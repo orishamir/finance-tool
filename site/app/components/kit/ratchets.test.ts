@@ -66,6 +66,10 @@ const SELECT: Record<string, number> = {
 const STATGRID: Record<string, number> = {
     "components/holdings/card.tsx": 1,
   };
+/** A fold whose label is a heading, built by hand from Disclosure (`as="h2"` and the like): FoldGroup has the heading and its count (2026-10-26). */
+const HEADINGFOLD: Record<string, number> = {
+    "routes/documents.tsx": 1,
+  };
 const OLDUI: Record<string, number> = {
     "components/Sheet.tsx": 1,
     "components/provenance.tsx": 1,
@@ -100,6 +104,11 @@ const patterns: Record<string, { kit: string; count: (s: string) => number; allo
     kit: "StatRow or KeyValueList (a <dl> laid out as a grid)",
     count: (s) => (s.match(/<dl\b[^>]*className="[^"]*\bgrid\b/g) ?? []).length,
     allowed: STATGRID,
+  },
+  headingFold: {
+    kit: "FoldGroup (variant=\"section\" for a topic of cards, with its count; open and onOpenChange when the page opens it): a Disclosure with as=\"h2\", \"h3\" or \"h4\"",
+    count: (s) => [...s.matchAll(/<Disclosure\b[^>]*?\bas="h[2-4]"/g)].length,
+    allowed: HEADINGFOLD,
   },
   oldUi: {
     kit: "components/kit (ui.tsx is a legacy re-export)",

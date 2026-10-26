@@ -11,6 +11,7 @@
   "recheck_date": "2027-01-01",
   "il_finance_file": "switching-and-transfers.md",
   "checked": "2026-10-25",
+  "scope": "general",
   "sources": [
     {
       "url": "https://www.btl.gov.il/Laws1/00_0001_000000.pdf",

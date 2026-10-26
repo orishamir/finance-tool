@@ -15,7 +15,7 @@ export interface DepositInput {
     rate: number;
     /** A-15 term in months; 1 for a current account. */
     termMonths: number;
-    /** A-16: unlinked, CPI-linked, or prime-linked (taxed as unlinked by the rule base's reading, TXI-04). */
+    /** A-16: unlinked, CPI-linked, or prime-linked (taxed as unlinked, TXI-04; TXI OQ2 closed 2026-10-26). */
     linkage: "unlinked" | "cpi" | "prime";
     /**
      * F-26 (2026-10-25): the largest balance of a current account that earns the rate (the record's `amount_range.max`,
@@ -64,7 +64,8 @@ export function runDeposit(input: DepositInput, ctx: RunContext): RunResult {
     book.cite("BANK-26");
   } else {
     rate = book.rate("TXI-03", "rate");
-    if (deposit.linkage === "prime") book.label("reading", "TXI-04");
+    // a prime-linked deposit is unlinked: the statutory index is the CPI or an exchange rate (TXI-04; TXI OQ2 closed 2026-10-26, no longer a reading)
+    if (deposit.linkage === "prime") book.cite("TXI-04");
   }
 
   // TXI-20 applies to deposit and savings-plan interest when the income is known; whether it reaches

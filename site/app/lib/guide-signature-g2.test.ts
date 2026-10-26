@@ -104,9 +104,18 @@ describe("provident fund for investing", () => {
     expect(m.ageAtExit).toBe(40);
     expect(providentModel(d, { amount: 10000, monthly: 500, years: 30, age: 30 }).annuityOpen).toBe(true);
     expect(providentModel(d, { amount: 10000, monthly: 500, years: 10, age: null }).annuityOpen).toBeNull();
-    // the same lump sum whatever the age: the tax does not change at 60
+    // 2026-10-26 (F-44 with F-42, TXK-06): from 60 the reduced brackets apply first, so at 65 the same lump sum pays less tax than at 40;
+    // the brokerage side gets the same profile, so both sides carry the relief
     const old = providentModel(d, { amount: 10000, monthly: 500, years: 10, age: 55 });
-    expect(old.lump!.net).toBeCloseTo(m.lump!.net, 6);
+    expect(old.lump!.tax).toBeLessThan(0.25 * old.realGain! - 1e-6);
+    expect(old.lump!.net).toBeGreaterThan(m.lump!.net);
+    expect(old.broker!.tax).toBeLessThan(m.broker!.tax);
+    // the visual reads the age-60 case off the run itself, and the figures carry that run's rules and flags (review 2026-10-26)
+    expect(old.lump!.run.formulas).toContain("F-42");
+    expect(m.lump!.run.formulas).not.toContain("F-42");
+    expect(old.lump!.run.rules.map((r) => r.id)).toEqual(expect.arrayContaining(["TXG-04", "TXG-07", "TXK-26"]));
+    expect(old.lump!.run.flags.map((f) => f.code)).toContain("TXK-26");
+    expect(old.lump!.run.flags.map((f) => f.code)).not.toContain("G-21");
     // the balance that moves to an annuity fund is the gross balance, before the lump-sum tax
     expect(m.transfer!).toBeGreaterThan(m.lump!.net);
     expect(m.diff).toBeCloseTo(m.lump!.gain - m.broker!.gain, 9);

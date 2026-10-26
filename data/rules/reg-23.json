@@ -11,6 +11,7 @@
   "text_he": "התכנית נפתחת 'בקופת גמל או בבנק לפי בחירתכם'. בקופת גמל הנכסים מוחזקים בנאמנות ובנפרד מרכוש החברה המנהלת, ואם היא קורסת הניהול עובר לחברה אחרת. בבנק הכסף הוא פיקדון בנקאי בלי ביטוח פיקדונות.",
   "il_finance_file": "regulators-and-protection.md",
   "checked": "2026-10-22",
+  "scope": "general",
   "sources": [
     {
       "url": "https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/default.aspx",

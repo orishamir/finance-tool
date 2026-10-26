@@ -37,6 +37,18 @@
   },
   "il_finance_file": "switching-and-transfers.md",
   "checked": "2026-10-25",
+  "scope": "unsettled",
+  "scope_institutions": [
+    {
+      "id": "discount",
+      "name_he": "בנק דיסקונט"
+    },
+    {
+      "id": "meitav-trade",
+      "name_he": "מיטב טרייד"
+    }
+  ],
+  "scope_settle": "the Bank of Israel price-supervision order under s.7 of the Banking (Customer Service) Law that sets the amount (open question 10)",
   "sources": [
     {
       "url": "https://www.discountbank.co.il/media/bjudw31y/part4_securities07022025.pdf",

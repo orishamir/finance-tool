@@ -11,6 +11,33 @@
   "recheck_date": "2027-04-30",
   "il_finance_file": "etfs-and-index-funds.md",
   "checked": "2026-10-25",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "harel-funds",
+      "name_he": "הראל קרנות נאמנות"
+    },
+    {
+      "id": "kesem",
+      "name_he": "קסם קרנות נאמנות"
+    },
+    {
+      "id": "ibi-funds",
+      "name_he": "אי.בי.אי קרנות נאמנות"
+    },
+    {
+      "id": "migdal-funds",
+      "name_he": "מגדל קרנות נאמנות"
+    },
+    {
+      "id": "mor-funds",
+      "name_he": "מור קרנות נאמנות"
+    },
+    {
+      "id": "meitav-funds",
+      "name_he": "מיטב קרנות נאמנות"
+    }
+  ],
   "sources": [
     {
       "url": "https://mayafiles.tase.co.il/rpdf/1761001-1762000/P1761272-00.pdf",

@@ -293,6 +293,8 @@ export const provenance = {
     closed: "השאלה הזאת נסגרה ב־{date}. היא כבר לא עוצרת שום דבר באתר.",
     status: "מצב",
     blocks: "מה היא עוצרת",
+    // 2026-10-26: the status line, from data/open-questions.json (a closed one says its date in `closed` instead)
+    statuses: { open: "פתוחה", narrowed: "פתוחה בחלקה: חלק ממנה כבר נענה" } as Record<string, string>,
   },
   entered: { line: "הזנתם את הערך הזה.", instead: "במקום:" },
   // 2026-10-25: `more` folds the parameter file's general line away from the clicked number's own line
@@ -563,6 +565,7 @@ export const formulaNames: Record<string, string> = {
   "F-33": "הפקדה בלי הטבת מס",
   "F-43": "מס נוסף על הכנסה גבוהה",
   "F-44": "מס במשיכה מקופת גמל להשקעה",
+  "F-42": "מגיל שישים: מדרגות המס המופחתות על הרווח", // 2026-10-26 (review): the kupat gemel lehashkaa lump sum's tax from 60 opens on it
   "F-67": "הגרף בעמודי המדריך",
   // audit 2026-10-24 (A21): names for the formulas a sheet shows beside its id, so no sheet opens on a bare code
   "F-17": "דמי ניהול קבועים בחשבון",
@@ -591,11 +594,14 @@ export const formulaNames: Record<string, string> = {
 /** What each engine flag means, in one line (method.md §12); copy.md 3.8. The code stays beside the words. */
 export const flags: Record<string, string> = {
   "G-02": "בסיס המס במשיכה: לפי החוק המס הוא על הרווח הריאלי, כי חלק ההצמדה פטור. האתר מציג גם את החלופה של שיעור נמוך יותר על הרווח הנומינלי, שלפי דברי ההסבר לחוק לא חלה כאן.", // 2026-10-25 tax-bases research: the base is the law's (TXK-07)
-  "G-11": "דמי ביטוח לאומי על הרווח במשיכה: עוד לא ברור אם חלים. האתר לא מחשב אותם.",
   "G-14": "הוצאות ישירות של המסלול לא נאספו עדיין, ולכן לא נכללו בחישוב.",
   "G-21": "חלק מהמס מוסדר דרך דוח שנתי, לא בניכוי במקור.",
   "PF-13": "ההנחה בדמי הניהול הוארכה לחמש שנים לפחות, לפי חוזר הרשות.",
-  "TXK-OQ12": "מגיל הפרישה המוקדמת: האם מדרגות המס הנמוכות חלות על הרווח במשיכה, עוד לא ברור. האתר לא מחשב את ההקלה.",
+  "G-23": "נקודות הזיכוי לא הופחתו מהמס הזה. נקודות זיכוי מקטינות את כל המס המחושב בשנה, גם את המס על רווחים ועל ריבית בשיעור מיוחד, ולכן הן משנות את התוצאה רק כשהן גדולות מהמס על שאר ההכנסה שלכם באותה שנה, למשל בשנה בלי משכורת. מס שכבר נוכה במקור חוזר רק דרך דוח שנתי או בקשת החזר מס. האתר לא יודע כמה נקודות זיכוי יש לכם.", // 2026-10-26: TXG-05; the refund of tax withheld is TXG-25; method G-23 names the input it would need
+  "CS-18": "דמי הניהול אחרי גיל עשרים ואחת חושבו לפי התקרה שבתקנות, ולכן הם ״עד״: בקופה שלכם השיעור יכול להיות נמוך יותר.", // 2026-10-26: the child-savings fee after 21 runs on CS-18's cap unless the person enters a rate (F-54)
+  "TXK-06": "מגיל שישים מדרגות המס המופחתות חלות קודם גם על הרווח במשיכה, וכסף שנוכה במקור ביותר חוזר רק דרך דוח שנתי או בקשת החזר מס. החישוב הזה הוא בלי בקשת החזר, והאתר השאיר בו את השיעור המלא, בלי ההקלה. על חלק הרווח שהמדרגה שלו נמוכה משיעור הניכוי במקור זה יותר מהמס בפועל, כי שם המס הוא הניכוי עצמו.", // 2026-10-26: F-44 applies the brackets (F-42); the flag marks only a run with the refund not claimed (A-14 off), whose flat rate is an upper bound since reg. 3(א) withholds 20% (TXK-26); finance review 2026-10-26
+  "TXK-26": "החברה המנהלת מנכה במקור לפי שיעור התקנות, בלי להתחשב בגיל, והמס הסופי נקבע מול הניכוי בדוח השנתי: על חלק הרווח שהמדרגה שלו נמוכה משיעור הניכוי מקבלים החזר, ועל חלק שהמדרגה שלו גבוהה ממנו משלמים עוד, עד השיעור המרבי. המספר כאן הוא המס הסופי, אחרי ההתחשבנות בדוח.", // 2026-10-26 (finance review): the kupat gemel lehashkaa exit from 60 settles against reg. 3(א)'s withholding (TXK-26), not G-21 (a bank's or TASE member's withholding)
+  "TXP-11": "הפקדת המעסיק לפיצויים עוברת את תקרת הפיצויים, שנבדקת כל חודש: החלק שמעל התקרה הוא הכנסת עבודה כבר במועד ההפקדה, והאתר עוד לא מחשב את המס עליו.", // 2026-10-26: TXP OQ5 closed (circular 4/2019 s.2.1.1, TXP-11); the engine flag was "TXP-OQ5"
 };
 
 /** Labels of the values a computation reads, shown in the number sheet (copy.md 3.8 "ערכים שנכנסו לחישוב"). */
@@ -1274,9 +1280,9 @@ export const idle = {
   errBalance: "הזינו סכום גדול מאפס.",
   errKeep: "הסכום גדול מהיתרה בעו״ש.",
   fill: "מלאו את שני המספרים.",
-  headlineBefore: "להשאיר",
-  headlineMid: "בעו״ש עולה לכם עד",
-  headlineAfter: "בחודש",
+  // founder 2026-10-26: "להשאיר 10,000 ₪ בעו״ש" read as if the person chose to keep that sum; the sum is the part not needed at once
+  headlineSplit: "{amount} מהכסף בעו״ש לא צריכים להיות זמינים מיד.",
+  headlineCost: "אם הם נשארים בעו״ש, זה עולה לכם עד {cost} בחודש.",
   headlineLabel: "העלות החודשית הגבוהה ביותר מבין האפשרויות הנזילות",
   noCost: "לפי הנתונים של האתר אף אפשרות נזילה לא משלמת יותר מהעו״ש, ולכן להשאיר אותו שם לא עולה לכם כלום.",
   allKept: "כל הכסף צריך להישאר זמין, אין מה להשוות.",
@@ -1287,11 +1293,14 @@ export const idle = {
   mmfNote: "הריבית כאן משמשת כקירוב לתשואת הקרן.",
   makamNoCommission: "בלי עמלת קנייה",
   baselineBefore: "העו״ש משלם היום",
+  // F-85: the rate most collected banks print on a current account, not one bank's (founder, 2026-10-26)
+  baselineCommon: "הריבית הנפוצה ביותר על יתרה בעו״ש, בבנקים שהאתר אסף:",
   // D31: the bank whose published rate the baseline is
   baselineOwner: { before: "העו״ש של", after: "משלם היום" },
   rowOwner: "של",
   baselineAfter: ".",
-  baselineNone: "לפי הנתונים של האתר העו״ש לא משלם ריבית.",
+  // F-85: the rate most collected banks print is 0; some pay, with conditions, and the comparison does not assume the person meets them
+  baselineNone: "ברוב הבנקים שהאתר אסף העו״ש לא משלם ריבית על היתרה, ולכן ההשוואה מניחה שהכסף שם לא מרוויח כלום.",
   boiBefore: "הממוצע שבנק ישראל מפרסם לכל בנק לא מופיע כאן: תנאי השימוש של בנק ישראל לא מתירים לפרסם אותו מחדש בלי הסכמה בכתב.",
   boiLink: "לממוצעים של בנק ישראל",
   boiParam: "הריבית של הקרן הכספית והמק״מ היא פרמטר של האתר, לא נתון של בנק ישראל.",
@@ -2119,6 +2128,8 @@ export const r4workbench = {
     /** copy.md 8.1: a snapshot line that applies but is no part of a holding's running cost (a transfer out) */
     notModelledOther: "עמלה שאינה חלק מעלות ההחזקה השוטפת.",
     noLine: (base: string) => `אין בתעריפון שורה ל${base}; לא נגבה בחישוב.`,
+    /** 2026-10-26 (method F-14, F-63; BRK OQ11 closed): the note on a non-bank member's custody line when the fund is a money-market fund */
+    mmfCustodyNonBank: "בבנק אסור לגבות דמי ניהול פיקדון ניירות ערך על קרן כספית. אצל חבר בורסה שאינו בנק לא נמצא כלל שמגביל אותם, ולכן החישוב לפי התעריפון. רק חבר בורסה שאינו משווק השקעות ויש לו הסכם הפצה לקרן הזאת אסור לו, לפי תקנות עמלת הפצה, לגבות עליה עמלה. לפי הדוח המשותף של הרגולטורים, אצל חברי בורסה שאינם בנקים יש פטור גורף מדמי משמרת, ודמי טיפול בפיקדון הם בדרך כלל סכום קבוע שלעתים קרובות מוחזר או לא נגבה. זה נוהג, לא תנאי בתעריפון.",
     /** copy.md 8.1: the bases a missing line is named by, in the sentence above */
     noLineBases: { trade: "קנייה ומכירה", custody: "דמי ניהול פיקדון ניירות ערך", fx: "המרת מטבע" } as Record<string, string>,
     fixedSpread: (name: string) => `${name} נפרסו לחודשים.`,
@@ -2443,8 +2454,7 @@ export const r4playbook = {
     "SW OQ3": "מה קובעים לגבי פניות שימור במוצרי גמל.",
     "SW OQ4": "האם הצעה שניתנה לפני ההצטרפות מחייבת.",
     "SW OQ5": "איך נבדקת הסכמת הלקוח להוצאת דוח מהמסלקה.",
-    "SW OQ6": "מי מודיע למעסיק להפנות את ההפקדות הבאות, ובתוך כמה זמן.",
-    "SW OQ9": "אילו סוגי חשבונות ופעילות המעבר בין בנקים כולל.",
+    "SW OQ9": "אילו בנקים פטורים מהמעבר, ואיך נספר יום העסקים השישי.", // 2026-10-26: narrowed, SW-26 gives the account and activity types
     "SW OQ10": "המחיר המפוקח להעברת ניירות ערך.",
     "SW OQ11": "המס על העברת ניירות ערך בין חשבונות של אותו בעלים.",
     "SW OQ12": "העברה בין מוסד ישראלי לברוקר זר.",
@@ -2592,7 +2602,7 @@ export const r5 = {
     wrapperSubject: "לפי {exposure} בתשואה שהזנתם, {rate}",
     cannotHoldTag: "לא מחזיק {exposure}",
     // copy.md 9.2 to 9.6: P-08 rows that cannot run, in the words of the parameter's own rows
-    p08: { gov: "לא נבדקה: תדירות הקופון של סדרה לא צמודה עוד לא במאגר החוקים והכללים. שאלה פתוחה GOV OQ4", fund: "לא נבדקה: פרטי הקרן עוד לא נאספו." },
+    p08: { gov: "לא נבדקה: האתר עוד לא מחשב אג״ח ממשלתית לא צמודה בריבית קבועה.", govCoupon: "לפי התקנות של הסוג הזה, הקופון משולם פעם בשנה", fund: "לא נבדקה: פרטי הקרן עוד לא נאספו." },
   },
   // 9.3 revisit
   revisit: {
@@ -2737,11 +2747,60 @@ export const updateRules = {
   frozen: "מוקפא בשנים {years}",
 } as const;
 
+/**
+ * Who a rule applies to (D30; research/specs/2026-10-25-rules-scope/spec.md §4, 2026-10-26): the rule card's label and lines by
+ * scope, the chip of a company's term, "תלוי בחברה", the company pages' section, the rules page's line and the search group.
+ * `{names}` is a Hebrew list ("הראל ואלטשולר שחם"), `{name}` one company.
+ */
+export const scopeWords = {
+  // "על {names}": a record about companies that rests on none of their documents (a press report, a forum post; review, 2026-10-26)
+  tag: { general: "חל על כולם", institution: "של {names}", unsettled: "לא הוכח שחל על כולם", about: "על {names}" },
+  line: {
+    institution: "נמצא במסמכים של {names}; בחברות אחרות זה יכול להיות אחרת.",
+    notTheirs: "המקורות כאן אינם מסמכים של {names}.",
+    unsettledSeen: "נמצא במסמכים של {names}. אולי כך בכל החברות; לא מצאנו לזה מקור רשמי.",
+    unsettled: "אולי כך בכל החברות; לא מצאנו לזה מקור רשמי.",
+  },
+  /** The card's foot: where the company's terms are listed, one link per company. */
+  allAt: "לכל מה שמצאנו אצל {name}",
+  allNoCompany: "לכל מה שלא נכלל ככלל",
+  /** A record the rule base keeps that is not a rule (a forum post, a press report, a list, a count, a site's terms, a company's tariff): its card's tag and, when it cites a company's document, its line (review, 2026-10-26). */
+  notRule: {
+    tag: "לא נכלל ככלל",
+    lineOwn: "נמצא במסמכים של {names}. האתר לא מציג את זה ככלל, ושומר אותו עם המקור בין מה שלא נכלל ככלל.",
+  },
+  /** The card's foot of a general rule on a page about one product. */
+  rulesOf: "לכל החוקים והכללים של {product}",
+  /** The chip of a record that names several companies: "לאומי ועוד 3". */
+  chipMore: { one: "ועוד אחת", two: "ועוד שתיים", many: "ועוד {n}" },
+  /** Where a property is each company's own: the guide's line and checklist mark, with the companies as links. */
+  varies: "תלוי בחברה",
+  variesBank: "תלוי בבנק",
+  section: {
+    title: "מה כתוב במסמכים של {name}",
+    line: "מה שנמצא רק במסמכים של החברה, לא בחוק ולא אצל הרשות, ולכן לא מופיע במדריך. ליד כל אחד המסמך והיום שבו האתר קרא אותו.",
+    unsettledMark: "אולי כך בכל החברות; לא מצאנו לזה מקור רשמי",
+  },
+  noPage: {
+    title: "מה כתוב במסמכים של חברות שאין להן עמוד כאן",
+    line: "מה שנמצא במסמכים של חברות שלאתר אין עליהן עמוד משלהן, לפי חברה.",
+    // what no company's section lists: the records the rule base keeps that are not rules (review, 2026-10-26)
+    none: { title: "לא נכלל ככלל: פרסומים, ספירות ונתונים", line: "מה שהאתר שומר עם המקור אבל לא מציג ככלל: סיפורים מפורומים, כתבות, רשימות וספירות, נתונים, תנאי שימוש של אתרים, תעריפים של חברות, ומקומות שבהם חיפשנו כלל ולא מצאנו." },
+  },
+  /** The rules page: company terms are not listed there. */
+  rulesLine: { before: "מה שנמצא רק במסמכים של חברה מסוימת מופיע בעמוד של אותה חברה, לא כאן.", link: "לרשימת החברות" },
+  searchGroup: "אצל חברות מסוימות",
+  /** "and" before the last name of a list: joined to a Hebrew name, with a maqaf before a Latin one (copy.md 10.4). */
+  and: { hebrew: "ו", latin: "ו־" },
+} as const;
+
 /** Additions to the rule card (synthesis §3.3). */
 export const ruleCardMore = {
   forTaxYear: "לשנת המס",
   derivedFrom: "נגזר מ־",
   derivedLine: "זו מסקנה משילוב של כמה חוקים וכללים, לא משפט אחד שנמצא במקור.",
+  /** A general rule's pointers to companies' terms (review, 2026-10-26): named examples, never a derivation. */
+  examples: "לדוגמה:",
   stable: "לא משתנה מעצמו",
   usesLead: "משפיע על",
   usesEngine: "החישובים באתר",
@@ -2888,7 +2947,6 @@ export const guideSignature = {
     gaps: {
       depositBreak: "הבנק מתאר שבירה בתנאים שהאתר עוד לא מחשב.",
       planLockPerDeposit: "ההנחה כאן: לכל הפקדה חודשית יש נעילה משלה, באורך תקופת התוכנית, כמו בפיקדון שנפתח בכל חודש. אף מקור לא אומר אם כך זה בפועל (שאלה פתוחה BANK-OQ12); בחוזה של בנק אחד נקראו תוכניות שנפתחות כולן יחד, בנקודת יציאה שנספרת מתחילת התוכנית.",
-      mmfPayoutDays: "כמה ימי עסקים עוברים מהוראת הפדיון עד שהכסף בחשבון עוד לא ידוע (שאלה פתוחה MF-OQ4).",
       renewableDates: "מועדי הסדרות הבאות עוד לא נאספו: הם כתובים בהסכם הקרן ובתשקיף שלה, והאתרים שמפרסמים אותם חוסמים קריאה אוטומטית.",
       seriesDate: "תאריך הפדיון של הסדרה לא נמצא בנתוני הקרן.",
       accountBanks: "הריביות שהבנקים מפרסמים על יתרה בעו״ש עוד לא נאספו.",
@@ -3130,6 +3188,10 @@ export const guideSignature = {
     marker: "אחרי כמה שנים לוקחים את הכסף?",
     unit: "שנים מהיום",
     ageLabel: "הגיל שלכם היום",
+    /** 2026-10-26: the input name of the scenario income in the lump sum's sheet, once the exit year is at 60 or over (F-44 with F-42) */
+    incomeName: "ההכנסה השנתית בשנת המשיכה",
+    /** 2026-10-26 (review): from 60 the lump sum's tax is F-42 over this, the real gain F-44 sets */
+    realGainName: "הרווח הריאלי במשיכה",
     ageHint: "לא חובה. בלי גיל האתר לא יכול להראות מתי נפתחת הקצבה.",
     ageError: "גיל שלם בין 0 ל־120.",
     chart: {
@@ -3165,6 +3227,7 @@ export const guideSignature = {
     about: {
       net: "מה שנשאר מהקופה אחרי מס, אם לוקחים הכול כסכום חד־פעמי, בכסף של היום",
       tax: "המס על הסכום החד־פעמי: חלק מהרווח הריאלי, בכסף של היום",
+      realGain: "הרווח הריאלי של הסכום החד־פעמי, שעליו המס, בכסף של היום",
       alt: "המס על אותו סכום אם הבסיס הוא הרווח הנומינלי, בכסף של היום",
       transfer: "היתרה שעוברת לקופת גמל לקצבה, לפני מס, בכסף של היום",
       gain: "הרווח נטו בקופה: מה שנשאר אחרי עלויות ומס, פחות מה שהפקדתם, בכסף של היום",
@@ -3220,11 +3283,13 @@ export const guideSignature = {
 export const guideWorth = {
   title: "שווה לדעת",
   line: "עובדות על המוצר הזה שרוב האנשים לא יודעים, כל אחת עם המקור שלה.",
+  /** 2026-10-26: before a figure that is a legal cap (its name holds "cap"), so a cap never reads as the rate charged */
+  upTo: "עד",
 } as const;
 
 /** Search additions (synthesis §3.6): the three new groups, their row lines and the empty states by query type. */
 export const searchMore = {
-  groups: { rule: "חוקים וכללים", parameter: "פרמטרים", document: "מסמכים" },
+  groups: { rule: "חוקים וכללים", companyRule: "אצל חברות מסוימות" /* D30, 2026-10-26: a company's own terms, each row naming the company */, parameter: "פרמטרים", document: "מסמכים" },
   parameterLine: "פרמטר של האתר",
   documentLine: "מסמך",
   figureLine: "מספר מתוך המאגר",
@@ -3571,7 +3636,7 @@ export const kit = {
       Card: "המשטח המורם היחיד. את הריפוד בוחרים ב־pad, את הפנים ב־className.",
       Section: "כותרת עם פתיחה ופעולה בקצה השורה, ואחריה הגוף. level: page, card או form.",
       Disclosure: "כל מה שהקורא יכול לפתוח: טבלה, הערה ארוכה, קבוצה ברשימה. התווית והחץ עוקבים אחרי מצב הקופסה עצמה, גם בתוך קופסה פתוחה אחרת.",
-      FoldGroup: "כותרת קבוצה עם הספירה שלה, בתוך רשימת כיסוי. כותרת ברמה 3 או 4.",
+      FoldGroup: "כותרת קבוצה עם הספירה שלה. list (ברירת המחדל): קבוצה בתוך רשימת כיסוי, כותרת ברמה 3 או 4. section: נושא של כרטיסים בעמוד (קבוצות החוקים והכללים, מה כתוב במסמכים של חברה), כותרת גדולה ושורה של 48 פיקסלים; open ו־onOpenChange כשהעמוד פותח קבוצה לפי הכתובת.",
       CoverageFold: "הכרטיס שמונה כל אפשרות פעם אחת: משפט של ספירות, שורת הצגה והסתרה, והרשימה מתחת לקו.",
       SegmentedControl: "שתיים עד ארבע אפשרויות קצרות ושוות, אחת תמיד נבחרת.",
       ChipList: "רשימה שאפשר לבחור בה, להוסיף לה, לשנות שם ולמחוק: מטרות, מדדים. הפריט הנבחר מקבל עיפרון ופח; גרירה רק כשיש onMove; הפריט האחרון (add) מוסיף.",
@@ -3591,6 +3656,7 @@ export const kit = {
       Marker: "סמן שנגררים אותו על ציר של תרשים: לחיצה בכל מקום בשטח מזיזה אותו, וגם מקשי החצים. Marker הוא המחוון הבלתי נראה; MarkerMark הוא מה שהתרשים מצייר.",
       GainBars: "שני סכומים כעמודות מאותה נקודת התחלה, וההפרש כסוגר עם מספר משלו (אף פעם לא עמודה שלישית).",
       ChartLegend: "שלושת החלקים סביב כל תרשים: מה כל סימן אומר, הערכים בשנה שמצביעים עליה, ואותם מספרים כטבלה.",
+      CompanyLinks: "פתיח ואחריו החברות שהוא עוסק בהן, כל אחת קישור לעמוד שלה: ״תלוי בחברה״ כשכל חברה קובעת לעצמה, ״לכל מה שמצאנו אצל״ מתחת לתנאי של חברה. רצוף: יכול לסגור משפט או לעמוד בשורה משלו.",
     },
     sample: {
       list: { heading: "הרשימה שלכם", note: "הערה קטנה ליד הכותרת, שיורדת שורה כשאין מקום", items: ["ראשון", "שני", "שלישי"], longItem: "פריט עם שם ארוך מאוד כדי לראות איך השורה יורדת", add: "פריט נוסף", confirm: "למחוק את הפריט?", yes: "מחיקה", no: "ביטול", rename: "שינוי השם", remove: "מחיקת הפריט", renameField: "שם הפריט", foot: "שורה מתחת לרשימה." },
@@ -3633,6 +3699,7 @@ export const kit = {
       coverOpen: "הצגת הרשימה",
       coverClose: "הסתרת הרשימה",
       group: "לא דורגו",
+      topic: "קרן השתלמות",
       rowA: "אפשרות ראשונה",
       rowB: "אפשרות שנייה",
       statLabels: ["אחרי הדמים", "בלי דמים", "העלות"],
@@ -3643,6 +3710,8 @@ export const kit = {
         { id: "b", label: "פטור ממס", line: "עוד שורה." },
       ],
       headCaption: "אחרי ניכוי דמים, במונחי היום",
+      companyLead: "תלוי בחברה",
+      companies: ["חברה ראשונה", "חברה שנייה", "חברה שלישית"],
     },
   },
 } as const;

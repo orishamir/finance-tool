@@ -13,6 +13,7 @@
   "text_he": "הממוצע הוא של השנה הקלנדרית האחרונה שהסתיימה, ושורות של שנת הדיווח הנוכחית מחזיקות את הממוצע של השנה הקודמת. הערך משתנה פעם בשנה, בשורת ינואר. מסלול מקבל ערך ראשון רק אחרי שנה קלנדרית מלאה. עבור שנים קודמות זו הסקה מהנתונים ולא הגדרה רשמית.",
   "il_finance_file": "tracks-catalogue-and-decoder.md",
   "checked": "2026-10-23",
+  "scope": "general",
   "sources": [
     {
       "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1703/he/regulation_2002-11.pdf",

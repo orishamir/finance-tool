@@ -1,7 +1,7 @@
 // The data the switching playbook page is built from at build time (flows 31, 33): the wrapper's step list rendered from
 // the rule records, the rules the page quotes (for the cards and the engine's rule book), and the companies the pair fields
 // offer. One page per wrapper that has a step list. Server-only.
-import { loadCma, loadFees, loadRules, loadWrappers, today } from "./data.server";
+import { loadCma, loadFees, loadRules, loadWrappers, pointedRecords, today } from "./data.server";
 import { buildSteps, buildSummary, isProvident, playbookRuleIds, playbookWrappers, STEP_LISTS } from "./playbook";
 import { providerWrapperIds } from "./providers.server";
 
@@ -54,6 +54,7 @@ export function playbookPage(wrapperId: string) {
     wrapperName: wrapper?.names.he[0] ?? wrapperId,
     today: date,
     rules,
+    pointed: pointedRecords(rules, all),
     steps: buildSteps(all, wrapperId, date),
     summary: buildSummary(all, wrapperId),
     companies: companies(wrapperId),

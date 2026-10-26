@@ -1,0 +1,408 @@
+"""Write securities-tax.jsonl: one finding per open question (2026-10-26 hunt). Run: python3 -I tools/write_jsonl.py"""
+import json
+from pathlib import Path
+
+OUT = Path(__file__).resolve().parent.parent / "securities-tax.jsonl"
+C = "2026-10-26"
+
+ORD = ("https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20"
+       "%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf")
+ORD_T = "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים (לא מרובד)"
+C10 = "https://www.gov.il/BlobFolder/policy/professional-directives-271125-1/he/IncomeTax_professional-directives-271125-1.pdf"
+C10_T = "חוזר מס הכנסה מס' 10/2025 – רשות המסים, בנושא: קיזוז הפסדי הון (27.11.2025)"
+MOSES = "https://www.capitax.co.il/Attachments/3555-15.pdf"
+MOSES_T = "ע\"א 3555/15, 3723/15, 5447/16 עודד מוזס ואח' נ' פקיד שומה למפעלים גדולים, בית המשפט העליון, 12.9.2016 (עותק באתר capitax; העותק באתר בתי המשפט חסום לשליפה)"
+MOSES_COURT = "https://supremedecisions.court.gov.il/Home/Download?path=HebrewVerdicts\\15\\550\\035\\e25&fileName=15035550_e25.txt&type=4"
+LET19 = "https://www.capitax.co.il/Attachments/04072019.pdf"
+LET19_T = "רשות המסים, מחלקת מיסוי שוק ההון: ניכוי מס במקור – קרנות חוץ (Foreign Funds), 4.7.2019, לבורסה, לאיגוד הבנקים ולאיגוד חברי הבורסה שאינם בנקים (עותק באתר capitax; לא נמצא עותק ב-gov.il)"
+C7 = "https://www.gov.il/BlobFolder/policy/income-tax-professional-inst-7-2003/he/Policy_IncomeTaxInst_hoz7-2003.pdf"
+C7_T = "חוזר מס הכנסה מס' 7/2003 (מקצועית): הרפורמה במס הכנסה – מיסוי קרנות נאמנות ובעלי היחידות בהן, 22.5.2003"
+C22 = "https://www.gov.il/BlobFolder/policy/income-tax-professional-inst-22-2002/he/Policy_IncomeTaxInst_hoz22-2002.pdf"
+C22_T = "חוזר מס הכנסה 22/2002 (מקצועית, משפטית): הרפורמה במס הכנסה – מיסוי רווחי הון והכנסות מניירות ערך הנסחרים בבורסה, 30.12.2003"
+CALC = "https://www.btl.gov.il/Laws1/02_0103_100223.pdf"
+CALC_T = "תקנות מס הכנסה (חישוב רווח הון במכירת נייר ערך הנסחר בבורסה, מילווה המדינה או יחידה בקרן נאמנות), התשס\"ג-2002 (נוסח משולב, אתר המוסד לביטוח לאומי)"
+WH02 = "https://www.btl.gov.il/Laws1/02_0103_100228.pdf"
+WH02_T = "תקנות מס הכנסה (ניכוי מתמורה, מתשלום או מרווח הון במכירת נייר ערך, במכירת יחידה בקרן נאמנות או בעסקה עתידית), התשס\"ג-2002 (נוסח משולב, אתר המוסד לביטוח לאומי)"
+WH05 = "https://www.btl.gov.il/Laws1/02_0103_100269.pdf"
+WH05_T = "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס\"ו-2005 (נוסח משולב, אתר המוסד לביטוח לאומי)"
+F1325 = ("https://www.gov.il/BlobFolder/service/reporting-and-payment-2025-annual-tax-report-for-individuals/he/"
+         "Service_Pages_Income_tax_annual-report-2026_1325-2025.pdf")
+F1325_T = "טופס 1325 – נספח ג(1) לטופס הדוח השנתי: רווח הון מניירות ערך סחירים לשנת המס 2025, ודברי ההסבר לו (רשות המסים, מעודכן 12.2025)"
+F1322 = ("https://www.gov.il/BlobFolder/service/reporting-and-payment-2025-annual-tax-report-for-individuals/he/"
+         "Service_Pages_Income_tax_annual-report-2026_1322-2025.pdf")
+F1322_T = "טופס 1322 – נספח ג לטופס הדוח השנתי: רווח הון מניירות ערך סחירים לשנת המס 2025, ודברי ההסבר לו (רשות המסים, מעודכן 12.2025)"
+GUIDE = "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf"
+GUIDE_T = "רשות המסים, \"דע זכויותיך וחובותיך 2025\" (מדריך לדוח השנתי לשנת המס 2025)"
+REFUND = "https://www.gov.il/he/Departments/Guides/tax-return-application-guide"
+REFUND_T = "רשות המסים, \"מדריך להגשת בקשה להחזר מס למי שאינו חייב בהגשת דו\"ח\" (פורסם 28.10.2019, עודכן 20.04.2026)"
+EXREGS = ("https://he.wikisource.org/w/index.php?title=%D7%AA%D7%A7%D7%A0%D7%95%D7%AA_%D7%9E%D7%A1_%D7%94%D7%9B%D7%A0%D7%A1%D7%94_"
+          "%28%D7%A4%D7%98%D7%95%D7%A8_%D7%9E%D7%94%D7%92%D7%A9%D7%AA_%D7%93%D7%99%D7%9F_%D7%95%D7%97%D7%A9%D7%91%D7%95%D7%9F%29&action=raw")
+EXREGS_T = "תקנות מס הכנסה (פטור מהגשת דין וחשבון), התשמ\"ח-1988, נוסח משולב (ויקיטקסט, העתק של החקיקה)"
+KT6317 = ("https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/"
+          "Rw7wUk704REbG2yxl42bdFeT2Z6A1RTn4GqifMATFc4=")
+KT6317_T = "קובץ התקנות 6317א, 31.5.2004: תקנות מס הכנסה (פטור מהגשת דין וחשבון) (תיקון), התשס\"ד-2004, ותקנות מס הכנסה (מקדמות בשל הכנסת חוץ), התשס\"ד-2004 (סריקה, משרד המשפטים)"
+R5916 = "https://secapp.taxes.gov.il/TMMISUYWEB/frmShowLinkedAbs.aspx?num=20200015&new=true"
+R5916_T = "רשות המסים, החלטת מיסוי 5916/20 (בהסכם): מיסוי הכנסותיהם של משקיעים ישראליים ב-REIT אמריקאית, פורסמה 08.09.2020"
+RDB = "https://secapp.taxes.gov.il/TMMISUYWEB/frmAbsSearch.aspx?cur=4"
+RDB_T = "רשות המסים, איתור תמצית החלטות מיסוי (מאגר ההחלטות המקדמיות; הקישור מ-gov.il: www.misim.gov.il/TMMISUYWEB/frmAbsSearch.aspx?cur=4)"
+MERC = "https://www.mercantile.co.il/private/investments-savings/taxation/securities-taxation/"
+MERC_T = "בנק מרכנתיל (קבוצת דיסקונט), \"כדאי לדעת - מיסוי בניירות ערך\", פרק \"אמנות מס\" (נוהג של בנק, אינו מקור לכלל)"
+USIE = "https://www.irs.gov/pub/irs-trty/ireland.pdf"
+USIE_T = "Convention between the United States and Ireland for the avoidance of double taxation (1997), IRS text (מקור רשמי אמריקאי, אנגלית)"
+CSPX = "https://www.ishares.com/uk/individual/en/literature/fact-sheet/cspx-ishares-core-s-p-500-ucits-etf-fund-fact-sheet-en-gb.pdf"
+CSPX_T = "iShares Core S&P 500 UCITS ETF USD (Acc), CSPX, factsheet September 2026 (BlackRock, iShares VII plc; מסמך של החברה על המוצר שלה)"
+
+
+def src(url, title, loc, quote, kind):
+    return {"url": url, "title_he": title, "locator": loc, "quote_he": quote, "checked": C, "kind": kind}
+
+
+rows = []
+
+# ---------------------------------------------------------------- TXF OQ1
+rows.append({
+    "code": "TXF OQ1",
+    "verdict": "narrowed",
+    "answer_en": (
+        "No official text says in words that an accumulating foreign fund is taxed only when sold, but every current Tax Authority "
+        "text on foreign funds taxes the holder only on a sale of the unit and on distributions: its 2019 letter to TASE and the banks "
+        "treats a TASE-registered foreign fund as a unit, sets withholding only on sale and on distributions, and credits only foreign tax "
+        "on the fund's distributions (accumulating Irish ETFs such as CSPX are among the funds listed on TASE), and the Ordinance has no "
+        "attribution rule for a non-controlling holder. One older Tax Authority statement points the other way: circular 7/2003 s.4.4 "
+        "(May 2003, before Amendment 147 rewrote the definition of a security) said that from 2007 a holder of a foreign-resident fund "
+        "would be taxed 'according to the fund's investments', each time the fund sells assets; no later text applies that."),
+    "sources": [
+        src(LET19, LET19_T, "p.2, s.4.1 and 4.1.1; s.4.1.2; s.4.1.4",
+            "קרן חוץ הינה יחידה כמשמעותה בחוק. על כן, לצרכי ניכוי מס במקור יחולו על קרן חוץ ההוראות הרלוונטיות החלות על נייר ערך נסחר בפקודת מס הכנסה … רווח הון – ברכישה או במכירה של קרן חוץ יחולו הוראות ניכוי מס במקור מרווח הון … חלוקת רווח – בחלוקת רווחים מקרן חוץ … יהיה זכאי לזיכוי מס זר ששולם בגין חלוקת רווחים בלבד מקרן החוץ",
+            "circular"),
+        src(ORD, ORD_T, "p.148, s.88, definition נייר ערך (added by Amendment 147, 2005)",
+            "\"נייר ערך\" – כהגדרה \"ניירות ערך\" בחוק ניירות ערך, לרבות … יחידה, … נייר ערך שהונפק מחוץ לישראל וכן עסקה עתידית",
+            "law"),
+        src(CSPX, CSPX_T, "p.1 'Use of Income'; p.3 trading table",
+            "Use of Income : Accumulating … This product is also listed on: Tel Aviv Stock Exchange",
+            "institution_doc"),
+        src(C7, C7_T, "pp.20-21, s.4.4 'קרנות נאמנות תושבות חוץ' (contrary, pre-Amendment 147)",
+            "מוגדרת יחידה בקרן נאמנות תושבת חוץ, שאישרה הרשות המוסמכת במדינה שבה הוצאה, כנייר ערך זר … לאחר שנת המס 2006 לא תחשב עוד היחידה בקרן כ\"נייר ערך זר\" … לאחר ה-1.1.2007 ומהיותה של קרן כאמור מחזיקת נכסים עבור משקיעים, החיוב במס של בעל היחידה יערך לפי השקעות הקרן והרווח יחושב בכל עת בה נמכרים נכסי הקרן.",
+            "circular"),
+        src(C22, C22_T, "p.22, s.3.1 (the 2003-2006 foreign-security list that s.4.4 of circular 7/2003 refers to)",
+            "ה) יחידה או תעודת השתתפות של קרן נאמנות תושבת חוץ (עד סוף 2006)",
+            "circular"),
+        src(RDB, RDB_T, "searched by title for קרן, קרנות, ETF, צוברת, נאמנות, and listed all 45 capital-market rulings: none on a foreign fund held by an individual",
+            "", "ruling"),
+    ],
+    "proposed_rule_text": (
+        "TXF-11, Rule (replace the reading-only wording): An individual who is not a controlling holder of a listed foreign fund is taxed on two "
+        "events only: a sale or redemption of the unit (capital gain, TXF-01 to TXF-03) and a distribution (dividend, TXF-08). Income the fund "
+        "reinvests enters the tax base only through the sale price. For a foreign fund registered on TASE the Tax Authority's letter of 4.7.2019 "
+        "says a \"קרן חוץ\" is a unit and sets withholding on sale and on distributions only, with foreign-tax credit only for tax on the fund's "
+        "own distributions (TXF-05, TXF-06); accumulating Irish UCITS ETFs are among the funds listed on TASE (CSPX factsheet). "
+        "Conditions / exceptions: no Tax Authority sentence states the rule for accumulating funds in words; it follows from the 2019 letter, "
+        "the s.88 definition of a security (Amendment 147, 2005: a unit and a security issued abroad are securities) and the absence of any "
+        "attribution rule for non-controlling holders (s.75B needs control). Contrary: circular 7/2003 s.4.4 (May 2003) said that from 1.1.2007 a "
+        "holder of a foreign-resident fund would be taxed \"לפי השקעות הקרן\"; it predates Amendment 147 and no later Tax Authority text applies it. "
+        "Strength: primary by implication (Tax Authority letter), with one contrary older circular."),
+    "site_effect": (
+        "The accumulating-fund tax dimension can rest on a Tax Authority text (the 2019 letter, by implication) instead of the personal-finance blog, "
+        "but should keep a caution note naming circular 7/2003 s.4.4; method G-18 numbers do not change (tax at sale only). Still a founder call under "
+        "D10 whether 'by implication' is enough to drop the caution flag on index-sp500 and brokerage-account."),
+    "still_unknown": (
+        "A Tax Authority sentence on accumulating foreign funds, especially funds bought at a foreign broker rather than registered on TASE; "
+        "whether circular 7/2003 s.4.4 was ever withdrawn (no notice found); whether funds organised as trusts or contractual funds (FCP) rather "
+        "than companies would be treated differently."),
+})
+
+# ---------------------------------------------------------------- TXS OQ12
+rows.append({
+    "code": "TXS OQ12",
+    "verdict": "narrowed",
+    "answer_en": (
+        "The law lets the year's management and custody fees reduce the gain (reg. 6(a)), lets the bank deduct them at withholding only if the "
+        "Director approved and under his rules (reg. 8), and turns fees not deducted in the year into a capital loss from securities (s.92(a)(5)); "
+        "the Tax Authority's 2025 return form counts only transaction commissions in cost and proceeds. No Director's approval or rule under reg. 8, "
+        "and no Tax Authority or bank text showing banks do it, was found."),
+    "sources": [
+        src(CALC, CALC_T, "p.1, reg. 1(a) definition הוצאות; p.2, reg. 6(a)",
+            "\"הוצאות\" - דמי ניהול ודמי משמורת בשנות המס החל במועד הקובע ואילך, בעד פעולות בניירות ערך … בחישוב רווח ההון במכירת ניירות ערך יותרו בניכוי מהתמורה ההוצאות שהוצאו באותה שנת מס.",
+            "regulation"),
+        src(WH02, WH02_T, "p.2, reg. 8; p.2, reg. 13",
+            "בחישוב רווח ההון לצורכי הניכוי במקור כאמור בתקנות אלה, ינכה החייב, אם אישר זאת המנהל, בהתאם לכללים שקבע, הוצאות שהוצאו לאחר המועד הקובע, בהתאם לקבוע בתקנות חישוב רווח ההון … את ההוצאות שהופחתו וקיזוז ההפסדים שביצע",
+            "regulation"),
+        src(ORD, ORD_T, "p.155, s.92(א)(5)",
+            "הוצאות בשל ניירות ערך, כפי שקבע שר האוצר באישור ועדת הכספים של הכנסת, שלא נוכו בשנת המס, ייחשבו לענין סעיף זה כהפסד הון מניירות ערך.",
+            "law"),
+        src(F1325, F1325_T, "p.2, explanatory notes 3 and 5",
+            "מחיר מקורי - סכום שהוצא לרכישת נייר הערך … בתוספת עמלות התנועה (התשלום בו מחוייב החשבון בגין ביצוע פעולה בנייר הערך לא כולל עמלות תקופתיות) … תמורה - תמורה כהגדרתה בסעיף 88 לפקודה בניכוי עמלות התנועה",
+            "guide"),
+    ],
+    "proposed_rule_text": (
+        "TXS-06, Conditions (add): Fees for the year that were not deducted from that year's proceeds count as a capital loss from securities "
+        "(s.92(a)(5)), so they can offset capital gains and, in the same year, interest or dividends on securities (s.92(a)(4)), and carry forward "
+        "if a return is filed. Whether a bank or TASE member deducts them at withholding depends on the Director's approval and rules under reg. 8 "
+        "of the 2002 withholding regulations, which were not found. The 2025 return form 1325 puts only transaction commissions into cost and "
+        "proceeds (\"לא כולל עמלות תקופתיות\")."),
+    "site_effect": (
+        "Keep method G-20 flagged: the fee deduction is certain only through an annual return (or as a securities loss), not at the bank. "
+        "Materiality is small: a 0.1% custody fee is worth 0.025% of the balance a year in tax."),
+    "still_unknown": "The Director's approval or rules under reg. 8; a bank's form 867 or tax page showing management or custody fees deducted at withholding.",
+})
+
+# ---------------------------------------------------------------- TXG OQ4
+rows.append({
+    "code": "TXG OQ4",
+    "verdict": "narrowed",
+    "answer_en": (
+        "In practice yes: the Tax Authority says that whoever sold securities without full Israeli withholding 'must file an annual return' and must "
+        "report and pay an advance by 31 July and 31 January; its 2025 return forms send sales made abroad not through Israeli withholders to forms "
+        "1325 and 1322 (appendices to the annual return), and its 2026 refund guide excludes 'trading securities on an external platform' from the "
+        "short form 135. The regulations leave one narrow exemption (foreign income up to the 375,000 NIS ceiling on which the annual foreign-income "
+        "advance was paid with its report by 30 April, with no loss offset), but no Tax Authority text says a foreign-broker saver may use it instead "
+        "of the half-yearly regime; and a loss carries forward only if a return was filed for the loss year."),
+    "sources": [
+        src(GUIDE, GUIDE_T, "file p.48, 'דיווח על מכירת נכס'",
+            "במכירת ניירות ערך סחירים אין להגיש הודעה כאמור אם נוכה מלוא המס כחוק. אם לא נוכה המס כאמור, הינך חייב בהגשת דוח שנתי, וכן הינך חייב בדיווח על רווח הון ממכירת ני\"ע סחירים, עד ה-31 ביולי של שנת המס וב-31 בינואר שלאחר שנת המס",
+            "guide"),
+        src(ORD, ORD_T, "p.153, s.91(ד)(2ג)(ב)",
+            "לא נוכה המס כאמור בפסקת משנה (1) והמוכר חייב בהגשת דוח לפי סעיף 131, יוגש הדוח על רווח ההון … ביום 31 ביולי וביום 31 בינואר של כל שנת מס, בשל מכירה של ניירות ערך בששת החודשים שקדמו לחודש שבו חל יום הדיווח; עם הגשת הדוח כאמור, תשולם מקדמה",
+            "law"),
+        src(F1322, F1322_T, "p.2, explanatory notes 1, 2(ב) and 6",
+            "ליחיד - נספח לטופס 0135/1301 … יחיד שניירות הערך בידיו נרשמו בספרי העסק או שלא נוכה מלוא המס במקור כחוק מניירות הערך שבידיו (כגון ני\"ע שנמכרו בחו\"ל שלא דרך המנכים) וכן חבר בני אדם, ימלאו נספח ג(1) (טופס 1325) … עסקאות החייבות בדיווח בתשלום מקדמה חצי-שנתית",
+            "guide"),
+        src(REFUND, REFUND_T, "chapter 'מי הם החייבים להגיש דוח שנתי למס הכנסה'",
+            "הגשת בקשה להחזר מס בטופס 135 אינה מיועדת למקרים הבאים: … הכנסות שחייבות בניכוי ולא נוכה מהם מס במקור ( למשל מסחר בניע\"ז בפלטפורמה חיצונית)",
+            "guide"),
+        src(GUIDE, GUIDE_T, "file p.5, s.2 item 3",
+            "תוכל להיות פטור מהגשתו אם שילמת \"מקדמת מס\" על הכנסות אלו במסלול \"הדיווח המקוצר\". מקדמת מס הינה מקדמה לפי הוראות תקנות מס הכנסה, המתייחסת … מרווח הון שהוא הכנסת חוץ מנייר ערך, אשר דווחה על גבי שוברי תשלום שמספרם 351 ו-352 (לפי סוג ההכנסה), עד ל-30.4 שלאחר תום שנת המס.",
+            "guide"),
+        src(EXREGS, EXREGS_T, "reg. 1, definitions הכנסת חוץ, מקדמת מס; reg. 2(א)",
+            "\"הכנסת חוץ\" – הכנסה שהופקה או שנצמחה מחוץ לישראל … שולמה בשלה מקדמת מס, ולענין הכנסה כאמור שאינה ממכירת נייר ערך של חברה תושבת ישראל הנסחרת בבורסה או ממכירת נייר ערך זר – שולמה בשלה מקדמת מס או שנקבע לה פטור ממס",
+            "regulation"),
+        src(KT6317, KT6317_T, "file p.10, Foreign Income Advance Regulations reg. 1 ('הכנסת חוץ' (2)) and reg. 2; file p.11, reg. 6",
+            "רווח הון במכירת נייר ערך זר או במכירת נייר ערך של חברה תושבת ישראל הרשום למסחר בבורסה מחוץ לישראל, שלא נוכה ממנו מלוא המס לפי סעיף 164 לפקודה … ישלם בשלהן מקדמה שנתית עד יום 30 באפריל בשנת המס שלאחריה … לא יותר בחישוב המקדמה כל ניכוי, זיכוי או קיזוז",
+            "regulation"),
+        src(C10, C10_T, "p.6, s.4.3",
+            "הפסד הון מועבר יותר בקיזוז בתנאי שהנישום הגיש דוח בגין שנת המס השוטפת בה נוצר ההפסד וכן גם בשנת הקיזוז ודיווח בהם על ההפסד וביצוע הקיזוז",
+            "circular"),
+    ],
+    "proposed_rule_text": (
+        "TXG-20, Conditions (add): The Tax Authority treats such a seller as a filer: the 2025 form 1322 sends 'ני\"ע שנמכרו בחו\"ל שלא דרך המנכים' "
+        "to form 1325 as an appendix to the annual return (1301, or 0135), with separate forms for each half-year's advance, and its refund guide "
+        "(updated 20.4.2026) says the short refund form 135 is not for income from which tax should have been withheld and was not, for example "
+        "securities trading on an external platform. A capital loss carries forward only if a return was filed for the loss year and the year of "
+        "offset (circular 10/2025 s.4.3). TXG-19, Conditions (add): No Tax Authority text says whether a foreign-broker saver who pays the 30 April "
+        "annual foreign-income advance (with its report, no loss offset) instead of filing is exempt from the return and from the half-yearly reports."),
+    "site_effect": (
+        "The site should say plainly that a foreign-broker account means an annual return plus half-yearly reports and advances (31 July, 31 January); "
+        "copy.ts noReturnBefore and method G-22 stay blocked for the 375,000 NIS shortcut. The comparison can show the return as an effort of the "
+        "foreign-broker route, and note that losses carry forward only with a filed return."),
+    "still_unknown": (
+        "Whether the 30 April annual foreign-income advance route can replace the return (and the half-yearly reports) for capital gains at a foreign "
+        "broker; how s.91(ד)(1) (30-day report per sale) would apply to a seller who is exempt from filing; whether a saver who paid half-yearly "
+        "advances is also counted as having paid the annual 'מקדמת מס'."),
+})
+
+# ---------------------------------------------------------------- TXG OQ13
+rows.append({
+    "code": "TXG OQ13",
+    "verdict": "closed",
+    "answer_en": (
+        "It is simply untaxed and gives no deductible loss: when the inflationary amount is larger than the nominal gain, the whole nominal gain is an "
+        "exempt inflationary amount and the real gain is zero, and an allowable capital loss is measured in nominal terms only."),
+    "sources": [
+        src(C10, C10_T, "p.2, s.2.1",
+            "הפסד הון בר קיזוז נמדד בערכים נומינאליים בלבד",
+            "circular"),
+        src(C10, C10_T, "pp.10-11, appendix, example 2 (second set of rates)",
+            "מכיוון שהסכום האינפלציוני גבוה מרווח ההון הנומינלי, כל רווח ההון הנומינלי ייחשב כסכום אינפלציוני פטור ממס.",
+            "circular"),
+        src(ORD, ORD_T, "p.149, s.88 definitions סכום אינפלציוני, ריווח הון ריאלי; p.150, הפסד הון",
+            "\"סכום אינפלציוני\" – (1) חלק ריווח ההון השווה לסכום שבו עולה יתרת המחיר המקורי המתואם על יתרת המחיר המקורי … \"הפסד הון\" - הסכום שבו עולה יתרת המחיר המקורי על התמורה",
+            "law"),
+        src(F1325, F1325_T, "p.2, explanatory note 6",
+            "הפסד הון נומינלי (ד - א) - יחול על מי שבקביעת הכנסתו לא חל סעיף 9 לחוק התיאומים (אם התוצאה שלילית יש לרשום 0).",
+            "guide"),
+    ],
+    "proposed_rule_text": (
+        "TXS-02 (and TXG), Rule (add): If the inflationary amount is larger than the nominal gain, the whole nominal gain is an exempt inflationary "
+        "amount and the real gain is zero; no capital loss arises, because an allowable capital loss is measured in nominal terms only (circular 10/2025, "
+        "s.2.1 and appendix example 2; s.88 definitions). Exception: holders under the Inflation Adjustments Law (circular 10/2025 note 1)."),
+    "site_effect": "Confirms F-40's max(0, real gain) with no loss carried; method G-07 can close for this case and its open-question tag can go.",
+    "still_unknown": "Nothing for an ordinary individual saver.",
+})
+
+# ---------------------------------------------------------------- TXS OQ15
+rows.append({
+    "code": "TXS OQ15",
+    "verdict": "closed",
+    "answer_en": (
+        "The taxable base never exceeds the nominal gain: when the index (the CPI for a shekel fund unit) falls over the holding period, the "
+        "inflationary amount is zero, not negative, and the whole nominal gain is the real gain. If the sale ends in a nominal loss while the index fell, "
+        "only the loss left after removing the fall in the index can be offset."),
+    "sources": [
+        src(C10, C10_T, "p.9, appendix 'הפסדי הון הנובעים מירידת מדד', quoting ע\"א 3555/15 para 20, and the two-step rule",
+            "מכאן, ש\"סכום אינפלציוני\", בין אם מקורו בשינוי ערך מדד או בשינוי שער חליפין, אינו בר קיזוז כהפסד … למעשה קיים מנגנון דו שלבי לחישוב סכום ההפסד המותר בקיזוז: בשלב הראשון - יש לחשב את הפסד ההון בערכים נומינליים … בשלב השני - יש לבודד את סכום הפסד ההון שאילו היה רווח היה חייב במס",
+            "circular"),
+        src(C10, C10_T, "p.11, appendix examples 3 and 4",
+            "מכיוון שהסכום האינפלציוני הינו סכום שלילי, במקרה כאמור אנו נראה בסכום האינפלציוני 0 וכל רווח ההון יהיה רווח הון ריאלי … מתוך הפסד הון בסך 640 ₪ יש לנטרל את הסכום האינפלציוני השלילי שאילו היה רווח לא היה חייב במס, ולכן הפסד ההון שיותר בקיזוז הינו בסך 340 ₪.",
+            "circular"),
+        src(MOSES, MOSES_T, "file p.21, para 26, examples 4 and 5",
+            "בענייננו, אין להלום כי \"סכום אינפלציוני שלילי\" ייכלל בבסיס המס, שכן אז בעת מיסוי רווח ההון הריאלי יתווסף הסכום האינפלציוני לסכום בו מחויב הנישום במס",
+            "ruling"),
+        src(ORD, ORD_T, "p.149, s.88 definition סכום אינפלציוני",
+            "חלק ריווח ההון השווה לסכום שבו עולה יתרת המחיר המקורי המתואם על יתרת המחיר המקורי",
+            "law"),
+    ],
+    "proposed_rule_text": (
+        "TXS-02, Rule (add): When the index is lower on the sale day than on the purchase day, the inflationary amount is zero, not negative, and the "
+        "real gain equals the nominal gain; tax can never exceed the rate times the nominal gain. If the sale ends in a nominal loss, the part of the loss "
+        "equal to the fall in the index (a \"negative inflationary amount\") is not allowed and only the rest can be offset. Source: circular 10/2025 "
+        "appendix (examples 3 and 4), applying ע\"א 3555/15 מוזס (Supreme Court, 12.9.2016). The circular's worked examples use an exchange-rate index; "
+        "its stated rule covers 'שינוי ערך מדד או … שער חליפין'."),
+    "site_effect": (
+        "F-40 takes the inflationary amount as max(0, …) for gains, so a money-market fund's real gain never exceeds its nominal gain in a deflation; "
+        "where the engine models losses, the offsettable loss in a deflation is the nominal loss minus the fall in the index. The government-bond-cpi "
+        "open-question tag and method G-07 can close."),
+    "still_unknown": "Nothing material. The Supreme Court judgment was read from the capitax copy; the court's own site resets scripted connections (listed as blocked).",
+    "blocked": [MOSES_COURT],
+})
+
+# ---------------------------------------------------------------- TXF OQ3
+rows.append({
+    "code": "TXF OQ3",
+    "verdict": "narrowed",
+    "answer_en": (
+        "The Tax Authority's approach is that an Israeli withholder computes the 25% on the gross foreign dividend and may credit the foreign tax "
+        "actually paid, capped at the treaty rate (or the foreign domestic rate if lower), so it withholds only the difference: with US withholding at the "
+        "25% treaty rate (W-8BEN) the Israeli top-up is nil, and an Irish fund's distribution, on which Ireland deducts nothing, bears the full 25% in "
+        "Israel. This is stated in a published Tax Authority ruling (a US REIT listed on TASE) and in a bank's tax page citing Tax Authority instructions; "
+        "no general directive to banks was found."),
+    "sources": [
+        src(R5916, R5916_T, "file p.3, s.3.2.1; p.4, ss.3.2.2.1, 3.2.2.2 and 3.3.1-3.3.2",
+            "בחלוקת הכנסות מהחברה הזרה לבעלי המניות, חברי הבורסה ינכו מס במקור בהתאם לשיעורי המס החלים על הכנסות מדיבידנד … ניכוי המס כאמור יהא מסכום ההכנסה ברוטו - לפני זיכוי בגין מסי חוץ … כנגד סכום ניכוי המס במקור, חבר הבורסה יהא רשאי לתת זיכוי בגין סכום מס זר ששולם בפועל לשלטונות המס בארה\"ב … סכום המס הזר יהיה כנמוך מבין: -המס הזר ששולם בפועל לשלטונות המס בארה\"ב; או -המס הזר שארה\"ב רשאית להטיל בהתאם להוראות … לאמנה",
+            "ruling"),
+        src(RDB, RDB_T, "page text above the search form",
+            "יכול הציבור הרחב לצפות שרשות המיסים תנהג בסוגיות המתוארות באותו אופן שפורסם בתמציות החלטות מיסוי, בכפוף לקיום מערכת נסיבות דומה ובתנאים שנקבעו",
+            "ruling"),
+        src(LET19, LET19_T, "p.2, s.4.1.4",
+            "מסי חוץ המותרים בזיכוי יהיו בשיעור שלא יעלה על שיעור המס הקבוע בדין הפנימי או באמנה (לעניין דיבידנד), הנמוך מבניהם.",
+            "circular"),
+        src(MERC, MERC_T, "section 'אמנות מס'",
+            "בהתאם להוראות רשות המסים בישראל, השלמת המס בישראל הינה ביחס לשיעור המס הקבוע באמנת המס הזרה הרלבנטית, או לפי הדין הפנימי שם, הנמוך מביניהם.",
+            "institution_doc"),
+        src(WH05, WH05_T, "p.2, reg. 2(ד); p.3, reg. 11",
+            "המקבל מתושב חוץ דיבידנד על מניות בשל תושב ישראל או לזכותו, ינכה ממנו מס בשיעורים אלה: (1) שולם הדיבידנד ליחיד – 25%",
+            "regulation"),
+    ],
+    "proposed_rule_text": (
+        "TXF-10, Conditions (replace the open part): The regulation sets 25% on the gross dividend and does not mention foreign tax. In practice the "
+        "Israeli withholder credits the foreign tax withheld, up to the lower of the tax actually paid and the treaty (or foreign domestic) rate, and "
+        "withholds only the difference: Tax Authority ruling 5916/20 (a US REIT listed on TASE) says the TASE member withholds on the gross amount "
+        "\"לפני זיכוי בגין מסי חוץ\" and \"יהא רשאי לתת זיכוי\" for US tax actually paid up to the treaty rate; the 2019 'קרן חוץ' letter caps creditable "
+        "foreign tax the same way; a bank's tax page (Mercantile, Discount group) says the top-up follows this cap \"בהתאם להוראות רשות המסים\". Result: "
+        "US dividends with W-8BEN (US 25%, TXF-12) bear no further Israeli withholding; foreign tax above the cap is not credited by the bank. "
+        "Strength: Tax Authority ruling (case-specific) plus institution practice; no general directive found."),
+    "site_effect": (
+        "For dividends received through an Israeli bank: US stocks or US-domiciled funds total 25% (US 25%, Israeli top-up 0), not 50%; Irish "
+        "distributing funds 25% in Israel (no Irish tax, TXF-28) on top of the fund-level US 15% that stays a cost (TXF-16). The guide pages that list TXF "
+        "OQ3 can show this with a 'per Tax Authority ruling and bank practice' caution."),
+    "still_unknown": "The general Tax Authority instruction to withholders; whether every bank and TASE member applies the credit (the ruling says 'may').",
+})
+
+# ---------------------------------------------------------------- TXF OQ7
+rows.append({
+    "code": "TXF OQ7",
+    "verdict": "narrowed",
+    "answer_en": (
+        "Under the US-Ireland treaty an Irish collective investment undertaking is itself an Irish resident, and US dividends paid to it may be taxed by "
+        "the US at no more than 15%, if it passes the treaty's limitation-on-benefits test (for example, its principal class of shares or units regularly "
+        "traded on a recognised exchange such as London, Amsterdam or the Irish Stock Exchange). Whether a given fund qualifies and what it actually "
+        "suffered is a fund fact for its annual report, which was not reached."),
+    "sources": [
+        src(USIE, USIE_T, "file p.9, Art. 4(1)(d)",
+            "d) in the case of the United States, a Regulated Investment Company and a Real Estate Investment Trust; in the case of Ireland, a Collective Investment Undertaking",
+            "law"),
+        src(USIE, USIE_T, "file p.14, Art. 10(2)(b)",
+            "the tax so charged shall not exceed: … b) 15 percent of the gross amount of the dividends in all other cases.",
+            "law"),
+        src(USIE, USIE_T, "file p.24, Art. 23(1), (2)(d)(i), (2)(e)(i); file p.27, Art. 23(8)(b)",
+            "a resident of a Contracting State that derives income from the other Contracting State shall be entitled to all the benefits of this Convention only if such resident is a \"qualified person\" … the principal class of its shares is substantially and regularly traded on one or more recognized stock exchanges … the Irish Stock Exchange and the stock exchanges of Amsterdam, Brussels, Frankfurt, Hamburg, London",
+            "law"),
+    ],
+    "proposed_rule_text": (
+        "TXF-16, Conditions (replace the Q7 sentence): The US-Ireland treaty treats an Irish collective investment undertaking as an Irish resident "
+        "(Art. 4(1)(d)) and caps US tax on dividends paid to it at 15% (Art. 10(2)(b)), subject to the limitation-on-benefits article (Art. 23: for example "
+        "units or shares regularly traded on a recognised exchange, which includes London, Amsterdam and the Irish Stock Exchange). The rate a given "
+        "Irish fund actually bears is that fund's fact (annual report), not a general rule."),
+    "site_effect": (
+        "F-20's fund-level US withholding of 15% for an Irish fund can cite the treaty as the cap, labelled 'treaty rate; the fund's own report not read', "
+        "instead of an unsourced figure. Compared with holding US shares or US funds directly (US 25%, credited in Israel), the Irish fund's 15% is a "
+        "non-creditable cost inside the fund (TXF-16)."),
+    "still_unknown": (
+        "What a given fund (for example CSPX) reports as US withholding suffered; the iShares literature pages for prospectus and annual report returned "
+        "a site page instead of the PDF and were not pursued."),
+})
+
+# ---------------------------------------------------------------- TXF OQ5
+rows.append({
+    "code": "TXF OQ5",
+    "verdict": "closed",
+    "answer_en": (
+        "When the foreign currency weakened against the shekel, the inflationary amount is zero, not negative: tax falls on the whole shekel nominal gain "
+        "and never more. If the sale ends in a shekel loss, the part of the loss caused by the currency's fall cannot be offset; only the rest is allowable."),
+    "sources": [
+        src(C10, C10_T, "p.9, appendix (Moses rule for an individual's foreign-currency securities); p.11, examples 3 and 4",
+            "יוצא אפוא, שבעסקת מכירה של נייר ערך הנקוב במט\"ח שנוצר בגינו רווח הון נומינלי וסכום אינפלציוני שלילי (ראה דוגמה 3 להלן), כל הרווח יחשב לרווח הון ריאלי. לעומת זאת, כאשר תוצאת עסקת מכירה של נייר ערך הנקוב במט\"ח היא הפסד הון נומינלי וסכום אינפלציוני שלילי (ראה דוגמה 4 להלן), יהיה צורך לנטרל בהפסד ההון הנומינלי את הסכום האינפלציוני השלילי על מנת להגיע לסכום הפסד הון בר קיזוז.",
+            "circular"),
+        src(MOSES, MOSES_T, "file p.20, para 26 example 4; file p.21, example 5",
+            "בעסקה זו אין למעשה סכום אינפלציוני כהגדרתו בפקודה … שכן יתרת המחיר המקורי המתואם (₪300) נמוכה מיתרת המחיר המקורי (₪500) … סכום הפסד ההון בסך ₪200, הנובע מהשינוי בשער החליפין לא היה חייב במס לו היה רווח, בהיותו \"סכום אינפלציוני\". משכך, סכום הפסד ההון שיותר בקיזוז בדוגמה זו עומד על ₪150 בלבד.",
+            "ruling"),
+        src(ORD, ORD_T, "p.146, s.88 definition מדד",
+            "על אף האמור, לענין נייר ערך בידי יחיד, הנקוב במטבע חוץ או שערכו צמוד למטבע חוץ, יראו את שער המטבע כמדד",
+            "law"),
+    ],
+    "proposed_rule_text": (
+        "TXF-03, Conditions (replace the Q5 sentence): If the currency fell over the holding period, the inflationary amount is zero, not negative: the "
+        "real gain is the whole shekel nominal gain. If the sale ends in a shekel loss, the part of the loss equal to the currency's fall (original cost × "
+        "(rate on purchase − rate on sale) / rate on purchase) is not allowable; only the rest can be offset (ע\"א 3555/15 מוזס, Supreme Court 12.9.2016; "
+        "circular 10/2025 appendix, examples 3 and 4). A family company uses the CPI, not the exchange rate (ע\"א 1038/17 אור שרה, circular note 13)."),
+    "site_effect": (
+        "The engine can compute foreign-currency holdings when the shekel strengthens: inflationary amount = max(0, cost × (rate_sale / rate_buy − 1)); "
+        "for a loss, allowable loss = nominal loss minus the currency part, floored at 0. Method G-24 can drop TXF OQ5 from the tier-2 blockers "
+        "(TX2 OQ1 for deposits is a separate question)."),
+    "still_unknown": "Nothing for listed securities held by an individual. The Supreme Court judgment was read from the capitax copy; the court site resets scripted connections.",
+    "blocked": [MOSES_COURT],
+})
+
+# ---------------------------------------------------------------- bonus finds (not assigned; the lead decides)
+rows.append({
+    "code": "TXS OQ7",
+    "bonus": True,
+    "verdict": "closed",
+    "answer_en": "No: the Tax Authority says a securities capital loss cannot be offset against profits paid by a mutual fund, so an exempt fund's 25% distribution does not absorb a securities loss.",
+    "sources": [
+        src(C10, C10_T, "p.5, s.3.7",
+            "הפסדי הון מניירות ערך לא ניתנים לקיזוז כנגד ריבית ששולמה על תכנית חיסכון, פיקדונות (…), הלוואה שאינה בגדר נייר ערך או כנגד רווחים ששילמה קרן נאמנות.",
+            "circular"),
+    ],
+    "proposed_rule_text": "TXS-10, Conditions (add): A securities capital loss cannot be offset against profits a mutual fund distributes (circular 10/2025 s.3.7).",
+    "site_effect": "Loss-offset text on exempt-fund pages can say distributions do not absorb securities losses.",
+    "still_unknown": "Whether the same applies to distributions of a TASE-registered foreign fund (the 2019 letter says so for withholding; TXF OQ9).",
+})
+rows.append({
+    "code": "TXG OQ5",
+    "bonus": True,
+    "verdict": "closed",
+    "answer_en": "The Tax Authority's refund guide gives the filing-exemption ceilings 'as of 2026' with the same amounts as 2025 (salary 723,000; other income 375,000; foreign pension 375,000; interest 717,000; securities 2,810,000; foreign assets 2,086,000).",
+    "sources": [
+        src(REFUND, REFUND_T, "chapter 'מי הם החייבים להגיש דוח שנתי למס הכנסה'",
+            "הקבוצות כוללות, בין היתר, הכנסות עד לתקרות הבאות ( נכון לשנת 2026): משכורת (תוספת א') 723,000 הכנסה נוספת (תוספת ב') 375,000 קצבת חוץ (תוספת ד') 375,000 ריבית (תוספת ה') 717,000 ניירות ערך (תוספת ו') 2,810,000 נכסי חוץ (תקרה 3) 2,086,000",
+            "guide"),
+    ],
+    "proposed_rule_text": "TXG-17, Figures: the same ceilings are labelled 'נכון לשנת 2026' in the Tax Authority's refund guide (updated 20.4.2026).",
+    "site_effect": "data/rules/txg-17.json can drop the 'tax year 2025 only' caveat.",
+    "still_unknown": "The guide lists 375,000 for schedule ד under 'קצבת חוץ' only; the foreign-income ceiling shares that schedule.",
+})
+
+with OUT.open("w", encoding="utf-8") as f:
+    for r in rows:
+        f.write(json.dumps(r, ensure_ascii=False) + "\n")
+print(f"wrote {len(rows)} rows to {OUT}")

@@ -11,6 +11,17 @@
   "likely_to_change": "no",
   "il_finance_file": "keren-hishtalmut.md",
   "checked": "2026-10-25",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "altshuler-shaham",
+      "name_he": "אלטשולר שחם"
+    },
+    {
+      "id": "harel",
+      "name_he": "הראל"
+    }
+  ],
   "sources": [
     {
       "url": "https://as-invest.co.il/media/khpp32k5/אלטשולר-שחם-השתלמות-תקנון-מהדורת-שינויים-דצמבר-2024.pdf",

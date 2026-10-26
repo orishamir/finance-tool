@@ -1,6 +1,7 @@
 // data/rules/: rule figures the engine reads. docs/data-schema.md §3.1.
 import { z } from "zod";
 import { isoDate, valueObject } from "../value.ts";
+import { ruleScope, scopeInstitution } from "../scope.ts";
 
 const bracket = z.object({ up_to: valueObject, rate: valueObject });
 
@@ -65,12 +66,23 @@ export const ruleRecord = z
     text_he: z.string().min(1).optional(),
     /** Figure key to Hebrew name, for the rule card. */
     figure_names_he: z.record(z.string(), z.string().min(1)).optional(),
+    /** Who it applies to (D30), extracted from the `- Scope:` line of the rule base (data-schema §3.1, spec 2026-10-25-rules-scope §1). */
+    scope: ruleScope,
+    /** `institution`: the companies whose own term it is (required); `unsettled`: the companies whose documents were seen ("seen at"), if any. */
+    scope_institutions: z.array(scopeInstitution).min(1).optional(),
+    /** `unsettled` only: what would settle it, as the rule base writes it (English working text, never shown). */
+    scope_settle: z.string().min(1).optional(),
     /** Where the rule comes from, extracted from the rule base (data-schema §3.1). */
     sources: z.array(ruleSource).min(1).optional(),
     /** Why `sources` is absent: the raw Source line when it names no link. */
     sources_missing_reason: z.string().optional(),
-    /** Rules this one is derived from or points to (chips on the card). */
+    /** Rules this one is derived from or points to (chips on the card). A general rule's are general (D30: it never rests on a company's term). */
     derived_from: z.array(z.string().regex(/^[A-Z0-9]+-[A-Z0-9]+$/)).optional(),
+    /**
+     * A general rule's pointers to companies' terms (its Source line names them beside the general source): named examples of how a
+     * company applies it (spec §1), never a derivation. The card shows them under "לדוגמה" (review, 2026-10-26).
+     */
+    examples: z.array(z.string().regex(/^[A-Z0-9]+-[A-Z0-9]+$/)).optional(),
     il_finance_file: z.string().regex(/\.md$/),
     checked: isoDate,
   })
@@ -81,6 +93,22 @@ export const ruleRecord = z
   .refine((r) => r.likely_to_change !== "yes" || !!r.recheck_date, {
     message: "a rule likely to change needs a recheck_date (product.md 3.8)",
     path: ["recheck_date"],
+  })
+  .refine((r) => r.scope !== "institution" || (r.scope_institutions?.length ?? 0) > 0, {
+    message: "an institution rule names its companies in scope_institutions (D30)",
+    path: ["scope_institutions"],
+  })
+  .refine((r) => (r.scope === "unsettled") === !!r.scope_settle, {
+    message: "scope_settle is set exactly when the scope is unsettled (D30)",
+    path: ["scope_settle"],
+  })
+  .refine((r) => r.scope === "general" || r.examples === undefined, {
+    message: "only a general rule carries examples (its pointers to companies' terms)",
+    path: ["examples"],
+  })
+  .refine((r) => r.scope !== "general" || r.scope_institutions === undefined, {
+    message: "a general rule names no companies in scope_institutions (a company is a named example in its text)",
+    path: ["scope_institutions"],
   });
 
 export type RuleRecord = z.infer<typeof ruleRecord>;

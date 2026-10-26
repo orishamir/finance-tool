@@ -2,8 +2,8 @@
 name: finance-reviewer
 description: Independent check of the calculation engine against il-finance and docs/method.md. Use after any change to the engine or the data schema.
 tools: Read, Grep, Glob
-model: fable
-effort: high
+model: opus
+effort: xhigh
 skills:
   - il-finance
 ---

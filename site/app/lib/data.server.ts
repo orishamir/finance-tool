@@ -7,6 +7,7 @@ import {
   dimensionId,
   dimensionRecord,
   feesSnapshot,
+  openQuestionsFile,
   parameterRecord,
   ruleRecord,
   termRecord,
@@ -23,6 +24,7 @@ import type { z } from "zod";
 import { parseMdLink } from "./md-link";
 import { newestChecked } from "./data-as-of";
 import { staleCma, type SiteValue } from "./value";
+import { pointedIds } from "./scope";
 
 function findRoot(): string {
   let dir = process.cwd();
@@ -62,6 +64,27 @@ function readDir<T extends z.ZodType>(sub: string, schema: T): z.infer<T>[] {
 
 export function loadRules(): Record<string, RuleRecord> {
   return Object.fromEntries(readDir("data/rules", ruleRecord).map((r) => [r.id, r]));
+}
+
+/**
+ * The records a page's rule cards point at (`derived_from`, a general rule's `examples`, and the rules its figures cite, which a
+ * figure's sheet shows as chips), and the ones those point at in turn, that the page does not hold itself: a page passes them as
+ * `ProvenanceData.pointed`, so every chip on a card opens its record (reviews, 2026-10-26: BRK-35's "לדוגמה" chip, then TXG-04's
+ * figure chips TXG-02 and TXG-03, opened empty cards). They never join the page's own rules, which its checklist and its runs read.
+ */
+export function pointedRecords(have: Record<string, RuleRecord> | readonly RuleRecord[], all: Record<string, RuleRecord> = loadRules()): Record<string, RuleRecord> {
+  const own = new Set(Array.isArray(have) ? have.map((r) => r.id) : Object.keys(have));
+  const out: Record<string, RuleRecord> = {};
+  const queue = (Array.isArray(have) ? [...have] : Object.values(have)) as RuleRecord[];
+  while (queue.length > 0) {
+    const r = queue.pop()!;
+    for (const id of pointedIds(r)) {
+      if (own.has(id) || out[id] || !all[id]) continue;
+      out[id] = all[id]!;
+      queue.push(all[id]!);
+    }
+  }
+  return out;
 }
 
 export function loadParameters(): ParameterRecord[] {
@@ -293,6 +316,29 @@ export function loadParameterUses(): Record<string, string[]> {
 export function loadFormulaParameters(): Record<string, string[]> {
   const out: Record<string, string[]> = {};
   for (const [param, formulas] of Object.entries(loadParameterUses())) for (const f of formulas) (out[f] ??= []).push(param);
+  return out;
+}
+
+/** The Hebrew name of each source host (`data/sources/publishers.json`): a data file names its company in English ("Bank Leumi le-Israel B.M."), and the sheet's source line shows the Hebrew one (founder, 2026-10-26). */
+export function loadPublishersHe(): Record<string, string> {
+  const rows = JSON.parse(readFileSync(join(root, "data/sources/publishers.json"), "utf8")) as Record<string, { publisher_he?: string }>;
+  return Object.fromEntries(Object.entries(rows).flatMap(([host, r]) => (r.publisher_he ? [[host, r.publisher_he]] : [])));
+}
+
+/** What a question sheet knows about an open question, by its code (`TX2 OQ6`): its status, the closing date, and its Hebrew lines. */
+export type OpenQuestionView = { status: "open" | "narrowed" | "closed"; closed_on?: string; title_he?: string; blocks_he?: string };
+
+/**
+ * data/open-questions.json (data-schema 3.15) for every page's sheets, through the root loader (2026-10-26). Only the questions a
+ * sheet has something to say about: a closed one (its chip shows the closure wherever it appears) and one with Hebrew lines (every
+ * question the site names). Any other code opens the sheet's general lines, which are true of an open question.
+ */
+export function loadOpenQuestions(): Record<string, OpenQuestionView> {
+  const out: Record<string, OpenQuestionView> = {};
+  for (const q of readJson(join(root, "data/open-questions.json"), openQuestionsFile)) {
+    if (q.status !== "closed" && !q.title_he && !q.blocks_he) continue;
+    out[q.id] = { status: q.status, ...(q.closed_on ? { closed_on: q.closed_on } : {}), ...(q.title_he ? { title_he: q.title_he } : {}), ...(q.blocks_he ? { blocks_he: q.blocks_he } : {}) };
+  }
   return out;
 }
 

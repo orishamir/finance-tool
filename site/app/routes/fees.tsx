@@ -31,6 +31,7 @@ import { useInputs } from "../lib/inputs";
 import { holdingName, useHolding } from "../lib/holdings";
 import { bundleLinks } from "../lib/bundle";
 import { playbookWrappers } from "../lib/playbook";
+import { recordsById } from "../lib/scope";
 
 /** The data files this page fetches after it starts, requested with the HTML (audit 2026-10-24, A52). */
 export const links = () => bundleLinks("fees-data.json", "compare-bundle.json");
@@ -72,7 +73,7 @@ export default function FeesPage() {
   }, []);
   const provenance = useMemo(() => {
     const rules: Record<string, RuleRecord> = Object.fromEntries([...(bundle?.rules ?? Object.values(data.rules)), ...(fees?.rules ?? [])].map((r) => [r.id, r as RuleRecord]));
-    return { rules, terms: {}, dimensions: Object.fromEntries((bundle?.checklist ?? []).map((c) => [c.id, c.name])), today: data.today };
+    return { rules, pointed: recordsById(bundle?.pointed, fees?.pointed), terms: {}, dimensions: Object.fromEntries((bundle?.checklist ?? []).map((c) => [c.id, c.name])), today: data.today };
   }, [bundle, fees, data.rules, data.today]);
   return (
     <GoalsProvider presets={presets}>

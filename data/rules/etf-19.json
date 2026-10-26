@@ -10,6 +10,13 @@
   "likely_to_change": "no",
   "il_finance_file": "etfs-and-index-funds.md",
   "checked": "2026-10-25",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "ibi-funds",
+      "name_he": "אי.בי.אי קרנות נאמנות"
+    }
+  ],
   "sources": [
     {
       "url": "https://mayafiles.tase.co.il/rpdf/1727001-1728000/P1727829-00.pdf",

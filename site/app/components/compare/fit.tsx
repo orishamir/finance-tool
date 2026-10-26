@@ -10,7 +10,7 @@ import { fitOf, type FitResult, type FitTableData } from "../../lib/fit";
 import { useGoals } from "../../lib/goal";
 import type { Staleness } from "../../lib/value";
 import { IconClock } from "../icons";
-import { Num, StateTag } from "../provenance";
+import { Num } from "../provenance";
 import { Card, cx, LinkButton } from "../kit";
 import { goalTitle } from "./goal-form";
 import { IconDash, IconHelp, IconOk } from "./icons";
@@ -82,7 +82,6 @@ export function FitMarkCard({ table, track, stale, period }: { table: FitTableDa
       {result.kind !== "no-rule" && result.fall && (
         <p className="text-sm text-muted-foreground flex flex-wrap items-center gap-x-1.5 gap-y-1 max-w-measure">
           <Tpl t={result.fall.met ? r5.additions.fitTrackSide : r5.additions.fitNotMet} vars={{ max: <Num value={result.fall.max} display={fmt.pct(result.fall.max.value as number)} />, accepted: <bdi dir="ltr">{fmt.pct(result.fall.accepted)}</bdi> }} />
-          <StateTag state="parameter" />
         </p>
       )}
       <p className="text-sm text-muted-foreground max-w-measure">
@@ -95,8 +94,7 @@ export function FitMarkCard({ table, track, stale, period }: { table: FitTableDa
             {" "}
             {copy.ruleRange}<Num value={result.minYears} display={fmt.years(result.minYears.value as number)} />
           </>
-        )}{" "}
-        <StateTag state="parameter" />
+        )}
       </p>
       {stale && (
         <p className="text-sm text-caution-foreground">

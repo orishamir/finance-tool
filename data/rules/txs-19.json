@@ -11,13 +11,14 @@
   "likely_to_change": "no",
   "il_finance_file": "tax-securities-israeli.md",
   "checked": "2026-10-25",
+  "scope": "general",
   "sources": [
     {
       "url": "https://www.btl.gov.il/Laws1/02_0103_100228.pdf",
       "title": "תקנות מס הכנסה (ניכוי מתמורה, מתשלום או מרווח הון במכירת נייר ערך, במכירת יחידה בקרן נאמנות או בעסקה עתידית), התשס\"ג-2002",
       "title_he": "תקנות מס הכנסה (ניכוי מתמורה, מתשלום או מרווח הון במכירת נייר ערך, במכירת יחידה בקרן נאמנות או בעסקה עתידית), התשס״ג-2002",
       "publisher": "National Insurance Institute",
-      "publisher_he": "המוסד לביטוח לאומי (נוסח משולב)",
+      "publisher_he": "שר האוצר (נוסח משולב באתר המוסד לביטוח לאומי)",
       "kind": "regulation",
       "strength": "primary",
       "locator": "p.2, reg. 9(א), (ב), (ד), reg. 10",
@@ -37,18 +38,6 @@
       "locator": "p.41, p.42, p.47",
       "locator_he": "עמוד 41, עמוד 42, עמוד 47",
       "page": 41,
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://mayafiles.tase.co.il/rpdf/1719001-1720000/P1719487-00.pdf",
-      "title": "מגדל קרנות נאמנות, תשקיף עיקרי מיום 30.1.2026",
-      "title_he": "מגדל קרנות נאמנות, תשקיף עיקרי מיום 30.1.2026",
-      "publisher": "Maya (TASE filings)",
-      "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "p.73, ch.25.2.2.5",
-      "page": 73,
       "checked": "2026-10-25"
     }
   ]

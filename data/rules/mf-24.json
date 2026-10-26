@@ -77,7 +77,21 @@
   },
   "il_finance_file": "mutual-funds-and-money-market-funds.md",
   "checked": "2026-10-22",
+  "scope": "general",
   "sources": [
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/SR97yUyP2jSKVKeFojNZ63rHiXBWJs93gBRaURcO88U=#page=2",
+      "title": "תקנות השקעות משותפות בנאמנות (עמלת הפצה) (תיקון), התשע\"ג-2013 (קובץ התקנות 7236)",
+      "title_he": "תקנות השקעות משותפות בנאמנות (עמלת הפצה) (תיקון), התשע\"ג-2013 (קובץ התקנות 7236)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.2, regs. 1, 3",
+      "locator_he": "עמוד 2, תקנות 1, 3",
+      "page": 2,
+      "checked": "2026-10-26"
+    },
     {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmfLeg7C4UCrAfbCcchwXa2I=#page=2",
       "title": "תקנות השקעות משותפות בנאמנות (עמלת הפצה), התשס\"ו-2006 (קובץ התקנות 6464)",
@@ -105,25 +119,12 @@
       "checked": "2026-10-25"
     },
     {
-      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/SR97yUyP2jSKVKeFojNZ63rHiXBWJs93gBRaURcO88U=#page=2",
-      "title": "תקנות השקעות משותפות בנאמנות (עמלת הפצה) (תיקון), התשע\"ג-2013 (קובץ התקנות 7236)",
-      "title_he": "תקנות השקעות משותפות בנאמנות (עמלת הפצה) (תיקון), התשע\"ג-2013 (קובץ התקנות 7236)",
-      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
-      "publisher_he": "רשומות (משרד המשפטים)",
-      "kind": "law",
-      "strength": "primary",
-      "locator": "p.2, regs. 1, 3",
-      "locator_he": "עמוד 2, תקנות 1, 3",
-      "page": 2,
-      "checked": "2026-10-25"
-    },
-    {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/YeLGailVs4sAQNAXci5Zo3BCViCj7pr1tFrgiQP0KVw=#page=10",
       "title": "תקנות השקעות משותפות בנאמנות (עמלת הפצה) (תיקון), התשע\"ו-2016 (קובץ התקנות 7653)",
       "title_he": "תקנות השקעות משותפות בנאמנות (עמלת הפצה) (תיקון), התשע\"ו-2016 (קובץ התקנות 7653)",
       "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
       "publisher_he": "רשומות (משרד המשפטים)",
-      "kind": "law",
+      "kind": "regulation",
       "strength": "primary",
       "locator": "p.10, regs. 1-2",
       "locator_he": "עמוד 10, תקנות 1-2",
@@ -156,16 +157,6 @@
       "page": 24,
       "checked": "2026-10-25",
       "qualifier": "(dated; still linked by the ISA as its full guide)"
-    },
-    {
-      "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
-      "title": "תעריפון העמלות המלא, בנק לאומי, מעודכן ל-01/10/2026",
-      "title_he": "תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (בנק לאומי, 1.10.2026)",
-      "publisher": "Bank Leumi",
-      "publisher_he": "בנק לאומי",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "checked": "2026-10-25"
     }
   ]
 }

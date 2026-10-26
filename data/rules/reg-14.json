@@ -6,7 +6,7 @@
   "figure_names_he": {
     "member_count": "מספר חברי הבורסה"
   },
-  "strength": "primary",
+  "strength": "institution",
   "dimensions": [
     "regulator"
   ],
@@ -35,21 +35,28 @@
     }
   },
   "il_finance_file": "regulators-and-protection.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-26",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "tase",
+      "name_he": "הבורסה לניירות ערך בתל אביב"
+    }
+  ],
   "sources": [
     {
       "url": "https://content.tase.co.il/media/chilpz2c/1150_nbcm_372306_heb.pdf",
       "title": "הבורסה לניירות ערך בתל אביב: מדריך לחברות בבורסה - חש\"ב, ינואר 2026",
-      "title_he": "הבורסה לניירות ערך בתל אביב: מדריך לחברות בבורסה - חש\"ב, ינואר 2026",
+      "title_he": "מדריך לחברות בבורסה: חבר בורסה שאינו בנק (ינואר 2026)",
       "publisher": "Tel Aviv Stock Exchange",
       "publisher_he": "הבורסה לניירות ערך בתל אביב",
-      "kind": "exchange_rules",
-      "strength": "primary",
+      "kind": "institution_doc",
+      "strength": "institution",
       "locator": "pp.3, 12",
       "locator_he": "עמודים 3, 12",
       "page": 3,
       "checked": "2026-10-25",
-      "qualifier": "(TASE publication)"
+      "qualifier": "(TASE's own guide)"
     },
     {
       "url": "https://content.tase.co.il/media/3fdpe5za/1150_nbcm_399328_eng.pdf",
@@ -57,13 +64,13 @@
       "title_he": "How to become a non-banking corporation member (ינואר 2026)",
       "publisher": "Tel Aviv Stock Exchange",
       "publisher_he": "הבורסה לניירות ערך בתל אביב",
-      "kind": "exchange_rules",
-      "strength": "primary",
+      "kind": "institution_doc",
+      "strength": "institution",
       "locator": "pp.3, 7, 9, 12",
       "locator_he": "עמודים 3, 7, 9, 12",
       "page": 3,
       "checked": "2026-10-25",
-      "qualifier": "(TASE publication)"
+      "qualifier": "(TASE's own guide)"
     }
   ]
 }

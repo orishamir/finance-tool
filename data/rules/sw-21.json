@@ -12,6 +12,7 @@
   "likely_to_change": "no",
   "il_finance_file": "switching-and-transfers.md",
   "checked": "2026-10-25",
+  "scope": "general",
   "sources": [
     {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/tZDvucD9RCpb4OFgftW2Mghx2FA7HU11Svr+ngxOA9o=#page=2",
@@ -19,7 +20,7 @@
       "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל) (תיקון), התש\"ף-2020 (קובץ התקנות 8735)",
       "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
       "publisher_he": "רשומות (משרד המשפטים)",
-      "kind": "law",
+      "kind": "regulation",
       "strength": "primary",
       "locator": "p.2, s.2 and s.3: reg. 2(א)(7) and reg. 3(א)(11א)",
       "page": 2,
@@ -64,40 +65,6 @@
       "locator_he": "עמוד 1, סעיף 5",
       "page": 1,
       "quote": "גיל 60 לגבר ולאישה",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.as-invest.co.il/media/md1afb1l/אלטשולר-שחם-גמל-להשקעה-חיסכון-פלוס-תקנון-נקי-מרץ-2025.pdf",
-      "title": "אלטשולר שחם חיסכון פלוס – תקנון תקני לקופת גמל להשקעה, מרץ 2025",
-      "title_he": "אלטשולר שחם חיסכון פלוס – תקנון תקני לקופת גמל להשקעה, מרץ 2025",
-      "publisher": "Altshuler Shaham",
-      "publisher_he": "אלטשולר שחם",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "p.6, clauses 16-19",
-      "locator_he": "עמוד 6, סעיפים 16-19",
-      "page": 6,
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.harel-group.co.il/long-term-savings/funding-saving/join/doclib/%d7%92%d7%9e%d7%9c%20%d7%9c%d7%94%d7%a9%d7%a7%d7%a2%d7%94.pdf",
-      "title": "הראל – קופת גמל להשקעה, עיקרי התוכנית",
-      "title_he": "הראל – קופת גמל להשקעה, עיקרי התוכנית",
-      "publisher": "Harel",
-      "publisher_he": "הראל",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "quote": "ללא אירוע מס",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.ice.co.il/consumerism/news/article/1005636",
-      "title": "אייס – \"קופות הגמל חוגגות: לקראת שינוי משמעותי בסכומי ההפקדה?\"",
-      "title_he": "אייס – \"קופות הגמל חוגגות: לקראת שינוי משמעותי בסכומי ההפקדה?\"",
-      "publisher": "ice",
-      "publisher_he": "ice",
-      "kind": "article",
-      "strength": "secondary",
       "checked": "2026-10-25"
     }
   ],

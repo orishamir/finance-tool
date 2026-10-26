@@ -8,6 +8,8 @@
   "likely_to_change": "no",
   "il_finance_file": "switching-and-transfers.md",
   "checked": "2026-10-22",
+  "scope": "unsettled",
+  "scope_settle": "not a rule; one forum account with no company named (the general rules it touches: PF-15, SW-07)",
   "sources": [
     {
       "url": "https://www.hasolidit.com/kehila/threads/.36752/",

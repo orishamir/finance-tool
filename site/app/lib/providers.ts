@@ -16,7 +16,7 @@ import {
   type RunContext,
 } from "@finance-tool/engine";
 import type { ExposureRecord, FeesSnapshot, FundListFile, FundRecord, ParameterRecord, RuleRecord, ValueObject } from "@finance-tool/schema";
-import { flags as flagCopy, formulaNames, guideBlocks } from "../copy";
+import { flags as flagCopy, formulaNames, guideBlocks, r4workbench } from "../copy";
 import { fxRunInput, nisPerNumber, type FxSnapshot } from "./fx";
 import { toEnteredTariff, type EnteredOffer } from "./offers";
 import { computed, entered as enteredValue, ownBy, type SiteValue, type Staleness } from "./value";
@@ -47,6 +47,8 @@ export interface WorkbenchBundle {
   fundLists: FundListFile[];
   /** The rule records a run may read, the protection rules and the rules the pages quote. */
   rules: RuleRecord[];
+  /** The records those rules' cards point at (derived_from, examples) that the bundle does not ship: only chips and cards read them (review, 2026-10-26). */
+  pointed?: RuleRecord[];
   /** P-01 (tie threshold) and P-05 (the representative instruments). */
   p01: ParameterRecord;
   p05: ParameterRecord;
@@ -558,9 +560,11 @@ export function buildProviderWorkbench(a: BuildArgs): ProviderResult {
     try {
       const built = !x.s.missing || x.p.level === "entered" ? buildTariff({ ...base, providers: [] }, x.p, x.s.missing ? { ...x.s, lines: [], averages: [] } : x.s) : null;
       // F-63 (2026-10-25): a tariff with no buy/sell line for the fund's class gives no price, not a free trade (a distributor
-      // may charge for buying and selling tracking funds, MF-26); a money-market fund is the exception, bought free under a
-      // distribution agreement (MF-26, BANK-17), so a missing line there stays a zero.
-      if (built && built.noLine.includes("trade") && subject.instrumentClass !== "money_market_units") {
+      // may charge for buying and selling tracking funds, MF-26); a money-market fund at a bank is the exception, bought free
+      // under a distribution agreement (MF-26) and held free (BANK-18), so a missing line there stays a zero. 2026-10-26 (BRK OQ11
+      // closed): at a non-bank member, which is mostly an investment marketer that MF-26 does not bind, it is no exception.
+      const freeMoneyMarket = subject.instrumentClass === "money_market_units" && x.s.provider.class === "bank";
+      if (built && built.noLine.includes("trade") && !freeMoneyMarket) {
         ambiguous.set(x.s.id, { code: "no-applicable-line", detail: `no trade line of the ${x.s.id} snapshot applies to ${subject.instrumentClass}` });
         continue;
       }
@@ -596,11 +600,17 @@ export function buildProviderWorkbench(a: BuildArgs): ProviderResult {
       const lvl = src?.level ?? "list";
       const avg = lvl !== "list" && lvl !== l.level ? s.averages.find((x) => x.line_id === id && x.level === lvl) : undefined;
       const isAvg = lvl !== "list";
+      // F-14 (2026-10-26): a non-bank member's custody line on a money-market fund is charged as published; its note says that
+      // no rule limiting it was found, that a member with a distribution agreement for the fund may charge nothing on it (MF-26),
+      // and what the regulators' report says of practice: a blanket waiver of custody proper only, a handling fee usually fixed
+      // and often refunded (BRK-52). Practice, not a term of the tariff.
+      const rate = withStale(avg ? avg.rate : l.rate, stale, s.provider.name_he);
+      const mmfNonBank = l.base === "custody" && subject.instrumentClass === "money_market_units" && s.provider.class !== "bank";
       return [{
         id,
         base: l.base,
         name: l.names.tariff[0] ?? id,
-        rate: withStale(avg ? avg.rate : l.rate, stale, s.provider.name_he),
+        rate: mmfNonBank ? { ...rate, notes: r4workbench.providers.mmfCustodyNonBank } : rate,
         min: !isAvg && l.min && l.min.value !== null ? withStale(l.min, stale, s.provider.name_he) : null,
         max: !isAvg && l.max && l.max.value !== null ? withStale(l.max, stale, s.provider.name_he) : null,
         period: l.period,

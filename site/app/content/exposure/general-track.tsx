@@ -1,7 +1,7 @@
 // Exposure prose for מסלול כללי (flows 6.6). Written 2026-10-23 from the rule base (CAT, PF, TXK, REG); each
 // block ends with the rules it rests on. NEW copy for the founder to review.
 import type { ExposureContent } from "../guide/types";
-import { IdRef, Num, RulesLine, Term } from "../../components/provenance";
+import { Num, RuleRef, RulesLine, Term } from "../../components/provenance";
 import { Sentence } from "../../components/kit";
 
 export const content: ExposureContent = {
@@ -36,9 +36,9 @@ export const content: ExposureContent = {
         השווי עולה ויורד עם כל הנכסים שבמסלול, ושני מסלולים באותו שם אצל חברות שונות יכולים להחזיק תמהילים שונים מאוד; <Term prefix="ה" id="מסלול השקעה">מסלול</Term> הנכון נמדד לפי החשיפה בפועל בנתוני רשות שוק ההון, לא לפי השם. מעבר לדמי הניהול, המסלול נושא הוצאות ישירות שהחברה גובה מהנכסים, עד תקרה שהיא קובעת ומפרסמת לכל מסלול.
       </p>
       <p className="max-w-measure">
-        הנכסים מוחזקים בנאמנות, בנפרד מרכוש החברה המנהלת, ואי אפשר לעקל אותם. רשימת המסלולים הרשמית של רשות שוק ההון, עם המדיניות שכל שם מחייב, עדיין לא הושגה: <IdRef id="CAT OQ9" />.
+        הנכסים מוחזקים בנאמנות, בנפרד מרכוש החברה המנהלת, ואי אפשר לעקל אותם. את המדיניות שכל שם מסלול מחייב קובעת רשימת מסלולי ההשקעה של רשות שוק ההון; במסלול כללי הנכסים חשופים לנכסים מסוגים שונים, בכפוף לדין ולשיקול דעת ועדת ההשקעות, בלי תמהיל קבוע <RuleRef id="CAT-23" />.
       </p>
-      <RulesLine ids={["CAT-24", "CAT-16", "PF-10", "PF-29", "REG-18", "TXK-03"]} />
+      <RulesLine ids={["CAT-24", "CAT-16", "PF-10", "PF-29", "REG-18", "TXK-03", "CAT-23", "CAT-15"]} />
     </>
   ),
   termIds: ["מסלול כללי", "מסלול ברירת מחדל", "מסלול השקעה", "העברת כספים בין מסלולי השקעה", "מסלול השקעה מתמחה", "רשימת מסלולי השקעה"],

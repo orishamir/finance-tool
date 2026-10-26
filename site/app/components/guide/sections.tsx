@@ -2,10 +2,10 @@
 // dimension checklist, related products, term table, institution chips.
 import { useEffect, useState, type ReactNode } from "react";
 import { Link, useParams } from "react-router";
-import { guide as copy, r3fees } from "../../copy";
+import { guide as copy, r3fees, scopeWords } from "../../copy";
 import type { TermRow } from "../../lib/data.server";
 import type { Strength } from "../../lib/value";
-import { IconCheck, IconChevronDown, IconDrillIn, IconLock, IconMinus } from "../icons";
+import { IconCheck, IconChevronDown, IconDrillIn, IconFile, IconLock, IconMinus } from "../icons";
 import { IdRef, RuleRef, RulesLine, StrengthLabel } from "../provenance";
 import { Card, cx, Disclosure, KeyValueList as KitKeyValueList, Section, Tag } from "../kit";
 
@@ -110,6 +110,8 @@ export interface FeeRow {
   cap: ReactNode;
   rules: readonly string[];
   tag?: ReactNode;
+  /** "תלוי בחברה" and the companies whose own rate the site holds for this fee (D30), under the cap. */
+  varies?: ReactNode;
 }
 
 export function FeeTable({ fees, note }: { fees: FeeRow[]; note: string }) {
@@ -125,6 +127,7 @@ export function FeeTable({ fees, note }: { fees: FeeRow[]; note: string }) {
               {f.cap}
               {f.tag}
             </span>
+            {f.varies && <span className="block">{f.varies}</span>}
             <RulesLine ids={f.rules} />
           </div>
         ))}
@@ -149,6 +152,7 @@ export function FeeTable({ fees, note }: { fees: FeeRow[]; note: string }) {
                     {f.cap}
                     {f.tag}
                   </span>
+                  {f.varies && <span className="block pt-1">{f.varies}</span>}
                 </td>
                 <td>
                   <span className="flex flex-wrap gap-2">
@@ -231,11 +235,14 @@ export interface ChecklistRowView {
   id: string;
   name: string;
   explanation: string;
-  mark: "covered" | "na" | "blocked";
+  /** `varies`: no general rule carries it, and each company sets it for itself (the wrapper's `company_terms`, D30). */
+  mark: "covered" | "na" | "blocked" | "varies";
   code?: string;
   rules: readonly string[];
   weak?: Strength | null;
   applies?: ReactNode;
+  /** "תלוי בחברה" and the companies whose own terms the site holds for this property (a `VariesByCompany`), under the explanation. */
+  varies?: ReactNode;
 }
 
 function ChecklistRow({ r }: { r: ChecklistRowView }) {
@@ -243,13 +250,13 @@ function ChecklistRow({ r }: { r: ChecklistRowView }) {
   return (
     <li className="flex gap-3 py-3 border-b border-border">
       <span className="shrink-0 mt-0.5" aria-hidden="true">
-        {r.mark === "covered" ? <IconCheck size={24} className="text-positive" /> : r.mark === "blocked" ? <IconLock size={24} className="text-blocked" /> : <IconMinus size={24} className="text-muted-foreground" />}
+        {r.mark === "covered" ? <IconCheck size={24} className="text-positive" /> : r.mark === "blocked" ? <IconLock size={24} className="text-blocked" /> : r.mark === "varies" ? <IconFile size={24} className="text-muted-foreground" /> : <IconMinus size={24} className="text-muted-foreground" />}
       </span>
       <div className="flex flex-col gap-0.5 min-w-0 flex-1">
         <span className="flex flex-wrap items-center gap-x-2 gap-y-1">
           <span className="font-medium">{r.name}</span>
           <span className={cx("text-xs", r.mark === "covered" ? "text-positive-foreground" : r.mark === "blocked" ? "text-blocked-foreground" : "text-muted-foreground")}>
-            {r.mark === "covered" ? copy.checklist.considered : r.mark === "na" ? copy.checklist.notRelevant : <>{copy.checklist.blockedMark} {r.code ? <IdRef id={r.code} /> : null}</>}
+            {r.mark === "covered" ? copy.checklist.considered : r.mark === "na" ? copy.checklist.notRelevant : r.mark === "varies" ? scopeWords.varies : <>{copy.checklist.blockedMark} {r.code ? <IdRef id={r.code} /> : null}</>}
           </span>
           {r.weak && (r.weak === "institution" || r.weak === "secondary") && <StrengthLabel strength={r.weak} />}
           {r.applies}
@@ -260,6 +267,7 @@ function ChecklistRow({ r }: { r: ChecklistRowView }) {
         </span>
         {/* audit A90: the status sentence is its own line, not glued to the question */}
         {r.mark === "blocked" && <span className="block text-sm text-blocked-foreground">{copy.checklist.blockedLast}</span>}
+        {r.varies && <span className="block">{r.varies}</span>}
         {r.rules.length > 0 && (
           <Disclosure label={<span className="text-xs text-link">{copy.checklist.expand}</span>} summaryClassName="min-h-9 justify-start gap-1 [&>svg]:size-4">
             <RulesLine ids={r.rules} className="pb-2" />

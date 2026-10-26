@@ -157,6 +157,8 @@ export interface CompareBundle {
   parameters: ParameterRecord[];
   tier2: Tier2Row[];
   rules: RuleRecord[];
+  /** The records those rules' cards point at (derived_from, examples) that the bundle does not ship: only chips and cards read them (review, 2026-10-26). */
+  pointed?: RuleRecord[];
   checklist: { id: string; name: string; explanation: string }[];
   /** The Bank of Israel page a cash-like rate comes from (BANK-22), for the link-out. */
   cashLink: { href: string; title: string; ruleId: string } | null;

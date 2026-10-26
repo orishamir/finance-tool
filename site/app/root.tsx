@@ -8,10 +8,16 @@ import NotFound from "./routes/not-found";
 import { PageShell } from "./components/shell";
 import { system } from "./copy";
 
-/** What every page's provenance sheet needs to know about the method: which parameters each formula uses and which parameter card each id belongs to (PageShell reads it). */
+/**
+ * What every page's provenance sheet needs to know: which parameters each formula uses, which parameter card each id belongs to,
+ * the Hebrew name of each source host, the open questions' status and Hebrew lines from data/open-questions.json (2026-10-26), and
+ * where each company's terms are listed (a rule card that names a company links there, D30), and per record that is not general the
+ * companies whose own document it cites (only those list it, review 2026-10-26). PageShell reads it.
+ */
 export async function loader() {
-  const { loadFormulaParameters, loadParameterAnchors } = await import("./lib/data.server");
-  return { formulaParameters: loadFormulaParameters(), parameterAnchors: loadParameterAnchors() };
+  const { loadFormulaParameters, loadOpenQuestions, loadParameterAnchors, loadPublishersHe } = await import("./lib/data.server");
+  const { companyLinks, ownDocuments } = await import("./lib/institutions.server");
+  return { formulaParameters: loadFormulaParameters(), parameterAnchors: loadParameterAnchors(), publishersHe: loadPublishersHe(), openQuestions: loadOpenQuestions(), companies: companyLinks(), ownDocs: ownDocuments() };
 }
 
 export function links() {

@@ -38,8 +38,8 @@ export const content: GuideContent = {
       <RulesLine ids={["TXP-01", "TXP-02", "TXP-10", "TXP-24"]} />
       <Callout tone="blocked" className="max-w-measure">
         <span className="font-medium">את הקצבה האתר עוד לא מחשב, כי חסרים מקדמי ההמרה.</span> שאלה פתוחה: <IdRef id="PEN OQ7" />. מגיל הפרישה חלק מהקצבה פטור ממס:{" "}
-        <N v={figure("TXP-14", "exempt_share")} /> מתקרה של <N v={figure("TXP-14", "annuity_ceiling")} /> בחודש. משיכה שלא כדין ממוסה לפחות ב־<N v={figure("TXP-18", "minimum_rate")} />, ועל איזה סכום
-        בדיוק: שאלה פתוחה <IdRef id="TXP OQ3" />.
+        <N v={figure("TXP-14", "exempt_share")} /> מתקרה של <N v={figure("TXP-14", "annuity_ceiling")} /> בחודש. משיכה שלא כדין ממוסה על כל הסכום שמשולם, בגבוה מבין <N v={figure("TXP-18", "minimum_rate")} />{" "}
+        והשיעור השולי <RuleRef id="TXP-18" />.
       </Callout>
       <RulesLine ids={["TXP-14", "TXP-18", "PEN-27", "PEN-30"]} />
     </>

@@ -1813,6 +1813,46 @@
         "pattern": "^(covered|blocked)(:[A-Z0-9-]+)?$"
       }
     },
+    "company_terms": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string"
+      },
+      "additionalProperties": {
+        "minItems": 1,
+        "type": "array",
+        "items": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[A-Z0-9]+-[A-Z0-9]+$"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "rule": {
+                  "type": "string",
+                  "pattern": "^[A-Z0-9]+-[A-Z0-9]+$"
+                },
+                "companies": {
+                  "minItems": 1,
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "pattern": "^[a-z0-9-]+$"
+                  }
+                }
+              },
+              "required": [
+                "rule",
+                "companies"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        }
+      }
+    },
     "tier": {
       "anyOf": [
         {
