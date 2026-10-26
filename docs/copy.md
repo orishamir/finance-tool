@@ -102,6 +102,7 @@ The numbers match the briefs in `docs/flows.md` section 6.
 | Search placeholder | הדביקו שם של מוצר, מסלול או מונח |
 | Door 1 | להבין סוג של חיסכון |
 | Door 1, line | מה זה, כמה זה עולה ואיך זה ממוסה |
+| Door 1, link to the list (`home.door1.all`) | לכל סוגי החיסכון במדריך (2026-10-26: the door is no longer a link; it shows the P-10 kinds as pills, each named as its wrapper record names it, and this link) |
 | Door 2 | מה חברה מציעה לי |
 | Door 2, line | כל המוצרים והמסלולים שלה, עם הסבר לכל אחד |
 | Small link | מה האתר עוד לא מכסה |
@@ -128,7 +129,7 @@ Why A: the reader learns what the site does and the one thing that sets it apart
 
 | Key in `copy.ts` | Hebrew | Note |
 |---|---|---|
-| `home.quick.heading` | מה השאלה שלכם? | h2 of the card |
+| `home.quick.heading` | ~~מה השאלה שלכם?~~ מה המטרה שלכם? | h2 of the card (founder 2026-10-26: the card sets a goal, so it asks for the goal) |
 | `home.quick.amountNow` | יש לכם היום | field label; ₪ |
 | `home.quick.monthly` | ובכל חודש | field label; ₪ |
 | `home.quick.years` | כמה שנים עד שתצטרכו את הכסף | field label, in place of the goal form's "שנים עד המטרה" |
@@ -150,7 +151,7 @@ Why A: the reader learns what the site does and the one thing that sets it apart
 | `home.quick.needAmount` | הזינו סכום: היום או בכל חודש. | under the button when no sum above zero is typed |
 | `home.quick.line` | הכול נשמר במכשיר הזה. גיל, שכר ותשואה אפשר להוסיף בתוצאה, אם תרצו. | `text-xs muted` under the button |
 | `home.quick.allFields` | לכל השדות | quiet link to the full goal form |
-| `home.quick.another` | שאלה נוספת | the closed disclosure under the saved-goal strip; adds a second goal (D12) |
+| `home.quick.another` | ~~שאלה נוספת~~ מטרה נוספת (2026-10-26) | the closed disclosure under the saved-goal strip; adds a second goal (D12) |
 | `r2.strip.blank · fill · savedAll` | עוד לא מולאה · למילוי · נשמרו במכשיר הזה | added 2026-10-25: the first page's goal rows, a goal that holds nothing yet, and the line under several rows |
 | `r2.result.horizonDefaulted.before / mid / after / change` | לא ידעתם כמה שנים, ולכן ההשוואה רצה על {n} שנים, נקודת ההתחלה של ״{preset}״. לשנות | note under the result's headline when the years came from the preset; {n} a site-parameter `Num`; "לשנות" opens the assumptions at the years. Same pattern as `employmentInferred` |
 | `r2.result.horizonHonest.cannot` | האתר לא קובע אם {years} שנים מספיקות למניות: אין לו תשואה צפויה ואין לו נתון על ירידות. | product mode, when the years are below P-04's equity minimum; the site says what it does not know (D9, D11) |
@@ -246,7 +247,8 @@ Why "למי ששלח לכם את האתר": every friend reached the site throug
 
 | Key in `copy.ts` | Hebrew | Note |
 |---|---|---|
-| `guide.headline.afterNominal` | אחרי דמי ניהול ומס, בשקלים של העתיד | the headline's tail when the switch is on future shekels |
+| `guide.headline.afterBoth` · `afterTax` · `afterFees` · `real` · `nominal` | אחרי דמי ניהול ומס · אחרי מס · אחרי דמי ניהול · בכסף של היום · בשקלים של העתיד | the headline's tail (changed 2026-10-26, founder): it names only the parts the run has, then the value mode. Was one string "אחרי דמי ניהול ומס, בשקלים של העתיד" and its real twin, which named fees and tax on a current account that has neither |
+| `guide.editSlot` | שינוי של | spoken name of the pencil beside a number the reader sets in the example sentence, before the field's name (kit `InputSlot`, 2026-10-26) |
 | `guide.modeLabel` | אופן הצגת הסכומים | screen-reader name of the real / nominal switch. Was "מטבע ההצגה": the switch is not about a currency |
 | `guide.feeNoteOther` | הסכומים בפועל נקבעים אצל הגורם המציע. כאן מופיעים סוגי העלויות, ותקרה כשיש תקרה בחוק. | the fee-table note for a product that is not a provident fund (the provident note is above) |
 | `guide.generalTermsLabel` | מונחים כלליים | disclosure under the term table |

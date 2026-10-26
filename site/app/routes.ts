@@ -27,8 +27,8 @@ export default [
   route("holdings", "routes/holdings.tsx"),
   route("holdings-bundle.json", "routes/holdings-bundle.ts"),
   route("transfer", "routes/transfer.tsx"),
-  route("indices", "routes/invest.tsx"),
-  route("indices/:slug", "routes/invest.tsx", { id: "invest-index" }),
+  // one route for /indices and every /indices/<x>: choosing another index keeps the page and fetches nothing (routes/invest.tsx)
+  route("indices/:slug?", "routes/invest.tsx"),
   route("workbench/providers/:wrapper", "routes/workbench-providers.tsx"),
   route("workbench/funds/:exposure", "routes/workbench-funds.tsx"),
   route("workbench-bundle.json", "routes/workbench-bundle.ts"),

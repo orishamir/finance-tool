@@ -3,10 +3,9 @@ import { Link } from "react-router";
 import { buttons, r4workbench as c } from "../../../copy";
 import { fmt } from "../../../lib/format";
 import { ORDERS_MAX, ORDERS_MIN, type Channel, type ProviderWorkbenchView, type SubjectFund, type UiLevel, type WorkbenchInputs, type RefLink } from "../../../lib/providers";
-import { IconDown, IconUp } from "../../compare/icons";
 import { IconExternal, IconReset } from "../../icons";
 import { Num } from "../../provenance";
-import { Button, Card, cx, NumberField, ParameterLine, SegmentedControl } from "../../kit";
+import { Button, Card, cx, NumberField, ParameterLine, SegmentedControl, StepButtons } from "../../kit";
 
 // ---------------------------------------------------------------- subject strip
 
@@ -109,12 +108,7 @@ export function BehaviourCard({ view, inputs, onOrders, onChannel, onOpenAssumpt
               </p>
             }
           />
-          <Button variant="icon" className="border border-input h-field w-11 shrink-0" aria-label={t.ordersDown} disabled={b.ordersN <= ORDERS_MIN} onClick={() => onOrders(b.ordersN - 1)}>
-            <IconDown size={18} />
-          </Button>
-          <Button variant="icon" className="border border-input h-field w-11 shrink-0" aria-label={t.ordersUp} disabled={b.ordersN >= ORDERS_MAX} onClick={() => onOrders(b.ordersN + 1)}>
-            <IconUp size={18} />
-          </Button>
+          <StepButtons downLabel={t.ordersDown} upLabel={t.ordersUp} downDisabled={b.ordersN <= ORDERS_MIN} upDisabled={b.ordersN >= ORDERS_MAX} onDown={() => onOrders(b.ordersN - 1)} onUp={() => onOrders(b.ordersN + 1)} />
         </div>
         <div className="field">
           <span className="field-label" id="beh-channel">
@@ -135,10 +129,8 @@ export function BehaviourCard({ view, inputs, onOrders, onChannel, onOpenAssumpt
       </div>
       <div className="flex flex-col gap-1 text-sm text-muted-foreground">
         <p>{b.fxCurrency ? t.fxForeign(b.fxCurrency) : t.fxShekels}</p>
-        <p>
-          <Num value={b.deposits} size="cell" display="12" />
-          {t.deposits.replace(/^12/, "")}
-        </p>
+        {/* copy.md 8.1 (2026-10-24): the twelve deposits (A-28) in words, no typed figure; the "12" printed before it read "12הפקדה" */}
+        <p>{t.deposits}</p>
       </div>
     </Card>
   );

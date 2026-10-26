@@ -162,7 +162,7 @@ Added 2026-10-24 (dilemma-first home), after the founder asked that the part of 
 ```ts
 interface QuickGoalCardProps {
   bounds: { horizon: Range; monthly: Range }; // the loader's form.horizon and form.monthly
-  mode: "current" | "new";                    // "new" adds a second goal first (the closed "שאלה נוספת")
+  mode: "current" | "new";                    // "new" adds a second goal first (the closed "מטרה נוספת", until 2026-10-26 "שאלה נוספת")
   className?: string;
 }
 ```

@@ -273,8 +273,6 @@ export interface LadderRow {
   banks?: { count: SiteValue; of: SiteValue };
   /** The one-year deposit: the lowest rate and how many banks were collected (F-86). */
   range?: { lo: SiteValue; count: SiteValue };
-  /** The current account: the most a bank pays, with the largest ceiling (the conditions are the bank's). */
-  top?: { rate: SiteValue; name: string; ceiling: SiteValue | null };
 }
 
 /** The four products on the ladder, from the fastest to the slowest, each with its rate and where the rate comes from. */
@@ -282,7 +280,6 @@ export function ladderRows(d: SignatureData): LadderRow[] {
   const rows: LadderRow[] = [];
   const cur = fact(d, "currentRate");
   if (cur) {
-    const top = topPayer(d);
     const count = fact(d, "currentCount");
     const of = fact(d, "currentBankCount");
     rows.push({
@@ -291,7 +288,6 @@ export function ladderRows(d: SignatureData): LadderRow[] {
       rate: cur,
       kind: "common",
       ...(count && of ? { banks: { count, of } } : {}),
-      ...(top ? { top: { rate: top.rate, name: top.name, ceiling: largestCeiling(d) } } : {}),
     });
   }
   const assumed = fact(d, "cashRate");
@@ -306,10 +302,16 @@ export function ladderRows(d: SignatureData): LadderRow[] {
   return rows.sort((a, b) => speedOrder.indexOf(a.speed) - speedOrder.indexOf(b.speed));
 }
 
-/** The best rate among the rows that bring the money back within `need` (the order of `speedOrder`). */
-export function bestWithin(rows: LadderRow[], need: Speed): LadderRow | null {
-  const ok = rows.filter((r) => speedOrder.indexOf(r.speed) <= speedOrder.indexOf(need));
-  return ok.reduce<LadderRow | null>((best, r) => (best === null || (r.rate.value as number) > (best.rate.value as number) ? r : best), null);
+/**
+ * Whether waiting pays on the ladder: true when `id`'s rate is at least the highest rate of every slower row (a range at its top). The
+ * sentence over the table says so only when it holds; with other data it says nothing rather than something untrue.
+ */
+export function slowerPayNoMore(rows: LadderRow[], id: string): boolean {
+  const at = rows.findIndex((r) => r.id === id);
+  if (at < 0) return false;
+  const own = Number(rows[at]!.rate.value);
+  const slower = rows.filter((r) => speedOrder.indexOf(r.speed) > speedOrder.indexOf(rows[at]!.speed));
+  return slower.length > 0 && slower.every((r) => Number(r.rate.value) <= own);
 }
 
 // ---------------------------------------------------------------- renewable money-market fund

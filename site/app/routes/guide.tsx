@@ -374,7 +374,7 @@ export default function GuidePage() {
   const signature = hasSignatureVisual(record.id, data.signature) ? data.signature : null;
   // the current account starts from the rate most of the collected banks publish (F-85), and says how many do
   const common = record.id === "current-account" && signature?.facts.commonCount && signature.facts.bankCount ? { count: signature.facts.commonCount, of: signature.facts.bankCount } : null;
-  const cash = cashLikeIds.includes(record.id) ? { id: record.id, published: !!data.bundle?.feeValues.balanceCeiling || ["bank-deposit", "savings-plan", "current-account"].includes(record.id), feesIndependent: record.id === "current-account", common } : null;
+  const cash = cashLikeIds.includes(record.id) ? { id: record.id, published: !!data.bundle?.feeValues.balanceCeiling || ["bank-deposit", "savings-plan", "current-account"].includes(record.id), common } : null;
   // a fact the site computes from the collected records, listed with the pinned rules (2026-10-25)
   const worthFacts = signature && record.id === "current-account" ? [accountWorthRow(signature)].filter((r) => r !== null) : [];
   const timelineNode =

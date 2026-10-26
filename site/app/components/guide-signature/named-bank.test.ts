@@ -23,13 +23,18 @@ describe("one bank's rate is named where it is quoted", () => {
   it("the ladder's deposit row is the range across the banks, names none and links to each bank's rate", () => {
     const sig = buildGuidePage("money-market-fund-daily")!.signature!;
     const html = render(createElement(MoneyMarketDailyVisual, { data: sig, today: "2026-10-26" }));
-    const raw = [...html.matchAll(/<li[\s\S]*?<\/li>/g)].map((m) => m[0]).find((r) => text(r).includes("פיקדון לשנה"));
+    const raw = [...html.matchAll(/<tr[\s\S]*?<\/tr>/g)].map((m) => m[0]).find((r) => text(r).includes("פיקדון לשנה"));
     expect(raw).toBeDefined();
     const row = text(raw!);
     for (const bank of ["לאומי", "הפועלים", "דיסקונט", "מזרחי"]) expect(row).not.toContain(bank);
-    expect(row).toMatch(/1\.55%.*עד.*2\.25%/);
-    expect(row).toContain("הבנקים שנאספו");
-    expect(raw).toContain('href="/guide/bank-deposit#deposit-banks"');
+    expect(row).toMatch(/1\.55%\s*–\s*2\.25%/);
+    expect(row).toMatch(/טווח ב־\s*4\s*בנקים/);
+    expect(raw).toContain('href="/guide/bank-deposit"');
+    // the note under the table: how many of the collected deposits cannot be left early, naming none, and the link to each bank's rate
+    const notes = [...html.matchAll(/<ul[\s\S]*?<\/ul>/g)].map((m) => text(m[0])).find((t) => t.includes("פיקדון לשנה:"))!;
+    expect(notes).toMatch(/ב־\s*3\s*מתוך\s*4\s*הבנקים שנאספו אי אפשר למשוך/);
+    for (const bank of ["לאומי", "הפועלים", "דיסקונט", "מזרחי"]) expect(notes).not.toContain(bank);
+    expect(html).toContain('href="/guide/bank-deposit#deposit-banks"');
   });
   it("the bank-deposit page lists each bank's one-year deposit at the anchor the ladder links to", () => {
     const sig = buildGuidePage("bank-deposit")!.signature!;

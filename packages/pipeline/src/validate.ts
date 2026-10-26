@@ -155,6 +155,7 @@ export function validateData(ctx: ValidationContext): Problem[] {
   checkInstrumentsMap(files, ctx.dataDir, ruleDimensions, report);
   checkHoldingParameter(files, ctx.dataDir, report);
   checkPinnedRules(files, ctx.dataDir, ruleRecords, report);
+  checkHomeGuideDoor(files, ctx.dataDir, report);
   checkOpenQuestions(files, ctx, report, warn);
   // who each rule applies to and where it may appear (D30; research/specs/2026-10-25-rules-scope/spec.md §3): scope.ts
   const scopeCounts = checkScope(ctx, ruleRecords, report, warn);
@@ -303,6 +304,22 @@ function checkPinnedRules(files: string[], dataDir: string, all: Map<string, Rul
         if (!(figure in figures)) report(file, `pinned-rules: the answer slot {${id}:${figure}} names a figure ${id} does not have (${Object.keys(figures).join(",") || "none"})`);
       }
     }
+  }
+}
+
+/** P-10 (`data/parameters/home-guide-door.json`): every wrapper id it names has a record under data/instruments/wrappers/, once. */
+function checkHomeGuideDoor(files: string[], dataDir: string, report: (file: string, message: string) => void) {
+  const at = (f: string) => relative(dataDir, f).replace(/\\/g, "/");
+  const file = files.find((f) => at(f) === "parameters/home-guide-door.json");
+  if (!file) return;
+  const rec = parseJson(readFileSync(file, "utf8")).value as { wrappers?: unknown } | undefined;
+  if (!Array.isArray(rec?.wrappers) || rec.wrappers.length === 0) return report(file, "home-guide-door: `wrappers` must be a non-empty list of wrapper ids");
+  const known = new Set(files.filter((f) => at(f).startsWith("instruments/wrappers/") && f.endsWith(".json")).map((f) => (parseJson(readFileSync(f, "utf8")).value as { id?: string } | undefined)?.id));
+  const seen = new Set<string>();
+  for (const id of rec.wrappers as string[]) {
+    if (!known.has(id)) report(file, `home-guide-door: ${id} has no record under data/instruments/wrappers/`);
+    if (seen.has(id)) report(file, `home-guide-door: ${id} is listed twice`);
+    seen.add(id);
   }
 }
 
