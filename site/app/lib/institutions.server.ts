@@ -21,6 +21,7 @@ import { shortName } from "./providers";
 import { ownBy, type SiteValue } from "./value";
 import { fileRank } from "./rule-shelves";
 import { listedCompanies, noPageAnchor, type CompanyLink, type OwnDocs } from "./scope";
+import { brandOfMember, brandOfPage, loadBrands } from "./brands.server";
 
 /** The cadence until `docs/data-schema.md` §3.6 writes `staleTariff` (flow 33 data note): 90 days. */
 const staleDays = 90;
@@ -61,7 +62,13 @@ export function institutionIds(): string[] {
   return [...ids];
 }
 
+/** The companies list's banks and brokers: those that are not a brand's member (a brand has its own row, D33). */
 export function institutionRows(): InstitutionRow[] {
+  const inBrand = new Set(loadBrands().flatMap((b) => b.pageIds));
+  return allInstitutionRows().filter((r) => !inBrand.has(r.id));
+}
+
+function allInstitutionRows(): InstitutionRow[] {
   const snaps = institutionSnapshots();
   const rows: InstitutionRow[] = snaps.map((s) => ({ id: s.id, name: s.provider.name_he, kind: s.kind, published: s.tariff.published, missing: s.missing, noSnapshot: false }));
   for (const d of loadDepositTerms()) {
@@ -233,6 +240,20 @@ function tariffCard(s: FeesSnapshot, rules: Record<string, RuleRecord>, t: strin
   };
 }
 
+// ---------------------------------------------------------------- a brand's brokerage account (D33)
+
+/** The tariff card of a broker or a foreign broker, with the records its card cites; null when no snapshot has that id. */
+export function brokeragePart(id: string): { kind: InstitutionKind; tariff: TariffCardData; rules: Record<string, RuleRecord> } | null {
+  const snap = latestSnapshots().find((s) => s.id === id && (s.provider.class === "broker" || s.provider.class === "foreign_broker"));
+  if (!snap) return null;
+  const allRules = loadRules();
+  const cited = new Set<string>(["BRK-20", "BRK-21", "BRK-16"]);
+  for (const r of [...snap.provider.protection_rule_ids, ...snap.notice_rule_ids]) cited.add(r);
+  for (const l of snap.lines) for (const r of l.rate.rule_ids ?? []) cited.add(r);
+  const rules = Object.fromEntries([...cited].filter((r) => allRules[r]).map((r) => [r, allRules[r]!]));
+  return { kind: "broker", tariff: tariffCard(snap, allRules, today()), rules };
+}
+
 // ---------------------------------------------------------------- the page
 
 export function buildInstitution(id: string): InstitutionPageData | null {
@@ -304,6 +325,11 @@ export function institutionSearchEntries(words: { bank: string; broker: string }
   const out: InstitutionSearchEntry[] = [];
   const names = new Map<string, string>(institutionRows().map((r) => [r.id, r.name]));
   for (const r of institutionRows()) out.push({ name: r.name, line: r.kind === "bank" ? words.bank : words.broker, href: `/companies/${r.id}`, extra: r.id });
+  // a brand member's legal name finds the brand's page (D33)
+  for (const r of allInstitutionRows()) {
+    const brand = brandOfPage(r.id);
+    if (brand) out.push({ name: r.name, line: brand.name, href: `/companies/${brand.page}`, extra: r.id });
+  }
   const wrappers = loadProducts();
   for (const d of loadDepositTerms()) {
     const wrapper = wrappers.find((w) => w.id === d.wrapper_id)?.names.he[0] ?? "";
@@ -334,7 +360,8 @@ export function companyLinks(): Record<string, CompanyLink> {
   const pages = new Set(institutionIds());
   const out: Record<string, CompanyLink> = {};
   for (const r of loadInstitutionRegistry()) {
-    const page = r.cma_legal_id && cmaIds.has(r.cma_legal_id) ? r.cma_legal_id : r.fees_id && pages.has(r.fees_id) ? r.fees_id : r.deposit_bank_id && pages.has(r.deposit_bank_id) ? r.deposit_bank_id : null;
+    const brand = brandOfMember(r.id);
+    const page = brand ? brand.page : r.cma_legal_id && cmaIds.has(r.cma_legal_id) ? r.cma_legal_id : r.fees_id && pages.has(r.fees_id) ? r.fees_id : r.deposit_bank_id && pages.has(r.deposit_bank_id) ? r.deposit_bank_id : null;
     // where its own documents live travels too: a rule card drops "לפי החברה" only on a source there (D31; review, 2026-10-26)
     const docs = { own_hosts: r.own_hosts, ...(r.filing_names ? { filing_names: r.filing_names } : {}) };
     out[r.id] = page ? { name: r.name_he, href: `/companies/${page}`, hasPage: true, docs } : { name: r.name_he, href: `/companies#${noPageAnchor(r.id)}`, hasPage: false, docs };
@@ -353,6 +380,8 @@ function loadCmaCompanyIds(): string[] {
 
 /** The registry ids a company page stands for: the rows whose CMA id, snapshot id or deposit id is the page's id. */
 export function registryIdsOfPage(pageId: string): string[] {
+  const brand = brandOfPage(pageId);
+  if (brand) return brand.members.map((m) => m.id);
   return loadInstitutionRegistry()
     .filter((r) => r.cma_legal_id === pageId || r.fees_id === pageId || r.deposit_bank_id === pageId)
     .map((r) => r.id);

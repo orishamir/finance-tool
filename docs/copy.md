@@ -1889,6 +1889,25 @@ Added 2026-10-24 for the briefs in `docs/flows.md` section 15 and the handoff in
 - **"מה חותמים / מה לצפות"** as the two labelled lines of a step: product 3.7 Out names exactly these two things for every step; the labels make them scannable.
 - **Added 2026-10-24** (the build's strings, folded the same day): **"כמה עולה המעבר"** for the cost block, the question a person asks (not "מה עולה"). **"הפקדה אחת בכל חודש של השנה"** says A-28's twelve deposits without a digit. **"להשוות אליו · ביטול ההשוואה"** as infinitive and noun, like every other button. **"הכללים שהחישוב נשען עליהם"** mirrors 6.2's "הכללים שההשוואה נשענת עליהם". **"מחיסכון · מהפקדה"** in the provident listing, the glossary's words, never "מצבירה".
 
+### 8.7 Brands: a group's companies as one (D33, 2026-10-26)
+
+The founder, 2026-10-26: someone browsing the companies wants a company's products, not its legal structure. A group's managing company, broker and fund manager are one row and one page, under the name people use (`data/sources/brands.json`).
+
+| Where | Hebrew |
+|---|---|
+| Companies list, first heading | בתי השקעות |
+| Companies list, a brand's quiet line | its product kinds, joined with " · ": the CMA classifications, then קרנות סל · קרנות מחקות · קרנות כספיות, then חשבון השקעות |
+| Search, a brand's row line | בית השקעות |
+| Brand page, lede without CMA tracks | כל מה שהחברה מציעה, כל סוג מוצר תחת כותרת משלו. |
+| Brand page, the companies line | כולל את החברות: `{שם חוקי}` · `{שם חוקי}` |
+| Brand page, list heading | כל המוצרים של `{שם}` |
+| Fund groups | קרנות סל · קרנות מחקות · קרנות כספיות · קרנות נאמנות |
+| Fund group count | קרן אחת · שתי קרנות · `{מספר}` קרנות |
+| Fund group note | רק הקרנות שהאתר אסף עליהן דוח, לא כל הקרנות של החברה. דמי הניהול לפי הדוח של כל קרן. |
+| Fund row, what it follows (link to the index page or the money-market guide) | עוקבת אחרי `{מדד}` · קרן כספית |
+
+The fund row's other words (מנהלת הקרן, מספר נייר, בדף הקרן במאיה, the three fee names, לא נאסף) are the index page's (`invest.funds` in `site/app/copy.ts`).
+
 ## 9. Release 5 screens
 
 Added 2026-10-24 for the briefs in `docs/flows.md` section 18 and the handoff in `docs/design-spec.md` sections 21 to 25. Same voice and conventions as section 1: plural imperative or impersonal, no typed figures (every `{…}` is a value object with its state), names as the source writes them, codes after the words. Exposure names are the records' `names.he[0]` (מזומן שקלי · מק"מ · אג"ח ממשלתית לא צמודה · אג"ח ממשלתית צמודה · מדד S&P 500 · מדד ת"א-125 · מסלול כללי) and their one-line explanations are the records' `one_line_he`, never retyped here. Rule texts render from the rule base with their chips. Status: **draft** (2026-10-24), to be settled by the founder as sections 3, 6, 7 and 8 were. Every wording choice is "chosen 2026-10-24, revisable"; section 9.7 says why.

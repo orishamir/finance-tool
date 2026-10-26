@@ -68,9 +68,29 @@ export const institutionRow = z.strictObject({
 
 export const institutionsTable = z.array(institutionRow);
 
-/** A file under data/sources/ is one of the three tables. */
-export const sourcesFile = z.union([publishersTable, documentsTable, institutionsTable]);
+/**
+ * One row of `brands.json` (founder, 2026-10-26, D33): the companies of one group the site shows as one company, under the name
+ * people know it by. Its page holds every product of every member (provident and study funds, the brokerage account, the funds it
+ * manages), each under its own heading; every member's old address shows the same page.
+ */
+export const brandRow = z.strictObject({
+  id: z.string().regex(/^[a-z0-9-]+$/),
+  /** The name the site shows for the group ("מיטב"), not a legal name. */
+  name_he: z.string().min(1),
+  /** Registry ids (`institutions.json`) of the group's companies; a company is in one brand at most. */
+  members: z.array(z.string().regex(/^[a-z0-9-]+$/)).min(1),
+  /** The fund managers as the fund records under data/funds/ write `manager`: their funds are listed on the page. */
+  fund_managers: z.array(z.string().min(1)),
+  /** Optional working note; never shown. */
+  note: z.string().optional(),
+});
+
+export const brandsTable = z.array(brandRow);
+
+/** A file under data/sources/ is one of the four tables. */
+export const sourcesFile = z.union([publishersTable, documentsTable, institutionsTable, brandsTable]);
 
 export type PublisherRow = z.infer<typeof publisherRow>;
 export type DocumentRow = z.infer<typeof documentRow>;
 export type InstitutionRegistryRow = z.infer<typeof institutionRow>;
+export type BrandRow = z.infer<typeof brandRow>;

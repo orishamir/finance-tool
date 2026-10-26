@@ -3,6 +3,7 @@ import { loadCma, loadProducts } from "./data.server";
 import { loadExposures } from "./instruments.server";
 import { workbenchWrapperIds } from "./workbench.server";
 import { institutionIds } from "./institutions.server";
+import { loadBrands } from "./brands.server";
 import { INDICES_PATH, indexPath } from "./invest";
 import { providerWrapperIds } from "./providers.server";
 import { playbookWrapperIds } from "./playbook.server";
@@ -22,6 +23,8 @@ export function prerenderPaths(): string[] {
   for (const e of loadExposures()) if (e.kind === "equity_index") paths.push(indexPath(e.id));
   // banks and brokers (release 4): one page per snapshot provider and per bank with deposit records
   for (const id of institutionIds()) if (!cma.companies.some((c) => c.id === id)) paths.push(`/companies/${id}`);
+  // the brands (D33): every address of a brand shows its one page (a fund manager or a foreign broker has no other page)
+  for (const b of loadBrands()) for (const id of b.pageIds) if (!paths.includes(`/companies/${id}`)) paths.push(`/companies/${id}`);
   // the provider workbench and the fund-variant page (release 4): the subject is in the address, read in the browser
   for (const w of providerWrapperIds()) paths.push(`/workbench/providers/${w}`);
   for (const e of loadExposures()) paths.push(`/workbench/funds/${e.id}`);
