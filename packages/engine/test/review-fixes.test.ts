@@ -188,19 +188,21 @@ it("tests TXI-20 against income including the interest itself", () => {
   expect(r.taxDuring).toBeCloseTo(0.15 * (10_000 - r.detail.txi20Deduction!), 6);
 });
 
-it("does not apply the age-60 brackets to a kupat gemel lehashkaa exit yet, and flags the relief left out (F-44, TXK-06)", () => {
-  const r = runProvident(
-    {
-      wrapper: "kupat-gemel-lehashkaa",
-      goal: { amountNow: 50_000, monthly: 0, months: 60 },
-      market: { grossReturn: 0.06, inflation: 0.025 },
-      fees: { deposit: 0, balance: 0.008, direct: 0.001 },
-      profile: { ageAtStart: 62, otherIncome: 0 },
-    },
-    ctx,
-  );
+it("applies the age-60 brackets to a kupat gemel lehashkaa exit (F-44 with F-42, TXK-06; 2026-10-26), settled through a return", () => {
+  const input = {
+    wrapper: "kupat-gemel-lehashkaa" as const,
+    goal: { amountNow: 50_000, monthly: 0, months: 60 },
+    market: { grossReturn: 0.06, inflation: 0.025 },
+    fees: { deposit: 0, balance: 0.008, direct: 0.001 },
+  };
+  const r = runProvident({ ...input, profile: { ageAtStart: 62, otherIncome: 0 } }, ctx);
+  const under60 = runProvident({ ...input, profile: { ageAtStart: 30, otherIncome: 0 } }, ctx);
+  // With no other income the whole real gain sits in the 10% bracket (TXG-04), below 25%.
+  expect(r.taxAtExit).toBeCloseTo(0.1 * r.detail.realGain!, 6);
+  expect(under60.taxAtExit).toBeCloseTo(0.25 * under60.detail.realGain!, 6);
   expect(ids(r)).not.toContain("TXS-23");
-  expect(codes(r)).toContain("TXK-06");
+  expect(codes(r)).toContain("G-21");
+  expect(codes(r)).not.toContain("TXK-06");
 });
 
 it("raises the US estate-tax flag only when the dollar value is known (TXF-27)", () => {

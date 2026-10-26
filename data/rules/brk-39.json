@@ -91,10 +91,10 @@
     {
       "url": "https://www.tase.co.il/he/content/products_lobby/data_services",
       "title": "הבורסה לניירות ערך: שירותי המידע של הבורסה",
-      "title_he": "הבורסה לניירות ערך: שירותי המידע של הבורסה",
+      "title_he": "שירותי המידע של הבורסה",
       "publisher": "Tel Aviv Stock Exchange",
       "publisher_he": "הבורסה לניירות ערך בתל אביב",
-      "kind": "exchange_rules",
+      "kind": "institution_doc",
       "strength": "institution",
       "checked": "2026-10-25",
       "qualifier": "(TASE's product page)"
@@ -102,10 +102,10 @@
     {
       "url": "https://www.tase.co.il/he/content/products_lobby/data_services_hub/",
       "title": "הבורסה לניירות ערך: רכישת מנוי וגישה ל-דאטה האב",
-      "title_he": "הבורסה לניירות ערך: רכישת מנוי וגישה ל-דאטה האב",
+      "title_he": "רכישת מנוי וגישה לדאטה האב של הבורסה",
       "publisher": "Tel Aviv Stock Exchange",
       "publisher_he": "הבורסה לניירות ערך בתל אביב",
-      "kind": "exchange_rules",
+      "kind": "institution_doc",
       "strength": "institution",
       "checked": "2026-10-25",
       "qualifier": "(TASE's product page)"
@@ -116,7 +116,7 @@
       "title_he": "מחירון מוצרי המידע של הבורסה",
       "publisher": "Tel Aviv Stock Exchange",
       "publisher_he": "הבורסה לניירות ערך בתל אביב",
-      "kind": "other",
+      "kind": "institution_doc",
       "strength": "institution",
       "checked": "2026-10-25",
       "qualifier": "(TASE's price list)"
@@ -124,10 +124,10 @@
     {
       "url": "https://store.tase.co.il/he/products/9",
       "title": "חנות המידע של הבורסה: נתוני שוק ונתונים כלליים",
-      "title_he": "חנות המידע של הבורסה: נתוני שוק ונתונים כלליים",
+      "title_he": "חנות המידע של הבורסה",
       "publisher": "TASE Data Hub",
-      "publisher_he": "הבורסה לניירות ערך בתל אביב (Data Hub)",
-      "kind": "other",
+      "publisher_he": "הבורסה לניירות ערך בתל אביב",
+      "kind": "institution_doc",
       "strength": "institution",
       "checked": "2026-10-25",
       "qualifier": "(TASE's store)"

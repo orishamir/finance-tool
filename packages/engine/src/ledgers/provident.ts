@@ -4,11 +4,11 @@
 import { balanceFee, depositFee, feeForMonth, type Discount } from "../formulas/fees.ts";
 import { deductionValue, equalNetOutlay, spreadReliefByYear } from "../formulas/deposit-side.ts";
 import { studyFundEarlyWithdrawal } from "../formulas/early-withdrawal.ts";
-import { hishtalmutExitTax, kglExitTax } from "../formulas/exit-tax.ts";
+import { bracketTaxOnTopSlice, hishtalmutExitTax, kglExitTax } from "../formulas/exit-tax.ts";
 import { annualToMonthly, contributions, cpiPath, taxYearOf, type Goal } from "../formulas/time.ts";
 import { BlockedError, RecordInputError, ruleBook } from "../resolver.ts";
 import type { Outcome, RunContext, RunResult } from "../result.ts";
-import { exitTax, reachesAgeInYear, surtaxOn, Tally, unlessBlocked, type Profile } from "./common.ts";
+import { exitTax, otherIncomeOf, reachesAgeInYear, surtaxOn, Tally, unlessBlocked, type Profile } from "./common.ts";
 
 export interface ProvidentInput {
   wrapper: "kupat-gemel-lehashkaa" | "keren-hishtalmut";
@@ -286,7 +286,11 @@ export function runProvident(input: ProvidentInput, ctx: RunContext): ProvidentR
   if (discountExtended) tally.flag("PF-13");
 
   const gross = benefited.balance + excess.balance;
-  const realGain = (pot: Pot) => pot.balance - pot.deposits.reduce((s, d) => s + (d.amount * I[T]!) / d.index, 0);
+  // The real gain: each deposit indexed by I_T / I_deposit. When the CPI fell over a deposit's life its linkage is not a
+  // gain, so that deposit counts at its amount and the taxable gain never exceeds the gains withdrawn (s.3(ה4)(3) deems the
+  // gains withdrawn interest and carves out only gains equal to linkage, TXK-05, TXK-07; read with TXS-02, method F-44).
+  const fellFor = (pot: Pot) => pot.deposits.some((d) => I[T]! < d.index);
+  const realGain = (pot: Pot) => pot.balance - pot.deposits.reduce((s, d) => s + (I[T]! >= d.index ? (d.amount * I[T]!) / d.index : d.amount), 0);
   const nominalGain = (pot: Pot) => pot.balance - pot.deposits.reduce((s, d) => s + d.amount, 0);
   const detail: Record<string, number> = { grossBalance: gross };
   let taxAtExit: number;
@@ -298,12 +302,26 @@ export function runProvident(input: ProvidentInput, ctx: RunContext): ProvidentR
     const realRate = book.rate("TXK-07", "rate");
     const nominalRate = book.rate("TXK-06", "nominal_rate");
     const real = realGain(benefited);
+    if (fellFor(benefited)) book.label("reading", "TXK-07");
     const t = kglExitTax(real, nominalGain(benefited), realRate, nominalRate);
-    // From 60 the reduced brackets apply first to this deemed interest (s.125C(b) is a maximum rate; TXK-06, 2026-10-26).
-    // F-44 does not apply them yet (F-42 is not wired to this exit), so the run flags the relief it leaves out.
-    if (reachesAgeInYear(profile, T, book.amount("TXG-04", "age"), first)) tally.flag("TXK-06");
+    // F-42 at this exit (2026-10-26): from 60 the reduced brackets apply first to this deemed interest, since s.125C(b) is a
+    // maximum rate and s.121(ב)(1) gives the reduced brackets to all taxable income of an individual aged 60 or over; the
+    // gains are the top slice above the other income Y, each part at min(bracket, 25%) (TXK-06, TXG-04, TXG-07). The manager
+    // withholds without an age rule, so the difference comes back through a return (G-21, TXG-25); with the refund not
+    // claimed (A-14 off) the full rate stays and the run flags the relief it leaves out (TXK-06).
+    let incomeTax = t.tax;
+    if (reachesAgeInYear(profile, T, book.amount("TXG-04", "age"), first)) {
+      book.cite("TXG-07");
+      formulas.push("F-42");
+      if (profile.refundClaimed === false) tally.flag("TXK-06");
+      else {
+        incomeTax = bracketTaxOnTopSlice(otherIncomeOf(profile), Math.max(0, real), book.brackets("TXG-04", "brackets"), realRate);
+        if (!exitTaxUnknown) tally.flag("G-21");
+      }
+      detail.fullRateTax = t.tax;
+    }
     const s = surtaxOn(book, profile, real);
-    taxAtExit = exitTaxUnknown ? 0 : t.tax + s.general + s.onCapital;
+    taxAtExit = exitTaxUnknown ? 0 : incomeTax + s.general + s.onCapital;
     detail.realGain = real;
     detail.altTaxAtExit = t.alternative;
     detail.altNominal = gross - t.alternative;
@@ -311,11 +329,12 @@ export function runProvident(input: ProvidentInput, ctx: RunContext): ProvidentR
     // No National Insurance or health contributions on the gains: they are income taxed under s.125C(b)-(c) (TXK-27, G-11 answered for the lump sum 2026-10-26).
     book.cite("TXK-27");
     tally.flag("G-02");
-    if (exitTaxUnknown) for (const k of ["realGain", "altTaxAtExit", "altNominal", "altReal"]) delete detail[k];
+    if (exitTaxUnknown) for (const k of ["realGain", "altTaxAtExit", "altNominal", "altReal", "fullRateTax"]) delete detail[k];
   } else {
     // F-46: benefited money is exempt (TXH-09); gains on the excess are taxed at 25% of their real gain
     // (TXH-11; the real base is the Ministry of Finance Chief Economist paper's, primary).
     const excessReal = realGain(excess);
+    if (excess.deposits.length > 0 && !early && fellFor(excess)) book.label("reading", "TXH-11");
     taxAtExit = 0;
     if (early) {
       // F-47: early withdrawal at the horizon, opted into (B3). All gains, benefited or not, are taxed at

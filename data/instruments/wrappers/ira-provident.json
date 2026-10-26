@@ -281,7 +281,7 @@
       "IRA-27",
       "IRA-15"
     ],
-    "text": "only listed kinds of provident money: capital money that is withdrawable at retirement, money invested in index-tracking funds or ETNs, money of a member who receives an old-age pension of at least the minimum pension amount (NIS 5,306 a month in 2026) or holds 'הסכום הקובע' (NIS 1,575,882 in 2026) in a non-IRA annuity fund, and money in a new account; pension-fund money cannot be self-directed and must first move to an IRA provident fund, losing its insurance cover; severance money needs the employer's approval; the member, or a licensed portfolio manager, gives the instructions; no regulatory minimum was found (Meitav suggests from about NIS 200,000); a 2025 draft would keep only members with twice the pension or savings test"
+    "text": "only listed kinds of provident money: capital money that is withdrawable at retirement, money invested in index-tracking funds or ETNs, money of a member who receives an old-age pension of at least the minimum pension amount (NIS 5,306 a month in 2026) or holds 'הסכום הקובע' (NIS 1,575,882 in 2026) in a non-IRA annuity fund, and money in a new account; pension-fund money cannot be self-directed and must first move to an IRA provident fund, losing its insurance cover; severance-component money that does not come in place of severance pay under section 14 needs the employer's approval (IRA-09); the member, or a licensed portfolio manager, gives the instructions; no regulatory minimum was found; a 2025 draft would keep only members with twice the pension or savings test"
   },
   "protection": {
     "rule_ids": [

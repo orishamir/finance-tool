@@ -7,7 +7,7 @@ import { annualToMonthly, closesTaxYear, contributions, cpiPath, fxPath, taxYear
 import { ruleBook } from "../resolver.ts";
 import type { Outcome, RunContext, RunResult } from "../result.ts";
 import { exitTax, Tally, unlessBlocked, yearlySurtax, type Profile } from "./common.ts";
-import { removeFifo, totalUnits, type Lot } from "./lots.ts";
+import { indexedCost, removeFifo, totalUnits, type Lot } from "./lots.ts";
 
 export interface Fund {
   /**
@@ -68,6 +68,13 @@ export interface SecuritiesInput {
   };
   /** Where the account is: an Israeli bank or member withholds; a foreign broker does not (TXF-21, TXF-22). */
   broker?: "israeli" | "foreign";
+  /**
+   * F-14 (2026-10-26): whether an Israeli account is at a bank or at a TASE member that is not a bank. A bank may not charge
+   * custody on money-market fund units (BRK-17, BANK-18); no rule limits a non-bank member's custody fee on them, so there the
+   * tariff's line applies (BRK OQ11 closed: the distribution-fee regulations leave out an investment marketer, MF-26). Default
+   * `bank`, the case every money-market guide and comparison assumes.
+   */
+  memberKind?: "bank" | "non-bank";
   /** F-51: the account is held inside an IRA hishtalmut, with the manager's balance fee. */
   wrapper?: { kind: "ira-hishtalmut"; managerFee: number; clockStartMonth: number };
   /**
@@ -225,9 +232,11 @@ export function runSecurities(input: SecuritiesInput, ctx: RunContext): RunResul
 
   const wrapperFee = input.wrapper ? Math.min(input.wrapper.managerFee, book.rate("PF-06", "balance_cap")) : 0;
   if (input.wrapper) formulas.push("F-51", "F-15", "F-46");
-  // No custody fee on money-market fund units at a bank (BRK-17, BANK-18).
-  if (isMmf) book.cite("BANK-18");
-  const custodyLine = isMmf ? undefined : tariff.custody;
+  // No custody fee on money-market fund units at a bank (BRK-17, BANK-18); at a non-bank member the tariff's custody line
+  // applies as published (F-14; BRK-17 binds banks only, and MF-26 does not bind an investment marketer).
+  const mmfFree = isMmf && input.memberKind !== "non-bank";
+  if (mmfFree) book.cite("BANK-18");
+  const custodyLine = mmfFree ? undefined : tariff.custody;
 
   let exitYearFees = 0;
   let foreignTax = 0;
@@ -293,11 +302,14 @@ export function runSecurities(input: SecuritiesInput, ctx: RunContext): RunResul
   const proceeds = gross - commission - fx;
 
   const cost = lots.reduce((s, l) => s + l.basis, 0);
-  const indexedCost = lots.reduce((s, l) => s + (l.basis * J[T]!) / l.index, 0);
-  const realGain = gross - indexedCost - exitYearFees;
+  // Each lot indexed by J_T / J_lot; when the index (CPI or exchange rate) fell, its inflationary amount is zero and
+  // the part of a nominal loss equal to the fall is not allowable (TXS-02, TXF-03; method F-09, 2026-10-26).
+  const adjusted = indexedCost(lots, J[T]!, nav * (1 - spread));
+  const realGain = gross - adjusted.indexed - exitYearFees + adjusted.fallDisallowed;
   const nominalGain = gross - cost;
   book.cite("TXS-06");
   book.cite("TXS-02");
+  if (adjusted.fell && fxIndexed) book.cite("TXF-03");
 
   let outcome: Outcome = { code: "eligible" };
   let lossOffset = 0;
@@ -344,6 +356,7 @@ export function runSecurities(input: SecuritiesInput, ctx: RunContext): RunResul
     detail: {
       realGain,
       nominalGain,
+      fallDisallowed: adjusted.fallDisallowed,
       lossOffset,
       lossUnused,
       exitYearFees,

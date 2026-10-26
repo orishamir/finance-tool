@@ -5,7 +5,7 @@ import { closesTaxYear, contributions, cpiPath, taxYearOf, type Goal } from "../
 import { ruleBook } from "../resolver.ts";
 import type { RunContext, RunResult } from "../result.ts";
 import { exitTax, maxRateTax, Tally, unlessBlocked, yearlySurtax, type Profile } from "./common.ts";
-import { removeFifo, type Lot } from "./lots.ts";
+import { indexedCost, removeFifo, type Lot } from "./lots.ts";
 
 export interface BondInput {
   goal: Goal;
@@ -114,9 +114,13 @@ export function runBond(input: BondInput, ctx: RunContext): RunResult {
   const gross = units * price(T) * (1 + (bond.exitPriceChange ?? 0));
   const commission = tradeCommission(tariff.sell, gross, { fxRate: 1 });
   tally.fee("trade", commission);
-  const gain = linked
-    ? gross - lots.reduce((s, l) => s + (l.basis * I[T]!) / l.index, 0) - exitYearFees
+  // A CPI-linked bond is a real-basis security: each lot indexed by I_T / I_lot, and when the CPI fell its
+  // inflationary amount is zero and the part of a nominal loss equal to the fall is not allowable (TXS-02; F-09).
+  const adjusted = linked ? indexedCost(lots, I[T]!, price(T) * (1 + (bond.exitPriceChange ?? 0))) : undefined;
+  const gain = adjusted
+    ? gross - adjusted.indexed - exitYearFees + adjusted.fallDisallowed
     : gross - lots.reduce((s, l) => s + l.basis, 0) - exitYearFees;
+  if (adjusted) book.cite("TXS-02");
   if (gain < 0) tally.flag("G-07");
   tally.flag("G-20");
   const exit = unlessBlocked(() =>

@@ -243,6 +243,8 @@ describe("Part A: the ledger on single instruments", () => {
       ctx,
     );
     const g = golden("S10");
+    // 2026-10-26: the CPI fell, so each lot's inflationary amount is zero and the nominal loss counts only beyond the fall (TXS-02).
+    g.value("gain at exit", r.detail.gain, -395.95);
     g.value("real", r.real, 102_622.17);
     g.value("nominal", r.nominal, 99_574.19);
     g.value("trade", r.fees.trade, 456.34);

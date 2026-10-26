@@ -239,7 +239,7 @@ Exercises PEN-22 vs PEN-21 caps, F-53 zero insurance (PEN-35), F-49 blocked for 
 Exercises F-54 (CS-03, CS-04, CS-13 cohort, CS-18 fees), F-50 blocked.
 - Child born 2026-01-01; doubling on from birth; increased-risk track r_g 6%; π = 2%; horizon to age 21.
 - Expected: _(founder)_: gross balance at 18 and 21, grants, fees from 21, the flag "exit tax blocked (G-17)".
-  - Independent check, 2026-10-22 (steps in [workings.md](workings.md), section S31): Gross balance at 18 = 52,470.43 (boy) / 52,490.19 (girl), real 36,737.67 / 36,751.50; at 21 = 63,375.24 / 63,398.77, real 41,813.45 / 41,828.98. Tax if withdrawn at 21: 6,009.76 / 6,015.64 (25% of the real gain, label "secondary source", TXK-23); at 18: 4,058.57 / 4,063.51. Grants: 308.81 at 3, 376.44 at 13 (boy) or 369.06 at 12 (girl), 882.12 at 21. Fees 0 until 21, then 0.23% of balance. Subject to Q10 (sex).
+  - Independent check, 2026-10-22 (steps in [workings.md](workings.md), section S31): Gross balance at 18 = 52,470.43 (boy) / 52,490.19 (girl), real 36,737.67 / 36,751.50; at 21 = 63,375.24 / 63,398.77, real 41,813.45 / 41,828.98. Tax if withdrawn at 21: 6,009.76 / 6,015.64 (25% of the real gain, label "secondary source", TXK-23); at 18: 4,058.57 / 4,063.51. Grants: 308.81 at 3, 376.44 at 13 (boy) or 369.06 at 12 (girl), 882.12 at 21. Fees 0 until 21, then up to 1.05% of the balance (CS-18; see S54). Subject to Q10 (sex).
 
 ### S32 Child savings, bank route
 Exercises CS-10 tracks, F-21 as a savings plan (derived label), CS-23 stale data flag.
@@ -384,6 +384,44 @@ Exercises F-80 tie with P-01.
 
 ---
 
+## Part E: follow-ups (2026-10-26)
+
+Added 2026-10-26 with the follow-ups brief (`research/specs/2026-10-26-followups/brief.md`): the falling index (TXS-02, TXF-03), the relief from 60 on a kupat gemel lehashkaa lump sum (TXK-06), the child-savings fee after 21 at the legal cap (CS-18), and money-market custody at a non-bank member (F-14). The independent check computes them in `expected_calc.py` like the rest.
+
+### S51 Kupat gemel lehashkaa, lump sum at 60 with low other income
+Exercises F-44 with F-42 (TXK-06, TXG-04, TXG-07), A-13, A-14.
+- Profile: age 55 at start; other income in the exit year 60,000.
+- Goal: 80,000 now (within the yearly ceiling); no monthly; horizon 5 years.
+- Market: r_g 6%; π = 2.5%. Fees as S20: balance 0.8%, direct expenses 0.1%, no deposit fee.
+- Expected: _(founder)_: tax at the brackets on the real gain, each slice capped at 25%, against the full 25%.
+  - Independent check, 2026-10-22 (steps in [workings.md](workings.md), section S51): Gross balance 102,345.49; real gain 11,832.84; tax at the brackets 1,183.28 (method F-44 with F-42); at the full 25% it would be 2,958.21, so the relief is 1,774.93; V_T 101,162.21, real 89,412.65; fees: balance 3,638.76, direct expenses 454.85; flag G-21 (settled through a return).
+
+### S52 TASE foreign fund when the shekel strengthens
+Exercises F-09 and F-40 with a falling index (TXS-02, TXF-03, TXF-04), G-07.
+- As S16 with f = −3% for the whole horizon; (a) r_g 6%, (b) r_g −1% (a nominal loss smaller than the currency's fall).
+- Expected: _(founder)_: (a) the real gain no larger than the nominal gain; (b) no tax and no allowable loss beyond the exit-year custody.
+  - Independent check, 2026-10-22 (steps in [workings.md](workings.md), section S52): (a) r_g 6%: nominal gain 30,805.42; real gain 30,052.89 (the inflationary amount is 0, not negative; without the rule it would be 43,720.67); tax at exit 7,513.22; V_T 119,661.64, real 105,763.45. (b) r_g −1%: real gain -548.57 (the nominal loss is smaller than the fall, so none of it is allowable; without the rule 7,006.23); tax at exit 0.00; V_T 90,367.21, real 79,871.45; flag "real loss not carried, G-07".
+
+### S53 Israeli ETF and kupat gemel lehashkaa under CPI deflation
+Exercises F-09 and F-40 (TXS-02), F-44 (TXK-05, TXK-07) with π < 0.
+- (a) As S14 with π = −1%. (b) As S20 with π = −1%.
+- Expected: _(founder)_: in both, the taxable gain equals the nominal gain (less the exit-year custody in (a)); (b) labelled a reading.
+  - Independent check, 2026-10-22 (steps in [workings.md](workings.md), section S53): (a) ETF: nominal gain 19,717.36; real gain 18,862.65 (inflationary amount 0); tax at exit 4,715.66; V_T 147,697.08, real 155,308.75. (b) Kupat gemel lehashkaa: real gain 21,663.90, equal to the nominal gain; tax at exit 5,415.98; V_T 153,233.70, real 161,130.71; label "reading" on TXK-07.
+
+### S54 Child savings, provident route, withdrawn at 25
+Exercises F-54 after 21 (CS-18, CS-30), F-50.
+- As S31 (boy) with the withdrawal at 25 (month 300); (a) the fee after 21 at the legal cap, labelled "עד"; (b) a rate the person enters, 0.23%.
+- Expected: _(founder)_: fees after 21, tax if withdrawn and the net value in each case.
+  - Independent check, 2026-10-22 (steps in [workings.md](workings.md), section S54): (a) At the legal cap (1.05% of the balance after 21, labelled "עד"): balance at 25 76,717.55; fees after 21 2,941.45; tax if withdrawn 8,534.69 (25% of the real gain 34,138.78); net 68,182.86, real 41,559.56; flag "fee after 21 at the cap". (b) With an entered 0.23%: balance 79,277.00; fees after 21 655.12; tax 9,174.56; net 70,102.44, real 42,729.60.
+
+### S55 Daily money-market fund at a non-bank member
+Exercises F-14 at a non-bank member (BRK-17, MF-26), F-23, F-09.
+- As S11 at a TASE member that is not a bank, whose tariff charges custody of 0.1% a quarter with no minimum on money-market units.
+- Expected: _(founder)_: the custody paid and its effect on the value.
+  - Independent check, 2026-10-22 (steps in [workings.md](workings.md), section S55): Real V_T/I_T = 73,630.68; nominal V_T = 78,114.79; fees: fund (δ) 231.41, trade 0, custody 525.11; tax at exit 0.00 (25% of real gain -145.27).
+
+---
+
 ## Coverage matrix
 
 | Formula | Scenarios |
@@ -393,14 +431,14 @@ Exercises F-80 tie with P-01.
 | F-11 | S20, S27 |
 | F-12 | S06, S07, S08, S14, S15, S16, S17, S33, S44 |
 | F-13 | S14, S16, S17, S43 |
-| F-14 | S08, S14, S33, S44 |
+| F-14 | S08, S14, S33, S44, S55 |
 | F-15 | S20, S22, S23, S27, S33, S42 |
 | F-16 | S22 |
 | F-17 | S17, S44 |
 | F-20 | S13, S16, S17, S18, S19 |
 | F-21 | S01, S02, S03, S04, S32 |
 | F-22 | S32 |
-| F-23 | S11, S12, S41 |
+| F-23 | S11, S12, S41, S55 |
 | F-24 | S06, S07, S41 |
 | F-25 | S08, S09, S10, S35 |
 | F-26 | S05, S41 |
@@ -408,20 +446,20 @@ Exercises F-80 tie with P-01.
 | F-28 | all (zero), flag in S20 |
 | F-30 to F-32 | S26, S27, S28, S29 |
 | F-33 | S20, S23 |
-| F-40 | S14 to S19, S34, S36, S37 |
+| F-40 | S14 to S19, S34, S36, S37, S52, S53 |
 | F-41 | S01 to S05 |
-| F-42 | S34, S35 |
+| F-42 | S34, S35, S51 |
 | F-43 | S36 |
-| F-44 | S11, S20, S37 |
+| F-44 | S11, S20, S37, S51, S53 |
 | F-45 | guide text only (blocked) |
 | F-46 | S23, S25, S26, S33 |
 | F-47 | S24 |
 | F-48, F-49 | S27, S30 (blocked, listed) |
-| F-50 | S31, S32 |
+| F-50 | S31, S32, S54 |
 | F-51 | S33 |
 | F-52 | S23, S25, S27 |
 | F-53 | S27, S30 |
-| F-54 | S31 |
+| F-54 | S31, S54 |
 | F-60 | S41 |
 | F-61, F-62 | S42, S43 |
 | F-63 | S44, S45 |

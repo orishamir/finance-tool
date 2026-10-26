@@ -6,8 +6,8 @@
   "figure_names_he": {
     "linkage": "הצמדה",
     "coupon_every_months": "תדירות תשלום הקופון (חודשים)",
-    "margin_cap": "תקרת המרווח מעל תשואת המק\"ם",
-    "coupon_floor": "רצפת הקופון"
+    "margin_cap": "תקרת המרווח מעל תשואת המק\"ם (רק בסוג הישן \"גילון חדש\")",
+    "coupon_floor": "רצפת הקופון (רק בסוג הישן \"גילון חדש\")"
   },
   "strength": "primary",
   "dimensions": [

@@ -418,9 +418,10 @@ const providerLines: readonly FeeLine[] = ["trade", "custody", "fx", "fixed"];
  * is "not comparable, data missing" with the snapshot's reason. Minimums and protection pass through.
  */
 export function providerWorkbench(input: WorkbenchInput, ctx: RunContext): ProviderWorkbench {
-  const plan = (tariff: SecuritiesInput["tariff"], months: number): SecuritiesInput => {
+  const plan = (tariff: SecuritiesInput["tariff"], months: number, memberKind?: SecuritiesInput["memberKind"]): SecuritiesInput => {
     const p: SecuritiesInput = { goal: { ...input.goal, months }, market: input.market, fund: input.fund, tariff, profile: input.profile };
     if (input.broker) p.broker = input.broker;
+    if (memberKind) p.memberKind = memberKind;
     if (input.behaviour?.ordersPerMonth !== undefined) p.ordersPerMonth = input.behaviour.ordersPerMonth;
     return p;
   };
@@ -478,9 +479,11 @@ export function providerWorkbench(input: WorkbenchInput, ctx: RunContext): Provi
       continue;
     }
 
-    const planF = { run: "runSecurities", input: plan(built.tariff, horizon) } as const;
+    // F-14: a money-market unit pays custody at a non-bank member's tariff, never at a bank's (BRK-17, BANK-18).
+    const memberKind = s.provider.class === "bank" ? "bank" : s.provider.class === "broker" ? "non-bank" : undefined;
+    const planF = { run: "runSecurities", input: plan(built.tariff, horizon, memberKind) } as const;
     const run = runSecurities(planF.input, ctx);
-    const run12 = runSecurities(plan(built.tariff, 12), ctx);
+    const run12 = runSecurities(plan(built.tariff, 12, memberKind), ctx);
     const total = noneT.real - run.real;
     const byType = feeLines(planF)
       .filter((l) => providerLines.includes(l))

@@ -596,7 +596,9 @@ export const flags: Record<string, string> = {
   "G-14": "הוצאות ישירות של המסלול לא נאספו עדיין, ולכן לא נכללו בחישוב.",
   "G-21": "חלק מהמס מוסדר דרך דוח שנתי, לא בניכוי במקור.",
   "PF-13": "ההנחה בדמי הניהול הוארכה לחמש שנים לפחות, לפי חוזר הרשות.",
-  "TXK-06": "מדרגות המס המופחתות לבני הגיל המבוגר חלות קודם גם על הרווח במשיכה, כי השיעור עליו הוא שיעור מרבי. האתר עוד לא מחשב את ההקלה הזאת.", // 2026-10-26: TXK OQ12 closed (TXK-06); the engine flag was "TXK-OQ12"
+  "G-23": "נקודות הזיכוי לא הופחתו מהמס הזה. הן מקטינות את כל המס המחושב, גם על הכנסה כזו, ולכן הן משנות את התוצאה רק כשהן גדולות מהמס על שאר ההכנסה שלכם, למשל בשנה בלי משכורת. האתר לא יודע כמה נקודות זיכוי יש לכם.", // 2026-10-26: TXG-05; method G-23 names the input it would need
+  "CS-18": "דמי הניהול אחרי גיל עשרים ואחת חושבו לפי התקרה שבחוק, ולכן הם ״עד״: בקופה שלכם השיעור יכול להיות נמוך יותר.", // 2026-10-26: the child-savings fee after 21 runs on CS-18's cap unless the person enters a rate (F-54)
+  "TXK-06": "מגיל שישים מדרגות המס המופחתות חלות קודם גם על הרווח במשיכה, אבל ההפרש חוזר רק בבקשת החזר מס. בלי בקשת החזר, החישוב נשאר בשיעור המלא.", // 2026-10-26: F-44 applies the brackets (F-42); the flag now marks only a run with the refund not claimed (A-14 off)
   "TXP-11": "הפקדת המעסיק לפיצויים עוברת את תקרת הפיצויים, שנבדקת כל חודש: החלק שמעל התקרה הוא הכנסת עבודה כבר במועד ההפקדה, והאתר עוד לא מחשב את המס עליו.", // 2026-10-26: TXP OQ5 closed (circular 4/2019 s.2.1.1, TXP-11); the engine flag was "TXP-OQ5"
 };
 
@@ -2124,6 +2126,8 @@ export const r4workbench = {
     /** copy.md 8.1: a snapshot line that applies but is no part of a holding's running cost (a transfer out) */
     notModelledOther: "עמלה שאינה חלק מעלות ההחזקה השוטפת.",
     noLine: (base: string) => `אין בתעריפון שורה ל${base}; לא נגבה בחישוב.`,
+    /** 2026-10-26 (method F-14, F-63; BRK OQ11 closed): the note on a non-bank member's custody line when the fund is a money-market fund */
+    mmfCustodyNonBank: "בבנק אסור לגבות דמי ניהול פיקדון ניירות ערך על קרן כספית. אצל חבר בורסה שאינו בנק אין כלל שמגביל אותם, ולכן החישוב לפי התעריפון. לפי הדוח המשותף של הרגולטורים, חברי בורסה שאינם בנקים נוהגים לוותר עליהם לכל הלקוחות: זה נוהג, לא תנאי בתעריפון.",
     /** copy.md 8.1: the bases a missing line is named by, in the sentence above */
     noLineBases: { trade: "קנייה ומכירה", custody: "דמי ניהול פיקדון ניירות ערך", fx: "המרת מטבע" } as Record<string, string>,
     fixedSpread: (name: string) => `${name} נפרסו לחודשים.`,
@@ -3133,6 +3137,8 @@ export const guideSignature = {
     marker: "אחרי כמה שנים לוקחים את הכסף?",
     unit: "שנים מהיום",
     ageLabel: "הגיל שלכם היום",
+    /** 2026-10-26: the input name of the scenario income in the lump sum's sheet, once the exit year is at 60 or over (F-44 with F-42) */
+    incomeName: "ההכנסה השנתית בשנת המשיכה",
     ageHint: "לא חובה. בלי גיל האתר לא יכול להראות מתי נפתחת הקצבה.",
     ageError: "גיל שלם בין 0 ל־120.",
     chart: {
@@ -3223,6 +3229,8 @@ export const guideSignature = {
 export const guideWorth = {
   title: "שווה לדעת",
   line: "עובדות על המוצר הזה שרוב האנשים לא יודעים, כל אחת עם המקור שלה.",
+  /** 2026-10-26: before a figure that is a legal cap (its name holds "cap"), so a cap never reads as the rate charged */
+  upTo: "עד",
 } as const;
 
 /** Search additions (synthesis §3.6): the three new groups, their row lines and the empty states by query type. */

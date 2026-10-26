@@ -15,6 +15,8 @@ export interface WorthRow {
   id: string;
   title: string;
   figure: SiteValue | null;
+  /** The figure is a legal cap (its name holds `cap`, as `balance_cap`): shown with "עד" so it never reads as the rate charged (2026-10-26). */
+  upTo?: boolean;
   weak: "institution" | "secondary" | null;
 }
 
@@ -32,7 +34,7 @@ export function worthRows(ids: readonly string[] | undefined, rules: Record<stri
     const r = rules[id];
     if (!r?.title_he) continue;
     const first = Object.keys(r.figures ?? {}).find((n) => ruleFigure(r, n, today));
-    rows.push({ kind: "rule", id, title: r.title_he, figure: first ? ruleFigure(r, first, today) : null, weak: r.strength === "institution" || r.strength === "secondary" ? r.strength : null });
+    rows.push({ kind: "rule", id, title: r.title_he, figure: first ? ruleFigure(r, first, today) : null, upTo: first !== undefined && /(^|_)cap(_|$)/.test(first), weak: r.strength === "institution" || r.strength === "secondary" ? r.strength : null });
     if (rows.length === 3) break;
   }
   return rows;
@@ -49,6 +51,7 @@ export function WorthKnowing({ rows, facts = [] }: { rows: WorthRow[]; facts?: W
             <span>{r.title}</span>
             {r.figure && (
               <span className="whitespace-nowrap">
+                {r.upTo && <>{copy.upTo} </>}
                 <Num value={r.figure} />
                 {["months", "years", "days", "business_days", "usd", "eur"].includes(r.figure.unit) && (provCopy.unit as Record<string, string>)[r.figure.unit] && <span className="text-muted-foreground"> {(provCopy.unit as Record<string, string>)[r.figure.unit]}</span>}
               </span>

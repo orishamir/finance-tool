@@ -15,8 +15,10 @@
     {
       "url": "https://www.ccpc.ie/consumers/money/investing/ics-protection",
       "title": "Competition and Consumer Protection Commission (Ireland): How does the Investor Compensation Scheme protect you",
-      "publisher": "ccpc.ie",
-      "kind": "other",
+      "title_he": "תוכנית הפיצוי למשקיעים באירלנד: ממה היא מגנה (רשות התחרות והגנת הצרכן של אירלנד)",
+      "publisher": "Competition and Consumer Protection Commission (Ireland)",
+      "publisher_he": "רשות התחרות והגנת הצרכן של אירלנד (CCPC)",
+      "kind": "regulator_page",
       "strength": "primary",
       "checked": "2026-10-26",
       "qualifier": "(foreign regulator)"

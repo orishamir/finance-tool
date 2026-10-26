@@ -53,9 +53,10 @@
     {
       "url": "https://content.tase.co.il/media/uqtbtwm3/1150_foreign_bank_372262_eng.pdf",
       "title": "TASE, How to become TASE Foreign Bank Member, January 2026",
+      "title_he": "How to become TASE Foreign Bank Member (ינואר 2026)",
       "publisher": "Tel Aviv Stock Exchange",
       "publisher_he": "הבורסה לניירות ערך בתל אביב",
-      "kind": "exchange_rules",
+      "kind": "institution_doc",
       "strength": "institution",
       "locator": "p.4",
       "locator_he": "עמוד 4",

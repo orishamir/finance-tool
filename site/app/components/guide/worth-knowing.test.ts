@@ -10,6 +10,11 @@ describe("worthRows", () => {
     expect(worthRows(["A", "X", "B", "C", "D", "E"], rules, "2026-10-24").map((r) => r.id)).toEqual(["A", "C", "D"]);
     expect(worthRows(undefined, rules, "2026-10-24")).toEqual([]);
   });
+  it("marks a cap figure, by its name, to be shown with \"עד\" (2026-10-26, CS-18 after 21)", () => {
+    const fig = (value: number) => ({ value, unit: "pct_per_year", source: { url: "https://x", title: "t", publisher: "p", strength: "primary" }, checked: "2026-10-24", effective_from: null, effective_to: null, tax_year: null, update_rule: "fixed", rule_ids: ["A"], state: "sourced" });
+    const rows = worthRows(["A", "B", "C"], { A: rule("A", { figures: { balance_cap_after_21: fig(1.05) } }), B: rule("B", { figures: { rate: fig(25) } }), C: rule("C", { figures: { capital_multiplier: fig(180) } }) }, "2026-10-24");
+    expect(rows.map((r) => r.upTo)).toEqual([true, false, false]);
+  });
   it("marks weak strength", () => {
     expect(worthRows(["A"], { A: rule("A", { strength: "secondary" }) }, "2026-10-24")[0]!.weak).toBe("secondary");
   });
