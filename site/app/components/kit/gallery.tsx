@@ -214,6 +214,7 @@ function Folds() {
 function Choices() {
   const [seg, setSeg] = useState<"a" | "b" | "c">("a");
   const [chip, setChip] = useState<string | null>("0");
+  const [own, setOwn] = useState<string | null>(null);
   const labels = Object.fromEntries(g.sample.chip.map((c, i) => [String(i), c]));
   return (
     <>
@@ -225,6 +226,10 @@ function Choices() {
       <Demo name="ChoiceChips" use={g.uses.ChoiceChips}>
         <State label={`wrap, ${g.states.interactive}`}>
           <ChoiceChips ids={["0", "1", "2", "3"]} labels={labels} value={chip} onChange={setChip} ariaLabel={g.sample.title} wrap />
+        </State>
+        <State label={`other, ${g.states.interactive}`}>
+          <ChoiceChips ids={["0", "1", "2"]} labels={labels} value={own} onChange={(id) => setOwn((k) => (k === id ? null : id))} ariaLabel={g.sample.title} wrap other={{ label: g.sample.other, open: own === "other", onToggle: () => setOwn((k) => (k === "other" ? null : "other")) }} />
+          {own === "other" && <NumberField label={g.sample.otherField} unit="months" value={null} isEntered={false} validate={() => null} onCommit={() => {}} onReset={() => {}} optional inputMode="numeric" />}
         </State>
       </Demo>
     </>
