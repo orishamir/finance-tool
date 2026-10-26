@@ -223,6 +223,17 @@
   --chart-option-3: var(--palette-teal-600);
   --chart-baseline: var(--palette-neutral-300); /* drawn dotted on the comparison chart (2026-10-26): any grey sits within 15 ΔE of one of the three teal steps */
   --chart-alt: var(--palette-gold-200); /* the nearest alternative in a guide page's two-line drawing (D29, 2026-10-25): gold against the teal value line; same pair as fee kinds 2 and 3 */
+  /* how soon the money is back (2026-10-26, the daily money-market guide's table): a tag with an icon and a word, warmer the longer the
+     money is held. Teal, green, amber, red at step 200 on 900, never on a number, so they are not the flags of 3.2 (those are 950 tags
+     beside a number). Kept from the mockup the founder approved on 2026-10-26; a teal-gold-orange scale was offered as the alternative */
+  --access-1: var(--palette-teal-200);
+  --access-1-subtle: var(--palette-teal-900);
+  --access-2: var(--palette-green-200);
+  --access-2-subtle: var(--palette-green-900);
+  --access-3: var(--palette-amber-200);
+  --access-3-subtle: var(--palette-amber-900);
+  --access-4: var(--palette-red-200);
+  --access-4-subtle: var(--palette-red-900);
 }
 
 /* ---------------------------------------------------------------- Non-colour tokens */
@@ -345,6 +356,15 @@
   --color-positive: var(--positive);
   --color-positive-foreground: var(--positive-foreground);
   --color-positive-subtle: var(--positive-subtle);
+
+  --color-access-1: var(--access-1);
+  --color-access-1-subtle: var(--access-1-subtle);
+  --color-access-2: var(--access-2);
+  --color-access-2-subtle: var(--access-2-subtle);
+  --color-access-3: var(--access-3);
+  --color-access-3-subtle: var(--access-3-subtle);
+  --color-access-4: var(--access-4);
+  --color-access-4-subtle: var(--access-4-subtle);
 
   --color-chart-grid: var(--chart-grid);
   --color-chart-axis: var(--chart-axis);

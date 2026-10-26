@@ -314,6 +314,10 @@
   }
 
   /* ---- readout and definition lists in sheets */
+  /* the part of a bar that is a range, not a value: stripes of the bar's own colour (ValueBar, 2026-10-26) */
+  .hatch-value {
+    background-image: repeating-linear-gradient(135deg, var(--chart-value) 0 3px, transparent 3px 6px);
+  }
   .readout {
     display: flex;
     flex-direction: column;
