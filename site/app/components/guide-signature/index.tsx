@@ -44,8 +44,9 @@ export function SignatureFrame({ id, data, today, timeline }: { id: string; data
   const page = copy.pages[id]!;
   return (
     <>
-      <p className="text-lg max-w-measure">{page.question}</p>
-      <Card >
+      {/* the question is the card's title: outside the card it read as a second heading under the section's on a phone */}
+      <Card className="flex flex-col gap-4">
+        <p className="text-lg font-semibold max-w-measure">{page.question}</p>
         <Visual data={data} today={today} />
       </Card>
       {page.altId ? (
