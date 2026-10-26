@@ -36,7 +36,7 @@
     "exit_station_years": "שנים בין תחנות יציאה"
   },
   "il_finance_file": "child-savings.md",
-  "checked": "2026-10-25",
+  "checked": "2026-10-26",
   "sources": [
     {
       "url": "https://www.btl.gov.il/benefits/HozrimGimlaot/Hozrim/11.16%d7%97%d7%95%d7%96%d7%a8%20%d7%aa%d7%95%d7%9b%d7%a0%d7%99%d7%aa%20%d7%97%d7%99%d7%a1%d7%9b%d7%95%d7%9f%20%d7%9c%d7%9b%d7%9c%20%d7%99%d7%9c%d7%93_.pdf",
@@ -46,11 +46,11 @@
       "publisher_he": "המוסד לביטוח לאומי",
       "kind": "circular",
       "strength": "primary",
-      "locator": "p.5, pp.21-22",
-      "locator_he": "עמוד 5, עמודים 21 עד 22",
-      "page": 5,
+      "locator": "p.22",
+      "locator_he": "עמוד 22",
+      "page": 22,
       "quote": "והכספים יצברו ריבית שתהיה ידועה מראש בהתאם למסלול החיסכון הנבחר",
-      "checked": "2026-10-25",
+      "checked": "2026-10-26",
       "qualifier": "(historical)"
     },
     {

@@ -20,10 +20,11 @@
       "publisher_he": "רשות המסים",
       "kind": "law",
       "strength": "primary",
-      "locator": "p.152, s.91(ד)(2ג)",
-      "locator_he": "עמוד 152, סעיף 91(ד)(2ג)",
+      "locator": "pp.152-153, s.91(ד)(2ג)",
+      "locator_he": "עמודים 152 עד 153, סעיף 91(ד)(2ג)",
       "page": 152,
-      "checked": "2026-10-25"
+      "quote": "ביום 31 ביולי וביום 31 בינואר של כל שנת מס",
+      "checked": "2026-10-26"
     },
     {
       "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",

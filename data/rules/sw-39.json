@@ -2,7 +2,7 @@
   "id": "SW-39",
   "title": "Seniority on a transfer: the money keeps its own payment dates; two study funds merge into one account only when both are already withdrawable",
   "title_he": "ותק בניוד: הכסף שומר על מועדי התשלום שלו; שתי קרנות השתלמות מאוחדות לחשבון אחד רק כששתיהן נזילות",
-  "text_he": "בהעברה בין קופות שאינן לקצבה, ובהן מקרן השתלמות לקרן השתלמות ומקופת גמל להשקעה לקופת גמל להשקעה, הכסף עובר לחשבון על שם העמית בקופה המקבלת, ולעניין דיני המס רואים את כל מועדי התשלום לקופה המעבירה כמועדי התשלום לקופה המקבלת. כלומר הוותק של הכסף אינו משתנה בניוד. איחוד של חשבון שהועבר עם חשבון קיים של העמית באותה קרן השתלמות מותר רק אם במועד האיחוד העמית היה זכאי למשוך בפטור ממס בכל אחד מהחשבונות. לכן קרן צעירה וקרן ותיקה של אותו אדם יכולות לעבור לאותו מנהל כשתי חשבונות נפרדים, ומתאחדות לחשבון אחד רק כששתיהן נזילות. הכלל הישן שקשר איחוד למועד התשלום הראשון הוחלף ואינו בתוקף.",
+  "text_he": "בהעברה בין קופות שאינן לקצבה, ובהן מקרן השתלמות לקרן השתלמות, הכסף עובר לחשבון על שם העמית בקופה המקבלת, ולעניין דיני המס רואים את כל מועדי התשלום לקופה המעבירה כמועדי התשלום לקופה המקבלת. כלומר הוותק של הכסף אינו משתנה בניוד. על העברה מקופת גמל להשקעה לקופת גמל להשקעה, שנוספה לתקנות מאוחר יותר, התקנות לא אומרות זאת במפורש, וזו שאלה פתוחה. איחוד של חשבון שהועבר עם חשבון קיים של העמית באותה קרן השתלמות מותר רק אם במועד האיחוד העמית היה זכאי למשוך בפטור ממס בכל אחד מהחשבונות. לכן קרן צעירה וקרן ותיקה של אותו אדם יכולות לעבור לאותו מנהל כשתי חשבונות נפרדים, ומתאחדות לחשבון אחד רק כששתיהן נזילות. הכלל הישן שקשר איחוד למועד התשלום הראשון הוחלף ואינו בתוקף.",
   "strength": "primary",
   "dimensions": [
     "transfer-switch-process",
@@ -11,7 +11,7 @@
   ],
   "likely_to_change": "no",
   "il_finance_file": "switching-and-transfers.md",
-  "checked": "2026-10-23",
+  "checked": "2026-10-26",
   "sources": [
     {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fpoeVB94OXb~VXxIiNxEmuFE=#page=6",
@@ -25,7 +25,21 @@
       "locator_he": "עמוד 6, תקנה 3(ב)(1)",
       "page": 6,
       "quote": "כמועדי התשלום לקופה המקבלת",
-      "checked": "2026-10-25"
+      "checked": "2026-10-26"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/tZDvucD9RCpb4OFgftW2Mghx2FA7HU11Svr+ngxOA9o=#page=2",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל) (תיקון), התש\"ף-2020 (קובץ התקנות 8735)",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל) (תיקון), התש\"ף-2020 (קובץ התקנות 8735)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.2, s.3",
+      "locator_he": "עמוד 2, סעיף 3",
+      "page": 2,
+      "quote": "מקופת גמל להשקעה לקופת גמל להשקעה אחרת",
+      "checked": "2026-10-26"
     },
     {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/bfvsjLN+leExZ3ArqQksAZbYNmyK9Qa3gH~lF+jEWmc=#page=4",
@@ -51,6 +65,19 @@
       "locator": "p.8, reg. 9 as",
       "page": 8,
       "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.nevo.co.il/law_html/law01/999_929.htm",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008, נוסח משולב (Nevo, mirror of the regulations)",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס״ח-2008",
+      "publisher": "Nevo",
+      "publisher_he": "משרד האוצר",
+      "kind": "regulation",
+      "strength": "primary-mirror",
+      "mirror_host": "nevo",
+      "locator": "reg. 3(א)(11א) and 3(ב)(1)",
+      "quote": "למעט לפי – (1) פסקאות (8) עד (12) שבה",
+      "checked": "2026-10-26"
     }
   ]
 }

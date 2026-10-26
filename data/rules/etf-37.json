@@ -2,7 +2,7 @@
   "id": "ETF-37",
   "title": "S&P 500: the provider's own description: the gauge of large-cap U.S. equities, 500 leading companies, about 80% of available market capitalisation, float-adjusted market-cap weighted, in U.S. dollars, launched 4 March 1957",
   "title_he": "המדד האמריקני בתיאור עורך המדד: חמש מאות חברות מובילות",
-  "strength": "primary",
+  "strength": "institution",
   "dimensions": [
     "currency"
   ],
@@ -98,7 +98,7 @@
     "launch_date": "מועד השקת המדד"
   },
   "il_finance_file": "etfs-and-index-funds.md",
-  "checked": "2026-10-23",
+  "checked": "2026-10-26",
   "sources": [
     {
       "url": "https://www.spglobal.com/spdji/en/documents/methodologies/methodology-sp-us-indices.pdf",
@@ -107,12 +107,12 @@
       "publisher": "S&P Dow Jones Indices",
       "publisher_he": "S&P Dow Jones Indices",
       "kind": "other",
-      "strength": "primary",
+      "strength": "institution",
       "locator": "pp.5, 19",
       "locator_he": "עמודים 5, 19",
       "page": 5,
       "checked": "2026-10-25",
-      "qualifier": "(index provider; read in Chrome, curl returns 403)"
+      "qualifier": "(index provider's own document; read in Chrome, curl returns 403)"
     },
     {
       "url": "https://www.spglobal.com/spdji/en/indices/equity/sp-500/",
@@ -121,9 +121,9 @@
       "publisher": "S&P Dow Jones Indices",
       "publisher_he": "S&P Dow Jones Indices",
       "kind": "other",
-      "strength": "primary",
+      "strength": "institution",
       "checked": "2026-10-25",
-      "qualifier": "(index provider; read in Chrome)"
+      "qualifier": "(index provider's own document; read in Chrome)"
     }
   ]
 }

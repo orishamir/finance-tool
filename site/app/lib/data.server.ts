@@ -296,6 +296,12 @@ export function loadFormulaParameters(): Record<string, string[]> {
   return out;
 }
 
+/** The Hebrew name of each source host (`data/sources/publishers.json`): a data file names its company in English ("Bank Leumi le-Israel B.M."), and the sheet's source line shows the Hebrew one (founder, 2026-10-26). */
+export function loadPublishersHe(): Record<string, string> {
+  const rows = JSON.parse(readFileSync(join(root, "data/sources/publishers.json"), "utf8")) as Record<string, { publisher_he?: string }>;
+  return Object.fromEntries(Object.entries(rows).flatMap(([host, r]) => (r.publisher_he ? [[host, r.publisher_he]] : [])));
+}
+
 /** Which card on /parameters each id answers to: `P-01` to itself, and an `A-01` that a card holds as an input key to that card. */
 export function loadParameterAnchors(): Record<string, string> {
   const out: Record<string, string> = {};

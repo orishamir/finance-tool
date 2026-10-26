@@ -1,8 +1,8 @@
 {
   "id": "ETF-33",
-  "title": "TA-125: TASE's own description: its most important benchmark, the 125 companies with the highest value on the exchange, containing the TA-35 and TA-90 shares",
-  "title_he": "ת״א 125 בתיאור הבורסה: מדד הייחוס החשוב",
-  "text_he": "חוברת המדדים המובילים של הבורסה מתארת את מדד ת\"א־125 כמדד הייחוס החשוב ביותר, המשקף את הכלכלה הישראלית וכולל את החברות בעלות השווי הגבוה ביותר בבורסה, ואומרת שהוא כולל את המניות שבמדדי ת\"א־35 ות\"א־90; המוצרים העוקבים אחריו הם הגדולים מכל מדד של הבורסה. נוסח הכללים של המדד עצמו, שקובע את מספר המניות, את תקרת המשקל ואת דרגות הכניסה והיציאה, לא נקרא, וזו שאלה פתוחה; תקרת המשקל מופיעה בתוצאות חיפוש בלבד ולא נרשמה. הנתון על שווי המוצרים העוקבים ישן יחסית לתאריך החוברת, וההרכב משתנה בכל עדכון.",
+  "title": "TA-125: a Rimon index of the TA-35 and TA-90 shares, and what TASE's brochure says of it",
+  "title_he": "ת״א 125: מדד רימון של מניות ת״א 35 ות״א 90",
+  "text_he": "לפי הנחיות המדדים של הבורסה, מדד ת\"א־125 הוא מדד בסדרת מדדי רימון, והוא כולל את המניות שנקבע שייכללו במדד ת\"א־35 או במדד ת\"א־90. חוברת המדדים המובילים של הבורסה מתארת אותו, במילים של הבורסה, כמדד הייחוס החשוב ביותר המשקף את הכלכלה הישראלית, ואומרת שהמוצרים העוקבים אחריו הם הגדולים מכל מדד של הבורסה; הנתון על שווי המוצרים ישן יחסית לתאריך החוברת. ההרכב משתנה בכל עדכון.",
   "figure_names_he": {
     "constituents": "מספר החברות במדד",
     "tracking_products_value": "שווי המוצרים העוקבים אחר המדד"
@@ -32,7 +32,7 @@
         "ETF-33"
       ],
       "state": "sourced",
-      "notes": "\"כולל את 125 החברות בעלות השווי הגבוה ביותר בבורסה\" (brochure p.2). The index's own rule text (weight cap, entry and exit ranks) was not read: ETF OQ20."
+      "notes": "\"כולל את 125 החברות בעלות השווי הגבוה ביותר בבורסה\" (brochure p.2). The rule text is the index guidelines, annex 3 ss.1-2 (the TA-35 and TA-90 shares; ETF-41, read 2026-10-23)."
     },
     "tracking_products_value": {
       "value": 19000000000,
@@ -56,20 +56,34 @@
     }
   },
   "il_finance_file": "etfs-and-index-funds.md",
-  "checked": "2026-10-23",
+  "checked": "2026-10-26",
   "sources": [
     {
-      "url": "https://content.tase.co.il/media/rhzcuxda/file_0623_leading_indices_2025.pdf",
-      "title": "הבורסה, \"מדדי הבורסה המובילים\" (חוברת, PDF מ-12.5.2025)",
+      "url": "https://content.tase.co.il/media/iftghzjt/274765-1.pdf",
+      "title": "הבורסה, \"הנחיות על פי החלק השביעי לתקנון\" (מדריך מעו\"ף, עמודים מעודכנים עד 4.8.2026)",
+      "title_he": "הנחיות על פי החלק השביעי לתקנון הבורסה (״מדריך מעו״ף״)",
       "publisher": "Tel Aviv Stock Exchange",
       "publisher_he": "הבורסה לניירות ערך בתל אביב",
       "kind": "exchange_rules",
       "strength": "primary",
+      "locator": "p.31, annex 3 ss.1-2",
+      "page": 31,
+      "checked": "2026-10-26",
+      "qualifier": "(exchange rules, ISA-approved)"
+    },
+    {
+      "url": "https://content.tase.co.il/media/rhzcuxda/file_0623_leading_indices_2025.pdf",
+      "title": "הבורסה: \"מדדי הבורסה המובילים\" (חוברת, קובץ מ-12.5.2025)",
+      "title_he": "הבורסה: \"מדדי הבורסה המובילים\" (חוברת, קובץ מ-12.5.2025)",
+      "publisher": "Tel Aviv Stock Exchange",
+      "publisher_he": "הבורסה לניירות ערך בתל אביב",
+      "kind": "exchange_rules",
+      "strength": "institution",
       "locator": "p.2",
       "locator_he": "עמוד 2",
       "page": 2,
       "checked": "2026-10-25",
-      "qualifier": "(index provider)"
+      "qualifier": "(TASE's marketing brochure)"
     }
   ]
 }

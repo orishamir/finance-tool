@@ -2,7 +2,7 @@
   "id": "BRK-27",
   "title": "Who deducts tax: the clearing house pays gross; every bank and TASE member withholds on a sale; a foreign broker withholds no Israeli tax",
   "title_he": "מי מנכה מס: המסלקה, הבנק או חבר הבורסה, והברוקר הזר",
-  "text_he": "מסלקת הבורסה מזכה ריבית, הפרשי הצמדה ודיבידנדים ברוטו, לפני מס. במכירת ניירות ערך המס מנוכה על ידי מוסד כספי, שהתקנות מגדירות כתאגיד בנקאי או חבר בורסה: כל בנק וכל חבר בורסה, גם חבר שאינו בנק, מנכה. ברוקר זר אינו אף אחד מאלה, ולכן בחשבון ישיר אצלו לא מנוכה מס בישראל, והחוסך מדווח פעמיים בשנה ומגיש דוח שנתי.",
+  "text_he": "לפי הדוח התקופתי של הבורסה, מסלקת הבורסה מזכה ריבית, הפרשי הצמדה ודיבידנדים ברוטו, לפני מס. במכירת ניירות ערך המס מנוכה על ידי מוסד כספי, שהתקנות מגדירות כתאגיד בנקאי או חבר בורסה: כל בנק וכל חבר בורסה, גם חבר שאינו בנק, מנכה. ברוקר זר אינו אף אחד מאלה, ולכן בחשבון ישיר אצלו לא מנוכה מס בישראל, והחוסך מדווח פעמיים בשנה ומגיש דוח שנתי.",
   "strength": "primary",
   "dimensions": [
     "tax-at-exit",
@@ -12,7 +12,7 @@
   ],
   "likely_to_change": "no",
   "il_finance_file": "brokerage-account.md",
-  "checked": "2026-10-25",
+  "checked": "2026-10-26",
   "sources": [
     {
       "url": "https://www.btl.gov.il/Laws1/02_0103_100228.pdf",
@@ -34,11 +34,12 @@
       "publisher": "Tel Aviv Stock Exchange",
       "publisher_he": "הבורסה לניירות ערך בתל אביב",
       "kind": "institution_doc",
-      "strength": "primary",
+      "strength": "institution",
       "locator": "p.79",
       "locator_he": "עמוד 79",
       "page": 79,
-      "checked": "2026-10-25"
+      "checked": "2026-10-25",
+      "qualifier": "(TASE's own report, for the clearing house's gross payment)"
     }
   ],
   "derived_from": [

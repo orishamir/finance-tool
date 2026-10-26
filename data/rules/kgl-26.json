@@ -2,27 +2,15 @@
   "id": "KGL-26",
   "title": "Altshuler Shaham, Meitav and the Hebrew University fund: opening an account, and in another person's name",
   "title_he": "אלטשולר שחם, מיטב וקופת האוניברסיטה העברית: פתיחת חשבון, גם על שם אדם אחר",
-  "text_he": "באלטשולר שחם כותבים שכל אדם רשאי לפתוח קופת גמל להשקעה, בכל גיל ובכל סכום, כלומר בלי סכום מינימלי ובתוך התקרה. לפי מיטב, פתיחת חשבון על שם אדם אחר, כמו ילד, נכד או בן זוג, היא מתנה בלתי חוזרת, והחשבון מנוהל על ידי אותו אדם, חוץ מקטין. בתקנון של אלטשולר שחם החברה רשאית לקבל או לדחות בקשת הצטרפות, אבל לא לסגור חשבון בניגוד לרצון העמית אלא במקרים שבתקנון. בטופס ההצטרפות של קופת האוניברסיטה העברית יש שורה לחתימת אפוטרופוס.",
+  "text_he": "באלטשולר שחם כותבים שכל אדם רשאי לפתוח קופת גמל להשקעה, בכל גיל ובכל סכום, כלומר בלי סכום מינימלי ובתוך התקרה. לפי מיטב, פתיחת חשבון על שם אדם אחר, כמו ילד, נכד או בן זוג, היא מתנה בלתי חוזרת, והחשבון מנוהל על ידי אותו אדם, חוץ מקטין. בטופס ההצטרפות של קופת האוניברסיטה העברית יש שורה לחתימת אפוטרופוס.",
   "strength": "institution",
   "dimensions": [
     "eligibility"
   ],
   "likely_to_change": "no",
   "il_finance_file": "kupat-gemel-lehashkaa.md",
-  "checked": "2026-10-25",
+  "checked": "2026-10-26",
   "sources": [
-    {
-      "url": "https://www.as-invest.co.il/media/md1afb1l/אלטשולר-שחם-גמל-להשקעה-חיסכון-פלוס-תקנון-נקי-מרץ-2025.pdf",
-      "title": "Altshuler bylaws March 2025",
-      "title_he": "תקנון קופת הגמל להשקעה ״חיסכון פלוס״ של אלטשולר שחם (מרץ 2025)",
-      "publisher": "Altshuler Shaham",
-      "publisher_he": "אלטשולר שחם",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "clauses 7.1, 7.2",
-      "locator_he": "סעיפים 7.1, 7.2",
-      "checked": "2026-10-25"
-    },
     {
       "url": "https://gemel.huji.ac.il/wp-content/uploads/2026/05/‏‏‏‏‏‏הצטרפות-קופת-גמל-להשקעה-מאי-2026.pdf",
       "title": "Hebrew University fund joining form",

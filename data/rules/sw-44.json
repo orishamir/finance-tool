@@ -186,6 +186,19 @@
       "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
       "kind": "circular",
       "strength": "primary",
+      "locator": "pp.7-9, annex ג",
+      "page": 7,
+      "quote": "ממשק טרום ייעוץ",
+      "checked": "2026-10-26"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-539/he/protocol_payments_for_use_of_Central_Pension_clearing_house_system.pdf.pdf",
+      "title": "חוזר סוכנים ויועצים 2026-10-6 – תשלום עבור שימוש במערכת סליקה פנסיונית מרכזית – עדכון (21.10.2026)",
+      "title_he": "חוזר סוכנים ויועצים 2026-10-6: תשלום עבור שימוש במערכת סליקה פנסיונית מרכזית – עדכון",
+      "publisher": "gov.il",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+      "kind": "circular",
+      "strength": "primary",
       "locator": "p.5, annex א",
       "page": 5,
       "checked": "2026-10-25"
@@ -210,33 +223,10 @@
       "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
       "kind": "circular",
       "strength": "primary",
-      "locator": "pp.7-9, annex ג",
-      "page": 7,
-      "quote": "ממשק טרום ייעוץ",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-539/he/protocol_payments_for_use_of_Central_Pension_clearing_house_system.pdf.pdf",
-      "title": "חוזר סוכנים ויועצים 2026-10-6 – תשלום עבור שימוש במערכת סליקה פנסיונית מרכזית – עדכון (21.10.2026)",
-      "title_he": "חוזר סוכנים ויועצים 2026-10-6: תשלום עבור שימוש במערכת סליקה פנסיונית מרכזית – עדכון",
-      "publisher": "gov.il",
-      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
-      "kind": "circular",
-      "strength": "primary",
       "locator": "p.4, s.8",
       "locator_he": "עמוד 4, סעיף 8",
       "page": 4,
       "quote": "תחילתו של חוזר זה ביום 1 בינואר 2027",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.swiftness.co.il/savers/about/%D7%9E%D7%97%D7%99%D7%A8%D7%95%D7%9F-%D7%A9%D7%99%D7%A8%D7%95%D7%AA%D7%99%D7%9D/",
-      "title": "המסלקה הפנסיונית – מחירון שירותים",
-      "title_he": "המסלקה הפנסיונית – מחירון שירותים",
-      "publisher": "Swiftness (pension clearing house)",
-      "publisher_he": "המסלקה הפנסיונית (סוויפטנס)",
-      "kind": "institution_doc",
-      "strength": "institution",
       "checked": "2026-10-25"
     }
   ]

@@ -1,26 +1,25 @@
 {
   "id": "BRK-35",
-  "title": "Interactive Brokers Ireland: client money segregated; Irish investor compensation up to EUR 20,000 and SIPC through the US affiliate",
-  "title_he": "אינטראקטיב ברוקרס אירלנד: הפרדת כספים ופיצוי משקיעים אירי",
-  "text_he": "אינטראקטיב ברוקרס אירלנד מצהירה שהיא מפרידה כספי לקוחות בחשבונות לקוחות ומבצעת התאמה יומית. לקוחותיה הפרטיים הזכאים מכוסים בתוכנית הפיצוי למשקיעים של אירלנד, שמכסה חלק מההפסד עד תקרה למשקיע במקרה של קריסת החברה ולא של הפסדי שוק; ניירות ערך שהיא מחזיקה אצל החברה האחות האמריקנית מכוסים על ידי SIPC עד תקרה ובפוליסה נוספת, וחוזים עתידיים אינם מכוסים. איזו ישות של אינטראקטיב ברוקרס מחזיקה חשבון של תושב ישראל לא הוכרע, ואתר הברוקר הישראלי המציג מזכיר את שתיהן. אלה הצהרות החברה עצמה.",
-  "strength": "institution",
+  "title": "Ireland's Investor Compensation Scheme: 90% of the net loss, up to EUR 20,000, when an eligible investment firm cannot return a client's money or investments",
+  "title_he": "תוכנית הפיצוי למשקיעים באירלנד: חלק מההפסד עד תקרה, כשחברת השקעות קורסת",
+  "text_he": "באירלנד יש תוכנית פיצוי למשקיעים: כשחברת השקעות זכאית לא יכולה להחזיר ללקוח את הכסף או ההשקעות שהיא חייבת לו, התוכנית מכסה את רוב ההפסד הנקי, עד תקרה. התוכנית לא מפצה על הפסד בגלל ייעוץ גרוע, ניהול גרוע או מצב השוק. המקור הוא רשות הגנת הצרכן של אירלנד; מי זכאי לפיצוי ואילו חברות חברות בתוכנית לא נקרא כאן.",
+  "strength": "primary",
   "dimensions": [
     "protection"
   ],
   "likely_to_change": "yes",
   "recheck_date": "2027-04-01",
   "il_finance_file": "brokerage-account.md",
-  "checked": "2026-10-25",
+  "checked": "2026-10-26",
   "sources": [
     {
-      "url": "https://www.interactivebrokers.ie/en/general/security-investor-protection.php",
-      "title": "אינטראקטיב ברוקרס אירלנד: הגנה על לקוחות",
-      "title_he": "אינטראקטיב ברוקרס אירלנד: הגנה על לקוחות",
-      "publisher": "Interactive Brokers Ireland",
-      "publisher_he": "Interactive Brokers",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "checked": "2026-10-25"
+      "url": "https://www.ccpc.ie/consumers/money/investing/ics-protection",
+      "title": "Competition and Consumer Protection Commission (Ireland): How does the Investor Compensation Scheme protect you",
+      "publisher": "ccpc.ie",
+      "kind": "other",
+      "strength": "primary",
+      "checked": "2026-10-26",
+      "qualifier": "(foreign regulator)"
     }
   ],
   "derived_from": [

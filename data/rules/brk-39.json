@@ -2,7 +2,7 @@
   "id": "BRK-39",
   "title": "TASE Data Hub and Data Store: paid, licensed data products priced for internal use or distribution; the mutual-fund products and their list prices; the site terms govern",
   "title_he": "שירותי המידע של הבורסה: מוצרים ברישוי ובתשלום, במחיר שונה לשימוש פנימי ולהפצה",
-  "strength": "primary",
+  "strength": "institution",
   "dimensions": [
     "regulator"
   ],
@@ -86,7 +86,7 @@
   },
   "text_he": "הבורסה מוכרת נתונים בממשק תכנות ובקבצים, ברישוי לפי סוג השימוש: פנימי או הפצה. יש מוצרים חינמיים, אבל תנאיהם מוצגים רק בדף המוצר ובקופה. במחירון מופיעים גם מוצרי קרנות נאמנות, אחזקות ושערים, במחיר להפצה גבוה ממחיר השימוש הפנימי; המחירון אינו מציין לאיזו תקופה המחיר. תנאי השימוש של האתר חלים על כל הפלטפורמות, ולכן גם דרך שירותי המידע אין דרך להציג את רשימת הקרנות בלי רישיון הפצה או אישור בכתב.",
   "il_finance_file": "brokerage-account.md",
-  "checked": "2026-10-24",
+  "checked": "2026-10-26",
   "sources": [
     {
       "url": "https://www.tase.co.il/he/content/products_lobby/data_services",
@@ -95,8 +95,9 @@
       "publisher": "Tel Aviv Stock Exchange",
       "publisher_he": "הבורסה לניירות ערך בתל אביב",
       "kind": "exchange_rules",
-      "strength": "primary",
-      "checked": "2026-10-25"
+      "strength": "institution",
+      "checked": "2026-10-25",
+      "qualifier": "(TASE's product page)"
     },
     {
       "url": "https://www.tase.co.il/he/content/products_lobby/data_services_hub/",
@@ -105,8 +106,9 @@
       "publisher": "Tel Aviv Stock Exchange",
       "publisher_he": "הבורסה לניירות ערך בתל אביב",
       "kind": "exchange_rules",
-      "strength": "primary",
-      "checked": "2026-10-25"
+      "strength": "institution",
+      "checked": "2026-10-25",
+      "qualifier": "(TASE's product page)"
     },
     {
       "url": "https://www.tase.co.il/he/content/products_lobby/datastore_pricelist/",
@@ -115,8 +117,9 @@
       "publisher": "Tel Aviv Stock Exchange",
       "publisher_he": "הבורסה לניירות ערך בתל אביב",
       "kind": "other",
-      "strength": "primary",
-      "checked": "2026-10-25"
+      "strength": "institution",
+      "checked": "2026-10-25",
+      "qualifier": "(TASE's price list)"
     },
     {
       "url": "https://store.tase.co.il/he/products/9",
@@ -125,8 +128,9 @@
       "publisher": "TASE Data Hub",
       "publisher_he": "הבורסה לניירות ערך בתל אביב (Data Hub)",
       "kind": "other",
-      "strength": "primary",
-      "checked": "2026-10-25"
+      "strength": "institution",
+      "checked": "2026-10-25",
+      "qualifier": "(TASE's store)"
     }
   ]
 }

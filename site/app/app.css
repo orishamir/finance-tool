@@ -520,6 +520,14 @@
     unicode-bidi: plaintext;
     text-align: right !important;
   }
+  /* A native select's option list is drawn by the browser: with a see-through select (a field-input inside its box) Chrome on Windows
+     painted it white while the options kept the light text, so every option was invisible until hovered (founder, 2026-10-26, the
+     holdings sheet). The list takes the popover's colours whatever the select's own background. */
+  select option,
+  select optgroup {
+    background-color: var(--popover);
+    color: var(--popover-foreground);
+  }
   .field-input {
     flex: 1;
     min-width: 0;

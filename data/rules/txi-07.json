@@ -2,7 +2,7 @@
   "id": "TXI-07",
   "title": "Timing: deposits and savings plans are taxed on withdrawal; tax is withheld when interest is paid",
   "title_he": "עיתוי: פיקדונות ותוכניות חיסכון ממוסים במשיכה, בניכוי במקור",
-  "text_he": "רווחים שנצברו בפיקדונות ובתוכניות חיסכון ממוסים בעת המשיכה. הבנק מנכה את המס במקור כשהוא משלם את הריבית ליחיד. לא נמצא כלל מיוחד לשבירת פיקדון מוקדמת: הניכוי חל על הריבית ששולמה בפועל, כך ששבירה שמקטינה את הריבית מקטינה את הבסיס, אבל אף מקור לא אומר זאת במילים.",
+  "text_he": "רווחים שנצברו בפיקדונות ובתוכניות חיסכון ממוסים בעת המשיכה. הבנק מנכה את המס במקור כשהוא משלם את הריבית ליחיד. אין כלל מיוחד לשבירת פיקדון: הבנק מנכה מהריבית שהוא משלם בפועל, ולכן בשבירה ממוסה רק הריבית ששולמה. כמה ריבית שבירה משלמת הוא תנאי של הבנק, וכדי שפיקדון ייחשב קצוב לעניין הנזילות, הוראת המפקח דורשת שמשיכה מוקדמת תגרור קנס גדול במידה מהותית מאובדן הריבית, כך ששבירה עלולה לפגוע גם בקרן; אם להפסד כזה יש משמעות לעניין המס, לא נאמר באף מקור.",
   "strength": "primary",
   "dimensions": [
     "tax-at-exit",
@@ -10,7 +10,7 @@
   ],
   "likely_to_change": "no",
   "il_finance_file": "tax-interest-deposits-bonds.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-26",
   "sources": [
     {
       "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
@@ -24,7 +24,34 @@
       "locator_he": "עמוד 42, סעיפים 21-23",
       "page": 42,
       "quote": "מחויבים במס בעת המשיכה",
-      "checked": "2026-10-25"
+      "checked": "2026-10-26"
+    },
+    {
+      "url": "https://www.boi.org.il/media/rvzi1ngd/151.pdf",
+      "title": "כללי הבנקאות (שירות ללקוח) (גילוי נאות ומסירת מסמכים), התשנ\"ב-1992, נוסח משולב (בנק ישראל)",
+      "title_he": "כללי הבנקאות (שירות ללקוח) (גילוי נאות ומסירת מסמכים), התשנ\"ב-1992, נוסח משולב (בנק ישראל)",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "locator": "p.6, s.10(א)",
+      "locator_he": "עמוד 6, סעיף 10(א)",
+      "page": 6,
+      "checked": "2026-10-26"
+    },
+    {
+      "url": "https://boi.org.il/media/fdkmxbr0/221.pdf",
+      "title": "הוראת ניהול בנקאי תקין 221: יחס כיסוי הנזילות (9/25)",
+      "title_he": "הוראת ניהול בנקאי תקין 221: יחס כיסוי הנזילות (9/25)",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "locator": "p.20, s.82",
+      "locator_he": "עמוד 20, סעיף 82",
+      "page": 20,
+      "quote": "כרוכה בקנס משמעותי ששיעורו גדול מהותית מהפסד הריבית",
+      "checked": "2026-10-26"
     },
     {
       "url": "https://www.btl.gov.il/Laws1/02_0103_100269.pdf",
@@ -51,6 +78,20 @@
       "locator_he": "עמוד 5, תקנה 20(א)(2)(ג)",
       "page": 5,
       "checked": "2026-10-25"
+    },
+    {
+      "url": "https://bankhapoalim.co.il/sites/default/files/media/PDFS/standard-contract/ligal_deposit_contract_311223_ribit_kvua.pdf",
+      "title": "בנק הפועלים: פיקדון בריבית קבועה, תנאי עסקה",
+      "title_he": "בנק הפועלים: פיקדון בריבית קבועה, תנאי עסקה",
+      "publisher": "Bank Hapoalim",
+      "publisher_he": "בנק הפועלים",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.1",
+      "locator_he": "עמוד 1",
+      "page": 1,
+      "quote": "ינכה הבנק מס הכנסה במקור",
+      "checked": "2026-10-26"
     }
   ]
 }

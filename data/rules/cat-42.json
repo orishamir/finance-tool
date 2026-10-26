@@ -2,7 +2,7 @@
   "id": "CAT-42",
   "title": "Maya's fund list on 2026-10-24: 2,009 funds, their counts by top classification and tax status, and how a person downloads the export",
   "title_he": "רשימת הקרנות במאיה: כמה קרנות יש, לפי סיווג על ולפי מעמד מס, ואיך מורידים את הקובץ",
-  "strength": "primary",
+  "strength": "institution",
   "dimensions": [
     "product-marking"
   ],
@@ -500,7 +500,7 @@
   },
   "text_he": "רשימת הקרנות הפתוחות במאיה מונה כאלפיים קרנות, ורובן המכריע פטורות ממס. המסננים בעמוד מחלקים אותן לשתי קבוצות של סיווגי על: קרנות מנוהלות וקרנות מחקות וקרנות סל, וכל קרן נספרת פעם אחת. כדי להוריד את הרשימה פותחים במאיה את נתוני הקרנות, בוחרים רשימת קרנות, מסננים לפי הצורך ולוחצים על הורדת נתונים. האתר מציג רק את המספרים ומקשר למאיה, כי תנאי השימוש של הבורסה אינם מתירים לפרסם את הרשימה.",
   "il_finance_file": "tracks-catalogue-and-decoder.md",
-  "checked": "2026-10-24",
+  "checked": "2026-10-26",
   "sources": [
     {
       "url": "https://maya.tase.co.il/he/funds/mutual-funds",
@@ -509,8 +509,9 @@
       "publisher": "Maya (TASE filings)",
       "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
       "kind": "institution_doc",
-      "strength": "primary",
-      "checked": "2026-10-25"
+      "strength": "institution",
+      "checked": "2026-10-25",
+      "qualifier": "(TASE's own platform; recorded only, the page is script-rendered)"
     }
   ]
 }

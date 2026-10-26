@@ -2,7 +2,7 @@
   "id": "SW-15",
   "title": "Fees: no transfer fee, but moving can cost a discount",
   "title_he": "עמלות: אין עמלת העברה, אבל הנחה יכולה להסתיים",
-  "text_he": "עמלת העברה אינה חיוב מותר בקופות גמל. העברה מלאה או חלקית, או מעבר למסלול אחר, היא אחד המקרים שבהם מנהל רשאי להעלות דמי ניהול מוזלים לפני תום תקופת ההנחה, אחרי ההודעה שהכללים דורשים; מעבר בין מעסיקים עם הסדרים קבוצתיים באותו גוף נשלט בכלל נפרד. בקרן פנסיה נבחרת דמי הניהול הקבועים מובטחים רק למי שהצטרף בתקופה שבה הקרן נבחרה. זהו כלל מצביע: המקורות נמצאים בכללים שהוא מפנה אליהם, ובהם חוק שנקרא באתר שמעתיק אותו, חוזר של הרשות ותקנוני קופות.",
+  "text_he": "עמלת העברה אינה חיוב מותר בקופות גמל. העברה מלאה או חלקית, או מעבר למסלול אחר, היא אחד המקרים שבהם מנהל רשאי להעלות דמי ניהול מוזלים לפני תום תקופת ההנחה, אחרי ההודעה שהכללים דורשים; מעבר בין מעסיקים עם הסדרים קבוצתיים באותו גוף נשלט בכלל נפרד. בקרן פנסיה נבחרת דמי הניהול הקבועים מובטחים רק למי שהצטרף בתקופה שבה הקרן נבחרה. זהו כלל מצביע: המקורות נמצאים בכללים שהוא מפנה אליהם, ובהם החוק, חוזר של הרשות ותקנות ההעברה.",
   "strength": "primary",
   "dimensions": [
     "fee-exit",
@@ -11,7 +11,7 @@
   "likely_to_change": "yes",
   "recheck_date": "2027-01-01",
   "il_finance_file": "switching-and-transfers.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-26",
   "sources": [
     {
       "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-989/he/regulation_h_2017-9-15.pdf",
@@ -64,43 +64,6 @@
       "locator": "p.2, s.1",
       "locator_he": "עמוד 2, סעיף 1",
       "page": 2,
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.as-invest.co.il/media/md1afb1l/אלטשולר-שחם-גמל-להשקעה-חיסכון-פלוס-תקנון-נקי-מרץ-2025.pdf",
-      "title": "אלטשולר שחם חיסכון פלוס – תקנון תקני לקופת גמל להשקעה, מרץ 2025",
-      "title_he": "אלטשולר שחם חיסכון פלוס – תקנון תקני לקופת גמל להשקעה, מרץ 2025",
-      "publisher": "Altshuler Shaham",
-      "publisher_he": "אלטשולר שחם",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "p.10, clauses 36-37",
-      "locator_he": "עמוד 10, סעיפים 36-37",
-      "page": 10,
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://infinity.co.il/wp-content/uploads/2025/07/תקנון-גמל-להשקעה-בתוקף-מיום-1.7.2024.pdf",
-      "title": "אינפיניטי – תקנון קופת גמל להשקעה, בתוקף מיום 1.7.2024",
-      "title_he": "אינפיניטי – תקנון קופת גמל להשקעה, בתוקף מיום 1.7.2024",
-      "publisher": "Infinity",
-      "publisher_he": "אינפיניטי",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "p.10",
-      "locator_he": "עמוד 10",
-      "page": 10,
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.fnx.co.il/gemel/gemelhashkaa/faq/",
-      "title": "Phoenix gemel lehashkaa FAQ",
-      "title_he": "שאלות ותשובות על קופת הגמל להשקעה של הפניקס",
-      "publisher": "The Phoenix",
-      "publisher_he": "הפניקס",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "quote": "עלולים להשתנות בעת ניוד לקופה אחרת",
       "checked": "2026-10-25"
     }
   ],

@@ -2,7 +2,7 @@
   "id": "PEN-21",
   "title": "Regulated fee caps for pension funds and pensioners",
   "title_he": "תקרות דמי הניהול לקרנות פנסיה ולפנסיונרים",
-  "text_he": "דמי הניהול המרביים לפי תקנות דמי הניהול: בקרן חדשה מקיפה עד התקרה מהצבירה ועד התקרה מההפקדות; מפנסיונרים עד שיעור מהנכסים שעומדים כנגד התחייבויות הקצבה, ונמוך יותר למקבלי קצבת זקנה שהחלה אחרי המועד שבתקנות; לקצבה שמתחת לקצבת המינימום, עד שיעור מההפרש בין קצבת המינימום לקצבה המשולמת. בקרן חדשה כללית התקרה מהצבירה גבוהה יותר והתקרה מההפקדות נמוכה יותר. בקרן רב מסלולית התקרות חלות לכל מסלול, דמי הניהול מיתרת עמית נכה לא יעלו על מה שנגבה לפני הנכות, ולחשבונות של עמיתים שנותק עמם הקשר או שנפטרו יש תקרה נמוכה בתנאים. התקנות נקראו בעותק בוויקיטקסט.",
+  "text_he": "דמי הניהול המרביים לפי תקנות דמי הניהול: בקרן חדשה מקיפה עד התקרה מהצבירה ועד התקרה מההפקדות; מפנסיונרים עד שיעור מהנכסים שעומדים כנגד התחייבויות הקצבה, ונמוך יותר למקבלי קצבת זקנה שהחלה אחרי המועד שבתקנות; לקצבה שמתחת לקצבת המינימום, עד שיעור מההפרש בין קצבת המינימום לקצבה המשולמת. בקרן חדשה כללית התקרה מהצבירה גבוהה יותר והתקרה מההפקדות נמוכה יותר. בקרן רב מסלולית התקרות חלות לכל מסלול, דמי הניהול מיתרת עמית נכה לא יעלו על מה שנגבה לפני הנכות, ולחשבונות של עמיתים שנותק עמם הקשר או שנפטרו יש תקרה נמוכה בתנאים. התקנות נקראו ברשומות, וסעיף עמית הנכה בא מהתקנון האחיד של רשות שוק ההון.",
   "figure_names_he": {
     "comprehensive_balance_cap": "תקרת דמי ניהול מהצבירה, קרן מקיפה",
     "comprehensive_deposit_cap": "תקרת דמי ניהול מההפקדות, קרן מקיפה",
@@ -125,7 +125,7 @@
     }
   },
   "il_finance_file": "pension-and-gemel-lekitzba.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-26",
   "sources": [
     {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=5",
@@ -180,30 +180,19 @@
       "checked": "2026-10-25"
     },
     {
-      "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf",
-      "title": "Mor comprehensive bylaws 01.06.2025",
-      "title_he": "תקנון קרן הפנסיה המקיפה של מור (מהדורת 1.6.2025)",
-      "publisher": "Mor Investment House",
-      "publisher_he": "מור גמל ופנסיה",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "section 8, p.16",
-      "locator_he": "סעיף 8, עמוד 16",
-      "page": 16,
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.moreinvest.co.il/media/hphjzxvl/תקנון-קרן-פנסיה-כללית.pdf",
-      "title": "Mor general bylaws 01.04.2026",
-      "title_he": "תקנון קרן הפנסיה הכללית של מור (מהדורת 1.4.2026)",
-      "publisher": "Mor Investment House",
-      "publisher_he": "מור גמל ופנסיה",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "section 8, p.14",
-      "locator_he": "סעיף 8, עמוד 14",
-      "page": 14,
-      "checked": "2026-10-25"
+      "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz201634a.pdf",
+      "title": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018 (עותק באתר prisha.co.il)",
+      "publisher": "Prisha.co.il",
+      "publisher_he": "אתר פרישה (prisha.co.il)",
+      "kind": "circular",
+      "strength": "primary-mirror",
+      "mirror_host": "other",
+      "locator": "pp.13-14, s.8(א)-(ב)",
+      "locator_he": "עמודים 13 עד 14, סעיף 8(א)-(ב)",
+      "page": 13,
+      "quote": "שיעור דמי הניהול שייגבה מתוך היתרה הצבורה הרשומה לזכות עמית נכה בקרן לא יעלה על שיעור דמי הניהול שנגבה מהעמית בטרם הפך לנכה",
+      "checked": "2026-10-26",
+      "qualifier": "(third-party host)"
     }
   ]
 }

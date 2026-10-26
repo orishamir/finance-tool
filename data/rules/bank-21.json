@@ -2,7 +2,7 @@
   "id": "BANK-21",
   "title": "Deposit without a current account (\"closed system\")",
   "title_he": "הפקדה בלי חשבון עובר ושב: חשבון במערכת סגורה",
-  "text_he": "כל בנק שאינו בנק בעל היקף פעילות קטן חייב לאפשר לאדם פרטי להפקיד כסף בפיקדון שקלי דרך חשבון במערכת סגורה, בפשטות ובנוחות וגם באופן מקוון. הכסף מגיע רק מחשבון של אותו אדם בבנק אחר או בבנק הדואר, וחוזר רק לחשבון שממנו הגיע; הלקוח יכול להסמיך בכתב את הבנק הקולט לטפל בכל השלבים, והבנק המקורי לא רשאי להשפיע עליו באופן לא הוגן. כסף בחשבון כזה לא ניתן לשעבוד או לקיזוז, ועמלת ההעברה לא תהיה גבוהה מהעברה רגילה. חל על פיקדונות שקליים בלבד; הגדרת 'בנק קטן' לא נקראה.",
+  "text_he": "כל בנק שאינו בנק בעל היקף פעילות קטן או זעיר חייב לאפשר לאדם פרטי להפקיד כסף בפיקדון שקלי דרך חשבון במערכת סגורה, בפשטות ובנוחות וגם באופן מקוון. הכסף מגיע רק מחשבון של אותו אדם בבנק אחר או בבנק הדואר, וחוזר רק לחשבון שממנו הגיע; הלקוח יכול להסמיך בכתב את הבנק הקולט לטפל בכל השלבים, והבנק המקורי לא רשאי להשפיע עליו באופן לא הוגן. אי אפשר לשעבד או לקזז כסף בחשבון כזה, ועמלת ההעברה לא תהיה גבוהה מהעברה רגילה. חל על פיקדונות שקליים בלבד. החוק מגדיר בנק קטן ובנק זעיר לפי החלק שלהם בנכסים של כל הבנקים; אילו בנקים עומדים בהגדרות היום לא נבדק.",
   "figure_names_he": {
     "in_force_from": "מועד התחילה של החוק"
   },
@@ -38,7 +38,7 @@
     }
   },
   "il_finance_file": "bank-current-account-deposits.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-26",
   "sources": [
     {
       "url": "https://www.boi.org.il/media/3bacxlsl/417.pdf",
@@ -116,47 +116,8 @@
       "locator": "pp.2 to 3",
       "locator_he": "עמודים 2 עד 3",
       "page": 2,
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.leumi.co.il/he/accountless-deposit",
-      "title": "לאומי: פיקדון ללא חשבון",
-      "title_he": "לאומי: פיקדון ללא חשבון",
-      "publisher": "Bank Leumi",
-      "publisher_he": "בנק לאומי",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.mercantile.co.il/private/investments-savings/deposit-savings/deposits-without-account/",
-      "title": "מרכנתיל: פיקדונות ללא חשבון",
-      "title_he": "מרכנתיל: פיקדונות ללא חשבון",
-      "publisher": "Mercantile Discount Bank",
-      "publisher_he": "בנק מרכנתיל דיסקונט",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.bankmassad.co.il/private/depositsandsavings/openingthedepositaccount/",
-      "title": "מסד: פתיחת חשבון פיקדון",
-      "title_he": "מסד: פתיחת חשבון פיקדון",
-      "publisher": "Bank Massad",
-      "publisher_he": "בנק מסד",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.ice.co.il/finance/news/article/1114246",
-      "title": "אייס, על דוחות בנק ירושלים לרבעון הראשון של 2026",
-      "title_he": "אייס, על דוחות בנק ירושלים לרבעון הראשון של 2026",
-      "publisher": "ice",
-      "publisher_he": "ice",
-      "kind": "article",
-      "strength": "secondary",
-      "checked": "2026-10-25"
+      "checked": "2026-10-25",
+      "qualifier": "(a bill, not binding)"
     }
   ]
 }

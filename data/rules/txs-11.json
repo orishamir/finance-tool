@@ -2,7 +2,7 @@
   "id": "TXS-11",
   "title": "Taxable fund: the fund pays, the saver does not, and losses are lost",
   "title_he": "קרן חייבת: הקרן משלמת, החוסך לא, וההפסדים אובדים",
-  "text_he": "ההכנסה החייבת של קרן חייבת ממוסה בתוך הקרן בשיעורים שהיו חלים על יחיד שאינו בעל עסק, אלא אם נקבע אחרת במפורש. בעל היחידה פטור ממס במכירה או בפדיון של היחידה ועל חלוקות. הפסד על יחידות של קרן חייבת לא ניתן לקיזוז מול רווחים או הכנסות מכל מקור, כי הפסד על נכס שהרווח עליו היה פטור אינו הפסד הון. לפי קריאת החוקר, קרן חייבת שמחזיקה מכשירי ריבית שקליים לא צמודים נושאת ברמת הקרן את שיעור המס על ריבית לא צמודה מהרווח הנומינלי והחוסך לא משלם יותר; משפט של רשות המסים שאומר זאת במפורש לא נמצא.",
+  "text_he": "ההכנסה החייבת של קרן חייבת ממוסה בתוך הקרן בשיעורים שהיו חלים על יחיד שאינו בעל עסק, אלא אם נקבע אחרת במפורש. בעל היחידה פטור ממס במכירה או בפדיון של היחידה ועל חלוקות. הפסד על יחידות של קרן חייבת לא ניתן לקיזוז מול רווחים או הכנסות מכל מקור, כי הפסד על נכס שהרווח עליו היה פטור אינו הפסד הון. חוזר של רשות המסים אומר שהשיעורים על קרן חייבת זהים לשיעורים על יחיד, ולכן קרן חייבת שמחזיקה מכשירי ריבית שקליים לא צמודים נושאת ברמת הקרן את שיעור המס של יחיד על ריבית לא צמודה מהרווח הנומינלי, והחוסך לא משלם יותר. הדוגמאות בחוזר הן בשיעורים של אותה שנה; השיעורים של היום הם אלה שבפקודה.",
   "strength": "primary",
   "dimensions": [
     "tax-during",
@@ -12,8 +12,22 @@
   ],
   "likely_to_change": "no",
   "il_finance_file": "tax-securities-israeli.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-26",
   "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "title": "Tax Authority guide 2025",
+      "title_he": "דע זכויותיך וחובותיך 2025",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.49",
+      "locator_he": "עמוד 49",
+      "page": 49,
+      "quote": "הפסד ממכירת נכס שאילו היה רווח היה פטור ממס, אינו בגדר הפסד הון",
+      "checked": "2026-10-26"
+    },
     {
       "url": "https://www.gov.il/BlobFolder/policy/income-tax-professional-inst-7-2003/he/Policy_IncomeTaxInst_hoz7-2003.pdf",
       "title": "חוזר מס הכנסה 7/2003: הרפורמה במס הכנסה – מיסוי קרנות נאמנות ובעלי היחידות בהן",
@@ -94,32 +108,6 @@
       "locator": "p.155, s.92(א)(1)",
       "locator_he": "עמוד 155, סעיף 92(א)(1)",
       "page": 155,
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
-      "title": "Tax Authority guide 2025",
-      "title_he": "דע זכויותיך וחובותיך 2025",
-      "publisher": "gov.il",
-      "publisher_he": "רשות המסים",
-      "kind": "official_pdf",
-      "strength": "primary",
-      "locator": "p.49",
-      "locator_he": "עמוד 49",
-      "page": 49,
-      "quote": "הפסד ממכירת נכס שאילו היה רווח היה פטור ממס, אינו בגדר הפסד הון",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://mayafiles.tase.co.il/rpdf/1719001-1720000/P1719487-00.pdf",
-      "title": "מגדל קרנות נאמנות, תשקיף עיקרי מיום 30.1.2026",
-      "title_he": "מגדל קרנות נאמנות, תשקיף עיקרי מיום 30.1.2026",
-      "publisher": "Maya (TASE filings)",
-      "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "p.72, ch.25.2.1.1-25.2.1.7",
-      "page": 72,
       "checked": "2026-10-25"
     }
   ]

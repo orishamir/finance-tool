@@ -9,10 +9,37 @@
   ],
   "likely_to_change": "yes",
   "recheck_date": "2027-01-01",
-  "text_he": "במסלול הקופה הכסף יושב בקופה בסיווג 'קופת גמל להשקעה - חסכון לילד'. כל חברה מציעה חלק מחמישה מסלולים: סיכון מועט, בינוני, מוגבר, הלכה ושריעה. בוחרים מסלול אחד; אי אפשר לפצל.",
+  "text_he": "במסלול הקופה הכסף יושב בקופה בסיווג 'קופת גמל להשקעה - חסכון לילד'. כל חברה חייבת להציע שלושה מסלולים: סיכון מועט, בינוני ומוגבר; מסלול הלכה או שריעה היא מציעה רק אם היא מנהלת מסלול כזה בקופה אחרת. בוחרים מסלול אחד, כך שהכסף לא מתפצל בין מסלולים.",
   "il_finance_file": "child-savings.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-26",
   "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-304/he/Provident%20fund%20for%20long-term%20child%20savings.pdf",
+      "title": "חוזר גופים מוסדיים 2022-9-29 – קופת גמל להשקעה לחיסכון ארוך טווח לילד – תיקון, 28.9.2022",
+      "title_he": "חוזר גופים מוסדיים 2022-9-29 – קופת גמל להשקעה לחיסכון ארוך טווח לילד – תיקון, 28.9.2022",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "p.3, annex s.3(א) עד (3)",
+      "page": 3,
+      "quote": "החברה המנהלת תהיה חייבת להציע את המסלולים האמורים בפסקאות (1) עד (3)",
+      "checked": "2026-10-26"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/8OfazOM9J2n~VjyzV5AWsITYS27PjZHrqw3iJWE0YJI=#page=8",
+      "title": "תקנות הביטוח הלאומי (חיסכון ארוך טווח לילד), התשע\"ז-2016 (קובץ התקנות 7727)",
+      "title_he": "תקנות הביטוח הלאומי (חיסכון ארוך טווח לילד), התשע״ז-2016 (קובץ התקנות 7727)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.8, reg. 4(א)",
+      "locator_he": "עמוד 8, תקנה 4(א)",
+      "page": 8,
+      "quote": "זכאי ההורה לבחור מסלול השקעה אחד או מסלול חיסכון אחד",
+      "checked": "2026-10-26"
+    },
     {
       "url": "https://www.btl.gov.il/Publications/more_publications/Documents/HISAHON2025%20new.pdf",
       "title": "חיסכון ארוך-טווח לכל ילד וילדה – דוח הביטוח הלאומי לשנת 2025",
@@ -44,17 +71,6 @@
       "kind": "regulator_page",
       "strength": "primary",
       "quote": "באחד מ-5 מסלולי השקעה שמציעות הקופות",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.as-invest.co.il/interstedin/%D7%97%D7%99%D7%A1%D7%9B%D7%95%D7%9F-%D7%95%D7%94%D7%A9%D7%A7%D7%A2%D7%94/%D7%A9%D7%90%D7%9C%D7%95%D7%AA-%D7%95%D7%AA%D7%A9%D7%95%D7%91%D7%95%D7%AA-%D7%91%D7%A0%D7%95%D7%A9%D7%90-%D7%97%D7%99%D7%A1%D7%9B%D7%95%D7%9F-%D7%9C%D7%9B%D7%9C-%D7%99%D7%9C%D7%93/",
-      "title": "אלטשולר שחם: שאלות ותשובות בנושא חיסכון לכל ילד",
-      "title_he": "אלטשולר שחם: שאלות ותשובות בנושא חיסכון לכל ילד",
-      "publisher": "Altshuler Shaham",
-      "publisher_he": "אלטשולר שחם",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "quote": "ניתן לשנות מסלול בכל עת, אך לא לפצל כספים בין מסלולים",
       "checked": "2026-10-25"
     }
   ]

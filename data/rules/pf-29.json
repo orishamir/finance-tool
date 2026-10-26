@@ -9,8 +9,22 @@
   ],
   "likely_to_change": "no",
   "il_finance_file": "provident-family-common.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-26",
   "sources": [
+    {
+      "url": "https://fs.knesset.gov.il/20/law/20_lsr_343169.pdf",
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 15), התשע\"ו-2016",
+      "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 15), התשע\"ו-2016",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.2, s.4",
+      "locator_he": "עמוד 2, סעיף 4",
+      "page": 2,
+      "quote": "בקופת גמל להשקעה",
+      "checked": "2026-10-26"
+    },
     {
       "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf",
       "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005",
@@ -51,19 +65,6 @@
       "locator_he": "עמוד 12, סעיפים 27, 30",
       "page": 12,
       "quote": "נכסי קופת גמל אינם ניתנים לעיקול",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://fs.knesset.gov.il/20/law/20_lsr_343169.pdf",
-      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 15), התשע\"ו-2016",
-      "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 15), התשע\"ו-2016",
-      "publisher": "The Knesset",
-      "publisher_he": "הכנסת",
-      "kind": "law",
-      "strength": "primary",
-      "locator": "p.2",
-      "locator_he": "עמוד 2",
-      "page": 2,
       "checked": "2026-10-25"
     }
   ]

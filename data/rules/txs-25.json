@@ -2,7 +2,7 @@
   "id": "TXS-25",
   "title": "Migdal Mutual Funds and Yalin Lapidot: the foreign-tax situations their exempt-fund prospectuses list",
   "title_he": "מגדל קרנות נאמנות וילין לפידות: מתי קרן פטורה משלמת מס בחו״ל",
-  "text_he": "במגדל קרנות נאמנות ובילין לפידות, התשקיפים אומרים שקרן פטורה עשויה לשלם מס בחו״ל על הכנסות ורווחים מניירות ערך שנסחרים בחו״ל, מניירות ערך דואליים ומניירות ערך של מנפיקים זרים שנסחרים רק בישראל, בנוסף למס שבעל היחידות משלם בפדיון על הרווח הריאלי. סביר שהנוסח דומה בתשקיפים אחרים, אבל נקראו רק שני אלה.",
+  "text_he": "בתשקיף של מגדל קרנות נאמנות כתוב שקרן פטורה עשויה לשלם מס בחו״ל על הכנסות ורווחים מניירות ערך שנסחרים בחו״ל, מניירות ערך דואליים ומניירות ערך של מנפיקים זרים שנסחרים רק בישראל, בנוסף למס שבעל היחידות משלם בפדיון על הרווח הריאלי. בתשקיף של קרן כספית של ילין לפידות כתובים רק שני הראשונים: ניירות ערך שנסחרים בחו״ל וניירות ערך דואליים. נקראו רק שני התשקיפים האלה.",
   "strength": "institution",
   "dimensions": [
     "foreign-withholding-domicile",
@@ -10,7 +10,7 @@
   ],
   "likely_to_change": "no",
   "il_finance_file": "tax-securities-israeli.md",
-  "checked": "2026-10-25",
+  "checked": "2026-10-26",
   "sources": [
     {
       "url": "https://mayafiles.tase.co.il/rpdf/1719001-1720000/P1719487-00.pdf",
@@ -22,7 +22,7 @@
       "strength": "institution",
       "locator": "p.74, ch.25.7",
       "page": 74,
-      "checked": "2026-10-25"
+      "checked": "2026-10-26"
     },
     {
       "url": "https://mayafiles.tase.co.il/rpdf/1629001-1630000/P1629214-00.pdf",
@@ -34,7 +34,7 @@
       "strength": "institution",
       "locator": "p.1, footnote 3",
       "page": 1,
-      "checked": "2026-10-25"
+      "checked": "2026-10-26"
     }
   ],
   "derived_from": [

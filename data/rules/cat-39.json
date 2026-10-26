@@ -8,9 +8,9 @@
     "fee-deposit"
   ],
   "likely_to_change": "no",
-  "text_he": "בפנסיה נט דמי הניהול מוצגים לקרן כולה ולא לכל מסלול. במאגר כל המסלולים של אותה קרן נושאים את אותו זוג ערכים. לכן אי אפשר להשוות בין מסלולים של קרן אחת לפי דמי ניהול, ויש להציג שורת עמלה אחת לקרן.",
+  "text_he": "בפנסיה נט דמי הניהול מוצגים לקרן כולה ולא לכל מסלול. במאגר כל המסלולים של אותה קרן שיש להם ערך נושאים את אותו זוג ערכים, ובארבע קרנות יש גם מסלולים בלי ערך. לכן אי אפשר להשוות בין מסלולים של קרן אחת לפי דמי ניהול, ויש להציג שורת עמלה אחת לקרן.",
   "il_finance_file": "tracks-catalogue-and-decoder.md",
-  "checked": "2026-10-23",
+  "checked": "2026-10-26",
   "sources": [
     {
       "url": "https://pensyanet.cma.gov.il/Parameters",
@@ -40,7 +40,8 @@
       "publisher_he": "פנסיה־נט (רשות שוק ההון, ביטוח וחיסכון)",
       "kind": "dataset",
       "strength": "primary",
-      "checked": "2026-10-25"
+      "checked": "2026-10-25",
+      "qualifier": "(recorded only: the page is script-rendered and a script does not get the quoted text)"
     }
   ]
 }

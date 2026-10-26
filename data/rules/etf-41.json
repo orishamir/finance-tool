@@ -225,7 +225,7 @@
     "max_foreign_shares_per_country": "מספר מרבי של מניות חו\"ל מאותה מדינה"
   },
   "il_finance_file": "etfs-and-index-funds.md",
-  "checked": "2026-10-23",
+  "checked": "2026-10-26",
   "sources": [
     {
       "url": "https://content.tase.co.il/media/iftghzjt/274765-1.pdf",
@@ -237,19 +237,9 @@
       "strength": "primary",
       "locator": "pp.28-33, annexes 1, 3, 4",
       "page": 28,
-      "checked": "2026-10-25",
-      "qualifier": "(index provider)"
-    },
-    {
-      "url": "https://market.tase.co.il/he/market_data/index/137/about",
-      "title": "הבורסה, \"ת\"א-125 אודות המדד\" (מדד 137)",
-      "title_he": "ת״א-125: אודות המדד",
-      "publisher": "Tel Aviv Stock Exchange",
-      "publisher_he": "הבורסה לניירות ערך בתל אביב",
-      "kind": "regulator_page",
-      "strength": "primary",
-      "checked": "2026-10-25",
-      "qualifier": "(index provider; read in Chrome)"
+      "quote": "ועדת מדדים החליטה כי תקרת המשקל של המדד תהיה 5%",
+      "checked": "2026-10-26",
+      "qualifier": "(exchange rules, ISA-approved)"
     }
   ]
 }

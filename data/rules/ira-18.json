@@ -57,7 +57,7 @@
     "min_participants": "מספר משתתפים מינימלי בהליך"
   },
   "il_finance_file": "ira-self-directed.md",
-  "checked": "2026-10-25",
+  "checked": "2026-10-26",
   "sources": [
     {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/iXRl3JX663X67T342MLtmOhZrYskYBxrQk+FHRN~mJM=#page=2",
@@ -100,16 +100,9 @@
       "page": 2,
       "quote": "לא יעלו על 20 אחוזים מסך כל העמלות",
       "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.meitav.co.il/provident_pension/ira/brokerage_commission_breakdown/",
-      "title": "פירוט עמלות הברוקראז׳ בקופת גמל בניהול אישי – מיטב",
-      "title_he": "פירוט עמלות הברוקראז׳ בקופת גמל בניהול אישי – מיטב",
-      "publisher": "Meitav",
-      "publisher_he": "מיטב",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "checked": "2026-10-25"
     }
+  ],
+  "derived_from": [
+    "IRA-21"
   ]
 }

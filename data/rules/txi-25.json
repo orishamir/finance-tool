@@ -1,8 +1,8 @@
 {
   "id": "TXI-25",
-  "title": "Negative linkage does not reduce the tax on interest, and the linkage loss cannot be offset",
+  "title": "Negative linkage does not reduce the tax on interest; the linkage loss was not offset, and the Supreme Court left the offset question open",
   "title_he": "הצמדה שלילית לא מקטינה את המס על הריבית",
-  "text_he": "ריבית והפרשי הצמדה הם מקורות הכנסה נפרדים: כשההצמדה של פיקדון צמוד נעשית שלילית והחוסך מפסיד בסך הכול, הריבית עדיין ממוסה במלואה. את ההפסד מההצמדה השלילית אי אפשר לקזז כנגד הריבית, כי הפרש הצמדה חיובי היה פטור, והפסד שהיה פטור כרווח אינו ניתן לקיזוז. בית המשפט העליון דחה את הערעור ואישר את פסק הדין המחוזי. המקרה היה פיקדון בנקאי צמוד למטבע חוץ; ההחלה על פיקדון צמוד מדד ועל קופונים של אג״ח ממשלתית צמודה היא היסק מאותו נימוק, לא אמירה מפורשת.",
+  "text_he": "ריבית והפרשי הצמדה הם מקורות הכנסה נפרדים: כשההצמדה של פיקדון צמוד נעשית שלילית והחוסך מפסיד בסך הכול, הריבית עדיין ממוסה במלואה, ובית המשפט העליון דחה את הערעור על כך. בית המשפט המחוזי קבע שאת ההפסד מההצמדה השלילית אי אפשר לקזז כנגד הריבית, כי אין בפקודה הוראה שמאפשרת זאת, וכי הפרש הצמדה חיובי היה פטור. בית המשפט העליון לא הכריע בשאלת הקיזוז: המערערת לא הצביעה על דרך לקזז, והוא השאיר את השאלה פתוחה. המקרה היה פיקדון בנקאי צמוד למטבע חוץ; ההחלה על פיקדון צמוד מדד ועל קופונים של אג״ח ממשלתית צמודה היא היסק מאותו נימוק, לא אמירה מפורשת.",
   "strength": "primary",
   "dimensions": [
     "real-vs-nominal",
@@ -11,7 +11,7 @@
   ],
   "likely_to_change": "no",
   "il_finance_file": "tax-interest-deposits-bonds.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-26",
   "sources": [
     {
       "url": "https://supremedecisions.court.gov.il/Home/Download?path=HebrewVerdicts/14/860/074/l09&fileName=14074860_l09.txt&type=2",
@@ -22,7 +22,23 @@
       "kind": "other",
       "strength": "primary",
       "checked": "2026-10-25",
-      "qualifier": "(court ruling; opened in Chrome)"
+      "qualifier": "(court ruling; opened in Chrome 2026-10-25; by script the court's site resets the connection, 2026-10-26)"
+    },
+    {
+      "url": "https://www.capitax.co.il/Attachments/7486-14.pdf",
+      "title": "עע\"מ 7486/14 בראל נ' מדינת ישראל – רשות המיסים, פסק דין מיום 27.7.2016 (עותק באתר קפיטקס)",
+      "title_he": "עע״מ 7486/14 בראל נ׳ רשות המיסים (פסק דין, 27.7.2016)",
+      "publisher": "Capitax",
+      "publisher_he": "בית המשפט העליון",
+      "kind": "other",
+      "strength": "primary-mirror",
+      "mirror_host": "other",
+      "locator": "p.8",
+      "locator_he": "עמוד 8",
+      "page": 8,
+      "quote": "מדובר בחלופות הכנסה נפרדות ועצמאיות",
+      "checked": "2026-10-26",
+      "qualifier": "(third-party host)"
     }
   ]
 }

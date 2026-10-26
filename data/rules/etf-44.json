@@ -99,7 +99,7 @@
     "min_public_holdings": "שיעור החזקות ציבור מזערי"
   },
   "il_finance_file": "etfs-and-index-funds.md",
-  "checked": "2026-10-25",
+  "checked": "2026-10-26",
   "sources": [
     {
       "url": "https://market.tase.co.il/he/market_data/index/142/about",
@@ -108,9 +108,9 @@
       "publisher": "Tel Aviv Stock Exchange",
       "publisher_he": "הבורסה לניירות ערך בתל אביב",
       "kind": "dataset",
-      "strength": "primary",
+      "strength": "institution",
       "checked": "2026-10-25",
-      "qualifier": "(index provider; read in Chrome)"
+      "qualifier": "(TASE's market-data page; read in Chrome; for its description and identifiers)"
     },
     {
       "url": "https://content.tase.co.il/media/iftghzjt/274765-1.pdf",
@@ -120,10 +120,10 @@
       "publisher_he": "הבורסה לניירות ערך בתל אביב",
       "kind": "exchange_rules",
       "strength": "primary",
-      "locator": "pp.28-29, annex 1",
+      "locator": "pp.28-29, annex 1; p.15, footnote 1",
       "page": 28,
-      "checked": "2026-10-25",
-      "qualifier": "(index provider)"
+      "checked": "2026-10-26",
+      "qualifier": "(exchange rules, ISA-approved)"
     }
   ]
 }

@@ -2,7 +2,7 @@
   "id": "TXF-10",
   "title": "An Israeli intermediary that receives a foreign dividend for an Israeli resident withholds 25%",
   "title_he": "מתווך ישראלי שמקבל דיבידנד זר לתושב ישראל מנכה מס",
-  "text_he": "מי שמקבל מתושב חוץ דיבידנד על מניות בשל תושב ישראל או לזכותו מנכה ממנו מס: ליחיד לפי שיעור הניכוי במקור, ולחבר בני אדם בשיעור המס המרבי. התקנה אינה מזכירה מס זר שכבר נוכה בחו\"ל, ואם הבנק הישראלי מנכה את מלוא השיעור או רק את ההפרש אחרי הניכוי הזר לא נמצא, וזו שאלה פתוחה. אצל ברוקר זר אין מתווך ישראלי ושום דבר אינו מנוכה בישראל.",
+  "text_he": "מי שמקבל מתושב חוץ דיבידנד על מניות בשל תושב ישראל או לזכותו מנכה ממנו מס: ליחיד לפי שיעור הניכוי במקור, ולחבר בני אדם בשיעור המס המרבי. התקנה אינה מזכירה מס זר שכבר נוכה בחו\"ל. בפועל המנכה מזכה את המס הזר עד שיעור האמנה ומנכה רק את ההפרש: כך כתוב בהחלטת מיסוי שרשות המסים פרסמה על קרן ריט אמריקנית הרשומה בבורסה, ובמכתב שלה על קרנות חוץ. החלטה כזו חלה על המקרה שלה ואינה הוראה כללית, והוראה כללית לבנקים לא נמצאה. לכן על דיבידנד אמריקני עם טופס W-8BEN לא מנוכה בישראל מס נוסף. אצל ברוקר זר אין מתווך ישראלי ושום דבר אינו מנוכה בישראל.",
   "figure_names_he": {
     "rate": "שיעור הניכוי במקור על דיבידנד זר ליחיד"
   },
@@ -35,7 +35,7 @@
     }
   },
   "il_finance_file": "tax-securities-foreign.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-26",
   "sources": [
     {
       "url": "https://www.btl.gov.il/Laws1/02_0103_100269.pdf",
@@ -49,7 +49,56 @@
       "locator_he": "עמוד 2, תקנה 2(ד)",
       "page": 2,
       "quote": "המקבל מתושב חוץ דיבידנד על מניות בשל תושב ישראל או לזכותו, ינכה ממנו מס בשיעורים אלה",
-      "checked": "2026-10-25"
+      "checked": "2026-10-26"
+    },
+    {
+      "url": "https://secapp.taxes.gov.il/TMMISUYWEB/frmShowLinkedAbs.aspx?num=20200015&new=true",
+      "title": "רשות המסים: החלטת מיסוי 5916/20 (בהסכם), מיסוי הכנסותיהם של משקיעים ישראליים בקרן ריט אמריקאית, פורסמה 8.9.2020",
+      "title_he": "רשות המסים: החלטת מיסוי 5916/20 (בהסכם), מיסוי הכנסותיהם של משקיעים ישראליים בקרן ריט אמריקאית, פורסמה 8.9.2020",
+      "publisher": "secapp.taxes.gov.il",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "quote": "לפני זיכוי בגין מסי חוץ",
+      "checked": "2026-10-26",
+      "qualifier": "(a published tax ruling, made in agreement; not binding beyond similar cases)"
+    },
+    {
+      "url": "https://secapp.taxes.gov.il/TMMISUYWEB/frmAbsSearch.aspx?cur=4",
+      "title": "רשות המסים: איתור תמצית החלטות מיסוי",
+      "title_he": "רשות המסים: איתור תמצית החלטות מיסוי",
+      "publisher": "secapp.taxes.gov.il",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "quote": "בכפוף לקיום מערכת נסיבות דומה",
+      "checked": "2026-10-26"
+    },
+    {
+      "url": "https://www.capitax.co.il/Attachments/04072019.pdf",
+      "title": "רשות המסים, מחלקת מיסוי שוק ההון: ניכוי מס במקור – קרנות חוץ, 4.7.2019 (עותק באתר קפיטקס)",
+      "title_he": "ניכוי מס במקור – קרנות חוץ (מכתב מחלקת מיסוי שוק ההון, 4.7.2019)",
+      "publisher": "Capitax",
+      "publisher_he": "רשות המסים",
+      "kind": "official_pdf",
+      "strength": "primary-mirror",
+      "mirror_host": "other",
+      "locator": "p.2, s.4.1.4",
+      "locator_he": "עמוד 2, סעיף 4.1.4",
+      "page": 2,
+      "quote": "הנמוך מבניהם",
+      "checked": "2026-10-26",
+      "qualifier": "(third-party host: capitax.co.il; no gov.il copy found)"
+    },
+    {
+      "url": "https://www.mercantile.co.il/private/investments-savings/taxation/securities-taxation/",
+      "title": "בנק מרכנתיל: כדאי לדעת – מיסוי בניירות ערך, פרק אמנות מס",
+      "title_he": "בנק מרכנתיל: כדאי לדעת – מיסוי בניירות ערך, פרק אמנות מס",
+      "publisher": "Mercantile Discount Bank",
+      "publisher_he": "בנק מרכנתיל דיסקונט",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "quote": "אמנות מס",
+      "checked": "2026-10-26",
+      "qualifier": "(the bank's own statement; example)"
     }
   ]
 }

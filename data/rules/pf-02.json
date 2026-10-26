@@ -2,7 +2,7 @@
   "id": "PF-02",
   "title": "Cap for provident funds (regulation 2): 1.05% a year of balance and 4% of deposits",
   "title_he": "תקרת דמי הניהול לקופות גמל",
-  "text_he": "חברה מנהלת של קופת גמל רשאית לגבות מהיתרה הצבורה של כל עמית עד תקרת דמי הניהול השנתיים מהיתרה, ומהתשלומים שמועברים בעדו עד תקרת דמי הניהול מההפקדה. לעניין התקנה הזו 'קופת גמל' לא כוללת קרנות פנסיה, קרנות השתלמות, קופות בניהול אישי, קופות ענפיות ועוד, שלהן תקרות משלהן. לכסף מהפקדות של שנות מס ישנות הקופה רשאית לגבות במקום זאת סכום חודשי קבוע, צמוד למדד, שלא נקרא. למקבלי קצבה תקרות נמוכות יותר; נוסח התקנות נקרא באתרים שמעתיקים אותו.",
+  "text_he": "חברה מנהלת של קופת גמל רשאית לגבות מהיתרה הצבורה של כל עמית עד תקרת דמי הניהול השנתיים מהיתרה, ומהתשלומים שמועברים בעדו עד תקרת דמי הניהול מההפקדה. לעניין התקנה הזו 'קופת גמל' לא כוללת קרנות פנסיה, קרנות השתלמות, קופות בניהול אישי, קופות ענפיות ועוד, שלהן תקרות משלהן. לכסף מהפקדות של שנות מס ישנות הקופה רשאית לגבות במקום זאת סכום חודשי קבוע, צמוד למדד, שלא נקרא. למקבלי קצבה התקרה נמוכה יותר, ולמקבלי קצבת זקנה בפוליסות ביטוח מפברואר 2022 נמוכה עוד יותר.",
   "figure_names_he": {
     "balance_cap": "תקרת דמי הניהול השנתיים מהיתרה",
     "deposit_cap": "תקרת דמי הניהול מההפקדה"
@@ -56,7 +56,7 @@
     }
   },
   "il_finance_file": "provident-family-common.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-26",
   "sources": [
     {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=4",
@@ -70,21 +70,7 @@
       "locator_he": "עמוד 4, תקנה 2(א)(1)-(3); 2(ב)",
       "page": 4,
       "quote": "מן היתרה הצבורה בחשבונו של כל עמית בשיעור שלא יעלה על 1.05% לשנה",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/bfvsjLN+leExZ3ArqQksAeOdRzFXelp1D6CGA3tNK3g=#page=4",
-      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול) (תיקון), התשע\"ד-2014 (קובץ התקנות 7358)",
-      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול) (תיקון), התשע\"ד-2014 (קובץ התקנות 7358)",
-      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
-      "publisher_he": "רשומות (משרד המשפטים)",
-      "kind": "law",
-      "strength": "primary",
-      "locator": "p.4, s.2",
-      "locator_he": "עמוד 4, סעיף 2",
-      "page": 4,
-      "quote": "לעניין עמית אשר באחד מחשבונותיו בקופת גמל שאינה קופת ביטוח",
-      "checked": "2026-10-25"
+      "checked": "2026-10-26"
     },
     {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/8HBFRznZ1PqBBqBlhhXAb7L47e1dgbmyX~fXnBHkch8=#page=2",
@@ -98,6 +84,20 @@
       "locator_he": "עמוד 2, סעיף 1",
       "page": 2,
       "quote": "לעניין מקבלי קצבת זקנה בפוליסות ביטוח שהוצאו לפי קופות ביטוח",
+      "checked": "2026-10-26"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/bfvsjLN+leExZ3ArqQksAeOdRzFXelp1D6CGA3tNK3g=#page=4",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול) (תיקון), התשע\"ד-2014 (קובץ התקנות 7358)",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול) (תיקון), התשע\"ד-2014 (קובץ התקנות 7358)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.4, s.2",
+      "locator_he": "עמוד 4, סעיף 2",
+      "page": 4,
+      "quote": "לעניין עמית אשר באחד מחשבונותיו בקופת גמל שאינה קופת ביטוח",
       "checked": "2026-10-25"
     },
     {

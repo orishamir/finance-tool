@@ -9,7 +9,7 @@
   ],
   "likely_to_change": "no",
   "il_finance_file": "keren-hishtalmut.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-26",
   "sources": [
     {
       "url": "https://meyda.education.gov.il/files/PortalOvdeyHoraa/POH/Salary/study-fund.pdf",
@@ -35,7 +35,8 @@
       "locator": "pp.9-10, s.20(א), (ב)",
       "locator_he": "עמודים 9 עד 10, סעיף 20(א), (ב)",
       "page": 9,
-      "checked": "2026-10-25"
+      "quote": "עובד הזכאי להצטרף כעמית לקופת גמל שאינה קרן ותיקה שמונה לה מנהל מיוחד",
+      "checked": "2026-10-26"
     },
     {
       "url": "https://fs.knesset.gov.il/20/law/20_lsr_343666.pdf",

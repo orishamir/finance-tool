@@ -49,10 +49,10 @@
       "kind": "official_pdf",
       "strength": "primary-mirror",
       "mirror_host": "other",
-      "locator": "p.2, section 4.1.5",
-      "locator_he": "עמוד 2, סעיף 4.1.5",
+      "locator": "pp.2-3, section 4.1.5",
+      "locator_he": "עמודים 2 עד 3, סעיף 4.1.5",
       "page": 2,
-      "checked": "2026-10-25",
+      "checked": "2026-10-26",
       "qualifier": "(copy: no gov.il copy found)"
     }
   ]

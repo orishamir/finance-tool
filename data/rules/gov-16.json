@@ -1,15 +1,15 @@
 {
   "id": "GOV-16",
-  "title": "State buybacks before maturity are at market price",
-  "title_he": "פדיון מוקדם על ידי המדינה הוא במחיר השוק",
-  "text_he": "פדיון מוקדם של סדרה על ידי המדינה נעשה בהליך תחרותי ושוויוני בתקופות שמתפרסמות, ויכול להיות מוצע לכל הציבור, לכל עושי השוק הראשיים או לחלקם. המחיר הוא מחיר השוק של האיגרת ביום הפדיון בפועל, והרכישה מהציבור עוברת דרך בנקים, חברי בורסה וגופים מאושרים. זו זכות של המדינה, לא של המחזיק: מי שרוצה לצאת לפני הפדיון מוכר בשוק המשני. התקנות נקראו בעותק באתר נבו.",
+  "title": "State buybacks before maturity: a competitive process, with no price rule in the regulations",
+  "title_he": "פדיון מוקדם על ידי המדינה: הליך תחרותי, בלי כלל מחיר בתקנות",
+  "text_he": "פדיון מוקדם של סדרה על ידי המדינה נעשה בהליך תחרותי ושוויוני, בתקופה ובמועדים שמתפרסמים, וההליך קובע ממי קונים: מכל הציבור, מכל עושי השוק הראשיים או מחלקם. הרכישה מהציבור עוברת דרך בנקים, חברי בורסה וגופים מאושרים. התקנות לא קובעות מחיר: נוסח שדיבר על מחיר השוק ביום הפדיון הוחלף בתיקון של התקנות. זו זכות של המדינה, לא של המחזיק: מי שרוצה לצאת לפני הפדיון מוכר בשוק המשני.",
   "strength": "primary",
   "dimensions": [
     "liquidity-lockup"
   ],
   "likely_to_change": "no",
   "il_finance_file": "government-bonds-and-makam.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-26",
   "sources": [
     {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmXONlitPuu1cAlpRLobaJ4U=#page=3",
@@ -19,9 +19,11 @@
       "publisher_he": "רשומות (משרד המשפטים)",
       "kind": "regulation",
       "strength": "primary",
-      "locator": "p.3, reg. 7 as",
+      "locator": "p.3, s.2",
+      "locator_he": "עמוד 3, סעיף 2",
       "page": 3,
-      "checked": "2026-10-25"
+      "quote": "במקום הסיפה החל במילים",
+      "checked": "2026-10-26"
     },
     {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmXONlitPuu1cAlpRLobaJ4U=#page=3",
@@ -34,7 +36,7 @@
       "locator": "p.3, reg. 7",
       "locator_he": "עמוד 3, תקנה 7",
       "page": 3,
-      "checked": "2026-10-25"
+      "checked": "2026-10-26"
     },
     {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmWhyAjAO9sieYV7GsTkIsdY=#page=9",

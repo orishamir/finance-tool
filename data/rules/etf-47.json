@@ -1,8 +1,8 @@
 {
   "id": "ETF-47",
-  "title": "NASDAQ-100 return versions: price (NDX), gross total return (XNDX) and a notional net total return that reinvests 70% of dividends; Israeli funds track a net version",
+  "title": "NASDAQ-100 return versions: price (NDX), gross total return (XNDX) and a notional net total return that reinvests 70% of dividends",
   "title_he": "נאסד״ק 100: גרסאות התשואה",
-  "strength": "primary",
+  "strength": "institution",
   "dimensions": [
     "distribution-policy",
     "currency",
@@ -51,13 +51,13 @@
       "notes": "\"reinvesting 70% of cash dividends\"."
     }
   },
-  "text_he": "נאסד״ק מפרסמת את המדד בשלוש גרסאות בדולר: מחיר בלבד, תשואה כוללת שמשקיעה מחדש את כל הדיבידנד, ותשואה נטו שמניחה שחלק מהדיבידנד נוכה כמס לפני ההשקעה מחדש. הקרנות הישראליות על המדד שנבדקו עוקבות אחר גרסת הנטו בתוספת הדולר, כך שהמדד שאליו הן נמדדות כבר מניח את המס הזה.",
+  "text_he": "נאסד״ק מפרסמת את המדד בשלוש גרסאות בדולר: מחיר בלבד, תשואה כוללת שמשקיעה מחדש את כל הדיבידנד, ותשואה נטו שמניחה שחלק מהדיבידנד נוכה כמס לפני ההשקעה מחדש. איזו גרסה קרן מסוימת עוקבת אחריה כתוב בדוח של הקרן.",
   "figure_names_he": {
     "notional_net_tax_rate": "שיעור המס המונח בגרסת הנטו",
     "notional_net_reinvested": "חלק הדיבידנד שמושקע מחדש בגרסת הנטו"
   },
   "il_finance_file": "etfs-and-index-funds.md",
-  "checked": "2026-10-25",
+  "checked": "2026-10-26",
   "sources": [
     {
       "url": "https://indexes.nasdaqomx.com/docs/NDX%20Versions.pdf",
@@ -65,12 +65,12 @@
       "publisher": "Nasdaq Global Indexes",
       "publisher_he": "Nasdaq Global Indexes",
       "kind": "other",
-      "strength": "primary",
+      "strength": "institution",
       "locator": "p.1",
       "locator_he": "עמוד 1",
       "page": 1,
       "checked": "2026-10-25",
-      "qualifier": "(index provider)"
+      "qualifier": "(index provider's own document)"
     },
     {
       "url": "https://indexes.nasdaqomx.com/docs/FS_NDX.pdf",
@@ -78,48 +78,12 @@
       "publisher": "Nasdaq Global Indexes",
       "publisher_he": "Nasdaq Global Indexes",
       "kind": "other",
-      "strength": "primary",
+      "strength": "institution",
       "locator": "p.1",
       "locator_he": "עמוד 1",
       "page": 1,
       "checked": "2026-10-25",
-      "qualifier": "(index provider)"
-    },
-    {
-      "url": "https://mayafiles.tase.co.il/rpdf/1729001-1730000/P1729157-00.pdf",
-      "title": "אי.בי.אי., דוח שנתי \"אי.בי.אי. מחקה (4D)י Nasdaq 100\" (5127766), 31.12.2025",
-      "publisher": "Maya (TASE filings)",
-      "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "p.2",
-      "locator_he": "עמוד 2",
-      "page": 2,
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://mayafiles.tase.co.il/rpdf/1729001-1730000/P1729977-00.pdf",
-      "title": "מור, דוח שנתי \"מור מחקה (4D)י NASDAQ 100\" (5117585), 31.12.2025",
-      "publisher": "Maya (TASE filings)",
-      "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "p.2",
-      "locator_he": "עמוד 2",
-      "page": 2,
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://mayafiles.tase.co.il/rpdf/1730001-1731000/P1730711-00.pdf",
-      "title": "MTF, דוח שנתי \"MTF מחקה (Nasdaq 100 (4D\" (5134531), 31.12.2025",
-      "publisher": "Maya (TASE filings)",
-      "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "pp.2-3",
-      "locator_he": "עמודים 2 עד 3",
-      "page": 2,
-      "checked": "2026-10-25"
+      "qualifier": "(index provider's own document)"
     }
   ]
 }

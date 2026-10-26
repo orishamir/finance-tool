@@ -2,7 +2,7 @@
   "id": "ETF-39",
   "title": "How the S&P 500 is weighted and maintained: float-adjusted market-capitalisation weights by the divisor method, composition changes as needed with at least three business days' notice, share counts updated quarterly",
   "title_he": "איך המדד האמריקני משוקלל ומתוחזק",
-  "strength": "primary",
+  "strength": "institution",
   "dimensions": [
     "liquidity-lockup"
   ],
@@ -77,7 +77,7 @@
     "iwf_change_threshold": "שינוי מינימלי בשיעור המניות בידי הציבור לעדכון"
   },
   "il_finance_file": "etfs-and-index-funds.md",
-  "checked": "2026-10-23",
+  "checked": "2026-10-26",
   "sources": [
     {
       "url": "https://www.spglobal.com/spdji/en/documents/methodologies/methodology-sp-us-indices.pdf",
@@ -86,12 +86,12 @@
       "publisher": "S&P Dow Jones Indices",
       "publisher_he": "S&P Dow Jones Indices",
       "kind": "other",
-      "strength": "primary",
+      "strength": "institution",
       "locator": "pp.6, 13, 17-19",
       "locator_he": "עמודים 6, 13, 17-19",
       "page": 6,
       "checked": "2026-10-25",
-      "qualifier": "(index provider; read in Chrome, curl returns 403)"
+      "qualifier": "(index provider's own document; read in Chrome, curl returns 403)"
     },
     {
       "url": "https://www.spglobal.com/spdji/en/indices/equity/sp-500/",
@@ -100,9 +100,9 @@
       "publisher": "S&P Dow Jones Indices",
       "publisher_he": "S&P Dow Jones Indices",
       "kind": "other",
-      "strength": "primary",
+      "strength": "institution",
       "checked": "2026-10-25",
-      "qualifier": "(index provider; read in Chrome)"
+      "qualifier": "(index provider's own document; read in Chrome)"
     }
   ]
 }

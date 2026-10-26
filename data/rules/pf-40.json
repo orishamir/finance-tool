@@ -1,8 +1,8 @@
 {
   "id": "PF-40",
-  "title": "Altshuler Shaham and The Phoenix: timing and valuing a kupat gemel lehashkaa track switch",
-  "title_he": "אלטשולר שחם והפניקס: מועד המעבר בין מסלולים והשערוך שלו",
-  "text_he": "בתקנון של אלטשולר שחם לקופת גמל להשקעה, אם מועד המעבר בין מסלולים חל בימי העסקים הראשונים של החודש, החברה רשאית לדחות אותו ליום העסקים הרביעי, ואפשר להפקיד לכל מסלול בנפרד. לפי הפניקס, המעבר משוערך לפי מדד ההשקעות האחרון הידוע ליום המעבר, לא ליום הבקשה. אם כך גם בחברות אחרות לא נבדק.",
+  "title": "The Phoenix: valuing a kupat gemel lehashkaa track switch",
+  "title_he": "הפניקס: השערוך של מעבר בין מסלולים",
+  "text_he": "לפי הפניקס, מעבר בין מסלולים בקופת גמל להשקעה משוערך לפי מדד ההשקעות האחרון הידוע ליום המעבר, לא ליום הבקשה. אם כך גם בחברות אחרות לא נבדק.",
   "strength": "institution",
   "dimensions": [
     "transfer-switch-process"
@@ -10,21 +10,8 @@
   "likely_to_change": "yes",
   "recheck_date": "2027-01-01",
   "il_finance_file": "provident-family-common.md",
-  "checked": "2026-10-25",
+  "checked": "2026-10-26",
   "sources": [
-    {
-      "url": "https://www.as-invest.co.il/media/md1afb1l/אלטשולר-שחם-גמל-להשקעה-חיסכון-פלוס-תקנון-נקי-מרץ-2025.pdf",
-      "title": "אלטשולר שחם גמל להשקעה \"חיסכון פלוס\" – תקנון, מרץ 2025",
-      "title_he": "אלטשולר שחם גמל להשקעה \"חיסכון פלוס\" – תקנון, מרץ 2025",
-      "publisher": "Altshuler Shaham",
-      "publisher_he": "אלטשולר שחם",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "p.6, ss.20.1-20.4; s.10 on p.5",
-      "page": 6,
-      "quote": "העברת כספים בין מסלולי השקעה תתבצע בתוך שלושה ימי עסקים",
-      "checked": "2026-10-25"
-    },
     {
       "url": "https://www.fnx.co.il/gemel/gemelhashkaa/faq/",
       "title": "הפניקס – קופת גמל להשקעה: שאלות ותשובות",

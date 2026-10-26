@@ -2,7 +2,7 @@
   "id": "PF-05",
   "title": "Cap for a new general pension fund: 1.05% a year of balance and 4% of deposits",
   "title_he": "תקרת דמי הניהול לקרן פנסיה חדשה כללית",
-  "text_he": "חברה מנהלת של קרן פנסיה חדשה כללית רשאית לגבות עד תקרת דמי הניהול השנתיים מהיתרה ועד תקרת דמי הניהול מההפקדה. למקבלי קצבה תקרות נמוכות יותר, שתלויות במועד תחילת הקצבה, ולמקבלי קצבת זקנה חדשים התקרה הנמוכה ביותר. נוסח התקנות נקרא באתרים שמעתיקים אותו.",
+  "text_he": "חברה מנהלת של קרן פנסיה חדשה כללית רשאית לגבות עד תקרת דמי הניהול השנתיים מהיתרה ועד תקרת דמי הניהול מההפקדה. למקבלי קצבה תקרות נמוכות יותר, שתלויות במועד תחילת הקצבה, ולמקבלי קצבת זקנה חדשים התקרה הנמוכה ביותר.",
   "figure_names_he": {
     "balance_cap": "תקרת דמי הניהול השנתיים מהיתרה",
     "deposit_cap": "תקרת דמי הניהול מההפקדה"
@@ -56,7 +56,7 @@
     }
   },
   "il_finance_file": "provident-family-common.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-26",
   "sources": [
     {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=5",

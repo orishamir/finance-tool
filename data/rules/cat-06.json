@@ -10,9 +10,9 @@
   ],
   "likely_to_change": "yes",
   "recheck_date": "2027-04-01",
-  "text_he": "שני שדות העמלה ברשות שוק ההון הם ממוצעים על פני עמיתי המסלול, לא מחירון ולא מה שכל חוסך משלם. אחד מהם הוא שיעור דמי הניהול מהצבירה, והשני שיעור דמי הניהול מההפקדות. הערך מתחלף בכל ינואר, והבהרות על התקופה והמשקל מפורטות בכללים הסמוכים.",
+  "text_he": "שני שדות העמלה ברשות שוק ההון הם ממוצעים על פני עמיתי המסלול, לא מחירון ולא מה שכל חוסך משלם. אחד מהם הוא שיעור דמי הניהול מהצבירה, והשני שיעור דמי הניהול מההפקדות. בנתוני הרשות הערך מתחלף בינואר, ואתרי הרשות מציינים את השנה שאליה הוא שייך; הבהרות על התקופה והמשקל מפורטות בכללים הסמוכים.",
   "il_finance_file": "tracks-catalogue-and-decoder.md",
-  "checked": "2026-10-23",
+  "checked": "2026-10-26",
   "sources": [
     {
       "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=76ad9eed-d076-46d6-96e2-a4eb8e045444&limit=100",
@@ -43,17 +43,6 @@
       "kind": "dataset",
       "strength": "primary",
       "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.meitav.co.il/provident_pension/kupa_gemel_invest_reports/",
-      "title": "מיטב: דוחות מסלולי קופת גמל להשקעה",
-      "title_he": "מיטב: דוחות מסלולי קופת גמל להשקעה",
-      "publisher": "Meitav",
-      "publisher_he": "מיטב",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "checked": "2026-10-25",
-      "qualifier": "(period label)"
     }
   ]
 }

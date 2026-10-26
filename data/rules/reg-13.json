@@ -36,19 +36,6 @@
       "locator_he": "עמוד 2, סעיף 4 (סעיף 44לא); עמוד 3, סעיפים 9-10 (סעיפים 45, 45א); עמוד 10, סעיף 13 (סעיף 48); עמוד 20, סעיף 22 (סעיף 51)",
       "page": 2,
       "checked": "2026-10-25"
-    },
-    {
-      "url": "https://content.tase.co.il/media/xrwbgkhk/1150_remote_member_372145_eng.pdf",
-      "title": "TASE, How to become TASE Remote Member, January 2026",
-      "publisher": "Tel Aviv Stock Exchange",
-      "publisher_he": "הבורסה לניירות ערך בתל אביב",
-      "kind": "exchange_rules",
-      "strength": "primary",
-      "locator": "pp.3-4",
-      "locator_he": "עמודים 3 עד 4",
-      "page": 3,
-      "checked": "2026-10-25",
-      "qualifier": "(TASE publication)"
     }
   ]
 }

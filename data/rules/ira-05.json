@@ -10,7 +10,7 @@
   "recheck_date": "2027-01-01",
   "text_he": "הכסף מושקע רק לפי הוראות העמית, ישירות או דרך מנהל תיקים שיש לו איתו הסכם בכתב. לכל חשבון אדם אחד מוסמך להורות; העמית בוחר אותו ויכול להחליף בכל עת, והחברה המנהלת לא רשאית להגביל את הבחירה. טיוטת תיקון תוסיף לכך 'בכפוף לכל דין'.",
   "il_finance_file": "ira-self-directed.md",
-  "checked": "2026-10-25",
+  "checked": "2026-10-26",
   "sources": [
     {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/aA+Qh3g77QNmRelSc3xeJ0cYncnL0AKU6J5OI6GlOZQ=#page=3",
@@ -20,11 +20,11 @@
       "publisher_he": "רשומות (משרד המשפטים)",
       "kind": "law",
       "strength": "primary",
-      "locator": "p.3, reg. 3(ב)-(ג)",
-      "locator_he": "עמוד 3, תקנה 3(ב)-(ג)",
+      "locator": "p.3, reg. 3(א)-(ב)",
+      "locator_he": "עמוד 3, תקנה 3(א)-(ב)",
       "page": 3,
       "quote": "והחברה המנהלת לא תטיל כל מגבלה על אפשרויות הבחירה של העמית באדם האמור",
-      "checked": "2026-10-25"
+      "checked": "2026-10-26"
     },
     {
       "url": "https://www.gov.il/BlobFolder/legalinfo/regulation_0059/he/regulation_ira_pdf.pdf",

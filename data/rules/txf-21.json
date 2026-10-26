@@ -23,7 +23,7 @@
         "publisher": "רשות המסים",
         "strength": "primary"
       },
-      "checked": "2026-10-25",
+      "checked": "2026-10-26",
       "effective_from": null,
       "effective_to": null,
       "tax_year": 2025,
@@ -32,11 +32,11 @@
         "TXF-21"
       ],
       "state": "sourced",
-      "notes": "Foreign income up to this ceiling on which an advance was paid by 30 April can exempt the person from filing (guide p.3 item 3, read from a low-resolution page image, TXF OQ16). Indexation frozen 2025-2027 (TXG-06)."
+      "notes": "Foreign income up to this ceiling on which an advance was paid by 30 April can exempt the person from filing (guide p.5 item 3, re-read in the text layer 2026-10-25 and 2026-10-26; TXF OQ16 closed). Indexation frozen 2025-2027 (TXG-06)."
     }
   },
   "il_finance_file": "tax-securities-foreign.md",
-  "checked": "2026-10-25",
+  "checked": "2026-10-26",
   "sources": [
     {
       "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",

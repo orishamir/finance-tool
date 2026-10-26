@@ -7,7 +7,7 @@ import type { RuleRecord } from "@finance-tool/schema";
 import { buttons, computedInputs, flags as flagCopy, formulaNames, numbers, provenance as copy, rule as ruleCopy, ruleCardMore, sourceBlock as sourceCopy, strength as strengthCopy, updateRules } from "../copy";
 import { ruleTitle } from "../lib/rule-title";
 import { fmt, formatValue } from "../lib/format";
-import { hasHebrew, isHebrewTitle, mostlyHebrew, sourceLabel } from "../lib/source-label";
+import { hasHebrew, hostOf, isHebrewTitle, mostlyHebrew, sourceLabel } from "../lib/source-label";
 import { isExperience } from "../lib/rule-shelves";
 import { citationText, mayHaveChanged, moreSourcesLabel, pickSources, sourceHref, sourceLabel2, shownTitle, type RuleSource, type SourcedRule } from "../lib/sources";
 import { useInputs } from "../lib/inputs";
@@ -48,6 +48,8 @@ export interface ProvenanceData {
   parameters?: Record<string, string>;
   /** Per open question (`TX2 OQ6`): from data/open-questions.json once it exists; the question sheet shows these fields when the id is here. */
   openQuestions?: Record<string, { title_he?: string; status_he?: string; blocks_he?: string }>;
+  /** Per source host, the company's Hebrew name (`data/sources/publishers.json`); PageShell fills it for every page. */
+  publishersHe?: Record<string, string>;
 }
 
 /** What a rule affects: links to pages that use it, and whether the calculation engine reads it. */
@@ -418,7 +420,11 @@ function Iso({ children, ltr }: { children: ReactNode; ltr?: boolean }) {
 
 /** One source: the link line, the quoted words, then when it was read (synthesis 3.3). */
 function OneSource({ source, rule, today, english, own }: { source: RuleSource; rule?: Pick<SourcedRule, "likely_to_change" | "recheck_date">; today: string; english?: boolean; own?: boolean }) {
-  const n = sourceLabel2(source);
+  // a data file names its company in English: the publishers table gives the Hebrew name by the source's host (founder, 2026-10-26)
+  const publishersHe = useContext(DataCtx)?.publishersHe;
+  const host = hostOf(source.url);
+  const he = source.publisher_he ?? (host ? publishersHe?.[host] : undefined);
+  const n = sourceLabel2(he ? { ...source, publisher_he: he } : source);
   const title = shownTitle(n.title, source.url, source.kind);
   const pubHebrew = hasHebrew(n.publisher);
   // D31: a company's own figure on its own product is shown with a neutral source line, no "לפי החברה"
@@ -433,6 +439,9 @@ function OneSource({ source, rule, today, english, own }: { source: RuleSource; 
             <>
               {titleNode} · {n.mirrorKind}, {n.mirror}
             </>
+          ) : title.text.startsWith(n.publisher) ? (
+            // the title already opens with the company ("בנק לאומי, 'שיעורי הריבית…'"): its name is not repeated before it
+            titleNode
           ) : (
             <>
               <Iso ltr={!pubHebrew}>{n.publisher}</Iso> · {titleNode}

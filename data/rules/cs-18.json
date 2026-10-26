@@ -81,7 +81,7 @@
     }
   },
   "il_finance_file": "child-savings.md",
-  "checked": "2026-10-25",
+  "checked": "2026-10-26",
   "sources": [
     {
       "url": "https://www.btl.gov.il/Laws1/00_0001_000000.pdf",
@@ -172,7 +172,8 @@
       "publisher_he": "המוסד לביטוח לאומי",
       "kind": "regulator_page",
       "strength": "primary",
-      "checked": "2026-10-25"
+      "quote": "לאחר גיל 21 דמי הניהול ייגבו מחשבון החיסכון",
+      "checked": "2026-10-26"
     },
     {
       "url": "https://www.btl.gov.il/About/faq/SaveMoneyFAQ/Pages/default.aspx",

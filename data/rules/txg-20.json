@@ -2,7 +2,7 @@
   "id": "TXG-20",
   "title": "Securities trades from which full tax was not withheld (for example at a foreign broker): half-yearly reports and advances, and an annual return",
   "title_he": "ניירות ערך בלי ניכוי מלא במקור: דיווח חצי-שנתי ומקדמות",
-  "text_he": "מי שיש לו רווחי הון מניירות ערך סחירים, בארץ או בחו״ל, שלא נוכה מהם מס מלא במקור, חייב לדווח ולשלם מקדמה פעמיים בשנה: עד סוף יולי על מכירות במחצית הראשונה, ועד סוף ינואר על מכירות במחצית השנייה של השנה הקודמת. המקדמה היא לפי השיעורים שחלים. המדריך מוסיף שאדם כזה חייב להגיש דוח שנתי. בנק או ברוקר ישראלי שמנכה במקור מסיר את החובה; הסתירה לכאורה עם מסלול הפטור מדוח כש'שולמה מקדמה' היא שאלה פתוחה.",
+  "text_he": "מי שיש לו רווחי הון מניירות ערך סחירים, בארץ או בחו״ל, שלא נוכה מהם מס מלא במקור, חייב לדווח ולשלם מקדמה פעמיים בשנה: עד סוף יולי על מכירות במחצית הראשונה, ועד סוף ינואר על מכירות במחצית השנייה של השנה הקודמת. המקדמה היא לפי השיעורים שחלים. המדריך מוסיף שאדם כזה חייב להגיש דוח שנתי. בנק או ברוקר ישראלי שמנכה במקור מסיר את החובה. רשות המסים רואה במי שמכר ניירות ערך בחו״ל בלי ניכוי מגיש דוח: הטפסים שלה שולחים אותו לנספחים של הדוח השנתי, וטופס הבקשה המקוצרת להחזר מס לא מיועד למי שסחר בפלטפורמה חיצונית. הפסד הון עובר לשנים הבאות רק אם הוגש דוח. אם המקדמה השנתית על הכנסת חוץ יכולה להחליף את הדוח, לא נמצא.",
   "strength": "primary",
   "dimensions": [
     "reporting-obligation",
@@ -11,8 +11,50 @@
   ],
   "likely_to_change": "no",
   "il_finance_file": "tax-general.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-26",
   "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/service/reporting-and-payment-2025-annual-tax-report-for-individuals/he/Service_Pages_Income_tax_annual-report-2026_1322-2025.pdf",
+      "title": "טופס 1322, נספח ג לדוח השנתי: רווח הון מניירות ערך סחירים לשנת המס 2025, ודברי ההסבר (רשות המסים)",
+      "title_he": "טופס 1322, נספח ג לדוח השנתי: רווח הון מניירות ערך סחירים לשנת המס 2025, ודברי ההסבר (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.2",
+      "locator_he": "עמוד 2",
+      "page": 2,
+      "quote": "כגון ני״ע שנמכרו בחו״ל שלא דרך המנכים",
+      "checked": "2026-10-26"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.153, s.91(ד)(2ג)(ב)",
+      "locator_he": "עמוד 153, סעיף 91(ד)(2ג)(ב)",
+      "page": 153,
+      "quote": "והמוכר חייב בהגשת דוח לפי סעיף 131",
+      "checked": "2026-10-26"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/policy/professional-directives-271125-1/he/IncomeTax_professional-directives-271125-1.pdf",
+      "title": "חוזר מס הכנסה 10/2025: קיזוז הפסדי הון (רשות המסים, 27.11.2025)",
+      "title_he": "חוזר מס הכנסה 10/2025: קיזוז הפסדי הון (רשות המסים, 27.11.2025)",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "p.6, s.4.3",
+      "locator_he": "עמוד 6, סעיף 4.3",
+      "page": 6,
+      "quote": "הפסד הון מועבר יותר בקיזוז בתנאי שהנישום הגיש דוח",
+      "checked": "2026-10-26"
+    },
     {
       "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
       "title": "Guide 2025",
@@ -25,6 +67,17 @@
       "page": 48,
       "quote": "אם לא נוכה המס כאמור, הינך חייב בהגשת דוח שנתי",
       "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.gov.il/he/Departments/Guides/tax-return-application-guide",
+      "title": "רשות המסים: מדריך להגשת בקשה להחזר מס למי שאינו חייב בהגשת דו\"ח (עודכן 20.4.2026)",
+      "title_he": "רשות המסים: מדריך להגשת בקשה להחזר מס למי שאינו חייב בהגשת דו\"ח (עודכן 20.4.2026)",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "quote": "מי הם החייבים להגיש דוח שנתי למס הכנסה",
+      "checked": "2026-10-26"
     }
   ]
 }

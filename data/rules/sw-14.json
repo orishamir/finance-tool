@@ -2,14 +2,14 @@
   "id": "SW-14",
   "title": "Partial transfers: allowed except from a keren hishtalmut; which money leaves first in a pension fund",
   "title_he": "העברה חלקית: מותרת חוץ מקרן השתלמות",
-  "text_he": "קופה מעבירה מעבירה את היתרה או חלק ממנה, אבל מקרן השתלמות אי אפשר להעביר חלק. כשחלק מחשבון בקרן פנסיה חדשה מקיפה או כללית מועבר, הכסף נלקח מכל מרכיב לפי סדר ההפקדה, מהמועד המאוחר ביותר אל המוקדם ביותר. ברירת המחדל בטופס היא העברה מלאה; העברה חלקית משאירה כיסוי מוות יחסי בקופה המעבירה ויכולה להתיר למנהל לסיים הנחה מוקדם. נוסח התקנות נקרא באתר שמעתיק אותו.",
+  "text_he": "קופה מעבירה מעבירה את היתרה או חלק ממנה, אבל מקרן השתלמות אי אפשר להעביר חלק. כשחלק מחשבון בקרן פנסיה חדשה מקיפה או כללית מועבר לקרן פנסיה חדשה מקיפה או כללית, הכסף נלקח מכל מרכיב לפי סדר ההפקדה, מהמועד המאוחר ביותר אל המוקדם ביותר. ברירת המחדל בטופס היא העברה מלאה; העברה חלקית משאירה כיסוי מוות יחסי בקופה המעבירה ויכולה להתיר למנהל לסיים הנחה מוקדם. נוסח התקנות נקרא ברשומות.",
   "strength": "primary",
   "dimensions": [
     "transfer-switch-process"
   ],
   "likely_to_change": "no",
   "il_finance_file": "switching-and-transfers.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-26",
   "sources": [
     {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/bfvsjLN+leExZ3ArqQksAZbYNmyK9Qa3gH~lF+jEWmc=#page=5",
@@ -22,8 +22,8 @@
       "locator": "p.5, s.5, reg. 9(ד)",
       "locator_he": "עמוד 5, סעיף 5, תקנה 9(ד)",
       "page": 5,
-      "quote": "מן המועד המאוחר ביותר עד המועד המוקדם ביותר",
-      "checked": "2026-10-25"
+      "quote": "מקופה מעבירה שהיא קרן חדשה לקופה מקבלת שהיא קרן חדשה",
+      "checked": "2026-10-26"
     },
     {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/qa0DjAH11hv4cTvqv8pm34W06X1DvaxhWwgq239BXaQ=#page=7",
@@ -36,7 +36,8 @@
       "locator": "p.7, s.3",
       "locator_he": "עמוד 7, סעיף 3",
       "page": 7,
-      "checked": "2026-10-25"
+      "quote": "אחרי 'קרן חדשה' יבוא 'מקיפה או קרן חדשה כללית'",
+      "checked": "2026-10-26"
     }
   ],
   "derived_from": [

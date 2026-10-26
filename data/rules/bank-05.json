@@ -59,6 +59,33 @@
   "checked": "2026-10-22",
   "sources": [
     {
+      "url": "https://www.boi.org.il/media/orgfwntb/447.pdf",
+      "title": "הוראת ניהול בנקאי תקין 447: פרסום שיעורי ריבית על פיקדונות ועל יתרות זכות בחשבון (5/24)",
+      "title_he": "הוראת ניהול בנקאי תקין 447: פרסום שיעורי ריבית על פיקדונות ועל יתרות זכות בחשבון (5/24)",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "locator": "p.3, Annex A",
+      "page": 3,
+      "quote": "תנאי חידוש",
+      "checked": "2026-10-26"
+    },
+    {
+      "url": "https://boi.org.il/media/nxzbaarp/h2781.pdf",
+      "title": "חוזר הפיקוח על הבנקים ח-2781-06 (20.5.2024)",
+      "title_he": "חוזר הפיקוח על הבנקים ח-2781-06 (20.5.2024)",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "p.3",
+      "locator_he": "עמוד 3",
+      "page": 3,
+      "quote": "האפשרות לחידוש אוטומטי מאפשרת הן ללקוח והן לתאגיד הבנקאי לנהל את הממשקים ביניהם בצורה אפקטיבית יותר לגבי הפיקדונות קצרי הטווח (עד שנה)",
+      "checked": "2026-10-26"
+    },
+    {
       "url": "https://www.boi.org.il/media/rvzi1ngd/151.pdf",
       "title": "כללי הבנקאות (שירות ללקוח) (גילוי נאות ומסירת מסמכים), התשנ\"ב-1992, נוסח משולב (בנק ישראל)",
       "title_he": "כללי הבנקאות (שירות ללקוח) (גילוי נאות ומסירת מסמכים), התשנ\"ב-1992, נוסח משולב (בנק ישראל)",
@@ -69,29 +96,6 @@
       "locator": "p.6, s.9",
       "locator_he": "עמוד 6, סעיף 9",
       "page": 6,
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.bank-yahav.co.il/media/zidh1r2r/deposit-interest.pdf",
-      "title": "בנק יהב: לוח שיעורי ריבית על פיקדונות 13_26",
-      "title_he": "בנק יהב: לוח שיעורי ריבית על פיקדונות 13_26",
-      "publisher": "Bank Yahav",
-      "publisher_he": "בנק יהב",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "p.6",
-      "locator_he": "עמוד 6",
-      "page": 6,
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.mercantile.co.il/private/investments-savings/deposit-savings/deposits-without-account/",
-      "title": "מרכנתיל: פיקדונות ללא חשבון",
-      "title_he": "מרכנתיל: פיקדונות ללא חשבון",
-      "publisher": "Mercantile Discount Bank",
-      "publisher_he": "בנק מרכנתיל דיסקונט",
-      "kind": "institution_doc",
-      "strength": "institution",
       "checked": "2026-10-25"
     }
   ]

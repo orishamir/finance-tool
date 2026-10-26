@@ -2,7 +2,7 @@
   "id": "BRK-01",
   "title": "Three provider classes: banks, non-bank TASE members, and foreign brokers under a section 49A permit",
   "title_he": "שלוש קבוצות ספקים: בנקים, בתי השקעות וברוקרים זרים",
-  "text_he": "המסחר בבורסה בתל אביב נעשה רק דרך חברי הבורסה: בנקים, בנקים זרים, חברים שאינם בנקים (חש\"בים) כמו בתי השקעות, וחברים רחוקים. מי שמציע מסחר דרך מערכת שאינה של בורסה ישראלית צריך היתר לפי סעיף 49א לחוק ניירות ערך מיושב ראש רשות ניירות ערך, הניתן למערכת של בורסה בחו\"ל, בתנאים שהוא קובע ורק אם אינו פוגע בציבור המשקיעים; לכן ברוקר זר מגיע ללקוחות בישראל רק עם היתר כזה, ישירות או דרך חברה ישראלית. אם גם ברוקר זר שאינו משווק בישראל, שאדם פתח אצלו חשבון ביוזמתו, צריך היתר, לא כתוב בנוסח שנקרא; זו שאלה פתוחה.",
+  "text_he": "המסחר בבורסה בתל אביב נעשה רק דרך חברי הבורסה, כך לפי הבורסה עצמה. תקנון הבורסה קובע מי יכול להיות חבר: חברה שהתאגדה בישראל, ובהן בנקים וחברים שאינם בנקים (חש\"בים) כמו בתי השקעות, בנק זר שיש לו סניף בישראל, וחבר רחוק. מי שמציע מסחר דרך מערכת שאינה של בורסה ישראלית צריך היתר לפי סעיף 49א לחוק ניירות ערך מיושב ראש רשות ניירות ערך, הניתן למערכת של בורסה בחו\"ל, בתנאים שהוא קובע ורק אם אינו פוגע בציבור המשקיעים; לכן ברוקר זר מגיע ללקוחות בישראל רק עם היתר כזה, ישירות או דרך חברה ישראלית. לפי רשות ניירות ערך, החוק לא אוסר על אדם לפנות ביוזמתו הבלעדית לגוף זר שלא פועל בישראל ולא פנה לאיש בישראל; גוף שפועל בישראל לא יכול להסתמך על יוזמת הלקוח.",
   "strength": "primary",
   "dimensions": [
     "regulator",
@@ -11,7 +11,7 @@
   "likely_to_change": "yes",
   "recheck_date": "2027-04-01",
   "il_finance_file": "brokerage-account.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-26",
   "sources": [
     {
       "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-626a5f3377ef9/QAA49a.pdf",
@@ -40,18 +40,32 @@
       "checked": "2026-10-25"
     },
     {
+      "url": "https://content.tase.co.il/media/q2mhob4u/274690.pdf",
+      "title": "מדריך לחברי הבורסה: החלק הראשון לתקנון (מעודכן עד 1.1.2026)",
+      "title_he": "מדריך לחברי הבורסה: החלק הראשון לתקנון (מעודכן עד 1.1.2026)",
+      "publisher": "Tel Aviv Stock Exchange",
+      "publisher_he": "הבורסה לניירות ערך בתל אביב",
+      "kind": "exchange_rules",
+      "strength": "primary",
+      "locator": "p.4, s.1 definitions; p.8, s.2",
+      "page": 4,
+      "quote": "חבר בורסה הוא חברה שהתאגדה ונרשמה בישראל",
+      "checked": "2026-10-26",
+      "qualifier": "(exchange rules, ISA-approved)"
+    },
+    {
       "url": "https://content.tase.co.il/media/kvjpsnmx/tase_ltd_periodic_report_for_2025.pdf?guid=b4232a8e-909e-473e-84c6-3ece08e3158a",
       "title": "TASE, periodic report 2025, part A, 1.7.2",
       "title_he": "דוח תקופתי לשנת 2025 של הבורסה לניירות ערך בתל אביב בע״מ",
       "publisher": "Tel Aviv Stock Exchange",
       "publisher_he": "הבורסה לניירות ערך בתל אביב",
       "kind": "institution_doc",
-      "strength": "primary",
+      "strength": "institution",
       "locator": "p.20",
       "locator_he": "עמוד 20",
       "page": 20,
       "checked": "2026-10-25",
-      "qualifier": "(exchange's statutory report)"
+      "qualifier": "(TASE's own report, for its sentence on trading through members)"
     }
   ]
 }

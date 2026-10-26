@@ -2,7 +2,7 @@
   "id": "KGL-14",
   "title": "Fee bases and the regulated maximum",
   "title_he": "בסיסי דמי הניהול והתקרה שבתקנות",
-  "text_he": "החברה המנהלת רשאית לגבות דמי ניהול משני בסיסים, מהיתרה הצבורה ומההפקדות, עד התקרות שבתקנות דמי הניהול. קופת גמל להשקעה לא מופיעה ברשימת הקופות שהוצאו מהתקרה הכללית, ולכן התקרה הכללית חלה עליה; התקרות עצמן מופיעות בכלל על התקרה לקופות גמל. כל מסלול נחשב קופה נפרדת לעניין דמי הניהול. נוסח התקנות נקרא רק באתר שמעתיק אותו.",
+  "text_he": "החברה המנהלת רשאית לגבות דמי ניהול משני בסיסים, מהיתרה הצבורה ומההפקדות, עד התקרות שבתקנות דמי הניהול. קופת גמל להשקעה לא מופיעה ברשימת הקופות שהוצאו מהתקרה הכללית, ולכן התקרה הכללית חלה עליה; התקרות עצמן מופיעות בכלל על התקרה לקופות גמל. בקופה עם מסלולים התקרות חלות על כל מסלול כאילו היה חשבון נפרד.",
   "strength": "primary",
   "dimensions": [
     "fee-management-balance",
@@ -10,8 +10,22 @@
   ],
   "likely_to_change": "no",
   "il_finance_file": "kupat-gemel-lehashkaa.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-26",
   "sources": [
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=6",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע״ב-2012",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "משרד האוצר",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.6, regs. 5, 6",
+      "locator_he": "עמוד 6, תקנות 5, 6",
+      "page": 6,
+      "quote": "על כל מסלול השקעה כאילו היה חשבון נפרד",
+      "checked": "2026-10-26"
+    },
     {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=4",
       "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012",
@@ -37,30 +51,6 @@
       "locator": "p.4, ss.2, 4",
       "locator_he": "עמוד 4, סעיפים 2, 4",
       "page": 4,
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.as-invest.co.il/media/md1afb1l/אלטשולר-שחם-גמל-להשקעה-חיסכון-פלוס-תקנון-נקי-מרץ-2025.pdf",
-      "title": "Altshuler bylaws March 2025",
-      "title_he": "תקנון קופת הגמל להשקעה ״חיסכון פלוס״ של אלטשולר שחם (מרץ 2025)",
-      "publisher": "Altshuler Shaham",
-      "publisher_he": "אלטשולר שחם",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "clause 35",
-      "locator_he": "סעיף 35",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "http://www.krn-rofim.co.il/wp-content/uploads/2024/10/%d7%aa%d7%a7%d7%a0%d7%95%d7%9f_%d7%a7%d7%95%d7%a4%d7%aa_%d7%92%d7%9e%d7%9c_%d7%9c%d7%94%d7%a9%d7%a7%d7%a2%d7%94__25.7.2024-1.pdf",
-      "title": "Yachad Rofim bylaws",
-      "title_he": "תקנון קופת הגמל להשקעה של יחד רופאים (25.7.2024)",
-      "publisher": "Yachad Rofim",
-      "publisher_he": "יחד רופאים",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "clause 35",
-      "locator_he": "סעיף 35",
       "checked": "2026-10-25"
     }
   ]

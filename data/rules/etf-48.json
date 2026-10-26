@@ -2,7 +2,7 @@
   "id": "ETF-48",
   "title": "MSCI World and MSCI ACWI: large and mid caps covering about 85% of each market, free-float market-cap weights, quarterly index reviews; World is 23 developed markets including Israel, ACWI adds 24 emerging markets",
   "title_he": "מדדי העולם של MSCI: מה הם כוללים",
-  "strength": "primary",
+  "strength": "institution",
   "dimensions": [
     "currency",
     "eligibility"
@@ -99,7 +99,7 @@
     "standard_coverage_target": "יעד הכיסוי של שווי השוק"
   },
   "il_finance_file": "etfs-and-index-funds.md",
-  "checked": "2026-10-25",
+  "checked": "2026-10-26",
   "sources": [
     {
       "url": "https://www.msci.com/documents/10199/178e6643-6ae6-47b9-82be-e1fc565ededb",
@@ -107,11 +107,11 @@
       "publisher": "MSCI",
       "publisher_he": "MSCI",
       "kind": "other",
-      "strength": "primary",
+      "strength": "institution",
       "locator": "pp.1-2",
       "locator_he": "עמודים 1 עד 2",
       "checked": "2026-10-25",
-      "qualifier": "(index provider)"
+      "qualifier": "(index provider's own document)"
     },
     {
       "url": "https://www.msci.com/documents/10199/8d97d244-4685-4200-a24c-3e2942e3adeb",
@@ -119,11 +119,11 @@
       "publisher": "MSCI",
       "publisher_he": "MSCI",
       "kind": "other",
-      "strength": "primary",
+      "strength": "institution",
       "locator": "p.1",
       "locator_he": "עמוד 1",
       "checked": "2026-10-25",
-      "qualifier": "(index provider)"
+      "qualifier": "(index provider's own document)"
     },
     {
       "url": "https://www.msci.com/index/methodology/latest/GIMI",
@@ -131,11 +131,11 @@
       "publisher": "MSCI",
       "publisher_he": "MSCI",
       "kind": "other",
-      "strength": "primary",
+      "strength": "institution",
       "locator": "pp.24, 100",
       "locator_he": "עמודים 24, 100",
       "checked": "2026-10-25",
-      "qualifier": "(index provider)"
+      "qualifier": "(index provider's own document)"
     },
     {
       "url": "https://www-cdn.msci.com/documents/10199/6a862628-db59-5e41-a49e-12a1ceddc878",
@@ -143,11 +143,11 @@
       "publisher": "MSCI",
       "publisher_he": "MSCI",
       "kind": "other",
-      "strength": "primary",
+      "strength": "institution",
       "locator": "pp.3-4, 9",
       "locator_he": "עמודים 3 עד 4, 9",
       "checked": "2026-10-25",
-      "qualifier": "(index provider)"
+      "qualifier": "(index provider's own document)"
     }
   ]
 }

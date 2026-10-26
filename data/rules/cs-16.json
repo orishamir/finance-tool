@@ -9,9 +9,9 @@
     "fee-exit"
   ],
   "likely_to_change": "no",
-  "text_he": "כסף שלא נמשך בגיל הפדיון ממשיך להתנהל בקופה או בבנק. אחרי 18 הילד יכול לעבור בין קופות או מסלולים, או בין מסלולי חיסכון בבנק; כסף חדש אי אפשר להוסיף. בבנק החשבון מתחדש לתקופות נוספות, ושבירה של תקופה כזו עלולה לגרוע ריבית והצמדה. האם אפשר להעביר לקופת גמל רגילה לא נמצא (שאלה פתוחה 13).",
+  "text_he": "כסף שלא נמשך בגיל הפדיון ממשיך להתנהל בקופה או בבנק. אחרי 18 הילד יכול להעביר את הכסף לכל קופת גמל להשקעה, גם לא של חיסכון לילד, או לעבור בין מסלולים; בבנק עוברים בין מסלולי חיסכון לפי ההסכם של הבנק. כסף חדש אי אפשר להוסיף. איך בנק מחדש את החשבון אחרי 18, ומה עולה לשבור תקופה, קובע ההסכם של כל בנק.",
   "il_finance_file": "child-savings.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-26",
   "sources": [
     {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/8OfazOM9J2n~VjyzV5AWsITYS27PjZHrqw3iJWE0YJI=#page=10",
@@ -39,6 +39,20 @@
       "locator_he": "עמוד 2, סעיף 3",
       "page": 2,
       "quote": "(11א) מקופת גמל להשקעה לקופת גמל להשקעה אחרת",
+      "checked": "2026-10-26"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1056/he/regulation_h2016-9-20a.pdf",
+      "title": "תקנון תקני לקופת גמל להשקעה לחיסכון ארוך טווח לילד (נספח לחוזר גופים מוסדיים 2016-9-20)",
+      "title_he": "תקנון תקני לקופת גמל להשקעה לחיסכון ארוך טווח לילד (נספח לחוזר גופים מוסדיים 2016-9-20)",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "p.5, s.8 ; p.9, s.28.1",
+      "locator_he": "עמוד 5, סעיף 8 ; עמוד 9, סעיף 28.1",
+      "page": 5,
+      "quote": "הפקדות לחשבון העמית יבוצעו בידי המוסד לביטוח לאומי בלבד",
       "checked": "2026-10-26"
     },
     {
@@ -75,31 +89,6 @@
       "publisher_he": "המוסד לביטוח לאומי",
       "kind": "regulator_page",
       "strength": "primary",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://media.harel-group.co.il/media/lved10ua/תקנון-הראל-חיסכון-לכל-ילד-אפריל-2026-_.pdf",
-      "title": "תקנון תקני לקופת גמל להשקעה לחיסכון ארוך טווח לילד: הראל חיסכון לכל ילד, מהדורה 3, 04/2026",
-      "title_he": "תקנון תקני לקופת גמל להשקעה לחיסכון ארוך טווח לילד: הראל חיסכון לכל ילד, מהדורה 3, 04/2026",
-      "publisher": "Harel",
-      "publisher_he": "הראל",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "s.8, 28",
-      "locator_he": "סעיף 8, 28",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://bank-yahav.co.il/media/qxed4yhi/השקעות-מונגש-חסכון-לכל-ילד-צפייה-בהסכם-חיסכון-לכל-ילד.pdf",
-      "title": "בנק יהב: הסכם חיסכון ארוך טווח לילד (חיסכון לכל ילד)",
-      "title_he": "בנק יהב: הסכם חיסכון ארוך טווח לילד (חיסכון לכל ילד)",
-      "publisher": "Bank Yahav",
-      "publisher_he": "בנק יהב",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "pp.4-6, s.4-6",
-      "locator_he": "עמודים 4 עד 6, סעיף 4-6",
-      "page": 4,
       "checked": "2026-10-25"
     }
   ]

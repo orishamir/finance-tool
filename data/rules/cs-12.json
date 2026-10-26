@@ -36,7 +36,7 @@
     "bank_to_provident_moves": "מספר הפעמים שאפשר להפנות הפקדות מבנק לקופה"
   },
   "il_finance_file": "child-savings.md",
-  "checked": "2026-10-25",
+  "checked": "2026-10-26",
   "sources": [
     {
       "url": "https://www.btl.gov.il/Laws1/00_0001_000000.pdf",
@@ -72,28 +72,6 @@
       "publisher_he": "המוסד לביטוח לאומי",
       "kind": "regulator_page",
       "strength": "primary",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://bank-yahav.co.il/media/qxed4yhi/השקעות-מונגש-חסכון-לכל-ילד-צפייה-בהסכם-חיסכון-לכל-ילד.pdf",
-      "title": "בנק יהב: הסכם חיסכון ארוך טווח לילד (חיסכון לכל ילד)",
-      "title_he": "בנק יהב: הסכם חיסכון ארוך טווח לילד (חיסכון לכל ילד)",
-      "publisher": "Bank Yahav",
-      "publisher_he": "בנק יהב",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "s.3.3, 4.6",
-      "locator_he": "סעיף 3.3, 4.6",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.as-invest.co.il/interstedin/%D7%97%D7%99%D7%A1%D7%9B%D7%95%D7%9F-%D7%95%D7%94%D7%A9%D7%A7%D7%A2%D7%94/%D7%A9%D7%90%D7%9C%D7%95%D7%AA-%D7%95%D7%AA%D7%A9%D7%95%D7%91%D7%95%D7%AA-%D7%91%D7%A0%D7%95%D7%A9%D7%90-%D7%97%D7%99%D7%A1%D7%9B%D7%95%D7%9F-%D7%9C%D7%9B%D7%9C-%D7%99%D7%9C%D7%93/",
-      "title": "אלטשולר שחם: שאלות ותשובות בנושא חיסכון לכל ילד",
-      "title_he": "אלטשולר שחם: שאלות ותשובות בנושא חיסכון לכל ילד",
-      "publisher": "Altshuler Shaham",
-      "publisher_he": "אלטשולר שחם",
-      "kind": "institution_doc",
-      "strength": "institution",
       "checked": "2026-10-25"
     }
   ]

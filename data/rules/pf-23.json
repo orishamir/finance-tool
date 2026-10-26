@@ -2,7 +2,7 @@
   "id": "PF-23",
   "title": "Track switching: within three business days; no fee or frequency limit in the regulation",
   "title_he": "מעבר מסלול: תוך ימי עסקים ספורים, בלי עמלה",
-  "text_he": "כסף עובר ממסלול השקעה למסלול אחר באותה קופה בתוך ימי העסקים למעבר מסלול, אלא אם התקנון קובע תקופה קצרה יותר. בכל קופת גמל, גם בקופת גמל להשקעה, מותר לעמית להעביר בכל עת את כל הכסף או חלק ממנו מכל מסלול לכל מסלול אחר באותה קופה. בקופת גמל להשקעה, שהתקנה לא נוקבת בה, את המועד קובע התקנון התקני של רשות שוק ההון, באותו מספר ימים. אין עמלה ואין הגבלה על מספר המעברים, אבל מעבר יכול לסיים הנחה בדמי ניהול מוקדם.",
+  "text_he": "כסף עובר ממסלול השקעה למסלול אחר באותה קופה בתוך ימי העסקים למעבר מסלול, אלא אם התקנון קובע תקופה קצרה יותר. בקופת גמל להשקעה, שהתקנה לא נוקבת בה, את הזכות ואת המועד קובע התקנון התקני של רשות שוק ההון: מותר להעביר כסף ממסלול אחד או מכמה מסלולים לאחרים, באותו מספר ימים, ואם המועד נופל בשלושת ימי העסקים הראשונים של החודש החברה רשאית לדחות אותו ליום העסקים הרביעי; אפשר גם להפקיד לכל מסלול. אין עמלה ואין הגבלה על מספר המעברים, אבל מעבר יכול לסיים הנחה בדמי ניהול מוקדם.",
   "figure_names_he": {
     "switch_business_days": "ימי עסקים למעבר מסלול"
   },
@@ -36,8 +36,36 @@
     }
   },
   "il_finance_file": "provident-family-common.md",
-  "checked": "2026-10-25",
+  "checked": "2026-10-26",
   "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
+      "title": "חוזר גופים מוסדיים 2022-9-30 – מסלולי השקעה בקופות גמל – תיקון",
+      "title_he": "חוזר גופים מוסדיים 2022-9-30: מסלולי השקעה בקופות גמל – תיקון",
+      "publisher": "gov.il",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "p.4, s.4(ד)(3)",
+      "locator_he": "עמוד 4, סעיף 4(ד)(3)",
+      "page": 4,
+      "quote": "זכותו של כל עמית להעביר בכל עת את כספיו, כולם או חלקם, מכל מסלול לכל מסלול אחר באותה הקופה",
+      "checked": "2026-10-26"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-2829/he/regulation_hm_takanongemel.pdf",
+      "title": "תקנון תקני לקופת גמל להשקעה (רשות שוק ההון, נשלח לחברות המנהלות במכתב 2016-19364 מ־29.9.2016)",
+      "title_he": "תקנון תקני לקופת גמל להשקעה (רשות שוק ההון, נשלח לחברות המנהלות במכתב 2016-19364 מ־29.9.2016)",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.5, s.10; p.6, s.20.1; p.7, ss.20.2-20.4",
+      "locator_he": "עמוד 5, סעיף 10; עמוד 6, סעיף 20.1; עמוד 7, סעיפים 20.2-20.4",
+      "page": 5,
+      "quote": "אם חל מועד העברת הכספים באחד משלושת ימי העסקים הראשונים בחודש פלוני, רשאית החברה המנהלת לדחות את מועד העברת הכספים ליום העסקים הרביעי באותו חודש",
+      "checked": "2026-10-26"
+    },
     {
       "url": "https://www.btl.gov.il/Laws1/02_0103_100022.pdf",
       "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ\"ד-1964",
@@ -63,31 +91,6 @@
       "locator": "p.3, reg. 1 (מסלול השקעה)",
       "locator_he": "עמוד 3, תקנה 1 (מסלול השקעה)",
       "page": 3,
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
-      "title": "חוזר גופים מוסדיים 2022-9-30 – מסלולי השקעה בקופות גמל – תיקון",
-      "title_he": "חוזר גופים מוסדיים 2022-9-30: מסלולי השקעה בקופות גמל – תיקון",
-      "publisher": "gov.il",
-      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
-      "kind": "circular",
-      "strength": "primary",
-      "locator": "p.4, s.4(ד)(3)",
-      "locator_he": "עמוד 4, סעיף 4(ד)(3)",
-      "page": 4,
-      "quote": "זכותו של כל עמית להעביר בכל עת את כספיו, כולם או חלקם, מכל מסלול לכל מסלול אחר באותה הקופה",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-2829/he/regulation_hm_takanongemel.pdf",
-      "title": "CMA standard bylaw for kupat gemel lehashkaa (2016)",
-      "publisher": "gov.il",
-      "publisher_he": "אתר הממשלה (gov.il)",
-      "kind": "official_pdf",
-      "strength": "primary",
-      "locator": "s.20.2",
-      "locator_he": "סעיף 20.2",
       "checked": "2026-10-25"
     }
   ]

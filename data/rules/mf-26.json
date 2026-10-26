@@ -1,8 +1,8 @@
 {
   "id": "MF-26",
-  "title": "What a distributor may charge the unit holder directly",
-  "title_he": "מה המפיץ רשאי לגבות ישירות מבעל היחידה",
-  "text_he": "בקרן כספית שיש עליה הסכם הפצה, המפיץ לא רשאי לגבות מבעל היחידה שום עמלה על קנייה, החזקה או פדיון של יחידות. בקרנות מסוגים אחרים שיש עליהן הסכם, המפיץ רשאי לגבות עמלות על קנייה, החזקה או פדיון, בתנאי שהן לא משתנות לפי מנהל הקרן. בלי הסכם עם המנהל, המפיץ רשאי לגבות מבעל היחידה עד גובה עמלת ההפצה שיכול היה לגבות מהמנהל, ובקרנות שנסחרות בבורסה ובקרנות מחקות רק עמלה על העסקה עצמה. החוק אוסר כל תשלום או טובת הנאה אחרים שקשורים לקנייה, פדיון, מכירה או החזקה של יחידות, למעט חריגים שמנויים בו.",
+  "title": "What a distributor that is not an investment marketer may charge the unit holder directly",
+  "title_he": "מה מפיץ שאינו משווק השקעות רשאי לגבות ישירות מבעל היחידה",
+  "text_he": "התקנות האלה חלות רק על מפיץ שאינו משווק השקעות לפי חוק הייעוץ; מפיץ שהוא משווק, וכך רוב חברי הבורסה שאינם בנקים, מקבל עמלת הפצה לפי החוק ונמצא מחוץ להן. אצל מפיץ שאינו משווק: בקרן כספית שיש עליה הסכם הפצה, המפיץ לא רשאי לגבות מבעל היחידה שום עמלה על קנייה, החזקה או פדיון של יחידות. בקרנות מסוגים אחרים, המפיץ רשאי לגבות עמלות על קנייה, החזקה או פדיון, בתנאי שהן לא משתנות לפי מנהל הקרן. בלי הסכם עם המנהל, המפיץ רשאי לגבות מבעל היחידה עד גובה עמלת ההפצה שיכול היה לגבות מהמנהל, ובקרנות שנסחרות בבורסה ובקרנות מחקות רק עמלה על העסקה עצמה. החוק אוסר כל תשלום או טובת הנאה אחרים שקשורים לקנייה, פדיון, מכירה או החזקה של יחידות, למעט חריגים שמנויים בו.",
   "strength": "primary",
   "dimensions": [
     "fee-trade",
@@ -10,8 +10,36 @@
   ],
   "likely_to_change": "no",
   "il_finance_file": "mutual-funds-and-money-market-funds.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-26",
   "sources": [
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmfLeg7C4UCrAfbCcchwXa2I=#page=2",
+      "title": "תקנות השקעות משותפות בנאמנות (עמלת הפצה), התשס\"ו-2006 (קובץ התקנות 6464)",
+      "title_he": "תקנות השקעות משותפות בנאמנות (עמלת הפצה), התשס״ו-2006 (קובץ התקנות 6464; תיקון 2013 בקובץ התקנות 7236)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.2, reg. 1",
+      "locator_he": "עמוד 2, תקנה 1",
+      "page": 2,
+      "quote": "מפיץ שאינו משווק השקעות כהגדרתו בחוק הסדרת העיסוק",
+      "checked": "2026-10-26"
+    },
+    {
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf",
+      "title": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994",
+      "title_he": "חוק השקעות משותפות בנאמנות, התשנ״ד-1994",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.60, s.82(א)(2)-(3), 82(ב)",
+      "locator_he": "עמוד 60, סעיף 82(א)(2)-(3), 82(ב)",
+      "page": 60,
+      "quote": "תשלום עמלת הפצה למפיץ שהוא משווק השקעות כהגדרתו בחוק הסדרת העיסוק",
+      "checked": "2026-10-26"
+    },
     {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/YeLGailVs4sAQNAXci5Zo3BCViCj7pr1tFrgiQP0KVw=#page=10",
       "title": "תקנות השקעות משותפות בנאמנות (עמלת הפצה) (תיקון), התשע\"ו-2016 (קובץ התקנות 7653)",
@@ -36,19 +64,6 @@
       "locator": "p.3, reg. 2(ג)",
       "locator_he": "עמוד 3, תקנה 2(ג)",
       "page": 3,
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf",
-      "title": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994",
-      "title_he": "חוק השקעות משותפות בנאמנות, התשנ״ד-1994",
-      "publisher": "Israel Securities Authority",
-      "publisher_he": "הכנסת",
-      "kind": "law",
-      "strength": "primary",
-      "locator": "p.60, s.82",
-      "locator_he": "עמוד 60, סעיף 82",
-      "page": 60,
       "checked": "2026-10-25"
     }
   ]

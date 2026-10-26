@@ -1,0 +1,111 @@
+Settling pass, 2026-10-26: conventions for every fork (input for the forks; the lead's brief is settle-brief.md).
+
+OWNERSHIP
+- You edit ONLY the rule-base files named in your prompt and the data/rules/*.json records of their prefixes.
+- Never edit: site/, packages/, docs/ (docs/method.md is the editor's, at the very end), README.md or coverage.md of the
+  references, data/sources/*, other forks' files, requests.md or settled.md (the editor writes those from your partial).
+- Never commit, push, stash, reset or check out files. The main checkout holds the lead's work.
+- Do not run `npm run extract:sources` (it writes every data/rules record while other forks edit theirs). You may run
+  `npm run extract:sources -w @finance-tool/pipeline -- --dry` (prints only) and `npm run validate` (read-only).
+
+SOURCES
+- Never fill a financial or tax fact from memory. Every change cites the source you read, with its locator, and the
+  Source-line segment you touch says `checked 2026-10-26`.
+- Read sources with tools/src.py and always set SRC_CACHE=/home/ori/dev/finance-tool/research/knowledge/2026-10-25-scope/tools/work/srccache
+  (the review's 915 cached sources are there). src.py fetches gov.il HTML pages through research/audit/tools/govil-page.sh
+  (the only allowed workaround); everything else by plain curl. A bot check, captcha, 403 shell or JS-only page is
+  "blocked": list it and leave the item as it was. Never work around it.
+- Keep shell commands simple: scripts in files under research/knowledge/2026-10-25-scope/tools/ named with your fork id
+  (f1_*.py ...), large downloads under tools/work/, never /tmp.
+- General sources first (CLAUDE.md, D30): never cite a company's document where a law, regulation or regulator says it.
+
+TOOLS
+- tools/rb.py show ID ...    the markdown block with file and line;  rb.py noscope;  rb.py ids PREFIX (next free id)
+- tools/ref.py ID            the review's bundle (record JSON + references block as the reviewer saw it)
+- tools/rj.py show ID ...    a data/rules record's title, title_he, text_he, strength, checked
+- tools/rj.py apply P.json   patch fields of data/rules records (keeps format; refuses sources/derived_from and new keys)
+- review.json entries: scope, institutions, general_source (quote, url, locator), settle, split, company_doc_needed,
+  note, text_issue. Read every text_issue of your prefixes, not only review.md's table (the table is cut short).
+
+THE SCOPE LINE (README "The Scope line", strict format, one line directly after `- Source:` and its continuation lines)
+  - Scope: general
+  - Scope: institution: <Name>[, <Name>...]
+  - Scope: unsettled: <what would settle it, in English>[; seen at: <Name>[, <Name>...]]
+- Add one to every data/rules record of your prefixes that has none (`rb.py noscope`). Start from review.json's verdict;
+  depart from it only on the sources, and say why in your partial.
+- Names: the names already used in Scope lines (Altshuler Shaham, Altshuler Shaham Trade, Harel, Mor, Meitav,
+  Meitav Trade, The Phoenix, Infinity, Clal, Migdal, Migdal Mutual Funds, Menora Mivtachim, Analyst, Yalin Lapidot,
+  IBI, MTF, Kesem, Tachlit, Psagot, Excellence, Fair, Yachad Rofim, Hebrew University provident fund, Bank Leumi,
+  Bank Hapoalim, Discount Bank, Mizrahi Tefahot Bank, First International Bank, Bank Yahav, Mercantile Discount Bank,
+  Bank Massad, Bank of Jerusalem, One Zero Bank, Interactive Israel, Interactive Brokers, Interactive Brokers Ireland,
+  iShares, BlackRock, Reit 1), else data/sources/publishers.json's name. New ones decided: Tel Aviv Stock Exchange,
+  S&P Dow Jones Indices, MSCI, Nasdaq, J.P. Morgan Asset Management, Israel Securities Authority (only where it acts
+  as a site owner, MF-55).
+- general: the record's Source line carries a general source FIRST that says the record's main statement. If the
+  review quoted a general source the record does not cite, verify the quote yourself (src.py find) and add it first.
+  A company document that only repeats a general rule leaves the Source line (README: "Company documents that only
+  repeat the rule are dropped"). A company detail worth keeping stays only as a named example in Conditions
+  ("Example: in Harel's bylaw s.8 ..."); its document may stay on the Source line, after the general source, only when
+  the text names that company beside the detail.
+- institution: the record's text names each company in the sentence that carries its term; where a general
+  counterpart exists (a legal maximum), Conditions point to that rule.
+- unsettled: Conditions say what was searched; `seen at:` lists where it was seen.
+
+SPLITS (a record joining a general rule and a company's term)
+- The general part keeps the old id. The company part takes the next free id of the prefix (`rb.py ids PREFIX`),
+  as a new `### PREFIX-NN <title naming the company>` block placed directly after the parent, with its own Rule,
+  Conditions (first sentence: "Split from PREFIX-MM on 2026-10-26 (scope settling)."), Figures if any, Source (the
+  company's document), Scope, Dimensions, Likely to change. The parent's Conditions say where the part went
+  ("<Company>'s <term> moved to PREFIX-NN on 2026-10-26.").
+- Where the company sentence is already said by another record (the review names one: "it is CAT-43", "it belongs
+  in ETF-58"), drop it from the parent and point there instead of making a new id.
+- Do NOT create data/rules JSON for a new id; list it for requests.md.
+- Search site/app, data/ (outside data/rules), packages/ and docs/method.md for the parent id (grep -rn "PARENT-ID").
+  Report what cites it and whether that citation uses the part that moved (then it is a request for the lead, and a
+  docs/method.md line for the editor).
+
+DATA/RULES JSON
+- When you change a record's meaning, or its Hebrew text is stale or wrong against its source, update title_he and
+  text_he (and the English `title` to match the markdown heading), set "checked": "2026-10-26", and change "strength"
+  when the record's evidence level changes (an institution record re-sourced to a regulator becomes "primary"; a
+  record left only on a company document is "institution"). Never edit sources / sources_missing_reason /
+  derived_from: the extraction writes them. A Scope line added alone needs no JSON change.
+- Hebrew: docs/copy.md section 10. Plural address or impersonal; the site is "האתר"; spoken words, not form words
+  (no ניתן, טרם, לרבות, במידה ו); maqaf ־ with no spaces between a prefix letter and a number, date, code or Latin
+  word (ב־2026); gershayim ״ in abbreviations as the existing text_he does; one idea per sentence. Name the company in
+  the sentence that carries its term ("אצל הראל: ..."). No doc ids in text_he unless the existing text uses them.
+
+JUDGEMENT CALLS (the lead's provisional calls; apply them)
+- Index rules: the S&P, MSCI and Nasdaq rulebooks are `institution` (the index provider); TASE's index rules stay general.
+- The exchange as a company (its website terms, paid data products, Maya filter/download, nominee company, its own
+  brochures and annual report): `institution: Tel Aviv Stock Exchange`. BRK-12 and BRK-29 stay unsettled until the
+  rule text is read; try TASE's rulebook (and the clearing-house rules) first.
+- "No rule exists" records: keep them; the record's own text (Conditions, and briefly text_he) says what search was made.
+- Regulator texts that bind no one (yearly reports, voluntary outlines, drafts, plans, the chief economist's paper,
+  an FAQ whose legal basis the record doubts, a published tax ruling): `general`, with a line in Conditions
+  ("Not binding: <what it is>; it binds no one.") and a sentence in text_he such as "פרסום של הרשות, לא מחייב."
+  (name the body: "פרסום של רשות ניירות ערך, לא מחייב.").
+- Company clauses copied word for word from a regulator's standard bylaw: general once the standard bylaw is quoted.
+  Cite it first; the company stays only for its own terms.
+- Not rules (forum posts, press reports, return series, website terms, market counts): every data/rules record is
+  listed on the rules page, so do not move any: list each (id, what it is, where it should go: data / a note / an
+  open question) for requests.md. Give it the scope the definition gives it meanwhile.
+- Partial counts (a figure seen in some companies' documents, no regulator text): unsettled, `seen at:` the companies.
+
+PARTIAL REPORT: research/knowledge/2026-10-25-scope/tools/work/part-<FORK>.md (if the harness refuses the write, write
+a script tools/<fork>_part.py that writes it, and run it). Sections, each a list:
+ 1. Disagreements decided: `ID: decision. Reason (one line). Source: title, URL, locator.`
+ 2. Scope lines added: counts by kind; every non-general one with its names / settle text; every departure from
+    review.json with the reason.
+ 3. Splits: `PARENT → NEW-ID (scope: ...)`: what moved; citations of the parent in site/data/packages/method.md and
+    whether they use the moved part.
+ 4. Not rules: `ID: what it is → where it should go (site-cited: rules page / also <files>)`.
+ 5. Text and source fixes, by file: `ID: what changed (source, locator, checked 2026-10-26)`; mark `[json]` when the
+    data/rules record changed too.
+ 6. Audit hand-offs done: `item N, ID: what was done`.
+ 7. Skipped: `ID: the issue → why it was skipped`.
+ 8. Blocked pages: `URL (for ID / item)`.
+ 9. Requests for the lead (for requests.md).
+10. Source labels that need documents.json or the extraction (kind or title_he that the markdown cannot fix): `title → kind`.
+11. docs/method.md lines to change (line, id, what).
+End your run with a short summary (counts, anything the editor must decide or apply in another fork's file).

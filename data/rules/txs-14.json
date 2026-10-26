@@ -69,7 +69,8 @@
       "strength": "primary",
       "locator": "p.146, s.88, definition מדד",
       "page": 146,
-      "checked": "2026-10-25"
+      "quote": "לענין נייר ערך בידי יחיד, הנקוב במטבע חוץ או שערכו צמוד למטבע חוץ, יראו את שער המטבע כמדד",
+      "checked": "2026-10-26"
     },
     {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/SJCa7BPhZiMZ9l0U5Xe3nxVBukfCLPiTSKOFP3CGC94=#page=9",
@@ -108,18 +109,6 @@
       "locator": "p.36, s.36 ; p.58, s.80",
       "locator_he": "עמוד 36, סעיף 36 ; עמוד 58, סעיף 80",
       "page": 36,
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://mayafiles.tase.co.il/rpdf/1719001-1720000/P1719487-00.pdf",
-      "title": "מגדל קרנות נאמנות, תשקיף עיקרי מיום 30.1.2026",
-      "title_he": "מגדל קרנות נאמנות, תשקיף עיקרי מיום 30.1.2026",
-      "publisher": "Maya (TASE filings)",
-      "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "p.73, ch.25.3, 25.4",
-      "page": 73,
       "checked": "2026-10-25"
     }
   ]

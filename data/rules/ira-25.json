@@ -9,7 +9,7 @@
   "likely_to_change": "no",
   "text_he": "קופה אישית היא קרן השתלמות או קופה לתגמולים/לקצבה, ולכן כללי המשיכה הם של אותו מוצר. בנוסף: הפקדות ומשיכות מותרות גם כשהחשבון חסום בגלל חריגה; העברה במזומן מחכה למכירת כל ההחזקות; ומה אפשר למכור ומתי תלוי בניירות שבחרתם.",
   "il_finance_file": "ira-self-directed.md",
-  "checked": "2026-10-22",
+  "checked": "2026-10-26",
   "sources": [
     {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/aA+Qh3g77QNmRelSc3xeJ0cYncnL0AKU6J5OI6GlOZQ=#page=4",
@@ -36,17 +36,6 @@
       "locator_he": "עמוד 5, סעיף 7 (תקנה 11(ב))",
       "page": 5,
       "quote": "נכסי הקופה למזומנים",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.calcalist.co.il/market/article/bjnkrerfa",
-      "title": "\"מה שקרה לסלייס לא יקרה לנו. הם הכניסו מוצרים רעילים שפגעו בעמיתים\", כלכליסט, 06.05.2024",
-      "title_he": "\"מה שקרה לסלייס לא יקרה לנו. הם הכניסו מוצרים רעילים שפגעו בעמיתים\", כלכליסט, 06.05.2024",
-      "publisher": "Calcalist",
-      "publisher_he": "כלכליסט",
-      "kind": "article",
-      "strength": "secondary",
-      "quote": "הקפיאו את האפשרות למשוך מהן כספים לפחות עד 2026",
       "checked": "2026-10-25"
     }
   ]
