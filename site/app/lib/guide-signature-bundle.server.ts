@@ -6,7 +6,10 @@
 //
 // 2026-10-25 (current-account page, G3): the current account's illustrative run starts from the rate most of the collected banks
 // publish (F-85), not from one bank's rate; `commonAccountRate` makes that value and the page's counts from the bank records.
-import { mostCommonRate } from "@finance-tool/engine";
+//
+// 2026-10-26 (founder: a general page names no single bank's rate): the one-year deposit on the money-market ladder is the range
+// across the collected banks (F-86); `oneYearDepositRecords` and `depositRange` make it, and the bank-deposit page lists each bank.
+import { mostCommonRate, rateRange } from "@finance-tool/engine";
 import type { Bundle } from "./engine";
 import { p05Range, runTimeline } from "./engine";
 import type { DepositTerms, ParameterRecord, RuleRecord, ValueObject, WrapperId, WrapperRecord } from "@finance-tool/schema";
@@ -85,6 +88,17 @@ export function currentAccountRecords(deposits: DepositTerms[]): DepositTerms[] 
   return [...latest.values()].sort((a, b) => (a.bank < b.bank ? -1 : 1));
 }
 
+/** One record per bank of a one-year deposit at a fixed rate with no linkage (F-86): the latest by snapshot. */
+export function oneYearDepositRecords(deposits: DepositTerms[]): DepositTerms[] {
+  const latest = new Map<string, DepositTerms>();
+  for (const d of deposits) {
+    if (d.wrapper_id !== "bank-deposit" || d.rate_type !== "fixed" || d.linkage !== "none" || d.term_months.value !== 12) continue;
+    const prev = latest.get(d.bank);
+    if (!prev || d.snapshot > prev.snapshot) latest.set(d.bank, d);
+  }
+  return [...latest.values()].sort((a, b) => (a.bank < b.bank ? -1 : 1));
+}
+
 /** The records as the page reads them: the printed rate and ceiling as sourced figures, with the record's own Hebrew text. A record whose rate is not a number is left out. */
 export function accountBanks(records: DepositTerms[]): AccountBank[] {
   const banks: AccountBank[] = [];
@@ -141,6 +155,25 @@ export function commonAccountRate(banks: AccountBank[], rules: Record<string, Ru
     of: make(result.of, "count", "כמה בנקים נאספו"),
     paying: make(result.paying, "count", "כמה בנקים מפרסמים ריבית מעל 0"),
     ceiling,
+  };
+}
+
+/** The range of a one-year deposit's rate across the banks (F-86) as computed values over the banks' printed rates. */
+export interface DepositRange {
+  lo: SiteValue;
+  hi: SiteValue;
+  count: SiteValue;
+}
+
+export function depositRange(banks: AccountBank[], today: string): DepositRange | null {
+  const result = rateRange(banks.map((b) => Number(b.rate.value)));
+  if (!result) return null;
+  const inputs = Object.fromEntries(banks.map((b) => [b.name, b.rate]));
+  const make = (value: number, unit: SiteValue["unit"], about: string) => computed(value, unit, "F-86", inputs, { today, about });
+  return {
+    lo: make(result.lo, "pct_per_year", "הריבית הנמוכה ביותר על פיקדון לשנה בריבית קבועה בבנקים שנאספו"),
+    hi: make(result.hi, "pct_per_year", "הריבית הגבוהה ביותר על פיקדון לשנה בריבית קבועה בבנקים שנאספו"),
+    count: make(result.count, "count", "כמה בנקים נאספו"),
   };
 }
 

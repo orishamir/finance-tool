@@ -6,7 +6,7 @@ import type { DepositTerms, FundRecord, ParameterRecord, RuleRecord, WrapperReco
 import { loadParameters, loadRules, loadWrappers, today } from "./data.server";
 import type { Bundle } from "./engine";
 import { p05Value } from "./engine";
-import { accountBanks, buildInstrumentBundle, commonAccountRate, currentAccountRecords, familyOf, publishedDeposit, type InstrumentFamily } from "./guide-signature-bundle.server";
+import { accountBanks, buildInstrumentBundle, commonAccountRate, currentAccountRecords, depositRange, familyOf, oneYearDepositRecords, publishedDeposit, type InstrumentFamily } from "./guide-signature-bundle.server";
 import type { SignatureData } from "./guide-signature";
 import { loadDepositTerms, loadFunds } from "./instruments.server";
 import { buildPension, buildProvident, buildStudyFund } from "./guide-signature-g2.server";
@@ -110,6 +110,15 @@ function depositFacts(d: SignatureData, c: Ctx, wrapperId: string, prefix = ""):
   return { rate, rec: pub.record };
 }
 
+/** The banks' one-year fixed-rate deposits and their range (F-86), on `d`: the ladder's deposit row and the bank-deposit page's list. */
+function addDepositBanks(d: SignatureData, c: Ctx): ReturnType<typeof depositRange> {
+  const banks = accountBanks(oneYearDepositRecords(c.deposits));
+  d.depositBanks = banks;
+  const range = depositRange(banks, c.t);
+  if (!range) d.gaps.push("depositBanks");
+  return range;
+}
+
 // ---------------------------------------------------------------- current account
 
 /** The banks' current-account records and the rate most of them pay (F-85), on `d`: the data both the account page and the ladder read. */
@@ -147,6 +156,13 @@ builders["bank-deposit"] = (c) => {
   addBundle(d, c, "bank-deposit");
   addBundle(d, c, "money-market-fund-daily");
   depositFacts(d, c, "bank-deposit");
+  // the list the money-market ladder links to: each collected bank's one-year fixed-rate deposit (F-86)
+  const range = addDepositBanks(d, c);
+  if (range) {
+    d.facts.depositLo = range.lo;
+    d.facts.depositHi = range.hi;
+    d.facts.depositCount = range.count;
+  }
   d.facts.cashRate = p05Value(c.p05, "cash_rate");
   const brk = d.facts.break;
   if (brk && brk.value !== "not_allowed" && brk.value !== "none") d.gaps.push("depositBreak");
@@ -180,15 +196,19 @@ builders["money-market-fund-daily"] = (c) => {
   addBundle(d, c, "money-market-fund-daily");
   // the current-account row is the rate most of the collected banks publish (F-85), with the best a bank pays beside it
   const { common } = addAccountBanks(d, c);
-  const dep = depositFacts(d, c, "bank-deposit", "deposit:");
+  // the one-year deposit row is the range across the collected banks (F-86), never one bank's rate (founder, 2026-10-26)
+  const range = addDepositBanks(d, c);
   // names the ladder reads
   if (common) {
     d.facts.currentRate = common.rate;
     d.facts.currentCount = common.count;
     d.facts.currentBankCount = common.of;
   }
-  if (dep.rate) d.facts.depositRate = dep.rate;
-  if (d.facts["deposit:term"]) d.facts.depositTerm = d.facts["deposit:term"]!;
+  if (range) {
+    d.facts.depositLo = range.lo;
+    d.facts.depositHi = range.hi;
+    d.facts.depositCount = range.count;
+  }
   d.facts.cashRate = p05Value(c.p05, "cash_rate");
   // MF-11 (prices regulations reg. 15): when redemption money reaches the account, stated in the guide's prose (MF OQ4 closed 2026-10-26); MF-35: the renewable fund's dates are chosen when buying
   return withRules(d, "MF-10", "MF-11", "MF-34", "MF-35", "BANK-09", "BANK-13");

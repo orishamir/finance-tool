@@ -88,21 +88,21 @@
       "rationale_he": "האינפלציה השנתית שהגרף מניח, כדי להציג סכומים בכסף של היום. זה ערך התחלה עגול שהאתר בחר: לא ממוצע שנמדד ולא תחזית. אפשר להזין אינפלציה אחרת."
     },
     "cash_rate": {
-      "value": 3.5,
+      "value": 3.25,
       "unit": "pct_per_year",
       "state": "sourced",
       "source": {
-        "url": "docs/parameters-rationale.md#illustrative-scenario",
-        "title": "Founder's choice, made by Claude at his request: illustrative scenario",
-        "publisher": "founder",
+        "url": "https://www.boi.org.il/publications/pressreleases/21-10-26b/",
+        "title": "בנק ישראל, הודעה לעיתונות 21.10.2026: הוועדה המוניטרית החליטה להותיר את הריבית ללא שינוי ברמה של 3.25%",
+        "publisher": "Bank of Israel",
         "strength": "primary"
       },
-      "checked": "2026-10-23",
-      "effective_from": "2026-10-23",
+      "checked": "2026-10-26",
+      "effective_from": null,
       "effective_to": null,
-      "update_rule": "founder",
-      "notes": "yearly rate for cash-like products (deposit, money-market fund, makam, government bond, current account); the site's assumption for options with no published rate of their own (money-market fund, makam, government bond); the bank deposit and the current account run on their published rates (2026-10-24)",
-      "rationale_he": "הריבית השנתית שהגרף מניח למוצרים דמויי מזומן: קרן כספית, מק״מ ואג״ח ממשלתית. זה ערך התחלה עגול שהאתר בחר, לא ריבית שפורסמה ולא תחזית. פיקדון בבנק ועו״ש מחושבים לפי הריבית שהבנק פרסם. אפשר להזין ריבית אחרת."
+      "update_rule": "market",
+      "notes": "The Bank of Israel's policy rate, quoted as one published figure (D20 as amended 2026-10-26, D22). The site's assumption for cash-like options with no published rate of their own (money-market fund, makam, government bond); a daily money-market fund tracks it less its costs (MF-34). The bank deposit and the current account run on their banks' published rates. Next decision 23.11.2026 (the press release's last line); recheck then.",
+      "rationale_he": "ריבית בנק ישראל, כפי שבנק ישראל פרסם בהחלטת הריבית מ־21.10.2026. זו ההנחה של האתר לקרן כספית, למק״מ ולאג״ח ממשלתית, שאין להם ריבית מפורסמת משלהם; קרן כספית יומית נעה לפי ריבית בנק ישראל בניכוי העלויות שלה. פיקדון בבנק ועו״ש מחושבים לפי הריבית שהבנק פרסם. אפשר להזין ריבית אחרת."
     },
     "annual_income": {
       "value": 144000,

@@ -44,7 +44,7 @@ export const tier2Table: { id: string; he: string; questions: string[]; display:
   { id: "foreign-currency-deposits", he: "פיקדון במטבע חוץ", questions: ["TX2 OQ2"], display: "TX2 OQ2" },
   { id: "reits", he: "קרן להשקעות במקרקעין", questions: ["TX2 OQ8"], display: "TX2 OQ8" },
   { id: "gold-via-funds", he: "השקעה בזהב דרך קרנות סל", questions: ["TX2 OQ10"], display: "TX2 OQ10" },
-  { id: "amendment-190-deposits", he: "תיקון 190", questions: ["TXA OQ14", "TXA OQ15"], display: "TXA OQ14, TXA OQ15" },
+  { id: "amendment-190-deposits", he: "תיקון 190", questions: ["TXA OQ14"], display: "TXA OQ14" },
 ];
 
 function tier2List(): Tier2Row[] {

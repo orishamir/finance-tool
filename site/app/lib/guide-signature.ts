@@ -16,6 +16,8 @@ export interface SignatureData {
   facts: Record<string, SiteValue>;
   /** The banks whose current-account record the site holds, one each (the current-account page and the ladder read them). */
   banks?: AccountBank[];
+  /** The banks whose one-year fixed-rate deposit the site holds, one each (F-86: the ladder's range, the bank-deposit page's list). */
+  depositBanks?: AccountBank[];
   /** Things the visual needs that the data does not hold yet: each shows "עוד לא חושב" with its reason (copy `guideSignature.gaps`). */
   gaps: string[];
   /** Rule ids the visual cites beyond those its bundles read. */
@@ -264,12 +266,13 @@ export interface LadderRow {
   id: string;
   speed: Speed;
   rate: SiteValue;
-  /** `published`: a bank's own table; `assumption`: the site's P-05 `cash_rate` (D20); `common`: the rate most of the collected banks publish (F-85). */
-  kind: "published" | "assumption" | "common";
-  /** The term of a row that comes back only at its end. */
-  term?: SiteValue;
+  /** `assumption`: the site's P-05 `cash_rate` (D20); `common`: the rate most of the collected banks publish (F-85); `range`: the
+   *  lowest to the highest rate of the collected banks (F-86), `rate` being the highest. */
+  kind: "assumption" | "common" | "range";
   /** The current account: how many collected banks print the row's rate, out of how many (F-85). */
   banks?: { count: SiteValue; of: SiteValue };
+  /** The one-year deposit: the lowest rate and how many banks were collected (F-86). */
+  range?: { lo: SiteValue; count: SiteValue };
   /** The current account: the most a bank pays, with the largest ceiling (the conditions are the bank's). */
   top?: { rate: SiteValue; name: string; ceiling: SiteValue | null };
 }
@@ -296,8 +299,10 @@ export function ladderRows(d: SignatureData): LadderRow[] {
     rows.push({ id: "money-market-fund-daily", speed: "trading-day", rate: assumed, kind: "assumption" });
     rows.push({ id: "money-market-fund-renewable", speed: "fixed-dates", rate: assumed, kind: "assumption" });
   }
-  const dep = fact(d, "depositRate");
-  if (dep) rows.push({ id: "bank-deposit", speed: "at-maturity", rate: dep, kind: "published", ...(fact(d, "depositTerm") ? { term: fact(d, "depositTerm")! } : {}) });
+  const hi = fact(d, "depositHi");
+  const lo = fact(d, "depositLo");
+  const count = fact(d, "depositCount");
+  if (hi && lo && count) rows.push({ id: "bank-deposit", speed: "at-maturity", rate: hi, kind: "range", range: { lo, count } });
   return rows.sort((a, b) => speedOrder.indexOf(a.speed) - speedOrder.indexOf(b.speed));
 }
 

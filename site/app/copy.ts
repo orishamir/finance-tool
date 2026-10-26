@@ -2453,12 +2453,9 @@ export const r4playbook = {
     "SW OQ2": "האם חוזר ההעברה חל על קופת גמל להשקעה.",
     "SW OQ3": "מה קובעים לגבי פניות שימור במוצרי גמל.",
     "SW OQ4": "האם הצעה שניתנה לפני ההצטרפות מחייבת.",
-    "SW OQ5": "איך נבדקת הסכמת הלקוח להוצאת דוח מהמסלקה.",
     "SW OQ9": "אילו בנקים פטורים מהמעבר, ואיך נספר יום העסקים השישי.", // 2026-10-26: narrowed, SW-26 gives the account and activity types
-    "SW OQ10": "המחיר המפוקח להעברת ניירות ערך.",
     "SW OQ11": "המס על העברת ניירות ערך בין חשבונות של אותו בעלים.",
     "SW OQ12": "העברה בין מוסד ישראלי לברוקר זר.",
-    "SW OQ16": "הסרת סוכן שכבר מחובר לחשבון.",
   } as Record<string, string>,
   loading: "טוען…",
   noWrapper: "אין מדריך מעבר למוצר הזה.",
@@ -2950,6 +2947,7 @@ export const guideSignature = {
       renewableDates: "מועדי הסדרות הבאות עוד לא נאספו: הם כתובים בהסכם הקרן ובתשקיף שלה, והאתרים שמפרסמים אותם חוסמים קריאה אוטומטית.",
       seriesDate: "תאריך הפדיון של הסדרה לא נמצא בנתוני הקרן.",
       accountBanks: "הריביות שהבנקים מפרסמים על יתרה בעו״ש עוד לא נאספו.",
+      depositBanks: "הריביות שהבנקים מפרסמים על פיקדון לשנה עוד לא נאספו.",
     } as Record<string, string>,
     gapFallback: "הנתונים לזה עוד לא נאספו.",
   },
@@ -3021,6 +3019,8 @@ export const guideSignature = {
     breakOther: "שבירה: לפי תנאי הבנק",
     afterTax: "אחרי מס ועלויות. הקרן לפי ההנחה של האתר.",
     rateLine: { before: "הפיקדון של לאומי משלם", middle: "בשנה, לתקופה של" },
+    // 2026-10-26: each collected bank's one-year fixed-rate deposit, the list the money-market ladder links to (F-86)
+    banks: { title: "פיקדון לשנה בריבית קבועה, בכל בנק שנאסף", range: { before: "בין", middle: "ל־", after: "בשנה, לפני מס." } },
     about: { depositEnd: "מה שנשאר מהפיקדון בסוף התקופה, אחרי מס", depositGain: "הרווח מהפיקדון בסוף התקופה, אחרי מס", fundGain: "הרווח מהקרן באותה תקופה, אחרי עלויות ומס", fundNow: "מה שנשאר מהקרן אם מושכים ביום שבחרתם, אחרי עלויות ומס", gap: "ההפרש בין הרווח בקרן לרווח בפיקדון" },
   },
   plan: {
@@ -3034,7 +3034,7 @@ export const guideSignature = {
     at: { before: "אחרי", after: "חודשים מתחילת התוכנית" },
     figures: { free: "פנוי לקחת", locked: "עדיין נעול", last: "ההפקדה האחרונה נפתחת בחודש" },
     lockLine: { before: "בתוכנית של לאומי התקופה היא", middle: "והריבית", after: "בשנה; אין אפשרות שבירה." },
-    alt: { before: "בפיקדון חד־פעמי לתקופה של", rate: "ריבית", middle: "כל הסכום נעול ואז פנוי בבת אחת; בתוכנית ההפקדה האחרונה נפתחת רק בחודש" },
+    alt: { before: "בפיקדון חד־פעמי", ofBank: "של", forTerm: "לתקופה של", rate: "ריבית", middle: "כל הסכום נעול ואז פנוי בבת אחת; בתוכנית ההפקדה האחרונה נפתחת רק בחודש" },
     rangeLine: "הטווח בטבלה של הבנק נקרא כסכום להפקדה אחת; הטבלה לא אומרת זאת במילים.",
     about: { free: "מה שפנוי לקחת ביום שבחרתם: ההפקדות שהתקופה שלהן הסתיימה, אחרי מס", locked: "הכסף שהופקד ועדיין נעול ביום שבחרתם", last: "החודש שבו ההפקדה האחרונה נפתחת" },
   },
@@ -3044,15 +3044,17 @@ export const guideSignature = {
     rows: { "current-account": "עו״ש", "money-market-fund-daily": "קרן כספית יומית", "money-market-fund-renewable": "קרן כספית מתחדשת", "bank-deposit": "פיקדון לשנה" } as Record<string, string>,
     wait: { "any-time": "בכל רגע", "trading-day": "הוראת פדיון בכל יום מסחר", "fixed-dates": "רק במועדים שנקבעו מראש", "at-maturity": "בסוף התקופה, בלי שבירה" } as Record<string, string>,
     thisOne: "המוצר בעמוד",
+    // 2026-10-26: a row whose rate is one bank's own figure names the bank ("פיקדון לשנה של לאומי"), D30/D31
+    ofBank: "של",
     // 2026-10-25 (G3): the current-account row is the rate most of the collected banks publish, with the best a bank pays beside it
     common: { of: "מתוך", after: "הבנקים שנאספו מפרסמים ריבית כזאת." },
     top: { before: "יש בנקים שמשלמים עד", conditions: "בתנאים ועל עד", only: "בלבד", conditionsNoCeiling: "בתנאי הבנק" },
-    term: "תקופה:",
-    kinds: { published: "ריבית שפורסמה", assumption: "הנחה של האתר", common: "הריבית שרוב הבנקים משלמים" } as Record<string, string>,
+    // 2026-10-26 (founder): the one-year deposit is the range across the collected banks (F-86), linked to each bank's rate
+    range: { to: "עד", upTo: "עד", before: "ריבית קבועה, ב־", after: "הבנקים שנאספו.", link: "הריבית בכל בנק", anchorId: "deposit-banks" },
+    kinds: { assumption: "לפי ריבית בנק ישראל", common: "הריבית שרוב הבנקים משלמים", range: "טווח בבנקים שנאספו" } as Record<string, string>,
     chart: { aria: "ארבעה מוצרים לפי מהירות החזרת הכסף, וריבית כל אחד" },
     best: { before: "הריבית הגבוהה ביותר שמחזירה את הכסף בזמן:", middle: "בשנה" },
     foot: "ריבית שנתית לפני מס ועלויות.",
-    depositFoot: "הפיקדון לשנה לפי הפרסום של לאומי; בנקים אחרים עוד לא נאספו.",
   },
   renewable: {
     marker: "מתי תצטרכו את הכסף?",
