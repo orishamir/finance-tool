@@ -37,7 +37,8 @@ export function MoneyMarketDailyVisual({ data }: VisualProps) {
                   <RowName row={r} />
                   {mine && <Tag tone="positive" className="ms-2">{copy.ladder.thisOne}</Tag>}
                 </span>
-                <span className="flex items-center gap-2">
+                {/* wraps: on a phone the range "1.55% עד 2.25%" beside its tag ran 18 px out of the row (2026-10-26) */}
+                <span className="flex flex-wrap items-center gap-x-2 gap-y-1">
                   <Tag tone={r.kind === "assumption" ? "parameter" : "neutral"}>{copy.ladder.kinds[r.kind]}</Tag>
                   <span className="font-semibold text-lg whitespace-nowrap">
                     {r.range ? (

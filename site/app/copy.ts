@@ -3696,6 +3696,7 @@ export const kit = {
       seriesA: "מסלול א",
       seriesB: "מסלול ב",
       seriesC: "קו מנוקד: על תשואה שהוזנה",
+      baselineDots: "קו נקודות: העו״ש, קו הבסיס בגרף ההשוואה",
       fee: "דמי ניהול",
       yearWord: "שנה",
       today: "היום",

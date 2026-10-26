@@ -105,7 +105,8 @@ export function BankDepositVisual({ data, today }: VisualProps) {
             ) : (
               <rect x={0} y={DEPOSIT_Y} width={plotW} height={LANE_H} rx={3} fill={`url(#${pid}-lock)`} />
             )}
-            <rect x={0} y={FUND_Y} width={plotW} height={LANE_H} rx={3} className="fill-chart-alt" fillOpacity="0.55" />
+            {/* the fund's gold at full strength, as in the bars under it: at 55% it read as a dull olive, another colour for the same fund (2026-10-26) */}
+            <rect x={0} y={FUND_Y} width={plotW} height={LANE_H} rx={3} className="fill-chart-alt" />
             <line x1={0} x2={plotW} y1={AXIS_Y - 6} y2={AXIS_Y - 6} className="stroke-chart-axis" strokeWidth="1" />
             {ticks.map((t) => (
               <text key={t} x={x(t)} y={AXIS_Y + 12} textAnchor={t === 0 ? "start" : t === term ? "end" : "middle"} className="text-xs fill-chart-text" data-scale>
@@ -122,12 +123,12 @@ export function BankDepositVisual({ data, today }: VisualProps) {
             {copy.deposit.lanes.fund}
           </span>
           {kind === "not-allowed" && (
-            <LaneLabel from={0} to={plotW} top={DEPOSIT_Y - 23} prefer="end">
+            <LaneLabel from={0} to={plotW} top={DEPOSIT_Y - 25} prefer="end">
               {copy.deposit.locked}: {copy.deposit.noBreak}
             </LaneLabel>
           )}
           {/* beside the fund's name, in the row the marker crosses: it steps aside from the marker, and fades when there is no room */}
-          <LaneLabel from={plotW / 2} to={plotW} top={FUND_Y - 23} markerX={x(m)} prefer="end">
+          <LaneLabel from={plotW / 2} to={plotW} top={FUND_Y - 25} markerX={x(m)} prefer="end">
             {copy.deposit.open}
           </LaneLabel>
           <span className="absolute text-xs text-chart-text" dir="rtl" style={{ right: 0, top: AXIS_Y + 14 - 2 }}>
