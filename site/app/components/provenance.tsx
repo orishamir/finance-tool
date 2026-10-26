@@ -204,8 +204,8 @@ export function Num({ value, size = "inline", display, animate, className, prefi
   return prefix ? <span className="whitespace-nowrap">{prefix}{button}</span> : button;
 }
 
-/** A lead text that ends in a maqaf word ("נכון ל־", "ב־") followed by a number: only its last word is bound to the number
- * (one non-breaking span), so the rest of the sentence still wraps. */
+/** A lead text that ends in a maqaf word ("נכון ל־", "ב־") or a word and a space ("ממוצע ") followed by a number: only its last word is
+ * bound to the number (one non-breaking span, the space kept), so the rest of the sentence still wraps. */
 export function LeadTail({ lead, children }: { lead: string; children: ReactNode }) {
   const m = /^([\s\S]*?)(\S+)(\s*)$/.exec(lead);
   if (!m) return <>{children}</>;
@@ -214,6 +214,7 @@ export function LeadTail({ lead, children }: { lead: string; children: ReactNode
       {m[1]}
       <span className="whitespace-nowrap">
         {m[2]}
+        {m[3]}
         {children}
       </span>
     </>
@@ -226,7 +227,8 @@ export function NumAfter({ lead, ...rest }: NumProps & { lead: string }) {
   return (
     <>
       {m[1]}
-      <Num {...rest} prefix={m[2]} />
+      {/* the space after the last word stays: a lead that ends "ממוצע " read "ממוצע2025" (2026-10-26) */}
+      <Num {...rest} prefix={`${m[2]}${m[3]}`} />
     </>
   );
 }
@@ -349,10 +351,12 @@ export function IdRef({ id, className, closedOn, asLabel }: { id: string; classN
 
 /**
  * Text that names open questions inside a sentence (a copy string that ends "... שאלה פתוחה SW OQ4"): each code in it becomes an `IdRef`.
- * A string with no code comes back unchanged.
+ * `assumptions` also turns the method's assumption ids (`A-01`) into chips: printed as plain text, "(A-03)" broke at its hyphen on a phone
+ * (the parameters page, 2026-10-26). A string with no code comes back unchanged.
  */
-export function IdText({ text }: { text: string }) {
-  const parts = text.split(/\b([A-Z0-9]+[ -]OQ\d+)\b/);
+export function IdText({ text, assumptions }: { text: string; assumptions?: boolean }) {
+  // the chip is its own frame: "(A-03)" loses its brackets
+  const parts = assumptions ? text.replace(/\((A-\d+)\)/g, "$1").split(/\b([A-Z0-9]+[ -]OQ\d+|A-\d+)\b/) : text.split(/\b([A-Z0-9]+[ -]OQ\d+)\b/);
   if (parts.length === 1) return <>{text}</>;
   return (
     <>
@@ -401,11 +405,13 @@ const chipMore = (n: number) => (n === 1 ? scopeWords.chipMore.one : n === 2 ? s
  * The card's scope label: "חל על כולם", "של הראל ואלטשולר שחם" (the companies whose own documents say it), "לא הוכח שחל על כולם";
  * "על סלייס וגלובלנט" for a record about companies that rests on none of their documents (a press report, a forum post).
  */
-function scopeTag(rule: RuleRecord, ownDocs: OwnDocs | undefined): string {
+function scopeTag(rule: RuleRecord, ownDocs: OwnDocs | undefined, short?: { company: string | undefined }): string {
   if (rule.scope === "general") return scopeWords.tag.general;
   if (rule.scope === "unsettled") return scopeWords.tag.unsettled;
-  // the same companies the chip counts (`shownCompanies`): those whose own documents say it, else everyone it is about
-  const names = joinNames(shownCompanies(rule, ownDocs).map((c) => c.name_he));
+  // the same companies the chip counts (`shownCompanies`): those whose own documents say it, else everyone it is about. `short` (the card's
+  // tag) names them as the chip does, the page's company or the first and "ועוד N": six fund managers in one tag ran 400 px past a phone's
+  // edge (2026-10-26); the card's scope line under the text names them all.
+  const names = short ? chipName(rule, ownDocs, short.company, chipMore) ?? "" : joinNames(shownCompanies(rule, ownDocs).map((c) => c.name_he));
   return (ownDocCompanies(rule, ownDocs).length > 0 ? scopeWords.tag.institution : scopeWords.tag.about).replace("{names}", names);
 }
 
@@ -1095,7 +1101,7 @@ export function RuleCard({ id, data, headId, inline }: { id: string; data: Prove
         </h2>
         {/* who it applies to (D30): a neutral label, never a warning; the strength tag stays only for an open or second-hand source, or a general rule read from a company's document */}
         <div className="flex flex-wrap items-center gap-1.5">
-          <Tag tone="neutral">{scopeTag(rule, data.ownDocs)}</Tag>
+          <Tag tone="neutral" wrap>{scopeTag(rule, data.ownDocs, { company: data.company })}</Tag>
           {/* a record the rule base keeps that is not a rule says so: its foot leads to "לא נכלל ככלל" on /companies (review, 2026-10-26) */}
           {isNotRule(id) && !isGeneral(rule) && !isExperience(id) && <Tag tone="neutral">{scopeWords.notRule.tag}</Tag>}
           {isExperience(id) ? (

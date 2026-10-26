@@ -400,6 +400,9 @@ export function GoalFormBody({ data, to }: { data: FormData; to: string }) {
           <AssumptionFields data={data} />
         </div>
       </div>
+      {/* only the two doors and the line that says what is missing stay at the foot of a phone's screen: with the three notes under
+          them the bar covered almost half of a 360 x 780 screen (2026-10-26); the notes follow the bar in the page. The bar stays a
+          child of the form, so it sticks over the whole form. */}
       <div className="sticky bottom-0 z-[var(--z-sticky)] -mx-gutter px-gutter pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] bg-background/90 backdrop-blur border-t border-border md:static md:mx-0 md:px-0 md:border-0 md:bg-transparent md:backdrop-blur-none md:pt-0">
         <div className="flex flex-col gap-2 md:items-start">
           <div className="flex flex-col gap-2 md:flex-row md:items-center md:gap-3 w-full md:w-auto">
@@ -411,21 +414,23 @@ export function GoalFormBody({ data, to }: { data: FormData; to: string }) {
               {r5.form.secondDoor}
             </Button>
           </div>
-          <p className="text-xs text-muted-foreground max-w-measure">{r5.form.doorsLine}</p>
           <p id="goal-submit-line" role="status" className={cx("text-sm", message ? "text-destructive" : "text-muted-foreground", !line && "sr-only")}>
             {line}
           </p>
-          <p className={cx("text-xs flex flex-wrap items-center gap-x-1.5 gap-y-0.5", failed ? "text-caution-foreground" : "text-muted-foreground")}>
-            {!failed && <IconCheck size={14} className="text-positive" />}
-            {failed ? r2.couldNotSave : r2.savedAuto}
-          </p>
-          <p className="text-xs text-muted-foreground max-w-measure">
-            {r3transfer.onePerDevice} {r3transfer.erasedNote}{" "}
-            <Link to="/transfer" className="text-link hover:underline">
-              {r3holdings.transferLink}
-            </Link>
-          </p>
         </div>
+      </div>
+      <div className="flex flex-col gap-2 -mt-4">
+        <p className="text-xs text-muted-foreground max-w-measure">{r5.form.doorsLine}</p>
+        <p className={cx("text-xs flex flex-wrap items-center gap-x-1.5 gap-y-0.5", failed ? "text-caution-foreground" : "text-muted-foreground")}>
+          {!failed && <IconCheck size={14} className="text-positive" />}
+          {failed ? r2.couldNotSave : r2.savedAuto}
+        </p>
+        <p className="text-xs text-muted-foreground max-w-measure">
+          {r3transfer.onePerDevice} {r3transfer.erasedNote}{" "}
+          <Link to="/transfer" className="text-link hover:underline">
+            {r3holdings.transferLink}
+          </Link>
+        </p>
       </div>
     </form>
   );

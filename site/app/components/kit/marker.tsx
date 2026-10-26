@@ -99,6 +99,42 @@ export function MarkerMark({ x, y1, y2 }: { x: number; y1: number; y2: number })
   );
 }
 
+/** Room kept clear on each side of the marker's line: the thumb's 11 px radius, its stroke and a pixel. */
+const MARKER_CLEAR = 13;
+
+/**
+ * The name of a band on a marker's lane ("נעול: משיכה ממוסה", "אפשר למשוך בפטור") inside its band (`from` to `to`, px from the plot's
+ * left), at the band's `prefer` end. Over a lane the marker crosses, give `markerX`: when the marker stands on the label it moves to the
+ * band's other end or beside the marker, and when it fits nowhere it fades out (the marker ran through the words on a phone, 2026-10-26).
+ * In the row above a lane, where the marker's line does not reach, leave `markerX` out. The parent reads left to right, as the marker's does.
+ */
+export function LaneLabel({ from, to, top, markerX, prefer = "start", children }: { from: number; to: number; top: number; markerX?: number; prefer?: "start" | "end" | "center"; children: ReactNode }) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const [w, setW] = useState(0);
+  useIsoLayoutEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const measure = () => setW(el.offsetWidth);
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+  const pad = 4;
+  const start = from + pad;
+  const end = to - pad - w;
+  const order = prefer === "end" ? [end, start] : prefer === "center" ? [(from + to) / 2 - w / 2, start, end] : [start, end];
+  const clear = (l: number) => markerX === undefined || l + w <= markerX - MARKER_CLEAR || l >= markerX + MARKER_CLEAR;
+  const candidates = markerX === undefined ? order : [...order, markerX + MARKER_CLEAR, markerX - MARKER_CLEAR - w];
+  // before the label is measured (the pre-rendered page) it stands at its preferred place
+  const left = w === 0 ? order[0] : candidates.find((l) => l >= start - 0.5 && l <= end + 0.5 && clear(l));
+  return (
+    <span ref={ref} className={cx("absolute text-xs bg-card/85 rounded-sm px-1.5 py-0.5 whitespace-nowrap transition-opacity duration-[var(--duration-fast)]", left === undefined && "opacity-0")} dir="rtl" style={{ left: left ?? order[0], top }}>
+      {children}
+    </span>
+  );
+}
+
 export interface GainBar {
   key: string;
   label: ReactNode;

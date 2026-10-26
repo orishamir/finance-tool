@@ -7,7 +7,7 @@ import { guideSignature as copy, values as valuesCopy } from "../../copy";
 import { breakKindOf, depositModel, fact, factNumber } from "../../lib/guide-signature";
 import { fmt } from "../../lib/format";
 import { entered as enteredValue, type SiteValue } from "../../lib/value";
-import { Callout, GainBars, InputSlot, KeyValue, Marker, MarkerMark, NumberField, Sentence, Stat, StatRow, useWidth } from "../kit";
+import { Callout, GainBars, InputSlot, KeyValue, LaneLabel, Marker, MarkerMark, NumberField, Sentence, Stat, StatRow, useWidth } from "../kit";
 import { Num, RulesLine } from "../provenance";
 import { Gap, SourceLine, figure, inputSite, rulesOfBundle, useSigInputs, type VisualProps } from "./kit";
 
@@ -112,7 +112,8 @@ export function BankDepositVisual({ data, today }: VisualProps) {
                 {t}
               </text>
             ))}
-            <MarkerMark x={x(m)} y1={DEPOSIT_Y - 12} y2={FUND_Y + LANE_H + 8} />
+            {/* the line starts at the deposit's lane, so the deposit's state, in the row above it, stays clear of the marker (2026-10-26) */}
+            <MarkerMark x={x(m)} y1={DEPOSIT_Y - 2} y2={FUND_Y + LANE_H + 8} />
           </svg>
           <span className="absolute text-xs text-chart-text" dir="rtl" style={{ left: 0, top: DEPOSIT_Y - 17 }}>
             {copy.deposit.lanes.deposit}
@@ -121,13 +122,14 @@ export function BankDepositVisual({ data, today }: VisualProps) {
             {copy.deposit.lanes.fund}
           </span>
           {kind === "not-allowed" && (
-            <span className="absolute text-xs bg-card/85 rounded-sm px-1.5 py-0.5 whitespace-nowrap" dir="rtl" style={{ left: Math.max(4, plotW / 2 - 70), top: DEPOSIT_Y + 4 }}>
+            <LaneLabel from={0} to={plotW} top={DEPOSIT_Y - 23} prefer="end">
               {copy.deposit.locked}: {copy.deposit.noBreak}
-            </span>
+            </LaneLabel>
           )}
-          <span className="absolute text-xs bg-card/85 rounded-sm px-1.5 py-0.5 whitespace-nowrap" dir="rtl" style={{ left: Math.max(4, plotW / 2 - 50), top: FUND_Y + 4 }}>
+          {/* beside the fund's name, in the row the marker crosses: it steps aside from the marker, and fades when there is no room */}
+          <LaneLabel from={plotW / 2} to={plotW} top={FUND_Y - 23} markerX={x(m)} prefer="end">
             {copy.deposit.open}
-          </span>
+          </LaneLabel>
           <span className="absolute text-xs text-chart-text" dir="rtl" style={{ right: 0, top: AXIS_Y + 14 - 2 }}>
             {copy.deposit.unit}
           </span>

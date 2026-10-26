@@ -13,7 +13,7 @@ import { useGoals } from "../../lib/goal";
 import { useInputs } from "../../lib/inputs";
 import { entered as enteredValue, type SiteValue } from "../../lib/value";
 import type { Bundle } from "../../lib/engine";
-import { Callout, GainBars, InputSlot, Marker, MarkerMark, NumberField, Sentence, useWidth } from "../kit";
+import { Callout, GainBars, InputSlot, LaneLabel, Marker, MarkerMark, NumberField, Sentence, useWidth } from "../kit";
 import { Num, RuleRef, RulesLine, Term } from "../provenance";
 import { G2Gap, HoldRow, PlanInputs, text } from "./g2-parts";
 import { figure, inputSite, notFeeFlag, rulesOfBundle, runFigure, useSigInputs, yearsRange, type VisualProps } from "./kit";
@@ -192,19 +192,20 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
                 {t}
               </text>
             ))}
-            <MarkerMark x={x(years)} y1={LANE_Y - 10} y2={AXIS_Y + 2} />
+            {/* the line starts at the lane, so the row above it holds the bands' names clear of the marker (2026-10-26) */}
+            <MarkerMark x={x(years)} y1={LANE_Y - 2} y2={AXIS_Y + 2} />
           </svg>
           {earlyYears === null ? null : (
             <>
               {earlyYears > 0 && x(earlyYears) > 110 && (
-                <span className="absolute text-xs bg-card/85 rounded-sm px-1.5 py-0.5 whitespace-nowrap" dir="rtl" style={{ left: 4, top: LANE_Y + 4 }}>
+                <LaneLabel from={0} to={clamp(x(earlyYears), 0, plotW)} top={LANE_Y - 24}>
                   {copy.provident.chart.one}
-                </span>
+                </LaneLabel>
               )}
               {x(earlyYears) < plotW - 130 && (
-                <span className="absolute text-xs bg-card/85 rounded-sm px-1.5 py-0.5 whitespace-nowrap" dir="rtl" style={{ right: 4, top: LANE_Y + 4 }}>
+                <LaneLabel from={clamp(x(earlyYears), 0, plotW)} to={plotW} top={LANE_Y - 24} prefer="end">
                   {copy.provident.chart.two}
-                </span>
+                </LaneLabel>
               )}
             </>
           )}
@@ -224,7 +225,7 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
 
       <div className="flex flex-col gap-3">
         <p className="text-sm font-medium">
-          {copy.provident.at.before} <InputSlot chars={10}><bdi>{fmt.years(years)}</bdi></InputSlot>
+          {copy.provident.at.before} <InputSlot chars={7}><bdi>{fmt.years(years)}</bdi></InputSlot>
           {model.ageAtExit !== null ? (
             <>
               {" "}
