@@ -5,7 +5,8 @@
   "text_he": "כשיש יותר מיתום אחד, הנוסח המקורי של התקנון האחיד של רשות שוק ההון נותן לכל יתום שיעור משלו. בתקנונים של מור, הראל, אלטשולר שחם, מיטב, מנורה מבטחים ואינפיניטי כל היתומים יחד מקבלים שיעור אחד ומתחלקים בו שווה בשווה, ובאלטשולר שחם, במיטב ובאינפיניטי יש שיעור נוסף למסלול אחד. חוזר שמשנה את השיעור לא נמצא, ולכן לא ברור מה מחייב היום. נמצא רק בתקנונים של החברות האלה; מקור כללי לא נמצא.",
   "figure_names_he": {
     "orphan_share_each_standard_text": "שיעור לכל יתום בנוסח המקורי של התקנון האחיד",
-    "orphans_share_total_current_bylaws": "שיעור לכל היתומים יחד בתקנונים העדכניים"
+    "orphans_share_total_current_bylaws": "שיעור לכל היתומים יחד בתקנונים העדכניים",
+    "harel_orphans_share_total": "שיעור לכל היתומים יחד (בהראל)"
   },
   "strength": "institution",
   "dimensions": [
@@ -52,6 +53,26 @@
       ],
       "state": "sourced",
       "notes": "All the orphans together, shared equally, in the 2025 bylaws of Mor (cited), Harel, Altshuler Shaham, Meitav and Menora Mivtachim (read by the scope research, links not recorded); Altshuler Shaham and Meitav add a 15% variant for one track."
+    },
+    "harel_orphans_share_total": {
+      "value": 40,
+      "unit": "pct",
+      "source": {
+        "url": "https://media.harel-group.co.il/media/slyhz2yj/תקנון-הראל-פנסיה-יוני-2025.pdf",
+        "title": "Harel comprehensive pension fund bylaws, edition 20, 06/2025, p.67, s.94(א)(2)(ה)",
+        "publisher": "Harel",
+        "strength": "institution"
+      },
+      "checked": "2026-10-27",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "PEN-40"
+      ],
+      "state": "sourced",
+      "notes": "Several orphans share 40% equally, in Harel's own bylaws (founder, 2026-10-27). Unsettled."
     }
   },
   "il_finance_file": "pension-and-gemel-lekitzba.md",
