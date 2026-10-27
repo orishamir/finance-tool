@@ -1,12 +1,12 @@
 diff --git a/site/app/components/decoder/brand-funds.tsx b/site/app/components/decoder/brand-funds.tsx
-index affedc0..cf174eb 100644
+index affedc0..98781c1 100644
 --- a/site/app/components/decoder/brand-funds.tsx
 +++ b/site/app/components/decoder/brand-funds.tsx
-@@ -1,71 +1,147 @@
+@@ -1,71 +1,112 @@
 -// A brand's funds (D33): one row per fund record of the brand's fund managers, with its number, what it follows, Maya's page of the
 -// fund and its fees as the manager's own sourced figures. Only collected records: the full list is the manager's, on Maya (CAT-43).
 -import { Link } from "react-router";
-+// PROTOTYPE (not for commit): the brand's funds as the track table, three options for the exposure (?fundTable=a|b|c).
++// PROTOTYPE (not for commit): the brand's funds as the track table; the index column in two versions (?idx=a|b).
 +import { Link, useSearchParams } from "react-router";
  import { brands as copy, invest } from "../../copy";
  import type { BrandFundRow } from "../../lib/brands.server";
@@ -18,7 +18,7 @@ index affedc0..cf174eb 100644
  import type { SiteValue } from "../../lib/value";
  
  const c = invest.funds;
-+type Opt = "a" | "b" | "c";
++type Opt = "a" | "b";
  
 -function FeeValue({ value }: { value: SiteValue | null }) {
 -  return value ? <Num value={value} /> : <span className="text-muted-foreground">{c.notCollected}</span>;
@@ -41,33 +41,30 @@ index affedc0..cf174eb 100644
  }
  
 -export function BrandFundList({ funds }: { funds: BrandFundRow[] }) {
-+function Ceil({ t }: { t: string }) {
-+  const m = t.match(/^(\D*)(\d+%)$/);
-+  return m ? <>{m[1]}<bdi dir="ltr" className="tabular-nums underline decoration-[var(--sourced)] underline-offset-4">{m[2]}</bdi></> : <>{t}</>;
-+}
-+
-+function Exposure({ f, opt, inline }: { f: BrandFundRow; opt: Opt; inline?: boolean }) {
-+  if (!f.profile) return null;
-+  const rows = opt === "c" ? [{ w: "מט״ח", v: f.profile.fx }] : [{ w: "מניות", v: f.profile.stocks }, { w: "מט״ח", v: f.profile.fx }];
++function Index({ f, opt, phone }: { f: BrandFundRow; opt: Opt; phone?: boolean }) {
++  if (!f.index) {
++    return f.follows ? <Link to={f.follows.href} className="text-link hover:underline">{f.follows.name || copy.funds.moneyMarket}</Link> : null;
++  }
    return (
 -    <ul className="flex flex-col gap-3">
 -      {funds.map((f) => (
 -        <BrandFundCard key={f.id} f={f} />
-+    <span className={inline ? "contents" : "grid grid-cols-[auto_auto] justify-start gap-x-2 gap-y-0.5 text-sm text-muted-foreground"}>
-+      {rows.map((r) => (
-+        <span key={r.w} className={inline ? "inline-flex gap-1.5" : "contents"}>
-+          <span>{r.w}</span>
-+          <span className="text-foreground whitespace-nowrap"><Ceil t={r.v} /></span>
-+        </span>
-       ))}
+-      ))}
 -    </ul>
++    <span className="flex flex-col items-start gap-0.5">
++      <Link to={f.index.href} className="text-link hover:underline inline-flex items-center gap-0.5 font-medium">
++        {phone && <span className="text-muted-foreground font-normal">מדד&nbsp;</span>}
++        <bdi>{f.index.name}</bdi>
++        <IconDrillIn size={16} />
++      </Link>
++      {opt === "b" && f.index.inside && <span className="text-sm text-muted-foreground max-w-64">{f.index.inside}</span>}
 +    </span>
    );
  }
  
 -function BrandFundCard({ f }: { f: BrandFundRow }) {
-+function Follows({ f }: { f: BrandFundRow }) {
-+  if (!f.follows) return null;
++function Maya({ f }: { f: BrandFundRow }) {
++  if (!f.mayaHref) return null;
    return (
 -    <Card as="li" pad="tight" id={`fund-${f.id}`} className="flex flex-col gap-2.5">
 -      <div className="flex flex-col gap-1">
@@ -81,16 +78,6 @@ index affedc0..cf174eb 100644
 -          {f.number && (
 -            <span>
 -              {c.number} <bdi dir="ltr" className="font-mono">{f.number}</bdi>
-+    <Link to={f.follows.href} className="text-link hover:underline inline-flex items-center gap-0.5">
-+      <span>{copy.funds.follows} <bdi>{f.follows.name || copy.funds.moneyMarket}</bdi></span>
-+      <IconDrillIn size={16} />
-+    </Link>
-+  );
-+}
-+
-+function Maya({ f }: { f: BrandFundRow }) {
-+  if (!f.mayaHref) return null;
-+  return (
 +    <a href={f.mayaHref} target="_blank" rel="noopener noreferrer" className="text-sm text-link hover:underline inline-flex items-center gap-1 whitespace-nowrap">
 +      {c.mayaPage} <IconExternal size={14} />
 +    </a>
@@ -99,21 +86,13 @@ index affedc0..cf174eb 100644
 +
 +export function BrandFundList({ funds }: { funds: BrandFundRow[] }) {
 +  const [sp] = useSearchParams();
-+  const opt = (["a", "b", "c"].includes(sp.get("fundTable") ?? "") ? sp.get("fundTable") : "a") as Opt;
-+  const allAccumulating = funds.every((f) => f.policy?.startsWith("לא מחלקת"));
-+  const foot = (
-+    <span className="flex flex-col gap-1 text-sm text-muted-foreground">
-+      {allAccumulating && <span>כל הקרנות כאן לא מחלקות: הדיבידנד והריבית מושקעים בקרן מחדש.</span>}
-+      {opt !== "b" && <span>החשיפה המרבית היא התקרה שהקרן מצהירה עליה בשם שלה (למשל 4A), לא מה שהיא מחזיקה היום.</span>}
-+    </span>
-+  );
-+  const head = opt === "c" ? "חשיפה מרבית למט״ח" : "חשיפה מרבית";
++  const opt: Opt = sp.get("idx") === "b" ? "b" : "a";
 +  return (
 +    <LabelSheetHost>
 +      <Card className="md:hidden p-0 md:p-0 overflow-hidden flex flex-col">
 +        {funds.map((f) => (
 +          <div key={f.id} className="track !flex-col !items-stretch !gap-1">
-+            <span className="font-medium flex flex-wrap items-center gap-2"><bdi>{f.name}</bdi></span>
++            <span className="font-medium"><bdi>{f.name}</bdi></span>
 +            <span className="text-sm text-muted-foreground">
 +              {c.number} <bdi dir="ltr" className="num-id">{f.number}</bdi>
              </span>
@@ -128,8 +107,8 @@ index affedc0..cf174eb 100644
 -          <Link to={f.follows.href} className="text-sm text-link hover:underline inline-flex items-center gap-1 self-start min-h-target">
 -            <span>
 -              {copy.funds.follows} <bdi>{f.follows.name || copy.funds.moneyMarket}</bdi>
-+            <span className="text-sm"><Follows f={f} /></span>
-+            <LabelRow labels={f.labels} />
++            <Index f={f} opt={opt} phone />
++            <LabelRow labels={f.labels} className="pt-0.5" />
 +            <span className="text-sm text-muted-foreground flex flex-wrap items-center gap-x-3 gap-y-1">
 +              דמי ניהול: <Fees f={f} inline />
              </span>
@@ -149,15 +128,9 @@ index affedc0..cf174eb 100644
 -        </KeyValue>
 -      </dl>
 -    </Card>
-+            {opt !== "b" && (
-+              <span className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-muted-foreground">
-+                {head}: <Exposure f={f} opt={opt} inline />
-+              </span>
-+            )}
 +            <Maya f={f} />
 +          </div>
 +        ))}
-+        <div className="px-4 py-3 border-t border-border">{foot}</div>
 +      </Card>
 +      <Card className="hidden md:block p-0 md:p-0 overflow-x-auto overflow-y-hidden">
 +        <table className="tbl">
@@ -165,9 +138,8 @@ index affedc0..cf174eb 100644
 +            <tr>
 +              <th scope="col">שם הקרן</th>
 +              <th scope="col">מספר נייר</th>
-+              <th scope="col">במה הכסף מושקע</th>
++              <th scope="col">{opt === "b" ? "המדד ומה יש בו" : "המדד"}</th>
 +              <th scope="col">דמי ניהול לפי הדוח של הקרן</th>
-+              {opt !== "b" && <th scope="col">{head}</th>}
 +            </tr>
 +          </thead>
 +          <tbody>
@@ -185,24 +157,60 @@ index affedc0..cf174eb 100644
 +                    <Maya f={f} />
 +                  </span>
 +                </td>
-+                <td>
-+                  <span className="flex flex-col items-start gap-1">
-+                    <Follows f={f} />
-+                  </span>
-+                </td>
++                <td><Index f={f} opt={opt} /></td>
 +                <td><Fees f={f} /></td>
-+                {opt !== "b" && <td className="whitespace-nowrap"><Exposure f={f} opt={opt} /></td>}
 +              </tr>
 +            ))}
 +          </tbody>
 +        </table>
-+        <div className="px-3 py-3 border-t border-border">{foot}</div>
 +      </Card>
 +    </LabelSheetHost>
    );
  }
+diff --git a/site/app/components/invest/icons.tsx b/site/app/components/invest/icons.tsx
+index cc39c7f..8b479cd 100644
+--- a/site/app/components/invest/icons.tsx
++++ b/site/app/components/invest/icons.tsx
+@@ -1,5 +1,5 @@
+ // The icons of the index page's labels (design-system 2.8): Lucide, 1.75px stroke, none mirrors.
+-import { Ban, Clock, Coins, FileText, Globe, House, Layers, Lock, Percent, Repeat, ShieldCheck, Sun, TriangleAlert, type LucideProps } from "lucide-react";
++import { Ban, Clock, Coins, HandCoins, PiggyBank, FileText, Globe, House, Layers, Lock, Percent, Repeat, ShieldCheck, Sun, TriangleAlert, type LucideProps } from "lucide-react";
+ import type { LabelIconKey } from "../../lib/labels";
+ 
+ const map: Record<LabelIconKey, React.ComponentType<LucideProps>> = {
+@@ -16,6 +16,8 @@ const map: Record<LabelIconKey, React.ComponentType<LucideProps>> = {
+   percent: Percent,
+   repeat: Repeat,
+   sun: Sun,
++  piggy: PiggyBank,
++  handCoins: HandCoins,
+ };
+ 
+ export function LabelIcon({ name, size = 14 }: { name: LabelIconKey; size?: number }) {
+diff --git a/site/app/copy.ts b/site/app/copy.ts
+index 32afab4..6627475 100644
+--- a/site/app/copy.ts
++++ b/site/app/copy.ts
+@@ -3652,7 +3652,7 @@ export const invest = {
+ 
+   currencies: { USD: "דולר", EUR: "אירו", GBP: "פאונד", JPY: "ין", CHF: "פרנק שוויצרי", CAD: "דולר קנדי", AUD: "דולר אוסטרלי", CNY: "יואן", HKD: "דולר הונג קונג", NIS: "שקל", ILS: "שקל" } as Record<string, string>,
+ 
+-  labelFamilies: { held: "איפה הקרן מוחזקת", trade: "איך היא נסחרת", follow: "איך היא עוקבת אחרי המדד", currency: "מטבע", tax: "מס", asks: "מה היא דורשת מכם, וסיכון", availability: "זמינות" },
++  labelFamilies: { held: "איפה הקרן מוחזקת", trade: "איך היא נסחרת", follow: "איך היא עוקבת אחרי המדד", currency: "מטבע", payout: "חלוקה", tax: "מס", asks: "מה היא דורשת מכם, וסיכון", availability: "זמינות" },
+   labelsSheet: { rules: "מקורות", close: "סגירה", forPlan: "" },
+   labels: {
+     "held-il": { text: "קרן ישראלית", explain: "הקרן רשומה בישראל ומפוקחת כאן. על מדד זר היא מקבלת את החשיפה בעסקאות, ועל מדד ישראלי היא מחזיקה את המניות." },
+@@ -3669,6 +3669,8 @@ export const invest = {
+     "tax-currency": { text: "מס גם על שינויי המטבע", explain: "בקרן ישראלית המס נמדד על הרווח הריאלי ביחידות השקליות, ולכן גם עליית המטבע שבתוך הרווח ממוסה." },
+     "tax-fund-dividend": { text: "מס דיבידנד בתוך הקרן", explain: "קרן אירית משלמת מס אמריקני על דיבידנדים מחברות אמריקניות. המס הזה הוא עלות של הקרן ואינו מזוכה בישראל." },
+     "tax-distribution": { text: "מס על כל חלוקה", explain: "קרן שמחלקת משלמת לכם דיבידנד, וממנו משלמים מס בכל חלוקה, לפני המכירה." },
++    "pays-accumulating": { text: "צוברת", explain: "הקרן לא מחלקת תשלומים: הדיבידנד והריבית שהיא מקבלת מושקעים בה מחדש, והרווח נשאר בתוך מחיר היחידה." },
++    "pays-distributing": { text: "מחלקת דיבידנד", explain: "הקרן מחלקת תשלומים לבעלי היחידות, פעם בשנה או יותר, לפי שיקול דעת המנהל." },
+     "tax-on-sale-open": { text: "מס רק במכירה", explain: "לא נמצא כלל שממסה יחיד על רווחים שקרן זרה צברה ולא חילקה, ורשות המסים לא אישרה זאת. זו שאלה פתוחה, ולכן הדרך מוצגת בלי דירוג." },
+     "ask-self-report": { text: "דיווח עצמי למס", explain: "כשאין ניכוי מס במקור במכירה, מדווחים על הרווח ומשלמים מקדמה פעמיים בשנה, ומגישים דוח שנתי." },
+     "ask-estate": { text: "מס עיזבון אמריקאי", explain: "מי שאינו אמריקאי ומחזיק נכסים אמריקניים מעל סף הנקוב בדולרים עלול להיות חייב בדוח מס ירושה אמריקני. קרן שמאוגדת בארצות הברית היא נכס אמריקני." },
 diff --git a/site/app/lib/brands.server.ts b/site/app/lib/brands.server.ts
-index fe8b1c9..ef9e7cc 100644
+index fe8b1c9..891c8e8 100644
 --- a/site/app/lib/brands.server.ts
 +++ b/site/app/lib/brands.server.ts
 @@ -7,6 +7,7 @@ import { brandsTable, institutionsTable, type FundRecord, type InstitutionRegist
@@ -213,17 +221,18 @@ index fe8b1c9..ef9e7cc 100644
  import { readParsedCached, readJsonCached } from "./read-cache.server";
  
  export interface Brand {
-@@ -95,6 +96,9 @@ export interface BrandFundRow {
+@@ -95,6 +96,10 @@ export interface BrandFundRow {
    fixed: SiteValue | null;
    variable: SiteValue | null;
    trustee: SiteValue | null;
 +  labels: import("./labels").Label[];
 +  profile: { code: string; stocks: string; fx: string } | null;
 +  policy: string | null;
++  index: { name: string; inside: string | null; href: string } | null;
  }
  
  export interface BrandFundGroup {
-@@ -108,7 +112,18 @@ export function brandFunds(brand: Brand): BrandFundGroup[] {
+@@ -108,7 +113,19 @@ export function brandFunds(brand: Brand): BrandFundGroup[] {
    if (brand.fundManagers.length === 0) return [];
    const exposures = new Map(loadExposures().map((e) => [e.id, e]));
    const recs = loadFunds().filter((f) => brand.fundManagers.includes(f.manager));
@@ -237,16 +246,66 @@ index fe8b1c9..ef9e7cc 100644
 +    const code = (rec as { exposure_code?: string }).exposure_code;
 +    row.labels = protoLabels(rec as never, ref as never, fundKindOf(rec) === "etf" ? "il-etf" : "il-tracking");
 +    row.profile = code ? { code, stocks: S[code[0]!] ?? "", fx: F[code[1]!] ?? "" } : null;
++    row.index = ex && (ex.id ?? "").startsWith("index-") ? { name: (ex.names.he[0] ?? "").replace(/^מדד /, ""), inside: (ex.one_line_he ?? "").split(/[;,]/)[0]!.replace(/^מדד של /, "") || null, href: `/exposure/${ex.id}` } : null;
 +    row.policy = rec.distribution_policy === "accumulating" ? "לא מחלקת: הדיבידנד נשאר בקרן" : rec.distribution_policy === "distributing" ? "מחלקת" : null;
 +    return { kind: fundKindOf(rec), row };
 +  });
    return kindOrder
      .map((kind) => ({ kind, funds: rows.filter((r) => r.kind === kind).map((r) => r.row).sort((a, b) => collator.compare(a.name, b.name)) }))
      .filter((g) => g.funds.length > 0);
-@@ -130,5 +145,5 @@ function fundRow(rec: FundRecord, exposureName: string | null): BrandFundRow {
+@@ -130,5 +147,5 @@ function fundRow(rec: FundRecord, exposureName: string | null): BrandFundRow {
      : kind === "money-market"
        ? { name: exposureName ?? "", href: `/guide/${rec.legal_form.includes("מתחדשת") ? "money-market-fund-renewable" : "money-market-fund-daily"}` }
        : null;
 -  return { id: rec.id, name: rec.names.he[0] ?? rec.names.en[0] ?? rec.id, number, manager: rec.manager, follows, mayaHref, fixed: fee("fixed_management"), variable: fee("variable_management"), trustee: fee("trustee") };
-+  return { id: rec.id, name: rec.names.he[0] ?? rec.names.en[0] ?? rec.id, number, manager: rec.manager, follows, mayaHref, fixed: fee("fixed_management"), variable: fee("variable_management"), trustee: fee("trustee"), labels: [], profile: null, policy: null };
++  return { id: rec.id, name: rec.names.he[0] ?? rec.names.en[0] ?? rec.id, number, manager: rec.manager, follows, mayaHref, fixed: fee("fixed_management"), variable: fee("variable_management"), trustee: fee("trustee"), labels: [], profile: null, policy: null, index: null };
  }
+diff --git a/site/app/lib/labels.ts b/site/app/lib/labels.ts
+index 82f73b0..b6efd28 100644
+--- a/site/app/lib/labels.ts
++++ b/site/app/lib/labels.ts
+@@ -7,7 +7,7 @@ import { invest as c } from "../copy";
+ import type { IndexRef, OptionId, ProviderInfo } from "./invest";
+ 
+ export type LabelTone = "neutral" | "caution" | "open";
+-export type LabelIconKey = "home" | "globe" | "clock" | "layers" | "coins" | "shield" | "file" | "lock" | "alert" | "ban" | "percent" | "repeat" | "sun";
++export type LabelIconKey = "home" | "globe" | "clock" | "layers" | "coins" | "shield" | "file" | "lock" | "alert" | "ban" | "percent" | "repeat" | "sun" | "piggy" | "handCoins";
+ 
+ export type LabelId =
+   | "held-il"
+@@ -25,6 +25,8 @@ export type LabelId =
+   | "tax-fund-dividend"
+   | "tax-distribution"
+   | "tax-on-sale-open"
++  | "pays-accumulating"
++  | "pays-distributing"
+   | "ask-self-report"
+   | "ask-estate"
+   | "risk-unsupervised"
+@@ -54,6 +56,8 @@ export const labelDefs: Record<LabelId, LabelDef> = {
+   "tax-fund-dividend": { icon: "percent", tone: "neutral", rules: ["TXF-16"] },
+   "tax-distribution": { icon: "percent", tone: "neutral", rules: ["TXF-08"] },
+   "tax-on-sale-open": { icon: "lock", tone: "open", rules: ["TXF-11"] },
++  "pays-accumulating": { icon: "piggy", tone: "neutral", rules: ["MF-49"] },
++  "pays-distributing": { icon: "handCoins", tone: "neutral", rules: ["MF-49"] },
+   "ask-self-report": { icon: "file", tone: "caution", rules: ["TXF-22"] },
+   "ask-estate": { icon: "alert", tone: "caution", rules: ["TXF-27"] },
+   "risk-unsupervised": { icon: "ban", tone: "caution", rules: ["BRK-06", "ETF-24"] },
+@@ -88,6 +92,8 @@ const familyOf: Record<LabelId, Label["family"]> = {
+   "tax-fund-dividend": "tax",
+   "tax-distribution": "tax",
+   "tax-on-sale-open": "tax",
++  "pays-accumulating": "payout",
++  "pays-distributing": "payout",
+   "ask-self-report": "asks",
+   "ask-estate": "asks",
+   "risk-unsupervised": "asks",
+@@ -126,6 +132,8 @@ export function fundLabels(rec: FundRecord, index: IndexRef, option: OptionId):
+   const out: Label[] = [];
+   const method = rec.replication?.method;
+   if (method) out.push(label(method === "physical" ? "follow-physical" : method === "swap" ? "follow-swap" : method === "futures" ? "follow-futures" : "follow-mixed"));
++  if (rec.distribution_policy === "accumulating") out.push(label("pays-accumulating"));
++  else if (rec.distribution_policy === "distributing") out.push(label("pays-distributing"));
+   const indexCurrency = index.exposure?.currency;
+   if (rec.hedged === true) out.push(label("hedged"));
+   else if (indexCurrency && !isIls(indexCurrency)) out.push(label("currency", indexCurrency));
