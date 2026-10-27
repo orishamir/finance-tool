@@ -121,6 +121,32 @@ The four options:
 
 `option-B-sp500-pc.png` stays from round 1 for reference.
 
+**Founder, round 2 (2026-10-27):** C2 chosen: the fee breakdown belongs to the broker's row. Move the fund number and its link up, next to the fund's name. Take the sum invested out (clutter). Give the broker table column headers. Two questions to think through: will readers know whether they want a hedged fund and what it costs; and is it fair to compare brokers when each is priced with a different fund?
+
+### 3.7 Hedging, and brokers priced on different funds (2026-10-27)
+
+**Hedging.** Readers will not know whether they want "מנוטרלת מט״ח". It is a choice of what you hold, not a fee: a hedged fund follows the index alone, while an unhedged one follows the index plus the dollar against the shekel (ETF-10, ETF-12). The rule base has no rule on what hedging costs. The existing label text puts that cost inside the fund's fees or its tracking difference, and tracking difference is not collected. The comparison also assumes no change in the exchange rate (method A-03). So the site can show the fee difference and must say that the rest is not known.
+
+The lead first proposed a hedged index variant among the index chips. **The founder's proposal, which the mockups follow:** hedging is a label, not a filter. Every label opens an explanation when clicked, and the fund list can be filtered by label. The hedging explanation has three parts:
+- what it means (ETF-10);
+- a worked example (10,000 ₪, the index unchanged, the dollar down 10% or up 10%), marked as an example, not a forecast, and leaving out the cost of hedging;
+- what it costs here: the fee gap at the chosen account (1,098 ₪ at Psagot), and a statement that the rest of the cost sits in the tracking difference, which is not collected.
+
+The labels that can filter are only the ones that split the list. "צוברת", which every fund has, is not offered.
+
+**Brokers on different funds.** A broker's charges depend on the fund's type (ETF, tracking fund, foreign security), not on the specific fund. A fund's own fees do not depend on the broker. So "a different fund at each broker" means "a different type at each broker".
+
+The live data shows something that makes this sharper. At 10 of the 14 accounts the collected tariff has no line for mutual-fund units ("בתעריפון אין שורה ליחידות של קרן נאמנות"). Those 10 are priced only on an ETF, while Psagot, Leumi, IBI and Altshuler Trade are priced on a tracking fund. The gap is partly a data gap. Priced on the same ETF at every account, Leumi drops from second place (76,322 ₪ with a tracking fund) to sixth (73,036 ₪).
+
+The best ETF at every account is the same fund, ATF סל (4D) S&P 500, so "compare on ETFs" really is the same fund everywhere.
+
+Round 3 (`source-round3.html`) builds the decisions into C2. In all three, the broker bar shows only what the account charges (buying, custody, account fee); the fund's fees and the tax move out of it. The broker table has column headers, the fund number sits next to the fund's name, and the sum invested is gone.
+- **E1, each account with its cheapest fund, said plainly** (`option-E1-pc.png`). A "מחושב עם" column gives the fund type and, where it applies, "קרן מחקה: אין בתעריפון". The gap is split into "מהחשבון" and "מהקרן" where the type differs. It shows the "מנוטרלת מט״ח" explanation open above the fund list.
+- **E2, account × fund type** (`option-E2-pc.png`). Each account has two cells, the best tracking fund and the best ETF, each with what is left, what the account charges, and a thin bar. The better cell is framed, and a missing tariff line is a dashed cell. It shows the fund list filtered by the "מנוטרלת מט״ח" label.
+- **E3, compare on the same type** (`option-E3-pc.png`). A switch reads "השוו את החשבונות על: הזולה בכל חשבון · קרן סל: אותה קרן בכל חשבון · קרן מחקה: 4 חשבונות". On "קרן סל", every account is priced on the same fund, so the bar is the whole difference; the fund list is filtered to ETFs.
+
+The values left at each account, per type, are the live site's (read account by account on 27.10.2026). What each account charges, and its split by fee type, are illustrative.
+
 ## 4. Against `docs/product.md`: what else the page owes the reader
 
 `docs/product.md` section 2 states the reader's job: which fund variant and which provider, "which fees are worth fighting, and what they might be failing to consider", then act, and "be able to come back later and see whether anything changed".
@@ -138,8 +164,8 @@ The four options:
 
 ## 5. Decisions for the founder
 
-1. Section 3: the account as the visual comparison and the fund as a short list; which of the round-2 mockups C1 to C4 (3.6), or a mix.
-2. Section 3.4: one control for the account, and hedging as a question that scopes the whole comparison, shown only where both kinds exist.
+1. Section 3.7: E1, E2 or E3 (C2 was chosen in round 2).
+2. Section 3.7: hedging as a clickable label with a filter (the founder's proposal), and whether a label filter also re-ranks the accounts (E3) or only filters the fund list (E1, E2).
 3. Section 4 item 1: drop the "ETF or tracking fund" fold and amend D28 (a).
 4. Section 4 item 5: a negotiated fee entered on this page.
 5. Section 4 item 9: saving the chosen way on the device.
