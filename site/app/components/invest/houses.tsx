@@ -7,8 +7,8 @@ import type { HouseRow, InvestView } from "../../lib/invest";
 import { brokerLabels } from "../../lib/labels";
 import { IconExternal } from "../icons";
 import { Num } from "../provenance";
-import { Button, Card, cx, Disclosure, RankBadge, Section, Sentence, Tag } from "../kit";
-import { LabelRow, OptionTag, reasonText } from "./parts";
+import { Button, Card, cx, Disclosure, LabelRow, RankBadge, Section, Sentence, Tag } from "../kit";
+import { OptionTag, reasonText } from "./parts";
 import { ProviderLink } from "./sections";
 
 const TOP = 5;

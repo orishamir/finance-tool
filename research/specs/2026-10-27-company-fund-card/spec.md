@@ -1,6 +1,6 @@
 # Design: a company's funds as the track table, 2026-10-27
 
-**Status:** settled by the founder on 2026-10-27; not built. `prototype.diff` is the throwaway sketch behind the screenshots, not the build.
+**Status:** settled by the founder on 2026-10-27; **built the same day** (section 8). `prototype.diff` is the throwaway sketch behind the screenshots, not the build.
 
 How it got here, all on 2026-10-27 on IBI's page (`/companies/ibi`):
 - The founder: "what should we put here?" A first draft filled the empty half of each fund card.
@@ -87,3 +87,16 @@ The decisions are recorded as general rules in `docs/design-system.md` section 1
 5. **Later, when the founder reviews them:** the workbench pages (held as not final, `docs/roadmap.md`) have their own fund rows with a separate Maya link line (`site/app/components/workbench/funds/parts.tsx`, `site/app/routes/workbench-funds.tsx`). They follow these rules when they are settled, not before.
 
 Not candidates: the track page (one product, a key-value card is right for it), the brokerage tariff card (a document, not a list), and the comparison's ranked rows (one option per row with a verdict, a different anatomy).
+
+## 8. Built, 2026-10-27
+
+- **Kit:** `ProductTable` and `ProductPhoneRow` (`site/app/components/kit/product-table.tsx`), the table shell; `TrackList` now draws on it, unchanged to look at. `LabelChip`, `LabelRow`, `LabelSheetHost` and `LabelIcon` moved from `site/app/components/invest/` into `site/app/components/kit/label-chip.tsx`; the index page imports them from the kit. Both have a gallery entry at `/kit`.
+- **Labels:** `pays-accumulating` ("צוברת") and `pays-distributing` ("מחלקת דיבידנד"), family "חלוקה", rule MF-49, in `fundLabels()`, so the index page shows them too. The "צוברת" sheet says only what MF-49 says: "הקרן לא מחלקת תשלומים: הכנסות כמו דיבידנד וריבית מושקעות בה מחדש."
+- **The fund table** (`site/app/components/decoder/brand-funds.tsx`): as section 2, on every brand page. A money-market group has the column "סוג הקרן" with "קרן כספית יומית" or "קרן כספית מתחדשת" linking to its guide, and no labels. A fee the site has not collected reads "לא נאסף", as the card did.
+- **Rules on the page:** the company page loads the rules the label sheets name.
+- **Copy:** `brands.funds` in `site/app/copy.ts`; `docs/copy.md` 8.7.
+
+**Structure review** (`node research/audit/tools/merge-review.mjs`, 21 files, under the 30 that call for an independent reviewer):
+- `Fees`, `NumberLink`, `Follows`, `BrandFundList` in `brand-funds.tsx`: **kept**, the cells of this one list. `NumberLink` (the identifier as the link out) is the rule's second pattern to watch: when the index page's fund list is built on `ProductTable`, it becomes its second user and is **promoted** then.
+- `rec.legal_form.includes("מתחדשת")` in `brands.server.ts`: **kept**, it matches the record's own legal-form text, not a string the page shows; the line moved, it is not new.
+- New kit pieces `ProductTable`, `ProductPhoneRow`, `LabelChip`, `LabelRow`, `LabelSheetHost`, `LabelIcon`: **promoted**, each with a gallery entry (`LabelIcon` added after the first run). Screenshots of `/companies/ibi` (1280 and 390 px), `/companies/altshuler-shaham` (the money-market group), `/companies/meitav` (the track table, unchanged) and `/kit` compared with the gallery; nothing left to send back.

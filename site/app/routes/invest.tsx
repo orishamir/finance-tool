@@ -12,7 +12,7 @@ import { feePlanItems, ScenarioDefaults } from "../components/fees/chips";
 import { IndexChips, PlanBlock } from "../components/invest/chips";
 import { HousesSection } from "../components/invest/houses";
 import { FundsSection } from "../components/invest/funds";
-import { LabelSheetHost } from "../components/invest/parts";
+import { LabelSheetHost } from "../components/kit";
 import { Headline, IndexHeader, Matters, OptionsCompare, WorthBars } from "../components/invest/sections";
 import { Foot, Steps } from "../components/invest/steps";
 import { Callout, Disclosure } from "../components/kit";

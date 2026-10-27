@@ -71,7 +71,7 @@ export function knownIndices(bundle: Pick<WorkbenchBundle, "exposures">): IndexR
   return bundle.exposures.filter((e) => e.kind === "equity_index").map(refOfExposure);
 }
 
-const refOfExposure = (e: ExposureRecord): IndexRef => ({ id: e.id, name: e.names.he[0] ?? e.names.en[0] ?? e.id, israeli: e.constituents_israeli === true, exposure: e, custom: null, oneLine: e.one_line_he ?? null });
+export const refOfExposure = (e: ExposureRecord): IndexRef => ({ id: e.id, name: e.names.he[0] ?? e.names.en[0] ?? e.id, israeli: e.constituents_israeli === true, exposure: e, custom: null, oneLine: e.one_line_he ?? null });
 
 export const refOfCustom = (c: CustomIndex): IndexRef => ({ id: c.id, name: c.name, israeli: c.israeli, exposure: null, custom: c, oneLine: null });
 

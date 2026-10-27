@@ -7,7 +7,7 @@ import { invest as c } from "../copy";
 import type { IndexRef, OptionId, ProviderInfo } from "./invest";
 
 export type LabelTone = "neutral" | "caution" | "open";
-export type LabelIconKey = "home" | "globe" | "clock" | "layers" | "coins" | "shield" | "file" | "lock" | "alert" | "ban" | "percent" | "repeat" | "sun";
+export type LabelIconKey = "home" | "globe" | "clock" | "layers" | "coins" | "shield" | "file" | "lock" | "alert" | "ban" | "percent" | "repeat" | "sun" | "piggy" | "handCoins";
 
 export type LabelId =
   | "held-il"
@@ -25,6 +25,8 @@ export type LabelId =
   | "tax-fund-dividend"
   | "tax-distribution"
   | "tax-on-sale-open"
+  | "pays-accumulating"
+  | "pays-distributing"
   | "ask-self-report"
   | "ask-estate"
   | "risk-unsupervised"
@@ -54,6 +56,8 @@ export const labelDefs: Record<LabelId, LabelDef> = {
   "tax-fund-dividend": { icon: "percent", tone: "neutral", rules: ["TXF-16"] },
   "tax-distribution": { icon: "percent", tone: "neutral", rules: ["TXF-08"] },
   "tax-on-sale-open": { icon: "lock", tone: "open", rules: ["TXF-11"] },
+  "pays-accumulating": { icon: "piggy", tone: "neutral", rules: ["MF-49"] },
+  "pays-distributing": { icon: "handCoins", tone: "neutral", rules: ["MF-49"] },
   "ask-self-report": { icon: "file", tone: "caution", rules: ["TXF-22"] },
   "ask-estate": { icon: "alert", tone: "caution", rules: ["TXF-27"] },
   "risk-unsupervised": { icon: "ban", tone: "caution", rules: ["BRK-06", "ETF-24"] },
@@ -88,6 +92,8 @@ const familyOf: Record<LabelId, Label["family"]> = {
   "tax-fund-dividend": "tax",
   "tax-distribution": "tax",
   "tax-on-sale-open": "tax",
+  "pays-accumulating": "payout",
+  "pays-distributing": "payout",
   "ask-self-report": "asks",
   "ask-estate": "asks",
   "risk-unsupervised": "asks",
@@ -126,6 +132,9 @@ export function fundLabels(rec: FundRecord, index: IndexRef, option: OptionId): 
   const out: Label[] = [];
   const method = rec.replication?.method;
   if (method) out.push(label(method === "physical" ? "follow-physical" : method === "swap" ? "follow-swap" : method === "futures" ? "follow-futures" : "follow-mixed"));
+  // what it does with dividends and interest (founder, 2026-10-27): the label says it; the tax that follows is a label of its own
+  if (rec.distribution_policy === "accumulating") out.push(label("pays-accumulating"));
+  else if (rec.distribution_policy === "distributing") out.push(label("pays-distributing"));
   const indexCurrency = index.exposure?.currency;
   if (rec.hedged === true) out.push(label("hedged"));
   else if (indexCurrency && !isIls(indexCurrency)) out.push(label("currency", indexCurrency));
