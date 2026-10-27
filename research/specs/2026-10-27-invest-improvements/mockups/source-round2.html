@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="/finance-tool/assets/root-Bt2cGptk.css">
+<style>
+  :root {
+    --you: var(--palette-blue-300); --best: var(--palette-teal-300);
+    /* label families: proposed new tokens (blue and violet stay reserved for entered and computed) */
+    --l-trade: oklch(0.80 0.10 215); --l-follow: oklch(0.76 0.15 340); --l-payout: oklch(0.80 0.14 155);
+    --l-currency: oklch(0.86 0.13 92); --l-tax: oklch(0.76 0.14 28); --l-order: oklch(0.86 0.15 125);
+    --l-asks: oklch(0.80 0.14 62); --l-open: oklch(0.70 0.19 25);
+    /* cost lines */
+    --c-fund: oklch(0.86 0.13 92); --c-buy: oklch(0.70 0.17 50); --c-cust: oklch(0.80 0.12 60); --c-acct: oklch(0.58 0.15 45); --c-tax: var(--chart-tax); --c-left: var(--palette-teal-500);
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--background); color: var(--foreground); font-family: "Inter Variable", "Heebo Variable", sans-serif; font-size: 16px; line-height: 1.6; }
+  .num { direction: ltr; unicode-bidi: isolate; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  bdi { unicode-bidi: isolate; }
+  .sketch { background: var(--palette-amber-400); color: var(--palette-neutral-975); font-size: 13px; font-weight: 600; text-align: center; padding: 4px 8px; }
+  .topbar { display: flex; align-items: center; justify-content: space-between; height: 56px; padding: 0 32px; border-bottom: 1px solid var(--border); }
+  .brand { font-weight: 700; font-size: 18px; }
+  .menu { display: flex; gap: 24px; color: var(--muted-foreground); font-size: 14px; }
+  .menu b { color: var(--foreground); font-weight: 600; }
+  .wrap { max-width: 1260px; margin: 0 auto; padding: 24px 32px 56px; display: flex; flex-direction: column; gap: 24px; }
+  h1 { font-size: 30px; line-height: 1.25; margin: 0; font-weight: 600; }
+  h2 { font-size: 20px; margin: 0; font-weight: 600; line-height: 1.35; }
+  h3 { font-size: 16px; margin: 0; font-weight: 600; }
+  .sub { color: var(--muted-foreground); margin: 4px 0 0; font-size: 15px; }
+  .muted { color: var(--muted-foreground); }
+  .small { font-size: 13px; }
+  .link { color: var(--link); }
+  .row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 12px; }
+  .chip { border: 1px solid var(--input); border-radius: 999px; padding: 5px 14px; font-size: 14px; white-space: nowrap; }
+  .chip.on { background: var(--primary); color: var(--primary-foreground); border-color: var(--primary); font-weight: 600; }
+  .pc { display: inline-flex; gap: 6px; align-items: baseline; background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 5px 12px; font-size: 14px; white-space: nowrap; }
+  .pc .k { color: var(--muted-foreground); } .pc .v { font-weight: 600; }
+  .pc.mine { border-color: var(--you); } .pc.mine .v { color: var(--you); }
+  .seg { display: inline-flex; border: 1px solid var(--input); border-radius: 10px; overflow: hidden; }
+  .seg span { padding: 6px 14px; font-size: 14px; white-space: nowrap; }
+  .seg span.on { background: var(--popover); font-weight: 600; box-shadow: inset 0 -2px 0 var(--primary); }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 20px; }
+  .tag { display: inline-flex; align-items: center; font-size: 12px; font-weight: 600; border-radius: 6px; padding: 0 7px; border: 1px solid currentColor; white-space: nowrap; line-height: 20px; }
+  .tag.best { color: var(--best); } .tag.you { color: var(--you); }
+
+  /* labels: icon + colour per family */
+  .labs { display: flex; flex-wrap: wrap; gap: 5px; }
+  .lab { --c: var(--muted-foreground); display: inline-flex; align-items: center; gap: 5px; font-size: 12.5px; line-height: 22px; padding: 0 9px 0 8px; border-radius: 999px; white-space: nowrap;
+         color: var(--c); background: color-mix(in oklch, var(--c) 13%, transparent); border: 1px solid color-mix(in oklch, var(--c) 40%, transparent); }
+  .lab svg { width: 14px; height: 14px; flex: none; }
+  .lab.trade { --c: var(--l-trade); } .lab.follow { --c: var(--l-follow); } .lab.payout { --c: var(--l-payout); } .lab.currency { --c: var(--l-currency); }
+  .lab.tax { --c: var(--l-tax); } .lab.order { --c: var(--l-order); } .lab.asks { --c: var(--l-asks); } .lab.open { --c: var(--l-open); }
+
+  /* summary strip */
+  .stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; border: 1px solid var(--border); border-radius: 14px; background: var(--card); }
+  .stat { padding: 14px 18px; display: flex; flex-direction: column; gap: 2px; border-inline-start: 1px solid var(--border); }
+  .stat:first-child { border-inline-start: 0; }
+  .stat .k { font-size: 13px; color: var(--muted-foreground); }
+  .stat .v { font-size: 26px; font-weight: 700; line-height: 1.2; }
+  .stat .n { font-size: 13px; color: var(--muted-foreground); }
+  .ul { text-decoration: underline dotted var(--computed); text-underline-offset: 5px; text-decoration-thickness: 2px; }
+
+  /* layout: list beside detail */
+  .side { display: grid; grid-template-columns: 410px minmax(0, 1fr); gap: 24px; align-items: start; }
+  .side.wide { grid-template-columns: minmax(0, 1fr) 470px; }
+  .acc { display: grid; grid-template-columns: 22px minmax(0, 1fr) 70px 78px; gap: 10px; align-items: center; padding: 7px 10px; border-bottom: 1px solid var(--border); font-size: 15px; }
+  .acc .rk { color: var(--muted-foreground); font-size: 13px; text-align: center; }
+  .acc .nm { font-weight: 600; white-space: nowrap; display: flex; gap: 6px; align-items: center; }
+  .acc.you .nm { color: var(--you); }
+  .acc.sel { background: var(--popover); border-radius: 10px; box-shadow: inset -3px 0 0 var(--primary); border-bottom-color: transparent; }
+  .acc .gap { text-align: left; font-weight: 600; font-size: 14px; }
+  .acc.best .gap { color: var(--best); }
+  .mini { height: 8px; background: var(--c-buy); border-radius: 0 2px 2px 0; }
+  .chk { width: 16px; height: 16px; border: 1.5px solid var(--input); border-radius: 4px; display: inline-block; }
+  .chk.on { background: var(--primary); border-color: var(--primary); position: relative; }
+  .chk.on::after { content: ""; position: absolute; inset: 2px 4px 4px 4px; border: solid var(--primary-foreground); border-width: 0 2px 2px 0; transform: rotate(45deg); }
+
+  /* stacked bars, one above the other on one scale */
+  .sb { display: grid; grid-template-columns: 120px minmax(0, 1fr) 84px; gap: 12px; align-items: center; padding: 5px 0; }
+  .sb .nm { font-weight: 600; white-space: nowrap; font-size: 15px; display: flex; flex-direction: column; line-height: 1.25; }
+  .sb .nm small { font-weight: 400; font-size: 12px; color: var(--muted-foreground); }
+  .sb.you .nm { color: var(--you); }
+  .sb .tot { text-align: left; font-weight: 600; font-size: 14px; }
+  .stack { display: flex; height: 20px; border-radius: 3px; overflow: hidden; }
+  .stack.thin { height: 14px; }
+  .stack > i { display: block; height: 100%; border-inline-end: 1px solid var(--card); }
+  .stack > i:last-child { border: 0; }
+  .f-fund { background: var(--c-fund); } .f-buy { background: var(--c-buy); } .f-cust { background: var(--c-cust); } .f-acct { background: var(--c-acct); } .f-tax { background: var(--c-tax); } .f-left { background: var(--c-left); }
+  .legend { display: flex; flex-wrap: wrap; gap: 4px 16px; font-size: 13px; color: var(--muted-foreground); }
+  .legend i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-inline-end: 6px; vertical-align: -1px; }
+  .scale { display: grid; grid-template-columns: 120px minmax(0, 1fr) 84px; gap: 12px; font-size: 12px; color: var(--muted-foreground); }
+  .scale .t { display: flex; justify-content: space-between; }
+  .sb-list .sb { border-bottom: 1px solid var(--border); padding: 7px 8px; }
+  .sb-list .sb.sel { background: var(--popover); border-radius: 10px; box-shadow: inset -3px 0 0 var(--primary); border-bottom-color: transparent; }
+  .sb-list .sb { grid-template-columns: 22px 110px minmax(0, 1fr) 70px 76px; }
+  .sb-list .scale { grid-template-columns: 22px 110px minmax(0, 1fr) 70px 76px; padding: 0 8px; }
+
+  /* funds */
+  .fhead, .frow { display: grid; grid-template-columns: minmax(0, 1fr) 92px 150px 84px; gap: 14px; align-items: center; }
+  .fhead { font-size: 12.5px; color: var(--muted-foreground); padding: 0 14px 4px; }
+  .fhead span { white-space: nowrap; }
+  .frow { padding: 10px 0; border-bottom: 1px solid var(--border); }
+  .frow:last-child { border-bottom: 0; }
+  .frow .fn { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
+  .frow .fn b { font-weight: 600; }
+  .frow .id { color: var(--link); font-size: 14px; }
+  .frow .fees { font-size: 13px; color: var(--muted-foreground); }
+  .frow .left { text-align: left; font-weight: 600; }
+  .group { border: 1px solid color-mix(in oklch, var(--palette-teal-400) 45%, transparent); border-radius: 12px; padding: 2px 14px; background: color-mix(in oklch, var(--palette-teal-400) 5%, transparent); }
+  .group-h { display: flex; justify-content: space-between; gap: 12px; padding: 8px 0 2px; font-size: 13.5px; color: var(--palette-teal-200); font-weight: 600; }
+  .narrow .fhead, .narrow .frow { grid-template-columns: minmax(0, 1fr) 84px; }
+  .narrow .fhead, .narrow .frow .fees { display: none; }
+  .narrow .frow .fn b { white-space: nowrap; font-size: 15px; }
+  .narrow .frow .id { grid-row: 2; grid-column: 1; }
+  .narrow .frow .left { grid-row: 1; grid-column: 2; }
+  .steps { margin: 0; padding-inline-start: 22px; display: flex; flex-direction: column; gap: 6px; }
+  .note { font-size: 13px; color: var(--muted-foreground); }
+  .callout { border-inline-start: 4px solid var(--primary); background: var(--popover); border-radius: 8px; padding: 10px 14px; font-size: 15px; }
+  table.fees { border-collapse: collapse; width: 100%; font-size: 14.5px; table-layout: fixed; }
+  table.fees col.c { width: 130px; }
+  table.fees th, table.fees td { padding: 8px 10px; border-bottom: 1px solid var(--border); text-align: right; white-space: nowrap; }
+  table.fees th { font-size: 13px; color: var(--muted-foreground); font-weight: 500; }
+  table.fees td.n, table.fees th.n { text-align: center; }
+  table.fees tr.tot td { font-weight: 700; border-bottom: 0; }
+  table.fees .sw { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-inline-end: 8px; }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+const OPT = new URLSearchParams(location.search).get("opt") || "C1";
+const n = (x) => Math.round(x).toLocaleString("he-IL");
+const S = (x) => `<span class="num">${n(x)} ₪</span>`;
+const GAP = (x) => `<span class="num">−${n(x)} ₪</span>`;
+
+const I = {
+  clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+  cal: '<rect x="4" y="5" width="16" height="15" rx="2"/><path d="M8 3v4M16 3v4M4 10h16"/>',
+  swap: '<path d="M7 4 3 8l4 4"/><path d="M3 8h14"/><path d="m17 20 4-4-4-4"/><path d="M21 16H7"/>',
+  layers: '<path d="m12 3 9 5-9 5-9-5 9-5z"/><path d="m3 13 9 5 9-5"/>',
+  mixed: '<path d="M3 7h4l10 10h4"/><path d="M3 17h4l3-3"/><path d="M14 10l3-3h4"/><path d="m18 4 3 3-3 3"/><path d="m18 14 3 3-3 3"/>',
+  grow: '<path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/>',
+  dollar: '<circle cx="12" cy="12" r="9"/><path d="M15 9.5c-.5-1-1.6-1.5-3-1.5-1.7 0-3 .9-3 2s1.3 1.7 3 2 3 .9 3 2-1.3 2-3 2c-1.4 0-2.5-.5-3-1.5M12 6v2M12 16v2"/>',
+  shield: '<path d="M12 3l8 3v6c0 4.5-3.4 8-8 9-4.6-1-8-4.5-8-9V6l8-3z"/>',
+  percent: '<path d="M19 5 5 19"/><circle cx="7" cy="7" r="2.5"/><circle cx="17" cy="17" r="2.5"/>',
+  repeat: '<path d="m17 2 4 4-4 4"/><path d="M3 11v-1a4 4 0 0 1 4-4h14"/><path d="m7 22-4-4 4-4"/><path d="M21 13v1a4 4 0 0 1-4 4H3"/>',
+  file: '<path d="M14 3H6v18h12V7l-4-4z"/><path d="M14 3v4h4M9 13h6M9 17h6"/>',
+  shieldoff: '<path d="M19 16.1c.6-1.2 1-2.6 1-4.1V6l-8-3-4.3 1.6M5 5.5 4 6v6c0 4.5 3.4 8 8 9 2-.4 3.7-1.4 5-2.8"/><path d="m3 3 18 18"/>',
+  lock: '<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>',
+};
+const L = (fam, icon, text) => `<span class="lab ${fam}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${I[icon]}</svg>${text}</span>`;
+const typeLab = (t) => t === "m" ? L("trade", "cal", "קרן מחקה · פעם ביום") : L("trade", "clock", "קרן סל · כל היום");
+const followLab = (f) => f === "swap" ? L("follow", "swap", "עסקת החלף") : f === "mixed" ? L("follow", "mixed", "כמה דרכים יחד") : L("follow", "layers", "מחזיקה את המניות");
+
+/* live figures, 27.10.2026, S&P 500, default plan */
+const H = [["פסגות",78943,0,"ילין לפידות מחקה (4D) S&P 500"],["לאומי",76322,2621,"ילין לפידות מחקה (4D) S&P 500"],["ירושלים",75675,3268,"ATF סל (4D) S&P 500"],["וואן זירו",75181,3762,"ATF סל (4D) S&P 500"],["הפועלים",73740,5203,"ATF סל (4D) S&P 500"],["יהב",73740,5203,"ATF סל (4D) S&P 500"],["דיסקונט",72330,6613,"ATF סל (4D) S&P 500"],["מרכנתיל",72330,6613,"ATF סל (4D) S&P 500"],["אי.בי.אי",71647,7296,"ילין לפידות מחקה (4D) S&P 500"],["מסד",71249,7694,"ATF סל (4D) S&P 500"],["הבינלאומי",70859,8084,"ATF סל (4D) S&P 500"],["מזרחי טפחות",70304,8639,"ATF סל (4D) S&P 500"],["אלטשולר טרייד",59242,19701,"ילין לפידות מחקה (4D) S&P 500"],["אקסלנס",57710,21233,"ATF סל (4D) S&P 500"]];
+const F = [["ילין לפידות מחקה (4D) S&P 500","5139282",78943,"m","swap",[0,0,0.02],1],["אלטשולר שחם מחקה (4D) S&P 500","5139100",78906,"m","mixed",[0,0,0.03],1],["קסם S&P 500 (4D) KTF","5124482",78556,"m","mixed",[0,0.1,0.025],1],["הראל מחקה (4D) S&P 500","5129275",78556,"m","mixed",[0,0.1,0.025],1],["ATF סל (4D) S&P 500","1218916",78252,"e","mixed",[0,0.2,0.008],0],["ילין לפידות סל (4D) S&P 500","1201656",77845,"e","swap",[0,0.3,0.02],0]];
+const YOU = "לאומי", INVESTED = 70000, GROSS = 83493;
+
+/* illustrative split of each account's cost (the engine does not output it yet) */
+function split(h) {
+  const cost = GROSS - h[1], fund = h[3].includes("מחקה") ? 1650 : 1700, tax = 2400 - 0.25 * h[2];
+  const r = cost - fund - tax;
+  if (h[0] === "פסגות") return { fund, buy: 300, cust: 200, acct: 0, tax };
+  const heavy = h[2] > 15000;
+  return heavy ? { fund, buy: r * 0.3, cust: r * 0.3, acct: r * 0.4, tax } : { fund, buy: r * 0.42, cust: r * 0.5, acct: r * 0.08, tax };
+}
+const total = (s) => s.fund + s.buy + s.cust + s.acct + s.tax;
+const MAXC = Math.max(...H.map((h) => total(split(h))));
+function stack(h, scale, thin) {
+  const s = split(h), w = (x) => `${(x / scale) * 100}%`;
+  return `<div class="stack ${thin ? "thin" : ""}" style="width:${w(total(s))}"><i class="f-fund" style="width:${(s.fund / total(s)) * 100}%"></i><i class="f-buy" style="width:${(s.buy / total(s)) * 100}%"></i><i class="f-cust" style="width:${(s.cust / total(s)) * 100}%"></i>${s.acct ? `<i class="f-acct" style="width:${(s.acct / total(s)) * 100}%"></i>` : ""}<i class="f-tax" style="width:${(s.tax / total(s)) * 100}%"></i></div>`;
+}
+const legend = `<div class="legend"><span><i class="f-fund"></i>דמי ניהול הקרן</span><span><i class="f-buy"></i>עמלות קנייה</span><span><i class="f-cust"></i>דמי משמרת</span><span><i class="f-acct"></i>דמי ניהול חשבון</span><span><i class="f-tax"></i>מס במכירה</span></div>`;
+const hh = (name) => H.find((h) => h[0] === name);
+const scaleRow = (max, cols) => `<div class="scale" ${cols ? `style="grid-template-columns:${cols}"` : ""}>${cols && cols.split(" ").length === 5 ? "<span></span>" : ""}<span></span><span class="t">${[0, 0.25, 0.5, 0.75, 1].map((f) => `<span class="num">${n(Math.round((max * f) / 1000) * 1000)}</span>`).join("")}</span><span></span>${cols && cols.split(" ").length === 5 ? "<span></span>" : ""}</div>`;
+
+function header() {
+  return `<div class="sketch">סקיצה לדיון · אפשרות ${OPT} · לא אינטראקטיבית · הסכומים מהאתר החי (27.10.2026); פירוט העלויות לפי סוג ותווית "הוראת קבע" הם להמחשה בלבד</div>
+  <div class="topbar"><span class="brand">מקור</span><nav class="menu"><span>מדריך</span><span>שאלות שכולם שואלים</span><span>חברות ומסלולים</span><span>השוואה למטרה</span><b>השקעה במדד</b></nav></div>`;
+}
+function intro() {
+  const idx = ["MSCI AC World", "MSCI World", "נאסד״ק 100", "S&P 500", "ת״א-125", "ת״א-35", "ת״א-90", "+ אחר"];
+  return `<header style="display:flex;flex-direction:column;gap:12px">
+    <div><h1>השקעה במדד</h1><p class="sub">כבר בחרתם מדד. כאן: איפה לפתוח חשבון ניירות ערך, ומה לקנות בו.</p></div>
+    <div class="row">${idx.map((x) => `<span class="chip ${x === "S&P 500" ? "on" : ""}">${x}</span>`).join("")}</div>
+    <div class="row">
+      <span class="pc"><span class="k">סכום</span><span class="v num">10,000 ₪</span></span>
+      <span class="pc"><span class="k">כל חודש</span><span class="v num">500 ₪</span></span>
+      <span class="pc"><span class="k">תקופה</span><span class="v">10 שנים</span></span>
+      <span class="pc mine"><span class="k">החשבון שלכם</span><span class="v">${YOU}</span></span>
+      <span class="link small">עוד הנחות</span>
+      <span style="flex:1"></span>
+      <span class="muted small">המטבע</span><span class="seg"><span class="on">כמו המדד · חשיפה לדולר</span><span>מנוטרלת מט״ח</span></span>
+    </div>
+  </header>`;
+}
+function stats(sel) {
+  const s = hh(sel);
+  return `<div class="stats">
+    <div class="stat"><span class="k">הפקדתם</span><span class="v num">${n(INVESTED)} ₪</span><span class="n"><span class="num">10,000 ₪</span> ועוד <span class="num">500 ₪</span> × 120 חודשים</span></div>
+    <div class="stat"><span class="k">נשאר ב${sel}, בעוד 10 שנים</span><span class="v num ul">${n(s[1])} ₪</span><span class="n">אחרי דמי ניהול ומס, בכסף של היום</span></div>
+    <div class="stat"><span class="k">מה זה עולה לכם ב${sel}</span><span class="v num ul">${n(total(split(s)))} ₪</span><span class="n">עמלות, דמי ניהול ומס</span></div>
+    <div class="stat"><span class="k">לעומת ${YOU}, החשבון שלכם</span><span class="v num ul" style="color:var(--best)">+${n(hh(YOU)[2] - s[2])} ₪</span><span class="n">יותר נשאר לכם ב${sel}</span></div>
+  </div>`;
+}
+function accList(sel, opts = {}) {
+  const max = Math.max(...H.map((h) => h[2]));
+  return `<section style="display:flex;flex-direction:column;gap:2px">
+    <h2 style="margin-bottom:6px">${opts.title || "החשבונות, מהזול ליקר"}</h2>
+    ${opts.sub ? `<p class="sub" style="margin:0 0 8px">${opts.sub}</p>` : ""}
+    ${H.map((h, i) => `<div class="acc ${h[0] === sel ? "sel" : ""} ${h[0] === YOU ? "you" : ""} ${h[2] === 0 ? "best" : ""}" ${opts.check ? `style="grid-template-columns:20px 22px minmax(0,1fr) 70px 78px"` : ""}>
+      ${opts.check ? `<span class="chk ${opts.check.includes(h[0]) ? "on" : ""}"></span>` : ""}
+      <span class="rk">${i + 1}</span>
+      <span class="nm">${h[0]}${h[0] === YOU ? `<span class="tag you">שלכם</span>` : ""}${h[2] === 0 ? `<span class="tag best">הזול</span>` : ""}</span>
+      <span>${h[2] ? `<span class="mini" style="display:block;width:${Math.max(4, (h[2] / max) * 100)}%"></span>` : ""}</span>
+      <span class="gap">${h[2] ? GAP(h[2]) : S(h[1])}</span>
+    </div>`).join("")}
+    <span class="note" style="padding:8px 10px">מיטב טרייד: לא חושב, התעריפון לא נאסף.</span>
+  </section>`;
+}
+function bars(names, scale, title) {
+  return `<div style="display:flex;flex-direction:column;gap:4px">
+    <h3>${title || "מה זה עולה לכם, כולל מס"}</h3>
+    ${names.map((nm) => { const h = hh(nm); return `<div class="sb ${nm === YOU ? "you" : ""}"><span class="nm">${nm}<small>${nm === YOU ? "החשבון שלכם" : h[2] === 0 ? "הזול ביותר" : ""}</small></span>${stack(h, scale)}<span class="tot num">${n(total(split(h)))} ₪</span></div>`; }).join("")}
+    ${scaleRow(scale)}
+    ${legend}
+  </div>`;
+}
+function funds(house, narrow) {
+  const row = (f) => `<div class="frow">
+    <span class="fn"><b><bdi>${f[0]}</bdi></b><span class="labs">${typeLab(f[3])}${followLab(f[4])}${L("payout", "grow", "צוברת")}${L("currency", "dollar", "חשיפה לדולר")}${L("tax", "percent", "מס גם על שינויי המטבע")}${f[6] ? L("order", "repeat", "הוראת קבע") : ""}</span></span>
+    <span class="id num">${f[1]} ↗</span>
+    <span class="fees num">${f[5][0]}% · ${f[5][1]}% · ${f[5][2]}%</span>
+    <span class="left num">${n(f[2])} ₪</span></div>`;
+  return `<div class="${narrow ? "narrow" : ""}" style="display:flex;flex-direction:column;gap:10px">
+    <div><h3>מה קונים ב${house}</h3><p class="sub" style="font-size:14px">4 הקרנות הראשונות שוות לתוכנית שלכם: ההפרש ביניהן קטן מ־0.5%, סף התיקו של האתר. אפשר לקנות כל אחת מהן לפי מספר הנייר.</p></div>
+    <div class="fhead"><span>קרן</span><span>מספר נייר</span><span class="x">דמי ניהול: קבועים · משתנים · נאמן</span><span style="text-align:left">נשאר</span></div>
+    <div class="group"><div class="group-h"><span>שוות לתוכנית שלכם</span><span class="num">78,556–78,943 ₪</span></div>${F.slice(0, 4).map(row).join("")}</div>
+    <span class="link small">עוד 8 קרנות, שנשאר בהן פחות</span>
+    <span class="note">13 קרנות על המדד עם רשומה באתר; הרשימה המלאה ב־Maya ↗. הפרש העקיבה עוד לא נאסף, ונלקח כאפס.</span>
+  </div>`;
+}
+const steps = `<div style="display:flex;flex-direction:column;gap:8px"><h3>מה עושים עכשיו</h3><ol class="steps"><li>פותחים חשבון בפסגות · <span class="link small">איך עוברים חשבון</span></li><li>קונים את <bdi>ילין לפידות מחקה (4D) S&P 500</bdi> לפי מספר הנייר <span class="num link">5139282</span></li><li>קובעים הוראת קבע של <span class="num">500 ₪</span> בחודש ${L("order", "repeat", "הוראת קבע")}</li></ol></div>`;
+const abroad = `<section class="card" style="display:flex;flex-direction:column;gap:12px">
+  <h2>ואם קונים בחו״ל?</h2>
+  <div class="two">
+    <div><span class="muted small">הזול בארץ</span><div style="font-weight:600">פסגות · <bdi>ילין לפידות מחקה (4D) S&P 500</bdi></div><div class="num" style="font-size:22px;font-weight:700">78,943 ₪</div></div>
+    <div><span class="muted small">הזול בחו״ל</span><div style="font-weight:600">Interactive Brokers · <bdi>iShares Core S&P 500 UCITS ETF</bdi></div><div style="font-size:22px;font-weight:700"><span class="num">76,184 ₪</span> <span class="small muted" style="font-weight:400"><span class="num">2,759 ₪</span> פחות</span></div></div>
+  </div>
+  <div class="labs">${L("asks", "file", "דיווח עצמי למס")}${L("asks", "shieldoff", "לא בפיקוח רשות ני״ע")}${L("tax", "percent", "מס דיבידנד בתוך הקרן")}${L("open", "lock", "מס רק במכירה: שאלה פתוחה")}</div>
+</section>`;
+
+/* C1: list beside detail; the detail's cost bars stacked one above the other */
+function C1() {
+  return `${intro()}${stats("פסגות")}
+  <div class="side">${accList("פסגות")}
+    <div class="card" style="display:flex;flex-direction:column;gap:22px">
+      <div class="row" style="justify-content:space-between"><h2>פסגות</h2><span class="tag best">הזול ביותר לתוכנית שלכם</span></div>
+      ${bars(["פסגות", YOU], 7400)}
+      <div class="callout">ההפרש מלאומי הוא בעיקר <b>דמי המשמרת</b> ו<b>עמלות הקנייה</b>. <span class="link">יש לכם עמלה שסיכמתם עם לאומי? הקלידו אותה</span></div>
+      ${funds("פסגות", false)}
+      ${steps}
+    </div>
+  </div>${abroad}`;
+}
+/* C2: the list is the chart: every account's cost as a stacked bar, one above the other on one scale */
+function C2() {
+  const cols = "22px 110px minmax(0,1fr) 70px 76px";
+  return `${intro()}${stats("פסגות")}
+  <div class="side wide">
+    <section class="sb-list" style="display:flex;flex-direction:column;gap:2px">
+      <h2>מה כל חשבון עולה לכם, כולל מס</h2><p class="sub" style="margin:0 0 8px">כל החשבונות על אותו קנה מידה, מהזול ליקר. הקישו על שורה כדי לראות מה קונים בו.</p>
+      ${H.map((h, i) => `<div class="sb ${h[0] === "פסגות" ? "sel" : ""} ${h[0] === YOU ? "you" : ""}"><span class="muted small" style="text-align:center">${i + 1}</span><span class="nm">${h[0]}${h[0] === YOU ? "<small>החשבון שלכם</small>" : ""}</span>${stack(h, MAXC, true)}<span class="tot num">${n(total(split(h)))} ₪</span><span class="tot" style="${h[2] ? "" : "color:var(--best)"}">${h[2] ? GAP(h[2]) : "הזול"}</span></div>`).join("")}
+      ${scaleRow(MAXC, cols)}
+      <div style="padding:8px">${legend}</div>
+      <div style="margin-top:20px">${abroad}</div>
+    </section>
+    <div class="card narrow" style="display:flex;flex-direction:column;gap:20px">
+      <div class="row" style="justify-content:space-between"><h2>פסגות</h2><span class="tag best">הזול ביותר</span></div>
+      ${funds("פסגות", true)}
+      ${steps}
+    </div>
+  </div>`;
+}
+/* C3: from what you put in to what is left, per account, stacked one above the other */
+function C3() {
+  const sc = GROSS;
+  const flow = (nm) => { const h = hh(nm), s = split(h), t = total(s), w = (x) => `${(x / sc) * 100}%`;
+    return `<div class="sb ${nm === YOU ? "you" : ""}" style="grid-template-columns:120px minmax(0,1fr) 120px"><span class="nm">${nm}<small>${nm === YOU ? "החשבון שלכם" : "הזול ביותר"}</small></span>
+      <div style="position:relative"><div class="stack" style="height:26px"><i class="f-left" style="width:${w(h[1])}"></i><i class="f-fund" style="width:${w(s.fund)}"></i><i class="f-buy" style="width:${w(s.buy)}"></i><i class="f-cust" style="width:${w(s.cust)}"></i>${s.acct ? `<i class="f-acct" style="width:${w(s.acct)}"></i>` : ""}<i class="f-tax" style="width:${w(s.tax)}"></i></div>
+      <span style="position:absolute;inset-inline-start:${(INVESTED / sc) * 100}%;top:-6px;bottom:-6px;border-inline-start:2px dashed var(--foreground)"></span></div>
+      <span class="tot"><span class="num" style="color:var(--palette-teal-300)">${n(h[1])} ₪</span><br><span class="muted small">נשאר</span></span></div>`; };
+  return `${intro()}${stats("פסגות")}
+  <div class="side">${accList("פסגות")}
+    <div class="card" style="display:flex;flex-direction:column;gap:22px">
+      <div class="row" style="justify-content:space-between"><h2>פסגות</h2><span class="tag best">הזול ביותר לתוכנית שלכם</span></div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <h3>מה קורה לכסף: מה שנשאר, ומה הלך לעמלות ולמס</h3>
+        <p class="sub" style="margin:0;font-size:14px">כל הפס הוא מה שהכסף היה שווה בלי עלויות. הקו המקווקו: מה שהפקדתם, <span class="num">70,000 ₪</span>.</p>
+        ${flow("פסגות")}${flow(YOU)}
+        <div class="legend"><span><i class="f-left"></i>נשאר לכם</span><span><i class="f-fund"></i>דמי ניהול הקרן</span><span><i class="f-buy"></i>עמלות קנייה</span><span><i class="f-cust"></i>דמי משמרת</span><span><i class="f-acct"></i>דמי ניהול חשבון</span><span><i class="f-tax"></i>מס במכירה</span><span>┆ הפקדתם</span></div>
+      </div>
+      ${funds("פסגות", false)}
+      ${steps}
+    </div>
+  </div>${abroad}`;
+}
+/* C4: tick up to three accounts; their bars one above the other, then a table of fee lines */
+function C4() {
+  const pick = ["פסגות", YOU, "וואן זירו"];
+  const lines = [["fund", "דמי ניהול הקרן", "f-fund"], ["buy", "עמלות קנייה", "f-buy"], ["cust", "דמי משמרת", "f-cust"], ["acct", "דמי ניהול חשבון", "f-acct"], ["tax", "מס במכירה", "f-tax"]];
+  return `${intro()}${stats("פסגות")}
+  <div class="side">${accList("פסגות", { check: pick, title: "בחרו עד שלושה חשבונות להשוואה", sub: "מסומנים: הזול, שלכם, ועוד אחד שבחרתם." })}
+    <div class="card" style="display:flex;flex-direction:column;gap:22px">
+      <div class="row" style="justify-content:space-between"><h2>השוואה</h2><span class="muted small">בעוד 10 שנים, בכסף של היום</span></div>
+      ${bars(pick, 8200)}
+      <table class="fees"><colgroup><col><col class="c"><col class="c"><col class="c"></colgroup><thead><tr><th></th>${pick.map((p) => `<th class="n" style="${p === YOU ? "color:var(--you)" : ""}">${p}</th>`).join("")}</tr></thead><tbody>
+        ${lines.map(([k, t, c]) => `<tr><td><span class="sw ${c}"></span>${t}</td>${pick.map((p) => `<td class="n">${S(split(hh(p))[k])}</td>`).join("")}</tr>`).join("")}
+        <tr class="tot"><td>סך הכול</td>${pick.map((p) => `<td class="n">${S(total(split(hh(p))))}</td>`).join("")}</tr>
+        <tr><td class="muted">נשאר לכם</td>${pick.map((p) => `<td class="n" style="color:var(--palette-teal-300)">${S(hh(p)[1])}</td>`).join("")}</tr>
+      </tbody></table>
+      ${funds("פסגות", false)}
+    </div>
+  </div>${abroad}`;
+}
+document.getElementById("root").innerHTML = header() + `<main class="wrap">${{ C1, C2, C3, C4 }[OPT]()}</main>`;
+</script>
+</body>
+</html>
