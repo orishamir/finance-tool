@@ -8,8 +8,8 @@ import type { HouseEntry, HouseRow, InvestView } from "../../lib/invest";
 import { fundLabels, matchesHedge, type HedgeFilter } from "../../lib/labels";
 import { IconCopy, IconExternal, IconLock } from "../icons";
 import { Num } from "../provenance";
-import { Button, Card, KeyValue, RankBadge, Section, SegmentedControl, SelectField, Tag } from "../kit";
-import { LabelRow, LabelsLegend, OptionTag, reasonText } from "./parts";
+import { Button, Card, KeyValue, LabelRow, RankBadge, Section, SegmentedControl, SelectField, Tag } from "../kit";
+import { LabelsLegend, OptionTag, reasonText } from "./parts";
 import { ownBy, type SiteValue } from "../../lib/value";
 
 const feeOf = (rec: FundRecord, key: "fixed_management" | "variable_management" | "trustee"): SiteValue | null => {

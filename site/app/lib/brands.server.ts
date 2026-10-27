@@ -3,7 +3,10 @@
 // under its own heading, and every member's old address shows that page. Server-only; the table is data/sources/brands.json.
 import { existsSync, readdirSync } from "node:fs";
 import { join } from "node:path";
-import { brandsTable, institutionsTable, type FundRecord, type InstitutionRegistryRow } from "@finance-tool/schema";
+import { brandsTable, institutionsTable, type ExposureRecord, type FundRecord, type InstitutionRegistryRow } from "@finance-tool/schema";
+import { brands as brandsCopy } from "../copy";
+import { refOfExposure } from "./invest";
+import { fundLabels, type Label } from "./labels";
 import { loadCma, root } from "./data.server";
 import { loadExposures, loadFunds } from "./instruments.server";
 import { ownBy, type SiteValue } from "./value";
@@ -88,10 +91,12 @@ export interface BrandFundRow {
   id: string;
   name: string;
   number: string | null;
-  manager: string;
-  /** What the fund follows, and the guide page that explains it: the index's page under /exposure (founder, 2026-10-26: not the index comparison at /indices), or the money-market fund's guide. */
-  follows: { name: string; href: string } | null;
+  /** The index the fund follows (its short name, linking to its page under /exposure; founder, 2026-10-26: not the index comparison), or a money-market fund's kind (linking to its guide). */
+  follows: { kind: "index" | "money-market"; name: string; href: string } | null;
+  /** Maya's page of the fund: the fund's number links to it (founder, 2026-10-27). */
   mayaHref: string | null;
+  /** What the fund is and does, from the index page's label set (fundLabels); an index fund only. */
+  labels: Label[];
   fixed: SiteValue | null;
   variable: SiteValue | null;
   trustee: SiteValue | null;
@@ -103,18 +108,19 @@ export interface BrandFundGroup {
 }
 
 const collator = new Intl.Collator("he");
+const indexWordAtStart = new RegExp(`^${brandsCopy.funds.indexWord}\\s+`);
 
 export function brandFunds(brand: Brand): BrandFundGroup[] {
   if (brand.fundManagers.length === 0) return [];
   const exposures = new Map(loadExposures().map((e) => [e.id, e]));
   const recs = loadFunds().filter((f) => brand.fundManagers.includes(f.manager));
-  const rows = recs.map((rec) => ({ kind: fundKindOf(rec), row: fundRow(rec, exposures.get(rec.exposure_id ?? "")?.names.he[0] ?? null) }));
+  const rows = recs.map((rec) => ({ kind: fundKindOf(rec), row: fundRow(rec, exposures.get(rec.exposure_id ?? "") ?? null) }));
   return kindOrder
     .map((kind) => ({ kind, funds: rows.filter((r) => r.kind === kind).map((r) => r.row).sort((a, b) => collator.compare(a.name, b.name)) }))
     .filter((g) => g.funds.length > 0);
 }
 
-function fundRow(rec: FundRecord, exposureName: string | null): BrandFundRow {
+function fundRow(rec: FundRecord, exposure: ExposureRecord | null): BrandFundRow {
   // D31: the fund manager's own fee, shown on its own fund
   const fee = (key: "fixed_management" | "variable_management" | "trustee"): SiteValue | null => {
     const v = rec.fees[key];
@@ -124,11 +130,15 @@ function fundRow(rec: FundRecord, exposureName: string | null): BrandFundRow {
   const number = rec.identifiers.tase_number;
   // Maya's page of the fund: an Israeli ETF under "etfs", any other Israeli fund under "mutual-funds" (the fund records' sources)
   const mayaHref = rec.domicile === "IL" && number ? `https://maya.tase.co.il/he/funds/${kind === "etf" ? "etfs" : "mutual-funds"}/${number}` : null;
-  const exposure = rec.exposure_id ?? "";
-  const follows = exposure.startsWith("index-") && exposureName
-    ? { name: exposureName, href: `/exposure/${exposure}` }
+  const index = exposure && exposure.id.startsWith("index-") ? exposure : null;
+  // the column's head carries the word "index", so the cell holds the index's name without it (founder, 2026-10-27)
+  const follows: BrandFundRow["follows"] = index
+    ? { kind: "index", name: (index.names.he[0] ?? index.id).replace(indexWordAtStart, ""), href: `/exposure/${index.id}` }
     : kind === "money-market"
-      ? { name: exposureName ?? "", href: `/guide/${rec.legal_form.includes("מתחדשת") ? "money-market-fund-renewable" : "money-market-fund-daily"}` }
+      ? rec.legal_form.includes("מתחדשת")
+        ? { kind: "money-market", name: brandsCopy.funds.moneyMarketKinds.renewable, href: "/guide/money-market-fund-renewable" }
+        : { kind: "money-market", name: brandsCopy.funds.moneyMarketKinds.daily, href: "/guide/money-market-fund-daily" }
       : null;
-  return { id: rec.id, name: rec.names.he[0] ?? rec.names.en[0] ?? rec.id, number, manager: rec.manager, follows, mayaHref, fixed: fee("fixed_management"), variable: fee("variable_management"), trustee: fee("trustee") };
+  const labels = index ? fundLabels(rec, refOfExposure(index), kind === "etf" ? "il-etf" : "il-tracking") : [];
+  return { id: rec.id, name: rec.names.he[0] ?? rec.names.en[0] ?? rec.id, number, follows, mayaHref, labels, fixed: fee("fixed_management"), variable: fee("variable_management"), trustee: fee("trustee") };
 }

@@ -1906,9 +1906,15 @@ The founder, 2026-10-26: someone browsing the companies wants a company's produc
 | Fund groups | קרנות סל · קרנות מחקות · קרנות כספיות · קרנות נאמנות |
 | Fund group count | קרן אחת · שתי קרנות · `{מספר}` קרנות |
 | Fund group note | רק הקרנות שהאתר אסף עליהן דוח, לא כל הקרנות של החברה. דמי הניהול לפי הדוח של כל קרן. |
-| Fund row, what it follows (link to the index's guide page, `/exposure/<index>` since 2026-10-26, or the money-market guide) | עוקבת אחרי `{מדד}` · קרן כספית |
+| Fund table, column heads (founder, 2026-10-27; was a card per fund) | שם הקרן · מספר נייר · המדד (a money-market group: סוג הקרן) · דמי ניהול לפי הדוח של הקרן |
+| Fund table, the index cell (link to `/exposure/<index>`; the head carries the word) | `{שם המדד בלי "מדד"}`, for example ת"א-125 |
+| Fund table, a money-market fund's kind (link to its guide) | קרן כספית יומית · קרן כספית מתחדשת |
+| Fund table, the fee lines (`{אחוז}` then the word; one not collected: לא נאסף) | קבועים · משתנים · נאמן |
+| Fund table, the number as the Maya link: its spoken name | `{מספר}`, בדף הקרן במאיה |
+| Fund table, phone row | מספר נייר `{מספר}` ↗ · מדד `{שם}` › · דמי ניהול: `{אחוז}` קבועים `{אחוז}` משתנים `{אחוז}` נאמן |
+| Fund labels, the payout family (new 2026-10-27, MF-49) | חלוקה: צוברת ("הקרן לא מחלקת תשלומים: הכנסות כמו דיבידנד וריבית מושקעות בה מחדש.") · מחלקת דיבידנד ("הקרן מחלקת תשלומים לבעלי היחידות, פעם בשנה או יותר, לפי שיקול דעת המנהל.") |
 
-The fund row's other words (מנהלת הקרן, מספר נייר, בדף הקרן במאיה, the three fee names, לא נאסף) are the index page's (`invest.funds` in `site/app/copy.ts`).
+Until 2026-10-27 each fund was a card with "מנהלת הקרן", "עוקבת אחרי `{מדד}`" and a separate "בדף הקרן במאיה" line; the table drops all three (the brand's fund managers are on the page's companies line). The other labels' words are the index page's (`invest.labels` in `site/app/copy.ts`).
 
 ### 8.8 Stock exposure of a track (D34, 2026-10-26)
 

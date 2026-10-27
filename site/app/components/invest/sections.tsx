@@ -6,8 +6,8 @@ import { optionLabels } from "../../lib/labels";
 import type { SiteValue } from "../../lib/value";
 import { IconLock } from "../icons";
 import { Num } from "../provenance";
-import { Callout, Card, cx, KeyValue, Sentence, Tag, Tpl } from "../kit";
-import { LabelRow, OptionTag } from "./parts";
+import { Callout, Card, cx, KeyValue, LabelRow, Sentence, Tag, Tpl } from "../kit";
+import { OptionTag } from "./parts";
 
 export const providerName = (view: InvestView, id: string): ProviderInfo | undefined => view.providers.find((p) => p.id === id);
 
