@@ -210,7 +210,8 @@ describe("fees", () => {
     for (const v of [of("קרנות השתלמות", "קרן"), of("מרכזית לפיצויים", "קופה"), of("מטרה אחרת", "קופה"), of("תגמולים ואישית לפיצויים", "גמל בניהול אישי IRA")]) {
       expect(v.value).toBeNull();
       expect(v.rule_ids).toContain("PF-06");
-      expect(v.notes).toMatch(/^לא דווח: .*PF-06/);
+      expect(v.notes).toMatch(/^אין דמי ניהול מהפקדה/);
+      expect(v.notes).not.toContain("לא דווח");
     }
     // a tagmulim fund may charge a deposit fee: an empty one stays unknown, and "אישית לפיצויים" is not an IRA
     const tagmulim = of("תגמולים ואישית לפיצויים", "קופת גמל אישית לפיצויים");
