@@ -29,10 +29,15 @@ export async function loader({ params }: Route.LoaderArgs) {
   const others = cma.tracks.filter((t) => t.companyId === track.companyId && t.name === track.name && t.fundId !== track.fundId);
   const wrapper = loadWrappers().find((w) => w.id === track.wrapperId) ?? null;
   const rules = loadRules();
+  // the fund's company (D30; founder, 2026-10-27): its fund's page lists the general rules and this company's terms, never another
+  // company's, and a record that names several companies shows this one's part
+  const { registryIdsOfPage } = await import("../lib/institutions.server");
+  const companyIds = registryIdsOfPage(track.companyId);
+  const ours = (r: (typeof rules)[string]) => r.scope === "general" || (r.scope_institutions ?? []).some((c) => companyIds.includes(c.id));
   const checklist = wrapper
     ? loadChecklistRows().map((row) => {
         const mark = wrapper.dimensions[row.id];
-        const carrying = Object.values(rules).filter((r) => r.dimensions.includes(row.id) && JSON.stringify(wrapper).includes(`"${r.id}"`)).map((r) => r.id);
+        const carrying = Object.values(rules).filter((r) => r.dimensions.includes(row.id) && ours(r) && JSON.stringify(wrapper).includes(`"${r.id}"`)).map((r) => r.id);
         return { id: row.id, name: row.name, explanation: row.explanation, mark: mark === "covered" ? "covered" : mark?.startsWith("blocked:") ? "blocked" : "na", code: mark?.startsWith("blocked:") ? mark.slice(8) : undefined, rules: carrying } as ChecklistRowView;
       })
     : [];
@@ -61,6 +66,7 @@ export async function loader({ params }: Route.LoaderArgs) {
   const isDefault = catalog.some((c) => c.default_at_joining && c.maps_to.track_ids.includes(track.fundId) && owner.get(c.institution) === track.companyId);
   return {
     track,
+    companyIds,
     names,
     isDefault,
     others: others.map((o) => ({ fundId: o.fundId, href: `/companies/${o.companyId}/${o.fundId}` })),
@@ -97,7 +103,7 @@ export default function TrackPage() {
   // pension fees belong to the fund, not to the track (CAT-39)
   const feeText = (template: string, v: SiteValue) => feeLabel(template, feeYear(v)) + (track.dataset === "pensia-net" ? ` ${copy.feeWhole}` : "");
   return (
-    <PageShell current="decoder" data={{ rules: data.rules, pointed: data.pointed, terms: {}, dimensions: data.dimensionNames, today: data.today }}>
+    <PageShell current="decoder" data={{ rules: data.rules, pointed: data.pointed, terms: {}, dimensions: data.dimensionNames, today: data.today, ...(data.companyIds[0] ? { company: data.companyIds[0], pageCompanies: data.companyIds } : {}) }}>
       <div className="flex flex-col gap-8 pt-2 lg:pt-8 max-w-page">
         <header className="flex flex-col gap-3">
           <Breadcrumb parent={{ href: `/companies/${track.companyId}`, label: track.companyName }} current={track.name} />

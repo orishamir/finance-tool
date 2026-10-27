@@ -308,7 +308,7 @@ export function buildInstitution(id: string): InstitutionPageData | null {
     catalogue,
     rules,
     pointed,
-    terms: { groups: termGroups, company: registryIds[0] ?? null, name: loadInstitutionRegistry().find((r) => r.id === registryIds[0])?.name_he ?? snap?.provider.name_he ?? id, dimensions: termGroups.length ? Object.fromEntries(loadChecklistRows().map((r) => [r.id, r.name])) : {} },
+    terms: { groups: termGroups, company: registryIds[0] ?? null, pageCompanies: registryIds, name: loadInstitutionRegistry().find((r) => r.id === registryIds[0])?.name_he ?? snap?.provider.name_he ?? id, dimensions: termGroups.length ? Object.fromEntries(loadChecklistRows().map((r) => [r.id, r.name])) : {} },
   };
 }
 

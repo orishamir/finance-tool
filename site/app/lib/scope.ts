@@ -94,15 +94,60 @@ export function isOwnSourceOf(rule: Pick<RuleRecord, "id" | "scope_institutions"
 }
 
 /**
- * The chip's words for a record that is not general (spec §4: the chip shows the company's name, not a code): the page's own company
- * when the record shows it, else the first, with "and N more" (copy) and the count of the others, over the same companies the card
- * names (`shownCompanies`). Null when it names none (the code stays).
+ * A record as a company's page shows it (D30; founder, 2026-10-27: PEN-44 under "מה כתוב במסמכים של אלטשולר שחם" showed Mor's and
+ * Analyst's documents and figures): only the page's companies, their own documents and the sources of no company (the law, the
+ * regulator), and no figure read from another company's document. A general record, or one that names none of the page's companies
+ * (opened from a chip), is returned whole.
+ */
+export function pageView(rule: RuleRecord, page: readonly string[], companies: Record<string, CompanyLink> | undefined): RuleRecord {
+  if (isGeneral(rule) || page.length === 0) return rule;
+  const mine = scopeCompanies(rule).filter((c) => page.includes(c.id));
+  if (mine.length === 0) return rule;
+  const foreign = (s: { url: string; title: string; title_he?: string }) => {
+    const c = sourceCompany(rule, s, companies);
+    return !!c && !page.includes(c.id);
+  };
+  const figures = Object.fromEntries(
+    Object.entries(rule.figures ?? {}).filter(([, f]) => Array.isArray(f) || "by_tax_year" in f || !(f.source.strength === "institution" && foreign(f.source))),
+  ) as RuleRecord["figures"];
+  return { ...rule, scope_institutions: mine, sources: (rule.sources ?? []).filter((s) => !foreign(s)), figures };
+}
+
+/** Of the companies a record names, the one whose own document a source is; null for a law, a regulator, a press report. */
+export function sourceCompany(rule: Pick<RuleRecord, "scope_institutions">, source: { url: string; title: string; title_he?: string }, companies: Record<string, CompanyLink> | undefined): { id: string; name_he: string } | null {
+  return (
+    scopeCompanies(rule).find((c) => {
+      const docs = companies?.[c.id]?.docs;
+      return !!docs && isOwnDocument(source, docs);
+    }) ?? null
+  );
+}
+
+/**
+ * A record's sources on a company's page (D30; founder, 2026-10-27, PEN-44 on Altshuler Shaham's page led with Mor's bylaws): the
+ * page's own companies' documents first, then the sources of no company (the law, the regulator), then other companies' documents.
+ * The order within each part is kept.
+ */
+export function sourcesForPage<S extends { url: string; title: string; title_he?: string }>(rule: Pick<RuleRecord, "scope_institutions">, sources: readonly S[], page: readonly string[], companies: Record<string, CompanyLink> | undefined): S[] {
+  const rank = (s: S) => {
+    const c = sourceCompany(rule, s, companies);
+    return !c ? 1 : page.includes(c.id) ? 0 : 2;
+  };
+  return sources.map((s, i) => ({ s, i, r: rank(s) })).sort((a, b) => a.r - b.r || a.i - b.i).map((x) => x.s);
+}
+
+/**
+ * The chip's words for a record that is not general (spec §4: the chip shows the company's name, not a code): on the page of a company
+ * the record shows, that company alone; else the first, with "and N more" (copy) and the count of the others, over the same companies
+ * the card names (`shownCompanies`). Null when it names none (the code stays).
  */
 export function chipName(rule: Pick<RuleRecord, "id" | "scope_institutions">, ownDocs: OwnDocs | undefined, current: string | undefined, more: (n: number) => string): string | null {
   const list = shownCompanies(rule, ownDocs);
   if (list.length === 0) return null;
-  const first = list.find((c) => c.id === current) ?? list[0]!;
-  return list.length === 1 ? first.name_he : `${first.name_he} ${more(list.length - 1)}`;
+  // on the page of a company the record names, the chip names that company alone (D30; founder, 2026-10-27)
+  const here = list.find((c) => c.id === current);
+  if (here) return here.name_he;
+  return list.length === 1 ? list[0]!.name_he : `${list[0]!.name_he} ${more(list.length - 1)}`;
 }
 
 /** A Hebrew list of names (copy.md 10.4): commas, and the conjunction only before the last. */

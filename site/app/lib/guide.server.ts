@@ -3,7 +3,7 @@
 import { pending as pendingFormulaReleases, type P05Input } from "@finance-tool/engine";
 import { join } from "node:path";
 import { companyTermRule, isSecurity, productIds, type ExposureRecord, type RuleRecord, type ProductRecord } from "@finance-tool/schema";
-import { buildHishtalmutTerms, loadExposures } from "./instruments.server";
+import { buildHishtalmutTerms, exposureFolds, loadExposures } from "./instruments.server";
 import { providentTerms } from "./compare.server";
 import { loadChecklistRows, loadCma, loadFees, loadParameters, loadRules, loadTerms, loadProducts, pointedRecords, root, today, type ChecklistRow, type TermRow } from "./data.server";
 import { runTimeline, type Bundle, type Timeline } from "./engine";
@@ -35,8 +35,8 @@ export interface GuidePageData {
   marks: Record<string, string>;
   /** `closed`: every track the company has under this product is for a sector's or a plant's workers (CMA target population, CAT-10), so it is not open to anyone (audit A86). */
   companies: { id: string; name: string; closed: boolean }[];
-  /** The exposures whose record lists this wrapper among those that can hold them (audit A43). */
-  exposures: { id: string; name: string }[];
+  /** The exposures whose record lists this wrapper among those that can hold them (audit A43), each with its page (D6 as amended 2026-10-27). */
+  exposures: { id: string; name: string; href: string }[];
   /** Whether the switching playbook (/switch/<wrapper>) has steps for this wrapper (audit A14). */
   hasPlaybook: boolean;
   /** Rule ids the record's exit sentence cites that have a Hebrew text, in the order the sentence names them (audit A22). */
@@ -192,9 +192,10 @@ export function buildGuidePage(id: string, extraRuleIds: string[] = [], extraTer
   }
   const collator = new Intl.Collator("he");
   const companies = [...seen.entries()].map(([cid, c]) => ({ id: cid, name: c.name, closed: isClosedAudience(c.populations) })).sort((a, b) => collator.compare(a.name, b.name));
-  const exposures = loadExposures()
+  const folds = exposureFolds();
+  const exposuresHeld = loadExposures()
     .filter((e) => (e.wrapper_ids ?? []).includes(record.id))
-    .map((e) => ({ id: e.id, name: e.names.he[0] ?? e.id }));
+    .map((e) => ({ id: e.id, name: e.names.he[0] ?? e.id, href: folds[e.id] ? `/guide/${folds[e.id]}` : `/exposure/${e.id}` }));
 
   const wrappers = loadProducts();
   const related = record.transfer_routes
@@ -206,6 +207,8 @@ export function buildGuidePage(id: string, extraRuleIds: string[] = [], extraTer
   const account = isSecurity(record) ? wrappers.find((w) => w.id === record.held_in.wrapper_ids[0]) : undefined;
   const heldIn = isSecurity(record) && account ? { id: account.id, name: account.names.he[0]!, ruleIds: record.held_in.rule_ids } : null;
   const securities = wrappers.filter((w) => isSecurity(w) && w.held_in.wrapper_ids.includes(record.id as never)).map((w) => ({ href: `/guide/${w.id}`, label: w.names.he[0]! }));
+  // an exposure that is this page, or a security the row above already links, is not linked twice
+  const exposures = exposuresHeld.filter((e) => e.href !== `/guide/${record.id}` && !securities.some((x) => x.href === e.href));
 
   return { record, name: record.names.he[0]!, lede, bundle, initial, rules, pointed: pointedRecords(rules, allRules), terms, wrapperCount: productIds.length, heldIn, securities, termsById, checklist, dimensionNames, marks, companies, exposures, hasPlaybook: playbookWrappers.includes(record.id), exitTextRules, signature, noGraph, pendingFormulas, related, today: t };
 }

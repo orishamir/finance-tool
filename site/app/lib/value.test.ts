@@ -1,6 +1,6 @@
 // D31: a company's figure about its own product is not weak; the same figure out of context is.
 import { describe, expect, it } from "vitest";
-import { computed, isWeak, ownBy, ownEach, type SiteValue } from "./value";
+import { compactFee, computed, depositFeeNoneByRule, expandFee, isWeak, ownBy, ownEach, type SiteValue } from "./value";
 
 const fig = (strength: SiteValue["source"]["strength"], extra: Partial<SiteValue> = {}): SiteValue => ({
   value: 0.24,
@@ -61,5 +61,21 @@ describe("computed() weakest", () => {
   it("a secondary input stays weak next to an own one", () => {
     const v = computed(2, "nis", "F-1", { fee: fig("institution", { own: "הראל" }), s: fig("secondary") }, { today });
     expect(v.weakest).toBe("secondary");
+  });
+});
+
+describe("compact fees keep the rule that explains an empty deposit fee (PF-06)", () => {
+  const tpl = fig("primary", { value: 0.1, rule_ids: ["CAT-35"], notes: "ממוצע" });
+  const none = fig("primary", { value: null, rule_ids: ["CAT-35", "PF-06"], notes: "לא דווח: PF-06" });
+  const unknown = fig("primary", { value: null, rule_ids: ["CAT-35"], notes: "לא דווח: הסיבה לא ידועה." });
+  it("round-trips the rule ids only when they differ from the template's", () => {
+    expect(compactFee(tpl, tpl)).toEqual({ value: 0.1 });
+    expect(depositFeeNoneByRule(expandFee(compactFee(none, tpl), tpl))).toBe(true);
+    expect(depositFeeNoneByRule(expandFee(compactFee(unknown, tpl), tpl))).toBe(false);
+    // a template that carries the rule does not lend it to a reported value
+    expect(depositFeeNoneByRule(expandFee(compactFee(unknown, none), none))).toBe(false);
+  });
+  it("a reported value is never 'none by rule'", () => {
+    expect(depositFeeNoneByRule({ value: 0, rule_ids: ["PF-06"] })).toBe(false);
   });
 });

@@ -34,11 +34,11 @@ import { recordsById } from "../lib/scope";
 export const links = () => bundleLinks("workbench-bundle.json", "compare-bundle.json");
 
 export async function loader({ params }: Route.LoaderArgs) {
-  const { loadExposures } = await import("../lib/instruments.server");
+  const { exposureHref, loadExposures } = await import("../lib/instruments.server");
   const { goalFormData } = await import("../lib/compare.server");
   const exposure = loadExposures().find((e) => e.id === params.exposure);
   if (!exposure) throw new Response("Not found", { status: 404 });
-  return { ...goalFormData(), exposureId: exposure.id, exposureName: exposure.names.he[0] ?? exposure.id };
+  return { ...goalFormData(), exposureId: exposure.id, exposureName: exposure.names.he[0] ?? exposure.id, exposureHref: exposureHref(exposure.id) };
 }
 
 export function meta({ loaderData: data }: Route.MetaArgs) {
@@ -77,7 +77,7 @@ export default function WorkbenchFunds() {
 function Head({ data }: { data: Data }) {
   return (
     <header className="flex flex-col gap-3">
-      <Breadcrumb parent={{ href: `/exposure/${data.exposureId}`, label: c.funds.back }} current={`${c.funds.title.before}${data.exposureName}${c.funds.title.after}`} />
+      <Breadcrumb parent={{ href: data.exposureHref, label: c.funds.back }} current={`${c.funds.title.before}${data.exposureName}${c.funds.title.after}`} />
       <h1 className="text-2xl lg:text-3xl font-semibold">
         {c.funds.title.before}
         <bdi>{data.exposureName}</bdi>
@@ -132,7 +132,7 @@ function Body({ wb, compare, data, presets, search }: { wb: WorkbenchBundle; com
     [fi, ownReturn],
   );
   const assumptions = useFundAssumptions(data.exposureId);
-  const result = useMemo(() => buildFundVariants({ bundle: wb, exposureId: data.exposureId, query, inputs, assumptions: assumptions.value }), [wb, data.exposureId, query, inputs, assumptions.value]);
+  const result = useMemo(() => buildFundVariants({ bundle: wb, exposureId: data.exposureId, query, inputs, assumptions: assumptions.value, exposureHref: data.exposureHref }), [wb, data.exposureId, data.exposureHref, query, inputs, assumptions.value]);
 
   const [filter, setFilter] = useState("");
   const [sort, setSort] = useState<SortKey>("rank");
