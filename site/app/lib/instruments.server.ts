@@ -21,7 +21,8 @@ import {
   type ValueObject,
 } from "@finance-tool/schema";
 import type { z } from "zod";
-import { root } from "./data.server";
+import { loadSecurities, root } from "./data.server";
+import { exposureFoldedInto } from "./guide-nav";
 import { cmaFeeValue, ruleFigure, type SiteValue } from "./value";
 import { readParsedCached } from "./read-cache.server";
 
@@ -60,6 +61,23 @@ export function loadFunds(): FundRecord[] {
 
 export function loadExposures(): ExposureRecord[] {
   return readDir("data/instruments/exposures", exposureRecord).map((r) => r.record);
+}
+
+/** The security whose page an exposure's page is (D6 as amended 2026-10-27), by exposure id; absent when it keeps its own page. */
+export function exposureFolds(): Record<string, string> {
+  const securities = loadSecurities();
+  const out: Record<string, string> = {};
+  for (const e of loadExposures()) {
+    const into = exposureFoldedInto(e.wrapper_ids ?? [], securities);
+    if (into) out[e.id] = into;
+  }
+  return out;
+}
+
+/** Where a link to an exposure goes: its own page, or the page of the security it is. */
+export function exposureHref(id: string): string {
+  const into = exposureFolds()[id];
+  return into ? `/guide/${into}` : `/exposure/${id}`;
 }
 
 /** data/catalog/: the institution-facing names (data-schema 3.10). */

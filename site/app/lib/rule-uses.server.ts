@@ -6,7 +6,7 @@ import { existsSync, readdirSync, statSync } from "node:fs";
 import { join, relative, sep } from "node:path";
 import type { RuleRecord } from "@finance-tool/schema";
 import { guideIndex, idle, r2, r3fees, r3holdings, r3transfer, r3workbench, r4playbook, r4workbench, companies as companiesCopy } from "../copy";
-import { loadExposures } from "./instruments.server";
+import { exposureHref, loadExposures } from "./instruments.server";
 import { loadRules, loadProducts, pointedRecords, root } from "./data.server";
 import { fileProducts, commonRulesFile, shelfOf, tier2RuleFiles, type ShelfId } from "./rule-shelves";
 import { playbookWrapperIds } from "./playbook.server";
@@ -182,7 +182,7 @@ function build(): Scan {
       page = { href: `/guide/${base}`, label: wrapperName.get(base) ?? base };
     } else if (rel[0] === "content" && rel[1] === "exposure") {
       const e = loadExposures().find((x) => x.id === base);
-      page = { href: `/exposure/${base}`, label: e?.names?.he?.[0] ?? base };
+      page = { href: exposureHref(base), label: e?.names?.he?.[0] ?? base };
     } else if (rel[0] === "routes") {
       const k = routeKey[base];
       page = k ? table[k] ?? null : null;

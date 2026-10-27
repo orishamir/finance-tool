@@ -200,7 +200,8 @@ Why "למי ששלח לכם את האתר": every friend reached the site throug
 | Group 1 | איפה הכסף מוחזק |
 | Group 1, line | המוצר עצמו: חשבון בבנק, קופה או חשבון השקעות |
 | Group 2 | במה הכסף מושקע |
-| Group 2, line | מה שבתוך המוצר: מזומן, אג״ח, מניות דרך מדד |
+| Group 2, line | מה שבתוך המוצר: מזומן, מק״מ, קרן כספית, אג״ח, מניות דרך מדד |
+| Group 2, the money-market fund entry (D6, 2026-10-27) | its kinds as link pills: יומית · מתחדשת (list named "קרן כספית לפי סוג" for screen readers) |
 | Each card's line | the product's one-line explanation from `docs/glossary.md` |
 | Last card | מה האתר עוד לא מכסה |
 | Last card, line | מוצרים שהאתר מכיר אבל עוד לא מסביר עד הסוף · changed 2026-10-24 (Hebrew editor); was ״מוצרים שאנחנו מכירים אבל עוד לא מסבירים עד הסוף״ |

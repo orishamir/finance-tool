@@ -6,7 +6,7 @@ import { join } from "node:path";
 import type { DepositTerms, FeesSnapshot, ParameterRecord, RuleRecord, ValueObject, ProductId, ProductRecord } from "@finance-tool/schema";
 import { buildTariff as engineTariff, memberKindOf, type InstrumentTerms, type WorkbenchInput } from "@finance-tool/engine";
 import { loadChecklistRows, loadCma, loadCmaFees, loadFees, loadNotCovered, loadParameters, loadRules, loadProducts, pointedRecords, root, today } from "./data.server";
-import { buildInstrumentTerms, loadDepositTerms, loadExposures, loadFunds, regulatorAverageFees } from "./instruments.server";
+import { buildInstrumentTerms, exposureHref, loadDepositTerms, loadExposures, loadFunds, regulatorAverageFees } from "./instruments.server";
 import { evaluate, representativeFeeValue, type BundleDataFile, type ProviderTariff, type CompareBundle, type ExposureEntry, type Family, type HoldingTerms, type IndexFundTerms, type RunGoal, type Tier2Row, type WrapperEntry } from "./compare";
 import type { FitTableData } from "./fit";
 import { computed, ownBy, ownEach, type SiteValue } from "./value";
@@ -288,7 +288,7 @@ function exposureData(wrappers: WrapperEntry[], p05: ParameterRecord, sources: P
       }
       (exposureTerms[record.id] ??= {})[wid] = { fundId: fund.id, terms: built.terms, feeValues: built.feeValues };
     }
-    return { record, name: record.names.he[0] ?? record.id, oneLine: record.one_line_he ?? null, guideHref: `/exposure/${record.id}`, variantsHref: forExposure.length > 0 ? `/workbench/funds/${record.id}` : null };
+    return { record, name: record.names.he[0] ?? record.id, oneLine: record.one_line_he ?? null, guideHref: exposureHref(record.id), variantsHref: forExposure.length > 0 ? `/workbench/funds/${record.id}` : null };
   });
   void wrappers;
   return { exposures, exposureTerms };

@@ -11,10 +11,6 @@ export const content: GuideContent = {
     const series = figure("GOV-22", "series_outstanding");
     return (
       <>
-        {/* audit A43: the two מק״מ pages say what each is and point at the other */}
-        <p className="max-w-measure text-sm text-muted-foreground">
-          זה העמוד על מק״מ כמוצר: איך קונים אותו, כמה זה עולה ומה המס. על ההשקעה עצמה, כולל החזקה בלי לקנות אותו ישירות, ראו <Link to="/exposure/makam" className="text-link hover:underline">מק״מ כחשיפה: במה הכסף מושקע</Link>.
-        </p>
         <p className="max-w-measure">
           הלוואה קצרה למדינה, לתקופה של עד שנה, שבנק ישראל מוכר לציבור. המק״מ לא משלם ריבית ולא צמוד למדד: קונים אותו במחיר נמוך <Term prefix="מה" id="שווי נקוב">שווי הנקוב</Term>, ובמועד <Term prefix="ה" id="פדיון">פדיון</Term> המדינה משלמת את השווי הנקוב במלואו. ההפרש הוא הרווח שלכם, ובמס הוא נחשב <Term id="דמי ניכיון">דמי ניכיון</Term>, כלומר <Term id="ריבית">ריבית</Term>.
         </p>
@@ -25,7 +21,9 @@ export const content: GuideContent = {
       </>
     );
   },
-  who: () => (
+  who: ({ figure }) => {
+    const makamMonths = figure("MF-29", "max_makam_term_months");
+    return (
     <>
       <p className="max-w-measure">
         קונים מק״מ דרך חשבון ניירות ערך בבנק או בבית השקעות שהוא חבר בורסה: בבורסה, בכל יום מסחר, או בהזמנה למכרז ההנפקה החודשי דרך החשבון. בנק שאפשר לקנות דרכו מק״מ חייב להציג אותו ליד הפיקדונות והקרנות הכספיות, תחת הכותרת <Term id="מוצרי שוק הכסף">מוצרי שוק הכסף</Term>, בלי להעדיף מוצר, ולהסביר איך קונים.
@@ -34,8 +32,14 @@ export const content: GuideContent = {
         את המק״מ מנפיק ומנהל בנק ישראל. במכרז עצמו מציעים ישירות רק חברי מסלקת הבורסה; איך הזמנה של אדם פרטי מגיעה אליו, באיזה סכום מינימלי ובאיזו עמלה, עדיין לא מתועד. שאלה פתוחה: <IdRef id="GOV OQ2" />. גם הסכום המזערי לקנייה ומכירה בבורסה עצמה עוד לא נבדק (<IdRef id="GOV OQ7" />), ולכן השורה "סכום מינימלי" בבדיקות חסומה.
       </p>
       <RulesLine ids={["GOV-22", "GOV-05", "BANK-15", "BRK-32"]} />
+      {/* D6 (amended 2026-10-27): makam's exposure page folded into this one; what it said about holding makam without buying it */}
+      <Sentence measure>
+        אפשר להיות חשופים למק״מ גם בלי לקנות אותו: <Link to="/guide/money-market-fund-daily" className="text-link hover:underline">קרן כספית</Link> רשאית להחזיק מק״מ שנותרו לו עד {makamMonths ? <Num value={makamMonths} /> : null} חודשים לפדיון, לצד איגרות חוב קצרות, פיקדונות ומזומן. גם בתוך ניהול אישי מחזיקים אותו ישירות, כמו בחשבון ניירות ערך. בנק אסור לו לגבות <Term id="דמי ניהול פיקדון ניירות ערך">דמי ניהול פיקדון ניירות ערך</Term> על מק״מ.
+      </Sentence>
+      <RulesLine ids={["MF-29", "IRA-11", "BRK-17", "BANK-18"]} />
     </>
-  ),
+    );
+  },
   switchLine: "מכירה של סדרה אחת וקנייה של אחרת היא מכירה לכל דבר, עם מס על הרווח",
   switchRules: ["TXI-12", "TXS-21"],
   termIds: ["שווי נקוב", "פדיון", "דמי ניכיון", "ריבית", "תשואה לפדיון", "מוצרי שוק הכסף", "רווח הון ריאלי", "ניכוי מס במקור", "תשואה ברוטו", "דמי ניהול פיקדון ניירות ערך", "אג\"ח סחיר", "אג\"ח ממשלתית קצרה"],

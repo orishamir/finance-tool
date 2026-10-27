@@ -4,7 +4,7 @@ import type { SearchEntry } from "../lib/search";
 
 export async function loader() {
   const { loadCma, loadTerms, loadProducts, loadRules, loadParameters } = await import("../lib/data.server");
-  const { loadCatalog, loadExposures } = await import("../lib/instruments.server");
+  const { exposureHref, loadCatalog, loadExposures } = await import("../lib/instruments.server");
   const { normalize, pageAliases, ruleFigs } = await import("../lib/search");
   const { search, searchMore, sourceBlock, parametersPage, topicName } = await import("../copy");
   const entries: SearchEntry[] = [];
@@ -24,7 +24,7 @@ export async function loader() {
   for (const b of loadBrands()) for (const name of [b.name, ...b.fundManagers]) entries.push({ kind: "company", name, line: brandWords.searchLine, href: `/companies/${b.page}`, norm: normalize(name) });
   for (const a of pageAliases) for (const name of a.names) entries.push({ kind: "guide", name, line: a.line, href: a.href, norm: normalize(name) });
   const exposures = loadExposures();
-  for (const e of exposures) for (const name of [...e.names.he, ...e.names.en]) entries.push({ kind: "guide", name, line: search.groups.guide, href: `/exposure/${e.id}`, norm: normalize(name) });
+  for (const e of exposures) for (const name of [...e.names.he, ...e.names.en]) entries.push({ kind: "guide", name, line: search.groups.guide, href: exposureHref(e.id), norm: normalize(name) });
   // every name the catalogue records: the track when it names one, else the company page, else the product's guide page
   for (const c of loadCatalog()) {
     const first = cma.tracks.find((t) => c.maps_to.track_ids.includes(t.fundId));
@@ -57,7 +57,7 @@ export async function loader() {
     const exposure = guide ? undefined : term.exposureIds.find((id) => exposures.some((e) => e.id === id));
     if (!guide && !exposure) continue;
     const page = guide ? wrappers.find((w) => w.id === guide)!.names.he[0]! : exposures.find((e) => e.id === exposure)!.names.he[0]!;
-    const href = guide ? `/guide/${guide}#terms` : `/exposure/${exposure}#terms`;
+    const href = guide ? `/guide/${guide}#terms` : `${exposureHref(exposure!)}#terms`;
     for (const name of [term.he, ...term.variants]) entries.push({ kind: "term", name, line: `${search.termLine} ${page}`, href, norm: normalize(name), key: `term:${term.he}` });
   }
   // knowledge layer (synthesis 3.6): rules by title, id and figures; parameters by name and id; documents by title

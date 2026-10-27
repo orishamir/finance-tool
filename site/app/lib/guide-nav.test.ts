@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { groupGuides, guideLayout, isClosedAudience, rulesAnchor, splitTerms } from "./guide-nav";
+import { exposureFoldedInto, groupGuides, guideLayout, isClosedAudience, rulesAnchor, splitTerms } from "./guide-nav";
 
 const allIds = guideLayout.flatMap((g) => g.ids);
 
@@ -76,5 +76,15 @@ describe("splitTerms (audit A83)", () => {
     const r = splitTerms([t("א"), t("ב"), t("ג")], ["א"]);
     expect(r.main).toEqual([]);
     expect(r.rest).toHaveLength(3);
+  });
+});
+
+describe("exposureFoldedInto (D6 as amended 2026-10-27)", () => {
+  const products = [{ id: "makam", held_as: "direct" }, { id: "money-market-fund-daily", held_as: "fund_units" }, { id: "brokerage-account" }];
+  it("an exposure a security held directly is gets that security's page", () => {
+    expect(exposureFoldedInto(["makam", "money-market-fund-daily"], products)).toBe("makam");
+  });
+  it("an exposure held only through funds or wrappers keeps its own page", () => {
+    expect(exposureFoldedInto(["money-market-fund-daily", "brokerage-account"], products)).toBeNull();
   });
 });

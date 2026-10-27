@@ -7,12 +7,22 @@
  * product never disappears from the list.
  */
 export const guideLayout: { id: string; ids: readonly string[] }[] = [
-  { id: "short", ids: ["current-account", "bank-deposit", "savings-plan", "money-market-fund-daily", "money-market-fund-renewable", "makam"] },
+  { id: "short", ids: ["current-account", "bank-deposit", "savings-plan"] },
   { id: "tax-benefit", ids: ["keren-hishtalmut", "kupat-gemel-lehashkaa"] },
   { id: "retirement", ids: ["pension-comprehensive", "pension-general", "provident-for-annuity"] },
   { id: "children", ids: ["child-savings-provident", "child-savings-bank"] },
-  { id: "self-directed", ids: ["brokerage-account", "government-bond", "ira-hishtalmut", "ira-provident"] },
+  { id: "self-directed", ids: ["brokerage-account", "ira-hishtalmut", "ira-provident"] },
 ];
+
+/**
+ * D6 (amended 2026-10-27): a security is what the money is invested in, not where it is held, so the guide lists it under
+ * "במה הכסף מושקע". An exposure that one security held directly *is* (makam, a government bond) has no page of its own:
+ * the security's page is its page. Returns that security's id, or null when the exposure keeps its own page.
+ */
+export function exposureFoldedInto(holderIds: readonly string[], products: readonly { id: string; held_as?: string }[]): string | null {
+  for (const id of holderIds) if (products.find((p) => p.id === id)?.held_as === "direct") return id;
+  return null;
+}
 
 export interface GuideGroup {
   id: string;

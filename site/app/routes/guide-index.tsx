@@ -6,19 +6,55 @@ import { IconDrillIn } from "../components/icons";
 import { SavedGoalStrip } from "../components/compare/strip";
 import { PageShell } from "../components/shell";
 import { GoalsProvider, type Presets } from "../lib/goal";
-import { Card } from "../components/kit";
+import { Card, ChipList } from "../components/kit";
 import { groupGuides } from "../lib/guide-nav";
 
 export async function loader() {
   const { loadTerms, loadProducts, today } = await import("../lib/data.server");
-  const { loadExposures } = await import("../lib/instruments.server");
+  const { exposureFolds, loadExposures } = await import("../lib/instruments.server");
+  const { isSecurity } = await import("@finance-tool/schema");
   const terms = loadTerms();
   const line = (name: string) => terms.find((t) => t.he === name)?.explanation ?? null;
+  const products = loadProducts();
+  // D6 (amended 2026-10-27): "איפה הכסף מוחזק" lists only wrappers; a security (makam, a bond, a money-market fund) is what the money is invested in
   // a name that must be decoded also shows the plain name the product's own record carries (audit A44)
-  const wrappers = loadProducts().map((w) => ({ id: w.id, name: w.names.he[0]!, line: line(w.names.he[0]!), plain: (copy.plainSubtitleFor as readonly string[]).includes(w.id) ? (w.names.he[1] ?? null) : null }));
+  const wrappers = products.filter((w) => !isSecurity(w)).map((w) => ({ id: w.id, name: w.names.he[0]!, line: line(w.names.he[0]!), plain: (copy.plainSubtitleFor as readonly string[]).includes(w.id) ? (w.names.he[1] ?? null) : null }));
+  const securities = products.filter(isSecurity);
+  const folds = exposureFolds();
+  const exposures: ExposureItem[] = [];
+  for (const e of loadExposures()) {
+    const into = securities.find((x) => x.id === folds[e.id]);
+    if (!into) exposures.push({ key: e.id, name: e.names.he[0] ?? e.id, line: e.one_line_he ?? line(e.names.he[0] ?? ""), href: `/exposure/${e.id}`, kinds: [] });
+    // an exposure that a security held directly is has that security's page (makam; both kinds of government bond share one)
+    else if (!exposures.some((x) => x.key === into.id)) exposures.push({ key: into.id, name: into.names.he[0]!, line: line(into.names.he[0]!) ?? line(e.names.he[0] ?? ""), href: `/guide/${into.id}`, kinds: [] });
+  }
+  // the money-market funds are one entry: a fund held as units, whose kinds each have a page
+  const funds = securities.filter((x) => x.held_as === "fund_units");
+  if (funds.length > 0) {
+    const name = funds[0]!.names.he[0]!;
+    exposures.push({ key: "money-market-funds", name, line: line(name), href: `/guide/${funds[0]!.id}`, kinds: funds.map((f) => ({ href: `/guide/${f.id}`, label: copy.fundKinds[f.id] ?? f.names.he[0]! })) });
+  }
+  exposures.sort((a, b) => rank(a.key) - rank(b.key));
   const { goalContext } = await import("../lib/compare.server");
-  return { wrappers, exposures: loadExposures().map((e) => ({ id: e.id, name: e.names.he[0] ?? e.id, line: e.one_line_he ?? line(e.names.he[0] ?? "") })), today: today(), goal: goalContext() };
+  // "מאיפה להתחיל" may point at any product, a security too
+  const startLinks = copy.start.items.flatMap((it) => {
+    const p = products.find((x) => x.id === it.id);
+    return p ? [{ id: p.id, lead: it.lead, name: p.names.he[0]! }] : [];
+  });
+  return { wrappers, exposures, startLinks, today: today(), goal: goalContext() };
 }
+
+interface ExposureItem {
+  key: string;
+  name: string;
+  line: string | null;
+  href: string;
+  kinds: { href: string; label: string }[];
+}
+
+/** The cash-like and bond entries first, short to long, then the rest in file order. */
+const exposureOrder = ["shekel-cash", "money-market-funds", "makam", "government-bond"];
+const rank = (key: string) => (exposureOrder.includes(key) ? exposureOrder.indexOf(key) : exposureOrder.length);
 
 export function meta() {
   return [{ title: `${copy.title} · ${site.name}` }];
@@ -77,18 +113,15 @@ export default function GuideIndex() {
             {copy.start.title}
           </h2>
           <ul className="flex flex-col">
-            {copy.start.items.map((it) => {
-              const w = data.wrappers.find((x) => x.id === it.id);
-              return w ? (
-                <li key={it.id}>
-                  <Link to={`/guide/${w.id}`} className="inline-flex flex-wrap items-center gap-x-2 min-h-target hover:underline">
-                    <span>{it.lead}</span>
-                    <span className="text-link font-medium">{w.name}</span>
-                    <IconDrillIn size={16} className="text-muted-foreground" />
-                  </Link>
-                </li>
-              ) : null;
-            })}
+            {data.startLinks.map((it) => (
+              <li key={it.id}>
+                <Link to={`/guide/${it.id}`} className="inline-flex flex-wrap items-center gap-x-2 min-h-target hover:underline">
+                  <span>{it.lead}</span>
+                  <span className="text-link font-medium">{it.name}</span>
+                  <IconDrillIn size={16} className="text-muted-foreground" />
+                </Link>
+              </li>
+            ))}
           </ul>
         </section>
         <section aria-labelledby="g1" className="flex flex-col gap-6">
@@ -119,9 +152,22 @@ export default function GuideIndex() {
               <p className="text-sm text-muted-foreground">{copy.group2.line}</p>
             </div>
             <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-              {data.exposures.map((e) => (
-                <InstrumentCard key={e.id} href={`/exposure/${e.id}`} name={e.name} line={e.line} />
-              ))}
+              {data.exposures.map((e) =>
+                e.kinds.length > 0 ? (
+                  <li key={e.key}>
+                    <Card className="h-full flex flex-col gap-2">
+                      <Link to={e.href} className="flex items-start justify-between gap-4 hover:underline">
+                        <span className="text-lg font-semibold">{e.name}</span>
+                        <IconDrillIn className="text-muted-foreground shrink-0 mt-1" />
+                      </Link>
+                      {e.line && <span className="text-sm text-muted-foreground">{e.line}</span>}
+                      <ChipList heading={`${e.name} ${copy.fundKindsLine}`} headingHidden items={e.kinds.map((k) => ({ id: k.href, label: k.label, href: k.href }))} value={null} />
+                    </Card>
+                  </li>
+                ) : (
+                  <InstrumentCard key={e.key} href={e.href} name={e.name} line={e.line} />
+                ),
+              )}
             </ul>
           </section>
         )}

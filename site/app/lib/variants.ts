@@ -231,6 +231,8 @@ interface VariantArgs {
   query: VariantQuery;
   inputs: WorkbenchInputs;
   assumptions: FundAssumptions;
+  /** The exposure's page, when it is a security's page (D6 as amended 2026-10-27); else `/exposure/{id}`. */
+  exposureHref?: string;
 }
 
 /** Foreign currencies the funds are bought in abroad (their start rate is the ECB cross rate). */
@@ -239,7 +241,7 @@ function foreignCurrencies(mine: FundRecord[]): string[] {
 }
 
 export function buildFundVariants(a: VariantArgs): VariantResult {
-  const { bundle, exposureId, query, inputs, assumptions } = a;
+  const { bundle, exposureId, query, inputs, assumptions, exposureHref } = a;
   const today = bundle.today;
   const exposure = bundle.exposures.find((e) => e.id === exposureId);
   if (!exposure) return { kind: "error", code: "no-exposure" };
@@ -353,7 +355,7 @@ export function buildFundVariants(a: VariantArgs): VariantResult {
       ...(detail ? { detail } : {}),
       ruleIds: run ? run.rules.map((r) => r.id) : [],
       providersHref: rec ? `/workbench/providers/${BROKERAGE}?fund=${encodeURIComponent(rec.id)}` : `/workbench/providers/${BROKERAGE}`,
-      checkHref: `/exposure/${exposure.id}`,
+      checkHref: exposureHref ?? `/exposure/${exposure.id}`,
       ...(sameIsin.length > 0 ? { duplicateOf: sameIsin[0]! } : {}),
     };
   });
