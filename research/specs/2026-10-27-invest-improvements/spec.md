@@ -100,6 +100,16 @@ Hedging becomes a question with two answers, shown only when the index has both 
 
 The folds today ("מה כל בחירה שווה", "קרן סל או קרן מחקה", "מה עושים עכשיו"): the first becomes sections 2 and 3 of this order, the second goes (section 1), and the third stays.
 
+### 3.6 Mockups: three options (2026-10-27)
+
+Static pictures in `mockups/`, PC (1366 px) and phone (390 px), for a reader who chose the S&P 500, has a Leumi account and the default plan. A seventh picture shows option A on the phone for a reader who chose the TA-90. The account and fund figures are the live site's of 27.10.2026. The cost split by fee line and the "הוראת קבע" labels are illustrative only: the engine does not output the split yet, and the standing-order data is not collected. `mockups/source.html` draws them; it needs the site's built CSS served at `/finance-tool/assets/`.
+
+All three share the top: the index pills, the plan (amount, monthly sum, years, "החשבון שלכם"), and the currency question, which shows only when the index has both hedged and unhedged funds. All three show the funds as a short list, the funds within the tie threshold in one box ("שוות לתוכנית שלכם"), and buying abroad as one card.
+
+- **A, "the gap first"** (`option-A-sp500-pc.png`, `option-A-sp500-phone.png`, `option-A-ta90-phone.png`). The headline is your account against the cheapest ("בלאומי יישארו לכם 2,621 ₪ פחות"). Then one bar per account showing how much less it leaves you, your account marked, then the funds at the cheapest account, abroad and the steps. It is the simplest, and the same on both sizes. It does not say why an account costs more.
+- **B, "your account against the cheapest"** (`option-B-sp500-pc.png`, `option-B-sp500-phone.png`). Two cards side by side, Leumi and Psagot, each with what is left and a bar of what it costs you, split by fee line. A sentence names the lines that make the difference, with a field to type a negotiated fee. Then every account as a compact list with a small gap bar. It answers "move or negotiate?" best, but needs the engine to split the cost by fee line.
+- **C, "list and detail"** (`option-C-sp500-pc.png`, `option-C-sp500-phone.png`). On a PC, the accounts are a list on one side and the chosen account's detail is on the other: what is left, the gap to yours, its cost split against yours, the funds to buy, the steps. On a phone, the list is an accordion and the open account shows the same detail. Every account can be explored without leaving the page, but it is the most to build, and on a phone the open account pushes the others down.
+
 ## 4. Against `docs/product.md`: what else the page owes the reader
 
 `docs/product.md` section 2 states the reader's job: which fund variant and which provider, "which fees are worth fighting, and what they might be failing to consider", then act, and "be able to come back later and see whether anything changed".
@@ -117,7 +127,7 @@ The folds today ("מה כל בחירה שווה", "קרן סל או קרן מח�
 
 ## 5. Decisions for the founder
 
-1. Section 3: the account as the visual comparison (gap bars, ties, your account marked) and the fund as a short list.
+1. Section 3: the account as the visual comparison and the fund as a short list; which of the mockups A, B or C (3.6), or a mix.
 2. Section 3.4: one control for the account, and hedging as a question that scopes the whole comparison, shown only where both kinds exist.
 3. Section 4 item 1: drop the "ETF or tracking fund" fold and amend D28 (a).
 4. Section 4 item 5: a negotiated fee entered on this page.
