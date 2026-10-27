@@ -194,7 +194,7 @@ Three variants:
   - That sentence ends with the link to type in a negotiated fee.
 
 Shared by both states:
-- **The account slot lists the account's own lines:** what each is charged on (each purchase, the value each quarter, a fixed sum each month), its amount over the horizon, and the total.
+- **The account slot lists the account's own lines:** what each is charged on (each purchase, the value each quarter, a fixed sum each month), its amount over the horizon, and the total. *Removed the same day (founder: "in the broker tab, remove the top legend"): the result's bar already shows these lines, so the slot keeps the name, the supervisor and the link.*
 - **The fund slot gives the fund's fee in shekels.**
 - **The account list's bars now use a scale that fits the main group.** The two far larger accounts are drawn with a break mark ("⫽ הפס נחתך").
 
