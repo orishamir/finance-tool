@@ -1,6 +1,6 @@
 // A list to choose one row from (founder, 2026-10-27, the index page's two linked lists): every row is a radio, the chosen one is
 // tinted with a bar at its start; the rows' cells are the caller's, on a grid the caller names, and a head row can name the columns.
-import { useState, type CSSProperties, type ReactNode } from "react";
+import { useLayoutEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { cx } from "./cx";
 
 export interface PickRow {
@@ -20,13 +20,35 @@ export interface PickRow {
  */
 export function PickList({ label, columns, phoneColumns, head, rows, phoneLimit, more }: { label: string; columns: string; phoneColumns?: string; head?: ReactNode; rows: PickRow[]; phoneLimit?: number; more?: (hidden: number) => string }) {
   const [open, setOpen] = useState(false);
+  // a pick re-prices what is above the list (founder, 2026-10-27: "the whole page jumps up and down"): keep the tapped row where it
+  // was on the screen, wherever the list now puts it
+  const root = useRef<HTMLDivElement>(null);
+  const anchor = useRef<{ key: string; top: number } | null>(null);
+  useLayoutEffect(() => {
+    const a = anchor.current;
+    if (!a || !root.current) return;
+    anchor.current = null;
+    const list = root.current;
+    const hold = () => {
+      const el = [...list.querySelectorAll<HTMLElement>("[data-pick-key]")].find((x) => x.dataset.pickKey === a.key);
+      const moved = el ? el.getBoundingClientRect().top - a.top : 0;
+      if (Math.abs(moved) > 1) window.scrollBy({ top: moved, behavior: "instant" });
+    };
+    hold();
+    // once more after the browser's own layout pass (its scroll anchoring can move the page again)
+    requestAnimationFrame(hold);
+  });
+  const choose = (r: PickRow, el: HTMLElement) => {
+    anchor.current = { key: r.key, top: el.getBoundingClientRect().top };
+    r.onSelect();
+  };
   const grid = { "--pick-cols": columns, "--pick-cols-phone": phoneColumns ?? columns } as CSSProperties;
   const gridClass = "grid-cols-[1.25rem_var(--pick-cols-phone)] md:grid-cols-[1.25rem_var(--pick-cols)]";
   const folds = !open && phoneLimit !== undefined && rows.length > phoneLimit + 1;
   const folded = (i: number, r: PickRow) => folds && i >= phoneLimit! && !r.selected;
   const hidden = rows.filter((r, i) => folded(i, r)).length;
   return (
-    <div role="radiogroup" aria-label={label} className="flex flex-col">
+    <div ref={root} role="radiogroup" aria-label={label} className="flex flex-col [overflow-anchor:none]">
       {head && (
         <div className={cx("grid gap-x-3 items-end px-4 pb-1.5 text-xs text-muted-foreground border-b border-border", gridClass)} style={grid}>
           <span />
@@ -39,12 +61,13 @@ export function PickList({ label, columns, phoneColumns, head, rows, phoneLimit,
           key={r.key}
           role="radio"
           aria-checked={r.selected}
+          data-pick-key={r.key}
           tabIndex={r.selected ? 0 : -1}
-          onClick={r.onSelect}
+          onClick={(e) => choose(r, e.currentTarget)}
           onKeyDown={(e) => {
             if (e.key === " " || e.key === "Enter") {
               e.preventDefault();
-              r.onSelect();
+              choose(r, e.currentTarget);
             } else if (e.key === "ArrowDown" || e.key === "ArrowUp") {
               e.preventDefault();
               const next = (e.key === "ArrowDown" ? e.currentTarget.nextElementSibling : e.currentTarget.previousElementSibling) as HTMLElement | null;
