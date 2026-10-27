@@ -231,6 +231,14 @@ The founder: "nice. implement it. in the fund table use differences not absolute
 
 No independent reviewer is needed under 30 files.
 
+**Later the same day.**
+- The page frame is wider on a large screen (`max-w-wide`, 96rem). The founder asked: "on pc, you have more space to work with no?". At 1,280 px and up the fund list gets 7 parts of the width to the accounts' 5, and a fund's labels fit on one line at 1,920 px.
+- The result block now has one shape. The founder reported: "the page is still jumping when changing from the winning combination". Moving from the cheapest pair (one bar) to any other pair (two cards, two bars) grew the block by about 140 px. The tapped row stayed put, but everything above it jumped.
+  - On the cheapest pair, the second card and bar show the next pair ("הזוג הבא בתור", the ranked pair that leaves the most after it).
+  - The legend names every account line.
+  - A bar's name keeps to one line, and a card's title takes two lines on a phone.
+  - Measured over seven picks at 1,920, 1,366, 768 and 390 px wide, the block keeps one height; on a PC the page no longer scrolls at all on a pick.
+
 ## 4. Against `docs/product.md`: what else the page owes the reader
 
 `docs/product.md` section 2 states the reader's job: which fund variant and which provider, "which fees are worth fighting, and what they might be failing to consider", then act, and "be able to come back later and see whether anything changed".
