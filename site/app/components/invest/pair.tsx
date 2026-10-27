@@ -84,12 +84,14 @@ function CostBar({ who, sub, pc, scale, you, today }: { who: string; sub: string
   const parts = partsOf(pc);
   const total = totalOf(parts);
   return (
-    <div className="grid grid-cols-[8.5rem_minmax(0,1fr)_6rem] items-center gap-3">
+    <div className="grid grid-cols-[minmax(0,1fr)_auto] md:grid-cols-[8.5rem_minmax(0,1fr)_6rem] items-center gap-x-3 gap-y-1.5">
       <span className={cx("flex flex-col leading-tight font-semibold", you && "text-entered")}>
         {who}
         <span className="text-xs font-normal text-muted-foreground">{sub}</span>
       </span>
-      <CostStack parts={parts} scale={scale} label={`${who}: ${fmt.nisWhole(total)}`} />
+      <div className="min-w-0 max-md:col-span-2 max-md:row-start-2">
+        <CostStack parts={parts} scale={scale} label={`${who}: ${fmt.nisWhole(total)}`} />
+      </div>
       <span className="text-end font-semibold">
         <Num value={nis(total, "F-61", who, today, { left: pc.left })} />
       </span>
@@ -110,14 +112,14 @@ export function PairResult({ view, bundle, plan, pick, onPick }: { view: InvestV
   const paid = (
     <div className="flex flex-col gap-0.5">
       <span className="text-sm text-muted-foreground">{c.pair.paidIn}</span>
-      <span className="text-3xl font-bold leading-tight">
+      <span className="text-2xl md:text-3xl font-bold leading-tight">
         <Num value={pc.paidIn} />
       </span>
       <span className="text-xs text-muted-foreground">{c.pair.paidInNote(months)}</span>
     </div>
   );
   const arrow = (
-    <span aria-hidden="true" className="text-2xl text-muted-foreground self-center">
+    <span aria-hidden="true" className="hidden md:inline text-2xl text-muted-foreground self-center">
       ←
     </span>
   );
@@ -130,14 +132,14 @@ export function PairResult({ view, bundle, plan, pick, onPick }: { view: InvestV
     const accountTotal = pc.account.reduce((a, l) => a + (l.cost.value as number), 0) + pc.interaction;
     return (
       <Card pad="roomy" className="flex flex-col gap-5">
-        <div className="flex flex-wrap items-end gap-x-8 gap-y-4">
+        <div className="grid grid-cols-2 gap-4 md:flex md:flex-wrap md:items-end md:gap-x-8">
           {paid}
           {arrow}
           <div className="flex flex-col gap-0.5">
             <span className="text-sm text-muted-foreground">
               {c.pair.left(years)} · <span className="text-primary font-medium">{c.pair.cheapestStar}</span>
             </span>
-            <span className="text-3xl font-bold leading-tight">
+            <span className="text-2xl md:text-3xl font-bold leading-tight">
               <Num value={pc.left} />
             </span>
             <span className="text-xs text-muted-foreground">{c.pair.leftNote}</span>
@@ -171,12 +173,13 @@ export function PairResult({ view, bundle, plan, pick, onPick }: { view: InvestV
   const sumAccount = (x: PairCosts) => x.account.reduce((a, l) => a + (l.cost.value as number), 0) + x.interaction;
   return (
     <Card pad="roomy" className="flex flex-col gap-5">
-      <div className="flex flex-wrap items-stretch gap-x-6 gap-y-4">
+      <div className="flex flex-col gap-4 md:flex-row md:flex-wrap md:items-stretch md:gap-x-6">
         {paid}
         {arrow}
-        <div className="flex-1 min-w-64 rounded-lg border border-entered bg-entered/10 p-3 flex flex-col gap-0.5">
+        <div className="grid grid-cols-2 gap-3 md:contents">
+        <div className="md:flex-1 md:min-w-64 rounded-lg border border-entered bg-entered/10 p-3 flex flex-col gap-0.5">
           <span className="text-sm text-muted-foreground">{c.pair.yours}</span>
-          <span className="text-3xl font-bold leading-tight">
+          <span className="text-2xl md:text-3xl font-bold leading-tight">
             <Num value={pc.left} />
           </span>
           <span className="text-xs text-muted-foreground">
@@ -184,9 +187,9 @@ export function PairResult({ view, bundle, plan, pick, onPick }: { view: InvestV
           </span>
         </div>
         {pcBest && best && (
-          <div className="flex-1 min-w-64 rounded-lg border border-border p-3 flex flex-col gap-1">
+          <div className="md:flex-1 md:min-w-64 rounded-lg border border-border p-3 flex flex-col gap-1">
             <span className="text-sm text-muted-foreground">{c.pair.cheapestStar}</span>
-            <span className="text-3xl font-bold leading-tight text-primary">
+            <span className="text-2xl md:text-3xl font-bold leading-tight text-primary">
               <Num value={pcBest.left} />
             </span>
             <span className="flex flex-wrap items-center gap-x-3 text-sm">
@@ -199,6 +202,7 @@ export function PairResult({ view, bundle, plan, pick, onPick }: { view: InvestV
             </span>
           </div>
         )}
+        </div>
       </div>
       {pcBest && (
         <div className="flex flex-col gap-2">
@@ -263,7 +267,7 @@ export function AccountColumn({ view, bundle, years, pick, onPick }: { view: Inv
             {isYours && <span className="text-xs font-normal text-muted-foreground">{c.pair.yoursTag}</span>}
             {isBest && <span className="text-xs font-medium text-primary">{c.pair.cheapestTag}</span>}
           </span>
-          <span className="flex items-center gap-2 min-w-0">
+          <span className="flex items-center gap-2 min-w-0 max-md:row-start-2 max-md:col-start-3 max-md:col-span-2">
             <CostStack size="sm" parts={parts} scale={scale} label={`${r.p.short}: ${fmt.nisWhole(r.at.accountCost)}`} />
             <span className="text-xs text-muted-foreground whitespace-nowrap">
               <Num value={nis(r.at.accountCost, "F-63", `${r.p.short}: ${c.pair.colChargesShort}`, bundle.today)} />
@@ -306,11 +310,12 @@ export function AccountColumn({ view, bundle, years, pick, onPick }: { view: Inv
       <PickList
         label={c.pair.listLabelAccounts}
         columns="1.5rem 8rem minmax(0,1fr) 6.5rem"
+        phoneColumns="1.25rem minmax(0,1fr) auto"
         head={
           <>
             <span>#</span>
             <span>{c.pair.colAccount}</span>
-            <span>{c.pair.colChargesShort}</span>
+            <span className="max-md:hidden">{c.pair.colChargesShort}</span>
             <span className="text-end">{c.pair.colLeft}</span>
           </>
         }
@@ -397,15 +402,15 @@ export function FundColumn({ view, today, pick, onPick, filter, onFilter }: { vi
       cells: (
         <>
           <span className="flex flex-col gap-1.5 min-w-0">
-            <span className="flex items-baseline gap-2 whitespace-nowrap">
+            <span className="leading-snug md:whitespace-nowrap">
               <span className="font-semibold">
                 <bdi>{r.f.name}</bdi>
-              </span>
-              <span onClick={(e) => e.stopPropagation()}>
+              </span>{" "}
+              <span className="inline-block ms-1" onClick={(e) => e.stopPropagation()}>
                 <ProductIdLink id={r.f.number} href={mayaHrefOf(r.f)} label={brands.funds.mayaLink(r.f.number)} />
               </span>
             </span>
-            <span className="flex flex-wrap gap-1.5" onClick={(e) => e.stopPropagation()}>
+            <span className="flex md:flex-wrap gap-1.5 max-md:overflow-x-auto max-md:pb-0.5" onClick={(e) => e.stopPropagation()}>
               {r.labels.map((l) => (
                 <LabelChip key={l.id} label={l} />
               ))}
@@ -426,7 +431,7 @@ export function FundColumn({ view, today, pick, onPick, filter, onFilter }: { vi
       <div className="bg-popover border-b border-border px-5 py-4 flex flex-col gap-1.5">
         <span className="text-sm text-muted-foreground">{c.pair.fundSlot}</span>
         <span className="flex items-baseline gap-2 flex-wrap">
-          <span className="text-lg font-bold whitespace-nowrap">
+          <span className="text-lg font-bold md:whitespace-nowrap">
             <bdi>{fund.name}</bdi>
           </span>
           <ProductIdLink id={fund.number} href={mayaHrefOf(fund)} label={brands.funds.mayaLink(fund.number)} />
@@ -448,7 +453,7 @@ export function FundColumn({ view, today, pick, onPick, filter, onFilter }: { vi
         </div>
         <LabelFilter lead={c.pair.filter} allLabel={c.pair.clearFilter} value={active} onChange={onFilter} options={options} />
       </div>
-      <PickList label={c.pair.listLabelFunds} columns="minmax(0,1fr) auto" head={<><span>{c.pair.colFund}</span><span className="text-end">{c.pair.colDiff}</span></>} rows={pickRows} />
+      <PickList label={c.pair.listLabelFunds} columns="minmax(0,1fr) auto" phoneLimit={6} more={c.pair.moreFunds} head={<><span>{c.pair.colFund}</span><span className="text-end">{c.pair.colDiff}</span></>} rows={pickRows} />
       <p className="px-5 py-3 text-sm text-muted-foreground">
         {active ? `${c.pair.shown(shown.length, rows.length)} · ` : ""}
         {c.funds.trackingNote}
