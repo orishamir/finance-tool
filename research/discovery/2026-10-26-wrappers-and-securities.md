@@ -114,3 +114,19 @@ A reviewer who saw the diff, not this note, found nothing blocking and six shoul
 - **3.4 workbench.** Unchanged (see section 4).
 - **3.10 catalogue.** Unchanged, since it is keyed on provident wrappers.
 - **Tier-2 graduation.** Corporate bonds and REITs graduate as securities held in the account (roadmap).
+
+## 7. Follow-up, 2026-10-27: what the founder saw was still there
+
+The founder, on the live site: "the site still has separate makams in the guide", then "why under מוצרים? isnt it an exposure, not a wrapper?". He was right. Section 2 kept `/exposure/makam` and kept the securities as guide "products" beside the wrappers, so the duplicate that started this note survived the change, and the PR description did not say so.
+
+What went wrong: the finding (makam is not a wrapper) was turned into a third layer ("security", "a product is a wrapper or a security held in one") instead of the two layers D6 already had, and the choice to keep the pages was recorded here as "open to the founder's revision" but not raised with him. The review checked the diff, not the starting symptom.
+
+Changed (D6 amended 2026-10-27 in `docs/product.md`):
+
+- `/guide` lists only wrappers under "איפה הכסף מוחזק". Under "במה הכסף מושקע": shekel cash, one money-market fund entry (its kinds, daily and renewable, as link pills to their pages), makam, one government-bond entry, then the indices and the general track.
+- An exposure that a security held directly is (the first holder in its `wrapper_ids` whose record has `held_as: "direct"`, `exposureFoldedInto` in `site/app/lib/guide-nav.ts`) links to that security's page everywhere: the guide list, the "במה אפשר להשקיע בתוכו" row, the comparison, search, the rules page's "used on", and the fund workbench. `/exposure/makam` and the two government-bond exposure pages are not pre-rendered, and the route sends those ids to the security's page.
+- Their prose moved: the makam guide gains how makam is held without buying it (a money-market fund, MF-29 with its 13-month figure; an IRA); the government-bond guide gains the same for bonds (a money-market fund may hold short unlinked bonds, not linked ones; provident tracks, CAT-23; an IRA) and the open questions the exposure pages named (GOV OQ4, GOV OQ6, GOV OQ9). The cross-links between the two makam pages are gone.
+- Shekel cash no longer calls a money-market fund or makam cash: its line and its first paragraph say current account, deposit and savings plan, and point to the fund and makam pages.
+- The "held in" line on a security's page drops "המוצר הזה".
+
+Not changed: the security records and ids, the exposure records (exposure mode in the comparison still runs on them), the two money-market fund pages (merging them into one page would mean rebuilding two guide visuals; the guide list shows them as one entry with two kinds), the home page's guide door.

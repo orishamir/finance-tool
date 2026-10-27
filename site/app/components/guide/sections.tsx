@@ -326,13 +326,13 @@ export function RelatedProducts({ items, label = copy.related }: { items: { href
 }
 
 /** The links to the exposures a product can hold (audit A43). */
-export function ExposureLinks({ items }: { items: { id: string; name: string }[] }) {
+export function ExposureLinks({ items }: { items: { id: string; name: string; href: string }[] }) {
   if (items.length === 0) return null;
   return (
     <p className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
       <span>{copy.exposuresRow}</span>
       {items.map((it) => (
-        <Link key={it.id} to={`/exposure/${it.id}`} className="a-chip">
+        <Link key={it.id} to={it.href} className="a-chip">
           {it.name}
         </Link>
       ))}

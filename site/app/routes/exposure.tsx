@@ -1,6 +1,6 @@
 // Screen: the exposure guide page (flows 6.6, design-spec 2 without the timeline): what the money is invested in,
 // which products can hold it, risks, the dimension checklist for this exposure, and the words used for it.
-import { Link, useLoaderData } from "react-router";
+import { Link, redirect, useLoaderData } from "react-router";
 import type { Route } from "./+types/exposure";
 import { exposurePage as copy, guide, guideIndex, site } from "../copy";
 import { DimensionChecklist, GuideSection, SectionIndex, TermTable, useCurrentSection, type ChecklistRowView } from "../components/guide/sections";
@@ -15,6 +15,10 @@ import { splitTerms } from "../lib/guide-nav";
 import type { SiteValue } from "../lib/value";
 
 export async function loader({ params }: Route.LoaderArgs) {
+  // D6 (amended 2026-10-27): makam and the government bonds are the security's own page
+  const { exposureFolds } = await import("../lib/instruments.server");
+  const into = exposureFolds()[params.id];
+  if (into) throw redirect(`/guide/${into}`);
   const { buildExposurePage } = await import("../lib/guide.server");
   const content = exposureContent[params.id];
   const data = buildExposurePage(params.id, content ? [...content.termIds] : []);
