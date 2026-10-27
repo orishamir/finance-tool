@@ -165,6 +165,21 @@ Three states of the same design:
 
 The label explanation from round 3 stays as it is.
 
+**Founder, round 4 (2026-10-27):** "eureka! the linked list makes sense a lot. lets make it more intuitive and build upon that idea."
+
+### 3.9 Round 5: making the link visible (2026-10-27)
+
+In round 4 the link between the lists was only a sentence ("בחרו קרן אחרת ברשימה שמשמאל"). Round 5 (`source-round5.html`) makes it something the reader can see:
+- **A slot at the top of each list** shows what is chosen there: the account (name, what it charges on this fund, who supervises it, "איך פותחים") and the fund (name, number ↗, fees). A "+" joins the two slots. Above both, the result: what is left, and the gap to your account on the same fund.
+- **Each list says what it depends on**, as a chip with the same icon as the other slot ("כשקונים בהם את [◔ ילין לפידות…]", "בחשבון [🏛 פסגות]"). A building icon always means an account, and a pie always means a fund.
+- **A round select button on every row** of both lists, and the cheapest pair marked "★ הזול" when the reader has chosen something else.
+- **Accounts that cannot be priced with the chosen fund** are named under the list with the reason. Once researched, they join it.
+
+Three variants:
+- `option-G1-pc.png`: the slots, with absolute values in both lists.
+- `option-G2-pc.png`: the same, but each list shows what changes if only that half changes ("אם מחליפים רק את החשבון": −2,621 ₪; "רק את הקרן": −37 ₪), with "הבחירה" on the chosen row.
+- `option-G3-pc.png`: the reader has chosen their own account (Leumi). The result shows two cards, their pair (76,322 ₪) and the cheapest pair (78,943 ₪, "+2,621 ₪ אם עוברים לפסגות"). The fund list at Leumi groups the tracking funds first, then a line: ETFs leave at least 3,286 ₪ less at Leumi. The figures are the live site's.
+
 ## 4. Against `docs/product.md`: what else the page owes the reader
 
 `docs/product.md` section 2 states the reader's job: which fund variant and which provider, "which fees are worth fighting, and what they might be failing to consider", then act, and "be able to come back later and see whether anything changed".
@@ -182,7 +197,7 @@ The label explanation from round 3 stays as it is.
 
 ## 5. Decisions for the founder
 
-1. Section 3.8: the two linked lists (round 4).
+1. Section 3.9: the linked lists with slots (round 5): G1, G2 or G3, or a mix.
 2. Section 3.7: hedging as a clickable label with a filter (the founder's proposal), and whether a label filter also re-ranks the accounts (E3) or only filters the fund list (E1, E2).
 3. Section 4 item 1: drop the "ETF or tracking fund" fold and amend D28 (a).
 4. Section 4 item 5: a negotiated fee entered on this page.
