@@ -84,7 +84,7 @@ describe("scope helpers", () => {
   const more = (n: number) => `ועוד ${n}`;
   it("names the chip by the page's company, else the first and the count of the others", () => {
     const own = { "X-1": ["harel", "altshuler-shaham"], "X-2": ["harel"] };
-    expect(chipName({ id: "X-1", scope_institutions: [harel, as] }, own, "altshuler-shaham", more)).toBe("אלטשולר שחם ועוד 1");
+    expect(chipName({ id: "X-1", scope_institutions: [harel, as] }, own, "altshuler-shaham", more)).toBe("אלטשולר שחם");
     expect(chipName({ id: "X-1", scope_institutions: [harel, as] }, own, undefined, more)).toBe("הראל ועוד 1");
     expect(chipName({ id: "X-2", scope_institutions: [harel] }, own, undefined, more)).toBe("הראל");
     expect(chipName({ id: "X-3" }, own, undefined, more)).toBeNull();

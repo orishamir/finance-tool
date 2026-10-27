@@ -17,7 +17,7 @@ import { IconAlert, IconCalculator, IconCheck, IconClock, IconCopy, IconExternal
 import { Sheet } from "./Sheet";
 import { Button, Callout, cx, Disclosure, LinkButton, Tag } from "./ui";
 import { CompanyLinks, Tpl } from "./kit";
-import { chipName, companyLinksOf, generalOnly, isGeneral, isNotRule, isOwnSourceOf, joinNames, listedCompanies, noCompanyAnchor, ownDocCompanies, scopeCompanies, shownCompanies, sourceCompany, sourcesForPage, type CompanyLink, type OwnDocs } from "../lib/scope";
+import { chipName, companyLinksOf, generalOnly, isGeneral, isNotRule, isOwnSourceOf, joinNames, listedCompanies, noCompanyAnchor, ownDocCompanies, scopeCompanies, pageView, shownCompanies, sourceCompany, sourcesForPage, type CompanyLink, type OwnDocs } from "../lib/scope";
 
 // ---------------------------------------------------------------- context
 
@@ -1039,8 +1039,8 @@ function ShownRuleTitle({ rule }: { rule: RuleRecord }) {
 }
 
 export function RuleCard({ id, data, headId, inline }: { id: string; data: ProvenanceData; headId?: string; inline?: boolean }) {
-  const rule = ruleOf(data, id);
-  if (!rule) {
+  const record = ruleOf(data, id);
+  if (!record) {
     return (
       <div className="flex flex-col gap-2">
         <h2 id={headId} className="text-lg font-semibold">
@@ -1051,16 +1051,16 @@ export function RuleCard({ id, data, headId, inline }: { id: string; data: Prove
       </div>
     );
   }
+  // on a company's page only that company's part of the record (D30): its name, its own documents, the law and the regulator, its figures
+  const page = data.pageCompanies ?? (data.company ? [data.company] : []);
+  const rule = pageView(record, page, data.companies);
   const open = rule.strength === "open";
   const figures = Object.entries(rule.figures ?? {});
   const sourced = asSourced(rule);
-  // on a company's page (D30, D31): its own documents lead, and a figure from another company's document says whose it is
-  const page = data.pageCompanies ?? (data.company ? [data.company] : []);
   const sources = page.length ? sourcesForPage(rule, pickSources(sourced), page, data.companies) : pickSources(sourced);
-  const figureFrom = (v: Pick<SiteValue, "source">) => (page.length && v.source.strength === "institution" ? sourceCompany(rule, v.source, data.companies) : null);
   /** A company's figure on its own term, on its own page, is its own (D31): no "לפי החברה". */
   const pageValue = (v: SiteValue): SiteValue => {
-    const c = figureFrom(v);
+    const c = page.length && v.source.strength === "institution" ? sourceCompany(rule, v.source, data.companies) : null;
     return c && page.includes(c.id) && rule.scope === "institution" ? ownBy(v, c.id) : v;
   };
   const uses = data.ruleUses?.[id];
@@ -1070,10 +1070,8 @@ export function RuleCard({ id, data, headId, inline }: { id: string; data: Prove
   const figureLabel = (name: string) => (rule.figure_names_he?.[name] ? <span className="text-xs">{rule.figure_names_he[name]}</span> : <bdi dir="ltr" className="text-xs">{name}</bdi>);
   const unitSuffix = (unit: string) => (suffixUnits.has(unit) ? <span className="text-sm text-muted-foreground"> {unitWordOf(unit)}</span> : null);
   /** "לשנת המס 2026 · קבוע בחוק": the tax year the figure is for (when its label does not say) and how it is updated. */
-  const figureNote = (v: Pick<SiteValue, "source"> & { tax_year?: number | null; update_rule: string }, labelYear: string | null) => {
+  const figureNote = (v: { tax_year?: number | null; update_rule: string }, labelYear: string | null) => {
     const bits: ReactNode[] = [];
-    const from = figureFrom(v);
-    if (from && !page.includes(from.id)) bits.push(<span key="c">{ruleCardMore.figureOf.replace("{name}", from.name_he)}</span>);
     if (v.tax_year && String(v.tax_year) !== labelYear)
       bits.push(
         <span key="y">

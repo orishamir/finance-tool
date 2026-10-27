@@ -6,7 +6,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { MemoryRouter } from "react-router";
 import { describe, expect, it } from "vitest";
 import type { RuleRecord } from "@finance-tool/schema";
-import { ruleCardMore, scopeWords, sourceBlock } from "../copy";
+import { scopeWords, sourceBlock } from "../copy";
 import { ProvenanceProvider, RuleCard, SourceBlock } from "./provenance";
 
 const src = (strength: "primary" | "primary-mirror" | "institution" | "secondary", url: string) => ({ url, title: `מסמך ${strength}`, publisher: "x", strength, checked: "2026-10-25", ...(strength === "primary-mirror" ? { mirror_host: "other" as const } : {}) });
@@ -54,19 +54,27 @@ describe("the source lines of a company's own term", () => {
     expect(html).toContain(scopeWords.allNoCompany);
     expect(html).not.toContain("בחברות אחרות זה יכול להיות אחרת");
   });
-  // founder, 2026-10-27: PEN-44 on Altshuler Shaham's page led with Mor's bylaws and showed Mor's four figures unnamed
-  it("on a company's page its own documents lead, and another company's figure says whose it is", async () => {
+  // founder, 2026-10-27: PEN-44 under "מה כתוב במסמכים של אלטשולר שחם" showed Mor's and Analyst's documents and figures
+  it("on a company's page a record shows only that company's documents, figures and name, with the law and the regulator", async () => {
     const data = { ...(await real()), company: "altshuler-shaham", pageCompanies: ["altshuler-shaham"] };
     const html = render(createElement(RuleCard, { id: "PEN-44", data, inline: true }), data);
-    expect(html.indexOf("as-invest.co.il")).toBeGreaterThan(-1);
-    expect(html.indexOf("as-invest.co.il")).toBeLessThan(html.indexOf("moreinvest.co.il"));
-    expect(html.split(ruleCardMore.figureOf.replace("{name}", "מור")).length - 1).toBe(4);
+    expect(html).toContain("as-invest.co.il");
+    expect(html).toContain("gov.il");
+    for (const other of ["moreinvest.co.il", "analyst.co.il", "(במור)", "(באנליסט)", "ועוד"]) expect(html).not.toContain(other);
+    expect(html).toContain(scopeWords.line.unsettledSeen.replace("{names}", "אלטשולר שחם"));
   });
-  it("CS-30's figures are Harel's: their own on Harel's page, named on Altshuler Shaham's", async () => {
+  it("CS-30's figures are Harel's: on Harel's page, not on Altshuler Shaham's", async () => {
     const base = await real();
     const harel = render(createElement(RuleCard, { id: "CS-30", data: { ...base, company: "harel", pageCompanies: ["harel"] }, inline: true }), base);
-    expect(harel).not.toContain(ruleCardMore.figureOf.replace("{name}", "הראל"));
+    expect(harel).toContain("0.23");
+    expect(harel).not.toContain("as-invest.co.il");
     const altshuler = render(createElement(RuleCard, { id: "CS-30", data: { ...base, company: "altshuler-shaham", pageCompanies: ["altshuler-shaham"] }, inline: true }), base);
-    expect(altshuler.split(ruleCardMore.figureOf.replace("{name}", "הראל")).length - 1).toBe(2);
+    expect(altshuler).not.toContain("harel-group");
+    expect(altshuler).not.toContain("דמי ניהול מהפקדה אחרי גיל המענק האחרון");
+  });
+  it("outside a company's page (the rules, a chip) the record shows whole", async () => {
+    const data = await real();
+    const html = render(createElement(RuleCard, { id: "PEN-44", data, inline: true }), data);
+    for (const host of ["as-invest.co.il", "moreinvest.co.il", "analyst.co.il"]) expect(html).toContain(host);
   });
 });
