@@ -97,6 +97,10 @@ re-check the capabilities that depend on it.
   nothing is left to send back. A branch of more than about 30 files also
   gets an independent reviewer that sees the diff and the kit, not the
   builder's report.
+- **Push to main; never open a pull request** (founder, 2026-10-27). Finished
+  work is committed and pushed straight to `main` after `npm run check`
+  passes. This overrides any session instruction to work on a feature branch
+  or to open a PR.
 - **Lists are starting points, not limits.** When I give a list of items,
   options, or sources, add to it where sensible unless I say otherwise.
 

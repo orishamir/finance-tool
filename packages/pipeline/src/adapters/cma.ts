@@ -188,10 +188,25 @@ const FEE_FIELDS = [
 /** The calendar year a fee average of a report period belongs to: the year before (CAT-36). */
 export const feeYear = (reportPeriod: string): number => Number(reportPeriod.slice(0, 4)) - 1;
 
+/** The product types whose fee regulation (reg. 4) has no deposit-fee item (PF-06), as the data's FUND_CLASSIFICATION names them. */
+const BALANCE_ONLY_CLASSIFICATIONS = new Set(["קרנות השתלמות", "מרכזית לפיצויים", "מטרה אחרת"]);
+/** An IRA fund is reported as a fund of its own whose name says so (IRA-03, IRA-04): 15 funds in 202609, all matched by this. */
+const IRA_NAME = /בניהול אישי|\bIRA\b/i;
+
+/**
+ * Whether the fund is of a type that may charge a fee from the balance only, so an empty deposit-fee average is the rule, not a
+ * gap (PF-06: study funds, IRA funds, central funds and other-purpose funds). Sick-pay funds the data files under tagmulim are
+ * left out: only their names say what they are, and PF-06's record does not name them.
+ */
+export function balanceFeeOnly(fund: Partial<Pick<CmaFund, "fund_classification" | "names">>): boolean {
+  if (fund.fund_classification && BALANCE_ONLY_CLASSIFICATIONS.has(fund.fund_classification)) return true;
+  return (fund.names?.cma ?? []).some((n) => IRA_NAME.test(n));
+}
+
 /** CMA fee fields to value objects (data-schema 3.13; CAT-35 to CAT-39, CAT-06). Pure. */
 export function buildFees(
   file: Pick<CmaPeriodFile, "dataset" | "report_period" | "checked" | "source">,
-  fund: Pick<CmaFund, "raw_fields" | "inception_date">,
+  fund: Pick<CmaFund, "raw_fields" | "inception_date"> & Partial<Pick<CmaFund, "fund_classification" | "names">>,
 ): CmaFund["fees"] {
   const config = DATASETS.find((d) => d.dataset === file.dataset)!;
   const year = feeYear(file.report_period);
@@ -202,7 +217,11 @@ export function buildFees(
     const n = rawText === "" ? null : Number(rawText);
     const value = n !== null && Number.isFinite(n) ? n : null;
     let notes: string;
-    if (value === null) {
+    let ruleIdsHere = ruleIds;
+    if (value === null && f.key === "avg_deposit_fee" && file.dataset === "gemelnet" && balanceFeeOnly(fund)) {
+      notes = "לא דווח: בסוג הקופה הזה אין דמי ניהול מהפקדה; התקנות מתירות דמי ניהול מהיתרה בלבד (PF-06).";
+      ruleIdsHere = [...ruleIds, "PF-06"];
+    } else if (value === null) {
       const incYear = fund.inception_date ? Number(fund.inception_date.slice(0, 4)) : null;
       const young = incYear !== null && incYear >= year;
       const why = young
@@ -231,7 +250,7 @@ export function buildFees(
       effective_to: `${year}-12-31`,
       tax_year: null,
       update_rule: "market" as const,
-      rule_ids: ruleIds,
+      rule_ids: ruleIdsHere,
       state: "sourced" as const,
       notes,
     };

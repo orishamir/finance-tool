@@ -21,7 +21,7 @@ import { chipName, companyLinksOf, generalOnly, isGeneral, isNotRule, isOwnSourc
 
 // ---------------------------------------------------------------- context
 
-export type Item = { kind: "value"; value: SiteValue; /** The figure was shown with two decimals (a table cell, or near a threshold): the sheet shows the same digits. */ exact?: boolean } | { kind: "rule"; id: string } | { kind: "term"; id: string } | { kind: "formula"; id: string } | { kind: "question"; id: string; /** The question was closed on this date (a closure on the not-covered page): the sheet says so. */ closedOn?: string };
+export type Item = { kind: "value"; value: SiteValue; /** The figure was shown with two decimals (a table cell, or near a threshold): the sheet shows the same digits. */ exact?: boolean; /** The word an empty value was shown as ("אין", "עוד לא דווח"): the sheet heads with the same word. */ display?: string } | { kind: "rule"; id: string } | { kind: "term"; id: string } | { kind: "formula"; id: string } | { kind: "question"; id: string; /** The question was closed on this date (a closure on the not-covered page): the sheet says so. */ closedOn?: string };
 
 interface ProvenanceApi {
   open: (item: Item, anchor: HTMLElement | null) => void;
@@ -195,7 +195,7 @@ export function Num({ value, size = "inline", display, animate, className, prefi
       type="button"
       className={cx("num", `num-${value.state}`, size === "figure" && "num-figure", size === "cell" && "num-cell", value.value === null && "num-unknown", className)}
       aria-label={label}
-      onClick={(e) => open({ kind: "value", value, ...(keepDecimals ? { exact: true } : {}) }, e.currentTarget)}
+      onClick={(e) => open({ kind: "value", value, ...(keepDecimals ? { exact: true } : {}), ...(value.value === null && display ? { display } : {}) }, e.currentTarget)}
     >
       {value.stale && <IconClock size={14} className={cx("text-caution me-1", mark)} aria-hidden="true" />}
       {((showMark && fromDate) || markWeak) && <IconAlert size={14} className={cx("text-caution me-1", mark)} aria-hidden="true" />}
@@ -634,7 +634,7 @@ function FirstSourceLine({ rule }: { rule: RuleRecord }) {
 function SheetContent({ item, data, headId, descId }: { item: Item; data: ProvenanceData; headId: string; descId: string }) {
   return (
     <InsideSheetCtx.Provider value={true}>
-      {item.kind === "value" && <ValueSheet value={item.value} exact={!!item.exact} data={data} headId={headId} descId={descId} />}
+      {item.kind === "value" && <ValueSheet value={item.value} exact={!!item.exact} display={item.display} data={data} headId={headId} descId={descId} />}
       {item.kind === "rule" && <RuleCard id={item.id} data={data} headId={headId} />}
       {item.kind === "term" && <TermCard id={item.id} data={data} headId={headId} />}
       {item.kind === "formula" && <FormulaSheet id={item.id} data={data} headId={headId} />}
@@ -836,12 +836,12 @@ export function ParameterWhy({ value }: { value: SiteValue }) {
 }
 
 /** The sheet behind a figure (exported for the render tests). */
-export function ValueSheet({ value, exact, data, headId, descId }: { value: SiteValue; exact: boolean; data: ProvenanceData; headId: string; descId: string }) {
+export function ValueSheet({ value, exact, display, data, headId, descId }: { value: SiteValue; exact: boolean; display?: string; data: ProvenanceData; headId: string; descId: string }) {
   const strength = strengthOf(value);
   const param = isParameter(value);
   const provisional = isProvisional(value);
   const today = useContext(TodayCtx);
-  const text = formatValue(value.value, value.unit, exact ? undefined : value.state, param);
+  const text = (value.value === null ? display : undefined) ?? formatValue(value.value, value.unit, exact ? undefined : value.state, param);
   const unitWord = typeof value.value === "number" ? unitWordOf(value.unit) : null;
   const { setEntered } = useInputs();
   const fromDate = startsAfter(value, today);
@@ -878,6 +878,18 @@ export function ValueSheet({ value, exact, data, headId, descId }: { value: Site
 
       {/* the working notes are English; only a note written in Hebrew is shown (audit A21) */}
       {value.value === null && <p className="text-sm">{mostlyHebrew(value.notes) ? value.notes : copy.sourced.noValue}</p>}
+      {/* an empty value a rule explains ("אין", PF-06) names that rule as a chip, as a sourced figure does (2026-10-27) */}
+      {value.value === null && display && value.rule_ids && value.rule_ids.length > 0 && (
+        <dl className="sheet-dl">
+          <Row label={copy.sourced.rule}>
+            <span className="flex flex-wrap gap-2">
+              {value.rule_ids.map((id) => (
+                <RuleRef key={id} id={id} />
+              ))}
+            </span>
+          </Row>
+        </dl>
+      )}
 
       {value.state === "sourced" && !param && value.value !== null && !value.about && (
         <p className="text-sm text-muted-foreground">

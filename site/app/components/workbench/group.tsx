@@ -6,7 +6,7 @@ import { company as companyCopy, fit as fitCopy, r3workbench as copy } from "../
 import { fmt } from "../../lib/format";
 import { expandFee, feeLabel, feeYear, type SiteValue } from "../../lib/value";
 import { referenceValues, sortRows, type SortDir, type SortKey, type WbData, type WorkbenchRow } from "../../lib/workbench";
-import { FeeNum } from "../decoder/fees";
+import { FeeKey, FeeNum } from "../decoder/fees";
 import { IconAlert, IconChevronDown, IconClock, IconDrillIn } from "../icons";
 import { IconDash, IconHelp, IconOk } from "../compare/icons";
 import { Num } from "../provenance";
@@ -296,7 +296,7 @@ export function WorkbenchGroup({
               </tbody>
             </table>
           </div>
-          {sorted.some((w) => w.row.b.value === null || w.row.d.value === null) && <p className="px-4 py-2 text-xs text-muted-foreground border-t border-border">{copy.missingKey}</p>}
+          <FeeKey values={sorted.flatMap((w) => Object.values(fees(data, w)))} className="flex flex-col gap-1 px-4 py-2 text-xs text-muted-foreground border-t border-border" />
           {rest > 0 && (
             <button type="button" onClick={() => setPages((p) => p + 1)} className="w-full min-h-target border-t border-border text-link hover:bg-accent/40">
               {copy.showMore} <bdi dir="ltr">{fmt.number(Math.min(PAGE, rest))}</bdi>

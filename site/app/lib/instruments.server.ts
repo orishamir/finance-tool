@@ -23,7 +23,7 @@ import {
 import type { z } from "zod";
 import { loadSecurities, root } from "./data.server";
 import { exposureFoldedInto } from "./guide-nav";
-import { cmaFeeValue, ruleFigure, type SiteValue } from "./value";
+import { cmaFeeValue, depositFeeNoneByRule, ruleFigure, type SiteValue } from "./value";
 import { readParsedCached } from "./read-cache.server";
 
 // The two helpers of data.server.ts are private there; copied, not imported (both read through the one cache).
@@ -557,8 +557,8 @@ export type RegulatorFees = { fees: { balance: number; deposit: number; direct: 
  * A provident-family wrapper's fees when no managing company publishes a list fee for it (or only one of the two): the regulator's average
  * actually charged on the track P-05's entry names (`track`, a CMA fund_id), not a list price. Balance and deposit
  * come from the track's `avg_annual_management_fee` and `avg_deposit_fee`; direct expenses are 0 (the engine raises
- * G-14 for it). The CMA leaves the deposit average empty for every study-fund track; a study fund has no deposit-fee
- * item (PF-06), so that case takes 0 from the rule. A kupat gemel lehashkaa has one, so an empty value there is missing.
+ * G-14 for it). An empty deposit average that the data marks with PF-06 (study, IRA, central and other-purpose funds have
+ * no deposit-fee item) takes 0 from the rule. A kupat gemel lehashkaa has one, so an empty value there is missing.
  */
 export function regulatorAverageFees(
   wrapperId: string,
@@ -584,21 +584,22 @@ export function regulatorAverageFees(
     depositFraction = pct(deposit);
     feeValues.deposit = deposit;
     feeValues.regDeposit = deposit;
-  } else if (wrapperId === "keren-hishtalmut") {
+  } else if (depositFeeNoneByRule(deposit)) {
     const pf06 = rules["PF-06"];
-    if (!pf06) missing.push(`${wrapperId}: data/rules/ has no record "PF-06" (tariff fees)`);
+    const reg = pf06?.sources?.find((x) => x.kind === "regulation");
+    if (!pf06 || !reg) missing.push(`${wrapperId}: data/rules/ has no record "PF-06" with its regulation source (tariff fees)`);
     else
       feeValues.deposit = {
         value: 0,
         unit: "pct_of_deposit",
-        source: { url: "https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(דמי_ניהול)", title: "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), תקנה 4", publisher: "ספר החוקים (ויקיטקסט)", strength: pf06.strength },
-        checked: pf06.checked,
+        source: { url: reg.url, title: `${reg.title}, ${reg.locator}`, publisher: reg.publisher_he ?? reg.publisher, strength: reg.strength },
+        checked: reg.checked ?? pf06.checked,
         effective_from: null,
         effective_to: null,
         update_rule: "fixed in regulation",
         state: "sourced",
         rule_ids: ["PF-06"],
-        notes: `רשות שוק ההון לא דיווחה ממוצע דמי ניהול מהפקדות למסלול ${spec.track}. בקרן השתלמות אין סעיף של דמי ניהול מהפקדה בתקנות (PF-06), ולכן ההדגמה מניחה 0.`,
+        notes: `השדה של ממוצע דמי הניהול מהפקדות ריק בנתוני רשות שוק ההון למסלול ${spec.track}. בסוג הקופה הזה התקנות מתירות דמי ניהול מהיתרה בלבד (PF-06), ולכן החישוב לוקח 0.`,
       };
   } else missing.push(`${wrapperId}: track ${spec.track} reports no average deposit fee (tariff fees)`);
   if (missing.length > 0) return { missing };
