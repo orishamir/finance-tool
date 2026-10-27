@@ -96,8 +96,8 @@ Why these: most numbers on a page are sourced, so sourced is the quietest. Compu
 
 | Meaning | Roles | Value | Icon | From |
 |---|---|---|---|---|
-| caution: stale, secondary or institution source | `caution` (icon), `caution-foreground` (text), `caution-subtle` (fill) | amber-400, amber-200, amber-950 | `Clock` (stale), `CircleAlert` (source) | D3, D10, method §13 |
-| blocked by an open rule | `blocked`, `blocked-foreground`, `blocked-subtle` | red-400, red-200, red-950 | `Lock` | D10, method §12 |
+| caution: stale, secondary or institution source | `caution` (icon, callout edge), `caution-foreground` (text), `caution-subtle` (fill), `caution-border` (callout frame) | amber-400, amber-200, amber-950, amber-800 | `Clock` (stale), `CircleAlert` (source) | D3, D10, method §13 |
+| blocked by an open rule | `blocked` (icon, callout edge), `blocked-foreground`, `blocked-subtle`, `blocked-border` (callout frame) | red-400, red-200, red-950, red-800 | `Lock` | D10, method §12 |
 | considered (dimension) | `positive`, `positive-foreground`, `positive-subtle` | green-400, green-200, green-950 | `Check` | 3.3 |
 | not applicable | `muted-foreground` | neutral-300 (400 until 2026-10-24) | `Minus` | 3.3 |
 
@@ -424,7 +424,7 @@ Amended 2026-10-24 (knowledge layer, D25). Called for by flows 6.9, 6.14 and 6.1
 | Component | Spec |
 |---|---|
 | **Card** | `bg-card`, 1 px `border`, `rounded-lg`, no shadow; padding 16 px on a phone, 24 px from `md`. |
-| **Callout** | Info (`card` with a `primary` icon), caution, blocked, positive: subtle fill, icon at the start, one-sentence title, body. Never colour without an icon and a title. |
+| **Callout** | Info (`card` with a `primary` icon), caution, blocked, positive: subtle fill, icon at the start, one-sentence title, body. Never colour without an icon and a title. *Amended 2026-10-27 (founder):* the three tones of the kit's `Callout` share one shape: a 1 px frame (`info-border`, `caution-border`, `blocked-border`), a 4 px edge at the inline start (`info`, `caution`, `blocked`) and a 20 px icon (`info-foreground`, `caution`, `blocked`). Info keeps the `card` fill, caution and blocked their subtle fills; the fill tells a warning from a note. The info icon was faint on the card; this was chosen from several options. |
 | **Tag** | `text-xs` weight 500, `rounded-sm`, 2 px × 6 px padding, icon optional; `w-fit`, so it never stretches in a column flex parent (2026-10-24, UX audit). |
 | **Disclosure** | Native `details` and `summary`, so it works before scripts; ~~chevron at the end~~, rotating on open; 44 px summary. Since 2026-10-24 (UX audit) the chevron sits beside the label by default and a `spread` option restores the far end for list-group headers (the rules page); hand-written group summaries use a small gap instead of spreading. |
 | **Sheet** | `<dialog>` bottom sheet below `lg` (`rounded-xl` top corners, grab handle, `overlay` behind, slides up over `--duration-base`); a centred dialog at `lg` and up (the provenance popover on PC is not a dialog, 3.2). Close with X at the inline end of its header (top left). Amended 2026-10-25: the back and close buttons float over the body's top corners (36 px, round, `bg-popover` at 90 %, `muted-foreground` icon at 20 px), centred on the first line and outside the scrolling, so they stay put; the first child keeps 36 px clear of them. Until then they had a row of their own above the content. |

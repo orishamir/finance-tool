@@ -2,10 +2,10 @@
 // near-duplicate groups, paste card.
 import { useId, type ReactNode } from "react";
 import { Link } from "react-router";
-import { company as copy, r3workbench } from "../../copy";
+import { company as copy } from "../../copy";
 import type { Track } from "../../lib/data.server";
 import type { SiteValue } from "../../lib/value";
-import { FeeNum } from "./fees";
+import { FeeKey, FeeNum } from "./fees";
 import { Num } from "../provenance";
 import { ringFraction, shareText, type ExposureShares } from "../../lib/track-exposure";
 import { trackLabels } from "../../lib/track-labels";
@@ -159,6 +159,8 @@ export function TrackList({ groups, feeHead, exposureHead, foot }: { groups: Gro
             <TrackRow key={g.key} row={g.tracks[0]!} />
           ),
         )}
+        {/* the key of the empty-cell words, on the phone too (2026-10-27: it was on the PC table only) */}
+        <FeeKey values={groups.flatMap((g) => g.tracks.flatMap((r) => [r.fee, r.deposit]))} className="flex flex-col gap-1 px-4 py-2 text-xs text-muted-foreground border-t border-border" />
         {foot && <div className="px-4 py-3 border-t border-border">{foot}</div>}
       </Card>
       <Card className="hidden md:block p-0 md:p-0 overflow-x-auto overflow-y-hidden">
@@ -230,7 +232,7 @@ export function TrackList({ groups, feeHead, exposureHead, foot }: { groups: Gro
             })}
           </tbody>
         </table>
-        {groups.some((g) => g.tracks.some((r) => r.fee && r.fee.value === null)) && <p className="px-3 py-2 text-xs text-muted-foreground border-t border-border">{r3workbench.missingKey}</p>}
+        <FeeKey values={groups.flatMap((g) => g.tracks.flatMap((r) => [r.fee, r.deposit]))} className="flex flex-col gap-1 px-3 py-2 text-xs text-muted-foreground border-t border-border" />
         {foot && <div className="px-3 py-3 border-t border-border">{foot}</div>}
       </Card>
     </>

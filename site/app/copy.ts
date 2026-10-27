@@ -530,6 +530,8 @@ export const track = {
   feeDepositLabel: "ממוצע דמי הניהול מהפקדה שנגבו בפועל בשנת {year}",
   feeWhole: "לקרן כולה",
   feeNotReported: "עוד לא דווח",
+  /** An empty deposit-fee average that PF-06 explains: the product has no deposit fee. */
+  feeNone: "אין",
   sameNameElsewhere: "יש מסלול נוסף באותו שם.",
   toOther: "למסלול השני",
   toGuide: "לעמוד המדריך על",
@@ -1458,7 +1460,9 @@ export const r3workbench = {
   // audit 2026-10-24 (A36, A82, A87): the open-to-all filter, the sort direction words, the key for "עוד לא דווח"
   openToAll: { label: "פתוח לכולם", hidden: "מסלולים הפתוחים רק לקבוצה מסוימת מוסתרים", none: "אין מסלולים שפתוחים רק לקבוצה מסוימת" },
   sortDir: { asc: "מהנמוך לגבוה", desc: "מהגבוה לנמוך" },
-  missingKey: "עוד לא דווח: החברה לא דיווחה לרשות את הנתון לתקופה הזו.",
+  // 2026-10-27: the key said the company had not reported; the data says why only sometimes, so the key points to the value's note.
+  missingKey: "עוד לא דווח: השדה ריק בנתוני הרשות. לחצו על הערך כדי לראות אם הסיבה ידועה.",
+  noneKey: "אין: בסוג הקופה הזה מותר לגבות דמי ניהול רק מהחיסכון, לא מההפקדות.",
   // copy.md 7.3 (added 2026-10-24, B14): one and two are words, not "1 מסלולים"
   group: { suffix: "מסלולים", matching: "תואמים", one: "מסלול אחד", two: "שני מסלולים", matchingOne: "אחד תואם" },
   showMore: "להציג עוד",
@@ -3705,7 +3709,7 @@ export const kit = {
       IdRef: "שבב לכל מזהה שהאתר מציג: חוק, נוסחה, פרמטר או שאלה פתוחה. לא כותבים מזהה כטקסט חשוף. גר ב־provenance.tsx, לא ב־kit.",
       Button: "Button לפעולה, LinkButton למעבר לעמוד. כפתור primary אחד בכל מסך.",
       Tag: "תווית קצרה עם גוון: מצב, סוג, דגל. הגוון לא עובד לבד: מוסיפים מילה או אייקון.",
-      Callout: "הערה בקופסה מתחת לתוצאה: caution (לא עודכן, מקור חלש), blocked (שאלה פתוחה), info.",
+      Callout: "הערה בקופסה מתחת לתוצאה: caution (לא עודכן, מקור חלש), blocked (שאלה פתוחה), info. לשלושתן אותה צורה: מסגרת דקה וקצה של 4 פיקסלים בצד שבו הטקסט מתחיל, בצבע של הסוג; הרקע המלא מבדיל אזהרה מהערה.",
       Card: "המשטח המורם היחיד. את הריפוד בוחרים ב־pad, את הפנים ב־className.",
       Section: "כותרת עם פתיחה ופעולה בקצה השורה, ואחריה הגוף. level: page, card או form.",
       Disclosure: "כל מה שהקורא יכול לפתוח: טבלה, הערה ארוכה, קבוצה ברשימה. התווית והחץ עוקבים אחרי מצב הקופסה עצמה, גם בתוך קופסה פתוחה אחרת.",

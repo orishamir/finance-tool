@@ -305,10 +305,10 @@ topic files with links and dates, and the open questions they answer are marked 
 | The CMA defines the same-named member-report average as the rate "שגבתה הקופה בפועל מכלל העמיתים" (after discounts); identity with the field inferred | CAT-37 | CAT OQ2 (basis) |
 | The regulator's fee-rate reporting codes (quarterly, fees ÷ assets) from circular 2015-9-9 | CAT-38 | CAT OQ2 (weighting, narrowed) |
 | Pension fees are per fund; every track of a fund carries the same pair | CAT-39 | CAT OQ15 |
-| Empty means not reported (young tracks), not zero; one negative deposit fee | CAT-40 | new |
+| Empty means not reported (young tracks), not zero; one negative deposit fee; an empty deposit fee of a balance-only product type is the rule (PF-06, 2026-10-27) | CAT-40 | CAT OQ24 to OQ26 |
 | Yields, Sharpe and liquidity fields equal the portal display; trailing windows end at the report month | CAT-41 | CAT OQ1 (in part) |
 
-**Not settled:** how the published average is weighted and which report feeds it (CAT OQ2, OQ23); 13 tracks opened in 2024 without a value (OQ22); whether portal yields are after direct expenses (CAT-41). Gemel-Net's "הסברים" pages are images of an academic paper on risk measures, not read in full (OQ3).
+**Not settled:** how the published average is weighted and which report feeds it (CAT OQ2, OQ23); 13 tracks opened in 2024 without a value (OQ22); Migdal's empty deposit fees, guaranteed-return funds' deposit fee and the list of actual-expense funds (OQ24 to OQ26); whether portal yields are after direct expenses (CAT-41). Gemel-Net's "הסברים" pages are images of an academic paper on risk measures, not read in full (OQ3).
 
 The Maya export file was downloaded once through the browser, into your Downloads folder (`mutual-funds.csv`). Later files were fetched in WSL instead.
 
