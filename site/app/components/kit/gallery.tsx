@@ -592,7 +592,7 @@ function ChartParts({ today }: { today: string }) {
             { id: "c", swatch: <Swatch shape="entered-line" className="stroke-chart-entered" />, label: <bdi>{g.sample.seriesC}</bdi> },
             { id: "d", swatch: <Swatch shape="rule" className="border-chart-baseline" />, label: g.sample.today },
             { id: "e", swatch: <Swatch shape="dotted-line" className="stroke-chart-baseline" />, label: g.sample.baselineDots },
-            { id: "e", label: g.sample.note },
+            { id: "note", label: g.sample.note },
           ]}
         />
       </State>

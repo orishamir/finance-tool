@@ -77,8 +77,8 @@ function FundList({ view, house, hedge }: { view: InvestView; house: HouseRow; h
   return <ProductTable columns={columns} groups={rows.map((r) => ({ key: r.key, rows: [r] }))} />;
 }
 
-/** The three fees, each with its word; one not collected says so. */
-function Fees({ rec, inline }: { rec: FundRecord; inline?: boolean }) {
+/** The three fees, each with its word; one not collected says so (also the index page's fund slot). */
+export function Fees({ rec, inline }: { rec: FundRecord; inline?: boolean }) {
   const items = (["fixed_management", "variable_management", "trustee"] as const).map((key, i) => {
     const v = feeOf(rec, key);
     const word = [b.feeWords.fixed, b.feeWords.variable, b.feeWords.trustee][i]!;

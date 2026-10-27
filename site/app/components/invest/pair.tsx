@@ -5,18 +5,18 @@
 // and the cheapest one above each other.
 import { useMemo } from "react";
 import type { FeeLine } from "@finance-tool/engine";
-import type { FundRecord } from "@finance-tool/schema";
 import { brands, invest as c } from "../../copy";
 import { pairCosts, type FundWay, type InvestView, type PairCosts, type Reason, type WayPrice } from "../../lib/invest";
 import type { WorkbenchBundle, WorkbenchInputs } from "../../lib/providers";
 import { brokerLabels, fundLabels, optionLabels, type Label } from "../../lib/labels";
-import { computed, ownBy, type SiteValue } from "../../lib/value";
+import { computed, type SiteValue } from "../../lib/value";
 import { fmt } from "../../lib/format";
 import { IconLock } from "../icons";
 import { Num } from "../provenance";
-import { Button, Card, ChartLegend, CostStack, LabelChip, LabelFilter, LabelRow, PickList, ProductFigures, ProductIdLink, Sentence, Swatch, Tag, cx, type CostPart, type PickRow } from "../kit";
+import { Button, Card, ChartLegend, CostStack, LabelChip, LabelFilter, LabelRow, PickList, ProductIdLink, Sentence, Swatch, Tag, cx, type CostPart, type PickRow } from "../kit";
 import { optionClass, OptionTag, reasonText } from "./parts";
 import { ProviderLink, providerName } from "./sections";
+import { Fees } from "./funds";
 
 export interface Pick {
   house: string;
@@ -300,7 +300,7 @@ export function AccountColumn({ view, bundle, years, pick, onPick }: { view: Inv
       <div className="px-5 pt-4 pb-2 flex flex-col gap-0.5">
         <h3 className="font-semibold">{c.pair.accounts}</h3>
         <span className="text-sm text-muted-foreground flex flex-wrap items-center gap-1.5">
-          {c.pair.accountsCond} <FundRef name={fund.name} /> · {c.pair.accountsHint}
+          {c.pair.accountsCond} <Tag><bdi>{fund.name}</bdi></Tag> · {c.pair.accountsHint}
         </span>
       </div>
       <PickList
@@ -347,31 +347,8 @@ export function AccountColumn({ view, bundle, years, pick, onPick }: { view: Inv
   );
 }
 
-function FundRef({ name }: { name: string }) {
-  return (
-    <span className="inline-flex items-center rounded-md border border-input bg-popover px-2 text-foreground font-medium">
-      <bdi>{name}</bdi>
-    </span>
-  );
-}
 
 // ---------------------------------------------------------------- the fund column
-
-const feeOf = (rec: FundRecord, key: "fixed_management" | "variable_management" | "trustee"): SiteValue | null => {
-  const v = rec.fees[key];
-  // D31: the fund manager's own fee, shown on that fund's row
-  return v && v.value !== null ? ownBy(v as SiteValue, rec.manager) : null;
-};
-
-function Fees({ rec }: { rec: FundRecord }) {
-  const b = brands.funds;
-  const items = (["fixed_management", "variable_management", "trustee"] as const).map((key, i) => {
-    const v = feeOf(rec, key);
-    const word = [b.feeWords.fixed, b.feeWords.variable, b.feeWords.trustee][i]!;
-    return { id: key, word, figure: v ? <Num value={v} /> : <span className="text-sm text-muted-foreground">{c.funds.notCollected}</span> };
-  });
-  return <ProductFigures items={items} inline />;
-}
 
 const FILTER_FAMILIES = new Set<Label["family"]>(["trade", "follow", "currency", "payout", "held"]);
 
@@ -455,7 +432,7 @@ export function FundColumn({ view, today, pick, onPick, filter, onFilter }: { vi
           <ProductIdLink id={fund.number} href={mayaHrefOf(fund)} label={brands.funds.mayaLink(fund.number)} />
         </span>
         <span className="text-sm text-muted-foreground flex flex-wrap items-center gap-x-3 gap-y-1">
-          {c.pair.colFees}: <Fees rec={fund.rec} />
+          {c.pair.colFees}: <Fees rec={fund.rec} inline />
         </span>
         <span className="flex flex-wrap gap-1.5 items-center">
           <OptionTag option={fund.option} />
@@ -466,7 +443,7 @@ export function FundColumn({ view, today, pick, onPick, filter, onFilter }: { vi
         <div className="flex flex-col gap-0.5">
           <h3 className="font-semibold">{c.pair.funds(view.index.name)}</h3>
           <span className="text-sm text-muted-foreground flex flex-wrap items-center gap-1.5">
-            {c.pair.fundsCond} <span className="inline-flex items-center rounded-md border border-input bg-popover px-2 text-foreground font-medium">{house.short}</span> · {c.pair.fundsHint}
+            {c.pair.fundsCond} <Tag>{house.short}</Tag> · {c.pair.fundsHint}
           </span>
         </div>
         <LabelFilter lead={c.pair.filter} allLabel={c.pair.clearFilter} value={active} onChange={onFilter} options={options} />
