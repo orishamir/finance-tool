@@ -1906,9 +1906,15 @@ The founder, 2026-10-26: someone browsing the companies wants a company's produc
 | Fund groups | קרנות סל · קרנות מחקות · קרנות כספיות · קרנות נאמנות |
 | Fund group count | קרן אחת · שתי קרנות · `{מספר}` קרנות |
 | Fund group note | רק הקרנות שהאתר אסף עליהן דוח, לא כל הקרנות של החברה. דמי הניהול לפי הדוח של כל קרן. |
-| Fund row, what it follows (link to the index's guide page, `/exposure/<index>` since 2026-10-26, or the money-market guide) | עוקבת אחרי `{מדד}` · קרן כספית |
+| Fund table, column heads (founder, 2026-10-27; was a card per fund) | שם הקרן · מספר נייר · המדד (a money-market group: סוג הקרן) · דמי ניהול לפי הדוח של הקרן |
+| Fund table, the index cell (link to `/exposure/<index>`; the head carries the word) | `{שם המדד בלי "מדד"}`, for example ת"א-125 |
+| Fund table, a money-market fund's kind (link to its guide) | קרן כספית יומית · קרן כספית מתחדשת |
+| Fund table, the fee lines (`{אחוז}` then the word; one not collected: לא נאסף) | קבועים · משתנים · נאמן |
+| Fund table, the number as the Maya link: its spoken name | `{מספר}`, בדף הקרן במאיה |
+| Fund table, phone row | מספר נייר `{מספר}` ↗ · מדד `{שם}` › · דמי ניהול: `{אחוז}` קבועים `{אחוז}` משתנים `{אחוז}` נאמן |
+| Fund labels, the payout family (new 2026-10-27, MF-49) | חלוקה: צוברת ("הקרן לא מחלקת תשלומים: הכנסות כמו דיבידנד וריבית מושקעות בה מחדש.") · מחלקת דיבידנד ("הקרן מחלקת תשלומים לבעלי היחידות, פעם בשנה או יותר, לפי שיקול דעת המנהל.") |
 
-The fund row's other words (מנהלת הקרן, מספר נייר, בדף הקרן במאיה, the three fee names, לא נאסף) are the index page's (`invest.funds` in `site/app/copy.ts`).
+Until 2026-10-27 each fund was a card with "מנהלת הקרן", "עוקבת אחרי `{מדד}`" and a separate "בדף הקרן במאיה" line; the table drops all three (the brand's fund managers are on the page's companies line). The other labels' words are the index page's (`invest.labels` in `site/app/copy.ts`).
 
 ### 8.8 Stock exposure of a track (D34, 2026-10-26)
 
@@ -1929,6 +1935,15 @@ The founder, 2026-10-26: the company page's last column shows something other th
 Fee cell and labels (D36, the same day): header "דמי ניהול, ממוצע `{שנה}`"; each cell "`{אחוז}` מהחיסכון" over "`{אחוז}` מההפקדות" (phone: "דמי ניהול, ממוצע: `{אחוז}` מהחיסכון `{אחוז}` מההפקדות"); under the table "התקרה בחוק: `{אחוז}` מהחיסכון, `{אחוז}` מההפקדות" and "בנוסף לדמי הניהול יורדות מהקופה הוצאות ישירות (עמלות מסחר, משמורת ועוד), שלא מופיעות כאן: הן נראות בתשואה, לא כשורה בחשבון." with the PF-10 chip; labels "חדש" · "לעובדי סקטור מסוים" · "לעובדי גוף מסוים" beside "ברירת המחדל".
 
 Removed the same day with the fit mark on these pages: the row mark (מתאים · לא מתאים · אין כלל לסיווג הזה, "התאמה למטרה:") and the strip's "ההתאמה לפי המטרה השמורה:" there; the workbench keeps them (`docs/roadmap.md`, "Not final").
+
+### 8.9 The index page as two linked lists (D28 as amended, 2026-10-27)
+
+The strings are `invest.pair` in `site/app/copy.ts`. The words the founder saw in the mockups and kept:
+
+- The result: "הפקדתם" ← "נשאר לכם בעוד {N} שנים" with "אחרי דמי ניהול ומס, בכסף של היום"; "הבחירה שלכם" (on the cheapest pair "הבחירה שלכם · ★ הזול") beside "★ הזוג הזול ביותר לתוכנית שלכם" with "{סכום} יותר אם עוברים לזוג הזול", or, on the cheapest pair, beside "הזוג הבא בתור" with "{סכום} לעומת הבחירה שלכם"; both with "בחרו את הזוג הזה". The cost title "כמה זה עולה לכם ב־{N} שנים, בכל אחד מהזוגות".
+- The cost: "כמה זה עולה לכם ב־{N} שנים" (one pair) or "…, בכל אחד מהזוגות" (two), "מתוכם החשבון גובה", and the key by who takes it: "החשבון:", "הקרן:", "המדינה:". It replaced "מה יצא בדרך", which the founder turned down.
+- The lists: "כל החשבונות" / "כשקונים בהם את {קרן}", "כל הקרנות על {מדד}" / "בחשבון {חשבון}", each with "בחרו … אחר, והרשימה תסתדר מחדש"; the chosen fund's row says "הבחירה", the others their difference from it ("לעומת הבחירה").
+- Rows that cannot be priced: "{N} חשבונות לא מחושבים עם הקרן הזו:" with the reason and the names, and "כשהנתון ייאסף, הם יצטרפו לרשימה."
 
 ## 9. Release 5 screens
 

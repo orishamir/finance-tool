@@ -1,0 +1,345 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="/finance-tool/assets/root-Bt2cGptk.css">
+<style>
+  :root {
+    --you: var(--palette-blue-300); --best: var(--palette-teal-300);
+    /* label families: proposed new tokens (blue and violet stay reserved for entered and computed) */
+    --l-trade: oklch(0.80 0.10 215); --l-follow: oklch(0.76 0.15 340); --l-payout: oklch(0.80 0.14 155);
+    --l-currency: oklch(0.86 0.13 92); --l-tax: oklch(0.76 0.14 28); --l-order: oklch(0.86 0.15 125);
+    --l-asks: oklch(0.80 0.14 62); --l-open: oklch(0.70 0.19 25);
+    /* cost lines */
+    --c-fund: oklch(0.86 0.13 92); --c-buy: oklch(0.70 0.17 50); --c-cust: oklch(0.80 0.12 60); --c-acct: oklch(0.58 0.15 45); --c-tax: var(--chart-tax); --c-left: var(--palette-teal-500);
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--background); color: var(--foreground); font-family: "Inter Variable", "Heebo Variable", sans-serif; font-size: 16px; line-height: 1.6; }
+  .num { direction: ltr; unicode-bidi: isolate; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  bdi { unicode-bidi: isolate; }
+  .sketch { background: var(--palette-amber-400); color: var(--palette-neutral-975); font-size: 13px; font-weight: 600; text-align: center; padding: 4px 8px; }
+  .topbar { display: flex; align-items: center; justify-content: space-between; height: 56px; padding: 0 32px; border-bottom: 1px solid var(--border); }
+  .brand { font-weight: 700; font-size: 18px; }
+  .menu { display: flex; gap: 24px; color: var(--muted-foreground); font-size: 14px; }
+  .menu b { color: var(--foreground); font-weight: 600; }
+  .wrap { max-width: 1260px; margin: 0 auto; padding: 24px 32px 56px; display: flex; flex-direction: column; gap: 24px; }
+  h1 { font-size: 30px; line-height: 1.25; margin: 0; font-weight: 600; }
+  h2 { font-size: 20px; margin: 0; font-weight: 600; line-height: 1.35; }
+  h3 { font-size: 16px; margin: 0; font-weight: 600; }
+  .sub { color: var(--muted-foreground); margin: 4px 0 0; font-size: 15px; }
+  .muted { color: var(--muted-foreground); }
+  .small { font-size: 13px; }
+  .link { color: var(--link); }
+  .row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 12px; }
+  .chip { border: 1px solid var(--input); border-radius: 999px; padding: 5px 14px; font-size: 14px; white-space: nowrap; }
+  .chip.on { background: var(--primary); color: var(--primary-foreground); border-color: var(--primary); font-weight: 600; }
+  .pc { display: inline-flex; gap: 6px; align-items: baseline; background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 5px 12px; font-size: 14px; white-space: nowrap; }
+  .pc .k { color: var(--muted-foreground); } .pc .v { font-weight: 600; }
+  .pc.mine { border-color: var(--you); } .pc.mine .v { color: var(--you); }
+  .seg { display: inline-flex; border: 1px solid var(--input); border-radius: 10px; overflow: hidden; }
+  .seg span { padding: 6px 14px; font-size: 14px; white-space: nowrap; }
+  .seg span.on { background: var(--popover); font-weight: 600; box-shadow: inset 0 -2px 0 var(--primary); }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 20px; }
+  .tag { display: inline-flex; align-items: center; font-size: 12px; font-weight: 600; border-radius: 6px; padding: 0 7px; border: 1px solid currentColor; white-space: nowrap; line-height: 20px; }
+  .tag.best { color: var(--best); } .tag.you { color: var(--you); }
+
+  /* labels: icon + colour per family */
+  .labs { display: flex; flex-wrap: wrap; gap: 5px; }
+  .lab { --c: var(--muted-foreground); display: inline-flex; align-items: center; gap: 5px; font-size: 12.5px; line-height: 22px; padding: 0 9px 0 8px; border-radius: 999px; white-space: nowrap;
+         color: var(--c); background: color-mix(in oklch, var(--c) 13%, transparent); border: 1px solid color-mix(in oklch, var(--c) 40%, transparent); }
+  .lab svg { width: 14px; height: 14px; flex: none; }
+  .lab.trade { --c: var(--l-trade); } .lab.follow { --c: var(--l-follow); } .lab.payout { --c: var(--l-payout); } .lab.currency { --c: var(--l-currency); }
+  .lab.tax { --c: var(--l-tax); } .lab.order { --c: var(--l-order); } .lab.asks { --c: var(--l-asks); } .lab.open { --c: var(--l-open); }
+
+  /* summary strip */
+  .stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; border: 1px solid var(--border); border-radius: 14px; background: var(--card); }
+  .stat { padding: 14px 18px; display: flex; flex-direction: column; gap: 2px; border-inline-start: 1px solid var(--border); }
+  .stat:first-child { border-inline-start: 0; }
+  .stat .k { font-size: 13px; color: var(--muted-foreground); }
+  .stat .v { font-size: 26px; font-weight: 700; line-height: 1.2; }
+  .stat .n { font-size: 13px; color: var(--muted-foreground); }
+  .ul { text-decoration: underline dotted var(--computed); text-underline-offset: 5px; text-decoration-thickness: 2px; }
+
+  /* layout: list beside detail */
+  .side { display: grid; grid-template-columns: 410px minmax(0, 1fr); gap: 24px; align-items: start; }
+  .side.wide { grid-template-columns: minmax(0, 1fr) 470px; }
+  .acc { display: grid; grid-template-columns: 22px minmax(0, 1fr) 70px 78px; gap: 10px; align-items: center; padding: 7px 10px; border-bottom: 1px solid var(--border); font-size: 15px; }
+  .acc .rk { color: var(--muted-foreground); font-size: 13px; text-align: center; }
+  .acc .nm { font-weight: 600; white-space: nowrap; display: flex; gap: 6px; align-items: center; }
+  .acc.you .nm { color: var(--you); }
+  .acc.sel { background: var(--popover); border-radius: 10px; box-shadow: inset -3px 0 0 var(--primary); border-bottom-color: transparent; }
+  .acc .gap { text-align: left; font-weight: 600; font-size: 14px; }
+  .acc.best .gap { color: var(--best); }
+  .mini { height: 8px; background: var(--c-buy); border-radius: 0 2px 2px 0; }
+  .chk { width: 16px; height: 16px; border: 1.5px solid var(--input); border-radius: 4px; display: inline-block; }
+  .chk.on { background: var(--primary); border-color: var(--primary); position: relative; }
+  .chk.on::after { content: ""; position: absolute; inset: 2px 4px 4px 4px; border: solid var(--primary-foreground); border-width: 0 2px 2px 0; transform: rotate(45deg); }
+
+  /* stacked bars, one above the other on one scale */
+  .sb { display: grid; grid-template-columns: 120px minmax(0, 1fr) 84px; gap: 12px; align-items: center; padding: 5px 0; }
+  .sb .nm { font-weight: 600; white-space: nowrap; font-size: 15px; display: flex; flex-direction: column; line-height: 1.25; }
+  .sb .nm small { font-weight: 400; font-size: 12px; color: var(--muted-foreground); }
+  .sb.you .nm { color: var(--you); }
+  .sb .tot { text-align: left; font-weight: 600; font-size: 14px; }
+  .stack { display: flex; height: 20px; border-radius: 3px; overflow: hidden; }
+  .stack.thin { height: 14px; }
+  .stack > i { display: block; height: 100%; border-inline-end: 1px solid var(--card); }
+  .stack > i:last-child { border: 0; }
+  .f-fund { background: var(--c-fund); } .f-buy { background: var(--c-buy); } .f-cust { background: var(--c-cust); } .f-acct { background: var(--c-acct); } .f-tax { background: var(--c-tax); } .f-left { background: var(--c-left); }
+  .legend { display: flex; flex-wrap: wrap; gap: 4px 16px; font-size: 13px; color: var(--muted-foreground); }
+  .legend i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-inline-end: 6px; vertical-align: -1px; }
+  .scale { display: grid; grid-template-columns: 120px minmax(0, 1fr) 84px; gap: 12px; font-size: 12px; color: var(--muted-foreground); }
+  .scale .t { display: flex; justify-content: space-between; }
+  .sb-list .sb { border-bottom: 1px solid var(--border); padding: 7px 8px; }
+  .sb-list .sb.sel { background: var(--popover); border-radius: 10px; box-shadow: inset -3px 0 0 var(--primary); border-bottom-color: transparent; }
+  .sb-list .sb { grid-template-columns: 22px 110px minmax(0, 1fr) 70px 76px; }
+  .sb-list .scale { grid-template-columns: 22px 110px minmax(0, 1fr) 70px 76px; padding: 0 8px; }
+
+  /* funds */
+  .fhead, .frow { display: grid; grid-template-columns: minmax(0, 1fr) 92px 150px 84px; gap: 14px; align-items: center; }
+  .fhead { font-size: 12.5px; color: var(--muted-foreground); padding: 0 14px 4px; }
+  .fhead span { white-space: nowrap; }
+  .frow { padding: 10px 0; border-bottom: 1px solid var(--border); }
+  .frow:last-child { border-bottom: 0; }
+  .frow .fn { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
+  .frow .fn b { font-weight: 600; }
+  .frow .id { color: var(--link); font-size: 14px; }
+  .frow .fees { font-size: 13px; color: var(--muted-foreground); }
+  .frow .left { text-align: left; font-weight: 600; }
+  .group { border: 1px solid color-mix(in oklch, var(--palette-teal-400) 45%, transparent); border-radius: 12px; padding: 2px 14px; background: color-mix(in oklch, var(--palette-teal-400) 5%, transparent); }
+  .group-h { display: flex; justify-content: space-between; gap: 12px; padding: 8px 0 2px; font-size: 13.5px; color: var(--palette-teal-200); font-weight: 600; }
+  .narrow .fhead, .narrow .frow { grid-template-columns: minmax(0, 1fr) 84px; }
+  .narrow .fhead, .narrow .frow .fees { display: none; }
+  .narrow .frow .fn b { white-space: nowrap; font-size: 15px; }
+  .narrow .frow .id { grid-row: 2; grid-column: 1; }
+  .narrow .frow .left { grid-row: 1; grid-column: 2; }
+  .steps { margin: 0; padding-inline-start: 22px; display: flex; flex-direction: column; gap: 6px; }
+  .note { font-size: 13px; color: var(--muted-foreground); }
+  .callout { border-inline-start: 4px solid var(--primary); background: var(--popover); border-radius: 8px; padding: 10px 14px; font-size: 15px; }
+  table.fees { border-collapse: collapse; width: 100%; font-size: 14.5px; table-layout: fixed; }
+  table.fees col.c { width: 130px; }
+  table.fees th, table.fees td { padding: 8px 10px; border-bottom: 1px solid var(--border); text-align: right; white-space: nowrap; }
+  table.fees th { font-size: 13px; color: var(--muted-foreground); font-weight: 500; }
+  table.fees td.n, table.fees th.n { text-align: center; }
+  table.fees tr.tot td { font-weight: 700; border-bottom: 0; }
+  table.fees .sw { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-inline-end: 8px; }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+</style>
+</head>
+<body>
+<style>
+  .tbl-h, .tr { display: grid; gap: 10px; align-items: center; }
+  .tbl-h { font-size: 12.5px; color: var(--muted-foreground); padding: 0 8px 6px; border-bottom: 1px solid var(--border); }
+  .tbl-h span { white-space: nowrap; }
+  .tr { padding: 8px 8px; border-bottom: 1px solid var(--border); font-size: 14.5px; }
+  .tr.sel { background: var(--popover); border-radius: 10px; box-shadow: inset -3px 0 0 var(--primary); border-bottom-color: transparent; }
+  .tr .nm { font-weight: 600; white-space: nowrap; display: flex; flex-direction: column; line-height: 1.25; }
+  .tr .nm small { font-weight: 400; font-size: 12px; color: var(--muted-foreground); }
+  .tr.you .nm { color: var(--you); }
+  .tr .r { text-align: left; }
+  .tr .rk { color: var(--muted-foreground); font-size: 13px; text-align: center; }
+  .split { font-size: 11.5px; color: var(--muted-foreground); display: block; white-space: nowrap; }
+  .tt { font-size: 12px; color: var(--l-trade); white-space: nowrap; display: flex; flex-direction: column; line-height: 1.3; }
+  .tt small { color: var(--muted-foreground); font-size: 11px; }
+  .cell { border: 1px solid var(--border); border-radius: 8px; padding: 4px 8px; display: flex; flex-direction: column; gap: 3px; }
+  .cell.win { border-color: var(--best); background: color-mix(in oklch, var(--palette-teal-400) 7%, transparent); }
+  .cell.none { border-style: dashed; color: var(--muted-foreground); font-size: 12.5px; justify-content: center; min-height: 40px; }
+  .cell .v { font-weight: 600; font-size: 14px; display: flex; justify-content: space-between; }
+  .fbar { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+  .fbar .k { font-size: 13px; color: var(--muted-foreground); margin-inline-end: 2px; }
+  .lab.btn { cursor: pointer; }
+  .lab .cnt { opacity: .75; font-size: 11.5px; }
+  .lab.active { outline: 2px solid var(--c); outline-offset: 1px; background: color-mix(in oklch, var(--c) 26%, transparent); }
+  .lab .x { margin-inline-start: 2px; opacity: .8; }
+  .pop { position: relative; background: var(--popover); border: 1px solid var(--input); border-radius: 12px; padding: 14px 16px; box-shadow: 0 12px 32px rgb(0 0 0 / .45); display: flex; flex-direction: column; gap: 10px; font-size: 14.5px; }
+  .pop::before { content: ""; position: absolute; top: -7px; inset-inline-start: var(--arrow, 40px); width: 12px; height: 12px; background: var(--popover); border-top: 1px solid var(--input); border-inline-start: 1px solid var(--input); transform: rotate(45deg); }
+  .pop .close { position: absolute; top: 8px; inset-inline-end: 12px; color: var(--muted-foreground); }
+  .fx { display: grid; grid-template-columns: 110px minmax(0,1fr) 70px; gap: 8px; align-items: center; font-size: 13px; }
+  .fx .b { height: 12px; border-radius: 0 3px 3px 0; background: var(--palette-teal-500); }
+  .fx .b.h { background: var(--l-currency); }
+  .fx .ref { position: relative; }
+  .fx .ref::after { content: ""; position: absolute; inset-inline-start: 83.3%; top: -3px; bottom: -3px; border-inline-start: 1.5px dashed var(--muted-foreground); }
+  .segbar { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .hint { font-size: 12px; color: var(--muted-foreground); }
+  .frow2 { padding: 10px 0; border-bottom: 1px solid var(--border); display: grid; grid-template-columns: minmax(0,1fr) 78px; gap: 4px 10px; }
+  .frow2:last-child { border-bottom: 0; }
+  .frow2 .t { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+  .frow2 .t b { font-weight: 600; font-size: 15px; white-space: nowrap; }
+  .frow2 .t a { color: var(--link); font-size: 13.5px; text-decoration: none; }
+  .frow2 .v { font-weight: 600; text-align: left; grid-row: 1 / span 2; grid-column: 2; align-self: center; }
+  .frow2 .fees { font-size: 12px; color: var(--muted-foreground); }
+</style>
+<div id="root"></div>
+<script>
+const OPT = new URLSearchParams(location.search).get("opt") || "E1";
+const n = (x) => Math.round(x).toLocaleString("he-IL");
+const S = (x) => `<span class="num">${n(x)} ₪</span>`;
+const GAP = (x) => `<span class="num">−${n(x)} ₪</span>`;
+const I = {
+  clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>', cal: '<rect x="4" y="5" width="16" height="15" rx="2"/><path d="M8 3v4M16 3v4M4 10h16"/>',
+  swap: '<path d="M7 4 3 8l4 4"/><path d="M3 8h14"/><path d="m17 20 4-4-4-4"/><path d="M21 16H7"/>', mixed: '<path d="M3 7h4l10 10h4"/><path d="M3 17h4l3-3"/><path d="M14 10l3-3h4"/><path d="m18 4 3 3-3 3"/><path d="m18 14 3 3-3 3"/>',
+  grow: '<path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/>', dollar: '<circle cx="12" cy="12" r="9"/><path d="M15 9.5c-.5-1-1.6-1.5-3-1.5-1.7 0-3 .9-3 2s1.3 1.7 3 2 3 .9 3 2-1.3 2-3 2c-1.4 0-2.5-.5-3-1.5M12 6v2M12 16v2"/>',
+  shield: '<path d="M12 3l8 3v6c0 4.5-3.4 8-8 9-4.6-1-8-4.5-8-9V6l8-3z"/>', percent: '<path d="M19 5 5 19"/><circle cx="7" cy="7" r="2.5"/><circle cx="17" cy="17" r="2.5"/>',
+  repeat: '<path d="m17 2 4 4-4 4"/><path d="M3 11v-1a4 4 0 0 1 4-4h14"/><path d="m7 22-4-4 4-4"/><path d="M21 13v1a4 4 0 0 1-4 4H3"/>', file: '<path d="M14 3H6v18h12V7l-4-4z"/><path d="M14 3v4h4M9 13h6M9 17h6"/>',
+  shieldoff: '<path d="M19 16.1c.6-1.2 1-2.6 1-4.1V6l-8-3-4.3 1.6M5 5.5 4 6v6c0 4.5 3.4 8 8 9 2-.4 3.7-1.4 5-2.8"/><path d="m3 3 18 18"/>', lock: '<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>',
+};
+const L = (fam, icon, text, extra = "") => `<span class="lab ${fam} ${extra}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${I[icon]}</svg>${text}</span>`;
+const typeLab = (t) => t === "m" ? L("trade", "cal", "קרן מחקה · פעם ביום") : L("trade", "clock", "קרן סל · כל היום");
+const followLab = (f) => f === "swap" ? L("follow", "swap", "עסקת החלף") : L("follow", "mixed", "כמה דרכים יחד");
+const ccyLab = (h) => h ? L("currency", "shield", "מנוטרלת מט״ח") : L("currency", "dollar", "חשיפה לדולר");
+
+/* live figures 27.10.2026: per account, the best tracking fund (m) and the best ETF (e); null = the tariff has no line for mutual-fund units */
+const A = [["פסגות",78943,78252],["לאומי",76322,73036],["ירושלים",null,75675],["וואן זירו",null,75181],["הפועלים",null,73740],["יהב",null,73740],["דיסקונט",null,72330],["מרכנתיל",null,72330],["אי.בי.אי",71647,71126],["מסד",null,71249],["הבינלאומי",null,70859],["מזרחי טפחות",null,70304],["אלטשולר טרייד",59242,58698],["אקסלנס",null,57710]];
+const best = (a) => Math.max(a[1] ?? 0, a[2]);
+const typeOf = (a) => a[1] != null && a[1] >= a[2] ? "m" : "e";
+const YOU = "לאומי", TOP = 78943;
+/* Psagot's funds, live */
+const F = [["ילין לפידות מחקה (4D) S&P 500","5139282","m","swap",0,78943,[0,0,0.02]],["אלטשולר שחם מחקה (4D) S&P 500","5139100","m","mixed",0,78906,[0,0,0.03]],["קסם S&P 500 (4D) KTF","5124482","m","mixed",0,78556,[0,0.1,0.025]],["הראל מחקה (4D) S&P 500","5129275","m","mixed",0,78556,[0,0.1,0.025]],["ATF סל (4D) S&P 500","1218916","e","mixed",0,78252,[0,0.2,0.008]],["הראל מחקה (4A) S&P 500 - מנוטרלת מט״ח","5127527","m","mixed",1,77845,[0,0.3,0.02]],["ילין לפידות סל (4D) S&P 500","1201656","e","swap",0,77845,[0,0.3,0.02]],["מור סל (4D) S&P 500","1165810","e","swap",0,77484,[0.1,0.3,0.02]]];
+
+/* illustrative: what the account itself charges (buying, custody, account fee); the engine does not split it yet */
+function charges(name, t, left) {
+  const ps = t === "m" ? 78943 : 78252, tot = (t === "m" ? 500 : 560) + 1.25 * (ps - left);
+  if (name === "פסגות") return t === "m" ? { buy: 300, cust: 200, acct: 0 } : { buy: 360, cust: 200, acct: 0 };
+  return tot > 20000 ? { buy: tot * 0.3, cust: tot * 0.3, acct: tot * 0.4 } : { buy: tot * 0.45, cust: tot * 0.5, acct: tot * 0.05 };
+}
+const sum = (c) => c.buy + c.cust + c.acct;
+const MAXCH = 28000;
+const bar = (c, max = MAXCH, h = 14) => `<div class="stack" style="height:${h}px;width:${(sum(c) / max) * 100}%"><i class="f-buy" style="width:${(c.buy / sum(c)) * 100}%"></i><i class="f-cust" style="width:${(c.cust / sum(c)) * 100}%"></i>${c.acct ? `<i class="f-acct" style="width:${(c.acct / sum(c)) * 100}%"></i>` : ""}</div>`;
+const legend = `<div class="legend"><span><i class="f-buy"></i>עמלות קנייה</span><span><i class="f-cust"></i>דמי משמרת</span><span><i class="f-acct"></i>דמי ניהול חשבון</span><span class="muted">דמי ניהול הקרן ומס: ברשימת הקרנות</span></div>`;
+const ticks = (max, pre, at) => { const k = pre.trim().split(/\s+(?![^(]*\))/).length; return `<div class="tbl-h" style="border:0;padding-top:4px;grid-template-columns:${pre}">${Array.from({ length: k }, (_, j) => j === at ? `<span style="display:flex;justify-content:space-between">${[0, 7000, 14000, 21000, 28000].map((t) => `<span class="num">${n(t)}</span>`).join("")}</span>` : "<span></span>").join("")}</div>`; };
+
+function header() {
+  return `<div class="sketch">סקיצה לדיון · אפשרות ${OPT} · לא אינטראקטיבית · "נשאר" מהאתר החי (27.10.2026) · מה שהחשבון גובה, לפי סוג עמלה: להמחשה בלבד · כל תווית נפתחת בלחיצה</div>
+  <div class="topbar"><span class="brand">מקור</span><nav class="menu"><span>מדריך</span><span>שאלות שכולם שואלים</span><span>חברות ומסלולים</span><span>השוואה למטרה</span><b>השקעה במדד</b></nav></div>`;
+}
+function intro() {
+  const idx = ["MSCI AC World", "MSCI World", "נאסד״ק 100", "S&P 500", "ת״א-125", "ת״א-35", "ת״א-90", "+ אחר"];
+  return `<header style="display:flex;flex-direction:column;gap:12px">
+    <div><h1>השקעה במדד</h1><p class="sub">כבר בחרתם מדד. כאן: איפה לפתוח חשבון ניירות ערך, ומה לקנות בו.</p></div>
+    <div class="row">${idx.map((x) => `<span class="chip ${x === "S&P 500" ? "on" : ""}">${x}</span>`).join("")}</div>
+    <div class="row"><span class="pc"><span class="k">סכום</span><span class="v num">10,000 ₪</span></span><span class="pc"><span class="k">כל חודש</span><span class="v num">500 ₪</span></span><span class="pc"><span class="k">תקופה</span><span class="v">10 שנים</span></span><span class="pc mine"><span class="k">החשבון שלכם</span><span class="v">${YOU}</span></span><span class="link small">עוד הנחות</span></div>
+  </header>`;
+}
+function stats(left, ch, vsYou) {
+  return `<div class="stats" style="grid-template-columns:repeat(3,minmax(0,1fr))">
+    <div class="stat"><span class="k">נשאר בפסגות, בעוד 10 שנים</span><span class="v num ul">${n(left)} ₪</span><span class="n">אחרי דמי ניהול ומס, בכסף של היום</span></div>
+    <div class="stat"><span class="k">מה פסגות גובה</span><span class="v num ul">${n(ch)} ₪</span><span class="n">עמלות קנייה ודמי משמרת, לאורך 10 שנים</span></div>
+    <div class="stat"><span class="k">לעומת ${YOU}, החשבון שלכם</span><span class="v num ul" style="color:var(--best)">+${n(vsYou)} ₪</span><span class="n">יותר נשאר לכם בפסגות</span></div>
+  </div>`;
+}
+function fundRow(f) {
+  return `<div class="frow2"><span class="t"><b><bdi>${f[0]}</bdi></b><a class="num">${f[1]} ↗</a></span><span class="v num">${n(f[5])} ₪</span>
+    <span class="labs">${typeLab(f[2])}${followLab(f[3])}${L("payout", "grow", "צוברת")}${ccyLab(f[4])}${f[4] ? "" : L("tax", "percent", "מס גם על שינויי המטבע")}</span>
+    <span class="fees num" style="grid-column:1">דמי ניהול ${f[6][0]}% · ${f[6][1]}% · ${f[6][2]}% (קבועים · משתנים · נאמן)</span></div>`;
+}
+function filterBar(active) {
+  const chips = [["trade", "cal", "קרן מחקה", 5], ["trade", "clock", "קרן סל", 8], ["follow", "swap", "עסקת החלף", 5], ["follow", "mixed", "כמה דרכים יחד", 8], ["currency", "shield", "מנוטרלת מט״ח", 1], ["currency", "dollar", "חשיפה לדולר", 12]];
+  return `<div class="fbar"><span class="k">סננו לפי תווית:</span>${chips.map(([f, i, t, c]) => L(f, i, `${t} <span class="cnt num">${c}</span>${active === t ? '<span class="x">✕</span>' : ""}`, `btn ${active === t ? "active" : ""}`)).join("")}</div>`;
+}
+const hedgePop = `<div class="pop" style="--arrow:236px">
+  <span class="close">✕</span>
+  <div class="row" style="gap:8px">${L("currency", "shield", "מנוטרלת מט״ח")}<b>מה זה אומר</b></div>
+  <div>הקרן עוקבת אחרי המדד בלבד. קרן עם <b>חשיפה לדולר</b> עוקבת אחרי המדד ועוד שער הדולר מול השקל <span class="link small">ETF-10</span>.</div>
+  <div style="display:flex;flex-direction:column;gap:6px">
+    <span class="muted small">דוגמה לחישוב, לא תחזית: 10,000 ₪, המדד לא זז, והדולר משתנה. בלי עלות הנטרול.</span>
+    <div class="fx"><span>הדולר יורד 10%</span><span class="ref"><span class="b" style="display:block;width:75%"></span></span><span class="num">9,000 ₪</span></div>
+    <div class="fx"><span></span><span class="ref"><span class="b h" style="display:block;width:83.3%"></span></span><span class="num">10,000 ₪</span></div>
+    <div class="fx"><span>הדולר עולה 10%</span><span class="ref"><span class="b" style="display:block;width:91.7%"></span></span><span class="num">11,000 ₪</span></div>
+    <div class="fx"><span></span><span class="ref"><span class="b h" style="display:block;width:83.3%"></span></span><span class="num">10,000 ₪</span></div>
+    <div class="legend"><span><i style="background:var(--palette-teal-500)"></i>חשיפה לדולר</span><span><i style="background:var(--l-currency)"></i>מנוטרלת מט״ח</span></div>
+  </div>
+  <div><b>מה זה עולה כאן:</b> בפסגות, הקרן המנוטרלת משאירה <span class="num">1,098 ₪</span> פחות מהזולה עם חשיפה לדולר, מדמי הניהול שלה. עלות הנטרול עצמה נמצאת בהפרש העקיבה, שעוד לא נאסף.</div>
+  <div class="row"><span class="link small">הראו רק מנוטרלות (1)</span><span class="link small">הראו רק עם חשיפה לדולר (12)</span></div>
+</div>`;
+function fundPanel(opts = {}) {
+  const list = opts.only ? F.filter(opts.only) : F;
+  const tied = opts.only ? [] : list.slice(0, 4);
+  const rest = opts.only ? list : list.slice(4, 7);
+  return `<div class="card" style="display:flex;flex-direction:column;gap:14px">
+    <div class="row" style="justify-content:space-between"><h2>${opts.title || "מה קונים בפסגות"}</h2><span class="tag best">הזול ביותר</span></div>
+    ${filterBar(opts.active)}
+    ${opts.pop ? hedgePop : ""}
+    ${opts.note ? `<div class="callout" style="font-size:14px">${opts.note}</div>` : ""}
+    ${tied.length ? `<div class="group"><div class="group-h"><span>שוות לתוכנית שלכם · ההפרש קטן מ־0.5%</span><span class="num">78,556–78,943 ₪</span></div>${tied.map(fundRow).join("")}</div>` : ""}
+    <div>${rest.map(fundRow).join("")}</div>
+    ${opts.only ? "" : `<span class="link small">עוד 5 קרנות</span>`}
+    <span class="note">13 קרנות על המדד עם רשומה באתר; הרשימה המלאה ב־Maya ↗. הפרש העקיבה עוד לא נאסף, ונלקח כאפס.</span>
+    <div style="display:flex;flex-direction:column;gap:6px"><h3>מה עושים עכשיו</h3><ol class="steps" style="font-size:14.5px"><li>פותחים חשבון בפסגות · <span class="link small">איך עוברים חשבון</span></li><li>קונים לפי מספר הנייר <span class="num link">${opts.buy || "5139282"}</span></li><li>קובעים הוראת קבע של <span class="num">500 ₪</span> בחודש</li></ol></div>
+  </div>`;
+}
+
+/* E1: each account with its own cheapest fund, honestly labelled */
+function E1() {
+  const rows = [...A].sort((x, y) => best(y) - best(x));
+  const cols = "22px 92px 100px minmax(0,1fr) 60px 66px 112px";
+  return `${intro()}${stats(78943, 500, 2621)}
+  <div class="side wide">
+    <section style="display:flex;flex-direction:column;gap:6px">
+      <h2>איפה לפתוח את החשבון</h2>
+      <p class="sub" style="margin:0 0 6px">כל חשבון עם הקרן שנשאר בה הכי הרבה אצלו. הפס: מה החשבון עצמו גובה.</p>
+      <div class="tbl-h" style="grid-template-columns:${cols}"><span>#</span><span>חשבון</span><span>מחושב עם</span><span>מה החשבון גובה</span><span class="r">סך הכול</span><span class="r">נשאר</span><span class="r">פחות מהזול</span></div>
+      ${rows.map((a, i) => { const t = typeOf(a), left = best(a), c = charges(a[0], t, left), g = TOP - left, fp = t === "e" ? 691 : 0;
+        return `<div class="tr ${a[0] === "פסגות" ? "sel" : ""} ${a[0] === YOU ? "you" : ""}" style="grid-template-columns:${cols}">
+        <span class="rk">${i + 1}</span><span class="nm">${a[0]}${a[0] === YOU ? "<small>החשבון שלכם</small>" : ""}</span>
+        <span class="tt">${t === "m" ? "קרן מחקה" : "קרן סל"}${a[1] == null ? "<small>קרן מחקה: אין בתעריפון</small>" : ""}</span>
+        <span>${bar(c)}</span><span class="r num" style="font-size:13.5px">${n(sum(c))} ₪</span><span class="r num">${n(left)} ₪</span>
+        <span class="r">${g ? `${GAP(g)}${fp ? `<span class="split">מהחשבון <span class="num">${n(g - fp)}</span></span><span class="split">מהקרן <span class="num">${n(fp)}</span></span>` : ""}` : `<span style="color:var(--best);font-weight:600">הזול</span>`}</span></div>`; }).join("")}
+      ${ticks(MAXCH, cols, 3)}
+      <div style="padding:6px 8px">${legend}</div>
+      <span class="note" style="padding:0 8px">ב־10 מ־14 החשבונות אין בתעריפון שורה ליחידות של קרן נאמנות, ולכן הם מחושבים רק עם קרן סל. מיטב טרייד: התעריפון לא נאסף.</span>
+    </section>
+    ${fundPanel({ pop: true, active: null })}
+  </div>`;
+}
+/* E2: account x fund type, side by side */
+function E2() {
+  const rows = [...A].sort((x, y) => best(y) - best(x));
+  const cols = "22px 100px minmax(0,1fr) minmax(0,1fr) 92px";
+  const cell = (a, t) => { const v = t === "m" ? a[1] : a[2]; if (v == null) return `<div class="cell none">אין בתעריפון שורה לקרן מחקה</div>`;
+    const win = typeOf(a) === t, c = charges(a[0], t, v);
+    return `<div class="cell ${win ? "win" : ""}"><span class="v"><span class="num">${n(v)} ₪</span><span class="muted small num" style="font-weight:400">גובה ${n(sum(c))} ₪</span></span>${bar(c, MAXCH, 8)}</div>`; };
+  return `${intro()}${stats(78943, 500, 2621)}
+  <div class="side wide">
+    <section style="display:flex;flex-direction:column;gap:6px">
+      <h2>איפה לפתוח את החשבון</h2>
+      <p class="sub" style="margin:0 0 6px">חשבון גובה אחרת על קרן מחקה ועל קרן סל. מה נשאר לכם בכל חשבון, עם הזולה מכל סוג. המסגרת: הזולה מבין השתיים.</p>
+      <div class="tbl-h" style="grid-template-columns:${cols}"><span>#</span><span>חשבון</span><span>${L("trade", "cal", "עם קרן מחקה")}</span><span>${L("trade", "clock", "עם קרן סל")}</span><span class="r">פחות מהזול</span></div>
+      ${rows.map((a, i) => { const g = TOP - best(a); return `<div class="tr ${a[0] === "פסגות" ? "sel" : ""} ${a[0] === YOU ? "you" : ""}" style="grid-template-columns:${cols}">
+        <span class="rk">${i + 1}</span><span class="nm">${a[0]}${a[0] === YOU ? "<small>החשבון שלכם</small>" : ""}</span>${cell(a, "m")}${cell(a, "e")}
+        <span class="r">${g ? GAP(g) : `<span style="color:var(--best);font-weight:600">הזול</span>`}</span></div>`; }).join("")}
+      <div style="padding:8px">${legend}</div>
+      <span class="note" style="padding:0 8px">בלאומי: עם קרן מחקה נשארים <span class="num">3,286 ₪</span> יותר מאשר עם קרן סל. בעשרה חשבונות אין בתעריפון שורה לקרן מחקה, אז אי אפשר לדעת.</span>
+    </section>
+    ${fundPanel({ active: "מנוטרלת מט״ח", only: (f) => f[4], title: "מה קונים בפסגות", buy: "5127527",
+      note: `מסונן: ${L("currency", "shield", "מנוטרלת מט״ח")} קרן אחת. היא משאירה <span class="num">1,098 ₪</span> פחות מהזולה עם חשיפה לדולר, מדמי הניהול; עלות הנטרול עצמה בהפרש העקיבה, שלא נאסף.` })}
+  </div>`;
+}
+/* E3: compare every account on the same fund type; the type is a label filter that scopes the whole page */
+function E3() {
+  const rows = [...A].sort((x, y) => y[2] - x[2]);
+  const cols = "22px 100px minmax(0,1fr) 64px 70px 92px";
+  const topE = 78252;
+  return `${intro()}
+  <div class="card" style="padding:14px 18px;display:flex;flex-direction:column;gap:8px">
+    <div class="segbar"><b style="font-size:15px">השוו את החשבונות על:</b><span class="seg"><span>הזולה בכל חשבון</span><span class="on">קרן סל: אותה קרן בכל חשבון</span><span>קרן מחקה: 4 חשבונות</span></span></div>
+    <span class="hint">כל החשבונות מחושבים עם <bdi>ATF סל (4D) S&P 500</bdi>, קרן הסל שנשאר בה הכי הרבה בכל אחד מהם. כך ההפרש הוא רק מה שהחשבון גובה. עם קרן מחקה אפשר לחשב רק 4 חשבונות.</span>
+  </div>
+  ${stats(topE, 560, topE - 73036)}
+  <div class="side wide">
+    <section style="display:flex;flex-direction:column;gap:6px">
+      <h2>מה כל חשבון גובה על אותה קרן סל</h2>
+      <div class="tbl-h" style="grid-template-columns:${cols}"><span>#</span><span>חשבון</span><span>מה החשבון גובה</span><span class="r">סך הכול</span><span class="r">נשאר</span><span class="r">פחות מהזול</span></div>
+      ${rows.map((a, i) => { const c = charges(a[0], "e", a[2]), g = topE - a[2]; return `<div class="tr ${a[0] === "פסגות" ? "sel" : ""} ${a[0] === YOU ? "you" : ""}" style="grid-template-columns:${cols}">
+        <span class="rk">${i + 1}</span><span class="nm">${a[0]}${a[0] === YOU ? "<small>החשבון שלכם</small>" : ""}</span><span>${bar(c)}</span>
+        <span class="r num" style="font-size:13.5px">${n(sum(c))} ₪</span><span class="r num">${n(a[2])} ₪</span><span class="r">${g ? GAP(g) : `<span style="color:var(--best);font-weight:600">הזול</span>`}</span></div>`; }).join("")}
+      <div class="tbl-h" style="border:0;padding-top:4px;grid-template-columns:${cols}"><span></span><span></span><span style="display:flex;justify-content:space-between">${[0, 7000, 14000, 21000, 28000].map((t) => `<span class="num">${n(t)}</span>`).join("")}</span><span></span><span></span><span></span></div>
+      <div style="padding:6px 8px">${legend}</div>
+      <span class="note" style="padding:0 8px">לאומי יורד מהמקום השני למקום השישי: על קרן סל הוא גובה יותר מאשר על קרן מחקה.</span>
+    </section>
+    ${fundPanel({ active: "קרן סל", only: (f) => f[2] === "e", buy: "1218916" })}
+  </div>`;
+}
+document.getElementById("root").innerHTML = header() + `<main class="wrap">${{ E1, E2, E3 }[OPT]()}</main>`;
+</script>
+</body>
+</html>

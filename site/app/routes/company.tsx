@@ -108,7 +108,9 @@ export async function loader({ params }: Route.LoaderArgs) {
   const termGroups = companyTermGroups(registryIds, allRules, topicName);
   const brokerage = brand?.brokerId ? brokeragePart(brand.brokerId) : null;
   const funds = brand ? brandFunds(brand) : [];
-  const termRules = { ...brokerage?.rules, ...Object.fromEntries(termGroups.flatMap((g) => g.ids).map((id) => [id, allRules[id]!])) };
+  // the rules the funds' label sheets name (the label set's own, as on the index page)
+  const labelRuleIds = [...new Set(funds.flatMap((g) => g.funds.flatMap((f) => f.labels.flatMap((l) => l.rules))))].filter((id) => allRules[id]);
+  const termRules = { ...brokerage?.rules, ...Object.fromEntries([...termGroups.flatMap((g) => g.ids), ...labelRuleIds].map((id) => [id, allRules[id]!])) };
   const { loadInstitutionRegistry } = await import("../lib/institutions.server");
   const name = brand?.name ?? company!.name;
   const shortName = brand?.name ?? loadInstitutionRegistry().find((r) => r.id === registryIds[0])?.name_he ?? name;
@@ -262,7 +264,7 @@ function ManagerCompany({ data }: { data: CompanyData }) {
                 render: (open: boolean) => (
               <Disclosure key={g.kind} defaultOpen={open} className="flex flex-col gap-2" summaryClassName="min-h-12 md:min-h-14" label={<GroupLabel title={brandsCopy.funds.groups[g.kind]} count={fundCountLine(g.funds.length)} />}>
                 <p className="text-sm text-muted-foreground max-w-measure px-1">{brandsCopy.funds.collected}</p>
-                <BrandFundList funds={g.funds} />
+                <BrandFundList funds={g.funds} kind={g.kind} />
               </Disclosure>
                 ),
               })),
