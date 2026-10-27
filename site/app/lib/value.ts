@@ -185,21 +185,34 @@ export function feeYear(v: Pick<ValueObject, "effective_from">): string | null {
 }
 
 /**
- * A track list ships one fee pair per track; the source, dates and rule ids are the same for all of them, so
+ * A track list ships one fee pair per track; the source, dates and rule ids are the same for most of them, so
  * the list carries the value object once (`template`) and, per track, the number and its own note only.
  */
 export interface CompactFee {
   value: number | null;
   /** Sent only when it differs from the template's note (a missing value, a negative one). */
   notes?: string;
+  /** Sent only when they differ from the template's (an empty deposit fee that PF-06 explains). */
+  rule_ids?: string[];
 }
 
 export function compactFee(v: ValueObject, template: ValueObject): CompactFee {
-  return v.notes && v.notes !== template.notes ? { value: v.value as number | null, notes: v.notes } : { value: v.value as number | null };
+  const out: CompactFee = { value: v.value as number | null };
+  if (v.notes && v.notes !== template.notes) out.notes = v.notes;
+  if ((v.rule_ids ?? []).join() !== (template.rule_ids ?? []).join()) out.rule_ids = v.rule_ids ?? [];
+  return out;
 }
 
 export function expandFee(c: CompactFee, template: SiteValue): SiteValue {
-  return { ...template, value: c.value, notes: c.notes ?? template.notes };
+  return { ...template, value: c.value, notes: c.notes ?? template.notes, rule_ids: c.rule_ids ?? template.rule_ids };
+}
+
+/**
+ * An empty deposit-fee average of a product type that may charge a fee from the balance only (PF-06): no fee, by rule, not a
+ * gap. The pipeline names the rule on such a value (data-schema 3.13); calculations take 0 for it, and the page says "אין".
+ */
+export function depositFeeNoneByRule(v: Pick<ValueObject, "value" | "rule_ids">): boolean {
+  return v.value === null && (v.rule_ids ?? []).includes("PF-06");
 }
 
 /** Fills "{year}" in a label with a fee's year; without a year the clause is left out. */

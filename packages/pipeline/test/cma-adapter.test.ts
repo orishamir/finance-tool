@@ -13,8 +13,10 @@ import {
   gzipRaw,
   inceptionDate,
   normalise,
+  balanceFeeOnly,
   buildFees,
   buildHoldings,
+  readCmaFile,
   KEPT_COLUMNS,
   feeYear,
   renormaliseFees,
@@ -198,6 +200,31 @@ describe("fees", () => {
     const raw = { AVG_ANNUAL_MANAGEMENT_FEE: "", AVG_DEPOSIT_FEE: "" };
     expect(buildFees(base, { raw_fields: raw, inception_date: "2010-01-01" }).avg_annual_management_fee.notes).toContain("OQ22");
     expect(buildFees(base, { raw_fields: raw, inception_date: "2026-03-01" }).avg_annual_management_fee.notes).toContain("שנה קלנדרית מלאה");
+  });
+
+  it("an empty deposit fee of a balance-only type (study fund, central, other-purpose, IRA) gives PF-06 as the reason", () => {
+    const base = { dataset: "gemelnet" as const, report_period: "2026-09", checked: "2026-10-23", source: file.source };
+    const raw = { AVG_ANNUAL_MANAGEMENT_FEE: "0.5", AVG_DEPOSIT_FEE: "" };
+    const of = (fund_classification: string, name: string) =>
+      buildFees(base, { raw_fields: raw, inception_date: "2010-01-01", fund_classification, names: { cma: [name] } }).avg_deposit_fee;
+    for (const v of [of("קרנות השתלמות", "קרן"), of("מרכזית לפיצויים", "קופה"), of("מטרה אחרת", "קופה"), of("תגמולים ואישית לפיצויים", "גמל בניהול אישי IRA")]) {
+      expect(v.value).toBeNull();
+      expect(v.rule_ids).toContain("PF-06");
+      expect(v.notes).toMatch(/^לא דווח: .*PF-06/);
+    }
+    // a tagmulim fund may charge a deposit fee: an empty one stays unknown, and "אישית לפיצויים" is not an IRA
+    const tagmulim = of("תגמולים ואישית לפיצויים", "קופת גמל אישית לפיצויים");
+    expect(tagmulim.rule_ids).not.toContain("PF-06");
+    expect(tagmulim.notes).toContain("הסיבה לא ידועה");
+    // the balance fee of a study fund is not touched
+    expect(buildFees(base, { raw_fields: { AVG_ANNUAL_MANAGEMENT_FEE: "", AVG_DEPOSIT_FEE: "" }, inception_date: "2010-01-01", fund_classification: "קרנות השתלמות" }).avg_annual_management_fee.rule_ids).not.toContain("PF-06");
+  });
+
+  it("the stored gemelnet file marks exactly the 15 IRA funds of IRA-03 by name", () => {
+    const stored = readCmaFile(fileURLToPath(new URL("../../../data/cma", import.meta.url)), "gemelnet", "2026-09");
+    const ira = stored.funds.filter((f) => f.fund_classification !== "קרנות השתלמות" && f.fund_classification !== "מרכזית לפיצויים" && f.fund_classification !== "מטרה אחרת" && balanceFeeOnly(f));
+    const iraStudy = stored.funds.filter((f) => f.fund_classification === "קרנות השתלמות" && /בניהול אישי|\bIRA\b/i.test(f.names.cma.join(" ")));
+    expect(ira.length + iraStudy.length).toBe(15);
   });
 
   it("pension fees carry CAT-39 and say they are for the whole fund", () => {

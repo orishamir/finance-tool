@@ -530,6 +530,8 @@ export const track = {
   feeDepositLabel: "ממוצע דמי הניהול מהפקדה שנגבו בפועל בשנת {year}",
   feeWhole: "לקרן כולה",
   feeNotReported: "עוד לא דווח",
+  /** An empty deposit-fee average that PF-06 explains: the product has no deposit fee. */
+  feeNone: "אין",
   sameNameElsewhere: "יש מסלול נוסף באותו שם.",
   toOther: "למסלול השני",
   toGuide: "לעמוד המדריך על",
@@ -1458,7 +1460,9 @@ export const r3workbench = {
   // audit 2026-10-24 (A36, A82, A87): the open-to-all filter, the sort direction words, the key for "עוד לא דווח"
   openToAll: { label: "פתוח לכולם", hidden: "מסלולים הפתוחים רק לקבוצה מסוימת מוסתרים", none: "אין מסלולים שפתוחים רק לקבוצה מסוימת" },
   sortDir: { asc: "מהנמוך לגבוה", desc: "מהגבוה לנמוך" },
-  missingKey: "עוד לא דווח: החברה לא דיווחה לרשות את הנתון לתקופה הזו.",
+  // 2026-10-27: the key said the company had not reported; the data says why only sometimes, so the key points to the value's note.
+  missingKey: "עוד לא דווח: השדה ריק בנתוני הרשות. לחצו על הערך כדי לראות אם הסיבה ידועה.",
+  noneKey: "אין: בסוג הקופה הזה מותר לגבות דמי ניהול רק מהחיסכון, לא מההפקדות.",
   // copy.md 7.3 (added 2026-10-24, B14): one and two are words, not "1 מסלולים"
   group: { suffix: "מסלולים", matching: "תואמים", one: "מסלול אחד", two: "שני מסלולים", matchingOne: "אחד תואם" },
   showMore: "להציג עוד",

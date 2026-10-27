@@ -589,6 +589,7 @@ Why "בשקלים של העתיד" rather than "נומינלי": the reader sees
 | `track.labels.population · inception` | למי מיועד · נפתח ב־ | two more record labels from the regulator's data |
 | `track.feeWhole` | לקרן כולה | appended to both fee labels on a pension track |
 | `track.feeNotReported` | עוד לא דווח | an empty fee field is not zero. Was "טרם דווח" |
+| `track.feeNone` | אין | an empty deposit-fee field of a product type that may charge from the balance only (PF-06: study, IRA, central and other-purpose funds): no fee, by rule. No caution mark (2026-10-27) |
 
 ### 3.13 Not covered yet
 
@@ -2574,7 +2575,8 @@ Also fixed outside `copy.ts` the same day, at the lead's request: "הודעו" �
 |---|---|---|
 | `r3workbench.openToAll` | פתוח לכולם · `{n}` מסלולים הפתוחים רק לקבוצה מסוימת מוסתרים | A36: the toggle, on by default; the count is the sector and employer tracks it hides |
 | `r3workbench.sortDir` | מהנמוך לגבוה · מהגבוה לנמוך | A36: screen-reader words for the sort direction; a second press reverses |
-| `r3workbench.missingKey` | עוד לא דווח: החברה לא דיווחה לרשות את הנתון לתקופה הזו. | A87: one-line key under a table that holds an unreported fee |
+| `r3workbench.missingKey` | עוד לא דווח: השדה ריק בנתוני הרשות. לחצו על הערך כדי לראות אם הסיבה ידועה. | A87: one-line key under a table that holds an unreported fee. 2026-10-27: was "החברה לא דיווחה לרשות את הנתון לתקופה הזו", a cause the data does not state; the value's note says the reason when it is known |
+| `r3workbench.noneKey` | אין: בסוג הקופה הזה מותר לגבות דמי ניהול רק מהחיסכון, לא מההפקדות. | key line for `track.feeNone`, followed by the PF-06 chip (2026-10-27) |
 | `r4workbench.providers.provident.title` | איזו חברה: `{מוצר}` | A35: the provider page title for the provident wrappers |
 | `r4workbench.providers.provident.covered` | נאסף תעריפון של חברה אחת מתוך `{n}`; הדירוג הוא לפי מסלול. (many: של `{k}` חברות) | A35: one-sentence coverage statement, with the link "לדירוג לפי מסלול" |
 | `r4catalogue.oneTariff` | הבנק מפרסם תעריפון אחד; ההצעות באפליקציה אישיות: הזינו אותן בעמוד כסף שיושב בעו״ש. | A88: under the bank's deposits group when it holds one product; the link goes to /idle-cash |
