@@ -188,6 +188,13 @@
   --blocked: var(--palette-red-400); /* icon and hatch: blocked by an open rule (D10, method §12) */
   --blocked-foreground: var(--palette-red-200);
   --blocked-subtle: var(--palette-red-950);
+  /* Callout frames (founder, 2026-10-27): a thin frame and a 4 px edge at the start in the tone's colour; the edge of caution and
+     blocked is their icon colour. Info is teal like the site's actions, one step lighter for its icon. */
+  --caution-border: var(--palette-amber-800);
+  --blocked-border: var(--palette-red-800);
+  --info: var(--palette-teal-400); /* edge of an info callout */
+  --info-foreground: var(--palette-teal-200); /* its icon */
+  --info-border: var(--palette-teal-800); /* its frame */
   --positive: var(--palette-green-400); /* icon: dimension considered (3.3) */
   --positive-foreground: var(--palette-green-200);
   --positive-subtle: var(--palette-green-950);
@@ -354,6 +361,11 @@
   --color-blocked: var(--blocked);
   --color-blocked-foreground: var(--blocked-foreground);
   --color-blocked-subtle: var(--blocked-subtle);
+  --color-caution-border: var(--caution-border);
+  --color-blocked-border: var(--blocked-border);
+  --color-info: var(--info);
+  --color-info-foreground: var(--info-foreground);
+  --color-info-border: var(--info-border);
   --color-positive: var(--positive);
   --color-positive-foreground: var(--positive-foreground);
   --color-positive-subtle: var(--positive-subtle);
