@@ -18,8 +18,6 @@ export interface TermGroup {
   ids: string[];
 }
 
-/** A fold holds this many cards or fewer: every group starts open. Above it only the first does, and the one an address names. */
-const openAllUpTo = 6;
 const scrollMargin = "scroll-mt-[112px] lg:scroll-mt-[88px]";
 
 /** The id the address names (`#KH-09`, `#terms-msci`), read after the first paint: the pre-rendered page has none. */
@@ -63,7 +61,8 @@ function Cards({ ids }: { ids: readonly string[] }) {
 export function CompanyTerms({ name, groups }: { name: string; groups: readonly TermGroup[] }) {
   const hash = useHash();
   const total = groups.reduce((n, g) => n + g.ids.length, 0);
-  const [opened, setOpened] = useState<Set<string>>(() => new Set(groups.slice(0, 1).map((g) => g.key)));
+  // every group starts closed (legal text; the founder, 2026-10-27); the one an address names opens
+  const [opened, setOpened] = useState<Set<string>>(() => new Set());
   const named = groups.find((g) => g.ids.includes(hash))?.key;
   useEffect(() => {
     if (named) setOpened((o) => (o.has(named) ? o : new Set(o).add(named)));
@@ -71,7 +70,7 @@ export function CompanyTerms({ name, groups }: { name: string; groups: readonly 
   useScrollToHash(hash, !!named && opened.has(named));
   if (total === 0) return null;
   return (
-    <Section id={companyTermsAnchor} title={scopeWords.section.title.replace("{name}", name)} lead={scopeWords.section.line}>
+    <Section id={companyTermsAnchor} title={scopeWords.section.title.replace("{name}", name)} lead={scopeWords.section.line.replace("{name}", name)}>
       <div className="flex flex-col gap-3">
         {groups.map((g) => (
           <FoldGroup
@@ -79,7 +78,7 @@ export function CompanyTerms({ name, groups }: { name: string; groups: readonly 
             variant="section"
             title={g.title}
             count={g.ids.length}
-            open={total <= openAllUpTo || opened.has(g.key)}
+            open={opened.has(g.key)}
             onOpenChange={(now) => setOpened((o) => { const n = new Set(o); if (now) n.add(g.key); else n.delete(g.key); return n; })}
           >
             <Cards ids={g.ids} />
