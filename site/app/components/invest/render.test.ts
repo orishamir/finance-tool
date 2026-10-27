@@ -38,7 +38,7 @@ describe("the index page's sections render", () => {
       createElement(AccountColumn, { view, bundle, years: 20, pick, onPick: () => undefined }),
       createElement(FundColumn, { view, today: t, pick, onPick: () => undefined, filter: null, onFilter: () => undefined }),
       createElement(Steps, { view, monthly: plan.values.monthly, pick }), createElement(Foot, { view }),
-      createElement(PlanBlock, { items: [], onOpen: () => undefined, fx: bundle.fx, today: t, brokers: [], yourBroker: null, onBroker: () => undefined, hasGoal: true })));
+      createElement(PlanBlock, { items: [], onOpen: () => undefined, fx: bundle.fx, today: t, hasGoal: true })));
     expect(out).toContain("הפקדתם");
     expect(out).toContain("★ הזוג הזול ביותר לתוכנית שלכם");
     expect(out).toContain("כמה זה עולה לכם ב־20 שנים, בכל אחד מהזוגות");

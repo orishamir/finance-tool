@@ -3467,10 +3467,6 @@ export const invest = {
     dollar: "שער הדולר",
     dollarSource: "מחושב משערי הייחוס של הבנק המרכזי האירופי",
     dollarMissing: "אין שער דולר בשערי הייחוס; הדרך בחו״ל לא מחושבת.",
-    yourAccount: "החשבון שלכם",
-    yourAccountNone: "לא נבחר",
-    yourAccountLead: "ב־",
-    yourAccountHelp: "אם יש לכם כבר חשבון, האתר יראה כמה עולה להישאר בו.",
     todayShekels: "בכסף של היום",
   },
 

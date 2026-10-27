@@ -6,7 +6,7 @@ import { customIdOf, customIndexPath, indexPath, indexSuggestions, matchKnownInd
 import { fxLabel, nisPer, type FxSnapshot } from "../../lib/fx";
 import type { WorkbenchBundle } from "../../lib/providers";
 import { Num } from "../provenance";
-import { Button, Card, ChipList, PlanChips, SegmentedControl, SelectField, Sentence, Tag, type ChipItem, type PlanChipItem } from "../kit";
+import { Button, Card, ChipList, PlanChips, SegmentedControl, Sentence, Tag, type ChipItem, type PlanChipItem } from "../kit";
 
 /** The index name as a pill: the pills sit under the heading "המדד", so a leading "מדד" is dropped. */
 export const pillName = (name: string): string => name.replace(/^מדד\s+/, "");
@@ -111,7 +111,7 @@ function CustomPanel({ bundle, customs, onCancel, onSave, onKnown }: { bundle: P
 
 // ---------------------------------------------------------------- the plan
 
-export function PlanBlock({ items, onOpen, fx, today, brokers, yourBroker, onBroker, hasGoal }: { items: PlanChipItem[]; onOpen: (f: FieldKey | "all") => void; fx: FxSnapshot | undefined; today: string; brokers: { id: string; name: string }[]; yourBroker: string | null; onBroker: (id: string | null) => void; hasGoal: boolean }) {
+export function PlanBlock({ items, onOpen, fx, today, hasGoal }: { items: PlanChipItem[]; onOpen: (f: FieldKey | "all") => void; fx: FxSnapshot | undefined; today: string; hasGoal: boolean }) {
   const usd = fx ? nisPer(fx, "USD", today) : null;
   return (
     <section className="flex flex-col gap-3" aria-label={c.plan.heading}>
@@ -128,7 +128,6 @@ export function PlanBlock({ items, onOpen, fx, today, brokers, yourBroker, onBro
           <Tag tone="caution">{c.plan.dollarMissing}</Tag>
         )}
       </Sentence>
-      <SelectField label={c.plan.yourAccount} none={c.plan.yourAccountNone} value={yourBroker} options={brokers} onChange={onBroker} help={c.plan.yourAccountHelp} />
     </section>
   );
 }
