@@ -2858,6 +2858,8 @@ export const scopeWords = {
 /** Additions to the rule card (synthesis §3.3). */
 export const ruleCardMore = {
   forTaxYear: "לשנת המס",
+  /** Under a figure read from another company's document than the page's (D31): whose figure it is. */
+  figureOf: "לפי {name}",
   derivedFrom: "נגזר מ־",
   derivedLine: "זו מסקנה משילוב של כמה חוקים וכללים, לא משפט אחד שנמצא במקור.",
   /** A general rule's pointers to companies' terms (review, 2026-10-26): named examples, never a derivation. */

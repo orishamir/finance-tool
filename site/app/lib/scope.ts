@@ -93,6 +93,29 @@ export function isOwnSourceOf(rule: Pick<RuleRecord, "id" | "scope_institutions"
   });
 }
 
+/** Of the companies a record names, the one whose own document a source is; null for a law, a regulator, a press report. */
+export function sourceCompany(rule: Pick<RuleRecord, "scope_institutions">, source: { url: string; title: string; title_he?: string }, companies: Record<string, CompanyLink> | undefined): { id: string; name_he: string } | null {
+  return (
+    scopeCompanies(rule).find((c) => {
+      const docs = companies?.[c.id]?.docs;
+      return !!docs && isOwnDocument(source, docs);
+    }) ?? null
+  );
+}
+
+/**
+ * A record's sources on a company's page (D30; founder, 2026-10-27, PEN-44 on Altshuler Shaham's page led with Mor's bylaws): the
+ * page's own companies' documents first, then the sources of no company (the law, the regulator), then other companies' documents.
+ * The order within each part is kept.
+ */
+export function sourcesForPage<S extends { url: string; title: string; title_he?: string }>(rule: Pick<RuleRecord, "scope_institutions">, sources: readonly S[], page: readonly string[], companies: Record<string, CompanyLink> | undefined): S[] {
+  const rank = (s: S) => {
+    const c = sourceCompany(rule, s, companies);
+    return !c ? 1 : page.includes(c.id) ? 0 : 2;
+  };
+  return sources.map((s, i) => ({ s, i, r: rank(s) })).sort((a, b) => a.r - b.r || a.i - b.i).map((x) => x.s);
+}
+
 /**
  * The chip's words for a record that is not general (spec §4: the chip shows the company's name, not a code): the page's own company
  * when the record shows it, else the first, with "and N more" (copy) and the count of the others, over the same companies the card

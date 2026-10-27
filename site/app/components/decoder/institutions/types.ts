@@ -110,5 +110,5 @@ export interface InstitutionPageData {
   /** The records those rules' cards point at that the page does not cite (`pointedRecords`): only chips and cards read them. */
   pointed: Record<string, RuleRecord>;
   /** What the site found in the company's own documents (D30): the records that name it, by topic; `company` is its registry id. */
-  terms: { groups: { key: string; title: string; ids: string[] }[]; company: string | null; name: string; dimensions: Record<string, string> };
+  terms: { groups: { key: string; title: string; ids: string[] }[]; company: string | null; pageCompanies: string[]; name: string; dimensions: Record<string, string> };
 }
