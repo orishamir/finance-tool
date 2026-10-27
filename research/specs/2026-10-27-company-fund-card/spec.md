@@ -8,6 +8,7 @@ How it got here, all on 2026-10-27 on IBI's page (`/companies/ibi`):
 - The founder: "dont write the stocks percentage. dont mention [currency] risk because we already have חשיפה לדולר label." So there is no exposure column and no ceiling anywhere. The currency fact is the label alone.
 - The founder: "Add an accumulating or dividend label. Lets change the whats the money invested in column somehow." The payout policy becomes a label on each fund, in place of the line under the table. The third column becomes "המדד", in two versions.
 - The founder: "Remove the text under the index and resize the column." Version A (the index name only), with the column as wide as its content.
+- The founder: "the בדף הקרן במאיה is placed weird can you move it somewhere." The TASE number itself becomes the link to the fund's Maya page, with the external-link icon; the separate "בדף הקרן במאיה" line is gone.
 
 ## 1. Today
 
@@ -28,7 +29,7 @@ Each track column, and what a fund puts there:
 | Track table | Fund table | Source |
 |---|---|---|
 | Track name, with its tags | **שם הקרן**, with the fund's labels: how it tracks the index ("מחזיקה את המניות" or "עסקת החלף"), **the payout policy ("צוברת" or "מחלקת דיבידנד", new)**, "חשיפה לדולר" (or the hedged label), "מס גם על שינויי המטבע". The same labels and sheet as the index page (`fundLabels()`) | `replication`, `distribution_policy`, the index's currency, `hedged`, `domicile`; rules ETF-51 to 53, MF-49, ETF-12, TXS-09 |
-| קופה | **מספר נייר**, with "בדף הקרן במאיה" under it | `identifiers.tase_number` |
+| קופה | **מספר נייר**: the number is the link to the fund's page on Maya, with the external-link icon ("1148808 ↗"); its accessible name says "בדף הקרן במאיה". No separate Maya line | `identifiers.tase_number` |
 | במה הכסף מושקע | **המדד**: the index's name alone as the link to its guide page, for example "ת"א-125 ›", without "עוקבת אחרי מדד" on every row and without a line under it. On the phone: "מדד ת"א-125 ›" | `exposure_id`; the exposure record's name |
 | The two fee averages from the regulator | **דמי ניהול לפי הדוח של הקרן**: three lines (קבועים, משתנים, נאמן), each the manager's own figure (D31) | `fees.*` |
 | The exposure rings | **None.** The rings show what a track actually holds. A fund's code is only a ceiling, and the currency label already says what matters. | |
@@ -45,7 +46,7 @@ Each track column, and what a fund puts there:
 
 **Column widths.** The number, index and fee columns are as wide as their content (`w-px`, the index cell does not wrap); the fund name takes the rest, so its labels sit on one line where they fit.
 
-**Phone:** one row per fund, like a track row: the name; the number; "מדד …" as a link; the labels; "דמי ניהול:" with the three fees on one line; the Maya link.
+**Phone:** one row per fund, like a track row: the name; "מספר נייר" with the number as the Maya link; "מדד …" as a link; the labels; "דמי ניהול:" with the three fees on one line.
 
 ## 3. Left out
 
