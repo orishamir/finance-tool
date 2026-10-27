@@ -11,7 +11,7 @@ import { ringFraction, shareText, type ExposureShares } from "../../lib/track-ex
 import { trackLabels } from "../../lib/track-labels";
 import { IconDrillIn, IconSearch } from "../icons";
 import { useOpenSearch } from "../shell";
-import { Card, cx, ProductPhoneRow, ProductTable, ShareRings, Swatch, Tag, type ProductColumn } from "../kit";
+import { Card, cx, ProductFigures, ProductPhoneRow, ProductTable, ShareRings, Swatch, Tag, type ProductColumn } from "../kit";
 
 export type Resolution = "distinct" | "twice" | "unresolved";
 
@@ -126,15 +126,13 @@ function FeeLines({ row, size = "inline", inline }: { row: TrackRowView; size?: 
     { id: "savings", v: row.fee, word: copy.fees.savings },
     { id: "deposits", v: row.deposit, word: copy.fees.deposits },
   ].filter((l): l is typeof l & { v: SiteValue } => !!l.v);
-  return (
-    <span className={cx("flex", inline ? "flex-wrap items-center gap-x-3 gap-y-1" : "flex-col gap-1")}>
-      {lines.map((l) => (
-        <span key={l.id} className="inline-flex items-center gap-1.5 whitespace-nowrap">
-          <FeeNum value={l.v} size={size} />
-          <span className="text-sm text-muted-foreground">{l.word}</span>
-        </span>
-      ))}
+  const items = lines.map((l) => ({ id: l.id, figure: <FeeNum value={l.v} size={size} />, word: l.word }));
+  return inline ? (
+    <span className="flex flex-wrap items-center gap-x-3 gap-y-1">
+      <ProductFigures items={items} inline />
     </span>
+  ) : (
+    <ProductFigures items={items} />
   );
 }
 

@@ -8,9 +8,9 @@ import { computed, entered } from "../../lib/value";
 import { CalendarCheck, CalendarDays, Lock, Zap } from "lucide-react";
 import { IconLock } from "../icons";
 import { IdRef, Num } from "../provenance";
-import { IconDrillIn, IconExternal } from "../icons";
+import { IconDrillIn } from "../icons";
 import { label } from "../../lib/labels";
-import { Button, Callout, Card, ChartLegend, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, CompareTable, CoverageFold, LabelIcon, LabelRow, LabelSheetHost, ProductPhoneRow, ProductTable, Disclosure, FieldState, FoldGroup, GainBars, GapNote, HeadlineFigure, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, NumberField, ParameterLine, PercentField, PlanChips, RangeField, RankBadge, Section, SegmentedControl, SelectField, Sentence, ShareRings, SourceLine, Stat, StatRow, StepButtons, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth } from "./index";
+import { Button, Callout, Card, ChartLegend, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, CompareTable, CoverageFold, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, Disclosure, FieldState, FoldGroup, GainBars, GapNote, HeadlineFigure, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, NumberField, ParameterLine, PercentField, PlanChips, RangeField, RankBadge, Section, SegmentedControl, SelectField, Sentence, ShareRings, SourceLine, Stat, StatRow, StepButtons, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth } from "./index";
 
 const g = copy.gallery;
 
@@ -649,15 +649,12 @@ function Lists({ today }: { today: string }) {
         <span className="font-medium">{name}</span>
         {withLabels && <LabelRow labels={labels} />}
       </span>,
-      <a key="i" href="#kit" className="text-link hover:underline inline-flex items-center gap-1">
-        <bdi dir="ltr" className="num-id">{n}</bdi>
-        <IconExternal size={14} />
-      </a>,
+      <ProductIdLink key="i" id={n} href="#kit" label={n} />,
       <a key="l" href="#kit" className="text-link hover:underline inline-flex items-center gap-0.5">
         {p.go}
         <IconDrillIn size={16} />
       </a>,
-      <Num key="f" value={{ ...s.rate, value: rate }} size="cell" />,
+      <ProductFigures key="f" items={[{ id: "a", figure: <Num value={{ ...s.rate, value: rate }} size="cell" />, word: p.figure }, { id: "b", figure: <Num value={{ ...s.rate, value: rate / 2 }} size="cell" />, word: p.figure }]} />,
     ],
     phone: (
       <ProductPhoneRow stacked>
@@ -666,15 +663,15 @@ function Lists({ today }: { today: string }) {
           {p.number} <bdi dir="ltr" className="num-id">{n}</bdi>
         </span>
         {withLabels && <LabelRow labels={labels} />}
-        <span className="text-sm text-muted-foreground">
-          {p.figure} <Num value={{ ...s.rate, value: rate }} />
+        <span className="text-sm text-muted-foreground flex flex-wrap items-center gap-x-3 gap-y-1">
+          <ProductFigures inline items={[{ id: "a", figure: <Num value={{ ...s.rate, value: rate }} />, word: p.figure }, { id: "b", figure: <Num value={{ ...s.rate, value: rate / 2 }} />, word: p.figure }]} />
         </span>
       </ProductPhoneRow>
     ),
   });
   return (
     <LabelSheetHost>
-      <Demo name="ProductTable, ProductPhoneRow" use={g.uses.ProductTable}>
+      <Demo name="ProductTable, ProductPhoneRow, ProductIdLink, ProductFigures" use={g.uses.ProductTable}>
         <State label="three products: one alone, two under a banner; the number, link and figure columns fit" wide>
           <ProductTable
             columns={[

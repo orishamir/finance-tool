@@ -5,9 +5,9 @@ import { Link } from "react-router";
 import { brands as copy, invest } from "../../copy";
 import type { BrandFundRow, FundKind } from "../../lib/brands.server";
 import type { SiteValue } from "../../lib/value";
-import { IconDrillIn, IconExternal } from "../icons";
+import { IconDrillIn } from "../icons";
 import { Num } from "../provenance";
-import { LabelRow, LabelSheetHost, ProductPhoneRow, ProductTable, type ProductColumn } from "../kit";
+import { LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, type ProductColumn } from "../kit";
 
 const c = copy.funds;
 
@@ -18,33 +18,13 @@ function Fees({ f, inline }: { f: BrandFundRow; inline?: boolean }) {
     { id: "variable", v: f.variable, word: c.feeWords.variable },
     { id: "trustee", v: f.trustee, word: c.feeWords.trustee },
   ];
-  return (
-    <span className={inline ? "contents" : "flex flex-col gap-1"}>
-      {lines.map((l) => (
-        <span key={l.id} className="inline-flex items-center gap-1.5 whitespace-nowrap">
-          {l.v ? <Num value={l.v} size={inline ? "inline" : "cell"} /> : <span className="text-sm text-muted-foreground">{invest.funds.notCollected}</span>}
-          <span className="text-sm text-muted-foreground">{l.word}</span>
-        </span>
-      ))}
-    </span>
-  );
+  const items = lines.map((l) => ({ id: l.id, word: l.word, figure: l.v ? <Num value={l.v} size={inline ? "inline" : "cell"} /> : <span className="text-sm text-muted-foreground">{invest.funds.notCollected}</span> }));
+  return <ProductFigures items={items} inline={inline} />;
 }
 
-/** The fund's number, as the link to its page on Maya (a link out: the external icon). */
+/** The fund's number, as the link to its page on Maya. */
 function NumberLink({ f }: { f: BrandFundRow }) {
-  if (!f.number) return null;
-  const n = (
-    <bdi dir="ltr" className="num-id">
-      {f.number}
-    </bdi>
-  );
-  if (!f.mayaHref) return n;
-  return (
-    <a href={f.mayaHref} target="_blank" rel="noopener noreferrer" aria-label={c.mayaLink(f.number)} className="text-link hover:underline inline-flex items-center gap-1 whitespace-nowrap">
-      {n}
-      <IconExternal size={14} />
-    </a>
-  );
+  return f.number ? <ProductIdLink id={f.number} href={f.mayaHref} label={c.mayaLink(f.number)} /> : null;
 }
 
 /** What the fund follows: the index's name (a link inside the site: the chevron), or a money-market fund's kind. */

@@ -1,26 +1,25 @@
-// Section 2 of the index page: the funds on the index at the chosen house: rank, name, type tag, the fund's fees under full names, labels, and the value left at that house.
+// Section 2 of the index page: the funds on the index at the chosen house, as the product table: rank, the fund with its type tag
+// and labels, the number as the link to Maya, its three fees, and the value left at that house.
 // Filters on currency hedging, "what do the labels mean", the tracking-difference note, and the empty state for an index with no
 // fund records (a request text for the founder, as flow 10).
 import { useState } from "react";
-import { invest as c } from "../../copy";
+import { brands, invest as c } from "../../copy";
 import type { FundRecord } from "@finance-tool/schema";
 import type { HouseEntry, HouseRow, InvestView } from "../../lib/invest";
 import { fundLabels, matchesHedge, type HedgeFilter } from "../../lib/labels";
 import { IconCopy, IconExternal, IconLock } from "../icons";
 import { Num } from "../provenance";
-import { Button, Card, KeyValue, LabelRow, RankBadge, Section, SegmentedControl, SelectField, Tag } from "../kit";
+import { Button, LabelChip, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RankBadge, Section, SegmentedControl, SelectField, Tag, type ProductColumn, type ProductRow } from "../kit";
 import { LabelsLegend, OptionTag, reasonText } from "./parts";
 import { ownBy, type SiteValue } from "../../lib/value";
+
+const b = brands.funds;
 
 const feeOf = (rec: FundRecord, key: "fixed_management" | "variable_management" | "trustee"): SiteValue | null => {
   const v = rec.fees[key];
   // D31: the fund manager's own fee, shown on that fund's row
   return v && v.value !== null ? ownBy(v as SiteValue, rec.manager) : null;
 };
-
-function FeeValue({ value }: { value: SiteValue | null }) {
-  return value ? <Num value={value} /> : <span className="text-muted-foreground">{c.funds.notCollected}</span>;
-}
 
 export function FundsSection({ view, houseId, onHouse, mayaHref }: { view: InvestView; houseId: string | null; onHouse: (id: string) => void; mayaHref: string | null }) {
   const [hedge, setHedge] = useState<HedgeFilter>("all");
@@ -61,83 +60,109 @@ function FundList({ view, house, hedge }: { view: InvestView; house: HouseRow; h
   if (house.entries.length === 0) return <p className="text-muted-foreground">{c.funds.noOption}</p>;
   if (filtered.length === 0) return <p className="text-muted-foreground">{c.funds.noMatch}</p>;
   let rank = 0;
-  return (
-    <ol className="flex flex-col gap-3">
-      {filtered.map((e) => {
-        const ranked = !!e.price && !e.price.open;
-        if (ranked) rank += 1;
-        return <FundRow key={e.fund.rec.id} view={view} house={house} entry={e} rank={ranked ? rank : null} />;
-      })}
-    </ol>
-  );
+  const rows = filtered.map((e) => {
+    const ranked = !!e.price && !e.price.open;
+    if (ranked) rank += 1;
+    return fundRow(view, e, ranked ? rank : null, house);
+  });
+  // the product table (founder, 2026-10-27; design-system 11 "Lists of products"): rank, the fund with its labels, the number as the
+  // link to Maya, the three fees, and what is left at the chosen house, which the list is ranked by
+  const columns: ProductColumn[] = [
+    { id: "rank", head: <span className="sr-only">{c.funds.rank}</span>, fit: true },
+    { id: "name", head: b.columns.name },
+    { id: "number", head: b.columns.number, fit: true },
+    { id: "fees", head: b.columns.fees, fit: true },
+    { id: "value", head: c.funds.value(house.provider.short), fit: true },
+  ];
+  return <ProductTable columns={columns} groups={rows.map((r) => ({ key: r.key, rows: [r] }))} />;
 }
 
-function FundRow({ view, house, entry: e, rank }: { view: InvestView; house: HouseRow; entry: HouseEntry; rank: number | null }) {
+/** The three fees, each with its word; one not collected says so. */
+function Fees({ rec, inline }: { rec: FundRecord; inline?: boolean }) {
+  const items = (["fixed_management", "variable_management", "trustee"] as const).map((key, i) => {
+    const v = feeOf(rec, key);
+    const word = [b.feeWords.fixed, b.feeWords.variable, b.feeWords.trustee][i]!;
+    return { id: key, word, figure: v ? <Num value={v} size={inline ? "inline" : "cell"} /> : <span className="text-sm text-muted-foreground">{c.funds.notCollected}</span> };
+  });
+  return <ProductFigures items={items} inline={inline} />;
+}
+
+function fundRow(view: InvestView, e: HouseEntry, rank: number | null, house: HouseRow): ProductRow {
   const f = e.fund;
   const labels = fundLabels(f.rec, view.index, f.option);
   // Maya's page of the fund exists for an Israeli ETF and an Israeli tracking fund (the address pattern of the fund records' sources)
   const kind = f.option === "il-etf" ? "etfs" : f.option === "il-tracking" ? "mutual-funds" : null;
   const mayaHref = kind && f.rec.identifiers.tase_number ? `https://maya.tase.co.il/he/funds/${kind}/${f.rec.identifiers.tase_number}` : null;
-  return (
-    <Card as="li" pad="tight" className="flex flex-col gap-2.5">
-      <div className="flex items-start gap-3">
-        <RankBadge rank={rank} label={rank ? `${c.funds.rank} ${rank}` : undefined} />
-        <div className="flex-1 min-w-0 flex flex-col gap-1">
-          <h3 className="font-semibold leading-snug">
-            <bdi>{f.name}</bdi>
-          </h3>
-          <span className="text-sm text-muted-foreground">
-            {c.funds.manager}: <bdi>{f.rec.manager}</bdi>
-          </span>
-          <span className="text-sm text-muted-foreground flex flex-wrap items-center gap-x-3 gap-y-0.5">
-            <span>
-              {c.funds.number} <bdi dir="ltr" className="font-mono">{f.number}</bdi>
-            </span>
-            {mayaHref && (
-              <a href={mayaHref} target="_blank" rel="noopener noreferrer" className="text-link hover:underline inline-flex items-center gap-1">
-                {c.funds.mayaPage} <IconExternal size={14} />
-              </a>
-            )}
-          </span>
-          <span>
-            <OptionTag option={f.option} />
-          </span>
-        </div>
-        <div className="flex flex-col items-end text-end shrink-0">
-          {e.price ? (
-            <>
-              <span className="text-lg font-semibold">
-                <Num value={e.price.value} />
-              </span>
-              <span className="text-xs text-muted-foreground">{c.funds.value(house.provider.short)}</span>
-            </>
-          ) : (
-            <span className="text-sm text-muted-foreground max-w-48 text-end">{e.reason ? reasonText(e.reason, "") : c.funds.cannot}</span>
-          )}
-        </div>
-      </div>
-      <dl className="flex flex-col gap-0.5 max-w-sm">
-        <KeyValue label={c.funds.fixed}>
-          <FeeValue value={feeOf(f.rec, "fixed_management")} />
-        </KeyValue>
-        <KeyValue label={c.funds.variable}>
-          <FeeValue value={feeOf(f.rec, "variable_management")} />
-        </KeyValue>
-        <KeyValue label={c.funds.trustee}>
-          <FeeValue value={feeOf(f.rec, "trustee")} />
-        </KeyValue>
-      </dl>
-      <div className="flex flex-wrap items-center gap-1.5">
-        <LabelRow labels={labels} />
-        {f.currencyMismatch && <Tag tone="caution">{c.funds.mismatchTag}</Tag>}
-        {e.price?.open && (
-          <Tag tone="blocked" icon={<IconLock size={14} />}>
-            {c.options.open}
-          </Tag>
-        )}
-      </div>
-    </Card>
+  const badge = <RankBadge rank={rank} label={rank ? `${c.funds.rank} ${rank}` : undefined} />;
+  const name = (
+    <span className="font-semibold leading-snug">
+      <bdi>{f.name}</bdi>
+    </span>
   );
+  const manager = (
+    <span className="text-sm text-muted-foreground">
+      {c.funds.manager}: <bdi>{f.rec.manager}</bdi>
+    </span>
+  );
+  // the type tag first (funds of both types share this list), then what differs between the funds, then the flags
+  const tags = (
+    <span className="flex flex-wrap items-center gap-1.5">
+      <OptionTag option={f.option} />
+      {labels.map((l) => (
+        <LabelChip key={l.id} label={l} />
+      ))}
+      {f.currencyMismatch && <Tag tone="caution">{c.funds.mismatchTag}</Tag>}
+      {e.price?.open && (
+        <Tag tone="blocked" icon={<IconLock size={14} />}>
+          {c.options.open}
+        </Tag>
+      )}
+    </span>
+  );
+  const number = <ProductIdLink id={f.number} href={mayaHref} label={b.mayaLink(f.number)} />;
+  const value = e.price ? (
+    <span className="text-lg font-semibold">
+      <Num value={e.price.value} />
+    </span>
+  ) : (
+    <span className="block whitespace-normal text-sm text-muted-foreground max-w-48">{e.reason ? reasonText(e.reason, "") : c.funds.cannot}</span>
+  );
+  return {
+    key: f.rec.id,
+    cells: [
+      badge,
+      <span className="flex flex-col items-start gap-1">
+        {name}
+        {manager}
+        <span className="pt-0.5">{tags}</span>
+      </span>,
+      number,
+      <Fees rec={f.rec} />,
+      value,
+    ],
+    phone: (
+      <ProductPhoneRow stacked>
+        <span className="flex items-start gap-3">
+          {badge}
+          <span className="flex-1 min-w-0 flex flex-col gap-0.5">
+            {name}
+            {manager}
+          </span>
+          <span className="flex flex-col items-end text-end shrink-0">
+            {value}
+            {e.price && <span className="text-xs text-muted-foreground">{c.funds.value(house.provider.short)}</span>}
+          </span>
+        </span>
+        <span className="text-sm text-muted-foreground inline-flex items-center gap-1.5">
+          {b.numberWord} {number}
+        </span>
+        {tags}
+        <span className="text-sm text-muted-foreground flex flex-wrap items-center gap-x-3 gap-y-1">
+          {b.phoneFees} <Fees rec={f.rec} inline />
+        </span>
+      </ProductPhoneRow>
+    ),
+  };
 }
 
 function EmptyFunds({ view, mayaHref }: { view: InvestView; mayaHref: string | null }) {
