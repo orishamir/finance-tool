@@ -202,6 +202,12 @@ The sum invested is in the result, never inside a cost bar (founder, round 2).
 
 Everything in the cost split, the slot lines and the "why" sentence is illustrative: the engine does not output costs by line yet. That output is the first thing to build for this page. The "left" figures and the sum invested come from the live site.
 
+**Founder, on round 6 (2026-10-27), applied the same day:**
+- The fund's number and its link sit on the same line as its name, in the list and in the slot, never wrapped below it.
+- The cost heading is "כמה זה עולה לכם ב־10 שנים" (one pair), or "…, בכל אחד מהזוגות" (two pairs). It replaces "מה יצא בדרך".
+- The account's lines get distinct hues: buying orange, custody yellow, account fee brick red, the fund's fee olive green, tax rose. These are new tokens if adopted; blue and violet stay reserved.
+- The result no longer names the account and the fund, since both are highlighted in their lists. The cheapest pair's card still says "אם עוברים לפסגות".
+
 ## 4. Against `docs/product.md`: what else the page owes the reader
 
 `docs/product.md` section 2 states the reader's job: which fund variant and which provider, "which fees are worth fighting, and what they might be failing to consider", then act, and "be able to come back later and see whether anything changed".
