@@ -84,7 +84,7 @@ export function PageShell({ current, data: pageData, children, wide }: { current
       <SearchOpenCtx.Provider value={openSearch}>
         <div className="min-h-dvh flex flex-col">
           <Header current={current} ready={ready} onMenu={() => setMenuOpen(true)} onSearch={openSearch} />
-          <main className={cx("flex-1 w-full mx-auto px-gutter pb-10", wide ? "max-w-page" : "max-w-page")}>
+          <main className={cx("flex-1 w-full mx-auto px-gutter pb-10", wide ? "max-w-wide" : "max-w-page")}>
             {isHeld(location.pathname) && (
               <Callout tone="caution" title={site.held.title} className="mt-4">
                 {site.held.page}

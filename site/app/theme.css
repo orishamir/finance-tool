@@ -336,6 +336,7 @@
 
   --container-measure: 38rem; /* prose line length; check real Hebrew lines in the browser */
   --container-page: 72rem;
+  --container-wide: 96rem; /* a page whose lists sit side by side (the index page) */
 }
 
 @theme inline {
