@@ -7,7 +7,11 @@
     "liquid_loan_max_pct": "תקרת הלוואה מכסף נזיל (במור)",
     "nonliquid_loan_max_pct": "תקרת הלוואה מכסף שאינו נזיל (במור)",
     "loan_max_years": "תקופת הלוואה מרבית בשנים (במור)",
-    "total_loans_max_pct_of_assets": "תקרת סך ההלוואות מנכסי הקופה (במור)"
+    "total_loans_max_pct_of_assets": "תקרת סך ההלוואות מנכסי הקופה (במור)",
+    "analyst_liquid_loan_max_pct": "תקרת הלוואה מכסף נזיל (באנליסט)",
+    "analyst_nonliquid_loan_max_pct": "תקרת הלוואה מכסף שאינו נזיל (באנליסט)",
+    "analyst_loan_max_years": "תקופת הלוואה מרבית בשנים (באנליסט)",
+    "analyst_total_loans_max_pct_of_assets": "תקרת סך ההלוואות מנכסי הקופה (באנליסט)"
   },
   "strength": "institution",
   "dimensions": [
@@ -94,6 +98,86 @@
       ],
       "state": "sourced",
       "notes": "Total loans as a share of fund assets in Mor's gemel bylaws. Unsettled."
+    },
+    "analyst_liquid_loan_max_pct": {
+      "value": 80,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.analyst.co.il/media/paep2grv/תקנון-החל-מ-112016.pdf",
+        "title": "Analyst standard bylaws for a provident fund, 1st edition 1.1.2016, p.14, s.47.1.2",
+        "publisher": "Analyst",
+        "strength": "institution"
+      },
+      "checked": "2026-10-27",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "PEN-44"
+      ],
+      "state": "sourced",
+      "notes": "Read in Analyst's own bylaws (founder, 2026-10-27: each company's figure from its own document). Unsettled, as Mor's."
+    },
+    "analyst_nonliquid_loan_max_pct": {
+      "value": 30,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.analyst.co.il/media/paep2grv/תקנון-החל-מ-112016.pdf",
+        "title": "Analyst standard bylaws for a provident fund, 1st edition 1.1.2016, p.14, s.47.1.3",
+        "publisher": "Analyst",
+        "strength": "institution"
+      },
+      "checked": "2026-10-27",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "PEN-44"
+      ],
+      "state": "sourced",
+      "notes": "Read in Analyst's own bylaws (founder, 2026-10-27: each company's figure from its own document). Unsettled, as Mor's. Excluding severance."
+    },
+    "analyst_loan_max_years": {
+      "value": 7,
+      "unit": "years",
+      "source": {
+        "url": "https://www.analyst.co.il/media/paep2grv/תקנון-החל-מ-112016.pdf",
+        "title": "Analyst standard bylaws for a provident fund, 1st edition 1.1.2016, p.14, s.47.1.4",
+        "publisher": "Analyst",
+        "strength": "institution"
+      },
+      "checked": "2026-10-27",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "PEN-44"
+      ],
+      "state": "sourced",
+      "notes": "Read in Analyst's own bylaws (founder, 2026-10-27: each company's figure from its own document). Unsettled, as Mor's."
+    },
+    "analyst_total_loans_max_pct_of_assets": {
+      "value": 10,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.analyst.co.il/media/paep2grv/תקנון-החל-מ-112016.pdf",
+        "title": "Analyst standard bylaws for a provident fund, 1st edition 1.1.2016, p.14, s.47.1.1",
+        "publisher": "Analyst",
+        "strength": "institution"
+      },
+      "checked": "2026-10-27",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "PEN-44"
+      ],
+      "state": "sourced",
+      "notes": "Read in Analyst's own bylaws (founder, 2026-10-27: each company's figure from its own document). Unsettled, as Mor's."
     }
   },
   "il_finance_file": "pension-and-gemel-lekitzba.md",

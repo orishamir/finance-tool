@@ -11,13 +11,13 @@ import { hasHebrew, hostOf, isHebrewTitle, mostlyHebrew, sourceLabel } from "../
 import { isExperience } from "../lib/rule-shelves";
 import { citationText, mayHaveChanged, moreSourcesLabel, pickSources, sourceHref, sourceLabel2, shownTitle, type RuleSource, type SourcedRule } from "../lib/sources";
 import { useInputs } from "../lib/inputs";
-import { isParameter, isProvisional, isWeak, strengthOf, type SiteValue, type Strength } from "../lib/value";
+import { isParameter, isProvisional, isWeak, ownBy, strengthOf, type SiteValue, type Strength } from "../lib/value";
 import type { TermRow } from "../lib/data.server";
 import { IconAlert, IconCalculator, IconCheck, IconClock, IconCopy, IconExternal, IconFile, IconLock, IconPencil, IconReset } from "./icons";
 import { Sheet } from "./Sheet";
 import { Button, Callout, cx, Disclosure, LinkButton, Tag } from "./ui";
 import { CompanyLinks, Tpl } from "./kit";
-import { chipName, companyLinksOf, generalOnly, isGeneral, isNotRule, isOwnSourceOf, joinNames, listedCompanies, noCompanyAnchor, ownDocCompanies, scopeCompanies, shownCompanies, type CompanyLink, type OwnDocs } from "../lib/scope";
+import { chipName, companyLinksOf, generalOnly, isGeneral, isNotRule, isOwnSourceOf, joinNames, listedCompanies, noCompanyAnchor, ownDocCompanies, scopeCompanies, pageView, shownCompanies, sourceCompany, sourcesForPage, type CompanyLink, type OwnDocs } from "../lib/scope";
 
 // ---------------------------------------------------------------- context
 
@@ -65,6 +65,8 @@ export interface ProvenanceData {
   pointed?: Record<string, RuleRecord>;
   /** On a company's page, its registry id: a chip of a term that names several companies shows this one's name. */
   company?: string;
+  /** On a company's page, every registry id it stands for (a brand's companies): a rule card leads with their documents and names another company's figure. */
+  pageCompanies?: readonly string[];
 }
 
 /** What a rule affects: links to pages that use it, and whether the calculation engine reads it. */
@@ -1037,8 +1039,8 @@ function ShownRuleTitle({ rule }: { rule: RuleRecord }) {
 }
 
 export function RuleCard({ id, data, headId, inline }: { id: string; data: ProvenanceData; headId?: string; inline?: boolean }) {
-  const rule = ruleOf(data, id);
-  if (!rule) {
+  const record = ruleOf(data, id);
+  if (!record) {
     return (
       <div className="flex flex-col gap-2">
         <h2 id={headId} className="text-lg font-semibold">
@@ -1049,10 +1051,18 @@ export function RuleCard({ id, data, headId, inline }: { id: string; data: Prove
       </div>
     );
   }
+  // on a company's page only that company's part of the record (D30): its name, its own documents, the law and the regulator, its figures
+  const page = data.pageCompanies ?? (data.company ? [data.company] : []);
+  const rule = pageView(record, page, data.companies);
   const open = rule.strength === "open";
   const figures = Object.entries(rule.figures ?? {});
   const sourced = asSourced(rule);
-  const sources = pickSources(sourced);
+  const sources = page.length ? sourcesForPage(rule, pickSources(sourced), page, data.companies) : pickSources(sourced);
+  /** A company's figure on its own term, on its own page, is its own (D31): no "לפי החברה". */
+  const pageValue = (v: SiteValue): SiteValue => {
+    const c = page.length && v.source.strength === "institution" ? sourceCompany(rule, v.source, data.companies) : null;
+    return c && page.includes(c.id) && rule.scope === "institution" ? ownBy(v, c.id) : v;
+  };
   const uses = data.ruleUses?.[id];
   const derived = sourced.derived_from ?? [];
   const examples = rule.examples ?? [];
@@ -1161,11 +1171,11 @@ export function RuleCard({ id, data, headId, inline }: { id: string; data: Prove
                 return f.map((b, i) => (
                   <div key={`${name}-${i}`} className="readout-row">
                     <dt>
-                      {figureLabel(name)} {b.up_to.value === null ? "" : "≤"} {b.up_to.value !== null && <Num value={{ ...b.up_to, rule_ids: b.up_to.rule_ids ?? [id] }} />}
+                      {figureLabel(name)} {b.up_to.value === null ? "" : "≤"} {b.up_to.value !== null && <Num value={pageValue({ ...b.up_to, rule_ids: b.up_to.rule_ids ?? [id] })} />}
                       {i === 0 && figureNote(b.rate, null)}
                     </dt>
                     <dd>
-                      <Num value={{ ...b.rate, rule_ids: b.rate.rule_ids ?? [id] }} />
+                      <Num value={pageValue({ ...b.rate, rule_ids: b.rate.rule_ids ?? [id] })} />
                       {unitSuffix(b.rate.unit)}
                     </dd>
                   </div>
@@ -1184,7 +1194,7 @@ export function RuleCard({ id, data, headId, inline }: { id: string; data: Prove
                     {figureNote(v, year)}
                   </dt>
                   <dd>
-                    <Num value={{ ...v, rule_ids: v.rule_ids ?? [id] }} />
+                    <Num value={pageValue({ ...v, rule_ids: v.rule_ids ?? [id] })} />
                     {unitSuffix(v.unit)}
                   </dd>
                 </div>

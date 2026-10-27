@@ -2,9 +2,9 @@ import type { ExposureContent } from "../guide/types";
 
 /**
  * One prose module per exposure record under data/instruments/exposures/, `app/content/exposure/<id>.tsx`
- * exporting `content: ExposureContent`. Modules are picked up by file name, so the seven ids (shekel-cash, makam,
- * government-bond-unlinked, government-bond-cpi, index-sp500, index-ta125, general-track) wire themselves when
- * their file exists. A record without prose still renders its data.
+ * exporting `content: ExposureContent`. Modules are picked up by file name, so an id wires itself when its file exists.
+ * A record without prose still renders its data. Makam and the government bonds have no file: their page is the
+ * security's guide page (D6 as amended 2026-10-27).
  */
 const modules = import.meta.glob<{ content: ExposureContent }>("./*.tsx", { eager: true });
 

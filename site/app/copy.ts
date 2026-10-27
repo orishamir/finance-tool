@@ -154,13 +154,16 @@ export const guideIndex = {
   title: "מדריך",
   lede: "כל סוג של חיסכון והשקעה שהאתר מכסה. לכל אחד אותו מבנה, כדי שיהיה קל להשוות.",
   group1: { title: "איפה הכסף מוחזק", line: "המוצר עצמו: חשבון בבנק, קופה או חשבון השקעות" },
-  group2: { title: "במה הכסף מושקע", line: "מה שבתוך המוצר: מזומן, אג״ח, מניות דרך מדד" },
+  group2: { title: "במה הכסף מושקע", line: "מה שבתוך המוצר: מזומן, מק״מ, קרן כספית, אג״ח, מניות דרך מדד" },
+  // D6 (amended 2026-10-27): the money-market funds are one entry under "במה הכסף מושקע", each kind with its page
+  fundKindsLine: "לפי סוג",
+  fundKinds: { "money-market-fund-daily": "יומית", "money-market-fund-renewable": "מתחדשת" } as Record<string, string>,
   last: { title: "מה האתר עוד לא מכסה", line: "מוצרים שהאתר מכיר אבל עוד לא מסביר עד הסוף" },
   // audit 2026-10-24 (A43, A44): the product-versus-exposure explainer, the start line, the purpose groups and the plain subtitles
   explainer: {
     title: "שני חלקים בכל חיסכון",
     product: { term: "איפה הכסף מוחזק", line: "המוצר: פיקדון, קרן השתלמות, חשבון ניירות ערך. הוא קובע מי מחזיק את הכסף, מה המס ומתי אפשר למשוך." },
-    exposure: { term: "במה הכסף מושקע", line: "מה שבתוך המוצר: מזומן, אג״ח, מדד מניות. הוא קובע מה עולה ויורד." },
+    exposure: { term: "במה הכסף מושקע", line: "מה שבתוך המוצר: מזומן, מק״מ, קרן כספית, אג״ח, מדד מניות. הוא קובע מה עולה ויורד." },
     link: "בכל עמוד של מוצר יש שורה עם מה שאפשר להשקיע בתוכו.",
   },
   start: {
@@ -181,7 +184,7 @@ export const guideIndex = {
 export const guide = {
   indexTitle: "בעמוד הזה",
   // D6 (amended 2026-10-26): makam, a government bond and a money-market fund are bought inside an account, not a container of their own
-  heldIn: "את המוצר הזה קונים ומחזיקים בתוך {account}. מי יכול לפתוח את החשבון, מי מפקח עליו ואיך שומרים בו את הנכסים: בעמוד שלו.",
+  heldIn: "קונים ומחזיקים בתוך {account}. מי יכול לפתוח את החשבון, מי מפקח עליו ואיך שומרים בו את הנכסים: בעמוד שלו.",
   sections: [
     { id: "what", title: "מה זה" },
     { id: "use", title: "למה משתמשים בזה" }, // audit 2026-10-24 (A42): directly under "מה זה"
@@ -326,7 +329,7 @@ export const provenance = {
 export const rule = {
   title: "חוק או כלל",
   conditions: "תנאים וחריגים",
-  figures: "סכומים לפי שנת מס",
+  figures: "המספרים",
   source: "מקור",
   topic: "נושא",
   checked: "נבדק",
@@ -2836,7 +2839,7 @@ export const scopeWords = {
   variesBank: "תלוי בבנק",
   section: {
     title: "מה כתוב במסמכים של {name}",
-    line: "מה שנמצא רק במסמכים של החברה, לא בחוק ולא אצל הרשות, ולכן לא מופיע במדריך. ליד כל אחד המסמך והיום שבו האתר קרא אותו.",
+    line: "תנאים שכתובים במסמכים של {name} ולא בחוק, ולכן בחברה אחרת הם יכולים להיות שונים.",
     unsettledMark: "אולי כך בכל החברות; לא מצאנו לזה מקור רשמי",
   },
   noPage: {
