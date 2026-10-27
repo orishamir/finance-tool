@@ -334,8 +334,7 @@ function page() {
   <div class="pair">
     <div class="col">
       <div class="slot" style="min-height:0"><span class="k">${svg("bank")}חשבון ניירות ערך</span><span class="name">${acc === "פסגות" ? "פסגות ניירות ערך (פסגות טרייד)" : "בנק לאומי"}</span>
-        <span class="facts"><span>בפיקוח רשות ני״ע</span><a>${acc === "פסגות" ? "איך פותחים" : "התעריפון של לאומי ↗"}</a></span>
-        <span class="small muted" style="margin-top:6px">מה החשבון גובה על הקרן הזו:</span>${lines}</div>
+        <span class="facts"><span>בפיקוח רשות ני״ע</span><a>${acc === "פסגות" ? "איך פותחים" : "התעריפון של לאומי ↗"}</a></span></div>
       <div class="listh"><b>כל החשבונות</b><span class="cond">כשקונים בהם את ${refFund(fund[0])} · בחרו קרן אחרת, והרשימה תסתדר מחדש</span></div>
       <div class="ahead"><span></span><span>#</span><span>חשבון</span><span>מה החשבון גובה ב־10 שנים</span><span class="r">נשאר</span></div>
       ${accRows}
