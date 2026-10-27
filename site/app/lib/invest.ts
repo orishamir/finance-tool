@@ -771,7 +771,7 @@ export function pairCosts(a: InvestArgs & { fundId: string; providerId: string }
   return {
     providerId: s.id,
     fundId: rec.id,
-    paidIn: computed(paidInReal, "nis", "F-05", { סכום: ctx.plan.values.amount, "הפקדה חודשית": ctx.plan.values.monthly, שנים: ctx.plan.values.years }, { today: ctx.bundle.today, about: copy.pair.paidInAbout }),
+    paidIn: computed(paidInReal, "nis", "F-05", inputs, { today: ctx.bundle.today, about: copy.pair.paidInAbout }),
     left: wayPrice(ctx, p, s.id, nameOf(rec)).value,
     account: row.byType.map((x) => ({ line: x.line, cost: at(x.cost, "F-63", copy.pair.lineAbout(x.line)) })),
     interaction: row.interaction,
