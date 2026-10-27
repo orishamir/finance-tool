@@ -9,7 +9,7 @@ import { entered } from "../../lib/value";
 import type { WorkbenchInputs } from "../../lib/providers";
 import { HousesSection } from "./houses";
 import { FundsSection } from "./funds";
-import { LabelSheetHost } from "./parts";
+import { LabelSheetHost } from "../kit";
 import { Headline, IndexHeader, Matters, OptionsCompare, WorthBars } from "./sections";
 import { Foot, Steps } from "./steps";
 import { PlanBlock } from "./chips";
