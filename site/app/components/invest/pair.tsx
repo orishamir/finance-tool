@@ -231,7 +231,8 @@ export function AccountColumn({ view, bundle, years, pick, onPick }: { view: Inv
   const pickRows: PickRow[] = ok.map((r, i) => {
     const parts: CostPart[] = r.at.lines.map((l) => ({ id: l.line, value: l.cost, className: lineClass[lineOf(l.line)] ?? "bg-chart-cost-other" }));
     const isYours = r.p.id === view.yourBroker;
-    const isBest = best?.house === r.p.id && best.fund === pick.fund && pick.house !== r.p.id;
+    // shown on the row whether or not it is picked, so a pick never adds or removes a line (founder, 2026-10-27)
+    const isBest = best?.house === r.p.id && best.fund === pick.fund;
     return {
       key: r.p.id,
       selected: r.p.id === pick.house,
