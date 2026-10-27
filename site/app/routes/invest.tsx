@@ -85,7 +85,7 @@ export default function Invest() {
   }, [compare, wb, data.today]);
   return (
     <GoalsProvider presets={presets}>
-      <PageShell current="other" data={provenance}>
+      <PageShell current="other" data={provenance} wide>
         <Page wb={wb} compare={compare} failed={failed} data={data} />
       </PageShell>
     </GoalsProvider>
@@ -202,7 +202,7 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
             {pick ? (
               <>
                 <PairResult view={view} bundle={wb} plan={plan} pick={pick} onPick={onPick} />
-                <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_2.5rem_minmax(0,32.5rem)] items-start">
+                <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_2.5rem_minmax(0,32.5rem)] xl:grid-cols-[minmax(0,5fr)_2.5rem_minmax(0,7fr)] items-start">
                   <AccountColumn view={view} bundle={wb} years={plan.years} pick={pick} onPick={onPick} />
                   <span aria-hidden="true" className="hidden lg:grid place-items-center size-9 mt-10 rounded-full border border-input bg-popover text-xl text-muted-foreground justify-self-center">
                     +
