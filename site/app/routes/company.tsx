@@ -19,6 +19,11 @@ import { fmt } from "../lib/format";
 import { cmaFeeValue, compactFee, expandFee, feeYear, type CompactFee } from "../lib/value";
 import { compactHoldings, exposureShares, holdingsTemplate } from "../lib/track-exposure";
 
+/**
+ * The order of a company page's product groups, by how often a reader comes for them (founder, 2026-10-27); a group not named here
+ * follows, the managing company's in `classificationOrder`, then the funds.
+ */
+const groupOrder = ["track:קופת גמל להשקעה", "funds:tracking", "brokerage", "track:קרנות השתלמות", "funds:money-market"];
 const classificationOrder = ["קופת גמל להשקעה", "קרנות השתלמות", "תגמולים ואישית לפיצויים", "קופת גמל להשקעה - חסכון לילד", "קרנות חדשות", "קרנות כלליות", "מרכזית לפיצויים", "מטרה אחרת"];
 
 export async function loader({ params }: Route.LoaderArgs) {
@@ -159,8 +164,6 @@ function ManagerCompany({ data }: { data: CompanyData }) {
   // or brokerage account (most managing companies run several types; each group heading links to its own guide)
   const side = data.groups.length === 1 && data.funds.length === 0 && !data.brokerage ? data.groups[0]!.wrapper : null;
   const company = data.company;
-  // the page's groups in one order: the managing company's products, the funds, the brokerage account; the first is open
-  const firstOpen = company && data.groups.length > 0 ? "tracks" : data.funds.length > 0 ? "funds" : "brokerage";
   return (
     <PageShell current="decoder" data={{ rules: data.companyTerms.rules, pointed: data.companyTerms.pointed, terms: {}, dimensions: data.companyTerms.dimensions, today: data.today, ...(data.companyTerms.company ? { company: data.companyTerms.company } : {}), pageCompanies: data.companyTerms.pageCompanies }}>
       <div className="pt-2 lg:pt-8">
@@ -213,9 +216,13 @@ function ManagerCompany({ data }: { data: CompanyData }) {
             </div>
             {company && <Callout tone="info">{copy.feesLine}</Callout>}
 
-            {company &&
-              data.groups.map((g, i) => (
-                <Disclosure key={g.classification} defaultOpen={firstOpen === "tracks" && i === 0} className="flex flex-col gap-2" summaryClassName="min-h-12 md:min-h-14" label={<GroupLabel title={g.classification} count={countLine(g.tracks.length)} />}>
+            {/* one list in the founder's order (groupOrder): the first group is open */}
+            {[
+              ...(company
+                ? data.groups.map((g) => ({
+                    key: `track:${g.classification}`,
+                    render: (open: boolean) => (
+                  <Disclosure key={g.classification} defaultOpen={open} className="flex flex-col gap-2" summaryClassName="min-h-12 md:min-h-14" label={<GroupLabel title={g.classification} count={countLine(g.tracks.length)} />}>
                   {g.wrapper && (
                     <Link to={`/guide/${g.wrapper.id}`} className="inline-flex items-center gap-0.5 min-h-target text-sm text-link hover:underline self-start px-1">
                       {copy.whatIs} {g.wrapper.name}
@@ -247,20 +254,34 @@ function ManagerCompany({ data }: { data: CompanyData }) {
                     foot={<FeeFoot caps={g.caps} />}
                   />
                 </Disclosure>
-              ))}
-
-            {data.funds.map((g, i) => (
-              <Disclosure key={g.kind} defaultOpen={firstOpen === "funds" && i === 0} className="flex flex-col gap-2" summaryClassName="min-h-12 md:min-h-14" label={<GroupLabel title={brandsCopy.funds.groups[g.kind]} count={fundCountLine(g.funds.length)} />}>
+                    ),
+                  }))
+                : []),
+              ...data.funds.map((g) => ({
+                key: `funds:${g.kind}`,
+                render: (open: boolean) => (
+              <Disclosure key={g.kind} defaultOpen={open} className="flex flex-col gap-2" summaryClassName="min-h-12 md:min-h-14" label={<GroupLabel title={brandsCopy.funds.groups[g.kind]} count={fundCountLine(g.funds.length)} />}>
                 <p className="text-sm text-muted-foreground max-w-measure px-1">{brandsCopy.funds.collected}</p>
                 <BrandFundList funds={g.funds} />
               </Disclosure>
-            ))}
-
-            {data.brokerage && (
-              <Disclosure defaultOpen={firstOpen === "brokerage"} className="flex flex-col gap-2" summaryClassName="min-h-12 md:min-h-14" label={<GroupLabel title={r4catalogue.groups.brokerage} />}>
-                <BrokerageGroupCard id={data.brokerage.id} tariff={data.brokerage.tariff} kind={data.brokerage.kind} />
+                ),
+              })),
+              ...(data.brokerage
+                ? [
+                    {
+                      key: "brokerage",
+                      render: (open: boolean) => (
+              <Disclosure key="brokerage" defaultOpen={open} className="flex flex-col gap-2" summaryClassName="min-h-12 md:min-h-14" label={<GroupLabel title={r4catalogue.groups.brokerage} />}>
+                <BrokerageGroupCard id={data.brokerage!.id} tariff={data.brokerage!.tariff} kind={data.brokerage!.kind} />
               </Disclosure>
-            )}
+                      ),
+                    },
+                  ]
+                : []),
+            ]
+              .map((e, i) => ({ ...e, i, rank: groupOrder.indexOf(e.key) === -1 ? groupOrder.length : groupOrder.indexOf(e.key) }))
+              .sort((x, y) => x.rank - y.rank || x.i - y.i)
+              .map((e, j) => e.render(j === 0))}
           </section>
           {data.unassigned.length > 0 && (
             <section aria-labelledby="un-h" className="flex flex-col gap-3">
