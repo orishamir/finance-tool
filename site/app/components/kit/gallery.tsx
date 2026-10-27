@@ -721,6 +721,29 @@ function Lists({ today }: { today: string }) {
           />
         </State>
       </Demo>
+      <Demo name="PickList (phone)" use={g.uses.PickList}>
+        <State label="phoneColumns: the figure on a second line below md; phoneLimit 1: on a phone the rows after the first fold behind a button (the chosen row stays)" wide>
+          <PickList
+            label={p.name}
+            columns="minmax(0,1fr) 8rem auto"
+            phoneColumns="minmax(0,1fr) auto"
+            phoneLimit={1}
+            more={(n) => `+${n}`}
+            rows={["a", "b", "c", "d"].map((k, i) => ({
+              key: k,
+              selected: i === 2,
+              onSelect: () => {},
+              cells: (
+                <>
+                  <span>{[p.a, p.b, p.c, p.a][i]}</span>
+                  <span className="text-sm text-muted-foreground max-md:row-start-2 max-md:col-start-2">{p.figure}</span>
+                  <span className="tabular-nums">{["78,943", "76,322", "71,647", "59,242"][i]}</span>
+                </>
+              ),
+            }))}
+          />
+        </State>
+      </Demo>
       <Demo name="LabelFilter" use={g.uses.LabelFilter}>
         <State label="three labels with counts, the first on" wide>
           <LabelFilter lead={p.figure} allLabel={p.link} value={labels[0]!.id} onChange={() => {}} options={labels.map((l, i) => ({ label: l, count: 5 - i }))} />
