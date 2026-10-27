@@ -8,12 +8,10 @@ import { brokerLabels } from "../../lib/labels";
 import { IconExternal } from "../icons";
 import { Num } from "../provenance";
 import { Button, Card, cx, Disclosure, LabelRow, RankBadge, Section, Sentence, Tag } from "../kit";
-import { OptionTag, reasonText } from "./parts";
+import { optionClass, OptionTag, reasonText } from "./parts";
 import { ProviderLink } from "./sections";
 
 const TOP = 5;
-const CLS = { "il-tracking": "mutual_fund_units", "il-etf": "etf_units", "tase-foreign": "etf_units", abroad: "foreign_securities" } as const;
-
 export function HousesSection({ view, chosen, onPick }: { view: InvestView; chosen: string | null; onPick: (id: string) => void }) {
   const computes = (r: HouseRow) => !!(r.best || r.generic);
   const il = view.houses.filter((r) => r.group === "il" && computes(r));
@@ -74,7 +72,7 @@ function NoWay({ row }: { row: HouseRow }) {
       </span>
     );
   }
-  const cls = row.entries[0] ? CLS[row.entries[0].fund.option] : "etf_units";
+  const cls = row.entries[0] ? optionClass[row.entries[0].fund.option] : "etf_units";
   return <span className="text-muted-foreground">{row.reason ? reasonText(row.reason, cls) : c.houses.noWay}</span>;
 }
 

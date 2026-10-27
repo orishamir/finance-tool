@@ -10,7 +10,7 @@ import { fundLabels, matchesHedge, type HedgeFilter } from "../../lib/labels";
 import { IconCopy, IconExternal, IconLock } from "../icons";
 import { Num } from "../provenance";
 import { Button, LabelChip, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RankBadge, Section, SegmentedControl, SelectField, Tag, type ProductColumn, type ProductRow } from "../kit";
-import { LabelsLegend, OptionTag, reasonText } from "./parts";
+import { LabelsLegend, optionClass, OptionTag, reasonText } from "./parts";
 import { ownBy, type SiteValue } from "../../lib/value";
 
 const b = brands.funds;
@@ -125,7 +125,7 @@ function fundRow(view: InvestView, e: HouseEntry, rank: number | null, house: Ho
       <Num value={e.price.value} />
     </span>
   ) : (
-    <span className="block whitespace-normal text-sm text-muted-foreground max-w-48">{e.reason ? reasonText(e.reason, "") : c.funds.cannot}</span>
+    <span className="block whitespace-normal text-sm text-muted-foreground max-w-48">{e.reason ? reasonText(e.reason, optionClass[f.option]) : c.funds.cannot}</span>
   );
   return {
     key: f.rec.id,
