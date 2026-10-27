@@ -1,8 +1,8 @@
 diff --git a/site/app/components/decoder/brand-funds.tsx b/site/app/components/decoder/brand-funds.tsx
-index affedc0..9402e79 100644
+index affedc0..808c10b 100644
 --- a/site/app/components/decoder/brand-funds.tsx
 +++ b/site/app/components/decoder/brand-funds.tsx
-@@ -1,71 +1,111 @@
+@@ -1,71 +1,108 @@
 -// A brand's funds (D33): one row per fund record of the brand's fund managers, with its number, what it follows, Maya's page of the
 -// fund and its fees as the manager's own sourced figures. Only collected records: the full list is the manager's, on Maya (CAT-43).
 -import { Link } from "react-router";
@@ -62,8 +62,9 @@ index affedc0..9402e79 100644
  }
  
 -function BrandFundCard({ f }: { f: BrandFundRow }) {
-+function Maya({ f }: { f: BrandFundRow }) {
-+  if (!f.mayaHref) return null;
++function NumberLink({ f }: { f: BrandFundRow }) {
++  const n = <bdi dir="ltr" className="num-id">{f.number}</bdi>;
++  if (!f.mayaHref) return n;
    return (
 -    <Card as="li" pad="tight" id={`fund-${f.id}`} className="flex flex-col gap-2.5">
 -      <div className="flex flex-col gap-1">
@@ -77,8 +78,8 @@ index affedc0..9402e79 100644
 -          {f.number && (
 -            <span>
 -              {c.number} <bdi dir="ltr" className="font-mono">{f.number}</bdi>
-+    <a href={f.mayaHref} target="_blank" rel="noopener noreferrer" className="text-sm text-link hover:underline inline-flex items-center gap-1 whitespace-nowrap">
-+      {c.mayaPage} <IconExternal size={14} />
++    <a href={f.mayaHref} target="_blank" rel="noopener noreferrer" aria-label={`${f.number}, ${c.mayaPage}`} className="text-link hover:underline inline-flex items-center gap-1 whitespace-nowrap">
++      {n} <IconExternal size={14} />
 +    </a>
 +  );
 +}
@@ -92,8 +93,8 @@ index affedc0..9402e79 100644
 +        {funds.map((f) => (
 +          <div key={f.id} className="track !flex-col !items-stretch !gap-1">
 +            <span className="font-medium"><bdi>{f.name}</bdi></span>
-+            <span className="text-sm text-muted-foreground">
-+              {c.number} <bdi dir="ltr" className="num-id">{f.number}</bdi>
++            <span className="text-sm text-muted-foreground inline-flex items-center gap-1.5">
++              {c.number} <NumberLink f={f} />
              </span>
 -          )}
 -          {f.mayaHref && (
@@ -127,7 +128,6 @@ index affedc0..9402e79 100644
 -        </KeyValue>
 -      </dl>
 -    </Card>
-+            <Maya f={f} />
 +          </div>
 +        ))}
 +      </Card>
@@ -151,10 +151,7 @@ index affedc0..9402e79 100644
 +                  </span>
 +                </td>
 +                <td>
-+                  <span className="flex flex-col items-start gap-1">
-+                    <bdi dir="ltr" className="num-id">{f.number}</bdi>
-+                    <Maya f={f} />
-+                  </span>
++                  <NumberLink f={f} />
 +                </td>
 +                <td className="whitespace-nowrap"><Index f={f} opt={opt} /></td>
 +                <td><Fees f={f} /></td>
