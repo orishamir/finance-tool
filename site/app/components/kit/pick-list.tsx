@@ -1,6 +1,6 @@
 // A list to choose one row from (founder, 2026-10-27, the index page's two linked lists): every row is a radio, the chosen one is
 // tinted with a bar at its start; the rows' cells are the caller's, on a grid the caller names, and a head row can name the columns.
-import type { ReactNode } from "react";
+import { useState, type CSSProperties, type ReactNode } from "react";
 import { cx } from "./cx";
 
 export interface PickRow {
@@ -13,18 +13,27 @@ export interface PickRow {
   muted?: boolean;
 }
 
-/** `columns`: the grid template after the radio (for example `"minmax(0,1fr) auto"`). `head`: the column names, on the same grid. */
-export function PickList({ label, columns, head, rows }: { label: string; columns: string; head?: ReactNode; rows: PickRow[] }) {
-  const grid = { gridTemplateColumns: `1.25rem ${columns}` };
+/**
+ * `columns`: the grid template after the radio (for example `"minmax(0,1fr) auto"`); `phoneColumns` the template below `md`, where
+ * a cell may move to a second line (`max-md:row-start-2`). `head`: the column names, on the same grid. `phoneLimit`: on a phone, the
+ * rows after the first N fold behind a button (`more` words it), the chosen row always shown; nothing is filtered out.
+ */
+export function PickList({ label, columns, phoneColumns, head, rows, phoneLimit, more }: { label: string; columns: string; phoneColumns?: string; head?: ReactNode; rows: PickRow[]; phoneLimit?: number; more?: (hidden: number) => string }) {
+  const [open, setOpen] = useState(false);
+  const grid = { "--pick-cols": columns, "--pick-cols-phone": phoneColumns ?? columns } as CSSProperties;
+  const gridClass = "grid-cols-[1.25rem_var(--pick-cols-phone)] md:grid-cols-[1.25rem_var(--pick-cols)]";
+  const folds = !open && phoneLimit !== undefined && rows.length > phoneLimit + 1;
+  const folded = (i: number, r: PickRow) => folds && i >= phoneLimit! && !r.selected;
+  const hidden = rows.filter((r, i) => folded(i, r)).length;
   return (
     <div role="radiogroup" aria-label={label} className="flex flex-col">
       {head && (
-        <div className="grid gap-x-3 items-end px-4 pb-1.5 text-xs text-muted-foreground border-b border-border" style={grid}>
+        <div className={cx("grid gap-x-3 items-end px-4 pb-1.5 text-xs text-muted-foreground border-b border-border", gridClass)} style={grid}>
           <span />
           {head}
         </div>
       )}
-      {rows.map((r) => (
+      {rows.map((r, i) => (
         // a div, not a button: a row holds links of its own (a fund's number to Maya, a house's page)
         <div
           key={r.key}
@@ -44,6 +53,8 @@ export function PickList({ label, columns, head, rows }: { label: string; column
           }}
           className={cx(
             "grid gap-x-3 gap-y-1 items-center text-start px-4 py-2.5 border-b border-border last:border-b-0 min-h-target cursor-pointer hover:bg-muted/60 focus-visible:outline-2 focus-visible:outline-ring",
+            gridClass,
+            folded(i, r) && "max-md:hidden",
             r.selected && "bg-primary/10 shadow-[inset_-3px_0_0_var(--primary)] hover:bg-primary/10",
             r.muted && !r.selected && "text-muted-foreground",
           )}
@@ -53,6 +64,11 @@ export function PickList({ label, columns, head, rows }: { label: string; column
           {r.cells}
         </div>
       ))}
+      {hidden > 0 && more && (
+        <button type="button" onClick={() => setOpen(true)} className="md:hidden text-link text-sm font-medium min-h-target px-4 text-start hover:underline">
+          {more(hidden)}
+        </button>
+      )}
     </div>
   );
 }

@@ -3625,6 +3625,7 @@ export const invest = {
     listLabelAccounts: "חשבונות ניירות ערך",
     listLabelFunds: "קרנות על המדד",
     shown: (n: number, of: number) => `מוצגות ${n} מתוך ${of}`,
+    moreFunds: (n: number) => (n === 1 ? "עוד קרן אחת" : `עוד ${n} קרנות`),
   },
 
   typeTags: { "il-etf": "קרן סל · נסחרת כל היום", "il-tracking": "קרן מחקה · נקנית פעם ביום", "tase-foreign": "קרן זרה בת״א", abroad: "בחו״ל" } as Record<string, string>,

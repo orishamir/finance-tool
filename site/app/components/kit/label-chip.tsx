@@ -99,12 +99,12 @@ export function LabelChip({ label }: { label: Label }) {
 export function LabelFilter({ options, value, onChange, lead, allLabel }: { options: { label: Label; count: number }[]; value: string | null; onChange: (id: string | null) => void; lead: ReactNode; allLabel: string }) {
   if (options.length === 0) return null;
   return (
-    <div className="flex flex-wrap items-center gap-1.5" role="group" aria-label={typeof lead === "string" ? lead : undefined}>
-      <span className="text-sm text-muted-foreground me-1">{lead}</span>
+    <div className="flex md:flex-wrap items-center gap-1.5 max-md:overflow-x-auto max-md:pb-1" role="group" aria-label={typeof lead === "string" ? lead : undefined}>
+      <span className="text-sm text-muted-foreground me-1 shrink-0">{lead}</span>
       {options.map(({ label, count }) => {
         const on = value === label.id;
         return (
-          <button key={label.id} type="button" aria-pressed={on} onClick={() => onChange(on ? null : label.id)} className={cx(chipShape, "min-h-8 hover:brightness-110", chipClass(label), on && "ring-2 ring-current ring-offset-1 ring-offset-card")}>
+          <button key={label.id} type="button" aria-pressed={on} onClick={() => onChange(on ? null : label.id)} className={cx(chipShape, "shrink-0 min-h-8 hover:brightness-110", chipClass(label), on && "ring-2 ring-current ring-offset-1 ring-offset-card")}>
             <LabelIcon name={label.icon} />
             {label.text}
             <span className="tabular-nums opacity-75">{count}</span>
@@ -112,7 +112,7 @@ export function LabelFilter({ options, value, onChange, lead, allLabel }: { opti
         );
       })}
       {value !== null && (
-        <button type="button" onClick={() => onChange(null)} className="text-sm text-link hover:underline min-h-8 px-1">
+        <button type="button" onClick={() => onChange(null)} className="shrink-0 text-sm text-link hover:underline min-h-8 px-1">
           {allLabel}
         </button>
       )}
