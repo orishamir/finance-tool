@@ -1,8 +1,8 @@
 diff --git a/site/app/components/decoder/brand-funds.tsx b/site/app/components/decoder/brand-funds.tsx
-index affedc0..98781c1 100644
+index affedc0..9402e79 100644
 --- a/site/app/components/decoder/brand-funds.tsx
 +++ b/site/app/components/decoder/brand-funds.tsx
-@@ -1,71 +1,112 @@
+@@ -1,71 +1,111 @@
 -// A brand's funds (D33): one row per fund record of the brand's fund managers, with its number, what it follows, Maya's page of the
 -// fund and its fees as the manager's own sourced figures. Only collected records: the full list is the manager's, on Maya (CAT-43).
 -import { Link } from "react-router";
@@ -57,7 +57,6 @@ index affedc0..98781c1 100644
 +        <bdi>{f.index.name}</bdi>
 +        <IconDrillIn size={16} />
 +      </Link>
-+      {opt === "b" && f.index.inside && <span className="text-sm text-muted-foreground max-w-64">{f.index.inside}</span>}
 +    </span>
    );
  }
@@ -86,7 +85,7 @@ index affedc0..98781c1 100644
 +
 +export function BrandFundList({ funds }: { funds: BrandFundRow[] }) {
 +  const [sp] = useSearchParams();
-+  const opt: Opt = sp.get("idx") === "b" ? "b" : "a";
++  const opt: Opt = "a"; void sp;
 +  return (
 +    <LabelSheetHost>
 +      <Card className="md:hidden p-0 md:p-0 overflow-hidden flex flex-col">
@@ -137,9 +136,9 @@ index affedc0..98781c1 100644
 +          <thead>
 +            <tr>
 +              <th scope="col">שם הקרן</th>
-+              <th scope="col">מספר נייר</th>
-+              <th scope="col">{opt === "b" ? "המדד ומה יש בו" : "המדד"}</th>
-+              <th scope="col">דמי ניהול לפי הדוח של הקרן</th>
++              <th scope="col" className="w-px">מספר נייר</th>
++              <th scope="col" className="w-px">המדד</th>
++              <th scope="col" className="w-px">דמי ניהול לפי הדוח של הקרן</th>
 +            </tr>
 +          </thead>
 +          <tbody>
@@ -157,7 +156,7 @@ index affedc0..98781c1 100644
 +                    <Maya f={f} />
 +                  </span>
 +                </td>
-+                <td><Index f={f} opt={opt} /></td>
++                <td className="whitespace-nowrap"><Index f={f} opt={opt} /></td>
 +                <td><Fees f={f} /></td>
 +              </tr>
 +            ))}
