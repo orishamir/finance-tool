@@ -1,11 +1,13 @@
 # Design: a company's funds as the track table, 2026-10-27
 
-**Status:** design settled by the founder on 2026-10-27; not built. `prototype.diff` is the throwaway sketch behind the screenshots, not the build.
+**Status:** settled by the founder on 2026-10-27; not built. `prototype.diff` is the throwaway sketch behind the screenshots, not the build.
 
 How it got here, all on 2026-10-27 on IBI's page (`/companies/ibi`):
 - The founder: "what should we put here?" A first draft filled the empty half of each fund card.
 - The founder: "does the existing table from קופת גמל fit here? … ok redesign it then." The funds move into the table the page uses for a managing company's tracks (`TrackList` in `site/app/components/decoder/tracks.tsx`), with phone rows like the track rows. Three options were drawn for the exposure ceiling in the fund's name (for example 4A).
 - The founder: "dont write the stocks percentage. dont mention [currency] risk because we already have חשיפה לדולר label." So there is no exposure column and no ceiling anywhere. The currency fact is the label alone.
+- The founder: "Add an accumulating or dividend label. Lets change the whats the money invested in column somehow." The payout policy becomes a label on each fund, in place of the line under the table. The third column becomes "המדד", in two versions.
+- The founder: "Remove the text under the index and resize the column." Version A (the index name only), with the column as wide as its content.
 
 ## 1. Today
 
@@ -25,16 +27,25 @@ Each track column, and what a fund puts there:
 
 | Track table | Fund table | Source |
 |---|---|---|
-| Track name, with its tags | **שם הקרן**, with the fund's labels: how it tracks the index ("מחזיקה את המניות" or "עסקת החלף"), "חשיפה לדולר" (or the hedged label), "מס גם על שינויי המטבע". The same labels and sheet as the index page (`fundLabels()`) | `replication`, the index's currency, `hedged`, `domicile`; rules ETF-51 to 53, ETF-12, TXS-09 |
+| Track name, with its tags | **שם הקרן**, with the fund's labels: how it tracks the index ("מחזיקה את המניות" or "עסקת החלף"), **the payout policy ("צוברת" or "מחלקת דיבידנד", new)**, "חשיפה לדולר" (or the hedged label), "מס גם על שינויי המטבע". The same labels and sheet as the index page (`fundLabels()`) | `replication`, `distribution_policy`, the index's currency, `hedged`, `domicile`; rules ETF-51 to 53, MF-49, ETF-12, TXS-09 |
 | קופה | **מספר נייר**, with "בדף הקרן במאיה" under it | `identifiers.tase_number` |
-| במה הכסף מושקע | **"עוקבת אחרי מדד …"**, linking to the index's guide page | `exposure_id` |
+| במה הכסף מושקע | **המדד**: the index's name alone as the link to its guide page, for example "ת"א-125 ›", without "עוקבת אחרי מדד" on every row and without a line under it. On the phone: "מדד ת"א-125 ›" | `exposure_id`; the exposure record's name |
 | The two fee averages from the regulator | **דמי ניהול לפי הדוח של הקרן**: three lines (קבועים, משתנים, נאמן), each the manager's own figure (D31) | `fees.*` |
 | The exposure rings | **None.** The rings show what a track actually holds. A fund's code is only a ceiling, and the currency label already says what matters. | |
-| The arrow into the track's page | **None.** A fund has no page of its own (question 2). | |
+| The arrow into the track's page | **None.** A fund has no page of its own (question 1). | |
 
-**Under the table:** when every fund in the group has the same payout policy, one line says so, for example "כל הקרנות כאן לא מחלקות: הדיבידנד והריבית מושקעים בקרן מחדש." (`distribution_policy`, MF-49). That replaces a column whose value would repeat on every row. A fund that differs shows its policy on its own row.
+**The payout label (new).** Two new labels in the label set, in a new family "חלוקה", both resting on MF-49:
 
-**Phone:** one row per fund, like a track row: the name; the number; the index link; the labels; "דמי ניהול:" with the three fees on one line; the Maya link. The footnote line closes the list.
+| Label | Icon | Its sheet |
+|---|---|---|
+| צוברת | piggy bank | הקרן לא מחלקת תשלומים: הדיבידנד והריבית שהיא מקבלת מושקעים בה מחדש, והרווח נשאר בתוך מחיר היחידה. |
+| מחלקת דיבידנד | hand with coins | הקרן מחלקת תשלומים לבעלי היחידות, פעם בשנה או יותר, לפי שיקול דעת המנהל. |
+
+`fundLabels()` is shared, so the index page gets the payout label on its fund rows too. A distributing fund there already carries "מס על כל חלוקה" (TXF-08), which stays: one label says what the fund does, the other what it costs in tax. There is no footnote under the table any more.
+
+**Column widths.** The number, index and fee columns are as wide as their content (`w-px`, the index cell does not wrap); the fund name takes the rest, so its labels sit on one line where they fit.
+
+**Phone:** one row per fund, like a track row: the name; the number; "מדד …" as a link; the labels; "דמי ניהול:" with the three fees on one line; the Maya link.
 
 ## 3. Left out
 
@@ -47,18 +58,18 @@ Each track column, and what a fund puts there:
 ## 4. Build
 
 - **Shared table, not a copy.** Today `TrackList` takes `Track` rows from the CMA. Either generalise it (column heads and cells passed in; the fee cell takes 2 or 3 lines; the exposure and arrow columns are optional), or extract its table and phone-row shell into the kit and build both lists from that. The prototype copied the markup only to get the screenshots; the build must not copy it.
-- **Labels in the kit.** `LabelChip`, `LabelRow` and `LabelSheetHost` move from `site/app/components/invest/parts.tsx` into `site/app/components/kit/`, with a gallery entry, because two pages use them now. The company page loads the rules their sheet names: ETF-12, ETF-51, ETF-52, ETF-53, TXS-09, plus MF-49 for the footnote.
-- **`brandFunds()`** adds `labels` and `policy` to each row.
+- **Labels in the kit.** `LabelChip`, `LabelRow` and `LabelSheetHost` move from `site/app/components/invest/parts.tsx` into `site/app/components/kit/`, with a gallery entry, because two pages use them now. The company page loads the rules their sheet names: ETF-12, ETF-51, ETF-52, ETF-53, TXS-09 and MF-49.
+- **The payout labels.** `pays-accumulating` and `pays-distributing` in `labelDefs` (MF-49), the family "payout" ("חלוקה") in `copy.ts` `labelFamilies`, and two icons (Lucide `PiggyBank`, `HandCoins`) in `site/app/components/invest/icons.tsx`. `fundLabels()` adds one of them from `distribution_policy`. The labels legend on the index page ("מה אומרות התוויות?") lists the new family.
+- **`brandFunds()`** adds `labels` and `index` (its short name and link) to each row.
 - **No data change.** The ETF-12 figures the earlier drafts needed are not needed.
-- **Copy** (`copy.ts` `brands.funds`, `docs/copy.md` 8.7): the column heads "שם הקרן", "מספר נייר", "במה הכסף מושקע" (as the track table) and "דמי ניהול לפי הדוח של הקרן"; the fee words קבועים, משתנים, נאמן; "דמי ניהול:" for the phone row; the payout footnote for each policy.
+- **Copy** (`copy.ts` `brands.funds`, `docs/copy.md` 8.7): the column heads "שם הקרן", "מספר נייר", "המדד" and "דמי ניהול לפי הדוח של הקרן"; the fee words קבועים, משתנים, נאמן; "דמי ניהול:" for the phone row; "מדד" before the index on the phone; the two payout labels and their sheets.
 - **Money-market funds** use the same table. They get no labels, because `fundLabels()` is for index funds.
 - **Checks:** `npm run check`; screenshots at 1280 and 390 px of `/companies/ibi` with the ETF group open, and of a brand that has a money-market fund; the structure review (`merge-review.mjs`) before merge.
 
 ## 5. Questions for the founder
 
-1. **Payouts in the footnote.** Is one line under the table enough while every collected fund has the same policy?
-2. **A page per fund?** A track row opens the track's page; a fund row opens nothing. A fund page would hold what is now spread across Maya and the sources. `docs/product.md` does not cover it, so it is a product decision. Until then, there is no arrow.
-3. **Size and past return:** worth a data pass to store them as sourced fields?
+1. **A page per fund?** A track row opens the track's page; a fund row opens nothing. A fund page would hold what is now spread across Maya and the sources. `docs/product.md` does not cover it, so it is a product decision. Until then, there is no arrow.
+2. **Size and past return:** worth a data pass to store them as sourced fields?
 
 ## 6. Found on the way
 
