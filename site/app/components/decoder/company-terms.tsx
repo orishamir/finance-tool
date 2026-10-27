@@ -41,9 +41,11 @@ function useScrollToHash(hash: string, ready: boolean) {
   }, [hash, ready]);
 }
 
-function Cards({ ids }: { ids: readonly string[] }) {
-  const data = useProvenanceData();
-  if (!data) return null;
+/** `company`: the fold is that company's section (a company with no page of its own, on /companies), so its cards show its part only. */
+function Cards({ ids, company }: { ids: readonly string[]; company?: string }) {
+  const page = useProvenanceData();
+  if (!page) return null;
+  const data = company ? { ...page, company, pageCompanies: [company] } : page;
   return (
     <ul className="grid gap-4 lg:grid-cols-2 pt-2">
       {ids
@@ -112,7 +114,7 @@ export function NoPageCompanyTerms({ companies, none }: { companies: readonly { 
           <div className="flex flex-col gap-3">
             {companies.map((c) => (
               <FoldGroup key={c.id} variant="section" id={noPageAnchor(c.id)} className={scrollMargin} title={<bdi>{c.name}</bdi>} count={c.ids.length} open={opened.has(c.id)} onOpenChange={toggle(c.id)}>
-                <Cards ids={c.ids} />
+                <Cards ids={c.ids} company={c.id} />
               </FoldGroup>
             ))}
           </div>
