@@ -208,6 +208,29 @@ Everything in the cost split, the slot lines and the "why" sentence is illustrat
 - The account's lines get distinct hues: buying orange, custody yellow, account fee brick red, the fund's fee olive green, tax rose. These are new tokens if adopted; blue and violet stay reserved.
 - The result no longer names the account and the fund, since both are highlighted in their lists. The cheapest pair's card still says "אם עוברים לפסגות".
 
+### 3.11 Built (2026-10-27)
+
+The founder: "nice. implement it. in the fund table use differences not absolute number. make sure the funds list isnt filtered by the banks yeah? and the banks not filtered by the funds."
+
+- **Lists:** `site/app/components/invest/pair.tsx` holds the result and the two lists. Every account is listed for the chosen fund, and every fund at the chosen account. A row that cannot be priced stays, with its reason; clicking it picks it and the other half that leaves the most with it. The fund list shows differences from the chosen fund.
+- **Numbers:** from `lib/invest.ts`. Every way now keeps the account's cost by tariff line (`byType`, F-61 inside F-63). `pairCosts` adds the fund's fee line (F-61) and the tax (F-06) for the chosen pair and the cheapest one. The sum put in is the amount now plus the monthly sum times the months, in today's shekels (F-05 with A-04's constant real deposits). The method note is under F-63.
+- **Kit:** `CostStack`, `PickList`, `LabelFilter`, each in the gallery. Labels take their family's colour. The tokens are `--chart-cost-*` and `--label-*`.
+- **What stayed:** an index with no fund records (a custom index) keeps the earlier houses-and-funds view and its request for funds. The steps follow the chosen pair.
+- **Not built yet:** the hedging explanation with the worked example (3.7); a negotiated account fee typed on the page; the standing-order label (data not collected); the phone layout (the founder: PC first).
+
+**Structure review** (`node research/audit/tools/merge-review.mjs origin/main`, 22 files):
+- Sent back and fixed:
+  - Hebrew input names in `lib/invest.ts`: the file's existing `inputMap` is used instead.
+  - A hand-styled reference pill: the kit's `Tag` is used instead.
+  - A second copy of the fund-fees helper: `funds.tsx`'s `Fees` is exported and reused.
+- Kept as the page's own anatomy, built from the kit and used once:
+  - `PairResult`, `AccountColumn`, `FundColumn`, `CostBar` (a label and a total around `CostStack`), `CostLegend` (`ChartLegend` grouped by who takes the cost);
+  - `Fees`, now shared by the two fund views of the page;
+  - `Steps`, which existed already and only gained the chosen pair.
+- Promoted: `CostStack`, `PickList`, `LabelFilter`, each with a gallery entry.
+
+No independent reviewer is needed under 30 files.
+
 ## 4. Against `docs/product.md`: what else the page owes the reader
 
 `docs/product.md` section 2 states the reader's job: which fund variant and which provider, "which fees are worth fighting, and what they might be failing to consider", then act, and "be able to come back later and see whether anything changed".
