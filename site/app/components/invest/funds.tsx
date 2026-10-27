@@ -10,7 +10,7 @@ import { fundLabels, matchesHedge, type HedgeFilter } from "../../lib/labels";
 import { IconCopy, IconExternal, IconLock } from "../icons";
 import { Num } from "../provenance";
 import { Button, LabelChip, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RankBadge, Section, SegmentedControl, SelectField, Tag, type ProductColumn, type ProductRow } from "../kit";
-import { LabelsLegend, OptionTag, reasonText } from "./parts";
+import { LabelsLegend, optionClass, OptionTag, reasonText } from "./parts";
 import { ownBy, type SiteValue } from "../../lib/value";
 
 const b = brands.funds;
@@ -77,8 +77,8 @@ function FundList({ view, house, hedge }: { view: InvestView; house: HouseRow; h
   return <ProductTable columns={columns} groups={rows.map((r) => ({ key: r.key, rows: [r] }))} />;
 }
 
-/** The three fees, each with its word; one not collected says so. */
-function Fees({ rec, inline }: { rec: FundRecord; inline?: boolean }) {
+/** The three fees, each with its word; one not collected says so (also the index page's fund slot). */
+export function Fees({ rec, inline }: { rec: FundRecord; inline?: boolean }) {
   const items = (["fixed_management", "variable_management", "trustee"] as const).map((key, i) => {
     const v = feeOf(rec, key);
     const word = [b.feeWords.fixed, b.feeWords.variable, b.feeWords.trustee][i]!;
@@ -125,7 +125,7 @@ function fundRow(view: InvestView, e: HouseEntry, rank: number | null, house: Ho
       <Num value={e.price.value} />
     </span>
   ) : (
-    <span className="block whitespace-normal text-sm text-muted-foreground max-w-48">{e.reason ? reasonText(e.reason, "") : c.funds.cannot}</span>
+    <span className="block whitespace-normal text-sm text-muted-foreground max-w-48">{e.reason ? reasonText(e.reason, optionClass[f.option]) : c.funds.cannot}</span>
   );
   return {
     key: f.rec.id,

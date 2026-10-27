@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="/finance-tool/assets/root-Bt2cGptk.css">
+<style>
+  :root { --gap-bar: var(--palette-orange-500); --best: var(--palette-teal-400); --you: var(--palette-blue-300); }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--background); color: var(--foreground); font-family: "Inter Variable", "Heebo Variable", sans-serif; font-size: 16px; line-height: 1.6; }
+  .num { direction: ltr; unicode-bidi: isolate; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .topbar { display: flex; align-items: center; justify-content: space-between; height: 56px; padding: 0 var(--g); border-bottom: 1px solid var(--border); }
+  .brand { font-weight: 700; font-size: 18px; }
+  .menu { display: flex; gap: 24px; color: var(--muted-foreground); font-size: 14px; }
+  .menu b { color: var(--foreground); font-weight: 600; }
+  .sketch { background: var(--palette-amber-400); color: var(--palette-neutral-975); font-size: 13px; font-weight: 600; text-align: center; padding: 4px 8px; }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 28px var(--g) 64px; display: flex; flex-direction: column; gap: 36px; }
+  body { --g: 32px; }
+  body.phone { --g: 16px; }
+  body.phone .menu { display: none; }
+  h1 { font-size: 30px; line-height: 1.25; margin: 0; font-weight: 600; }
+  body.phone h1 { font-size: 24px; }
+  h2 { font-size: 20px; margin: 0; font-weight: 600; }
+  h3 { font-size: 16px; margin: 0; font-weight: 600; }
+  .sub { color: var(--muted-foreground); margin: 6px 0 0; font-size: 15px; }
+  .muted { color: var(--muted-foreground); }
+  .small { font-size: 13px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip { border: 1px solid var(--input); border-radius: 999px; padding: 6px 14px; font-size: 14px; }
+  .chip.on { background: var(--primary); color: var(--primary-foreground); border-color: var(--primary); font-weight: 600; }
+  .plan { display: flex; flex-wrap: wrap; gap: 10px 12px; align-items: center; }
+  .pc { display: inline-flex; gap: 6px; align-items: baseline; background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 6px 12px; font-size: 14px; }
+  .pc .k { color: var(--muted-foreground); }
+  .pc .v { font-weight: 600; }
+  .pc.mine .v { color: var(--entered); }
+  .pc.mine { border-color: var(--palette-blue-300); }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 20px; }
+  body.phone .card { padding: 16px; }
+  .seg { display: inline-flex; border: 1px solid var(--input); border-radius: 10px; overflow: hidden; }
+  .seg span { padding: 8px 14px; font-size: 14px; }
+  .seg span.on { background: var(--popover); font-weight: 600; box-shadow: inset 0 -2px 0 var(--primary); }
+  .q { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; }
+  .big { font-size: 32px; font-weight: 700; line-height: 1.15; }
+  body.phone .big { font-size: 28px; }
+  .tag { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 600; border-radius: 6px; padding: 1px 7px; border: 1px solid var(--input); color: var(--muted-foreground); white-space: nowrap; }
+  .tag.best { color: var(--best); border-color: var(--best); }
+  .tag.you { color: var(--you); border-color: var(--you); }
+  .tag.tie { color: var(--palette-teal-200); border-color: var(--palette-teal-700, var(--input)); }
+  .lab { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; border-radius: 999px; padding: 1px 9px; background: var(--popover); border: 1px solid var(--border); color: var(--foreground); white-space: nowrap; }
+  .lab.new { border-color: var(--palette-teal-400); }
+  .labs { display: flex; flex-wrap: wrap; gap: 4px; }
+  .ul { text-decoration: underline dotted var(--computed); text-underline-offset: 4px; }
+  a, .link { color: var(--link); text-decoration: none; }
+
+  /* gap bars */
+  .bars { display: flex; flex-direction: column; }
+  .bar-row { display: grid; grid-template-columns: 130px 1fr 92px; gap: 12px; align-items: center; padding: 7px 0; border-bottom: 1px solid var(--border); }
+  body.phone .bar-row { grid-template-columns: 96px 1fr 70px; gap: 8px; font-size: 14px; }
+  .bar-row .name { font-weight: 500; display: flex; flex-direction: column; line-height: 1.3; }
+  .bar-row .track { height: 14px; position: relative; }
+  .bar-row .fill { height: 100%; background: var(--gap-bar); border-radius: 0 3px 3px 0; opacity: .85; }
+  .bar-row.you { background: color-mix(in oklch, var(--palette-blue-300) 9%, transparent); }
+  .bar-row.you .name { color: var(--you); }
+  .bar-row .val { text-align: left; font-weight: 600; }
+  .bar-row.best .val { color: var(--best); }
+  .zero { color: var(--best); font-size: 13px; font-weight: 600; }
+  .axis { display: grid; grid-template-columns: 130px 1fr 92px; gap: 12px; font-size: 12px; color: var(--muted-foreground); padding-top: 6px; }
+  body.phone .axis { grid-template-columns: 96px 1fr 70px; gap: 8px; }
+  .axis .ticks { display: flex; justify-content: space-between; }
+
+  /* stacked cost bars */
+  .stack { display: flex; height: 22px; border-radius: 4px; overflow: hidden; }
+  .stack > i { display: block; height: 100%; }
+  .s-fund { background: var(--palette-gold-200); }
+  .s-buy { background: var(--palette-orange-500); }
+  .s-cust { background: var(--palette-orange-300, #f6a26b); }
+  .s-acct { background: var(--palette-orange-700, #a8521c); }
+  .s-tax { background: var(--chart-tax); }
+  .legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 13px; color: var(--muted-foreground); }
+  .legend i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-inline-end: 6px; vertical-align: middle; }
+
+  /* fund list */
+  .group { border: 1px solid var(--palette-teal-700, var(--border)); border-radius: 12px; padding: 4px 16px; background: color-mix(in oklch, var(--palette-teal-400) 5%, transparent); }
+  .group-h { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 10px 0 4px; font-size: 14px; color: var(--palette-teal-200); font-weight: 600; flex-wrap: wrap; }
+  .frow { display: grid; grid-template-columns: 1fr 110px 120px 96px; gap: 14px; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border); }
+  .frow:last-child { border-bottom: 0; }
+  .frow .fn { display: flex; flex-direction: column; gap: 4px; }
+  .frow .fn b { font-weight: 600; }
+  .frow .id { color: var(--link); font-size: 14px; }
+  .frow .fees { font-size: 13px; color: var(--muted-foreground); }
+  .frow .left { text-align: left; font-weight: 600; }
+  .fhead { display: grid; grid-template-columns: 1fr 110px 120px 96px; gap: 14px; font-size: 13px; color: var(--muted-foreground); padding: 0 16px 6px; }
+  body.phone .frow { grid-template-columns: 1fr auto; gap: 4px 10px; }
+  body.phone .frow .fees { display: none; }
+  body.phone .frow .id { grid-row: 2; grid-column: 1; }
+  body.phone .frow .left { grid-row: 1; grid-column: 2; }
+  body.phone .fhead { display: none; }
+  .narrow .frow { grid-template-columns: 1fr auto; gap: 4px 10px; }
+  .narrow .frow .fees { display: none; }
+  .narrow .frow .id { grid-row: 2; grid-column: 1; }
+  .narrow .frow .left { grid-row: 1; grid-column: 2; }
+  .narrow .fhead { display: none; }
+  .rest { padding: 4px 16px; }
+
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  body.phone .two { grid-template-columns: 1fr; }
+  .side { display: grid; grid-template-columns: 380px 1fr; gap: 24px; align-items: start; }
+  body.phone .side { grid-template-columns: 1fr; }
+  .kv { display: flex; justify-content: space-between; gap: 12px; padding: 6px 0; border-bottom: 1px solid var(--border); font-size: 15px; }
+  .kv:last-child { border-bottom: 0; }
+  .steps { margin: 0; padding-inline-start: 22px; display: flex; flex-direction: column; gap: 6px; }
+  .note { font-size: 13px; color: var(--muted-foreground); }
+  .callout { border-inline-start: 4px solid var(--primary); background: var(--card); border-radius: 8px; padding: 12px 14px; font-size: 15px; }
+  .list-row { display: grid; grid-template-columns: 28px 1fr 110px 120px; gap: 10px; align-items: center; padding: 10px 12px; border-bottom: 1px solid var(--border); font-size: 15px; }
+  .list-row.sel { background: var(--popover); border-radius: 10px; box-shadow: inset -3px 0 0 var(--primary); }
+  .list-row.you .nm { color: var(--you); }
+  .rank { color: var(--muted-foreground); font-size: 13px; text-align: center; }
+  .mini { height: 8px; background: var(--gap-bar); border-radius: 0 2px 2px 0; opacity: .85; }
+  .acc { border-bottom: 1px solid var(--border); }
+  .acc-h { display: grid; grid-template-columns: 1fr auto 18px; gap: 10px; align-items: center; padding: 12px 4px; }
+  .acc-h .chev { color: var(--muted-foreground); }
+  .acc.open { background: var(--card); border: 1px solid var(--border); border-radius: 12px; margin: 6px 0; }
+  .acc.open .acc-h { padding: 12px 12px 6px; }
+  .acc-b { padding: 4px 12px 14px; display: flex; flex-direction: column; gap: 12px; }
+  .opt-h { display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+  .opt-badge { background: var(--palette-amber-400); color: var(--palette-neutral-975); font-weight: 700; padding: 2px 10px; border-radius: 6px; font-size: 14px; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+const P = new URLSearchParams(location.search);
+const OPT = P.get("opt") || "A", IX = P.get("ix") || "sp500", PHONE = P.get("phone") === "1";
+if (PHONE) document.body.classList.add("phone");
+const n = (x) => x.toLocaleString("he-IL");
+const S = (x) => `<span class="num">${n(x)} ₪</span>`;
+
+const D = {
+  sp500: {
+    name: "S&P 500", foreign: true, best: 78943, yourGap: 2621,
+    houses: [["פסגות",78943,0,"ילין לפידות מחקה (4D) S&P 500","מחקה"],["לאומי",76322,2621,"ילין לפידות מחקה (4D) S&P 500","מחקה"],["ירושלים",75675,3268,"ATF סל (4D) S&P 500","סל"],["וואן זירו",75181,3762,"ATF סל (4D) S&P 500","סל"],["הפועלים",73740,5203,"ATF סל (4D) S&P 500","סל"],["יהב",73740,5203,"ATF סל (4D) S&P 500","סל"],["דיסקונט",72330,6613,"ATF סל (4D) S&P 500","סל"],["מרכנתיל",72330,6613,"ATF סל (4D) S&P 500","סל"],["אי.בי.אי",71647,7296,"ילין לפידות מחקה (4D) S&P 500","מחקה"],["מסד",71249,7694,"ATF סל (4D) S&P 500","סל"],["הבינלאומי",70859,8084,"ATF סל (4D) S&P 500","סל"],["מזרחי טפחות",70304,8639,"ATF סל (4D) S&P 500","סל"],["אלטשולר טרייד",59242,19701,"ילין לפידות מחקה (4D) S&P 500","מחקה"],["אקסלנס",57710,21233,"ATF סל (4D) S&P 500","סל"]],
+    funds: [["ילין לפידות מחקה (4D) S&P 500","5139282",78943,"מחקה","עסקת החלף",[0,0,0.02],true],["אלטשולר שחם מחקה (4D) S&P 500","5139100",78906,"מחקה","כמה דרכים יחד",[0,0,0.03],true],["קסם S&P 500 (4D) KTF","5124482",78556,"מחקה","כמה דרכים יחד",[0,0.1,0.025],true],["הראל מחקה (4D) S&P 500","5129275",78556,"מחקה","כמה דרכים יחד",[0,0.1,0.025],true],["ATF סל (4D) S&P 500","1218916",78252,"סל","כמה דרכים יחד",[0,0.2,0.008],false],["ילין לפידות סל (4D) S&P 500","1201656",77845,"סל","עסקת החלף",[0,0.3,0.02],false],["מור סל (4D) S&P 500","1165810",77484,"סל","עסקת החלף",[0.1,0.3,0.02],false],["MTF סל (4D) S&P 500","1150333",76913,"סל","עסקת החלף",[0.25,0.3,0.03],false]],
+    more: 4, coverage: 13,
+  },
+  ta90: {
+    name: "ת״א-90", foreign: false, best: 78574, yourGap: 2607,
+    houses: [["פסגות",78574,0,"הראל מחקה (4A) ת״א 90","מחקה"],["לאומי",75968,2607,"הראל מחקה (4A) ת״א 90","מחקה"],["ירושלים",75668,2906,"אי.בי.אי. סל (4A) ת״א-90","סל"],["וואן זירו",75174,3400,"אי.בי.אי. סל (4A) ת״א-90","סל"],["הפועלים",73733,4841,"אי.בי.אי. סל (4A) ת״א-90","סל"],["יהב",73733,4841,"אי.בי.אי. סל (4A) ת״א-90","סל"],["דיסקונט",72324,6250,"אי.בי.אי. סל (4A) ת״א-90","סל"],["מרכנתיל",72324,6250,"אי.בי.אי. סל (4A) ת״א-90","סל"],["אי.בי.אי",71306,7268,"הראל מחקה (4A) ת״א 90","מחקה"],["מסד",71243,7331,"אי.בי.אי. סל (4A) ת״א-90","סל"],["הבינלאומי",70852,7722,"אי.בי.אי. סל (4A) ת״א-90","סל"],["מזרחי טפחות",70298,8276,"אי.בי.אי. סל (4A) ת״א-90","סל"],["אלטשולר טרייד",58952,19622,"הראל מחקה (4A) ת״א 90","מחקה"],["אקסלנס",57704,20870,"אי.בי.אי. סל (4A) ת״א-90","סל"]],
+    funds: [["הראל מחקה (4A) ת״א 90","5130638",78574,"מחקה","מחזיקה את המניות",[0,0.1,0.02],true],["אי.בי.אי. סל (4A) ת״א-90","1209444",78245,"סל","מחזיקה את המניות",[0.1,0.1,0.01],false],["MTF סל (4A) ת״א 90","1150259",76472,"סל","מחזיקה את המניות",[0.6,0.1,0.005],false],["הראל סל (4A) ת״א 90","1148931",76459,"סל","מחזיקה את המניות",[0.6,0.1,0.01],false],["קסם ETF (4A) ת״א 90","1146331",76440,"סל","מחזיקה את המניות",[0.6,0.1,0.014],false],["תכלית סל (40) ת״א 90","1143783",76419,"סל","מחזיקה את המניות",[0.6,0.1,0.02],false]],
+    more: 0, coverage: 6,
+  },
+};
+const d = D[IX];
+const YOU = "לאומי";
+const TIE = 0.005;
+
+const typeLab = (t) => t === "מחקה" ? "קרן מחקה · נקנית פעם ביום" : "קרן סל · נסחרת כל היום";
+function fundLabels(f) {
+  const l = [f[4], "צוברת"];
+  if (d.foreign) l.push("חשיפה לדולר", "מס גם על שינויי המטבע");
+  if (f[6]) l.push("<span class='lab new'>הוראת קבע</span>");
+  return l.map((x) => x.startsWith("<") ? x : `<span class="lab">${x}</span>`).join("");
+}
+
+function header() {
+  return `
+  <div class="sketch">סקיצה לדיון · אפשרות ${OPT} · לא אינטראקטיבית · המספרים מהאתר החי (27.10.2026), חוץ מפירוט העלויות ותווית "הוראת קבע", שהם להמחשה</div>
+  <div class="topbar"><span class="brand">מקור</span><nav class="menu"><span>מדריך</span><span>שאלות שכולם שואלים</span><span>חברות ומסלולים</span><span>השוואה למטרה</span><b>השקעה במדד</b></nav></div>`;
+}
+
+function intro() {
+  const idx = ["MSCI AC World","MSCI World","נאסד״ק 100","S&P 500","ת״א-125","ת״א-35","ת״א-90","+ אחר"];
+  return `
+  <header style="display:flex;flex-direction:column;gap:14px">
+    <div><h1>השקעה במדד</h1><p class="sub">כבר בחרתם מדד. כאן: איפה לפתוח חשבון ניירות ערך, ומה לקנות בו.</p></div>
+    <div class="chips">${idx.map((x) => `<span class="chip ${x === d.name ? "on" : ""}">${x}</span>`).join("")}</div>
+    <div class="plan">
+      <span class="pc"><span class="k">סכום</span><span class="v num">10,000 ₪</span></span>
+      <span class="pc"><span class="k">כל חודש</span><span class="v num">500 ₪</span></span>
+      <span class="pc"><span class="k">תקופה</span><span class="v">10 שנים</span></span>
+      <span class="pc mine"><span class="k">החשבון שלכם</span><span class="v">${YOU}</span></span>
+      <span class="link small">עוד הנחות</span>
+    </div>
+    ${d.foreign ? `<div class="q"><span class="muted small">המטבע:</span><span class="seg"><span class="on">כמו המדד · חשיפה לדולר</span><span>מנוטרלת מט״ח</span></span><span class="note">השאלה מופיעה רק כשיש קרנות משני הסוגים</span></div>` : ``}
+  </header>`;
+}
+
+function headlineYou() {
+  return `
+  <section class="card" style="display:flex;flex-direction:column;gap:10px">
+    <span class="muted small">החשבון שלכם מול הזול ביותר, בעוד 10 שנים, אחרי דמי ניהול ומס, בכסף של היום</span>
+    <div class="big">ב${YOU} יישארו לכם <span class="ul num">${n(d.yourGap)} ₪</span> פחות</div>
+    <div>הזול ביותר לתוכנית שלכם: <b>פסגות</b>, עם ${d.houses[0][3]}. נשארים <span class="ul">${S(d.best)}</span>.</div>
+  </section>`;
+}
+
+function gapBars(limit) {
+  const max = Math.max(...d.houses.map((h) => h[2]));
+  const rows = d.houses.slice(0, limit ?? d.houses.length);
+  const ticks = PHONE ? [0, 10000, 20000] : [0, 5000, 10000, 15000, 20000];
+  return `
+  <section style="display:flex;flex-direction:column;gap:12px">
+    <div><h2>כמה יותר עולה כל חשבון</h2><p class="sub">מה שיישאר לכם פחות מאשר בזול ביותר, עם הקרן הזולה בכל חשבון.</p></div>
+    <div class="bars">
+      ${rows.map((h) => `
+        <div class="bar-row ${h[0] === YOU ? "you" : ""} ${h[2] === 0 ? "best" : ""}">
+          <span class="name">${h[0]}${h[0] === YOU ? `<span class="small">החשבון שלכם</span>` : ""}</span>
+          <span class="track">${h[2] === 0 ? `<span class="zero">הזול ביותר</span>` : `<span class="fill" style="display:block;width:${(h[2] / max) * 100}%"></span>`}</span>
+          <span class="val num">${h[2] === 0 ? n(h[1]) + " ₪" : "−" + n(h[2]) + " ₪"}</span>
+        </div>`).join("")}
+    </div>
+    <div class="axis"><span></span><span class="ticks">${ticks.map((t) => `<span class="num">${n(t)}</span>`).join("")}</span><span></span></div>
+    ${limit && limit < d.houses.length ? `<span class="link small">ועוד ${d.houses.length - limit} בנקים ובתי השקעות</span>` : ``}
+    <span class="note">מיטב טרייד: לא חושב, התעריפון לא נאסף.${d.foreign ? "" : " Interactive Brokers ואינטראקטיב ישראל: אין אצלם קרן על המדד הזה."}</span>
+  </section>`;
+}
+
+function fundList(house, compact) {
+  const best = d.funds[0][2];
+  const tied = d.funds.filter((f) => best - f[2] < best * TIE);
+  const rest = d.funds.filter((f) => !tied.includes(f));
+  const row = (f) => `
+    <div class="frow">
+      <span class="fn"><b>${f[0]}</b><span class="muted small">${typeLab(f[3])}</span><span class="labs">${fundLabels(f)}</span></span>
+      <span class="id num">${f[1]} ↗</span>
+      <span class="fees num">${f[5][0]}% · ${f[5][1]}% · ${f[5][2]}%</span>
+      <span class="left num">${n(f[2])} ₪</span>
+    </div>`;
+  return `
+  <section style="display:flex;flex-direction:column;gap:12px">
+    <div><h2>מה קונים ב${house}</h2><p class="sub">${tied.length} הקרנות הראשונות שוות לתוכנית שלכם: ההפרש ביניהן קטן מ־0.5% (סף התיקו של האתר). אפשר לקנות כל אחת מהן לפי מספר הנייר.</p></div>
+    <div class="fhead"><span>קרן</span><span>מספר נייר</span><span>דמי ניהול: קבועים · משתנים · נאמן</span><span style="text-align:left">נשאר</span></div>
+    <div class="group"><div class="group-h"><span>שוות לתוכנית שלכם</span><span class="num">${n(tied[tied.length - 1][2])}–${n(best)} ₪</span></div>${tied.map(row).join("")}</div>
+    ${compact ? `<span class="link small">עוד ${rest.length + (d.more || 0)} קרנות, שיישאר בהן פחות</span>` : `<div class="rest">${rest.slice(0, 3).map(row).join("")}</div><span class="link small">עוד ${rest.length - 3 + (d.more || 0)} קרנות</span>`}
+    <span class="note">${d.coverage} קרנות על המדד עם רשומה באתר. הרשימה המלאה ב־Maya ↗. הפרש העקיבה עוד לא נאסף, ונלקח כאפס.</span>
+  </section>`;
+}
+
+function abroad() {
+  if (!d.foreign) return "";
+  return `
+  <section class="card" style="display:flex;flex-direction:column;gap:12px">
+    <h2>ואם קונים בחו״ל?</h2>
+    <div class="two">
+      <div><span class="muted small">הזול בארץ</span><div style="font-weight:600">פסגות · ילין לפידות מחקה</div><div class="num" style="font-size:20px;font-weight:700">${n(d.best)} ₪</div></div>
+      <div><span class="muted small">הזול בחו״ל</span><div style="font-weight:600">Interactive Brokers · iShares Core S&P 500 UCITS ETF</div><div class="num" style="font-size:20px;font-weight:700">76,184 ₪ <span class="small muted">· ${n(d.best - 76184)} ₪ פחות</span></div></div>
+    </div>
+    <div class="labs"><span class="lab">דיווח עצמי למס</span><span class="lab">לא בפיקוח רשות ני״ע</span><span class="lab">מס דיבידנד בתוך הקרן</span><span class="lab" style="border-color:var(--blocked)">🔒 מס רק במכירה: שאלה פתוחה</span></div>
+  </section>`;
+}
+
+function steps(house) {
+  return `
+  <section style="display:flex;flex-direction:column;gap:10px">
+    <h2>מה עושים עכשיו</h2>
+    <ol class="steps"><li>פותחים חשבון ב${house} <span class="link small">איך עוברים חשבון</span></li><li>קונים את ${d.funds[0][0]} לפי מספר הנייר <span class="num link">${d.funds[0][1]}</span></li><li>קובעים הוראת קבע של <span class="num">500 ₪</span> בחודש <span class="lab new">הוראת קבע</span></li></ol>
+  </section>`;
+}
+
+/* fee lines: illustrative only (the engine does not output them yet) */
+const LINES = { "פסגות": [1650, 300, 200, 2400], "לאומי": [1650, 1200, 1900, 2421] };
+function stack(h, scale) {
+  const [fund, buy, cust, tax] = LINES[h];
+  const w = (x) => `${(x / scale) * 100}%`;
+  return `<div class="stack"><i class="s-fund" style="width:${w(fund)}"></i><i class="s-buy" style="width:${w(buy)}"></i><i class="s-cust" style="width:${w(cust)}"></i><i class="s-tax" style="width:${w(tax)}"></i></div>`;
+}
+const legend = `<div class="legend"><span><i class="s-fund"></i>דמי ניהול הקרן</span><span><i class="s-buy"></i>עמלות קנייה</span><span><i class="s-cust"></i>דמי משמרת</span><span><i class="s-tax"></i>מס במכירה</span></div>`;
+
+function optA() {
+  return `${intro()}${headlineYou()}${gapBars(PHONE ? 8 : undefined)}${fundList("פסגות", PHONE)}${abroad()}${steps("פסגות")}`;
+}
+
+function optB() {
+  const scale = 6700;
+  const col = (h, tag, left, gap) => `
+    <div class="card" style="display:flex;flex-direction:column;gap:10px;${h === YOU ? "border-color:var(--palette-blue-300)" : "border-color:var(--palette-teal-400)"}">
+      <div style="display:flex;justify-content:space-between;align-items:center"><h3 style="font-size:18px">${h}</h3>${tag}</div>
+      <div><span class="muted small">נשאר בעוד 10 שנים</span><div class="big num">${n(left)} ₪</div>${gap ? `<span class="small" style="color:var(--gap-bar)">${n(gap)} ₪ פחות מהזול</span>` : `<span class="small" style="color:var(--best)">הזול ביותר לתוכנית שלכם</span>`}</div>
+      <div><span class="muted small">מה זה עולה לכם, כולל מס</span>${stack(h, 7400)}</div>
+      <div class="kv"><span class="muted">הקרן</span><span>${d.houses.find((x) => x[0] === h)[3]}</span></div>
+    </div>`;
+  const rows = d.houses.slice(0, PHONE ? 6 : 14);
+  const max = Math.max(...d.houses.map((h) => h[2]));
+  return `${intro()}
+  <section style="display:flex;flex-direction:column;gap:14px">
+    <div><h2>החשבון שלכם מול הזול ביותר</h2><p class="sub">בעוד 10 שנים, אחרי דמי ניהול ומס, בכסף של היום.</p></div>
+    <div class="two">${col(YOU, `<span class="tag you">החשבון שלכם</span>`, 76322, 2621)}${col("פסגות", `<span class="tag best">הזול ביותר</span>`, 78943, 0)}</div>
+    ${legend}
+    <div class="callout">רוב ההפרש הוא <b>דמי המשמרת</b> ו<b>עמלות הקנייה</b> של ${YOU}: ${S(2600)} מתוך ${S(2621)}. אם ${YOU} יוריד אותם, תוכלו להישאר. <span class="link">הקלידו את העמלה שסיכמתם</span></div>
+  </section>
+  <section style="display:flex;flex-direction:column;gap:8px">
+    <h2>כל החשבונות</h2>
+    ${rows.map((h, i) => `
+      <div class="list-row ${h[0] === YOU ? "you" : ""}" style="${PHONE ? "grid-template-columns:22px 1fr 90px" : ""}">
+        <span class="rank">${i + 1}</span>
+        <span class="nm" style="display:flex;flex-direction:column;line-height:1.35"><b style="font-weight:600">${h[0]}</b><span class="muted small">${h[3]}</span></span>
+        ${PHONE ? "" : `<span>${h[2] ? `<span class="mini" style="display:block;width:${(h[2] / max) * 100}%"></span>` : `<span class="zero">הזול</span>`}</span>`}
+        <span class="num" style="text-align:left;font-weight:600;${h[2] ? "" : "color:var(--best)"}">${h[2] ? "−" + n(h[2]) + " ₪" : n(h[1]) + " ₪"}</span>
+      </div>`).join("")}
+    ${PHONE ? `<span class="link small">ועוד 8</span>` : ""}
+  </section>
+  ${fundList("פסגות", true)}${abroad()}`;
+}
+
+function optC() {
+  const max = Math.max(...d.houses.map((h) => h[2]));
+  const sel = "פסגות";
+  const detail = `
+    <div class="card narrow" style="display:flex;flex-direction:column;gap:18px">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap"><h2>פסגות</h2><span class="tag best">הזול ביותר לתוכנית שלכם</span></div>
+      <div class="two">
+        <div><span class="muted small">נשאר בעוד 10 שנים</span><div class="big num">${n(d.best)} ₪</div></div>
+        <div><span class="muted small">לעומת ${YOU}, החשבון שלכם</span><div class="big num" style="color:var(--best)">+${n(d.yourGap)} ₪</div></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:6px"><span class="muted small">מה זה עולה לכם, כולל מס</span>${stack("פסגות", 7400)}<span class="muted small">${YOU}, לשם השוואה</span>${stack(YOU, 7400)}${legend}</div>
+      ${fundList("פסגות", true).replace("<section", "<div").replace("</section>", "</div>")}
+      ${steps("פסגות").replace("<section", "<div").replace("</section>", "</div>")}
+    </div>`;
+  if (PHONE) {
+    return `${intro()}${headlineYou()}
+    <section><h2 style="margin-bottom:8px">החשבונות, מהזול ליקר</h2>
+      <div class="acc open"><div class="acc-h"><span><b>1 · פסגות</b> <span class="tag best">הזול</span></span><span class="num" style="font-weight:600;color:var(--best)">${n(d.best)} ₪</span><span class="chev">⌃</span></div>
+        <div class="acc-b"><span class="muted small">מה זה עולה לכם, כולל מס</span>${stack("פסגות", 7400)}${legend}
+          ${fundList("פסגות", true).replace("<section", "<div").replace("</section>", "</div>")}</div></div>
+      ${d.houses.slice(1, 8).map((h, i) => `<div class="acc"><div class="acc-h"><span style="${h[0] === YOU ? "color:var(--you)" : ""}"><b style="font-weight:600">${i + 2} · ${h[0]}</b>${h[0] === YOU ? ` <span class="tag you">שלכם</span>` : ""}</span><span class="num">−${n(h[2])} ₪</span><span class="chev">⌄</span></div></div>`).join("")}
+      <span class="link small">ועוד 6</span>
+    </section>${abroad()}`;
+  }
+  return `${intro()}
+  <div class="side">
+    <section style="display:flex;flex-direction:column;gap:4px">
+      <h2 style="margin-bottom:8px">החשבונות, מהזול ליקר</h2>
+      ${d.houses.map((h, i) => `
+        <div class="list-row ${h[0] === sel ? "sel" : ""} ${h[0] === YOU ? "you" : ""}" style="grid-template-columns:24px 1fr 90px 84px;padding:8px 10px">
+          <span class="rank">${i + 1}</span><span class="nm" style="font-weight:600">${h[0]}${h[0] === YOU ? ` <span class="tag you">שלכם</span>` : ""}</span>
+          <span>${h[2] ? `<span class="mini" style="display:block;width:${(h[2] / max) * 100}%"></span>` : `<span class="zero">הזול</span>`}</span>
+          <span class="num" style="text-align:left;font-weight:600;font-size:14px">${h[2] ? "−" + n(h[2]) : n(h[1])} ₪</span>
+        </div>`).join("")}
+      <span class="note" style="padding:8px 10px">מיטב טרייד: לא חושב, התעריפון לא נאסף.</span>
+    </section>
+    ${detail}
+  </div>${abroad()}`;
+}
+
+document.getElementById("root").innerHTML = header() + `<main class="wrap">${{ A: optA, B: optB, C: optC }[OPT]()}</main>`;
+</script>
+</body>
+</html>
