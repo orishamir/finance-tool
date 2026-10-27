@@ -180,6 +180,28 @@ Three variants:
 - `option-G2-pc.png`: the same, but each list shows what changes if only that half changes ("אם מחליפים רק את החשבון": −2,621 ₪; "רק את הקרן": −37 ₪), with "הבחירה" on the chosen row.
 - `option-G3-pc.png`: the reader has chosen their own account (Leumi). The result shows two cards, their pair (76,322 ₪) and the cheapest pair (78,943 ₪, "+2,621 ₪ אם עוברים לפסגות"). The fund list at Leumi groups the tracking funds first, then a line: ETFs leave at least 3,286 ₪ less at Leumi. The figures are the live site's.
 
+**Founder, round 5 (2026-10-27):** G1 while the reader is on the cheapest pair, G3 once they change either half. Bring back the sum invested, and improve the fee breakdown.
+
+### 3.10 Round 6: the sum invested and where the money went (2026-10-27)
+
+`source-round6.html`, two states of one page:
+- **`option-H1-pc.png`, on the cheapest pair (G1):**
+  - The result reads "הפקדתם 70,000 ₪ ← נשאר לכם 78,943 ₪", with the pair named and the gap to your account on the same fund.
+  - Under it is one bar, "מה יצא בדרך", split into the account's lines (buying, custody, account fee), the fund's fee, and the tax. Each segment carries its amount, and the key groups the segments by who takes them: החשבון / הקרן / המדינה.
+- **`option-H3-pc.png`, after a change (G3):**
+  - The same "הפקדתם" figure, then two cards: your choice (Leumi + the fund, 76,322 ₪) and the cheapest pair (78,943 ₪, "+2,621 ₪ אם עוברים לפסגות · בחרו את הזוג הזה").
+  - The two cost bars are drawn one above the other on one scale. One sentence says where the gap comes from: what the account charges, mostly custody and buying; the fund's fee is the same because it is the same fund; the tax is smaller because the gain is.
+  - That sentence ends with the link to type in a negotiated fee.
+
+Shared by both states:
+- **The account slot lists the account's own lines:** what each is charged on (each purchase, the value each quarter, a fixed sum each month), its amount over the horizon, and the total.
+- **The fund slot gives the fund's fee in shekels.**
+- **The account list's bars now use a scale that fits the main group.** The two far larger accounts are drawn with a break mark ("⫽ הפס נחתך").
+
+The sum invested is in the result, never inside a cost bar (founder, round 2).
+
+Everything in the cost split, the slot lines and the "why" sentence is illustrative: the engine does not output costs by line yet. That output is the first thing to build for this page. The "left" figures and the sum invested come from the live site.
+
 ## 4. Against `docs/product.md`: what else the page owes the reader
 
 `docs/product.md` section 2 states the reader's job: which fund variant and which provider, "which fees are worth fighting, and what they might be failing to consider", then act, and "be able to come back later and see whether anything changed".
@@ -197,7 +219,7 @@ Three variants:
 
 ## 5. Decisions for the founder
 
-1. Section 3.9: the linked lists with slots (round 5): G1, G2 or G3, or a mix.
+1. Section 3.10: the round-6 page (G1 on the cheapest pair, G3 after a change), with the sum invested and the cost breakdown.
 2. Section 3.7: hedging as a clickable label with a filter (the founder's proposal), and whether a label filter also re-ranks the accounts (E3) or only filters the fund list (E1, E2).
 3. Section 4 item 1: drop the "ETF or tracking fund" fold and amend D28 (a).
 4. Section 4 item 5: a negotiated fee entered on this page.
