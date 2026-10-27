@@ -1936,6 +1936,15 @@ Fee cell and labels (D36, the same day): header "דמי ניהול, ממוצע `
 
 Removed the same day with the fit mark on these pages: the row mark (מתאים · לא מתאים · אין כלל לסיווג הזה, "התאמה למטרה:") and the strip's "ההתאמה לפי המטרה השמורה:" there; the workbench keeps them (`docs/roadmap.md`, "Not final").
 
+### 8.9 The index page as two linked lists (D28 as amended, 2026-10-27)
+
+The strings are `invest.pair` in `site/app/copy.ts`. The words the founder saw in the mockups and kept:
+
+- The result: "הפקדתם" ← "נשאר לכם בעוד {N} שנים" with "אחרי דמי ניהול ומס, בכסף של היום"; on the cheapest pair "★ הזוג הזול ביותר לתוכנית שלכם" and "לעומת {חשבון}, החשבון שלכם, עם אותה קרן"; after a change "הבחירה שלכם" beside "★ הזוג הזול ביותר", "{סכום} יותר אם עוברים לזוג הזול" and "בחרו את הזוג הזה".
+- The cost: "כמה זה עולה לכם ב־{N} שנים" (one pair) or "…, בכל אחד מהזוגות" (two), "מתוכם החשבון גובה", and the key by who takes it: "החשבון:", "הקרן:", "המדינה:". It replaced "מה יצא בדרך", which the founder turned down.
+- The lists: "כל החשבונות" / "כשקונים בהם את {קרן}", "כל הקרנות על {מדד}" / "בחשבון {חשבון}", each with "בחרו … אחר, והרשימה תסתדר מחדש"; the chosen fund's row says "הבחירה", the others their difference from it ("לעומת הבחירה").
+- Rows that cannot be priced: "{N} חשבונות לא מחושבים עם הקרן הזו:" with the reason and the names, and "כשהנתון ייאסף, הם יצטרפו לרשימה."
+
 ## 9. Release 5 screens
 
 Added 2026-10-24 for the briefs in `docs/flows.md` section 18 and the handoff in `docs/design-spec.md` sections 21 to 25. Same voice and conventions as section 1: plural imperative or impersonal, no typed figures (every `{…}` is a value object with its state), names as the source writes them, codes after the words. Exposure names are the records' `names.he[0]` (מזומן שקלי · מק"מ · אג"ח ממשלתית לא צמודה · אג"ח ממשלתית צמודה · מדד S&P 500 · מדד ת"א-125 · מסלול כללי) and their one-line explanations are the records' `one_line_he`, never retyped here. Rule texts render from the rule base with their chips. Status: **draft** (2026-10-24), to be settled by the founder as sections 3, 6, 7 and 8 were. Every wording choice is "chosen 2026-10-24, revisable"; section 9.7 says why.

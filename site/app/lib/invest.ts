@@ -3,7 +3,7 @@
 // numbers come from the engine's provider workbench (F-63) and from the fund runs of F-65, over the bundle the other
 // workbench pages use. No fee, rate or rule figure is written here: tariffs are snapshots, fund fees are fund records,
 // exchange rates are the ECB's (D26). Nothing is chosen for the person (D27): an index is always an argument.
-import { providerWorkbench, relativeGap, type ComparedProvider, type NotComparableProvider, type ProviderRow } from "@finance-tool/engine";
+import { providerWorkbench, relativeGap, type ComparedProvider, type FeeLine, type NotComparableProvider, type ProviderRow } from "@finance-tool/engine";
 import type { ExposureRecord, FeesSnapshot, FundRecord } from "@finance-tool/schema";
 import { invest as copy } from "../copy";
 import { aliasRows } from "./search-aliases";
@@ -147,6 +147,11 @@ export interface WayPrice {
   venue: Venue | null;
   /** The run rests on an open rule (an accumulating foreign fund, G-18): shown, not ranked. */
   open: boolean;
+  /** What the account itself charges over the horizon (F-63), real shekels. */
+  accountCost: number;
+  /** The same, by the tariff's own lines (F-61 inside F-63: trade, custody, FX, fixed), largest first, and the remainder no single line explains. */
+  lines: { line: FeeLine; cost: number }[];
+  interaction: number;
 }
 
 export interface FundWay {
@@ -473,7 +478,7 @@ function wayPrice(ctx: Ctx, p: Extract<Priced, { kind: "ok" }>, providerId: stri
   const row = p.row;
   const open = row.run.outcome.code === "listed-not-ranked";
   const value = computed(row.real, "nis", "F-65", inputMap(ctx.plan), { today: ctx.bundle.today, rules: rulesOf(row), flags: row.run.flags.map((f) => f.code), about });
-  return { providerId, value, valueN: row.real, venue: p.venue, open };
+  return { providerId, value, valueN: row.real, venue: p.venue, open, accountCost: row.horizonCost.value as number, lines: row.byType.map((x) => ({ line: x.line, cost: x.cost })), interaction: row.interaction };
 }
 
 // ---------------------------------------------------------------- funds
@@ -714,6 +719,64 @@ export function buildInvest(a: InvestArgs): InvestView {
     returnPct: a.plan.grossReturn * 100,
     returnIllustrative: illustrative,
     fundCount: a.bundle.funds.filter((f) => f.exposure_id === a.index.exposure?.id).length,
+  };
+}
+
+// ---------------------------------------------------------------- one account and one fund, broken down (the index page's result, 2026-10-27)
+
+export interface PairCosts {
+  providerId: string;
+  fundId: string;
+  /** What the person puts in: the amount now and every monthly deposit (F-05), in today's shekels (F-06). */
+  paidIn: SiteValue;
+  /** Real value left at the horizon (F-65). */
+  left: SiteValue;
+  /** The account's own lines over the horizon (F-63 broken down by F-61), real shekels; `interaction` is what no single line explains. */
+  account: { line: FeeLine; cost: SiteValue }[];
+  interaction: number;
+  /** The fund's own fees (management, variable, trustee) at this account: F-61's fund line, `V_real(without them) − V_real`. */
+  fund: SiteValue;
+  /** Tax paid during and at exit, in today's shekels at the horizon (F-06). */
+  tax: SiteValue;
+}
+
+/**
+ * The cost of one complete way, split by who takes it: the account (its tariff lines), the fund (its own fees) and the state (tax).
+ * Null when the account cannot price the fund. Two runs: the way as it is, and the same way with the fund's fee line removed.
+ */
+export function pairCosts(a: InvestArgs & { fundId: string; providerId: string }): PairCosts | null {
+  const ctx = makeCtx(a.bundle, a.plan, a.assumptions);
+  const rec = a.bundle.funds.find((f) => f.id === a.fundId);
+  const s = ctx.snaps.find((x) => x.id === a.providerId);
+  if (!rec || !s) return null;
+  const option = optionOfFund(rec, a.index.exposure ?? undefined);
+  if (unavailable(s, option)) return null;
+  const fs = fundSpec(ctx, rec);
+  if ("reason" in fs) return null;
+  const venue = option === "abroad" ? venueOfFund(rec) : null;
+  const p = priceMany(ctx, fs.spec, option, [s], venue).get(s.id);
+  if (!p || p.kind !== "ok") return null;
+  const drag = (fs.spec.fund as { drag?: Record<string, number> }).drag ?? {};
+  const bare = { ...fs.spec, fund: { ...fs.spec.fund, drag: { ...drag, management: 0, variable: 0, trustee: 0 } } } as Spec;
+  const p0 = priceMany(ctx, bare, option, [s], venue).get(s.id);
+  const row = p.row;
+  const run = row.run;
+  const inputs = inputMap(ctx.plan);
+  const at = (n: number, formula: string, about: string) => computed(n, "nis", formula, inputs, { today: ctx.bundle.today, rules: rulesOf(row), about });
+  const fundCost = p0 && p0.kind === "ok" ? p0.row.real - row.real : 0;
+  const deflator = run.nominal > 0 ? run.real / run.nominal : 0;
+  // each deposit in today's shekels (F-05, F-06): the goal's contributions keep their real value (A-04, the engine's default here),
+  // so this is the amount now plus the monthly sum times the months
+  const paidInReal = ctx.plan.amountNow + ctx.plan.monthly * 12 * ctx.plan.years;
+  return {
+    providerId: s.id,
+    fundId: rec.id,
+    paidIn: computed(paidInReal, "nis", "F-05", { סכום: ctx.plan.values.amount, "הפקדה חודשית": ctx.plan.values.monthly, שנים: ctx.plan.values.years }, { today: ctx.bundle.today, about: copy.pair.paidInAbout }),
+    left: wayPrice(ctx, p, s.id, nameOf(rec)).value,
+    account: row.byType.map((x) => ({ line: x.line, cost: at(x.cost, "F-63", copy.pair.lineAbout(x.line)) })),
+    interaction: row.interaction,
+    fund: at(fundCost, "F-61", copy.pair.fundAbout),
+    tax: at((run.taxAtExit + run.taxDuring) * deflator, "F-06", copy.pair.taxAbout),
   };
 }
 

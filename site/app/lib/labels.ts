@@ -1,7 +1,7 @@
 // The label system of "השקעה במדד" (spec §3, facts 10.1): each label has an id, an icon, a tone and two or three words, and
 // is computed from records, never typed per row. The words and explanations are in copy.ts (`invest.labels`). A label states
-// a sourced fact or an open rule; it never praises. Row labels are only what differs between the ways; what holds for
-// every way sits in the index header.
+// a sourced fact or an open rule; it never praises. A label shows on every row it is true of, even when every row has it
+// (founder, 2026-10-27); its colour is its family's (the kit's LabelChip).
 import type { FundRecord } from "@finance-tool/schema";
 import { invest as c } from "../copy";
 import type { IndexRef, OptionId, ProviderInfo } from "./invest";

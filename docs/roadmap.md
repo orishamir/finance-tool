@@ -316,6 +316,7 @@ What continues, none of it a release:
 
 - **The index page (D27, D28)**, "השקעה במדד":
   - It lives at `/indices` and `/indices/<index>` since 2026-10-26, with no redirect from the old `/invest`.
+  - *Rebuilt 2026-10-27 (D28 as amended):* two linked lists (accounts for the chosen fund, funds at the chosen account) under a result of what is put in, what is left and what it costs by who takes it; the fund type and hedging are labels; labels have family colours and filter the fund list. An index with no fund records keeps the earlier houses-and-funds view. Spec: `research/specs/2026-10-27-invest-improvements/spec.md`.
   - It answers where to hold an index, broker first:
     - the cheapest complete way;
     - two plain lines: the same fund in another securities account, and the same account with another fund;
