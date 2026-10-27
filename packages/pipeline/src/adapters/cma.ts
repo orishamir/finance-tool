@@ -219,7 +219,8 @@ export function buildFees(
     let notes: string;
     let ruleIdsHere = ruleIds;
     if (value === null && f.key === "avg_deposit_fee" && file.dataset === "gemelnet" && balanceFeeOnly(fund)) {
-      notes = "לא דווח: בסוג הקופה הזה אין דמי ניהול מהפקדה; התקנות מתירות דמי ניהול מהיתרה בלבד (PF-06).";
+      // the rule is in rule_ids, which the sheet shows as a chip; an id inside the Hebrew sentence broke across lines (2026-10-27)
+      notes = "אין דמי ניהול מהפקדה בסוג הקופה הזה: התקנות מתירות דמי ניהול מהיתרה בלבד, ולכן השדה ריק גם בנתוני רשות שוק ההון.";
       ruleIdsHere = [...ruleIds, "PF-06"];
     } else if (value === null) {
       const incYear = fund.inception_date ? Number(fund.inception_date.slice(0, 4)) : null;
