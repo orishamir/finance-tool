@@ -1,8 +1,8 @@
 // The index page as two linked lists (founder, 2026-10-27; spec research/specs/2026-10-27-invest-improvements 3.8 to 3.10): an account
 // and a fund. The account list prices every account with the chosen fund, the fund list prices every fund at the chosen account;
 // neither list leaves anything out (a row that cannot be priced stays, with its reason). Above them, the result: what is put in, what
-// is left, and what it costs, split by who takes it. On the cheapest pair one figure; once the person picks something else, their pair
-// and the cheapest one above each other.
+// is left, and what it costs, split by who takes it: the person's pair and the cheapest one above each other, or, on the cheapest pair,
+// the next one beside it (one shape, so a pick never resizes the block).
 import { useMemo } from "react";
 import type { FeeLine } from "@finance-tool/engine";
 import { brands, invest as c } from "../../copy";
@@ -84,9 +84,11 @@ function CostBar({ who, sub, pc, scale, you, today }: { who: string; sub: string
   const parts = partsOf(pc);
   const total = totalOf(parts);
   return (
-    <div className="grid grid-cols-[minmax(0,1fr)_auto] md:grid-cols-[8.5rem_minmax(0,1fr)_6rem] items-center gap-x-3 gap-y-1.5">
-      <span className={cx("flex flex-col leading-tight font-semibold", you && "text-entered")}>
-        {who}
+    <div className="grid grid-cols-[minmax(0,1fr)_auto] md:grid-cols-[10rem_minmax(0,1fr)_6rem] items-center gap-x-3 gap-y-1.5">
+      <span className={cx("flex flex-col min-w-0 leading-tight font-semibold", you && "text-entered")}>
+        <span className="truncate" title={who}>
+          {who}
+        </span>
         <span className="text-xs font-normal text-muted-foreground">{sub}</span>
       </span>
       <div className="min-w-0 max-md:col-span-2 max-md:row-start-2">
@@ -99,126 +101,101 @@ function CostBar({ who, sub, pc, scale, you, today }: { who: string; sub: string
   );
 }
 
+/** The pair beside the best one when the person is on it: the next that leaves the most, over every ranked fund at every house. */
+function runnerUp(view: InvestView, best: Pick): Pick | null {
+  const pairs = allFunds(view).flatMap((f) =>
+    Object.entries(f.byHouse).flatMap(([house, at]) => (priced(at) && !at.open && !(house === best.house && f.rec.id === best.fund) ? [{ house, fund: f.rec.id, v: at.valueN }] : [])),
+  );
+  const top = pairs.sort((a, b) => b.v - a.v)[0];
+  return top ? { house: top.house, fund: top.fund } : null;
+}
+
 export function PairResult({ view, bundle, plan, pick, onPick }: { view: InvestView; bundle: WorkbenchBundle; plan: WorkbenchInputs; pick: Pick; onPick: (p: Pick) => void }) {
   const best = pickOfHeadline(view);
   const onBest = !!best && best.house === pick.house && best.fund === pick.fund;
+  // the block keeps one shape whichever pair is picked (founder, 2026-10-27: "the page is still jumping when changing from the winning
+  // combination"): the person's pair beside the cheapest, or, on the cheapest, beside the next one
+  const other = onBest ? runnerUp(view, pick) : best;
   const pc = useMemo(() => pairCosts({ bundle, index: view.index, plan, fundId: pick.fund, providerId: pick.house }), [bundle, view.index, plan, pick.fund, pick.house]);
-  const pcBest = useMemo(() => (best && !onBest ? pairCosts({ bundle, index: view.index, plan, fundId: best.fund, providerId: best.house }) : null), [bundle, view.index, plan, best?.fund, best?.house, onBest]);
+  const pcOther = useMemo(() => (other ? pairCosts({ bundle, index: view.index, plan, fundId: other.fund, providerId: other.house }) : null), [bundle, view.index, plan, other?.fund, other?.house]);
   if (!pc) return null;
   const years = plan.years;
   const months = 12 * plan.years;
-  const lines = [...new Set([...pc.account, ...(pcBest?.account ?? [])].map((l) => lineOf(l.line)))];
+  // the legend names every account line whichever pair is shown, so it keeps its size from one pick to the next
+  const lines = [...Object.keys(lineClass), ...([...pc.account, ...(pcOther?.account ?? [])].some((l) => lineOf(l.line) === "other") ? ["other"] : [])];
   const gap = (a: SiteValue, b: SiteValue, about: string) => nis((a.value as number) - (b.value as number), "F-65", about, bundle.today, { a, b });
-  const paid = (
-    <div className="flex flex-col gap-0.5">
-      <span className="text-sm text-muted-foreground">{c.pair.paidIn}</span>
-      <span className="text-2xl md:text-3xl font-bold leading-tight">
-        <Num value={pc.paidIn} />
-      </span>
-      <span className="text-xs text-muted-foreground">{c.pair.paidInNote(months)}</span>
-    </div>
-  );
-  const arrow = (
-    <span aria-hidden="true" className="hidden md:inline text-2xl text-muted-foreground self-center">
-      ←
-    </span>
-  );
-
-  if (onBest) {
-    const fund = allFunds(view).find((f) => f.rec.id === pick.fund);
-    const yours = view.yourBroker && view.yourBroker !== pick.house ? fund?.byHouse[view.yourBroker] : undefined;
-    const yourName = view.yourBroker ? providerName(view, view.yourBroker)?.short : undefined;
-    const total = totalOf(partsOf(pc));
-    const accountTotal = pc.account.reduce((a, l) => a + (l.cost.value as number), 0) + pc.interaction;
-    return (
-      <Card pad="roomy" className="flex flex-col gap-5">
-        <div className="grid grid-cols-2 gap-4 md:flex md:flex-wrap md:items-end md:gap-x-8">
-          {paid}
-          {arrow}
-          <div className="flex flex-col gap-0.5">
-            <span className="text-sm text-muted-foreground">
-              {c.pair.left(years)} · <span className="text-primary font-medium">{c.pair.cheapestStar}</span>
+  const parts = partsOf(pc);
+  const scale = Math.max(totalOf(parts), pcOther ? totalOf(partsOf(pcOther)) : 0);
+  const sumAccount = (x: PairCosts) => x.account.reduce((a, l) => a + (l.cost.value as number), 0) + x.interaction;
+  const nameOf = (p: Pick) => providerName(view, p.house)?.short ?? p.house;
+  const otherTitle = onBest ? c.pair.next : c.pair.cheapestStar;
+  return (
+    <Card pad="roomy" className="flex flex-col gap-5">
+      <div className="flex flex-col gap-4 md:flex-row md:flex-wrap md:items-stretch md:gap-x-6">
+        <div className="flex flex-col gap-0.5">
+          <span className="text-sm text-muted-foreground">{c.pair.paidIn}</span>
+          <span className="text-2xl md:text-3xl font-bold leading-tight">
+            <Num value={pc.paidIn} />
+          </span>
+          <span className="text-xs text-muted-foreground">{c.pair.paidInNote(months)}</span>
+        </div>
+        <span aria-hidden="true" className="hidden md:inline text-2xl text-muted-foreground self-center">
+          ←
+        </span>
+        <div className="grid grid-cols-2 gap-3 md:contents">
+          <div className="md:flex-1 md:min-w-64 rounded-lg border border-entered bg-entered/10 p-3 flex flex-col gap-0.5">
+            <span className="text-sm text-muted-foreground max-md:min-h-[2lh]">
+              {c.pair.yours}
+              {onBest && <span className="text-primary font-medium"> · {c.pair.cheapestTag}</span>}
             </span>
             <span className="text-2xl md:text-3xl font-bold leading-tight">
               <Num value={pc.left} />
             </span>
-            <span className="text-xs text-muted-foreground">{c.pair.leftNote}</span>
+            <span className="text-xs text-muted-foreground">
+              {c.pair.left(years)}, {c.pair.leftNote}
+            </span>
           </div>
-          {priced(yours) && yourName && (
-            <div className="flex flex-col gap-0.5 ms-auto">
-              <span className="text-sm text-muted-foreground">{c.pair.vsYourAccount(yourName)}</span>
-              <span className="text-2xl font-bold text-primary">
-                <Num value={gap(pc.left, yours.value, c.pair.vsYourAccount(yourName))} display={plus(gap(pc.left, yours.value, c.pair.vsYourAccount(yourName)))} />
+          {pcOther && other && (
+            <div className="md:flex-1 md:min-w-64 rounded-lg border border-border p-3 flex flex-col gap-1">
+              <span className="text-sm text-muted-foreground max-md:min-h-[2lh]">{otherTitle}</span>
+              <span className={cx("text-2xl md:text-3xl font-bold leading-tight", !onBest && "text-primary")}>
+                <Num value={pcOther.left} />
+              </span>
+              <span className="flex flex-wrap items-center gap-x-3 text-sm">
+                <span>
+                  {onBest ? (
+                    <>
+                      <Num value={gap(pcOther.left, pc.left, c.pair.vsYours)} /> {c.pair.vsYours}
+                    </>
+                  ) : (
+                    <>
+                      <Num value={gap(pcOther.left, pc.left, c.pair.moreIfCheapest)} display={plus(gap(pcOther.left, pc.left, c.pair.moreIfCheapest))} /> {c.pair.moreIfCheapest}
+                    </>
+                  )}
+                </span>
+                <Button variant="quiet" onClick={() => onPick(other)}>
+                  {c.pair.pickCheapest}
+                </Button>
               </span>
             </div>
           )}
         </div>
-        <div className="flex flex-col gap-2">
-          <h3 className="font-semibold">
-            {c.pair.costTitle(years)}: <Num value={nis(total, "F-61", c.pair.costTitle(years), bundle.today, { left: pc.left })} />{" "}
-            <span className="text-sm font-normal text-muted-foreground">
-              {c.pair.ofWhichAccount} <Num value={nis(accountTotal, "F-63", c.pair.ofWhichAccount, bundle.today)} />
-            </span>
-          </h3>
-          <CostBar who={providerName(view, pick.house)?.short ?? pick.house} sub={c.pair.cheapest} pc={pc} scale={total} today={bundle.today} />
-          <CostLegend lines={lines} />
-        </div>
-      </Card>
-    );
-  }
-
-  const parts = partsOf(pc);
-  const partsBest = pcBest ? partsOf(pcBest) : [];
-  const scale = Math.max(totalOf(parts), totalOf(partsBest));
-  const sumAccount = (x: PairCosts) => x.account.reduce((a, l) => a + (l.cost.value as number), 0) + x.interaction;
-  return (
-    <Card pad="roomy" className="flex flex-col gap-5">
-      <div className="flex flex-col gap-4 md:flex-row md:flex-wrap md:items-stretch md:gap-x-6">
-        {paid}
-        {arrow}
-        <div className="grid grid-cols-2 gap-3 md:contents">
-        <div className="md:flex-1 md:min-w-64 rounded-lg border border-entered bg-entered/10 p-3 flex flex-col gap-0.5">
-          <span className="text-sm text-muted-foreground">{c.pair.yours}</span>
-          <span className="text-2xl md:text-3xl font-bold leading-tight">
-            <Num value={pc.left} />
-          </span>
-          <span className="text-xs text-muted-foreground">
-            {c.pair.left(years)}, {c.pair.leftNote}
-          </span>
-        </div>
-        {pcBest && best && (
-          <div className="md:flex-1 md:min-w-64 rounded-lg border border-border p-3 flex flex-col gap-1">
-            <span className="text-sm text-muted-foreground">{c.pair.cheapestStar}</span>
-            <span className="text-2xl md:text-3xl font-bold leading-tight text-primary">
-              <Num value={pcBest.left} />
-            </span>
-            <span className="flex flex-wrap items-center gap-x-3 text-sm">
-              <span>
-                <Num value={gap(pcBest.left, pc.left, c.pair.moreIfCheapest)} display={plus(gap(pcBest.left, pc.left, c.pair.moreIfCheapest))} /> {c.pair.moreIfCheapest}
-              </span>
-              <Button variant="quiet" onClick={() => onPick(best)}>
-                {c.pair.pickCheapest}
-              </Button>
-            </span>
-          </div>
-        )}
-        </div>
       </div>
-      {pcBest && (
-        <div className="flex flex-col gap-2">
-          <h3 className="font-semibold">{c.pair.costTitleBoth(years)}</h3>
-          <CostBar who={providerName(view, pick.house)?.short ?? pick.house} sub={c.pair.yours} pc={pc} scale={scale} you today={bundle.today} />
-          <CostBar who={providerName(view, best!.house)?.short ?? best!.house} sub={c.pair.cheapest} pc={pcBest} scale={scale} today={bundle.today} />
-          <CostLegend lines={lines} />
+      <div className="flex flex-col gap-2">
+        <h3 className="font-semibold">{c.pair.costTitleBoth(years)}</h3>
+        <CostBar who={nameOf(pick)} sub={c.pair.yours} pc={pc} scale={scale} you today={bundle.today} />
+        {pcOther && other && <CostBar who={nameOf(other)} sub={onBest ? c.pair.next : c.pair.cheapest} pc={pcOther} scale={scale} today={bundle.today} />}
+        <CostLegend lines={lines} />
+        {pcOther && (
           <Sentence size="sm" tone="muted">
-            {c.pair.gapLead} {c.pair.gapPart.account} <Num value={nis(sumAccount(pc) - sumAccount(pcBest), "F-63", c.pair.gapPart.account, bundle.today)} />
+            {c.pair.gapLead} {c.pair.gapPart.account} <Num value={nis(sumAccount(pc) - sumAccount(pcOther), "F-63", c.pair.gapPart.account, bundle.today)} />
             {" · "}
-            {c.pair.gapPart.fund} <Num value={gap(pc.fund, pcBest.fund, c.pair.gapPart.fund)} />
+            {c.pair.gapPart.fund} <Num value={gap(pc.fund, pcOther.fund, c.pair.gapPart.fund)} />
             {" · "}
-            {c.pair.gapPart.tax} <Num value={gap(pc.tax, pcBest.tax, c.pair.gapPart.tax)} />
+            {c.pair.gapPart.tax} <Num value={gap(pc.tax, pcOther.tax, c.pair.gapPart.tax)} />
           </Sentence>
-        </div>
-      )}
+        )}
+      </div>
     </Card>
   );
 }

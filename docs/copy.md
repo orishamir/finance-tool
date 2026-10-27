@@ -1940,7 +1940,7 @@ Removed the same day with the fit mark on these pages: the row mark (מתאים 
 
 The strings are `invest.pair` in `site/app/copy.ts`. The words the founder saw in the mockups and kept:
 
-- The result: "הפקדתם" ← "נשאר לכם בעוד {N} שנים" with "אחרי דמי ניהול ומס, בכסף של היום"; on the cheapest pair "★ הזוג הזול ביותר לתוכנית שלכם" and "לעומת {חשבון}, החשבון שלכם, עם אותה קרן"; after a change "הבחירה שלכם" beside "★ הזוג הזול ביותר", "{סכום} יותר אם עוברים לזוג הזול" and "בחרו את הזוג הזה".
+- The result: "הפקדתם" ← "נשאר לכם בעוד {N} שנים" with "אחרי דמי ניהול ומס, בכסף של היום"; "הבחירה שלכם" (on the cheapest pair "הבחירה שלכם · ★ הזול") beside "★ הזוג הזול ביותר לתוכנית שלכם" with "{סכום} יותר אם עוברים לזוג הזול", or, on the cheapest pair, beside "הזוג הבא בתור" with "{סכום} לעומת הבחירה שלכם"; both with "בחרו את הזוג הזה". The cost title "כמה זה עולה לכם ב־{N} שנים, בכל אחד מהזוגות".
 - The cost: "כמה זה עולה לכם ב־{N} שנים" (one pair) or "…, בכל אחד מהזוגות" (two), "מתוכם החשבון גובה", and the key by who takes it: "החשבון:", "הקרן:", "המדינה:". It replaced "מה יצא בדרך", which the founder turned down.
 - The lists: "כל החשבונות" / "כשקונים בהם את {קרן}", "כל הקרנות על {מדד}" / "בחשבון {חשבון}", each with "בחרו … אחר, והרשימה תסתדר מחדש"; the chosen fund's row says "הבחירה", the others their difference from it ("לעומת הבחירה").
 - Rows that cannot be priced: "{N} חשבונות לא מחושבים עם הקרן הזו:" with the reason and the names, and "כשהנתון ייאסף, הם יצטרפו לרשימה."
