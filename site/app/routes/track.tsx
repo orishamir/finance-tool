@@ -9,14 +9,15 @@ import { Num, NumAfter } from "../components/provenance";
 import { Breadcrumb, PageShell } from "../components/shell";
 import { Callout, Card, Sentence, Tag } from "../components/kit";
 import { cmaFeeValue, feeYear, type SiteValue } from "../lib/value";
-import { compactHoldings, holdingsTemplate, stockShare, stockShareText, type Holdings } from "../lib/track-exposure";
+import { compactHoldings, exposureShares, holdingsTemplate, type ExposureShares, type Holdings } from "../lib/track-exposure";
+import { ShareNum } from "../components/decoder/tracks";
+import { trackLabels } from "../lib/track-labels";
 import { fmt } from "../lib/format";
 
-/** F-87 for one track: undefined when its data file has no amounts, null when the track did not report them. */
-function stockOf(h: Holdings | undefined, period: string, today: string): SiteValue | null | undefined {
-  if (!h) return undefined;
+/** F-87 and F-88 for one track; null when its data file has no amounts. */
+function exposureOf(h: Holdings | undefined, period: string, today: string): ExposureShares | null {
   const template = holdingsTemplate([h], period, today);
-  return stockShare(compactHoldings(h, template), template, period, today);
+  return exposureShares(compactHoldings(h, template), template, period, today);
 }
 
 export async function loader({ params }: Route.LoaderArgs) {
@@ -28,10 +29,15 @@ export async function loader({ params }: Route.LoaderArgs) {
   const others = cma.tracks.filter((t) => t.companyId === track.companyId && t.name === track.name && t.fundId !== track.fundId);
   const wrapper = loadWrappers().find((w) => w.id === track.wrapperId) ?? null;
   const rules = loadRules();
+  // the fund's company (D30; founder, 2026-10-27): its fund's page lists the general rules and this company's terms, never another
+  // company's, and a record that names several companies shows this one's part
+  const { registryIdsOfPage } = await import("../lib/institutions.server");
+  const companyIds = registryIdsOfPage(track.companyId);
+  const ours = (r: (typeof rules)[string]) => r.scope === "general" || (r.scope_institutions ?? []).some((c) => companyIds.includes(c.id));
   const checklist = wrapper
     ? loadChecklistRows().map((row) => {
         const mark = wrapper.dimensions[row.id];
-        const carrying = Object.values(rules).filter((r) => r.dimensions.includes(row.id) && JSON.stringify(wrapper).includes(`"${r.id}"`)).map((r) => r.id);
+        const carrying = Object.values(rules).filter((r) => r.dimensions.includes(row.id) && ours(r) && JSON.stringify(wrapper).includes(`"${r.id}"`)).map((r) => r.id);
         return { id: row.id, name: row.name, explanation: row.explanation, mark: mark === "covered" ? "covered" : mark?.startsWith("blocked:") ? "blocked" : "na", code: mark?.startsWith("blocked:") ? mark.slice(8) : undefined, rules: carrying } as ChecklistRowView;
       })
     : [];
@@ -60,6 +66,7 @@ export async function loader({ params }: Route.LoaderArgs) {
   const isDefault = catalog.some((c) => c.default_at_joining && c.maps_to.track_ids.includes(track.fundId) && owner.get(c.institution) === track.companyId);
   return {
     track,
+    companyIds,
     names,
     isDefault,
     others: others.map((o) => ({ fundId: o.fundId, href: `/companies/${o.companyId}/${o.fundId}` })),
@@ -74,7 +81,7 @@ export async function loader({ params }: Route.LoaderArgs) {
       fundId: sourced(String(track.fundId), "text"),
       period: cma.periodValue,
       inception: track.inception ? sourced(track.inception, "text") : null,
-      stock: stockOf(loadCmaHoldings().get(track.fundId), track.reportPeriod, t),
+      exposure: exposureOf(loadCmaHoldings().get(track.fundId), track.reportPeriod, t),
     },
     today: t,
   };
@@ -96,13 +103,16 @@ export default function TrackPage() {
   // pension fees belong to the fund, not to the track (CAT-39)
   const feeText = (template: string, v: SiteValue) => feeLabel(template, feeYear(v)) + (track.dataset === "pensia-net" ? ` ${copy.feeWhole}` : "");
   return (
-    <PageShell current="decoder" data={{ rules: data.rules, pointed: data.pointed, terms: {}, dimensions: data.dimensionNames, today: data.today }}>
+    <PageShell current="decoder" data={{ rules: data.rules, pointed: data.pointed, terms: {}, dimensions: data.dimensionNames, today: data.today, ...(data.companyIds[0] ? { company: data.companyIds[0], pageCompanies: data.companyIds } : {}) }}>
       <div className="flex flex-col gap-8 pt-2 lg:pt-8 max-w-page">
         <header className="flex flex-col gap-3">
           <Breadcrumb parent={{ href: `/companies/${track.companyId}`, label: track.companyName }} current={track.name} />
           <h1 className="text-2xl lg:text-3xl font-semibold flex flex-wrap items-center gap-3">
             <bdi>{track.name}</bdi>
             {data.isDefault && <Tag tone="parameter">{companyCopy.default}</Tag>}
+            {trackLabels(track).map((l) => (
+              <Tag key={l}>{companyCopy.labels[l]}</Tag>
+            ))}
           </h1>
           <Sentence tone="muted">
             {copy.fundLine} <Num value={data.values.fundId} />
@@ -146,11 +156,8 @@ export default function TrackPage() {
             {track.targetPopulation && row(copy.labels.population, <bdi>{track.targetPopulation}</bdi>)}
             {row(feeText(copy.feeBalanceLabel, data.values.balanceFee), <FeeNum value={data.values.balanceFee} />)}
             {row(feeText(copy.feeDepositLabel, data.values.depositFee), <FeeNum value={data.values.depositFee} />)}
-            {data.values.stock !== undefined &&
-              row(
-                companyCopy.stock.column.replace("{period}", fmt.period(track.reportPeriod)),
-                data.values.stock ? <Num value={data.values.stock} display={stockShareText(data.values.stock)} /> : <span className="text-muted-foreground">{companyCopy.stock.missing}</span>,
-              )}
+            {data.values.exposure?.stock && row(companyCopy.stock.rowStock.replace("{period}", fmt.period(track.reportPeriod)), <ShareNum value={data.values.exposure.stock} />)}
+            {data.values.exposure?.currency && row(companyCopy.stock.rowCurrency.replace("{period}", fmt.period(track.reportPeriod)), <ShareNum value={data.values.exposure.currency} />)}
             {data.values.inception && row(copy.labels.inception, <Num value={data.values.inception} />)}
             {row(copy.labels.period, <Num value={data.values.period} />)}
           </dl>

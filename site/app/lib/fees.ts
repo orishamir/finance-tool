@@ -34,7 +34,7 @@ import { holdingName, holdingPlan } from "./holdings";
 import { blockedHe, failureHe } from "./failure-he";
 import type { Holding } from "./state";
 import type { InputsState } from "./inputs";
-import { computed, entered as enteredValue, expandFee, staleCmaFee, weaker, type CompactFee, type SiteValue, type Strength } from "./value";
+import { computed, depositFeeNoneByRule, entered as enteredValue, expandFee, staleCmaFee, weaker, type CompactFee, type SiteValue, type Strength } from "./value";
 
 Object.assign(formulaNames, { "F-62": "פסק דין על עמלה", "F-68": "ממוצע הרשות למסלולי הסיווג", "F-61": "עלות דמי הניהול" });
 
@@ -235,7 +235,7 @@ export function withTrackFees(bundle: CompareBundle, wrapperId: string, track: T
   let depositFraction = 0;
   const depV = num(dep);
   if (depV !== null && depV >= 0) depositFraction = depV / 100;
-  else if (wrapperId !== "keren-hishtalmut") missing.push("deposit");
+  else if (!depositFeeNoneByRule(dep)) missing.push("deposit"); // a product with no deposit-fee item (PF-06) takes 0
   const terms = { ...w.terms, fees: { balance: num(bal)! / 100, deposit: depositFraction, direct: 0 } };
   const feeValues: Record<string, SiteValue> = { balance: bal };
   if (depV !== null && depV >= 0) feeValues.deposit = dep;

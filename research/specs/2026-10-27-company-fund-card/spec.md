@@ -1,0 +1,112 @@
+# Design: a company's funds as the track table, 2026-10-27
+
+**Status:** settled by the founder on 2026-10-27; **built the same day** (section 8). `prototype.diff` is the throwaway sketch behind the screenshots, not the build.
+
+How it got here, all on 2026-10-27 on IBI's page (`/companies/ibi`):
+- The founder: "what should we put here?" A first draft filled the empty half of each fund card.
+- The founder: "does the existing table from קופת גמל fit here? … ok redesign it then." The funds move into the table the page uses for a managing company's tracks (`TrackList` in `site/app/components/decoder/tracks.tsx`), with phone rows like the track rows. Three options were drawn for the exposure ceiling in the fund's name (for example 4A).
+- The founder: "dont write the stocks percentage. dont mention [currency] risk because we already have חשיפה לדולר label." So there is no exposure column and no ceiling anywhere. The currency fact is the label alone.
+- The founder: "Add an accumulating or dividend label. Lets change the whats the money invested in column somehow." The payout policy becomes a label on each fund, in place of the line under the table. The third column becomes "המדד", in two versions.
+- The founder: "Remove the text under the index and resize the column." Version A (the index name only), with the column as wide as its content.
+- The founder: "the בדף הקרן במאיה is placed weird can you move it somewhere." The TASE number itself becomes the link to the fund's Maya page, with the external-link icon; the separate "בדף הקרן במאיה" line is gone.
+
+## 1. Today
+
+Today the fund list (`site/app/components/decoder/brand-funds.tsx`, fed by `brandFunds()` in `site/app/lib/brands.server.ts`, D33) is a stack of cards. Each card holds the name, the manager, the TASE number, the Maya link, "עוקבת אחרי מדד …" and three fees. The fee list has `max-w-sm`, so on a desktop the left half of each card is empty. The other product groups on the same page are tables.
+
+| Desktop | Phone |
+|---|---|
+| ![](shots/before-etf-desktop.png) | ![](shots/before-etf-phone.png) |
+
+## 2. The table
+
+| Desktop | Phone |
+|---|---|
+| ![](shots/table-desktop.png) | ![](shots/table-phone.png) |
+
+Each track column, and what a fund puts there:
+
+| Track table | Fund table | Source |
+|---|---|---|
+| Track name, with its tags | **שם הקרן**, with the fund's labels: how it tracks the index ("מחזיקה את המניות" or "עסקת החלף"), **the payout policy ("צוברת" or "מחלקת דיבידנד", new)**, "חשיפה לדולר" (or the hedged label), "מס גם על שינויי המטבע". The same labels and sheet as the index page (`fundLabels()`) | `replication`, `distribution_policy`, the index's currency, `hedged`, `domicile`; rules ETF-51 to 53, MF-49, ETF-12, TXS-09 |
+| קופה | **מספר נייר**: the number is the link to the fund's page on Maya, with the external-link icon ("1148808 ↗"); its accessible name says "בדף הקרן במאיה". No separate Maya line | `identifiers.tase_number` |
+| במה הכסף מושקע | **המדד**: the index's name alone as the link to its guide page, for example "ת"א-125 ›", without "עוקבת אחרי מדד" on every row and without a line under it. On the phone: "מדד ת"א-125 ›" | `exposure_id`; the exposure record's name |
+| The two fee averages from the regulator | **דמי ניהול לפי הדוח של הקרן**: three lines (קבועים, משתנים, נאמן), each the manager's own figure (D31) | `fees.*` |
+| The exposure rings | **None.** The rings show what a track actually holds. A fund's code is only a ceiling, and the currency label already says what matters. | |
+| The arrow into the track's page | **None.** A fund has no page of its own (question 1). | |
+
+**The payout label (new).** Two new labels in the label set, in a new family "חלוקה", both resting on MF-49:
+
+| Label | Icon | Its sheet |
+|---|---|---|
+| צוברת | piggy bank | הקרן לא מחלקת תשלומים: הדיבידנד והריבית שהיא מקבלת מושקעים בה מחדש, והרווח נשאר בתוך מחיר היחידה. |
+| מחלקת דיבידנד | hand with coins | הקרן מחלקת תשלומים לבעלי היחידות, פעם בשנה או יותר, לפי שיקול דעת המנהל. |
+
+`fundLabels()` is shared, so the index page gets the payout label on its fund rows too. A distributing fund there already carries "מס על כל חלוקה" (TXF-08), which stays: one label says what the fund does, the other what it costs in tax. There is no footnote under the table any more.
+
+**Column widths.** The number, index and fee columns are as wide as their content (`w-px`, the index cell does not wrap); the fund name takes the rest, so its labels sit on one line where they fit.
+
+**Phone:** one row per fund, like a track row: the name; "מספר נייר" with the number as the Maya link; "מדד …" as a link; the labels; "דמי ניהול:" with the three fees on one line.
+
+## 3. Left out
+
+- **The exposure profile** (founder, above): no stock or currency ceiling, in a column or anywhere else. `exposure_code` stays on the record unused.
+- **Any comparison with other companies' funds** (D35). The index link leads to where funds are compared.
+- **IBI's own fund terms** (ETF-64, 65, 66, 69). They are already in the page's last section, "מה כתוב במסמכים של אי.בי.אי".
+- **Fund size and return against the index.** Today both are only text in the records (`legal_form`, notes), not sourced fields. The 12-month tracking difference is empty because its publisher forbids copying it, a decision already pending.
+- **Creation and redemption fee category, distribution fee type.** These matter only to someone dealing with the manager directly.
+
+## 4. Build
+
+- **Shared table, not a copy.** Today `TrackList` takes `Track` rows from the CMA. Either generalise it (column heads and cells passed in; the fee cell takes 2 or 3 lines; the exposure and arrow columns are optional), or extract its table and phone-row shell into the kit and build both lists from that. The prototype copied the markup only to get the screenshots; the build must not copy it.
+- **Labels in the kit.** `LabelChip`, `LabelRow` and `LabelSheetHost` move from `site/app/components/invest/parts.tsx` into `site/app/components/kit/`, with a gallery entry, because two pages use them now. The company page loads the rules their sheet names: ETF-12, ETF-51, ETF-52, ETF-53, TXS-09 and MF-49.
+- **The payout labels.** `pays-accumulating` and `pays-distributing` in `labelDefs` (MF-49), the family "payout" ("חלוקה") in `copy.ts` `labelFamilies`, and two icons (Lucide `PiggyBank`, `HandCoins`) in `site/app/components/invest/icons.tsx`. `fundLabels()` adds one of them from `distribution_policy`. The labels legend on the index page ("מה אומרות התוויות?") lists the new family.
+- **`brandFunds()`** adds `labels` and `index` (its short name and link) to each row.
+- **No data change.** The ETF-12 figures the earlier drafts needed are not needed.
+- **Copy** (`copy.ts` `brands.funds`, `docs/copy.md` 8.7): the column heads "שם הקרן", "מספר נייר", "המדד" and "דמי ניהול לפי הדוח של הקרן"; the fee words קבועים, משתנים, נאמן; "דמי ניהול:" for the phone row; "מדד" before the index on the phone; the two payout labels and their sheets.
+- **Money-market funds** use the same table. They get no labels, because `fundLabels()` is for index funds.
+- **Checks:** `npm run check`; screenshots at 1280 and 390 px of `/companies/ibi` with the ETF group open, and of a brand that has a money-market fund; the structure review (`merge-review.mjs`) before merge.
+
+## 5. Questions for the founder
+
+1. **A page per fund?** A track row opens the track's page; a fund row opens nothing. A fund page would hold what is now spread across Maya and the sources. `docs/product.md` does not cover it, so it is a product decision. Until then, there is no arrow.
+2. **Size and past return:** worth a data pass to store them as sourced fields?
+
+## 6. Found on the way
+
+`data/funds/1149772@2026-10-25.json`: the name the table shows is "אי.בי.אי. סל (4D)י MSCI AC World", with a stray "י" after the code; the second name on the record has no "י". Check it against Maya before changing which name comes first.
+
+## 7. Where else the same decisions apply
+
+The decisions are recorded as general rules in `docs/design-system.md` section 11, "Lists of products". Surveyed on 2026-10-27, by screenshots of the running site and a search of the code:
+
+1. **Every brand page, at once.** `BrandFundList` is one component, used for every brand's fund groups (D33): Meitav's 7 ETFs, Harel, Mor, Kesem, Altshuler Shaham, Yalin Lapidot and the rest. The build in section 4 changes all of them, and its screenshots should include one more brand than IBI.
+2. **The index page's fund list** (`/indices/<index>`, `FundRow` in `site/app/components/invest/funds.tsx`). Same card, same separate "בדף הקרן במאיה" line, same fee list with `max-w-sm` and the empty half. It becomes the same table with two more columns, the rank (`RankBadge`) first and the value left at the chosen broker last. The number is the Maya link, and the labels already come from `fundLabels()`, so the payout label arrives there with the build. The type tag (`OptionTag`, "קרן מחקה · נקנית פעם ביום") stays among the labels, because funds of both types share this list. Biggest gain after the company page.
+3. **A bank's deposits** (`/companies/<bank>`, the deposit card in `site/app/components/decoder/institutions/page.tsx`). One deposit is a card of 11 rows. Hapoalim and Mizrahi-Tefahot have two one-year deposits each (`data/terms/deposits/`), so their pages stack two such cards. The kinds become labels: ריבית קבועה or משתנה, צמוד or לא צמוד, the break terms, and automatic renewal. The tax row repeats the guide ("השיעור בעמוד המדריך"), so it becomes a label that opens the rule. That leaves a table of term, rate, amount and as-of date. The model number ("דגם 5421/4") could become the link to the bank's rate table, like the fund number to Maya; today that link ("לטבלת הריביות של הבנק") is a line of its own.
+4. **The track table's widths** (company pages, `TrackList`). The name column wraps long track names ("… אשראי ואג"ח עם מניות (עד 25% במניות)") while "במה הכסף מושקע" and the fee column take more than they hold. Sizing the number, fee and exposure columns to their content gives the name the room. The table is shared with the fund list once the build generalises it, so one change covers both.
+5. **Later, when the founder reviews them:** the workbench pages (held as not final, `docs/roadmap.md`) have their own fund rows with a separate Maya link line (`site/app/components/workbench/funds/parts.tsx`, `site/app/routes/workbench-funds.tsx`). They follow these rules when they are settled, not before.
+
+Not candidates: the track page (one product, a key-value card is right for it), the brokerage tariff card (a document, not a list), and the comparison's ranked rows (one option per row with a verdict, a different anatomy).
+
+## 8. Built, 2026-10-27
+
+- **Kit:** `ProductTable` and `ProductPhoneRow` (`site/app/components/kit/product-table.tsx`), the table shell; `TrackList` now draws on it, unchanged to look at. `LabelChip`, `LabelRow`, `LabelSheetHost` and `LabelIcon` moved from `site/app/components/invest/` into `site/app/components/kit/label-chip.tsx`; the index page imports them from the kit. Both have a gallery entry at `/kit`.
+- **Labels:** `pays-accumulating` ("צוברת") and `pays-distributing` ("מחלקת דיבידנד"), family "חלוקה", rule MF-49, in `fundLabels()`, so the index page shows them too. The "צוברת" sheet says only what MF-49 says: "הקרן לא מחלקת תשלומים: הכנסות כמו דיבידנד וריבית מושקעות בה מחדש."
+- **The fund table** (`site/app/components/decoder/brand-funds.tsx`): as section 2, on every brand page. A money-market group has the column "סוג הקרן" with "קרן כספית יומית" or "קרן כספית מתחדשת" linking to its guide, and no labels. A fee the site has not collected reads "לא נאסף", as the card did.
+- **Rules on the page:** the company page loads the rules the label sheets name.
+- **Copy:** `brands.funds` in `site/app/copy.ts`; `docs/copy.md` 8.7.
+
+**Structure review** (`node research/audit/tools/merge-review.mjs`, 21 files, under the 30 that call for an independent reviewer):
+- `Fees`, `NumberLink`, `Follows`, `BrandFundList` in `brand-funds.tsx`: **kept**, the cells of this one list. `NumberLink` (the identifier as the link out) is the rule's second pattern to watch: when the index page's fund list is built on `ProductTable`, it becomes its second user and is **promoted** then.
+- `rec.legal_form.includes("מתחדשת")` in `brands.server.ts`: **kept**, it matches the record's own legal-form text, not a string the page shows; the line moved, it is not new.
+- New kit pieces `ProductTable`, `ProductPhoneRow`, `LabelChip`, `LabelRow`, `LabelSheetHost`, `LabelIcon`: **promoted**, each with a gallery entry (`LabelIcon` added after the first run). Screenshots of `/companies/ibi` (1280 and 390 px), `/companies/altshuler-shaham` (the money-market group), `/companies/meitav` (the track table, unchanged) and `/kit` compared with the gallery; nothing left to send back.
+
+## 9. The index page's funds, built 2026-10-27
+
+The founder, on `/indices/ta35`: "it still uses the old half-page design. can you redo it? the labels are there so thats good." Section 7's second place, built on the same table (`FundList` in `site/app/components/invest/funds.tsx`): the rank (its head spoken only), the fund's name with its manager and its tags (the type tag first, because funds of both types share the list; then the labels; then the currency-mismatch and open-rule flags), the number as the Maya link, the three fees, and "נשאר ב{בית ההשקעות}" with the value the list is ranked by, or the reason it could not be computed. On a phone the rank, the name and the value share the first line, then the number, the tags and the fees. The manager line stays here, unlike on a company page, because this list mixes managers and a name like "ת"א 35 (4A) סל MTF" does not say whose fund it is.
+
+`ProductIdLink` (the number as the link out) and `ProductFigures` (figures with their words) are now kit pieces: their second and third users arrived (the company's funds, the index page's funds, and the track table's fee cell). The empty state for an index with no fund records is unchanged.
+
+Found on the way: `data/funds/1165810@2026-10-25.json`, Mor's S&P 500 ETF, shows "מור סל (4D)י S&P 500", the same stray "י" as section 6.
+
+**Structure review** (9 files): `Fees` in `invest/funds.tsx` **kept**: like the company page's, it only picks the three fees and their words and renders the kit's `ProductFigures` (design-system 11, "Where the kit stops": a feature's helper that looks up its own copy stays with the feature). `ProductIdLink` and `ProductFigures` **promoted**, with their gallery entry, which was compared with the screenshots of `/indices/ta35` (1280 and 390 px), `/indices/sp500`, `/companies/ibi` and `/companies/meitav`. Nothing left to send back.

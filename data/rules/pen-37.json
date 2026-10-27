@@ -4,7 +4,8 @@
   "title_he": "השכר המבוטח: הרצפה שבתקנונים העדכניים (לא מוסדר)",
   "text_he": "בתקנונים של מור, הראל, אלטשולר שחם, אינפיניטי ומיטב יש רצפה לחישוב השכר המבוטח: הפקדות התגמולים של שכיר מחולקות בשיעור הרצפה, או בשיעור ההפקדה בפועל אם הוא גבוה יותר, וגם לעצמאי יש אותה רצפה. בנוסח המקורי של התקנון האחיד של רשות שוק ההון אין רצפה כזו, והחוזר שהוסיף אותה לא נמצא; לפי סיכום השינויים של אלטשולר שחם היא נוספה כדי לשמור על עלות הביטוח מתחת לתקרה. נמצא רק בתקנונים של החברות האלה; מקור כללי לא נמצא.",
   "figure_names_he": {
-    "insured_salary_divisor_floor": "רצפת שיעור החלוקה לחישוב השכר המבוטח (בתקנונים שנקראו)"
+    "insured_salary_divisor_floor": "רצפת שיעור החלוקה לחישוב השכר המבוטח (בתקנונים שנקראו)",
+    "harel_insured_salary_divisor_floor": "רצפת שיעור החלוקה לחישוב השכר המבוטח (בהראל)"
   },
   "strength": "institution",
   "dimensions": [
@@ -31,6 +32,26 @@
       ],
       "state": "sourced",
       "notes": "Seen in Mor's bylaws (cited) and in Harel's, Altshuler Shaham's and Meitav's June 2025 bylaws (read by the scope research, links not recorded). The CMA standard text of 2016 divides by the month's tagmulim deposit rate, with no floor (PEN-09). Unsettled until a CMA document setting the floor is found."
+    },
+    "harel_insured_salary_divisor_floor": {
+      "value": 12.5,
+      "unit": "pct",
+      "source": {
+        "url": "https://media.harel-group.co.il/media/slyhz2yj/תקנון-הראל-פנסיה-יוני-2025.pdf",
+        "title": "Harel comprehensive pension fund bylaws, edition 20, 06/2025, p.10, s.1 \"שכר מבוטח\"",
+        "publisher": "Harel",
+        "strength": "institution"
+      },
+      "checked": "2026-10-27",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "PEN-37"
+      ],
+      "state": "sourced",
+      "notes": "Read in Harel's own bylaws (founder, 2026-10-27). Unsettled, as Mor's."
     }
   },
   "il_finance_file": "pension-and-gemel-lekitzba.md",

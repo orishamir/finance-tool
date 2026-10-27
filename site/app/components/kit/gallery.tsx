@@ -8,7 +8,9 @@ import { computed, entered } from "../../lib/value";
 import { CalendarCheck, CalendarDays, Lock, Zap } from "lucide-react";
 import { IconLock } from "../icons";
 import { IdRef, Num } from "../provenance";
-import { Button, Callout, Card, ChartLegend, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, CompareTable, CoverageFold, Disclosure, FieldState, FoldGroup, GainBars, GapNote, HeadlineFigure, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, NumberField, ParameterLine, PercentField, PlanChips, RangeField, RankBadge, Section, SegmentedControl, SelectField, Sentence, SourceLine, Stat, StatRow, StepButtons, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth } from "./index";
+import { IconDrillIn } from "../icons";
+import { label } from "../../lib/labels";
+import { Button, Callout, Card, ChartLegend, CostStack, LabelFilter, PickList, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, CompareTable, CoverageFold, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, Disclosure, FieldState, FoldGroup, GainBars, GapNote, HeadlineFigure, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, NumberField, ParameterLine, PercentField, PlanChips, RangeField, RankBadge, Section, SegmentedControl, SelectField, Sentence, ShareRings, SourceLine, Stat, StatRow, StepButtons, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth } from "./index";
 
 const g = copy.gallery;
 
@@ -590,7 +592,7 @@ function ChartParts({ today }: { today: string }) {
             { id: "c", swatch: <Swatch shape="entered-line" className="stroke-chart-entered" />, label: <bdi>{g.sample.seriesC}</bdi> },
             { id: "d", swatch: <Swatch shape="rule" className="border-chart-baseline" />, label: g.sample.today },
             { id: "e", swatch: <Swatch shape="dotted-line" className="stroke-chart-baseline" />, label: g.sample.baselineDots },
-            { id: "e", label: g.sample.note },
+            { id: "note", label: g.sample.note },
           ]}
         />
       </State>
@@ -618,6 +620,128 @@ function ChartParts({ today }: { today: string }) {
   );
 }
 
+function Rings() {
+  return (
+    <Demo name="ShareRings" use={g.uses.ShareRings}>
+      <Grid>
+        <State label="two rings: 49% stocks outside, 21% currency inside">
+          <ShareRings rings={[{ id: "a", fraction: 0.49, className: "stroke-chart-stocks" }, { id: "b", fraction: 0.21, className: "stroke-chart-currency" }]} />
+        </State>
+        <State label="above 100% draws full; 0 draws an empty ring">
+          <ShareRings rings={[{ id: "a", fraction: 1.087, className: "stroke-chart-stocks" }, { id: "b", fraction: 0, className: "stroke-chart-currency" }]} />
+        </State>
+        <State label="one ring, size 48">
+          <ShareRings size={48} rings={[{ id: "a", fraction: 0.05, className: "stroke-chart-stocks" }]} />
+        </State>
+      </Grid>
+    </Demo>
+  );
+}
+
+function Lists({ today }: { today: string }) {
+  const s = samples(today);
+  const p = g.sample.products;
+  const labels = [label("follow-physical"), label("pays-accumulating"), label("currency", "USD")];
+  const row = (key: string, name: string, n: string, rate: number, withLabels: boolean) => ({
+    key,
+    cells: [
+      <span key="n" className="flex flex-col items-start gap-1.5">
+        <span className="font-medium">{name}</span>
+        {withLabels && <LabelRow labels={labels} />}
+      </span>,
+      <ProductIdLink key="i" id={n} href="#kit" label={n} />,
+      <a key="l" href="#kit" className="text-link hover:underline inline-flex items-center gap-0.5">
+        {p.go}
+        <IconDrillIn size={16} />
+      </a>,
+      <ProductFigures key="f" items={[{ id: "a", figure: <Num value={{ ...s.rate, value: rate }} size="cell" />, word: p.figure }, { id: "b", figure: <Num value={{ ...s.rate, value: rate / 2 }} size="cell" />, word: p.figure }]} />,
+    ],
+    phone: (
+      <ProductPhoneRow stacked>
+        <span className="font-medium">{name}</span>
+        <span className="text-sm text-muted-foreground">
+          {p.number} <bdi dir="ltr" className="num-id">{n}</bdi>
+        </span>
+        {withLabels && <LabelRow labels={labels} />}
+        <span className="text-sm text-muted-foreground flex flex-wrap items-center gap-x-3 gap-y-1">
+          <ProductFigures inline items={[{ id: "a", figure: <Num value={{ ...s.rate, value: rate }} />, word: p.figure }, { id: "b", figure: <Num value={{ ...s.rate, value: rate / 2 }} />, word: p.figure }]} />
+        </span>
+      </ProductPhoneRow>
+    ),
+  });
+  return (
+    <LabelSheetHost>
+      <Demo name="ProductTable, ProductPhoneRow, ProductIdLink, ProductFigures" use={g.uses.ProductTable}>
+        <State label="three products: one alone, two under a banner; the number, link and figure columns fit" wide>
+          <ProductTable
+            columns={[
+              { id: "name", head: p.name },
+              { id: "number", head: p.number, fit: true },
+              { id: "link", head: p.link, fit: true },
+              { id: "figure", head: p.figure, fit: true },
+            ]}
+            groups={[
+              { key: "a", rows: [row("a", p.a, "1148808", 0.35, true)] },
+              { key: "bc", banner: p.banner, rows: [row("b", p.b, "1209444", 0.1, false), row("c", p.c, "1148162", 0.8, false)] },
+            ]}
+          />
+        </State>
+      </Demo>
+      <Demo name="CostStack" use={g.uses.CostStack}>
+        <State label="two costs one above the other on one scale, amounts inside the wide parts" wide>
+          <div className="flex flex-col gap-2">
+            <CostStack label="7,171" scale={7200} parts={[{ id: "t", value: 1699, className: "bg-chart-cost-trade", inside: "1,699" }, { id: "c", value: 1888, className: "bg-chart-cost-custody", inside: "1,888" }, { id: "f", value: 189, className: "bg-chart-cost-fixed" }, { id: "u", value: 150, className: "bg-chart-cost-fund" }, { id: "x", value: 1745, className: "bg-chart-tax", inside: "1,745" }]} />
+            <CostStack label="3,050" scale={7200} parts={[{ id: "t", value: 300, className: "bg-chart-cost-trade", inside: "300" }, { id: "c", value: 200, className: "bg-chart-cost-custody" }, { id: "u", value: 150, className: "bg-chart-cost-fund" }, { id: "x", value: 2400, className: "bg-chart-tax", inside: "2,400" }]} />
+          </div>
+        </State>
+        <State label="list rows (sm), the last past the scale: drawn to the edge with a break" wide>
+          <div className="flex flex-col gap-2">
+            <CostStack size="sm" label="500" scale={10000} parts={[{ id: "t", value: 300, className: "bg-chart-cost-trade" }, { id: "c", value: 200, className: "bg-chart-cost-custody" }]} />
+            <CostStack size="sm" label="9,620" scale={10000} parts={[{ id: "t", value: 4300, className: "bg-chart-cost-trade" }, { id: "c", value: 4800, className: "bg-chart-cost-custody" }, { id: "f", value: 520, className: "bg-chart-cost-fixed" }]} />
+            <CostStack size="sm" label="25,126" scale={10000} parts={[{ id: "t", value: 7500, className: "bg-chart-cost-trade" }, { id: "c", value: 7500, className: "bg-chart-cost-custody" }, { id: "f", value: 10126, className: "bg-chart-cost-fixed" }]} />
+          </div>
+        </State>
+      </Demo>
+      <Demo name="PickList" use={g.uses.PickList}>
+        <State label="three rows, the second chosen, the third muted" wide>
+          <PickList
+            label={p.name}
+            columns="minmax(0,1fr) auto"
+            head={
+              <>
+                <span>{p.name}</span>
+                <span>{p.figure}</span>
+              </>
+            }
+            rows={[
+              { key: "a", selected: false, onSelect: () => {}, cells: <><span>{p.a}</span><span className="tabular-nums">78,943</span></> },
+              { key: "b", selected: true, onSelect: () => {}, cells: <><span>{p.b}</span><span className="tabular-nums">76,322</span></> },
+              { key: "c", selected: false, muted: true, onSelect: () => {}, cells: <><span>{p.c}</span><span className="text-sm">—</span></> },
+            ]}
+          />
+        </State>
+      </Demo>
+      <Demo name="LabelFilter" use={g.uses.LabelFilter}>
+        <State label="three labels with counts, the first on" wide>
+          <LabelFilter lead={p.figure} allLabel={p.link} value={labels[0]!.id} onChange={() => {}} options={labels.map((l, i) => ({ label: l, count: 5 - i }))} />
+        </State>
+      </Demo>
+      <Demo name="LabelChip, LabelRow, LabelSheetHost, LabelIcon" use={g.uses.LabelChip}>
+        <State label="a row of three labels; a tap opens the page's one sheet" wide>
+          <LabelRow labels={labels} />
+        </State>
+        <State label="LabelIcon alone, size 18 (the sheet's heading)">
+          <span className="inline-flex gap-2">
+            {labels.map((l) => (
+              <LabelIcon key={l.id} name={l.icon} size={18} />
+            ))}
+          </span>
+        </State>
+      </Demo>
+    </LabelSheetHost>
+  );
+}
+
 export function KitGallery({ today }: { today: string }) {
   return (
     <div className="flex flex-col gap-section pt-6 lg:pt-10">
@@ -635,6 +759,8 @@ export function KitGallery({ today }: { today: string }) {
         <Fields />
         <MarkerDemo today={today} />
         <ChartParts today={today} />
+        <Rings />
+        <Lists today={today} />
       </div>
     </div>
   );

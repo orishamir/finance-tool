@@ -19,3 +19,8 @@ export { GainBars, LaneLabel, Marker, MarkerMark, useWidth, type GainBar, type M
 export { ChartLegend, ChartReadout, ChartTable, Swatch, scrollCueStyle, type LegendItem, type ReadoutRow, type SwatchShape, type TableColumn, type TableRowData } from "./chart-parts";
 export { CompanyLinks, type CompanyLinkItem } from "./company-links";
 export { CompareTable, ValueBar, type CompareRow } from "./compare-table";
+export { ShareRings, type Ring } from "./rings";
+export { LabelChip, LabelFilter, LabelIcon, LabelRow, LabelSheetHost } from "./label-chip";
+export { CostStack, type CostPart } from "./cost-stack";
+export { PickList, type PickRow } from "./pick-list";
+export { ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, type ProductColumn, type ProductGroup, type ProductRow } from "./product-table";

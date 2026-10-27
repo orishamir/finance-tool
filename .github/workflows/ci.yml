@@ -26,6 +26,24 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           path: site/build/client
+      # The same site as a .tar.gz to run offline (docs/architecture.md section 6): extract it, run `python3 -m http.server`
+      # in the folder, open http://localhost:8000/. The pages sit under finance-tool/ (the basename); index.html at the top
+      # sends the browser there.
+      - if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
+        run: |
+          mkdir -p offline/finance-tool
+          cp -r site/build/client/. offline/finance-tool/
+          printf '<!doctype html><meta charset="utf-8"><meta http-equiv="refresh" content="0; url=finance-tool/"><a href="finance-tool/">finance-tool</a>\n' > offline/index.html
+          printf 'Run: python3 -m http.server   (in this folder)\nOpen: http://localhost:8000/\nBuilt from %s on %s.\n' "$GITHUB_SHA" "$(date -u +%F)" > offline/README.txt
+          tar -czf finance-tool-site.tar.gz -C offline .
+      - if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
+        uses: actions/upload-artifact@v4
+        with:
+          name: finance-tool-site
+          path: finance-tool-site.tar.gz
+          # already gzipped; about 120 MB per run, so kept two weeks
+          compression-level: 0
+          retention-days: 14
 
   # GitHub Pages (docs/architecture.md section 6). Only main is deployed, and only after every check passed.
   deploy:

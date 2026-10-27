@@ -69,10 +69,10 @@ export const REQUIRED_COLUMNS = [
 export const GEMEL_ONLY_COLUMNS = ["TARGET_POPULATION", "SPECIALIZATION", "SUB_SPECIALIZATION"] as const;
 
 /**
- * Amount columns kept when the file has them (D34, 2026-10-26: the company page's stock-exposure column, F-87). Not required: a file
+ * Amount columns kept when the file has them (D34, 2026-10-26: the company page's exposure rings, F-87 and F-88). Not required: a file
  * without them still writes, and its funds carry no `holdings`. NIS millions at the period end (CAT-03, research note).
  */
-export const HOLDINGS_COLUMNS = ["TOTAL_ASSETS", "STOCK_MARKET_EXPOSURE"] as const;
+export const HOLDINGS_COLUMNS = ["TOTAL_ASSETS", "STOCK_MARKET_EXPOSURE", "FOREIGN_CURRENCY_EXPOSURE"] as const;
 
 /**
  * Further columns kept as received in `raw_fields`, for later use (founder, 2026-10-26): no page reads them and none has a value
@@ -81,7 +81,6 @@ export const HOLDINGS_COLUMNS = ["TOTAL_ASSETS", "STOCK_MARKET_EXPOSURE"] as con
  */
 export const KEPT_COLUMNS = [
   "FOREIGN_EXPOSURE",
-  "FOREIGN_CURRENCY_EXPOSURE",
   "LIQUID_ASSETS_PERCENT",
   "DEPOSITS",
   "MONTHLY_DEPOSITS",
@@ -189,10 +188,25 @@ const FEE_FIELDS = [
 /** The calendar year a fee average of a report period belongs to: the year before (CAT-36). */
 export const feeYear = (reportPeriod: string): number => Number(reportPeriod.slice(0, 4)) - 1;
 
+/** The product types whose fee regulation (reg. 4) has no deposit-fee item (PF-06), as the data's FUND_CLASSIFICATION names them. */
+const BALANCE_ONLY_CLASSIFICATIONS = new Set(["קרנות השתלמות", "מרכזית לפיצויים", "מטרה אחרת"]);
+/** An IRA fund is reported as a fund of its own whose name says so (IRA-03, IRA-04): 15 funds in 202609, all matched by this. */
+const IRA_NAME = /בניהול אישי|\bIRA\b/i;
+
+/**
+ * Whether the fund is of a type that may charge a fee from the balance only, so an empty deposit-fee average is the rule, not a
+ * gap (PF-06: study funds, IRA funds, central funds and other-purpose funds). Sick-pay funds the data files under tagmulim are
+ * left out: only their names say what they are, and PF-06's record does not name them.
+ */
+export function balanceFeeOnly(fund: Partial<Pick<CmaFund, "fund_classification" | "names">>): boolean {
+  if (fund.fund_classification && BALANCE_ONLY_CLASSIFICATIONS.has(fund.fund_classification)) return true;
+  return (fund.names?.cma ?? []).some((n) => IRA_NAME.test(n));
+}
+
 /** CMA fee fields to value objects (data-schema 3.13; CAT-35 to CAT-39, CAT-06). Pure. */
 export function buildFees(
   file: Pick<CmaPeriodFile, "dataset" | "report_period" | "checked" | "source">,
-  fund: Pick<CmaFund, "raw_fields" | "inception_date">,
+  fund: Pick<CmaFund, "raw_fields" | "inception_date"> & Partial<Pick<CmaFund, "fund_classification" | "names">>,
 ): CmaFund["fees"] {
   const config = DATASETS.find((d) => d.dataset === file.dataset)!;
   const year = feeYear(file.report_period);
@@ -203,7 +217,12 @@ export function buildFees(
     const n = rawText === "" ? null : Number(rawText);
     const value = n !== null && Number.isFinite(n) ? n : null;
     let notes: string;
-    if (value === null) {
+    let ruleIdsHere = ruleIds;
+    if (value === null && f.key === "avg_deposit_fee" && file.dataset === "gemelnet" && balanceFeeOnly(fund)) {
+      // the rule is in rule_ids, which the sheet shows as a chip; an id inside the Hebrew sentence broke across lines (2026-10-27)
+      notes = "אין דמי ניהול מהפקדה בסוג הקופה הזה: התקנות מתירות דמי ניהול מהיתרה בלבד, ולכן השדה ריק גם בנתוני רשות שוק ההון.";
+      ruleIdsHere = [...ruleIds, "PF-06"];
+    } else if (value === null) {
       const incYear = fund.inception_date ? Number(fund.inception_date.slice(0, 4)) : null;
       const young = incYear !== null && incYear >= year;
       const why = young
@@ -232,7 +251,7 @@ export function buildFees(
       effective_to: `${year}-12-31`,
       tax_year: null,
       update_rule: "market" as const,
-      rule_ids: ruleIds,
+      rule_ids: ruleIdsHere,
       state: "sourced" as const,
       notes,
     };
@@ -243,6 +262,7 @@ export function buildFees(
 const HOLDINGS_FIELDS = [
   { key: "total_assets", raw: "TOTAL_ASSETS", heName: "סך נכסים" },
   { key: "stock_market_exposure", raw: "STOCK_MARKET_EXPOSURE", heName: "חשיפה לשוק המניות" },
+  { key: "foreign_currency_exposure", raw: "FOREIGN_CURRENCY_EXPOSURE", heName: "חשיפה למט\"ח" },
 ] as const;
 
 /** The last day of a report period, "2026-09" -> "2026-09-30". */
@@ -252,9 +272,9 @@ const periodEnd = (period: string): string => {
 };
 
 /**
- * CMA amount fields to value objects, in NIS millions at the period end (CAT-03 for the unit of TOTAL_ASSETS; the unit of
- * STOCK_MARKET_EXPOSURE is read the same way, inferred: the dictionary does not state it, CAT OQ4). Null when the file has
- * neither column. Pure.
+ * CMA amount fields to value objects, in NIS millions at the period end (CAT-03 for the unit of TOTAL_ASSETS; the units of
+ * STOCK_MARKET_EXPOSURE and FOREIGN_CURRENCY_EXPOSURE are read the same way, inferred: the dictionary does not state them, CAT OQ4).
+ * Undefined when the file has none of the columns. Pure.
  */
 export function buildHoldings(
   file: Pick<CmaPeriodFile, "dataset" | "report_period" | "checked" | "source">,
@@ -271,7 +291,7 @@ export function buildHoldings(
         ? "לא דווח."
         : f.key === "total_assets"
           ? `סך נכסי המסלול בסוף ${file.report_period}, במיליוני ש״ח כפי שהרשות מדווחת.`
-          : `החשיפה של המסלול לשוק המניות בסוף ${file.report_period}, במיליוני ש״ח (היחידה לא כתובה במילון השדות; היא נקראת כמו סך הנכסים, CAT OQ4). לא פורסם אם החשיפה נמדדת כולל נגזרים או דרך קרנות שהמסלול מחזיק.`;
+          : `${f.key === "stock_market_exposure" ? "החשיפה של המסלול לשוק המניות" : "החשיפה של המסלול למטבע חוץ"} בסוף ${file.report_period}, במיליוני ש״ח (היחידה לא כתובה במילון השדות; היא נקראת כמו סך הנכסים, CAT OQ4). לא פורסם אם החשיפה נמדדת כולל נגזרים או דרך קרנות שהמסלול מחזיק.`;
     return {
       value,
       unit: "nis_millions" as const,
@@ -291,7 +311,11 @@ export function buildHoldings(
       notes,
     };
   };
-  return { total_assets: make(HOLDINGS_FIELDS[0]), stock_market_exposure: make(HOLDINGS_FIELDS[1]) };
+  return {
+    total_assets: make(HOLDINGS_FIELDS[0]),
+    stock_market_exposure: make(HOLDINGS_FIELDS[1]),
+    ...(HOLDINGS_FIELDS[2].raw in fund.raw_fields ? { foreign_currency_exposure: make(HOLDINGS_FIELDS[2]) } : {}),
+  };
 }
 
 /** Attach a fund's derived value objects (fees, and holdings when its raw fields have them). */

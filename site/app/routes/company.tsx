@@ -11,18 +11,23 @@ import { CompanyTerms } from "../components/decoder/company-terms";
 import { BrandFundList } from "../components/decoder/brand-funds";
 import { BrokerageGroupCard } from "../components/decoder/institutions/brokerage-card";
 import { IconDrillIn } from "../components/icons";
-import { NumAfter, NumberLegend } from "../components/provenance";
+import { IdRef, Num, NumAfter, NumberLegend } from "../components/provenance";
 import { Breadcrumb, PageShell } from "../components/shell";
 import { Callout, Card, Disclosure } from "../components/kit";
 import type { SiteValue } from "../lib/value";
 import { fmt } from "../lib/format";
 import { cmaFeeValue, compactFee, expandFee, feeYear, type CompactFee } from "../lib/value";
-import { compactHoldings, holdingsTemplate, stockShare } from "../lib/track-exposure";
+import { compactHoldings, exposureShares, holdingsTemplate } from "../lib/track-exposure";
 
+/**
+ * The order of a company page's product groups, by how often a reader comes for them (founder, 2026-10-27); a group not named here
+ * follows, the managing company's in `classificationOrder`, then the funds.
+ */
+const groupOrder = ["track:קופת גמל להשקעה", "funds:tracking", "brokerage", "track:קרנות השתלמות", "funds:money-market"];
 const classificationOrder = ["קופת גמל להשקעה", "קרנות השתלמות", "תגמולים ואישית לפיצויים", "קופת גמל להשקעה - חסכון לילד", "קרנות חדשות", "קרנות כלליות", "מרכזית לפיצויים", "מטרה אחרת"];
 
 export async function loader({ params }: Route.LoaderArgs) {
-  const { loadCma, loadCmaFees, loadCmaHoldings, loadTerms, loadProducts, today } = await import("../lib/data.server");
+  const { loadCma, loadCmaFees, loadCmaHoldings, loadTerms, loadProducts, loadWrappers, today } = await import("../lib/data.server");
   const { institutionCompanies, loadCatalog, resolutionOf, seenValue, seenWhere } = await import("../lib/instruments.server");
   const cma = loadCma();
   // D33: a brand's every address shows its one page: the managing company's tracks, the funds, the brokerage account
@@ -38,6 +43,11 @@ export async function loader({ params }: Route.LoaderArgs) {
     return { kind: "institution" as const, institution };
   }
   const wrappers = loadProducts();
+  const wrapperCaps = new Map<string, { balance: SiteValue | null; deposit: SiteValue | null }>(
+    loadWrappers()
+      .filter((w) => w.fee_caps?.balance || w.fee_caps?.deposit)
+      .map((w) => [w.id, { balance: (w.fee_caps?.balance?.value != null ? w.fee_caps.balance : null) as SiteValue | null, deposit: (w.fee_caps?.deposit?.value != null ? w.fee_caps.deposit : null) as SiteValue | null }]),
+  );
   const terms = loadTerms();
   const collator = new Intl.Collator("he");
   const tracks = cma.tracks.filter((t) => t.companyId === company?.id).sort((a, b) => collator.compare(a.name, b.name));
@@ -53,7 +63,14 @@ export async function loader({ params }: Route.LoaderArgs) {
       const balances = list.map((x) => feesOf.get(x.fundId)!.balance);
       const template = cmaFeeValue(balances.find((b) => b.value !== null) ?? balances[0]!, t);
       const fees: Record<number, CompactFee> = Object.fromEntries(list.map((x, i) => [x.fundId, compactFee(balances[i]!, template)]));
-      // F-87 (D34): the same compaction for the two amounts the stock share is computed from
+      // the deposit fee, the fee cell's second line (D34), compacted the same way
+      const deposits = list.map((x) => feesOf.get(x.fundId)!.deposit);
+      const depositTemplate = cmaFeeValue(deposits.find((b) => b.value !== null) ?? deposits[0]!, t);
+      const depositFees: Record<number, CompactFee> = Object.fromEntries(list.map((x, i) => [x.fundId, compactFee(deposits[i]!, depositTemplate)]));
+      // the product's legal caps (its wrapper record's fee_caps, sourced to the regulations), for the line under the table
+      const wrapperId = list[0]!.wrapperId;
+      const caps = (wrapperId && wrapperCaps.get(wrapperId)) || null;
+      // F-87 and F-88 (D34): the same compaction for the amounts the exposure shares are computed from
       const period = list[0]!.reportPeriod;
       const stockTemplate = holdingsTemplate(list.map((x) => holdingsOf.get(x.fundId)), period, t);
       const holdings = Object.fromEntries(list.map((x) => [x.fundId, compactHoldings(holdingsOf.get(x.fundId), stockTemplate)]));
@@ -66,6 +83,9 @@ export async function loader({ params }: Route.LoaderArgs) {
         tracks: list,
         fees,
         feeTemplate: template,
+        depositFees,
+        depositTemplate,
+        caps,
         wrapper: wrapper ? { id: wrapper.id, name: wrapper.names.he[0]!, line: terms.find((t) => t.he === wrapper.names.he[0])?.explanation ?? null } : null,
       };
     });
@@ -88,11 +108,13 @@ export async function loader({ params }: Route.LoaderArgs) {
   const termGroups = companyTermGroups(registryIds, allRules, topicName);
   const brokerage = brand?.brokerId ? brokeragePart(brand.brokerId) : null;
   const funds = brand ? brandFunds(brand) : [];
-  const termRules = { ...brokerage?.rules, ...Object.fromEntries(termGroups.flatMap((g) => g.ids).map((id) => [id, allRules[id]!])) };
+  // the rules the funds' label sheets name (the label set's own, as on the index page)
+  const labelRuleIds = [...new Set(funds.flatMap((g) => g.funds.flatMap((f) => f.labels.flatMap((l) => l.rules))))].filter((id) => allRules[id]);
+  const termRules = { ...brokerage?.rules, ...Object.fromEntries([...termGroups.flatMap((g) => g.ids), ...labelRuleIds].map((id) => [id, allRules[id]!])) };
   const { loadInstitutionRegistry } = await import("../lib/institutions.server");
   const name = brand?.name ?? company!.name;
   const shortName = brand?.name ?? loadInstitutionRegistry().find((r) => r.id === registryIds[0])?.name_he ?? name;
-  const companyTerms = { groups: termGroups, rules: termRules, pointed: pointedRecords(termRules, allRules), company: registryIds[0] ?? null, name: shortName, dimensions: termGroups.length ? Object.fromEntries(loadChecklistRows().map((r) => [r.id, r.name])) : {} };
+  const companyTerms = { groups: termGroups, rules: termRules, pointed: pointedRecords(termRules, allRules), company: registryIds[0] ?? null, pageCompanies: registryIds, name: shortName, dimensions: termGroups.length ? Object.fromEntries(loadChecklistRows().map((r) => [r.id, r.name])) : {} };
   // the legal companies the page stands for, as their own data writes them (the CMA, the tariff, the fund records)
   const members = brand ? [...new Set([company?.name, brokerage?.tariff.providerName, ...brand.fundManagers].filter((x): x is string => !!x))] : [];
   const brokerageCard = brokerage && brand?.brokerId ? { id: brand.brokerId, kind: brokerage.kind, tariff: brokerage.tariff } : null;
@@ -144,10 +166,8 @@ function ManagerCompany({ data }: { data: CompanyData }) {
   // or brokerage account (most managing companies run several types; each group heading links to its own guide)
   const side = data.groups.length === 1 && data.funds.length === 0 && !data.brokerage ? data.groups[0]!.wrapper : null;
   const company = data.company;
-  // the page's groups in one order: the managing company's products, the funds, the brokerage account; the first is open
-  const firstOpen = company && data.groups.length > 0 ? "tracks" : data.funds.length > 0 ? "funds" : "brokerage";
   return (
-    <PageShell current="decoder" data={{ rules: data.companyTerms.rules, pointed: data.companyTerms.pointed, terms: {}, dimensions: data.companyTerms.dimensions, today: data.today, ...(data.companyTerms.company ? { company: data.companyTerms.company } : {}) }}>
+    <PageShell current="decoder" data={{ rules: data.companyTerms.rules, pointed: data.companyTerms.pointed, terms: {}, dimensions: data.companyTerms.dimensions, today: data.today, ...(data.companyTerms.company ? { company: data.companyTerms.company } : {}), pageCompanies: data.companyTerms.pageCompanies }}>
       <div className="pt-2 lg:pt-8">
         <div className="flex-1 min-w-0 flex flex-col gap-6 lg:gap-8">
           <header className="flex flex-col gap-3">
@@ -198,9 +218,13 @@ function ManagerCompany({ data }: { data: CompanyData }) {
             </div>
             {company && <Callout tone="info">{copy.feesLine}</Callout>}
 
-            {company &&
-              data.groups.map((g, i) => (
-                <Disclosure key={g.classification} defaultOpen={firstOpen === "tracks" && i === 0} className="flex flex-col gap-2" summaryClassName="min-h-12 md:min-h-14" label={<GroupLabel title={g.classification} count={countLine(g.tracks.length)} />}>
+            {/* one list in the founder's order (groupOrder): the first group is open */}
+            {[
+              ...(company
+                ? data.groups.map((g) => ({
+                    key: `track:${g.classification}`,
+                    render: (open: boolean) => (
+                  <Disclosure key={g.classification} defaultOpen={open} className="flex flex-col gap-2" summaryClassName="min-h-12 md:min-h-14" label={<GroupLabel title={g.classification} count={countLine(g.tracks.length)} />}>
                   {g.wrapper && (
                     <Link to={`/guide/${g.wrapper.id}`} className="inline-flex items-center gap-0.5 min-h-target text-sm text-link hover:underline self-start px-1">
                       {copy.whatIs} {g.wrapper.name}
@@ -217,33 +241,49 @@ function ManagerCompany({ data }: { data: CompanyData }) {
                   )}
                   <TrackList
                     feeHead={feeHeadOf(g.feeTemplate) + (g.tracks[0]?.dataset === "pensia-net" ? ` ${copy.feeRowWhole}` : "")}
-                    stockHead={g.stockTemplate ? copy.stock.column.replace("{period}", fmt.period(g.period)) : undefined}
+                    exposureHead={g.stockTemplate ? copy.stock.column.replace("{period}", fmt.period(g.period)) : undefined}
                     groups={groupTracks(
                       g.tracks.map((t) => ({
                         track: t,
                         href: `/companies/${company.id}/${t.fundId}`,
                         isDefault: data.defaultIds.includes(t.fundId),
                         fee: expandFee(g.fees[t.fundId]!, g.feeTemplate),
-                        ...(g.stockTemplate ? { stock: stockShare(g.holdings[t.fundId] ?? null, g.stockTemplate, g.period, data.today) } : {}),
+                        deposit: expandFee(g.depositFees[t.fundId]!, g.depositTemplate),
+                        ...(g.stockTemplate ? { exposure: exposureShares(g.holdings[t.fundId] ?? null, g.stockTemplate, g.period, data.today) } : {}),
                       })),
                       data.known,
                     )}
+                    foot={<FeeFoot caps={g.caps} />}
                   />
                 </Disclosure>
-              ))}
-
-            {data.funds.map((g, i) => (
-              <Disclosure key={g.kind} defaultOpen={firstOpen === "funds" && i === 0} className="flex flex-col gap-2" summaryClassName="min-h-12 md:min-h-14" label={<GroupLabel title={brandsCopy.funds.groups[g.kind]} count={fundCountLine(g.funds.length)} />}>
+                    ),
+                  }))
+                : []),
+              ...data.funds.map((g) => ({
+                key: `funds:${g.kind}`,
+                render: (open: boolean) => (
+              <Disclosure key={g.kind} defaultOpen={open} className="flex flex-col gap-2" summaryClassName="min-h-12 md:min-h-14" label={<GroupLabel title={brandsCopy.funds.groups[g.kind]} count={fundCountLine(g.funds.length)} />}>
                 <p className="text-sm text-muted-foreground max-w-measure px-1">{brandsCopy.funds.collected}</p>
-                <BrandFundList funds={g.funds} />
+                <BrandFundList funds={g.funds} kind={g.kind} />
               </Disclosure>
-            ))}
-
-            {data.brokerage && (
-              <Disclosure defaultOpen={firstOpen === "brokerage"} className="flex flex-col gap-2" summaryClassName="min-h-12 md:min-h-14" label={<GroupLabel title={r4catalogue.groups.brokerage} />}>
-                <BrokerageGroupCard id={data.brokerage.id} tariff={data.brokerage.tariff} kind={data.brokerage.kind} />
+                ),
+              })),
+              ...(data.brokerage
+                ? [
+                    {
+                      key: "brokerage",
+                      render: (open: boolean) => (
+              <Disclosure key="brokerage" defaultOpen={open} className="flex flex-col gap-2" summaryClassName="min-h-12 md:min-h-14" label={<GroupLabel title={r4catalogue.groups.brokerage} />}>
+                <BrokerageGroupCard id={data.brokerage!.id} tariff={data.brokerage!.tariff} kind={data.brokerage!.kind} />
               </Disclosure>
-            )}
+                      ),
+                    },
+                  ]
+                : []),
+            ]
+              .map((e, i) => ({ ...e, i, rank: groupOrder.indexOf(e.key) === -1 ? groupOrder.length : groupOrder.indexOf(e.key) }))
+              .sort((x, y) => x.rank - y.rank || x.i - y.i)
+              .map((e, j) => e.render(j === 0))}
           </section>
           {data.unassigned.length > 0 && (
             <section aria-labelledby="un-h" className="flex flex-col gap-3">
@@ -278,6 +318,32 @@ function ManagerCompany({ data }: { data: CompanyData }) {
 
       </div>
     </PageShell>
+  );
+}
+
+/** Under each track table (D34): the product's legal caps, then that the direct expenses come on top (PF-10). */
+function FeeFoot({ caps }: { caps: { balance: SiteValue | null; deposit: SiteValue | null } | null }) {
+  return (
+    <div className="flex flex-col gap-1 text-xs text-muted-foreground">
+      {caps && (caps.balance || caps.deposit) && (
+        <span>
+          {copy.fees.cap}{" "}
+          {caps.balance && (
+            <>
+              <Num value={caps.balance} /> {caps.deposit ? copy.fees.capSavings : copy.fees.savings}{" "}
+            </>
+          )}
+          {caps.deposit && (
+            <>
+              <Num value={caps.deposit} /> {copy.fees.capDeposits}
+            </>
+          )}
+        </span>
+      )}
+      <span>
+        {copy.fees.direct} <IdRef id="PF-10" />
+      </span>
+    </div>
   );
 }
 

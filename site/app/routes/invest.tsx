@@ -12,8 +12,9 @@ import { feePlanItems, ScenarioDefaults } from "../components/fees/chips";
 import { IndexChips, PlanBlock } from "../components/invest/chips";
 import { HousesSection } from "../components/invest/houses";
 import { FundsSection } from "../components/invest/funds";
-import { LabelSheetHost } from "../components/invest/parts";
-import { Headline, IndexHeader, Matters, OptionsCompare, WorthBars } from "../components/invest/sections";
+import { AccountColumn, FundColumn, PairResult, pickOfHeadline, allFunds, type Pick } from "../components/invest/pair";
+import { LabelSheetHost } from "../components/kit";
+import { Headline, IndexHeader } from "../components/invest/sections";
 import { Foot, Steps } from "../components/invest/steps";
 import { Callout, Disclosure } from "../components/kit";
 import { Sheet } from "../components/Sheet";
@@ -24,7 +25,7 @@ import { type CompareBundle } from "../lib/compare";
 import { planInputs } from "../lib/plan-inputs";
 import { GoalsProvider, useGoals, type Presets } from "../lib/goal";
 import { useInputs } from "../lib/inputs";
-import { buildInvest, exposureIdOfSlug, indexById, INDICES_PATH, providersOfInvest, refOfCustom, type CustomIndex, type IndexRef } from "../lib/invest";
+import { buildInvest, exposureIdOfSlug, indexById, INDICES_PATH, refOfCustom, type CustomIndex, type IndexRef } from "../lib/invest";
 import { loadWorkbenchBundle, type WorkbenchBundle, type WorkbenchInputs } from "../lib/providers";
 import { useInvestState } from "../lib/state";
 import { recordsById } from "../lib/scope";
@@ -147,8 +148,8 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
   const index: IndexRef | null = useMemo(() => (exposureId ? indexById(wb, exposureId) : customId ? (customs.find((x) => x.id === customId) ? refOfCustom(customs.find((x) => x.id === customId)!) : null) : null), [wb, exposureId, customId, customs]);
   const known: IndexRef[] = data.indices.map((i) => ({ id: i.id, name: i.name, israeli: i.israeli, exposure: null, custom: null, oneLine: null }));
 
-  const brokers = useMemo(() => providersOfInvest(wb).filter((s) => !s.missing).map((s) => ({ id: s.id, name: s.provider.name_he })), [wb]);
-  const yourBroker = invest.broker && brokers.some((b) => b.id === invest.broker) ? invest.broker : null;
+  // the person compares their own account by picking it in the account list (founder, 2026-10-27: the separate "החשבון שלכם" field was redundant)
+  const yourBroker: string | null = null;
   const view = useMemo(() => (index ? buildInvest({ bundle: wb, index, plan, yourBroker }) : null), [wb, index, plan, yourBroker]);
 
   const [panelOpen, setPanelOpen] = useState(false);
@@ -156,15 +157,15 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
   // A chip opens the same fields the fees page opens, on the same current goal: a value typed here is the value there.
   const planItems = feePlanItems(fi, { return: plan.returnFromParameter ? c.plan.retExample : c.plan.retEntered });
 
-  // the house whose funds are listed: the person's click, else their own account, else the cheapest way's house
-  const [picked, setPicked] = useState<{ index: string; house: string } | null>(null);
-  const pickable = (id: string | null) => !!id && !!view?.houses.some((h) => h.provider.id === id && (h.best || h.generic));
-  const house = picked && index && picked.index === index.id && pickable(picked.house) ? picked.house : pickable(yourBroker) ? yourBroker : view?.headline?.providerId ?? view?.genericHeadline?.cell.providerId ?? view?.houses.find((h) => h.best || h.generic)?.provider.id ?? null;
-  const pickHouse = (id: string) => {
-    if (!index) return;
-    setPicked({ index: index.id, house: id });
-    requestAnimationFrame(() => document.getElementById("invest-funds-section")?.scrollIntoView({ behavior: "smooth", block: "start" }));
-  };
+  // the account and the fund the two lists are priced on: the person's picks on this index, else the cheapest way (2026-10-27)
+  const [picked, setPicked] = useState<{ index: string; pick: Pick } | null>(null);
+  const [labelFilter, setLabelFilter] = useState<string | null>(null);
+  const validPick = (p: Pick) => !!view && allFunds(view).some((f) => f.rec.id === p.fund) && view.providers.some((x) => x.id === p.house);
+  const pick: Pick | null = view && index && picked && picked.index === index.id && validPick(picked.pick) ? picked.pick : view ? pickOfHeadline(view) : null;
+  const onPick = (p: Pick) => index && setPicked({ index: index.id, pick: p });
+  // an index with no fund records (a custom one): the houses and their broker costs, and the request for funds
+  const [genericHouse, setGenericHouse] = useState<string | null>(null);
+  const house = genericHouse ?? view?.genericHeadline?.cell.providerId ?? view?.houses.find((h) => h.generic)?.provider.id ?? null;
 
   const rules = ["ETF-31", "ETF-24", "ETF-51", "TXS-09", "TXF-22"].filter((id) => wb.rules.some((r) => r.id === id));
 
@@ -190,7 +191,7 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
         <div className="flex flex-col gap-5">
           <Head />
           {chips}
-          <PlanBlock items={planItems} onOpen={() => setPanelOpen(true)} fx={wb.fx} today={data.today} brokers={brokers} yourBroker={yourBroker} onBroker={(id) => invest.setBroker(id)} hasGoal={plan.fromGoal} />
+          <PlanBlock items={planItems} onOpen={() => setPanelOpen(true)} fx={wb.fx} today={data.today} hasGoal={plan.fromGoal} />
         </div>
         {customId && !exposureId && !index && <Callout tone="caution">{c.custom.missing}</Callout>}
         {!index || !view ? (
@@ -198,19 +199,27 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
         ) : (
           <>
             <IndexHeader view={view} onChangeAnswer={index.custom ? () => invest.add({ ...index.custom!, israeli: !index.custom!.israeli }) : null} />
-            <Headline view={view} />
-            <Matters view={view} years={plan.values.years} />
-            <HousesSection view={view} chosen={house} onPick={pickHouse} />
-            <FundsSection view={view} houseId={house} onHouse={(id) => setPicked({ index: index.id, house: id })} mayaHref={wb.links.maya?.href ?? null} />
+            {pick ? (
+              <>
+                <PairResult view={view} bundle={wb} plan={plan} pick={pick} onPick={onPick} />
+                <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_2.5rem_minmax(0,32.5rem)] items-start">
+                  <AccountColumn view={view} bundle={wb} years={plan.years} pick={pick} onPick={onPick} />
+                  <span aria-hidden="true" className="hidden lg:grid place-items-center size-9 mt-10 rounded-full border border-input bg-popover text-xl text-muted-foreground justify-self-center">
+                    +
+                  </span>
+                  <FundColumn view={view} today={data.today} pick={pick} onPick={onPick} filter={labelFilter} onFilter={setLabelFilter} />
+                </div>
+              </>
+            ) : (
+              <>
+                <Headline view={view} />
+                <HousesSection view={view} chosen={house} onPick={(id) => setGenericHouse(id)} />
+                <FundsSection view={view} houseId={house} onHouse={(id) => setGenericHouse(id)} mayaHref={wb.links.maya?.href ?? null} />
+              </>
+            )}
             <div className="flex flex-col divide-y divide-border border-y border-border">
-              <Disclosure label={c.folds.worth} spread>
-                <WorthBars view={view} />
-              </Disclosure>
-              <Disclosure label={c.options.foldLabel} spread>
-                <OptionsCompare view={view} />
-              </Disclosure>
               <Disclosure label={c.folds.steps} spread>
-                <Steps view={view} monthly={plan.values.monthly} />
+                <Steps view={view} monthly={plan.values.monthly} pick={pick} />
               </Disclosure>
             </div>
             <Foot view={view} />

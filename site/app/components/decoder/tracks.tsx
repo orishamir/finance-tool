@@ -2,15 +2,16 @@
 // near-duplicate groups, paste card.
 import { useId, type ReactNode } from "react";
 import { Link } from "react-router";
-import { company as copy, r3workbench } from "../../copy";
+import { company as copy } from "../../copy";
 import type { Track } from "../../lib/data.server";
 import type { SiteValue } from "../../lib/value";
-import { FeeNum } from "./fees";
+import { FeeKey, FeeNum } from "./fees";
 import { Num } from "../provenance";
-import { stockShareText } from "../../lib/track-exposure";
-import { IconAlert, IconDrillIn, IconSearch } from "../icons";
+import { ringFraction, shareText, type ExposureShares } from "../../lib/track-exposure";
+import { trackLabels } from "../../lib/track-labels";
+import { IconDrillIn, IconSearch } from "../icons";
 import { useOpenSearch } from "../shell";
-import { Card, cx, Tag } from "../kit";
+import { Card, cx, ProductFigures, ProductPhoneRow, ProductTable, ShareRings, Swatch, Tag, type ProductColumn } from "../kit";
 
 export type Resolution = "distinct" | "twice" | "unresolved";
 
@@ -20,8 +21,10 @@ export interface TrackRowView {
   isDefault?: boolean;
   /** The regulator's balance-fee average of the track (not a ranking: the list keeps its order). */
   fee?: SiteValue;
-  /** F-87: the share of the track's assets exposed to shares; null when not reported, absent when the table has no such column. */
-  stock?: SiteValue | null;
+  /** The regulator's deposit-fee average of the track, the fee cell's second line (D34). */
+  deposit?: SiteValue;
+  /** F-87 and F-88: the shares of the track's assets exposed to stocks and to foreign currency; null or absent when its data file has no amounts. */
+  exposure?: ExposureShares | null;
 }
 
 export interface Group {
@@ -74,118 +77,130 @@ function Holds({ t }: { t: Track }) {
   );
 }
 
-/** The stock share, or the muted word for a track that did not report it (D34). */
-function StockCell({ value, size }: { value: SiteValue | null; size?: "inline" | "cell" }) {
-  if (!value) return <span className="text-sm text-muted-foreground">{copy.stock.missing}</span>;
-  return <Num value={value} size={size} display={stockShareText(value)} />;
+/** F-87 or F-88 (D34) through the provenance component; a share that could not be computed says why in its words and sheet. */
+export function ShareNum({ value, size = "inline" }: { value: SiteValue; size?: "inline" | "cell" }) {
+  return <Num value={value} size={size} display={shareText(value)} />;
 }
 
-export function TrackList({ groups, feeHead, stockHead }: { groups: Group[]; feeHead?: string; stockHead?: string }) {
-  const cols = 4 + (feeHead ? 1 : 0) + (stockHead ? 1 : 0);
-  const bannerId = useId();
+/** A track's exposure (D34): two rings, stocks outside and foreign currency inside, and beside them each share with its own dot and name. */
+export function ExposureCell({ value, size = "inline" }: { value: ExposureShares; size?: "inline" | "cell" }) {
+  const lines = [
+    { id: "stocks", v: value.stock, word: copy.stock.stocks, swatch: "bg-chart-stocks", ring: "stroke-chart-stocks" },
+    { id: "currency", v: value.currency, word: copy.stock.currency, swatch: "bg-chart-currency", ring: "stroke-chart-currency" },
+  ].filter((l): l is typeof l & { v: SiteValue } => !!l.v);
   return (
-    <>
-      <Card className="md:hidden p-0 md:p-0 overflow-hidden flex flex-col">
-        {groups.map((g) =>
-          g.dup ? (
-            <div key={g.key} role="group" aria-labelledby={`${bannerId}-${g.key}`} className="dup">
-              <div id={`${bannerId}-${g.key}`} className="dup-banner">
-                <IconAlert size={16} className="text-caution shrink-0" />
-                {copy.sameName[g.dup]}
-              </div>
-              {g.tracks.map((r) => (
-                <TrackRow key={r.track.fundId + r.track.name} row={r} />
-              ))}
-            </div>
-          ) : (
-            <TrackRow key={g.key} row={g.tracks[0]!} />
-          ),
-        )}
-      </Card>
-      <Card className="hidden md:block p-0 md:p-0 overflow-x-auto overflow-y-hidden">
-        <table className="tbl">
-          <thead>
-            <tr>
-              <th scope="col">{copy.pcColumns.name}</th>
-              <th scope="col">{copy.pcColumns.fund}</th>
-              <th scope="col">{copy.pcColumns.holds}</th>
-              {feeHead && <th scope="col">{feeHead}</th>}
-              {stockHead && <th scope="col">{stockHead}</th>}
-              <th scope="col" className="w-10 md:w-auto">
-                <span className="sr-only">{copy.pcColumns.open}</span>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {groups.flatMap((g) => {
-              const rows: ReactNode[] = [];
-              if (g.dup)
-                rows.push(
-                  <tr key={`${g.key}-banner`} className="dup-row">
-                    <td colSpan={cols} className="!pb-1 !border-b-0 border-s-[3px] border-s-caution">
-                      <span className="dup-banner !p-0">
-                        <IconAlert size={16} className="text-caution shrink-0" />
-                        {copy.sameName[g.dup]}
-                      </span>
-                    </td>
-                  </tr>,
-                );
-              for (const r of g.tracks)
-                rows.push(
-                  <tr key={r.track.fundId + r.track.name} className={cx(g.dup && "dup-row")}>
-                    <td className={cx(g.dup && "border-s-[3px] border-s-caution")}>
-                      <Link to={r.href} className="font-medium hover:underline">
-                        <bdi>{r.track.name}</bdi>
-                      </Link>{" "}
-                      {r.isDefault && <Tag tone="parameter">{copy.default}</Tag>}
-                    </td>
-                    <td>
-                      <bdi dir="ltr" className="num-id">{r.track.fundId}</bdi>
-                    </td>
-                    <td>
-                      <span className="flex flex-col gap-0.5">
-                        <span>{r.track.specialization}</span>
-                        {r.track.subSpecialization && (
-                          <span className="text-sm text-muted-foreground">
-                            <bdi>{r.track.subSpecialization}</bdi>
-                          </span>
-                        )}
-                      </span>
-                    </td>
-                    {feeHead && <td className="whitespace-nowrap">{r.fee && <FeeNum value={r.fee} size="cell" />}</td>}
-                    {stockHead && (
-                      <td className="whitespace-nowrap">
-                        <StockCell value={r.stock ?? null} size="cell" />
-                      </td>
-                    )}
-                    <td>
-                      <Link to={r.href} aria-label={r.track.name} className="inline-flex size-target items-center justify-center -my-2">
-                        <IconDrillIn className="text-muted-foreground" />
-                      </Link>
-                    </td>
-                  </tr>,
-                );
-              return rows;
-            })}
-          </tbody>
-        </table>
-        {groups.some((g) => g.tracks.some((r) => r.fee && r.fee.value === null)) && <p className="px-3 py-2 text-xs text-muted-foreground border-t border-border">{r3workbench.missingKey}</p>}
-      </Card>
-    </>
+    <span className="inline-flex items-center gap-2.5">
+      <ShareRings rings={lines.map((l) => ({ id: l.id, fraction: ringFraction(l.v), className: l.ring }))} />
+      <span className="grid grid-cols-[auto_auto] items-center gap-x-2 gap-y-0.5 text-sm text-muted-foreground">
+        {lines.map((l) => (
+          <span key={l.id} className="contents">
+            <span className="inline-flex items-center gap-1.5">
+              <Swatch shape="box" className={l.swatch} />
+              {l.word}
+            </span>
+            <ShareNum value={l.v} size={size} />
+          </span>
+        ))}
+      </span>
+    </span>
+  );
+}
+
+/** The default track's tag, then the facts about this track (lib/track-labels.ts). */
+function Labels({ row }: { row: TrackRowView }) {
+  const labels = trackLabels(row.track);
+  if (!row.isDefault && labels.length === 0) return null;
+  return (
+    <span className="inline-flex flex-wrap gap-1.5">
+      {row.isDefault && <Tag tone="parameter">{copy.default}</Tag>}
+      {labels.map((l) => (
+        <Tag key={l}>{copy.labels[l]}</Tag>
+      ))}
+    </span>
+  );
+}
+
+/** Both fee averages, each with its word: the balance fee, then the deposit fee (D34). */
+function FeeLines({ row, size = "inline", inline }: { row: TrackRowView; size?: "inline" | "cell"; inline?: boolean }) {
+  const lines = [
+    { id: "savings", v: row.fee, word: copy.fees.savings },
+    { id: "deposits", v: row.deposit, word: copy.fees.deposits },
+  ].filter((l): l is typeof l & { v: SiteValue } => !!l.v);
+  const items = lines.map((l) => ({ id: l.id, figure: <FeeNum value={l.v} size={size} />, word: l.word }));
+  return inline ? (
+    <span className="flex flex-wrap items-center gap-x-3 gap-y-1">
+      <ProductFigures items={items} inline />
+    </span>
+  ) : (
+    <ProductFigures items={items} />
+  );
+}
+
+export function TrackList({ groups, feeHead, exposureHead, foot }: { groups: Group[]; feeHead?: string; exposureHead?: string; foot?: ReactNode }) {
+  const columns: ProductColumn[] = [
+    { id: "name", head: copy.pcColumns.name },
+    { id: "fund", head: copy.pcColumns.fund },
+    { id: "holds", head: copy.pcColumns.holds },
+    ...(feeHead ? [{ id: "fee", head: feeHead }] : []),
+    ...(exposureHead ? [{ id: "exposure", head: exposureHead, cellClassName: "whitespace-nowrap" }] : []),
+    { id: "open", head: <span className="sr-only">{copy.pcColumns.open}</span>, headClassName: "w-10 md:w-auto" },
+  ];
+  const fees = groups.flatMap((g) => g.tracks.flatMap((r) => [r.fee, r.deposit]));
+  return (
+    <ProductTable
+      columns={columns}
+      groups={groups.map((g) => ({
+        key: g.key,
+        ...(g.dup ? { banner: copy.sameName[g.dup] } : {}),
+        rows: g.tracks.map((r) => ({
+          key: r.track.fundId + r.track.name,
+          phone: <TrackRow row={r} />,
+          cells: [
+            <span className="flex flex-col items-start gap-1.5">
+              <Link to={r.href} className="font-medium hover:underline">
+                <bdi>{r.track.name}</bdi>
+              </Link>
+              <Labels row={r} />
+            </span>,
+            <bdi dir="ltr" className="num-id">{r.track.fundId}</bdi>,
+            <span className="flex flex-col gap-0.5">
+              <span>{r.track.specialization}</span>
+              {r.track.subSpecialization && (
+                <span className="text-sm text-muted-foreground">
+                  <bdi>{r.track.subSpecialization}</bdi>
+                </span>
+              )}
+            </span>,
+            ...(feeHead ? [r.fee && <FeeLines row={r} size="cell" />] : []),
+            ...(exposureHead ? [r.exposure && <ExposureCell value={r.exposure} size="cell" />] : []),
+            <Link to={r.href} aria-label={r.track.name} className="inline-flex size-target items-center justify-center -my-2">
+              <IconDrillIn className="text-muted-foreground" />
+            </Link>,
+          ],
+        })),
+      }))}
+      foot={(place) => (
+        <>
+          {/* the key of the empty-cell words, on the phone too (2026-10-27: it was on the PC table only) */}
+          <FeeKey values={fees} className={cx("flex flex-col gap-1 py-2 text-xs text-muted-foreground border-t border-border", place === "phone" ? "px-4" : "px-3")} />
+          {foot && <div className={cx("py-3 border-t border-border", place === "phone" ? "px-4" : "px-3")}>{foot}</div>}
+        </>
+      )}
+    />
   );
 }
 
 function TrackRow({ row }: { row: TrackRowView }) {
   const { track: t } = row;
   // The fee and the stock share are provenance buttons, which cannot sit inside the link: each gets its own line under it.
-  const lines = !!row.fee || row.stock !== undefined;
+  const lines = !!row.fee || !!row.exposure;
   return (
-    <div className={cx("track", lines && "!flex-col !items-stretch !gap-1")}>
+    <ProductPhoneRow stacked={lines}>
       <Link to={row.href} className="flex items-center justify-between gap-3 min-w-0">
         <span className="flex flex-col gap-0.5 min-w-0">
           <span className="font-medium flex flex-wrap items-center gap-2">
             <bdi>{t.name}</bdi>
-            {row.isDefault && <Tag tone="parameter">{copy.default}</Tag>}
+            <Labels row={row} />
           </span>
           <TrackLine t={t} />
           <Holds t={t} />
@@ -195,19 +210,14 @@ function TrackRow({ row }: { row: TrackRowView }) {
         </span>
       </Link>
       {row.fee && (
-        <span className="text-sm text-muted-foreground flex flex-wrap items-center gap-x-1.5">
+        <span className="text-sm text-muted-foreground flex flex-wrap items-center gap-x-1.5 gap-y-1">
           {copy.feeRow}
           {t.dataset === "pensia-net" && <> {copy.feeRowWhole}</>}:
-          <FeeNum value={row.fee} />
+          <FeeLines row={row} inline />
         </span>
       )}
-      {row.stock !== undefined && (
-        <span className="text-sm text-muted-foreground flex flex-wrap items-center gap-x-1.5">
-          {copy.stock.row}:
-          <StockCell value={row.stock} />
-        </span>
-      )}
-    </div>
+      {row.exposure && <ExposureCell value={row.exposure} />}
+    </ProductPhoneRow>
   );
 }
 

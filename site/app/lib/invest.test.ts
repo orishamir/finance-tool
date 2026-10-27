@@ -1,6 +1,6 @@
 // "השקעה במדד" on the collected data (spec §8): the founder's plan, the grid, the custom index and D27.
 import { describe, expect, it } from "vitest";
-import { buildInvest, cheapestWay, indexById, knownIndices, matchKnownIndex, optionOfFund, rangeOverKnownIndices, refOfCustom, venueOfBand, type CustomIndex } from "./invest";
+import { buildInvest, cheapestWay, pairCosts, indexById, knownIndices, matchKnownIndex, optionOfFund, rangeOverKnownIndices, refOfCustom, venueOfBand, type CustomIndex } from "./invest";
 import { buildWorkbenchBundle } from "./providers.server";
 import type { WorkbenchInputs } from "./providers";
 import { entered } from "./value";
@@ -138,3 +138,30 @@ describe("invest page computation", () => {
     expect(venueOfBand("מסלול ONE")).toBeNull();
   });
 });
+
+describe("one account and one fund, broken down (2026-10-27)", () => {
+  const view = buildInvest({ bundle, index: sp, plan: plan() });
+  const w = view.headline!;
+  const pc = pairCosts({ bundle, index: sp, plan: plan(), fundId: w.fund.rec.id, providerId: w.providerId })!;
+  const num = (v: { value: unknown }) => v.value as number;
+
+  it("each way keeps what the account charges, by its tariff lines", () => {
+    const at = w.fund.byHouse[w.providerId] as { accountCost: number; lines: { cost: number }[]; interaction: number };
+    expect(at.lines.length).toBeGreaterThan(0);
+    expect(at.lines.reduce((a, l) => a + l.cost, 0) + at.interaction).toBeCloseTo(at.accountCost, 6);
+  });
+
+  it("the pair: the same value left as the list, the account's lines, the fund's fee and the tax", () => {
+    expect(num(pc.left)).toBeCloseTo(w.valueN, 6);
+    expect(num(pc.paidIn)).toBeCloseTo(6000 + 400 * 240, 6);
+    expect(pc.account.length).toBeGreaterThan(0);
+    expect(num(pc.tax)).toBeGreaterThan(0);
+    expect(num(pc.fund)).toBeGreaterThanOrEqual(0);
+  });
+
+  it("an account that cannot price the fund gives no breakdown", () => {
+    const none = Object.entries(w.fund.byHouse).find(([, v]) => "reason" in v)?.[0];
+    if (none) expect(pairCosts({ bundle, index: sp, plan: plan(), fundId: w.fund.rec.id, providerId: none })).toBeNull();
+  });
+});
+

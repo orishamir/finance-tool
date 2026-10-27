@@ -97,6 +97,10 @@ re-check the capabilities that depend on it.
   nothing is left to send back. A branch of more than about 30 files also
   gets an independent reviewer that sees the diff and the kit, not the
   builder's report.
+- **Push to main; never open a pull request** (founder, 2026-10-27). Finished
+  work is committed and pushed straight to `main` after `npm run check`
+  passes. This overrides any session instruction to work on a feature branch
+  or to open a PR.
 - **Lists are starting points, not limits.** When I give a list of items,
   options, or sources, add to it where sensible unless I say otherwise.
 
@@ -147,6 +151,7 @@ Look approved by the founder (2026-10-23). Tokens live in `site/app/theme.css`;
   figures; identifiers also use a slashed zero.
 - **Spacing.** 4 px base; `px-gutter` 16 to 32 px, `gap-section` 40 to 64 px,
   44 px touch targets, 48 px fields, prose at `max-w-measure` (38rem).
+- **Lists of products** (founder, 2026-10-27). A table on a desktop and one row per product on a phone, not stacked cards; the identifier is itself the link out (`1148808 ↗`); the column head carries the words and the cell the short value; columns as wide as their content; a kind (payout, how it tracks, currency) is a label chip, never a column, and a label shows on every row it is true of (2026-10-27); no figure that repeats a label, no column that is the same on every row. `docs/design-system.md` section 11, "Lists of products".
 - **RTL and formats.** Logical properties only. Isolate every number, date
   and identifier inside Hebrew text. `Intl` with `he-IL`: `1,234.50 ₪`,
   `22.10.2026`. Plural imperative in copy.

@@ -200,7 +200,8 @@ Why "למי ששלח לכם את האתר": every friend reached the site throug
 | Group 1 | איפה הכסף מוחזק |
 | Group 1, line | המוצר עצמו: חשבון בבנק, קופה או חשבון השקעות |
 | Group 2 | במה הכסף מושקע |
-| Group 2, line | מה שבתוך המוצר: מזומן, אג״ח, מניות דרך מדד |
+| Group 2, line | מה שבתוך המוצר: מזומן, מק״מ, קרן כספית, אג״ח, מניות דרך מדד |
+| Group 2, the money-market fund entry (D6, 2026-10-27) | its kinds as link pills: יומית · מתחדשת (list named "קרן כספית לפי סוג" for screen readers) |
 | Each card's line | the product's one-line explanation from `docs/glossary.md` |
 | Last card | מה האתר עוד לא מכסה |
 | Last card, line | מוצרים שהאתר מכיר אבל עוד לא מסביר עד הסוף · changed 2026-10-24 (Hebrew editor); was ״מוצרים שאנחנו מכירים אבל עוד לא מסבירים עד הסוף״ |
@@ -588,6 +589,7 @@ Why "בשקלים של העתיד" rather than "נומינלי": the reader sees
 | `track.labels.population · inception` | למי מיועד · נפתח ב־ | two more record labels from the regulator's data |
 | `track.feeWhole` | לקרן כולה | appended to both fee labels on a pension track |
 | `track.feeNotReported` | עוד לא דווח | an empty fee field is not zero. Was "טרם דווח" |
+| `track.feeNone` | אין | an empty deposit-fee field of a product type that may charge from the balance only (PF-06: study, IRA, central and other-purpose funds): no fee, by rule. No caution mark (2026-10-27) |
 
 ### 3.13 Not covered yet
 
@@ -1904,9 +1906,15 @@ The founder, 2026-10-26: someone browsing the companies wants a company's produc
 | Fund groups | קרנות סל · קרנות מחקות · קרנות כספיות · קרנות נאמנות |
 | Fund group count | קרן אחת · שתי קרנות · `{מספר}` קרנות |
 | Fund group note | רק הקרנות שהאתר אסף עליהן דוח, לא כל הקרנות של החברה. דמי הניהול לפי הדוח של כל קרן. |
-| Fund row, what it follows (link to the index's guide page, `/exposure/<index>` since 2026-10-26, or the money-market guide) | עוקבת אחרי `{מדד}` · קרן כספית |
+| Fund table, column heads (founder, 2026-10-27; was a card per fund) | שם הקרן · מספר נייר · המדד (a money-market group: סוג הקרן) · דמי ניהול לפי הדוח של הקרן |
+| Fund table, the index cell (link to `/exposure/<index>`; the head carries the word) | `{שם המדד בלי "מדד"}`, for example ת"א-125 |
+| Fund table, a money-market fund's kind (link to its guide) | קרן כספית יומית · קרן כספית מתחדשת |
+| Fund table, the fee lines (`{אחוז}` then the word; one not collected: לא נאסף) | קבועים · משתנים · נאמן |
+| Fund table, the number as the Maya link: its spoken name | `{מספר}`, בדף הקרן במאיה |
+| Fund table, phone row | מספר נייר `{מספר}` ↗ · מדד `{שם}` › · דמי ניהול: `{אחוז}` קבועים `{אחוז}` משתנים `{אחוז}` נאמן |
+| Fund labels, the payout family (new 2026-10-27, MF-49) | חלוקה: צוברת ("הקרן לא מחלקת תשלומים: הכנסות כמו דיבידנד וריבית מושקעות בה מחדש.") · מחלקת דיבידנד ("הקרן מחלקת תשלומים לבעלי היחידות, פעם בשנה או יותר, לפי שיקול דעת המנהל.") |
 
-The fund row's other words (מנהלת הקרן, מספר נייר, בדף הקרן במאיה, the three fee names, לא נאסף) are the index page's (`invest.funds` in `site/app/copy.ts`).
+Until 2026-10-27 each fund was a card with "מנהלת הקרן", "עוקבת אחרי `{מדד}`" and a separate "בדף הקרן במאיה" line; the table drops all three (the brand's fund managers are on the page's companies line). The other labels' words are the index page's (`invest.labels` in `site/app/copy.ts`).
 
 ### 8.8 Stock exposure of a track (D34, 2026-10-26)
 
@@ -1914,15 +1922,28 @@ The founder, 2026-10-26: the company page's last column shows something other th
 
 | Where | Hebrew |
 |---|---|
-| Company page, column heading; track page, row label | חשיפה למניות בסוף `{חודש שנה}` |
-| Company page, phone line | חשיפה למניות: `{אחוז}` |
-| A track that did not report the amounts | לא דווח |
-| The sheet, what the figure is | החלק מנכסי המסלול שחשוף לשוק המניות בסוף `{חודש שנה}` |
-| The sheet, formula name (F-87) | החלק מנכסי המסלול שחשוף למניות |
-| The sheet, the two inputs | החשיפה לשוק המניות · סך נכסי המסלול |
+| Company page, column heading | חשיפה בסוף `{חודש שנה}` |
+| Beside the rings, each with its colour dot (no legend above the table) | מניות `{אחוז}` · מט״ח `{אחוז}` |
+| Track page, row labels | חשיפה למניות בסוף `{חודש שנה}` · חשיפה למט״ח בסוף `{חודש שנה}` |
+| A track that did not report the amounts; one that reported assets of 0 | לא דווח · אין נכסים |
+| The sheet, the note on every share | לפי דיווח המסלול לרשות שוק ההון. הרשות לא מפרסמת אם החשיפה כוללת נגזרים או את מה שבתוך קרנות שהמסלול מחזיק, ולכן היא יכולה להיות גבוהה מ־100%. |
+| The sheet, what the figure is | החלק מנכסי המסלול שחשוף לשוק המניות בסוף `{חודש שנה}` · החלק מנכסי המסלול שחשוף למטבע חוץ בסוף `{חודש שנה}` |
+| The sheet, formula names (F-87, F-88) | החלק מנכסי המסלול שחשוף למניות · החלק מנכסי המסלול שחשוף למטבע חוץ |
+| The sheet, the inputs | החשיפה לשוק המניות · החשיפה למטבע חוץ · סך נכסי המסלול |
 | The unit of the regulator's amounts | `{מספר}` מיליון ₪ |
 
+Fee cell and labels (D36, the same day): header "דמי ניהול, ממוצע `{שנה}`"; each cell "`{אחוז}` מהחיסכון" over "`{אחוז}` מההפקדות" (phone: "דמי ניהול, ממוצע: `{אחוז}` מהחיסכון `{אחוז}` מההפקדות"); under the table "התקרה בחוק: `{אחוז}` מהחיסכון, `{אחוז}` מההפקדות" and "בנוסף לדמי הניהול יורדות מהקופה הוצאות ישירות (עמלות מסחר, משמורת ועוד), שלא מופיעות כאן: הן נראות בתשואה, לא כשורה בחשבון." with the PF-10 chip; labels "חדש" · "לעובדי סקטור מסוים" · "לעובדי גוף מסוים" beside "ברירת המחדל".
+
 Removed the same day with the fit mark on these pages: the row mark (מתאים · לא מתאים · אין כלל לסיווג הזה, "התאמה למטרה:") and the strip's "ההתאמה לפי המטרה השמורה:" there; the workbench keeps them (`docs/roadmap.md`, "Not final").
+
+### 8.9 The index page as two linked lists (D28 as amended, 2026-10-27)
+
+The strings are `invest.pair` in `site/app/copy.ts`. The words the founder saw in the mockups and kept:
+
+- The result: "הפקדתם" ← "נשאר לכם בעוד {N} שנים" with "אחרי דמי ניהול ומס, בכסף של היום"; on the cheapest pair "★ הזוג הזול ביותר לתוכנית שלכם" and "לעומת {חשבון}, החשבון שלכם, עם אותה קרן"; after a change "הבחירה שלכם" beside "★ הזוג הזול ביותר", "{סכום} יותר אם עוברים לזוג הזול" and "בחרו את הזוג הזה".
+- The cost: "כמה זה עולה לכם ב־{N} שנים" (one pair) or "…, בכל אחד מהזוגות" (two), "מתוכם החשבון גובה", and the key by who takes it: "החשבון:", "הקרן:", "המדינה:". It replaced "מה יצא בדרך", which the founder turned down.
+- The lists: "כל החשבונות" / "כשקונים בהם את {קרן}", "כל הקרנות על {מדד}" / "בחשבון {חשבון}", each with "בחרו … אחר, והרשימה תסתדר מחדש"; the chosen fund's row says "הבחירה", the others their difference from it ("לעומת הבחירה").
+- Rows that cannot be priced: "{N} חשבונות לא מחושבים עם הקרן הזו:" with the reason and the names, and "כשהנתון ייאסף, הם יצטרפו לרשימה."
 
 ## 9. Release 5 screens
 
@@ -2569,7 +2590,8 @@ Also fixed outside `copy.ts` the same day, at the lead's request: "הודעו" �
 |---|---|---|
 | `r3workbench.openToAll` | פתוח לכולם · `{n}` מסלולים הפתוחים רק לקבוצה מסוימת מוסתרים | A36: the toggle, on by default; the count is the sector and employer tracks it hides |
 | `r3workbench.sortDir` | מהנמוך לגבוה · מהגבוה לנמוך | A36: screen-reader words for the sort direction; a second press reverses |
-| `r3workbench.missingKey` | עוד לא דווח: החברה לא דיווחה לרשות את הנתון לתקופה הזו. | A87: one-line key under a table that holds an unreported fee |
+| `r3workbench.missingKey` | עוד לא דווח: השדה ריק בנתוני הרשות. לחצו על הערך כדי לראות אם הסיבה ידועה. | A87: one-line key under a table that holds an unreported fee. 2026-10-27: was "החברה לא דיווחה לרשות את הנתון לתקופה הזו", a cause the data does not state; the value's note says the reason when it is known |
+| `r3workbench.noneKey` | אין: בסוג הקופה הזה מותר לגבות דמי ניהול רק מהחיסכון, לא מההפקדות. | key line for `track.feeNone`, followed by the PF-06 chip (2026-10-27) |
 | `r4workbench.providers.provident.title` | איזו חברה: `{מוצר}` | A35: the provider page title for the provident wrappers |
 | `r4workbench.providers.provident.covered` | נאסף תעריפון של חברה אחת מתוך `{n}`; הדירוג הוא לפי מסלול. (many: של `{k}` חברות) | A35: one-sentence coverage statement, with the link "לדירוג לפי מסלול" |
 | `r4catalogue.oneTariff` | הבנק מפרסם תעריפון אחד; ההצעות באפליקציה אישיות: הזינו אותן בעמוד כסף שיושב בעו״ש. | A88: under the bank's deposits group when it holds one product; the link goes to /idle-cash |

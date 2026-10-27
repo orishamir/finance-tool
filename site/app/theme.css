@@ -188,6 +188,13 @@
   --blocked: var(--palette-red-400); /* icon and hatch: blocked by an open rule (D10, method §12) */
   --blocked-foreground: var(--palette-red-200);
   --blocked-subtle: var(--palette-red-950);
+  /* Callout frames (founder, 2026-10-27): a thin frame and a 4 px edge at the start in the tone's colour; the edge of caution and
+     blocked is their icon colour. Info is teal like the site's actions, one step lighter for its icon. */
+  --caution-border: var(--palette-amber-800);
+  --blocked-border: var(--palette-red-800);
+  --info: var(--palette-teal-400); /* edge of an info callout */
+  --info-foreground: var(--palette-teal-200); /* its icon */
+  --info-border: var(--palette-teal-800); /* its frame */
   --positive: var(--palette-green-400); /* icon: dimension considered (3.3) */
   --positive-foreground: var(--palette-green-200);
   --positive-subtle: var(--palette-green-950);
@@ -222,7 +229,29 @@
   --chart-option-2: var(--palette-teal-400);
   --chart-option-3: var(--palette-teal-600);
   --chart-baseline: var(--palette-neutral-300); /* drawn dotted on the comparison chart (2026-10-26): any grey sits within 15 ΔE of one of the three teal steps */
+  /* a track's exposure rings (D34, 2026-10-26, the company page): the share in shares and the share in foreign currency, two separate
+     measures of the same assets, never slices of one whole. Teal and gold, the guide's value-and-alternative pair; the empty part is
+     the chart grid */
+  --chart-stocks: var(--palette-teal-400);
+  --chart-currency: var(--palette-gold-200);
   --chart-alt: var(--palette-gold-200); /* the nearest alternative in a guide page's two-line drawing (D29, 2026-10-25): gold against the teal value line; same pair as fee kinds 2 and 3 */
+  /* the index page's cost bar (founder, 2026-10-27, research/specs/2026-10-27-invest-improvements 3.10): one hue per part, by who
+     takes it. The account's tariff lines (trade, custody, the fixed account fee, FX), then the fund's own fees, then tax (`--chart-tax`).
+     The founder asked for "more color variation" than the orange steps; blue and violet stay out (entered and computed inks) */
+  --chart-cost-trade: var(--palette-orange-500);
+  --chart-cost-custody: var(--palette-gold-200);
+  --chart-cost-fixed: var(--palette-red-500);
+  --chart-cost-fx: var(--palette-magenta-400);
+  --chart-cost-other: var(--palette-neutral-500);
+  --chart-cost-fund: var(--palette-green-300);
+  /* a fund label's family (founder, 2026-10-27: "i want all labels to have a nice icon with nice distinct color"): the icon and the
+     words take the colour, the chip a faint fill of it. A caution label keeps the caution role and an open-rule label the blocked role */
+  --label-held: var(--palette-neutral-200);
+  --label-trade: var(--palette-teal-200);
+  --label-follow: var(--palette-magenta-400);
+  --label-currency: var(--palette-gold-200);
+  --label-tax: var(--palette-rose-400);
+  --label-payout: var(--palette-green-300);
   /* how soon the money is back (2026-10-26, the daily money-market guide's table): the icon of a grey tag, warmer the longer the money is
      held (founder, 2026-10-26: option D of four; a fully coloured tag in teal, green, amber, red read like the flags of 3.2, and
      teal-gold-orange-rose or one orange hue were the others). Step 300, the icon only, the tag itself is `muted` */
@@ -349,6 +378,11 @@
   --color-blocked: var(--blocked);
   --color-blocked-foreground: var(--blocked-foreground);
   --color-blocked-subtle: var(--blocked-subtle);
+  --color-caution-border: var(--caution-border);
+  --color-blocked-border: var(--blocked-border);
+  --color-info: var(--info);
+  --color-info-foreground: var(--info-foreground);
+  --color-info-border: var(--info-border);
   --color-positive: var(--positive);
   --color-positive-foreground: var(--positive-foreground);
   --color-positive-subtle: var(--positive-subtle);
@@ -382,4 +416,18 @@
   --color-chart-option-3: var(--chart-option-3);
   --color-chart-baseline: var(--chart-baseline);
   --color-chart-alt: var(--chart-alt);
+  --color-chart-stocks: var(--chart-stocks);
+  --color-chart-currency: var(--chart-currency);
+  --color-chart-cost-trade: var(--chart-cost-trade);
+  --color-chart-cost-custody: var(--chart-cost-custody);
+  --color-chart-cost-fixed: var(--chart-cost-fixed);
+  --color-chart-cost-fx: var(--chart-cost-fx);
+  --color-chart-cost-other: var(--chart-cost-other);
+  --color-chart-cost-fund: var(--chart-cost-fund);
+  --color-label-held: var(--label-held);
+  --color-label-trade: var(--label-trade);
+  --color-label-follow: var(--label-follow);
+  --color-label-currency: var(--label-currency);
+  --color-label-tax: var(--label-tax);
+  --color-label-payout: var(--label-payout);
 }
