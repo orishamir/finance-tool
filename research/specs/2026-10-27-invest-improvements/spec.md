@@ -42,7 +42,7 @@ The reader has already chosen an index and wants to hold it in a regular securit
 
 ### 3.1 Two decisions of very different size
 
-Someone with the S&P 500 or the TA-90 in mind makes two choices: the account and the fund. The page's own numbers (default plan: 10,000 ₪, 500 ₪ a month, 10 years) show how unequal they are:
+Take a reader who has already chosen the S&P 500, or one who has already chosen the TA-90 (two separate readers; the page never sets one index against another, D27). Each makes two choices: the account and the fund. The page's own numbers (default plan: 10,000 ₪, 500 ₪ a month, 10 years) show how unequal they are:
 
 | | S&P 500 | TA-125 |
 |---|---|---|
@@ -52,7 +52,7 @@ Someone with the S&P 500 or the TA-90 in mind makes two choices: the account and
 
 The fund figures also take tracking difference as zero, so the fund gaps are less certain than they look. **The account is the decision; the fund is mostly a tie.** The page should be built the same way: the account gets the visual comparison, and the fund gets a short list.
 
-The data for the two indices the founder names:
+What each of the two readers finds today:
 
 - **S&P 500**: 14 fund records (8 Israeli ETFs and 5 Israeli tracking funds, by swap or several ways together, one of them hedged; one Irish ETF bought abroad), plus a route abroad.
 - **TA-90**: 6 records (5 ETFs, 1 tracking fund), all hold the shares, all in shekels, none hedged, no route abroad. The fund step is almost nothing here: the labels are the same on every row and the hedging filter has nothing to filter.
