@@ -1,0 +1,97 @@
+diff --git a/site/app/components/decoder/brand-funds.tsx b/site/app/components/decoder/brand-funds.tsx
+index affedc0..2f1a4f4 100644
+--- a/site/app/components/decoder/brand-funds.tsx
++++ b/site/app/components/decoder/brand-funds.tsx
+@@ -6,6 +6,7 @@ import type { BrandFundRow } from "../../lib/brands.server";
+ import { IconDrillIn, IconExternal } from "../icons";
+ import { Num } from "../provenance";
+ import { Card, KeyValue } from "../kit";
++import { LabelRow } from "../invest/parts";
+ import type { SiteValue } from "../../lib/value";
+ 
+ const c = invest.funds;
+@@ -26,7 +27,7 @@ export function BrandFundList({ funds }: { funds: BrandFundRow[] }) {
+ 
+ function BrandFundCard({ f }: { f: BrandFundRow }) {
+   return (
+-    <Card as="li" pad="tight" id={`fund-${f.id}`} className="flex flex-col gap-2.5">
++    <Card as="li" pad="tight" id={`fund-${f.id}`} className="grid gap-x-8 gap-y-3 md:grid-cols-[minmax(0,1fr)_minmax(0,20rem)]">
+       <div className="flex flex-col gap-1">
+         <h3 className="font-semibold leading-snug">
+           <bdi>{f.name}</bdi>
+@@ -54,8 +55,17 @@ function BrandFundCard({ f }: { f: BrandFundRow }) {
+             <IconDrillIn size={16} />
+           </Link>
+         )}
++        <LabelRow labels={f.labels} className="pt-1" />
+       </div>
+-      <dl className="flex flex-col gap-0.5 max-w-sm">
++      <div className="flex flex-col gap-3">
++      {f.profile && (
++        <dl className="flex flex-col gap-0.5">
++          <KeyValue label={`חשיפה למניות (${f.profile.code[0]})`}><span className="underline decoration-dotted">{f.profile.stocks}</span></KeyValue>
++          <KeyValue label={`חשיפה למטבע חוץ (${f.profile.code[1]})`}><span className="underline decoration-dotted">{f.profile.fx}</span></KeyValue>
++          {f.policy && <KeyValue label="רווחים">{f.policy}</KeyValue>}
++        </dl>
++      )}
++      <dl className="flex flex-col gap-0.5 border-t border-border pt-2">
+         <KeyValue label={c.fixed}>
+           <FeeValue value={f.fixed} />
+         </KeyValue>
+@@ -66,6 +76,7 @@ function BrandFundCard({ f }: { f: BrandFundRow }) {
+           <FeeValue value={f.trustee} />
+         </KeyValue>
+       </dl>
++      </div>
+     </Card>
+   );
+ }
+diff --git a/site/app/lib/brands.server.ts b/site/app/lib/brands.server.ts
+index fe8b1c9..ef9e7cc 100644
+--- a/site/app/lib/brands.server.ts
++++ b/site/app/lib/brands.server.ts
+@@ -7,6 +7,7 @@ import { brandsTable, institutionsTable, type FundRecord, type InstitutionRegist
+ import { loadCma, root } from "./data.server";
+ import { loadExposures, loadFunds } from "./instruments.server";
+ import { ownBy, type SiteValue } from "./value";
++import { fundLabels as protoLabels } from "./labels";
+ import { readParsedCached, readJsonCached } from "./read-cache.server";
+ 
+ export interface Brand {
+@@ -95,6 +96,9 @@ export interface BrandFundRow {
+   fixed: SiteValue | null;
+   variable: SiteValue | null;
+   trustee: SiteValue | null;
++  labels: import("./labels").Label[];
++  profile: { code: string; stocks: string; fx: string } | null;
++  policy: string | null;
+ }
+ 
+ export interface BrandFundGroup {
+@@ -108,7 +112,18 @@ export function brandFunds(brand: Brand): BrandFundGroup[] {
+   if (brand.fundManagers.length === 0) return [];
+   const exposures = new Map(loadExposures().map((e) => [e.id, e]));
+   const recs = loadFunds().filter((f) => brand.fundManagers.includes(f.manager));
+-  const rows = recs.map((rec) => ({ kind: fundKindOf(rec), row: fundRow(rec, exposures.get(rec.exposure_id ?? "")?.names.he[0] ?? null) }));
++  const rows = recs.map((rec) => {
++    const ex = exposures.get(rec.exposure_id ?? "");
++    const ref = ex ? { id: ex.id, name: "", israeli: ex.constituents_israeli === true, exposure: ex, custom: null, oneLine: null } : { id: "", name: "", israeli: true, exposure: null, custom: null, oneLine: null };
++    const row = fundRow(rec, ex?.names.he[0] ?? null);
++    const S: Record<string, string> = { "0": "בלי", "1": "עד 10%", "2": "עד 30%", "3": "עד 50%", "4": "עד 120%", "5": "עד 200%", "6": "מעל 200%" };
++    const F: Record<string, string> = { "0": "בלי", A: "עד 10%", B: "עד 30%", C: "עד 50%", D: "עד 120%", E: "עד 200%", F: "מעל 200%" };
++    const code = (rec as { exposure_code?: string }).exposure_code;
++    row.labels = protoLabels(rec as never, ref as never, fundKindOf(rec) === "etf" ? "il-etf" : "il-tracking");
++    row.profile = code ? { code, stocks: S[code[0]!] ?? "", fx: F[code[1]!] ?? "" } : null;
++    row.policy = rec.distribution_policy === "accumulating" ? "לא מחלקת: הדיבידנד נשאר בקרן" : rec.distribution_policy === "distributing" ? "מחלקת" : null;
++    return { kind: fundKindOf(rec), row };
++  });
+   return kindOrder
+     .map((kind) => ({ kind, funds: rows.filter((r) => r.kind === kind).map((r) => r.row).sort((a, b) => collator.compare(a.name, b.name)) }))
+     .filter((g) => g.funds.length > 0);
+@@ -130,5 +145,5 @@ function fundRow(rec: FundRecord, exposureName: string | null): BrandFundRow {
+     : kind === "money-market"
+       ? { name: exposureName ?? "", href: `/guide/${rec.legal_form.includes("מתחדשת") ? "money-market-fund-renewable" : "money-market-fund-daily"}` }
+       : null;
+-  return { id: rec.id, name: rec.names.he[0] ?? rec.names.en[0] ?? rec.id, number, manager: rec.manager, follows, mayaHref, fixed: fee("fixed_management"), variable: fee("variable_management"), trustee: fee("trustee") };
++  return { id: rec.id, name: rec.names.he[0] ?? rec.names.en[0] ?? rec.id, number, manager: rec.manager, follows, mayaHref, fixed: fee("fixed_management"), variable: fee("variable_management"), trustee: fee("trustee"), labels: [], profile: null, policy: null };
+ }
