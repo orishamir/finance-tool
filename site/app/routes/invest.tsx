@@ -25,7 +25,7 @@ import { type CompareBundle } from "../lib/compare";
 import { planInputs } from "../lib/plan-inputs";
 import { GoalsProvider, useGoals, type Presets } from "../lib/goal";
 import { useInputs } from "../lib/inputs";
-import { buildInvest, exposureIdOfSlug, indexById, INDICES_PATH, providersOfInvest, refOfCustom, type CustomIndex, type IndexRef } from "../lib/invest";
+import { buildInvest, exposureIdOfSlug, indexById, INDICES_PATH, refOfCustom, type CustomIndex, type IndexRef } from "../lib/invest";
 import { loadWorkbenchBundle, type WorkbenchBundle, type WorkbenchInputs } from "../lib/providers";
 import { useInvestState } from "../lib/state";
 import { recordsById } from "../lib/scope";
@@ -148,8 +148,8 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
   const index: IndexRef | null = useMemo(() => (exposureId ? indexById(wb, exposureId) : customId ? (customs.find((x) => x.id === customId) ? refOfCustom(customs.find((x) => x.id === customId)!) : null) : null), [wb, exposureId, customId, customs]);
   const known: IndexRef[] = data.indices.map((i) => ({ id: i.id, name: i.name, israeli: i.israeli, exposure: null, custom: null, oneLine: null }));
 
-  const brokers = useMemo(() => providersOfInvest(wb).filter((s) => !s.missing).map((s) => ({ id: s.id, name: s.provider.name_he })), [wb]);
-  const yourBroker = invest.broker && brokers.some((b) => b.id === invest.broker) ? invest.broker : null;
+  // the person compares their own account by picking it in the account list (founder, 2026-10-27: the separate "החשבון שלכם" field was redundant)
+  const yourBroker: string | null = null;
   const view = useMemo(() => (index ? buildInvest({ bundle: wb, index, plan, yourBroker }) : null), [wb, index, plan, yourBroker]);
 
   const [panelOpen, setPanelOpen] = useState(false);
@@ -191,7 +191,7 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
         <div className="flex flex-col gap-5">
           <Head />
           {chips}
-          <PlanBlock items={planItems} onOpen={() => setPanelOpen(true)} fx={wb.fx} today={data.today} brokers={brokers} yourBroker={yourBroker} onBroker={(id) => invest.setBroker(id)} hasGoal={plan.fromGoal} />
+          <PlanBlock items={planItems} onOpen={() => setPanelOpen(true)} fx={wb.fx} today={data.today} hasGoal={plan.fromGoal} />
         </div>
         {customId && !exposureId && !index && <Callout tone="caution">{c.custom.missing}</Callout>}
         {!index || !view ? (
