@@ -147,6 +147,24 @@ Round 3 (`source-round3.html`) builds the decisions into C2. In all three, the b
 
 The values left at each account, per type, are the live site's (read account by account on 27.10.2026). What each account charges, and its split by fee type, are illustrative.
 
+**Founder, round 3 (2026-10-27):** none of E1 to E3, apart from the label explanation. E1 reads unnaturally, E2 worse; E3 is the best of them, but not its "השוו את החשבונות על" switch. The design must also hold once the missing tariff lines are researched.
+
+### 3.8 Round 4: two linked lists (2026-10-27)
+
+E3 worked because every account was priced on the same fund. What failed was asking the reader to pick a pricing method. Round 4 (`source-round4.html`) drops the method: **the fund the reader has selected is the context.**
+- The page opens on the cheapest pair, account plus fund, named at the start of the figures strip.
+- The account list shows every account for the selected fund. The fund list shows every fund at the selected account, with a radio on each row.
+- Clicking a fund re-ranks the accounts; clicking an account re-ranks the funds. The comparison with your account is always on the same fund ("על אותה קרן").
+- An account whose tariff cannot price the selected fund is listed under the ranking: "N חשבונות שאי אפשר לחשב עם הקרן הזו", with the reason and what it would leave with a fund it can price. This is D17's "not evaluated, with the reason".
+- When the research fills a gap, that account simply joins the ranking, and nothing in the design changes. That is the founder's condition.
+
+Three states of the same design:
+- `option-F1-pc.png`: today, as the page opens (Psagot with Yalin's tracking fund): 4 accounts ranked, 10 that cannot be priced on a tracking fund.
+- `option-F2-pc.png`: today, after the reader picks ATF's ETF: all 14 ranked on the same fund; the strip offers the way back to the cheapest pair.
+- `option-F3-pc.png`: once the tariffs are researched. **The ten missing values are made up for the picture.**
+
+The label explanation from round 3 stays as it is.
+
 ## 4. Against `docs/product.md`: what else the page owes the reader
 
 `docs/product.md` section 2 states the reader's job: which fund variant and which provider, "which fees are worth fighting, and what they might be failing to consider", then act, and "be able to come back later and see whether anything changed".
@@ -164,7 +182,7 @@ The values left at each account, per type, are the live site's (read account by 
 
 ## 5. Decisions for the founder
 
-1. Section 3.7: E1, E2 or E3 (C2 was chosen in round 2).
+1. Section 3.8: the two linked lists (round 4).
 2. Section 3.7: hedging as a clickable label with a filter (the founder's proposal), and whether a label filter also re-ranks the accounts (E3) or only filters the fund list (E1, E2).
 3. Section 4 item 1: drop the "ETF or tracking fund" fold and amend D28 (a).
 4. Section 4 item 5: a negotiated fee entered on this page.
