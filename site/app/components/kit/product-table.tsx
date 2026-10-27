@@ -3,7 +3,7 @@
 // carry a caution banner (tracks that share a name). The cells and the phone rows are the caller's; the shell, the banner and the
 // widths are here.
 import { Fragment, useId, type ReactNode } from "react";
-import { IconAlert } from "../icons";
+import { IconAlert, IconExternal } from "../icons";
 import { Card } from "./card";
 import { cx } from "./cx";
 
@@ -99,4 +99,34 @@ export function ProductTable({ columns, groups, foot }: { columns: ProductColumn
 /** One product on a phone: a row of the list card. `stacked` when lines (fees, figures, labels) sit under the name. */
 export function ProductPhoneRow({ stacked, className, children }: { stacked?: boolean; className?: string; children: ReactNode }) {
   return <div className={cx("track", stacked && "!flex-col !items-stretch !gap-1", className)}>{children}</div>;
+}
+
+/** Figures each followed by its word ("0.35% קבועים", "0.62% מהחיסכון"): one under the other in a table cell, in one line on a phone. */
+export function ProductFigures({ items, inline }: { items: { id: string; figure: ReactNode; word: ReactNode }[]; inline?: boolean }) {
+  return (
+    <span className={inline ? "contents" : "flex flex-col gap-1"}>
+      {items.map((it) => (
+        <span key={it.id} className="inline-flex items-center gap-1.5 whitespace-nowrap">
+          {it.figure}
+          <span className="text-sm text-muted-foreground">{it.word}</span>
+        </span>
+      ))}
+    </span>
+  );
+}
+
+/** A product's identifier as the link to its official page elsewhere (a fund's number to Maya): the number, then the external icon. Without an address, the number alone. `label` is the link's spoken name, saying where it leads. */
+export function ProductIdLink({ id, href, label }: { id: string; href: string | null; label: string }) {
+  const n = (
+    <bdi dir="ltr" className="num-id">
+      {id}
+    </bdi>
+  );
+  if (!href) return n;
+  return (
+    <a href={href} target="_blank" rel="noopener noreferrer" aria-label={label} className="text-link hover:underline inline-flex items-center gap-1 whitespace-nowrap">
+      {n}
+      <IconExternal size={14} />
+    </a>
+  );
 }

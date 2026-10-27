@@ -21,4 +21,4 @@ export { CompanyLinks, type CompanyLinkItem } from "./company-links";
 export { CompareTable, ValueBar, type CompareRow } from "./compare-table";
 export { ShareRings, type Ring } from "./rings";
 export { LabelChip, LabelIcon, LabelRow, LabelSheetHost } from "./label-chip";
-export { ProductPhoneRow, ProductTable, type ProductColumn, type ProductGroup, type ProductRow } from "./product-table";
+export { ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, type ProductColumn, type ProductGroup, type ProductRow } from "./product-table";
