@@ -75,3 +75,15 @@ Each track column, and what a fund puts there:
 ## 6. Found on the way
 
 `data/funds/1149772@2026-10-25.json`: the name the table shows is "אי.בי.אי. סל (4D)י MSCI AC World", with a stray "י" after the code; the second name on the record has no "י". Check it against Maya before changing which name comes first.
+
+## 7. Where else the same decisions apply
+
+The decisions are recorded as general rules in `docs/design-system.md` section 11, "Lists of products". Surveyed on 2026-10-27, by screenshots of the running site and a search of the code:
+
+1. **Every brand page, at once.** `BrandFundList` is one component, used for every brand's fund groups (D33): Meitav's 7 ETFs, Harel, Mor, Kesem, Altshuler Shaham, Yalin Lapidot and the rest. The build in section 4 changes all of them, and its screenshots should include one more brand than IBI.
+2. **The index page's fund list** (`/indices/<index>`, `FundRow` in `site/app/components/invest/funds.tsx`). Same card, same separate "בדף הקרן במאיה" line, same fee list with `max-w-sm` and the empty half. It becomes the same table with two more columns, the rank (`RankBadge`) first and the value left at the chosen broker last. The number is the Maya link, and the labels already come from `fundLabels()`, so the payout label arrives there with the build. The type tag (`OptionTag`, "קרן מחקה · נקנית פעם ביום") stays among the labels, because funds of both types share this list. Biggest gain after the company page.
+3. **A bank's deposits** (`/companies/<bank>`, the deposit card in `site/app/components/decoder/institutions/page.tsx`). One deposit is a card of 11 rows. Hapoalim and Mizrahi-Tefahot have two one-year deposits each (`data/terms/deposits/`), so their pages stack two such cards. The kinds become labels: ריבית קבועה or משתנה, צמוד or לא צמוד, the break terms, and automatic renewal. The tax row repeats the guide ("השיעור בעמוד המדריך"), so it becomes a label that opens the rule. That leaves a table of term, rate, amount and as-of date. The model number ("דגם 5421/4") could become the link to the bank's rate table, like the fund number to Maya; today that link ("לטבלת הריביות של הבנק") is a line of its own.
+4. **The track table's widths** (company pages, `TrackList`). The name column wraps long track names ("… אשראי ואג"ח עם מניות (עד 25% במניות)") while "במה הכסף מושקע" and the fee column take more than they hold. Sizing the number, fee and exposure columns to their content gives the name the room. The table is shared with the fund list once the build generalises it, so one change covers both.
+5. **Later, when the founder reviews them:** the workbench pages (held as not final, `docs/roadmap.md`) have their own fund rows with a separate Maya link line (`site/app/components/workbench/funds/parts.tsx`, `site/app/routes/workbench-funds.tsx`). They follow these rules when they are settled, not before.
+
+Not candidates: the track page (one product, a key-value card is right for it), the brokerage tariff card (a document, not a list), and the comparison's ranked rows (one option per row with a verdict, a different anatomy).
