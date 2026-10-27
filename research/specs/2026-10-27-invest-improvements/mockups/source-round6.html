@@ -11,7 +11,7 @@
     --l-currency: oklch(0.86 0.13 92); --l-tax: oklch(0.76 0.14 28); --l-order: oklch(0.86 0.15 125);
     --l-asks: oklch(0.80 0.14 62); --l-open: oklch(0.70 0.19 25);
     /* cost lines */
-    --c-fund: oklch(0.86 0.13 92); --c-buy: oklch(0.70 0.17 50); --c-cust: oklch(0.80 0.12 60); --c-acct: oklch(0.58 0.15 45); --c-tax: var(--chart-tax); --c-left: var(--palette-teal-500);
+    --c-fund: oklch(0.76 0.10 135); --c-buy: oklch(0.72 0.17 50); --c-cust: oklch(0.87 0.14 95); --c-acct: oklch(0.60 0.18 28); --c-tax: var(--chart-tax); --c-left: var(--palette-teal-500);
   }
   * { box-sizing: border-box; }
   body { margin: 0; background: var(--background); color: var(--foreground); font-family: "Inter Variable", "Heebo Variable", sans-serif; font-size: 16px; line-height: 1.6; }
@@ -126,7 +126,7 @@
   .two { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 </style><style>
 
-  .pair { display: grid; grid-template-columns: minmax(0, 1fr) 44px 480px; align-items: stretch; }
+  .pair { display: grid; grid-template-columns: minmax(0, 1fr) 44px 520px; align-items: stretch; }
   .plus { display: flex; align-items: flex-start; justify-content: center; padding-top: 46px; }
   .plus span { width: 32px; height: 32px; border-radius: 50%; background: var(--popover); border: 1px solid var(--input); display: grid; place-items: center; font-size: 20px; color: var(--muted-foreground); }
   .col { display: flex; flex-direction: column; background: var(--card); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; }
@@ -159,8 +159,8 @@
   .na b { color: var(--foreground); font-weight: 600; }
   .na-row { display: grid; grid-template-columns: 18px 22px 108px minmax(0, 1fr); gap: 10px; padding: 6px 16px; font-size: 13.5px; color: var(--muted-foreground); border-bottom: 1px solid var(--border); }
   .frow { display: grid; grid-template-columns: 18px minmax(0, 1fr) 86px; gap: 4px 10px; padding: 10px 16px; border-bottom: 1px solid var(--border); }
-  .frow .t { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
-  .frow .t b { font-weight: 600; font-size: 15px; white-space: nowrap; }
+  .frow .t { display: flex; align-items: baseline; gap: 8px; flex-wrap: nowrap; white-space: nowrap; }
+  .frow .t b { font-weight: 600; font-size: 14.5px; white-space: nowrap; }
   .frow .t a { color: var(--link); font-size: 13.5px; }
   .frow .v { text-align: left; font-weight: 600; grid-row: 1 / span 2; grid-column: 3; align-self: center; }
   .frow .labs { grid-column: 2; }
@@ -290,9 +290,9 @@ function result(acc) {
   const invested = `<div class="fig"><span class="k">הפקדתם</span><span class="v num">${n(INVESTED)} ₪</span><span class="n"><span class="num">10,000 ₪</span> ועוד <span class="num">500 ₪</span> × 120 חודשים</span></div>`;
   if (!mine) return `<div class="res">
     <div class="res-top">${invested}<span class="arrow">←</span>
-      <div class="fig"><span class="k">נשאר לכם בעוד 10 שנים · <span class="star">★ הזוג הזול ביותר</span></span><span class="v num ul">${n(left)} ₪</span><span class="n">אחרי דמי ניהול ומס, בכסף של היום · ${refAcc("פסגות")} + ${refFund(FUNDS[0][0])}</span></div>
+      <div class="fig"><span class="k">נשאר לכם בעוד 10 שנים · <span class="star">★ הזוג הזול ביותר</span></span><span class="v num ul">${n(left)} ₪</span><span class="n">אחרי דמי ניהול ומס, בכסף של היום</span></div>
       <div class="fig" style="text-align:left"><span class="k">לעומת ${YOU}, החשבון שלכם, עם אותה קרן</span><span class="v sm num" style="color:var(--best)">+${n(BEST - YALIN[YOU])} ₪</span></div></div>
-    <div class="costs"><h3>מה יצא בדרך: <span class="num">${n(total(c))} ₪</span><span class="muted small" style="font-weight:400">מתוכם החשבון גובה <span class="num">${n(c.acc)} ₪</span></span></h3>
+    <div class="costs"><h3>כמה זה עולה לכם ב־10 שנים: <span class="num">${n(total(c))} ₪</span><span class="muted small" style="font-weight:400">מתוכם החשבון גובה <span class="num">${n(c.acc)} ₪</span></span></h3>
       ${costBar("פסגות", "עם הקרן הזו", c, scale)}
       ${key}</div>
   </div>`;
@@ -300,10 +300,10 @@ function result(acc) {
   return `<div class="res">
     <div class="res-top" style="grid-template-columns:auto auto minmax(0,1fr)">${invested}<span class="arrow">←</span>
       <div class="pairs">
-        <div class="pc2 yours"><span class="h">הבחירה שלכם · ${refAcc(YOU)} + ${refFund(FUNDS[0][0])}</span><span class="v num">${n(left)} ₪</span><span class="small muted">נשאר בעוד 10 שנים, אחרי דמי ניהול ומס, בכסף של היום</span></div>
-        <div class="pc2"><span class="h">★ הזוג הזול ביותר · ${refAcc("פסגות")} + ${refFund(FUNDS[0][0])}</span><span class="v num" style="color:var(--best)">${n(BEST)} ₪</span><span class="small"><span class="num">+${n(BEST - left)} ₪</span> אם עוברים לפסגות · <span class="link">בחרו את הזוג הזה</span></span></div>
+        <div class="pc2 yours"><span class="h">הבחירה שלכם</span><span class="v num">${n(left)} ₪</span><span class="small muted">נשאר בעוד 10 שנים, אחרי דמי ניהול ומס, בכסף של היום</span></div>
+        <div class="pc2"><span class="h">★ הזוג הזול ביותר</span><span class="v num" style="color:var(--best)">${n(BEST)} ₪</span><span class="small"><span class="num">+${n(BEST - left)} ₪</span> אם עוברים לפסגות · <span class="link">בחרו את הזוג הזה</span></span></div>
       </div></div>
-    <div class="costs"><h3>מה יצא בדרך, זה מעל זה</h3>
+    <div class="costs"><h3>כמה זה עולה לכם ב־10 שנים, בכל אחד מהזוגות</h3>
       ${costBar(YOU, "הבחירה שלכם", c, scale, true)}
       ${costBar("פסגות", "הזוג הזול", cb, scale)}
       ${key}
@@ -344,7 +344,7 @@ function page() {
     </div>
     <div class="plus"><span>+</span></div>
     <div class="col">
-      <div class="slot" style="min-height:0"><span class="k">${svg("pie")}קרן</span><span class="name" style="font-size:19px"><bdi>${fund[0]}</bdi></span><span class="facts"><a class="num">${fund[1]} ↗</a><span>דמי ניהול <span class="num">0% · 0% · 0.02%</span> (קבועים · משתנים · נאמן)</span></span>
+      <div class="slot" style="min-height:0"><span class="k">${svg("pie")}קרן</span><span class="name" style="font-size:19px;white-space:nowrap"><bdi>${fund[0]}</bdi> <a class="num" style="font-size:14px;font-weight:500;color:var(--link)">${fund[1]} ↗</a></span><span class="facts"><span>דמי ניהול <span class="num">0% · 0% · 0.02%</span> (קבועים · משתנים · נאמן)</span></span>
         <div class="lines"><i class="f-fundfee"></i><span>דמי ניהול הקרן</span><span class="how">נלקחים מתוך הקרן</span><span class="amt num">${n(c.fund)} ₪</span></div></div>
       <div class="listh"><b>כל הקרנות על S&P 500</b><span class="cond">בחשבון ${refAcc(acc)} · בחרו חשבון אחר, והרשימה תסתדר מחדש</span></div>
       <div class="fbar"><span class="k">סננו:</span>${L("trade", "cal", 'קרן מחקה <span class="cnt num">5</span>')}${L("trade", "clock", 'קרן סל <span class="cnt num">8</span>')}${L("follow", "swap", 'עסקת החלף <span class="cnt num">5</span>')}${L("currency", "shield", 'מנוטרלת מט״ח <span class="cnt num">1</span>')}</div>
