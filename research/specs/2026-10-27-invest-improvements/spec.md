@@ -100,15 +100,26 @@ Hedging becomes a question with two answers, shown only when the index has both 
 
 The folds today ("מה כל בחירה שווה", "קרן סל או קרן מחקה", "מה עושים עכשיו"): the first becomes sections 2 and 3 of this order, the second goes (section 1), and the third stays.
 
-### 3.6 Mockups: three options (2026-10-27)
+### 3.6 Mockups (2026-10-27)
 
-Static pictures in `mockups/`, PC (1366 px) and phone (390 px), for a reader who chose the S&P 500, has a Leumi account and the default plan. A seventh picture shows option A on the phone for a reader who chose the TA-90. The account and fund figures are the live site's of 27.10.2026. The cost split by fee line and the "הוראת קבע" labels are illustrative only: the engine does not output the split yet, and the standing-order data is not collected. `mockups/source.html` draws them; it needs the site's built CSS served at `/finance-tool/assets/`.
+Static PC pictures in `mockups/` (1366 px), for a reader who chose the S&P 500, has a Leumi account and the default plan. The account and fund figures are the live site's of 27.10.2026. The split of each account's cost by fee type, and the "הוראת קבע" labels, are illustrative only: the engine does not output the split yet, and the standing-order data is not collected.
 
-All three share the top: the index pills, the plan (amount, monthly sum, years, "החשבון שלכם"), and the currency question, which shows only when the index has both hedged and unhedged funds. All three show the funds as a short list, the funds within the tie threshold in one box ("שוות לתוכנית שלכם"), and buying abroad as one card.
+**Round 1** (`source.html`): A, the gap bars first; B, your account and the cheapest as two cards side by side; C, the account list beside the chosen account's detail.
 
-- **A, "the gap first"** (`option-A-sp500-pc.png`, `option-A-sp500-phone.png`, `option-A-ta90-phone.png`). The headline is your account against the cheapest ("בלאומי יישארו לכם 2,621 ₪ פחות"). Then one bar per account showing how much less it leaves you, your account marked, then the funds at the cheapest account, abroad and the steps. It is the simplest, and the same on both sizes. It does not say why an account costs more.
-- **B, "your account against the cheapest"** (`option-B-sp500-pc.png`, `option-B-sp500-phone.png`). Two cards side by side, Leumi and Psagot, each with what is left and a bar of what it costs you, split by fee line. A sentence names the lines that make the difference, with a field to type a negotiated fee. Then every account as a compact list with a small gap bar. It answers "move or negotiate?" best, but needs the engine to split the cost by fee line.
-- **C, "list and detail"** (`option-C-sp500-pc.png`, `option-C-sp500-phone.png`). On a PC, the accounts are a list on one side and the chosen account's detail is on the other: what is left, the gap to yours, its cost split against yours, the funds to buy, the steps. On a phone, the list is an accordion and the open account shows the same detail. Every account can be explored without leaving the page, but it is the most to build, and on a phone the open account pushes the others down.
+**Founder, round 1 (2026-10-27):** drop A; judge on PC only and work out the phone later. C uses space well. Stacked bars are "10x easier to comprehend" one above the other than side by side (B's two cards). Every label gets an icon and a distinct colour. Show the sum invested. Fix the text that wrapped or clipped. More options that build on C.
+
+**Round 2** (`source-round2.html`), all four built on C. They share:
+- the top: index pills, the plan, "החשבון שלכם", and the currency question on the same row;
+- a strip of four figures: what you put in (70,000 ₪ = 10,000 ₪ + 500 ₪ × 120), what is left at the chosen account, what it costs you there, and how much more is left than at your account;
+- labels with an icon and a colour per family: how it trades (cyan), how it tracks (magenta), payout (green), currency (gold), tax (coral), standing order (lime), what it asks of you (amber), an open rule (red with a lock). Blue and violet stay reserved for entered and computed numbers. These are new tokens if adopted.
+
+The four options:
+- **C1, list and detail** (`option-C1-pc.png`). The account list (rank, small gap bar, gap) beside the chosen account. The detail has two cost bars on one scale, the chosen account above your account. Then a sentence on which fee lines make the gap, with a link to type a negotiated fee, the funds, and the steps.
+- **C2, the list is the chart** (`option-C2-pc.png`). Every account's cost as a stacked bar, one above the other on one scale, with its total and its gap. You see every account's cost and why at once. The narrow column beside it holds the chosen account's funds and the steps, and buying abroad sits under the chart.
+- **C3, from what you put in to what is left** (`option-C3-pc.png`). As C1, but each bar is the whole sum the money would be worth with no costs: what is left (teal), then each fee line and the tax, with a dashed line at what you put in. It shows what share the costs take, and on this plan that share looks small next to what is left.
+- **C4, compare chosen accounts** (`option-C4-pc.png`). Tick up to three accounts in the list (the cheapest and yours are ticked first). Their bars stack one above the other, then a table of fee lines by account: totals and what is left. It is the most exact, and the reader has to choose what to compare.
+
+`option-B-sp500-pc.png` stays from round 1 for reference.
 
 ## 4. Against `docs/product.md`: what else the page owes the reader
 
@@ -127,7 +138,7 @@ All three share the top: the index pills, the plan (amount, monthly sum, years, 
 
 ## 5. Decisions for the founder
 
-1. Section 3: the account as the visual comparison and the fund as a short list; which of the mockups A, B or C (3.6), or a mix.
+1. Section 3: the account as the visual comparison and the fund as a short list; which of the round-2 mockups C1 to C4 (3.6), or a mix.
 2. Section 3.4: one control for the account, and hedging as a question that scopes the whole comparison, shown only where both kinds exist.
 3. Section 4 item 1: drop the "ETF or tracking fund" fold and amend D28 (a).
 4. Section 4 item 5: a negotiated fee entered on this page.
