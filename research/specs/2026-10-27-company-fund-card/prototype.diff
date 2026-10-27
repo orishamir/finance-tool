@@ -1,49 +1,210 @@
 diff --git a/site/app/components/decoder/brand-funds.tsx b/site/app/components/decoder/brand-funds.tsx
-index affedc0..2f1a4f4 100644
+index affedc0..7cfb900 100644
 --- a/site/app/components/decoder/brand-funds.tsx
 +++ b/site/app/components/decoder/brand-funds.tsx
-@@ -6,6 +6,7 @@ import type { BrandFundRow } from "../../lib/brands.server";
+@@ -1,71 +1,153 @@
+-// A brand's funds (D33): one row per fund record of the brand's fund managers, with its number, what it follows, Maya's page of the
+-// fund and its fees as the manager's own sourced figures. Only collected records: the full list is the manager's, on Maya (CAT-43).
+-import { Link } from "react-router";
++// PROTOTYPE (not for commit): the brand's funds as the track table, three options for the exposure (?fundTable=a|b|c).
++import { Link, useSearchParams } from "react-router";
+ import { brands as copy, invest } from "../../copy";
+ import type { BrandFundRow } from "../../lib/brands.server";
  import { IconDrillIn, IconExternal } from "../icons";
  import { Num } from "../provenance";
- import { Card, KeyValue } from "../kit";
-+import { LabelRow } from "../invest/parts";
+-import { Card, KeyValue } from "../kit";
++import { Card } from "../kit";
++import { LabelRow, LabelSheetHost } from "../invest/parts";
  import type { SiteValue } from "../../lib/value";
  
  const c = invest.funds;
-@@ -26,7 +27,7 @@ export function BrandFundList({ funds }: { funds: BrandFundRow[] }) {
++type Opt = "a" | "b" | "c";
  
- function BrandFundCard({ f }: { f: BrandFundRow }) {
+-function FeeValue({ value }: { value: SiteValue | null }) {
+-  return value ? <Num value={value} /> : <span className="text-muted-foreground">{c.notCollected}</span>;
++function Fees({ f, inline }: { f: BrandFundRow; inline?: boolean }) {
++  const lines = [
++    { id: "fixed", v: f.fixed, word: "קבועים" },
++    { id: "variable", v: f.variable, word: "משתנים" },
++    { id: "trustee", v: f.trustee, word: "נאמן" },
++  ].filter((l): l is typeof l & { v: SiteValue } => !!l.v);
++  return (
++    <span className={inline ? "contents" : "flex flex-col gap-1"}>
++      {lines.map((l) => (
++        <span key={l.id} className="inline-flex items-center gap-1.5 whitespace-nowrap">
++          <Num value={l.v} size={inline ? "inline" : "cell"} />
++          <span className="text-sm text-muted-foreground">{l.word}</span>
++        </span>
++      ))}
++    </span>
++  );
+ }
+ 
+-export function BrandFundList({ funds }: { funds: BrandFundRow[] }) {
++function Ceil({ t }: { t: string }) {
++  const m = t.match(/^(\D*)(\d+%)$/);
++  return m ? <>{m[1]}<bdi dir="ltr" className="tabular-nums underline decoration-[var(--sourced)] underline-offset-4">{m[2]}</bdi></> : <>{t}</>;
++}
++
++function Exposure({ f, opt, inline }: { f: BrandFundRow; opt: Opt; inline?: boolean }) {
++  if (!f.profile) return null;
++  const rows = opt === "c" ? [{ w: "מט״ח", v: f.profile.fx }] : [{ w: "מניות", v: f.profile.stocks }, { w: "מט״ח", v: f.profile.fx }];
+   return (
+-    <ul className="flex flex-col gap-3">
+-      {funds.map((f) => (
+-        <BrandFundCard key={f.id} f={f} />
++    <span className={inline ? "contents" : "grid grid-cols-[auto_auto] justify-start gap-x-2 gap-y-0.5 text-sm text-muted-foreground"}>
++      {rows.map((r) => (
++        <span key={r.w} className={inline ? "inline-flex gap-1.5" : "contents"}>
++          <span>{r.w}</span>
++          <span className="text-foreground whitespace-nowrap"><Ceil t={r.v} /></span>
++        </span>
+       ))}
+-    </ul>
++    </span>
+   );
+ }
+ 
+-function BrandFundCard({ f }: { f: BrandFundRow }) {
++function Follows({ f }: { f: BrandFundRow }) {
++  if (!f.follows) return null;
    return (
 -    <Card as="li" pad="tight" id={`fund-${f.id}`} className="flex flex-col gap-2.5">
-+    <Card as="li" pad="tight" id={`fund-${f.id}`} className="grid gap-x-8 gap-y-3 md:grid-cols-[minmax(0,1fr)_minmax(0,20rem)]">
-       <div className="flex flex-col gap-1">
-         <h3 className="font-semibold leading-snug">
-           <bdi>{f.name}</bdi>
-@@ -54,8 +55,17 @@ function BrandFundCard({ f }: { f: BrandFundRow }) {
-             <IconDrillIn size={16} />
-           </Link>
-         )}
-+        <LabelRow labels={f.labels} className="pt-1" />
-       </div>
+-      <div className="flex flex-col gap-1">
+-        <h3 className="font-semibold leading-snug">
+-          <bdi>{f.name}</bdi>
+-        </h3>
+-        <span className="text-sm text-muted-foreground">
+-          {c.manager}: <bdi>{f.manager}</bdi>
+-        </span>
+-        <span className="text-sm text-muted-foreground flex flex-wrap items-center gap-x-3 gap-y-0.5">
+-          {f.number && (
+-            <span>
+-              {c.number} <bdi dir="ltr" className="font-mono">{f.number}</bdi>
++    <Link to={f.follows.href} className="text-link hover:underline inline-flex items-center gap-0.5">
++      <span>{copy.funds.follows} <bdi>{f.follows.name || copy.funds.moneyMarket}</bdi></span>
++      <IconDrillIn size={16} />
++    </Link>
++  );
++}
++
++function Maya({ f }: { f: BrandFundRow }) {
++  if (!f.mayaHref) return null;
++  return (
++    <a href={f.mayaHref} target="_blank" rel="noopener noreferrer" className="text-sm text-link hover:underline inline-flex items-center gap-1 whitespace-nowrap">
++      {c.mayaPage} <IconExternal size={14} />
++    </a>
++  );
++}
++
++export function BrandFundList({ funds }: { funds: BrandFundRow[] }) {
++  const [sp] = useSearchParams();
++  const opt = (["a", "b", "c"].includes(sp.get("fundTable") ?? "") ? sp.get("fundTable") : "a") as Opt;
++  const allAccumulating = funds.every((f) => f.policy?.startsWith("לא מחלקת"));
++  const foot = (
++    <span className="flex flex-col gap-1 text-sm text-muted-foreground">
++      {allAccumulating && <span>כל הקרנות כאן לא מחלקות: הדיבידנד והריבית מושקעים בקרן מחדש.</span>}
++      {opt !== "b" && <span>החשיפה המרבית היא התקרה שהקרן מצהירה עליה בשם שלה (למשל 4A), לא מה שהיא מחזיקה היום.</span>}
++    </span>
++  );
++  const head = opt === "c" ? "חשיפה מרבית למט״ח" : "חשיפה מרבית";
++  return (
++    <LabelSheetHost>
++      <Card className="md:hidden p-0 md:p-0 overflow-hidden flex flex-col">
++        {funds.map((f) => (
++          <div key={f.id} className="track !flex-col !items-stretch !gap-1">
++            <span className="font-medium flex flex-wrap items-center gap-2"><bdi>{f.name}</bdi></span>
++            <span className="text-sm text-muted-foreground">
++              {c.number} <bdi dir="ltr" className="num-id">{f.number}</bdi>
+             </span>
+-          )}
+-          {f.mayaHref && (
+-            <a href={f.mayaHref} target="_blank" rel="noopener noreferrer" className="text-link hover:underline inline-flex items-center gap-1">
+-              {c.mayaPage} <IconExternal size={14} />
+-            </a>
+-          )}
+-        </span>
+-        {f.follows && (
+-          <Link to={f.follows.href} className="text-sm text-link hover:underline inline-flex items-center gap-1 self-start min-h-target">
+-            <span>
+-              {copy.funds.follows} <bdi>{f.follows.name || copy.funds.moneyMarket}</bdi>
++            <span className="text-sm"><Follows f={f} /></span>
++            {opt === "b" && f.profile && (
++              <span className="text-sm text-muted-foreground">פרופיל <bdi dir="ltr">{f.profile.code}</bdi>: מניות <Ceil t={f.profile.stocks} />, מט״ח <Ceil t={f.profile.fx} /></span>
++            )}
++            <LabelRow labels={f.labels} />
++            <span className="text-sm text-muted-foreground flex flex-wrap items-center gap-x-3 gap-y-1">
++              דמי ניהול: <Fees f={f} inline />
+             </span>
+-            <IconDrillIn size={16} />
+-          </Link>
+-        )}
+-      </div>
 -      <dl className="flex flex-col gap-0.5 max-w-sm">
-+      <div className="flex flex-col gap-3">
-+      {f.profile && (
-+        <dl className="flex flex-col gap-0.5">
-+          <KeyValue label={`חשיפה למניות (${f.profile.code[0]})`}><span className="underline decoration-dotted">{f.profile.stocks}</span></KeyValue>
-+          <KeyValue label={`חשיפה למטבע חוץ (${f.profile.code[1]})`}><span className="underline decoration-dotted">{f.profile.fx}</span></KeyValue>
-+          {f.policy && <KeyValue label="רווחים">{f.policy}</KeyValue>}
-+        </dl>
-+      )}
-+      <dl className="flex flex-col gap-0.5 border-t border-border pt-2">
-         <KeyValue label={c.fixed}>
-           <FeeValue value={f.fixed} />
-         </KeyValue>
-@@ -66,6 +76,7 @@ function BrandFundCard({ f }: { f: BrandFundRow }) {
-           <FeeValue value={f.trustee} />
-         </KeyValue>
-       </dl>
-+      </div>
-     </Card>
+-        <KeyValue label={c.fixed}>
+-          <FeeValue value={f.fixed} />
+-        </KeyValue>
+-        <KeyValue label={c.variable}>
+-          <FeeValue value={f.variable} />
+-        </KeyValue>
+-        <KeyValue label={c.trustee}>
+-          <FeeValue value={f.trustee} />
+-        </KeyValue>
+-      </dl>
+-    </Card>
++            {opt !== "b" && (
++              <span className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-muted-foreground">
++                {head}: <Exposure f={f} opt={opt} inline />
++              </span>
++            )}
++            <Maya f={f} />
++          </div>
++        ))}
++        <div className="px-4 py-3 border-t border-border">{foot}</div>
++      </Card>
++      <Card className="hidden md:block p-0 md:p-0 overflow-x-auto overflow-y-hidden">
++        <table className="tbl">
++          <thead>
++            <tr>
++              <th scope="col">שם הקרן</th>
++              <th scope="col">מספר נייר</th>
++              <th scope="col">במה הכסף מושקע</th>
++              <th scope="col">דמי ניהול לפי הדוח של הקרן</th>
++              {opt !== "b" && <th scope="col">{head}</th>}
++            </tr>
++          </thead>
++          <tbody>
++            {funds.map((f) => (
++              <tr key={f.id}>
++                <td>
++                  <span className="flex flex-col items-start gap-1.5">
++                    <span className="font-medium"><bdi>{f.name}</bdi></span>
++                    <LabelRow labels={f.labels} />
++                  </span>
++                </td>
++                <td>
++                  <span className="flex flex-col items-start gap-1">
++                    <bdi dir="ltr" className="num-id">{f.number}</bdi>
++                    <Maya f={f} />
++                  </span>
++                </td>
++                <td>
++                  <span className="flex flex-col items-start gap-1">
++                    <Follows f={f} />
++                    {opt === "b" && f.profile && (
++                      <span className="text-sm text-muted-foreground">פרופיל <bdi dir="ltr">{f.profile.code}</bdi>: מניות <Ceil t={f.profile.stocks} />, מט״ח <Ceil t={f.profile.fx} /></span>
++                    )}
++                  </span>
++                </td>
++                <td><Fees f={f} /></td>
++                {opt !== "b" && <td className="whitespace-nowrap"><Exposure f={f} opt={opt} /></td>}
++              </tr>
++            ))}
++          </tbody>
++        </table>
++        <div className="px-3 py-3 border-t border-border">{foot}</div>
++      </Card>
++    </LabelSheetHost>
    );
  }
 diff --git a/site/app/lib/brands.server.ts b/site/app/lib/brands.server.ts
