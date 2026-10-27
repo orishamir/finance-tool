@@ -8,8 +8,10 @@ import { Num } from "../provenance";
 import { Button, Disclosure, Sentence } from "../kit";
 import { ProviderLink, providerName } from "./sections";
 
-export function Steps({ view, monthly }: { view: InvestView; monthly: import("../../lib/value").SiteValue }) {
-  const w = view.headline ?? view.options.find((o) => o.bestWay)?.bestWay ?? null;
+export function Steps({ view, monthly, pick }: { view: InvestView; monthly: import("../../lib/value").SiteValue; pick?: { house: string; fund: string } | null }) {
+  // the person's chosen account and fund (the two linked lists, 2026-10-27), else the cheapest way
+  const chosen = pick ? view.options.flatMap((o) => o.funds).find((f) => f.rec.id === pick.fund) : undefined;
+  const w = chosen && pick ? { fund: chosen, providerId: pick.house } : (view.headline ?? view.options.find((o) => o.bestWay)?.bestWay ?? null);
   const p = w ? providerName(view, w.providerId) : view.genericHeadline ? providerName(view, view.genericHeadline.cell.providerId) : undefined;
   const yours = view.yourBroker ? providerName(view, view.yourBroker) : undefined;
   const [copied, setCopied] = useState(false);
@@ -37,7 +39,7 @@ export function Steps({ view, monthly }: { view: InvestView; monthly: import("..
               </>
             )}
           </span>
-          {yours && !stay && view.atYours?.less && typeof view.atYours.less.value === "number" && view.atYours.less.value > 0.5 && (
+          {yours && !stay && !pick && view.atYours?.less && typeof view.atYours.less.value === "number" && view.atYours.less.value > 0.5 && (
             <Sentence as="span" size="sm" tone="muted">
               {c.steps.stayDiff}: <Num value={view.atYours.less} />
             </Sentence>

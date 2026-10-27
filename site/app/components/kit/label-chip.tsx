@@ -63,20 +63,60 @@ export function LabelSheetHost({ children }: { children: ReactNode }) {
   );
 }
 
-const toneClass: Record<Label["tone"], string> = {
-  neutral: "bg-muted text-foreground",
-  caution: "bg-caution-subtle text-caution-foreground",
-  open: "bg-blocked-subtle text-blocked-foreground",
+const toneClass: Record<Exclude<Label["tone"], "neutral">, string> = {
+  caution: "bg-caution-subtle text-caution-foreground border-caution/40",
+  open: "bg-blocked-subtle text-blocked-foreground border-blocked/40",
 };
 
-/** A label: an icon and two or three words; colour never alone (the open tone also carries the lock icon). */
+/** A neutral label takes its family's colour (founder, 2026-10-27): the icon and words in it, a faint fill and edge of it. */
+const familyClass: Partial<Record<Label["family"], string>> = {
+  held: "text-label-held bg-label-held/10 border-label-held/35",
+  trade: "text-label-trade bg-label-trade/12 border-label-trade/40",
+  follow: "text-label-follow bg-label-follow/14 border-label-follow/45",
+  currency: "text-label-currency bg-label-currency/12 border-label-currency/40",
+  tax: "text-label-tax bg-label-tax/12 border-label-tax/40",
+  payout: "text-label-payout bg-label-payout/12 border-label-payout/40",
+};
+
+const chipClass = (label: Label) => (label.tone === "neutral" ? (familyClass[label.family] ?? "bg-muted text-foreground border-border") : toneClass[label.tone]);
+const chipShape = "inline-flex items-center gap-1 text-xs font-medium rounded-full border px-2 py-0.5 min-h-6 whitespace-nowrap";
+
+/** A label: an icon and two or three words; colour never alone (the icon and the words carry it; the open tone also has the lock). */
 export function LabelChip({ label }: { label: Label }) {
   const open = useContext(OpenCtx);
   return (
-    <button type="button" onClick={(e) => open(label, e.currentTarget)} className={cx("inline-flex items-center gap-1 text-xs font-medium rounded-sm px-1.5 py-0.5 min-h-6 hover:brightness-110", toneClass[label.tone])} data-label={label.id}>
+    <button type="button" onClick={(e) => open(label, e.currentTarget)} className={cx(chipShape, "hover:brightness-110", chipClass(label))} data-label={label.id}>
       <LabelIcon name={label.icon} />
       {label.text}
     </button>
+  );
+}
+
+/**
+ * Filter a list by one label (founder, 2026-10-27): each label that splits the list, with how many rows carry it; a tap keeps only
+ * those rows, a second tap or "all" shows every row again. Only offer labels that some rows have and some do not.
+ */
+export function LabelFilter({ options, value, onChange, lead, allLabel }: { options: { label: Label; count: number }[]; value: string | null; onChange: (id: string | null) => void; lead: ReactNode; allLabel: string }) {
+  if (options.length === 0) return null;
+  return (
+    <div className="flex flex-wrap items-center gap-1.5" role="group" aria-label={typeof lead === "string" ? lead : undefined}>
+      <span className="text-sm text-muted-foreground me-1">{lead}</span>
+      {options.map(({ label, count }) => {
+        const on = value === label.id;
+        return (
+          <button key={label.id} type="button" aria-pressed={on} onClick={() => onChange(on ? null : label.id)} className={cx(chipShape, "min-h-8 hover:brightness-110", chipClass(label), on && "ring-2 ring-current ring-offset-1 ring-offset-card")}>
+            <LabelIcon name={label.icon} />
+            {label.text}
+            <span className="tabular-nums opacity-75">{count}</span>
+          </button>
+        );
+      })}
+      {value !== null && (
+        <button type="button" onClick={() => onChange(null)} className="text-sm text-link hover:underline min-h-8 px-1">
+          {allLabel}
+        </button>
+      )}
+    </div>
   );
 }
 

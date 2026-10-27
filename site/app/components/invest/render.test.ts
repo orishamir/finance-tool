@@ -10,7 +10,8 @@ import type { WorkbenchInputs } from "../../lib/providers";
 import { HousesSection } from "./houses";
 import { FundsSection } from "./funds";
 import { LabelSheetHost } from "../kit";
-import { Headline, IndexHeader, Matters, OptionsCompare, WorthBars } from "./sections";
+import { Headline, IndexHeader } from "./sections";
+import { AccountColumn, FundColumn, PairResult, pickOfHeadline } from "./pair";
 import { Foot, Steps } from "./steps";
 import { PlanBlock } from "./chips";
 import { ProvenanceProvider } from "../provenance";
@@ -27,23 +28,31 @@ const html = (el: React.ReactElement) => renderToString(createElement(MemoryRout
 
 describe("the index page's sections render", () => {
   const view = buildInvest({ bundle, index: indexById(bundle, "index-sp500")!, plan: { ...plan, returnFromParameter: true }, yourBroker: "leumi" });
-  it("all sections of a known index", () => {
+  it("all sections of a known index: the result and the two linked lists", () => {
+    const pick = pickOfHeadline(view)!;
+    const leumi = { house: "leumi", fund: pick.fund };
     const out = html(createElement("div", null,
       createElement(IndexHeader, { view, onChangeAnswer: null }),
-      createElement(Headline, { view }), createElement(Matters, { view, years: plan.values.years }), createElement(WorthBars, { view }),
-      createElement(OptionsCompare, { view }),
-      createElement(HousesSection, { view, chosen: "leumi", onPick: () => undefined }),
-      createElement(FundsSection, { view, houseId: "leumi", onHouse: () => undefined, mayaHref: null }),
-      createElement(FundsSection, { view, houseId: "interactive-brokers", onHouse: () => undefined, mayaHref: null }),
-      createElement(Steps, { view, monthly: plan.values.monthly }), createElement(Foot, { view }),
+      createElement(PairResult, { view, bundle, plan: { ...plan, returnFromParameter: true }, pick, onPick: () => undefined }),
+      createElement(PairResult, { view, bundle, plan: { ...plan, returnFromParameter: true }, pick: leumi, onPick: () => undefined }),
+      createElement(AccountColumn, { view, bundle, years: 20, pick, onPick: () => undefined }),
+      createElement(FundColumn, { view, today: t, pick, onPick: () => undefined, filter: null, onFilter: () => undefined }),
+      createElement(Steps, { view, monthly: plan.values.monthly, pick }), createElement(Foot, { view }),
       createElement(PlanBlock, { items: [], onOpen: () => undefined, fx: bundle.fx, today: t, brokers: [], yourBroker: null, onBroker: () => undefined, hasGoal: true })));
-    expect(out).toContain("הדרך הזולה ביותר לתוכנית שלכם");
-    expect(out).toContain("אותה קרן, בחשבון ניירות ערך אחר:");
-    expect(out).toContain("אותו חשבון ניירות ערך, קרן אחרת:");
-    expect(out).toContain("הקרנות על המדד, בחשבון ב");
+    expect(out).toContain("הפקדתם");
+    expect(out).toContain("★ הזוג הזול ביותר לתוכנית שלכם");
+    expect(out).toContain("כמה זה עולה לכם ב־20 שנים, בכל אחד מהזוגות");
+    expect(out).toContain("כל החשבונות");
+    expect(out).toContain("כל הקרנות על");
+    expect(out).toContain("הבחירה");
     expect(out).toContain("פסגות");
-    expect(out).toContain("קרן מחקה · נקנית פעם ביום");
     expect(out).toContain("שער הדולר");
+  });
+  it("neither list leaves a row out: every account and every fund is listed, priced or with its reason", () => {
+    const pick = pickOfHeadline(view)!;
+    const out = html(createElement("div", null, createElement(AccountColumn, { view, bundle, years: 20, pick, onPick: () => undefined }), createElement(FundColumn, { view, today: t, pick, onPick: () => undefined, filter: null, onFilter: () => undefined })));
+    for (const p of view.providers) expect(out).toContain(p.short);
+    for (const f of view.options.filter((o) => o.exists).flatMap((o) => o.funds)) expect(out).toContain(f.number);
   });
   it("a custom index: empty funds state with the request button", () => {
     const v = buildInvest({ bundle, index: refOfCustom({ id: "custom-nikkei", name: "ניקיי 225", israeli: false, added: t }), plan });

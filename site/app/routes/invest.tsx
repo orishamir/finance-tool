@@ -12,8 +12,9 @@ import { feePlanItems, ScenarioDefaults } from "../components/fees/chips";
 import { IndexChips, PlanBlock } from "../components/invest/chips";
 import { HousesSection } from "../components/invest/houses";
 import { FundsSection } from "../components/invest/funds";
+import { AccountColumn, FundColumn, PairResult, pickOfHeadline, allFunds, type Pick } from "../components/invest/pair";
 import { LabelSheetHost } from "../components/kit";
-import { Headline, IndexHeader, Matters, OptionsCompare, WorthBars } from "../components/invest/sections";
+import { Headline, IndexHeader } from "../components/invest/sections";
 import { Foot, Steps } from "../components/invest/steps";
 import { Callout, Disclosure } from "../components/kit";
 import { Sheet } from "../components/Sheet";
@@ -156,15 +157,15 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
   // A chip opens the same fields the fees page opens, on the same current goal: a value typed here is the value there.
   const planItems = feePlanItems(fi, { return: plan.returnFromParameter ? c.plan.retExample : c.plan.retEntered });
 
-  // the house whose funds are listed: the person's click, else their own account, else the cheapest way's house
-  const [picked, setPicked] = useState<{ index: string; house: string } | null>(null);
-  const pickable = (id: string | null) => !!id && !!view?.houses.some((h) => h.provider.id === id && (h.best || h.generic));
-  const house = picked && index && picked.index === index.id && pickable(picked.house) ? picked.house : pickable(yourBroker) ? yourBroker : view?.headline?.providerId ?? view?.genericHeadline?.cell.providerId ?? view?.houses.find((h) => h.best || h.generic)?.provider.id ?? null;
-  const pickHouse = (id: string) => {
-    if (!index) return;
-    setPicked({ index: index.id, house: id });
-    requestAnimationFrame(() => document.getElementById("invest-funds-section")?.scrollIntoView({ behavior: "smooth", block: "start" }));
-  };
+  // the account and the fund the two lists are priced on: the person's picks on this index, else the cheapest way (2026-10-27)
+  const [picked, setPicked] = useState<{ index: string; pick: Pick } | null>(null);
+  const [labelFilter, setLabelFilter] = useState<string | null>(null);
+  const validPick = (p: Pick) => !!view && allFunds(view).some((f) => f.rec.id === p.fund) && view.providers.some((x) => x.id === p.house);
+  const pick: Pick | null = view && index && picked && picked.index === index.id && validPick(picked.pick) ? picked.pick : view ? pickOfHeadline(view) : null;
+  const onPick = (p: Pick) => index && setPicked({ index: index.id, pick: p });
+  // an index with no fund records (a custom one): the houses and their broker costs, and the request for funds
+  const [genericHouse, setGenericHouse] = useState<string | null>(null);
+  const house = genericHouse ?? view?.genericHeadline?.cell.providerId ?? view?.houses.find((h) => h.generic)?.provider.id ?? null;
 
   const rules = ["ETF-31", "ETF-24", "ETF-51", "TXS-09", "TXF-22"].filter((id) => wb.rules.some((r) => r.id === id));
 
@@ -198,19 +199,27 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
         ) : (
           <>
             <IndexHeader view={view} onChangeAnswer={index.custom ? () => invest.add({ ...index.custom!, israeli: !index.custom!.israeli }) : null} />
-            <Headline view={view} />
-            <Matters view={view} years={plan.values.years} />
-            <HousesSection view={view} chosen={house} onPick={pickHouse} />
-            <FundsSection view={view} houseId={house} onHouse={(id) => setPicked({ index: index.id, house: id })} mayaHref={wb.links.maya?.href ?? null} />
+            {pick ? (
+              <>
+                <PairResult view={view} bundle={wb} plan={plan} pick={pick} onPick={onPick} />
+                <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_2.5rem_minmax(0,32.5rem)] items-start">
+                  <AccountColumn view={view} bundle={wb} years={plan.years} pick={pick} onPick={onPick} />
+                  <span aria-hidden="true" className="hidden lg:grid place-items-center size-9 mt-10 rounded-full border border-input bg-popover text-xl text-muted-foreground justify-self-center">
+                    +
+                  </span>
+                  <FundColumn view={view} today={data.today} pick={pick} onPick={onPick} filter={labelFilter} onFilter={setLabelFilter} />
+                </div>
+              </>
+            ) : (
+              <>
+                <Headline view={view} />
+                <HousesSection view={view} chosen={house} onPick={(id) => setGenericHouse(id)} />
+                <FundsSection view={view} houseId={house} onHouse={(id) => setGenericHouse(id)} mayaHref={wb.links.maya?.href ?? null} />
+              </>
+            )}
             <div className="flex flex-col divide-y divide-border border-y border-border">
-              <Disclosure label={c.folds.worth} spread>
-                <WorthBars view={view} />
-              </Disclosure>
-              <Disclosure label={c.options.foldLabel} spread>
-                <OptionsCompare view={view} />
-              </Disclosure>
               <Disclosure label={c.folds.steps} spread>
-                <Steps view={view} monthly={plan.values.monthly} />
+                <Steps view={view} monthly={plan.values.monthly} pick={pick} />
               </Disclosure>
             </div>
             <Foot view={view} />
