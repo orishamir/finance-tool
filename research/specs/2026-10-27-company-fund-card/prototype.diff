@@ -1,8 +1,8 @@
 diff --git a/site/app/components/decoder/brand-funds.tsx b/site/app/components/decoder/brand-funds.tsx
-index affedc0..7cfb900 100644
+index affedc0..cf174eb 100644
 --- a/site/app/components/decoder/brand-funds.tsx
 +++ b/site/app/components/decoder/brand-funds.tsx
-@@ -1,71 +1,153 @@
+@@ -1,71 +1,147 @@
 -// A brand's funds (D33): one row per fund record of the brand's fund managers, with its number, what it follows, Maya's page of the
 -// fund and its fees as the manager's own sourced figures. Only collected records: the full list is the manager's, on Maya (CAT-43).
 -import { Link } from "react-router";
@@ -129,9 +129,6 @@ index affedc0..7cfb900 100644
 -            <span>
 -              {copy.funds.follows} <bdi>{f.follows.name || copy.funds.moneyMarket}</bdi>
 +            <span className="text-sm"><Follows f={f} /></span>
-+            {opt === "b" && f.profile && (
-+              <span className="text-sm text-muted-foreground">פרופיל <bdi dir="ltr">{f.profile.code}</bdi>: מניות <Ceil t={f.profile.stocks} />, מט״ח <Ceil t={f.profile.fx} /></span>
-+            )}
 +            <LabelRow labels={f.labels} />
 +            <span className="text-sm text-muted-foreground flex flex-wrap items-center gap-x-3 gap-y-1">
 +              דמי ניהול: <Fees f={f} inline />
@@ -191,9 +188,6 @@ index affedc0..7cfb900 100644
 +                <td>
 +                  <span className="flex flex-col items-start gap-1">
 +                    <Follows f={f} />
-+                    {opt === "b" && f.profile && (
-+                      <span className="text-sm text-muted-foreground">פרופיל <bdi dir="ltr">{f.profile.code}</bdi>: מניות <Ceil t={f.profile.stocks} />, מט״ח <Ceil t={f.profile.fx} /></span>
-+                    )}
 +                  </span>
 +                </td>
 +                <td><Fees f={f} /></td>
