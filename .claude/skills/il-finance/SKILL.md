@@ -62,4 +62,4 @@ The project's rule base (`docs/product.md` 3.8). 937 rules in 31 topic files und
 
 ## Keeping it current
 
-This folder is the only copy (the 2026-10-22 research snapshot it came from was deleted from `research/knowledge/` on 2026-10-28; git history has it). When adding or changing a rule, follow `references/README.md`: a link and checked date on every rule, strength, tax year on every figure, and anything unsourced goes under Open questions.
+This folder is the only copy (the 2026-10-22 research snapshot it came from was deleted from `research/knowledge/` on 2026-10-28; git history has it). Only the file's owner (the tax-specialist for the `tax-*` files, the domain-specialist for the rest) or the lead edits it; everyone else reports (`references/README.md`, "Who edits these files"). When adding or changing a rule, follow `references/README.md`: a link and checked date on every rule, strength, tax year on every figure, and anything unsourced goes under Open questions.
