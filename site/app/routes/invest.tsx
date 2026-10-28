@@ -25,7 +25,7 @@ import { type CompareBundle } from "../lib/compare";
 import { planInputs } from "../lib/plan-inputs";
 import { GoalsProvider, useGoals, type Presets } from "../lib/goal";
 import { useInputs } from "../lib/inputs";
-import { buildInvest, exposureIdOfSlug, indexById, INDICES_PATH, refOfCustom, type CustomIndex, type IndexRef } from "../lib/invest";
+import { buildInvest, exposureIdOfSlug, indexById, INDICES_PATH, knownIndices, refOfCustom, type CustomIndex, type IndexRef } from "../lib/invest";
 import { loadWorkbenchBundle, type WorkbenchBundle, type WorkbenchInputs } from "../lib/providers";
 import { useInvestState } from "../lib/state";
 import { recordsById } from "../lib/scope";
@@ -198,7 +198,7 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
           <p className="text-muted-foreground">{c.chips.none}</p>
         ) : (
           <>
-            <IndexHeader view={view} onChangeAnswer={index.custom ? () => invest.add({ ...index.custom!, israeli: !index.custom!.israeli }) : null} />
+            <IndexHeader view={view} others={knownIndices(wb)} onChangeAnswer={index.custom ? () => invest.add({ ...index.custom!, israeli: !index.custom!.israeli }) : null} />
             {pick ? (
               <>
                 <PairResult view={view} bundle={wb} plan={plan} pick={pick} onPick={onPick} />
