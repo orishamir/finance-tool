@@ -1,5 +1,7 @@
 # CMA fund catalogue, track naming and the product decoder
 
+> **Snapshot of 2026-10-22, not maintained.** The rule base the site reads is `.claude/skills/il-finance/references/tracks-catalogue-and-decoder.md`, updated since (closed questions struck, rules re-sourced, scope added). Cite and edit that copy, never this one.
+
 Checked: 2026-10-22 · Owner: domain-specialist
 Serves: product.md 3.10 (product decoder), 3.4 (workbench, tracks), 3.6 (holdings review), dependency 4 (CMA field definitions, discovery O11) and 6a (`data/catalog/`), § 6 refresh; roadmap R1 (decoder, CMA refresh), R3 (tracks workbench)
 Scope: in: the three CMA monthly datasets on data.gov.il (Gemel-Net, Pension-Net, Bituach-Net) and the `transfer_bank` crosswalk; what each field means, its unit, period and gross/net basis as far as sources allow; identifiers (fund vs track); classification and specialization values; how merged and renamed tracks appear; the CMA circular on investment tracks (naming, categories, defaults); the Meitav kupat gemel lehashkaa case end to end; where the ISA-side fund list is (not found); refresh and new-period detection. Out: fee caps and transfer rules (`provident-family-common.md`), wrapper rules (`kupat-gemel-lehashkaa.md`, `keren-hishtalmut.md`, `pension-and-gemel-lekitzba.md`, `child-savings.md`, `ira-self-directed.md`), tax (tax files), the meaning of ISA exposure codes (`mutual-funds-and-money-market-funds.md`).

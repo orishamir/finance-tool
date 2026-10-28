@@ -1,5 +1,7 @@
 # Tax on Israeli securities and Israeli funds (shares, bonds, mutual funds, money-market funds, ETFs)
 
+> **Snapshot of 2026-10-22, not maintained.** The rule base the site reads is `.claude/skills/il-finance/references/tax-securities-israeli.md`, updated since (closed questions struck, rules re-sourced, scope added). Cite and edit that copy, never this one.
+
 Checked: 2026-10-22 · Owner: tax-specialist
 Serves: product.md 3.1 (instrument guide: money-market fund, ETF and mutual-fund pages), 3.2 (wrapper mode and the idle-cash preset), 3.3 (dimension checklist), 3.4 (fund variants), 3.8 (rule base). Roadmap release 1 (instrument guide) and release 2 (closes tax report Q15, which blocks the idle-cash preset).
 Scope: what an individual Israeli resident pays on Israeli-listed shares and bonds and on Israeli mutual funds, money-market funds, tracking funds and ETFs (קרנות סל). Covers capital gains, distributions, dividends, losses, withholding, switching, and the currency component of shekel funds that hold foreign assets. Out of scope: foreign-domiciled funds and foreign securities (`tax-securities-foreign.md`, TXF); interest on deposits, makam and bonds (`tax-interest-deposits-bonds.md`, TXI); brackets, surtax, filing, National Insurance on passive income (`tax-general.md`, TXG); REITs (`tax-tier2-other.md`, TX2); switching inside provident wrappers (`tax-gemel-lehashkaa-ira-child.md` TXK, `tax-hishtalmut.md` TXH, `tax-pension-gemel-lekitzba.md` TXP). None of those files existed on 2026-10-22, so pointers are by file name only.

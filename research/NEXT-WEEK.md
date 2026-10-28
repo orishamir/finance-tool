@@ -57,4 +57,4 @@ A new researcher for any item gets its brief plus the line "resume: read what's 
 
 ## 6. Still open from the roadmap ("What continues, in order")
 - F-48, early pension withdrawal: the official text is now confirmed, so it can be built.
-- The founder's calls: credit points (G-23), GOV OQ7, the tax at 60 when no refund is claimed, kit round 2, the TXF OQ1 caution, the playbook as a product context.
+- The founder's calls: credit points (G-23), GOV OQ7, the tax at 60 when no refund is claimed, kit round 2, the TXF OQ1 caution, the playbook as a product context (moot since the switching page left the site on 2026-10-28, D38, until it is built again).

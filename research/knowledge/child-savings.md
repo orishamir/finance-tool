@@ -1,5 +1,7 @@
 # Child savings (חיסכון לכל ילד)
 
+> **Snapshot of 2026-10-22, not maintained.** The rule base the site reads is `.claude/skills/il-finance/references/child-savings.md`, updated since (closed questions struck, rules re-sourced, scope added). Cite and edit that copy, never this one.
+
 Checked: 2026-10-22 · Owner: domain-specialist
 Serves: product.md 3.1 (instrument guide), 3.3 (dimension checklist), 3.6 (holdings review: "whether the child-savings plan is in a chosen or default track"), 3.10 (decoder for child-savings track names); roadmap releases R1 (guide, decoder) and R3 (holdings review).
 Scope: the National Insurance (NII) long-term savings plan for every child: legal basis, eligibility, deposits, grants, where the money is held, default allocation, tracks, switching, withdrawal, death, fees, statements, participating institutions. Out: tax on withdrawal and on the plan (`tax-gemel-lehashkaa-ira-child.md`, TXK); general provident fee caps, transfer rules and statement formats (`provident-family-common.md`, PF); track catalogue mechanics (`tracks-catalogue-and-decoder.md`, CAT); bank deposit rules in general (`bank-current-account-deposits.md`, BANK).

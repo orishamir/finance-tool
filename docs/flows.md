@@ -4,6 +4,8 @@ Amended 2026-10-24 after the overnight user audit; see research/audit/2026-10-24
 
 Amended again 2026-10-24 (scenario audit) after the same night's scenario audit, in which user personas ran the live site end to end; see `research/audit/2026-10-24-scenario-audit.md`. Each amendment is marked "(2026-10-24, scenario audit)": the first page's second row (flow 1, 6.1), the goal form's child-age and purchase-cost questions (flow 12, 9.1), the idle-cash verdict (flow 11, 9.3), the comparison's representative instrument, headline and lines (flows 13, 14, 28, 29; 9.2), the holdings sheet and the liquid study fund (flows 22, 23; 12.2), and the exposure guide's tax note (6.6). A replaced sentence is struck through or kept as "until 2026-10-24".
 
+*Amended 2026-10-28 (sweep for later decisions).* Later decisions overrule parts of this file; each affected section carries a dated line at its top. In short: D24 removed the change log (flow 36); D32 holds the idle-cash and holdings pages back from the site; D34 and D37 took the saved goal, the saved-goal strip and the fit mark off every page except the goal pages; D35 and D36 changed the company page; D38 removed the switching page (flow 31, screen 15.3) and every link to it; the five rule shelf pages are only redirects to `/rules` (D25); the index page lives at `/indices` (D28). Where a ground rule of 2026-10-28 in `CLAUDE.md` conflicts with a brief below (phone first, charts, controls), the ground rule wins.
+
 > Release 2 sections added 2026-10-23: section 7 (release 2 flows), 8 (screens release 2 needs) and 9 (screen briefs, release 2).
 > Release 3 sections added 2026-10-23: section 10 (release 3 flows), 11 (screens release 3 needs) and 12 (screen briefs, release 3).
 > Release 4 sections added 2026-10-24: section 13 (release 4 flows), 14 (screens release 4 needs) and 15 (screen briefs, release 4).
@@ -255,6 +257,8 @@ One brief per screen in section 4. They apply `docs/design-system.md`. Mockups f
 
 **Amended 2026-10-25 (the founder: only "כרית ביטחון" changed anything).** "בשביל מה" is now the card's first question, and the questions under it follow the answer: a purchase (דירה, חתונה, לימודים) adds "how much will it cost, roughly" (optional; the result then says whether the sum is enough), "ילד" asks the child's age in place of the years (the comparison runs to age 18, a site parameter), "כרית ביטחון" asks the sum only, and "פרישה" or no purpose keep the three fields. With the years left empty (or "לא יודעים"), the card says how many years the comparison will assume for the chosen purpose. Because the chips are above the fields, choosing one never moves the chip under the finger or the pointer. Spec: `docs/design-spec.md` 1a.
 
+*Amended 2026-10-26 to 2026-10-28 (D32, D37):* the home page's idle-cash and holdings doors, the "פיקדון שמסתיים" and "קרן השתלמות נזילה" pills and the "כרית ביטחון" hand-off to `/idle-cash` are held back from the site; the saved-goal strip still replaces the question card here when a goal is saved.
+
 **Phone:** one column; the card and the search label are on the first screen, the four doors on the second (until 2026-10-24: "everything fits the first screen without scrolling", with a goal card above the doors). The chip row scrolls sideways inside the card.
 **PC:** below 80rem a centred column of 38rem with the cards 8rem wider from `lg`; from `xl` (80rem) a two-column grid inside `max-w-page`: the name, the two lines and the question card in the start column (7 of 12), the search, the four doors and the small link in the end column (5 of 12).
 ~~**PC:** a centred column of 38rem; the two cards side by side under the search field.~~ (until 2026-10-24)
@@ -338,6 +342,8 @@ The mockups show the layout. Also designed for:
 Amended 2026-10-24 (knowledge layer, D25): a **"שווה לדעת" block** follows "למה משתמשים בזה" on each wrapper guide page. Two or three rows from P-09 `guide_blocks` for that wrapper; each row is the rule's own Hebrew title, its first figure as a provenance number when it has one, and the rule chip, which opens the rule card in the sheet (source block first, 6.9). A rule whose source is the institution's own document or a secondary one carries its strength tag. A wrapper with no entry in P-09 shows no block. The block is a list of facts, not a quiz or a "did you know": no myth framing, no counts. The page's rules line is unchanged. Component: worth-knowing block (design-system 3.8).
 
 ### 6.6 Exposure guide page
+
+*Amended 2026-10-26 and 2026-10-27 (D6):* makam, government bonds and the two money-market funds are securities bought in a securities account, not wrappers; their exposure pages were folded into their guide pages, so exposure pages remain for the shekel cash, the two stock indices and the general track. No exposure page reads the saved goal (D37).
 
 **Flows:** 2. **Mockup:** none.
 
@@ -440,6 +446,8 @@ An open question keeps the blocked style and shows what is unknown and which num
 
 ### 6.11 Company page
 
+*Amended 2026-10-26 to 2026-10-28 (D33 to D36, D37):* a group's companies are one brand page under its known name (D33); the page compares nothing with other companies (D35); the fee cell shows both fees, from savings and from deposits, on every row (D36); there is no saved-goal strip and no fit mark (D34); the last column of the track table is two rings, stock share and foreign-currency share (F-87, F-88).
+
 **Flows:** 5. **Mockup:** "חברה · טלפון" and "חברה · מחשב", redrawn on 2026-10-23 as the single list below (product.md appendix E).
 
 - h1 the company name; under it "כל מה שהחברה מציעה, עם הסבר לכל מסלול", with the regulator's data month.
@@ -457,6 +465,8 @@ An open question keeps the blocked style and shows what is unknown and which num
 **Components:** track row, near-duplicate group, fee-pending note, disclosure.
 
 ### 6.12 Track page
+
+*Amended 2026-10-26 (D34):* the slot under the h1 reserved for "מתאים למטרה שלכם?" is gone; the track page shows no goal, no strip and no fit mark.
 
 **Flows:** 5, 6. **Mockup:** none.
 
@@ -571,6 +581,8 @@ What it is for: the honest answer to "where does all this come from". The forty-
 
 ### 6.17 Questions page
 
+*Note 2026-10-28:* the route is `/questions`; the five shelf routes (`/rules/state` and the others) remain only as redirects to `/rules?shelf=…`.
+
 **Flows:** 8 (a reader with a question). **Mockup:** the sketch the founder approved on 2026-10-24 (late evening): three phone frames, the rules page starting at the rules, the questions page with answers, the home block. Added 2026-10-24 (late evening): the common questions left the rules page (6.14) because a list of questions at the top of the reference page "doesn't fit well"; on their own page each gets an answer, not only pointers.
 
 - h1 "השאלות שכולם שואלים" and the lede "תשובה של שורה לכל שאלה, ומתחתיה החוקים והכללים שאפשר לפתוח ולבדוק במקור."
@@ -630,6 +642,8 @@ The header's menu gains one row, "השוואה למטרה", which opens the goal
 ### 7.3 The flows
 
 ### Flow 11. Start from idle cash
+
+*Held 2026-10-26 (D32), amended 2026-10-28 (D37):* `/idle-cash` is not linked from the site (no home door, menu item or pill; the address still works), and it no longer hands off to the goal comparison. The text below is the flow as built.
 
 **Starts:** the third door on the first page, the menu, or a link the founder sends. The person has their bank app open.
 
@@ -732,6 +746,8 @@ The header's menu gains one row, "השוואה למטרה", which opens the goal
 **Traces to:** product.md §2 "interactive by default", D7, D9; method A-01, A-02; design-system 3.3 (reused), 6.2.
 
 ### Flow 17. Come back later with the goal saved
+
+*Amended 2026-10-26 to 2026-10-28 (D34, D37):* the saved-goal strip shows on the home page, the goal pages and the workbench pages ("not final"); it is gone from the company, track, fee, indices, guide, exposure, holdings and idle-cash pages. Step 2 below, "on every page", is stale.
 
 **Starts:** any visit after a goal was set, on the same browser.
 
@@ -849,6 +865,8 @@ Top to bottom:
 
 ### 9.3 Idle-cash screen
 
+*Held 2026-10-26 (D32); amended 2026-10-28 (D37):* the screen is not linked from the site, and it neither reads the saved goal nor offers the goal comparison. The home page's "כסף שיושב בעו״ש" door and "פיקדון שמסתיים" pill described elsewhere in this file are gone from the site.
+
 **Flows:** 11. **Route:** `/idle-cash` (chosen 2026-10-23, revisable). **Mockup:** none.
 
 - Back link on a phone; h1 "כסף שיושב בעו״ש"; lede "שני מספרים, ותראו כמה עולה לכם להשאיר אותו שם."
@@ -872,6 +890,8 @@ Top to bottom:
 
 ### 9.4 Saved-goal strip
 
+*Amended 2026-10-26 and 2026-10-28 (D34, D37):* the strip is not on "every page": it shows on the home page, the goal pages and the workbench pages ("not final"); the compact strip on the company, track, fee and holdings pages is removed.
+
 **Flows:** 17. **Where:** the first page (above the doors), the result (top), the goal form (top, as the goals list), company and track pages (under the h1, compact). **Mockup:** none.
 
 - A 56 px card row: the goal's name in weight 500 (or the preset's name when unnamed), then "{שנים} · {סכום}" as numbers in their state, then "נשמר במכשיר הזה" in `text-xs muted`.
@@ -885,6 +905,8 @@ Top to bottom:
 **Components:** saved-goal strip, goal chips; from release 1: tag, button, link.
 
 ### 9.5 Fit mark on the track page and the company page
+
+*Removed 2026-10-26 (D34): the track and company pages no longer show the fit mark or the card "מתאים למטרה שלכם?"; the holdings fit mark went on 2026-10-28 (D37). Kept as the record of what was built.*
 
 **Flows:** 18. **Mockup:** none (the track page's reserved slot, 6.12).
 
@@ -947,6 +969,8 @@ The header's menu gains one row, "מה כבר יש לכם", which opens the hold
 
 ### Flow 20. Fee materiality from a comparison result row
 
+*Amended 2026-10-28 (D37):* the fee page runs on its own numbers, not on the saved goal: four plan sliders (amount today, monthly deposit, years, return), with inflation, employment and age behind a button; the "avoid" verdict comes from F-83 and does not link to the goal comparison.
+
 **Starts:** a ranked or listed row's detail sheet on the comparison result (flow 13), the link "מה העמלות כאן עולות לכם"; or the "why" sheet when the deciding formula is fee drag (flow 14), the link under the fee row.
 
 1. The fee page opens for that wrapper with the fee set the row's run used: the representative instrument P-05 names for the wrapper (`instruments`, D21: Leumi's tariff, Meitav's product-page fees, the CMA average of track 880 for the hishtalmut, labelled as an average actually charged, not a list price), and the goal's amounts, horizon, return and inflation, each in its state. The subject strip at the top says so: "לפי ההשוואה למטרה '{שם}': {מוצר}, לפי {שם הרשומה}".
@@ -1002,6 +1026,8 @@ Amended 2026-10-24 (UX audit): the deposit fee ("מהפקדה") is optional and 
 
 ### Flow 23. Read a holding: fit, fees, and on to fee materiality
 
+*Held 2026-10-26 (D32), amended 2026-10-28 (D37):* `/holdings` is not linked from the site. It asks the years once, and the fit mark and its lines are gone (item 4 and the fit marks in the worked example are stale).
+
 **Starts:** the holdings page with at least one holding.
 
 1. Each **holding card** shows: the track name as the company writes it, the company, the fund number, and the classification and report period from the CMA record; the balance and the fees as entered (blue); beside each fee the track's own average as members paid it (sourced, with the fee year) and the F-68 class reference (computed); the **fit mark** against the saved goal (F-70, P-04, horizon only in this release, D11): "מתאים", "לא מתאים", "אין כלל לסיווג הזה", with the goal named; the **fee line**: "העמלות יעלו {סכום} ב־{שנים}, בכסף של היום" (F-61 total drag on this holding's balance, deposits and fees over the goal's horizon) and the link "כל העמלות, ומה שווה לעשות איתן" to the fee page for this holding (flow 20, subject "לפי הדוח שלכם"); the rules line.
@@ -1032,6 +1058,8 @@ Amended 2026-10-24 (UX audit): the deposit fee ("מהפקדה") is optional and 
 **Traces to:** product.md 3.6 Out, 3.7 (link only), D10; method F-61, F-72; rules PF-14, PF-17, PF-18, PF-19, SW-01, SW-12, SW-15, SW-22, SW-24, CS-07, CS-12, CS-18, CS-20, CS-21, CS OQ10, TXK-04, TXH-19; S46; design-system 7.6.
 
 ### Flow 25. The track workbench
+
+*Amended 2026-10-28:* workbench pages are linked but "not final" (`docs/roadmap.md`); they still show the compact saved-goal strip. The track workbench still has its fit column (D34 removed the fit mark from the company and track pages only).
 
 **Starts:** the coverage line's last line on a result (flow 13, "המסלולים … בעמודי החברות"), a ranked row's detail ("כל המסלולים בכל החברות"), a guide page, a company page's group heading ("לכל המסלולים של {מוצר} בכל החברות"), or the address bar.
 
@@ -1100,6 +1128,8 @@ They apply `docs/design-system.md` section 7 and the "for every screen" rules of
 
 ### 12.1 Fee materiality page
 
+*Amended 2026-10-28 (D37):* no saved-goal strip, no no-goal notes and no defaults sheet; the page has its own four plan sliders and its verdict does not link to the goal comparison. See flow 20. Its "ואם תחליטו לעבור: המדריך למעבר" link (12.5, 15.5) is gone with the switching page (D38).
+
 **Flows:** 20, 21, 23, 27. **Route:** `/fees` with the subject in the address: `?wrapper={id}` (from a guide page or a result row), `?track={fundId}` (from a track page or the workbench), `?holding={id}` (from a holding); `&from=compare` when opened from the result, so the avoid verdicts use that comparison (chosen 2026-10-23, revisable). **Mockup:** none.
 
 Top to bottom:
@@ -1132,6 +1162,8 @@ Top to bottom:
 **Components:** subject strip, fee row, verdict tag, reference line, cap line, reduction field, negotiation text card, interaction-remainder line, thresholds line, fee-drag chart; from releases 1 and 2: provenance number, state tag, rule reference, rules line, assumptions sheet and chips, sensitivity panel, callout, disclosure, copy button, link.
 
 ### 12.2 Holdings page
+
+*Held 2026-10-26 (D32), amended 2026-10-28 (D37, D38):* the page is not linked from the site (no home door, menu item or pill); it shows no saved-goal strip and no fit mark, asks the years once, and has no link to the switching guide.
 
 **Flows:** 22, 23, 24, 27. **Route:** `/holdings` (chosen 2026-10-23, revisable). **Mockup:** none.
 
@@ -1214,6 +1246,8 @@ Four facts shape every screen here. No regulator average is collected for any pr
 | "Why is this provider not in the table, and why is the number marked old?" | Anyone reading the table | 33 |
 
 ### 13.2 Map of what release 4 adds
+
+*Amended 2026-10-28 (D38):* the switching playbook node and every arrow into it in the map below are removed from the site. The engine's switching cost F-66 stays.
 
 ```mermaid
 flowchart TB
@@ -1307,6 +1341,8 @@ The header's menu gains no row (chosen 2026-10-24, revisable, as release 3 chose
 **Amended (2026-10-24, scenario audit).** The S&P 500 worked example above is now a nine-record group: besides the IBI ETF and the iShares Core S&P 500 UCITS ETF, seven Israeli funds were collected from their annual reports to 31.12.2025: ATF סל 1218916, ילין לפידות סל 1201656, ילין לפידות מחקה 5139282, אלטשולר שחם מחקה 5139100, קסם KTF 5124482, הראל מחקה (4D) 5129275 and the currency-hedged הראל מחקה (4A) 5127527. By fee, ילין לפידות מחקה (0.02 % all in) ranks first and the IBI ETF eighth; hedged and other funds seen but not collected are on the not-collected line, and no fund list is republished (D22).
 
 ### Flow 31. The switching playbook for a wrapper
+
+*Removed 2026-10-28 (D38): the switching page and every link to it left the site and its code was deleted; the capability is on the roadmap under "Removed, to build again". This flow is kept as the record of what was built.*
 
 **Starts:** the holdings page's consolidation card (flow 24; the release 3 line "המדריך למעבר יתווסף בהמשך" becomes the link "המדריך למעבר"), a provider row's "איך עוברים" (flow 28), a fee row with the negotiate verdict (flow 20, "ואם תחליטו לעבור"), the "how money goes in and out" block of a guide page ("איך עוברים לחברה אחרת"), or the address bar.
 
@@ -1438,6 +1474,8 @@ Top to bottom:
 
 ### 15.3 Switching playbook page
 
+*Removed 2026-10-28 (D38): `/switch/{wrapper}` no longer exists. This section is kept as the record of what was built.*
+
 **Flows:** 31, 33. **Route:** `/switch/{wrapper}` with `?from={providerId|holdingId}&to={providerId}` and, for a brokerage fund switch, `&fundFrom={recordId}&fundTo={recordId}` (chosen 2026-10-24, revisable). **Mockup:** none.
 
 - Back link; h1 "איך עוברים: {מוצר}"; the **subject strip**: "מ{ספק} ל{ספק}" · "מ{ספק}" · the two optional filter fields "מאיפה" and "לאן" over the companies the site knows; the lede (copy 8.3).
@@ -1468,6 +1506,8 @@ Top to bottom:
 
 ### 15.5 Additions to existing screens
 
+*Amended 2026-10-28 (D38):* every link to the switching playbook below (the guide in-and-out block's "איך עוברים לחברה אחרת", the holdings, fee and providers links) is gone. Guide pages keep a one-line fact on switching.
+
 - **Track workbench (12.3):** the "לפי ספק" tab is live and opens `/workbench/providers/{wrapper}`; for a provident wrapper the tab shows the managers' published list fees from `data/fees/` as a sourced listing (Meitav's five lines, "דמי ניהול לפי המחירון, לא מדורג"), the line that the ranking for provident wrappers is by track (flow 25), and Phoenix's missing card. A third tab "לפי קרן" appears for a brokerage wrapper when a fund with an exposure is chosen.
 - **Comparison result (9.2):** the brokerage row's detail gains "איזה בנק או בית השקעות" (the provider workbench with the row's P-05 instrument) and "איזו קרן לקנות" (the fund-variant page of the row's exposure); the coverage line's last line names the three workbench tabs.
 - **Exposure guide page (6.6):** a block "איזו קרן לקנות" with the count of funds the site holds for the exposure (records; and the list count once read) and the link to the fund-variant page.
@@ -1487,13 +1527,13 @@ Top to bottom:
 
 Removed 2026-10-24 (D24): the change log and the what-changed page (flow 36, screen 19), the menu and footer rows "מה השתנה" and the first page's "since your last visit" line. The revisit sheet (flows 35 and 38) stays and is the whole "what changed" view; the text below is kept as history.
 
-**Note 2026-10-24.** The worked examples in this section use the golden fixtures S48 (a revisit after a rule change) and S49 (exposure mode with three exposures) in `tests/golden/scenarios.md`, while the site runs on the collected records: the seven exposure records in `data/instruments/exposures/` (shekel cash, makam, the unlinked and the CPI-linked government bond, the S&P 500, the TA-125 and the general track), Leumi's three deposit records in `data/terms/deposits/` (the only published cash rate the site holds), and the change log `data/changelog.jsonl` (removed, D24) (7,399 lines on 2026-10-24, 4,705 of them marked as affecting rankings, most of them one CMA snapshot). The numbers on screen differ from the examples by design. Where a flow needs a reading the method or the engine does not give yet, it says so in a **method note** or an **engine note**, so the owner can write it in before the screen is built.
+**Note 2026-10-24.** The worked examples in this section use the golden fixtures S48 (a revisit after a rule change) and S49 (exposure mode with three exposures) in `tests/golden/scenarios.md`, while the site runs on the collected records: the seven exposure records in `data/instruments/exposures/` (shekel cash, makam, the unlinked and the CPI-linked government bond, the S&P 500, the TA-125 and the general track), Leumi's three deposit records in `data/terms/deposits/` (the only published cash rates on 2026-10-24; since then seven more banks' current accounts and three banks' one-year deposits), and the change log `data/changelog.jsonl` (removed, D24) (7,399 lines on 2026-10-24, 4,705 of them marked as affecting rankings, most of them one CMA snapshot). The numbers on screen differ from the examples by design. Where a flow needs a reading the method or the engine does not give yet, it says so in a **method note** or an **engine note**, so the owner can write it in before the screen is built.
 
 Added 2026-10-24 from `docs/product.md` 3.2 (exposure mode), 3.8 (the change log), 3.9 (saved state and revisit), decisions D2 (tier-2 graduation), D7, D9, D11, D13, D17, D20, D21; `docs/roadmap.md` Release 5 (in it, depends on, risks, done when); `docs/method.md` A-29, F-70 (the loss filter in the fit mark from release 5), F-71, F-80, F-82, F-83, G-24, §12; the engine as built (`packages/engine/src/compare/loss-filter.ts`, `exposures.ts`, `revisit.ts`: `LossVerdict`, `ExposureComparison`, `SavedComparison`, `Revisit`, `VersionDiff`, `ChangesSince`); the data on disk (`data/instruments/exposures/*.json` with `return_source`, `cash_like`, `wrapper_ids`, `one_line_he`; `data/changelog.jsonl` (removed, D24) and its schema `packages/schema/src/collections/changelog.ts`; `data/parameters/classification-fit.json`); the saved state v2 document (`site/app/lib/state.ts`) and the v3 additions of design-spec 16.5; the "not covered yet" page (6.13) and the tier-2 table in `site/app/lib/compare.server.ts`; the graduation lines the rule base keeps per tier-2 file (`coverage.md`, "Tier-2 'not covered yet' page", 2026-10-24), and the release 5 tier-2 research pass of the same day (`scratchpad/reports/r5-tier2.md`: ranking, blockers, closures, draft records). Status: **draft for the founder.** Where the product text leaves a choice, the flow makes one and marks it "chosen 2026-10-24, revisable".
 
 What release 5 adds: for a saved goal, a second answer, which exposure (what the money is invested in) suits the horizon and the fall the person is willing to take, at returns the person enters and labels as their own, with the exposures their own filter removes shown as removed and a coverage line over all seven; a saved comparison that remembers the rules, parameters, data and assumptions it rested on, so a later visit says "re-check: {what} changed on {date}" or "unchanged since {date}" and whether the ranking holds; a reader-facing page over the change log, from the person's last visit, split into changes that affect rankings and changes that do not; and, on the "not covered yet" page, each tier-2 instrument's distance from full coverage, so a friend can see what closed and what still blocks.
 
-Five facts shape every screen here. **No sourced return exists for equity or bonds** (D9, N5): every such return is typed by the person, and the result must never read as the site's view. **Only one cash rate is sourced**: Leumi's published deposit rates (`data/terms/deposits/`, institution strength, effective 25.10.2026 as printed); the Bank of Israel series behind shekel cash and makam are links (D20), so makam is "not evaluated: no sourced series" until the person enters a rate. **The loss filter is two numbers the person types** (D11, F-71): the worst fall they expect for an exposure and the largest fall they accept; the site has no mapping and shows none. **The engine's revisit covers wrapper mode**: `SavedComparison` and `revisit` re-run `buildCandidateSet`; an exposure-mode saved comparison has the same shape in these flows and an engine note. **The change log is large and lumpy**: a CMA snapshot writes thousands of lines in one day, so the page folds a snapshot into one row and the revisit notice names what changed for *this* comparison (F-82's precise diff), not every line (roadmap R5 risk: noise).
+Five facts shape every screen here. **No sourced return exists for equity or bonds** (D9, N5): every such return is typed by the person, and the result must never read as the site's view. **Few cash rates are sourced** (as of 2026-10-24; more banks' terms were added on 2026-10-25 and 2026-10-26): Leumi's published deposit rates (`data/terms/deposits/`, institution strength, effective 25.10.2026 as printed); the Bank of Israel series are links (D20), but its policy rate, one figure, is quoted as the cash-like rate (D20 as amended 2026-10-26); makam is a security, not a wrapper (D6 as amended). **The loss filter is two numbers the person types** (D11, F-71): the worst fall they expect for an exposure and the largest fall they accept; the site has no mapping and shows none. **The engine's revisit covers wrapper mode**: `SavedComparison` and `revisit` re-run `buildCandidateSet`; an exposure-mode saved comparison has the same shape in these flows and an engine note. **The change log is large and lumpy**: a CMA snapshot writes thousands of lines in one day, so the page folds a snapshot into one row and the revisit notice names what changed for *this* comparison (F-82's precise diff), not every line (roadmap R5 risk: noise).
 
 ### 16.1 Why people come (added rows)
 
@@ -1573,6 +1613,8 @@ The header's menu gains one row, "מה השתנה" (chosen 2026-10-24, revisable
 **Traces to:** product.md 3.9, 3.8, D1, D7; roadmap R5 (risk: noise); method F-82, F-80, F-83, §13; engine `revisit.ts` (`SavedComparison`, `Revisit`, `VersionDiff`); S48; design-system 9.4; design-spec 21.5.
 
 ### Flow 36. What changed since: the change log for readers
+
+*Removed 2026-10-24 (D24): there is no change log, no what-changed page and no "since your last visit" line. Kept as the record of what was specified.*
 
 **Starts:** the menu row "מה השתנה", the rules page's and the parameters page's link of the same name, the what-changed sheet's last link (flow 35, with the saved date), the first page's quiet line "מאז הביקור הקודם שלכם השתנו {מספר} דברים" when there are any, or the address bar (`/changes?since=YYYY-MM-DD`).
 
@@ -1715,6 +1757,8 @@ Top to bottom:
 **Components:** strip revisit line, revisit banner, ranking verdict, choice line, what-changed sheet, diff row, value-change row, before/after block, unreadable-record form; from releases 1 to 4: saved-goal strip, callout, sheet, disclosure, provenance number, state tag, rule reference, confirm line, button, link button.
 
 ### 18.4 What changed since page
+
+*Removed 2026-10-24 (D24): `/changes` does not exist. Kept as the record of what was specified.*
 
 **Flows:** 36, 38. **Route:** `/changes?since=YYYY-MM-DD&until=…&collections=a,b` (chosen 2026-10-24, revisable). **Mockup:** none.
 

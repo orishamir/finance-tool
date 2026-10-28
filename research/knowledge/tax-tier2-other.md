@@ -1,5 +1,7 @@
 # Tax on tier-2 instruments: FX deposits and FX cash, structured deposits, corporate bonds, REITs, gold funds, managed portfolios
 
+> **Snapshot of 2026-10-22, not maintained.** The rule base the site reads is `.claude/skills/il-finance/references/tax-tier2-other.md`, updated since (closed questions struck, rules re-sourced, scope added). Cite and edit that copy, never this one.
+
 Checked: 2026-10-22 · Owner: tax-specialist
 Serves: `docs/product.md` 3.1 (the tier-2 "not covered yet" page: what is known, what is open, why; D2), 3.3 (dimension checklist), 3.8 (rule base and open list), D10 (strength policy decides what may compute). Roadmap: R1 (tier-2 page), R5 (D2 graduation of each instrument).
 Scope: income tax for an Israeli-resident individual (not a substantial shareholder, not in business) on: foreign-currency (FX) deposits and FX current-account balances, including the withholding side of tax report Q2 and the olim and returning-resident exemptions; foreign currency held as cash; structured deposits; corporate bonds and commercial paper (interest and gain by linkage, discount, default and write-off); REITs (distributions by source of income, sale of units); gold through Israeli and foreign funds and ETFs (Q9, funds only); managed and robo portfolios (fees against gains, withholding by the custodian).

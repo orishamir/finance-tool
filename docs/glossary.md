@@ -11,6 +11,8 @@ Every explanation below comes from the rule base, never from memory. Each row gi
 
 Where the rule base cannot explain a term, the term is listed in section 4 as missing and the site must not explain it until the rule base does.
 
+*Swept 2026-10-28.* The playbook terms in 9.1 and 9.2 ("איך עוברים", "עלות המעבר", "רשמו כל הצעה", "מה לבדוק אחרי המעבר") describe the switching page, which left the site (D38); the change-log terms in 10.1 were already marked removed (D24).
+
 **Strength label renamed 2026-10-24 (UX audit).** The site's word for a source that is an institution's own binding document is now "לפי החברה" (the popover line, the legend and the tags); it was "מוסדי" / "מקור מוסדי". The rows below record the rule base's own strength word as it stood when they were generated ("מקור מוסדי"), which the build maps to the same state; the meaning (D23) is unchanged. A caution icon before the digits stands in the line; the word is in the sheet.
 
 The rows are generated from the research files in `research/glossary/terms/` by `research/glossary/merge_terms.py` then `gen_glossary.py docs/glossary.md`; regenerate rather than hand-edit when the rule base changes. When the guide pages are built, these rows move into `data/terms/` (`docs/data-schema.md` 3.11), with the same sources.
@@ -830,6 +832,8 @@ Added 2026-10-24 by hand for the briefs in `docs/flows.md` section 15. As sectio
 
 ### 9.1 Site definitions (method and product)
 
+*Amended 2026-10-28 (D38):* the terms about the switching playbook ("איך עוברים", "עלות המעבר", "רשמו כל הצעה", "מה לבדוק אחרי המעבר") stand for a page that was removed; the engine's switching cost F-66 and the rules stay. Kept as the record.
+
 | מונח | הסבר | נקרא גם | מקור |
 |---|---|---|---|
 | **רמת העמלה** | באיזה מחיר העמלות של כל ספק נכנסות להשוואה: לפי התעריפון המלא, לפי ממוצע שפורסם של מה שנגבה בפועל, או לפי ההצעה שקיבלתם; הרמה חלה על כל הספקים בטבלה בבת אחת | שלוש רמות · fee level | `docs/product.md` D4; `docs/method.md` F-63 (list, regulator average, entered); BRK-26, BRK-33 (what the two averages are) · 2026-10-24 · הגדרה של האתר |
@@ -899,7 +903,7 @@ Added to the list in section 4. The screens need these; the site must not state 
 | **הסרת סוכן שמשויך לחשבון** | not found (SW OQ16). The agent step renders SW-17 and the lock. |
 | **ניסיון כסוג רשומה במאגר הכללים** | the schema's strength vocabulary has no "experience" value and the rules bundle no such kind; the SW-X entries need one, or a content file (design-spec 16.2 data note). Until then the retention step says experience was not shipped. |
 | **מנהלי קרנות כגוף בקטלוג** | the companies list shows fund managers only from a fund list; none is collected. A manager found through a record gets a page with the records and the link to Maya. |
-| **מוצרי בנק של בנקים מלבד לאומי** | only Leumi's three deposit records exist; every other bank's deposits group says they are not collected (N6: no regulator list behind bank products). |
+| **מוצרי בנק של בנקים מלבד לאומי** | Leumi's three deposit records existed on 2026-10-24; since 2026-10-25 seven more banks' current accounts, and since 2026-10-26 one-year deposits of Hapoalim, Discount and Mizrahi-Tefahot, are collected; every other bank's deposits group says they are not collected (N6: no regulator list behind bank products). |
 | **ברוקר זר במאגר התעריפונים** | no 49A foreign broker has a snapshot; the "לא מפוקח על ידי רשות ניירות ערך" tag (BRK-06) is designed and unused. The process for moving securities to a foreign broker was not found (SW-37, SW OQ12). |
 
 ## 10. Terms the release 5 screens introduce
@@ -949,12 +953,12 @@ Added to the list in section 4. The screens need these; the site must not state 
 | **תשואה צפויה למניות ולאג״ח** | no sourced expected-return scenario exists (product N5, D9). Every equity, bond and general-track return is entered by the person and labelled so; the site shows no number of its own, not even as a placeholder. |
 | **ירידה צפויה לחשיפה** (worst fall) | no mapping from an exposure to a fall is in the rule base, and D11 forbids claiming one. The worst-fall hint links to the exposure guide's risks block, which holds only what the rule base holds (ETF-33 to ETF-42 describe the two indices; no historical drawdown figure is recorded for any exposure). Until a sourced figure with its period and source exists, the site shows none. |
 | **תשואת מק״מ כמספר** | the Bank of Israel's makam yield series is a link (D20). The makam exposure is "not evaluated: no sourced series" until the person enters a yield. |
-| **ריבית מזומן שקלי מחוץ לפיקדון** | a published rate exists only for Leumi's deposits (`data/terms/deposits/`). Shekel cash held in a money-market fund, a current account or a brokerage account has no sourced rate; the row says so and asks for one. |
+| **ריבית מזומן שקלי מחוץ לפיקדון** | a published rate existed only for Leumi's deposits (`data/terms/deposits/`) on 2026-10-24; more banks' terms were added on 2026-10-25 and 2026-10-26, and the Bank of Israel policy rate is quoted as the guides' cash-like rate (D20 as amended 2026-10-26). Shekel cash held in a money-market fund, a current account or a brokerage account has no sourced rate; the row says so and asks for one. |
 | **המוצר שמחזיק כל חשיפה כברירת מחדל** | ~~the parameter P-08 (`data/parameters/exposure-holding-wrapper.json`) is proposed in flow 34 and does not exist; F-71 leaves the choice to the caller.~~ **Written 2026-10-24**: P-08 exists with a wrapper per exposure (`docs/parameters-rationale.md`; its names are in `parametersPage` of `copy.ts`); the row shows the default as a site parameter and lets the person change it. F-71 still leaves the choice to the caller. |
 | **מקור הריבית למזומן בשני המצבים** | wrapper mode runs cash-like wrappers on P-05's `cash_rate` (a parameter); exposure mode, by D20's reading here, on a published rate, an entered rate or nothing (flow 34 method note). The method owner should settle one reading for both. |
 | **"לא מחזיק את החשיפה" כתוצאה** | whether a wrapper that cannot hold the chosen exposure is "not eligible" in wrapper mode is not in F-83; the site shows a display tag (flow 34 method note). |
 | **בדיקה מחדש להשוואה לפי חשיפה** | F-82's engine (`saveComparison`, `revisit`) covers wrapper mode; the exposure-mode record (the loss filter and the per-exposure returns as assumptions) and its re-run are an engine note (flow 35). |
-| **תאריך השינוי של פרמטר או הנחה** | `VersionDiff` carries `checked` dates for rules and data only; the notice's date for a parameter or an assumption is read from the change log, else "מאז {תאריך השמירה}" (flow 35 data note). |
+| **תאריך השינוי של פרמטר או הנחה** | `VersionDiff` carries `checked` dates for rules and data only; the notice's date for a parameter or an assumption is read from the change log (removed 2026-10-24, D24), else "מאז {תאריך השמירה}" (flow 35 data note). |
 | **הסיבה בעברית ביומן השינויים** (removed 2026-10-24, D24) | `reason` is a technical note (data-schema §3.12). The page shows it as data; a `reason_he` field is not in the schema. |
 | **שמות עבריים לשדות ביומן** (removed 2026-10-24, D24) | the schema has no field-label dictionary; the change-log row shows a Hebrew label where the site has one and the raw field otherwise. |
 | **קובץ מצב לכל מוצר שעוד לא מכוסה** | the tier-2 list, its open questions, closures and ranking live in code (`compare.server.ts`), in G-24 and in the rule base's `coverage.md` lines. A data file per instrument (`data/instruments/tier2/`) is proposed in flow 37; until it exists the status card shows blockers only and "עוד לא נרשמו סגירות". The pass's two draft wrapper records (`tier2-drafts/managed-portfolio.json`, `fx-deposit.json`) are outside `data/` by design: their ids are not in the schema's `wrapperId` and their formulas are not in the method. |

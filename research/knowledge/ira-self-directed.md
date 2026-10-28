@@ -1,5 +1,7 @@
 # Self-directed provident and study funds (קופת גמל בניהול אישי, IRA)
 
+> **Snapshot of 2026-10-22, not maintained.** The rule base the site reads is `.claude/skills/il-finance/references/ira-self-directed.md`, updated since (closed questions struck, rules re-sourced, scope added). Cite and edit that copy, never this one.
+
 Checked: 2026-10-22 · Owner: domain-specialist
 Serves: product.md 3.1 (instrument guide, IRA is a tier-1 wrapper under D2), 3.3 (dimension checklist), 3.10 (decoder: IRA funds in the CMA data and Meitav's IRA menu) in R1; 3.5 and 3.6 (fees, holdings) in R3; 3.4 (providers: brokerage tariffs inside the IRA) and 3.7 (transfers) in R4.
 Scope: what an IRA fund is in Israeli law; which product types may be self-directed; who may deposit which money and up to what amount; what may be held and the investment limits; who gives instructions, portfolio managers, brokers and custody; the closed list of charges and the brokerage competitive process; transfers in and out; the 2025 draft amendment and the CMA 2026 plan; failures (Slice, Globalnet); the IRA funds in Gemel-Net and Meitav's published terms.

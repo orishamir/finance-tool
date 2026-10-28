@@ -34,12 +34,17 @@ All five releases of `docs/roadmap.md` are built (release 1 on 2026-10-23,
 releases 2 to 5 on 2026-10-23 and 2026-10-24); the dated "Status" paragraphs
 under each release say what exists and what is open, and its closing section
 "After release 5" lists the work that continues (tier-2 graduation, data
-growth, quarterly tariff refresh, my approvals). Data: about 500 rules, 20
-tariff snapshots for 17 providers (Meitav Trade still missing), 12 fund records,
-deposit terms (Leumi's 3, seven more banks' current accounts since 2026-10-25, and one-year deposits of Hapoalim, Discount and Mizrahi-Tefahot since 2026-10-26), 2 series; no fund list, because TASE's terms forbid
-republishing it (see `docs/data-inventory.md`). The saved state is version 3
-under `mekor.v2.state`; the entered offers, variant assumptions and playbook
-ticks are three side stores on the device pending a merge into it.
+growth, quarterly tariff refresh, my approvals). Switching (release 4) was
+removed on 2026-10-28 to be built again (D38). Data (2026-10-28): about 600
+rule records, 22 tariff snapshots for 19 providers (Meitav Trade still missing),
+48 fund records, 16 deposit-term records (Leumi's 3, seven more banks' current
+accounts since 2026-10-25, and one-year deposits of Hapoalim, Discount and
+Mizrahi-Tefahot since 2026-10-26), 3 series (CPI, child-savings rates, ECB
+exchange rates); no fund list, because TASE's terms forbid republishing it (see
+`docs/data-inventory.md`). The saved state is version 3 under `mekor.v2.state`;
+the entered offers, variant assumptions, playbook ticks and entered rates are
+four side stores on the device, carried in the export file and pending a merge
+into the state document.
 
 `docs/product.md` defines the site: who it is for, the capabilities, the
 decisions D1 to D13 (confirmed 2026-10-22, open to revision as I learn more),
@@ -115,7 +120,7 @@ The evidence behind them is `research/2026-10-28-founder-patterns.md`.
   about a product. A statement about the whole market comes from law or
   from a count over every collected institution. See D30.
 - **Never fill in a financial or tax rule from memory.** Use the
-  `il-finance` skill once it exists. If a rule is missing from it, say the
+  `il-finance` skill. If a rule is missing from it, say the
   rule is missing and stop; do not guess or approximate. Site judgements
   (thresholds, bounds) live in `data/parameters/` and are not rules.
 - **Shared components first** (founder, 2026-10-25). Before building any UI
@@ -155,7 +160,7 @@ The evidence behind them is `research/2026-10-28-founder-patterns.md`.
 
 ## Repo layout
 
-- `docs/` — product docs (`product.md`, `discovery.md`, later `method.md`)
+- `docs/` — product docs (`product.md`, `discovery.md`, `method.md`, `roadmap.md`, `data-schema.md`, `data-inventory.md`, `parameters-rationale.md`)
 - `research/` — research notes and findings
 - `data/` — source data, each entry with its source and date
 - `packages/schema/` — data schemas (Zod) for `docs/data-schema.md`; `json/` holds the exported JSON Schema

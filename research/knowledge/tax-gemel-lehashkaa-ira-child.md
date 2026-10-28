@@ -1,5 +1,7 @@
 # Tax: kupat gemel lehashkaa, IRA, child savings
 
+> **Snapshot of 2026-10-22, not maintained.** The rule base the site reads is `.claude/skills/il-finance/references/tax-gemel-lehashkaa-ira-child.md`, updated since (closed questions struck, rules re-sourced, scope added). Cite and edit that copy, never this one.
+
 Checked: 2026-10-22 · Owner: tax-specialist
 Serves: product.md 3.1 (kupat gemel lehashkaa, IRA and child-savings guide pages, including the founder's age-60 example), 3.2 (wrapper mode, the founder's ETF-vs-provident case: exit tax and track-switch dimensions), 3.3 (dimension checklist), 3.6 (child-savings holdings), 3.8 (rule base). Roadmap R1 (3.1, 3.3), R2 (3.2), R3 (3.6).
 Scope: in: income tax at deposit, during, on switches and transfers, on lump-sum and annuity exit, on death, for kupat gemel lehashkaa; the tax side of IRA (self-directed) accounts; tax on child-savings deposits, grants and gains. Out: product rules, ceilings as product limits, fees, tracks and processes (`kupat-gemel-lehashkaa.md`, `ira-self-directed.md`, `child-savings.md`, `provident-family-common.md`); study fund tax, including the IRA study fund (`tax-hishtalmut.md`); pension and provident-for-annuity tax, including the qualifying-annuity exemption and Amendment 190 in general (`tax-pension-gemel-lekitzba.md`); brackets, surtax, NII and health on passive income, filing (`tax-general.md`); interest-rate rules in general (`tax-interest-deposits-bonds.md`); foreign withholding and credit in general (`tax-securities-foreign.md`).

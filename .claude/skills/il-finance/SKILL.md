@@ -18,7 +18,7 @@ The project's rule base (`docs/product.md` 3.8). 937 rules in 31 topic files und
    - `primary`: computes.
    - `secondary`: computes, labelled "secondary source".
    - `open`: does not compute.
-   - `institution` (a provider's own bylaw, prospectus or tariff): D10 does not cover it yet (coverage.md F1), so flag it rather than treat it as primary.
+   - `institution` (a provider's own bylaw, prospectus or tariff): computes, labelled "institution source", and never closes a tax question for graduation (D23, 2026-10-24; coverage.md F1).
 6. Respect scope (D30, `references/README.md` "The Scope line"): a product context (a guide page, the questions page, "שווה לדעת", a product's rules, the comparison) uses only `general` rules. An `institution` rule is that company's term: show it only on that company's page or in a sentence that names the company. An `unsettled` rule rests only on company documents: show it only as those companies'. A record with no Scope line was not reviewed in the scope pass.
 7. `primary (mirror)` means the law was read on Wikisource or Nevo through a tool that paraphrases. Re-read the exact wording in the official text before encoding the rule.
 8. Figures change: check each rule's tax year and "Likely to change" line. Annotations marked "browser pass" record later updates.

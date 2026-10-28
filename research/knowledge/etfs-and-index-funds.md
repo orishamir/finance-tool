@@ -1,5 +1,7 @@
 # ETFs and index funds
 
+> **Snapshot of 2026-10-22, not maintained.** The rule base the site reads is `.claude/skills/il-finance/references/etfs-and-index-funds.md`, updated since (closed questions struck, rules re-sourced, scope added). Cite and edit that copy, never this one.
+
 Checked: 2026-10-22 · Owner: domain-specialist
 Serves: product.md 3.1 (instrument guide, exposure page "index"), 3.2 (wrapper mode: the same index in a brokerage account), 3.3 (dimension checklist), 3.4 (fund-variant workbench), 3.10 (decoding fund names and codes). Release 1 (README file list).
 Scope: the three ways to hold an index through a brokerage account. (1) Israeli funds that track an index: ETFs (קרן סל) and open-ended tracking funds (קרן מחקה פתוחה). (2) Foreign funds registered for offer in Israel and traded on TASE (קרן חוץ). (3) Foreign-domiciled ETFs bought abroad (US-domiciled, Irish UCITS). Covers structure, trading, price vs NAV, fee types, tracking, currency hedging, distribution policy, identifiers, regulator and issuers.

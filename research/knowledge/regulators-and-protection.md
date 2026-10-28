@@ -1,5 +1,7 @@
 # Regulators and protection
 
+> **Snapshot of 2026-10-22, not maintained.** The rule base the site reads is `.claude/skills/il-finance/references/regulators-and-protection.md`, updated since (closed questions struck, rules re-sourced, scope added). Cite and edit that copy, never this one.
+
 Checked: 2026-10-22 · Owner: domain-specialist
 Serves: product.md 3.1 ("who offers it and under which regulator", "risks and what is not protected"), 3.3 (dimensions `regulator`, `protection`), 3.4 (regulator and protection status per provider), 3.7 (dispute channels). Roadmap: release 1 (guide, checklist), release 4 (workbench, playbook).
 Scope: who regulates each tier-1 wrapper and institution, under which law; the official registers of institutions and what they list today; what the law says happens to a saver's money if the institution fails, per wrapper; complaint and dispute channels per regulator; the legal entities behind the Meitav brand. Out: product rules (wrapper files), brokerage fee types (`brokerage-account.md`), tax (tax files), track catalogue (`tracks-catalogue-and-decoder.md`).

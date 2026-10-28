@@ -1,5 +1,7 @@
 # Coverage: what in `docs/product.md` the knowledge base does not cover yet
 
+> **Snapshot of 2026-10-22, not maintained.** The rule base the site reads is `.claude/skills/il-finance/references/coverage.md`, updated since (closed questions struck, rules re-sourced, scope added). Cite and edit that copy, never this one.
+
 Written 2026-10-22, after the 29 topic files in this folder were finished and reviewed.
 The knowledge base holds 775 rules and about 510 open questions. Every rule has a link and a
 checked date. Rules that only point to other rules carry the links of the rules they point to.

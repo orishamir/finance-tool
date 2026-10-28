@@ -1,5 +1,7 @@
 # Bank product names (decoder catalogue, bank side)
 
+> **Snapshot of 2026-10-22, not maintained.** The rule base the site reads is `.claude/skills/il-finance/references/bank-product-names.md`, updated since (closed questions struck, rules re-sourced, scope added). Cite and edit that copy, never this one.
+
 Checked: 2026-10-22 · Owner: domain-specialist
 Serves: product.md 3.10 (product decoder, bank products), D2 (every product name a bank shows must be decodable), section 2 success criterion 5, section 5 item 6a (`data/catalog/` seeded with each bank's deposit and savings-plan names), N6 (machine-readability of the directive-447 publication); roadmap release R4 (3.10 bank products; tariff and catalogue snapshots).
 Scope: in: the names each bank in the BoI register that serves individuals uses on its site, in its directive-447 publication, in its standard contracts and (where public) its app, for shekel deposits, savings plans, current-account credit interest, fee tracks, child-savings products, and the names of FX and structured deposits (name only); per name, what it is in the wrapper model; names that look alike but differ; names that cannot be decoded from public sources; whether each bank's 447 publication is machine-readable. Out: the rules behind deposits, 447 and fee tracks (`bank-current-account-deposits.md` BANK-01 to BANK-29, not repeated here); FX and structured deposit terms (`fx-and-structured-deposits.md`); child-savings rules (`child-savings.md`); tax (`tax-interest-deposits-bonds.md`); rates and prices (data track, `data/`).

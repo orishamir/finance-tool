@@ -1,5 +1,7 @@
 # Government bonds and makam
 
+> **Snapshot of 2026-10-22, not maintained.** The rule base the site reads is `.claude/skills/il-finance/references/government-bonds-and-makam.md`, updated since (closed questions struck, rules re-sourced, scope added). Cite and edit that copy, never this one.
+
 Checked: 2026-10-22 · Owner: domain-specialist
 Serves: product.md 3.1 (instrument guide), 3.2 (goal comparison and the idle-cash preset), 3.3 (dimension checklist), 3.10 (decoder: names on bank and broker screens); roadmap R1 (guide, decoder, rule base) and R2 (idle-cash comparison).
 Scope: makam (מק"ם) and every type of Israeli government shekel bond a resident can hold: tradable fixed-rate, CPI-linked and floating-rate series, and the short government bond. Designated non-tradable series (ערד, ח"ץ, מירון) only to record that they are not for individuals. Where official yields are published. What a holder gets at maturity and what an early exit is. Out: tax (`tax-interest-deposits-bonds.md`), corporate bonds (`corporate-bonds.md`), bond funds and ETFs (`etfs-and-index-funds.md`, `mutual-funds-and-money-market-funds.md`), brokerage fees and custody protection (`brokerage-account.md`, `regulators-and-protection.md`), government foreign-currency debt (left out, see the end of this file).

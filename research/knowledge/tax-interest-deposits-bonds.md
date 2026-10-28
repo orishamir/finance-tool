@@ -1,5 +1,7 @@
 # Tax on interest: deposits, savings plans, current accounts, makam and government bonds
 
+> **Snapshot of 2026-10-22, not maintained.** The rule base the site reads is `.claude/skills/il-finance/references/tax-interest-deposits-bonds.md`, updated since (closed questions struck, rules re-sourced, scope added). Cite and edit that copy, never this one.
+
 Checked: 2026-10-22 · Owner: tax-specialist
 Serves: product.md 3.1 (instrument guide: deposit, makam and government-bond pages), 3.2 (wrapper mode and the idle-cash preset: deposits vs money-market funds vs makam), 3.3 (dimension checklist), 3.8 (rule base). Roadmap R1 (rule base, guide) and R2 (idle-cash preset).
 Scope: income tax on interest paid to an Israeli-resident individual (not a business, not a substantial shareholder) on shekel bank deposits, savings plans and current-account credit balances; makam; Israeli government bonds (unlinked fixed, CPI-linked, variable); withholding and reclaiming; reliefs for low income and old age; loss offset as it touches these instruments.

@@ -1,5 +1,7 @@
 # Study fund (keren hishtalmut) taxation
 
+> **Snapshot of 2026-10-22, not maintained.** The rule base the site reads is `.claude/skills/il-finance/references/tax-hishtalmut.md`, updated since (closed questions struck, rules re-sourced, scope added). Cite and edit that copy, never this one.
+
 Checked: 2026-10-22 · Owner: tax-specialist
 Serves: `docs/product.md` 3.1 (instrument guide, keren hishtalmut page), 3.2 (wrapper mode; salary and contribution inputs; the founder's apartment goal and ETF-vs-provident example), 3.3 (dimension checklist), 3.8 (rule base). Release 1 (README file list).
 Scope: in: tax at deposit for salaried and self-employed members, ceilings and how they are updated, tax on gains, exempt and non-exempt withdrawals, withholding, how a fund tracks benefited and non-benefited money, track switch and transfer, legislated and proposed changes. Out: product rules such as liquidity, tracks, fees, transfer process and who offers it (`keren-hishtalmut.md`, `provident-family-common.md`, `switching-and-transfers.md`); brackets, surtax, filing thresholds, National Insurance (`tax-general.md`); pension and provident fund for annuity (`tax-pension-gemel-lekitzba.md`); IRA wrapper of a study fund (`tax-gemel-lehashkaa-ira-child.md`, `ira-self-directed.md`).

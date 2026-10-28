@@ -1,5 +1,7 @@
 # Pension fund and provident fund for annuity
 
+> **Snapshot of 2026-10-22, not maintained.** The rule base the site reads is `.claude/skills/il-finance/references/pension-and-gemel-lekitzba.md`, updated since (closed questions struck, rules re-sourced, scope added). Cite and edit that copy, never this one.
+
 Checked: 2026-10-22 · Owner: domain-specialist
 Serves: `docs/product.md` 3.1 (instrument guide), 3.2 (salary and contribution inputs, "where to find this on the payslip"), 3.3 (dimension checklist), 3.4 (tracks), 3.6 (holdings review), 3.10 (decoder for pension and gemel tracks). Release 1 file per `research/knowledge/README.md`.
 Scope: mandatory pension for employees and the self-employed; new comprehensive and general pension funds (ceilings, insured salary, insurance cover, stopping deposits); investment tracks, designated bonds and the guaranteed-return mechanism, actuarial balancing; selected (default) pension funds; regulated fee caps for pension funds, provident funds and pensioners; withdrawal, retirement ages, minimum pension, severance on leaving a job, death; provident fund for annuity (tagmulim and personal severance); payslip fields; institutions.

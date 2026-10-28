@@ -1,5 +1,7 @@
 # Kupat gemel lehashkaa (investment provident fund)
 
+> **Snapshot of 2026-10-22, not maintained.** The rule base the site reads is `.claude/skills/il-finance/references/kupat-gemel-lehashkaa.md`, updated since (closed questions struck, rules re-sourced, scope added). Cite and edit that copy, never this one.
+
 Checked: 2026-10-22 · Owner: domain-specialist
 Serves: `docs/product.md` 3.1 (instrument guide page), 3.2 (wrapper record: ceiling, liquidity, fee bases), 3.3 (dimension checklist), 3.4 (tracks and providers), 3.10 (decoder: the founder's Meitav "open a new saving" button opens this wrapper). Release 1 (README file list).
 Scope: what the product is, legal basis, who may open one, deposits and the ceiling, withdrawals, transfers in and out, tracks as categories, the default track, fee bases and the regulated maximum, fee discounts, beneficiaries, sector funds, and the managing companies that offer it.

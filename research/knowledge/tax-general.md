@@ -1,5 +1,7 @@
 # Tax: cross-cutting rules (brackets, surtax, definitions, filing, withholding, National Insurance)
 
+> **Snapshot of 2026-10-22, not maintained.** The rule base the site reads is `.claude/skills/il-finance/references/tax-general.md`, updated since (closed questions struck, rules re-sourced, scope added). Cite and edit that copy, never this one.
+
 Checked: 2026-10-22 · Owner: tax-specialist
 Serves: `docs/product.md` 3.1 (instrument guide: "how it is taxed"), 3.2 (goal comparison: tax at exit, the "must not need an annual tax return" constraint, age input), 3.3 (dimension checklist), 3.8 (rule base, "likely to change" list with re-check dates) and 3.9 (re-check after a rule change). Roadmap: Release 1 (rule base, guide), Release 2 (comparison engine).
 Scope: rules every instrument file relies on, for an individual Israeli resident who is not a substantial shareholder (בעל מניות מהותי): the tax year and residency, 2026 brackets and credit point, the 2025-2027 freeze, surtax (3% and the extra 2% on capital income), real gain and inflationary amount, the "maximum rate vs fixed rate" rule that decides whether lower brackets (age 60+) reach capital income, withholding vs self-reporting, Form 867, annual-return triggers, advances when income is at a foreign broker, foreign-asset reporting triggers, refunds and late-payment charges, National Insurance and health contributions on passive income, legislated and proposed changes for 2025-2027.

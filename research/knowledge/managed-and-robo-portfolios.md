@@ -1,5 +1,7 @@
 # Managed and robo portfolios (ניהול תיקי השקעות, תיק השקעות דיגיטלי)
 
+> **Snapshot of 2026-10-22, not maintained.** The rule base the site reads is `.claude/skills/il-finance/references/managed-and-robo-portfolios.md`, updated since (closed questions struck, rules re-sourced, scope added). Cite and edit that copy, never this one.
+
 Checked: 2026-10-22 · Owner: domain-specialist
 Serves: product.md 3.1, the tier-2 "not covered yet" page (D2; roadmap R1). D2 graduation to tier 1 (roadmap R5 and ongoing). 3.10 decoder, where a manager's app or site offers a managed or "digital" portfolio, for example Meitav Manager. D4: an ISA-reported fee average by portfolio size exists for this provider class. D11: robo risk questionnaires.
 Scope: in:

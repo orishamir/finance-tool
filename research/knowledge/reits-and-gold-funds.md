@@ -1,5 +1,7 @@
 # REITs and gold via funds
 
+> **Snapshot of 2026-10-22, not maintained.** The rule base the site reads is `.claude/skills/il-finance/references/reits-and-gold-funds.md`, updated since (closed questions struck, rules re-sourced, scope added). Cite and edit that copy, never this one.
+
 Checked: 2026-10-22 · Owner: domain-specialist
 Serves: product.md 3.1 (the tier-2 "not covered yet" page: what is known, what is open, why), 3.3 (dimension checklist items that apply when these appear in a holding), 3.10 (decoding fund and company names such as "ריט", "LBMA Gold Price AM", "מנוטרלת מט"ח"). Tier 2 under D2.
 Scope: (1) Israeli REITs (קרן להשקעות במקרקעין): the legal definition and its product rules (holdings, size, borrowing, holder spread, distribution duty, loss of status), which REITs trade on TASE, how a saver holds one, costs, liquidity and stated risks. (2) Foreign REITs: TASE dual listing, and REIT funds and ETFs. (3) Gold through funds: Israeli commodity ETFs and tracking funds on gold, foreign physically backed gold ETCs and US gold trusts, how each holds gold, fees, currency, tracking, and what a saver must check.
