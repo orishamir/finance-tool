@@ -177,7 +177,7 @@ function NegotiationCard({ line, an, subject, toPct, rules }: { line: LineView; 
 
 // ---------------------------------------------------------------- the row
 
-export function FeeRow({ line, an, subject, years, thresholds, reduction, onReduce, rules, notReported, soften, compareHref }: { line: LineView; an: Analysis; subject: SubjectView; years: number; thresholds: Analysis["thresholds"]; reduction: number | null; onReduce: (n: number | null) => void; rules: Map<string, RuleRecord>; notReported?: boolean; soften?: boolean; compareHref?: string }) {
+export function FeeRow({ line, an, subject, years, thresholds, reduction, onReduce, rules, notReported, soften }: { line: LineView; an: Analysis; subject: SubjectView; years: number; thresholds: Analysis["thresholds"]; reduction: number | null; onReduce: (n: number | null) => void; rules: Map<string, RuleRecord>; notReported?: boolean; soften?: boolean }) {
   void notReported;
   const toPct = reduction ?? line.suggestion;
   return (
@@ -199,7 +199,7 @@ export function FeeRow({ line, an, subject, years, thresholds, reduction, onRedu
           </span>
         </div>
       </div>
-      <VerdictTag line={line} thresholds={thresholds} soften={soften} compareHref={compareHref} />
+      <VerdictTag line={line} thresholds={thresholds} soften={soften} />
       <div className="flex flex-col gap-2">
         <ReferenceLine reference={line.reference} />
         <CapLine cap={line.cap} />

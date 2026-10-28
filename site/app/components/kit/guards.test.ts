@@ -120,7 +120,7 @@ describe("no closed open question is named as open", () => {
   const named = (src: string): string[] => [...new Set([...idRefIds(src).flatMap(codesIn), ...codesIn(uncommented(src))])];
   it("the data file is there and has closed questions, and the scan reaches the files", () => {
     expect(closed.size).toBeGreaterThan(0);
-    expect(scanned.map(rel)).toEqual(expect.arrayContaining(["copy.ts", "lib/playbook.ts", "content/guide/pension-comprehensive.tsx", "routes/not-covered.tsx"]));
+    expect(scanned.map(rel)).toEqual(expect.arrayContaining(["copy.ts", "content/guide/pension-comprehensive.tsx", "routes/not-covered.tsx"]));
   });
   it("names none in any source of the site", () => {
     const bad: string[] = [];

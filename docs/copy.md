@@ -1,6 +1,8 @@
 # Hebrew copy, release 1
 
 > Release 2 section added 2026-10-23: section 6, the strings of the release 2 screens.
+
+> Swept 2026-10-28: rows whose keys no longer exist in `site/app/copy.ts` stay as the record. Each affected section carries a dated line above its table: the switching playbook strings (8.3; `r4playbook` is gone, D38), the what-changed page (9.4, D24), the saved-goal strip and fit mark strings (6.4, 6.5; D34, D37), the idle-cash and holdings strings (6.3, 7.2; held by D32), and the front page's shelf and pinned-question strings (the `rulesFront` block; D25).
 > Folded 2026-10-23 (evening): every string the day's build added to `site/app/copy.ts` is now here, in an "Added 2026-10-23, for the founder's review" table at the end of its section (3.5a and the release 2 tables are the largest), keyed by its `copy.ts` path so the two files can be diffed. Where the build's wording was changed, the note says what it was. Section 6.6 lists the word choices.
 > Release 3 section added 2026-10-23: section 7, the strings of the release 3 screens.
 > Release 4 section added 2026-10-24: section 8, the strings of the release 4 screens.
@@ -950,6 +952,8 @@ Added 2026-10-23 for the briefs in `docs/flows.md` section 9 and the handoff in 
 
 ### 6.3 Idle-cash screen
 
+*Held 2026-10-26 (D32), amended 2026-10-28 (D37):* the idle-cash page is not linked from the site and no longer hands off to the goal comparison. The strings below are still in `copy.ts` (`idle`); the hand-off rows are retired.
+
 | Element | Hebrew |
 |---|---|
 | Title | כסף שיושב בעו״ש |
@@ -999,6 +1003,8 @@ Added 2026-10-23 for the briefs in `docs/flows.md` section 9 and the handoff in 
 
 ### 6.4 Saved-goal strip
 
+*Amended 2026-10-26 to 2026-10-28 (D34, D37):* the strip's strings apply on the home page, the goal pages and the workbench pages; the strip is gone from the company, track, fee, indices, guide, exposure, holdings and idle-cash pages (see the last section of this file).
+
 | Element | Hebrew |
 |---|---|
 | Strip line | `{שם המטרה}` · `{שנים}` · `{סכום}` |
@@ -1015,6 +1021,8 @@ Added 2026-10-23 for the briefs in `docs/flows.md` section 9 and the handoff in 
 | Old version, actions | להתחיל מחדש · מחיקה מהמכשיר |
 
 ### 6.5 Fit mark
+
+*Removed 2026-10-26 (D34) from the company and track pages and 2026-10-28 (D37) from holdings: the card "מתאים למטרה שלכם?" and the row marks are no longer shown there. The `fit` block of `copy.ts` remains for the track workbench. Rows below are the record.*
 
 | Element | Hebrew |
 |---|---|
@@ -1107,6 +1115,8 @@ Added 2026-10-23 for the briefs in `docs/flows.md` section 12 and the handoff in
 
 ### 7.1 Fee materiality page
 
+*Amended 2026-10-28 (D37):* the fee page's saved-goal strip, no-goal notes and defaults sheet are retired (rows in the last section of this file); `r3fees.review.noGoal` is no longer in `copy.ts`.
+
 | Element | Hebrew |
 |---|---|
 | Title | כמה העמלות עולות לכם |
@@ -1196,6 +1206,8 @@ Added 2026-10-23 for the briefs in `docs/flows.md` section 12 and the handoff in
 | `r3fees.review.defaultsLead · defaultsNote` | עד שתזינו ערך, החישוב לפי התרחיש לדוגמה של האתר: `{שנים}`, `{סכום}`, … · מה שתזינו כאן יישמר כמטרה במכשיר הזה. | B3, added 2026-10-24 (QA fixes): the top of the assumptions sheet when no goal is saved, the scenario's own numbers each opening its source |
 
 ### 7.2 Holdings page
+
+*Held 2026-10-26 (D32), amended 2026-10-28 (D37):* `/holdings` is not linked from the site; the fit mark rows and the goal-strip rows below are retired.
 
 | Element | Hebrew |
 |---|---|
@@ -1425,6 +1437,8 @@ Added 2026-10-23 for the briefs in `docs/flows.md` section 12 and the handoff in
 | `r3transfer.loading` | טוען… | |
 
 ### 7.5 Additions to existing screens
+
+*Amended 2026-10-28 (D37, D38):* the rows that link to the goal comparison from the fee page, or to the switching playbook, are retired.
 
 | Where | Hebrew |
 |---|---|
@@ -1693,6 +1707,8 @@ Added 2026-10-24 for the briefs in `docs/flows.md` section 15 and the handoff in
 
 ### 8.3 Switching playbook page
 
+*Removed 2026-10-28 (D38): the switching page was deleted and the `r4playbook` block is no longer in `site/app/copy.ts`. The rows below, and the `r4playbook` rows in the "Added" tables of 8.0 and later, are kept as the record.*
+
 | Element | Hebrew |
 |---|---|
 | Title | איך עוברים: `{מוצר}` |
@@ -1854,6 +1870,8 @@ Added 2026-10-24 for the briefs in `docs/flows.md` section 15 and the handoff in
 
 ### 8.5 Additions to existing screens
 
+*Amended 2026-10-28 (D38):* the rows that link to the switching playbook are retired with it.
+
 | Where | Hebrew |
 |---|---|
 | Result, brokerage row detail | איזה בנק או בית השקעות · איזו קרן לקנות |
@@ -1940,10 +1958,11 @@ Removed the same day with the fit mark on these pages: the row mark (מתאים 
 
 The strings are `invest.pair` in `site/app/copy.ts`. The words the founder saw in the mockups and kept:
 
-- The result: "הפקדתם" ← "נשאר לכם בעוד {N} שנים" with "אחרי דמי ניהול ומס, בכסף של היום"; on the cheapest pair "★ הזוג הזול ביותר לתוכנית שלכם" and "לעומת {חשבון}, החשבון שלכם, עם אותה קרן"; after a change "הבחירה שלכם" beside "★ הזוג הזול ביותר", "{סכום} יותר אם עוברים לזוג הזול" and "בחרו את הזוג הזה".
+- The result: "הפקדתם" ← "נשאר לכם בעוד {N} שנים" with "אחרי דמי ניהול ומס, בכסף של היום"; "הבחירה שלכם" (on the cheapest pair "הבחירה שלכם · ★ הזול") beside "★ הזוג הזול ביותר לתוכנית שלכם" with "{סכום} יותר אם עוברים לזוג הזול", or, on the cheapest pair, beside "הזוג הבא בתור" with "{סכום} לעומת הבחירה שלכם"; both with "בחרו את הזוג הזה". The cost title "כמה זה עולה לכם ב־{N} שנים, בכל אחד מהזוגות".
 - The cost: "כמה זה עולה לכם ב־{N} שנים" (one pair) or "…, בכל אחד מהזוגות" (two), "מתוכם החשבון גובה", and the key by who takes it: "החשבון:", "הקרן:", "המדינה:". It replaced "מה יצא בדרך", which the founder turned down.
 - The lists: "כל החשבונות" / "כשקונים בהם את {קרן}", "כל הקרנות על {מדד}" / "בחשבון {חשבון}", each with "בחרו … אחר, והרשימה תסתדר מחדש"; the chosen fund's row says "הבחירה", the others their difference from it ("לעומת הבחירה").
 - Rows that cannot be priced: "{N} חשבונות לא מחושבים עם הקרן הזו:" with the reason and the names, and "כשהנתון ייאסף, הם יצטרפו לרשימה."
+- *2026-10-28 (method F-91, option A of the mockup):* under the cost bars, "העלות אצלכם, לעומת הזוג השני:" then "החשבון", "הקרן" and "המס", each with an amount and "יותר" or "פחות", or "בלי הפרש" when zero; then ", כי נשאר לכם יותר רווח" or ", כי נשאר לכם פחות רווח" when the tax moves with what is left. In the key under "החשבון:", "השפעת השורות יחד" is the part of the account's cost no single line explains. Reviewed by the Hebrew editor the same day.
 
 ## 9. Release 5 screens
 
@@ -2219,6 +2238,8 @@ Removed 2026-10-24 (D24): the page and its strings (`r5.changes`) are gone from 
 | `r5.graduation.sourceNote` | המצב נקרא מקטעי ״מצב מעבר״ בקובצי מאגר הכללים של כל מוצר ומרשימת הפערים הפתוחים של שיטת החישוב. | where the card's status comes from. Was "…ומשאלות G-24 של השיטה.": a method gap's code is not for the page |
 
 ### 9.6 Additions to existing screens
+
+*Amended 2026-10-24 (D24):* the menu, footer, first-page and rules-page rows for the change log ("מה השתנה", "מאז הביקור הקודם שלכם…") are retired; the revisit rows stay.
 
 | Where | Hebrew |
 |---|---|
@@ -2768,6 +2789,8 @@ Removed with the round, nothing renders them: `rulesPage.ruleCount`, `rulesFront
 
 ### rulesFront
 
+*Amended 2026-10-24 (D25, late evening):* rows for the front page's shelf cards and pinned questions are retired (`rulesFront.pinned.tag`, `pinned.provisional`, `shelvesTitle`, `ruleCount` and `back` are no longer in `copy.ts`); the twelve questions are in the `questions` block and on `/questions`. Rows below are the record of that first build.
+
 | Key | Text | Note |
 |---|---|---|
 | `rulesFront.title` / `.lede` | כללים · כל כלל שהאתר נשען עליו, עם המקור שלו. מתחילים מהשאלות שכולם שואלים, וממשיכים לפי מה שמעניין אתכם. | |
@@ -2847,3 +2870,26 @@ Spoken questions, no number inside them, no "ידעתם?". Rows 1, 2, 4 and 10 k
 
 - `publishers.json`: 99 hosts (the lead's count of 78 was the markdown alone; the rule records' figure sources add 21). Regulators and ministries by their official names (רשות המסים, רשות שוק ההון, ביטוח וחיסכון, רשות ניירות ערך, בנק ישראל, המוסד לביטוח לאומי, הכנסת, הלשכה המרכזית לסטטיסטיקה, הבורסה לניירות ערך בתל אביב, מאיה (מערכת ההודעות של הבורסה)); `gov.il` is "אתר הממשלה (gov.il)" because its sub-paths cannot be told apart by host, and `documents.json` names the issuing authority; `hly.gov.il` is the official "חיסכון לכל ילד" site; mirrors are ויקיטקסט and נבו; banks and managers by their Hebrew trading names as the site writes them (בנק לאומי, מיטב, אלטשולר שחם, מור בית השקעות, הראל, הפניקס, יחד רופאים); copies of official documents on private hosts carry "(עותק)" (פאנדר, עדיף); Latin brand names stay Latin (S&P Dow Jones Indices, iShares, J.P. Morgan Asset Management, SIPC, LBMA). One host, `behar-law.co.il` (a law firm mirroring regulations once), keeps its host as its name: the firm's Hebrew name is not certain.
 - `documents.json`: 135 recurring documents. Laws by their official short names with the Hebrew year where it is certain (פקודת מס הכנסה; חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס״ה-2005; חוק השקעות משותפות בנאמנות, התשנ״ד-1994; חוק הביטוח הלאומי [נוסח משולב], התשנ״ה-1995; חוק מילווה קצר מועד, התשמ״ד-1984 …); regulations in full with the Reshumot year (תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס״ח-2008; … (דמי ניהול), התשע״ב-2012; כללי הבנקאות (שירות ללקוח) (עמלות), התשס״ח-2008). Two regulations are named without a year because the year was not certain: the IRA regulations (קופת גמל בניהול אישי) and the child-savings regulations (חיסכון ארוך טווח לילד). The deductions booklet is "לוח עזר לחישוב מס הכנסה ממשכורת ושכר עבודה (חוברת הניכויים) 2026"; the Tax Authority guide "דע זכויותיך וחובותיך 2025"; CMA circulars as "חוזר גופים מוסדיים {code}: {name}"; Bank of Israel directives as "הוראת ניהול בנקאי תקין {n}: {name}" (425 has no name: the title was not in the sources); Sefer HaChukim issues as "ספר החוקים {n} ({date}): {the amending law}".
+
+## Amended 2026-10-28: only the goal pages speak of a goal (product D37)
+
+The indices page, the fee page, the guide pages, the guide index, the exposure pages, holdings and idle cash no longer show or read the saved goal. Strings retired from those pages: the saved-goal strip, "לפי ההשוואה למטרה ״…״", "להגדיר מטרה", "להזנת מטרה", "מהמטרה השמורה", the fee page's no-goal notes and defaults sheet, the holdings fit mark and its lines, "להשוואה המלאה לפי המטרה שלכם", "להשוואה המלאה, עם המטרה ״עתודה נזילה״" and its "available at any moment" box. Older rows above that quote them are history. New and changed strings, reviewed by the Hebrew editor the same day:
+
+| Key | Text |
+|---|---|
+| `r3fees.strip.compare` | מתוך ההשוואה: `{מוצר}`, לפי `{רשומה}` |
+| `r3fees.avoidNotEvaluated` | להימנע: לא נבדק. עם המספרים האלה אי אפשר להשוות בין האפשרויות. |
+| `r3fees.othersButton` | הנחות נוספות |
+| `r3fees.siteExample` | המספרים לדוגמה של האתר, עד שתשנו אותם |
+| `r3fees.ranked.first` | לפי המספרים בעמוד, המוצר הזה במקום הראשון מבין כל האפשרויות, גם אחרי העמלות. |
+| `r3fees.ranked.other` | למרות העמלה, לפי המספרים בעמוד המוצר הזה במקום `{מקום}` מבין כל האפשרויות. |
+| `r3fees.chart.endMarker` | סוף התקופה |
+| fee sensitivity, the years axis | תקופת ההחזקה |
+| `invest.plan.knobs.others` | אינפלציה |
+| `r3holdings.lede` | הזינו מהדוח השנתי, ותראו כמה העמלות עולות לכם ואם אפשר לאחד חיסכונות. הכול נשמר במכשיר הזה. |
+| `r3holdings.feeLineNoGoal` | כמה שנים הכסף הזה יישאר מושקע? הזינו את מספר השנים. |
+| `r3holdings.feeFailed` | האתר לא הצליח לחשב את העלות. בדקו את הערכים שהזנתם. |
+| `r3holdings.depositsLeftOut` | ההפקדות החודשיות לא נכללו בחישוב: חסר שכר. |
+| `exposurePage.holdLine` | המוצרים שבהם אפשר להחזיק את החשיפה הזו. |
+| `guideSignature.common.source` | הזנתם · דוגמה של האתר |
+

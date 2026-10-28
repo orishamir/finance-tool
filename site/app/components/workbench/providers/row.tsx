@@ -17,13 +17,11 @@ export { BarLegend };
 export const inYears = (n: number) => (n === 1 ? "בשנה" : n === 2 ? "בשנתיים" : `ב־${fmt.number(n)} שנים`);
 
 export interface RowCtx {
-  wrapperId: string;
   years: number;
   level: UiLevel;
   names: Record<string, string>;
   theta: SiteValue;
   rules: Record<string, RuleRecord>;
-  vsId: string | null;
   onOffer: (id: string, el: HTMLElement) => void;
   onDetail: (id: string, el: HTMLElement) => void;
   onVs: (id: string | null) => void;
@@ -76,15 +74,11 @@ function UseInCompare({ id, use }: { id: string; use: NonNullable<RowCtx["compar
 
 function RowLinks({ view, ctx }: { view: ProviderRowView; ctx: RowCtx }) {
   const t = c.providers.rowLinks;
-  const switchTo = `/switch/${ctx.wrapperId}?to=${encodeURIComponent(view.id)}${ctx.vsId && ctx.vsId !== view.id ? `&from=${encodeURIComponent(ctx.vsId)}` : ""}`;
   return (
     <div className="flex flex-wrap gap-x-5 gap-y-0">
       <button type="button" className={quietLink} onClick={(e) => ctx.onOffer(view.id, e.currentTarget)}>
         {view.hasOffer ? t.edit : t.offer}
       </button>
-      <Link to={switchTo} className={quietLink}>
-        {t.switch}
-      </Link>
       <Link to={`/companies/${view.id}`} className={quietLink}>
         {t.company(ctx.names[view.id] ?? view.name)}
       </Link>

@@ -34,12 +34,17 @@ All five releases of `docs/roadmap.md` are built (release 1 on 2026-10-23,
 releases 2 to 5 on 2026-10-23 and 2026-10-24); the dated "Status" paragraphs
 under each release say what exists and what is open, and its closing section
 "After release 5" lists the work that continues (tier-2 graduation, data
-growth, quarterly tariff refresh, my approvals). Data: about 500 rules, 20
-tariff snapshots for 17 providers (Meitav Trade still missing), 12 fund records,
-deposit terms (Leumi's 3, seven more banks' current accounts since 2026-10-25, and one-year deposits of Hapoalim, Discount and Mizrahi-Tefahot since 2026-10-26), 2 series; no fund list, because TASE's terms forbid
-republishing it (see `docs/data-inventory.md`). The saved state is version 3
-under `mekor.v2.state`; the entered offers, variant assumptions and playbook
-ticks are three side stores on the device pending a merge into it.
+growth, quarterly tariff refresh, my approvals). Switching (release 4) was
+removed on 2026-10-28 to be built again (D38). Data (2026-10-28): about 600
+rule records, 22 tariff snapshots for 19 providers (Meitav Trade still missing),
+48 fund records, 16 deposit-term records (Leumi's 3, seven more banks' current
+accounts since 2026-10-25, and one-year deposits of Hapoalim, Discount and
+Mizrahi-Tefahot since 2026-10-26), 3 series (CPI, child-savings rates, ECB
+exchange rates); no fund list, because TASE's terms forbid republishing it (see
+`docs/data-inventory.md`). The saved state is version 3 under `mekor.v2.state`;
+the entered offers, variant assumptions, playbook ticks and entered rates are
+four side stores on the device, carried in the export file and pending a merge
+into the state document.
 
 `docs/product.md` defines the site: who it is for, the capabilities, the
 decisions D1 to D13 (confirmed 2026-10-22, open to revision as I learn more),
@@ -53,6 +58,45 @@ Do not assume any feature, page, data source or scope that is not in
 down there, say so instead of inventing one. If I change a decision, record
 the change in `docs/product.md` section 1 with the date and reason, and
 re-check the capabilities that depend on it.
+
+## Ground rules (founder, 2026-10-28)
+
+These override any older rule they conflict with, in the docs, older specs or
+the memory notes; where one conflicts, the older text is amended to match.
+The evidence behind them is `research/2026-10-28-founder-patterns.md`.
+
+1. **Draw before building anything a person sees.** Every change to what a
+   screen shows starts as a Hebrew mockup with the site's real numbers, in
+   two or three options with one recommended; a made-up value is marked. A
+   fix shows the symptom I saw and the same screen without it. This holds for
+   a choice I delegated too: a delegated choice that changes a screen still
+   goes through a mockup. Technical settings stay Claude's to set.
+2. **Fair and general comparisons.** Name the holding; change one thing at
+   a time; show differences rather than two absolutes; use a range or a
+   count over every collected institution, never one bank and never my own
+   case.
+3. **Simple inputs, rich analysis.** Inputs are plain fields and sliders
+   with nothing clever built in. Analysis gets a section of its own, and
+   that section is genuinely informative: it compares everything at once,
+   not a list and not two things at a time.
+4. **Every control earns its place.** A control changes something on its
+   page, visibly; a field the page never reads is left out; no figure
+   changes silently.
+5. **Fast.** A slider or field answers in under 100 ms; work that takes
+   longer waits until the hand rests; measured before merging.
+6. **Charts read left to right.** Every chart axis runs left to right, not
+   only time. A bar inside a table row, beside its Hebrew text, may grow
+   from the right with the row. Each line or category has its own clearly
+   different hue, with a direct label or a legend; blue and violet stay
+   reserved for entered and computed numbers.
+7. **One flaw means a sweep.** A flaw I report is fixed in the shared piece,
+   and every other place of the same kind is fixed with it.
+8. **Both screen sizes, PC judged first.** Mockups are judged on PC; every
+   screen is also checked at 390 px before merging, with 44 px touch
+   targets and nothing that depends on hover.
+9. **Full words.** Full terms, headers on every table, no process language
+   on the site (Claude, audit ids, test names); builders' Hebrew goes
+   through the Hebrew editor.
 
 ## Fixed constraints
 
@@ -76,7 +120,7 @@ re-check the capabilities that depend on it.
   about a product. A statement about the whole market comes from law or
   from a count over every collected institution. See D30.
 - **Never fill in a financial or tax rule from memory.** Use the
-  `il-finance` skill once it exists. If a rule is missing from it, say the
+  `il-finance` skill. If a rule is missing from it, say the
   rule is missing and stop; do not guess or approximate. Site judgements
   (thresholds, bounds) live in `data/parameters/` and are not rules.
 - **Shared components first** (founder, 2026-10-25). Before building any UI
@@ -85,6 +129,16 @@ re-check the capabilities that depend on it.
   where it can be named, a guard in `kit/guards.test.ts` or a ratchet in
   `kit/ratchets.test.ts` (leftovers listed by name, the list only shrinks);
   never into a feature folder. Every builder's brief says so.
+- **Nothing moves when a number changes** (founder, 2026-10-28). When the
+  person moves a slider, picks an option, types a number or switches an
+  index, only the figures change; every column, row, block and line keeps
+  its place and size. A table has a fixed width per column, for computer
+  and phone (`table-layout: fixed`); figures use tabular digits and do not
+  wrap; a block whose content varies keeps one height, sized for its
+  longest case; a blank for a number has a fixed width; a list that
+  re-sorts keeps the tapped row where it was. The builder checks it with a
+  script that changes the inputs and compares the boxes, and says so in the
+  structure review. Patterns: `docs/design-system.md` 2.5a.
 - **Structure review before every merge** (founder, 2026-10-25). The lead
   reviews each builder's branch for structure, not line by line:
   `node research/audit/tools/merge-review.mjs <base>` lists what the branch
@@ -106,8 +160,9 @@ re-check the capabilities that depend on it.
 
 ## Repo layout
 
-- `docs/` — product docs (`product.md`, `discovery.md`, later `method.md`)
-- `research/` — research notes and findings
+- `docs/` — product docs (`product.md`, `discovery.md`, `method.md`, `roadmap.md`, `data-schema.md`, `data-inventory.md`, `parameters-rationale.md`)
+- `research/` — dated research reports and findings
+- `.claude/skills/il-finance/references/` — the rule base: the latest research on every rule, sourced and kept current (closed questions struck); the only copy. Everyone reads it; only each file's owner (the tax-specialist for the tax files, the domain-specialist for the rest) or the lead edits it, and other agents put rule findings in their reports
 - `data/` — source data, each entry with its source and date
 - `packages/schema/` — data schemas (Zod) for `docs/data-schema.md`; `json/` holds the exported JSON Schema
 - `packages/engine/` — calculation engine, one function per `docs/method.md` formula; no I/O

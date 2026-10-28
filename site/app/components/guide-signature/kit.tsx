@@ -4,7 +4,6 @@
 import type { P05Input, RunResult } from "@finance-tool/engine";
 import { guideSignature as copy } from "../../copy";
 import { p05Number, p05Range, p05Units, p05Value, type Bundle } from "../../lib/engine";
-import { useGoals } from "../../lib/goal";
 import type { SignatureData } from "../../lib/guide-signature";
 import { useInputs } from "../../lib/inputs";
 import { computed, entered as enteredValue, weaker, type SiteValue, type Strength } from "../../lib/value";
@@ -13,7 +12,7 @@ import { IdText, Num } from "../provenance";
 
 // ---------------------------------------------------------------- the guide inputs a visual starts from
 
-export type InputSource = "guide" | "goal" | "p05";
+export type InputSource = "guide" | "p05";
 
 export interface SigInputs {
   amount: number;
@@ -30,21 +29,15 @@ export interface SigInputs {
 
 /**
  * The amount, the monthly deposit and the years a visual starts from (D29 rule 9): what the person typed in the guide's own
- * fields, else the saved goal's, else P-05's. Editing a control writes the guide's field, the same one the timeline reads.
+ * fields, else P-05's; never the saved goal (founder, 2026-10-28: only the goal page speaks of a goal). Editing a control writes the guide's field, the same one the timeline reads.
  */
 export function useSigInputs(bundle: Bundle): SigInputs {
   const { state, ready, setEntered } = useInputs();
-  const { resolved } = useGoals();
   const p05 = { amount: p05Number(bundle.p05, "amount_now"), monthly: p05Number(bundle.p05, "monthly_deposit"), years: p05Number(bundle.p05, "horizon_years") };
-  const pick = (entered: number | undefined, goal: number | null | undefined, base: number): [number, InputSource] => {
-    if (!ready) return [base, "p05"];
-    if (entered !== undefined) return [entered, "guide"];
-    if (goal !== null && goal !== undefined && Number.isFinite(goal)) return [goal, "goal"];
-    return [base, "p05"];
-  };
-  const [amount, sa] = pick(state.entered.amount_now, resolved?.amountNow, p05.amount);
-  const [monthly, sm] = pick(state.entered.monthly_deposit, resolved?.monthly, p05.monthly);
-  const [years, sy] = pick(state.entered.horizon_years, resolved?.horizonYears, p05.years);
+  const pick = (entered: number | undefined, base: number): [number, InputSource] => (ready && entered !== undefined ? [entered, "guide"] : [base, "p05"]);
+  const [amount, sa] = pick(state.entered.amount_now, p05.amount);
+  const [monthly, sm] = pick(state.entered.monthly_deposit, p05.monthly);
+  const [years, sy] = pick(state.entered.horizon_years, p05.years);
   const set = (key: "amount_now" | "monthly_deposit" | "horizon_years", base: number) => (n: number | null) => setEntered(key, n === null || n === base ? null : n);
   return { amount, monthly, years, source: { amount: sa, monthly: sm, years: sy }, ready, setAmount: set("amount_now", p05.amount), setMonthly: set("monthly_deposit", p05.monthly), setYears: set("horizon_years", p05.years), p05 };
 }

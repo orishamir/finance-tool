@@ -101,6 +101,15 @@ Everything below is committed with this report. The design docs carry the amendm
 
 ## Decisions for the founder
 
+*Status 2026-10-28:*
+
+- **Taken since:**
+  - 5 and 16 were taken by the lead the same day (scenario audit, "Decisions for the founder" item 7).
+  - 8: the word "לפי החברה" stayed, and D31 (2026-10-26) narrowed it to a company figure used outside its own context.
+  - 9 was answered the same afternoon: no name on the site, and the footer line stays.
+- **Waiting with held pages:** 15 waits with the holdings page, held for review (D32).
+- **Still open:** the others, as far as the docs record.
+
 None of these blocked tonight's work. Each has options and a recommendation in the consolidated list; the short form:
 
 1. **Past returns and fund size next to fees on every track list.** Recommended: yes, from the same CMA dataset the fees come from, labelled as past, after confirming that resource's terms once (D22). Users read a fee-only table as broken.

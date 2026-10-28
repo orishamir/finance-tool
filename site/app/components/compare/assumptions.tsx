@@ -53,7 +53,12 @@ function Suggest({ s, field, onAdopt, children }: { s: Suggestion | null; field:
 }
 
 /** The fields of flow 16: horizon, amount now, monthly, what must stay available, return, inflation, withdrawable at any time. */
-export function AssumptionsPanel({ data, suggestion, onAdopted, exposure }: { data: FormData; suggestion: Suggestion | null; onAdopted: () => void; exposure?: boolean }) {
+/**
+ * `leaveOut`: fields a page leaves out (founder 2026-10-28, every control earns its place). The indices page and the two workbenches:
+ * every option there can be sold any trading day and no run takes the pension insurance share; the indices page also invests the
+ * whole amount today, so what stays available is the goal's question, not its.
+ */
+export function AssumptionsPanel({ data, suggestion, onAdopted, exposure, leaveOut = [] }: { data: FormData; suggestion: Suggestion | null; onAdopted: () => void; exposure?: boolean; leaveOut?: ("anytime" | "insurance" | "available")[] }) {
   const { current, resolved, update, setEnteredReturn, setInflation } = useGoals();
   if (!current || !resolved) return null;
   const set = (k: "horizonYears" | "amountNow" | "monthly" | "available") => (n: number | null) => update((g) => ({ ...g, [k]: n === null ? { value: null, entered: false } : { value: n, entered: true } }));
@@ -73,7 +78,7 @@ export function AssumptionsPanel({ data, suggestion, onAdopted, exposure }: { da
       </Suggest>
       <GoalNumber label={r2.form.amountNow} unit="nis" value={resolved.amountNow} source={src.amountNow} onChange={set("amountNow")} validate={(n) => (n < 0 ? valuesCopy.errors.negative : null)} />
       <GoalSlider label={r2.form.monthly} unit="nis_per_month" value={resolved.monthly} source={src.monthly} presetValue={resolved.preset.monthly} onChange={set("monthly")} validate={(n) => (n < 0 ? valuesCopy.errors.negative : null)} min={data.monthly.min} max={data.monthly.max} step={data.monthly.step} />
-      <GoalNumber label={r2.form.available} unit="nis" value={resolved.available} source={src.available} presetValue={resolved.available} onChange={set("available")} externalError={availableTooBig(resolved)} validate={(n) => (n < 0 ? valuesCopy.errors.negative : resolved.amountNow !== null && n > resolved.amountNow ? r2.form.errAvailable : null)} />
+      {!leaveOut.includes("available") && <GoalNumber label={r2.form.available} unit="nis" value={resolved.available} source={src.available} presetValue={resolved.available} onChange={set("available")} externalError={availableTooBig(resolved)} validate={(n) => (n < 0 ? valuesCopy.errors.negative : resolved.amountNow !== null && n > resolved.amountNow ? r2.form.errAvailable : null)} />}
       <div className="grid grid-cols-2 gap-3">
         {exposure ? (
           <div className="col-span-2">
@@ -88,9 +93,9 @@ export function AssumptionsPanel({ data, suggestion, onAdopted, exposure }: { da
           <GoalNumber label={r2.result.chips.inflation} unit="pct_per_year" value={current.assumptions.inflation ?? data.inflationStart} source={current.assumptions.inflation === null ? "preset" : "entered"} presetValue={data.inflationStart} onChange={setInflation} validate={pct} bare={current.assumptions.inflation === null} />
         </Suggest>
       </div>
-      <InsuranceField data={data} />
+      {!leaveOut.includes("insurance") && <InsuranceField data={data} />}
       {!exposure && <p className="text-xs text-muted-foreground -mt-2">{current.assumptions.return === null ? `${r2.form.returnEmpty} ${r2.form.returnHint}` : r2.form.returnFilled}</p>}
-      <SwitchRow label={r2.form.anytime} checked={resolved.anytime} source={src.anytime} onChange={(v) => update((g) => ({ ...g, anytime: { value: v, entered: true } }))} onReset={() => update((g) => ({ ...g, anytime: { value: false, entered: false } }))} />
+      {!leaveOut.includes("anytime") && <SwitchRow label={r2.form.anytime} checked={resolved.anytime} source={src.anytime} onChange={(v) => update((g) => ({ ...g, anytime: { value: v, entered: true } }))} onReset={() => update((g) => ({ ...g, anytime: { value: false, entered: false } }))} />}
     </div>
   );
 }

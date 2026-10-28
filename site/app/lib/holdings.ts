@@ -206,7 +206,7 @@ export interface HoldingsCtx {
   hb: HoldingsBundle;
   /** The comparison bundle: wrapper records, P-05, the rules a run reads. Absent while it loads. */
   cb: CompareBundle | null;
-  /** The saved goal's numbers, or null without a goal with a horizon. */
+  /** The page's numbers (the entered values, else the site's example; never the saved goal, founder 2026-10-28), or null while the comparison bundle loads. */
   goal: { years: number; name: string; run: RunGoal } | null;
   rules: Record<string, RuleRecord>;
   today: string;
@@ -216,12 +216,8 @@ export function mergedRules(hb: HoldingsBundle, cb: CompareBundle | null): Recor
   return Object.fromEntries([...(cb?.rules ?? []), ...hb.rules].map((r) => [r.id, r]));
 }
 
-export function buildCtx(hb: HoldingsBundle, cb: CompareBundle | null, goal: { current: Goal; resolved: ResolvedGoal } | null, goalName: string): HoldingsCtx {
-  let g: HoldingsCtx["goal"] = null;
-  if (goal) {
-    const run = runGoalOf(goal.current, goal.resolved);
-    if (run) g = { years: run.horizonYears, name: goalName, run };
-  }
+export function buildCtx(hb: HoldingsBundle, cb: CompareBundle | null, run: RunGoal | null): HoldingsCtx {
+  const g: HoldingsCtx["goal"] = run ? { years: run.horizonYears, name: "", run } : null;
   return { hb, cb, goal: g, rules: mergedRules(hb, cb), today: cb?.runDate ?? hb.today };
 }
 

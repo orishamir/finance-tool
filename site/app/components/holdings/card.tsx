@@ -8,7 +8,6 @@ import { fit as fitCopy, r3holdings as copy } from "../../copy";
 import { feeYear, type SiteValue } from "../../lib/value";
 import { fmt } from "../../lib/format";
 import { isChild, liquidityOf, type HoldingView, type HoldingsCtx, type Liquidity } from "../../lib/holdings";
-import { playbookQueryString, playbookWrappers } from "../../lib/playbook";
 import { IconAlert, IconClock, IconLock } from "../icons";
 import { IconDash, IconHelp, IconOk } from "../compare/icons";
 import { LeadTail, Num, RuleRef } from "../provenance";
@@ -106,7 +105,7 @@ export function HoldingCard({ view, ctx, index, count, onEdit, onDelete, onMove 
           </div>
 
           <div className="flex flex-col gap-3 min-w-0">
-            {!child && <FitLine view={view} ctx={ctx} />}
+            {!child && <StaleLine view={view} />}
             {child ? <ChildLines view={view} /> : <FeeLine view={view} ctx={ctx} />}
           </div>
         </div>
@@ -216,56 +215,16 @@ function CapLines({ view, kind }: { view: HoldingView; kind: "balance" | "deposi
   );
 }
 
-/** The fit mark as on a track page (design-spec 10): icon and word, never red; the goal line; a stale clock. */
-function FitLine({ view, ctx }: { view: HoldingView; ctx: HoldingsCtx }) {
-  const m = view.fit;
-  if (m === "no-goal") {
-    return (
-      // the page says it once, with the link (audit A66)
-      <p className="flex items-center gap-2 text-muted-foreground">
-        <IconHelp size={20} />
-        <span className="font-medium">{copy.fitNoGoal}</span>
-      </p>
-    );
-  }
-  if (m === "no-track") {
-    return (
-      <p className="flex items-center gap-2 text-muted-foreground">
-        <IconHelp size={20} />
-        <span>{copy.fitNoTrack}</span>
-      </p>
-    );
-  }
-  const Icon = m === "fits" ? IconOk : m === "no-fit" ? IconDash : IconHelp;
-  const rule = view.fitRule;
+/** The track's data is older than the latest report: a clock and the period it is from. */
+function StaleLine({ view }: { view: HoldingView }) {
+  if (!view.cma?.stale) return null;
   return (
-    <div className="flex flex-col gap-1.5">
-      <p className={cx("flex items-center gap-2", m === "fits" ? "text-positive" : "text-muted-foreground")}>
-        <Icon size={20} />
-        <span className={m === "no-rule" ? "font-medium" : "text-lg font-medium"}>{m === "no-rule" ? copy.fitNoRule : fitCopy.marks[m]}</span>
-        {view.cma?.stale && <IconClock size={16} className="text-caution" />}
-      </p>
-      {ctx.goal && (
-        <p className="text-sm">
-          {copy.fitGoalLine}
-          <bdi>{ctx.goal.name}</bdi>
-          {copy.fitGoalMid}
-          {fmt.years(ctx.goal.years)}.
-        </p>
-      )}
-      {rule?.minYears && (
-        <p className="text-sm text-muted-foreground">
-          {copy.fitRuleBefore}
-          <bdi>{rule.classification}</bdi>
-          {copy.fitRuleAfter} <YearsNum value={rule.minYears} />
-        </p>
-      )}
-      {view.cma?.stale && (
-        <p className="text-sm text-caution-foreground">
-          {copy.staleLine} <bdi dir="ltr">{fmt.period(String(view.cma.period.value))}</bdi>.
-        </p>
-      )}
-    </div>
+    <p className="text-sm text-caution-foreground flex items-center gap-2">
+      <IconClock size={16} className="text-caution shrink-0" />
+      <span>
+        {copy.staleLine} <bdi dir="ltr">{fmt.period(String(view.cma.period.value))}</bdi>.
+      </span>
+    </p>
   );
 }
 
@@ -323,11 +282,6 @@ function FeeLine({ view, ctx }: { view: HoldingView; ctx: HoldingsCtx }) {
       <Link to={`/fees?holding=${encodeURIComponent(id)}`} className="text-link min-h-target inline-flex items-center self-start hover:underline">
         {copy.feeLinkLabel}
       </Link>
-      {playbookWrappers.includes(wrapperId) && (
-        <Link to={`/switch/${wrapperId}${playbookQueryString({ from: id, to: null, fundFrom: null, fundTo: null, share: null })}`} className="text-link min-h-target inline-flex items-center self-start hover:underline">
-          {copy.switchLink}
-        </Link>
-      )}
     </div>
   );
 }
@@ -403,11 +357,7 @@ function DecisionBlock({ view, ctx }: { view: HoldingView; ctx: HoldingsCtx }) {
       <ul className="flex flex-col gap-2">
         <DecisionRow label={d.stay.label} text={d.stay.text} ids={["TXH-18"]} ctx={ctx} />
         <DecisionRow label={d.switchTrack.label} text={d.switchTrack.text} ids={["TXH-17", "PF-23", "SW-15"]} ctx={ctx} />
-        <DecisionRow label={d.move.label} text={d.move.text} ids={["PF-18", "SW-39"]} ctx={ctx}>
-          <Link to={`/switch/${h.wrapperId}${playbookQueryString({ from: h.id, to: null, fundFrom: null, fundTo: null, share: null })}`} className="text-link min-h-target inline-flex items-center self-start hover:underline">
-            {d.move.link}
-          </Link>
-        </DecisionRow>
+        <DecisionRow label={d.move.label} text={d.move.text} ids={["PF-18", "SW-39"]} ctx={ctx} />
         <DecisionRow label={d.withdraw.label} text={d.withdraw.text} ids={["TXH-09", "TXH-10", "TXH-11"]} ctx={ctx} />
       </ul>
       {view.cma && (

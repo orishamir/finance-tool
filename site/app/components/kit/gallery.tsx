@@ -10,7 +10,8 @@ import { IconLock } from "../icons";
 import { IdRef, Num } from "../provenance";
 import { IconDrillIn } from "../icons";
 import { label } from "../../lib/labels";
-import { Button, Callout, Card, ChartLegend, CostStack, LabelFilter, PickList, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, CompareTable, CoverageFold, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, Disclosure, FieldState, FoldGroup, GainBars, GapNote, HeadlineFigure, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, NumberField, ParameterLine, PercentField, PlanChips, RangeField, RankBadge, Section, SegmentedControl, SelectField, Sentence, ShareRings, SourceLine, Stat, StatRow, StepButtons, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth } from "./index";
+import { fmt } from "../../lib/format";
+import { Button, Callout, Card, ChartLegend, CostStack, LabelFilter, PickList, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, CompareTable, CoverageFold, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, Disclosure, FieldState, FoldGroup, GainBars, GapNote, HeadlineFigure, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, NumberField, ParameterLine, PercentField, PlanChips, KnobStrip, ChangeChart, RangeField, RankBadge, Section, SegmentedControl, SelectField, Sentence, ShareRings, SourceLine, Stat, StatRow, StepButtons, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth } from "./index";
 
 const g = copy.gallery;
 
@@ -422,6 +423,7 @@ function Fields() {
   const [b, setB] = useState<number | null>(3000);
   const [years, setYears] = useState<number | null>(10);
   const [pct, setPct] = useState<number | null>(5);
+  const [share, setShare] = useState(20);
   const [pick, setPick] = useState<string | null>(null);
   const [count, setCount] = useState(1);
   return (
@@ -479,6 +481,45 @@ function Fields() {
             <RangeField label={g.sample.range} unit="years" value={null} min={1} max={40} step={1} isEntered={false} validate={() => null} onCommit={() => undefined} onReset={() => undefined} disabled />
           </State>
         </Grid>
+      </Demo>
+      <Demo name="KnobStrip" use={g.uses.KnobStrip}>
+        <State label={`${g.states.interactive}, ${g.states.draggable}`} wide>
+          <KnobStrip
+            knobs={[
+              { id: "years", label: g.sample.range, unit: "years", value: years, min: 1, max: 40, step: 1, isEntered: years !== 10, validate: () => null, onCommit: (n) => setYears(n), onReset: () => setYears(10), inputMode: "numeric" },
+              { id: "pct", label: g.sample.percent, unit: "pct_per_year", value: pct, min: 0, max: 12, step: 0.5, isEntered: pct !== 5, validate: () => null, onCommit: (n) => setPct(n), onReset: () => setPct(5) },
+            ]}
+          />
+        </State>
+      </Demo>
+      <Demo name="ChangeChart" use={g.uses.ChangeChart}>
+        <State label={`${g.states.interactive}, ${g.states.draggable}`} wide>
+          <ChangeChart
+            lines={[
+              { id: "a", label: g.sample.range, stroke: "stroke-chart-lever-2", fill: "fill-chart-lever-2", ys: Array.from({ length: 21 }, (_, i) => 1000 * Math.pow(1.07, 5 + i * 0.5)) },
+              { id: "b", label: g.sample.percent, stroke: "stroke-chart-lever-4", fill: "fill-chart-lever-4", ys: Array.from({ length: 21 }, (_, i) => 1500 + 40 * i) },
+            ]}
+            shares={Array.from({ length: 21 }, (_, i) => -50 + 5 * i)}
+            at={share}
+            onAt={setShare}
+            choices={[-20, 20]}
+            shareWord={(s) => `${s}%`}
+            planWord="0"
+            xTitle={g.sample.range}
+            yTitle="₪"
+            yFormat={(v) => fmt.number(Math.round(v))}
+            choicesLabel={g.sample.range}
+            head={[g.sample.range, g.sample.percent]}
+            widths={[
+              { pc: "50%", phone: "50%" },
+              { pc: "50%", phone: "50%" },
+            ]}
+            rows={[
+              { id: "a", swatch: "bg-chart-lever-2", cells: [g.sample.range, fmt.nisWhole(1200)] },
+              { id: "b", swatch: "bg-chart-lever-4", cells: [g.sample.percent, fmt.nisWhole(400)] },
+            ]}
+          />
+        </State>
       </Demo>
       <Demo name="PercentField" use={g.uses.PercentField}>
         <Grid>
@@ -718,6 +759,29 @@ function Lists({ today }: { today: string }) {
               { key: "b", selected: true, onSelect: () => {}, cells: <><span>{p.b}</span><span className="tabular-nums">76,322</span></> },
               { key: "c", selected: false, muted: true, onSelect: () => {}, cells: <><span>{p.c}</span><span className="text-sm">—</span></> },
             ]}
+          />
+        </State>
+      </Demo>
+      <Demo name="PickList (phone)" use={g.uses.PickList}>
+        <State label="phoneColumns: the figure on a second line below md; phoneLimit 1: on a phone the rows after the first fold behind a button (the chosen row stays)" wide>
+          <PickList
+            label={p.name}
+            columns="minmax(0,1fr) 8rem auto"
+            phoneColumns="minmax(0,1fr) auto"
+            phoneLimit={1}
+            more={(n) => `+${n}`}
+            rows={["a", "b", "c", "d"].map((k, i) => ({
+              key: k,
+              selected: i === 2,
+              onSelect: () => {},
+              cells: (
+                <>
+                  <span>{[p.a, p.b, p.c, p.a][i]}</span>
+                  <span className="text-sm text-muted-foreground max-md:row-start-2 max-md:col-start-2">{p.figure}</span>
+                  <span className="tabular-nums">{["78,943", "76,322", "71,647", "59,242"][i]}</span>
+                </>
+              ),
+            }))}
           />
         </State>
       </Demo>

@@ -394,9 +394,8 @@ describe("side stores in the export file (A32)", () => {
   it("the keys are the ones the stores write", async () => {
     const { OFFERS_KEY } = await import("./offers");
     const { VARIANTS_KEY } = await import("./variants");
-    const { TICKS_KEY } = await import("./playbook");
     const { SIDE_KEYS } = await import("./side-stores");
-    expect([SIDE_KEYS.offers, SIDE_KEYS.variants, SIDE_KEYS.ticks, SIDE_KEYS.ownRates]).toEqual([OFFERS_KEY, VARIANTS_KEY, TICKS_KEY, "mekor.v2.own-rates"]);
+    expect([SIDE_KEYS.offers, SIDE_KEYS.variants, SIDE_KEYS.ticks, SIDE_KEYS.ownRates]).toEqual([OFFERS_KEY, VARIANTS_KEY, "mekor.v2.playbook-ticks", "mekor.v2.own-rates"]);
   });
 
   it("reads the three keys, writes them into the file, and a second device takes them back; the same file again adds nothing", () => {

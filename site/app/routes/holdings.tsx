@@ -1,12 +1,13 @@
 // Screen 10: what you already hold (design-spec 13, flows 22 to 24): holdings entered from the annual statement, each
-// with the fit mark against the saved goal, what its fees cost over the horizon, and, under them, whether holdings of the
-// same type could be consolidated and the child-savings check. The saved goal and the holdings are on the device.
+// with what its fees cost over the years the page asks, and, under them, whether holdings of the same type could be
+// consolidated and the child-savings check. The holdings and the years are on the device; the saved goal is not read
+// (founder, 2026-10-28: only the goal page speaks of a goal).
 import { useEffect, useMemo, useState } from "react";
 import { Link, useLoaderData } from "react-router";
 import type { RuleRecord } from "@finance-tool/schema";
 import { r2, r3holdings as copy, r3transfer, site, system } from "../copy";
-import { SavedGoalStrip } from "../components/compare/strip";
-import { goalTitle } from "../components/compare/goal-form";
+import type { FormData } from "../components/compare/goal-form";
+import { PlanKnobs, type KnobRanges } from "../components/invest/knobs";
 import { AddHoldingSheet } from "../components/holdings/add-sheet";
 import { HoldingCard } from "../components/holdings/card";
 import { ChildSavingsCard, ConsolidationCard, DifferentTypesLine } from "../components/holdings/consolidation";
@@ -17,19 +18,22 @@ import { Button, Callout, Card, cx } from "../components/kit";
 import { loadBundle } from "../lib/bundle";
 import type { CompareBundle } from "../lib/compare";
 import { fmt } from "../lib/format";
-import { EmploymentInferredNote, employmentMatters } from "../components/compare/inferred";
-import { GoalsProvider, isBlank, useGoals, type Presets } from "../lib/goal";
+import { feeInputs, type FeeInputs } from "../lib/fees";
+import { useInputs } from "../lib/inputs";
 import { buildCtx, consolidationGroups, isChild, loadHoldingsBundle, viewOf, type HoldingsBundle } from "../lib/holdings";
 import { useHoldings, type Holding } from "../lib/state";
 import { bundleLinks } from "../lib/bundle";
 import { recordsById } from "../lib/scope";
 
+type HoldingsForm = FormData & { knobs: KnobRanges };
+
 /** The data files this page fetches after it starts, requested with the HTML (audit 2026-10-24, A52). */
 export const links = () => bundleLinks("holdings-bundle.json", "compare-bundle.json");
 
 export async function loader() {
-  const { goalContext } = await import("../lib/compare.server");
-  return goalContext();
+  const { goalFormData } = await import("../lib/compare.server");
+  const { form, today } = goalFormData();
+  return { form, today };
 }
 
 export function meta() {
@@ -38,7 +42,6 @@ export function meta() {
 
 export default function HoldingsPage() {
   const data = useLoaderData<typeof loader>();
-  const presets = data.presets as Presets;
   const [hb, setHb] = useState<HoldingsBundle | null>(null);
   const [cb, setCb] = useState<CompareBundle | null>(null);
   const [failed, setFailed] = useState(false);
@@ -51,43 +54,27 @@ export default function HoldingsPage() {
     return { rules, pointed: recordsById(cb?.pointed, hb?.pointed), terms: {}, dimensions: Object.fromEntries((cb?.checklist ?? []).map((c) => [c.id, c.name])), today: data.today };
   }, [cb, hb, data.today]);
   return (
-    <GoalsProvider presets={presets}>
-      <PageShell current="other" data={provenance}>
-        <Screen hb={hb} cb={cb} failed={failed} presets={presets} meta={data.meta} today={data.today} />
-      </PageShell>
-    </GoalsProvider>
+    <PageShell current="other" data={provenance}>
+      <Screen hb={hb} cb={cb} failed={failed} form={data.form as HoldingsForm} />
+    </PageShell>
   );
 }
 
-function GoalStrip({ presets, meta, today }: { presets: Presets; meta: { rationale: string; rationaleHe?: string | null; signedOffOn: string | null }; today: string }) {
-  const { status, current } = useGoals();
-  if (status === "loading") return null;
-  if (!current || isBlank(current)) {
-    return (
-      <p className="text-sm">
-        <span className="text-muted-foreground">{copy.fitNoGoal}</span>{" "}
-        <Link to="/goal" className="text-link min-h-target inline-flex items-center align-middle hover:underline">
-          {copy.fitNoGoalLink}
-        </Link>
-      </p>
-    );
-  }
-  return <SavedGoalStrip variant="compact" presets={presets} meta={meta} today={today} label={copy.stripLine} />;
+/** How many years the money stays: the one number the fee line runs on that the statement does not give (founder, 2026-10-28). */
+function YearsField({ fi, form }: { fi: FeeInputs; form: HoldingsForm }) {
+  return <PlanKnobs fi={fi} ranges={form.knobs} pct={form.pct} only={["years"]} />;
 }
 
-function Screen({ hb, cb, failed, presets, meta, today }: { hb: HoldingsBundle | null; cb: CompareBundle | null; failed: boolean; presets: Presets; meta: { rationale: string; rationaleHe?: string | null; signedOffOn: string | null }; today: string }) {
+function Screen({ hb, cb, failed, form }: { hb: HoldingsBundle | null; cb: CompareBundle | null; failed: boolean; form: HoldingsForm }) {
   const { ready, saved, holdings, save, remove, move } = useHoldings();
-  const goals = useGoals();
+  const released = useInputs();
   const [sheet, setSheet] = useState<{ editing: Holding | null } | null>(null);
   const [transfer, setTransfer] = useState(false);
-  const hasGoal = goals.status !== "loading" && goals.current && !isBlank(goals.current) && goals.resolved;
-  const ctx = useMemo(
-    () => (hb ? buildCtx(hb, cb, hasGoal ? { current: goals.current!, resolved: goals.resolved! } : null, goals.current ? goalTitle(goals.current) : "") : null),
-    [hb, cb, hasGoal, goals.current, goals.resolved],
-  );
+  const fi = useMemo(() => (cb ? feeInputs(cb, null, released.state) : null), [cb, released.state]);
+  const ctx = useMemo(() => (hb ? buildCtx(hb, cb, fi?.g ?? null) : null), [hb, cb, fi]);
   const views = useMemo(() => (ctx ? holdings.map((h) => viewOf(h, ctx)) : []), [ctx, holdings]);
   const groups = useMemo(() => (ctx && cb ? consolidationGroups(views, ctx) : []), [ctx, cb, views]);
-  const loaded = ready && !!hb && !!ctx;
+  const loaded = ready && released.ready && !!hb && !!ctx && !!fi;
   const childViews = views.filter((v) => isChild(v.holding.wrapperId));
   const types = new Set(views.filter((v) => !isChild(v.holding.wrapperId)).map((v) => v.holding.wrapperId));
   const nonChild = views.filter((v) => !isChild(v.holding.wrapperId));
@@ -111,10 +98,7 @@ function Screen({ hb, cb, failed, presets, meta, today }: { hb: HoldingsBundle |
       {loaded && (
         <div className={cx("flex flex-col gap-8", holdings.length > 1 && "lg:grid lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] lg:gap-x-10 lg:items-start")}>
           <div className="flex flex-col gap-6 min-w-0">
-            <div className={holdings.length > 1 ? "lg:hidden" : undefined}>
-              <GoalStrip presets={presets} meta={meta} today={today} />
-            </div>
-            <EmploymentInferredNote show={!!ctx?.goal?.run.employmentInferred && holdings.some((h) => employmentMatters(h.wrapperId))} />
+            {holdings.length > 0 && <YearsField fi={fi!} form={form} />}
             {holdings.length === 0 ? (
               <Card className="flex flex-col gap-4">
                 <p className="text-lg max-w-measure">{copy.empty}</p>
@@ -160,9 +144,6 @@ function Screen({ hb, cb, failed, presets, meta, today }: { hb: HoldingsBundle |
           </div>
 
           <aside className={cx("flex flex-col gap-6 min-w-0", holdings.length > 1 && "lg:sticky lg:top-24")}>
-            <div className={holdings.length > 1 ? "hidden lg:block" : "hidden"}>
-              <GoalStrip presets={presets} meta={meta} today={today} />
-            </div>
             {nonChild.length > 0 && (
               <section className="flex flex-col gap-3" aria-labelledby="h-cons">
                 <h2 id="h-cons" className="text-xl font-semibold">

@@ -27,12 +27,12 @@ No financial figure appears here. Where a component shows a number, it shows a v
 | # | Principle | From |
 |---|---|---|
 | V1 | **Provenance is the visual language.** Every number shows whether it is sourced, computed or entered by you, and one tap shows where it came from. Stale, secondary-source and blocked states are visible in place, never only in a footnote. | CLAUDE.md, D3, D7, D10 |
-| V2 | **Phone first, thumb first.** Designed at 360 px wide and checked at 390 and 430 px, then widened for PC. Touch targets at least 44 px. Nothing depends on hover. | product.md §2, K7 |
-| V3 | **Right to left throughout.** Layout, reading order, sliders, disclosure and navigation flow from the right. Exceptions: time on a chart runs left to right (founder, gap 8.6), and numbers, identifiers and Latin names are isolated left-to-right runs. | CLAUDE.md, architecture 3.5 |
+| V2 | **Both screen sizes, PC judged first** (ground rule 8, 2026-10-28; was "phone first, designed at 360 px"). Mockups are judged on PC; every screen is also checked at 390 px before merging. Touch targets at least 44 px. Nothing depends on hover. | CLAUDE.md ground rules, product.md §2, K7 |
+| V3 | **Right to left throughout.** Layout, reading order, sliders, disclosure and navigation flow from the right. Exceptions: every chart axis runs left to right, not only time (founder, gap 8.6; widened by ground rule 6, 2026-10-28), while a bar inside a table row may grow from the right with its Hebrew text; numbers, identifiers and Latin names are isolated left-to-right runs. | CLAUDE.md, architecture 3.5 |
 | V4 | **Inputs sit next to the result they change.** Every graph and computed number shows the inputs it uses, each editable on the same page. | product.md §2 "interactive by default", K8 |
 | V5 | **Calm and neutral.** Warm dark grey, light text, one accent. No bank or manager brand colours, no promotional look, no colour that suggests a recommendation the site has not made. | product.md §2 "neutral by construction" |
 | V6 | **Colour never works alone.** Every state also has a pattern, an icon or a word, so it reads in sunlight, in greyscale and to a colour-blind friend. | dataviz method |
-| V7 | **Polish is a requirement.** Motion when values change, careful type, charts drawn by us. | K12 |
+| V7 | **Polish is a requirement.** Motion inside a chart mark when values change (a bar grows, a line glides), never a layout that moves (2.5a, 2026-10-28); careful type; charts drawn by us. | K12 |
 
 ---
 
@@ -148,13 +148,13 @@ Validated with the dataviz validator on the card surface: the three family hues 
 1. **Draw only true numbers.** A real quantity (a rate, an amount, a time in months) gets a mark on its scale, with its figure printed at the mark. A category or an order (how soon the money is back, a kind of product) gets words, an icon and a colour, never a bar or a meter: equal slices invent a unit the data does not have.
 2. **Colour carries meaning, and there is enough of it.** Each colour says one thing the reader can name (teal is the rate, warmer is held longer, stripes are a range); grey on grey says nothing, and a colour that only ranks or decorates is left out. The flags of 3.2 keep their meaning: a scale that borrows their hues stays away from numbers and always has a word and an icon.
 3. **Every encoding has a legend.** Whatever a colour, a pattern or a shape means is said on the screen, even when every figure is also printed.
-4. **Show the whole comparison; do not make the reader operate it.** A guide page shows its product among its alternatives, all at once, with the page's product marked (a tinted row and a tag). No filter that hides or fades rows, no control the reader must use before the visual says anything.
+4. **Show the whole comparison; do not make the reader operate it.** A guide page shows its product among its alternatives, all at once, with the page's product marked (a tinted row and a tag). No filter that hides or fades rows, no control the reader must use before the visual says anything. An analysis section may have a control (ground rule 3, 2026-10-28: the indices page's change chart has a marker) when its first state already shows the whole comparison.
 
 Before a visual merges, the reading test: for each mark on the screen, one sentence says what it is from what is on the screen alone.
 
 **The daily money-market table (2026-10-26).** The four cash products from the fastest way back to the slowest, in a `CompareTable`: the product (the other three link to their guide pages), when the money is back as a `StepTag` with a line under it where the word leaves out how (the fund's set hour, MF-10 and MF-11; up to 12 months between fixed dates, MF-08), and the annual rate as a `ValueBar` on one scale (the next whole percent above the highest rate), the deposit's range striped from the lowest bank to the highest. A sentence above the table says that waiting does not pay, only while the data says so (`slowerPayNoMore`). Under it a legend (rate, range) and a `NoteList`: before tax, the funds' rate is the site's assumption, the current account's common rate (the same sentence as the current-account page, `CommonRateLine`), and how many of the collected one-year deposits cannot be left before the end (F-86), with a link to each bank's rate.
 
-Not defined yet: a categorical palette for comparing several options on one chart. It arrives with the R2 comparison chart and must avoid the state hues (blue, violet) and the status hues.
+The categorical palette for comparing several options on one chart arrived with the R2 comparison chart (6.5); it avoids the state hues (blue, violet) and the status hues, and every legend identity has its own clearly different hue (founder, 2026-10-24).
 
 ### 2.4 Typography
 
@@ -192,10 +192,25 @@ Why this pair: Heebo is clear on small screens and matches Inter's proportions; 
 
 - **Base unit 4 px** (Tailwind's `--spacing: 0.25rem`): `p-1` is 4 px, `p-4` is 16 px. Use steps 1, 2, 3, 4, 6, 8, 12, 16.
 - **Named spacing:** `px-gutter` (page side padding, `clamp(1rem, 4vw, 2rem)`: 16 px on a phone, up to 32 px), `gap-section` / `my-section` (between page sections, 40 to 64 px), `size-target` / `min-h-target` (44 px touch target), `h-field` (48 px fields and main buttons).
-- **Widths:** `max-w-page` (72rem) for the page frame, `max-w-measure` (38rem) for prose.
+- **Widths:** `max-w-page` (72rem) for the page frame, `max-w-measure` (38rem) for prose. `max-w-wide` (96rem, 2026-10-27) for a page whose lists sit side by side and gain from the room on a large screen (the index page; founder: "on pc, you have more space to work with"), set by `PageShell wide`; its prose still keeps to `max-w-measure`.
 - **Breakpoints:** Tailwind defaults. Phone is the base style. `md` (48rem): tables become real tables; cards go two across. `lg` (64rem): guide pages get a side section index at the start (right) and the timeline's inputs sit beside the chart. The header's inline destinations wait for `xl` (80rem), not `lg`, and the tracks table of the workbench and the company page is a real table from `lg` (phone-style cards below it), not from `md` (2026-10-24, UX audit).
 - **Hit areas (2026-10-24, UX audit).** A number, a rule chip and a glossary term each carry a transparent 44 px `::after` hit area without changing the line spacing. On a screen shorter than 500 px the sticky bars (chip bars, table heads, the bottom bar) become static. While a sheet is open the page behind does not scroll (`scrollbar-gutter: stable` on `html` so the desktop does not shift).
 - **Rhythm inside a section:** 16 px between paragraphs, 24 px between blocks (a chart and its inputs, a table and its note), `section-gap` between sections.
+
+### 2.5a Stable layout (founder, 2026-10-28)
+
+**Nothing moves when a number changes.** Moving a slider, picking an option, typing a number or switching an index changes the figures and nothing else: no column widens, no row or block grows or shrinks, no line wraps differently, and the part of the page under the person's finger stays where it was. The founder asked for this case by case at least five times before it became a rule (the index page's result block, its header, its picked row, the guide's sentence blanks, the change table).
+
+| Case | How the site does it | Where |
+|---|---|---|
+| A table whose figures change | `table-layout: fixed` with a width for every column, on a computer and on a phone; a column left out on a phone stays at width 0, so the next cell keeps its column; headings may wrap, figures may not | `ChangeChart` (`widths`) |
+| A figure | Tabular digits (`tabular-nums`, the page body's default), no wrapping inside a figure, isolated in Hebrew text | every `Num` |
+| A blank for a number inside a sentence | A fixed-width blank, whatever the number | `InputSlot` (`.input-slot`) |
+| A block whose content varies by choice | One shape for every choice: what may be missing is replaced, not removed (on the cheapest pair the result block shows the next pair beside it) | the index page's `PairResult` |
+| A header that varies by subject | One height, sized for the longest subject | the index page's `IndexHeader` |
+| A list that re-sorts after a tap | The tapped row is held at its place on the screen | `PickList` (`holdOnPick`) |
+
+**Check.** The builder runs a script that sets each input to several values (the choices, a slider's ends, a large typed number) and compares the boxes of the parts that must stay (column widths, block heights, the tapped row's top); the result goes in the builder's report and the structure review. A part that moves is a finding, fixed in the kit piece, not on the page.
 
 ### 2.6 Shape, elevation, focus, motion
 
@@ -566,6 +581,8 @@ Why no slider in the panel: the panel answers "what would change the answer"; ch
 
 ### 6.7 Saved-goal strip
 
+*Amended 2026-10-26 to 2026-10-28 (D34, D37):* the strip shows on the home page, the goal pages and the workbench pages ("not final"); it is removed from the company, track, fee, indices, guide, exposure, holdings and idle-cash pages.
+
 Called for by 3.9 (one local state per browser, automatic), D1, D12, and the fit mark's need for a saved goal (3.10).
 
 A `card` row, 56 px, `rounded-lg`: at the start a `Target` icon (Lucide) in `muted-foreground`; the goal's name in weight 500 (or the preset's name); "{שנים} · {סכום}" as Nums in their states; "נשמר במכשיר הזה" in `text-xs muted-foreground`; at the end the actions: "לתוצאה" and "עריכה" as links (44 px), and a `MoreHorizontal` icon button opening a small popover with "מטרה נוספת" and "מחיקה מהמכשיר" (the delete asks once, inline: "למחוק את המטרה מהמכשיר הזה?" with "מחיקה" in `destructive` text and "ביטול"). With several goals, chips under the row in their order (D12), the current one filled. The compact form on company and track pages is one `text-sm` line with "שינוי". Sticky under the header on the result page on a phone, until the ranked list scrolls past.
@@ -585,6 +602,8 @@ Called for by 3.10 Out ("a fit mark against the person's saved goal, with a link
 - Colours: `positive` for fits; "does not fit" and "no rule" in `muted-foreground`, never `blocked` or `destructive`: not fitting is an answer, not a problem. A stale CMA period puts the clock on the mark, since its classification input is stale.
 
 ### 6.9 First page and menu additions
+
+*Held 2026-10-26 (D32):* the idle-cash and holdings doors, the menu items and the home pills that lead to `/idle-cash` and `/holdings` are not linked from the site. Text below that describes them as live is the record of the build.
 
 Called for by 3.2 (idle cash "meant to be the first thing a friend sees") and flow 11.
 
@@ -650,6 +669,8 @@ Why first person future ("אבקש") and "בחשבון שלי": they are gender-
 
 ### 7.5 Holding card and add-holding sheet
 
+*Held 2026-10-26 (D32), amended 2026-10-28 (D37):* `/holdings` is not linked from the site; the holding card has no fit mark, and the page asks the years once instead of reading the saved goal.
+
 Called for by 3.6 In ("each holding … as read from the annual statement or the clearing-house report. The site shows where on the statement to find each"), 3.6 Out, 3.10 ("a track name typed from a statement finds its fund"), D1, D7, D17.
 
 - **Holding card.** A `card`, `rounded-lg`, padding 16px (24 at `md`). Head: the track name as entered or as the data writes it (h3 `text-lg`), the company and "קופה {מספר}" (identifier style) in `text-sm muted`, tags at the end: "יובא ב־{תאריך}" (`muted`, `Download` icon) and "לא נמצא בנתוני הרשות" (`caution`). Body, two columns from `md`: at the start the facts (classification and period as sourced values; balance and the two fees as entered Nums, each fee followed by its two reference lines in `text-sm`: the track's own average, sourced; the class mean and median, computed) and the cap warning in `caution` when an entered fee exceeds the law's cap; at the end the fit mark card (6.8, compact: icon, word, goal line) and the fee line ("העמלות יעלו {סכום} ב־{שנים}, בכסף של היום", computed, with the "לפני מס ביציאה" tag when blocked) with the link "כל העמלות, ומה שווה לעשות איתן". Footer: "עריכה", "מחיקה" (inline confirm) as 44px links. On a phone the body is a `Disclosure`, open.
@@ -687,6 +708,8 @@ Called for by 3.9 ("exportable and importable as a file so the founder can help 
 - Why "add" is the default and "replace" confirms: the founder's own state is on his device; a friend's file must not overwrite it. Why copy-as-text is offered beside the file: on a phone, pasting into WhatsApp is often easier than attaching a file, and the import side accepts pasted text for the same reason.
 
 ### 7.9 First page, menu and link additions
+
+*Held 2026-10-26 (D32):* the holdings menu item, door and pill are not linked from the site. *Amended 2026-10-28 (D37, D38):* the fee page's goal links and the links to the switching guide are gone.
 
 Called for by 3.6 (the founder's own next use), 3.9, and flows 20 to 26.
 
@@ -734,6 +757,8 @@ Called for by 3.4 Out, fund variants ("every fund available for the chosen expos
 
 ### 8.5 Playbook step, strength chip, experience card, post-switch checklist
 
+*Removed 2026-10-28 (D38): the switching page left the site and these components were deleted; this section is kept as the record of what was built.*
+
 Called for by 3.7 Out ("the ordered steps … each with what the person must sign or authorise and what to expect next, including the retention call and whether agent involvement can be declined; a checklist of what to verify after the switch …; steps that state a process rule are rendered from rule-base entries, not written as prose (D10); forum-derived expectations are shown as experience, with their source and labelled as such"), D8, D10, roadmap R4 (risk: experience-only content).
 
 - **Playbook step.** A `card`, `rounded-lg`, padding 16 px (24 at `md`): a 28 px number circle (`bg-secondary`, `text-sm` weight 600) at the inline start; the title (h3 `text-lg`) from copy 8.3's table, one fixed title per rule, never a sentence written for the page; the **strength chip** at the title's end; the rule's text rendered from the bundle with its chip (6.9's rule card opens on tap); two labelled lines in `text-sm` where the rule gives them, "מה חותמים:" and "מה לצפות:"; every figure a sourced Num from `data/rules/` ("בתוך {מספר} ימי עסקים"), or, where the rule's figure file does not exist yet, the words "בתוך התקופה שהחוזר קובע" with the chip and no number (the standing rule: no number without a data file; SW-05 to SW-09 are in this state at the time of writing); an open-question line with `Lock` in `blocked` ("שאלה פתוחה {קוד}: {מה לא נמצא}") where the step rests on one. A step whose every source is an institution's page carries the title prefix "לפי הוראות המוסדות" and the "מוסדי" chip (now "לפי החברה", 2026-10-24, UX audit), so the brokerage order of steps (SW-35) is never read as regulation.
@@ -743,6 +768,8 @@ Called for by 3.7 Out ("the ordered steps … each with what the person must sig
 - **Post-switch checklist.** A `card` list of Radix Checkbox rows (44 px), one per SW-38 item that applies to the wrapper, each with the item's rule text and chip; ticks remembered on the device keyed by the wrapper alone (2026-10-24, UX audit; until then by wrapper and pair; old keys are migrated once) (design-spec 16.5), a quiet "איפוס" at the end. Why remembered: a switch takes weeks (ten business days to move, fifteen for confirmations, a first statement later), and the person returns to the page several times.
 
 ### 8.6 Switching-cost line and record-your-offer card
+
+*Removed 2026-10-28 (D38): the switching page, its switching-cost line and its record-your-offer card were deleted. The engine's F-66 stays.*
 
 Called for by 3.7 Out ("a reminder to write down each offer with its date, because quotes get withdrawn"), 3.4 and 3.5 ("the cost of moving as part of a provider's total cost", SW file header), method F-66, D10.
 
@@ -759,6 +786,8 @@ Called for by 3.10 Out ("for a product name (for example a bank's deposit name):
 - **Companies list headings.** Three h2 groups under the filter of 6.10: "חברות מנהלות", "בנקים ובתי השקעות", "מנהלי קרנות"; a bank or broker row's quiet line is the class word and "תעריפון מ־{תאריך}" or "התעריפון לא נאסף" in `caution-foreground`. Why banks join this list: the catalogue door promises "everything a company offers", and after release 4 a bank's deposits and tariff are what the site holds for it.
 
 ### 8.8 Link additions
+
+*Amended 2026-10-28 (D38):* the links to the switching playbook in this section are gone; guide pages keep a one-line fact on switching.
 
 Called for by flows 28 to 32 and 15.5.
 
@@ -843,11 +872,11 @@ Removed 2026-10-24 (D24): the menu and footer row "מה השתנה", the first p
 
 Built from `research/specs/2026-10-25-guide-signatures/spec.md`; components in `site/app/components/guide-signature/`.
 
-- **The section "מה מייחד …"** (titled without "את" since 2026-10-26, founder) sits after "למה משתמשים בזה": the page's one question, the visual in a card, one line naming the nearest alternative on the same holding (links to its guide page and to the goal comparison), and the old illustrative timeline folded below as "שחקו עם המספרים שלכם". A page without a visual keeps its timeline open in "מה זה".
+- **The section "מה מייחד …"** (titled without "את" since 2026-10-26, founder) sits after "למה משתמשים בזה": the page's one question, the visual in a card, one line naming the nearest alternative on the same holding (links to its guide page; no link to the goal comparison since 2026-10-28, D37), and the old illustrative timeline folded below as "שחקו עם המספרים שלכם". A page without a visual keeps its timeline open in "מה זה".
 - **Colour.** New role `chart-alt` (gold-200): the nearest alternative's line or bar, against the product's teal `chart-value`. The pair is the one the cumulative-cost chart already uses for fee lines 2 and 3 (6.x), so it passed the same check; validate it again against the card with the dataviz validator when a page draws both on a fill. The starting amount is a dashed neutral line. A gap between two lines may be filled at 22% opacity only with its number written on it (spec rule 4).
 - **Draggable marker** (`Marker` in the shared kit, section 11): a native range input laid over the plot, so it drags, takes a tap on the axis, and answers the arrow keys, Page Up/Down, Home and End; 44 px tall touch area.
 - **A difference is a bracket** (`GainBars`): two bars from the same start and a bracket between their ends carrying the difference, never a third bar (spec rule 6).
-- **Where the inputs come from** is printed under the controls: "הזנתם", "מהמטרה השמורה" or "דוגמה של האתר".
+- **Where the inputs come from** is printed under the controls: "הזנתם" or "דוגמה של האתר" ("מהמטרה השמורה" went with D37, 2026-10-28).
 - **Pension deposit bar** (pension pages): one bar of the monthly deposit in three clearly different hues, each with its number above it: the person's part teal (`chart-value`), the employer's gold (`chart-alt`), severance magenta (`chart-fee-4`, borrowed from the fee-kind palette); a bracket under the person's part carries the tax credit. The study fund and the provident fund draw the container teal and the brokerage account gold. Validate the teal, gold and magenta trio with the dataviz validator against the card.
 
 ## 11. Kit (the shared components, 2026-10-25)
@@ -875,6 +904,8 @@ The founder, 2026-10-25, after two layout bugs in a day (a sentence with a numbe
 | `KeyValue`, `KeyValueList`, `HeadlineFigure` | A label at the start and its value at the end (a fee line); facts as cards (a list on a phone, 2 by 2 from `lg`); the big computed figure with its state tag and one caption line. |
 | `StepButtons` | One step down and one step up (minus, plus) beside a whole-number field, 44 px wide and a field high, each with its own spoken name (2026-10-26: the goal's age had a minus and a plus, the provider page's orders two arrows). |
 | `NumberField`, `RangeField`, `PercentField` | A typed number (unit, hint, error, state line, 150 ms pause); a number with its slider; a percent (yearly rate unless `unit` says otherwise, standard range sentence, `range` for the bounds). |
+| `KnobStrip` | The plan's numbers as sliders that stay on screen, on a page meant to be played with (the indices page, 2026-10-28): two columns on a computer, one on a phone, the state line only once a number is entered. Where the plan is read rather than played with, use `PlanChips`. |
+| `ChangeChart` | What moves the result (2026-10-28, the indices page): every plan number changed by the same share, one line each on one chart, left to right from less to more, crossing at the plan, with direct labels at the right ends; a marker (drag or a choice chip) reads every line, and the table under it gives each number before, after, what is left and the difference, sorted by the difference. Line colours are `--chart-lever-1…4`. |
 | `SelectField` | One item out of a list of names in a native `select` (an account, a provider): label above, an optional "none" first option, an optional help line. 48 px, `bg-card` with the `input` edge. The index page's two account selects (2026-10-26). |
 | `Marker` (`MarkerMark`), `LaneLabel`, `GainBars` | A draggable marker on a chart's axis (the invisible slider and the drawn mark); the name of a band on its lane (2026-10-26): in the row above the lane, where the marker's line no longer reaches, or, given `markerX`, in a row the marker crosses, where it steps to the band's other end or beside the marker and fades when nothing fits (the marker ran through "אפשר למשוך בפטור" on a phone); two bars from one start with the difference as a bracket, never a third bar. |
 | `CompareTable`, `ValueBar` | A few options (up to five) in a table with a small graph in its cells (2026-10-26): labelled columns say what is compared, the page's option is a tinted row. On a phone each row's name takes its own line and the cells sit side by side under it. `ValueBar`: the figure and a bar under it on the column's one scale; a range is solid to its low end and striped (`hatch-value`) to its high end; a zero is a thin mark, so it reads as zero. |
@@ -884,7 +915,7 @@ The founder, 2026-10-25, after two layout bugs in a day (a sentence with a numbe
 | `ProductTable`, `ProductPhoneRow`, `ProductIdLink`, `ProductFigures` | A list of products of one kind (2026-10-27, "Lists of products" below): one table on a desktop, one row per product on a phone. Columns with `fit` are as wide as their content (a number, a link, figures) and the rest take the room; a group with a `banner` gets the caution line over its rows (tracks that share a name). `ProductIdLink`: the identifier as the link out, with the external icon and a spoken name that says where it leads. `ProductFigures`: figures each followed by its word ("0.35% קבועים"), stacked in a cell, in one line on a phone. Built on it: the company page's tracks (`TrackList`), a brand's funds, and the index page's funds. |
 | `LabelChip`, `LabelRow`, `LabelSheetHost`, `LabelIcon` | What a fund is or does, as an icon and two or three words (2026-10-27, moved from the index page when the company page became their second user): the set and its rules are `lib/labels.ts`. One `LabelSheetHost` per page opens a tapped label's meaning and rules; the page loads those rules. *2026-10-27 (founder: "i want all labels to have a nice icon with nice distinct color"):* a neutral label takes its family's colour (`--label-held`, `-trade`, `-follow`, `-currency`, `-tax`, `-payout`: the icon and words in it, a faint fill and edge of it); a caution label keeps the caution role and an open-rule label the blocked role. `LabelFilter`: filter a list by one label, offering only labels some rows carry and some do not, each with its count; a second tap or "הכול" shows every row. |
 | `CostStack` | One cost split into its parts as one bar (2026-10-27, the index page): each part in its own hue, the bar's length the total on a scale shared with the bars it is compared to. Bars that compare are drawn one above the other, never side by side (founder: "10x easier to comprehend"). A total past the scale reaches the edge with a break mark. Hues: `--chart-cost-trade`, `-custody`, `-fixed`, `-fx`, `-other` for an account's tariff lines, `--chart-cost-fund` for a fund's own fees, `--chart-tax` for tax. |
-| `PickList` | A list to choose one row from (2026-10-27, the index page's two linked lists): every row is a radio, the chosen one tinted with a bar at its start; a row that cannot be priced stays, muted (never filtered out). The cells and the grid are the caller's; a head row can name the columns. |
+| `PickList` | A list to choose one row from (2026-10-27, the index page's two linked lists): every row is a radio, the chosen one tinted with a bar at its start; a row that cannot be priced stays, muted (never filtered out). The cells and the grid are the caller's; a head row can name the columns. On a phone (2026-10-27): `phoneColumns` gives the grid below `md`, where a cell can move to a second line (the account list puts its cost bar under the name); `phoneLimit` folds the rows after the first N behind an "עוד" button, the chosen row always shown, nothing filtered out. `LabelFilter` and a row's labels are one line that scrolls sideways on a phone. A pick keeps the tapped row where it was on the screen (2026-10-27, founder: "clicking any other fund or bank makes the whole page jump up and down"): what a pick changes above the list (the result, the re-sorted rows) no longer moves the page under the finger. A click on a control inside a row (a figure that opens its sheet, a link, a label) is that control's and does not pick the row (2026-10-28, founder: "clicking the number changes the choice"). A pick made outside the list that brings a row into it (a name in a "not priced" line under the list) calls `holdOnPick(key, el)` first: the row takes the place on the screen of what was tapped (2026-10-28, founder: "now only interactive brokers are problematic"). |
 | `CompanyLinks` | A lead and the companies it is about, each a link to where the site lists its terms (2026-10-26, D30): "תלוי בחברה: הראל, אלטשולר שחם" where each company sets a property for itself, "לכל מה שמצאנו אצל: …" under a company's term. Inline (`size` `sm` or `xs`), so it closes a sentence or stands as its own line. Pages reach it through `VariesByCompany` (provenance layer), which takes rule ids and finds their companies. |
 
 **Blocks layer: `IdRef`** (`provenance.tsx`, 2026-10-26). One chip for every id the site shows; it reads the kind from the id's shape. A rule id (`TXS-05`) opens the rule card (`RuleRef` is a thin alias); a formula id (`F-80`, and the ids `formulaNames` names, such as `A-06`, whose sheet and aria-label say "איך זה מחושב" instead of "נוסחה") opens the formula sheet (its Hebrew name, the site parameters it uses, each an `IdRef`, and a link to `docs/method.md` on GitHub, in English); a parameter id (`P-01`) is a link to `/parameters#P-01`, which scrolls to its card below the sticky header; any other `A-nn` is a method assumption, linked only when a parameter card holds it as an input, else plain text; an open-question id (`TX2 OQ6`, also written `TX2-OQ6`) opens the open-question sheet (what the term means on the site, and the title, status and what it blocks once `data/open-questions.json` has the id). Props: `closedOn` (a question that was closed: same chip, the sheet says when), `asLabel` (the id as a label that does nothing: a parameter's own card). An empty id renders nothing, and an id of no kind renders as plain text. `IdText` turns the open-question codes inside a copy string into chips; with `assumptions` it also turns the method's `A-nn` ids into chips and drops their brackets (the parameters page's field names, 2026-10-26, where "(A-03)" broke at its hyphen on a phone). Never print one of these ids as plain text in a `<bdi>`: `kit/guards.test.ts` scans for it. The method data (formulas with their parameters, the parameter cards) reaches every page through the root loader, which `PageShell` merges into the provenance data.

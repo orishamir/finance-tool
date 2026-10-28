@@ -1,6 +1,7 @@
 // The four side stores the export file carries beside the state document (audit 2026-10-24, A32): the entered offers
-// (`mekor.v2.offers`), the variant assumptions (`mekor.v2.variants`) and the playbook ticks (`mekor.v2.playbook-ticks`).
-// Each is owned by its own module (lib/offers.ts, lib/variants.ts, lib/playbook.ts) through `device-store.ts`; this file
+// (`mekor.v2.offers`), the variant assumptions (`mekor.v2.variants`) and the switching checklist's ticks (`mekor.v2.playbook-ticks`;
+// the switching page is gone, D38, and the ticks stay on the device). Offers and variants are owned by their modules (lib/offers.ts,
+// lib/variants.ts) through `device-store.ts`; this file
 // only reads and writes their storage keys, checks every item, and merges. The merge of the three INTO the state
 // document is pending the founder's approval (roadmap), so the document's version stays 3.
 //
@@ -8,11 +9,9 @@
 //   { offers: EnteredOffer[], variantAssumptions: { [exposureId]: FundAssumptions }, playbookTicks: { [key]: string[] },
 //     ownRates: { [goalId]: { [wrapperId]: pctPerYear | { rate?, fee?, provider? } } } }  (an object form holds an entered fee, 2026-10-24, and the provider id chosen for the brokerage wrapper, 2026-10-24; an unknown provider id is read and ignored)   (ownRates added 2026-10-24 (sweep); a file without it reads as none;
 //   a tick key of the old `wrapper|from|to` shape is folded into the wrapper's key on import)
-// Keys of the stores are kept verbatim (a tick key is whatever lib/playbook.ts writes), so a change of the tick keying
-// there needs nothing here.
+// Keys of the stores are kept verbatim (a tick key is a product id, or an old `wrapper|from|to` key, folded on import).
 import { valueObject } from "@finance-tool/schema";
 import { parseOwnRates, type OwnRates } from "./own-rate";
-import { migrateTickKeys } from "./playbook";
 
 export const SIDE_KEYS = { offers: "mekor.v2.offers", variants: "mekor.v2.variants", ticks: "mekor.v2.playbook-ticks", ownRates: "mekor.v2.own-rates" } as const;
 /** What the last "add" imports put into the side stores (a `SideStores` holding only those items), so "מחיקת מה שיובא" can take exactly them out. */
@@ -150,7 +149,7 @@ export function readSideFile(raw: unknown): { side: SideStores | null; problems:
       }
     }
   }
-  // a tick key written by the old keying folds into its wrapper's key (lib/playbook.ts)
+  // a tick key written by the old keying folds into its wrapper's key (migrateTickKeys, below)
   side.playbookTicks = migrateTickKeys(side.playbookTicks);
   return { side, problems };
 }
@@ -316,4 +315,17 @@ export function writeSideStores(s: Storage | null, side: SideStores): boolean {
     }
   }
   return ok;
+}
+
+/**
+ * A ticks key written by the old keying (`wrapper|from|to`) folds into its wrapper's key, as a union of the ids. The ticks were the
+ * switching guide's checklist; the guide is gone (founder, 2026-10-28), and the ticks stay on the device and in the transfer file.
+ */
+export function migrateTickKeys(byKey: Record<string, string[]>): Record<string, string[]> {
+  const out: Record<string, string[]> = {};
+  for (const [k, ids] of Object.entries(byKey)) {
+    const wrapper = k.split("|")[0]!;
+    out[wrapper] = [...new Set([...(out[wrapper] ?? []), ...ids])];
+  }
+  return out;
 }

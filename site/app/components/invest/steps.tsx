@@ -1,6 +1,5 @@
 // "מה עושים עכשיו" (three steps) and the page's footnote (the return used and whether the order holds).
 import { useState } from "react";
-import { Link } from "react-router";
 import { invest as c } from "../../copy";
 import type { InvestView } from "../../lib/invest";
 import { IconCopy } from "../icons";
@@ -44,11 +43,6 @@ export function Steps({ view, monthly, pick }: { view: InvestView; monthly: impo
               {c.steps.stayDiff}: <Num value={view.atYours.less} />
             </Sentence>
           )}
-          <div>
-            <Link to={`/switch/brokerage-account?to=${encodeURIComponent(p.id)}${yours ? `&from=${encodeURIComponent(yours.id)}` : ""}`} className="text-sm text-link hover:underline min-h-target inline-flex items-center">
-              {c.steps.switchLink}
-            </Link>
-          </div>
         </li>
         <li className="ps-1">
           {w ? (
