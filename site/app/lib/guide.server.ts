@@ -11,7 +11,6 @@ import { buildInstrumentBundle, familyOf, missingParts, rulesTouched, type NoGra
 import { buildSignatureData } from "./guide-signature.server";
 import type { SignatureData } from "./guide-signature";
 import { isClosedAudience } from "./guide-nav";
-import { playbookWrappers } from "./playbook";
 import { ruleFigure, weaker, type SiteValue, type Strength } from "./value";
 import { readTextCached } from "./read-cache.server";
 
@@ -37,8 +36,6 @@ export interface GuidePageData {
   companies: { id: string; name: string; closed: boolean }[];
   /** The exposures whose record lists this wrapper among those that can hold them (audit A43), each with its page (D6 as amended 2026-10-27). */
   exposures: { id: string; name: string; href: string }[];
-  /** Whether the switching playbook (/switch/<wrapper>) has steps for this wrapper (audit A14). */
-  hasPlaybook: boolean;
   /** Rule ids the record's exit sentence cites that have a Hebrew text, in the order the sentence names them (audit A22). */
   exitTextRules: string[];
   /** The data of this page's "what makes it different" visual (D29), or null when the wrapper has none and its timeline stays open. */
@@ -210,7 +207,7 @@ export function buildGuidePage(id: string, extraRuleIds: string[] = [], extraTer
   // an exposure that is this page, or a security the row above already links, is not linked twice
   const exposures = exposuresHeld.filter((e) => e.href !== `/guide/${record.id}` && !securities.some((x) => x.href === e.href));
 
-  return { record, name: record.names.he[0]!, lede, bundle, initial, rules, pointed: pointedRecords(rules, allRules), terms, wrapperCount: productIds.length, heldIn, securities, termsById, checklist, dimensionNames, marks, companies, exposures, hasPlaybook: playbookWrappers.includes(record.id), exitTextRules, signature, noGraph, pendingFormulas, related, today: t };
+  return { record, name: record.names.he[0]!, lede, bundle, initial, rules, pointed: pointedRecords(rules, allRules), terms, wrapperCount: productIds.length, heldIn, securities, termsById, checklist, dimensionNames, marks, companies, exposures, exitTextRules, signature, noGraph, pendingFormulas, related, today: t };
 }
 
 export { familyOf };

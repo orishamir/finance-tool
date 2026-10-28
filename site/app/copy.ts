@@ -773,7 +773,6 @@ export const guideBlocks = {
     textNoteHe: "הפירוט המלא, לפי החוקים והכללים:",
     textNoteEn: "הנוסח באנגלית:",
     // audit 2026-10-24 (A14): the exit row of the money-in-and-out list points at the switching steps
-    switchHow: "איך עוברים, שלב אחרי שלב",
   },
   fees: {
     balance: { name: "דמי ניהול מחיסכון", base: "כל שנה, מכל הכסף שנצבר", after: "בשנה" },
@@ -1226,7 +1225,7 @@ export const r2 = {
     fallEcho: "הירידה שתסכימו לספוג: {pct} מ־{amount}, כלומר {drop} היום. היא לא משפיעה על הדירוג בהשוואה לפי מוצר.", // audit 2026-10-24 (A12)
     fallBand: "ירידה שתסכימו לספוג", // audit 2026-10-24 (A12): the chart's accessible name for the shaded band
     // A14: after "בחרתי בזה"
-    chosenNext: { heading: "מה עושים עכשיו", pick: "לבחור חברה ומסלול", join: "איך מצטרפים או עוברים", fees: "מה העמלות יעלו לכם" }, // audit 2026-10-24 (A14)
+    chosenNext: { heading: "מה עושים עכשיו", pick: "לבחור חברה ומסלול", fees: "מה העמלות יעלו לכם" }, // audit 2026-10-24 (A14)
     // A71
     saveMenu: "לשמור את ההשוואה", // audit 2026-10-24 (A71)
     saveMenuAgain: "לשמור שוב את ההשוואה", // audit 2026-10-24 (A71)
@@ -1615,7 +1614,6 @@ export const r3fees = {
   },
   ranked: { first: "לפי המספרים בעמוד, המוצר הזה במקום הראשון מבין כל האפשרויות, גם אחרי העמלות.", other: ["למרות העמלה, לפי המספרים בעמוד המוצר הזה במקום ", " מבין כל האפשרויות."], tied: " (שקול לאחרים)" },
   verdictSoft: "יקר יחסית לחלופות בלי עמלה",
-  linkSwitch: "איך עוברים",
   linkProviders: "השוואת הספקים",
   remainder: { before: "השפעה משולבת של העמלות זו על זו: ", line: "הסכום של כל השורות והשורה הזו הוא העלות הכוללת." },
   thresholds: { before: "הספים: שווה להתמקח מ־", mid: "; שווה להימנע מ־", after: ". פרמטר של האתר.", link: "לכל הפרמטרים" },
@@ -1828,7 +1826,6 @@ export const r3holdings = {
   cardDates: { authority: "נתוני הרשות", statement: "הדוח שלכם" }, // audit 2026-10-24 (A16)
   trackAvgNone: "המסלול הזה עוד לא דיווח לרשות דמי ניהול לשנת", // audit 2026-10-24 (A60): its own sentence, the year follows
   avgSaving: { before: "לפי הממוצע הייתם חוסכים", approx: "כ־", mid: "ב־", after: "." }, // audit 2026-10-24 (A18): F-61's value of lowering the fee to the class mean
-  switchLink: "איך עוברים", // audit 2026-10-24 (A14)
   depositsHere: { before: "פיקדון שיש לכם כבר אפשר להשוות ב", link: "עמוד הכסף שבעו״ש", after: "." }, // audit 2026-10-24 (A59)
   // scenario fix 2026-10-24 (study fund that became liquid): the first-deposit checkbox, the fee prefill, the card's liquidity line and decision block
   firstDepositOver: "ההפקדה הראשונה לפני יותר משש שנים (הקרן נזילה)", // scenario fix 2026-10-24
@@ -1856,7 +1853,7 @@ export const r3holdings = {
     heading: "הקרן נזילה: מה אפשר לעשות", // scenario fix 2026-10-24
     stay: { label: "להשאיר", text: "אין מס שנתי על הרווחים כל עוד הכסף בקרן; המס חל רק במשיכה." }, // scenario fix 2026-10-24, TXH-18
     switchTrack: { label: "להחליף מסלול באותה קופה", text: "מעבר מסלול בתוך הקרן אינו אירוע מס ואין עליו עמלה בתקנות; חברה רשאית להעלות דמי ניהול מוזלים אחרי מעבר." }, // scenario fix 2026-10-24, TXH-17, PF-23, SW-15
-    move: { label: "להעביר לחברה אחרת", text: "עוברת כל היתרה בלבד, והוותק של הכסף נשמר.", link: "איך עוברים" }, // scenario fix 2026-10-24, PF-18, SW-39
+    move: { label: "להעביר לחברה אחרת", text: "עוברת כל היתרה בלבד, והוותק של הכסף נשמר." }, // scenario fix 2026-10-24, PF-18, SW-39
     withdraw: { label: "למשוך", text: "משיכה אחרי תקופת ההמתנה פטורה ממס על הרווחים מהפקדה מוטבת, ורווחים מהפקדה מעל התקרה ממוסים; ולעובד: אחרי משיכה החשבון נסגר להפקדות נוספות (משיכת שליש ללימודים לא סוגרת, TXH-10)." }, // scenario fix 2026-10-24, TXH-09, TXH-11; review fix 2026-10-24: the closure is the rule for an employee's fund and has the one-third study exception, TXH-10
     fee: "דמי הניהול בקרן הזו, מול הממוצע:", // scenario fix 2026-10-24
     exposureLink: "להשוות לפי חשיפה", // scenario fix 2026-10-24
@@ -2199,7 +2196,7 @@ export const r4workbench = {
     /** copy.md 8.1: the bases a missing line is named by, in the sentence above */
     noLineBases: { trade: "קנייה ומכירה", custody: "דמי ניהול פיקדון ניירות ערך", fx: "המרת מטבע" } as Record<string, string>,
     fixedSpread: (name: string) => `${name} נפרסו לחודשים.`,
-    rowLinks: { offer: "קיבלתם הצעה? הזינו אותה", edit: "עריכת ההצעה שלכם", switch: "איך עוברים", fees: "מה העמלות האלה יעלו לכם", company: (name: string) => `לעמוד ${name}` },
+    rowLinks: { offer: "קיבלתם הצעה? הזינו אותה", edit: "עריכת ההצעה שלכם", fees: "מה העמלות האלה יעלו לכם", company: (name: string) => `לעמוד ${name}` },
     vsTag: "מושווה",
     vsSet: "להשוות אליו",
     vsClear: "ביטול ההשוואה",
@@ -2404,136 +2401,6 @@ export const r4workbench = {
     needsReturn: "הזינו תשואה במטרה השמורה כדי לדרג את הקרנות.",
     needsReturnLink: "למטרה",
   },
-} as const;
-
-// ---------------------------------------------------------------- release 4: the switching playbook (copy.md 8.3)
-/** Strings of docs/copy.md 8.3 verbatim; the keys the build added are in copy.md 8.3's "Added 2026-10-24" table, keyed by path. */
-export const r4playbook = {
-  title: { before: "איך עוברים: ", after: "" },
-  lede: "השלבים כפי שהחוקים והכללים קובעים אותם: מה חותמים, מה לצפות, ומה חוזק המקור של כל שלב. לא המלצה לעבור.",
-  back: "מה כבר יש לכם",
-  strip: {
-    from: "מ",
-    to: "ל",
-    fromOnly: "מ",
-    fieldFrom: "מאיפה",
-    fieldTo: "לאן",
-    pickPair: "בחרו מאיפה ולאן (לא חובה)",
-    none: "לא נבחר",
-    same: "אותה חברה: החלפת מסלול בתוך הקופה.",
-    /** copy.md 8.3: the two fund fields of a brokerage switch */
-    fundFrom: "מקרן",
-    fundTo: "לקרן",
-  },
-  stepsHeading: "השלבים, לפי החוקים והכללים",
-  stepNumber: "שלב",
-  sign: "מה חותמים:",
-  expect: "מה לצפות:",
-  figure: {
-    businessDays: (n: string) => `בתוך ${n} ימי עסקים`,
-    days: (n: string) => `בתוך ${n} ימים`,
-    months: (n: string) => `${n} חודשים`,
-    missing: "בתוך התקופה שהחוזר קובע",
-    // audit 2026-10-24 (hebrew-editor): the dual and the singular, by Intl.PluralRules (lib/hebrew.ts)
-    forms: {
-      businessDays: { lead: "בתוך ", one: "יום עסקים אחד", two: "שני ימי עסקים" },
-      days: { lead: "בתוך ", one: "יום אחד", two: "יומיים" },
-      months: { lead: "", one: "חודש אחד", two: "חודשיים" },
-    },
-  },
-  openQuestion: "שאלה פתוחה",
-  institutionPrefix: "לפי הוראות המוסדות: ",
-  noRule: { title: "שיחת שימור: לא נמצא במקורות", head: "על שיחת שימור במוצרי גמל לא נמצא שום דבר במקורות.", known: "מה כן ידוע" },
-  experience: {
-    disclosure: "מה אנשים מספרים",
-    label: "ניסיון של אדם אחד, לא חוק ולא כלל.",
-    source: { before: "מקור: ", mid: ", שרשור ", read: ", נקרא ב־" },
-    notShipped: "ניסיון מהפורומים לא נכלל בגרסה הזו.",
-  },
-  /** The strength chip words (copy.md 8.0) and the popover for a copy (8.0). */
-  chip: { primary: "ראשי", "primary-mirror": "ראשי (עותק)", institution: "לפי החברה", secondary: "משני", experience: "ניסיון", open: "שאלה פתוחה" } as Record<string, string>,
-  chipCopy: { before: "המקור הרשמי נקרא בעותק שמתארח ב", mid: ", נבדק ב־", after: "." },
-  /** copy.md 8.3: the host of each mirror, as the rule base's sources name them */
-  hosts: { analyst: "אנליסט", wikisource: "ויקיטקסט", nevo: "נבו", meitav: "מיטב" },
-  offer: {
-    title: "רשמו כל הצעה",
-    lede: "הצעות גם מתבטלות. רשמו כל הצעה עם התאריך שלה.",
-    items: ["מאיזה ספק", "כל שורת עמלה והמינימום שלה", "מי אמר", "באיזה תאריך", "בכתב או בטלפון"],
-    // copy.md 8.3 (added 2026-10-24, B10): the list and the template follow the wrapper's family
-    itemsByFamily: {
-      provident: ["מאיזה ספק", "דמי הניהול מהחיסכון ומההפקדה, ועד מתי ההנחה", "מי אמר", "באיזה תאריך", "בכתב או בטלפון"],
-      bank: ["מאיזה בנק", "הריבית על ההפקדה ולכמה זמן", "מי אמר", "באיזה תאריך", "בכתב או בטלפון"],
-    } as Record<string, string[]>,
-    copy: "העתקת תבנית לרישום",
-    copied: "הועתק",
-    template: "הצעה מ___, בתאריך ___: עמלת קנייה ומכירה ___ (מינימום ___); דמי ניהול פיקדון ניירות ערך ___; המרת מטבע ___; דמי חשבון ___. מי הציע: ___. בכתב: כן / לא.",
-    templates: {
-      provident: "הצעה מ___, בתאריך ___: דמי ניהול מחיסכון ___; דמי ניהול מהפקדה ___; ההנחה בתוקף עד ___. מי הציע: ___. בכתב: כן / לא.",
-      bank: "הצעה מ___, בתאריך ___: ריבית על ההפקדה ___, לתקופה של ___. מי הציע: ___. בכתב: כן / לא.",
-    } as Record<string, string>,
-    link: "ההצעות שהזנתם בהשוואת הספקים",
-  },
-  cost: {
-    brokerage: { before: "המעבר מ", mid: " ל", after: " עכשיו יעלה ", tax: " בכסף של היום, מזה מס במכירה ", end: "." },
-    /** copy.md 8.3: the same sentence when the engine finds the switch gains (a cheaper fund outweighs the sale) */
-    brokerageSaves: { after: " עכשיו יחסוך ", tax: " בכסף של היום; המס במכירה ", end: "." },
-    brokerageDetail: { before: "בלי מעבר היו נשארים ", mid: "; עם המעבר, ", after: ". התמורה אחרי המס פותחת את הקרן החדשה: ", end: "." },
-    provident: "המעבר לא עולה כלום לפי החוקים והכללים.",
-    providentLines: ["הנחה בדמי ניהול יכולה להסתיים מוקדם במעבר.", "דמי הצטרפות, אם החברה גובה: לפי התעריפון של החברה."],
-    inKind: "לפי הצהרות של מוסדות בלבד: העברה לחשבון של אותו בעלים אינה אירוע מס.",
-    transferFee: { amount: "עמלת העברת ניירות ערך: ", none: "לא נאסף" },
-    hishtalmutPartial: "אי אפשר: קרן השתלמות עוברת רק בשלמותה.",
-    differentKinds: "לא נבדק: לא נמצא מקור שאומר שהעברה בין שני סוגים פטורה ממס.",
-    open: "חסום: שאלה פתוחה",
-    /** copy.md 8.3: the line when the sentence above cannot be built (the funds or the goal are not enough) and the share control of a hishtalmut */
-    notEvaluated: "לא נבדק:",
-    reasons: {
-      "no-fund": "לא נמצאה אחת הקרנות באתר.",
-      "need-rate": "אין שער למטבע של הקרן בשערי הייחוס של הבנק המרכזי האירופי.",
-      "need-yield": "הזינו את תשואת החלוקה בעמוד הקרן.",
-      "fund-type": "אין עדיין חישוב לסוג הקרן הזה.",
-      "other-currency": "אין חישוב לקרן שמטבעה שונה מהחשיפה.",
-      "no-tariff": "תעריפון הספק לא נאסף.",
-      engine: "החישוב לא הצליח.",
-    } as Record<string, string>,
-    loading: "טוען…",
-    shareLabel: "כמה מהיתרה עוברת",
-    shareAll: "כל היתרה",
-    sharePart: "חלק מהיתרה",
-    secondary: "מקור משני",
-    heading: "כמה עולה המעבר",
-  },
-  checklist: {
-    heading: "מה לבדוק אחרי המעבר",
-    reset: "איפוס",
-    confirm: "לאפס את הסימונים?",
-    confirmYes: "איפוס",
-    confirmNo: "ביטול",
-  },
-  links: { holdings: "מה כבר יש לכם", providers: "השוואת הספקים", guide: "לעמוד המדריך", rules: "כל החוקים והכללים על מעבר", playbook: "המדריך למעבר" },
-  oneStep: { "child-savings-provident": "תוכנית בבנק לא עוברת לבנק אחר; תוכנית בקופת גמל עוברת דרך הקופה המקבלת וביטוח לאומי.", "child-savings-bank": "תוכנית בבנק לא עוברת לבנק אחר; תוכנית בקופת גמל עוברת דרך הקופה המקבלת וביטוח לאומי.", "bank-deposit": "פיקדון לא עובר לבנק אחר לפני הפדיון. כסף חדש אפשר להפקיד בבנק אחר בחשבון במערכת סגורה." } as Record<string, string>,
-  /** copy.md 8.3: the brokerage order of steps is an institution's, said in the lede (design-spec 19 edge cases) */
-  brokerageNote: "סדר השלבים בחשבון השקעות הוא לפי הוראות של בנקים ובתי השקעות, לא לפי תקנה.",
-  /** copy.md 8.3: what each open question did not find (the rule base's open-question list, switching-and-transfers.md) */
-  oq: {
-    "SW OQ2": "האם חוזר ההעברה חל על קופת גמל להשקעה.",
-    "SW OQ3": "מה קובעים לגבי פניות שימור במוצרי גמל.",
-    "SW OQ4": "האם הצעה שניתנה לפני ההצטרפות מחייבת.",
-    "SW OQ9": "אילו בנקים פטורים מהמעבר, ואיך נספר יום העסקים השישי.", // 2026-10-26: narrowed, SW-26 gives the account and activity types
-    "SW OQ11": "המס על העברת ניירות ערך בין חשבונות של אותו בעלים.",
-    "SW OQ12": "העברה בין מוסד ישראלי לברוקר זר.",
-  } as Record<string, string>,
-  loading: "טוען…",
-  noWrapper: "אין מדריך מעבר למוצר הזה.",
-  incomplete: "המדריך חלקי בשלב הזה: שאלה פתוחה מסומנת במנעול.",
-  // audit 2026-10-24 (A56): the summary box, each sentence a rule's own with its code after it
-  summary: {
-    heading: "בקצרה",
-    lede: "משפטים מהשלבים שלמטה, כלשונם. אחרי כל משפט, מאיפה הוא בא.",
-    topics: { time: "כמה זמן", cost: "כמה עולה", sign: "איפה חותמים", cancel: "אפשר לבטל", notice: "מתי זה קורה", lose: "מה לבדוק לפני", partial: "העברה חלקית", check: "מה לבדוק אחרי", route: "לאן אפשר", tax: "מס" } as Record<string, string>,
-  },
-  // audit 2026-10-24 (A56): a self-employed person has no employer to notify
-  skipEmployer: "דלגו: לפי הפרופיל השמור אתם עצמאים",
 } as const;
 
 // Release 5 (docs/copy.md section 9, status draft 2026-10-24): exposure mode, the revisit notice and sheet, the
@@ -3707,7 +3574,6 @@ export const invest = {
     buyCustom: "בוחרים קרן במאיה לפי דמי הניהול",
     standing: "מגדירים הוראת קבע של הסכום החודשי",
     standingWith: "הסכום החודשי",
-    switchLink: "איך עוברים חשבון ניירות ערך",
     noWay: "כשתהיה דרך שלמה, כאן יופיעו שלושת השלבים.",
   },
 

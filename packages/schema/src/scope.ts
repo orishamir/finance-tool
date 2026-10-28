@@ -32,10 +32,10 @@ export const generalSourceKinds: ReadonlySet<string> = new Set(["law", "regulati
  * on /companies under "לא נכלל ככלל". The list only shrinks as each one moves to `data/` or the open questions.
  */
 export const notRules: Readonly<Record<string, { why: string; files: readonly string[] }>> = {
-  "SW-X01": { why: "forum post", files: ["site/app/lib/playbook.ts", "site/app/lib/rule-shelves.ts"] },
-  "SW-X02": { why: "forum post", files: ["site/app/lib/playbook.ts", "site/app/lib/rule-shelves.ts"] },
-  "SW-X03": { why: "forum post", files: ["site/app/lib/playbook.ts", "site/app/lib/rule-shelves.ts"] },
-  "SW-X04": { why: "forum post", files: ["site/app/lib/playbook.ts", "site/app/lib/rule-shelves.ts"] },
+  "SW-X01": { why: "forum post", files: ["site/app/lib/rule-shelves.ts"] },
+  "SW-X02": { why: "forum post", files: ["site/app/lib/rule-shelves.ts"] },
+  "SW-X03": { why: "forum post", files: ["site/app/lib/rule-shelves.ts"] },
+  "SW-X04": { why: "forum post", files: ["site/app/lib/rule-shelves.ts"] },
   "IRA-28": { why: "press report (events at Slice and Globalnet)", files: ["data/dimensions/protection.json", "data/dimensions/regulator.json", "data/instruments/wrappers/ira-hishtalmut.json", "data/instruments/wrappers/ira-provident.json", "site/app/content/guide/ira-hishtalmut.tsx", "site/app/content/guide/ira-provident.tsx"] },
   "TXH-24": { why: "press report", files: [] },
   "MKT-01": { why: "a series (J.P. Morgan's past-return slide)", files: ["site/app/lib/compare.server.ts", "site/app/lib/rule-shelves.ts"] },
@@ -45,7 +45,7 @@ export const notRules: Readonly<Record<string, { why: string; files: readonly st
   "CS-20": { why: "a share (tracks chosen by parents)", files: [] },
   "CS-22": { why: "market shares", files: [] },
   "CS-08": { why: "figures (the rule part is general)", files: [] },
-  "SW-53": { why: "two brokers' tariffs (belong in data/fees)", files: ["data/dimensions/fee-custody.json", "data/dimensions/fee-exit.json", "site/app/lib/playbook.ts", "site/app/lib/rule-shelves.ts"] },
+  "SW-53": { why: "two brokers' tariffs (belong in data/fees)", files: ["data/dimensions/fee-custody.json", "data/dimensions/fee-exit.json", "site/app/lib/rule-shelves.ts"] },
   "TXS-26": { why: "a tax-track field of named funds", files: [] },
   "TXS-27": { why: "a tax-track field of named funds", files: [] },
   "IRA-03": { why: "a count", files: [] },
@@ -73,8 +73,8 @@ export const notRules: Readonly<Record<string, { why: string; files: readonly st
   "BANK-27": { why: "\"no rule exists\" record", files: [] },
   "IRA-10": { why: "\"no rule exists\" record", files: [] },
   "SW-19": { why: "\"no rule exists\" record", files: [] },
-  "SW-34": { why: "\"no rule exists\" record", files: ["data/dimensions/fee-custody.json", "data/dimensions/fee-exit.json", "data/instruments/wrappers/brokerage-account.json", "site/app/components/playbook/cost.tsx", "site/app/lib/playbook.ts", "site/app/lib/rule-shelves.ts"] },
-  "SW-37": { why: "\"no rule exists\" record", files: ["data/dimensions/foreign-withholding-domicile.json", "data/dimensions/protection.json", "data/dimensions/transfer-switch-process.json", "site/app/lib/playbook.ts"] },
+  "SW-34": { why: "\"no rule exists\" record", files: ["data/dimensions/fee-custody.json", "data/dimensions/fee-exit.json", "data/instruments/wrappers/brokerage-account.json", "site/app/lib/rule-shelves.ts"] },
+  "SW-37": { why: "\"no rule exists\" record", files: ["data/dimensions/foreign-withholding-domicile.json", "data/dimensions/protection.json", "data/dimensions/transfer-switch-process.json"] },
 };
 
 /** Whether a not-rule may stand in this product-context file (a repo path, "data/instruments/wrappers/x.json"). */

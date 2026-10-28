@@ -5,11 +5,10 @@
 import { existsSync, readdirSync, statSync } from "node:fs";
 import { join, relative, sep } from "node:path";
 import type { RuleRecord } from "@finance-tool/schema";
-import { guideIndex, idle, r2, r3fees, r3holdings, r3transfer, r3workbench, r4playbook, r4workbench, companies as companiesCopy } from "../copy";
+import { guideIndex, idle, r2, r3fees, r3holdings, r3transfer, r3workbench, r4workbench, companies as companiesCopy } from "../copy";
 import { exposureHref, loadExposures } from "./instruments.server";
 import { loadRules, loadProducts, pointedRecords, root } from "./data.server";
 import { fileProducts, commonRulesFile, shelfOf, tier2RuleFiles, type ShelfId } from "./rule-shelves";
-import { playbookWrapperIds } from "./playbook.server";
 import { providerWrapperIds } from "./providers.server";
 import { workbenchWrapperIds } from "./workbench.server";
 import { shown } from "./review";
@@ -69,7 +68,6 @@ const trimColon = (s: string) => s.replace(/[:\s]+$/, "");
 function pageTable(): Record<string, RuleUsePage> {
   const wb = workbenchWrapperIds()[0];
   const pw = providerWrapperIds()[0];
-  const sw = playbookWrapperIds()[0];
   const fx = loadExposures()[0]?.id;
   const t: Record<string, RuleUsePage> = {
     idle: { href: "/idle-cash", label: idle.title },
@@ -81,7 +79,6 @@ function pageTable(): Record<string, RuleUsePage> {
     companies: { href: "/companies", label: companiesCopy.title },
     guide: { href: "/guide", label: guideIndex.title },
   };
-  if (sw) t.switch = { href: `/switch/${sw}`, label: trimColon(r4playbook.title.before) };
   if (pw) t.providers = { href: `/workbench/providers/${pw}`, label: trimColon(r4workbench.providers.title.before) };
   if (wb) {
     const name = loadProducts().find((w) => w.id === wb)?.names.he[0] ?? "";
@@ -117,7 +114,6 @@ const componentKey: Record<string, string> = {
   compare: "compare",
   fees: "fees",
   holdings: "holdings",
-  playbook: "switch",
   workbench: "providers",
   "exposure-mode": "compare",
   revisit: "compare",
@@ -126,7 +122,7 @@ const componentKey: Record<string, string> = {
   idle: "idle",
 };
 
-/** lib/<file> → page, by file-name prefix (the pages' own logic lives there: playbook step lists, the fee tables …). */
+/** lib/<file> → page, by file-name prefix (the pages' own logic lives there: the fee tables …). */
 const libPrefixes: [string, string][] = [
   ["compare", "compare"],
   ["exposure-mode", "compare"],
@@ -135,7 +131,6 @@ const libPrefixes: [string, string][] = [
   ["holdings", "holdings"],
   ["idle", "idle"],
   ["fees", "fees"],
-  ["playbook", "switch"],
   ["workbench", "providers"],
   ["providers", "providers"],
   ["variants", "funds"],

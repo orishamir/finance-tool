@@ -12,7 +12,6 @@
 // there needs nothing here.
 import { valueObject } from "@finance-tool/schema";
 import { parseOwnRates, type OwnRates } from "./own-rate";
-import { migrateTickKeys } from "./playbook";
 
 export const SIDE_KEYS = { offers: "mekor.v2.offers", variants: "mekor.v2.variants", ticks: "mekor.v2.playbook-ticks", ownRates: "mekor.v2.own-rates" } as const;
 /** What the last "add" imports put into the side stores (a `SideStores` holding only those items), so "מחיקת מה שיובא" can take exactly them out. */
@@ -316,4 +315,17 @@ export function writeSideStores(s: Storage | null, side: SideStores): boolean {
     }
   }
   return ok;
+}
+
+/**
+ * A ticks key written by the old keying (`wrapper|from|to`) folds into its wrapper's key, as a union of the ids. The ticks were the
+ * switching guide's checklist; the guide is gone (founder, 2026-10-28), and the ticks stay on the device and in the transfer file.
+ */
+export function migrateTickKeys(byKey: Record<string, string[]>): Record<string, string[]> {
+  const out: Record<string, string[]> = {};
+  for (const [k, ids] of Object.entries(byKey)) {
+    const wrapper = k.split("|")[0]!;
+    out[wrapper] = [...new Set([...(out[wrapper] ?? []), ...ids])];
+  }
+  return out;
 }

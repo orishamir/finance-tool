@@ -44,11 +44,6 @@ export function Steps({ view, monthly, pick }: { view: InvestView; monthly: impo
               {c.steps.stayDiff}: <Num value={view.atYours.less} />
             </Sentence>
           )}
-          <div>
-            <Link to={`/switch/brokerage-account?to=${encodeURIComponent(p.id)}${yours ? `&from=${encodeURIComponent(yours.id)}` : ""}`} className="text-sm text-link hover:underline min-h-target inline-flex items-center">
-              {c.steps.switchLink}
-            </Link>
-          </div>
         </li>
         <li className="ps-1">
           {w ? (

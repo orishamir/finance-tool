@@ -8,7 +8,6 @@ import { fit as fitCopy, r3holdings as copy } from "../../copy";
 import { feeYear, type SiteValue } from "../../lib/value";
 import { fmt } from "../../lib/format";
 import { isChild, liquidityOf, type HoldingView, type HoldingsCtx, type Liquidity } from "../../lib/holdings";
-import { playbookQueryString, playbookWrappers } from "../../lib/playbook";
 import { IconAlert, IconClock, IconLock } from "../icons";
 import { IconDash, IconHelp, IconOk } from "../compare/icons";
 import { LeadTail, Num, RuleRef } from "../provenance";
@@ -283,11 +282,6 @@ function FeeLine({ view, ctx }: { view: HoldingView; ctx: HoldingsCtx }) {
       <Link to={`/fees?holding=${encodeURIComponent(id)}`} className="text-link min-h-target inline-flex items-center self-start hover:underline">
         {copy.feeLinkLabel}
       </Link>
-      {playbookWrappers.includes(wrapperId) && (
-        <Link to={`/switch/${wrapperId}${playbookQueryString({ from: id, to: null, fundFrom: null, fundTo: null, share: null })}`} className="text-link min-h-target inline-flex items-center self-start hover:underline">
-          {copy.switchLink}
-        </Link>
-      )}
     </div>
   );
 }
@@ -363,11 +357,7 @@ function DecisionBlock({ view, ctx }: { view: HoldingView; ctx: HoldingsCtx }) {
       <ul className="flex flex-col gap-2">
         <DecisionRow label={d.stay.label} text={d.stay.text} ids={["TXH-18"]} ctx={ctx} />
         <DecisionRow label={d.switchTrack.label} text={d.switchTrack.text} ids={["TXH-17", "PF-23", "SW-15"]} ctx={ctx} />
-        <DecisionRow label={d.move.label} text={d.move.text} ids={["PF-18", "SW-39"]} ctx={ctx}>
-          <Link to={`/switch/${h.wrapperId}${playbookQueryString({ from: h.id, to: null, fundFrom: null, fundTo: null, share: null })}`} className="text-link min-h-target inline-flex items-center self-start hover:underline">
-            {d.move.link}
-          </Link>
-        </DecisionRow>
+        <DecisionRow label={d.move.label} text={d.move.text} ids={["PF-18", "SW-39"]} ctx={ctx} />
         <DecisionRow label={d.withdraw.label} text={d.withdraw.text} ids={["TXH-09", "TXH-10", "TXH-11"]} ctx={ctx} />
       </ul>
       {view.cma && (
