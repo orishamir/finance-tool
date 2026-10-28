@@ -385,7 +385,7 @@ function Body({ wb, compare, data, presets, rules, search }: { wb: WorkbenchBund
         <h2 id={`${headId}-as`} className="text-lg font-semibold mb-3">
           {c.providers.behaviour.title}
         </h2>
-        {panelOpen && <AssumptionsPanel data={data.form as FormData} suggestion={null} onAdopted={() => undefined} />}
+        {panelOpen && <AssumptionsPanel data={data.form as FormData} suggestion={null} onAdopted={() => undefined} leaveOut={["anytime", "insurance"]} />}
       </Sheet>
     </div>
   );

@@ -72,7 +72,7 @@ Every page also has the header: site name (back to the first page), search, and 
 3. A shared link opens its page directly. The back link at the top leads to that page's list (guide or companies).
 
 **Done when:** the person is on a guide page, a company page, or searching.
-**Traces to:** product.md 2 (users, phone first); architecture.md 3.5 (pages); design-system.md 3.1.
+**Traces to:** product.md 2 (users; both screen sizes, PC judged first, ground rule 8, 2026-10-28); architecture.md 3.5 (pages); design-system.md 3.1.
 
 ### Flow 2. Learn what a product is
 

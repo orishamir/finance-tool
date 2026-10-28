@@ -27,12 +27,12 @@ No financial figure appears here. Where a component shows a number, it shows a v
 | # | Principle | From |
 |---|---|---|
 | V1 | **Provenance is the visual language.** Every number shows whether it is sourced, computed or entered by you, and one tap shows where it came from. Stale, secondary-source and blocked states are visible in place, never only in a footnote. | CLAUDE.md, D3, D7, D10 |
-| V2 | **Phone first, thumb first.** Designed at 360 px wide and checked at 390 and 430 px, then widened for PC. Touch targets at least 44 px. Nothing depends on hover. | product.md §2, K7 |
-| V3 | **Right to left throughout.** Layout, reading order, sliders, disclosure and navigation flow from the right. Exceptions: time on a chart runs left to right (founder, gap 8.6), and numbers, identifiers and Latin names are isolated left-to-right runs. | CLAUDE.md, architecture 3.5 |
+| V2 | **Both screen sizes, PC judged first** (ground rule 8, 2026-10-28; was "phone first, designed at 360 px"). Mockups are judged on PC; every screen is also checked at 390 px before merging. Touch targets at least 44 px. Nothing depends on hover. | CLAUDE.md ground rules, product.md §2, K7 |
+| V3 | **Right to left throughout.** Layout, reading order, sliders, disclosure and navigation flow from the right. Exceptions: every chart axis runs left to right, not only time (founder, gap 8.6; widened by ground rule 6, 2026-10-28), while a bar inside a table row may grow from the right with its Hebrew text; numbers, identifiers and Latin names are isolated left-to-right runs. | CLAUDE.md, architecture 3.5 |
 | V4 | **Inputs sit next to the result they change.** Every graph and computed number shows the inputs it uses, each editable on the same page. | product.md §2 "interactive by default", K8 |
 | V5 | **Calm and neutral.** Warm dark grey, light text, one accent. No bank or manager brand colours, no promotional look, no colour that suggests a recommendation the site has not made. | product.md §2 "neutral by construction" |
 | V6 | **Colour never works alone.** Every state also has a pattern, an icon or a word, so it reads in sunlight, in greyscale and to a colour-blind friend. | dataviz method |
-| V7 | **Polish is a requirement.** Motion when values change, careful type, charts drawn by us. | K12 |
+| V7 | **Polish is a requirement.** Motion inside a chart mark when values change (a bar grows, a line glides), never a layout that moves (2.5a, 2026-10-28); careful type; charts drawn by us. | K12 |
 
 ---
 
@@ -148,7 +148,7 @@ Validated with the dataviz validator on the card surface: the three family hues 
 1. **Draw only true numbers.** A real quantity (a rate, an amount, a time in months) gets a mark on its scale, with its figure printed at the mark. A category or an order (how soon the money is back, a kind of product) gets words, an icon and a colour, never a bar or a meter: equal slices invent a unit the data does not have.
 2. **Colour carries meaning, and there is enough of it.** Each colour says one thing the reader can name (teal is the rate, warmer is held longer, stripes are a range); grey on grey says nothing, and a colour that only ranks or decorates is left out. The flags of 3.2 keep their meaning: a scale that borrows their hues stays away from numbers and always has a word and an icon.
 3. **Every encoding has a legend.** Whatever a colour, a pattern or a shape means is said on the screen, even when every figure is also printed.
-4. **Show the whole comparison; do not make the reader operate it.** A guide page shows its product among its alternatives, all at once, with the page's product marked (a tinted row and a tag). No filter that hides or fades rows, no control the reader must use before the visual says anything.
+4. **Show the whole comparison; do not make the reader operate it.** A guide page shows its product among its alternatives, all at once, with the page's product marked (a tinted row and a tag). No filter that hides or fades rows, no control the reader must use before the visual says anything. An analysis section may have a control (ground rule 3, 2026-10-28: the indices page's change chart has a marker) when its first state already shows the whole comparison.
 
 Before a visual merges, the reading test: for each mark on the screen, one sentence says what it is from what is on the screen alone.
 
