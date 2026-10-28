@@ -247,6 +247,7 @@ No independent reviewer is needed under 30 files.
   - A fund that cannot be priced shows its reason as a line under its labels, not squeezed into the difference column. That column shows "—".
   - The account name column is 9.5rem and a long name may wrap, so "Interactive Brokers" no longer runs into its bar.
 - 2026-10-28, the founder: "make the index description after choosing an index fixed size". The index header was 157 to 184 px tall on a PC and 179 to 229 px on a phone, depending on the index, so a switch of index moved everything under it. The lines of every index are now laid out unseen in the same place (`IndexHeader` with `others`), so the header is as tall as the longest at any width. Measured over the seven indices at 390, 1,366 and 1,920 px wide, it keeps one height at each.
+  - Structure review: `IndexHeader` (it existed already) and `IndexBlurb` (its lines, taken out so they can be laid out once per index) were kept. They are this page's own anatomy, built from the kit's `Tag`, and used once.
 
 ## 4. Against `docs/product.md`: what else the page owes the reader
 
