@@ -24,6 +24,15 @@ const inControl = (target: EventTarget, row: HTMLElement) => {
   return !!hit && hit !== row && row.contains(hit);
 };
 
+// A pick made outside the list (a name in a "not priced" line under it) that brings a row into the list: that row takes the place on the
+// screen of what was tapped. One pending hold for the page; the list that has the row takes it.
+let pending: { key: string; top: number } | null = null;
+
+/** Call before a pick made outside the list: the list row `key` will appear where `el` is now. */
+export function holdOnPick(key: string, el: HTMLElement) {
+  pending = { key, top: el.getBoundingClientRect().top };
+}
+
 export function PickList({ label, columns, phoneColumns, head, rows, phoneLimit, more }: { label: string; columns: string; phoneColumns?: string; head?: ReactNode; rows: PickRow[]; phoneLimit?: number; more?: (hidden: number) => string }) {
   const [open, setOpen] = useState(false);
   // a pick re-prices what is above the list (founder, 2026-10-27: "the whole page jumps up and down"): keep the tapped row where it
@@ -31,9 +40,11 @@ export function PickList({ label, columns, phoneColumns, head, rows, phoneLimit,
   const root = useRef<HTMLDivElement>(null);
   const anchor = useRef<{ key: string; top: number } | null>(null);
   useLayoutEffect(() => {
-    const a = anchor.current;
+    const outside = pending && rows.some((r) => r.key === pending!.key) ? pending : null;
+    const a = anchor.current ?? outside;
     if (!a || !root.current) return;
     anchor.current = null;
+    if (a === outside) pending = null;
     const list = root.current;
     const hold = () => {
       const el = [...list.querySelectorAll<HTMLElement>("[data-pick-key]")].find((x) => x.dataset.pickKey === a.key);

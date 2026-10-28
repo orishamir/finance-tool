@@ -13,7 +13,7 @@ import { computed, type SiteValue } from "../../lib/value";
 import { fmt } from "../../lib/format";
 import { IconLock } from "../icons";
 import { Num } from "../provenance";
-import { Button, Card, ChartLegend, CostStack, LabelChip, LabelFilter, LabelRow, PickList, ProductIdLink, Sentence, Swatch, Tag, cx, type CostPart, type PickRow } from "../kit";
+import { Button, Card, ChartLegend, CostStack, LabelChip, LabelFilter, LabelRow, PickList, holdOnPick, ProductIdLink, Sentence, Swatch, Tag, cx, type CostPart, type PickRow } from "../kit";
 import { optionClass, OptionTag, reasonText } from "./parts";
 import { ProviderLink, providerName } from "./sections";
 import { Fees } from "./funds";
@@ -243,7 +243,7 @@ export function AccountColumn({ view, bundle, years, pick, onPick }: { view: Inv
       cells: (
         <>
           <span className="text-sm text-muted-foreground tabular-nums text-center">{r.at.open ? "—" : i + 1}</span>
-          <span className={cx("flex flex-col leading-tight font-semibold whitespace-nowrap", isYours && "text-entered")}>
+          <span className={cx("flex flex-col min-w-0 leading-tight font-semibold", isYours && "text-entered")}>
             {r.p.short}
             {isYours && <span className="text-xs font-normal text-muted-foreground">{c.pair.yoursTag}</span>}
             {isBest && <span className="text-xs font-medium text-primary">{c.pair.cheapestTag}</span>}
@@ -290,7 +290,7 @@ export function AccountColumn({ view, bundle, years, pick, onPick }: { view: Inv
       </div>
       <PickList
         label={c.pair.listLabelAccounts}
-        columns="1.5rem 8rem minmax(0,1fr) 6.5rem"
+        columns="1.5rem 9.5rem minmax(0,1fr) 6.5rem"
         phoneColumns="1.25rem minmax(0,1fr) auto"
         head={
           <>
@@ -317,7 +317,11 @@ export function AccountColumn({ view, bundle, years, pick, onPick }: { view: Inv
                 <span>{text}</span>
                 <span className="flex flex-wrap gap-x-1">
                   {ids.map((id, i) => (
-                    <button key={id} type="button" className="text-link hover:underline" onClick={() => onPick(repick(view, pick, { house: id }))}>
+                    <button key={id} type="button" className="text-link hover:underline" onClick={(e) => {
+                        holdOnPick(id, e.currentTarget);
+                        onPick(repick(view, pick, { house: id }));
+                      }}
+                    >
                       {providerName(view, id)?.short ?? id}
                       {i < ids.length - 1 ? " ·" : ""}
                     </button>
@@ -374,8 +378,12 @@ export function FundColumn({ view, today, pick, onPick, filter, onFilter }: { vi
         <Num value={diff(at.valueN - selAt.valueN, r.f.name, at.value, selAt.value)} display={plus(diff(at.valueN - selAt.valueN, r.f.name, at.value, selAt.value))} />
       </span>
     ) : (
-      <span className="text-xs text-muted-foreground whitespace-normal">{at && "reason" in at ? reasonText(at.reason, optionClass[r.f.option]) : c.funds.cannot}</span>
+      <span className="text-muted-foreground" aria-hidden="true">
+        —
+      </span>
     );
+    // why a fund has no price here: a line of the row at its full width, not squeezed into the difference column (founder, 2026-10-28)
+    const why = priced(at) ? null : at && "reason" in at ? reasonText(at.reason, optionClass[r.f.option]) : c.funds.cannot;
     return {
       key: r.f.rec.id,
       selected: isSel,
@@ -402,8 +410,9 @@ export function FundColumn({ view, today, pick, onPick, filter, onFilter }: { vi
                 </Tag>
               )}
             </span>
+            {why && <span className="text-xs text-muted-foreground">{why}</span>}
           </span>
-          <span className="text-end self-center max-w-40">{right}</span>
+          <span className="text-end self-center">{right}</span>
         </>
       ),
     };
