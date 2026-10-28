@@ -54,8 +54,9 @@ function Suggest({ s, field, onAdopt, children }: { s: Suggestion | null; field:
 
 /** The fields of flow 16: horizon, amount now, monthly, what must stay available, return, inflation, withdrawable at any time. */
 /**
- * `leaveOut`: fields a page leaves out (the indices page, founder 2026-10-28: every option can be sold any trading day, no pension run
- * takes the insurance share, and the page invests the whole amount today, so what stays available is the goal's question, not its).
+ * `leaveOut`: fields a page leaves out (founder 2026-10-28, every control earns its place). The indices page and the two workbenches:
+ * every option there can be sold any trading day and no run takes the pension insurance share; the indices page also invests the
+ * whole amount today, so what stays available is the goal's question, not its.
  */
 export function AssumptionsPanel({ data, suggestion, onAdopted, exposure, leaveOut = [] }: { data: FormData; suggestion: Suggestion | null; onAdopted: () => void; exposure?: boolean; leaveOut?: ("anytime" | "insurance" | "available")[] }) {
   const { current, resolved, update, setEnteredReturn, setInflation } = useGoals();

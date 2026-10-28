@@ -54,6 +54,45 @@ down there, say so instead of inventing one. If I change a decision, record
 the change in `docs/product.md` section 1 with the date and reason, and
 re-check the capabilities that depend on it.
 
+## Ground rules (founder, 2026-10-28)
+
+These override any older rule they conflict with, in the docs, older specs or
+the memory notes; where one conflicts, the older text is amended to match.
+The evidence behind them is `research/2026-10-28-founder-patterns.md`.
+
+1. **Draw before building anything a person sees.** Every change to what a
+   screen shows starts as a Hebrew mockup with the site's real numbers, in
+   two or three options with one recommended; a made-up value is marked. A
+   fix shows the symptom I saw and the same screen without it. This holds for
+   a choice I delegated too: a delegated choice that changes a screen still
+   goes through a mockup. Technical settings stay Claude's to set.
+2. **Fair and general comparisons.** Name the holding; change one thing at
+   a time; show differences rather than two absolutes; use a range or a
+   count over every collected institution, never one bank and never my own
+   case.
+3. **Simple inputs, rich analysis.** Inputs are plain fields and sliders
+   with nothing clever built in. Analysis gets a section of its own, and
+   that section is genuinely informative: it compares everything at once,
+   not a list and not two things at a time.
+4. **Every control earns its place.** A control changes something on its
+   page, visibly; a field the page never reads is left out; no figure
+   changes silently.
+5. **Fast.** A slider or field answers in under 100 ms; work that takes
+   longer waits until the hand rests; measured before merging.
+6. **Charts read left to right.** Every chart axis runs left to right, not
+   only time. A bar inside a table row, beside its Hebrew text, may grow
+   from the right with the row. Each line or category has its own clearly
+   different hue, with a direct label or a legend; blue and violet stay
+   reserved for entered and computed numbers.
+7. **One flaw means a sweep.** A flaw I report is fixed in the shared piece,
+   and every other place of the same kind is fixed with it.
+8. **Both screen sizes, PC judged first.** Mockups are judged on PC; every
+   screen is also checked at 390 px before merging, with 44 px touch
+   targets and nothing that depends on hover.
+9. **Full words.** Full terms, headers on every table, no process language
+   on the site (Claude, audit ids, test names); builders' Hebrew goes
+   through the Hebrew editor.
+
 ## Fixed constraints
 
 - Hebrew UI, right-to-left layout.
