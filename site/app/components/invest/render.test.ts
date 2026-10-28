@@ -38,7 +38,7 @@ describe("the index page's sections render", () => {
       createElement(AccountColumn, { view, bundle, years: 20, pick, onPick: () => undefined }),
       createElement(FundColumn, { view, today: t, pick, onPick: () => undefined, filter: null, onFilter: () => undefined }),
       createElement(Steps, { view, monthly: plan.values.monthly, pick }), createElement(Foot, { view }),
-      createElement(PlanBlock, { items: [], onOpen: () => undefined, fx: bundle.fx, today: t, hasGoal: true })));
+      createElement(PlanBlock, { knobs: null, onOpen: () => undefined, fx: bundle.fx, today: t, hasGoal: true })));
     expect(out).toContain("הפקדתם");
     expect(out).toContain("★ הזוג הזול ביותר לתוכנית שלכם");
     expect(out).toContain("כמה זה עולה לכם ב־20 שנים, בכל אחד מהזוגות");
@@ -47,6 +47,7 @@ describe("the index page's sections render", () => {
     expect(out).toContain("הבחירה");
     expect(out).toContain("פסגות");
     expect(out).toContain("שער הדולר");
+    expect(out).toContain("אינפלציה ועוד");
   });
   it("neither list leaves a row out: every account and every fund is listed, priced or with its reason", () => {
     const pick = pickOfHeadline(view)!;

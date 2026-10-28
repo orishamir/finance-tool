@@ -1,12 +1,11 @@
 // The index pills (the kit's ChipList; nothing preselected, D27), the "אחר" flow for a custom index, and the plan (the kit's PlanChips) with the dollar rate (D26).
-import { useId, useMemo, useState } from "react";
+import { useId, useMemo, useState, type ReactNode } from "react";
 import { invest as c } from "../../copy";
-import type { FieldKey } from "../../lib/goal";
 import { customIdOf, customIndexPath, indexPath, indexSuggestions, matchKnownIndex, type CustomIndex, type IndexRef } from "../../lib/invest";
 import { fxLabel, nisPer, type FxSnapshot } from "../../lib/fx";
 import type { WorkbenchBundle } from "../../lib/providers";
 import { Num } from "../provenance";
-import { Button, Card, ChipList, PlanChips, SegmentedControl, Sentence, Tag, type ChipItem, type PlanChipItem } from "../kit";
+import { Button, Card, ChipList, SegmentedControl, Sentence, Tag, type ChipItem } from "../kit";
 
 /** The index name as a pill: the pills sit under the heading "המדד", so a leading "מדד" is dropped. */
 export const pillName = (name: string): string => name.replace(/^מדד\s+/, "");
@@ -111,13 +110,19 @@ function CustomPanel({ bundle, customs, onCancel, onSave, onKnown }: { bundle: P
 
 // ---------------------------------------------------------------- the plan
 
-export function PlanBlock({ items, onOpen, fx, today, hasGoal }: { items: PlanChipItem[]; onOpen: (f: FieldKey | "all") => void; fx: FxSnapshot | undefined; today: string; hasGoal: boolean }) {
+/** The plan the page runs on: the knob strip (founder, 2026-10-28), the rest of the assumptions behind a button, and the dollar rate. */
+export function PlanBlock({ knobs, onOpen, fx, today, hasGoal }: { knobs: ReactNode; onOpen: () => void; fx: FxSnapshot | undefined; today: string; hasGoal: boolean }) {
   const usd = fx ? nisPer(fx, "USD", today) : null;
   return (
     <section className="flex flex-col gap-3" aria-label={c.plan.heading}>
-      <PlanChips items={items} allLabel={c.plan.all} onOpen={onOpen} />
-      <p className="text-sm text-muted-foreground">
-        {hasGoal ? c.plan.fromGoal : c.plan.siteExample} · {c.plan.todayShekels}
+      {knobs}
+      <p className="flex flex-wrap items-center gap-x-3 text-sm text-muted-foreground">
+        <Button variant="secondary" className="!h-9 px-3 text-sm" onClick={onOpen}>
+          {c.plan.knobs.others}
+        </Button>
+        <span>
+          {hasGoal ? c.plan.fromGoal : c.plan.siteExample} · {c.plan.todayShekels}
+        </span>
       </p>
       <Sentence size="sm" tone="muted">
         {usd ? (

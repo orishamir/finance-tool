@@ -1,14 +1,15 @@
 // "השקעה במדד" (D28, spec research/specs/2026-10-25-invest-page/spec.md): for an index the person chooses (or adds), the options
 // for owning it, the cheapest broker for each, and the cheapest complete way for the plan. `/indices` chooses nothing (D27);
 // `/indices/<x>` opens the known index `index-<x>` (pre-rendered); a custom index lives on the device and opens at `/indices?custom=<id>`.
-import { useEffect, useId, useMemo, useState } from "react";
+import { useDeferredValue, useEffect, useId, useMemo, useState } from "react";
 import { useLoaderData, useLocation, useNavigate, useParams } from "react-router";
 import type { RuleRecord } from "@finance-tool/schema";
 import type { Route } from "./+types/invest";
 import { invest as c, site } from "../copy";
 import { AssumptionsPanel } from "../components/compare/assumptions";
 import type { FormData } from "../components/compare/goal-form";
-import { feePlanItems, ScenarioDefaults } from "../components/fees/chips";
+import { ScenarioDefaults } from "../components/fees/chips";
+import { PlanKnobs } from "../components/invest/knobs";
 import { IndexChips, PlanBlock } from "../components/invest/chips";
 import { HousesSection } from "../components/invest/houses";
 import { FundsSection } from "../components/invest/funds";
@@ -127,7 +128,7 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
   const invest = useInvestState();
   // The person may type only one number here (this page may be all they use): the goal's empty numbers take the site's example.
   const fi = useMemo(() => planInputs(compare, current, resolved, released.state), [compare, current, resolved, released.state]);
-  const plan: WorkbenchInputs = useMemo(
+  const livePlan: WorkbenchInputs = useMemo(
     () => ({
       amountNow: Math.max(0, fi.g.amountNow - fi.g.available),
       monthly: fi.g.monthly,
@@ -142,6 +143,8 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
     }),
     [fi],
   );
+  // pricing every account and fund takes about half a second: a slider moves at once and the results follow (2026-10-28)
+  const plan = useDeferredValue(livePlan);
 
   const customs: CustomIndex[] = invest.customIndices;
   const customId = new URLSearchParams(search).get("custom");
@@ -154,8 +157,6 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
 
   const [panelOpen, setPanelOpen] = useState(false);
   const headId = useId();
-  // A chip opens the same fields the fees page opens, on the same current goal: a value typed here is the value there.
-  const planItems = feePlanItems(fi, { return: plan.returnFromParameter ? c.plan.retExample : c.plan.retEntered });
 
   // the account and the fund the two lists are priced on: the person's picks on this index, else the cheapest way (2026-10-27)
   const [picked, setPicked] = useState<{ index: string; pick: Pick } | null>(null);
@@ -185,13 +186,22 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
     />
   );
 
+  const planBlock = (
+    <PlanBlock
+      knobs={<PlanKnobs fi={fi} plan={plan} ranges={data.form.knobs} bundle={wb} view={view} pick={pick} pct={data.form.pct} />}
+      onOpen={() => setPanelOpen(true)}
+      fx={wb.fx}
+      today={data.today}
+      hasGoal={plan.fromGoal}
+    />
+  );
+
   return (
     <LabelSheetHost>
       <div className="flex flex-col gap-section pt-2 lg:pt-8">
         <div className="flex flex-col gap-5">
           <Head />
           {chips}
-          <PlanBlock items={planItems} onOpen={() => setPanelOpen(true)} fx={wb.fx} today={data.today} hasGoal={plan.fromGoal} />
         </div>
         {customId && !exposureId && !index && <Callout tone="caution">{c.custom.missing}</Callout>}
         {!index || !view ? (
@@ -199,6 +209,9 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
         ) : (
           <>
             <IndexHeader view={view} others={knownIndices(wb)} onChangeAnswer={index.custom ? () => invest.add({ ...index.custom!, israeli: !index.custom!.israeli }) : null} />
+            {/* the knobs write the same current goal the fees page and the panel write: a value set here is the value there; they sit
+                right above the result so it moves in view (founder, 2026-10-28) */}
+            {planBlock}
             {pick ? (
               <>
                 <PairResult view={view} bundle={wb} plan={plan} pick={pick} onPick={onPick} />

@@ -501,7 +501,7 @@ export function goalFormData() {
   const p05 = parameters.find((p) => (p as { method_id?: string }).method_id === "P-05") as unknown as {
     inputs: Record<string, ValueObject>;
     ranges: Record<string, { min: ValueObject; max: ValueObject }>;
-    sliders: Record<string, { min: ValueObject; max: ValueObject; step?: ValueObject }>;
+    sliders: Record<string, { min: ValueObject; max: ValueObject; step?: ValueObject; nudge?: ValueObject }>;
   };
   if (!p07 || !p05) throw new Error("data/parameters/ holds no P-07 or P-05 record");
   const range = (r: { min: ValueObject; max: ValueObject; step?: ValueObject }) => ({ min: r.min.value as number, max: r.max.value as number, step: (r.step?.value as number | undefined) ?? 1 });
@@ -514,6 +514,8 @@ export function goalFormData() {
     form: {
       horizon: range(p07.ranges.horizon_years!),
       monthly: range(p05.sliders.monthly_deposit!),
+      // the indices page's knob strip (F-89): each slider's range and the step whose effect it shows
+      knobs: Object.fromEntries((["amount_now", "monthly_deposit", "horizon_years", "A-01"] as const).map((k) => [k, { ...range(p05.sliders[k]!), nudge: p05.sliders[k]!.nudge!.value as number }])) as Record<"amount_now" | "monthly_deposit" | "horizon_years" | "A-01", { min: number; max: number; step: number; nudge: number }>,
       age: { min: p05.ranges.age!.min.value as number, max: p05.ranges.age!.max.value as number },
       pct: { min: p05.ranges.pct!.min.value as number, max: p05.ranges.pct!.max.value as number },
       inflationStart: p05.inputs["A-02"]!.value as number,

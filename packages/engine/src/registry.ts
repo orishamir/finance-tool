@@ -20,6 +20,7 @@ import {
 } from "./formulas/holding-tax.ts";
 import { mostCommonRate, rateRange } from "./formulas/account-interest.ts";
 import { currencyExposureShare, stockExposureShare } from "./formulas/track-exposure.ts";
+import { stepEffect } from "./formulas/step-effect.ts";
 import { annualToMonthly, contributions, cpiPath, crossRate, fxPath, monthlyInflation, realValue, taxYearOf } from "./formulas/time.ts";
 import { runBond } from "./ledgers/bond.ts";
 import { runChildSavings } from "./ledgers/child-savings.ts";
@@ -117,6 +118,7 @@ export const formulas = {
   "F-86": rateRange,
   "F-87": stockExposureShare,
   "F-88": currencyExposureShare,
+  "F-89": stepEffect,
 } as const;
 
 /** Ledger runs, by the instrument family they model. */
