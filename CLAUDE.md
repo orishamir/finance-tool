@@ -161,7 +161,8 @@ The evidence behind them is `research/2026-10-28-founder-patterns.md`.
 ## Repo layout
 
 - `docs/` — product docs (`product.md`, `discovery.md`, `method.md`, `roadmap.md`, `data-schema.md`, `data-inventory.md`, `parameters-rationale.md`)
-- `research/` — research notes and findings
+- `research/` — dated research reports and findings
+- `.claude/skills/il-finance/references/` — the rule base: the latest research on every rule, sourced and kept current (closed questions struck); the only copy, so read and extend it there
 - `data/` — source data, each entry with its source and date
 - `packages/schema/` — data schemas (Zod) for `docs/data-schema.md`; `json/` holds the exported JSON Schema
 - `packages/engine/` — calculation engine, one function per `docs/method.md` formula; no I/O

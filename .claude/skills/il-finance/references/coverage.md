@@ -1,7 +1,7 @@
 # Coverage: what in `docs/product.md` the knowledge base does not cover yet
 
 Written 2026-10-22, after the 29 topic files in this folder were finished and reviewed.
-The knowledge base holds 775 rules and about 510 open questions (493 numbered items in 29 files on 2026-10-26, of which 101 are closed and struck; see `research/knowledge/2026-10-26-open-questions.md`). *2026-10-28:* 937 rules (SKILL.md) and 498 numbered open questions, of which 115 are closed, 127 narrowed and 256 open (`data/open-questions.json`, generated from these files). Every rule has a link and a
+The knowledge base holds 775 rules and about 510 open questions (493 numbered items in 29 files on 2026-10-26, of which 101 are closed and struck; see `research/knowledge/2026-10-26-open-questions.md`). *2026-10-28:* the stale copy of this file in `research/knowledge/` was deleted. 937 rules (SKILL.md) and 498 numbered open questions, of which 115 are closed, 127 narrowed and 256 open (`data/open-questions.json`, generated from these files). Every rule has a link and a
 checked date. Rules that only point to other rules carry the links of the rules they point to.
 
 This file lists what is still missing, in the order of `docs/product.md`. Each gap names the file and
