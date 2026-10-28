@@ -4,6 +4,8 @@ Amended 2026-10-24 after the overnight user audit; see research/audit/2026-10-24
 
 Amended again 2026-10-24 (scenario audit) after the same night's scenario audit, in which user personas ran the live site end to end; see `research/audit/2026-10-24-scenario-audit.md` for the method and findings. The amendments below carry "(2026-10-24, scenario audit)": the question card's second row (1a), the goal form's child-age and purchase-cost fields (7), the comparison's representative line, fee-term flip, limitation-first headline and the other result lines (8), the idle-cash verdict block (9), the holdings add sheet's fee prefill and the liquid-fund decision block (13), the own-terms side store (11.5), the S&P 500 fund records (18), and the guide and exposure prose (2). A replaced sentence is struck through or kept as "until 2026-10-24".
 
+*Amended 2026-10-28 (sweep for later decisions).* Sections for removed or held screens carry a dated line at their top: the switching playbook page (19) was removed by D38; the what-changed page (24) by D24; the idle-cash screen (9) and the holdings page (13) are held back from the site by D32; the fit mark and the saved-goal strip on the company and track pages (10) were removed by D34, and the fee page (12) and holdings no longer read the saved goal (D37). Where a ground rule of 2026-10-28 in `CLAUDE.md` conflicts with a layout rule below (phone first, charts, hover, fixed column widths), the ground rule wins.
+
 > Release 2 sections added 2026-10-23: sections 6 (shared) to 10 (screens 5 to 8).
 > Release 3 sections added 2026-10-23: sections 11 (shared) to 15 (screens 9 to 12).
 > Release 4 sections added 2026-10-24: sections 16 (shared) to 20 (screens 13 to 16).
@@ -353,6 +355,8 @@ Where the reader changes the values behind the graph (flow 3). A bottom sheet on
 
 ## 5. Screen 4: company page in the decoder
 
+*Amended 2026-10-26 to 2026-10-28 (D33 to D36):* a group's companies are one brand page; the page compares nothing with other companies (D35); the fee cell shows both fees on every row (D36); the last column of the track table is two rings, stock share and foreign-currency share (F-87, F-88); there is no goal strip and no fit mark (D34).
+
 > **Built 2026-10-23 as one list.** The app-mirroring view described below (`ProductMappingCard`, `AppQuestionCard`, the view switch) was removed on 2026-10-23 (product.md appendix E, flows 6.11, the redrawn mockup) and is not built. The page is: back link, h1, the data-month line, the fees-pending callout, "כל המסלולים של {חברה}", one disclosure per regulator product type (the first open, each with its track count and a link to the product's guide page), the track list with same-name groups, and the paste card (PC: in the side column with the product card). `TrackList`, `NearDuplicateGroup`, `Tag`, `Callout` and `PasteCard` are as specified below. Since the same day the list also shows the regulator's balance-fee average per track (the fee column on PC, a fee line per phone row, with the year in the heading; CAT-35 to CAT-37, discovery O11 confirmed), the names and same-name resolutions `data/catalog/` records, and the default-track tag from `default_at_joining`; the fees-pending callout became the line that says what the average is.
 
 ### Overview
@@ -686,6 +690,8 @@ As 6.3: `SavedGoalStrip`, `WhyHeadline`, `WhySheet`, `RankedRow`, `ListedRow`, `
 
 ## 9. Screen 7: idle-cash screen
 
+*Held 2026-10-26 (D32), amended 2026-10-28 (D37):* this screen is not linked from the site (the address still works), and it no longer reads the saved goal or hands off to the goal comparison.
+
 ### Overview
 
 Two inputs and the person's own offer (the balance can arrive prefilled from the first page's "כרית ביטחון": `?balance=`, see 1a); the monthly cost of leaving the money in the current account against each liquid option (flow 11). Route `/idle-cash`. Data: the Bank of Israel series (A-20 policy rate, A-21 per-bank one-month deposit average, A-22 makam yield, A-25 current-account rate from the 447 snapshot), the money-market fund drag (A-06, ISA category average), the engine's F-60 and its F-83 coverage line (G-28), the list of banks in the A-21 series. Worked example S41: 80,000 in the account, 20,000 kept available; costs per month of leaving 60,000: deposit at the bank average 113.12, deposit at the entered offer 129.69, makam 142.07, daily money-market fund 129.13; coverage 26 considered, 1 baseline, 3 compared, 2 not eligible, 20 not evaluated.
@@ -1014,6 +1020,8 @@ Every `ValueObject` carries its state, so styling follows `state` as in 1.3: sta
 
 ## 12. Screen 9: fee materiality page
 
+*Amended 2026-10-28 (D37):* the fee page runs on its own numbers, not on the saved goal: four plan sliders (amount today, monthly deposit, years, return), with inflation, employment and age behind a button; no saved-goal strip, no no-goal notes and no defaults sheet; the "avoid" verdict comes from F-83 and does not link to the goal comparison.
+
 ### Overview
 
 What each fee costs over the horizon, which is worth negotiating, avoiding or ignoring, with the reference and the words to say (flows 20, 21, 23, 27). Route `/fees?wrapper=…` | `?track=…` | `?holding=…` (+ `&from=compare`). Data: the fee set from the subject (P-05's `instruments` record for a wrapper, D21; the CMA track's two averages; the holding's entered figures), the inputs (the saved goal's, else P-05's as parameters), the CMA file for F-68 and the track average, P-03, P-02, the rule figures for the caps (PF-02 to PF-08, PEN-21, PEN-22, KH-22), the saved goal's F-83 candidate set when one exists, and the engine's F-61, F-62, F-68 and F-81 outputs. Not pre-rendered.
@@ -1078,6 +1086,8 @@ Worked examples: S42 (hishtalmut: total 20,664.79 real over 10 years; without fe
 ---
 
 ## 13. Screen 10: holdings page
+
+*Held 2026-10-26 (D32), amended 2026-10-28 (D37, D38):* the page is not linked from the site; it asks the years once, the fit mark and its lines are gone, and the links to the switching guide are gone.
 
 ### Overview
 
@@ -1146,6 +1156,8 @@ What the person already holds, entered from the annual statement, with the fit m
 ---
 
 ## 14. Screen 11: track workbench page
+
+*Amended 2026-10-28:* workbench pages are linked but "not final" (`docs/roadmap.md`); workbench no-op fields (withdraw any time, insurance share) were removed on 2026-10-28.
 
 ### Overview
 
@@ -1252,6 +1264,8 @@ The saved state as a versioned file, out of this device and into another (flow 2
 ---
 
 ## 16. Release 4: shared
+
+*Amended 2026-10-28 (D38):* the playbook types and components in this section (`Playbook`, `PlaybookStep`, `PlaybookSubjectStrip`, `StrengthChip` on steps, `ExperienceCard`, `RecordOfferCard`, `SwitchingCostLine`, `PostSwitchChecklist`) were deleted with the switching page. The engine's switching cost F-66 and the playbook ticks in the saved state stay.
 
 Added 2026-10-24 for the release 4 screens in `docs/flows.md` section 15 (provider workbench page, fund-variant page, switching playbook page, companies list and bank page additions). Same format as sections 1 to 15; same stack. The components of 1.3, 1.4, 6.3, 11.3 are reused as they are; this section lists only what is new. Component behaviour and the reasons are in `docs/design-system.md` section 8; strings in `docs/copy.md` section 8; the engine outputs in `packages/engine/src/providers/workbench.ts` (F-63), `variants/fund-variants.ts` (F-65) and `variants/switching.ts` (F-66), whose exported types the shapes below extend for display (the engine returns codes, never Hebrew; the site maps them). Three method notes in flows 28 and 31 (A-28's deposits and FX counts as facts, the cumulative-cost series, the provider-to-provider move) and two data notes in flow 33 (`staleTariff`, `missing_reason_he`) must be settled before the engine and data sides are built; the types below assume the readings those flows chose. Decision D22 (2026-10-24) governs every average and list here: a figure a publisher's terms forbid copying is a link, not a number.
 
@@ -1514,7 +1528,7 @@ Worked examples: S44 (four invented providers; list level, one order a month: C 
 | `ProviderRow` | fixed fee spread | Quiet line "דמי טיפול {תקופתיים} נפרסו לחודשים" |
 | `ProviderRow` | `vs` | 3px bar in `chart-fee-4`; its line drawn in the chart |
 | `ProviderRow` | "קיבלתם הצעה? הזינו אותה" | Opens `EnteredOfferCard` for the provider |
-| `ProviderRow` | "איך עוברים" | Opens `/switch/{wrapper}?to={providerId}` (+ `from` when a `vs` provider is set) |
+| `ProviderRow` | "איך עוברים" | ~~Opens `/switch/{wrapper}?to={providerId}`~~ Removed 2026-10-28 (D38): the link and the page are gone |
 | `NotComparableRow` | `data-missing` | Reason sentence; the recorded reason as data in a disclosure; tariff link; offer link |
 | `NotComparableRow` | `no-applicable-line` / `line-without-value` / `no-average` | The sentence names the class and channel, the line, or the level |
 | `NotComparableRow` | offer saved | Row joins the ranking (FLIP) with the entered tag and the no-line lines in caution for uncovered bases |
@@ -1617,6 +1631,8 @@ Worked example (shape, the S&P 500 exposure): the IBI S&P 500 ETF ranked (Israel
 ---
 
 ## 19. Screen 15: switching playbook page
+
+*Removed 2026-10-28 (D38): the switching page (`/switch/{wrapper}`) left the site and its code was deleted. This section is kept as the record of what was built; the provider row's "איך עוברים" link (17) is gone too.*
 
 ### Overview
 

@@ -1,6 +1,8 @@
 # Hebrew copy, release 1
 
 > Release 2 section added 2026-10-23: section 6, the strings of the release 2 screens.
+
+> Swept 2026-10-28: rows whose keys no longer exist in `site/app/copy.ts` stay as the record. Each affected section carries a dated line above its table: the switching playbook strings (8.3; `r4playbook` is gone, D38), the what-changed page (9.4, D24), the saved-goal strip and fit mark strings (6.4, 6.5; D34, D37), the idle-cash and holdings strings (6.3, 7.2; held by D32), and the front page's shelf and pinned-question strings (the `rulesFront` block; D25).
 > Folded 2026-10-23 (evening): every string the day's build added to `site/app/copy.ts` is now here, in an "Added 2026-10-23, for the founder's review" table at the end of its section (3.5a and the release 2 tables are the largest), keyed by its `copy.ts` path so the two files can be diffed. Where the build's wording was changed, the note says what it was. Section 6.6 lists the word choices.
 > Release 3 section added 2026-10-23: section 7, the strings of the release 3 screens.
 > Release 4 section added 2026-10-24: section 8, the strings of the release 4 screens.
@@ -950,6 +952,8 @@ Added 2026-10-23 for the briefs in `docs/flows.md` section 9 and the handoff in 
 
 ### 6.3 Idle-cash screen
 
+*Held 2026-10-26 (D32), amended 2026-10-28 (D37):* the idle-cash page is not linked from the site and no longer hands off to the goal comparison. The strings below are still in `copy.ts` (`idle`); the hand-off rows are retired.
+
 | Element | Hebrew |
 |---|---|
 | Title | כסף שיושב בעו״ש |
@@ -999,6 +1003,8 @@ Added 2026-10-23 for the briefs in `docs/flows.md` section 9 and the handoff in 
 
 ### 6.4 Saved-goal strip
 
+*Amended 2026-10-26 to 2026-10-28 (D34, D37):* the strip's strings apply on the home page, the goal pages and the workbench pages; the strip is gone from the company, track, fee, indices, guide, exposure, holdings and idle-cash pages (see the last section of this file).
+
 | Element | Hebrew |
 |---|---|
 | Strip line | `{שם המטרה}` · `{שנים}` · `{סכום}` |
@@ -1015,6 +1021,8 @@ Added 2026-10-23 for the briefs in `docs/flows.md` section 9 and the handoff in 
 | Old version, actions | להתחיל מחדש · מחיקה מהמכשיר |
 
 ### 6.5 Fit mark
+
+*Removed 2026-10-26 (D34) from the company and track pages and 2026-10-28 (D37) from holdings: the card "מתאים למטרה שלכם?" and the row marks are no longer shown there. The `fit` block of `copy.ts` remains for the track workbench. Rows below are the record.*
 
 | Element | Hebrew |
 |---|---|
@@ -1107,6 +1115,8 @@ Added 2026-10-23 for the briefs in `docs/flows.md` section 12 and the handoff in
 
 ### 7.1 Fee materiality page
 
+*Amended 2026-10-28 (D37):* the fee page's saved-goal strip, no-goal notes and defaults sheet are retired (rows in the last section of this file); `r3fees.review.noGoal` is no longer in `copy.ts`.
+
 | Element | Hebrew |
 |---|---|
 | Title | כמה העמלות עולות לכם |
@@ -1196,6 +1206,8 @@ Added 2026-10-23 for the briefs in `docs/flows.md` section 12 and the handoff in
 | `r3fees.review.defaultsLead · defaultsNote` | עד שתזינו ערך, החישוב לפי התרחיש לדוגמה של האתר: `{שנים}`, `{סכום}`, … · מה שתזינו כאן יישמר כמטרה במכשיר הזה. | B3, added 2026-10-24 (QA fixes): the top of the assumptions sheet when no goal is saved, the scenario's own numbers each opening its source |
 
 ### 7.2 Holdings page
+
+*Held 2026-10-26 (D32), amended 2026-10-28 (D37):* `/holdings` is not linked from the site; the fit mark rows and the goal-strip rows below are retired.
 
 | Element | Hebrew |
 |---|---|
@@ -1425,6 +1437,8 @@ Added 2026-10-23 for the briefs in `docs/flows.md` section 12 and the handoff in
 | `r3transfer.loading` | טוען… | |
 
 ### 7.5 Additions to existing screens
+
+*Amended 2026-10-28 (D37, D38):* the rows that link to the goal comparison from the fee page, or to the switching playbook, are retired.
 
 | Where | Hebrew |
 |---|---|
@@ -1693,6 +1707,8 @@ Added 2026-10-24 for the briefs in `docs/flows.md` section 15 and the handoff in
 
 ### 8.3 Switching playbook page
 
+*Removed 2026-10-28 (D38): the switching page was deleted and the `r4playbook` block is no longer in `site/app/copy.ts`. The rows below, and the `r4playbook` rows in the "Added" tables of 8.0 and later, are kept as the record.*
+
 | Element | Hebrew |
 |---|---|
 | Title | איך עוברים: `{מוצר}` |
@@ -1853,6 +1869,8 @@ Added 2026-10-24 for the briefs in `docs/flows.md` section 15 and the handoff in
 | `r4catalogue.instrumentClasses · regulators` | as 8.0 | the class and regulator words, held again for the bank page |
 
 ### 8.5 Additions to existing screens
+
+*Amended 2026-10-28 (D38):* the rows that link to the switching playbook are retired with it.
 
 | Where | Hebrew |
 |---|---|
@@ -2219,6 +2237,8 @@ Removed 2026-10-24 (D24): the page and its strings (`r5.changes`) are gone from 
 | `r5.graduation.sourceNote` | המצב נקרא מקטעי ״מצב מעבר״ בקובצי מאגר הכללים של כל מוצר ומרשימת הפערים הפתוחים של שיטת החישוב. | where the card's status comes from. Was "…ומשאלות G-24 של השיטה.": a method gap's code is not for the page |
 
 ### 9.6 Additions to existing screens
+
+*Amended 2026-10-24 (D24):* the menu, footer, first-page and rules-page rows for the change log ("מה השתנה", "מאז הביקור הקודם שלכם…") are retired; the revisit rows stay.
 
 | Where | Hebrew |
 |---|---|
@@ -2767,6 +2787,8 @@ Removed with the round, nothing renders them: `rulesPage.ruleCount`, `rulesFront
 | `ruleCardMore.experienceTag` | ניסיון של אדם אחד | the four forum entries |
 
 ### rulesFront
+
+*Amended 2026-10-24 (D25, late evening):* rows for the front page's shelf cards and pinned questions are retired (`rulesFront.pinned.tag`, `pinned.provisional`, `shelvesTitle`, `ruleCount` and `back` are no longer in `copy.ts`); the twelve questions are in the `questions` block and on `/questions`. Rows below are the record of that first build.
 
 | Key | Text | Note |
 |---|---|---|

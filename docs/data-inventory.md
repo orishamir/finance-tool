@@ -8,6 +8,25 @@ Status: **for founder review.** Section 3 lists what the inventory found that ne
 
 **Status 2026-10-24:** releases 2 to 5 are built, and the inventory now covers what their screens read too. Rows 21 to 27 were added for the collections that joined since (one fee snapshot per provider, fund records, deposit terms, series, the catalogue's bank side, the parameters P-07 and P-08); rows 1, 5, 6, 11, 12 and 12a carry today's counts. Not shipped, with the reason: `data/fund-lists/` (TASE's terms forbid republishing the Maya export, CAT-43), the Bank of Israel series (D20), the ISA fund-fee averages (D22) and `data/averages/` (row 13). Nothing in `data/` holds a person's own figures: the holdings, goals, offers, ticks and saved comparisons are on the device (`site/app/lib/state.ts` version 3 under `mekor.v2.state`, plus three side stores pending a merge).
 
+**Status 2026-10-28:** the counts in the rows below stop at 2026-10-24; today's are these, and they supersede the rows where they differ.
+
+- `data/rules/`: 596 records.
+- `data/instruments/`: 13 wrappers. 4 securities in `securities/` (makam, the government bond and the two money-market funds), moved out of `wrappers/` on 2026-10-26 (D6 as amended).
+- `data/instruments/exposures/`: 12, after five indices were added on 2026-10-25 (TA-35, TA-90, NASDAQ-100, MSCI World, MSCI ACWI). The makam and government-bond exposure pages were folded into their guide pages on 2026-10-27 (D18); their records stay.
+- `data/fees/` (row 21): 22 snapshots for 19 providers. Interactive Brokers and Interactive Israel joined on 2026-10-25. Meitav Trade is still a `missing: true` record. The "ambiguous lines" at One Zero and Psagot were settled on 2026-10-24 (method F-63); both rank.
+- `data/funds/` (row 22): 57 snapshots of 48 funds. The index-fund pass of 2026-10-25 covers every index on the index page.
+- `data/terms/deposits/` (row 23): 16 records:
+  - Leumi's three;
+  - the current account of seven more banks (Discount, FIBI, Hapoalim, Massad, Mercantile, Mizrahi-Tefahot, Yahav; 2026-10-25);
+  - the one-year fixed and prime deposits of Hapoalim, Discount and Mizrahi-Tefahot (2026-10-26).
+
+  N6 is no longer "Leumi only".
+- `data/series/` (row 24): 3. `ecb-fx.json` (the ECB's daily reference rates, D26, F-84) joined on 2026-10-25.
+- `data/parameters/`: 10. `home-guide-door.json` joined the nine named above.
+- `data/open-questions.json`: added 2026-10-26 (data-schema 3.15).
+
+The side stores on the device are four, not three: `own-rates` (2026-10-24) joined offers, variants and playbook ticks. The offer card still lives on the providers workbench. The ticks outlive the switching page they served (D38, 2026-10-28), carried only by the transfer file. "The changes page" in row 24 was removed by D24.
+
 **Origins** (the founder's four, plus two that some files need):
 
 - **Published source**: collected from an official or institution page, file or dataset, with the URL and the date read.

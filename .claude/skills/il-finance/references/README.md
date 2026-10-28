@@ -5,6 +5,21 @@ instrument guide, dimension checklist and catalogue of every option. One file pe
 Started 2026-10-22. Written by the domain-specialist and tax-specialist agents;
 `coverage.md` lists what in `docs/product.md` this knowledge base does not cover yet.
 
+## Who edits these files (founder, 2026-10-28)
+
+Each agent keeps to its own job:
+
+| Files | Who edits |
+|---|---|
+| The tax files (`tax-*.md`: TXG, TXI, TXS, TXF, TXP, TXH, TXK, TXA, TX2) | The tax-specialist |
+| Every other topic file (products, wrappers, cross-cutting, tier 2) | The domain-specialist |
+| This README and `coverage.md` | The lead (the main session) |
+
+- **The `Owner:` line** at the top of each topic file names who owns it.
+- **The lead** may also apply a sourced finding from a research report, such as a closed question or a corrected source. The commit names the report it came from.
+- **Everyone else reads and never edits.** That covers the ux-researcher, data-researcher, qa-engineer and finance-reviewer, and every builder. A rule they find wrong, missing or out of date goes in their report, for the owner or the lead to apply.
+- **Specialists stay in their own files.** A specialist who finds something about the other's files reports it the same way and does not edit them.
+
 This is research, not site data. Nothing here is shown on the site until it is
 copied into `data/` or the rule base with its source and date.
 

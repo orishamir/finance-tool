@@ -154,7 +154,7 @@ Before a visual merges, the reading test: for each mark on the screen, one sente
 
 **The daily money-market table (2026-10-26).** The four cash products from the fastest way back to the slowest, in a `CompareTable`: the product (the other three link to their guide pages), when the money is back as a `StepTag` with a line under it where the word leaves out how (the fund's set hour, MF-10 and MF-11; up to 12 months between fixed dates, MF-08), and the annual rate as a `ValueBar` on one scale (the next whole percent above the highest rate), the deposit's range striped from the lowest bank to the highest. A sentence above the table says that waiting does not pay, only while the data says so (`slowerPayNoMore`). Under it a legend (rate, range) and a `NoteList`: before tax, the funds' rate is the site's assumption, the current account's common rate (the same sentence as the current-account page, `CommonRateLine`), and how many of the collected one-year deposits cannot be left before the end (F-86), with a link to each bank's rate.
 
-Not defined yet: a categorical palette for comparing several options on one chart. It arrives with the R2 comparison chart and must avoid the state hues (blue, violet) and the status hues.
+The categorical palette for comparing several options on one chart arrived with the R2 comparison chart (6.5); it avoids the state hues (blue, violet) and the status hues, and every legend identity has its own clearly different hue (founder, 2026-10-24).
 
 ### 2.4 Typography
 
@@ -581,6 +581,8 @@ Why no slider in the panel: the panel answers "what would change the answer"; ch
 
 ### 6.7 Saved-goal strip
 
+*Amended 2026-10-26 to 2026-10-28 (D34, D37):* the strip shows on the home page, the goal pages and the workbench pages ("not final"); it is removed from the company, track, fee, indices, guide, exposure, holdings and idle-cash pages.
+
 Called for by 3.9 (one local state per browser, automatic), D1, D12, and the fit mark's need for a saved goal (3.10).
 
 A `card` row, 56 px, `rounded-lg`: at the start a `Target` icon (Lucide) in `muted-foreground`; the goal's name in weight 500 (or the preset's name); "{שנים} · {סכום}" as Nums in their states; "נשמר במכשיר הזה" in `text-xs muted-foreground`; at the end the actions: "לתוצאה" and "עריכה" as links (44 px), and a `MoreHorizontal` icon button opening a small popover with "מטרה נוספת" and "מחיקה מהמכשיר" (the delete asks once, inline: "למחוק את המטרה מהמכשיר הזה?" with "מחיקה" in `destructive` text and "ביטול"). With several goals, chips under the row in their order (D12), the current one filled. The compact form on company and track pages is one `text-sm` line with "שינוי". Sticky under the header on the result page on a phone, until the ranked list scrolls past.
@@ -600,6 +602,8 @@ Called for by 3.10 Out ("a fit mark against the person's saved goal, with a link
 - Colours: `positive` for fits; "does not fit" and "no rule" in `muted-foreground`, never `blocked` or `destructive`: not fitting is an answer, not a problem. A stale CMA period puts the clock on the mark, since its classification input is stale.
 
 ### 6.9 First page and menu additions
+
+*Held 2026-10-26 (D32):* the idle-cash and holdings doors, the menu items and the home pills that lead to `/idle-cash` and `/holdings` are not linked from the site. Text below that describes them as live is the record of the build.
 
 Called for by 3.2 (idle cash "meant to be the first thing a friend sees") and flow 11.
 
@@ -665,6 +669,8 @@ Why first person future ("אבקש") and "בחשבון שלי": they are gender-
 
 ### 7.5 Holding card and add-holding sheet
 
+*Held 2026-10-26 (D32), amended 2026-10-28 (D37):* `/holdings` is not linked from the site; the holding card has no fit mark, and the page asks the years once instead of reading the saved goal.
+
 Called for by 3.6 In ("each holding … as read from the annual statement or the clearing-house report. The site shows where on the statement to find each"), 3.6 Out, 3.10 ("a track name typed from a statement finds its fund"), D1, D7, D17.
 
 - **Holding card.** A `card`, `rounded-lg`, padding 16px (24 at `md`). Head: the track name as entered or as the data writes it (h3 `text-lg`), the company and "קופה {מספר}" (identifier style) in `text-sm muted`, tags at the end: "יובא ב־{תאריך}" (`muted`, `Download` icon) and "לא נמצא בנתוני הרשות" (`caution`). Body, two columns from `md`: at the start the facts (classification and period as sourced values; balance and the two fees as entered Nums, each fee followed by its two reference lines in `text-sm`: the track's own average, sourced; the class mean and median, computed) and the cap warning in `caution` when an entered fee exceeds the law's cap; at the end the fit mark card (6.8, compact: icon, word, goal line) and the fee line ("העמלות יעלו {סכום} ב־{שנים}, בכסף של היום", computed, with the "לפני מס ביציאה" tag when blocked) with the link "כל העמלות, ומה שווה לעשות איתן". Footer: "עריכה", "מחיקה" (inline confirm) as 44px links. On a phone the body is a `Disclosure`, open.
@@ -702,6 +708,8 @@ Called for by 3.9 ("exportable and importable as a file so the founder can help 
 - Why "add" is the default and "replace" confirms: the founder's own state is on his device; a friend's file must not overwrite it. Why copy-as-text is offered beside the file: on a phone, pasting into WhatsApp is often easier than attaching a file, and the import side accepts pasted text for the same reason.
 
 ### 7.9 First page, menu and link additions
+
+*Held 2026-10-26 (D32):* the holdings menu item, door and pill are not linked from the site. *Amended 2026-10-28 (D37, D38):* the fee page's goal links and the links to the switching guide are gone.
 
 Called for by 3.6 (the founder's own next use), 3.9, and flows 20 to 26.
 
@@ -749,6 +757,8 @@ Called for by 3.4 Out, fund variants ("every fund available for the chosen expos
 
 ### 8.5 Playbook step, strength chip, experience card, post-switch checklist
 
+*Removed 2026-10-28 (D38): the switching page left the site and these components were deleted; this section is kept as the record of what was built.*
+
 Called for by 3.7 Out ("the ordered steps … each with what the person must sign or authorise and what to expect next, including the retention call and whether agent involvement can be declined; a checklist of what to verify after the switch …; steps that state a process rule are rendered from rule-base entries, not written as prose (D10); forum-derived expectations are shown as experience, with their source and labelled as such"), D8, D10, roadmap R4 (risk: experience-only content).
 
 - **Playbook step.** A `card`, `rounded-lg`, padding 16 px (24 at `md`): a 28 px number circle (`bg-secondary`, `text-sm` weight 600) at the inline start; the title (h3 `text-lg`) from copy 8.3's table, one fixed title per rule, never a sentence written for the page; the **strength chip** at the title's end; the rule's text rendered from the bundle with its chip (6.9's rule card opens on tap); two labelled lines in `text-sm` where the rule gives them, "מה חותמים:" and "מה לצפות:"; every figure a sourced Num from `data/rules/` ("בתוך {מספר} ימי עסקים"), or, where the rule's figure file does not exist yet, the words "בתוך התקופה שהחוזר קובע" with the chip and no number (the standing rule: no number without a data file; SW-05 to SW-09 are in this state at the time of writing); an open-question line with `Lock` in `blocked` ("שאלה פתוחה {קוד}: {מה לא נמצא}") where the step rests on one. A step whose every source is an institution's page carries the title prefix "לפי הוראות המוסדות" and the "מוסדי" chip (now "לפי החברה", 2026-10-24, UX audit), so the brokerage order of steps (SW-35) is never read as regulation.
@@ -758,6 +768,8 @@ Called for by 3.7 Out ("the ordered steps … each with what the person must sig
 - **Post-switch checklist.** A `card` list of Radix Checkbox rows (44 px), one per SW-38 item that applies to the wrapper, each with the item's rule text and chip; ticks remembered on the device keyed by the wrapper alone (2026-10-24, UX audit; until then by wrapper and pair; old keys are migrated once) (design-spec 16.5), a quiet "איפוס" at the end. Why remembered: a switch takes weeks (ten business days to move, fifteen for confirmations, a first statement later), and the person returns to the page several times.
 
 ### 8.6 Switching-cost line and record-your-offer card
+
+*Removed 2026-10-28 (D38): the switching page, its switching-cost line and its record-your-offer card were deleted. The engine's F-66 stays.*
 
 Called for by 3.7 Out ("a reminder to write down each offer with its date, because quotes get withdrawn"), 3.4 and 3.5 ("the cost of moving as part of a provider's total cost", SW file header), method F-66, D10.
 
@@ -774,6 +786,8 @@ Called for by 3.10 Out ("for a product name (for example a bank's deposit name):
 - **Companies list headings.** Three h2 groups under the filter of 6.10: "חברות מנהלות", "בנקים ובתי השקעות", "מנהלי קרנות"; a bank or broker row's quiet line is the class word and "תעריפון מ־{תאריך}" or "התעריפון לא נאסף" in `caution-foreground`. Why banks join this list: the catalogue door promises "everything a company offers", and after release 4 a bank's deposits and tariff are what the site holds for it.
 
 ### 8.8 Link additions
+
+*Amended 2026-10-28 (D38):* the links to the switching playbook in this section are gone; guide pages keep a one-line fact on switching.
 
 Called for by flows 28 to 32 and 15.5.
 
@@ -858,11 +872,11 @@ Removed 2026-10-24 (D24): the menu and footer row "מה השתנה", the first p
 
 Built from `research/specs/2026-10-25-guide-signatures/spec.md`; components in `site/app/components/guide-signature/`.
 
-- **The section "מה מייחד …"** (titled without "את" since 2026-10-26, founder) sits after "למה משתמשים בזה": the page's one question, the visual in a card, one line naming the nearest alternative on the same holding (links to its guide page and to the goal comparison), and the old illustrative timeline folded below as "שחקו עם המספרים שלכם". A page without a visual keeps its timeline open in "מה זה".
+- **The section "מה מייחד …"** (titled without "את" since 2026-10-26, founder) sits after "למה משתמשים בזה": the page's one question, the visual in a card, one line naming the nearest alternative on the same holding (links to its guide page; no link to the goal comparison since 2026-10-28, D37), and the old illustrative timeline folded below as "שחקו עם המספרים שלכם". A page without a visual keeps its timeline open in "מה זה".
 - **Colour.** New role `chart-alt` (gold-200): the nearest alternative's line or bar, against the product's teal `chart-value`. The pair is the one the cumulative-cost chart already uses for fee lines 2 and 3 (6.x), so it passed the same check; validate it again against the card with the dataviz validator when a page draws both on a fill. The starting amount is a dashed neutral line. A gap between two lines may be filled at 22% opacity only with its number written on it (spec rule 4).
 - **Draggable marker** (`Marker` in the shared kit, section 11): a native range input laid over the plot, so it drags, takes a tap on the axis, and answers the arrow keys, Page Up/Down, Home and End; 44 px tall touch area.
 - **A difference is a bracket** (`GainBars`): two bars from the same start and a bracket between their ends carrying the difference, never a third bar (spec rule 6).
-- **Where the inputs come from** is printed under the controls: "הזנתם", "מהמטרה השמורה" or "דוגמה של האתר".
+- **Where the inputs come from** is printed under the controls: "הזנתם" or "דוגמה של האתר" ("מהמטרה השמורה" went with D37, 2026-10-28).
 - **Pension deposit bar** (pension pages): one bar of the monthly deposit in three clearly different hues, each with its number above it: the person's part teal (`chart-value`), the employer's gold (`chart-alt`), severance magenta (`chart-fee-4`, borrowed from the fee-kind palette); a bracket under the person's part carries the tax credit. The study fund and the provident fund draw the container teal and the brokerage account gold. Validate the teal, gold and magenta trio with the dataviz validator against the card.
 
 ## 11. Kit (the shared components, 2026-10-25)
