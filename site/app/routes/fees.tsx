@@ -5,13 +5,14 @@
 import { useEffect, useId, useMemo, useState } from "react";
 import { Link, useLoaderData, useLocation } from "react-router";
 import type { RuleRecord } from "@finance-tool/schema";
-import { r3fees, r3holdings, site } from "../copy";
-import { AssumptionsPanel, type Suggestion } from "../components/compare/assumptions";
+import { r2, r3fees, r3holdings, site } from "../copy";
 import type { FormData } from "../components/compare/goal-form";
-import { goalTitle } from "../components/compare/goal-form";
-import { EmploymentInferredNote, employmentMatters } from "../components/compare/inferred";
-import { SavedGoalStrip } from "../components/compare/strip";
-import { feePlanItems, ScenarioDefaults } from "../components/fees/chips";
+import type { KnobRanges } from "../components/invest/knobs";
+
+/** The goal form's ranges this page reads, with the plan sliders' (P-05). */
+type FeeForm = FormData & { knobs: KnobRanges };
+import { employmentMatters } from "../components/compare/inferred";
+import { OtherAssumptions, PlanKnobs } from "../components/invest/knobs";
 import { ChartLegend, ChartReadout, ChartTable, FeeDragChart } from "../components/fees/FeeDragChart";
 import { FeeRow, NotReportedRow } from "../components/fees/FeeRow";
 import { FeeHeadline, ReasonWithCode, RemainderLine, SubjectStrip, ThresholdsLine } from "../components/fees/parts";
@@ -21,13 +22,14 @@ import { Num, NumberLegend, RuleRef, RulesLine } from "../components/provenance"
 import { anyWeak } from "../lib/value";
 import { Sheet } from "../components/Sheet";
 import { Breadcrumb, PageShell } from "../components/shell";
-import { Callout, Card, PlanChips, Sentence } from "../components/kit";
+import { Button, Callout, Card, Sentence } from "../components/kit";
 import { loadBundle } from "../lib/bundle";
-import { runGoalOf, type CompareBundle } from "../lib/compare";
-import { buildFees, buildHoldingFees, type FeeInputs, feeSensitivity, headlineGap, loadFeesData, parseSubject, rankedFor, ruleMap, softensAvoid, type FeeSensitivity, type FeesData, type FeesResult, type PlanError, type SubjectSpec } from "../lib/fees";
-import { planInputs } from "../lib/plan-inputs";
-import { GoalsProvider, hasMeaning, useGoals, type FieldKey, type Presets } from "../lib/goal";
+import { type CompareBundle } from "../lib/compare";
+import { buildFees, buildHoldingFees, feeInputs, type FeeInputs, feeSensitivity, headlineGap, loadFeesData, parseSubject, rankedFor, ruleMap, softensAvoid, type FeeSensitivity, type FeesData, type FeesResult, type PlanError, type SubjectSpec } from "../lib/fees";
+import type { FieldKey } from "../lib/goal";
 import { useInputs } from "../lib/inputs";
+import { useSettled } from "../lib/settled";
+import { fmt } from "../lib/format";
 import { holdingName, useHolding } from "../lib/holdings";
 import { bundleLinks } from "../lib/bundle";
 import { playbookWrappers } from "../lib/playbook";
@@ -60,7 +62,6 @@ export function meta() {
 
 export default function FeesPage() {
   const data = useLoaderData<typeof loader>();
-  const presets = data.presets as Presets;
   const [bundle, setBundle] = useState<CompareBundle | null>(null);
   const [fees, setFees] = useState<FeesData | null>(null);
   const [failed, setFailed] = useState(false);
@@ -77,16 +78,14 @@ export default function FeesPage() {
     return { rules, pointed: recordsById(bundle?.pointed, fees?.pointed), terms: {}, dimensions: Object.fromEntries((bundle?.checklist ?? []).map((c) => [c.id, c.name])), today: data.today };
   }, [bundle, fees, data.rules, data.today]);
   return (
-    <GoalsProvider presets={presets}>
-      <PageShell current="other" data={provenance}>
-        <Page bundle={bundle} fees={fees} failed={failed} form={data.form as FormData} presets={presets} meta={data.meta} today={data.today} publisherNames={data.publisherNames} />
-      </PageShell>
-    </GoalsProvider>
+    <PageShell current="other" data={provenance}>
+      <Page bundle={bundle} fees={fees} failed={failed} form={data.form as FeeForm} publisherNames={data.publisherNames} />
+    </PageShell>
   );
 }
 
-function Page({ bundle, fees, failed, form, presets, meta, today, publisherNames }: { bundle: CompareBundle | null; fees: FeesData | null; failed: boolean; form: FormData; presets: Presets; meta: { rationale: string; rationaleHe?: string | null; signedOffOn: string | null }; today: string; publisherNames: Record<string, string> }) {
-  const { status, current } = useGoals();
+function Page({ bundle, fees, failed, form, publisherNames }: { bundle: CompareBundle | null; fees: FeesData | null; failed: boolean; form: FeeForm; publisherNames: Record<string, string> }) {
+  const { ready } = useInputs();
   const { search } = useLocation();
   const subject = useMemo(() => parseSubject(search), [search]);
   // The pre-rendered page has no address to read: the first client render matches it, then the subject is read.
@@ -98,7 +97,6 @@ function Page({ bundle, fees, failed, form, presets, meta, today, publisherNames
     <div className="flex flex-col gap-6 pt-2 lg:pt-8">
       <Breadcrumb parent={back ?? { href: "/guide", label: site.menuItems[0].label }} current={r3fees.title} />
       {!ownHeading && <h1 className="text-2xl lg:text-3xl font-semibold">{r3fees.title}</h1>}
-      <SavedGoalStrip presets={presets} meta={meta} today={today} showResultLink note="" />
       {body}
     </div>
   );
@@ -111,8 +109,7 @@ function Page({ bundle, fees, failed, form, presets, meta, today, publisherNames
       </Callout>,
     );
   if (failed) return frame(<Callout tone="caution">{r3fees.failed}</Callout>);
-  if (!bundle || !fees || status === "loading" || !current) return frame(<p className="text-muted-foreground">{r3fees.loading}</p>);
-  if (status === "old-version") return null;
+  if (!bundle || !fees || !ready) return frame(<p className="text-muted-foreground">{r3fees.loading}</p>);
   return <Body bundle={bundle} fees={fees} form={form} publisherNames={publisherNames} subject={subject} frame={frame} />;
 }
 
@@ -159,10 +156,7 @@ function errorText(e: PlanError, wrapperId: string): React.ReactNode {
       return (
         <>
           {r3fees.review.needInput}
-          {/insurance/.test(e.detail) ? "עלות הביטוח בקרן הפנסיה (A-17)" : /salary/i.test(e.detail) ? "שכר חודשי" : /employment|hishtalmut/i.test(e.detail) ? "סוג ההעסקה" : /age/i.test(e.detail) ? "גיל" : r3fees.review.needGeneric}.{" "}
-          <Link to="/goal" className="text-link hover:underline">
-            {r3fees.review.toForm}
-          </Link>
+          {/insurance/.test(e.detail) ? "עלות הביטוח בקרן הפנסיה (A-17)" : /salary/i.test(e.detail) ? "שכר חודשי" : /employment|hishtalmut/i.test(e.detail) ? "סוג ההעסקה" : /age/i.test(e.detail) ? "גיל" : r3fees.review.needGeneric}.
         </>
       );
     case "no-fee":
@@ -183,27 +177,26 @@ function errorText(e: PlanError, wrapperId: string): React.ReactNode {
   }
 }
 
-function Body({ bundle, fees, form, publisherNames, subject, frame }: { bundle: CompareBundle; fees: FeesData; form: FormData; publisherNames: Record<string, string>; subject: SubjectSpec; frame: (b: React.ReactNode, back?: { href: string; label: string }, ownHeading?: boolean) => React.ReactNode }) {
-  const { current, resolved } = useGoals();
+function Body({ bundle, fees, form, publisherNames, subject, frame }: { bundle: CompareBundle; fees: FeesData; form: FeeForm; publisherNames: Record<string, string>; subject: SubjectSpec; frame: (b: React.ReactNode, back?: { href: string; label: string }, ownHeading?: boolean) => React.ReactNode }) {
   const released = useInputs();
   const holding = useHolding(subject.kind === "holding" ? subject.holdingId : null);
-  const goalG = current && resolved && hasMeaning(resolved) ? runGoalOf(current, resolved) : null;
-  const goalName = current ? goalTitle(current) : "";
-  // a goal begun with only an amount runs on that amount and the site's example for the rest (lib/plan-inputs.ts)
-  const inputs = useMemo(() => planInputs(bundle, current, resolved, released.state), [bundle, current, resolved, released.state]);
+  // The page's own numbers: what the person entered on this device, the site's example (P-05) for the rest; never the saved goal
+  // (founder, 2026-10-28). The sliders follow the hand; the run, with the comparison behind "avoid", waits until it rests.
+  const live = useMemo(() => feeInputs(bundle, null, released.state), [bundle, released.state]);
+  const inputs = useSettled(live, 250);
   const result: FeesResult | null = useMemo(() => {
     try {
-      if (subject.kind === "holding") return holding.holding ? buildHoldingFees(bundle, fees, holding.holding, inputs, goalName) : null;
-      return buildFees(bundle, fees, subject, inputs, goalName);
+      if (subject.kind === "holding") return holding.holding ? buildHoldingFees(bundle, fees, holding.holding, inputs) : null;
+      return buildFees(bundle, fees, subject, inputs);
     } catch {
       return { kind: "error", error: { kind: "no-run", code: "failed" } } as FeesResult;
     }
-  }, [bundle, fees, subject, inputs, goalName, holding.holding]);
+  }, [bundle, fees, subject, inputs, holding.holding]);
   const [hover, setHover] = useState<number | null>(null);
   const [sens, setSens] = useState<FeeSensitivity | null>(null);
   const [reductions, setReductions] = useState<Record<string, number | null>>({});
   const [panelOpen, setPanelOpen] = useState(false);
-  const [suggestion, setSuggestion] = useState<Suggestion | null>(null);
+  const [suggestion, setSuggestion] = useState<{ field: FieldKey; value: number } | null>(null);
   const headId = useId();
   const key = JSON.stringify(subject);
   useEffect(() => setReductions({}), [key]);
@@ -227,11 +220,27 @@ function Body({ bundle, fees, form, publisherNames, subject, frame }: { bundle: 
     };
   }, [result]);
 
-  const openField = (field: FieldKey | "all", suggested?: number) => {
-    const f: FieldKey = field === "all" ? "horizonYears" : field;
-    setSuggestion(suggested === undefined || field === "all" ? null : { field: f, value: suggested });
+  const openField = (field: FieldKey, suggested: number) => {
+    setSuggestion({ field, value: suggested });
     setPanelOpen(true);
   };
+  const wrapperId = subject.kind === "wrapper" ? subject.wrapperId : subject.kind === "holding" ? (holding.holding?.wrapperId ?? null) : result?.kind === "ok" ? result.subject.wrapperId : null;
+  // a holding's amount and monthly deposit are its own (the statement's), so only the years and the return move it
+  const plan = (
+    <FeePlan fi={live} form={form} holding={subject.kind === "holding"} onOpen={() => {
+      setSuggestion(null);
+      setPanelOpen(true);
+    }} />
+  );
+  const sheet = (
+    <Sheet open={panelOpen} onClose={() => setPanelOpen(false)} pc="center" height={78} labelledBy={`${headId}-as`}>
+      <h2 id={`${headId}-as`} className="text-lg font-semibold mb-3">
+        {r3fees.assumptionsTitle}
+      </h2>
+      {panelOpen && suggestion && <SuggestionLine s={suggestion} onDone={() => setSuggestion(null)} />}
+      {panelOpen && <OtherAssumptions inflation={live.values.inflation} pct={form.pct} employment={employmentMatters(wrapperId)} age={ageMatters(wrapperId, released.state.age) ? form.age : undefined} />}
+    </Sheet>
+  );
 
   if (subject.kind === "holding" && !holding.ready) return frame(<p className="text-muted-foreground">{r3fees.loading}</p>);
   if (subject.kind === "holding" && !holding.holding) return frame(<Callout tone="info">{errorText({ kind: "no-wrapper" }, "")}</Callout>, { href: "/holdings", label: r3fees.notFoundLinks.holdings });
@@ -258,6 +267,13 @@ function Body({ bundle, fees, form, publisherNames, subject, frame }: { bundle: 
           )}
         </header>
         <Callout tone={result.error.kind === "needs-pf36" ? "blocked" : "caution"}>{errorText(result.error, subject.kind === "wrapper" ? subject.wrapperId : "")}</Callout>
+        {/* a missing number (age, employment) is entered here, on the page's own fields */}
+        {result.error.kind === "need-input" && (
+          <>
+            {plan}
+            {sheet}
+          </>
+        )}
         {own && (
           <Link to="/holdings" className="text-link hover:underline min-h-target inline-flex items-center self-start">
             {r3fees.strip.backHolding}
@@ -278,16 +294,15 @@ function Body({ bundle, fees, form, publisherNames, subject, frame }: { bundle: 
   const workbench = fees.wrapperTrack[sv.wrapperId] !== undefined || ["kupat-gemel-lehashkaa", "keren-hishtalmut", "pension-comprehensive", "pension-general", "provident-for-annuity"].includes(sv.wrapperId);
   const grossNote = hasChart && Math.abs((an.series!.points.at(-1)?.total ?? 0) - (an.fm.total.value as number)) > 1;
   void staleLine;
-  // A9, A18: the plain sentence above the chart, the subject's place in the saved goal's comparison, the softened badge
+  // A9, A18: the plain sentence above the chart, the subject's place among every option on the page's numbers, the softened badge
   const gap = headlineGap(an);
   const place = rankedFor(result.comparison, sv.wrapperId);
-  const compareHref = "/goal/compare";
   const switchable = playbookWrappers.includes(sv.wrapperId);
   const providersLink = sv.wrapperId === "brokerage-account";
   const otherRecords = workbench ? { href: `/workbench/tracks/${sv.wrapperId}`, label: r3fees.linksWorkbench } : providersLink ? { href: `/workbench/providers/${sv.wrapperId}`, label: r3fees.linkProviders } : null;
 
   const rows = an.lines.map((l) => (
-    <FeeRow key={l.line} line={l} an={an} subject={sv} years={years} thresholds={an.thresholds} reduction={reductions[l.line] ?? null} onReduce={(n) => setReductions((r) => ({ ...r, [l.line]: n }))} rules={rules} soften={softensAvoid(l.verdict, place)} compareHref={compareHref} />
+    <FeeRow key={l.line} line={l} an={an} subject={sv} years={years} thresholds={an.thresholds} reduction={reductions[l.line] ?? null} onReduce={(n) => setReductions((r) => ({ ...r, [l.line]: n }))} rules={rules} soften={softensAvoid(l.verdict, place)} />
   ));
   const chartCard = hasChart && (
     <section className="flex flex-col gap-3" aria-labelledby={`${headId}-chart`}>
@@ -296,7 +311,7 @@ function Body({ bundle, fees, form, publisherNames, subject, frame }: { bundle: 
       </h2>
       <Card className="flex flex-col gap-4">
         <ChartLegend an={an} />
-        <FeeDragChart an={an} horizonYears={years} hover={hover} onHover={setHover} hasGoal={inputs.fromGoal} />
+        <FeeDragChart an={an} horizonYears={years} hover={hover} onHover={setHover} />
         {grossNote && an.exitGap && (
           <Sentence size="xs" tone="muted">
             {r3fees.review.chartGross.before}
@@ -306,25 +321,15 @@ function Body({ bundle, fees, form, publisherNames, subject, frame }: { bundle: 
         )}
         <ChartReadout an={an} year={hover ?? Math.round(an.series!.exitMonth / 12)} />
         <ChartTable an={an} />
-        <PlanChips items={feePlanItems(result.inputs)} allLabel={r3fees.chips.all} onOpen={(f) => openField(f)} />
       </Card>
     </section>
   );
 
   return frame(
     <>
-      <SubjectStrip subject={sv} goalName={goalName} publisherNames={publisherNames} otherRecords={otherRecords} />
-      <FeeHeadline product={sv.productName} total={an.total} withFees={an.withFees} withoutFees={an.withoutFees} years={years} preTax={preTax} omitted={omitted} gap={gap} place={place} compareHref={compareHref} />
-      <EmploymentInferredNote show={!!goalG?.employmentInferred && employmentMatters(sv.wrapperId)} />
-      {inputs.returnFromParameter && <Callout tone="info">{r3fees.review.parameterReturn}</Callout>}
-      {!inputs.fromGoal && (
-        <Callout tone="info">
-          {current ? r3fees.review.goalIncomplete : r3fees.review.noGoal}{" "}
-          <Link to="/goal" className="text-link hover:underline">
-            {r3fees.setGoal}
-          </Link>
-        </Callout>
-      )}
+      <SubjectStrip subject={sv} publisherNames={publisherNames} otherRecords={otherRecords} />
+      <FeeHeadline product={sv.productName} total={an.total} withFees={an.withFees} withoutFees={an.withoutFees} years={years} preTax={preTax} omitted={omitted} gap={gap} place={place} />
+      {plan}
       {an.lines.length === 0 ? (
         <p className="text-muted-foreground">{r3fees.noFees}</p>
       ) : (
@@ -342,11 +347,6 @@ function Body({ bundle, fees, form, publisherNames, subject, frame }: { bundle: 
           </section>
           <div className="flex flex-col gap-6 min-w-0">
             {chartCard}
-            <Card as="aside" pad="aside" className="hidden lg:block" aria-label={r3fees.assumptionsTitle}>
-              <h3 className="text-lg font-semibold mb-4">{r3fees.assumptionsTitle}</h3>
-              {!inputs.fromGoal && <ScenarioDefaults inputs={inputs} />}
-              <AssumptionsPanel data={form} suggestion={suggestion} onAdopted={() => setSuggestion(null)} />
-            </Card>
           </div>
         </div>
       )}
@@ -384,16 +384,52 @@ function Body({ bundle, fees, form, publisherNames, subject, frame }: { bundle: 
         )}
       </nav>
       <RulesLine ids={[...new Set([...an.rulesUsed, "PF-13", "PF-39"].filter((id) => rules.has(id)))]} />
-      <Sheet open={panelOpen} onClose={() => setPanelOpen(false)} pc="center" height={78} labelledBy={`${headId}-as`}>
-        <h2 id={`${headId}-as`} className="text-lg font-semibold mb-3">
-          {r3fees.assumptionsTitle}
-        </h2>
-        {panelOpen && !inputs.fromGoal && <ScenarioDefaults inputs={inputs} />}
-        {panelOpen && <AssumptionsPanel data={form} suggestion={suggestion} onAdopted={() => setSuggestion(null)} />}
-      </Sheet>
+      {sheet}
     </>,
     back,
     true,
+  );
+}
+
+/** Wrappers whose run reads the age (an exit or annuity rule by age), as the guide page asks it; or an age already entered. */
+const AGE_WRAPPERS = new Set(["pension-comprehensive", "pension-general", "provident-for-annuity", "kupat-gemel-lehashkaa", "ira-provident"]);
+const ageMatters = (wrapperId: string | null, age: number | null) => age !== null || (!!wrapperId && AGE_WRAPPERS.has(wrapperId));
+
+/** The page's numbers (founder, 2026-10-28): the plan sliders, as on the indices page, and the rest behind a button. */
+function FeePlan({ fi, form, holding, onOpen }: { fi: FeeInputs; form: FeeForm; holding: boolean; onOpen: () => void }) {
+  const entered = fi.values;
+  const example = [entered.amount, entered.monthly, entered.years, entered.returnV].every((v) => v.state !== "entered");
+  return (
+    <section className="flex flex-col gap-3" aria-label={r3fees.assumptionsTitle}>
+      <PlanKnobs fi={fi} ranges={form.knobs} pct={form.pct} only={holding ? ["years", "ret"] : undefined} />
+      <p className="flex flex-wrap items-center gap-x-3 text-sm text-muted-foreground">
+        <Button variant="secondary" className="!h-9 px-3 text-sm" onClick={onOpen}>
+          {r3fees.othersButton}
+        </Button>
+        {example && <span>{r3fees.siteExample}</span>}
+      </p>
+    </section>
+  );
+}
+
+/** A sensitivity row's value, offered to adopt: it becomes an entered value, as a slider would make it. */
+function SuggestionLine({ s, onDone }: { s: { field: FieldKey; value: number }; onDone: () => void }) {
+  const { setEntered } = useInputs();
+  const key = s.field === "horizonYears" ? "horizon_years" : s.field === "return" ? "A-01" : s.field === "inflation" ? "A-02" : null;
+  if (!key) return null;
+  return (
+    <p className="flex items-center gap-2 flex-wrap text-sm text-muted-foreground mb-4">
+      <span>{r2.result.suggestion}:</span>
+      <bdi dir="ltr" className="font-medium">
+        {s.field === "horizonYears" ? fmt.years(s.value) : fmt.pct(s.value)}
+      </bdi>
+      <Button variant="secondary" className="!h-9 px-3 text-sm" onClick={() => {
+        setEntered(key, s.value);
+        onDone();
+      }}>
+        {r2.result.adopt}
+      </Button>
+    </p>
   );
 }
 

@@ -12,7 +12,7 @@ import { IconNotWorth, IconPhone, IconSwap, IconUnevaluated } from "./icons";
 
 // ---------------------------------------------------------------- subject strip
 
-export function SubjectStrip({ subject, goalName, publisherNames, otherRecords }: { subject: SubjectView; goalName: string; publisherNames: Record<string, string>; otherRecords?: { href: string; label: string } | null }) {
+export function SubjectStrip({ subject, publisherNames, otherRecords }: { subject: SubjectView; publisherNames: Record<string, string>; otherRecords?: { href: string; label: string } | null }) {
   const s = r3fees.strip;
   // The record is named by its publisher, which the data keeps in English: show the provider's Hebrew name, keep the record for the popover.
   const recordName = publisherNames[subject.record] ?? subject.record;
@@ -27,8 +27,6 @@ export function SubjectStrip({ subject, goalName, publisherNames, otherRecords }
     body = (
       <>
         {s.compare}
-        <bdi>{goalName}</bdi>
-        {s.compareMid}
         <bdi>{subject.productName}</bdi>
         {s.compareRecord}
         {record}
@@ -101,7 +99,7 @@ export function ReasonWithCode({ message, code }: { message: string; code?: stri
   );
 }
 
-export function FeeHeadline({ product, total, withFees, withoutFees, years, preTax, omitted, gap, place, compareHref }: { product: string; total: SiteValue; withFees: SiteValue; withoutFees: SiteValue; years: number; preTax: string[]; omitted: string[]; gap: ReturnType<typeof headlineGap>; place: { rank: number; tied: boolean } | null; compareHref: string }) {
+export function FeeHeadline({ product, total, withFees, withoutFees, years, preTax, omitted, gap, place }: { product: string; total: SiteValue; withFees: SiteValue; withoutFees: SiteValue; years: number; preTax: string[]; omitted: string[]; gap: ReturnType<typeof headlineGap>; place: { rank: number; tied: boolean } | null }) {
   const h = r3fees.headline;
   const g = r3fees.gap;
   const rk = r3fees.ranked;
@@ -133,10 +131,7 @@ export function FeeHeadline({ product, total, withFees, withoutFees, years, preT
               {rk.other[1]}
             </>
           )}
-          {place.tied && rk.tied}{" "}
-          <Link to={compareHref} className="text-link hover:underline">
-            {rk.link}
-          </Link>
+          {place.tied && rk.tied}
         </p>
       )}
       <Sentence size="lg">
@@ -181,8 +176,8 @@ export function FeeHeadline({ product, total, withFees, withoutFees, years, preT
 
 // ---------------------------------------------------------------- verdict
 
-export function VerdictTag({ line, thresholds, soften, compareHref }: { line: LineView; thresholds: { negotiate: SiteValue; avoid: SiteValue }; soften?: boolean; compareHref?: string }) {
-  // lead decision 4c: the product ranks first for the saved goal, so "avoid" reads as a relative statement, with the way to the comparison
+export function VerdictTag({ line, thresholds, soften }: { line: LineView; thresholds: { negotiate: SiteValue; avoid: SiteValue }; soften?: boolean }) {
+  // lead decision 4c: the product ranks first among every option on the page's numbers, so "avoid" reads as a relative statement
   const word = soften && line.verdict === "avoid" ? r3fees.verdictSoft : r3fees.verdict[line.verdict]!;
   const tag =
     line.verdict === "negotiate" ? (
@@ -239,24 +234,12 @@ export function VerdictTag({ line, thresholds, soften, compareHref }: { line: Li
   }
   return (
     <div className="flex flex-col gap-1">
-      <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-        {tag}
-        {soften && line.verdict === "avoid" && compareHref && (
-          <Link to={compareHref} className="text-link text-sm hover:underline">
-            {r3fees.ranked.link}
-          </Link>
-        )}
-      </div>
+      <div className="flex flex-wrap items-center gap-x-3 gap-y-1">{tag}</div>
       <p className="text-sm text-muted-foreground">{reason}</p>
       {!line.avoidEvaluated && (
         <p className="text-sm text-muted-foreground flex items-start gap-2">
           <IconUnevaluatedInline />
-          <span>
-            {r3fees.avoidNotEvaluated}{" "}
-            <Link to="/goal" className="text-link hover:underline">
-              {r3fees.setGoal}
-            </Link>
-          </span>
+          <span>{r3fees.avoidNotEvaluated}</span>
         </p>
       )}
     </div>

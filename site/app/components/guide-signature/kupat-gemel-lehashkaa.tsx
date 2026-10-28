@@ -9,7 +9,6 @@ import { guideSignature as copy } from "../../copy";
 import { fmt } from "../../lib/format";
 import { fact } from "../../lib/guide-signature";
 import { providentModel } from "../../lib/guide-signature-g2";
-import { useGoals } from "../../lib/goal";
 import { useInputs } from "../../lib/inputs";
 import { entered as enteredValue, type SiteValue } from "../../lib/value";
 import type { Bundle } from "../../lib/engine";
@@ -35,8 +34,7 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
   const broker = data.bundles["brokerage-account"];
   const inputs = useSigInputs(base);
   const { state, setAge } = useInputs();
-  const { current } = useGoals();
-  const age = state.age ?? current?.profile.age ?? null;
+  const age = state.age;
   const ageEntered = state.age !== null;
   const yr = yearsRange(base);
   const [yearsPick, setYearsPick] = useState<number | null>(null);

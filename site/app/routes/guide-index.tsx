@@ -3,9 +3,7 @@ import { Link, useLoaderData } from "react-router";
 import type { Route } from "./+types/guide-index";
 import { guideIndex as copy, site } from "../copy";
 import { IconDrillIn } from "../components/icons";
-import { SavedGoalStrip } from "../components/compare/strip";
 import { PageShell } from "../components/shell";
-import { GoalsProvider, type Presets } from "../lib/goal";
 import { Card, ChipList } from "../components/kit";
 import { groupGuides } from "../lib/guide-nav";
 
@@ -35,13 +33,12 @@ export async function loader() {
     exposures.push({ key: "money-market-funds", name, line: line(name), href: `/guide/${funds[0]!.id}`, kinds: funds.map((f) => ({ href: `/guide/${f.id}`, label: copy.fundKinds[f.id] ?? f.names.he[0]! })) });
   }
   exposures.sort((a, b) => rank(a.key) - rank(b.key));
-  const { goalContext } = await import("../lib/compare.server");
   // "מאיפה להתחיל" may point at any product, a security too
   const startLinks = copy.start.items.flatMap((it) => {
     const p = products.find((x) => x.id === it.id);
     return p ? [{ id: p.id, lead: it.lead, name: p.names.he[0]! }] : [];
   });
-  return { wrappers, exposures, startLinks, today: today(), goal: goalContext() };
+  return { wrappers, exposures, startLinks, today: today() };
 }
 
 interface ExposureItem {
@@ -84,13 +81,11 @@ function InstrumentCard({ href, name, line, plain, quiet }: { href: string; name
 export default function GuideIndex() {
   const data = useLoaderData<typeof loader>();
   return (
-    <GoalsProvider presets={data.goal.presets as Presets}>
     <PageShell current="guide" data={{ rules: {}, terms: {}, dimensions: {}, today: data.today }}>
       <div className="flex flex-col gap-section pt-6 lg:pt-10">
         <header className="flex flex-col gap-2">
           <h1 className="text-2xl lg:text-3xl font-semibold">{copy.title}</h1>
           <p className="text-lg text-muted-foreground max-w-measure">{copy.lede}</p>
-          <SavedGoalStrip variant="compact" presets={data.goal.presets as Presets} meta={data.goal.meta} today={data.today} />
         </header>
         <section aria-labelledby="explainer" className="flex flex-col gap-3 max-w-measure">
           <h2 id="explainer" className="text-xl font-semibold">
@@ -176,6 +171,5 @@ export default function GuideIndex() {
         </ul>
       </div>
     </PageShell>
-    </GoalsProvider>
   );
 }

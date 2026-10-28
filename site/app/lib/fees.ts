@@ -700,7 +700,7 @@ export function feeSensitivity(a: AnalyseArgs, base: Analysis, runBundle: Compar
     horizonYears: g.horizonYears,
     fees: scalable.map((l) => ({ key: l.line, label: r3fees.names[l.line]! })),
   });
-  for (const ax of axes) ax.label = ax.key === "A-01" ? "תשואה שנתית" : ax.key === "A-02" ? "אינפלציה" : ax.key === "horizon" ? "שנים עד המטרה" : `${ax.label}${r3fees.sens.feeAxis}`;
+  for (const ax of axes) ax.label = ax.key === "A-01" ? "תשואה שנתית" : ax.key === "A-02" ? "אינפלציה" : ax.key === "horizon" ? "תקופת ההחזקה" : `${ax.label}${r3fees.sens.feeAxis}`;
   const totalFor = (fm: FeeMateriality) => fm.total.value as number;
   const topOf = (key: string, value: number): string => {
     const goal: RunGoal = { ...g };
@@ -809,7 +809,7 @@ function holdingInputs(inputs: FeeInputs, h: Holding): FeeInputs {
   };
 }
 
-export function buildHoldingFees(bundle: CompareBundle, data: FeesData, h: Holding, inputs: FeeInputs, goalName: string): FeesResult {
+export function buildHoldingFees(bundle: CompareBundle, data: FeesData, h: Holding, inputs: FeeInputs, goalName = ""): FeesResult {
   const wrapper = bundle.wrappers.find((w) => w.id === h.wrapperId);
   if (!wrapper) return { kind: "error", error: { kind: "no-wrapper" } };
   const rules = ruleMap(bundle, data);
@@ -824,7 +824,7 @@ export function buildHoldingFees(bundle: CompareBundle, data: FeesData, h: Holdi
     };
   const { subject, track } = holdingSubject(h, wrapper, data);
   const names: Record<string, string> = Object.fromEntries(bundle.wrappers.map((w) => [w.id, w.name]));
-  const comparison = comparisonFor(bundle, inputs.goalG, goalName);
+  const comparison = comparisonFor(bundle, inputs.goalG ?? inputs.g, goalName);
   const rates: AnalyseArgs["rates"] = {};
   if (h.feeBalance) rates.balance = h.feeBalance as SiteValue;
   if (h.feeDeposit) rates.deposit = h.feeDeposit as SiteValue;
@@ -860,9 +860,12 @@ export function buildHoldingFees(bundle: CompareBundle, data: FeesData, h: Holdi
   }
 }
 
-export function buildFees(bundle: CompareBundle, data: FeesData, subject: SubjectSpec, inputs: FeeInputs, goalName: string): FeesResult {
+/**
+ * `inputs` with no saved goal (the fee page, founder 2026-10-28): the comparison behind "avoid" runs on the page's own numbers,
+ * every option at once, so the verdict is evaluated without a goal.
+ */
+export function buildFees(bundle: CompareBundle, data: FeesData, subject: SubjectSpec, inputs: FeeInputs, goalName = ""): FeesResult {
   const names: Record<string, string> = Object.fromEntries(bundle.wrappers.map((w) => [w.id, w.name]));
-  const comparison = comparisonFor(bundle, inputs.goalG, goalName);
   let wrapperId: string;
   let track: TrackLite | null = null;
   let runBundle = bundle;
@@ -877,11 +880,12 @@ export function buildFees(bundle: CompareBundle, data: FeesData, subject: Subjec
     omitted = r.missing;
   } else if (subject.kind === "wrapper") wrapperId = subject.wrapperId;
   else return { kind: "error", error: { kind: "no-wrapper" } };
-  // No saved goal: the run is P-05's scenario, and a study fund takes the employment its `instruments` entry names, as the guide page does (B3).
+  // No saved goal: the run is the entered values or P-05's, and a study fund with no employment entered takes the one its `instruments` entry names, as the guide page does (B3).
   if (!inputs.fromGoal && inputs.g.employment === null) {
     const spec = (parameterOf(bundle, "P-05") as unknown as { instruments?: Record<string, { employment?: "employee" | "self-employed" }> }).instruments?.[wrapperId];
     if (spec?.employment) inputs = { ...inputs, g: { ...inputs.g, employment: spec.employment } };
   }
+  const comparison = comparisonFor(bundle, inputs.goalG ?? inputs.g, goalName);
 
   const run = (() => {
     try {

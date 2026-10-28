@@ -1,20 +1,18 @@
 // Screen 7: the idle-cash screen (design-spec 9, flow 11): two numbers, and what leaving the money in the current
 // account costs a month against each liquid option (method F-60, S41). The engine runs here, on the bundle fetched once.
 import { useEffect, useMemo, useState, type ReactNode } from "react";
-import { Link, useLoaderData, useNavigate, useSearchParams } from "react-router";
+import { Link, useLoaderData, useSearchParams } from "react-router";
 import type { RuleRecord } from "@finance-tool/schema";
 import { idle as copy, r2, site } from "../copy";
 import { BoiLine, CostRows, IdleCoverage, idleCtx, MaterialityLine, SmallSumLine, VerdictBlock } from "../components/compare/idle";
 import { LeadTail, Num, NumberLegend } from "../components/provenance";
 import { RawWatch } from "../components/holdings/fields";
 import { Breadcrumb, PageShell } from "../components/shell";
-import { Button, Callout, Card, ChoiceChips, cx, Disclosure, NumberField, Sentence } from "../components/kit";
+import { Callout, Card, ChoiceChips, cx, Disclosure, NumberField, Sentence } from "../components/kit";
 import { loadBundle } from "../lib/bundle";
 import { fmt, parseNumber } from "../lib/format";
 import type { CompareBundle } from "../lib/compare";
-import { GoalsProvider, isBlank, useGoals, type Presets } from "../lib/goal";
 import { buildIdle, maxTermMonths, negotiateThreshold } from "../lib/idle";
-import { useOwnTerms } from "../lib/own-rate";
 import { anyWeak, ruleFigure, type SiteValue } from "../lib/value";
 import { bundleLinks } from "../lib/bundle";
 import { recordsById } from "../lib/scope";
@@ -41,7 +39,6 @@ export function meta() {
 
 export default function IdleCashPage() {
   const data = useLoaderData<typeof loader>();
-  const presets = data.presets as Presets;
   const [bundle, setBundle] = useState<CompareBundle | null>(null);
   const [failed, setFailed] = useState(false);
   useEffect(() => {
@@ -52,11 +49,9 @@ export default function IdleCashPage() {
     return { rules, pointed: { ...(data.pointed as Record<string, RuleRecord>), ...recordsById(bundle?.pointed) }, terms: {}, dimensions: Object.fromEntries((bundle?.checklist ?? []).map((c) => [c.id, c.name])), today: data.today };
   }, [bundle, data.rules, data.today]);
   return (
-    <GoalsProvider presets={presets}>
-      <PageShell current="other" data={provenance}>
-        <Screen bundle={bundle} failed={failed} rules={data.rules as Record<string, RuleRecord>} today={data.today} p03={data.p03} />
-      </PageShell>
-    </GoalsProvider>
+    <PageShell current="other" data={provenance}>
+      <Screen bundle={bundle} failed={failed} rules={data.rules as Record<string, RuleRecord>} today={data.today} p03={data.p03} />
+    </PageShell>
   );
 }
 
@@ -82,10 +77,6 @@ function Screen({ bundle, failed, rules, today, p03 }: { bundle: CompareBundle |
   const [offer, setOffer] = useState<number | null>(null);
   const [termKey, setTermKey] = useState<TermKey | null>(null);
   const [otherMonths, setOtherMonths] = useState<number | null>(null);
-  const [anytime, setAnytime] = useState(false);
-  const [handoff, setHandoff] = useState<{ balance: number; rate: number | null } | null>(null);
-  const navigate = useNavigate();
-  const { status, current, update, add } = useGoals();
   // the home page's "כרית ביטחון" opens this screen with the sum typed there (?balance=15000), read once; it is entered, like any typed value
   const [params] = useSearchParams();
   useEffect(() => {
@@ -115,34 +106,6 @@ function Screen({ bundle, failed, rules, today, p03 }: { bundle: CompareBundle |
   const resultShown = !failed && !!outcome && (outcome.kind === "ok" || outcome.kind === "all-kept" || outcome.kind === "no-baseline");
   const over = balance !== null && keep !== null && keep > balance;
 
-  // The full comparison starts from the liquid-reserve preset with the two amounts (flow 11, step 4). A goal already on the
-  // device is kept: a new one is started unless the current one is still empty.
-  // 2026-10-24 (scenario audit 7): the hand-off carries the amount, the offered rate and its term; a year sets the horizon, a longer
-  // term leaves it for the goal form to ask, and "withdrawable at any moment" is on only when the person ticked it here.
-  const toFull = () => {
-    if (status === "loading" || balance === null) return;
-    if (current && !isBlank(current)) add();
-    const longer = termMonths !== null && termMonths > 12;
-    update((g) => ({
-      ...g,
-      preset: longer ? "none" : "liquid-reserve",
-      amountNow: { value: balance, entered: true },
-      ...(keep !== null ? { available: { value: keep, entered: true } } : {}),
-      ...(termMonths === 12 ? { horizonYears: { value: 1, entered: true } } : {}),
-      ...(longer ? { horizonYears: { value: null, entered: false } } : {}),
-      anytime: { value: anytime, entered: true },
-    }));
-    setHandoff({ balance, rate: offer });
-  };
-  // the entered rate is kept per goal, and the goal a new one was just started as is known only after the update: wait for it
-  const [, setTerm] = useOwnTerms(current?.id ?? "");
-  useEffect(() => {
-    if (!handoff || !current || !current.amountNow.entered || current.amountNow.value !== handoff.balance) return;
-    if (handoff.rate !== null) setTerm("bank-deposit", "rate", handoff.rate);
-    setHandoff(null);
-    navigate("/goal");
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [handoff, current]);
 
   return (
     <div className={cx("flex flex-col gap-6 pt-2 lg:pt-8 mx-auto w-full", resultShown ? "max-w-page" : "max-w-3xl")}>
@@ -188,7 +151,7 @@ function Screen({ bundle, failed, rules, today, p03 }: { bundle: CompareBundle |
           ) : anyBad ? (
             <Callout tone="caution">{copy.invalid}</Callout>
           ) : (
-            <Result outcome={outcome} bundle={bundle} ctx={ctx} over={over} onFull={toFull} offerGiven={offer !== null} termGiven={termMonths !== null} depositRate={depositRate} fundRate={fundRate} anytime={anytime} onAnytime={setAnytime} />
+            <Result outcome={outcome} bundle={bundle} ctx={ctx} over={over} offerGiven={offer !== null} termGiven={termMonths !== null} depositRate={depositRate} fundRate={fundRate} />
           )}
         </div>
       </div>
@@ -201,16 +164,13 @@ interface ResultProps {
   bundle: CompareBundle;
   ctx: ReturnType<typeof idleCtx> | null;
   over: boolean;
-  onFull: () => void;
   offerGiven: boolean;
   termGiven: boolean;
   depositRate: SiteValue | null;
   fundRate: SiteValue | null;
-  anytime: boolean;
-  onAnytime: (v: boolean) => void;
 }
 
-function Result({ outcome, bundle, ctx, over, onFull, offerGiven, termGiven, depositRate, fundRate, anytime, onAnytime }: ResultProps) {
+function Result({ outcome, bundle, ctx, over, offerGiven, termGiven, depositRate, fundRate }: ResultProps) {
   if (outcome.kind === "error") return <Callout tone="caution">{copy.failed}</Callout>;
   if (outcome.kind === "no-baseline") return <Callout tone="caution">{copy.noBaseline}</Callout>;
   if (outcome.kind === "need-more")
@@ -268,18 +228,6 @@ function Result({ outcome, bundle, ctx, over, onFull, offerGiven, termGiven, dep
       {view.smallSum && <SmallSumLine />}
       <BoiLine bundle={bundle} />
       {ctx && <IdleCoverage view={view} ctx={ctx} />}
-      <div className="flex flex-col gap-3 items-start">
-        <label className="flex items-start gap-3 min-h-target cursor-pointer">
-          <input type="checkbox" checked={anytime} onChange={(e) => onAnytime(e.target.checked)} className="mt-1 size-5 accent-primary" />
-          <span className="flex flex-col">
-            <span>{copy.anytime}</span>
-            <span className="text-sm text-muted-foreground">{copy.anytimeHint}</span>
-          </span>
-        </label>
-        <Button variant="primary" onClick={onFull} className="w-full md:w-auto">
-          {copy.fullLink}
-        </Button>
-      </div>
     </>
   );
 }

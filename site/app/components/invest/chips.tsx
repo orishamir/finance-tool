@@ -111,7 +111,8 @@ function CustomPanel({ bundle, customs, onCancel, onSave, onKnown }: { bundle: P
 // ---------------------------------------------------------------- the plan
 
 /** The plan the page runs on: the knob strip (founder, 2026-10-28), the rest of the assumptions behind a button, and the dollar rate. */
-export function PlanBlock({ knobs, onOpen, fx, today, hasGoal }: { knobs: ReactNode; onOpen: () => void; fx: FxSnapshot | undefined; today: string; hasGoal: boolean }) {
+/** `example`: no number entered yet, so every one is the site's example; once one is entered each slider marks its own. */
+export function PlanBlock({ knobs, onOpen, fx, today, example }: { knobs: ReactNode; onOpen: () => void; fx: FxSnapshot | undefined; today: string; example: boolean }) {
   const usd = fx ? nisPer(fx, "USD", today) : null;
   return (
     <section className="flex flex-col gap-3" aria-label={c.plan.heading}>
@@ -121,7 +122,7 @@ export function PlanBlock({ knobs, onOpen, fx, today, hasGoal }: { knobs: ReactN
           {c.plan.knobs.others}
         </Button>
         <span>
-          {hasGoal ? c.plan.fromGoal : c.plan.siteExample} · {c.plan.todayShekels}
+          {example && <>{c.plan.siteExample} · </>}{c.plan.todayShekels}
         </span>
       </p>
       <Sentence size="sm" tone="muted">

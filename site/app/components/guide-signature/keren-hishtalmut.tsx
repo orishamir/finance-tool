@@ -11,7 +11,6 @@ import { fmt } from "../../lib/format";
 import { fact } from "../../lib/guide-signature";
 import { hishtalmutModel, type Employment } from "../../lib/guide-signature-g2";
 import { p05Number, p05Value, type Bundle } from "../../lib/engine";
-import { useGoals } from "../../lib/goal";
 import { useInputs } from "../../lib/inputs";
 import { entered as enteredValue, type SiteValue } from "../../lib/value";
 import { Callout, GainBars, InputSlot, LaneLabel, Marker, MarkerMark, NumberField, SegmentedControl, Sentence, useWidth } from "../kit";
@@ -37,13 +36,12 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
   const broker = data.bundles["brokerage-account"];
   const inputs = useSigInputs(base);
   const { state, setEmployment } = useInputs();
-  const { current } = useGoals();
-  const employment: Employment = state.employment ?? current?.profile.employment ?? "employee";
+  // the page's own values and the site's example, never the saved goal (founder, 2026-10-28)
+  const employment: Employment = state.employment ?? "employee";
   const [incomePick, setIncomePick] = useState<number | null>(null);
-  const goalSalary = current?.profile.salary && current.profile.salary > 0 ? current.profile.salary : null;
   const p05Income = p05Number(base.p05, "annual_income") / 12;
-  const income = incomePick ?? goalSalary ?? p05Income;
-  const incomeSource = incomePick !== null ? "guide" : goalSalary !== null ? "goal" : "p05";
+  const income = incomePick ?? p05Income;
+  const incomeSource = incomePick !== null ? "guide" : "p05";
   const [yearsPick, setYearsPick] = useState<number | null>(null);
   const years = clamp(yearsPick ?? Math.round(inputs.years), 1, MAX_YEARS);
 

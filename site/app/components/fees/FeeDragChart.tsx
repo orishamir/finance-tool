@@ -64,7 +64,7 @@ function points(an: Analysis, bands: Band[]): Pt[] {
     });
 }
 
-export function FeeDragChart({ an, horizonYears, hover, onHover, hasGoal, dimmed }: { an: Analysis; horizonYears: number; hover: number | null; onHover: (y: number | null) => void; hasGoal: boolean; dimmed?: boolean }) {
+export function FeeDragChart({ an, horizonYears, hover, onHover, dimmed }: { an: Analysis; horizonYears: number; hover: number | null; onHover: (y: number | null) => void; dimmed?: boolean }) {
   const box = useRef<HTMLDivElement>(null);
   const svgRef = useRef<SVGSVGElement>(null);
   const [size, setSize] = useState({ width: 326, height: 240 });
@@ -160,7 +160,7 @@ export function FeeDragChart({ an, horizonYears, hover, onHover, hasGoal, dimmed
         )}
       </svg>
       <span className="absolute top-0 text-xs text-chart-text whitespace-nowrap px-1 bg-card/80 rounded-sm" style={{ left: `${x(years)}px`, transform: "translateX(-100%)" }} dir="rtl">
-        {hasGoal ? "מועד המטרה" : r3fees.chart.noGoalMarker}
+        {r3fees.chart.endMarker}
       </span>
       {placed.map((p) => (
         <div key={p.id} className="absolute text-xs leading-tight" style={{ left: `${plotW + 8}px`, top: `${p.y - LABEL_H / 2}px`, width: `${STRIP - 10}px`, height: `${LABEL_H}px` }}>

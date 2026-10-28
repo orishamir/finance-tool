@@ -71,10 +71,6 @@ export function SignatureFrame({ id, data, today, timeline, held }: { id: string
           <Link to={`/guide/${page.altId}`} className="text-link hover:underline">
             {copy.altLinkBefore} {page.alt}
           </Link>
-          {" · "}
-          <Link to="/goal/compare" className="text-link hover:underline">
-            {copy.compareLink}
-          </Link>
         </p>
       ) : (
         // a product with no alternative on the same holding (a pension is required for salaried people): only the page's own line

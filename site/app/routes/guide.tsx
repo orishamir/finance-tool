@@ -12,9 +12,7 @@ import { hasSignatureVisual, SignatureFrame, signatureTitle, useReviewMode } fro
 import { heldSignatures } from "../lib/review";
 import { accountWorthRow } from "../components/guide-signature/current-account";
 import { cashLikeIds } from "../lib/guide-signature";
-import { SavedGoalStrip } from "../components/compare/strip";
 import { Disclosure, Sentence, Tag } from "../components/kit";
-import { GoalsProvider, type Presets } from "../lib/goal";
 import { fmt } from "../lib/format";
 import { splitTerms } from "../lib/guide-nav";
 import { useInputs } from "../lib/inputs";
@@ -63,7 +61,6 @@ export async function loader({ params }: Route.LoaderArgs) {
   const content = guideContent[params.id];
   const data = buildGuidePage(params.id, content ? [...content.switchRules] : [], content ? [...content.termIds] : []);
   if (!data) throw new Response("Not found", { status: 404 });
-  const { goalContext } = await import("../lib/compare.server");
   // the pinned facts of this wrapper (P-09 guide_blocks); their rules join the page's provenance data
   const { loadPinnedRules, loadRules, pointedRecords } = await import("../lib/data.server");
   const worthIds = loadPinnedRules().guide_blocks?.[params.id] ?? [];
@@ -71,7 +68,7 @@ export async function loader({ params }: Route.LoaderArgs) {
   const rules = { ...data.rules };
   for (const id of worthIds) if (!rules[id] && allRules[id]) rules[id] = allRules[id]!;
   // the records the cards point at, the pinned facts' too, travel beside the page's own rules (only chips and cards read them)
-  return { ...data, rules, pointed: pointedRecords(rules, allRules), worthIds, goal: goalContext() };
+  return { ...data, rules, pointed: pointedRecords(rules, allRules), worthIds };
 }
 
 export function meta({ loaderData: data }: Route.MetaArgs) {
@@ -393,7 +390,6 @@ export default function GuidePage() {
   );
 
   return (
-    <GoalsProvider presets={data.goal.presets as Presets}>
     <PageShell current="guide" data={provenance}>
       <div className="lg:flex lg:gap-12 pt-2 lg:pt-8">
         <SectionIndex sections={copy.sections.filter((x) => (x.id !== "terms" || !mainTerms.hide || generalTerms.length > 0) && ((x.id as string) !== "worth" || worthRows(data.worthIds, rules, today).length > 0 || worthFacts.length > 0) && ((x.id as string) !== "different" || !!signature))} current={current} />
@@ -418,7 +414,6 @@ export default function GuidePage() {
                 <RulesLine ids={gen(data.heldIn.ruleIds)} />
               </div>
             )}
-            <SavedGoalStrip variant="compact" presets={data.goal.presets as Presets} meta={data.goal.meta} today={today} />
             <NumberLegend term institution={anyWeak([...Object.values(data.bundle?.feeValues ?? {}), ...Object.values(signature?.facts ?? {}), ...(signature?.banks ?? []).flatMap((b) => [b.rate, b.ceiling])])} />
           </header>
 
@@ -501,7 +496,6 @@ export default function GuidePage() {
         </div>
       </div>
     </PageShell>
-    </GoalsProvider>
   );
 }
 

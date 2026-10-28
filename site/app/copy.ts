@@ -900,7 +900,7 @@ export const exposurePage = {
   kinds: { equity_index: "מדד מניות", bond_index: "מדד אג״ח", cash_like: "מזומן ודומיו", mixed: "תמהיל של כמה סוגי נכסים", commodity: "סחורות", other: "אחר" } as Record<string, string>,
   kindLabel: "סוג",
   currencyLabel: "מטבע",
-  holdLine: "המוצרים שבהם אפשר להחזיק את זה. ההשוואה ביניהם למטרה שלכם: בעמוד ״השוואה למטרה״.",
+  holdLine: "המוצרים שבהם אפשר להחזיק את החשיפה הזו.",
   holdNone: "עוד לא נאספו המוצרים שמחזיקים את זה.",
   openTax: "עוד לא ברור איך זה ממוסה כאן: שאלה פתוחה",
   toGuide: "לעמוד המדריך",
@@ -1415,8 +1415,6 @@ export const idle = {
     thresholdLabel: "הסף:",
   },
   smallSum: "בקרן כספית קונים ופודים בדרך כלל בלי סכום מינימלי, ובבנק שיש לו הסכם הפצה עם מנהל הקרן אסור לגבות עמלה על קנייה, החזקה או פדיון.",
-  anytime: "הכסף צריך להיות זמין בכל רגע",
-  anytimeHint: "אם לא תסמנו, ההשוואה המלאה תכלול גם פיקדון נעול.",
   coverageBefore: "נבדקו",
   coverageMid: "אפשרויות:",
   coverageClose: "הסתרת הרשימה",
@@ -1425,7 +1423,6 @@ export const idle = {
   kindsTag: { baseline: "העו״ש", compared: "הושוותה", "not-eligible": "לא מתאימה לכם", "not-evaluated": "לא נכללה בהשוואה המהירה" } as Record<string, string>,
   notQuick: "לא נכלל בהשוואה המהירה",
   notQuickLine: "כדאי לבדוק בהשוואה המלאה",
-  fullLink: "להשוואה המלאה, עם המטרה ״עתודה נזילה״",
   rowsHeading: "מה זה עולה לכם",
   failed: "האתר לא הצליח לחשב. רעננו את העמוד ונסו שוב.",
   loading: "טוען את הנתונים…",
@@ -1516,8 +1513,7 @@ export const r3fees = {
   loading: "טוען…",
   failed: "האתר לא הצליח לחשב את העמלות. רעננו את העמוד ונסו שוב.",
   strip: {
-    compare: "לפי ההשוואה למטרה ״",
-    compareMid: "״: ",
+    compare: "מתוך ההשוואה: ",
     compareRecord: ", לפי ",
     guide: "לפי עמוד המדריך: ",
     track: "לפי המסלול ",
@@ -1566,8 +1562,9 @@ export const r3fees = {
     noReference: "אין ממוצע להשוואה, ולכן אי אפשר לומר שכדאי להתמקח.",
     nothingRemoves: "כל האפשרויות בהשוואה גובות עמלה כזו.",
   },
-  avoidNotEvaluated: "להימנע: לא נבדק. נבדק רק מול השוואה למטרה.",
-  setGoal: "להגדיר מטרה",
+  avoidNotEvaluated: "להימנע: לא נבדק. עם המספרים האלה אי אפשר להשוות בין האפשרויות.",
+  othersButton: "הנחות נוספות",
+  siteExample: "המספרים לדוגמה של האתר, עד שתשנו אותם",
   removedBy: "אין עמלה כזו ב",
   noReference: "אין ממוצע להשוואה",
   noReferenceReasons: {
@@ -1616,7 +1613,7 @@ export const r3fees = {
     more: ["אם דמי הניהול היו כממוצע של המסלולים הדומים, הייתם משאירים אצלכם כ־", " ב־", "."],
     less: "דמי הניהול שלכם לא גבוהים מהממוצע של המסלולים הדומים.",
   },
-  ranked: { first: "המוצר הזה במקום הראשון בהשוואה שלכם, גם אחרי העמלות.", other: ["למרות העמלה, המוצר הזה במקום ", " בהשוואה שלכם."], tied: " (שקול לאחרים)", link: "להשוואה" },
+  ranked: { first: "לפי המספרים בעמוד, המוצר הזה במקום הראשון מבין כל האפשרויות, גם אחרי העמלות.", other: ["למרות העמלה, לפי המספרים בעמוד המוצר הזה במקום ", " מבין כל האפשרויות."], tied: " (שקול לאחרים)" },
   verdictSoft: "יקר יחסית לחלופות בלי עמלה",
   linkSwitch: "איך עוברים",
   linkProviders: "השוואת הספקים",
@@ -1630,7 +1627,7 @@ export const r3fees = {
     rest: "שאר העמלות",
     remainderLegend: "השפעה משולבת: הפער עד הקו",
     notReported: "לא דווח",
-    noGoalMarker: "סוף התקופה",
+    endMarker: "סוף התקופה",
     aria: ["גרף: העלות של ", " עמלות לאורך ", ". הנתונים המלאים בטבלה."],
     year: "שנה",
   },
@@ -1666,19 +1663,12 @@ export const r3fees = {
     },
     ruleMissing: "הנוסח עוד לא נמצא במאגר החוקים והכללים של האתר.",
     parameterReturn: "לא הוזנה תשואה. החישוב לפי התשואה של התרחיש לדוגמה, פרמטר של האתר.",
-    noGoal: "אין מטרה שמורה: החישוב לפי התרחיש לדוגמה של האתר.",
     noTerms: "למוצר הזה עוד אין רשומה עם עמלות לחישוב. אפשר להזין את העמלות מהדוח שלכם.",
     needInput: "כדי לחשב צריך עוד פרט: ",
     // copy.md 7.1 (added 2026-10-24, B3): no engine message reaches the page
     needGeneric: "אחד מהערכים בהנחות",
-    // copy.md 7.1 (added 2026-10-24, B3): the assumptions sheet when no goal is saved
-    defaultsLead: "עד שתזינו ערך, החישוב לפי התרחיש לדוגמה של האתר: ",
-    defaultsNote: "מה שתזינו כאן יישמר כמטרה במכשיר הזה.",
     genericFail: "האתר לא הצליח להריץ את החישוב עם הערכים האלה. בדקו את ההנחות שהזנתם.",
-    toForm: "לטופס המטרה",
     blockedRun: "החישוב למוצר הזה חסום: ",
-    // audit 2026-10-24 (A2, A63): the plain Hebrew first, its code after it in a chip; a goal that lacks a figure says so
-    goalIncomplete: "המטרה השמורה עוד חסרה סכום או הפקדה, ולכן החישוב לפי התרחיש לדוגמה של האתר.",
     sensRunning: "בודק…",
     sensFooter: "הטווחים שנבדקו הם פרמטר של האתר.",
     notReportedRow: "העמלה לא דווחה לרשות, ולכן לא נכללה בחישוב.",
@@ -1693,8 +1683,7 @@ export const r3fees = {
 
 export const r3holdings = {
   title: "מה כבר יש לכם",
-  lede: "הזינו מהדוח השנתי, ותראו אם המסלול מתאים למטרה, מה העמלות עולות ואם אפשר לאחד. הכול נשמר במכשיר הזה.",
-  stripLine: "ההתאמה והעלות לפי המטרה השמורה:",
+  lede: "הזינו מהדוח השנתי, ותראו כמה העמלות עולות לכם ואם אפשר לאחד חיסכונות. הכול נשמר במכשיר הזה.",
   loading: "טוען את הנתונים…", // copy.md 7.2
   loadFailed: "האתר לא הצליח לטעון את הנתונים. רעננו את העמוד ונסו שוב.", // copy.md 7.2
   empty: "מה להכין: הדוח השנתי של כל קופה, או הדוח מהמסלקה הפנסיונית.",
@@ -1777,23 +1766,15 @@ export const r3holdings = {
   capAbove: "מעל התקרה בחוק:",
   openQuestion: "שאלה פתוחה",
   feeLine: { before: "העמלות יעלו", mid: "ב־", after: ", בכסף של היום." },
-  feeLineNoGoal: "כמה שנים הכסף הזה יישאר? הגדירו מטרה.",
+  feeLineNoGoal: "כמה שנים הכסף הזה יישאר מושקע? הזינו את מספר השנים.",
   feeLinkLabel: "כל העמלות, ומה שווה לעשות איתן",
   preTax: "לפני מס ביציאה: שאלה פתוחה",
   feeNotComputed: "את העלות של סוג המוצר הזה האתר עוד לא מחשב.", // copy.md 7.2
   feeNeedsPf36: "הקרן עוד לא נזילה: כדי לחשב את המס ביציאה צריך את פיצול שכבות המס מהדוח המפורט.", // copy.md 7.2
   feeNeedsFirstDeposit: "כדי לחשב את העלות בקרן השתלמות, הוסיפו את תאריך ההפקדה הראשונה.", // copy.md 7.2
-  feeFailed: "האתר לא הצליח לחשב את העלות. בדקו את המטרה ואת הערכים שהזנתם.", // copy.md 7.2
-  depositsLeftOut: "ההפקדות החודשיות לא נכללו: חסר שכר בטופס המטרה.", // copy.md 7.2
+  feeFailed: "האתר לא הצליח לחשב את העלות. בדקו את הערכים שהזנתם.", // copy.md 7.2, amended 2026-10-28
+  depositsLeftOut: "ההפקדות החודשיות לא נכללו בחישוב: חסר שכר.", // copy.md 7.2, amended 2026-10-28
   returnFromParameter: "החישוב לפי התשואה של התרחיש לדוגמה, פרמטר של האתר, לא לפי תשואה שהזנתם.", // copy.md 7.2
-  fitNoGoal: "אין מטרה שמורה.",
-  fitNoGoalLink: "להגדיר מטרה",
-  fitHeading: "מתאים למטרה?", // copy.md 7.2, the card's label before the mark
-  fitGoalLine: "לפי המטרה ״", // from release 2's fit copy
-  fitGoalMid: "״, ",
-  fitRuleBefore: "לפי טבלת ההתאמה של האתר, לסיווג ״",
-  fitRuleAfter: "״ מתאים החל מ־",
-  fitNoTrack: "אין התאמה: המסלול לא נמצא בנתוני הרשות.", // copy.md 7.2
   staleLine: "נתוני הסיווג לא עודכנו מאז", // as release 2's fit.stale
   actions: { edit: "עריכה", delete: "מחיקה", up: "להזיז למעלה", down: "להזיז למטה" }, // copy.md 7.2: up/down, (flow 22: up/down buttons on a phone)
   deleteConfirm: "למחוק את ההחזקה מהמכשיר הזה?",
@@ -1844,7 +1825,6 @@ export const r3holdings = {
   trackCount: { one: "מסלול אחד", two: "שני מסלולים", many: "מסלולים" }, // audit 2026-10-24 (A65)
   cardDates: { authority: "נתוני הרשות", statement: "הדוח שלכם" }, // audit 2026-10-24 (A16)
   trackAvgNone: "המסלול הזה עוד לא דיווח לרשות דמי ניהול לשנת", // audit 2026-10-24 (A60): its own sentence, the year follows
-  fitNoRule: "האתר לא קבע כלל התאמה לסיווג הזה.", // audit 2026-10-24 (A60), P-04 is a site judgement
   avgSaving: { before: "לפי הממוצע הייתם חוסכים", approx: "כ־", mid: "ב־", after: "." }, // audit 2026-10-24 (A18): F-61's value of lowering the fee to the class mean
   switchLink: "איך עוברים", // audit 2026-10-24 (A14)
   depositsHere: { before: "פיקדון שיש לכם כבר אפשר להשוות ב", link: "עמוד הכסף שבעו״ש", after: "." }, // audit 2026-10-24 (A59)
@@ -3004,7 +2984,6 @@ export const guideSignature = {
   } as Record<string, { name: string; question: string; alt: string; altId: string; altLine: string }>,
   altBefore: "הכי קרוב לזה, באותה החזקה:",
   altLinkBefore: "לעמוד של",
-  compareLink: "להשוואה המלאה לפי המטרה שלכם",
   timeline: { summary: "שחקו עם המספרים שלכם", hide: "הסתרת המספרים", lead: "גרף לדוגמה של כסף שנכנס, גדל לפי הנחה ויוצא אחרי עלויות ומס. אפשר לשנות כל הנחה." },
   common: {
     notComputed: "עוד לא חושב",
@@ -3012,7 +2991,7 @@ export const guideSignature = {
     commonRate: { before: "רוב הבנקים משלמים בעו״ש", of: "מתוך", after: "הבנקים שנאספו." },
     onlyLeumi: "לפי הפרסום של לאומי; בנקים אחרים עוד לא נאספו.",
     fundAssumption: { before: "אין תשואה שפורסמה לקרן כספית שהאתר רשאי להציג, ולכן הקרן רצה כאן על", after: "בשנה. זו הנחה של האתר, לא הבטחה ולא תחזית." },
-    source: { guide: "הזנתם", goal: "מהמטרה השמורה", p05: "דוגמה של האתר" } as Record<string, string>,
+    source: { guide: "הזנתם", p05: "דוגמה של האתר" } as Record<string, string>,
     sourceLead: "הסכום והזמן:",
     years: "כמה שנים",
     todayMoney: "הסכומים בכסף של היום, אחרי מס ועלויות.",
@@ -3423,8 +3402,6 @@ export const invest = {
   sub: "בוחרים חשבון ניירות ערך וקרן, ורואים כמה יישאר לכם. לפי התעריפון של כל בנק ובית השקעות ולפי הדוח של כל קרן.",
   loading: "טוען את התעריפונים והקרנות…",
   failed: "האתר לא הצליח לטעון את התעריפונים והקרנות. נסו לרענן את העמוד.",
-  noGoal: "הסכום, ההפקדה והשנים הם של האתר לדוגמה; הזינו מטרה כדי לחשב לפי התוכנית שלכם.",
-  goalLink: "להזנת מטרה",
   breadcrumbHome: "ראשי",
 
   chips: {
@@ -3472,7 +3449,6 @@ export const invest = {
     ret: "תשואה",
     retExample: "תשואה לדוגמה",
     retEntered: "התשואה שהזנתם",
-    fromGoal: "מהמטרה השמורה",
     siteExample: "לדוגמה של האתר",
     all: "כל ההנחות",
     panelTitle: "ההנחות של החישוב",
@@ -3487,7 +3463,7 @@ export const invest = {
       oneYear: "עוד שנה",
       retStep: "תשואה",
       most: "הכי משפיע",
-      others: "אינפלציה ועוד",
+      others: "אינפלציה",
       changes: {
         title: "מה הכי משנה את מה שיישאר לכם",
         lead: "בכל קו משתנה מספר אחד, והשאר נשארים כמו בתוכנית שלכם. גררו את הקו האנכי בגרף, או בחרו שינוי:",

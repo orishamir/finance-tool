@@ -1,16 +1,19 @@
-// The indices page's plan controls (founder, 2026-10-28): the four plan numbers as plain sliders that write the current goal, as the
-// assumptions panel does; and, at the bottom of the page, what each number changed by the same share does to the result (F-89, F-90).
+// The plan controls of the indices and fee pages (founder, 2026-10-28): the four plan numbers as plain sliders, the rest behind a
+// button; they write the values the person entered on this device (lib/inputs.tsx, the guide pages' own), never the saved goal
+// (founder, 2026-10-28: only the goal page speaks of a goal). At the bottom of the indices page, what each number changed by the
+// same share does to the result (F-89, F-90).
 import { useMemo, useState } from "react";
 import { changedByShare, sweep } from "@finance-tool/engine";
+import type { P05Input } from "@finance-tool/engine";
 import { invest as c, r2, values as valuesCopy } from "../../copy";
 import type { FeeInputs } from "../../lib/fees";
 import { fmt } from "../../lib/format";
-import { useGoals } from "../../lib/goal";
+import { useInputs, type Employment } from "../../lib/inputs";
 import { pairCosts, type InvestView } from "../../lib/invest";
 import type { WorkbenchBundle, WorkbenchInputs } from "../../lib/providers";
 import { computed, type SiteValue } from "../../lib/value";
 import { Num } from "../provenance";
-import { ChangeChart, KnobStrip, percentCheck, type Knob } from "../kit";
+import { ChangeChart, KnobStrip, NumberField, ParameterLine, SegmentedControl, percentCheck, type Knob } from "../kit";
 
 type Range = { min: number; max: number; step: number };
 export type KnobRanges = Record<"amount_now" | "monthly_deposit" | "horizon_years" | "A-01", Range>;
@@ -36,14 +39,12 @@ function usePairLeft(bundle: WorkbenchBundle, view: InvestView | null, pick: Pai
   }, [bundle, view, house, fund]);
 }
 
-/** Writes one knob into the current goal, or clears it back to the start value (null). */
+const KEY: Record<Id, P05Input> = { amount: "amount_now", monthly: "monthly_deposit", years: "horizon_years", ret: "A-01" };
+
+/** Writes one knob into the entered values, or clears it back to the site's example (null). */
 function useSetKnob() {
-  const { update, setEnteredReturn } = useGoals();
-  return (id: Id, n: number | null) => {
-    if (id === "ret") return setEnteredReturn(n);
-    const field = id === "amount" ? "amountNow" : id === "monthly" ? "monthly" : "horizonYears";
-    update((g) => ({ ...g, [field]: n === null ? { value: null, entered: false } : { value: n, entered: true } }));
-  };
+  const { setEntered } = useInputs();
+  return (id: Id, n: number | null) => setEntered(KEY[id], n);
 }
 
 const valueOf = (fi: FeeInputs, id: Id) => {
@@ -51,7 +52,8 @@ const valueOf = (fi: FeeInputs, id: Id) => {
   return { value: v.value as number, entered: v.state === "entered" };
 };
 
-export function PlanKnobs({ fi, ranges, pct }: { fi: FeeInputs; ranges: KnobRanges; pct: { min: number; max: number } }) {
+/** `only`: the knobs a page reads (a holding's amounts are its own statement's, so the fee page shows only years and return for it). */
+export function PlanKnobs({ fi, ranges, pct, only }: { fi: FeeInputs; ranges: KnobRanges; pct: { min: number; max: number }; only?: Id[] }) {
   const setKnob = useSetKnob();
   const span = (r: Range) => ({ min: r.min, max: r.max, step: r.step });
   const field = (id: Id) => {
@@ -65,7 +67,7 @@ export function PlanKnobs({ fi, ranges, pct }: { fi: FeeInputs; ranges: KnobRang
     { ...field("years"), unit: "years", ...span(ranges.horizon_years), inputMode: "numeric", validate: (n) => (n < 1 ? r2.form.errYears : !Number.isInteger(n) ? r2.form.errYearsWhole : null) },
     { ...field("ret"), unit: "pct_per_year", ...span(ranges["A-01"]), validate: percentCheck(pct) },
   ];
-  return <KnobStrip knobs={knobs} />;
+  return <KnobStrip knobs={only ? knobs.filter((x) => only.includes(x.id as Id)) : knobs} />;
 }
 
 /** F-89 and F-90: every plan number changed by the same share, on one chart with a marker and a table, at the bottom of the page.
@@ -169,3 +171,29 @@ const LINE = [
 ];
 /** The shares a tap sets, in percent: inputs the person picks, not figures. */
 const CHOICES = [-20, -10, 10, 20, 50];
+
+/**
+ * What the button beside the sliders opens: inflation, and where the page's product needs them, employment and age; written to the
+ * same entered values. The page leaves out what it never reads (founder 2026-10-28, every control earns its place).
+ */
+export function OtherAssumptions({ inflation, pct, employment, age }: { inflation: SiteValue; pct: { min: number; max: number }; employment?: boolean; age?: { min: number; max: number } }) {
+  const { state, ready, setEntered, setAge, setEmployment } = useInputs();
+  const ageCheck = (r: { min: number; max: number }) => (n: number) => (!Number.isInteger(n) ? valuesCopy.errors.nan : n < r.min || n > r.max ? `${valuesCopy.errors.age[0]} ${fmt.number(r.min)} ${valuesCopy.errors.age[1]}${fmt.number(r.max)}.` : null);
+  return (
+    <div className="flex flex-col gap-4 lg:gap-[18px]">
+      <ParameterLine />
+      <NumberField label={valuesCopy.fields["A-02"]} unit="pct_per_year" value={inflation.value as number} isEntered={state.entered["A-02"] !== undefined} validate={percentCheck(pct)} onCommit={(n) => setEntered("A-02", n)} onReset={() => setEntered("A-02", null)} disabled={!ready} />
+      <p className="text-xs text-muted-foreground -mt-2">{valuesCopy.hints.inflation}</p>
+      {employment && (
+        <div className="field">
+          <span className="field-label" id="plan-emp-label">
+            {valuesCopy.fields.employment} <span className="text-muted-foreground font-normal">{valuesCopy.optional}</span>
+          </span>
+          <SegmentedControl<Employment> labelledBy="plan-emp-label" options={[{ value: "employee", label: valuesCopy.employment.employee }, { value: "self-employed", label: valuesCopy.employment["self-employed"] }]} value={state.employment} onChange={(v) => setEmployment(state.employment === v ? null : v)} />
+          <span className="text-xs text-muted-foreground">{valuesCopy.hints.employment}</span>
+        </div>
+      )}
+      {age && <NumberField label={<>{valuesCopy.fields.age} <span className="text-muted-foreground font-normal">{valuesCopy.optional}</span></>} unit="years" value={state.age} isEntered={state.age !== null} validate={ageCheck(age)} onCommit={(n) => setAge(n)} onReset={() => setAge(null)} hint={valuesCopy.hints.age} placeholder={valuesCopy.agePlaceholder} inputMode="numeric" optional disabled={!ready} />}
+    </div>
+  );
+}
