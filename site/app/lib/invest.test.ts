@@ -132,6 +132,21 @@ describe("invest page computation", () => {
     expect(w.fund!.value as number).toBeCloseTo(h.valueN - Math.min(...sameHouse), 6);
   });
 
+  it("opens on an unhedged fund (founder, 2026-10-28); hedged funds stay in the list, priced and pickable", () => {
+    const world = indexById(bundle, "index-msci-world")!;
+    const v = buildInvest({ bundle, index: world, plan: plan() });
+    const funds = v.options.flatMap((o) => o.funds);
+    const hedged = funds.filter((f) => f.rec.hedged === true && f.best);
+    expect(hedged.length).toBeGreaterThan(0);
+    // the symptom: on fees alone a hedged fund leaves more, since the engine gives it the same return
+    expect(Math.max(...hedged.map((f) => f.best!.valueN))).toBeGreaterThan(v.headline!.valueN);
+    expect(v.headline!.fund.rec.hedged).not.toBe(true);
+    const unhedged = funds.filter((f) => f.rec.hedged !== true && f.best && !f.best.open);
+    expect(v.headline!.valueN).toBe(Math.max(...unhedged.map((f) => f.best!.valueN)));
+    // the goal comparison's cheapest way for the index is the same pair
+    expect(cheapestWay(bundle, world, plan())!.fundRecordId).toBe(v.headline!.fund.rec.id);
+  });
+
   it("reads the exchange a tariff band names", () => {
     expect(venueOfBand('מניות הנסחרות בארה"ב')).toBe("us");
     expect(venueOfBand("מניות ו-ETF הנסחרות בבורסות אירופה")).toBe("europe");

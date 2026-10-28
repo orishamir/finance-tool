@@ -11,7 +11,7 @@ import { HousesSection } from "./houses";
 import { FundsSection } from "./funds";
 import { LabelSheetHost } from "../kit";
 import { Headline, IndexHeader } from "./sections";
-import { AccountColumn, FundColumn, PairResult, pickOfHeadline } from "./pair";
+import { AccountColumn, allFunds, bestFor, FundColumn, PairResult, pickOfHeadline } from "./pair";
 import { Foot, Steps } from "./steps";
 import { PlanBlock } from "./chips";
 import { ProvenanceProvider } from "../provenance";
@@ -25,6 +25,23 @@ const plan: WorkbenchInputs = {
 };
 const data = { rules: {}, terms: {}, dimensions: {}, today: t };
 const html = (el: React.ReactElement) => renderToString(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data, children: createElement(LabelSheetHost, null, el) })));
+
+describe("the pair set beside the person's (2026-10-28)", () => {
+  const world = buildInvest({ bundle, index: indexById(bundle, "index-msci-world")!, plan });
+  const valueOf = (p: { house: string; fund: string }) => {
+    const at = allFunds(world).find((f) => f.rec.id === p.fund)!.byHouse[p.house]!;
+    return "valueN" in at ? at.valueN : NaN;
+  };
+  it("an unhedged pick is set beside the headline; a hedged pick beside the best hedged pair, never one that leaves less", () => {
+    const head = pickOfHeadline(world)!;
+    expect(bestFor(world, head)).toEqual(head);
+    const hedged = allFunds(world).find((f) => f.rec.hedged === true && f.best)!;
+    const pick = { house: head.house, fund: hedged.rec.id };
+    const best = bestFor(world, pick)!;
+    expect(allFunds(world).find((f) => f.rec.id === best.fund)!.rec.hedged).toBe(true);
+    expect(valueOf(best)).toBeGreaterThanOrEqual(valueOf(pick));
+  });
+});
 
 describe("the index page's sections render", () => {
   const view = buildInvest({ bundle, index: indexById(bundle, "index-sp500")!, plan: { ...plan, returnFromParameter: true }, yourBroker: "leumi" });

@@ -565,10 +565,18 @@ function core(ctx: Ctx, index: IndexRef, yourBroker: string | null): OptionView[
   return OPTION_IDS.map((o) => computeOption(ctx, index, o, yourBroker));
 }
 
-/** The headline: the best ranked way over the options (an open way is shown, not ranked, G-18). */
+/**
+ * A fund the page may open on (founder, 2026-10-28): not a currency-hedged one. The engine gives a hedged fund the same return as one
+ * that keeps the index's currency and no field holds what the hedge costs, so its lower fee alone would win between two different
+ * holdings. Hedged funds stay in the lists with their label, priced, and the person can pick one; hedging is a label, not a filter (D28).
+ */
+export const opensOn = (rec: FundRecord): boolean => rec.hedged !== true;
+
+/** The headline: the best ranked way over the options (an open way is shown, not ranked, G-18), among funds the page may open on when there are any. */
 function headlineOf(options: OptionView[]): Way | null {
-  const ways = options.flatMap((o) => (o.bestWay && !o.bestWay.open ? [o.bestWay] : []));
-  return ways.sort((a, b) => b.valueN - a.valueN)[0] ?? null;
+  const ways = options.flatMap((o) => o.funds.flatMap((f): Way[] => (f.best && !f.best.open ? [{ option: o.id, fund: f, providerId: f.best.providerId, value: f.best.value, valueN: f.best.valueN, open: false }] : [])));
+  const from = ways.some((w) => opensOn(w.fund.rec)) ? ways.filter((w) => opensOn(w.fund.rec)) : ways;
+  return from.sort((a, b) => b.valueN - a.valueN)[0] ?? null;
 }
 
 /** Items in value order with the ones within θ of the group's first merged into one place: the order that matters (F-80). */
