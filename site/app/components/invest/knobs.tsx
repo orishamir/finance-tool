@@ -1,7 +1,8 @@
-// The indices page's knob strip (founder, 2026-10-28): the plan's four numbers as sliders that write the current goal, as the
-// assumptions panel does, each with what one more step does to the value left for the priced pair (F-89).
-import { useMemo, type ReactNode } from "react";
-import { stepEffect } from "@finance-tool/engine";
+// The indices page's plan controls (founder, 2026-10-28): the four plan numbers as sliders that write the current goal, as the
+// assumptions panel does; buttons that try one more step of each (F-89), on top; and the result across each number's range (F-90),
+// at the bottom of the page.
+import { useMemo, useState, type ReactNode } from "react";
+import { stepEffect, sweep } from "@finance-tool/engine";
 import { invest as c, r2, values as valuesCopy } from "../../copy";
 import type { FeeInputs } from "../../lib/fees";
 import { fmt } from "../../lib/format";
@@ -10,105 +11,142 @@ import { pairCosts, type InvestView } from "../../lib/invest";
 import type { WorkbenchBundle, WorkbenchInputs } from "../../lib/providers";
 import { computed, type SiteValue } from "../../lib/value";
 import { Num } from "../provenance";
-import { KnobStrip, percentCheck, type Knob, type KnobEffect } from "../kit";
+import { KnobStrip, percentCheck, ResultCurves, TryButtons, type Curve, type Knob, type TryItem } from "../kit";
 
 type Range = { min: number; max: number; step: number; nudge: number };
 export type KnobRanges = Record<"amount_now" | "monthly_deposit" | "horizon_years" | "A-01", Range>;
-type Key = "amountNow" | "monthly" | "years" | "grossReturn";
+type Id = "amount" | "monthly" | "years" | "ret";
+type Pair = { house: string; fund: string } | null;
+/** Each knob: its plan field, its range, and how its slider reads the plan (a return is a fraction in the plan, percent on the slider). */
+const KNOBS: { id: Id; key: "amountNow" | "monthly" | "years" | "grossReturn"; range: keyof KnobRanges; scale: number }[] = [
+  { id: "amount", key: "amountNow", range: "amount_now", scale: 1 },
+  { id: "monthly", key: "monthly", range: "monthly_deposit", scale: 1 },
+  { id: "years", key: "years", range: "horizon_years", scale: 1 },
+  { id: "ret", key: "grossReturn", range: "A-01", scale: 100 },
+];
+const k = c.plan.knobs;
+const labelOf: Record<Id, string> = { amount: k.amount, monthly: k.monthly, years: k.years, ret: k.ret };
 
-export function PlanKnobs({ fi, plan, ranges, bundle, view, pick, pct }: { fi: FeeInputs; plan: WorkbenchInputs; ranges: KnobRanges; bundle: WorkbenchBundle; view: InvestView | null; pick: { house: string; fund: string } | null; pct: { min: number; max: number } }) {
+/** The value left for the pair the page prices, as a function of the plan (F-63's `L`); null when the page prices no pair. */
+function usePairLeft(bundle: WorkbenchBundle, view: InvestView | null, pick: Pair) {
+  const house = pick?.house;
+  const fund = pick?.fund;
+  return useMemo(() => {
+    if (!view || !house || !fund) return null;
+    return (p: WorkbenchInputs) => pairCosts({ bundle, index: view.index, plan: p, fundId: fund, providerId: house })?.left ?? null;
+  }, [bundle, view, house, fund]);
+}
+
+/** Writes one knob into the current goal, or clears it back to the start value (null). */
+function useSetKnob() {
   const { update, setEnteredReturn } = useGoals();
-  const v = fi.values;
-  const set = (k: "amountNow" | "monthly" | "horizonYears") => (n: number | null) => update((g) => ({ ...g, [k]: n === null ? { value: null, entered: false } : { value: n, entered: true } }));
+  return (id: Id, n: number | null) => {
+    if (id === "ret") return setEnteredReturn(n);
+    const field = id === "amount" ? "amountNow" : id === "monthly" ? "monthly" : "horizonYears";
+    update((g) => ({ ...g, [field]: n === null ? { value: null, entered: false } : { value: n, entered: true } }));
+  };
+}
 
-  // F-89: the value left with one knob a step higher, against the value left now, for the pair the page prices
-  // the page hands a new pick object on every render: the runs are keyed on the pair's ids
-  const pair = useMemo(() => (pick ? { house: pick.house, fund: pick.fund } : null), [pick?.house, pick?.fund]); // eslint-disable-line react-hooks/exhaustive-deps
-  const effects = useMemo(() => {
-    if (!view || !pair) return null;
-    const run = (p: WorkbenchInputs) => pairCosts({ bundle, index: view.index, plan: p, fundId: pair.fund, providerId: pair.house })?.left ?? null;
-    const base = run(plan);
+const valueOf = (fi: FeeInputs, id: Id) => {
+  const v = fi.values[id === "amount" ? "amount" : id === "monthly" ? "monthly" : id === "years" ? "years" : "returnV"];
+  return { value: v.value as number, entered: v.state === "entered" };
+};
+
+export function PlanKnobs({ fi, ranges, pct }: { fi: FeeInputs; ranges: KnobRanges; pct: { min: number; max: number } }) {
+  const setKnob = useSetKnob();
+  const span = (r: Range) => ({ min: r.min, max: r.max, step: r.step });
+  const field = (id: Id) => {
+    const v = valueOf(fi, id);
+    return { id, label: labelOf[id], value: v.value, isEntered: v.entered, onCommit: (n: number) => setKnob(id, n), onReset: () => setKnob(id, null) };
+  };
+  const negative = (n: number) => (n < 0 ? valuesCopy.errors.negative : null);
+  const knobs: Knob[] = [
+    { ...field("amount"), unit: "nis", ...span(ranges.amount_now), validate: negative },
+    { ...field("monthly"), unit: "nis_per_month", ...span(ranges.monthly_deposit), validate: negative },
+    { ...field("years"), unit: "years", ...span(ranges.horizon_years), inputMode: "numeric", validate: (n) => (n < 1 ? r2.form.errYears : !Number.isInteger(n) ? r2.form.errYearsWhole : null) },
+    { ...field("ret"), unit: "pct_per_year", ...span(ranges["A-01"]), validate: percentCheck(pct) },
+  ];
+  return <KnobStrip knobs={knobs} />;
+}
+
+/** F-89 on buttons: a press applies the step; a second press puts back the value it replaced. */
+export function PlanTry({ fi, plan, ranges, bundle, view, pick }: { fi: FeeInputs; plan: WorkbenchInputs; ranges: KnobRanges; bundle: WorkbenchBundle; view: InvestView | null; pick: Pair }) {
+  const setKnob = useSetKnob();
+  const left = usePairLeft(bundle, view, pick);
+  // the step applied last: the knob, the value it set, and the value it replaced (null: the start value)
+  const [applied, setApplied] = useState<{ id: Id; to: number; before: number | null } | null>(null);
+  const deltas = useMemo(() => {
+    if (!left) return null;
+    const base = left(plan);
     if (!base) return null;
     // the plan as it is was priced just above: each step prices only the changed plan
-    const left = (p: WorkbenchInputs) => (p === plan ? (base.value as number) : ((run(p)?.value as number | undefined) ?? null));
-    const one = (key: Key, r: Range, scale = 1): SiteValue | null => {
-      const d = stepEffect(left, plan, key, r.nudge, r.max, scale);
-      return d === null ? null : computed(Math.round(d), "nis", "F-89", { [c.plan.knobs.about]: base }, { today: bundle.today, about: c.plan.knobs.about });
-    };
-    return {
-      amount: one("amountNow", ranges.amount_now),
-      monthly: one("monthly", ranges.monthly_deposit),
-      years: one("years", ranges.horizon_years),
-      ret: one("grossReturn", ranges["A-01"], 100),
-    };
-  }, [bundle, view, pair, plan, ranges]);
+    const L = (p: WorkbenchInputs) => (p === plan ? (base.value as number) : ((left(p)?.value as number | undefined) ?? null));
+    return Object.fromEntries(
+      KNOBS.map(({ id, key, range, scale }) => {
+        const d = stepEffect(L, plan, key, ranges[range].nudge, ranges[range].max, scale);
+        return [id, d === null ? null : computed(Math.round(d), "nis", "F-89", { [k.about]: base }, { today: bundle.today, about: k.about })];
+      }),
+    ) as Record<Id, SiteValue | null>;
+  }, [left, plan, ranges, bundle.today]);
+  if (!deltas) return null;
 
-  const k = c.plan.knobs;
-  const effect = (d: SiteValue | null | undefined, step: ReactNode): KnobEffect | null =>
-    d
-      ? {
-          step,
-          delta: (
-            <>
-              <Num value={d} display={`${(d.value as number) >= 0 ? "+" : ""}${fmt.nisWhole(d.value as number)}`} /> {k.atEnd}
-            </>
-          ),
-          size: d.value as number,
-        }
-      : null;
-  const nis = (n: number) => <bdi>{fmt.nisWhole(n)}</bdi>;
-  const span = (r: Range) => ({ min: r.min, max: r.max, step: r.step });
+  const words: Record<Id, ReactNode> = {
+    amount: <>{k.more} <bdi>{fmt.nisWhole(ranges.amount_now.nudge)}</bdi> {k.today}</>,
+    monthly: <>{k.more} <bdi>{fmt.nisWhole(ranges.monthly_deposit.nudge)}</bdi> {k.perMonth}</>,
+    years: k.oneYear,
+    ret: <>{k.more} <bdi>{fmt.pct(ranges["A-01"].nudge)}</bdi> {k.retStep}</>,
+  };
+  const isOn = (id: Id) => !!applied && applied.id === id && applied.to === valueOf(fi, id).value;
+  const items: TryItem[] = KNOBS.flatMap(({ id }) => {
+    const d = deltas[id];
+    return d ? [{ id, step: words[id], delta: <Num value={d} display={`+${fmt.nisWhole(d.value as number)}`} />, size: d.value as number, active: isOn(id) }] : [];
+  });
+  const onToggle = (raw: string) => {
+    const knob = KNOBS.find((x) => x.id === raw)!;
+    if (isOn(knob.id)) {
+      setKnob(knob.id, applied!.before);
+      setApplied(null);
+      return;
+    }
+    const v = valueOf(fi, knob.id);
+    const to = Math.min(ranges[knob.range].max, v.value + ranges[knob.range].nudge);
+    setKnob(knob.id, to);
+    setApplied({ id: knob.id, to, before: v.entered ? v.value : null });
+  };
+  return <TryButtons items={items} onToggle={onToggle} lead={k.tryLead} most={k.most} activeNote={k.tryUndo} />;
+}
 
-  const knobs: Knob[] = [
-    {
-      id: "amount",
-      label: k.amount,
-      unit: "nis",
-      value: v.amount.value as number,
-      isEntered: v.amount.state === "entered",
-      ...span(ranges.amount_now),
-      validate: (n) => (n < 0 ? valuesCopy.errors.negative : null),
-      onCommit: set("amountNow"),
-      onReset: () => set("amountNow")(null),
-      effect: effect(effects?.amount, <>{k.more} {nis(ranges.amount_now.nudge)} {k.today}:</>),
-    },
-    {
-      id: "monthly",
-      label: k.monthly,
-      unit: "nis_per_month",
-      value: v.monthly.value as number,
-      isEntered: v.monthly.state === "entered",
-      ...span(ranges.monthly_deposit),
-      validate: (n) => (n < 0 ? valuesCopy.errors.negative : null),
-      onCommit: set("monthly"),
-      onReset: () => set("monthly")(null),
-      effect: effect(effects?.monthly, <>{k.more} {nis(ranges.monthly_deposit.nudge)} {k.perMonth}:</>),
-    },
-    {
-      id: "years",
-      label: k.years,
-      unit: "years",
-      value: v.years.value as number,
-      isEntered: v.years.state === "entered",
-      ...span(ranges.horizon_years),
-      inputMode: "numeric",
-      validate: (n) => (n < 1 ? r2.form.errYears : !Number.isInteger(n) ? r2.form.errYearsWhole : null),
-      onCommit: set("horizonYears"),
-      onReset: () => set("horizonYears")(null),
-      effect: effect(effects?.years, k.oneYear),
-    },
-    {
-      id: "ret",
-      label: k.ret,
-      unit: "pct_per_year",
-      value: v.returnV.value as number,
-      isEntered: v.returnV.state === "entered",
-      ...span(ranges["A-01"]),
-      validate: percentCheck(pct),
-      onCommit: setEnteredReturn,
-      onReset: () => setEnteredReturn(null),
-      effect: effect(effects?.ret, <>{k.more} <bdi>{fmt.pct(ranges["A-01"].nudge)}</bdi> {k.retStep}</>),
-    },
-  ];
-  return <KnobStrip knobs={knobs} lead={k.lead} most={k.most} />;
+/** F-90: the result across each number's range, at the bottom of the page; 64 runs, so it takes the plan once a slider rests. */
+export function PlanCurves({ plan, ranges, bundle, view, pick }: { plan: WorkbenchInputs; ranges: KnobRanges; bundle: WorkbenchBundle; view: InvestView | null; pick: Pair }) {
+  const left = usePairLeft(bundle, view, pick);
+  const curves = useMemo(() => {
+    if (!left) return null;
+    const base = left(plan);
+    if (!base) return null;
+    const L = (p: WorkbenchInputs) => (left(p)?.value as number | undefined) ?? null;
+    return KNOBS.map(({ id, key, range, scale }): Curve => {
+      const r = ranges[range];
+      // 16 values from the low end to the high end, each on the slider's step (a run takes whole years)
+      const xs = Array.from({ length: 16 }, (_, i) => Math.round((r.min + ((r.max - r.min) * i) / 15) / r.step) * r.step);
+      const ys = sweep(L, plan, key, xs, scale);
+      const hi = ys[ys.length - 1] ?? null;
+      const show = (n: number) => (id === "years" ? fmt.years(n) : id === "ret" ? fmt.pct(n) : fmt.nisWhole(n));
+      return {
+        id,
+        label: labelOf[id],
+        now: <bdi>{show(plan[key] * scale)}</bdi>,
+        ends: [<bdi key="lo">{show(r.min)}</bdi>, <bdi key="hi">{show(r.max)}</bdi>],
+        ys,
+        at: { frac: Math.max(0, Math.min(1, (plan[key] * scale - r.min) / (r.max - r.min))), y: base.value as number },
+        top: hi === null ? null : <Num value={computed(Math.round(hi), "nis", "F-90", { [k.about]: base }, { today: bundle.today, about: k.curveAbout })} />,
+      };
+    });
+  }, [left, plan, ranges, bundle.today]);
+  if (!curves) return null;
+  return (
+    <section className="flex flex-col gap-3" aria-label={k.curvesTitle}>
+      <h2 className="text-lg font-semibold">{k.curvesTitle}</h2>
+      <ResultCurves curves={curves} lead={k.curvesLead} topWord={k.curveTop} />
+    </section>
+  );
 }

@@ -11,7 +11,7 @@ import { IdRef, Num } from "../provenance";
 import { IconDrillIn } from "../icons";
 import { label } from "../../lib/labels";
 import { fmt } from "../../lib/format";
-import { Button, Callout, Card, ChartLegend, CostStack, LabelFilter, PickList, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, CompareTable, CoverageFold, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, Disclosure, FieldState, FoldGroup, GainBars, GapNote, HeadlineFigure, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, NumberField, ParameterLine, PercentField, PlanChips, KnobStrip, RangeField, RankBadge, Section, SegmentedControl, SelectField, Sentence, ShareRings, SourceLine, Stat, StatRow, StepButtons, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth } from "./index";
+import { Button, Callout, Card, ChartLegend, CostStack, LabelFilter, PickList, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, CompareTable, CoverageFold, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, Disclosure, FieldState, FoldGroup, GainBars, GapNote, HeadlineFigure, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, NumberField, ParameterLine, PercentField, PlanChips, KnobStrip, TryButtons, ResultCurves, RangeField, RankBadge, Section, SegmentedControl, SelectField, Sentence, ShareRings, SourceLine, Stat, StatRow, StepButtons, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth } from "./index";
 
 const g = copy.gallery;
 
@@ -423,6 +423,7 @@ function Fields() {
   const [b, setB] = useState<number | null>(3000);
   const [years, setYears] = useState<number | null>(10);
   const [pct, setPct] = useState<number | null>(5);
+  const [tried, setTried] = useState<string | null>(null);
   const [pick, setPick] = useState<string | null>(null);
   const [count, setCount] = useState(1);
   return (
@@ -484,11 +485,33 @@ function Fields() {
       <Demo name="KnobStrip" use={g.uses.KnobStrip}>
         <State label={`${g.states.interactive}, ${g.states.draggable}`} wide>
           <KnobStrip
-            lead={g.uses.KnobStrip}
-            most={g.sample.knobMost}
             knobs={[
-              { id: "years", label: g.sample.range, unit: "years", value: years, min: 1, max: 40, step: 1, isEntered: years !== 10, validate: () => null, onCommit: (n) => setYears(n), onReset: () => setYears(10), inputMode: "numeric", effect: { step: g.sample.knobStep, delta: fmt.nisWhole(1200 * (years ?? 10)), size: 1200 * (years ?? 10) } },
-              { id: "pct", label: g.sample.percent, unit: "pct_per_year", value: pct, min: 0, max: 12, step: 0.5, isEntered: pct !== 5, validate: () => null, onCommit: (n) => setPct(n), onReset: () => setPct(5), effect: { step: g.sample.knobStep, delta: fmt.nisWhole(3000 * (pct ?? 5)), size: 3000 * (pct ?? 5) } },
+              { id: "years", label: g.sample.range, unit: "years", value: years, min: 1, max: 40, step: 1, isEntered: years !== 10, validate: () => null, onCommit: (n) => setYears(n), onReset: () => setYears(10), inputMode: "numeric" },
+              { id: "pct", label: g.sample.percent, unit: "pct_per_year", value: pct, min: 0, max: 12, step: 0.5, isEntered: pct !== 5, validate: () => null, onCommit: (n) => setPct(n), onReset: () => setPct(5) },
+            ]}
+          />
+        </State>
+      </Demo>
+      <Demo name="TryButtons" use={g.uses.TryButtons}>
+        <State label={g.states.interactive} wide>
+          <TryButtons
+            most={g.sample.knobMost}
+            activeNote={g.uses.TryButtons}
+            onToggle={(id) => setTried(tried === id ? null : id)}
+            items={[
+              { id: "a", step: g.sample.knobStep, delta: fmt.nisWhole(12000), size: 12000, active: tried === "a" },
+              { id: "b", step: g.sample.knobStep, delta: fmt.nisWhole(4000), size: 4000, active: tried === "b" },
+            ]}
+          />
+        </State>
+      </Demo>
+      <Demo name="ResultCurves" use={g.uses.ResultCurves}>
+        <State label={g.states.filled} wide>
+          <ResultCurves
+            topWord={g.sample.knobStep}
+            curves={[
+              { id: "a", label: g.sample.range, now: fmt.years(10), ends: [fmt.years(1), fmt.years(40)], ys: Array.from({ length: 16 }, (_, i) => 1000 * Math.pow(1.07, i * 2.6)), at: { frac: 0.23, y: 1000 * Math.pow(1.07, 9) }, top: fmt.nisWhole(1000 * Math.pow(1.07, 39)) },
+              { id: "b", label: g.sample.percent, now: fmt.pct(5), ends: [fmt.pct(0), fmt.pct(12)], ys: Array.from({ length: 16 }, (_, i) => 1000 + 120 * i), at: { frac: 0.42, y: 1750 }, top: fmt.nisWhole(2800) },
             ]}
           />
         </State>
