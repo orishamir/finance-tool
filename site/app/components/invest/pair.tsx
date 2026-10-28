@@ -6,7 +6,7 @@
 import { useMemo } from "react";
 import type { FeeLine } from "@finance-tool/engine";
 import { brands, invest as c } from "../../copy";
-import { pairCosts, type FundWay, type InvestView, type PairCosts, type Reason, type WayPrice } from "../../lib/invest";
+import { opensOn, pairCosts, type FundWay, type InvestView, type PairCosts, type Reason, type WayPrice } from "../../lib/invest";
 import type { WorkbenchBundle, WorkbenchInputs } from "../../lib/providers";
 import { brokerLabels, fundLabels, optionLabels, type Label } from "../../lib/labels";
 import { computed, type SiteValue } from "../../lib/value";
@@ -37,6 +37,20 @@ export const allFunds = (view: InvestView): FundWay[] => view.options.filter((o)
 /** The default pick: the cheapest complete way. */
 export const pickOfHeadline = (view: InvestView): Pick | null => (view.headline ? { house: view.headline.providerId, fund: view.headline.fund.rec.id } : null);
 
+/**
+ * The cheapest pair to set beside the person's: the headline, unless they picked a currency-hedged fund, which is compared with the best
+ * hedged pair (2026-10-28): the page opens on unhedged funds only, and "the cheapest" must never leave less than the pick beside it.
+ */
+export function bestFor(view: InvestView, pick: Pick): Pick | null {
+  const rec = allFunds(view).find((f) => f.rec.id === pick.fund)?.rec;
+  if (!rec || opensOn(rec)) return pickOfHeadline(view);
+  const top = allFunds(view)
+    .filter((f) => !opensOn(f.rec))
+    .flatMap((f) => Object.entries(f.byHouse).flatMap(([house, at]) => (priced(at) && !at.open ? [{ house, fund: f.rec.id, v: at.valueN }] : [])))
+    .sort((a, b) => b.v - a.v)[0];
+  return top ? { house: top.house, fund: top.fund } : pickOfHeadline(view);
+}
+
 /** The other half when one half changes: keep it when it still prices, else the one that leaves the most with the new half. */
 export function repick(view: InvestView, cur: Pick, change: Partial<Pick>): Pick {
   const funds = allFunds(view);
@@ -60,9 +74,19 @@ function partsOf(pc: PairCosts): CostPart[] {
   const n = (v: SiteValue) => (typeof v.value === "number" ? v.value : 0);
   const whole = (x: number) => Math.round(x).toLocaleString("he-IL");
   const account = pc.account.map((l) => ({ id: l.line, value: n(l.cost), className: lineClass[lineOf(l.line)] ?? "bg-chart-cost-other", inside: whole(n(l.cost)) }));
-  return [...account, { id: "fund", value: n(pc.fund), className: "bg-chart-cost-fund", inside: whole(n(pc.fund)) }, { id: "tax", value: n(pc.tax), className: "bg-chart-tax", inside: whole(n(pc.tax)) }];
+  // the account's remainder no single line explains is part of what it takes, so the bar holds the whole cost (F-91)
+  return [...account, { id: "remainder", value: pc.interaction, className: "bg-chart-cost-other", inside: whole(pc.interaction) }, { id: "fund", value: n(pc.fund), className: "bg-chart-cost-fund", inside: whole(n(pc.fund)) }, { id: "tax", value: n(pc.tax), className: "bg-chart-tax", inside: whole(n(pc.tax)) }];
 }
-const totalOf = (parts: CostPart[]) => parts.reduce((a, p) => a + Math.max(0, p.value), 0);
+/** Whole shekels that add up to `target` (by default the rounded sum; largest remainder): a sentence of parts never disagrees with its total. */
+export function wholeParts(xs: number[], target = Math.round(xs.reduce((a, x) => a + x, 0))): number[] {
+  const out = xs.map((x) => Math.floor(x));
+  const order = xs.map((x, i) => ({ i, r: x - Math.floor(x) })).sort((a, b) => b.r - a.r);
+  let left = target - out.reduce((a, x) => a + x, 0);
+  for (let k = 0; left > 0; k++, left--) out[order[k % xs.length]!.i]! += 1;
+  for (let k = order.length - 1; left < 0; k--, left++) out[order[((k % xs.length) + xs.length) % xs.length]!.i]! -= 1;
+  return out;
+}
+const totalOf = (parts: CostPart[]) => parts.reduce((a, p) => a + p.value, 0);
 
 function CostLegend({ lines }: { lines: string[] }) {
   const groupHead = (text: string) => ({ id: `g-${text}`, label: <span className="text-foreground font-medium">{text}</span> });
@@ -71,6 +95,7 @@ function CostLegend({ lines }: { lines: string[] }) {
       items={[
         groupHead(c.pair.who.account),
         ...lines.map((l) => ({ id: l, swatch: <Swatch shape="box" className={lineClass[l] ?? "bg-chart-cost-other"} />, label: c.pair.lines[l] ?? c.pair.lines.other })),
+        { id: "remainder", swatch: <Swatch shape="box" className="bg-chart-cost-other" />, label: c.pair.remainder },
         groupHead(c.pair.who.fund),
         { id: "fund", swatch: <Swatch shape="box" className="bg-chart-cost-fund" />, label: c.pair.fundLine },
         groupHead(c.pair.who.state),
@@ -82,7 +107,8 @@ function CostLegend({ lines }: { lines: string[] }) {
 
 function CostBar({ who, sub, pc, scale, you, today }: { who: string; sub: string; pc: PairCosts; scale: number; you?: boolean; today: string }) {
   const parts = partsOf(pc);
-  const total = totalOf(parts);
+  // shown as the rounded base less the rounded value left: two bars then differ by exactly what the two "left" figures differ by
+  const total = Math.round(pc.base) - Math.round(pc.left.value as number);
   return (
     <div className="grid grid-cols-[minmax(0,1fr)_auto] md:grid-cols-[10rem_minmax(0,1fr)_6rem] items-center gap-x-3 gap-y-1.5">
       <span className={cx("flex flex-col min-w-0 leading-tight font-semibold", you && "text-entered")}>
@@ -95,23 +121,24 @@ function CostBar({ who, sub, pc, scale, you, today }: { who: string; sub: string
         <CostStack parts={parts} scale={scale} label={`${who}: ${fmt.nisWhole(total)}`} />
       </div>
       <span className="text-end font-semibold">
-        <Num value={nis(total, "F-61", who, today, { [c.pair.input(who, c.pair.colLeft)]: pc.left })} />
+        <Num value={nis(total, "F-91", who, today, { [c.pair.input(who, c.pair.colLeft)]: pc.left })} />
       </span>
     </div>
   );
 }
 
-/** The pair beside the best one when the person is on it: the next that leaves the most, over every ranked fund at every house. */
+/** The pair beside the best one when the person is on it: the next that leaves the most, over every ranked fund at every house of the same kind (hedged or not) as the best one. */
 function runnerUp(view: InvestView, best: Pick): Pick | null {
-  const pairs = allFunds(view).flatMap((f) =>
-    Object.entries(f.byHouse).flatMap(([house, at]) => (priced(at) && !at.open && !(house === best.house && f.rec.id === best.fund) ? [{ house, fund: f.rec.id, v: at.valueN }] : [])),
-  );
+  const bestRec = allFunds(view).find((f) => f.rec.id === best.fund)?.rec;
+  const pairs = allFunds(view)
+    .filter((f) => !bestRec || opensOn(f.rec) === opensOn(bestRec))
+    .flatMap((f) => Object.entries(f.byHouse).flatMap(([house, at]) => (priced(at) && !at.open && !(house === best.house && f.rec.id === best.fund) ? [{ house, fund: f.rec.id, v: at.valueN }] : [])));
   const top = pairs.sort((a, b) => b.v - a.v)[0];
   return top ? { house: top.house, fund: top.fund } : null;
 }
 
 export function PairResult({ view, bundle, plan, pick, onPick }: { view: InvestView; bundle: WorkbenchBundle; plan: WorkbenchInputs; pick: Pick; onPick: (p: Pick) => void }) {
-  const best = pickOfHeadline(view);
+  const best = bestFor(view, pick);
   const onBest = !!best && best.house === pick.house && best.fund === pick.fund;
   // the block keeps one shape whichever pair is picked (founder, 2026-10-27: "the page is still jumping when changing from the winning
   // combination"): the person's pair beside the cheapest, or, on the cheapest, beside the next one
@@ -129,6 +156,18 @@ export function PairResult({ view, bundle, plan, pick, onPick }: { view: InvestV
   const parts = partsOf(pc);
   const scale = Math.max(totalOf(parts), pcOther ? totalOf(partsOf(pcOther)) : 0);
   const sumAccount = (x: PairCosts) => x.account.reduce((a, l) => a + (l.cost.value as number), 0) + x.interaction;
+  // the three parts of the gap, rounded so they add up to the gap between the two shown values left (F-91: the costs add up to it exactly)
+  const shownLeft = (x: PairCosts) => Math.round(x.left.value as number);
+  const gapParts = pcOther ? wholeParts([sumAccount(pc) - sumAccount(pcOther), (pc.fund.value as number) - (pcOther.fund.value as number), (pc.tax.value as number) - (pcOther.tax.value as number)], shownLeft(pcOther) - shownLeft(pc)) : null;
+  const leftGap = pcOther ? (pc.left.value as number) - (pcOther.left.value as number) : 0;
+  const gapNum = (n: number, about: string, a: SiteValue, b: SiteValue) =>
+    n === 0 ? (
+      c.pair.gapNone
+    ) : (
+      <>
+        <Num value={nis(Math.abs(n), "F-91", about, bundle.today, { [c.pair.input(c.pair.yours, about)]: a, [c.pair.input(otherRole, about)]: b })} /> {n > 0 ? c.pair.gapMore : c.pair.gapLess}
+      </>
+    );
   const nameOf = (p: Pick) => providerName(view, p.house)?.short ?? p.house;
   const otherTitle = onBest ? c.pair.next : c.pair.cheapestStar;
   const moreIfOther = pcOther ? gap(pcOther.left, c.pair.input(otherRole, c.pair.colLeft), pc.left, c.pair.input(c.pair.yours, c.pair.colLeft), c.pair.moreIfCheapest) : null;
@@ -191,11 +230,13 @@ export function PairResult({ view, bundle, plan, pick, onPick }: { view: InvestV
         <CostLegend lines={lines} />
         {pcOther && (
           <Sentence size="sm" tone="muted">
-            {c.pair.gapLead} {c.pair.gapPart.account} <Num value={nis(sumAccount(pc) - sumAccount(pcOther), "F-63", c.pair.gapPart.account, bundle.today)} />
+            {c.pair.gapLead} {c.pair.gapPart.account} {gapNum(gapParts![0]!, c.pair.gapPart.account, nis(sumAccount(pc), "F-91", c.pair.gapPart.account, bundle.today), nis(sumAccount(pcOther), "F-91", c.pair.gapPart.account, bundle.today))}
             {" · "}
-            {c.pair.gapPart.fund} <Num value={gap(pc.fund, c.pair.input(c.pair.yours, c.pair.fundLine), pcOther.fund, c.pair.input(otherRole, c.pair.fundLine), c.pair.gapPart.fund)} />
+            {c.pair.gapPart.fund} {gapNum(gapParts![1]!, c.pair.gapPart.fund, pc.fund, pcOther.fund)}
             {" · "}
-            {c.pair.gapPart.tax} <Num value={gap(pc.tax, c.pair.input(c.pair.yours, c.pair.taxLine), pcOther.tax, c.pair.input(otherRole, c.pair.taxLine), c.pair.gapPart.tax)} />
+            {c.pair.gapPart.tax} {gapNum(gapParts![2]!, c.pair.gapPart.tax, pc.tax, pcOther.tax)}
+            {/* more tax with more left: the gain explains it; with a different tax treatment the signs part, and nothing is said */}
+            {gapParts![2]! !== 0 && Math.sign(gapParts![2]!) === Math.sign(leftGap) && <>, {gapParts![2]! > 0 ? c.pair.taxBecauseMore : c.pair.taxBecauseLess}</>}
           </Sentence>
         )}
       </div>
@@ -218,7 +259,7 @@ export function AccountColumn({ view, bundle, years, pick, onPick }: { view: Inv
   const fund = allFunds(view).find((f) => f.rec.id === pick.fund);
   const house = providerName(view, pick.house);
   if (!fund || !house) return null;
-  const best = pickOfHeadline(view);
+  const best = bestFor(view, pick);
   const rows = view.providers.map((p) => ({ p, at: fund.byHouse[p.id] }));
   const ok = rows.filter((r): r is { p: typeof r.p; at: WayPrice } => priced(r.at)).sort((a, b) => Number(a.at.open) - Number(b.at.open) || b.at.valueN - a.at.valueN);
   const missing = rows.filter((r) => !priced(r.at));
@@ -232,7 +273,7 @@ export function AccountColumn({ view, bundle, years, pick, onPick }: { view: Inv
     byReason.set(text, [...(byReason.get(text) ?? []), r.p.id]);
   }
   const pickRows: PickRow[] = ok.map((r, i) => {
-    const parts: CostPart[] = r.at.lines.map((l) => ({ id: l.line, value: l.cost, className: lineClass[lineOf(l.line)] ?? "bg-chart-cost-other" }));
+    const parts: CostPart[] = [...r.at.lines.map((l) => ({ id: l.line, value: l.cost, className: lineClass[lineOf(l.line)] ?? "bg-chart-cost-other" })), { id: "remainder", value: r.at.interaction, className: "bg-chart-cost-other" }];
     const isYours = r.p.id === view.yourBroker;
     // shown on the row whether or not it is picked, so a pick never adds or removes a line (founder, 2026-10-27)
     const isBest = best?.house === r.p.id && best.fund === pick.fund;
@@ -306,6 +347,7 @@ export function AccountColumn({ view, bundle, years, pick, onPick }: { view: Inv
         <ChartLegend
           items={[
             ...lines.map((l) => ({ id: l, swatch: <Swatch shape="box" className={lineClass[l] ?? "bg-chart-cost-other"} />, label: c.pair.lines[l] ?? c.pair.lines.other })),
+            { id: "remainder", swatch: <Swatch shape="box" className="bg-chart-cost-other" />, label: c.pair.remainder },
             ...(ok.some((r) => r.at.accountCost > scale) ? [{ id: "broken", label: c.pair.broken }] : []),
           ]}
         />

@@ -6,9 +6,7 @@ import { exposurePage as copy, guide, guideIndex, site } from "../copy";
 import { DimensionChecklist, GuideSection, SectionIndex, TermTable, useCurrentSection, type ChecklistRowView } from "../components/guide/sections";
 import { IconDrillIn, IconLock } from "../components/icons";
 import { NumberLegend, RuleRef } from "../components/provenance";
-import { SavedGoalStrip } from "../components/compare/strip";
 import { Breadcrumb, PageShell } from "../components/shell";
-import { GoalsProvider, type Presets } from "../lib/goal";
 import { Card, Disclosure, Tag } from "../components/kit";
 import { exposureContent } from "../content/exposure";
 import { splitTerms } from "../lib/guide-nav";
@@ -23,8 +21,7 @@ export async function loader({ params }: Route.LoaderArgs) {
   const content = exposureContent[params.id];
   const data = buildExposurePage(params.id, content ? [...content.termIds] : []);
   if (!data) throw new Response("Not found", { status: 404 });
-  const { goalContext } = await import("../lib/compare.server");
-  return { ...data, goal: goalContext() };
+  return data;
 }
 
 export function meta({ loaderData: data }: Route.MetaArgs) {
@@ -61,7 +58,6 @@ export default function ExposurePage() {
   // audit A83: no terms table under three rows; the page's own terms first, the rest behind a toggle
   const terms = splitTerms(data.terms, content?.termIds ?? []);
   return (
-    <GoalsProvider presets={data.goal.presets as Presets}>
     <PageShell current="guide" data={provenance}>
       <div className="lg:flex lg:gap-12 pt-2 lg:pt-8">
         <SectionIndex sections={copy.sections.filter((x) => x.id !== "terms" || !terms.hide)} current={current} />
@@ -80,7 +76,6 @@ export default function ExposurePage() {
                 {copy.currencyLabel}: <bdi dir="ltr">{copy.currencies[record.currency] ?? record.currency}</bdi>
               </Tag>
             </p>
-            <SavedGoalStrip variant="compact" presets={data.goal.presets as Presets} meta={data.goal.meta} today={today} />
             <NumberLegend term />
           </header>
 
@@ -154,6 +149,5 @@ export default function ExposurePage() {
         </div>
       </div>
     </PageShell>
-    </GoalsProvider>
   );
 }

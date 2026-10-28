@@ -136,12 +136,16 @@ export interface ComparedProvider extends ProviderBase {
   yearOneCost: ValueObject;
   /** Nominal fees paid in a 12-month run, exit commission included (trade, custody, fx, fixed). */
   yearOneFeesPaid: number;
-  /** F-61 by fee type: `V(F \ {f}) − V(F)`, real NIS, for each provider line the tariff charges, largest first. */
-  byType: { line: FeeLine; cost: number }[];
+  /** F-61 by fee type: `V(F \ {f}) − V(F)`, real NIS, for each provider line the tariff charges, largest first; `costBeforeTax` is the same difference before tax (F-91). */
+  byType: { line: FeeLine; cost: number; costBeforeTax: number }[];
   /** `total − Σ cost_f`. */
   interaction: number;
   /** Real value at the horizon with this provider's fees. */
   real: number;
+  /** `B(∅) − B(F_p)`, the horizon cost before the tax it saves, real NIS (F-91's account part; additive, 2026-10-28). */
+  horizonCostBeforeTax: number;
+  /** The tax of this run (during and at exit) divided by `I_T` (F-91 helper). */
+  taxReal: number;
   run: RunResult;
   rank: number;
 }
@@ -174,6 +178,8 @@ export interface ProviderWorkbench {
   formula: "F-63";
   /** Real value with no provider fees (fund costs and spread stay), the base of every cost. */
   realWithoutProviderFees: number;
+  /** The same run before tax (F-91), the base of every cost before tax. */
+  beforeTaxWithoutProviderFees: number;
   rows: ProviderRow[];
   ranking: ProviderRanking;
   /** F-83: every provider once, "ranked" or "not-evaluated". */
@@ -407,6 +413,45 @@ export function buildTariff(input: WorkbenchInput, p: ProviderInput, snapshot: F
 
 const providerLines: readonly FeeLine[] = ["trade", "custody", "fx", "fixed"];
 
+/** The CPI index at the run's exit, `I_T` (F-03): from the run's own series, else from `V_T / V_T^real`. */
+function indexAtExit(r: RunResult): number {
+  const p = r.series.find((x) => x.month === r.exitMonth) ?? r.series[r.series.length - 1];
+  if (p && p.index > 0) return p.index;
+  return r.real !== 0 ? r.nominal / r.real : 1;
+}
+
+/** F-91 helper: a run's tax (during and at exit) divided by `I_T`, the value `B` adds back. */
+export function taxReal(r: RunResult): number {
+  return (r.taxDuring + r.taxAtExit) / indexAtExit(r);
+}
+
+/** F-91 helper: the real value before tax, `B = V_T^real + tax_real`; a difference of two is a cost before the tax it saves. */
+export function beforeTax(r: RunResult): number {
+  return r.real + taxReal(r);
+}
+
+/** F-91's inputs, every one a real value at the horizon in today's shekels. */
+export interface CostByWhoInput {
+  /** `X`: B of the same deposits in the same fund with no fund cost, no distribution and no account: the plan's return alone. */
+  base: number;
+  /** `V_T^real` of the way. */
+  left: number;
+  /** `B(u, no account fees) − B(u, p)`: the account's cost before tax (`horizonCostBeforeTax`). */
+  account: number;
+  /** `B(u with no fund cost, no account) − B(u, no account)`. */
+  fund: number;
+}
+
+/**
+ * F-91 A way's cost by who takes it. The account and the fund before the tax they save, the fund measured with no account;
+ * the state is what remains, `X − left − account − fund`: the tax paid, with the growth a tax paid during the holding would
+ * have earned. The three add up to `X − left` by construction, so the gap in what is left between two ways on the same plan
+ * is the gap in their costs.
+ */
+export function costByWho(a: CostByWhoInput): { account: number; fund: number; state: number } {
+  return { account: a.account, fund: a.fund, state: a.base - a.left - a.account - a.fund };
+}
+
 /**
  * F-63 Provider workbench. For each provider `p` with tariff `F_p` at its chosen level (list, regulator or TASE
  * average, entered; D4): `cost_p(horizon) = V_T^real(∅) − V_T^real(F_p)` and `cost_p(year 1) = V_12(∅) − V_12(F_p)`
@@ -490,7 +535,8 @@ export function providerWorkbench(input: WorkbenchInput, ctx: RunContext): Provi
       .map((line) => {
         const w = withoutFeeLine(planF, line);
         if (w.run !== "runSecurities") throw new Error("unreachable: a securities plan stays a securities plan");
-        return { line, cost: runSecurities(w.input, ctx).real - run.real };
+        const without = runSecurities(w.input, ctx);
+        return { line, cost: without.real - run.real, costBeforeTax: beforeTax(without) - beforeTax(run) };
       })
       .sort((a, b) => b.cost - a.cost);
     const sum = byType.reduce((acc, t) => acc + t.cost, 0);
@@ -527,6 +573,8 @@ export function providerWorkbench(input: WorkbenchInput, ctx: RunContext): Provi
       byType,
       interaction: total - sum,
       real: run.real,
+      horizonCostBeforeTax: beforeTax(noneT) - beforeTax(run),
+      taxReal: taxReal(run),
       run,
       rank: 0,
     });
@@ -575,7 +623,7 @@ export function providerWorkbench(input: WorkbenchInput, ctx: RunContext): Provi
     ["ranked", "not-evaluated"] as const,
     ["ranked"],
   );
-  return { formula: "F-63", realWithoutProviderFees: noneT.real, rows, ranking, coverage };
+  return { formula: "F-63", realWithoutProviderFees: noneT.real, beforeTaxWithoutProviderFees: beforeTax(noneT), rows, ranking, coverage };
 }
 
 /** One month of the cumulative-fees series (F-63, chart note 2026-10-24). */

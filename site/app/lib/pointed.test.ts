@@ -10,8 +10,6 @@ import { loadCma, loadRules } from "./data.server";
 import { buildExposurePage, buildGuidePage } from "./guide.server";
 import { buildInstitution, institutionIds } from "./institutions.server";
 import { loadExposures } from "./instruments.server";
-import { playbookPage } from "./playbook.server";
-import { playbookWrappers } from "./playbook";
 import { compareBundle, goalFormData } from "./compare.server";
 import { workbenchBundle } from "./providers.server";
 import { buildHoldingsBundle } from "./holdings.server";
@@ -96,14 +94,6 @@ describe("every chip on a page's rule cards opens its record", () => {
     const g = goalFormData();
     const shelves = shelfIds.flatMap((s) => unopened(shelfBundle(s).rules, {}).map((x) => `${s}: ${x}`));
     expect([...unopened(q.rules, q.pointed), ...unopened(n.rules, n.pointed), ...unopened(i.rules, i.pointed), ...unopened(g.rules as Map_, g.pointed as Map_), ...shelves]).toEqual([]);
-  }, 120000);
-
-  it("the playbooks", () => {
-    const bad = playbookWrappers.flatMap((w) => {
-      const d = playbookPage(w);
-      return d ? unopened(d.rules, d.pointed).map((x) => `${w}: ${x}`) : [];
-    });
-    expect(bad).toEqual([]);
   }, 120000);
 
   it("the bundles the comparison, the workbenches, holdings and fees read", () => {

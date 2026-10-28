@@ -6,10 +6,7 @@ import { useLoaderData, useLocation, useNavigate, useParams } from "react-router
 import type { RuleRecord } from "@finance-tool/schema";
 import type { Route } from "./+types/invest";
 import { invest as c, site } from "../copy";
-import { AssumptionsPanel } from "../components/compare/assumptions";
-import type { FormData } from "../components/compare/goal-form";
-import { ScenarioDefaults } from "../components/fees/chips";
-import { PlanChanges, PlanKnobs } from "../components/invest/knobs";
+import { OtherAssumptions, PlanChanges, PlanKnobs } from "../components/invest/knobs";
 import { IndexChips, PlanBlock } from "../components/invest/chips";
 import { HousesSection } from "../components/invest/houses";
 import { FundsSection } from "../components/invest/funds";
@@ -23,9 +20,8 @@ import { PageShell } from "../components/shell";
 import { RulesLine } from "../components/provenance";
 import { loadBundle, bundleLinks } from "../lib/bundle";
 import { type CompareBundle } from "../lib/compare";
-import { planInputs } from "../lib/plan-inputs";
+import { feeInputs } from "../lib/fees";
 import { useSettled } from "../lib/settled";
-import { GoalsProvider, useGoals, type Presets } from "../lib/goal";
 import { useInputs } from "../lib/inputs";
 import { buildInvest, exposureIdOfSlug, indexById, INDICES_PATH, knownIndices, refOfCustom, type CustomIndex, type IndexRef } from "../lib/invest";
 import { loadWorkbenchBundle, type WorkbenchBundle, type WorkbenchInputs } from "../lib/providers";
@@ -69,7 +65,6 @@ type Data = Awaited<ReturnType<typeof loader>>;
 
 export default function Invest() {
   const data = useLoaderData<typeof loader>();
-  const presets = data.presets as Presets;
   const [wb, setWb] = useState<WorkbenchBundle | null>(null);
   const [compare, setCompare] = useState<CompareBundle | null>(null);
   const [failed, setFailed] = useState(false);
@@ -86,11 +81,9 @@ export default function Invest() {
     return { rules, pointed: recordsById(compare?.pointed, wb?.pointed), terms: {}, dimensions: Object.fromEntries((compare?.checklist ?? []).map((x) => [x.id, x.name])), today: data.today };
   }, [compare, wb, data.today]);
   return (
-    <GoalsProvider presets={presets}>
-      <PageShell current="other" data={provenance} wide>
-        <Page wb={wb} compare={compare} failed={failed} data={data} />
-      </PageShell>
-    </GoalsProvider>
+    <PageShell current="other" data={provenance} wide>
+      <Page wb={wb} compare={compare} failed={failed} data={data} />
+    </PageShell>
   );
 }
 
@@ -104,7 +97,7 @@ function Head() {
 }
 
 function Page({ wb, compare, failed, data }: { wb: WorkbenchBundle | null; compare: CompareBundle | null; failed: boolean; data: Data }) {
-  const { status, current } = useGoals();
+  const { ready } = useInputs();
   const { search } = useLocation();
   // The pre-rendered page has no address to read and no saved state: the first client render matches it, then they are read.
   const [mounted, setMounted] = useState(false);
@@ -115,23 +108,22 @@ function Page({ wb, compare, failed, data }: { wb: WorkbenchBundle | null; compa
       {body}
     </div>
   );
-  if (!mounted || (!failed && (!wb || !compare || status === "loading" || !current))) return frame(<p className="text-muted-foreground">{c.loading}</p>);
+  if (!mounted || (!failed && (!wb || !compare || !ready))) return frame(<p className="text-muted-foreground">{c.loading}</p>);
   if (failed || !wb || !compare) return frame(<Callout tone="caution">{c.failed}</Callout>);
-  if (status === "old-version") return null;
   return <Body wb={wb} compare={compare} data={data} search={search} />;
 }
 
 function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: CompareBundle; data: Data; search: string }) {
   const navigate = useNavigate();
   const exposureId = exposureIdOf(useParams().slug, data.indices);
-  const { current, resolved } = useGoals();
   const released = useInputs();
   const invest = useInvestState();
-  // The person may type only one number here (this page may be all they use): the goal's empty numbers take the site's example.
-  const fi = useMemo(() => planInputs(compare, current, resolved, released.state), [compare, current, resolved, released.state]);
+  // The numbers the person entered on this device, each one not entered taking the site's example (P-05); never the saved goal
+  // (founder, 2026-10-28: only the goal page speaks of a goal).
+  const fi = useMemo(() => feeInputs(compare, null, released.state), [compare, released.state]);
   const livePlan: WorkbenchInputs = useMemo(
     () => ({
-      // the whole amount today: what the goal keeps available is the comparison's question, not this page's (founder, 2026-10-28)
+      // the whole amount today: what stays available is the comparison's question, not this page's (founder, 2026-10-28)
       amountNow: fi.g.amountNow,
       monthly: fi.g.monthly,
       years: fi.g.horizonYears,
@@ -195,7 +187,7 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
       onOpen={() => setPanelOpen(true)}
       fx={wb.fx}
       today={data.today}
-      hasGoal={plan.fromGoal}
+      example={Object.keys(released.state.entered).length === 0}
     />
   );
 
@@ -249,8 +241,7 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
         <h2 id={`${headId}-as`} className="text-lg font-semibold mb-3">
           {c.plan.panelTitle}
         </h2>
-        {panelOpen && !fi.fromGoal && <ScenarioDefaults inputs={fi} />}
-        {panelOpen && <AssumptionsPanel data={data.form as FormData} suggestion={null} onAdopted={() => {}} leaveOut={["anytime", "insurance", "available"]} />}
+        {panelOpen && <OtherAssumptions inflation={fi.values.inflation} pct={data.form.pct} />}
       </Sheet>
     </LabelSheetHost>
   );

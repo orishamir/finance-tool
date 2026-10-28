@@ -227,13 +227,11 @@ function Body({ wb, compare, data, presets, rules, search }: { wb: WorkbenchBund
   const notComparable = v.rows.filter((r) => r.kind === "not-comparable");
   const names = Object.fromEntries(v.rows.map((r) => [r.id, shortName(r.id, r.name)]));
   const ctx: RowCtx = {
-    wrapperId: data.wrapperId,
     years: v.years,
     level: v.level,
     names,
     theta: v.theta,
     rules,
-    vsId: query.vs,
     onOffer: (id, el) => setOfferFor({ id, anchor: el }),
     onDetail: (id, el) => setDetail({ id, anchor: el }),
     onVs: (id) => setQuery({ vs: id }),
@@ -385,7 +383,7 @@ function Body({ wb, compare, data, presets, rules, search }: { wb: WorkbenchBund
         <h2 id={`${headId}-as`} className="text-lg font-semibold mb-3">
           {c.providers.behaviour.title}
         </h2>
-        {panelOpen && <AssumptionsPanel data={data.form as FormData} suggestion={null} onAdopted={() => undefined} />}
+        {panelOpen && <AssumptionsPanel data={data.form as FormData} suggestion={null} onAdopted={() => undefined} leaveOut={["anytime", "insurance"]} />}
       </Sheet>
     </div>
   );

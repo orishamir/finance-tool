@@ -1224,7 +1224,7 @@ export function RuleCard({ id, data, headId, inline }: { id: string; data: Prove
             <bdi dir="ltr">{fmt.date(rule.recheck_date)}</bdi>
           </Row>
         )}
-        {/* only the dimensions the page can name: a page that passes none (the playbook) shows no empty row */}
+        {/* only the dimensions the page can name: a page that passes none shows no empty row */}
         {rule.dimensions.some((d) => data.dimensions[d]) && (
           <Row label={ruleCopy.dimensions}>
             <span className="flex flex-wrap gap-1.5">
