@@ -270,7 +270,7 @@ function Body({ wb, compare, data, presets, search }: { wb: WorkbenchBundle; com
           <div className="flex flex-col gap-6">
             <div className="flex flex-col gap-2">
               <p className="text-sm text-muted-foreground">{c.funds.sheet.goalLead}</p>
-              <AssumptionsPanel data={form} suggestion={null} onAdopted={() => undefined} />
+              <AssumptionsPanel data={form} suggestion={null} onAdopted={() => undefined} leaveOut={["anytime", "insurance"]} />
             </div>
             {fields}
           </div>

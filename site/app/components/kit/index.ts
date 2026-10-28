@@ -9,6 +9,8 @@ export { CoverageFold, Disclosure, FoldGroup, type DisclosureProps, type FoldGro
 export { ChoiceChips, OtherChip, SegmentedControl, type SegmentOption } from "./choice";
 export { ChipList, dropOrder, type ChipItem, type ChipListProps, type ChipListWords } from "./chip-list";
 export { PlanChips, type PlanChipItem } from "./plan-chips";
+export { KnobStrip, type Knob } from "./knobs";
+export { ChangeChart, type ChangeLine, type ChangeRow } from "./change-chart";
 export { InputSlot, Sentence, Tpl, fill } from "./sentence";
 export { HeadlineFigure, KeyValue, KeyValueList, Stat, StatRow, type KeyValueItem } from "./stat";
 export { GapNote, NoteList, SourceLine } from "./notes";
@@ -22,5 +24,5 @@ export { CompareTable, ValueBar, type CompareRow } from "./compare-table";
 export { ShareRings, type Ring } from "./rings";
 export { LabelChip, LabelFilter, LabelIcon, LabelRow, LabelSheetHost } from "./label-chip";
 export { CostStack, type CostPart } from "./cost-stack";
-export { PickList, type PickRow } from "./pick-list";
+export { PickList, holdOnPick, type PickRow } from "./pick-list";
 export { ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, type ProductColumn, type ProductGroup, type ProductRow } from "./product-table";

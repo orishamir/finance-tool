@@ -76,6 +76,9 @@ already inside a product) it either refuses to answer or answers the wrong quest
 - Keep the caution on the unconfirmed custody line; do not ask the companies for now.
 
 ## Still open after this round
+
+*Status 2026-10-28:* decision 1 is still a provisional amendment to D9, waiting for the founder's confirmation. Decisions 2 to 5 are not recorded as decided in `docs/product.md`. The list below was not re-checked against the site.
+
 - The offer's term on idle cash is page state and is not carried into the comparison's deposit line (the own rate is).
 - In product mode nothing sets a forecast fall, so the "entered a fall that passes" exception to the fit-table demotion works only in exposure mode.
 - The wrapper records' protection text is English only, so the cards show no "what is protected" line yet.

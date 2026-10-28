@@ -2,8 +2,7 @@
 // transfer rules allow and what the fees would save; it recommends nothing ("listed, not ranked", B3). The
 // child-savings card shows the blocked default check (CS OQ10) and what the rule base does know.
 import { Link } from "react-router";
-import { r3holdings as copy, r4playbook as playbookCopy } from "../../copy";
-import { playbookQueryString, playbookWrappers } from "../../lib/playbook";
+import { r3holdings as copy } from "../../copy";
 import { fmt } from "../../lib/format";
 import type { ConsolidationGroup, Fit, HoldingView } from "../../lib/holdings";
 import { IconBan, IconDash, IconDashed, IconHelp, IconOk } from "../compare/icons";
@@ -164,11 +163,6 @@ export function ConsolidationCard({ group, views, rules }: { group: Consolidatio
             ))}
           </ul>
         </div>
-      )}
-      {playbookWrappers.includes(group.wrapperId) && (
-        <Link to={`/switch/${group.wrapperId}${playbookQueryString({ from: group.holdingIds.find((id) => id !== group.target?.holdingId) ?? group.holdingIds[0] ?? null, to: group.target?.holdingId ?? null, fundFrom: null, fundTo: null, share: null })}`} className="text-link min-h-target inline-flex items-center self-start hover:underline">
-          {playbookCopy.links.playbook}
-        </Link>
       )}
     </Card>
   );

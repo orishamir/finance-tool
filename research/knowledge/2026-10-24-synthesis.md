@@ -123,7 +123,7 @@ W-Docs: flows 6.9 (card order), 6.14 (front and shelves), new 6.16 documents pag
 2. **Home page:** a quiet line with a link under the doors (built), or a fifth door for the rules and documents?
 3. **Conditions on every rule** ("מתי זה לא חל", from the research's conditions lines): a Hebrew-writing day for the 214 figure rules first. Go?
 4. **Official publications beside the mirrors:** for the ~15 laws and regulations behind 144 mirror rules, record the Knesset or gazette PDF next to the Wikisource copy. Research hours. Go?
-5. **Open questions on the page:** the ~31 that block a number, as records with "what is unknown" and "what waits", or none.
+5. *Partly built 2026-10-26:* `data/open-questions.json` holds every question's status, and for some a Hebrew title and what it blocks; the chips read it, and the site no longer names a closed question as open. Whether the questions become records of their own on the page is still open. **Open questions on the page:** the ~31 that block a number, as records with "what is unknown" and "what waits", or none.
 6. **The 360 rules in the research that have no record** (about 190 on tier-1 products): write Hebrew records so the browse is complete, or leave them to the research.
 7. **Claim marks inside guide sentences** (one small mark at the end of a surprising sentence, opening its rule): wanted, beyond the "שווה לדעת" block?
 8. **"פירוש של האתר" tag** on rules whose conclusion the law does not state in one sentence: yes or leave it inside the text.

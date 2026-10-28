@@ -9,7 +9,7 @@
         "state": "sourced",
         "source": {
           "url": "docs/parameters-rationale.md#exposure-holding-wrapper",
-          "title": "Founder's choice, made by Claude at his request: exposure holding wrapper",
+          "title": "The site's choice: exposure holding wrapper",
           "publisher": "founder",
           "strength": "primary"
         },
@@ -17,7 +17,7 @@
         "effective_from": "2026-10-24",
         "effective_to": null,
         "update_rule": "founder",
-        "notes": "chosen by Claude at the founder's request, 2026-10-24, revisable; the bank deposit's published rate is the P-05 deposit-terms record's rate_offered (Leumi 365 days), D20",
+        "notes": "chosen for the site at the founder's request, 2026-10-24, revisable; the bank deposit's published rate is the P-05 deposit-terms record's rate_offered (Leumi 365 days), D20",
         "rationale_he": "מזומן שקלי מוחזק בפיקדון קבוע בבנק, בריבית שהבנק פרסם. זו ברירת מחדל של האתר, ואפשר להחליף מוצר בכל שורה."
       },
       "status": "evaluated",
@@ -31,7 +31,7 @@
         "state": "sourced",
         "source": {
           "url": "docs/parameters-rationale.md#exposure-holding-wrapper",
-          "title": "Founder's choice, made by Claude at his request: exposure holding wrapper",
+          "title": "The site's choice: exposure holding wrapper",
           "publisher": "founder",
           "strength": "primary"
         },
@@ -39,7 +39,7 @@
         "effective_from": "2026-10-24",
         "effective_to": null,
         "update_rule": "founder",
-        "notes": "chosen by Claude at the founder's request, 2026-10-24, revisable; makam held directly in a securities account, the makam security record (D6 amended 2026-10-26: a security held in the account, not a wrapper); no sourced yield exists (D20), so the person enters one",
+        "notes": "chosen for the site at the founder's request, 2026-10-24, revisable; makam held directly in a securities account, the makam security record (D6 amended 2026-10-26: a security held in the account, not a wrapper); no sourced yield exists (D20), so the person enters one",
         "rationale_he": "מק״מ מוחזק במוצר המק״מ. אין לו תשואה ממקור, ולכן התשואה מוזנת על ידכם."
       },
       "status": "evaluated",
@@ -53,7 +53,7 @@
         "state": "sourced",
         "source": {
           "url": "docs/parameters-rationale.md#exposure-holding-wrapper",
-          "title": "Founder's choice, made by Claude at his request: exposure holding wrapper",
+          "title": "The site's choice: exposure holding wrapper",
           "publisher": "founder",
           "strength": "primary"
         },
@@ -61,7 +61,7 @@
         "effective_from": "2026-10-24",
         "effective_to": null,
         "update_rule": "founder",
-        "notes": "chosen by Claude at the founder's request, 2026-10-24, revisable; the bond held directly in a securities account, the government-bond security record (D6 amended 2026-10-26); series GOV-11 (CPI-linked), the series P-05's government-bond entry names",
+        "notes": "chosen for the site at the founder's request, 2026-10-24, revisable; the bond held directly in a securities account, the government-bond security record (D6 amended 2026-10-26); series GOV-11 (CPI-linked), the series P-05's government-bond entry names",
         "rationale_he": "אג״ח ממשלתית צמודה מוחזקת במוצר האג״ח הממשלתית, לפי סדרה צמודה למדד שנאספה לאתר. זו ברירת מחדל של האתר, ואפשר להחליף מוצר."
       },
       "status": "evaluated",
@@ -75,7 +75,7 @@
         "state": "sourced",
         "source": {
           "url": "docs/parameters-rationale.md#exposure-holding-wrapper",
-          "title": "Founder's choice, made by Claude at his request: exposure holding wrapper",
+          "title": "The site's choice: exposure holding wrapper",
           "publisher": "founder",
           "strength": "primary"
         },
@@ -83,7 +83,7 @@
         "effective_from": "2026-10-24",
         "effective_to": null,
         "update_rule": "founder",
-        "notes": "chosen by Claude at the founder's request, 2026-10-24, revisable; not evaluated: the engine does not run a fixed-rate unlinked series yet. Its coupon frequency, yearly, is now in the rule base (GOV-13; GOV OQ4 narrowed to the old Shachar text, 2026-10-26), so whether to evaluate the row is the lead's call",
+        "notes": "chosen for the site at the founder's request, 2026-10-24, revisable; not evaluated: the engine does not run a fixed-rate unlinked series yet. Its coupon frequency, yearly, is now in the rule base (GOV-13; GOV OQ4 narrowed to the old Shachar text, 2026-10-26), so whether to evaluate the row is the lead's call",
         "rationale_he": "אג״ח ממשלתית לא צמודה מוחזקת באותו מוצר, אבל האתר עוד לא מחשב אותה."
       },
       "status": "not-evaluated",
@@ -96,7 +96,7 @@
         "state": "sourced",
         "source": {
           "url": "docs/parameters-rationale.md#exposure-holding-wrapper",
-          "title": "Founder's choice, made by Claude at his request: exposure holding wrapper",
+          "title": "The site's choice: exposure holding wrapper",
           "publisher": "founder",
           "strength": "primary"
         },
@@ -104,7 +104,7 @@
         "effective_from": "2026-10-24",
         "effective_to": null,
         "update_rule": "founder",
-        "notes": "chosen by Claude at the founder's request, 2026-10-24, revisable; held through fund 1148162, the fund P-05's brokerage entry names",
+        "notes": "chosen for the site at the founder's request, 2026-10-24, revisable; held through fund 1148162, the fund P-05's brokerage entry names",
         "rationale_he": "מדד S&P 500 מוחזק בחשבון ניירות ערך, דרך קרן שנאספה לאתר. זו ברירת מחדל של האתר, ואפשר להחליף מוצר."
       },
       "status": "evaluated",
@@ -119,7 +119,7 @@
         "state": "sourced",
         "source": {
           "url": "docs/parameters-rationale.md#exposure-holding-wrapper",
-          "title": "Founder's choice, made by Claude at his request: exposure holding wrapper",
+          "title": "The site's choice: exposure holding wrapper",
           "publisher": "founder",
           "strength": "primary"
         },
@@ -127,7 +127,7 @@
         "effective_from": "2026-10-24",
         "effective_to": null,
         "update_rule": "founder",
-        "notes": "chosen by Claude at the founder's request, 2026-10-24, revisable; held through fund 1143718 (collected 2026-10-24, exposure_id index-ta125) at Leumi's tariff, the tariff P-05's brokerage-account entry names",
+        "notes": "chosen for the site at the founder's request, 2026-10-24, revisable; held through fund 1143718 (collected 2026-10-24, exposure_id index-ta125) at Leumi's tariff, the tariff P-05's brokerage-account entry names",
         "rationale_he": "מדד ת״א-125 מוחזק בחשבון ניירות ערך, דרך קרן שנאספה לאתר, בתעריפון של לאומי. זו ברירת מחדל של האתר, ואפשר להחליף מוצר."
       },
       "status": "evaluated",
@@ -142,7 +142,7 @@
         "state": "sourced",
         "source": {
           "url": "docs/parameters-rationale.md#exposure-holding-wrapper",
-          "title": "Founder's choice, made by Claude at his request: exposure holding wrapper",
+          "title": "The site's choice: exposure holding wrapper",
           "publisher": "founder",
           "strength": "primary"
         },
@@ -150,7 +150,7 @@
         "effective_from": "2026-10-24",
         "effective_to": null,
         "update_rule": "founder",
-        "notes": "chosen by Claude at the founder's request, 2026-10-24, revisable; the manager's list fees (Meitav), the return is entered by the person (D9)",
+        "notes": "chosen for the site at the founder's request, 2026-10-24, revisable; the manager's list fees (Meitav), the return is entered by the person (D9)",
         "rationale_he": "המסלול הכללי מוחזק בקופת גמל להשקעה, בדמי הניהול שבתעריפון של מיטב. התשואה מוזנת על ידכם."
       },
       "status": "evaluated",

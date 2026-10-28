@@ -20,6 +20,7 @@ import {
 } from "./formulas/holding-tax.ts";
 import { mostCommonRate, rateRange } from "./formulas/account-interest.ts";
 import { currencyExposureShare, stockExposureShare } from "./formulas/track-exposure.ts";
+import { changeEffect, sweep } from "./formulas/step-effect.ts";
 import { annualToMonthly, contributions, cpiPath, crossRate, fxPath, monthlyInflation, realValue, taxYearOf } from "./formulas/time.ts";
 import { runBond } from "./ledgers/bond.ts";
 import { runChildSavings } from "./ledgers/child-savings.ts";
@@ -46,7 +47,7 @@ import { feeVerdict } from "./fees/verdict.ts";
 import { consolidation } from "./holdings/consolidation.ts";
 import { classificationFit } from "./holdings/fit.ts";
 import { trackWorkbench } from "./holdings/workbench.ts";
-import { providerWorkbench } from "./providers/workbench.ts";
+import { costByWho, providerWorkbench } from "./providers/workbench.ts";
 import { fundVariants } from "./variants/fund-variants.ts";
 import { switchingCost } from "./variants/switching.ts";
 
@@ -117,6 +118,9 @@ export const formulas = {
   "F-86": rateRange,
   "F-87": stockExposureShare,
   "F-88": currencyExposureShare,
+  "F-89": changeEffect,
+  "F-90": sweep,
+  "F-91": costByWho,
 } as const;
 
 /** Ledger runs, by the instrument family they model. */
