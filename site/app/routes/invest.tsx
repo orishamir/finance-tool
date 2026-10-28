@@ -1,7 +1,7 @@
 // "השקעה במדד" (D28, spec research/specs/2026-10-25-invest-page/spec.md): for an index the person chooses (or adds), the options
 // for owning it, the cheapest broker for each, and the cheapest complete way for the plan. `/indices` chooses nothing (D27);
 // `/indices/<x>` opens the known index `index-<x>` (pre-rendered); a custom index lives on the device and opens at `/indices?custom=<id>`.
-import { useDeferredValue, useEffect, useId, useMemo, useState } from "react";
+import { useEffect, useId, useMemo, useState } from "react";
 import { useLoaderData, useLocation, useNavigate, useParams } from "react-router";
 import type { RuleRecord } from "@finance-tool/schema";
 import type { Route } from "./+types/invest";
@@ -24,6 +24,7 @@ import { RulesLine } from "../components/provenance";
 import { loadBundle, bundleLinks } from "../lib/bundle";
 import { type CompareBundle } from "../lib/compare";
 import { planInputs } from "../lib/plan-inputs";
+import { useSettled } from "../lib/settled";
 import { GoalsProvider, useGoals, type Presets } from "../lib/goal";
 import { useInputs } from "../lib/inputs";
 import { buildInvest, exposureIdOfSlug, indexById, INDICES_PATH, knownIndices, refOfCustom, type CustomIndex, type IndexRef } from "../lib/invest";
@@ -143,8 +144,9 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
     }),
     [fi],
   );
-  // pricing every account and fund takes about half a second: a slider moves at once and the results follow (2026-10-28)
-  const plan = useDeferredValue(livePlan);
+  // The result and the knobs' step figures price one or two pairs (a few ms) and follow a slider live; the two lists price every
+  // account and fund (about 200 ms) and wait until the slider rests (founder, 2026-10-28: "sliding the sliders is very laggy").
+  const plan = useSettled(livePlan, 250);
 
   const customs: CustomIndex[] = invest.customIndices;
   const customId = new URLSearchParams(search).get("custom");
@@ -188,7 +190,7 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
 
   const planBlock = (
     <PlanBlock
-      knobs={<PlanKnobs fi={fi} plan={plan} ranges={data.form.knobs} bundle={wb} view={view} pick={pick} pct={data.form.pct} />}
+      knobs={<PlanKnobs fi={fi} plan={livePlan} ranges={data.form.knobs} bundle={wb} view={view} pick={pick} pct={data.form.pct} />}
       onOpen={() => setPanelOpen(true)}
       fx={wb.fx}
       today={data.today}
@@ -214,7 +216,7 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
             {planBlock}
             {pick ? (
               <>
-                <PairResult view={view} bundle={wb} plan={plan} pick={pick} onPick={onPick} />
+                <PairResult view={view} bundle={wb} plan={livePlan} pick={pick} onPick={onPick} />
                 <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_2.5rem_minmax(0,32.5rem)] xl:grid-cols-[minmax(0,5fr)_2.5rem_minmax(0,7fr)] items-start">
                   <AccountColumn view={view} bundle={wb} years={plan.years} pick={pick} onPick={onPick} />
                   <span aria-hidden="true" className="hidden lg:grid place-items-center size-9 mt-10 rounded-full border border-input bg-popover text-xl text-muted-foreground justify-self-center">
