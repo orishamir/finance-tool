@@ -54,7 +54,7 @@
       "rationale_he": "מספר השנים שהגרף מציג. זה אופק עגול שהאתר בחר לדוגמה, לא המלצה לכמה זמן לחסוך. אפשר לשנות אותו במחוון או להקליד מספר אחר."
     },
     "A-01": {
-      "value": 5,
+      "value": 7,
       "unit": "pct_per_year",
       "state": "sourced",
       "source": {
@@ -63,8 +63,8 @@
         "publisher": "founder",
         "strength": "primary"
       },
-      "checked": "2026-10-23",
-      "effective_from": "2026-10-23",
+      "checked": "2026-10-28",
+      "effective_from": "2026-10-28",
       "effective_to": null,
       "update_rule": "founder",
       "notes": "gross yearly return for market products (funds, ETFs, provident, hishtalmut, pension); a starting value, not a forecast (D9)",
