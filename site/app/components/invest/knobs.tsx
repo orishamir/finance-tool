@@ -1,17 +1,16 @@
-// The indices page's plan controls (founder, 2026-10-28): the four plan numbers as sliders that write the current goal, as the
-// assumptions panel does; buttons that try one more step of each (F-89), on top; and the result across each number's range (F-90),
-// at the bottom of the page.
-import { useMemo, useState, type ReactNode } from "react";
-import { stepEffect, sweep } from "@finance-tool/engine";
+// The indices page's plan controls (founder, 2026-10-28): the four plan numbers as plain sliders that write the current goal, as the
+// assumptions panel does; and, at the bottom of the page, the result across each number's range (F-90).
+import { useMemo } from "react";
+import { sweep } from "@finance-tool/engine";
 import { invest as c, r2, values as valuesCopy } from "../../copy";
 import type { FeeInputs } from "../../lib/fees";
 import { fmt } from "../../lib/format";
 import { useGoals } from "../../lib/goal";
 import { pairCosts, type InvestView } from "../../lib/invest";
 import type { WorkbenchBundle, WorkbenchInputs } from "../../lib/providers";
-import { computed, type SiteValue } from "../../lib/value";
+import { computed } from "../../lib/value";
 import { Num } from "../provenance";
-import { KnobStrip, percentCheck, ResultCurves, TryButtons, type Curve, type Knob, type TryItem } from "../kit";
+import { KnobStrip, percentCheck, ResultCurves, type Curve, type Knob } from "../kit";
 
 type Range = { min: number; max: number; step: number; nudge: number };
 export type KnobRanges = Record<"amount_now" | "monthly_deposit" | "horizon_years" | "A-01", Range>;
@@ -67,53 +66,6 @@ export function PlanKnobs({ fi, ranges, pct }: { fi: FeeInputs; ranges: KnobRang
     { ...field("ret"), unit: "pct_per_year", ...span(ranges["A-01"]), validate: percentCheck(pct) },
   ];
   return <KnobStrip knobs={knobs} />;
-}
-
-/** F-89 on buttons: a press applies the step; a second press puts back the value it replaced. */
-export function PlanTry({ fi, plan, ranges, bundle, view, pick }: { fi: FeeInputs; plan: WorkbenchInputs; ranges: KnobRanges; bundle: WorkbenchBundle; view: InvestView | null; pick: Pair }) {
-  const setKnob = useSetKnob();
-  const left = usePairLeft(bundle, view, pick);
-  // the step applied last: the knob, the value it set, and the value it replaced (null: the start value)
-  const [applied, setApplied] = useState<{ id: Id; to: number; before: number | null } | null>(null);
-  const deltas = useMemo(() => {
-    if (!left) return null;
-    const base = left(plan);
-    if (!base) return null;
-    // the plan as it is was priced just above: each step prices only the changed plan
-    const L = (p: WorkbenchInputs) => (p === plan ? (base.value as number) : ((left(p)?.value as number | undefined) ?? null));
-    return Object.fromEntries(
-      KNOBS.map(({ id, key, range, scale }) => {
-        const d = stepEffect(L, plan, key, ranges[range].nudge, ranges[range].max, scale);
-        return [id, d === null ? null : computed(Math.round(d), "nis", "F-89", { [k.about]: base }, { today: bundle.today, about: k.about })];
-      }),
-    ) as Record<Id, SiteValue | null>;
-  }, [left, plan, ranges, bundle.today]);
-  if (!deltas) return null;
-
-  const words: Record<Id, ReactNode> = {
-    amount: <>{k.more} <bdi>{fmt.nisWhole(ranges.amount_now.nudge)}</bdi> {k.today}</>,
-    monthly: <>{k.more} <bdi>{fmt.nisWhole(ranges.monthly_deposit.nudge)}</bdi> {k.perMonth}</>,
-    years: k.oneYear,
-    ret: <>{k.more} <bdi>{fmt.pct(ranges["A-01"].nudge)}</bdi> {k.retStep}</>,
-  };
-  const isOn = (id: Id) => !!applied && applied.id === id && applied.to === valueOf(fi, id).value;
-  const items: TryItem[] = KNOBS.flatMap(({ id }) => {
-    const d = deltas[id];
-    return d ? [{ id, step: words[id], delta: <Num value={d} display={`+${fmt.nisWhole(d.value as number)}`} />, size: d.value as number, active: isOn(id) }] : [];
-  });
-  const onToggle = (raw: string) => {
-    const knob = KNOBS.find((x) => x.id === raw)!;
-    if (isOn(knob.id)) {
-      setKnob(knob.id, applied!.before);
-      setApplied(null);
-      return;
-    }
-    const v = valueOf(fi, knob.id);
-    const to = Math.min(ranges[knob.range].max, v.value + ranges[knob.range].nudge);
-    setKnob(knob.id, to);
-    setApplied({ id: knob.id, to, before: v.entered ? v.value : null });
-  };
-  return <TryButtons items={items} onToggle={onToggle} lead={k.tryLead} most={k.most} activeNote={k.tryUndo} />;
 }
 
 /** F-90: the result across each number's range, at the bottom of the page; 64 runs, so it takes the plan once a slider rests. */
