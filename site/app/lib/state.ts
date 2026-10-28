@@ -697,9 +697,12 @@ export function setCurrentBroker(id: string | null): void {
   });
 }
 
+/** One empty list for every render: a new `[]` each time made the index page price every account and fund again on any change (2026-10-28). */
+const NO_CUSTOM: CustomIndex[] = [];
+
 export function useInvestState() {
   const snapshot = useStateStore();
-  return { ready: snapshot.ready, status: snapshot.status, customIndices: snapshot.state.customIndices ?? [], broker: snapshot.state.broker ?? null, saved: snapshot.saved, add: saveCustomIndex, rename: renameCustomIndex, remove: removeCustomIndex, setBroker: setCurrentBroker };
+  return { ready: snapshot.ready, status: snapshot.status, customIndices: snapshot.state.customIndices ?? NO_CUSTOM, broker: snapshot.state.broker ?? null, saved: snapshot.saved, add: saveCustomIndex, rename: renameCustomIndex, remove: removeCustomIndex, setBroker: setCurrentBroker };
 }
 
 // ---------------------------------------------------------------- saved comparisons
