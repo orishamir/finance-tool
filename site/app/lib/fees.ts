@@ -700,7 +700,7 @@ export function feeSensitivity(a: AnalyseArgs, base: Analysis, runBundle: Compar
     horizonYears: g.horizonYears,
     fees: scalable.map((l) => ({ key: l.line, label: r3fees.names[l.line]! })),
   });
-  for (const ax of axes) ax.label = ax.key === "A-01" ? "תשואה שנתית" : ax.key === "A-02" ? "אינפלציה" : ax.key === "horizon" ? "תקופת ההחזקה" : `${ax.label}${r3fees.sens.feeAxis}`;
+  for (const ax of axes) ax.label = ax.key === "A-01" ? r3fees.sens.axes.ret : ax.key === "A-02" ? r3fees.sens.axes.inflation : ax.key === "horizon" ? r3fees.sens.axes.years : `${ax.label}${r3fees.sens.feeAxis}`;
   const totalFor = (fm: FeeMateriality) => fm.total.value as number;
   const topOf = (key: string, value: number): string => {
     const goal: RunGoal = { ...g };

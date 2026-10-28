@@ -156,7 +156,10 @@ function errorText(e: PlanError, wrapperId: string): React.ReactNode {
       return (
         <>
           {r3fees.review.needInput}
-          {/insurance/.test(e.detail) ? "עלות הביטוח בקרן הפנסיה (A-17)" : /salary/i.test(e.detail) ? "שכר חודשי" : /employment|hishtalmut/i.test(e.detail) ? "סוג ההעסקה" : /age/i.test(e.detail) ? "גיל" : r3fees.review.needGeneric}.
+          {(() => {
+            const n = r3fees.review.needNames;
+            return /insurance/.test(e.detail) ? n.insurance : /salary/i.test(e.detail) ? n.salary : /employment|hishtalmut/i.test(e.detail) ? n.employment : /age/i.test(e.detail) ? n.age : r3fees.review.needGeneric;
+          })()}.
         </>
       );
     case "no-fee":

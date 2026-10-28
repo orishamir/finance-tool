@@ -1635,6 +1635,7 @@ export const r3fees = {
   assumptionsTitle: "ההנחות של חישוב העמלות",
   sens: {
     title: "מה היה משנה את המסקנה",
+    axes: { ret: "תשואה שנתית", inflation: "אינפלציה", years: "תקופת ההחזקה" },
     flipVerdict: ["המסקנה על ", " מתהפכת אם ", " תעבור מ־", " ל־", ": אז "],
     flipLargest: ["העמלה הגדולה מתחלפת אם ", " תעבור מ־", " ל־", ": אז "],
     noFlip: "לא מתהפכת בטווח שנבדק: ",
@@ -1667,6 +1668,7 @@ export const r3fees = {
     needInput: "כדי לחשב צריך עוד פרט: ",
     // copy.md 7.1 (added 2026-10-24, B3): no engine message reaches the page
     needGeneric: "אחד מהערכים בהנחות",
+    needNames: { insurance: "עלות הביטוח בקרן הפנסיה (A-17)", salary: "שכר חודשי", employment: "סוג ההעסקה", age: "גיל" },
     genericFail: "האתר לא הצליח להריץ את החישוב עם הערכים האלה. בדקו את ההנחות שהזנתם.",
     blockedRun: "החישוב למוצר הזה חסום: ",
     sensRunning: "בודק…",
