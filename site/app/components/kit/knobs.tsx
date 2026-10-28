@@ -7,7 +7,7 @@ export interface Knob extends RangeFieldProps {
 
 /**
  * The plan's numbers as sliders that stay on screen, for a page meant to be played with (the indices page, founder 2026-10-28):
- * two columns on a computer, one on a phone. What one more step does is `TryButtons`; the result across a range is `ResultCurves`.
+ * two columns on a computer, one on a phone. The result across a range is `ResultCurves`.
  */
 export function KnobStrip({ knobs, lead }: { knobs: Knob[]; lead?: ReactNode }) {
   return (
