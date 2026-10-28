@@ -53,7 +53,8 @@ function Suggest({ s, field, onAdopt, children }: { s: Suggestion | null; field:
 }
 
 /** The fields of flow 16: horizon, amount now, monthly, what must stay available, return, inflation, withdrawable at any time. */
-export function AssumptionsPanel({ data, suggestion, onAdopted, exposure }: { data: FormData; suggestion: Suggestion | null; onAdopted: () => void; exposure?: boolean }) {
+/** `noAnytime`: a page whose options can all be sold any trading day (the indices page) leaves the switch out. */
+export function AssumptionsPanel({ data, suggestion, onAdopted, exposure, noAnytime }: { data: FormData; suggestion: Suggestion | null; onAdopted: () => void; exposure?: boolean; noAnytime?: boolean }) {
   const { current, resolved, update, setEnteredReturn, setInflation } = useGoals();
   if (!current || !resolved) return null;
   const set = (k: "horizonYears" | "amountNow" | "monthly" | "available") => (n: number | null) => update((g) => ({ ...g, [k]: n === null ? { value: null, entered: false } : { value: n, entered: true } }));
@@ -90,7 +91,7 @@ export function AssumptionsPanel({ data, suggestion, onAdopted, exposure }: { da
       </div>
       <InsuranceField data={data} />
       {!exposure && <p className="text-xs text-muted-foreground -mt-2">{current.assumptions.return === null ? `${r2.form.returnEmpty} ${r2.form.returnHint}` : r2.form.returnFilled}</p>}
-      <SwitchRow label={r2.form.anytime} checked={resolved.anytime} source={src.anytime} onChange={(v) => update((g) => ({ ...g, anytime: { value: v, entered: true } }))} onReset={() => update((g) => ({ ...g, anytime: { value: false, entered: false } }))} />
+      {!noAnytime && <SwitchRow label={r2.form.anytime} checked={resolved.anytime} source={src.anytime} onChange={(v) => update((g) => ({ ...g, anytime: { value: v, entered: true } }))} onReset={() => update((g) => ({ ...g, anytime: { value: false, entered: false } }))} />}
     </div>
   );
 }

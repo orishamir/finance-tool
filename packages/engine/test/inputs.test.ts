@@ -277,8 +277,9 @@ describe("a golden scenario rebuilt from equivalent records gives the golden res
       // S47 runs the daily fund at S11's 3.25%, not P-05's 3.5% cash rate: entered here to match.
       mmf: () =>
         runPlanned(runInputs(records.mmf, parameters, terms.mmf, { entered: { cash_rate: vo(3.25, "pct_per_year", "entered") } }), ctx),
-      etf: () => runPlanned(runInputs(records.brokerage, parameters, terms.etf), ctx),
-      kgl: () => runPlanned(runInputs(records.kgl, parameters, terms.kgl), ctx),
+      // S47 runs market products at 5%; P-05's A-01 is 7% since 2026-10-28: entered here to match.
+      etf: () => runPlanned(runInputs(records.brokerage, parameters, terms.etf, { entered: { "A-01": vo(5, "pct_per_year", "entered") } }), ctx),
+      kgl: () => runPlanned(runInputs(records.kgl, parameters, terms.kgl, { entered: { "A-01": vo(5, "pct_per_year", "entered") } }), ctx),
     });
 
     // The same runs as golden.test.ts S47, with its literal inputs.
