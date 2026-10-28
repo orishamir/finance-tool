@@ -18,6 +18,21 @@ export interface PickRow {
  * a cell may move to a second line (`max-md:row-start-2`). `head`: the column names, on the same grid. `phoneLimit`: on a phone, the
  * rows after the first N fold behind a button (`more` words it), the chosen row always shown; nothing is filtered out.
  */
+/** A click on a control inside a row (a figure's sheet, a link, a label) is that control's, not a pick (founder, 2026-10-27). */
+const inControl = (target: EventTarget, row: HTMLElement) => {
+  const hit = (target as Element).closest?.("a, button, input, select, textarea, [role=button], [role=link]");
+  return !!hit && hit !== row && row.contains(hit);
+};
+
+// A pick made outside the list (a name in a "not priced" line under it) that brings a row into the list: that row takes the place on the
+// screen of what was tapped. One pending hold for the page; the list that has the row takes it.
+let pending: { key: string; top: number } | null = null;
+
+/** Call before a pick made outside the list: the list row `key` will appear where `el` is now. */
+export function holdOnPick(key: string, el: HTMLElement) {
+  pending = { key, top: el.getBoundingClientRect().top };
+}
+
 export function PickList({ label, columns, phoneColumns, head, rows, phoneLimit, more }: { label: string; columns: string; phoneColumns?: string; head?: ReactNode; rows: PickRow[]; phoneLimit?: number; more?: (hidden: number) => string }) {
   const [open, setOpen] = useState(false);
   // a pick re-prices what is above the list (founder, 2026-10-27: "the whole page jumps up and down"): keep the tapped row where it
@@ -25,9 +40,11 @@ export function PickList({ label, columns, phoneColumns, head, rows, phoneLimit,
   const root = useRef<HTMLDivElement>(null);
   const anchor = useRef<{ key: string; top: number } | null>(null);
   useLayoutEffect(() => {
-    const a = anchor.current;
+    const outside = pending && rows.some((r) => r.key === pending!.key) ? pending : null;
+    const a = anchor.current ?? outside;
     if (!a || !root.current) return;
     anchor.current = null;
+    if (a === outside) pending = null;
     const list = root.current;
     const hold = () => {
       const el = [...list.querySelectorAll<HTMLElement>("[data-pick-key]")].find((x) => x.dataset.pickKey === a.key);
@@ -56,16 +73,18 @@ export function PickList({ label, columns, phoneColumns, head, rows, phoneLimit,
         </div>
       )}
       {rows.map((r, i) => (
-        // a div, not a button: a row holds links of its own (a fund's number to Maya, a house's page)
+        // a div, not a button: a row holds controls of its own (a fund's number to Maya, a figure's sheet), and a click on one is not a pick
         <div
           key={r.key}
           role="radio"
           aria-checked={r.selected}
           data-pick-key={r.key}
           tabIndex={r.selected ? 0 : -1}
-          onClick={(e) => choose(r, e.currentTarget)}
+          onClick={(e) => {
+            if (!inControl(e.target, e.currentTarget)) choose(r, e.currentTarget);
+          }}
           onKeyDown={(e) => {
-            if (e.key === " " || e.key === "Enter") {
+            if ((e.key === " " || e.key === "Enter") && e.target === e.currentTarget) {
               e.preventDefault();
               choose(r, e.currentTarget);
             } else if (e.key === "ArrowDown" || e.key === "ArrowUp") {

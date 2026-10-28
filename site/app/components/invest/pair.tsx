@@ -13,7 +13,7 @@ import { computed, type SiteValue } from "../../lib/value";
 import { fmt } from "../../lib/format";
 import { IconLock } from "../icons";
 import { Num } from "../provenance";
-import { Button, Card, ChartLegend, CostStack, LabelChip, LabelFilter, LabelRow, PickList, ProductIdLink, Sentence, Swatch, Tag, cx, type CostPart, type PickRow } from "../kit";
+import { Button, Card, ChartLegend, CostStack, LabelChip, LabelFilter, LabelRow, PickList, holdOnPick, ProductIdLink, Sentence, Swatch, Tag, cx, type CostPart, type PickRow } from "../kit";
 import { optionClass, OptionTag, reasonText } from "./parts";
 import { ProviderLink, providerName } from "./sections";
 import { Fees } from "./funds";
@@ -95,7 +95,7 @@ function CostBar({ who, sub, pc, scale, you, today }: { who: string; sub: string
         <CostStack parts={parts} scale={scale} label={`${who}: ${fmt.nisWhole(total)}`} />
       </div>
       <span className="text-end font-semibold">
-        <Num value={nis(total, "F-61", who, today, { left: pc.left })} />
+        <Num value={nis(total, "F-61", who, today, { [c.pair.input(who, c.pair.colLeft)]: pc.left })} />
       </span>
     </div>
   );
@@ -123,12 +123,15 @@ export function PairResult({ view, bundle, plan, pick, onPick }: { view: InvestV
   const months = 12 * plan.years;
   // the legend names every account line whichever pair is shown, so it keeps its size from one pick to the next
   const lines = [...Object.keys(lineClass), ...([...pc.account, ...(pcOther?.account ?? [])].some((l) => lineOf(l.line) === "other") ? ["other"] : [])];
-  const gap = (a: SiteValue, b: SiteValue, about: string) => nis((a.value as number) - (b.value as number), "F-65", about, bundle.today, { a, b });
+  // a gap names its two inputs by whose they are, as the figure's sheet lists them
+  const gap = (a: SiteValue, aName: string, b: SiteValue, bName: string, about: string) => nis((a.value as number) - (b.value as number), "F-65", about, bundle.today, { [aName]: a, [bName]: b });
+  const otherRole = onBest ? c.pair.next : c.pair.cheapest;
   const parts = partsOf(pc);
   const scale = Math.max(totalOf(parts), pcOther ? totalOf(partsOf(pcOther)) : 0);
   const sumAccount = (x: PairCosts) => x.account.reduce((a, l) => a + (l.cost.value as number), 0) + x.interaction;
   const nameOf = (p: Pick) => providerName(view, p.house)?.short ?? p.house;
   const otherTitle = onBest ? c.pair.next : c.pair.cheapestStar;
+  const moreIfOther = pcOther ? gap(pcOther.left, c.pair.input(otherRole, c.pair.colLeft), pc.left, c.pair.input(c.pair.yours, c.pair.colLeft), c.pair.moreIfCheapest) : null;
   return (
     <Card pad="roomy" className="flex flex-col gap-5">
       <div className="flex flex-col gap-4 md:flex-row md:flex-wrap md:items-stretch md:gap-x-6">
@@ -165,11 +168,11 @@ export function PairResult({ view, bundle, plan, pick, onPick }: { view: InvestV
                 <span>
                   {onBest ? (
                     <>
-                      <Num value={gap(pcOther.left, pc.left, c.pair.vsYours)} /> {c.pair.vsYours}
+                      <Num value={gap(pcOther.left, c.pair.input(otherRole, c.pair.colLeft), pc.left, c.pair.input(c.pair.yours, c.pair.colLeft), c.pair.vsYours)} /> {c.pair.vsYours}
                     </>
                   ) : (
                     <>
-                      <Num value={gap(pcOther.left, pc.left, c.pair.moreIfCheapest)} display={plus(gap(pcOther.left, pc.left, c.pair.moreIfCheapest))} /> {c.pair.moreIfCheapest}
+                      <Num value={moreIfOther!} display={plus(moreIfOther!)} /> {c.pair.moreIfCheapest}
                     </>
                   )}
                 </span>
@@ -190,9 +193,9 @@ export function PairResult({ view, bundle, plan, pick, onPick }: { view: InvestV
           <Sentence size="sm" tone="muted">
             {c.pair.gapLead} {c.pair.gapPart.account} <Num value={nis(sumAccount(pc) - sumAccount(pcOther), "F-63", c.pair.gapPart.account, bundle.today)} />
             {" · "}
-            {c.pair.gapPart.fund} <Num value={gap(pc.fund, pcOther.fund, c.pair.gapPart.fund)} />
+            {c.pair.gapPart.fund} <Num value={gap(pc.fund, c.pair.input(c.pair.yours, c.pair.fundLine), pcOther.fund, c.pair.input(otherRole, c.pair.fundLine), c.pair.gapPart.fund)} />
             {" · "}
-            {c.pair.gapPart.tax} <Num value={gap(pc.tax, pcOther.tax, c.pair.gapPart.tax)} />
+            {c.pair.gapPart.tax} <Num value={gap(pc.tax, c.pair.input(c.pair.yours, c.pair.taxLine), pcOther.tax, c.pair.input(otherRole, c.pair.taxLine), c.pair.gapPart.tax)} />
           </Sentence>
         )}
       </div>
@@ -240,7 +243,7 @@ export function AccountColumn({ view, bundle, years, pick, onPick }: { view: Inv
       cells: (
         <>
           <span className="text-sm text-muted-foreground tabular-nums text-center">{r.at.open ? "—" : i + 1}</span>
-          <span className={cx("flex flex-col leading-tight font-semibold whitespace-nowrap", isYours && "text-entered")}>
+          <span className={cx("flex flex-col min-w-0 leading-tight font-semibold", isYours && "text-entered")}>
             {r.p.short}
             {isYours && <span className="text-xs font-normal text-muted-foreground">{c.pair.yoursTag}</span>}
             {isBest && <span className="text-xs font-medium text-primary">{c.pair.cheapestTag}</span>}
@@ -287,7 +290,7 @@ export function AccountColumn({ view, bundle, years, pick, onPick }: { view: Inv
       </div>
       <PickList
         label={c.pair.listLabelAccounts}
-        columns="1.5rem 8rem minmax(0,1fr) 6.5rem"
+        columns="1.5rem 9.5rem minmax(0,1fr) 6.5rem"
         phoneColumns="1.25rem minmax(0,1fr) auto"
         head={
           <>
@@ -314,7 +317,11 @@ export function AccountColumn({ view, bundle, years, pick, onPick }: { view: Inv
                 <span>{text}</span>
                 <span className="flex flex-wrap gap-x-1">
                   {ids.map((id, i) => (
-                    <button key={id} type="button" className="text-link hover:underline" onClick={() => onPick(repick(view, pick, { house: id }))}>
+                    <button key={id} type="button" className="text-link hover:underline" onClick={(e) => {
+                        holdOnPick(id, e.currentTarget);
+                        onPick(repick(view, pick, { house: id }));
+                      }}
+                    >
                       {providerName(view, id)?.short ?? id}
                       {i < ids.length - 1 ? " ·" : ""}
                     </button>
@@ -360,6 +367,7 @@ export function FundColumn({ view, today, pick, onPick, filter, onFilter }: { vi
   const shown = rows.filter((r) => !active || r.labels.some((l) => l.id === active) || r.f.rec.id === pick.fund);
   const order = (r: (typeof rows)[number]) => (priced(r.at) ? (r.at.open ? 1 : 0) : 2);
   shown.sort((a, b) => order(a) - order(b) || (priced(b.at) ? b.at.valueN : 0) - (priced(a.at) ? a.at.valueN : 0));
+  const diff = (n: number, name: string, value: SiteValue, sel: SiteValue) => nis(n, "F-65", c.pair.colDiff, today, { [c.pair.input(name, c.pair.colLeft)]: value, [c.pair.input(`${c.pair.chosen}, ${fund.name}`, c.pair.colLeft)]: sel });
   const pickRows: PickRow[] = shown.map((r) => {
     const at = r.at;
     const isSel = r.f.rec.id === pick.fund;
@@ -367,11 +375,15 @@ export function FundColumn({ view, today, pick, onPick, filter, onFilter }: { vi
       <span className="text-sm text-muted-foreground">{c.pair.chosen}</span>
     ) : priced(at) && priced(selAt) ? (
       <span className="font-semibold">
-        <Num value={nis(at.valueN - selAt.valueN, "F-65", c.pair.colDiff, today, { a: at.value, b: selAt.value })} display={plus(nis(at.valueN - selAt.valueN, "F-65", c.pair.colDiff, today))} />
+        <Num value={diff(at.valueN - selAt.valueN, r.f.name, at.value, selAt.value)} display={plus(diff(at.valueN - selAt.valueN, r.f.name, at.value, selAt.value))} />
       </span>
     ) : (
-      <span className="text-xs text-muted-foreground whitespace-normal">{at && "reason" in at ? reasonText(at.reason, optionClass[r.f.option]) : c.funds.cannot}</span>
+      <span className="text-muted-foreground" aria-hidden="true">
+        —
+      </span>
     );
+    // why a fund has no price here: a line of the row at its full width, not squeezed into the difference column (founder, 2026-10-28)
+    const why = priced(at) ? null : at && "reason" in at ? reasonText(at.reason, optionClass[r.f.option]) : c.funds.cannot;
     return {
       key: r.f.rec.id,
       selected: isSel,
@@ -398,8 +410,9 @@ export function FundColumn({ view, today, pick, onPick, filter, onFilter }: { vi
                 </Tag>
               )}
             </span>
+            {why && <span className="text-xs text-muted-foreground">{why}</span>}
           </span>
-          <span className="text-end self-center max-w-40">{right}</span>
+          <span className="text-end self-center">{right}</span>
         </>
       ),
     };

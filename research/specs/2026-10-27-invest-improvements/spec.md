@@ -239,6 +239,15 @@ No independent reviewer is needed under 30 files.
   - A bar's name keeps to one line, and a card's title takes two lines on a phone.
   - Measured over seven picks at 1,920, 1,366, 768 and 390 px wide, the block keeps one height; on a PC the page no longer scrolls at all on a pick.
 - The cheapest account keeps its "★ הזול" tag when it is picked too. Before, the tag showed only while another account was chosen, so picking or leaving the cheapest added or removed a line in its row. The founder: "make the cheapest always show the star sign because it stretches the page and scrolls down".
+- 2026-10-28, the founder: "clicking the number changes the choice, and theres "a" , "b"". Two fixes:
+  - A figure inside a list row opens its sheet without picking the row. The fix is in the kit's `PickList`: a click on a control inside a row belongs to that control.
+  - A gap's sheet names its two inputs by whose they are ("הבחירה שלכם: נשאר", "הזוג הזול ביותר: נשאר", or a fund's name), not "a" and "b".
+- 2026-10-28, the founder: "now only interactive brokers are problematic UI wise". Interactive Brokers is not priced with the Israeli tracking fund the page opens on. Clicking its name in the "not priced" line picks it together with an ETF, so the account list grows from 4 rows to 15 and the page jumped about 550 px. Three fixes:
+  - `holdOnPick` puts its new row where the name was on the screen.
+  - A fund that cannot be priced shows its reason as a line under its labels, not squeezed into the difference column. That column shows "—".
+  - The account name column is 9.5rem and a long name may wrap, so "Interactive Brokers" no longer runs into its bar.
+- 2026-10-28, the founder: "make the index description after choosing an index fixed size". The index header was 157 to 184 px tall on a PC and 179 to 229 px on a phone, depending on the index, so a switch of index moved everything under it. The lines of every index are now laid out unseen in the same place (`IndexHeader` with `others`), so the header is as tall as the longest at any width. Measured over the seven indices at 390, 1,366 and 1,920 px wide, it keeps one height at each.
+  - Structure review: `IndexHeader` (it existed already) and `IndexBlurb` (its lines, taken out so they can be laid out once per index) were kept. They are this page's own anatomy, built from the kit's `Tag`, and used once.
 
 ## 4. Against `docs/product.md`: what else the page owes the reader
 
