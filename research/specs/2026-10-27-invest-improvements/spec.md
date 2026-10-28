@@ -239,6 +239,9 @@ No independent reviewer is needed under 30 files.
   - A bar's name keeps to one line, and a card's title takes two lines on a phone.
   - Measured over seven picks at 1,920, 1,366, 768 and 390 px wide, the block keeps one height; on a PC the page no longer scrolls at all on a pick.
 - The cheapest account keeps its "★ הזול" tag when it is picked too. Before, the tag showed only while another account was chosen, so picking or leaving the cheapest added or removed a line in its row. The founder: "make the cheapest always show the star sign because it stretches the page and scrolls down".
+- 2026-10-28, the founder: "clicking the number changes the choice, and theres "a" , "b"". Two fixes:
+  - A figure inside a list row opens its sheet without picking the row. The fix is in the kit's `PickList`: a click on a control inside a row belongs to that control.
+  - A gap's sheet names its two inputs by whose they are ("הבחירה שלכם: נשאר", "הזוג הזול ביותר: נשאר", or a fund's name), not "a" and "b".
 
 ## 4. Against `docs/product.md`: what else the page owes the reader
 

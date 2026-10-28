@@ -3581,6 +3581,8 @@ export const invest = {
     yours: "הבחירה שלכם",
     next: "הזוג הבא בתור",
     vsYours: "לעומת הבחירה שלכם",
+    /** An input of a computed figure, named by whose it is: "הבחירה שלכם: נשאר". */
+    input: (who: string, what: string) => `${who}: ${what}`,
     moreIfCheapest: "יותר אם עוברים לזוג הזול",
     pickCheapest: "בחרו את הזוג הזה",
     costTitleBoth: (years: number) => `כמה זה עולה לכם ב־${years} שנים, בכל אחד מהזוגות`,
