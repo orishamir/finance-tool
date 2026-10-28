@@ -32,7 +32,6 @@ export default [
   route("workbench/providers/:wrapper", "routes/workbench-providers.tsx"),
   route("workbench/funds/:exposure", "routes/workbench-funds.tsx"),
   route("workbench-bundle.json", "routes/workbench-bundle.ts"),
-  route("switch/:wrapper", "routes/switch.tsx"),
   route("kit", "routes/kit.tsx"),
   route("*", "routes/not-found.tsx"),
 ] satisfies RouteConfig;

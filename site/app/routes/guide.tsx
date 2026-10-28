@@ -197,7 +197,7 @@ export default function GuidePage() {
     });
   }
   if (content && record.switch_is_tax_event.value === false) {
-    inout.push({ id: "switch", label: blocks.exit.labelSwitch, value: content.switchLine, line: data.hasPlaybook ? <Link to={`/switch/${record.id}`} className="text-link hover:underline">{blocks.exit.switchHow}</Link> : undefined, rules: [...(record.switch_is_tax_event.rule_ids ?? []), ...content.switchRules.filter((r) => !(record.switch_is_tax_event.rule_ids ?? []).includes(r))] });
+    inout.push({ id: "switch", label: blocks.exit.labelSwitch, value: content.switchLine, rules: [...(record.switch_is_tax_event.rule_ids ?? []), ...content.switchRules.filter((r) => !(record.switch_is_tax_event.rule_ids ?? []).includes(r))] });
   }
 
   for (const it of inout) it.rules = gen(it.rules);

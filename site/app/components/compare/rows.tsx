@@ -5,7 +5,6 @@ import { Link } from "react-router";
 import { ownTermsCopy, r2, r3fees, scnCompare } from "../../copy";
 import { addMonths, decidingFormulaOf, depositRangeFlag, feeShieldPair, providerOutcomes, workbenchHref, type CoverageRow, type ListedOption, type ProviderOutcome, type RankedOption } from "../../lib/compare";
 import { fmt } from "../../lib/format";
-import { playbookWrappers } from "../../lib/playbook";
 import { Button, Card, cx, HeadlineFigure, PercentField, RankBadge, Sentence, Tag } from "../kit";
 import { Tpl } from "../exposure-mode/tpl";
 import { IconAlert, IconDrillIn, IconLock } from "../icons";
@@ -129,14 +128,12 @@ export function RankedRow({ o, above, ctx, onDetail, extra, choose, chosen }: { 
   );
 }
 
-/** A14: what to do after "בחרתי בזה": pick the company and track, how to join or switch, what the fees cost. */
+/** A14: what to do after "בחרתי בזה": pick the company and track, what the fees cost. */
 function ChosenNext({ id }: { id: string }) {
   const c = r2.result.chosenNext;
   const pick = workbenchHref(id);
-  const join = playbookWrappers.includes(id) ? `/switch/${id}` : null;
   const links: { href: string; label: string }[] = [];
   if (pick) links.push({ href: pick, label: c.pick });
-  if (join) links.push({ href: join, label: c.join });
   links.push({ href: `/fees?wrapper=${id}&from=compare`, label: c.fees });
   return (
     <div className="rounded-md bg-secondary p-3 flex flex-col gap-1" data-chosen-next>

@@ -32,7 +32,6 @@ import { useSettled } from "../lib/settled";
 import { fmt } from "../lib/format";
 import { holdingName, useHolding } from "../lib/holdings";
 import { bundleLinks } from "../lib/bundle";
-import { playbookWrappers } from "../lib/playbook";
 import { recordsById } from "../lib/scope";
 import { shown } from "../lib/review";
 
@@ -300,7 +299,6 @@ function Body({ bundle, fees, form, publisherNames, subject, frame }: { bundle: 
   // A9, A18: the plain sentence above the chart, the subject's place among every option on the page's numbers, the softened badge
   const gap = headlineGap(an);
   const place = rankedFor(result.comparison, sv.wrapperId);
-  const switchable = playbookWrappers.includes(sv.wrapperId);
   const providersLink = sv.wrapperId === "brokerage-account";
   const otherRecords = workbench ? { href: `/workbench/tracks/${sv.wrapperId}`, label: r3fees.linksWorkbench } : providersLink ? { href: `/workbench/providers/${sv.wrapperId}`, label: r3fees.linkProviders } : null;
 
@@ -370,11 +368,6 @@ function Body({ bundle, fees, form, publisherNames, subject, frame }: { bundle: 
         <Link to={sv.kind === "track" ? `/guide/${sv.wrapperId}` : `/guide/${sv.wrapperId}`} className="text-link hover:underline min-h-target inline-flex items-center">
           {r3fees.linkGuide}
         </Link>
-        {switchable && (
-          <Link to={`/switch/${sv.wrapperId}`} className="text-link hover:underline min-h-target inline-flex items-center">
-            {r3fees.linkSwitch}
-          </Link>
-        )}
         {sv.kind === "holding" && (
           <Link to="/holdings" className="text-link hover:underline min-h-target inline-flex items-center">
             {r3fees.strip.backHolding}

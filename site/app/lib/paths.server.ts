@@ -6,7 +6,6 @@ import { institutionIds } from "./institutions.server";
 import { loadBrands } from "./brands.server";
 import { INDICES_PATH, indexPath } from "./invest";
 import { providerWrapperIds } from "./providers.server";
-import { playbookWrapperIds } from "./playbook.server";
 
 export function prerenderPaths(): string[] {
   const paths = ["/", "/guide", "/questions", "/companies", "/rules", "/rules/state", "/rules/costs", "/rules/access", "/rules/protection", "/rules/structure", "/rules-data/state.json", "/rules-data/costs.json", "/rules-data/access.json", "/rules-data/protection.json", "/rules-data/structure.json", "/documents", "/parameters", "/not-covered", "/search-index.json", "/search-texts.json", "/goal", "/goal/compare", "/idle-cash", "/compare-bundle.json"];
@@ -32,7 +31,5 @@ export function prerenderPaths(): string[] {
   paths.push("/workbench-bundle.json");
   // the component gallery: for builders, noindex, in no menu and no search
   paths.push("/kit");
-  // the switching playbook (release 4): one page per wrapper that has a step list
-  for (const w of playbookWrapperIds()) paths.push(`/switch/${w}`);
   return paths;
 }
