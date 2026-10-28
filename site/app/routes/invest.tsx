@@ -131,7 +131,8 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
   const fi = useMemo(() => planInputs(compare, current, resolved, released.state), [compare, current, resolved, released.state]);
   const livePlan: WorkbenchInputs = useMemo(
     () => ({
-      amountNow: Math.max(0, fi.g.amountNow - fi.g.available),
+      // the whole amount today: what the goal keeps available is the comparison's question, not this page's (founder, 2026-10-28)
+      amountNow: fi.g.amountNow,
       monthly: fi.g.monthly,
       years: fi.g.horizonYears,
       grossReturn: (fi.g.returnPct ?? 0) / 100,
@@ -249,7 +250,7 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
           {c.plan.panelTitle}
         </h2>
         {panelOpen && !fi.fromGoal && <ScenarioDefaults inputs={fi} />}
-        {panelOpen && <AssumptionsPanel data={data.form as FormData} suggestion={null} onAdopted={() => {}} leaveOut={["anytime", "insurance"]} />}
+        {panelOpen && <AssumptionsPanel data={data.form as FormData} suggestion={null} onAdopted={() => {}} leaveOut={["anytime", "insurance", "available"]} />}
       </Sheet>
     </LabelSheetHost>
   );

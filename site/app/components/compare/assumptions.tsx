@@ -54,10 +54,10 @@ function Suggest({ s, field, onAdopt, children }: { s: Suggestion | null; field:
 
 /** The fields of flow 16: horizon, amount now, monthly, what must stay available, return, inflation, withdrawable at any time. */
 /**
- * `leaveOut`: fields a page's runs never read, so they would change nothing there (the indices page: every option can be sold any
- * trading day, and no pension run takes the insurance share; founder, 2026-10-28).
+ * `leaveOut`: fields a page leaves out (the indices page, founder 2026-10-28: every option can be sold any trading day, no pension run
+ * takes the insurance share, and the page invests the whole amount today, so what stays available is the goal's question, not its).
  */
-export function AssumptionsPanel({ data, suggestion, onAdopted, exposure, leaveOut = [] }: { data: FormData; suggestion: Suggestion | null; onAdopted: () => void; exposure?: boolean; leaveOut?: ("anytime" | "insurance")[] }) {
+export function AssumptionsPanel({ data, suggestion, onAdopted, exposure, leaveOut = [] }: { data: FormData; suggestion: Suggestion | null; onAdopted: () => void; exposure?: boolean; leaveOut?: ("anytime" | "insurance" | "available")[] }) {
   const { current, resolved, update, setEnteredReturn, setInflation } = useGoals();
   if (!current || !resolved) return null;
   const set = (k: "horizonYears" | "amountNow" | "monthly" | "available") => (n: number | null) => update((g) => ({ ...g, [k]: n === null ? { value: null, entered: false } : { value: n, entered: true } }));
@@ -77,7 +77,7 @@ export function AssumptionsPanel({ data, suggestion, onAdopted, exposure, leaveO
       </Suggest>
       <GoalNumber label={r2.form.amountNow} unit="nis" value={resolved.amountNow} source={src.amountNow} onChange={set("amountNow")} validate={(n) => (n < 0 ? valuesCopy.errors.negative : null)} />
       <GoalSlider label={r2.form.monthly} unit="nis_per_month" value={resolved.monthly} source={src.monthly} presetValue={resolved.preset.monthly} onChange={set("monthly")} validate={(n) => (n < 0 ? valuesCopy.errors.negative : null)} min={data.monthly.min} max={data.monthly.max} step={data.monthly.step} />
-      <GoalNumber label={r2.form.available} unit="nis" value={resolved.available} source={src.available} presetValue={resolved.available} onChange={set("available")} externalError={availableTooBig(resolved)} validate={(n) => (n < 0 ? valuesCopy.errors.negative : resolved.amountNow !== null && n > resolved.amountNow ? r2.form.errAvailable : null)} />
+      {!leaveOut.includes("available") && <GoalNumber label={r2.form.available} unit="nis" value={resolved.available} source={src.available} presetValue={resolved.available} onChange={set("available")} externalError={availableTooBig(resolved)} validate={(n) => (n < 0 ? valuesCopy.errors.negative : resolved.amountNow !== null && n > resolved.amountNow ? r2.form.errAvailable : null)} />}
       <div className="grid grid-cols-2 gap-3">
         {exposure ? (
           <div className="col-span-2">
