@@ -20,7 +20,7 @@ import {
 } from "./formulas/holding-tax.ts";
 import { mostCommonRate, rateRange } from "./formulas/account-interest.ts";
 import { currencyExposureShare, stockExposureShare } from "./formulas/track-exposure.ts";
-import { stepEffect, sweep } from "./formulas/step-effect.ts";
+import { changeEffect, sweep } from "./formulas/step-effect.ts";
 import { annualToMonthly, contributions, cpiPath, crossRate, fxPath, monthlyInflation, realValue, taxYearOf } from "./formulas/time.ts";
 import { runBond } from "./ledgers/bond.ts";
 import { runChildSavings } from "./ledgers/child-savings.ts";
@@ -118,7 +118,7 @@ export const formulas = {
   "F-86": rateRange,
   "F-87": stockExposureShare,
   "F-88": currencyExposureShare,
-  "F-89": stepEffect,
+  "F-89": changeEffect,
   "F-90": sweep,
 } as const;
 

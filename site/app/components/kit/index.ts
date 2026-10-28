@@ -10,7 +10,7 @@ export { ChoiceChips, OtherChip, SegmentedControl, type SegmentOption } from "./
 export { ChipList, dropOrder, type ChipItem, type ChipListProps, type ChipListWords } from "./chip-list";
 export { PlanChips, type PlanChipItem } from "./plan-chips";
 export { KnobStrip, type Knob } from "./knobs";
-export { ResultCurves, type Curve } from "./result-curves";
+export { ChangeChart, type ChangeLine, type ChangeRow } from "./change-chart";
 export { InputSlot, Sentence, Tpl, fill } from "./sentence";
 export { HeadlineFigure, KeyValue, KeyValueList, Stat, StatRow, type KeyValueItem } from "./stat";
 export { GapNote, NoteList, SourceLine } from "./notes";

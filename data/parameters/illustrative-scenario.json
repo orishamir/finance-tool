@@ -174,23 +174,6 @@
         "update_rule": "founder",
         "notes": "",
         "rationale_he": "הגודל של כל צעד במחוון ההפקדה החודשית. סכום שבין שני צעדים אפשר להקליד."
-      },
-      "nudge": {
-        "value": 500,
-        "unit": "nis_per_month",
-        "state": "sourced",
-        "source": {
-          "url": "docs/parameters-rationale.md#illustrative-scenario",
-          "title": "Founder's choice, made by Claude at his request: illustrative scenario",
-          "publisher": "founder",
-          "strength": "primary"
-        },
-        "checked": "2026-10-28",
-        "effective_from": "2026-10-28",
-        "effective_to": null,
-        "update_rule": "founder",
-        "notes": "",
-        "rationale_he": "הצעד שבו עמוד המדדים מראה כמה הפקדה חודשית גדולה יותר משנה את התוצאה. בחירה של האתר, לא כלל."
       }
     },
     "horizon_years": {
@@ -244,23 +227,6 @@
         "update_rule": "founder",
         "notes": "",
         "rationale_he": "הגודל של כל צעד במחוון האופק. מספר שבין שני צעדים אפשר להקליד."
-      },
-      "nudge": {
-        "value": 1,
-        "unit": "years",
-        "state": "sourced",
-        "source": {
-          "url": "docs/parameters-rationale.md#illustrative-scenario",
-          "title": "Founder's choice, made by Claude at his request: illustrative scenario",
-          "publisher": "founder",
-          "strength": "primary"
-        },
-        "checked": "2026-10-28",
-        "effective_from": "2026-10-28",
-        "effective_to": null,
-        "update_rule": "founder",
-        "notes": "",
-        "rationale_he": "הצעד שבו עמוד המדדים מראה כמה שנה נוספת משנה את התוצאה. בחירה של האתר, לא כלל."
       }
     },
     "amount_now": {
@@ -314,23 +280,6 @@
         "update_rule": "founder",
         "notes": "",
         "rationale_he": "גודל הצעד של מחוון הסכום של היום."
-      },
-      "nudge": {
-        "value": 10000,
-        "unit": "nis",
-        "state": "sourced",
-        "source": {
-          "url": "docs/parameters-rationale.md#illustrative-scenario",
-          "title": "Founder's choice, made by Claude at his request: illustrative scenario",
-          "publisher": "founder",
-          "strength": "primary"
-        },
-        "checked": "2026-10-28",
-        "effective_from": "2026-10-28",
-        "effective_to": null,
-        "update_rule": "founder",
-        "notes": "",
-        "rationale_he": "הצעד שבו עמוד המדדים מראה כמה סכום גדול יותר היום משנה את התוצאה. בחירה של האתר, לא כלל."
       }
     },
     "A-01": {
@@ -384,10 +333,12 @@
         "update_rule": "founder",
         "notes": "",
         "rationale_he": "גודל הצעד של מחוון התשואה."
-      },
-      "nudge": {
-        "value": 1,
-        "unit": "pct_per_year",
+      }
+    },
+    "change_share": {
+      "min": {
+        "value": -50,
+        "unit": "pct",
         "state": "sourced",
         "source": {
           "url": "docs/parameters-rationale.md#illustrative-scenario",
@@ -400,7 +351,58 @@
         "effective_to": null,
         "update_rule": "founder",
         "notes": "",
-        "rationale_he": "הצעד שבו עמוד המדדים מראה כמה נקודת אחוז נוספת של תשואה משנה את התוצאה. בחירה של האתר, לא כלל."
+        "rationale_he": "הקצה השמאלי של הגרף בעמוד המדדים: כל מספר בתוכנית קטן בחצי. בחירה של האתר, לא כלל."
+      },
+      "max": {
+        "value": 50,
+        "unit": "pct",
+        "state": "sourced",
+        "source": {
+          "url": "docs/parameters-rationale.md#illustrative-scenario",
+          "title": "Founder's choice, made by Claude at his request: illustrative scenario",
+          "publisher": "founder",
+          "strength": "primary"
+        },
+        "checked": "2026-10-28",
+        "effective_from": "2026-10-28",
+        "effective_to": null,
+        "update_rule": "founder",
+        "notes": "",
+        "rationale_he": "הקצה הימני של הגרף בעמוד המדדים: כל מספר בתוכנית גדל בחצי. בחירה של האתר, לא כלל."
+      },
+      "step": {
+        "value": 5,
+        "unit": "pct",
+        "state": "sourced",
+        "source": {
+          "url": "docs/parameters-rationale.md#illustrative-scenario",
+          "title": "Founder's choice, made by Claude at his request: illustrative scenario",
+          "publisher": "founder",
+          "strength": "primary"
+        },
+        "checked": "2026-10-28",
+        "effective_from": "2026-10-28",
+        "effective_to": null,
+        "update_rule": "founder",
+        "notes": "",
+        "rationale_he": "כל כמה אחוזים הגרף בעמוד המדדים מחשב נקודה, ובכמה הסמן זז."
+      },
+      "start": {
+        "value": 20,
+        "unit": "pct",
+        "state": "sourced",
+        "source": {
+          "url": "docs/parameters-rationale.md#illustrative-scenario",
+          "title": "Founder's choice, made by Claude at his request: illustrative scenario",
+          "publisher": "founder",
+          "strength": "primary"
+        },
+        "checked": "2026-10-28",
+        "effective_from": "2026-10-28",
+        "effective_to": null,
+        "update_rule": "founder",
+        "notes": "",
+        "rationale_he": "השינוי שהסמן בגרף של עמוד המדדים מראה לפני שמזיזים אותו. בחירה של האתר, לא כלל."
       }
     }
   },
