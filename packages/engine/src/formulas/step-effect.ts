@@ -10,3 +10,11 @@ export function stepEffect<K extends string, P extends Record<K, number>>(left: 
   const after = left({ ...plan, [key]: next });
   return after === null ? null : after - before;
 }
+
+/**
+ * F-90 The result across a knob's range: `L(plan with k = x)` for each `x` in `xs` (the slider's values, in its unit; `scale` as in
+ * F-89). Null where a run gives no value.
+ */
+export function sweep<K extends string, P extends Record<K, number>>(left: (plan: P) => number | null, plan: P, key: K, xs: readonly number[], scale = 1): (number | null)[] {
+  return xs.map((x) => left({ ...plan, [key]: x / scale }));
+}

@@ -9,7 +9,7 @@ import { invest as c, site } from "../copy";
 import { AssumptionsPanel } from "../components/compare/assumptions";
 import type { FormData } from "../components/compare/goal-form";
 import { ScenarioDefaults } from "../components/fees/chips";
-import { PlanKnobs } from "../components/invest/knobs";
+import { PlanCurves, PlanKnobs, PlanTry } from "../components/invest/knobs";
 import { IndexChips, PlanBlock } from "../components/invest/chips";
 import { HousesSection } from "../components/invest/houses";
 import { FundsSection } from "../components/invest/funds";
@@ -190,7 +190,12 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
 
   const planBlock = (
     <PlanBlock
-      knobs={<PlanKnobs fi={fi} plan={livePlan} ranges={data.form.knobs} bundle={wb} view={view} pick={pick} pct={data.form.pct} />}
+      knobs={
+        <>
+          <PlanTry fi={fi} plan={livePlan} ranges={data.form.knobs} bundle={wb} view={view} pick={pick} />
+          <PlanKnobs fi={fi} ranges={data.form.knobs} pct={data.form.pct} />
+        </>
+      }
       onOpen={() => setPanelOpen(true)}
       fx={wb.fx}
       today={data.today}
@@ -237,6 +242,8 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
                 <Steps view={view} monthly={plan.values.monthly} pick={pick} />
               </Disclosure>
             </div>
+            {/* the result across each number's range: the slow part of the play, at the bottom (founder, 2026-10-28) */}
+            <PlanCurves plan={plan} ranges={data.form.knobs} bundle={wb} view={view} pick={pick} />
             <Foot view={view} />
             <RulesLine ids={rules} />
           </>

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { stepEffect } from "../src/formulas/step-effect.ts";
+import { stepEffect, sweep } from "../src/formulas/step-effect.ts";
 
 describe("F-89 step effect", () => {
   const left = (p: { years: number; r: number }) => 1000 * p.years * (1 + p.r);
@@ -12,5 +12,13 @@ describe("F-89 step effect", () => {
   });
   it("is null when a run gives no value", () => {
     expect(stepEffect(() => null, { years: 10, r: 0 }, "years", 1, 40)).toBeNull();
+  });
+});
+
+describe("F-90 sweep", () => {
+  it("prices the plan at each value of one knob, read in the slider's unit", () => {
+    const left = (p: { years: number; r: number }) => 1000 * p.years * (1 + p.r);
+    expect(sweep(left, { years: 10, r: 0 }, "years", [1, 2, 3])).toEqual([1000, 2000, 3000]);
+    expect(sweep(left, { years: 1, r: 0 }, "r", [0, 50], 100)).toEqual([1000, 1500]);
   });
 });
