@@ -772,7 +772,6 @@ export const guideBlocks = {
     // audit 2026-10-24 (A22): the Hebrew text of the rules the sentence cites, else the English wording, said to be English
     textNoteHe: "הפירוט המלא, לפי החוקים והכללים:",
     textNoteEn: "הנוסח באנגלית:",
-    // audit 2026-10-24 (A14): the exit row of the money-in-and-out list points at the switching steps
   },
   fees: {
     balance: { name: "דמי ניהול מחיסכון", base: "כל שנה, מכל הכסף שנצבר", after: "בשנה" },

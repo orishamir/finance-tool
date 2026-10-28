@@ -98,7 +98,6 @@ const routeKey: Record<string, string> = {
   "goal-compare": "compare",
   "compare-bundle": "compare",
   goal: "goal",
-  switch: "switch",
   "workbench-providers": "providers",
   "workbench-tracks": "tracks",
   "workbench-funds": "funds",

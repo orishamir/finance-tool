@@ -17,13 +17,11 @@ export { BarLegend };
 export const inYears = (n: number) => (n === 1 ? "בשנה" : n === 2 ? "בשנתיים" : `ב־${fmt.number(n)} שנים`);
 
 export interface RowCtx {
-  wrapperId: string;
   years: number;
   level: UiLevel;
   names: Record<string, string>;
   theta: SiteValue;
   rules: Record<string, RuleRecord>;
-  vsId: string | null;
   onOffer: (id: string, el: HTMLElement) => void;
   onDetail: (id: string, el: HTMLElement) => void;
   onVs: (id: string | null) => void;

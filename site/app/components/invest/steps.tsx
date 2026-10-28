@@ -1,6 +1,5 @@
 // "מה עושים עכשיו" (three steps) and the page's footnote (the return used and whether the order holds).
 import { useState } from "react";
-import { Link } from "react-router";
 import { invest as c } from "../../copy";
 import type { InvestView } from "../../lib/invest";
 import { IconCopy } from "../icons";
