@@ -1,7 +1,7 @@
 // What moves the result (founder, 2026-10-28, the indices page): every plan number changed by the same share on one chart, left to
 // right from less to more, all lines crossing at the plan; a marker the person drags (or sets with a choice) reads every line at one
 // share, and the table under it says, for each number, what it was, what it becomes, what is left and the difference. Own SVG.
-import { useState, type PointerEvent, type ReactNode } from "react";
+import { useState, type CSSProperties, type PointerEvent, type ReactNode } from "react";
 import { ChoiceChips } from "./choice";
 import { useWidth } from "./marker";
 
@@ -27,6 +27,8 @@ const TOP = 12;
 const BOTTOM = 22;
 const LEFT = 64;
 const RIGHT = 104;
+/** A column left out on a phone stays in the table at width 0 (hiding the cell would move the next cell into its column). */
+const GONE = "max-md:invisible max-md:!p-0 overflow-hidden";
 
 export function ChangeChart({
   lines,
@@ -42,7 +44,7 @@ export function ChangeChart({
   choicesLabel,
   head,
   rows,
-  phoneHide = [],
+  widths,
 }: {
   lines: ChangeLine[];
   /** The shares the lines are priced at, in percent, from the lowest to the highest; 0 is the plan. */
@@ -60,8 +62,9 @@ export function ChangeChart({
   choicesLabel: string;
   head: ReactNode[];
   rows: ChangeRow[];
-  /** Columns left out on a phone, by index (the table keeps the name, before, after and the difference). */
-  phoneHide?: number[];
+  /** Each column's width, on a computer and on a phone ("0" leaves the column out on a phone): fixed, so no value that changes
+   * moves a column (founder, 2026-10-28). The widths add up to 100% on each. */
+  widths: { pc: string; phone: string }[];
 }) {
   const [ref, w] = useWidth(600);
   const [drag, setDrag] = useState(false);
@@ -145,11 +148,16 @@ export function ChangeChart({
       </div>
       <p className="text-xs text-muted-foreground text-center -mt-2">{xTitle}</p>
       <div className="overflow-x-auto">
-        <table className="tbl text-sm w-full max-md:[&_td]:px-1.5 max-md:[&_th]:px-1.5">
+        <table className="tbl table-fixed [&_thead_th]:whitespace-normal text-sm max-md:text-[13px] tabular-nums w-full max-md:[&_td]:px-1.5 max-md:[&_th]:px-1.5">
+          <colgroup>
+            {widths.map((c, i) => (
+              <col key={i} className="w-(--w-phone) md:w-(--w-pc)" style={{ "--w-pc": c.pc, "--w-phone": c.phone } as CSSProperties} />
+            ))}
+          </colgroup>
           <thead>
             <tr>
               {head.map((h, i) => (
-                <th key={i} scope="col" className={phoneHide.includes(i) ? "max-md:hidden" : undefined}>
+                <th key={i} scope="col" className={widths[i]?.phone === "0" ? GONE : undefined}>
                   {h}
                 </th>
               ))}
@@ -159,7 +167,7 @@ export function ChangeChart({
             {rows.map((r) => (
               <tr key={r.id}>
                 {r.cells.map((c, i) => (
-                  <td key={i} className={phoneHide.includes(i) ? "max-md:hidden" : undefined}>
+                  <td key={i} className={widths[i]?.phone === "0" ? GONE : undefined}>
                     {i === 0 ? (
                       <span className="inline-flex items-center gap-2">
                         <span aria-hidden="true" className={`inline-block size-3 rounded-sm ${r.swatch}`} />

@@ -510,6 +510,10 @@ function Fields() {
             yFormat={(v) => fmt.number(Math.round(v))}
             choicesLabel={g.sample.range}
             head={[g.sample.range, g.sample.percent]}
+            widths={[
+              { pc: "50%", phone: "50%" },
+              { pc: "50%", phone: "50%" },
+            ]}
             rows={[
               { id: "a", swatch: "bg-chart-lever-2", cells: [g.sample.range, fmt.nisWhole(1200)] },
               { id: "b", swatch: "bg-chart-lever-4", cells: [g.sample.percent, fmt.nisWhole(400)] },

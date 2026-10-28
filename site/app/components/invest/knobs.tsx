@@ -142,11 +142,17 @@ export function PlanChanges({ plan, share, bundle, view, pick }: { plan: Workben
         yFormat={(v) => fmt.number(Math.round(v))}
         choicesLabel={ch.choices}
         head={[...ch.cols]}
-        phoneHide={[3]}
+        widths={[
+          { pc: "24%", phone: "27%" },
+          { pc: "18%", phone: "21%" },
+          { pc: "18%", phone: "21%" },
+          { pc: "20%", phone: "0" },
+          { pc: "20%", phone: "31%" },
+        ]}
         rows={rows.map(({ l, n, to, after, diff }) => ({
           id: l.id,
           swatch: LINE[n]!.bg,
-          cells: [labelOf[l.id], <Num key="p" value={planValue[l.id]} display={show(l.id, planValue[l.id].value as number)} />, <Num key="t" value={to} display={show(l.id, to.value as number)} />, after ? <Num key="a" value={after} /> : null, diff ? <span key="d" className="font-semibold md:whitespace-nowrap">{diffText(diff)}</span> : null],
+          cells: [labelOf[l.id], <Num key="p" value={planValue[l.id]} display={show(l.id, planValue[l.id].value as number)} />, <Num key="t" value={to} display={show(l.id, to.value as number)} />, after ? <Num key="a" value={after} /> : null, diff ? <span key="d" className="font-semibold whitespace-nowrap">{diffText(diff)}</span> : null],
         }))}
       />
       <p className="text-sm text-muted-foreground">{ch.foot}</p>
