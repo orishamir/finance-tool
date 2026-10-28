@@ -159,6 +159,51 @@ describe("one account and one fund, broken down (2026-10-27)", () => {
     expect(num(pc.fund)).toBeGreaterThanOrEqual(0);
   });
 
+  it("the parts add up: what is left plus every cost is the same for every way, so a gap in what is left is the gap in cost (F-91)", () => {
+    const all = (v: typeof view) => v.options.flatMap((o) => o.funds).flatMap((f) => Object.entries(f.byHouse).flatMap(([house, at]) => ("valueN" in at ? [{ fund: f.rec.id, house, at }] : [])));
+    for (const [ix, ret] of [[sp, 7], [indexById(bundle, "index-ta125")!, 5], [indexById(bundle, "index-msci-world")!, 7]] as const) {
+      const v = buildInvest({ bundle, index: ix, plan: plan({}, ret) });
+      const ways = all(v);
+      expect(ways.length).toBeGreaterThan(10);
+      const sums = ways.map(({ fund, house, at }) => {
+        const p = pairCosts({ bundle, index: ix, plan: plan({}, ret), fundId: fund, providerId: house })!;
+        const cost = p.account.reduce((a, l) => a + num(l.cost), 0) + p.interaction + num(p.fund) + num(p.tax);
+        // the account's part is the figure the accounts list shows for the same way
+        expect(p.account.reduce((a, l) => a + num(l.cost), 0) + p.interaction).toBeCloseTo(at.accountCost, 6);
+        expect(num(p.left) + cost).toBeCloseTo(p.base, 6);
+        return p.base;
+      });
+      for (const b of sums) expect(b).toBeCloseTo(sums[0]!, 6);
+    }
+  });
+
+  it("the parts still add up when a fund pays out (A-10): the tax paid along the way, with its lost growth, is the state's", () => {
+    // no collected fund pays out yet: the cheapest one, read as if its record said it does
+    const b = { ...bundle, funds: bundle.funds.map((f) => (f.id === w.fund.rec.id ? { ...f, distribution_policy: "distributing" as const } : f)) };
+    const assumptions = { distributions: { [w.fund.rec.id]: { yield: 1.3, perYear: 4 } } };
+    const v = buildInvest({ bundle: b, index: sp, plan: plan(), assumptions });
+    const ways = v.options.flatMap((o) => o.funds).flatMap((f) => Object.entries(f.byHouse).flatMap(([house, at]) => ("valueN" in at ? [{ fund: f.rec.id, house }] : [])));
+    const paying = ways.filter((x) => x.fund === w.fund.rec.id);
+    expect(paying.length).toBeGreaterThan(0);
+    const bases = ways.map(({ fund, house }) => {
+      const p = pairCosts({ bundle: b, index: sp, plan: plan(), assumptions, fundId: fund, providerId: house })!;
+      const cost = p.account.reduce((a, l) => a + num(l.cost), 0) + p.interaction + num(p.fund) + num(p.tax);
+      expect(num(p.left) + cost).toBeCloseTo(p.base, 6);
+      return p.base;
+    });
+    for (const b of bases) expect(b).toBeCloseTo(bases[0]!, 6);
+    // the paying fund leaves less than the same fund held without payouts, and the difference is in the state's part
+    const still = pairCosts({ bundle, index: sp, plan: plan(), fundId: w.fund.rec.id, providerId: w.providerId })!;
+    const pays = pairCosts({ bundle: b, index: sp, plan: plan(), assumptions, fundId: w.fund.rec.id, providerId: w.providerId })!;
+    expect(num(pays.left)).toBeLessThan(num(still.left));
+    expect(num(pays.tax)).toBeGreaterThan(num(still.tax));
+  });
+
+  it("the fund's part is the same at every account", () => {
+    const at = Object.entries(w.fund.byHouse).filter(([, x]) => "valueN" in x).map(([h]) => num(pairCosts({ bundle, index: sp, plan: plan(), fundId: w.fund.rec.id, providerId: h })!.fund));
+    for (const f of at) expect(f).toBeCloseTo(at[0]!, 6);
+  });
+
   it("an account that cannot price the fund gives no breakdown", () => {
     const none = Object.entries(w.fund.byHouse).find(([, v]) => "reason" in v)?.[0];
     if (none) expect(pairCosts({ bundle, index: sp, plan: plan(), fundId: w.fund.rec.id, providerId: none })).toBeNull();

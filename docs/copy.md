@@ -1962,6 +1962,7 @@ The strings are `invest.pair` in `site/app/copy.ts`. The words the founder saw i
 - The cost: "כמה זה עולה לכם ב־{N} שנים" (one pair) or "…, בכל אחד מהזוגות" (two), "מתוכם החשבון גובה", and the key by who takes it: "החשבון:", "הקרן:", "המדינה:". It replaced "מה יצא בדרך", which the founder turned down.
 - The lists: "כל החשבונות" / "כשקונים בהם את {קרן}", "כל הקרנות על {מדד}" / "בחשבון {חשבון}", each with "בחרו … אחר, והרשימה תסתדר מחדש"; the chosen fund's row says "הבחירה", the others their difference from it ("לעומת הבחירה").
 - Rows that cannot be priced: "{N} חשבונות לא מחושבים עם הקרן הזו:" with the reason and the names, and "כשהנתון ייאסף, הם יצטרפו לרשימה."
+- *2026-10-28 (method F-91, option A of the mockup):* under the cost bars, "העלות אצלכם, לעומת הזוג השני:" then "החשבון", "הקרן" and "המס", each with an amount and "יותר" or "פחות", or "בלי הפרש" when zero; then ", כי נשאר לכם יותר רווח" or ", כי נשאר לכם פחות רווח" when the tax moves with what is left. In the key under "החשבון:", "השפעת השורות יחד" is the part of the account's cost no single line explains. Reviewed by the Hebrew editor the same day.
 
 ## 9. Release 5 screens
 
