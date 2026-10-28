@@ -6,7 +6,7 @@
 import { useMemo } from "react";
 import type { FeeLine } from "@finance-tool/engine";
 import { brands, invest as c } from "../../copy";
-import { pairCosts, type FundWay, type InvestView, type PairCosts, type Reason, type WayPrice } from "../../lib/invest";
+import { opensOn, pairCosts, type FundWay, type InvestView, type PairCosts, type Reason, type WayPrice } from "../../lib/invest";
 import type { WorkbenchBundle, WorkbenchInputs } from "../../lib/providers";
 import { brokerLabels, fundLabels, optionLabels, type Label } from "../../lib/labels";
 import { computed, type SiteValue } from "../../lib/value";
@@ -36,6 +36,20 @@ export const allFunds = (view: InvestView): FundWay[] => view.options.filter((o)
 
 /** The default pick: the cheapest complete way. */
 export const pickOfHeadline = (view: InvestView): Pick | null => (view.headline ? { house: view.headline.providerId, fund: view.headline.fund.rec.id } : null);
+
+/**
+ * The cheapest pair to set beside the person's: the headline, unless they picked a currency-hedged fund, which is compared with the best
+ * hedged pair (2026-10-28): the page opens on unhedged funds only, and "the cheapest" must never leave less than the pick beside it.
+ */
+export function bestFor(view: InvestView, pick: Pick): Pick | null {
+  const rec = allFunds(view).find((f) => f.rec.id === pick.fund)?.rec;
+  if (!rec || opensOn(rec)) return pickOfHeadline(view);
+  const top = allFunds(view)
+    .filter((f) => !opensOn(f.rec))
+    .flatMap((f) => Object.entries(f.byHouse).flatMap(([house, at]) => (priced(at) && !at.open ? [{ house, fund: f.rec.id, v: at.valueN }] : [])))
+    .sort((a, b) => b.v - a.v)[0];
+  return top ? { house: top.house, fund: top.fund } : pickOfHeadline(view);
+}
 
 /** The other half when one half changes: keep it when it still prices, else the one that leaves the most with the new half. */
 export function repick(view: InvestView, cur: Pick, change: Partial<Pick>): Pick {
@@ -113,17 +127,18 @@ function CostBar({ who, sub, pc, scale, you, today }: { who: string; sub: string
   );
 }
 
-/** The pair beside the best one when the person is on it: the next that leaves the most, over every ranked fund at every house. */
+/** The pair beside the best one when the person is on it: the next that leaves the most, over every ranked fund at every house of the same kind (hedged or not) as the best one. */
 function runnerUp(view: InvestView, best: Pick): Pick | null {
-  const pairs = allFunds(view).flatMap((f) =>
-    Object.entries(f.byHouse).flatMap(([house, at]) => (priced(at) && !at.open && !(house === best.house && f.rec.id === best.fund) ? [{ house, fund: f.rec.id, v: at.valueN }] : [])),
-  );
+  const bestRec = allFunds(view).find((f) => f.rec.id === best.fund)?.rec;
+  const pairs = allFunds(view)
+    .filter((f) => !bestRec || opensOn(f.rec) === opensOn(bestRec))
+    .flatMap((f) => Object.entries(f.byHouse).flatMap(([house, at]) => (priced(at) && !at.open && !(house === best.house && f.rec.id === best.fund) ? [{ house, fund: f.rec.id, v: at.valueN }] : [])));
   const top = pairs.sort((a, b) => b.v - a.v)[0];
   return top ? { house: top.house, fund: top.fund } : null;
 }
 
 export function PairResult({ view, bundle, plan, pick, onPick }: { view: InvestView; bundle: WorkbenchBundle; plan: WorkbenchInputs; pick: Pick; onPick: (p: Pick) => void }) {
-  const best = pickOfHeadline(view);
+  const best = bestFor(view, pick);
   const onBest = !!best && best.house === pick.house && best.fund === pick.fund;
   // the block keeps one shape whichever pair is picked (founder, 2026-10-27: "the page is still jumping when changing from the winning
   // combination"): the person's pair beside the cheapest, or, on the cheapest, beside the next one
@@ -244,7 +259,7 @@ export function AccountColumn({ view, bundle, years, pick, onPick }: { view: Inv
   const fund = allFunds(view).find((f) => f.rec.id === pick.fund);
   const house = providerName(view, pick.house);
   if (!fund || !house) return null;
-  const best = pickOfHeadline(view);
+  const best = bestFor(view, pick);
   const rows = view.providers.map((p) => ({ p, at: fund.byHouse[p.id] }));
   const ok = rows.filter((r): r is { p: typeof r.p; at: WayPrice } => priced(r.at)).sort((a, b) => Number(a.at.open) - Number(b.at.open) || b.at.valueN - a.at.valueN);
   const missing = rows.filter((r) => !priced(r.at));
