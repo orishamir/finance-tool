@@ -2847,3 +2847,26 @@ Spoken questions, no number inside them, no "ידעתם?". Rows 1, 2, 4 and 10 k
 
 - `publishers.json`: 99 hosts (the lead's count of 78 was the markdown alone; the rule records' figure sources add 21). Regulators and ministries by their official names (רשות המסים, רשות שוק ההון, ביטוח וחיסכון, רשות ניירות ערך, בנק ישראל, המוסד לביטוח לאומי, הכנסת, הלשכה המרכזית לסטטיסטיקה, הבורסה לניירות ערך בתל אביב, מאיה (מערכת ההודעות של הבורסה)); `gov.il` is "אתר הממשלה (gov.il)" because its sub-paths cannot be told apart by host, and `documents.json` names the issuing authority; `hly.gov.il` is the official "חיסכון לכל ילד" site; mirrors are ויקיטקסט and נבו; banks and managers by their Hebrew trading names as the site writes them (בנק לאומי, מיטב, אלטשולר שחם, מור בית השקעות, הראל, הפניקס, יחד רופאים); copies of official documents on private hosts carry "(עותק)" (פאנדר, עדיף); Latin brand names stay Latin (S&P Dow Jones Indices, iShares, J.P. Morgan Asset Management, SIPC, LBMA). One host, `behar-law.co.il` (a law firm mirroring regulations once), keeps its host as its name: the firm's Hebrew name is not certain.
 - `documents.json`: 135 recurring documents. Laws by their official short names with the Hebrew year where it is certain (פקודת מס הכנסה; חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס״ה-2005; חוק השקעות משותפות בנאמנות, התשנ״ד-1994; חוק הביטוח הלאומי [נוסח משולב], התשנ״ה-1995; חוק מילווה קצר מועד, התשמ״ד-1984 …); regulations in full with the Reshumot year (תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס״ח-2008; … (דמי ניהול), התשע״ב-2012; כללי הבנקאות (שירות ללקוח) (עמלות), התשס״ח-2008). Two regulations are named without a year because the year was not certain: the IRA regulations (קופת גמל בניהול אישי) and the child-savings regulations (חיסכון ארוך טווח לילד). The deductions booklet is "לוח עזר לחישוב מס הכנסה ממשכורת ושכר עבודה (חוברת הניכויים) 2026"; the Tax Authority guide "דע זכויותיך וחובותיך 2025"; CMA circulars as "חוזר גופים מוסדיים {code}: {name}"; Bank of Israel directives as "הוראת ניהול בנקאי תקין {n}: {name}" (425 has no name: the title was not in the sources); Sefer HaChukim issues as "ספר החוקים {n} ({date}): {the amending law}".
+
+## Amended 2026-10-28: only the goal pages speak of a goal (product D37)
+
+The indices page, the fee page, the guide pages, the guide index, the exposure pages, holdings and idle cash no longer show or read the saved goal. Strings retired from those pages: the saved-goal strip, "לפי ההשוואה למטרה ״…״", "להגדיר מטרה", "להזנת מטרה", "מהמטרה השמורה", the fee page's no-goal notes and defaults sheet, the holdings fit mark and its lines, "להשוואה המלאה לפי המטרה שלכם", "להשוואה המלאה, עם המטרה ״עתודה נזילה״" and its "available at any moment" box. Older rows above that quote them are history. New and changed strings, reviewed by the Hebrew editor the same day:
+
+| Key | Text |
+|---|---|
+| `r3fees.strip.compare` | מתוך ההשוואה: `{מוצר}`, לפי `{רשומה}` |
+| `r3fees.avoidNotEvaluated` | להימנע: לא נבדק. עם המספרים האלה אי אפשר להשוות בין האפשרויות. |
+| `r3fees.othersButton` | הנחות נוספות |
+| `r3fees.siteExample` | המספרים לדוגמה של האתר, עד שתשנו אותם |
+| `r3fees.ranked.first` | לפי המספרים בעמוד, המוצר הזה במקום הראשון מבין כל האפשרויות, גם אחרי העמלות. |
+| `r3fees.ranked.other` | למרות העמלה, לפי המספרים בעמוד המוצר הזה במקום `{מקום}` מבין כל האפשרויות. |
+| `r3fees.chart.endMarker` | סוף התקופה |
+| fee sensitivity, the years axis | תקופת ההחזקה |
+| `invest.plan.knobs.others` | אינפלציה |
+| `r3holdings.lede` | הזינו מהדוח השנתי, ותראו כמה העמלות עולות לכם ואם אפשר לאחד חיסכונות. הכול נשמר במכשיר הזה. |
+| `r3holdings.feeLineNoGoal` | כמה שנים הכסף הזה יישאר מושקע? הזינו את מספר השנים. |
+| `r3holdings.feeFailed` | האתר לא הצליח לחשב את העלות. בדקו את הערכים שהזנתם. |
+| `r3holdings.depositsLeftOut` | ההפקדות החודשיות לא נכללו בחישוב: חסר שכר. |
+| `exposurePage.holdLine` | המוצרים שבהם אפשר להחזיק את החשיפה הזו. |
+| `guideSignature.common.source` | הזנתם · דוגמה של האתר |
+
