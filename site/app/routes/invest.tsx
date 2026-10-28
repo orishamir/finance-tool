@@ -249,7 +249,7 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
           {c.plan.panelTitle}
         </h2>
         {panelOpen && !fi.fromGoal && <ScenarioDefaults inputs={fi} />}
-        {panelOpen && <AssumptionsPanel data={data.form as FormData} suggestion={null} onAdopted={() => {}} noAnytime />}
+        {panelOpen && <AssumptionsPanel data={data.form as FormData} suggestion={null} onAdopted={() => {}} leaveOut={["anytime", "insurance"]} />}
       </Sheet>
     </LabelSheetHost>
   );

@@ -53,8 +53,11 @@ function Suggest({ s, field, onAdopt, children }: { s: Suggestion | null; field:
 }
 
 /** The fields of flow 16: horizon, amount now, monthly, what must stay available, return, inflation, withdrawable at any time. */
-/** `noAnytime`: a page whose options can all be sold any trading day (the indices page) leaves the switch out. */
-export function AssumptionsPanel({ data, suggestion, onAdopted, exposure, noAnytime }: { data: FormData; suggestion: Suggestion | null; onAdopted: () => void; exposure?: boolean; noAnytime?: boolean }) {
+/**
+ * `leaveOut`: fields a page's runs never read, so they would change nothing there (the indices page: every option can be sold any
+ * trading day, and no pension run takes the insurance share; founder, 2026-10-28).
+ */
+export function AssumptionsPanel({ data, suggestion, onAdopted, exposure, leaveOut = [] }: { data: FormData; suggestion: Suggestion | null; onAdopted: () => void; exposure?: boolean; leaveOut?: ("anytime" | "insurance")[] }) {
   const { current, resolved, update, setEnteredReturn, setInflation } = useGoals();
   if (!current || !resolved) return null;
   const set = (k: "horizonYears" | "amountNow" | "monthly" | "available") => (n: number | null) => update((g) => ({ ...g, [k]: n === null ? { value: null, entered: false } : { value: n, entered: true } }));
@@ -89,9 +92,9 @@ export function AssumptionsPanel({ data, suggestion, onAdopted, exposure, noAnyt
           <GoalNumber label={r2.result.chips.inflation} unit="pct_per_year" value={current.assumptions.inflation ?? data.inflationStart} source={current.assumptions.inflation === null ? "preset" : "entered"} presetValue={data.inflationStart} onChange={setInflation} validate={pct} bare={current.assumptions.inflation === null} />
         </Suggest>
       </div>
-      <InsuranceField data={data} />
+      {!leaveOut.includes("insurance") && <InsuranceField data={data} />}
       {!exposure && <p className="text-xs text-muted-foreground -mt-2">{current.assumptions.return === null ? `${r2.form.returnEmpty} ${r2.form.returnHint}` : r2.form.returnFilled}</p>}
-      {!noAnytime && <SwitchRow label={r2.form.anytime} checked={resolved.anytime} source={src.anytime} onChange={(v) => update((g) => ({ ...g, anytime: { value: v, entered: true } }))} onReset={() => update((g) => ({ ...g, anytime: { value: false, entered: false } }))} />}
+      {!leaveOut.includes("anytime") && <SwitchRow label={r2.form.anytime} checked={resolved.anytime} source={src.anytime} onChange={(v) => update((g) => ({ ...g, anytime: { value: v, entered: true } }))} onReset={() => update((g) => ({ ...g, anytime: { value: false, entered: false } }))} />}
     </div>
   );
 }
