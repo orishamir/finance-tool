@@ -11,7 +11,7 @@ import { IdRef, Num } from "../provenance";
 import { IconDrillIn } from "../icons";
 import { label } from "../../lib/labels";
 import { fmt } from "../../lib/format";
-import { Button, Callout, Card, ChartLegend, CostStack, LabelFilter, PickList, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, CompareTable, CoverageFold, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, Disclosure, FieldState, FoldGroup, GainBars, GapNote, HeadlineFigure, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, NumberField, ParameterLine, PercentField, PlanChips, KnobStrip, ResultCurves, RangeField, RankBadge, Section, SegmentedControl, SelectField, Sentence, ShareRings, SourceLine, Stat, StatRow, StepButtons, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth } from "./index";
+import { Button, Callout, Card, ChartLegend, CostStack, LabelFilter, PickList, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, CompareTable, CoverageFold, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, Disclosure, FieldState, FoldGroup, GainBars, GapNote, HeadlineFigure, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, NumberField, ParameterLine, PercentField, PlanChips, KnobStrip, ChangeChart, RangeField, RankBadge, Section, SegmentedControl, SelectField, Sentence, ShareRings, SourceLine, Stat, StatRow, StepButtons, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth } from "./index";
 
 const g = copy.gallery;
 
@@ -423,6 +423,7 @@ function Fields() {
   const [b, setB] = useState<number | null>(3000);
   const [years, setYears] = useState<number | null>(10);
   const [pct, setPct] = useState<number | null>(5);
+  const [share, setShare] = useState(20);
   const [pick, setPick] = useState<string | null>(null);
   const [count, setCount] = useState(1);
   return (
@@ -491,13 +492,27 @@ function Fields() {
           />
         </State>
       </Demo>
-      <Demo name="ResultCurves" use={g.uses.ResultCurves}>
-        <State label={g.states.filled} wide>
-          <ResultCurves
-            topWord={g.sample.knobStep}
-            curves={[
-              { id: "a", label: g.sample.range, now: fmt.years(10), ends: [fmt.years(1), fmt.years(40)], ys: Array.from({ length: 16 }, (_, i) => 1000 * Math.pow(1.07, i * 2.6)), at: { frac: 0.23, y: 1000 * Math.pow(1.07, 9) }, top: fmt.nisWhole(1000 * Math.pow(1.07, 39)) },
-              { id: "b", label: g.sample.percent, now: fmt.pct(5), ends: [fmt.pct(0), fmt.pct(12)], ys: Array.from({ length: 16 }, (_, i) => 1000 + 120 * i), at: { frac: 0.42, y: 1750 }, top: fmt.nisWhole(2800) },
+      <Demo name="ChangeChart" use={g.uses.ChangeChart}>
+        <State label={`${g.states.interactive}, ${g.states.draggable}`} wide>
+          <ChangeChart
+            lines={[
+              { id: "a", label: g.sample.range, stroke: "stroke-chart-lever-2", fill: "fill-chart-lever-2", ys: Array.from({ length: 21 }, (_, i) => 1000 * Math.pow(1.07, 5 + i * 0.5)) },
+              { id: "b", label: g.sample.percent, stroke: "stroke-chart-lever-4", fill: "fill-chart-lever-4", ys: Array.from({ length: 21 }, (_, i) => 1500 + 40 * i) },
+            ]}
+            shares={Array.from({ length: 21 }, (_, i) => -50 + 5 * i)}
+            at={share}
+            onAt={setShare}
+            choices={[-20, 20]}
+            shareWord={(s) => `${s}%`}
+            planWord="0"
+            xTitle={g.sample.range}
+            yTitle="₪"
+            yFormat={(v) => fmt.number(Math.round(v))}
+            choicesLabel={g.sample.range}
+            head={[g.sample.range, g.sample.percent]}
+            rows={[
+              { id: "a", swatch: "bg-chart-lever-2", cells: [g.sample.range, fmt.nisWhole(1200)] },
+              { id: "b", swatch: "bg-chart-lever-4", cells: [g.sample.percent, fmt.nisWhole(400)] },
             ]}
           />
         </State>

@@ -9,7 +9,7 @@ import { invest as c, site } from "../copy";
 import { AssumptionsPanel } from "../components/compare/assumptions";
 import type { FormData } from "../components/compare/goal-form";
 import { ScenarioDefaults } from "../components/fees/chips";
-import { PlanCurves, PlanKnobs } from "../components/invest/knobs";
+import { PlanChanges, PlanKnobs } from "../components/invest/knobs";
 import { IndexChips, PlanBlock } from "../components/invest/chips";
 import { HousesSection } from "../components/invest/houses";
 import { FundsSection } from "../components/invest/funds";
@@ -237,8 +237,8 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
                 <Steps view={view} monthly={plan.values.monthly} pick={pick} />
               </Disclosure>
             </div>
-            {/* the result across each number's range: the slow part of the play, at the bottom (founder, 2026-10-28) */}
-            <PlanCurves plan={plan} ranges={data.form.knobs} bundle={wb} view={view} pick={pick} />
+            {/* what moves the result most: every number changed by the same share, at the bottom (founder, 2026-10-28) */}
+            <PlanChanges plan={plan} share={data.form.share} bundle={wb} view={view} pick={pick} />
             <Foot view={view} />
             <RulesLine ids={rules} />
           </>

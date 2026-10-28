@@ -216,6 +216,11 @@
   --chart-fee-2: var(--palette-gold-200);
   --chart-fee-3: var(--palette-teal-300);
   --chart-fee-4: var(--palette-magenta-400);
+  /* the indices page's change chart (2026-10-28): one line per plan number, the four validated fee-kind hues in the same order */
+  --chart-lever-1: var(--palette-orange-500);
+  --chart-lever-2: var(--palette-gold-200);
+  --chart-lever-3: var(--palette-teal-300);
+  --chart-lever-4: var(--palette-magenta-400);
   --chart-fee-total: var(--palette-neutral-50); /* the fee-drag chart's total line over the bands: a reference line, not a fee kind (2026-10-24 evening); neutral-200 until 2026-10-26, 4.9 ΔE from fee kind 3 under protanopia */
   --chart-tax: var(--palette-rose-600);
   --chart-tax-1: var(--palette-rose-600); /* tax during */
@@ -401,6 +406,10 @@
   --color-chart-value: var(--chart-value);
   --color-chart-net: var(--chart-net);
   --color-chart-fee: var(--chart-fee);
+  --color-chart-lever-1: var(--chart-lever-1);
+  --color-chart-lever-2: var(--chart-lever-2);
+  --color-chart-lever-3: var(--chart-lever-3);
+  --color-chart-lever-4: var(--chart-lever-4);
   --color-chart-fee-1: var(--chart-fee-1);
   --color-chart-fee-2: var(--chart-fee-2);
   --color-chart-fee-3: var(--chart-fee-3);
