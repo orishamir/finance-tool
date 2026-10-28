@@ -3476,8 +3476,16 @@ export const invest = {
     moreIfCheapest: "יותר אם עוברים לזוג הזול",
     pickCheapest: "בחרו את הזוג הזה",
     costTitleBoth: (years: number) => `כמה זה עולה לכם ב־${years} שנים, בכל אחד מהזוגות`,
-    gapLead: "ההפרש בין הזוגות:",
+    gapLead: "העלות אצלכם, לעומת הזוג השני:",
     gapPart: { account: "החשבון", fund: "הקרן", tax: "המס" },
+    /** After a part of the gap: the person's pair pays this much more, or less, to that party. */
+    gapMore: "יותר",
+    gapLess: "פחות",
+    /** A part of the gap that is zero: not "0 ₪", which reads as a cost of nothing. */
+    gapNone: "בלי הפרש",
+    /** Why the tax moves the other way from the fees: more left means more gain to tax. */
+    taxBecauseMore: "כי נשאר לכם יותר רווח",
+    taxBecauseLess: "כי נשאר לכם פחות רווח",
     who: { account: "החשבון:", fund: "הקרן:", state: "המדינה:" },
     lines: { trade: "עמלות קנייה ומכירה", custody: "דמי משמרת", fixed: "דמי ניהול חשבון", fx: "המרת מטבע", other: "עמלות אחרות" } as Record<string, string>,
     lineAbout: (line: string) => `מה החשבון גובה: ${line}`,
@@ -3485,7 +3493,7 @@ export const invest = {
     fundAbout: "דמי הניהול של הקרן",
     taxLine: "מס",
     taxAbout: "מס במכירה, בכסף של היום",
-    remainder: "יחד, מעבר לכל שורה לבד",
+    remainder: "השפעת השורות יחד",
     accountSlot: "חשבון ניירות ערך",
     fundSlot: "קרן",
     accounts: "כל החשבונות",
