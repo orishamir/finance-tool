@@ -197,6 +197,21 @@ Why this pair: Heebo is clear on small screens and matches Inter's proportions; 
 - **Hit areas (2026-10-24, UX audit).** A number, a rule chip and a glossary term each carry a transparent 44 px `::after` hit area without changing the line spacing. On a screen shorter than 500 px the sticky bars (chip bars, table heads, the bottom bar) become static. While a sheet is open the page behind does not scroll (`scrollbar-gutter: stable` on `html` so the desktop does not shift).
 - **Rhythm inside a section:** 16 px between paragraphs, 24 px between blocks (a chart and its inputs, a table and its note), `section-gap` between sections.
 
+### 2.5a Stable layout (founder, 2026-10-28)
+
+**Nothing moves when a number changes.** Moving a slider, picking an option, typing a number or switching an index changes the figures and nothing else: no column widens, no row or block grows or shrinks, no line wraps differently, and the part of the page under the person's finger stays where it was. The founder asked for this case by case at least five times before it became a rule (the index page's result block, its header, its picked row, the guide's sentence blanks, the change table).
+
+| Case | How the site does it | Where |
+|---|---|---|
+| A table whose figures change | `table-layout: fixed` with a width for every column, on a computer and on a phone; a column left out on a phone stays at width 0, so the next cell keeps its column; headings may wrap, figures may not | `ChangeChart` (`widths`) |
+| A figure | Tabular digits (`tabular-nums`, the page body's default), no wrapping inside a figure, isolated in Hebrew text | every `Num` |
+| A blank for a number inside a sentence | A fixed-width blank, whatever the number | `InputSlot` (`.input-slot`) |
+| A block whose content varies by choice | One shape for every choice: what may be missing is replaced, not removed (on the cheapest pair the result block shows the next pair beside it) | the index page's `PairResult` |
+| A header that varies by subject | One height, sized for the longest subject | the index page's `IndexHeader` |
+| A list that re-sorts after a tap | The tapped row is held at its place on the screen | `PickList` (`holdOnPick`) |
+
+**Check.** The builder runs a script that sets each input to several values (the choices, a slider's ends, a large typed number) and compares the boxes of the parts that must stay (column widths, block heights, the tapped row's top); the result goes in the builder's report and the structure review. A part that moves is a finding, fixed in the kit piece, not on the page.
+
 ### 2.6 Shape, elevation, focus, motion
 
 - **Radius:** `rounded-sm` 4 px (tags), `rounded-md` 8 px (fields, buttons, chips), `rounded-lg` 12 px (cards, popovers), `rounded-xl` 20 px (top corners of a bottom sheet), `rounded-full` (state chips, slider thumb).

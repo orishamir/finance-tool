@@ -85,6 +85,16 @@ re-check the capabilities that depend on it.
   where it can be named, a guard in `kit/guards.test.ts` or a ratchet in
   `kit/ratchets.test.ts` (leftovers listed by name, the list only shrinks);
   never into a feature folder. Every builder's brief says so.
+- **Nothing moves when a number changes** (founder, 2026-10-28). When the
+  person moves a slider, picks an option, types a number or switches an
+  index, only the figures change; every column, row, block and line keeps
+  its place and size. A table has a fixed width per column, for computer
+  and phone (`table-layout: fixed`); figures use tabular digits and do not
+  wrap; a block whose content varies keeps one height, sized for its
+  longest case; a blank for a number has a fixed width; a list that
+  re-sorts keeps the tapped row where it was. The builder checks it with a
+  script that changes the inputs and compares the boxes, and says so in the
+  structure review. Patterns: `docs/design-system.md` 2.5a.
 - **Structure review before every merge** (founder, 2026-10-25). The lead
   reviews each builder's branch for structure, not line by line:
   `node research/audit/tools/merge-review.mjs <base>` lists what the branch
