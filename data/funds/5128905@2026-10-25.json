@@ -180,5 +180,37 @@
       "checked": "2026-10-25"
     }
   },
+  "tracking_record": {
+    "years": [
+      {
+        "year": 2025,
+        "fund_pct": 5.85,
+        "tracking_pct": 5.52
+      },
+      {
+        "year": 2024,
+        "fund_pct": 25.86,
+        "tracking_pct": 25.86
+      },
+      {
+        "year": 2023,
+        "fund_pct": 60.12,
+        "tracking_pct": 59.81
+      },
+      {
+        "year": 2022,
+        "fund_pct": -23.93,
+        "tracking_pct": -23.91
+      }
+    ],
+    "source": {
+      "url": "https://mayafiles.tase.co.il/rpdf/1726001-1727000/P1726329-00.pdf",
+      "title": "דוח שנתי 'קסם NASDAQ 100 (4D) KTF' (מספר בורסה 5128905), תאריך הדוח 31 בדצמבר 2025, קסם קרנות נאמנות בע\"מ (Maya filing 1726329, PDF), עמ' 7 'תשואות, סטיות תקן ונתוני השוואה'",
+      "publisher": "קסם קרנות נאמנות בע\"מ",
+      "strength": "institution"
+    },
+    "page": 7,
+    "checked": "2026-10-25"
+  },
   "snapshot": "2026-10-25"
 }

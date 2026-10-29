@@ -54,5 +54,6 @@
     "IRA-11"
   ],
   "constituents_israeli": false,
+  "other_currencies": true,
   "checked": "2026-10-25"
 }

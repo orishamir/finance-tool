@@ -182,5 +182,22 @@
       "checked": "2026-10-25"
     }
   },
+  "tracking_record": {
+    "years": [
+      {
+        "year": 2025,
+        "fund_pct": 2.18,
+        "tracking_pct": 2.61
+      }
+    ],
+    "source": {
+      "url": "https://mayafiles.tase.co.il/rpdf/1727001-1728000/P1727369-00.pdf",
+      "title": "דוח שנתי 'קסם S&P 500 (4D) ETF' (מספר בורסה 1146471), תאריך הדוח 31 בדצמבר 2025, קסם קרנות נאמנות בע\"מ (Maya filing 1727369, PDF), עמ' 8 'תשואות, סטיות תקן ונתוני השוואה'",
+      "publisher": "קסם קרנות נאמנות בע\"מ",
+      "strength": "institution"
+    },
+    "page": 8,
+    "checked": "2026-10-25"
+  },
   "snapshot": "2026-10-25"
 }

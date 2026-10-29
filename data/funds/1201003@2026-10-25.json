@@ -182,5 +182,22 @@
       "checked": "2026-10-25"
     }
   },
+  "tracking_record": {
+    "years": [
+      {
+        "year": 2025,
+        "fund_pct": 5.81,
+        "tracking_pct": 6.01
+      }
+    ],
+    "source": {
+      "url": "https://mayafiles.tase.co.il/rpdf/1729001-1730000/P1729885-00.pdf",
+      "title": "דוח שנתי 'MTF סל (MSCI AC World (4D' (מספר בורסה 1201003), תאריך הדוח 31 בדצמבר 2025, מגדל קרנות נאמנות בע\"מ (Maya filing 1729885, PDF), עמ' 8 'תשואות, סטיות תקן ונתוני השוואה'",
+      "publisher": "מגדל קרנות נאמנות בע\"מ",
+      "strength": "institution"
+    },
+    "page": 8,
+    "checked": "2026-10-25"
+  },
   "snapshot": "2026-10-25"
 }

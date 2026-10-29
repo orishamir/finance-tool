@@ -181,5 +181,37 @@
       "checked": "2026-10-25"
     }
   },
+  "tracking_record": {
+    "years": [
+      {
+        "year": 2025,
+        "fund_pct": 5.67,
+        "tracking_pct": 5.52
+      },
+      {
+        "year": 2024,
+        "fund_pct": 26.05,
+        "tracking_pct": 25.86
+      },
+      {
+        "year": 2023,
+        "fund_pct": 61.29,
+        "tracking_pct": 59.81
+      },
+      {
+        "year": 2022,
+        "fund_pct": -23.98,
+        "tracking_pct": -23.91
+      }
+    ],
+    "source": {
+      "url": "https://mayafiles.tase.co.il/rpdf/1730001-1731000/P1730280-00.pdf",
+      "title": "דוח שנתי 'הראל מחקה (4D)יNASDAQ 100' (מספר בורסה 5129283), תאריך הדוח 31 בדצמבר 2025, הראל קרנות נאמנות בע\"מ (Maya filing 1730280, PDF), עמ' 8 'תשואות, סטיות תקן ונתוני השוואה'",
+      "publisher": "הראל קרנות נאמנות בע\"מ",
+      "strength": "institution"
+    },
+    "page": 8,
+    "checked": "2026-10-25"
+  },
   "snapshot": "2026-10-25"
 }

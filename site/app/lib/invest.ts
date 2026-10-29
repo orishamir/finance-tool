@@ -3,7 +3,7 @@
 // numbers come from the engine's provider workbench (F-63) and from the fund runs of F-65, over the bundle the other
 // workbench pages use. No fee, rate or rule figure is written here: tariffs are snapshots, fund fees are fund records,
 // exchange rates are the ECB's (D26). Nothing is chosen for the person (D27): an index is always an argument.
-import { beforeTax, costByWho, providerWorkbench, relativeGap, type ComparedProvider, type FeeLine, type NotComparableProvider, type ProviderRow } from "@finance-tool/engine";
+import { beforeTax, costByWho, crossing, gapToIndex, sumFees, trackingBeyondFeesRange, providerWorkbench, relativeGap, type ComparedProvider, type FeeLine, type NotComparableProvider, type ProviderRow } from "@finance-tool/engine";
 import type { ExposureRecord, FeesSnapshot, FundRecord } from "@finance-tool/schema";
 import { invest as copy } from "../copy";
 import { aliasRows } from "./search-aliases";
@@ -119,7 +119,7 @@ export const customIdOf = (name: string): string => `custom-${norm(name).replace
 
 // ---------------------------------------------------------------- reasons and cells
 
-export type Reason = NotComparable | { code: "fund-type" } | { code: "need-yield" } | { code: "need-rate"; currency: string } | { code: "no-fund-rate" };
+export type Reason = NotComparable | { code: "fund-type" } | { code: "need-yield" } | { code: "need-rate"; currency: string } | { code: "no-fund-rate" } | { code: "no-hedge-record" };
 
 export interface Availability {
   source: { url: string; title: string; checked: string };
@@ -469,7 +469,7 @@ function unavailable(s: FeesSnapshot, option: OptionId): Availability | null {
 
 // ---------------------------------------------------------------- values
 
-const inputMap = (plan: WorkbenchInputs): Record<string, SiteValue> => ({ סכום: plan.values.amount, "הפקדה חודשית": plan.values.monthly, שנים: plan.values.years, תשואה: plan.values.returnV, אינפלציה: plan.values.inflation });
+export const inputMap = (plan: WorkbenchInputs): Record<string, SiteValue> => ({ סכום: plan.values.amount, "הפקדה חודשית": plan.values.monthly, שנים: plan.values.years, תשואה: plan.values.returnV, אינפלציה: plan.values.inflation });
 const rulesOf = (row: ComparedProvider) => row.run.rules.map((u) => ({ id: u.id, strength: u.strength as Strength }));
 
 function costValue(ctx: Ctx, row: ComparedProvider, about: string): SiteValue {
@@ -490,6 +490,8 @@ function fundSpec(ctx: Ctx, rec: FundRecord): { spec: Spec; mismatch: boolean } 
   const exposure = ctx.bundle.exposures.find((e) => e.id === rec.exposure_id);
   const subject = subjectOf(ctx.bundle, rec.id);
   if (!subject) return { reason: { code: "fund-type" } };
+  // a hedged fund's cost is mostly beyond its fees (F-92): with no full year in its report and no published figure it is not priced
+  if (rec.hedged === true && !rec.tracking_record && typeof rec.fees.tracking_difference_12m?.value !== "number") return { reason: { code: "no-hedge-record" } };
   const run = fundRun(subject, exposure, ctx.plan.grossReturn, ctx.assumptions, ctx.bundle.fx);
   if ("kind" in run) return { reason: run.kind === "need-rate" ? { code: "need-rate", currency: run.currency } : run.kind === "need-yield" ? { code: "need-yield" } : { code: "fund-type" } };
   // as the engine flags it (E4): a fund in a foreign currency other than its index's; a shekel fund on a dollar index is the usual case, not a mismatch
@@ -851,4 +853,84 @@ export function rangeOverKnownIndices(bundle: WorkbenchBundle, plan: WorkbenchIn
   if (all.length === 0) return null;
   all.sort((a, b) => a.valueN - b.valueN);
   return { low: all[0]!, high: all[all.length - 1]!, perIndex: all };
+}
+
+// ---------------------------------------------------------------- hedged or not, across the dollar (F-94, 2026-10-29)
+
+/** The two kinds a foreign index's funds come in: keeping the index's currency, or neutralising it (`hedged: true`). */
+export type Kind = "unhedged" | "hedged";
+export const kindOf = (rec: FundRecord): Kind => (rec.hedged === true ? "hedged" : "unhedged");
+
+/** F-92 (a): a fund's gap to its index in percent a year, with how many full years it rests on; null with none. */
+export function gapOf(rec: FundRecord): { pct: number; years: number } | null {
+  const years = rec.tracking_record?.years ?? [];
+  const pct = gapToIndex(years);
+  return pct === null ? null : { pct, years: years.length };
+}
+
+/** Whether the page shows the two kinds: an index on a foreign currency with a priced fund of each kind. */
+export function hasKinds(view: InvestView): boolean {
+  const cur = view.index.exposure?.currency;
+  if (!cur || cur === "ILS" || cur === "NIS") return false;
+  const funds = view.options.filter((o) => o.exists).flatMap((o) => o.funds);
+  return (["unhedged", "hedged"] as const).every((k) => funds.some((f) => kindOf(f.rec) === k && Object.values(f.byHouse).some((x) => "valueN" in x && !x.open)));
+}
+
+/** One pair's real value left (F-65) at a dollar change `fxChange` (percent a year, A-03), A-07 replaced by `tracking` when given. */
+export function pairValue(a: InvestArgs & { fundId: string; providerId: string; fxChange: number; tracking?: number }): number | null {
+  const ctx = makeCtx(a.bundle, a.plan, { ...a.assumptions, fxChange: a.fxChange });
+  const rec = a.bundle.funds.find((f) => f.id === a.fundId);
+  const s = ctx.snaps.find((x) => x.id === a.providerId);
+  if (!rec || !s) return null;
+  const option = optionOfFund(rec, a.index.exposure ?? undefined);
+  if (unavailable(s, option)) return null;
+  const fs = fundSpec(ctx, rec);
+  if ("reason" in fs) return null;
+  let spec = fs.spec;
+  if (a.tracking !== undefined) {
+    const fund = spec.fund as { drag?: Record<string, number> };
+    spec = { ...spec, fund: { ...fund, drag: { ...fund.drag, tracking: a.tracking } } } as Spec;
+  }
+  const p = priceMany(ctx, spec, option, [s], option === "abroad" ? venueOfFund(rec) : null).get(s.id);
+  return p && p.kind === "ok" ? p.row.real : null;
+}
+
+export interface KindScenarios {
+  /** P-02's bounds for A-03, percent a year. */
+  lo: number;
+  hi: number;
+  /** The unhedged pair's value left at every whole percent from `lo` to `hi` (F-94 a). */
+  unhedged: { fx: number; value: number }[];
+  /** The hedged pair's value left, and its band (F-94 b, F-92 c); the band is null when the run's A-07 is not from the reports. */
+  hedged: { value: number; band: { low: number; high: number } | null };
+  /** The dollar's yearly change at which the two are equal (F-94 c), percent; null when they do not meet within ±10% a year. */
+  crossing: number | null;
+}
+
+/** F-94 over two pairs, one of each kind. `withCrossing` false skips (c), the slow part, for a figure that follows a slider live. */
+export function kindScenarios(a: InvestArgs & { unhedged: { fundId: string; providerId: string }; hedged: { fundId: string; providerId: string }; lo: number; hi: number; withCrossing?: boolean; points?: "ends" | "all" }): KindScenarios | null {
+  const u = (fx: number) => pairValue({ ...a, ...a.unhedged, fxChange: fx });
+  const hv = pairValue({ ...a, ...a.hedged, fxChange: 0 });
+  if (hv === null) return null;
+  const xs: number[] = [];
+  if (a.points === "ends") xs.push(a.lo, 0, a.hi);
+  else for (let f = Math.ceil(a.lo); f <= Math.floor(a.hi); f++) xs.push(f);
+  const unhedged: { fx: number; value: number }[] = [];
+  for (const fx of xs) {
+    const v = u(fx);
+    if (v === null) return null;
+    unhedged.push({ fx, value: v });
+  }
+  const rec = a.bundle.funds.find((f) => f.id === a.hedged.fundId)!;
+  // a band needs two years or more: one year is the figure itself
+  const range = rec.tracking_record && rec.tracking_record.years.length > 1 && typeof rec.fees.tracking_difference_12m?.value !== "number" ? trackingBeyondFeesRange(rec.tracking_record.years, sumFees(rec)) : null;
+  let band: { low: number; high: number } | null = null;
+  if (range) {
+    // the dearest year's A-07 leaves the least
+    const low = pairValue({ ...a, ...a.hedged, fxChange: 0, tracking: range.high });
+    const high = pairValue({ ...a, ...a.hedged, fxChange: 0, tracking: range.low });
+    if (low !== null && high !== null) band = { low, high };
+  }
+  const cross = a.withCrossing === false ? null : crossing((fx) => (u(fx) ?? NaN) - hv, -10, 10);
+  return { lo: a.lo, hi: a.hi, unhedged, hedged: { value: hv, band }, crossing: cross };
 }

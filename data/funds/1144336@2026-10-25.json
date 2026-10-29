@@ -182,5 +182,37 @@
     }
   },
   "hedged": true,
+  "tracking_record": {
+    "years": [
+      {
+        "year": 2025,
+        "fund_pct": 18.61,
+        "tracking_pct": 21.52
+      },
+      {
+        "year": 2024,
+        "fund_pct": 15.89,
+        "tracking_pct": 18.92
+      },
+      {
+        "year": 2023,
+        "fund_pct": 19.23,
+        "tracking_pct": 22.2
+      },
+      {
+        "year": 2022,
+        "fund_pct": -21.13,
+        "tracking_pct": -18.41
+      }
+    ],
+    "source": {
+      "url": "https://mayafiles.tase.co.il/rpdf/1729001-1730000/P1729604-00.pdf",
+      "title": "דוח שנתי 'תכלית סל (4A) MSCI AC World מנוטרלת דולר' (מספר בורסה 1144336), תאריך הדוח 31 בדצמבר 2025, מיטב קרנות נאמנות בע\"מ (Maya filing 1729604, PDF), עמ' 7 'תשואות, סטיות תקן ונתוני השוואה'",
+      "publisher": "מיטב קרנות נאמנות בע\"מ",
+      "strength": "institution"
+    },
+    "page": 7,
+    "checked": "2026-10-25"
+  },
   "snapshot": "2026-10-25"
 }

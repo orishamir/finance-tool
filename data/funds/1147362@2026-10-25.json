@@ -182,5 +182,22 @@
     }
   },
   "hedged": true,
+  "tracking_record": {
+    "years": [
+      {
+        "year": 2025,
+        "fund_pct": 19.06,
+        "tracking_pct": 21.52
+      }
+    ],
+    "source": {
+      "url": "https://mayafiles.tase.co.il/rpdf/1727001-1728000/P1727505-00.pdf",
+      "title": "דוח שנתי 'קסם MSCI AC World (4A) ETF מנוטרלת דולר' (מספר בורסה 1147362), תאריך הדוח 31 בדצמבר 2025, קסם קרנות נאמנות בע\"מ (Maya filing 1727505, PDF), עמ' 10 'תשואות, סטיות תקן ונתוני השוואה'",
+      "publisher": "קסם קרנות נאמנות בע\"מ",
+      "strength": "institution"
+    },
+    "page": 10,
+    "checked": "2026-10-25"
+  },
   "snapshot": "2026-10-25"
 }
