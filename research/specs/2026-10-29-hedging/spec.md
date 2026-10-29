@@ -47,6 +47,14 @@ The founder's sensitivity range for the dollar (P-02, A-03) is −3% to +3% a ye
    - The ECB series keeps its history (today the file holds the latest day only), under the ECB's terms with attribution. The Bank of Israel's rates stay links (D20).
 3. **Engine.** A hedged fund does not move with A-03 (F-04 and `fundRun`), with a golden test.
 4. **Labels.** "מנוטרלת דולר" for a fund that hedges only the dollar. The old three-way filter goes.
+   - **Many-currency indices** (founder's question, 2026-10-29).
+     - The hedged MSCI World and ACWI funds track the index in dollar terms and neutralise only the dollar against the shekel (ETF-69; the funds' reports, "עסקאות חוזי אקדמה וספוט לצורך נטרול החשיפה למטבע"). MSCI World is calculated in dollars over 23 countries (ETF-48, ETF-49), so the euro, yen and the index's other currencies still move a hedged fund, against the dollar.
+     - In 2025 the shekel target and the dollar target differ by the same amount on every index: −12.77% (MSCI World 4.96% against 20.32%), −12.76% (ACWI), −12.62% (S&P 500) and −12.63% (NASDAQ 100). Hedged and unhedged therefore differ only by the dollar against the shekel, so option A's dollar axis holds for these indices too.
+     - Wording:
+       - a hedged MSCI World figure is "not tied to the dollar against the shekel", never "not tied to currencies";
+       - the unhedged label on these indices says the dollar and the other currencies.
+     - The exposure codes do not tell how hedged a fund is: the two ACWI hedged ETFs are 4A (foreign currency up to 10%), the two MSCI World hedged funds 4D (up to 120%), though their reports describe the same hedge.
+     - Not in the rule base: the index's share outside the dollar (the MSCI factsheet's country weights), for the domain-specialist.
 5. **Rule base.** The domain-specialist researches what hedging costs and why.
 
 ## 3. Options
