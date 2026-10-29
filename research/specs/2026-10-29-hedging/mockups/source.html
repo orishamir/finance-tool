@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="/finance-tool/assets/root-BN-cOSnu.css">
+<style>
+  :root {
+    --l-trade: oklch(0.80 0.10 215); --l-follow: oklch(0.76 0.15 340); --l-payout: oklch(0.80 0.14 155);
+    --l-currency: oklch(0.86 0.13 92); --l-tax: oklch(0.76 0.14 28);
+    --s-usd: oklch(0.86 0.13 92); --s-ils: oklch(0.76 0.15 340);
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--background); color: var(--foreground); font-family: "Inter Variable", "Heebo Variable", sans-serif; font-size: 16px; line-height: 1.6; }
+  .nm { direction: ltr; unicode-bidi: isolate; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  bdi { unicode-bidi: isolate; }
+  section { max-width: 1366px; margin: 0 auto; padding: 0 32px 48px; }
+  .sketch { background: var(--palette-amber-400); color: var(--palette-neutral-975); font-size: 14px; font-weight: 600; padding: 8px 14px; margin: 0 -32px 20px; }
+  .sketch .rec { background: var(--palette-neutral-975); color: var(--palette-amber-400); border-radius: 6px; padding: 1px 8px; margin-inline-start: 8px; }
+  .sketch p { margin: 2px 0 0; font-weight: 400; }
+  h2 { font-size: 20px; margin: 0; font-weight: 600; line-height: 1.35; }
+  h3 { font-size: 16px; margin: 0; font-weight: 600; }
+  .muted { color: var(--muted-foreground); }
+  .small { font-size: 13px; }
+  .link { color: var(--link); }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 20px; }
+  .cols { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; align-items: start; }
+  .colhead { font-size: 13px; font-weight: 700; letter-spacing: 0; margin-bottom: 8px; color: var(--muted-foreground); }
+  .ul { text-decoration: underline dotted var(--computed); text-underline-offset: 5px; text-decoration-thickness: 2px; }
+  .src { text-decoration: underline solid var(--muted-foreground); text-underline-offset: 5px; }
+  .ent { color: var(--entered); background: color-mix(in oklch, var(--entered) 16%, transparent); border-radius: 4px; padding: 0 4px; }
+  .labs { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 6px; }
+  .lab { --c: var(--muted-foreground); display: inline-flex; align-items: center; font-size: 12.5px; line-height: 22px; padding: 0 9px; border-radius: 999px; white-space: nowrap;
+         color: var(--c); background: color-mix(in oklch, var(--c) 13%, transparent); border: 1px solid color-mix(in oklch, var(--c) 40%, transparent); }
+  .lab.trade { --c: var(--l-trade); } .lab.follow { --c: var(--l-follow); } .lab.payout { --c: var(--l-payout); } .lab.currency { --c: var(--l-currency); } .lab.tax { --c: var(--l-tax); }
+  .lab.new { outline: 2px dashed var(--palette-amber-400); outline-offset: 2px; }
+  table.funds { width: 100%; border-collapse: collapse; table-layout: fixed; }
+  table.funds th { font-size: 13px; color: var(--muted-foreground); font-weight: 500; text-align: start; padding: 6px 8px; border-bottom: 1px solid var(--border); }
+  table.funds td { padding: 10px 8px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  table.funds tr.pick td { background: color-mix(in oklch, var(--primary) 7%, transparent); }
+  table.funds tr.pick td:first-child { box-shadow: inset -3px 0 0 var(--primary); }
+  .rank { display: inline-grid; place-items: center; width: 24px; height: 24px; border-radius: 999px; border: 1px solid var(--input); font-size: 13px; }
+  tr.pick .rank { background: var(--primary); color: var(--primary-foreground); border-color: var(--primary); }
+  .fname { font-weight: 600; line-height: 1.35; }
+  .mgr { font-size: 13px; color: var(--muted-foreground); }
+  .fees { font-size: 13px; line-height: 1.7; }
+  .fees .w { color: var(--muted-foreground); }
+  .fees .new { outline: 2px dashed var(--palette-amber-400); outline-offset: 2px; border-radius: 3px; }
+  .val { font-weight: 600; font-size: 17px; }
+  .why { font-size: 13px; color: var(--muted-foreground); white-space: normal; }
+  .lsheet { background: var(--popover); border: 1px solid var(--input); border-radius: 16px; padding: 22px 24px; display: flex; flex-direction: column; gap: 14px; }
+  .lsheet p { margin: 0; }
+  .legend { display: flex; gap: 18px; font-size: 13px; color: var(--muted-foreground); }
+  .sw { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-inline-end: 6px; vertical-align: -1px; }
+  .seg { display: inline-flex; border: 1px solid var(--input); border-radius: 10px; overflow: hidden; }
+  .seg span { padding: 10px 16px; font-size: 15px; white-space: nowrap; }
+  .seg span.on { background: var(--popover); font-weight: 600; box-shadow: inset 0 -2px 0 var(--primary); }
+  .knobs { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  .pc { display: inline-flex; gap: 6px; align-items: baseline; background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 6px 12px; font-size: 14px; white-space: nowrap; }
+  .pc .k { color: var(--muted-foreground); } .pc .v { font-weight: 600; }
+  .sldr { display: flex; align-items: center; gap: 12px; background: var(--card); border: 2px dashed var(--palette-amber-400); border-radius: 12px; padding: 10px 14px; }
+  .trk { position: relative; width: 260px; height: 6px; border-radius: 3px; background: var(--input); direction: ltr; }
+  .trk .fill { position: absolute; inset-block: 0; left: 0; width: 20%; border-radius: 3px; background: var(--entered); }
+  .trk .thumb { position: absolute; top: -8px; left: calc(20% - 11px); width: 22px; height: 22px; border-radius: 999px; background: var(--entered); }
+  .bars { display: flex; flex-direction: column; gap: 10px; }
+  .bar { display: grid; grid-template-columns: 220px minmax(0, 1fr) 110px; gap: 12px; align-items: center; }
+  .bar .b { height: 22px; border-radius: 4px; background: var(--palette-teal-500); }
+</style>
+</head>
+<body>
+
+<!-- ============ the fix every option shares ============ -->
+<section id="fix">
+  <div class="sketch">בכל האפשרויות: עלות הנטרול נכנסת לחישוב. דוגמה: MSCI World, התוכנית לדוגמה (10,000 ₪, 500 ₪ בחודש, 10 שנים, 7%), חשבון בפסגות.
+    <p>לפני: הקרן המנוטרלת נבחרת כזולה כי רק דמי הניהול שלה נספרים. אחרי: הפער שהקרן עצמה מדווחת מול המדד שלה, מעבר לדמי הניהול, נספר כעלות. הקרן של מגדל עוד בלי שנה מלאה בדוח, ולכן מופיעה עם הסיבה ולא מדורגת. התווית "מנוטרלת דולר" כשהקרן מנטרלת רק את הדולר.</p></div>
+  <div class="cols">
+    <div>
+      <div class="colhead">לפני (היום באתר)</div>
+      <div class="card">
+        <table class="funds">
+          <colgroup><col style="width:40px"><col><col style="width:110px"><col style="width:190px"></colgroup>
+          <thead><tr><th></th><th>קרן</th><th>דמי ניהול</th><th>לעומת הבחירה</th></tr></thead>
+          <tbody>
+            <tr class="pick"><td><span class="rank">1</span></td><td><div class="fname"><bdi>קסם KTF (4D) MSCI World מנוטרלת דולר</bdi> <span class="link nm">5139696 ↗</span></div><div class="mgr">קסם קרנות נאמנות</div>
+              <div class="labs"><span class="lab trade">קרן מחקה: פעם ביום</span><span class="lab follow">עסקת החלף</span><span class="lab payout">צוברת</span><span class="lab currency">מנוטרלת מט״ח</span></div></td>
+              <td class="fees"><span class="w">קבועים</span> <span class="nm src">0%</span><br><span class="w">משתנים</span> <span class="nm src">0.3%</span><br><span class="w">נאמן</span> <span class="nm src">0.03%</span></td><td class="val">הבחירה</td></tr>
+            <tr><td><span class="rank">2</span></td><td><div class="fname"><bdi>MTF מחקה (4D) MSCI World מנוטרלת דולר</bdi> <span class="link nm">5140165 ↗</span></div><div class="mgr">מגדל קרנות נאמנות</div>
+              <div class="labs"><span class="lab trade">קרן מחקה: פעם ביום</span><span class="lab follow">עסקת החלף</span><span class="lab payout">צוברת</span><span class="lab currency">מנוטרלת מט״ח</span></div></td>
+              <td class="fees"><span class="w">קבועים</span> <span class="nm src">0%</span><br><span class="w">משתנים</span> <span class="nm src">0.3%</span><br><span class="w">נאמן</span> <span class="nm src">0.03%</span></td><td class="val nm ul">0 ₪</td></tr>
+            <tr><td><span class="rank">3</span></td><td><div class="fname"><bdi>MTF מחקה (4D) MSCI World</bdi> <span class="link nm">5122569 ↗</span></div><div class="mgr">מגדל קרנות נאמנות</div>
+              <div class="labs"><span class="lab trade">קרן מחקה: פעם ביום</span><span class="lab follow">עסקת החלף</span><span class="lab payout">צוברת</span><span class="lab currency">חשיפה לדולר</span><span class="lab tax">מס גם על שינויי המטבע</span></div></td>
+              <td class="fees"><span class="w">קבועים</span> <span class="nm src">0.25%</span><br><span class="w">משתנים</span> <span class="nm src">0.3%</span><br><span class="w">נאמן</span> <span class="nm src">0.02%</span></td><td class="val nm ul">−993 ₪</td></tr>
+            <tr><td><span class="rank">4</span></td><td><div class="fname"><bdi>תכלית MSCI WORLD (4D) TTF</bdi> <span class="link nm">5124573 ↗</span></div><div class="mgr">מיטב קרנות נאמנות</div>
+              <div class="labs"><span class="lab trade">קרן מחקה: פעם ביום</span><span class="lab follow">כמה דרכים יחד</span><span class="lab payout">צוברת</span><span class="lab currency">חשיפה לדולר</span><span class="lab tax">מס גם על שינויי המטבע</span></div></td>
+              <td class="fees"><span class="w">קבועים</span> <span class="nm src">0.31%</span><br><span class="w">משתנים</span> <span class="nm src">0.3%</span><br><span class="w">נאמן</span> <span class="nm src">0.03%</span></td><td class="val nm ul">−1,279 ₪</td></tr>
+            <tr><td><span class="rank">5</span></td><td><div class="fname"><bdi>קסם MSCI World (4D) ETF</bdi> <span class="link nm">1145804 ↗</span></div><div class="mgr">קסם קרנות נאמנות</div>
+              <div class="labs"><span class="lab trade">קרן סל: נסחרת כל היום</span><span class="lab follow">עסקת החלף</span><span class="lab payout">צוברת</span><span class="lab currency">חשיפה לדולר</span><span class="lab tax">מס גם על שינויי המטבע</span></div></td>
+              <td class="fees"><span class="w">קבועים</span> <span class="nm src">0.83%</span><br><span class="w">משתנים</span> <span class="nm src">0.3%</span><br><span class="w">נאמן</span> <span class="nm src">0.03%</span></td><td class="val nm ul">−3,359 ₪</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div>
+      <div class="colhead">אחרי</div>
+      <div class="card">
+        <table class="funds">
+          <colgroup><col style="width:40px"><col><col style="width:150px"><col style="width:150px"></colgroup>
+          <thead><tr><th></th><th>קרן</th><th>דמי ניהול ופער</th><th>לעומת הבחירה</th></tr></thead>
+          <tbody>
+            <tr class="pick"><td><span class="rank">1</span></td><td><div class="fname"><bdi>MTF מחקה (4D) MSCI World</bdi> <span class="link nm">5122569 ↗</span></div><div class="mgr">מגדל קרנות נאמנות</div>
+              <div class="labs"><span class="lab trade">קרן מחקה: פעם ביום</span><span class="lab follow">עסקת החלף</span><span class="lab payout">צוברת</span><span class="lab currency">חשיפה לדולר</span><span class="lab tax">מס גם על שינויי המטבע</span></div></td>
+              <td class="fees"><span class="w">קבועים</span> <span class="nm src">0.25%</span><br><span class="w">משתנים</span> <span class="nm src">0.3%</span><br><span class="w">נאמן</span> <span class="nm src">0.02%</span><br><span class="new"><span class="w">פער מהמדד</span> <span class="nm ul">0%</span></span></td><td class="val">הבחירה</td></tr>
+            <tr><td><span class="rank">2</span></td><td><div class="fname"><bdi>תכלית MSCI WORLD (4D) TTF</bdi> <span class="link nm">5124573 ↗</span></div><div class="mgr">מיטב קרנות נאמנות</div>
+              <div class="labs"><span class="lab trade">קרן מחקה: פעם ביום</span><span class="lab follow">כמה דרכים יחד</span><span class="lab payout">צוברת</span><span class="lab currency">חשיפה לדולר</span><span class="lab tax">מס גם על שינויי המטבע</span></div></td>
+              <td class="fees"><span class="w">קבועים</span> <span class="nm src">0.31%</span><br><span class="w">משתנים</span> <span class="nm src">0.3%</span><br><span class="w">נאמן</span> <span class="nm src">0.03%</span><br><span class="new"><span class="w">פער מהמדד</span> <span class="nm ul">0%</span></span></td><td class="val nm ul">−286 ₪</td></tr>
+            <tr><td><span class="rank">3</span></td><td><div class="fname"><bdi>קסם MSCI World (4D) ETF</bdi> <span class="link nm">1145804 ↗</span></div><div class="mgr">קסם קרנות נאמנות</div>
+              <div class="labs"><span class="lab trade">קרן סל: נסחרת כל היום</span><span class="lab follow">עסקת החלף</span><span class="lab payout">צוברת</span><span class="lab currency">חשיפה לדולר</span><span class="lab tax">מס גם על שינויי המטבע</span></div></td>
+              <td class="fees"><span class="w">קבועים</span> <span class="nm src">0.83%</span><br><span class="w">משתנים</span> <span class="nm src">0.3%</span><br><span class="w">נאמן</span> <span class="nm src">0.03%</span><br><span class="new"><span class="w">פער מהמדד</span> <span class="nm ul">0%</span></span></td><td class="val nm ul">−2,366 ₪</td></tr>
+            <tr><td><span class="rank">4</span></td><td><div class="fname"><bdi>קסם KTF (4D) MSCI World מנוטרלת דולר</bdi> <span class="link nm">5139696 ↗</span></div><div class="mgr">קסם קרנות נאמנות</div>
+              <div class="labs"><span class="lab trade">קרן מחקה: פעם ביום</span><span class="lab follow">עסקת החלף</span><span class="lab payout">צוברת</span><span class="lab currency new">מנוטרלת דולר</span></div></td>
+              <td class="fees"><span class="w">קבועים</span> <span class="nm src">0%</span><br><span class="w">משתנים</span> <span class="nm src">0.3%</span><br><span class="w">נאמן</span> <span class="nm src">0.03%</span><br><span class="new"><span class="w">פער מהמדד</span> <span class="nm ul">1.79%</span></span></td><td class="val nm ul">−5,649 ₪</td></tr>
+            <tr><td><span class="rank" style="visibility:hidden">5</span></td><td><div class="fname"><bdi>MTF מחקה (4D) MSCI World מנוטרלת דולר</bdi> <span class="link nm">5140165 ↗</span></div><div class="mgr">מגדל קרנות נאמנות</div>
+              <div class="labs"><span class="lab trade">קרן מחקה: פעם ביום</span><span class="lab follow">עסקת החלף</span><span class="lab payout">צוברת</span><span class="lab currency new">מנוטרלת דולר</span></div></td>
+              <td class="fees"><span class="w">קבועים</span> <span class="nm src">0%</span><br><span class="w">משתנים</span> <span class="nm src">0.3%</span><br><span class="w">נאמן</span> <span class="nm src">0.03%</span></td><td class="why">אי אפשר לחשב: בדוח השנתי של הקרן עוד אין שנה מלאה</td></tr>
+          </tbody>
+        </table>
+        <p class="small muted" style="margin:12px 0 0">פער מהמדד: כמה הקרן פיגרה בשנה בממוצע אחרי המדד שלה, לפי הדוחות השנתיים שלה, מעבר לדמי הניהול והנאמן. קרן שהקדימה את המדד נספרת כאפס.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ option A ============ -->
+<section id="optA">
+  <div class="sketch">אפשרות א: רשימה אחת, והתווית מסבירה את הבחירה <span class="rec">מומלצת</span>
+    <p>נשארת ההחלטה מ־27.10: הנטרול הוא תווית ולא מסנן. הקרן המנוטרלת מדורגת עם השאר לפי מה שנשאר אם השער לא משתנה, ולחיצה על התווית פותחת את ההסבר עם שלושה דברים: מה השער עשה בכל שנה, מה הנטרול עלה בקרן הזו, ומאיזו ירידה של הדולר הוא משתלם בתוכנית שלכם. S&P 500, התוכנית לדוגמה, פסגות.</p></div>
+  <div class="cols" style="grid-template-columns: minmax(0, 6fr) minmax(0, 5fr)">
+    <div class="card">
+      <h3 style="margin-bottom:8px">כל הקרנות על מדד S&amp;P 500</h3>
+      <table class="funds">
+        <colgroup><col style="width:40px"><col><col style="width:140px"><col style="width:120px"></colgroup>
+        <thead><tr><th></th><th>קרן</th><th>דמי ניהול ופער</th><th>לעומת הבחירה</th></tr></thead>
+        <tbody>
+          <tr class="pick"><td><span class="rank">1</span></td><td><div class="fname"><bdi>ילין לפידות מחקה (4D) S&amp;P 500</bdi> <span class="link nm">5139282 ↗</span></div>
+            <div class="labs"><span class="lab trade">קרן מחקה: פעם ביום</span><span class="lab follow">עסקת החלף</span><span class="lab currency">חשיפה לדולר</span><span class="lab tax">מס גם על שינויי המטבע</span></div></td>
+            <td class="fees"><span class="w">קבועים</span> <span class="nm src">0%</span> · <span class="w">משתנים</span> <span class="nm src">0%</span><br><span class="w">נאמן</span> <span class="nm src">0.02%</span> · <span class="w">פער</span> <span class="nm ul">0%</span></td><td class="val">הבחירה</td></tr>
+          <tr><td><span class="rank">2</span></td><td><div class="fname"><bdi>אלטשולר שחם מחקה (4D) S&amp;P 500</bdi> <span class="link nm">5139100 ↗</span></div>
+            <div class="labs"><span class="lab trade">קרן מחקה: פעם ביום</span><span class="lab follow">כמה דרכים יחד</span><span class="lab currency">חשיפה לדולר</span><span class="lab tax">מס גם על שינויי המטבע</span></div></td>
+            <td class="fees"><span class="w">קבועים</span> <span class="nm src">0%</span> · <span class="w">משתנים</span> <span class="nm src">0%</span><br><span class="w">נאמן</span> <span class="nm src">0.03%</span> · <span class="w">פער</span> <span class="nm ul">0%</span></td><td class="val nm ul">−43 ₪</td></tr>
+          <tr><td colspan="4" class="small muted" style="text-align:center">עוד 10 קרנות</td></tr>
+          <tr><td><span class="rank">13</span></td><td><div class="fname"><bdi>הראל מחקה (4A) S&amp;P 500 מנוטרלת מט״ח</bdi> <span class="link nm">5127527 ↗</span></div>
+            <div class="labs"><span class="lab trade">קרן מחקה: פעם ביום</span><span class="lab follow">כמה דרכים יחד</span><span class="lab currency" style="box-shadow:0 0 0 2px var(--primary)">מנוטרלת מט״ח</span></div></td>
+            <td class="fees"><span class="w">קבועים</span> <span class="nm src">0%</span> · <span class="w">משתנים</span> <span class="nm src">0.3%</span><br><span class="w">נאמן</span> <span class="nm src">0.02%</span> · <span class="w">פער</span> <span class="nm ul">2.12%</span></td><td class="val nm ul">−9,061 ₪</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="lsheet">
+      <h2>מנוטרלת מט״ח</h2>
+      <p>הקרן עוקבת אחרי S&amp;P 500 כפי שהוא מחושב בדולרים, בלי השינוי בשער הדולר מול השקל. קרן שאינה מנוטרלת עוקבת אחרי אותו מדד אחרי ההמרה לשקלים, ולכן עולה כשהדולר מתחזק ויורדת כשהוא נחלש.</p>
+      <h3>מה קרה בכל שנה</h3>
+      <div class="legend"><span><span class="sw" style="background:var(--s-usd)"></span>S&amp;P 500 בדולרים: מה שהקרן המנוטרלת עוקבת אחריו</span><span><span class="sw" style="background:var(--s-ils)"></span>S&amp;P 500 בשקלים: מה שהלא מנוטרלות עוקבות אחריו</span></div>
+      <svg viewBox="0 0 520 230" width="100%" style="direction:ltr" font-family="Inter Variable, Heebo Variable, sans-serif">
+        <!-- scale: -20..30 => y 200..20 ; 1pt = 3.6px ; zero at y=128 -->
+        <g stroke="var(--border)" stroke-width="1">
+          <line x1="44" x2="510" y1="20" y2="20"/><line x1="44" x2="510" y1="56" y2="56"/><line x1="44" x2="510" y1="92" y2="92"/><line x1="44" x2="510" y1="164" y2="164"/><line x1="44" x2="510" y1="200" y2="200"/>
+        </g>
+        <line x1="44" x2="510" y1="128" y2="128" stroke="var(--input)" stroke-width="1.5"/>
+        <g fill="var(--muted-foreground)" font-size="12" text-anchor="end">
+          <text x="38" y="24">30%</text><text x="38" y="60">20%</text><text x="38" y="96">10%</text><text x="38" y="132">0%</text><text x="38" y="168">−10%</text><text x="38" y="204">−20%</text>
+        </g>
+        <!-- 2022: usd -18.52 => y 128..194.7 ; ils -7.55 => 128..155.2 -->
+        <rect x="70" y="128" width="34" height="66.7" rx="3" fill="var(--s-usd)"/><rect x="108" y="128" width="34" height="27.2" rx="3" fill="var(--s-ils)"/>
+        <!-- 2023: usd 25.70 => h 92.5 ; ils 29.43 => h 105.9 -->
+        <rect x="186" y="35.5" width="34" height="92.5" rx="3" fill="var(--s-usd)"/><rect x="224" y="22.1" width="34" height="105.9" rx="3" fill="var(--s-ils)"/>
+        <!-- 2024: usd 24.16 => 87.0 ; ils 24.96 => 89.9 -->
+        <rect x="302" y="41" width="34" height="87" rx="3" fill="var(--s-usd)"/><rect x="340" y="38.1" width="34" height="89.9" rx="3" fill="var(--s-ils)"/>
+        <!-- 2025: usd 17.43 => 62.7 ; ils 2.61 => 9.4 -->
+        <rect x="418" y="65.3" width="34" height="62.7" rx="3" fill="var(--s-usd)"/><rect x="456" y="118.6" width="34" height="9.4" rx="3" fill="var(--s-ils)"/>
+        <g fill="var(--foreground)" font-size="11.5" text-anchor="middle" style="font-variant-numeric: tabular-nums">
+          <text x="87" y="208">−18.5</text><text x="125" y="169">−7.6</text>
+          <text x="203" y="31">25.7</text><text x="241" y="17">29.4</text>
+          <text x="319" y="36">24.2</text><text x="357" y="33">25.0</text>
+          <text x="435" y="60">17.4</text><text x="473" y="113">2.6</text>
+        </g>
+        <g fill="var(--muted-foreground)" font-size="13" text-anchor="middle">
+          <text x="106" y="224">2022</text><text x="222" y="224">2023</text><text x="338" y="224">2024</text><text x="454" y="224">2025</text>
+        </g>
+      </svg>
+      <p class="small muted">מתוך הדוחות השנתיים של הקרנות. הדולר מול השקל: <span class="nm ul">+13.5%</span> ב־2022, <span class="nm ul">+3.0%</span> ב־2023, <span class="nm ul">+0.6%</span> ב־2024, <span class="nm ul">−12.6%</span> ב־2025.</p>
+      <h3>מה הנטרול עלה בקרן הזו</h3>
+      <p>בשנים 2022 עד 2025 הקרן פיגרה אחרי המדד שלה ב־<span class="nm ul">2.44%</span> בשנה בממוצע. מזה <span class="nm src">0.32%</span> דמי ניהול ונאמן, ואת <span class="nm ul">2.12%</span> הנותרים החישוב מוסיף כעלות.</p>
+      <h3>מתי זה משתלם בתוכנית שלכם</h3>
+      <p>אם השער לא משתנה, בעוד 10 שנים יישארו לכם בקרן הזו <span class="nm ul">77,431 ₪</span>, ובקרן שבחרתם <span class="nm ul">86,492 ₪</span>. הקרן המנוטרלת משאירה יותר רק אם הדולר יורד מול השקל ביותר מ־<span class="nm ul">2.27%</span> בשנה, בממוצע לאורך כל 10 השנים.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ option B ============ -->
+<section id="optB">
+  <div class="sketch">אפשרות ב: הנטרול הוא בחירה של מה מחזיקים, מעל שתי הרשימות
+    <p>מתג אחד מעל הרשימות: הרשימות והתוצאה מדרגות רק קרנות מאותו סוג, כך שקרן מנוטרלת אף פעם לא מתחרה בלא מנוטרלת. מתחת, השוואה של שתי האפשרויות. ב־27.10 הוחלט נגד מדד נפרד לנטרול; העובדה החדשה היא שהעלות ידועה מהדוחות של הקרנות, והיא גדולה. ב־S&amp;P 500 יש קרן מנוטרלת אחת.</p></div>
+  <div style="display:flex; flex-direction:column; gap:18px">
+    <div style="display:flex; align-items:center; gap:14px"><span class="muted" style="font-size:15px">מה מחזיקים</span>
+      <div class="seg"><span class="on">S&amp;P 500 בשקלים · 13 קרנות</span><span>S&amp;P 500 בדולרים, מנוטרל מט״ח · קרן אחת</span></div></div>
+    <div class="card" style="max-width:760px">
+      <h3>בשקלים או מנוטרל מט״ח: מה יישאר לכם בעוד 10 שנים</h3>
+      <p class="small muted" style="margin:4px 0 14px">הזולה מכל סוג בפסגות, אם השער לא משתנה</p>
+      <div class="bars">
+        <div class="bar"><span><bdi>בשקלים: ילין לפידות מחקה</bdi></span><span class="b" style="width:100%"></span><span class="nm ul val">86,492 ₪</span></div>
+        <div class="bar"><span><bdi>מנוטרל: הראל מחקה (4A)</bdi></span><span class="b" style="width:89.5%"></span><span class="nm ul val">77,431 ₪</span></div>
+      </div>
+      <p style="margin:14px 0 0">המנוטרלת משאירה יותר רק אם הדולר יורד מול השקל ביותר מ־<span class="nm ul">2.27%</span> בשנה, בממוצע לאורך 10 השנים. בשנים האחרונות הדולר זז בין <span class="nm ul">−12.6%</span> ל־<span class="nm ul">+13.5%</span> בשנה.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ option C ============ -->
+<section id="optC">
+  <div class="sketch">אפשרות ג: שדה לשינוי שער הדולר בתוכנית
+    <p>רשימה אחת כמו היום, ובתוכנית שדה חדש. כאן מוזן <span class="nm">−3%</span> בשנה: הקרן המנוטרלת לא זזה, הלא מנוטרלות יורדות, והמנוטרלת עולה למקום הראשון. בברירת המחדל (<span class="nm">0%</span>) היא במקום האחרון. החיסרון: הקורא צריך לנחש את הדולר, והדירוג כולו נשען על הניחוש.</p></div>
+  <div style="display:flex; flex-direction:column; gap:18px">
+    <div class="knobs">
+      <span class="pc"><span class="k">סכום</span><span class="v nm">10,000 ₪</span></span>
+      <span class="pc"><span class="k">הפקדה חודשית</span><span class="v nm">500 ₪</span></span>
+      <span class="pc"><span class="k">תקופה</span><span class="v nm">10 שנים</span></span>
+      <span class="pc"><span class="k">תשואה בדולרים</span><span class="v nm">7%</span></span>
+      <span class="sldr"><span>שינוי שער הדולר בשנה</span><span class="trk"><span class="fill"></span><span class="thumb"></span></span><span class="nm ent" style="font-weight:600">−3%</span></span>
+    </div>
+    <div class="card" style="max-width:820px">
+      <table class="funds">
+        <colgroup><col style="width:40px"><col><col style="width:140px"></colgroup>
+        <thead><tr><th></th><th>קרן</th><th>לעומת הבחירה</th></tr></thead>
+        <tbody>
+          <tr class="pick"><td><span class="rank">1</span></td><td><div class="fname"><bdi>הראל מחקה (4A) S&amp;P 500 מנוטרלת מט״ח</bdi> <span class="link nm">5127527 ↗</span></div><div class="labs"><span class="lab currency">מנוטרלת מט״ח</span></div></td><td class="val">הבחירה</td></tr>
+          <tr><td><span class="rank">2</span></td><td><div class="fname"><bdi>ילין לפידות מחקה (4D) S&amp;P 500</bdi> <span class="link nm">5139282 ↗</span></div><div class="labs"><span class="lab currency">חשיפה לדולר</span></div></td><td class="val nm ul">−2,611 ₪</td></tr>
+          <tr><td><span class="rank">3</span></td><td><div class="fname"><bdi>אלטשולר שחם מחקה (4D) S&amp;P 500</bdi> <span class="link nm">5139100 ↗</span></div><div class="labs"><span class="lab currency">חשיפה לדולר</span></div></td><td class="val nm ul">−2,644 ₪</td></tr>
+          <tr><td><span class="rank">4</span></td><td><div class="fname"><bdi>קסם S&amp;P 500 (4D) KTF</bdi> <span class="link nm">5124482 ↗</span></div><div class="labs"><span class="lab currency">חשיפה לדולר</span></div></td><td class="val nm ul">−2,965 ₪</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>
