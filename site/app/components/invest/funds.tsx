@@ -1,15 +1,15 @@
 // Section 2 of the index page: the funds on the index at the chosen house, as the product table: rank, the fund with its type tag
 // and labels, the number as the link to Maya, its three fees, and the value left at that house.
-// Filters on currency hedging, "what do the labels mean", the tracking-difference note, and the empty state for an index with no
+// "What do the labels mean", the gap-to-the-index note, and the empty state for an index with no
 // fund records (a request text for the founder, as flow 10).
 import { useState } from "react";
 import { brands, invest as c } from "../../copy";
 import type { FundRecord } from "@finance-tool/schema";
 import type { HouseEntry, HouseRow, InvestView } from "../../lib/invest";
-import { fundLabels, matchesHedge, type HedgeFilter } from "../../lib/labels";
+import { fundLabels } from "../../lib/labels";
 import { IconCopy, IconExternal, IconLock } from "../icons";
 import { Num } from "../provenance";
-import { Button, LabelChip, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RankBadge, Section, SegmentedControl, SelectField, Tag, type ProductColumn, type ProductRow } from "../kit";
+import { Button, LabelChip, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RankBadge, Section, SelectField, Tag, type ProductColumn, type ProductRow } from "../kit";
 import { LabelsLegend, optionClass, OptionTag, reasonText } from "./parts";
 import { ownBy, type SiteValue } from "../../lib/value";
 
@@ -22,7 +22,6 @@ const feeOf = (rec: FundRecord, key: "fixed_management" | "variable_management" 
 };
 
 export function FundsSection({ view, houseId, onHouse, mayaHref }: { view: InvestView; houseId: string | null; onHouse: (id: string) => void; mayaHref: string | null }) {
-  const [hedge, setHedge] = useState<HedgeFilter>("all");
   const house = view.houses.find((h) => h.provider.id === houseId) ?? null;
   const noRecords = view.index.exposure === null || view.fundCount === 0;
   const pickable = view.houses.filter((h) => h.best || h.generic).map((h) => ({ id: h.provider.id, name: h.provider.short }));
@@ -33,32 +32,18 @@ export function FundsSection({ view, houseId, onHouse, mayaHref }: { view: Inves
         <EmptyFunds view={view} mayaHref={mayaHref} />
       ) : (
         <>
-          <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
-            <SegmentedControl<HedgeFilter>
-              label={c.funds.filterLabel}
-              value={hedge}
-              onChange={setHedge}
-              className="max-w-lg"
-              options={[
-                { value: "all", label: c.funds.filterAll },
-                { value: "unhedged", label: c.funds.filterUnhedged },
-                { value: "hedged", label: c.funds.filterHedged },
-              ]}
-            />
-          </div>
           <LabelsLegend />
-          <FundList view={view} house={house} hedge={hedge} />
-          <p className="text-sm text-muted-foreground">{c.funds.trackingNote}</p>
+          <FundList view={view} house={house} />
+          <p className="text-sm text-muted-foreground">{c.funds.gapNote}</p>
         </>
       )}
     </Section>
   );
 }
 
-function FundList({ view, house, hedge }: { view: InvestView; house: HouseRow; hedge: HedgeFilter }) {
-  const filtered = house.entries.filter((e) => matchesHedge(e.fund.rec, hedge));
+function FundList({ view, house }: { view: InvestView; house: HouseRow }) {
+  const filtered = house.entries;
   if (house.entries.length === 0) return <p className="text-muted-foreground">{c.funds.noOption}</p>;
-  if (filtered.length === 0) return <p className="text-muted-foreground">{c.funds.noMatch}</p>;
   let rank = 0;
   const rows = filtered.map((e) => {
     const ranked = !!e.price && !e.price.open;

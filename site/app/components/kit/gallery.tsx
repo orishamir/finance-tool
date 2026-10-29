@@ -11,7 +11,7 @@ import { IdRef, Num } from "../provenance";
 import { IconDrillIn } from "../icons";
 import { label } from "../../lib/labels";
 import { fmt } from "../../lib/format";
-import { Button, Callout, Card, ChartLegend, CostStack, LabelFilter, PickList, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, CompareTable, CoverageFold, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, Disclosure, FieldState, FoldGroup, GainBars, GapNote, HeadlineFigure, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, NumberField, ParameterLine, PercentField, PlanChips, KnobStrip, ChangeChart, RangeField, RankBadge, Section, SegmentedControl, SelectField, Sentence, ShareRings, SourceLine, Stat, StatRow, StepButtons, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth } from "./index";
+import { Button, Callout, Card, ChartLegend, CostStack, LabelFilter, PickList, ScenarioChart, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, CompareTable, CoverageFold, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, Disclosure, FieldState, FoldGroup, GainBars, GapNote, HeadlineFigure, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, NumberField, ParameterLine, PercentField, PlanChips, KnobStrip, ChangeChart, RangeField, RankBadge, Section, SegmentedControl, SelectField, Sentence, ShareRings, SourceLine, Stat, StatRow, StepButtons, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth } from "./index";
 
 const g = copy.gallery;
 
@@ -760,6 +760,40 @@ function Lists({ today }: { today: string }) {
               { key: "c", selected: false, muted: true, onSelect: () => {}, cells: <><span>{p.c}</span><span className="text-sm">—</span></> },
             ]}
           />
+        </State>
+      </Demo>
+      <Demo name="PickList (groups)" use={g.uses.PickList}>
+        <State label="a heading above the first row of each group: a group, never a row to choose" wide>
+          <PickList
+            label={p.name}
+            columns="minmax(0,1fr) auto"
+            rows={[
+              { key: "a", heading: p.a, selected: true, onSelect: () => {}, cells: <><span>{p.b}</span><span className="tabular-nums">89,212</span></> },
+              { key: "b", selected: false, onSelect: () => {}, cells: <><span>{p.c}</span><span className="tabular-nums">−1,133</span></> },
+              { key: "c", heading: p.b, selected: false, onSelect: () => {}, cells: <><span>{p.a}</span><span className="tabular-nums">−9,461</span></> },
+            ]}
+          />
+        </State>
+      </Demo>
+      <Demo name="ScenarioChart" use={g.uses.ScenarioChart}>
+        <State label="a line across the assumption, a band, a shaded past stretch and where they meet" wide>
+          <ScenarioChart
+            label={p.figure}
+            xMin={-3}
+            xMax={3}
+            xTicks={[-3, -2, -1, 0, 1, 2, 3]}
+            xFormat={(x) => `${x > 0 ? "+" : x < 0 ? "−" : ""}${Math.abs(x)}%`}
+            yFormat={(v) => v.toLocaleString("he-IL")}
+            shade={{ from: -3.12, to: 1.35, label: p.c }}
+            crossing={{ x: -2.38, label: "−2.38%" }}
+            lines={[{ id: "u", label: p.a, stroke: "stroke-chart-kind-unhedged", fill: "fill-chart-kind-unhedged", points: [74820, 78450, 82334, 86492, 90942, 95704, 100798].map((y, i) => ({ x: i - 3, y })) }]}
+            bands={[{ id: "h", label: p.b, fill: "fill-chart-kind-hedged", text: "fill-chart-kind-hedged", low: 74212, high: 78267 }]}
+          />
+        </State>
+      </Demo>
+      <Demo name="YearBars" use={g.uses.YearBars}>
+        <State label="the dollar against the shekel each year, from zero" wide>
+          <YearBars label={p.figure} tickStep={10} format={(v) => `${v > 0 ? "+" : v < 0 ? "−" : ""}${Math.abs(v).toFixed(Number.isInteger(v) ? 0 : 1)}`} items={[[2021, -3.4], [2022, 13.4], [2023, 2.8], [2024, 0.8], [2025, -12.5]].map(([year, value]) => ({ year: year!, value: value! }))} />
         </State>
       </Demo>
       <Demo name="PickList (phone)" use={g.uses.PickList}>

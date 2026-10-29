@@ -138,13 +138,25 @@ describe("invest page computation", () => {
     const funds = v.options.flatMap((o) => o.funds);
     const hedged = funds.filter((f) => f.rec.hedged === true && f.best);
     expect(hedged.length).toBeGreaterThan(0);
-    // the symptom: on fees alone a hedged fund leaves more, since the engine gives it the same return
-    expect(Math.max(...hedged.map((f) => f.best!.valueN))).toBeGreaterThan(v.headline!.valueN);
+    // 2026-10-29 (F-92): a hedged fund's shortfall beyond its fees is counted, so none leaves more than the headline on a steady dollar;
+    // the one with no full year in its report is listed with its reason, not priced
+    expect(Math.max(...hedged.map((f) => f.best!.valueN))).toBeLessThan(v.headline!.valueN);
+    expect(funds.find((f) => f.rec.id === "5140165")!.reason).toEqual({ code: "no-hedge-record" });
     expect(v.headline!.fund.rec.hedged).not.toBe(true);
     const unhedged = funds.filter((f) => f.rec.hedged !== true && f.best && !f.best.open);
     expect(v.headline!.valueN).toBe(Math.max(...unhedged.map((f) => f.best!.valueN)));
     // the goal comparison's cheapest way for the index is the same pair
     expect(cheapestWay(bundle, world, plan())!.fundRecordId).toBe(v.headline!.fund.rec.id);
+  });
+
+  it("a hedged fund is not moved by the dollar against the shekel; an unhedged one is (F-04, 2026-10-29)", () => {
+    const sp500 = indexById(bundle, "index-sp500")!;
+    const at = (fx: number, id: string) => {
+      const v = buildInvest({ bundle, index: sp500, plan: plan(), assumptions: { fxChange: fx } });
+      return v.options.flatMap((o) => o.funds).find((f) => f.rec.id === id)!.best!.valueN;
+    };
+    expect(at(-3, "5127527")).toBeCloseTo(at(3, "5127527"), 6);
+    expect(at(3, "5139282")).toBeGreaterThan(at(-3, "5139282"));
   });
 
   it("reads the exchange a tariff band names", () => {

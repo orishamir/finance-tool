@@ -182,5 +182,22 @@
       "checked": "2026-10-25"
     }
   },
+  "tracking_record": {
+    "years": [
+      {
+        "year": 2025,
+        "fund_pct": 4.05,
+        "tracking_pct": 4.96
+      }
+    ],
+    "source": {
+      "url": "https://mayafiles.tase.co.il/rpdf/1722001-1723000/P1722988-00.pdf",
+      "title": "דוח שנתי 'קסם MSCI World (4D) ETF' (מספר בורסה 1145804), תאריך הדוח 31 בדצמבר 2025, קסם קרנות נאמנות בע\"מ (Maya filing 1722988, PDF), עמ' 9 'תשואות, סטיות תקן ונתוני השוואה'",
+      "publisher": "קסם קרנות נאמנות בע\"מ",
+      "strength": "institution"
+    },
+    "page": 9,
+    "checked": "2026-10-25"
+  },
   "snapshot": "2026-10-25"
 }

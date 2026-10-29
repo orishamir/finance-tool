@@ -181,5 +181,22 @@
       "checked": "2026-10-25"
     }
   },
+  "tracking_record": {
+    "years": [
+      {
+        "year": 2025,
+        "fund_pct": 51.23,
+        "tracking_pct": 51.63
+      }
+    ],
+    "source": {
+      "url": "https://mayafiles.tase.co.il/rpdf/1768001-1769000/P1768240-00.pdf",
+      "title": "דוח שנתי 'קסם 4A) ETF) ת\"א 35' (מספר בורסה 1146570), תאריך הדוח 30 ביוני 2026, קסם קרנות נאמנות בע\"מ (Maya filing 1768240, PDF), עמ' 7 'תשואות, סטיות תקן ונתוני השוואה'",
+      "publisher": "קסם קרנות נאמנות בע\"מ",
+      "strength": "institution"
+    },
+    "page": 7,
+    "checked": "2026-10-25"
+  },
   "snapshot": "2026-10-25"
 }

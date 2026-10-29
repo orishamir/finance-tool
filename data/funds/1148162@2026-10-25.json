@@ -177,5 +177,37 @@
       "checked": "2026-10-25"
     }
   },
+  "tracking_record": {
+    "years": [
+      {
+        "year": 2025,
+        "fund_pct": 1.85,
+        "tracking_pct": 2.61
+      },
+      {
+        "year": 2024,
+        "fund_pct": 24.06,
+        "tracking_pct": 24.96
+      },
+      {
+        "year": 2023,
+        "fund_pct": 29.56,
+        "tracking_pct": 29.43
+      },
+      {
+        "year": 2022,
+        "fund_pct": -8.15,
+        "tracking_pct": -7.55
+      }
+    ],
+    "source": {
+      "url": "https://mayafiles.tase.co.il/rpdf/1727001-1728000/P1727829-00.pdf",
+      "title": "דוח שנתי 'אי.בי.אי. סל (4D) S&P 500' (מספר בורסה 1148162), תאריך הדוח 31 בדצמבר 2025, אי.בי.אי קרנות נאמנות בע\"מ (Maya filing PDF), עמ' 6 'תשואת הקרן בהשוואה לשיעור השינוי בנכס המעקב', 2025",
+      "publisher": "אי.בי.אי קרנות נאמנות בע\"מ",
+      "strength": "institution"
+    },
+    "page": null,
+    "checked": "2026-10-23"
+  },
   "snapshot": "2026-10-25"
 }
