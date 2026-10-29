@@ -1,52 +1,72 @@
 # Hedged and unhedged funds on the index page (2026-10-29)
 
-Proposal for the founder. Mockups in `mockups/` (PC, 1366 px), drawn on the site's data of 29.10.2026, the default plan (10,000 ₪, 500 ₪ a month, 10 years, 7%) and the Psagot account. Builds on the decisions of 2026-10-27 (hedging is a label, not a filter) and 2026-10-28 (the page opens on the best unhedged pair; a with/without-the-dollar switch was turned down; "pricing the hedge from the funds' reported gaps" was one of the three options and was not chosen then). Both decisions stay.
+Proposal for the founder, round 2. Whole-page mockups in `mockups/` (PC, 1366 px, `page.html`), drawn for S&P 500 on the site's data of 29.10.2026, the default plan (10,000 ₪, 500 ₪ a month, 10 years, 7% a year in dollars) and the Psagot account. Round 1 (three options, all priced at a steady dollar) is kept in `mockups/round1/`.
 
-## 1. What is still wrong after 2026-10-28
+## 1. Where things stand
 
-**Hedged funds are priced on their fees alone.** The page opens on the right fund, but the fund list still prices every fund on its listed fees with tracking difference taken as zero. On MSCI World the two hedged funds sit above the opened fund with "+993 ₪"; with their reported shortfall counted they leave 5,649 ₪ less, not 993 ₪ more. The label now says the cost is not counted, but the figure beside it is still wrong. The same holds when a reader picks a hedged fund: the result and the cost bars are overstated (S&P 500's 5127527: 85,224 ₪ shown, 77,431 ₪ with its shortfall).
+- **Decisions kept.** Hedging is a label, not a filter (2026-10-27). The page opens on the best unhedged pair, and a with/without-the-dollar switch was turned down (2026-10-28).
+- **Founder, 2026-10-29.**
+  - Every round-1 option assumed no change in the exchange rate. The page has to lay out the information so the reader decides, without drawing conclusions from the past.
+  - The gap to the index belongs to every fund, so it is a field either way, not a hedging matter.
 
-**The size is known from the funds' own reports.** Each annual report prints the fund's yearly return against its tracking asset (kept in `fees.tracking_difference_12m.notes` of each record). The shortfall beyond the listed fees, averaged over the full years printed:
+**The gap to the index ("מול המדד").** Each annual report prints the fund's yearly return against its tracking asset (now only in `fees.tracking_difference_12m.notes` of each record). The mean over the full years, after all expenses:
 
-| | Funds | Shortfall beyond fees, a year |
+| S&P 500 fund | Years | Fund minus index, a year |
 |---|---|---|
-| Unhedged | every one with a full year in its report | between −0.2 and −0.9 points (they did better than their fees imply) |
-| Hedged | 1144336, 1147362, 1143734, 1165844, 5127527, 5139696 | between 1.79 and 2.68 points, in every year 2022 to 2025 |
+| Harel tracking 5129275 | 4 | +0.65% |
+| Yelin Lapidot tracking 5139282 | 1 | +0.37% |
+| Kesem KTF 5124482 | 4 | +0.36% |
+| Altshuler Shaham tracking 5139100 | 1 | +0.32% |
+| Mor ETF 1165810 | 4 | +0.18% |
+| Yelin Lapidot ETF 1201656 | 1 | +0.03% |
+| MTF ETF 1150333 | 4 | +0.01% |
+| ATF ETF 1218916 | 0 | none yet (8.4.2025 to 31.12.2025 only) |
+| Harel ETF 1149020 | 4 | −0.31% |
+| Kesem ETF 1146471 | 1 | −0.43% |
+| Tachlit ETF 1144385 | 4 | −0.43% |
+| IBI ETF 1148162 | 4 | −0.53% |
+| Harel hedged 5127527 | 4 | −2.44% (its index is in dollars) |
 
-5140165 has no full year yet (23.4.2025 to 31.12.2025 only).
+The hedged fund's shortfall was there whether the dollar rose or fell (−3.26% in 2022, when the dollar rose 13.4%; −2.11% in 2025, when it fell 12.5%). It is still the past: it moved between −2.10% and −3.26%, and the rule base does not say why hedging costs this much.
 
-**The engine moves hedged funds with the currency.** F-04 (`packages/engine/src/variants/fund-variants.ts`, and `fundRun` in `site/app/lib/providers.ts`) applies A-03 to every shekel fund on a foreign index, hedged or not. With the dollar falling 3% a year, 5127527 drops from 85,224 ₪ to 73,814 ₪, as an unhedged fund would. The index page has A-03 at 0, so this does not show there, but it does on `/workbench/funds/:exposure`, which has the currency field.
+**The dollar against the shekel** (ECB reference rates, the shekel quoted since 3.1.2011; the dollar-shekel rate is a cross rate computed by the site; read 2026-10-29):
 
-**Labels.** The two MSCI World hedged funds remove only the dollar ("מנוטרלת דולר", exposure code 4D, foreign currency up to 120%), yet carry "מנוטרלת מט״ח", whose explanation says a change in the rate does not change the fund's value.
+| Measure | Range | Middle |
+|---|---|---|
+| Single calendar years 2012 to 2025 | −12.5% (2025) to +13.4% (2022); down in 8 of 14 | |
+| Every 10-year stretch from a month end (70, overlapping) | −3.12% to +1.35% a year | −0.96% |
+| Every 5-year stretch (130) | −4.16% to +2.40% a year | −0.30% |
 
-**Leftover control.** The three-way hedging filter in `site/app/components/invest/funds.tsx` remained after hedging became a label filter. It shows only when no pair can be priced.
-
-**Rule base gap.** What currency hedging costs and why is not in il-finance (`reits-and-gold-funds.md` open question 10, `etfs-and-index-funds.md` open question 18). The reports give the size of the gap, not its cause.
+The founder's sensitivity range for the dollar (P-02, A-03) is −3% to +3% a year. For a 10-year plan it is about as wide as the past, but the past sat lower. The data covers only 2011 to 2026, so the 70 ten-year stretches are one and a half decades seen many times. They show how wide the moves were, not where the dollar will go.
 
 ## 2. In every option
 
-1. **Engine.** A hedged fund does not move with A-03 (F-04 and `fundRun`), with a golden test.
-2. **Labels.** "מנוטרלת דולר" for a fund that hedges only the dollar (from its name). The old three-way filter goes.
-3. **Rule base.** The domain-specialist researches what hedging costs and why, from a regulator or Bank of Israel source, to close the two open questions.
+1. **"מול המדד" on every fund**, with the number of full years. The value counts it in place of the listed fees (both directions); a fund with no full year is priced on its fees and says so. Provisional (Claude's). With it, S&P 500's order at Psagot becomes Harel tracking 89,212 ₪, Yelin Lapidot tracking 88,079 ₪, Kesem KTF 87,988 ₪, Altshuler Shaham 87,871 ₪, then the ETFs. The order today runs Yelin, Altshuler, Kesem, Harel.
+2. **Data.**
+   - The yearly fund and index returns become fields of each fund record, with the report page. Schema and `docs/data-schema.md` change.
+   - The ECB series keeps its history (today the file holds the latest day only), under the ECB's terms with attribution. The Bank of Israel's rates stay links (D20).
+3. **Engine.** A hedged fund does not move with A-03 (F-04 and `fundRun`), with a golden test.
+4. **Labels.** "מנוטרלת דולר" for a fund that hedges only the dollar. The old three-way filter goes.
+5. **Rule base.** The domain-specialist researches what hedging costs and why.
 
-## 3. Options (mockups)
+## 3. Options
 
-- **A, price the hedge from each fund's reports, and the label explains the choice. Recommended.**
-  - Part 1 (`option-A1-msci-world-now-and-after-pc.png`): MSCI World today and after. The hedged 5139696 moves from "+993 ₪" to "−5,649 ₪"; 5140165 is listed with "בדוח השנתי של הקרן עוד אין שנה מלאה". A fourth figure, "פער מהמדד", joins the fees.
-  - Part 2 (`option-A2-label-sheet-pc.png`): the "מנוטרלת מט״ח" sheet on S&P 500. It gives the meaning; the index in dollars and in shekels each year 2022 to 2025, with the dollar's yearly change; what the hedge cost in this fund (2.44% a year short of its index, 0.32% of it fees, 2.12% counted); and the dollar fall at which the hedged fund leaves more on the reader's plan (2.27% a year against the chosen fund).
-  - Data: each fund record gets its yearly returns against its tracking asset as fields (year, fund, tracking asset, report page), from the reports already read. Schema and `docs/data-schema.md` change; data-update collects them for new funds.
-  - Method: a new formula, a fund's shortfall beyond its listed fees, `max(0, mean over full calendar years of (tracking asset − fund) − listed fees)`. It enters the run as the fund's tracking difference. Provisional choices (Claude's, revisable):
-    - only full calendar years count;
-    - a fund that beat its index counts as zero, so a fund with a short record is not ranked below funds that earned a credit;
-    - an unhedged fund with no full year takes zero, since every unhedged fund with one shows no shortfall;
-    - a hedged fund with no full year is listed with its reason and not ranked.
-- **B, hedged funds listed without a figure** (`option-B-hedged-without-figure-pc.png`). No new calculation. While the hedge's cost is not counted, a hedged fund is listed with its label and the reason, like any fund that cannot be priced. The wrong "+993 ₪" goes, but the reader learns nothing about what hedging costs, and picking a hedged fund gives no result.
-- **C, a field for the dollar's yearly change** (`option-C-currency-field-pc.png`). One list as today, with a new plan field, after A's pricing. At −3% the hedged fund ranks first; at 0% it ranks last. The ranking then rests on the reader's guess about the dollar.
+- **A, both kinds in the result, with no assumption about the dollar. Recommended** (`page-A-both-kinds-in-result-pc.png`).
+  - **Result.** The cheapest of each kind. Unhedged is shown as a range over the founder's dollar range: 76,970 to 104,234 ₪, with 89,212 ₪ marked "if the rate does not change". Hedged is one figure, 77,431 ₪, with its band from its cheapest and dearest year, 74,687 to 78,612 ₪. One sentence follows: the hedged fund leaves more only if the dollar falls more than 2.87% a year on average.
+  - **New section, "עם נטרול מט״ח או בלי: לפי מה שיקרה לדולר".** Both kinds across the dollar's average yearly change, the past 10-year stretches shaded, and the dollar's yearly change 2012 to 2025.
+  - **Fund list.** Two groups, each ranked on its own; the hedged row shows its difference as a range, +461 to −26,803 ₪.
+  - No new input.
+- **B, a dollar field in the plan** (`page-B-dollar-field-pc.png`).
+  - A fifth slider, "שינוי שער הדולר בשנה", from −3% to +3%, starting at 0%.
+  - Every figure follows it, and one list ranks all funds by it. At 0% the hedged fund is last (−11,781 ₪); below −2.87% it is first.
+  - The same section marks the entered value.
+- **C, today's page with the field and the section** (`page-C-today-plus-section-pc.png`). The result and the list stay single figures, now saying "if the rate does not change"; the hedged row shows a range; the section sits at the bottom.
 
-**Why A.** It removes the wrong figure and answers the reader's real question ("should I take the hedged one?") with sourced past figures and one computed threshold instead of a forecast. It keeps both earlier decisions and adds no control. When "pricing from the reported gaps" was set aside on 2026-10-28, it was not yet checked across every record: the gap holds for all six hedged funds in every year printed, and every unhedged fund shows none. B is the smallest safe step, but it leaves hedged funds unpriced for good unless A follows. C makes every figure on the page depend on a guess about the dollar.
+**Why A.** The choice that moves the result most, hedged or not, answered across the dollar range, is in the headline, and no figure there rests on one guess about the dollar. The order inside each kind does not depend on the dollar, so the lists can rank. There is no new control. B makes every figure depend on a number the reader has to guess, and its 0% start is the steady-dollar assumption again. C keeps a steady-dollar headline and puts the choice at the bottom.
 
 ## 4. Decisions for the founder
 
 1. Which option: A (recommended), B or C.
+2. The dollar range: keep −3% to +3% a year, or follow the plan's length. In the past, 5-year stretches ran from −4.2% to +2.4% and 10-year stretches from −3.1% to +1.4%.
 
-Break-even figures for the other indices, for reference: MSCI World 1.44% a year (5139696 against 5122569), NASDAQ 100 2.61% (1165844 against 5129283).
+Figures for the drawings come from the site's engine with each fund's gap applied through the return; the build computes it in the engine. Break-even for the other indices, round 1: MSCI World 1.44% a year, NASDAQ 100 2.61% (fees and hedged gaps only).
