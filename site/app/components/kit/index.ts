@@ -25,4 +25,6 @@ export { ShareRings, type Ring } from "./rings";
 export { LabelChip, LabelFilter, LabelIcon, LabelRow, LabelSheetHost } from "./label-chip";
 export { CostStack, type CostPart } from "./cost-stack";
 export { PickList, holdOnPick, type PickRow } from "./pick-list";
+export { ScenarioChart, type ScenarioBand, type ScenarioLine } from "./scenario-chart";
+export { YearBars } from "./year-bars";
 export { ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, type ProductColumn, type ProductGroup, type ProductRow } from "./product-table";

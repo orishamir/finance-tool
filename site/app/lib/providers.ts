@@ -17,7 +17,7 @@ import {
 } from "@finance-tool/engine";
 import type { ExposureRecord, FeesSnapshot, FundListFile, FundRecord, ParameterRecord, RuleRecord, ValueObject } from "@finance-tool/schema";
 import { flags as flagCopy, formulaNames, guideBlocks, r4workbench } from "../copy";
-import { fxRunInput, nisPerNumber, type FxSnapshot } from "./fx";
+import { fxRunInput, nisPerNumber, type FxHistory, type FxSnapshot } from "./fx";
 import { toEnteredTariff, type EnteredOffer } from "./offers";
 import { computed, entered as enteredValue, ownBy, type SiteValue, type Staleness } from "./value";
 
@@ -59,6 +59,10 @@ export interface WorkbenchBundle {
   wrapperCompanies: Record<string, number>;
   /** The ECB's daily euro reference rates (D26): the start exchange rate of every foreign-currency run. The person never types one. */
   fx?: FxSnapshot;
+  /** The ECB's month-end rates as shekels per dollar since 2000 (F-93, the index page's dollar section). */
+  fxHistory?: FxHistory;
+  /** P-02's bounds for the dollar's yearly change against the shekel (A-03), percent a year, with the record (F-94). */
+  dollarRange?: { lo: number; hi: number; p02: ParameterRecord };
 }
 
 export const BROKERAGE = "brokerage-account";
@@ -262,7 +266,8 @@ export function fundRun(
   const market: { grossReturn: number; returnIn?: "instrument"; fxChange?: number } = { grossReturn };
   const fundCurrency = isIls(rec.currency) ? "ILS" : rec.currency;
   if (fundCurrency === "ILS") {
-    if (!isIls(exposure.currency)) market.grossReturn = (1 + grossReturn) * (1 + f) - 1;
+    // a fund that neutralises the exposure's currency is not moved by A-03 (F-04, 2026-10-29)
+    if (!isIls(exposure.currency) && rec.hedged !== true) market.grossReturn = (1 + grossReturn) * (1 + f) - 1;
     return { fund: built.fund, market };
   }
   // E4 (2026-10-25): a fund in another currency than its index runs; A-01 stays in the index's currency, A-03 moves the fund's currency

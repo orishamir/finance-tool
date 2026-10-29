@@ -24,6 +24,9 @@ export const exposureRecord = z.strictObject({
   open_questions: z.array(z.string().min(1)).optional(),
   /** S5 (2026-10-25): true when the index is made of Israeli companies. Left out for cash, bond and general tracks. */
   constituents_israeli: z.boolean().optional(),
+  /** 2026-10-29: true when the index holds shares priced in currencies other than `currency` (ETF-48: MSCI World's 23 countries). A
+   * fund that neutralises `currency` keeps the others, against it. Left out for a one-currency index. */
+  other_currencies: z.boolean().optional(),
   checked: isoDate,
 });
 

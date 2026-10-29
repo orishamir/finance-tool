@@ -60,6 +60,8 @@ export function reasonText(r: Reason, cls: string): string {
       return c.reasons.needRate(r.currency);
     case "no-fund-rate":
       return c.reasons.noBroker;
+    case "no-hedge-record":
+      return c.reasons.noHedgeRecord;
     default:
       return reasonSentence(r, cls, r4workbench.providers.behaviour.channelOptions.direct);
   }

@@ -78,3 +78,32 @@ The founder's sensitivity range for the dollar (P-02, A-03) is −3% to +3% a ye
 2. The dollar range: keep −3% to +3% a year, or follow the plan's length. In the past, 5-year stretches ran from −4.2% to +2.4% and 10-year stretches from −3.1% to +1.4%.
 
 Figures for the drawings come from the site's engine with each fund's gap applied through the return; the build computes it in the engine. Break-even for the other indices, round 1: MSCI World 1.44% a year, NASDAQ 100 2.61% (fees and hedged gaps only).
+
+## 5. Built (2026-10-29, founder: "Implement the recommended option")
+
+Option A, as drawn, with these differences from the drawing:
+- **Only a shortfall counts.** The gap to the index ("מול המדד") is shown on every fund with its years. In the figures, only the part of a shortfall beyond the fees is counted (F-92 b); a lead over the index is not counted as a gain. Counting both ways made the fund's part of the cost bars negative (Harel's tracking fund beat its index by 0.65% a year), and then the bars no longer added up to the gap in what is left (F-91). So the S&P 500 order among unhedged funds stays as before (Yelin Lapidot's tracking fund first at Psagot, 86,492 ₪ on the default plan). The hedged fund's cost is counted in full (77,032 ₪), and the crossing is −2.38% a year. The rule is provisional (Claude's), revisable.
+- **The dollar's history starts in 2000**, not 2011: the ECB Data Portal's month-end series has the shekel from January 2000 (`data/series/ecb-fx-month-end.json`, `npm run fetch:ecb-month -w @finance-tool/pipeline`). Its 201 ten-year stretches run from −3.1% to +1.3% a year.
+- A hedged fund with no full year in its report (MTF 5140165) is listed with its reason and not priced.
+- On MSCI World and ACWI the labels say "מנוטרלת דולר" and "חשיפה לדולר ולמטבעות נוספים" (`other_currencies` on the exposure).
+- The old three-way hedging filter is gone.
+
+Checks:
+- Tests: engine `fund-gap.test.ts`; site `invest.test.ts` (a hedged fund is not moved by the dollar), `render.test.ts`, `variants.test.ts`.
+- Jump check on /indices/sp500: 0 moved at PC and phone.
+- The slider check (every plan field changed, boxes compared): the new blocks keep their size. The plan block itself still pushes the page down 50 px per field changed; that predates this work, on every index, and is a separate task.
+- Timing: the result's figures take about 6 ms and the section about 18 ms.
+
+**Independent review (2026-10-29)** found the 43 yearly records match their reports. Fixed after it:
+- The result's cards and the dollar section run on the settled plan, so they wait until the slider rests (about 15 pricings each).
+- The gap carries the report's yearly figures as its inputs, the F-94 figures carry the plan's inputs, and the dollar's range is shown as the P-02 parameter.
+- A crossing is never computed from a result that cannot be priced.
+- The hedged colour is the guide's gold "alternative", not the fee orange.
+- A group's first row never folds on a phone.
+- The cross-kind range wraps, and the verdict line keeps one height.
+
+Left open:
+- The ±10% search range for the crossing is in code, not in `data/parameters/`.
+- F-92 compares past gaps with today's fees.
+- The range bar in the unhedged card is a one-off in the feature file.
+- The stretch count counts overlapping stretches.

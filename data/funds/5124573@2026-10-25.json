@@ -180,5 +180,37 @@
       "checked": "2026-10-25"
     }
   },
+  "tracking_record": {
+    "years": [
+      {
+        "year": 2025,
+        "fund_pct": 5.43,
+        "tracking_pct": 4.96
+      },
+      {
+        "year": 2024,
+        "fund_pct": 21.16,
+        "tracking_pct": 21.37
+      },
+      {
+        "year": 2023,
+        "fund_pct": 28.1,
+        "tracking_pct": 27.46
+      },
+      {
+        "year": 2022,
+        "fund_pct": -7.77,
+        "tracking_pct": -7.82
+      }
+    ],
+    "source": {
+      "url": "https://mayafiles.tase.co.il/rpdf/1731001-1732000/P1731275-00.pdf",
+      "title": "דוח שנתי 'תכלית MSCI WORLD (4D) TTF' (מספר בורסה 5124573), תאריך הדוח 31 בדצמבר 2025, מיטב קרנות נאמנות בע\"מ (Maya filing 1731275, PDF), עמ' 6 'תשואות, סטיות תקן ונתוני השוואה'",
+      "publisher": "מיטב קרנות נאמנות בע\"מ",
+      "strength": "institution"
+    },
+    "page": 6,
+    "checked": "2026-10-25"
+  },
   "snapshot": "2026-10-25"
 }

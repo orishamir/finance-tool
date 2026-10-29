@@ -1,7 +1,7 @@
 // data/funds/: hand-collected fund details. docs/data-schema.md §3.5.
 // Strict: a field the doc does not name is an error. Every fee entry is a value object or null.
 import { z } from "zod";
-import { isoDate, valueObject } from "../value.ts";
+import { isoDate, source, valueObject } from "../value.ts";
 
 const fee = valueObject.nullable().optional();
 
@@ -49,6 +49,18 @@ export const fundRecord = z.strictObject({
     .optional(),
   /** S4: true when the fund neutralises the currency (מנוטרלת מט"ח). */
   hedged: z.boolean().optional(),
+  /**
+   * 2026-10-29 (F-92): the fund's return and its tracking asset's in each full calendar year its report prints, in percent, from the
+   * report named in `source` (the same as `fees.tracking_difference_12m`). A part year is left out; no full year leaves the field out.
+   */
+  tracking_record: z
+    .strictObject({
+      years: z.array(z.strictObject({ year: z.number().int().min(1990), fund_pct: z.number(), tracking_pct: z.number() })).min(1),
+      source,
+      page: z.number().int().positive().nullable(),
+      checked: isoDate,
+    })
+    .optional(),
   /** S4: the price of one unit, in a currency unit, for per-share commissions. */
   share_price: valueObject.optional(),
   snapshot: isoDate,

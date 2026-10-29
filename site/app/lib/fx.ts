@@ -90,3 +90,11 @@ export function nisPerQuoted(fx: FxSnapshot, code: string): { per: 1 | 100; valu
   if (n === null) return null;
   return n < 0.1 ? { per: 100, value: n * 100 } : { per: 1, value: n };
 }
+
+/** The ECB's month-end rates as shekels per dollar, oldest first (F-93; data/series/ecb-fx-month-end.json). */
+export interface FxHistory {
+  points: { date: string; rate: number }[];
+  checked: string;
+  attribution: string;
+  sourceUrl: string;
+}

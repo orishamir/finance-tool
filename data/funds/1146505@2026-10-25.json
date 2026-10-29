@@ -182,5 +182,22 @@
       "checked": "2026-10-25"
     }
   },
+  "tracking_record": {
+    "years": [
+      {
+        "year": 2025,
+        "fund_pct": 4.97,
+        "tracking_pct": 5.52
+      }
+    ],
+    "source": {
+      "url": "https://mayafiles.tase.co.il/rpdf/1724001-1725000/P1724797-00.pdf",
+      "title": "דוח שנתי 'קסם NASDAQ 100 (4D) ETF' (מספר בורסה 1146505), תאריך הדוח 31 בדצמבר 2025, קסם קרנות נאמנות בע\"מ (Maya filing 1724797, PDF), עמ' 8 'תשואות, סטיות תקן ונתוני השוואה'",
+      "publisher": "קסם קרנות נאמנות בע\"מ",
+      "strength": "institution"
+    },
+    "page": 8,
+    "checked": "2026-10-25"
+  },
   "snapshot": "2026-10-25"
 }

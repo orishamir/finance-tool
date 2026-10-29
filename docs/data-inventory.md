@@ -21,7 +21,8 @@ Status: **for founder review.** Section 3 lists what the inventory found that ne
   - the one-year fixed and prime deposits of Hapoalim, Discount and Mizrahi-Tefahot (2026-10-26).
 
   N6 is no longer "Leumi only".
-- `data/series/` (row 24): 3. `ecb-fx.json` (the ECB's daily reference rates, D26, F-84) joined on 2026-10-25.
+- `data/series/` (row 24): 4. `ecb-fx.json` (the ECB's daily reference rates, D26, F-84) joined on 2026-10-25; `ecb-fx-month-end.json` (the ECB's month-end rates of the dollar and the shekel since 2000, F-93) on 2026-10-29.
+- `data/funds/` (row 22), 2026-10-29: 43 records carry `tracking_record`, the yearly fund and index returns their reports print (F-92), taken from the notes already collected; 5 have no full year (ATF 1218916, MTF 5140165, iShares, the two money-market funds).
 - `data/parameters/`: 10. `home-guide-door.json` joined the nine named above.
 - `data/open-questions.json`: added 2026-10-26 (data-schema 3.15).
 

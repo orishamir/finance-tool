@@ -7,6 +7,7 @@ import { coverageLine } from "../compare/coverage.ts";
 import { reasonFromError } from "../compare/candidates.ts";
 import { rankCandidates, type Ranking } from "../compare/ranking.ts";
 import { outcomeOrder, type Candidate, type CoverageLine, type OutcomeKind, type Reason } from "../compare/types.ts";
+import { trackingBeyondFees } from "../formulas/fund-gap.ts";
 import type { Goal } from "../formulas/time.ts";
 import type { Profile } from "../ledgers/common.ts";
 import { runSecurities, type Fund, type SecuritiesInput } from "../ledgers/securities.ts";
@@ -131,7 +132,14 @@ function matchRow(row: Row, record: FundRecord | undefined, exposure: VariantExp
   return row.reference_asset != null && refs.has(norm(row.reference_asset));
 }
 
+/** The fund's listed fixed, variable and trustee fees together, as an annual fraction (0 for a fee not collected). */
+export function sumFees(rec: FundRecord): number {
+  const v = (x: FundRecord["fees"]["trustee"]) => (x && typeof x.value === "number" ? x.value / 100 : 0);
+  return v(rec.fees.fixed_management) + v(rec.fees.variable_management) + v(rec.fees.trustee);
+}
+
 /** The fund the engine runs for a record, and the fee fields the record leaves empty (exported 2026-10-24 so the provider workbench builds its fund the same way). */
+
 export function fundOf(rec: FundRecord, kind: Fund["kind"], dist: { yield: number; perYear: number } | undefined, w8ben: boolean | undefined) {
   const notCollected: string[] = [];
   const f = rec.fees;
@@ -143,7 +151,10 @@ export function fundOf(rec: FundRecord, kind: Fund["kind"], dist: { yield: numbe
   const management = get("fixed_management", "pct_per_year");
   const trustee = get("trustee", "pct_per_year");
   const variable = get("variable_management", "pct_per_year");
-  const tracking = get("tracking_difference_12m", "pct_per_year");
+  // A-07: the published 12-month figure when the record has one, else F-92 from the yearly returns the fund's report prints
+  const published = fraction(f.tracking_difference_12m, "pct_per_year", `fund ${rec.id} fees.tracking_difference_12m`);
+  const fromReports = published === undefined && rec.tracking_record ? trackingBeyondFees(rec.tracking_record.years, sumFees(rec)) : null;
+  const tracking = published ?? fromReports ?? get("tracking_difference_12m", "pct_per_year");
   const spread = get("median_spread", "pct_of_trade");
   const withholding = get("fund_level_withholding_drag", "pct_per_year");
   const drag: NonNullable<Fund["drag"]> = {};
@@ -210,7 +221,8 @@ function evaluate(c: Cand, exposure: VariantExposure, ctx: RunContext): VariantR
   const built = fundOf(rec, kind, policy === "distributing" ? dist : undefined, x.w8ben);
   if (!built.hasManagement) return { ...base, notCollected: built.notCollected, kind: "not-evaluated", reasons: [{ code: "missing-record", ruleIds: [], gapIds: [], detail: "details not collected: fees.fixed_management" }] };
 
-  // F-04: a fund in a foreign currency earns A-01 in that currency with A-03 on top; a shekel fund on a foreign exposure earns the same in shekels.
+  // F-04: a fund in a foreign currency earns A-01 in that currency with A-03 on top; a shekel fund on a foreign exposure earns the same in
+  // shekels, unless it neutralises the exposure's currency (`hedged`, 2026-10-29): then A-03 does not move it.
   const exposureCurrency = exposure.record.currency;
   const fundCurrency = isIls(rec.currency) ? "ILS" : rec.currency;
   const f = x.fxChange ?? 0;
@@ -218,7 +230,7 @@ function evaluate(c: Cand, exposure: VariantExposure, ctx: RunContext): VariantR
   const tariff = { ...x.tariff };
   let currencyMismatch: VariantRow["currencyMismatch"];
   if (fundCurrency === "ILS") {
-    if (!isIls(exposureCurrency)) market.grossReturn = (1 + x.grossReturn) * (1 + f) - 1;
+    if (!isIls(exposureCurrency) && rec.hedged !== true) market.grossReturn = (1 + x.grossReturn) * (1 + f) - 1;
   } else {
     // E4 (2026-10-25, index page): a fund in another currency than its exposure runs. A-01 stays in the exposure's currency and A-03
     // moves the fund's currency against the shekel; the FX line (F-13) and the tax index (TXF-03) are the fund's trading currency's.

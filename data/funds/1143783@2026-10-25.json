@@ -181,5 +181,22 @@
       "checked": "2026-10-25"
     }
   },
+  "tracking_record": {
+    "years": [
+      {
+        "year": 2025,
+        "fund_pct": 45.65,
+        "tracking_pct": 46.56
+      }
+    ],
+    "source": {
+      "url": "https://mayafiles.tase.co.il/rpdf/1772001-1773000/P1772601-00.pdf",
+      "title": "דוח שנתי 'תכלית סל (40) ת\"א 90' (מספר בורסה 1143783), תאריך הדוח 30 ביוני 2026, מיטב קרנות נאמנות בע\"מ (Maya filing 1772601, PDF), עמ' 5 'תשואות, סטיות תקן ונתוני השוואה'",
+      "publisher": "מיטב קרנות נאמנות בע\"מ",
+      "strength": "institution"
+    },
+    "page": 5,
+    "checked": "2026-10-25"
+  },
   "snapshot": "2026-10-25"
 }

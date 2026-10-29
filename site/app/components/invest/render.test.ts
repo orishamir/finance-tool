@@ -53,11 +53,15 @@ describe("the index page's sections render", () => {
       createElement(PairResult, { view, bundle, plan: { ...plan, returnFromParameter: true }, pick, onPick: () => undefined }),
       createElement(PairResult, { view, bundle, plan: { ...plan, returnFromParameter: true }, pick: leumi, onPick: () => undefined }),
       createElement(AccountColumn, { view, bundle, years: 20, pick, onPick: () => undefined }),
-      createElement(FundColumn, { view, today: t, pick, onPick: () => undefined, filter: null, onFilter: () => undefined }),
+      createElement(FundColumn, { view, bundle, plan, today: t, pick, onPick: () => undefined, filter: null, onFilter: () => undefined }),
       createElement(Steps, { view, monthly: plan.values.monthly, pick }), createElement(Foot, { view }),
       createElement(PlanBlock, { knobs: null, onOpen: () => undefined, fx: bundle.fx, today: t, example: true })));
     expect(out).toContain("הפקדתם");
-    expect(out).toContain("★ הזוג הזול ביותר לתוכנית שלכם");
+    // a dollar index with funds of both kinds shows each kind across the dollar (F-94, 2026-10-29)
+    expect(out).toContain("בלי נטרול מט״ח");
+    expect(out).toContain("עם נטרול מט״ח");
+    expect(out).toContain("אם השער לא משתנה");
+    expect(out).toContain("מול המדד");
     expect(out).toContain("כמה זה עולה לכם ב־20 שנים, בכל אחד מהזוגות");
     expect(out).toContain("כל החשבונות");
     expect(out).toContain("כל הקרנות על");
@@ -67,9 +71,16 @@ describe("the index page's sections render", () => {
     expect(out).toContain("אינפלציה");
     expect(out).toContain("לדוגמה של האתר");
   });
+  it("an Israeli index keeps the pair beside the cheapest one (no kinds)", () => {
+    const ta = buildInvest({ bundle, index: indexById(bundle, "index-ta125")!, plan: { ...plan, returnFromParameter: true } });
+    const pick = pickOfHeadline(ta)!;
+    const out = html(createElement(PairResult, { view: ta, bundle, plan: { ...plan, returnFromParameter: true }, pick: { ...pick, house: "leumi" }, onPick: () => undefined }));
+    expect(out).toContain("★ הזוג הזול ביותר לתוכנית שלכם");
+    expect(out).not.toContain("עם נטרול");
+  });
   it("neither list leaves a row out: every account and every fund is listed, priced or with its reason", () => {
     const pick = pickOfHeadline(view)!;
-    const out = html(createElement("div", null, createElement(AccountColumn, { view, bundle, years: 20, pick, onPick: () => undefined }), createElement(FundColumn, { view, today: t, pick, onPick: () => undefined, filter: null, onFilter: () => undefined })));
+    const out = html(createElement("div", null, createElement(AccountColumn, { view, bundle, years: 20, pick, onPick: () => undefined }), createElement(FundColumn, { view, bundle, plan, today: t, pick, onPick: () => undefined, filter: null, onFilter: () => undefined })));
     for (const p of view.providers) expect(out).toContain(p.short);
     for (const f of view.options.filter((o) => o.exists).flatMap((o) => o.funds)) expect(out).toContain(f.number);
   });

@@ -182,5 +182,37 @@
       "checked": "2026-10-25"
     }
   },
+  "tracking_record": {
+    "years": [
+      {
+        "year": 2025,
+        "fund_pct": 2.14,
+        "tracking_pct": 2.61
+      },
+      {
+        "year": 2024,
+        "fund_pct": 24.14,
+        "tracking_pct": 24.96
+      },
+      {
+        "year": 2023,
+        "fund_pct": 29.35,
+        "tracking_pct": 29.43
+      },
+      {
+        "year": 2022,
+        "fund_pct": -7.9,
+        "tracking_pct": -7.55
+      }
+    ],
+    "source": {
+      "url": "https://mayafiles.tase.co.il/rpdf/1730001-1731000/P1730830-00.pdf",
+      "title": "דוח שנתי 'תכלית סל (4D) S&P 500' (מספר בורסה 1144385), תאריך הדוח 31 בדצמבר 2025, מיטב קרנות נאמנות בע\"מ (Maya filing 1730830, PDF), עמ' 6 'תשואות, סטיות תקן ונתוני השוואה'",
+      "publisher": "מיטב קרנות נאמנות בע\"מ",
+      "strength": "institution"
+    },
+    "page": 6,
+    "checked": "2026-10-25"
+  },
   "snapshot": "2026-10-25"
 }
