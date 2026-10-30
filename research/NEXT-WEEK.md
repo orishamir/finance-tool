@@ -1,5 +1,7 @@
 # Resume here (paused 2026-10-26)
 
+*2026-10-31:* the open items below are now GitHub issues, ranked on the pinned [Roadmap issue](https://github.com/orishamir/finance-tool/issues/122). This file keeps the resume details and the researcher rules.
+
 The founder paused the research jobs to save tokens. Everything below is saved:
 - briefs and tools are committed;
 - downloads sit in each folder's `work/`, which is gitignored but on disk in the repo.

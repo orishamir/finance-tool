@@ -28,14 +28,13 @@ On 2026-10-24 (night) the knowledge layer (D25) followed: every rule record carr
 
 On 2026-10-26 D6 was amended: makam, government bonds and the money-market funds are securities bought in a securities account, not wrappers (`data/instruments/securities/`, `research/discovery/2026-10-26-wrappers-and-securities.md`); a guide page or comparison option stands for a product, a wrapper or a security held in one.
 
-Since 2026-10-26 some pages and visuals are held for the founder's review (D32): not linked from the site, still at their addresses; the list is `site/app/lib/review.ts` and `docs/roadmap.md` "Held for review" says what each needs.
+Since 2026-10-26 some pages and visuals are held for the founder's review (D32): not linked from the site, still at their addresses; the list is `site/app/lib/review.ts` and issues #45 to #48 say what each needs.
 
 All five releases of `docs/roadmap.md` are built (release 1 on 2026-10-23,
 releases 2 to 5 on 2026-10-23 and 2026-10-24); the dated "Status" paragraphs
-under each release say what exists and what is open, and its closing section
-"After release 5" lists the work that continues (tier-2 graduation, data
-growth, quarterly tariff refresh, my approvals). Switching (release 4) was
-removed on 2026-10-28 to be built again (D38). Data (2026-10-28): about 600
+under each release say what was built. Since 2026-10-31 the open work is in
+GitHub issues, not in that file ("Open work lives in GitHub issues" below).
+Switching (release 4) was removed on 2026-10-28 to be built again (D38). Data (2026-10-28): about 600
 rule records, 22 tariff snapshots for 19 providers (Meitav Trade still missing),
 48 fund records, 16 deposit-term records (Leumi's 3, seven more banks' current
 accounts since 2026-10-25, and one-year deposits of Hapoalim, Discount and
@@ -51,7 +50,8 @@ decisions D1 to D13 (confirmed 2026-10-22, open to revision as I learn more),
 and the dependencies that come before any capability. `docs/discovery.md`
 holds the research findings and the founder interview behind it. The research
 reports are in `research/discovery/`. `docs/roadmap.md` (approved 2026-10-22)
-places every capability in one of five releases; work follows that order.
+places every capability in one of five releases, all built; what comes next is
+ranked on the pinned Roadmap issue.
 
 Do not assume any feature, page, data source or scope that is not in
 `docs/product.md`. If a task needs a product decision that is not written
@@ -155,6 +155,16 @@ The evidence behind them is `research/2026-10-28-founder-patterns.md`.
   work is committed and pushed straight to `main` after `npm run check`
   passes. This overrides any session instruction to work on a feature branch
   or to open a PR.
+- **Open work lives in GitHub issues** (founder, 2026-10-31). The pinned
+  Roadmap issue (#122) ranks what unblocks the most, shows how far each goal
+  is and what waits on me; an Action rewrites it
+  (`.github/scripts/roadmap.mjs`), so change the issues, never its text. Each
+  goal of `docs/product.md` section 2 is a milestone with a finish-line issue
+  labelled `goal`. New work gets an issue, with its milestone if it serves a
+  goal, a blocker only when the work truly cannot finish first, and a
+  `you decide` or `you do` label when it waits on me. A commit that finishes
+  one says `Closes #n`. Decisions still go in `docs/product.md`; the docs hold
+  no lists of open work.
 - **Lists are starting points, not limits.** When I give a list of items,
   options, or sources, add to it where sensible unless I say otherwise.
 - **Big jobs have a budget** (founder, 2026-10-31). In the week of 24 to 30
