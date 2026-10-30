@@ -14,6 +14,7 @@ const CHOSEN = {
   "Foreign-currency and structured deposits": `My bank offers a foreign-currency or a structured deposit: what is it, and is it worth it?\n${EACH_PRODUCT}`,
   "Savings policies, executive insurance and Amendment 190": `An insurer offers a savings policy or executive insurance, or I heard of Amendment 190: what do I get?\n${EACH_PRODUCT}`,
   "Managed and robo portfolios": `A company offers to manage my money, or a robo portfolio: what is it, and what does it cost?\n${EACH_PRODUCT}`,
+  "Retirement savings": `Where should my retirement money go: a pension fund, a provident fund for annuity or a self-managed provident fund (IRA), and what will I get?\nDone when: all of them are ranked in the comparison, not only listed with a balance before tax.`,
 };
 
 const GOALS = {
@@ -27,7 +28,7 @@ const GOALS = {
   "Foreign-currency and structured deposits": [101, 104, 110],
   "Savings policies, executive insurance and Amendment 190": [86, 102, 108, 109, 111],
   "Managed and robo portfolios": [100, 103],
-  "Pension and IRA": [65, 70, 73, 85, 88, 89, 90],
+  "Retirement savings": [65, 70, 73, 85, 88, 89, 90],
   "Switching": [50],
   "Rules and sources": [15, 19, 27, 76, 78, 79, 80, 81, 82, 83, 84, 87],
   "Whole site": [18, 22, 24, 25, 32, 52, 68, 74, 113, 116],

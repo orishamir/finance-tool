@@ -159,11 +159,13 @@ The evidence behind them is `research/2026-10-28-founder-patterns.md`.
   Roadmap issue (#122) ranks what unblocks the most, shows how far each goal
   is and what waits on me; an Action rewrites it
   (`.github/scripts/roadmap.mjs`), so change the issues, never its text. A goal
-  is a feature the site provides, named by the question it reliably answers: a
+  is a feature the site provides, named as its page would be named, with the question it reliably answers: a
   milestone whose description holds the question and then the finish line,
   finished when its tasks are closed (D39). New work gets an issue, with its milestone if it serves a
   goal, a blocker only when the work truly cannot finish first, and a
-  `you decide` or `you do` label when it waits on me. A commit that finishes
+  `you decide` or `you do` label when it waits on me; such an issue says in
+  plain words, with no internal ids, what the question is, what each answer
+  does and what Claude recommends, or what to do. A commit that finishes
   one says `Closes #n`. The board is
   [Project 5](https://github.com/users/orishamir/projects/5), which adds new
   issues by itself; its views filter on the `ready`, `blocked` and `unblocks`
