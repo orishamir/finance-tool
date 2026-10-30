@@ -1,0 +1,30 @@
+# Keeps the pinned Roadmap issue (#122) current; the text comes from .github/scripts/roadmap.mjs.
+#
+# GitHub has no event for a blocker or sub-issue being set, so the hourly run catches those; the
+# rest follow within a minute. An edit made with this token starts no new run, so it cannot loop.
+name: roadmap
+
+on:
+  issues:
+    types: [opened, edited, closed, reopened, deleted, labeled, unlabeled, milestoned, demilestoned]
+  schedule:
+    - cron: "17 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: roadmap
+  cancel-in-progress: true
+
+jobs:
+  roadmap:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: node .github/scripts/roadmap.mjs
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          ROADMAP_ISSUE: "122"
