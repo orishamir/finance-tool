@@ -3,7 +3,7 @@
 import { existsSync } from "node:fs";
 import { join } from "node:path";
 import { root } from "./data.server";
-import type { FxSnapshot } from "./fx";
+import type { FxHistory, FxSnapshot } from "./fx";
 import { readJsonCached } from "./read-cache.server";
 
 /** Builds the snapshot from a parsed series record (the newest reference day's observations). */
@@ -35,4 +35,24 @@ export function loadFx(): FxSnapshot | null {
   if (!existsSync(p)) return null;
   cached = snapshotFromSeries(readJsonCached(p));
   return cached;
+}
+
+let cachedHistory: FxHistory | null = null;
+
+/** The ECB's month-end rates as shekels per dollar (F-93), from data/series/ecb-fx-month-end.json; null if the file is missing. */
+export function loadFxHistory(): FxHistory | null {
+  if (cachedHistory) return cachedHistory;
+  const p = join(root, "data/series/ecb-fx-month-end.json");
+  if (!existsSync(p)) return null;
+  const rec = readJsonCached(p) as { observations: { key?: string; date: string; value: unknown; checked: string; source: { url: string } }[]; terms_of_use: { attribution?: string } };
+  const by = new Map<string, Record<string, number>>();
+  let checked = "";
+  for (const o of rec.observations) {
+    if (!o.key || typeof o.value !== "number") continue;
+    by.set(o.date, { ...by.get(o.date), [o.key]: o.value });
+    if (o.checked > checked) checked = o.checked;
+  }
+  const points = [...by.entries()].filter(([, r]) => r.ILS && r.USD).sort(([a], [b]) => a.localeCompare(b)).map(([date, r]) => ({ date, rate: r.ILS! / r.USD! }));
+  cachedHistory = { points, checked, attribution: rec.terms_of_use.attribution ?? "", sourceUrl: rec.observations[0]?.source.url ?? "" };
+  return cachedHistory;
 }

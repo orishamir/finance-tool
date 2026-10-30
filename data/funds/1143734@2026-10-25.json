@@ -183,5 +183,37 @@
     }
   },
   "hedged": true,
+  "tracking_record": {
+    "years": [
+      {
+        "year": 2025,
+        "fund_pct": 17.32,
+        "tracking_pct": 20.77
+      },
+      {
+        "year": 2024,
+        "fund_pct": 21.25,
+        "tracking_pct": 25.05
+      },
+      {
+        "year": 2023,
+        "fund_pct": 50.58,
+        "tracking_pct": 55.21
+      },
+      {
+        "year": 2022,
+        "fund_pct": -36.29,
+        "tracking_pct": -32.94
+      }
+    ],
+    "source": {
+      "url": "https://mayafiles.tase.co.il/rpdf/1723001-1724000/P1723793-00.pdf",
+      "title": "דוח שנתי 'תכלית סל (4A)י NASDAQ 100 מנוטרלת מט\"ח' (מספר בורסה 1143734), תאריך הדוח 31 בדצמבר 2025, מיטב קרנות נאמנות בע\"מ (Maya filing 1723793, PDF), עמ' 6 'תשואות, סטיות תקן ונתוני השוואה'",
+      "publisher": "מיטב קרנות נאמנות בע\"מ",
+      "strength": "institution"
+    },
+    "page": 6,
+    "checked": "2026-10-25"
+  },
   "snapshot": "2026-10-25"
 }

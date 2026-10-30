@@ -179,5 +179,37 @@
       "checked": "2026-10-25"
     }
   },
+  "tracking_record": {
+    "years": [
+      {
+        "year": 2025,
+        "fund_pct": 2.98,
+        "tracking_pct": 2.61
+      },
+      {
+        "year": 2024,
+        "fund_pct": 25.11,
+        "tracking_pct": 24.96
+      },
+      {
+        "year": 2023,
+        "fund_pct": 30.15,
+        "tracking_pct": 29.43
+      },
+      {
+        "year": 2022,
+        "fund_pct": -7.37,
+        "tracking_pct": -7.55
+      }
+    ],
+    "source": {
+      "url": "https://mayafiles.tase.co.il/rpdf/1726001-1727000/P1726311-00.pdf",
+      "title": "דוח שנתי 'קסם S&P 500 (4D) KTF' (מספר בורסה 5124482), תאריך הדוח 31 דצמבר 2025, קסם קרנות נאמנות בע\"מ (Maya filing 1726311, PDF), פרק 'תשואות, סטיות תקן ונתוני השוואה', 2025",
+      "publisher": "קסם קרנות נאמנות בע\"מ",
+      "strength": "institution"
+    },
+    "page": null,
+    "checked": "2026-10-24"
+  },
   "snapshot": "2026-10-25"
 }

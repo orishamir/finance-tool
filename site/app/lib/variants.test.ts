@@ -71,15 +71,18 @@ describe("fund-variant view", () => {
     if (r.kind !== "ok") throw new Error("not ok");
     const ibi = r.view.rows.find((x) => x.recordId === "1148162")!;
     expect(ibi.kind).toBe("ranked");
-    // its 0.8% fixed and 0.3% variable fee rank it last of the ranked funds (8 of 9 on 2026-10-24, 13 of 14 records on 2026-10-25)
-    expect(ibi.rank).toBe(Math.max(...r.view.rows.flatMap((x) => (x.rank === undefined ? [] : [x.rank]))));
+    // its 0.8% fixed and 0.3% variable fee rank it last of the unhedged ranked funds (8 of 9 on 2026-10-24, 13 of 14 records on
+    // 2026-10-25); since 2026-10-29 the hedged fund's shortfall beyond its fees (F-92) puts that one after it
+    const hedgedIds = new Set(bundle.funds.filter((f) => f.hedged === true).map((f) => f.id));
+    expect(ibi.rank).toBe(Math.max(...r.view.rows.flatMap((x) => (x.rank === undefined || hedgedIds.has(x.recordId ?? "") ? [] : [x.rank]))));
     expect(ibi.number).toBe("1148162");
     expect(ibi.value?.state).toBe("computed");
     expect(ibi.tags).toEqual({ domicile: "IL", policy: "accumulating" });
     expect(ibi.trading).toMatchObject({ onTaseInNis: true, abroad: false });
     expect(ibi.fees?.fixed_management?.value).toBe(0.8);
     expect(ibi.fees?.tracking_difference_12m).toBeNull();
-    expect(ibi.takenAsZero).toContain("tracking_difference_12m");
+    // since 2026-10-29 its tracking drag comes from the yearly returns its report prints (F-92), so it is not taken as zero
+    expect(ibi.takenAsZero).not.toContain("tracking_difference_12m");
     expect(r.view.held.value).toBe(1); // the iShares CSPX record trades abroad
   });
 

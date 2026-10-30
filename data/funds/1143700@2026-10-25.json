@@ -181,5 +181,22 @@
       "checked": "2026-10-25"
     }
   },
+  "tracking_record": {
+    "years": [
+      {
+        "year": 2025,
+        "fund_pct": 51.22,
+        "tracking_pct": 51.63
+      }
+    ],
+    "source": {
+      "url": "https://mayafiles.tase.co.il/rpdf/1771001-1772000/P1771466-00.pdf",
+      "title": "דוח שנתי 'תכלית סל (40) ת\"א 35' (מספר בורסה 1143700), תאריך הדוח 30 ביוני 2026, מיטב קרנות נאמנות בע\"מ (Maya filing 1771466, PDF), עמ' 5 'תשואות, סטיות תקן ונתוני השוואה'",
+      "publisher": "מיטב קרנות נאמנות בע\"מ",
+      "strength": "institution"
+    },
+    "page": 5,
+    "checked": "2026-10-25"
+  },
   "snapshot": "2026-10-25"
 }

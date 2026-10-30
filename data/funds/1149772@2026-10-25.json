@@ -183,5 +183,37 @@
       "checked": "2026-10-25"
     }
   },
+  "tracking_record": {
+    "years": [
+      {
+        "year": 2025,
+        "fund_pct": 5.27,
+        "tracking_pct": 6.01
+      },
+      {
+        "year": 2024,
+        "fund_pct": 19.11,
+        "tracking_pct": 20.48
+      },
+      {
+        "year": 2023,
+        "fund_pct": 25.65,
+        "tracking_pct": 25.83
+      },
+      {
+        "year": 2022,
+        "fund_pct": -8.74,
+        "tracking_pct": -7.98
+      }
+    ],
+    "source": {
+      "url": "https://mayafiles.tase.co.il/rpdf/1727001-1728000/P1727830-00.pdf",
+      "title": "דוח שנתי 'אי.בי.אי. סל (4D)י MSCI AC World' (מספר בורסה 1149772), תאריך הדוח 31 בדצמבר 2025, אי.בי.אי קרנות נאמנות בע\"מ (Maya filing 1727830, PDF), עמ' 7 'תשואות, סטיות תקן ונתוני השוואה'",
+      "publisher": "אי.בי.אי קרנות נאמנות בע\"מ",
+      "strength": "institution"
+    },
+    "page": 7,
+    "checked": "2026-10-25"
+  },
   "snapshot": "2026-10-25"
 }

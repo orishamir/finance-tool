@@ -21,6 +21,8 @@ export type LabelId =
   | "follow-mixed"
   | "currency"
   | "hedged"
+  | "hedged-many"
+  | "currency-many"
   | "tax-currency"
   | "tax-fund-dividend"
   | "tax-distribution"
@@ -52,6 +54,8 @@ export const labelDefs: Record<LabelId, LabelDef> = {
   "follow-mixed": { icon: "layers", tone: "neutral", rules: ["ETF-52", "ETF-53"] },
   currency: { icon: "coins", tone: "neutral", rules: ["ETF-12"] },
   hedged: { icon: "shield", tone: "neutral", rules: ["ETF-12"] },
+  "hedged-many": { icon: "shield", tone: "neutral", rules: ["ETF-12"] },
+  "currency-many": { icon: "coins", tone: "neutral", rules: ["ETF-12"] },
   "tax-currency": { icon: "percent", tone: "neutral", rules: ["TXS-09"] },
   "tax-fund-dividend": { icon: "percent", tone: "neutral", rules: ["TXF-16"] },
   "tax-distribution": { icon: "percent", tone: "neutral", rules: ["TXF-08"] },
@@ -88,6 +92,8 @@ const familyOf: Record<LabelId, Label["family"]> = {
   "follow-mixed": "follow",
   currency: "currency",
   hedged: "currency",
+  "hedged-many": "currency",
+  "currency-many": "currency",
   "tax-currency": "tax",
   "tax-fund-dividend": "tax",
   "tax-distribution": "tax",
@@ -136,8 +142,10 @@ export function fundLabels(rec: FundRecord, index: IndexRef, option: OptionId): 
   if (rec.distribution_policy === "accumulating") out.push(label("pays-accumulating"));
   else if (rec.distribution_policy === "distributing") out.push(label("pays-distributing"));
   const indexCurrency = index.exposure?.currency;
-  if (rec.hedged === true) out.push(label("hedged"));
-  else if (indexCurrency && !isIls(indexCurrency)) out.push(label("currency", indexCurrency));
+  // an index priced in several currencies (ETF-48): a hedge removes only its own currency, and the unhedged fund carries them all (2026-10-29)
+  const many = index.exposure?.other_currencies === true;
+  if (rec.hedged === true) out.push(label(many ? "hedged-many" : "hedged", indexCurrency && !isIls(indexCurrency) ? indexCurrency : undefined));
+  else if (indexCurrency && !isIls(indexCurrency)) out.push(label(many ? "currency-many" : "currency", indexCurrency));
   else if (!index.exposure && !index.israeli) out.push(label("currency", rec.currency));
   // tax: an Israeli fund on a foreign index is taxed on the currency move too (TXS-09); an Irish fund pays tax inside on dividends (TXF-16)
   if (rec.domicile === "IL" && !index.israeli && rec.hedged !== true) out.push(label("tax-currency"));
@@ -161,7 +169,3 @@ export function brokerLabels(p: ProviderInfo, unavailable: boolean): Label[] {
 export function allLabels(): Label[] {
   return (Object.keys(labelDefs) as LabelId[]).map((id) => label(id));
 }
-
-/** Which labels a filter keeps: funds without the currency hedge, only the hedged ones. */
-export type HedgeFilter = "all" | "unhedged" | "hedged";
-export const matchesHedge = (rec: FundRecord, f: HedgeFilter): boolean => f === "all" || (f === "hedged") === (rec.hedged === true);

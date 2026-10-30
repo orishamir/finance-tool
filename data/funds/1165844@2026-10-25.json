@@ -183,5 +183,37 @@
     }
   },
   "hedged": true,
+  "tracking_record": {
+    "years": [
+      {
+        "year": 2025,
+        "fund_pct": 18.19,
+        "tracking_pct": 20.77
+      },
+      {
+        "year": 2024,
+        "fund_pct": 22.18,
+        "tracking_pct": 25.05
+      },
+      {
+        "year": 2023,
+        "fund_pct": 51.81,
+        "tracking_pct": 55.21
+      },
+      {
+        "year": 2022,
+        "fund_pct": -35.72,
+        "tracking_pct": -32.94
+      }
+    ],
+    "source": {
+      "url": "https://mayafiles.tase.co.il/rpdf/1732001-1733000/P1732058-00.pdf",
+      "title": "דוח שנתי 'מור סל (4A)י NASDAQ 100 מנוטרלת מט\"ח' (מספר בורסה 1165844), תאריך הדוח 31 בדצמבר 2025, מור ניהול קרנות נאמנות (2013) בע\"מ (Maya filing 1732058, PDF), עמ' 7 'תשואות, סטיות תקן ונתוני השוואה'",
+      "publisher": "מור ניהול קרנות נאמנות (2013) בע\"מ",
+      "strength": "institution"
+    },
+    "page": 7,
+    "checked": "2026-10-25"
+  },
   "snapshot": "2026-10-25"
 }
