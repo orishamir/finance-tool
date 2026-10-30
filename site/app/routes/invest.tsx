@@ -14,6 +14,7 @@ import { AccountColumn, FundColumn, PairResult, pickOfHeadline, allFunds, type P
 import { LabelSheetHost } from "../components/kit";
 import { Headline, IndexHeader } from "../components/invest/sections";
 import { Foot, Steps } from "../components/invest/steps";
+import { DollarSection } from "../components/invest/dollar";
 import { Callout, Disclosure } from "../components/kit";
 import { Sheet } from "../components/Sheet";
 import { PageShell } from "../components/shell";
@@ -23,7 +24,7 @@ import { type CompareBundle } from "../lib/compare";
 import { feeInputs } from "../lib/fees";
 import { useSettled } from "../lib/settled";
 import { useInputs } from "../lib/inputs";
-import { buildInvest, exposureIdOfSlug, indexById, INDICES_PATH, knownIndices, refOfCustom, type CustomIndex, type IndexRef } from "../lib/invest";
+import { buildInvest, hasKinds, exposureIdOfSlug, indexById, INDICES_PATH, knownIndices, refOfCustom, type CustomIndex, type IndexRef } from "../lib/invest";
 import { loadWorkbenchBundle, type WorkbenchBundle, type WorkbenchInputs } from "../lib/providers";
 import { useInvestState } from "../lib/state";
 import { recordsById } from "../lib/scope";
@@ -209,13 +210,15 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
             {planBlock}
             {pick ? (
               <>
-                <PairResult view={view} bundle={wb} plan={livePlan} pick={pick} onPick={onPick} />
+                <PairResult view={view} bundle={wb} plan={livePlan} settled={plan} pick={pick} onPick={onPick} />
+                {/* hedged or not, across the dollar (F-94, founder 2026-10-29): only on a foreign index with funds of both kinds */}
+                {hasKinds(view) && wb.dollarRange && <DollarSection view={view} bundle={wb} plan={plan} pick={pick} />}
                 <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_2.5rem_minmax(0,32.5rem)] xl:grid-cols-[minmax(0,5fr)_2.5rem_minmax(0,7fr)] items-start">
                   <AccountColumn view={view} bundle={wb} years={plan.years} pick={pick} onPick={onPick} />
                   <span aria-hidden="true" className="hidden lg:grid place-items-center size-9 mt-10 rounded-full border border-input bg-popover text-xl text-muted-foreground justify-self-center">
                     +
                   </span>
-                  <FundColumn view={view} today={data.today} pick={pick} onPick={onPick} filter={labelFilter} onFilter={setLabelFilter} />
+                  <FundColumn view={view} bundle={wb} plan={plan} today={data.today} pick={pick} onPick={onPick} filter={labelFilter} onFilter={setLabelFilter} />
                 </div>
               </>
             ) : (

@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="/finance-tool/assets/root-BN-cOSnu.css">
+<style>
+  :root {
+    --l-trade: oklch(0.80 0.10 215); --l-follow: oklch(0.76 0.15 340); --l-payout: oklch(0.80 0.14 155); --l-currency: oklch(0.86 0.13 92); --l-tax: oklch(0.76 0.14 28);
+    --s-un: oklch(0.80 0.13 165); --s-h: oklch(0.76 0.15 50);
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--background); color: var(--foreground); font-family: "Inter Variable", "Heebo Variable", sans-serif; font-size: 16px; line-height: 1.6; }
+  .nm { direction: ltr; unicode-bidi: isolate; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  bdi { unicode-bidi: isolate; }
+  .page { width: 1366px; margin: 0 auto 64px; }
+  .sketch { background: var(--palette-amber-400); color: var(--palette-neutral-975); font-size: 15px; font-weight: 600; padding: 10px 32px; }
+  .sketch .rec { background: var(--palette-neutral-975); color: var(--palette-amber-400); border-radius: 6px; padding: 1px 8px; margin-inline-start: 8px; }
+  .sketch p { margin: 2px 0 0; font-weight: 400; }
+  .top { display: flex; align-items: center; height: 64px; padding: 0 48px; border-bottom: 1px solid var(--border); gap: 28px; font-size: 15px; color: var(--muted-foreground); }
+  .top b { color: var(--foreground); font-weight: 700; font-size: 18px; margin-inline-end: 12px; }
+  .top .on { color: var(--foreground); box-shadow: inset 0 -2px 0 var(--primary); padding-bottom: 4px; }
+  .wrap { padding: 32px 48px 0; display: flex; flex-direction: column; gap: 44px; }
+  h1 { font-size: 30px; margin: 0; font-weight: 700; line-height: 1.25; }
+  h2 { font-size: 20px; margin: 0; font-weight: 600; line-height: 1.35; }
+  h3 { font-size: 16px; margin: 0; font-weight: 600; }
+  p { margin: 0; }
+  .muted { color: var(--muted-foreground); }
+  .small { font-size: 13px; }
+  .link { color: var(--link); }
+  .chips { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
+  .chip { border: 1px solid var(--border); background: var(--card); border-radius: 999px; padding: 8px 18px; font-size: 15px; }
+  .chip.on { background: var(--foreground); color: var(--background); font-weight: 600; }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 22px; }
+  .ul { text-decoration: underline dotted var(--computed); text-underline-offset: 5px; text-decoration-thickness: 2px; }
+  .src { text-decoration: underline solid var(--muted-foreground); text-underline-offset: 5px; }
+  .ent { color: var(--entered); }
+  .new { outline: 2px dashed var(--palette-amber-400); outline-offset: 6px; border-radius: 10px; }
+  .same { opacity: .55; }
+  .tagsame { display: inline-block; font-size: 12px; font-weight: 600; color: var(--palette-neutral-975); background: var(--muted-foreground); border-radius: 6px; padding: 0 8px; margin-inline-start: 8px; vertical-align: 2px; }
+  /* plan */
+  .plan { display: grid; grid-template-columns: 1fr 1fr; gap: 26px 64px; }
+  .knob { display: flex; flex-direction: column; gap: 10px; }
+  .knob .row { display: flex; justify-content: space-between; align-items: center; }
+  .knob .box { border: 1px solid var(--input); border-radius: 10px; padding: 6px 12px; min-width: 128px; display: flex; justify-content: space-between; gap: 12px; font-size: 18px; font-weight: 600; }
+  .knob .box .u { color: var(--muted-foreground); font-weight: 400; font-size: 14px; }
+  .trk { position: relative; height: 4px; background: var(--input); border-radius: 2px; direction: ltr; margin: 8px 0; }
+  .trk i { position: absolute; top: -12px; width: 26px; height: 26px; border-radius: 999px; background: var(--foreground); border: 3px solid var(--primary); }
+  .trk b { position: absolute; inset-block: 0; border-radius: 2px; background: var(--primary); }
+  /* result */
+  .res { display: grid; grid-template-columns: 250px 30px minmax(0,1fr) minmax(0,1fr); gap: 20px; align-items: stretch; }
+  .dep .k { color: var(--muted-foreground); font-size: 14px; } .dep .v { font-size: 30px; font-weight: 700; }
+  .rc { border: 1px solid var(--border); border-radius: 14px; padding: 18px 20px; display: flex; flex-direction: column; gap: 6px; background: var(--background); }
+  .rc.best { border-color: var(--input); background: var(--popover); }
+  .rc .tag { font-size: 13px; color: var(--muted-foreground); }
+  .rc .tag b { color: var(--link); font-weight: 600; }
+  .rc .fund { font-weight: 600; font-size: 15px; }
+  .rc .big { font-size: 30px; font-weight: 700; line-height: 1.2; }
+  .rc .sub { font-size: 13.5px; color: var(--muted-foreground); }
+  .kind { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; }
+  .kind i { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+  .rbar { position: relative; height: 10px; border-radius: 5px; margin: 14px 0 22px; direction: ltr; background: color-mix(in oklch, var(--s-un) 35%, transparent); }
+  .rbar .m { position: absolute; top: -5px; width: 3px; height: 20px; background: var(--foreground); border-radius: 2px; }
+  .rbar .t { position: absolute; top: 16px; font-size: 12px; color: var(--muted-foreground); transform: translateX(-50%); white-space: nowrap; }
+  .verdict { font-size: 16px; margin-top: 14px; }
+  .costbars { margin-top: 18px; border-top: 1px solid var(--border); padding-top: 14px; display: flex; flex-direction: column; gap: 8px; }
+  .cb { display: grid; grid-template-columns: 150px minmax(0,1fr) 90px; gap: 12px; align-items: center; font-size: 14px; }
+  .cb .bar { height: 22px; border-radius: 4px; background: repeating-linear-gradient(90deg, var(--input) 0 40%, var(--border) 40% 60%, var(--input) 60% 100%); }
+  /* lists */
+  .lists { display: grid; grid-template-columns: minmax(0, 5fr) 40px minmax(0, 7fr); gap: 20px; align-items: start; }
+  .plus { width: 36px; height: 36px; border-radius: 999px; border: 1px solid var(--input); display: grid; place-items: center; margin-top: 40px; color: var(--muted-foreground); }
+  table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+  th { font-size: 13px; color: var(--muted-foreground); font-weight: 500; text-align: start; padding: 6px 8px; border-bottom: 1px solid var(--border); }
+  td { padding: 10px 8px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  tr.pick td { background: color-mix(in oklch, var(--primary) 7%, transparent); }
+  tr.pick td:first-child { box-shadow: inset -3px 0 0 var(--primary); }
+  tr.grp td { background: var(--popover); font-weight: 600; font-size: 14px; padding: 8px; }
+  .radio { display: inline-block; width: 18px; height: 18px; border-radius: 999px; border: 2px solid var(--input); margin-top: 3px; }
+  tr.pick .radio { border-color: var(--primary); background: var(--primary); box-shadow: inset 0 0 0 3px var(--card); }
+  .fname { font-weight: 600; line-height: 1.35; font-size: 15px; }
+  .labs { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 6px; }
+  .lab { --c: var(--muted-foreground); display: inline-flex; font-size: 12px; line-height: 21px; padding: 0 8px; border-radius: 999px; white-space: nowrap; color: var(--c); background: color-mix(in oklch, var(--c) 13%, transparent); border: 1px solid color-mix(in oklch, var(--c) 40%, transparent); }
+  .lab.trade { --c: var(--l-trade); } .lab.follow { --c: var(--l-follow); } .lab.payout { --c: var(--l-payout); } .lab.currency { --c: var(--l-currency); } .lab.tax { --c: var(--l-tax); }
+  .fees { font-size: 13px; line-height: 1.7; } .fees .w { color: var(--muted-foreground); }
+  .gap { font-size: 13px; line-height: 1.5; } .gap .v { font-size: 15px; font-weight: 600; }
+  .val { font-weight: 600; font-size: 16px; }
+  .why { font-size: 13px; color: var(--muted-foreground); white-space: normal; }
+  .more td { text-align: center; color: var(--muted-foreground); font-size: 13px; }
+  .note { font-size: 13px; color: var(--muted-foreground); margin-top: 10px; }
+  .legend { display: flex; flex-wrap: wrap; gap: 8px 22px; font-size: 13px; color: var(--muted-foreground); }
+  .sw { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-inline-end: 6px; vertical-align: -1px; }
+  .two { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 28px; align-items: start; }
+  .fold { border-block: 1px solid var(--border); padding: 14px 0; display: flex; justify-content: space-between; color: var(--foreground); }
+</style>
+</head>
+<body>
+<div id="A" class="page"></div>
+<div id="B" class="page"></div>
+<div id="C" class="page"></div>
+<script>
+const U = { "-3": 76970, "-2": 80775, "-1": 84849, "0": 89212, "1": 93883, "2": 98882, "3": 104234 };
+const H = { mid: 77431, lo: 74687, hi: 78612 };
+const fmt = (n) => (n < 0 ? "−" : "") + Math.abs(n).toLocaleString("en-US");
+const nis = (n, cls = "ul") => `<span class="nm ${cls}">${fmt(n)} ₪</span>`;
+const pct = (n, cls = "ul") => `<span class="nm ${cls}">${n > 0 ? "+" : n < 0 ? "−" : ""}${Math.abs(n)}%</span>`;
+
+const header = (sketch) => `
+  <div class="sketch">${sketch}</div>
+  <div class="top"><b>מקור</b><span>מדריך</span><span>שאלות שכולם שואלים</span><span>חברות ומסלולים</span><span>השוואה למטרה</span><span class="on">השקעה במדד</span></div>`;
+
+const intro = `
+  <div class="same"><h1>איפה ואיך הכי זול להשקיע במדד, לאורך זמן</h1>
+    <p class="muted" style="margin-top:6px">בוחרים חשבון ניירות ערך וקרן, ורואים כמה יישאר לכם. לפי התעריפון של כל בנק ובית השקעות ולפי הדוח של כל קרן.</p>
+    <div class="chips"><span class="chip">MSCI AC World</span><span class="chip">MSCI World</span><span class="chip">נאסד״ק 100</span><span class="chip on">S&amp;P 500</span><span class="chip">ת״א 125</span><span class="chip">ת״א 35</span><span class="chip">ת״א 90</span><span class="chip">+ אחר</span></div>
+    <h2 style="margin-top:34px; font-size:24px">מדד S&amp;P 500</h2>
+    <p class="muted" style="max-width:640px">מדד של חמש מאות החברות הגדולות בארצות הברית, במשקל לפי שווי השוק הסחיר; הכסף מושקע בדולרים דרך קרן שעוקבת אחריו.</p></div>`;
+
+const knob = (label, val, unit, pos) => `<div class="knob"><div class="row"><span style="font-weight:600">${label}</span><span class="box"><span class="nm">${val}</span><span class="u">${unit}</span></span></div><div class="trk"><b style="left:0;width:${pos}%"></b><i style="left:calc(${pos}% - 13px)"></i></div></div>`;
+const plan = (withFx) => `
+  <div>
+    <div class="plan ${withFx ? "" : "same"}">
+      ${knob("סכום היום", "10,000", "₪", 96)}${knob("הפקדה חודשית", "500", "₪", 7)}
+      ${knob("שנים", "10", "שנים", 24)}${knob("תשואה בשנה, בדולרים", "7", "%", 58)}
+      ${withFx ? `<div class="new" style="grid-column: 1 / -1; display:grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items:center">
+        ${knob("שינוי שער הדולר בשנה", "0", "%", 50)}
+        <p class="small muted">כמה הדולר יעלה או ירד מול השקל בכל שנה, בממוצע. בכל 10 שנים רצופות מאז 2011 הדולר זז בין ${pct(-3.1)} ל־${pct(1.4)} בשנה בממוצע, ובשנה אחת בין ${pct(-12.5)} ל־${pct(13.4)}.</p></div>` : ""}
+    </div>
+    <p class="small muted same" style="margin-top:14px">שער הדולר ${nis(3.12, "src").replace(" ₪", "")} ₪ · מחושב משערי הייחוס של הבנק המרכזי האירופי, 23.10.2026</p>
+  </div>`;
+
+const costbars = `<div class="costbars same"><div class="row" style="display:flex;justify-content:space-between"><h3>כמה זה עולה לכם ב־10 שנים, בכל אחד מהזוגות <span class="tagsame">כמו היום</span></h3></div>
+  <div class="cb"><span>הבחירה שלכם</span><span class="bar"></span><span></span></div><div class="cb"><span>הזוג הבא בתור</span><span class="bar"></span><span></span></div></div>`;
+
+// ---------- result variants
+const resultA = `
+  <div class="card new">
+    <div class="res">
+      <div class="dep" style="align-self:center"><div class="k">הפקדתם</div><div class="v">${nis(70000)}</div><div class="small muted">הסכום ההתחלתי ועוד הפקדה חודשית, 120 חודשים</div></div>
+      <div style="align-self:center; color:var(--muted-foreground); font-size:22px">←</div>
+      <div class="rc best">
+        <span class="kind"><i style="background:var(--s-un)"></i>בלי נטרול מט״ח · <span class="link">★ הזול</span></span>
+        <span class="fund"><bdi>הראל מחקה (4D) S&amp;P 500</bdi> · פסגות</span>
+        <span class="big">${nis(76970).replace(" ₪", "")} עד ${nis(104234)}</span>
+        <span class="sub">נשאר לכם בעוד 10 שנים, בכסף של היום, לפי מה שיקרה לשער הדולר: מירידה של 3% בשנה ועד עלייה של 3% בשנה.</span>
+        <div class="rbar"><span class="m" style="left:50%"></span><span class="t" dir="rtl" style="left:0%; transform:none">דולר <span class="nm">−3%</span></span><span class="t" dir="rtl" style="left:50%">אם השער לא משתנה: ${nis(89212)}</span><span class="t" dir="rtl" style="left:100%; transform:translateX(-100%)">דולר <span class="nm">+3%</span></span></div>
+      </div>
+      <div class="rc">
+        <span class="kind"><i style="background:var(--s-h)"></i>עם נטרול מט״ח · <span class="link">★ הזול</span></span>
+        <span class="fund"><bdi>הראל מחקה (4A) S&amp;P 500 מנוטרלת מט״ח</bdi> · פסגות</span>
+        <span class="big">${nis(77431)}</span>
+        <span class="sub">נשאר לכם בעוד 10 שנים, בכסף של היום, בלי קשר לשער הדולר. לפי מה שהנטרול עלה בכל אחת מהשנים 2022 עד 2025: בין ${nis(74687)} ל־${nis(78612)}.</span>
+      </div>
+    </div>
+    <p class="verdict">הקרן המנוטרלת משאירה יותר רק אם הדולר יורד מול השקל ביותר מ־<span class="nm ul">2.87%</span> בשנה, בממוצע לאורך 10 השנים. <span class="link">איך זה נראה בכל שינוי של הדולר ↓</span></p>
+    ${costbars}
+  </div>`;
+const resultBC = (note) => `
+  <div class="card ${note ? "new" : "same"}">
+    <div class="res" style="grid-template-columns: 250px 30px minmax(0,1fr) minmax(0,1fr)">
+      <div class="dep" style="align-self:center"><div class="k">הפקדתם</div><div class="v">${nis(70000)}</div><div class="small muted">הסכום ההתחלתי ועוד הפקדה חודשית, 120 חודשים</div></div>
+      <div style="align-self:center; color:var(--muted-foreground); font-size:22px">←</div>
+      <div class="rc best"><span class="tag">הבחירה שלכם · <b>★ הזול</b></span><span class="fund"><bdi>הראל מחקה (4D) S&amp;P 500</bdi> · פסגות</span><span class="big">${nis(89212)}</span>
+        <span class="sub">נשאר לכם בעוד 10 שנים, אחרי דמי ניהול ומס, בכסף של היום${note ? `, <b style="color:var(--foreground)">${note}</b>` : ""}</span></div>
+      <div class="rc"><span class="tag">הזוג הבא בתור</span><span class="fund"><bdi>ילין לפידות מחקה (4D) S&amp;P 500</bdi> · פסגות</span><span class="big">${nis(88079)}</span><span class="sub">לעומת הבחירה שלכם ${nis(-1133)} · <span class="link">בחרו את הזוג הזה</span></span></div>
+    </div>
+    ${costbars}
+  </div>`;
+
+// ---------- the analysis section: both kinds across the dollar's change, and what the dollar did
+function fxChart(marker) {
+  const W = 760, Hh = 300, x0 = 70, x1 = 730, y0 = 250, y1 = 20, vmin = 70000, vmax = 106000;
+  const X = (f) => x0 + (f + 3) / 6 * (x1 - x0), Y = (v) => y0 - (v - vmin) / (vmax - vmin) * (y0 - y1);
+  let s = `<svg viewBox="0 0 ${W} ${Hh}" width="100%" style="direction:ltr" font-family="Inter Variable, Heebo Variable, sans-serif">`;
+  for (const v of [70000, 80000, 90000, 100000]) s += `<line x1="${x0}" x2="${x1}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--border)"/><text x="${x0 - 8}" y="${Y(v) + 4}" text-anchor="end" font-size="12" fill="var(--muted-foreground)">${v / 1000},000</text>`;
+  // the past: every 10-year stretch since 2011
+  s += `<rect x="${X(-3)}" y="${y1 - 6}" width="${X(1.35) - X(-3)}" height="${y0 - y1 + 6}" fill="var(--foreground)" opacity="0.05"/>`;
+  s += `<text x="${(X(-3) + X(1.35)) / 2}" y="${y1 + 6}" text-anchor="middle" font-size="12" fill="var(--muted-foreground)" direction="rtl">כל 10 שנים רצופות מאז 2011: מ־\u2066−3.1%\u2069 עד \u2066+1.4%\u2069 בשנה</text>`;
+  // hedged band and line
+  s += `<rect x="${x0}" y="${Y(H.hi)}" width="${x1 - x0}" height="${Y(H.lo) - Y(H.hi)}" fill="var(--s-h)" opacity="0.18"/>`;
+  s += `<line x1="${x0}" x2="${x1}" y1="${Y(H.mid)}" y2="${Y(H.mid)}" stroke="var(--s-h)" stroke-width="2.5" stroke-dasharray="7 5"/>`;
+  // unhedged line
+  const pts = Object.entries(U).map(([f, v]) => `${X(+f)},${Y(v)}`).join(" ");
+  s += `<polyline points="${pts}" fill="none" stroke="var(--s-un)" stroke-width="3"/>`;
+  for (const [f, v] of Object.entries(U)) s += `<circle cx="${X(+f)}" cy="${Y(v)}" r="4" fill="var(--s-un)"/>`;
+  // crossing
+  s += `<line x1="${X(-2.87)}" x2="${X(-2.87)}" y1="${Y(H.mid) - 26}" y2="${y0}" stroke="var(--muted-foreground)" stroke-dasharray="3 3"/><text x="${X(-2.87) + 6}" y="${Y(H.mid) - 30}" font-size="12" fill="var(--foreground)">−2.87%</text>`;
+  if (marker !== null) s += `<line x1="${X(marker)}" x2="${X(marker)}" y1="${y1 + 14}" y2="${y0}" stroke="var(--entered)" stroke-width="2"/><text x="${X(marker)}" y="${y0 + 36}" text-anchor="middle" font-size="12" fill="var(--entered)">השינוי שהזנתם</text>`;
+  // direct labels at the right
+  s += `<text x="${x1 - 14}" y="${Y(U[3]) - 8}" text-anchor="start" font-size="13" font-weight="600" fill="var(--s-un)" direction="rtl">בלי נטרול \u2066104,234\u2069</text>`;
+  s += `<text x="${x1 - 4}" y="${Y(H.lo) + 18}" text-anchor="start" font-size="13" font-weight="600" fill="var(--s-h)" direction="rtl">עם נטרול \u206677,431\u2069</text>`;
+  s += `<text x="${X(-3) + 4}" y="${Y(U[-3]) + 22}" font-size="12" fill="var(--s-un)">76,970</text>`;
+  for (const f of [-3, -2, -1, 0, 1, 2, 3]) s += `<text x="${X(f)}" y="${y0 + 18}" text-anchor="middle" font-size="12" fill="var(--muted-foreground)">${f > 0 ? "+" + f : f < 0 ? "−" + -f : 0}%</text>`;
+  s += `</svg>`;
+  return s;
+}
+function yearsChart() {
+  const ys = [["2012", -2.3], ["2013", -7.0], ["2014", 12.0], ["2015", 0.4], ["2016", -1.6], ["2017", -9.6], ["2018", 8.1], ["2019", -7.9], ["2020", -7.0], ["2021", -3.4], ["2022", 13.4], ["2023", 2.8], ["2024", 0.8], ["2025", -12.5]];
+  const W = 480, Hh = 250, x0 = 40, x1 = 470, mid = 120, k = 7;
+  let s = `<svg viewBox="0 0 ${W} ${Hh}" width="100%" style="direction:ltr" font-family="Inter Variable, Heebo Variable, sans-serif">`;
+  for (const v of [-10, 0, 10]) s += `<line x1="${x0}" x2="${x1}" y1="${mid - v * k}" y2="${mid - v * k}" stroke="${v === 0 ? "var(--input)" : "var(--border)"}"/><text x="${x0 - 6}" y="${mid - v * k + 4}" text-anchor="end" font-size="11" fill="var(--muted-foreground)">${v > 0 ? "+" : v < 0 ? "−" : ""}${Math.abs(v)}%</text>`;
+  const bw = (x1 - x0) / ys.length;
+  ys.forEach(([y, v], i) => { const x = x0 + i * bw + 4; const h = Math.abs(v) * k; s += `<rect x="${x}" y="${v >= 0 ? mid - h : mid}" width="${bw - 8}" height="${h}" rx="2" fill="var(--muted-foreground)" opacity="0.75"/>`;
+    s += `<text x="${x + (bw - 8) / 2}" y="${v >= 0 ? mid - h - 4 : mid + h + 12}" text-anchor="middle" font-size="10.5" fill="var(--foreground)">${v > 0 ? "+" : v < 0 ? "−" : ""}${Math.abs(v)}</text>`;
+    if (i % 2 === 0 || i === ys.length - 1) s += `<text x="${x + (bw - 8) / 2}" y="${Hh - 8}" text-anchor="middle" font-size="11" fill="var(--muted-foreground)">${y}</text>`; });
+  return s + `</svg>`;
+}
+const section = (marker, extra = "") => `
+  <section class="card new">
+    <h2>עם נטרול מט״ח או בלי: לפי מה שיקרה לדולר</h2>
+    <p class="muted" style="margin:4px 0 16px">כמה יישאר לכם בעוד 10 שנים בקרן הזולה מכל סוג, בפסגות, לכל שינוי ממוצע של הדולר מול השקל.${extra}</p>
+    <div class="two">
+      <div>
+        <div class="legend"><span><span class="sw" style="background:var(--s-un)"></span>בלי נטרול: הראל מחקה (4D), זז עם הדולר</span><span><span class="sw" style="background:var(--s-h)"></span>עם נטרול: הראל מחקה (4A), לא זז עם הדולר; הרצועה היא מה שהנטרול עלה בשנה הזולה והיקרה מ־2022 עד 2025</span></div>
+        ${fxChart(marker)}
+        <p class="small muted" style="text-align:center">השינוי הממוצע בשנה של הדולר מול השקל, לאורך 10 השנים</p>
+      </div>
+      <div>
+        <h3>מה הדולר עשה מול השקל בכל שנה</h3>
+        ${yearsChart()}
+        <p class="small muted">בשנה אחת הדולר זז בין ${pct(-12.5)} ל־${pct(13.4)}, וירד ב־8 מתוך 14 השנים. לאורך 10 שנים התנועות מתקזזות בחלקן, ולכן הממוצע בשנה צר יותר. יש נתונים רק מ־2011, ולכן הם לא אומרים מה יקרה בהמשך.</p>
+        <p class="small muted" style="margin-top:6px">שערי הייחוס של הבנק המרכזי האירופי; השינוי של הדולר מול השקל מחושב באתר.</p>
+      </div>
+    </div>
+  </section>`;
+
+// ---------- lists
+const accounts = (note) => `
+  <div class="card ${note ? "" : "same"}">
+    <h3 style="font-size:18px">כל החשבונות</h3>
+    <p class="small muted" style="margin:2px 0 10px">כשקונים בהם את <bdi>הראל מחקה (4D) S&amp;P 500</bdi> · בחרו קרן אחרת, והרשימה תסתדר מחדש</p>
+    <table><colgroup><col style="width:34px"><col><col style="width:120px"><col style="width:110px"></colgroup>
+      <thead><tr><th></th><th>חשבון</th><th>מה החשבון גובה</th><th>נשאר</th></tr></thead><tbody>
+      <tr class="pick"><td><span class="radio"></span></td><td><b>פסגות</b><div class="small link">★ הזול</div></td><td>${nis(1104)}</td><td class="val">${nis(89212)}</td></tr>
+      <tr><td><span class="radio"></span></td><td><b>לאומי</b></td><td>${nis(4562)}</td><td class="val">${nis(86187)}</td></tr>
+      <tr><td><span class="radio"></span></td><td><b>אי.בי.אי.</b></td><td>${nis(10313)}</td><td class="val">${nis(81123)}</td></tr>
+      <tr><td><span class="radio"></span></td><td><b>אלטשולר טרייד</b></td><td>${nis(26053)}</td><td class="val">${nis(67231)}</td></tr>
+      <tr class="more"><td colspan="4">ועוד 13 חשבונות, שלא מחושבים עם הקרן הזו, עם הסיבה</td></tr></tbody></table>
+  </div>`;
+
+const R = {
+  "5129275": ["הראל מחקה (4D) S&amp;P 500", "trade-tracking", "כמה דרכים יחד", [0, 0.1, 0.025], 0.65, 4],
+  "5139282": ["ילין לפידות מחקה (4D) S&amp;P 500", "trade-tracking", "עסקת החלף", [0, 0, 0.02], 0.37, 1],
+  "5124482": ["קסם S&amp;P 500 (4D) KTF", "trade-tracking", "כמה דרכים יחד", [0, 0.1, 0.025], 0.36, 4],
+  "5139100": ["אלטשולר שחם מחקה (4D) S&amp;P 500", "trade-tracking", "כמה דרכים יחד", [0, 0, 0.03], 0.32, 1],
+  "1148162": ["אי.בי.אי. סל (4D) S&amp;P 500", "trade-etf", "עסקת החלף", [0.8, 0.3, 0.015], -0.53, 4],
+  "5127527": ["הראל מחקה (4A) S&amp;P 500 מנוטרלת מט״ח", "trade-tracking", "כמה דרכים יחד", [0, 0.3, 0.02], -2.44, 4],
+};
+const yearsWord = (n) => (n === 1 ? "שנה אחת" : `${n} שנים`);
+function fundRow(id, diffHtml, pick) {
+  const [name, trade, follow, fees, gap, n] = R[id];
+  const hedged = id === "5127527";
+  const labs = `<span class="lab trade">${trade === "trade-etf" ? "קרן סל: נסחרת כל היום" : "קרן מחקה: פעם ביום"}</span><span class="lab follow">${follow}</span><span class="lab payout">צוברת</span>` +
+    (hedged ? `<span class="lab currency">מנוטרלת מט״ח</span>` : `<span class="lab currency">חשיפה לדולר</span><span class="lab tax">מס גם על שינויי המטבע</span>`);
+  return `<tr class="${pick ? "pick" : ""}"><td><span class="radio"></span></td>
+    <td><div class="fname"><bdi>${name}</bdi> <span class="link nm">${id} ↗</span></div><div class="labs">${labs}</div></td>
+    <td class="fees"><span class="w">קבועים</span> <span class="nm src">${fees[0]}%</span><br><span class="w">משתנים</span> <span class="nm src">${fees[1]}%</span><br><span class="w">נאמן</span> <span class="nm src">${fees[2]}%</span></td>
+    <td class="gap new" style="outline-offset:-2px"><span class="v">${pct(gap)}</span><br><span class="muted" style="white-space:nowrap">בשנה · ${yearsWord(n)}</span></td>
+    <td class="val">${diffHtml}</td></tr>`;
+}
+const fundHead = `<colgroup><col style="width:34px"><col><col style="width:110px"><col style="width:118px"><col style="width:170px"></colgroup>
+  <thead><tr><th></th><th>קרן</th><th>דמי ניהול</th><th>מול המדד</th><th>לעומת הבחירה</th></tr></thead>`;
+const gapNote = `<p class="note"><b style="color:var(--foreground)">מול המדד:</b> כמה הקרן הקדימה (+) או פיגרה (−) אחרי המדד שלה בשנה, בממוצע השנים המלאות בדוחות השנתיים שלה, אחרי כל ההוצאות. החישוב משתמש בו במקום דמי הניהול; קרן בלי שנה מלאה מחושבת לפי דמי הניהול.</p>`;
+const hedgedRange = `<span class="small" style="font-weight:600">בין ${nis(461)} ל־${nis(-26803)}</span><div class="why">לפי הדולר, מירידה של 3% בשנה ועד עלייה של 3%</div>`;
+function fundsGrouped() {
+  return `<div class="card"><h3 style="font-size:18px">כל הקרנות על מדד S&amp;P 500</h3><p class="small muted" style="margin:2px 0 10px">בחשבון <b>פסגות</b> · בחרו חשבון אחר, והרשימה תסתדר מחדש</p>
+    <table>${fundHead}<tbody>
+      <tr class="grp new"><td colspan="5"><span class="kind"><i style="background:var(--s-un)"></i>בלי נטרול מט״ח · 13 קרנות</span></td></tr>
+      ${fundRow("5129275", "הבחירה", true)}${fundRow("5139282", nis(-1133))}${fundRow("5124482", nis(-1224))}${fundRow("5139100", nis(-1341))}
+      <tr class="more"><td colspan="5">עוד 8 קרנות, ו־iShares Core S&amp;P 500 שאי אפשר לחשב בחשבון הזה</td></tr>
+      <tr class="grp new"><td colspan="5"><span class="kind"><i style="background:var(--s-h)"></i>עם נטרול מט״ח · קרן אחת</span></td></tr>
+      ${fundRow("5127527", hedgedRange)}
+    </tbody></table>
+    <p class="note">בכל סוג הקרנות מסודרות לפי מה שנשאר, והסדר לא תלוי בדולר. הסכומים הם אם השער לא משתנה.</p>${gapNote}</div>`;
+}
+function fundsOne(hedgedCell, rankNote) {
+  return `<div class="card"><h3 style="font-size:18px">כל הקרנות על מדד S&amp;P 500</h3><p class="small muted" style="margin:2px 0 10px">בחשבון <b>פסגות</b> · בחרו חשבון אחר, והרשימה תסתדר מחדש</p>
+    <table>${fundHead}<tbody>
+      ${fundRow("5129275", "הבחירה", true)}${fundRow("5139282", nis(-1133))}${fundRow("5124482", nis(-1224))}${fundRow("5139100", nis(-1341))}
+      <tr class="more"><td colspan="5">עוד 8 קרנות</td></tr>
+      ${fundRow("5127527", hedgedCell)}
+      <tr class="more"><td colspan="5">iShares Core S&amp;P 500: אי אפשר לחשב בחשבון הזה</td></tr>
+    </tbody></table>${rankNote ? `<p class="note">${rankNote}</p>` : ""}${gapNote}</div>`;
+}
+const lists = (funds, accNote) => `<div class="lists">${accounts(accNote)}<div class="plus">+</div>${funds}</div>`;
+const tail = `<div class="same"><div class="fold"><span>מה עושים עכשיו</span><span>⌄</span></div>
+  <h2 style="margin-top:36px">מה הכי משנה את מה שיישאר לכם <span class="tagsame">כמו היום</span></h2><p class="muted small" style="margin-top:6px">אם תגדילו כל מספר ב־20%, הכי ישנה מספר השנים.</p></div>`;
+
+// ---------- the three pages
+document.getElementById("A").innerHTML = header(`אפשרות א: שני הסוגים בתוצאה, בלי הנחה על הדולר <span class="rec">מומלצת</span>
+  <p>בראש הדף, הזול מכל סוג: בלי נטרול כטווח לפי הדולר, ועם נטרול כסכום אחד. מתחת, סעיף שמראה את שניהם לכל שינוי של הדולר, ומה הדולר עשה מאז 2011. ברשימת הקרנות שתי קבוצות, כל אחת מסודרת בפני עצמה, ו"מול המדד" לכל קרן. אין שדה חדש בתוכנית. המסגרות המקווקוות הן מה שחדש; החלקים החיוורים כמו היום.</p>`) +
+  `<div class="wrap">${intro}${plan(false)}${resultA}${section(null)}${lists(fundsGrouped())}${tail}</div>`;
+document.getElementById("B").innerHTML = header(`אפשרות ב: שדה לשער הדולר בתוכנית
+  <p>שדה חמישי בתוכנית, "שינוי שער הדולר בשנה", מ־<span class="nm">−3%</span> עד <span class="nm">+3%</span>, ומתחילים מ־<span class="nm">0%</span>. כל הסכומים בדף הולכים אחריו, והקרנות ברשימה אחת מסודרות לפיו. הסעיף מראה את כל השינויים ומסמן את מה שהוזן. ב־<span class="nm">0%</span> הקרן המנוטרלת אחרונה; מתחת ל־<span class="nm">−2.87%</span> היא ראשונה.</p>`) +
+  `<div class="wrap">${intro}${plan(true)}${resultBC("עם שינוי הדולר שהזנתם")}${section(0, " הקו הכחול הוא השינוי שהזנתם בתוכנית.")}${lists(fundsOne(nis(-11781), "הקרנות מסודרות לפי מה שנשאר, עם שינוי הדולר שהזנתם."))}${tail}</div>`;
+document.getElementById("C").innerHTML = header(`אפשרות ג: הדף כמו היום, ועוד "מול המדד" וסעיף לדולר
+  <p>הכי קרוב לדף של היום: התוצאה והרשימה בסכום אחד, ונאמר במפורש שזה אם השער לא משתנה. ברשימה אחת, לקרן המנוטרלת טווח במקום סכום. הסעיף על הדולר בתחתית, ליד "מה הכי משנה".</p>`) +
+  `<div class="wrap">${intro}${plan(false)}${resultBC("אם השער לא משתנה")}${lists(fundsOne(hedgedRange, "הקרנות בלי נטרול מסודרות לפי מה שנשאר אם השער לא משתנה. לקרן המנוטרלת טווח, כי ההפרש ממנה תלוי בדולר."))}${tail}${section(null)}</div>`;
+</script>
+</body>
+</html>

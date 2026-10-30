@@ -181,5 +181,22 @@
       "checked": "2026-10-25"
     }
   },
+  "tracking_record": {
+    "years": [
+      {
+        "year": 2025,
+        "fund_pct": 51.24,
+        "tracking_pct": 51.63
+      }
+    ],
+    "source": {
+      "url": "https://mayafiles.tase.co.il/rpdf/1761001-1762000/P1761272-00.pdf",
+      "title": "דוח שנתי 'הראל סל (4A) ת\"א 35' (מספר בורסה 1148907), תאריך הדוח 30 ביוני 2026, הראל קרנות נאמנות בע\"מ (Maya filing 1761272, PDF), עמ' 7 'תשואות, סטיות תקן ונתוני השוואה'",
+      "publisher": "הראל קרנות נאמנות בע\"מ",
+      "strength": "institution"
+    },
+    "page": 7,
+    "checked": "2026-10-25"
+  },
   "snapshot": "2026-10-25"
 }

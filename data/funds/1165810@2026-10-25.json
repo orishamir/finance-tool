@@ -183,5 +183,37 @@
       "checked": "2026-10-25"
     }
   },
+  "tracking_record": {
+    "years": [
+      {
+        "year": 2025,
+        "fund_pct": 2.59,
+        "tracking_pct": 2.61
+      },
+      {
+        "year": 2024,
+        "fund_pct": 24.94,
+        "tracking_pct": 24.96
+      },
+      {
+        "year": 2023,
+        "fund_pct": 30.12,
+        "tracking_pct": 29.43
+      },
+      {
+        "year": 2022,
+        "fund_pct": -7.47,
+        "tracking_pct": -7.55
+      }
+    ],
+    "source": {
+      "url": "https://mayafiles.tase.co.il/rpdf/1732001-1733000/P1732871-00.pdf",
+      "title": "דוח שנתי 'מור סל (4D)י S&P 500' (מספר בורסה 1165810), תאריך הדוח 31 בדצמבר 2025, מור ניהול קרנות נאמנות (2013) בע\"מ (Maya filing 1732871, PDF), עמ' 7 'תשואות, סטיות תקן ונתוני השוואה'",
+      "publisher": "מור ניהול קרנות נאמנות (2013) בע\"מ",
+      "strength": "institution"
+    },
+    "page": 7,
+    "checked": "2026-10-25"
+  },
   "snapshot": "2026-10-25"
 }

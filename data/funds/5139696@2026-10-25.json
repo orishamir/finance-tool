@@ -181,5 +181,22 @@
     }
   },
   "hedged": true,
+  "tracking_record": {
+    "years": [
+      {
+        "year": 2025,
+        "fund_pct": 18.2,
+        "tracking_pct": 20.32
+      }
+    ],
+    "source": {
+      "url": "https://mayafiles.tase.co.il/rpdf/1732001-1733000/P1732864-00.pdf",
+      "title": "דוח שנתי 'קסם KTF י(4D)י MSCI World מנוטרלת דולר' (מספר בורסה 5139696), תאריך הדוח 31 בדצמבר 2025, קסם קרנות נאמנות בע\"מ (Maya filing 1732864, PDF), עמ' 8 'תשואות, סטיות תקן ונתוני השוואה'",
+      "publisher": "קסם קרנות נאמנות בע\"מ",
+      "strength": "institution"
+    },
+    "page": 8,
+    "checked": "2026-10-25"
+  },
   "snapshot": "2026-10-25"
 }

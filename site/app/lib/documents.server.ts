@@ -270,7 +270,7 @@ export async function loadDocumentData(): Promise<DocumentData> {
   const bankName = new Map(institutionRows().map((r) => [r.id, r.name]));
   const depositCards: DataCard[] = deposits.map(({ bank, ...d }) => ({ ...d, line: bankName.get(bank) ?? d.line }));
   const series: DataCard[] = [];
-  for (const id of ["cbs-cpi", "mof-child-savings-rates", "ecb-fx"]) {
+  for (const id of ["cbs-cpi", "mof-child-savings-rates", "ecb-fx", "ecb-fx-month-end"]) {
     const p = join(root, "data/series", id + ".json");
     if (!existsSync(p)) continue;
     const rec = readJsonCached<{ observations?: (import("./value").SiteValue & { date: string; key?: string })[]; names?: { he?: string[] }; terms_of_use?: { attribution?: string } }>(p);

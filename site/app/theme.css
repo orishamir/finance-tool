@@ -240,6 +240,10 @@
   --chart-stocks: var(--palette-teal-400);
   --chart-currency: var(--palette-gold-200);
   --chart-alt: var(--palette-gold-200); /* the nearest alternative in a guide page's two-line drawing (D29, 2026-10-25): gold against the teal value line; same pair as fee kinds 2 and 3 */
+  /* the index page's two kinds of fund (2026-10-29, founder: option A of research/specs/2026-10-29-hedging): keeping the index's currency, and
+     neutralising it; the guide's value-and-alternative pair (teal against gold, as --chart-alt), not the fee orange the page's cost bars use */
+  --chart-kind-unhedged: var(--palette-teal-300);
+  --chart-kind-hedged: var(--palette-gold-200);
   /* the index page's cost bar (founder, 2026-10-27, research/specs/2026-10-27-invest-improvements 3.10): one hue per part, by who
      takes it. The account's tariff lines (trade, custody, the fixed account fee, FX), then the fund's own fees, then tax (`--chart-tax`).
      The founder asked for "more color variation" than the orange steps; blue and violet stay out (entered and computed inks) */
@@ -410,6 +414,8 @@
   --color-chart-lever-2: var(--chart-lever-2);
   --color-chart-lever-3: var(--chart-lever-3);
   --color-chart-lever-4: var(--chart-lever-4);
+  --color-chart-kind-unhedged: var(--chart-kind-unhedged);
+  --color-chart-kind-hedged: var(--chart-kind-hedged);
   --color-chart-fee-1: var(--chart-fee-1);
   --color-chart-fee-2: var(--chart-fee-2);
   --color-chart-fee-3: var(--chart-fee-3);

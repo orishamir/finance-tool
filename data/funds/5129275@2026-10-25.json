@@ -180,5 +180,37 @@
       "checked": "2026-10-25"
     }
   },
+  "tracking_record": {
+    "years": [
+      {
+        "year": 2025,
+        "fund_pct": 3.04,
+        "tracking_pct": 2.61
+      },
+      {
+        "year": 2024,
+        "fund_pct": 25.48,
+        "tracking_pct": 24.96
+      },
+      {
+        "year": 2023,
+        "fund_pct": 30.88,
+        "tracking_pct": 29.43
+      },
+      {
+        "year": 2022,
+        "fund_pct": -7.35,
+        "tracking_pct": -7.55
+      }
+    ],
+    "source": {
+      "url": "https://mayafiles.tase.co.il/rpdf/1723001-1724000/P1723932-00.pdf",
+      "title": "דוח שנתי 'הראל מחקה (4D) S&P 500' / 'Harel Htf (4D) S&P 500' (מספר בורסה 5129275), תאריך הדוח 31 בדצמבר 2025, הראל קרנות נאמנות בע\"מ (Maya filing 1723932, PDF), פרק 'תשואות, סטיות תקן ונתוני השוואה', 2025",
+      "publisher": "הראל קרנות נאמנות בע\"מ",
+      "strength": "institution"
+    },
+    "page": null,
+    "checked": "2026-10-24"
+  },
   "snapshot": "2026-10-25"
 }

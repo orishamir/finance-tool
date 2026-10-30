@@ -1,6 +1,6 @@
 // A list to choose one row from (founder, 2026-10-27, the index page's two linked lists): every row is a radio, the chosen one is
 // tinted with a bar at its start; the rows' cells are the caller's, on a grid the caller names, and a head row can name the columns.
-import { useLayoutEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
+import { Fragment, useLayoutEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { cx } from "./cx";
 
 export interface PickRow {
@@ -11,6 +11,8 @@ export interface PickRow {
   cells: ReactNode;
   /** A row that cannot be chosen as it is is still a row, muted (it is never left out). */
   muted?: boolean;
+  /** A group's heading, shown above this row (2026-10-29, the index page's two kinds of fund); not a row, never chosen. */
+  heading?: ReactNode;
 }
 
 /**
@@ -62,7 +64,8 @@ export function PickList({ label, columns, phoneColumns, head, rows, phoneLimit,
   const grid = { "--pick-cols": columns, "--pick-cols-phone": phoneColumns ?? columns } as CSSProperties;
   const gridClass = "grid-cols-[1.25rem_var(--pick-cols-phone)] md:grid-cols-[1.25rem_var(--pick-cols)]";
   const folds = !open && phoneLimit !== undefined && rows.length > phoneLimit + 1;
-  const folded = (i: number, r: PickRow) => folds && i >= phoneLimit! && !r.selected;
+  // a row that opens a group stays, so a group's heading is never hidden behind the fold
+  const folded = (i: number, r: PickRow) => folds && i >= phoneLimit! && !r.selected && !r.heading;
   const hidden = rows.filter((r, i) => folded(i, r)).length;
   return (
     <div ref={root} role="radiogroup" aria-label={label} className="flex flex-col [overflow-anchor:none]">
@@ -74,8 +77,9 @@ export function PickList({ label, columns, phoneColumns, head, rows, phoneLimit,
       )}
       {rows.map((r, i) => (
         // a div, not a button: a row holds controls of its own (a fund's number to Maya, a figure's sheet), and a click on one is not a pick
+        <Fragment key={r.key}>
+        {r.heading && <div className={cx("px-4 py-2 bg-popover border-b border-border text-sm font-semibold", folded(i, r) && "max-md:hidden")}>{r.heading}</div>}
         <div
-          key={r.key}
           role="radio"
           aria-checked={r.selected}
           data-pick-key={r.key}
@@ -89,7 +93,9 @@ export function PickList({ label, columns, phoneColumns, head, rows, phoneLimit,
               choose(r, e.currentTarget);
             } else if (e.key === "ArrowDown" || e.key === "ArrowUp") {
               e.preventDefault();
-              const next = (e.key === "ArrowDown" ? e.currentTarget.nextElementSibling : e.currentTarget.previousElementSibling) as HTMLElement | null;
+              // the next row, past a group's heading
+              let next = (e.key === "ArrowDown" ? e.currentTarget.nextElementSibling : e.currentTarget.previousElementSibling) as HTMLElement | null;
+              while (next && next.getAttribute("role") !== "radio" && !next.matches("button")) next = (e.key === "ArrowDown" ? next.nextElementSibling : next.previousElementSibling) as HTMLElement | null;
               if (next?.getAttribute("role") === "radio") next.focus();
             }
           }}
@@ -105,6 +111,7 @@ export function PickList({ label, columns, phoneColumns, head, rows, phoneLimit,
           <span aria-hidden="true" className={cx("size-4 rounded-full border-[1.5px] self-start mt-1", r.selected ? "border-[5px] border-primary" : "border-input")} />
           {r.cells}
         </div>
+        </Fragment>
       ))}
       {hidden > 0 && more && (
         <button type="button" onClick={() => setOpen(true)} className="md:hidden text-link text-sm font-medium min-h-target px-4 text-start hover:underline">
