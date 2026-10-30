@@ -2,9 +2,13 @@
 // blockers but does not count chains of them, so the ranking is computed here.
 // A sub-issue blocks its parent. A parent with open sub-issues is passed through but
 // not counted as a task. `--print` writes the body to stdout instead of the issue.
+//
+// It also keeps the ready, blocked and unblocks labels current: the Project's views filter on
+// them, because a Project has no field for blockers and this token cannot write to one anyway.
 const repo = process.env.GITHUB_REPOSITORY ?? "orishamir/finance-tool";
 const [owner, name] = repo.split("/");
 const roadmap = Number(process.env.ROADMAP_ISSUE);
+const board = "https://github.com/users/orishamir/projects/5";
 const headers = { authorization: `Bearer ${process.env.GITHUB_TOKEN}`, accept: "application/vnd.github+json", "content-type": "application/json" };
 
 const graphql = async (query, variables) => {
@@ -108,7 +112,7 @@ const node = (i) => `n${i.number}["${label(i)}"]${i.labelNames.includes("goal") 
 const body = [
   "**Rewritten automatically: edit the issues, not this text.** Set a blocker with \"Blocked by\" on the issue itself; the ranking follows when issues change, and within the hour otherwise.",
   "",
-  `**${tasks.length} open tasks:** ${readyClaude.length} ready for Claude, ${readyYou.length} ready and waiting on you, ${blocked.length} blocked.`,
+  `**${tasks.length} open tasks:** ${readyClaude.length} ready for Claude, ${readyYou.length} ready and waiting on you, ${blocked.length} blocked. [The board](${board}) has a view for each of these and for each goal.`,
   "",
   ...(stuck.length ? [`**Waiting on themselves, fix these blockers:** ${stuck.map((i) => `#${i.number}`).join(", ")}`, ""] : []),
   "## How far each goal is",
@@ -146,10 +150,35 @@ const body = [
   "```",
 ].join("\n");
 
+const stateLabels = ["ready", "blocked", "unblocks"];
+const wanted = (i) => (i.container ? [] : !i.ready ? ["blocked"] : i.down.length ? ["ready", "unblocks"] : ["ready"]);
+const labelChanges = open
+  .map((i) => ({ n: i.number, add: wanted(i).filter((l) => !i.labelNames.includes(l)), drop: stateLabels.filter((l) => i.labelNames.includes(l) && !wanted(i).includes(l)) }))
+  .filter((c) => c.add.length || c.drop.length);
+
 if (process.argv.includes("--print")) {
   console.log(body);
+  console.error(`${labelChanges.length} issues would change labels.`);
 } else {
-  const res = await fetch(`https://api.github.com/repos/${repo}/issues/${roadmap}`, { method: "PATCH", headers, body: JSON.stringify({ body }) });
-  if (!res.ok) throw new Error(`update: ${res.status} ${await res.text()}`);
-  console.log(`Roadmap updated: ${tasks.length} tasks, ${ready.length} ready, ${blocked.length} blocked.`);
+  const issuesUrl = `https://api.github.com/repos/${repo}/issues`;
+  const write = async (method, path, payload) => {
+    const res = await fetch(`${issuesUrl}/${path}`, { method, headers, body: JSON.stringify(payload) });
+    if (!res.ok) throw new Error(`${method} ${path}: ${res.status} ${await res.text()}`);
+    // GitHub asks for about a second between writes.
+    await new Promise((r) => setTimeout(r, 1000));
+  };
+  // The hourly run usually changes nothing, and an edit would still bump the issue's date.
+  const current = await fetch(`${issuesUrl}/${roadmap}`, { headers });
+  if (!current.ok) throw new Error(`read: ${current.status} ${await current.text()}`);
+  if ((await current.json()).body === body) {
+    console.log("Roadmap unchanged.");
+  } else {
+    await write("PATCH", roadmap, { body });
+    console.log(`Roadmap updated: ${tasks.length} tasks, ${ready.length} ready, ${blocked.length} blocked.`);
+  }
+  for (const c of labelChanges) {
+    if (c.add.length) await write("POST", `${c.n}/labels`, { labels: c.add });
+    for (const l of c.drop) await write("DELETE", `${c.n}/labels/${l}`);
+  }
+  console.log(`${labelChanges.length} issues changed labels.`);
 }

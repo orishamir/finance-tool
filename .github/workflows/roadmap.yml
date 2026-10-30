@@ -1,4 +1,5 @@
-# Keeps the pinned Roadmap issue (#122) current; the text comes from .github/scripts/roadmap.mjs.
+# Keeps the pinned Roadmap issue (#122) current, and the ready, blocked and unblocks labels the
+# board's views filter on; both come from .github/scripts/roadmap.mjs.
 #
 # GitHub has no event for a blocker or sub-issue being set, so the hourly run catches those; the
 # rest follow within a minute. An edit made with this token starts no new run, so it cannot loop.
