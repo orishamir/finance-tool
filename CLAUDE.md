@@ -163,8 +163,11 @@ The evidence behind them is `research/2026-10-28-founder-patterns.md`.
   labelled `goal`. New work gets an issue, with its milestone if it serves a
   goal, a blocker only when the work truly cannot finish first, and a
   `you decide` or `you do` label when it waits on me. A commit that finishes
-  one says `Closes #n`. Decisions still go in `docs/product.md`; the docs hold
-  no lists of open work.
+  one says `Closes #n`. The board is
+  [Project 5](https://github.com/users/orishamir/projects/5), which adds new
+  issues by itself; its views filter on the `ready`, `blocked` and `unblocks`
+  labels, which the same Action keeps current, so never set those by hand.
+  Decisions still go in `docs/product.md`; the docs hold no lists of open work.
 - **Lists are starting points, not limits.** When I give a list of items,
   options, or sources, add to it where sensible unless I say otherwise.
 - **Big jobs have a budget** (founder, 2026-10-31). In the week of 24 to 30
