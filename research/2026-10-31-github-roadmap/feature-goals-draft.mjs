@@ -1,7 +1,20 @@
-// Draft of the feature goals the founder asked for on 2026-10-31: each goal is a site feature that
-// reliably answers one question. Nothing here is on GitHub yet. Prints each goal's counts and the
-// blockers that cross from one goal to another; run with no arguments.
+// The feature goals the founder asked for on 2026-10-31: each goal is a site feature that reliably
+// answers one question. CHOSEN is what the founder has picked; the rest of GOALS is still a proposal.
+// Prints each goal's counts and the blockers that cross from one goal to another; run with no
+// arguments. `--publish` creates the chosen milestones and moves their issues, and is safe to run again.
 import { execSync } from "node:child_process";
+
+// Each goal's question, then its finish line. Created last to first, since the Roadmap issue lists
+// the newest milestone first.
+const EACH_PRODUCT = "Done when: each has sourced terms, computed tax, its formulas with checked results, and a page.";
+const CHOSEN = {
+  "Indices page": `I want to invest in the S&P 500, a TA index or another index: which broker or fund should I use?\nDone when: on every index, every collected bank and investment house has a price or a named reason, and international funds are included.`,
+  "Guides": `What is this product, and does it fit me?\nDone when: each guide has a structure that suits it, no example stands on one bank, and the held visuals are decided.`,
+  "Corporate bonds, REITs and gold": `What else can I hold in a securities account: corporate bonds, real-estate funds or gold funds?\n${EACH_PRODUCT}`,
+  "Foreign-currency and structured deposits": `My bank offers a foreign-currency or a structured deposit: what is it, and is it worth it?\n${EACH_PRODUCT}`,
+  "Savings policies, executive insurance and Amendment 190": `An insurer offers a savings policy or executive insurance, or I heard of Amendment 190: what do I get?\n${EACH_PRODUCT}`,
+  "Managed and robo portfolios": `A company offers to manage my money, or a robo portfolio: what is it, and what does it cost?\n${EACH_PRODUCT}`,
+};
 
 const GOALS = {
   "Indices page": [20, 21, 28, 29, 30, 39, 40, 41, 42, 43, 44, 75],
@@ -10,8 +23,11 @@ const GOALS = {
   "Holdings and fees": [36, 46, 51, 63],
   "Managers and tracks": [17, 26, 38, 49, 56, 60, 61],
   "Guides": [16, 33, 47, 48, 66, 69, 94, 96, 112],
-  "More products": [86, 99, 100, 101, 103, 104, 105, 106, 107, 108, 109, 110, 111],
-  "Pension and IRA": [65, 70, 73, 85, 88, 89, 90, 102],
+  "Corporate bonds, REITs and gold": [105, 106, 107],
+  "Foreign-currency and structured deposits": [101, 104, 110],
+  "Savings policies, executive insurance and Amendment 190": [86, 102, 108, 109, 111],
+  "Managed and robo portfolios": [100, 103],
+  "Pension and IRA": [65, 70, 73, 85, 88, 89, 90],
   "Switching": [50],
   "Rules and sources": [15, 19, 27, 76, 78, 79, 80, 81, 82, 83, 84, 87],
   "Whole site": [18, 22, 24, 25, 32, 52, 68, 74, 113, 116],
@@ -37,7 +53,7 @@ for (let after = null; ; ) {
   const { issues: page } = await graphql(
     `query($after: String) { repository(owner: "orishamir", name: "finance-tool") { issues(first: 100, states: OPEN, after: $after) {
       pageInfo { hasNextPage endCursor }
-      nodes { number title labels(first: 20) { nodes { name } }
+      nodes { number title milestone { number } labels(first: 20) { nodes { name } }
         subIssues(first: 100) { nodes { number state } } blockedBy(first: 50) { nodes { number state } } } } } }`,
     { after },
   );
@@ -69,3 +85,30 @@ for (const [goal, numbers] of Object.entries(GOALS)) {
   for (const line of crossing) console.log(`  ${line}`);
 }
 console.log(`${open.length} issues placed, ${NO_GOAL.length} with no goal`);
+
+if (process.argv.includes("--publish")) {
+  const rest = async (method, path, payload) => {
+    const res = await fetch(`https://api.github.com/repos/orishamir/finance-tool/${path}`, {
+      method,
+      headers: { authorization: `Bearer ${token}`, accept: "application/vnd.github+json", "content-type": "application/json" },
+      body: payload ? JSON.stringify(payload) : undefined,
+    });
+    if (!res.ok) throw new Error(`${method} ${path}: ${res.status} ${await res.text()}`);
+    // GitHub asks for about a second between writes.
+    if (method !== "GET") await new Promise((r) => setTimeout(r, 1000));
+    return res.json();
+  };
+  const milestones = await rest("GET", "milestones?state=open&per_page=100");
+  for (const [title, description] of Object.entries(CHOSEN).reverse()) {
+    const have = milestones.find((m) => m.title === title);
+    const m = have ?? (await rest("POST", "milestones", { title, description }));
+    if (have && have.description !== description) await rest("PATCH", `milestones/${m.number}`, { description });
+    let moved = 0;
+    for (const n of GOALS[title]) {
+      if (byNumber.get(n).milestone?.number === m.number) continue;
+      await rest("PATCH", `issues/${n}`, { milestone: m.number });
+      moved++;
+    }
+    console.log(`${title}: milestone ${m.number}, ${moved} issues moved`);
+  }
+}
