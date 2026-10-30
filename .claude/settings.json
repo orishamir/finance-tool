@@ -1,0 +1,9 @@
+{
+  "autoCompactWindow": 200000,
+  "bashOutputMaxChars": 10000,
+  "autoContinueAtUsageLimit": false,
+  "enabledPlugins": {
+    "wealth-management@finance-skills": false,
+    "core@finance-skills": false
+  }
+}
