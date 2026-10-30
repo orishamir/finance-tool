@@ -157,6 +157,17 @@ The evidence behind them is `research/2026-10-28-founder-patterns.md`.
   or to open a PR.
 - **Lists are starting points, not limits.** When I give a list of items,
   options, or sources, add to it where sensible unless I say otherwise.
+- **Big jobs have a budget** (founder, 2026-10-31). In the week of 24 to 30
+  October about 200 subagents used a week of tokens in a day and a half. Read
+  the weekly meter (`get_usage`) before and after each job and report both.
+  Subagents run one at a time, and small work stays in the main conversation;
+  this overrides any older instruction to run work in parallel. A job likely
+  to use more than 5% of the week gets a one-line estimate and my yes first (a
+  one-topic conversation costs about 1 to 2%, one subagent's job about 1 to
+  3%). Above 70% of the week, do only what I directly ask for. Effort is medium
+  by default and high for tax, rules and calculation work; extra high and Fable
+  only when I ask. Start a fresh agent with a short brief rather than messaging
+  an idle one.
 
 ## Repo layout
 
