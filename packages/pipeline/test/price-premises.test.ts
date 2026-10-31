@@ -18,7 +18,6 @@ for (const f of readdirSync(dir).sort()) {
 const CLASSES = ["mutual_fund_units", "etf_units", "tase_foreign_fund_units", "foreign_securities"];
 const DOUBT = /not stated|not named|unconfirmed|not collected|Read as|could not be fetched|for a person to check|no document says|not confirmed/i;
 const LEFTOVERS = [
-  "altshuler-trade-custody",
   "interactive-brokers-buy-sell-lse-usd-tiered",
   "interactive-brokers-buy-sell-tase-fixed",
   "interactive-brokers-buy-sell-tase-tiered",

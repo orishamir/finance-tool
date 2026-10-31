@@ -2,7 +2,7 @@
 // bounds, the cap, a fund in another currency than its exposure, and a provider's bad record as its own row.
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import { fundVariants, providerWorkbench, tradeCommission, type NotComparableProvider, type ProviderRow, type WorkbenchInput } from "../src/index.ts";
+import { buildTariff, fundVariants, providerWorkbench, tradeCommission, type NotComparableProvider, type ProviderRow, type WorkbenchInput } from "../src/index.ts";
 import { context, loadRules } from "./golden/harness.ts";
 
 const ctx = context(loadRules());
@@ -145,5 +145,13 @@ describe("F-65 a fund in another currency than its exposure (E4)", () => {
   it("with a USD rate missing it is still not evaluated, naming the input", () => {
     const r = fundVariants({ ...exposure, run: { ...exposure.run, fxStartRates: {} } } as never, [], [record], ctx).rows[0]!;
     expect(r.reasons[0]).toMatchObject({ code: "missing-input", detail: "fxStartRates.USD" });
+  });
+});
+
+describe("F-14: a custody bound printed per month", () => {
+  it("is multiplied by the months in the charging period", () => {
+    const excellence = read("fees/excellence@2026-10-31.json");
+    expect(buildTariff(input({ providers: [] }), { snapshot: altshuler, level: "list" }, altshuler).tariff.custody).toMatchObject({ everyMonths: 12, min: 900 });
+    expect(buildTariff(input({ providers: [] }), { snapshot: excellence, level: "list" }, excellence).tariff.custody).toMatchObject({ everyMonths: 3, min: 120 });
   });
 });
