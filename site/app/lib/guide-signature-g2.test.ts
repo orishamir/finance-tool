@@ -9,6 +9,8 @@ import { entered as enteredValue } from "./value";
 import { hishtalmutModel, hishtalmutTerms, pensionModel, providentModel, runWith } from "./guide-signature-g2";
 import { signatureRegistry } from "../components/guide-signature";
 import { guideSignature as copy } from "../copy";
+import { buildInvest, indexById } from "./invest";
+import { buildWorkbenchBundle } from "./providers.server";
 
 const page = (id: string) => buildGuidePage(id)!;
 const entered = (amount_now: number, monthly_deposit: number) => ({ amount_now, monthly_deposit });
@@ -84,6 +86,29 @@ describe("study fund", () => {
     const best = runWith(d.bundles["brokerage-best"]!, entered(10000, 500), 96)!;
     const worst = runWith(d.bundles["brokerage-worst"]!, entered(10000, 500), 96)!;
     expect(best.real).toBeGreaterThan(worst.real);
+  });
+});
+
+describe("the guides' securities-account range and the indices page (issue 143)", () => {
+  const bundle = buildWorkbenchBundle();
+  const t = bundle.today;
+  const money = (n: number) => enteredValue(n, "nis", t);
+  const plan = { amountNow: 10000, monthly: 500, years: 10, grossReturn: 0.07, inflation: 0.02, age: null, income: null, values: { amount: money(10000), monthly: enteredValue(500, "nis_per_month", t), years: enteredValue(10, "years", t), returnV: enteredValue(7, "pct_per_year", t), inflation: enteredValue(2, "pct_per_year", t) }, fromGoal: false, returnFromParameter: false };
+  const view = buildInvest({ bundle, index: indexById(bundle, "index-sp500")!, plan });
+  const onFund = view.houses.flatMap((h) => h.entries.filter((e) => e.fund.number === "5139282" && e.price && !e.price.open).map((e) => ({ id: h.provider.id, value: e.price!.valueN }))).sort((a, b) => b.value - a.value);
+  for (const id of ["keren-hishtalmut", "kupat-gemel-lehashkaa"]) {
+    it(`${id}: counts the same houses and names the same pick`, () => {
+      const d = page(id).signature!;
+      expect(fact(d, "brokerCount")!.value).toBe(onFund.length);
+      const best = String(fact(d, "brokerBestName")!.value);
+      expect(onFund.some((h) => h.id === "fair")).toBe(true);
+      expect(onFund[0]!.id).toBe("fair");
+      expect(best).toContain("פייר");
+    });
+  }
+  it("prices the pick the same on both pages", () => {
+    const run = runWith(page("keren-hishtalmut").signature!.bundles["brokerage-best"]!, entered(10000, 500), 120)!;
+    expect(Math.abs(run.real - onFund[0]!.value) / onFund[0]!.value).toBeLessThan(0.001);
   });
 });
 
