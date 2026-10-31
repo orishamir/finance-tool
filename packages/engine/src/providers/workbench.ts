@@ -268,6 +268,11 @@ export function buildTariff(input: Omit<WorkbenchInput, "fund"> & { fund?: Workb
     if (input.channel === undefined && channels.size > 0)
       throw new RecordInputError(`provider ${snapshot.id}: ${base} lines exist for channels ${[...channels].join(", ")}; the input must name the channel`);
     let found = all.filter((l) => l.channel === null || l.channel === input.channel);
+    // F-13 (2026-10-31): a conversion line printed for one currency prices a fund in it, and the line with no currency prices the others.
+    if (base === "fx" && input.currency) {
+      const own = found.filter((l) => l.conversion_currency === input.currency!.code);
+      found = own.length > 0 ? own : found.filter((l) => !l.conversion_currency);
+    }
     const exact = found.filter((l) => l.applies_to.includes(input.instrumentClass));
     if (exact.length > 0 && exact.length < found.length && classes.length > 1) found = exact;
     const ambiguous = (ls: SnapLine[]) =>
@@ -401,7 +406,13 @@ export function buildTariff(input: Omit<WorkbenchInput, "fund"> & { fund?: Workb
     else {
       const r = resolve("fx");
       if (r) {
-        const c: Commission = { rate: pct(r.rate, "pct_of_trade", `${r.line.id} rate`) };
+        const c: Commission = { rate: 0 };
+        // F-13 (2026-10-31): a conversion priced in shekels a dollar, not as a share of the amount.
+        if (r.rate.unit === "nis_per_usd") {
+          if (input.currency!.code !== "USD") throw new RecordInputError(`${r.line.id}: the price is per dollar but the instrument currency is ${input.currency!.code}`);
+          if (typeof r.rate.value !== "number") throw new Unusable("line-without-value", `${r.line.id} rate has no value`);
+          c.perCurrencyUnit = r.rate.value;
+        } else c.rate = pct(r.rate, "pct_of_trade", `${r.line.id} rate`);
         if (hasBound(r.min) || hasBound(r.max)) {
           // The FX bounds are in USD where the bank sets them so: they stay in the trade currency (F-13, 2026-10-24).
           const bounds = [r.min, r.max].filter(hasBound);
@@ -420,7 +431,7 @@ export function buildTariff(input: Omit<WorkbenchInput, "fund"> & { fund?: Workb
           if (hasBound(r.min)) c.min = bound(r.min, `${r.line.id} min`);
           if (hasBound(r.max)) c.max = bound(r.max, `${r.line.id} max`);
         }
-        out.tariff.fx = hasBound(r.min) || hasBound(r.max) ? c : c.rate;
+        out.tariff.fx = hasBound(r.min) || hasBound(r.max) || c.perCurrencyUnit ? c : c.rate;
         used(r.line, r.rate, r.min, r.max);
       }
     }

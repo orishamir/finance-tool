@@ -30,6 +30,15 @@ describe("invest page computation", () => {
     expect(marked.sort()).toEqual(["fibi", "leumi", "massad"]);
   });
 
+  it("Psagot prices a fund abroad on its European line and its dollar conversion (issue 144)", () => {
+    const abroad = view.options.find((o) => o.id === "abroad")!.funds[0]!;
+    const at = abroad.byHouse.psagot!;
+    if (!("valueN" in at)) throw new Error(`Psagot has no price: ${at.reason.code}`);
+    expect(at.venue).toBe("europe");
+    expect(at.lines.map((l) => l.line).sort()).toEqual(["custody", "fx", "trade"]);
+    expect(view.headline!.providerId).toBe("fair");
+  });
+
   it("lists the equity indices of the records, none chosen for the person", () => {
     expect(knownIndices(bundle).map((i) => i.id)).toContain("index-sp500");
     expect(knownIndices(bundle).every((i) => i.exposure?.kind === "equity_index")).toBe(true);

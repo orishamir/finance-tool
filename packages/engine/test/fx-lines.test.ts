@@ -2,7 +2,7 @@
 // Expected figures: tests/golden/expected_fx_lines.py, from the formulas alone, with no return, fund cost or inflation.
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import { crossRate, providerWorkbench, runSecurities, type NotComparableProvider, type SecuritiesInput, type WorkbenchInput } from "../src/index.ts";
+import { crossRate, feeLines, fxFee, providerWorkbench, runSecurities, withFeeRate, withoutFeeLine, type NotComparableProvider, type SecuritiesInput, type WorkbenchInput } from "../src/index.ts";
 import { buildTariff } from "../src/providers/workbench.ts";
 import { context } from "./golden/harness.ts";
 
@@ -58,5 +58,49 @@ describe("a minimum in euros (F-12, F-84)", () => {
     const row = out.rows[0] as NotComparableProvider;
     expect(row.kind).toBe("not-comparable");
     expect(row.reason.code).toBe("needs-fx-rate");
+  });
+});
+
+describe("a conversion priced per dollar, on the line for the fund's currency (F-13)", () => {
+  const tariffFor = (code: string) => {
+    const input = workbench({ currency: { code, startRate: fx.USD }, providers: [] });
+    return buildTariff(input, { snapshot: psagot, level: "list", band: EUROPE }, psagot);
+  };
+
+  it("a dollar fund reads the line printed for the dollar, as shekels a dollar", () => {
+    const t = tariffFor("USD");
+    expect(t.tariff.fx).toEqual({ rate: 0, perCurrencyUnit: 0.015 });
+    expect(t.linesUsed).toContain("psagot-fx-conversion-usd");
+    expect(t.linesUsed).not.toContain("psagot-fx-conversion-other");
+    expect(fxFee(t.tariff.fx, 400, { fxRate: fx.USD })).toBeCloseTo(1.92215, 5);
+  });
+
+  it("a fund in another currency reads the line with no currency, a percentage", () => {
+    const t = tariffFor("EUR");
+    expect(t.tariff.fx).toBe(0.005);
+    expect(t.linesUsed).toContain("psagot-fx-conversion-other");
+  });
+
+  it("twelve orders of 400 NIS and the sale, conversion and commission together", () => {
+    const { tariff } = tariffFor("USD");
+    const r = runSecurities(plain({ buy: tariff.buy!, sell: tariff.sell!, fx: tariff.fx! }), ctx);
+    expect(r.fees.fx).toBeCloseTo(42.746808, 5);
+    expect(r.fees.trade).toBeCloseTo(681.3105, 4);
+    expect(r.nominal).toBeCloseTo(4075.942692, 4);
+  });
+
+  it("is a fee line of its own, and removing it takes the whole price away (F-61)", () => {
+    const { tariff } = tariffFor("USD");
+    const plan = { run: "runSecurities", input: plain({ buy: tariff.buy!, sell: tariff.sell!, fx: tariff.fx! }) } as const;
+    expect(feeLines(plan)).toContain("fx");
+    const without = withoutFeeLine(plan, "fx");
+    expect(without.run === "runSecurities" && without.input.tariff.fx).toBeUndefined();
+    const own = withFeeRate(plan, "fx", 0.001);
+    expect(own.run === "runSecurities" && own.input.tariff.fx).toEqual({ rate: 0.001 });
+  });
+
+  it("a per-dollar price on a fund in another currency is the record's error, not a silent figure", () => {
+    const snapshot = { ...psagot, lines: psagot.lines.map((l: { id: string; conversion_currency?: string }) => { if (l.id !== "psagot-fx-conversion-usd") return l; const { conversion_currency: _, ...rest } = l; return rest; }).filter((l: { id: string }) => l.id !== "psagot-fx-conversion-other") };
+    expect(() => buildTariff(workbench({ currency: { code: "EUR", startRate: fx.EUR }, providers: [] }), { snapshot, level: "list", band: EUROPE }, snapshot)).toThrow(/per dollar/);
   });
 });

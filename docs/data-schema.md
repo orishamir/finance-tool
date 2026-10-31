@@ -65,7 +65,9 @@ Field rules:
 
 ## 2. Units and enumerations
 
-Units: `nis`, `nis_millions`, `usd`, `eur`, `pct` (a share), `pct_per_year`, `pct_of_deposit`, `pct_of_trade`, `pct_of_balance_per_period`, `nis_per_month`, `nis_per_trade`, `nis_per_transfer`, `usd_per_share`, `usd_per_trade`, `gbp_per_trade`, `fx_per_eur`, `months`, `years`, `days`, `business_days`, `index_points`, `count`, `boolean`, `text`.
+Units: `nis`, `nis_millions`, `usd`, `eur`, `pct` (a share), `pct_per_year`, `pct_of_deposit`, `pct_of_trade`, `pct_of_balance_per_period`, `nis_per_month`, `nis_per_trade`, `nis_per_transfer`, `usd_per_share`, `usd_per_trade`, `gbp_per_trade`, `nis_per_usd`, `fx_per_eur`, `months`, `years`, `days`, `business_days`, `index_points`, `count`, `boolean`, `text`.
+
+**2026-10-31 (issue 144).** `nis_per_usd` (shekels per dollar converted: a conversion printed as agorot a dollar, Psagot's 1.5 agorot) was added; F-13 charges it on the dollars converted.
 
 **2026-10-25 (invest page).** `usd_per_share` (a dollar amount per share, a per-share commission rate), `usd_per_trade` and `gbp_per_trade` (a dollar or pound amount per trade: a minimum or maximum commission in a foreign currency) were added for the foreign brokers' tariffs; the engine converts them at the run's exchange rate. `fx_per_eur` (units of a currency per one euro, the ECB reference rate) was added for the FX series `data/series/ecb-fx.json` (request of agent A3). **2026-10-29:** `data/series/ecb-fx-month-end.json` holds the same unit for the dollar and the shekel on each month's last reference day since January 2000 (the ECB Data Portal's EXR.M.<code>.EUR.SP00.E, `npm run fetch:ecb-month -w @finance-tool/pipeline`), for F-93.
 
@@ -273,7 +275,7 @@ Israeli funds (Maya export, CAT-34, TXS-24) add `il_fund_tax_track` (`exempt` or
 
 ### 3.6 `data/fees/` — provider tariffs, dated snapshots (dependency 5)
 
-One file per provider per snapshot: `fees/<provider-id>@<date>.json`. A line's `band` is the tariff's own text for a plan or sub-class; `band: null` is the standard line, which F-63 prefers, and a plan line is read only when the person names the plan. A bonds-only line uses `applies_to: ["tase_bonds"]`.
+One file per provider per snapshot: `fees/<provider-id>@<date>.json`. A line's `band` is the tariff's own text for a plan or sub-class; `band: null` is the standard line, which F-63 prefers, and a plan line is read only when the person names the plan. A bonds-only line uses `applies_to: ["tase_bonds"]`. A conversion line printed for one currency carries `conversion_currency` (ISO code, 2026-10-31): it prices a fund in that currency, and a line without one prices the others (F-13).
 
 A value's `source` here may also carry its exact place (issue 19, 2026-10-31), both optional: `page`, the file's own page of a PDF (the document library's count, not the number printed on the sheet), and `quote`, the document's own words that carry the value, at most 240 characters. A web page has only `quote`. A value gets them only when its own line was read on that page; no `page` means not yet confirmed, not absent from the document. The same two fields may sit on an `availability` entry's `source`. They are read by nothing on the site yet.
 
