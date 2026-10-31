@@ -219,6 +219,12 @@ export const guide = {
   // audit 2026-10-24 (A45): the headline says it is an example and names its inputs; each gap is filled by a Num
   headlineExample: { lead: "דוגמה:", plus: "ועוד", perMonth: "בחודש, בתשואה של", perMonthCash: "בחודש, בריבית של", perYear: "בשנה, משאירים לכם אחרי" }, // perMonthCash 2026-10-25: a cash-like page runs on a rate, not a return
   modes: { real: "בכסף של היום", nominal: "בשקלים של העתיד" },
+  // issue 23: the mode says what its figure is and gives the other mode's figure
+  modeNote: {
+    real: { before: "בכסף של היום: מה שהסכום יקנה במחירים של היום. בחשבון יהיה כתוב אז", after: "בשקלים של העתיד." },
+    nominal: { before: "בשקלים של העתיד: מה שיהיה כתוב בחשבון. הסכום הזה יקנה רק כמו", after: "היום, כי המחירים עולים." },
+    deposits: "החישוב מניח שההפקדה החודשית עולה כל חודש עם המחירים.",
+  },
   modeLabel: "אופן הצגת הסכומים",
   legend: { net: "נשאר לכם", tax: "מס", fees: "דמי ניהול", contributions: "ההפקדות שלכם" },
   chips: { amount_now: "סכום היום", monthly_deposit: "הפקדה חודשית", horizon_years: "תקופה", "A-01": "תשואה בשנה", cash_rate: "ריבית בשנה", "A-02": "אינפלציה בשנה", all: "כל ההנחות" },
