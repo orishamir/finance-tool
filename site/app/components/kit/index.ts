@@ -1,6 +1,7 @@
 // The shared component kit (design-system, section "Kit"). A new pattern goes in here first; the site's pages and features import from
 // "components/kit", not from a neighbouring feature. One file per component or small family; the gallery at /kit shows each in its states.
 export { cx } from "./cx";
+export { useHeldHeight } from "./held-height";
 export { Button, LinkButton } from "./button";
 export { StepTag, Tag } from "./tag";
 export { Callout } from "./callout";

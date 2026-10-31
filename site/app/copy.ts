@@ -3524,6 +3524,8 @@ export const invest = {
     standingNote: ownTermsCopy.provider.standingNote,
     broken: "⫽ הפס נחתך: הסכום ארוך מהשטח",
     notPossible: "לא אפשרי שם",
+    noPriceHere: "אין מחיר כאן",
+    noPriceWhy: (house: string) => `למה חלק מהקרנות בלי מחיר ב${house}:`,
     notPossibleSource: "המקור",
     elsewhere: "בקרן אחרת,",
     elsewhereOpen: "מוצג בלי דירוג, כי כלל המס עוד פתוח",

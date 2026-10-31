@@ -211,9 +211,16 @@ export function RangeField(props: RangeFieldProps) {
   const fill = ((clamped - min) / (max - min)) * 100;
   return (
     <div className="field">
-      <div className="flex items-center justify-between gap-3">
-        <span className="field-label" id={`${id}-l`}>
-          {label}
+      <div className="flex items-center justify-between gap-3 min-h-target">
+        <span className="flex items-center gap-2 min-w-0">
+          <span className="field-label" id={`${id}-l`}>
+            {label}
+          </span>
+          {footer === false && isEntered && !disabled && (
+            <button type="button" onClick={onReset} className="text-xs text-link hover:underline min-h-target whitespace-nowrap">
+              {buttons.resetOne}
+            </button>
+          )}
         </span>
         <NumberField {...props} compact />
       </div>

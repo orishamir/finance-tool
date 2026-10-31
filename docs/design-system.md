@@ -212,6 +212,8 @@ Why this pair: Heebo is clear on small screens and matches Inter's proportions; 
 
 **Check.** The builder runs a script that sets each input to several values (the choices, a slider's ends, a large typed number) and compares the boxes of the parts that must stay (column widths, block heights, the tapped row's top); the result goes in the builder's report and the structure review. A part that moves is a finding, fixed in the kit piece, not on the page.
 
+
+A list whose rows differ from one choice to the next (the indices page's account and fund cards) holds the tallest height it has had with `useHeldHeight` from the kit, keyed on what starts it over (the index). It can grow once, the first time a taller case comes up, and never shrinks back; a reason that depends on the choice stands once under the list rather than on each row (2026-10-31).
 ### 2.6 Shape, elevation, focus, motion
 
 - **Radius:** `rounded-sm` 4 px (tags), `rounded-md` 8 px (fields, buttons, chips), `rounded-lg` 12 px (cards, popovers), `rounded-xl` 20 px (top corners of a bottom sheet), `rounded-full` (state chips, slider thumb).
