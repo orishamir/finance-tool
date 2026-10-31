@@ -398,7 +398,7 @@ export default function GuidePage() {
   );
 
   return (
-    <PageShell current="guide" data={provenance}>
+    <PageShell current="guide" data={provenance} wide="large">
       <div className="lg:flex lg:gap-12 pt-2 lg:pt-8">
         <SectionIndex sections={copy.sections.filter((x) => !omitted(x.id) && (x.id !== "terms" || !mainTerms.hide || generalTerms.length > 0) && ((x.id as string) !== "worth" || worthRows(data.worthIds, rules, today).length > 0 || worthFacts.length > 0) && ((x.id as string) !== "different" || !!signature))} current={current} />
         <div className="flex-1 min-w-0 flex flex-col gap-section">
