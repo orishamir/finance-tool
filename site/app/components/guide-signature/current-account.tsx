@@ -5,16 +5,16 @@
 // bank's own rate (spec section 7). Figures come from engine runs of the two bundles (guide-signature.ts `currentAccountModel`).
 import { area, line } from "d3-shape";
 import { scaleLinear } from "d3-scale";
-import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
-import { guideSignature as copy, values as valuesCopy } from "../../copy";
+import { useEffect, useId, useMemo, useRef, useState, type ReactNode } from "react";
+import { guideSignature as copy, values as valuesCopy, kit as kitCopy } from "../../copy";
 import { fmt } from "../../lib/format";
 import { p05Value } from "../../lib/engine";
 import { accountAxis, accountFact, bankYearlyMax, currentAccountModel, fact, payingBanks, silentBanks, type SignatureData } from "../../lib/guide-signature";
 import type { SiteValue } from "../../lib/value";
-import { AxisLabels, niceYearTicks } from "../chart/TimelineChart";
+import { AxisLabels, yearTicksIn } from "../chart/TimelineChart";
 import { IconAlert } from "../icons";
 import type { WorthFactRow } from "../guide/worth-knowing";
-import { ChartLegend, cx, Disclosure, InputSlot, NumberField, RangeField, Sentence, Stat, StatRow, Swatch, TableCols, Tag, useWidth } from "../kit";
+import { ChartLegend, ChartTip, cx, Disclosure, InputSlot, NumberField, pickDim, RangeField, Sentence, Stat, StatRow, Swatch, TableCols, Tag, useChartPick, useWidth, useYearZoom, ZoomBar, ZoomBrush } from "../kit";
 import { Num, RuleRef, RulesLine } from "../provenance";
 import { CommonRateLine, Gap, SourceLine, figure, inputSite, rulesOfBundle, useSigInputs, yearsRange, type VisualProps } from "./kit";
 
@@ -86,15 +86,21 @@ export function CurrentAccountVisual({ data, today }: VisualProps) {
 
   const pts = model?.points ?? [];
   const plotW = width - 8;
-  const axis = accountAxis([inputs.amount, ...pts.flatMap((p) => [p.account, p.fund])]);
+  const [hover, setHover] = useState<number | null>(null);
+  const legendPick = useChartPick();
+  const zoom = useYearZoom({ last: years, plotLeft: LEFT, plotWidth: plotW - LEFT, onHover: setHover });
+  const clip = useId().replace(/:/g, "");
+  const axis = accountAxis([inputs.amount, ...pts.filter((p) => zoom.has(p.year)).flatMap((p) => [p.account, p.fund])]);
   // the value labels sit in a gutter at the left edge; the lines start right of it, so a label never lies on the start of a line
-  const x = scaleLinear().domain([0, years]).range([LEFT, plotW]);
+  const x = scaleLinear().domain(zoom.domain).range([LEFT, plotW]);
   const y = scaleLinear().domain([axis.lo, axis.hi]).nice(4).range([HEIGHT - BOTTOM, TOP]);
   const ticks = y.ticks(4);
   const acct = line<{ year: number; account: number }>().x((d) => x(d.year)).y((d) => y(d.account));
   const fnd = line<{ year: number; fund: number }>().x((d) => x(d.year)).y((d) => y(d.fund));
   const gap = area<{ year: number; account: number; fund: number }>().x((d) => x(d.year)).y0((d) => y(d.account)).y1((d) => y(d.fund));
-  const last = pts[pts.length - 1];
+  // the last year in view: zoomed in, the lines' names stand there, beside their ends
+  const last = [...pts].reverse().find((p) => p.year <= zoom.settled[1]);
+  const read = hover === null ? null : pts.find((p) => p.year === hover);
 
   const base = (key: "amount_now" | "horizon_years", n: number, src: "amount" | "years") => inputSite(account, key, n, inputs.source[src], today, key === "amount_now" ? copy.common.inputNames.balance : copy.common.inputNames.years);
   const balanceValue = base("amount_now", inputs.amount, "amount");
@@ -204,6 +210,7 @@ export function CurrentAccountVisual({ data, today }: VisualProps) {
       {model ? (
         <>
           <ChartLegend
+            pick={legendPick}
             items={[
               { id: "account", swatch: <Swatch className="bg-chart-net" />, label: copy.account.chart.account },
               { id: "fund", swatch: <Swatch className="bg-chart-alt" />, label: copy.account.chart.fund },
@@ -211,27 +218,43 @@ export function CurrentAccountVisual({ data, today }: VisualProps) {
               { id: "cost", swatch: <Swatch shape="box" className="bg-chart-alt/25" />, label: copy.account.chart.cost },
             ]}
           />
+          <div className="flex flex-col gap-1">
           <div ref={box} className="relative w-full" dir="ltr" style={{ height: HEIGHT }}>
-            <svg width={width} height={HEIGHT} viewBox={`0 0 ${width} ${HEIGHT}`} role="img" aria-label={copy.account.chart.aria} className="block select-none">
+            <svg ref={zoom.svgRef} {...zoom.handlers} width={width} height={HEIGHT} viewBox={`0 0 ${width} ${HEIGHT}`} role="img" aria-label={copy.account.chart.aria} className="block select-none touch-pan-y">
+              <defs>
+                <clipPath id={clip}>
+                  <rect x={LEFT} y={0} width={Math.max(0, plotW - LEFT)} height={HEIGHT} />
+                </clipPath>
+              </defs>
               {ticks.map((t) => (
                 <line key={t} x1={0} x2={plotW} y1={y(t)} y2={y(t)} className="stroke-chart-grid" strokeWidth="1" />
               ))}
               <line x1={0} x2={plotW} y1={HEIGHT - BOTTOM} y2={HEIGHT - BOTTOM} className="stroke-chart-axis" strokeWidth="1" />
-              <path d={gap(pts) ?? ""} className="fill-chart-alt" fillOpacity="0.22" />
-              <line x1={0} x2={plotW} y1={y(model.start)} y2={y(model.start)} className="stroke-chart-baseline" strokeWidth="1.5" strokeDasharray="5 4" />
-              <path d={fnd(pts) ?? ""} fill="none" className="stroke-chart-alt" strokeWidth="2.5" strokeLinejoin="round" />
-              <path d={acct(pts) ?? ""} fill="none" className="stroke-chart-net" strokeWidth="2.5" strokeLinejoin="round" />
+              <path d={gap(pts) ?? ""} clipPath={`url(#${clip})`} className={cx("fill-chart-alt", pickDim(legendPick.active, "cost"))} fillOpacity="0.22" />
+              <line x1={0} x2={plotW} y1={y(model.start)} y2={y(model.start)} className={cx("stroke-chart-baseline", pickDim(legendPick.active, "baseline"))} strokeWidth="1.5" strokeDasharray="5 4" />
+              <g clipPath={`url(#${clip})`}>
+                <path d={fnd(pts) ?? ""} fill="none" className={cx("stroke-chart-alt", pickDim(legendPick.active, "fund"))} strokeWidth="2.5" strokeLinejoin="round" />
+                <path d={acct(pts) ?? ""} fill="none" className={cx("stroke-chart-net", pickDim(legendPick.active, "account"))} strokeWidth="2.5" strokeLinejoin="round" />
+              </g>
               {/* after the lines and the dashed start, with the card-colour halo: the start line ran through "50 אלף ₪" (2026-10-26) */}
               <AxisLabels ticks={ticks} y={y} />
-              {last && Math.abs(y(last.fund) - y(last.account)) > 12 && (
+              {last && !zoom.view && Math.abs(y(last.fund) - y(last.account)) > 12 && (
                 // the gap as a difference: a bracket between the two ends, its number beside it (D29 rule 6)
                 <path d={`M ${plotW - 8} ${y(last.fund)} h 4 V ${y(last.account)} h -4`} fill="none" className="stroke-chart-text" strokeWidth="1.5" />
               )}
-              {niceYearTicks(years).map((t) => (
-                <text key={t} x={x(t)} y={HEIGHT - 8} textAnchor={t === 0 ? "start" : t === years ? "end" : "middle"} className="text-xs fill-chart-text" data-scale>
+              {yearTicksIn(zoom.settled[0], zoom.settled[1]).map((t) => (
+                <text key={t} x={x(t)} y={HEIGHT - 8} textAnchor={t <= zoom.settled[0] ? "start" : t >= zoom.settled[1] ? "end" : "middle"} className="text-xs fill-chart-text" data-scale>
                   {t === 0 ? copy.account.today : t}
                 </text>
               ))}
+              {read && (
+                <g>
+                  <line x1={x(read.year)} x2={x(read.year)} y1={TOP} y2={HEIGHT - BOTTOM} className="stroke-chart-crosshair" strokeWidth="1" />
+                  <circle cx={x(read.year)} cy={y(read.fund)} r="4" className="stroke-card fill-chart-alt" strokeWidth="2" />
+                  <circle cx={x(read.year)} cy={y(read.account)} r="4" className="stroke-card fill-chart-net" strokeWidth="2" />
+                </g>
+              )}
+              <ZoomBrush brush={zoom.brush} left={LEFT} top={TOP} bottom={HEIGHT - BOTTOM} />
             </svg>
             {last && (
               <>
@@ -241,13 +264,26 @@ export function CurrentAccountVisual({ data, today }: VisualProps) {
                 <span className="absolute text-xs text-chart-text whitespace-nowrap" dir="rtl" style={{ right: 12, top: y(last.account) + 6 }}>
                   {copy.account.chart.account}
                 </span>
-                {cost && (
+                {cost && !zoom.view && (
                   <span className="absolute text-xs bg-card/85 rounded-sm px-1.5 py-0.5 whitespace-nowrap" dir="rtl" style={{ right: 26, top: Math.min(HEIGHT - BOTTOM - 24, Math.max(TOP, (y(last.fund) + y(last.account)) / 2 - 10)) }}>
                     {copy.account.chart.cost} <Num value={cost} />
                   </span>
                 )}
               </>
             )}
+            {read && !zoom.brush && (
+              <ChartTip x={x(read.year)} top={TOP} width={width}>
+                <span className="block font-medium">{read.year === 0 ? copy.account.today : <>{kitCopy.chart.yearWord} <bdi dir="ltr">{read.year}</bdi></>}</span>
+                <span className="block">
+                  {copy.account.chart.account}: <Num value={figure(read.account, "nis", "F-67", runInputs, today, copy.account.about.account)} />
+                </span>
+                <span className="block">
+                  {copy.account.chart.fund}: <Num value={figure(read.fund, "nis", "F-67", fundInputs, today, copy.account.about.fund)} />
+                </span>
+              </ChartTip>
+            )}
+          </div>
+          <ZoomBar zoom={zoom} yearWord={(t) => (t === 0 ? copy.account.today : String(t))} />
           </div>
           <p className="text-xs text-muted-foreground">{copy.account.axisNote}</p>
           <StatRow cols={3}>

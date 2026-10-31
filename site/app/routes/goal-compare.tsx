@@ -26,7 +26,7 @@ import { IconExternal } from "../components/icons";
 import { IdRef, Num, NumberLegend, RulesLine } from "../components/provenance";
 import { Sheet } from "../components/Sheet";
 import { Breadcrumb, PageShell } from "../components/shell";
-import { Callout, Card, Disclosure, SegmentedControl, Sentence, Tag } from "../components/kit";
+import { Callout, Card, Disclosure, SegmentedControl, Sentence, Tag, useChartPick } from "../components/kit";
 import { applyProviders, buildView, computeSensitivity, makeValues, runGoalOf, nothingToCompare, cashRateOf, type CompareBundle, type CompareView, type FeeKind, type RankedOption, type SensitivityView } from "../lib/compare";
 import { loadBundle } from "../lib/bundle";
 import { fmt } from "../lib/format";
@@ -148,6 +148,7 @@ function Body({ bundle: bundle0, wb, data, fit, frame, exposureId, registerSave 
   const outcome = useMemo(() => buildView(bundle, g), [bundle, key]); // eslint-disable-line react-hooks/exhaustive-deps
   const [mode, setMode] = useValueMode();
   const [hover, setHover] = useState<number | null>(null);
+  const legendPick = useChartPick();
   const [sens, setSens] = useState<SensitivityView | null>(null);
   const [panelOpen, setPanelOpen] = useState(false);
   const { saved, view: revisit } = useRevisit("wrapper");
@@ -365,8 +366,8 @@ function Body({ bundle: bundle0, wb, data, fit, frame, exposureId, registerSave 
               ) : (
                 <>
                   <SegmentedControl label={r2.result.realNominal} options={[{ value: "real", label: r2.result.modes.real }, { value: "nominal", label: r2.result.modes.nominal }]} value={mode} onChange={setMode} />
-                  <ChartLegend lines={view.series} />
-                  <ComparisonChart lines={view.series} mode={mode} horizon={g.horizonYears} ctx={ctx} hover={hover} onHover={setHover} />
+                  <ChartLegend lines={view.series} pick={legendPick} />
+                  <ComparisonChart lines={view.series} mode={mode} horizon={g.horizonYears} ctx={ctx} hover={hover} onHover={setHover} highlight={legendPick.active} />
                   {view.series.some((l) => l.enteredReturn) && <p className="text-xs text-entered">{r2.result.chartEnteredCaption}</p>}
                   <FallEcho ctx={ctx} />
                   <ChartReadout lines={view.series} mode={mode} year={hover ?? g.horizonYears} ctx={ctx} />

@@ -11,7 +11,7 @@ import { IdRef, Num } from "../provenance";
 import { IconDrillIn } from "../icons";
 import { label } from "../../lib/labels";
 import { fmt } from "../../lib/format";
-import { Button, Callout, Card, ChartLegend, CostStack, LabelFilter, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, CompareTable, TableCols, CoverageFold, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, Disclosure, FieldState, FoldGroup, GainBars, GapNote, HeadlineFigure, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, CheckField, FieldGroup, TextField, NumberField, ParameterLine, PercentField, PlanChips, KnobStrip, ChangeChart, RangeField, RankBadge, Section, SegmentedControl, SelectField, Sentence, ShareRings, SourceLine, Stat, StatRow, StatTile, StepButtons, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth } from "./index";
+import { useChartPick, pickDim, Button, Callout, Card, ChartLegend, CostStack, LabelFilter, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, CompareTable, TableCols, CoverageFold, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, Disclosure, FieldState, FoldGroup, GainBars, GapNote, HeadlineFigure, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, CheckField, FieldGroup, TextField, NumberField, ParameterLine, PercentField, PlanChips, KnobStrip, ChangeChart, RangeField, RankBadge, Section, SegmentedControl, SelectField, Sentence, ShareRings, SourceLine, Stat, StatRow, StatTile, StepButtons, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth } from "./index";
 
 const g = copy.gallery;
 
@@ -694,6 +694,9 @@ function ChartParts({ today }: { today: string }) {
           ]}
         />
       </State>
+      <State label="ChartLegend with pick: a mouse previews a series, a click or a tap keeps it" wide>
+        <LegendPickDemo />
+      </State>
       <State label="ChartReadout" wide>
         <ChartReadout
           title={`${g.sample.yearWord} 10`}
@@ -834,7 +837,7 @@ function Lists({ today }: { today: string }) {
       </Demo>
       <Demo name="PairBars" use={g.uses.PairBars}>
         <State label="two series each year, from zero, a figure on each bar" wide>
-          <PairBars label={p.figure} tickStep={20} format={(v) => `${v > 0 ? "+" : v < 0 ? "−" : ""}${Math.abs(v).toFixed(Number.isInteger(v) ? 0 : 1)}`} fillA="fill-chart-kind-unhedged" fillB="fill-chart-kind-hedged" items={[{ year: 2022, a: -7.8, b: -21.8 }, { year: 2023, a: 30.1, b: 23.6 }, { year: 2024, a: 24.8, b: 21.9 }, { year: 2025, a: 2.4, b: 15.3 }]} />
+          <PairBars label={p.figure} tickStep={20} format={(v) => `${v > 0 ? "+" : v < 0 ? "−" : ""}${Math.abs(v).toFixed(Number.isInteger(v) ? 0 : 1)}`} fillA="fill-chart-kind-unhedged" fillB="fill-chart-kind-hedged" nameA={p.a} nameB={p.b} items={[{ year: 2022, a: -7.8, b: -21.8 }, { year: 2023, a: 30.1, b: 23.6 }, { year: 2024, a: 24.8, b: 21.9 }, { year: 2025, a: 2.4, b: 15.3 }]} />
         </State>
       </Demo>
       <Demo name="FixedTable" use={g.uses.FixedTable}>
@@ -842,11 +845,16 @@ function Lists({ today }: { today: string }) {
           <FixedTable rowHead={p.a} columns={[{ id: "a", head: p.b }, { id: "b", head: p.c, hideOnPhone: true }, { id: "c", head: p.figure }]} rows={[{ key: "1", head: "2022", cells: ["+13.4%", "−18.5%", "−21.8%"] }, { key: "2", head: "2025", cells: ["−12.5%", "+17.4%", "+15.3%"] }, { key: "3", head: p.a, cells: ["+2.7%", "+49.3%", "+35.9%"], strong: true }]} />
         </State>
       </Demo>
+      <Demo name="useYearZoom, ZoomBar, ZoomBrush, ChartTip" use={g.uses.YearZoom}>
+        <State label="a longer range: pointing at or tapping a year reads it; on a computer a drag zooms, ctrl with the wheel too, and a double click returns" wide>
+          <YearBars label={p.figure} tickStep={10} format={(v) => `${v > 0 ? "+" : v < 0 ? "−" : ""}${Math.abs(v).toFixed(0)}`} items={Array.from({ length: 16 }, (_, n) => ({ year: 2010 + n, value: ((n * 7) % 23) - 11 }))} />
+        </State>
+      </Demo>
       <Demo name="YearBars" use={g.uses.YearBars}>
         <State label="the dollar against the shekel each year, from zero; bright years set apart in the second" wide>
           <YearBars label={p.figure} tickStep={10} format={(v) => `${v > 0 ? "+" : v < 0 ? "−" : ""}${Math.abs(v).toFixed(Number.isInteger(v) ? 0 : 1)}`} items={[[2021, -3.4], [2022, 13.4], [2023, 2.8], [2024, 0.8], [2025, -12.5]].map(([year, value]) => ({ year: year!, value: value! }))} />
         </State>
-      </Demo>
+                </Demo>
       <Demo name="PickList (phone)" use={g.uses.PickList}>
         <State label="phoneColumns: the figure on a second line below md; phoneLimit 1: on a phone the rows after the first fold behind a button (the chosen row stays)" wide>
           <PickList
@@ -910,6 +918,26 @@ export function KitGallery({ today }: { today: string }) {
         <ChartParts today={today} />
         <Rings />
         <Lists today={today} />
+      </div>
+    </div>
+  );
+}
+
+function LegendPickDemo() {
+  const pick = useChartPick();
+  const dim = (id: string) => pickDim(pick.active, id);
+  return (
+    <div className="flex flex-col gap-2">
+      <ChartLegend
+        pick={pick}
+        items={[
+          { id: "a", swatch: <Swatch shape="box" className="bg-chart-value" />, label: <bdi>{g.sample.seriesA}</bdi> },
+          { id: "b", swatch: <Swatch shape="box" className="bg-chart-fee" />, label: <bdi>{g.sample.fee}</bdi> },
+        ]}
+      />
+      <div className="flex h-7 gap-px">
+        <span className={cx("flex-[2] rounded-s-sm bg-chart-value", dim("a"))} />
+        <span className={cx("flex-1 rounded-e-sm bg-chart-fee", dim("b"))} />
       </div>
     </div>
   );

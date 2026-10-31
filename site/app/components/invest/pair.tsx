@@ -15,7 +15,7 @@ import { computed, ownBy, type SiteValue } from "../../lib/value";
 import { fmt } from "../../lib/format";
 import { IconLock } from "../icons";
 import { Num } from "../provenance";
-import { Button, Card, ChartLegend, CostStack, LabelChip, LabelFilter, LabelRow, PickList, ProductIdLink, Sentence, Swatch, Tag, cx, useHeldHeight, type CostPart, type PickRow } from "../kit";
+import { Button, Card, ChartLegend, CostStack, LabelChip, LabelFilter, LabelRow, PickList, ProductIdLink, Sentence, Swatch, Tag, cx, useChartPick, type ChartPick, useHeldHeight, type CostPart, type PickRow } from "../kit";
 import { optionClass, OptionTag, reasonText } from "./parts";
 import { ProviderLink, providerName } from "./sections";
 import { Fees } from "./funds";
@@ -105,9 +105,9 @@ export const isoPct = (x: number, digits = 0) => `\u2066${signedPct(x, digits)}\
 function partsOf(pc: PairCosts): CostPart[] {
   const n = (v: SiteValue) => (typeof v.value === "number" ? v.value : 0);
   const whole = (x: number) => Math.round(x).toLocaleString("he-IL");
-  const account = pc.account.map((l) => ({ id: l.line, value: n(l.cost), className: lineClass[lineOf(l.line)] ?? "bg-chart-cost-other", inside: whole(n(l.cost)) }));
+  const account = pc.account.map((l) => ({ id: l.line, legendId: lineOf(l.line), name: c.pair.lines[lineOf(l.line)] ?? c.pair.lines.other, value: n(l.cost), className: lineClass[lineOf(l.line)] ?? "bg-chart-cost-other", inside: whole(n(l.cost)) }));
   // the account's remainder no single line explains is part of what it takes, so the bar holds the whole cost (F-91)
-  return [...account, { id: "remainder", value: pc.interaction, className: "bg-chart-cost-other", inside: whole(pc.interaction) }, { id: "fund", value: n(pc.fund), className: "bg-chart-cost-fund", inside: whole(n(pc.fund)) }, { id: "tax", value: n(pc.tax), className: "bg-chart-tax", inside: whole(n(pc.tax)) }];
+  return [...account, { id: "remainder", name: c.pair.remainder, value: pc.interaction, className: "bg-chart-cost-other", inside: whole(pc.interaction) }, { id: "fund", name: c.pair.fundLine, value: n(pc.fund), className: "bg-chart-cost-fund", inside: whole(n(pc.fund)) }, { id: "tax", name: c.pair.taxLine, value: n(pc.tax), className: "bg-chart-tax", inside: whole(n(pc.tax)) }];
 }
 /** Whole shekels that add up to `target` (by default the rounded sum; largest remainder): a sentence of parts never disagrees with its total. */
 export function wholeParts(xs: number[], target = Math.round(xs.reduce((a, x) => a + x, 0))): number[] {
@@ -120,10 +120,11 @@ export function wholeParts(xs: number[], target = Math.round(xs.reduce((a, x) =>
 }
 const totalOf = (parts: CostPart[]) => parts.reduce((a, p) => a + p.value, 0);
 
-function CostLegend({ lines }: { lines: string[] }) {
+function CostLegend({ lines, pick }: { lines: string[]; pick: ChartPick<string> }) {
   const groupHead = (text: string) => ({ id: `g-${text}`, label: <span className="text-foreground font-medium">{text}</span> });
   return (
     <ChartLegend
+      pick={pick}
       items={[
         groupHead(c.pair.who.account),
         ...lines.map((l) => ({ id: l, swatch: <Swatch shape="box" className={lineClass[l] ?? "bg-chart-cost-other"} />, label: c.pair.lines[l] ?? c.pair.lines.other })),
@@ -137,7 +138,7 @@ function CostLegend({ lines }: { lines: string[] }) {
   );
 }
 
-function CostBar({ who, sub, pc, scale, you, entered, today }: { who: string; sub: string; pc: PairCosts; scale: number; you?: boolean; /** The person typed this account (D44). */ entered?: boolean; today: string }) {
+function CostBar({ who, sub, pc, scale, you, entered, today, highlight }: { who: string; sub: string; pc: PairCosts; scale: number; highlight: string | null; you?: boolean; /** The person typed this account (D44). */ entered?: boolean; today: string }) {
   const parts = partsOf(pc);
   // shown as the rounded base less the rounded value left: two bars then differ by exactly what the two "left" figures differ by
   const total = Math.round(pc.base) - Math.round(pc.left.value as number);
@@ -153,7 +154,7 @@ function CostBar({ who, sub, pc, scale, you, entered, today }: { who: string; su
         </span>
       </span>
       <div className="min-w-0 max-md:col-span-2 max-md:row-start-2">
-        <CostStack parts={parts} scale={scale} label={`${who}: ${fmt.nisWhole(total)}`} />
+        <CostStack parts={parts} scale={scale} highlight={highlight} label={`${who}: ${fmt.nisWhole(total)}`} />
       </div>
       <span className="text-end font-semibold">
         <Num value={nis(total, "F-91", who, today, { [c.pair.input(who, c.pair.colLeft)]: pc.left })} />
@@ -174,6 +175,7 @@ function runnerUp(view: InvestView, best: Pick): Pick | null {
 
 export function PairResult({ view, bundle, plan, settled, pick, onPick }: { view: InvestView; bundle: WorkbenchBundle; plan: WorkbenchInputs; settled?: WorkbenchInputs; pick: Pick; onPick: (p: Pick) => void }) {
   const best = bestFor(view, pick);
+  const legendPick = useChartPick();
   const onBest = !!best && best.house === pick.house && best.fund === pick.fund;
   // the block keeps one shape whichever pair is picked (founder, 2026-10-27: "the page is still jumping when changing from the winning
   // combination"): the person's pair beside the cheapest, or, on the cheapest, beside the next one
@@ -266,9 +268,9 @@ export function PairResult({ view, bundle, plan, settled, pick, onPick }: { view
       </div>
       <div className="flex flex-col gap-2">
         <h3 className="font-semibold">{c.pair.costTitleBoth(years)}</h3>
-        <CostBar who={nameOf(pick)} sub={c.pair.yours} pc={pc} scale={scale} you entered={providerName(view, pick.house)?.custom} today={bundle.today} />
-        {pcOther && other && <CostBar who={nameOf(other)} sub={onBest ? c.pair.next : c.pair.cheapest} pc={pcOther} scale={scale} entered={providerName(view, other.house)?.custom} today={bundle.today} />}
-        <CostLegend lines={lines} />
+        <CostBar who={nameOf(pick)} sub={c.pair.yours} pc={pc} scale={scale} you entered={providerName(view, pick.house)?.custom} today={bundle.today} highlight={legendPick.active} />
+        {pcOther && other && <CostBar highlight={legendPick.active} who={nameOf(other)} sub={onBest ? c.pair.next : c.pair.cheapest} pc={pcOther} scale={scale} entered={providerName(view, other.house)?.custom} today={bundle.today} />}
+        <CostLegend lines={lines} pick={legendPick} />
         {pcOther && (
           // three lines on a phone: the longest case, with the tax's reason (nothing moves when a number changes)
           <div className="text-sm max-md:min-h-[3lh]">
@@ -306,6 +308,7 @@ function GroupLine({ id, snapshots }: { id: string; snapshots: WorkbenchBundle["
 }
 
 export function AccountColumn({ view, bundle, years, pick, onPick }: { view: InvestView; bundle: WorkbenchBundle; years: number; pick: Pick; onPick: (p: Pick) => void }) {
+  const legendPick = useChartPick();
   // a row added or removed starts the held height over, so a removed row leaves no hole (D44)
   const held = useHeldHeight<HTMLDivElement>(`${view.index.id}:${view.providers.length}`);
   const fund = allFunds(view).find((f) => f.rec.id === pick.fund);
@@ -325,7 +328,7 @@ export function AccountColumn({ view, bundle, years, pick, onPick }: { view: Inv
   const snapshot = bundle.snapshots.find((s) => s.id === pick.house);
   const at = fund.byHouse[pick.house];
   const pickRows: PickRow[] = ok.map((r, i) => {
-    const parts: CostPart[] = [...r.at.lines.map((l) => ({ id: l.line, value: l.cost, className: lineClass[lineOf(l.line)] ?? "bg-chart-cost-other" })), { id: "remainder", value: r.at.interaction, className: "bg-chart-cost-other" }];
+    const parts: CostPart[] = [...r.at.lines.map((l) => ({ id: l.line, legendId: lineOf(l.line), name: c.pair.lines[lineOf(l.line)] ?? c.pair.lines.other, value: l.cost, className: lineClass[lineOf(l.line)] ?? "bg-chart-cost-other" })), { id: "remainder", name: c.pair.remainder, value: r.at.interaction, className: "bg-chart-cost-other" }];
     const isYours = r.p.id === view.yourBroker;
     // shown on the row whether or not it is picked, so a pick never adds or removes a line (founder, 2026-10-27)
     const isBest = best?.house === r.p.id && best.fund === pick.fund;
@@ -346,7 +349,7 @@ export function AccountColumn({ view, bundle, years, pick, onPick }: { view: Inv
             </span>
           </span>
           <span className="flex items-center gap-2 min-w-0 max-md:row-start-2 max-md:col-start-3 max-md:col-span-2">
-            <CostStack size="sm" parts={parts} scale={scale} label={`${r.p.short}: ${fmt.nisWhole(r.at.accountCost)}`} />
+            <CostStack size="sm" parts={parts} scale={scale} highlight={legendPick.active} label={`${r.p.short}: ${fmt.nisWhole(r.at.accountCost)}`} />
             <span className="text-xs text-muted-foreground whitespace-nowrap">
               <Num value={nis(r.at.accountCost, "F-63", `${r.p.short}: ${c.pair.colChargesShort}`, bundle.today)} />
             </span>
@@ -456,6 +459,7 @@ export function AccountColumn({ view, bundle, years, pick, onPick }: { view: Inv
       <div className="px-5 py-3 flex flex-col gap-3">
         <AddEntryButton kind="broker" />
         <ChartLegend
+          pick={legendPick}
           items={[
             ...lines.map((l) => ({ id: l, swatch: <Swatch shape="box" className={lineClass[l] ?? "bg-chart-cost-other"} />, label: c.pair.lines[l] ?? c.pair.lines.other })),
             { id: "remainder", swatch: <Swatch shape="box" className="bg-chart-cost-other" />, label: c.pair.remainder },

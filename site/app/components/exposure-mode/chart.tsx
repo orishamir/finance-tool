@@ -7,7 +7,7 @@ import type { SeriesLine } from "../../lib/compare";
 import { defaultSelection, seriesFor, type ExposureResultView } from "../../lib/exposure-mode";
 import { ChartLegend, ChartReadout, ChartTable, ComparisonChart } from "../compare/chart";
 import type { ResultCtx } from "../compare/ctx";
-import { cx, SegmentedControl } from "../kit";
+import { cx, SegmentedControl, useChartPick } from "../kit";
 import { IconPencil } from "../icons";
 import { Tpl } from "./tpl";
 import type { ExpCtx, Mode } from "./ctx";
@@ -29,6 +29,7 @@ export function ExposureChartCard({ ctx, view, mode, onMode }: { ctx: ExpCtx; vi
   const defaults = useMemo(() => defaultSelection(view), [view]);
   const [picked, setPicked] = useState<string[] | null>(null);
   const [hover, setHover] = useState<number | null>(null);
+  const legendPick = useChartPick();
   // a selection survives a change of inputs while its exposures are still ranked; otherwise the default returns
   const rankedIds = new Set(view.ranked.map((r) => r.id));
   const sel = picked && picked.every((id) => rankedIds.has(id)) && picked.length > 0 ? picked : defaults;
@@ -55,8 +56,8 @@ export function ExposureChartCard({ ctx, view, mode, onMode }: { ctx: ExpCtx; vi
         {hidden > 0 && <span className="text-xs text-muted-foreground"><Tpl t={r5.exposure.chart.more} vars={{ n: hidden }} /></span>}
       </div>
       <p className="text-xs text-muted-foreground -mt-2">{r5.exposure.chart.limit}</p>
-      <ChartLegend lines={drawn} />
-      <ComparisonChart lines={drawn} mode={mode} horizon={g.horizonYears} ctx={fake} hover={hover} onHover={setHover} />
+      <ChartLegend lines={drawn} pick={legendPick} />
+      <ComparisonChart lines={drawn} mode={mode} horizon={g.horizonYears} ctx={fake} hover={hover} onHover={setHover} highlight={legendPick.active} />
       <p className="text-xs text-entered">{r5.exposure.chart.caption}</p>
       <ChartReadout lines={drawn} mode={mode} year={hover ?? g.horizonYears} ctx={fake} />
       <ChartTable lines={tableLines} mode={mode} ctx={fake} />
