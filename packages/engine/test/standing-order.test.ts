@@ -42,10 +42,19 @@ describe("which tariff line is the standing-order price (F-12)", () => {
   it("the same fund through a branch gets the branch's standing line", () => {
     expect(read("massad", "mutual_fund_units", "branch").buyStanding).toMatchObject({ rate: 0.0064, min: 7, max: 7_000 });
   });
-  it("an ETF has no standing-order price: the printed line names tracking funds", () => {
-    expect(read("massad", "etf_units", "direct").buyStanding).toBeUndefined();
-    expect(read("fibi", "etf_units", "direct").buyStanding).toBeUndefined();
-    expect(read("leumi", "etf_units", "direct").buyStanding).toBeUndefined();
+  it("an Israeli ETF gets the same line: each tariff names a tracking fund as the law defines it, and the law makes an ETF one (MF-58)", () => {
+    expect(read("massad", "etf_units", "direct").buyStanding).toMatchObject({ rate: 0.004, min: 7, max: 6_300, cap: 0.25 });
+    expect(read("fibi", "etf_units", "direct").buyStanding).toMatchObject({ rate: 0.003, min: 7, max: 6_900, cap: 0.3 });
+    expect(read("leumi", "etf_units", "direct").buyStanding).toMatchObject({ min: 5, max: 6_300 });
+    expect(read("leumi", "etf_units", "direct").buyStanding?.rate).toBeCloseTo(0.00225, 10);
+    expect(read("massad", "etf_units", "direct").buy?.min).toBe(35);
+  });
+  it("a foreign fund listed on TASE keeps the regular exchange-traded line and gets no standing-order price: no tariff names it (MF-58)", () => {
+    for (const id of ["massad", "fibi", "leumi"]) {
+      const t = read(id, "tase_foreign_fund_units", "direct");
+      expect(t.buyStanding, id).toBeUndefined();
+      expect(t.buy?.min, id).toBe(read(id, "etf_units", "direct").buy?.min);
+    }
   });
   it("Leumi's line prints no channel, so it holds on both", () => {
     for (const channel of ["direct", "branch"]) {

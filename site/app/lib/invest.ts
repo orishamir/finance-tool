@@ -17,7 +17,7 @@ export type OptionId = "il-tracking" | "il-etf" | "tase-foreign" | "abroad";
 export const OPTION_IDS: readonly OptionId[] = ["il-tracking", "il-etf", "tase-foreign", "abroad"];
 
 /** The tariff class each option is priced in (spec §2); a fund is priced in its own class (`instrumentClassOf`). */
-export const OPTION_CLASS: Record<OptionId, string> = { "il-tracking": "mutual_fund_units", "il-etf": "etf_units", "tase-foreign": "etf_units", abroad: "foreign_securities" };
+export const OPTION_CLASS: Record<OptionId, string> = { "il-tracking": "mutual_fund_units", "il-etf": "etf_units", "tase-foreign": "tase_foreign_fund_units", abroad: "foreign_securities" };
 /** The classes a snapshot's `availability` entry may name for the option. */
 const AVAILABILITY_CLASSES: Record<OptionId, string[]> = { "il-tracking": ["mutual_fund_units"], "il-etf": ["etf_units"], "tase-foreign": ["etf_units", "tase_foreign_fund_units"], abroad: ["foreign_securities"] };
 

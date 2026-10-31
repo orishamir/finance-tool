@@ -7,6 +7,7 @@ import {
   coverageLine,
   cumulativeProviderFees,
   fundOf,
+  lineClasses,
   providerWorkbench,
   RecordInputError,
   type ComparedProvider,
@@ -201,11 +202,11 @@ export interface SubjectFund {
   record: FundRecord;
 }
 
-/** The tariff class a fund falls under (`applies_to` of a snapshot line). A TASE-listed foreign fund is traded like an ETF on the exchange. */
+/** The tariff class a fund falls under (`applies_to` of a snapshot line). A TASE-listed foreign fund is its own class, read on the exchange-traded lines (`lineClasses`). */
 export function instrumentClassOf(rec: FundRecord, exposure: ExposureRecord | undefined): string {
   if (exposure?.cash_like) return "money_market_units";
   const israeli = rec.domicile === "IL";
-  if (!israeli) return rec.trading_currency_on_tase ? "etf_units" : "foreign_securities";
+  if (!israeli) return rec.trading_currency_on_tase ? "tase_foreign_fund_units" : "foreign_securities";
   // an open tracking fund's legal form says "not traded on the exchange, ETF-04": the rule id must not read as an ETF (2026-10-25)
   const lf = rec.legal_form;
   return /קרן סל/.test(lf) || (!/קרן מחקה/.test(lf) && /\bETF\b/i.test(lf)) ? "etf_units" : "mutual_fund_units";
@@ -625,7 +626,7 @@ export function buildProviderWorkbench(a: BuildArgs): ProviderResult {
     });
 
   const enteredLines = (offer: EnteredOffer, s: FeesSnapshot): EnteredLine[] => {
-    const listRate = (base: string) => s.lines.find((l) => l.base === base && l.level === "list" && typeof l.rate.value === "number" && l.applies_to.some((x) => x === subject.instrumentClass || x === "all" || x === wrapperId) && (l.channel === null || l.channel === channelId))?.rate.value as number | undefined;
+    const listRate = (base: string) => s.lines.find((l) => l.base === base && l.level === "list" && typeof l.rate.value === "number" && l.applies_to.some((x) => lineClasses(subject.instrumentClass).includes(x) || x === "all" || x === wrapperId) && (l.channel === null || l.channel === channelId))?.rate.value as number | undefined;
     const out: EnteredLine[] = [];
     const o = offer.lines;
     if (o.trade) out.push({ base: "trade", rate: o.trade.rate, min: o.trade.min ?? null, max: o.trade.max ?? null, aboveList: above(o.trade.rate, listRate("trade")) });
@@ -639,7 +640,7 @@ export function buildProviderWorkbench(a: BuildArgs): ProviderResult {
     const out: Partial<Record<FeeType, ListLine>> = {};
     const bases: [FeeType, string][] = [["trade", "trade"], ["custody", "custody"], ["fx", "fx"], ["fixed", "fixed_period"]];
     for (const [type, base] of bases) {
-      const found = s.lines.filter((l) => l.base === base && l.level === "list" && l.applies_to.some((x) => x === subject.instrumentClass || x === "all" || x === wrapperId) && !(l.excludes ?? []).includes(subject.instrumentClass) && (l.channel === null || l.channel === channelId));
+      const found = s.lines.filter((l) => l.base === base && l.level === "list" && l.applies_to.some((x) => lineClasses(subject.instrumentClass).includes(x) || x === "all" || x === wrapperId) && !(l.excludes ?? []).includes(subject.instrumentClass) && (l.channel === null || l.channel === channelId));
       if (found.length !== 1) continue;
       const l = found[0]!;
       out[type] = { rate: withStale(l.rate, stale, s.provider.name_he), min: l.min && l.min.value !== null ? withStale(l.min, stale, s.provider.name_he) : null, max: l.max && l.max.value !== null ? withStale(l.max, stale, s.provider.name_he) : null, period: l.period };

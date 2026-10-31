@@ -1255,7 +1255,7 @@ export const ownTermsCopy = {
     pick: "לבחור", // scenario fix 2026-10-24
     standingTag: "מחיר להוראת קבע", // founder 2026-10-31
     standingNote: (n: number, total: number) =>
-      `קנייה חודשית מחושבת כהוראת קבע: ${n === 1 ? `אחד מתוך ${total} הבנקים ובתי ההשקעות שברשימה מפרסם` : `${n} מתוך ${total} הבנקים ובתי ההשקעות שברשימה מפרסמים`} לה מחיר נמוך יותר, והוא שנכלל בחישוב. סכום חד־פעמי, מכירה וקנייה של קרן סל מחושבים במחיר הרגיל.`, // founder 2026-10-31
+      `קנייה חודשית מחושבת כהוראת קבע: ${n === 1 ? `אחד מתוך ${total} הבנקים ובתי ההשקעות שברשימה מפרסם` : `${n} מתוך ${total} הבנקים ובתי ההשקעות שברשימה מפרסמים`} לה מחיר נמוך יותר, והוא שנכלל בחישוב. סכום חד־פעמי ומכירה מחושבים במחיר הרגיל.`, // founder 2026-10-31
     channel: { direct: "ערוץ ישיר", branch: "סניף" } as Record<string, string>, // scenario fix 2026-10-24
     reset: "לחזור לספק שהאתר בחר", // scenario fix 2026-10-24
     siteChoice: "בחירת האתר", // scenario fix 2026-10-24
@@ -2065,6 +2065,7 @@ export const r4catalogue = {
   regulators: { BoI: "בנק ישראל", ISA: "רשות ניירות ערך", CMA: "רשות שוק ההון, ביטוח וחיסכון" },
   instrumentClasses: {
     etf_units: "קרן סל",
+    tase_foreign_fund_units: "קרן חוץ הנסחרת בבורסה",
     tase_shares_bonds: "מניות ואיגרות חוב",
     mutual_fund_units: "יחידות של קרן נאמנות",
     foreign_securities: "ניירות ערך זרים",

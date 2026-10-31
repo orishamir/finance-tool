@@ -691,7 +691,8 @@
       "id": "fibi-standing-order-tase-direct",
       "base": "trade",
       "applies_to": [
-        "mutual_fund_units"
+        "mutual_fund_units",
+        "etf_units"
       ],
       "level": "list",
       "rate": {
@@ -713,10 +714,11 @@
         "rule_ids": [
           "BRK-16",
           "BRK-19",
-          "MF-27"
+          "MF-27",
+          "MF-58"
         ],
         "state": "sourced",
-        "notes": "The note lowers only the minimum and says 'העמלה': the regular rate and maximum of this channel stay. A tracking fund by standing order; priced on monthly purchases only (F-12)."
+        "notes": "The note lowers only the minimum and says 'העמלה': the regular rate and maximum of this channel stay. A tracking fund by standing order; priced on monthly purchases only (F-12). The tariff defines the term: p.1 note 3 'קרן מחקה, כהגדרתה בחוק השקעות משותפות בנאמנות'. The law's s.1 makes a קרן סל a קרן מחקה that is closed, so note 13 holds for an Israeli ETF too; note 14 treats a foreign fund listed on TASE apart, and note 13 does not name it (MF-58)."
       },
       "min": {
         "value": 7,
@@ -796,7 +798,10 @@
           "הוראת קבע",
           "קניה/מכירה של ניירות ערך הנסחרים בבורסה בת\"א - מניות ואג\"ח"
         ]
-      }
+      },
+      "excludes": [
+        "tase_foreign_fund_units"
+      ]
     },
     {
       "id": "fibi-standing-order-foreign-direct",
@@ -823,10 +828,11 @@
         "update_rule": "provider-set",
         "rule_ids": [
           "BRK-16",
-          "BRK-19"
+          "BRK-19",
+          "MF-58"
         ],
         "state": "sourced",
-        "notes": "The note lowers only the minimum and says 'העמלה': the regular rate and maximum of this channel stay. A ETF by standing order; priced on monthly purchases only (F-12)."
+        "notes": "The note lowers only the minimum and says 'העמלה': the regular rate and maximum of this channel stay. A ETF by standing order; priced on monthly purchases only (F-12). p.2 note 10 names an ETF, by that word, bought or sold by standing order. The only fund collected abroad is an ETF; a share or a fund of another kind is not covered by the note (MF-58)."
       },
       "min": {
         "value": 4.5,
@@ -911,7 +917,8 @@
       "id": "fibi-standing-order-tase-branch",
       "base": "trade",
       "applies_to": [
-        "mutual_fund_units"
+        "mutual_fund_units",
+        "etf_units"
       ],
       "level": "list",
       "rate": {
@@ -933,10 +940,11 @@
         "rule_ids": [
           "BRK-16",
           "BRK-19",
-          "MF-27"
+          "MF-27",
+          "MF-58"
         ],
         "state": "sourced",
-        "notes": "The note lowers only the minimum and says 'העמלה': the regular rate and maximum of this channel stay. A tracking fund by standing order; priced on monthly purchases only (F-12)."
+        "notes": "The note lowers only the minimum and says 'העמלה': the regular rate and maximum of this channel stay. A tracking fund by standing order; priced on monthly purchases only (F-12). The tariff defines the term: p.1 note 3 'קרן מחקה, כהגדרתה בחוק השקעות משותפות בנאמנות'. The law's s.1 makes a קרן סל a קרן מחקה that is closed, so note 13 holds for an Israeli ETF too; note 14 treats a foreign fund listed on TASE apart, and note 13 does not name it (MF-58)."
       },
       "min": {
         "value": 7,
@@ -1016,7 +1024,10 @@
           "הוראת קבע",
           "קנייה, מכירה, ופדיון של ניירות ערך הנסחרים בבורסה בתל אביב (למעט קרנות נאמנות, אופציות מעו\"ף וחוזים עתידיים במעו\"ף) (כולל קניה או מכירה שלא בוצעה)"
         ]
-      }
+      },
+      "excludes": [
+        "tase_foreign_fund_units"
+      ]
     },
     {
       "id": "fibi-standing-order-foreign-branch",
@@ -1043,10 +1054,11 @@
         "update_rule": "provider-set",
         "rule_ids": [
           "BRK-16",
-          "BRK-19"
+          "BRK-19",
+          "MF-58"
         ],
         "state": "sourced",
-        "notes": "The note lowers only the minimum and says 'העמלה': the regular rate and maximum of this channel stay. A ETF by standing order; priced on monthly purchases only (F-12)."
+        "notes": "The note lowers only the minimum and says 'העמלה': the regular rate and maximum of this channel stay. A ETF by standing order; priced on monthly purchases only (F-12). p.2 note 10 names an ETF, by that word, bought or sold by standing order. The only fund collected abroad is an ETF; a share or a fund of another kind is not covered by the note (MF-58)."
       },
       "min": {
         "value": 4.5,
@@ -1566,7 +1578,7 @@
         "notes": "Appendix E: '0.0875%' in the internet and mobile-app columns for conversions above $100 (clerk 0.175%); conversions up to $100: '1.5$' (clerk $3.0); automatic teller: exempt ('פטור')."
       },
       "min": {
-        "value": 5.0,
+        "value": 5,
         "unit": "usd",
         "source": {
           "url": "https://www.fibi.co.il/media/rgketaam/נספח-ה-הטבות-בערוצי-בנקאות-בתקשורת-31.pdf",

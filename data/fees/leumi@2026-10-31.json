@@ -866,7 +866,8 @@
       "id": "leumi-tracking-fund-standing-order",
       "base": "trade",
       "applies_to": [
-        "mutual_fund_units"
+        "mutual_fund_units",
+        "etf_units"
       ],
       "level": "list",
       "rate": {
@@ -887,10 +888,11 @@
         "update_rule": "provider-set",
         "rule_ids": [
           "BRK-16",
-          "MF-27"
+          "MF-27",
+          "MF-58"
         ],
         "state": "sourced",
-        "notes": "Buying only (p.30 note 10 'בגין קנית קרן מחקה'). Priced on monthly purchases; lump sums, reinvested distributions and sales pay the regular line (F-12). On any channel: the note names none."
+        "notes": "Buying only (p.30 note 10 'בגין קנית קרן מחקה'). Priced on monthly purchases; lump sums, reinvested distributions and sales pay the regular line (F-12). On any channel: the note names none. The tariff defines the term: p.34 footnote {4} 'קרן מחקה, כהגדרתה בחוק השקעות משותפות בנאמנות'. The law's s.1 makes a קרן סל a קרן מחקה that is closed, so note 10 holds for an Israeli ETF too; a foreign fund listed on TASE is a קרן חוץ and is not named (MF-58)."
       },
       "min": {
         "value": 5,
@@ -944,7 +946,10 @@
         "tariff": [
           "קנית קרן מחקה באמצעות הוראת קבע"
         ]
-      }
+      },
+      "excludes": [
+        "tase_foreign_fund_units"
+      ]
     },
     {
       "id": "leumi-distribution-fee-type-1",
