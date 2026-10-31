@@ -466,6 +466,114 @@
       }
     },
     {
+      "id": "leumi-redemption-makam",
+      "base": "trade",
+      "applies_to": [
+        "makam"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.1,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
+          "title": "תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (מעודכן לתאריך 01/10/2026), חלק 4 - ניירות ערך, (4א) שירותים נפוצים, סעיף (1), מילווה קצר מועד (עמ' 30)",
+          "publisher": "Bank Leumi le-Israel B.M.",
+          "strength": "institution",
+          "page": 30,
+          "quote": "-מילווה קצר מועד 0.100% בביצוע מינימום 20 מכסימום 2000ש"
+        },
+        "checked": "2026-10-31",
+        "effective_from": "2026-10-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-19"
+        ],
+        "state": "sourced",
+        "notes": "Section 4א(1) names redemption. The reduced price of annex ה (p.13, 0.095%) reads \"קניה, מכירה של ני\"ע\", without redemption, so a redemption stays at the section's price."
+      },
+      "min": {
+        "value": 20,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
+          "title": "תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (מעודכן לתאריך 01/10/2026), חלק 4 - ניירות ערך, (4א) שירותים נפוצים, סעיף (1), מילווה קצר מועד, מינימום (עמ' 30)",
+          "publisher": "Bank Leumi le-Israel B.M.",
+          "strength": "institution",
+          "page": 30,
+          "quote": "-מילווה קצר מועד 0.100% בביצוע מינימום 20 מכסימום 2000ש"
+        },
+        "checked": "2026-10-31",
+        "effective_from": "2026-10-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'מינימום 20 ש\"ח'."
+      },
+      "max": {
+        "value": 2000,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
+          "title": "תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (מעודכן לתאריך 01/10/2026), חלק 4 - ניירות ערך, (4א) שירותים נפוצים, סעיף (1), מילווה קצר מועד, מכסימום (עמ' 30)",
+          "publisher": "Bank Leumi le-Israel B.M.",
+          "strength": "institution",
+          "page": 30,
+          "quote": "-מילווה קצר מועד 0.100% בביצוע מינימום 20 מכסימום 2000ש"
+        },
+        "checked": "2026-10-31",
+        "effective_from": "2026-10-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'מכסימום 2000 ש\"ח'."
+      },
+      "period": null,
+      "channel": null,
+      "band": "פדיון",
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קניה, מכירה, פדיון של ני\"ע הנסחרים בבורסה בת\"א",
+          "מילווה קצר מועד"
+        ]
+      },
+      "cap": {
+        "value": 30,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
+          "title": "תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (מעודכן לתאריך 01/10/2026), חלק 4 - ניירות ערך, (4א) שירותים נפוצים, סעיף (1), מילווה קצר מועד (עמ' 30)",
+          "publisher": "Bank Leumi le-Israel B.M.",
+          "strength": "institution",
+          "page": 30,
+          "quote": "אך לא יותר מ-30% מהתשלום"
+        },
+        "checked": "2026-10-31",
+        "effective_from": "2026-10-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-19"
+        ],
+        "state": "sourced",
+        "notes": "The minimum, not the rate, is limited to this share of the payment (p.30 note 6)."
+      }
+    },
+    {
       "id": "leumi-buy-sell-foreign-branch",
       "base": "trade",
       "applies_to": [

@@ -7,7 +7,7 @@ import type { TermRow } from "../../lib/data.server";
 import type { Strength } from "../../lib/value";
 import { IconCheck, IconChevronDown, IconDrillIn, IconFile, IconLock, IconMinus } from "../icons";
 import { IdRef, RuleRef, RulesLine, StrengthLabel } from "../provenance";
-import { Card, cx, Disclosure, KeyValueList as KitKeyValueList, Section, Tag } from "../kit";
+import { Card, cx, Disclosure, KeyValueList as KitKeyValueList, Section, TableCols, Tag } from "../kit";
 
 export interface SectionDef {
   id: string;
@@ -134,6 +134,7 @@ export function FeeTable({ fees, note }: { fees: FeeRow[]; note: string }) {
       </Card>
       <Card className="hidden md:block p-0 md:p-0 overflow-hidden">
         <table className="tbl">
+          <TableCols widths={["20%", "34%", "24%", "22%"]} />
           <thead>
             <tr>
               <th scope="col">{copy.feeTable.type}</th>
@@ -412,6 +413,7 @@ export function TermTable({ terms }: { terms: TermRow[] }) {
       </dl>
       <Card className="hidden md:block p-0 md:p-0 overflow-hidden">
         <table className="tbl">
+          <TableCols widths={["22%", "54%", "24%"]} />
           <thead>
             <tr>
               <th scope="col">{copy.termTable.term}</th>

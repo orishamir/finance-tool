@@ -69,6 +69,31 @@
     "url": "https://fund-docs.vanguard.com/ie00b3xxrp09-en.pdf",
     "date": null
   },
+  "distribution": {
+    "yield": {
+      "value": 0.87,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://www.vanguard.co.uk/professional/product/etf/equity/9503/sp-500-ucits-etf-usd-distributing",
+        "title": "Vanguard S&P 500 UCITS ETF (USD) Distributing, product page, 'Distribution history': 'Historical performance 30 Sept 2026 0.87%' (library 66fb38ade7c15b4d)",
+        "publisher": "Vanguard (Vanguard Funds plc)",
+        "strength": "institution"
+      },
+      "checked": "2026-10-31",
+      "effective_from": "2026-09-30",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-28",
+        "TXF-08",
+        "TXF-28"
+      ],
+      "state": "sourced",
+      "notes": "The figure as the page prints it; its visible label is 'Historical performance', and that it is a trailing yield is inferred from two things: the page's own field name for that label (yieldHeader) and the arithmetic. The table above it lists 0.3096, 0.3236, 0.3296 and 0.2991 USD a unit (ex-dates 17 Sep 2026, 18 Jun 2026, 19 Mar 2026, 18 Dec 2025), 1.2619 USD together, which is 0.88% of the 143.65 USD net asset value at 30 Oct 2026. Not the factsheet's 'Equity yield (dividend) 1.1%', which the factsheet says 'applies to the underlying holdings of the ETF, and not the ETF itself' (library 97b49e692be6c260, p. 3). Payments a year: 'Distribution frequency Quarterly' on the same page."
+    },
+    "per_year": 4
+  },
   "snapshot": "2026-10-31",
   "replication": {
     "method": "physical",

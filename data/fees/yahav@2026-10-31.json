@@ -344,6 +344,85 @@
       }
     },
     {
+      "id": "yahav-redemption-makam",
+      "base": "trade",
+      "applies_to": [
+        "makam"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.1,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.bank-yahav.co.il/media/020jnu0x/22026_taarifon_male.xlsx",
+          "title": "בנק יהב - תעריפון יחיד / עסק קטן, מספר סידורי 2.2026 (נכון ליום: 01/10/2026), פרק: ניירות ערך, שירותים נפוצים, מלווה קצר מועד, שעור/סכום",
+          "publisher": "Bank Yahav for State Employees Ltd.",
+          "strength": "institution",
+          "quote": "קניה, מכירה ופדיון של מלווה קצר מועד (כולל בהנפקה) | 1E-3 | 15 | 2000"
+        },
+        "checked": "2026-10-31",
+        "effective_from": "2026-10-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-19"
+        ],
+        "state": "sourced",
+        "notes": "This row names redemption. The reduced row (0.09%) reads \"קניה, מכירה של מלווה קצר מועד\", without redemption, so a redemption stays at this row's price."
+      },
+      "min": {
+        "value": 15,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.bank-yahav.co.il/media/020jnu0x/22026_taarifon_male.xlsx",
+          "title": "בנק יהב - תעריפון יחיד / עסק קטן, מספר סידורי 2.2026 (נכון ליום: 01/10/2026), פרק: ניירות ערך, שירותים נפוצים, מלווה קצר מועד, מינימום",
+          "publisher": "Bank Yahav for State Employees Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-31",
+        "effective_from": "2026-10-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'15' (NIS)."
+      },
+      "max": {
+        "value": 2000,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.bank-yahav.co.il/media/020jnu0x/22026_taarifon_male.xlsx",
+          "title": "בנק יהב - תעריפון יחיד / עסק קטן, מספר סידורי 2.2026 (נכון ליום: 01/10/2026), פרק: ניירות ערך, שירותים נפוצים, מלווה קצר מועד, מקסימום",
+          "publisher": "Bank Yahav for State Employees Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-31",
+        "effective_from": "2026-10-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'2000' (NIS)."
+      },
+      "period": null,
+      "channel": null,
+      "band": "פדיון",
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קניה, מכירה ופדיון של מלווה קצר מועד (כולל בהנפקה)"
+        ]
+      }
+    },
+    {
       "id": "yahav-buy-sell-foreign",
       "base": "trade",
       "applies_to": [

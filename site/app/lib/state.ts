@@ -13,6 +13,7 @@ import type { ComparisonResult, Versions } from "@finance-tool/engine";
 import type { RunGoal } from "./compare";
 import type { Goal } from "./goal";
 import type { CustomIndex } from "./invest";
+import { validCustomBrokers, validCustomFunds, type CustomBroker, type CustomFund } from "./custom-entries";
 import { todayLocal } from "./today";
 import { entered as enteredValue } from "./value";
 import { sanitizeRawState, type Rejected } from "./import-check";
@@ -126,6 +127,9 @@ export interface StateV3 extends Omit<StateV2, "version"> {
   savedComparisons: SavedComparisonRecord[];
   /** "השקעה במדד" (D28, 2026-10-25): the indices the person added, kept on the device and in the export file; an older document has none. */
   customIndices?: CustomIndex[];
+  /** The index page's own: a broker and a fund the person typed (D44), on the device and in the export file; an older document has none. */
+  customBrokers?: CustomBroker[];
+  customFunds?: CustomFund[];
   /** The person's current broker (a fee snapshot id), optional; "החשבון שלכם" on the same page. */
   broker?: string;
 }
@@ -308,6 +312,8 @@ function normalizeState(s: Record<string, unknown>): StateV3 {
     ...(typeof s.currentId === "string" ? { currentId: s.currentId } : {}),
     ...(typeof s.bank === "string" ? { bank: s.bank } : {}),
     ...(Array.isArray(s.customIndices) && validCustomIndices(s.customIndices).length ? { customIndices: validCustomIndices(s.customIndices) } : {}),
+    ...(Array.isArray(s.customBrokers) && validCustomBrokers(s.customBrokers).length ? { customBrokers: validCustomBrokers(s.customBrokers) } : {}),
+    ...(Array.isArray(s.customFunds) && validCustomFunds(s.customFunds).length ? { customFunds: validCustomFunds(s.customFunds) } : {}),
     ...(typeof s.broker === "string" && s.broker ? { broker: s.broker } : {}),
     inputs: s.inputs as Record<string, ValueObject>,
     holdings: s.holdings as Holding[],
@@ -684,8 +690,40 @@ export function removeCustomIndex(id: string): void {
     const next = (s.customIndices ?? []).filter((x) => x.id !== id);
     const { customIndices: _drop, ...rest } = s;
     void _drop;
-    return next.length ? { ...rest, customIndices: next } : rest;
+    // a fund the person added belongs to its index and goes with it
+    return withList(next.length ? { ...rest, customIndices: next } : rest, "customFunds", (s.customFunds ?? []).filter((f) => f.indexId !== id));
   });
+}
+
+/** The state with a list of entries, the key left out when it is empty (as a document that never had any). */
+function withList<K extends "customBrokers" | "customFunds">(s: StateV3, key: K, list: NonNullable<StateV3[K]>): StateV3 {
+  const { [key]: _drop, ...rest } = s;
+  void _drop;
+  return (list.length ? { ...rest, [key]: list } : rest) as StateV3;
+}
+
+/** Adds a broker the person typed, or replaces the one with its id (D44). */
+export function saveCustomBroker(b: CustomBroker): void {
+  updateState((s) => {
+    const have = s.customBrokers ?? [];
+    return withList(s, "customBrokers", have.some((x) => x.id === b.id) ? have.map((x) => (x.id === b.id ? b : x)) : [...have, b]);
+  });
+}
+
+export function removeCustomBroker(id: string): void {
+  updateState((s) => withList(s, "customBrokers", (s.customBrokers ?? []).filter((x) => x.id !== id)));
+}
+
+/** Adds a fund the person typed, or replaces the one with its id (D44). */
+export function saveCustomFund(f: CustomFund): void {
+  updateState((s) => {
+    const have = s.customFunds ?? [];
+    return withList(s, "customFunds", have.some((x) => x.id === f.id) ? have.map((x) => (x.id === f.id ? f : x)) : [...have, f]);
+  });
+}
+
+export function removeCustomFund(id: string): void {
+  updateState((s) => withList(s, "customFunds", (s.customFunds ?? []).filter((x) => x.id !== id)));
 }
 
 /** The person's current broker for "החשבון שלכם"; null clears it. */
@@ -699,10 +737,12 @@ export function setCurrentBroker(id: string | null): void {
 
 /** One empty list for every render: a new `[]` each time made the index page price every account and fund again on any change (2026-10-28). */
 const NO_CUSTOM: CustomIndex[] = [];
+const NO_BROKERS: CustomBroker[] = [];
+const NO_FUNDS: CustomFund[] = [];
 
 export function useInvestState() {
   const snapshot = useStateStore();
-  return { ready: snapshot.ready, status: snapshot.status, customIndices: snapshot.state.customIndices ?? NO_CUSTOM, broker: snapshot.state.broker ?? null, saved: snapshot.saved, add: saveCustomIndex, rename: renameCustomIndex, remove: removeCustomIndex, setBroker: setCurrentBroker };
+  return { ready: snapshot.ready, status: snapshot.status, customIndices: snapshot.state.customIndices ?? NO_CUSTOM, customBrokers: snapshot.state.customBrokers ?? NO_BROKERS, customFunds: snapshot.state.customFunds ?? NO_FUNDS, broker: snapshot.state.broker ?? null, saved: snapshot.saved, add: saveCustomIndex, rename: renameCustomIndex, remove: removeCustomIndex, setBroker: setCurrentBroker, saveBroker: saveCustomBroker, removeBroker: removeCustomBroker, saveFund: saveCustomFund, removeFund: removeCustomFund };
 }
 
 // ---------------------------------------------------------------- saved comparisons
@@ -775,6 +815,7 @@ export function exportCounts(s: StateV3, side?: SideStores) {
     inputs: Object.keys(s.inputs).length > 0,
     comparisons: s.savedComparisons.length,
     indices: (s.customIndices ?? []).length,
+    entries: (s.customBrokers ?? []).length + (s.customFunds ?? []).length,
     offers: sc.offers,
     variants: sc.variants,
     ticks: sc.ticks,
@@ -790,7 +831,7 @@ export function currentSideStores(): SideStores {
 /** Nothing worth a file: no goal with content, no holding, no name, no guide input, no saved comparison, no side store. */
 export function isEmptyState(s: StateV3, side?: SideStores): boolean {
   const c = exportCounts(s, side);
-  return c.goals === 0 && c.holdings === 0 && c.names === 0 && !c.inputs && c.comparisons === 0 && c.indices === 0 && c.offers + c.variants + c.ticks + c.ownRates === 0;
+  return c.goals === 0 && c.holdings === 0 && c.names === 0 && !c.inputs && c.comparisons === 0 && c.indices === 0 && c.entries === 0 && c.offers + c.variants + c.ticks + c.ownRates === 0;
 }
 
 export function buildStateFile(s: StateV3, site: { version: string; data: string }, now = new Date(), side?: SideStores): StateFile {
@@ -981,12 +1022,13 @@ export function applyImport(current: StateV3, incoming: StateV3, mode: "add" | "
     uncatalogued: names,
     ...(current.bank ? { bank: current.bank } : incoming.bank ? { bank: incoming.bank } : {}),
     ...(() => {
-      // an index the device already has (by id) stays as it is; the file's others are added; the device's own broker stays
-      const have = current.customIndices ?? [];
-      const more = (incoming.customIndices ?? []).filter((c) => !have.some((x) => x.id === c.id));
-      const all = [...have, ...more];
+      // an index, or a broker or fund the person typed, that the device already has (by id) stays as it is; the file's others are added; the device's own broker stays
+      const merged = <T extends { id: string }>(have: T[] = [], file: T[] = []) => [...have, ...file.filter((c) => !have.some((x) => x.id === c.id))];
+      const all = merged(current.customIndices, incoming.customIndices);
+      const brokers = merged(current.customBrokers, incoming.customBrokers);
+      const funds = merged(current.customFunds, incoming.customFunds);
       const broker = current.broker ?? incoming.broker;
-      return { ...(all.length ? { customIndices: all } : {}), ...(broker ? { broker } : {}) };
+      return { ...(all.length ? { customIndices: all } : {}), ...(brokers.length ? { customBrokers: brokers } : {}), ...(funds.length ? { customFunds: funds } : {}), ...(broker ? { broker } : {}) };
     })(),
     imports: [...current.imports, { at: today, mode, goals: added.goals, holdings: added.holdings, names: added.names, skipped }],
   };

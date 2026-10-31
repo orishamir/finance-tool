@@ -225,6 +225,7 @@ Scope: in: income tax at deposit, during, on switches and transfers, on lump-sum
 - Figures: 200,000 NIS in total, CPI-indexed; age 60; 12 months; three years.
 - Source: [הצוות לצמצום הפערים במכשירי השקעה בחיסכון לטווח קצר ובינוני, דו"ח מסכם, יולי 2026](https://www.capitax.co.il/Attachments/arbitrage_committee-07-2026.pdf#page=14), pages as above · checked 2026-10-31 · primary text on a secondary host (Alex Shapira & Co.); the team's own page, https://www.gov.il/he/Departments/PublicBodies/arbitrage_committee, is on the second gov.il list. [דו"ח ביניים להערות הציבור, 13.2.2025](https://www.gov.il/BlobFolder/news/press_13022025/he/press_13022025_file.pdf) · checked 2026-10-31 · primary, filed, not read past its opening. [Private bill פ/3539/25](https://fs.knesset.gov.il/25/law/25_lst_2708087.pdf) · checked 2026-10-22 · secondary (bill)
 - Dimensions: `age-or-use-exemption`, `switching-tax-event`, `deposit-ceiling`
+- Scope: general
 - Likely to change: yes. Re-check at the next budget and arrangements law.
 
 ### TXK-22 Child savings: the provident track is a kupat gemel lehashkaa

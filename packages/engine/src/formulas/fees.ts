@@ -16,6 +16,8 @@ export interface Commission {
   perShare?: number;
   /** The most the commission can be, as a fraction of the trade value; it wins over the minimum (E3, 2026-10-25). */
   cap?: number;
+  /** F-13 (2026-10-31): a conversion priced in shekels per unit of the currency converted (Psagot's 1.5 agorot a dollar). */
+  perCurrencyUnit?: number;
 }
 
 /** Converts a tariff line's fixed amounts to NIS: the rate of the instrument's currency at the trade. */
@@ -41,6 +43,7 @@ export function tradeCommission(line: Commission | undefined, amount: number, te
     if (!terms.sharePrice) throw new RangeError("a per-share commission needs the share price (F-12)");
     fee += line.perShare * (amount / terms.fxRate / terms.sharePrice);
   }
+  if (line.perCurrencyUnit) fee += line.perCurrencyUnit * (amount / terms.fxRate);
   if (line.max !== undefined) fee = Math.min(fee, line.max * k);
   if (line.min !== undefined) fee = Math.max(fee, line.min * k);
   if (line.perShareAbove && terms.sharePrice) {

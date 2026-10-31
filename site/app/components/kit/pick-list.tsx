@@ -13,6 +13,8 @@ export interface PickRow {
   muted?: boolean;
   /** A group's heading, shown above this row (2026-10-29, the index page's two kinds of fund); not a row, never chosen. */
   heading?: ReactNode;
+  /** Never folded on a phone (the person's own row, D44). */
+  keep?: boolean;
 }
 
 /**
@@ -65,7 +67,7 @@ export function PickList({ label, columns, phoneColumns, head, rows, phoneLimit,
   const gridClass = "grid-cols-[1.25rem_var(--pick-cols-phone)] md:grid-cols-[1.25rem_var(--pick-cols)]";
   const folds = !open && phoneLimit !== undefined && rows.length > phoneLimit + 1;
   // a row that opens a group stays, so a group's heading is never hidden behind the fold
-  const folded = (i: number, r: PickRow) => folds && i >= phoneLimit! && !r.selected && !r.heading;
+  const folded = (i: number, r: PickRow) => folds && i >= phoneLimit! && !r.selected && !r.heading && !r.keep;
   const hidden = rows.filter((r, i) => folded(i, r)).length;
   return (
     <div ref={root} role="radiogroup" aria-label={label} className="flex flex-col [overflow-anchor:none]">

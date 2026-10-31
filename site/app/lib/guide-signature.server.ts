@@ -4,9 +4,10 @@
 // figure, or a P-05 parameter, and a missing one becomes a `gap` (shown as "עוד לא חושב" with its reason).
 import type { DepositTerms, FundRecord, ParameterRecord, RuleRecord, ProductRecord } from "@finance-tool/schema";
 import { loadParameters, loadRules, loadProducts, today } from "./data.server";
+import { guideSignature } from "../copy";
 import type { Bundle } from "./engine";
 import { p05Value } from "./engine";
-import { accountBanks, buildInstrumentBundle, commonAccountRate, currentAccountRecords, depositRange, familyOf, oneYearDepositRecords, publishedDeposit, type InstrumentFamily } from "./guide-signature-bundle.server";
+import { accountBanks, commonAccountRate, currentAccountRecords, depositBundleOf, depositEnds, depositExample, depositRange, familyOf, guideInstrumentBundle, oneYearDepositRecords, publishedDeposit, type InstrumentFamily } from "./guide-signature-bundle.server";
 import type { SignatureData } from "./guide-signature";
 import { loadDepositTerms, loadFunds } from "./instruments.server";
 import { buildPension, buildProvident, buildStudyFund } from "./guide-signature-g2.server";
@@ -50,7 +51,7 @@ function bundleOf(c: Ctx, wrapperId: string): Bundle | null {
   const record = c.wrappers.find((w) => w.id === wrapperId);
   const family = familyOf(wrapperId as never);
   if (!record || !family || family === "provident") return null;
-  return buildInstrumentBundle(record, family as InstrumentFamily, c.p05, c.allRules, c.t).bundle;
+  return guideInstrumentBundle(record, family as InstrumentFamily, c.p05, c.allRules, c.t).bundle;
 }
 
 const figureOf = (c: Ctx, rule: string, name: string): SiteValue | undefined => {
@@ -88,8 +89,8 @@ function addBundle(d: SignatureData, c: Ctx, wrapperId: string): Bundle | null {
   return b;
 }
 
-function depositFacts(d: SignatureData, c: Ctx, wrapperId: string, prefix = ""): { rate?: SiteValue; rec?: DepositTerms } {
-  const pub = publishedDeposit(wrapperId, c.p05.instruments?.[wrapperId], c.deposits);
+function depositFacts(d: SignatureData, c: Ctx, wrapperId: string, spec: { deposit_terms?: string } | undefined = c.p05.instruments?.[wrapperId]): { rate?: SiteValue; rec?: DepositTerms } {
+  const pub = publishedDeposit(wrapperId, spec, c.deposits);
   if (!pub) {
     d.gaps.push(`deposit:${wrapperId}`);
     return {};
@@ -98,24 +99,35 @@ function depositFacts(d: SignatureData, c: Ctx, wrapperId: string, prefix = ""):
   const bank = shortName(pub.record.bank, pub.record.bank);
   const own = (v: SiteValue): SiteValue => ownBy(v, bank);
   const rate = own(pub.rate);
-  d.facts[`${prefix}rate`] = rate;
+  d.facts.rate = rate;
   const term = pub.record.term_months;
-  if (typeof term.value === "number") d.facts[`${prefix}term`] = own({ ...term } as SiteValue);
-  d.facts[`${prefix}break`] = own(breakFact(pub.record));
+  if (typeof term.value === "number") d.facts.term = own({ ...term } as SiteValue);
+  d.facts.break = own(breakFact(pub.record));
   if (pub.record.amount_range) {
-    d.facts[`${prefix}amountMin`] = own({ ...pub.record.amount_range.min } as SiteValue);
-    if (pub.record.amount_range.max) d.facts[`${prefix}amountMax`] = own({ ...pub.record.amount_range.max } as SiteValue);
+    d.facts.amountMin = own({ ...pub.record.amount_range.min } as SiteValue);
+    if (pub.record.amount_range.max) d.facts.amountMax = own({ ...pub.record.amount_range.max } as SiteValue);
   }
-  if (pub.ceiling) d.facts[`${prefix}ceiling`] = own(pub.ceiling);
+  if (pub.ceiling) d.facts.ceiling = own(pub.ceiling);
   return { rate, rec: pub.record };
 }
 
 /** The banks' one-year fixed-rate deposits and their range (F-86), on `d`: the ladder's deposit row and the bank-deposit page's list. */
 function addDepositBanks(d: SignatureData, c: Ctx): ReturnType<typeof depositRange> {
-  const banks = accountBanks(oneYearDepositRecords(c.deposits));
+  const records = oneYearDepositRecords(c.deposits);
+  // each bank's own break terms, on the line that names the bank (D31)
+  const banks = accountBanks(records).map((b) => ({ ...b, exit: ownBy(breakFact(records.find((r) => r.id === b.id)!), b.name) }));
   d.depositBanks = banks;
   const range = depositRange(banks, c.t);
   if (!range) d.gaps.push("depositBanks");
+  else {
+    d.facts.depositLo = range.lo;
+    d.facts.depositHi = range.hi;
+    d.facts.depositCount = range.count;
+    // F-86: of the same deposits, how many forbid taking the money out before the end of the term (each record's 447 column); a count
+    // over the collected banks, naming none (D30)
+    const inputs = Object.fromEntries(records.map((r) => [shortName(r.bank, r.bank), breakFact(r)]));
+    d.facts.depositNoExitCount = computed(records.filter((r) => !r.break.allowed).length, "count", "F-86", inputs, { today: c.t, about: guideSignature.deposit.about.noExitCount });
+  }
   return range;
 }
 
@@ -155,17 +167,23 @@ builders["bank-deposit"] = (c) => {
   const d = emptyData(c.id);
   addBundle(d, c, "bank-deposit");
   addBundle(d, c, "money-market-fund-daily");
-  depositFacts(d, c, "bank-deposit");
+  // the run stands on the middle of the collected deposits that cannot be broken, and the sentence under the bars on the two ends of all of them (F-86), each bank named
+  const ends = depositEnds(c.deposits);
+  const example = depositExample(c.deposits);
+  const record = c.wrappers.find((w) => w.id === "bank-deposit");
+  if (ends && example && record) {
+    depositFacts(d, c, "bank-deposit", { deposit_terms: example.record.id });
+    const low = depositBundleOf(record, ends.bottom, c.p05, c.allRules, c.t).bundle;
+    if (low) d.bundles["bank-deposit-lo"] = low;
+    const high = depositBundleOf(record, ends.top, c.p05, c.allRules, c.t).bundle;
+    if (high) d.bundles["bank-deposit-hi"] = high;
+  } else d.gaps.push("deposit:bank-deposit");
+  // whether the money is locked is a count over the banks, not the terms of the one bank the run stands on
+  delete d.facts.break;
   // the list the money-market ladder links to: each collected bank's one-year fixed-rate deposit (F-86)
-  const range = addDepositBanks(d, c);
-  if (range) {
-    d.facts.depositLo = range.lo;
-    d.facts.depositHi = range.hi;
-    d.facts.depositCount = range.count;
-  }
+  addDepositBanks(d, c);
   d.facts.cashRate = p05Value(c.p05, "cash_rate");
-  const brk = d.facts.break;
-  if (brk && brk.value !== "not_allowed" && brk.value !== "none") d.gaps.push("depositBreak");
+  if (Number(d.facts.depositNoExitCount?.value ?? 0) === 0) d.gaps.push("depositBreak");
   return withRules(d, "BANK-06", "BANK-13", "BANK-27", "TXI-03", "TXI-08");
 };
 
@@ -197,24 +215,12 @@ builders["money-market-fund-daily"] = (c) => {
   // the current-account row is the rate most of the collected banks publish (F-85), with the best a bank pays beside it
   const { common } = addAccountBanks(d, c);
   // the one-year deposit row is the range across the collected banks (F-86), never one bank's rate (founder, 2026-10-26)
-  const range = addDepositBanks(d, c);
+  addDepositBanks(d, c);
   // names the ladder reads
   if (common) {
     d.facts.currentRate = common.rate;
     d.facts.currentCount = common.count;
     d.facts.currentBankCount = common.of;
-  }
-  if (range) {
-    d.facts.depositLo = range.lo;
-    d.facts.depositHi = range.hi;
-    d.facts.depositCount = range.count;
-  }
-  // F-86: of the same deposits, how many forbid taking the money out before the end of the term (each record's 447 column); a count
-  // over the collected banks, naming none (D30)
-  const depositRecords = oneYearDepositRecords(c.deposits);
-  if (range && depositRecords.length) {
-    const inputs = Object.fromEntries(depositRecords.map((r) => [shortName(r.bank, r.bank), breakFact(r)]));
-    d.facts.depositNoExitCount = computed(depositRecords.filter((r) => !r.break.allowed).length, "count", "F-86", inputs, { today: c.t, about: "בכמה מהבנקים שנאספו אי אפשר למשוך מהפיקדון לפני סוף התקופה" });
   }
   d.facts.cashRate = p05Value(c.p05, "cash_rate");
   // MF-08: the longest a renewable fund's money can wait for its next date, by the law's default
@@ -281,8 +287,8 @@ builders["makam"] = (c) => {
   else d.gaps.push("rule:TXI-11");
   if (gain) d.facts.gainRate = gain;
   else d.gaps.push("rule:TXI-12");
-  const dep = depositFacts(d, c, "bank-deposit", "deposit:");
-  if (dep.rate) d.facts.depositRate = dep.rate;
+  // the one-year deposit it is set against: the range across the collected banks and how many of them lock the money (F-86)
+  addDepositBanks(d, c);
   return withRules(d, "GOV-03", "GOV-06", "GOV-17", "GOV-22", "GOV-23", "TXI-11", "TXI-12", "TXI-03");
 };
 

@@ -347,6 +347,85 @@
       }
     },
     {
+      "id": "hapoalim-redemption-makam",
+      "base": "trade",
+      "applies_to": [
+        "makam"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.11,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
+          "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), פרק: ניירות ערך, קניה מכירה (כולל הנפקה) ופדיון של מלווה קצר מועד (כולל קניה/ מכירה שלא בוצעה), גובה העמלה שעור/סכום",
+          "publisher": "Bank Hapoalim B.M.",
+          "strength": "institution",
+          "quote": "קניה מכירה (כולל הנפקה) ופדיון של מלווה קצר מועד (כולל קניה/ מכירה שלא בוצעה) | 0.11% | 19.00 | 7,500.00"
+        },
+        "checked": "2026-10-31",
+        "effective_from": "2026-10-05",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-19"
+        ],
+        "state": "sourced",
+        "notes": "This row names redemption. The reduced row of annex ה (0.10%) reads \"קנייה מכירה (כולל הנפקה) של מלווה קצר מועד\", without redemption, so a redemption stays at this row's price."
+      },
+      "min": {
+        "value": 19,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
+          "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), פרק: ניירות ערך, קניה מכירה (כולל הנפקה) ופדיון של מלווה קצר מועד (כולל קניה/ מכירה שלא בוצעה), גובה העמלה מינימום",
+          "publisher": "Bank Hapoalim B.M.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-31",
+        "effective_from": "2026-10-05",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'19.00'."
+      },
+      "max": {
+        "value": 7500,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
+          "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), פרק: ניירות ערך, קניה מכירה (כולל הנפקה) ופדיון של מלווה קצר מועד (כולל קניה/ מכירה שלא בוצעה), גובה העמלה מקסימום",
+          "publisher": "Bank Hapoalim B.M.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-31",
+        "effective_from": "2026-10-05",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'7,500.00'."
+      },
+      "period": null,
+      "channel": null,
+      "band": "פדיון",
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קניה מכירה (כולל הנפקה) ופדיון של מלווה קצר מועד (כולל קניה/ מכירה שלא בוצעה)"
+        ]
+      }
+    },
+    {
       "id": "hapoalim-buy-sell-foreign",
       "base": "trade",
       "applies_to": [

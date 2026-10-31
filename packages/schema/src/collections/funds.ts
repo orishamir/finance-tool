@@ -67,6 +67,16 @@ export const fundRecord = z.strictObject({
       checked: isoDate,
     })
     .optional(),
+  /**
+   * 2026-10-31 (issue 147, A-10): a distributing fund's yield, a value object in `pct_per_year` read from the fund's own factsheet or the
+   * manager's page with its date, and the payments a year the same source prints. Left out when it was not read: the fund then has no price.
+   */
+  distribution: z
+    .strictObject({
+      yield: valueObject,
+      per_year: z.union([z.literal(1), z.literal(2), z.literal(3), z.literal(4), z.literal(6), z.literal(12)]),
+    })
+    .optional(),
   /** S4: the price of one unit, in a currency unit, for per-share commissions. */
   share_price: valueObject.optional(),
   snapshot: isoDate,

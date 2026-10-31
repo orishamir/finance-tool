@@ -266,7 +266,7 @@
         "BRK-53"
       ],
       "state": "sourced",
-      "notes": "'פתיחת חשבון במינימום של 250 ש\"ח ברכישה או ללא רכישה בכלל'; a first investment of at least 250 NIS."
+      "notes": "'פתיחת חשבון במינימום של 250 ש\"ח ברכישה או ללא רכישה בכלל'; a first investment of at least 250 NIS. The home page goes on 'ואחר כך כמה שרוצים', and the buying form of Fair's app, which limits a sum to 250 to 50,000 NIS, adds '*לאחר ההצטרפות לא יהיו הגבלות על רכישות נוספות', and its automatic-purchase form asks only 'יש להזין סכום גבוה מ 0' and a fund's own minimum quantity (one unit on the S&P 500 funds, about 1 to 3 NIS, in its fund list read 2026-10-31) (issue 141), so neither limit is applied to a monthly purchase. The account agreement, which Fair says alone binds it, is not public and was not read."
     }
   },
   "notice_rule_ids": [],

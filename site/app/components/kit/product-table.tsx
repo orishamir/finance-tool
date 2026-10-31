@@ -6,12 +6,13 @@ import { Fragment, useId, type ReactNode } from "react";
 import { IconAlert, IconExternal } from "../icons";
 import { Card } from "./card";
 import { cx } from "./cx";
+import { TableCols } from "./table-cols";
 
 export interface ProductColumn {
   id: string;
   head: ReactNode;
-  /** As wide as its content (a number, a link, figures); the columns without it share the rest. */
-  fit?: boolean;
+  /** As wide as its longest real content, in rem (a number, a link, figures), and not wrapping; the columns without it share the rest. */
+  width?: number;
   headClassName?: string;
   cellClassName?: string;
 }
@@ -31,8 +32,12 @@ export interface ProductGroup {
   banner?: ReactNode;
 }
 
+const MIN_SHARED_REM = 11;
+
 export function ProductTable({ columns, groups, foot }: { columns: ProductColumn[]; groups: ProductGroup[]; foot?: (place: "phone" | "table") => ReactNode }) {
   const bannerId = useId();
+  // the columns that share the rest keep a readable width: under that the table scrolls inside its card (a narrow tablet)
+  const minRem = columns.reduce((sum, c) => sum + (c.width ?? MIN_SHARED_REM), 0);
   return (
     <>
       <Card className="md:hidden p-0 md:p-0 overflow-hidden flex flex-col">
@@ -53,12 +58,13 @@ export function ProductTable({ columns, groups, foot }: { columns: ProductColumn
         )}
         {foot?.("phone")}
       </Card>
-      <Card className="hidden md:block p-0 md:p-0 overflow-x-auto overflow-y-hidden">
-        <table className="tbl">
+      <Card className="relative hidden md:block p-0 md:p-0 overflow-x-auto overflow-y-hidden">
+        <table className="tbl" style={{ minWidth: `${minRem}rem` }}>
+          <TableCols widths={columns.map((c) => (c.width ? `${c.width}rem` : "auto"))} />
           <thead>
             <tr>
               {columns.map((c) => (
-                <th key={c.id} scope="col" className={cx(c.fit && "w-px", c.headClassName)}>
+                <th key={c.id} scope="col" className={c.headClassName}>
                   {c.head}
                 </th>
               ))}
@@ -81,7 +87,7 @@ export function ProductTable({ columns, groups, foot }: { columns: ProductColumn
               ...g.rows.map((r) => (
                 <tr key={r.key} className={cx(g.banner ? "dup-row" : null)}>
                   {r.cells.map((cell, i) => (
-                    <td key={columns[i]?.id ?? i} className={cx(i === 0 && g.banner ? "border-s-[3px] border-s-caution" : null, columns[i]?.fit && "whitespace-nowrap", columns[i]?.cellClassName)}>
+                    <td key={columns[i]?.id ?? i} className={cx(i === 0 && g.banner ? "border-s-[3px] border-s-caution" : null, columns[i]?.width ? "whitespace-nowrap" : null, columns[i]?.cellClassName)}>
                       {cell}
                     </td>
                   ))}

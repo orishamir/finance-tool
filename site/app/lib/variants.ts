@@ -138,7 +138,7 @@ export interface FundVariantsView {
   /** A foreign fund is in the set: the W-8BEN and exchange-rate fields apply. */
   needsFx: boolean;
   hasDistributing: boolean;
-  /** Fund records of the exposure that distribute, for the yield fields. */
+  /** Fund records of the exposure that distribute and whose record holds no yield (A-10), for the yield fields. */
   distributing: { recordId: string; name: string }[];
   /** Foreign currencies the funds are bought in abroad, each with the start rate the run used: the ECB cross rate (D26, never typed); null when the ECB has none. */
   startRates: { code: string; rate: SiteValue | null }[];
@@ -395,7 +395,7 @@ export function buildFundVariants(a: VariantArgs): VariantResult {
     ruleIds: [...ruleIds].filter((id) => bundle.rules.some((r) => r.id === id)),
     needsFx: mine.some((f) => f.domicile !== "IL" || !isIls(f.currency)),
     hasDistributing: mine.some((f) => f.distribution_policy === "distributing"),
-    distributing: mine.filter((f) => f.distribution_policy === "distributing").map((f) => ({ recordId: f.id, name: f.names.he[0] ?? f.names.en[0] ?? f.id })),
+    distributing: mine.filter((f) => f.distribution_policy === "distributing" && !f.distribution).map((f) => ({ recordId: f.id, name: f.names.he[0] ?? f.names.en[0] ?? f.id })),
     startRates,
     ordersN,
     orders: query.orders !== null ? ({ ...a28Value(query.orders, "פעולות בחודש", today), state: "entered", update_rule: "founder" } as SiteValue) : a28Value(1, "פעולות בחודש", today),

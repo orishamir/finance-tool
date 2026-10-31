@@ -12,15 +12,18 @@ export function Foot({ view }: { view: InvestView }) {
   };
   return (
     <footer className="flex flex-col gap-1.5 text-sm text-muted-foreground border-t border-border pt-4 max-w-measure">
-      <p>
+      {/* one height for both words and whether or not a return was entered: this block closes the page, and the page's length holds */}
+      <p className="max-md:min-h-[2lh]">
         {c.foot.returnUsed}: {view.returnIllustrative ? c.foot.example : c.foot.entered}
       </p>
-      {o && o.holds && <p>{c.foot.holds}</p>}
-      {o && !o.holds && (
-        <Disclosure plain label={c.foot.flipsSummary(new Set(flips.map((f) => words(f))).size)}>
-          <p className="mt-1">{`${c.foot.flips} ${[...new Set(flips.map((f) => `${words(f)} (${c.foot.flipsAt(f.at)})`))].join("; ")}.`}</p>
-        </Disclosure>
-      )}
+      <div className="min-h-[1lh] max-md:min-h-[2lh]">
+        {o && o.holds && <p>{c.foot.holds}</p>}
+        {o && !o.holds && (
+          <Disclosure plain label={c.foot.flipsSummary(new Set(flips.map((f) => words(f))).size)}>
+            <p className="mt-1">{`${c.foot.flips} ${[...new Set(flips.map((f) => `${words(f)} (${c.foot.flipsAt(f.at)})`))].join("; ")}.`}</p>
+          </Disclosure>
+        )}
+      </div>
       <p>{c.foot.values}</p>
       <p>{c.foot.sharePrice}</p>
       <p>{c.foot.engine}</p>

@@ -10,7 +10,7 @@ import { todayLocal } from "../../lib/today";
 import { Sheet } from "../Sheet";
 import { IconAlert, IconCheck, IconLock } from "../icons";
 import { Num } from "../provenance";
-import { Button, Callout, cx, Disclosure, Tag } from "../kit";
+import { Button, Callout, cx, Disclosure, TableCols, Tag } from "../kit";
 import { Tpl } from "../exposure-mode/tpl";
 
 const date = (iso: string) => <bdi dir="ltr">{fmt.date(iso)}</bdi>;
@@ -303,6 +303,7 @@ function RenderedValue({ v }: { v: Rendered }): ReactNode {
     return (
       <Disclosure label={<span className="text-xs">{r5.revisit.sheet.detail}</span>} summaryClassName="text-sm">
         <table className="tbl text-xs mt-1">
+          <TableCols widths={["50%", "50%"]} />
           <tbody>
             {v.rows.map((b, i) => (
               <tr key={i}>
