@@ -212,16 +212,22 @@ export function RangeField(props: RangeFieldProps) {
   return (
     <div className="field">
       <div className="flex items-center justify-between gap-3 min-h-target">
-        <span className="flex items-center gap-2 min-w-0">
-          <span className="field-label" id={`${id}-l`}>
-            {label}
-          </span>
-          {footer === false && isEntered && !disabled && (
-            <button type="button" onClick={onReset} className="text-xs text-link hover:underline min-h-target whitespace-nowrap">
+        {footer === false ? (
+          // the label and the reset, one over the other in a row of one height: the reset's place is kept while it is not there, so a
+          // number becoming the person's own moves nothing; its tap target reaches 44 px past its line (2026-10-31)
+          <span className="flex flex-col items-start min-w-0">
+            <span className="field-label whitespace-nowrap" id={`${id}-l`}>
+              {label}
+            </span>
+            <button type="button" onClick={onReset} className={cx("relative h-5 text-xs text-link hover:underline whitespace-nowrap after:absolute after:inset-x-0 after:-top-4 after:-bottom-2", !(isEntered && !disabled) && "invisible")}>
               {buttons.resetOne}
             </button>
-          )}
-        </span>
+          </span>
+        ) : (
+          <span className="field-label min-w-0" id={`${id}-l`}>
+            {label}
+          </span>
+        )}
         <NumberField {...props} compact />
       </div>
       <input
