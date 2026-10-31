@@ -79,6 +79,13 @@ describe("the guides price an account and its securities on the comparison's pic
     expect(own.feeValues.tradeRate?.value).toBe(0.06);
     expect(own.pick!.tied).toBeUndefined();
   });
+  it("the guide path counts a monthly minimum per charging period (F-14), as the engine's path does", () => {
+    const p05 = loadParameters().find((p) => p.method_id === "P-05")!;
+    const rows = accountRuns(loadProducts().find((w) => w.id === "makam")!, "makam", p05, loadRules(), today());
+    const custody = (id: string) => rows.find((r) => r.id === id)!.bundle.terms.tariff!.custody;
+    expect(custody("altshuler-trade")).toMatchObject({ everyMonths: 12, min: 900 });
+    expect(custody("excellence")).toMatchObject({ everyMonths: 3, min: 120 });
+  });
   it("the guide path reads each house's order line as the comparison does", () => {
     const p05 = loadParameters().find((p) => p.method_id === "P-05")!;
     for (const [id, family] of [["makam", "makam"], ["government-bond", "bond"]] as const) {
