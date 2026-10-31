@@ -45,7 +45,7 @@ const INPUT: Record<string, number> = {
     "components/compare/why.tsx": 1,
     "components/decoder/tracks.tsx": 1,
     "components/holdings/fields.tsx": 3,
-    "components/invest/chips.tsx": 3,
+    "components/invest/chips.tsx": 1,
     "components/search.tsx": 2,
     "components/transfer/panel.tsx": 1,
     "components/workbench/controls.tsx": 1,

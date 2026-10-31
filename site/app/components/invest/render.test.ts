@@ -55,7 +55,7 @@ describe("the index page's sections render", () => {
       createElement(AccountColumn, { view, bundle, years: 20, pick, onPick: () => undefined }),
       createElement(FundColumn, { view, bundle, plan, today: t, pick, onPick: () => undefined, filter: null, onFilter: () => undefined }),
       createElement(Foot, { view }),
-      createElement(PlanBlock, { knobs: null, onOpen: () => undefined, fx: bundle.fx, today: t, example: true })));
+      createElement(PlanBlock, { knobs: null, onOpen: () => undefined, fx: bundle.fx, today: t, example: true, dollar: true })));
     expect(out).toContain("הפקדתם");
     // a dollar index with funds of both kinds shows each kind across the dollar (F-94, 2026-10-29)
     expect(out).toContain("בלי נטרול מט״ח");

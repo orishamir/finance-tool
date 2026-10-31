@@ -38,8 +38,6 @@ function CustomPanel({ bundle, customs, onCancel, onSave, onKnown }: { bundle: P
   const [name, setName] = useState("");
   const [step, setStep] = useState<"name" | "question">("name");
   const [israeli, setIsraeli] = useState<"yes" | "no" | null>(null);
-  const [currency, setCurrency] = useState("");
-  const [region, setRegion] = useState("");
   const [note, setNote] = useState<string | null>(null);
   const names = useMemo(() => [...new Set(indexSuggestions(bundle).map((x) => pillName(x.name)))], [bundle]);
   const go = () => {
@@ -56,7 +54,7 @@ function CustomPanel({ bundle, customs, onCancel, onSave, onKnown }: { bundle: P
   const save = () => {
     if (!israeli) return;
     const added = new Date().toISOString().slice(0, 10);
-    const idx: CustomIndex = { id: customIdOf(name.trim()), name: name.trim(), israeli: israeli === "yes", ...(currency.trim() ? { currency: currency.trim() } : {}), ...(region.trim() ? { region: region.trim() } : {}), added };
+    const idx: CustomIndex = { id: customIdOf(name.trim()), name: name.trim(), israeli: israeli === "yes", added };
     onSave(idx);
   };
   return (
@@ -83,17 +81,6 @@ function CustomPanel({ bundle, customs, onCancel, onSave, onKnown }: { bundle: P
           <p className="font-medium">{c.custom.question}</p>
           <p className="text-sm text-muted-foreground">{c.custom.questionWhy}</p>
           <SegmentedControl<"yes" | "no"> label={c.custom.question} value={israeli} onChange={setIsraeli} options={[{ value: "yes", label: c.custom.yes }, { value: "no", label: c.custom.no }]} className="max-w-60" />
-          <p className="text-sm text-muted-foreground">{c.custom.forInfo}</p>
-          <div className="flex flex-wrap gap-3">
-            <label className="flex flex-col gap-1 text-sm">
-              {c.custom.currency}
-              <input value={currency} onChange={(e) => setCurrency(e.target.value)} className="h-field rounded-md bg-card border border-input px-3 w-40" />
-            </label>
-            <label className="flex flex-col gap-1 text-sm">
-              {c.custom.region}
-              <input value={region} onChange={(e) => setRegion(e.target.value)} className="h-field rounded-md bg-card border border-input px-3 w-40" />
-            </label>
-          </div>
           <div className="flex gap-2">
             <Button variant="primary" onClick={save} disabled={!israeli}>
               {c.custom.save}
@@ -110,30 +97,35 @@ function CustomPanel({ bundle, customs, onCancel, onSave, onKnown }: { bundle: P
 
 // ---------------------------------------------------------------- the plan
 
-/** The plan the page runs on: the knob strip (founder, 2026-10-28), the rest of the assumptions behind a button, and the dollar rate. */
+/** The plan the page runs on: the knob strip (founder, 2026-10-28), the rest of the assumptions behind a button, and the dollar rate on the same line. */
 /** `example`: no number entered yet, so every one is the site's example; once one is entered each slider marks its own. */
-export function PlanBlock({ knobs, onOpen, fx, today, example }: { knobs: ReactNode; onOpen: () => void; fx: FxSnapshot | undefined; today: string; example: boolean }) {
+/** `dollar`: an index priced in shekels reads no exchange rate, so it shows none (founder, 2026-10-31); the line keeps its height either way. */
+export function PlanBlock({ knobs, onOpen, fx, today, example, dollar }: { knobs: ReactNode; onOpen: () => void; fx: FxSnapshot | undefined; today: string; example: boolean; dollar: boolean }) {
   const usd = fx ? nisPer(fx, "USD", today) : null;
   return (
-    <section className="flex flex-col gap-3" aria-label={c.plan.heading}>
+    <section className="flex flex-col gap-2" aria-label={c.plan.heading}>
       {knobs}
-      <p className="flex flex-wrap items-center gap-x-3 text-sm text-muted-foreground">
+      <div className="flex flex-wrap items-center gap-x-3 gap-y-1 max-md:min-h-[6.5rem]">
         <Button variant="secondary" className="!h-9 px-3 text-sm" onClick={onOpen}>
           {c.plan.knobs.others}
         </Button>
-        <span>
-          {example && <>{c.plan.siteExample} · </>}{c.plan.todayShekels}
-        </span>
-      </p>
-      <Sentence size="sm" tone="muted">
-        {usd ? (
-          <>
-            {c.plan.dollar} <Num value={usd} exact /> · {fxLabel(fx!)}
-          </>
-        ) : (
-          <Tag tone="caution">{c.plan.dollarMissing}</Tag>
-        )}
-      </Sentence>
+        <Sentence size="sm" tone="muted">
+          {example && <>{c.plan.siteExample} · </>}
+          {c.plan.todayShekels}
+          {dollar &&
+            (usd ? (
+              <>
+                {" · "}
+                {c.plan.dollar} <Num value={usd} exact /> · {fxLabel(fx!)}
+              </>
+            ) : (
+              <>
+                {" · "}
+                <Tag tone="caution">{c.plan.dollarMissing}</Tag>
+              </>
+            ))}
+        </Sentence>
+      </div>
     </section>
   );
 }

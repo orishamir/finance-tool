@@ -190,13 +190,15 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
       fx={wb.fx}
       today={data.today}
       example={Object.keys(released.state.entered).length === 0}
+      dollar={!index?.israeli}
     />
   );
 
   return (
     <LabelSheetHost>
-      <div className="flex flex-col gap-section pt-2 lg:pt-8">
-        <div className="flex flex-col gap-5">
+      {/* tighter than a page's sections: the sliders and the result they move stay in one view (founder, 2026-10-31) */}
+      <div className="flex flex-col gap-5 lg:gap-6 pt-2 lg:pt-6">
+        <div className="flex flex-col gap-4">
           <Head />
           {chips}
         </div>
