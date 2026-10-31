@@ -270,15 +270,18 @@ export function PairResult({ view, bundle, plan, settled, pick, onPick }: { view
         {pcOther && other && <CostBar who={nameOf(other)} sub={onBest ? c.pair.next : c.pair.cheapest} pc={pcOther} scale={scale} entered={providerName(view, other.house)?.custom} today={bundle.today} />}
         <CostLegend lines={lines} />
         {pcOther && (
-          <Sentence size="sm" tone="muted">
-            {c.pair.gapLead} {c.pair.gapPart.account} {gapNum(gapParts![0]!, c.pair.gapPart.account, nis(sumAccount(pc), "F-91", c.pair.gapPart.account, bundle.today), nis(sumAccount(pcOther), "F-91", c.pair.gapPart.account, bundle.today))}
-            {" · "}
-            {c.pair.gapPart.fund} {gapNum(gapParts![1]!, c.pair.gapPart.fund, pc.fund, pcOther.fund)}
-            {" · "}
-            {c.pair.gapPart.tax} {gapNum(gapParts![2]!, c.pair.gapPart.tax, pc.tax, pcOther.tax)}
-            {/* more tax with more left: the gain explains it; with a different tax treatment the signs part, and nothing is said */}
-            {gapParts![2]! !== 0 && Math.sign(gapParts![2]!) === Math.sign(leftGap) && <>, {gapParts![2]! > 0 ? c.pair.taxBecauseMore : c.pair.taxBecauseLess}</>}
-          </Sentence>
+          // three lines on a phone: the longest case, with the tax's reason (nothing moves when a number changes)
+          <div className="text-sm max-md:min-h-[3lh]">
+            <Sentence size="sm" tone="muted">
+              {c.pair.gapLead} {c.pair.gapPart.account} {gapNum(gapParts![0]!, c.pair.gapPart.account, nis(sumAccount(pc), "F-91", c.pair.gapPart.account, bundle.today), nis(sumAccount(pcOther), "F-91", c.pair.gapPart.account, bundle.today))}
+              {" · "}
+              {c.pair.gapPart.fund} {gapNum(gapParts![1]!, c.pair.gapPart.fund, pc.fund, pcOther.fund)}
+              {" · "}
+              {c.pair.gapPart.tax} {gapNum(gapParts![2]!, c.pair.gapPart.tax, pc.tax, pcOther.tax)}
+              {/* more tax with more left: the gain explains it; with a different tax treatment the signs part, and nothing is said */}
+              {gapParts![2]! !== 0 && Math.sign(gapParts![2]!) === Math.sign(leftGap) && <>, {gapParts![2]! > 0 ? c.pair.taxBecauseMore : c.pair.taxBecauseLess}</>}
+            </Sentence>
+          </div>
         )}
       </div>
     </Card>
@@ -409,9 +412,10 @@ export function AccountColumn({ view, bundle, years, pick, onPick }: { view: Inv
         <span className={cx("text-xl font-bold max-md:min-h-14.5 [overflow-wrap:anywhere]", house.custom && "text-entered")}>
           <ProviderLink p={house} />
         </span>
-        <span className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm max-md:min-h-12.25">
+        {/* on a phone the charge has its own line, so a longer figure does not push the words beside it to another line */}
+        <span className="flex flex-wrap items-center content-start gap-x-4 gap-y-1 text-sm max-md:min-h-12.25">
           {priced(at) && (
-            <span className="text-muted-foreground">
+            <span className="text-muted-foreground whitespace-nowrap max-md:basis-full">
               {c.pair.colCharges(years)}: <Num value={nis(at.accountCost, "F-63", c.pair.colCharges(years), bundle.today)} />
             </span>
           )}
@@ -555,7 +559,7 @@ export function FundColumn({ view, bundle, plan, today, pick, onPick, filter, on
       <span className="text-sm text-muted-foreground">{c.pair.chosen}</span>
     ) : x && range ? (
       <span className="flex flex-col items-end gap-0.5 text-sm">
-        <span className="font-semibold">
+        <span className="block font-semibold min-h-[2lh]">
           {c.kinds.between} <Num value={nis(x.atLo, "F-94", c.pair.colDiff, today)} display={plus(nis(x.atLo, "F-94", c.pair.colDiff, today))} /> {c.kinds.and}
           <Num value={nis(x.atHi, "F-94", c.pair.colDiff, today)} display={plus(nis(x.atHi, "F-94", c.pair.colDiff, today))} />
         </span>
