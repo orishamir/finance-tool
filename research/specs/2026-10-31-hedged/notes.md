@@ -60,3 +60,8 @@ C: a new kit strip plot; a function gathering every fund-year. No plan input, so
 - Hebrew in the drawings has not been through the Hebrew editor.
 - The palette validator passes colour separation (worst pair 17.6). It flags lightness and chroma for the site's approved kind tokens and for the neutral dollar series, left as they are.
 - Option A's unhedged bars show the middle of the range, and the table holds the range. The band across funds is about 1 point, too thin to draw.
+
+## Option A's text, second version (founder, 2026-10-31)
+
+He liked option A's graphs and found the text unclear, and asked how the hedged fund fell 21.78% in 2022 against 7.35% to 8.15% for the unhedged funds. `option-a.html` is option A alone with the new text; `mockups.html` carries the same block. What changed: the block opens with the two funds as sums (the index plus the dollar; the index less a gap), a worked example walks 2022 and 2025 step by step in percent (he asked for percent, not 100 ₪), the table runs index, dollar, funds, and "פיגור" gives way to "פער מהמדד", the site's own word. Every row of the example is read: the index in dollars and in shekels and the funds' returns from the reports, the dollar from the ECB series; the gap is the fund's return less its index. The graphs did not change.
+

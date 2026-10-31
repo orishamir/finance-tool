@@ -121,13 +121,27 @@ function stripRowHtml(label, range, marks, axis = false) {
 function reportedTable() {
   const row = (d) => {
     const gapLo = d.hedged - d.unhedgedHigh, gapHi = d.hedged - d.unhedgedLow;
-    return `<tr><th scope="row">${d.year}</th><td>${pct(d.dollar)}</td><td class="hide-ph">${pct(d.hedgedTarget)}</td><td>${pct(d.unhedgedLow)} <span class="to">עד</span> ${pct(d.unhedgedHigh)}<span class="sub">${d.unhedgedCount} קרנות</span></td><td>${pct(d.hedged)}</td><td>${pct(gapLo)} <span class="to">עד</span> ${pct(gapHi)}</td></tr>`;
+    return `<tr><th scope="row">${d.year}</th><td>${pct(d.hedgedTarget)}</td><td>${pct(d.dollar)}</td><td>${pct(d.unhedgedLow)} <span class="to">עד</span> ${pct(d.unhedgedHigh)}<span class="sub">${d.unhedgedCount} קרנות</span></td><td>${pct(d.hedged)}</td><td class="hide-ph">${pct(gapLo)} <span class="to">עד</span> ${pct(gapHi)}</td></tr>`;
   };
   return `<div class="table-wrap"><table class="fixed t-rep">
-    <thead><tr><th scope="col">שנה</th><th scope="col">הדולר מול השקל</th><th scope="col" class="hide-ph">S&amp;P 500 בדולרים</th><th scope="col">קרנות בלי נטרול</th><th scope="col">עם נטרול (הראל)</th><th scope="col">עם נטרול פחות בלי נטרול, בנקודות אחוז</th></tr></thead>
+    <thead><tr><th scope="col">שנה</th><th scope="col">המדד בדולרים</th><th scope="col">הדולר מול השקל</th><th scope="col">קרנות בלי נטרול</th><th scope="col">קרן עם נטרול</th><th scope="col" class="hide-ph">כמה הקרן עם הנטרול עשתה יותר (+) או פחות (${MINUS}), בנקודות אחוז</th></tr></thead>
     <tbody>${R.map(row).join("")}
-    <tr class="sum"><th scope="row">ארבע השנים יחד</th><td>${pct(d4)}</td><td class="hide-ph">${pct(usd4)}</td><td>${pct(un4lo)} <span class="to">עד</span> ${pct(un4hi)}<span class="sub">${n.hundreds.unhedged.length} הקרנות שיש להן ארבע שנים</span></td><td>${pct(he4)}</td><td>${pct(he4 - un4hi)} <span class="to">עד</span> ${pct(he4 - un4lo)}</td></tr>
+    <tr class="sum"><th scope="row">ארבע השנים יחד</th><td>${pct(usd4)}</td><td>${pct(d4)}</td><td>${pct(un4lo)} <span class="to">עד</span> ${pct(un4hi)}<span class="sub">${n.hundreds.unhedged.length} הקרנות שיש להן ארבע שנים</span></td><td>${pct(he4)}</td><td class="hide-ph">${pct(he4 - un4hi)} <span class="to">עד</span> ${pct(he4 - un4lo)}</td></tr>
     </tbody></table></div>`;
+}
+
+// ------------------------------------------------ one year, step by step, in percent (from the same reports)
+function example(d, title) {
+  const pts = (x) => `<span class="n">${iso(signed(x))} נקודות</span>`;
+  return `<div class="col"><h4>${title}</h4><div class="table-wrap"><table class="fixed t-ex">
+    <thead><tr><th scope="col">שלב</th><th scope="col">קרן בלי נטרול</th><th scope="col">קרן עם נטרול</th></tr></thead>
+    <tbody>
+      <tr><th scope="row">המדד בדולרים</th><td>${pct(d.hedgedTarget)}</td><td>${pct(d.hedgedTarget)}</td></tr>
+      <tr><th scope="row">הדולר מול השקל</th><td>${pct(d.dollar)}</td><td class="muted">כמעט לא משפיע</td></tr>
+      <tr><th scope="row">המדד אחרי הדולר</th><td>${pct(d.unhedgedTarget)}</td><td>${pct(d.hedgedTarget)}</td></tr>
+      <tr><th scope="row">הפער של הקרן מהמדד</th><td>${pts(d.unhedgedLow - d.unhedgedTarget)} <span class="to">עד</span> ${pts(d.unhedgedHigh - d.unhedgedTarget)}</td><td>${pts(d.hedgedShortfall)}</td></tr>
+      <tr class="sum"><th scope="row">הקרן, לפי הדוחות</th><td>${pct(d.unhedgedLow)} <span class="to">עד</span> ${pct(d.unhedgedHigh)}</td><td>${pct(d.hedged)}</td></tr>
+    </tbody></table></div></div>`;
 }
 
 // ------------------------------------------------ the grid of option B
@@ -197,6 +211,12 @@ section{display:flex;flex-direction:column;gap:16px}
 .tile b{font-size:14px;font-weight:500;color:var(--muted-foreground)}
 .tile strong{font-size:24px;line-height:1.3;font-weight:700}
 .tile strong .to{font-size:16px;font-weight:500}
+.tiles-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.two-eq{display:grid;gap:24px;grid-template-columns:repeat(2,minmax(0,1fr))}
+h4{font-size:16px;line-height:1.4;margin:0;font-weight:600}
+.t-ex th:first-child{width:40%}
+.t-ex tbody th{font-weight:400}
+ul.plain{margin:0;padding-inline-start:20px}
 .legend{display:flex;flex-direction:column;gap:2px;font-size:14px;line-height:1.5;color:var(--muted-foreground)}
 .legend span{display:flex;gap:8px;align-items:baseline}
 .legend em{font-style:normal}
@@ -241,7 +261,7 @@ a{color:var(--link)}
   .card{padding:16px}
   .pc{display:none}.ph{display:block}
   .pc-i{display:none}.ph-i{display:inline}
-  .two,.tiles,.flaws,.pros{grid-template-columns:minmax(0,1fr)}
+  .two,.tiles,.flaws,.pros,.two-eq{grid-template-columns:minmax(0,1fr)}
   .hide-ph{display:none}
   table{font-size:13px}
   th,td{padding:6px 4px}
@@ -265,6 +285,35 @@ const checks = [
   ["המס על תנועת הדולר בקרן ישראלית", `החישוב נכון. שתי הקרנות בשקלים, והרווח הריאלי נמדד מול מדד המחירים לצרכן, אז גם רווח שבא מהדולר ממוסה: ${num(taxShare * 100, 0)}% מכל הפרש הולך למס (${nis(uTax[0].tax)} מס ב־${pct(-3, 0)} לדולר, ${nis(uTax[2].tax)} ב־${pct(3, 0)}). רק שהעמוד לא אומר את זה. בקרן שנקנית בחו״ל המס נמדד אחרת.`, "לא מטעה, רק חסר", "ok"],
   ["עלות הנטרול תלויה בפער הריביות", `אי אפשר לבדוק את זה כאן: באתר אין נתון ריבית של ארצות הברית מול ישראל, ובבסיס הכללים אין כלל שאומר למה הנטרול עולה ומה יקבע את זה. מה שכן יש: בכל ${allShorts.length} שנות הדוח של ${heFundsWithYears} הקרנות המנוטרלות הקרן מפגרת אחרי המדד שלה, ב־${iso(num(-Math.min(...allShorts)))} נקודות לכל היותר כולל דמי ניהול, אבל הדוחות הם רק מ־2022 ואילך. הרצועה היום מניחה שכך יימשך 10 שנים.`, "לא ידוע, חסר מקור", "none"],
 ];
+
+const optionA = `<div class="card mock">
+    <div class="col"><h3 style="font-size:20px">עם נטרול מט״ח או בלי: מה קרה בפועל</h3>
+    <p>שתי הקרנות עוקבות אחרי אותו מדד אמריקאי, והמדד נמדד בדולרים. הן נבדלות במה שקורה כשהתוצאה מגיעה לשקלים.</p></div>
+    <div class="tiles tiles-2">
+      <div class="tile"><b>קרן בלי נטרול מט״ח</b><strong>המדד ועוד הדולר</strong><span class="small muted">הסכום בשקלים זז עם המדד וגם עם שער הדולר. דולר שמתחזק מוסיף, דולר שנחלש מוריד. בשנה אחת הדולר זז מול השקל בין ${pct(yLo)} ל־${pct(yHi)} (2001 עד 2025), ובממוצע של 10 שנים רצופות בין ${pct(st.low)} ל־${pct(st.high)} בשנה.</span></div>
+      <div class="tile"><b>קרן עם נטרול מט״ח</b><strong>המדד פחות פער</strong><span class="small muted">שער הדולר כמעט לא משפיע, לא כשהוא עוזר ולא כשהוא מזיק. במקומו יש פער: <bdi>${heName}</bdi> השיגה פחות מהמדד שלה בכל שנה, ב־${iso(num(shLo))} עד ${iso(num(shHi))} נקודות אחוז (2022 עד 2025, כולל דמי ניהול של ${iso(`${num(n.hedgedCost.fees, 2)}%`)}). קרנות בלי נטרול נשארו קרובות למדד שלהן: ${iso(signed(n.unhedgedRecord.low))} עד ${iso(signed(n.unhedgedRecord.high))} נקודות אחוז.</span></div>
+    </div>
+    <div class="col" style="gap:12px"><h3>דוגמה: שתי שנים הפוכות, שלב אחר שלב</h3>
+      <div class="two-eq">
+        ${example(R[0], "2022: המדד ירד, הדולר עלה")}
+        ${example(R[3], "2025: המדד עלה, הדולר ירד")}
+      </div>
+      <p class="xs muted">הדולר פועל על מה שנשאר אחרי המדד, ולכן האחוזים לא מתחברים פשוט: ב־2022, ${pct(R[0].hedgedTarget)} ו־${pct(R[0].dollar)} נותנים ${pct(R[0].unhedgedTarget)}. המדד אחרי הדולר הוא מהדוחות של הקרנות.</p>
+      <p><strong>הנטרול לא מגן מירידה של השוק. הוא מבטל את הדולר, לשני הכיוונים.</strong> ב־2022 הדולר ריכך את הירידה בקרנות בלי נטרול, ולכן הקרן עם הנטרול ירדה הרבה יותר. ב־2025 הדולר לקח מהן את רוב העלייה, ולכן הקרן עם הנטרול עלתה הרבה יותר.</p>
+    </div>
+    <div class="two">
+      <div class="col"><h3>מה הדולר עשה מול השקל בכל שנה</h3><p class="xs muted">באחוזים. ב־${n.fallsOfYears.falls} מתוך ${n.fallsOfYears.count} שנים הדולר ירד. העמודות הבהירות: השנים שיש עליהן דוחות של הקרנות.</p>${both(yearBars)}</div>
+      <div class="col"><h3>מה הקרנות עשו באותן שנים</h3><p class="xs muted">באחוזים, אחרי כל ההוצאות של הקרן, לפני מס.</p>${legendKinds}${both(groupBars)}</div>
+    </div>
+    <div class="col" style="gap:8px"><h3>כל השנים במספרים</h3>${reportedTable()}</div>
+    <div class="col"><h3>כמה זה בכסף, בתוכנית שלכם</h3>
+      <p>הפרש של נקודת אחוז אחת בכל שנה, בין שהוא בא מהדולר ובין שהוא בא מהפער, שווה בסוף ${n.plan.years} השנים ${nis(round100(worthLo))} עד ${nis(round100(worthHi))}, בכסף של היום ואחרי מס. אם שער הדולר לא ישתנה והפער יישאר כמו בדוחות, קרן בלי נטרול תשאיר ${nis(gapFlat)} יותר. ככל שהדולר ייחלש ההפרש קטן, ואם הוא ייחלש בקצב גדול מהפער, ההפרש יתהפך.</p></div>
+    <ul class="small muted plain">
+      <li>זה בסיס קטן: ארבע שנים, וקרן אחת עם נטרול על המדד הזה. זה מה שקרה, לא מה שיקרה.</li>
+      <li>גם רווח שבא מהדולר ממוסה: כל עוד יש רווח ריאלי, ${num(taxShare * 100, 0)}% מכל הפרש בין הקרנות הולך למס.</li>
+      <li>למה הקרן עם הנטרול משיגה פחות מהמדד, ומה יקבע את זה בעתיד: עוד אין לאתר מקור.</li>
+    </ul>
+  </div>`;
 
 const html = `<!doctype html>
 <html lang="he" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
@@ -309,22 +358,7 @@ const html = `<!doctype html>
 <section>
   <div class="opt-h"><h2>אפשרות א: מה קרה בכל שנה</h2><span class="tag rec">מומלצת</span></div>
   <p class="measure muted">בלי שום הנחה על העתיד: הגרף של הדולר נשאר, ולידו מה שתי הקרנות עשו באותן שנים, לפי הדוחות.</p>
-  <div class="card mock">
-    <div class="col"><h3 style="font-size:20px">עם נטרול מט״ח או בלי: מה קרה בפועל</h3>
-    <p class="muted">קרן מנוטרלת מסירה דבר אחד: התנועה של הדולר מול השקל. השוק נשאר כמו בכל קרן, ובכל שנה שיש עליה דוח היא גם פיגרה אחרי המדד שלה.</p></div>
-    <div class="tiles">
-      <div class="tile"><b>מה הנטרול מסיר</b><strong>${pct(yLo)} <span class="to">עד</span> ${pct(yHi)}</strong><span class="xs muted">הדולר מול השקל בשנה אחת, 2001 עד 2025. בממוצע של 10 שנים רצופות: ${pct(st.low)} עד ${pct(st.high)} בשנה.</span></div>
-      <div class="tile"><b>מה הוא עולה</b><strong>${iso(num(shLo))} <span class="to">עד</span> ${iso(num(shHi))} נקודות בשנה</strong><span class="xs muted">כמה <bdi>${heName}</bdi> פיגרה אחרי המדד שלה, 2022 עד 2025, כולל דמי ניהול של ${iso(`${num(n.hedgedCost.fees, 2)}%`)}. קרנות בלי נטרול: ${pct(n.unhedgedRecord.low)} עד ${pct(n.unhedgedRecord.high)}.</span></div>
-      <div class="tile"><b>מה הוא לא מסיר</b><strong>${pct(R[0].hedged)} ב־2022</strong><span class="xs muted">השוק ירד, והדולר עלה ${pct(R[0].dollar)}: קרנות בלי נטרול ירדו רק ${iso(`${num(-R[0].unhedgedHigh)}%`)} עד ${iso(`${num(-R[0].unhedgedLow)}%`)}. ב־2025 זה התהפך.</span></div>
-    </div>
-    <div class="two">
-      <div class="col"><h3>מה הדולר עשה מול השקל בכל שנה</h3><p class="xs muted">באחוזים. ${n.fallsOfYears.falls} ירידות מתוך ${n.fallsOfYears.count} שנים. בהיר: השנים שיש עליהן דוחות של הקרנות.</p>${both(yearBars)}</div>
-      <div class="col"><h3>מה הקרנות עשו באותן שנים</h3><p class="xs muted">באחוזים, אחרי כל ההוצאות של הקרן, לפני מס.</p>${legendKinds}${both(groupBars)}</div>
-    </div>
-    ${reportedTable()}
-    <p><strong>בתוכנית שלכם:</strong> כל נקודת אחוז בשנה, של הדולר או של הפיגור, שווה ${nis(round100(worthLo))} עד ${nis(round100(worthHi))} בסוף, בכסף של היום ואחרי מס. אם הדולר לא ישתנה והפיגור יישאר כבדוחות, הקרן בלי נטרול משאירה ${nis(gapFlat)} יותר. אם הדולר ירד, ההפרש קטן ואף מתהפך.</p>
-    <p class="small muted">ארבע שנים, וקרן מנוטרלת אחת על המדד הזה: זה מה שקרה, לא מה שיקרה. המס: כל עוד יש רווח ריאלי, ${num(taxShare * 100, 0)}% מכל הפרש בין הקרנות הולך למס, גם אם ההפרש בא מהדולר. למה הקרן המנוטרלת מפגרת ומה יקבע את זה בעתיד: עוד אין לאתר מקור.</p>
-  </div>
+  ${optionA}
   <div class="pros small"><div><b>למה מומלצת</b>היא לא מסיקה ולא מנחשת: מספרים מדוחות ומשערי מטבע, באותן שנים, ועוד משפט אחד על התוכנית. היא בונה על הגרף שכבר עובד. מי שקורא אותה רואה ש־2022 ו־2025 הפוכות, וזו האמת על הבחירה.</div><div><b>מה חסר בה</b>רק ארבע שנים של קרנות, כי זה מה שהדוחות שנאספו נותנים. בתקופה ארוכה יותר ייתכן שהתמונה שונה, והעמוד אומר זאת.</div></div>
 </section>
 
@@ -361,4 +395,12 @@ const html = `<!doctype html>
 
 </main></body></html>`;
 writeFileSync(join(here, "mockups.html"), html);
-console.log("written", html.length);
+const head = html.slice(0, html.indexOf("<section>"));
+const onlyA = `${head}<section>
+  <h1>אפשרות א, עם הטקסטים החדשים</h1>
+  <p class="measure muted">הגוש שיישב בתחתית עמוד ההשקעה במדד, על מדד S&amp;P 500. התוכנית לדוגמה של האתר: ${nis(n.plan.amountNow)} ועוד ${nis(n.plan.monthly)} בחודש, ${n.plan.years} שנים, ${iso(`${Math.round(n.plan.grossReturn * 100)}%`)} בשנה בדולרים, אינפלציה ${iso(`${Math.round(n.plan.inflation * 100)}%`)}. נתונים של ${iso(dateHe)}. הגרפים לא השתנו.</p>
+</section>
+<section>${optionA}</section>
+</main></body></html>`;
+writeFileSync(join(here, "option-a.html"), onlyA);
+console.log("written", html.length, onlyA.length);
