@@ -1,0 +1,57 @@
+{
+  "id": "TXK-21",
+  "title": "Proposed changes, not law: the Finance Ministry team's final report of July 2026",
+  "title_he": "שינויים מוצעים, לא חוק: הדו״ח המסכם של צוות משרד האוצר מיולי 2026",
+  "text_he": "זה לא חוק. הצוות לצמצום הפערים במכשירי השקעה בחיסכון לטווח קצר ובינוני פרסם ב־1.7.2026 דו״ח מסכם שממליץ על חשבון השקעות עם הטבת מס, ובו ניירות ערך, קרנות נאמנות, קופות גמל להשקעה ופוליסות חיסכון, עם תקרה אחת להטבה: 200,000 שקלים בסך הכול לתושב ישראל, צמודה למדד. עד התקרה: בלי אירוע מס במעברים, ופטור ממס רווחי הון על משיכה כקצבה אחרי גיל 60. מעל התקרה: ההטבות של היום מסתיימות, כולל דחיית המס במעברים. ההמלצות תלויות בתיקון חקיקה. בשני חיפושים ב־31.10.2026 לא נמצאה הצעת חוק, וזו לא הוכחה שאין.",
+  "figure_names_he": {
+    "proposed_cap": "התקרה המוצעת על הטבת המס (המלצה, לא חוק)"
+  },
+  "strength": "secondary",
+  "dimensions": [
+    "age-or-use-exemption",
+    "switching-tax-event",
+    "deposit-ceiling"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-03-31",
+  "figures": {
+    "proposed_cap": {
+      "value": 200000,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.capitax.co.il/Attachments/arbitrage_committee-07-2026.pdf#page=14",
+        "title": "הצוות לצמצום הפערים במכשירי השקעה בחיסכון לטווח קצר ובינוני, דו\"ח מסכם, יולי 2026, p.14, s.5.1-5.2 (copy at capitax.co.il)",
+        "publisher": "Finance Ministry team (copy at Alex Shapira & Co.)",
+        "strength": "secondary"
+      },
+      "checked": "2026-10-31",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "TXK-21"
+      ],
+      "state": "sourced",
+      "notes": "A recommendation, not law: 200,000 NIS in total per Israeli resident, inside and outside the account together, no yearly limit, indexed to the CPI each 1 January."
+    }
+  },
+  "il_finance_file": "tax-gemel-lehashkaa-ira-child.md",
+  "checked": "2026-10-31",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.capitax.co.il/Attachments/arbitrage_committee-07-2026.pdf#page=14",
+      "title": "הצוות לצמצום הפערים במכשירי השקעה בחיסכון לטווח קצר ובינוני, דו\"ח מסכם, יולי 2026",
+      "title_he": "הצוות לצמצום הפערים במכשירי השקעה בחיסכון לטווח קצר ובינוני, דו\"ח מסכם, יולי 2026",
+      "publisher": "Finance Ministry team (copy at Alex Shapira & Co.)",
+      "publisher_he": "צוות משרד האוצר (עותק באתר אלכס שפירא ושות׳)",
+      "kind": "official_pdf",
+      "strength": "secondary",
+      "locator": "pp.5, 10-14, 16-17",
+      "locator_he": "עמודים 5, 10 עד 14, 16 ו־17",
+      "page": 14,
+      "checked": "2026-10-31"
+    }
+  ]
+}

@@ -14,7 +14,7 @@ import { accountWorthRow } from "../components/guide-signature/current-account";
 import { cashLikeIds } from "../lib/guide-signature";
 import { Disclosure, Sentence, Tag } from "../components/kit";
 import { fmt } from "../lib/format";
-import { omitsSection, splitTerms } from "../lib/guide-nav";
+import { omitsSection, splitTerms, withdrawalRules } from "../lib/guide-nav";
 import { useInputs } from "../lib/inputs";
 import { guideContent } from "../content/guide";
 import { anyWeak, type SiteValue } from "../lib/value";
@@ -66,7 +66,7 @@ export async function loader({ params }: Route.LoaderArgs) {
   const worthIds = loadPinnedRules().guide_blocks?.[params.id] ?? [];
   const allRules = loadRules();
   const rules = { ...data.rules };
-  for (const id of worthIds) if (!rules[id] && allRules[id]) rules[id] = allRules[id]!;
+  for (const id of [...worthIds, ...withdrawalRules(params.id)]) if (!rules[id] && allRules[id]) rules[id] = allRules[id]!;
   // the records the cards point at, the pinned facts' too, travel beside the page's own rules (only chips and cards read them)
   return { ...data, rules, pointed: pointedRecords(rules, allRules), worthIds };
 }
@@ -197,6 +197,13 @@ export default function GuidePage() {
       lead: onlyAt ? <span>{blocks.exit.onlyAt.before} {onlyAt}{blocks.exit.onlyAt.after}</span> : undefined,
     });
   }
+  // issue 129: the same three rows on every guide they apply to
+  if (withdrawalRules(record.id).includes("PF-46")) inout.push({ id: "days-count", label: blocks.withdrawal.daysCount.label, value: blocks.withdrawal.daysCount.value, rules: ["PF-46"] });
+  const messageCeiling = withdrawalRules(record.id).includes("PF-45") ? figure("PF-45", "digital_message_ceiling") : null;
+  if (messageCeiling) inout.push({ id: "unlawful", label: blocks.withdrawal.unlawful.label, value: <>{blocks.withdrawal.unlawful.before} <Num value={messageCeiling} display={fmt.nisWhole(Number(messageCeiling.value))} />{blocks.withdrawal.unlawful.after}</>, rules: ["PF-45"] });
+  const lowOne = withdrawalRules(record.id).includes("TXP-18") ? figure("TXP-18", "low_income_one") : null;
+  const lowDouble = lowOne ? figure("TXP-18", "low_income_double") : null;
+  if (lowOne && lowDouble) inout.push({ id: "low-income", label: blocks.withdrawal.lowIncome.label, value: <>{blocks.withdrawal.lowIncome.before} <Num value={lowOne} /> {blocks.withdrawal.lowIncome.one} <Num value={lowDouble} /> {blocks.withdrawal.lowIncome.after}</>, rules: ["TXP-18"] });
   if (content && record.switch_is_tax_event.value === false) {
     inout.push({ id: "switch", label: blocks.exit.labelSwitch, value: content.switchLine, rules: [...(record.switch_is_tax_event.rule_ids ?? []), ...content.switchRules.filter((r) => !(record.switch_is_tax_event.rule_ids ?? []).includes(r))] });
   }

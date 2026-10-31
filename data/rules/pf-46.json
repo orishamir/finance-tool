@@ -1,0 +1,31 @@
+{
+  "id": "PF-46",
+  "title": "The days to pay a withdrawal count only from a complete request",
+  "title_he": "הימים לתשלום משיכה נספרים רק מבקשה מלאה",
+  "text_he": "בקשה שחסרים בה פרטים שהגוף המוסדי צריך כדי לבדוק את הזכאות, כמו מסמכים מצורפים, חשבון הבנק או זהות העמית, אינה בקשה מלאה. הימים שנקבעו בחוק ובתקנון מתחילים רק כשכל הפרטים אצל הגוף. עיכוב בגלל השלמת פרטים כאלה אינו איחור ולא מזכה בריבית פיגורים. הגוף עדיין חייב לעשות את כל הבדיקות בתוך הימים שנקבעו.",
+  "strength": "primary",
+  "dimensions": [
+    "protection",
+    "regulator"
+  ],
+  "likely_to_change": "no",
+  "figures": {},
+  "il_finance_file": "provident-family-common.md",
+  "checked": "2026-10-31",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-legislation296/he/clarification-2026-673-pdf.pdf",
+      "title": "הבהרה לעניין הליך משיכת כספים מקופת גמל, שה.2026-673, 19.4.2026",
+      "title_he": "הבהרה לעניין הליך משיכת כספים מקופת גמל, שה.2026-673, 19.4.2026",
+      "publisher": "Capital Market, Insurance and Savings Authority",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "p.1; p.2",
+      "locator_he": "עמודים 1 ו־2",
+      "page": 1,
+      "checked": "2026-10-31"
+    }
+  ]
+}

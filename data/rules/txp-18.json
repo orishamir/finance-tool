@@ -4,7 +4,9 @@
   "title_he": "משיכה שלא כדין: מוקדמת או בלי עמידה בתנאים",
   "text_he": "משיכה מקופת גמל לקצבה, או משיכה מקופת גמל לפני זמנה, היא משיכה שלא כדין וממוסה בגבוה מבין שיעור המס המזערי והשיעור השולי; הקופה מנכה במקור את השיעור המזערי. בחישוב לפי השיעור המזערי ניתנות רק נקודות הזיכוי הבסיסיות, ובחישוב השולי ניתנים זיכויים, ניכויים וקיזוזים כמו בהכנסה מיגיעה אישית. לא ממוסה כך: משיכה בשל הכנסה נמוכה של בני הזוג, עד הפער משכר המינימום (כפול אם יש ילד קטין), בטופס לקופה; הוצאות רפואיות (לא שיניים) מעל מחצית ההכנסה השנתית; נכות קבועה בדרגה גבוהה של העמית או של קרוב שנקבעה אחרי תחילת ההפקדות; ומשיכת יורשים במות העמית. המס חל על כל הסכום שמשולם: התקנות ממסות את העמית על אותם כספים בשיעור המזערי גם אם הוא פטור ממס או חייב בשיעור נמוך יותר, והפקודה מחילה במקומן את המס הרגיל כשהוא גבוה יותר.",
   "figure_names_he": {
-    "minimum_rate": "שיעור המס המזערי על משיכה שלא כדין"
+    "minimum_rate": "שיעור המס המזערי על משיכה שלא כדין",
+    "low_income_one": "הכנסה מזערית: יחיד, או זוג בלי ילדים מתחת לגיל 18",
+    "low_income_double": "הכנסה מזערית: יחיד או זוג עם ילד מתחת לגיל 18"
   },
   "strength": "primary",
   "dimensions": [
@@ -33,12 +35,65 @@
       ],
       "state": "sourced",
       "notes": "A withdrawal the law does not allow is taxed at the higher of 35% and the marginal rate, and the fund withholds 35%. Exceptions: low household income (form 159א), medical expenses above half the annual income, permanent disability of 75% or more (form 159), and heirs on death. The taxable base is the whole amount paid (reg. 3(1) of the 1962 regulations, \"על אותם כספים\"; s.87(ד) applies the ordinary tax where it is higher)."
+    },
+    "low_income_one": {
+      "value": 6247.67,
+      "unit": "nis_per_month",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/policy/professional-inst-261025/he/IncomeTax_professional-inst-261025.pdf",
+        "title": "רשות המסים, משיכת כספי תגמולים ללא ניכוי מס בשל מיעוט הכנסות ועדכון טופס 159א, 26.10.2025, p.1 s.ב.3",
+        "publisher": "Israel Tax Authority",
+        "strength": "primary"
+      },
+      "checked": "2026-10-31",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "TXP-18"
+      ],
+      "state": "sourced",
+      "notes": "One monthly minimum wage, as of 4/2025 as the letter prints it."
+    },
+    "low_income_double": {
+      "value": 12495.34,
+      "unit": "nis_per_month",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/policy/professional-inst-261025/he/IncomeTax_professional-inst-261025.pdf",
+        "title": "רשות המסים, משיכת כספי תגמולים ללא ניכוי מס בשל מיעוט הכנסות ועדכון טופס 159א, 26.10.2025, p.1 s.ב.3",
+        "publisher": "Israel Tax Authority",
+        "strength": "primary"
+      },
+      "checked": "2026-10-31",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "TXP-18"
+      ],
+      "state": "sourced",
+      "notes": "Twice the monthly minimum wage, as of 4/2025 as the letter prints it."
     }
   },
   "il_finance_file": "tax-pension-gemel-lekitzba.md",
   "checked": "2026-10-22",
   "scope": "general",
   "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/policy/professional-inst-261025/he/IncomeTax_professional-inst-261025.pdf",
+      "title": "משיכת כספי תגמולים ללא ניכוי מס בשל מיעוט הכנסות ועדכון טופס 159א, 26.10.2025",
+      "title_he": "משיכת כספי תגמולים ללא ניכוי מס בשל מיעוט הכנסות ועדכון טופס 159א, 26.10.2025",
+      "publisher": "Israel Tax Authority",
+      "publisher_he": "רשות המסים",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "p.1 s.ב.3-5; p.2 s.6-7",
+      "locator_he": "עמוד 1 סעיף ב.3 עד 5; עמוד 2 סעיפים 6 ו־7",
+      "page": 1,
+      "checked": "2026-10-31"
+    },
     {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/~Yg+aDp+~ePh0JDdCeG7hBWqLMUkCuhSPoCwN1UKmyI=#page=3",
       "title": "תקנות מס הכנסה (כללים בדבר חיוב במס על תשלומים לקרן שלא אושרה ותשלומים שלא כדין), תשכ\"ב-1962, gazette ק\"ת 1317, p.2006",
