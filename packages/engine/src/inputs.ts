@@ -130,7 +130,7 @@ const nestedKeys: Partial<Record<keyof InstrumentTerms, string[]>> = {
 };
 
 /** Tariff lines each run reads; a line the run would ignore is an error, not a silent drop. */
-const tariffKeys: Partial<Record<Family, string[]>> = { makam: ["buy", "sell", "custody", "monthlyFee"], bond: ["buy", "sell", "custody", "monthlyFee"] };
+const tariffKeys: Partial<Record<Family, string[]>> = { makam: ["buy", "sell", "redeem", "custody", "monthlyFee"], bond: ["buy", "sell", "custody", "monthlyFee"] };
 
 /**
  * Fund kinds a wrapper can hold. The engine runs a taxable money-market fund with a daily fund's liquidity

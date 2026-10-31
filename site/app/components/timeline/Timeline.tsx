@@ -128,6 +128,11 @@ export function Timeline({ bundle: pageBundle, initial, wrapperName, ageMarker, 
   // or named in the sentence; it comes back when an input makes it real (a rate entered on the current account brings the tax)
   const hasFees = points.some((p) => p.fees > 0.005);
   const hasTax = points.some((p) => p.tax > 0.005);
+  // the table keeps a column it has shown, so a slider at zero does not take the column away and move the others (design-system 2.5a)
+  const tableFees = useRef(false);
+  const tableTax = useRef(false);
+  tableFees.current ||= hasFees;
+  tableTax.current ||= hasTax;
   const afterWhat = hasFees && hasTax ? copy.headline.afterBoth : hasTax ? copy.headline.afterTax : hasFees ? copy.headline.afterFees : null;
   const modeWords = mode === "real" ? copy.headline.real : copy.headline.nominal;
   const tail = afterWhat ? `${afterWhat}, ${modeWords}` : modeWords;
@@ -185,8 +190,8 @@ export function Timeline({ bundle: pageBundle, initial, wrapperName, ageMarker, 
           rowHead={copy.table.year}
           columns={[
             { id: "contributions", head: copy.table.contributions },
-            ...(hasFees ? [{ id: "fees", head: copy.table.fees }] : []),
-            ...(hasTax ? [{ id: "tax", head: copy.table.tax }] : []),
+            ...(tableFees.current ? [{ id: "fees", head: copy.table.fees }] : []),
+            ...(tableTax.current ? [{ id: "tax", head: copy.table.tax }] : []),
             { id: "net", head: copy.table.net },
           ]}
           rows={timeline.years.map((p) => {
@@ -194,7 +199,7 @@ export function Timeline({ bundle: pageBundle, initial, wrapperName, ageMarker, 
             return {
               key: p.year,
               head: p.year,
-              cells: [<Num key="c" value={v.contributions} size="cell" />, ...(hasFees ? [<Num key="f" value={v.fees} size="cell" />] : []), ...(hasTax ? [<Num key="t" value={v.tax} size="cell" />] : []), <Num key="n" value={v.net} size="cell" />],
+              cells: [<Num key="c" value={v.contributions} size="cell" />, ...(tableFees.current ? [<Num key="f" value={v.fees} size="cell" />] : []), ...(tableTax.current ? [<Num key="t" value={v.tax} size="cell" />] : []), <Num key="n" value={v.net} size="cell" />],
             };
           })}
         />
@@ -210,7 +215,7 @@ export function Timeline({ bundle: pageBundle, initial, wrapperName, ageMarker, 
             <h3 id={titleId} className="text-lg font-semibold">
               {copy.graphTitle}
             </h3>
-            <span className="text-sm text-muted-foreground">
+            <span className="text-sm text-muted-foreground max-w-measure">
               {/* audit A45: it says it is an example and names the inputs, so it does not read as a promise */}
               {values ? (
                 <>
@@ -236,6 +241,14 @@ export function Timeline({ bundle: pageBundle, initial, wrapperName, ageMarker, 
           </div>
           <SegmentedControl label={copy.modeLabel} options={[{ value: "real", label: copy.modes.real }, { value: "nominal", label: copy.modes.nominal }]} value={mode} onChange={setMode} className="lg:w-auto lg:min-w-[260px] max-w-full" />
         </div>
+
+        {/* issue 23: a figure in future shekels read as ignoring inflation; each mode names the other's figure and why deposits exceed what was typed */}
+        {values && timeline.kind === "ok" ? (
+          <p className="text-sm text-muted-foreground max-w-measure min-h-[6rem] lg:min-h-12">
+            {copy.modeNote[mode].before} <Num value={values.yearValues(timeline.years[timeline.years.length - 1]!, mode === "real" ? "nominal" : "real").net} /> {copy.modeNote[mode].after}
+            {(state.entered.monthly_deposit ?? p05Number(bundle.p05, "monthly_deposit")) > 0 ? ` ${copy.modeNote.deposits}` : ""}
+          </p>
+        ) : null}
 
         {timeline.kind === "ok" ? (
           <>
@@ -337,6 +350,7 @@ function labelOf(key: P05Input): string {
 
 /** The product terms the run read (flows 6.5): each a provenance number, in the order of the label table; not editable. */
 function TermsList({ bundle }: { bundle: Bundle }) {
+  const tiedCopy = guideBlocks.terms.pick.tied;
   const rows = Object.entries(guideBlocks.terms.labels).filter(([key]) => bundle.feeValues[key]);
   const employment = bundle.feeValues.employment;
   if (rows.length === 0 && !employment) return null;
@@ -355,6 +369,26 @@ function TermsList({ bundle }: { bundle: Bundle }) {
       {owners.length > 0 && (
         <p className="text-sm">
           {guideBlocks.terms.whose} <bdi className="font-medium">{owners.join(" · ")}</bdi>
+        </p>
+      )}
+      {bundle.pick && (
+        <p className="text-sm">
+          {bundle.pick.tied ? (
+            <>
+              {tiedCopy.before} <Num value={bundle.pick.count} /> {tiedCopy.middle}{" "}
+              {bundle.pick.tied.names.map((name, i) => (
+                <span key={name}>
+                  {i > 0 && <> {tiedCopy.and}</>}
+                  <bdi>{name}</bdi>{" "}
+                </span>
+              ))}
+              {tiedCopy.tie} <Num value={bundle.pick.tied.theta} />, {tiedCopy.after} <bdi>{bundle.pick.tied.names[0]}</bdi>. {tiedCopy.end}
+            </>
+          ) : (
+            <>
+              {guideBlocks.terms.pick[bundle.pick.kind].before} <Num value={bundle.pick.count} /> {guideBlocks.terms.pick[bundle.pick.kind].after}
+            </>
+          )}
         </p>
       )}
       <dl className="readout">

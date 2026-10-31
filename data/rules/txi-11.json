@@ -59,6 +59,7 @@
       "kind": "official_pdf",
       "strength": "primary",
       "locator": "p.41, item 3",
+      "locator_he": "עמוד 41, פרט 3",
       "page": 41,
       "quote": "דמי ניכיון על מק״מ חייבים ב-20% מס בעת המימוש",
       "checked": "2026-10-26"
@@ -71,6 +72,7 @@
       "kind": "official_pdf",
       "strength": "primary",
       "locator": "p.41, item 3",
+      "locator_he": "עמוד 41, פרט 3",
       "page": 41,
       "checked": "2026-10-26"
     },

@@ -1,6 +1,6 @@
 // "השקעה במדד" on the collected data (spec §8): the founder's plan, the grid, the custom index and D27.
 import { describe, expect, it } from "vitest";
-import { buildInvest, cheapestWay, pairCosts, indexById, knownIndices, matchKnownIndex, optionOfFund, rangeOverKnownIndices, refOfCustom, venueOfBand, type CustomIndex } from "./invest";
+import { buildInvest, cheapestWay, pairCosts, indexById, knownIndices, matchKnownIndex, optionOfFund, rangeOverKnownIndices, refOfCustom, venueOfBand, type CustomIndex, doubtOf } from "./invest";
 import { buildWorkbenchBundle } from "./providers.server";
 import type { WorkbenchInputs } from "./providers";
 import { entered } from "./value";
@@ -25,14 +25,50 @@ const sp = indexById(bundle, "index-sp500")!;
 describe("invest page computation", () => {
   const view = buildInvest({ bundle, index: sp, plan: plan() });
 
+  it("prices the Irish distributing funds from their records' yields, and keeps a reason on the US ones (issue 147)", () => {
+    const abroad = view.options.find((o) => o.id === "abroad")!;
+    const of = (id: string) => abroad.funds.find((f) => f.rec.id === id)!;
+    for (const id of ["ie0031442068", "ie00b3xxrp09"]) {
+      expect(of(id).best?.valueN).toBeGreaterThan(0);
+      expect(of(id).best?.open).toBe(false);
+      // paying out costs tax along the way: below the same house's accumulating fund at the same fee, which is not ranked
+      expect(of(id).best!.valueN).toBeLessThan(of("ie00b5bmr087").best!.valueN);
+    }
+    for (const id of ["us-voo", "us-ivv"]) {
+      expect(of(id).best).toBeUndefined();
+      expect(of(id).reason).toEqual({ code: "us-fund-open" });
+    }
+  });
+
+  it("marks the houses that print a price for monthly buying, and only them", () => {
+    // three banks print a commission for a standing order; Interactive Israel a conversion for its recurring plan (p.6 of its tariff, issue 132)
+    const marked = view.houses.filter((h) => h.entries.some((e) => e.price?.standing)).map((h) => h.provider.id);
+    expect(marked.sort()).toEqual(["fibi", "interactive-israel", "leumi", "massad"]);
+  });
+
+  it("Fair stays priced below 250 NIS a month: its pages put that floor on the first investment (issue 141)", () => {
+    const low = buildInvest({ bundle, index: sp, plan: plan({ amountNow: 0, monthly: 100 }) });
+    const fair = low.houses.find((h) => h.provider.id === "fair")!;
+    expect(fair.best?.price?.valueN).toBeGreaterThan(0);
+  });
+
+  it("Psagot is grey on funds abroad, with its tariff's own words on why (issue 144, D42)", () => {
+    const abroad = view.options.find((o) => o.id === "abroad")!;
+    const accumulating = abroad.funds.filter((f) => f.rec.distribution_policy === "accumulating");
+    expect(accumulating.length).toBeGreaterThan(0);
+    for (const f of accumulating) expect("valueN" in f.byHouse.psagot!).toBe(false);
+    expect(doubtOf(bundle.snapshots.find((s) => s.id === "psagot"), "abroad")).toContain("עשויה להשתנות");
+    expect(view.headline!.providerId).toBe("fair");
+  });
+
   it("lists the equity indices of the records, none chosen for the person", () => {
     expect(knownIndices(bundle).map((i) => i.id)).toContain("index-sp500");
     expect(knownIndices(bundle).every((i) => i.exposure?.kind === "equity_index")).toBe(true);
   });
 
-  it("the founder's plan: the cheapest way is Psagot Trade with a tracking fund, priced with the fund's own class", () => {
+  it("the founder's plan: the cheapest way is Fair with a tracking fund, priced with the fund's own class", () => {
     expect(view.headline).not.toBeNull();
-    expect(view.headline!.providerId).toBe("psagot");
+    expect(view.headline!.providerId).toBe("fair");
     expect(view.headline!.option).toBe("il-tracking");
     expect(optionOfFund(view.headline!.fund.rec, sp.exposure!)).toBe("il-tracking");
   });
@@ -106,7 +142,7 @@ describe("invest page computation", () => {
 
   it("the API: the cheapest way for an index, and the range over the known indices", () => {
     const w = cheapestWay(bundle, sp, plan());
-    expect(w?.providerId).toBe("psagot");
+    expect(w?.providerId).toBe("fair");
     const r = rangeOverKnownIndices(bundle, plan())!;
     expect(r.low.valueN).toBeLessThanOrEqual(r.high.valueN);
     expect(r.perIndex.length).toBeGreaterThan(3);
@@ -205,7 +241,7 @@ describe("one account and one fund, broken down (2026-10-27)", () => {
   });
 
   it("the parts still add up when a fund pays out (A-10): the tax paid along the way, with its lost growth, is the state's", () => {
-    // no collected fund pays out yet: the cheapest one, read as if its record said it does
+    // the cheapest fund, read as if its record said it pays out, with the yield entered
     const b = { ...bundle, funds: bundle.funds.map((f) => (f.id === w.fund.rec.id ? { ...f, distribution_policy: "distributing" as const } : f)) };
     const assumptions = { distributions: { [w.fund.rec.id]: { yield: 1.3, perYear: 4 } } };
     const v = buildInvest({ bundle: b, index: sp, plan: plan(), assumptions });

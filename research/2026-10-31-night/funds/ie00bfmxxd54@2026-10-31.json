@@ -1,0 +1,82 @@
+{
+  "id": "ie00bfmxxd54",
+  "names": {
+    "en": [
+      "Vanguard S&P 500 UCITS ETF (USD) Accumulating"
+    ],
+    "he": [],
+    "tase": []
+  },
+  "identifiers": {
+    "isin": "IE00BFMXXD54",
+    "tase_number": null,
+    "cusip": null,
+    "ticker": {
+      "LSE": "VUAA",
+      "LSE_GBP": "VUAG",
+      "Deutsche Boerse": "VUAA"
+    }
+  },
+  "manager": "Vanguard Global Advisers, LLC (fund: Vanguard Funds plc)",
+  "domicile": "IE",
+  "legal_form": "UCITS ETF, share class USD Accumulating of Vanguard Funds plc, Ireland; investment method 'Physical'; inception 14 May 2019; benchmark 'S&P 500 Net Total Return'.",
+  "exposure_id": "index-sp500",
+  "currency": "USD",
+  "trading_currency_on_tase": null,
+  "distribution_policy": "accumulating",
+  "tax_status": {
+    "il_fund_tax_track": null,
+    "tase_foreign_fund_90pct_test": null
+  },
+  "fees": {
+    "fixed_management": {
+      "value": 0.07,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://fund-docs.vanguard.com/SandP_500_UCITS_ETF_USD_Accumulating_9694_EU_INT_UK_EN.pdf#page=1",
+        "title": "Vanguard S&P 500 UCITS ETF USD Accumulating, factsheet at 30 September 2026, p. 1: 'Ongoing Charges Figure 0.07%' (library be6b56d18242118d)",
+        "publisher": "Vanguard (Vanguard Funds plc)",
+        "strength": "institution"
+      },
+      "checked": "2026-10-31",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-28",
+        "TXF-16",
+        "TXF-29",
+        "TXF-30",
+        "TXF-31"
+      ],
+      "state": "sourced",
+      "notes": "Ongoing charges figure as the factsheet prints it (at 30 September 2026; the factsheet says it is directed at professional investors, this was the edition readable). The key investor information (accurate at 17/02/2026) prints the same 0.07%, on its p. 2, with entry charge None and exit charge None and says it is based on the year ended 31 December 2025; that document is library 3ab0270f05a4be5d. The prospectus was not opened; no Tel Aviv line was seen and no TASE number was looked up."
+    },
+    "trustee": null,
+    "variable_management": null,
+    "tracking_difference_12m": null,
+    "median_spread": null,
+    "fund_level_withholding_drag": null
+  },
+  "dimensions": {
+    "foreign-withholding-domicile": "covered:TXF-16",
+    "distribution-policy": "covered:ETF-28",
+    "currency": "covered:ETF-28",
+    "fee-management-balance": "covered:ETF-28",
+    "fee-trade": "covered:ETF-29"
+  },
+  "prospectus": {
+    "url": "https://fund-docs.vanguard.com/ie00bfmxxd54-en.pdf",
+    "date": null
+  },
+  "snapshot": "2026-10-31",
+  "replication": {
+    "method": "physical",
+    "source": {
+      "url": "https://fund-docs.vanguard.com/SandP_500_UCITS_ETF_USD_Accumulating_9694_EU_INT_UK_EN.pdf",
+      "page": 1,
+      "checked": "2026-10-31"
+    }
+  }
+}

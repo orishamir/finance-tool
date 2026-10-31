@@ -38,7 +38,9 @@
           "url": "https://www.as-invest.co.il/media/oqdfpafo/תעריפון-מלא-אלטשולר-שחם-טרייד.pdf",
           "title": "תעריפון אלטשולר שחם טרייד בע\"מ (המסמך אינו נושא תאריך; מטא-נתוני ה-PDF: נוצר 9.12.2024, שונה 22.5.2025), חלק 4 - ניירות ערך, (4א) שרותים נפוצים, סעיף 1, ני\"ע הנסחרים בבורסה בת\"א - קניה, מכירה ופדיון (למעט קרנות ולרבות רכישה בהנפקה ועסקאות מחוץ לבורסה) (עמ' 1)",
           "publisher": "Altshuler Shaham Trade Ltd.",
-          "strength": "institution"
+          "strength": "institution",
+          "page": 1,
+          "quote": "קרנות ולרבות רכישה בהנפקה 0.15% מינימום ₪ 3.5"
         },
         "checked": "2026-10-23",
         "effective_from": null,
@@ -59,7 +61,9 @@
           "url": "https://www.as-invest.co.il/media/oqdfpafo/תעריפון-מלא-אלטשולר-שחם-טרייד.pdf",
           "title": "תעריפון אלטשולר שחם טרייד בע\"מ (המסמך אינו נושא תאריך; מטא-נתוני ה-PDF: נוצר 9.12.2024, שונה 22.5.2025), חלק 4, (4א) סעיף 1, מינימום (עמ' 1)",
           "publisher": "Altshuler Shaham Trade Ltd.",
-          "strength": "institution"
+          "strength": "institution",
+          "page": 1,
+          "quote": "קרנות ולרבות רכישה בהנפקה 0.15% מינימום ₪ 3.5"
         },
         "checked": "2026-10-23",
         "effective_from": null,
@@ -98,7 +102,9 @@
           "url": "https://www.as-invest.co.il/media/oqdfpafo/תעריפון-מלא-אלטשולר-שחם-טרייד.pdf",
           "title": "תעריפון אלטשולר שחם טרייד בע\"מ (המסמך אינו נושא תאריך; מטא-נתוני ה-PDF: נוצר 9.12.2024, שונה 22.5.2025), חלק 4, (4א) סעיף 2, קניה, מכירה ופדיון מק\"מ (עמ' 1)",
           "publisher": "Altshuler Shaham Trade Ltd.",
-          "strength": "institution"
+          "strength": "institution",
+          "page": 1,
+          "quote": "ופדיון מק\"מ 0.1% מינימום ₪ 3.5"
         },
         "checked": "2026-10-23",
         "effective_from": null,
@@ -119,7 +125,9 @@
           "url": "https://www.as-invest.co.il/media/oqdfpafo/תעריפון-מלא-אלטשולר-שחם-טרייד.pdf",
           "title": "תעריפון אלטשולר שחם טרייד בע\"מ (המסמך אינו נושא תאריך; מטא-נתוני ה-PDF: נוצר 9.12.2024, שונה 22.5.2025), חלק 4, (4א) סעיף 2, מינימום (עמ' 1)",
           "publisher": "Altshuler Shaham Trade Ltd.",
-          "strength": "institution"
+          "strength": "institution",
+          "page": 1,
+          "quote": "ופדיון מק\"מ 0.1% מינימום ₪ 3.5"
         },
         "checked": "2026-10-23",
         "effective_from": null,
@@ -145,6 +153,70 @@
       }
     },
     {
+      "id": "altshuler-trade-redemption-makam",
+      "base": "trade",
+      "applies_to": [
+        "makam"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.1,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.as-invest.co.il/media/oqdfpafo/תעריפון-מלא-אלטשולר-שחם-טרייד.pdf",
+          "title": "תעריפון אלטשולר שחם טרייד בע\"מ (המסמך אינו נושא תאריך; מטא-נתוני ה-PDF: נוצר 9.12.2024, שונה 22.5.2025), חלק 4, (4א) סעיף 2, קניה, מכירה ופדיון מק\"מ (עמ' 1)",
+          "publisher": "Altshuler Shaham Trade Ltd.",
+          "strength": "institution",
+          "page": 1,
+          "quote": "ופדיון מק\"מ 0.1% מינימום ₪ 3.5"
+        },
+        "checked": "2026-10-31",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "The tariff has one line for makam and it names redemption."
+      },
+      "min": {
+        "value": 3.5,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.as-invest.co.il/media/oqdfpafo/תעריפון-מלא-אלטשולר-שחם-טרייד.pdf",
+          "title": "תעריפון אלטשולר שחם טרייד בע\"מ (המסמך אינו נושא תאריך; מטא-נתוני ה-PDF: נוצר 9.12.2024, שונה 22.5.2025), חלק 4, (4א) סעיף 2, מינימום (עמ' 1)",
+          "publisher": "Altshuler Shaham Trade Ltd.",
+          "strength": "institution",
+          "page": 1,
+          "quote": "ופדיון מק\"מ 0.1% מינימום ₪ 3.5"
+        },
+        "checked": "2026-10-31",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "'מינימום ₪ 3.5'."
+      },
+      "max": null,
+      "period": null,
+      "channel": null,
+      "band": "פדיון",
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קניה, מכירה ופדיון מק\"מ"
+        ]
+      }
+    },
+    {
       "id": "altshuler-trade-buy-sell-funds",
       "base": "trade",
       "applies_to": [
@@ -159,7 +231,9 @@
           "url": "https://www.as-invest.co.il/media/oqdfpafo/תעריפון-מלא-אלטשולר-שחם-טרייד.pdf",
           "title": "תעריפון אלטשולר שחם טרייד בע\"מ (המסמך אינו נושא תאריך; מטא-נתוני ה-PDF: נוצר 9.12.2024, שונה 22.5.2025), חלק 4, (4א) סעיף 5, קניה, מכירה ופדיון של קרנות נאמנות וסל הנסחרות בבורסה בת\"א (עמ' 1)",
           "publisher": "Altshuler Shaham Trade Ltd.",
-          "strength": "institution"
+          "strength": "institution",
+          "page": 2,
+          "quote": "נאמנות וסל הנסחרות בבורסה 0.15% מינימום ₪ 16"
         },
         "checked": "2026-10-23",
         "effective_from": null,
@@ -180,7 +254,9 @@
           "url": "https://www.as-invest.co.il/media/oqdfpafo/תעריפון-מלא-אלטשולר-שחם-טרייד.pdf",
           "title": "תעריפון אלטשולר שחם טרייד בע\"מ (המסמך אינו נושא תאריך; מטא-נתוני ה-PDF: נוצר 9.12.2024, שונה 22.5.2025), חלק 4, (4א) סעיף 5, מינימום (עמ' 1)",
           "publisher": "Altshuler Shaham Trade Ltd.",
-          "strength": "institution"
+          "strength": "institution",
+          "page": 2,
+          "quote": "נאמנות וסל הנסחרות בבורסה 0.15% מינימום ₪ 16"
         },
         "checked": "2026-10-23",
         "effective_from": null,
@@ -220,7 +296,9 @@
           "url": "https://www.as-invest.co.il/media/oqdfpafo/תעריפון-מלא-אלטשולר-שחם-טרייד.pdf",
           "title": "תעריפון אלטשולר שחם טרייד בע\"מ (המסמך אינו נושא תאריך; מטא-נתוני ה-PDF: נוצר 9.12.2024, שונה 22.5.2025), חלק 4, (4א) סעיף 7, ני\"ע זרים - קניה, מכירה ופדיון, (א) מסחר במניות ו-ETF's בארה\"ב, מסלול (3) (עמ' 2)",
           "publisher": "Altshuler Shaham Trade Ltd.",
-          "strength": "institution"
+          "strength": "institution",
+          "page": 2,
+          "quote": "0.15% משווי העסקה מינימום 9$"
         },
         "checked": "2026-10-23",
         "effective_from": null,
@@ -241,7 +319,9 @@
           "url": "https://www.as-invest.co.il/media/oqdfpafo/תעריפון-מלא-אלטשולר-שחם-טרייד.pdf",
           "title": "תעריפון אלטשולר שחם טרייד בע\"מ (המסמך אינו נושא תאריך; מטא-נתוני ה-PDF: נוצר 9.12.2024, שונה 22.5.2025), חלק 4, (4א) סעיף 7, מסלול (3), מינימום (עמ' 2)",
           "publisher": "Altshuler Shaham Trade Ltd.",
-          "strength": "institution"
+          "strength": "institution",
+          "page": 2,
+          "quote": "0.15% משווי העסקה מינימום 9$"
         },
         "checked": "2026-10-23",
         "effective_from": null,
@@ -287,7 +367,9 @@
           "url": "https://www.as-invest.co.il/media/oqdfpafo/תעריפון-מלא-אלטשולר-שחם-טרייד.pdf",
           "title": "תעריפון אלטשולר שחם טרייד בע\"מ (המסמך אינו נושא תאריך; מטא-נתוני ה-PDF: נוצר 9.12.2024, שונה 22.5.2025), חלק 4, (4א) סעיף 10, דמי ניהול/טיפול פקדון ני\"ע (עמ' 2)",
           "publisher": "Altshuler Shaham Trade Ltd.",
-          "strength": "institution"
+          "strength": "institution",
+          "page": 2,
+          "quote": "דמי ניהול/טיפול פקדון ני\"ע ₪ 75 לחודש 0.15% מינימום"
         },
         "checked": "2026-10-23",
         "effective_from": null,
@@ -299,7 +381,7 @@
           "BRK-15"
         ],
         "state": "sourced",
-        "notes": "'0.15%, מינימום ₪ 75 לחודש', charged once a month ('אחת לחודש'), computed on the portfolio value including financial assets and fund units. The tariff does not say whether 0.15% is a monthly or an annual rate; recorded per the monthly charging period as printed, unconfirmed. The tariff prints no exemption of makam or money-market funds from custody; the bank ban (BRK-17) does not apply to a non-bank member, and no rule limits its custody fee on them (BRK-52; BRK open question 11 closed 2026-10-26), so no excludes are recorded."
+        "notes": "'0.15%, מינימום ₪ 75 לחודש', charged once a month ('אחת לחודש'), computed on the portfolio value including financial assets and fund units. The tariff does not say whether 0.15% is a monthly or an annual rate; TASE's fee calculator (https://market.tase.co.il/he/market_data/trading_fees, Altshuler's sheet, read in a browser 2026-10-31) prints list 0.1500% a year, minimum 75 NIS a month, no average charged. So the period here is a year, and the 75 NIS is per month (F-14). The tariff prints no exemption of makam or money-market funds from custody; the bank ban (BRK-17) does not apply to a non-bank member, and no rule limits its custody fee on them (BRK-52; BRK open question 11 closed 2026-10-26), so no excludes are recorded."
       },
       "min": {
         "value": 75,
@@ -308,7 +390,9 @@
           "url": "https://www.as-invest.co.il/media/oqdfpafo/תעריפון-מלא-אלטשולר-שחם-טרייד.pdf",
           "title": "תעריפון אלטשולר שחם טרייד בע\"מ (המסמך אינו נושא תאריך; מטא-נתוני ה-PDF: נוצר 9.12.2024, שונה 22.5.2025), חלק 4, (4א) סעיף 10, מינימום (עמ' 2)",
           "publisher": "Altshuler Shaham Trade Ltd.",
-          "strength": "institution"
+          "strength": "institution",
+          "page": 2,
+          "quote": "דמי ניהול/טיפול פקדון ני\"ע ₪ 75 לחודש 0.15% מינימום"
         },
         "checked": "2026-10-23",
         "effective_from": null,
@@ -323,7 +407,7 @@
         "notes": "'מינימום ₪ 75 לחודש'."
       },
       "max": null,
-      "period": "month",
+      "period": "year",
       "channel": null,
       "band": null,
       "statement_code": null,
@@ -347,7 +431,9 @@
           "url": "https://www.as-invest.co.il/media/oqdfpafo/תעריפון-מלא-אלטשולר-שחם-טרייד.pdf",
           "title": "תעריפון אלטשולר שחם טרייד בע\"מ (המסמך אינו נושא תאריך; מטא-נתוני ה-PDF: נוצר 9.12.2024, שונה 22.5.2025), חלק 5 - מטבע חוץ, סעיף 1, עמלת חליפין (עמ' 2)",
           "publisher": "Altshuler Shaham Trade Ltd.",
-          "strength": "institution"
+          "strength": "institution",
+          "page": 3,
+          "quote": "עמלת חליפין פטור"
         },
         "checked": "2026-10-23",
         "effective_from": null,
@@ -370,7 +456,9 @@
           "url": "https://www.as-invest.co.il/media/oqdfpafo/תעריפון-מלא-אלטשולר-שחם-טרייד.pdf",
           "title": "תעריפון אלטשולר שחם טרייד בע\"מ (המסמך אינו נושא תאריך; מטא-נתוני ה-PDF: נוצר 9.12.2024, שונה 22.5.2025), חלק 5 - מטבע חוץ, סעיף 2, מרווח המרה (עמ' 2)",
           "publisher": "Altshuler Shaham Trade Ltd.",
-          "strength": "institution"
+          "strength": "institution",
+          "page": 3,
+          "quote": "מרווח המרה עד 0.7% משער המרה"
         },
         "checked": "2026-10-23",
         "effective_from": null,
@@ -409,7 +497,9 @@
           "url": "https://www.as-invest.co.il/media/oqdfpafo/תעריפון-מלא-אלטשולר-שחם-טרייד.pdf",
           "title": "תעריפון אלטשולר שחם טרייד בע\"מ (המסמך אינו נושא תאריך; מטא-נתוני ה-PDF: נוצר 9.12.2024, שונה 22.5.2025), חלק 9 - שירותים ועמלות נוספות, סעיף 1, דמי ניהול תקופתיים (עמ' 3)",
           "publisher": "Altshuler Shaham Trade Ltd.",
-          "strength": "institution"
+          "strength": "institution",
+          "page": 3,
+          "quote": "דמי ניהול תקופתיים עד ₪ 80 אחת לחודש"
         },
         "checked": "2026-10-23",
         "effective_from": null,
@@ -442,5 +532,60 @@
   },
   "notice_rule_ids": [
     "BRK-15"
-  ]
+  ],
+  "availability": [
+    {
+      "applies_to": [
+        "mutual_fund_units",
+        "etf_units"
+      ],
+      "available": "unknown",
+      "source": {
+        "url": "https://www.as-invest.co.il/media/oqdfpafo/תעריפון-מלא-אלטשולר-שחם-טרייד.pdf",
+        "title": "תעריפון אלטשולר שחם טרייד בע\"מ (3 עמ'; המסמך אינו מודפס עם תאריך; מטא-נתוני ה-PDF: נוצר 9.12.2024, שונה 22.5.2025; זה הק",
+        "checked": "2026-10-31",
+        "page": 2,
+        "quote": "נאמנות וסל הנסחרות בבורסה"
+      },
+      "reason_he": "לפי מחשבון העמלות של הבורסה, התעריף הוא 0.15% לשנה, מינימום 75 שקלים לחודש. אבל במחשבון אין ממוצע שנגבה בפועל, ודף החברה אומר ״ללא דמי משמרת״ בלי תנאים. לא ברור מי משלם את התעריף, ולכן האתר לא מחשב לה מחיר.",
+      "note": "Printed \"אחת לחודש, 0.15% מינימום ₪ 75 לחודש\", p.2. TASE's fee calculator (https://market.tase.co.il/he/market_data/trading_fees, Altshuler's sheet, read in a browser 2026-10-31) prints list 0.1500% a year, minimum 75 NIS a month, no average charged. The tariff itself does not say. Its about page (library 22f5007bbc67cda4, as-invest.co.il/trade/about/, read 2026-10-31) says \"מחירים אטרקטיביים במיוחד, ללא דמי משמרת\" with no condition; its joining offer (library e7f582848e27b188, /trade/trading_benefits/) waives \"דמי ניהול\" for new customers, and the offer's terms (library e99ac8ffb6741bb3, p.2) give it to an account with frequent trades, at the company's discretion. Neither states the ordinary customer's rate. Would settle it: the fee annex of the account agreement (not published), or the company's written answer."
+    },
+    {
+      "applies_to": [
+        "foreign_securities"
+      ],
+      "available": "unknown",
+      "source": {
+        "url": "https://www.as-invest.co.il/media/oqdfpafo/תעריפון-מלא-אלטשולר-שחם-טרייד.pdf",
+        "title": "תעריפון אלטשולר שחם טרייד בע\"מ (3 עמ'; המסמך אינו מודפס עם תאריך; מטא-נתוני ה-PDF: נוצר 9.12.2024, שונה 22.5.2025; זה הק",
+        "checked": "2026-10-31",
+        "page": 2,
+        "quote": "מסחר במניות ו ETF'S"
+      },
+      "reason_he": "לפי מחשבון העמלות של הבורסה, התעריף הוא 0.15% לשנה, מינימום 75 שקלים לחודש. אבל במחשבון אין ממוצע שנגבה בפועל, ודף החברה אומר ״ללא דמי משמרת״ בלי תנאים. לא ברור מי משלם את התעריף, ולכן האתר לא מחשב לה מחיר.",
+      "note": "Printed \"אחת לחודש, 0.15% מינימום ₪ 75 לחודש\", p.2. TASE's fee calculator (https://market.tase.co.il/he/market_data/trading_fees, Altshuler's sheet, read in a browser 2026-10-31) prints list 0.1500% a year, minimum 75 NIS a month, no average charged. The tariff itself does not say. Its about page (library 22f5007bbc67cda4, as-invest.co.il/trade/about/, read 2026-10-31) says \"מחירים אטרקטיביים במיוחד, ללא דמי משמרת\" with no condition; its joining offer (library e7f582848e27b188, /trade/trading_benefits/) waives \"דמי ניהול\" for new customers, and the offer's terms (library e99ac8ffb6741bb3, p.2) give it to an account with frequent trades, at the company's discretion. Neither states the ordinary customer's rate. Would settle it: the fee annex of the account agreement (not published), or the company's written answer."
+    }
+  ],
+  "price_for_he": "לקוח רגיל, בלי הטבה לקבוצה",
+  "left_out": [
+    {
+      "what": "תקנון מבצע הצטרפות: פטור מדמי ניהול חשבון לחשבון פעיל",
+      "why": "An offer with its own conditions, in a separate document; not priced."
+    },
+    {
+      "what": "דף מבצע ההצטרפות: קנייה ומכירה של \"מניות, קרנות סל וקרנות מחקות בישראל\" 0.07%, מינימום 2.9 שקלים; \"השקעה חודשית קבועה בהוראת קבע\" ללא עלות",
+      "why": "For new customers under the joining offer (library e7f582848e27b188, read 2026-10-31); not the ordinary customer's price, and the record is grey for its custody line anyway."
+    }
+  ],
+  "groups": {
+    "state": "no_mention",
+    "note": "Full tariff read in the filed copy; a joining offer is listed under left_out. Searched for young, student, soldier, released-soldier, group and club wording; none found on a price. This covers the tariff read, not a personal offer.",
+    "read": [
+      {
+        "url": "https://www.as-invest.co.il/media/oqdfpafo/תעריפון-מלא-אלטשולר-שחם-טרייד.pdf",
+        "title": "תעריפון מלא"
+      }
+    ],
+    "entries": []
+  }
 }

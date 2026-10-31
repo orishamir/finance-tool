@@ -79,6 +79,17 @@
       "checked": "2026-10-25"
     },
     {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/HiehF7UL8gSftjhlpLxrKPH+yuGCEINw6ptzinFLzLk=#page=24",
+      "title": "s.15, gazette ק״ת תשנ״ה, 322",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "s.15",
+      "locator_he": "סעיף 15",
+      "checked": "2026-10-25"
+    },
+    {
       "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-64186b589b352/080217.pdf",
       "title": "מדריך למשקיע: קרנות נאמנות (רשות ניירות ערך, ינואר 2017)",
       "title_he": "מדריך למשקיע: קרנות נאמנות (ינואר 2017)",
@@ -133,8 +144,7 @@
     },
     {
       "url": "https://he.wikisource.org/wiki/תקנות_השקעות_משותפות_בנאמנות_(מחירי_קניה_ומכירה_של_נכסי_קרן_ושווי_נכסי_קרן)",
-      "title": "תקנות השקעות משותפות בנאמנות (מחירי קניה ומכירה של נכסי קרן ושווי נכסי קרן), התשנ\"ה-1994, נוסח משולב (ויקיטקסט, מראה של התקנות)",
-      "title_he": "תקנות השקעות משותפות בנאמנות (מחירי קניה ומכירה של נכסי קרן ושווי נכסי קרן), התשנ\"ה-1994, נוסח משולב (ויקיטקסט, מראה של התקנות)",
+      "title": "תקנות השקעות משותפות בנאמנות (מחירי קניה ומכירה של נכסי קרן ושווי נכסי קרן), התשנ\"ה-1994, נוסח משולב (ויקיטקסט, מראה של התקנות), unofficial consolidated text, the only copy found of the current wording",
       "publisher": "Hebrew Wikisource",
       "publisher_he": "ויקיטקסט",
       "kind": "regulation",
@@ -144,7 +154,8 @@
       "locator_he": "תקנה 15(א)-(ב)",
       "anchor": "סעיף_15.א",
       "quote": "בקרן שעל פי מדיניות ההשקעות שלה, לא יעלה שווי ניירות ערך חוץ שיוחזקו בה על עשרה אחוזים מהשווי הנקי של נכסיה",
-      "checked": "2026-10-26"
+      "checked": "2026-10-31",
+      "note": "(gazette for the text as enacted or amended there; the Wikisource page, unofficial, is the only consolidated copy of the current wording found)"
     },
     {
       "url": "https://olaw.org.il/takanot/takanot-5637.pdf#page=24",

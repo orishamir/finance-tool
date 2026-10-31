@@ -1,0 +1,37 @@
+{
+  "id": "BRK-55",
+  "title": "First International: the HighTech 10 club's prices are a promotion",
+  "title_he": "הבינלאומי: המחירים של מועדון HighTech 10 הם הטבה",
+  "text_he": "לחברי מועדון HighTech 10 של הבנק הבינלאומי המחיר לקניית קרן מחקה בהוראת קבע הוא 0.1%, מינימום 5 שקלים. ההטבות מוענקות עד 31.12.2026. האתר מחשב את הבינלאומי לפי התעריפון ולא לפי המחירים האלה.",
+  "strength": "institution",
+  "dimensions": [
+    "fee-trade"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2026-12-31",
+  "il_finance_file": "brokerage-account.md",
+  "checked": "2026-10-31",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "fibi",
+      "name_he": "הבנק הבינלאומי"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.fibi.co.il/media/cnvlnxrr/%D7%94%D7%98%D7%91%D7%95%D7%AA-%D7%99%D7%99%D7%97%D7%95%D7%93%D7%99%D7%95%D7%AA-%D7%9C%D7%A4%D7%A2%D7%99%D7%9C%D7%99%D7%9D-%D7%A2%D7%A6%D7%9E%D7%90%D7%99%D7%AA.pdf",
+      "title": "הטבות אטרקטיביות לפעילים עצמאית בשוק ההון (מועדון HighTech 10)",
+      "title_he": "הטבות אטרקטיביות לפעילים עצמאית בשוק ההון (מועדון HighTech 10)",
+      "publisher": "First International Bank",
+      "publisher_he": "הבנק הבינלאומי",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.3",
+      "locator_he": "עמוד 3",
+      "page": 3,
+      "quote": "קניה של קרן מחקה באמצעות הוראות קבע",
+      "checked": "2026-10-31"
+    }
+  ]
+}

@@ -1,10 +1,11 @@
 // Bank deposit (D29): what do I give up by locking the money? A marker on the deposit's term ("when do you need the money"), two
-// lanes (the deposit, locked with no break; a daily money-market fund, open every trading day), what each lets you take at the marker
-// and, at the end of the term, what each earned with the difference as a bracket. Rate, term and break terms are the deposit record's.
+// lanes (the deposit, locked at the banks that say so; a daily money-market fund, open every trading day), what each lets you take at the
+// marker and, at the end of the term, what each earned with the difference as a bracket. Whether it locks is a count over the collected
+// deposits, and the bars stand on the middle of those that cannot be broken, with the range of all of them in a sentence under them (F-86), each bank named (D31).
 import { scaleLinear } from "d3-scale";
 import { useId, useMemo, useState } from "react";
 import { guideSignature as copy, values as valuesCopy } from "../../copy";
-import { breakKindOf, depositModel, fact, factNumber } from "../../lib/guide-signature";
+import { depositEndBanks, depositModel, fact, factNumber } from "../../lib/guide-signature";
 import { fmt } from "../../lib/format";
 import { entered as enteredValue, type SiteValue } from "../../lib/value";
 import { Callout, GainBars, InputSlot, KeyValue, LaneLabel, Marker, MarkerMark, NumberField, Sentence, Stat, StatRow, useWidth } from "../kit";
@@ -23,12 +24,16 @@ export function BankDepositVisual({ data, today }: VisualProps) {
   const inputs = useSigInputs(depositBundle);
   const rate = fact(data, "rate")!;
   const termFact = fact(data, "term")!;
-  const brk = fact(data, "break");
+  const noExit = fact(data, "depositNoExitCount");
+  const count = fact(data, "depositCount");
+  const ends = depositEndBanks(data);
+  const example = (data.depositBanks ?? []).find((b) => b.id === depositBundle.pick?.id);
+  const allLocked = !!noExit && !!count && noExit.value === count.value;
   const cash = fact(data, "cashRate")!;
   const banks = data.depositBanks ?? [];
   const lo = fact(data, "depositLo");
   const hi = fact(data, "depositHi");
-  const kind = breakKindOf(brk);
+  const kind = Number(noExit?.value ?? 0) > 0 ? "not-allowed" : "other";
   const model = useMemo(() => depositModel(data, { amount: inputs.amount }), [data, inputs.amount]);
   const term = model?.term ?? factNumber(data, "term") ?? 12;
   const [month, setMonth] = useState<number | null>(null);
@@ -55,6 +60,8 @@ export function BankDepositVisual({ data, today }: VisualProps) {
         fundNow: fundNow === null ? null : figure(fundNow, "nis", "F-67", { ...fundInputs, [copy.deposit.marker]: figureMonths(m, today) }, today, copy.deposit.about.fundNow, rulesOfBundle(fundBundle)),
       }
     : null;
+  const depositGainLow = model && model.atTermLo !== null && ends ? figure(model.atTermLo - inputs.amount, "nis", "F-67", { ...depInputs, [copy.common.inputNames.rate]: ends.bottom.rate }, today, copy.deposit.about.depositGainLow, rulesOfBundle(depositBundle)) : null;
+  const depositGainHigh = model && model.atTermHi !== null && ends ? figure(model.atTermHi - inputs.amount, "nis", "F-67", { ...depInputs, [copy.common.inputNames.rate]: ends.top.rate }, today, copy.deposit.about.depositGainHigh, rulesOfBundle(depositBundle)) : null;
   const diff = v && model ? figure(Math.abs(model.gap), "nis", "F-67", { [copy.deposit.lanes.deposit]: v.depositGain, [copy.deposit.lanes.fund]: v.fundGain }, today, copy.deposit.about.gap) : null;
   const locked = kind === "not-allowed" && m < term;
 
@@ -124,7 +131,14 @@ export function BankDepositVisual({ data, today }: VisualProps) {
           </span>
           {kind === "not-allowed" && (
             <LaneLabel from={0} to={plotW} top={DEPOSIT_Y - 25} prefer="end">
-              {copy.deposit.locked}: {copy.deposit.noBreak}
+              {allLocked || !noExit || !count ? (
+                copy.deposit.locked.all
+              ) : (
+                <>
+                  {copy.deposit.locked.before}
+                  <Num value={noExit} /> {copy.deposit.locked.of} <Num value={count} /> {copy.deposit.locked.after}
+                </>
+              )}
             </LaneLabel>
           )}
           {/* beside the fund's name, in the row the marker crosses: it steps aside from the marker, and fades when there is no room */}
@@ -134,23 +148,34 @@ export function BankDepositVisual({ data, today }: VisualProps) {
           <span className="absolute text-xs text-chart-text" dir="rtl" style={{ right: 0, top: AXIS_Y + 14 - 2 }}>
             {copy.deposit.unit}
           </span>
-          <Marker min={0} max={term} step={1} value={m} onChange={setMonth} label={copy.deposit.marker} valueText={`${m} ${copy.deposit.atMarker.month}`} left={0} top={DEPOSIT_Y - 14} width={plotW} height={FUND_Y + LANE_H + 10 - (DEPOSIT_Y - 14)} />
+          <Marker min={0} max={term} step={1} value={m} onChange={setMonth} label={copy.deposit.marker} valueText={fmt.months(m)} left={0} top={DEPOSIT_Y - 14} width={plotW} height={FUND_Y + LANE_H + 10 - (DEPOSIT_Y - 14)} />
         </div>
         <p className="text-xs text-muted-foreground">{copy.common.drag}</p>
       </div>
 
       <div className="flex flex-col gap-3">
         <p className="text-sm font-medium">
-          {copy.deposit.atMarker.lead} <InputSlot chars={3}><bdi dir="ltr">{m}</bdi></InputSlot> {copy.deposit.atMarker.month}:
+          {copy.deposit.atMarker.lead} <InputSlot chars={9}>{fmt.months(m)}</InputSlot>:
         </p>
         <StatRow cols={2}>
           <Stat label={copy.deposit.atMarker.deposit} tone="value">
             {kind !== "not-allowed" ? (
               <span className="text-base font-normal text-muted-foreground">{copy.deposit.breakOther}</span>
             ) : locked ? (
-              <span className="text-base font-normal">{copy.deposit.atMarker.none}</span>
+              <span className="text-base font-normal">
+                {allLocked || !noExit || !count ? (
+                  copy.deposit.atMarker.none.all
+                ) : (
+                  <>
+                    {copy.deposit.atMarker.none.before}
+                    <Num value={noExit} /> {copy.deposit.atMarker.none.of} <Num value={count} /> {copy.deposit.atMarker.none.after}
+                  </>
+                )}
+              </span>
             ) : v ? (
-              <Num value={v.depositEnd} />
+              <>
+                <span className="text-base font-normal">{copy.deposit.atMarker.upTo}</span> <Num value={v.depositEnd} />
+              </>
             ) : null}
           </Stat>
           <Stat label={copy.deposit.atMarker.fund} tone="alt">
@@ -158,11 +183,6 @@ export function BankDepositVisual({ data, today }: VisualProps) {
           </Stat>
         </StatRow>
         {kind !== "not-allowed" && <Gap id="depositBreak" />}
-        {brk && (
-          <Sentence size="sm" tone="muted" measure>
-            {copy.deposit.bankWords} {kind === "not-allowed" ? <Num value={brk} display={copy.deposit.noBreak} /> : <bdi dir="ltr">{brk.notes}</bdi>}
-          </Sentence>
-        )}
       </div>
 
       {v && diff && model && (
@@ -172,21 +192,28 @@ export function BankDepositVisual({ data, today }: VisualProps) {
           </p>
           <GainBars
             bars={[
-              { key: "deposit", label: copy.deposit.lanes.deposit, value: v.depositGain, tone: "value" },
+              { key: "deposit", label: example ? <>{copy.deposit.atEnd.depositBar.before} <bdi>{example.name}</bdi>{copy.deposit.atEnd.depositBar.after}</> : copy.deposit.lanes.deposit, value: v.depositGain, tone: "value" },
               { key: "fund", label: copy.deposit.lanes.fund, value: v.fundGain, tone: "alt" },
             ]}
             diff={diff}
             diffLabel={model.gap >= 0 ? copy.deposit.atEnd.gapMore : copy.deposit.atEnd.gapLess}
           />
+          {depositGainLow && depositGainHigh && ends && count && ends.bottom.id !== ends.top.id && (
+            <Sentence size="sm" tone="muted" measure>
+              {copy.deposit.atEnd.range.before} <Num value={count} /> {copy.deposit.atEnd.range.middle} <Num value={depositGainLow} /> (<bdi>{ends.bottom.name}</bdi>) {copy.deposit.atEnd.range.to}
+              <Num value={depositGainHigh} /> (<bdi>{ends.top.name}</bdi>
+              {ends.top.exit ? <>: {copy.deposit.banks.exit[String(ends.top.exit.value)] ?? copy.deposit.breakOther}</> : null}
+              {ends.top.conditions ? <>; {ends.top.conditions}</> : null}).
+            </Sentence>
+          )}
           <p className="text-xs text-muted-foreground">{copy.deposit.afterTax}</p>
         </div>
       )}
 
       <div className="flex flex-col gap-2 text-sm max-w-measure">
         <p>
-          {copy.deposit.rateLine.before} <Num value={rate} /> {copy.deposit.rateLine.middle} <Num value={termFact} display={fmt.months(term)} />.
+          {copy.deposit.rateLine.before} <Num value={rate} /> {copy.deposit.rateLine.middle} <bdi>{example?.name}</bdi>, {copy.deposit.rateLine.term} <Num value={termFact} display={fmt.months(term)} />. {copy.deposit.rateLine.kind} {depositBundle.pick && <Num value={depositBundle.pick.count} />} {copy.deposit.rateLine.after}
         </p>
-        <p className="text-muted-foreground">{copy.common.onlyLeumi}</p>
         <Sentence tone="muted">
           {copy.common.fundAssumption.before} <Num value={cash} /> {copy.common.fundAssumption.after}
         </Sentence>
@@ -199,6 +226,13 @@ export function BankDepositVisual({ data, today }: VisualProps) {
             {banks.map((b) => (
               <KeyValue key={b.id} label={<bdi>{b.name}</bdi>}>
                 <Num value={b.rate} />
+                {b.exit && (
+                  <>
+                    {" · "}
+                    <Num value={b.exit} display={copy.deposit.banks.exit[String(b.exit.value)] ?? copy.deposit.breakOther} />
+                  </>
+                )}
+                {b.conditions && <> · {b.conditions}</>}
               </KeyValue>
             ))}
           </dl>

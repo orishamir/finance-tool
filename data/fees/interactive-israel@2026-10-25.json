@@ -10,6 +10,7 @@
       "country": "Cyprus"
     },
     "tase_member": false,
+    "israeli_tax_service": true,
     "protection_rule_ids": [
       "BRK-06",
       "BRK-14",
@@ -42,7 +43,9 @@
           "url": "https://www.inter-il.com/wp-content/uploads/2026/09/%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F-%D7%A2%D7%9E%D7%9C%D7%95%D7%AA-23.09.2026-1.pdf",
           "title": "תעריף עמלות מסחר, אינטראקטיב ישראל (PDF, 'תעריפון זה מעודכן החל מיום 23.09.2026'), עמ' 1, טבלת 'מניות', שורת USD (Shares)",
           "publisher": "Interactive Israel (MEXEM LTD)",
-          "strength": "institution"
+          "strength": "institution",
+          "page": 1,
+          "quote": "2.5 USD 0.01 )USD (Shares"
         },
         "checked": "2026-10-25",
         "effective_from": "2026-09-23",
@@ -63,7 +66,9 @@
           "url": "https://www.inter-il.com/wp-content/uploads/2026/09/%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F-%D7%A2%D7%9E%D7%9C%D7%95%D7%AA-23.09.2026-1.pdf",
           "title": "תעריף עמלות מסחר, אינטראקטיב ישראל (PDF, 'תעריפון זה מעודכן החל מיום 23.09.2026'), עמ' 1, טבלת 'מניות', שורת USD (Shares), מינימום לעסקה",
           "publisher": "Interactive Israel (MEXEM LTD)",
-          "strength": "institution"
+          "strength": "institution",
+          "page": 1,
+          "quote": "2.5 USD 0.01 )USD (Shares"
         },
         "checked": "2026-10-25",
         "effective_from": "2026-09-23",
@@ -85,7 +90,9 @@
           "url": "https://www.inter-il.com/wp-content/uploads/2026/09/%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F-%D7%A2%D7%9E%D7%9C%D7%95%D7%AA-23.09.2026-1.pdf",
           "title": "תעריף עמלות מסחר, אינטראקטיב ישראל (PDF, 'תעריפון זה מעודכן החל מיום 23.09.2026'), עמ' 1, הערה לטבלת 'מניות': עמלת מקסימום במניות ארה\"ב",
           "publisher": "Interactive Israel (MEXEM LTD)",
-          "strength": "institution"
+          "strength": "institution",
+          "page": 1,
+          "quote": "עמלת מקסימום במניות ארה\"ב הינה 2% משווי העסקה"
         },
         "checked": "2026-10-25",
         "effective_from": "2026-09-23",
@@ -125,7 +132,9 @@
           "url": "https://www.inter-il.com/wp-content/uploads/2026/09/%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F-%D7%A2%D7%9E%D7%9C%D7%95%D7%AA-23.09.2026-1.pdf",
           "title": "תעריף עמלות מסחר, אינטראקטיב ישראל (PDF, 'תעריפון זה מעודכן החל מיום 23.09.2026'), עמ' 1, הערות לטבלת 'מניות': מניות/תעודות סל הנסחרות באירופה",
           "publisher": "Interactive Israel (MEXEM LTD)",
-          "strength": "institution"
+          "strength": "institution",
+          "page": 1,
+          "quote": "עבור מניות/תעודות סל הנסחרות באירופה 0.15% משווי העסקה מינימום 2.5"
         },
         "checked": "2026-10-25",
         "effective_from": "2026-09-23",
@@ -146,7 +155,9 @@
           "url": "https://www.inter-il.com/wp-content/uploads/2026/09/%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F-%D7%A2%D7%9E%D7%9C%D7%95%D7%AA-23.09.2026-1.pdf",
           "title": "תעריף עמלות מסחר, אינטראקטיב ישראל (PDF, 'תעריפון זה מעודכן החל מיום 23.09.2026'), עמ' 1, הערות לטבלת 'מניות': מינימום 2.5 בהתאם למטבע העסקה",
           "publisher": "Interactive Israel (MEXEM LTD)",
-          "strength": "institution"
+          "strength": "institution",
+          "page": 1,
+          "quote": "עבור מניות/תעודות סל הנסחרות באירופה 0.15% משווי העסקה מינימום 2.5"
         },
         "checked": "2026-10-25",
         "effective_from": "2026-09-23",
@@ -186,7 +197,8 @@
           "url": "https://www.inter-il.com/commission/",
           "title": "עמלות מסחר באינטראקטיב ישראל (עמוד HTML), 'דמי ניהול: 0 ₪' ושאלות ותשובות: 'האם יש דמי ניהול חודשיים'",
           "publisher": "Interactive Israel (MEXEM LTD)",
-          "strength": "institution"
+          "strength": "institution",
+          "quote": "אנו לא גובים דמי ניהול, בנוסף אין דמי שמירת ניירות ערך"
         },
         "checked": "2026-10-25",
         "effective_from": null,
@@ -227,7 +239,8 @@
           "url": "https://www.inter-il.com/commission/",
           "title": "עמלות מסחר באינטראקטיב ישראל (עמוד HTML), 'דמי מערכת: 0 ש\"ח' ו'דמי ניהול: 0 ₪'",
           "publisher": "Interactive Israel (MEXEM LTD)",
-          "strength": "institution"
+          "strength": "institution",
+          "quote": "דמי מערכת: 0 ש\"ח"
         },
         "checked": "2026-10-25",
         "effective_from": null,
@@ -269,7 +282,9 @@
           "url": "https://www.inter-il.com/wp-content/uploads/2026/09/%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F-%D7%A2%D7%9E%D7%9C%D7%95%D7%AA-23.09.2026-1.pdf",
           "title": "תעריף עמלות מסחר, אינטראקטיב ישראל (PDF, 'תעריפון זה מעודכן החל מיום 23.09.2026'), עמ' 6, טבלת 'המרות מט\"ח', שורת ILS (%)",
           "publisher": "Interactive Israel (MEXEM LTD)",
-          "strength": "institution"
+          "strength": "institution",
+          "page": 6,
+          "quote": "10 ILS 0.002 * Trade Value"
         },
         "checked": "2026-10-25",
         "effective_from": "2026-09-23",
@@ -290,7 +305,9 @@
           "url": "https://www.inter-il.com/wp-content/uploads/2026/09/%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F-%D7%A2%D7%9E%D7%9C%D7%95%D7%AA-23.09.2026-1.pdf",
           "title": "תעריף עמלות מסחר, אינטראקטיב ישראל (PDF, 'תעריפון זה מעודכן החל מיום 23.09.2026'), עמ' 6, טבלת 'המרות מט\"ח', שורת ILS (%), מינימום לעסקה",
           "publisher": "Interactive Israel (MEXEM LTD)",
-          "strength": "institution"
+          "strength": "institution",
+          "page": 6,
+          "quote": "10 ILS 0.002 * Trade Value"
         },
         "checked": "2026-10-25",
         "effective_from": "2026-09-23",
@@ -330,7 +347,9 @@
           "url": "https://www.inter-il.com/wp-content/uploads/2026/09/%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F-%D7%A2%D7%9E%D7%9C%D7%95%D7%AA-23.09.2026-1.pdf",
           "title": "תעריף עמלות מסחר, אינטראקטיב ישראל (PDF, 'תעריפון זה מעודכן החל מיום 23.09.2026'), עמ' 6, הערה לטבלת 'המרות מט\"ח': השקעה אוטומטית קבועה",
           "publisher": "Interactive Israel (MEXEM LTD)",
-          "strength": "institution"
+          "strength": "institution",
+          "page": 6,
+          "quote": "בזמן ביצוע המרת מטבע במסגרת תכנית השקעה אוטומטית קבועה אין חיוב בגין עמלת המרת מט\"ח"
         },
         "checked": "2026-10-25",
         "effective_from": "2026-09-23",
@@ -395,9 +414,22 @@
       "source": {
         "url": "https://www.inter-il.com/israeli-stock-market/",
         "title": "אינטראקטיב ישראל: בורסה ישראלית (BRK-41)",
-        "checked": "2026-10-25"
+        "checked": "2026-10-31"
       },
-      "note": "'באינטראקטיב ישראל נכון להיום, קנייה ומכירה של ניירות ערך ישראלים הנסחרים בבורסת תל אביב ניתנת ללקוחות מוסדיים בלבד' (BRK-41; worded 'נכון להיום'). Israeli mutual funds and tracking funds: no page offers them, which is 'not found', not recorded here."
+      "note": "'באינטראקטיב ישראל נכון להיום, קנייה ומכירה של ניירות ערך ישראלים הנסחרים בבורסת תל אביב ניתנת ללקוחות מוסדיים בלבד' (BRK-41; worded 'נכון להיום'). The page's list holds shares and ETFs only, and its tariff prints no mutual-fund line, so an Israeli tracking fund is read as not sold to a private client either."
+    },
+    {
+      "applies_to": [
+        "mutual_fund_units"
+      ],
+      "available": "unknown",
+      "source": {
+        "url": "https://www.inter-il.com/israeli-stock-market/",
+        "title": "אינטראקטיב ישראל: בורסה ישראלית (BRK-41)",
+        "checked": "2026-10-31"
+      },
+      "reason_he": "החברה כותבת שמסחר בניירות ערך בבורסה בתל אביב פתוח ללקוחות מוסדיים בלבד, ולא כותבת על קרן פתוחה שלא נסחרת בבורסה.",
+      "note": "Read as not sold; no document says so in words."
     },
     {
       "applies_to": [
@@ -405,11 +437,26 @@
       ],
       "available": true,
       "source": {
-        "url": "https://www.inter-il.com/financial-products-on-indices/",
-        "title": "אינטראקטיב ישראל: רשימת תעודות סל וחוזים עתידיים שימושיים (BRK-41)",
-        "checked": "2026-10-25"
+        "url": "https://www.inter-il.com/wp-content/uploads/2026/09/%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F-%D7%A2%D7%9E%D7%9C%D7%95%D7%AA-23.09.2026-1.pdf",
+        "title": "תעריף עמלות מסחר (PDF, 8 עמ', 'תעריפון זה מעודכן החל מיום 23.09.2026'), מקושר כ'לתעריפון המלא' מעמוד 'עמלות מסחר' (inter",
+        "checked": "2026-10-31",
+        "quote": "עבור מניות/תעודות סל הנסחרות באירופה",
+        "page": 1
       },
       "note": "US-listed ETFs (SPY, QQQ) and Irish UCITS ETFs listed in Europe (CSPX, CSNDX, VUSD, IWDA) are listed as tradable (BRK-41). Open: whether an Irish-regulated account blocks US-domiciled ETFs (BRK-44)."
     }
-  ]
+  ],
+  "price_for_he": "כל לקוח",
+  "left_out": [],
+  "groups": {
+    "state": "no_mention",
+    "note": "Tariff read in the filed copy; p.7 says this tariff applies to every customer. Searched for young, student, soldier, released-soldier, group and club wording; none found on a price. This covers the tariff read, not a personal offer.",
+    "read": [
+      {
+        "url": "https://www.inter-il.com/wp-content/uploads/2026/09/%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F-%D7%A2%D7%9E%D7%9C%D7%95%D7%AA-23.09.2026-1.pdf",
+        "title": "תעריפון עמלות"
+      }
+    ],
+    "entries": []
+  }
 }

@@ -13,10 +13,11 @@ export interface MakamInput {
   /** A-22 yield to redemption; series term in months (12 for the yearly series, GOV-22, GOV-23). */
   makam: { yield: number; termMonths?: number };
   /**
-   * Buy and sell lines for makam (F-12); no sale order at redemption. The custody line, if the tariff has one for makam (F-14), and
-   * the account's F-17 monthly fee in NIS, which the account charges whatever it holds.
+   * Buy and sell lines for makam (F-12). `redeem` is the tariff's own line for a redemption where it names one (F-24, 2026-10-31); with
+   * none, a redemption costs nothing. The custody line, if the tariff has one for makam (F-14), and the account's F-17 monthly fee in NIS,
+   * which the account charges whatever it holds.
    */
-  tariff: { buy?: Commission; sell?: Commission; custody?: Custody; monthlyFee?: number };
+  tariff: { buy?: Commission; sell?: Commission; redeem?: Commission; custody?: Custody; monthlyFee?: number };
   /**
    * F-14 (2026-10-26): a bank may not charge custody on makam (BRK-17, BANK-18); no rule limits a non-bank member's custody fee on
    * it (BRK-52), so there the tariff's custody line applies. Default `bank`, the case P-05's tariff (a bank's) is.
@@ -37,7 +38,8 @@ const DAYS = 365;
  * F-24 Makam, rolled yearly. Each amount buys a new series at issue at `p = 100 / (1 + y)^(N/365)`; at
  * redemption the discount is interest taxed at TXI-11's rate and the net proceeds buy the next series. A
  * series still open at the horizon is sold at the price implied by the unchanged yield, its gain taxed as a
- * capital gain on an unlinked asset (TXI-12).
+ * capital gain on an unlinked asset (TXI-12). A redemption pays the tariff's redemption line, once a month on the face value redeemed that
+ * month: amounts with one maturity are one series, so one redemption. It comes out of the proceeds and does not reduce the taxed discount (G-20).
  */
 export function runMakam(input: MakamInput, ctx: RunContext): RunResult {
   const book = ruleBook(ctx);
@@ -88,6 +90,13 @@ export function runMakam(input: MakamInput, ctx: RunContext): RunResult {
       interestThisYear += s.face - s.cost;
       tally.taxDuring += tax;
       proceeds += s.face - tax;
+    }
+    if (redeemed.length > 0) {
+      const face = redeemed.reduce((sum, s) => sum + s.face, 0);
+      const commission = Math.min(proceeds, tradeCommission(tariff.redeem, face, { fxRate: 1 }));
+      tally.fee("trade", commission);
+      if (commission > 0) tally.flag("G-20");
+      proceeds -= commission;
     }
     // before the horizon the net proceeds buy the next series at once, so a redemption month holds paper when custody is counted
     if (m < T && proceeds > 0) {

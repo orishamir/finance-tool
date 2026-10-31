@@ -1,0 +1,15 @@
+# The confirmed place of bank and broker sources in rule records, read on the page. For the rule base's owner: data/rules sources are generated from the rule base.
+# rule | library id | file page | the document's own words
+BRK-48 | 1b2d30fbf999c143 | 4 | דמי משמרת
+BRK-48 | 1b2d30fbf999c143 | 6 | מרווח המרה בלבד
+BRK-48 | 1b2d30fbf999c143 | 7 | מערכות מתקדמות ו/או ציטוטי זמן אמת
+BRK-48 | 6c9ec0ada66f77d8 | 4 | דמי ניהול/טיפול פיקדון
+BRK-48 | 6c9ec0ada66f77d8 | 6 | חבר הבורסה רשאי לגבות סכומים או שיעורים נמוכים יותר
+BRK-48 | 500b2b74e04bd53e | 2 | טיפול בתשלומי ריבית/דיבידנד
+BRK-48 | 500b2b74e04bd53e | 3 | דמי ניהול תקופתיים
+MF-56 | 1b2d30fbf999c143 | 3 | קניה מכירה ופדיון של קרנות נאמנות 0.08% משווי העסקה
+MF-56 | f31f4fdbee1483d9 | 30 | בגין קנית קרן מחקה באמצעות הוראת קבע
+MF-56 | f31f4fdbee1483d9 | 31 | לרבות יחידות השתתפות בקרנות נאמנות
+MF-56 | f31f4fdbee1483d9 | 33 | במקרים המותרים לפי תקנות השקעות משותפות
+CS-05 | 049318233fdf3b77 | 4 | בכל מקרה ונסיבות לא יפחת הסכום הצבור בחשבון החיסכון מסכום הכספים שהופקדו בו
+CS-30 | 049318233fdf3b77 | 5 | חשבון התמורה יהיה פטור מעמלות או תשלומים כלשהם

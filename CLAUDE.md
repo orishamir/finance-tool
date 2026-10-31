@@ -28,14 +28,13 @@ On 2026-10-24 (night) the knowledge layer (D25) followed: every rule record carr
 
 On 2026-10-26 D6 was amended: makam, government bonds and the money-market funds are securities bought in a securities account, not wrappers (`data/instruments/securities/`, `research/discovery/2026-10-26-wrappers-and-securities.md`); a guide page or comparison option stands for a product, a wrapper or a security held in one.
 
-Since 2026-10-26 some pages and visuals are held for the founder's review (D32): not linked from the site, still at their addresses; the list is `site/app/lib/review.ts` and `docs/roadmap.md` "Held for review" says what each needs.
+Since 2026-10-26 some pages and visuals are held for the founder's review (D32): not linked from the site, still at their addresses; the list is `site/app/lib/review.ts` and issues #45 to #48 say what each needs.
 
 All five releases of `docs/roadmap.md` are built (release 1 on 2026-10-23,
 releases 2 to 5 on 2026-10-23 and 2026-10-24); the dated "Status" paragraphs
-under each release say what exists and what is open, and its closing section
-"After release 5" lists the work that continues (tier-2 graduation, data
-growth, quarterly tariff refresh, my approvals). Switching (release 4) was
-removed on 2026-10-28 to be built again (D38). Data (2026-10-28): about 600
+under each release say what was built. Since 2026-10-31 the open work is in
+GitHub issues, not in that file ("Open work lives in GitHub issues" below).
+Switching (release 4) was removed on 2026-10-28 to be built again (D38). Data (2026-10-28): about 600
 rule records, 22 tariff snapshots for 19 providers (Meitav Trade still missing),
 48 fund records, 16 deposit-term records (Leumi's 3, seven more banks' current
 accounts since 2026-10-25, and one-year deposits of Hapoalim, Discount and
@@ -51,7 +50,8 @@ decisions D1 to D13 (confirmed 2026-10-22, open to revision as I learn more),
 and the dependencies that come before any capability. `docs/discovery.md`
 holds the research findings and the founder interview behind it. The research
 reports are in `research/discovery/`. `docs/roadmap.md` (approved 2026-10-22)
-places every capability in one of five releases; work follows that order.
+places every capability in one of five releases, all built; what comes next is
+ranked on the pinned Roadmap issue.
 
 Do not assume any feature, page, data source or scope that is not in
 `docs/product.md`. If a task needs a product decision that is not written
@@ -65,12 +65,13 @@ These override any older rule they conflict with, in the docs, older specs or
 the memory notes; where one conflicts, the older text is amended to match.
 The evidence behind them is `research/2026-10-28-founder-patterns.md`.
 
-1. **Draw before building anything a person sees.** Every change to what a
-   screen shows starts as a Hebrew mockup with the site's real numbers, in
-   two or three options with one recommended; a made-up value is marked. A
-   fix shows the symptom I saw and the same screen without it. This holds for
-   a choice I delegated too: a delegated choice that changes a screen still
-   goes through a mockup. Technical settings stay Claude's to set.
+1. **Draw before building a major graphic visualization** (narrowed
+   2026-10-31). A major chart or picture starts as a Hebrew mockup with the
+   site's real numbers, in two or three options with one recommended; a
+   made-up value is marked. A fix to one shows the symptom I saw and the same
+   screen without it. This holds for a choice I delegated too. Text and label
+   changes need no mockup, and neither does anything else short of a major
+   graphic visualization. Technical settings stay Claude's to set.
 2. **Fair and general comparisons.** Name the holding; change one thing at
    a time; show differences rather than two absolutes; use a range or a
    count over every collected institution, never one bank and never my own
@@ -98,6 +99,10 @@ The evidence behind them is `research/2026-10-28-founder-patterns.md`.
    on the site (Claude, audit ids, test names); builders' Hebrew goes
    through the Hebrew editor.
 
+**Work order (founder, 2026-10-31).** Finish the indices page and the guides
+before anything else; the workbench, holdings and idle-cash pages wait. This
+overrides the Roadmap issue's ranking, which counts what unblocks the most.
+
 ## Fixed constraints
 
 - Hebrew UI, right-to-left layout.
@@ -119,6 +124,15 @@ The evidence behind them is `research/2026-10-28-founder-patterns.md`.
   own terms, which appear named or on that company's page, never as a fact
   about a product. A statement about the whole market comes from law or
   from a count over every collected institution. See D30.
+- **No price from analogy** (founder, 2026-10-31). A house ranks on a kind of
+  holding only where its own document or fund list names it; the data check
+  fails otherwise, and a doubt is a grey row, not a note (D42). A new house or a
+  new top pick gets a fresh reviewer first, given only the documents and asked
+  to disprove it, and a short check by a real customer of that house where one
+  is at hand. A ranking change is its own commit, with its evidence, and
+  expected test numbers change only with that evidence. In chat, every figure
+  carries its assumption, and what was read is told apart from what was
+  inferred; what I report first-hand is treated as true and then checked.
 - **Never fill in a financial or tax rule from memory.** Use the
   `il-finance` skill. If a rule is missing from it, say the
   rule is missing and stop; do not guess or approximate. Site judgements
@@ -155,14 +169,45 @@ The evidence behind them is `research/2026-10-28-founder-patterns.md`.
   work is committed and pushed straight to `main` after `npm run check`
   passes. This overrides any session instruction to work on a feature branch
   or to open a PR.
+- **Open work lives in GitHub issues** (founder, 2026-10-31). The pinned
+  Roadmap issue (#122) ranks what unblocks the most, shows how far each goal
+  is and what waits on me; an Action rewrites it
+  (`.github/scripts/roadmap.mjs`), so change the issues, never its text. A goal
+  is a feature the site provides, named as its page would be named, with the question it reliably answers: a
+  milestone whose description holds the question and then the finish line,
+  finished when its tasks are closed (D39). New work gets an issue, with its milestone if it serves a
+  goal, a blocker only when the work truly cannot finish first, and a
+  `you decide` or `you do` label when it waits on me; such an issue says in
+  plain words, with no internal ids, what the question is, what each answer
+  does and what Claude recommends, or what to do. A `long horizon` label means
+  no work on it now: the Action leaves it out of the ranking and the board's
+  views and lists it apart. A commit that finishes
+  one says `Closes #n`. The board is
+  [Project 5](https://github.com/users/orishamir/projects/5), which adds new
+  issues by itself; its views filter on the `ready`, `blocked` and `unblocks`
+  labels, which the same Action keeps current, so never set those by hand.
+  Decisions still go in `docs/product.md`; the docs hold no lists of open work.
 - **Lists are starting points, not limits.** When I give a list of items,
   options, or sources, add to it where sensible unless I say otherwise.
+- **Big jobs have a budget** (founder, 2026-10-31). In the week of 24 to 30
+  October about 200 subagents used a week of tokens in a day and a half. Read
+  the weekly meter (`get_usage`) before and after each job; report it only for a
+  big job or near a limit (founder, 2026-10-31).
+  Subagents run one at a time, and small work stays in the main conversation;
+  this overrides any older instruction to run work in parallel. A job likely
+  to use more than 5% of the week gets a one-line estimate and my yes first (a
+  one-topic conversation costs about 1 to 2%, one subagent's job about 1 to
+  3%). Above 70% of the week, do only what I directly ask for. Effort is medium
+  by default and high for tax, rules and calculation work; extra high and Fable
+  only when I ask. Start a fresh agent with a short brief rather than messaging
+  an idle one.
 
 ## Repo layout
 
 - `docs/` — product docs (`product.md`, `discovery.md`, `method.md`, `roadmap.md`, `data-schema.md`, `data-inventory.md`, `parameters-rationale.md`)
 - `research/` — dated research reports and findings
 - `.claude/skills/il-finance/references/` — the rule base: the latest research on every rule, sourced and kept current (closed questions struck); the only copy. Everyone reads it; only each file's owner (the tax-specialist for the tax files, the domain-specialist for the rest) or the lead edits it, and other agents put rule findings in their reports
+- `research/library/` — every document already read, searchable by page: look there before downloading, and file each new one with `library.mjs add`. The index is in git; the files and their text are not, because the repository is public. `library.mjs recheck` says which linked documents changed since they were read
 - `data/` — source data, each entry with its source and date
 - `packages/schema/` — data schemas (Zod) for `docs/data-schema.md`; `json/` holds the exported JSON Schema
 - `packages/engine/` — calculation engine, one function per `docs/method.md` formula; no I/O

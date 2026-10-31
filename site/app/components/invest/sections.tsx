@@ -41,11 +41,6 @@ function IndexBlurb({ index, onChangeAnswer }: { index: IndexRef; onChangeAnswer
           )}
         </p>
       )}
-      {(index.custom?.currency || index.custom?.region || index.exposure) && (
-        <p className="text-sm text-muted-foreground">
-          {c.header.forInfo}: {index.exposure ? `${c.header.currency} ${index.exposure.currency}` : [index.custom?.currency && `${c.header.currency} ${index.custom.currency}`, index.custom?.region && `${c.header.region} ${index.custom.region}`].filter(Boolean).join(" · ")}
-        </p>
-      )}
     </div>
   );
 }

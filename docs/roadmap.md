@@ -3,6 +3,8 @@
 Written 2026-10-22 from `docs/product.md` (confirmed the same day, decisions D1 to D13, open to revision). Updated 2026-10-23 for D17, "no blind spots" (product.md appendix E).
 Status: **approved by the founder on 2026-10-22.** Updated 2026-10-24: all five releases are built, release 1 to release 5, each to the extent its data allows. The dated "Status" paragraphs under each release say what exists and what is open; the closing section "After release 5" says what work continues. Updated 2026-10-26: "After release 5" now ends with what was built on 2026-10-25 and 2026-10-26 and the current list of open work.
 
+**Open work moved to GitHub on 2026-10-31.** Each open item is an issue and each goal a milestone; the pinned [Roadmap issue](https://github.com/orishamir/finance-tool/issues/122) ranks what unblocks the most and shows how far each goal is. This file stays as the record of what each release holds, what was built and why, and the issues cite its sections. Its open lists ("Held for review", "Not final", "Removed, to build again", "After release 5" and "What continues, in order") were copied into issues that day and are not updated here.
+
 How to read it:
 
 - Every capability in `docs/product.md` section 3 appears exactly once below, by its number. Where a capability has parts (modes, presets, outputs), each part is placed separately so nothing disappears inside a heading. The "Not planned" section lists what is not planned, with reasons.
@@ -278,6 +280,8 @@ Approval of this document fixes the release contents and order. It did not start
 
 ## Held for review
 
+*Frozen 2026-10-31. Open as [#45](https://github.com/orishamir/finance-tool/issues/45) (idle cash), [#46](https://github.com/orishamir/finance-tool/issues/46) (holdings), [#47](https://github.com/orishamir/finance-tool/issues/47) and [#48](https://github.com/orishamir/finance-tool/issues/48) (the visuals).*
+
 *Written 2026-10-26 (D32).* The founder holds these back until he has reviewed their design and UX. They are not linked from anywhere on the site, but their addresses work, with a note at the top saying they are waiting for review. The list is `site/app/lib/review.ts`; to bring an item back, remove it from there and record the change here.
 
 - **The idle-cash page (`/idle-cash`).** The founder finds the page "a bit weird". Held with it: the home card's "כרית ביטחון" chip and its "יש לכם כבר פיקדון" pill (both lead there), the menu item and home door "כסף שיושב בעו״ש", the comparison's next step and the deposit guide's "קיבלתם הצעה מהבנק?" line. **Before it returns:** the founder walks through it as a friend with money in a current account, and says what the page should answer and in what order; the page is reworked to that, keeping F-60 and the D20 rule (entered rates, no Bank of Israel numbers); then where a cushion on the home card should land is decided again.
@@ -286,11 +290,15 @@ Approval of this document fixes the release contents and order. It did not start
 
 ## Not final
 
+*Frozen 2026-10-31. Open as [#49](https://github.com/orishamir/finance-tool/issues/49).*
+
 *Written 2026-10-26.* Built and linked from the site, but not final: the founder has not settled their design and UX, and they may change. Unlike the held items above they stay reachable from the company pages, the guides and search.
 
 - **The workbench pages (`/workbench/*`):** the tracks of a product across every company (`/workbench/tracks/<wrapper>`, F-64), the banks and investment houses for a fund (`/workbench/providers/<wrapper>`, F-63) and the fund variants of an exposure (`/workbench/funds/<exposure>`, F-65). They still carry the saved-goal strip and a fit mark on each track, which D34 moves off the company and track pages to the goals page. **Before they are final:** the founder walks through them and says what each should answer and in what order; whether their goal UI stays or moves with D34 is decided then.
 
 ## Removed, to build again
+
+*Frozen 2026-10-31. Open as [#50](https://github.com/orishamir/finance-tool/issues/50).*
 
 *Written 2026-10-28 (D38).* Taken off the site by the founder and deleted, page and code, to be built again later.
 
@@ -302,7 +310,7 @@ Approval of this document fixes the release contents and order. It did not start
 
 Every capability of `docs/product.md` section 3 is now placed in a release above and built, to the extent the data allows: the guide, checklist and catalogue (R1), goal comparison in both modes with the idle-cash preset and the sensitivity panel in wrapper mode (R2, R5), saved state with export, import and revisit (R2, R3, R5), fee materiality and the holdings review (R3), the workbench for tracks, providers and fund variants (R3, R4), the switching playbook (R4; removed 2026-10-28, D38) and the rule base, parameters and method under all of them. Where a number cannot be shown, the page says why: a publisher's terms (the Bank of Israel series, the ISA averages, the TASE fund lists), a missing record (Meitav Trade's tariff, a fund without details) or an open rule. No new capability is proposed here; the roadmap's job is done.
 
-What continues, none of it a release:
+What continues, none of it a release (*frozen 2026-10-31: the open items are now issues, ranked on the [Roadmap issue](https://github.com/orishamir/finance-tool/issues/122)*):
 
 - **Tier-2 graduation (D2)**, in the order of the release 5 pass: managed and robo portfolios, then FX deposits, corporate bonds, REITs, gold through funds; savings policies, Amendment 190 and structured deposits wait on Tax Authority texts, executive insurance on TXA OQ6. Each graduation needs the record fields of data-schema §3.3 sourced, the tax steps computing under D10 and D23, the formulas added to `docs/method.md` with golden cases, the id added to the schema, and then the pages across 3.1, 3.2, 3.3, 3.4 and 3.10. The browser to-dos per instrument are in the pass report.
 - **Data growth.** Fund records in `data/funds/` for the funds people actually ask about (N4), one by one from the prospectus; deposit terms of more banks in `data/terms/deposits/` so the bank catalogue (3.10, N6) grows beyond Leumi (*2026-10-28:* seven more banks' current accounts and three banks' one-year deposits are in; savings plans are still Leumi's only); the Maya and TASE fund lists only if TASE consents in writing (CAT-43), and the Bank of Israel series only if the Bank does (D20); Meitav Trade's tariff when it is published; the CMA snapshots keep refreshing daily.
@@ -410,7 +418,7 @@ What continues, none of it a release:
 - **A fund's "עוקבת אחרי" link** on a company page leads to the index's guide page (`/exposure/<index>`), not to the index comparison.
 - **The workbench pages are listed as not final** (section "Not final" above).
 
-**What continues, in order:**
+**What continues, in order** (*frozen 2026-10-31: the order now comes from the [Roadmap issue](https://github.com/orishamir/finance-tool/issues/122)*)**:**
 
 1. **F-48, early pension withdrawal:** re-read TXP-18's official text, then build it.
 2. **The money-market and makam rate:** tie it to the Bank of Israel rate minus the fund's fees once a person reads the BoI page, which stops scripts. Today it is a round 3.5%. *Later on 2026-10-26:* the round 3.5% became the Bank of Israel's 3.25%, quoted from its press release (D20 as amended, `docs/parameters-rationale.md`); each cash product on its own figure is the step left (`research/NEXT-WEEK.md` section 3).

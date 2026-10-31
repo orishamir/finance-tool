@@ -14,7 +14,7 @@ import { accountWorthRow } from "../components/guide-signature/current-account";
 import { cashLikeIds } from "../lib/guide-signature";
 import { Disclosure, Sentence, Tag } from "../components/kit";
 import { fmt } from "../lib/format";
-import { splitTerms } from "../lib/guide-nav";
+import { omitsSection, splitTerms, withdrawalRules } from "../lib/guide-nav";
 import { useInputs } from "../lib/inputs";
 import { guideContent } from "../content/guide";
 import { anyWeak, type SiteValue } from "../lib/value";
@@ -66,7 +66,7 @@ export async function loader({ params }: Route.LoaderArgs) {
   const worthIds = loadPinnedRules().guide_blocks?.[params.id] ?? [];
   const allRules = loadRules();
   const rules = { ...data.rules };
-  for (const id of worthIds) if (!rules[id] && allRules[id]) rules[id] = allRules[id]!;
+  for (const id of [...worthIds, ...withdrawalRules(params.id)]) if (!rules[id] && allRules[id]) rules[id] = allRules[id]!;
   // the records the cards point at, the pinned facts' too, travel beside the page's own rules (only chips and cards read them)
   return { ...data, rules, pointed: pointedRecords(rules, allRules), worthIds };
 }
@@ -83,6 +83,7 @@ export default function GuidePage() {
   const { state: inputsState } = useInputs();
   const review = useReviewMode();
   const title = (id: string) => copy.sections.find((x) => x.id === id)!.title;
+  const omitted = (id: string) => omitsSection(record.id, id);
   const figure = (ruleId: string, name: string): SiteValue | null => {
     const r = rules[ruleId];
     if (!r) return null;
@@ -196,6 +197,13 @@ export default function GuidePage() {
       lead: onlyAt ? <span>{blocks.exit.onlyAt.before} {onlyAt}{blocks.exit.onlyAt.after}</span> : undefined,
     });
   }
+  // issue 129: the same three rows on every guide they apply to
+  if (withdrawalRules(record.id).includes("PF-46")) inout.push({ id: "days-count", label: blocks.withdrawal.daysCount.label, value: blocks.withdrawal.daysCount.value, rules: ["PF-46"] });
+  const messageCeiling = withdrawalRules(record.id).includes("PF-45") ? figure("PF-45", "digital_message_ceiling") : null;
+  if (messageCeiling) inout.push({ id: "unlawful", label: blocks.withdrawal.unlawful.label, value: <>{blocks.withdrawal.unlawful.before} <Num value={messageCeiling} display={fmt.nisWhole(Number(messageCeiling.value))} />{blocks.withdrawal.unlawful.after}</>, rules: ["PF-45"] });
+  const lowOne = withdrawalRules(record.id).includes("TXP-18") ? figure("TXP-18", "low_income_one") : null;
+  const lowDouble = lowOne ? figure("TXP-18", "low_income_double") : null;
+  if (lowOne && lowDouble) inout.push({ id: "low-income", label: blocks.withdrawal.lowIncome.label, value: <>{blocks.withdrawal.lowIncome.before} <Num value={lowOne} /> {blocks.withdrawal.lowIncome.one} <Num value={lowDouble} /> {blocks.withdrawal.lowIncome.after}</>, rules: ["TXP-18"] });
   if (content && record.switch_is_tax_event.value === false) {
     inout.push({ id: "switch", label: blocks.exit.labelSwitch, value: content.switchLine, rules: [...(record.switch_is_tax_event.rule_ids ?? []), ...content.switchRules.filter((r) => !(record.switch_is_tax_event.rule_ids ?? []).includes(r))] });
   }
@@ -390,9 +398,9 @@ export default function GuidePage() {
   );
 
   return (
-    <PageShell current="guide" data={provenance}>
+    <PageShell current="guide" data={provenance} wide="large">
       <div className="lg:flex lg:gap-12 pt-2 lg:pt-8">
-        <SectionIndex sections={copy.sections.filter((x) => (x.id !== "terms" || !mainTerms.hide || generalTerms.length > 0) && ((x.id as string) !== "worth" || worthRows(data.worthIds, rules, today).length > 0 || worthFacts.length > 0) && ((x.id as string) !== "different" || !!signature))} current={current} />
+        <SectionIndex sections={copy.sections.filter((x) => !omitted(x.id) && (x.id !== "terms" || !mainTerms.hide || generalTerms.length > 0) && ((x.id as string) !== "worth" || worthRows(data.worthIds, rules, today).length > 0 || worthFacts.length > 0) && ((x.id as string) !== "different" || !!signature))} current={current} />
         <div className="flex-1 min-w-0 flex flex-col gap-section">
           <header className="flex flex-col gap-3">
             <Breadcrumb parent={{ href: "/guide", label: guideIndex.title }} current={data.name} />
@@ -439,27 +447,35 @@ export default function GuidePage() {
 
           <WorthKnowing rows={worthRows(data.worthIds, rules, today)} facts={worthFacts} />
 
-          <GuideSection id="who" title={title("who")} rulesToggle>
-            {content?.who(cp) ?? (
-              <p className="max-w-measure">
-                {regulatorName}. {copy.whoLine}
-              </p>
-            )}
-            <InstitutionChips companies={data.companies} allHref="/companies" />
-          </GuideSection>
+          {!omitted("who") && (
+            <GuideSection id="who" title={title("who")} rulesToggle>
+              {content?.who(cp) ?? (
+                <p className="max-w-measure">
+                  {regulatorName}. {copy.whoLine}
+                </p>
+              )}
+              <InstitutionChips companies={data.companies} allHref="/companies" />
+            </GuideSection>
+          )}
 
-          <GuideSection id="inout" title={title("inout")} rulesToggle>
-            <KeyValueList items={inout} />
-          </GuideSection>
+          {!omitted("inout") && (
+            <GuideSection id="inout" title={title("inout")} rulesToggle>
+              <KeyValueList items={inout} />
+            </GuideSection>
+          )}
 
-          <GuideSection id="cost" title={title("cost")} rulesToggle>
-            <FeeTable fees={fees} note={provident ? copy.feeNote : copy.feeNoteOther} />
-          </GuideSection>
+          {!omitted("cost") && (
+            <GuideSection id="cost" title={title("cost")} rulesToggle>
+              <FeeTable fees={fees} note={provident ? copy.feeNote : copy.feeNoteOther} />
+            </GuideSection>
+          )}
 
-          <GuideSection id="tax" title={title("tax")} rulesToggle>
-            <TaxSteps steps={steps} />
-            {content?.afterTax?.(cp)}
-          </GuideSection>
+          {!omitted("tax") && (
+            <GuideSection id="tax" title={title("tax")} rulesToggle>
+              <TaxSteps steps={steps} />
+              {content?.afterTax?.(cp)}
+            </GuideSection>
+          )}
 
           <GuideSection id="risk" title={title("risk")} rulesToggle>
             {content?.risks(cp) ?? (
@@ -472,9 +488,11 @@ export default function GuidePage() {
             )}
           </GuideSection>
 
-          <GuideSection id="check" title={title("check")}>
-            <DimensionChecklist rows={checklist} />
-          </GuideSection>
+          {!omitted("check") && (
+            <GuideSection id="check" title={title("check")}>
+              <DimensionChecklist rows={checklist} />
+            </GuideSection>
+          )}
 
           {(mainTerms.hide ? 0 : 1) + (generalTerms.length > 0 ? 1 : 0) > 0 && (
             <GuideSection id="terms" title={title("terms")}>

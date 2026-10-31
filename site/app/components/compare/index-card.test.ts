@@ -35,7 +35,7 @@ describe("the account's index card", () => {
   it("after a choice: the cheapest way and the link to all ways with the index", () => {
     const out = html({ ...founder, ownIndices: { [BRK]: "index-sp500" } });
     expect(out).toContain("הדרך הזולה:");
-    expect(out).toContain("פסגות");
+    expect(out).toContain("פייר");
     expect(out).toContain("כל הדרכים להשקיע במדד");
     expect(out).toContain('href="/indices/sp500"');
     expect(out).toContain("לבטל את בחירת המדד");

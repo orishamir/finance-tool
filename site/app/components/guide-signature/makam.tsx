@@ -22,9 +22,12 @@ export function MakamVisual({ data, today }: VisualProps) {
   const cash = fact(data, "cashRate")!;
   const discountRate = fact(data, "discountRate");
   const gainRate = fact(data, "gainRate");
-  const depositRate = fact(data, "depositRate");
-  const brk = fact(data, "deposit:break");
-  const depositTerm = fact(data, "deposit:term");
+  const depositLo = fact(data, "depositLo");
+  const depositHi = fact(data, "depositHi");
+  const depositCount = fact(data, "depositCount");
+  const noExit = fact(data, "depositNoExitCount");
+  // the tariff the run reads is the site's pick (F-80), named beside the commission (D31)
+  const house = bundle.feeValues.tradeRate?.own;
   const [month, setMonth] = useState<number | null>(null);
   const [box, width] = useWidth();
   const model0 = useMemo(() => makamModel(data, { amount: inputs.amount, month: 6 }), [data, inputs.amount]);
@@ -107,7 +110,8 @@ export function MakamVisual({ data, today }: VisualProps) {
 
       {model && v && (
         <div className="flex flex-col gap-3">
-          <p className="text-sm font-medium">
+          {/* one height with or without the slot: the blocks under it keep their place when the marker reaches redemption */}
+          <p className="text-sm font-medium min-h-6">
             {m >= term ? copy.makam.atRedemption : <>{copy.makam.atSale} <InputSlot chars={9}>{fmt.months(m)}</InputSlot></>}:
           </p>
           <StatRow cols={4}>
@@ -140,7 +144,21 @@ export function MakamVisual({ data, today }: VisualProps) {
           </StatRow>
           {model.fees > 0 && (
             <Sentence size="sm" tone="muted">
-              {copy.makam.figures.fees}: <Num value={v.fees} />, {copy.makam.feesWhose}
+              {copy.makam.figures.fees}: <Num value={v.fees} />
+              {house && bundle.pick && (
+                <>
+                  , {copy.makam.feesWhose.before} <bdi>{house}</bdi>
+                  {bundle.pick.tied ? (
+                    <>
+                      . {copy.makam.feesWhose.tied} <bdi>{bundle.pick.tied.names.filter((n) => n !== house).join(" · ")}</bdi>: {copy.makam.feesWhose.tiedGap} <Num value={bundle.pick.tied.theta} />.
+                    </>
+                  ) : (
+                    <>
+                      {copy.makam.feesWhose.middle} <Num value={bundle.pick.count} /> {copy.makam.feesWhose.after}
+                    </>
+                  )}
+                </>
+              )}
             </Sentence>
           )}
           {model.blocked && (
@@ -156,21 +174,20 @@ export function MakamVisual({ data, today }: VisualProps) {
           {copy.makam.yieldLine.before} <Num value={cash} /> {copy.makam.yieldLine.after}
         </p>
         <p className="text-muted-foreground">{copy.makam.redeem}</p>
-        {depositRate && (
+        {depositLo && depositHi && depositCount && noExit && (
           <p>
-            {copy.makam.altNoBreak} <Num value={depositRate} />
-            {depositTerm ? (
+            {copy.makam.altDeposit.before}{" "}
+            <span dir="ltr" className="inline-block">
+              <Num value={depositLo} />–<Num value={depositHi} />
+            </span>{" "}
+            {Number(noExit.value) === Number(depositCount.value) ? (
+              copy.makam.altDeposit.all
+            ) : (
               <>
-                {" "}
-                <Num value={depositTerm} display={fmt.months(Number(depositTerm.value))} prefix={copy.makam.altTermPrefix} />
+                {copy.makam.altDeposit.middle}
+                <Num value={noExit} /> {copy.makam.altDeposit.of} <Num value={depositCount} /> {copy.makam.altDeposit.after}
               </>
-            ) : null}
-            {brk ? (
-              <>
-                : <Num value={brk} display={copy.makam.noBreak} />
-              </>
-            ) : null}
-            . {copy.common.onlyLeumi}
+            )}
           </p>
         )}
       </div>

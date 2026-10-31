@@ -12,6 +12,7 @@ import {
   feesSnapshot,
   fundListFile,
   fundRecord,
+  type FundRecord,
   type FundListFile,
   openQuestionsFile,
   type OpenQuestionEntry,
@@ -122,6 +123,10 @@ export function validateData(ctx: ValidationContext): Problem[] {
     if (collection === "fund-lists" && result.success) {
       for (const message of checkFundList(parsed.value as FundListFile, parts[parts.length - 1]!)) report(file, message);
     }
+    if (collection === "funds" && result.success) {
+      for (const message of checkFundLoad(parsed.value as Pick<FundRecord, "fees">)) report(file, message);
+      for (const message of checkFundDistribution(parsed.value as Pick<FundRecord, "distribution_policy" | "distribution">)) report(file, message);
+    }
     if (collection === "catalog" && result.success && cmaFundIds) {
       const maps = (parsed.value as { maps_to: { cma_fund_id: number | null; track_ids: number[] } }).maps_to;
       // `cma_fund_id` is the fund (קופה) number from the institution's documents and transfer_bank (CAT-09); the
@@ -143,6 +148,10 @@ export function validateData(ctx: ValidationContext): Problem[] {
           if (seen.has(c)) report(file, `availability: class ${c} appears in two entries`);
           seen.add(c);
         }
+      // only a provider's latest record ranks; an older one stands as it was read
+      const name = rel.split(/[\\/]/).pop()!;
+      const isLatest = !files.some((f) => { const n = f.split(/[\\/]/).pop()!; return n.startsWith(`${name.split("@")[0]}@`) && n > name; });
+      if (isLatest) for (const message of checkPricePremises(parsed.value as PremiseSnapshot)) report(file, message);
     }
     if (collection === "instruments/exposures" && result.success && fundIds) {
       for (const v of (parsed.value as { variants: string[] }).variants) {
@@ -167,6 +176,85 @@ export function validateData(ctx: ValidationContext): Problem[] {
     emit(`warning: ${category}: ${ids.length} (${ids.slice(0, 6).join(", ")}${ids.length > 6 ? ", ..." : ""})`);
   }
   return problems;
+}
+
+/**
+ * data-schema §3.5 and §4 item 15 (issue 44): the page shows no load and prices none while every collected load is zero. A load
+ * above zero would be a cost the reader never sees, so it fails until the page prices it.
+ */
+export function checkFundLoad(record: Pick<FundRecord, "fees">): string[] {
+  const value = record.fees.load?.value;
+  if (typeof value !== "number" || value <= 0) return [];
+  return [`fees.load: this fund charges a load on purchase of ${value}%, and the page does not yet price it; show and price the load before adding this value (issue 44)`];
+}
+
+/** data-schema §3.5 (issue 147, A-10): a yield belongs to a distributing fund, as a number in percent a year from a document. */
+export function checkFundDistribution(record: Pick<FundRecord, "distribution_policy" | "distribution">): string[] {
+  const d = record.distribution;
+  if (!d) return [];
+  const out: string[] = [];
+  if (record.distribution_policy !== "distributing") out.push("distribution: a yield on a fund that does not distribute");
+  if (d.yield.unit !== "pct_per_year" || typeof d.yield.value !== "number" || d.yield.value <= 0) out.push("distribution.yield: a number above zero in pct_per_year, read from the fund's document");
+  return out;
+}
+
+/** The words a document must use before a house ranks on a kind of holding (founder, 2026-10-31: no price from analogy). */
+const NAMES_CLASS: Record<string, RegExp> = {
+  mutual_fund_units: /קרן מחקה|קרנות מחקות|קרנות נאמנות|נאמנות וסל/,
+  etf_units: /קרן סל|קרנות סל|תעודו?ת סל|ETF|קרן מחקה|קרנות מחקות|נאמנות וסל/,
+  tase_foreign_fund_units: /קרן חוץ|קרנות חוץ|רשומות בבורסה/,
+  // a fund abroad, in words or as a security with nothing narrowing it to shares; a place alone names no holding
+  foreign_securities: /קרנות|קרן|ETF|תעודו?ת סל|ניירות ערך בחוץ לארץ(?!\s*-)/,
+};
+interface PremiseSnapshot {
+  provider: { class: string };
+  missing?: boolean;
+  price_for_he?: string;
+  left_out?: unknown[];
+  lines: { base: string; applies_to: string[]; rate?: { value?: number | null } | null }[];
+  availability?: { applies_to: string[]; available: boolean | "unknown"; reason_he?: string; source: { quote?: string } }[];
+  groups?: { state: string; row_he?: string; entries: { name_he: string; ends_printed: boolean; ends_source?: unknown; prices: { price_he: string; holdings_he: string; names_fund: boolean }[] }[] };
+}
+/** Before a price ranks: who pays it, on what named holding, and whether a person can do it there. */
+export function checkPricePremises(snap: PremiseSnapshot): string[] {
+  if (!["bank", "broker", "foreign_broker"].includes(snap.provider.class) || snap.missing) return [];
+  const out: string[] = [];
+  if (!snap.price_for_he) out.push("price_for_he: a bank's or broker's record says who pays its prices");
+  if (!snap.left_out) out.push("left_out: a bank's or broker's record lists what its documents hold that it does not use; empty means nothing was found");
+  const g = snap.groups;
+  if (!g) out.push("groups: a bank's or broker's record says its group prices, or that it has none, or that they could not be read");
+  else {
+    if (g.state === "prices" ? !g.entries.length || !g.row_he : g.entries.length > 0 || !!g.row_he) out.push(`groups: state ${g.state} does not fit its entries and row line`);
+    for (const e of g.entries) {
+      if (e.ends_printed && !e.ends_source) out.push(`groups: ${e.name_he} says its end is printed and does not say where`);
+      // a price reaches a fund only where the row's own words name funds (D42): the same stretch as a ranked line; words after "למעט" take funds out
+      for (const x of e.prices) if (x.names_fund !== /קרן|קרנות/.test(x.holdings_he.replace(/למעט[^)]*/g, ""))) out.push(`groups: ${e.name_he}: names_fund does not fit the words "${x.holdings_he}"`);
+    }
+    // a row line's comparison is the record's own: the lower price stands in an entry, the ordinary one on a line of the same fee
+    const row = g.row_he ?? "";
+    for (const m of row.matchAll(/([\d.]+)%[^%]*?במקום ([\d.]+)%/g)) {
+      const base = /דמי ניהול/.test(row.slice(0, m.index)) ? "custody" : "trade";
+      if (!snap.lines.some((l) => l.base === base && l.rate?.value === Number(m[2]))) out.push(`groups: the row line's ${m[2]}% is no ${base} rate in this record`);
+      if (!g.entries.some((e) => e.prices.some((x) => [...x.price_he.matchAll(/[\d.]+(?=%)/g)].some(([n]) => Number(n) === Number(m[1]))))) out.push(`groups: the row line's ${m[1]}% stands in no entry of this record`);
+    }
+  }
+  const entries = snap.availability ?? [];
+  if (snap.lines.some((l) => l.base === "trade" && l.applies_to.some((c) => c === "all" || c === "brokerage-account")))
+    out.push("lines: a trade line names every holding or the account, which no availability entry can vouch for; name the kinds");
+  for (const c of Object.keys(NAMES_CLASS)) {
+    if (!snap.lines.some((l) => l.base === "trade" && l.applies_to.includes(c))) continue;
+    if (!entries.some((a) => a.applies_to.includes(c))) out.push(`availability: ${c} has a price and no entry saying a person can do it there`);
+  }
+  for (const a of entries) {
+    if (a.available === "unknown" && !a.reason_he) out.push(`availability: ${a.applies_to.join(", ")} is unknown and gives no reason_he for the row`);
+    if (a.available !== true) continue;
+    for (const c of a.applies_to) {
+      const words = NAMES_CLASS[c];
+      // what the words exclude does not count as naming it ("למעט קרנות נאמנות")
+      if (words && !words.test((a.source.quote ?? "").replace(/למעט[^,.]*/g, ""))) out.push(`availability: the quote for ${c} does not name it in the document's words`);
+    }
+  }
+  return out;
 }
 
 export interface RuleLike {

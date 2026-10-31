@@ -193,14 +193,14 @@ export function cleanLocator(text: string): string {
   t = t.replace(/\((?:[^()]*[A-Za-z]{3,}[^()]*)\)/g, " ");
   t = t.replace(/\(\s*\)/g, " ");
   // Prose after the reference ("describe Amendment 15 as the law that") is cut off.
-  const prose = /\b(?!(?:sections?|regulations?|clauses?|annex(?:es)?|appendix|table|printed|footnote|paragraphs?|items?|definitions?|regs?|bylaws|pages?)\b)[a-z]{4,}\b/.exec(t);
+  const prose = /\b(?!(?:sections?|regulations?|clauses?|annex(?:es)?|appendix|table|printed|footnote|paragraphs?|items?|definitions?|regs?|bylaws|pages?|parts?)\b)[a-z]{4,}\b/.exec(t);
   if (prose) t = t.slice(0, prose.index);
   t = t.replace(/\s+/g, " ").replace(/^[\s,;:.()]+/, "");
   t = t.replace(/(?:[\s,;:.(]|\b(?:definitions?|definition of|of|and|paragraph|footnote|items?|the|read)\b)+$/gi, "");
   t = t.replace(/\s+/g, " ").trim();
   // an opening parenthesis the cut left unmatched ends the locator there (QA 2026-10-24, F3); a space before a comma is tidied
   while ((t.match(/\(/g) ?? []).length > (t.match(/\)/g) ?? []).length) t = t.slice(0, t.lastIndexOf("(")).trim();
-  t = t.replace(/\s+,/g, ",").replace(/[\s,;:.]+$/, "").trim();
+  t = t.replace(/\s+,/g, ",").replace(/[\s,;:.]+$/, "").replace(/[\s,;]+row$/i, "").trim();
   if (!/[0-9\u05D0-\u05EA]/.test(t)) return "";
   return t.length > 160 ? t.slice(0, 160).replace(/[\s,;]+\S*$/, "") : t;
 }
@@ -226,6 +226,12 @@ export function toHebrewLocator(locator: string): string | undefined {
     .replace(/\breg\.\s*/gi, "תקנה ")
     .replace(/\bclauses\s+/gi, "סעיפים ")
     .replace(/\bclause\s+/gi, "סעיף ")
+    .replace(/\bfirst schedule\b/gi, "התוספת הראשונה")
+    .replace(/\bannex\s+([a-e])\b/gi, (_m, l: string) => `נספח ${LATIN_TO_HE[l.toLowerCase()]}`)
+    .replace(/\bparts\s+/gi, "חלקים ")
+    .replace(/\bpart\s+/gi, "חלק ")
+    .replace(/\bitems\s+/gi, "פרטים ")
+    .replace(/\bitem\s+/gi, "פרט ")
     .replace(/(\d)\s+to\s+(?=[\d(])/gi, "$1 עד ")
     .replace(/\)\s+to\s+(?=[\d(])/gi, ") עד ")
     .replace(/\(([a-e])(\d*)\)/gi, (_m, l: string, d: string) => `(${LATIN_TO_HE[l.toLowerCase()]}${d})`)
@@ -520,7 +526,8 @@ function main() {
   const publishersPath = join(root, "data/sources/publishers.json");
   const documentsPath = join(root, "data/sources/documents.json");
   const publishers = existsSync(publishersPath) ? (JSON.parse(readFileSync(publishersPath, "utf8")) as Record<string, PublisherRow>) : undefined;
-  const documents = existsSync(documentsPath) ? (JSON.parse(readFileSync(documentsPath, "utf8")) as DocumentRow[]) : undefined;
+  // a row with `doc_kind` is filed for the law and terms browser and names no rule's source
+  const documents = existsSync(documentsPath) ? (JSON.parse(readFileSync(documentsPath, "utf8")) as (DocumentRow & { doc_kind?: string })[]).filter((d) => !d.doc_kind) : undefined;
   const registry = readRegistry(join(root, "data"));
   const scopeProblems: string[] = [];
   const scopeCounts: Record<string, number> = {};

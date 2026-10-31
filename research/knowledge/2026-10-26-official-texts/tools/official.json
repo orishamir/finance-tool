@@ -2938,7 +2938,16 @@
  },
  "adv-equity": {
   "title": "תקנות הסדרת העיסוק בייעוץ השקעות, בשיווק השקעות ובניהול תיקי השקעות (הון עצמי וביטוח)",
-  "files": [],
+  "files": [
+   {
+    "name": "adv-equity-isa",
+    "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/IsaFile_4105.pdf",
+    "publisher": "רשות ניירות ערך",
+    "kind": "consolidated",
+    "date": "file 2.1.2022",
+    "covers": "consolidated regulations"
+   }
+  ],
   "booklets_without_official_link": [
    {
     "booklet": "6016",

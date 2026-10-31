@@ -5,23 +5,13 @@ import { r4workbench as c } from "../../../copy";
 import { fmt } from "../../../lib/format";
 import { draftOf, hasErrors, offerFromDraft, validateDraft, type DraftErrors, type EnteredOffer, type OfferDraft } from "../../../lib/offers";
 import type { ProviderRowView } from "../../../lib/providers";
-import { Button, cx, NumberField } from "../../kit";
+import { Button, cx, FieldGroup as Group, NumberField } from "../../kit";
 import { IdText } from "../../provenance";
 
 const monthsOf = { month: 1, quarter: 3, year: 12 } as const;
 const periodOfMonths = (m: number): "month" | "quarter" | "year" => (m === 1 ? "month" : m === 3 ? "quarter" : "year");
 
 type Num = number | null;
-
-function Group({ title, children, note }: { title: string; children: React.ReactNode; note?: React.ReactNode }) {
-  return (
-    <fieldset className="flex flex-col gap-3 border-t border-border pt-3 first:border-t-0 first:pt-0">
-      <legend className="font-medium mb-1">{title}</legend>
-      {children}
-      {note}
-    </fieldset>
-  );
-}
 
 export function EnteredOfferCard({ view, offer, today, writable, showFx, onSave, onClear, onClose, headId }: { view: ProviderRowView; offer: EnteredOffer | undefined; today: string; writable: boolean; showFx: boolean; onSave: (o: EnteredOffer) => void; onClear: () => void; onClose: () => void; headId: string }) {
   const t = c.providers.offer;

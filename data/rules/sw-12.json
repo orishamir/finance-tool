@@ -93,6 +93,7 @@
       "kind": "circular",
       "strength": "primary",
       "locator": "p.18, Annex B",
+      "locator_he": "עמוד 18, נספח ב",
       "page": 18,
       "checked": "2026-10-25"
     }

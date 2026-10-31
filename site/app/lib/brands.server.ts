@@ -1,6 +1,7 @@
 // The brands (founder, 2026-10-26, D33): the companies of one group shown as one company under the name people know it by. One page
 // holds every product of every member (the managing company's tracks, the brokerage account, the funds its fund manager runs), each
 // under its own heading, and every member's old address shows that page. Server-only; the table is data/sources/brands.json.
+import { mayaFundHref } from "./sources";
 import { existsSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { brandsTable, institutionsTable, type ExposureRecord, type FundRecord, type InstitutionRegistryRow } from "@finance-tool/schema";
@@ -128,8 +129,7 @@ function fundRow(rec: FundRecord, exposure: ExposureRecord | null): BrandFundRow
   };
   const kind = fundKindOf(rec);
   const number = rec.identifiers.tase_number;
-  // Maya's page of the fund: an Israeli ETF under "etfs", any other Israeli fund under "mutual-funds" (the fund records' sources)
-  const mayaHref = rec.domicile === "IL" && number ? `https://maya.tase.co.il/he/funds/${kind === "etf" ? "etfs" : "mutual-funds"}/${number}` : null;
+  const mayaHref = rec.domicile === "IL" && number ? mayaFundHref(number) : null;
   const index = exposure && exposure.id.startsWith("index-") ? exposure : null;
   // the column's head carries the word "index", so the cell holds the index's name without it (founder, 2026-10-27)
   const follows: BrandFundRow["follows"] = index

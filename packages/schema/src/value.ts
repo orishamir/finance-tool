@@ -20,6 +20,7 @@ export const unit = z.enum([
   "usd_per_share",
   "usd_per_trade",
   "gbp_per_trade",
+  "nis_per_usd",
   "fx_per_eur",
   "months",
   "years",

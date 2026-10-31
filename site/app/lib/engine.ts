@@ -36,6 +36,12 @@ export interface Bundle {
   feeValues: Record<string, SiteValue>;
   rules: RuleRecord[];
   runDate: string;
+  /**
+   * The run rests on a choice over the collected records, which the terms block says with how many were compared: an account on the tariff
+   * that leaves the plan the most (F-80), a deposit on the middle of those that cannot be broken (F-86).
+   * `tied` (F-80, P-01): the houses within the tie threshold of the top, the run's own first; the page says they tie and crowns none.
+   */
+  pick?: { kind: "account" | "deposit"; id: string; count: SiteValue; tied?: { names: string[]; theta: SiteValue } };
 }
 
 export interface YearPoint {

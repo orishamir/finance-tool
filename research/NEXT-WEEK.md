@@ -1,5 +1,7 @@
 # Resume here (paused 2026-10-26)
 
+*2026-10-31:* the open items below are now GitHub issues, ranked on the pinned [Roadmap issue](https://github.com/orishamir/finance-tool/issues/122). This file keeps the resume details and the researcher rules.
+
 The founder paused the research jobs to save tokens. Everything below is saved:
 - briefs and tools are committed;
 - downloads sit in each folder's `work/`, which is gitignored but on disk in the repo.
@@ -7,7 +9,7 @@ The founder paused the research jobs to save tokens. Everything below is saved:
 A new researcher for any item gets its brief plus the line "resume: read what's in the folder and in work/ first, don't download again what's there".
 
 **Rules for every researcher:**
-- Opus 5.5, extra high effort.
+- Opus 5.5, high effort, one researcher at a time (the budget rule in `CLAUDE.md`, 2026-10-31).
 - curl only. No FlareSolverr, no headless browser and no bot-check workaround.
 - gov.il official documents before Wikisource or third-party copies.
 - Pages that block scripts go to the lead, who reads them in the founder's Chrome.

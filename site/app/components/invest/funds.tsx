@@ -2,6 +2,7 @@
 // and labels, the number as the link to Maya, its three fees, and the value left at that house.
 // "What do the labels mean", the gap-to-the-index note, and the empty state for an index with no
 // fund records (a request text for the founder, as flow 10).
+import { mayaFundHref } from "../../lib/sources";
 import { useState } from "react";
 import { brands, invest as c } from "../../copy";
 import type { FundRecord } from "@finance-tool/schema";
@@ -11,6 +12,8 @@ import { IconCopy, IconExternal, IconLock } from "../icons";
 import { Num } from "../provenance";
 import { Button, LabelChip, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RankBadge, Section, SelectField, Tag, type ProductColumn, type ProductRow } from "../kit";
 import { LabelsLegend, optionClass, OptionTag, reasonText } from "./parts";
+import { AddEntryButton, FundTerms } from "./custom-entries";
+import { isCustomFund } from "../../lib/custom-entries";
 import { ownBy, type SiteValue } from "../../lib/value";
 
 const b = brands.funds;
@@ -23,7 +26,7 @@ const feeOf = (rec: FundRecord, key: "fixed_management" | "variable_management" 
 
 export function FundsSection({ view, houseId, onHouse, mayaHref }: { view: InvestView; houseId: string | null; onHouse: (id: string) => void; mayaHref: string | null }) {
   const house = view.houses.find((h) => h.provider.id === houseId) ?? null;
-  const noRecords = view.index.exposure === null || view.fundCount === 0;
+  const noRecords = view.fundCount === 0;
   const pickable = view.houses.filter((h) => h.best || h.generic).map((h) => ({ id: h.provider.id, name: h.provider.short }));
   return (
     <Section id="invest-funds-section" level="card" title={house ? c.funds.heading(house.provider.short) : c.funds.pick}>
@@ -37,6 +40,7 @@ export function FundsSection({ view, houseId, onHouse, mayaHref }: { view: Inves
           <p className="text-sm text-muted-foreground">{c.funds.gapNote}</p>
         </>
       )}
+      <AddEntryButton kind="fund" />
     </Section>
   );
 }
@@ -53,20 +57,22 @@ function FundList({ view, house }: { view: InvestView; house: HouseRow }) {
   // the product table (founder, 2026-10-27; design-system 11 "Lists of products"): rank, the fund with its labels, the number as the
   // link to Maya, the three fees, and what is left at the chosen house, which the list is ranked by
   const columns: ProductColumn[] = [
-    { id: "rank", head: <span className="sr-only">{c.funds.rank}</span>, fit: true },
+    { id: "rank", head: <span className="sr-only">{c.funds.rank}</span>, width: 3 },
     { id: "name", head: b.columns.name },
-    { id: "number", head: b.columns.number, fit: true },
-    { id: "fees", head: b.columns.fees, fit: true },
-    { id: "value", head: c.funds.value(house.provider.short), fit: true },
+    { id: "number", head: b.columns.number, width: 7.5 },
+    { id: "fees", head: b.columns.fees, width: 11 },
+    { id: "value", head: c.funds.value(house.provider.short), width: 13.5 },
   ];
   return <ProductTable columns={columns} groups={rows.map((r) => ({ key: r.key, rows: [r] }))} />;
 }
 
 /** The three fees, each with its word; one not collected says so (also the index page's fund slot). */
 export function Fees({ rec, inline }: { rec: FundRecord; inline?: boolean }) {
-  const items = (["fixed_management", "variable_management", "trustee"] as const).map((key, i) => {
+  // a foreign fund the person typed has one yearly charge, and nothing "not collected" beside it (D44)
+  const yearlyOnly = isCustomFund(rec) && rec.domicile !== "IL";
+  const items = (yearlyOnly ? (["fixed_management"] as const) : (["fixed_management", "variable_management", "trustee"] as const)).map((key, i) => {
     const v = feeOf(rec, key);
-    const word = [b.feeWords.fixed, b.feeWords.variable, b.feeWords.trustee][i]!;
+    const word = yearlyOnly ? c.customEntries.yearlyWord : [b.feeWords.fixed, b.feeWords.variable, b.feeWords.trustee][i]!;
     return { id: key, word, figure: v ? <Num value={v} size={inline ? "inline" : "cell"} /> : <span className="text-sm text-muted-foreground">{c.funds.notCollected}</span> };
   });
   return <ProductFigures items={items} inline={inline} />;
@@ -75,16 +81,18 @@ export function Fees({ rec, inline }: { rec: FundRecord; inline?: boolean }) {
 function fundRow(view: InvestView, e: HouseEntry, rank: number | null, house: HouseRow): ProductRow {
   const f = e.fund;
   const labels = fundLabels(f.rec, view.index, f.option);
-  // Maya's page of the fund exists for an Israeli ETF and an Israeli tracking fund (the address pattern of the fund records' sources)
-  const kind = f.option === "il-etf" ? "etfs" : f.option === "il-tracking" ? "mutual-funds" : null;
-  const mayaHref = kind && f.rec.identifiers.tase_number ? `https://maya.tase.co.il/he/funds/${kind}/${f.rec.identifiers.tase_number}` : null;
+  // Maya's page of the fund exists for a fund listed in Israel
+  const typed = isCustomFund(f.rec);
+  const mayaHref = !typed && (f.option === "il-etf" || f.option === "il-tracking") && f.rec.identifiers.tase_number ? mayaFundHref(f.rec.identifiers.tase_number) : null;
   const badge = <RankBadge rank={rank} label={rank ? `${c.funds.rank} ${rank}` : undefined} />;
   const name = (
-    <span className="font-semibold leading-snug">
+    <span className={typed ? "font-semibold leading-snug text-entered [overflow-wrap:anywhere]" : "font-semibold leading-snug"}>
       <bdi>{f.name}</bdi>
     </span>
   );
-  const manager = (
+  const manager = typed ? (
+    <FundTerms id={f.rec.id} />
+  ) : (
     <span className="text-sm text-muted-foreground">
       {c.funds.manager}: <bdi>{f.rec.manager}</bdi>
     </span>
@@ -138,9 +146,11 @@ function fundRow(view: InvestView, e: HouseEntry, rank: number | null, house: Ho
             {e.price && <span className="text-xs text-muted-foreground">{c.funds.value(house.provider.short)}</span>}
           </span>
         </span>
-        <span className="text-sm text-muted-foreground inline-flex items-center gap-1.5">
-          {b.numberWord} {number}
-        </span>
+        {f.number && (
+          <span className="text-sm text-muted-foreground inline-flex items-center gap-1.5">
+            {b.numberWord} {number}
+          </span>
+        )}
         {tags}
         <span className="text-sm text-muted-foreground flex flex-wrap items-center gap-x-3 gap-y-1">
           {b.phoneFees} <Fees rec={f.rec} inline />

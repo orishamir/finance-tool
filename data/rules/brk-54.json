@@ -1,0 +1,49 @@
+{
+  "id": "BRK-54",
+  "title": "PEPPER: 4 NIS up to 30,000 NIS an order, on shares, makam and bonds",
+  "title_he": "פפר: 4 שקלים עד 30,000 שקלים להוראה, על מניות, מק״מ ואגרות חוב",
+  "text_he": "לקוחות פפר, מותג של בנק לאומי, משלמים 4 שקלים על קנייה, מכירה ופדיון של מניות, מק״מ ואגרות חוב בבורסה בתל אביב עד 30,000 שקלים להוראה, ו־4 דולרים בחוץ לארץ עד 8,000 דולרים להוראה. הוראה גדולה יותר מחויבת לפי התעריפון. השורה לא נוקבת בקרנות, ואף מסמך של פפר לא אומר שאפשר לקנות שם קרן מחקה או קרן סל, לכן האתר לא מחשב קרן בפפר. דמי הניהול 0.15% לרבעון.",
+  "strength": "institution",
+  "dimensions": [
+    "fee-trade",
+    "fee-custody"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "il_finance_file": "brokerage-account.md",
+  "checked": "2026-10-31",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "pepper",
+      "name_he": "פפר (בנק לאומי)"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
+      "title": "תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (בנק לאומי, 1.10.2026)",
+      "title_he": "תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (בנק לאומי, 1.10.2026)",
+      "publisher": "Bank Leumi",
+      "publisher_he": "בנק לאומי",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.11",
+      "locator_he": "עמוד 11",
+      "page": 11,
+      "quote": "בבורסה בת \"א­ מניות ,מק \"מ ואגרות חוב",
+      "checked": "2026-10-31"
+    },
+    {
+      "url": "https://www.pepper.co.il/",
+      "title": "דף הבית של PEPPER, שאלות ותשובות",
+      "title_he": "דף הבית של PEPPER, שאלות ותשובות",
+      "publisher": "PEPPER (Bank Leumi)",
+      "publisher_he": "פפר (בנק לאומי)",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "quote": "העמלה על קנייה או מכירה בסכום גבוה יותר תהיה בהתאם לתעריפון העמלות",
+      "checked": "2026-10-31"
+    }
+  ]
+}

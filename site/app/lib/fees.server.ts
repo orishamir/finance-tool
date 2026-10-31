@@ -84,6 +84,8 @@ export function buildFeesData(): FeesData {
     if (spec.track !== undefined) wrapperTrack[id] = spec.track;
     const snap = spec.tariff ? snapshots.get(spec.tariff) : undefined;
     if (snap) tariffClass[id] = (snap.provider as { class?: string }).class ?? "";
+    // the money-market funds are modelled at a bank (MF-26, BANK-18), any bank: P-05 names none
+    if (id.startsWith("money-market-fund")) tariffClass[id] = "bank";
   }
 
   const links: FeesData["links"] = {

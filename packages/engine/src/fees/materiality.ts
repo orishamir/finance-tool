@@ -15,7 +15,7 @@ export type FeeLine = FeeType;
 export const feeLineOrder: readonly FeeLine[] = ["deposit", "balance", "direct", "trade", "spread", "custody", "fixed", "fund", "fx", "manager"];
 
 const positive = (n: number | undefined) => (n ?? 0) > 0;
-const configured = (c: Commission | Custody | undefined) => c !== undefined && (positive(c.rate) || positive(c.min));
+const configured = (c: Commission | Custody | undefined) => c !== undefined && (positive(c.rate) || positive(c.min) || ("perCurrencyUnit" in c && positive(c.perCurrencyUnit)));
 
 /** The fee lines this plan charges: those whose input is set and not zero. Deposits (bank) have none. */
 export function feeLines(plan: RunPlan): FeeLine[] {
@@ -92,13 +92,22 @@ function changeLine(plan: RunPlan, line: FeeLine, rate: number): RunPlan {
       const set = (key: "buy" | "sell") => {
         const old = tariff[key];
         if (rate === 0) delete tariff[key];
-        else tariff[key] = { ...old, rate };
+        else {
+          // a person's own rate replaces the line, its flat price too (F-12)
+          const { flatUpTo: _, ...rest } = old ?? ({} as NonNullable<typeof old>);
+          tariff[key] = { ...rest, rate };
+        }
       };
       switch (line) {
         case "trade":
           if (!input.tariff.buy && !input.tariff.sell) return noLine(plan, line);
           if (input.tariff.buy) set("buy");
           if (input.tariff.sell) set("sell");
+          // F-12: a standing-order price moves with the trade rate, in proportion, so it stays the same share of the regular price
+          if (input.tariff.buyStanding) {
+            if (rate === 0 || !input.tariff.buy?.rate) delete tariff.buyStanding;
+            else tariff.buyStanding = { ...input.tariff.buyStanding, rate: (input.tariff.buyStanding.rate * rate) / input.tariff.buy.rate };
+          }
           return { run: "runSecurities", input: { ...input, tariff } };
         case "custody":
           if (!tariff.custody) return noLine(plan, line);
@@ -108,7 +117,19 @@ function changeLine(plan: RunPlan, line: FeeLine, rate: number): RunPlan {
         case "fx":
           if (tariff.fx === undefined) return noLine(plan, line);
           if (rate === 0) delete tariff.fx;
-          else tariff.fx = typeof tariff.fx === "number" ? rate : { ...tariff.fx, rate };
+          else if (typeof tariff.fx === "number") tariff.fx = rate;
+          else {
+            // a person's own rate replaces the line, a price per unit of currency too (F-13)
+            const { perCurrencyUnit: _, ...rest } = tariff.fx;
+            tariff.fx = { ...rest, rate };
+          }
+          // F-13: a recurring plan's conversion moves with the regular rate, in proportion, as a standing-order price does; a plan that charges nothing stays at nothing
+          if (input.tariff.fxStanding !== undefined) {
+            const old = typeof input.tariff.fx === "number" ? input.tariff.fx : input.tariff.fx!.rate;
+            if (rate === 0 || !old) delete tariff.fxStanding;
+            else if (typeof input.tariff.fxStanding === "number") tariff.fxStanding = (input.tariff.fxStanding * rate) / old;
+            else tariff.fxStanding = { ...input.tariff.fxStanding, rate: (input.tariff.fxStanding.rate * rate) / old };
+          }
           return { run: "runSecurities", input: { ...input, tariff } };
         case "fixed":
           if (tariff.monthlyFee === undefined) return noLine(plan, line);
@@ -142,10 +163,10 @@ function changeLine(plan: RunPlan, line: FeeLine, rate: number): RunPlan {
     case "runMakam":
     case "runBond": {
       if (line !== "trade" && line !== "custody") return noLine(plan, line);
-      const tariff = { ...(plan.input.tariff as { buy?: Commission; sell?: Commission; custody?: Custody }) };
+      const tariff = { ...(plan.input.tariff as { buy?: Commission; sell?: Commission; redeem?: Commission; custody?: Custody }) };
       if (line === "trade") {
         if (!tariff.buy && !tariff.sell) return noLine(plan, line);
-        for (const key of ["buy", "sell"] as const) {
+        for (const key of ["buy", "sell", "redeem"] as const) {
           if (!tariff[key]) continue;
           if (rate === 0) delete tariff[key];
           else tariff[key] = { ...tariff[key]!, rate };

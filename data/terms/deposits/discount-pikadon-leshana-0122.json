@@ -118,6 +118,7 @@
     "value": false,
     "max_renewals": 0
   },
+  "conditions_he": "נפתח רק בסניף או בטלבנק",
   "snapshot": "2026-10-26",
   "source": {
     "url": "https://www.discountbank.co.il/private/savings-investments/deposits-savings/classic/interest-rate-tables/",

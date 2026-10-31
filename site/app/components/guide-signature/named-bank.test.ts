@@ -9,6 +9,7 @@ import { buildGuidePage } from "../../lib/guide.server";
 import { InputsProvider } from "../../lib/inputs";
 import { ProvenanceProvider } from "../provenance";
 import { BankDepositVisual } from "./bank-deposit";
+import { MakamVisual } from "./makam";
 import { MoneyMarketDailyVisual } from "./money-market-daily";
 import { SavingsPlanVisual } from "./savings-plan";
 
@@ -28,11 +29,11 @@ describe("one bank's rate is named where it is quoted", () => {
     const row = text(raw!);
     for (const bank of ["לאומי", "הפועלים", "דיסקונט", "מזרחי"]) expect(row).not.toContain(bank);
     expect(row).toMatch(/1\.55%\s*–\s*2\.25%/);
-    expect(row).toMatch(/טווח ב־\s*4\s*בנקים/);
+    expect(row).toMatch(/טווח ב־\s*4\s*פיקדונות שנאספו/);
     expect(raw).toContain('href="/guide/bank-deposit"');
     // the note under the table: how many of the collected deposits cannot be left early, naming none, and the link to each bank's rate
     const notes = [...html.matchAll(/<ul[\s\S]*?<\/ul>/g)].map((m) => text(m[0])).find((t) => t.includes("פיקדון לשנה:"))!;
-    expect(notes).toMatch(/ב־\s*3\s*מתוך\s*4\s*הבנקים שנאספו אי אפשר למשוך/);
+    expect(notes).toMatch(/ב־\s*3\s*מתוך\s*4\s*הפיקדונות שנאספו אי אפשר למשוך/);
     for (const bank of ["לאומי", "הפועלים", "דיסקונט", "מזרחי"]) expect(notes).not.toContain(bank);
     expect(html).toContain('href="/guide/bank-deposit#deposit-banks"');
   });
@@ -43,6 +44,30 @@ describe("one bank's rate is named where it is quoted", () => {
     expect(list).not.toBeNull();
     const t = text(list![0]);
     for (const bank of ["לאומי", "הפועלים", "דיסקונט", "מזרחי"]) expect(t).toContain(bank);
+  });
+  it("the bank-deposit page stands on no one bank presented as general: the example and the ends are named, the lock is a count, and no rate is called the market's highest or a pick", () => {
+    const sig = buildGuidePage("bank-deposit")!.signature!;
+    const t = text(render(createElement(BankDepositVisual, { data: sig, today: "2026-10-26" })));
+    expect(t).not.toContain("עוד לא נאספו");
+    expect(t).toContain("פיקדון של הפועלים");
+    expect(t).toContain("מזרחי");
+    expect(t).toContain("דיסקונט");
+    expect(t).toMatch(/מבין\s*4\s*הפיקדונות לשנה שנאספו/);
+    expect(t).toMatch(/ב־\s*3\s*מתוך\s*4\s*הפיקדונות/);
+    expect(t).not.toContain("הבחירה של האתר");
+    expect(t).not.toContain("הגבוהה בבנקים");
+    expect(t.replace(/<section[\s\S]*$/, "").split("לאומי").length).toBe(2); // only the line of the list that names it
+  });
+  it("the makam page names the house of its commission, says which house ties with it, and sets the deposit as a range", () => {
+    const sig = buildGuidePage("makam")!.signature!;
+    const t = text(render(createElement(MakamVisual, { data: sig, today: "2026-10-26" })));
+    expect(t).not.toContain("לאומי");
+    expect(t).not.toContain("עוד לא נאספו");
+    expect(t).toMatch(/1\.55%\s*–\s*2\.25%/);
+    expect(t).toMatch(/לפי התעריפון של\s*(<[^>]*>)?\s*פסגות/);
+    expect(t).toContain("הוא שקול לתעריפון של");
+    expect(t).toContain("פפר");
+    expect(t).not.toContain("הבחירה של האתר");
   });
   it("the savings plan's one-off deposit sentence names its bank", () => {
     const sig = buildGuidePage("savings-plan")!.signature!;

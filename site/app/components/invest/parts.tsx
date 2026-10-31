@@ -47,7 +47,7 @@ export function LabelsLegend() {
 // ---------------------------------------------------------------- reasons
 
 /** The tariff class each option is bought as, for the sentence that names a missing tariff line. */
-export const optionClass = { "il-tracking": "mutual_fund_units", "il-etf": "etf_units", "tase-foreign": "etf_units", abroad: "foreign_securities" } as const;
+export const optionClass = { "il-tracking": "mutual_fund_units", "il-etf": "etf_units", "tase-foreign": "tase_foreign_fund_units", abroad: "foreign_securities" } as const;
 
 /** The sentence for a price the engine or the site could not give. */
 export function reasonText(r: Reason, cls: string): string {
@@ -56,12 +56,16 @@ export function reasonText(r: Reason, cls: string): string {
       return c.reasons.fundType;
     case "need-yield":
       return c.reasons.needYield;
+    case "us-fund-open":
+      return c.reasons.usFundOpen;
     case "need-rate":
       return c.reasons.needRate(r.currency);
     case "no-fund-rate":
       return c.reasons.noBroker;
     case "no-hedge-record":
       return c.reasons.noHedgeRecord;
+    case "no-hedge-entered":
+      return c.reasons.noHedgeEntered;
     default:
       return reasonSentence(r, cls, r4workbench.providers.behaviour.channelOptions.direct);
   }

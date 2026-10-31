@@ -7,7 +7,7 @@ import { buildHishtalmutTerms, exposureFolds, loadExposures } from "./instrument
 import { providentTerms } from "./compare.server";
 import { loadChecklistRows, loadCma, loadFees, loadParameters, loadRules, loadTerms, loadProducts, pointedRecords, root, today, type ChecklistRow, type TermRow } from "./data.server";
 import { runTimeline, type Bundle, type Timeline } from "./engine";
-import { buildInstrumentBundle, familyOf, missingParts, rulesTouched, type NoGraph } from "./guide-signature-bundle.server";
+import { guideInstrumentBundle, familyOf, missingParts, rulesTouched, type NoGraph } from "./guide-signature-bundle.server";
 import { buildSignatureData } from "./guide-signature.server";
 import type { SignatureData } from "./guide-signature";
 import { isClosedAudience } from "./guide-nav";
@@ -134,7 +134,7 @@ export function buildGuidePage(id: string, extraRuleIds: string[] = [], extraTer
       noGraph = { kind: "missing", parts: missingParts(missing) };
     }
   } else if (family) {
-    const r = buildInstrumentBundle(record, family, p05, allRules, t);
+    const r = guideInstrumentBundle(record, family, p05, allRules, t);
     bundle = r.bundle;
     noGraph = r.noGraph;
   } else console.log(`[guide] ${id}: no timeline: no run for this wrapper`);

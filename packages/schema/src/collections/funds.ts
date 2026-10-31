@@ -33,6 +33,12 @@ export const fundRecord = z.strictObject({
     tracking_difference_12m: fee,
     median_spread: fee,
     fund_level_withholding_drag: fee,
+    /**
+     * 2026-10-31 (MF-21): the load on purchase (שיעור הוספה), unit `pct_of_trade`, from the fund's own document. `0` means a document
+     * was read and says zero; left out means not read, so a missing value is never a zero. ETFs and foreign funds leave it out.
+     * The validator fails a load above zero until the page prices one.
+     */
+    load: fee,
   }),
   dimensions: z.record(z.string(), z.string().regex(/^(covered|blocked)(:[A-Z0-9-]+)?$/)),
   prospectus: z.strictObject({ url: z.string().min(1), date: z.string().nullable() }),
@@ -59,6 +65,16 @@ export const fundRecord = z.strictObject({
       source,
       page: z.number().int().positive().nullable(),
       checked: isoDate,
+    })
+    .optional(),
+  /**
+   * 2026-10-31 (issue 147, A-10): a distributing fund's yield, a value object in `pct_per_year` read from the fund's own factsheet or the
+   * manager's page with its date, and the payments a year the same source prints. Left out when it was not read: the fund then has no price.
+   */
+  distribution: z
+    .strictObject({
+      yield: valueObject,
+      per_year: z.union([z.literal(1), z.literal(2), z.literal(3), z.literal(4), z.literal(6), z.literal(12)]),
     })
     .optional(),
   /** S4: the price of one unit, in a currency unit, for per-share commissions. */

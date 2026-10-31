@@ -44,7 +44,7 @@ export interface VariantExposure {
     w8ben?: boolean;
     /** NIS per unit of a foreign currency at the start (BoI series `data/series/fx`), by ISO code; needed for a fund bought in that currency. */
     fxStartRates?: Record<string, number>;
-    /** A-10 distribution yield and payments a year per fund record id, entered or from the fund's documents; the fund record has no yield field. */
+    /** A-10 distribution yield and payments a year per fund record id, entered, for a fund whose record holds no yield (`recordDistribution`). */
     distributions?: Record<string, { yield: number; perYear: number }>;
     ordersPerMonth?: number;
   };
@@ -138,6 +138,13 @@ export function sumFees(rec: FundRecord): number {
   return v(rec.fees.fixed_management) + v(rec.fees.variable_management) + v(rec.fees.trustee);
 }
 
+/** A-10 as the record holds it (2026-10-31, issue 147): the yield as a fraction and the payments a year; undefined when the record has none. */
+export function recordDistribution(rec: Pick<FundRecord, "id" | "distribution">): { yield: number; perYear: number } | undefined {
+  if (!rec.distribution) return undefined;
+  const y = fraction(rec.distribution.yield, "pct_per_year", `fund ${rec.id} distribution.yield`);
+  return y === undefined ? undefined : { yield: y, perYear: rec.distribution.per_year };
+}
+
 /** The fund the engine runs for a record, and the fee fields the record leaves empty (exported 2026-10-24 so the provider workbench builds its fund the same way). */
 
 export function fundOf(rec: FundRecord, kind: Fund["kind"], dist: { yield: number; perYear: number } | undefined, w8ben: boolean | undefined) {
@@ -212,7 +219,7 @@ function evaluate(c: Cand, exposure: VariantExposure, ctx: RunContext): VariantR
   }
   const policy = rec.distribution_policy;
   if (policy === null) return notEvaluated({ code: "missing-record", ruleIds: [], gapIds: [], detail: "details not collected: distribution_policy" });
-  const dist = x.distributions?.[rec.id];
+  const dist = recordDistribution(rec) ?? x.distributions?.[rec.id];
   if (policy === "distributing" && !dist) return notEvaluated({ code: "missing-input", ruleIds: [], gapIds: [], detail: `distributions.${rec.id}: the distribution yield (A-10) is not in the fund record` });
   if (policy === "distributing" && !israeli && rec.domicile !== "US" && rec.domicile !== "IE") {
     return notEvaluated({ code: "no-run", ruleIds: [], gapIds: [], detail: `foreign withholding for domicile ${rec.domicile} is not set` });
@@ -272,10 +279,11 @@ function evaluate(c: Cand, exposure: VariantExposure, ctx: RunContext): VariantR
  * foreign-fund list (ETF-32) that matches the exposure (`matchRow`), and every foreign-domiciled fund in `funds` for
  * the exposure that no list row stands for (traded abroad); a record of an Israeli fund the list no longer prints is
  * kept as a candidate too. Each candidate with a record runs F-08 with its own drag (A-06 to A-11), currency (F-04),
- * distribution policy (F-20) and domicile rules (F-40, F-41); an accumulating foreign fund is computed under the
+ * distribution policy with the yield its record holds (F-20, A-10) and domicile rules (F-40, F-41); an accumulating foreign fund is computed under the
  * secondary reading of TXF-11 (labelled) and listed, not ranked (G-18). A candidate without a record is "not evaluated:
  * details not collected". Foreign-domiciled funds traded abroad that are not in `funds` are one group line (G-29).
  * The rest are ranked by real value with ties by F-80, and the coverage line (F-83) accounts for each candidate once.
+ * F-94 Hedged or not, across the dollar: this same calculation at another A-03, which moves an unhedged fund and not a hedged one.
  */
 export function fundVariants(exposure: VariantExposure, lists: readonly FundListFile[], funds: readonly unknown[], ctx: RunContext): FundVariants {
   const records = funds.map((f, i) => {
