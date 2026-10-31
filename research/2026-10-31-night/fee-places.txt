@@ -1,0 +1,174 @@
+# The confirmed place of each value in data/fees/: the value's own line was read on that page of the library's copy.
+# snapshot | line id | fields | library id | file page | the document's own words
+# Discount: combined tariff of 01/10/2026
+discount@2026-10-31 | discount-buy-sell-tase-branch | rate,min,max | b576758838afae08 | 11 | 4.1.1 ופדיון של ניירות 0.54% משווי העסקה ₪ 35 ₪ 7,300
+discount@2026-10-31 | discount-buy-sell-tase-direct | rate,min,max | b576758838afae08 | 11 | עבור קניה ומכירה בערוץ ישיר יגבה מחיר מופחת בשיעור 0.40% לפעולה במניות ואגרות חוב בכפוף למינימום של 25 ש"ח מקסימום 7,150 ש"ח לפעולה
+discount@2026-10-31 | discount-buy-sell-makam-branch | rate,min,max | b576758838afae08 | 12 | 4.1.2 קניה ופדיון של ני"ע 0.1% משווי העסקה ₪ 25 ₪ 7,300
+discount@2026-10-31 | discount-buy-sell-makam-direct | rate,min,max | b576758838afae08 | 12 | עבור קניה ומכירה בערוץ ישיר ייגבה מחיר מופחת בשיעור 0.09% בכפוף למינימום של 22.5 ש"ח מקסימום 7,150 ש"ח
+discount@2026-10-31 | discount-buy-sell-foreign-branch | rate,min,max | b576758838afae08 | 13 | 4.4.1 קניה מכירה ופדיון של ניירות 0.79% משווי העסקה $ 25 $ 10900
+discount@2026-10-31 | discount-buy-sell-foreign-direct | rate,min,max | b576758838afae08 | 13 | עבור קניה ומכירה בערוץ ישיר ייגבה מחיר מופחת של 0.59% בכפוף למינימום של $ 23.5 מקסימום $ 10,680
+discount@2026-10-31 | discount-custody-israel | rate,max | b576758838afae08 | 14 | 4.5.1 דמי ניהול פיקדון ני"ע 0.2% לרבעון ₪ 7,500
+discount@2026-10-31 | discount-custody-foreign | rate,max | b576758838afae08 | 14 | 4.5.2 דמי ניהול פיקדון ני"ע 0.25% לרבעון ₪ 7,500
+discount@2026-10-31 | discount-distribution-fee-type-1 | rate | b576758838afae08 | 16 | 4.9.1 עמלת הפצה מרוכש יחידת 0.20% לשנה מסוג 1
+discount@2026-10-31 | discount-distribution-fee-type-3 | rate | b576758838afae08 | 16 | 4.9.3 עמלת הפצה מרוכש יחידת 0.35% לשנה מסוג 3
+discount@2026-10-31 | discount-distribution-fee-type-4 | rate | b576758838afae08 | 16 | 4.9.4 עמלת הפצה מרוכש יחידת 0.10% לשנה מסוג 4
+discount@2026-10-31 | discount-fx-conversion-branch | rate,min,max | b576758838afae08 | 17 | 5.1.1 עמלת חליפין מט"י-מט"ח 0.19% מסכום העסקה $ 6.8 לפעולה $ 1,075
+discount@2026-10-31 | discount-fx-conversion-direct | rate,min,max | b576758838afae08 | 17 | 0.17% מסכום העסקה מינימום בערוץ ישיר $ 6 לפעולה מקסימום $ 1,055
+# Mercantile
+mercantile@2026-10-31 | mercantile-buy-sell-tase-branch | rate,min,max | 5fd0b860eaea10ee | 12 | 4.1.1 קניה מכירה ופידיון של ניירות 0.54% משווי העסקה ₪ 35 ₪ 7,300
+mercantile@2026-10-31 | mercantile-buy-sell-tase-direct | rate,min,max | 5fd0b860eaea10ee | 12 | עבור קניה ומכירה בערוץ ישיר יגבה מחיר מופחת בשיעור 0.40% לפעולה במניות ואגרות חוב בכפוף למינימום של 25 ש"ח מקסימום 7,150 ש"ח לפעולה
+mercantile@2026-10-31 | mercantile-buy-sell-makam-branch | rate,min,max | 5fd0b860eaea10ee | 12 | 4.1.2 מכירה ופידיון של ני"ע 0.1% משווי העסקה ₪ 25 ₪ 7,300
+mercantile@2026-10-31 | mercantile-buy-sell-makam-direct | rate,min,max | 5fd0b860eaea10ee | 12 | עבור קניה ומכירה בערוץ ישיר ייגבה מחיר מופחת בשיעור 0.09% בכפוף למינימום של 22.5 ש"ח מקסימום 7,150 ש"ח
+mercantile@2026-10-31 | mercantile-buy-sell-foreign-branch | rate,min,max | 5fd0b860eaea10ee | 13 | 4.4.1 קניה מכירה ופידיון של 0.79% משווי העסקה $ 25 $ 10900
+mercantile@2026-10-31 | mercantile-buy-sell-foreign-direct | rate,min,max | 5fd0b860eaea10ee | 13 | עבור קניה ומכירה המבוצעת באמצעות ערוץ ישיר ייגבה מחיר מופחת של 0.59% בכפוף למינימום של $ 23.5 מקסימום $ 10,680
+mercantile@2026-10-31 | mercantile-custody-israel | rate,max | 5fd0b860eaea10ee | 14 | 4.5.1 דמי ניהול פיקדון ני"ע 0.2% לרבעון ₪ 7,500
+mercantile@2026-10-31 | mercantile-custody-foreign | rate,max | 5fd0b860eaea10ee | 14 | 4.5.2 דמי ניהול פיקדון ני"ע 0.25% לרבעון ₪ 7,500
+mercantile@2026-10-31 | mercantile-distribution-fee-type-1 | rate | 5fd0b860eaea10ee | 15 | 4.9.1 עמלת הפצה מרוכש יחידת 0.20% לשנה מסוג 1
+mercantile@2026-10-31 | mercantile-distribution-fee-type-3 | rate | 5fd0b860eaea10ee | 15 | 4.9.3 עמלת הפצה מרוכש יחידת 0.35% לשנה מסוג 3
+mercantile@2026-10-31 | mercantile-distribution-fee-type-4 | rate | 5fd0b860eaea10ee | 15 | 4.9.4 עמלת הפצה מרוכש יחידת 0.10% לשנה מסוג 4
+mercantile@2026-10-31 | mercantile-fx-conversion-branch | rate,min,max | 5fd0b860eaea10ee | 17 | 5.1.1 עמלת חליפין מט"י-מט"ח 0.19% מסכום העסקה $ 6.8 לפעולה $ 1,075
+mercantile@2026-10-31 | mercantile-fx-conversion-direct | rate,min,max | 5fd0b860eaea10ee | 17 | 0.17% מסכום העסקה מינימום $ 6.30 בערוץ ישיר לפעולה מקסימום $ 1,055
+# FIBI: parts 4 and 5 and appendix E are separate files
+fibi@2026-10-31 | fibi-buy-sell-tase-branch | rate,min,max | 4cfbcc09992df849 | 1 | 4.1.1 מניות ואגרות חוב 0.64% מינ'40.0 מקס 7,000
+fibi@2026-10-31 | fibi-buy-sell-tase-direct | rate,min,max | 7d1cf0d48500cb12 | 2 | קניה/מכירה של ניירות ערך הנסחרים בבורסה בת"א מניות ואג"ח 0.3% מינ' 39.0 מקס' 6900
+fibi@2026-10-31 | fibi-buy-sell-makam-branch | rate,min,max | 4cfbcc09992df849 | 1 | 4.1.2 מלווה קצר מועד 0.11% מינ'16.0 מקס 7,000
+fibi@2026-10-31 | fibi-buy-sell-makam-direct | rate,min,max | 7d1cf0d48500cb12 | 2 | קניה/מכירה של ניירות ערך הנסחרים בבורסה בת"א מלווה קצר מועד 0.1% מינ' 15.0 מקס' 6900
+fibi@2026-10-31 | fibi-buy-sell-foreign-branch | rate,min,max | 4cfbcc09992df849 | 2 | 4.4.1 מניות אגרות חוב וקרנות נאמנות 0.85% מינ' 40.0$ מקס7,000$
+fibi@2026-10-31 | fibi-buy-sell-foreign-direct | rate,min,max | 7d1cf0d48500cb12 | 3 | קניית/מכירת של ניירות ערך בחו"ל מניות אג"ח וקרנות 0.25% מינ' 39.0$ מקס' $6900
+fibi@2026-10-31 | fibi-custody-israel | rate,max | 4cfbcc09992df849 | 3 | 4.5.1 הנסחרים בארץ 0.195% מקס' 4,000
+fibi@2026-10-31 | fibi-custody-foreign | rate,max | 4cfbcc09992df849 | 3 | 4.5.2 הנסחרים בחוץ לארץ 0.199% מקס' 4,000
+fibi@2026-10-31 | fibi-distribution-fee-type-1 | rate | 4cfbcc09992df849 | 5 | 4.9.1 עמלת הפצת קרן מסוג 0.20% לשנה ממחיר הפדיון
+fibi@2026-10-31 | fibi-distribution-fee-type-3 | rate | 4cfbcc09992df849 | 5 | 4.9.3 עמלת הפצת קרן מסוג 0.35% לשנה ממחיר הפדיון
+fibi@2026-10-31 | fibi-distribution-fee-type-4 | rate | 4cfbcc09992df849 | 5 | 4.9.4 עמלת הפצת קרן מסוג 0.10% לשנה ממחיר הפדיון
+fibi@2026-10-31 | fibi-fx-conversion-branch | rate,min,max | f780bbff5d87c1c2 | 1 | 5.1.1 מט"י-מט"ח 0.175% מינ'6.25$ מקס' 2,750.0$
+fibi@2026-10-31 | fibi-fx-conversion-direct | rate,min,max | 7d1cf0d48500cb12 | 3 | עמלת חליפין מט"י/מט"ח מעל 100$ 0.0875% מינ' 5.0$ מקס' $2475
+# Massad: the same shape as FIBI
+massad@2026-10-31 | massad-buy-sell-tase-branch | rate,min,max | 14d10e0ed6b25245 | 1 | 4.1.1 מניות ואגרות חוב 0.64% מינ' 40.0 מקס'7,000
+massad@2026-10-31 | massad-buy-sell-tase-direct | rate,min,max | 9023a51ca129dafa | 2 | קניה/מכירה של ניירות ערך הנסחרים בבורסה בת"א מניות ואג"ח. 0.4% מינ' 35.0 מקס' 6300
+massad@2026-10-31 | massad-buy-sell-makam-branch | rate,min,max | 14d10e0ed6b25245 | 1 | 4.1.2 מלווה קצר מועד 0.11% מינ' 19.0 מקס'4,500
+massad@2026-10-31 | massad-buy-sell-makam-direct | rate,min,max | 9023a51ca129dafa | 2 | קניה/מכירה של ניירות ערך הנסחרים בבורסה בת"א מלווה קצר מועד 0.1% מינ' 16.0 מקס' 4050
+massad@2026-10-31 | massad-buy-sell-foreign-branch | rate,min,max | 14d10e0ed6b25245 | 2 | 4.4.1 מניות אגרות חוב וקרנות 0.80% מינ' 25.0$ מקס' 1,200$
+massad@2026-10-31 | massad-buy-sell-foreign-direct | rate,min,max | 9023a51ca129dafa | 3 | קניית/מכירת של ניירות ערך בחו"ל מניות אג"ח וקרנות בחו"ל 0.78% מינ' 24.5$ מקס' $1100
+massad@2026-10-31 | massad-custody-israel | rate,max | 14d10e0ed6b25245 | 3 | 4.5.1 הנסחרים בארץ 0.195% מקס' לפיקדון 10,000
+massad@2026-10-31 | massad-custody-foreign | rate,max | 14d10e0ed6b25245 | 3 | 4.5.2 הנסחרים בחוץ לארץ 0.20% מקס' לפיקדון 10,000
+massad@2026-10-31 | massad-distribution-fee-type-1 | rate | 14d10e0ed6b25245 | 5 | 4.9.1 עמלת הפצת קרן מסוג 0.20% לשנה ממחיר הפדיון היומי
+massad@2026-10-31 | massad-distribution-fee-type-3 | rate | 14d10e0ed6b25245 | 5 | 4.9.3 עמלת הפצת קרן מסוג 0.35% לשנה ממחיר הפדיון היומי
+massad@2026-10-31 | massad-distribution-fee-type-4 | rate | 14d10e0ed6b25245 | 5 | 4.9.4 עמלת הפצת קרן מסוג 0.10% לשנה ממחיר הפדיון היומי
+massad@2026-10-31 | massad-fx-conversion-branch | rate,min,max | 0d2d6203cebe2ca5 | 1 | 5.1.1 מט"י-מט"ח 0.175% מינ' 6.25$ מקס' 2,700.0$
+massad@2026-10-31 | massad-fx-conversion-direct | rate,min,max | 9023a51ca129dafa | 4 | עמלת חליפין מט"י/מט"ח מעל 100$ 0.17% מינ' 5.0$ מקס' $2500
+# Leumi: the main table has its rate, minimum and maximum one under another; appendix E on pages 13 and 14
+leumi@2026-10-23 | leumi-buy-sell-tase-branch | rate,min,max | f31f4fdbee1483d9 | 30 | -מניות ואגרות חוב 0.650% בביצוע מינימום 27 מכסימום 7000ש
+leumi@2026-10-23 | leumi-buy-sell-tase-direct | rate,min,max | f31f4fdbee1483d9 | 13 | ­מניות ואגרות חוב אינטרנט וסלולר גישה ישירה TRADE ON 0.4% 26ש מינימום 6300ש מכסימום
+leumi@2026-10-23 | leumi-buy-sell-makam-branch | rate,min,max | f31f4fdbee1483d9 | 30 | -מילווה קצר מועד 0.100% בביצוע מינימום 20 מכסימום 2000ש
+leumi@2026-10-23 | leumi-buy-sell-makam-direct | rate,min,max | f31f4fdbee1483d9 | 13 | ­מלווה קצר מועד אינטרנט וסלולר גישה ישירה TRADE ON 0.095% 18ש מינימום 1800ש מכסימום
+leumi@2026-10-23 | leumi-custody-israel | rate,max | f31f4fdbee1483d9 | 32 | -הנסחרים בארץ 0.150% 3700ש
+leumi@2026-10-23 | leumi-custody-foreign | rate,max | f31f4fdbee1483d9 | 32 | -הנסחרים בחוץ לארץ 0.200% 7400ש
+leumi@2026-10-23 | leumi-tracking-fund-standing-order | rate,min,max | f31f4fdbee1483d9 | 30 | בגין קנית קרן מחקה באמצעות הוראת קבע תיגבה עמלה בשיעור 0.225% מינ' 5ש מכסימום 6,300ש
+leumi@2026-10-23 | leumi-distribution-fee-type-1 | rate | f31f4fdbee1483d9 | 33 | עמלת הפצה מרוכש יחידת השתתפות -קרן מסוג 1 0.200%
+leumi@2026-10-23 | leumi-distribution-fee-type-3 | rate | f31f4fdbee1483d9 | 33 | עמלת הפצה מרוכש יחידת השתתפות -קרן מסוג 3 0.350%
+leumi@2026-10-23 | leumi-distribution-fee-type-4 | rate | f31f4fdbee1483d9 | 33 | עמלת הפצה מרוכש יחידת השתתפות -קרן מסוג 4 0.100%
+leumi@2026-10-23 | leumi-fx-conversion-branch | rate | f31f4fdbee1483d9 | 35 | עמלת חליפין 0.200% בביצוע
+leumi@2026-10-23 | leumi-fx-conversion-direct | rate | f31f4fdbee1483d9 | 14 | עמלת חליפין­ עמדות דיגיטל 0.200%מהשווי 0.16%מהשווי
+# Jerusalem
+jerusalem@2026-10-31 | jerusalem-buy-sell-tase-branch | rate,min,max | 2fddc750f3f74c72 | 6 | ניירות ערך הנסחרים חוב 20 0.55% ₪ 20,000
+jerusalem@2026-10-31 | jerusalem-buy-sell-tase-direct | rate | 2fddc750f3f74c72 | 6 | עבור פעולה המבוצעת ישירות באמצעות האינטרנט ייגבה שיעור מופחת של 0.5%
+jerusalem@2026-10-31 | jerusalem-buy-sell-makam-branch | rate,min,max | 2fddc750f3f74c72 | 6 | קצר מועד ₪ 20 0.10% מינימום 7,500
+jerusalem@2026-10-31 | jerusalem-buy-sell-makam-direct | rate | 2fddc750f3f74c72 | 6 | 0.09% לפעולה במלווה קצר מועד
+jerusalem@2026-10-31 | jerusalem-buy-sell-foreign | rate,min,max | 2fddc750f3f74c72 | 6 | מניות אגרות חוב וקרנות נאמנות 0.6% מינימום $ 50 מקסימום $ 10,000 לעסקה
+jerusalem@2026-10-31 | jerusalem-custody-israel | rate,max | 2fddc750f3f74c72 | 6 | לרבות יחידות השתתפות 0.15%לרבעון בקרנות נאמנות ₪ 10,000
+jerusalem@2026-10-31 | jerusalem-custody-foreign | rate,max | 2fddc750f3f74c72 | 6 | לארץ 0.15% לרבעון (10,000
+jerusalem@2026-10-31 | jerusalem-transfer-out-same-client | rate | 2fddc750f3f74c72 | 6 | לחשבון אותו לקוח בגוף ₪ 5 להעברה
+jerusalem@2026-10-31 | jerusalem-distribution-fee-type-1 | rate | 2fddc750f3f74c72 | 7 | קרן מסוג 1 0.20%
+jerusalem@2026-10-31 | jerusalem-distribution-fee-type-3 | rate | 2fddc750f3f74c72 | 7 | קרן מסוג 3 0.35%
+jerusalem@2026-10-31 | jerusalem-distribution-fee-type-4 | rate | 2fddc750f3f74c72 | 7 | קרן מסוג 4 0.10%
+jerusalem@2026-10-31 | jerusalem-fx-conversion | rate,min,max | 2fddc750f3f74c72 | 7 | ממט"ח ל ₪ולהיפך $ 6.7 0.20% מינימום2,750
+jerusalem@2026-10-31 | jerusalem-fx-conversion-fx-to-fx | rate,min,max | 2fddc750f3f74c72 | 7 | ממט"ח למט"ח $ 13.4 0.40% מינימום5,500
+# Mizrahi-Tefahot
+mizrahi-tefahot@2026-10-31 | mizrahi-buy-sell-tase-branch | rate,min,max | 8dedbb45235cd662 | 10 | 4.1.1 מניות ואגרות חוב 0.64% ₪ 50.00 ₪ 10,750.00
+mizrahi-tefahot@2026-10-31 | mizrahi-buy-sell-tase-direct | rate,min,max | 8dedbb45235cd662 | 47 | קניה/מכירה של ניירות ערך בבורסה בתל שירות האינטרנט 0.52% מזערי ₪ 45.00 מירבי ₪ 9,675.00
+mizrahi-tefahot@2026-10-31 | mizrahi-buy-sell-makam-branch | rate,min,max | 8dedbb45235cd662 | 10 | 4.1.2 מילווה קצר מועד 0.11% ₪ 19.00 ₪ 7,500.00
+mizrahi-tefahot@2026-10-31 | mizrahi-buy-sell-makam-direct | rate,min,max | 8dedbb45235cd662 | 47 | קניה/מכירה של ניירות ערך בבורסה בתל שירות האינטרנט 0.10% מזערי ₪ 17.10 מירבי ₪ 6,750.00
+mizrahi-tefahot@2026-10-31 | mizrahi-buy-sell-foreign-branch | rate,min,max | 8dedbb45235cd662 | 11 | 4.4.1 מניות איגרות חוב וקרנות 0.89% $75.00 $7,500.00
+mizrahi-tefahot@2026-10-31 | mizrahi-buy-sell-foreign-direct | rate,min,max | 8dedbb45235cd662 | 47 | קניה/מכירה ושל ניירות ערך בחוץ לארץ שירות האינטרנט 0.30% מזערי $ 25.00 מירבי $ 6,750.00
+mizrahi-tefahot@2026-10-31 | mizrahi-custody-israel | rate,max | 8dedbb45235cd662 | 11 | 4.5.1 הנסחרים בארץ 0.175% ₪ 10,750.00
+mizrahi-tefahot@2026-10-31 | mizrahi-custody-foreign | rate,max | 8dedbb45235cd662 | 11 | 4.5.2 הנסחרים בחוץ לארץ 0.195% ₪ 10,750.00
+mizrahi-tefahot@2026-10-31 | mizrahi-distribution-fee-type-1 | rate | 8dedbb45235cd662 | 13 | 4.9.1 קרן מסוג 1 0.20%
+mizrahi-tefahot@2026-10-31 | mizrahi-distribution-fee-type-3 | rate | 8dedbb45235cd662 | 13 | 4.9.3 קרן מסוג 3 0.35%
+mizrahi-tefahot@2026-10-31 | mizrahi-distribution-fee-type-4 | rate | 8dedbb45235cd662 | 13 | 4.9.4 קרן מסוג 4 0.100%
+mizrahi-tefahot@2026-10-31 | mizrahi-distribution-fee-tracking-fund | rate | 8dedbb45235cd662 | 13 | !4.9.5 קרן מחקה פטור
+mizrahi-tefahot@2026-10-31 | mizrahi-fx-conversion-branch | rate,min,max | 8dedbb45235cd662 | 14 | 5.1.1 ממטבע לש"ח/מש"ח למטבע 0.19% $6.00 $2,500.00
+mizrahi-tefahot@2026-10-31 | mizrahi-fx-conversion-branch | spread | 8dedbb45235cd662 | 14 | עסקות מכירת מט"ח בשער ידוע בהפחתה של 2.00% משער זה
+mizrahi-tefahot@2026-10-31 | mizrahi-fx-conversion-direct | rate,min,max | 8dedbb45235cd662 | 48 | -ממטבע לש"ח/מש"ח למטבע חליפין שירות האינטרנט 0.133% מזערי $ 5.40 מירבי $ 2,250.00
+# Altshuler Trade
+altshuler-trade@2026-10-23 | altshuler-trade-buy-sell-tase | rate,min | 500b2b74e04bd53e | 1 | קרנות ולרבות רכישה בהנפקה 0.15% מינימום ₪ 3.5
+altshuler-trade@2026-10-23 | altshuler-trade-buy-sell-makam | rate,min | 500b2b74e04bd53e | 1 | ופדיון מק"מ 0.1% מינימום ₪ 3.5
+altshuler-trade@2026-10-23 | altshuler-trade-buy-sell-funds | rate,min | 500b2b74e04bd53e | 2 | נאמנות וסל הנסחרות בבורסה 0.15% מינימום ₪ 16
+altshuler-trade@2026-10-23 | altshuler-trade-buy-sell-foreign-us-pct-track | rate,min | 500b2b74e04bd53e | 2 | 0.15% משווי העסקה מינימום 9$
+altshuler-trade@2026-10-23 | altshuler-trade-custody | rate,min | 500b2b74e04bd53e | 2 | דמי ניהול/טיפול פקדון ני"ע ₪ 75 לחודש 0.15% מינימום
+altshuler-trade@2026-10-23 | altshuler-trade-fx-conversion | rate | 500b2b74e04bd53e | 3 | !עמלת חליפין פטור
+altshuler-trade@2026-10-23 | altshuler-trade-fx-conversion | spread | 500b2b74e04bd53e | 3 | מרווח המרה עד 0.7% משער המרה
+altshuler-trade@2026-10-23 | altshuler-trade-account-fee | rate | 500b2b74e04bd53e | 3 | דמי ניהול תקופתיים עד ₪ 80 אחת לחודש
+# Excellence
+excellence@2026-10-31 | excellence-buy-sell-tase | rate,min | 6c9ec0ada66f77d8 | 3 | מסורתיות 0.4% מינימום 10ש"ח
+excellence@2026-10-31 | excellence-buy-sell-mutual-fund | rate | 6c9ec0ada66f77d8 | 3 | קרנות נאמנות ₪ 16 פיקס
+excellence@2026-10-31 | excellence-buy-sell-foreign-us-pct-track | rate | 6c9ec0ada66f77d8 | 4 | או + 0.3% עמלת ברוקר
+excellence@2026-10-31 | excellence-buy-sell-foreign-us-pct-track | min | 6c9ec0ada66f77d8 | 4 | 3סנט למניה מינימום 8$
+excellence@2026-10-31 | excellence-buy-sell-foreign-us-pct-track | max | 6c9ec0ada66f77d8 | 4 | עמלת מקסימום 2% משווי העסקה
+excellence@2026-10-31 | excellence-buy-sell-foreign-non-us | rate | 6c9ec0ada66f77d8 | 4 | 0.4% משווי העסקה עם מינימום 35
+excellence@2026-10-31 | excellence-custody | rate,min | 6c9ec0ada66f77d8 | 4 | 0.6% לרבעון עם מינימום 40 ₪לחודש
+excellence@2026-10-31 | excellence-fx-conversion | rate | 6c9ec0ada66f77d8 | 5 | עמלת חליפין 0.1%
+excellence@2026-10-31 | excellence-account-fee | rate | 6c9ec0ada66f77d8 | 5 | פרטיים :עד 99
+# IBI
+ibi@2026-10-23 | ibi-buy-sell-tase | rate,min | 1b2d30fbf999c143 | 3 | אגרות חוב וקרנות סל 0.15% משווי העסקה מינימום ₪ 3.5 לעסקה
+ibi@2026-10-23 | ibi-buy-sell-makam | rate,min | 1b2d30fbf999c143 | 3 | מילווה קצר מועד 0.1% משווי העסקה ₪ 3.5 לעסקה מינימום
+ibi@2026-10-23 | ibi-buy-sell-mutual-fund | rate,min | 1b2d30fbf999c143 | 3 | קניה מכירה ופדיון של קרנות נאמנות 0.08% משווי העסקה ₪ 5 לעסקה מינימום
+ibi@2026-10-23 | ibi-buy-sell-foreign-us-pct-track | rate,min | 1b2d30fbf999c143 | 3 | מסלול נוסף לבחירה: 0.15% משווי העסקה מינימום 10דולר ארה"ב לעסקה
+ibi@2026-10-23 | ibi-custody | rate | 1b2d30fbf999c143 | 4 | דמי משמרת 0.1% משווי החשבון לרבעון
+ibi@2026-10-23 | ibi-fx-spread | spread | 1b2d30fbf999c143 | 6 | מרווח המרה עד 0.7% ממחיר הביצוע בשוק
+ibi@2026-10-23 | ibi-account-fee | rate | 1b2d30fbf999c143 | 7 | דמי שימוש עד ₪ 50 אחת לחודש
+# Psagot: a web page, so the words are the place
+psagot@2026-10-23 | psagot-buy-sell-tase-shares | rate,min | 95671307abfe64f1 | - | 0.07% משווי העיסקה, מינימום 2₪ לפעולה
+psagot@2026-10-23 | psagot-buy-sell-tase-bonds | rate,min | 95671307abfe64f1 | - | 0.06%משווי העיסקה, מינימום 2₪ לפעולה
+psagot@2026-10-23 | psagot-buy-sell-makam | rate,min | 95671307abfe64f1 | - | 0.05% משווי העיסקה, מינימום ₪ 2 לפעולה
+psagot@2026-10-23 | psagot-buy-sell-mutual-fund | rate,min | 95671307abfe64f1 | - | 0.07% משווי העיסקה, מינימום ₪ 2 לפעולה
+psagot@2026-10-23 | psagot-buy-sell-foreign-us | min | 95671307abfe64f1 | - | 1 סנט למניה מינימום $ 6.5לעסקה
+psagot@2026-10-23 | psagot-buy-sell-foreign-europe | rate,min | 95671307abfe64f1 | - | עמלה בגובה 0.15% מהעסקה, מינימום 15 יורו לעסקה
+psagot@2026-10-23 | psagot-custody | rate | 95671307abfe64f1 | - | גבייה רבעונית 0.03%
+psagot@2026-10-23 | psagot-fx-conversion-other | rate | 95671307abfe64f1 | - | עבור המרה למטבע אחר או ממטבע אחר – עד 0.5% משווי העסקה
+psagot@2026-10-23 | psagot-account-fee | rate | 95671307abfe64f1 | - | !דמי שימוש/דמי טיפול ללא עלות
+# Interactive Israel
+interactive-israel@2026-10-25 | interactive-israel-buy-sell-us | rate,min | 58a938374a90ac29 | 1 | 2.5 USD 0.01 )USD (Shares
+interactive-israel@2026-10-25 | interactive-israel-buy-sell-us | cap | 58a938374a90ac29 | 1 | עמלת מקסימום במניות ארה"ב הינה 2% משווי העסקה
+interactive-israel@2026-10-25 | interactive-israel-buy-sell-europe | rate,min | 58a938374a90ac29 | 1 | עבור מניות/תעודות סל הנסחרות באירופה 0.15% משווי העסקה מינימום 2.5
+interactive-israel@2026-10-25 | interactive-israel-fx-ils | rate,min | 58a938374a90ac29 | 6 | 10 ILS 0.002 * Trade Value
+interactive-israel@2026-10-25 | interactive-israel-fx-recurring-plan | rate | 58a938374a90ac29 | 6 | !בזמן ביצוע המרת מטבע במסגרת תכנית השקעה אוטומטית קבועה אין חיוב בגין עמלת המרת מט"ח
+interactive-israel@2026-10-25 | interactive-israel-custody-foreign | rate | efe5d0ead4cac314 | - | !אנו לא גובים דמי ניהול, בנוסף אין דמי שמירת ניירות ערך
+# Interactive Brokers: a web page. Words on the same row of its table; the country is in the value's title
+interactive-brokers@2026-10-25 | interactive-brokers-buy-sell-us-fixed | rate | 0bf0534869b59d82 | - | ≤ 300,000 USD 0.0035 USD 0.005
+interactive-brokers@2026-10-25 | interactive-brokers-buy-sell-us-fixed | min | 0bf0534869b59d82 | - | Minimum per order (shares) USD 0.35 12 USD 1.00 12
+interactive-brokers@2026-10-25 | interactive-brokers-buy-sell-us-fixed | cap | 0bf0534869b59d82 | - | Maximum per order 1% of Trade Value 4,8 1% of Trade Value 4,8
+interactive-brokers@2026-10-25 | interactive-brokers-buy-sell-us-tiered | rate | 0bf0534869b59d82 | - | ≤ 300,000 USD 0.0035 USD 0.005
+interactive-brokers@2026-10-25 | interactive-brokers-buy-sell-us-tiered | min | 0bf0534869b59d82 | - | Minimum per order (shares) USD 0.35 12 USD 1.00 12
+interactive-brokers@2026-10-25 | interactive-brokers-buy-sell-us-tiered | cap | 0bf0534869b59d82 | - | Maximum per order 1% of Trade Value 4,8 1% of Trade Value 4,8
+interactive-brokers@2026-10-25 | interactive-brokers-buy-sell-lse-usd-fixed | rate | 0bf0534869b59d82 | - | ≤ 50,000,000 0.05% of Trade Value 0.05% of Trade Value 0.10% of Trade Value
+interactive-brokers@2026-10-25 | interactive-brokers-buy-sell-lse-usd-fixed | min | 0bf0534869b59d82 | - | Minimum per order (shares) USD 1.70 USD 4.00 USD 6.00
+interactive-brokers@2026-10-25 | interactive-brokers-buy-sell-lse-usd-tiered | rate | 0bf0534869b59d82 | - | ≤ 50,000,000 0.05% of Trade Value 0.05% of Trade Value 0.10% of Trade Value
+interactive-brokers@2026-10-25 | interactive-brokers-buy-sell-lse-usd-tiered | min | 0bf0534869b59d82 | - | Minimum per order (shares) USD 1.70 USD 4.00 USD 6.00
+interactive-brokers@2026-10-25 | interactive-brokers-buy-sell-lse-usd-tiered | max | 0bf0534869b59d82 | - | Maximum per order (shares) USD 39.00
+interactive-brokers@2026-10-25 | interactive-brokers-buy-sell-tase-fixed | rate | 0bf0534869b59d82 | - | 0.05% of Trade Value 0.1% of Trade Value
+interactive-brokers@2026-10-25 | interactive-brokers-buy-sell-tase-fixed | min | 0bf0534869b59d82 | - | Minimum per order ILS 5.25 ILS 15.00
+interactive-brokers@2026-10-25 | interactive-brokers-buy-sell-tase-tiered | rate | 0bf0534869b59d82 | - | 0.05% of Trade Value 0.1% of Trade Value
+interactive-brokers@2026-10-25 | interactive-brokers-buy-sell-tase-tiered | min | 0bf0534869b59d82 | - | Minimum per order ILS 5.25 ILS 15.00
+interactive-brokers@2026-10-25 | interactive-brokers-buy-sell-tase-tiered | max | 0bf0534869b59d82 | - | Maximum per order ILS 120.00
+interactive-brokers@2026-10-25 | interactive-brokers-custody | rate | 0bf0534869b59d82 | - | !IBKR charges no custody fees.
+interactive-brokers@2026-10-25 | interactive-brokers-fx-spot | min | 51e812af38fbaa9d | - | Tier I - USD 2.00
+interactive-brokers@2026-10-25 | interactive-brokers-fx-auto-conversion | rate | 51e812af38fbaa9d | - | typically add or subtract (at its discretion) 0.03% to the exchange rate
+# One Zero: read by eye from a copy not filed, PDF page 9 and 11 (brief, job 8); no quote
+one-zero@2026-10-31 | one-zero-buy-sell-tase | rate,min,max | - | 9 | 
+one-zero@2026-10-31 | one-zero-custody-israel | rate | - | 11 | 
+# Interactive Israel, web page
+interactive-israel@2026-10-25 | interactive-israel-account-fee | rate | efe5d0ead4cac314 | - | !דמי מערכת: 0 ש"ח
+# Meitav, web pages. The 0 deposit lines record that no deposit fee is named, so no words carry them; left without a place.
+meitav@2026-10-23 | meitav-kgl-balance-list | rate | 66d3c1f4688de137 | - | עומדים על שיעור של 0.8% מהצבירה ונגבים באופן שנתי
+meitav@2026-10-23 | meitav-pension-comprehensive-deposit-list | rate | 58670775e07bf09c | - | דמי הניהול בקרן הפנסיה המקיפה של מיטב: 1% מן ההפקדה ו-0.22% מן הצבירה.
+meitav@2026-10-23 | meitav-pension-comprehensive-balance-list | rate | 58670775e07bf09c | - | דמי הניהול בקרן הפנסיה המקיפה של מיטב: 1% מן ההפקדה ו-0.22% מן הצבירה.
