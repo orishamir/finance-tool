@@ -86,7 +86,11 @@ export function DollarSection({ view, bundle, plan, pick }: { view: InvestView; 
 
   const hedgedPhrase = (s: Spread, up: boolean) => (s.low === s.high ? (up ? c.dollar.oneRose(bare(s.low)) : c.dollar.oneFell(bare(s.low))) : up ? c.dollar.manyRose(bare(s.low), bare(s.high)) : c.dollar.manyFell(bare(s.high), bare(s.low)));
   const fell = rec.fell, rose = rec.rose;
-  const nameOf = (p: Pick) => c.dollar.pairName(funds.find((f) => f.rec.id === p.fund)?.name ?? p.fund, providerName(view, p.house)?.short ?? p.house);
+  const houseOf = (id: string) => {
+    const info = providerName(view, id);
+    return info?.custom ? `${info.short} (${c.customEntries.enteredWord})` : (info?.short ?? id);
+  };
+  const nameOf = (p: Pick) => c.dollar.pairName(funds.find((f) => f.rec.id === p.fund)?.name ?? p.fund, houseOf(p.house));
   const moneyInputs = inputMap(plan);
   const nisV = (n: number, about: string) => computed(Math.round(n), "nis", "F-95", moneyInputs, { today, about });
   const round100 = (n: number) => Math.round(n / 100) * 100;
