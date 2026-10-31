@@ -464,6 +464,12 @@ function buildTariff(
         if (min !== undefined) c.min = min;
         if (max !== undefined) c.max = max;
         if (l.cap && isNum(l.cap)) c.cap = pct(l.cap);
+        // F-12: the same reading as the comparison's tariff step: a flat price up to an amount, where the tariff prints one
+        if (l.flat_up_to) {
+          const amount = nis(l.flat_up_to.amount);
+          const upTo = nis(l.flat_up_to.up_to);
+          if (amount !== undefined && upTo !== undefined) c.flatUpTo = { amount, upTo };
+        }
         return c;
       };
       const c = commission(line);
@@ -484,6 +490,10 @@ function buildTariff(
       feeValues.tradeRate = { ...line.rate };
       if (line.min && isNum(line.min)) feeValues.tradeMin = { ...line.min };
       if (line.max && isNum(line.max)) feeValues.tradeMax = { ...line.max };
+      if (line.flat_up_to) {
+        feeValues.tradeFlat = { ...line.flat_up_to.amount };
+        feeValues.tradeFlatUpTo = { ...line.flat_up_to.up_to };
+      }
     } else missing.push(`${wrapperId}: ${snap.id} line ${line.id} is not a percent of trade`);
   }
 

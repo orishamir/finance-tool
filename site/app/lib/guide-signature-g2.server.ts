@@ -5,11 +5,10 @@
 import type { CatalogEntry, DepositTerms, ExposureRecord, FundRecord, ParameterRecord, RuleRecord, ValueObject, ProductRecord } from "@finance-tool/schema";
 import { loadCma, loadCmaFees, loadFees } from "./data.server";
 import type { Bundle } from "./engine";
-import { p05Number, p05Value } from "./engine";
+import { p05Value } from "./engine";
 import type { SignatureData } from "./guide-signature";
-import { buildInstrumentBundle } from "./guide-signature-bundle.server";
-import { onlyWhatCanBeDone } from "./providers";
-import { hishtalmutTerms, pensionModel, rulesRead, runWith, sideOf, type Employment } from "./guide-signature-g2";
+import { accountRuns, buildInstrumentBundle } from "./guide-signature-bundle.server";
+import { hishtalmutTerms, pensionModel, rulesRead, runWith, type Employment } from "./guide-signature-g2";
 import { loadCatalog, loadExposures, regulatorAverageFees } from "./instruments.server";
 import { cmaFeeValue, computed, ownBy, ruleFigure, type SiteValue } from "./value";
 
@@ -170,26 +169,8 @@ function brokerageBundle(c: G2Ctx): Bundle | null {
 function addBrokerRange(d: SignatureData, c: G2Ctx) {
   const record = c.wrappers.find((w) => w.id === "brokerage-account");
   if (!record) return;
-  const months = 12 * p05Number(c.p05, "horizon_years");
-  const plan = { amount_now: p05Number(c.p05, "amount_now"), monthly_deposit: p05Number(c.p05, "monthly_deposit") };
-  const rows: { id: string; name: string; gain: number; bundle: Bundle; source: ValueObject["source"]; checked: string }[] = [];
-  const seen = new Set<string>();
-  for (const f of loadFees()) {
-    if (seen.has(f.id) || f.missing) continue;
-    seen.add(f.id);
-    // the example is an Israeli tracking fund: a house whose documents leave that open is not counted (D42)
-    const newest = loadFees().filter((x) => x.id === f.id).sort((x, y) => x.snapshot.localeCompare(y.snapshot)).at(-1)!;
-    if (!onlyWhatCanBeDone(newest).lines.some((l) => l.base === "trade" && l.applies_to.includes("mutual_fund_units"))) continue;
-    const spec = { ...c.p05.instruments?.["brokerage-account"], tariff: f.id };
-    const p = { ...c.p05, instruments: { ...c.p05.instruments, "brokerage-account": spec } } as ParameterRecord;
-    const bundle = buildInstrumentBundle(record, "securities", p, c.allRules, c.t).bundle;
-    const run = bundle ? runWith(bundle, plan, months) : null;
-    if (!bundle || !run || run.outcome.code !== "eligible") continue;
-    const latest = loadFees().filter((x) => x.id === f.id).sort((a, b) => a.snapshot.localeCompare(b.snapshot)).at(-1)!;
-    rows.push({ id: f.id, name: latest.provider.name_he, gain: sideOf(run, plan.amount_now).gain, bundle, source: { url: latest.tariff.url, title: latest.tariff.title, publisher: latest.provider.name_he, strength: "institution" }, checked: latest.snapshot });
-  }
+  const rows = accountRuns(record, "securities", c.p05, c.allRules, c.t);
   if (rows.length < 3) return;
-  rows.sort((a, b) => a.gain - b.gain);
   const [worst, best] = [rows[0]!, rows[rows.length - 1]!];
   d.bundles["brokerage-worst"] = widen(worst.bundle, c, brokerVariants);
   d.bundles["brokerage-best"] = widen(best.bundle, c, brokerVariants);

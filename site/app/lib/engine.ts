@@ -36,6 +36,8 @@ export interface Bundle {
   feeValues: Record<string, SiteValue>;
   rules: RuleRecord[];
   runDate: string;
+  /** The run rests on the site's pick over the collected institutions (F-80, F-86), which the terms block says, with how many were compared. */
+  pick?: { kind: "account" | "deposit"; id: string; count: SiteValue };
 }
 
 export interface YearPoint {

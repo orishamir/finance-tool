@@ -406,8 +406,8 @@
       }
     }
   },
-  "rationale": "The guide graphs open on round, middle-of-the-road starting values for someone starting to save: the amount today, a monthly deposit, a horizon, a return for market products, a rate for cash-like products and inflation. They are not a forecast and not a measured average, and each can be changed on the page. The sliders cover what most people would try; larger values can be typed. On the comparison page the cash-like rate is the site's assumption for options with no published rate of their own (the money-market fund, makam, the government bond): it is not a published rate and not a forecast, and a person can enter another rate to replace it. For each product the graph uses one collected representative record (a deposit, a fund or a track), and the page says which.",
-  "rationale_he": "גרפי המדריכים נפתחים על ערכי התחלה עגולים ואמצעיים למי שמתחיל לחסוך: סכום היום, הפקדה חודשית, אופק, תשואה למוצרי שוק, ריבית למוצרים דמויי מזומן ואינפלציה. הם לא תחזית ולא ממוצע שנמדד, ואפשר לשנות כל אחד מהם בעמוד. המחוונים מכסים את מה שרוב האנשים ינסו, וערכים גדולים יותר אפשר להקליד. בעמוד ההשוואה הריבית למוצרים דמויי מזומן היא ההנחה של האתר לאפשרויות שאין להן ריבית שפורסמה (הקרן הכספית, המק״מ והאג״ח הממשלתית): היא לא ריבית שפורסמה ולא תחזית, ואפשר להזין ריבית אחרת במקומה. לכל מוצר בגרף האתר מחשב לפי רשומה מייצגת אחת שנאספה, למשל פיקדון, קרן או מסלול, והעמוד אומר איזו.",
+  "rationale": "The guide graphs open on round, middle-of-the-road starting values for someone starting to save: the amount today, a monthly deposit, a horizon, a return for market products, a rate for cash-like products and inflation. They are not a forecast and not a measured average, and each can be changed on the page. The sliders cover what most people would try; larger values can be typed. On the comparison page the cash-like rate is the site's assumption for options with no published rate of their own (the money-market fund, makam, the government bond): it is not a published rate and not a forecast, and a person can enter another rate to replace it. For each product the graph uses one collected representative record (a deposit, a fund or a track), and the page says which; the bank deposit, the securities account, makam and the government bond take the site's pick over every collected institution (method F-80, F-86), and the page says it is one.",
+  "rationale_he": "גרפי המדריכים נפתחים על ערכי התחלה עגולים ואמצעיים למי שמתחיל לחסוך: סכום היום, הפקדה חודשית, אופק, תשואה למוצרי שוק, ריבית למוצרים דמויי מזומן ואינפלציה. הם לא תחזית ולא ממוצע שנמדד, ואפשר לשנות כל אחד מהם בעמוד. המחוונים מכסים את מה שרוב האנשים ינסו, וערכים גדולים יותר אפשר להקליד. בעמוד ההשוואה הריבית למוצרים דמויי מזומן היא ההנחה של האתר לאפשרויות שאין להן ריבית שפורסמה (הקרן הכספית, המק״מ והאג״ח הממשלתית): היא לא ריבית שפורסמה ולא תחזית, ואפשר להזין ריבית אחרת במקומה. לכל מוצר בגרף האתר מחשב לפי רשומה מייצגת אחת שנאספה, למשל פיקדון, קרן או מסלול, והעמוד אומר איזו. בפיקדון בנקאי, בחשבון ניירות ערך, במק״מ ובאג״ח ממשלתית זו הבחירה של האתר מבין כל מי שנאספו, והעמוד אומר זאת.",
   "chosen_by": "Claude, at the founder's request (2026-10-23: \"do whatever you think fits\")",
   "signed_off_by": "founder",
   "signed_off_on": "2026-10-23",
@@ -423,12 +423,10 @@
       "deposit_terms": "leumi-current-account"
     },
     "money-market-fund-daily": {
-      "fund": "5138763",
-      "tariff": "leumi"
+      "fund": "5138763"
     },
     "money-market-fund-renewable": {
-      "fund": "1223866",
-      "tariff": "leumi"
+      "fund": "1223866"
     },
     "brokerage-account": {
       "fund": "5139282",

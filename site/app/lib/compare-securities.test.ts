@@ -3,6 +3,7 @@
 import { describe, expect, it } from "vitest";
 import { applyOwnProviders, applyProviders, evaluate, providerOutcomes, type RunGoal } from "./compare";
 import { compareBundle } from "./compare.server";
+import { buildGuidePage } from "./guide.server";
 
 const bundle = compareBundle();
 // a year of idle cash: 100,000 now, nothing monthly, the makam yield entered as the cash rate the guides use
@@ -51,6 +52,33 @@ describe("the money-market funds keep the bank case", () => {
   it("carry no provider list: at a bank with a distribution agreement the holder pays nothing (MF-26, BANK-18)", () => {
     expect(entry("money-market-fund-daily").providers).toBeUndefined();
     expect(entry("money-market-fund-daily").record).toHaveProperty("held_in");
+  });
+});
+
+describe("the guides price an account and its securities on the comparison's pick (issue 112)", () => {
+  // the guide's example plan: P-05's amount, monthly deposit and horizon
+  const plan: RunGoal = { ...goal, horizonYears: 10, amountNow: 10_000, monthly: 500, inflationPct: 2 };
+  for (const id of ["makam", "government-bond"]) {
+    it(`${id}: the same house out of the same count`, () => {
+      const own = buildGuidePage(id)!.bundle!;
+      const rows = providerOutcomes(bundle, plan, id).providers;
+      expect(own.pick!.id).toBe(rows[0]!.id);
+      expect(own.pick!.count.value).toBe(Object.keys(entry(id).providers!).length);
+      expect(own.feeValues.tradeRate?.own).toBeTruthy();
+    });
+  }
+  it("names no bank on a money-market fund: the fees are the law's zero (MF-26, BANK-18)", () => {
+    const own = buildGuidePage("money-market-fund-daily")!.bundle!;
+    expect(own.feeValues.tradeRate?.value).toBe(0);
+    expect(own.feeValues.tradeRate?.own).toBeUndefined();
+    expect(own.feeValues.custodyRate?.own).toBeUndefined();
+  });
+  it("the securities account's page is the study-fund page's pick", () => {
+    const own = buildGuidePage("brokerage-account")!.bundle!;
+    const other = buildGuidePage("keren-hishtalmut")!.signature!;
+    expect(own.pick!.id).toBe("fair");
+    expect(own.pick!.count.value).toBe(other.facts.brokerCount!.value);
+    expect(own.feeValues.tradeRate?.own).toBeTruthy();
   });
 });
 

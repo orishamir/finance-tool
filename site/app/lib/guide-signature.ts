@@ -69,6 +69,8 @@ export interface AccountBank {
   until: string | null;
   /** The bank printed the sentence that says it offers no interest (BANK-09), not a rate. */
   noOffer: boolean;
+  /** A one-year deposit's break terms (value `not_allowed`, `none` or the penalty kind): the bank's own, on the line that names it. */
+  exit?: SiteValue;
 }
 
 const rateOf = (b: AccountBank) => Number(b.rate.value);
@@ -197,8 +199,10 @@ export function breakKindOf(v: SiteValue | undefined): BreakKind {
 
 export interface DepositModel {
   term: number;
-  /** Net amount of the deposit at the end of its term (F-21 with the bank's withholding), nominal. */
+  /** Net amount of the deposit at the end of its term (F-21 with the bank's withholding), nominal: the highest rate of the collected banks (F-86). */
   atTerm: number;
+  /** The same at the lowest rate of the collected banks, when the data holds one. */
+  atTermLo: number | null;
   /** Net amount of the daily fund if the money is taken out after `month` months, nominal. */
   fundAt: (month: number) => number | null;
   fundAtTerm: number;
@@ -216,7 +220,15 @@ export function depositModel(d: SignatureData, c: { amount: number }): DepositMo
   const fundEnd = runAtMonths(fund, base, term);
   if (!end || !fundEnd) return null;
   const fundAt = (month: number) => (month <= 0 ? c.amount : (runAtMonths(fund, base, month)?.nominal ?? null));
-  return { term, atTerm: end.nominal, fundAt, fundAtTerm: fundEnd.nominal, gap: fundEnd.nominal - end.nominal };
+  const low = d.bundles["bank-deposit-lo"];
+  const endLo = low ? runAtMonths(low, base, term) : null;
+  return { term, atTerm: end.nominal, atTermLo: endLo?.nominal ?? null, fundAt, fundAtTerm: fundEnd.nominal, gap: fundEnd.nominal - end.nominal };
+}
+
+/** The banks at the two ends of the collected one-year deposits' rates (F-86): the ones the run and the sentence under the bars stand on. */
+export function depositEndBanks(d: SignatureData): { top: AccountBank; bottom: AccountBank } | null {
+  const banks = [...(d.depositBanks ?? [])].sort((a, b) => rateOf(a) - rateOf(b));
+  return banks.length ? { top: banks[banks.length - 1]!, bottom: banks[0]! } : null;
 }
 
 // ---------------------------------------------------------------- savings plan

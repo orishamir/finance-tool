@@ -365,6 +365,11 @@ function TermsList({ bundle }: { bundle: Bundle }) {
           {guideBlocks.terms.whose} <bdi className="font-medium">{owners.join(" · ")}</bdi>
         </p>
       )}
+      {bundle.pick && (
+        <p className="text-sm">
+          {guideBlocks.terms.pick[bundle.pick.kind].before} <Num value={bundle.pick.count} /> {guideBlocks.terms.pick[bundle.pick.kind].after}
+        </p>
+      )}
       <dl className="readout">
         {rows.map(([key, label]) => {
           const v = bundle.feeValues[key]!;
