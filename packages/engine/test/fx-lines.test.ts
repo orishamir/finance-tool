@@ -61,6 +61,44 @@ describe("a minimum in euros (F-12, F-84)", () => {
   });
 });
 
+describe("a recurring plan's conversion on a monthly purchase (F-13, D41)", () => {
+  const israel = read("interactive-israel@2026-10-25");
+  const EUROPE_II = "מניות ותעודות סל הנסחרות באירופה";
+  const built = buildTariff(workbench({ providers: [] }), { snapshot: israel, level: "list", band: EUROPE_II }, israel);
+  const line = { rate: 0.00002, min: 10 };
+  const lump = { amountNow: 6000 };
+
+  it("reads the band from the tariff: the regular line stays regular, the plan's line prices nothing", () => {
+    expect(built.tariff.fx).toEqual(line);
+    expect(built.tariff.fxStanding).toBe(0);
+    expect(built.linesUsed).toEqual(expect.arrayContaining(["interactive-israel-fx-ils", "interactive-israel-fx-recurring-plan"]));
+    expect(built.lineSources.find((s) => s.lineId === "interactive-israel-fx-recurring-plan")?.url).toContain("inter-il.com");
+  });
+
+  it("the lump sum and the sale pay the line, the twelve monthly purchases nothing", () => {
+    expect(runSecurities(plain({ fx: line, fxStanding: 0 }, lump), ctx).fees.fx).toBeCloseTo(20, 8);
+  });
+
+  it("without a plan every conversion pays the line: 120 NIS more in the year", () => {
+    expect(runSecurities(plain({ fx: line }, lump), ctx).fees.fx).toBeCloseTo(140, 8);
+  });
+
+  it("a tariff with no plan line has no such price", () => {
+    const hapoalim = read("hapoalim@2026-10-31");
+    expect(buildTariff({ ...workbench({ providers: [] }), channel: "direct" }, { snapshot: hapoalim, level: "list" }, hapoalim).tariff.fxStanding).toBeUndefined();
+  });
+
+  it("a person's own rate moves it in proportion, and removing the line removes both (F-61)", () => {
+    const plan = { run: "runSecurities", input: plain({ fx: { rate: 0.001, min: 10 }, fxStanding: 0.0005 }) } as const;
+    const moved = withFeeRate(plan, "fx", 0.002);
+    expect(moved.run === "runSecurities" && moved.input.tariff.fxStanding).toBeCloseTo(0.001, 12);
+    const gone = withoutFeeLine(plan, "fx");
+    expect(gone.run === "runSecurities" && gone.input.tariff.fxStanding).toBeUndefined();
+    const free = withFeeRate({ run: "runSecurities", input: plain({ fx: line, fxStanding: 0 }) }, "fx", 0.002);
+    expect(free.run === "runSecurities" && free.input.tariff.fxStanding).toBe(0);
+  });
+});
+
 describe("a conversion priced per dollar, on the line for the fund's currency (F-13)", () => {
   const tariffFor = (code: string) => {
     const input = workbench({ currency: { code, startRate: fx.USD }, providers: [] });

@@ -123,6 +123,13 @@ function changeLine(plan: RunPlan, line: FeeLine, rate: number): RunPlan {
             const { perCurrencyUnit: _, ...rest } = tariff.fx;
             tariff.fx = { ...rest, rate };
           }
+          // F-13: a recurring plan's conversion moves with the regular rate, in proportion, as a standing-order price does; a plan that charges nothing stays at nothing
+          if (input.tariff.fxStanding !== undefined) {
+            const old = typeof input.tariff.fx === "number" ? input.tariff.fx : input.tariff.fx!.rate;
+            if (rate === 0 || !old) delete tariff.fxStanding;
+            else if (typeof input.tariff.fxStanding === "number") tariff.fxStanding = (input.tariff.fxStanding * rate) / old;
+            else tariff.fxStanding = { ...input.tariff.fxStanding, rate: (input.tariff.fxStanding.rate * rate) / old };
+          }
           return { run: "runSecurities", input: { ...input, tariff } };
         case "fixed":
           if (tariff.monthlyFee === undefined) return noLine(plan, line);

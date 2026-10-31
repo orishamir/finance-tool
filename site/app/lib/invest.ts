@@ -3,7 +3,7 @@
 // numbers come from the engine's provider workbench (F-63) and from the fund runs of F-65, over the bundle the other
 // workbench pages use. No fee, rate or rule figure is written here: tariffs are snapshots, fund fees are fund records,
 // exchange rates are the ECB's (D26). Nothing is chosen for the person (D27): an index is always an argument.
-import { STANDING_ORDER_BAND, beforeTax, costByWho, crossing, gapToIndex, sumFees, trackingBeyondFeesRange, providerWorkbench, relativeGap, type ComparedProvider, type FeeLine, type NotComparableProvider, type ProviderRow } from "@finance-tool/engine";
+import { STANDING_CONVERSION_BAND, STANDING_ORDER_BAND, beforeTax, costByWho, crossing, gapToIndex, sumFees, trackingBeyondFeesRange, providerWorkbench, relativeGap, type ComparedProvider, type FeeLine, type NotComparableProvider, type ProviderRow } from "@finance-tool/engine";
 import type { ExposureRecord, FeesSnapshot, FundRecord } from "@finance-tool/schema";
 import { invest as copy } from "../copy";
 import { aliasRows } from "./search-aliases";
@@ -456,7 +456,7 @@ function priceMany(ctx: Ctx, spec: Spec, option: OptionId, snaps: FeesSnapshot[]
       if (!best || g.row.real > best.row.real || (g.row.real === best.row.real && venue !== null && best.venue === null)) best = { row: g.row, venue };
     }
     if (best) {
-      out.set(s.id, { kind: "ok", ...best, standing: best.row.linesUsed.some((id) => s.lines.find((l) => l.id === id)?.band === STANDING_ORDER_BAND) });
+      out.set(s.id, { kind: "ok", ...best, standing: best.row.linesUsed.some((id) => { const band = s.lines.find((l) => l.id === id)?.band; return band === STANDING_ORDER_BAND || band === STANDING_CONVERSION_BAND; }) });
       continue;
     }
     const fails = got.flatMap((g) => (g.row.kind === "not-comparable" ? [reasonOf(g.row, scoped(s))] : g.row.noLine.includes("trade") ? [{ code: "no-applicable-line" as const, detail: `no trade line of the ${s.snapshot} snapshot applies to ${spec.cls}` }] : []));

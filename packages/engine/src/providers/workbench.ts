@@ -233,8 +233,10 @@ type SnapLine = FeesSnapshot["lines"][number];
  */
 /** The band of a trade line that prices a purchase by standing order (F-12, 2026-10-31). Never the line of a sale, a lump sum or a reinvested distribution. */
 export const STANDING_ORDER_BAND = "הוראת קבע";
+/** The band of a conversion line that prices the conversion of a monthly purchase on a recurring plan (F-13, 2026-10-31). Never a lump sum's or a sale's: Interactive Israel's tariff, p.6, charges those by the table. */
+export const STANDING_CONVERSION_BAND = "השקעה קבועה אוטומטית";
 
-const standingLines = (snapshot: FeesSnapshot) => snapshot.lines.filter((l) => l.base === "trade" && l.level === "list" && l.band === STANDING_ORDER_BAND);
+const standingLines = (snapshot: FeesSnapshot, base: "trade" | "fx") => snapshot.lines.filter((l) => l.base === base && l.level === "list" && l.band === (base === "trade" ? STANDING_ORDER_BAND : STANDING_CONVERSION_BAND));
 
 /**
  * The classes a tariff line may name for a security of this class. A bond (`tase_bonds`) is also a `tase_shares_bonds` security, and a line
@@ -263,7 +265,7 @@ export function buildTariff(input: Omit<WorkbenchInput, "fund"> & { fund?: Workb
 
   /** The line of a base at a level for the channel: none, one, or an error when two apply (the snapshot is ambiguous). */
   const pick = (base: SnapLine["base"], at: SnapLine["level"]): SnapLine | undefined => {
-    const all = snapshot.lines.filter((l) => l.base === base && l.level === at && applicable(l) && l.band !== STANDING_ORDER_BAND);
+    const all = snapshot.lines.filter((l) => l.base === base && l.level === at && applicable(l) && l.band !== STANDING_ORDER_BAND && l.band !== STANDING_CONVERSION_BAND);
     const channels = new Set(all.map((l) => l.channel).filter((c): c is string => c !== null));
     if (input.channel === undefined && channels.size > 0)
       throw new RecordInputError(`provider ${snapshot.id}: ${base} lines exist for channels ${[...channels].join(", ")}; the input must name the channel`);
@@ -358,7 +360,7 @@ export function buildTariff(input: Omit<WorkbenchInput, "fund"> & { fund?: Workb
       used(r.line, r.rate, r.min, r.max, r.cap);
       // F-12 (2026-10-31): a monthly purchase by standing order, where the tariff prints a price for one; a list price only, never over an average.
       if (r.rate === r.line.rate && r.line.level === "list") {
-        const standing = standingLines(snapshot).filter((l) => applicable(l) && (l.channel === null || l.channel === input.channel));
+        const standing = standingLines(snapshot, "trade").filter((l) => applicable(l) && (l.channel === null || l.channel === input.channel));
         if (standing.length > 1) throw new RecordInputError(`provider ${snapshot.id}: ${standing.length} standing-order lines apply (${standing.map((l) => l.id).join(", ")}); the snapshot is ambiguous`);
         const l = standing[0];
         if (l) {
@@ -433,6 +435,16 @@ export function buildTariff(input: Omit<WorkbenchInput, "fund"> & { fund?: Workb
         }
         out.tariff.fx = hasBound(r.min) || hasBound(r.max) || c.perCurrencyUnit ? c : c.rate;
         used(r.line, r.rate, r.min, r.max);
+        // F-13 (2026-10-31): the conversion of a monthly purchase on a recurring plan, where the tariff prints a price for one; a list price only, never over an average.
+        if (r.rate === r.line.rate && r.line.level === "list") {
+          const plan = standingLines(snapshot, "fx").filter((l) => applicable(l) && (l.channel === null || l.channel === input.channel));
+          if (plan.length > 1) throw new RecordInputError(`provider ${snapshot.id}: ${plan.length} recurring-plan conversion lines apply (${plan.map((l) => l.id).join(", ")}); the snapshot is ambiguous`);
+          const l = plan[0];
+          if (l) {
+            out.tariff.fxStanding = pct(l.rate, "pct_of_trade", `${l.id} rate`);
+            used(l, l.rate);
+          }
+        }
       }
     }
   }

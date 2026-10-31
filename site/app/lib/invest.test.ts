@@ -25,9 +25,10 @@ const sp = indexById(bundle, "index-sp500")!;
 describe("invest page computation", () => {
   const view = buildInvest({ bundle, index: sp, plan: plan() });
 
-  it("marks the three houses that print a standing-order price, and only them", () => {
+  it("marks the houses that print a price for monthly buying, and only them", () => {
+    // three banks print a commission for a standing order; Interactive Israel a conversion for its recurring plan (p.6 of its tariff, issue 132)
     const marked = view.houses.filter((h) => h.entries.some((e) => e.price?.standing)).map((h) => h.provider.id);
-    expect(marked.sort()).toEqual(["fibi", "leumi", "massad"]);
+    expect(marked.sort()).toEqual(["fibi", "interactive-israel", "leumi", "massad"]);
   });
 
   it("Psagot prices a fund abroad on its European line and its dollar conversion (issue 144)", () => {
