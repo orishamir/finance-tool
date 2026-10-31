@@ -93,3 +93,17 @@ September 2026, fixed, unindexed, average actually given:
 Variable, September 2026: 6 months to a year, Leumi 2.00, Discount 2.85, Mizrahi 3.30, First International 1.63, Mercantile 2.75, Massad 1.92, Jerusalem 3.44, One Zero 3.28, all banks 2.20.
 
 Why it matters: Hapoalim's page dated 01.11.2026 offers 1.74% fixed for a year and First International's 1.85%, while the same banks gave households 2.83% to 3.77% and 3.29% to 3.30% on average in September. The sheet is an average over deposits of every size and the months differ, so this is not a like-for-like gap, and whether a deposit of exactly one year falls in the first band or the second is not stated. But it says the published rate is not what depositors got. One Zero's 6.00 fits the 3% bonus on its fixed one-year saving. Nothing on the site uses this sheet yet; `data/` has no record of it, and a screen needs a mockup.
+
+## Form 747 and the government bonds page (2026-10-31)
+
+Form 747, read in Chrome on https://www.gov.il/he/service/notice-cost-declaration-for-traded-securities and then filed by plain curl from the page's own links (the attachments under `/BlobFolder/` answered at once):
+
+- `31a616b98ccaa856` p.1, the form: for an individual only, who files returns under section 131, holding a traded security through an Israeli exchange member whose recorded cost does not match what was paid; total declared cost up to 500,000 NIS a year; resident, active tax file, must file for the year of sale and attach the form; for withholding only. Accessible copy `d601c1c6c8627b84`.
+- `cbb3d775be9e3a8f` p.1, Tax Authority notice of 19 May 2025: forms 746, 747 and 748 are new; 746 and 747 replace form 938; 748 exempts from withholding on a donated security; for withholding only, not an assessment.
+- The service page adds: once per tax year.
+
+So the 500,000 NIS cap job 1 asked about is current on the form's own page. The rule base still names form 938 in `ira-self-directed.md` and `switching-and-transfers.md`; this goes to the tax-specialist job.
+
+Government bonds page, https://www.gov.il/he/pages/govermental-bonds, published 24.08.2020, its traded-bond table updated 02.01.2011 (four tabs: traded features, non-traded features, traded regulations, non-traded regulations). Series seen: גליל from 31.12.1984, fixed, by yields, at least 1%, annual; ממשלתית צמודה from 26.6.2006, annual; גילון חדש from 28.4.1999, variable by makam of 3 to 12 months, every 3 months, no longer issued; ממשלתית בריבית משתנה from 8.1.2008, by 12-month makam, every 3 months; שחר from 24.8.1995, annual; ממשלתית from 6.11.2006, annual. Not filed: scripts get a check on this page. It is on the morning list.
+
+Filed as well: `d386a692cce2ad86`, the Securities Authority's own full text of the Joint Investment Trust Law with amendments to 5784, 99 pages. `447225a31c1b5b55` (the Authority's `takanon2` address) holds only the empty shell of a script-drawn page.
