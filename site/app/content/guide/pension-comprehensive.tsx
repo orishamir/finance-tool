@@ -27,7 +27,7 @@ export const content: GuideContent = {
         <N v={figure("PEN-23", "selected_balance_fee")} /> מהצבירה, שמובטחים לפחות <N v={figure("PEN-23", "guarantee_years")} /> שנים.
       </p>
       <p className="max-w-measure">
-        מאז <bdi>1.6.2025</bdi> ועד <bdi>31.10.2028</bdi> הקרן הנבחרת נקבעת לפי ספרת הביקורת בתעודת הזהות: <bdi>7, 8, 9</bdi> אינפיניטי; <bdi>4, 5, 6</bdi> מור; <bdi>2, 3</bdi> אלטשולר שחם; <bdi>0, 1</bdi> מיטב.
+        מ־<bdi>1.6.2025</bdi> עד <bdi>31.10.2028</bdi> הקרן הנבחרת נקבעת לפי ספרת הביקורת בתעודת הזהות: <bdi>7, 8, 9</bdi> אינפיניטי; <bdi>4, 5, 6</bdi> מור; <bdi>2, 3</bdi> אלטשולר שחם; <bdi>0, 1</bdi> מיטב.
       </p>
       <RulesLine ids={["REG-17", "PEN-06", "PEN-23"]} />
     </>
