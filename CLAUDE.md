@@ -177,7 +177,8 @@ The evidence behind them is `research/2026-10-28-founder-patterns.md`.
   options, or sources, add to it where sensible unless I say otherwise.
 - **Big jobs have a budget** (founder, 2026-10-31). In the week of 24 to 30
   October about 200 subagents used a week of tokens in a day and a half. Read
-  the weekly meter (`get_usage`) before and after each job and report both.
+  the weekly meter (`get_usage`) before and after each job; report it only for a
+  big job or near a limit (founder, 2026-10-31).
   Subagents run one at a time, and small work stays in the main conversation;
   this overrides any older instruction to run work in parallel. A job likely
   to use more than 5% of the week gets a one-line estimate and my yes first (a

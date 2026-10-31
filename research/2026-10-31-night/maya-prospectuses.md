@@ -32,4 +32,4 @@ These are foreign funds, not under `/he/funds/mutual-funds/`, which sends them t
 
 - Report 1763539 is the iShares VII plc umbrella prospectus dated 2 June 2026, 209 pages. It is in English and is the home country document, not an Israeli annex. Whether an Israeli annex exists for 1159250, 1159243 and 1159235 is not settled by this.
 - Report 1770707, 15.9.2026: BlackRock stops offering units in Israel from 15.12.2026 of iShares S&P 500 Consumer Discretionary Sector UCITS ETF, number 1159227. It is a sector line, not one the site lists, and the notice is not about 1159250.
-- The same company's list shows letters to investors of 15.9.2026 about deleting funds in iShares IV plc and iShares V plc. Those letters were not read.
+- The same company's list shows letters to investors of 15.9.2026 about deleting funds in iShares IV plc and iShares V plc. Those letters were not read here; `day-terms-collection.md` read them later that day.
