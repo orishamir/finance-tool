@@ -454,16 +454,18 @@ For every CMA product (pension, provident for annuity, keren hishtalmut, gemel l
 
 ### Brokerage account
 
-### SW-33 Banks: a supervised price to move securities to your own account elsewhere, and at most NIS 10 on closing
+### SW-33 Banks: a supervised price to move securities to your own account elsewhere, at most NIS 10 on closing and NIS 40 in total
 - Rule: In the full tariff, item "העברת ניירות ערך" has two prices: "לחשבון אותו לקוח בגוף פיננסי אחר" a shekel amount "(להעברה) (בפיקוח)", and to another client's account a percentage with a minimum and maximum per portfolio. The notes:
   - (1) "חשבון אותו לקוח" includes a joint account of the client with their spouse ("בן או בת זוגו").
   - (2) a transfer to the same client's account "בעת סגירת חשבון לא תעלה על 10 ש"ח להעברת התיק והוצאות צד ג'".
   - (3) "גוף פיננסי" is as defined in the Bank of Israel Law 2010.
 
   A foreign-currency transfer to the same client's account on closing is likewise capped at NIS 10 (part 5, item 10).
+
+  The first schedule's general note 3 caps the total: "סך כל העמלות שיגבה התאגיד הבנקאי בשל פעולות לסגירת חשבון המפורטות להלן לא יעלה על 40 ש"ח". It excludes fees for a plan's service, the exchange clearing house's costs, a correspondent and early repayment. The listed actions include moving Israeli and foreign securities, a bank transfer and foreign currency to the same client's account at another Israeli banking corporation, returning post-dated cheques, a balance confirmation before early repayment, and cancelling debit authorisations and standing orders.
 - Conditions / exceptions: The rules make the same-client price a supervised item but do not state the amount. The Bank of Israel's own page on fees states it: "סכום העמלה המרבי שניתן לגבות בעד השירות יהיה 5 שקלים חדשים, בתוספת החזר ההוצאה ששילם התאגיד הבנקאי לצד שלישי (כגון: בורסה או ברוקר בחו"ל) בשל ביצוע השירות", for a move "מחשבון בבנק אחד לחשבון אותו לקוח בגוף פיננסי אחר", including to a joint account the client is one of the owners of (open question 10, closed 2026-10-26); what bank tariffs and the press say about it, and their disagreement on the unit, is SW-52. Use your bank's own tariff line. Split on 2026-10-25 (scope pass): the companies' part is SW-52.
-- Figures: NIS 5 for the service plus the third party's cost, to the same client's account at another financial body (Bank of Israel fees page, read 2026-10-26); NIS 10 cap on closing (rules, consolidated to 9.4.2025).
-- Source: [כללי הבנקאות (שירות ללקוח) (עמלות), התשס"ח-2008, נוסח משולב (בנק ישראל)](https://www.boi.org.il/media/mi2driua/159a.pdf) pp.17-19, first schedule part 4(א)(6) and notes, part 5 item 10 "בעת סגירת חשבון לא תעלה על 10" · checked 2026-10-25 · primary; [בנק ישראל, מידע ושירות לציבור: עמלות](https://boi.org.il/information/fees/), section "העברת ניירות ערך לחשבון אחר של אותו לקוח בגוף פיננסי אחר" "סכום העמלה המרבי שניתן לגבות בעד השירות יהיה 5 שקלים חדשים" · checked 2026-10-26 · primary
+- Figures: NIS 5 for the service plus the third party's cost, to the same client's account at another financial body (Bank of Israel fees page, read 2026-10-26); NIS 10 cap on closing (rules, consolidated to 9.4.2025); NIS 40 total on the listed closing actions (same rules, read 2026-10-31).
+- Source: [כללי הבנקאות (שירות ללקוח) (עמלות), התשס"ח-2008, נוסח משולב (בנק ישראל)](https://www.boi.org.il/media/mi2driua/159a.pdf) pp.17-19, first schedule part 4(א)(6) and notes, part 5 item 10 "בעת סגירת חשבון לא תעלה על 10" · checked 2026-10-25 · primary; [the same rules, first schedule, general note 3](https://www.boi.org.il/media/mi2driua/159a.pdf#page=24) p.24 "לא יעלה על 40 ש"ח" · checked 2026-10-31 · primary; [בנק ישראל, מידע ושירות לציבור: עמלות](https://boi.org.il/information/fees/), section "העברת ניירות ערך לחשבון אחר של אותו לקוח בגוף פיננסי אחר" "סכום העמלה המרבי שניתן לגבות בעד השירות יהיה 5 שקלים חדשים" · checked 2026-10-26 · primary
 - Scope: general
 - Dimensions: `fee-exit`, `transfer-switch-process`
 - Likely to change: possible.
