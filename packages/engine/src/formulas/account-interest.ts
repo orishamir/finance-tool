@@ -50,6 +50,14 @@ export function rateRange(rates: readonly number[]): RateRange | null {
 }
 
 /**
+ * F-86 (2026-10-31): the index of the middle rate among rates of one kind, in their ascending order; of an even count, the lower of the two
+ * middle ones. The guide's example, so that it rests on neither the top nor the bottom of what was collected.
+ */
+export function middleIndex(count: number): number | null {
+  return count > 0 ? Math.floor((count - 1) / 2) : null;
+}
+
+/**
  * F-26 (one year at a flat balance). The most a bank pays in a year on `balance`: the rate on the first `ceiling` of it, less the tax
  * the bank withholds on the interest (TXI-08, TXI-03). `ratePct` and `taxPct` are percents; `ceiling` is null when the record prints
  * none. No compounding and no change of balance: the figure is the ceiling of what the arrangement can pay, only to a customer who
