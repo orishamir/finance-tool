@@ -31,6 +31,12 @@ describe("invest page computation", () => {
     expect(marked.sort()).toEqual(["fibi", "interactive-israel", "leumi", "massad"]);
   });
 
+  it("Fair stays priced below 250 NIS a month: its pages put that floor on the first investment (issue 141)", () => {
+    const low = buildInvest({ bundle, index: sp, plan: plan({ amountNow: 0, monthly: 100 }) });
+    const fair = low.houses.find((h) => h.provider.id === "fair")!;
+    expect(fair.best?.price?.valueN).toBeGreaterThan(0);
+  });
+
   it("Psagot prices a fund abroad on its European line and its dollar conversion (issue 144)", () => {
     const abroad = view.options.find((o) => o.id === "abroad")!.funds[0]!;
     const at = abroad.byHouse.psagot!;
