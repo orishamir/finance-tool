@@ -36,7 +36,37 @@
       "publisher_he": "בנק לאומי",
       "kind": "institution_doc",
       "strength": "institution",
-      "checked": "2026-10-25"
+      "locator": "p.30",
+      "locator_he": "עמוד 30",
+      "page": 30,
+      "quote": "בגין קנית קרן מחקה באמצעות הוראת קבע",
+      "checked": "2026-10-31"
+    },
+    {
+      "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
+      "title": "תעריפון העמלות המלא, בנק לאומי, מעודכן ל-01/10/2026",
+      "title_he": "תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (בנק לאומי, 1.10.2026)",
+      "publisher": "Bank Leumi",
+      "publisher_he": "בנק לאומי",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.31, item 5",
+      "page": 31,
+      "quote": "לרבות יחידות השתתפות בקרנות נאמנות",
+      "checked": "2026-10-31"
+    },
+    {
+      "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
+      "title": "תעריפון העמלות המלא, בנק לאומי, מעודכן ל-01/10/2026",
+      "title_he": "תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (בנק לאומי, 1.10.2026)",
+      "publisher": "Bank Leumi",
+      "publisher_he": "בנק לאומי",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.33, item 2",
+      "page": 33,
+      "quote": "במקרים המותרים לפי תקנות השקעות משותפות",
+      "checked": "2026-10-31"
     },
     {
       "url": "https://campaign.ibi.co.il/PDF/TRADE/TAARIFON_IBI.pdf",
@@ -46,7 +76,10 @@
       "publisher_he": "אי.בי.אי",
       "kind": "institution_doc",
       "strength": "institution",
-      "checked": "2026-10-25"
+      "locator": "p.3, item 2",
+      "page": 3,
+      "quote": "עד 0.08% משווי העסקה",
+      "checked": "2026-10-31"
     },
     {
       "url": "https://www.meitav.co.il/mutual_funds/",

@@ -5,41 +5,41 @@ Tables read: publishers.json yes, documents.json yes.
 ## Headline
 
 - Rules: 596; with sources: 596; unresolved (sources_missing_reason): 0
-- Entries: 1794; with locator 1491, locator_he 1287, quote 703, anchor 18, page 1428
-- Entries with title_he: 1669; with publisher_he: 1791; rules whose first source lacks publisher_he: 0
+- Entries: 1837; with locator 1531, locator_he 1324, quote 737, anchor 16, page 1457
+- Entries with title_he: 1684; with publisher_he: 1832; rules whose first source lacks publisher_he: 0
 - Rules with derived_from: 148; general rules with examples (companies' terms they point to): 6
-- Strengths: primary 1414, primary-mirror 82, secondary 17, institution 281
+- Strengths: primary 1431, primary-mirror 82, secondary 17, institution 307
 - Rule strength realigned to its best source (primary/mirror pair only): 0
-- Kinds: regulator_page 162, circular 188, regulation 384, article 15, law 392, official_pdf 275, dataset 62, institution_doc 259, exchange_rules 25, other 23, form 9
+- Kinds: regulator_page 164, circular 191, regulation 383, article 15, law 405, official_pdf 276, dataset 62, institution_doc 284, exchange_rules 25, other 23, form 9
 
 ## Per rule base file
 
 | file | rules | entries | unresolved |
 |---|---|---|---|
-| bank-current-account-deposits.md | 26 | 79 | 0 |
+| bank-current-account-deposits.md | 26 | 89 | 0 |
 | bank-product-names.md | 1 | 4 | 0 |
-| brokerage-account.md | 41 | 109 | 0 |
+| brokerage-account.md | 41 | 113 | 0 |
 | child-savings.md | 25 | 101 | 0 |
-| etfs-and-index-funds.md | 63 | 163 | 0 |
+| etfs-and-index-funds.md | 63 | 165 | 0 |
 | government-bonds-and-makam.md | 24 | 68 | 0 |
-| ira-self-directed.md | 24 | 66 | 0 |
-| keren-hishtalmut.md | 28 | 69 | 0 |
-| kupat-gemel-lehashkaa.md | 19 | 50 | 0 |
-| mutual-funds-and-money-market-funds.md | 38 | 109 | 0 |
+| ira-self-directed.md | 24 | 70 | 0 |
+| keren-hishtalmut.md | 28 | 75 | 0 |
+| kupat-gemel-lehashkaa.md | 19 | 57 | 0 |
+| mutual-funds-and-money-market-funds.md | 38 | 113 | 0 |
 | pension-and-gemel-lekitzba.md | 41 | 132 | 0 |
 | provident-family-common.md | 29 | 77 | 0 |
 | regulators-and-protection.md | 20 | 40 | 0 |
 | savings-policies-and-executive-insurance.md | 2 | 8 | 0 |
-| switching-and-transfers.md | 60 | 170 | 0 |
-| tax-gemel-lehashkaa-ira-child.md | 19 | 66 | 0 |
-| tax-general.md | 14 | 47 | 0 |
+| switching-and-transfers.md | 60 | 173 | 0 |
+| tax-gemel-lehashkaa-ira-child.md | 19 | 67 | 0 |
+| tax-general.md | 14 | 48 | 0 |
 | tax-hishtalmut.md | 15 | 64 | 0 |
 | tax-insurance-and-amendment-190.md | 4 | 11 | 0 |
 | tax-interest-deposits-bonds.md | 18 | 71 | 0 |
 | tax-pension-gemel-lekitzba.md | 18 | 81 | 0 |
 | tax-securities-foreign.md | 20 | 62 | 0 |
 | tax-securities-israeli.md | 24 | 81 | 0 |
-| tax-tier2-other.md | 5 | 19 | 0 |
+| tax-tier2-other.md | 5 | 20 | 0 |
 | tracks-catalogue-and-decoder.md | 18 | 47 | 0 |
 
 ## Unresolved (no URL on the Source line)
@@ -48,14 +48,16 @@ Tables read: publishers.json yes, documents.json yes.
 ## Skipped inside a line (entries without a link, unresolved references, bad URLs)
 
 
-## Hosts missing from publishers.json (2)
+## Hosts missing from publishers.json (3)
 
+- migdal.co.il: 2
 - mvs.co.il: 2
 - tahun.co.il: 1
 
 ## Most frequent document titles without title_he (title up to the locator)
 
 - 24 x חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018 (עותק באתר prisha.co.il)
+- 4 x תקנות השקעות משותפות בנאמנות (דוח שנתי של קרן), התשע"ו-2016 (ויקיטקסט, מראה), unofficial; the state's own copy was not read
 - 4 x MTF, דוח שנתי "MTF מחקה (MSCI World (4D" (5122569), 31.12.2025
 - 4 x מור, דוח שנתי "מור מחקה (4D)י NASDAQ 100" (5117585), 31.12.2025
 - 3 x רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (שה. 2024-1471, 17.4.2024), קובץ Word
@@ -63,6 +65,7 @@ Tables read: publishers.json yes, documents.json yes.
 - 3 x תכלית, דוח שנתי "תכלית MSCI WORLD (4D) TTF" (5124573), 31.12.2025
 - 3 x MTF, דוח שנתי "MTF מחקה (Nasdaq 100 (4D" (5134531), 31.12.2025
 - 3 x אי.בי.אי., דוח שנתי "אי.בי.אי. מחקה (4D)י MSCI AC World" (5139605), 31.12.2025
+- 3 x Wikisource, unofficial
 - 2 x אינטראקטיב ישראל: PRIIPs Regulation (KID)
 - 2 x hly.gov.il, ההבדלים בין חיסכון בקופת גמל לחיסכון בבנק
 - 2 x Nasdaq, "Nasdaq-100 factsheet" (data as of 09/30/2026)
@@ -71,7 +74,11 @@ Tables read: publishers.json yes, documents.json yes.
 - 2 x הראל, דוח שנתי "הראל מחקה (4A) ת"א 35" (5130661), 30.6.2026
 - 2 x קסם, דוח שנתי "קסם MSCI AC World (4A) ETF מנוטרלת דולר" (1147362), 31.12.2025
 - 2 x משרד האוצר (data.gov.il): נתוני החוב הממשלתי המקומי, הנפקת אג"ח סחירות בשוק המקומי
-- 2 x חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס"ה-2005, נוסח משולב (ויקיטקסט, mirror of the law)
+- 2 x s.1, gazette ס״ח תשס״ה, 889
+- 2 x s.13
+- 2 x חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס"ה-2005, נוסח משולב (ויקיטקסט, mirror of the law), unofficial consolidated text, the only copy found of the current wording
+- 2 x Harel 02/2021
+- 2 x Migdal 05.2024
 - 1 x EDGE dataflow INTEREST_DASH
 - 1 x Knesset OData KNS_Bill record
 - 1 x status 104
@@ -105,6 +112,9 @@ Tables read: publishers.json yes, documents.json yes.
 - 1 x MSCI, "MSCI GIMI Methodology", October 2026
 - 1 x MSCI, "MSCI Global Investable Market Indexes Methodology Summary", July 2026
 - 1 x MSCI, "MSCI Index Calculation Methodology", September 2026
+- 1 x s.3, gazette ק״ת תשנ״ה, 317
+- 1 x s.7, gazette תשס״ח, 149
+- 1 x תקנות השקעות משותפות בנאמנות (אופציות, חוזים עתידיים ומכירות בחסר), התשס"א-2001, unofficial consolidated text, the only copy found of the current wording
 - 1 x קסם, דוח שנתי "קסם (KTF (4A ת"א 35" (5124490), 30.6.2026
 - 1 x הראל, דוח שנתי "הראל סל (4A) MSCI AC World מנוטרלת דולר" (1150200), 31.12.2025
 - 1 x קסם, דוח שנתי "קסם MSCI World (4A) ETF מנוטרלת דולר" (1147073), 31.12.2025
@@ -112,26 +122,20 @@ Tables read: publishers.json yes, documents.json yes.
 - 1 x בנק ישראל, EDGE: SECDWH
 - 1 x בנק ישראל, EDGE: רשימת זרימות הנתונים
 - 1 x data.gov.il: נתוני החוב הממשלתי המקומי (package_show)
-- 1 x תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי), נוסח משולב (ויקיטקסט, mirror)
-- 1 x תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (כללי השקעה החלים על גופים מוסדיים), התשע"ב-2012, Wikisource mirror
+- 1 x תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי), נוסח משולב (ויקיטקסט, mirror), unofficial consolidated text, the only copy found of the current wording
+- 1 x תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (כללי השקעה החלים על גופים מוסדיים), התשע"ב-2012, Wikisource mirror, unofficial consolidated text, the only copy found of the current wording
+- 1 x Meitav 7.24
+- 1 x Clal 2/2025
+- 1 x Analyst
+- 1 x s.15, gazette ק״ת תשנ״ה, 322
+- 1 x תקנות השקעות משותפות בנאמנות (מחירי קניה ומכירה של נכסי קרן ושווי נכסי קרן), התשנ"ה-1994, נוסח משולב (ויקיטקסט, מראה של התקנות), unofficial consolidated text, the only copy found of the current wording
 - 1 x קובץ התקנות 5637 (10.11.1994), סריקה באתר olaw
 - 1 x קובץ התקנות 5987 (1.7.1999), סריקה באתר olaw
+- 1 x s.3, gazette ק״ת תשס״ח, 152
 - 1 x חוזר פנסיה 2017-3-7 – ... עדכון, 1.1.2018 (עותק באתר prisha.co.il)
 - 1 x חוזר פנסיה 2022-3-3 – הוראות לניהול קרן חדשה – תיקון, 27.7.2022 (עותק באתר prisha.co.il)
 - 1 x data.gov.il, בנק ישראל: רשימת תאגידים בנקאיים בישראל - כתובות וקישורים
 - 1 x data.gov.il: רשימת תאגידים בנקאיים, משאב בעברית (datastore API)
-- 1 x Knesset OData, KNS_IsraelLaw 2242328
-- 1 x Knesset OData KNS_Bill, PrivateNumber 6522
-- 1 x Knesset OData KNS_Status 104
-- 1 x SIPC, What SIPC Protects
-- 1 x חוק הפיקוח על שירותים פיננסיים (ייעוץ, שיווק ומערכת סליקה פנסיוניים), התשס"ה-2005 (Wikisource, mirror of the law)
-- 1 x תקנות הפיקוח על שירותים פיננסיים (ייעוץ, שיווק ומערכת סליקה פנסיוניים) (אבטחת מידע במערכת סליקה פנסיונית מרכזית), התשע"ב-2012, קובץ התקנות 7157 (עותק הסריקה באתר olaw)
-- 1 x כללי הבנקאות (שירות ללקוח) (העברת פעילות פיננסית של לקוח בין בנקים), תש"ף-2019, נוסח עדכני נכון ליום 05-10-2026 (Nevo)
-- 1 x Reit 1, investor relations page, "שאלות ותשובות", "מהו שיעור המס שחל על דיבידנד?"
-- 1 x Convention between the United States and Ireland for the avoidance of double taxation (1997), IRS text
-- 1 x Tax Authority guide 2024
-- 1 x חוזר מס הכנסה 4/2019 – הפקדות מעסיק לקופות גמל לקצבה – תיקון 232 לפקודת מס הכנסה, 31.12.2019 (עותק באתר מבטחים, mvs.co.il)
-- 1 x תקנות מס הכנסה (כללים בדבר חיוב במס על תשלומים לקרן שלא אושרה ותשלומים שלא כדין), תשכ"ב-1962, Wikisource raw text
 
 ## Rules whose first source lacks publisher_he
 
