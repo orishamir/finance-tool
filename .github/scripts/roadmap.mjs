@@ -64,7 +64,10 @@ const startable = (i, closed) => blockersOf(i).every((b) => isDone(b, closed));
 
 const who = (i) => (i.labelNames.includes("you decide") ? "You decide" : i.labelNames.includes("you do") ? "You do" : "Claude");
 const yours = (i) => who(i) !== "Claude";
-const tasks = open.filter((i) => isTask(i.number));
+// A long-horizon issue has no work on it now: it stays out of the ranking, the counts and the board's views.
+const isLater = (i) => i.labelNames.includes("long horizon");
+const later = open.filter(isLater);
+const tasks = open.filter((i) => isTask(i.number) && !isLater(i));
 const short = (title) => title.split(":")[0];
 for (const i of tasks) {
   i.ready = startable(i, new Set());
@@ -85,7 +88,7 @@ const ref = (i) => `#${i.number} ${cell(i.title)}`;
 const fold = (summary, lines) => (lines.length ? [`<details><summary>${summary}</summary>`, "", ...lines, "", "</details>", ""] : []);
 
 // A goal's description starts with the question it answers; the finish line follows on the next line.
-const goalRows = milestones.nodes.map((m) => {
+const goalRows = milestones.nodes.filter((m) => !later.some((i) => i.milestone?.title === m.title)).map((m) => {
   const own = tasks.filter((i) => i.milestone?.title === m.title);
   const startNow = own.filter((i) => i.ready);
   const question = cell(m.description?.split("\n")[0] ?? "");
@@ -137,6 +140,7 @@ const body = [
   ...fold(`Ready for Claude (${readyClaude.length})`, readyClaude.map(row)),
   ...fold(`Blocked (${blocked.length})`, blocked.map((i) => `${row(i)}: waits on ${blockersOf(i).map((b) => `#${b}`).join(", ")}`)),
   ...fold(`Serving no written goal (${noGoal.length})`, noGoal.map(row)),
+  ...fold(`Long horizon, no work on it now (${later.length})`, later.map(row)),
   "## What blocks what",
   "",
   "An arrow runs from a task to what waits on it; a dashed arrow from a sub-issue to its parent. Red waits on you.",
@@ -150,7 +154,7 @@ const body = [
 ].join("\n");
 
 const stateLabels = ["ready", "blocked", "unblocks"];
-const wanted = (i) => (i.container ? [] : !i.ready ? ["blocked"] : i.down.length ? ["ready", "unblocks"] : ["ready"]);
+const wanted = (i) => (i.container || isLater(i) ? [] : !i.ready ? ["blocked"] : i.down.length ? ["ready", "unblocks"] : ["ready"]);
 const labelChanges = open
   .map((i) => ({ n: i.number, add: wanted(i).filter((l) => !i.labelNames.includes(l)), drop: stateLabels.filter((l) => i.labelNames.includes(l) && !wanted(i).includes(l)) }))
   .filter((c) => c.add.length || c.drop.length);

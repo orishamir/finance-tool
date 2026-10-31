@@ -165,7 +165,9 @@ The evidence behind them is `research/2026-10-28-founder-patterns.md`.
   goal, a blocker only when the work truly cannot finish first, and a
   `you decide` or `you do` label when it waits on me; such an issue says in
   plain words, with no internal ids, what the question is, what each answer
-  does and what Claude recommends, or what to do. A commit that finishes
+  does and what Claude recommends, or what to do. A `long horizon` label means
+  no work on it now: the Action leaves it out of the ranking and the board's
+  views and lists it apart. A commit that finishes
   one says `Closes #n`. The board is
   [Project 5](https://github.com/users/orishamir/projects/5), which adds new
   issues by itself; its views filter on the `ready`, `blocked` and `unblocks`
