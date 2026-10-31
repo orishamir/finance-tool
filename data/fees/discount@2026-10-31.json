@@ -1,0 +1,1006 @@
+{
+  "id": "discount",
+  "provider": {
+    "name_he": "בנק דיסקונט לישראל בע\"מ",
+    "class": "bank",
+    "regulator": "BoI",
+    "tase_member": true,
+    "protection_rule_ids": [
+      "BRK-10",
+      "BRK-12",
+      "BRK-13"
+    ]
+  },
+  "tariff": {
+    "url": "https://www.discountbank.co.il/media/fnibqzdx/tarifon_single-united_11026.pdf",
+    "title": "תעריפון יחיד/עסק קטן - בנק דיסקונט לישראל, התעריפון המאוחד (52 עמ'; עמודי הפתיחה נושאים את התאריך 01/10/2026); חלק 4 - ניירות ערך (עמ' 11-16, כל עמוד 'עודכן 07/02/2025'), חלק 5 - מטבע חוץ (עמ' 17, 25/05/2026), נספח ה' - הטבות בערוצי בנקאות בתקשורת (עמ' 47, 02/09/2026). קובץ חלק 4 הנפרד (part4_securities07022025.pdf) זהה בתוכנו. מקושר מעמוד התעריפונים https://www.discountbank.co.il/private/general-information/charges-tariff/",
+    "published": "2026-10-01",
+    "format": "pdf"
+  },
+  "snapshot": "2026-10-31",
+  "missing": false,
+  "missing_reason": null,
+  "lines": [
+    {
+      "id": "discount-buy-sell-tase-branch",
+      "base": "trade",
+      "applies_to": [
+        "tase_shares_bonds",
+        "etf_units",
+        "mutual_fund_units"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.54,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.discountbank.co.il/media/fnibqzdx/tarifon_single-united_11026.pdf",
+          "title": "תעריפון יחיד/עסק קטן - בנק דיסקונט (תעריפון מאוחד, 01/10/2026), חלק 4 - ניירות ערך, סעיף 4.1.1 (עמ' 11 מתוך 52, עודכן 07/02/2025)",
+          "publisher": "Israel Discount Bank Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2025-02-07",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-19",
+          "MF-27"
+        ],
+        "state": "sourced",
+        "notes": "'0.54% משווי העסקה', charged on execution ('מיידי - בעת ביצוע הפעולה'). Footnote (1) to 'למעט קרנות נאמנות': includes a tracking fund (קרן מחקה) and a fund whose units are listed on TASE, so Israeli ETFs and listed fund units pay this line. Note (1): a split order pays one minimum per day. Note (2): an unexecuted order pays the minimum only if a clerk acted. Note (7): a zero-coupon government bond issued at a discount for up to one year pays a reduced 0.12% with a reduced minimum of NIS 25. Note (5): also charged on off-exchange trades with cash consideration. Tracking funds (2026-10-31): the exclusion of mutual funds on this line does not cover a tracking fund, so a tracking fund pays this line; a traditional fund that is not listed does not. Place: library b576758838afae08, PDF page 11, line 4.1.1 \"קניה, מכירה ופדיון של ניירות ערך הנסחרים בבורסה בתל אביב (למעט קרנות נאמנות(1)...\", footnote (1): \"אך לרבות 'קרן מחקה', כהגדרתה בחוק השקעות משותפות בנאמנות, התשנ\"ד 1994 וכן של קרן להשקעות משותפות בנאמנות, שיחידותיה רשומות בבורסה לניירות ערך תל אביב\". The same page names the direct channels \"דיסקונטרייד, שלדג, מנת\"ה\", so Discount Trade is this tariff's direct channel, not a tariff of its own."
+      },
+      "min": {
+        "value": 35,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.discountbank.co.il/media/fnibqzdx/tarifon_single-united_11026.pdf",
+          "title": "תעריפון יחיד/עסק קטן - בנק דיסקונט (תעריפון מאוחד, 01/10/2026), חלק 4 - ניירות ערך, סעיף 4.1.1, גובה העמלה מינימום (עמ' 11 מתוך 52, עודכן 07/02/2025)",
+          "publisher": "Israel Discount Bank Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2025-02-07",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'₪ 35'."
+      },
+      "max": {
+        "value": 7300,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.discountbank.co.il/media/fnibqzdx/tarifon_single-united_11026.pdf",
+          "title": "תעריפון יחיד/עסק קטן - בנק דיסקונט (תעריפון מאוחד, 01/10/2026), חלק 4 - ניירות ערך, סעיף 4.1.1, גובה העמלה מקסימום (עמ' 11 מתוך 52, עודכן 07/02/2025)",
+          "publisher": "Israel Discount Bank Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2025-02-07",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'₪ 7,300'."
+      },
+      "period": null,
+      "channel": "branch",
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קניה, מכירה, ופדיון של ניירות ערך הנסחרים בבורסה בתל אביב (למעט קרנות נאמנות, אופציות מעו\"ף וחוזים עתידיים במעו\"ף) (כולל קנייה או מכירה שלא בוצעה) - מניות ואגרות חוב",
+          "מניות ואגרות חוב"
+        ]
+      }
+    },
+    {
+      "id": "discount-buy-sell-tase-direct",
+      "base": "trade",
+      "applies_to": [
+        "tase_shares_bonds",
+        "etf_units",
+        "mutual_fund_units"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.4,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.discountbank.co.il/media/fnibqzdx/tarifon_single-united_11026.pdf",
+          "title": "תעריפון יחיד/עסק קטן - בנק דיסקונט (תעריפון מאוחד, 01/10/2026), חלק 4 - ניירות ערך, סעיף 4.1.1, הערה (4) (עמ' 11 מתוך 52, עודכן 07/02/2025); נספח ה' - הטבות בערוצי בנקאות בתקשורת, חלק 4, סעיף 4.1.1 (עמ' 47 מתוך 52)",
+          "publisher": "Israel Discount Bank Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2025-02-07",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-19",
+          "MF-27"
+        ],
+        "state": "sourced",
+        "notes": "Note (4) in part 4: 'עבור קניה ומכירה בערוץ ישיר יגבה מחיר מופחת בשיעור 0.40% לפעולה במניות ואגרות חוב בכפוף למינימום של 25 ש\"ח מקסימום 7,150 ש\"ח לפעולה'. Direct channels per the part-4 footnote: אינטרנט, אפליקציה סלולרית, מערכות מתקדמות למסחר בני\"ע: דיסקונטרייד, שלדג, מנת\"ה. An unexecuted order in a direct channel pays no fee ('ללא עמלה'). Same scope as the branch line (ETFs and tracking funds included). Appendix E (page 47, dated 02/09/2026) prints the same price under 'באינטרנט, בסלולר'. Tracking funds (2026-10-31): the exclusion of mutual funds on this line does not cover a tracking fund, so a tracking fund pays this line; a traditional fund that is not listed does not. Place: library b576758838afae08, PDF page 11, line 4.1.1 \"קניה, מכירה ופדיון של ניירות ערך הנסחרים בבורסה בתל אביב (למעט קרנות נאמנות(1)...\", footnote (1): \"אך לרבות 'קרן מחקה', כהגדרתה בחוק השקעות משותפות בנאמנות, התשנ\"ד 1994 וכן של קרן להשקעות משותפות בנאמנות, שיחידותיה רשומות בבורסה לניירות ערך תל אביב\". The same page names the direct channels \"דיסקונטרייד, שלדג, מנת\"ה\", so Discount Trade is this tariff's direct channel, not a tariff of its own."
+      },
+      "min": {
+        "value": 25,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.discountbank.co.il/media/fnibqzdx/tarifon_single-united_11026.pdf",
+          "title": "תעריפון יחיד/עסק קטן - בנק דיסקונט (תעריפון מאוחד, 01/10/2026), חלק 4 - ניירות ערך, סעיף 4.1.1, הערה (4) (עמ' 11 מתוך 52, עודכן 07/02/2025)",
+          "publisher": "Israel Discount Bank Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2025-02-07",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'מינימום של 25 ש\"ח'."
+      },
+      "max": {
+        "value": 7150,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.discountbank.co.il/media/fnibqzdx/tarifon_single-united_11026.pdf",
+          "title": "תעריפון יחיד/עסק קטן - בנק דיסקונט (תעריפון מאוחד, 01/10/2026), חלק 4 - ניירות ערך, סעיף 4.1.1, הערה (4) (עמ' 11 מתוך 52, עודכן 07/02/2025)",
+          "publisher": "Israel Discount Bank Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2025-02-07",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'מקסימום 7,150 ש\"ח לפעולה'."
+      },
+      "period": null,
+      "channel": "direct",
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קניה, מכירה, ופדיון של ניירות ערך הנסחרים בבורסה בתל אביב (למעט קרנות נאמנות, אופציות מעו\"ף וחוזים עתידיים במעו\"ף) (כולל קנייה או מכירה שלא בוצעה) - מניות ואגרות חוב",
+          "מניות ואגרות חוב",
+          "באינטרנט, בסלולר",
+          "דיסקונטרייד",
+          "שלדג",
+          "מנת\"ה"
+        ]
+      }
+    },
+    {
+      "id": "discount-buy-sell-makam-branch",
+      "base": "trade",
+      "applies_to": [
+        "makam"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.1,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.discountbank.co.il/media/fnibqzdx/tarifon_single-united_11026.pdf",
+          "title": "תעריפון יחיד/עסק קטן - בנק דיסקונט (תעריפון מאוחד, 01/10/2026), חלק 4 - ניירות ערך, סעיף 4.1.2 (עמ' 12 מתוך 52, עודכן 07/02/2025)",
+          "publisher": "Israel Discount Bank Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2025-02-07",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-19"
+        ],
+        "state": "sourced",
+        "notes": "'0.1% משווי העסקה', separate row for makam ('מילווה קצר מועד'), charged on execution. Note (5): also charged on the allotted part of a purchase in an issue."
+      },
+      "min": {
+        "value": 25,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.discountbank.co.il/media/fnibqzdx/tarifon_single-united_11026.pdf",
+          "title": "תעריפון יחיד/עסק קטן - בנק דיסקונט (תעריפון מאוחד, 01/10/2026), חלק 4 - ניירות ערך, סעיף 4.1.2, גובה העמלה מינימום (עמ' 12 מתוך 52, עודכן 07/02/2025)",
+          "publisher": "Israel Discount Bank Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2025-02-07",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'₪ 25'."
+      },
+      "max": {
+        "value": 7300,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.discountbank.co.il/media/fnibqzdx/tarifon_single-united_11026.pdf",
+          "title": "תעריפון יחיד/עסק קטן - בנק דיסקונט (תעריפון מאוחד, 01/10/2026), חלק 4 - ניירות ערך, סעיף 4.1.2, גובה העמלה מקסימום (עמ' 12 מתוך 52, עודכן 07/02/2025)",
+          "publisher": "Israel Discount Bank Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2025-02-07",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'₪ 7,300'."
+      },
+      "period": null,
+      "channel": "branch",
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קניה, מכירה ופדיון של ני\"ע הנסחרים בבורסה בתל אביב – מילווה קצר מועד (כולל קניה או מכירה שלא בוצעה)",
+          "מילווה קצר מועד"
+        ]
+      }
+    },
+    {
+      "id": "discount-buy-sell-makam-direct",
+      "base": "trade",
+      "applies_to": [
+        "makam"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.09,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.discountbank.co.il/media/fnibqzdx/tarifon_single-united_11026.pdf",
+          "title": "תעריפון יחיד/עסק קטן - בנק דיסקונט (תעריפון מאוחד, 01/10/2026), חלק 4 - ניירות ערך, סעיף 4.1.2, הערה (3) (עמ' 12 מתוך 52, עודכן 07/02/2025); נספח ה' - הטבות בערוצי בנקאות בתקשורת, חלק 4, סעיף 4.1.2 (עמ' 47 מתוך 52)",
+          "publisher": "Israel Discount Bank Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2025-02-07",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-19"
+        ],
+        "state": "sourced",
+        "notes": "Note (3): 'עבור קניה ומכירה בערוץ ישיר ייגבה מחיר מופחת בשיעור 0.09% בכפוף למינימום של 22.5 ש\"ח, מקסימום 7,150 ש\"ח'. Also printed in appendix E under 'באינטרנט, בסלולר'. Unexecuted order in a direct channel: no fee."
+      },
+      "min": {
+        "value": 22.5,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.discountbank.co.il/media/fnibqzdx/tarifon_single-united_11026.pdf",
+          "title": "תעריפון יחיד/עסק קטן - בנק דיסקונט (תעריפון מאוחד, 01/10/2026), חלק 4 - ניירות ערך, סעיף 4.1.2, הערה (3) (עמ' 12 מתוך 52, עודכן 07/02/2025)",
+          "publisher": "Israel Discount Bank Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2025-02-07",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'מינימום של 22.5 ש\"ח'."
+      },
+      "max": {
+        "value": 7150,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.discountbank.co.il/media/fnibqzdx/tarifon_single-united_11026.pdf",
+          "title": "תעריפון יחיד/עסק קטן - בנק דיסקונט (תעריפון מאוחד, 01/10/2026), חלק 4 - ניירות ערך, סעיף 4.1.2, הערה (3) (עמ' 12 מתוך 52, עודכן 07/02/2025)",
+          "publisher": "Israel Discount Bank Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2025-02-07",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'מקסימום 7,150 ש\"ח'."
+      },
+      "period": null,
+      "channel": "direct",
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קניה, מכירה ופדיון של ני\"ע הנסחרים בבורסה בתל אביב – מילווה קצר מועד (כולל קניה או מכירה שלא בוצעה)",
+          "מילווה קצר מועד",
+          "באינטרנט, בסלולר"
+        ]
+      }
+    },
+    {
+      "id": "discount-buy-sell-foreign-branch",
+      "base": "trade",
+      "applies_to": [
+        "foreign_securities"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.79,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.discountbank.co.il/media/fnibqzdx/tarifon_single-united_11026.pdf",
+          "title": "תעריפון יחיד/עסק קטן - בנק דיסקונט (תעריפון מאוחד, 01/10/2026), חלק 4 - ניירות ערך, סעיף 4.4.1 (עמ' 13 מתוך 52, עודכן 07/02/2025)",
+          "publisher": "Israel Discount Bank Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2025-02-07",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-19"
+        ],
+        "state": "sourced",
+        "notes": "'0.79% משווי העסקה', charged on execution. Additional expenses column: 'עמלת סוכן, Sec fee, מס מלכה, Option regulatory fee, הוצאות סוויפט' (third-party charges on top). Note (7): US TBILL/CD/CP trades pay a reduced 0.15%. Note (9): DR securities may carry third-party costs."
+      },
+      "min": {
+        "value": 25,
+        "unit": "usd",
+        "source": {
+          "url": "https://www.discountbank.co.il/media/fnibqzdx/tarifon_single-united_11026.pdf",
+          "title": "תעריפון יחיד/עסק קטן - בנק דיסקונט (תעריפון מאוחד, 01/10/2026), חלק 4 - ניירות ערך, סעיף 4.4.1, גובה העמלה מינימום (עמ' 13 מתוך 52, עודכן 07/02/2025)",
+          "publisher": "Israel Discount Bank Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2025-02-07",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'$ 25' per trade (US dollars)."
+      },
+      "max": {
+        "value": 10900,
+        "unit": "usd",
+        "source": {
+          "url": "https://www.discountbank.co.il/media/fnibqzdx/tarifon_single-united_11026.pdf",
+          "title": "תעריפון יחיד/עסק קטן - בנק דיסקונט (תעריפון מאוחד, 01/10/2026), חלק 4 - ניירות ערך, סעיף 4.4.1, גובה העמלה מקסימום (עמ' 13 מתוך 52, עודכן 07/02/2025)",
+          "publisher": "Israel Discount Bank Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2025-02-07",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'$ 10900' per trade (US dollars)."
+      },
+      "period": null,
+      "channel": "branch",
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קניה מכירה ופדיון של ניירות ערך בחוץ לארץ - מניות, אגרות חוב וקרנות נאמנות (כולל קניה או מכירה שלא בוצעה)",
+          "מניות, אגרות חוב וקרנות נאמנות"
+        ]
+      }
+    },
+    {
+      "id": "discount-buy-sell-foreign-direct",
+      "base": "trade",
+      "applies_to": [
+        "foreign_securities"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.59,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.discountbank.co.il/media/fnibqzdx/tarifon_single-united_11026.pdf",
+          "title": "תעריפון יחיד/עסק קטן - בנק דיסקונט (תעריפון מאוחד, 01/10/2026), חלק 4 - ניירות ערך, סעיף 4.4.1, הערה (8) (עמ' 13 מתוך 52, עודכן 07/02/2025); נספח ה' - הטבות בערוצי בנקאות בתקשורת, חלק 4, סעיף 4.4.1 (עמ' 47 מתוך 52)",
+          "publisher": "Israel Discount Bank Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2025-02-07",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-19"
+        ],
+        "state": "sourced",
+        "notes": "Note (8): 'עבור קניה ומכירה בערוץ ישיר ייגבה מחיר מופחת של 0.59% בכפוף למינימום של $ 23.5 מקסימום $ 10,680'. Appendix E prints the same under 'באינטרנט, בסלולר'."
+      },
+      "min": {
+        "value": 23.5,
+        "unit": "usd",
+        "source": {
+          "url": "https://www.discountbank.co.il/media/fnibqzdx/tarifon_single-united_11026.pdf",
+          "title": "תעריפון יחיד/עסק קטן - בנק דיסקונט (תעריפון מאוחד, 01/10/2026), חלק 4 - ניירות ערך, סעיף 4.4.1, הערה (8) (עמ' 13 מתוך 52, עודכן 07/02/2025)",
+          "publisher": "Israel Discount Bank Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2025-02-07",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'מינימום של $ 23.5' per trade (US dollars)."
+      },
+      "max": {
+        "value": 10680,
+        "unit": "usd",
+        "source": {
+          "url": "https://www.discountbank.co.il/media/fnibqzdx/tarifon_single-united_11026.pdf",
+          "title": "תעריפון יחיד/עסק קטן - בנק דיסקונט (תעריפון מאוחד, 01/10/2026), חלק 4 - ניירות ערך, סעיף 4.4.1, הערה (8) (עמ' 13 מתוך 52, עודכן 07/02/2025)",
+          "publisher": "Israel Discount Bank Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2025-02-07",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'מקסימום $ 10,680' per trade (US dollars)."
+      },
+      "period": null,
+      "channel": "direct",
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קניה מכירה ופדיון של ניירות ערך בחוץ לארץ - מניות, אגרות חוב וקרנות נאמנות (כולל קניה או מכירה שלא בוצעה)",
+          "מניות, אגרות חוב וקרנות נאמנות",
+          "באינטרנט, בסלולר"
+        ]
+      }
+    },
+    {
+      "id": "discount-custody-israel",
+      "base": "custody",
+      "applies_to": [
+        "tase_shares_bonds",
+        "etf_units",
+        "mutual_fund_units"
+      ],
+      "excludes": [
+        "makam",
+        "money_market_units"
+      ],
+      "excludes_rule_ids": [
+        "BRK-17",
+        "BANK-18"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.2,
+        "unit": "pct_of_balance_per_period",
+        "source": {
+          "url": "https://www.discountbank.co.il/media/fnibqzdx/tarifon_single-united_11026.pdf",
+          "title": "תעריפון יחיד/עסק קטן - בנק דיסקונט (תעריפון מאוחד, 01/10/2026), חלק 4 - ניירות ערך, סעיף 4.5.1 (עמ' 14 מתוך 52, עודכן 07/02/2025)",
+          "publisher": "Israel Discount Bank Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2025-02-07",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-17"
+        ],
+        "state": "sourced",
+        "notes": "'0.2% לרבעון'. Collected at quarter end and/or on a transaction ('סוף רבעון ו/או מועד ביצוע פעולה'). Note (3): during the quarter the fee is charged on every balance reduction (sale, redemption, transfer) pro rata to the holding period from the start of the quarter, on the value in the transaction, subject to the per-security maximum per quarter. Note (4): at quarter end on the securities held on the last day, pro rata, on their value that day. Note (2): not charged on makam or on a money-market fund as defined in the 1994 assets regulations (recorded as excludes). Note (1): not chargeable on delisted securities (with an interested-party exception)."
+      },
+      "min": {
+        "value": null,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.discountbank.co.il/media/fnibqzdx/tarifon_single-united_11026.pdf",
+          "title": "תעריפון יחיד/עסק קטן - בנק דיסקונט (תעריפון מאוחד, 01/10/2026), חלק 4 - ניירות ערך, סעיף 4.5.1, גובה העמלה מינימום (עמ' 14 מתוך 52, עודכן 07/02/2025)",
+          "publisher": "Israel Discount Bank Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2025-02-07",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "No minimum is printed for this line (column 'גובה העמלה מינימום' is empty)."
+      },
+      "max": {
+        "value": 7500,
+        "unit": "nis",
+        "source": {
+          "url": "https://www.discountbank.co.il/media/fnibqzdx/tarifon_single-united_11026.pdf",
+          "title": "תעריפון יחיד/עסק קטן - בנק דיסקונט (תעריפון מאוחד, 01/10/2026), חלק 4 - ניירות ערך, סעיף 4.5.1, גובה העמלה מקסימום (עמ' 14 מתוך 52, עודכן 07/02/2025)",
+          "publisher": "Israel Discount Bank Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2025-02-07",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'₪ 7,500 לני\"ע לרבעון': maximum per security per quarter. No per-deposit (whole account) maximum is printed."
+      },
+      "period": "quarter",
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "דמי ניהול פיקדון ני\"ע (לרבות יחידות השתתפות בקרנות נאמנות)",
+          "הנסחרים בארץ"
+        ]
+      }
+    },
+    {
+      "id": "discount-custody-foreign",
+      "base": "custody",
+      "applies_to": [
+        "foreign_securities"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.25,
+        "unit": "pct_of_balance_per_period",
+        "source": {
+          "url": "https://www.discountbank.co.il/media/fnibqzdx/tarifon_single-united_11026.pdf",
+          "title": "תעריפון יחיד/עסק קטן - בנק דיסקונט (תעריפון מאוחד, 01/10/2026), חלק 4 - ניירות ערך, סעיף 4.5.2 (עמ' 14 מתוך 52, עודכן 07/02/2025)",
+          "publisher": "Israel Discount Bank Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2025-02-07",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'0.25% לרבעון' for securities traded abroad (including metals, 'לרבות מתכות'); same collection mechanics as the Israeli line. Additional expenses column: 'הוצאות קסטודיאן בחו\"ל'; note (6): foreign custodian expenses are charged on top. Note (5): US CP/CD/TBILL pay a reduced 0.05% per security per quarter."
+      },
+      "min": {
+        "value": null,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.discountbank.co.il/media/fnibqzdx/tarifon_single-united_11026.pdf",
+          "title": "תעריפון יחיד/עסק קטן - בנק דיסקונט (תעריפון מאוחד, 01/10/2026), חלק 4 - ניירות ערך, סעיף 4.5.2, גובה העמלה מינימום (עמ' 14 מתוך 52, עודכן 07/02/2025)",
+          "publisher": "Israel Discount Bank Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2025-02-07",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "No minimum is printed for this line."
+      },
+      "max": {
+        "value": 7500,
+        "unit": "nis",
+        "source": {
+          "url": "https://www.discountbank.co.il/media/fnibqzdx/tarifon_single-united_11026.pdf",
+          "title": "תעריפון יחיד/עסק קטן - בנק דיסקונט (תעריפון מאוחד, 01/10/2026), חלק 4 - ניירות ערך, סעיף 4.5.2, גובה העמלה מקסימום (עמ' 14 מתוך 52, עודכן 07/02/2025)",
+          "publisher": "Israel Discount Bank Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2025-02-07",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'₪ 7,500 לני\"ע לרבעון': maximum per security per quarter."
+      },
+      "period": "quarter",
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "דמי ניהול פיקדון ני\"ע (לרבות יחידות השתתפות בקרנות נאמנות)",
+          "הנסחרים בחוץ לארץ (לרבות מתכות)"
+        ]
+      }
+    },
+    {
+      "id": "discount-distribution-fee-type-1",
+      "base": "distribution_handling",
+      "applies_to": [
+        "mutual_fund_units"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.2,
+        "unit": "pct_of_balance_per_period",
+        "source": {
+          "url": "https://www.discountbank.co.il/media/fnibqzdx/tarifon_single-united_11026.pdf",
+          "title": "תעריפון יחיד/עסק קטן - בנק דיסקונט (תעריפון מאוחד, 01/10/2026), חלק 4 - ניירות ערך, סעיף 4.9.1 (עמ' 15 מתוך 52, עודכן 07/02/2025)",
+          "publisher": "Israel Discount Bank Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2025-02-07",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "MF-24",
+          "MF-26"
+        ],
+        "state": "sourced",
+        "notes": "'0.20% לשנה', collected at month end ('סוף חודש'). Note (1): in the cases the 2006 distribution-fee regulations permit (MF-26). Note (2): 'העמלה תגבה מהלקוח ברכישת/העברת קרן נאמנות לבנק ובמידה ואין לבנק הסכם הפצה עם מנהל הקרן' (charged to the client only when the bank has no distribution agreement with the fund manager). Fund type 1 per the fund's prospectus (MF-24; type 4 is a money-market fund). Recorded with base distribution_handling because the vocabulary has no closer base for a distributor fee charged to the holder."
+      },
+      "min": null,
+      "max": null,
+      "period": "year",
+      "channel": null,
+      "band": "קרן מסוג 1",
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "עמלת הפצה מרוכש יחידת השתתפות בקרן נאמנות",
+          "קרן מסוג 1"
+        ]
+      }
+    },
+    {
+      "id": "discount-distribution-fee-type-3",
+      "base": "distribution_handling",
+      "applies_to": [
+        "mutual_fund_units"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.35,
+        "unit": "pct_of_balance_per_period",
+        "source": {
+          "url": "https://www.discountbank.co.il/media/fnibqzdx/tarifon_single-united_11026.pdf",
+          "title": "תעריפון יחיד/עסק קטן - בנק דיסקונט (תעריפון מאוחד, 01/10/2026), חלק 4 - ניירות ערך, סעיף 4.9.3 (עמ' 15 מתוך 52, עודכן 07/02/2025)",
+          "publisher": "Israel Discount Bank Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2025-02-07",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "MF-24",
+          "MF-26"
+        ],
+        "state": "sourced",
+        "notes": "'0.35% לשנה', collected at month end ('סוף חודש'). Note (1): in the cases the 2006 distribution-fee regulations permit (MF-26). Note (2): 'העמלה תגבה מהלקוח ברכישת/העברת קרן נאמנות לבנק ובמידה ואין לבנק הסכם הפצה עם מנהל הקרן' (charged to the client only when the bank has no distribution agreement with the fund manager). Fund type 3 per the fund's prospectus (MF-24; type 4 is a money-market fund). Recorded with base distribution_handling because the vocabulary has no closer base for a distributor fee charged to the holder."
+      },
+      "min": null,
+      "max": null,
+      "period": "year",
+      "channel": null,
+      "band": "קרן מסוג 3",
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "עמלת הפצה מרוכש יחידת השתתפות בקרן נאמנות",
+          "קרן מסוג 3"
+        ]
+      }
+    },
+    {
+      "id": "discount-distribution-fee-type-4",
+      "base": "distribution_handling",
+      "applies_to": [
+        "money_market_units"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.1,
+        "unit": "pct_of_balance_per_period",
+        "source": {
+          "url": "https://www.discountbank.co.il/media/fnibqzdx/tarifon_single-united_11026.pdf",
+          "title": "תעריפון יחיד/עסק קטן - בנק דיסקונט (תעריפון מאוחד, 01/10/2026), חלק 4 - ניירות ערך, סעיף 4.9.4 (עמ' 15 מתוך 52, עודכן 07/02/2025)",
+          "publisher": "Israel Discount Bank Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2025-02-07",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "MF-24",
+          "MF-26"
+        ],
+        "state": "sourced",
+        "notes": "'0.10% לשנה', collected at month end ('סוף חודש'). Note (1): in the cases the 2006 distribution-fee regulations permit (MF-26). Note (2): 'העמלה תגבה מהלקוח ברכישת/העברת קרן נאמנות לבנק ובמידה ואין לבנק הסכם הפצה עם מנהל הקרן' (charged to the client only when the bank has no distribution agreement with the fund manager). Fund type 4 per the fund's prospectus (MF-24; type 4 is a money-market fund). Recorded with base distribution_handling because the vocabulary has no closer base for a distributor fee charged to the holder."
+      },
+      "min": null,
+      "max": null,
+      "period": "year",
+      "channel": null,
+      "band": "קרן מסוג 4",
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "עמלת הפצה מרוכש יחידת השתתפות בקרן נאמנות",
+          "קרן מסוג 4"
+        ]
+      }
+    },
+    {
+      "id": "discount-fx-conversion-branch",
+      "base": "fx",
+      "applies_to": [
+        "all"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.19,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.discountbank.co.il/media/fnibqzdx/tarifon_single-united_11026.pdf",
+          "title": "תעריפון יחיד/עסק קטן - בנק דיסקונט (תעריפון מאוחד, 01/10/2026), חלק 5 - מטבע חוץ, סעיף 5.1.1 (עמ' 17 מתוך 52, 25/05/2026)",
+          "publisher": "Israel Discount Bank Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-05-25",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-23"
+        ],
+        "state": "sourced",
+        "notes": "'0.19% מסכום העסקה', charged on execution. Footnote (*): FX transactions up to $10 are exempt; up to $100 get a 50% discount including on the minimum ('בעסקאות מט\"ח שסכומן עד 10$ פטור, בעסקאות מט\"ח שסכומן עד 100$ 50% הנחה, לרבות על המינימום'). Exemption for conversions from a Nazi-victims pension account."
+      },
+      "min": {
+        "value": 6.8,
+        "unit": "usd",
+        "source": {
+          "url": "https://www.discountbank.co.il/media/fnibqzdx/tarifon_single-united_11026.pdf",
+          "title": "תעריפון יחיד/עסק קטן - בנק דיסקונט (תעריפון מאוחד, 01/10/2026), חלק 5 - מטבע חוץ, סעיף 5.1.1 (עמ' 17 מתוך 52, 25/05/2026), מינימום",
+          "publisher": "Israel Discount Bank Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-05-25",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-23"
+        ],
+        "state": "sourced",
+        "notes": "'$ 6.8 לפעולה' (US dollars per transaction)."
+      },
+      "max": {
+        "value": 1075,
+        "unit": "usd",
+        "source": {
+          "url": "https://www.discountbank.co.il/media/fnibqzdx/tarifon_single-united_11026.pdf",
+          "title": "תעריפון יחיד/עסק קטן - בנק דיסקונט (תעריפון מאוחד, 01/10/2026), חלק 5 - מטבע חוץ, סעיף 5.1.1 (עמ' 17 מתוך 52, 25/05/2026), מקסימום",
+          "publisher": "Israel Discount Bank Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-05-25",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-23"
+        ],
+        "state": "sourced",
+        "notes": "'$ 1,075 לפעולה' (US dollars per transaction)."
+      },
+      "spread": {
+        "value": null,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.discountbank.co.il/media/fnibqzdx/tarifon_single-united_11026.pdf",
+          "title": "תעריפון יחיד/עסק קטן - בנק דיסקונט (תעריפון מאוחד, 01/10/2026), חלק 5 - מטבע חוץ, סעיף 5.1.1 (עמ' 17 מתוך 52, 25/05/2026)",
+          "publisher": "Israel Discount Bank Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-05-25",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-23"
+        ],
+        "state": "sourced",
+        "notes": "The tariff prints a percentage conversion fee only; the spread between the bank's buy/sell rate and the representative rate is not published in the tariff (BRK-23)."
+      },
+      "period": null,
+      "channel": "branch",
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "עמלת חליפין מט\"י-מט\"ח"
+        ]
+      }
+    },
+    {
+      "id": "discount-fx-conversion-direct",
+      "base": "fx",
+      "applies_to": [
+        "all"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.17,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.discountbank.co.il/media/fnibqzdx/tarifon_single-united_11026.pdf",
+          "title": "תעריפון יחיד/עסק קטן - בנק דיסקונט (תעריפון מאוחד, 01/10/2026), חלק 5 - מטבע חוץ, סעיף 5.1.1 (עמ' 17 מתוך 52, 25/05/2026), הערות (ערוץ ישיר); נספח ה', חלק 5, סעיף 5.1.1 (עמ' 47)",
+          "publisher": "Israel Discount Bank Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-05-25",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-23",
+          "BRK-19"
+        ],
+        "state": "sourced",
+        "notes": "Notes column: 'בערוץ ישיר 0.17% מסכום העסקה מינימום $ 6 לפעולה, מקסימום $ 1,055 לפעולה'. Appendix E prints the direct price under 'באינטרנט'. Same small-amount exemptions as the branch line (footnote *)."
+      },
+      "min": {
+        "value": 6,
+        "unit": "usd",
+        "source": {
+          "url": "https://www.discountbank.co.il/media/fnibqzdx/tarifon_single-united_11026.pdf",
+          "title": "תעריפון יחיד/עסק קטן - בנק דיסקונט (תעריפון מאוחד, 01/10/2026), חלק 5 - מטבע חוץ, סעיף 5.1.1 (עמ' 17 מתוך 52, 25/05/2026), הערות (ערוץ ישיר), מינימום",
+          "publisher": "Israel Discount Bank Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-05-25",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-23"
+        ],
+        "state": "sourced",
+        "notes": "'מינימום $ 6 לפעולה' (US dollars)."
+      },
+      "max": {
+        "value": 1055,
+        "unit": "usd",
+        "source": {
+          "url": "https://www.discountbank.co.il/media/fnibqzdx/tarifon_single-united_11026.pdf",
+          "title": "תעריפון יחיד/עסק קטן - בנק דיסקונט (תעריפון מאוחד, 01/10/2026), חלק 5 - מטבע חוץ, סעיף 5.1.1 (עמ' 17 מתוך 52, 25/05/2026), הערות (ערוץ ישיר), מקסימום",
+          "publisher": "Israel Discount Bank Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-05-25",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-23"
+        ],
+        "state": "sourced",
+        "notes": "'מקסימום $ 1,055 לפעולה' (US dollars)."
+      },
+      "spread": {
+        "value": null,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.discountbank.co.il/media/fnibqzdx/tarifon_single-united_11026.pdf",
+          "title": "תעריפון יחיד/עסק קטן - בנק דיסקונט (תעריפון מאוחד, 01/10/2026), חלק 5 - מטבע חוץ, סעיף 5.1.1 (עמ' 17 מתוך 52, 25/05/2026)",
+          "publisher": "Israel Discount Bank Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-05-25",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-23"
+        ],
+        "state": "sourced",
+        "notes": "The tariff prints a percentage conversion fee only; the spread is not published (BRK-23)."
+      },
+      "period": null,
+      "channel": "direct",
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "עמלת חליפין מט\"י-מט\"ח",
+          "בערוץ ישיר",
+          "באינטרנט"
+        ]
+      }
+    }
+  ],
+  "averages": [],
+  "minimums": {
+    "account_opening": null
+  },
+  "notice_rule_ids": [
+    "BRK-21",
+    "BRK-20"
+  ]
+}
