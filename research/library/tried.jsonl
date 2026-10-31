@@ -44,8 +44,11 @@
 {"looked_for":"Tax Authority professional circulars list on gov.il, for circulars since 2023","result":"403 to plain requests (collectors/policies?officeId=...), departments/policies 301 then blocked; taxes.gov.il IncomeTaxCirculars.aspx answers an error page. Not checked. On the morning list.","where":"gov.il, taxes.gov.il","date":"2026-10-31"}
 {"looked_for":"Enumerating circulars by address inst-NN-2023 to 2026 on gov.il BlobFolder","result":"18 PDFs found: 01,03,11/2023; 03,05,06/2024; 01,03,05,07,10,11,12/2025; realestate 01/2026, 02,06,08,09/2026. Keyword counts on securities, funds, study fund, provident investing: none relevant except one mention in 08/2026; no rule added, none filed. Numbers skipped may use another address pattern.","where":"gov.il BlobFolder","date":"2026-10-31"}
 {"looked_for":"Capitax lists of circulars for shares, bonds, mutual funds and deposits (content/2/143, 168, 180, 209)","result":"Lists stop at 2011; nothing since 2023 there.","where":"capitax.co.il","date":"2026-10-31"}
-{"date":"2026-10-31"}
 {"looked_for":"self-service trading page of FIBI by guessed path /private/capital-market/","result":"404","where":"fibi.co.il","date":"2026-10-31"}
 {"looked_for":"investments page of Discount by guessed path /private/investments/ for Discount Trade","result":"404","where":"discountbank.co.il","date":"2026-10-31"}
 {"looked_for":"capital market page of Massad by guessed path /private/capital-market/","result":"404","where":"bankmassad.co.il","date":"2026-10-31"}
 {"looked_for":"separate price list for Mizrahi's capital market app","result":"none: the app's page in the App Store only; brokerage/amalot holds actual-charges table, no price list","where":"mizrahi-tefahot.co.il, apps.apple.com","date":"2026-10-31"}
+{"looked_for":"bill or draft law for the investment account","result":"none found in two web searches; not proof","where":"web search 2026-10-31","date":"2026-10-31"}
+{"looked_for":"Capital Market Authority regulation list, newest back to 22.12.2024","result":"read in Chrome, 129 rows; see research/2026-10-31-night/morning-addendum.md","where":"gov.il","date":"2026-10-31"}
+{"looked_for":"Tax Authority circular list, 2000 to 2026","result":"read in Chrome, 768 rows; see research/2026-10-31-night/morning-addendum.md","where":"gov.il","date":"2026-10-31"}
+{"looked_for":"Tax Reform Committee chapters 2 and 3, founder's morning script","result":"failed in the script too; left, not needed for the current goals","where":"gov.il","date":"2026-10-31"}

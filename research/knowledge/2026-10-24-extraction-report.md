@@ -5,12 +5,12 @@ Tables read: publishers.json yes, documents.json yes.
 ## Headline
 
 - Rules: 596; with sources: 596; unresolved (sources_missing_reason): 0
-- Entries: 1846; with locator 1540, locator_he 1380, quote 743, anchor 16, page 1466
-- Entries with title_he: 1692; with publisher_he: 1841; rules whose first source lacks publisher_he: 0
+- Entries: 1847; with locator 1541, locator_he 1381, quote 743, anchor 16, page 1467
+- Entries with title_he: 1693; with publisher_he: 1842; rules whose first source lacks publisher_he: 0
 - Rules with derived_from: 148; general rules with examples (companies' terms they point to): 6
-- Strengths: primary 1440, primary-mirror 82, secondary 17, institution 307
+- Strengths: primary 1441, primary-mirror 82, secondary 17, institution 307
 - Rule strength realigned to its best source (primary/mirror pair only): 0
-- Kinds: regulator_page 164, circular 197, regulation 384, article 15, law 405, official_pdf 278, dataset 62, institution_doc 284, exchange_rules 25, other 23, form 9
+- Kinds: regulator_page 164, circular 197, regulation 384, article 15, law 405, official_pdf 279, dataset 62, institution_doc 284, exchange_rules 25, other 23, form 9
 
 ## Per rule base file
 
@@ -26,7 +26,7 @@ Tables read: publishers.json yes, documents.json yes.
 | keren-hishtalmut.md | 28 | 75 | 0 |
 | kupat-gemel-lehashkaa.md | 19 | 57 | 0 |
 | mutual-funds-and-money-market-funds.md | 38 | 113 | 0 |
-| pension-and-gemel-lekitzba.md | 41 | 132 | 0 |
+| pension-and-gemel-lekitzba.md | 41 | 133 | 0 |
 | provident-family-common.md | 29 | 77 | 0 |
 | regulators-and-protection.md | 20 | 40 | 0 |
 | savings-policies-and-executive-insurance.md | 2 | 8 | 0 |

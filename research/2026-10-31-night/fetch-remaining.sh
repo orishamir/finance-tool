@@ -73,6 +73,11 @@ while IFS=$'\t' read -r url publisher title; do
       fail "a check page came back instead of the document"
       continue
     fi
+    # gov.il answers a wrong address with its own error page, which is not the document either.
+    if grep -qF 'העמוד שחיפשת לא נמצא' "$file"; then
+      fail "gov.il says this page does not exist"
+      continue
+    fi
     # A link to a PDF that answers with a page is not the PDF.
     if [[ "$file" == *.pdf ]]; then
       fail "a web page came back instead of the PDF: save this one from your browser"

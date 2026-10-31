@@ -160,7 +160,7 @@ if (command === "find") {
   const all = args.includes("--all");
   const hits = [];
   const docs = load();
-  for (const t of lines(triedPath)) if (words.some((w) => t.looked_for.includes(w))) console.log(`TRIED ${t.date}: ${t.looked_for} -> ${t.result}${t.where ? ` (${t.where})` : ""}`);
+  for (const t of lines(triedPath)) if (words.some((w) => t.looked_for?.includes(w))) console.log(`TRIED ${t.date}: ${t.looked_for} -> ${t.result}${t.where ? ` (${t.where})` : ""}`);
   for (const d of docs) {
     if (d.superseded_by && !all) continue;
     if (publisher && !d.publisher?.includes(publisher)) continue;
@@ -239,6 +239,7 @@ if (command === "find") {
   });
   console.log(link ?? "recorded, but this document has no link");
 } else if (command === "tried") {
+  if (!positional[0]) throw new Error("tried needs the words looked for");
   appendFileSync(triedPath, JSON.stringify({ looked_for: positional[0], result: flag("result"), where: flag("where"), date: today }) + "\n");
 } else if (command === "scan") {
   const walk = (dir) => readdirSync(dir).flatMap((n) => {
