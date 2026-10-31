@@ -760,9 +760,9 @@ function Lists({ today }: { today: string }) {
           <ProductTable
             columns={[
               { id: "name", head: p.name },
-              { id: "number", head: p.number, fit: true },
-              { id: "link", head: p.link, fit: true },
-              { id: "figure", head: p.figure, fit: true },
+              { id: "number", head: p.number, width: 7.5 },
+              { id: "link", head: p.link, width: 6 },
+              { id: "figure", head: p.figure, width: 8 },
             ]}
             groups={[
               { key: "a", rows: [row("a", p.a, "1148808", 0.35, true)] },

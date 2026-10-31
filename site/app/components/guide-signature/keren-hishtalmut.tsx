@@ -13,7 +13,7 @@ import { hishtalmutModel, type Employment } from "../../lib/guide-signature-g2";
 import { p05Number, p05Value, type Bundle } from "../../lib/engine";
 import { useInputs } from "../../lib/inputs";
 import { entered as enteredValue, type SiteValue } from "../../lib/value";
-import { Callout, GainBars, InputSlot, LaneLabel, Marker, MarkerMark, NumberField, SegmentedControl, Sentence, useWidth } from "../kit";
+import { Callout, GainBars, InputSlot, LaneLabel, Marker, MarkerMark, NumberField, SegmentedControl, Sentence, TableCols, useWidth } from "../kit";
 import { Num, RulesLine, Term } from "../provenance";
 import { G2Gap, HoldRow, PlanInputs, text } from "./g2-parts";
 import { figure, inputSite, rulesOfBundle, useSigInputs, type VisualProps } from "./kit";
@@ -232,7 +232,8 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
               diffLabel={(model.diff ?? 0) >= 0 ? copy.hishtalmut.diffMore : copy.hishtalmut.diffLess}
             />
             <p className="text-xs text-muted-foreground">{copy.hishtalmut.barsNote}</p>
-            <table className="text-sm w-full max-w-md">
+            <table className="text-sm w-full max-w-md table-fixed tabular-nums [&_td]:whitespace-nowrap">
+              <TableCols widths={["26%", "37%", "37%"]} />
               <thead>
                 <tr className="text-muted-foreground text-start">
                   <th scope="col" className="font-normal text-start pb-1" />
