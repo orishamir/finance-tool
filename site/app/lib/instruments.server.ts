@@ -465,7 +465,7 @@ function buildTariff(
   // makam and a government bond are securities held in the securities account (D6, 2026-10-26): the account's custody line for their class
   // and its monthly fee apply to them too (F-14, F-17); a bank's custody on makam is barred in the run itself (BRK-17)
   const wants = family === "makam" || family === "bond" ? ["trade", "custody", "fixed_period"] : ["trade", "custody", "fx", "fixed_period"];
-  const nis = (v: ValueObject | null) => (isNum(v) && (v.unit === "nis_per_trade" || v.unit === "nis") ? (v.value as number) : undefined);
+  const nis = (v: ValueObject | null) => (isNum(v) && (v.unit === "nis_per_trade" || v.unit === "nis" || v.unit === "nis_per_month") ? (v.value as number) : undefined);
 
   const trade = wants.includes("trade") ? listLines(snap, wrapperId, "trade") : [];
   if (trade.length > 0) {

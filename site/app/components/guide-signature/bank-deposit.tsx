@@ -148,14 +148,14 @@ export function BankDepositVisual({ data, today }: VisualProps) {
           <span className="absolute text-xs text-chart-text" dir="rtl" style={{ right: 0, top: AXIS_Y + 14 - 2 }}>
             {copy.deposit.unit}
           </span>
-          <Marker min={0} max={term} step={1} value={m} onChange={setMonth} label={copy.deposit.marker} valueText={`${m} ${copy.deposit.atMarker.month}`} left={0} top={DEPOSIT_Y - 14} width={plotW} height={FUND_Y + LANE_H + 10 - (DEPOSIT_Y - 14)} />
+          <Marker min={0} max={term} step={1} value={m} onChange={setMonth} label={copy.deposit.marker} valueText={fmt.months(m)} left={0} top={DEPOSIT_Y - 14} width={plotW} height={FUND_Y + LANE_H + 10 - (DEPOSIT_Y - 14)} />
         </div>
         <p className="text-xs text-muted-foreground">{copy.common.drag}</p>
       </div>
 
       <div className="flex flex-col gap-3">
         <p className="text-sm font-medium">
-          {copy.deposit.atMarker.lead} <InputSlot chars={3}><bdi dir="ltr">{m}</bdi></InputSlot> {copy.deposit.atMarker.month}:
+          {copy.deposit.atMarker.lead} <InputSlot chars={9}>{fmt.months(m)}</InputSlot>:
         </p>
         <StatRow cols={2}>
           <Stat label={copy.deposit.atMarker.deposit} tone="value">
