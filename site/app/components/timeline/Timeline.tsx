@@ -215,7 +215,7 @@ export function Timeline({ bundle: pageBundle, initial, wrapperName, ageMarker, 
             <h3 id={titleId} className="text-lg font-semibold">
               {copy.graphTitle}
             </h3>
-            <span className="text-sm text-muted-foreground">
+            <span className="text-sm text-muted-foreground max-w-measure">
               {/* audit A45: it says it is an example and names the inputs, so it does not read as a promise */}
               {values ? (
                 <>
