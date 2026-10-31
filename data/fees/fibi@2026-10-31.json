@@ -469,6 +469,114 @@
       }
     },
     {
+      "id": "fibi-redemption-makam",
+      "base": "trade",
+      "applies_to": [
+        "makam"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.11,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.fibi.co.il/media/jqob143q/חלק-4-ניירות-ערך-31.pdf",
+          "title": "תעריפון ליחידים ועסקים קטנים - הבנק הבינלאומי (בתוקף מ-06/09/2026) - חלק 4 ניירות ערך, סעיף 4.1.2 מלווה קצר מועד (עמוד מס' 15)",
+          "publisher": "First International Bank of Israel Ltd.",
+          "strength": "institution",
+          "page": 1,
+          "quote": "4.1.2 מלווה קצר מועד 0.11% מינ'16.0 מקס 7,000"
+        },
+        "checked": "2026-10-31",
+        "effective_from": "2026-09-06",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-19"
+        ],
+        "state": "sourced",
+        "notes": "Section 4.1 names redemption. The reduced price (note 9, 0.1%) is for an action \"המבוצעת ישירות באמצעות האינטרנט\", so a redemption, where no order is placed, stays at the section's price (inferred from the wording)."
+      },
+      "min": {
+        "value": 16,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.fibi.co.il/media/jqob143q/חלק-4-ניירות-ערך-31.pdf",
+          "title": "תעריפון ליחידים ועסקים קטנים - הבנק הבינלאומי (בתוקף מ-06/09/2026) - חלק 4 ניירות ערך, סעיף 4.1.2, מינ' (עמוד מס' 15)",
+          "publisher": "First International Bank of Israel Ltd.",
+          "strength": "institution",
+          "page": 1,
+          "quote": "4.1.2 מלווה קצר מועד 0.11% מינ'16.0 מקס 7,000"
+        },
+        "checked": "2026-10-31",
+        "effective_from": "2026-09-06",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'מינ' - 16'."
+      },
+      "max": {
+        "value": 7000,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.fibi.co.il/media/jqob143q/חלק-4-ניירות-ערך-31.pdf",
+          "title": "תעריפון ליחידים ועסקים קטנים - הבנק הבינלאומי (בתוקף מ-06/09/2026) - חלק 4 ניירות ערך, סעיף 4.1.2, מקס' (עמוד מס' 15)",
+          "publisher": "First International Bank of Israel Ltd.",
+          "strength": "institution",
+          "page": 1,
+          "quote": "4.1.2 מלווה קצר מועד 0.11% מינ'16.0 מקס 7,000"
+        },
+        "checked": "2026-10-31",
+        "effective_from": "2026-09-06",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'מקס' - 7,000'."
+      },
+      "cap": {
+        "value": 30,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.fibi.co.il/media/jqob143q/חלק-4-ניירות-ערך-31.pdf",
+          "title": "תעריפון ליחידים ועסקים קטנים - הבנק הבינלאומי (בתוקף מ-06/09/2026) - חלק 4 ניירות ערך, הערה 5 לסעיף ניירות ערך הנסחרים בבורסה בתל אביב",
+          "publisher": "First International Bank of Israel Ltd.",
+          "strength": "institution",
+          "page": 1,
+          "quote": "בכל עסקה בני\"ע סכום העמלה לא יעלה על 30% משווי העסקה."
+        },
+        "checked": "2026-10-31",
+        "effective_from": "2026-09-06",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-19"
+        ],
+        "state": "sourced",
+        "notes": "Printed for every securities trade, so the standing-order line too: the fee, and with it the minimum, stops at this share of the trade value."
+      },
+      "period": null,
+      "channel": null,
+      "band": "פדיון",
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קנייה, מכירה, ופדיון של ניירות ערך הנסחרים בבורסה בתל אביב",
+          "4.1.2 מלווה קצר מועד"
+        ]
+      }
+    },
+    {
       "id": "fibi-buy-sell-foreign-branch",
       "base": "trade",
       "applies_to": [

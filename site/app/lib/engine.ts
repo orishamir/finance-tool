@@ -36,8 +36,11 @@ export interface Bundle {
   feeValues: Record<string, SiteValue>;
   rules: RuleRecord[];
   runDate: string;
-  /** The run rests on the site's pick over the collected institutions (F-80, F-86), which the terms block says, with how many were compared. */
-  pick?: { kind: "account" | "deposit"; id: string; count: SiteValue };
+  /**
+   * The run rests on the site's pick over the collected institutions (F-80, F-86), which the terms block says, with how many were compared.
+   * `tied` (F-80, P-01): the houses within the tie threshold of the top, the run's own first; the page says they tie and crowns none.
+   */
+  pick?: { kind: "account" | "deposit"; id: string; count: SiteValue; tied?: { names: string[]; theta: SiteValue } };
 }
 
 export interface YearPoint {

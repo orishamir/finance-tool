@@ -9,14 +9,15 @@
 //
 // 2026-10-26 (founder: a general page names no single bank's rate): the one-year deposit on the money-market ladder is the range
 // across the collected banks (F-86); `oneYearDepositRecords` and `depositRange` make it, and the bank-deposit page lists each bank.
-import { mostCommonRate, rateRange } from "@finance-tool/engine";
+import { isTie, mostCommonRate, rateRange, tieThreshold } from "@finance-tool/engine";
 import type { Bundle } from "./engine";
 import { p05Number, p05Range, runTimeline } from "./engine";
 import type { DepositTerms, ParameterRecord, RuleRecord, ValueObject, ProductId, ProductRecord } from "@finance-tool/schema";
+import { asParameter } from "./compare";
 import type { AccountBank } from "./guide-signature";
 import { runWith, sideOf } from "./guide-signature-g2";
 import { buildInstrumentTerms, loadDepositTerms, loadFunds } from "./instruments.server";
-import { loadFees } from "./data.server";
+import { loadFees, loadParameters } from "./data.server";
 import { onlyWhatCanBeDone, shortName } from "./providers";
 import { computed, ownBy, type SiteValue, type Strength } from "./value";
 import { publisherHe } from "./publisher-he.server";
@@ -256,6 +257,8 @@ export interface AccountRun {
   id: string;
   name: string;
   gain: number;
+  /** The run's real value at the horizon, which F-80 ranks and ties on. */
+  real: number;
   bundle: Bundle;
   source: ValueObject["source"];
   checked: string;
@@ -288,7 +291,7 @@ export function accountRuns(record: ProductRecord, family: InstrumentFamily, p05
     const bundle = buildInstrumentBundle(record, family, { ...p05, instruments: { ...p05.instruments, [record.id]: spec } } as ParameterRecord, allRules, t).bundle;
     const run = bundle ? runWith(bundle, plan, months) : null;
     if (!bundle || !run || run.outcome.code !== "eligible") continue;
-    rows.push({ id, name: latest.provider.name_he, gain: sideOf(run, plan.amount_now).gain, bundle, source: { url: latest.tariff.url, title: latest.tariff.title, publisher: latest.provider.name_he, strength: "institution" }, checked: latest.snapshot });
+    rows.push({ id, name: latest.provider.name_he, gain: sideOf(run, plan.amount_now).gain, real: run.real, bundle, source: { url: latest.tariff.url, title: latest.tariff.title, publisher: latest.provider.name_he, strength: "institution" }, checked: latest.snapshot });
   }
   return rows.sort((a, b) => a.gain - b.gain);
 }
@@ -324,7 +327,16 @@ export function guideInstrumentBundle(record: ProductRecord, family: InstrumentF
   if (accountClasses[record.id]) {
     const rows = accountRuns(record, family, p05, allRules, t);
     const best = rows.at(-1);
-    if (best) return { bundle: { ...best.bundle, pick: { kind: "account", id: best.id, count: computed(rows.length, "count", "F-80", {}, { today: t, about: "כמה בנקים ובתי השקעות שהתעריפון שלהם נאסף ושהאתר מחשב בשבילם את הדוגמה" }) } }, noGraph: null, published: null };
+    if (best) {
+      const count = computed(rows.length, "count", "F-80", {}, { today: t, about: "כמה בנקים ובתי השקעות שהתעריפון שלהם נאסף ושהאתר מחשב בשבילם את הדוגמה" });
+      // F-80: every tariff within P-01 of the top is a tie, compared with the top; the page says so and crowns none
+      const parameters = loadParameters();
+      const others = rows.slice(0, -1).reverse().filter((r) => isTie(best.real, r.real, tieThreshold(parameters)));
+      const p01 = parameters.find((p) => p.method_id === "P-01");
+      const theta = p01?.value ? asParameter(p01, p01.value) : undefined;
+      const tied = others.length > 0 && theta ? { names: [best, ...others].map((r) => shortName(r.id, r.name)), theta } : undefined;
+      return { bundle: { ...best.bundle, pick: { kind: "account", id: best.id, count, ...(tied ? { tied } : {}) } }, noGraph: null, published: null };
+    }
   }
   return buildInstrumentBundle(record, family, p05, allRules, t);
 }

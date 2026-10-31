@@ -370,6 +370,91 @@
       }
     },
     {
+      "id": "mizrahi-tefahot-redemption-makam",
+      "base": "trade",
+      "applies_to": [
+        "makam"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.11,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
+          "title": "תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים - בנק מזרחי טפחות (קובץ מאוגד, 48 עמ'), חלק 4 - ניירות ערך ('מעודכן לתאריך: 02/04/2024'), סעיף 4.1.2 מילווה קצר מועד (כולל הנפקה)",
+          "publisher": "Mizrahi Tefahot Bank Ltd.",
+          "strength": "institution",
+          "page": 10,
+          "quote": "4.1.2 מילווה קצר מועד 0.11% ₪ 19.00 ₪ 7,500.00"
+        },
+        "checked": "2026-10-31",
+        "effective_from": "2024-04-02",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-19"
+        ],
+        "state": "sourced",
+        "notes": "Section 4.1 names redemption. The reduced price of annex ה (0.10%) reads \"קניה/מכירה\", without redemption, so a redemption stays at the section's price."
+      },
+      "min": {
+        "value": 19,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
+          "title": "תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים - בנק מזרחי טפחות (קובץ מאוגד, 48 עמ'), חלק 4 - ניירות ערך ('מעודכן לתאריך: 02/04/2024'), סעיף 4.1.2, מיזערי",
+          "publisher": "Mizrahi Tefahot Bank Ltd.",
+          "strength": "institution",
+          "page": 10,
+          "quote": "4.1.2 מילווה קצר מועד 0.11% ₪ 19.00 ₪ 7,500.00"
+        },
+        "checked": "2026-10-31",
+        "effective_from": "2024-04-02",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'₪ 19.00'."
+      },
+      "max": {
+        "value": 7500,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
+          "title": "תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים - בנק מזרחי טפחות (קובץ מאוגד, 48 עמ'), חלק 4 - ניירות ערך ('מעודכן לתאריך: 02/04/2024'), סעיף 4.1.2, מירבי",
+          "publisher": "Mizrahi Tefahot Bank Ltd.",
+          "strength": "institution",
+          "page": 10,
+          "quote": "4.1.2 מילווה קצר מועד 0.11% ₪ 19.00 ₪ 7,500.00"
+        },
+        "checked": "2026-10-31",
+        "effective_from": "2024-04-02",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'₪ 7,500.00'."
+      },
+      "period": null,
+      "channel": null,
+      "band": "פדיון",
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קניה, מכירה, ופדיון של ניירות ערך בבורסה בתל אביב",
+          "4.1.2 מילווה קצר מועד (כולל הנפקה)"
+        ]
+      }
+    },
+    {
       "id": "mizrahi-buy-sell-foreign-branch",
       "base": "trade",
       "applies_to": [

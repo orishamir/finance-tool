@@ -58,3 +58,28 @@ describe("the account's monthly fee follows a security into the account (F-17)",
     expect(fee.formulas).toContain("F-17");
   });
 });
+
+describe("F-24: a redemption pays the tariff's line that names it (2026-10-31)", () => {
+  const goal = { amountNow: 10_000, monthly: 500, months: 120 };
+  const flat = { rate: 0.001, min: 18, flatUpTo: { amount: 4, upTo: 30_000 } };
+  const plan: MakamInput = { goal, market: { inflation: 0.02 }, makam: { yield: 0.0325 }, tariff: { buy: flat, sell: flat } };
+  it("once a month on the paper of that month's maturity: 109 redemptions over ten years, 4 NIS each", () => {
+    const without = runMakam(plan, ctx);
+    const paid = runMakam({ ...plan, tariff: { ...plan.tariff, redeem: flat } }, ctx);
+    expect(paid.fees.trade - without.fees.trade).toBeCloseTo(4 * (120 - 11), 6);
+    expect(paid.nominal).toBeLessThan(without.nominal);
+    expect(paid.flags.map((f) => f.code)).toContain("G-20");
+  });
+  it("is charged on the face value redeemed, and does not reduce the tax on the discount", () => {
+    const one = { goal: { amountNow: 100_000, monthly: 0, months: 12 }, market: { inflation: 0.02 }, makam: { yield: 0.0325 }, tariff: {} } satisfies MakamInput;
+    const without = runMakam(one, ctx);
+    const paid = runMakam({ ...one, tariff: { redeem: { rate: 0.001, min: 2 } } }, ctx);
+    const face = 100_000 * (1 + 0.0325);
+    expect(paid.fees.trade).toBeCloseTo(0.001 * face, 6);
+    expect(paid.taxDuring).toBeCloseTo(without.taxDuring, 6);
+    expect(without.nominal - paid.nominal).toBeCloseTo(0.001 * face, 6);
+  });
+  it("a tariff with no such line charges nothing, as before", () => {
+    expect(runMakam({ ...plan, tariff: { buy: flat, sell: flat, redeem: undefined } }, ctx).nominal).toBe(runMakam(plan, ctx).nominal);
+  });
+});

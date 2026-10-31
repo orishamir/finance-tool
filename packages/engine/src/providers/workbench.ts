@@ -235,6 +235,8 @@ type SnapLine = FeesSnapshot["lines"][number];
 export const STANDING_ORDER_BAND = "הוראת קבע";
 /** The band of a conversion line that prices the conversion of a monthly purchase on a recurring plan (F-13, 2026-10-31). Never a lump sum's or a sale's: Interactive Israel's tariff, p.6, charges those by the table. */
 export const STANDING_CONVERSION_BAND = "השקעה קבועה אוטומטית";
+/** The band of a trade line that prices a redemption of makam (F-24, 2026-10-31): the tariff's line that names redemption, never the reduced price of an order placed online. */
+export const REDEMPTION_BAND = "פדיון";
 
 const standingLines = (snapshot: FeesSnapshot, base: "trade" | "fx") => snapshot.lines.filter((l) => l.base === base && l.level === "list" && l.band === (base === "trade" ? STANDING_ORDER_BAND : STANDING_CONVERSION_BAND));
 
@@ -265,7 +267,7 @@ export function buildTariff(input: Omit<WorkbenchInput, "fund"> & { fund?: Workb
 
   /** The line of a base at a level for the channel: none, one, or an error when two apply (the snapshot is ambiguous). */
   const pick = (base: SnapLine["base"], at: SnapLine["level"]): SnapLine | undefined => {
-    const all = snapshot.lines.filter((l) => l.base === base && l.level === at && applicable(l) && l.band !== STANDING_ORDER_BAND && l.band !== STANDING_CONVERSION_BAND);
+    const all = snapshot.lines.filter((l) => l.base === base && l.level === at && applicable(l) && l.band !== STANDING_ORDER_BAND && l.band !== STANDING_CONVERSION_BAND && l.band !== REDEMPTION_BAND);
     const channels = new Set(all.map((l) => l.channel).filter((c): c is string => c !== null));
     if (input.channel === undefined && channels.size > 0)
       throw new RecordInputError(`provider ${snapshot.id}: ${base} lines exist for channels ${[...channels].join(", ")}; the input must name the channel`);
@@ -366,6 +368,14 @@ export function buildTariff(input: Omit<WorkbenchInput, "fund"> & { fund?: Workb
         if (l) {
           out.tariff.buyStanding = commission({ line: l, rate: l.rate, min: l.min, max: l.max, cap: l.cap });
           used(l, l.rate, l.min, l.max, l.cap);
+        }
+        // F-24 (2026-10-31): a redemption, where the tariff names it; it follows no channel, because no order is placed
+        const redemption = snapshot.lines.filter((l) => l.base === "trade" && l.level === "list" && l.band === REDEMPTION_BAND && applicable(l));
+        if (redemption.length > 1) throw new RecordInputError(`provider ${snapshot.id}: ${redemption.length} redemption lines apply (${redemption.map((l) => l.id).join(", ")}); the snapshot is ambiguous`);
+        const paid = redemption[0];
+        if (paid) {
+          out.tariff.redeem = commission({ line: paid, rate: paid.rate, min: paid.min, max: paid.max, cap: paid.cap });
+          used(paid, paid.rate, paid.min, paid.max, paid.cap);
         }
       }
     } else out.noLine.push("trade");

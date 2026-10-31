@@ -215,6 +215,69 @@
       }
     },
     {
+      "id": "psagot-redemption-makam",
+      "base": "trade",
+      "applies_to": [
+        "makam"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.05,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.psagot.co.il/%d7%aa%d7%a2%d7%a8%d7%99%d7%a4%d7%95%d7%9f-%d7%91%d7%95%d7%a8%d7%a1%d7%94-%d7%a4%d7%a1%d7%92%d7%95%d7%aa-%d7%98%d7%a8%d7%99%d7%99%d7%93-2/",
+          "title": "תעריפון עמלות פסגות טרייד (עמוד HTML, ללא תאריך), חלק 4, (4א) סעיף 1, '3. מילווה קצר מועד'",
+          "publisher": "Psagot Securities Ltd. (Psagot Trade)",
+          "strength": "institution",
+          "quote": "0.05% משווי העיסקה, מינימום ₪ 2 לפעולה"
+        },
+        "checked": "2026-10-31",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "The tariff has one line for makam, under a heading that names redemption."
+      },
+      "min": {
+        "value": 2,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.psagot.co.il/%d7%aa%d7%a2%d7%a8%d7%99%d7%a4%d7%95%d7%9f-%d7%91%d7%95%d7%a8%d7%a1%d7%94-%d7%a4%d7%a1%d7%92%d7%95%d7%aa-%d7%98%d7%a8%d7%99%d7%99%d7%93-2/",
+          "title": "תעריפון עמלות פסגות טרייד (עמוד HTML, ללא תאריך), חלק 4, (4א) סעיף 1, מילווה קצר מועד, מינימום",
+          "publisher": "Psagot Securities Ltd. (Psagot Trade)",
+          "strength": "institution",
+          "quote": "0.05% משווי העיסקה, מינימום ₪ 2 לפעולה"
+        },
+        "checked": "2026-10-31",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "'מינימום ₪ 2 לפעולה'."
+      },
+      "max": null,
+      "period": null,
+      "channel": null,
+      "band": "פדיון",
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קניה, מכירה ופדיון של ניירות ערך הנסחרים בבורסה ת\"א",
+          "3. מילווה קצר מועד"
+        ]
+      }
+    },
+    {
       "id": "psagot-buy-sell-mutual-fund",
       "base": "trade",
       "applies_to": [

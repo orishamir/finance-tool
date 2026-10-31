@@ -370,6 +370,91 @@
       }
     },
     {
+      "id": "jerusalem-redemption-makam",
+      "base": "trade",
+      "applies_to": [
+        "makam"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.1,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.bankjerusalem.co.il/media/7012/%D7%A2%D7%95%D7%AA%D7%A7-%D7%A9%D7%9C-1759155996_2_%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F_%D7%9E%D7%9C%D7%90_%D7%9C%D7%99%D7%97%D7%99%D7%93_%D7%A2%D7%A1%D7%A7_%D7%A7%D7%98%D7%9F-1-1.pdf",
+          "title": "התעריפון המלא ליחיד / עסק קטן - בנק ירושלים, חלק 4 - ניירות ערך ('בתוקף מתאריך : 06/02/20217' כפי שמודפס), 4(א)(1), מלווה קצר מועד",
+          "publisher": "Bank of Jerusalem Ltd.",
+          "strength": "institution",
+          "page": 6,
+          "quote": "קצר מועד ₪ 20 0.10% מינימום 7,500"
+        },
+        "checked": "2026-10-31",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-19"
+        ],
+        "state": "sourced",
+        "notes": "Section 4א(1) names redemption. The reduced price (note 4, 0.09%) is for an action \"המבוצעת ישירות באמצעות האינטרנט\", so a redemption, where no order is placed, stays at the section's price (inferred from the wording)."
+      },
+      "min": {
+        "value": 20,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.bankjerusalem.co.il/media/7012/%D7%A2%D7%95%D7%AA%D7%A7-%D7%A9%D7%9C-1759155996_2_%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F_%D7%9E%D7%9C%D7%90_%D7%9C%D7%99%D7%97%D7%99%D7%93_%D7%A2%D7%A1%D7%A7_%D7%A7%D7%98%D7%9F-1-1.pdf",
+          "title": "התעריפון המלא ליחיד / עסק קטן - בנק ירושלים, חלק 4 - ניירות ערך ('בתוקף מתאריך : 06/02/20217' כפי שמודפס), 4(א)(1), מלווה קצר מועד, מינימום",
+          "publisher": "Bank of Jerusalem Ltd.",
+          "strength": "institution",
+          "page": 6,
+          "quote": "קצר מועד ₪ 20 0.10% מינימום 7,500"
+        },
+        "checked": "2026-10-31",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'20 ש\"ח מינימום'. The part's effective date is printed '06/02/20217', a misprint in the source; effective_from is left null rather than guessed."
+      },
+      "max": {
+        "value": 7500,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.bankjerusalem.co.il/media/7012/%D7%A2%D7%95%D7%AA%D7%A7-%D7%A9%D7%9C-1759155996_2_%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F_%D7%9E%D7%9C%D7%90_%D7%9C%D7%99%D7%97%D7%99%D7%93_%D7%A2%D7%A1%D7%A7_%D7%A7%D7%98%D7%9F-1-1.pdf",
+          "title": "התעריפון המלא ליחיד / עסק קטן - בנק ירושלים, חלק 4 - ניירות ערך ('בתוקף מתאריך : 06/02/20217' כפי שמודפס), 4(א)(1), מלווה קצר מועד, מקסימום",
+          "publisher": "Bank of Jerusalem Ltd.",
+          "strength": "institution",
+          "page": 6,
+          "quote": "קצר מועד ₪ 20 0.10% מינימום 7,500"
+        },
+        "checked": "2026-10-31",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'7,500 ₪ מקסימום'. The part's effective date is printed '06/02/20217', a misprint in the source; effective_from is left null rather than guessed."
+      },
+      "period": null,
+      "channel": null,
+      "band": "פדיון",
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קנייה, מכירה, ופדיון של ניירות ערך הנסחרים בבורסה בתל אביב",
+          "מלווה קצר מועד"
+        ]
+      }
+    },
+    {
       "id": "jerusalem-buy-sell-foreign",
       "base": "trade",
       "applies_to": [

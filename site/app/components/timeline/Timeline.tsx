@@ -345,6 +345,7 @@ function labelOf(key: P05Input): string {
 
 /** The product terms the run read (flows 6.5): each a provenance number, in the order of the label table; not editable. */
 function TermsList({ bundle }: { bundle: Bundle }) {
+  const tiedCopy = guideBlocks.terms.pick.tied;
   const rows = Object.entries(guideBlocks.terms.labels).filter(([key]) => bundle.feeValues[key]);
   const employment = bundle.feeValues.employment;
   if (rows.length === 0 && !employment) return null;
@@ -367,7 +368,22 @@ function TermsList({ bundle }: { bundle: Bundle }) {
       )}
       {bundle.pick && (
         <p className="text-sm">
-          {guideBlocks.terms.pick[bundle.pick.kind].before} <Num value={bundle.pick.count} /> {guideBlocks.terms.pick[bundle.pick.kind].after}
+          {bundle.pick.tied ? (
+            <>
+              {tiedCopy.before} <Num value={bundle.pick.count} /> {tiedCopy.middle}{" "}
+              {bundle.pick.tied.names.map((name, i) => (
+                <span key={name}>
+                  {i > 0 && <> {tiedCopy.and}</>}
+                  <bdi>{name}</bdi>{" "}
+                </span>
+              ))}
+              {tiedCopy.tie} <Num value={bundle.pick.tied.theta} />, {tiedCopy.after} <bdi>{bundle.pick.tied.names[0]}</bdi>. {tiedCopy.end}
+            </>
+          ) : (
+            <>
+              {guideBlocks.terms.pick[bundle.pick.kind].before} <Num value={bundle.pick.count} /> {guideBlocks.terms.pick[bundle.pick.kind].after}
+            </>
+          )}
         </p>
       )}
       <dl className="readout">

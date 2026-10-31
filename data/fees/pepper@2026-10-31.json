@@ -335,6 +335,159 @@
       }
     },
     {
+      "id": "pepper-redemption-makam",
+      "base": "trade",
+      "applies_to": [
+        "makam"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.1,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
+          "title": "תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (מעודכן לתאריך 01/10/2026), חלק 4 - ניירות ערך, (4א) שירותים נפוצים, סעיף (1), מילווה קצר מועד (עמ' 30)",
+          "publisher": "Bank Leumi le-Israel B.M.",
+          "strength": "institution",
+          "page": 30,
+          "quote": "-מילווה קצר מועד 0.100% בביצוע מינימום 20 מכסימום 2000ש"
+        },
+        "checked": "2026-10-31",
+        "effective_from": "2026-10-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-19"
+        ],
+        "state": "sourced",
+        "notes": "The PEPPER annex (p.11) names redemption of makam at 4 NIS up to 30,000 NIS an order and prints nothing above that; above it the line stays at Leumi's section 4א(1), p.30, the one that names redemption (inferred: the annex is silent above 30,000 NIS)."
+      },
+      "min": {
+        "value": 20,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
+          "title": "תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (מעודכן לתאריך 01/10/2026), חלק 4 - ניירות ערך, (4א) שירותים נפוצים, סעיף (1), מילווה קצר מועד, מינימום (עמ' 30)",
+          "publisher": "Bank Leumi le-Israel B.M.",
+          "strength": "institution",
+          "page": 30,
+          "quote": "-מילווה קצר מועד 0.100% בביצוע מינימום 20 מכסימום 2000ש"
+        },
+        "checked": "2026-10-31",
+        "effective_from": "2026-10-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'מינימום 20 ש\"ח'."
+      },
+      "max": {
+        "value": 2000,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
+          "title": "תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (מעודכן לתאריך 01/10/2026), חלק 4 - ניירות ערך, (4א) שירותים נפוצים, סעיף (1), מילווה קצר מועד, מכסימום (עמ' 30)",
+          "publisher": "Bank Leumi le-Israel B.M.",
+          "strength": "institution",
+          "page": 30,
+          "quote": "-מילווה קצר מועד 0.100% בביצוע מינימום 20 מכסימום 2000ש"
+        },
+        "checked": "2026-10-31",
+        "effective_from": "2026-10-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'מכסימום 2000 ש\"ח'."
+      },
+      "period": null,
+      "channel": null,
+      "band": "פדיון",
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קניה, מכירה ופדיון של ני\"ע הנסחרים בבורסה בת\"א- מניות, מק\"מ ואגרות חוב"
+        ]
+      },
+      "cap": {
+        "value": 30,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
+          "title": "תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (מעודכן לתאריך 01/10/2026), חלק 4 - ניירות ערך, (4א) שירותים נפוצים, סעיף (1), מילווה קצר מועד (עמ' 30)",
+          "publisher": "Bank Leumi le-Israel B.M.",
+          "strength": "institution",
+          "page": 30,
+          "quote": "אך לא יותר מ-30% מהתשלום"
+        },
+        "checked": "2026-10-31",
+        "effective_from": "2026-10-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-19"
+        ],
+        "state": "sourced",
+        "notes": "The minimum, not the rate, is limited to this share of the payment (p.30 note 6)."
+      },
+      "flat_up_to": {
+        "amount": {
+          "value": 4,
+          "unit": "nis_per_trade",
+          "source": {
+            "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
+            "title": "תעריפון העמלות המלא, בנק לאומי, נספח 'לקוחות PEPPER', חלק 4 ניירות ערך (עמ' 11), 'התעריפון מעודכן לתאריך 01/10/2026'",
+            "publisher": "Bank Leumi (PEPPER)",
+            "strength": "institution",
+            "page": 11,
+            "quote": "בבורסה בת \"א­ מניות ,מק \"מ ואגרות חוב"
+          },
+          "checked": "2026-10-31",
+          "effective_from": "2026-10-01",
+          "effective_to": null,
+          "tax_year": null,
+          "update_rule": "provider-set",
+          "rule_ids": [
+            "BRK-54"
+          ],
+          "state": "sourced",
+          "notes": "Printed: '4 ש\"ח' for buying, selling and redeeming securities traded on the Tel Aviv exchange: shares, makam and bonds, up to 30,000 NIS an order. Covering a tracking fund and an ETF is a reading of Leumi's own tariff, not words on this line (BRK-54)."
+        },
+        "up_to": {
+          "value": 30000,
+          "unit": "nis",
+          "source": {
+            "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
+            "title": "תעריפון העמלות המלא, בנק לאומי, נספח 'לקוחות PEPPER', חלק 4 ניירות ערך (עמ' 11), 'התעריפון מעודכן לתאריך 01/10/2026'",
+            "publisher": "Bank Leumi (PEPPER)",
+            "strength": "institution",
+            "page": 11,
+            "quote": "בסכום של עד 30,000ש \"ח להוראה"
+          },
+          "checked": "2026-10-31",
+          "effective_from": "2026-10-01",
+          "effective_to": null,
+          "tax_year": null,
+          "update_rule": "provider-set",
+          "rule_ids": [
+            "BRK-54"
+          ],
+          "state": "sourced",
+          "notes": "'בסכום של עד 30,000 ש\"ח להוראה'. PEPPER's page: a larger order pays per the fee tariff."
+        }
+      }
+    },
+    {
       "id": "pepper-buy-sell-foreign",
       "base": "trade",
       "applies_to": [

@@ -153,6 +153,70 @@
       }
     },
     {
+      "id": "altshuler-trade-redemption-makam",
+      "base": "trade",
+      "applies_to": [
+        "makam"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.1,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.as-invest.co.il/media/oqdfpafo/תעריפון-מלא-אלטשולר-שחם-טרייד.pdf",
+          "title": "תעריפון אלטשולר שחם טרייד בע\"מ (המסמך אינו נושא תאריך; מטא-נתוני ה-PDF: נוצר 9.12.2024, שונה 22.5.2025), חלק 4, (4א) סעיף 2, קניה, מכירה ופדיון מק\"מ (עמ' 1)",
+          "publisher": "Altshuler Shaham Trade Ltd.",
+          "strength": "institution",
+          "page": 1,
+          "quote": "ופדיון מק\"מ 0.1% מינימום ₪ 3.5"
+        },
+        "checked": "2026-10-31",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "The tariff has one line for makam and it names redemption."
+      },
+      "min": {
+        "value": 3.5,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.as-invest.co.il/media/oqdfpafo/תעריפון-מלא-אלטשולר-שחם-טרייד.pdf",
+          "title": "תעריפון אלטשולר שחם טרייד בע\"מ (המסמך אינו נושא תאריך; מטא-נתוני ה-PDF: נוצר 9.12.2024, שונה 22.5.2025), חלק 4, (4א) סעיף 2, מינימום (עמ' 1)",
+          "publisher": "Altshuler Shaham Trade Ltd.",
+          "strength": "institution",
+          "page": 1,
+          "quote": "ופדיון מק\"מ 0.1% מינימום ₪ 3.5"
+        },
+        "checked": "2026-10-31",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "'מינימום ₪ 3.5'."
+      },
+      "max": null,
+      "period": null,
+      "channel": null,
+      "band": "פדיון",
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קניה, מכירה ופדיון מק\"מ"
+        ]
+      }
+    },
+    {
       "id": "altshuler-trade-buy-sell-funds",
       "base": "trade",
       "applies_to": [
