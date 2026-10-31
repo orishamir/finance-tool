@@ -380,8 +380,10 @@ export function buildTariff(input: Omit<WorkbenchInput, "fund"> & { fund?: Workb
       const period = r.line.period ?? (r.rate.value === 0 ? "month" : null);
       if (period === null) throw new Unusable("line-without-value", `${r.line.id} has no period`);
       const c: Custody = { rate: pct(r.rate, "pct_of_balance_per_period", `${r.line.id} rate`), everyMonths: periodMonths[period] };
-      if (hasBound(r.min)) c.min = nis(r.min, `${r.line.id} min`);
-      if (hasBound(r.max)) c.max = nis(r.max, `${r.line.id} max`);
+      // F-14: a bound printed per month is per charging period here, so a yearly line with a monthly minimum charges twelve of them.
+      const boundOf = (b: ValueObject, what: string) => nis(b, what) * (b.unit === "nis_per_month" ? c.everyMonths : 1);
+      if (hasBound(r.min)) c.min = boundOf(r.min, `${r.line.id} min`);
+      if (hasBound(r.max)) c.max = boundOf(r.max, `${r.line.id} max`);
       out.tariff.custody = c;
       used(r.line, r.rate, r.min, r.max);
     } else out.noLine.push("custody");

@@ -489,10 +489,12 @@ function buildTariff(
     const unitOk = line.rate.unit === "pct_of_balance_per_period" || line.rate.unit === "pct_per_year";
     if (isNum(line.rate) && unitOk && every) {
       const c: NonNullable<Tariff["custody"]> = { rate: pct(line.rate), everyMonths: every };
+      // F-14: a bound printed per month is per charging period here, so a yearly line with a monthly minimum charges twelve of them.
+      const perPeriod = (b: typeof line.min) => (b?.unit === "nis_per_month" ? every : 1);
       const min = nis(line.min);
       const max = nis(line.max);
-      if (min !== undefined) c.min = min;
-      if (max !== undefined) c.max = max;
+      if (min !== undefined) c.min = min * perPeriod(line.min);
+      if (max !== undefined) c.max = max * perPeriod(line.max);
       tariff.custody = c;
       feeValues.custodyRate = { ...line.rate };
       if (line.min && isNum(line.min)) feeValues.custodyMin = { ...line.min };
