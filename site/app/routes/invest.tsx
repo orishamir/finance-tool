@@ -171,7 +171,7 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
   const [genericHouse, setGenericHouse] = useState<string | null>(null);
   const house = genericHouse ?? view?.genericHeadline?.cell.providerId ?? view?.houses.find((h) => h.generic)?.provider.id ?? null;
 
-  const rules = ["ETF-31", "ETF-24", "ETF-51", "TXS-09", "TXF-22"].filter((id) => wb.rules.some((r) => r.id === id));
+  const rules = ["ETF-31", "ETF-24", "ETF-51", "ETF-75", "TXS-09", "TXF-22"].filter((id) => wb.rules.some((r) => r.id === id));
 
   const chips = (
     <IndexChips

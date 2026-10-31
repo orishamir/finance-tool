@@ -1,0 +1,45 @@
+{
+  "id": "ETF-75",
+  "title": "What hedging adds to or takes from a hedged tracking fund in the regulator's formula: interest differential and quanto",
+  "title_he": "מה הנטרול מוסיף לקרן מחקה מנוטרלת או לוקח ממנה, לפי הנוסחה של הרשות",
+  "text_he": "הוראה של רשות ניירות ערך על דמי ניהול משתנים בקרן מחקה מוציאה מחישוב פער העקיבה של קרן מנוטרלת מטבע את ההוצאות או ההכנסות מפעולת הגידור. הנוסחה בנספח שלה מחלקת את תוצאת הגידור לשני מקדמים: פער הריביות בין המטבעות, לפי נקודות הפורוורד של עסקה לשלושה חודשים, וקוואנטו, שנגזר מהשינוי היומי של המדד כפול השינוי היומי של המטבע. ההוראה לא נותנת גודל, ולכן גודל הפער תלוי במה שקרה בכל שנה. הנוסחה מגדירה את נקודת הייחוס לדמי הניהול המשתנים, ולא אומרת כמה קרן משלמת בפועל.",
+  "strength": "primary",
+  "dimensions": [
+    "currency"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-10-31",
+  "figures": {},
+  "il_finance_file": "etfs-and-index-funds.md",
+  "checked": "2026-10-31",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.chamber.org.il/media/159262/fees.pdf#page=5",
+      "title": "הוראה למנהלי קרנות הנאמנות בעניין חישוב דמי ניהול משתנים בקרן מחקה (עותק באתר לשכת המסחר, 23.8.2018)",
+      "title_he": "הוראה למנהלי קרנות הנאמנות בעניין חישוב דמי ניהול משתנים בקרן מחקה (עותק באתר לשכת המסחר, 23.8.2018)",
+      "publisher": "Israel Securities Authority (copy at the Chamber of Commerce)",
+      "publisher_he": "רשות ניירות ערך (עותק באתר לשכת המסחר)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.1 s.3; p.5 Appendix A",
+      "locator_he": "עמוד 1 סעיף 3; עמוד 5 נספח א",
+      "page": 5,
+      "checked": "2026-10-31"
+    },
+    {
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/shared_investments_rules.pdf#page=3",
+      "title": "כללי השקעות משותפות בנאמנות (פרטים נוספים בתשקיף קרן מחקה ודוחות נוספים של קרן מחקה), התשע\"ט-2018",
+      "title_he": "כללי השקעות משותפות בנאמנות (פרטים נוספים בתשקיף קרן מחקה ודוחות נוספים של קרן מחקה), התשע\"ט-2018",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "רשות ניירות ערך",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.3",
+      "locator_he": "עמוד 3",
+      "page": 3,
+      "quote": "ינוטרלו מהחישוב האמור גם עלויות גידור המטבע",
+      "checked": "2026-10-31"
+    }
+  ]
+}

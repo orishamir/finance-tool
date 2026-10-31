@@ -6,7 +6,7 @@ import { invest as c } from "../../copy";
 import { inputMap, kindMoney, kindOf, sumFeesPct, type InvestView } from "../../lib/invest";
 import type { WorkbenchBundle, WorkbenchInputs } from "../../lib/providers";
 import { computed, ownBy, type SiteValue } from "../../lib/value";
-import { Num } from "../provenance";
+import { Num, RuleRef } from "../provenance";
 import { Card, ChartLegend, FixedTable, PairBars, SourceLine, StatRow, StatTile, Swatch, YearBars, useHeldHeight } from "../kit";
 import { allFunds, kindPairs, type Pick } from "./pair";
 import { providerName } from "./sections";
@@ -195,7 +195,7 @@ export function DollarSection({ view, bundle, plan, pick }: { view: InvestView; 
         items={[]}
       />
       <p>
-        <strong className="font-semibold">{c.dollar.bottomLead}</strong> {c.dollar.bottomLine}
+        <strong className="font-semibold">{c.dollar.bottomLead}</strong> {c.dollar.bottomLine} <RuleRef id="ETF-75" />
       </p>
     </Card>
   );
