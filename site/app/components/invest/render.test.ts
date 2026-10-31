@@ -12,7 +12,7 @@ import { FundsSection } from "./funds";
 import { LabelSheetHost } from "../kit";
 import { Headline, IndexHeader } from "./sections";
 import { AccountColumn, allFunds, bestFor, FundColumn, PairResult, pickOfHeadline } from "./pair";
-import { Foot, Steps } from "./steps";
+import { Foot } from "./foot";
 import { PlanBlock } from "./chips";
 import { ProvenanceProvider } from "../provenance";
 
@@ -54,7 +54,7 @@ describe("the index page's sections render", () => {
       createElement(PairResult, { view, bundle, plan: { ...plan, returnFromParameter: true }, pick: leumi, onPick: () => undefined }),
       createElement(AccountColumn, { view, bundle, years: 20, pick, onPick: () => undefined }),
       createElement(FundColumn, { view, bundle, plan, today: t, pick, onPick: () => undefined, filter: null, onFilter: () => undefined }),
-      createElement(Steps, { view, monthly: plan.values.monthly, pick }), createElement(Foot, { view }),
+      createElement(Foot, { view }),
       createElement(PlanBlock, { knobs: null, onOpen: () => undefined, fx: bundle.fx, today: t, example: true })));
     expect(out).toContain("הפקדתם");
     // a dollar index with funds of both kinds shows each kind across the dollar (F-94, 2026-10-29)
@@ -86,7 +86,7 @@ describe("the index page's sections render", () => {
   });
   it("a custom index: empty funds state with the request button", () => {
     const v = buildInvest({ bundle, index: refOfCustom({ id: "custom-nikkei", name: "ניקיי 225", israeli: false, added: t }), plan });
-    const out = html(createElement("div", null, createElement(Headline, { view: v }), createElement(FundsSection, { view: v, houseId: v.houses.find((h) => h.generic)?.provider.id ?? null, onHouse: () => undefined, mayaHref: "https://maya.tase.co.il" }), createElement(Steps, { view: v, monthly: plan.values.monthly })));
+    const out = html(createElement("div", null, createElement(Headline, { view: v }), createElement(FundsSection, { view: v, houseId: v.houses.find((h) => h.generic)?.provider.id ?? null, onHouse: () => undefined, mayaHref: "https://maya.tase.co.il" })));
     expect(out).toContain("עוד לא נאספו קרנות על המדד הזה");
     expect(out).toContain("בקשו שנאסוף");
     expect(out).toContain("חשבון ניירות הערך הזול ביותר לקרן ישראלית על המדד");

@@ -13,9 +13,9 @@ import { FundsSection } from "../components/invest/funds";
 import { AccountColumn, FundColumn, PairResult, pickOfHeadline, allFunds, type Pick } from "../components/invest/pair";
 import { LabelSheetHost } from "../components/kit";
 import { Headline, IndexHeader } from "../components/invest/sections";
-import { Foot, Steps } from "../components/invest/steps";
+import { Foot } from "../components/invest/foot";
 import { DollarSection } from "../components/invest/dollar";
-import { Callout, Disclosure } from "../components/kit";
+import { Callout } from "../components/kit";
 import { Sheet } from "../components/Sheet";
 import { PageShell } from "../components/shell";
 import { RulesLine } from "../components/provenance";
@@ -228,11 +228,6 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
                 <FundsSection view={view} houseId={house} onHouse={(id) => setGenericHouse(id)} mayaHref={wb.links.maya?.href ?? null} />
               </>
             )}
-            <div className="flex flex-col divide-y divide-border border-y border-border">
-              <Disclosure label={c.folds.steps} spread>
-                <Steps view={view} monthly={plan.values.monthly} pick={pick} />
-              </Disclosure>
-            </div>
             {/* what moves the result most: every number changed by the same share, at the bottom (founder, 2026-10-28) */}
             <PlanChanges plan={plan} share={data.form.share} bundle={wb} view={view} pick={pick} />
             <Foot view={view} />
