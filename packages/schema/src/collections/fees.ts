@@ -3,9 +3,17 @@
 // illustrative guide timeline runs on are collected (method F-67, scenario S47); the workbench's
 // averages, bands and minimums arrive with R4.
 import { z } from "zod";
-import { feeBase, instrumentClass, isoDate, valueObject } from "../value.ts";
+import { feeBase, instrumentClass, isoDate, source, valueObject } from "../value.ts";
 
 const ruleIds = z.array(z.string().min(1));
+
+/**
+ * Issue 19 (2026-10-31): where in the document a fee value stands. `page` is the file's own page of a
+ * PDF (the library's count, not the number printed on the sheet); `quote` is the document's own words,
+ * at most 240 characters. A web page has only `quote`. Both optional: no page means not yet confirmed.
+ */
+const place = { page: z.number().int().positive().optional(), quote: z.string().min(1).max(240).optional() };
+const feeValue = valueObject.safeExtend({ source: source.extend(place) });
 
 export const feeLine = z.strictObject({
   id: z.string().regex(/^[a-z0-9-]+$/),
@@ -16,12 +24,12 @@ export const feeLine = z.strictObject({
   excludes_rule_ids: ruleIds.optional(),
   /** D4: a list price, a regulator average, a TASE average. An `entered` line never lives under data/. */
   level: z.enum(["list", "regulator_average", "tase_average"]),
-  rate: valueObject,
-  min: valueObject.nullable(),
-  max: valueObject.nullable(),
+  rate: feeValue,
+  min: feeValue.nullable(),
+  max: feeValue.nullable(),
   /** S2 (2026-10-25): a cap as a share of the trade value (unit `pct_of_trade`): commission = min(cap x trade, max(min, rate x base)). */
-  cap: valueObject.optional(),
-  spread: valueObject.nullable().optional(),
+  cap: feeValue.optional(),
+  spread: feeValue.nullable().optional(),
   period: z.enum(["month", "quarter", "year"]).nullable(),
   channel: z.string().nullable(),
   band: z.string().nullable(),
@@ -29,8 +37,8 @@ export const feeLine = z.strictObject({
   /** The CMA fund number, when the line is for one track. */
   track_id: z.number().int().positive().optional(),
   /** A-19: how long a discount lasts, and the list fee it reverts to. */
-  discount_months: valueObject.optional(),
-  reverts_to: valueObject.optional(),
+  discount_months: feeValue.optional(),
+  reverts_to: feeValue.optional(),
   names: z.strictObject({ tariff: z.array(z.string()) }),
 });
 
@@ -38,7 +46,7 @@ export const feeLine = z.strictObject({
 export const availabilityEntry = z.strictObject({
   applies_to: z.array(instrumentClass).min(1),
   available: z.boolean(),
-  source: z.strictObject({ url: z.string().min(1), title: z.string().min(1), checked: isoDate }),
+  source: z.strictObject({ url: z.string().min(1), title: z.string().min(1), checked: isoDate, ...place }),
   note: z.string().optional(),
 });
 
@@ -68,10 +76,10 @@ export const feesSnapshot = z.strictObject({
       line_id: z.string().min(1),
       level: z.enum(["regulator_average", "tase_average"]),
       band: z.string().nullable(),
-      rate: valueObject,
+      rate: feeValue,
     }),
   ),
-  minimums: z.strictObject({ account_opening: valueObject.nullable() }),
+  minimums: z.strictObject({ account_opening: feeValue.nullable() }),
   notice_rule_ids: ruleIds,
   availability: z.array(availabilityEntry).optional(),
 })
