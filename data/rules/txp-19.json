@@ -74,7 +74,8 @@
       "publisher_he": "רשות המסים",
       "kind": "official_pdf",
       "strength": "primary",
-      "locator": "p.13 row",
+      "locator": "p.13",
+      "locator_he": "עמוד 13",
       "page": 13,
       "quote": "תקרת הפטור למענק הון עקב פרישה 9(7א)(א) 13,750 לכל שנת עבודה",
       "checked": "2026-10-25"

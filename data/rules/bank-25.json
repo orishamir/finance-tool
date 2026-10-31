@@ -22,6 +22,7 @@
       "kind": "regulator_page",
       "strength": "primary",
       "locator": "p.2, s.5(ב); p.3, Annex A",
+      "locator_he": "עמוד 2, סעיף 5(ב); עמוד 3, נספח א",
       "page": 2,
       "quote": "סוג ריבית",
       "checked": "2026-10-25"

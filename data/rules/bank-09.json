@@ -37,6 +37,7 @@
       "kind": "regulator_page",
       "strength": "primary",
       "locator": "pp.1, 3, s.4(א), Annex A",
+      "locator_he": "עמודים 1, 3, סעיף 4(א), נספח א",
       "page": 1,
       "checked": "2026-10-25"
     }

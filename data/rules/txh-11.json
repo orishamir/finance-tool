@@ -152,6 +152,7 @@
       "kind": "official_pdf",
       "strength": "primary",
       "locator": "p.5, item 3",
+      "locator_he": "עמוד 5, פרט 3",
       "page": 5,
       "quote": "בגובה 25% מהרווחים הריאליים",
       "checked": "2026-10-25"

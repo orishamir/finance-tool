@@ -110,6 +110,7 @@
       "kind": "official_pdf",
       "strength": "primary",
       "locator": "p.43, item 1",
+      "locator_he": "עמוד 43, פרט 1",
       "page": 43,
       "checked": "2026-10-25"
     },

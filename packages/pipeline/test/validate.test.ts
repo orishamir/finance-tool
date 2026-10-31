@@ -406,7 +406,7 @@ describe("open questions (data-schema 3.15, 2026-10-26)", () => {
 
   it("reads every numbered item under the file's prefix, with the closures the audit struck", () => {
     // the audit's 493, SW OQ17, opened by the scope settling on 2026-10-26, and CAT OQ24 to OQ26 (empty deposit fees, 2026-10-27)
-    expect(items.length).toBe(502);
+    expect(items.length).toBe(503);
     expect(items.find((q) => q.id === "TXP OQ3")).toMatchObject({ file: "tax-pension-gemel-lekitzba.md", closedOn: "2026-10-26" });
     // a closure of the open-question hunt (main, 2026-10-26), struck with its bold title inside the strike
     expect(items.find((q) => q.id === "BRK OQ11")).toMatchObject({ file: "brokerage-account.md", closedOn: "2026-10-26" });

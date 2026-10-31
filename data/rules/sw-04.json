@@ -75,6 +75,7 @@
       "kind": "circular",
       "strength": "primary",
       "locator": "p.19, Annex D",
+      "locator_he": "עמוד 19, נספח ד",
       "page": 19,
       "checked": "2026-10-25"
     }
