@@ -1,6 +1,10 @@
 // The gap sentence under the cost bars: its rounded parts add up to the rounded gap (F-91).
 import { describe, expect, it } from "vitest";
-import { wholeParts } from "./pair";
+import { buildInvest, knownIndices } from "../../lib/invest";
+import type { WorkbenchInputs } from "../../lib/providers";
+import { buildWorkbenchBundle } from "../../lib/providers.server";
+import { entered } from "../../lib/value";
+import { allFunds, pickOfHeadline, repick, wholeParts } from "./pair";
 
 describe("wholeParts", () => {
   it("rounds each part so they add up to the rounded sum", () => {
@@ -29,5 +33,30 @@ describe("wholeParts with a set total", () => {
     expect(wholeParts(xs, -42).reduce((a, x) => a + x, 0)).toBe(-42);
     expect(wholeParts(xs, -44).reduce((a, x) => a + x, 0)).toBe(-44);
     wholeParts(xs, -44).forEach((x, i) => expect(Math.abs(x - xs[i]!)).toBeLessThan(2));
+  });
+});
+
+describe("a click on a house moves to a way it has (founder, 2026-10-31)", () => {
+  const bundle = buildWorkbenchBundle();
+  const t = bundle.today;
+  const plan: WorkbenchInputs = { amountNow: 6000, monthly: 400, years: 20, grossReturn: 0.07, inflation: 0.02, age: null, income: null, fromGoal: false, returnFromParameter: false,
+    values: { amount: entered(6000, "nis", t), monthly: entered(400, "nis_per_month", t), years: entered(20, "years", t), returnV: entered(7, "pct_per_year", t), inflation: entered(2, "pct_per_year", t) } };
+  const pricedAt = (f: ReturnType<typeof allFunds>[number] | undefined, house: string) => { const at = f?.byHouse[house]; return !!at && "valueN" in at; };
+
+  it("on every index, from every fund, a house with any priced fund lands on a priced one", () => {
+    for (const index of knownIndices(bundle)) {
+      const view = buildInvest({ bundle, index, plan });
+      const funds = allFunds(view);
+      for (const from of funds) for (const p of view.providers) {
+        if (!funds.some((f) => pricedAt(f, p.id))) continue;
+        const to = repick(view, { house: view.providers[0]!.id, fund: from.rec.id }, { house: p.id });
+        expect(pricedAt(funds.find((f) => f.rec.id === to.fund), p.id), `${index.id}, ${p.id}, from ${from.rec.id}`).toBe(true);
+      }
+    }
+  });
+
+  it("Interactive Brokers on the S&P 500 moves from the Israeli fund the page opens on to iShares", () => {
+    const view = buildInvest({ bundle, index: knownIndices(bundle).find((i) => i.id === "index-sp500")!, plan });
+    expect(repick(view, pickOfHeadline(view)!, { house: "interactive-brokers" }).fund).toBe("ie00b5bmr087");
   });
 });
