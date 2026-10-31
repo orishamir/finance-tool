@@ -10,6 +10,7 @@
       "country": "Cyprus"
     },
     "tase_member": false,
+    "israeli_tax_service": true,
     "protection_rule_ids": [
       "BRK-06",
       "BRK-14",

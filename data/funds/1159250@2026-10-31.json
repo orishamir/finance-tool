@@ -1,0 +1,85 @@
+{
+  "id": "1159250",
+  "names": {
+    "en": [
+      "iShares Core S&P 500 UCITS ETF",
+      "iShares Core S&P 500 UCITS ETF USD (Accumulating)"
+    ],
+    "he": [],
+    "tase": [
+      "iSFF702"
+    ]
+  },
+  "identifiers": {
+    "isin": "IE00B5BMR087",
+    "tase_number": "1159250",
+    "cusip": null,
+    "ticker": {
+      "LSE": "CSPX",
+      "LSE_GBP": "CSP1",
+      "Euronext Amsterdam": "CSPX",
+      "Bloomberg": "CSPX LN",
+      "SEDOL": "B50YWZ5",
+      "TASE": "iSFF702"
+    }
+  },
+  "manager": "BlackRock Asset Management Ireland Limited (fund: iShares VII plc)",
+  "domicile": "IE",
+  "legal_form": "UCITS ETF, sub-fund (share class USD Accumulating) of iShares VII plc, Ireland; physical replication ('Product Structure: Physical', 'Methodology: Physical Replication'); 'UK Reporting Status: Yes'; fund launch date 18-May-2010, share class launch date 19-May-2010; benchmark 'S&P 500 Index'. Its Tel Aviv line: number 1159250, ticker iSFF702, in shekels, 0.07% (BlackRock's Israel brochure (library 5fae6c1d0933c1bc, p. 1, 2026-10-01)). The same share class bought abroad is record ie00b5bmr087.",
+  "exposure_id": "index-sp500",
+  "currency": "USD",
+  "trading_currency_on_tase": "NIS",
+  "distribution_policy": "accumulating",
+  "tax_status": {
+    "il_fund_tax_track": null,
+    "tase_foreign_fund_90pct_test": null
+  },
+  "fees": {
+    "fixed_management": {
+      "value": 0.07,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://www.ishares.com/uk/individual/en/literature/fact-sheet/cspx-ishares-core-s-p-500-ucits-etf-fund-fact-sheet-en-gb.pdf",
+        "title": "iShares Core S&P 500 UCITS ETF, USD (Accumulating), CSPX, factsheet 'September 2026' (performance and net assets as at 30-Sep-2026, all other data as at 05-Oct-2026), iShares VII plc / BlackRock, p. 1 'Product information': 'Total Expense Ratio : 0.07%'",
+        "publisher": "BlackRock (iShares VII plc)",
+        "strength": "institution"
+      },
+      "checked": "2026-10-24",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-28",
+        "ETF-27",
+        "TXF-16"
+      ],
+      "state": "sourced",
+      "notes": "Total expense ratio (TER) of the share class as the factsheet prints it; a UCITS TER is the all-in ongoing charge, so the Israeli fee layers (variable fee, trustee fee) do not exist here (ETF-27: 'אין דמי ניהול משתנים'). The factsheet is marketing material dated September 2026, data as at 05-Oct-2026; the KIID/prospectus was not opened."
+    },
+    "trustee": null,
+    "variable_management": null,
+    "tracking_difference_12m": null,
+    "median_spread": null,
+    "fund_level_withholding_drag": null
+  },
+  "dimensions": {
+    "foreign-withholding-domicile": "covered:TXF-16",
+    "distribution-policy": "covered:ETF-28",
+    "currency": "covered:ETF-28",
+    "fee-management-balance": "covered:ETF-28",
+    "fee-trade": "covered:ETF-29"
+  },
+  "prospectus": {
+    "url": "https://www.ishares.com/uk/individual/en/products/253743/ishares-sp-500-b-ucits-etf-acc-fund",
+    "date": null
+  },
+  "replication": {
+    "method": "physical",
+    "source": {
+      "url": "https://www.ishares.com/uk/individual/en/literature/fact-sheet/cspx-ishares-core-s-p-500-ucits-etf-fund-fact-sheet-en-gb.pdf",
+      "checked": "2026-10-24"
+    }
+  },
+  "snapshot": "2026-10-31"
+}

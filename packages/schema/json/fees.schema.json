@@ -59,6 +59,9 @@
         "tase_member": {
           "type": "boolean"
         },
+        "israeli_tax_service": {
+          "type": "boolean"
+        },
         "protection_rule_ids": {
           "type": "array",
           "items": {

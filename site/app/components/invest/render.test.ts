@@ -5,6 +5,7 @@ import { MemoryRouter } from "react-router";
 import { describe, expect, it } from "vitest";
 import { buildWorkbenchBundle } from "../../lib/providers.server";
 import { buildInvest, indexById, refOfCustom } from "../../lib/invest";
+import { brokerLabels, fundLabels, optionLabels } from "../../lib/labels";
 import { entered } from "../../lib/value";
 import type { WorkbenchInputs } from "../../lib/providers";
 import { HousesSection } from "./houses";
@@ -112,6 +113,27 @@ describe("every house keeps a row in the account list (founder, 2026-10-31)", ()
   });
 });
 
+describe("who reports the tax is the route's, not the fund's (issue 126, TXF-29)", () => {
+  const view = buildInvest({ bundle, index: indexById(bundle, "index-sp500")!, plan });
+  const ids = (id: string) => brokerLabels(view.providers.find((p) => p.id === id)!, false).map((l) => l.id);
+  it("a fund bought abroad carries no reporting label; a bank none, Interactive Brokers reports, Interactive Israel offers its service", () => {
+    const abroad = view.options.find((o) => o.id === "abroad")!;
+    expect(optionLabels(abroad.id).map((l) => l.id)).not.toContain("ask-self-report");
+    for (const f of abroad.funds) expect(fundLabels(f.rec, view.index, f.option).map((l) => l.id)).not.toContain("ask-self-report");
+    expect(ids("leumi")).toEqual([]);
+    expect(ids("interactive-brokers")).toContain("ask-self-report");
+    expect(ids("interactive-israel")).toContain("ask-tax-service");
+    expect(ids("interactive-israel")).not.toContain("ask-self-report");
+  });
+  it("the same fund on Tel Aviv and abroad is a row each, told apart by where it is listed", () => {
+    const funds = allFunds(view);
+    expect(funds.find((f) => f.rec.id === "1159250")!.option).toBe("tase-foreign");
+    expect(funds.find((f) => f.rec.id === "ie00b5bmr087")!.option).toBe("abroad");
+    expect(funds.find((f) => f.rec.id === "1159250")!.number).toBe("1159250");
+    expect(funds.find((f) => f.rec.id === "ie00b5bmr087")!.number).toBe("IE00B5BMR087");
+  });
+});
+
 describe("no price on what no document says can be done (2026-10-31)", () => {
   const view = buildInvest({ bundle, index: indexById(bundle, "index-sp500")!, plan });
   const at = (option: string, house: string) => view.options.find((o) => o.id === option)!.funds.map((f) => f.byHouse[house]!);
@@ -122,7 +144,10 @@ describe("no price on what no document says can be done (2026-10-31)", () => {
     }
   });
   it("a house whose document names funds abroad is priced there, on the row that names them", () => {
-    for (const house of ["hapoalim", "yahav"]) for (const x of at("abroad", house)) expect("valueN" in x).toBe(true);
+    // a distributing fund is priced nowhere until its yield is known, so it has no row at any house (issue 30)
+    const funds = view.options.find((o) => o.id === "abroad")!.funds.filter((f) => f.rec.distribution_policy === "accumulating");
+    expect(funds.length).toBeGreaterThan(0);
+    for (const house of ["hapoalim", "yahav"]) for (const f of funds) expect("valueN" in f.byHouse[house]!).toBe(true);
   });
   it("One Zero prices tracking funds, not ETFs, and no fund traded outside the US", () => {
     for (const x of at("il-tracking", "one-zero")) expect("valueN" in x).toBe(true);

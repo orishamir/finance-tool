@@ -283,6 +283,7 @@ A value's `source` here may also carry its exact place (issue 19, 2026-10-31), b
 {
   "id": "leumi",
   "provider": { "name_he": "בנק לאומי", "class": "bank", "regulator": "BoI", "tase_member": true, "protection_rule_ids": ["BRK-10", "BRK-13"] },
+  // "israeli_tax_service": true on a foreign broker whose own terms offer a service that withholds Israeli tax (BRK-36)
   "tariff": { "url": "...", "title": "תעריפון מלא, חלק 4", "published": "2026-10-01", "format": "pdf" },
   "snapshot": "2026-10-22",
   "missing": false,

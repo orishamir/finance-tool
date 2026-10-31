@@ -579,8 +579,8 @@ const mayaHrefOf = (f: FundWay) => {
   return (f.option === "il-etf" || f.option === "il-tracking") && f.rec.identifiers.tase_number ? mayaFundHref(f.rec.identifiers.tase_number) : null;
 };
 
-/** The fund's labels: how it trades (the type, from its option), then what the record says about it. */
-const labelsOf = (view: InvestView, f: FundWay): Label[] => [optionLabels(f.option)[1] ?? optionLabels(f.option)[0]!, ...fundLabels(f.rec, view.index, f.option)];
+/** The fund's labels: how it trades (the type, from its option; a foreign fund, where it is listed, since the same fund can have a row for each), then what the record says about it. */
+const labelsOf = (view: InvestView, f: FundWay): Label[] => [f.option === "tase-foreign" ? optionLabels(f.option)[0]! : optionLabels(f.option)[1] ?? optionLabels(f.option)[0]!, ...fundLabels(f.rec, view.index, f.option)];
 
 /** F-92 (a) in a row: the gap with its sign, and the years it rests on. */
 function GapCell({ rec, today }: { rec: FundWay["rec"]; today: string }) {
