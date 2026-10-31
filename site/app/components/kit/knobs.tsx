@@ -16,8 +16,8 @@ export function KnobStrip({ knobs, lead }: { knobs: Knob[]; lead?: ReactNode }) 
       {lead && <p className="text-sm text-muted-foreground">{lead}</p>}
       <div className={cx("grid gap-x-6 gap-y-1 md:grid-cols-2", knobs.length === 4 && "xl:grid-cols-4")}>
         {knobs.map(({ id, ...field }) => (
-          // the state line only once a number is the person's own: an empty line under each slider spread the strip out
-          <RangeField key={id} {...field} footer={field.isEntered ? undefined : false} />
+          // no line under a slider: the reset sits beside its label, so a number becoming the person's own moves nothing (2026-10-31)
+          <RangeField key={id} {...field} footer={false} />
         ))}
       </div>
     </div>

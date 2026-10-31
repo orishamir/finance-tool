@@ -215,8 +215,6 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
             {pick ? (
               <>
                 <PairResult view={view} bundle={wb} plan={livePlan} settled={plan} pick={pick} onPick={onPick} />
-                {/* hedged or not, across the dollar (F-94, founder 2026-10-29): only on a foreign index with funds of both kinds */}
-                {hasKinds(view) && wb.dollarRange && <DollarSection view={view} bundle={wb} plan={plan} pick={pick} />}
                 <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_2.5rem_minmax(0,32.5rem)] xl:grid-cols-[minmax(0,5fr)_2.5rem_minmax(0,7fr)] items-start">
                   <AccountColumn view={view} bundle={wb} years={plan.years} pick={pick} onPick={onPick} />
                   <span aria-hidden="true" className="hidden lg:grid place-items-center size-9 mt-10 rounded-full border border-input bg-popover text-xl text-muted-foreground justify-self-center">
@@ -236,6 +234,8 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
             <GroupPrices snapshots={wb.snapshots} nameOf={(id) => view.providers.find((p) => p.id === id)?.short ?? wb.snapshots.find((s) => s.id === id)?.provider.name_he ?? id} />
             {/* what moves the result most: every number changed by the same share, at the bottom (founder, 2026-10-28) */}
             <PlanChanges plan={plan} share={data.form.share} bundle={wb} view={view} pick={pick} />
+            {/* hedged or not, across the dollar (F-94): only on a foreign index with funds of both kinds; at the bottom (founder, 2026-10-31) */}
+            {pick && hasKinds(view) && wb.dollarRange && <DollarSection view={view} bundle={wb} plan={plan} pick={pick} />}
             <Foot view={view} />
             <RulesLine ids={rules} />
           </>

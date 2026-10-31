@@ -105,7 +105,7 @@ export function PlanBlock({ knobs, onOpen, fx, today, example, dollar }: { knobs
   return (
     <section className="flex flex-col gap-2" aria-label={c.plan.heading}>
       {knobs}
-      <div className="flex flex-wrap items-center gap-x-3 gap-y-1 max-md:min-h-[6.5rem]">
+      <div className="flex flex-wrap items-center gap-x-3 gap-y-1 max-md:min-h-[7rem]">
         <Button variant="secondary" className="!h-9 px-3 text-sm" onClick={onOpen}>
           {c.plan.knobs.others}
         </Button>

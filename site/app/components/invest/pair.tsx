@@ -14,7 +14,7 @@ import { computed, ownBy, type SiteValue } from "../../lib/value";
 import { fmt } from "../../lib/format";
 import { IconLock } from "../icons";
 import { Num } from "../provenance";
-import { Button, Card, ChartLegend, CostStack, LabelChip, LabelFilter, LabelRow, PickList, ProductIdLink, Sentence, Swatch, Tag, cx, type CostPart, type PickRow } from "../kit";
+import { Button, Card, ChartLegend, CostStack, LabelChip, LabelFilter, LabelRow, PickList, ProductIdLink, Sentence, Swatch, Tag, cx, useHeldHeight, type CostPart, type PickRow } from "../kit";
 import { optionClass, OptionTag, reasonText } from "./parts";
 import { ProviderLink, providerName } from "./sections";
 import { Fees } from "./funds";
@@ -207,7 +207,8 @@ function KindCards({ view, bundle, plan, pick, onPick }: { view: InvestView; bun
           {isPick && <span>· {c.kinds.yours}</span>}
           {isBest && <span className="text-primary font-medium">· {c.kinds.cheapest}</span>}
         </span>
-        <span className="text-sm font-semibold leading-snug">
+        {/* three lines on a phone: the longest fund and house, so a pick never changes the card's height (2026-10-31) */}
+        <span className="text-sm font-semibold leading-snug max-md:min-h-[3lh]">
           <bdi>{fundName(p)}</bdi> · {house(p)}
         </span>
         {k === "unhedged" ? (
@@ -244,7 +245,7 @@ function KindCards({ view, bundle, plan, pick, onPick }: { view: InvestView; bun
             </span>
           </>
         )}
-        <span className="flex flex-wrap items-center gap-x-3 text-sm min-h-target">
+        <span className="flex flex-wrap items-center gap-x-3 text-sm min-h-target max-md:min-h-[4.25rem]">
           {!isPick ? (
             <Button variant="quiet" onClick={() => onPick(p)}>
               {c.pair.pickCheapest}
@@ -422,6 +423,7 @@ function GroupLine({ id, snapshots }: { id: string; snapshots: WorkbenchBundle["
 }
 
 export function AccountColumn({ view, bundle, years, pick, onPick }: { view: InvestView; bundle: WorkbenchBundle; years: number; pick: Pick; onPick: (p: Pick) => void }) {
+  const held = useHeldHeight<HTMLDivElement>(view.index.id);
   const fund = allFunds(view).find((f) => f.rec.id === pick.fund);
   const house = providerName(view, pick.house);
   if (!fund || !house) return null;
@@ -480,7 +482,10 @@ export function AccountColumn({ view, bundle, years, pick, onPick }: { view: Inv
       key: r.p.id,
       selected: r.p.id === pick.house,
       muted: true,
-      onSelect: () => onPick(repick(view, pick, { house: r.p.id })),
+      // a house with no way on this index has nothing to show as a pair: its row stays, with the reason
+      onSelect: () => {
+        if (other) onPick(repick(view, pick, { house: r.p.id }));
+      },
       cells: (
         <>
           <span className="text-sm tabular-nums text-center">—</span>
@@ -513,7 +518,7 @@ export function AccountColumn({ view, bundle, years, pick, onPick }: { view: Inv
     };
   });
   return (
-    <Card pad="none" className="flex flex-col overflow-hidden">
+    <Card ref={held} pad="none" className="flex flex-col overflow-hidden">
       <div className="bg-popover border-b border-border px-5 py-4 flex flex-col gap-1">
         <span className="text-sm text-muted-foreground">{c.pair.accountSlot}</span>
         {/* two lines on a phone: the longest legal name's, so the card keeps its height when the cheapest house changes (2026-10-31) */}
@@ -605,6 +610,7 @@ function GapCell({ rec, today }: { rec: FundWay["rec"]; today: string }) {
 }
 
 export function FundColumn({ view, bundle, plan, today, pick, onPick, filter, onFilter }: { view: InvestView; bundle: WorkbenchBundle; plan: WorkbenchInputs; today: string; pick: Pick; onPick: (p: Pick) => void; filter: string | null; onFilter: (id: string | null) => void }) {
+  const held = useHeldHeight<HTMLDivElement>(view.index.id);
   const funds = allFunds(view);
   const kinds = hasKinds(view) && !!bundle.dollarRange;
   const range = bundle.dollarRange;
@@ -643,6 +649,7 @@ export function FundColumn({ view, bundle, plan, today, pick, onPick, filter, on
   const names = view.index.exposure?.other_currencies === true ? c.kinds.nameMany(c.currencies[cur] ?? cur) : c.kinds.name;
   const kindCount = { unhedged: shown.filter((r) => kindOf(r.f.rec) === "unhedged").length, hedged: shown.filter((r) => kindOf(r.f.rec) === "hedged").length };
   const diff = (n: number, name: string, value: SiteValue, sel: SiteValue) => nis(n, "F-65", c.pair.colDiff, today, { [c.pair.input(name, c.pair.colLeft)]: value, [c.pair.input(`${c.pair.chosen}, ${fund.name}`, c.pair.colLeft)]: sel });
+  const houseWhys = [...new Set(shown.flatMap((r) => (r.at && !priced(r.at) && "reason" in r.at ? [reasonText(r.at.reason, optionClass[r.f.option])] : [])))];
   const pickRows: PickRow[] = shown.map((r, i) => {
     const at = r.at;
     const isSel = r.f.rec.id === pick.fund;
@@ -669,18 +676,18 @@ export function FundColumn({ view, bundle, plan, today, pick, onPick, filter, on
         <Num value={diff(at.valueN - selAt.valueN, r.f.name, at.value, selAt.value)} display={plus(diff(at.valueN - selAt.valueN, r.f.name, at.value, selAt.value))} />
       </span>
     ) : (
-      <span className="text-muted-foreground" aria-hidden="true">
-        —
-      </span>
+      <span className="text-xs text-muted-foreground">{c.pair.noPriceHere}</span>
     );
-    // why a fund has no price here: a line of the row at its full width, not squeezed into the difference column (founder, 2026-10-28)
-    const why = priced(at) ? null : at && "reason" in at ? reasonText(at.reason, optionClass[r.f.option]) : r.f.reason ? reasonText(r.f.reason, optionClass[r.f.option]) : c.funds.cannot;
+    // a fund priced nowhere says why on its row, the same at every house; the reasons that depend on the house are under the list, once each (2026-10-31)
+    const why = !r.at && r.f.reason ? reasonText(r.f.reason, optionClass[r.f.option]) : null;
     return {
       key: r.f.rec.id,
       ...(heading ? { heading } : {}),
       selected: isSel,
       muted: !priced(at),
-      onSelect: () => onPick(repick(view, pick, { fund: r.f.rec.id })),
+      onSelect: () => {
+        if (!why) onPick(repick(view, pick, { fund: r.f.rec.id }));
+      },
       cells: (
         <>
           <span className="flex flex-col gap-1.5 min-w-0">
@@ -714,7 +721,7 @@ export function FundColumn({ view, bundle, plan, today, pick, onPick, filter, on
     };
   });
   return (
-    <Card pad="none" className="flex flex-col overflow-hidden">
+    <Card ref={held} pad="none" className="flex flex-col overflow-hidden">
       <div className="bg-popover border-b border-border px-5 py-4 flex flex-col gap-1.5">
         <span className="text-sm text-muted-foreground">{c.pair.fundSlot}</span>
         <span className="flex items-baseline gap-2 flex-wrap">
@@ -756,6 +763,14 @@ export function FundColumn({ view, bundle, plan, today, pick, onPick, filter, on
         rows={pickRows}
       />
       <div className="px-5 py-3 flex flex-col gap-1.5 text-sm text-muted-foreground">
+        {houseWhys.length > 0 && (
+          <div className="flex flex-col gap-0.5">
+            <span className="font-medium text-foreground">{c.pair.noPriceWhy(house.short)}</span>
+            {houseWhys.map((w) => (
+              <span key={w}>{w}</span>
+            ))}
+          </div>
+        )}
         {active && <span>{c.pair.shown(shown.length, rows.length)}</span>}
         {kinds && <span>{c.funds.kindsNote}</span>}
         <span>{c.funds.gapNote}</span>

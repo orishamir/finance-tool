@@ -23,7 +23,6 @@
   "snapshot": "2026-10-23",
   "missing": false,
   "missing_reason": null,
-  "missing_reason_he": "על קרן הנסחרת באירופה: המינימום בתעריפון נקוב ביורו, 15 יורו לעסקה, והאתר עוד לא מחשב מינימום ביורו.",
   "lines": [
     {
       "id": "psagot-buy-sell-tase-shares",
@@ -654,7 +653,9 @@
       "applies_to": [
         "foreign_securities"
       ],
-      "available": true,
+      "available": "unknown",
+      "reason_he": "בתעריפון המחיר על ניירות ערך באירופה לא סופי: ״עמלת ני״ע באסיה ובאירופה עשויה להשתנות בהתאם לסוג המניה ואופי הפעילות״. גם ההמרה לדולר, ״1.5 אגורות עבור כל דולר/שקל״, אפשר לקרוא ביותר מדרך אחת, בין 0.48% ל־1.5%, ולכן האתר לא מחשב לה מחיר.",
+      "note": "2026-10-31, an independent reader of the tariff (issue 144): the euro minimum is computed since that day, but the document itself leaves the European price open and the conversion wording has more than one reading (per dollar about 0.48% at 3.12, per shekel 1.5%). A doubt is a grey row (D42). The lines stay recorded as printed.",
       "source": {
         "url": "https://www.psagot.co.il/%d7%aa%d7%a2%d7%a8%d7%99%d7%a4%d7%95%d7%9f-%d7%91%d7%95%d7%a8%d7%a1%d7%94-%d7%a4%d7%a1%d7%92%d7%95%d7%aa-%d7%98%d7%a8%d7%99%d7%99%d7%93-2/",
         "title": "תעריפון עמלות פסגות טרייד - עמוד HTML באתר פסגות (ללא תאריך); הקישור 'להורדת התעריפון עמלות המלא' מוביל לקובץ PDF (7 עמ'",
