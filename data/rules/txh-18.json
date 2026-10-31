@@ -34,6 +34,7 @@
       "kind": "official_pdf",
       "strength": "primary",
       "locator": "p.5, items 2-3",
+      "locator_he": "עמוד 5, פרטים 2-3",
       "page": 5,
       "checked": "2026-10-25"
     }

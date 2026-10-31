@@ -88,6 +88,7 @@
       "kind": "official_pdf",
       "strength": "primary",
       "locator": "p.40, item 4",
+      "locator_he": "עמוד 40, פרט 4",
       "page": 40,
       "quote": "בעל מניות מהותי",
       "checked": "2026-10-25"

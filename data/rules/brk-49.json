@@ -35,8 +35,8 @@
       "publisher_he": "אי.בי.אי",
       "kind": "institution_doc",
       "strength": "institution",
-      "locator": "p.2",
-      "locator_he": "עמוד 2",
+      "locator": "p.2, part 3 item 6",
+      "locator_he": "עמוד 2, חלק 3 פרט 6",
       "page": 2,
       "checked": "2026-10-25"
     },
@@ -48,8 +48,8 @@
       "publisher_he": "אקסלנס",
       "kind": "institution_doc",
       "strength": "institution",
-      "locator": "p.1",
-      "locator_he": "עמוד 1",
+      "locator": "p.1, part 1 item 5",
+      "locator_he": "עמוד 1, חלק 1 פרט 5",
       "page": 1,
       "checked": "2026-10-25"
     },
