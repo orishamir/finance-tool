@@ -155,6 +155,26 @@
       ],
       "state": "sourced",
       "notes": "Not collected: the report prints no withholding figure and no computation is made here. The fund takes its exposure mainly through derivatives (see REPLICATION in legal_form), so any dividend-withholding drag sits inside the instrument pricing and is not published as a rate."
+    },
+    "load": {
+      "value": 0,
+      "unit": "pct_of_trade",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1726001-1727000/P1726329-00.pdf#page=1",
+        "title": "דוח שנתי 'קסם NASDAQ 100 (4D) KTF' (מספר בורסה 5128905), תאריך הדוח 31 בדצמבר 2025, קסם קרנות נאמנות בע\"מ (Maya filing 1726329, PDF), עמ' 1: 'שיעור ההוספה המשולמת בעת רכישת היחידות 0%'",
+        "publisher": "קסם קרנות נאמנות בע\"מ",
+        "strength": "institution"
+      },
+      "checked": "2026-10-31",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "MF-21"
+      ],
+      "state": "sourced",
+      "notes": "Words as printed on page 1 of the report. A zero is the rate this report states; the maximum sits in the fund agreement (MF-21), which was not read for this record, and the report says a manager raises its pay, the load included, only at the start of a calendar year. Any commission a distributor charges on buying or selling is a tariff line, not this load."
     }
   },
   "dimensions": {

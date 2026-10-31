@@ -166,6 +166,19 @@ describe("new collections", () => {
     ).toEqual([]);
   });
 
+  it("fails a fund load above zero, because the page does not price one; a zero and a load left out pass", () => {
+    const withLoad = (value: number | null) => ({
+      ...fund,
+      fees: { ...fund.fees, load: { ...vo, value, unit: "pct_of_trade", rule_ids: ["MF-21"], ...(value === null ? { notes: "not read" } : {}) } },
+    });
+    expect(run({ "funds/a@2026-10-31.json": withLoad(0) })).toEqual([]);
+    expect(run({ "funds/a@2026-10-31.json": withLoad(null) })).toEqual([]);
+    expect(run({ "funds/a@2026-10-31.json": fund })).toEqual([]);
+    const problems = run({ "funds/a@2026-10-31.json": withLoad(0.5) });
+    expect(problems).toHaveLength(1);
+    expect(problems[0]!.message).toMatch(/load on purchase of 0\.5%.*does not yet price it/);
+  });
+
   it("rejects an unknown exposure kind and an unknown dimension id", () => {
     expect(run({ "instruments/exposures/a.json": { ...exposure, kind: "stocks" } })[0]?.message).toMatch(/kind/);
     expect(run({ "dimensions/x.json": { ...dimension, id: "nope" } })[0]?.message).toMatch(/id/);
