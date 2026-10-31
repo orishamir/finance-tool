@@ -61,8 +61,8 @@ export interface WorkbenchInput {
   /** Set when the fund is quoted in a foreign currency: the FX line then applies (F-13). */
   currency?: { code: string; startRate: number };
   /**
-   * F-63 (2026-10-25, index page): shekels per one unit of a currency, by ISO code ("USD", "GBP"), for the tariff lines set in
-   * dollars or pounds (per share, minimum, maximum). The site fills it from the ECB series with `crossRate` (F-84). A provider
+   * F-63 (2026-10-25, index page): shekels per one unit of a currency, by ISO code ("USD", "EUR", "GBP"), for the tariff lines set in
+   * dollars, euros or pounds (per share, minimum, maximum). The site fills it from the ECB series with `crossRate` (F-84). A provider
    * whose line needs a currency this does not hold is "not comparable" (`needs-fx-rate`).
    */
   fx?: Record<string, number>;
@@ -102,7 +102,7 @@ export type NotComparableReason =
   | { code: "line-without-value"; detail: string }
   /** 2026-10-25: a per-share line and the fund record has no `share_price`. */
   | { code: "needs-share-price"; detail: string }
-  /** 2026-10-25: a line in dollars or pounds and `fx` holds no rate for the currency. */
+  /** 2026-10-25: a line in a foreign currency and `fx` holds no rate for it. */
   | { code: "needs-fx-rate"; detail: string }
   /** 2026-10-25: the snapshot is ambiguous or a unit is not one the tariff reads; `detail` is the engine's message. */
   | { code: "record-error"; detail: string };
@@ -209,6 +209,8 @@ function nis(vo: ValueObject, what: string): number {
 }
 
 const USD_UNITS = new Set(["usd", "usd_per_trade"]);
+/** The currency a fixed amount of a tariff line is printed in, by its unit (F-12): one table, so a bound in any of them is converted the same way (F-84). */
+const CURRENCY_OF_UNIT: Partial<Record<ValueObject["unit"], string>> = { usd: "USD", usd_per_trade: "USD", eur: "EUR", gbp_per_trade: "GBP" };
 
 /** Shekels per unit of a currency from the run's `fx` input; a provider that needs a rate the run lacks is "not comparable" (2026-10-25). */
 function rateOf(fx: WorkbenchInput["fx"], code: string, what: string): number {
@@ -329,11 +331,11 @@ export function buildTariff(input: Omit<WorkbenchInput, "fund"> & { fund?: Workb
           if (!input.fund?.sharePrice) throw new Unusable("needs-share-price", `${l.line.id} is a fee per share and the fund record has no share_price`);
           c.perShare = l.rate.value * rateOf(input.fx, "USD", `${l.line.id} rate`);
         } else c.rate = pct(l.rate, "pct_of_trade", `${l.line.id} rate`);
-        // E2: minimums and maximums in dollars or pounds are converted at the run's rate.
+        // E2: minimums and maximums in a foreign currency are converted at the run's rate.
         const bound = (vo: ValueObject, what: string): number => {
           if (NIS_UNITS.has(vo.unit)) return nis(vo, what);
-          const code = USD_UNITS.has(vo.unit) ? "USD" : vo.unit === "gbp_per_trade" ? "GBP" : null;
-          if (!code) throw new RecordInputError(`${what}: unit is ${vo.unit}, expected shekels, dollars or pounds`);
+          const code = CURRENCY_OF_UNIT[vo.unit];
+          if (!code) throw new RecordInputError(`${what}: unit is ${vo.unit}, expected shekels, dollars, euros or pounds`);
           if (typeof vo.value !== "number") throw new Unusable("line-without-value", `${what} has no value`);
           return vo.value * rateOf(input.fx, code, what);
         };
