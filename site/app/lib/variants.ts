@@ -9,7 +9,7 @@ import {
   memberKindOf,
   outcomeOrder,
   rankCandidates,
-  RecordInputError,
+  RecordInputError, Unusable,
   tieThreshold,
   type Candidate,
   type FundVariants,
@@ -20,7 +20,7 @@ import {
 import type { ExposureRecord, FundRecord, ValueObject } from "@finance-tool/schema";
 import { deviceStore } from "./device-store";
 import { BROKERAGE, a28Value, instrumentClassOf, parameterValue, ruleContext, staleTariff, type FundAssumptions, type WorkbenchBundle, type WorkbenchInputs } from "./providers";
-import { nisPer } from "./fx";
+import { fxRunInput, nisPer } from "./fx";
 import { computed, ownBy, weaker, type SiteValue, type Strength } from "./value";
 
 /**
@@ -169,6 +169,8 @@ function tariffFor(bundle: WorkbenchBundle, wanted: string | null, instrumentCla
       theta: 0,
       behaviour: { ordersPerMonth: ordersN },
       providers: [],
+      // a minimum in dollars is converted at the run's rate, as on the brokers page
+      ...(bundle.fx ? { fx: fxRunInput(bundle.fx) } : {}),
     };
     // the FX line is read with the exposure's currency so a bound set in dollars is checked against it; no line if that fails
     const attempt = (currency: string | null) => buildTariff({ ...input, ...(currency ? { currency: { code: currency, startRate: 1 } } : {}) }, { snapshot: s, level: "list" }, s).tariff;
@@ -180,13 +182,13 @@ function tariffFor(bundle: WorkbenchBundle, wanted: string | null, instrumentCla
       void _drop;
       return { tariff: rest, provider: { id: s.id, name: s.provider.name_he, fromP05: c.fromP05, fellBack: c.fellBack }, memberKind };
     } catch (e) {
-      if (!(e instanceof RecordInputError)) throw e;
+      if (!(e instanceof RecordInputError || e instanceof Unusable)) throw e;
       try {
         const { currency: _drop, ...rest } = attempt(null);
         void _drop;
         return { tariff: rest, provider: { id: s.id, name: s.provider.name_he, fromP05: c.fromP05, fellBack: c.fellBack }, memberKind };
       } catch (e2) {
-        if (!(e2 instanceof RecordInputError)) throw e2;
+        if (!(e2 instanceof RecordInputError || e2 instanceof Unusable)) throw e2;
       }
     }
   }

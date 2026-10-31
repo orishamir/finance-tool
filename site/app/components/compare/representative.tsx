@@ -124,16 +124,25 @@ function ProviderPicker({ w, chosen, outcomes, figureOf, onPick }: { w: WrapperE
     return { site: ran.site, rows: named as (Pick<ProviderOutcome, "id" | "name" | "channel"> & Partial<ProviderOutcome>)[] };
   }, [w, outcomes]);
   const mine = chosen ? w.representative?.providerId : undefined;
-  const label = (x: Pick<ProviderOutcome, "name" | "channel">) => (
+  const hasStanding = (id: string | undefined) => !!(id && w.providers?.[id]?.tariff.buyStanding);
+  const standingCount = rows.filter((x) => hasStanding(x.id)).length;
+  const label = (x: Pick<ProviderOutcome, "name" | "channel"> & { id?: string }) => (
     <span className="flex-1 basis-full sm:basis-0 min-w-0 text-sm">
       <bdi>{x.name}</bdi>
       {tp.channel[x.channel] && <span className="text-xs text-muted-foreground"> · {tp.channel[x.channel]}</span>}
+      {hasStanding(x.id) && (
+        <>
+          {" "}
+          <Tag>{tp.standingTag}</Tag>
+        </>
+      )}
     </span>
   );
   return (
     <div className="flex flex-col gap-1.5">
       <p className="text-sm font-medium">{tp.heading}</p>
       <p className="text-xs text-muted-foreground">{tp.hint}</p>
+      {standingCount > 0 && <p className="text-xs text-muted-foreground">{tp.standingNote(standingCount, rows.length)}</p>}
       <ul className="flex flex-col divide-y divide-border border border-border rounded-md" data-provider-list>
         {site && (
           <li data-provider-site className="px-3 py-1 min-h-target flex items-center gap-x-3 gap-y-0.5 flex-wrap bg-accent">

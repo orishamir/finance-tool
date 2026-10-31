@@ -52,7 +52,7 @@
           "MF-27"
         ],
         "state": "sourced",
-        "notes": "'0.64%' in the clerk column. Note 3: 'למעט קרנות נאמנות' includes a tracking fund (קרן מחקה) and a fund whose units are listed on TASE, so Israeli ETFs and listed fund units pay this line. Note 5: the fee never exceeds 25% of the trade value. Note 1: a split order pays one minimum per day. Note 2: an unexecuted order pays the minimum only if a clerk acted. Note 7: third-party expenses (part 11, TASE expenses) on top. Note 13: a tracking fund bought/sold by standing order pays a reduced minimum of NIS 7. Note 9 gives the internet price (recorded as the direct line). Statement codes ('ח-ן 960/ אסמכתא'): 014543; buy 803, sell 804. Tracking funds (2026-10-31): the exclusion of mutual funds on this line does not cover a tracking fund, so a tracking fund pays this line; a traditional fund that is not listed does not. Place: library 14d10e0ed6b25245, PDF page 1, line \"קניה, מכירה ופדיון של ניירות ערך הנסחרים בבורסה בתל אביב (למעט קרנות נאמנות...\", note 3: \"'למעט קרנות נאמנות' - אך לרבות 'קרן מחקה', כהגדרתה בחוק השקעות משותפות בנאמנות, התשנ\"ד-1994\". Note 13: \"בגין רכישת/מכירת קרן מחקה באמצעות הוראות קבע תיגבה העמלה בכפוף לעמלת מינ' מופחת בסך 7 ₪\"; that reduced minimum is not modelled here."
+        "notes": "'0.64%' in the clerk column. Note 3: 'למעט קרנות נאמנות' includes a tracking fund (קרן מחקה) and a fund whose units are listed on TASE, so Israeli ETFs and listed fund units pay this line. Note 5: the fee never exceeds 25% of the trade value. Note 1: a split order pays one minimum per day. Note 2: an unexecuted order pays the minimum only if a clerk acted. Note 7: third-party expenses (part 11, TASE expenses) on top. Note 13: a tracking fund bought/sold by standing order pays a reduced minimum of NIS 7. Note 9 gives the internet price (recorded as the direct line). Statement codes ('ח-ן 960/ אסמכתא'): 014543; buy 803, sell 804. Tracking funds (2026-10-31): the exclusion of mutual funds on this line does not cover a tracking fund, so a tracking fund pays this line; a traditional fund that is not listed does not. Place: library 14d10e0ed6b25245, PDF page 1, line \"קניה, מכירה ופדיון של ניירות ערך הנסחרים בבורסה בתל אביב (למעט קרנות נאמנות...\", note 3: \"'למעט קרנות נאמנות' - אך לרבות 'קרן מחקה', כהגדרתה בחוק השקעות משותפות בנאמנות, התשנ\"ד-1994\". Note 13: \"בגין רכישת/מכירת קרן מחקה באמצעות הוראות קבע תיגבה העמלה בכפוף לעמלת מינ' מופחת בסך 7 ₪\"; that reduced minimum is the standing-order line in this file."
       },
       "min": {
         "value": 40,
@@ -98,6 +98,30 @@
         "state": "sourced",
         "notes": "'מקס' - 7,000'."
       },
+      "cap": {
+        "value": 25,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.bankmassad.co.il/media/qb0h1di4/חלק-4-ניירות-ערך-46.pdf",
+          "title": "תעריפון ליחידים ולעסקים קטנים - בנק מסד (בתוקף מ-06/09/2026) - חלק 4 ניירות ערך, הערה 5 לסעיף ניירות ערך הנסחרים בבורסה בתל אביב",
+          "publisher": "Bank Massad Ltd.",
+          "strength": "institution",
+          "page": 1,
+          "quote": "בכל עסקה בני\"ע סכום העמלה לא יעלה על 25% משווי העסקה."
+        },
+        "checked": "2026-10-31",
+        "effective_from": "2026-09-06",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-19",
+          "MF-27"
+        ],
+        "state": "sourced",
+        "notes": "Printed for every securities trade, so the standing-order line too: the fee, and with it the minimum, stops at this share of the trade value."
+      },
       "period": null,
       "channel": "branch",
       "band": null,
@@ -140,7 +164,7 @@
           "MF-27"
         ],
         "state": "sourced",
-        "notes": "Appendix E: '0.4%' in the internet, mobile-app and trading-systems columns (clerk 0.64%); part 4 note 9 prints the same: 'עבור פעולה המבוצעת ישירות באמצעות האינטרנט ייגבה שיעור מופחת של 0.4%, מינ' 35 ש\"ח, מקס' – 6,300 ש\"ח לפעולה במניות ואגרות חוב'. Columns 'תעריף באמצעות אינטרנט', 'תעריף באמצעות אפליקציה סלולרית' and 'מערכות מסחר' all print 0.4%, min 35, max 6,300. Tracking funds (2026-10-31): the exclusion of mutual funds on this line does not cover a tracking fund, so a tracking fund pays this line; a traditional fund that is not listed does not. Place: library 14d10e0ed6b25245, PDF page 1, line \"קניה, מכירה ופדיון של ניירות ערך הנסחרים בבורסה בתל אביב (למעט קרנות נאמנות...\", note 3: \"'למעט קרנות נאמנות' - אך לרבות 'קרן מחקה', כהגדרתה בחוק השקעות משותפות בנאמנות, התשנ\"ד-1994\". Note 13: \"בגין רכישת/מכירת קרן מחקה באמצעות הוראות קבע תיגבה העמלה בכפוף לעמלת מינ' מופחת בסך 7 ₪\"; that reduced minimum is not modelled here."
+        "notes": "Appendix E: '0.4%' in the internet, mobile-app and trading-systems columns (clerk 0.64%); part 4 note 9 prints the same: 'עבור פעולה המבוצעת ישירות באמצעות האינטרנט ייגבה שיעור מופחת של 0.4%, מינ' 35 ש\"ח, מקס' – 6,300 ש\"ח לפעולה במניות ואגרות חוב'. Columns 'תעריף באמצעות אינטרנט', 'תעריף באמצעות אפליקציה סלולרית' and 'מערכות מסחר' all print 0.4%, min 35, max 6,300. Tracking funds (2026-10-31): the exclusion of mutual funds on this line does not cover a tracking fund, so a tracking fund pays this line; a traditional fund that is not listed does not. Place: library 14d10e0ed6b25245, PDF page 1, line \"קניה, מכירה ופדיון של ניירות ערך הנסחרים בבורסה בתל אביב (למעט קרנות נאמנות...\", note 3: \"'למעט קרנות נאמנות' - אך לרבות 'קרן מחקה', כהגדרתה בחוק השקעות משותפות בנאמנות, התשנ\"ד-1994\". Note 13: \"בגין רכישת/מכירת קרן מחקה באמצעות הוראות קבע תיגבה העמלה בכפוף לעמלת מינ' מופחת בסך 7 ₪\"; that reduced minimum is the standing-order line in this file."
       },
       "min": {
         "value": 35,
@@ -185,6 +209,30 @@
         ],
         "state": "sourced",
         "notes": "'מקס' - 6300 ש\"ח'."
+      },
+      "cap": {
+        "value": 25,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.bankmassad.co.il/media/qb0h1di4/חלק-4-ניירות-ערך-46.pdf",
+          "title": "תעריפון ליחידים ולעסקים קטנים - בנק מסד (בתוקף מ-06/09/2026) - חלק 4 ניירות ערך, הערה 5 לסעיף ניירות ערך הנסחרים בבורסה בתל אביב",
+          "publisher": "Bank Massad Ltd.",
+          "strength": "institution",
+          "page": 1,
+          "quote": "בכל עסקה בני\"ע סכום העמלה לא יעלה על 25% משווי העסקה."
+        },
+        "checked": "2026-10-31",
+        "effective_from": "2026-09-06",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-19",
+          "MF-27"
+        ],
+        "state": "sourced",
+        "notes": "Printed for every securities trade, so the standing-order line too: the fee, and with it the minimum, stops at this share of the trade value."
       },
       "period": null,
       "channel": "direct",
@@ -274,6 +322,29 @@
         "state": "sourced",
         "notes": "'מקס' - 4,500'."
       },
+      "cap": {
+        "value": 25,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.bankmassad.co.il/media/qb0h1di4/חלק-4-ניירות-ערך-46.pdf",
+          "title": "תעריפון ליחידים ולעסקים קטנים - בנק מסד (בתוקף מ-06/09/2026) - חלק 4 ניירות ערך, הערה 5 לסעיף ניירות ערך הנסחרים בבורסה בתל אביב",
+          "publisher": "Bank Massad Ltd.",
+          "strength": "institution",
+          "page": 1,
+          "quote": "בכל עסקה בני\"ע סכום העמלה לא יעלה על 25% משווי העסקה."
+        },
+        "checked": "2026-10-31",
+        "effective_from": "2026-09-06",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-19"
+        ],
+        "state": "sourced",
+        "notes": "Printed for every securities trade, so the standing-order line too: the fee, and with it the minimum, stops at this share of the trade value."
+      },
       "period": null,
       "channel": "branch",
       "band": null,
@@ -358,6 +429,29 @@
         ],
         "state": "sourced",
         "notes": "'מקס' - 4050 ש\"ח'."
+      },
+      "cap": {
+        "value": 25,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.bankmassad.co.il/media/qb0h1di4/חלק-4-ניירות-ערך-46.pdf",
+          "title": "תעריפון ליחידים ולעסקים קטנים - בנק מסד (בתוקף מ-06/09/2026) - חלק 4 ניירות ערך, הערה 5 לסעיף ניירות ערך הנסחרים בבורסה בתל אביב",
+          "publisher": "Bank Massad Ltd.",
+          "strength": "institution",
+          "page": 1,
+          "quote": "בכל עסקה בני\"ע סכום העמלה לא יעלה על 25% משווי העסקה."
+        },
+        "checked": "2026-10-31",
+        "effective_from": "2026-09-06",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-19"
+        ],
+        "state": "sourced",
+        "notes": "Printed for every securities trade, so the standing-order line too: the fee, and with it the minimum, stops at this share of the trade value."
       },
       "period": null,
       "channel": "direct",
@@ -448,6 +542,29 @@
         "state": "sourced",
         "notes": "'מקס' - 1,200$' per trade (US dollars)."
       },
+      "cap": {
+        "value": 25,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.bankmassad.co.il/media/qb0h1di4/חלק-4-ניירות-ערך-46.pdf",
+          "title": "תעריפון ליחידים ולעסקים קטנים - בנק מסד (בתוקף מ-06/09/2026) - חלק 4 ניירות ערך, הערה 2 לסעיף ניירות ערך בחוץ לארץ",
+          "publisher": "Bank Massad Ltd.",
+          "strength": "institution",
+          "page": 2,
+          "quote": "בכל עסקה בני\"ע סכום העמלה לא יעלה על 25% משווי העסקה."
+        },
+        "checked": "2026-10-31",
+        "effective_from": "2026-09-06",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-19"
+        ],
+        "state": "sourced",
+        "notes": "Printed for every securities trade, so the standing-order line too: the fee, and with it the minimum, stops at this share of the trade value."
+      },
       "period": null,
       "channel": "branch",
       "band": null,
@@ -533,6 +650,29 @@
         "state": "sourced",
         "notes": "'מקס' - $1,100' per trade (US dollars)."
       },
+      "cap": {
+        "value": 25,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.bankmassad.co.il/media/qb0h1di4/חלק-4-ניירות-ערך-46.pdf",
+          "title": "תעריפון ליחידים ולעסקים קטנים - בנק מסד (בתוקף מ-06/09/2026) - חלק 4 ניירות ערך, הערה 2 לסעיף ניירות ערך בחוץ לארץ",
+          "publisher": "Bank Massad Ltd.",
+          "strength": "institution",
+          "page": 2,
+          "quote": "בכל עסקה בני\"ע סכום העמלה לא יעלה על 25% משווי העסקה."
+        },
+        "checked": "2026-10-31",
+        "effective_from": "2026-09-06",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-19"
+        ],
+        "state": "sourced",
+        "notes": "Printed for every securities trade, so the standing-order line too: the fee, and with it the minimum, stops at this share of the trade value."
+      },
       "period": null,
       "channel": "direct",
       "band": null,
@@ -544,6 +684,446 @@
           "אינטרנט",
           "אפליקציה סלולרית",
           "מערכות מסחר"
+        ]
+      }
+    },
+    {
+      "id": "massad-standing-order-tase-direct",
+      "base": "trade",
+      "applies_to": [
+        "mutual_fund_units"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.4,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.bankmassad.co.il/media/bdihy3hk/נספח-ה-הטבות-בערוצים-ישירים-46.pdf",
+          "title": "תעריפון ליחידים ולעסקים קטנים - בנק מסד (בתוקף מ-06/09/2026) - נספח ה' הטבות בערוצי בנקאות בתקשורת, קניה/מכירה של ניירות ערך הנסחרים בבורסה בת\"א - מניות ואג\"ח, תעריף באמצעות אינטרנט / אפליקציה סלולרית / מערכות מסחר (עמוד מס' 52)",
+          "publisher": "Bank Massad Ltd.",
+          "strength": "institution",
+          "page": 2,
+          "quote": "קניה/מכירה של ניירות ערך הנסחרים בבורסה בת\"א מניות ואג\"ח. 0.4% מינ' 35.0 מקס' 6300"
+        },
+        "checked": "2026-10-31",
+        "effective_from": "2026-09-06",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-19",
+          "MF-27"
+        ],
+        "state": "sourced",
+        "notes": "The note lowers only the minimum and says 'העמלה': the regular rate and maximum of this channel stay. A tracking fund by standing order; priced on monthly purchases only (F-12)."
+      },
+      "min": {
+        "value": 7,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.bankmassad.co.il/media/qb0h1di4/חלק-4-ניירות-ערך-46.pdf",
+          "title": "תעריפון ליחידים ולעסקים קטנים - בנק מסד, חלק 4 - ניירות ערך, הערה 13 (עמ' 1)",
+          "publisher": "Bank Massad Ltd.",
+          "strength": "institution",
+          "page": 1,
+          "quote": "בגין רכישת/מכירת קרן מחקה באמצעות הוראות קבע תיגבה העמלה בכפוף לעמלת מינ' מופחת בסך 7 ₪"
+        },
+        "checked": "2026-10-31",
+        "effective_from": "2026-09-06",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "MF-27"
+        ],
+        "state": "sourced",
+        "notes": "The note lowers only the minimum and says 'העמלה': the regular rate and maximum of this channel stay. A tracking fund by standing order; priced on monthly purchases only (F-12)."
+      },
+      "max": {
+        "value": 6300,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.bankmassad.co.il/media/bdihy3hk/נספח-ה-הטבות-בערוצים-ישירים-46.pdf",
+          "title": "תעריפון ליחידים ולעסקים קטנים - בנק מסד (בתוקף מ-06/09/2026) - נספח ה' הטבות בערוצי בנקאות בתקשורת, קניה/מכירה של ניירות ערך הנסחרים בבורסה בת\"א - מניות ואג\"ח, מקס', תעריף באמצעות אינטרנט / אפליקציה סלולרית / מערכות מסחר (עמוד מס' 52)",
+          "publisher": "Bank Massad Ltd.",
+          "strength": "institution",
+          "page": 2,
+          "quote": "קניה/מכירה של ניירות ערך הנסחרים בבורסה בת\"א מניות ואג\"ח. 0.4% מינ' 35.0 מקס' 6300"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-09-06",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'מקס' - 6300 ש\"ח'."
+      },
+      "cap": {
+        "value": 25,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.bankmassad.co.il/media/qb0h1di4/חלק-4-ניירות-ערך-46.pdf",
+          "title": "תעריפון ליחידים ולעסקים קטנים - בנק מסד (בתוקף מ-06/09/2026) - חלק 4 ניירות ערך, הערה 5 לסעיף ניירות ערך הנסחרים בבורסה בתל אביב",
+          "publisher": "Bank Massad Ltd.",
+          "strength": "institution",
+          "page": 1,
+          "quote": "בכל עסקה בני\"ע סכום העמלה לא יעלה על 25% משווי העסקה."
+        },
+        "checked": "2026-10-31",
+        "effective_from": "2026-09-06",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-19",
+          "MF-27"
+        ],
+        "state": "sourced",
+        "notes": "Printed for every securities trade, so the standing-order line too: the fee, and with it the minimum, stops at this share of the trade value."
+      },
+      "period": null,
+      "channel": "direct",
+      "band": "הוראת קבע",
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "הוראת קבע",
+          "קניה/מכירה של ניירות ערך הנסחרים בבורסה בת\"א - מניות ואג\"ח"
+        ]
+      }
+    },
+    {
+      "id": "massad-standing-order-foreign-direct",
+      "base": "trade",
+      "applies_to": [
+        "foreign_securities"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.78,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.bankmassad.co.il/media/bdihy3hk/נספח-ה-הטבות-בערוצים-ישירים-46.pdf",
+          "title": "תעריפון ליחידים ולעסקים קטנים - בנק מסד (בתוקף מ-06/09/2026) - נספח ה' הטבות בערוצי בנקאות בתקשורת, קניית/מכירת של ניירות ערך בחו\"ל - מניות, אג\"ח וקרנות בחו\"ל, תעריף באמצעות אינטרנט / אפליקציה סלולרית / מערכות מסחר (עמוד מס' 53)",
+          "publisher": "Bank Massad Ltd.",
+          "strength": "institution",
+          "page": 3,
+          "quote": "קניית/מכירת של ניירות ערך בחו\"ל מניות אג\"ח וקרנות בחו\"ל 0.78% מינ' 24.5$ מקס' $1100"
+        },
+        "checked": "2026-10-31",
+        "effective_from": "2026-09-06",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-19"
+        ],
+        "state": "sourced",
+        "notes": "The note lowers only the minimum and says 'העמלה': the regular rate and maximum of this channel stay. A ETF by standing order; priced on monthly purchases only (F-12)."
+      },
+      "min": {
+        "value": 4.5,
+        "unit": "usd",
+        "source": {
+          "url": "https://www.bankmassad.co.il/media/qb0h1di4/חלק-4-ניירות-ערך-46.pdf",
+          "title": "תעריפון ליחידים ולעסקים קטנים - בנק מסד, חלק 4 - ניירות ערך, הערה 11 (עמ' 2)",
+          "publisher": "Bank Massad Ltd.",
+          "strength": "institution",
+          "page": 2,
+          "quote": "בגין רכישה/מכירה של ETF באמצעות הוראות קבע תיגבה העמלה בכפוף לעמלת מינימום מופחתת בסך 4.5$"
+        },
+        "checked": "2026-10-31",
+        "effective_from": "2026-09-06",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-19"
+        ],
+        "state": "sourced",
+        "notes": "The note lowers only the minimum and says 'העמלה': the regular rate and maximum of this channel stay. A ETF by standing order; priced on monthly purchases only (F-12)."
+      },
+      "max": {
+        "value": 1100,
+        "unit": "usd",
+        "source": {
+          "url": "https://www.bankmassad.co.il/media/bdihy3hk/נספח-ה-הטבות-בערוצים-ישירים-46.pdf",
+          "title": "תעריפון ליחידים ולעסקים קטנים - בנק מסד (בתוקף מ-06/09/2026) - נספח ה' הטבות בערוצי בנקאות בתקשורת, קניית/מכירת של ניירות ערך בחו\"ל - מניות, אג\"ח וקרנות בחו\"ל, מקס', תעריף באמצעות אינטרנט / אפליקציה סלולרית / מערכות מסחר (עמוד מס' 53)",
+          "publisher": "Bank Massad Ltd.",
+          "strength": "institution",
+          "page": 3,
+          "quote": "קניית/מכירת של ניירות ערך בחו\"ל מניות אג\"ח וקרנות בחו\"ל 0.78% מינ' 24.5$ מקס' $1100"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-09-06",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'מקס' - $1,100' per trade (US dollars)."
+      },
+      "cap": {
+        "value": 25,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.bankmassad.co.il/media/qb0h1di4/חלק-4-ניירות-ערך-46.pdf",
+          "title": "תעריפון ליחידים ולעסקים קטנים - בנק מסד (בתוקף מ-06/09/2026) - חלק 4 ניירות ערך, הערה 2 לסעיף ניירות ערך בחוץ לארץ",
+          "publisher": "Bank Massad Ltd.",
+          "strength": "institution",
+          "page": 2,
+          "quote": "בכל עסקה בני\"ע סכום העמלה לא יעלה על 25% משווי העסקה."
+        },
+        "checked": "2026-10-31",
+        "effective_from": "2026-09-06",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-19"
+        ],
+        "state": "sourced",
+        "notes": "Printed for every securities trade, so the standing-order line too: the fee, and with it the minimum, stops at this share of the trade value."
+      },
+      "period": null,
+      "channel": "direct",
+      "band": "הוראת קבע",
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "הוראת קבע",
+          "קניית/מכירת של ניירות ערך בחו\"ל - מניות, אג\"ח וקרנות בחו\"ל"
+        ]
+      }
+    },
+    {
+      "id": "massad-standing-order-tase-branch",
+      "base": "trade",
+      "applies_to": [
+        "mutual_fund_units"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.64,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.bankmassad.co.il/media/qb0h1di4/חלק-4-ניירות-ערך-46.pdf",
+          "title": "תעריפון ליחידים ולעסקים קטנים - בנק מסד (בתוקף מ-06/09/2026) - חלק 4 ניירות ערך, סעיף 4.1.1 מניות ואגרות חוב (עמוד מס' 15)",
+          "publisher": "Bank Massad Ltd.",
+          "strength": "institution",
+          "page": 1,
+          "quote": "4.1.1 מניות ואגרות חוב 0.64% מינ' 40.0 מקס'7,000"
+        },
+        "checked": "2026-10-31",
+        "effective_from": "2026-09-06",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-19",
+          "MF-27"
+        ],
+        "state": "sourced",
+        "notes": "The note lowers only the minimum and says 'העמלה': the regular rate and maximum of this channel stay. A tracking fund by standing order; priced on monthly purchases only (F-12)."
+      },
+      "min": {
+        "value": 7,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.bankmassad.co.il/media/qb0h1di4/חלק-4-ניירות-ערך-46.pdf",
+          "title": "תעריפון ליחידים ולעסקים קטנים - בנק מסד, חלק 4 - ניירות ערך, הערה 13 (עמ' 1)",
+          "publisher": "Bank Massad Ltd.",
+          "strength": "institution",
+          "page": 1,
+          "quote": "בגין רכישת/מכירת קרן מחקה באמצעות הוראות קבע תיגבה העמלה בכפוף לעמלת מינ' מופחת בסך 7 ₪"
+        },
+        "checked": "2026-10-31",
+        "effective_from": "2026-09-06",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "MF-27"
+        ],
+        "state": "sourced",
+        "notes": "The note lowers only the minimum and says 'העמלה': the regular rate and maximum of this channel stay. A tracking fund by standing order; priced on monthly purchases only (F-12)."
+      },
+      "max": {
+        "value": 7000,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.bankmassad.co.il/media/qb0h1di4/חלק-4-ניירות-ערך-46.pdf",
+          "title": "תעריפון ליחידים ולעסקים קטנים - בנק מסד (בתוקף מ-06/09/2026) - חלק 4 ניירות ערך, סעיף 4.1.1, מקס' (עמוד מס' 15)",
+          "publisher": "Bank Massad Ltd.",
+          "strength": "institution",
+          "page": 1,
+          "quote": "4.1.1 מניות ואגרות חוב 0.64% מינ' 40.0 מקס'7,000"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-09-06",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'מקס' - 7,000'."
+      },
+      "cap": {
+        "value": 25,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.bankmassad.co.il/media/qb0h1di4/חלק-4-ניירות-ערך-46.pdf",
+          "title": "תעריפון ליחידים ולעסקים קטנים - בנק מסד (בתוקף מ-06/09/2026) - חלק 4 ניירות ערך, הערה 5 לסעיף ניירות ערך הנסחרים בבורסה בתל אביב",
+          "publisher": "Bank Massad Ltd.",
+          "strength": "institution",
+          "page": 1,
+          "quote": "בכל עסקה בני\"ע סכום העמלה לא יעלה על 25% משווי העסקה."
+        },
+        "checked": "2026-10-31",
+        "effective_from": "2026-09-06",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-19",
+          "MF-27"
+        ],
+        "state": "sourced",
+        "notes": "Printed for every securities trade, so the standing-order line too: the fee, and with it the minimum, stops at this share of the trade value."
+      },
+      "period": null,
+      "channel": "branch",
+      "band": "הוראת קבע",
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "הוראת קבע",
+          "קנייה, מכירה, ופדיון של ניירות ערך הנסחרים בבורסה בתל אביב (למעט קרנות נאמנות, אופציות מעו\"ף וחוזים עתידיים במעו\"ף) (כולל קניה או מכירה שלא בוצעה)"
+        ]
+      }
+    },
+    {
+      "id": "massad-standing-order-foreign-branch",
+      "base": "trade",
+      "applies_to": [
+        "foreign_securities"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.8,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.bankmassad.co.il/media/qb0h1di4/חלק-4-ניירות-ערך-46.pdf",
+          "title": "תעריפון ליחידים ולעסקים קטנים - בנק מסד (בתוקף מ-06/09/2026) - חלק 4 ניירות ערך, סעיף 4.4.1 מניות, אגרות חוב וקרנות נאמנות (עמוד מס' 16)",
+          "publisher": "Bank Massad Ltd.",
+          "strength": "institution",
+          "page": 2,
+          "quote": "4.4.1 מניות אגרות חוב וקרנות 0.80% מינ' 25.0$ מקס' 1,200$"
+        },
+        "checked": "2026-10-31",
+        "effective_from": "2026-09-06",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-19"
+        ],
+        "state": "sourced",
+        "notes": "The note lowers only the minimum and says 'העמלה': the regular rate and maximum of this channel stay. A ETF by standing order; priced on monthly purchases only (F-12)."
+      },
+      "min": {
+        "value": 4.5,
+        "unit": "usd",
+        "source": {
+          "url": "https://www.bankmassad.co.il/media/qb0h1di4/חלק-4-ניירות-ערך-46.pdf",
+          "title": "תעריפון ליחידים ולעסקים קטנים - בנק מסד, חלק 4 - ניירות ערך, הערה 11 (עמ' 2)",
+          "publisher": "Bank Massad Ltd.",
+          "strength": "institution",
+          "page": 2,
+          "quote": "בגין רכישה/מכירה של ETF באמצעות הוראות קבע תיגבה העמלה בכפוף לעמלת מינימום מופחתת בסך 4.5$"
+        },
+        "checked": "2026-10-31",
+        "effective_from": "2026-09-06",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-19"
+        ],
+        "state": "sourced",
+        "notes": "The note lowers only the minimum and says 'העמלה': the regular rate and maximum of this channel stay. A ETF by standing order; priced on monthly purchases only (F-12)."
+      },
+      "max": {
+        "value": 1200,
+        "unit": "usd",
+        "source": {
+          "url": "https://www.bankmassad.co.il/media/qb0h1di4/חלק-4-ניירות-ערך-46.pdf",
+          "title": "תעריפון ליחידים ולעסקים קטנים - בנק מסד (בתוקף מ-06/09/2026) - חלק 4 ניירות ערך, סעיף 4.4.1, מקס' (עמוד מס' 16)",
+          "publisher": "Bank Massad Ltd.",
+          "strength": "institution",
+          "page": 2,
+          "quote": "4.4.1 מניות אגרות חוב וקרנות 0.80% מינ' 25.0$ מקס' 1,200$"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-09-06",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'מקס' - 1,200$' per trade (US dollars)."
+      },
+      "cap": {
+        "value": 25,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.bankmassad.co.il/media/qb0h1di4/חלק-4-ניירות-ערך-46.pdf",
+          "title": "תעריפון ליחידים ולעסקים קטנים - בנק מסד (בתוקף מ-06/09/2026) - חלק 4 ניירות ערך, הערה 2 לסעיף ניירות ערך בחוץ לארץ",
+          "publisher": "Bank Massad Ltd.",
+          "strength": "institution",
+          "page": 2,
+          "quote": "בכל עסקה בני\"ע סכום העמלה לא יעלה על 25% משווי העסקה."
+        },
+        "checked": "2026-10-31",
+        "effective_from": "2026-09-06",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-19"
+        ],
+        "state": "sourced",
+        "notes": "Printed for every securities trade, so the standing-order line too: the fee, and with it the minimum, stops at this share of the trade value."
+      },
+      "period": null,
+      "channel": "branch",
+      "band": "הוראת קבע",
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "הוראת קבע",
+          "קנייה, מכירה ופדיון של ניירות ערך בחוץ לארץ (כולל קניה או מכירה שלא בוצעה)"
         ]
       }
     },

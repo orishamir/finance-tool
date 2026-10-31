@@ -18,8 +18,8 @@ describe("the providers the brokerage wrapper carries", () => {
     for (const id of ["psagot", "ibi"]) expect(ids).toContain(id);
     expect(ids).not.toContain("meitav-trade"); // its snapshot is marked missing
     // the representative fund (5139282) is a tracking fund, `mutual_fund_units`: a tariff with no buy/sell line for that class gives no price, never a free trade (F-63 "No line, no price", MF-26, 2026-10-25)
-    for (const id of ["leumi", "interactive-brokers"]) expect(ids).not.toContain(id);
-    expect(ids).toContain("one-zero"); // its TASE line covers tracking funds by footnote 9 (MF-27; snapshot 2026-10-31)
+    expect(ids).not.toContain("interactive-brokers");
+    for (const id of ["one-zero", "leumi"]) expect(ids).toContain(id); // their TASE lines cover tracking funds by footnote (MF-27; snapshot 2026-10-31)
     for (const p of Object.values(wrapper.providers!)) {
       expect(p.name.length).toBeGreaterThan(2);
       expect(p.tariff.buy).toBeDefined();
@@ -61,27 +61,27 @@ describe("the 20-year case on the cheapest collected broker", () => {
     expect(outcomes[1]!.id).toBe("psagot");
     expect(outcomes.at(-1)!.id).toBe("excellence");
   });
-  it("shows the card's own run (P-05's Leumi tariff, which the picker no longer lists) as the site's choice, on the direct channel", () => {
-    expect(all.site).toMatchObject({ id: "leumi", current: true, channel: "direct" });
-    expect(all.site!.real).toBeCloseTo(real(bundle, BRK), 4);
-    expect(outcomes.find((o) => o.id === "leumi")).toBeUndefined();
+  it("marks the card's own run (P-05's Leumi tariff) on its row, on the direct channel, with no second row for it", () => {
+    expect(all.site).toBeNull();
+    expect(outcomes.find((o) => o.id === "leumi")).toMatchObject({ current: true, channel: "direct" });
+    expect(outcomes.find((o) => o.id === "leumi")!.real).toBeCloseTo(real(bundle, BRK), 4);
     expect(wrapper.terms!.tariff!.buy!.rate).toBeCloseTo(0.004, 8); // Leumi's direct channel, not the branch line's 0.65 %
     expect(wrapper.representative?.channel).toBe("direct");
     // once the person chose, the card's run is theirs and there is no site row
     expect(providerOutcomes(applyOwnProviders(bundle, { ownProviders: { [BRK]: "psagot" } }), goal, BRK).site).toBeNull();
   });
-  it("lands above the kupat gemel on the best broker, while the unpicked default (Leumi) lands below it, and the figures are these", () => {
+  it("lands above the kupat gemel on the best broker and on the unpicked default (Leumi, its monthly purchases on the standing-order line, D41), and the figures are these", () => {
     const kgl = real(bundle, "kupat-gemel-lehashkaa");
     const dflt = real(bundle, BRK);
     const chosen = applyOwnProviders(bundle, { ownProviders: { [BRK]: best.id } });
     const cheapest = real(chosen, BRK, { ...goal, ownProviders: { [BRK]: best.id } });
     expect(cheapest).toBeCloseTo(best.real, 4);
-    expect(dflt).toBeLessThan(kgl);
-    expect(kgl - dflt).toBeCloseTo(2_169, -2); // 3,154 on the branch line (the scenario audit); 2,169 on the direct channel (review fix 2026-10-24)
+    expect(dflt).toBeGreaterThan(kgl);
     expect(cheapest).toBeGreaterThan(kgl);
     expect(Math.round(kgl)).toBe(1_032_222);
     expect(cheapest).toBeCloseTo(1_098_743, -2);
-    expect(Math.abs(dflt - 1_030_053)).toBeLessThan(100);
+    // 240 purchases of 3,000: 0.225% (6.75) instead of the regular line's 26 saves 4,620 before growth and tax
+    expect(Math.abs(dflt - 1_034_620)).toBeLessThan(100);
     // the ranking moves: the brokerage account leads outright with that broker
     const ev = evaluate(chosen, goal);
     expect(ev.ranking.entries[0]!.id).toBe(BRK);

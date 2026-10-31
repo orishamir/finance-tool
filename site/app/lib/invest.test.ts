@@ -25,6 +25,11 @@ const sp = indexById(bundle, "index-sp500")!;
 describe("invest page computation", () => {
   const view = buildInvest({ bundle, index: sp, plan: plan() });
 
+  it("marks the three houses that print a standing-order price, and only them", () => {
+    const marked = view.houses.filter((h) => h.entries.some((e) => e.price?.standing)).map((h) => h.provider.id);
+    expect(marked.sort()).toEqual(["fibi", "leumi", "massad"]);
+  });
+
   it("lists the equity indices of the records, none chosen for the person", () => {
     expect(knownIndices(bundle).map((i) => i.id)).toContain("index-sp500");
     expect(knownIndices(bundle).every((i) => i.exposure?.kind === "equity_index")).toBe(true);

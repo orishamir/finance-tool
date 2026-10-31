@@ -413,6 +413,9 @@ export function AccountColumn({ view, bundle, years, pick, onPick }: { view: Inv
   const house = providerName(view, pick.house);
   if (!fund || !house) return null;
   const best = bestFor(view, pick);
+  // counted over every fund of the index, so the sentence stays as it is when another fund is picked
+  const local = view.providers.filter((p) => !p.foreign);
+  const standingCount = local.filter((p) => allFunds(view).some((f) => { const a = f.byHouse[p.id]; return priced(a) && a.standing; })).length;
   const rows = view.providers.map((p) => ({ p, at: fund.byHouse[p.id] }));
   const ok = rows.filter((r): r is { p: typeof r.p; at: WayPrice } => priced(r.at)).sort((a, b) => Number(a.at.open) - Number(b.at.open) || b.at.valueN - a.at.valueN);
   const missing = rows.filter((r) => !priced(r.at));
@@ -439,8 +442,12 @@ export function AccountColumn({ view, bundle, years, pick, onPick }: { view: Inv
           <span className="text-sm text-muted-foreground tabular-nums text-center">{r.at.open ? "—" : i + 1}</span>
           <span className={cx("flex flex-col min-w-0 leading-tight font-semibold", isYours && "text-entered")}>
             {r.p.short}
-            {isYours && <span className="text-xs font-normal text-muted-foreground">{c.pair.yoursTag}</span>}
-            {isBest && <span className="text-xs font-medium text-primary">{c.pair.cheapestTag}</span>}
+            {/* one line reserved on every row, so a re-sort never changes a row's height (2026-10-31) */}
+            <span className="flex flex-wrap gap-x-2 min-h-5 text-xs font-normal text-muted-foreground">
+              {isYours && <span>{c.pair.yoursTag}</span>}
+              {isBest && <span className="font-medium text-primary">{c.pair.cheapestTag}</span>}
+              {r.at.standing && <span>{c.pair.standingTag}</span>}
+            </span>
           </span>
           <span className="flex items-center gap-2 min-w-0 max-md:row-start-2 max-md:col-start-3 max-md:col-span-2">
             <CostStack size="sm" parts={parts} scale={scale} label={`${r.p.short}: ${fmt.nisWhole(r.at.accountCost)}`} />
@@ -459,10 +466,11 @@ export function AccountColumn({ view, bundle, years, pick, onPick }: { view: Inv
     <Card pad="none" className="flex flex-col overflow-hidden">
       <div className="bg-popover border-b border-border px-5 py-4 flex flex-col gap-1">
         <span className="text-sm text-muted-foreground">{c.pair.accountSlot}</span>
-        <span className="text-xl font-bold">
+        {/* two lines on a phone: the longest legal name's, so the card keeps its height when the cheapest house changes (2026-10-31) */}
+        <span className="text-xl font-bold max-md:min-h-14.5">
           <ProviderLink p={house} />
         </span>
-        <span className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm">
+        <span className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm max-md:min-h-12.25">
           {priced(at) && (
             <span className="text-muted-foreground">
               {c.pair.colCharges(years)}: <Num value={nis(at.accountCost, "F-63", c.pair.colCharges(years), bundle.today)} />
@@ -481,6 +489,7 @@ export function AccountColumn({ view, bundle, years, pick, onPick }: { view: Inv
         <span className="text-sm text-muted-foreground flex flex-wrap items-center gap-1.5">
           {c.pair.accountsCond} <Tag><bdi>{fund.name}</bdi></Tag> · {c.pair.accountsHint}
         </span>
+        {standingCount > 0 && <span className="text-xs text-muted-foreground">{c.pair.standingNote(standingCount, local.length)}</span>}
       </div>
       <PickList
         label={c.pair.listLabelAccounts}
