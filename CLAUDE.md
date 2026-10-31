@@ -192,6 +192,7 @@ The evidence behind them is `research/2026-10-28-founder-patterns.md`.
 - `docs/` — product docs (`product.md`, `discovery.md`, `method.md`, `roadmap.md`, `data-schema.md`, `data-inventory.md`, `parameters-rationale.md`)
 - `research/` — dated research reports and findings
 - `.claude/skills/il-finance/references/` — the rule base: the latest research on every rule, sourced and kept current (closed questions struck); the only copy. Everyone reads it; only each file's owner (the tax-specialist for the tax files, the domain-specialist for the rest) or the lead edits it, and other agents put rule findings in their reports
+- `research/library/` — every document already read, searchable by page: look there before downloading, and file each new one with `library.mjs add`. The index is in git; the files and their text are not, because the repository is public. `library.mjs recheck` says which linked documents changed since they were read
 - `data/` — source data, each entry with its source and date
 - `packages/schema/` — data schemas (Zod) for `docs/data-schema.md`; `json/` holds the exported JSON Schema
 - `packages/engine/` — calculation engine, one function per `docs/method.md` formula; no I/O
