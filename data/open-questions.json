@@ -1603,6 +1603,10 @@
     "closed_on": "2026-10-26"
   },
   {
+    "id": "TXG OQ14",
+    "status": "open"
+  },
+  {
     "id": "TXH OQ1",
     "status": "closed",
     "closed_on": "2026-10-26"
@@ -2002,6 +2006,10 @@
     "status": "open"
   },
   {
+    "id": "TXF OQ22",
+    "status": "open"
+  },
+  {
     "id": "TXS OQ1",
     "status": "narrowed"
   },
@@ -2068,6 +2076,26 @@
     "status": "closed",
     "closed_on": "2026-10-26",
     "title_he": "מה קורה לבסיס המס כשהמדד יורד"
+  },
+  {
+    "id": "TXS OQ16",
+    "status": "open"
+  },
+  {
+    "id": "TXS OQ17",
+    "status": "open"
+  },
+  {
+    "id": "TXS OQ18",
+    "status": "open"
+  },
+  {
+    "id": "TXS OQ19",
+    "status": "open"
+  },
+  {
+    "id": "TXS OQ20",
+    "status": "open"
   },
   {
     "id": "TX2 OQ1",

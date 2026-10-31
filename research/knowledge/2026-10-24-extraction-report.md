@@ -5,12 +5,12 @@ Tables read: publishers.json yes, documents.json yes.
 ## Headline
 
 - Rules: 596; with sources: 596; unresolved (sources_missing_reason): 0
-- Entries: 1837; with locator 1531, locator_he 1371, quote 737, anchor 16, page 1457
-- Entries with title_he: 1684; with publisher_he: 1832; rules whose first source lacks publisher_he: 0
+- Entries: 1846; with locator 1540, locator_he 1380, quote 743, anchor 16, page 1466
+- Entries with title_he: 1692; with publisher_he: 1841; rules whose first source lacks publisher_he: 0
 - Rules with derived_from: 148; general rules with examples (companies' terms they point to): 6
-- Strengths: primary 1431, primary-mirror 82, secondary 17, institution 307
+- Strengths: primary 1440, primary-mirror 82, secondary 17, institution 307
 - Rule strength realigned to its best source (primary/mirror pair only): 0
-- Kinds: regulator_page 164, circular 191, regulation 383, article 15, law 405, official_pdf 276, dataset 62, institution_doc 284, exchange_rules 25, other 23, form 9
+- Kinds: regulator_page 164, circular 197, regulation 384, article 15, law 405, official_pdf 278, dataset 62, institution_doc 284, exchange_rules 25, other 23, form 9
 
 ## Per rule base file
 
@@ -32,14 +32,14 @@ Tables read: publishers.json yes, documents.json yes.
 | savings-policies-and-executive-insurance.md | 2 | 8 | 0 |
 | switching-and-transfers.md | 60 | 173 | 0 |
 | tax-gemel-lehashkaa-ira-child.md | 19 | 67 | 0 |
-| tax-general.md | 14 | 48 | 0 |
+| tax-general.md | 14 | 50 | 0 |
 | tax-hishtalmut.md | 15 | 64 | 0 |
 | tax-insurance-and-amendment-190.md | 4 | 11 | 0 |
-| tax-interest-deposits-bonds.md | 18 | 71 | 0 |
-| tax-pension-gemel-lekitzba.md | 18 | 81 | 0 |
-| tax-securities-foreign.md | 20 | 62 | 0 |
-| tax-securities-israeli.md | 24 | 81 | 0 |
-| tax-tier2-other.md | 5 | 20 | 0 |
+| tax-interest-deposits-bonds.md | 18 | 72 | 0 |
+| tax-pension-gemel-lekitzba.md | 18 | 82 | 0 |
+| tax-securities-foreign.md | 20 | 63 | 0 |
+| tax-securities-israeli.md | 24 | 84 | 0 |
+| tax-tier2-other.md | 5 | 21 | 0 |
 | tracks-catalogue-and-decoder.md | 18 | 47 | 0 |
 
 ## Unresolved (no URL on the Source line)
