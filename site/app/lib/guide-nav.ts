@@ -24,6 +24,12 @@ export function exposureFoldedInto(holderIds: readonly string[], products: reado
   return null;
 }
 
+/** The sections a product guide leaves out (founder, issue 33: one template does not fit every guide). Unlisted guides keep them all. */
+const omittedSections: Record<string, readonly string[]> = {
+  "current-account": ["who", "inout", "cost", "tax", "check"],
+};
+export const omitsSection = (guideId: string, section: string): boolean => omittedSections[guideId]?.includes(section) ?? false;
+
 export interface GuideGroup {
   id: string;
   ids: string[];

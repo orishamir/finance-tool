@@ -160,22 +160,7 @@ export const guideIndex = {
   fundKindsLine: "לפי סוג",
   fundKinds: { "money-market-fund-daily": "יומית", "money-market-fund-renewable": "מתחדשת" } as Record<string, string>,
   last: { title: "מה האתר עוד לא מכסה", line: "מוצרים שהאתר מכיר אבל עוד לא מסביר עד הסוף" },
-  // audit 2026-10-24 (A43, A44): the product-versus-exposure explainer, the start line, the purpose groups and the plain subtitles
-  explainer: {
-    title: "שני חלקים בכל חיסכון",
-    product: { term: "איפה הכסף מוחזק", line: "המוצר: פיקדון, קרן השתלמות, חשבון ניירות ערך. הוא קובע מי מחזיק את הכסף, מה המס ומתי אפשר למשוך." },
-    exposure: { term: "במה הכסף מושקע", line: "מה שבתוך המוצר: מזומן, מק״מ, קרן כספית, אג״ח, מדד מניות. הוא קובע מה עולה ויורד." },
-    link: "בכל עמוד של מוצר יש שורה עם מה שאפשר להשקיע בתוכו.",
-  },
-  start: {
-    title: "מאיפה להתחיל",
-    // each line is the page's own "למה משתמשים בזה" sentence, shortened; the link goes to that page
-    items: [
-      { id: "keren-hishtalmut", lead: "שכירים שהמעסיק מפקיד להם:" },
-      { id: "pension-comprehensive", lead: "הבסיס של כל חוסך שכיר:" },
-      { id: "money-market-fund-daily", lead: "כסף שצריך להישאר זמין:" },
-    ],
-  },
+  // audit 2026-10-24 (A44): the purpose groups and the plain subtitles
   purposeGroups: { short: "כסף שוטף וקצר", "tax-benefit": "חיסכון עם הטבת מס", retirement: "פרישה", children: "לילדים", "self-directed": "לבחירה עצמית", other: "עוד" } as Record<string, string>,
   /** Products whose official name must be decoded: the card also shows the plain name the product's own record carries (names.he[1]). */
   plainSubtitleFor: ["pension-comprehensive", "pension-general", "provident-for-annuity", "child-savings-provident"],

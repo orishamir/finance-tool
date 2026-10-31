@@ -3,6 +3,7 @@
 import { Link } from "react-router";
 import { r4catalogue as copy } from "../../../copy";
 import { fmt } from "../../../lib/format";
+import { omitsSection } from "../../../lib/guide-nav";
 import { IconAlert, IconDrillIn } from "../../icons";
 import { LeadTail, Num, RuleRef, RulesLine } from "../../provenance";
 import { Card, Disclosure, Tag } from "../../kit";
@@ -167,10 +168,12 @@ export function BankProductRow({ p, known, wrapperName }: { p: ProductRowData; k
           {copy.rowLinks.whatIs} {wrapperName}
           <IconDrillIn size={16} />
         </Link>
-        <Link to={`/guide/${p.wrapperId}#check`} className="inline-flex items-center gap-0.5 min-h-target text-sm text-link hover:underline">
-          {copy.rowLinks.whatToCheck}
-          <IconDrillIn size={16} />
-        </Link>
+        {!omitsSection(p.wrapperId, "check") && (
+          <Link to={`/guide/${p.wrapperId}#check`} className="inline-flex items-center gap-0.5 min-h-target text-sm text-link hover:underline">
+            {copy.rowLinks.whatToCheck}
+            <IconDrillIn size={16} />
+          </Link>
+        )}
       </p>
     </Card>
   );
