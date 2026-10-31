@@ -61,8 +61,8 @@ export interface WorkbenchInput {
   /** Set when the fund is quoted in a foreign currency: the FX line then applies (F-13). */
   currency?: { code: string; startRate: number };
   /**
-   * F-63 (2026-10-25, index page): shekels per one unit of a currency, by ISO code ("USD", "GBP"), for the tariff lines set in
-   * dollars or pounds (per share, minimum, maximum). The site fills it from the ECB series with `crossRate` (F-84). A provider
+   * F-63 (2026-10-25, index page): shekels per one unit of a currency, by ISO code ("USD", "EUR", "GBP"), for the tariff lines set in
+   * dollars, euros or pounds (per share, minimum, maximum). The site fills it from the ECB series with `crossRate` (F-84). A provider
    * whose line needs a currency this does not hold is "not comparable" (`needs-fx-rate`).
    */
   fx?: Record<string, number>;
@@ -102,7 +102,7 @@ export type NotComparableReason =
   | { code: "line-without-value"; detail: string }
   /** 2026-10-25: a per-share line and the fund record has no `share_price`. */
   | { code: "needs-share-price"; detail: string }
-  /** 2026-10-25: a line in dollars or pounds and `fx` holds no rate for the currency. */
+  /** 2026-10-25: a line in a foreign currency and `fx` holds no rate for it. */
   | { code: "needs-fx-rate"; detail: string }
   /** 2026-10-25: the snapshot is ambiguous or a unit is not one the tariff reads; `detail` is the engine's message. */
   | { code: "record-error"; detail: string };
@@ -209,6 +209,8 @@ function nis(vo: ValueObject, what: string): number {
 }
 
 const USD_UNITS = new Set(["usd", "usd_per_trade"]);
+/** The currency a fixed amount of a tariff line is printed in, by its unit (F-12): one table, so a bound in any of them is converted the same way (F-84). */
+const CURRENCY_OF_UNIT: Partial<Record<ValueObject["unit"], string>> = { usd: "USD", usd_per_trade: "USD", eur: "EUR", gbp_per_trade: "GBP" };
 
 /** Shekels per unit of a currency from the run's `fx` input; a provider that needs a rate the run lacks is "not comparable" (2026-10-25). */
 function rateOf(fx: WorkbenchInput["fx"], code: string, what: string): number {
@@ -231,8 +233,10 @@ type SnapLine = FeesSnapshot["lines"][number];
  */
 /** The band of a trade line that prices a purchase by standing order (F-12, 2026-10-31). Never the line of a sale, a lump sum or a reinvested distribution. */
 export const STANDING_ORDER_BAND = "הוראת קבע";
+/** The band of a conversion line that prices the conversion of a monthly purchase on a recurring plan (F-13, 2026-10-31). Never a lump sum's or a sale's: Interactive Israel's tariff, p.6, charges those by the table. */
+export const STANDING_CONVERSION_BAND = "השקעה קבועה אוטומטית";
 
-const standingLines = (snapshot: FeesSnapshot) => snapshot.lines.filter((l) => l.base === "trade" && l.level === "list" && l.band === STANDING_ORDER_BAND);
+const standingLines = (snapshot: FeesSnapshot, base: "trade" | "fx") => snapshot.lines.filter((l) => l.base === base && l.level === "list" && l.band === (base === "trade" ? STANDING_ORDER_BAND : STANDING_CONVERSION_BAND));
 
 /**
  * The classes a tariff line may name for a security of this class. A bond (`tase_bonds`) is also a `tase_shares_bonds` security, and a line
@@ -261,11 +265,16 @@ export function buildTariff(input: Omit<WorkbenchInput, "fund"> & { fund?: Workb
 
   /** The line of a base at a level for the channel: none, one, or an error when two apply (the snapshot is ambiguous). */
   const pick = (base: SnapLine["base"], at: SnapLine["level"]): SnapLine | undefined => {
-    const all = snapshot.lines.filter((l) => l.base === base && l.level === at && applicable(l) && l.band !== STANDING_ORDER_BAND);
+    const all = snapshot.lines.filter((l) => l.base === base && l.level === at && applicable(l) && l.band !== STANDING_ORDER_BAND && l.band !== STANDING_CONVERSION_BAND);
     const channels = new Set(all.map((l) => l.channel).filter((c): c is string => c !== null));
     if (input.channel === undefined && channels.size > 0)
       throw new RecordInputError(`provider ${snapshot.id}: ${base} lines exist for channels ${[...channels].join(", ")}; the input must name the channel`);
     let found = all.filter((l) => l.channel === null || l.channel === input.channel);
+    // F-13 (2026-10-31): a conversion line printed for one currency prices a fund in it, and the line with no currency prices the others.
+    if (base === "fx" && input.currency) {
+      const own = found.filter((l) => l.conversion_currency === input.currency!.code);
+      found = own.length > 0 ? own : found.filter((l) => !l.conversion_currency);
+    }
     const exact = found.filter((l) => l.applies_to.includes(input.instrumentClass));
     if (exact.length > 0 && exact.length < found.length && classes.length > 1) found = exact;
     const ambiguous = (ls: SnapLine[]) =>
@@ -329,11 +338,11 @@ export function buildTariff(input: Omit<WorkbenchInput, "fund"> & { fund?: Workb
           if (!input.fund?.sharePrice) throw new Unusable("needs-share-price", `${l.line.id} is a fee per share and the fund record has no share_price`);
           c.perShare = l.rate.value * rateOf(input.fx, "USD", `${l.line.id} rate`);
         } else c.rate = pct(l.rate, "pct_of_trade", `${l.line.id} rate`);
-        // E2: minimums and maximums in dollars or pounds are converted at the run's rate.
+        // E2: minimums and maximums in a foreign currency are converted at the run's rate.
         const bound = (vo: ValueObject, what: string): number => {
           if (NIS_UNITS.has(vo.unit)) return nis(vo, what);
-          const code = USD_UNITS.has(vo.unit) ? "USD" : vo.unit === "gbp_per_trade" ? "GBP" : null;
-          if (!code) throw new RecordInputError(`${what}: unit is ${vo.unit}, expected shekels, dollars or pounds`);
+          const code = CURRENCY_OF_UNIT[vo.unit];
+          if (!code) throw new RecordInputError(`${what}: unit is ${vo.unit}, expected shekels, dollars, euros or pounds`);
           if (typeof vo.value !== "number") throw new Unusable("line-without-value", `${what} has no value`);
           return vo.value * rateOf(input.fx, code, what);
         };
@@ -351,7 +360,7 @@ export function buildTariff(input: Omit<WorkbenchInput, "fund"> & { fund?: Workb
       used(r.line, r.rate, r.min, r.max, r.cap);
       // F-12 (2026-10-31): a monthly purchase by standing order, where the tariff prints a price for one; a list price only, never over an average.
       if (r.rate === r.line.rate && r.line.level === "list") {
-        const standing = standingLines(snapshot).filter((l) => applicable(l) && (l.channel === null || l.channel === input.channel));
+        const standing = standingLines(snapshot, "trade").filter((l) => applicable(l) && (l.channel === null || l.channel === input.channel));
         if (standing.length > 1) throw new RecordInputError(`provider ${snapshot.id}: ${standing.length} standing-order lines apply (${standing.map((l) => l.id).join(", ")}); the snapshot is ambiguous`);
         const l = standing[0];
         if (l) {
@@ -399,7 +408,13 @@ export function buildTariff(input: Omit<WorkbenchInput, "fund"> & { fund?: Workb
     else {
       const r = resolve("fx");
       if (r) {
-        const c: Commission = { rate: pct(r.rate, "pct_of_trade", `${r.line.id} rate`) };
+        const c: Commission = { rate: 0 };
+        // F-13 (2026-10-31): a conversion priced in shekels a dollar, not as a share of the amount.
+        if (r.rate.unit === "nis_per_usd") {
+          if (input.currency!.code !== "USD") throw new RecordInputError(`${r.line.id}: the price is per dollar but the instrument currency is ${input.currency!.code}`);
+          if (typeof r.rate.value !== "number") throw new Unusable("line-without-value", `${r.line.id} rate has no value`);
+          c.perCurrencyUnit = r.rate.value;
+        } else c.rate = pct(r.rate, "pct_of_trade", `${r.line.id} rate`);
         if (hasBound(r.min) || hasBound(r.max)) {
           // The FX bounds are in USD where the bank sets them so: they stay in the trade currency (F-13, 2026-10-24).
           const bounds = [r.min, r.max].filter(hasBound);
@@ -418,8 +433,18 @@ export function buildTariff(input: Omit<WorkbenchInput, "fund"> & { fund?: Workb
           if (hasBound(r.min)) c.min = bound(r.min, `${r.line.id} min`);
           if (hasBound(r.max)) c.max = bound(r.max, `${r.line.id} max`);
         }
-        out.tariff.fx = hasBound(r.min) || hasBound(r.max) ? c : c.rate;
+        out.tariff.fx = hasBound(r.min) || hasBound(r.max) || c.perCurrencyUnit ? c : c.rate;
         used(r.line, r.rate, r.min, r.max);
+        // F-13 (2026-10-31): the conversion of a monthly purchase on a recurring plan, where the tariff prints a price for one; a list price only, never over an average.
+        if (r.rate === r.line.rate && r.line.level === "list") {
+          const plan = standingLines(snapshot, "fx").filter((l) => applicable(l) && (l.channel === null || l.channel === input.channel));
+          if (plan.length > 1) throw new RecordInputError(`provider ${snapshot.id}: ${plan.length} recurring-plan conversion lines apply (${plan.map((l) => l.id).join(", ")}); the snapshot is ambiguous`);
+          const l = plan[0];
+          if (l) {
+            out.tariff.fxStanding = pct(l.rate, "pct_of_trade", `${l.id} rate`);
+            used(l, l.rate);
+          }
+        }
       }
     }
   }

@@ -35,6 +35,8 @@ export const feeLine = z.strictObject({
   period: z.enum(["month", "quarter", "year"]).nullable(),
   channel: z.string().nullable(),
   band: z.string().nullable(),
+  /** F-13 (2026-10-31): a conversion line for one currency (ISO code); it prices a fund in that currency, and a line with no currency prices the others. */
+  conversion_currency: z.string().regex(/^[A-Z]{3}$/).optional(),
   statement_code: z.string().nullable(),
   /** The CMA fund number, when the line is for one track. */
   track_id: z.number().int().positive().optional(),

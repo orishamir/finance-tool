@@ -65,6 +65,8 @@ export interface SecuritiesInput {
      * currency (`in: "instrument"`), converted at the rate of the trade.
      */
     fx?: number | Commission;
+    /** F-13 (2026-10-31): the conversion of a monthly purchase on a recurring plan, where the tariff prints a price for one; `fx` otherwise, and always on a lump sum and at exit. */
+    fxStanding?: number | Commission;
     /** The instrument's currency, for tariff lines set in it: code and NIS per unit at the start. */
     currency?: { code: string; startRate: number };
   };
@@ -195,8 +197,8 @@ export function runSecurities(input: SecuritiesInput, ctx: RunContext): RunResul
   let lots: Lot[] = [];
 
   /** One order: FX fee on a contribution, then trade value and commission, bought at the ask. */
-  const buy = (cash: number, month: number, eventMonth: number, convert: boolean, price: Commission | undefined = tariff.buy) => {
-    const fx = convert && tariff.currency ? fxFee(tariff.fx, cash, { fxRate: fxRate(eventMonth) }) : 0;
+  const buy = (cash: number, month: number, eventMonth: number, convert: boolean, price: Commission | undefined = tariff.buy, conversion: number | Commission | undefined = tariff.fx) => {
+    const fx = convert && tariff.currency ? fxFee(conversion, cash, { fxRate: fxRate(eventMonth) }) : 0;
     tally.fee("fx", fx);
     const { trade, commission } = buyWithCash(cash - fx, price, { fxRate: fxRate(eventMonth), sharePrice: sharePrice(month) });
     tally.fee("trade", commission);
@@ -258,7 +260,7 @@ export function runSecurities(input: SecuritiesInput, ctx: RunContext): RunResul
   for (let m = 1; m <= T; m++) {
     // 1-2. Contributions at the start of the month, each its own order (A-28).
     if (m === 1 && C[0]! > 0) buy(C[0]!, m, 0, true);
-    if (m <= goal.months && C[m]! > 0) for (let k = 0; k < orders; k++) buy(C[m]! / orders, m, m, true, tariff.buyStanding ?? tariff.buy);
+    if (m <= goal.months && C[m]! > 0) for (let k = 0; k < orders; k++) buy(C[m]! / orders, m, m, true, tariff.buyStanding ?? tariff.buy, tariff.fxStanding ?? tariff.fx);
     tally.paidIn += (m === 1 ? C[0]! : 0) + (m <= goal.months ? C[m]! : 0);
 
     // 3. Growth less drag (F-10).
