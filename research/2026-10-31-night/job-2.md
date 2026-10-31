@@ -17,9 +17,9 @@ The line exists. Each tariff's TASE trading line excludes mutual funds but its f
 | Mizrahi-Tefahot | 8dedbb45235cd662 p.10, p.13, p.47 | 4.1 | note 4 "אך לרבות "קרן מחקה"" | 0.52%, min 45 (p.47) |
 | Jerusalem | 2fddc750f3f74c72 p.6, p.7 | "קרנות נאמנות[4]" | note 4 "אך לרבות "קרן מחקה"" | 0.5% |
 | Hapoalim | no filed copy | existing record | note (05), read 2026-10-23 | 0.40%, min 20 |
-| One Zero | no filed copy | existing record | footnote 9, read 2026-10-24 | 0.3%, min 30 |
+| One Zero | no filed copy, read in Chrome tonight, PDF p.9-10 | 4(א)(1) | footnote 9, p.10: "אך לרבות "קרן מחקה"" | 0.3%, min 30 |
 
-Hapoalim and One Zero could not be fetched tonight (bot checks). Their scope rests on the footnote recorded when the tariff was read and on MF-27; both are on the chrome list and their `checked` dates are unchanged.
+One Zero and Hapoalim could not be fetched by script tonight (bot checks). The lead read One Zero in Chrome afterwards: 0.3%, minimum 30, maximum 6,000 on PDF page 9, footnote 9 on page 10 includes tracking funds and any mutual fund listed on the exchange, custody 0 on page 11. Note 5 on the line adds third-party costs from part 11 (pages 16-18); for a TASE holding only TASE's trading-data cost applies, at actual cost, unpriced. Hapoalim rests on the note recorded when its tariff was read and on MF-27; it stays on the chrome list with its `checked` date unchanged.
 
 ### Issue 41: Excellence
 The "guess" was a record error: a tracking fund fell on the 16 NIS line, which the tariff prints for traditional funds only. Library 6c9ec0ada66f77d8, PDF page 3: line 1 "...(למעט קרנות נאמנות מסורתיות, אופציות מעו"ף וחוזים עתידיים במעו"ף ולרבות קרנות סל וקרנות מחקות)", "0.4% מינימום 10 ש"ח"; line 2 "קניה, מכירה ופדיון של קרנות נאמנות מסורתיות הנסחרות בבורסה בתל אביב", "₪ 16 פיקס לעסקה". Snapshot `excellence@2026-10-31`: tracking funds on line 1, line 2 given the band "קרנות נאמנות מסורתיות". The file fetched tonight is byte for byte the filed copy.
@@ -66,7 +66,7 @@ This pick rests on a document that could not be re-read tonight. Tests that pinn
 
 ## Conflicts and doubts
 - Leumi is on another basis: its only tracking-fund line is the standing-order one (0.225%, min 5, note 10), which by its own note applies only to buying by standing order; other trades pay the regular line (0.4%, min 26). The other banks are now on the regular line. Massad and FIBI print a 7 NIS standing-order minimum (note 13), not modelled. Not changed: outside the four issues.
-- One Zero's plan lines (מסלול ONE) were not extended to tracking funds: footnote not re-read.
+- One Zero's plan lines (מסלול ONE) were not extended to tracking funds: the plan line on PDF page 24 names only "מניות ואגרות חוב", with no footnote.
 - IBI's and Excellence's rates and Excellence's account fee are ceilings (BRK-24, BRK-48).
 - Interactive Israel's tariff, PDF page 1, prints a TASE custody fee of 0.08% for shares and ETFs; not in data, since TASE trading there is institutional only.
 - Fair (0.08%, min 3 on tracking funds per the broker landscape) is not in data.
