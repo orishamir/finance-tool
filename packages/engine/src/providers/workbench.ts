@@ -187,7 +187,7 @@ export interface ProviderWorkbench {
 }
 
 /** A value the snapshot holds as null: the provider's data is incomplete, so its row is "not comparable". */
-class Unusable extends Error {
+export class Unusable extends Error {
   constructor(readonly code: "line-without-value" | "needs-share-price" | "needs-fx-rate", message: string) {
     super(message);
   }
@@ -229,7 +229,13 @@ type SnapLine = FeesSnapshot["lines"][number];
  * its rate by an `averages` row (a percentage with no minimum or maximum, Q16); lines with no average stay at the list price.
  * `entered` takes the person's lines over the list lines. Quarterly or yearly fixed fees are spread evenly over their months.
  */
-export function buildTariff(input: WorkbenchInput, p: ProviderInput, snapshot: FeesSnapshot): TariffBuild {
+/** The band of a trade line that prices a purchase by standing order (F-12, 2026-10-31). Never the line of a sale, a lump sum or a reinvested distribution. */
+export const STANDING_ORDER_BAND = "הוראת קבע";
+
+const standingLines = (snapshot: FeesSnapshot) => snapshot.lines.filter((l) => l.base === "trade" && l.level === "list" && l.band === STANDING_ORDER_BAND);
+
+/** A tariff can be read without a fund (the goal comparison's list of brokers): only a fee per share and a distribution line need one. */
+export function buildTariff(input: Omit<WorkbenchInput, "fund"> & { fund?: WorkbenchInput["fund"] }, p: ProviderInput, snapshot: FeesSnapshot): TariffBuild {
   const wrapper = input.wrapper ?? "brokerage-account";
   // A bond (`tase_bonds`) is also a `tase_shares_bonds` security; a line that names the class itself is the more specific and wins below.
   const classes = input.instrumentClass === "tase_bonds" ? ["tase_bonds", "tase_shares_bonds"] : [input.instrumentClass];
@@ -249,7 +255,7 @@ export function buildTariff(input: WorkbenchInput, p: ProviderInput, snapshot: F
 
   /** The line of a base at a level for the channel: none, one, or an error when two apply (the snapshot is ambiguous). */
   const pick = (base: SnapLine["base"], at: SnapLine["level"]): SnapLine | undefined => {
-    const all = snapshot.lines.filter((l) => l.base === base && l.level === at && applicable(l));
+    const all = snapshot.lines.filter((l) => l.base === base && l.level === at && applicable(l) && l.band !== STANDING_ORDER_BAND);
     const channels = new Set(all.map((l) => l.channel).filter((c): c is string => c !== null));
     if (input.channel === undefined && channels.size > 0)
       throw new RecordInputError(`provider ${snapshot.id}: ${base} lines exist for channels ${[...channels].join(", ")}; the input must name the channel`);
@@ -310,27 +316,41 @@ export function buildTariff(input: WorkbenchInput, p: ProviderInput, snapshot: F
     const r = resolve("trade");
     if (r) {
       // E1 (2026-10-25): a dollar rate per share is charged on the share count, which needs the fund's price.
-      const c: Commission = { rate: 0 };
-      if (r.rate.unit === "usd_per_share") {
-        if (typeof r.rate.value !== "number") throw new Unusable("line-without-value", `${r.line.id} rate has no value`);
-        if (!input.fund.sharePrice) throw new Unusable("needs-share-price", `${r.line.id} is a fee per share and the fund record has no share_price`);
-        c.perShare = r.rate.value * rateOf(input.fx, "USD", `${r.line.id} rate`);
-      } else c.rate = pct(r.rate, "pct_of_trade", `${r.line.id} rate`);
-      // E2: minimums and maximums in dollars or pounds are converted at the run's rate.
-      const bound = (vo: ValueObject, what: string): number => {
-        if (NIS_UNITS.has(vo.unit)) return nis(vo, what);
-        const code = USD_UNITS.has(vo.unit) ? "USD" : vo.unit === "gbp_per_trade" ? "GBP" : null;
-        if (!code) throw new RecordInputError(`${what}: unit is ${vo.unit}, expected shekels, dollars or pounds`);
-        if (typeof vo.value !== "number") throw new Unusable("line-without-value", `${what} has no value`);
-        return vo.value * rateOf(input.fx, code, what);
+      const commission = (l: { line: SnapLine; rate: ValueObject; min: ValueObject | null | undefined; max: ValueObject | null | undefined; cap: ValueObject | null | undefined }): Commission => {
+        const c: Commission = { rate: 0 };
+        if (l.rate.unit === "usd_per_share") {
+          if (typeof l.rate.value !== "number") throw new Unusable("line-without-value", `${l.line.id} rate has no value`);
+          if (!input.fund?.sharePrice) throw new Unusable("needs-share-price", `${l.line.id} is a fee per share and the fund record has no share_price`);
+          c.perShare = l.rate.value * rateOf(input.fx, "USD", `${l.line.id} rate`);
+        } else c.rate = pct(l.rate, "pct_of_trade", `${l.line.id} rate`);
+        // E2: minimums and maximums in dollars or pounds are converted at the run's rate.
+        const bound = (vo: ValueObject, what: string): number => {
+          if (NIS_UNITS.has(vo.unit)) return nis(vo, what);
+          const code = USD_UNITS.has(vo.unit) ? "USD" : vo.unit === "gbp_per_trade" ? "GBP" : null;
+          if (!code) throw new RecordInputError(`${what}: unit is ${vo.unit}, expected shekels, dollars or pounds`);
+          if (typeof vo.value !== "number") throw new Unusable("line-without-value", `${what} has no value`);
+          return vo.value * rateOf(input.fx, code, what);
+        };
+        if (hasBound(l.min)) c.min = bound(l.min, `${l.line.id} min`);
+        if (hasBound(l.max)) c.max = bound(l.max, `${l.line.id} max`);
+        // E3: the cap is a share of the trade value and wins over the minimum.
+        if (hasBound(l.cap)) c.cap = pct(l.cap, "pct_of_trade", `${l.line.id} cap`);
+        return c;
       };
-      if (hasBound(r.min)) c.min = bound(r.min, `${r.line.id} min`);
-      if (hasBound(r.max)) c.max = bound(r.max, `${r.line.id} max`);
-      // E3: the cap is a share of the trade value and wins over the minimum.
-      if (hasBound(r.cap)) c.cap = pct(r.cap, "pct_of_trade", `${r.line.id} cap`);
+      const c = commission(r);
       out.tariff.buy = c;
       out.tariff.sell = { ...c };
       used(r.line, r.rate, r.min, r.max, r.cap);
+      // F-12 (2026-10-31): a monthly purchase by standing order, where the tariff prints a price for one; a list price only, never over an average.
+      if (r.rate === r.line.rate && r.line.level === "list") {
+        const standing = standingLines(snapshot).filter((l) => applicable(l) && (l.channel === null || l.channel === input.channel));
+        if (standing.length > 1) throw new RecordInputError(`provider ${snapshot.id}: ${standing.length} standing-order lines apply (${standing.map((l) => l.id).join(", ")}); the snapshot is ambiguous`);
+        const l = standing[0];
+        if (l) {
+          out.tariff.buyStanding = commission({ line: l, rate: l.rate, min: l.min, max: l.max, cap: l.cap });
+          used(l, l.rate, l.min, l.max, l.cap);
+        }
+      }
     } else out.noLine.push("trade");
   }
 
@@ -400,7 +420,7 @@ export function buildTariff(input: WorkbenchInput, p: ProviderInput, snapshot: F
   const modelled = new Set<SnapLine["base"]>(["trade", "custody", "fixed_period", "fx"]);
   for (const l of snapshot.lines.filter(applicable)) {
     if (l.base === "distribution_handling") {
-      if (input.fund.distribution) {
+      if (input.fund?.distribution) {
         out.notModelled.push({ lineId: l.id, base: l.base, reason: "F-18 is not computed yet" });
         if (!out.flags.includes("F-18")) out.flags.push("F-18");
       }

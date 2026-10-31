@@ -99,6 +99,11 @@ function changeLine(plan: RunPlan, line: FeeLine, rate: number): RunPlan {
           if (!input.tariff.buy && !input.tariff.sell) return noLine(plan, line);
           if (input.tariff.buy) set("buy");
           if (input.tariff.sell) set("sell");
+          // F-12: a standing-order price moves with the trade rate, in proportion, so it stays the same share of the regular price
+          if (input.tariff.buyStanding) {
+            if (rate === 0 || !input.tariff.buy?.rate) delete tariff.buyStanding;
+            else tariff.buyStanding = { ...input.tariff.buyStanding, rate: (input.tariff.buyStanding.rate * rate) / input.tariff.buy.rate };
+          }
           return { run: "runSecurities", input: { ...input, tariff } };
         case "custody":
           if (!tariff.custody) return noLine(plan, line);

@@ -4,7 +4,7 @@
 import { existsSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import type { DepositTerms, FeesSnapshot, ParameterRecord, RuleRecord, ValueObject, ProductId, ProductRecord } from "@finance-tool/schema";
-import { buildTariff as engineTariff, memberKindOf, type InstrumentTerms, type WorkbenchInput } from "@finance-tool/engine";
+import { buildTariff as engineTariff, memberKindOf, STANDING_ORDER_BAND, Unusable, type InstrumentTerms, type WorkbenchInput } from "@finance-tool/engine";
 import { loadChecklistRows, loadCma, loadCmaFees, loadFees, loadNotCovered, loadParameters, loadRules, loadProducts, pointedRecords, root, today } from "./data.server";
 import { buildInstrumentTerms, exposureHref, loadDepositTerms, loadExposures, loadFunds, regulatorAverageFees } from "./instruments.server";
 import { evaluate, representativeFeeValue, type BundleDataFile, type ProviderTariff, type CompareBundle, type ExposureEntry, type Family, type HoldingTerms, type IndexFundTerms, type RunGoal, type Tier2Row, type WrapperEntry } from "./compare";
@@ -13,7 +13,7 @@ import { computed, ownBy, ownEach, type SiteValue } from "./value";
 import { publisherHe } from "./publisher-he.server";
 import { accountBanks, commonAccountRate, currentAccountRecords } from "./guide-signature-bundle.server";
 
-const tariffKeys: string[] = ["tradeRate", "tradeMin", "tradeMax", "custodyRate", "custodyMin", "custodyMax", "fxRate", "monthlyFee"];
+const tariffKeys: string[] = ["tradeRate", "tradeMin", "tradeMax", "standingRate", "standingMin", "standingMax", "custodyRate", "custodyMin", "custodyMax", "fxRate", "monthlyFee"];
 import { BROKERAGE, instrumentClassOf, providersOf, shortName } from "./providers";
 import { latestSnapshots } from "./providers.server";
 import { readJsonCached, readTextCached } from "./read-cache.server";
@@ -199,8 +199,10 @@ function providerTariffs(productId: string, instrumentClass: string): Record<str
       let built: ReturnType<typeof engineTariff>;
       try {
         built = engineTariff({ instrumentClass, wrapper: BROKERAGE, channel } as WorkbenchInput, { snapshot: snap, level: "list" }, snap);
-      } catch {
-        break;
+      } catch (e) {
+        // a tariff the run cannot price leaves the list; any other fault is a fault, never a shorter list
+        if (e instanceof Unusable) break;
+        throw e;
       }
       if (built.noLine.includes("trade") || !built.tariff.buy) continue;
       const tariff = direct ? pickLines(built.tariff, ["buy", "sell", "custody", "monthlyFee"]) : built.tariff;
@@ -209,7 +211,12 @@ function providerTariffs(productId: string, instrumentClass: string): Record<str
         const l = snap.lines.find((x) => x.id === id);
         if (!l) continue;
         const bound = (v: ValueObject | null | undefined) => (v && typeof v.value === "number" ? { ...v } : undefined);
-        if (l.base === "trade") {
+        if (l.base === "trade" && l.band === STANDING_ORDER_BAND) {
+          feeValues.standingRate = { ...l.rate };
+          const lo = bound(l.min), hi = bound(l.max);
+          if (lo) feeValues.standingMin = lo;
+          if (hi) feeValues.standingMax = hi;
+        } else if (l.base === "trade") {
           feeValues.tradeRate = { ...l.rate };
           const lo = bound(l.min), hi = bound(l.max);
           if (lo) feeValues.tradeMin = lo;
@@ -418,7 +425,7 @@ export function buildCompareBundle(): CompareBundle {
     // the channel of the trade line the site's own tariff read: the list trade line whose rate and minimum are the ones the run takes
     const rate = w.feeValues.tradeRate?.value;
     const snap = named ? latestSnapshots().find((x) => x.id === named) : undefined;
-    const channel = snap?.lines.find((l) => l.level === "list" && l.base === "trade" && l.rate.value === rate && (w.feeValues.tradeMin === undefined || l.min?.value === w.feeValues.tradeMin.value))?.channel;
+    const channel = snap?.lines.find((l) => l.level === "list" && l.base === "trade" && l.band !== STANDING_ORDER_BAND && l.rate.value === rate && (w.feeValues.tradeMin === undefined || l.min?.value === w.feeValues.tradeMin.value))?.channel;
     // D31: the card names the fund and the provider whose tariff it reads; their figures are those companies' own
     const fundRecord = sources.funds.find((x) => x.id === String(p05.instruments?.[w.id]?.fund));
     if (fundRecord) w.feeValues = ownEach(w.feeValues, fundRecord.manager, (k) => k.startsWith("fund"));

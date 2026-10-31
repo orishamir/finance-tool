@@ -364,7 +364,7 @@ export function withOwnFee(w: WrapperEntry, terms: InstrumentTerms, g: Pick<RunG
   return t;
 }
 
-const tariffValueKeys = ["tradeRate", "tradeMin", "tradeMax", "custodyRate", "custodyMin", "custodyMax", "fxRate", "monthlyFee"] as const;
+const tariffValueKeys = ["tradeRate", "tradeMin", "tradeMax", "standingRate", "standingMin", "standingMax", "custodyRate", "custodyMin", "custodyMax", "fxRate", "monthlyFee"] as const;
 
 /**
  * The bundle with the person's chosen providers in place (2026-10-24, D4 and D21: the representative provider is a parameter the
@@ -500,6 +500,12 @@ export function providerOutcomes(bundle: CompareBundle, g: RunGoal, wrapperId: s
     if (row) row.current = true;
     return { site: null, providers };
   }
+  // the card's own tariff when it is also one of the rows: mark that row, never two rows for one institution
+  const same = r && !r.chosen ? providers.find((p) => p.id === r.providerId) : undefined;
+  if (same) {
+    same.current = true;
+    return { site: null, providers };
+  }
   const own = r && !r.chosen ? ran(bundle) : undefined;
   return { site: own && r ? outcome(r.providerId ?? "", r.provider ?? w.name, r.channel ?? "", own, true) : null, providers };
 }
@@ -536,6 +542,7 @@ function scaleTerms(terms: InstrumentTerms, id: string, scale: Record<string, nu
   }
   if (t.tariff) {
     if (t.tariff.buy) t.tariff.buy.rate *= k("trade");
+    if (t.tariff.buyStanding) t.tariff.buyStanding.rate *= k("trade");
     if (t.tariff.sell) t.tariff.sell.rate *= k("trade");
     if (t.tariff.custody) t.tariff.custody.rate *= k("custody");
   }

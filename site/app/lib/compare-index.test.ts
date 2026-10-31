@@ -6,6 +6,7 @@ import { applyIndex, applyIndexWay, planOfGoal, readIndex } from "./compare-inde
 import { compareBundle } from "./compare.server";
 import { cheapestWay, knownIndices, rangeOverKnownIndices } from "./invest";
 import { parseOwnRates, splitOwnTerms, termsOfGoal } from "./own-rate";
+import { instrumentClassOf } from "./providers";
 import { buildWorkbenchBundle } from "./providers.server";
 
 const bundle = compareBundle();
@@ -31,6 +32,33 @@ describe("the account's way is priced like the invest page's", () => {
       }
     });
   }
+});
+
+describe("the account's other houses are read for the way's fund (F-12, F-63)", () => {
+  const way = (kind: "etf" | "tracking") => {
+    const plan = planOfGoal(bundle, founder, state);
+    const ways = rangeOverKnownIndices(wb, plan)!.perIndex;
+    const fundOf = (w: (typeof ways)[number]) => wb.funds.find((f) => f.id === w.fundRecordId);
+    const isEtf = (w: (typeof ways)[number]) => instrumentClassOf(fundOf(w)!, wb.exposures.find((e) => e.id === fundOf(w)!.exposure_id)) === "etf_units";
+    return { list: ways.filter((w) => isEtf(w) === (kind === "etf")), plan };
+  };
+  const withWay = (w: Parameters<typeof applyIndexWay>[2]) => applyIndexWay(bundle, wb, w, "chosen")!.wrappers.find((x) => x.id === BRK)!;
+  it("an ETF's way carries no standing-order price at any house, as the invest page charges it", () => {
+    const { list } = way("etf");
+    for (const w of list) {
+      const entry = withWay(w);
+      for (const [id, p] of Object.entries(entry.providers ?? {})) expect(p.tariff.buyStanding, `${w.fundRecordId} at ${id}`).toBeUndefined();
+      expect(entry.providers?.massad?.tariff.buy?.min).toBe(35);
+    }
+  });
+  it("a tracking fund's way carries the printed standing-order price at the three houses that print one", () => {
+    const { list } = way("tracking");
+    expect(list.length).toBeGreaterThan(0);
+    const entry = withWay(list[0]!);
+    const marked = Object.entries(entry.providers ?? {}).filter(([, p]) => p.tariff.buyStanding).map(([id]) => id).sort();
+    expect(marked).toEqual(["fibi", "leumi", "massad"]);
+    expect(entry.providers?.massad?.tariff.buyStanding?.min).toBe(7);
+  });
 });
 
 describe("before a choice (D27)", () => {

@@ -863,6 +863,9 @@ export const guideBlocks = {
       tradeRate: "עמלת קנייה ומכירה",
       tradeMin: "עמלת קנייה ומכירה, מינימום",
       tradeMax: "עמלת קנייה ומכירה, מקסימום",
+      standingRate: "עמלת קנייה בהוראת קבע",
+      standingMin: "עמלת קנייה בהוראת קבע, מינימום",
+      standingMax: "עמלת קנייה בהוראת קבע, מקסימום",
       custodyRate: "דמי ניהול פיקדון ניירות ערך",
       custodyMin: "דמי ניהול פיקדון ניירות ערך, מינימום",
       custodyMax: "דמי ניהול פיקדון ניירות ערך, מקסימום",
@@ -1250,6 +1253,9 @@ export const ownTermsCopy = {
     heading: "ספק שהתעריפון שלו ישמש בחישוב", // scenario fix 2026-10-24
     hint: "הבנקים ובתי ההשקעות שהתעריפון שלהם נאסף, לפי מה שהאפשרות הזו משאירה בסוף. התעריפון הוא של הספק; הבחירה שלכם.", // scenario fix 2026-10-24; review 2026-10-26: makam and bonds are not on the providers page
     pick: "לבחור", // scenario fix 2026-10-24
+    standingTag: "מחיר להוראת קבע", // founder 2026-10-31
+    standingNote: (n: number, total: number) =>
+      `קנייה חודשית מחושבת כהוראת קבע: ${n === 1 ? `אחד מתוך ${total} הבנקים ובתי ההשקעות שברשימה מפרסם` : `${n} מתוך ${total} הבנקים ובתי ההשקעות שברשימה מפרסמים`} לה מחיר נמוך יותר, והוא שנכלל בחישוב. סכום חד־פעמי, מכירה וקנייה של קרן סל מחושבים במחיר הרגיל.`, // founder 2026-10-31
     channel: { direct: "ערוץ ישיר", branch: "סניף" } as Record<string, string>, // scenario fix 2026-10-24
     reset: "לחזור לספק שהאתר בחר", // scenario fix 2026-10-24
     siteChoice: "בחירת האתר", // scenario fix 2026-10-24
@@ -3437,6 +3443,8 @@ export const invest = {
   houses: {
     heading: "איפה לפתוח את חשבון ניירות הערך",
     sub: "בנק או בית השקעות שמחזיק בשבילכם את ניירות הערך.",
+    standingTag: ownTermsCopy.provider.standingTag,
+    standingNote: ownTermsCopy.provider.standingNote,
     tap: "לכל אחד מופיעה הקרן שנשאר בה הכי הרבה. הקישו על שורה כדי לראות את כל הקרנות בחשבון שלו.",
     gapAbout: (name: string) => `פער מהדרך הזולה, ${name}`,
     foreignHeading: "בחו״ל",
@@ -3514,6 +3522,8 @@ export const invest = {
     chosen: "הבחירה",
     cheapestTag: "★ הזול",
     yoursTag: "החשבון שלכם",
+    standingTag: ownTermsCopy.provider.standingTag,
+    standingNote: ownTermsCopy.provider.standingNote,
     broken: "⫽ הפס נחתך: הסכום ארוך מהשטח",
     notPriced: (n: number) => (n === 1 ? "חשבון אחד לא מחושב עם הקרן הזו:" : `${n} חשבונות לא מחושבים עם הקרן הזו:`),
     fundsNotPriced: (n: number, house: string) => (n === 1 ? `קרן אחת לא מחושבת ב${house}:` : `${n} קרנות לא מחושבות ב${house}:`),

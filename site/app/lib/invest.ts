@@ -3,7 +3,7 @@
 // numbers come from the engine's provider workbench (F-63) and from the fund runs of F-65, over the bundle the other
 // workbench pages use. No fee, rate or rule figure is written here: tariffs are snapshots, fund fees are fund records,
 // exchange rates are the ECB's (D26). Nothing is chosen for the person (D27): an index is always an argument.
-import { beforeTax, costByWho, crossing, gapToIndex, sumFees, trackingBeyondFeesRange, providerWorkbench, relativeGap, type ComparedProvider, type FeeLine, type NotComparableProvider, type ProviderRow } from "@finance-tool/engine";
+import { STANDING_ORDER_BAND, beforeTax, costByWho, crossing, gapToIndex, sumFees, trackingBeyondFeesRange, providerWorkbench, relativeGap, type ComparedProvider, type FeeLine, type NotComparableProvider, type ProviderRow } from "@finance-tool/engine";
 import type { ExposureRecord, FeesSnapshot, FundRecord } from "@finance-tool/schema";
 import { invest as copy } from "../copy";
 import { aliasRows } from "./search-aliases";
@@ -137,6 +137,8 @@ export interface BrokerCell {
   leftN?: number;
   /** Abroad: the exchange the price rests on; null when the tariff has one line for all. */
   venue?: Venue | null;
+  /** The monthly purchases ran on the house's printed standing-order line (F-12, D41). */
+  standing?: boolean;
   reason?: Reason;
   availability?: Availability;
 }
@@ -154,6 +156,8 @@ export interface WayPrice {
   /** The same, by the tariff's own lines (trade, custody, FX, fixed), largest first, and the remainder no single line explains. */
   lines: { line: FeeLine; cost: number }[];
   interaction: number;
+  /** The monthly purchases ran on the house's printed standing-order line (F-12, D41). */
+  standing: boolean;
 }
 
 export interface FundWay {
@@ -231,6 +235,8 @@ export interface HouseRow {
   reason: Reason | null;
   /** An index with no fund record: the house's cheapest broker cost over the group's options. */
   generic: BrokerCell | null;
+  /** The house prints a standing-order line for a kind of fund here: by house, so the row keeps its label when the best fund changes. */
+  standing: boolean;
 }
 
 export interface WorthLines {
@@ -411,7 +417,7 @@ function reasonOf(row: NotComparableProvider, s: FeesSnapshot): NotComparable {
   return { code: r.code, detail: r.detail };
 }
 
-type Priced = { kind: "ok"; row: ComparedProvider; venue: Venue | null } | { kind: "fail"; reason: NotComparable };
+type Priced = { kind: "ok"; row: ComparedProvider; venue: Venue | null; standing: boolean } | { kind: "fail"; reason: NotComparable };
 
 /** The venue the tariff line a row used names (a trade line's band), else the reading's venue. */
 function rowVenue(row: ComparedProvider, s: FeesSnapshot, cand: Cand): Venue | null {
@@ -448,7 +454,7 @@ function priceMany(ctx: Ctx, spec: Spec, option: OptionId, snaps: FeesSnapshot[]
       if (!best || g.row.real > best.row.real || (g.row.real === best.row.real && venue !== null && best.venue === null)) best = { row: g.row, venue };
     }
     if (best) {
-      out.set(s.id, { kind: "ok", ...best });
+      out.set(s.id, { kind: "ok", ...best, standing: best.row.linesUsed.some((id) => s.lines.find((l) => l.id === id)?.band === STANDING_ORDER_BAND) });
       continue;
     }
     const fails = got.flatMap((g) => (g.row.kind === "not-comparable" ? [reasonOf(g.row, scoped(s))] : g.row.noLine.includes("trade") ? [{ code: "no-applicable-line" as const, detail: `no trade line of the ${s.snapshot} snapshot applies to ${spec.cls}` }] : []));
@@ -481,7 +487,7 @@ function wayPrice(ctx: Ctx, p: Extract<Priced, { kind: "ok" }>, providerId: stri
   const open = row.run.outcome.code === "listed-not-ranked";
   const value = computed(row.real, "nis", "F-65", inputMap(ctx.plan), { today: ctx.bundle.today, rules: rulesOf(row), flags: row.run.flags.map((f) => f.code), about });
   const lines = row.byType.map((x) => ({ line: x.line, cost: x.costBeforeTax }));
-  return { providerId, value, valueN: row.real, venue: p.venue, open, accountCost: row.horizonCostBeforeTax, lines, interaction: row.horizonCostBeforeTax - lines.reduce((t, l) => t + l.cost, 0) };
+  return { providerId, value, valueN: row.real, venue: p.venue, open, accountCost: row.horizonCostBeforeTax, lines, interaction: row.horizonCostBeforeTax - lines.reduce((t, l) => t + l.cost, 0), standing: p.standing };
 }
 
 // ---------------------------------------------------------------- funds
@@ -518,7 +524,7 @@ function computeOption(ctx: Ctx, index: IndexRef, option: OptionId, yourBroker: 
     const na = unavailable(s, option);
     if (na) return { providerId: s.id, kind: "unavailable", availability: na };
     const p = priced.get(s.id)!;
-    if (p.kind === "ok") return { providerId: s.id, kind: "cost", cost: costValue(ctx, p.row, `עלות ${s.provider.name_he}`), costN: p.row.horizonCostBeforeTax, leftN: p.row.real, venue: p.venue };
+    if (p.kind === "ok") return { providerId: s.id, kind: "cost", cost: costValue(ctx, p.row, `עלות ${s.provider.name_he}`), costN: p.row.horizonCostBeforeTax, leftN: p.row.real, venue: p.venue, standing: p.standing };
     return { providerId: s.id, kind: p.reason.code === "no-applicable-line" ? "no-line" : "not-comparable", reason: p.reason };
   });
   // ordered as the ranking orders (F-80 on what is left), not by the cost shown, which is before tax (F-91)
@@ -664,7 +670,8 @@ function housesOf(ctx: Ctx, options: OptionView[], headline: Way | null, provide
     const na = cells.find((c) => c.kind === "unavailable");
     const gap = best && headline && headline.providerId !== provider.id && headline.valueN - best.price!.valueN > 0 ? spreadValue(ctx, headline.valueN - best.price!.valueN, copy.houses.gapAbout(provider.name)) : null;
     const reason = best || generic ? null : (entries.find((e) => e.reason)?.reason ?? cells.find((c) => c.reason)?.reason ?? null);
-    return { provider, group, entries, best, gap, unavailable: !best && !generic ? (na?.availability ?? null) : null, reason, generic };
+    const standing = cells.some((c) => c.standing) || entries.some((e) => e.price?.standing);
+    return { provider, group, entries, best, gap, unavailable: !best && !generic ? (na?.availability ?? null) : null, reason, generic, standing };
   });
   const priced = (r: HouseRow) => r.best ?? r.generic;
   const cost = (r: HouseRow) => (r.best ? -r.best.price!.valueN : r.generic ? r.generic.costN! : Infinity);

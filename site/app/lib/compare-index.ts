@@ -4,7 +4,7 @@
 // account by the lowest of them (the conservative reading, D10; provisional, the founder has been told). After a choice the account runs on
 // that index's cheapest way (`cheapestWay`): the broker's tariff and the fund's own costs. Pure functions; the fund costs come from the
 // compare bundle (`indexFunds`), the ways from the invest page's computation (`invest.ts`), so the two pages agree for the same plan.
-import { buildTariff as engineTariff, type WorkbenchInput } from "@finance-tool/engine";
+import { buildTariff as engineTariff, STANDING_ORDER_BAND, type WorkbenchInput } from "@finance-tool/engine";
 import type { FeesSnapshot } from "@finance-tool/schema";
 import { representativeFeeValue, type CompareBundle, type RunGoal, type WrapperEntry } from "./compare";
 import { feeInputs } from "./fees";
@@ -47,8 +47,45 @@ export function readIndex(wb: WorkbenchBundle, plan: WorkbenchInputs, chosenId: 
 }
 
 const FX_BAND: Record<string, string> = { "interactive-brokers": "המרה אוטומטית" };
-const TARIFF_KEYS = ["tradeRate", "tradeMin", "tradeMax", "custodyRate", "custodyMin", "custodyMax", "fxRate", "monthlyFee"] as const;
+const TARIFF_KEYS = ["tradeRate", "tradeMin", "tradeMax", "standingRate", "standingMin", "standingMax", "custodyRate", "custodyMin", "custodyMax", "fxRate", "monthlyFee"] as const;
 const isFundKey = (k: string) => k.startsWith("fund") || k === "ninetyPercentTest";
+
+/** A house's tariff read for an instrument class on a channel, with the figures behind it; null when it gives no price (F-63, "No line, no price"). */
+function houseTariff(wb: WorkbenchBundle, snap: FeesSnapshot, cls: string, channel: string): { channel: string; tariff: NonNullable<NonNullable<WrapperEntry["terms"]>["tariff"]>; feeValues: WrapperEntry["feeValues"] } | null {
+  const scopedSnap = scoped(snap);
+  let built: ReturnType<typeof engineTariff>;
+  try {
+    built = engineTariff({ instrumentClass: cls, wrapper: BROKERAGE_ID, channel, ...(wb.fx ? { fx: fxRunInput(wb.fx) } : {}) } as WorkbenchInput, { snapshot: scopedSnap, level: "list", ...(FX_BAND[snap.id] ? { band: [FX_BAND[snap.id]!] } : {}) }, scopedSnap);
+  } catch {
+    return null;
+  }
+  if (built.noLine.includes("trade") || !built.tariff.buy) return null;
+  const feeValues: WrapperEntry["feeValues"] = {};
+  for (const id of built.linesUsed) {
+    const l = scopedSnap.lines.find((x) => x.id === id);
+    if (!l) continue;
+    const bound = (v: typeof l.min) => (v && typeof v.value === "number" ? { ...v } : undefined);
+    const lo = bound(l.min), hi = bound(l.max);
+    if (l.base === "trade" && l.band === STANDING_ORDER_BAND) {
+      feeValues.standingRate = { ...l.rate };
+      if (lo) feeValues.standingMin = lo;
+      if (hi) feeValues.standingMax = hi;
+    } else if (l.base === "trade") {
+      feeValues.tradeRate = { ...l.rate };
+      if (lo) feeValues.tradeMin = lo;
+      if (hi) feeValues.tradeMax = hi;
+    } else if (l.base === "custody") {
+      feeValues.custodyRate = { ...l.rate };
+      if (lo) feeValues.custodyMin = lo;
+      if (hi) feeValues.custodyMax = hi;
+    } else if (l.base === "fixed_period" && built.tariff.monthlyFee !== undefined) {
+      feeValues.monthlyFee = l.rate.unit === "nis_per_month" ? { ...l.rate } : { ...l.rate, value: built.tariff.monthlyFee, unit: "nis_per_month", state: "computed" };
+    }
+  }
+  // D31: the card names this provider, so the tariff lines are the provider's own figures
+  for (const k of TARIFF_KEYS) if (feeValues[k]) feeValues[k] = ownBy(feeValues[k]!, snap.provider.name_he);
+  return { channel, tariff: built.tariff as NonNullable<NonNullable<WrapperEntry["terms"]>["tariff"]>, feeValues };
+}
 
 /**
  * The bundle with the brokerage account running on one way: that fund (its kind and costs, from the bundle's `indexFunds`) and that
@@ -64,38 +101,19 @@ export function applyIndexWay(bundle: CompareBundle, wb: WorkbenchBundle, way: C
   const snap = wb.snapshots.find((s) => s.id === way.providerId);
   if (!w?.terms || !ft || !rec || !snap) return null;
   const cls = instrumentClassOf(rec, wb.exposures.find((e) => e.id === rec.exposure_id));
-  const scopedSnap = scoped(snap);
-  let built: ReturnType<typeof engineTariff>;
-  try {
-    built = engineTariff({ instrumentClass: cls, wrapper: BROKERAGE_ID, channel: "direct", ...(wb.fx ? { fx: fxRunInput(wb.fx) } : {}) } as WorkbenchInput, { snapshot: scopedSnap, level: "list", ...(FX_BAND[snap.id] ? { band: [FX_BAND[snap.id]!] } : {}) }, scopedSnap);
-  } catch {
-    return null;
-  }
-  if (built.noLine.includes("trade") || !built.tariff.buy) return null;
+  const own = houseTariff(wb, snap, cls, "direct");
+  if (!own) return null;
   const feeValues: WrapperEntry["feeValues"] = Object.fromEntries(Object.entries(w.feeValues).filter(([k]) => !isFundKey(k) && !(TARIFF_KEYS as readonly string[]).includes(k)));
-  Object.assign(feeValues, ft.feeValues);
-  const lines: FeesSnapshot["lines"] = scopedSnap.lines;
-  for (const id of built.linesUsed) {
-    const l = lines.find((x) => x.id === id);
-    if (!l) continue;
-    const bound = (v: typeof l.min) => (v && typeof v.value === "number" ? { ...v } : undefined);
-    const lo = bound(l.min), hi = bound(l.max);
-    if (l.base === "trade") {
-      feeValues.tradeRate = { ...l.rate };
-      if (lo) feeValues.tradeMin = lo;
-      if (hi) feeValues.tradeMax = hi;
-    } else if (l.base === "custody") {
-      feeValues.custodyRate = { ...l.rate };
-      if (lo) feeValues.custodyMin = lo;
-      if (hi) feeValues.custodyMax = hi;
-    } else if (l.base === "fixed_period" && built.tariff.monthlyFee !== undefined) {
-      feeValues.monthlyFee = l.rate.unit === "nis_per_month" ? { ...l.rate } : { ...l.rate, value: built.tariff.monthlyFee, unit: "nis_per_month", state: "computed" };
-    }
+  Object.assign(feeValues, ft.feeValues, own.feeValues);
+  const terms = { ...w.terms, fund: ft.fund, tariff: own.tariff };
+  // the other houses the person can pick are read for this fund's class too, never for P-05's (F-12, "for that security type"): a house with no line for it gives no price (F-63)
+  const providers: NonNullable<WrapperEntry["providers"]> = {};
+  for (const [id, p] of Object.entries(w.providers ?? {})) {
+    const s = wb.snapshots.find((x) => x.id === id);
+    const at = s ? (houseTariff(wb, s, cls, "direct") ?? houseTariff(wb, s, cls, "branch")) : null;
+    if (at) providers[id] = { ...p, ...at };
   }
-  // D31: the card names this provider and fund, so the tariff lines are the provider's own figures
-  for (const k of TARIFF_KEYS) if (feeValues[k]) feeValues[k] = ownBy(feeValues[k]!, snap.provider.name_he);
-  const terms = { ...w.terms, fund: ft.fund, tariff: built.tariff as NonNullable<typeof w.terms.tariff> };
-  const next: WrapperEntry = { ...w, terms, feeValues };
+  const next: WrapperEntry = { ...w, terms, feeValues, ...(w.providers ? { providers } : {}) };
   const fee = representativeFeeValue(next, bundle.runDate);
   const { classMinFee: _drop, chosen: _chosen, compared: _compared, ...rep } = w.representative ?? { name: w.name };
   next.representative = { ...rep, name: way.fundName, provider: way.providerName, providerId: way.providerId, channel: "direct", pickedBy: "site", viaIndex: via, ...(fee ? { fee } : {}) };
