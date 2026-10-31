@@ -5,7 +5,7 @@ Tables read: publishers.json yes, documents.json yes.
 ## Headline
 
 - Rules: 596; with sources: 596; unresolved (sources_missing_reason): 0
-- Entries: 1837; with locator 1531, locator_he 1324, quote 737, anchor 16, page 1457
+- Entries: 1837; with locator 1531, locator_he 1371, quote 737, anchor 16, page 1457
 - Entries with title_he: 1684; with publisher_he: 1832; rules whose first source lacks publisher_he: 0
 - Rules with derived_from: 148; general rules with examples (companies' terms they point to): 6
 - Strengths: primary 1431, primary-mirror 82, secondary 17, institution 307
