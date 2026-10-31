@@ -56,6 +56,8 @@ export function reasonText(r: Reason, cls: string): string {
       return c.reasons.fundType;
     case "need-yield":
       return c.reasons.needYield;
+    case "us-fund-open":
+      return c.reasons.usFundOpen;
     case "need-rate":
       return c.reasons.needRate(r.currency);
     case "no-fund-rate":

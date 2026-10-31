@@ -125,6 +125,7 @@ export function validateData(ctx: ValidationContext): Problem[] {
     }
     if (collection === "funds" && result.success) {
       for (const message of checkFundLoad(parsed.value as Pick<FundRecord, "fees">)) report(file, message);
+      for (const message of checkFundDistribution(parsed.value as Pick<FundRecord, "distribution_policy" | "distribution">)) report(file, message);
     }
     if (collection === "catalog" && result.success && cmaFundIds) {
       const maps = (parsed.value as { maps_to: { cma_fund_id: number | null; track_ids: number[] } }).maps_to;
@@ -185,6 +186,16 @@ export function checkFundLoad(record: Pick<FundRecord, "fees">): string[] {
   const value = record.fees.load?.value;
   if (typeof value !== "number" || value <= 0) return [];
   return [`fees.load: this fund charges a load on purchase of ${value}%, and the page does not yet price it; show and price the load before adding this value (issue 44)`];
+}
+
+/** data-schema §3.5 (issue 147, A-10): a yield belongs to a distributing fund, as a number in percent a year from a document. */
+export function checkFundDistribution(record: Pick<FundRecord, "distribution_policy" | "distribution">): string[] {
+  const d = record.distribution;
+  if (!d) return [];
+  const out: string[] = [];
+  if (record.distribution_policy !== "distributing") out.push("distribution: a yield on a fund that does not distribute");
+  if (d.yield.unit !== "pct_per_year" || typeof d.yield.value !== "number" || d.yield.value <= 0) out.push("distribution.yield: a number above zero in pct_per_year, read from the fund's document");
+  return out;
 }
 
 /** The words a document must use before a house ranks on a kind of holding (founder, 2026-10-31: no price from analogy). */

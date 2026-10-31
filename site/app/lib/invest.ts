@@ -123,7 +123,7 @@ export const customIdOf = (name: string): string => `custom-${norm(name).replace
 
 // ---------------------------------------------------------------- reasons and cells
 
-export type Reason = NotComparable | { code: "fund-type" } | { code: "need-yield" } | { code: "need-rate"; currency: string } | { code: "no-fund-rate" } | { code: "no-hedge-record" } | { code: "no-hedge-entered" };
+export type Reason = NotComparable | { code: "fund-type" } | { code: "need-yield" } | { code: "us-fund-open" } | { code: "need-rate"; currency: string } | { code: "no-fund-rate" } | { code: "no-hedge-record" } | { code: "no-hedge-entered" };
 
 export interface Availability {
   source: { url: string; title: string; checked: string };
@@ -523,7 +523,7 @@ function fundSpec(ctx: Ctx, rec: FundRecord): { spec: Spec; mismatch: boolean } 
   // a hedged fund's cost is mostly beyond its fees (F-92): with no full year in its report and no published figure it is not priced
   if (rec.hedged === true && !rec.tracking_record && typeof rec.fees.tracking_difference_12m?.value !== "number") return { reason: { code: isCustomFund(rec) ? "no-hedge-entered" : "no-hedge-record" } };
   const run = fundRun(subject, exposure, ctx.plan.grossReturn, ctx.assumptions, ctx.bundle.fx);
-  if ("kind" in run) return { reason: run.kind === "need-rate" ? { code: "need-rate", currency: run.currency } : run.kind === "need-yield" ? { code: "need-yield" } : { code: "fund-type" } };
+  if ("kind" in run) return { reason: run.kind === "need-rate" ? { code: "need-rate", currency: run.currency } : run.kind === "need-yield" ? { code: rec.domicile === "US" ? "us-fund-open" : "need-yield" } : { code: "fund-type" } };
   // as the engine flags it (E4): a fund in a foreign currency other than its index's; a shekel fund on a dollar index is the usual case, not a mismatch
   const mismatch = !!exposure && !["NIS", "ILS"].includes(rec.currency) && rec.currency !== exposure.currency;
   return { spec: { fund: run.fund, market: run.market, ...(run.currency ? { currency: run.currency } : {}), cls: subject.instrumentClass }, mismatch };

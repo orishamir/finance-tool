@@ -69,6 +69,31 @@
     "url": "https://www.ishares.com/gls-download/literature/fact-sheet/iusa-ishares-core-s-p-500-ucits-etf-usd-dist-fund-fact-sheet-en-gb.pdf",
     "date": null
   },
+  "distribution": {
+    "yield": {
+      "value": 0.86,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://www.ishares.com/uk/individual/en/products/251900/ishares-sp-500-ucits-etf-inc-fund",
+        "title": "iShares Core S&P 500 UCITS ETF USD (Dist), product page: '12 Month Trailing Dividend Distribution Yield as of 29/Oct/2026 0.86%' (library a1a8783f6c7463ec)",
+        "publisher": "BlackRock (iShares plc)",
+        "strength": "institution"
+      },
+      "checked": "2026-10-31",
+      "effective_from": "2026-10-29",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-28",
+        "TXF-08",
+        "TXF-28"
+      ],
+      "state": "sourced",
+      "notes": "As the manager's page prints it. Its own definition: income distributions over the past twelve months divided by the most recent net asset value. The page's distribution table agrees: 0.1646, 0.1654, 0.1679 and 0.1598 USD (ex-dates 17 Sep 2026, 18 Jun 2026, 19 Mar 2026, 11 Dec 2025), 0.6577 USD together. The factsheet (library 42f663b2cc0e8cc1, data at 05-Oct-2026) prints '12m Trailing Yield : 0.63%' without saying how it is computed; that does not fit those four payments at a net asset value near 76 USD, so the page's figure is the one used. Payments a year: 'Distribution Frequency Quarterly' on the same page."
+    },
+    "per_year": 4
+  },
   "snapshot": "2026-10-31",
   "replication": {
     "method": "physical",

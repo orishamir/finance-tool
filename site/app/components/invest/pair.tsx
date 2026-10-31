@@ -625,6 +625,11 @@ export function FundColumn({ view, bundle, plan, today, pick, onPick, filter, on
         </span>
         <span className="text-sm text-muted-foreground flex flex-wrap items-center gap-x-3 gap-y-1">
           {c.pair.colFees}: <Fees rec={fund.rec} inline />
+          {fund.rec.distribution && (
+            <span>
+              {c.pair.colYield}: <Num value={ownBy(fund.rec.distribution.yield as SiteValue, fund.rec.manager)} size="inline" />
+            </span>
+          )}
         </span>
         <span className="flex flex-wrap gap-1.5 items-center">
           <OptionTag option={fund.option} />

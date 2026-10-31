@@ -57,6 +57,7 @@ describe("a click on a house moves to a way it has (founder, 2026-10-31)", () =>
 
   it("Interactive Brokers on the S&P 500 moves from the Israeli fund the page opens on to iShares", () => {
     const view = buildInvest({ bundle, index: knownIndices(bundle).find((i) => i.id === "index-sp500")!, plan });
-    expect(repick(view, pickOfHeadline(view)!, { house: "interactive-brokers" }).fund).toBe("ie00b5bmr087");
+    // a ranked fund before one shown and not ranked: since issue 147 that is IUSA, which it prices, rather than the accumulating CSPX
+    expect(repick(view, pickOfHeadline(view)!, { house: "interactive-brokers" }).fund).toBe("ie0031442068");
   });
 });

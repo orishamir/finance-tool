@@ -9,6 +9,7 @@ import {
   fundOf,
   lineClasses,
   providerWorkbench,
+  recordDistribution,
   RecordInputError,
   type ComparedProvider,
   type EnteredTariff,
@@ -280,10 +281,12 @@ export function fundRun(
   if (israeli && rec.tax_status.il_fund_tax_track !== "exempt") return { kind: "fund-type" };
   if (rec.distribution_policy === null) return { kind: "fund-type" };
   const kind = !israeli && rec.trading_currency_on_tase !== null ? "tase-foreign-fund" : israeli ? "israeli-fund" : "foreign-fund";
-  const dist = assumptions.distributions?.[rec.id];
+  // A-10: the record's yield, read from the fund's own documents; a yield is entered only for a fund whose record has none
+  const entered = assumptions.distributions?.[rec.id];
+  const dist = recordDistribution(rec) ?? (entered ? { yield: entered.yield / 100, perYear: entered.perYear } : undefined);
   if (rec.distribution_policy === "distributing" && !dist) return { kind: "need-yield" };
   if (rec.distribution_policy === "distributing" && !israeli && rec.domicile !== "US" && rec.domicile !== "IE") return { kind: "fund-type" };
-  const built = fundOf(rec, kind, rec.distribution_policy === "distributing" && dist ? { yield: dist.yield / 100, perYear: dist.perYear } : undefined, assumptions.w8ben);
+  const built = fundOf(rec, kind, rec.distribution_policy === "distributing" ? dist : undefined, assumptions.w8ben);
   if (!built.hasManagement) return { kind: "fund-type" };
   const f = (assumptions.fxChange ?? 0) / 100;
   const market: { grossReturn: number; returnIn?: "instrument"; fxChange?: number } = { grossReturn };
