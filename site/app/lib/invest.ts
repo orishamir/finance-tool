@@ -170,7 +170,8 @@ export interface FundWay {
   /** At the person's broker, when known. */
   atYours?: WayPrice | { reason: Reason; providerId: string };
   /** The fund's run at every house of the option (a price, or why it has none); `best` is the highest of the ranked ones. */
-  byHouse: Record<string, WayPrice | { reason: Reason; providerId: string }>;
+  /** `availability`: a sourced fact says the house does not sell this kind of fund ("not possible there"); any other reason is "no data". */
+  byHouse: Record<string, WayPrice | { reason: Reason; providerId: string; availability?: Availability }>;
   reason?: Reason;
   currencyMismatch: boolean;
 }
@@ -544,8 +545,9 @@ function computeOption(ctx: Ctx, index: IndexRef, option: OptionId, yourBroker: 
     let best: WayPrice | undefined;
     let failure: Reason | undefined;
     for (const s of ctx.snaps) {
-      if (unavailable(s, option)) {
-        base.byHouse[s.id] = { providerId: s.id, reason: { code: "no-applicable-line", detail: "unavailable" } };
+      const na = unavailable(s, option);
+      if (na) {
+        base.byHouse[s.id] = { providerId: s.id, reason: { code: "no-applicable-line", detail: "unavailable" }, availability: na };
         continue;
       }
       const p = got.get(s.id)!;

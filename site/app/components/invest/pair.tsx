@@ -3,6 +3,7 @@
 // neither list leaves anything out (a row that cannot be priced stays, with its reason). Above them, the result: what is put in, what
 // is left, and what it costs, split by who takes it: the person's pair and the cheapest one above each other, or, on the cheapest pair,
 // the next one beside it (one shape, so a pick never resizes the block).
+import { mayaFundHref } from "../../lib/sources";
 import { useMemo } from "react";
 import type { FeeLine } from "@finance-tool/engine";
 import { brands, invest as c } from "../../copy";
@@ -13,7 +14,7 @@ import { computed, ownBy, type SiteValue } from "../../lib/value";
 import { fmt } from "../../lib/format";
 import { IconLock } from "../icons";
 import { Num } from "../provenance";
-import { Button, Card, ChartLegend, CostStack, LabelChip, LabelFilter, LabelRow, PickList, holdOnPick, ProductIdLink, Sentence, Swatch, Tag, cx, type CostPart, type PickRow } from "../kit";
+import { Button, Card, ChartLegend, CostStack, LabelChip, LabelFilter, LabelRow, PickList, ProductIdLink, Sentence, Swatch, Tag, cx, type CostPart, type PickRow } from "../kit";
 import { optionClass, OptionTag, reasonText } from "./parts";
 import { ProviderLink, providerName } from "./sections";
 import { Fees } from "./funds";
@@ -418,16 +419,13 @@ export function AccountColumn({ view, bundle, years, pick, onPick }: { view: Inv
   const standingCount = local.filter((p) => allFunds(view).some((f) => { const a = f.byHouse[p.id]; return priced(a) && a.standing; })).length;
   const rows = view.providers.map((p) => ({ p, at: fund.byHouse[p.id] }));
   const ok = rows.filter((r): r is { p: typeof r.p; at: WayPrice } => priced(r.at)).sort((a, b) => Number(a.at.open) - Number(b.at.open) || b.at.valueN - a.at.valueN);
-  const missing = rows.filter((r) => !priced(r.at));
+  const noWay = (r: (typeof rows)[number]) => (r.at && "availability" in r.at && r.at.availability ? r.at.availability : null);
+  // every house keeps a row: what cannot be priced is grey, "no data" first and "not possible there" last (founder, 2026-10-31)
+  const missing = rows.filter((r) => !priced(r.at)).sort((a, b) => Number(!!noWay(a)) - Number(!!noWay(b)) || a.p.short.localeCompare(b.p.short, "he"));
   const scale = barScale(ok.map((r) => r.at.accountCost));
   const lines = [...new Set(ok.flatMap((r) => r.at.lines.map((l) => lineOf(l.line))))];
   const snapshot = bundle.snapshots.find((s) => s.id === pick.house);
   const at = fund.byHouse[pick.house];
-  const byReason = new Map<string, string[]>();
-  for (const r of missing) {
-    const text = r.at && "reason" in r.at ? reasonText(r.at.reason, optionClass[fund.option]) : c.funds.cannot;
-    byReason.set(text, [...(byReason.get(text) ?? []), r.p.id]);
-  }
   const pickRows: PickRow[] = ok.map((r, i) => {
     const parts: CostPart[] = [...r.at.lines.map((l) => ({ id: l.line, value: l.cost, className: lineClass[lineOf(l.line)] ?? "bg-chart-cost-other" })), { id: "remainder", value: r.at.interaction, className: "bg-chart-cost-other" }];
     const isYours = r.p.id === view.yourBroker;
@@ -458,6 +456,35 @@ export function AccountColumn({ view, bundle, years, pick, onPick }: { view: Inv
           <span className="text-end font-semibold">
             <Num value={r.at.value} />
           </span>
+        </>
+      ),
+    };
+  });
+  const greyRows: PickRow[] = missing.map((r) => {
+    const na = noWay(r);
+    return {
+      key: r.p.id,
+      selected: r.p.id === pick.house,
+      muted: true,
+      onSelect: () => onPick(repick(view, pick, { house: r.p.id })),
+      cells: (
+        <>
+          <span className="text-sm tabular-nums text-center">—</span>
+          <span className="flex flex-col min-w-0 leading-tight font-semibold">
+            {r.p.short}
+            <span className="flex flex-wrap gap-x-2 min-h-5 text-xs font-normal">{r.p.id === view.yourBroker && <span>{c.pair.yoursTag}</span>}</span>
+          </span>
+          <span className="flex flex-wrap items-center gap-x-2 gap-y-0.5 min-w-0 text-xs max-md:row-start-2 max-md:col-start-3 max-md:col-span-2">
+            <Tag tone={na ? undefined : "caution"}>{na ? c.pair.notPossible : c.pair.noData}</Tag>
+            {na ? (
+              <a href={na.source.url} target="_blank" rel="noopener noreferrer" title={na.note ?? na.source.title} className="text-link hover:underline">
+                {c.pair.notPossibleSource} ↗
+              </a>
+            ) : (
+              <span>{bundle.snapshots.find((s) => s.id === r.p.id)?.missing_reason_he ?? (r.at && "reason" in r.at ? reasonText(r.at.reason, optionClass[fund.option]) : c.funds.cannot)}</span>
+            )}
+          </span>
+          <span className="text-end font-semibold">—</span>
         </>
       ),
     };
@@ -503,7 +530,7 @@ export function AccountColumn({ view, bundle, years, pick, onPick }: { view: Inv
             <span className="text-end">{c.pair.colLeft}</span>
           </>
         }
-        rows={pickRows}
+        rows={[...pickRows, ...greyRows]}
       />
       <div className="px-5 py-3 flex flex-col gap-3">
         <ChartLegend
@@ -513,29 +540,6 @@ export function AccountColumn({ view, bundle, years, pick, onPick }: { view: Inv
             ...(ok.some((r) => r.at.accountCost > scale) ? [{ id: "broken", label: c.pair.broken }] : []),
           ]}
         />
-        {missing.length > 0 && (
-          <div className="flex flex-col gap-1.5 text-sm text-muted-foreground">
-            <span className="font-medium text-foreground">{c.pair.notPriced(missing.length)}</span>
-            {[...byReason.entries()].map(([text, ids]) => (
-              <span key={text} className="flex flex-col gap-0.5">
-                <span>{text}</span>
-                <span className="flex flex-wrap gap-x-1">
-                  {ids.map((id, i) => (
-                    <button key={id} type="button" className="text-link hover:underline" onClick={(e) => {
-                        holdOnPick(id, e.currentTarget);
-                        onPick(repick(view, pick, { house: id }));
-                      }}
-                    >
-                      {providerName(view, id)?.short ?? id}
-                      {i < ids.length - 1 ? " ·" : ""}
-                    </button>
-                  ))}
-                </span>
-              </span>
-            ))}
-            <span>{c.pair.willJoin}</span>
-          </div>
-        )}
       </div>
     </Card>
   );
@@ -547,9 +551,8 @@ export function AccountColumn({ view, bundle, years, pick, onPick }: { view: Inv
 const FILTER_FAMILIES = new Set<Label["family"]>(["trade", "follow", "currency", "payout", "held"]);
 
 const mayaHrefOf = (f: FundWay) => {
-  // Maya's page of the fund exists for an Israeli ETF and an Israeli tracking fund (the address pattern of the fund records' sources)
-  const kind = f.option === "il-etf" ? "etfs" : f.option === "il-tracking" ? "mutual-funds" : null;
-  return kind && f.rec.identifiers.tase_number ? `https://maya.tase.co.il/he/funds/${kind}/${f.rec.identifiers.tase_number}` : null;
+  // Maya's page of the fund exists for a fund listed in Israel
+  return (f.option === "il-etf" || f.option === "il-tracking") && f.rec.identifiers.tase_number ? mayaFundHref(f.rec.identifiers.tase_number) : null;
 };
 
 /** The fund's labels: how it trades (the type, from its option), then what the record says about it. */

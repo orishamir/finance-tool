@@ -269,5 +269,21 @@
       "notes": "'פתיחת חשבון במינימום של 250 ש\"ח ברכישה או ללא רכישה בכלל'; a first investment of at least 250 NIS."
     }
   },
-  "notice_rule_ids": []
+  "notice_rule_ids": [],
+  "availability": [
+    {
+      "applies_to": [
+        "etf_units",
+        "tase_foreign_fund_units",
+        "foreign_securities"
+      ],
+      "available": false,
+      "source": {
+        "url": "https://www.fair.co.il/%d7%aa%d7%a2%d7%a8%d7%99%d7%a4%d7%95%d7%9f/",
+        "title": "תעריפון פייר (עודכן 03/06/2026)",
+        "checked": "2026-10-31"
+      },
+      "note": "The price list prices funds only, its site offers units of mutual funds, and the exchange's guide lists it as a custodial member for mutual funds (BRK-03). Read as no ETF and no foreign security there; no document says so in words."
+    }
+  ]
 }

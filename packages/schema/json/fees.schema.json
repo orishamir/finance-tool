@@ -122,6 +122,10 @@
     "missing": {
       "type": "boolean"
     },
+    "missing_reason_he": {
+      "type": "string",
+      "minLength": 1
+    },
     "missing_reason": {
       "type": [
         "string",
