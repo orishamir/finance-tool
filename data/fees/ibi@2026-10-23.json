@@ -340,13 +340,15 @@
       ],
       "level": "list",
       "rate": {
-        "value": null,
+        "value": 0.7,
         "unit": "pct_of_trade",
         "source": {
           "url": "https://campaign.ibi.co.il/PDF/TRADE/TAARIFON_IBI.pdf",
           "title": "תעריפון עמלות - שרותי בורסה והשקעות בישראל אי.בי.אי. בע\"מ ('נכון לתאריך: 1.7.2026'), חלק 5 - מטבע חוץ, סעיף 1, מרווח המרה (עמ' 6)",
           "publisher": "I.B.I. Investment House - Exchange and Investment Services in Israel I.B.I. Ltd.",
-          "strength": "institution"
+          "strength": "institution",
+          "page": 6,
+          "quote": "מרווח המרה עד 0.7% ממחיר הביצוע בשוק"
         },
         "checked": "2026-10-23",
         "effective_from": "2026-07-01",
@@ -359,7 +361,7 @@
           "BRK-25"
         ],
         "state": "sourced",
-        "notes": "No conversion fee is printed: the notes say 'מרווח המרה בלבד ממחיר הביצוע בשוק וללא עמלה' (spread only, no fee). The spread is recorded under spread."
+        "notes": "The tariff prints a conversion spread of up to 0.7% and no fee ('מרווח המרה בלבד ממחיר הביצוע בשוק וללא עמלה'). The run prices the printed ceiling, so an actual conversion may cost less (2026-10-31)."
       },
       "min": null,
       "max": null,

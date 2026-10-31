@@ -108,3 +108,18 @@ describe("every house keeps a row in the account list (founder, 2026-10-31)", ()
     expect(fund).toContain("maya.tase.co.il/he/funds/mutual-funds/");
   });
 });
+
+describe("no price on what no document says can be done (2026-10-31)", () => {
+  const view = buildInvest({ bundle, index: indexById(bundle, "index-sp500")!, plan });
+  const at = (option: string, house: string) => view.options.find((o) => o.id === option)!.funds.map((f) => f.byHouse[house]!);
+  it("PEPPER prices no fund and Interactive Brokers nothing on Tel Aviv: grey as no data, not as not possible", () => {
+    for (const x of [...at("il-tracking", "pepper"), ...at("il-etf", "pepper"), ...at("il-etf", "interactive-brokers")]) {
+      expect("valueN" in x).toBe(false);
+      expect("availability" in x && x.availability).toBeFalsy();
+    }
+  });
+  it("Fair still prices tracking funds and no ETF", () => {
+    for (const x of at("il-tracking", "fair")) expect("valueN" in x).toBe(true);
+    for (const x of at("il-etf", "fair")) expect("availability" in x && x.availability).toBeTruthy();
+  });
+});

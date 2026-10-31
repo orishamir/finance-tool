@@ -517,6 +517,7 @@ export function AccountColumn({ view, bundle, years, pick, onPick }: { view: Inv
           {c.pair.accountsCond} <Tag><bdi>{fund.name}</bdi></Tag> · {c.pair.accountsHint}
         </span>
         {standingCount > 0 && <span className="text-xs text-muted-foreground">{c.pair.standingNote(standingCount, local.length)}</span>}
+        <span className="text-xs text-muted-foreground">{c.pair.whichPrice}</span>
       </div>
       <PickList
         label={c.pair.listLabelAccounts}

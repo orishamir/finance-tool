@@ -3523,6 +3523,7 @@ export const invest = {
     colDiff: "לעומת הבחירה",
     chosen: "הבחירה",
     cheapestTag: "★ הזול",
+    whichPrice: "המחיר בכל שורה הוא של לקוח רגיל. בחלק מהבנקים יש מחיר נמוך יותר לקבוצות כמו צעירים, סטודנטים וחיילים משוחררים, והוא לא מחושב כאן.",
     yoursTag: "החשבון שלכם",
     standingTag: ownTermsCopy.provider.standingTag,
     standingNote: ownTermsCopy.provider.standingNote,

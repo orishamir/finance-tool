@@ -25,9 +25,7 @@
       "id": "pepper-buy-sell-tase",
       "base": "trade",
       "applies_to": [
-        "tase_shares_bonds",
-        "etf_units",
-        "mutual_fund_units"
+        "tase_shares_bonds"
       ],
       "level": "list",
       "rate": {
@@ -48,8 +46,7 @@
         "update_rule": "provider-set",
         "rule_ids": [
           "BRK-16",
-          "BRK-19",
-          "MF-27"
+          "BRK-19"
         ],
         "state": "sourced",
         "notes": "Direct channels 'אינטרנט וסלולר / גישה ישירה TRADE ON': 0.4%, printed in Appendix E and in part 4(א)(1) note 3 ('0.40% לפעולה במניות ובאגרות חוב'). Same scope as the branch line (footnote {4}: ETFs and tracking funds included). Footnote {4}, p.34: the exclusion of funds 'אך לרבות קרן מחקה' takes tracking funds in; so a tracking fund pays this line unless the purchase is by standing order."
@@ -155,7 +152,7 @@
             "BRK-54"
           ],
           "state": "sourced",
-          "notes": "Printed: '4 ש\"ח' for buying, selling and redeeming securities traded on the Tel Aviv exchange: shares, makam and bonds, up to 30,000 NIS an order. Covering a tracking fund and an ETF is a reading of Leumi's own tariff, not words on this line (BRK-54)."
+          "notes": "Printed: '4 ש\"ח' for buying, selling and redeeming securities traded on the Tel Aviv exchange: shares, makam and bonds, up to 30,000 NIS an order. The line names no fund, and no PEPPER document says a fund can be bought there, so no fund is priced at PEPPER (BRK-54, 2026-10-31)."
         },
         "up_to": {
           "value": 30000,
@@ -499,9 +496,7 @@
       "id": "pepper-custody-israel",
       "base": "custody",
       "applies_to": [
-        "tase_shares_bonds",
-        "etf_units",
-        "mutual_fund_units"
+        "tase_shares_bonds"
       ],
       "excludes": [
         "makam",
@@ -852,5 +847,6 @@
   "notice_rule_ids": [
     "BRK-21",
     "BRK-20"
-  ]
+  ],
+  "missing_reason_he": "המחירון של פפר נוקב במניות, מק״מ ואגרות חוב, ואף מסמך שלה לא אומר שאפשר לקנות שם קרן על מדד."
 }

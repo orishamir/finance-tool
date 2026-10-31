@@ -279,11 +279,11 @@
       ],
       "available": false,
       "source": {
-        "url": "https://www.fair.co.il/%d7%aa%d7%a2%d7%a8%d7%99%d7%a4%d7%95%d7%9f/",
-        "title": "תעריפון פייר (עודכן 03/06/2026)",
+        "url": "https://funds.fair.co.il/search/funds",
+        "title": "מאתר הקרנות של פייר",
         "checked": "2026-10-31"
       },
-      "note": "The price list prices funds only, its site offers units of mutual funds, and the exchange's guide lists it as a custodial member for mutual funds (BRK-03). Read as no ETF and no foreign security there; no document says so in words."
+      "note": "Fair's own fund finder (funds.fair.co.il, 2,057 funds, read 2026-10-31) lists all 14 open tracking funds on the site's indices page and none of its ETFs; its price list covers funds only. No foreign security appears there either."
     }
   ]
 }

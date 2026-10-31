@@ -205,3 +205,13 @@ The rule base was not edited. All of these are institutions' statements, not rul
 - That file's "stop offering" for 1159227 needs reading with the letter: both name 15.12.2026.
 
 Nothing in the fetched documents asked for any action beyond their own subject. No terms, banners or gates were accepted. `data/`, the site and the rule base were not edited, and nothing was committed.
+
+## Sweep after the founder's PEPPER report (2026-10-31, evening)
+
+The founder, a PEPPER customer, said an S&P 500 fund cannot be bought there. Their word stands over my reading: the annex names shares, makam and bonds, and I had stretched it to funds from Leumi's footnote. Every price on the indices page was then checked for the same flaw.
+
+- **Withdrawn:** PEPPER (no fund priced; grey, no data). Interactive Brokers on Tel Aviv (ranked second among ETFs at 150,284 NIS, though BRK-43 says no page tells whether an Israeli may trade there; lines removed, grey, no data).
+- **Printed, kept:** every bank's footnote names a tracking fund on the securities line (Leumi p.34, Discount, Mercantile, Mizrahi p.13, FIBI, Massad, Hapoalim, Yahav, Jerusalem, One Zero); Excellence, Altshuler, Psagot and IBI name funds and ETFs on their own lines. A bank's direct-channel note repeats "shares and bonds" without the footnote; its scope is taken from the branch line it discounts.
+- **Fair, now evidence:** its finder (`funds.fair.co.il/api/v1/funds`, 2,057 funds, read 2026-10-31) lists all 14 open tracking funds on the page and none of its ETFs. Each row carries a field `notActiveReason` (0, 4 or 6; 4 on the Yellin S&P 500 fund) that neither Fair's main code nor its search code reads, and the finder shows that fund as usual; meaning unknown. Its app settings hold `orderSumMinNumber` 250 and `orderSumMaxNumber` 50,000; the site does not use them yet.
+- **Dates:** no tariff is from 2022. Eleven of the 18 links served the same bytes as the copy read; seven gave a script a bot page or an error (Altshuler, Discount, FIBI, Massad, Mercantile, One Zero, Yahav), read in Chrome within eight days. Old printed dates on parts still served: Jerusalem securities "06/02/20217" (a misprint, apparently 2017), Mizrahi securities 02/04/2024, Discount and Mercantile securities 07/02/2025, Altshuler PDF modified 22.5.2025.
+- **Group prices:** every price is the ordinary customer's. Leumi's annex A gives its 14-16, 16-18, 18+ and student groups 0.075% a quarter on Israeli securities against 0.15%, a released soldier 0.09%, Total Digital 0.125%. At 6,000 NIS plus 400 a month for 20 years at 7%, 0.075% adds about 5,000 NIS and moves Leumi from fourth to third; Fair stays first. Discount and others have their own annexes, not yet collected.
