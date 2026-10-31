@@ -71,6 +71,8 @@ export const feesSnapshot = z.strictObject({
   }),
   snapshot: isoDate,
   missing: z.boolean(),
+  /** The reason in Hebrew, for the page, where the plain "not collected" would be untrue (2026-10-31). */
+  missing_reason_he: z.string().min(1).optional(),
   missing_reason: z.string().nullable(),
   lines: z.array(feeLine),
   averages: z.array(

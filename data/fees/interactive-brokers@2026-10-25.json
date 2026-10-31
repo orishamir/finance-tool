@@ -679,6 +679,18 @@
         "checked": "2026-10-25"
       },
       "note": "The price list prices US listings and USD-denominated shares on the London Stock Exchange (BRK-42). US-listed ETFs: IBKR's PRIIPs block covers retail clients resident in the EEA or the UK, not an Israeli resident (BRK-44); the entity for Israelis is not named (BRK-43)."
+    },
+    {
+      "applies_to": [
+        "mutual_fund_units"
+      ],
+      "available": false,
+      "source": {
+        "url": "https://www.interactivebrokers.com/en/pricing/commissions-mutual-funds.php",
+        "title": "Interactive Brokers: Mutual Funds commissions",
+        "checked": "2026-10-31"
+      },
+      "note": "The mutual-fund price page prices US and European funds and names no Israeli fund and no shekel price; the stock tariff's Tel Aviv line names shares and ETFs. Read as an Israeli tracking fund not being sold there; no document says so in words."
     }
   ]
 }

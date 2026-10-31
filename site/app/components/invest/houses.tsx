@@ -67,7 +67,7 @@ function NoWay({ row }: { row: HouseRow }) {
     const a = row.unavailable;
     return (
       <span className="inline-flex flex-wrap items-center gap-x-2 gap-y-1">
-        <Tag tone="caution">{c.houses.unavailable}</Tag>
+        <Tag>{c.houses.unavailable}</Tag>
         <a href={a.source.url} target="_blank" rel="noopener noreferrer" className="text-link hover:underline inline-flex items-center gap-1" title={a.note ?? a.source.title}>
           {c.houses.sourceOf} <IconExternal size={14} />
         </a>
@@ -75,7 +75,12 @@ function NoWay({ row }: { row: HouseRow }) {
     );
   }
   const cls = row.entries[0] ? optionClass[row.entries[0].fund.option] : "etf_units";
-  return <span className="text-muted-foreground">{row.reason ? reasonText(row.reason, cls) : c.houses.noWay}</span>;
+  return (
+    <span className="inline-flex flex-wrap items-center gap-x-2 gap-y-1 text-muted-foreground">
+      <Tag tone="caution">{c.houses.noData}</Tag>
+      {row.reason ? reasonText(row.reason, cls) : c.houses.noWay}
+    </span>
+  );
 }
 
 function HouseItem({ view, row: r, rank, chosen, onPick }: { view: InvestView; row: HouseRow; rank: number | null; chosen: boolean; onPick: (id: string) => void }) {

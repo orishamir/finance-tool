@@ -707,3 +707,11 @@ Tried and not readable on 2026-10-22: tase.co.il/he/content/about/tase_members, 
 - Scope: institution: PEPPER
 - Dimensions: fee-trade, fee-custody
 - Likely to change: yes, tariffs change several times a year
+
+### BRK-55 First International: the HighTech 10 club's prices are a promotion
+- Rule: The leaflet for the club prints 0.1%, minimum 5 NIS, for buying a tracking fund by standing order, and says the benefits are given until 31.12.2026. The site prices First International on its tariff, not on these.
+- Figures: as quoted
+- Source: [הטבות אטרקטיביות לפעילים עצמאית בשוק ההון](https://www.fibi.co.il/media/cnvlnxrr/%D7%94%D7%98%D7%91%D7%95%D7%AA-%D7%99%D7%99%D7%97%D7%95%D7%93%D7%99%D7%95%D7%AA-%D7%9C%D7%A4%D7%A2%D7%99%D7%9C%D7%99%D7%9D-%D7%A2%D7%A6%D7%9E%D7%90%D7%99%D7%AA.pdf), p.3 · checked 2026-10-31 · institution
+- Scope: institution: First International Bank
+- Dimensions: fee-trade
+- Likely to change: yes, it ends on 31.12.2026

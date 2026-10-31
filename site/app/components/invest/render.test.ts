@@ -92,3 +92,19 @@ describe("the index page's sections render", () => {
     expect(out).toContain("חשבון ניירות הערך הזול ביותר לקרן ישראלית על המדד");
   });
 });
+
+describe("every house keeps a row in the account list (founder, 2026-10-31)", () => {
+  const view = buildInvest({ bundle, index: indexById(bundle, "index-sp500")!, plan });
+  const pick = pickOfHeadline(view)!;
+  const out = html(createElement(AccountColumn, { view, bundle, years: 20, pick, onPick: () => undefined }));
+  it("lists Meitav Trade and both Interactives, told apart as no data and not possible there", () => {
+    for (const p of view.providers) expect(out).toContain(p.short.replace(/"/g, "&quot;"));
+    expect(out).toContain("אין נתון");
+    expect(out).toContain("לא אפשרי שם");
+  });
+  it("links a fund to its Maya page at the address that exists", () => {
+    const fund = html(createElement(FundColumn, { view, bundle, plan, today: t, pick, onPick: () => undefined, filter: [], onFilter: () => undefined } as never));
+    expect(fund).not.toContain("funds/etfs");
+    expect(fund).toContain("maya.tase.co.il/he/funds/mutual-funds/");
+  });
+});

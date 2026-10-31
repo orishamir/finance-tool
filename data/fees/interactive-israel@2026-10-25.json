@@ -407,15 +407,16 @@
         "tase_shares_bonds",
         "tase_bonds",
         "etf_units",
-        "tase_foreign_fund_units"
+        "tase_foreign_fund_units",
+        "mutual_fund_units"
       ],
       "available": false,
       "source": {
         "url": "https://www.inter-il.com/israeli-stock-market/",
         "title": "אינטראקטיב ישראל: בורסה ישראלית (BRK-41)",
-        "checked": "2026-10-25"
+        "checked": "2026-10-31"
       },
-      "note": "'באינטראקטיב ישראל נכון להיום, קנייה ומכירה של ניירות ערך ישראלים הנסחרים בבורסת תל אביב ניתנת ללקוחות מוסדיים בלבד' (BRK-41; worded 'נכון להיום'). Israeli mutual funds and tracking funds: no page offers them, which is 'not found', not recorded here."
+      "note": "'באינטראקטיב ישראל נכון להיום, קנייה ומכירה של ניירות ערך ישראלים הנסחרים בבורסת תל אביב ניתנת ללקוחות מוסדיים בלבד' (BRK-41; worded 'נכון להיום'). The page's list holds shares and ETFs only, and its tariff prints no mutual-fund line, so an Israeli tracking fund is read as not sold to a private client either."
     },
     {
       "applies_to": [
