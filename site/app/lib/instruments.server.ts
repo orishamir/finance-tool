@@ -485,7 +485,8 @@ function buildTariff(
   if (custody.length > 0) {
     const line = custody[0]!;
     // The ledger takes a rate per charging period and the months in a period: a quarterly line stays quarterly, no annual conversion.
-    const every = line.period ? monthsOf[line.period] : line.rate.unit === "pct_per_year" ? 12 : undefined;
+    // a zero rate prints no period (One Zero's "0 אחוז"): it charges nothing whatever the period is, as the engine's own path reads it
+    const every = line.period ? monthsOf[line.period] : line.rate.unit === "pct_per_year" ? 12 : line.rate.value === 0 ? 12 : undefined;
     const unitOk = line.rate.unit === "pct_of_balance_per_period" || line.rate.unit === "pct_per_year";
     if (isNum(line.rate) && unitOk && every) {
       const c: NonNullable<Tariff["custody"]> = { rate: pct(line.rate), everyMonths: every };
@@ -508,7 +509,9 @@ function buildTariff(
     if (isNum(line.rate) && line.rate.unit === "pct_of_trade") {
       tariff.fx = pct(line.rate);
       feeValues.fxRate = { ...line.rate };
-    } else missing.push(`${wrapperId}: ${snap.id} line ${line.id} is not a percent of trade`);
+    }
+    // F-13: only a fund in a foreign currency is converted, and this path takes shekel funds only (see the fund's check), so a
+    // conversion printed another way (Psagot's agorot a dollar) charges nothing here and is no reason to drop the house
   }
 
   const fixed = wants.includes("fixed_period") ? listLines(snap, wrapperId, "fixed_period") : [];

@@ -33,12 +33,7 @@ export async function loader() {
     exposures.push({ key: "money-market-funds", name, line: line(name), href: `/guide/${funds[0]!.id}`, kinds: funds.map((f) => ({ href: `/guide/${f.id}`, label: copy.fundKinds[f.id] ?? f.names.he[0]! })) });
   }
   exposures.sort((a, b) => rank(a.key) - rank(b.key));
-  // "מאיפה להתחיל" may point at any product, a security too
-  const startLinks = copy.start.items.flatMap((it) => {
-    const p = products.find((x) => x.id === it.id);
-    return p ? [{ id: p.id, lead: it.lead, name: p.names.he[0]! }] : [];
-  });
-  return { wrappers, exposures, startLinks, today: today() };
+  return { wrappers, exposures, today: today() };
 }
 
 interface ExposureItem {
@@ -87,38 +82,6 @@ export default function GuideIndex() {
           <h1 className="text-2xl lg:text-3xl font-semibold">{copy.title}</h1>
           <p className="text-lg text-muted-foreground max-w-measure">{copy.lede}</p>
         </header>
-        <section aria-labelledby="explainer" className="flex flex-col gap-3 max-w-measure">
-          <h2 id="explainer" className="text-xl font-semibold">
-            {copy.explainer.title}
-          </h2>
-          <dl className="flex flex-col gap-2">
-            <div>
-              <dt className="inline font-medium">{copy.explainer.product.term}: </dt>
-              <dd className="inline">{copy.explainer.product.line}</dd>
-            </div>
-            <div>
-              <dt className="inline font-medium">{copy.explainer.exposure.term}: </dt>
-              <dd className="inline">{copy.explainer.exposure.line}</dd>
-            </div>
-          </dl>
-          <p className="text-sm text-muted-foreground">{copy.explainer.link}</p>
-        </section>
-        <section aria-labelledby="start" className="flex flex-col gap-2">
-          <h2 id="start" className="text-xl font-semibold">
-            {copy.start.title}
-          </h2>
-          <ul className="flex flex-col">
-            {data.startLinks.map((it) => (
-              <li key={it.id}>
-                <Link to={`/guide/${it.id}`} className="inline-flex flex-wrap items-center gap-x-2 min-h-target hover:underline">
-                  <span>{it.lead}</span>
-                  <span className="text-link font-medium">{it.name}</span>
-                  <IconDrillIn size={16} className="text-muted-foreground" />
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </section>
         <section aria-labelledby="g1" className="flex flex-col gap-6">
           <div>
             <h2 id="g1" className="text-xl lg:text-2xl font-semibold">

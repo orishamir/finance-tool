@@ -14,7 +14,7 @@ import { accountWorthRow } from "../components/guide-signature/current-account";
 import { cashLikeIds } from "../lib/guide-signature";
 import { Disclosure, Sentence, Tag } from "../components/kit";
 import { fmt } from "../lib/format";
-import { splitTerms } from "../lib/guide-nav";
+import { omitsSection, splitTerms } from "../lib/guide-nav";
 import { useInputs } from "../lib/inputs";
 import { guideContent } from "../content/guide";
 import { anyWeak, type SiteValue } from "../lib/value";
@@ -83,6 +83,7 @@ export default function GuidePage() {
   const { state: inputsState } = useInputs();
   const review = useReviewMode();
   const title = (id: string) => copy.sections.find((x) => x.id === id)!.title;
+  const omitted = (id: string) => omitsSection(record.id, id);
   const figure = (ruleId: string, name: string): SiteValue | null => {
     const r = rules[ruleId];
     if (!r) return null;
@@ -392,7 +393,7 @@ export default function GuidePage() {
   return (
     <PageShell current="guide" data={provenance}>
       <div className="lg:flex lg:gap-12 pt-2 lg:pt-8">
-        <SectionIndex sections={copy.sections.filter((x) => (x.id !== "terms" || !mainTerms.hide || generalTerms.length > 0) && ((x.id as string) !== "worth" || worthRows(data.worthIds, rules, today).length > 0 || worthFacts.length > 0) && ((x.id as string) !== "different" || !!signature))} current={current} />
+        <SectionIndex sections={copy.sections.filter((x) => !omitted(x.id) && (x.id !== "terms" || !mainTerms.hide || generalTerms.length > 0) && ((x.id as string) !== "worth" || worthRows(data.worthIds, rules, today).length > 0 || worthFacts.length > 0) && ((x.id as string) !== "different" || !!signature))} current={current} />
         <div className="flex-1 min-w-0 flex flex-col gap-section">
           <header className="flex flex-col gap-3">
             <Breadcrumb parent={{ href: "/guide", label: guideIndex.title }} current={data.name} />
@@ -439,27 +440,35 @@ export default function GuidePage() {
 
           <WorthKnowing rows={worthRows(data.worthIds, rules, today)} facts={worthFacts} />
 
-          <GuideSection id="who" title={title("who")} rulesToggle>
-            {content?.who(cp) ?? (
-              <p className="max-w-measure">
-                {regulatorName}. {copy.whoLine}
-              </p>
-            )}
-            <InstitutionChips companies={data.companies} allHref="/companies" />
-          </GuideSection>
+          {!omitted("who") && (
+            <GuideSection id="who" title={title("who")} rulesToggle>
+              {content?.who(cp) ?? (
+                <p className="max-w-measure">
+                  {regulatorName}. {copy.whoLine}
+                </p>
+              )}
+              <InstitutionChips companies={data.companies} allHref="/companies" />
+            </GuideSection>
+          )}
 
-          <GuideSection id="inout" title={title("inout")} rulesToggle>
-            <KeyValueList items={inout} />
-          </GuideSection>
+          {!omitted("inout") && (
+            <GuideSection id="inout" title={title("inout")} rulesToggle>
+              <KeyValueList items={inout} />
+            </GuideSection>
+          )}
 
-          <GuideSection id="cost" title={title("cost")} rulesToggle>
-            <FeeTable fees={fees} note={provident ? copy.feeNote : copy.feeNoteOther} />
-          </GuideSection>
+          {!omitted("cost") && (
+            <GuideSection id="cost" title={title("cost")} rulesToggle>
+              <FeeTable fees={fees} note={provident ? copy.feeNote : copy.feeNoteOther} />
+            </GuideSection>
+          )}
 
-          <GuideSection id="tax" title={title("tax")} rulesToggle>
-            <TaxSteps steps={steps} />
-            {content?.afterTax?.(cp)}
-          </GuideSection>
+          {!omitted("tax") && (
+            <GuideSection id="tax" title={title("tax")} rulesToggle>
+              <TaxSteps steps={steps} />
+              {content?.afterTax?.(cp)}
+            </GuideSection>
+          )}
 
           <GuideSection id="risk" title={title("risk")} rulesToggle>
             {content?.risks(cp) ?? (
@@ -472,9 +481,11 @@ export default function GuidePage() {
             )}
           </GuideSection>
 
-          <GuideSection id="check" title={title("check")}>
-            <DimensionChecklist rows={checklist} />
-          </GuideSection>
+          {!omitted("check") && (
+            <GuideSection id="check" title={title("check")}>
+              <DimensionChecklist rows={checklist} />
+            </GuideSection>
+          )}
 
           {(mainTerms.hide ? 0 : 1) + (generalTerms.length > 0 ? 1 : 0) > 0 && (
             <GuideSection id="terms" title={title("terms")}>

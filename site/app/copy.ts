@@ -160,22 +160,7 @@ export const guideIndex = {
   fundKindsLine: "לפי סוג",
   fundKinds: { "money-market-fund-daily": "יומית", "money-market-fund-renewable": "מתחדשת" } as Record<string, string>,
   last: { title: "מה האתר עוד לא מכסה", line: "מוצרים שהאתר מכיר אבל עוד לא מסביר עד הסוף" },
-  // audit 2026-10-24 (A43, A44): the product-versus-exposure explainer, the start line, the purpose groups and the plain subtitles
-  explainer: {
-    title: "שני חלקים בכל חיסכון",
-    product: { term: "איפה הכסף מוחזק", line: "המוצר: פיקדון, קרן השתלמות, חשבון ניירות ערך. הוא קובע מי מחזיק את הכסף, מה המס ומתי אפשר למשוך." },
-    exposure: { term: "במה הכסף מושקע", line: "מה שבתוך המוצר: מזומן, מק״מ, קרן כספית, אג״ח, מדד מניות. הוא קובע מה עולה ויורד." },
-    link: "בכל עמוד של מוצר יש שורה עם מה שאפשר להשקיע בתוכו.",
-  },
-  start: {
-    title: "מאיפה להתחיל",
-    // each line is the page's own "למה משתמשים בזה" sentence, shortened; the link goes to that page
-    items: [
-      { id: "keren-hishtalmut", lead: "שכירים שהמעסיק מפקיד להם:" },
-      { id: "pension-comprehensive", lead: "הבסיס של כל חוסך שכיר:" },
-      { id: "money-market-fund-daily", lead: "כסף שצריך להישאר זמין:" },
-    ],
-  },
+  // audit 2026-10-24 (A44): the purpose groups and the plain subtitles
   purposeGroups: { short: "כסף שוטף וקצר", "tax-benefit": "חיסכון עם הטבת מס", retirement: "פרישה", children: "לילדים", "self-directed": "לבחירה עצמית", other: "עוד" } as Record<string, string>,
   /** Products whose official name must be decoded: the card also shows the plain name the product's own record carries (names.he[1]). */
   plainSubtitleFor: ["pension-comprehensive", "pension-general", "provident-for-annuity", "child-savings-provident"],
@@ -219,6 +204,12 @@ export const guide = {
   // audit 2026-10-24 (A45): the headline says it is an example and names its inputs; each gap is filled by a Num
   headlineExample: { lead: "דוגמה:", plus: "ועוד", perMonth: "בחודש, בתשואה של", perMonthCash: "בחודש, בריבית של", perYear: "בשנה, משאירים לכם אחרי" }, // perMonthCash 2026-10-25: a cash-like page runs on a rate, not a return
   modes: { real: "בכסף של היום", nominal: "בשקלים של העתיד" },
+  // issue 23: the mode says what its figure is and gives the other mode's figure
+  modeNote: {
+    real: { before: "בכסף של היום: מה שהסכום יקנה במחירים של היום. בחשבון יהיה כתוב אז", after: "בשקלים של העתיד." },
+    nominal: { before: "בשקלים של העתיד: מה שיהיה כתוב בחשבון. הסכום הזה יקנה רק כמו", after: "היום, כי המחירים עולים." },
+    deposits: "החישוב מניח שההפקדה החודשית עולה כל חודש עם המחירים.",
+  },
   modeLabel: "אופן הצגת הסכומים",
   legend: { net: "נשאר לכם", tax: "מס", fees: "דמי ניהול", contributions: "ההפקדות שלכם" },
   chips: { amount_now: "סכום היום", monthly_deposit: "הפקדה חודשית", horizon_years: "תקופה", "A-01": "תשואה בשנה", cash_rate: "ריבית בשנה", "A-02": "אינפלציה בשנה", all: "כל ההנחות" },

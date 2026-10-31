@@ -237,6 +237,14 @@ export function Timeline({ bundle: pageBundle, initial, wrapperName, ageMarker, 
           <SegmentedControl label={copy.modeLabel} options={[{ value: "real", label: copy.modes.real }, { value: "nominal", label: copy.modes.nominal }]} value={mode} onChange={setMode} className="lg:w-auto lg:min-w-[260px] max-w-full" />
         </div>
 
+        {/* issue 23: a figure in future shekels read as ignoring inflation; each mode names the other's figure and why deposits exceed what was typed */}
+        {values && timeline.kind === "ok" ? (
+          <p className="text-sm text-muted-foreground max-w-measure min-h-[6rem] lg:min-h-12">
+            {copy.modeNote[mode].before} <Num value={values.yearValues(timeline.years[timeline.years.length - 1]!, mode === "real" ? "nominal" : "real").net} /> {copy.modeNote[mode].after}
+            {(state.entered.monthly_deposit ?? p05Number(bundle.p05, "monthly_deposit")) > 0 ? ` ${copy.modeNote.deposits}` : ""}
+          </p>
+        ) : null}
+
         {timeline.kind === "ok" ? (
           <>
             <div className="lg:hidden -mx-4 px-4 overflow-x-auto flex gap-2 pb-1 scrollbar-none">
