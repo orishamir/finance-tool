@@ -1224,7 +1224,7 @@ export const r2 = {
     fallEcho: "הירידה שתסכימו לספוג: {pct} מ־{amount}, כלומר {drop} היום. היא לא משפיעה על הדירוג בהשוואה לפי מוצר.", // audit 2026-10-24 (A12)
     fallBand: "ירידה שתסכימו לספוג", // audit 2026-10-24 (A12): the chart's accessible name for the shaded band
     // A14: after "בחרתי בזה"
-    chosenNext: { heading: "מה עושים עכשיו", pick: "לבחור חברה ומסלול", fees: "מה העמלות יעלו לכם" }, // audit 2026-10-24 (A14)
+    chosenNext: { pick: "לבחור חברה ומסלול", fees: "מה העמלות יעלו לכם" }, // audit 2026-10-24 (A14)
     // A71
     saveMenu: "לשמור את ההשוואה", // audit 2026-10-24 (A71)
     saveMenuAgain: "לשמור שוב את ההשוואה", // audit 2026-10-24 (A71)
@@ -3529,7 +3529,7 @@ export const invest = {
 
   typeTags: { "il-etf": "קרן סל · נסחרת כל היום", "il-tracking": "קרן מחקה · נקנית פעם ביום", "tase-foreign": "קרן זרה בת״א", abroad: "בחו״ל" } as Record<string, string>,
 
-  folds: { worth: "מה כל בחירה שווה, בפירוט", steps: "מה עושים עכשיו" },
+  folds: { worth: "מה כל בחירה שווה, בפירוט" },
 
   funds: {
     heading: (house: string) => `הקרנות על המדד, בחשבון ${/^[A-Za-z]/.test(house) ? "ב־" : "ב"}${house}`,
@@ -3563,21 +3563,6 @@ export const invest = {
     copied: "הועתק",
     noOption: "אין קרנות שנאספו שנקנות בחשבון הזה.",
     israelTitle: "קרנות ישראליות",
-  },
-
-  steps: {
-    heading: "מה עושים עכשיו",
-    openLead: "פותחים חשבון ב",
-    stay: (broker: string) => `נשארים ב${broker}`,
-    stayDiff: "ההפרש מול הדרך הזולה",
-    buy: (fund: string) => `קונים את ${fund} לפי מספר הנייר`,
-    buyNumber: "מספר נייר",
-    copy: "העתקה",
-    copied: "הועתק",
-    buyCustom: "בוחרים קרן במאיה לפי דמי הניהול",
-    standing: "מגדירים הוראת קבע של הסכום החודשי",
-    standingWith: "הסכום החודשי",
-    noWay: "כשתהיה דרך שלמה, כאן יופיעו שלושת השלבים.",
   },
 
   foot: {
