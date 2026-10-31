@@ -102,7 +102,7 @@ Form 747, read in Chrome on https://www.gov.il/he/service/notice-cost-declaratio
 - `cbb3d775be9e3a8f` p.1, Tax Authority notice of 19 May 2025: forms 746, 747 and 748 are new; 746 and 747 replace form 938; 748 exempts from withholding on a donated security; for withholding only, not an assessment.
 - The service page adds: once per tax year.
 
-So the 500,000 NIS cap job 1 asked about is current on the form's own page. The rule base still names form 938 in `ira-self-directed.md` and `switching-and-transfers.md`; this goes to the tax-specialist job.
+So the 500,000 NIS cap job 1 asked about is current on the form's own page. (Corrected later that night: the rule base holds no stale mention of form 938; the hit was a fund number, and `switching-and-transfers.md` already names form 747.)
 
 Government bonds page, https://www.gov.il/he/pages/govermental-bonds, published 24.08.2020, its traded-bond table updated 02.01.2011 (four tabs: traded features, non-traded features, traded regulations, non-traded regulations). Series seen: גליל from 31.12.1984, fixed, by yields, at least 1%, annual; ממשלתית צמודה from 26.6.2006, annual; גילון חדש from 28.4.1999, variable by makam of 3 to 12 months, every 3 months, no longer issued; ממשלתית בריבית משתנה from 8.1.2008, by 12-month makam, every 3 months; שחר from 24.8.1995, annual; ממשלתית from 6.11.2006, annual. Not filed: scripts get a check on this page. It is on the morning list.
 

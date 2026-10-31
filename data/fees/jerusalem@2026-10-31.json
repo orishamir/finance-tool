@@ -143,16 +143,18 @@
         "notes": "Note (4): 'עבור פעולה המבוצעת ישירות באמצעות האינטרנט ייגבה שיעור מופחת של 0.5% לפעולה במניות ובאגרות חוב'. The note does not restate a minimum or maximum for the internet price. The part's effective date is printed '06/02/20217', a misprint in the source; effective_from is left null rather than guessed. Tracking funds (2026-10-31): the exclusion of mutual funds on this line does not cover a tracking fund, so a tracking fund pays this line; a traditional fund that is not listed does not. Place: library 2fddc750f3f74c72, PDF page 6, line \"...קרנות נאמנות[4], אופציות...\", PDF page 7, note 4: \"אך לרבות 'קרן מחקה', כהגדרתה בתקנות השקעות משותפות בנאמנות (סיווג קרנות לצורך פירסום), התשס\"ח-2007, וכן של קרן...\"."
       },
       "min": {
-        "value": null,
+        "value": 20,
         "unit": "nis_per_trade",
         "source": {
           "url": "https://www.bankjerusalem.co.il/media/7012/%D7%A2%D7%95%D7%AA%D7%A7-%D7%A9%D7%9C-1759155996_2_%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F_%D7%9E%D7%9C%D7%90_%D7%9C%D7%99%D7%97%D7%99%D7%93_%D7%A2%D7%A1%D7%A7_%D7%A7%D7%98%D7%9F-1-1.pdf",
-          "title": "התעריפון המלא ליחיד / עסק קטן - בנק ירושלים, חלק 4 - ניירות ערך ('בתוקף מתאריך : 06/02/20217' כפי שמודפס), 4(א)(1), הערה (4), מינימום",
+          "title": "התעריפון המלא ליחיד / עסק קטן - בנק ירושלים, נספח ה' - הטבות לפעילות בערוצים ישירים (בתוקף מתאריך 15/07/2025), מינימום",
           "publisher": "Bank of Jerusalem Ltd.",
-          "strength": "institution"
+          "strength": "institution",
+          "page": 19,
+          "quote": "אינטרנט - 0.50% (20 ₪ מינימום, 20,000 ₪ מקסימום)"
         },
-        "checked": "2026-10-24",
-        "effective_from": null,
+        "checked": "2026-10-31",
+        "effective_from": "2025-07-15",
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
@@ -160,19 +162,21 @@
           "BRK-16"
         ],
         "state": "sourced",
-        "notes": "Not printed for the internet rate; the clerk line's minimum is 20 NIS. The part's effective date is printed '06/02/20217', a misprint in the source; effective_from is left null rather than guessed."
+        "notes": "Annex ה', PDF page 19, prints the internet price with its minimum on the shares, bonds and funds line. Note (4) on page 6 does not restate it. Corrected 2026-10-31: the record held no minimum."
       },
       "max": {
-        "value": null,
+        "value": 20000,
         "unit": "nis_per_trade",
         "source": {
           "url": "https://www.bankjerusalem.co.il/media/7012/%D7%A2%D7%95%D7%AA%D7%A7-%D7%A9%D7%9C-1759155996_2_%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F_%D7%9E%D7%9C%D7%90_%D7%9C%D7%99%D7%97%D7%99%D7%93_%D7%A2%D7%A1%D7%A7_%D7%A7%D7%98%D7%9F-1-1.pdf",
-          "title": "התעריפון המלא ליחיד / עסק קטן - בנק ירושלים, חלק 4 - ניירות ערך ('בתוקף מתאריך : 06/02/20217' כפי שמודפס), 4(א)(1), הערה (4), מקסימום",
+          "title": "התעריפון המלא ליחיד / עסק קטן - בנק ירושלים, נספח ה' - הטבות לפעילות בערוצים ישירים (בתוקף מתאריך 15/07/2025), מקסימום",
           "publisher": "Bank of Jerusalem Ltd.",
-          "strength": "institution"
+          "strength": "institution",
+          "page": 19,
+          "quote": "אינטרנט - 0.50% (20 ₪ מינימום, 20,000 ₪ מקסימום)"
         },
-        "checked": "2026-10-24",
-        "effective_from": null,
+        "checked": "2026-10-31",
+        "effective_from": "2025-07-15",
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
@@ -180,7 +184,7 @@
           "BRK-16"
         ],
         "state": "sourced",
-        "notes": "Not printed for the internet rate; the clerk line's maximum is 20,000 NIS. The part's effective date is printed '06/02/20217', a misprint in the source; effective_from is left null rather than guessed."
+        "notes": "Annex ה', PDF page 19, prints the internet price with its maximum on the shares, bonds and funds line. Note (4) on page 6 does not restate it. Corrected 2026-10-31: the record held no maximum."
       },
       "period": null,
       "channel": "direct",
@@ -310,16 +314,18 @@
         "notes": "Note (4): '... ושיעור מופחת של 0.09% לפעולה במלווה קצר מועד'. No minimum or maximum restated. The part's effective date is printed '06/02/20217', a misprint in the source; effective_from is left null rather than guessed."
       },
       "min": {
-        "value": null,
+        "value": 20,
         "unit": "nis_per_trade",
         "source": {
           "url": "https://www.bankjerusalem.co.il/media/7012/%D7%A2%D7%95%D7%AA%D7%A7-%D7%A9%D7%9C-1759155996_2_%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F_%D7%9E%D7%9C%D7%90_%D7%9C%D7%99%D7%97%D7%99%D7%93_%D7%A2%D7%A1%D7%A7_%D7%A7%D7%98%D7%9F-1-1.pdf",
-          "title": "התעריפון המלא ליחיד / עסק קטן - בנק ירושלים, חלק 4 - ניירות ערך ('בתוקף מתאריך : 06/02/20217' כפי שמודפס), 4(א)(1), הערה (4), מינימום",
+          "title": "התעריפון המלא ליחיד / עסק קטן - בנק ירושלים, נספח ה' - הטבות לפעילות בערוצים ישירים (בתוקף מתאריך 15/07/2025), מינימום",
           "publisher": "Bank of Jerusalem Ltd.",
-          "strength": "institution"
+          "strength": "institution",
+          "page": 19,
+          "quote": "אינטרנט - 0.09% לפעולה (20 ₪ מינימום, 7,500 ₪ מקסימום)"
         },
-        "checked": "2026-10-24",
-        "effective_from": null,
+        "checked": "2026-10-31",
+        "effective_from": "2025-07-15",
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
@@ -327,19 +333,21 @@
           "BRK-16"
         ],
         "state": "sourced",
-        "notes": "Not printed for the internet rate. The part's effective date is printed '06/02/20217', a misprint in the source; effective_from is left null rather than guessed."
+        "notes": "Annex ה', PDF page 19, prints the internet price with its minimum on the makam line. Note (4) on page 6 does not restate it. Corrected 2026-10-31: the record held no minimum."
       },
       "max": {
-        "value": null,
+        "value": 7500,
         "unit": "nis_per_trade",
         "source": {
           "url": "https://www.bankjerusalem.co.il/media/7012/%D7%A2%D7%95%D7%AA%D7%A7-%D7%A9%D7%9C-1759155996_2_%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F_%D7%9E%D7%9C%D7%90_%D7%9C%D7%99%D7%97%D7%99%D7%93_%D7%A2%D7%A1%D7%A7_%D7%A7%D7%98%D7%9F-1-1.pdf",
-          "title": "התעריפון המלא ליחיד / עסק קטן - בנק ירושלים, חלק 4 - ניירות ערך ('בתוקף מתאריך : 06/02/20217' כפי שמודפס), 4(א)(1), הערה (4), מקסימום",
+          "title": "התעריפון המלא ליחיד / עסק קטן - בנק ירושלים, נספח ה' - הטבות לפעילות בערוצים ישירים (בתוקף מתאריך 15/07/2025), מקסימום",
           "publisher": "Bank of Jerusalem Ltd.",
-          "strength": "institution"
+          "strength": "institution",
+          "page": 19,
+          "quote": "אינטרנט - 0.09% לפעולה (20 ₪ מינימום, 7,500 ₪ מקסימום)"
         },
-        "checked": "2026-10-24",
-        "effective_from": null,
+        "checked": "2026-10-31",
+        "effective_from": "2025-07-15",
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
@@ -347,7 +355,7 @@
           "BRK-16"
         ],
         "state": "sourced",
-        "notes": "Not printed for the internet rate. The part's effective date is printed '06/02/20217', a misprint in the source; effective_from is left null rather than guessed."
+        "notes": "Annex ה', PDF page 19, prints the internet price with its maximum on the makam line. Note (4) on page 6 does not restate it. Corrected 2026-10-31: the record held no maximum."
       },
       "period": null,
       "channel": "direct",
