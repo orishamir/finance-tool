@@ -28,9 +28,9 @@ Out (and where): physical gold (bars, coins) is out of scope under D2 and is not
 
 ### RG-01 What an Israeli REIT is in law
 - Rule: "קרן להשקעות במקרקעין" is defined as a company that meets the conditions in s. 64A3 ("חברה שהתקיימו בה התנאים האמורים בסעיף 64א3"). One condition is that the company is incorporated in Israel and its control and management are exercised from Israel (s. 64A3(a)(1)). The REIT rules are in the Income Tax Ordinance, Part D, chapter 2-1 ("פרק שני 1: קרן להשקעות במקרקעין"), ss. 64A2 to 64A11.
-- Conditions / exceptions: Before listing, the company may have no assets, activity or liabilities, except activity that meets the asset test (s. 64A3(a)(3)). The amendment marks on s. 64A3 are תשס"ה-9, תשע"ו-19, תשפ"ג-3 and תשפ"ו-3. The mirror shows תשפ"ו-3 as the latest.
+- Conditions / exceptions: Before listing, the company may have no assets, activity or liabilities, except activity that meets the asset test (s. 64A3(a)(3)). The amendment marks on s. 64A3 are תשס"ה-9, תשע"ו-19, תשפ"ג-3 and תשפ"ו-3. The National Insurance Institute's copy (file p.60) lists the amendments of s. 64א3 as התשס"ה (no. 8), התשע"ו (no. 11), התשפ"ג (no. 3), התשפ"ו (no. 3), with תשפ"ו (no. 3) the latest; the numbers in the marks above are as Wikisource gave them.
 - Figures: none.
-- Source: [Income Tax Ordinance (פקודת מס הכנסה), ss. 64A2, 64A3(a)(1), (a)(3)](https://he.wikisource.org/wiki/פקודת_מס_הכנסה), Wikisource mirror · checked 2026-10-22 · primary (mirror)
+- Source: [Income Tax Ordinance, National Insurance Institute's consolidated copy, file of 21.6.2026](https://www.btl.gov.il/Laws1/00_0103_000000.pdf#page=58) (file pages: s.64א2 58-60; s.64א3 60-61) · checked 2026-10-31 · primary (state body's consolidated copy, not the binding gazette wording)
 - Dimensions: regulator, eligibility
 - Likely to change: yes. Amended as recently as תשפ"ו. Check the official text before use (open question 1).
 
@@ -38,7 +38,7 @@ Out (and where): physical gold (bars, coins) is out of scope under D2 and is not
 - Rule: The REIT's shares must be listed for trading "בבורסה בישראל" within 24 months of incorporation. Otherwise they must be listed within 48 months, provided that at the end of 36 months residential rental real estate is at least 30% of total asset value (s. 64A3(a)(2)).
 - Conditions / exceptions: The text read gives no route for an Israeli REIT that is listed only abroad.
 - Figures: 24 / 36 / 48 months; 30%. Fixed in law.
-- Source: [Income Tax Ordinance s. 64A3(a)(2)](https://he.wikisource.org/wiki/פקודת_מס_הכנסה) · checked 2026-10-22 · primary (mirror)
+- Source: [Income Tax Ordinance, National Insurance Institute's consolidated copy, file of 21.6.2026](https://www.btl.gov.il/Laws1/00_0103_000000.pdf#page=60) (file pages: s.64א3 60-61) · checked 2026-10-31 · primary (state body's consolidated copy, not the binding gazette wording)
 - Dimensions: eligibility, liquidity-lockup
 - Likely to change: no
 
@@ -56,7 +56,7 @@ Out (and where): physical gold (bars, coins) is out of scope under D2 and is not
   Real estate under construction counts only if its paid acquisition cost is no more than 20% of total asset value. Income-producing and residential rental real estate located "בישראל" must be at least 75% of the combined value of those two classes.
 - Conditions / exceptions: The text read sets no separate cap on listed securities within the 95%. It is not clear from the text read whether shares in unlisted subsidiaries that hold real estate count (open question 2). Section 64A2 also defines real estate held for a short period and "exceptional income"; these definitions were not read in detail.
 - Figures: 95%; 20%; 75%. Fixed in law.
-- Source: [Income Tax Ordinance ss. 64A2, 64A3(a)(5)](https://he.wikisource.org/wiki/פקודת_מס_הכנסה) · checked 2026-10-22 · primary (mirror). [חוק לתיקון פקודת מס הכנסה (מס' 285), התשפ"ו-2026, ספר החוקים 3509](https://fs.knesset.gov.il/25/law/25_lsr_12223928.pdf), p.346, s.2 (s.64א3(א)(5)(א)): "מקרקעין בהקמה שעלות רכישתם ששולמה בפועל אינה עולה על 20% משווי כלל נכסיה באותו מועד"; s.1(2) (definition `מקרקעין בהקמה` added to s.64א2) · checked 2026-10-26 · primary
+- Source: [Income Tax Ordinance, National Insurance Institute's consolidated copy, file of 21.6.2026](https://www.btl.gov.il/Laws1/00_0103_000000.pdf#page=58) (file pages: s.64א2 58-60; s.64א3 60-61) · checked 2026-10-31 · primary (state body's consolidated copy, not the binding gazette wording). [חוק לתיקון פקודת מס הכנסה (מס' 285), התשפ"ו-2026, ספר החוקים 3509](https://fs.knesset.gov.il/25/law/25_lsr_12223928.pdf), p.346, s.2 (s.64א3(א)(5)(א)): "מקרקעין בהקמה שעלות רכישתם ששולמה בפועל אינה עולה על 20% משווי כלל נכסיה באותו מועד"; s.1(2) (definition `מקרקעין בהקמה` added to s.64א2) · checked 2026-10-26 · primary
 - Dimensions: protection, currency
 - Likely to change: no
 
@@ -67,7 +67,7 @@ Out (and where): physical gold (bars, coins) is out of scope under D2 and is not
   - proceeds of a further issue: up to one year;
   - proceeds of a sale: up to one year.
 - Figures: 75%; NIS 200 million (nominal and fixed in the text; no linkage seen).
-- Source: [Income Tax Ordinance ss. 64A2 (definition), 64A3(a)(5א)(א)](https://he.wikisource.org/wiki/פקודת_מס_הכנסה) · checked 2026-10-22 · primary (mirror)
+- Source: [Income Tax Ordinance, National Insurance Institute's consolidated copy, file of 21.6.2026](https://www.btl.gov.il/Laws1/00_0103_000000.pdf#page=58) (file pages: s.64א2 58-60) · checked 2026-10-31 · primary (state body's consolidated copy, not the binding gazette wording)
 - Dimensions: protection
 - Likely to change: no
 
@@ -78,7 +78,7 @@ Out (and where): physical gold (bars, coins) is out of scope under D2 and is not
   - 20% of the value of all other assets.
 - Conditions / exceptions: The limit applies to loans, not to all liabilities.
 - Figures: 60% / 80% / 20%. Fixed in law.
-- Source: [Income Tax Ordinance s. 64A3(a)(5א)(ב)](https://he.wikisource.org/wiki/פקודת_מס_הכנסה) · checked 2026-10-22 · primary (mirror)
+- Source: [Income Tax Ordinance, National Insurance Institute's consolidated copy, file of 21.6.2026](https://www.btl.gov.il/Laws1/00_0103_000000.pdf#page=60) (file pages: s.64א3 60-61) · checked 2026-10-31 · primary (state body's consolidated copy, not the binding gazette wording)
 - Dimensions: protection
 - Proposed dimension: leverage-limit
 - Likely to change: no
@@ -92,7 +92,7 @@ Out (and where): physical gold (bars, coins) is out of scope under D2 and is not
   Shares held above these limits become dormant shares (מניות רדומות) with no rights until the holding complies. A holding of up to 9.99% always keeps its rights (s. 64A3(ג2)).
 - Conditions / exceptions: For a saver this means no REIT can stay closely held. A large holder's shares above the limits lose their rights.
 - Figures: 70% / 50% (five holders); 30% / 20% (one holder); 3 and 5 years; 9.99%.
-- Source: [Income Tax Ordinance s. 64A3(a)(6), (ג2)](https://he.wikisource.org/wiki/פקודת_מס_הכנסה) · checked 2026-10-22 · primary (mirror)
+- Source: [Income Tax Ordinance, National Insurance Institute's consolidated copy, file of 21.6.2026](https://www.btl.gov.il/Laws1/00_0103_000000.pdf#page=60) (file pages: s.64א3 60-61) · checked 2026-10-31 · primary (state body's consolidated copy, not the binding gazette wording)
 - Dimensions: protection, eligibility
 - Likely to change: no
 
@@ -105,7 +105,7 @@ Out (and where): physical gold (bars, coins) is out of scope under D2 and is not
   A capital gain or betterment from selling income-producing real estate must be distributed within 12 months of the sale (s. 64A9(a)(2)). Certain exchange transactions under the Real Estate Taxation Law are carved out. By the same 30 April date, the REIT may also distribute up to the amount of its depreciation, even if this is not "profits" under company law (s. 64A9(b)).
 - Conditions / exceptions: Distribution under s. 64A9 is itself one of the s. 64A3 conditions (s. 64A3(a)(7)). Section 64A9 states no penalty of its own, but a shortfall breaks condition (a)(7), and a company in which a condition stops being met ceases to be a REIT (s. 64A3(ד)(1)); the three-month cure in s. 64A3(ד)(2) covers only the (5א) tests, not distribution (RG-08). *2026-10-26 open-questions audit:* closes open question 3. The Minister of Finance may set rules on the order and attribution of distributions (s. 64A11). How distributions are taxed is for TX2.
 - Figures: 90%; 30 April of the following year; 12 months. Fixed in law.
-- Source: [Income Tax Ordinance ss. 64A3(a)(7), 64A9, 64A11](https://he.wikisource.org/wiki/פקודת_מס_הכנסה) · checked 2026-10-22 · primary (mirror). [פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים](https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf), p.104, s.64א3(א)(7) "ממועד הרישום למסחר בבורסה ההכנסה החייבת הועברה לבעלי המניות כאמור בהוראות סעיף 64א9"; p.105, s.64א3(ד)(1) "חדל להתקיים בחברה תנאי מהתנאים המנויים בסעיף קטן (א), תחדל להיות קרן להשקעות במקרקעין" · checked 2026-10-26 · primary
+- Source: [Income Tax Ordinance, National Insurance Institute's consolidated copy, file of 21.6.2026](https://www.btl.gov.il/Laws1/00_0103_000000.pdf#page=60) (file pages: s.64א3 60-61; s.64א9 66; s.64א11 66) · checked 2026-10-31 · primary (state body's consolidated copy, not the binding gazette wording). [פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים](https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf), p.104, s.64א3(א)(7) "ממועד הרישום למסחר בבורסה ההכנסה החייבת הועברה לבעלי המניות כאמור בהוראות סעיף 64א9"; p.105, s.64א3(ד)(1) "חדל להתקיים בחברה תנאי מהתנאים המנויים בסעיף קטן (א), תחדל להיות קרן להשקעות במקרקעין" · checked 2026-10-26 · primary
 - Dimensions: distribution-policy
 - Likely to change: no
 
@@ -113,7 +113,7 @@ Out (and where): physical gold (bars, coins) is out of scope under D2 and is not
 - Rule: Each annual return must come with an auditor's certificate that the conditions are met (s. 64A3(a)(8)). If a condition stops being met, the company stops being a REIT (s. 64A3(ד)). It may also opt out with shareholder approval. After status ends, the chapter still applies to income earned up to that date and to income distributed by 30 April of the following year (s. 64A10).
 - Conditions / exceptions: The tax consequences of losing status are for TX2. If a (5א) test (75% and NIS 200 million, borrowing limit) fails on a test date, it is treated as met if it is restored within three months and then holds for at least a year; otherwise status ends on the first failed test date (s. 64A3(ד)(2)). No other condition has a cure, and the law names no approval of status by the Tax Authority: the auditor's certificate attached to each return is the check. *2026-10-26 open-questions audit:* the cure and the official text were added.
 - Figures: none.
-- Source: [Income Tax Ordinance ss. 64A3(a)(8), 64A3(ד), 64A10](https://he.wikisource.org/wiki/פקודת_מס_הכנסה) · checked 2026-10-22 · primary (mirror). [פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים](https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf), p.104, s.64א3(א)(8) "צורף אישור רואה חשבון על התקיימות התנאים המנויים בפסקאות (1) עד (7)"; p.105, s.64א3(ד)(2) "אם חזר להתקיים בתוך שלושה חודשים והמשיך להתקיים ברציפות במשך שנה לפחות" · checked 2026-10-26 · primary
+- Source: [Income Tax Ordinance, National Insurance Institute's consolidated copy, file of 21.6.2026](https://www.btl.gov.il/Laws1/00_0103_000000.pdf#page=60) (file pages: s.64א3 60-61; s.64א10 66) · checked 2026-10-31 · primary (state body's consolidated copy, not the binding gazette wording). [פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים](https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf), p.104, s.64א3(א)(8) "צורף אישור רואה חשבון על התקיימות התנאים המנויים בפסקאות (1) עד (7)"; p.105, s.64א3(ד)(2) "אם חזר להתקיים בתוך שלושה חודשים והמשיך להתקיים ברציפות במשך שנה לפחות" · checked 2026-10-26 · primary
 - Dimensions: protection, reporting-obligation
 - Likely to change: no
 
@@ -310,7 +310,7 @@ Out (and where): physical gold (bars, coins) is out of scope under D2 and is not
 - Rule: A foreign fund may be offered to the public in Israel, and so trade on TASE as a foreign fund, only if it operates under the UCITS Directive or the US Investment Company Act 1940 (ETF-23, condition 6). The two physically backed gold products read here are a limited-recourse ETC (RG-20) and a US trust that says it is not a 1940 Act investment company (RG-21). Neither issuer describes its product as a UCITS or a 1940 Act fund.
 - Conditions / exceptions: This is an inference from the rule and the issuers' own descriptions, not a statement by the ISA. Whether any physically backed gold ETC or trust is listed on TASE, for example by dual listing, was not found (open question 13). Taken with RG-17, the sources read point the same way: a saver who wants a physically backed gold product reaches it through a broker abroad, not on TASE.
 - Figures: none.
-- Source: [Foreign-fund regulations, reg. 2](https://he.wikisource.org/wiki/תקנות_השקעות_משותפות_בנאמנות_(הצעת_יחידות_של_קרן_חוץ)), via ETF-23 · checked 2026-10-22 · primary (mirror). Sources of RG-20 and RG-21.
+- Source: [s.2, gazette ק״ת תשע״ו, 1090](https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/YeLGailVs4sAQNAXci5Zo3BCViCj7pr1tFrgiQP0KVw=#page=2); [Foreign-fund regulations, reg. 2, unofficial consolidated text, the only copy found of the current wording](https://he.wikisource.org/wiki/תקנות_השקעות_משותפות_בנאמנות_(הצעת_יחידות_של_קרן_חוץ)), via ETF-23 · checked 2026-10-31 · primary (gazette for the text as enacted or amended there; the Wikisource page, unofficial, is the only consolidated copy of the current wording found). Sources of RG-20 and RG-21.
 - Dimensions: regulator, eligibility, protection
 - Likely to change: yes. From 2.2.2027 the definition of a foreign fund changes to funds investing in "ניירות ערך או בנכס אחר" (ETF-22), and the regulations may follow.
 
@@ -383,7 +383,7 @@ Out (and where): physical gold (bars, coins) is out of scope under D2 and is not
 
 ## Open questions
 
-1. **Official text of ss. 64A2 to 64A11.** Only the Wikisource mirror was read, and it shows a תשפ"ו amendment. Check Nevo or Reshumot for the current text, especially any תשפ"ו change to the conditions. **[2026-10-26 open-questions audit]** Narrowed. The תשפ"ו change is Amendment 285 (ספר החוקים 3509, 31.3.2026), read in the gazette: it adds real estate under construction whose paid acquisition cost is at most 20% of total assets to the 95% test of s.64A3(a)(5)(א) (as RG-03 already says), defines "מקרקעין בהקמה", adds to "הכנסות חריגות" income from selling property bought while under construction if sold within four years of starting to be rented, and rewrites the opening of "מקרקעין לצורכי דיור להשכרה" (window 7.6.2016 to 31.12.2033 kept). s.64A3(a)(7), (a)(8) and (ד) were read on the Tax Authority's Ordinance text (pp.104-105) and match the mirror; s.64A5 is read there too (TX2-20). Still open: the rest of ss.64A2 to 64A11 against an official text (the Tax Authority's PDF dates from January 2023, so the תשפ"ג amendment must be checked as well). Would settle it: an official consolidated text dated after 31.3.2026, or each amending law since 2023 read in the gazette.
+1. ~~**Official text of ss. 64A2 to 64A11.**~~ Closed 2026-10-31: the National Insurance Institute's consolidated Ordinance, file of 21.6.2026, is dated after Amendment 285 (31.3.2026) and carries its wording ("מקרקעין בהקמה", file pp.58 to 60); ss.64א2 to 64א5 and 64א8 to 64א11 as cited here match it, 98% to 100% of the words in order, with no word missing from those pages beyond margin notes (compared 2026-10-31). Earlier note: only the Wikisource mirror was read, and it shows a תשפ"ו amendment. Check Nevo or Reshumot for the current text, especially any תשפ"ו change to the conditions. **[2026-10-26 open-questions audit]** Narrowed. The תשפ"ו change is Amendment 285 (ספר החוקים 3509, 31.3.2026), read in the gazette: it adds real estate under construction whose paid acquisition cost is at most 20% of total assets to the 95% test of s.64A3(a)(5)(א) (as RG-03 already says), defines "מקרקעין בהקמה", adds to "הכנסות חריגות" income from selling property bought while under construction if sold within four years of starting to be rented, and rewrites the opening of "מקרקעין לצורכי דיור להשכרה" (window 7.6.2016 to 31.12.2033 kept). s.64A3(a)(7), (a)(8) and (ד) were read on the Tax Authority's Ordinance text (pp.104-105) and match the mirror; s.64A5 is read there too (TX2-20). Still open: the rest of ss.64A2 to 64A11 against an official text (the Tax Authority's PDF dates from January 2023, so the תשפ"ג amendment must be checked as well). Would settle it: an official consolidated text dated after 31.3.2026, or each amending law since 2023 read in the gazette.
 2. **Can a REIT hold real estate through unlisted subsidiaries?** The s. 64A3(a)(5) list as read does not say. The answer is probably elsewhere in the chapter, in regulations under s. 64A11, or in a Tax Authority circular.
 3. ~~**What happens if a REIT distributes less than 90%, and who confirms REIT status (the Tax Authority?).**~~ Closed 2026-10-26: distributing under s.64A9 is a condition of REIT status (s.64A3(a)(7)), and a company in which a condition stops being met ceases to be a REIT (s.64A3(ד)(1)), with a three-month cure only for the (5א) tests; no authority confirms status: an auditor's certificate that the conditions are met is attached to each annual return (s.64A3(a)(8)) (RG-07, RG-08). **[2026-10-26 open-questions audit]** Source: the Tax Authority's text of the Ordinance, pp.104-105. Section 64A9 states no consequence. Probably in ss. 64A4 to 64A8 (tax, for TX2) or in a Tax Authority circular.
 4. **Official, current list of REITs.** Searches for a list found only Calcalist (January 2025). TASE pages render empty to scripts. A TASE sector list, the Tax Authority, or each company's annual report (which states REIT status) would settle it. Listings since 2025 are unknown. **[2026-10-24 R5 pass: still open; TASE's content API and Maya are behind Incapsula to scripts. Browser to-do: TASE market data, sector "ריט", or Maya's company list filtered by sector, then each company's latest periodic report (part A states REIT status under s.64A3).]**
@@ -418,8 +418,8 @@ Out (and where): physical gold (bars, coins) is out of scope under D2 and is not
 Under D2, a tier-2 instrument moves to tier 1 once it has a sourced record and its tax questions are closed.
 
 - **Israeli REIT shares: not ready.**
-  - Sourced: the product rules, from primary law (mirror).
-  - Blockers: the official REIT list (OQ 4); mirror vs official text (OQ 1, narrowed 2026-10-26: the 5786 change is Amendment 285, read in the gazette, RG-03); all tax rules (TX2).
+  - Sourced: the product rules, from primary law (the National Insurance Institute's consolidated copy).
+  - Blockers: the official REIT list (OQ 4); all tax rules (TX2).
   - ~~The consequence of a distribution shortfall and who confirms REIT status (open question 3)~~ closed 2026-10-26: distributing is a condition of REIT status and a company that stops meeting a condition stops being a REIT; no authority confirms status, an auditor's certificate goes with each annual return (RG-07, RG-08).
   - Costs depend on each company's management agreement (OQ 5) and on the brokerage wrapper, which is already tier 1.
   - Of the topics in this file, the closest to ready once TX2 is done. *2026-10-24:* TX2 exists; the rates compute (TX2-09 to TX2-11) and one REIT's withholding practice is recorded (TX2-21, split from TX2-20 on 2026-10-25; the rates by law stay TX2-20). Still blocking: the official list (OQ 4), the per-distribution source split (per-REIT data; corrected 2026-10-26, this is not open question 5, which is the management agreements), TX2 open question 8, and a pass-through formula in `docs/method.md`. Fourth in the graduation ranking (`scratchpad/reports/r5-tier2.md`).
@@ -437,10 +437,10 @@ Under D2, a tier-2 instrument moves to tier 1 once it has a sourced record and i
 
 | Title | Publisher | Strength | URL | Checked |
 |---|---|---|---|---|
-| פקודת מס הכנסה, ss. 64A2–64A11 (Part D, chapter 2-1) | Knesset (Wikisource mirror) | primary (mirror) | https://he.wikisource.org/wiki/פקודת_מס_הכנסה | 2026-10-22 |
+| פקודת מס הכנסה, ss. 64A2–64A11 (Part D, chapter 2-1) | National Insurance Institute's consolidated copy (file of 21.6.2026) | primary (state body's consolidated copy, not the binding gazette wording) | https://www.btl.gov.il/Laws1/00_0103_000000.pdf#page=58 (file pages: s.64א2 58-60; s.64א11 66) | 2026-10-31 |
 | פעילות קרנות נאמנות בישראל 2025, pp. 5, 14, 16 | ISA (hosted by Funder) | primary (third-party host) | https://cdn.funder.co.il/%D7%A4%D7%A2%D7%99%D7%9C%D7%95%D7%AA%20%D7%A7%D7%A8%D7%A0%D7%95%D7%AA%20%D7%A0%D7%90%D7%9E%D7%A0%D7%95%D7%AA%20%D7%91%D7%99%D7%A9%D7%A8%D7%90%D7%9C%202025_YJoJL5D9H.pdf | 2026-10-22 |
 | פעילות קרנות נאמנות בישראל 2024, p.20 (via ETF-11) | ISA | primary | https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/fundsReport24.pdf | 2026-10-22 (by the ETF file) |
-| תקנות השקעות משותפות בנאמנות (הצעת יחידות של קרן חוץ) (via ETF-23) | Minister of Finance (Wikisource mirror) | primary (mirror) | https://he.wikisource.org/wiki/תקנות_השקעות_משותפות_בנאמנות_(הצעת_יחידות_של_קרן_חוץ) | 2026-10-22 (by the ETF file) |
+| תקנות השקעות משותפות בנאמנות (הצעת יחידות של קרן חוץ) (via ETF-23) | Minister of Finance (Wikisource mirror) | primary (mirror) | https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/YeLGailVs4sAQNAXci5Zo3BCViCj7pr1tFrgiQP0KVw= (gazette ק״ת תשע״ו, 1090, as enacted); https://he.wikisource.org/wiki/תקנות_השקעות_משותפות_בנאמנות_(הצעת_יחידות_של_קרן_חוץ) (unofficial consolidated text, the only copy found of the current wording) | 2026-10-22 (by the ETF file) |
 | דוח שנתי "מור סל (4D) S&P 500" (1165810), 31.12.2025, pp.1–3 | More mutual funds (Maya) | institution | https://mayafiles.tase.co.il/rpdf/1732001-1733000/P1732871-00.pdf | 2026-10-22 |
 | Reit 1 home page | Reit 1 | institution | https://www.reit1.co.il/ | 2026-10-22 |
 | Megureit home page | Megureit | institution | https://www.megureit.co.il/ | 2026-10-22 |

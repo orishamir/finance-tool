@@ -1248,7 +1248,8 @@
   },
   {
     "id": "REG OQ20",
-    "status": "narrowed"
+    "status": "closed",
+    "closed_on": "2026-10-31"
   },
   {
     "id": "REG OQ21",
@@ -1257,7 +1258,8 @@
   },
   {
     "id": "RG OQ1",
-    "status": "narrowed"
+    "status": "closed",
+    "closed_on": "2026-10-31"
   },
   {
     "id": "RG OQ2",

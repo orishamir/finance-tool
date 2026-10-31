@@ -61,7 +61,7 @@ A study fund is taxed at three points. **Deposit:** for an employee, the employe
 - Rule: For someone who is both self-employed and an employee, the deduction applies only to the part of business income within the "ceiling amount" (`סכום התקרה`). That is the lower of (1) business or professional income and (2) 293,397 minus the determining salary on which the employer paid to a study fund.
 - Conditions / exceptions: In the guide's worked example, the employer-funded determining salary is capped at 188,544 (`משכורת קובעת מירבית 188,544`).
 - Figures: 293,397 and 188,544 (2025 guide; both unchanged in the 2026 booklet).
-- Source: [Tax Authority guide 2025](<https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf>), p.61 (sections 51-52, worked example) and p.92 · checked 2026-10-22 · primary. The [Ordinance](<https://he.wikisource.org/wiki/פקודת_מס_הכנסה>) text of s.17(5A), as returned by the fetch tool, did not show this reduction. Its statutory basis was not located (open question 7).
+- Source: [Tax Authority guide 2025](<https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf>), p.61 (sections 51-52, worked example) and p.92 · checked 2026-10-22 · primary. The [Income Tax Ordinance, National Insurance Institute's consolidated copy, file of 21.6.2026](https://www.btl.gov.il/Laws1/00_0103_000000.pdf#page=34) (file pages: s.17.5א 34) text of s.17(5A), as returned by the fetch tool, did not show this reduction. Its statutory basis was not located (open question 7).
 - Dimensions: `tax-at-deposit`, `deposit-ceiling`, `eligibility`
 - Likely to change: with TXH-05
 
@@ -69,7 +69,7 @@ A study fund is taxed at three points. **Deposit:** for an employee, the employe
 - Rule: Amounts an individual receives from a self-employed study fund, including interest, linkage differences and other gains, are business or professional income when received. Deposits that were not allowed as a deduction under s.17(5A) are excluded. Interest, linkage and other gains received on the dates in s.9(16B), that is, after the holding period, are interest income under s.2(4).
 - Conditions / exceptions: Exempt withdrawals under TXH-09 to TXH-11 take precedence. This rule decides what is taxed when the exemption does not apply.
 - Figures: none
-- Source: [Ordinance](<https://he.wikisource.org/wiki/פקודת_מס_הכנסה>) s.3(e2) (`סעיף 3(ה2)`), Wikisource · checked 2026-10-22 · primary (mirror).
+- Source: [Income Tax Ordinance, National Insurance Institute's consolidated copy, file of 21.6.2026](https://www.btl.gov.il/Laws1/00_0103_000000.pdf#page=8) (file pages: s.3 8-13) s.3(e2) (`סעיף 3(ה2)`) · checked 2026-10-31 · primary (state body's consolidated copy, not the binding gazette wording).
 - Dimensions: `tax-at-exit`, `liquidity-lockup`
 - Likely to change: no
 
@@ -130,7 +130,7 @@ A study fund is taxed at three points. **Deposit:** for an employee, the employe
 - Rule: If the employee or self-employed member dies, those entitled to the amounts may withdraw them from the fund tax-free, whatever the holding period.
 - Conditions / exceptions: The clause refers to "the said amounts" (`הסכומים כאמור`), that is, the amounts in s.9(16A)(a), whose gains part covers benefited deposits. Whether gains on non-benefited deposits are also exempt on death was not sourced (open question 9).
 - Figures: none
-- Source: [Ordinance](<https://he.wikisource.org/wiki/פקודת_מס_הכנסה>) s.9(16A)(a), s.9(16B), Wikisource · checked 2026-10-22 · primary (mirror). [Tax Authority guide 2025](<https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf>), p.89 (`שאריו של עובד יהיו רשאים למשוך את הסכומים בפטור ממס`) · checked 2026-10-22 · primary.
+- Source: [Income Tax Ordinance, National Insurance Institute's consolidated copy, file of 21.6.2026](https://www.btl.gov.il/Laws1/00_0103_000000.pdf#page=22) (file pages: s.9.16א 22-23; s.9.16ב 23) s.9(16A)(a), s.9(16B) · checked 2026-10-31 · primary (state body's consolidated copy, not the binding gazette wording). [Tax Authority guide 2025](<https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf>), p.89 (`שאריו של עובד יהיו רשאים למשוך את הסכומים בפטור ממס`) · checked 2026-10-22 · primary.
 - Dimensions: `age-or-use-exemption`, `tax-at-exit`
 - Likely to change: no
 
@@ -147,7 +147,7 @@ A study fund is taxed at three points. **Deposit:** for an employee, the employe
 - Rule: A provident fund (including a study fund) keeps separate records per member: employer and employee components, and within them, payments up to the cut-off date (for a self-employed study fund, 30 November 2002) and later payments split into benefited payments (`תשלומי ההפקדה המוטבת`) and taxable payments (`התשלומים החייבים`). Profits and expenses are allocated to the components at least monthly. On a transfer to another fund, all annual records pass to the receiving fund.
 - Conditions / exceptions: The text read is a Wikisource copy whose latest visible amendment is from 2013-2014. Current status was not confirmed (open question 12). During the 2020 temporary order the Tax Authority set benefited money as the default source of a withdrawal, unless the member asked otherwise (TXH-23). Whether a member can choose the order in an ordinary withdrawal was not sourced (open question 10).
 - Figures: none
-- Source: [Income Tax Rules (approval and management of provident funds) 1964, rules 49א, 49ב, 49ג, 49ד1](https://he.wikisource.org/wiki/תקנות_מס_הכנסה_(כללים_לאישור_ולניהול_קופות_גמל)) · checked 2026-10-22 · primary (mirror, currency unconfirmed).
+- Source: [Income Tax Regulations (Rules for Approving and Managing Provident Funds), National Insurance Institute's consolidated copy, file of 18.8.2025](https://www.btl.gov.il/Laws1/02_0103_100022.pdf#page=21) (file pages: s.49א 21; s.49ב 21; s.49ג 21-22; s.49ד1 22) · checked 2026-10-31 · primary (state body's consolidated copy, currency unconfirmed).
 - Dimensions: `tax-at-exit`, `transfer-switch-process`
 - Likely to change: no
 
@@ -182,7 +182,7 @@ A study fund is taxed at three points. **Deposit:** for an employee, the employe
 - Rule: Under the Economic Efficiency Law published 26.12.2024 (SH 3342), amounts that would be indexed on 1 January under s.120B are not indexed for tax years 2025 to 2027. Most amounts in the Tax Authority's 2026 table were therefore not updated.
 - Conditions / exceptions: For this file, the s.17(5A) ceiling is explicitly fixed at 293,397 for 2024-2027 in the law text. The s.9(16B) benefited deposit moved from 20,520 (2024) to 20,566 (2025, 2026) despite the freeze (open question 3). The determining salary (TXH-02) is not on the s.120B mechanism.
 - Figures: freeze period: tax years 2025-2027.
-- Source: [Deductions booklet 2026](<https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf>), p.3 · checked 2026-10-22 · primary. [Ordinance](<https://he.wikisource.org/wiki/פקודת_מס_הכנסה>) s.17(5A), s.9(16B), Wikisource · checked 2026-10-22 · primary (mirror).
+- Source: [Deductions booklet 2026](<https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf>), p.3 · checked 2026-10-22 · primary. [Income Tax Ordinance, National Insurance Institute's consolidated copy, file of 21.6.2026](https://www.btl.gov.il/Laws1/00_0103_000000.pdf#page=34) (file pages: s.17.5א 34; s.9.16ב 23) s.17(5A), s.9(16B) · checked 2026-10-31 · primary (state body's consolidated copy, not the binding gazette wording).
 - Dimensions: `deposit-ceiling`
 - Likely to change: yes. The freeze ends after 2027.
 
@@ -190,7 +190,7 @@ A study fund is taxed at three points. **Deposit:** for an employee, the employe
 - Rule: The consolidated Ordinance text read on 2026-10-22 still exempts gains from benefited deposits after 6 years, with no time limit on gains accrued after year 6 and no reduced salary ceiling. No amendment narrowing the exemption was found.
 - Conditions / exceptions: The Wikisource consolidated text carries 2026 amounts (for example, s.9(16B) "2025 and 2026"), which suggests it is current. A Knesset or Nevo check is still advised (open question 12).
 - Figures: none
-- Source: [Ordinance](<https://he.wikisource.org/wiki/פקודת_מס_הכנסה>) s.9(16A), s.9(16B), Wikisource · checked 2026-10-22 · primary (mirror). [Deductions booklet 2026](<https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf>), p.12 · checked 2026-10-22 · primary.
+- Source: [Income Tax Ordinance, National Insurance Institute's consolidated copy, file of 21.6.2026](https://www.btl.gov.il/Laws1/00_0103_000000.pdf#page=22) (file pages: s.9.16א 22-23; s.9.16ב 23) s.9(16A), s.9(16B) · checked 2026-10-31 · primary (state body's consolidated copy, not the binding gazette wording). [Deductions booklet 2026](<https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf>), p.12 · checked 2026-10-22 · primary.
 - Dimensions: `tax-at-exit`, `age-or-use-exemption`
 - Likely to change: yes (TXH-22)
 
@@ -283,16 +283,16 @@ Not applicable to a tax file. Managers and the CMA register are in `keren-hishta
 
 | Title | Publisher | URL | Strength | Checked |
 |---|---|---|---|---|
-| Income Tax Ordinance (consolidated), ss.1, 3(e), 3(e2), 3(e4), 9(13), 9(16A), 9(16B), 9(16C), 17(5A), 124C-125, 125C | Hebrew Wikisource (mirror of the law) | https://he.wikisource.org/wiki/פקודת_מס_הכנסה (raw: https://he.wikisource.org/w/index.php?title=פקודת_מס_הכנסה&action=raw) | primary (mirror) | 2026-10-22 |
+| Income Tax Ordinance (consolidated), ss.1, 3(e), 3(e2), 3(e4), 9(13), 9(16A), 9(16B), 9(16C), 17(5A), 124C-125, 125C | National Insurance Institute's consolidated copy (file of 21.6.2026) | https://www.btl.gov.il/Laws1/00_0103_000000.pdf#page=6 (file pages: s.1 6-7; s.3 8-13; s.9.13 21; s.9.16א 22-23; s.9.16ב 23; s.17.5א 34; s.124ג 119; s.125 119-120; s.125ג 120) | primary (state body's consolidated copy, not the binding gazette wording) | 2026-10-31 |
 | לוח עזר לחישוב מס הכנסה ממשכורת ושכר עבודה לחודש ינואר 2026 ואילך, מעודכן לאפריל 2026, pp.3, 7, 12, 19 | Tax Authority | https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf | primary | 2026-10-22 |
 | דע זכויותיך וחובותיך 2025, printed pp.39, 40, 59, 87, 90 | Tax Authority | https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf | primary | 2026-10-22 |
 | על הטבת המס בקרן השתלמות – ניתוח מדיניות, October 2025 | Ministry of Finance, Chief Economist | https://www.gov.il/BlobFolder/dynamiccollectorresultitem/review-15102025/he/reviews-and-publishes_review-15102025.pdf | primary (policy analysis) | 2026-10-22 |
 | הנחיות למתן פטור מניכוי מס במקור במשיכת סכומים מקרן השתלמות – הוראת שעה, 05.08.2020 | Tax Authority, provident-funds department | https://www.gov.il/BlobFolder/dynamiccollectorresultitem/employers-050820/he/IncomeTax_IncomeTaxEmployersInfo_employer_info_050820-1.pdf | primary | 2026-10-22 |
 | תזכיר חוק לתיקון פקודת מס הכנסה (מס'...), התשפ"ד-2024 (study-fund early withdrawal) | Ministry of Finance, read on capitax.co.il mirror | https://www.capitax.co.il/Attachments/07072024.pdf | primary (draft, mirror) | 2026-10-22 |
-| תקנות מס הכנסה (ניכוי מסכומים ששולמו מקרן השתלמות), התשנ"ח-1997 | Wikisource (mirror) | https://he.wikisource.org/wiki/תקנות_מס_הכנסה_(ניכוי_מסכומים_ששולמו_מקרן_השתלמות) | primary (mirror) | 2026-10-22 |
+| תקנות מס הכנסה (ניכוי מסכומים ששולמו מקרן השתלמות), התשנ"ח-1997 | National Insurance Institute's consolidated copy (file of 3.1.2018) | https://www.btl.gov.il/Laws1/02_0103_100097.pdf | primary (state body's consolidated copy, not the binding gazette wording) | 2026-10-31 |
 | צו מס הכנסה (קביעת סכומים ששולמו מקרן השתלמות כהכנסה), התשנ"ח-1997 | Wikisource (mirror) | https://he.wikisource.org/wiki/צו_מס_הכנסה_(קביעת_סכומים_ששולמו_מקרן_השתלמות_כהכנסה) | primary (mirror) | 2026-10-22 |
-| תקנות מס הכנסה (כללים לתנאים שבהם חשבונות שונים בקרן השתלמות ייחשבו לחשבון אחד), התשנ"ג-1993 | Wikisource (mirror) | https://he.wikisource.org/wiki/תקנות_מס_הכנסה_(כללים_לתנאים_שבהם_חשבונות_שונים_בקרן_השתלמות_ייחשבו_לחשבון_אחד) | primary (mirror) | 2026-10-22 |
-| תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ"ד-1964 | Wikisource (mirror; currency unconfirmed) | https://he.wikisource.org/wiki/תקנות_מס_הכנסה_(כללים_לאישור_ולניהול_קופות_גמל) | primary (mirror) | 2026-10-22 |
+| תקנות מס הכנסה (כללים לתנאים שבהם חשבונות שונים בקרן השתלמות ייחשבו לחשבון אחד), התשנ"ג-1993 | National Insurance Institute's consolidated copy (file of 15.3.2012) | https://www.btl.gov.il/Laws1/02_0103_100048.pdf | primary (state body's consolidated copy, not the binding gazette wording) | 2026-10-31 |
+| תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל), התשכ"ד-1964 | National Insurance Institute's consolidated copy (file of 18.8.2025) | https://www.btl.gov.il/Laws1/02_0103_100022.pdf | primary (state body's consolidated copy, not the binding gazette wording) | 2026-10-31 |
 | תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס"ח-2008 | Wikisource (mirror) | https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(העברת_כספים_בין_קופות_גמל) | primary (mirror) | 2026-10-22 |
 | Treasury contingency plan for the next budget (Asaf Zagrizak, Globes), 18.06.2026 | N12/mako | https://www.mako.co.il/news-money/2026_q2/Article-c2ada8e9a69de91026.htm | secondary | 2026-10-22 |
 | Finance Ministry tax committee plans (Shlomo Teitelbaum), 12.10.2026 | Calcalist | https://www.calcalist.co.il/local_news/article/skys1wkozg | secondary | 2026-10-22 |
