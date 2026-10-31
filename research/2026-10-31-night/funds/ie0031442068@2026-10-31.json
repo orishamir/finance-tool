@@ -1,0 +1,81 @@
+{
+  "id": "ie0031442068",
+  "names": {
+    "en": [
+      "iShares Core S&P 500 UCITS ETF USD (Dist)"
+    ],
+    "he": [],
+    "tase": []
+  },
+  "identifiers": {
+    "isin": "IE0031442068",
+    "tase_number": null,
+    "cusip": null,
+    "ticker": {
+      "LSE_GBP": "IUSA",
+      "LSE": "IDUS",
+      "Euronext Amsterdam": "IUSA"
+    }
+  },
+  "manager": "BlackRock (fund: iShares plc)",
+  "domicile": "IE",
+  "legal_form": "UCITS ETF, share class USD Distributing of iShares plc, Ireland, paid quarterly; 'Product Structure: Physical', 'Methodology: Replicated'; launch 15-Mar-2002; benchmark 'S&P 500 Index'. The factsheet has no Tel Aviv line and BlackRock's Israel brochure has no row for it.",
+  "exposure_id": "index-sp500",
+  "currency": "USD",
+  "trading_currency_on_tase": null,
+  "distribution_policy": "distributing",
+  "tax_status": {
+    "il_fund_tax_track": null,
+    "tase_foreign_fund_90pct_test": null
+  },
+  "fees": {
+    "fixed_management": {
+      "value": 0.07,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://www.ishares.com/gls-download/literature/fact-sheet/iusa-ishares-core-s-p-500-ucits-etf-usd-dist-fund-fact-sheet-en-gb.pdf#page=1",
+        "title": "iShares Core S&P 500 UCITS ETF USD (Dist), factsheet, data at 05-Oct-2026, p. 1: 'Total Expense Ratio : 0.07%' (library 42f663b2cc0e8cc1)",
+        "publisher": "BlackRock (iShares plc)",
+        "strength": "institution"
+      },
+      "checked": "2026-10-31",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-28",
+        "TXF-16",
+        "TXF-29",
+        "TXF-30"
+      ],
+      "state": "sourced",
+      "notes": "Total expense ratio of the share class as the factsheet prints it (marketing material for UK investors; performance and net assets at 30-Sep-2026, all other data at 05-Oct-2026). The prospectus and key information document were not opened."
+    },
+    "trustee": null,
+    "variable_management": null,
+    "tracking_difference_12m": null,
+    "median_spread": null,
+    "fund_level_withholding_drag": null
+  },
+  "dimensions": {
+    "foreign-withholding-domicile": "covered:TXF-16",
+    "distribution-policy": "covered:ETF-28",
+    "currency": "covered:ETF-28",
+    "fee-management-balance": "covered:ETF-28",
+    "fee-trade": "covered:ETF-29"
+  },
+  "prospectus": {
+    "url": "https://www.ishares.com/gls-download/literature/fact-sheet/iusa-ishares-core-s-p-500-ucits-etf-usd-dist-fund-fact-sheet-en-gb.pdf",
+    "date": null
+  },
+  "snapshot": "2026-10-31",
+  "replication": {
+    "method": "physical",
+    "source": {
+      "url": "https://www.ishares.com/gls-download/literature/fact-sheet/iusa-ishares-core-s-p-500-ucits-etf-usd-dist-fund-fact-sheet-en-gb.pdf",
+      "page": 1,
+      "checked": "2026-10-31"
+    }
+  }
+}
