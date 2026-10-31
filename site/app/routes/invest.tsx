@@ -162,7 +162,7 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
   // the account and the fund the two lists are priced on: the person's picks on this index, else the cheapest way (2026-10-27)
   const [picked, setPicked] = useState<{ index: string; pick: Pick } | null>(null);
   const [labelFilter, setLabelFilter] = useState<string | null>(null);
-  // a fund priced nowhere (a distributing fund whose yield is not known) keeps its row with the reason, and is not a pair to show; nor is
+  // a fund priced nowhere (a distributing fund whose yield is not known, or a US fund, TXF-37) keeps its row with the reason, and is not a pair to show; nor is
   // a pair the account no longer prices (a broker the person typed and changed, D44)
   const validPick = (p: Pick) => !!view && allFunds(view).some((f) => f.rec.id === p.fund && Object.values(f.byHouse).some((x) => "valueN" in x) && "valueN" in (f.byHouse[p.house] ?? {})) && view.providers.some((x) => x.id === p.house);
   const pick: Pick | null = view && index && picked && picked.index === index.id && validPick(picked.pick) ? picked.pick : view ? pickOfHeadline(view) : null;

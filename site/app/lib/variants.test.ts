@@ -72,9 +72,11 @@ describe("fund-variant view", () => {
     const ibi = r.view.rows.find((x) => x.recordId === "1148162")!;
     expect(ibi.kind).toBe("ranked");
     // its 0.8% fixed and 0.3% variable fee rank it last of the unhedged ranked funds (8 of 9 on 2026-10-24, 13 of 14 records on
-    // 2026-10-25); since 2026-10-29 the hedged fund's shortfall beyond its fees (F-92) puts that one after it
+    // 2026-10-25); since 2026-10-29 the hedged fund's shortfall beyond its fees (F-92) puts that one after it, and since 2026-10-31
+    // (issue 147) IUSA and VUSA rank after it here: bought abroad, with the tax on each distribution, on this page's account
     const hedgedIds = new Set(bundle.funds.filter((f) => f.hedged === true).map((f) => f.id));
-    expect(ibi.rank).toBe(Math.max(...r.view.rows.flatMap((x) => (x.rank === undefined || hedgedIds.has(x.recordId ?? "") ? [] : [x.rank]))));
+    const paying = new Set(["ie0031442068", "ie00b3xxrp09"]);
+    expect(ibi.rank).toBe(Math.max(...r.view.rows.flatMap((x) => (x.rank === undefined || hedgedIds.has(x.recordId ?? "") || paying.has(x.recordId ?? "") ? [] : [x.rank]))));
     expect(ibi.number).toBe("1148162");
     expect(ibi.value?.state).toBe("computed");
     expect(ibi.tags).toEqual({ domicile: "IL", policy: "accumulating" });

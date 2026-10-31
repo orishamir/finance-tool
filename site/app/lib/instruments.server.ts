@@ -4,7 +4,7 @@
 // `data/` and keeps its value object, so the values sheet can show its source.
 import { existsSync, readdirSync } from "node:fs";
 import { join } from "node:path";
-import { memberKindOf, STANDING_ORDER_BAND, type InstrumentTerms } from "@finance-tool/engine";
+import { memberKindOf, recordDistribution, STANDING_ORDER_BAND, type InstrumentTerms } from "@finance-tool/engine";
 import { instrumentClassOf } from "./providers";
 import {
   catalogEntry,
@@ -334,7 +334,13 @@ function buildFund(wrapperId: string, spec: InstrumentSpec, src: InstrumentSourc
 
   const fund: Fund = { kind };
   const isMmf = kind.startsWith("money-market");
-  if (rec.distribution_policy === "distributing") missing.push(`${wrapperId}: fund "${rec.id}" distributes, and its distribution yield (A-10) is not on the record`);
+  if (rec.distribution_policy === "distributing") {
+    const held = recordDistribution(rec);
+    if (held) {
+      fund.distribution = held;
+      feeValues.distributionYield = { ...rec.distribution!.yield };
+    } else missing.push(`${wrapperId}: fund "${rec.id}" distributes, and its distribution yield (A-10) is not on the record`);
+  }
   if (rec.currency !== "ILS" && rec.currency !== "NIS") missing.push(`${wrapperId}: fund "${rec.id}" is in ${rec.currency}; the exchange-rate change (A-03) and the start rate are not in P-05`);
   if (kind === "tase-foreign-fund") {
     const t = rec.tax_status.tase_foreign_fund_90pct_test;
