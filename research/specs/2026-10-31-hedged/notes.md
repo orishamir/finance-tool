@@ -64,3 +64,5 @@ C: a new kit strip plot; a function gathering every fund-year. No plan input, so
 ## Option A's text, second version (founder, 2026-10-31)
 
 He liked option A's graphs and found the text unclear, and asked how the hedged fund fell 21.78% in 2022 against 7.35% to 8.15% for the unhedged funds. `option-a.html` is option A alone with the new wording; `mockups.html` carries the same block. A step-by-step table of 2022 and 2025 was tried and removed the same day: he found it unintuitive and wanted the first version's table with better phrasing only. So the tiles, graphs and table are the first version's; the words changed, the third tile now answers his question, and "פיגור" gives way to "פער מהמדד", the site's own word.
+
+Built on the site the same day (D45, F-95), with 2025 on its own line in the third card and a bottom line closing the section. Where the drawing named one hedged fund, the site says so only on an index with one; elsewhere it gives the range over those funds. An index with no falling year in its reports (MSCI World today) says so in the third card.
