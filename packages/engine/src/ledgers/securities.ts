@@ -56,6 +56,8 @@ export interface SecuritiesInput {
     /** F-12 (2026-10-31): the price of a monthly purchase by standing order, where the tariff prints one; `buy` otherwise. */
     buyStanding?: Commission;
     sell?: Commission;
+    /** F-24 (2026-10-31): the tariff's own line for a redemption, where it names one. Only the makam run reads it. */
+    redeem?: Commission;
     custody?: Custody;
     /** F-17 monthly account fee in NIS. */
     monthlyFee?: number;

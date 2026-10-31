@@ -544,6 +544,7 @@ function scaleTerms(terms: InstrumentTerms, id: string, scale: Record<string, nu
     if (t.tariff.buy) t.tariff.buy.rate *= k("trade");
     if (t.tariff.buyStanding) t.tariff.buyStanding.rate *= k("trade");
     if (t.tariff.sell) t.tariff.sell.rate *= k("trade");
+    if (t.tariff.redeem) t.tariff.redeem.rate *= k("trade");
     if (t.tariff.custody) t.tariff.custody.rate *= k("custody");
   }
   return t;

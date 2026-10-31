@@ -156,6 +156,71 @@
       }
     },
     {
+      "id": "ibi-redemption-makam",
+      "base": "trade",
+      "applies_to": [
+        "makam"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.1,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://campaign.ibi.co.il/PDF/TRADE/TAARIFON_IBI.pdf",
+          "title": "תעריפון עמלות - שרותי בורסה והשקעות בישראל אי.בי.אי. בע\"מ ('נכון לתאריך: 1.7.2026'), חלק 4, (4א) סעיף 1, '2. מילווה קצר מועד' (עמ' 2)",
+          "publisher": "I.B.I. Investment House - Exchange and Investment Services in Israel I.B.I. Ltd.",
+          "strength": "institution",
+          "page": 3,
+          "quote": "מילווה קצר מועד 0.1% משווי העסקה ₪ 3.5 לעסקה מינימום"
+        },
+        "checked": "2026-10-31",
+        "effective_from": "2026-07-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "The tariff has one line for makam, under a heading that names redemption."
+      },
+      "min": {
+        "value": 3.5,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://campaign.ibi.co.il/PDF/TRADE/TAARIFON_IBI.pdf",
+          "title": "תעריפון עמלות - שרותי בורסה והשקעות בישראל אי.בי.אי. בע\"מ ('נכון לתאריך: 1.7.2026'), חלק 4, (4א) סעיף 1, מילווה קצר מועד, מינימום (עמ' 2)",
+          "publisher": "I.B.I. Investment House - Exchange and Investment Services in Israel I.B.I. Ltd.",
+          "strength": "institution",
+          "page": 3,
+          "quote": "מילווה קצר מועד 0.1% משווי העסקה ₪ 3.5 לעסקה מינימום"
+        },
+        "checked": "2026-10-31",
+        "effective_from": "2026-07-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "'מינימום ₪ 3.5 לעסקה'."
+      },
+      "max": null,
+      "period": null,
+      "channel": null,
+      "band": "פדיון",
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קניה, מכירה ופדיון של ניירות ערך הנסחרים בבורסה בת\"א",
+          "2. מילווה קצר מועד"
+        ]
+      }
+    },
+    {
       "id": "ibi-buy-sell-mutual-fund",
       "base": "trade",
       "applies_to": [

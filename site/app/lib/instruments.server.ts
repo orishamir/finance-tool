@@ -4,7 +4,7 @@
 // `data/` and keeps its value object, so the values sheet can show its source.
 import { existsSync, readdirSync } from "node:fs";
 import { join } from "node:path";
-import { memberKindOf, recordDistribution, STANDING_ORDER_BAND, type InstrumentTerms } from "@finance-tool/engine";
+import { memberKindOf, recordDistribution, REDEMPTION_BAND, STANDING_ORDER_BAND, type InstrumentTerms } from "@finance-tool/engine";
 import { instrumentClassOf } from "./providers";
 import {
   catalogEntry,
@@ -304,7 +304,10 @@ function listLines(snap: FeesSnapshot, wrapperId: string, base: FeeLine["base"])
   const rank = (l: FeeLine) => (l.channel === null || l.channel === "direct" ? 0 : 1);
   // a line that excludes the product's own security type (a bank's custody line leaves out makam, BRK-17) does not apply to it
   const excluded = (l: FeeLine) => (l.excludes ?? []).some((x) => types.includes(x));
-  return snap.lines.filter((l) => l.level === "list" && l.base === base && l.band !== STANDING_ORDER_BAND && (l.applies_to.includes(wrapperId) || l.applies_to.includes("all") || l.applies_to.some((a) => types.includes(a))) && !excluded(l)).sort((a, b) => rank(a) - rank(b));
+  const lines = snap.lines.filter((l) => l.level === "list" && l.base === base && l.band !== STANDING_ORDER_BAND && l.band !== REDEMPTION_BAND && (l.applies_to.includes(wrapperId) || l.applies_to.includes("all") || l.applies_to.some((a) => types.includes(a))) && !excluded(l)).sort((a, b) => rank(a) - rank(b));
+  // a bond's own line wins over a line for shares and bonds, as in the engine's tariff step (F-63, `lineClasses`): Psagot prints one
+  const own = wrapperId === "government-bond" ? lines.filter((l) => l.applies_to.includes("tase_bonds")) : [];
+  return own.length > 0 ? own : lines;
 }
 
 function buildFund(wrapperId: string, spec: InstrumentSpec, src: InstrumentSources, missing: string[], feeValues: Record<string, SiteValue>) {
@@ -435,6 +438,18 @@ function buildMoneyMarketTariff(wrapperId: string, src: InstrumentSources, missi
   return { buy: { rate: 0 }, sell: { rate: 0 }, custody: { rate: 0, everyMonths: 12 } };
 }
 
+/** The figures of a tariff's redemption line, for the terms block (F-24). */
+export function redemptionValues(l: FeeLine): Record<string, SiteValue> {
+  const out: Record<string, SiteValue> = { redeemRate: { ...l.rate } as SiteValue };
+  if (l.min && isNum(l.min)) out.redeemMin = { ...l.min } as SiteValue;
+  if (l.max && isNum(l.max)) out.redeemMax = { ...l.max } as SiteValue;
+  if (l.flat_up_to) {
+    out.redeemFlat = { ...l.flat_up_to.amount } as SiteValue;
+    out.redeemFlatUpTo = { ...l.flat_up_to.up_to } as SiteValue;
+  }
+  return out;
+}
+
 function buildTariff(
   wrapperId: string,
   family: "securities" | "makam" | "bond",
@@ -493,6 +508,12 @@ function buildTariff(
       if (line.flat_up_to) {
         feeValues.tradeFlat = { ...line.flat_up_to.amount };
         feeValues.tradeFlatUpTo = { ...line.flat_up_to.up_to };
+      }
+      // F-24 (2026-10-31): a redemption of makam, where the tariff names it (the comparison reads the same line through the engine's tariff step)
+      const redemption = family === "makam" ? snap.lines.find((l) => l.level === "list" && l.base === "trade" && l.band === REDEMPTION_BAND && l.applies_to.includes("makam")) : undefined;
+      if (redemption && isNum(redemption.rate) && redemption.rate.unit === "pct_of_trade") {
+        tariff.redeem = commission(redemption);
+        Object.assign(feeValues, redemptionValues(redemption));
       }
     } else missing.push(`${wrapperId}: ${snap.id} line ${line.id} is not a percent of trade`);
   }

@@ -54,12 +54,16 @@ describe("one bank's rate is named where it is quoted", () => {
     expect(t).toMatch(/ב־\s*3\s*מתוך\s*4\s*הבנקים/);
     expect(t.replace(/<section[\s\S]*$/, "").split("לאומי").length).toBe(2); // only the line of the list that names it
   });
-  it("the makam page names the house of its commission as the site's pick, and sets the deposit as a range", () => {
+  it("the makam page names the house of its commission, says which house ties with it, and sets the deposit as a range", () => {
     const sig = buildGuidePage("makam")!.signature!;
     const t = text(render(createElement(MakamVisual, { data: sig, today: "2026-10-26" })));
     expect(t).not.toContain("לאומי");
     expect(t).not.toContain("עוד לא נאספו");
     expect(t).toMatch(/1\.55%\s*–\s*2\.25%/);
+    expect(t).toMatch(/לפי התעריפון של\s*(<[^>]*>)?\s*פסגות/);
+    expect(t).toContain("הוא שקול לתעריפון של");
+    expect(t).toContain("פפר");
+    expect(t).not.toContain("הבחירה של האתר");
   });
   it("the savings plan's one-off deposit sentence names its bank", () => {
     const sig = buildGuidePage("savings-plan")!.signature!;

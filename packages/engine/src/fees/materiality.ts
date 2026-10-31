@@ -163,10 +163,10 @@ function changeLine(plan: RunPlan, line: FeeLine, rate: number): RunPlan {
     case "runMakam":
     case "runBond": {
       if (line !== "trade" && line !== "custody") return noLine(plan, line);
-      const tariff = { ...(plan.input.tariff as { buy?: Commission; sell?: Commission; custody?: Custody }) };
+      const tariff = { ...(plan.input.tariff as { buy?: Commission; sell?: Commission; redeem?: Commission; custody?: Custody }) };
       if (line === "trade") {
         if (!tariff.buy && !tariff.sell) return noLine(plan, line);
-        for (const key of ["buy", "sell"] as const) {
+        for (const key of ["buy", "sell", "redeem"] as const) {
           if (!tariff[key]) continue;
           if (rate === 0) delete tariff[key];
           else tariff[key] = { ...tariff[key]!, rate };

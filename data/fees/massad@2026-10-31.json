@@ -469,6 +469,114 @@
       }
     },
     {
+      "id": "massad-redemption-makam",
+      "base": "trade",
+      "applies_to": [
+        "makam"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.11,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.bankmassad.co.il/media/qb0h1di4/חלק-4-ניירות-ערך-46.pdf",
+          "title": "תעריפון ליחידים ולעסקים קטנים - בנק מסד (בתוקף מ-06/09/2026) - חלק 4 ניירות ערך, סעיף 4.1.2 מלווה קצר מועד (עמוד מס' 15)",
+          "publisher": "Bank Massad Ltd.",
+          "strength": "institution",
+          "page": 1,
+          "quote": "4.1.2 מלווה קצר מועד 0.11% מינ' 19.0 מקס'4,500"
+        },
+        "checked": "2026-10-31",
+        "effective_from": "2026-09-06",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-19"
+        ],
+        "state": "sourced",
+        "notes": "Section 4.1 names redemption. The reduced price (0.1%) is for an action \"המבוצעת ישירות באמצעות האינטרנט\", so a redemption, where no order is placed, stays at the section's price (inferred from the wording)."
+      },
+      "min": {
+        "value": 19,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.bankmassad.co.il/media/qb0h1di4/חלק-4-ניירות-ערך-46.pdf",
+          "title": "תעריפון ליחידים ולעסקים קטנים - בנק מסד (בתוקף מ-06/09/2026) - חלק 4 ניירות ערך, סעיף 4.1.2, מינ' (עמוד מס' 15)",
+          "publisher": "Bank Massad Ltd.",
+          "strength": "institution",
+          "page": 1,
+          "quote": "4.1.2 מלווה קצר מועד 0.11% מינ' 19.0 מקס'4,500"
+        },
+        "checked": "2026-10-31",
+        "effective_from": "2026-09-06",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'מינ' - 19'."
+      },
+      "max": {
+        "value": 4500,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.bankmassad.co.il/media/qb0h1di4/חלק-4-ניירות-ערך-46.pdf",
+          "title": "תעריפון ליחידים ולעסקים קטנים - בנק מסד (בתוקף מ-06/09/2026) - חלק 4 ניירות ערך, סעיף 4.1.2, מקס' (עמוד מס' 15)",
+          "publisher": "Bank Massad Ltd.",
+          "strength": "institution",
+          "page": 1,
+          "quote": "4.1.2 מלווה קצר מועד 0.11% מינ' 19.0 מקס'4,500"
+        },
+        "checked": "2026-10-31",
+        "effective_from": "2026-09-06",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'מקס' - 4,500'."
+      },
+      "cap": {
+        "value": 25,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.bankmassad.co.il/media/qb0h1di4/חלק-4-ניירות-ערך-46.pdf",
+          "title": "תעריפון ליחידים ולעסקים קטנים - בנק מסד (בתוקף מ-06/09/2026) - חלק 4 ניירות ערך, הערה 5 לסעיף ניירות ערך הנסחרים בבורסה בתל אביב",
+          "publisher": "Bank Massad Ltd.",
+          "strength": "institution",
+          "page": 1,
+          "quote": "בכל עסקה בני\"ע סכום העמלה לא יעלה על 25% משווי העסקה."
+        },
+        "checked": "2026-10-31",
+        "effective_from": "2026-09-06",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-19"
+        ],
+        "state": "sourced",
+        "notes": "Printed for every securities trade, so the standing-order line too: the fee, and with it the minimum, stops at this share of the trade value."
+      },
+      "period": null,
+      "channel": null,
+      "band": "פדיון",
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קנייה, מכירה, ופדיון של ניירות ערך הנסחרים בבורסה בתל אביב",
+          "4.1.2 מלווה קצר מועד"
+        ]
+      }
+    },
+    {
       "id": "massad-buy-sell-foreign-branch",
       "base": "trade",
       "applies_to": [

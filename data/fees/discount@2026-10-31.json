@@ -373,6 +373,90 @@
       }
     },
     {
+      "id": "discount-redemption-makam",
+      "base": "trade",
+      "applies_to": [
+        "makam"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.1,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.discountbank.co.il/media/fnibqzdx/tarifon_single-united_11026.pdf",
+          "title": "תעריפון יחיד/עסק קטן - בנק דיסקונט (תעריפון מאוחד, 01/10/2026), חלק 4 - ניירות ערך, סעיף 4.1.2 (עמ' 12 מתוך 52, עודכן 07/02/2025)",
+          "publisher": "Israel Discount Bank Ltd.",
+          "strength": "institution",
+          "page": 12,
+          "quote": "4.1.2 קניה ופדיון של ני\"ע 0.1% משווי העסקה ₪ 25 ₪ 7,300"
+        },
+        "checked": "2026-10-31",
+        "effective_from": "2025-02-07",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-19"
+        ],
+        "state": "sourced",
+        "notes": "Section 4.1.2 names redemption. The reduced direct-channel price (note 3, 0.09%) names buying and selling only (\"עבור קניה ומכירה בערוץ ישיר\"), so a redemption, where no order is placed, stays at the section's price (inferred from the wording)."
+      },
+      "min": {
+        "value": 25,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.discountbank.co.il/media/fnibqzdx/tarifon_single-united_11026.pdf",
+          "title": "תעריפון יחיד/עסק קטן - בנק דיסקונט (תעריפון מאוחד, 01/10/2026), חלק 4 - ניירות ערך, סעיף 4.1.2, גובה העמלה מינימום (עמ' 12 מתוך 52, עודכן 07/02/2025)",
+          "publisher": "Israel Discount Bank Ltd.",
+          "strength": "institution",
+          "page": 12,
+          "quote": "4.1.2 קניה ופדיון של ני\"ע 0.1% משווי העסקה ₪ 25 ₪ 7,300"
+        },
+        "checked": "2026-10-31",
+        "effective_from": "2025-02-07",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'₪ 25'."
+      },
+      "max": {
+        "value": 7300,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.discountbank.co.il/media/fnibqzdx/tarifon_single-united_11026.pdf",
+          "title": "תעריפון יחיד/עסק קטן - בנק דיסקונט (תעריפון מאוחד, 01/10/2026), חלק 4 - ניירות ערך, סעיף 4.1.2, גובה העמלה מקסימום (עמ' 12 מתוך 52, עודכן 07/02/2025)",
+          "publisher": "Israel Discount Bank Ltd.",
+          "strength": "institution",
+          "page": 12,
+          "quote": "4.1.2 קניה ופדיון של ני\"ע 0.1% משווי העסקה ₪ 25 ₪ 7,300"
+        },
+        "checked": "2026-10-31",
+        "effective_from": "2025-02-07",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'₪ 7,300'."
+      },
+      "period": null,
+      "channel": null,
+      "band": "פדיון",
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קניה,מכירה ופדיון של ני\"ע הנסחרים בבורסה בתל אביב –מילווה קצר מועד"
+        ]
+      }
+    },
+    {
       "id": "discount-buy-sell-foreign-branch",
       "base": "trade",
       "applies_to": [

@@ -148,7 +148,15 @@ export function MakamVisual({ data, today }: VisualProps) {
               {house && bundle.pick && (
                 <>
                   , {copy.makam.feesWhose.before} <bdi>{house}</bdi>
-                  {copy.makam.feesWhose.middle} <Num value={bundle.pick.count} /> {copy.makam.feesWhose.after}
+                  {bundle.pick.tied ? (
+                    <>
+                      . {copy.makam.feesWhose.tied} <bdi>{bundle.pick.tied.names.filter((n) => n !== house).join(" · ")}</bdi>: {copy.makam.feesWhose.tiedGap} <Num value={bundle.pick.tied.theta} />.
+                    </>
+                  ) : (
+                    <>
+                      {copy.makam.feesWhose.middle} <Num value={bundle.pick.count} /> {copy.makam.feesWhose.after}
+                    </>
+                  )}
                 </>
               )}
             </Sentence>
