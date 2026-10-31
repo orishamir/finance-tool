@@ -23,6 +23,7 @@
   "snapshot": "2026-10-23",
   "missing": false,
   "missing_reason": null,
+  "missing_reason_he": "על קרן הנסחרת באירופה: המינימום בתעריפון נקוב ביורו, 15 יורו לעסקה, והאתר עוד לא מחשב מינימום ביורו.",
   "lines": [
     {
       "id": "psagot-buy-sell-tase-shares",

@@ -22,7 +22,7 @@
   },
   "snapshot": "2026-10-31",
   "missing": true,
-  "missing_reason": "Not priced because Meitav Trade's own documents disagree (2026-10-31). The tariff 04/2026 (library 3ec196cf860a522c, PDF page 3, part 4, line 8, \"דמי ניהול פיקדון ניירות ערך (לרבות יחידות השתתפות בקרנות נאמנות)\") prints the price \"0.15%, מינימום ₪ 270 לרבעון\". Its pages say \"פטור מדמי משמרת\" (library f57d393657c2d282, meitav.co.il/trade/independent_trading) and \"ללא דמי משמרת ועמלות נסתרות\" (library 697ecc32a2bdcfa4, meitav.co.il/trade), and neither says under which conditions. The tariff does not say whether \"לרבעון\" covers the 0.15% or only the minimum. Needs an answer from Meitav Trade.",
+  "missing_reason": "Not priced because Meitav Trade's own documents do not settle custody (re-read 2026-10-31). The tariff 04/2026 (library 3ec196cf860a522c, PDF page 3, part 4, line 8, \"דמי ניהול פיקדון ניירות ערך (לרבות יחידות השתתפות בקרנות נאמנות)\") prints the price \"0.15%, מינימום ₪ 270 לרבעון\", collected \"ביום העסקה\"; version 01/2025 (library 3dab65d44284a0e2, p.3) prints the same. Neither says whether \"לרבעון\" covers the 0.15% or only the minimum. Its pages say \"פטור מדמי משמרת\" (library f57d393657c2d282, /trade/independent_trading; b0208670f321644d, /trade/financial_info/self_trading_portfolio_transfer), \"כולל פטור מדמי משמרת\" (library 1315f97ac91f198c, /trade/application) and \"ללא דמי משמרת ועמלות נסתרות\" (library 697ecc32a2bdcfa4, /trade/about), and none says under which conditions. Two documents state it for a narrower case only: the funds-only track, \"אין דמי משמרת\" (library 3d56645174b8a3b4), and accounts of provident funds in personal management, \"פטור דמי משמרת\" (library a0cc1f2ae61e4ce5, p.4). Not read: the frequently asked questions, the member's bylaws and the forms pages (the host reset connections on 2026-10-31 after a scripted read of its sitemap pages); TASE's fee calculator (BRK-33, needs a browser); no account agreement is published (library tried list). Would settle it: the fee annex of the account agreement, Meitav Trade's written answer, or the management fee TASE's calculator shows for this member.",
   "lines": [],
   "averages": [],
   "minimums": {
@@ -31,7 +31,7 @@
   "notice_rule_ids": [
     "BRK-15"
   ],
-  "missing_reason_he": "המסמכים של החברה סותרים: התעריפון מדפיס דמי ניהול של 0.15%, והדפים שלה אומרים שאין.",
+  "missing_reason_he": "התעריפון מדפיס דמי ניהול של 0.15%, מינימום 270 שקלים לרבעון, ולא אומר אם 0.15% הם לרבעון או לשנה. דפי החברה אומרים \"פטור מדמי משמרת\" ולא אומרים באילו תנאים.",
   "groups": {
     "state": "no_mention",
     "note": "Tariff 04/2026 read in the filed copy; this record is not priced for another reason. Searched for young, student, soldier, released-soldier, group and club wording; none found on a price. This covers the tariff read, not a personal offer.",
