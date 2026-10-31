@@ -16,3 +16,5 @@
 - https://www.bankmassad.co.il/private/general/standardcontracts/ (job 4): Massad's standard contracts page. Wanted: the securities chapter of its general terms (chapter A, 4.21, is filed) and any edition newer than 4.21. Bot check.
 - https://www.bankjerusalem.co.il/capital-market/giluy-sherutim (job 4): Jerusalem's disclosure of services, also /others/giluim and /others/trial. Wanted: any securities terms not on the forms page, and the page that links the 01/2024 general terms. Bot check on these; /capital-market/forms opened.
 - https://www.bank-yahav.co.il/clients-agreements (job 4; take the exact path from the site's menu): Yahav's agreements list, empty by curl. Wanted: the current edition of the account agreement, because the filed one has no edition date.
+- https://www.menoramivt.co.il/links/regulations-hishtalmut-omega (job 5): Menora's study fund regulations and its provident fund for investing regulations. Radware captcha to scripts.
+- https://www.yl-invest.co.il/ (job 5): Yalin Lapidot's provident regulations and fund fee page. Imperva answer to scripts (302 with no destination).

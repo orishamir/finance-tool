@@ -13,3 +13,12 @@
 {"looked_for":"מזרחי טפחות: /standard-contracts/","result":"404; המרכז הוא disclosure-links/bank-agreements","where":"mizrahi-tefahot.co.il","date":"2026-10-31"}
 {"looked_for":"בנק יהב: רשימת ההסכמים clients-agreements","result":"העמוד חוזר כמעט ריק ב-curl, הרשימה לא ב-HTML","where":"bank-yahav.co.il","date":"2026-10-31"}
 {"looked_for":"מזרחי טפחות: תנאים כלליים 1.2026 כטקסט","result":"הקובץ 'מונגש' זהה לקובץ שבתיק, עמודים כתמונות בלי טקסט","where":"mizrahi-tefahot.co.il/media/agublu4s","date":"2026-10-31"}
+{"looked_for":"Meitav Trade account agreement","result":"no published agreement found; only site terms, disclosures, tariff","where":"meitav.co.il /trade pages, two web searches","date":"2026-10-31"}
+{"looked_for":"Israeli brokers' account agreements (IBI, Altshuler Trade, Psagot, Excellence, Fair)","result":"no public agreement found; site terms, disclosures and tariffs only","where":"each broker's site by link listing and web search","date":"2026-10-31"}
+{"looked_for":"More provident fund for investing regulations, no.7956","result":"not found; the page lists study fund and gemel lechisachon","where":"moreinvest.co.il regulation pages","date":"2026-10-31"}
+{"looked_for":"Infinity study fund regulations","result":"not found on the forms page, which lists pension and provident files","where":"infinity.co.il/forms and study fund pages","date":"2026-10-31"}
+{"looked_for":"HUJI provident regulations","result":"not found; reports page holds financial statements","where":"gemel.huji.ac.il reports and products pages","date":"2026-10-31"}
+{"looked_for":"Yalin Lapidot brand site","result":"ylp.co.il is an unrelated contractor; yl-invest.co.il answers with an Imperva check","where":"curl","date":"2026-10-31"}
+{"looked_for":"Slice and Globalnet sites","result":"no site known; guesses do not answer","where":"curl of guessed hosts","date":"2026-10-31"}
+{"looked_for":"Kesem and Tachlit fund managers' own sites","result":"kesem.co.il is a hotel, tachlit.co.il a marketing firm; ksm.co.il title only, unconfirmed","where":"curl","date":"2026-10-31"}
+{"looked_for":"Israeli fund managers' fee pages","result":"fund pages of IBI, More and Meitav list no fund agreement or prospectus; documents are on Maya","where":"ibi.co.il/mutual-funds, moreinvest funds page, meitav.co.il/mutual_funds","date":"2026-10-31"}
