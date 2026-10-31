@@ -144,6 +144,8 @@ const SHORT_NAMES: Record<string, string> = {
   "altshuler-trade": "אלטשולר טרייד",
   excellence: "אקסלנס",
   "meitav-trade": "מיטב טרייד",
+  fair: "פייר",
+  pepper: "פפר",
 };
 
 /** A label for a chart's right strip (display only): the provider's name without the company suffix. */

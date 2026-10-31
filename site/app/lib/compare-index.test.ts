@@ -83,11 +83,10 @@ describe("before a choice (D27)", () => {
     expect(again.wrappers.find((w) => w.id === BRK)).toBe(out.bundle.wrappers.find((w) => w.id === BRK));
   });
   // since 2026-10-28 an index's way opens on an unhedged fund: MSCI World runs through MTF's unhedged fund, no longer Kesem's hedged one
-  it("the founder's plan: the lowest is MSCI World at about 146,712, the highest the S&P 500 at 155,116", () => {
+  it("the founder's plan: the lowest is MSCI ACWI, the highest the S&P 500 at 156,939", () => {
     if (out.reading?.kind !== "range") throw new Error("range");
-    expect(out.reading.low.indexId).toBe("index-msci-world");
-    expect(Math.round(out.reading.low.valueN)).toBe(146_712);
-    expect(Math.round(out.reading.high.valueN)).toBe(155_116);
+    expect(out.reading.low.indexId).toBe("index-msci-acwi");
+    expect(Math.round(out.reading.high.valueN)).toBe(156_939);
   });
 });
 
@@ -99,18 +98,18 @@ describe("after a choice", () => {
     expect(out.reading?.kind).toBe("chosen");
     const way = cheapestWay(wb, knownIndices(wb).find((i) => i.id === "index-sp500")!, plan)!;
     expect(out.ranked).toEqual(way);
-    expect(Math.round(real(out.bundle, g))).toBe(155_116);
+    expect(Math.round(real(out.bundle, g))).toBe(156_939);
     const w = out.bundle.wrappers.find((x) => x.id === BRK)!;
-    expect(w.representative).toMatchObject({ providerId: "psagot", viaIndex: "chosen" });
+    expect(w.representative).toMatchObject({ providerId: "fair", viaIndex: "chosen" });
     expect(w.representative!.name).toContain("S&P 500");
-    expect(providerOf(out.bundle, BRK)?.name).toContain("פסגות");
+    expect(providerOf(out.bundle, BRK)?.name).toContain("פייר");
   });
   it("an unknown or removed index id falls back to the range", () => {
     expect(readIndex(wb, plan, "index-nope")?.kind).toBe("range");
   });
   it("another index changes the figure through the fund's costs only", () => {
     const o = applyIndex(bundle, wb, plan, { ...founder, ownIndices: { [BRK]: "index-ta35" } });
-    expect(Math.round(real(o.bundle, founder))).toBe(154_323);
+    expect(Math.round(real(o.bundle, founder))).toBe(156_134);
   });
 });
 

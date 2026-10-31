@@ -1,0 +1,856 @@
+{
+  "id": "pepper",
+  "provider": {
+    "name_he": "פפר (בנק לאומי)",
+    "class": "bank",
+    "regulator": "BoI",
+    "tase_member": true,
+    "protection_rule_ids": [
+      "BRK-10",
+      "BRK-12",
+      "BRK-13"
+    ]
+  },
+  "tariff": {
+    "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
+    "title": "תעריפון העמלות המלא, בנק לאומי: נספח 'לקוחות PEPPER' (עמ' 11) ומעליו שורות התעריפון של לאומי בערוץ הישיר (חלק 4, עמ' 30-34); 'התעריפון מעודכן לתאריך 01/10/2026'. מחיר 4 ש\"ח ודמי הניהול גם בדף הבית של PEPPER",
+    "published": "2026-10-01",
+    "format": "pdf"
+  },
+  "snapshot": "2026-10-31",
+  "missing": false,
+  "missing_reason": null,
+  "lines": [
+    {
+      "id": "pepper-buy-sell-tase",
+      "base": "trade",
+      "applies_to": [
+        "tase_shares_bonds",
+        "etf_units",
+        "mutual_fund_units"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.4,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
+          "title": "תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (מעודכן לתאריך 01/10/2026), נספח ה' - הטבות בערוצי בנקאות בתקשורת (עמ' 13-14), 'קניה, מכירה של ני\"ע הנסחרים בבורסה בת\"א ... מניות ואגרות חוב', ערוצים ישירים (עמ' 13)",
+          "publisher": "Bank Leumi le-Israel B.M.",
+          "strength": "institution",
+          "page": 13,
+          "quote": "­מניות ואגרות חוב אינטרנט וסלולר גישה ישירה TRADE ON 0.4% 26ש מינימום 6300ש מכסימום"
+        },
+        "checked": "2026-10-31",
+        "effective_from": "2026-10-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-19",
+          "MF-27"
+        ],
+        "state": "sourced",
+        "notes": "Direct channels 'אינטרנט וסלולר / גישה ישירה TRADE ON': 0.4%, printed in Appendix E and in part 4(א)(1) note 3 ('0.40% לפעולה במניות ובאגרות חוב'). Same scope as the branch line (footnote {4}: ETFs and tracking funds included). Footnote {4}, p.34: the exclusion of funds 'אך לרבות קרן מחקה' takes tracking funds in; so a tracking fund pays this line unless the purchase is by standing order."
+      },
+      "min": {
+        "value": 26,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
+          "title": "תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (מעודכן לתאריך 01/10/2026), נספח ה' - הטבות בערוצי בנקאות בתקשורת (עמ' 13-14), מניות ואגרות חוב, ערוצים ישירים, מינימום (עמ' 13)",
+          "publisher": "Bank Leumi le-Israel B.M.",
+          "strength": "institution",
+          "page": 13,
+          "quote": "­מניות ואגרות חוב אינטרנט וסלולר גישה ישירה TRADE ON 0.4% 26ש מינימום 6300ש מכסימום"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'מינימום 26 ש\"ח אך לא יותר מ-27% מהתשלום'."
+      },
+      "max": {
+        "value": 6300,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
+          "title": "תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (מעודכן לתאריך 01/10/2026), נספח ה' - הטבות בערוצי בנקאות בתקשורת (עמ' 13-14), מניות ואגרות חוב, ערוצים ישירים, מכסימום (עמ' 13)",
+          "publisher": "Bank Leumi le-Israel B.M.",
+          "strength": "institution",
+          "page": 13,
+          "quote": "­מניות ואגרות חוב אינטרנט וסלולר גישה ישירה TRADE ON 0.4% 26ש מינימום 6300ש מכסימום"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'מכסימום 6300 ש\"ח'."
+      },
+      "period": null,
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קניה, מכירה, פדיון של ני\"ע הנסחרים בבורסה בת\"א (למעט קרנות נאמנות, אופציות מעו\"ף וחוזים עתידיים במעו\"ף) (כולל קניה או מכירה שלא בוצעה)",
+          "מניות ואגרות חוב",
+          "אינטרנט וסלולר",
+          "גישה ישירה TRADE ON"
+        ]
+      },
+      "cap": {
+        "value": 27,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
+          "title": "תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (מעודכן לתאריך 01/10/2026), נספח ה' - הטבות בערוצי בנקאות בתקשורת (עמ' 13-14), 'קניה, מכירה של ני\"ע הנסחרים בבורסה בת\"א ... מניות ואגרות חוב', ערוצים ישירים (עמ' 13)",
+          "publisher": "Bank Leumi le-Israel B.M.",
+          "strength": "institution",
+          "page": 13,
+          "quote": "אך לא יותר מ-27% מהתשלום"
+        },
+        "checked": "2026-10-31",
+        "effective_from": "2026-10-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-19",
+          "MF-27"
+        ],
+        "state": "sourced",
+        "notes": "The minimum, not the rate, is limited to this share of the payment (p.30 note 6)."
+      },
+      "flat_up_to": {
+        "amount": {
+          "value": 4,
+          "unit": "nis_per_trade",
+          "source": {
+            "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
+            "title": "תעריפון העמלות המלא, בנק לאומי, נספח 'לקוחות PEPPER', חלק 4 ניירות ערך (עמ' 11), 'התעריפון מעודכן לתאריך 01/10/2026'",
+            "publisher": "Bank Leumi (PEPPER)",
+            "strength": "institution",
+            "page": 11,
+            "quote": "בבורסה בת \"א­ מניות ,מק \"מ ואגרות חוב"
+          },
+          "checked": "2026-10-31",
+          "effective_from": "2026-10-01",
+          "effective_to": null,
+          "tax_year": null,
+          "update_rule": "provider-set",
+          "rule_ids": [
+            "BRK-54"
+          ],
+          "state": "sourced",
+          "notes": "Printed: '4 ש\"ח' for buying, selling and redeeming securities traded on the Tel Aviv exchange: shares, makam and bonds, up to 30,000 NIS an order. Covering a tracking fund and an ETF is a reading of Leumi's own tariff, not words on this line (BRK-54)."
+        },
+        "up_to": {
+          "value": 30000,
+          "unit": "nis",
+          "source": {
+            "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
+            "title": "תעריפון העמלות המלא, בנק לאומי, נספח 'לקוחות PEPPER', חלק 4 ניירות ערך (עמ' 11), 'התעריפון מעודכן לתאריך 01/10/2026'",
+            "publisher": "Bank Leumi (PEPPER)",
+            "strength": "institution",
+            "page": 11,
+            "quote": "בסכום של עד 30,000ש \"ח להוראה"
+          },
+          "checked": "2026-10-31",
+          "effective_from": "2026-10-01",
+          "effective_to": null,
+          "tax_year": null,
+          "update_rule": "provider-set",
+          "rule_ids": [
+            "BRK-54"
+          ],
+          "state": "sourced",
+          "notes": "'בסכום של עד 30,000 ש\"ח להוראה'. PEPPER's page: a larger order pays per the fee tariff."
+        }
+      }
+    },
+    {
+      "id": "pepper-buy-sell-makam",
+      "base": "trade",
+      "applies_to": [
+        "makam"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.095,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
+          "title": "תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (מעודכן לתאריך 01/10/2026), נספח ה' - הטבות בערוצי בנקאות בתקשורת (עמ' 13-14), מלווה קצר מועד, ערוצים ישירים (עמ' 13)",
+          "publisher": "Bank Leumi le-Israel B.M.",
+          "strength": "institution",
+          "page": 13,
+          "quote": "­מלווה קצר מועד אינטרנט וסלולר גישה ישירה TRADE ON 0.095% 18ש מינימום 1800ש מכסימום"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-19"
+        ],
+        "state": "sourced",
+        "notes": "Direct channels ('אינטרנט וסלולר / גישה ישירה TRADE ON'): 0.095%, also in part 4(א)(1) note 3."
+      },
+      "min": {
+        "value": 18,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
+          "title": "תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (מעודכן לתאריך 01/10/2026), נספח ה' - הטבות בערוצי בנקאות בתקשורת (עמ' 13-14), מלווה קצר מועד, ערוצים ישירים, מינימום (עמ' 13)",
+          "publisher": "Bank Leumi le-Israel B.M.",
+          "strength": "institution",
+          "page": 13,
+          "quote": "­מלווה קצר מועד אינטרנט וסלולר גישה ישירה TRADE ON 0.095% 18ש מינימום 1800ש מכסימום"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'מינימום 18 ש\"ח אך לא יותר מ-27% מהתשלום'."
+      },
+      "max": {
+        "value": 1800,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
+          "title": "תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (מעודכן לתאריך 01/10/2026), נספח ה' - הטבות בערוצי בנקאות בתקשורת (עמ' 13-14), מלווה קצר מועד, ערוצים ישירים, מכסימום (עמ' 13)",
+          "publisher": "Bank Leumi le-Israel B.M.",
+          "strength": "institution",
+          "page": 13,
+          "quote": "­מלווה קצר מועד אינטרנט וסלולר גישה ישירה TRADE ON 0.095% 18ש מינימום 1800ש מכסימום"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'מכסימום 1800 ש\"ח'."
+      },
+      "period": null,
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קניה, מכירה, פדיון של ני\"ע הנסחרים בבורסה בת\"א (למעט קרנות נאמנות, אופציות מעו\"ף וחוזים עתידיים במעו\"ף) (כולל קניה או מכירה שלא בוצעה)",
+          "מלווה קצר מועד",
+          "אינטרנט וסלולר",
+          "גישה ישירה TRADE ON"
+        ]
+      },
+      "cap": {
+        "value": 27,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
+          "title": "תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (מעודכן לתאריך 01/10/2026), נספח ה' - הטבות בערוצי בנקאות בתקשורת (עמ' 13-14), מלווה קצר מועד, ערוצים ישירים (עמ' 13)",
+          "publisher": "Bank Leumi le-Israel B.M.",
+          "strength": "institution",
+          "page": 13,
+          "quote": "אך לא יותר מ-27% מהתשלום"
+        },
+        "checked": "2026-10-31",
+        "effective_from": "2026-10-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-19"
+        ],
+        "state": "sourced",
+        "notes": "The minimum, not the rate, is limited to this share of the payment (p.30 note 6)."
+      },
+      "flat_up_to": {
+        "amount": {
+          "value": 4,
+          "unit": "nis_per_trade",
+          "source": {
+            "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
+            "title": "תעריפון העמלות המלא, בנק לאומי, נספח 'לקוחות PEPPER', חלק 4 ניירות ערך (עמ' 11), 'התעריפון מעודכן לתאריך 01/10/2026'",
+            "publisher": "Bank Leumi (PEPPER)",
+            "strength": "institution",
+            "page": 11,
+            "quote": "בבורסה בת \"א­ מניות ,מק \"מ ואגרות חוב"
+          },
+          "checked": "2026-10-31",
+          "effective_from": "2026-10-01",
+          "effective_to": null,
+          "tax_year": null,
+          "update_rule": "provider-set",
+          "rule_ids": [
+            "BRK-54"
+          ],
+          "state": "sourced",
+          "notes": "Printed: '4 ש\"ח' for buying, selling and redeeming securities traded on the Tel Aviv exchange: shares, makam and bonds, up to 30,000 NIS an order. Covering a tracking fund and an ETF is a reading of Leumi's own tariff, not words on this line (BRK-54)."
+        },
+        "up_to": {
+          "value": 30000,
+          "unit": "nis",
+          "source": {
+            "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
+            "title": "תעריפון העמלות המלא, בנק לאומי, נספח 'לקוחות PEPPER', חלק 4 ניירות ערך (עמ' 11), 'התעריפון מעודכן לתאריך 01/10/2026'",
+            "publisher": "Bank Leumi (PEPPER)",
+            "strength": "institution",
+            "page": 11,
+            "quote": "בסכום של עד 30,000ש \"ח להוראה"
+          },
+          "checked": "2026-10-31",
+          "effective_from": "2026-10-01",
+          "effective_to": null,
+          "tax_year": null,
+          "update_rule": "provider-set",
+          "rule_ids": [
+            "BRK-54"
+          ],
+          "state": "sourced",
+          "notes": "'בסכום של עד 30,000 ש\"ח להוראה'. PEPPER's page: a larger order pays per the fee tariff."
+        }
+      }
+    },
+    {
+      "id": "pepper-buy-sell-foreign",
+      "base": "trade",
+      "applies_to": [
+        "foreign_securities"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.3,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
+          "title": "תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (מעודכן לתאריך 01/10/2026), נספח ה' - הטבות בערוצי בנקאות בתקשורת, קניה, מכירה של ני\"ע בחוץ לארץ - מניות וקרנות נאמנות (עמ' 14)",
+          "publisher": "Bank Leumi le-Israel B.M.",
+          "strength": "institution",
+          "page": 14,
+          "quote": "מניות וקרנות נאמנות אינטרנט וסלולר גישה ישירה TRADE ON 0.3% מינימום 24 דולר מכסימום 6750 דולר"
+        },
+        "checked": "2026-10-31",
+        "effective_from": "2026-10-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-19"
+        ],
+        "state": "sourced",
+        "notes": ""
+      },
+      "min": {
+        "value": 24,
+        "unit": "usd",
+        "source": {
+          "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
+          "title": "תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (מעודכן לתאריך 01/10/2026), נספח ה' - הטבות בערוצי בנקאות בתקשורת, קניה, מכירה של ני\"ע בחוץ לארץ - מניות וקרנות נאמנות (עמ' 14)",
+          "publisher": "Bank Leumi le-Israel B.M.",
+          "strength": "institution",
+          "page": 14,
+          "quote": "מניות וקרנות נאמנות אינטרנט וסלולר גישה ישירה TRADE ON 0.3% מינימום 24 דולר מכסימום 6750 דולר"
+        },
+        "checked": "2026-10-31",
+        "effective_from": "2026-10-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-19"
+        ],
+        "state": "sourced",
+        "notes": ""
+      },
+      "max": {
+        "value": 6750,
+        "unit": "usd",
+        "source": {
+          "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
+          "title": "תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (מעודכן לתאריך 01/10/2026), נספח ה' - הטבות בערוצי בנקאות בתקשורת, קניה, מכירה של ני\"ע בחוץ לארץ - מניות וקרנות נאמנות (עמ' 14)",
+          "publisher": "Bank Leumi le-Israel B.M.",
+          "strength": "institution",
+          "page": 14,
+          "quote": "מניות וקרנות נאמנות אינטרנט וסלולר גישה ישירה TRADE ON 0.3% מינימום 24 דולר מכסימום 6750 דולר"
+        },
+        "checked": "2026-10-31",
+        "effective_from": "2026-10-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-19"
+        ],
+        "state": "sourced",
+        "notes": ""
+      },
+      "period": null,
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קניה, מכירה של ני\"ע בחוץ לארץ",
+          "מניות וקרנות נאמנות",
+          "אינטרנט וסלולר",
+          "גישה ישירה TRADE ON"
+        ]
+      },
+      "cap": {
+        "value": 27,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
+          "title": "תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (מעודכן לתאריך 01/10/2026), נספח ה' - הטבות בערוצי בנקאות בתקשורת, קניה, מכירה של ני\"ע בחוץ לארץ - מניות וקרנות נאמנות (עמ' 14)",
+          "publisher": "Bank Leumi le-Israel B.M.",
+          "strength": "institution",
+          "page": 14,
+          "quote": "אך לא יותר מ-27% מהתשלום"
+        },
+        "checked": "2026-10-31",
+        "effective_from": "2026-10-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-19"
+        ],
+        "state": "sourced",
+        "notes": "The minimum, not the rate, is limited to this share of the payment."
+      },
+      "flat_up_to": {
+        "amount": {
+          "value": 4,
+          "unit": "usd",
+          "source": {
+            "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
+            "title": "תעריפון העמלות המלא, בנק לאומי, נספח 'לקוחות PEPPER', חלק 4 ניירות ערך (עמ' 11), 'התעריפון מעודכן לתאריך 01/10/2026'",
+            "publisher": "Bank Leumi (PEPPER)",
+            "strength": "institution",
+            "page": 11,
+            "quote": "לארץ­ מניות ,אגרות חוב וקרנות נאמנות"
+          },
+          "checked": "2026-10-31",
+          "effective_from": "2026-10-01",
+          "effective_to": null,
+          "tax_year": null,
+          "update_rule": "provider-set",
+          "rule_ids": [
+            "BRK-54"
+          ],
+          "state": "sourced",
+          "notes": "Printed: '4 דולר' for buying, selling and redeeming securities traded abroad: shares, bonds and mutual funds, up to 8,000 dollars an order."
+        },
+        "up_to": {
+          "value": 8000,
+          "unit": "usd",
+          "source": {
+            "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
+            "title": "תעריפון העמלות המלא, בנק לאומי, נספח 'לקוחות PEPPER', חלק 4 ניירות ערך (עמ' 11), 'התעריפון מעודכן לתאריך 01/10/2026'",
+            "publisher": "Bank Leumi (PEPPER)",
+            "strength": "institution",
+            "page": 11,
+            "quote": "בסכום של עד 8,000דולר להוראה"
+          },
+          "checked": "2026-10-31",
+          "effective_from": "2026-10-01",
+          "effective_to": null,
+          "tax_year": null,
+          "update_rule": "provider-set",
+          "rule_ids": [
+            "BRK-54"
+          ],
+          "state": "sourced",
+          "notes": "'בסכום של עד 8,000 דולר להוראה'. PEPPER's page: a larger order pays per the fee tariff."
+        }
+      }
+    },
+    {
+      "id": "pepper-custody-israel",
+      "base": "custody",
+      "applies_to": [
+        "tase_shares_bonds",
+        "etf_units",
+        "mutual_fund_units"
+      ],
+      "excludes": [
+        "makam",
+        "money_market_units"
+      ],
+      "excludes_rule_ids": [
+        "BRK-17",
+        "BANK-18"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.15,
+        "unit": "pct_of_balance_per_period",
+        "source": {
+          "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
+          "title": "תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (מעודכן לתאריך 01/10/2026), חלק 4 - ניירות ערך, (4א) שירותים נפוצים, סעיף (5) דמי ניהול פקדון ניירות ערך, הנסחרים בארץ (עמ' 31-32)",
+          "publisher": "Bank Leumi le-Israel B.M.",
+          "strength": "institution",
+          "page": 32,
+          "quote": "-הנסחרים בארץ 0.150% 3700ש"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-17"
+        ],
+        "state": "sourced",
+        "notes": "Leumi's line for Israeli securities, unchanged in the PEPPER annex. PEPPER's page says the same rate with no scope: 'דמי הניהול הם 0.15% לרבעון'. '0.150% לרבעון'. Note 3: charged in the month after the quarter on the value of the securities on the last day of the quarter, prorated by holding days; on a sale/redemption/transfer during the quarter it is charged that day on the relevant value. Note 2: may not be charged on makam or on a money-market fund as defined in the 1994 assets regulations (recorded as excludes). Note 8: in the first year after a securities deposit is opened in the mobile app the client pays at most 50% of the printed price. Note 6: the fee may not exceed 30% of the transaction proceeds. Note 1: not chargeable on delisted securities (with an exception)."
+      },
+      "min": {
+        "value": null,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
+          "title": "תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (מעודכן לתאריך 01/10/2026), חלק 4 - ניירות ערך, (4א) שירותים נפוצים, סעיף (5), הנסחרים בארץ (עמ' 32)",
+          "publisher": "Bank Leumi le-Israel B.M.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "No minimum is printed for this line (only a maximum)."
+      },
+      "max": {
+        "value": 3700,
+        "unit": "nis",
+        "source": {
+          "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
+          "title": "תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (מעודכן לתאריך 01/10/2026), חלק 4 - ניירות ערך, (4א) שירותים נפוצים, סעיף (5), הנסחרים בארץ, מכסימום (עמ' 32)",
+          "publisher": "Bank Leumi le-Israel B.M.",
+          "strength": "institution",
+          "page": 32,
+          "quote": "-הנסחרים בארץ 0.150% 3700ש"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'מכסימום 3700 ש\"ח לני\"ע, 11500 לפקדון' per quarter: 3,700 per security and 11,500 per securities deposit (the whole account). Note 5: in the quarterly charge the lower of the per-security and per-deposit maximum applies. Note 4: on a balance reduction during a quarter the per-transaction maximum applies without accumulation."
+      },
+      "period": "quarter",
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "דמי ניהול פקדון ניירות ערך (לרבות יחידות השתתפות בקרנות נאמנות)",
+          "הנסחרים בארץ"
+        ]
+      }
+    },
+    {
+      "id": "pepper-custody-foreign",
+      "base": "custody",
+      "applies_to": [
+        "foreign_securities"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.15,
+        "unit": "pct_of_balance_per_period",
+        "source": {
+          "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
+          "title": "תעריפון העמלות המלא, בנק לאומי, נספח 'לקוחות PEPPER', חלק 4 ניירות ערך (עמ' 11), 'התעריפון מעודכן לתאריך 01/10/2026'",
+          "publisher": "Bank Leumi (PEPPER)",
+          "strength": "institution",
+          "page": 11,
+          "quote": "0.150אחוז גביה"
+        },
+        "checked": "2026-10-31",
+        "effective_from": "2026-10-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-54"
+        ],
+        "state": "sourced",
+        "notes": "Annex row 'דמי ניהול ני\"ע חו\"ל - לרבעון', 0.150%. Also capped at 11,500 NIS a deposit, which is not modelled."
+      },
+      "min": {
+        "value": null,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
+          "title": "תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (מעודכן לתאריך 01/10/2026), חלק 4 - ניירות ערך, (4א) שירותים נפוצים, סעיף (5), הנסחרים בחוץ לארץ (עמ' 32)",
+          "publisher": "Bank Leumi le-Israel B.M.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "No minimum is printed for this line."
+      },
+      "max": {
+        "value": 3700,
+        "unit": "nis",
+        "source": {
+          "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
+          "title": "תעריפון העמלות המלא, בנק לאומי, נספח 'לקוחות PEPPER', חלק 4 ניירות ערך (עמ' 11), 'התעריפון מעודכן לתאריך 01/10/2026'",
+          "publisher": "Bank Leumi (PEPPER)",
+          "strength": "institution",
+          "page": 11,
+          "quote": "מכסימום  3,700ש \"ח לני \"ע,"
+        },
+        "checked": "2026-10-31",
+        "effective_from": "2026-10-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-54"
+        ],
+        "state": "sourced",
+        "notes": "'מכסימום 3,700 ש\"ח לני\"ע'."
+      },
+      "period": "quarter",
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "דמי ניהול פקדון ניירות ערך (לרבות יחידות השתתפות בקרנות נאמנות)",
+          "הנסחרים בחוץ לארץ"
+        ]
+      }
+    },
+    {
+      "id": "pepper-distribution-fee-type-1",
+      "base": "distribution_handling",
+      "applies_to": [
+        "mutual_fund_units"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.2,
+        "unit": "pct_of_balance_per_period",
+        "source": {
+          "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
+          "title": "תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (מעודכן לתאריך 01/10/2026), חלק 4 - ניירות ערך, (4ב) שירותים מיוחדים, סעיף (2) עמלת הפצה (עמ' 33), קרן מסוג 1",
+          "publisher": "Bank Leumi le-Israel B.M.",
+          "strength": "institution",
+          "page": 33,
+          "quote": "עמלת הפצה מרוכש יחידת השתתפות -קרן מסוג 1 0.200%"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "MF-24",
+          "MF-26"
+        ],
+        "state": "sourced",
+        "notes": "Part 4(ב)(2): 'עמלת הפצה מרוכש יחידת השתתפות בקרן נאמנות - במקרים המותרים לפי תקנות השקעות משותפות בנאמנות (עמלות הפצה), התשס\"ו-2006'. Annual rate on the units held, charged to the unit holder only in the cases the 2006 regulations permit (MF-26); the fund type (1, 3 or 4) is set by the fund's prospectus (MF-24; type 4 is a money-market fund). Recorded with base distribution_handling because the vocabulary has no closer base for a distributor fee charged to the holder."
+      },
+      "min": null,
+      "max": null,
+      "period": "year",
+      "channel": null,
+      "band": "קרן מסוג 1",
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "עמלת הפצה מרוכש יחידת השתתפות בקרן נאמנות",
+          "קרן מסוג 1"
+        ]
+      }
+    },
+    {
+      "id": "pepper-distribution-fee-type-3",
+      "base": "distribution_handling",
+      "applies_to": [
+        "mutual_fund_units"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.35,
+        "unit": "pct_of_balance_per_period",
+        "source": {
+          "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
+          "title": "תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (מעודכן לתאריך 01/10/2026), חלק 4 - ניירות ערך, (4ב) שירותים מיוחדים, סעיף (2) עמלת הפצה (עמ' 33), קרן מסוג 3",
+          "publisher": "Bank Leumi le-Israel B.M.",
+          "strength": "institution",
+          "page": 33,
+          "quote": "עמלת הפצה מרוכש יחידת השתתפות -קרן מסוג 3 0.350%"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "MF-24",
+          "MF-26"
+        ],
+        "state": "sourced",
+        "notes": "Part 4(ב)(2): 'עמלת הפצה מרוכש יחידת השתתפות בקרן נאמנות - במקרים המותרים לפי תקנות השקעות משותפות בנאמנות (עמלות הפצה), התשס\"ו-2006'. Annual rate on the units held, charged to the unit holder only in the cases the 2006 regulations permit (MF-26); the fund type (1, 3 or 4) is set by the fund's prospectus (MF-24; type 4 is a money-market fund). Recorded with base distribution_handling because the vocabulary has no closer base for a distributor fee charged to the holder."
+      },
+      "min": null,
+      "max": null,
+      "period": "year",
+      "channel": null,
+      "band": "קרן מסוג 3",
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "עמלת הפצה מרוכש יחידת השתתפות בקרן נאמנות",
+          "קרן מסוג 3"
+        ]
+      }
+    },
+    {
+      "id": "pepper-distribution-fee-type-4",
+      "base": "distribution_handling",
+      "applies_to": [
+        "money_market_units"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.1,
+        "unit": "pct_of_balance_per_period",
+        "source": {
+          "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
+          "title": "תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (מעודכן לתאריך 01/10/2026), חלק 4 - ניירות ערך, (4ב) שירותים מיוחדים, סעיף (2) עמלת הפצה (עמ' 33), קרן מסוג 4",
+          "publisher": "Bank Leumi le-Israel B.M.",
+          "strength": "institution",
+          "page": 33,
+          "quote": "עמלת הפצה מרוכש יחידת השתתפות -קרן מסוג 4 0.100%"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "MF-24",
+          "MF-26"
+        ],
+        "state": "sourced",
+        "notes": "Part 4(ב)(2): 'עמלת הפצה מרוכש יחידת השתתפות בקרן נאמנות - במקרים המותרים לפי תקנות השקעות משותפות בנאמנות (עמלות הפצה), התשס\"ו-2006'. Annual rate on the units held, charged to the unit holder only in the cases the 2006 regulations permit (MF-26); the fund type (1, 3 or 4) is set by the fund's prospectus (MF-24; type 4 is a money-market fund). Recorded with base distribution_handling because the vocabulary has no closer base for a distributor fee charged to the holder."
+      },
+      "min": null,
+      "max": null,
+      "period": "year",
+      "channel": null,
+      "band": "קרן מסוג 4",
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "עמלת הפצה מרוכש יחידת השתתפות בקרן נאמנות",
+          "קרן מסוג 4"
+        ]
+      }
+    },
+    {
+      "id": "pepper-fx-conversion",
+      "base": "fx",
+      "applies_to": [
+        "all"
+      ],
+      "level": "list",
+      "rate": {
+        "value": null,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
+          "title": "תעריפון העמלות המלא, בנק לאומי, נספח 'לקוחות PEPPER', חלק 4 ניירות ערך (עמ' 11), 'התעריפון מעודכן לתאריך 01/10/2026'",
+          "publisher": "Bank Leumi (PEPPER)",
+          "strength": "institution",
+          "page": 11,
+          "quote": "50אחוז הטבה ,מינימום  3דולר"
+        },
+        "checked": "2026-10-31",
+        "effective_from": "2026-10-01",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-54"
+        ],
+        "state": "sourced",
+        "notes": "The annex prints '50 אחוז הטבה, מינימום 3 דולר' on conversion, 'הטבה בכפוף למינ' בחליפין', and does not say which of Leumi's rates it halves, so the rate is not written here."
+      },
+      "min": null,
+      "max": null,
+      "spread": null,
+      "period": null,
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "עמלת חליפין- מט\"י-מט\"ח - בהמרת מט\"ח",
+          "עמדות דיגיטל",
+          "אינטרנט וסלולר",
+          "גישה ישירה TRADE ON"
+        ]
+      }
+    }
+  ],
+  "averages": [],
+  "minimums": {
+    "account_opening": null
+  },
+  "notice_rule_ids": [
+    "BRK-21",
+    "BRK-20"
+  ]
+}

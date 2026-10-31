@@ -1,0 +1,46 @@
+{
+  "id": "BRK-53",
+  "title": "Fair: its price list, and no custody",
+  "title_he": "פייר: התעריפון, ובלי דמי משמרת",
+  "text_he": "פייר גובה 0.08%, מינימום 3 שקלים, על קנייה ומכירה של קרן שהיא מסמנת כקרן מחקה, ו־0 שקלים על עסקה בקרן נאמנות פתוחה. דמי הטיפול החודשיים 0 שקלים, והעברת תיק ניירות הערך לבנק המקור 35 שקלים. דף הבית אומר ״בלי עמלות נסתרות, דמי משמרת ואותיות קטנות״, ובתעריפון אין שורת דמי משמרת. התעריפון מכסה קרנות בלבד.",
+  "strength": "institution",
+  "dimensions": [
+    "fee-trade",
+    "fee-custody"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "il_finance_file": "brokerage-account.md",
+  "checked": "2026-10-31",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "fair",
+      "name_he": "פייר"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.fair.co.il/%d7%aa%d7%a2%d7%a8%d7%99%d7%a4%d7%95%d7%9f/",
+      "title": "תעריפון פייר (עודכן 03/06/2026)",
+      "title_he": "תעריפון פייר (עודכן 03/06/2026)",
+      "publisher": "Fair Financial Technologies",
+      "publisher_he": "פייר",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "quote": "עמלת קניה ועמלת מכירה בשיעור של 0.08% (מינ׳ 3 שקלים)",
+      "checked": "2026-10-31"
+    },
+    {
+      "url": "https://www.fair.co.il/",
+      "title": "דף הבית של פייר",
+      "title_he": "דף הבית של פייר",
+      "publisher": "Fair Financial Technologies",
+      "publisher_he": "פייר",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "quote": "בלי עמלות נסתרות, דמי משמרת ואותיות קטנות",
+      "checked": "2026-10-31"
+    }
+  ]
+}

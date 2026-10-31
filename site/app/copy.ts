@@ -153,7 +153,7 @@ export const search = {
 export const guideIndex = {
   title: "מדריך",
   lede: "כל סוג של חיסכון והשקעה שהאתר מכסה. לכל אחד אותו מבנה, כדי שיהיה קל להשוות.",
-  group1: { title: "איפה הכסף מוחזק", line: "המוצר עצמו: חשבון בבנק, קופה או חשבון השקעות" },
+  group1: { title: "איפה הכסף מוחזק", line: "המוצר עצמו: חשבון בבנק, קופה או חשבון ניירות ערך" },
   group2: { title: "במה הכסף מושקע", line: "מה שבתוך המוצר: מזומן, מק״מ, קרן כספית, אג״ח, מניות דרך מדד" },
   // D6 (amended 2026-10-27): the money-market funds are one entry under "במה הכסף מושקע", each kind with its page
   fundKindsLine: "לפי סוג",
@@ -361,7 +361,7 @@ export const rulesPage = {
     "bank-current-account-deposits.md": "עובר ושב ופיקדונות",
     "mutual-funds-and-money-market-funds.md": "קרנות נאמנות וקרנות כספיות",
     "etfs-and-index-funds.md": "קרנות סל וקרנות מחקות",
-    "brokerage-account.md": "חשבון השקעות",
+    "brokerage-account.md": "חשבון ניירות ערך",
     "government-bonds-and-makam.md": "אג״ח ממשלתיות ומק״מ",
     "kupat-gemel-lehashkaa.md": "קופת גמל להשקעה",
     "keren-hishtalmut.md": "קרן השתלמות",
@@ -410,7 +410,7 @@ export const parametersPage = {
   // audit 2026-10-24 (A77): the Hebrew names of the products P-08 names by id
   wrapperNames: {
     "bank-deposit": "פיקדון בבנק",
-    "brokerage-account": "חשבון השקעות",
+    "brokerage-account": "חשבון ניירות ערך",
     "government-bond": "אג״ח ממשלתית",
     "kupat-gemel-lehashkaa": "קופת גמל להשקעה",
     makam: "מק״מ",
@@ -2005,7 +2005,7 @@ export const r4catalogue = {
   ledeIntro: "כל מה שהבנק מציע, עם הסבר לכל מוצר.",
   ledeDeposits: "הפיקדונות לפי פרסום הבנק, נכון ל־",
   ledeTariff: "התעריפון נאסף ב־",
-  groups: { deposits: "פיקדונות", savings: "תוכניות חיסכון", current: "עו״ש", brokerage: "חשבון השקעות" },
+  groups: { deposits: "פיקדונות", savings: "תוכניות חיסכון", current: "עו״ש", brokerage: "חשבון ניירות ערך" },
   groupLink: "מה זה",
   count: { one: "מוצר אחד", two: "שני מוצרים", many: "מוצרים" },
   // audit 2026-10-24 (A88): one published tariff is not "the site does not know my bank"; offers are personal and entered elsewhere
@@ -2432,7 +2432,7 @@ export const r5 = {
     secondDoor: "השוואה לפי חשיפה (במה הכסף מושקע)", // audit 2026-10-24 (sweep): was "איזו חשיפה מתאימה למטרה"
     // 2026-10-25 (the founder: what is the difference between the two buttons?): the first said only "להשוואה"
     firstDoor: "השוואה לפי מוצר",
-    doorsLine: "מוצר: איפה הכסף מוחזק, כמו קרן השתלמות, קופת גמל להשקעה, חשבון השקעות או פיקדון. חשיפה: במה הוא מושקע בתוך המוצר, כמו מדד מניות, אג״ח או מזומן.",
+    doorsLine: "מוצר: איפה הכסף מוחזק, כמו קרן השתלמות, קופת גמל להשקעה, חשבון ניירות ערך או פיקדון. חשיפה: במה הוא מושקע בתוך המוצר, כמו מדד מניות, אג״ח או מזומן.",
   },
   // 9.2 exposure result
   exposure: {

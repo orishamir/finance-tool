@@ -689,3 +689,21 @@ Domain open questions from `research/discovery/domain-landscape.md` section 8: *
 | [חברי הבורסה בדרך להסדרה תחת פיקוח רשות ני"ע, 14.10.24](https://www.calcalist.co.il/market/article/rynfspfy1x) | Calcalist | secondary | 2026-10-22 |
 
 Tried and not readable on 2026-10-22: tase.co.il/he/content/about/tase_members, tase.co.il/he/content/knowledge_center/investor_protection, market.tase.co.il/en/about_tase/tase_members/tase_members_list, market.tase.co.il/en/about_tase/tase_members/tasech_members_list, market.tase.co.il/he/market_data/trading_fees (JS shells); info.tase.co.il (DNS); inter-il.com/commission (403); onezerobank.com (403); interactivebrokers.com/en/general/what-is-sipc.php (403); investorcompensation.ie (307). On 2026-10-25: ibkb.interactivebrokers.com knowledge-base links redirect to IBKR's site search or FAQ app (node 1000 has no mapped FAQ; the FAQ was found by the app's search); interactivebrokers.com/en/support/deposits-and-withdrawals.php and several tax-page guesses return 404; the IBKR FAQ app's AI answers were not used as a source.
+
+### BRK-53 Fair: its price list, and no custody
+- Rule: Fair charges 0.08%, minimum 3 NIS, to buy or sell a fund it marks as a tracking fund, and 0 NIS on a transaction in an open mutual fund. The monthly handling fee is 0 NIS; moving the securities deposit to the source bank costs 35 NIS.
+- Conditions / exceptions: Its home page says "בלי עמלות נסתרות, דמי משמרת ואותיות קטנות", and the price list prints no custody line and says the company is entitled to fees "כמפורט בתעריפון זה". The list covers funds only.
+- Figures: as quoted, list updated 03/06/2026
+- Source: [תעריפון פייר](https://www.fair.co.il/%d7%aa%d7%a2%d7%a8%d7%99%d7%a4%d7%95%d7%9f/) · checked 2026-10-31 · institution; [Fair home page](https://www.fair.co.il/) (no custody; first investment of at least 250 NIS) · checked 2026-10-31 · institution
+- Scope: institution: Fair
+- Dimensions: fee-trade, fee-custody
+- Likely to change: yes, tariffs change several times a year
+
+### BRK-54 PEPPER: 4 NIS up to 30,000 NIS an order, and a tracking fund
+- Rule: Leumi's tariff, in its annex for PEPPER customers, prints 4 NIS to buy, sell or redeem securities traded in Tel Aviv, "מניות, מק"מ ואגרות חוב", up to 30,000 NIS an order, and 4 dollars abroad up to 8,000 dollars an order. PEPPER's page: a larger order pays per the fee tariff, and third-party costs are PEPPER's. Custody is 0.15% a quarter.
+- Conditions / exceptions: Covering a tracking fund and an ETF is a reading: Leumi's matching line names "מניות ואגרות חוב", and its footnote {4} (p.34) includes a tracking fund. No PEPPER document says so in words. The annex prints 50% off conversion without saying which rate it halves, so conversion is not written. An account at PEPPER is separate from one at Leumi.
+- Figures: as quoted, tariff of 01/10/2026
+- Source: [תעריפון העמלות המלא, בנק לאומי](https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf), p.11 and p.34 · checked 2026-10-31 · institution; [PEPPER home page](https://www.pepper.co.il/) · checked 2026-10-31 · institution
+- Scope: institution: PEPPER
+- Dimensions: fee-trade, fee-custody
+- Likely to change: yes, tariffs change several times a year

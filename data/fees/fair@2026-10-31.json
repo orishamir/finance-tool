@@ -1,0 +1,273 @@
+{
+  "id": "fair",
+  "provider": {
+    "name_he": "פייר פיננשיאל טכנולוג'יז בע\"מ",
+    "class": "broker",
+    "regulator": "ISA",
+    "tase_member": true,
+    "protection_rule_ids": [
+      "BRK-07",
+      "BRK-08",
+      "BRK-09",
+      "BRK-12",
+      "BRK-13",
+      "REG-16"
+    ]
+  },
+  "tariff": {
+    "url": "https://www.fair.co.il/%d7%aa%d7%a2%d7%a8%d7%99%d7%a4%d7%95%d7%9f/",
+    "title": "תעריפון, פייר, 'מועד עדכון אחרון של התעריפון: 03/06/2026'. בלי דמי משמרת, לפי דף הבית",
+    "published": "2026-06-03",
+    "format": "html"
+  },
+  "snapshot": "2026-10-31",
+  "missing": false,
+  "missing_reason": null,
+  "lines": [
+    {
+      "id": "fair-buy-sell-tracking-fund",
+      "base": "trade",
+      "applies_to": [
+        "mutual_fund_units"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.08,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.fair.co.il/%d7%aa%d7%a2%d7%a8%d7%99%d7%a4%d7%95%d7%9f/",
+          "title": "תעריפון, פייר (fair.co.il), 'מועד עדכון אחרון של התעריפון: 03/06/2026'",
+          "publisher": "Fair Financial Technologies",
+          "strength": "institution",
+          "quote": "עמלת קניה ועמלת מכירה בשיעור של 0.08% (מינ׳ 3 שקלים)"
+        },
+        "checked": "2026-10-31",
+        "effective_from": "2026-06-03",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-53"
+        ],
+        "state": "sourced",
+        "notes": "On funds Fair marks as tracking funds in its app and site, buying and selling alike. The price list covers funds only, so no other class has a line."
+      },
+      "min": {
+        "value": 3,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.fair.co.il/%d7%aa%d7%a2%d7%a8%d7%99%d7%a4%d7%95%d7%9f/",
+          "title": "תעריפון, פייר (fair.co.il), 'מועד עדכון אחרון של התעריפון: 03/06/2026'",
+          "publisher": "Fair Financial Technologies",
+          "strength": "institution",
+          "quote": "0.08% (מינ׳ 3 שקלים)"
+        },
+        "checked": "2026-10-31",
+        "effective_from": "2026-06-03",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-53"
+        ],
+        "state": "sourced",
+        "notes": "'מינ׳ 3 שקלים'."
+      },
+      "max": null,
+      "period": null,
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "עמלות קניה ומכירה בגין קרנות מחקות"
+        ]
+      }
+    },
+    {
+      "id": "fair-buy-sell-open-fund",
+      "base": "trade",
+      "applies_to": [
+        "mutual_fund_units"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.fair.co.il/%d7%aa%d7%a2%d7%a8%d7%99%d7%a4%d7%95%d7%9f/",
+          "title": "תעריפון, פייר (fair.co.il), 'מועד עדכון אחרון של התעריפון: 03/06/2026'",
+          "publisher": "Fair Financial Technologies",
+          "strength": "institution",
+          "quote": "עמלה קבועה על סך 0 ₪ לכל עסקה"
+        },
+        "checked": "2026-10-31",
+        "effective_from": "2026-06-03",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-53"
+        ],
+        "state": "sourced",
+        "notes": "An open mutual fund that is not marked as a tracking fund. Band so the tracking-fund line stays the standard one."
+      },
+      "min": null,
+      "max": null,
+      "period": null,
+      "channel": null,
+      "band": "קרנות נאמנות פתוחות",
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "עמלות בגין עסקה בקרן נאמנות פתוחה"
+        ]
+      }
+    },
+    {
+      "id": "fair-custody",
+      "base": "custody",
+      "applies_to": [
+        "mutual_fund_units"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0,
+        "unit": "pct_of_balance_per_period",
+        "source": {
+          "url": "https://www.fair.co.il/",
+          "title": "דף הבית של פייר",
+          "publisher": "Fair Financial Technologies",
+          "strength": "institution",
+          "quote": "בלי עמלות נסתרות, דמי משמרת ואותיות קטנות"
+        },
+        "checked": "2026-10-31",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-53"
+        ],
+        "state": "sourced",
+        "notes": "The home page: 'בלי עמלות נסתרות, דמי משמרת ואותיות קטנות', and the price list prints no custody line and says the company is entitled to fees as listed in it."
+      },
+      "min": null,
+      "max": null,
+      "period": null,
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "דמי משמרת"
+        ]
+      }
+    },
+    {
+      "id": "fair-account-fee",
+      "base": "fixed_period",
+      "applies_to": [
+        "all"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0,
+        "unit": "nis_per_month",
+        "source": {
+          "url": "https://www.fair.co.il/%d7%aa%d7%a2%d7%a8%d7%99%d7%a4%d7%95%d7%9f/",
+          "title": "תעריפון, פייר (fair.co.il), 'מועד עדכון אחרון של התעריפון: 03/06/2026'",
+          "publisher": "Fair Financial Technologies",
+          "strength": "institution",
+          "quote": "דמי טיפול חודשיים – 0 ₪ בחודש"
+        },
+        "checked": "2026-10-31",
+        "effective_from": "2026-06-03",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-53"
+        ],
+        "state": "sourced",
+        "notes": "'דמי טיפול חודשיים – 0 ₪ בחודש'."
+      },
+      "min": null,
+      "max": null,
+      "period": "month",
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "דמי טיפול חודשיים"
+        ]
+      }
+    },
+    {
+      "id": "fair-transfer-out",
+      "base": "transfer_out",
+      "applies_to": [
+        "all"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 35,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.fair.co.il/%d7%aa%d7%a2%d7%a8%d7%99%d7%a4%d7%95%d7%9f/",
+          "title": "תעריפון, פייר (fair.co.il), 'מועד עדכון אחרון של התעריפון: 03/06/2026'",
+          "publisher": "Fair Financial Technologies",
+          "strength": "institution",
+          "quote": "מפייר לבנק המקור – 35 ₪"
+        },
+        "checked": "2026-10-31",
+        "effective_from": "2026-06-03",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-53"
+        ],
+        "state": "sourced",
+        "notes": "'עלות העברת תי\"ק ני\"ע מפייר לבנק המקור – 35 ₪': the whole securities deposit to the source bank."
+      },
+      "min": null,
+      "max": null,
+      "period": null,
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "עלות העברת תיק ניירות ערך לבנק המקור"
+        ]
+      }
+    }
+  ],
+  "averages": [],
+  "minimums": {
+    "account_opening": {
+      "value": 250,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.fair.co.il/",
+        "title": "דף הבית של פייר",
+        "publisher": "Fair Financial Technologies",
+        "strength": "institution",
+        "quote": "השקעה ראשונה במינימום 250 ש\"ח"
+      },
+      "checked": "2026-10-31",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "BRK-53"
+      ],
+      "state": "sourced",
+      "notes": "'פתיחת חשבון במינימום של 250 ש\"ח ברכישה או ללא רכישה בכלל'; a first investment of at least 250 NIS."
+    }
+  },
+  "notice_rule_ids": []
+}
