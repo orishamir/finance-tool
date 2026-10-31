@@ -1,0 +1,26 @@
+# Pages the repository cites that the library lacks, most used first. Link, publisher and title, separated by tabs.
+# Read by fetch-remaining.sh. A title that only repeats the address means the page has not been read; its digest and proper title are set after it is filed.
+https://www.gov.il/he/pages/govermental-bonds	משרד האוצר, החשב הכללי	מאפייני אג"ח סחיר ולא סחיר ותקנותיו (מדריך, פורסם 24.08.2020)
+https://www.gov.il/he/Departments/Guides/tax-return-application-guide	רשות המסים	מדריך להגשת בקשה להחזר מס למי שאינו חייב בהגשת דו"ח
+https://www.gov.il/he/service/notice-of-retirement	רשות המסים	הודעה על פרישה מעבודה (טופס 161 חדש), דף השירות
+https://www.gov.il/he/pages/tender-0102	רשות שוק ההון, ביטוח וחיסכון	דוח הממונה לשנת 2025, עמוד הדוח
+https://www.gov.il/he/service/pension_savings_search	רשות שוק ההון, ביטוח וחיסכון	קבלת מידע על חסכונות פנסיוניים, דף השירות
+https://www.gov.il/he/service/itc-request-for-fixed-rights-at-retirement-age	רשות המסים	בקשה לקיבוע זכויות, דף השירות
+https://www.gov.il/he/pages/pension-clearing	רשות שוק ההון, ביטוח וחיסכון	המסלקה הפנסיונית
+https://www.gov.il/he/service/har-hakesef	gov.il	דף השירות har-hakesef
+https://www.gov.il/he/service/itc-161	רשות המסים	דף השירות itc-161
+https://www.gov.il/he/departments/dynamiccollectors/tax-treaties	רשות המסים	אמנות מס, רשימת האמנות
+https://www.gov.il/he/Departments/news/news_0008	רשות שוק ההון, ביטוח וחיסכון	הודעה לציבור: מינוי מנהל מורשה לחברת סלייס גמל, 26.12.2023
+https://www.gov.il/he/pages/pa111224-2	gov.il	דף pa111224-2
+https://www.gov.il/he/departments/policies/income-tax-professional-inst-7-2003	רשות המסים	הוראת ביצוע מקצועית 7/2003
+https://www.gov.il/he/pages/press_0083	gov.il	דף press_0083
+https://www.gov.il/he/departments/legalInfo/regulation_0059	gov.il	דף regulation_0059
+https://www.gov.il/he/pages/income-tax-monthly-deductions-booklet	רשות המסים	לוח ניכויים חודשי, דף הפרסום
+https://www.gov.il/he/service/itc-150	רשות המסים	טופס 150, דף השירות
+https://www.gov.il/he/service/notice-cost-declaration-for-traded-securities	רשות המסים	הצהרת עלות לנייר ערך נסחר, טופס 747, דף השירות
+https://www.gov.il/en/service/itc5329b	רשות המסים	Form 5329, service page
+https://www.gov.il/he/Departments/DynamicCollectors/regulation-legislation?DCRI_UrlName=notice_2025_63	רשות שוק ההון, ביטוח וחיסכון	דף הפרסום notice_2025_63
+https://www.gov.il/he/Departments/DynamicCollectors/regulation-legislation?DCRI_UrlName=regulation-1100	רשות שוק ההון, ביטוח וחיסכון	דף הפרסום regulation-1100
+https://www.gov.il/he/departments/policies/income-tax-professional-inst-5-2018	רשות המסים	הוראת ביצוע מקצועית 5/2018
+https://www.gov.il/BlobFolder/unit/tax-reforma-committee/he/Vaadot_ahchud_TaxReformaCommittee_Report_Chapter2.PDF	רשות המסים	דוח הוועדה לרפורמה במס, פרק 2
+https://www.gov.il/BlobFolder/unit/tax-reforma-committee/he/Vaadot_ahchud_TaxReformaCommittee_Report_Chapter3.PDF	רשות המסים	דוח הוועדה לרפורמה במס, פרק 3
