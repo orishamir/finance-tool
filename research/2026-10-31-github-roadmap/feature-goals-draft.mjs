@@ -15,6 +15,7 @@ const CHOSEN = {
   "Savings policies, executive insurance and Amendment 190": `An insurer offers a savings policy or executive insurance, or I heard of Amendment 190: what do I get?\n${EACH_PRODUCT}`,
   "Managed and robo portfolios": `A company offers to manage my money, or a robo portfolio: what is it, and what does it cost?\n${EACH_PRODUCT}`,
   "Retirement savings": `Where should my retirement money go: a pension fund, a provident fund for annuity or a self-managed provident fund (IRA), and what will I get?\nDone when: all of them are ranked in the comparison, not only listed with a balance before tax.`,
+  "Switching": `I'm moving my money to another company: what should I know, what does it cost and what do I do?\nDone when: to be refined. Long horizon, no work on it now.`,
 };
 
 const GOALS = {
