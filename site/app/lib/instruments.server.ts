@@ -304,7 +304,10 @@ function listLines(snap: FeesSnapshot, wrapperId: string, base: FeeLine["base"])
   const rank = (l: FeeLine) => (l.channel === null || l.channel === "direct" ? 0 : 1);
   // a line that excludes the product's own security type (a bank's custody line leaves out makam, BRK-17) does not apply to it
   const excluded = (l: FeeLine) => (l.excludes ?? []).some((x) => types.includes(x));
-  return snap.lines.filter((l) => l.level === "list" && l.base === base && l.band !== STANDING_ORDER_BAND && l.band !== REDEMPTION_BAND && (l.applies_to.includes(wrapperId) || l.applies_to.includes("all") || l.applies_to.some((a) => types.includes(a))) && !excluded(l)).sort((a, b) => rank(a) - rank(b));
+  const lines = snap.lines.filter((l) => l.level === "list" && l.base === base && l.band !== STANDING_ORDER_BAND && l.band !== REDEMPTION_BAND && (l.applies_to.includes(wrapperId) || l.applies_to.includes("all") || l.applies_to.some((a) => types.includes(a))) && !excluded(l)).sort((a, b) => rank(a) - rank(b));
+  // a bond's own line wins over a line for shares and bonds, as in the engine's tariff step (F-63, `lineClasses`): Psagot prints one
+  const own = wrapperId === "government-bond" ? lines.filter((l) => l.applies_to.includes("tase_bonds")) : [];
+  return own.length > 0 ? own : lines;
 }
 
 function buildFund(wrapperId: string, spec: InstrumentSpec, src: InstrumentSources, missing: string[], feeValues: Record<string, SiteValue>) {
