@@ -276,6 +276,7 @@ function evaluate(c: Cand, exposure: VariantExposure, ctx: RunContext): VariantR
  * secondary reading of TXF-11 (labelled) and listed, not ranked (G-18). A candidate without a record is "not evaluated:
  * details not collected". Foreign-domiciled funds traded abroad that are not in `funds` are one group line (G-29).
  * The rest are ranked by real value with ties by F-80, and the coverage line (F-83) accounts for each candidate once.
+ * F-94 Hedged or not, across the dollar: this same calculation at another A-03, which moves an unhedged fund and not a hedged one.
  */
 export function fundVariants(exposure: VariantExposure, lists: readonly FundListFile[], funds: readonly unknown[], ctx: RunContext): FundVariants {
   const records = funds.map((f, i) => {

@@ -3,7 +3,7 @@
 // numbers come from the engine's provider workbench (F-63) and from the fund runs of F-65, over the bundle the other
 // workbench pages use. No fee, rate or rule figure is written here: tariffs are snapshots, fund fees are fund records,
 // exchange rates are the ECB's (D26). Nothing is chosen for the person (D27): an index is always an argument.
-import { STANDING_CONVERSION_BAND, STANDING_ORDER_BAND, beforeTax, costByWho, crossing, gapToIndex, sumFees, trackingBeyondFeesRange, providerWorkbench, relativeGap, type ComparedProvider, type FeeLine, type NotComparableProvider, type ProviderRow } from "@finance-tool/engine";
+import { STANDING_CONVERSION_BAND, STANDING_ORDER_BAND, beforeTax, costByWho, gapToIndex, sumFees, trackingBeyondFees, providerWorkbench, relativeGap, type ComparedProvider, type FeeLine, type NotComparableProvider, type ProviderRow } from "@finance-tool/engine";
 import type { ExposureRecord, FeesSnapshot, FundRecord } from "@finance-tool/schema";
 import { invest as copy } from "../copy";
 import { aliasRows } from "./search-aliases";
@@ -913,42 +913,39 @@ export function pairValue(a: InvestArgs & { fundId: string; providerId: string; 
   return p && p.kind === "ok" ? p.row.real : null;
 }
 
-export interface KindScenarios {
-  /** P-02's bounds for A-03, percent a year. */
-  lo: number;
-  hi: number;
-  /** The unhedged pair's value left at every whole percent from `lo` to `hi` (F-94 a). */
-  unhedged: { fx: number; value: number }[];
-  /** The hedged pair's value left, and its band (F-94 b, F-92 c); the band is null when the run's A-07 is not from the reports. */
-  hedged: { value: number; band: { low: number; high: number } | null };
-  /** The dollar's yearly change at which the two are equal (F-94 c), percent; null when they do not meet within ±10% a year. */
-  crossing: number | null;
+/** A fund's listed fees together, percent a year. */
+export const sumFeesPct = (rec: FundRecord) => sumFees(rec) * 100;
+
+export interface KindMoney {
+  /** Value left on a steady dollar with the shortfall the reports give. */
+  unhedged: number;
+  hedged: number;
+  /** What a point a year is worth in value left: of the dollar, either way from 0, and of the hedged fund's shortfall, either way from the reports (F-95). */
+  worth: { low: number; high: number };
+  /** The share of a difference between the two that goes to tax; null where the two cannot be priced for it. */
+  taxShare: number | null;
 }
 
-/** F-94 over two pairs, one of each kind. `withCrossing` false skips (c), the slow part, for a figure that follows a slider live. */
-export function kindScenarios(a: InvestArgs & { unhedged: { fundId: string; providerId: string }; hedged: { fundId: string; providerId: string }; lo: number; hi: number; withCrossing?: boolean; points?: "ends" | "all" }): KindScenarios | null {
+/** F-95's sentence on the plan, over two pairs, one of each kind. */
+export function kindMoney(a: InvestArgs & { unhedged: { fundId: string; providerId: string }; hedged: { fundId: string; providerId: string } }): KindMoney | null {
   const u = (fx: number) => pairValue({ ...a, ...a.unhedged, fxChange: fx });
-  const hv = pairValue({ ...a, ...a.hedged, fxChange: 0 });
-  if (hv === null) return null;
-  const xs: number[] = [];
-  if (a.points === "ends") xs.push(a.lo, 0, a.hi);
-  else for (let f = Math.ceil(a.lo); f <= Math.floor(a.hi); f++) xs.push(f);
-  const unhedged: { fx: number; value: number }[] = [];
-  for (const fx of xs) {
-    const v = u(fx);
-    if (v === null) return null;
-    unhedged.push({ fx, value: v });
+  const u0 = u(0), uDown = u(-1), uUp = u(1);
+  const h0 = pairValue({ ...a, ...a.hedged, fxChange: 0 });
+  if (u0 === null || uDown === null || uUp === null || h0 === null) return null;
+  const steps = [u0 - uDown, uUp - u0];
+  const rec = a.bundle.funds.find((f) => f.id === a.hedged.fundId);
+  const used = rec?.tracking_record && typeof rec.fees.tracking_difference_12m?.value !== "number" ? trackingBeyondFees(rec.tracking_record.years, sumFees(rec)) : null;
+  if (used !== null) {
+    const more = pairValue({ ...a, ...a.hedged, fxChange: 0, tracking: used + 0.01 });
+    const less = used >= 0.01 ? pairValue({ ...a, ...a.hedged, fxChange: 0, tracking: used - 0.01 }) : null;
+    if (more !== null) steps.push(h0 - more);
+    if (less !== null) steps.push(less - h0);
   }
-  const rec = a.bundle.funds.find((f) => f.id === a.hedged.fundId)!;
-  // a band needs two years or more: one year is the figure itself
-  const range = rec.tracking_record && rec.tracking_record.years.length > 1 && typeof rec.fees.tracking_difference_12m?.value !== "number" ? trackingBeyondFeesRange(rec.tracking_record.years, sumFees(rec)) : null;
-  let band: { low: number; high: number } | null = null;
-  if (range) {
-    // the dearest year's A-07 leaves the least
-    const low = pairValue({ ...a, ...a.hedged, fxChange: 0, tracking: range.high });
-    const high = pairValue({ ...a, ...a.hedged, fxChange: 0, tracking: range.low });
-    if (low !== null && high !== null) band = { low, high };
-  }
-  const cross = a.withCrossing === false ? null : crossing((fx) => (u(fx) ?? NaN) - hv, -10, 10);
-  return { lo: a.lo, hi: a.hi, unhedged, hedged: { value: hv, band }, crossing: cross };
+  // tax on a difference: the unhedged pair with the dollar a point up and a point down
+  const at = (fx: number) => pairCosts({ ...a, ...a.unhedged, fundId: a.unhedged.fundId, providerId: a.unhedged.providerId, assumptions: { ...a.assumptions, fxChange: fx } });
+  const cDown = at(-1), cUp = at(1);
+  const leftGap = cDown && cUp ? (cUp.left.value as number) - (cDown.left.value as number) : 0;
+  const taxGap = cDown && cUp ? (cUp.tax.value as number) - (cDown.tax.value as number) : 0;
+  const taxShare = leftGap + taxGap > 0 ? taxGap / (leftGap + taxGap) : null;
+  return { unhedged: u0, hedged: h0, worth: { low: Math.min(...steps), high: Math.max(...steps) }, taxShare };
 }

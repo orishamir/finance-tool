@@ -7,7 +7,7 @@ const TOP = 16;
 const BOTTOM = 22;
 const LEFT = 40;
 
-export function YearBars({ items, format, tickStep, label }: { items: { year: number; value: number }[]; format: (v: number) => string; tickStep: number; label: string }) {
+export function YearBars({ items, format, tickStep, label, bright }: { items: { year: number; value: number }[]; format: (v: number) => string; tickStep: number; label: string; /** The years to set apart: these are bright with their figure, the rest dim without one. */ bright?: readonly number[] }) {
   const [ref, w] = useWidth(420);
   const max = Math.max(tickStep, ...items.map((i) => Math.abs(i.value)));
   const top = Math.ceil(max / tickStep) * tickStep;
@@ -16,6 +16,9 @@ export function YearBars({ items, format, tickStep, label }: { items: { year: nu
   const ticks = Array.from({ length: (2 * top) / tickStep + 1 }, (_, i) => -top + i * tickStep);
   // year labels at least 34 px apart (every second or fifth year on a phone); a bar keeps its figure when there is room for it
   const every = [1, 2, 5, 10].find((n) => n * bw >= 34) ?? 10;
+  // among the bright years, only the highest and lowest carry a figure: the bars are too narrow for more
+  const shown = items.filter((i) => bright?.includes(i.year));
+  const extreme = { lo: shown.reduce((a, i) => (i.value < (a?.value ?? Infinity) ? i : a), shown[0])?.year, hi: shown.reduce((a, i) => (i.value > (a?.value ?? -Infinity) ? i : a), shown[0])?.year };
   return (
     <div ref={ref} dir="ltr" className="select-none">
       <svg width={w} height={H} role="img" aria-label={label} className="block">
@@ -32,10 +35,11 @@ export function YearBars({ items, format, tickStep, label }: { items: { year: nu
           const bwi = bw * 0.7;
           const y0 = y(0);
           const y1 = y(it.value);
+          const on = !!bright?.includes(it.year);
           return (
             <g key={it.year}>
-              <rect x={x} y={Math.min(y0, y1)} width={bwi} height={Math.max(1, Math.abs(y1 - y0))} rx={2} className="fill-chart-baseline" opacity={0.8} />
-              {bw >= 22 && (
+              <rect x={x} y={Math.min(y0, y1)} width={bwi} height={Math.max(1, Math.abs(y1 - y0))} rx={2} className={on ? "fill-foreground" : "fill-chart-baseline"} opacity={on ? 1 : bright ? 0.6 : 0.8} />
+              {(bright ? on && (it.year === extreme.lo || it.year === extreme.hi) : bw >= 22) && (
                 <text x={x + bwi / 2} y={it.value >= 0 ? y1 - 4 : y1 + 12} textAnchor="middle" className="fill-foreground text-[10px] tabular-nums">
                   {format(it.value)}
                 </text>

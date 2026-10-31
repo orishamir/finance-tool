@@ -7,7 +7,7 @@ import { mayaFundHref } from "../../lib/sources";
 import { useMemo } from "react";
 import type { FeeLine } from "@finance-tool/engine";
 import { brands, invest as c } from "../../copy";
-import { doubtOf, gapOf, inputMap, hasKinds, kindOf, kindScenarios, opensOn, pairCosts, pairValue, type FundWay, type InvestView, type Kind, type KindScenarios, type PairCosts, type Reason, type WayPrice } from "../../lib/invest";
+import { doubtOf, gapOf, inputMap, hasKinds, kindOf, opensOn, pairCosts, pairValue, type FundWay, type InvestView, type Kind, type PairCosts, type Reason, type WayPrice } from "../../lib/invest";
 import type { WorkbenchBundle, WorkbenchInputs } from "../../lib/providers";
 import { brokerLabels, fundLabels, optionLabels, type Label } from "../../lib/labels";
 import { computed, ownBy, type SiteValue } from "../../lib/value";
@@ -166,131 +166,6 @@ function runnerUp(view: InvestView, best: Pick): Pick | null {
   return top ? { house: top.house, fund: top.fund } : null;
 }
 
-/**
- * The result's two kinds (F-94, founder 2026-10-29, option A): the pair of each kind side by side, the unhedged one as a range over the
- * dollar's yearly change (P-02's bounds for A-03) with the steady-dollar figure marked, the hedged one as one figure with its band; then
- * where the two meet. Nothing here rests on one guess about the dollar.
- */
-function KindCards({ view, bundle, plan, pick, onPick }: { view: InvestView; bundle: WorkbenchBundle; plan: WorkbenchInputs; pick: Pick; onPick: (p: Pick) => void }) {
-  // `plan` is the settled plan: these figures run about 15 pricings and wait until the slider rests (ground rule 5)
-  const range = bundle.dollarRange!;
-  const pairs = kindPairs(view, pick);
-  const sc: KindScenarios | null = useMemo(
-    () => (pairs ? kindScenarios({ bundle, index: view.index, plan, unhedged: { fundId: pairs.unhedged.fund, providerId: pairs.unhedged.house }, hedged: { fundId: pairs.hedged.fund, providerId: pairs.hedged.house }, lo: range.lo, hi: range.hi, points: "ends" }) : null),
-    [bundle, view.index, plan, pairs?.unhedged.fund, pairs?.unhedged.house, pairs?.hedged.fund, pairs?.hedged.house, range.lo, range.hi],
-  );
-  if (!pairs || !sc) return null;
-  const today = bundle.today;
-  const years = plan.years;
-  const funds = allFunds(view);
-  const cur = view.index.exposure?.currency ?? "USD";
-  const many = view.index.exposure?.other_currencies === true;
-  const names = many ? c.kinds.nameMany(c.currencies[cur] ?? cur) : c.kinds.name;
-  const mine = kindOf(funds.find((f) => f.rec.id === pick.fund)!.rec);
-  const v = (n: number, about: string) => nis(n, "F-94", about, today, inputMap(plan));
-  const lo = sc.unhedged[0]!, mid = sc.unhedged.find((x) => x.fx === 0)!, hi = sc.unhedged[sc.unhedged.length - 1]!;
-  const markAt = ((0 - sc.lo) / (sc.hi - sc.lo)) * 100;
-  const fundName = (p: Pick) => funds.find((f) => f.rec.id === p.fund)?.name ?? p.fund;
-  const house = (p: Pick) => providerName(view, p.house)?.short ?? p.house;
-  const card = (k: Kind) => {
-    const p = pairs[k];
-    const isPick = k === mine;
-    const best = bestOfKind(view, k);
-    const isBest = !!best && best.fund === p.fund && best.house === p.house;
-    const bestLeft = !isBest && best ? (funds.find((f) => f.rec.id === best.fund)?.byHouse[best.house] as WayPrice | undefined) : undefined;
-    const pLeft = funds.find((f) => f.rec.id === p.fund)?.byHouse[p.house];
-    return (
-      <div key={k} className={cx("md:flex-1 md:min-w-72 rounded-lg border p-3 flex flex-col gap-1", isPick ? "border-entered bg-entered/10" : "border-border")}>
-        <span className="flex flex-wrap items-center gap-x-1.5 text-sm text-muted-foreground">
-          <Swatch shape="box" className={k === "hedged" ? "bg-chart-kind-hedged" : "bg-chart-kind-unhedged"} />
-          <span className="font-medium text-foreground">{names[k]}</span>
-          {isPick && <span>· {c.kinds.yours}</span>}
-          {isBest && <span className="text-primary font-medium">· {c.kinds.cheapest}</span>}
-        </span>
-        {/* three lines on a phone: the longest fund and house, so a pick never changes the card's height (2026-10-31) */}
-        <span className="text-sm font-semibold leading-snug max-md:min-h-[3lh]">
-          <bdi>{fundName(p)}</bdi> · {house(p)}
-        </span>
-        {k === "unhedged" ? (
-          <>
-            <span className="text-2xl md:text-3xl font-bold leading-tight md:whitespace-nowrap min-h-[2lh] md:min-h-0">
-              <Num value={v(lo.value, c.kinds.rangeAbout(isoPct(sc.lo)))} /> <span className="text-lg font-semibold">{c.kinds.upTo}</span> <Num value={v(hi.value, c.kinds.rangeAbout(isoPct(sc.hi)))} />
-            </span>
-            <span className="text-xs text-muted-foreground min-h-[3lh] md:min-h-[2lh]">{c.kinds.unhedgedSub(years, `${Math.abs(sc.lo)}%`, `${sc.hi}%`)}</span>
-            <div className="relative h-2.5 rounded-full bg-chart-kind-unhedged/35 mt-2 mb-6" dir="ltr" aria-hidden="true">
-              <span className="absolute -top-1.5 w-[3px] h-5 rounded bg-foreground" style={{ left: `calc(${markAt}% - 1.5px)` }} />
-              {/* the bar is the dollar axis, left to right: its fall at the left end, its rise at the right */}
-              <span className="absolute top-4 left-0 text-[11px] text-muted-foreground whitespace-nowrap" dir="rtl">{c.kinds.falls(isoPct(sc.lo))}</span>
-              <span className="absolute top-4 right-0 text-[11px] text-muted-foreground whitespace-nowrap" dir="rtl">{c.kinds.falls(isoPct(sc.hi))}</span>
-            </div>
-            <span className="text-sm">
-              {c.kinds.steady}: <Num value={v(mid.value, c.kinds.steady)} />
-            </span>
-          </>
-        ) : (
-          <>
-            <span className="text-2xl md:text-3xl font-bold leading-tight">
-              <Num value={v(sc.hedged.value, names.hedged)} />
-            </span>
-            <span className="text-xs text-muted-foreground min-h-[3lh] md:min-h-[2lh]">
-              {c.kinds.hedgedSub(years)} {many ? c.kinds.hedgedMany : ""}
-            </span>
-            <span className="text-sm min-h-[3lh] md:min-h-[2lh]">
-              {sc.hedged.band ? (
-                <>
-                  {c.kinds.band} {c.kinds.between} <Num value={v(sc.hedged.band.low, c.kinds.bandAbout)} /> {c.kinds.and}
-                  <Num value={v(sc.hedged.band.high, c.kinds.bandAbout)} />
-                </>
-              ) : null}
-            </span>
-          </>
-        )}
-        <span className="flex flex-wrap items-center gap-x-3 text-sm min-h-target max-md:min-h-[4.25rem]">
-          {!isPick ? (
-            <Button variant="quiet" onClick={() => onPick(p)}>
-              {c.pair.pickCheapest}
-            </Button>
-          ) : bestLeft && best && priced(pLeft) ? (
-            <>
-              <span>
-                <Num value={v(bestLeft.valueN - pLeft.valueN, c.kinds.moreInCheapest)} display={plus(v(bestLeft.valueN - pLeft.valueN, c.kinds.moreInCheapest))} /> {c.kinds.moreInCheapest}
-              </span>
-              <Button variant="quiet" onClick={() => onPick(best)}>
-                {c.pair.pickCheapest}
-              </Button>
-            </>
-          ) : null}
-        </span>
-      </div>
-    );
-  };
-  const x = sc.crossing;
-  const pctV = (n: number) => computed(Math.round(Math.abs(n) * 100) / 100, "pct_per_year", "F-94", { [names.unhedged]: v(mid.value, c.kinds.steady), [names.hedged]: v(sc.hedged.value, names.hedged) }, { today, about: c.kinds.crossingAbout });
-  const better0 = sc.hedged.value > mid.value ? names.hedged : names.unhedged;
-  return (
-    <div className="flex flex-col gap-3 md:flex-1">
-      <div className="flex flex-col gap-3 md:flex-row md:items-stretch">
-        {card("unhedged")}
-        {card("hedged")}
-      </div>
-      <p className="text-base min-h-[3lh] md:min-h-[2lh]">
-        {x === null ? (
-          c.kinds.verdictNever(better0)
-        ) : (
-          <>
-            {(x < 0 ? c.kinds.verdictDown(years) : c.kinds.verdictUp(years)).lead}
-            <Num value={pctV(x)} />
-            {(x < 0 ? c.kinds.verdictDown(years) : c.kinds.verdictUp(years)).tail}
-          </>
-        )}{" "}
-        <a href="#invest-dollar" className="text-link hover:underline">
-          {c.kinds.seeAll} ↓
-        </a>
-      </p>
-    </div>
-  );
-}
-
 export function PairResult({ view, bundle, plan, settled, pick, onPick }: { view: InvestView; bundle: WorkbenchBundle; plan: WorkbenchInputs; settled?: WorkbenchInputs; pick: Pick; onPick: (p: Pick) => void }) {
   const best = bestFor(view, pick);
   const onBest = !!best && best.house === pick.house && best.fund === pick.fund;
@@ -300,8 +175,9 @@ export function PairResult({ view, bundle, plan, settled, pick, onPick }: { view
   const pc = useMemo(() => pairCosts({ bundle, index: view.index, plan, fundId: pick.fund, providerId: pick.house }), [bundle, view.index, plan, pick.fund, pick.house]);
   const pcOther = useMemo(() => (other ? pairCosts({ bundle, index: view.index, plan, fundId: other.fund, providerId: other.house }) : null), [bundle, view.index, plan, other?.fund, other?.house]);
   if (!pc) return null;
-  // an index on a foreign currency with funds of both kinds shows each kind across the dollar (F-94, 2026-10-29)
-  const kinds = hasKinds(view) && !!bundle.dollarRange;
+  // a foreign fund's one figure rests on a steady dollar, and says so (founder, 2026-10-31: the assumption never goes silent); a hedged fund's does not
+  const onSteadyDollar = (fund: string) => kindOf(allFunds(view).find((f) => f.rec.id === fund)!.rec) === "unhedged";
+  const steady = (fund: string) => !view.index.israeli && <span className="text-xs text-muted-foreground min-h-[1lh] max-md:min-h-[2lh]">{onSteadyDollar(fund) ? c.pair.steadyDollar : ""}</span>;
   const years = plan.years;
   const months = 12 * plan.years;
   // the legend names every account line whichever pair is shown, so it keeps its size from one pick to the next
@@ -341,9 +217,6 @@ export function PairResult({ view, bundle, plan, settled, pick, onPick }: { view
         <span aria-hidden="true" className="hidden md:inline text-2xl text-muted-foreground self-center">
           ←
         </span>
-        {kinds ? (
-          <KindCards view={view} bundle={bundle} plan={settled ?? plan} pick={pick} onPick={onPick} />
-        ) : (
         <div className="grid grid-cols-2 gap-3 md:contents">
           <div className="md:flex-1 md:min-w-64 rounded-lg border border-entered bg-entered/10 p-3 flex flex-col gap-0.5">
             <span className="text-sm text-muted-foreground max-md:min-h-[2lh]">
@@ -356,6 +229,7 @@ export function PairResult({ view, bundle, plan, settled, pick, onPick }: { view
             <span className="text-xs text-muted-foreground">
               {c.pair.left(years)}, {c.pair.leftNote}
             </span>
+            {steady(pick.fund)}
           </div>
           {pcOther && other && (
             <div className="md:flex-1 md:min-w-64 rounded-lg border border-border p-3 flex flex-col gap-1">
@@ -379,10 +253,10 @@ export function PairResult({ view, bundle, plan, settled, pick, onPick }: { view
                   {c.pair.pickCheapest}
                 </Button>
               </span>
+              {steady(other.fund)}
             </div>
           )}
         </div>
-        )}
       </div>
       <div className="flex flex-col gap-2">
         <h3 className="font-semibold">{c.pair.costTitleBoth(years)}</h3>

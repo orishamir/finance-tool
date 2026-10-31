@@ -93,6 +93,39 @@ export interface TableRowData {
 }
 
 /**
+ * A table always in view with a fixed width per column, so nothing moves when a number changes: a header on every column, row heads at
+ * the start, `strong` for a closing row, and `hideOnPhone` for a column the phone can do without.
+ */
+export function FixedTable({ rowHead, columns, rows }: { rowHead: ReactNode; columns: { id: string; head: ReactNode; hideOnPhone?: boolean }[]; rows: { key: string; head: ReactNode; cells: ReactNode[]; strong?: boolean }[] }) {
+  return (
+    <table className="tbl table-fixed w-full text-sm max-md:text-[13px] tabular-nums [&_thead_th]:whitespace-normal [&_thead_th]:align-bottom [&_td]:align-top [&_th]:align-top max-md:[&_td]:px-1 max-md:[&_th]:px-1">
+      <thead>
+        <tr>
+          <th scope="col">{rowHead}</th>
+          {columns.map((c) => (
+            <th key={c.id} scope="col" className={c.hideOnPhone ? "max-md:hidden" : undefined}>
+              {c.head}
+            </th>
+          ))}
+        </tr>
+      </thead>
+      <tbody>
+        {rows.map((r) => (
+          <tr key={r.key} className={r.strong ? "border-t-2 border-border font-semibold" : undefined}>
+            <th scope="row">{r.head}</th>
+            {r.cells.map((cell, i) => (
+              <td key={columns[i]?.id ?? i} className={columns[i]?.hideOnPhone ? "max-md:hidden" : undefined}>
+                {cell}
+              </td>
+            ))}
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
+}
+
+/**
  * The same numbers as the chart, as a table behind a fold ("הצגה כטבלה"). `scroll="cue"` fades the edges where the table can scroll;
  * `scroll="bleed"` lets it run to the card's edge on a phone. `compact` tightens the cells (a table of five columns).
  */

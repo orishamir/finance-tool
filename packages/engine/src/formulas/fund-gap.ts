@@ -75,28 +75,70 @@ export function stretchRange(points: readonly RatePoint[], years: number): { low
   return count === 0 ? null : { low, high, count, from: points[0]!.date, to: points[points.length - 1]!.date };
 }
 
+export interface KindFund {
+  hedged: boolean;
+  years: readonly GapYear[];
+}
+
+/** The lowest and highest of a kind's funds in a year, and how many funds. */
+export interface Spread {
+  low: number;
+  high: number;
+  count: number;
+}
+
+export interface KindYear {
+  year: number;
+  /** The dollar against the shekel that calendar year (F-93), percent. */
+  dollar: number;
+  /** The index in its own currency: the hedged funds' tracking asset, percent. */
+  index: number;
+  unhedged: Spread;
+  hedged: Spread;
+}
+
+export interface KindRecord {
+  /** Oldest first: the years with a report of each kind and a full year of the dollar. */
+  years: KindYear[];
+  /** The years compounded, over the funds of each kind with every one of them; null with one year, or a kind with no such fund. */
+  together: { dollar: number; index: number; unhedged: Spread; hedged: Spread } | null;
+  /** Each kind's return less its index over those years, in points: every fund-year. */
+  gaps: { unhedged: Spread; hedged: Spread };
+  /** The year the index fell as the dollar rose the most, and the year it rose as the dollar fell the most; null without one. */
+  fell: KindYear | null;
+  rose: KindYear | null;
+}
+
+const spread = (xs: readonly number[], count = xs.length): Spread => ({ low: Math.min(...xs), high: Math.max(...xs), count });
+const compound = (xs: readonly number[]) => (xs.reduce((a, x) => a * (1 + x / 100), 1) - 1) * 100;
+
 /**
- * F-94 (c) Where two results meet: the `x` in `[lo, hi]` at which `diff(x)` (one result less the other) is 0, by bisection to 0.005,
- * or null when `diff` keeps one sign over the range. `diff` must change monotonically with `x`.
+ * F-95 What each kind of fund did in the same years, from the funds' own reports and the dollar's yearly change (F-93). Nothing here is
+ * about the future or depends on a plan. Null when no year has a report of each kind.
  */
-export function crossing(diff: (x: number) => number, lo: number, hi: number): number | null {
-  let a = lo, b = hi;
-  let fa = diff(a);
-  const fb = diff(b);
-  // a result that cannot be priced (NaN) is no crossing, never a made-up one
-  if (!Number.isFinite(fa) || !Number.isFinite(fb)) return null;
-  if (fa === 0) return a;
-  if (fb === 0) return b;
-  if (Math.sign(fa) === Math.sign(fb)) return null;
-  while (b - a > 0.005) {
-    const m = (a + b) / 2;
-    const fm = diff(m);
-    if (!Number.isFinite(fm)) return null;
-    if (fm === 0) return m;
-    if (Math.sign(fm) === Math.sign(fa)) {
-      a = m;
-      fa = fm;
-    } else b = m;
+export function kindRecord(funds: readonly KindFund[], dollar: readonly { year: number; pct: number }[]): KindRecord | null {
+  const of = (hedged: boolean) => funds.filter((f) => f.hedged === hedged);
+  const inYear = (kind: readonly KindFund[], year: number) => kind.flatMap((f) => f.years.filter((y) => y.year === year));
+  const allYears = [...new Set(funds.flatMap((f) => f.years.map((y) => y.year)))].sort((a, b) => a - b);
+  const years: KindYear[] = [];
+  for (const year of allYears) {
+    const d = dollar.find((x) => x.year === year);
+    const u = inYear(of(false), year), h = inYear(of(true), year);
+    if (!d || u.length === 0 || h.length === 0) continue;
+    years.push({ year, dollar: d.pct, index: h[0]!.tracking_pct, unhedged: spread(u.map((y) => y.fund_pct)), hedged: spread(h.map((y) => y.fund_pct)) });
   }
-  return (a + b) / 2;
+  if (years.length === 0) return null;
+  const covered = new Set(years.map((y) => y.year));
+  const reports = (kind: readonly KindFund[]) => kind.flatMap((f) => f.years.filter((y) => covered.has(y.year)));
+  const grown = (kind: readonly KindFund[]) =>
+    kind.filter((f) => [...covered].every((y) => f.years.some((x) => x.year === y))).map((f) => f.years.filter((y) => covered.has(y.year)));
+  const un = grown(of(false)), he = grown(of(true));
+  const together =
+    years.length > 1 && un.length > 0 && he.length > 0
+      ? { dollar: compound(years.map((y) => y.dollar)), index: compound(years.map((y) => y.index)), unhedged: spread(un.map((f) => compound(f.map((y) => y.fund_pct)))), hedged: spread(he.map((f) => compound(f.map((y) => y.fund_pct)))) }
+      : null;
+  const gaps = (kind: readonly KindFund[]) => spread(reports(kind).map((y) => y.fund_pct - y.tracking_pct));
+  const fell = years.filter((y) => y.index < 0 && y.dollar > 0).sort((a, b) => b.dollar - a.dollar)[0] ?? null;
+  const rose = years.filter((y) => y.index > 0 && y.dollar < 0).sort((a, b) => a.dollar - b.dollar)[0] ?? null;
+  return { years, together, gaps: { unhedged: gaps(of(false)), hedged: gaps(of(true)) }, fell, rose };
 }
