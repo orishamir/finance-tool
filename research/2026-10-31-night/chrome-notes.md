@@ -60,3 +60,36 @@ The rate table, one page, undated: חיסכון יומי variable, 10 NIS to 1 m
 ## Mizrahi-Tefahot
 
 https://www.mizrahi-tefahot.co.il/about-mizrahi-tefahot-he/disclosure-links/deposits-interest-rates/ opens but shows a filter with no table until one is chosen; "ענבים" is not on the page as loaded. Not read further: the plain one-year records exist, and the plans can wait for the guide that needs them.
+
+## TASE's list of foreign funds
+
+https://market.tase.co.il/he/market_data/f-etfs opens in Chrome, "נכון ל- 30/10/2026", "סה"כ 40 רשומות". All 40 lines are iShares or Invesco: no Vanguard line and no iShares MSCI World line. The list cannot be republished, so only the lines that bear on tonight's records: iShares S&P 500 01159250, iShares NASDAQ 100 01159243, iShares MSCI AC World 01159235 (these three match BlackRock's brochure `5fae6c1d0933c1bc` p.1); Invesco S&P 500 01183441, Invesco NASDAQ 100 Swap 01186063, Invesco MSCI World 01185164, Invesco FTSE All World 01209220.
+
+TASE's security pages open in Chrome at `https://market.tase.co.il/he/market_data/security/<number>/major_data` and print "דמי ניהול (%)"; all units in US dollars, all under the European directive; no ISIN on the page. Read 2026-10-31: Invesco S&P 500 01183441 0.05; Invesco NASDAQ 100 Swap 01186063 0.2; Invesco MSCI World 01185164 0.05; Invesco FTSE All World 01209220 0.15; iShares S&P 500 01159250 0.07; iShares NASDAQ 100 01159243 0.3; iShares MSCI AC World 01159235 0.2. The three iShares figures match the issuer's records from job 3. The Invesco figures are not yet compared with Invesco's own key information documents (not read: the links answer 406 to scripts), so treat 0.05% on MSCI World as unconfirmed until then. Guessed paths `/fund/` and `/mutual_fund/` do not exist on this site.
+
+## Money-market fund fee pages ([issue 91](https://github.com/orishamir/finance-tool/issues/91))
+
+Harel: https://www.harel-group.co.il/investments/mutual-funds answers "הגישה נדחתה" in Chrome (the path was a guess; skipped). 5127790 is "הראל כספית מגמת ריבית" by Leumi's page `6ff0a4ddc9e738c6`. Yalin Lapidot: https://www.yl-invest.co.il/קרנות-נאמנות-מנוהלות/ opens; its text has neither 5139258 nor 5141452, and its fund links go to Maya, which refuses automated browsing. So these fees wait on the founder's hand at Maya, unless the prospectus already filed settles them.
+
+Other pages: Yahav's clients-agreements answers "Request Rejected" (skipped). https://www.boi.org.il/roles/markets/interestrates/ is a 404, a wrong guess and not a block.
+
+The filed prospectus of Yalin Lapidot's money-market fund 5139258 (`337dea8fad898d27`, dated 26 November 2024) p.1 gives the manager's fee as 0.12% and the trustee's as 0.01%, no load; footnote 4 says the manager may raise it on 1 January 2026. Leumi's page (`6ff0a4ddc9e738c6` p.1) shows 0.19% for the same fund. So the prospectus does not settle today's fee: a rise on that date would explain the gap, and that is not checked. The fund's current annual or immediate report is on Maya.
+
+## The Securities Authority's fund report
+
+https://www.new.isa.gov.il/nav-index/supervised-mutualfunds/mutualfundsActivities opens in Chrome and links to the reports, which curl fetches. Filed: 2025 `3066e83c8398e3c3`, 2024 `14b296eb56570779`. It does not rank single funds: every table is by kind of fund, and no fund is named. Table 2 (p.14, checked against the page image, 2025, simple average then weighted): shekel money-market funds 0.14%, 0.16%; open tracking funds on foreign shares 0.47%, 0.24%; on Israeli shares 0.29%, 0.21%; ETFs on foreign shares 0.59%, 0.50%; on Israeli shares 0.37%, 0.40%; active funds on foreign shares 1.68%, 1.68%; on Israeli shares 1.54%, 1.63%. P.13: "העלאות דמי ניהול מבוצעות ביום הראשון של השנה בלבד"; cuts can come at any time. P.2: 2,444 funds, about 757 billion NIS at the end of 2025. This is a general source for the fund guides: a figure about the market from the regulator, no company's.
+
+## The Bank of Israel's comparison of rates actually paid
+
+https://www.boi.org.il/information/bank-paymnts/financial-education/campaigns/boi-equator/deposit/ opens in Chrome; its chart is drawn by a script, but "כאן" links to https://www.boi.org.il/boi_files/Pikuah/g060a.xls , which curl fetches (it is an xlsx file under an .xls name). Filed: `24b1ea7836362c4b`. Monthly, June 2024 to September 2026, per bank (all ten that report, One Zero included), by term. Banks report under section 16יא of the Banking (Service to Customer) Law; the page says the rate assumes no early exit, households without private banking, and no rate is shown for fewer than 10 deposits or under 5% of deposits (the sheet writes 0).
+
+September 2026, fixed, unindexed, average actually given:
+
+| Term | Hapoalim | Leumi | Discount | Mizrahi | First International | Yahav | Mercantile | Massad | Jerusalem | One Zero | All banks |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 6 months to a year | 3.77 | 3.66 | 3.51 | 3.30 | 3.30 | 2.91 | 2.90 | 2.79 | 3.71 | 6.00 | 3.54 |
+| A year to two years | 2.83 | 3.86 | 2.43 | 3.35 | 3.29 | 3.70 | 3.18 | 3.15 | 3.73 | not shown | 3.22 |
+
+Variable, September 2026: 6 months to a year, Leumi 2.00, Discount 2.85, Mizrahi 3.30, First International 1.63, Mercantile 2.75, Massad 1.92, Jerusalem 3.44, One Zero 3.28, all banks 2.20.
+
+Why it matters: Hapoalim's page dated 01.11.2026 offers 1.74% fixed for a year and First International's 1.85%, while the same banks gave households 2.83% to 3.77% and 3.29% to 3.30% on average in September. The sheet is an average over deposits of every size and the months differ, so this is not a like-for-like gap, and whether a deposit of exactly one year falls in the first band or the second is not stated. But it says the published rate is not what depositors got. One Zero's 6.00 fits the 3% bonus on its fixed one-year saving. Nothing on the site uses this sheet yet; `data/` has no record of it, and a screen needs a mockup.
