@@ -143,6 +143,10 @@ export function validateData(ctx: ValidationContext): Problem[] {
           if (seen.has(c)) report(file, `availability: class ${c} appears in two entries`);
           seen.add(c);
         }
+      // only a provider's latest record ranks; an older one stands as it was read
+      const name = rel.split(/[\\/]/).pop()!;
+      const isLatest = !files.some((f) => { const n = f.split(/[\\/]/).pop()!; return n.startsWith(`${name.split("@")[0]}@`) && n > name; });
+      if (isLatest) for (const message of checkPricePremises(parsed.value as PremiseSnapshot)) report(file, message);
     }
     if (collection === "instruments/exposures" && result.success && fundIds) {
       for (const v of (parsed.value as { variants: string[] }).variants) {
@@ -167,6 +171,47 @@ export function validateData(ctx: ValidationContext): Problem[] {
     emit(`warning: ${category}: ${ids.length} (${ids.slice(0, 6).join(", ")}${ids.length > 6 ? ", ..." : ""})`);
   }
   return problems;
+}
+
+/** The words a document must use before a house ranks on a kind of holding (founder, 2026-10-31: no price from analogy). */
+const NAMES_CLASS: Record<string, RegExp> = {
+  mutual_fund_units: /קרן מחקה|קרנות מחקות|קרנות נאמנות|נאמנות וסל/,
+  etf_units: /קרן סל|קרנות סל|תעודו?ת סל|ETF|קרן מחקה|קרנות מחקות|נאמנות וסל/,
+  tase_foreign_fund_units: /קרן חוץ|קרנות חוץ|רשומות בבורסה/,
+  // a fund abroad, in words or as a security with nothing narrowing it to shares; a place alone names no holding
+  foreign_securities: /קרנות|קרן|ETF|תעודו?ת סל|ניירות ערך בחוץ לארץ(?!\s*-)/,
+};
+interface PremiseSnapshot {
+  provider: { class: string };
+  missing?: boolean;
+  price_for_he?: string;
+  left_out?: unknown[];
+  lines: { base: string; applies_to: string[] }[];
+  availability?: { applies_to: string[]; available: boolean | "unknown"; reason_he?: string; source: { quote?: string } }[];
+}
+/** Before a price ranks: who pays it, on what named holding, and whether a person can do it there. */
+export function checkPricePremises(snap: PremiseSnapshot): string[] {
+  if (!["bank", "broker", "foreign_broker"].includes(snap.provider.class) || snap.missing) return [];
+  const out: string[] = [];
+  if (!snap.price_for_he) out.push("price_for_he: a bank's or broker's record says who pays its prices");
+  if (!snap.left_out) out.push("left_out: a bank's or broker's record lists what its documents hold that it does not use; empty means nothing was found");
+  const entries = snap.availability ?? [];
+  if (snap.lines.some((l) => l.base === "trade" && l.applies_to.some((c) => c === "all" || c === "brokerage-account")))
+    out.push("lines: a trade line names every holding or the account, which no availability entry can vouch for; name the kinds");
+  for (const c of Object.keys(NAMES_CLASS)) {
+    if (!snap.lines.some((l) => l.base === "trade" && l.applies_to.includes(c))) continue;
+    if (!entries.some((a) => a.applies_to.includes(c))) out.push(`availability: ${c} has a price and no entry saying a person can do it there`);
+  }
+  for (const a of entries) {
+    if (a.available === "unknown" && !a.reason_he) out.push(`availability: ${a.applies_to.join(", ")} is unknown and gives no reason_he for the row`);
+    if (a.available !== true) continue;
+    for (const c of a.applies_to) {
+      const words = NAMES_CLASS[c];
+      // what the words exclude does not count as naming it ("למעט קרנות נאמנות")
+      if (words && !words.test((a.source.quote ?? "").replace(/למעט[^,.]*/g, ""))) out.push(`availability: the quote for ${c} does not name it in the document's words`);
+    }
+  }
+  return out;
 }
 
 export interface RuleLike {

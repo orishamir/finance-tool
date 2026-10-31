@@ -7,7 +7,7 @@ import { mayaFundHref } from "../../lib/sources";
 import { useMemo } from "react";
 import type { FeeLine } from "@finance-tool/engine";
 import { brands, invest as c } from "../../copy";
-import { gapOf, inputMap, hasKinds, kindOf, kindScenarios, opensOn, pairCosts, pairValue, type FundWay, type InvestView, type Kind, type KindScenarios, type PairCosts, type Reason, type WayPrice } from "../../lib/invest";
+import { doubtOf, gapOf, inputMap, hasKinds, kindOf, kindScenarios, opensOn, pairCosts, pairValue, type FundWay, type InvestView, type Kind, type KindScenarios, type PairCosts, type Reason, type WayPrice } from "../../lib/invest";
 import type { WorkbenchBundle, WorkbenchInputs } from "../../lib/providers";
 import { brokerLabels, fundLabels, optionLabels, type Label } from "../../lib/labels";
 import { computed, ownBy, type SiteValue } from "../../lib/value";
@@ -481,7 +481,7 @@ export function AccountColumn({ view, bundle, years, pick, onPick }: { view: Inv
                 {c.pair.notPossibleSource} ↗
               </a>
             ) : (
-              <span>{bundle.snapshots.find((s) => s.id === r.p.id)?.missing_reason_he ?? (r.at && "reason" in r.at ? reasonText(r.at.reason, optionClass[fund.option]) : c.funds.cannot)}</span>
+              <span>{doubtOf(bundle.snapshots.find((s) => s.id === r.p.id), fund.option) ?? bundle.snapshots.find((s) => s.id === r.p.id)?.missing_reason_he ?? (r.at && "reason" in r.at ? reasonText(r.at.reason, optionClass[fund.option]) : c.funds.cannot)}</span>
             )}
           </span>
           <span className="text-end font-semibold">—</span>

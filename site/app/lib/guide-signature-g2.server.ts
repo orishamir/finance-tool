@@ -8,6 +8,7 @@ import type { Bundle } from "./engine";
 import { p05Number, p05Value } from "./engine";
 import type { SignatureData } from "./guide-signature";
 import { buildInstrumentBundle } from "./guide-signature-bundle.server";
+import { onlyWhatCanBeDone } from "./providers";
 import { hishtalmutTerms, pensionModel, rulesRead, runWith, sideOf, type Employment } from "./guide-signature-g2";
 import { loadCatalog, loadExposures, regulatorAverageFees } from "./instruments.server";
 import { cmaFeeValue, computed, ownBy, ruleFigure, type SiteValue } from "./value";
@@ -176,6 +177,9 @@ function addBrokerRange(d: SignatureData, c: G2Ctx) {
   for (const f of loadFees()) {
     if (seen.has(f.id) || f.missing) continue;
     seen.add(f.id);
+    // the example is an Israeli tracking fund: a house whose documents leave that open is not counted (D42)
+    const newest = loadFees().filter((x) => x.id === f.id).sort((x, y) => x.snapshot.localeCompare(y.snapshot)).at(-1)!;
+    if (!onlyWhatCanBeDone(newest).lines.some((l) => l.base === "trade" && l.applies_to.includes("mutual_fund_units"))) continue;
     const spec = { ...c.p05.instruments?.["brokerage-account"], tariff: f.id };
     const p = { ...c.p05, instruments: { ...c.p05.instruments, "brokerage-account": spec } } as ParameterRecord;
     const bundle = buildInstrumentBundle(record, "securities", p, c.allRules, c.t).bundle;

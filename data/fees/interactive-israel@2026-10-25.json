@@ -407,8 +407,7 @@
         "tase_shares_bonds",
         "tase_bonds",
         "etf_units",
-        "tase_foreign_fund_units",
-        "mutual_fund_units"
+        "tase_foreign_fund_units"
       ],
       "available": false,
       "source": {
@@ -420,15 +419,32 @@
     },
     {
       "applies_to": [
+        "mutual_fund_units"
+      ],
+      "available": "unknown",
+      "source": {
+        "url": "https://www.inter-il.com/israeli-stock-market/",
+        "title": "אינטראקטיב ישראל: בורסה ישראלית (BRK-41)",
+        "checked": "2026-10-31"
+      },
+      "reason_he": "החברה כותבת שמסחר בניירות ערך בבורסה בתל אביב פתוח ללקוחות מוסדיים בלבד, ולא כותבת על קרן פתוחה שלא נסחרת בבורסה.",
+      "note": "Read as not sold; no document says so in words."
+    },
+    {
+      "applies_to": [
         "foreign_securities"
       ],
       "available": true,
       "source": {
-        "url": "https://www.inter-il.com/financial-products-on-indices/",
-        "title": "אינטראקטיב ישראל: רשימת תעודות סל וחוזים עתידיים שימושיים (BRK-41)",
-        "checked": "2026-10-25"
+        "url": "https://www.inter-il.com/wp-content/uploads/2026/09/%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F-%D7%A2%D7%9E%D7%9C%D7%95%D7%AA-23.09.2026-1.pdf",
+        "title": "תעריף עמלות מסחר (PDF, 8 עמ', 'תעריפון זה מעודכן החל מיום 23.09.2026'), מקושר כ'לתעריפון המלא' מעמוד 'עמלות מסחר' (inter",
+        "checked": "2026-10-31",
+        "quote": "עבור מניות/תעודות סל הנסחרות באירופה",
+        "page": 1
       },
       "note": "US-listed ETFs (SPY, QQQ) and Irish UCITS ETFs listed in Europe (CSPX, CSNDX, VUSD, IWDA) are listed as tradable (BRK-41). Open: whether an Irish-regulated account blocks US-domiciled ETFs (BRK-44)."
     }
-  ]
+  ],
+  "price_for_he": "כל לקוח",
+  "left_out": []
 }

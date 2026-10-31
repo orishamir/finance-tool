@@ -396,7 +396,7 @@
           "BRK-16"
         ],
         "state": "sourced",
-        "notes": "'0.6%, מינימום 50$ מקסימום 10,000$ לעסקה'. The tariff prints no internet price for foreign securities, so channel is null. Notes: (1) an order not executed pays the minimum only if a clerk acted; (2) also charged on unlisted securities. The part's effective date is printed '06/02/20217', a misprint in the source; effective_from is left null rather than guessed."
+        "notes": "'0.6%, מינימום 50$ מקסימום 10,000$ לעסקה'.Page 20 prints an internet price, 'אינטרנט – 0.55%, מינימום 45$', on shares and bonds; it names no funds, so a fund abroad stays on this row. Notes: (1) an order not executed pays the minimum only if a clerk acted; (2) also charged on unlisted securities. The part's effective date is printed '06/02/20217', a misprint in the source; effective_from is left null rather than guessed."
       },
       "min": {
         "value": 50,
@@ -981,5 +981,42 @@
   "notice_rule_ids": [
     "BRK-21",
     "BRK-20"
+  ],
+  "availability": [
+    {
+      "applies_to": [
+        "mutual_fund_units",
+        "etf_units"
+      ],
+      "available": true,
+      "source": {
+        "url": "https://www.bankjerusalem.co.il/media/7012/%D7%A2%D7%95%D7%AA%D7%A7-%D7%A9%D7%9C-1759155996_2_%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F_%D7%9E%D7%9C%D7%90_%D7%9C%D7%99%D7%97%D7%99%D7%93_%D7%A2%D7%A1%D7%A7_%D7%A7%D7%98%D7%9F-1-1.pdf",
+        "title": "התעריפון המלא ליחיד / עסק קטן - בנק ירושלים (20 עמ'): חלק 4 - ניירות ערך ('בתוקף מתאריך : 06/02/20217' כפי שמודפס, כנראה",
+        "checked": "2026-10-31",
+        "page": 7,
+        "quote": "אך לרבות \"קרן מחקה\""
+      }
+    },
+    {
+      "applies_to": [
+        "foreign_securities"
+      ],
+      "available": true,
+      "source": {
+        "url": "https://www.bankjerusalem.co.il/media/7012/%D7%A2%D7%95%D7%AA%D7%A7-%D7%A9%D7%9C-1759155996_2_%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F_%D7%9E%D7%9C%D7%90_%D7%9C%D7%99%D7%97%D7%99%D7%93_%D7%A2%D7%A1%D7%A7_%D7%A7%D7%98%D7%9F-1-1.pdf",
+        "title": "התעריפון המלא ליחיד / עסק קטן - בנק ירושלים (20 עמ'): חלק 4 - ניירות ערך ('בתוקף מתאריך : 06/02/20217' כפי שמודפס, כנראה",
+        "checked": "2026-10-31",
+        "page": 6,
+        "quote": "מניות ,אגרות חוב וקרנות"
+      }
+    }
+  ],
+  "price_for_he": "לקוח רגיל, בלי הטבה לקבוצה",
+  "left_out": [
+    {
+      "what": "מחירים לקבוצות אוכלוסייה",
+      "page": 15,
+      "why": "The ranking uses the ordinary customer; group prices and how long they last are not collected (issue 140)."
+    }
   ]
 }

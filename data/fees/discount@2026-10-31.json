@@ -1064,5 +1064,47 @@
   "notice_rule_ids": [
     "BRK-21",
     "BRK-20"
+  ],
+  "availability": [
+    {
+      "applies_to": [
+        "mutual_fund_units",
+        "etf_units"
+      ],
+      "available": true,
+      "source": {
+        "url": "https://www.discountbank.co.il/media/fnibqzdx/tarifon_single-united_11026.pdf",
+        "title": "תעריפון יחיד/עסק קטן - בנק דיסקונט לישראל, התעריפון המאוחד (52 עמ'; עמודי הפתיחה נושאים את התאריך 01/10/2026); חלק 4 - נ",
+        "checked": "2026-10-31",
+        "page": 11,
+        "quote": "אך לרבות \"קרן מחקה\""
+      }
+    },
+    {
+      "applies_to": [
+        "foreign_securities"
+      ],
+      "available": true,
+      "source": {
+        "url": "https://www.discountbank.co.il/media/fnibqzdx/tarifon_single-united_11026.pdf",
+        "title": "תעריפון יחיד/עסק קטן - בנק דיסקונט לישראל, התעריפון המאוחד (52 עמ'; עמודי הפתיחה נושאים את התאריך 01/10/2026); חלק 4 - נ",
+        "checked": "2026-10-31",
+        "page": 13,
+        "quote": "חוב וקרנות נאמנות"
+      }
+    }
+  ],
+  "price_for_he": "לקוח רגיל, בלי הטבה לקבוצה",
+  "left_out": [
+    {
+      "what": "מחירים לקבוצות אוכלוסייה",
+      "page": 32,
+      "why": "The ranking uses the ordinary customer; group prices and how long they last are not collected (issue 140)."
+    },
+    {
+      "what": "מסלול INVEST או ניהול תיקים",
+      "page": 32,
+      "why": "Its own securities benefits, with their own conditions; not collected."
+    }
   ]
 }

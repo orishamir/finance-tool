@@ -463,5 +463,36 @@
   },
   "notice_rule_ids": [
     "BRK-15"
-  ]
+  ],
+  "availability": [
+    {
+      "applies_to": [
+        "mutual_fund_units",
+        "etf_units"
+      ],
+      "available": true,
+      "source": {
+        "url": "https://www.xnes.co.il/media/nwogkoos/taarifon.pdf",
+        "title": "תעריפון מלא - אקסלנס טרייד (xnes.co.il, 6 עמ'; המסמך אינו מודפס עם תאריך, קובץ ה-PDF נוצר 15.7.2026); חלק 4 - ניירות ערך",
+        "checked": "2026-10-31",
+        "page": 3,
+        "quote": "סל וקרנות מחקות"
+      }
+    },
+    {
+      "applies_to": [
+        "foreign_securities"
+      ],
+      "available": true,
+      "source": {
+        "url": "https://www.xnes.co.il/media/nwogkoos/taarifon.pdf",
+        "title": "תעריפון מלא - אקסלנס טרייד (xnes.co.il, 6 עמ'; המסמך אינו מודפס עם תאריך, קובץ ה-PDF נוצר 15.7.2026); חלק 4 - ניירות ערך",
+        "checked": "2026-10-31",
+        "page": 4,
+        "quote": "ניירות ערך בחוץ לארץ"
+      }
+    }
+  ],
+  "price_for_he": "לקוח רגיל, בלי הטבה לקבוצה",
+  "left_out": []
 }

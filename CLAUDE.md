@@ -124,6 +124,15 @@ overrides the Roadmap issue's ranking, which counts what unblocks the most.
   own terms, which appear named or on that company's page, never as a fact
   about a product. A statement about the whole market comes from law or
   from a count over every collected institution. See D30.
+- **No price from analogy** (founder, 2026-10-31). A house ranks on a kind of
+  holding only where its own document or fund list names it; the data check
+  fails otherwise, and a doubt is a grey row, not a note (D42). A new house or a
+  new top pick gets a fresh reviewer first, given only the documents and asked
+  to disprove it, and a short check by a real customer of that house where one
+  is at hand. A ranking change is its own commit, with its evidence, and
+  expected test numbers change only with that evidence. In chat, every figure
+  carries its assumption, and what was read is told apart from what was
+  inferred; what I report first-hand is treated as true and then checked.
 - **Never fill in a financial or tax rule from memory.** Use the
   `il-finance` skill. If a rule is missing from it, say the
   rule is missing and stop; do not guess or approximate. Site judgements

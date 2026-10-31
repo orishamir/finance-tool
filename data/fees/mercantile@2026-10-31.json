@@ -1064,5 +1064,42 @@
   "notice_rule_ids": [
     "BRK-21",
     "BRK-20"
+  ],
+  "availability": [
+    {
+      "applies_to": [
+        "mutual_fund_units",
+        "etf_units"
+      ],
+      "available": true,
+      "source": {
+        "url": "https://www.mercantile.co.il/media/5sgkpskc/taarifon_private_full.pdf",
+        "title": "תעריפון יחיד/עסק קטן - בנק מרכנתיל דיסקונט, התעריפון המלא (44 עמ'; אין תאריך כולל למסמך, כל עמוד נושא תאריך עדכון משלו);",
+        "checked": "2026-10-31",
+        "page": 12,
+        "quote": "אך לרבות \"קרן מחקה\""
+      }
+    },
+    {
+      "applies_to": [
+        "foreign_securities"
+      ],
+      "available": true,
+      "source": {
+        "url": "https://www.mercantile.co.il/media/5sgkpskc/taarifon_private_full.pdf",
+        "title": "תעריפון יחיד/עסק קטן - בנק מרכנתיל דיסקונט, התעריפון המלא (44 עמ'; אין תאריך כולל למסמך, כל עמוד נושא תאריך עדכון משלו);",
+        "checked": "2026-10-31",
+        "page": 13,
+        "quote": "אגרות חוב וקרנות נאמנות"
+      }
+    }
+  ],
+  "price_for_he": "לקוח רגיל, בלי הטבה לקבוצה",
+  "left_out": [
+    {
+      "what": "מחירים לקבוצות אוכלוסייה",
+      "page": 30,
+      "why": "The ranking uses the ordinary customer; group prices and how long they last are not collected (issue 140)."
+    }
   ]
 }

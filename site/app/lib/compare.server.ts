@@ -14,7 +14,7 @@ import { publisherHe } from "./publisher-he.server";
 import { accountBanks, commonAccountRate, currentAccountRecords } from "./guide-signature-bundle.server";
 
 const tariffKeys: string[] = ["tradeRate", "tradeMin", "tradeMax", "standingRate", "standingMin", "standingMax", "custodyRate", "custodyMin", "custodyMax", "fxRate", "monthlyFee"];
-import { BROKERAGE, instrumentClassOf, providersOf, shortName } from "./providers";
+import { BROKERAGE, instrumentClassOf, onlyWhatCanBeDone, providersOf, shortName } from "./providers";
 import { latestSnapshots } from "./providers.server";
 import { readJsonCached, readTextCached } from "./read-cache.server";
 
@@ -191,7 +191,7 @@ function representativeOf(
 function providerTariffs(productId: string, instrumentClass: string): Record<string, ProviderTariff> {
   const out: Record<string, ProviderTariff> = {};
   const direct = productId !== BROKERAGE;
-  for (const snap of providersOf({ snapshots: latestSnapshots() }, BROKERAGE)) {
+  for (const snap of providersOf({ snapshots: latestSnapshots().map(onlyWhatCanBeDone) }, BROKERAGE)) {
     if (snap.missing) continue;
     // a security held directly is bought on TASE through an Israeli member; a foreign broker does not sell makam or Israeli government bonds
     if (direct && snap.provider.class === "foreign_broker") continue;

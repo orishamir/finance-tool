@@ -50,7 +50,7 @@
           "MF-27"
         ],
         "state": "sourced",
-        "notes": "'0.60%'. Note (05): excludes mutual funds, Maof options and futures but includes a tracking fund (קרן מחקה) and a fund whose units are listed on TASE, so Israeli ETFs and listed fund units pay this line. Note (06): the fee never exceeds 25% of the money value. Note (03): an unexecuted order pays the minimum only when a clerk was involved; a split order pays one fee per day. Additional expenses: TASE payments per the third-party chapter. Note (07): a transaction made directly on the internet pays a reduced 0.40% subject to the appendix-E minimum and maximum. Tracking funds (2026-10-31): the exclusion of mutual funds on this line does not cover a tracking fund, so a tracking fund pays this line; a traditional fund that is not listed does not. Place: the existing record of the tariff read on 2026-10-23, note (05) above. On 2026-10-31 the file could not be fetched again (a bot check), so this scope rests on that reading and on the general rule MF-27; on the list for a person to check."
+        "notes": "'0.60%'. Note (05): excludes mutual funds, Maof options and futures but includes a tracking fund (קרן מחקה) and a fund whose units are listed on TASE, so Israeli ETFs and listed fund units pay this line. Note (06): the fee never exceeds 25% of the money value. Note (03): an unexecuted order pays the minimum only when a clerk was involved; a split order pays one fee per day. Additional expenses: TASE payments per the third-party chapter. Note (07): a transaction made directly on the internet pays a reduced 0.40% subject to the appendix-E minimum and maximum. Tracking funds (2026-10-31): the exclusion of mutual funds on this line does not cover a tracking fund, so a tracking fund pays this line; a traditional fund that is not listed does not. Place: the existing record of the tariff read on 2026-10-23, note (05) above. Scope re-read 2026-10-31 in the XLS, row 958, note (05)."
       },
       "min": {
         "value": 26,
@@ -132,7 +132,7 @@
           "MF-27"
         ],
         "state": "sourced",
-        "notes": "Appendix E direct-channel price '0.40%' (clerk 0.60%); also note (07) of the securities chapter: 'עבור פעולה המבוצעת ישירות באמצעות האינטרנט ייגבה שיעור מופחת של 0.40% לפעולה'. Same scope as the branch line. The appendix-E rows in the XLS interleave the direct and clerk columns in one cell; values were read against the part-4 notes. Tracking funds (2026-10-31): the exclusion of mutual funds on this line does not cover a tracking fund, so a tracking fund pays this line; a traditional fund that is not listed does not. Place: the existing record of the tariff read on 2026-10-23, note (05) above. On 2026-10-31 the file could not be fetched again (a bot check), so this scope rests on that reading and on the general rule MF-27; on the list for a person to check."
+        "notes": "Appendix E direct-channel price '0.40%' (clerk 0.60%); also note (07) of the securities chapter: 'עבור פעולה המבוצעת ישירות באמצעות האינטרנט ייגבה שיעור מופחת של 0.40% לפעולה'. Same scope as the branch line. The appendix-E rows in the XLS interleave the direct and clerk columns in one cell; values were read against the part-4 notes. Tracking funds (2026-10-31): the exclusion of mutual funds on this line does not cover a tracking fund, so a tracking fund pays this line; a traditional fund that is not listed does not. Place: the existing record of the tariff read on 2026-10-23, note (05) above. Scope re-read 2026-10-31 in the XLS, row 958, note (05)."
       },
       "min": {
         "value": 20,
@@ -347,7 +347,7 @@
       }
     },
     {
-      "id": "hapoalim-buy-sell-foreign-branch",
+      "id": "hapoalim-buy-sell-foreign",
       "base": "trade",
       "applies_to": [
         "foreign_securities"
@@ -372,7 +372,7 @@
           "BRK-19"
         ],
         "state": "sourced",
-        "notes": "'0.90%'. Note (04): third-party expenses (broker, custodian, ADR fees) are charged on top. Note (06): charged on the settlement day. Note (08): the fee never exceeds 25% of the trade amount. Note (07): direct-channel prices in appendix E."
+        "notes": "'0.90%'. Note (04): third-party expenses (broker, custodian, ADR fees) are charged on top. Note (06): charged on the settlement day. Note (08): the fee never exceeds 25% of the trade amount. Note (07): direct-channel prices in appendix E. The printed row limits no channel; the lower internet prices name shares only (see left_out), so a fund abroad pays this row on any channel."
       },
       "min": {
         "value": 25,
@@ -415,170 +415,12 @@
         "notes": "'$7,500.00' per trade (US dollars)."
       },
       "period": null,
-      "channel": "branch",
+      "channel": null,
       "band": null,
       "statement_code": null,
       "names": {
         "tariff": [
           "קניה מכירה ופדיון של ני\"ע בחו\"ל (כולל קניה מכירה שלא בוצעה): - מניות, אג\"ח, קרנות נאמנות"
-        ]
-      }
-    },
-    {
-      "id": "hapoalim-buy-sell-foreign-direct",
-      "base": "trade",
-      "applies_to": [
-        "foreign_securities"
-      ],
-      "level": "list",
-      "rate": {
-        "value": 0.3,
-        "unit": "pct_of_trade",
-        "source": {
-          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
-          "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), הטבות בערוצי בנקאות בתקשורת (נספח ה'), קניה מכירה של ני\"ע הנסחרים בחו\"ל (כולל קניה מכירה שלא בוצעה): - מניות הנסחרות בארה\"ב, מחיר בערוץ ישיר",
-          "publisher": "Bank Hapoalim B.M.",
-          "strength": "institution"
-        },
-        "checked": "2026-10-23",
-        "effective_from": "2026-10-05",
-        "effective_to": null,
-        "tax_year": null,
-        "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16",
-          "BRK-19"
-        ],
-        "state": "sourced",
-        "notes": "Appendix E: shares traded in the US '0.30%' in a direct channel (clerk 0.90%); shares traded outside the US '0.50%' (same minimum and maximum). The non-US row is its own line."
-      },
-      "min": {
-        "value": 20,
-        "unit": "usd",
-        "source": {
-          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
-          "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), הטבות בערוצי בנקאות בתקשורת (נספח ה'), מניות הנסחרות בארה\"ב, מינימום בערוץ ישיר",
-          "publisher": "Bank Hapoalim B.M.",
-          "strength": "institution"
-        },
-        "checked": "2026-10-23",
-        "effective_from": "2026-10-05",
-        "effective_to": null,
-        "tax_year": null,
-        "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
-        "state": "sourced",
-        "notes": "'20 $' (clerk $25)."
-      },
-      "max": {
-        "value": 7000,
-        "unit": "usd",
-        "source": {
-          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
-          "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), הטבות בערוצי בנקאות בתקשורת (נספח ה'), מניות הנסחרות בארה\"ב, מקסימום בערוץ ישיר",
-          "publisher": "Bank Hapoalim B.M.",
-          "strength": "institution"
-        },
-        "checked": "2026-10-23",
-        "effective_from": "2026-10-05",
-        "effective_to": null,
-        "tax_year": null,
-        "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
-        "state": "sourced",
-        "notes": "'7,000 $' (clerk $7,500)."
-      },
-      "period": null,
-      "channel": "direct",
-      "band": "מניות הנסחרות בארה\"ב",
-      "statement_code": null,
-      "names": {
-        "tariff": [
-          "קניה מכירה של ני\"ע הנסחרים בחו\"ל (כולל קניה מכירה שלא בוצעה): - מניות הנסחרות בארה\"ב",
-          "ערוץ ישיר"
-        ]
-      }
-    },
-    {
-      "id": "hapoalim-buy-sell-foreign-direct-non-us",
-      "base": "trade",
-      "applies_to": [
-        "foreign_securities"
-      ],
-      "level": "list",
-      "rate": {
-        "value": 0.5,
-        "unit": "pct_of_trade",
-        "source": {
-          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
-          "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), הטבות בערוצי בנקאות בתקשורת (נספח ה'), קניה מכירה של ני\"ע הנסחרים בחו\"ל (כולל קניה מכירה שלא בוצעה): - מניות הנסחרות בארה\"ב, מחיר בערוץ ישיר",
-          "publisher": "Bank Hapoalim B.M.",
-          "strength": "institution"
-        },
-        "checked": "2026-10-23",
-        "effective_from": "2026-10-05",
-        "effective_to": null,
-        "tax_year": null,
-        "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16",
-          "BRK-19"
-        ],
-        "state": "sourced",
-        "notes": "Appendix E: shares traded outside the US '0.50%' in a direct channel, same minimum and maximum as the US row."
-      },
-      "min": {
-        "value": 20,
-        "unit": "usd",
-        "source": {
-          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
-          "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), הטבות בערוצי בנקאות בתקשורת (נספח ה'), מניות הנסחרות בארה\"ב, מינימום בערוץ ישיר",
-          "publisher": "Bank Hapoalim B.M.",
-          "strength": "institution"
-        },
-        "checked": "2026-10-23",
-        "effective_from": "2026-10-05",
-        "effective_to": null,
-        "tax_year": null,
-        "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
-        "state": "sourced",
-        "notes": "'20 $' (clerk $25)."
-      },
-      "max": {
-        "value": 7000,
-        "unit": "usd",
-        "source": {
-          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
-          "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), הטבות בערוצי בנקאות בתקשורת (נספח ה'), מניות הנסחרות בארה\"ב, מקסימום בערוץ ישיר",
-          "publisher": "Bank Hapoalim B.M.",
-          "strength": "institution"
-        },
-        "checked": "2026-10-23",
-        "effective_from": "2026-10-05",
-        "effective_to": null,
-        "tax_year": null,
-        "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
-        "state": "sourced",
-        "notes": "'7,000 $' (clerk $7,500)."
-      },
-      "period": null,
-      "channel": "direct",
-      "band": "מניות הנסחרות מחוץ לארה\"ב",
-      "statement_code": null,
-      "names": {
-        "tariff": [
-          "קניה מכירה של ני\"ע הנסחרים בחו\"ל (כולל קניה מכירה שלא בוצעה): - מניות הנסחרות בארה\"ב",
-          "ערוץ ישיר"
         ]
       }
     },
@@ -1075,5 +917,43 @@
   "notice_rule_ids": [
     "BRK-21",
     "BRK-20"
+  ],
+  "availability": [
+    {
+      "applies_to": [
+        "mutual_fund_units",
+        "etf_units"
+      ],
+      "available": true,
+      "source": {
+        "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
+        "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים, 'נכון ליום: 05/10/2026' (קובץ XLS, גיליון אחד; פרק: ניירות ערך, ",
+        "checked": "2026-10-31",
+        "quote": "אך לרבות \"קרן מחקה\""
+      }
+    },
+    {
+      "applies_to": [
+        "foreign_securities"
+      ],
+      "available": true,
+      "source": {
+        "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
+        "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים, 'נכון ליום: 05/10/2026' (קובץ XLS, גיליון אחד; פרק: ניירות ערך, ",
+        "checked": "2026-10-31",
+        "quote": "מניות,אג\"ח ,קרנות נאמנות"
+      }
+    }
+  ],
+  "price_for_he": "לקוח רגיל, בלי הטבה לקבוצה",
+  "left_out": [
+    {
+      "what": "מחירים לקבוצות אוכלוסייה",
+      "why": "The ranking uses the ordinary customer; group prices and how long they last are not collected (issue 140)."
+    },
+    {
+      "what": "מחיר מופחת בערוץ ישיר למניות בחוץ לארץ: 0.30% בארצות הברית ו-0.50% מחוצה לה, מינימום 20 דולר, מקסימום 7,000 דולר",
+      "why": "The printed row names shares, not funds, so a fund abroad is priced on the row that names funds (founder, 2026-10-31: no price from analogy)."
+    }
   ]
 }

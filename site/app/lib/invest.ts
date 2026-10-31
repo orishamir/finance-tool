@@ -471,7 +471,13 @@ type AvailabilityEntry = NonNullable<FeesSnapshot["availability"]>[number];
 const AVAILABLE_NOTE = (a: AvailabilityEntry): Availability => ({ source: a.source, note: a.note ?? null });
 
 function unavailable(s: FeesSnapshot, option: OptionId): Availability | null {
-  for (const a of s.availability ?? []) if (!a.available && a.applies_to.some((c) => AVAILABILITY_CLASSES[option].includes(c))) return AVAILABLE_NOTE(a);
+  for (const a of s.availability ?? []) if (a.available === false && a.applies_to.some((c) => AVAILABILITY_CLASSES[option].includes(c))) return AVAILABLE_NOTE(a);
+  return null;
+}
+
+/** Why the documents leave this kind of holding open at the house: said on its grey row (2026-10-31). */
+export function doubtOf(s: FeesSnapshot | undefined, option: OptionId): string | null {
+  for (const a of s?.availability ?? []) if (a.available === "unknown" && a.applies_to.some((c) => AVAILABILITY_CLASSES[option].includes(c))) return a.reason_he ?? null;
   return null;
 }
 

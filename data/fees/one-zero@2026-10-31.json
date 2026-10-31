@@ -51,7 +51,7 @@
           "MF-27"
         ],
         "state": "sourced",
-        "notes": "'0.3 אחוז, מינימום 30 ש\"ח, מקסימום 6,000 ש\"ח', charged on execution (בביצוע). Note (4): 'בעד פעולה המבוצעת ישירות באמצעות האינטרנט ייגבה שיעור זהה של 0.3%', so the clerk and direct prices are the same and channel is null. Footnote 9: the mutual-fund exclusion does not cover a tracking fund or a fund whose units are listed on TASE. Notes (1)-(3): one minimum per day on a split order; an order not executed pays the minimum only if a clerk acted; also charged on unlisted securities. Note (5): third-party costs (broker and custodian) per part 11 are added. The tariff page states the bank currently allows trading only in TA-125 shares, Israeli mutual funds and US-traded foreign securities; there is no makam line and no separate open mutual-fund line in part 4. Tracking funds (2026-10-31): the exclusion of mutual funds on this line does not cover a tracking fund, so a tracking fund pays this line; a traditional fund that is not listed does not. Place: the existing record of the tariff read on 2026-10-24, footnote 9 above. On 2026-10-31 the file could not be fetched again (a bot check), so this scope rests on that reading and on the general rule MF-27; on the list for a person to check. Scope re-read in Chrome on 2026-10-31, PDF page 10, footnote 9 to the exclusion of 'קרנות נאמנות': 'אך לרבות \"קרן מחקה\", כהגדרתה בחוק השקעות משותפות בנאמנות, התשנ\"ד-1994, וכן של קרן להשקעות משותפות בנאמנות, שיחידותיה רשומות בבורסה לניירות ערך בתל אביב'. Note 5 on the line adds third-party costs per part 11 (PDF pages 16-18): on a TASE holding, item 10, TASE's trading-data cost, at actual cost up to TASE's tariff; not priced here."
+        "notes": "'0.3 אחוז, מינימום 30 ש\"ח, מקסימום 6,000 ש\"ח', charged on execution (בביצוע). Note (4): 'בעד פעולה המבוצעת ישירות באמצעות האינטרנט ייגבה שיעור זהה של 0.3%', so the clerk and direct prices are the same and channel is null. Footnote 9: the mutual-fund exclusion does not cover a tracking fund or a fund whose units are listed on TASE. Notes (1)-(3): one minimum per day on a split order; an order not executed pays the minimum only if a clerk acted; also charged on unlisted securities. Note (5): third-party costs (broker and custodian) per part 11 are added. The tariff page states the bank currently allows trading only in TA-125 shares, Israeli mutual funds and US-traded foreign securities; there is no makam line and no separate open mutual-fund line in part 4. Tracking funds (2026-10-31): the exclusion of mutual funds on this line does not cover a tracking fund, so a tracking fund pays this line; a traditional fund that is not listed does not. Place: the existing record of the tariff read on 2026-10-24, footnote 9 above. Scope re-read in Chrome on 2026-10-31, PDF page 10, footnote 9 to the exclusion of 'קרנות נאמנות': 'אך לרבות \"קרן מחקה\", כהגדרתה בחוק השקעות משותפות בנאמנות, התשנ\"ד-1994, וכן של קרן להשקעות משותפות בנאמנות, שיחידותיה רשומות בבורסה לניירות ערך בתל אביב'. Note 5 on the line adds third-party costs per part 11 (PDF pages 16-18): on a TASE holding, item 10, TASE's trading-data cost, at actual cost up to TASE's tariff; not priced here."
       },
       "min": {
         "value": 30,
@@ -175,7 +175,7 @@
       },
       "period": null,
       "channel": null,
-      "band": null,
+      "band": "ניירות ערך הנסחרים בארה\"ב",
       "statement_code": null,
       "names": {
         "tariff": [
@@ -664,7 +664,7 @@
       },
       "period": null,
       "channel": null,
-      "band": "מסלול ONE",
+      "band": "מסלול ONE · ניירות ערך הנסחרים בארה\"ב",
       "statement_code": null,
       "names": {
         "tariff": [
@@ -722,5 +722,55 @@
   "notice_rule_ids": [
     "BRK-21",
     "BRK-20"
+  ],
+  "availability": [
+    {
+      "applies_to": [
+        "mutual_fund_units"
+      ],
+      "available": true,
+      "source": {
+        "url": "https://www.onezerobank.com/warehouse/userUploadFiles/Image/01-%20%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F%20%D7%94%D7%A2%D7%9E%D7%9C%D7%95%D7%AA%20%D7%94%D7%9E%D7%9C%D7%90%20-%20%D7%9E%D7%94%D7%93%D7%95%D7%A8%D7%94%20%D7%9E%D7%99%D7%95%D7%9D%2026.7.26_announcement.pdf",
+        "title": "ONE ZERO - תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (שאינם תאגידים), תאריך פרסום: 24/6/2026, בתוקף מיום 26.7.202",
+        "checked": "2026-10-31",
+        "quote": "בשלב זה הבנק מאפשר מסחר במניות ישראליות הנכללות במדד 125, קרנות נאמנות בישראל וניירות ערך זרים הנסחרים בארה״ב"
+      },
+      "note": "Tariff page, BRK-38. Read in Chrome; the tariff has no copy in the library."
+    },
+    {
+      "applies_to": [
+        "etf_units"
+      ],
+      "available": "unknown",
+      "source": {
+        "url": "https://www.onezerobank.com/warehouse/userUploadFiles/Image/01-%20%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F%20%D7%94%D7%A2%D7%9E%D7%9C%D7%95%D7%AA%20%D7%94%D7%9E%D7%9C%D7%90%20-%20%D7%9E%D7%94%D7%93%D7%95%D7%A8%D7%94%20%D7%9E%D7%99%D7%95%D7%9D%2026.7.26_announcement.pdf",
+        "title": "ONE ZERO - תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (שאינם תאגידים), תאריך פרסום: 24/6/2026, בתוקף מיום 26.7.202",
+        "checked": "2026-10-31",
+        "quote": "בשלב זה הבנק מאפשר מסחר במניות ישראליות הנכללות במדד 125, קרנות נאמנות בישראל וניירות ערך זרים הנסחרים בארה״ב"
+      },
+      "reason_he": "הבנק כותב שהוא מאפשר מסחר במניות מדד 125, בקרנות נאמנות בישראל ובניירות ערך זרים בארצות הברית, ולא כותב אם קרן סל נכללת.",
+      "note": "Footnote 9 on p.10 takes in a fund listed on TASE, but the same page limits what can be traded; it does not name a קרן סל."
+    },
+    {
+      "applies_to": [
+        "foreign_securities"
+      ],
+      "available": true,
+      "source": {
+        "url": "https://www.onezerobank.com/warehouse/userUploadFiles/Image/01-%20%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F%20%D7%94%D7%A2%D7%9E%D7%9C%D7%95%D7%AA%20%D7%94%D7%9E%D7%9C%D7%90%20-%20%D7%9E%D7%94%D7%93%D7%95%D7%A8%D7%94%20%D7%9E%D7%99%D7%95%D7%9D%2026.7.26_announcement.pdf",
+        "title": "ONE ZERO - תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (שאינם תאגידים), תאריך פרסום: 24/6/2026, בתוקף מיום 26.7.202",
+        "checked": "2026-10-31",
+        "quote": "בשלב זה הבנק מאפשר מסחר במניות ישראליות הנכללות במדד 125, קרנות נאמנות בישראל וניירות ערך זרים הנסחרים בארה״ב"
+      },
+      "note": "US-traded securities only (BRK-38), so the foreign lines carry a US band."
+    }
+  ],
+  "price_for_he": "לקוח רגיל, בלי הטבה לקבוצה",
+  "left_out": [
+    {
+      "what": "מסלולי ONE ו-ONE PLUS",
+      "page": 20,
+      "why": "Plans with a monthly fee; ranked at the plan-less price except where a line says so."
+    }
   ]
 }

@@ -1106,5 +1106,42 @@
   "notice_rule_ids": [
     "BRK-21",
     "BRK-20"
+  ],
+  "availability": [
+    {
+      "applies_to": [
+        "mutual_fund_units",
+        "etf_units"
+      ],
+      "available": true,
+      "source": {
+        "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
+        "title": "תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים - בנק מזרחי טפחות, הקובץ המאוגד (48 עמ'; אין תאריך כולל, כל חלק נושא 'מעודכ",
+        "checked": "2026-10-31",
+        "page": 13,
+        "quote": "אך לרבות \"קרן מחקה\""
+      }
+    },
+    {
+      "applies_to": [
+        "foreign_securities"
+      ],
+      "available": true,
+      "source": {
+        "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
+        "title": "תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים - בנק מזרחי טפחות, הקובץ המאוגד (48 עמ'; אין תאריך כולל, כל חלק נושא 'מעודכ",
+        "checked": "2026-10-31",
+        "page": 11,
+        "quote": "מניות ,איגרות חוב וקרנות"
+      }
+    }
+  ],
+  "price_for_he": "לקוח רגיל, בלי הטבה לקבוצה",
+  "left_out": [
+    {
+      "what": "מחירים לקבוצות אוכלוסייה",
+      "page": 33,
+      "why": "The ranking uses the ordinary customer; group prices and how long they last are not collected (issue 140)."
+    }
   ]
 }
