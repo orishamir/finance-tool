@@ -1,0 +1,129 @@
+{
+  "id": "MF-58",
+  "title": "Leumi, First International and Massad: the standing-order price and an ETF",
+  "title_he": "לאומי, הבינלאומי ומסד: המחיר להוראת קבע וקרן סל",
+  "text_he": "שלושת התעריפונים מפרסמים מחיר נמוך יותר לקניית קרן מחקה בהוראת קבע, ומגדירים קרן מחקה לפי החוק. החוק מגדיר קרן סל כקרן מחקה שהיא קרן סגורה, ולכן לפי ההגדרה הזו המחיר חל גם על קרן סל ישראלית. אף מסמך של שלושת הבנקים לא אומר זאת במילים ואף מסמך לא מוציא זאת. לניירות ערך בחוץ לארץ, במסד ובבינלאומי, ההערה נוקבת במילה ETF. קרן חוץ הנסחרת בבורסה בתל אביב לא נזכרת בהערות האלה ונשארת במחיר הרגיל.",
+  "strength": "institution",
+  "dimensions": [
+    "fee-trade"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "il_finance_file": "mutual-funds-and-money-market-funds.md",
+  "checked": "2026-10-31",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "leumi",
+      "name_he": "בנק לאומי"
+    },
+    {
+      "id": "fibi",
+      "name_he": "הבנק הבינלאומי"
+    },
+    {
+      "id": "massad",
+      "name_he": "בנק מסד"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
+      "title": "תעריפון העמלות המלא, בנק לאומי, מעודכן ל-01/10/2026",
+      "title_he": "תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (בנק לאומי, 1.10.2026)",
+      "publisher": "Bank Leumi",
+      "publisher_he": "בנק לאומי",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.30",
+      "locator_he": "עמוד 30",
+      "page": 30,
+      "quote": "בגין קנית קרן מחקה באמצעות הוראת קבע",
+      "checked": "2026-10-31"
+    },
+    {
+      "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
+      "title": "תעריפון העמלות המלא, בנק לאומי, מעודכן ל-01/10/2026",
+      "title_he": "תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (בנק לאומי, 1.10.2026)",
+      "publisher": "Bank Leumi",
+      "publisher_he": "בנק לאומי",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.34",
+      "locator_he": "עמוד 34",
+      "page": 34,
+      "quote": "אך לרבות קרן מחקה",
+      "checked": "2026-10-31"
+    },
+    {
+      "url": "https://www.bankmassad.co.il/media/qb0h1di4/חלק-4-ניירות-ערך-46.pdf",
+      "title": "תעריפון בנק מסד, חלק 4 ניירות ערך",
+      "title_he": "תעריפון ליחידים ולעסקים קטנים, חלק 4 ניירות ערך (בנק מסד)",
+      "publisher": "Bank Massad",
+      "publisher_he": "בנק מסד",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.1",
+      "locator_he": "עמוד 1",
+      "page": 1,
+      "quote": "בגין רכישת/מכירת קרן מחקה באמצעות הוראות קבע",
+      "checked": "2026-10-31"
+    },
+    {
+      "url": "https://www.bankmassad.co.il/media/qb0h1di4/חלק-4-ניירות-ערך-46.pdf",
+      "title": "תעריפון בנק מסד, חלק 4 ניירות ערך",
+      "title_he": "תעריפון ליחידים ולעסקים קטנים, חלק 4 ניירות ערך (בנק מסד)",
+      "publisher": "Bank Massad",
+      "publisher_he": "בנק מסד",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.2",
+      "locator_he": "עמוד 2",
+      "page": 2,
+      "quote": "באמצעות הוראות קבע תיגבה העמלה בכפוף לעמלת מינימום מופחתת",
+      "checked": "2026-10-31"
+    },
+    {
+      "url": "https://www.fibi.co.il/media/jqob143q/חלק-4-ניירות-ערך-31.pdf",
+      "title": "תעריפון הבנק הבינלאומי, חלק 4 ניירות ערך",
+      "title_he": "תעריפון ליחידים ועסקים קטנים, חלק 4 ניירות ערך (הבנק הבינלאומי)",
+      "publisher": "First International Bank",
+      "publisher_he": "הבנק הבינלאומי",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.1",
+      "locator_he": "עמוד 1",
+      "page": 1,
+      "quote": "בגין רכישת/מכירת קרן מחקה באמצעות הוראות קבע",
+      "checked": "2026-10-31"
+    },
+    {
+      "url": "https://www.fibi.co.il/media/jqob143q/חלק-4-ניירות-ערך-31.pdf",
+      "title": "תעריפון הבנק הבינלאומי, חלק 4 ניירות ערך",
+      "title_he": "תעריפון ליחידים ועסקים קטנים, חלק 4 ניירות ערך (הבנק הבינלאומי)",
+      "publisher": "First International Bank",
+      "publisher_he": "הבנק הבינלאומי",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.2",
+      "locator_he": "עמוד 2",
+      "page": 2,
+      "quote": "באמצעות הוראות קבע תיגבה העמלה בכפוף לעמלת מינימום מופחתת",
+      "checked": "2026-10-31"
+    },
+    {
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf",
+      "title": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994",
+      "title_he": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "רשות ניירות ערך",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.4, s.1",
+      "locator_he": "עמוד 4, סעיף 1",
+      "page": 4,
+      "quote": "קרן מחקה ,שהיא קרן סגורה",
+      "checked": "2026-10-31"
+    }
+  ]
+}

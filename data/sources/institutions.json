@@ -246,6 +246,22 @@
     ]
   },
   {
+    "id": "pepper",
+    "name_he": "פפר (בנק לאומי)",
+    "kind": "bank",
+    "scope_names": [
+      {
+        "name": "PEPPER"
+      }
+    ],
+    "cma_legal_id": null,
+    "fees_id": "pepper",
+    "deposit_bank_id": null,
+    "own_hosts": [
+      "pepper.co.il"
+    ]
+  },
+  {
     "id": "hapoalim",
     "name_he": "בנק הפועלים",
     "kind": "bank",
@@ -480,12 +496,11 @@
       }
     ],
     "cma_legal_id": null,
-    "fees_id": null,
+    "fees_id": "fair",
     "deposit_bank_id": null,
     "own_hosts": [
       "fair.co.il"
-    ],
-    "note": "No fee snapshot collected yet, so no page."
+    ]
   },
   {
     "id": "interactive-israel",

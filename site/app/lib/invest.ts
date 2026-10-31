@@ -3,7 +3,7 @@
 // numbers come from the engine's provider workbench (F-63) and from the fund runs of F-65, over the bundle the other
 // workbench pages use. No fee, rate or rule figure is written here: tariffs are snapshots, fund fees are fund records,
 // exchange rates are the ECB's (D26). Nothing is chosen for the person (D27): an index is always an argument.
-import { beforeTax, costByWho, crossing, gapToIndex, sumFees, trackingBeyondFeesRange, providerWorkbench, relativeGap, type ComparedProvider, type FeeLine, type NotComparableProvider, type ProviderRow } from "@finance-tool/engine";
+import { STANDING_ORDER_BAND, beforeTax, costByWho, crossing, gapToIndex, sumFees, trackingBeyondFeesRange, providerWorkbench, relativeGap, type ComparedProvider, type FeeLine, type NotComparableProvider, type ProviderRow } from "@finance-tool/engine";
 import type { ExposureRecord, FeesSnapshot, FundRecord } from "@finance-tool/schema";
 import { invest as copy } from "../copy";
 import { aliasRows } from "./search-aliases";
@@ -17,7 +17,7 @@ export type OptionId = "il-tracking" | "il-etf" | "tase-foreign" | "abroad";
 export const OPTION_IDS: readonly OptionId[] = ["il-tracking", "il-etf", "tase-foreign", "abroad"];
 
 /** The tariff class each option is priced in (spec §2); a fund is priced in its own class (`instrumentClassOf`). */
-export const OPTION_CLASS: Record<OptionId, string> = { "il-tracking": "mutual_fund_units", "il-etf": "etf_units", "tase-foreign": "etf_units", abroad: "foreign_securities" };
+export const OPTION_CLASS: Record<OptionId, string> = { "il-tracking": "mutual_fund_units", "il-etf": "etf_units", "tase-foreign": "tase_foreign_fund_units", abroad: "foreign_securities" };
 /** The classes a snapshot's `availability` entry may name for the option. */
 const AVAILABILITY_CLASSES: Record<OptionId, string[]> = { "il-tracking": ["mutual_fund_units"], "il-etf": ["etf_units"], "tase-foreign": ["etf_units", "tase_foreign_fund_units"], abroad: ["foreign_securities"] };
 
@@ -33,7 +33,8 @@ export function optionOfFund(rec: FundRecord, exposure: ExposureRecord | undefin
 export type Venue = "us" | "europe";
 const US_RE = /ארה["״]ב|ארצות הברית/;
 const EU_RE = /אירופה|לונדון|London|LSE/;
-export const venueOfBand = (band: string | null | undefined): Venue | null => (!band ? null : US_RE.test(band) ? "us" : EU_RE.test(band) ? "europe" : null);
+const OUTSIDE_US_RE = /מחוץ לארה/;
+export const venueOfBand = (band: string | null | undefined): Venue | null => (!band ? null : OUTSIDE_US_RE.test(band) ? "europe" : US_RE.test(band) ? "us" : EU_RE.test(band) ? "europe" : null);
 
 /** The exchange a fund bought abroad trades on, from its tickers and domicile; null when the record does not say. */
 export function venueOfFund(rec: FundRecord): Venue | null {
@@ -137,6 +138,8 @@ export interface BrokerCell {
   leftN?: number;
   /** Abroad: the exchange the price rests on; null when the tariff has one line for all. */
   venue?: Venue | null;
+  /** The monthly purchases ran on the house's printed standing-order line (F-12, D41). */
+  standing?: boolean;
   reason?: Reason;
   availability?: Availability;
 }
@@ -154,6 +157,8 @@ export interface WayPrice {
   /** The same, by the tariff's own lines (trade, custody, FX, fixed), largest first, and the remainder no single line explains. */
   lines: { line: FeeLine; cost: number }[];
   interaction: number;
+  /** The monthly purchases ran on the house's printed standing-order line (F-12, D41). */
+  standing: boolean;
 }
 
 export interface FundWay {
@@ -166,7 +171,8 @@ export interface FundWay {
   /** At the person's broker, when known. */
   atYours?: WayPrice | { reason: Reason; providerId: string };
   /** The fund's run at every house of the option (a price, or why it has none); `best` is the highest of the ranked ones. */
-  byHouse: Record<string, WayPrice | { reason: Reason; providerId: string }>;
+  /** `availability`: a sourced fact says the house does not sell this kind of fund ("not possible there"); any other reason is "no data". */
+  byHouse: Record<string, WayPrice | { reason: Reason; providerId: string; availability?: Availability }>;
   reason?: Reason;
   currencyMismatch: boolean;
 }
@@ -202,6 +208,8 @@ export interface ProviderInfo {
   short: string;
   providerClass: FeesSnapshot["provider"]["class"];
   foreign: boolean;
+  /** A foreign broker whose own terms offer a service that withholds Israeli tax (BRK-36). */
+  taxService: boolean;
   /** Whether a company page exists (banks and brokers only). */
   hasPage: boolean;
 }
@@ -231,6 +239,8 @@ export interface HouseRow {
   reason: Reason | null;
   /** An index with no fund record: the house's cheapest broker cost over the group's options. */
   generic: BrokerCell | null;
+  /** The house prints a standing-order line for a kind of fund here: by house, so the row keeps its label when the best fund changes. */
+  standing: boolean;
 }
 
 export interface WorthLines {
@@ -312,7 +322,7 @@ export function providersOfInvest(bundle: Pick<WorkbenchBundle, "snapshots">): F
   return bundle.snapshots.filter((s) => s.provider.class === "bank" || s.provider.class === "broker" || s.provider.class === "foreign_broker").sort((a, b) => a.provider.name_he.localeCompare(b.provider.name_he, "he"));
 }
 
-export const providerInfo = (s: FeesSnapshot): ProviderInfo => ({ id: s.id, name: s.provider.name_he, short: shortName(s.id, s.provider.name_he), providerClass: s.provider.class, foreign: s.provider.class === "foreign_broker", hasPage: s.provider.class === "bank" || s.provider.class === "broker" });
+export const providerInfo = (s: FeesSnapshot): ProviderInfo => ({ id: s.id, name: s.provider.name_he, short: shortName(s.id, s.provider.name_he), providerClass: s.provider.class, foreign: s.provider.class === "foreign_broker", taxService: s.provider.israeli_tax_service === true, hasPage: s.provider.class === "bank" || s.provider.class === "broker" });
 
 interface Cand {
   venue: Venue | null;
@@ -411,7 +421,7 @@ function reasonOf(row: NotComparableProvider, s: FeesSnapshot): NotComparable {
   return { code: r.code, detail: r.detail };
 }
 
-type Priced = { kind: "ok"; row: ComparedProvider; venue: Venue | null } | { kind: "fail"; reason: NotComparable };
+type Priced = { kind: "ok"; row: ComparedProvider; venue: Venue | null; standing: boolean } | { kind: "fail"; reason: NotComparable };
 
 /** The venue the tariff line a row used names (a trade line's band), else the reading's venue. */
 function rowVenue(row: ComparedProvider, s: FeesSnapshot, cand: Cand): Venue | null {
@@ -448,7 +458,7 @@ function priceMany(ctx: Ctx, spec: Spec, option: OptionId, snaps: FeesSnapshot[]
       if (!best || g.row.real > best.row.real || (g.row.real === best.row.real && venue !== null && best.venue === null)) best = { row: g.row, venue };
     }
     if (best) {
-      out.set(s.id, { kind: "ok", ...best });
+      out.set(s.id, { kind: "ok", ...best, standing: best.row.linesUsed.some((id) => s.lines.find((l) => l.id === id)?.band === STANDING_ORDER_BAND) });
       continue;
     }
     const fails = got.flatMap((g) => (g.row.kind === "not-comparable" ? [reasonOf(g.row, scoped(s))] : g.row.noLine.includes("trade") ? [{ code: "no-applicable-line" as const, detail: `no trade line of the ${s.snapshot} snapshot applies to ${spec.cls}` }] : []));
@@ -463,7 +473,13 @@ type AvailabilityEntry = NonNullable<FeesSnapshot["availability"]>[number];
 const AVAILABLE_NOTE = (a: AvailabilityEntry): Availability => ({ source: a.source, note: a.note ?? null });
 
 function unavailable(s: FeesSnapshot, option: OptionId): Availability | null {
-  for (const a of s.availability ?? []) if (!a.available && a.applies_to.some((c) => AVAILABILITY_CLASSES[option].includes(c))) return AVAILABLE_NOTE(a);
+  for (const a of s.availability ?? []) if (a.available === false && a.applies_to.some((c) => AVAILABILITY_CLASSES[option].includes(c))) return AVAILABLE_NOTE(a);
+  return null;
+}
+
+/** Why the documents leave this kind of holding open at the house: said on its grey row (2026-10-31). */
+export function doubtOf(s: FeesSnapshot | undefined, option: OptionId): string | null {
+  for (const a of s?.availability ?? []) if (a.available === "unknown" && a.applies_to.some((c) => AVAILABILITY_CLASSES[option].includes(c))) return a.reason_he ?? null;
   return null;
 }
 
@@ -481,7 +497,7 @@ function wayPrice(ctx: Ctx, p: Extract<Priced, { kind: "ok" }>, providerId: stri
   const open = row.run.outcome.code === "listed-not-ranked";
   const value = computed(row.real, "nis", "F-65", inputMap(ctx.plan), { today: ctx.bundle.today, rules: rulesOf(row), flags: row.run.flags.map((f) => f.code), about });
   const lines = row.byType.map((x) => ({ line: x.line, cost: x.costBeforeTax }));
-  return { providerId, value, valueN: row.real, venue: p.venue, open, accountCost: row.horizonCostBeforeTax, lines, interaction: row.horizonCostBeforeTax - lines.reduce((t, l) => t + l.cost, 0) };
+  return { providerId, value, valueN: row.real, venue: p.venue, open, accountCost: row.horizonCostBeforeTax, lines, interaction: row.horizonCostBeforeTax - lines.reduce((t, l) => t + l.cost, 0), standing: p.standing };
 }
 
 // ---------------------------------------------------------------- funds
@@ -518,7 +534,7 @@ function computeOption(ctx: Ctx, index: IndexRef, option: OptionId, yourBroker: 
     const na = unavailable(s, option);
     if (na) return { providerId: s.id, kind: "unavailable", availability: na };
     const p = priced.get(s.id)!;
-    if (p.kind === "ok") return { providerId: s.id, kind: "cost", cost: costValue(ctx, p.row, `עלות ${s.provider.name_he}`), costN: p.row.horizonCostBeforeTax, leftN: p.row.real, venue: p.venue };
+    if (p.kind === "ok") return { providerId: s.id, kind: "cost", cost: costValue(ctx, p.row, `עלות ${s.provider.name_he}`), costN: p.row.horizonCostBeforeTax, leftN: p.row.real, venue: p.venue, standing: p.standing };
     return { providerId: s.id, kind: p.reason.code === "no-applicable-line" ? "no-line" : "not-comparable", reason: p.reason };
   });
   // ordered as the ranking orders (F-80 on what is left), not by the cost shown, which is before tax (F-91)
@@ -538,8 +554,9 @@ function computeOption(ctx: Ctx, index: IndexRef, option: OptionId, yourBroker: 
     let best: WayPrice | undefined;
     let failure: Reason | undefined;
     for (const s of ctx.snaps) {
-      if (unavailable(s, option)) {
-        base.byHouse[s.id] = { providerId: s.id, reason: { code: "no-applicable-line", detail: "unavailable" } };
+      const na = unavailable(s, option);
+      if (na) {
+        base.byHouse[s.id] = { providerId: s.id, reason: { code: "no-applicable-line", detail: "unavailable" }, availability: na };
         continue;
       }
       const p = got.get(s.id)!;
@@ -664,7 +681,8 @@ function housesOf(ctx: Ctx, options: OptionView[], headline: Way | null, provide
     const na = cells.find((c) => c.kind === "unavailable");
     const gap = best && headline && headline.providerId !== provider.id && headline.valueN - best.price!.valueN > 0 ? spreadValue(ctx, headline.valueN - best.price!.valueN, copy.houses.gapAbout(provider.name)) : null;
     const reason = best || generic ? null : (entries.find((e) => e.reason)?.reason ?? cells.find((c) => c.reason)?.reason ?? null);
-    return { provider, group, entries, best, gap, unavailable: !best && !generic ? (na?.availability ?? null) : null, reason, generic };
+    const standing = cells.some((c) => c.standing) || entries.some((e) => e.price?.standing);
+    return { provider, group, entries, best, gap, unavailable: !best && !generic ? (na?.availability ?? null) : null, reason, generic, standing };
   });
   const priced = (r: HouseRow) => r.best ?? r.generic;
   const cost = (r: HouseRow) => (r.best ? -r.best.price!.valueN : r.generic ? r.generic.costN! : Infinity);

@@ -4,7 +4,8 @@
 // `data/` and keeps its value object, so the values sheet can show its source.
 import { existsSync, readdirSync } from "node:fs";
 import { join } from "node:path";
-import { memberKindOf, type InstrumentTerms } from "@finance-tool/engine";
+import { memberKindOf, STANDING_ORDER_BAND, type InstrumentTerms } from "@finance-tool/engine";
+import { instrumentClassOf } from "./providers";
 import {
   catalogEntry,
   depositTerms,
@@ -303,7 +304,7 @@ function listLines(snap: FeesSnapshot, wrapperId: string, base: FeeLine["base"])
   const rank = (l: FeeLine) => (l.channel === null || l.channel === "direct" ? 0 : 1);
   // a line that excludes the product's own security type (a bank's custody line leaves out makam, BRK-17) does not apply to it
   const excluded = (l: FeeLine) => (l.excludes ?? []).some((x) => types.includes(x));
-  return snap.lines.filter((l) => l.level === "list" && l.base === base && (l.applies_to.includes(wrapperId) || l.applies_to.includes("all") || l.applies_to.some((a) => types.includes(a))) && !excluded(l)).sort((a, b) => rank(a) - rank(b));
+  return snap.lines.filter((l) => l.level === "list" && l.base === base && l.band !== STANDING_ORDER_BAND && (l.applies_to.includes(wrapperId) || l.applies_to.includes("all") || l.applies_to.some((a) => types.includes(a))) && !excluded(l)).sort((a, b) => rank(a) - rank(b));
 }
 
 function buildFund(wrapperId: string, spec: InstrumentSpec, src: InstrumentSources, missing: string[], feeValues: Record<string, SiteValue>) {
@@ -391,7 +392,7 @@ function buildFund(wrapperId: string, spec: InstrumentSpec, src: InstrumentSourc
  * the holder for buying, holding or redeeming units (MF-26), and a bank may not charge securities custody on one
  * (BANK-18). So the trade and custody lines are 0, each a sourced value object carrying its rule. The assumption that
  * the bank has a distribution agreement for the fund (the common case) is written on the value. The tariff's own
- * `mutual_fund_units` lines are not read: at Leumi the one that matches is a tracking-fund standing-order line.
+ * `mutual_fund_units` lines are not read: they price tracking funds.
  */
 function buildMoneyMarketTariff(wrapperId: string, src: InstrumentSources, missing: string[], feeValues: Record<string, SiteValue>): NonNullable<InstrumentTerms["tariff"]> | null {
   const mf26 = src.rules["MF-26"];
@@ -450,14 +451,30 @@ function buildTariff(
     const line = trade[0]!;
     if (trade.length > 1) console.log(`[guide] ${wrapperId}: ${snap.id} has ${trade.length} list trade lines; the first (${line.id}) is used`);
     if (isNum(line.rate) && line.rate.unit === "pct_of_trade") {
-      const c: NonNullable<Tariff["buy"]> = { rate: pct(line.rate) };
-      const min = nis(line.min);
-      const max = nis(line.max);
-      if (min !== undefined) c.min = min;
-      if (max !== undefined) c.max = max;
+      const commission = (l: FeeLine) => {
+        const c: NonNullable<Tariff["buy"]> = { rate: pct(l.rate) };
+        const min = nis(l.min);
+        const max = nis(l.max);
+        if (min !== undefined) c.min = min;
+        if (max !== undefined) c.max = max;
+        if (l.cap && isNum(l.cap)) c.cap = pct(l.cap);
+        return c;
+      };
+      const c = commission(line);
       // A tariff line has no buy/sell split (data-schema §3.6): one commission line applies to both orders.
       tariff.buy = c;
       tariff.sell = { ...c };
+      // F-12 (2026-10-31): monthly purchases of the account's own fund, where the tariff prints a standing-order price for its class
+      const fundRec = src.funds.find((f) => f.id === spec.fund);
+      const exposure = fundRec ? loadExposures().find((e) => e.id === fundRec.exposure_id) : undefined;
+      const cls = fundRec ? instrumentClassOf(fundRec, exposure) : null;
+      const standing = cls ? snap.lines.find((l) => l.level === "list" && l.base === "trade" && l.band === STANDING_ORDER_BAND && l.applies_to.includes(cls) && (l.channel === null || l.channel === line.channel)) : undefined;
+      if (standing && isNum(standing.rate) && standing.rate.unit === "pct_of_trade") {
+        tariff.buyStanding = commission(standing);
+        feeValues.standingRate = { ...standing.rate };
+        if (standing.min && isNum(standing.min)) feeValues.standingMin = { ...standing.min };
+        if (standing.max && isNum(standing.max)) feeValues.standingMax = { ...standing.max };
+      }
       feeValues.tradeRate = { ...line.rate };
       if (line.min && isNum(line.min)) feeValues.tradeMin = { ...line.min };
       if (line.max && isNum(line.max)) feeValues.tradeMax = { ...line.max };

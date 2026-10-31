@@ -53,6 +53,8 @@ export interface SecuritiesInput {
   fund: Fund;
   tariff: {
     buy?: Commission;
+    /** F-12 (2026-10-31): the price of a monthly purchase by standing order, where the tariff prints one; `buy` otherwise. */
+    buyStanding?: Commission;
     sell?: Commission;
     custody?: Custody;
     /** F-17 monthly account fee in NIS. */
@@ -193,10 +195,10 @@ export function runSecurities(input: SecuritiesInput, ctx: RunContext): RunResul
   let lots: Lot[] = [];
 
   /** One order: FX fee on a contribution, then trade value and commission, bought at the ask. */
-  const buy = (cash: number, month: number, eventMonth: number, convert: boolean) => {
+  const buy = (cash: number, month: number, eventMonth: number, convert: boolean, price: Commission | undefined = tariff.buy) => {
     const fx = convert && tariff.currency ? fxFee(tariff.fx, cash, { fxRate: fxRate(eventMonth) }) : 0;
     tally.fee("fx", fx);
-    const { trade, commission } = buyWithCash(cash - fx, tariff.buy, { fxRate: fxRate(eventMonth), sharePrice: sharePrice(month) });
+    const { trade, commission } = buyWithCash(cash - fx, price, { fxRate: fxRate(eventMonth), sharePrice: sharePrice(month) });
     tally.fee("trade", commission);
     const value = navBought(trade, spread);
     tally.fee("spread", trade - value);
@@ -256,7 +258,7 @@ export function runSecurities(input: SecuritiesInput, ctx: RunContext): RunResul
   for (let m = 1; m <= T; m++) {
     // 1-2. Contributions at the start of the month, each its own order (A-28).
     if (m === 1 && C[0]! > 0) buy(C[0]!, m, 0, true);
-    if (m <= goal.months && C[m]! > 0) for (let k = 0; k < orders; k++) buy(C[m]! / orders, m, m, true);
+    if (m <= goal.months && C[m]! > 0) for (let k = 0; k < orders; k++) buy(C[m]! / orders, m, m, true, tariff.buyStanding ?? tariff.buy);
     tally.paidIn += (m === 1 ? C[0]! : 0) + (m <= goal.months ? C[m]! : 0);
 
     // 3. Growth less drag (F-10).

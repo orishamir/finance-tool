@@ -33,6 +33,12 @@ export const fundRecord = z.strictObject({
     tracking_difference_12m: fee,
     median_spread: fee,
     fund_level_withholding_drag: fee,
+    /**
+     * 2026-10-31 (MF-21): the load on purchase (שיעור הוספה), unit `pct_of_trade`, from the fund's own document. `0` means a document
+     * was read and says zero; left out means not read, so a missing value is never a zero. ETFs and foreign funds leave it out.
+     * The validator fails a load above zero until the page prices one.
+     */
+    load: fee,
   }),
   dimensions: z.record(z.string(), z.string().regex(/^(covered|blocked)(:[A-Z0-9-]+)?$/)),
   prospectus: z.strictObject({ url: z.string().min(1), date: z.string().nullable() }),

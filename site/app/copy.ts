@@ -153,7 +153,7 @@ export const search = {
 export const guideIndex = {
   title: "מדריך",
   lede: "כל סוג של חיסכון והשקעה שהאתר מכסה. לכל אחד אותו מבנה, כדי שיהיה קל להשוות.",
-  group1: { title: "איפה הכסף מוחזק", line: "המוצר עצמו: חשבון בבנק, קופה או חשבון השקעות" },
+  group1: { title: "איפה הכסף מוחזק", line: "המוצר עצמו: חשבון בבנק, קופה או חשבון ניירות ערך" },
   group2: { title: "במה הכסף מושקע", line: "מה שבתוך המוצר: מזומן, מק״מ, קרן כספית, אג״ח, מניות דרך מדד" },
   // D6 (amended 2026-10-27): the money-market funds are one entry under "במה הכסף מושקע", each kind with its page
   fundKindsLine: "לפי סוג",
@@ -361,7 +361,7 @@ export const rulesPage = {
     "bank-current-account-deposits.md": "עובר ושב ופיקדונות",
     "mutual-funds-and-money-market-funds.md": "קרנות נאמנות וקרנות כספיות",
     "etfs-and-index-funds.md": "קרנות סל וקרנות מחקות",
-    "brokerage-account.md": "חשבון השקעות",
+    "brokerage-account.md": "חשבון ניירות ערך",
     "government-bonds-and-makam.md": "אג״ח ממשלתיות ומק״מ",
     "kupat-gemel-lehashkaa.md": "קופת גמל להשקעה",
     "keren-hishtalmut.md": "קרן השתלמות",
@@ -410,7 +410,7 @@ export const parametersPage = {
   // audit 2026-10-24 (A77): the Hebrew names of the products P-08 names by id
   wrapperNames: {
     "bank-deposit": "פיקדון בבנק",
-    "brokerage-account": "חשבון השקעות",
+    "brokerage-account": "חשבון ניירות ערך",
     "government-bond": "אג״ח ממשלתית",
     "kupat-gemel-lehashkaa": "קופת גמל להשקעה",
     makam: "מק״מ",
@@ -863,6 +863,9 @@ export const guideBlocks = {
       tradeRate: "עמלת קנייה ומכירה",
       tradeMin: "עמלת קנייה ומכירה, מינימום",
       tradeMax: "עמלת קנייה ומכירה, מקסימום",
+      standingRate: "עמלת קנייה בהוראת קבע",
+      standingMin: "עמלת קנייה בהוראת קבע, מינימום",
+      standingMax: "עמלת קנייה בהוראת קבע, מקסימום",
       custodyRate: "דמי ניהול פיקדון ניירות ערך",
       custodyMin: "דמי ניהול פיקדון ניירות ערך, מינימום",
       custodyMax: "דמי ניהול פיקדון ניירות ערך, מקסימום",
@@ -1224,7 +1227,7 @@ export const r2 = {
     fallEcho: "הירידה שתסכימו לספוג: {pct} מ־{amount}, כלומר {drop} היום. היא לא משפיעה על הדירוג בהשוואה לפי מוצר.", // audit 2026-10-24 (A12)
     fallBand: "ירידה שתסכימו לספוג", // audit 2026-10-24 (A12): the chart's accessible name for the shaded band
     // A14: after "בחרתי בזה"
-    chosenNext: { heading: "מה עושים עכשיו", pick: "לבחור חברה ומסלול", fees: "מה העמלות יעלו לכם" }, // audit 2026-10-24 (A14)
+    chosenNext: { pick: "לבחור חברה ומסלול", fees: "מה העמלות יעלו לכם" }, // audit 2026-10-24 (A14)
     // A71
     saveMenu: "לשמור את ההשוואה", // audit 2026-10-24 (A71)
     saveMenuAgain: "לשמור שוב את ההשוואה", // audit 2026-10-24 (A71)
@@ -1250,6 +1253,9 @@ export const ownTermsCopy = {
     heading: "ספק שהתעריפון שלו ישמש בחישוב", // scenario fix 2026-10-24
     hint: "הבנקים ובתי ההשקעות שהתעריפון שלהם נאסף, לפי מה שהאפשרות הזו משאירה בסוף. התעריפון הוא של הספק; הבחירה שלכם.", // scenario fix 2026-10-24; review 2026-10-26: makam and bonds are not on the providers page
     pick: "לבחור", // scenario fix 2026-10-24
+    standingTag: "מחיר להוראת קבע", // founder 2026-10-31
+    standingNote: (n: number, total: number) =>
+      `קנייה חודשית מחושבת כהוראת קבע: ${n === 1 ? `אחד מתוך ${total} הבנקים ובתי ההשקעות שברשימה מפרסם` : `${n} מתוך ${total} הבנקים ובתי ההשקעות שברשימה מפרסמים`} לה מחיר נמוך יותר, והוא שנכלל בחישוב. סכום חד־פעמי ומכירה מחושבים במחיר הרגיל.`, // founder 2026-10-31
     channel: { direct: "ערוץ ישיר", branch: "סניף" } as Record<string, string>, // scenario fix 2026-10-24
     reset: "לחזור לספק שהאתר בחר", // scenario fix 2026-10-24
     siteChoice: "בחירת האתר", // scenario fix 2026-10-24
@@ -1999,7 +2005,7 @@ export const r4catalogue = {
   ledeIntro: "כל מה שהבנק מציע, עם הסבר לכל מוצר.",
   ledeDeposits: "הפיקדונות לפי פרסום הבנק, נכון ל־",
   ledeTariff: "התעריפון נאסף ב־",
-  groups: { deposits: "פיקדונות", savings: "תוכניות חיסכון", current: "עו״ש", brokerage: "חשבון השקעות" },
+  groups: { deposits: "פיקדונות", savings: "תוכניות חיסכון", current: "עו״ש", brokerage: "חשבון ניירות ערך" },
   groupLink: "מה זה",
   count: { one: "מוצר אחד", two: "שני מוצרים", many: "מוצרים" },
   // audit 2026-10-24 (A88): one published tariff is not "the site does not know my bank"; offers are personal and entered elsewhere
@@ -2059,6 +2065,7 @@ export const r4catalogue = {
   regulators: { BoI: "בנק ישראל", ISA: "רשות ניירות ערך", CMA: "רשות שוק ההון, ביטוח וחיסכון" },
   instrumentClasses: {
     etf_units: "קרן סל",
+    tase_foreign_fund_units: "קרן חוץ הנסחרת בבורסה",
     tase_shares_bonds: "מניות ואיגרות חוב",
     mutual_fund_units: "יחידות של קרן נאמנות",
     foreign_securities: "ניירות ערך זרים",
@@ -2425,7 +2432,7 @@ export const r5 = {
     secondDoor: "השוואה לפי חשיפה (במה הכסף מושקע)", // audit 2026-10-24 (sweep): was "איזו חשיפה מתאימה למטרה"
     // 2026-10-25 (the founder: what is the difference between the two buttons?): the first said only "להשוואה"
     firstDoor: "השוואה לפי מוצר",
-    doorsLine: "מוצר: איפה הכסף מוחזק, כמו קרן השתלמות, קופת גמל להשקעה, חשבון השקעות או פיקדון. חשיפה: במה הוא מושקע בתוך המוצר, כמו מדד מניות, אג״ח או מזומן.",
+    doorsLine: "מוצר: איפה הכסף מוחזק, כמו קרן השתלמות, קופת גמל להשקעה, חשבון ניירות ערך או פיקדון. חשיפה: במה הוא מושקע בתוך המוצר, כמו מדד מניות, אג״ח או מזומן.",
   },
   // 9.2 exposure result
   exposure: {
@@ -3297,9 +3304,6 @@ export const invest = {
     questionWhy: "זו השאלה היחידה שמשנה את הדרכים: על מדד ישראלי יש רק קרנות ישראליות שמחזיקות את המניות; על מדד זר יש גם קרנות חוץ.",
     yes: "כן",
     no: "לא",
-    forInfo: "לידיעתכם בלבד, לא משנה את החישוב:",
-    currency: "מטבע המדד",
-    region: "אזור",
     save: "שמירה במכשיר",
     cancel: "ביטול",
     savedNote: "מדד שהוספתם, שמור במכשיר הזה",
@@ -3365,9 +3369,6 @@ export const invest = {
     foreignIndex: "מדד של חברות מחוץ לישראל",
     foreignNote: "אפשר להחזיק אותו גם דרך קרן חוץ.",
     israeliNote: "קרנות ישראליות שמחזיקות את המניות; אין קרן חוץ שמתמחה בישראל.",
-    forInfo: "לידיעתכם",
-    currency: "מטבע",
-    region: "אזור",
   },
 
   headline: {
@@ -3437,6 +3438,8 @@ export const invest = {
   houses: {
     heading: "איפה לפתוח את חשבון ניירות הערך",
     sub: "בנק או בית השקעות שמחזיק בשבילכם את ניירות הערך.",
+    standingTag: ownTermsCopy.provider.standingTag,
+    standingNote: ownTermsCopy.provider.standingNote,
     tap: "לכל אחד מופיעה הקרן שנשאר בה הכי הרבה. הקישו על שורה כדי לראות את כל הקרנות בחשבון שלו.",
     gapAbout: (name: string) => `פער מהדרך הזולה, ${name}`,
     foreignHeading: "בחו״ל",
@@ -3452,8 +3455,9 @@ export const invest = {
     less: "פחות",
     notComputed: "בנקים ובתי השקעות שאי אפשר לחשב",
     noWay: "אין קרן על המדד הזה שאפשר לחשב אצלו.",
-    unavailable: "לא זמין",
-    sourceOf: "המקור לכך שלא זמין",
+    unavailable: "לא אפשרי שם",
+    noData: "אין נתון",
+    sourceOf: "המקור",
     foreignTag: "ברוקר זר",
     listLabel: "חשבונות ניירות ערך לפי מה שנשאר",
     fixedOnly: "אינטראקטיב ברוקרס: מחושבים רק תעריפי ה־Fixed. תעריפי ה־Tiered משאירים בחוץ עמלות בורסה וסליקה שהנתונים לא מכילים, ולכן הדירוג שלהם היה מקטין את העלות.",
@@ -3513,11 +3517,17 @@ export const invest = {
     colDiff: "לעומת הבחירה",
     chosen: "הבחירה",
     cheapestTag: "★ הזול",
+    whichPrice: "המחיר בכל שורה הוא של לקוח רגיל, והדירוג לפיו. מחיר לקבוצות כתוב בשורה של הבנק או בית ההשקעות ולא נכנס לחישוב.",
     yoursTag: "החשבון שלכם",
+    standingTag: ownTermsCopy.provider.standingTag,
+    standingNote: ownTermsCopy.provider.standingNote,
     broken: "⫽ הפס נחתך: הסכום ארוך מהשטח",
-    notPriced: (n: number) => (n === 1 ? "חשבון אחד לא מחושב עם הקרן הזו:" : `${n} חשבונות לא מחושבים עם הקרן הזו:`),
+    notPossible: "לא אפשרי שם",
+    notPossibleSource: "המקור",
+    elsewhere: "בקרן אחרת,",
+    elsewhereOpen: "מוצג בלי דירוג, כי כלל המס עוד פתוח",
+    noData: "אין נתון",
     fundsNotPriced: (n: number, house: string) => (n === 1 ? `קרן אחת לא מחושבת ב${house}:` : `${n} קרנות לא מחושבות ב${house}:`),
-    willJoin: "כשהנתון ייאסף, הם יצטרפו לרשימה.",
     switched: (what: string) => `${what} לא מחושב עם הבחירה הקודמת, אז נבחר גם החלק השני שנשאר בו הכי הרבה.`,
     filter: "סננו לפי תווית:",
     clearFilter: "הכול",
@@ -3527,9 +3537,9 @@ export const invest = {
     moreFunds: (n: number) => (n === 1 ? "עוד קרן אחת" : `עוד ${n} קרנות`),
   },
 
-  typeTags: { "il-etf": "קרן סל · נסחרת כל היום", "il-tracking": "קרן מחקה · נקנית פעם ביום", "tase-foreign": "קרן זרה בת״א", abroad: "בחו״ל" } as Record<string, string>,
+  typeTags: { "il-etf": "קרן סל", "il-tracking": "קרן מחקה", "tase-foreign": "קרן זרה בת״א", abroad: "בחו״ל" } as Record<string, string>,
 
-  folds: { worth: "מה כל בחירה שווה, בפירוט", steps: "מה עושים עכשיו" },
+  folds: { worth: "מה כל בחירה שווה, בפירוט" },
 
   funds: {
     heading: (house: string) => `הקרנות על המדד, בחשבון ${/^[A-Za-z]/.test(house) ? "ב־" : "ב"}${house}`,
@@ -3565,21 +3575,27 @@ export const invest = {
     israelTitle: "קרנות ישראליות",
   },
 
-  steps: {
-    heading: "מה עושים עכשיו",
-    openLead: "פותחים חשבון ב",
-    stay: (broker: string) => `נשארים ב${broker}`,
-    stayDiff: "ההפרש מול הדרך הזולה",
-    buy: (fund: string) => `קונים את ${fund} לפי מספר הנייר`,
-    buyNumber: "מספר נייר",
-    copy: "העתקה",
-    copied: "הועתק",
-    buyCustom: "בוחרים קרן במאיה לפי דמי הניהול",
-    standing: "מגדירים הוראת קבע של הסכום החודשי",
-    standingWith: "הסכום החודשי",
-    noWay: "כשתהיה דרך שלמה, כאן יופיעו שלושת השלבים.",
+  groups: {
+    open: (n: number) => `מחירים לקבוצות כמו צעירים, סטודנטים וחיילים משוחררים, ב־${n} מהבנקים ובתי ההשקעות`,
+    close: "סגירת המחירים לקבוצות",
+    lead: "כל מחיר כתוב כאן כפי שהוא במסמך של הבנק או בית ההשקעות, והמילים שמתחתיו אומרות, לפי המסמך, על מה הוא חל. הדירוג נשאר לפי לקוח רגיל, כי לא כולם כותבים מתי המחיר נגמר, ואצל כמה מהם הסיום תלוי בגיל וביום ההצטרפות. שורה שלא מזכירה קרן לא מוכיחה שהמחיר חל על קרן מחקה.",
+    colWho: "קבוצה ומי זכאי",
+    colPrices: "מה יורד",
+    colEnds: "עד מתי",
+    fee: {
+      trade_israel: "קנייה ומכירה בתל אביב",
+      trade_abroad: "קנייה ומכירה בחוץ לארץ",
+      custody_israel: "דמי ניהול בארץ",
+      custody_abroad: "דמי ניהול בחוץ לארץ",
+    },
+    namesFund: "השורה מזכירה קרנות",
+    atPage: (n: number) => `עמוד ${n}`,
+    atRows: (rows: number[]) => (rows.length === 1 ? `שורה ${rows[0]}` : `שורות ${rows.slice(0, -1).join(", ")} ו־${rows[rows.length - 1]}`),
+    onPage: "דף הבנק",
+    noneOnSecurities: (names: string) => `יש נספח לקבוצות, אבל בלי מחיר לניירות ערך: ${names}.`,
+    noMention: (names: string) => `בתעריפון שנקרא לא מוזכרת אף קבוצה: ${names}.`,
+    notRead: (names: string) => `האתר לא הצליח לקרוא: ${names}.`,
   },
-
   foot: {
     returnUsed: "התשואה שבחישוב",
     example: "תשואה לדוגמה, לא תחזית: הסדר של הדרכים לפי עלויות, לא לפי מה שהמדד יעשה.",
@@ -3668,8 +3684,8 @@ export const invest = {
     "held-il": { text: "קרן ישראלית", explain: "הקרן רשומה בישראל ומפוקחת כאן. על מדד זר היא מקבלת את החשיפה בעסקאות, ועל מדד ישראלי היא מחזיקה את המניות." },
     "held-tase-foreign": { text: "קרן חוץ בת״א", explain: "קרן מחוץ לישראל שנסחרת גם בבורסה בתל אביב, בשקלים. קרן חוץ לא מתמחה בישראל, ולכן היא רק על מדדים זרים." },
     "held-abroad": { text: "נקנית בחו״ל", explain: "הקרן נקנית בבורסה בחו״ל, דרך בנק או בית השקעות שמוכרים ניירות ערך זרים. הרשות לניירות ערך לא מפקחת עליה." },
-    "trade-etf": { text: "קרן סל: נסחרת כל היום", explain: "קרן סל נסחרת בבורסה כל יום המסחר, במחיר שמשתנה במהלך היום." },
-    "trade-tracking": { text: "קרן מחקה: פעם ביום", explain: "קרן מחקה נקנית ונפדית במחיר היחידה אחת ביום, דרך הבנק או בית ההשקעות, לא בבורסה." },
+    "trade-etf": { text: "קרן סל", explain: "קרן סל נסחרת בבורסה כל יום המסחר, במחיר שמשתנה במהלך היום." },
+    "trade-tracking": { text: "קרן מחקה", explain: "קרן מחקה נקנית ונפדית במחיר היחידה אחת ביום, דרך הבנק או בית ההשקעות, לא בבורסה." },
     "follow-physical": { text: "מחזיקה את המניות", explain: "הקרן קונה את המניות שבמדד עצמן. כך עוקבות בדרך כלל קרנות על מדדים מקומיים." },
     "follow-swap": { text: "עסקת החלף", explain: "הקרן מקבלת את תשואת המדד מבנק בעסקת החלף. כך עוקבות בדרך כלל קרנות ישראליות על מדדים זרים, ויש בכך סיכון לבנק שמול הקרן." },
     "follow-futures": { text: "חוזים עתידיים", explain: "הקרן יוצרת את החשיפה למדד בחוזים עתידיים הנסחרים בבורסה." },
@@ -3684,7 +3700,8 @@ export const invest = {
     "pays-accumulating": { text: "צוברת", explain: "הקרן לא מחלקת תשלומים: הכנסות כמו דיבידנד וריבית מושקעות בה מחדש." },
     "pays-distributing": { text: "מחלקת דיבידנד", explain: "הקרן מחלקת תשלומים לבעלי היחידות, פעם בשנה או יותר, לפי שיקול דעת המנהל." },
     "tax-on-sale-open": { text: "מס רק במכירה", explain: "לא נמצא כלל שממסה יחיד על רווחים שקרן זרה צברה ולא חילקה, ורשות המסים לא אישרה זאת. זו שאלה פתוחה, ולכן הדרך מוצגת בלי דירוג." },
-    "ask-self-report": { text: "דיווח עצמי למס", explain: "כשאין ניכוי מס במקור במכירה, מדווחים על הרווח ומשלמים מקדמה פעמיים בשנה, ומגישים דוח שנתי." },
+    "ask-self-report": { text: "דיווח עצמי למס", explain: "ברוקר זר לא מנכה מס בישראל במכירה, ולכן מדווחים על הרווח ומשלמים מקדמה פעמיים בשנה, ומגישים דוח שנתי. בבנק או אצל חבר בורסה בישראל המס מנוכה במכירה, וגם קרן זרה לא מחייבת דיווח." },
+    "ask-tax-service": { text: "ניכוי מס בשירות נוסף", explain: "החברה מציעה שירות שמנכה מס ישראלי בחשבון, למי שמצטרף אליו. מי שלא מצטרף מדווח על הרווח בעצמו, משלם מקדמה פעמיים בשנה ומגיש דוח שנתי." },
     "ask-estate": { text: "מס עיזבון אמריקאי", explain: "מי שאינו אמריקאי ומחזיק נכסים אמריקניים מעל סף הנקוב בדולרים עלול להיות חייב בדוח מס ירושה אמריקני. קרן שמאוגדת בארצות הברית היא נכס אמריקני." },
     "risk-unsupervised": { text: "לא בפיקוח רשות ני״ע", explain: "בית ההשקעות פועל בישראל בהיתר, והרשות לניירות ערך לא מפקחת עליו. חשבונות הלקוחות נפתחים אצל גוף זר." },
     "ask-w8": { text: "צריך טופס W-8BEN", explain: "לקרן אמריקנית צריך למסור לבנק או לבית ההשקעות טופס W-8BEN. בלי הטופס הניכוי האמריקני עלול להיות גבוה יותר." },

@@ -2,6 +2,7 @@
 // and labels, the number as the link to Maya, its three fees, and the value left at that house.
 // "What do the labels mean", the gap-to-the-index note, and the empty state for an index with no
 // fund records (a request text for the founder, as flow 10).
+import { mayaFundHref } from "../../lib/sources";
 import { useState } from "react";
 import { brands, invest as c } from "../../copy";
 import type { FundRecord } from "@finance-tool/schema";
@@ -75,9 +76,8 @@ export function Fees({ rec, inline }: { rec: FundRecord; inline?: boolean }) {
 function fundRow(view: InvestView, e: HouseEntry, rank: number | null, house: HouseRow): ProductRow {
   const f = e.fund;
   const labels = fundLabels(f.rec, view.index, f.option);
-  // Maya's page of the fund exists for an Israeli ETF and an Israeli tracking fund (the address pattern of the fund records' sources)
-  const kind = f.option === "il-etf" ? "etfs" : f.option === "il-tracking" ? "mutual-funds" : null;
-  const mayaHref = kind && f.rec.identifiers.tase_number ? `https://maya.tase.co.il/he/funds/${kind}/${f.rec.identifiers.tase_number}` : null;
+  // Maya's page of the fund exists for a fund listed in Israel
+  const mayaHref = (f.option === "il-etf" || f.option === "il-tracking") && f.rec.identifiers.tase_number ? mayaFundHref(f.rec.identifiers.tase_number) : null;
   const badge = <RankBadge rank={rank} label={rank ? `${c.funds.rank} ${rank}` : undefined} />;
   const name = (
     <span className="font-semibold leading-snug">

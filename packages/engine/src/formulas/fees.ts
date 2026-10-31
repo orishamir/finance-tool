@@ -8,6 +8,8 @@ export interface Commission {
   max?: number;
   /** Whether min, max and the per-share fee are in NIS (default) or in the instrument's currency. */
   in?: "nis" | "instrument";
+  /** A flat price for an order up to a sum (BRK-54); a larger order pays the rest of the line. Both in NIS, or the instrument's currency under `in`. */
+  flatUpTo?: { amount: number; upTo: number };
   /** A fee per share above a number of shares in one order (BRK-36). */
   perShareAbove?: { shares: number; perShare: number };
   /** A fee per share on the whole order, in NIS (the line's dollar fee converted at the run's rate, 2026-10-25). Needs the share price. */
@@ -27,11 +29,13 @@ export interface TradeTerms {
 /**
  * F-12 Trade commission. Per order, `max(min, min(pct × amount, max))` on the trade value `amount`, from
  * the tariff line for the security type (BRK-16). A per-share line adds `perShare × shares`, and a cap
- * (a share of the trade value) limits the result last (2026-10-25).
+ * (a share of the trade value) limits the result last (2026-10-25). A line with a flat price charges only that on an
+ * order up to its sum (2026-10-31).
  */
 export function tradeCommission(line: Commission | undefined, amount: number, terms: TradeTerms): number {
   if (!line || amount <= 0) return 0;
   const k = line.in === "instrument" ? terms.fxRate : 1;
+  if (line.flatUpTo && amount <= line.flatUpTo.upTo * k) return line.flatUpTo.amount * k;
   let fee = line.rate * amount;
   if (line.perShare) {
     if (!terms.sharePrice) throw new RangeError("a per-share commission needs the share price (F-12)");
@@ -52,6 +56,14 @@ export function tradeCommission(line: Commission | undefined, amount: number, te
  * fixed-point iteration, which converges because the commission grows far more slowly than the trade.
  */
 export function buyWithCash(cash: number, line: Commission | undefined, terms: TradeTerms) {
+  // A flat price jumps at its sum, which the iteration below cannot cross: an order that fits under it is settled here, and a larger one leaves the flat price out.
+  if (line?.flatUpTo) {
+    const k = line.in === "instrument" ? terms.fxRate : 1;
+    const flat = line.flatUpTo.amount * k;
+    if (cash > 0 && cash - flat <= line.flatUpTo.upTo * k) return { trade: cash - flat, commission: flat };
+    const { flatUpTo: _, ...rest } = line;
+    line = rest;
+  }
   let trade = cash;
   for (let i = 0; i < 100; i++) {
     const next = cash - tradeCommission(line, trade, terms);

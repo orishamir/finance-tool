@@ -5,6 +5,7 @@ import { MemoryRouter } from "react-router";
 import { describe, expect, it } from "vitest";
 import { buildWorkbenchBundle } from "../../lib/providers.server";
 import { buildInvest, indexById, refOfCustom } from "../../lib/invest";
+import { brokerLabels, fundLabels, optionLabels } from "../../lib/labels";
 import { entered } from "../../lib/value";
 import type { WorkbenchInputs } from "../../lib/providers";
 import { HousesSection } from "./houses";
@@ -12,7 +13,7 @@ import { FundsSection } from "./funds";
 import { LabelSheetHost } from "../kit";
 import { Headline, IndexHeader } from "./sections";
 import { AccountColumn, allFunds, bestFor, FundColumn, PairResult, pickOfHeadline } from "./pair";
-import { Foot, Steps } from "./steps";
+import { Foot } from "./foot";
 import { PlanBlock } from "./chips";
 import { ProvenanceProvider } from "../provenance";
 
@@ -54,8 +55,8 @@ describe("the index page's sections render", () => {
       createElement(PairResult, { view, bundle, plan: { ...plan, returnFromParameter: true }, pick: leumi, onPick: () => undefined }),
       createElement(AccountColumn, { view, bundle, years: 20, pick, onPick: () => undefined }),
       createElement(FundColumn, { view, bundle, plan, today: t, pick, onPick: () => undefined, filter: null, onFilter: () => undefined }),
-      createElement(Steps, { view, monthly: plan.values.monthly, pick }), createElement(Foot, { view }),
-      createElement(PlanBlock, { knobs: null, onOpen: () => undefined, fx: bundle.fx, today: t, example: true })));
+      createElement(Foot, { view }),
+      createElement(PlanBlock, { knobs: null, onOpen: () => undefined, fx: bundle.fx, today: t, example: true, dollar: true })));
     expect(out).toContain("הפקדתם");
     // a dollar index with funds of both kinds shows each kind across the dollar (F-94, 2026-10-29)
     expect(out).toContain("בלי נטרול מט״ח");
@@ -86,9 +87,76 @@ describe("the index page's sections render", () => {
   });
   it("a custom index: empty funds state with the request button", () => {
     const v = buildInvest({ bundle, index: refOfCustom({ id: "custom-nikkei", name: "ניקיי 225", israeli: false, added: t }), plan });
-    const out = html(createElement("div", null, createElement(Headline, { view: v }), createElement(FundsSection, { view: v, houseId: v.houses.find((h) => h.generic)?.provider.id ?? null, onHouse: () => undefined, mayaHref: "https://maya.tase.co.il" }), createElement(Steps, { view: v, monthly: plan.values.monthly })));
+    const out = html(createElement("div", null, createElement(Headline, { view: v }), createElement(FundsSection, { view: v, houseId: v.houses.find((h) => h.generic)?.provider.id ?? null, onHouse: () => undefined, mayaHref: "https://maya.tase.co.il" })));
     expect(out).toContain("עוד לא נאספו קרנות על המדד הזה");
     expect(out).toContain("בקשו שנאסוף");
     expect(out).toContain("חשבון ניירות הערך הזול ביותר לקרן ישראלית על המדד");
+  });
+});
+
+describe("every house keeps a row in the account list (founder, 2026-10-31)", () => {
+  const view = buildInvest({ bundle, index: indexById(bundle, "index-sp500")!, plan });
+  const pick = pickOfHeadline(view)!;
+  const out = html(createElement(AccountColumn, { view, bundle, years: 20, pick, onPick: () => undefined }));
+  it("lists Meitav Trade and both Interactives, told apart as no data and not possible there", () => {
+    for (const p of view.providers) expect(out).toContain(p.short.replace(/"/g, "&quot;"));
+    expect(out).toContain("אין נתון");
+    // what a house's documents leave open is no data; only what they say is closed reads as not possible
+    const etf = view.options.find((o) => o.id === "il-etf")!.funds[0]!;
+    const closed = html(createElement(AccountColumn, { view, bundle, years: 20, pick: { ...pick, fund: etf.rec.id }, onPick: () => undefined }));
+    expect(closed).toContain("לא אפשרי שם");
+  });
+  it("links a fund to its Maya page at the address that exists", () => {
+    const fund = html(createElement(FundColumn, { view, bundle, plan, today: t, pick, onPick: () => undefined, filter: [], onFilter: () => undefined } as never));
+    expect(fund).not.toContain("funds/etfs");
+    expect(fund).toContain("maya.tase.co.il/he/funds/mutual-funds/");
+  });
+});
+
+describe("who reports the tax is the route's, not the fund's (issue 126, TXF-29)", () => {
+  const view = buildInvest({ bundle, index: indexById(bundle, "index-sp500")!, plan });
+  const ids = (id: string) => brokerLabels(view.providers.find((p) => p.id === id)!, false).map((l) => l.id);
+  it("a fund bought abroad carries no reporting label; a bank none, Interactive Brokers reports, Interactive Israel offers its service", () => {
+    const abroad = view.options.find((o) => o.id === "abroad")!;
+    expect(optionLabels(abroad.id).map((l) => l.id)).not.toContain("ask-self-report");
+    for (const f of abroad.funds) expect(fundLabels(f.rec, view.index, f.option).map((l) => l.id)).not.toContain("ask-self-report");
+    expect(ids("leumi")).toEqual([]);
+    expect(ids("interactive-brokers")).toContain("ask-self-report");
+    expect(ids("interactive-israel")).toContain("ask-tax-service");
+    expect(ids("interactive-israel")).not.toContain("ask-self-report");
+  });
+  it("the same fund on Tel Aviv and abroad is a row each, told apart by where it is listed", () => {
+    const funds = allFunds(view);
+    expect(funds.find((f) => f.rec.id === "1159250")!.option).toBe("tase-foreign");
+    expect(funds.find((f) => f.rec.id === "ie00b5bmr087")!.option).toBe("abroad");
+    expect(funds.find((f) => f.rec.id === "1159250")!.number).toBe("1159250");
+    expect(funds.find((f) => f.rec.id === "ie00b5bmr087")!.number).toBe("IE00B5BMR087");
+  });
+});
+
+describe("no price on what no document says can be done (2026-10-31)", () => {
+  const view = buildInvest({ bundle, index: indexById(bundle, "index-sp500")!, plan });
+  const at = (option: string, house: string) => view.options.find((o) => o.id === option)!.funds.map((f) => f.byHouse[house]!);
+  it("PEPPER prices no fund and Interactive Brokers nothing on Tel Aviv: grey as no data, not as not possible", () => {
+    for (const x of [...at("il-tracking", "pepper"), ...at("il-etf", "pepper"), ...at("il-etf", "interactive-brokers")]) {
+      expect("valueN" in x).toBe(false);
+      expect("availability" in x && x.availability).toBeFalsy();
+    }
+  });
+  it("a house whose document names funds abroad is priced there, on the row that names them", () => {
+    // a distributing fund is priced nowhere until its yield is known, so it has no row at any house (issue 30)
+    const funds = view.options.find((o) => o.id === "abroad")!.funds.filter((f) => f.rec.distribution_policy === "accumulating");
+    expect(funds.length).toBeGreaterThan(0);
+    for (const house of ["hapoalim", "yahav"]) for (const f of funds) expect("valueN" in f.byHouse[house]!).toBe(true);
+  });
+  it("One Zero prices tracking funds, not ETFs, and no fund traded outside the US", () => {
+    for (const x of at("il-tracking", "one-zero")) expect("valueN" in x).toBe(true);
+    for (const x of at("il-etf", "one-zero")) expect("valueN" in x).toBe(false);
+    const uk = view.options.find((o) => o.id === "abroad")!.funds.find((f) => /UCITS/.test(f.rec.names.en[0] ?? ""));
+    if (uk) expect("valueN" in uk.byHouse["one-zero"]!).toBe(false);
+  });
+  it("Fair still prices tracking funds and no ETF", () => {
+    for (const x of at("il-tracking", "fair")) expect("valueN" in x).toBe(true);
+    for (const x of at("il-etf", "fair")) expect("availability" in x && x.availability).toBeTruthy();
   });
 });

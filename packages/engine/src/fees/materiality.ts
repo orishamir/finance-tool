@@ -92,13 +92,22 @@ function changeLine(plan: RunPlan, line: FeeLine, rate: number): RunPlan {
       const set = (key: "buy" | "sell") => {
         const old = tariff[key];
         if (rate === 0) delete tariff[key];
-        else tariff[key] = { ...old, rate };
+        else {
+          // a person's own rate replaces the line, its flat price too (F-12)
+          const { flatUpTo: _, ...rest } = old ?? ({} as NonNullable<typeof old>);
+          tariff[key] = { ...rest, rate };
+        }
       };
       switch (line) {
         case "trade":
           if (!input.tariff.buy && !input.tariff.sell) return noLine(plan, line);
           if (input.tariff.buy) set("buy");
           if (input.tariff.sell) set("sell");
+          // F-12: a standing-order price moves with the trade rate, in proportion, so it stays the same share of the regular price
+          if (input.tariff.buyStanding) {
+            if (rate === 0 || !input.tariff.buy?.rate) delete tariff.buyStanding;
+            else tariff.buyStanding = { ...input.tariff.buyStanding, rate: (input.tariff.buyStanding.rate * rate) / input.tariff.buy.rate };
+          }
           return { run: "runSecurities", input: { ...input, tariff } };
         case "custody":
           if (!tariff.custody) return noLine(plan, line);

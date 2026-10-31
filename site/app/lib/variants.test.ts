@@ -83,7 +83,7 @@ describe("fund-variant view", () => {
     expect(ibi.fees?.tracking_difference_12m).toBeNull();
     // since 2026-10-29 its tracking drag comes from the yearly returns its report prints (F-92), so it is not taken as zero
     expect(ibi.takenAsZero).not.toContain("tracking_difference_12m");
-    expect(r.view.held.value).toBe(1); // the iShares CSPX record trades abroad
+    expect(r.view.held.value).toBe(6); // iShares CSPX and IUSA, Vanguard VUAA and VUSA, VOO and IVV trade abroad; CSPX's Tel Aviv line is an option of its own (issue 30)
   });
 
   it("waits for the person's return (D9): no figure and no rank until one is entered", () => {

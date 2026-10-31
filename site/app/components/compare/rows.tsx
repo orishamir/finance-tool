@@ -128,7 +128,7 @@ export function RankedRow({ o, above, ctx, onDetail, extra, choose, chosen }: { 
   );
 }
 
-/** A14: what to do after "בחרתי בזה": pick the company and track, what the fees cost. */
+/** A14: after "בחרתי בזה", links to pick the company and track and to what the fees cost; no heading or numbers, the site gives no steps (D40). */
 function ChosenNext({ id }: { id: string }) {
   const c = r2.result.chosenNext;
   const pick = workbenchHref(id);
@@ -137,8 +137,7 @@ function ChosenNext({ id }: { id: string }) {
   links.push({ href: `/fees?wrapper=${id}&from=compare`, label: c.fees });
   return (
     <div className="rounded-md bg-secondary p-3 flex flex-col gap-1" data-chosen-next>
-      <span className="text-sm font-medium">{c.heading}</span>
-      <ol className="flex flex-col gap-0.5 text-sm list-decimal ps-5">
+      <ul className="flex flex-col gap-0.5 text-sm">
         {links.map((l) => (
           <li key={l.href}>
             <Link to={l.href} className="text-link hover:underline min-h-9 inline-flex items-center">
@@ -146,7 +145,7 @@ function ChosenNext({ id }: { id: string }) {
             </Link>
           </li>
         ))}
-      </ol>
+      </ul>
     </div>
   );
 }
