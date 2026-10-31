@@ -1,0 +1,205 @@
+{
+  "what": "The load on purchase (שיעור הוספה) of every tracking fund in data/funds/, as the fund's filed report prints it on its first page. 14 of 14 are zero.",
+  "checked": "2026-10-31",
+  "fields_for_each": "fund_id, value, unit, words, library_id, page, url, report_date",
+  "caveat": "A zero is today's rate. The prospectus was not read; MF-21 says the maximum sits in the fund agreement, so a manager may set a load later. A distributor's commission on buying or selling is a tariff line, not a load.",
+  "funds": [
+    {
+      "fund_id": "5112628",
+      "name": "IBI TA-125",
+      "value": 0,
+      "unit": "pct_of_trade",
+      "words": "ללא תוספת הוספה",
+      "library_id": "ecd1cabcb6ce4986",
+      "page": 1,
+      "url": "https://mayafiles.tase.co.il/rpdf/1768001-1769000/P1768535-00.pdf#page=1",
+      "report_date": "2026-06-30",
+      "rule_ids": [
+        "MF-21"
+      ]
+    },
+    {
+      "fund_id": "5122569",
+      "name": "MTF MSCI World",
+      "value": 0,
+      "unit": "pct_of_trade",
+      "words": "שיעור ההוספה המשולמת בעת רכישת היחידות 0%",
+      "library_id": "fc794cd2b438b117",
+      "page": 1,
+      "url": "https://mayafiles.tase.co.il/rpdf/1729001-1730000/P1729627-00.pdf#page=1",
+      "report_date": "2025-12-31",
+      "rule_ids": [
+        "MF-21"
+      ]
+    },
+    {
+      "fund_id": "5124482",
+      "name": "Kesem S&P 500",
+      "value": 0,
+      "unit": "pct_of_trade",
+      "words": "שיעור ההוספה המשולמת בעת רכישת היחידות 0%",
+      "library_id": "b7016e91c43c80bf",
+      "page": 1,
+      "url": "https://mayafiles.tase.co.il/rpdf/1726001-1727000/P1726311-00.pdf#page=1",
+      "report_date": "2025-12-31",
+      "rule_ids": [
+        "MF-21"
+      ]
+    },
+    {
+      "fund_id": "5124573",
+      "name": "Tachlit MSCI World",
+      "value": 0,
+      "unit": "pct_of_trade",
+      "words": "ללא תוספת הוספה",
+      "library_id": "61344f09d9f47bd4",
+      "page": 1,
+      "url": "https://mayafiles.tase.co.il/rpdf/1731001-1732000/P1731275-00.pdf#page=1",
+      "report_date": "2025-12-31",
+      "rule_ids": [
+        "MF-21"
+      ]
+    },
+    {
+      "fund_id": "5127527",
+      "name": "Harel S&P 500 hedged",
+      "value": 0,
+      "unit": "pct_of_trade",
+      "words": "שיעור ההוספה המשולמת בעת רכישת היחידות 0%",
+      "library_id": "fceb8de34fb6b1d2",
+      "page": 1,
+      "url": "https://mayafiles.tase.co.il/rpdf/1725001-1726000/P1725343-00.pdf#page=1",
+      "report_date": null,
+      "rule_ids": [
+        "MF-21"
+      ],
+      "note": "The report's date line on page 1 is damaged in the text layer ('1 2025'); the year 2025 is legible, the day is not."
+    },
+    {
+      "fund_id": "5128905",
+      "name": "Kesem NASDAQ-100",
+      "value": 0,
+      "unit": "pct_of_trade",
+      "words": "שיעור ההוספה המשולמת בעת רכישת היחידות 0%",
+      "library_id": "9b264b0469c466ee",
+      "page": 1,
+      "url": "https://mayafiles.tase.co.il/rpdf/1726001-1727000/P1726329-00.pdf#page=1",
+      "report_date": "2025-12-31",
+      "rule_ids": [
+        "MF-21"
+      ]
+    },
+    {
+      "fund_id": "5129275",
+      "name": "Harel S&P 500",
+      "value": 0,
+      "unit": "pct_of_trade",
+      "words": "שיעור ההוספה המשולמת בעת רכישת היחידות 0%",
+      "library_id": "0764882a5d0bd708",
+      "page": 1,
+      "url": "https://mayafiles.tase.co.il/rpdf/1723001-1724000/P1723932-00.pdf#page=1",
+      "report_date": "2025-12-31",
+      "rule_ids": [
+        "MF-21"
+      ]
+    },
+    {
+      "fund_id": "5129283",
+      "name": "Harel NASDAQ-100",
+      "value": 0,
+      "unit": "pct_of_trade",
+      "words": "שיעור ההוספה המשולמת בעת רכישת היחידות 0%",
+      "library_id": "0bdb8ab1da4c4a22",
+      "page": 1,
+      "url": "https://mayafiles.tase.co.il/rpdf/1730001-1731000/P1730280-00.pdf#page=1",
+      "report_date": "2025-12-31",
+      "rule_ids": [
+        "MF-21"
+      ]
+    },
+    {
+      "fund_id": "5130638",
+      "name": "Harel TA-90",
+      "value": 0,
+      "unit": "pct_of_trade",
+      "words": "שיעור ההוספה המשולמת בעת רכישת היחידות 0%",
+      "library_id": "0c4671d69363aabe",
+      "page": 1,
+      "url": "https://mayafiles.tase.co.il/rpdf/1769001-1770000/P1769378-00.pdf#page=1",
+      "report_date": "2026-06-30",
+      "rule_ids": [
+        "MF-21"
+      ]
+    },
+    {
+      "fund_id": "5130661",
+      "name": "Harel TA-35",
+      "value": 0,
+      "unit": "pct_of_trade",
+      "words": "שיעור ההוספה המשולמת בעת רכישת היחידות 0%",
+      "library_id": "fc544e798abfe7db",
+      "page": 1,
+      "url": "https://mayafiles.tase.co.il/rpdf/1769001-1770000/P1769340-00.pdf#page=1",
+      "report_date": "2026-06-30",
+      "rule_ids": [
+        "MF-21"
+      ]
+    },
+    {
+      "fund_id": "5139100",
+      "name": "Altshuler S&P 500",
+      "value": 0,
+      "unit": "pct_of_trade",
+      "words": "שיעור ההוספה המשולמת בעת רכישת יחידות הקרן 0%",
+      "library_id": "57eb474a6cda2b41",
+      "page": 1,
+      "url": "https://mayafiles.tase.co.il/rpdf/1731001-1732000/P1731568-00.pdf#page=1",
+      "report_date": "2025-12-31",
+      "rule_ids": [
+        "MF-21"
+      ]
+    },
+    {
+      "fund_id": "5139282",
+      "name": "Yalin S&P 500",
+      "value": 0,
+      "unit": "pct_of_trade",
+      "words": "ללא תוספת הוספה",
+      "library_id": "5e4ed21a880adf07",
+      "page": 1,
+      "url": "https://mayafiles.tase.co.il/rpdf/1725001-1726000/P1725200-00.pdf#page=1",
+      "report_date": "2025-12-31",
+      "rule_ids": [
+        "MF-21"
+      ]
+    },
+    {
+      "fund_id": "5139696",
+      "name": "Kesem MSCI World hedged",
+      "value": 0,
+      "unit": "pct_of_trade",
+      "words": "שיעור ההוספה המשולמת בעת רכישת היחידות 0%",
+      "library_id": "8c59c3bb38cae21f",
+      "page": 1,
+      "url": "https://mayafiles.tase.co.il/rpdf/1732001-1733000/P1732864-00.pdf#page=1",
+      "report_date": "2025-12-31",
+      "rule_ids": [
+        "MF-21"
+      ]
+    },
+    {
+      "fund_id": "5140165",
+      "name": "MTF MSCI World hedged",
+      "value": 0,
+      "unit": "pct_of_trade",
+      "words": "שיעור ההוספה המשולמת בעת רכישת היחידות 0%",
+      "library_id": "aa030b04b05fe74d",
+      "page": 1,
+      "url": "https://mayafiles.tase.co.il/rpdf/1728001-1729000/P1728922-00.pdf#page=1",
+      "report_date": "2025-12-31",
+      "rule_ids": [
+        "MF-21"
+      ]
+    }
+  ]
+}
