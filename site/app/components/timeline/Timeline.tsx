@@ -128,6 +128,11 @@ export function Timeline({ bundle: pageBundle, initial, wrapperName, ageMarker, 
   // or named in the sentence; it comes back when an input makes it real (a rate entered on the current account brings the tax)
   const hasFees = points.some((p) => p.fees > 0.005);
   const hasTax = points.some((p) => p.tax > 0.005);
+  // the table keeps a column it has shown, so a slider at zero does not take the column away and move the others (design-system 2.5a)
+  const tableFees = useRef(false);
+  const tableTax = useRef(false);
+  tableFees.current ||= hasFees;
+  tableTax.current ||= hasTax;
   const afterWhat = hasFees && hasTax ? copy.headline.afterBoth : hasTax ? copy.headline.afterTax : hasFees ? copy.headline.afterFees : null;
   const modeWords = mode === "real" ? copy.headline.real : copy.headline.nominal;
   const tail = afterWhat ? `${afterWhat}, ${modeWords}` : modeWords;
@@ -185,8 +190,8 @@ export function Timeline({ bundle: pageBundle, initial, wrapperName, ageMarker, 
           rowHead={copy.table.year}
           columns={[
             { id: "contributions", head: copy.table.contributions },
-            ...(hasFees ? [{ id: "fees", head: copy.table.fees }] : []),
-            ...(hasTax ? [{ id: "tax", head: copy.table.tax }] : []),
+            ...(tableFees.current ? [{ id: "fees", head: copy.table.fees }] : []),
+            ...(tableTax.current ? [{ id: "tax", head: copy.table.tax }] : []),
             { id: "net", head: copy.table.net },
           ]}
           rows={timeline.years.map((p) => {
@@ -194,7 +199,7 @@ export function Timeline({ bundle: pageBundle, initial, wrapperName, ageMarker, 
             return {
               key: p.year,
               head: p.year,
-              cells: [<Num key="c" value={v.contributions} size="cell" />, ...(hasFees ? [<Num key="f" value={v.fees} size="cell" />] : []), ...(hasTax ? [<Num key="t" value={v.tax} size="cell" />] : []), <Num key="n" value={v.net} size="cell" />],
+              cells: [<Num key="c" value={v.contributions} size="cell" />, ...(tableFees.current ? [<Num key="f" value={v.fees} size="cell" />] : []), ...(tableTax.current ? [<Num key="t" value={v.tax} size="cell" />] : []), <Num key="n" value={v.net} size="cell" />],
             };
           })}
         />

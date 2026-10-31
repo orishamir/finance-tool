@@ -3,6 +3,7 @@ import type { CSSProperties, ReactNode } from "react";
 import { buttons, kit as kitCopy } from "../../copy";
 import { cx } from "./cx";
 import { Disclosure } from "./disclosure";
+import { TableCols } from "./table-cols";
 
 /** A sideways-scrolling table wrapper's cue without script: a card-colour fade at each end that is still hidden content, and a soft edge shadow. */
 export const scrollCueStyle: CSSProperties = {
@@ -98,7 +99,8 @@ export interface TableRowData {
  */
 export function FixedTable({ rowHead, columns, rows }: { rowHead: ReactNode; columns: { id: string; head: ReactNode; hideOnPhone?: boolean }[]; rows: { key: string; head: ReactNode; cells: ReactNode[]; strong?: boolean }[] }) {
   return (
-    <table className="tbl table-fixed w-full text-sm max-md:text-[13px] tabular-nums [&_thead_th]:whitespace-normal [&_thead_th]:align-bottom [&_td]:align-top [&_th]:align-top max-md:[&_td]:px-1 max-md:[&_th]:px-1">
+    <table className="tbl text-sm max-md:text-[13px] [&_thead_th]:align-bottom [&_td]:align-top [&_th]:align-top max-md:[&_td]:px-1 max-md:[&_th]:px-1">
+      <TableCols widths={["auto", ...columns.map((c) => ({ pc: "auto", phone: c.hideOnPhone ? "0" : "auto" }))]} />
       <thead>
         <tr>
           <th scope="col">{rowHead}</th>
@@ -125,15 +127,20 @@ export function FixedTable({ rowHead, columns, rows }: { rowHead: ReactNode; col
   );
 }
 
+const CHART_YEAR_REM = 3.5;
+const CHART_FIGURE_REM = 8;
+
 /**
  * The same numbers as the chart, as a table behind a fold ("הצגה כטבלה"). `scroll="cue"` fades the edges where the table can scroll;
- * `scroll="bleed"` lets it run to the card's edge on a phone. `compact` tightens the cells (a table of five columns).
+ * `scroll="bleed"` lets it run to the card's edge on a phone. `compact` tightens the cells (a table of five columns). The year's column
+ * and every figure's column have a fixed width, wide enough for "1,047,017.40 ₪"; the table scrolls inside its region when they do not fit.
  */
 export function ChartTable({ rowHead, columns, rows, scroll = "cue", compact, regionLabel }: { rowHead: ReactNode; columns: TableColumn[]; rows: TableRowData[]; scroll?: "cue" | "bleed"; compact?: boolean; regionLabel?: string }) {
   return (
     <Disclosure label={buttons.showTable} openLabel={buttons.hideTable} summaryClassName="text-sm">
       <div className={cx("overflow-x-auto overflow-y-hidden mt-2", scroll === "bleed" && "-mx-4 px-4 md:mx-0 md:px-0")} style={scroll === "cue" ? scrollCueStyle : undefined} {...(regionLabel ? { tabIndex: 0, role: "region", "aria-label": regionLabel } : {})}>
-        <table className={cx("tbl text-sm", compact && "[&_td]:px-2 [&_th]:px-2 [&_td]:whitespace-nowrap [&_th]:whitespace-nowrap")}>
+        <table className={cx("tbl text-sm [&_td]:whitespace-nowrap", compact && "[&_td]:px-2 [&_th]:px-2")} style={{ minWidth: `${CHART_YEAR_REM + columns.length * CHART_FIGURE_REM}rem` }}>
+          <TableCols widths={[`${CHART_YEAR_REM}rem`, ...columns.map(() => "auto")]} />
           <thead>
             <tr>
               <th scope="col">{rowHead}</th>

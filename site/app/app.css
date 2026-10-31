@@ -674,10 +674,13 @@
   }
 
   /* ---- tables */
+  /* Fixed columns (design-system 2.5a): a TableCols says each column's width, heads may wrap, figures may not. */
   .tbl {
     width: 100%;
+    table-layout: fixed;
     border-collapse: collapse;
     text-align: start;
+    font-variant-numeric: tabular-nums;
   }
   .tbl th,
   .tbl td {
@@ -690,7 +693,6 @@
     font-size: var(--text-xs);
     font-weight: 500;
     color: var(--muted-foreground);
-    white-space: nowrap;
   }
   .tbl tbody th {
     font-weight: 500;

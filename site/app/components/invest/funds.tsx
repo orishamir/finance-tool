@@ -57,11 +57,11 @@ function FundList({ view, house }: { view: InvestView; house: HouseRow }) {
   // the product table (founder, 2026-10-27; design-system 11 "Lists of products"): rank, the fund with its labels, the number as the
   // link to Maya, the three fees, and what is left at the chosen house, which the list is ranked by
   const columns: ProductColumn[] = [
-    { id: "rank", head: <span className="sr-only">{c.funds.rank}</span>, fit: true },
+    { id: "rank", head: <span className="sr-only">{c.funds.rank}</span>, width: 3 },
     { id: "name", head: b.columns.name },
-    { id: "number", head: b.columns.number, fit: true },
-    { id: "fees", head: b.columns.fees, fit: true },
-    { id: "value", head: c.funds.value(house.provider.short), fit: true },
+    { id: "number", head: b.columns.number, width: 7.5 },
+    { id: "fees", head: b.columns.fees, width: 11 },
+    { id: "value", head: c.funds.value(house.provider.short), width: 13.5 },
   ];
   return <ProductTable columns={columns} groups={rows.map((r) => ({ key: r.key, rows: [r] }))} />;
 }

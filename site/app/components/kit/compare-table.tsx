@@ -2,6 +2,7 @@
 // compared, a bar in a cell lets the eye compare before reading. On a phone each row's name takes its own line and the cells sit under it.
 import type { CSSProperties, ReactNode } from "react";
 import { cx } from "./cx";
+import { TableCols } from "./table-cols";
 
 export interface CompareRow {
   key: string;
@@ -14,11 +15,14 @@ export interface CompareRow {
 
 /** `columns` holds the name column's heading first, then one per cell. Up to five rows and three or four columns. */
 export function CompareTable({ columns, rows, caption }: { columns: ReactNode[]; rows: CompareRow[]; caption?: string }) {
+  // the name's column a third, the cells equal; on a phone the rows are grids of equal cells and the table is a block
+  const cells = columns.length - 1;
   const n = { "--cells": columns.length - 1 } as CSSProperties;
   const phoneGrid = "max-sm:grid max-sm:grid-cols-[repeat(var(--cells),minmax(0,1fr))] max-sm:gap-x-3";
   return (
-    <table className="w-full border-collapse" style={n}>
+    <table className="w-full table-fixed border-collapse tabular-nums max-sm:block max-sm:[&>colgroup]:hidden max-sm:[&>thead]:block max-sm:[&>tbody]:block" style={n}>
       {caption && <caption className="sr-only">{caption}</caption>}
+      <TableCols widths={["34%", ...Array.from({ length: cells }, () => `${66 / cells}%`)]} />
       <thead>
         <tr className={cx(phoneGrid, "border-b border-chart-axis")}>
           <th scope="col" className="max-sm:hidden text-start align-bottom text-sm font-semibold text-muted-foreground px-2 py-1.5">{columns[0]}</th>
