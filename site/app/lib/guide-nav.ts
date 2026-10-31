@@ -30,6 +30,14 @@ const omittedSections: Record<string, readonly string[]> = {
 };
 export const omitsSection = (guideId: string, section: string): boolean => omittedSections[guideId]?.includes(section) ?? false;
 
+/**
+ * The withdrawal rules a guide's money-in-and-out section shows (issue 129). PF-46 holds for every provident product. PF-45 and TXP-18
+ * speak of money drawn against the rules, read for the provident funds for annuity, so only those guides carry them.
+ */
+const providentFamily = ["kupat-gemel-lehashkaa", "keren-hishtalmut", "pension-comprehensive", "pension-general", "provident-for-annuity", "child-savings-provident", "ira-provident", "ira-hishtalmut"];
+const annuityFamily = ["pension-comprehensive", "pension-general", "provident-for-annuity", "ira-provident"];
+export const withdrawalRules = (guideId: string): string[] => [...(providentFamily.includes(guideId) ? ["PF-46"] : []), ...(annuityFamily.includes(guideId) ? ["PF-45", "TXP-18"] : [])];
+
 export interface GuideGroup {
   id: string;
   ids: string[];

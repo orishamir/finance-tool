@@ -729,6 +729,12 @@ export const computedInputs = {
 
 /** Fixed lines of the guide's key-value, fee and tax blocks, keyed by what the record says; copy.md 3.5a. */
 export const guideBlocks = {
+  // issue 129: what the rule base found on withdrawals; each figure is a Num on the page
+  withdrawal: {
+    daysCount: { label: "מתי מתחילים לספור את הימים", value: "מבקשה מלאה, לא מהבקשה הראשונה. עיכוב בגלל פרטים שחסרו בבקשה אינו איחור." },
+    unlawful: { label: "בקשה למשוך שלא כדין", before: "לפני התשלום הקופה חייבת לקיים שיחת שירות, או, בסכום של עד", after: ", לשלוח הודעה דיגיטלית. היא משלמת רק אחרי אישור מפורש שלכם." },
+    lowIncome: { label: "משיכה בלי מס בגלל הכנסה נמוכה", before: "ההפרש בין ההכנסה שלכם ושל בן או בת הזוג, מכל מקור וגם הכנסות פטורות, לבין", one: "בחודש, או", after: "בחודש למי שיש לו ילד מתחת לגיל 18. ההצהרה היא על אחד משני החודשים שלפני הבקשה, ותקפה לאותו חודש ולשני החודשים שאחריו." },
+  },
   ceiling: {
     perYearAll: "לשנה, לכל אדם בכל הקופות יחד",
     taxYear: "שנת המס",
