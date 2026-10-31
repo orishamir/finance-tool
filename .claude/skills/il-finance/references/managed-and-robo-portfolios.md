@@ -60,7 +60,7 @@ Out, and where it lives:
   For the saver, a "marketer" may prefer its own group's products (MGD-12). In 2025, 2,647 clients (2.8%) of portfolio-management firms received only advice or marketing from them, with the investment decision left to the client.
 - Figures: 131 firms, end-2025 (REG-08 has the count and its source).
 - Source:
-  - [חוק הסדרת העיסוק בייעוץ השקעות, בשיווק השקעות ובניהול תיקי השקעות, התשנ"ה-1995, Wikisource](https://he.wikisource.org/wiki/חוק_הסדרת_העיסוק_בייעוץ_השקעות,_בשיווק_השקעות_ובניהול_תיקי_השקעות), ss.1, 2(ב), 2(ג). The amendment list ends "תשפ"ו, 360, 403", with an amounts update in "י"פ תשפ"ו, 2532". Read through a summarising fetch. · checked 2026-10-22 · primary (mirror)
+  - [Investment Advice Law, Securities Authority's consolidated copy, file of 26.8.2026](https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Yiutz01.pdf#page=3) (file pages: s.1 3-6; s.2 7), ss.1, 2(ב), 2(ג). The amendment list ends "תשפ"ו, 360, 403", with an amounts update in "י"פ תשפ"ו, 2532". Read through a summarising fetch. · checked 2026-10-31 · primary (state body's consolidated copy, not the binding gazette wording)
   - [Meitav, גילוי נאות](https://www.meitav.co.il/proper_disclosure/) · checked 2026-10-22 · institution
   - [Altshuler Shaham, ניהול תיקים join page](https://join.as-invest.co.il/portfolio-management/) · checked 2026-10-22 · institution
   - [XNES (Phoenix Investment House) home](https://www.xnes.co.il/) · checked 2026-10-22 · institution
@@ -72,7 +72,7 @@ Out, and where it lives:
 - Rule: "בעל רשיון יפעל לטובת לקוחותיו באמונה ובשקידה". He may not prefer his own interests, or one client over another (s.11). Section 20 adds a general duty of care: take reasonable steps to protect clients' interests.
 - Conditions / exceptions: For an affiliated manager, the preference for affiliated assets in s.16א(ב) applies "notwithstanding" s.11(א) (MGD-12).
 - Figures: none
-- Source: [Investment Advice Law, Wikisource](https://he.wikisource.org/wiki/חוק_הסדרת_העיסוק_בייעוץ_השקעות,_בשיווק_השקעות_ובניהול_תיקי_השקעות), ss.11, 20 · checked 2026-10-22 · primary (mirror)
+- Source: [Investment Advice Law, Securities Authority's consolidated copy, file of 26.8.2026](https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Yiutz01.pdf#page=29) (file pages: s.11 29; s.20 36), ss.11, 20 · checked 2026-10-31 · primary (state body's consolidated copy, not the binding gazette wording)
 - Dimensions: `regulator`, `protection`
 - Likely to change: no
 
@@ -89,7 +89,7 @@ Out, and where it lives:
   - Treat these details as secondary until the ISA text is read (open question 2).
 - Figures: none fixed in the law.
 - Source:
-  - [Investment Advice Law, Wikisource](https://he.wikisource.org/wiki/חוק_הסדרת_העיסוק_בייעוץ_השקעות,_בשיווק_השקעות_ובניהול_תיקי_השקעות), ss.12, 13(ב)(2), 13(ד) · checked 2026-10-22 · primary (mirror)
+  - [Investment Advice Law, Securities Authority's consolidated copy, file of 26.8.2026](https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Yiutz01.pdf#page=29) (file pages: s.12 29; s.13 29-32), ss.12, 13(ב)(2), 13(ד) · checked 2026-10-31 · primary (state body's consolidated copy, not the binding gazette wording)
   - [ISA, הצעה לתיקון ההוראה לבעלי רישיון בקשר למתן שירותים תוך שימוש באמצעים טכנולוגיים, 26 Mar 2023 (law-firm-hosted copy)](https://www.shibolet.com/wp-content/uploads/2023/05/הצעה-לתיקון-ההוראה-לבעלי-רישיון-בקשר-למתן-שירותים-תוך-שימוש.pdf), p.7 footnote 6 · checked 2026-10-22 · primary (third-party host, draft)
   - [Funder, "ההנחיות מצטמצמות והאחריות מתרחבת", 26 Jul 2021](https://www.funder.co.il/article/120997) · checked 2026-10-22 · secondary
 - Dimensions: `eligibility`, `regulator`
@@ -116,7 +116,7 @@ Out, and where it lives:
   - Altshuler: a management agreement plus a power of attorney "as is customary at your bank".
 - Figures: none
 - Source:
-  - [Investment Advice Law, Wikisource](https://he.wikisource.org/wiki/חוק_הסדרת_העיסוק_בייעוץ_השקעות,_בשיווק_השקעות_ובניהול_תיקי_השקעות), s.13 · checked 2026-10-22 · primary (mirror)
+  - [Investment Advice Law, Securities Authority's consolidated copy, file of 26.8.2026](https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Yiutz01.pdf#page=29) (file pages: s.13 29-32), s.13 · checked 2026-10-31 · primary (state body's consolidated copy, not the binding gazette wording)
   - [Meitav, ניהול תיקי השקעות](https://www.meitav.co.il/portfolio_management/) · checked 2026-10-22 · institution
   - [Altshuler join page](https://join.as-invest.co.il/portfolio-management/) · checked 2026-10-22 · institution
 - Dimensions: `transfer-switch-process`, `regulator`
@@ -131,7 +131,7 @@ Out, and where it lives:
 - Conditions / exceptions: No provision on termination fees was found in the law sections read (open question 13).
 - Figures: 7 business days (Meitav Manager, own terms).
 - Source:
-  - [Investment Advice Law, Wikisource](https://he.wikisource.org/wiki/חוק_הסדרת_העיסוק_בייעוץ_השקעות,_בשיווק_השקעות_ובניהול_תיקי_השקעות), s.13(ב)(4) · checked 2026-10-22 · primary (mirror)
+  - [Investment Advice Law, Securities Authority's consolidated copy, file of 26.8.2026](https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Yiutz01.pdf#page=29) (file pages: s.13 29-32), s.13(ב)(4) · checked 2026-10-31 · primary (state body's consolidated copy, not the binding gazette wording)
   - [Meitav private clients](https://www.meitav.co.il/portfolio_management/private_clients/) · checked 2026-10-22 · institution
   - [Meitav Manager](https://www.meitav.co.il/portfolio_management/manager/) · checked 2026-10-22 · institution
   - [IBI portfolio management](https://www.ibi.co.il/solutions/portfolio-management/) · checked 2026-10-22 · institution
@@ -152,7 +152,7 @@ Out, and where it lives:
 - Providers confirm quarterly reports: Meitav ("דיווח רבעוני על מצב התיק"); Altshuler ("דיווח מידי רבעון"). Meitav Manager promises only "דיווחים תקופתיים".
 - Figures: at least every 3 months; records kept 7 years. Fixed in law.
 - Source:
-  - [Investment Advice Law, Wikisource](https://he.wikisource.org/wiki/חוק_הסדרת_העיסוק_בייעוץ_השקעות,_בשיווק_השקעות_ובניהול_תיקי_השקעות), ss.25, 26 · checked 2026-10-22 · primary (mirror)
+  - [Investment Advice Law, Securities Authority's consolidated copy, file of 26.8.2026](https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Yiutz01.pdf#page=42) (file pages: s.25 42; s.26 43-44), ss.25, 26 · checked 2026-10-31 · primary (state body's consolidated copy, not the binding gazette wording)
   - [Meitav portfolio management](https://www.meitav.co.il/portfolio_management/) · checked 2026-10-22 · institution
   - [Altshuler portfolio management](https://www.as-invest.co.il/interstedin/ניהול-תיקי-השקעות/) · checked 2026-10-22 · institution
   - [Meitav Manager](https://www.meitav.co.il/portfolio_management/manager/) · checked 2026-10-22 · institution
@@ -163,7 +163,7 @@ Out, and where it lives:
 - Rule: "מנהל תיקים לא יבצע עבור לקוח עסקה הכרוכה בסיכון מיוחד מבלי שהלקוח נתן אישורו מראש בכתב" (s.18). Whether credit may be taken for the client is fixed in the agreement (s.13(ג)(2)).
 - Conditions / exceptions: Which trades count as "special risk" was not read (s.18 is listed with its heading only; open question 14).
 - Figures: none
-- Source: [Investment Advice Law, Wikisource](https://he.wikisource.org/wiki/חוק_הסדרת_העיסוק_בייעוץ_השקעות,_בשיווק_השקעות_ובניהול_תיקי_השקעות), ss.13(ג)(2), 18 · checked 2026-10-22 · primary (mirror)
+- Source: [Investment Advice Law, Securities Authority's consolidated copy, file of 26.8.2026](https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Yiutz01.pdf#page=29) (file pages: s.13 29-32; s.18 35), ss.13(ג)(2), 18 · checked 2026-10-31 · primary (state body's consolidated copy, not the binding gazette wording)
 - Dimensions: `protection`
 - Likely to change: no
 
@@ -175,7 +175,7 @@ Out, and where it lives:
   - Meitav describes its private-client fee as a percentage of portfolio value that falls as the portfolio grows and does not depend on profit or loss. The rates themselves are not published (open question 5).
 - Figures: none
 - Source:
-  - [Investment Advice Law, Wikisource](https://he.wikisource.org/wiki/חוק_הסדרת_העיסוק_בייעוץ_השקעות,_בשיווק_השקעות_ובניהול_תיקי_השקעות), ss.13(ב)(3), 24 · checked 2026-10-22 · primary (mirror)
+  - [Investment Advice Law, Securities Authority's consolidated copy, file of 26.8.2026](https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Yiutz01.pdf#page=29) (file pages: s.13 29-32; s.24 37), ss.13(ב)(3), 24 · checked 2026-10-31 · primary (state body's consolidated copy, not the binding gazette wording)
   - [Meitav private clients](https://www.meitav.co.il/portfolio_management/private_clients/) · checked 2026-10-22 · institution
 - Dimensions: `fee-management-balance`, `fee-trade`
 - Likely to change: no
@@ -192,7 +192,7 @@ Out, and where it lives:
   - The ISA reports NIS 1.6 m (0.13% of income) of commission rebates ("החזרי עמלות") to portfolio managers in 2025. It defines them as amounts a TASE member passes to the manager out of commissions clients paid it for trades the manager made.
   - "Other income" ("הכנסות אחרות") was NIS 112 m (9.4%). This is income from managing the portfolio that is not a management fee, for example "רכישת מוצרים מובנים עבור לקוחות; עמלות המרת מט"ח".
 - Source:
-  - [Investment Advice Law, Wikisource](https://he.wikisource.org/wiki/חוק_הסדרת_העיסוק_בייעוץ_השקעות,_בשיווק_השקעות_ובניהול_תיקי_השקעות), s.17 · checked 2026-10-22 · primary (mirror)
+  - [Investment Advice Law, Securities Authority's consolidated copy, file of 26.8.2026](https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Yiutz01.pdf#page=32) (file pages: s.17 32-34), s.17 · checked 2026-10-31 · primary (state body's consolidated copy, not the binding gazette wording)
   - [ISA 2025 licensees report](https://cdn.funder.co.il/%D7%A4%D7%A2%D7%99%D7%9C%D7%95%D7%AA%20%D7%97%D7%91%D7%A8%D7%95%D7%AA%20%D7%91%D7%A2%D7%9C%D7%95%D7%AA%20%D7%A8%D7%99%D7%A9%D7%99%D7%95%D7%9F%20%D7%94%D7%A9%D7%A7%D7%A2%D7%95%D7%AA%202025_842jZyuHN.pdf), p.17 · checked 2026-10-22 · primary (third-party host)
 - Dimensions: `fee-trade`, `fee-fx`, `fee-management-balance`
 - Likely to change: no (law); yearly (figures)
@@ -217,7 +217,7 @@ Out, and where it lives:
   - [Altshuler](https://www.as-invest.co.il/interstedin/ניהול-תיקי-השקעות/) · checked 2026-10-22 · institution
 - Dimensions: `fee-management-balance`, `fee-trade`, `fee-custody`, `fee-fx`, `fee-fund-underlying` (proposed)
 - Likely to change: yes (provider terms)
-- *2026-10-24 R5 pass:* layer (a) carries 18% VAT when the manager is a dealer and not a financial institution (a bank, insurer, or a TASE member with 75% of its turnover from that activity); layers (b) from a bank or TASE member carry none (TX2-17, primary mirror). A tariff must say whether its rate is before or after VAT; Fjord's "0.5% בתוספת מע"מ" (MGD-20) is an example of the first.
+- *2026-10-24 R5 pass:* layer (a) carries 18% VAT when the manager is a dealer and not a financial institution (a bank, insurer, or a TASE member with 75% of its turnover from that activity); layers (b) from a bank or TASE member carry none (TX2-17). A tariff must say whether its rate is before or after VAT; Fjord's "0.5% בתוספת מע"מ" (MGD-20) is an example of the first.
 
 ### MGD-11 ISA-reported fee averages by portfolio size (D4 reference level)
 - Rule: The ISA publishes, per year, the income from direct management fees as a share of assets for non-institutional clients, by portfolio size ("שיעור ההכנסות מדמי ניהול מלקוחות שאינם מוסדיים"). It also publishes a weighted average direct management fee ("ממוצע משוקלל של דמי הניהול").
@@ -269,7 +269,7 @@ Out, and where it lives:
 
   By type of affiliation: 45 hosting managers; 16 firms with a sister company that manages funds; 9 with affiliation to other financial assets. 61 firms hold no affiliated assets.
 - Source:
-  - [Investment Advice Law, Wikisource](https://he.wikisource.org/wiki/חוק_הסדרת_העיסוק_בייעוץ_השקעות,_בשיווק_השקעות_ובניהול_תיקי_השקעות), ss.13(ג)(5), 15, 16, 16א · checked 2026-10-22 · primary (mirror)
+  - [Investment Advice Law, Securities Authority's consolidated copy, file of 26.8.2026](https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Yiutz01.pdf#page=29) (file pages: s.13 29-32; s.15 30-32; s.16 31; s.16א 32), ss.13(ג)(5), 15, 16, 16א · checked 2026-10-31 · primary (state body's consolidated copy, not the binding gazette wording)
   - [ISA 2025 licensees report](https://cdn.funder.co.il/%D7%A4%D7%A2%D7%99%D7%9C%D7%95%D7%AA%20%D7%97%D7%91%D7%A8%D7%95%D7%AA%20%D7%91%D7%A2%D7%9C%D7%95%D7%AA%20%D7%A8%D7%99%D7%A9%D7%99%D7%95%D7%9F%20%D7%94%D7%A9%D7%A7%D7%A2%D7%95%D7%AA%202025_842jZyuHN.pdf), p.7 · checked 2026-10-22 · primary (third-party host)
   - [Meitav, גילוי נאות](https://www.meitav.co.il/proper_disclosure/) · checked 2026-10-22 · institution
   - [Meitav Manager routes](https://www.meitav.co.il/portfolio_management/investment-routes_manager/) · checked 2026-10-22 · institution
@@ -313,7 +313,7 @@ Out, and where it lives:
   Meitav Manager is provided "על ידי מיטב ניהול תיקים בע"מ ומיטב טרייד בע"מ". Its page does not say where the account is held or in whose name (open question 4).
 - Figures: end-2025 shares as above.
 - Source:
-  - [Investment Advice Law, Wikisource](https://he.wikisource.org/wiki/חוק_הסדרת_העיסוק_בייעוץ_השקעות,_בשיווק_השקעות_ובניהול_תיקי_השקעות), ss.22, 23 · checked 2026-10-22 · primary (mirror)
+  - [Investment Advice Law, Securities Authority's consolidated copy, file of 26.8.2026](https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Yiutz01.pdf#page=36) (file pages: s.22 36-37; s.23 37), ss.22, 23 · checked 2026-10-31 · primary (state body's consolidated copy, not the binding gazette wording)
   - [ISA 2025 licensees report](https://cdn.funder.co.il/%D7%A4%D7%A2%D7%99%D7%9C%D7%95%D7%AA%20%D7%97%D7%91%D7%A8%D7%95%D7%AA%20%D7%91%D7%A2%D7%9C%D7%95%D7%AA%20%D7%A8%D7%99%D7%A9%D7%99%D7%95%D7%9F%20%D7%94%D7%A9%D7%A7%D7%A2%D7%95%D7%AA%202025_842jZyuHN.pdf), p.9 · checked 2026-10-22 · primary (third-party host)
   - [Meitav](https://www.meitav.co.il/portfolio_management/), [Altshuler](https://www.as-invest.co.il/interstedin/ניהול-תיקי-השקעות/), [IBI](https://www.ibi.co.il/solutions/portfolio-management/), [Meitav Manager](https://www.meitav.co.il/portfolio_management/manager/) · checked 2026-10-22 · institution
 - Dimensions: `protection`, `conflict-of-interest` (proposed)
@@ -329,11 +329,11 @@ Out, and where it lives:
 - Conditions / exceptions:
   - No Israeli investor-compensation scheme was found (BRK summary).
   - The deposit-insurance bill would exclude portfolio managers as claimants (REG-05).
-  - The equity figure is from the regulations as read on Wikisource through a summarising fetch, which reported no separate tier by assets managed. Verify this, and the indexed amount (open question 7). This partly answers REG open question 19.
+  - The equity figure is reg. 2 as read in the ISA's copy, file p.1 (2026-10-31): "הון עצמי של תאגיד מורשה לא יפחת, בכל עת, מסכום של מאתיים אלף שקלים חדשים", with no separate tier by assets managed in that regulation. The indexed amount is still open (open question 7). This partly answers REG open question 19.
 - Figures: NIS 200,000 equity floor, CPI-linked from Nov 1998; the indexed amount was not computed. Security stays valid 1 year after the licensee stops operating.
 - Source:
-  - [תקנות הסדרת העיסוק בייעוץ השקעות, בשיווק השקעות ובניהול תיקי השקעות (הון עצמי וביטוח), התש"ס-2000, Wikisource](https://he.wikisource.org/wiki/תקנות_הסדרת_העיסוק_בייעוץ_השקעות,_בשיווק_השקעות_ובניהול_תיקי_השקעות_(הון_עצמי_וביטוח)), regs. 1, 2, 3, 4, 7, 10. The last amendment listed is תשפ"ב, ק"ת 1170. · checked 2026-10-22 · primary (mirror)
-  - [Investment Advice Law, Wikisource](https://he.wikisource.org/wiki/חוק_הסדרת_העיסוק_בייעוץ_השקעות,_בשיווק_השקעות_ובניהול_תיקי_השקעות), s.20ג · checked 2026-10-22 · primary (mirror)
+  - [Investment Advice Regulations (Equity and Insurance), Securities Authority's consolidated copy, file of 2.1.2022](https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/IsaFile_4105.pdf#page=1) (file pages: s.1 1; s.2 1; s.3 2; s.4 2; s.7 3; s.10 5), regs. 1, 2, 3, 4, 7, 10. The last amendment listed is תשפ"ב, ק"ת 1170. · checked 2026-10-31 · primary (state body's consolidated copy, not the binding gazette wording)
+  - [Investment Advice Law, Securities Authority's consolidated copy, file of 26.8.2026](https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Yiutz01.pdf#page=36) (file pages: s.20ג 36), s.20ג · checked 2026-10-31 · primary (state body's consolidated copy, not the binding gazette wording)
 - Dimensions: `protection`
 - Likely to change: no
 
@@ -471,8 +471,8 @@ Out, and where it lives:
   - capital-market expertise, or at least one year in a professional role that needs it;
   - at least 30 trades a quarter on average over the previous four quarters, not counting trades a portfolio manager made for them.
 - Conditions / exceptions: Which duties do not apply to a qualified client was not established in this pass. One example elsewhere is BRK-07, where the foreign-custody warning does not apply (open question 11). Not relevant to the founder's profile; recorded because the term appears in agreements.
-- Figures: NIS 12 million and 30 trades a quarter. The NIS amount is as shown on Wikisource, which carries an amounts update (י"פ תשפ"ו, 2532). The update mechanism for this schedule was not established.
-- Source: [Investment Advice Law, Wikisource](https://he.wikisource.org/wiki/חוק_הסדרת_העיסוק_בייעוץ_השקעות,_בשיווק_השקעות_ובניהול_תיקי_השקעות), s.1 and First Schedule (read through a summarising fetch) · checked 2026-10-22 · primary (mirror)
+- Figures: NIS 12 million and 30 trades a quarter (First Schedule, item 9, ISA copy file p.55). Corrected 2026-10-31: the record tied the amounts update י"פ תשפ"ו, 2532 to this figure. The ISA copy's footnotes tie that update to s.38ה (file p.48) and the Third Schedule (file p.62), and none sits on the First Schedule. No update mechanism for this schedule is read.
+- Source: [Investment Advice Law, Securities Authority's consolidated copy, file of 26.8.2026](https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Yiutz01.pdf#page=3) (file pages: s.1 3-6), s.1 and First Schedule (file p.55) · checked 2026-10-31 · primary (state body's consolidated copy, not the binding gazette wording)
 - Dimensions: `eligibility`, `protection`
 - Likely to change: yes (amount updates)
 
@@ -587,8 +587,8 @@ Digital offerings confirmed on own pages: Meitav Manager, Phoenix digital portfo
 
 | Source | Publisher | Strength | Checked |
 |---|---|---|---|
-| [חוק הסדרת העיסוק בייעוץ השקעות, בשיווק השקעות ובניהול תיקי השקעות, התשנ"ה-1995](https://he.wikisource.org/wiki/חוק_הסדרת_העיסוק_בייעוץ_השקעות,_בשיווק_השקעות_ובניהול_תיקי_השקעות): ss.1, 2, 11 to 13, 15 to 18, 20, 20ג, 22 to 26, First Schedule (read through a summarising fetch, in two parts) | Wikisource (mirror of law) | primary (mirror) | 2026-10-22 |
-| [תקנות ... (הון עצמי וביטוח), התש"ס-2000](https://he.wikisource.org/wiki/תקנות_הסדרת_העיסוק_בייעוץ_השקעות,_בשיווק_השקעות_ובניהול_תיקי_השקעות_(הון_עצמי_וביטוח)) | Wikisource (mirror of regulations) | primary (mirror) | 2026-10-22 |
+| [Investment Advice Law, Securities Authority's consolidated copy, file of 26.8.2026](https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Yiutz01.pdf#page=3) (file pages: s.1 3-6; s.2 6-7; s.11 29; s.13 29-32; s.15 30-32; s.18 35; s.20 36; s.20ג 36; s.22 36-37; s.26 43-44): ss.1, 2, 11 to 13, 15 to 18, 20, 20ג, 22 to 26, First Schedule (read through a summarising fetch, in two parts) | Securities Authority's consolidated copy (file of 26.8.2026) | primary (state body's consolidated copy, not the binding gazette wording) | 2026-10-31 |
+| [Investment Advice Regulations (Equity and Insurance), Securities Authority's consolidated copy, file of 2.1.2022](https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/IsaFile_4105.pdf) | Securities Authority's consolidated copy (file of 2.1.2022) | primary (state body's consolidated copy, not the binding gazette wording) | 2026-10-31 |
 | [ISA, פעילות חברות בעלות רישיון השקעות 2025](https://cdn.funder.co.il/%D7%A4%D7%A2%D7%99%D7%9C%D7%95%D7%AA%20%D7%97%D7%91%D7%A8%D7%95%D7%AA%20%D7%91%D7%A2%D7%9C%D7%95%D7%AA%20%D7%A8%D7%99%D7%A9%D7%99%D7%95%D7%9F%20%D7%94%D7%A9%D7%A7%D7%A2%D7%95%D7%AA%202025_842jZyuHN.pdf), pp.1 to 24 read as page images | ISA (Funder-hosted copy) | primary (third-party host) | 2026-10-22 |
 | [ISA, הצעה לתיקון ההוראה ... באמצעים טכנולוגיים, 26 Mar 2023](https://www.shibolet.com/wp-content/uploads/2023/05/הצעה-לתיקון-ההוראה-לבעלי-רישיון-בקשר-למתן-שירותים-תוך-שימוש.pdf), pp.1 to 8 | ISA (law-firm-hosted copy) | primary (third-party host, draft) | 2026-10-22 |
 | [Meitav, ניהול תיקי השקעות](https://www.meitav.co.il/portfolio_management/) | Meitav | institution | 2026-10-22 |

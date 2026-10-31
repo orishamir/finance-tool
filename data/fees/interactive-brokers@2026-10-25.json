@@ -43,7 +43,8 @@
           "url": "https://www.interactivebrokers.com/en/pricing/commissions-stocks.php",
           "title": "Commissions Stocks, ETFs, Warrants and Structured Products (interactivebrokers.com, no date shown), United States, IBKR Pro - Fixed",
           "publisher": "Interactive Brokers LLC",
-          "strength": "institution"
+          "strength": "institution",
+          "quote": "≤ 300,000 USD 0.0035 USD 0.005"
         },
         "checked": "2026-10-25",
         "effective_from": null,
@@ -64,7 +65,8 @@
           "url": "https://www.interactivebrokers.com/en/pricing/commissions-stocks.php",
           "title": "Commissions Stocks, ETFs, Warrants and Structured Products (interactivebrokers.com, no date shown), United States, IBKR Pro - Fixed, Minimum per order (shares)",
           "publisher": "Interactive Brokers LLC",
-          "strength": "institution"
+          "strength": "institution",
+          "quote": "Minimum per order (shares) USD 0.35 12 USD 1.00 12"
         },
         "checked": "2026-10-25",
         "effective_from": null,
@@ -86,7 +88,8 @@
           "url": "https://www.interactivebrokers.com/en/pricing/commissions-stocks.php",
           "title": "Commissions Stocks, ETFs, Warrants and Structured Products (interactivebrokers.com), United States, IBKR Pro - Fixed, 'Maximum per order 1% of Trade Value'",
           "publisher": "Interactive Brokers LLC",
-          "strength": "institution"
+          "strength": "institution",
+          "quote": "Maximum per order 1% of Trade Value 4,8 1% of Trade Value 4,8"
         },
         "checked": "2026-10-25",
         "effective_from": null,
@@ -125,7 +128,8 @@
           "url": "https://www.interactivebrokers.com/en/pricing/commissions-stocks.php",
           "title": "Commissions Stocks, ETFs, Warrants and Structured Products (interactivebrokers.com, no date shown), United States, IBKR Pro - Tiered",
           "publisher": "Interactive Brokers LLC",
-          "strength": "institution"
+          "strength": "institution",
+          "quote": "≤ 300,000 USD 0.0035 USD 0.005"
         },
         "checked": "2026-10-25",
         "effective_from": null,
@@ -146,7 +150,8 @@
           "url": "https://www.interactivebrokers.com/en/pricing/commissions-stocks.php",
           "title": "Commissions Stocks, ETFs, Warrants and Structured Products (interactivebrokers.com, no date shown), United States, IBKR Pro - Tiered, Minimum per order (shares)",
           "publisher": "Interactive Brokers LLC",
-          "strength": "institution"
+          "strength": "institution",
+          "quote": "Minimum per order (shares) USD 0.35 12 USD 1.00 12"
         },
         "checked": "2026-10-25",
         "effective_from": null,
@@ -168,7 +173,8 @@
           "url": "https://www.interactivebrokers.com/en/pricing/commissions-stocks.php",
           "title": "Commissions Stocks, ETFs, Warrants and Structured Products (interactivebrokers.com), United States, IBKR Pro - Tiered, 'Maximum per order 1% of Trade Value'",
           "publisher": "Interactive Brokers LLC",
-          "strength": "institution"
+          "strength": "institution",
+          "quote": "Maximum per order 1% of Trade Value 4,8 1% of Trade Value 4,8"
         },
         "checked": "2026-10-25",
         "effective_from": null,
@@ -207,7 +213,8 @@
           "url": "https://www.interactivebrokers.com/en/pricing/commissions-stocks.php",
           "title": "Commissions Stocks, ETFs, Warrants and Structured Products (interactivebrokers.com, no date shown), United Kingdom, USD Denominated, Fixed - IB SmartRouting",
           "publisher": "Interactive Brokers LLC",
-          "strength": "institution"
+          "strength": "institution",
+          "quote": "≤ 50,000,000 0.05% of Trade Value 0.05% of Trade Value 0.10% of Trade Value"
         },
         "checked": "2026-10-25",
         "effective_from": null,
@@ -228,7 +235,8 @@
           "url": "https://www.interactivebrokers.com/en/pricing/commissions-stocks.php",
           "title": "Commissions Stocks, ETFs, Warrants and Structured Products (interactivebrokers.com, no date shown), United Kingdom, USD Denominated, Fixed - IB SmartRouting, Minimum per order (shares)",
           "publisher": "Interactive Brokers LLC",
-          "strength": "institution"
+          "strength": "institution",
+          "quote": "Minimum per order (shares) USD 1.70 USD 4.00 USD 6.00"
         },
         "checked": "2026-10-25",
         "effective_from": null,
@@ -269,7 +277,8 @@
           "url": "https://www.interactivebrokers.com/en/pricing/commissions-stocks.php",
           "title": "Commissions Stocks, ETFs, Warrants and Structured Products (interactivebrokers.com, no date shown), United Kingdom, USD Denominated, Tiered",
           "publisher": "Interactive Brokers LLC",
-          "strength": "institution"
+          "strength": "institution",
+          "quote": "≤ 50,000,000 0.05% of Trade Value 0.05% of Trade Value 0.10% of Trade Value"
         },
         "checked": "2026-10-25",
         "effective_from": null,
@@ -290,7 +299,8 @@
           "url": "https://www.interactivebrokers.com/en/pricing/commissions-stocks.php",
           "title": "Commissions Stocks, ETFs, Warrants and Structured Products (interactivebrokers.com, no date shown), United Kingdom, USD Denominated, Tiered, Minimum per order (shares)",
           "publisher": "Interactive Brokers LLC",
-          "strength": "institution"
+          "strength": "institution",
+          "quote": "Minimum per order (shares) USD 1.70 USD 4.00 USD 6.00"
         },
         "checked": "2026-10-25",
         "effective_from": null,
@@ -311,7 +321,8 @@
           "url": "https://www.interactivebrokers.com/en/pricing/commissions-stocks.php",
           "title": "Commissions Stocks, ETFs, Warrants and Structured Products (interactivebrokers.com, no date shown), United Kingdom, USD Denominated, Tiered, Maximum per order (shares)",
           "publisher": "Interactive Brokers LLC",
-          "strength": "institution"
+          "strength": "institution",
+          "quote": "Maximum per order (shares) USD 39.00"
         },
         "checked": "2026-10-25",
         "effective_from": null,
@@ -351,7 +362,8 @@
           "url": "https://www.interactivebrokers.com/en/pricing/commissions-stocks.php",
           "title": "Commissions Stocks, ETFs, Warrants and Structured Products (interactivebrokers.com, no date shown), Israel (Tel Aviv Exchange), Fixed",
           "publisher": "Interactive Brokers LLC",
-          "strength": "institution"
+          "strength": "institution",
+          "quote": "0.05% of Trade Value 0.1% of Trade Value"
         },
         "checked": "2026-10-25",
         "effective_from": null,
@@ -372,7 +384,8 @@
           "url": "https://www.interactivebrokers.com/en/pricing/commissions-stocks.php",
           "title": "Commissions Stocks, ETFs, Warrants and Structured Products (interactivebrokers.com, no date shown), Israel, Fixed, Minimum per order",
           "publisher": "Interactive Brokers LLC",
-          "strength": "institution"
+          "strength": "institution",
+          "quote": "Minimum per order ILS 5.25 ILS 15.00"
         },
         "checked": "2026-10-25",
         "effective_from": null,
@@ -413,7 +426,8 @@
           "url": "https://www.interactivebrokers.com/en/pricing/commissions-stocks.php",
           "title": "Commissions Stocks, ETFs, Warrants and Structured Products (interactivebrokers.com, no date shown), Israel (Tel Aviv Exchange), Tiered",
           "publisher": "Interactive Brokers LLC",
-          "strength": "institution"
+          "strength": "institution",
+          "quote": "0.05% of Trade Value 0.1% of Trade Value"
         },
         "checked": "2026-10-25",
         "effective_from": null,
@@ -434,7 +448,8 @@
           "url": "https://www.interactivebrokers.com/en/pricing/commissions-stocks.php",
           "title": "Commissions Stocks, ETFs, Warrants and Structured Products (interactivebrokers.com, no date shown), Israel, Tiered, Minimum per order",
           "publisher": "Interactive Brokers LLC",
-          "strength": "institution"
+          "strength": "institution",
+          "quote": "Minimum per order ILS 5.25 ILS 15.00"
         },
         "checked": "2026-10-25",
         "effective_from": null,
@@ -455,7 +470,8 @@
           "url": "https://www.interactivebrokers.com/en/pricing/commissions-stocks.php",
           "title": "Commissions Stocks, ETFs, Warrants and Structured Products (interactivebrokers.com, no date shown), Israel, Tiered, Maximum per order",
           "publisher": "Interactive Brokers LLC",
-          "strength": "institution"
+          "strength": "institution",
+          "quote": "Maximum per order ILS 120.00"
         },
         "checked": "2026-10-25",
         "effective_from": null,
@@ -496,7 +512,8 @@
           "url": "https://www.interactivebrokers.com/en/pricing/commissions-stocks.php",
           "title": "Commissions Stocks, ETFs, Warrants and Structured Products (interactivebrokers.com, no date shown), page footer",
           "publisher": "Interactive Brokers LLC",
-          "strength": "institution"
+          "strength": "institution",
+          "quote": "IBKR charges no custody fees."
         },
         "checked": "2026-10-25",
         "effective_from": null,
@@ -557,7 +574,8 @@
           "url": "https://www.interactivebrokers.com/en/pricing/commissions-spot-currencies.php",
           "title": "Commissions Spot Currencies, Minimum per order, Tier I",
           "publisher": "Interactive Brokers LLC",
-          "strength": "institution"
+          "strength": "institution",
+          "quote": "Tier I - USD 2.00"
         },
         "checked": "2026-10-25",
         "effective_from": null,
@@ -596,7 +614,8 @@
           "url": "https://www.interactivebrokers.com/en/pricing/commissions-spot-currencies.php",
           "title": "Commissions Spot Currencies (interactivebrokers.com), note on the auto currency conversion service",
           "publisher": "Interactive Brokers LLC",
-          "strength": "institution"
+          "strength": "institution",
+          "quote": "typically add or subtract (at its discretion) 0.03% to the exchange rate"
         },
         "checked": "2026-10-25",
         "effective_from": null,

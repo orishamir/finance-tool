@@ -135,6 +135,7 @@
       "kind": "official_pdf",
       "strength": "primary",
       "locator": "p.8, item 16, p.11",
+      "locator_he": "עמוד 8, פרט 16, עמוד 11",
       "page": 8,
       "checked": "2026-10-25"
     },
@@ -147,6 +148,7 @@
       "kind": "official_pdf",
       "strength": "primary",
       "locator": "p.7, item 15, p.10",
+      "locator_he": "עמוד 7, פרט 15, עמוד 10",
       "page": 7,
       "checked": "2026-10-25"
     },

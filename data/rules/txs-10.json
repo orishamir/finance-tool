@@ -88,6 +88,7 @@
       "kind": "law",
       "strength": "primary",
       "locator": "p.5, item (11), s.125ב1(ב)",
+      "locator_he": "עמוד 5, פרט (11), סעיף 125ב1(ב)",
       "page": 5,
       "checked": "2026-10-25"
     }
