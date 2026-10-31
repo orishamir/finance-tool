@@ -55,11 +55,13 @@
   },
   {
     "id": "BANK OQ13",
-    "status": "narrowed"
+    "status": "closed",
+    "closed_on": "2026-10-22"
   },
   {
     "id": "BANK OQ14",
-    "status": "open",
+    "status": "closed",
+    "closed_on": "2026-10-31",
     "title_he": "ההגדרה הרשמית של ריבית הפריים"
   },
   {
@@ -118,7 +120,8 @@
   },
   {
     "id": "BPN OQ10",
-    "status": "open"
+    "status": "closed",
+    "closed_on": "2026-10-31"
   },
   {
     "id": "BPN OQ11",
@@ -189,11 +192,13 @@
   },
   {
     "id": "BRK OQ6",
-    "status": "narrowed"
+    "status": "closed",
+    "closed_on": "2026-10-31"
   },
   {
     "id": "BRK OQ7",
-    "status": "narrowed"
+    "status": "closed",
+    "closed_on": "2026-10-22"
   },
   {
     "id": "BRK OQ8",
@@ -246,7 +251,8 @@
   },
   {
     "id": "BRK OQ18",
-    "status": "open"
+    "status": "closed",
+    "closed_on": "2026-10-31"
   },
   {
     "id": "BRK OQ19",
@@ -403,11 +409,13 @@
   },
   {
     "id": "ETF OQ1",
-    "status": "narrowed"
+    "status": "closed",
+    "closed_on": "2026-10-31"
   },
   {
     "id": "ETF OQ2",
-    "status": "open",
+    "status": "closed",
+    "closed_on": "2026-10-31",
     "title_he": "חובות עושי השוק בקרנות סל לגבי מרווח וגודל"
   },
   {
@@ -472,7 +480,8 @@
   },
   {
     "id": "ETF OQ17",
-    "status": "open"
+    "status": "closed",
+    "closed_on": "2026-10-31"
   },
   {
     "id": "ETF OQ18",
@@ -824,7 +833,8 @@
   },
   {
     "id": "KGL OQ10",
-    "status": "narrowed"
+    "status": "closed",
+    "closed_on": "2026-10-31"
   },
   {
     "id": "KGL OQ11",
@@ -836,7 +846,8 @@
   },
   {
     "id": "KGL OQ13",
-    "status": "open"
+    "status": "closed",
+    "closed_on": "2026-10-31"
   },
   {
     "id": "KGL OQ14",
@@ -1250,7 +1261,8 @@
   },
   {
     "id": "REG OQ19",
-    "status": "narrowed"
+    "status": "closed",
+    "closed_on": "2026-10-31"
   },
   {
     "id": "REG OQ20",
@@ -1583,7 +1595,8 @@
   },
   {
     "id": "TXG OQ9",
-    "status": "narrowed"
+    "status": "closed",
+    "closed_on": "2026-10-31"
   },
   {
     "id": "TXG OQ10",
@@ -1591,7 +1604,8 @@
   },
   {
     "id": "TXG OQ11",
-    "status": "open"
+    "status": "closed",
+    "closed_on": "2026-10-31"
   },
   {
     "id": "TXG OQ12",
@@ -1666,7 +1680,8 @@
   },
   {
     "id": "TXH OQ14",
-    "status": "open"
+    "status": "closed",
+    "closed_on": "2026-10-31"
   },
   {
     "id": "TXA OQ1",
@@ -1781,7 +1796,8 @@
   },
   {
     "id": "TXI OQ6",
-    "status": "narrowed",
+    "status": "closed",
+    "closed_on": "2026-10-31",
     "title_he": "המס על ירידת המחיר של אג״ח צמודה כשהמדד יורד"
   },
   {
@@ -1812,7 +1828,8 @@
   },
   {
     "id": "TXI OQ12",
-    "status": "open"
+    "status": "closed",
+    "closed_on": "2026-10-31"
   },
   {
     "id": "TXI OQ13",
@@ -1988,7 +2005,8 @@
   },
   {
     "id": "TXF OQ17",
-    "status": "open"
+    "status": "closed",
+    "closed_on": "2026-10-31"
   },
   {
     "id": "TXF OQ18",
@@ -2012,7 +2030,8 @@
   },
   {
     "id": "TXS OQ1",
-    "status": "narrowed"
+    "status": "closed",
+    "closed_on": "2026-10-22"
   },
   {
     "id": "TXS OQ2",

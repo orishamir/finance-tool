@@ -50,7 +50,7 @@
         "MF-17"
       ],
       "state": "sourced",
-      "notes": "Fixed management fee as printed in the report: 0.17% of average annual net assets. Maya's fund page (https://maya.tase.co.il/he/funds/etfs/1201003, read 2026-10-25) shows the same 'דמי ניהול' 0.17%. The manager committed to the ISA outline to raise its fees only on 1 January (ETF-16). Main prospectus published on Magna on 2026-01-27, reference 2026-03-010136 (not opened; Magna returns 403 to scripts), as the report states; the prospectus block cites this report."
+      "notes": "Fixed management fee as printed in the report: 0.17% of average annual net assets. Maya's fund page (https://maya.tase.co.il/he/funds/mutual-funds/1201003, read 2026-10-25) shows the same 'דמי ניהול' 0.17%. The manager committed to the ISA outline to raise its fees only on 1 January (ETF-16). Main prospectus published on Magna on 2026-01-27, reference 2026-03-010136 (not opened; Magna returns 403 to scripts), as the report states; the prospectus block cites this report."
     },
     "trustee": {
       "value": 0.03,
