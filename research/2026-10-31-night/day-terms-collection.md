@@ -146,6 +146,27 @@ The ISINs of the three funds asked about (IE00B5BMR087, IE00B53SZB19, IE00B6R522
 
 **How they were found.** Maya's report list refuses scripts, so I tried report numbers around the known 1770707 by plain curl, one try each (1770692 to 1770720, not 1770707). This is guessing addresses, not following links; the lead may want to know. Recorded with `tried`.
 
+## Chrome, later on 2026-10-31: what the leftovers came to
+
+Read with pages opening normally; no check was completed and no banner or terms were accepted. Everything filed is in `data/sources/documents.json` (114 rows: publisher, title, edition, link, pages, topic by page), which the law and terms browser reads.
+
+| Item | Result |
+| --- | --- |
+| One Zero general terms | **Read in Chrome.** 07/25, in force 1.8.2025, 110 pages: closing p.31, changing terms s.42 p.35, conversion pp.36-37, custodians from p.89, securities pp.91-97, moving securities in p.94. In the sources file, not in the library: the bank refuses scripts, so no copy could be saved. |
+| One Zero tariff | **Read in Chrome.** 26.7.26, 33 pages: TASE trade p.9, foreign trade p.10, custody p.11, plan ONE and its monthly fee pp.4-5, conversion p.7. The 0.3% line and footnote 9 are as recorded. Pages not written onto each of the snapshot's values. |
+| Israeli annex for 1159250, 1159243, 1159235 | **Not found.** Maya's foreign-fund reports list from 2017 names 7 annexes, none of these three. |
+| Fund agreements | **Not found published.** Not in any prospectus, nor by Maya's free text on one fund, nor on the Securities Authority's pages or the managers' fund pages read. Maximum load and redemption deduction stay unknown. |
+| IBI prospectus | **Read in part.** Scanned. Fund table p.8 by eye: rows 16 to 23 each print "שיעור הוספה – אין". With p.72, no load in what was read. The other 106 pages were not read; there is no text layer and each page would have to be read as an image. |
+| Hapoalim tariff PDF | **p.44 by eye** agrees with the sheet: 0.60%, 26, 7,500, note (05) includes a tracking fund. The other pages were not viewed; the sheet rows are the firm place. |
+| Harel load column | **p.14 by eye** confirms the column: fund 5111570, load 0.200%, as the table above. With p.21, two pages by eye; the rest by layout. |
+| Hapoalim newer general terms | **None.** The bank's page still links the 09.23 edition. |
+| Massad newer chapter A, chapter B | **Filed.** Chapter A 8.25 `df171c5bb635a04d`, chapter B 8.25 `8f1702e106d3dd46`, full booklet 8.25 `bddb14e343170642`, a second copy of chapter C `a8b21c4609bac97c`. |
+| Menora provident | **Provident fund for investing: not published on its regulations page.** Eight funds listed, none of this kind. Two main regulations filed, `a30817fbde72bbdb` and `e7a5f15451f4c850`. |
+| Yalin Lapidot provident | **Not found** on its fund pages or forms page. |
+| Hebrew University fund, Slice, Globalnet | **Not found**, as job 5. Not searched again. |
+| Mizrahi-Tefahot current general terms, 1.2026 | **Not read.** Images with no text; the 8.2025 edition was read instead. |
+| PEPPER | **Filed:** general terms `5e02cf00396f62f4`, securities section `d96b6a94fa9d382c`, legal aspects `e0d0111a88add350`, fee distribution `e548d68bfd4bb0ea` (images). |
+
 ## Still missing, and what would settle it
 
 | Item | State | What would settle it |

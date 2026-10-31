@@ -526,7 +526,8 @@ function main() {
   const publishersPath = join(root, "data/sources/publishers.json");
   const documentsPath = join(root, "data/sources/documents.json");
   const publishers = existsSync(publishersPath) ? (JSON.parse(readFileSync(publishersPath, "utf8")) as Record<string, PublisherRow>) : undefined;
-  const documents = existsSync(documentsPath) ? (JSON.parse(readFileSync(documentsPath, "utf8")) as DocumentRow[]) : undefined;
+  // a row with `doc_kind` is filed for the law and terms browser and names no rule's source
+  const documents = existsSync(documentsPath) ? (JSON.parse(readFileSync(documentsPath, "utf8")) as (DocumentRow & { doc_kind?: string })[]).filter((d) => !d.doc_kind) : undefined;
   const registry = readRegistry(join(root, "data"));
   const scopeProblems: string[] = [];
   const scopeCounts: Record<string, number> = {};

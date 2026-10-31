@@ -42,6 +42,8 @@ interface TableDoc {
   publisher_he?: string;
   kind?: string;
   official_url?: string | null;
+  /** A document filed for the law and terms browser (`doc_kind`, issue 123), which does not name a card on this page. */
+  doc_kind?: string;
 }
 interface PublisherRow {
   publisher?: string;
@@ -215,7 +217,7 @@ export function loadDocuments(): DocumentCard[] {
   const links = companyLinks();
   const ownDocs = ownDocuments(rules);
   const hrefOf = (id: string) => (rules[id] && rules[id]!.scope !== "general" ? companyTermsHref(rules[id]!, links, ownDocs) : `/rules#${id}`);
-  return groupDocuments(rules, Array.isArray(table) ? table : [], publishers, hrefOf);
+  return groupDocuments(rules, (Array.isArray(table) ? table : []).filter((d) => !d.doc_kind), publishers, hrefOf);
 }
 
 
