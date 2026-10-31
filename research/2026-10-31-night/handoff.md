@@ -20,7 +20,7 @@ Next: try those in Chrome, then file everything in `data/sources` (`documents.js
 
 ## 2a. Next research, then a sweep
 
-Do issue 131 by reading the three institutions' documents. Then go through every open issue labelled `you decide` or `you do`: any question that a law, a regulator or a company's own document answers is research, not the founder's. Take the label off, rewrite the issue as research and do it. He decides only his own goals and what the site should be.
+Do issue 131 by reading the three institutions' documents. Then go through every open issue labelled `you decide` or `you do`: any question that a law, a regulator or a company's own document answers is research, not the founder's. Take the label off, rewrite the issue as research and do it. The founder decides only their own goals and what the site should be.
 
 ## 3. To tell the founder
 
