@@ -22,7 +22,7 @@ import { Num, NumberLegend, RuleRef, RulesLine } from "../components/provenance"
 import { anyWeak } from "../lib/value";
 import { Sheet } from "../components/Sheet";
 import { Breadcrumb, PageShell } from "../components/shell";
-import { Button, Callout, Card, Sentence } from "../components/kit";
+import { Button, Callout, Card, Sentence, useChartPick } from "../components/kit";
 import { loadBundle } from "../lib/bundle";
 import { type CompareBundle } from "../lib/compare";
 import { buildFees, buildHoldingFees, feeInputs, type FeeInputs, feeSensitivity, headlineGap, loadFeesData, parseSubject, rankedFor, ruleMap, softensAvoid, type FeeSensitivity, type FeesData, type FeesResult, type PlanError, type SubjectSpec } from "../lib/fees";
@@ -195,6 +195,7 @@ function Body({ bundle, fees, form, publisherNames, subject, frame }: { bundle: 
     }
   }, [bundle, fees, subject, inputs, holding.holding]);
   const [hover, setHover] = useState<number | null>(null);
+  const legendPick = useChartPick();
   const [sens, setSens] = useState<FeeSensitivity | null>(null);
   const [reductions, setReductions] = useState<Record<string, number | null>>({});
   const [panelOpen, setPanelOpen] = useState(false);
@@ -311,8 +312,8 @@ function Body({ bundle, fees, form, publisherNames, subject, frame }: { bundle: 
         {r3fees.chart.title}
       </h2>
       <Card className="flex flex-col gap-4">
-        <ChartLegend an={an} />
-        <FeeDragChart an={an} horizonYears={years} hover={hover} onHover={setHover} />
+        <ChartLegend an={an} pick={legendPick} />
+        <FeeDragChart an={an} horizonYears={years} hover={hover} onHover={setHover} highlight={legendPick.active} />
         {grossNote && an.exitGap && (
           <Sentence size="xs" tone="muted">
             {r3fees.review.chartGross.before}

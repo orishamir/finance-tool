@@ -1,15 +1,15 @@
 // The comparison chart (design-spec 6.4, design-system 6.5): the top three options and the baseline on one
 // axis, time left to right, direct labels at the right end, dashed where a line rests on a return the person
 // entered. Our own SVG on D3 scales, sharing the timeline chart's grid, axis, crosshair and table view.
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useId, useLayoutEffect, useRef, useState } from "react";
 import { scaleLinear } from "d3-scale";
 import { line } from "d3-shape";
 import { guide as guideCopy, r2 } from "../../copy";
 import type { SeriesLine } from "../../lib/compare";
 import { fmt } from "../../lib/format";
 import { durationChart, Num } from "../provenance";
-import { AxisLabels, niceYearTicks } from "../chart/TimelineChart";
-import { ChartLegend as Legend, ChartReadout as Readout, ChartTable as Table, Swatch, cx } from "../kit";
+import { AxisLabels, niceYearTicks, yearTicksIn } from "../chart/TimelineChart";
+import { ChartLegend as Legend, ChartReadout as Readout, ChartTable as Table, Swatch, ZoomBar, ZoomBrush, cx, pickDim, useYearZoom, type ChartPick } from "../kit";
 import type { Mode, ResultCtx } from "./ctx";
 
 /** The direct label's strip at the right of the plot; narrower on a phone, where the plot had 175 of 296 px (2026-10-26). */
@@ -75,9 +75,8 @@ function useTween(target: Record<string, Pt[]>): Record<string, Pt[]> {
   return shown;
 }
 
-export function ComparisonChart({ lines, mode, horizon, ctx, hover, onHover, dimmed }: { lines: SeriesLine[]; mode: Mode; horizon: number; ctx: ResultCtx; hover: number | null; onHover: (y: number | null) => void; dimmed?: boolean }) {
+export function ComparisonChart({ lines, mode, horizon, ctx, hover, onHover, dimmed, highlight }: { lines: SeriesLine[]; mode: Mode; horizon: number; ctx: ResultCtx; hover: number | null; onHover: (y: number | null) => void; dimmed?: boolean; /** The line the legend sets apart. */ highlight?: string | null }) {
   const box = useRef<HTMLDivElement>(null);
-  const svgRef = useRef<SVGSVGElement>(null);
   const [size, setSize] = useState({ width: 326, height: 240 });
   useIsoLayoutEffect(() => {
     const el = box.current;
@@ -94,34 +93,34 @@ export function ComparisonChart({ lines, mode, horizon, ctx, hover, onHover, dim
   const { width, height } = size;
   const STRIP = strip(width);
   const plotW = width - STRIP;
-  const x = scaleLinear().domain([0, Math.max(1, horizon)]).range([0, plotW]);
-  const maxV = Math.max(1, ...Object.values(shown).flatMap((p) => p.map((q) => q.v)));
+  const zoom = useYearZoom({ last: Math.max(1, horizon), plotWidth: plotW, onHover });
+  const clip = useId().replace(/:/g, "");
+  const [from, to] = zoom.domain;
+  const x = scaleLinear().domain(zoom.domain).range([0, plotW]);
+  const maxV = Math.max(1, ...Object.values(shown).flatMap((p) => p.filter((q) => zoom.has(q.year)).map((q) => q.v)));
   const y = scaleLinear().domain([0, maxV]).nice(4).range([height - BOTTOM, TOP]);
   const ticks = y.ticks(4);
   const path = line<Pt>().x((d) => x(d.year)).y((d) => y(d.v));
-  const yearTicks = niceYearTicks(horizon);
+  const yearTicks = yearTicksIn(zoom.settled[0], zoom.settled[1]);
+  const horizonSeen = zoom.settled[1] >= horizon;
   // A12: the fall the person accepts, as a band from today's amount down by that share (D11 unchanged: it filters in exposure mode only)
   const fallStart = ctx.g.amountNow - ctx.g.available;
   // the band is a bracket at the start (year 0 to the first tick): the fall is read on today's amount, not applied to every year (F-71, 2026-10-24)
-  const fallW = x(Math.min(Math.max(1, horizon), yearTicks.find((t) => t > 0) ?? 1));
+  const fallW = x(Math.min(Math.max(1, horizon), niceYearTicks(horizon).find((t) => t > 0) ?? 1));
   const fallDrop = ctx.fall && ctx.fall > 0 && fallStart > 0 ? (fallStart * Math.min(ctx.fall, 100)) / 100 : 0;
 
   // One direct label, for the leading option only (the others are in the readout and the table): placed at its line's
   // end and kept inside the plot's height, so labels can never overprint one another or the goal marker.
   const lead = ctx.view.ranked[0] ? lines.find((l) => l.id === ctx.view.ranked[0]!.id) ?? lines[0] : lines[0];
-  const leadEnd = lead ? y(shown[lead.id]?.[shown[lead.id]!.length - 1]?.v ?? 0) : 0;
+  // the last year in view: zoomed in, the label reads there, beside its line
+  const endYear = zoom.view ? zoom.settled[1] : horizon;
+  const leadEnd = lead ? y(zoom.view ? valueAt(shown[lead.id] ?? [], to) : (shown[lead.id]?.[shown[lead.id]!.length - 1]?.v ?? 0)) : 0;
   const leadY = Math.max(TOP + LABEL_H / 2 + 14, Math.min(height - BOTTOM - LABEL_H / 2, leadEnd));
 
   const leadOpt = lead ? ctx.view.ranked.find((o) => o.id === lead.id) : undefined;
   const leadLast = lead?.points[lead.points.length - 1];
-  const leadRaw = (mode === "real" ? leadOpt?.real ?? leadLast?.real : leadOpt?.nominal ?? leadLast?.nominal) ?? 0;
+  const leadRaw = zoom.view && lead ? valueAt(valueOf(lead, mode), endYear) : ((mode === "real" ? leadOpt?.real ?? leadLast?.real : leadOpt?.nominal ?? leadLast?.nominal) ?? 0);
   const leadValue = ctx.mk.nis(leadRaw, mode === "real" ? "F-06" : "F-09", lead?.name ?? "", leadOpt);
-  const pick = (clientX: number) => {
-    const rect = svgRef.current?.getBoundingClientRect();
-    if (!rect) return;
-    const yr = Math.round(x.invert(clientX - rect.left));
-    onHover(Math.max(0, Math.min(horizon, yr)));
-  };
   const hovered = hover === null ? null : hover;
   // Each ranked line carries its place in a small circle, the number its card shows: the three options are shades of one teal and
   // often run on top of each other, so the colour alone could not tell them apart (V6, 2026-10-26). The circles stand at different
@@ -131,43 +130,47 @@ export function ComparisonChart({ lines, mode, horizon, ctx, hover, onHover, dim
     .filter((b) => b.rank > 0)
     .sort((a, b) => a.rank - b.rank)
     .map((b, i) => {
-      const at = Math.max(0, horizon * (0.92 - 0.12 * i));
+      const at = Math.max(from, to - (to - from) * (0.08 + 0.12 * i));
       return { ...b, x: x(at), y: y(valueAt(shown[b.l.id] ?? [], at)) };
     });
   return (
+    <div className="flex flex-col gap-1">
     <div ref={box} className={cx("relative w-full h-[240px] lg:h-[320px] transition-opacity duration-[var(--duration-base)]", dimmed && "opacity-60")}>
       <svg
-        ref={svgRef}
+        ref={zoom.svgRef}
+        {...zoom.handlers}
         width={width}
         height={height}
         viewBox={`0 0 ${width} ${height}`}
         role="img"
         aria-label={`${r2.result.chartAria} ${fmt.years(horizon)}. ${guideCopy.graphAria.after}`}
         className="block select-none touch-pan-y"
-        onPointerMove={(e) => pick(e.clientX)}
-        onPointerDown={(e) => pick(e.clientX)}
-        onPointerUp={() => onHover(null)}
-        onPointerLeave={() => onHover(null)}
-        onPointerCancel={() => onHover(null)}
       >
+        <defs>
+          <clipPath id={clip}>
+            <rect x={0} y={0} width={plotW} height={height} />
+          </clipPath>
+        </defs>
         {ticks.map((t) => (
           <line key={t} x1={0} x2={plotW} y1={y(t)} y2={y(t)} className={t === 0 ? "stroke-chart-axis" : "stroke-chart-grid"} strokeWidth="1" />
         ))}
         {fallDrop > 0 && (
-          <g role="img" aria-label={r2.result.fallBand} data-fall-band>
+          <g role="img" aria-label={r2.result.fallBand} data-fall-band clipPath={`url(#${clip})`}>
             <rect x={0} y={y(fallStart)} width={fallW} height={Math.max(0, y(fallStart - fallDrop) - y(fallStart))} className="fill-foreground" fillOpacity="0.07" />
             <line x1={0} x2={fallW} y1={y(fallStart - fallDrop)} y2={y(fallStart - fallDrop)} className="stroke-chart-marker" strokeWidth="1" strokeDasharray="2 3" />
           </g>
         )}
-        <line x1={x(horizon)} x2={x(horizon)} y1={TOP} y2={height - BOTTOM} className="stroke-chart-marker" strokeWidth="1" />
+        {horizonSeen && <line x1={x(horizon)} x2={x(horizon)} y1={TOP} y2={height - BOTTOM} className="stroke-chart-marker" strokeWidth="1" />}
+        <g clipPath={`url(#${clip})`}>
         {[...lines].reverse().map((l) => (
-          <path key={l.id} d={path(shown[l.id] ?? []) ?? ""} fill="none" className={roleClass[l.role].stroke} strokeWidth={l.role === "baseline" ? 2.5 : roleClass[l.role].width} strokeDasharray={l.enteredReturn ? "6 4" : l.role === "baseline" ? BASELINE_DOTS : undefined} strokeLinejoin="round" strokeLinecap="round" />
+          <path key={l.id} d={path(shown[l.id] ?? []) ?? ""} fill="none" className={cx(roleClass[l.role].stroke, pickDim(highlight, l.id))} strokeWidth={l.role === "baseline" ? 2.5 : roleClass[l.role].width} strokeDasharray={l.enteredReturn ? "6 4" : l.role === "baseline" ? BASELINE_DOTS : undefined} strokeLinejoin="round" strokeLinecap="round" />
         ))}
+        </g>
         {/* after the lines, with the card-colour halo: on a phone the lines ran through "100 אלף ₪" (2026-10-26) */}
         <AxisLabels ticks={ticks} y={y} />
         <g aria-hidden="true">
           {badges.map((b) => (
-            <g key={b.l.id} transform={`translate(${b.x} ${b.y})`}>
+            <g key={b.l.id} transform={`translate(${b.x} ${b.y})`} className={pickDim(highlight, b.l.id)}>
               <circle r="9.5" className={cx("fill-card", roleClass[b.l.role].stroke)} strokeWidth="1.5" />
               <text y="0.5" textAnchor="middle" dominantBaseline="middle" direction="ltr" className="text-xs font-medium fill-foreground tabular-nums">
                 {b.rank}
@@ -176,7 +179,7 @@ export function ComparisonChart({ lines, mode, horizon, ctx, hover, onHover, dim
           ))}
         </g>
         {yearTicks.map((yr) => (
-          <text key={yr} x={x(yr)} y={height - 8} textAnchor={yr === 0 ? "start" : yr === horizon ? "end" : "middle"} direction="ltr" className="text-xs fill-chart-text" data-scale>
+          <text key={yr} x={x(yr)} y={height - 8} textAnchor={yr <= zoom.settled[0] ? "start" : yr >= zoom.settled[1] ? "end" : "middle"} direction="ltr" className="text-xs fill-chart-text" data-scale>
             {yr === 0 ? guideCopy.readout.today : yr}
           </text>
         ))}
@@ -189,10 +192,13 @@ export function ComparisonChart({ lines, mode, horizon, ctx, hover, onHover, dim
             })}
           </g>
         )}
+        <ZoomBrush brush={zoom.brush} top={TOP} bottom={height - BOTTOM} />
       </svg>
-      <span className="absolute top-0 text-xs text-chart-text whitespace-nowrap px-1 bg-card/80 rounded-sm" style={{ left: `${x(horizon)}px`, transform: "translateX(-100%)" }} dir="rtl">
-        {r2.result.chartHorizon}
-      </span>
+      {horizonSeen && (
+        <span className="absolute top-0 text-xs text-chart-text whitespace-nowrap px-1 bg-card/80 rounded-sm" style={{ left: `${x(horizon)}px`, transform: "translateX(-100%)" }} dir="rtl">
+          {r2.result.chartHorizon}
+        </span>
+      )}
       {lead && (
         <div className="absolute text-xs leading-tight" style={{ left: `${plotW + 8}px`, top: `${leadY - LABEL_H / 2}px`, width: `${STRIP - 10}px`, height: `${LABEL_H}px` }}>
           <span className="line-clamp-2 font-medium">{lead.name}</span>
@@ -201,11 +207,13 @@ export function ComparisonChart({ lines, mode, horizon, ctx, hover, onHover, dim
         </div>
       )}
     </div>
+    <ZoomBar zoom={zoom} yearWord={(yr) => (yr === 0 ? guideCopy.readout.today : String(yr))} />
+    </div>
   );
 }
 
-export function ChartLegend({ lines }: { lines: SeriesLine[] }) {
-  return <Legend items={lines.map((l) => ({ id: l.id, swatch: l.enteredReturn ? <Swatch shape="entered-line" className={roleClass[l.role].stroke} /> : l.role === "baseline" ? <Swatch shape="dotted-line" className={roleClass[l.role].stroke} /> : <Swatch className={roleClass[l.role].bg} />, label: <bdi>{l.name}</bdi> }))} />;
+export function ChartLegend({ lines, pick }: { lines: SeriesLine[]; pick?: ChartPick<string> }) {
+  return <Legend pick={pick} items={lines.map((l) => ({ id: l.id, swatch: l.enteredReturn ? <Swatch shape="entered-line" className={roleClass[l.role].stroke} /> : l.role === "baseline" ? <Swatch shape="dotted-line" className={roleClass[l.role].stroke} /> : <Swatch className={roleClass[l.role].bg} />, label: <bdi>{l.name}</bdi> }))} />;
 }
 
 /** One row per line at the hovered year (or the horizon): swatch, name, value. */

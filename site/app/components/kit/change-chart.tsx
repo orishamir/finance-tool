@@ -2,6 +2,8 @@
 // right from less to more, all lines crossing at the plan; a marker the person drags (or sets with a choice) reads every line at one
 // share, and the table under it says, for each number, what it was, what it becomes, what is left and the difference. Own SVG.
 import { useState, type PointerEvent, type ReactNode } from "react";
+import { pickDim, useChartPick } from "./chart-interact";
+import { cx } from "./cx";
 import { TableCols } from "./table-cols";
 import { ChoiceChips } from "./choice";
 import { useWidth } from "./marker";
@@ -69,6 +71,8 @@ export function ChangeChart({
 }) {
   const [ref, w] = useWidth(600);
   const [drag, setDrag] = useState(false);
+  // a row of the table sets its line apart (issue 22); the marker already answers the pointer on the plot
+  const pick = useChartPick();
   const lo = shares[0]!;
   const hi = shares[shares.length - 1]!;
   const step = shares.length > 1 ? shares[1]! - shares[0]! : 1;
@@ -133,17 +137,17 @@ export function ChangeChart({
           ))}
           <line x1={x(0)} x2={x(0)} y1={TOP} y2={H - BOTTOM} className="stroke-chart-axis" strokeDasharray="3 3" />
           {lines.map((l) => (
-            <path key={l.id} d={path(l.ys)} fill="none" className={l.stroke} strokeWidth={2.2} />
+            <path key={l.id} d={path(l.ys)} fill="none" className={cx(l.stroke, pickDim(pick.active, l.id))} strokeWidth={2.2} />
           ))}
           {ends.map((e) => (
-            <text key={e.l.id} x={plotR + 8} y={e.y + 4} className={`${e.l.fill} text-xs`}>
+            <text key={e.l.id} x={plotR + 8} y={e.y + 4} className={cx(e.l.fill, "text-xs", pickDim(pick.active, e.l.id))}>
               {e.l.label}
             </text>
           ))}
           {at !== 0 && <line x1={x(at)} x2={x(at)} y1={TOP} y2={H - BOTTOM} className="stroke-chart-crosshair" strokeWidth={1.5} />}
           {lines.map((l) => {
             const v = l.ys[idx(at)];
-            return v === null || v === undefined ? null : <circle key={l.id} cx={x(at)} cy={y(v)} r={4.5} className={`${l.fill} stroke-card`} strokeWidth={1.5} />;
+            return v === null || v === undefined ? null : <circle key={l.id} cx={x(at)} cy={y(v)} r={4.5} className={cx(l.fill, "stroke-card", pickDim(pick.active, l.id))} strokeWidth={1.5} />;
           })}
         </svg>
       </div>
@@ -162,7 +166,7 @@ export function ChangeChart({
           </thead>
           <tbody>
             {rows.map((r) => (
-              <tr key={r.id}>
+              <tr key={r.id} {...pick.bind(r.id)} className={cx("cursor-pointer transition-colors duration-[var(--duration-fast)]", pick.active === r.id && "bg-accent")}>
                 {r.cells.map((c, i) => (
                   <td key={i} className={widths[i]?.phone === "0" ? GONE : undefined}>
                     {i === 0 ? (

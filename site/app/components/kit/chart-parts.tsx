@@ -1,6 +1,7 @@
 // The three parts that sit around every chart: the legend, the readout of the hovered year, and the table view.
 import type { CSSProperties, ReactNode } from "react";
 import { buttons, kit as kitCopy } from "../../copy";
+import type { ChartPick } from "./chart-interact";
 import { cx } from "./cx";
 import { Disclosure } from "./disclosure";
 import { TableCols } from "./table-cols";
@@ -39,14 +40,26 @@ export interface LegendItem {
   label: ReactNode;
 }
 
-/** What each colour or line on a chart means: one item per series, under the chart's title. Colour never works alone, so every item has its name. */
-export function ChartLegend({ items }: { items: LegendItem[] }) {
+/**
+ * What each colour or line on a chart means: one item per series, under the chart's title. Colour never works alone, so every item has its
+ * name. With `pick`, an item that has a mark sets its series apart on the chart: a mouse previews, a click or a tap keeps (issue 22).
+ */
+export function ChartLegend({ items, pick }: { items: LegendItem[]; pick?: ChartPick<string> }) {
   return (
     <ul className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground" aria-label={kitCopy.legend}>
       {items.map((it) => (
         <li key={it.id} className={it.swatch ? "flex items-center gap-1.5" : undefined}>
-          {it.swatch}
-          {it.label}
+          {pick && it.swatch ? (
+            <button type="button" aria-pressed={pick.pinned === it.id} {...pick.bind(it.id)} className={cx("inline-flex items-center gap-1.5 max-md:min-h-target cursor-pointer transition-opacity duration-[var(--duration-fast)] hover:text-foreground", pick.active === it.id && "text-foreground", pick.active && pick.active !== it.id && "opacity-50")}>
+              {it.swatch}
+              {it.label}
+            </button>
+          ) : (
+            <>
+              {it.swatch}
+              {it.label}
+            </>
+          )}
         </li>
       ))}
     </ul>
