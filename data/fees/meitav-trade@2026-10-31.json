@@ -31,5 +31,16 @@
   "notice_rule_ids": [
     "BRK-15"
   ],
-  "missing_reason_he": "המסמכים של החברה סותרים: התעריפון מדפיס דמי ניהול של 0.15%, והדפים שלה אומרים שאין."
+  "missing_reason_he": "המסמכים של החברה סותרים: התעריפון מדפיס דמי ניהול של 0.15%, והדפים שלה אומרים שאין.",
+  "groups": {
+    "state": "no_mention",
+    "note": "Tariff 04/2026 read in the filed copy; this record is not priced for another reason. Searched for young, student, soldier, released-soldier, group and club wording; none found on a price. This covers the tariff read, not a personal offer.",
+    "read": [
+      {
+        "url": "https://www.meitav.co.il/media/zitlfr4f/עמלות-תעריפון-42026.pdf",
+        "title": "תעריפון עמלות"
+      }
+    ],
+    "entries": []
+  }
 }

@@ -59,7 +59,7 @@
         "notes": "Printed per share: 'USD 0.005' a share (unit usd_per_share since 2026-10-25), 'Minimum per order (shares) USD 1.00', 'Maximum per order 1% of Trade Value' (recorded in cap). 'In the event the calculated maximum per order is less than the minimum per order, the maximum per order will be assessed.' Third-party fees for Fixed: regulatory fees (SEC Transaction Fee USD 0.0000206 * Value of Aggregate Sales; FINRA Trading Activity Fee, with a 'Fee Holiday ... from Oct 1, 2026 through Dec 31, 2026'; FINRA CAT fees USD 0.000003 * Quantity). IBKR Lite (USD 0 commissions) is 'US Residents Only'. The page: 'The published rates are for direct clients of IBKR. Clients introduced through another broker or managed by an advisor may pay additional commissions set by their introducing broker or advisor.' The same tables are on interactivebrokers.ie (IB Ireland) as read on 2026-10-25."
       },
       "min": {
-        "value": 1.0,
+        "value": 1,
         "unit": "usd_per_trade",
         "source": {
           "url": "https://www.interactivebrokers.com/en/pricing/commissions-stocks.php",
@@ -229,7 +229,7 @@
         "notes": "'0.05% of Trade Value', 'Minimum per order (shares) USD 4.00', 'Maximum per order (shares) None'. Direct Routing: 0.10%, minimum USD 6.00. This is the line for a USD-quoted UCITS ETF on the LSE such as CSPX. Example printed: '250 Shares @ USD 32 Share Price = USD 4.00'. The page: 'The published rates are for direct clients of IBKR. Clients introduced through another broker or managed by an advisor may pay additional commissions set by their introducing broker or advisor.' The same tables are on interactivebrokers.ie (IB Ireland) as read on 2026-10-25."
       },
       "min": {
-        "value": 4.0,
+        "value": 4,
         "unit": "usd_per_trade",
         "source": {
           "url": "https://www.interactivebrokers.com/en/pricing/commissions-stocks.php",
@@ -315,7 +315,7 @@
         "notes": "'USD 1.70'."
       },
       "max": {
-        "value": 39.0,
+        "value": 39,
         "unit": "usd_per_trade",
         "source": {
           "url": "https://www.interactivebrokers.com/en/pricing/commissions-stocks.php",
@@ -378,7 +378,7 @@
         "notes": "'0.1% of Trade Value', 'Minimum per order ILS 15.00', 'Maximum per order None'; example '200 Shares @ ILS 75 Share Price = ILS 15.00'. The section prices TASE stocks and ETFs; applies_to names ETF units only because the class for shares also covers bonds, which this line does not price. Whether an Israeli-resident retail client may trade TASE at IBKR directly is not stated on any page read (BRK-43). The page: 'The published rates are for direct clients of IBKR. Clients introduced through another broker or managed by an advisor may pay additional commissions set by their introducing broker or advisor.' The same tables are on interactivebrokers.ie (IB Ireland) as read on 2026-10-25."
       },
       "min": {
-        "value": 15.0,
+        "value": 15,
         "unit": "nis",
         "source": {
           "url": "https://www.interactivebrokers.com/en/pricing/commissions-stocks.php",
@@ -464,7 +464,7 @@
         "notes": "'ILS 5.25'."
       },
       "max": {
-        "value": 120.0,
+        "value": 120,
         "unit": "nis",
         "source": {
           "url": "https://www.interactivebrokers.com/en/pricing/commissions-stocks.php",
@@ -568,7 +568,7 @@
         "notes": "Printed '0.20 basis point * Trade Value' for monthly trade value up to USD 1,000,000,000 (then 0.15, 0.10, 0.08 basis point), with '1 basis point=0.0001'; the unit vocabulary has no basis-point unit (0.20 basis point = 0.002%), so no rate is recorded; the USD 2.00 minimum is recorded in usd_per_trade. 'Commissions for currency trades are calculated off the trade value and then converted and charged to the base currency of the account.' 'All exchange and regulatory fees included.'"
       },
       "min": {
-        "value": 2.0,
+        "value": 2,
         "unit": "usd_per_trade",
         "source": {
           "url": "https://www.interactivebrokers.com/en/pricing/commissions-spot-currencies.php",
@@ -720,5 +720,16 @@
       "what": "לקוח שהגיע דרך ברוקר מציג",
       "why": "Pays the introducing broker's own tariff; Interactive Israel has its own row."
     }
-  ]
+  ],
+  "groups": {
+    "state": "no_mention",
+    "note": "Price pages read in the filed copies; 'Student Trading Lab' there is a course, not a price. Searched for young, student, soldier, released-soldier, group and club wording; none found on a price. This covers the tariff read, not a personal offer.",
+    "read": [
+      {
+        "url": "https://www.interactivebrokers.com/en/pricing/commissions-stocks.php",
+        "title": "Commissions"
+      }
+    ],
+    "entries": []
+  }
 }

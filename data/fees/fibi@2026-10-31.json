@@ -1693,14 +1693,302 @@
     }
   ],
   "price_for_he": "לקוח רגיל, בלי הטבה לקבוצה",
-  "left_out": [
-    {
-      "what": "מחירים לקבוצות אוכלוסייה",
-      "why": "The ranking uses the ordinary customer; group prices and how long they last are not collected (issue 140)."
-    },
-    {
-      "what": "מועדון HighTech 10",
-      "why": "A club's prices, with their own conditions; recorded in a rule, not priced."
-    }
-  ]
+  "left_out": [],
+  "groups": {
+    "state": "prices",
+    "row_he": "לסטודנטים: דמי ניהול 0.1365% לרבעון במקום 0.195%, עד 3 שנים. בחשבון צעירים וחיילים אין מחיר לניירות ערך.",
+    "note": "Annex A pp.1-3 fetched and filed in this work; column order checked with the layout text. Young and soldier accounts print --- on every securities row. The HighTech 10 sheets were already filed. Their end date of 31.12.2026 and the two years of the self-directed track are both printed and are recorded as printed.",
+    "read": [
+      {
+        "url": "https://www.fibi.co.il/media/ys4pkdpw/נספח-א-הטבות-לקבוצות-אוכלוסיה-31.pdf",
+        "title": "נספח א', הטבות לקבוצות אוכלוסיה"
+      },
+      {
+        "url": "https://www.fibi.co.il/media/iuwfsifx/%D7%94%D7%98%D7%91%D7%95%D7%AA-%D7%91%D7%A4%D7%A2%D7%99%D7%9C%D7%95%D7%AA-%D7%91%D7%A9%D7%95%D7%A7-%D7%94%D7%94%D7%95%D7%9F.pdf",
+        "title": "הטבות בפעילות שוק ההון, מועדון הייטק־טן"
+      },
+      {
+        "url": "https://www.fibi.co.il/media/cnvlnxrr/%D7%94%D7%98%D7%91%D7%95%D7%AA-%D7%99%D7%99%D7%97%D7%95%D7%93%D7%99%D7%95%D7%AA-%D7%9C%D7%A4%D7%A2%D7%99%D7%9C%D7%99%D7%9D-%D7%A2%D7%A6%D7%9E%D7%90%D7%99%D7%AA.pdf",
+        "title": "הטבות לפעילים עצמאית בשוק ההון"
+      }
+    ],
+    "entries": [
+      {
+        "kind": "student",
+        "name_he": "חשבונות סטודנטים",
+        "who_he": "מי שהציג תעודת סטודנט או אישור על לימודים במוסד אקדמי או במוסד להכשרה מקצועית של שנה לפחות; עד גיל 35, ובאוניברסיטה הפתוחה עד 40",
+        "who_source": {
+          "url": "https://www.fibi.co.il/media/ys4pkdpw/נספח-א-הטבות-לקבוצות-אוכלוסיה-31.pdf",
+          "title": "נספח א', הטבות לקבוצות אוכלוסיה",
+          "page": 3,
+          "quote": "החשבון מיועד לסטודנטים עד גיל 35בלבד"
+        },
+        "ends_printed": true,
+        "ends_he": "יתרת שנות הלימוד, ולכל היותר 3 שנים. אפשר לחדש באישורים עדכניים.",
+        "ends_source": {
+          "url": "https://www.fibi.co.il/media/ys4pkdpw/נספח-א-הטבות-לקבוצות-אוכלוסיה-31.pdf",
+          "title": "נספח א', הטבות לקבוצות אוכלוסיה",
+          "page": 3,
+          "quote": "אך לא יותר מ 3 -שנים"
+        },
+        "prices": [
+          {
+            "fee": "trade_israel",
+            "price_he": "0.40%, בכפוף למינימום ומקסימום",
+            "holdings_he": "מניות ואג״ח הנסחרים בבורסה בת״א",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.fibi.co.il/media/ys4pkdpw/נספח-א-הטבות-לקבוצות-אוכלוסיה-31.pdf",
+              "title": "נספח א', הטבות לקבוצות אוכלוסיה",
+              "page": 2,
+              "quote": "קניה/מכירה/פדיון של מניות ואג\"ח"
+            }
+          },
+          {
+            "fee": "trade_abroad",
+            "price_he": "0.45%, בכפוף למינימום ומקסימום",
+            "holdings_he": "מניות, אג״ח וקרנות נאמנות בחוץ לארץ",
+            "names_fund": true,
+            "source": {
+              "url": "https://www.fibi.co.il/media/ys4pkdpw/נספח-א-הטבות-לקבוצות-אוכלוסיה-31.pdf",
+              "title": "נספח א', הטבות לקבוצות אוכלוסיה",
+              "page": 2,
+              "quote": "מניות ,אג\"ח וקרנות"
+            }
+          },
+          {
+            "fee": "custody_israel",
+            "price_he": "0.1365% לרבעון",
+            "holdings_he": "דמי ניהול פיקדון ני״ע בת״א",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.fibi.co.il/media/ys4pkdpw/נספח-א-הטבות-לקבוצות-אוכלוסיה-31.pdf",
+              "title": "נספח א', הטבות לקבוצות אוכלוסיה",
+              "page": 2,
+              "quote": "0.1365%לרבעון"
+            }
+          },
+          {
+            "fee": "custody_abroad",
+            "price_he": "0.1393% לרבעון",
+            "holdings_he": "דמי ניהול פיקדון ני״ע בחו״ל",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.fibi.co.il/media/ys4pkdpw/נספח-א-הטבות-לקבוצות-אוכלוסיה-31.pdf",
+              "title": "נספח א', הטבות לקבוצות אוכלוסיה",
+              "page": 2,
+              "quote": "0.1393%לרבעון"
+            }
+          }
+        ]
+      },
+      {
+        "kind": "other",
+        "name_he": "חשבונות אברכים, תלמידי ישיבות, כולל, תלמידות סמינרים ואולפנות",
+        "who_he": "מי שהציג אישור לימודים; אברכים ותלמידי ישיבה עד גיל 35, תלמידות סמינר עד 22; ללקוחות סניפי מערך פאג״י",
+        "who_source": {
+          "url": "https://www.fibi.co.il/media/ys4pkdpw/נספח-א-הטבות-לקבוצות-אוכלוסיה-31.pdf",
+          "title": "נספח א', הטבות לקבוצות אוכלוסיה",
+          "page": 3,
+          "quote": "החשבון מיועד לאברכים ,תלמידי ישיבה/כולל עד גיל 35בלבד"
+        },
+        "ends_printed": true,
+        "ends_he": "שנה אקדמית אחת, ואפשר לחדש באישורים",
+        "ends_source": {
+          "url": "https://www.fibi.co.il/media/ys4pkdpw/נספח-א-הטבות-לקבוצות-אוכלוסיה-31.pdf",
+          "title": "נספח א', הטבות לקבוצות אוכלוסיה",
+          "page": 3,
+          "quote": "יהיה בתוקף למשך שנה אקדמית אחת"
+        },
+        "prices": [
+          {
+            "fee": "trade_israel",
+            "price_he": "0.40%, בכפוף למינימום ומקסימום",
+            "holdings_he": "מניות ואג״ח הנסחרים בבורסה בת״א",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.fibi.co.il/media/ys4pkdpw/נספח-א-הטבות-לקבוצות-אוכלוסיה-31.pdf",
+              "title": "נספח א', הטבות לקבוצות אוכלוסיה",
+              "page": 2,
+              "quote": "קניה/מכירה/פדיון של מניות ואג\"ח"
+            }
+          },
+          {
+            "fee": "trade_abroad",
+            "price_he": "0.45%, בכפוף למינימום ומקסימום",
+            "holdings_he": "מניות, אג״ח וקרנות נאמנות בחוץ לארץ",
+            "names_fund": true,
+            "source": {
+              "url": "https://www.fibi.co.il/media/ys4pkdpw/נספח-א-הטבות-לקבוצות-אוכלוסיה-31.pdf",
+              "title": "נספח א', הטבות לקבוצות אוכלוסיה",
+              "page": 2,
+              "quote": "מניות ,אג\"ח וקרנות"
+            }
+          },
+          {
+            "fee": "custody_israel",
+            "price_he": "0.1365% לרבעון",
+            "holdings_he": "דמי ניהול פיקדון ני״ע בת״א",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.fibi.co.il/media/ys4pkdpw/נספח-א-הטבות-לקבוצות-אוכלוסיה-31.pdf",
+              "title": "נספח א', הטבות לקבוצות אוכלוסיה",
+              "page": 2,
+              "quote": "0.1365%לרבעון"
+            }
+          },
+          {
+            "fee": "custody_abroad",
+            "price_he": "0.1393% לרבעון",
+            "holdings_he": "דמי ניהול פיקדון ני״ע בחו״ל",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.fibi.co.il/media/ys4pkdpw/נספח-א-הטבות-לקבוצות-אוכלוסיה-31.pdf",
+              "title": "נספח א', הטבות לקבוצות אוכלוסיה",
+              "page": 2,
+              "quote": "0.1393%לרבעון"
+            }
+          }
+        ]
+      },
+      {
+        "kind": "other",
+        "name_he": "מועדון הייטק־טן",
+        "who_he": "בעלונים שנקראו לא כתוב מי זכאי למועדון",
+        "who_source": {
+          "url": "https://www.fibi.co.il/media/iuwfsifx/%D7%94%D7%98%D7%91%D7%95%D7%AA-%D7%91%D7%A4%D7%A2%D7%99%D7%9C%D7%95%D7%AA-%D7%91%D7%A9%D7%95%D7%A7-%D7%94%D7%94%D7%95%D7%9F.pdf",
+          "title": "הטבות בפעילות שוק ההון, מועדון הייטק־טן",
+          "page": 1,
+          "quote": "מועדון \"הייטק-טן\""
+        },
+        "ends_printed": true,
+        "ends_he": "עד 31.12.2026",
+        "ends_source": {
+          "url": "https://www.fibi.co.il/media/iuwfsifx/%D7%94%D7%98%D7%91%D7%95%D7%AA-%D7%91%D7%A4%D7%A2%D7%99%D7%9C%D7%95%D7%AA-%D7%91%D7%A9%D7%95%D7%A7-%D7%94%D7%94%D7%95%D7%9F.pdf",
+          "title": "הטבות בפעילות שוק ההון, מועדון הייטק־טן",
+          "page": 1,
+          "quote": "יוענקו עד ליום 31.12.2026"
+        },
+        "prices": [
+          {
+            "fee": "trade_israel",
+            "price_he": "0.18%",
+            "holdings_he": "מניות ואג״ח הנסחרים בבורסה בת״א",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.fibi.co.il/media/iuwfsifx/%D7%94%D7%98%D7%91%D7%95%D7%AA-%D7%91%D7%A4%D7%A2%D7%99%D7%9C%D7%95%D7%AA-%D7%91%D7%A9%D7%95%D7%A7-%D7%94%D7%94%D7%95%D7%9F.pdf",
+              "title": "הטבות בפעילות שוק ההון, מועדון הייטק־טן",
+              "page": 1,
+              "quote": "0.18%"
+            }
+          },
+          {
+            "fee": "trade_abroad",
+            "price_he": "0.22%",
+            "holdings_he": "מניות, אג״ח וקרנות נאמנות בחו״ל",
+            "names_fund": true,
+            "source": {
+              "url": "https://www.fibi.co.il/media/iuwfsifx/%D7%94%D7%98%D7%91%D7%95%D7%AA-%D7%91%D7%A4%D7%A2%D7%99%D7%9C%D7%95%D7%AA-%D7%91%D7%A9%D7%95%D7%A7-%D7%94%D7%94%D7%95%D7%9F.pdf",
+              "title": "הטבות בפעילות שוק ההון, מועדון הייטק־טן",
+              "page": 1,
+              "quote": "וקרנות נאמנות בחו\"ל"
+            }
+          },
+          {
+            "fee": "custody_israel",
+            "price_he": "0.1% לרבעון",
+            "holdings_he": "דנ״פ ני״ע בארץ ובחו״ל",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.fibi.co.il/media/iuwfsifx/%D7%94%D7%98%D7%91%D7%95%D7%AA-%D7%91%D7%A4%D7%A2%D7%99%D7%9C%D7%95%D7%AA-%D7%91%D7%A9%D7%95%D7%A7-%D7%94%D7%94%D7%95%D7%9F.pdf",
+              "title": "הטבות בפעילות שוק ההון, מועדון הייטק־טן",
+              "page": 1,
+              "quote": "0.1%לרבעון"
+            }
+          },
+          {
+            "fee": "custody_abroad",
+            "price_he": "0.1% לרבעון",
+            "holdings_he": "דנ״פ ני״ע בארץ ובחו״ל",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.fibi.co.il/media/iuwfsifx/%D7%94%D7%98%D7%91%D7%95%D7%AA-%D7%91%D7%A4%D7%A2%D7%99%D7%9C%D7%95%D7%AA-%D7%91%D7%A9%D7%95%D7%A7-%D7%94%D7%94%D7%95%D7%9F.pdf",
+              "title": "הטבות בפעילות שוק ההון, מועדון הייטק־טן",
+              "page": 1,
+              "quote": "0.1%לרבעון"
+            }
+          }
+        ]
+      },
+      {
+        "kind": "other",
+        "name_he": "הייטק־טן, מסלול לפעילים עצמאית",
+        "who_he": "לקוחות חדשים שהצטרפו למועדון ופועלים עצמאית באפליקציה או באתר הבנק; לקוחות קיימים שמעבירים תיק חדש או נכסים נוספים",
+        "who_source": {
+          "url": "https://www.fibi.co.il/media/cnvlnxrr/%D7%94%D7%98%D7%91%D7%95%D7%AA-%D7%99%D7%99%D7%97%D7%95%D7%93%D7%99%D7%95%D7%AA-%D7%9C%D7%A4%D7%A2%D7%99%D7%9C%D7%99%D7%9D-%D7%A2%D7%A6%D7%9E%D7%90%D7%99%D7%AA.pdf",
+          "title": "הטבות לפעילים עצמאית בשוק ההון",
+          "page": 1,
+          "quote": "לקוחות חדשים שהצטרפו למועדון"
+        },
+        "ends_printed": true,
+        "ends_he": "שנתיים מיום ההצטרפות, וכתוב גם שמ־1.1.2027 אין זכאות מתוקף המבצע",
+        "ends_source": {
+          "url": "https://www.fibi.co.il/media/cnvlnxrr/%D7%94%D7%98%D7%91%D7%95%D7%AA-%D7%99%D7%99%D7%97%D7%95%D7%93%D7%99%D7%95%D7%AA-%D7%9C%D7%A4%D7%A2%D7%99%D7%9C%D7%99%D7%9D-%D7%A2%D7%A6%D7%9E%D7%90%D7%99%D7%AA.pdf",
+          "title": "הטבות לפעילים עצמאית בשוק ההון",
+          "page": 2,
+          "quote": "תוקף מסלול ההטבות הינו לשנתיים מיום ההצטרפות"
+        },
+        "prices": [
+          {
+            "fee": "trade_israel",
+            "price_he": "0.1%, מינימום 5 שקלים",
+            "holdings_he": "מניות ואגרות חוב לרבות \"קרן מחקה\" (למעט קרנות נאמנות, אופציות מעו״ף וחוזים עתידיים במעו״ף)",
+            "names_fund": true,
+            "source": {
+              "url": "https://www.fibi.co.il/media/cnvlnxrr/%D7%94%D7%98%D7%91%D7%95%D7%AA-%D7%99%D7%99%D7%97%D7%95%D7%93%D7%99%D7%95%D7%AA-%D7%9C%D7%A4%D7%A2%D7%99%D7%9C%D7%99%D7%9D-%D7%A2%D7%A6%D7%9E%D7%90%D7%99%D7%AA.pdf",
+              "title": "הטבות לפעילים עצמאית בשוק ההון",
+              "page": 2,
+              "quote": "מניות ואגרות חוב לרבות \"קרן מחקה\""
+            }
+          },
+          {
+            "fee": "trade_abroad",
+            "price_he": "0.1%, מינימום 8 דולר",
+            "holdings_he": "מניות",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.fibi.co.il/media/cnvlnxrr/%D7%94%D7%98%D7%91%D7%95%D7%AA-%D7%99%D7%99%D7%97%D7%95%D7%93%D7%99%D7%95%D7%AA-%D7%9C%D7%A4%D7%A2%D7%99%D7%9C%D7%99%D7%9D-%D7%A2%D7%A6%D7%9E%D7%90%D7%99%D7%AA.pdf",
+              "title": "הטבות לפעילים עצמאית בשוק ההון",
+              "page": 2,
+              "quote": "מינ' ,8$ -מקס' -לפי תעריפון הבנק מניות"
+            }
+          },
+          {
+            "fee": "custody_israel",
+            "price_he": "0.025% לרבעון",
+            "holdings_he": "דמי ניהול פיקדון ני״ע הנסחרים/אינם נסחרים בת״א",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.fibi.co.il/media/cnvlnxrr/%D7%94%D7%98%D7%91%D7%95%D7%AA-%D7%99%D7%99%D7%97%D7%95%D7%93%D7%99%D7%95%D7%AA-%D7%9C%D7%A4%D7%A2%D7%99%D7%9C%D7%99%D7%9D-%D7%A2%D7%A6%D7%9E%D7%90%D7%99%D7%AA.pdf",
+              "title": "הטבות לפעילים עצמאית בשוק ההון",
+              "page": 2,
+              "quote": "0.025%לרבעון"
+            }
+          },
+          {
+            "fee": "custody_abroad",
+            "price_he": "0.025% לרבעון",
+            "holdings_he": "דמי ניהול פיקדון ני״ע הנסחרים/אינם נסחרים בחו״ל",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.fibi.co.il/media/cnvlnxrr/%D7%94%D7%98%D7%91%D7%95%D7%AA-%D7%99%D7%99%D7%97%D7%95%D7%93%D7%99%D7%95%D7%AA-%D7%9C%D7%A4%D7%A2%D7%99%D7%9C%D7%99%D7%9D-%D7%A2%D7%A6%D7%9E%D7%90%D7%99%D7%AA.pdf",
+              "title": "הטבות לפעילים עצמאית בשוק ההון",
+              "page": 2,
+              "quote": "0.025%לרבעון"
+            }
+          }
+        ]
+      }
+    ]
+  }
 }

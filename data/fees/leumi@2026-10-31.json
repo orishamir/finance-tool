@@ -1324,11 +1324,6 @@
   "price_for_he": "לקוח רגיל, בלי הטבה לקבוצה",
   "left_out": [
     {
-      "what": "מחירים לקבוצות אוכלוסייה",
-      "page": 2,
-      "why": "The ranking uses the ordinary customer; group prices and how long they last are not collected (issue 140)."
-    },
-    {
       "what": "לקוחות ישיר לאומי: החזר 20% מעמלות מסוימות",
       "page": 10,
       "why": "The listed parts do not include securities; a foreign-currency refund is not priced."
@@ -1337,5 +1332,474 @@
       "what": "קניה מרוכזת לתיק",
       "why": "A percentage with no minimum, for one kind of order; not priced."
     }
-  ]
+  ],
+  "groups": {
+    "state": "prices",
+    "row_he": "לקבוצות: דמי ניהול 0.075% לרבעון במקום 0.15% בתעריפון, ובדפי החשבונות פטור. בתעריפון אין תאריך סיום.",
+    "note": "Tariff annex A pp.2-9 read in the filed copy; who qualifies from the bank's account-types page and student page, both filed. The tariff prints no end for securities prices. The account-types and student pages print a custody exemption and 7 NIS or 7 USD a trade beside the tariff's rates; how the two combine, and when the released soldier's exemption ends, is not printed. Page 1: no double benefit, the higher benefit counts. A bulletin for doctors (library 4e658539456f3ef7) is about one profession and was not used.",
+    "read": [
+      {
+        "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
+        "title": "תעריפון העמלות המלא, נספח א'"
+      },
+      {
+        "url": "https://www.leumi.co.il/he/account_types",
+        "title": "סוגי חשבונות, בנק לאומי"
+      },
+      {
+        "url": "https://www.leumi.co.il/he/Articles/student_account_benefits",
+        "title": "חשבון סטודנט, בנק לאומי"
+      }
+    ],
+    "entries": [
+      {
+        "kind": "young",
+        "name_he": "לאומי צעיר 14-16 ו־16-18 ונוער עובד",
+        "who_he": "צעירים בגילאי 14 עד 18. עד גיל 16 באישור הורים בלבד.",
+        "who_source": {
+          "url": "https://www.leumi.co.il/he/account_types",
+          "title": "סוגי חשבונות, בנק לאומי",
+          "page": 1,
+          "quote": "צעירים בין הגילאים 14-18 עד גיל 16 באישור הורים בלבד"
+        },
+        "ends_printed": false,
+        "ends_he": "בתעריפון לא כתוב מתי המחיר של הקבוצה נגמר",
+        "prices": [
+          {
+            "fee": "trade_israel",
+            "price_he": "מניות 0.500%, אגרות חוב 0.350%, בכפוף למינימום",
+            "holdings_he": "מניות ואג״ח הנסחרות בבורסה בת״א",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
+              "title": "תעריפון העמלות המלא, נספח א'",
+              "page": 2,
+              "quote": "0.500 אחוז גביה קנייה /מכירה מניות הנסחרות בבורסה"
+            }
+          },
+          {
+            "fee": "custody_israel",
+            "price_he": "0.075% לרבעון",
+            "holdings_he": "דמי ניהול ני״ע ישראל",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
+              "title": "תעריפון העמלות המלא, נספח א'",
+              "page": 2,
+              "quote": "0.075 אחוז גביה דמי ניהול ניע ישראל לרבעון"
+            }
+          },
+          {
+            "fee": "custody_abroad",
+            "price_he": "0.100% לרבעון",
+            "holdings_he": "דמי ניהול ני״ע חו״ל",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
+              "title": "תעריפון העמלות המלא, נספח א'",
+              "page": 2,
+              "quote": "0.100 אחוז גביה דמי ניהול ני \"ע חו \"ל לרבעון"
+            }
+          }
+        ],
+        "inferred": "That a group price ends when the person leaves the group is inferred: Leumi's tariff prints no end for these securities prices, only 3 or 4 years on credit cards. The age ranges come from its account-types page, not from the tariff."
+      },
+      {
+        "kind": "young",
+        "name_he": "לאומי 18+",
+        "who_he": "צעירים בגילאי 18 עד 21 או עד תום שירות צבאי, המאוחר מביניהם; עתודאים בגילאי 18 עד 25; בני ישיבות ובנות סמינר",
+        "who_source": {
+          "url": "https://www.leumi.co.il/he/account_types",
+          "title": "סוגי חשבונות, בנק לאומי",
+          "page": 1,
+          "quote": "צעירים בגילאים 18-21 או עד תום שירות צבאי (המאוחר מבניהם)"
+        },
+        "ends_printed": false,
+        "ends_he": "בתעריפון לא כתוב מתי המחיר של הקבוצה נגמר",
+        "prices": [
+          {
+            "fee": "trade_israel",
+            "price_he": "מניות 0.500%, אגרות חוב 0.350%, בכפוף למינימום",
+            "holdings_he": "מניות ואג״ח הנסחרות בבורסה בת״א",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
+              "title": "תעריפון העמלות המלא, נספח א'",
+              "page": 4,
+              "quote": "0.500 אחוז גביה קנייה /מכירה מניות הנסחרות בבורסה"
+            }
+          },
+          {
+            "fee": "custody_israel",
+            "price_he": "0.075% לרבעון",
+            "holdings_he": "דמי ניהול ני״ע ישראל",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
+              "title": "תעריפון העמלות המלא, נספח א'",
+              "page": 4,
+              "quote": "0.075 אחוז גביה דמי ניהול ניע ישראל לרבעון"
+            }
+          },
+          {
+            "fee": "custody_abroad",
+            "price_he": "0.100% לרבעון",
+            "holdings_he": "דמי ניהול ני״ע חו״ל",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
+              "title": "תעריפון העמלות המלא, נספח א'",
+              "page": 5,
+              "quote": "0.100 אחוז גביה דמי ניהול ני \"ע חו \"ל לרבעון"
+            }
+          }
+        ],
+        "inferred": "That a group price ends when the person leaves the group is inferred: Leumi's tariff prints no end for these securities prices, only 3 or 4 years on credit cards. The age ranges come from its account-types page, not from the tariff."
+      },
+      {
+        "kind": "released",
+        "name_he": "לאומי חייל משוחרר",
+        "who_he": "בעלי חשבון 18+ בלאומי שהשתחררו מהצבא; חיילים משוחררים בני 21 עד 24 שפותחים חשבון חדש בלאומי",
+        "who_source": {
+          "url": "https://www.leumi.co.il/he/account_types",
+          "title": "סוגי חשבונות, בנק לאומי",
+          "page": 1,
+          "quote": "בעלי חשבון 18+ בלאומי שהשתחררו מהצבא חיילים משוחררים בני 21-24"
+        },
+        "ends_printed": false,
+        "ends_he": "בתעריפון לא כתוב מתי המחיר של הקבוצה נגמר",
+        "prices": [
+          {
+            "fee": "trade_israel",
+            "price_he": "מניות 0.500%, אגרות חוב 0.400%, בכפוף למינימום",
+            "holdings_he": "מניות ואג״ח הנסחרות בבורסה בת״א",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
+              "title": "תעריפון העמלות המלא, נספח א'",
+              "page": 6,
+              "quote": "0.500 אחוז גביה קנייה /מכירה מניות הנסחרות בבורסה"
+            }
+          },
+          {
+            "fee": "custody_israel",
+            "price_he": "0.090% לרבעון",
+            "holdings_he": "דמי ניהול ני״ע ישראל",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
+              "title": "תעריפון העמלות המלא, נספח א'",
+              "page": 6,
+              "quote": "0.090 אחוז גביה דמי ניהול ניע ישראל לרבעון"
+            }
+          },
+          {
+            "fee": "custody_abroad",
+            "price_he": "0.120% לרבעון",
+            "holdings_he": "דמי ניהול ני״ע חו״ל",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
+              "title": "תעריפון העמלות המלא, נספח א'",
+              "page": 6,
+              "quote": "0.120 אחוז גביה דמי ניהול ני \"ע חו \"ל לרבעון"
+            }
+          }
+        ],
+        "inferred": "That a group price ends when the person leaves the group is inferred: Leumi's tariff prints no end for these securities prices, only 3 or 4 years on credit cards. The age ranges come from its account-types page, not from the tariff."
+      },
+      {
+        "kind": "young",
+        "name_he": "לאומי חיילים ו־18+, בדף החשבונות",
+        "who_he": "כמו לאומי 18+",
+        "who_source": {
+          "url": "https://www.leumi.co.il/he/account_types",
+          "title": "סוגי חשבונות, בנק לאומי",
+          "page": 1,
+          "quote": "חשבון חיילים וגילאי 18+"
+        },
+        "ends_printed": true,
+        "ends_he": "פטור מדמי ניהול למשך שנה. על העמלות לא כתוב עד מתי.",
+        "ends_source": {
+          "url": "https://www.leumi.co.il/he/account_types",
+          "title": "סוגי חשבונות, בנק לאומי",
+          "page": 1,
+          "quote": "פטור מדמי ניהול ני\"ע ישראליים וזרים למשך שנה"
+        },
+        "prices": [
+          {
+            "fee": "custody_israel",
+            "price_he": "פטור, לשנה",
+            "holdings_he": "ני״ע ישראליים וזרים",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.leumi.co.il/he/account_types",
+              "title": "סוגי חשבונות, בנק לאומי",
+              "page": 1,
+              "quote": "פטור מדמי ניהול ני\"ע ישראליים וזרים למשך שנה"
+            }
+          },
+          {
+            "fee": "custody_abroad",
+            "price_he": "פטור, לשנה",
+            "holdings_he": "ני״ע ישראליים וזרים",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.leumi.co.il/he/account_types",
+              "title": "סוגי חשבונות, בנק לאומי",
+              "page": 1,
+              "quote": "פטור מדמי ניהול ני\"ע ישראליים וזרים למשך שנה"
+            }
+          },
+          {
+            "fee": "trade_israel",
+            "price_he": "7 שקלים לפעולה",
+            "holdings_he": "ני״ע ישראליים",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.leumi.co.il/he/account_types",
+              "title": "סוגי חשבונות, בנק לאומי",
+              "page": 1,
+              "quote": "(7 ₪ ישראליים, 7$ בזרים)"
+            }
+          },
+          {
+            "fee": "trade_abroad",
+            "price_he": "7 דולר לפעולה",
+            "holdings_he": "ני״ע זרים",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.leumi.co.il/he/account_types",
+              "title": "סוגי חשבונות, בנק לאומי",
+              "page": 1,
+              "quote": "(7 ₪ ישראליים, 7$ בזרים)"
+            }
+          }
+        ]
+      },
+      {
+        "kind": "released",
+        "name_he": "לאומי חייל משוחרר, בדף החשבונות",
+        "who_he": "כמו לאומי חייל משוחרר",
+        "who_source": {
+          "url": "https://www.leumi.co.il/he/account_types",
+          "title": "סוגי חשבונות, בנק לאומי",
+          "page": 1,
+          "quote": "חיילים משוחררים בני 21-24 שפותחים חשבון חדש בלאומי"
+        },
+        "ends_printed": false,
+        "ends_he": "בדף לא כתוב עד מתי",
+        "prices": [
+          {
+            "fee": "custody_israel",
+            "price_he": "פטור",
+            "holdings_he": "ני״ע ישראליים וזרים",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.leumi.co.il/he/account_types",
+              "title": "סוגי חשבונות, בנק לאומי",
+              "page": 1,
+              "quote": "פטור מדמי ניהול ני\"ע ישראליים וזרים"
+            }
+          },
+          {
+            "fee": "custody_abroad",
+            "price_he": "פטור",
+            "holdings_he": "ני״ע ישראליים וזרים",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.leumi.co.il/he/account_types",
+              "title": "סוגי חשבונות, בנק לאומי",
+              "page": 1,
+              "quote": "פטור מדמי ניהול ני\"ע ישראליים וזרים"
+            }
+          },
+          {
+            "fee": "trade_israel",
+            "price_he": "7 שקלים לפעולה",
+            "holdings_he": "ני״ע ישראליים",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.leumi.co.il/he/account_types",
+              "title": "סוגי חשבונות, בנק לאומי",
+              "page": 1,
+              "quote": "(7 ₪ ישראליים, 7$ בזרים)"
+            }
+          },
+          {
+            "fee": "trade_abroad",
+            "price_he": "7 דולר לפעולה",
+            "holdings_he": "ני״ע זרים",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.leumi.co.il/he/account_types",
+              "title": "סוגי חשבונות, בנק לאומי",
+              "page": 1,
+              "quote": "(7 ₪ ישראליים, 7$ בזרים)"
+            }
+          }
+        ]
+      },
+      {
+        "kind": "student",
+        "name_he": "לאומי סטודנט",
+        "who_he": "סטודנטים בגילאי 21 עד 35 ועתודאים בגילאי 18 עד 21, עם תעודת סטודנט תקפה של התאחדות הסטודנטים",
+        "who_source": {
+          "url": "https://www.leumi.co.il/he/account_types",
+          "title": "סוגי חשבונות, בנק לאומי",
+          "page": 1,
+          "quote": "סטודנט גילאים 21-35 ועתודאים בגילאי 18-21"
+        },
+        "ends_printed": false,
+        "ends_he": "בתעריפון לא כתוב מתי המחיר של הקבוצה נגמר",
+        "prices": [
+          {
+            "fee": "trade_israel",
+            "price_he": "מניות 0.500%, אגרות חוב 0.350%, בכפוף למינימום",
+            "holdings_he": "מניות ואג״ח הנסחרות בבורסה בת״א",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
+              "title": "תעריפון העמלות המלא, נספח א'",
+              "page": 7,
+              "quote": "0.500 אחוז גביה קנייה /מכירה מניות הנסחרות בבורסה"
+            }
+          },
+          {
+            "fee": "custody_israel",
+            "price_he": "0.075% לרבעון",
+            "holdings_he": "דמי ניהול ני״ע ישראל",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
+              "title": "תעריפון העמלות המלא, נספח א'",
+              "page": 8,
+              "quote": "0.075 אחוז גביה דמי ניהול ניע ישראל לרבעון"
+            }
+          },
+          {
+            "fee": "custody_abroad",
+            "price_he": "0.100% לרבעון",
+            "holdings_he": "דמי ניהול ני״ע חו״ל",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
+              "title": "תעריפון העמלות המלא, נספח א'",
+              "page": 8,
+              "quote": "0.100 אחוז גביה דמי ניהול ני \"ע חו \"ל לרבעון"
+            }
+          }
+        ],
+        "inferred": "That a group price ends when the person leaves the group is inferred: Leumi's tariff prints no end for these securities prices, only 3 or 4 years on credit cards. The age ranges come from its account-types page, not from the tariff."
+      },
+      {
+        "kind": "student",
+        "name_he": "לאומי סטודנט, בפתיחת חשבון",
+        "who_he": "בפתיחת חשבון סטודנט",
+        "who_source": {
+          "url": "https://www.leumi.co.il/he/Articles/student_account_benefits",
+          "title": "חשבון סטודנט, בנק לאומי",
+          "page": 1,
+          "quote": "בפתיחת חשבון הינכם זכאים לקבל פטור מדמי ניהול ניירות ערך ישראליים וזרים"
+        },
+        "ends_printed": true,
+        "ends_he": "פטור מדמי ניהול למשך שנה. על העמלות לא כתוב עד מתי.",
+        "ends_source": {
+          "url": "https://www.leumi.co.il/he/Articles/student_account_benefits",
+          "title": "חשבון סטודנט, בנק לאומי",
+          "page": 1,
+          "quote": "למשך שנה שלמה"
+        },
+        "prices": [
+          {
+            "fee": "custody_israel",
+            "price_he": "פטור, לשנה",
+            "holdings_he": "ניירות ערך ישראליים וזרים",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.leumi.co.il/he/Articles/student_account_benefits",
+              "title": "חשבון סטודנט, בנק לאומי",
+              "page": 1,
+              "quote": "פטור מדמי ניהול ניירות ערך ישראליים וזרים"
+            }
+          },
+          {
+            "fee": "custody_abroad",
+            "price_he": "פטור, לשנה",
+            "holdings_he": "ניירות ערך ישראליים וזרים",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.leumi.co.il/he/Articles/student_account_benefits",
+              "title": "חשבון סטודנט, בנק לאומי",
+              "page": 1,
+              "quote": "פטור מדמי ניהול ניירות ערך ישראליים וזרים"
+            }
+          },
+          {
+            "fee": "trade_israel",
+            "price_he": "7 שקלים לפעולה",
+            "holdings_he": "ניירות ערך ישראלים",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.leumi.co.il/he/Articles/student_account_benefits",
+              "title": "חשבון סטודנט, בנק לאומי",
+              "page": 1,
+              "quote": "עמלה בסך ₪7 בלבד בניירות ערך ישראלים"
+            }
+          },
+          {
+            "fee": "trade_abroad",
+            "price_he": "7 דולר לפעולה",
+            "holdings_he": "ניירות ערך זרים",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.leumi.co.il/he/Articles/student_account_benefits",
+              "title": "חשבון סטודנט, בנק לאומי",
+              "page": 1,
+              "quote": "עמלה בסך 7$ בלבד בניירות ערך זרים"
+            }
+          }
+        ]
+      },
+      {
+        "kind": "other",
+        "name_he": "לאומי טוטאל דיגיטל",
+        "who_he": "בתעריפון לא כתוב מי זכאי",
+        "who_source": {
+          "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
+          "title": "תעריפון העמלות המלא, נספח א'",
+          "page": 9,
+          "quote": "לאומי טוטאל דיגיטל"
+        },
+        "ends_printed": false,
+        "ends_he": "בתעריפון לא כתוב מתי המחיר של הקבוצה נגמר",
+        "prices": [
+          {
+            "fee": "trade_israel",
+            "price_he": "0.400%",
+            "holdings_he": "אג״ח ומניות הנסחרות בארץ, בערוץ ישיר",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
+              "title": "תעריפון העמלות המלא, נספח א'",
+              "page": 9,
+              "quote": "0.400 אחוז גביה ק /מ בערוץ ישיר אג \"ח ומניות הנסחרות בארץ"
+            }
+          },
+          {
+            "fee": "custody_israel",
+            "price_he": "0.125% לרבעון",
+            "holdings_he": "ני״ע הנסחרים בארץ",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
+              "title": "תעריפון העמלות המלא, נספח א'",
+              "page": 9,
+              "quote": "0.125 אחוז גביה ד .נ .פקדון ני \"ע הנסחרים בארץלרבעון"
+            }
+          }
+        ]
+      }
+    ]
+  }
 }

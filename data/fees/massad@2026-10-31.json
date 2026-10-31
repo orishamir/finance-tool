@@ -1693,10 +1693,294 @@
     }
   ],
   "price_for_he": "לקוח רגיל, בלי הטבה לקבוצה",
-  "left_out": [
-    {
-      "what": "מחירים לקבוצות אוכלוסייה",
-      "why": "The ranking uses the ordinary customer; group prices and how long they last are not collected (issue 140)."
-    }
-  ]
+  "left_out": [],
+  "groups": {
+    "state": "prices",
+    "row_he": "לצעירים, חיילים וסטודנטים: דמי ניהול 0.1% לרבעון במקום 0.195%, בלי תאריך סיום בתעריפון",
+    "note": "Annex A pp.1-2 fetched and filed in this work. It prints no period for any group; only the young column carries ages 14 to 19. The retiree club closed to new members on 30.09.2024. Teacher 10 prints no securities price.",
+    "read": [
+      {
+        "url": "https://www.bankmassad.co.il/media/sf5kfzdv/נספח-א-הטבות-לקבוצות-אוכלוסיה-46.pdf",
+        "title": "נספח א', הטבות לקבוצות אוכלוסיה"
+      }
+    ],
+    "entries": [
+      {
+        "kind": "young",
+        "name_he": "צעירים",
+        "who_he": "גילאי 14 עד 19",
+        "who_source": {
+          "url": "https://www.bankmassad.co.il/media/sf5kfzdv/נספח-א-הטבות-לקבוצות-אוכלוסיה-46.pdf",
+          "title": "נספח א', הטבות לקבוצות אוכלוסיה",
+          "page": 1,
+          "quote": "צעירים"
+        },
+        "ends_printed": false,
+        "ends_he": "לא כתוב. ההטבות לפי התבחינים הנהוגים בבנק מעת לעת.",
+        "ends_source": {
+          "url": "https://www.bankmassad.co.il/media/sf5kfzdv/נספח-א-הטבות-לקבוצות-אוכלוסיה-46.pdf",
+          "title": "נספח א', הטבות לקבוצות אוכלוסיה",
+          "page": 2,
+          "quote": "בהתאם לתבחינים הנהוגים בבנק מעת לעת"
+        },
+        "prices": [
+          {
+            "fee": "trade_israel",
+            "price_he": "0.39%, בכפוף למינימום",
+            "holdings_he": "מניות ואגרות חוב הנסחרים בבורסה בת״א (למעט קרנות נאמנות, אופציות מעו״ף וחוזים עתידיים במעו״ף)",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.bankmassad.co.il/media/sf5kfzdv/נספח-א-הטבות-לקבוצות-אוכלוסיה-46.pdf",
+              "title": "נספח א', הטבות לקבוצות אוכלוסיה",
+              "page": 1,
+              "quote": "0.39%"
+            }
+          },
+          {
+            "fee": "trade_abroad",
+            "price_he": "0.4%, בכפוף למינימום",
+            "holdings_he": "מניות, אגרות חוב וקרנות נאמנות בחו״ל",
+            "names_fund": true,
+            "source": {
+              "url": "https://www.bankmassad.co.il/media/sf5kfzdv/נספח-א-הטבות-לקבוצות-אוכלוסיה-46.pdf",
+              "title": "נספח א', הטבות לקבוצות אוכלוסיה",
+              "page": 2,
+              "quote": "0.4%"
+            }
+          },
+          {
+            "fee": "custody_israel",
+            "price_he": "0.1% לרבעון",
+            "holdings_he": "דמי ניהול פקדון ני״ע בארץ",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.bankmassad.co.il/media/sf5kfzdv/נספח-א-הטבות-לקבוצות-אוכלוסיה-46.pdf",
+              "title": "נספח א', הטבות לקבוצות אוכלוסיה",
+              "page": 2,
+              "quote": "0.1%"
+            }
+          },
+          {
+            "fee": "custody_abroad",
+            "price_he": "0.1% לרבעון",
+            "holdings_he": "דמי ניהול פקדון ני״ע בחו״ל",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.bankmassad.co.il/media/sf5kfzdv/נספח-א-הטבות-לקבוצות-אוכלוסיה-46.pdf",
+              "title": "נספח א', הטבות לקבוצות אוכלוסיה",
+              "page": 2,
+              "quote": "0.1%"
+            }
+          }
+        ]
+      },
+      {
+        "kind": "soldier",
+        "name_he": "חיילים",
+        "who_he": "לחיילים בלבד",
+        "who_source": {
+          "url": "https://www.bankmassad.co.il/media/sf5kfzdv/נספח-א-הטבות-לקבוצות-אוכלוסיה-46.pdf",
+          "title": "נספח א', הטבות לקבוצות אוכלוסיה",
+          "page": 2,
+          "quote": "לחיילים בלבד"
+        },
+        "ends_printed": false,
+        "ends_he": "לא כתוב. ההטבות לפי התבחינים הנהוגים בבנק מעת לעת.",
+        "ends_source": {
+          "url": "https://www.bankmassad.co.il/media/sf5kfzdv/נספח-א-הטבות-לקבוצות-אוכלוסיה-46.pdf",
+          "title": "נספח א', הטבות לקבוצות אוכלוסיה",
+          "page": 2,
+          "quote": "בהתאם לתבחינים הנהוגים בבנק מעת לעת"
+        },
+        "prices": [
+          {
+            "fee": "trade_israel",
+            "price_he": "0.39%, בכפוף למינימום",
+            "holdings_he": "מניות ואגרות חוב הנסחרים בבורסה בת״א (למעט קרנות נאמנות, אופציות מעו״ף וחוזים עתידיים במעו״ף)",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.bankmassad.co.il/media/sf5kfzdv/נספח-א-הטבות-לקבוצות-אוכלוסיה-46.pdf",
+              "title": "נספח א', הטבות לקבוצות אוכלוסיה",
+              "page": 1,
+              "quote": "0.39%"
+            }
+          },
+          {
+            "fee": "trade_abroad",
+            "price_he": "0.4%, בכפוף למינימום",
+            "holdings_he": "מניות, אגרות חוב וקרנות נאמנות בחו״ל",
+            "names_fund": true,
+            "source": {
+              "url": "https://www.bankmassad.co.il/media/sf5kfzdv/נספח-א-הטבות-לקבוצות-אוכלוסיה-46.pdf",
+              "title": "נספח א', הטבות לקבוצות אוכלוסיה",
+              "page": 2,
+              "quote": "0.4%"
+            }
+          },
+          {
+            "fee": "custody_israel",
+            "price_he": "0.1% לרבעון",
+            "holdings_he": "דמי ניהול פקדון ני״ע בארץ",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.bankmassad.co.il/media/sf5kfzdv/נספח-א-הטבות-לקבוצות-אוכלוסיה-46.pdf",
+              "title": "נספח א', הטבות לקבוצות אוכלוסיה",
+              "page": 2,
+              "quote": "0.1%"
+            }
+          },
+          {
+            "fee": "custody_abroad",
+            "price_he": "0.1% לרבעון",
+            "holdings_he": "דמי ניהול פקדון ני״ע בחו״ל",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.bankmassad.co.il/media/sf5kfzdv/נספח-א-הטבות-לקבוצות-אוכלוסיה-46.pdf",
+              "title": "נספח א', הטבות לקבוצות אוכלוסיה",
+              "page": 2,
+              "quote": "0.1%"
+            }
+          }
+        ]
+      },
+      {
+        "kind": "student",
+        "name_he": "סטודנטים",
+        "who_he": "בנספח לא כתוב מי נחשב סטודנט",
+        "who_source": {
+          "url": "https://www.bankmassad.co.il/media/sf5kfzdv/נספח-א-הטבות-לקבוצות-אוכלוסיה-46.pdf",
+          "title": "נספח א', הטבות לקבוצות אוכלוסיה",
+          "page": 1,
+          "quote": "סטודנטים"
+        },
+        "ends_printed": false,
+        "ends_he": "לא כתוב. ההטבות לפי התבחינים הנהוגים בבנק מעת לעת.",
+        "ends_source": {
+          "url": "https://www.bankmassad.co.il/media/sf5kfzdv/נספח-א-הטבות-לקבוצות-אוכלוסיה-46.pdf",
+          "title": "נספח א', הטבות לקבוצות אוכלוסיה",
+          "page": 2,
+          "quote": "בהתאם לתבחינים הנהוגים בבנק מעת לעת"
+        },
+        "prices": [
+          {
+            "fee": "trade_israel",
+            "price_he": "0.39%, בכפוף למינימום",
+            "holdings_he": "מניות ואגרות חוב הנסחרים בבורסה בת״א (למעט קרנות נאמנות, אופציות מעו״ף וחוזים עתידיים במעו״ף)",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.bankmassad.co.il/media/sf5kfzdv/נספח-א-הטבות-לקבוצות-אוכלוסיה-46.pdf",
+              "title": "נספח א', הטבות לקבוצות אוכלוסיה",
+              "page": 1,
+              "quote": "0.39%"
+            }
+          },
+          {
+            "fee": "trade_abroad",
+            "price_he": "0.4%, בכפוף למינימום",
+            "holdings_he": "מניות, אגרות חוב וקרנות נאמנות בחו״ל",
+            "names_fund": true,
+            "source": {
+              "url": "https://www.bankmassad.co.il/media/sf5kfzdv/נספח-א-הטבות-לקבוצות-אוכלוסיה-46.pdf",
+              "title": "נספח א', הטבות לקבוצות אוכלוסיה",
+              "page": 2,
+              "quote": "0.4%"
+            }
+          },
+          {
+            "fee": "custody_israel",
+            "price_he": "0.1% לרבעון",
+            "holdings_he": "דמי ניהול פקדון ני״ע בארץ",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.bankmassad.co.il/media/sf5kfzdv/נספח-א-הטבות-לקבוצות-אוכלוסיה-46.pdf",
+              "title": "נספח א', הטבות לקבוצות אוכלוסיה",
+              "page": 2,
+              "quote": "0.1%"
+            }
+          },
+          {
+            "fee": "custody_abroad",
+            "price_he": "0.1% לרבעון",
+            "holdings_he": "דמי ניהול פקדון ני״ע בחו״ל",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.bankmassad.co.il/media/sf5kfzdv/נספח-א-הטבות-לקבוצות-אוכלוסיה-46.pdf",
+              "title": "נספח א', הטבות לקבוצות אוכלוסיה",
+              "page": 2,
+              "quote": "0.1%"
+            }
+          }
+        ]
+      },
+      {
+        "kind": "other",
+        "name_he": "גמלאי",
+        "who_he": "לקוח מגיל 67, לקוחה מגיל 64, בחשבון עם 100,000 שקלים ומעלה והכנסה מגמלה. ההצטרפות נסגרה ב־30.9.2024.",
+        "who_source": {
+          "url": "https://www.bankmassad.co.il/media/sf5kfzdv/נספח-א-הטבות-לקבוצות-אוכלוסיה-46.pdf",
+          "title": "נספח א', הטבות לקבוצות אוכלוסיה",
+          "page": 2,
+          "quote": "ההצטרפות למועדון עד יום 30/09/2024בלבד"
+        },
+        "ends_printed": false,
+        "ends_he": "לא כתוב. ההטבות לפי התבחינים הנהוגים בבנק מעת לעת.",
+        "ends_source": {
+          "url": "https://www.bankmassad.co.il/media/sf5kfzdv/נספח-א-הטבות-לקבוצות-אוכלוסיה-46.pdf",
+          "title": "נספח א', הטבות לקבוצות אוכלוסיה",
+          "page": 2,
+          "quote": "בהתאם לתבחינים הנהוגים בבנק מעת לעת"
+        },
+        "prices": [
+          {
+            "fee": "trade_israel",
+            "price_he": "0.39%, בכפוף למינימום",
+            "holdings_he": "מניות ואגרות חוב הנסחרים בבורסה בת״א (למעט קרנות נאמנות, אופציות מעו״ף וחוזים עתידיים במעו״ף)",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.bankmassad.co.il/media/sf5kfzdv/נספח-א-הטבות-לקבוצות-אוכלוסיה-46.pdf",
+              "title": "נספח א', הטבות לקבוצות אוכלוסיה",
+              "page": 1,
+              "quote": "0.39%"
+            }
+          },
+          {
+            "fee": "trade_abroad",
+            "price_he": "0.4%, בכפוף למינימום",
+            "holdings_he": "מניות, אגרות חוב וקרנות נאמנות בחו״ל",
+            "names_fund": true,
+            "source": {
+              "url": "https://www.bankmassad.co.il/media/sf5kfzdv/נספח-א-הטבות-לקבוצות-אוכלוסיה-46.pdf",
+              "title": "נספח א', הטבות לקבוצות אוכלוסיה",
+              "page": 2,
+              "quote": "0.4%"
+            }
+          },
+          {
+            "fee": "custody_israel",
+            "price_he": "0.133% לרבעון",
+            "holdings_he": "דמי ניהול פקדון ני״ע בארץ",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.bankmassad.co.il/media/sf5kfzdv/נספח-א-הטבות-לקבוצות-אוכלוסיה-46.pdf",
+              "title": "נספח א', הטבות לקבוצות אוכלוסיה",
+              "page": 2,
+              "quote": "0.133%"
+            }
+          },
+          {
+            "fee": "custody_abroad",
+            "price_he": "0.133% לרבעון",
+            "holdings_he": "דמי ניהול פקדון ני״ע בחו״ל",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.bankmassad.co.il/media/sf5kfzdv/נספח-א-הטבות-לקבוצות-אוכלוסיה-46.pdf",
+              "title": "נספח א', הטבות לקבוצות אוכלוסיה",
+              "page": 2,
+              "quote": "0.133%"
+            }
+          }
+        ]
+      }
+    ]
+  }
 }

@@ -961,7 +961,7 @@
         "notes": "'$2,500.00' per transaction (US dollars)."
       },
       "spread": {
-        "value": 2.0,
+        "value": 2,
         "unit": "pct_of_trade",
         "source": {
           "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
@@ -1137,11 +1137,154 @@
     }
   ],
   "price_for_he": "לקוח רגיל, בלי הטבה לקבוצה",
-  "left_out": [
-    {
-      "what": "מחירים לקבוצות אוכלוסייה",
-      "page": 33,
-      "why": "The ranking uses the ordinary customer; group prices and how long they last are not collected (issue 140)."
-    }
-  ]
+  "left_out": [],
+  "groups": {
+    "state": "prices",
+    "row_he": "לקבוצות: רק קנייה ומכירה בתל אביב, 0.40% במקום 0.52%, לזמן מוגבל. דמי הניהול לא יורדים.",
+    "note": "Annex A pp.33-34 read in the filed copy, dated 13.01.2026. Only the Tel Aviv trade line is lowered; no group lowers custody. That 0.40 replaces the direct rate of 0.52 rather than the branch rate of 0.64 is inferred: the annex row names no channel, and 0.52 is the rate the ranking uses. The benefit excludes accounts with a portfolio manager's power of attorney.",
+    "read": [
+      {
+        "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
+        "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה"
+      }
+    ],
+    "entries": [
+      {
+        "kind": "young",
+        "name_he": "צעירים",
+        "who_he": "לקוחות בגילאי 14 עד 21.5",
+        "who_source": {
+          "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
+          "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+          "page": 33,
+          "quote": "צעיר -לקוח שגילו בין 14ל 21.5 -שנה"
+        },
+        "ends_printed": true,
+        "ends_he": "עד גיל 21.5",
+        "ends_source": {
+          "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
+          "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+          "page": 33,
+          "quote": "צעיר -לקוח שגילו בין 14ל 21.5 -שנה"
+        },
+        "prices": [
+          {
+            "fee": "trade_israel",
+            "price_he": "0.40%, ולא פחות מהעמלה המזערית",
+            "holdings_he": "ניירות ערך הנסחרים בבורסה בתל אביב",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
+              "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+              "page": 33,
+              "quote": "0.40%עמלה מופחתת"
+            }
+          }
+        ],
+        "inferred": "The annex row carries line number 4.1, the ordinary line whose footnote takes tracking funds in. That the group price reaches a tracking fund is inferred from the number, not printed on the row, so it is not priced. No group custody price is printed."
+      },
+      {
+        "kind": "soldier",
+        "name_he": "חיילים, תלמידי ישיבות הסדר ובנות שירות לאומי",
+        "who_he": "בשירות סדיר או בישיבת הסדר, עם תעודת חוגר; מלש״בים שמתגייסים בתוך שישה חודשים; בנות שירות לאומי עם אישור",
+        "who_source": {
+          "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
+          "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+          "page": 33,
+          "quote": "חייל -לקוח בשירות סדיר או תלמיד בישיבת הסדר"
+        },
+        "ends_printed": true,
+        "ends_he": "אוטומטית עד גיל 21.5, ואחר כך באישורים",
+        "ends_source": {
+          "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
+          "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+          "page": 33,
+          "quote": "ההטבות ניתנות אוטומטית עד גיל ,21.5לאחר גיל 21.5ההטבות יחודשו"
+        },
+        "prices": [
+          {
+            "fee": "trade_israel",
+            "price_he": "0.40%, ולא פחות מהעמלה המזערית",
+            "holdings_he": "ניירות ערך הנסחרים בבורסה בתל אביב",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
+              "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+              "page": 33,
+              "quote": "0.40%עמלה מופחתת"
+            }
+          }
+        ],
+        "inferred": "The annex row carries line number 4.1, the ordinary line whose footnote takes tracking funds in. That the group price reaches a tracking fund is inferred from the number, not printed on the row, so it is not priced. No group custody price is printed."
+      },
+      {
+        "kind": "released",
+        "name_he": "חיילים משוחררים",
+        "who_he": "מי שהציג תעודת שחרור, עד שנה מיום השחרור ולפני גיל 27",
+        "who_source": {
+          "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
+          "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+          "page": 34,
+          "quote": "חייל משוחרר -לקוח שהציג תעודת שחרור מצה\"ל או משירות לאומי"
+        },
+        "ends_printed": true,
+        "ends_he": "3 שנים או עד גיל 30, המוקדם מביניהם",
+        "ends_source": {
+          "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
+          "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+          "page": 34,
+          "quote": "ההטבות ניתנות לתקופה של 3שנים או עד גיל ,30המוקדם מבינהם"
+        },
+        "prices": [
+          {
+            "fee": "trade_israel",
+            "price_he": "0.40%, ולא פחות מהעמלה המזערית",
+            "holdings_he": "ניירות ערך הנסחרים בבורסה בתל אביב",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
+              "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+              "page": 33,
+              "quote": "0.40%עמלה מופחתת"
+            }
+          }
+        ],
+        "inferred": "The annex row carries line number 4.1, the ordinary line whose footnote takes tracking funds in. That the group price reaches a tracking fund is inferred from the number, not printed on the row, so it is not priced. No group custody price is printed."
+      },
+      {
+        "kind": "student",
+        "name_he": "סטודנטים",
+        "who_he": "לומדים לתואר ראשון, שני או שלישי, להנדסאי או לתעודת הוראה במוסד מוכר, עם אישור לימודים, לפני גיל 35",
+        "who_source": {
+          "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
+          "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+          "page": 34,
+          "quote": "סטודנט -לקוח הלומד לתואר ראשון ,שני או שלישי"
+        },
+        "ends_printed": true,
+        "ends_he": "4 שנים או עד גיל 35, המוקדם מביניהם",
+        "ends_source": {
+          "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
+          "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+          "page": 34,
+          "quote": "ההטבות ניתנות לתקופה של 4שנים או עד גיל ,35המוקדם מבינהם"
+        },
+        "prices": [
+          {
+            "fee": "trade_israel",
+            "price_he": "0.40%, ולא פחות מהעמלה המזערית",
+            "holdings_he": "ניירות ערך הנסחרים בבורסה בתל אביב",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
+              "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+              "page": 34,
+              "quote": "0.40%עמלה מופחתת"
+            }
+          }
+        ],
+        "inferred": "The annex row carries line number 4.1, the ordinary line whose footnote takes tracking funds in. That the group price reaches a tracking fund is inferred from the number, not printed on the row, so it is not priced. No group custody price is printed."
+      }
+    ]
+  }
 }

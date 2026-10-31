@@ -494,5 +494,16 @@
     }
   ],
   "price_for_he": "לקוח רגיל, בלי הטבה לקבוצה",
-  "left_out": []
+  "left_out": [],
+  "groups": {
+    "state": "no_mention",
+    "note": "Tariff read in the filed copy. Searched for young, student, soldier, released-soldier, group and club wording; none found on a price. This covers the tariff read, not a personal offer.",
+    "read": [
+      {
+        "url": "https://www.xnes.co.il/media/nwogkoos/taarifon.pdf",
+        "title": "תעריפון"
+      }
+    ],
+    "entries": []
+  }
 }

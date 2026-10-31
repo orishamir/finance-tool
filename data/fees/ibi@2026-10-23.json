@@ -496,5 +496,16 @@
       "page": 3,
       "why": "One track is priced. Every printed price is a ceiling (\"עד\"); the actual one is set in the account agreement."
     }
-  ]
+  ],
+  "groups": {
+    "state": "no_mention",
+    "note": "Tariff read in the filed copy. Searched for young, student, soldier, released-soldier, group and club wording; none found on a price. This covers the tariff read, not a personal offer.",
+    "read": [
+      {
+        "url": "https://campaign.ibi.co.il/PDF/TRADE/TAARIFON_IBI.pdf",
+        "title": "תעריפון"
+      }
+    ],
+    "entries": []
+  }
 }

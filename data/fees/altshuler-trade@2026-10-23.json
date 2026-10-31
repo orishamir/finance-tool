@@ -508,5 +508,16 @@
       "what": "תקנון מבצע הצטרפות: פטור מדמי ניהול חשבון לחשבון פעיל",
       "why": "An offer with its own conditions, in a separate document; not priced."
     }
-  ]
+  ],
+  "groups": {
+    "state": "no_mention",
+    "note": "Full tariff read in the filed copy; a joining offer is listed under left_out. Searched for young, student, soldier, released-soldier, group and club wording; none found on a price. This covers the tariff read, not a personal offer.",
+    "read": [
+      {
+        "url": "https://www.as-invest.co.il/media/oqdfpafo/תעריפון-מלא-אלטשולר-שחם-טרייד.pdf",
+        "title": "תעריפון מלא"
+      }
+    ],
+    "entries": []
+  }
 }

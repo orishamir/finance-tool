@@ -52,14 +52,19 @@ export function bestFor(view: InvestView, pick: Pick): Pick | null {
   return top ? { house: top.house, fund: top.fund } : pickOfHeadline(view);
 }
 
+/** A house's way that leaves the most: a ranked one first, else one on an open rule, which is shown and not ranked. Its row names it when the picked fund has no price there. */
+function otherWay(view: InvestView, house: string): { fund: FundWay; at: WayPrice } | null {
+  const ways = allFunds(view).flatMap((f) => { const at = f.byHouse[house]; return priced(at) ? [{ fund: f, at }] : []; });
+  return ways.sort((a, b) => Number(a.at.open) - Number(b.at.open) || b.at.valueN - a.at.valueN)[0] ?? null;
+}
+
 /** The other half when one half changes: keep it when it still prices, else the one that leaves the most with the new half. */
 export function repick(view: InvestView, cur: Pick, change: Partial<Pick>): Pick {
   const funds = allFunds(view);
   if (change.house) {
     const keep = funds.find((f) => f.rec.id === cur.fund);
     if (keep && priced(keep.byHouse[change.house])) return { house: change.house, fund: cur.fund };
-    const best = funds.map((f) => ({ f, at: f.byHouse[change.house!] })).filter((x) => priced(x.at) && !x.at.open).sort((a, b) => (b.at as WayPrice).valueN - (a.at as WayPrice).valueN)[0];
-    return { house: change.house, fund: best?.f.rec.id ?? cur.fund };
+    return { house: change.house, fund: otherWay(view, change.house)?.fund.rec.id ?? cur.fund };
   }
   if (change.fund) {
     const f = funds.find((x) => x.rec.id === change.fund);
@@ -409,6 +414,12 @@ function barScale(costs: number[]): number {
   return Math.max(...inGroup);
 }
 
+/** A house's group prices, on its row and never in its figure (D43). The line belongs to the house, so a re-sort or a new input never changes the row's height. */
+function GroupLine({ id, snapshots }: { id: string; snapshots: WorkbenchBundle["snapshots"] }) {
+  const line = snapshots.find((s) => s.id === id)?.groups?.row_he;
+  return line ? <span className="col-start-2 col-end-[-1] text-xs text-muted-foreground leading-snug">{line}</span> : null;
+}
+
 export function AccountColumn({ view, bundle, years, pick, onPick }: { view: InvestView; bundle: WorkbenchBundle; years: number; pick: Pick; onPick: (p: Pick) => void }) {
   const fund = allFunds(view).find((f) => f.rec.id === pick.fund);
   const house = providerName(view, pick.house);
@@ -456,12 +467,14 @@ export function AccountColumn({ view, bundle, years, pick, onPick }: { view: Inv
           <span className="text-end font-semibold">
             <Num value={r.at.value} />
           </span>
+          <GroupLine id={r.p.id} snapshots={bundle.snapshots} />
         </>
       ),
     };
   });
   const greyRows: PickRow[] = missing.map((r) => {
     const na = noWay(r);
+    const other = otherWay(view, r.p.id);
     return {
       key: r.p.id,
       selected: r.p.id === pick.house,
@@ -476,15 +489,24 @@ export function AccountColumn({ view, bundle, years, pick, onPick }: { view: Inv
           </span>
           <span className="flex flex-wrap items-center gap-x-2 gap-y-0.5 min-w-0 text-xs max-md:row-start-2 max-md:col-start-3 max-md:col-span-2">
             <Tag tone={na ? undefined : "caution"}>{na ? c.pair.notPossible : c.pair.noData}</Tag>
-            {na ? (
+            {na && (
               <a href={na.source.url} target="_blank" rel="noopener noreferrer" title={na.note ?? na.source.title} className="text-link hover:underline">
                 {c.pair.notPossibleSource} ↗
               </a>
-            ) : (
-              <span>{doubtOf(bundle.snapshots.find((s) => s.id === r.p.id), fund.option) ?? bundle.snapshots.find((s) => s.id === r.p.id)?.missing_reason_he ?? (r.at && "reason" in r.at ? reasonText(r.at.reason, optionClass[fund.option]) : c.funds.cannot)}</span>
             )}
           </span>
           <span className="text-end font-semibold">—</span>
+          {/* the reason takes the row's width, like the group line: in the charges column it stood one word to a line (2026-10-31) */}
+          <span className="col-start-2 col-end-[-1] flex flex-col gap-0.5 text-xs leading-snug">
+            {!na && <span>{doubtOf(bundle.snapshots.find((s) => s.id === r.p.id), fund.option) ?? bundle.snapshots.find((s) => s.id === r.p.id)?.missing_reason_he ?? (r.at && "reason" in r.at ? reasonText(r.at.reason, optionClass[fund.option]) : c.funds.cannot)}</span>}
+            {other && (
+              <span>
+                {c.pair.elsewhere} <bdi>{other.fund.name}</bdi>: <Num value={other.at.value} />
+                {other.at.open && ` (${c.pair.elsewhereOpen})`}
+              </span>
+            )}
+          </span>
+          <GroupLine id={r.p.id} snapshots={bundle.snapshots} />
         </>
       ),
     };

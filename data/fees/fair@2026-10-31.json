@@ -304,5 +304,16 @@
       "what": "גבולות הזמנה: מינימום 250 שקלים ומקסימום 50,000 שקלים בהגדרות מאתר הקרנות",
       "why": "Whether the minimum holds for every monthly purchase is not known; issue 141."
     }
-  ]
+  ],
+  "groups": {
+    "state": "no_mention",
+    "note": "Tariff and home page read in the filed copies; a friend-referral offer on the home page is not a group. Searched for young, student, soldier, released-soldier, group and club wording; none found on a price. This covers the tariff read, not a personal offer.",
+    "read": [
+      {
+        "url": "https://www.fair.co.il/%d7%aa%d7%a2%d7%a8%d7%99%d7%a4%d7%95%d7%9f/",
+        "title": "תעריפון"
+      }
+    ],
+    "entries": []
+  }
 }
