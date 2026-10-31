@@ -52,3 +52,13 @@
 {"looked_for":"Capital Market Authority regulation list, newest back to 22.12.2024","result":"read in Chrome, 129 rows; see research/2026-10-31-night/morning-addendum.md","where":"gov.il","date":"2026-10-31"}
 {"looked_for":"Tax Authority circular list, 2000 to 2026","result":"read in Chrome, 768 rows; see research/2026-10-31-night/morning-addendum.md","where":"gov.il","date":"2026-10-31"}
 {"looked_for":"Tax Reform Committee chapters 2 and 3, founder's morning script","result":"failed in the script too; left, not needed for the current goals","where":"gov.il","date":"2026-10-31"}
+{"looked_for":"gov.il service page itc5329b, form 5329 shortened reporting for foreign income","result":"403 to plain curl; left as a 403; only the search snippet seen","where":"https://www.gov.il/he/service/itc5329b","date":"2026-10-31"}
+{"looked_for":"Tax Authority sentence on accrued interest for a private buyer of traded government bonds; order under s.3(ח1)","result":"web search: only a bank's page and secondary sites; nothing official","where":"web","date":"2026-10-31"}
+{"looked_for":"Tax Authority sentence that 15% on unlinked interest is fixed from age 60","result":"web search: only secondary sites calling 15% fixed, none on age","where":"web","date":"2026-10-31"}
+{"looked_for":"low-income interest exemption s.125ד and current-account credit interest","result":"web search: nothing official; directive 05/2022 p.38 speaks of deposits and savings plans","where":"web","date":"2026-10-31"}
+{"looked_for":"tax when a deposit or savings plan is broken early","result":"web search: nothing official; Bank of Israel texts govern the penalty only","where":"web","date":"2026-10-31"}
+{"looked_for":"offset of a loss on withdrawing a kupat gemel lehashkaa below deposits","result":"web search: one secondary accountant's page only; no Tax Authority text","where":"web","date":"2026-10-31"}
+{"looked_for":"Tax Authority statement that an accumulating foreign fund is taxed only on sale","result":"web search: nothing official; no circular held says it","where":"web","date":"2026-10-31"}
+{"looked_for":"goldfarb.com broker-dealer memorandum page","result":"403","where":"https://www.goldfarb.com/he/","date":"2026-10-31"}
+{"looked_for":"justice.gov.il page on the joint brokerage report, 25.8.2019","result":"ECONNRESET","where":"https://www.justice.gov.il/Units/HalbantHon/News/Pages/Brokrash250819.aspx","date":"2026-10-31"}
+{"looked_for":"One Zero monthly deposit summary PDF by curl","result":"403","where":"https://www.onezerobank.com/warehouse/userUploadFiles/Image/Monthly%20-%20saving%20summary%20-%20Prime%20-%20V11%2023.1.2023%20-%20clean.pdf","date":"2026-10-31"}
