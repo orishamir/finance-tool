@@ -1,7 +1,8 @@
 // What moves the result (founder, 2026-10-28, the indices page): every plan number changed by the same share on one chart, left to
 // right from less to more, all lines crossing at the plan; a marker the person drags (or sets with a choice) reads every line at one
 // share, and the table under it says, for each number, what it was, what it becomes, what is left and the difference. Own SVG.
-import { useState, type CSSProperties, type PointerEvent, type ReactNode } from "react";
+import { useState, type PointerEvent, type ReactNode } from "react";
+import { TableCols } from "./table-cols";
 import { ChoiceChips } from "./choice";
 import { useWidth } from "./marker";
 
@@ -148,12 +149,8 @@ export function ChangeChart({
       </div>
       <p className="text-xs text-muted-foreground text-center -mt-2">{xTitle}</p>
       <div className="overflow-x-auto">
-        <table className="tbl table-fixed [&_thead_th]:whitespace-normal text-sm max-md:text-[13px] tabular-nums w-full max-md:[&_td]:px-1.5 max-md:[&_th]:px-1.5">
-          <colgroup>
-            {widths.map((c, i) => (
-              <col key={i} className="w-(--w-phone) md:w-(--w-pc)" style={{ "--w-pc": c.pc, "--w-phone": c.phone } as CSSProperties} />
-            ))}
-          </colgroup>
+        <table className="tbl text-sm max-md:text-[13px] max-md:[&_td]:px-1.5 max-md:[&_th]:px-1.5">
+          <TableCols widths={widths} />
           <thead>
             <tr>
               {head.map((h, i) => (

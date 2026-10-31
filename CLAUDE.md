@@ -65,12 +65,13 @@ These override any older rule they conflict with, in the docs, older specs or
 the memory notes; where one conflicts, the older text is amended to match.
 The evidence behind them is `research/2026-10-28-founder-patterns.md`.
 
-1. **Draw before building anything a person sees.** Every change to what a
-   screen shows starts as a Hebrew mockup with the site's real numbers, in
-   two or three options with one recommended; a made-up value is marked. A
-   fix shows the symptom I saw and the same screen without it. This holds for
-   a choice I delegated too: a delegated choice that changes a screen still
-   goes through a mockup. Technical settings stay Claude's to set.
+1. **Draw before building a major graphic visualization** (narrowed
+   2026-10-31). A major chart or picture starts as a Hebrew mockup with the
+   site's real numbers, in two or three options with one recommended; a
+   made-up value is marked. A fix to one shows the symptom I saw and the same
+   screen without it. This holds for a choice I delegated too. Text and label
+   changes need no mockup, and neither does anything else short of a major
+   graphic visualization. Technical settings stay Claude's to set.
 2. **Fair and general comparisons.** Name the holding; change one thing at
    a time; show differences rather than two absolutes; use a range or a
    count over every collected institution, never one bank and never my own
@@ -98,6 +99,10 @@ The evidence behind them is `research/2026-10-28-founder-patterns.md`.
    on the site (Claude, audit ids, test names); builders' Hebrew goes
    through the Hebrew editor.
 
+**Work order (founder, 2026-10-31).** Finish the indices page and the guides
+before anything else; the workbench, holdings and idle-cash pages wait. This
+overrides the Roadmap issue's ranking, which counts what unblocks the most.
+
 ## Fixed constraints
 
 - Hebrew UI, right-to-left layout.
@@ -119,6 +124,15 @@ The evidence behind them is `research/2026-10-28-founder-patterns.md`.
   own terms, which appear named or on that company's page, never as a fact
   about a product. A statement about the whole market comes from law or
   from a count over every collected institution. See D30.
+- **No price from analogy** (founder, 2026-10-31). A house ranks on a kind of
+  holding only where its own document or fund list names it; the data check
+  fails otherwise, and a doubt is a grey row, not a note (D42). A new house or a
+  new top pick gets a fresh reviewer first, given only the documents and asked
+  to disprove it, and a short check by a real customer of that house where one
+  is at hand. A ranking change is its own commit, with its evidence, and
+  expected test numbers change only with that evidence. In chat, every figure
+  carries its assumption, and what was read is told apart from what was
+  inferred; what I report first-hand is treated as true and then checked.
 - **Never fill in a financial or tax rule from memory.** Use the
   `il-finance` skill. If a rule is missing from it, say the
   rule is missing and stop; do not guess or approximate. Site judgements
@@ -177,7 +191,8 @@ The evidence behind them is `research/2026-10-28-founder-patterns.md`.
   options, or sources, add to it where sensible unless I say otherwise.
 - **Big jobs have a budget** (founder, 2026-10-31). In the week of 24 to 30
   October about 200 subagents used a week of tokens in a day and a half. Read
-  the weekly meter (`get_usage`) before and after each job and report both.
+  the weekly meter (`get_usage`) before and after each job; report it only for a
+  big job or near a limit (founder, 2026-10-31).
   Subagents run one at a time, and small work stays in the main conversation;
   this overrides any older instruction to run work in parallel. A job likely
   to use more than 5% of the week gets a one-line estimate and my yes first (a

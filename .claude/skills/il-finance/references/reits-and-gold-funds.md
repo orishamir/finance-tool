@@ -264,7 +264,7 @@ Out (and where): physical gold (bars, coins) is out of scope under D2 and is not
   - commodities count in the first digit, because "equities" includes commodities.
 
   Funder quotes the hedged Kesem fund's policy: "מנהל הקרן יפעל לנטרול מלא של החשיפה למט"ח, ובכל מקרה החשיפה כאמור לא תעלה בערך מוחלט על 10% משווי נכסי הקרן". The Meitav hedged fund's page states the same 10% limit.
-- Conditions / exceptions: The cost of hedging inside these funds was not found (open question 10).
+- Conditions / exceptions: The cost of hedging inside these funds was not found (open question 10). What a hedged tracking fund's hedge is made of, in general, is ETF-75 in `etfs-and-index-funds.md`.
 - Figures: FX cap of 10% on hedged funds and 120% on unhedged funds.
 - Source: [Funder fund 5142096](https://funder.co.il/fund/5142096) · checked 2026-10-22 · secondary. [Funder fund 5141627](https://www.funder.co.il/fund/5141627) · checked 2026-10-22 · secondary. Exposure code: MF-43 (`mutual-funds-and-money-market-funds.md`)
 - Dimensions: currency
@@ -392,7 +392,7 @@ Out (and where): physical gold (bars, coins) is out of scope under D2 and is not
 7. **Israeli funds that hold REITs or Israeli real-estate shares, and whether any tracks a REIT index.** Not researched beyond a search snippet. Likely in TASE index lists ("ת"א-נדל"ן") and managers' fund lists.
 8. **How each Israeli gold fund holds its exposure (futures, swaps, ETCs), and a complete list of gold funds.** No gold fund's prospectus or annual report was reached. Maya fund pages render empty, and searches did not surface the report PDFs. Needed: each fund's annual report on mayafiles, as with the More and IBI S&P 500 reports in the ETF file. **[2026-10-24 R5 pass: still open. The managers' fund lists (Kesem at xnes.co.il, IBI, Meitav/Tachlit) load by script and show no gold fund to curl; Maya's fund pages are Angular shells. Browser to-do: Maya fund list filtered on "זהב" or "Gold" (the export of CAT-34 has the tax status and fees), then each fund's latest annual report on mayafiles for the replication method.]**
 9. **TheMarker's "variable fee maximum 1.00%" for IBI 1147875.** It conflicts with the regulatory cap of 0.1% to 0.3% (ETF-14). Check the fund's prospectus.
-10. **Cost of currency hedging in hedged gold funds, and each gold fund's 12-month tracking difference** (published under ETF-07). Managers' sites and annual reports.
+10. **Cost of currency hedging in hedged gold funds, and each gold fund's 12-month tracking difference** (published under ETF-07). Managers' sites and annual reports. Narrowed 2026-10-31: the general formula is ETF-75 and index funds' record is ETF-78; no gold fund's report was read.
 11. **Custodian and vault of the iShares Physical Gold ETC, and what happens to holders if the issuer fails** beyond "limited recourse". In the base prospectus.
 12. **GLD's 1940 Act status in its own words.** The GLD prospectus URL tried returned 404. IAU's statement was found.
 13. **Is any physically backed gold ETC or trust listed on TASE** (by dual listing or otherwise)? Not found. The ISA foreign-fund register and the TASE list are unreadable to scripts.

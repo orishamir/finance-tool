@@ -1,5 +1,8 @@
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import type { RuleRecord } from "@finance-tool/schema";
+import * as dataServer from "./data.server";
 import { groupDocuments, loadDocuments, stripUrl } from "./documents.server";
 
 const rule = (id: string, sources: unknown[]): RuleRecord => ({ id, title: id, title_he: `כלל ${id}`, strength: "primary", sources }) as unknown as RuleRecord;
@@ -42,5 +45,14 @@ describe("loadDocuments on the real data", () => {
   });
   it("never lists a rule twice on one card", () => {
     for (const d of docs) expect(new Set(d.rules.map((r) => r.id)).size).toBe(d.rules.length);
+  });
+});
+
+describe("documents filed for the law and terms browser (issue 123)", () => {
+  it("name no card on this page", () => {
+    const filed = (JSON.parse(readFileSync(join(dataServer.root, "data/sources/documents.json"), "utf8")) as { id: string; doc_kind?: string }[]).filter((d) => d.doc_kind).map((d) => d.id);
+    expect(filed.length).toBeGreaterThan(100);
+    const keys = new Set(loadDocuments().map((c) => c.key));
+    expect(filed.filter((id) => keys.has(id))).toEqual([]);
   });
 });

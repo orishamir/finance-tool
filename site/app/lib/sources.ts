@@ -134,6 +134,9 @@ export function sourceLabel2(source: RuleSource): SourceNames {
 
 /** The title as shown: a Hebrew title as it is, otherwise the link's host (the English working title is never shown). */
 /** The Hebrew page title of a Wikisource law page, from its address ("/wiki/פקודת_מס_הכנסה" → "פקודת מס הכנסה"); null for any other address. */
+/** Maya's page of a fund listed in Israel. An ETF sits under the same address as any other fund; "etfs" does not exist there (47 of 47 checked, 2026-10-31). */
+export const mayaFundHref = (number: string) => `https://maya.tase.co.il/he/funds/mutual-funds/${number}`;
+
 export function wikisourcePageTitle(url: string): string | null {
   const m = /^https?:\/\/he\.wikisource\.org\/wiki\/([^?#]+)/.exec(url);
   if (!m) return null;

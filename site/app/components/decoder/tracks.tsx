@@ -139,11 +139,11 @@ function FeeLines({ row, size = "inline", inline }: { row: TrackRowView; size?: 
 export function TrackList({ groups, feeHead, exposureHead, foot }: { groups: Group[]; feeHead?: string; exposureHead?: string; foot?: ReactNode }) {
   const columns: ProductColumn[] = [
     { id: "name", head: copy.pcColumns.name },
-    { id: "fund", head: copy.pcColumns.fund },
+    { id: "fund", head: copy.pcColumns.fund, width: 5.5 },
     { id: "holds", head: copy.pcColumns.holds },
-    ...(feeHead ? [{ id: "fee", head: feeHead }] : []),
-    ...(exposureHead ? [{ id: "exposure", head: exposureHead, cellClassName: "whitespace-nowrap" }] : []),
-    { id: "open", head: <span className="sr-only">{copy.pcColumns.open}</span>, headClassName: "w-10 md:w-auto" },
+    ...(feeHead ? [{ id: "fee", head: feeHead, width: 13 }] : []),
+    ...(exposureHead ? [{ id: "exposure", head: exposureHead, width: 11.5 }] : []),
+    { id: "open", head: <span className="sr-only">{copy.pcColumns.open}</span>, width: 4.5 },
   ];
   const fees = groups.flatMap((g) => g.tracks.flatMap((r) => [r.fee, r.deposit]));
   return (

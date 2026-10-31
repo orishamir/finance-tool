@@ -61,8 +61,8 @@ export interface WorkbenchInput {
   /** Set when the fund is quoted in a foreign currency: the FX line then applies (F-13). */
   currency?: { code: string; startRate: number };
   /**
-   * F-63 (2026-10-25, index page): shekels per one unit of a currency, by ISO code ("USD", "GBP"), for the tariff lines set in
-   * dollars or pounds (per share, minimum, maximum). The site fills it from the ECB series with `crossRate` (F-84). A provider
+   * F-63 (2026-10-25, index page): shekels per one unit of a currency, by ISO code ("USD", "EUR", "GBP"), for the tariff lines set in
+   * dollars, euros or pounds (per share, minimum, maximum). The site fills it from the ECB series with `crossRate` (F-84). A provider
    * whose line needs a currency this does not hold is "not comparable" (`needs-fx-rate`).
    */
   fx?: Record<string, number>;
@@ -102,7 +102,7 @@ export type NotComparableReason =
   | { code: "line-without-value"; detail: string }
   /** 2026-10-25: a per-share line and the fund record has no `share_price`. */
   | { code: "needs-share-price"; detail: string }
-  /** 2026-10-25: a line in dollars or pounds and `fx` holds no rate for the currency. */
+  /** 2026-10-25: a line in a foreign currency and `fx` holds no rate for it. */
   | { code: "needs-fx-rate"; detail: string }
   /** 2026-10-25: the snapshot is ambiguous or a unit is not one the tariff reads; `detail` is the engine's message. */
   | { code: "record-error"; detail: string };
@@ -187,7 +187,7 @@ export interface ProviderWorkbench {
 }
 
 /** A value the snapshot holds as null: the provider's data is incomplete, so its row is "not comparable". */
-class Unusable extends Error {
+export class Unusable extends Error {
   constructor(readonly code: "line-without-value" | "needs-share-price" | "needs-fx-rate", message: string) {
     super(message);
   }
@@ -209,6 +209,8 @@ function nis(vo: ValueObject, what: string): number {
 }
 
 const USD_UNITS = new Set(["usd", "usd_per_trade"]);
+/** The currency a fixed amount of a tariff line is printed in, by its unit (F-12): one table, so a bound in any of them is converted the same way (F-84). */
+const CURRENCY_OF_UNIT: Partial<Record<ValueObject["unit"], string>> = { usd: "USD", usd_per_trade: "USD", eur: "EUR", gbp_per_trade: "GBP" };
 
 /** Shekels per unit of a currency from the run's `fx` input; a provider that needs a rate the run lacks is "not comparable" (2026-10-25). */
 function rateOf(fx: WorkbenchInput["fx"], code: string, what: string): number {
@@ -229,10 +231,26 @@ type SnapLine = FeesSnapshot["lines"][number];
  * its rate by an `averages` row (a percentage with no minimum or maximum, Q16); lines with no average stay at the list price.
  * `entered` takes the person's lines over the list lines. Quarterly or yearly fixed fees are spread evenly over their months.
  */
-export function buildTariff(input: WorkbenchInput, p: ProviderInput, snapshot: FeesSnapshot): TariffBuild {
+/** The band of a trade line that prices a purchase by standing order (F-12, 2026-10-31). Never the line of a sale, a lump sum or a reinvested distribution. */
+export const STANDING_ORDER_BAND = "הוראת קבע";
+/** The band of a conversion line that prices the conversion of a monthly purchase on a recurring plan (F-13, 2026-10-31). Never a lump sum's or a sale's: Interactive Israel's tariff, p.6, charges those by the table. */
+export const STANDING_CONVERSION_BAND = "השקעה קבועה אוטומטית";
+/** The band of a trade line that prices a redemption of makam (F-24, 2026-10-31): the tariff's line that names redemption, never the reduced price of an order placed online. */
+export const REDEMPTION_BAND = "פדיון";
+
+const standingLines = (snapshot: FeesSnapshot, base: "trade" | "fx") => snapshot.lines.filter((l) => l.base === base && l.level === "list" && l.band === (base === "trade" ? STANDING_ORDER_BAND : STANDING_CONVERSION_BAND));
+
+/**
+ * The classes a tariff line may name for a security of this class. A bond (`tase_bonds`) is also a `tase_shares_bonds` security, and a line
+ * that names the class itself is the more specific and wins. A foreign fund listed on TASE trades on the exchange-traded lines, and a line
+ * can leave it out (`excludes`), as the standing-order lines do: they name a tracking fund as the law defines it (MF-58).
+ */
+export const lineClasses = (cls: string): string[] => (cls === "tase_bonds" ? ["tase_bonds", "tase_shares_bonds"] : cls === "tase_foreign_fund_units" ? ["tase_foreign_fund_units", "etf_units"] : [cls]);
+
+/** A tariff can be read without a fund (the goal comparison's list of brokers): only a fee per share and a distribution line need one. */
+export function buildTariff(input: Omit<WorkbenchInput, "fund"> & { fund?: WorkbenchInput["fund"] }, p: ProviderInput, snapshot: FeesSnapshot): TariffBuild {
   const wrapper = input.wrapper ?? "brokerage-account";
-  // A bond (`tase_bonds`) is also a `tase_shares_bonds` security; a line that names the class itself is the more specific and wins below.
-  const classes = input.instrumentClass === "tase_bonds" ? ["tase_bonds", "tase_shares_bonds"] : [input.instrumentClass];
+  const classes = lineClasses(input.instrumentClass);
   const applicable = (l: SnapLine) =>
     l.applies_to.some((a) => a === "all" || classes.includes(a) || a === wrapper) && !(l.excludes ?? []).some((x) => classes.includes(x));
   const out: TariffBuild = { tariff: {}, linesUsed: [], lineSources: [], noLine: [], notModelled: [], averagesApplied: 0, strengths: [], flags: [] };
@@ -249,11 +267,16 @@ export function buildTariff(input: WorkbenchInput, p: ProviderInput, snapshot: F
 
   /** The line of a base at a level for the channel: none, one, or an error when two apply (the snapshot is ambiguous). */
   const pick = (base: SnapLine["base"], at: SnapLine["level"]): SnapLine | undefined => {
-    const all = snapshot.lines.filter((l) => l.base === base && l.level === at && applicable(l));
+    const all = snapshot.lines.filter((l) => l.base === base && l.level === at && applicable(l) && l.band !== STANDING_ORDER_BAND && l.band !== STANDING_CONVERSION_BAND && l.band !== REDEMPTION_BAND);
     const channels = new Set(all.map((l) => l.channel).filter((c): c is string => c !== null));
     if (input.channel === undefined && channels.size > 0)
       throw new RecordInputError(`provider ${snapshot.id}: ${base} lines exist for channels ${[...channels].join(", ")}; the input must name the channel`);
     let found = all.filter((l) => l.channel === null || l.channel === input.channel);
+    // F-13 (2026-10-31): a conversion line printed for one currency prices a fund in it, and the line with no currency prices the others.
+    if (base === "fx" && input.currency) {
+      const own = found.filter((l) => l.conversion_currency === input.currency!.code);
+      found = own.length > 0 ? own : found.filter((l) => !l.conversion_currency);
+    }
     const exact = found.filter((l) => l.applies_to.includes(input.instrumentClass));
     if (exact.length > 0 && exact.length < found.length && classes.length > 1) found = exact;
     const ambiguous = (ls: SnapLine[]) =>
@@ -310,27 +333,51 @@ export function buildTariff(input: WorkbenchInput, p: ProviderInput, snapshot: F
     const r = resolve("trade");
     if (r) {
       // E1 (2026-10-25): a dollar rate per share is charged on the share count, which needs the fund's price.
-      const c: Commission = { rate: 0 };
-      if (r.rate.unit === "usd_per_share") {
-        if (typeof r.rate.value !== "number") throw new Unusable("line-without-value", `${r.line.id} rate has no value`);
-        if (!input.fund.sharePrice) throw new Unusable("needs-share-price", `${r.line.id} is a fee per share and the fund record has no share_price`);
-        c.perShare = r.rate.value * rateOf(input.fx, "USD", `${r.line.id} rate`);
-      } else c.rate = pct(r.rate, "pct_of_trade", `${r.line.id} rate`);
-      // E2: minimums and maximums in dollars or pounds are converted at the run's rate.
-      const bound = (vo: ValueObject, what: string): number => {
-        if (NIS_UNITS.has(vo.unit)) return nis(vo, what);
-        const code = USD_UNITS.has(vo.unit) ? "USD" : vo.unit === "gbp_per_trade" ? "GBP" : null;
-        if (!code) throw new RecordInputError(`${what}: unit is ${vo.unit}, expected shekels, dollars or pounds`);
-        if (typeof vo.value !== "number") throw new Unusable("line-without-value", `${what} has no value`);
-        return vo.value * rateOf(input.fx, code, what);
+      const commission = (l: { line: SnapLine; rate: ValueObject; min: ValueObject | null | undefined; max: ValueObject | null | undefined; cap: ValueObject | null | undefined }): Commission => {
+        const c: Commission = { rate: 0 };
+        if (l.rate.unit === "usd_per_share") {
+          if (typeof l.rate.value !== "number") throw new Unusable("line-without-value", `${l.line.id} rate has no value`);
+          if (!input.fund?.sharePrice) throw new Unusable("needs-share-price", `${l.line.id} is a fee per share and the fund record has no share_price`);
+          c.perShare = l.rate.value * rateOf(input.fx, "USD", `${l.line.id} rate`);
+        } else c.rate = pct(l.rate, "pct_of_trade", `${l.line.id} rate`);
+        // E2: minimums and maximums in a foreign currency are converted at the run's rate.
+        const bound = (vo: ValueObject, what: string): number => {
+          if (NIS_UNITS.has(vo.unit)) return nis(vo, what);
+          const code = CURRENCY_OF_UNIT[vo.unit];
+          if (!code) throw new RecordInputError(`${what}: unit is ${vo.unit}, expected shekels, dollars, euros or pounds`);
+          if (typeof vo.value !== "number") throw new Unusable("line-without-value", `${what} has no value`);
+          return vo.value * rateOf(input.fx, code, what);
+        };
+        if (hasBound(l.min)) c.min = bound(l.min, `${l.line.id} min`);
+        if (hasBound(l.max)) c.max = bound(l.max, `${l.line.id} max`);
+        // E3: the cap is a share of the trade value and wins over the minimum.
+        if (hasBound(l.cap)) c.cap = pct(l.cap, "pct_of_trade", `${l.line.id} cap`);
+        // F-12 (2026-10-31): a flat price for an order up to a sum (BRK-54).
+        if (l.line.flat_up_to) c.flatUpTo = { amount: bound(l.line.flat_up_to.amount, `${l.line.id} flat amount`), upTo: bound(l.line.flat_up_to.up_to, `${l.line.id} flat up to`) };
+        return c;
       };
-      if (hasBound(r.min)) c.min = bound(r.min, `${r.line.id} min`);
-      if (hasBound(r.max)) c.max = bound(r.max, `${r.line.id} max`);
-      // E3: the cap is a share of the trade value and wins over the minimum.
-      if (hasBound(r.cap)) c.cap = pct(r.cap, "pct_of_trade", `${r.line.id} cap`);
+      const c = commission(r);
       out.tariff.buy = c;
       out.tariff.sell = { ...c };
       used(r.line, r.rate, r.min, r.max, r.cap);
+      // F-12 (2026-10-31): a monthly purchase by standing order, where the tariff prints a price for one; a list price only, never over an average.
+      if (r.rate === r.line.rate && r.line.level === "list") {
+        const standing = standingLines(snapshot, "trade").filter((l) => applicable(l) && (l.channel === null || l.channel === input.channel));
+        if (standing.length > 1) throw new RecordInputError(`provider ${snapshot.id}: ${standing.length} standing-order lines apply (${standing.map((l) => l.id).join(", ")}); the snapshot is ambiguous`);
+        const l = standing[0];
+        if (l) {
+          out.tariff.buyStanding = commission({ line: l, rate: l.rate, min: l.min, max: l.max, cap: l.cap });
+          used(l, l.rate, l.min, l.max, l.cap);
+        }
+        // F-24 (2026-10-31): a redemption, where the tariff names it; it follows no channel, because no order is placed
+        const redemption = snapshot.lines.filter((l) => l.base === "trade" && l.level === "list" && l.band === REDEMPTION_BAND && applicable(l));
+        if (redemption.length > 1) throw new RecordInputError(`provider ${snapshot.id}: ${redemption.length} redemption lines apply (${redemption.map((l) => l.id).join(", ")}); the snapshot is ambiguous`);
+        const paid = redemption[0];
+        if (paid) {
+          out.tariff.redeem = commission({ line: paid, rate: paid.rate, min: paid.min, max: paid.max, cap: paid.cap });
+          used(paid, paid.rate, paid.min, paid.max, paid.cap);
+        }
+      }
     } else out.noLine.push("trade");
   }
 
@@ -343,8 +390,10 @@ export function buildTariff(input: WorkbenchInput, p: ProviderInput, snapshot: F
       const period = r.line.period ?? (r.rate.value === 0 ? "month" : null);
       if (period === null) throw new Unusable("line-without-value", `${r.line.id} has no period`);
       const c: Custody = { rate: pct(r.rate, "pct_of_balance_per_period", `${r.line.id} rate`), everyMonths: periodMonths[period] };
-      if (hasBound(r.min)) c.min = nis(r.min, `${r.line.id} min`);
-      if (hasBound(r.max)) c.max = nis(r.max, `${r.line.id} max`);
+      // F-14: a bound printed per month is per charging period here, so a yearly line with a monthly minimum charges twelve of them.
+      const boundOf = (b: ValueObject, what: string) => nis(b, what) * (b.unit === "nis_per_month" ? c.everyMonths : 1);
+      if (hasBound(r.min)) c.min = boundOf(r.min, `${r.line.id} min`);
+      if (hasBound(r.max)) c.max = boundOf(r.max, `${r.line.id} max`);
       out.tariff.custody = c;
       used(r.line, r.rate, r.min, r.max);
     } else out.noLine.push("custody");
@@ -371,7 +420,13 @@ export function buildTariff(input: WorkbenchInput, p: ProviderInput, snapshot: F
     else {
       const r = resolve("fx");
       if (r) {
-        const c: Commission = { rate: pct(r.rate, "pct_of_trade", `${r.line.id} rate`) };
+        const c: Commission = { rate: 0 };
+        // F-13 (2026-10-31): a conversion priced in shekels a dollar, not as a share of the amount.
+        if (r.rate.unit === "nis_per_usd") {
+          if (input.currency!.code !== "USD") throw new RecordInputError(`${r.line.id}: the price is per dollar but the instrument currency is ${input.currency!.code}`);
+          if (typeof r.rate.value !== "number") throw new Unusable("line-without-value", `${r.line.id} rate has no value`);
+          c.perCurrencyUnit = r.rate.value;
+        } else c.rate = pct(r.rate, "pct_of_trade", `${r.line.id} rate`);
         if (hasBound(r.min) || hasBound(r.max)) {
           // The FX bounds are in USD where the bank sets them so: they stay in the trade currency (F-13, 2026-10-24).
           const bounds = [r.min, r.max].filter(hasBound);
@@ -390,8 +445,18 @@ export function buildTariff(input: WorkbenchInput, p: ProviderInput, snapshot: F
           if (hasBound(r.min)) c.min = bound(r.min, `${r.line.id} min`);
           if (hasBound(r.max)) c.max = bound(r.max, `${r.line.id} max`);
         }
-        out.tariff.fx = hasBound(r.min) || hasBound(r.max) ? c : c.rate;
+        out.tariff.fx = hasBound(r.min) || hasBound(r.max) || c.perCurrencyUnit ? c : c.rate;
         used(r.line, r.rate, r.min, r.max);
+        // F-13 (2026-10-31): the conversion of a monthly purchase on a recurring plan, where the tariff prints a price for one; a list price only, never over an average.
+        if (r.rate === r.line.rate && r.line.level === "list") {
+          const plan = standingLines(snapshot, "fx").filter((l) => applicable(l) && (l.channel === null || l.channel === input.channel));
+          if (plan.length > 1) throw new RecordInputError(`provider ${snapshot.id}: ${plan.length} recurring-plan conversion lines apply (${plan.map((l) => l.id).join(", ")}); the snapshot is ambiguous`);
+          const l = plan[0];
+          if (l) {
+            out.tariff.fxStanding = pct(l.rate, "pct_of_trade", `${l.id} rate`);
+            used(l, l.rate);
+          }
+        }
       }
     }
   }
@@ -400,7 +465,7 @@ export function buildTariff(input: WorkbenchInput, p: ProviderInput, snapshot: F
   const modelled = new Set<SnapLine["base"]>(["trade", "custody", "fixed_period", "fx"]);
   for (const l of snapshot.lines.filter(applicable)) {
     if (l.base === "distribution_handling") {
-      if (input.fund.distribution) {
+      if (input.fund?.distribution) {
         out.notModelled.push({ lineId: l.id, base: l.base, reason: "F-18 is not computed yet" });
         if (!out.flags.includes("F-18")) out.flags.push("F-18");
       }

@@ -5,7 +5,8 @@
 //     (each piece of text, each number) become separate items and lines (the fees page's "שווה … ב־8 שנים." sentence);
 //  4. the gallery at /kit stays out of the menu and the search;
 //  5. a question data/open-questions.json has as closed is not named as open (2026-10-26);
-//  6. "אחר" in a row of choices is the kit's OtherChip (ChoiceChips `other`), never an ordinary chip (2026-10-26).
+//  6. "אחר" in a row of choices is the kit's OtherChip (ChoiceChips `other`), never an ordinary chip (2026-10-26);
+//  7. every <table> is fixed with a width per column (design-system 2.5a, 2026-10-31).
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { join, relative } from "node:path";
@@ -156,5 +157,26 @@ describe("\"אחר\" is the kit's OtherChip", () => {
   it("the scanner sees the broken pattern", () => {
     expect(choiceIds(`const termIds: K[] = ["1", "other"];\n<ChoiceChips ids={termIds} wrap />`)).toEqual([`["1", "other"]`]);
     expect(choiceIds(`<ChoiceChips ids={["a", "other"]} />`)).toEqual([`["a", "other"]`]);
+  });
+});
+
+// 2026-10-31 (design-system 2.5a): nothing moves when a number changes, so a table's columns do not follow its content.
+describe("every table has fixed columns", () => {
+  const unfixed = (src: string): string[] =>
+    findElements(src, ["table"]).flatMap((el) => {
+      const fixed = classTokens(el.open).some((t) => t === "tbl" || t === "table-fixed");
+      return fixed && /<TableCols\b/.test(el.inner) ? [] : [`line ${el.line}: ${fixed ? "no TableCols" : "neither .tbl nor table-fixed"}`];
+    });
+  it("each <table> is .tbl or table-fixed, with a TableCols", () => {
+    const bad = files.filter((f) => f.endsWith(".tsx")).flatMap((f) => unfixed(code(read(f))).map((m) => `${rel(f)} ${m}`));
+    expect(bad).toEqual([]);
+  });
+  it(".tbl is fixed in the stylesheet", () => {
+    expect(/\.tbl \{[^}]*table-layout: fixed/.test(read(join(root, "app.css")))).toBe(true);
+  });
+  it("the scanner sees the broken pattern", () => {
+    expect(unfixed(`<table className="tbl"><thead /></table>`)).toHaveLength(1);
+    expect(unfixed(`<table className="w-full"><TableCols widths={[]} /></table>`)).toHaveLength(1);
+    expect(unfixed(`<table className="w-full table-fixed"><TableCols widths={[]} /></table>`)).toEqual([]);
   });
 });

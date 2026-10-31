@@ -2,6 +2,7 @@
 // Num). Wording follows the approved mockup of 2026-10-23, checked against the rule base; each block
 // ends with the rules it rests on. NEW copy for the founder to review (docs/copy.md holds only labels).
 import type { GuideContent } from "./types";
+import { fmt } from "../../lib/format";
 import { IdRef, Num, RuleRef, RulesLine, Term } from "../../components/provenance";
 import { Callout, Sentence } from "../../components/kit";
 
@@ -30,8 +31,17 @@ export const content: GuideContent = {
     const age = figure("TXK-10", "early_retirement_age");
     const sixty = figure("TXG-04", "age");
     const withheld = figure("TXK-26", "regulation_text_rate");
+    const proposedCap = figure("TXK-21", "proposed_cap");
     return (
       <>
+        {proposedCap ? (
+          <>
+            <Callout tone="caution" className="max-w-measure">
+              <span className="font-medium">המלצה, לא חוק.</span> צוות של משרד האוצר המליץ ביולי 2026 על חשבון השקעות עם הטבת מס, עם תקרה אחת של <Num value={proposedCap} display={fmt.nisWhole(Number(proposedCap.value))} /> לאדם. מעל התקרה ההטבות של היום היו מסתיימות. זה יכול לשנות את הכדאיות של המוצר, אבל זה לא החוק היום, ולא נמצאה הצעת חוק.
+            </Callout>
+            <RulesLine ids={["TXK-21"]} />
+          </>
+        ) : null}
         <Callout tone="blocked" className="max-w-measure">
           <span className="font-medium">מגיל {age ? <Num value={age} /> : null} אפשר להעביר את הכסף <Term prefix="ל" id="קופת גמל לקצבה">קופת גמל לקצבה</Term>.</span> את <Term prefix="ה" id="קצבה">קצבה</Term> האתר עוד לא מחשב, כי חסרים מקדמי ההמרה. שאלה פתוחה: <IdRef id="PEN OQ7" />.
         </Callout>

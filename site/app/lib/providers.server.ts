@@ -5,7 +5,7 @@
 import type { ParameterRecord, RuleRecord } from "@finance-tool/schema";
 import { loadCma, loadFees, loadParameters, loadRules, pointedRecords, today } from "./data.server";
 import { loadExposures, loadFunds } from "./instruments.server";
-import { BROKERAGE, PROVIDENT_WRAPPERS, type WorkbenchBundle } from "./providers";
+import { BROKERAGE, onlyWhatCanBeDone, PROVIDENT_WRAPPERS, type WorkbenchBundle } from "./providers";
 import { loadFundLists, workbenchLinks } from "./variants.server";
 import { loadFx, loadFxHistory } from "./fx.server";
 
@@ -56,7 +56,7 @@ export function buildWorkbenchBundle(): WorkbenchBundle {
     if (!p) throw new Error(`data/parameters/ holds no ${id} record`);
     return p;
   };
-  const snapshots = latestSnapshots();
+  const snapshots = latestSnapshots().map(onlyWhatCanBeDone);
   const funds = loadFunds();
   const exposures = loadExposures();
   const fundLists = loadFundLists();

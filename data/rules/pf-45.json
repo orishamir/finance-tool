@@ -1,0 +1,55 @@
+{
+  "id": "PF-45",
+  "title": "Asking for a withdrawal against the rules: a call or a message first, and the money moves only on an explicit yes",
+  "title_he": "בקשה למשוך שלא כדין: קודם שיחה או הודעה, והכסף יוצא רק אחרי אישור מפורש",
+  "text_he": "כשלקוח מבקש ביוזמתו למשוך כסף שלא לפי הכללים, הגוף המוסדי מקיים לפני התשלום שיחת שירות עם נציג, סמוך לבקשה. בשיחה נאמרים הסכום, שהמשיכה עלולה להיות ממוסה ב־35% מהסכום, שהיא עלולה להשפיע על הכיסוי הביטוחי ושהיא מקטינה את הקצבה הצפויה בפרישה, ושאפשר למשוך ישירות מול הגוף בלי עלות. הגוף משלם רק אחרי אישור מפורש של הלקוח. עד 50,000 שקלים אפשר לשלוח במקום השיחה הודעה דיגיטלית עם אותם פרטים ועם דרך לבטל. החוזר פורסם ב־12.7.2026 ונכנס לתוקף שלושה חודשים אחר כך.",
+  "figure_names_he": {
+    "digital_message_ceiling": "הסכום שעד אליו אפשר לשלוח הודעה דיגיטלית במקום שיחה"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "protection",
+    "regulator"
+  ],
+  "likely_to_change": "no",
+  "figures": {
+    "digital_message_ceiling": {
+      "value": 50000,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-legislation301/he/Institutional-Bodies-Customer-Service-Circular-Amendment-pdf.pdf",
+        "title": "חוזר גופים מוסדיים 2026-9-5, שירות ללקוחות גופים מוסדיים - תיקון, 12.7.2026, p.7, annex s.7ד",
+        "publisher": "Capital Market, Insurance and Savings Authority",
+        "strength": "primary"
+      },
+      "checked": "2026-10-31",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "PF-45"
+      ],
+      "state": "sourced",
+      "notes": "At NIS 50,000 or less the body may send a digital message with the same details and contact details for cancelling, instead of the call."
+    }
+  },
+  "il_finance_file": "provident-family-common.md",
+  "checked": "2026-10-31",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-legislation301/he/Institutional-Bodies-Customer-Service-Circular-Amendment-pdf.pdf",
+      "title": "חוזר גופים מוסדיים 2026-9-5, שירות ללקוחות גופים מוסדיים - תיקון, 12.7.2026",
+      "title_he": "חוזר גופים מוסדיים 2026-9-5, שירות ללקוחות גופים מוסדיים - תיקון, 12.7.2026",
+      "publisher": "Capital Market, Insurance and Savings Authority",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "p.1 s.1; p.2 s.5; p.7 annex s.7ד",
+      "locator_he": "עמוד 1 סעיף 1; עמוד 2 סעיף 5; עמוד 7 נספח סעיף 7ד",
+      "page": 7,
+      "checked": "2026-10-31"
+    }
+  ]
+}

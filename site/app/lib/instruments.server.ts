@@ -4,7 +4,8 @@
 // `data/` and keeps its value object, so the values sheet can show its source.
 import { existsSync, readdirSync } from "node:fs";
 import { join } from "node:path";
-import { memberKindOf, type InstrumentTerms } from "@finance-tool/engine";
+import { memberKindOf, recordDistribution, REDEMPTION_BAND, STANDING_ORDER_BAND, type InstrumentTerms } from "@finance-tool/engine";
+import { instrumentClassOf } from "./providers";
 import {
   catalogEntry,
   depositTerms,
@@ -303,7 +304,10 @@ function listLines(snap: FeesSnapshot, wrapperId: string, base: FeeLine["base"])
   const rank = (l: FeeLine) => (l.channel === null || l.channel === "direct" ? 0 : 1);
   // a line that excludes the product's own security type (a bank's custody line leaves out makam, BRK-17) does not apply to it
   const excluded = (l: FeeLine) => (l.excludes ?? []).some((x) => types.includes(x));
-  return snap.lines.filter((l) => l.level === "list" && l.base === base && (l.applies_to.includes(wrapperId) || l.applies_to.includes("all") || l.applies_to.some((a) => types.includes(a))) && !excluded(l)).sort((a, b) => rank(a) - rank(b));
+  const lines = snap.lines.filter((l) => l.level === "list" && l.base === base && l.band !== STANDING_ORDER_BAND && l.band !== REDEMPTION_BAND && (l.applies_to.includes(wrapperId) || l.applies_to.includes("all") || l.applies_to.some((a) => types.includes(a))) && !excluded(l)).sort((a, b) => rank(a) - rank(b));
+  // a bond's own line wins over a line for shares and bonds, as in the engine's tariff step (F-63, `lineClasses`): Psagot prints one
+  const own = wrapperId === "government-bond" ? lines.filter((l) => l.applies_to.includes("tase_bonds")) : [];
+  return own.length > 0 ? own : lines;
 }
 
 function buildFund(wrapperId: string, spec: InstrumentSpec, src: InstrumentSources, missing: string[], feeValues: Record<string, SiteValue>) {
@@ -333,7 +337,13 @@ function buildFund(wrapperId: string, spec: InstrumentSpec, src: InstrumentSourc
 
   const fund: Fund = { kind };
   const isMmf = kind.startsWith("money-market");
-  if (rec.distribution_policy === "distributing") missing.push(`${wrapperId}: fund "${rec.id}" distributes, and its distribution yield (A-10) is not on the record`);
+  if (rec.distribution_policy === "distributing") {
+    const held = recordDistribution(rec);
+    if (held) {
+      fund.distribution = held;
+      feeValues.distributionYield = { ...rec.distribution!.yield };
+    } else missing.push(`${wrapperId}: fund "${rec.id}" distributes, and its distribution yield (A-10) is not on the record`);
+  }
   if (rec.currency !== "ILS" && rec.currency !== "NIS") missing.push(`${wrapperId}: fund "${rec.id}" is in ${rec.currency}; the exchange-rate change (A-03) and the start rate are not in P-05`);
   if (kind === "tase-foreign-fund") {
     const t = rec.tax_status.tase_foreign_fund_90pct_test;
@@ -391,7 +401,7 @@ function buildFund(wrapperId: string, spec: InstrumentSpec, src: InstrumentSourc
  * the holder for buying, holding or redeeming units (MF-26), and a bank may not charge securities custody on one
  * (BANK-18). So the trade and custody lines are 0, each a sourced value object carrying its rule. The assumption that
  * the bank has a distribution agreement for the fund (the common case) is written on the value. The tariff's own
- * `mutual_fund_units` lines are not read: at Leumi the one that matches is a tracking-fund standing-order line.
+ * `mutual_fund_units` lines are not read: they price tracking funds.
  */
 function buildMoneyMarketTariff(wrapperId: string, src: InstrumentSources, missing: string[], feeValues: Record<string, SiteValue>): NonNullable<InstrumentTerms["tariff"]> | null {
   const mf26 = src.rules["MF-26"];
@@ -428,6 +438,18 @@ function buildMoneyMarketTariff(wrapperId: string, src: InstrumentSources, missi
   return { buy: { rate: 0 }, sell: { rate: 0 }, custody: { rate: 0, everyMonths: 12 } };
 }
 
+/** The figures of a tariff's redemption line, for the terms block (F-24). */
+export function redemptionValues(l: FeeLine): Record<string, SiteValue> {
+  const out: Record<string, SiteValue> = { redeemRate: { ...l.rate } as SiteValue };
+  if (l.min && isNum(l.min)) out.redeemMin = { ...l.min } as SiteValue;
+  if (l.max && isNum(l.max)) out.redeemMax = { ...l.max } as SiteValue;
+  if (l.flat_up_to) {
+    out.redeemFlat = { ...l.flat_up_to.amount } as SiteValue;
+    out.redeemFlatUpTo = { ...l.flat_up_to.up_to } as SiteValue;
+  }
+  return out;
+}
+
 function buildTariff(
   wrapperId: string,
   family: "securities" | "makam" | "bond",
@@ -443,24 +465,56 @@ function buildTariff(
   // makam and a government bond are securities held in the securities account (D6, 2026-10-26): the account's custody line for their class
   // and its monthly fee apply to them too (F-14, F-17); a bank's custody on makam is barred in the run itself (BRK-17)
   const wants = family === "makam" || family === "bond" ? ["trade", "custody", "fixed_period"] : ["trade", "custody", "fx", "fixed_period"];
-  const nis = (v: ValueObject | null) => (isNum(v) && (v.unit === "nis_per_trade" || v.unit === "nis") ? (v.value as number) : undefined);
+  const nis = (v: ValueObject | null) => (isNum(v) && (v.unit === "nis_per_trade" || v.unit === "nis" || v.unit === "nis_per_month") ? (v.value as number) : undefined);
 
   const trade = wants.includes("trade") ? listLines(snap, wrapperId, "trade") : [];
   if (trade.length > 0) {
     const line = trade[0]!;
     if (trade.length > 1) console.log(`[guide] ${wrapperId}: ${snap.id} has ${trade.length} list trade lines; the first (${line.id}) is used`);
     if (isNum(line.rate) && line.rate.unit === "pct_of_trade") {
-      const c: NonNullable<Tariff["buy"]> = { rate: pct(line.rate) };
-      const min = nis(line.min);
-      const max = nis(line.max);
-      if (min !== undefined) c.min = min;
-      if (max !== undefined) c.max = max;
+      const commission = (l: FeeLine) => {
+        const c: NonNullable<Tariff["buy"]> = { rate: pct(l.rate) };
+        const min = nis(l.min);
+        const max = nis(l.max);
+        if (min !== undefined) c.min = min;
+        if (max !== undefined) c.max = max;
+        if (l.cap && isNum(l.cap)) c.cap = pct(l.cap);
+        // F-12: the same reading as the comparison's tariff step: a flat price up to an amount, where the tariff prints one
+        if (l.flat_up_to) {
+          const amount = nis(l.flat_up_to.amount);
+          const upTo = nis(l.flat_up_to.up_to);
+          if (amount !== undefined && upTo !== undefined) c.flatUpTo = { amount, upTo };
+        }
+        return c;
+      };
+      const c = commission(line);
       // A tariff line has no buy/sell split (data-schema §3.6): one commission line applies to both orders.
       tariff.buy = c;
       tariff.sell = { ...c };
+      // F-12 (2026-10-31): monthly purchases of the account's own fund, where the tariff prints a standing-order price for its class
+      const fundRec = src.funds.find((f) => f.id === spec.fund);
+      const exposure = fundRec ? loadExposures().find((e) => e.id === fundRec.exposure_id) : undefined;
+      const cls = fundRec ? instrumentClassOf(fundRec, exposure) : null;
+      const standing = cls ? snap.lines.find((l) => l.level === "list" && l.base === "trade" && l.band === STANDING_ORDER_BAND && l.applies_to.includes(cls) && (l.channel === null || l.channel === line.channel)) : undefined;
+      if (standing && isNum(standing.rate) && standing.rate.unit === "pct_of_trade") {
+        tariff.buyStanding = commission(standing);
+        feeValues.standingRate = { ...standing.rate };
+        if (standing.min && isNum(standing.min)) feeValues.standingMin = { ...standing.min };
+        if (standing.max && isNum(standing.max)) feeValues.standingMax = { ...standing.max };
+      }
       feeValues.tradeRate = { ...line.rate };
       if (line.min && isNum(line.min)) feeValues.tradeMin = { ...line.min };
       if (line.max && isNum(line.max)) feeValues.tradeMax = { ...line.max };
+      if (line.flat_up_to) {
+        feeValues.tradeFlat = { ...line.flat_up_to.amount };
+        feeValues.tradeFlatUpTo = { ...line.flat_up_to.up_to };
+      }
+      // F-24 (2026-10-31): a redemption of makam, where the tariff names it (the comparison reads the same line through the engine's tariff step)
+      const redemption = family === "makam" ? snap.lines.find((l) => l.level === "list" && l.base === "trade" && l.band === REDEMPTION_BAND && l.applies_to.includes("makam")) : undefined;
+      if (redemption && isNum(redemption.rate) && redemption.rate.unit === "pct_of_trade") {
+        tariff.redeem = commission(redemption);
+        Object.assign(feeValues, redemptionValues(redemption));
+      }
     } else missing.push(`${wrapperId}: ${snap.id} line ${line.id} is not a percent of trade`);
   }
 
@@ -468,14 +522,17 @@ function buildTariff(
   if (custody.length > 0) {
     const line = custody[0]!;
     // The ledger takes a rate per charging period and the months in a period: a quarterly line stays quarterly, no annual conversion.
-    const every = line.period ? monthsOf[line.period] : line.rate.unit === "pct_per_year" ? 12 : undefined;
+    // a zero rate prints no period (One Zero's "0 אחוז"): it charges nothing whatever the period is, as the engine's own path reads it
+    const every = line.period ? monthsOf[line.period] : line.rate.unit === "pct_per_year" ? 12 : line.rate.value === 0 ? 12 : undefined;
     const unitOk = line.rate.unit === "pct_of_balance_per_period" || line.rate.unit === "pct_per_year";
     if (isNum(line.rate) && unitOk && every) {
       const c: NonNullable<Tariff["custody"]> = { rate: pct(line.rate), everyMonths: every };
+      // F-14: a bound printed per month is per charging period here, so a yearly line with a monthly minimum charges twelve of them.
+      const perPeriod = (b: typeof line.min) => (b?.unit === "nis_per_month" ? every : 1);
       const min = nis(line.min);
       const max = nis(line.max);
-      if (min !== undefined) c.min = min;
-      if (max !== undefined) c.max = max;
+      if (min !== undefined) c.min = min * perPeriod(line.min);
+      if (max !== undefined) c.max = max * perPeriod(line.max);
       tariff.custody = c;
       feeValues.custodyRate = { ...line.rate };
       if (line.min && isNum(line.min)) feeValues.custodyMin = { ...line.min };
@@ -489,7 +546,9 @@ function buildTariff(
     if (isNum(line.rate) && line.rate.unit === "pct_of_trade") {
       tariff.fx = pct(line.rate);
       feeValues.fxRate = { ...line.rate };
-    } else missing.push(`${wrapperId}: ${snap.id} line ${line.id} is not a percent of trade`);
+    }
+    // F-13: only a fund in a foreign currency is converted, and this path takes shekel funds only (see the fund's check), so a
+    // conversion printed another way (Psagot's agorot a dollar) charges nothing here and is no reason to drop the house
   }
 
   const fixed = wants.includes("fixed_period") ? listLines(snap, wrapperId, "fixed_period") : [];

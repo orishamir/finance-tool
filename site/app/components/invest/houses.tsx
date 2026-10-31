@@ -10,6 +10,7 @@ import { Num } from "../provenance";
 import { Button, Card, cx, Disclosure, LabelRow, RankBadge, Section, Sentence, Tag } from "../kit";
 import { optionClass, OptionTag, reasonText } from "./parts";
 import { ProviderLink } from "./sections";
+import { AddEntryButton, BrokerTerms } from "./custom-entries";
 
 const TOP = 5;
 export function HousesSection({ view, chosen, onPick }: { view: InvestView; chosen: string | null; onPick: (id: string) => void }) {
@@ -19,10 +20,14 @@ export function HousesSection({ view, chosen, onPick }: { view: InvestView; chos
   const rest = view.houses.filter((r) => !computes(r));
   const shown = il.filter((r, i) => i < TOP || r.provider.id === view.yourBroker);
   const folded = il.filter((r) => !shown.includes(r));
+  const standingCount = il.filter((r) => r.standing).length;
+  // a count over the collected houses (D44)
+  const collected = il.filter((r) => !r.provider.custom).length;
   const rowOf = (r: HouseRow, rank: number | null) => <HouseItem key={r.provider.id} view={view} row={r} rank={rank} chosen={chosen === r.provider.id} onPick={onPick} />;
   return (
     <Section id="invest-houses" level="card" title={c.houses.heading} lead={c.houses.sub}>
       <p className="text-sm text-muted-foreground max-w-measure">{c.houses.tap}</p>
+      {standingCount > 0 && <p className="text-sm text-muted-foreground max-w-measure">{c.houses.standingNote(standingCount, collected)}</p>}
       <ol className="flex flex-col gap-2" aria-label={c.houses.listLabel}>
         {shown.map((r) => rowOf(r, il.indexOf(r) + 1))}
       </ol>
@@ -49,23 +54,26 @@ export function HousesSection({ view, chosen, onPick }: { view: InvestView; chos
           <ul className="flex flex-col gap-1.5">
             {rest.map((r) => (
               <li key={r.provider.id} className="flex flex-wrap items-baseline gap-x-3 gap-y-1 text-sm">
-                <ProviderLink p={r.provider} short className="font-medium" />
+                <ProviderLink p={r.provider} short className={r.provider.custom ? "font-medium text-entered" : "font-medium"} />
                 <NoWay row={r} />
+                {r.provider.custom && <BrokerTerms id={r.provider.id} />}
               </li>
             ))}
           </ul>
         </div>
       )}
+      <AddEntryButton kind="broker" />
     </Section>
   );
 }
 
 function NoWay({ row }: { row: HouseRow }) {
+  if (row.provider.custom && row.unavailable) return <Tag>{c.houses.unavailable}</Tag>;
   if (row.unavailable) {
     const a = row.unavailable;
     return (
       <span className="inline-flex flex-wrap items-center gap-x-2 gap-y-1">
-        <Tag tone="caution">{c.houses.unavailable}</Tag>
+        <Tag>{c.houses.unavailable}</Tag>
         <a href={a.source.url} target="_blank" rel="noopener noreferrer" className="text-link hover:underline inline-flex items-center gap-1" title={a.note ?? a.source.title}>
           {c.houses.sourceOf} <IconExternal size={14} />
         </a>
@@ -73,7 +81,12 @@ function NoWay({ row }: { row: HouseRow }) {
     );
   }
   const cls = row.entries[0] ? optionClass[row.entries[0].fund.option] : "etf_units";
-  return <span className="text-muted-foreground">{row.reason ? reasonText(row.reason, cls) : c.houses.noWay}</span>;
+  return (
+    <span className="inline-flex flex-wrap items-center gap-x-2 gap-y-1 text-muted-foreground">
+      <Tag tone="caution">{c.houses.noData}</Tag>
+      {row.reason ? reasonText(row.reason, cls) : c.houses.noWay}
+    </span>
+  );
 }
 
 function HouseItem({ view, row: r, rank, chosen, onPick }: { view: InvestView; row: HouseRow; rank: number | null; chosen: boolean; onPick: (id: string) => void }) {
@@ -92,11 +105,13 @@ function HouseItem({ view, row: r, rank, chosen, onPick }: { view: InvestView; r
       <div className="flex items-start gap-3 min-w-0">
         <RankBadge rank={best ? rank : null} />
         <div className="flex flex-col gap-1 min-w-0">
-          <ProviderLink p={r.provider} short className="font-semibold" />
+          <ProviderLink p={r.provider} short className={r.provider.custom ? "font-semibold text-entered [overflow-wrap:anywhere]" : "font-semibold"} />
           <span className="flex flex-wrap gap-1">
             {yours && <Tag tone="entered">{c.houses.yours}</Tag>}
+            {r.standing && <Tag>{c.houses.standingTag}</Tag>}
             {r.provider.foreign && <LabelRow labels={brokerLabels(r.provider, false)} />}
           </span>
+          {r.provider.custom && <BrokerTerms id={r.provider.id} />}
         </div>
       </div>
       <div className="flex flex-col gap-1 min-w-0">

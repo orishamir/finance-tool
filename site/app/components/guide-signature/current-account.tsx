@@ -14,7 +14,7 @@ import type { SiteValue } from "../../lib/value";
 import { AxisLabels, niceYearTicks } from "../chart/TimelineChart";
 import { IconAlert } from "../icons";
 import type { WorthFactRow } from "../guide/worth-knowing";
-import { ChartLegend, cx, Disclosure, InputSlot, NumberField, RangeField, Sentence, Stat, StatRow, Swatch, Tag, useWidth } from "../kit";
+import { ChartLegend, cx, Disclosure, InputSlot, NumberField, RangeField, Sentence, Stat, StatRow, Swatch, TableCols, Tag, useWidth } from "../kit";
 import { Num, RuleRef, RulesLine } from "../provenance";
 import { CommonRateLine, Gap, SourceLine, figure, inputSite, rulesOfBundle, useSigInputs, yearsRange, type VisualProps } from "./kit";
 
@@ -298,13 +298,14 @@ export function CurrentAccountVisual({ data, today }: VisualProps) {
               <Gap id="rule:TXI-03" />
             )}
 
-            <table className="w-full text-sm border-collapse">
+            <table className="w-full table-fixed text-sm border-collapse tabular-nums max-md:block max-md:[&>colgroup]:hidden">
+              <TableCols widths={["8rem", "6rem", "auto", "9rem"]} />
               <thead className="hidden md:table-header-group">
                 <tr className="text-muted-foreground text-start">
-                  <th scope="col" className="font-medium text-start pb-2 pe-4 w-28">{f.columns.bank}</th>
-                  <th scope="col" className="font-medium text-start pb-2 pe-4 w-24">{f.columns.rate}</th>
+                  <th scope="col" className="font-medium text-start pb-2 pe-4">{f.columns.bank}</th>
+                  <th scope="col" className="font-medium text-start pb-2 pe-4">{f.columns.rate}</th>
                   <th scope="col" className="font-medium text-start pb-2 pe-4">{f.columns.who}</th>
-                  <th scope="col" className="font-medium text-start pb-2 w-36">{f.columns.max}</th>
+                  <th scope="col" className="font-medium text-start pb-2">{f.columns.max}</th>
                 </tr>
               </thead>
               <tbody className="block md:table-row-group">

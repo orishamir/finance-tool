@@ -10,7 +10,7 @@ import { FeeKey, FeeNum } from "../decoder/fees";
 import { IconAlert, IconChevronDown, IconClock, IconDrillIn } from "../icons";
 import { IconDash, IconHelp, IconOk } from "../compare/icons";
 import { Num } from "../provenance";
-import { Card, cx, Sentence, Tag } from "../kit";
+import { Card, cx, Sentence, TableCols, Tag } from "../kit";
 
 const PAGE = 50;
 
@@ -217,6 +217,7 @@ export function WorkbenchGroup({
           </div>
           <div className="hidden lg:block">
             <table className="tbl">
+              <TableCols widths={["8rem", "auto", "5.5rem", "8rem", "7.5rem", "7.5rem", ...(showFit ? ["5rem"] : []), "11rem"]} />
               <thead className="sticky top-16 [@media(max-height:500px)]:static bg-card z-[var(--z-sticky)] shadow-[0_1px_0_var(--border)]">
                 <tr>
                   <th scope="col">{copy.columns.company}</th>
@@ -279,7 +280,7 @@ export function WorkbenchGroup({
                           </td>
                         )}
                         <td>
-                          <span className="inline-flex items-center gap-3 whitespace-nowrap">
+                          <span className="inline-flex items-center gap-3">
                             <Link to={w.feesHref} className="text-sm text-link hover:underline">
                               {copy.links.fees}
                             </Link>

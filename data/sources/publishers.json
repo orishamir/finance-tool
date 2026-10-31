@@ -52,6 +52,7 @@
   "bankmassad.co.il": { "publisher": "Bank Massad", "publisher_he": "בנק מסד", "kind": "institution_doc", "mirror": null },
   "bank-yahav.co.il": { "publisher": "Bank Yahav", "publisher_he": "בנק יהב", "kind": "institution_doc", "mirror": null },
   "bankjerusalem.co.il": { "publisher": "Bank of Jerusalem", "publisher_he": "בנק ירושלים", "kind": "institution_doc", "mirror": null },
+  "pepper.co.il": {"publisher": "PEPPER (Bank Leumi)", "publisher_he": "פפר (בנק לאומי)", "kind": "institution_doc", "mirror": null},
   "onezerobank.com": { "publisher": "One Zero Bank", "publisher_he": "וואן זירו", "kind": "institution_doc", "mirror": null },
   "fair.co.il": { "publisher": "Fair", "publisher_he": "פייר", "kind": "institution_doc", "mirror": null },
   "meitav.co.il": { "publisher": "Meitav", "publisher_he": "מיטב", "kind": "institution_doc", "mirror": null },

@@ -211,10 +211,23 @@ export function RangeField(props: RangeFieldProps) {
   const fill = ((clamped - min) / (max - min)) * 100;
   return (
     <div className="field">
-      <div className="flex items-center justify-between gap-3">
-        <span className="field-label" id={`${id}-l`}>
-          {label}
-        </span>
+      <div className="flex items-center justify-between gap-3 min-h-target">
+        {footer === false ? (
+          // the label and the reset, one over the other in a row of one height: the reset's place is kept while it is not there, so a
+          // number becoming the person's own moves nothing; its tap target reaches 44 px past its line (2026-10-31)
+          <span className="flex flex-col items-start min-w-0">
+            <span className="field-label whitespace-nowrap" id={`${id}-l`}>
+              {label}
+            </span>
+            <button type="button" onClick={onReset} className={cx("relative h-5 text-xs text-link hover:underline whitespace-nowrap after:absolute after:inset-x-0 after:-top-4 after:-bottom-2", !(isEntered && !disabled) && "invisible")}>
+              {buttons.resetOne}
+            </button>
+          </span>
+        ) : (
+          <span className="field-label min-w-0" id={`${id}-l`}>
+            {label}
+          </span>
+        )}
         <NumberField {...props} compact />
       </div>
       <input
@@ -247,6 +260,53 @@ export function PercentField({ unit = "pct_per_year", range, validate, ...rest }
 /** The one line above a panel of fields: what an untouched field is (UX fix 17). */
 export function ParameterLine({ className }: { className?: string }) {
   return <p className={cx("text-xs text-muted-foreground", className)}>{copy.stateStart}</p>;
+}
+
+/** One line of text the person types (a name): a label above, an optional help line and error under. For a number, `NumberField`. */
+export function TextField({ label, value, onChange, hint, error, placeholder, maxLength, dir = "rtl", className }: { label: ReactNode; value: string; onChange: (v: string) => void; hint?: ReactNode; error?: ReactNode | null; placeholder?: string; maxLength?: number; /** `ltr` for an identifier. */ dir?: "rtl" | "ltr"; className?: string }) {
+  const id = useId();
+  return (
+    <div className={cx("field", className)}>
+      <label htmlFor={id} className="field-label">
+        {label}
+      </label>
+      <div className="field-body">
+        <div className={cx("field-box", error ? "field-box-error" : false)}>
+          <input id={id} type="text" dir={dir} value={value} placeholder={placeholder} maxLength={maxLength} autoComplete="off" aria-invalid={error ? true : undefined} aria-describedby={error ? `${id}-err` : hint ? `${id}-hint` : undefined} onChange={(e) => onChange(e.target.value)} className="field-input !text-start text-mixed" />
+        </div>
+        {error ? (
+          <span id={`${id}-err`} className="text-xs text-destructive">
+            {error}
+          </span>
+        ) : hint ? (
+          <span id={`${id}-hint`} className="text-xs text-muted-foreground">
+            {hint}
+          </span>
+        ) : null}
+      </div>
+    </div>
+  );
+}
+
+/** One yes or no the person can tick on its own, beside others that are not exclusive: the whole row is the target. For one choice of a few, `SegmentedControl`. */
+export function CheckField({ label, checked, onChange }: { label: ReactNode; checked: boolean; onChange: (v: boolean) => void }) {
+  return (
+    <label className="flex items-center gap-3 min-h-target cursor-pointer">
+      <input type="checkbox" checked={checked} onChange={(e) => onChange(e.target.checked)} className="size-5 shrink-0 accent-[var(--primary)]" />
+      <span>{label}</span>
+    </label>
+  );
+}
+
+/** Fields that belong together under one heading, with a line between groups. */
+export function FieldGroup({ title, children, note }: { title: ReactNode; children: ReactNode; note?: ReactNode }) {
+  return (
+    <fieldset className="flex flex-col gap-3 min-w-0 border-t border-border pt-3 first:border-t-0 first:pt-0">
+      <legend className="font-medium mb-1">{title}</legend>
+      {children}
+      {note}
+    </fieldset>
+  );
 }
 
 /** A choice from a list of names in a native select: a label above, an optional "none" first option, an optional help line under. The default for picking one item out of many (an account, a provider). */

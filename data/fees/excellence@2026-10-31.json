@@ -92,6 +92,70 @@
       }
     },
     {
+      "id": "excellence-redemption-makam",
+      "base": "trade",
+      "applies_to": [
+        "makam"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.4,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.xnes.co.il/media/nwogkoos/taarifon.pdf",
+          "title": "תעריפון מלא - אקסלנס טרייד (xnes.co.il; המסמך אינו נושא תאריך, קובץ ה-PDF נוצר 15.7.2026), חלק 4 - ניירות ערך, (4א) שירותים נפוצים, סעיף 1 (עמ' 3)",
+          "publisher": "Excellence Trade (Phoenix investment house)",
+          "strength": "institution",
+          "page": 3,
+          "quote": "מסורתיות 0.4% מינימום 10ש\"ח"
+        },
+        "checked": "2026-10-31",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "The tariff prints no line of its own for makam; the heading of its only line for securities on TASE names redemption and leaves out only mutual funds, options and futures, and this is the line the run already reads for makam."
+      },
+      "min": {
+        "value": 10,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.xnes.co.il/media/nwogkoos/taarifon.pdf",
+          "title": "תעריפון מלא - אקסלנס טרייד (xnes.co.il; המסמך אינו נושא תאריך, קובץ ה-PDF נוצר 15.7.2026), חלק 4, (4א) סעיף 1, מינימום (עמ' 3)",
+          "publisher": "Excellence Trade (Phoenix investment house)",
+          "strength": "institution",
+          "page": 3,
+          "quote": "מסורתיות 0.4% מינימום 10ש\"ח"
+        },
+        "checked": "2026-10-31",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "'מינימום 10 ש\"ח'."
+      },
+      "max": null,
+      "period": null,
+      "channel": null,
+      "band": "פדיון",
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קניה, מכירה, ופדיון של ניירות ערך הנסחרים בבורסה בת\"א"
+        ]
+      }
+    },
+    {
       "id": "excellence-buy-sell-mutual-fund",
       "base": "trade",
       "applies_to": [
@@ -463,5 +527,47 @@
   },
   "notice_rule_ids": [
     "BRK-15"
-  ]
+  ],
+  "availability": [
+    {
+      "applies_to": [
+        "mutual_fund_units",
+        "etf_units"
+      ],
+      "available": true,
+      "source": {
+        "url": "https://www.xnes.co.il/media/nwogkoos/taarifon.pdf",
+        "title": "תעריפון מלא - אקסלנס טרייד (xnes.co.il, 6 עמ'; המסמך אינו מודפס עם תאריך, קובץ ה-PDF נוצר 15.7.2026); חלק 4 - ניירות ערך",
+        "checked": "2026-10-31",
+        "page": 3,
+        "quote": "סל וקרנות מחקות"
+      }
+    },
+    {
+      "applies_to": [
+        "foreign_securities"
+      ],
+      "available": true,
+      "source": {
+        "url": "https://www.xnes.co.il/media/nwogkoos/taarifon.pdf",
+        "title": "תעריפון מלא - אקסלנס טרייד (xnes.co.il, 6 עמ'; המסמך אינו מודפס עם תאריך, קובץ ה-PDF נוצר 15.7.2026); חלק 4 - ניירות ערך",
+        "checked": "2026-10-31",
+        "page": 4,
+        "quote": "ניירות ערך בחוץ לארץ"
+      }
+    }
+  ],
+  "price_for_he": "לקוח רגיל, בלי הטבה לקבוצה",
+  "left_out": [],
+  "groups": {
+    "state": "no_mention",
+    "note": "Tariff read in the filed copy. Searched for young, student, soldier, released-soldier, group and club wording; none found on a price. This covers the tariff read, not a personal offer.",
+    "read": [
+      {
+        "url": "https://www.xnes.co.il/media/nwogkoos/taarifon.pdf",
+        "title": "תעריפון"
+      }
+    ],
+    "entries": []
+  }
 }

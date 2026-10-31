@@ -7,7 +7,9 @@ import {
   coverageLine,
   cumulativeProviderFees,
   fundOf,
+  lineClasses,
   providerWorkbench,
+  recordDistribution,
   RecordInputError,
   type ComparedProvider,
   type EnteredTariff,
@@ -18,6 +20,7 @@ import {
 import type { ExposureRecord, FeesSnapshot, FundListFile, FundRecord, ParameterRecord, RuleRecord, ValueObject } from "@finance-tool/schema";
 import { flags as flagCopy, formulaNames, guideBlocks, r4workbench } from "../copy";
 import { fxRunInput, nisPerNumber, type FxHistory, type FxSnapshot } from "./fx";
+import type { EnteredInBundle } from "./custom-entries";
 import { toEnteredTariff, type EnteredOffer } from "./offers";
 import { computed, entered as enteredValue, ownBy, type SiteValue, type Staleness } from "./value";
 
@@ -35,6 +38,23 @@ export interface RefLink {
   href: string;
   title: string;
   ruleId: string;
+}
+
+const PRICED_ON_PREMISE = ["mutual_fund_units", "etf_units", "tase_foreign_fund_units", "foreign_securities"];
+/**
+ * A bank's or broker's lines for ranking (founder, 2026-10-31): a kind of holding keeps its price only where the record's
+ * `availability` quotes the document saying a person can do it. Pages that show a tariff as printed read the record itself.
+ */
+export function onlyWhatCanBeDone<S extends FeesSnapshot>(s: S): S {
+  if (!["bank", "broker", "foreign_broker"].includes(s.provider.class) || s.missing) return s;
+  const can = new Set<string>((s.availability ?? []).filter((a) => a.available === true).flatMap((a) => a.applies_to));
+  const blocked = (c: string) => PRICED_ON_PREMISE.includes(c) && !can.has(c);
+  const lines = s.lines.flatMap((l) => {
+    if (!l.applies_to.some(blocked)) return [l];
+    const applies_to = l.applies_to.filter((c) => !blocked(c));
+    return applies_to.length ? [{ ...l, applies_to }] : [];
+  });
+  return { ...s, lines };
 }
 
 export interface WorkbenchBundle {
@@ -63,6 +83,8 @@ export interface WorkbenchBundle {
   fxHistory?: FxHistory;
   /** P-02's bounds for the dollar's yearly change against the shekel (A-03), percent a year, with the record (F-94). */
   dollarRange?: { lo: number; hi: number; p02: ParameterRecord };
+  /** The broker and fund the person typed (D44): only the index page's copy of the bundle has them (`withCustomEntries`). */
+  entered?: EnteredInBundle;
 }
 
 export const BROKERAGE = "brokerage-account";
@@ -143,6 +165,8 @@ const SHORT_NAMES: Record<string, string> = {
   "altshuler-trade": "אלטשולר טרייד",
   excellence: "אקסלנס",
   "meitav-trade": "מיטב טרייד",
+  fair: "פייר",
+  pepper: "פפר",
 };
 
 /** A label for a chart's right strip (display only): the provider's name without the company suffix. */
@@ -201,11 +225,11 @@ export interface SubjectFund {
   record: FundRecord;
 }
 
-/** The tariff class a fund falls under (`applies_to` of a snapshot line). A TASE-listed foreign fund is traded like an ETF on the exchange. */
+/** The tariff class a fund falls under (`applies_to` of a snapshot line). A TASE-listed foreign fund is its own class, read on the exchange-traded lines (`lineClasses`). */
 export function instrumentClassOf(rec: FundRecord, exposure: ExposureRecord | undefined): string {
   if (exposure?.cash_like) return "money_market_units";
   const israeli = rec.domicile === "IL";
-  if (!israeli) return rec.trading_currency_on_tase ? "etf_units" : "foreign_securities";
+  if (!israeli) return rec.trading_currency_on_tase ? "tase_foreign_fund_units" : "foreign_securities";
   // an open tracking fund's legal form says "not traded on the exchange, ETF-04": the rule id must not read as an ETF (2026-10-25)
   const lf = rec.legal_form;
   return /קרן סל/.test(lf) || (!/קרן מחקה/.test(lf) && /\bETF\b/i.test(lf)) ? "etf_units" : "mutual_fund_units";
@@ -246,7 +270,7 @@ export type RunSpecError = { kind: "fund-type" } | { kind: "need-rate"; currency
 /** The run inputs a fund fixes: its kind and drag (the same builder as F-65), the currency and how the return is quoted (F-04). */
 export function fundRun(
   s: SubjectFund,
-  exposure: ExposureRecord | undefined,
+  exposure: Pick<ExposureRecord, "cash_like" | "currency"> | undefined,
   grossReturn: number,
   assumptions: FundAssumptions,
   fx?: FxSnapshot,
@@ -257,10 +281,12 @@ export function fundRun(
   if (israeli && rec.tax_status.il_fund_tax_track !== "exempt") return { kind: "fund-type" };
   if (rec.distribution_policy === null) return { kind: "fund-type" };
   const kind = !israeli && rec.trading_currency_on_tase !== null ? "tase-foreign-fund" : israeli ? "israeli-fund" : "foreign-fund";
-  const dist = assumptions.distributions?.[rec.id];
+  // A-10: the record's yield, read from the fund's own documents; a yield is entered only for a fund whose record has none
+  const entered = assumptions.distributions?.[rec.id];
+  const dist = recordDistribution(rec) ?? (entered ? { yield: entered.yield / 100, perYear: entered.perYear } : undefined);
   if (rec.distribution_policy === "distributing" && !dist) return { kind: "need-yield" };
   if (rec.distribution_policy === "distributing" && !israeli && rec.domicile !== "US" && rec.domicile !== "IE") return { kind: "fund-type" };
-  const built = fundOf(rec, kind, rec.distribution_policy === "distributing" && dist ? { yield: dist.yield / 100, perYear: dist.perYear } : undefined, assumptions.w8ben);
+  const built = fundOf(rec, kind, rec.distribution_policy === "distributing" ? dist : undefined, assumptions.w8ben);
   if (!built.hasManagement) return { kind: "fund-type" };
   const f = (assumptions.fxChange ?? 0) / 100;
   const market: { grossReturn: number; returnIn?: "instrument"; fxChange?: number } = { grossReturn };
@@ -625,7 +651,7 @@ export function buildProviderWorkbench(a: BuildArgs): ProviderResult {
     });
 
   const enteredLines = (offer: EnteredOffer, s: FeesSnapshot): EnteredLine[] => {
-    const listRate = (base: string) => s.lines.find((l) => l.base === base && l.level === "list" && typeof l.rate.value === "number" && l.applies_to.some((x) => x === subject.instrumentClass || x === "all" || x === wrapperId) && (l.channel === null || l.channel === channelId))?.rate.value as number | undefined;
+    const listRate = (base: string) => s.lines.find((l) => l.base === base && l.level === "list" && typeof l.rate.value === "number" && l.applies_to.some((x) => lineClasses(subject.instrumentClass).includes(x) || x === "all" || x === wrapperId) && (l.channel === null || l.channel === channelId))?.rate.value as number | undefined;
     const out: EnteredLine[] = [];
     const o = offer.lines;
     if (o.trade) out.push({ base: "trade", rate: o.trade.rate, min: o.trade.min ?? null, max: o.trade.max ?? null, aboveList: above(o.trade.rate, listRate("trade")) });
@@ -639,7 +665,7 @@ export function buildProviderWorkbench(a: BuildArgs): ProviderResult {
     const out: Partial<Record<FeeType, ListLine>> = {};
     const bases: [FeeType, string][] = [["trade", "trade"], ["custody", "custody"], ["fx", "fx"], ["fixed", "fixed_period"]];
     for (const [type, base] of bases) {
-      const found = s.lines.filter((l) => l.base === base && l.level === "list" && l.applies_to.some((x) => x === subject.instrumentClass || x === "all" || x === wrapperId) && !(l.excludes ?? []).includes(subject.instrumentClass) && (l.channel === null || l.channel === channelId));
+      const found = s.lines.filter((l) => l.base === base && l.level === "list" && l.applies_to.some((x) => lineClasses(subject.instrumentClass).includes(x) || x === "all" || x === wrapperId) && !(l.excludes ?? []).includes(subject.instrumentClass) && (l.channel === null || l.channel === channelId));
       if (found.length !== 1) continue;
       const l = found[0]!;
       out[type] = { rate: withStale(l.rate, stale, s.provider.name_he), min: l.min && l.min.value !== null ? withStale(l.min, stale, s.provider.name_he) : null, max: l.max && l.max.value !== null ? withStale(l.max, stale, s.provider.name_he) : null, period: l.period };

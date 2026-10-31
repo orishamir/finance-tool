@@ -27,6 +27,18 @@ export const documentRow = z.strictObject({
    * משולב באתר המוסד לביטוח לאומי") is limited to that host, so another copy of the same document keeps its own host's label.
    */
   hosts: z.array(z.string().min(1)).min(1).optional(),
+  /** A company's own terms for the law and terms browser (issue 123, 2026-10-31): its row in the document library and what kind of document it is. */
+  library_id: z.string().regex(/^[0-9a-f]{16}$/).optional(),
+  doc_kind: z.enum(["terms", "regulations", "prospectus", "notice", "leaflet", "terms-hub", "tariff", "agreement"]).optional(),
+  /** The institution whose term this is (`institutions.json`); a company's term is shown under its name and never as a fact about a product (D30). */
+  institution: z.string().min(1).optional(),
+  /** The date or edition the document prints. */
+  version: z.string().min(1).optional(),
+  pages: z.number().int().positive().optional(),
+  /** Where each topic sits, by page. */
+  topics: z.array(z.strictObject({ topic: z.string().min(1), page: z.number().int().positive() })).optional(),
+  /** Why no copy is in the library, when the document was read but could not be filed. */
+  read_note: z.string().min(1).optional(),
   /** Optional working note; never shown. */
   note: z.string().optional(),
 });

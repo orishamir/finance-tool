@@ -16,7 +16,7 @@ import { goalTitle } from "../compare/goal-form";
 import { DimensionChecklist, type ChecklistRowView } from "../guide/sections";
 import { Num, NumberLegend, RulesLine } from "../provenance";
 import { Sheet } from "../Sheet";
-import { Callout, Card, CoverageFold, Disclosure, SegmentedControl, Tag } from "../kit";
+import { Callout, Card, CoverageFold, Disclosure, SegmentedControl, TableCols, Tag } from "../kit";
 import { ChooseButton, RevisitBanner, SaveComparisonButton, UnreadableSavedForm, WhatChangedSheet } from "../revisit/revisit";
 import { forgetRevisit, useRevisit } from "../revisit/use-revisit";
 import { computed } from "../../lib/value";
@@ -137,7 +137,8 @@ function BreakdownTable({ ctx, rows }: { ctx: ExpCtx; rows: ExposureRowView[] })
   const b = rows.map((r) => breakdownOf(ctx, r));
   const keys = ["relief", "fees", "taxDuring", "taxExit", "lockUp", "result"] as const;
   return (
-    <table className="tbl text-sm">
+    <table className="tbl text-sm [&_td]:whitespace-nowrap">
+      <TableCols widths={["auto", ...rows.map(() => "8rem")]} />
       <thead>
         <tr>
           <th scope="col" />

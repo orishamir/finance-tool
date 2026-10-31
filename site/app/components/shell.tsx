@@ -51,7 +51,7 @@ export function useOpenSearch() {
   return useContext(SearchOpenCtx);
 }
 
-export function PageShell({ current, data: pageData, children, wide }: { current: Current; data: ProvenanceData; children: ReactNode; wide?: boolean }) {
+export function PageShell({ current, data: pageData, children, wide }: { current: Current; data: ProvenanceData; children: ReactNode; /** true: wide from a computer up; "large": only on a large screen (1536 px up), a guide whose prose stays at the measure while its tables and charts take the room. */ wide?: boolean | "large" }) {
   // every page's sheets know the method: the formulas with their parameters, the parameter cards, the source hosts' Hebrew names, the open questions and where each company's terms are listed (root loader)
   const method = useRouteLoaderData("root") as { formulaParameters: Record<string, string[]>; parameterAnchors: Record<string, string>; publishersHe: Record<string, string>; openQuestions: NonNullable<ProvenanceData["openQuestions"]>; companies: NonNullable<ProvenanceData["companies"]>; ownDocs: NonNullable<ProvenanceData["ownDocs"]> } | undefined;
   const data = useMemo<ProvenanceData>(() => {
@@ -84,7 +84,7 @@ export function PageShell({ current, data: pageData, children, wide }: { current
       <SearchOpenCtx.Provider value={openSearch}>
         <div className="min-h-dvh flex flex-col">
           <Header current={current} ready={ready} onMenu={() => setMenuOpen(true)} onSearch={openSearch} />
-          <main className={cx("flex-1 w-full mx-auto px-gutter pb-10", wide ? "max-w-wide" : "max-w-page")}>
+          <main className={cx("flex-1 w-full mx-auto px-gutter pb-10", wide === "large" ? "max-w-page 2xl:max-w-wide" : wide ? "max-w-wide" : "max-w-page")}>
             {isHeld(location.pathname) && (
               <Callout tone="caution" title={site.held.title} className="mt-4">
                 {site.held.page}
@@ -157,7 +157,7 @@ function Header({ current, ready, onMenu, onSearch }: { current: Current; ready:
   const navFits = useNavFits(row, name, navRef);
   return (
     <header className="group/header sticky top-0 z-[var(--z-sticky)] bg-background/90 backdrop-blur border-b border-border">
-      <div ref={row} className="mx-auto max-w-page h-14 lg:h-16 px-gutter flex items-center justify-between gap-4">
+      <div ref={row} className="mx-auto max-w-page 2xl:max-w-wide h-14 lg:h-16 px-gutter flex items-center justify-between gap-4">
         <div className="flex items-center gap-6 xl:gap-8 min-w-0">
           <Link ref={name} to="/" className="text-lg font-semibold text-foreground py-2 whitespace-nowrap">
             {site.name}
@@ -195,7 +195,7 @@ function Header({ current, ready, onMenu, onSearch }: { current: Current; ready:
 function Footer() {
   return (
     <footer className="border-t border-border mt-section">
-      <div className="mx-auto max-w-page px-gutter py-3 pb-7 flex flex-wrap items-center gap-x-6 gap-y-0 text-sm">
+      <div className="mx-auto max-w-page 2xl:max-w-wide px-gutter py-3 pb-7 flex flex-wrap items-center gap-x-6 gap-y-0 text-sm">
         <span className="w-full lg:w-auto font-medium text-foreground pt-2 lg:pt-0">{site.name}</span>
         {footerLinks.map((f) => (
           <Link key={f.href} to={f.href} className="min-h-target inline-flex items-center text-link hover:underline">

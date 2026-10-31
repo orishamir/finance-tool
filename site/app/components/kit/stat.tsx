@@ -24,7 +24,18 @@ export function Stat({ label, children, note, tone }: { label: ReactNode; childr
   );
 }
 
-const COLS = { 2: "sm:grid-cols-2", 3: "sm:grid-cols-3", 4: "grid-cols-2 sm:grid-cols-4" } as const;
+/** One large figure in a frame of its own, with its name above it and a sentence under it: a row of them states a block's main points. Sits in a `<dl>` (`StatRow`). */
+export function StatTile({ label, children, note }: { label: ReactNode; children: ReactNode; note: ReactNode }) {
+  return (
+    <Card pad="tight" className="flex flex-col gap-0.5 min-w-0">
+      <dt className="text-sm text-muted-foreground">{label}</dt>
+      <dd className="text-2xl font-bold leading-snug">{children}</dd>
+      <dd className="text-xs text-muted-foreground flex flex-col gap-1">{note}</dd>
+    </Card>
+  );
+}
+
+const COLS = { 2: "sm:grid-cols-2", 3: "sm:grid-cols-3", 4: "grid-cols-2 sm:grid-cols-4", tiles: "lg:grid-cols-3" } as const;
 
 /** Two to four `Stat`s side by side from `sm` up; one column on a phone, except four, which go two by two. */
 export function StatRow({ children, cols = 3 }: { children: ReactNode; cols?: keyof typeof COLS }) {

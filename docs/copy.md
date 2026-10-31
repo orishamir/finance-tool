@@ -200,7 +200,7 @@ Why "למי ששלח לכם את האתר": every friend reached the site throug
 | Title | מדריך |
 | Lede | כל סוג של חיסכון והשקעה שהאתר מכסה. לכל אחד אותו מבנה, כדי שיהיה קל להשוות. |
 | Group 1 | איפה הכסף מוחזק |
-| Group 1, line | המוצר עצמו: חשבון בבנק, קופה או חשבון השקעות |
+| Group 1, line | המוצר עצמו: חשבון בבנק, קופה או חשבון ניירות ערך |
 | Group 2 | במה הכסף מושקע |
 | Group 2, line | מה שבתוך המוצר: מזומן, מק״מ, קרן כספית, אג״ח, מניות דרך מדד |
 | Group 2, the money-market fund entry (D6, 2026-10-27) | its kinds as link pills: יומית · מתחדשת (list named "קרן כספית לפי סוג" for screen readers) |
@@ -637,7 +637,7 @@ Why "בשקלים של העתיד" rather than "נומינלי": the reader sees
 | `rulesPage.groups[bank-current-account-deposits.md]` | עובר ושב ופיקדונות |  |
 | `rulesPage.groups[mutual-funds-and-money-market-funds.md]` | קרנות נאמנות וקרנות כספיות |  |
 | `rulesPage.groups[etfs-and-index-funds.md]` | קרנות סל וקרנות מחקות |  |
-| `rulesPage.groups[brokerage-account.md]` | חשבון השקעות |  |
+| `rulesPage.groups[brokerage-account.md]` | חשבון ניירות ערך |  |
 | `rulesPage.groups[government-bonds-and-makam.md]` | אג״ח ממשלתיות ומק״מ |  |
 | `rulesPage.groups[kupat-gemel-lehashkaa.md]` | קופת גמל להשקעה |  |
 | `rulesPage.groups[keren-hishtalmut.md]` | קרן השתלמות |  |
@@ -760,7 +760,7 @@ Why "בשקלים של העתיד" rather than "נומינלי": the reader sees
 
 ## 6. Release 2 screens
 
-Added 2026-10-23 for the briefs in `docs/flows.md` section 9 and the handoff in `docs/design-spec.md` sections 6 to 10. Same voice and conventions as section 1: plural imperative, no typed figures (every `{…}` is a value object with its state), names as the source writes them, codes after the words. Product and option names in these strings come from `docs/glossary.md` (for example "קופת גמל להשקעה", "חשבון השקעות", "מק״מ"). Status: **draft** (2026-10-23), to be settled by the founder as section 3 was.
+Added 2026-10-23 for the briefs in `docs/flows.md` section 9 and the handoff in `docs/design-spec.md` sections 6 to 10. Same voice and conventions as section 1: plural imperative, no typed figures (every `{…}` is a value object with its state), names as the source writes them, codes after the words. Product and option names in these strings come from `docs/glossary.md` (for example "קופת גמל להשקעה", "חשבון ניירות ערך", "מק״מ"). Status: **draft** (2026-10-23), to be settled by the founder as section 3 was.
 
 ### 6.0 Everywhere in release 2
 
@@ -822,7 +822,7 @@ Added 2026-10-23 for the briefs in `docs/flows.md` section 9 and the handoff in 
 | Return, hint | הזינו את התשואה שאתם מניחים. היא תסומן בכחול בכל מקום שבו היא משפיעה. |
 | Return, filled | תשואה שהזנתם תסומן בגרף בקו מקווקו, כי היא שלכם ולא של האתר. |
 | Inflation, start | ערך התחלתי, פרמטר של האתר | (now the one line above the fields, changed 2026-10-24, UX fix 17)
-| Button | ~~להשוואה~~ השוואה לפי מוצר (2026-10-25: beside "השוואה לפי חשיפה", the first button did not say what it compares); under both, "מוצר: איפה הכסף מוחזק, כמו קרן השתלמות, קופת גמל להשקעה, חשבון השקעות או פיקדון. חשיפה: במה הוא מושקע בתוך המוצר, כמו מדד מניות, אג״ח או מזומן." (`r5.form.firstDoor`, `r5.form.doorsLine`) |
+| Button | ~~להשוואה~~ השוואה לפי מוצר (2026-10-25: beside "השוואה לפי חשיפה", the first button did not say what it compares); under both, "מוצר: איפה הכסף מוחזק, כמו קרן השתלמות, קופת גמל להשקעה, חשבון ניירות ערך או פיקדון. חשיפה: במה הוא מושקע בתוך המוצר, כמו מדד מניות, אג״ח או מזומן." (`r5.form.firstDoor`, `r5.form.doorsLine`) |
 | Goals list heading | המטרות שלכם |
 | Goals list, line | המטרות נבדקות אחת אחת, מימין לשמאל: הראשונה מקבלת את הכסף קודם. גררו מטרה כדי לשנות את הסדר. | (was "…לפי הסדר. הראשונה מקבלת את הכסף קודם."; the chips are dragged since 2026-10-24, night)
 | Add a goal | מטרה נוספת |
@@ -1801,7 +1801,7 @@ Added 2026-10-24 for the briefs in `docs/flows.md` section 15 and the handoff in
 | `r4playbook.cost.notEvaluated · reasons.*` | לא נבדק: `{סיבה}` · לא נמצאה אחת הקרנות באתר. · הזינו את שער המטבע בעמוד הקרן. · הזינו את תשואת החלוקה בעמוד הקרן. · אין עדיין חישוב לסוג הקרן הזה. · אין חישוב לקרן שמטבעה שונה מהחשיפה. · תעריפון הספק לא נאסף. · החישוב לא הצליח. | when the cost sentence cannot be built |
 | `r4playbook.cost.shareLabel · shareAll · sharePart · secondary · loading` | כמה מהיתרה עוברת · כל היתרה · חלק מהיתרה · מקור משני · טוען… | the share control of a study fund (SW-14 context), the tag on the in-kind line |
 | `r4playbook.links.playbook` | המדריך למעבר | as 8.5 |
-| `r4playbook.brokerageNote` | סדר השלבים בחשבון השקעות הוא לפי הוראות של בנקים ובתי השקעות, לא לפי תקנה. | design-spec 19 edge case. Was "סדר השלבים בחשבון ניירות ערך לפי הוראות של בנקים ובתי השקעות, לא לפי תקנה.": the site's word is "חשבון השקעות", and the sentence needed a verb |
+| `r4playbook.brokerageNote` | סדר השלבים בחשבון ניירות ערך הוא לפי הוראות של בנקים ובתי השקעות, לא לפי תקנה. | design-spec 19 edge case. Was "סדר השלבים בחשבון ניירות ערך לפי הוראות של בנקים ובתי השקעות, לא לפי תקנה.": the site's word is "חשבון ניירות ערך", and the sentence needed a verb |
 | `r4playbook.oq[SW OQ2]` | האם חוזר ההעברה חל על קופת גמל להשקעה. | the `{מה לא נמצא}` of the open-question line, one per question of `switching-and-transfers.md` |
 | `r4playbook.oq[SW OQ3]` | כלל על פניות שימור במוצרי גמל. | |
 | `r4playbook.oq[SW OQ4]` | האם הצעה שניתנה לפני ההצטרפות מחייבת. | |
@@ -1823,7 +1823,7 @@ Added 2026-10-24 for the briefs in `docs/flows.md` section 15 and the handoff in
 | Bank or broker row line | `{סוג}` · תעריפון מ־`{תאריך}` · `{סוג}` · התעריפון לא נאסף |
 | Fund manager row line | `{מספר}` קרנות |
 | Bank page lede | כל מה שהבנק מציע, עם הסבר לכל מוצר. הפיקדונות לפי פרסום הבנק, נכון ל־`{תאריך}`; התעריפון נאסף ב־`{תאריך}`. (changed 2026-10-24, UX fix 28: maqaf) |
-| Groups | פיקדונות · תוכניות חיסכון · עו״ש · חשבון השקעות |
+| Groups | פיקדונות · תוכניות חיסכון · עו״ש · חשבון ניירות ערך |
 | Group link | מה זה `{סוג}` |
 | Group count | מוצר אחד · שני מוצרים · `{מספר}` מוצרים |
 | Deposits not collected | עוד לא נאספו פיקדונות ותוכניות חיסכון של `{בנק}`. |
@@ -1916,7 +1916,7 @@ The founder, 2026-10-26: someone browsing the companies wants a company's produc
 | Where | Hebrew |
 |---|---|
 | Companies list, first heading | בתי השקעות |
-| Companies list, a brand's quiet line | its product kinds, joined with " · ": the CMA classifications, then קרנות סל · קרנות מחקות · קרנות כספיות, then חשבון השקעות |
+| Companies list, a brand's quiet line | its product kinds, joined with " · ": the CMA classifications, then קרנות סל · קרנות מחקות · קרנות כספיות, then חשבון ניירות ערך |
 | Search, a brand's row line | בית השקעות |
 | Brand page, lede without CMA tracks | כל מה שהחברה מציעה, כל סוג מוצר תחת כותרת משלו. |
 | Brand page, the companies line | כולל את החברות: `{שם חוקי}` · `{שם חוקי}` |
@@ -2442,7 +2442,7 @@ Written 2026-10-24 by the Hebrew editor (phase 1 review of 1,564 strings, phase 
 
 ### 10.9 Decisions for the owner — החלטות לבעל האתר
 
-1. **כותרות ההשוואה ומין שם המוצר.** "{אפשרות} היא הטובה ביותר" ו־"{חשיפה} מתאימה למטרה הזו" נשברות כשהשם זכר (פיקדון, מק״מ, חשבון השקעות, מדד S&P 500). שתי דרכים: (א) להפוך את המבנה כך שהמילה "האפשרות/החשיפה" היא הנושא ("האפשרות הטובה ביותר למטרה הזו היא פיקדון בנקאי, כי …") — ההצעה שלי, מיושמת בקובץ ההצעות בביטחון בינוני; (ב) להוסיף שדה מין לכל מוצר וחשיפה ולהתאים פועל ותואר. הצ'יפים הקצרים ("דורגה", "נפסלה") נשארים בנקבה כמוסכמה ("האפשרות דורגה") בשתי הדרכים.
+1. **כותרות ההשוואה ומין שם המוצר.** "{אפשרות} היא הטובה ביותר" ו־"{חשיפה} מתאימה למטרה הזו" נשברות כשהשם זכר (פיקדון, מק״מ, חשבון ניירות ערך, מדד S&P 500). שתי דרכים: (א) להפוך את המבנה כך שהמילה "האפשרות/החשיפה" היא הנושא ("האפשרות הטובה ביותר למטרה הזו היא פיקדון בנקאי, כי …") — ההצעה שלי, מיושמת בקובץ ההצעות בביטחון בינוני; (ב) להוסיף שדה מין לכל מוצר וחשיפה ולהתאים פועל ותואר. הצ'יפים הקצרים ("דורגה", "נפסלה") נשארים בנקבה כמוסכמה ("האפשרות דורגה") בשתי הדרכים.
 2. **"הוזן על ידך".** מפר את כלל הפנייה (יחיד זכר). האפשרויות: "הזנתם" (קצר, כמו "תשואה שהזנתם" בכל האתר; ההצעה שלי), או "הוזן על ידכם" (שומר על המבנה הסביל, כבד). נוגע גם ל־numbers.legend.entered, strength.entered.label, values.stateEntered שאינם ברשימת הסקירה, ולמסמך העיצוב ("Entered by you").
 3. **משפחת "ניתן".** copy.md קבע "לא ניתן להשוות" (8.6) ו"לא ניתן לאחד" (7.6) כתוויות תוצאה; שאר המשפטים באתר אומרים "אפשר/אי אפשר". ההצעה: לשנות את המשפטים הרצים ל"אי אפשר" (מיושם, ביטחון גבוה), ולהחליט אם גם התוויות הקבועות משתנות ("אי אפשר לאחד", "אין השוואה"). אם לא — להשאיר "לא ניתן" רק בשתי התוויות האלה ולצטט אותן במירכאות בתוך משפט.
 4. **"מחירון" לחברות מנהלות.** המילון בחר "תעריפון" לבנקים ולברוקרים; לחברות גמל האתר אומר "המחירון של החברה" (5 שורות). שתי אפשרויות: לקבל "מחירון" כמונח של גמל (מקביל ל"ממוצע שנגבה"), או לאחד ל"תעריפון". לא שונה בסבב הזה, פרט לשתי שורות שבהן המילה הייתה מיותרת.

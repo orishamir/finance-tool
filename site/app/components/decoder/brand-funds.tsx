@@ -43,9 +43,9 @@ export function BrandFundList({ funds, kind }: { funds: BrandFundRow[]; kind: Fu
   const followsHead = kind === "money-market" ? c.columns.kind : c.columns.index;
   const columns: ProductColumn[] = [
     { id: "name", head: c.columns.name },
-    { id: "number", head: c.columns.number, fit: true },
-    ...(funds.some((f) => f.follows) ? [{ id: "follows", head: followsHead, fit: true }] : []),
-    { id: "fees", head: c.columns.fees, fit: true },
+    { id: "number", head: c.columns.number, width: 7.5 },
+    ...(funds.some((f) => f.follows) ? [{ id: "follows", head: followsHead, width: 12 }] : []),
+    { id: "fees", head: c.columns.fees, width: 12 },
   ];
   const withFollows = columns.some((col) => col.id === "follows");
   return (
