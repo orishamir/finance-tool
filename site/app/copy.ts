@@ -3530,6 +3530,8 @@ export const invest = {
     broken: "⫽ הפס נחתך: הסכום ארוך מהשטח",
     notPossible: "לא אפשרי שם",
     notPossibleSource: "המקור",
+    elsewhere: "בקרן אחרת,",
+    elsewhereOpen: "מוצג בלי דירוג, כי כלל המס עוד פתוח",
     noData: "אין נתון",
     fundsNotPriced: (n: number, house: string) => (n === 1 ? `קרן אחת לא מחושבת ב${house}:` : `${n} קרנות לא מחושבות ב${house}:`),
     switched: (what: string) => `${what} לא מחושב עם הבחירה הקודמת, אז נבחר גם החלק השני שנשאר בו הכי הרבה.`,
