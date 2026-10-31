@@ -84,7 +84,7 @@ Quotes are the document's own words. "—" means no clause found by the search d
 ### Changing terms and notice (שינוי תעריף והודעה עליו)
 - **Leumi:** `92690e4986a08814` p.58, s44, 30 days' notice.
 - **Discount:** `36453fb2c2b8e702` p.13, "30 ימים לפחות לפני מועד השינוי".
-- **Mizrahi (8.2025):** `75ad7686ca92ccd9` p.11, "בהודעה מוקדמת בכתב על כך או באמצעות פרסום באתר האינטרנט של הבנק"; no number of days found in that clause. Differs from the 30 days the other banks here state.
+- **Mizrahi (8.2025):** `75ad7686ca92ccd9` p.11, "בהודעה מוקדמת בכתב על כך או באמצעות פרסום באתר האינטרנט של הבנק"; no number of days found in that clause. Leumi, Discount, FIBI, Mercantile and Massad state 30 days; this clause, as read, does not.
 - **FIBI:** `0e1d2966962cb12c` p.31, s6.13, at least 30 days.
 - **Mercantile:** `62474a808f06947d` p.12, notice; 30 stated beside it (column-mixed, check the page).
 - **Massad (4.21):** `a681bf2641713eb5` p.27, at least 30 days.
@@ -106,7 +106,7 @@ These are terms of the account. The clause on a tariff change itself, as distinc
 ## Findings for the rule base (not edited)
 
 1. **Missing rule: a 40 NIS ceiling on closing fees.** Bank of Israel's fees rules, `442ff2ea4ab47723` p.24 (`https://www.boi.org.il/media/mi2driua/159a.pdf`): "סך כל העמלות שיגבה התאגיד הבנקאי בשל פעולות לסגירת חשבון המפורטות להלן לא יעלה על 40 ש"ח", excluding track fees, clearing-house costs, correspondent fees and early-repayment fees, and listing the move of Israeli and of foreign securities to the same client's account at another bank. `switching-and-transfers.md` gives "at most NIS 10" per transfer on closing and no total; no such total turned up by word search in the rule base. FIBI's `233e6bf05bfff50a` p.2 and Massad's `7dd5e58f81c4b4dc` p.2 repeat it for their customers. The owner should confirm scope and add it, and may be able to narrow open question 12 in `brokerage-account.md`.
-2. **Foreign tax above the Israeli maximum.** Discount `0db5c13ebcf91370` p.6 and Mercantile `4076a5e01852724f` p.7 say tax withheld abroad on income from securities of entities incorporated in certain countries (other than, among others, Israel and the US) may be at the maximum rate, above the treaty rate; that Israeli top-up follows the treaty or domestic rate, whichever is lower; and so "ייתכן כי שיעור המס הכולל שינוכה במקור ... יעלה על שיעור המס המרבי בישראל". That is these two banks' statement, and the wording concerns withholding. For the tax-specialist to compare with `tax-securities-foreign.md`, where a foreign fund's domicile (an Irish fund for instance) may matter. I did not research the law behind it.
+2. **Foreign tax above the Israeli maximum.** Discount `0db5c13ebcf91370` p.6 and Mercantile `4076a5e01852724f` p.7 say tax withheld abroad on income from securities of entities incorporated in certain countries (other than, among others, Israel and the US) may be at the maximum rate, above the treaty rate; that the Israeli top-up follows the treaty or domestic rate, whichever is lower; and so "ייתכן כי שיעור המס הכולל שינוכה במקור ... יעלה על שיעור המס המרבי בישראל". That is these two banks' statement, and the wording concerns withholding. For the tax-specialist to compare with `tax-securities-foreign.md`, where a foreign fund's domicile (an Irish fund for instance) may matter. I did not research the law behind it.
 3. **Joint accounts: the highest rate.** Discount p.13 and Mercantile p.12 withhold at the highest rate applying to any of the holders. No rule on this turned up by word search in the rule base. Those two banks only.
 4. **Moving a portfolio and tax.** The rule base notes that "tax-neutral between one's own accounts" is stated only by institutions. Yahav's page says the opposite in tone: a potential tax event, the customer's sole responsibility. The owner may add it as a contrary institution's statement; it is not a rule.
 5. **Mizrahi's custody charge timing.** Quarterly, and also at a sale (`97e568f32eb2e075` p.5). I found no rule on charge timing in `brokerage-account.md` by word search. This is Mizrahi's term only.
@@ -119,7 +119,7 @@ These are terms of the account. The clause on a tariff change itself, as distinc
 - **Older editions in the library.** Leumi `c33ce72a478b8907` (08.25) is older than `92690e4986a08814` (06.26). `data/sources/documents.json` holds no Leumi link, so no page points to the older one through that file. Jerusalem's forms page still links 01/17 and 10/20, while the newest found is 01/2024; which one binds a new customer was not established.
 - **Yahav's edition.** `322ff632b328571c` shows no edition date I could find. `9aa0ef0d9e76e54d` has "Dummy Text" on its first page and a footer of 2.16.
 - **A filing slip.** `89bca2b50b7b470a` is Jerusalem's forms page, saved with publisher "blocked" because I expected the link to fail. The right copy is `9db9d8d45818265a`, and the digest says so. The library has no remove command and the index is not edited by hand.
-- **Nothing in any document addressed me.**
+- **Nothing in the passages read addressed me.**
 
 ## Needs the founder
 
