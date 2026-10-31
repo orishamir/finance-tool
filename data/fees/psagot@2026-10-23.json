@@ -285,15 +285,16 @@
       ],
       "level": "list",
       "rate": {
-        "value": null,
-        "unit": "pct_of_trade",
+        "value": 0.01,
+        "unit": "usd_per_share",
         "source": {
           "url": "https://www.psagot.co.il/%d7%aa%d7%a2%d7%a8%d7%99%d7%a4%d7%95%d7%9f-%d7%91%d7%95%d7%a8%d7%a1%d7%94-%d7%a4%d7%a1%d7%92%d7%95%d7%aa-%d7%98%d7%a8%d7%99%d7%99%d7%93-2/",
           "title": "תעריפון עמלות פסגות טרייד (עמוד HTML, ללא תאריך), חלק 4, (4א) סעיף 5, קניה, מכירה, ופדיון של ניירות ערך בחו״ל, מניות ו-ETF הנסחרים בבורסות ארה\"ב",
           "publisher": "Psagot Securities Ltd. (Psagot Trade)",
-          "strength": "institution"
+          "strength": "institution",
+          "quote": "מניות ו-ETF הנסחרים בבורסות ארה\"ב 1 סנט למניה מינימום $ 6.5לעסקה"
         },
-        "checked": "2026-10-23",
+        "checked": "2026-10-31",
         "effective_from": null,
         "effective_to": null,
         "tax_year": null,
@@ -303,7 +304,7 @@
           "BRK-15"
         ],
         "state": "sourced",
-        "notes": "Printed only per share: '1 סנט למניה מינימום $ 6.5 לעסקה'; the unit vocabulary has no per-share unit, so no rate is recorded. Correspondent and third-party charges (SEC, ORF, ECN, TAF, tax) are added; the fee is collected in the trade currency."
+        "notes": "Printed per share: '1 סנט למניה מינימום $ 6.5 לעסקה'; recorded in the per-share unit since 2026-10-31 (the unit did not exist when the line was first collected). Correspondent and third-party charges (SEC, ORF, ECN, TAF, tax) are added; the fee is collected in the trade currency."
       },
       "min": {
         "value": 6.5,
@@ -456,15 +457,16 @@
       ],
       "level": "list",
       "rate": {
-        "value": null,
-        "unit": "pct_of_trade",
+        "value": 0.015,
+        "unit": "nis_per_usd",
         "source": {
           "url": "https://www.psagot.co.il/%d7%aa%d7%a2%d7%a8%d7%99%d7%a4%d7%95%d7%9f-%d7%91%d7%95%d7%a8%d7%a1%d7%94-%d7%a4%d7%a1%d7%92%d7%95%d7%aa-%d7%98%d7%a8%d7%99%d7%99%d7%93-2/",
           "title": "תעריפון עמלות פסגות טרייד (עמוד HTML, ללא תאריך), חלק 5 – מטבע חוץ, סעיף 1, עמלת המרת מט\"ח, המרה מדולר או לדולר",
           "publisher": "Psagot Securities Ltd. (Psagot Trade)",
-          "strength": "institution"
+          "strength": "institution",
+          "quote": "עבור המרה מדולר או לדולר – 1.5 אגורות עבור כל דולר/שקל"
         },
-        "checked": "2026-10-23",
+        "checked": "2026-10-31",
         "effective_from": null,
         "effective_to": null,
         "tax_year": null,
@@ -474,7 +476,7 @@
           "BRK-15"
         ],
         "state": "sourced",
-        "notes": "Printed as an amount per dollar, not a percentage: 'עבור המרה מדולר או לדולר – 1.5 אגורות עבור כל דולר/שקל'; no unit in the vocabulary expresses agorot per dollar, so no rate is recorded. Charged on execution."
+        "notes": "Printed as an amount per dollar, not a percentage: 'עבור המרה מדולר או לדולר – 1.5 אגורות עבור כל דולר/שקל'. Recorded as 0.015 NIS per dollar converted. Reading, not the document's words: 'כל דולר/שקל' is read as each dollar exchanged for shekels; at about 3.12 NIS a dollar that is about 0.48% of the amount, beside the same list's ceiling of 0.5% on other currencies, while per shekel it would be 1.5%. Charged on execution."
       },
       "min": null,
       "max": null,
@@ -502,6 +504,7 @@
       "period": null,
       "channel": null,
       "band": "המרה מדולר או לדולר",
+      "conversion_currency": "USD",
       "statement_code": null,
       "names": {
         "tariff": [

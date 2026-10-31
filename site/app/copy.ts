@@ -57,6 +57,7 @@ export const numbers = {
   unknown: "לא ידוע",
   /** The unit of the regulator's amounts (data-schema 2, `nis_millions`): `25,706.14 מיליון ₪`. */
   nisMillions: "מיליון ₪",
+  agorotPerDollar: "אגורות לדולר", // the tariff's own words, Psagot part 5
   parameter: "פרמטר של האתר",
   provisional: "ערך זמני שהאתר קבע",
   // audit 2026-10-24 (A77): the short tag beside a provisional parameter

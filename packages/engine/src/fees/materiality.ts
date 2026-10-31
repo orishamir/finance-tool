@@ -15,7 +15,7 @@ export type FeeLine = FeeType;
 export const feeLineOrder: readonly FeeLine[] = ["deposit", "balance", "direct", "trade", "spread", "custody", "fixed", "fund", "fx", "manager"];
 
 const positive = (n: number | undefined) => (n ?? 0) > 0;
-const configured = (c: Commission | Custody | undefined) => c !== undefined && (positive(c.rate) || positive(c.min));
+const configured = (c: Commission | Custody | undefined) => c !== undefined && (positive(c.rate) || positive(c.min) || ("perCurrencyUnit" in c && positive(c.perCurrencyUnit)));
 
 /** The fee lines this plan charges: those whose input is set and not zero. Deposits (bank) have none. */
 export function feeLines(plan: RunPlan): FeeLine[] {
@@ -117,7 +117,19 @@ function changeLine(plan: RunPlan, line: FeeLine, rate: number): RunPlan {
         case "fx":
           if (tariff.fx === undefined) return noLine(plan, line);
           if (rate === 0) delete tariff.fx;
-          else tariff.fx = typeof tariff.fx === "number" ? rate : { ...tariff.fx, rate };
+          else if (typeof tariff.fx === "number") tariff.fx = rate;
+          else {
+            // a person's own rate replaces the line, a price per unit of currency too (F-13)
+            const { perCurrencyUnit: _, ...rest } = tariff.fx;
+            tariff.fx = { ...rest, rate };
+          }
+          // F-13: a recurring plan's conversion moves with the regular rate, in proportion, as a standing-order price does; a plan that charges nothing stays at nothing
+          if (input.tariff.fxStanding !== undefined) {
+            const old = typeof input.tariff.fx === "number" ? input.tariff.fx : input.tariff.fx!.rate;
+            if (rate === 0 || !old) delete tariff.fxStanding;
+            else if (typeof input.tariff.fxStanding === "number") tariff.fxStanding = (input.tariff.fxStanding * rate) / old;
+            else tariff.fxStanding = { ...input.tariff.fxStanding, rate: (input.tariff.fxStanding.rate * rate) / old };
+          }
           return { run: "runSecurities", input: { ...input, tariff } };
         case "fixed":
           if (tariff.monthlyFee === undefined) return noLine(plan, line);
