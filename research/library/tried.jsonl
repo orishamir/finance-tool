@@ -1,2 +1,6 @@
 {"looked_for":"gov.il form 747 service page and Tax Reform Committee chapters 2 and 3 by curl","result":"403 Just a moment bot check; put on chrome-list","where":"gov.il","date":"2026-10-31"}
 {"looked_for":"form 747 service page, Tax Reform Committee chapter 2 and form 5329 page, Wayback availability","result":"no archive snapshot; left for the lead's Chrome list; not checked","where":"archive.org","date":"2026-10-31"}
+{"looked_for":"Hapoalim full tariff xls by curl, 2026-10-31","result":"blocked by a bot check, 307 to an Imperva cookie; not checked; on chrome-list","where":"bankhapoalim.co.il","date":"2026-10-31"}
+{"looked_for":"One Zero full tariff pdf by curl, 2026-10-31","result":"blocked by Cloudflare, 403; not checked; on chrome-list","where":"onezerobank.com","date":"2026-10-31"}
+{"looked_for":"Interactive Brokers page for mutual funds offered, en/trading/mutual-funds.php","result":"404 on 2026-10-31; product listing is a search form, not submitted","where":"interactivebrokers.com","date":"2026-10-31"}
+{"looked_for":"Interactive Israel page on mutual funds, /mutual-funds/","result":"404 on 2026-10-31","where":"inter-il.com","date":"2026-10-31"}

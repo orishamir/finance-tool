@@ -74,9 +74,9 @@ describe("provider workbench view", () => {
   it("gives no price, not a free trade, to a tariff with no buy/sell line for the fund's class (F-63, MF-26)", () => {
     const r = run(q());
     if (r.kind !== "ok") throw new Error("not ok");
-    const oneZero = r.view.rows.find((x) => x.id === "one-zero")!;
-    expect(oneZero.kind).toBe("not-comparable");
-    expect(oneZero.reason).toMatchObject({ code: "no-applicable-line" });
+    const interactive = r.view.rows.find((x) => x.id === "interactive-brokers")!;
+    expect(interactive.kind).toBe("not-comparable");
+    expect(interactive.reason).toMatchObject({ code: "no-applicable-line" });
     for (const row of r.view.rows.filter((x) => x.kind === "ranked")) expect(row.noLine ?? []).not.toContain("trade");
   });
 

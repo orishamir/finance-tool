@@ -1,0 +1,1012 @@
+{
+  "id": "fibi",
+  "provider": {
+    "name_he": "הבנק הבינלאומי הראשון לישראל בע\"מ",
+    "class": "bank",
+    "regulator": "BoI",
+    "tase_member": true,
+    "protection_rule_ids": [
+      "BRK-10",
+      "BRK-12",
+      "BRK-13"
+    ]
+  },
+  "tariff": {
+    "url": "https://www.fibi.co.il/media/jqob143q/חלק-4-ניירות-ערך-31.pdf",
+    "title": "תעריפון ליחידים ועסקים קטנים - הבנק הבינלאומי הראשון; עמוד התעריפון (https://www.fibi.co.il/private/general/commissionsrate/individuals/) מציין 'החל מתאריך ה 06/09/2026'; קבצי ה-PDF עצמם אינם מודפסים עם תאריך. חלק 4 - ניירות ערך (עמ' 15-19), חלק 5 - מטבע חוץ (עמ' 22), נספח ה' - הטבות בערוצי בנקאות בתקשורת (עמ' 61-62)",
+    "published": "2026-09-06",
+    "format": "pdf"
+  },
+  "snapshot": "2026-10-31",
+  "missing": false,
+  "missing_reason": null,
+  "lines": [
+    {
+      "id": "fibi-buy-sell-tase-branch",
+      "base": "trade",
+      "applies_to": [
+        "tase_shares_bonds",
+        "etf_units",
+        "mutual_fund_units"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.64,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.fibi.co.il/media/jqob143q/חלק-4-ניירות-ערך-31.pdf",
+          "title": "תעריפון ליחידים ועסקים קטנים - הבנק הבינלאומי (בתוקף מ-06/09/2026) - חלק 4 ניירות ערך, סעיף 4.1.1 מניות ואגרות חוב (עמוד מס' 15)",
+          "publisher": "First International Bank of Israel Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-09-06",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-19",
+          "MF-27"
+        ],
+        "state": "sourced",
+        "notes": "'0.64%' in the clerk column. Note 3: 'למעט קרנות נאמנות' includes a tracking fund (קרן מחקה) and a fund whose units are listed on TASE, so Israeli ETFs and listed fund units pay this line; note 14 adds a foreign fund whose units are listed on TASE. Note 5: the fee never exceeds 30% of the trade value. Note 1: a split order pays one minimum per day. Note 2: an unexecuted order pays the minimum of NIS 25 only if a clerk acted. Note 7: third-party expenses (part 11, TASE expenses) on top. Note 13: a tracking fund bought/sold by standing order pays a reduced minimum of NIS 7. Note 9 gives the internet price (recorded as the direct line). Statement codes ('ח-ן 960/ אסמכתא'): 014543; buy 803, sell 804. Tracking funds (2026-10-31): the exclusion of mutual funds on this line does not cover a tracking fund, so a tracking fund pays this line; a traditional fund that is not listed does not. Place: library 4cfbcc09992df849, PDF page 1, line \"קניה, מכירה ופדיון של ניירות ערך הנסחרים בבורסה בתל אביב (למעט קרנות נאמנות...\", note 3: \"'למעט קרנות נאמנות' - אך לרבות 'קרן מחקה', כהגדרתה בחוק השקעות משותפות בנאמנות, התשנ\"ד-1994\". Note 13: \"בגין רכישת/מכירת קרן מחקה באמצעות הוראות קבע תיגבה העמלה בכפוף לעמלת מינ' מופחת בסך 7 ש\"ח\"; that reduced minimum is not modelled here."
+      },
+      "min": {
+        "value": 40,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.fibi.co.il/media/jqob143q/חלק-4-ניירות-ערך-31.pdf",
+          "title": "תעריפון ליחידים ועסקים קטנים - הבנק הבינלאומי (בתוקף מ-06/09/2026) - חלק 4 ניירות ערך, סעיף 4.1.1, מינ' (עמוד מס' 15)",
+          "publisher": "First International Bank of Israel Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-09-06",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'מינ' - 40.0'."
+      },
+      "max": {
+        "value": 7000,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.fibi.co.il/media/jqob143q/חלק-4-ניירות-ערך-31.pdf",
+          "title": "תעריפון ליחידים ועסקים קטנים - הבנק הבינלאומי (בתוקף מ-06/09/2026) - חלק 4 ניירות ערך, סעיף 4.1.1, מקס' (עמוד מס' 15)",
+          "publisher": "First International Bank of Israel Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-09-06",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'מקס' - 7,000'."
+      },
+      "period": null,
+      "channel": "branch",
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קנייה, מכירה, ופדיון של ניירות ערך הנסחרים בבורסה בתל אביב (למעט קרנות נאמנות, אופציות מעו\"ף וחוזים עתידיים במעו\"ף) (כולל קניה או מכירה שלא בוצעה)",
+          "מניות ואגרות חוב"
+        ]
+      }
+    },
+    {
+      "id": "fibi-buy-sell-tase-direct",
+      "base": "trade",
+      "applies_to": [
+        "tase_shares_bonds",
+        "etf_units",
+        "mutual_fund_units"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.3,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.fibi.co.il/media/rgketaam/נספח-ה-הטבות-בערוצי-בנקאות-בתקשורת-31.pdf",
+          "title": "תעריפון ליחידים ועסקים קטנים - הבנק הבינלאומי (בתוקף מ-06/09/2026) - נספח ה' הטבות בערוצי בנקאות בתקשורת, קניה/מכירה של ניירות ערך הנסחרים בבורסה בת\"א - מניות ואג\"ח, תעריף באמצעות אינטרנט / אפליקציה סלולרית / מערכות מסחר (עמוד מס' 61)",
+          "publisher": "First International Bank of Israel Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-09-06",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-19",
+          "MF-27"
+        ],
+        "state": "sourced",
+        "notes": "Appendix E: '0.3%' in the internet, mobile-app and trading-systems columns (clerk 0.64%); part 4 note 9 prints the same: 'עבור פעולה המבוצעת ישירות באמצעות האינטרנט ייגבה שיעור מופחת של 0.3%, מינ' 39 ש\"ח, מקס' – 6,900 ש\"ח לפעולה במניות ואגרות חוב'. Columns 'תעריף באמצעות אינטרנט', 'תעריף באמצעות אפליקציה סלולרית' and 'מערכות מסחר' all print 0.3%, min 39, max 6,900. Tracking funds (2026-10-31): the exclusion of mutual funds on this line does not cover a tracking fund, so a tracking fund pays this line; a traditional fund that is not listed does not. Place: library 4cfbcc09992df849, PDF page 1, line \"קניה, מכירה ופדיון של ניירות ערך הנסחרים בבורסה בתל אביב (למעט קרנות נאמנות...\", note 3: \"'למעט קרנות נאמנות' - אך לרבות 'קרן מחקה', כהגדרתה בחוק השקעות משותפות בנאמנות, התשנ\"ד-1994\". Note 13: \"בגין רכישת/מכירת קרן מחקה באמצעות הוראות קבע תיגבה העמלה בכפוף לעמלת מינ' מופחת בסך 7 ש\"ח\"; that reduced minimum is not modelled here."
+      },
+      "min": {
+        "value": 39,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.fibi.co.il/media/rgketaam/נספח-ה-הטבות-בערוצי-בנקאות-בתקשורת-31.pdf",
+          "title": "תעריפון ליחידים ועסקים קטנים - הבנק הבינלאומי (בתוקף מ-06/09/2026) - נספח ה' הטבות בערוצי בנקאות בתקשורת, קניה/מכירה של ניירות ערך הנסחרים בבורסה בת\"א - מניות ואג\"ח, מינ', תעריף באמצעות אינטרנט / אפליקציה סלולרית / מערכות מסחר (עמוד מס' 61)",
+          "publisher": "First International Bank of Israel Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-09-06",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'מינ' - 39 ש\"ח'."
+      },
+      "max": {
+        "value": 6900,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.fibi.co.il/media/rgketaam/נספח-ה-הטבות-בערוצי-בנקאות-בתקשורת-31.pdf",
+          "title": "תעריפון ליחידים ועסקים קטנים - הבנק הבינלאומי (בתוקף מ-06/09/2026) - נספח ה' הטבות בערוצי בנקאות בתקשורת, קניה/מכירה של ניירות ערך הנסחרים בבורסה בת\"א - מניות ואג\"ח, מקס', תעריף באמצעות אינטרנט / אפליקציה סלולרית / מערכות מסחר (עמוד מס' 61)",
+          "publisher": "First International Bank of Israel Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-09-06",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'מקס' - 6900 ש\"ח'."
+      },
+      "period": null,
+      "channel": "direct",
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קניה/מכירה של ניירות ערך הנסחרים בבורסה בת\"א - מניות ואג\"ח",
+          "קנייה, מכירה, ופדיון של ניירות ערך הנסחרים בבורסה בתל אביב (למעט קרנות נאמנות, אופציות מעו\"ף וחוזים עתידיים במעו\"ף) (כולל קניה או מכירה שלא בוצעה)",
+          "אינטרנט",
+          "אפליקציה סלולרית",
+          "מערכות מסחר"
+        ]
+      }
+    },
+    {
+      "id": "fibi-buy-sell-makam-branch",
+      "base": "trade",
+      "applies_to": [
+        "makam"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.11,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.fibi.co.il/media/jqob143q/חלק-4-ניירות-ערך-31.pdf",
+          "title": "תעריפון ליחידים ועסקים קטנים - הבנק הבינלאומי (בתוקף מ-06/09/2026) - חלק 4 ניירות ערך, סעיף 4.1.2 מלווה קצר מועד (עמוד מס' 15)",
+          "publisher": "First International Bank of Israel Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-09-06",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-19"
+        ],
+        "state": "sourced",
+        "notes": "'0.11%', separate row for makam ('מלווה קצר מועד'). Statement code 014551 (803)."
+      },
+      "min": {
+        "value": 16,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.fibi.co.il/media/jqob143q/חלק-4-ניירות-ערך-31.pdf",
+          "title": "תעריפון ליחידים ועסקים קטנים - הבנק הבינלאומי (בתוקף מ-06/09/2026) - חלק 4 ניירות ערך, סעיף 4.1.2, מינ' (עמוד מס' 15)",
+          "publisher": "First International Bank of Israel Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-09-06",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'מינ' - 16'."
+      },
+      "max": {
+        "value": 7000,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.fibi.co.il/media/jqob143q/חלק-4-ניירות-ערך-31.pdf",
+          "title": "תעריפון ליחידים ועסקים קטנים - הבנק הבינלאומי (בתוקף מ-06/09/2026) - חלק 4 ניירות ערך, סעיף 4.1.2, מקס' (עמוד מס' 15)",
+          "publisher": "First International Bank of Israel Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-09-06",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'מקס' - 7,000'."
+      },
+      "period": null,
+      "channel": "branch",
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קנייה, מכירה, ופדיון של ניירות ערך הנסחרים בבורסה בתל אביב (למעט קרנות נאמנות, אופציות מעו\"ף וחוזים עתידיים במעו\"ף) (כולל קניה או מכירה שלא בוצעה)",
+          "מלווה קצר מועד"
+        ]
+      }
+    },
+    {
+      "id": "fibi-buy-sell-makam-direct",
+      "base": "trade",
+      "applies_to": [
+        "makam"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.1,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.fibi.co.il/media/rgketaam/נספח-ה-הטבות-בערוצי-בנקאות-בתקשורת-31.pdf",
+          "title": "תעריפון ליחידים ועסקים קטנים - הבנק הבינלאומי (בתוקף מ-06/09/2026) - נספח ה' הטבות בערוצי בנקאות בתקשורת, קניה/מכירה של ניירות ערך הנסחרים בבורסה בת\"א - מלווה קצר מועד, תעריף באמצעות אינטרנט / אפליקציה סלולרית / מערכות מסחר (עמוד מס' 61)",
+          "publisher": "First International Bank of Israel Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-09-06",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-19"
+        ],
+        "state": "sourced",
+        "notes": "Appendix E: '0.1%' in the direct columns (clerk 0.11%); part 4 note 9: 'שיעור מופחת של 0.1%, מינ' 15 ש\"ח, מקס' – 6,900 ש\"ח במלווה קצר מועד'."
+      },
+      "min": {
+        "value": 15,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.fibi.co.il/media/rgketaam/נספח-ה-הטבות-בערוצי-בנקאות-בתקשורת-31.pdf",
+          "title": "תעריפון ליחידים ועסקים קטנים - הבנק הבינלאומי (בתוקף מ-06/09/2026) - נספח ה' הטבות בערוצי בנקאות בתקשורת, קניה/מכירה של ניירות ערך הנסחרים בבורסה בת\"א - מלווה קצר מועד, מינ', תעריף באמצעות אינטרנט / אפליקציה סלולרית / מערכות מסחר (עמוד מס' 61)",
+          "publisher": "First International Bank of Israel Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-09-06",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'מינ' - 15 ש\"ח'."
+      },
+      "max": {
+        "value": 6900,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.fibi.co.il/media/rgketaam/נספח-ה-הטבות-בערוצי-בנקאות-בתקשורת-31.pdf",
+          "title": "תעריפון ליחידים ועסקים קטנים - הבנק הבינלאומי (בתוקף מ-06/09/2026) - נספח ה' הטבות בערוצי בנקאות בתקשורת, קניה/מכירה של ניירות ערך הנסחרים בבורסה בת\"א - מלווה קצר מועד, מקס', תעריף באמצעות אינטרנט / אפליקציה סלולרית / מערכות מסחר (עמוד מס' 61)",
+          "publisher": "First International Bank of Israel Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-09-06",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'מקס' - 6900 ש\"ח'."
+      },
+      "period": null,
+      "channel": "direct",
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קניה/מכירה של ניירות ערך הנסחרים בבורסה בת\"א - מלווה קצר מועד",
+          "קנייה, מכירה, ופדיון של ניירות ערך הנסחרים בבורסה בתל אביב (למעט קרנות נאמנות, אופציות מעו\"ף וחוזים עתידיים במעו\"ף) (כולל קניה או מכירה שלא בוצעה)",
+          "מלווה קצר מועד",
+          "אינטרנט",
+          "אפליקציה סלולרית",
+          "מערכות מסחר"
+        ]
+      }
+    },
+    {
+      "id": "fibi-buy-sell-foreign-branch",
+      "base": "trade",
+      "applies_to": [
+        "foreign_securities"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.85,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.fibi.co.il/media/jqob143q/חלק-4-ניירות-ערך-31.pdf",
+          "title": "תעריפון ליחידים ועסקים קטנים - הבנק הבינלאומי (בתוקף מ-06/09/2026) - חלק 4 ניירות ערך, סעיף 4.4.1 מניות, אגרות חוב וקרנות נאמנות (עמוד מס' 16)",
+          "publisher": "First International Bank of Israel Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-09-06",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-19"
+        ],
+        "state": "sourced",
+        "notes": "'0.85%'. Additional expenses column: broker, custodian and SEC FEE expenses (part 11) and fund expenses on top. Note 3: the fund rate is for closed funds traded on exchanges and open funds traded off-exchange. Note 2: the fee never exceeds 30% of the trade value. Note 10: an ETF bought/sold by standing order pays a reduced minimum of $4.5. Statement codes: shares 008640, funds 008624, bonds 008608."
+      },
+      "min": {
+        "value": 40,
+        "unit": "usd",
+        "source": {
+          "url": "https://www.fibi.co.il/media/jqob143q/חלק-4-ניירות-ערך-31.pdf",
+          "title": "תעריפון ליחידים ועסקים קטנים - הבנק הבינלאומי (בתוקף מ-06/09/2026) - חלק 4 ניירות ערך, סעיף 4.4.1, מינ' (עמוד מס' 16)",
+          "publisher": "First International Bank of Israel Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-09-06",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'מינ' - 40$' per trade (US dollars)."
+      },
+      "max": {
+        "value": 7000,
+        "unit": "usd",
+        "source": {
+          "url": "https://www.fibi.co.il/media/jqob143q/חלק-4-ניירות-ערך-31.pdf",
+          "title": "תעריפון ליחידים ועסקים קטנים - הבנק הבינלאומי (בתוקף מ-06/09/2026) - חלק 4 ניירות ערך, סעיף 4.4.1, מקס' (עמוד מס' 16)",
+          "publisher": "First International Bank of Israel Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-09-06",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'מקס' - 7,000$' per trade (US dollars)."
+      },
+      "period": null,
+      "channel": "branch",
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קנייה, מכירה ופדיון של ניירות ערך בחוץ לארץ (כולל קניה או מכירה שלא בוצעה)",
+          "מניות, אגרות חוב וקרנות נאמנות"
+        ]
+      }
+    },
+    {
+      "id": "fibi-buy-sell-foreign-direct",
+      "base": "trade",
+      "applies_to": [
+        "foreign_securities"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.25,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.fibi.co.il/media/rgketaam/נספח-ה-הטבות-בערוצי-בנקאות-בתקשורת-31.pdf",
+          "title": "תעריפון ליחידים ועסקים קטנים - הבנק הבינלאומי (בתוקף מ-06/09/2026) - נספח ה' הטבות בערוצי בנקאות בתקשורת, קניית/מכירת של ניירות ערך בחו\"ל - מניות, אג\"ח וקרנות בחו\"ל, תעריף באמצעות אינטרנט / אפליקציה סלולרית / מערכות מסחר (עמוד מס' 62)",
+          "publisher": "First International Bank of Israel Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-09-06",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-19"
+        ],
+        "state": "sourced",
+        "notes": "Appendix E: '0.25%' in the direct columns (clerk 0.85%)."
+      },
+      "min": {
+        "value": 39,
+        "unit": "usd",
+        "source": {
+          "url": "https://www.fibi.co.il/media/rgketaam/נספח-ה-הטבות-בערוצי-בנקאות-בתקשורת-31.pdf",
+          "title": "תעריפון ליחידים ועסקים קטנים - הבנק הבינלאומי (בתוקף מ-06/09/2026) - נספח ה' הטבות בערוצי בנקאות בתקשורת, קניית/מכירת של ניירות ערך בחו\"ל - מניות, אג\"ח וקרנות בחו\"ל, מינ', תעריף באמצעות אינטרנט / אפליקציה סלולרית / מערכות מסחר (עמוד מס' 62)",
+          "publisher": "First International Bank of Israel Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-09-06",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'מינ' - 39$' per trade (US dollars)."
+      },
+      "max": {
+        "value": 6900,
+        "unit": "usd",
+        "source": {
+          "url": "https://www.fibi.co.il/media/rgketaam/נספח-ה-הטבות-בערוצי-בנקאות-בתקשורת-31.pdf",
+          "title": "תעריפון ליחידים ועסקים קטנים - הבנק הבינלאומי (בתוקף מ-06/09/2026) - נספח ה' הטבות בערוצי בנקאות בתקשורת, קניית/מכירת של ניירות ערך בחו\"ל - מניות, אג\"ח וקרנות בחו\"ל, מקס', תעריף באמצעות אינטרנט / אפליקציה סלולרית / מערכות מסחר (עמוד מס' 62)",
+          "publisher": "First International Bank of Israel Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-09-06",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'מקס' - $6,900' per trade (US dollars)."
+      },
+      "period": null,
+      "channel": "direct",
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קניית/מכירת של ניירות ערך בחו\"ל - מניות, אג\"ח וקרנות בחו\"ל",
+          "קנייה, מכירה ופדיון של ניירות ערך בחוץ לארץ (כולל קניה או מכירה שלא בוצעה)",
+          "אינטרנט",
+          "אפליקציה סלולרית",
+          "מערכות מסחר"
+        ]
+      }
+    },
+    {
+      "id": "fibi-custody-israel",
+      "base": "custody",
+      "applies_to": [
+        "tase_shares_bonds",
+        "etf_units",
+        "mutual_fund_units"
+      ],
+      "excludes": [
+        "makam",
+        "money_market_units"
+      ],
+      "excludes_rule_ids": [
+        "BRK-17",
+        "BANK-18"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.195,
+        "unit": "pct_of_balance_per_period",
+        "source": {
+          "url": "https://www.fibi.co.il/media/jqob143q/חלק-4-ניירות-ערך-31.pdf",
+          "title": "תעריפון ליחידים ועסקים קטנים - הבנק הבינלאומי (בתוקף מ-06/09/2026) - חלק 4 ניירות ערך, סעיף 4.5.1 הנסחרים בארץ (עמוד מס' 17)",
+          "publisher": "First International Bank of Israel Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-09-06",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-17"
+        ],
+        "state": "sourced",
+        "notes": "'0.195% לרבעון', charged on the 15th of the first month of the quarter for the previous quarter ('ב-15 לחודש הראשון של הרבעון, בגין רבעון קודם'). Note 2: computed on the value on the last business day of the quarter pro rata to the days held; on a sale/redemption/conversion/transfer during the quarter charged that day on that day's value. Note 1: not charged on makam or on a money-market fund as defined in the 1994 assets regulations (recorded as excludes). Note 3: includes other securities, Bonds, Maof options and futures by their money value. Delisted securities: not chargeable (with an interested-party exception). Statement code 014616 (943)."
+      },
+      "min": {
+        "value": null,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.fibi.co.il/media/jqob143q/חלק-4-ניירות-ערך-31.pdf",
+          "title": "תעריפון ליחידים ועסקים קטנים - הבנק הבינלאומי (בתוקף מ-06/09/2026) - חלק 4 ניירות ערך, סעיף 4.5.1, מינ' (עמוד מס' 17)",
+          "publisher": "First International Bank of Israel Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-09-06",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "No minimum is printed for this line."
+      },
+      "max": {
+        "value": 4000,
+        "unit": "nis",
+        "source": {
+          "url": "https://www.fibi.co.il/media/jqob143q/חלק-4-ניירות-ערך-31.pdf",
+          "title": "תעריפון ליחידים ועסקים קטנים - הבנק הבינלאומי (בתוקף מ-06/09/2026) - חלק 4 ניירות ערך, סעיף 4.5.1, מקס' לנייר/פעולה; מקס' לפיקדון (עמוד מס' 17)",
+          "publisher": "First International Bank of Israel Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-09-06",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'מקס' לנייר/פעולה 4,000' (per security or transaction) and 'מקס' לפיקדון 10,000' (per deposit, the whole account), per quarter. Recorded value: the per-security maximum."
+      },
+      "period": "quarter",
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "דמי ניהול פיקדון ניירות ערך (לרבות יחידות השתתפות בקרנות נאמנות)",
+          "הנסחרים בארץ"
+        ]
+      }
+    },
+    {
+      "id": "fibi-custody-foreign",
+      "base": "custody",
+      "applies_to": [
+        "foreign_securities"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.199,
+        "unit": "pct_of_balance_per_period",
+        "source": {
+          "url": "https://www.fibi.co.il/media/jqob143q/חלק-4-ניירות-ערך-31.pdf",
+          "title": "תעריפון ליחידים ועסקים קטנים - הבנק הבינלאומי (בתוקף מ-06/09/2026) - חלק 4 ניירות ערך, סעיף 4.5.2 הנסחרים בחוץ לארץ (עמוד מס' 17)",
+          "publisher": "First International Bank of Israel Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-09-06",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'0.199% לרבעון'; same collection mechanics as the Israeli line. Additional expenses: custodian and ADR/GDR expenses (part 11) on top. Statement code 014624 (943)."
+      },
+      "min": {
+        "value": null,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.fibi.co.il/media/jqob143q/חלק-4-ניירות-ערך-31.pdf",
+          "title": "תעריפון ליחידים ועסקים קטנים - הבנק הבינלאומי (בתוקף מ-06/09/2026) - חלק 4 ניירות ערך, סעיף 4.5.2, מינ' (עמוד מס' 17)",
+          "publisher": "First International Bank of Israel Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-09-06",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "No minimum is printed for this line."
+      },
+      "max": {
+        "value": 4000,
+        "unit": "nis",
+        "source": {
+          "url": "https://www.fibi.co.il/media/jqob143q/חלק-4-ניירות-ערך-31.pdf",
+          "title": "תעריפון ליחידים ועסקים קטנים - הבנק הבינלאומי (בתוקף מ-06/09/2026) - חלק 4 ניירות ערך, סעיף 4.5.2, מקס' לנייר/פעולה; מקס' לפיקדון (עמוד מס' 17)",
+          "publisher": "First International Bank of Israel Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-09-06",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'מקס' לנייר/פעולה 4,000' and 'מקס' לפיקדון 10,000' per quarter."
+      },
+      "period": "quarter",
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "דמי ניהול פיקדון ניירות ערך (לרבות יחידות השתתפות בקרנות נאמנות)",
+          "הנסחרים בחוץ לארץ"
+        ]
+      }
+    },
+    {
+      "id": "fibi-distribution-fee-type-1",
+      "base": "distribution_handling",
+      "applies_to": [
+        "mutual_fund_units"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.2,
+        "unit": "pct_of_balance_per_period",
+        "source": {
+          "url": "https://www.fibi.co.il/media/jqob143q/חלק-4-ניירות-ערך-31.pdf",
+          "title": "תעריפון ליחידים ועסקים קטנים - הבנק הבינלאומי (בתוקף מ-06/09/2026) - חלק 4 ניירות ערך, סעיף 4.9.1 עמלת הפצת קרן מסוג 1, כהגדרתה בתקנות השקעות משותפות בנאמנות (עמלת הפצה), התשס\"ו-2006 (עמוד מס' 19)",
+          "publisher": "First International Bank of Israel Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-09-06",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "MF-24",
+          "MF-26"
+        ],
+        "state": "sourced",
+        "notes": "'0.20% לשנה ממחיר הפדיון היומי', charged at the start of each month for the previous month ('בתחילת כל חודש עבור החודש הקודם'). Note 1: in the cases the 2006 distribution-fee regulations permit (MF-26). Note 2 defines the daily redemption price. Fund type per the fund's prospectus (MF-24). Base distribution_handling for want of a closer base."
+      },
+      "min": null,
+      "max": null,
+      "period": "year",
+      "channel": null,
+      "band": "קרן מסוג 1",
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "עמלת הפצה מרוכש יחידת השתתפות בקרן נאמנות",
+          "עמלת הפצת קרן מסוג 1, כהגדרתה בתקנות השקעות משותפות בנאמנות (עמלת הפצה), התשס\"ו-2006"
+        ]
+      }
+    },
+    {
+      "id": "fibi-distribution-fee-type-3",
+      "base": "distribution_handling",
+      "applies_to": [
+        "mutual_fund_units"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.35,
+        "unit": "pct_of_balance_per_period",
+        "source": {
+          "url": "https://www.fibi.co.il/media/jqob143q/חלק-4-ניירות-ערך-31.pdf",
+          "title": "תעריפון ליחידים ועסקים קטנים - הבנק הבינלאומי (בתוקף מ-06/09/2026) - חלק 4 ניירות ערך, סעיף 4.9.3 עמלת הפצת קרן מסוג 3, כהגדרתה בתקנות השקעות משותפות בנאמנות (עמלת הפצה), התשס\"ו-2006 (עמוד מס' 19)",
+          "publisher": "First International Bank of Israel Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-09-06",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "MF-24",
+          "MF-26"
+        ],
+        "state": "sourced",
+        "notes": "'0.35% לשנה ממחיר הפדיון היומי', charged at the start of each month for the previous month ('בתחילת כל חודש עבור החודש הקודם'). Note 1: in the cases the 2006 distribution-fee regulations permit (MF-26). Note 2 defines the daily redemption price. Fund type per the fund's prospectus (MF-24). Base distribution_handling for want of a closer base."
+      },
+      "min": null,
+      "max": null,
+      "period": "year",
+      "channel": null,
+      "band": "קרן מסוג 3",
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "עמלת הפצה מרוכש יחידת השתתפות בקרן נאמנות",
+          "עמלת הפצת קרן מסוג 3, כהגדרתה בתקנות השקעות משותפות בנאמנות (עמלת הפצה), התשס\"ו-2006"
+        ]
+      }
+    },
+    {
+      "id": "fibi-distribution-fee-type-4",
+      "base": "distribution_handling",
+      "applies_to": [
+        "money_market_units"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.1,
+        "unit": "pct_of_balance_per_period",
+        "source": {
+          "url": "https://www.fibi.co.il/media/jqob143q/חלק-4-ניירות-ערך-31.pdf",
+          "title": "תעריפון ליחידים ועסקים קטנים - הבנק הבינלאומי (בתוקף מ-06/09/2026) - חלק 4 ניירות ערך, סעיף 4.9.4 עמלת הפצת קרן מסוג 4, כהגדרתה בתקנות השקעות משותפות בנאמנות (עמלת הפצה), התשס\"ו-2006 (עמוד מס' 19)",
+          "publisher": "First International Bank of Israel Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-09-06",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "MF-24",
+          "MF-26"
+        ],
+        "state": "sourced",
+        "notes": "'0.10% לשנה ממחיר הפדיון היומי', charged at the start of each month for the previous month ('בתחילת כל חודש עבור החודש הקודם'). Note 1: in the cases the 2006 distribution-fee regulations permit (MF-26). Note 2 defines the daily redemption price. Fund type per the fund's prospectus (MF-24). Base distribution_handling for want of a closer base."
+      },
+      "min": null,
+      "max": null,
+      "period": "year",
+      "channel": null,
+      "band": "קרן מסוג 4",
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "עמלת הפצה מרוכש יחידת השתתפות בקרן נאמנות",
+          "עמלת הפצת קרן מסוג 4, כהגדרתה בתקנות השקעות משותפות בנאמנות (עמלת הפצה), התשס\"ו-2006"
+        ]
+      }
+    },
+    {
+      "id": "fibi-fx-conversion-branch",
+      "base": "fx",
+      "applies_to": [
+        "all"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.175,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.fibi.co.il/media/3avbury5/חלק-5-מטבע-חוץ-31.pdf",
+          "title": "תעריפון ליחידים ועסקים קטנים - הבנק הבינלאומי (בתוקף מ-06/09/2026) - חלק 5 מטבע חוץ, סעיף 5.1.1 עמלת חליפין מט\"י-מט\"ח (עמוד מס' 22)",
+          "publisher": "First International Bank of Israel Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-09-06",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-23"
+        ],
+        "state": "sourced",
+        "notes": "'0.175%'. Note 2: small conversions: cash up to $50 a flat $3.3, cash up to $100 $5.5, in-account conversions up to $100 $3.0. Note 8: conversions up to $10 exempt. Note 7: certain pension recipients exempt. Statement code 002014 (936)."
+      },
+      "min": {
+        "value": 6.25,
+        "unit": "usd",
+        "source": {
+          "url": "https://www.fibi.co.il/media/3avbury5/חלק-5-מטבע-חוץ-31.pdf",
+          "title": "תעריפון ליחידים ועסקים קטנים - הבנק הבינלאומי (בתוקף מ-06/09/2026) - חלק 5 מטבע חוץ, סעיף 5.1.1 עמלת חליפין מט\"י-מט\"ח (עמוד מס' 22), מינ'",
+          "publisher": "First International Bank of Israel Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-09-06",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-23"
+        ],
+        "state": "sourced",
+        "notes": "'מינ' - 6.25$' (US dollars)."
+      },
+      "max": {
+        "value": 2750,
+        "unit": "usd",
+        "source": {
+          "url": "https://www.fibi.co.il/media/3avbury5/חלק-5-מטבע-חוץ-31.pdf",
+          "title": "תעריפון ליחידים ועסקים קטנים - הבנק הבינלאומי (בתוקף מ-06/09/2026) - חלק 5 מטבע חוץ, סעיף 5.1.1 עמלת חליפין מט\"י-מט\"ח (עמוד מס' 22), מקס'",
+          "publisher": "First International Bank of Israel Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-09-06",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-23"
+        ],
+        "state": "sourced",
+        "notes": "'מקס' - 2,750.0$' (US dollars)."
+      },
+      "spread": {
+        "value": null,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.fibi.co.il/media/3avbury5/חלק-5-מטבע-חוץ-31.pdf",
+          "title": "תעריפון ליחידים ועסקים קטנים - הבנק הבינלאומי (בתוקף מ-06/09/2026) - חלק 5 מטבע חוץ, סעיף 5.1.1 עמלת חליפין מט\"י-מט\"ח (עמוד מס' 22)",
+          "publisher": "First International Bank of Israel Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-09-06",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-23"
+        ],
+        "state": "sourced",
+        "notes": "The tariff prints a percentage conversion fee only; the spread between the bank's rates and the representative rate is not published (BRK-23)."
+      },
+      "period": null,
+      "channel": "branch",
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "עמלת חליפין",
+          "מט\"י-מט\"ח"
+        ]
+      }
+    },
+    {
+      "id": "fibi-fx-conversion-direct",
+      "base": "fx",
+      "applies_to": [
+        "all"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.0875,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.fibi.co.il/media/rgketaam/נספח-ה-הטבות-בערוצי-בנקאות-בתקשורת-31.pdf",
+          "title": "תעריפון ליחידים ועסקים קטנים - הבנק הבינלאומי (בתוקף מ-06/09/2026) - נספח ה' הטבות בערוצי בנקאות בתקשורת, עמלת חליפין (מט\"י/מט\"ח) - מעל 100$, תעריף באמצעות אינטרנט / אפליקציה סלולרית / מערכות מסחר (עמוד מס' 62)",
+          "publisher": "First International Bank of Israel Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-09-06",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-23",
+          "BRK-19"
+        ],
+        "state": "sourced",
+        "notes": "Appendix E: '0.0875%' in the internet and mobile-app columns for conversions above $100 (clerk 0.175%); conversions up to $100: '1.5$' (clerk $3.0); automatic teller: exempt ('פטור')."
+      },
+      "min": {
+        "value": 5.0,
+        "unit": "usd",
+        "source": {
+          "url": "https://www.fibi.co.il/media/rgketaam/נספח-ה-הטבות-בערוצי-בנקאות-בתקשורת-31.pdf",
+          "title": "תעריפון ליחידים ועסקים קטנים - הבנק הבינלאומי (בתוקף מ-06/09/2026) - נספח ה' הטבות בערוצי בנקאות בתקשורת, עמלת חליפין (מט\"י/מט\"ח) - מעל 100$, מינ', תעריף באמצעות אינטרנט / אפליקציה סלולרית / מערכות מסחר (עמוד מס' 62)",
+          "publisher": "First International Bank of Israel Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-09-06",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-23"
+        ],
+        "state": "sourced",
+        "notes": "'מינ' - 5.0$' (US dollars)."
+      },
+      "max": {
+        "value": 2475,
+        "unit": "usd",
+        "source": {
+          "url": "https://www.fibi.co.il/media/rgketaam/נספח-ה-הטבות-בערוצי-בנקאות-בתקשורת-31.pdf",
+          "title": "תעריפון ליחידים ועסקים קטנים - הבנק הבינלאומי (בתוקף מ-06/09/2026) - נספח ה' הטבות בערוצי בנקאות בתקשורת, עמלת חליפין (מט\"י/מט\"ח) - מעל 100$, מקס', תעריף באמצעות אינטרנט / אפליקציה סלולרית / מערכות מסחר (עמוד מס' 62)",
+          "publisher": "First International Bank of Israel Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-09-06",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-23"
+        ],
+        "state": "sourced",
+        "notes": "'מקס' - $2,475' (US dollars)."
+      },
+      "spread": {
+        "value": null,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.fibi.co.il/media/rgketaam/נספח-ה-הטבות-בערוצי-בנקאות-בתקשורת-31.pdf",
+          "title": "תעריפון ליחידים ועסקים קטנים - הבנק הבינלאומי (בתוקף מ-06/09/2026) - נספח ה' הטבות בערוצי בנקאות בתקשורת, עמלת חליפין (מט\"י/מט\"ח) - מעל 100$, תעריף באמצעות אינטרנט / אפליקציה סלולרית / מערכות מסחר (עמוד מס' 62)",
+          "publisher": "First International Bank of Israel Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-09-06",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-23"
+        ],
+        "state": "sourced",
+        "notes": "Fee only; the spread is not published (BRK-23)."
+      },
+      "period": null,
+      "channel": "direct",
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "עמלת חליפין (מט\"י/מט\"ח) - מעל 100$",
+          "עמלת חליפין",
+          "אינטרנט",
+          "אפליקציה סלולרית"
+        ]
+      }
+    }
+  ],
+  "averages": [],
+  "minimums": {
+    "account_opening": null
+  },
+  "notice_rule_ids": [
+    "BRK-21",
+    "BRK-20"
+  ]
+}

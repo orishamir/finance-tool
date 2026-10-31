@@ -1,0 +1,1000 @@
+{
+  "id": "hapoalim",
+  "provider": {
+    "name_he": "בנק הפועלים בע\"מ",
+    "class": "bank",
+    "regulator": "BoI",
+    "tase_member": true,
+    "protection_rule_ids": [
+      "BRK-10",
+      "BRK-12",
+      "BRK-13"
+    ]
+  },
+  "tariff": {
+    "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
+    "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים, 'נכון ליום: 05/10/2026' (קובץ XLS, גיליון אחד; פרק: ניירות ערך, פרק: מטבע חוץ, הטבות בערוצי בנקאות בתקשורת (נספח ה')). קובץ ה-PDF התאום single_small_51026.pdf משתמש בגופן Type 3 ללא מיפוי Unicode והטקסט שלו אינו ניתן לחילוץ. מקושר מעמוד https://www.bankhapoalim.co.il/forms/he/fee-list",
+    "published": "2026-10-05",
+    "format": "xlsx"
+  },
+  "snapshot": "2026-10-31",
+  "missing": false,
+  "missing_reason": null,
+  "lines": [
+    {
+      "id": "hapoalim-buy-sell-tase-branch",
+      "base": "trade",
+      "applies_to": [
+        "tase_shares_bonds",
+        "etf_units",
+        "mutual_fund_units"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.6,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
+          "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), פרק: ניירות ערך, קניה מכירה ופדיון של ני\"ע הנסחרים בבורסה של ת\"א (כולל קניה מכירה שלא בוצעה): - מניות ואג\"ח, גובה העמלה שעור/סכום",
+          "publisher": "Bank Hapoalim B.M.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-05",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-19",
+          "MF-27"
+        ],
+        "state": "sourced",
+        "notes": "'0.60%'. Note (05): excludes mutual funds, Maof options and futures but includes a tracking fund (קרן מחקה) and a fund whose units are listed on TASE, so Israeli ETFs and listed fund units pay this line. Note (06): the fee never exceeds 25% of the money value. Note (03): an unexecuted order pays the minimum only when a clerk was involved; a split order pays one fee per day. Additional expenses: TASE payments per the third-party chapter. Note (07): a transaction made directly on the internet pays a reduced 0.40% subject to the appendix-E minimum and maximum. Tracking funds (2026-10-31): the exclusion of mutual funds on this line does not cover a tracking fund, so a tracking fund pays this line; a traditional fund that is not listed does not. Place: the existing record of the tariff read on 2026-10-23, note (05) above. On 2026-10-31 the file could not be fetched again (a bot check), so this scope rests on that reading and on the general rule MF-27; on the list for a person to check."
+      },
+      "min": {
+        "value": 26,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
+          "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), פרק: ניירות ערך, קניה מכירה ופדיון של ני\"ע הנסחרים בבורסה של ת\"א (כולל קניה מכירה שלא בוצעה): - מניות ואג\"ח, גובה העמלה מינימום",
+          "publisher": "Bank Hapoalim B.M.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-05",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'26.00'."
+      },
+      "max": {
+        "value": 7500,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
+          "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), פרק: ניירות ערך, קניה מכירה ופדיון של ני\"ע הנסחרים בבורסה של ת\"א (כולל קניה מכירה שלא בוצעה): - מניות ואג\"ח, גובה העמלה מקסימום",
+          "publisher": "Bank Hapoalim B.M.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-05",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'7,500.00'."
+      },
+      "period": null,
+      "channel": "branch",
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קניה מכירה ופדיון של ני\"ע הנסחרים בבורסה של ת\"א (כולל קניה מכירה שלא בוצעה): - מניות ואג\"ח",
+          "מניות ואג\"ח"
+        ]
+      }
+    },
+    {
+      "id": "hapoalim-buy-sell-tase-direct",
+      "base": "trade",
+      "applies_to": [
+        "tase_shares_bonds",
+        "etf_units",
+        "mutual_fund_units"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.4,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
+          "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), הטבות בערוצי בנקאות בתקשורת (נספח ה'), קנייה מכירה של ני\"ע הנסחרים בבורסה של תל אביב (כולל קניה מכירה שלא בוצעה) - מניות אג\"ח, מחיר בערוץ ישיר",
+          "publisher": "Bank Hapoalim B.M.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-05",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-19",
+          "MF-27"
+        ],
+        "state": "sourced",
+        "notes": "Appendix E direct-channel price '0.40%' (clerk 0.60%); also note (07) of the securities chapter: 'עבור פעולה המבוצעת ישירות באמצעות האינטרנט ייגבה שיעור מופחת של 0.40% לפעולה'. Same scope as the branch line. The appendix-E rows in the XLS interleave the direct and clerk columns in one cell; values were read against the part-4 notes. Tracking funds (2026-10-31): the exclusion of mutual funds on this line does not cover a tracking fund, so a tracking fund pays this line; a traditional fund that is not listed does not. Place: the existing record of the tariff read on 2026-10-23, note (05) above. On 2026-10-31 the file could not be fetched again (a bot check), so this scope rests on that reading and on the general rule MF-27; on the list for a person to check."
+      },
+      "min": {
+        "value": 20,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
+          "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), הטבות בערוצי בנקאות בתקשורת (נספח ה'), מניות אג\"ח, מינימום בערוץ ישיר",
+          "publisher": "Bank Hapoalim B.M.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-05",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'20 ש\"ח' (clerk 26)."
+      },
+      "max": {
+        "value": 7000,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
+          "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), הטבות בערוצי בנקאות בתקשורת (נספח ה'), מניות אג\"ח, מקסימום בערוץ ישיר",
+          "publisher": "Bank Hapoalim B.M.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-05",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'7,000 ש\"ח' (clerk 7,500)."
+      },
+      "period": null,
+      "channel": "direct",
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קניה מכירה ופדיון של ני\"ע הנסחרים בבורסה של ת\"א (כולל קניה מכירה שלא בוצעה): - מניות ואג\"ח",
+          "קנייה מכירה של ני\"ע הנסחרים בבורסה של תל אביב (כולל קניה מכירה שלא בוצעה) - מניות אג\"ח",
+          "ערוץ ישיר",
+          "אינטרנט"
+        ]
+      }
+    },
+    {
+      "id": "hapoalim-buy-sell-makam-branch",
+      "base": "trade",
+      "applies_to": [
+        "makam"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.11,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
+          "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), פרק: ניירות ערך, קניה מכירה (כולל הנפקה) ופדיון של מלווה קצר מועד (כולל קניה/ מכירה שלא בוצעה), גובה העמלה שעור/סכום",
+          "publisher": "Bank Hapoalim B.M.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-05",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-19"
+        ],
+        "state": "sourced",
+        "notes": "'0.11%', separate row for makam (including issues). Note (10): charged on the settlement day. Note (11): internet 0.10% subject to the appendix-E minimum and maximum."
+      },
+      "min": {
+        "value": 19,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
+          "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), פרק: ניירות ערך, קניה מכירה (כולל הנפקה) ופדיון של מלווה קצר מועד (כולל קניה/ מכירה שלא בוצעה), גובה העמלה מינימום",
+          "publisher": "Bank Hapoalim B.M.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-05",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'19.00'."
+      },
+      "max": {
+        "value": 7500,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
+          "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), פרק: ניירות ערך, קניה מכירה (כולל הנפקה) ופדיון של מלווה קצר מועד (כולל קניה/ מכירה שלא בוצעה), גובה העמלה מקסימום",
+          "publisher": "Bank Hapoalim B.M.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-05",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'7,500.00'."
+      },
+      "period": null,
+      "channel": "branch",
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קניה מכירה (כולל הנפקה) ופדיון של מלווה קצר מועד (כולל קניה/ מכירה שלא בוצעה)",
+          "מלווה קצר מועד"
+        ]
+      }
+    },
+    {
+      "id": "hapoalim-buy-sell-makam-direct",
+      "base": "trade",
+      "applies_to": [
+        "makam"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.1,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
+          "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), הטבות בערוצי בנקאות בתקשורת (נספח ה'), קנייה מכירה (כולל הנפקה) של מלווה קצר מועד (כולל קניה/מכירה שלא בוצעה), מחיר בערוץ ישיר",
+          "publisher": "Bank Hapoalim B.M.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-05",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-19"
+        ],
+        "state": "sourced",
+        "notes": "Appendix E '0.10%' (clerk 0.11%); also note (11) of the securities chapter."
+      },
+      "min": {
+        "value": 15,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
+          "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), הטבות בערוצי בנקאות בתקשורת (נספח ה'), מלווה קצר מועד, מינימום בערוץ ישיר",
+          "publisher": "Bank Hapoalim B.M.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-05",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'15 ש\"ח' (clerk 19)."
+      },
+      "max": {
+        "value": 7000,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
+          "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), הטבות בערוצי בנקאות בתקשורת (נספח ה'), מלווה קצר מועד, מקסימום בערוץ ישיר",
+          "publisher": "Bank Hapoalim B.M.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-05",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'7,000 ש\"ח' (clerk 7,500)."
+      },
+      "period": null,
+      "channel": "direct",
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קניה מכירה (כולל הנפקה) ופדיון של מלווה קצר מועד (כולל קניה/ מכירה שלא בוצעה)",
+          "מלווה קצר מועד",
+          "ערוץ ישיר"
+        ]
+      }
+    },
+    {
+      "id": "hapoalim-buy-sell-foreign-branch",
+      "base": "trade",
+      "applies_to": [
+        "foreign_securities"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.9,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
+          "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), פרק: ניירות ערך, קניה מכירה ופדיון של ני\"ע בחו\"ל (כולל קניה מכירה שלא בוצעה): - מניות, אג\"ח, קרנות נאמנות, גובה העמלה שעור/סכום",
+          "publisher": "Bank Hapoalim B.M.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-05",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-19"
+        ],
+        "state": "sourced",
+        "notes": "'0.90%'. Note (04): third-party expenses (broker, custodian, ADR fees) are charged on top. Note (06): charged on the settlement day. Note (08): the fee never exceeds 25% of the trade amount. Note (07): direct-channel prices in appendix E."
+      },
+      "min": {
+        "value": 25,
+        "unit": "usd",
+        "source": {
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
+          "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), פרק: ניירות ערך, קניה מכירה ופדיון של ני\"ע בחו\"ל (כולל קניה מכירה שלא בוצעה): - מניות, אג\"ח, קרנות נאמנות, גובה העמלה מינימום",
+          "publisher": "Bank Hapoalim B.M.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-05",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'$25.00' per trade (US dollars)."
+      },
+      "max": {
+        "value": 7500,
+        "unit": "usd",
+        "source": {
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
+          "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), פרק: ניירות ערך, קניה מכירה ופדיון של ני\"ע בחו\"ל (כולל קניה מכירה שלא בוצעה): - מניות, אג\"ח, קרנות נאמנות, גובה העמלה מקסימום",
+          "publisher": "Bank Hapoalim B.M.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-05",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'$7,500.00' per trade (US dollars)."
+      },
+      "period": null,
+      "channel": "branch",
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קניה מכירה ופדיון של ני\"ע בחו\"ל (כולל קניה מכירה שלא בוצעה): - מניות, אג\"ח, קרנות נאמנות"
+        ]
+      }
+    },
+    {
+      "id": "hapoalim-buy-sell-foreign-direct",
+      "base": "trade",
+      "applies_to": [
+        "foreign_securities"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.3,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
+          "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), הטבות בערוצי בנקאות בתקשורת (נספח ה'), קניה מכירה של ני\"ע הנסחרים בחו\"ל (כולל קניה מכירה שלא בוצעה): - מניות הנסחרות בארה\"ב, מחיר בערוץ ישיר",
+          "publisher": "Bank Hapoalim B.M.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-05",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-19"
+        ],
+        "state": "sourced",
+        "notes": "Appendix E: shares traded in the US '0.30%' in a direct channel (clerk 0.90%); shares traded outside the US '0.50%' (same minimum and maximum). Recorded here: the US row; the non-US direct rate is 0.50%."
+      },
+      "min": {
+        "value": 20,
+        "unit": "usd",
+        "source": {
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
+          "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), הטבות בערוצי בנקאות בתקשורת (נספח ה'), מניות הנסחרות בארה\"ב, מינימום בערוץ ישיר",
+          "publisher": "Bank Hapoalim B.M.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-05",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'20 $' (clerk $25)."
+      },
+      "max": {
+        "value": 7000,
+        "unit": "usd",
+        "source": {
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
+          "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), הטבות בערוצי בנקאות בתקשורת (נספח ה'), מניות הנסחרות בארה\"ב, מקסימום בערוץ ישיר",
+          "publisher": "Bank Hapoalim B.M.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-05",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'7,000 $' (clerk $7,500)."
+      },
+      "period": null,
+      "channel": "direct",
+      "band": "מניות הנסחרות בארה\"ב",
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קניה מכירה של ני\"ע הנסחרים בחו\"ל (כולל קניה מכירה שלא בוצעה): - מניות הנסחרות בארה\"ב",
+          "ערוץ ישיר"
+        ]
+      }
+    },
+    {
+      "id": "hapoalim-custody-israel",
+      "base": "custody",
+      "applies_to": [
+        "tase_shares_bonds",
+        "etf_units",
+        "mutual_fund_units"
+      ],
+      "excludes": [
+        "makam",
+        "money_market_units"
+      ],
+      "excludes_rule_ids": [
+        "BRK-17",
+        "BANK-18"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.15,
+        "unit": "pct_of_balance_per_period",
+        "source": {
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
+          "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), פרק: ניירות ערך, דמי ניהול פיקדון ני\"ע הנסחרים בארץ (לרבות יחידות השתתפות בקרנות נאמנות) - לנייר",
+          "publisher": "Bank Hapoalim B.M.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-05",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-17"
+        ],
+        "state": "sourced",
+        "notes": "'0.15% לרבעון'. Note (09): charged on each sale, transfer, redemption or withdrawal and at quarter end for the previous quarter; the per-deposit maximum row is charged 'בתחילת כל רבעון, עבור רבעון קודם'. Note (12): may not be charged on makam or on a money-market fund as defined in the 1994 assets regulations (recorded as excludes). Note (11): not chargeable on delisted securities (with an interested-party exception)."
+      },
+      "min": {
+        "value": null,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
+          "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), פרק: ניירות ערך, דמי ניהול פיקדון ני\"ע הנסחרים בארץ, גובה העמלה מינימום",
+          "publisher": "Bank Hapoalim B.M.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-05",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "No minimum is printed for this line."
+      },
+      "max": {
+        "value": 10600,
+        "unit": "nis",
+        "source": {
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
+          "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), פרק: ניירות ערך, דמי ניהול פיקדון ני\"ע הנסחרים בארץ - לנייר, מקסימום; דמי ניהול פקדון ני\"ע הנסחרים בארץ - מקסימום לפקדון",
+          "publisher": "Bank Hapoalim B.M.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-05",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'10,600.00 לנייר ערך' (per security) and, in a separate row, '10,600.00 לפקדון' (per deposit, the whole account), both per quarter."
+      },
+      "period": "quarter",
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "דמי ניהול פיקדון ני\"ע הנסחרים בארץ (לרבות יחידות השתתפות בקרנות נאמנות) - לנייר",
+          "דמי ניהול פקדון ני\"ע הנסחרים בארץ (לרבות יחידות השתתפות בקרנות נאמנות) - מקסימום לפקדון"
+        ]
+      }
+    },
+    {
+      "id": "hapoalim-custody-foreign",
+      "base": "custody",
+      "applies_to": [
+        "foreign_securities"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.2,
+        "unit": "pct_of_balance_per_period",
+        "source": {
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
+          "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), פרק: ניירות ערך, דמי ניהול פיקדון ניירות ערך נסחרים בחו\"ל, קרנות זרות (לרבות יחידות השתתפות בקרנות נאמנות) - לנייר",
+          "publisher": "Bank Hapoalim B.M.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-05",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'0.20% לרבעון'; note (04): charged on each sale/transfer/redemption/withdrawal and at quarter end; note (05): ADR third-party costs charged as incurred."
+      },
+      "min": {
+        "value": null,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
+          "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), פרק: ניירות ערך, דמי ניהול פיקדון ניירות ערך נסחרים בחו\"ל, מינימום",
+          "publisher": "Bank Hapoalim B.M.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-05",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "No minimum is printed for this line."
+      },
+      "max": {
+        "value": 10600,
+        "unit": "nis",
+        "source": {
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
+          "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), פרק: ניירות ערך, דמי ניהול פיקדון ניירות ערך נסחרים בחו\"ל - לנייר, מקסימום; מקסימום לפקדון",
+          "publisher": "Bank Hapoalim B.M.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-05",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'10,600.00 לנייר ערך' per security and '10,600.00 לפקדון' per deposit, per quarter."
+      },
+      "period": "quarter",
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "דמי ניהול פיקדון ניירות ערך נסחרים בחו\"ל, קרנות זרות (לרבות יחידות השתתפות בקרנות נאמנות) - לנייר",
+          "דמי ניהול פקדון ני\"ע הנסחרים בחו\"ל, קרנות זרות (לרבות יחידות השתתפות בקרנות נאמנות) מקסימום לפקדון"
+        ]
+      }
+    },
+    {
+      "id": "hapoalim-distribution-fee-type-1",
+      "base": "distribution_handling",
+      "applies_to": [
+        "mutual_fund_units"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.2,
+        "unit": "pct_of_balance_per_period",
+        "source": {
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
+          "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), פרק: ניירות ערך, עמלת הפצה מרוכש יחידת השתתפות בקרן נאמנות מסוג 1",
+          "publisher": "Bank Hapoalim B.M.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-05",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "MF-24",
+          "MF-26"
+        ],
+        "state": "sourced",
+        "notes": "'0.20% לשנה', collected mid-month for the previous month ('באמצע החודש עבור החודש הקודם'). Note (02): charged per unit for every day it is held at the bank, on the redemption price. Note (03): 'למעט קרן מחקה' and a fund whose units are listed on TASE (tracking funds and listed funds are exempt). Fund type per the fund's prospectus (MF-24); charged to the holder only where the 2006 regulations permit (MF-26). Base distribution_handling for want of a closer base."
+      },
+      "min": null,
+      "max": null,
+      "period": "year",
+      "channel": null,
+      "band": "קרן מסוג 1",
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "עמלת הפצה מרוכש יחידת השתתפות בקרן נאמנות מסוג 1"
+        ]
+      }
+    },
+    {
+      "id": "hapoalim-distribution-fee-type-3",
+      "base": "distribution_handling",
+      "applies_to": [
+        "mutual_fund_units"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.35,
+        "unit": "pct_of_balance_per_period",
+        "source": {
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
+          "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), פרק: ניירות ערך, עמלת הפצה מרוכש יחידת השתתפות בקרן נאמנות מסוג 3",
+          "publisher": "Bank Hapoalim B.M.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-05",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "MF-24",
+          "MF-26"
+        ],
+        "state": "sourced",
+        "notes": "'0.35% לשנה', collected mid-month for the previous month ('באמצע החודש עבור החודש הקודם'). Note (02): charged per unit for every day it is held at the bank, on the redemption price. Note (03): 'למעט קרן מחקה' and a fund whose units are listed on TASE (tracking funds and listed funds are exempt). Fund type per the fund's prospectus (MF-24); charged to the holder only where the 2006 regulations permit (MF-26). Base distribution_handling for want of a closer base."
+      },
+      "min": null,
+      "max": null,
+      "period": "year",
+      "channel": null,
+      "band": "קרן מסוג 3",
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "עמלת הפצה מרוכש יחידת השתתפות בקרן נאמנות מסוג 3"
+        ]
+      }
+    },
+    {
+      "id": "hapoalim-distribution-fee-type-4",
+      "base": "distribution_handling",
+      "applies_to": [
+        "money_market_units"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.1,
+        "unit": "pct_of_balance_per_period",
+        "source": {
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
+          "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), פרק: ניירות ערך, עמלת הפצת מרוכש יחידת השתתפות בקרן נאמנות מסוג 4",
+          "publisher": "Bank Hapoalim B.M.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-05",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "MF-24",
+          "MF-26"
+        ],
+        "state": "sourced",
+        "notes": "'0.10% לשנה', collected mid-month for the previous month ('באמצע החודש עבור החודש הקודם'). Note (02): charged per unit for every day it is held at the bank, on the redemption price. Note (03): 'למעט קרן מחקה' and a fund whose units are listed on TASE (tracking funds and listed funds are exempt). Fund type per the fund's prospectus (MF-24); charged to the holder only where the 2006 regulations permit (MF-26). Base distribution_handling for want of a closer base."
+      },
+      "min": null,
+      "max": null,
+      "period": "year",
+      "channel": null,
+      "band": "קרן מסוג 4",
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "עמלת הפצת מרוכש יחידת השתתפות בקרן נאמנות מסוג 4"
+        ]
+      }
+    },
+    {
+      "id": "hapoalim-fx-conversion-branch",
+      "base": "fx",
+      "applies_to": [
+        "all"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.19,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
+          "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), פרק: מטבע חוץ, עמלת חליפין בקניה /מכירה לפי השער הידוע מיידי וצהריים, מעל 99 $",
+          "publisher": "Bank Hapoalim B.M.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-05",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-23"
+        ],
+        "state": "sourced",
+        "notes": "'0.19%' for transactions above $99; transactions up to $99 pay a flat '$5.50'. Note (03): no fee on zeroing balances under $10. Note (04): direct-channel prices in appendix E."
+      },
+      "min": {
+        "value": 6.7,
+        "unit": "usd",
+        "source": {
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
+          "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), פרק: מטבע חוץ, עמלת חליפין בקניה /מכירה לפי השער הידוע מיידי וצהריים, מעל 99 $, מינימום",
+          "publisher": "Bank Hapoalim B.M.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-05",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-23"
+        ],
+        "state": "sourced",
+        "notes": "'$6.70' per transaction (US dollars)."
+      },
+      "max": {
+        "value": 2700,
+        "unit": "usd",
+        "source": {
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
+          "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), פרק: מטבע חוץ, עמלת חליפין בקניה /מכירה לפי השער הידוע מיידי וצהריים, מעל 99 $, מקסימום",
+          "publisher": "Bank Hapoalim B.M.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-05",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-23"
+        ],
+        "state": "sourced",
+        "notes": "'$2,700.00' per transaction (US dollars)."
+      },
+      "spread": {
+        "value": null,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
+          "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), פרק: מטבע חוץ, עמלת חליפין בקניה /מכירה לפי השער הידוע מיידי וצהריים, מעל 99 $",
+          "publisher": "Bank Hapoalim B.M.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-05",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-23"
+        ],
+        "state": "sourced",
+        "notes": "The tariff prints a percentage conversion fee only; the spread between the bank's rates and the representative rate is not published (BRK-23)."
+      },
+      "period": null,
+      "channel": "branch",
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "עמלת חליפין בקניה /מכירה לפי השער הידוע מיידי וצהריים",
+          "מעל 99 $"
+        ]
+      }
+    },
+    {
+      "id": "hapoalim-fx-conversion-direct",
+      "base": "fx",
+      "applies_to": [
+        "all"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.17,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
+          "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), הטבות בערוצי בנקאות בתקשורת (נספח ה'), עמלת חליפין בקניה /מכירה לפי השער הידוע מיידי וצהריים, מעל 99 $, מחיר בערוץ ישיר",
+          "publisher": "Bank Hapoalim B.M.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-05",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-23",
+          "BRK-19"
+        ],
+        "state": "sourced",
+        "notes": "Appendix E: '0.17%' in a direct channel (clerk 0.19%); up to $99 a flat '3.3 $' (clerk $5.5)."
+      },
+      "min": {
+        "value": 5.7,
+        "unit": "usd",
+        "source": {
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
+          "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), הטבות בערוצי בנקאות בתקשורת (נספח ה'), עמלת חליפין בקניה /מכירה לפי השער הידוע מיידי וצהריים, מינימום בערוץ ישיר",
+          "publisher": "Bank Hapoalim B.M.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-05",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-23"
+        ],
+        "state": "sourced",
+        "notes": "'5.7 $' (clerk $6.7)."
+      },
+      "max": {
+        "value": 2300,
+        "unit": "usd",
+        "source": {
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
+          "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), הטבות בערוצי בנקאות בתקשורת (נספח ה'), עמלת חליפין בקניה /מכירה לפי השער הידוע מיידי וצהריים, מקסימום בערוץ ישיר",
+          "publisher": "Bank Hapoalim B.M.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-05",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-23"
+        ],
+        "state": "sourced",
+        "notes": "'2,300 $' (clerk $2,700)."
+      },
+      "spread": {
+        "value": null,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
+          "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), הטבות בערוצי בנקאות בתקשורת (נספח ה'), עמלת חליפין בקניה /מכירה לפי השער הידוע מיידי וצהריים",
+          "publisher": "Bank Hapoalim B.M.",
+          "strength": "institution"
+        },
+        "checked": "2026-10-23",
+        "effective_from": "2026-10-05",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-23"
+        ],
+        "state": "sourced",
+        "notes": "Fee only; the spread is not published (BRK-23)."
+      },
+      "period": null,
+      "channel": "direct",
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "עמלת חליפין בקניה /מכירה לפי השער הידוע מיידי וצהריים",
+          "מעל 99 $",
+          "ערוץ ישיר"
+        ]
+      }
+    }
+  ],
+  "averages": [],
+  "minimums": {
+    "account_opening": null
+  },
+  "notice_rule_ids": [
+    "BRK-21",
+    "BRK-20"
+  ]
+}
