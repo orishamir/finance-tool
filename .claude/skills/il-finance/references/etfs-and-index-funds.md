@@ -717,6 +717,77 @@ Added 2026-10-25 (founder's question whether Israeli index funds that use swaps 
 - Dimensions: (proposed) tracking-difference, fee-management-balance
 - Likely to change: yes, these are yearly figures.
 
+## Why a currency-hedged fund falls short of its index, added 2026-10-31
+
+Answers issue #149; the working, including what was searched and not found, is `research/2026-10-31-evening/hedged-shortfall.md`.
+
+### ETF-75 What hedging adds to or takes from a hedged tracking fund in the regulator's formula: an interest coefficient from three-month forward points and a quanto coefficient
+- Rule: The ISA's directive on calculating the variable fee in a tracking fund says that in a hedged fund ("קרן מנוטרלת מטבע") "ההוצאות או ההכנסות כתוצאה מפעולת גידור המטבע" are taken out of the tracking difference, and its Appendix A gives the formula: the tracking asset's value is `M_t = M'_t × R_t × Q_t`, where `M'_t` is the index as published. `R_t = R_(t-1) × r(t)`, `r(t) = 1 + (FP/Div/FX/Days)`, is the "מקדם המבטא היחס בין שיעורי ריביות": `FP` is "גובה הפרשי הריביות בין המטבעות של עסקת הפורוורד, כשהוא מבוטא בנקודות", with parameters taken from market prices of a three-month forward. `Q_t = Q_(t-1) × (1 + ΔM'_t × ΔC_t)` is the "מקדם המבטא רווח או הפסד הנוצרים כתוצאה מפעילות הגידור", where `ΔM'_t` and `ΔC_t` are the day's change in the index and in the currency (the ask when the index falls, the bid when it rises). The directive calls the hedge result "(קוואנטו והפרשי ריביות)". The ISA's rules on tracking-fund prospectuses say the same in words: the tracking difference is computed after fees "ובקרן מנוטרלת מטבע, ינוטרלו מהחישוב האמור גם עלויות גידור המטבע".
+- Conditions / exceptions: The formula defines the benchmark for the variable fee; the directive does not present it as a statement of what a fund pays, and states no size. Because hedging is taken out of that calculation, a variable-fee refund does not cover it (derived). Derived from the formula, not stated in it: `Q` falls on a day when the index and the currency move in opposite directions and rises when they move together, so it is not a fixed fee, and it grows with both moves. The sign convention of `FP` is not stated; the words "הוצאות או הכנסות" allow both directions. Read in the ISA's draft of 9.10.2024 only as a footnote: in a hedged fund the correlation is computed "בנטרול הפרשי קוואנטו למדד". Whether a real fund's hedge earns or pays what the formula gives was not read. Named funds' reports are ETF-77; their record is ETF-78.
+- Figures: three-month forward (the directive, published 2018). No cost figure.
+- Source: [הוראה למנהלי קרנות הנאמנות בעניין חישוב דמי ניהול משתנים בקרן מחקה, copy on the Chamber of Commerce site, PDF of 23.8.2018; the Authority's own copy was not found and amendments since then were not checked](https://www.chamber.org.il/media/159262/fees.pdf#page=5), p.1 s.3, p.2 (the definition of `Mt`), p.5 Appendix A · checked 2026-10-31 · primary (mirror). [כללי השקעות משותפות בנאמנות (פרטים נוספים בתשקיף קרן מחקה ודוחות נוספים של קרן מחקה), התשע"ט-2018](https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/shared_investments_rules.pdf#page=3), p.3 · checked 2026-10-31 · primary. [ISA draft amendment to the tracking-fund directive, 9.10.2024](https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/indexfund091024.pdf#page=8), p.8 footnote 2 · checked 2026-10-31 · primary (draft)
+- Scope: general
+- Dimensions: currency, (proposed) tracking-difference
+- Likely to change: unknown. The directive's current text is open question 30.
+
+### ETF-76 Forward prices follow the interest gap by parity, and the shekel's can deviate from it
+- Rule: Covered interest parity "holds that the interest rate differential between two currencies in the cash money markets should equal the differential between the forward and spot exchange rates" (BIS). The Bank of Israel describes an institutional FX swap in which "institutional bodies profit from the basis spread, which reflects a deviation of the shekel interest rate from the interest rate parity law", in a transaction it calls "the opposite of the regular activity of institutional bodies in the general portfolio, in which they borrow foreign currency".
+- Conditions / exceptions: Neither source speaks of hedged funds. Derived, unconfirmed: a hedged fund sells the dollar forward (the funds' reports, ETF-69), which is the direction of the regular activity, so the basis would reach it as a cost on top of the gap; the size of the basis for shekel-dollar was not read. No official series of shekel-dollar forward points was found.
+- Figures: none.
+- Source: [Bank of Israel, Financial Stability Report 2024 H1](https://www.boi.org.il/media/atwl5mcy/fsr2024fe1.pdf#page=47), p.47 · checked 2026-10-31 · primary. [BIS Quarterly Review, September 2016, "Covered interest parity lost"](https://www.bis.org/publ/qtrpdf/r_qt1609e.htm) · checked 2026-10-31 · primary (foreign institution)
+- Scope: general
+- Dimensions: currency
+- Likely to change: the principle no; the size of the deviation, yes.
+
+### ETF-77 Harel, Kesem, MTF, Meitav (Tachlit) and Mor: what their hedged funds' reports print as the hedge line and name as the cause of the shortfall
+- Rule: Each annual report prints one hedge line for the latest year, beside the fund's return and its index's. Their words:
+  - Kesem (MSCI World ETF, its KTF, MSCI ACWI): the line is the average interest differential between the shekel and the index's currency, "מעבר לעלות המשתקפת לעיל" the hedge also carries quanto costs; "שיעור חיובי של פעילות נטרול מט"ח התווסף לתשואת הקרן. שיעור שלילי ... נגרע". Its risk section says these costs can be material ("בשיעורים שעלולים להיות מהותיים"). The ACWI and KTF reports also name swap spread and interest costs.
+  - Meitav (Tachlit S&P 500 2023, NASDAQ 100 and ACWI 2025): the line is "ממוצע מקדם הפרשי הריביות ... על פי החישוב בהוראות הדין", without quanto; "מקום בו הפרש הריביות שלילי הוא יתווסף כהכנסה ולא כעלות". Its risk section calls this a built-in passive exposure ("חשיפה פאסיבית מובנית לקוואנטו ... ולהפרשי ריביות").
+  - Mor (NASDAQ 100, 2025): "ממוצע הפרשי הריביות ... בלבד", without quanto.
+  - Harel (S&P 500, ACWI, 2025) and MTF: the line is the average interest differential "בהתבסס על פרסומי ריביות פומביים", and "בנוסף" there is a quanto gap, "הפוך (הפסד לקרן)" when the index and the dollar correlate inversely and a gain when they correlate directly.
+- Conditions / exceptions: The lines do not agree for one year and one currency pair (table). The sign is not settled either: Meitav prints −0.60% under the heading "אשר נגרעת מתשואת הקרן", while its footnote says a negative differential is added as income; Kesem prints the same −0.60% and says a negative rate is deducted. In 2025 the policy-rate gap was +0.26 (ETF-78), so these lines are not that gap. Inferred: Harel's line seems to hold more than interest, since with its stated expenses it nearly closes the gap (17.43 − 1.85 − 0.32 = 15.26 against 15.32 on S&P 500), though its footnote says otherwise. The rest after the line is fees plus whatever else the fund names; no report prints the quanto figure. Open question 31.
+- Figures (percent, the funds' own, for the fund's report year; "rest" = fund minus index minus the line, computed, fees still in it):
+
+  | Fund | Year | Fund | Index | Hedge line | Rest |
+  |---|---|---|---|---|---|
+  | Harel S&P 500 (5127527) | 2025 | 15.32 | 17.43 | −1.85 | −0.26 (states expenses 0.32) |
+  | Harel MSCI ACWI | 2025 | 19.05 | 21.52 | −1.78 | −0.69 (states expenses 0.53) |
+  | Kesem MSCI ACWI (1147362) | 2025 | 19.06 | 21.52 | −0.60 | −1.86 |
+  | Kesem MSCI World ETF | 2025 | 17.00 | 20.32 | −0.60 | −2.72 |
+  | Kesem KTF MSCI World (5139696) | 2025 | 18.20 | 20.32 | −0.6 | −1.52 |
+  | Tachlit NASDAQ 100 (1143734) | 2025 | 17.32 | 20.77 | −0.60 | −2.85 |
+  | Tachlit MSCI ACWI (1144336) | 2025 | 18.61 | 21.52 | −0.60 | −2.31 |
+  | Mor NASDAQ 100 (1165844) | 2025 | 18.19 | 20.77 | −0.60 | −1.98 |
+  | MTF MSCI World (5140165) | 23.4 to 31.12.2025 | 24.14 | 27.19 | +0.12 | −3.17 |
+  | Tachlit S&P 500 (5123161) | 2023 | 23.65 | 25.70 | −1.65 | −0.40 |
+  | MTF S&P Technology (5125760) | 2023 | 51.55 | 55.95 | −0.77 | −3.63 |
+  | MTF S&P Utilities (1150507) | 2022 | −1.36 | 1.96 | −0.60 | −2.72 (states 0.83 expenses and, apart, a loss from the hedge) |
+- Source: annual reports, read in the library 2026-10-31: [Harel S&P 500](https://mayafiles.tase.co.il/rpdf/1725001-1726000/P1725343-00.pdf#page=8) p.8; [Harel ACWI](https://mayafiles.tase.co.il/rpdf/1726001-1727000/P1726003-00.pdf#page=10) p.10; [Kesem ACWI](https://mayafiles.tase.co.il/rpdf/1727001-1728000/P1727505-00.pdf#page=11) p.5, p.11; [Kesem World ETF](https://mayafiles.tase.co.il/rpdf/1724001-1725000/P1724834-00.pdf#page=10) p.5, p.9, p.10; [Kesem KTF World](https://mayafiles.tase.co.il/rpdf/1732001-1733000/P1732864-00.pdf#page=9) p.9; [Tachlit NASDAQ 100](https://mayafiles.tase.co.il/rpdf/1723001-1724000/P1723793-00.pdf#page=6) p.3, p.6; [Tachlit ACWI](https://mayafiles.tase.co.il/rpdf/1729001-1730000/P1729604-00.pdf#page=7) p.7; [Mor NASDAQ 100](https://mayafiles.tase.co.il/rpdf/1732001-1733000/P1732058-00.pdf#page=7) p.7; [MTF World](https://mayafiles.tase.co.il/rpdf/1728001-1729000/P1728922-00.pdf#page=9) p.9; [Tachlit S&P 500, 2023](https://mayafiles.tase.co.il/rpdf/1575001-1576000/P1575487-00.pdf#page=6) p.6; [MTF Technology, 2023](https://mayafiles.tase.co.il/rpdf/1584001-1585000/P1584110-00.pdf#page=8) p.8; [MTF Utilities, 2022](https://mayafiles.tase.co.il/rpdf/1507001-1508000/P1507480-00.pdf#page=8) p.8 · institution · checked 2026-10-31
+- Scope: institution: Harel, Kesem, MTF, Meitav, Mor
+- Dimensions: currency, (proposed) tracking-difference
+- Likely to change: yes, a new line each year.
+
+### ETF-78 Named hedged funds' record, 2019 to 2025: every full year read fell short of its index, fees included, and the shortfall did not move point for point with the interest gap
+- Rule: In the 38 full fund-years read, over 11 hedged funds of Harel, Kesem, MTF, Meitav and Mor, the fund's return was below its index's in every one, by 0.61 to 4.77 points including fees. No report read shows a year above the index. Before 2022 there are 7 of these fund-years, on 3 funds (table).
+- Conditions / exceptions: These are the funds found, not every hedged fund, and the indices differ, so the "before 2022" rows are three funds' terms and no market figure. Nothing before 2019 was read (open question 32). The gap column is computed, a plain comparison: the yearly average of the Bank of Israel rate less the effective federal funds rate, a policy-rate gap and not the forward-implied one; the funds' hedge lines (ETF-77) differ from it. Inferred from the table: the two move apart. Harel S&P 500's shortfall moved 0.19 points from 2024 to 2025 while the gap moved 0.91; MTF Utilities' was −3.32 at gaps of −1.91 (2019) and −0.42 (2022); and years with a gap near zero or above it (2020, 2025) still fell short by 2 points or more. Inferred, not stated: the largest moves in the quanto part (ETF-75) would explain this; no report prints that part. The small shortfalls of 2021 are three funds in one year with a gap near zero, and nothing was read that says why.
+- Figures (percentage points, fund minus index, incl. fees; 2022 to 2025 add the funds in `data/funds/` and two more):
+
+  | Year | Rate gap, shekel less dollar (computed) | Fund-years | Shortfall | Named |
+  |---|---|---|---|---|
+  | 2019 | −1.91 | 1 | −3.32 | MTF Utilities |
+  | 2020 | −0.22 | 3 | −2.42 to −4.77 | Tachlit S&P 500 −2.42; MTF Utilities −3.20; MTF Technology −4.77 |
+  | 2021 | +0.02 | 3 | −0.61 to −1.71 | Tachlit S&P 500 −0.61; MTF Technology −1.32; MTF Utilities −1.71 |
+  | 2022 | −0.42 | 9 | −2.72 to −4.40 | |
+  | 2023 | −0.52 | 8 | −2.05 to −4.63 | |
+  | 2024 | −0.65 | 6 | −2.30 to −4.03 | |
+  | 2025 | +0.26 | 8 | −2.11 to −3.45 | |
+
+  The gap was also above zero in 2011 to 2014 (+2.79, +2.20, +1.27, +0.51), below it in 2015 to 2019 (−0.01 to −1.91) and +0.06 in 2026 to 29.10; no fund report for 2011 to 2018 was read.
+- Source: the reports in ETF-77, plus [Harel ACWI](https://mayafiles.tase.co.il/rpdf/1726001-1727000/P1726003-00.pdf#page=10) and `tracking_record` in `data/funds/` for 2022 to 2025 · institution · checked 2026-10-31. Rate gap: [Bank of Israel rate, series MNT_RIB_BOI_D](https://edge.boi.org.il/FusionEdgeServer/sdmx/v2/data/dataflow/BOI.STATISTICS/BR/1.0/?format=csv&startperiod=2011-01-01) and [New York Fed, effective federal funds rate](https://markets.newyorkfed.org/api/rates/unsecured/effr/search.csv?startDate=2011-01-01&endDate=2026-10-30) · primary · checked 2026-10-31
+- Scope: institution: Harel, Kesem, MTF, Meitav, Mor
+- Dimensions: currency, (proposed) tracking-difference
+- Likely to change: yes, a past record that grows each year; never a forecast.
+
 ## Comparing variants of the same index (feeds the dimension checklist)
 
 What a saver must check to compare, for example, an S&P 500 Israeli ETF, an S&P 500 open tracking fund, an iShares S&P 500 registered on TASE, and the same fund bought abroad. Each line names the rule above.
@@ -780,6 +851,9 @@ What a saver must check to compare, for example, an S&P 500 Israeli ETF, an S&P 
 | מסחר רציף / שלב הנעילה / פתיחה | Continuous trading / closing phase / opening | TASE trading phases | ISA report | ISA 2025 p.9 |
 | פרופיל חשיפה | Exposure profile | Digit (equities) and letter (FX) code, e.g. 4D | Fund names, reports | IBI, Yalin reports |
 | מנוטרלת מט"ח | Currency-hedged | FX exposure neutralised (in fund names) | Fund names | IBI filing 5143359 |
+| קוואנטו, פער קוואנטו (Quanto Maintenance Fee) | Quanto | The hedge's gain or loss from how the index and the currency move together | Reports, ISA directive | ETF-75, ETF-77 |
+| הפרשי ריביות, נקודות הפורוורד | Interest differential, forward points | The rate gap between the two currencies, expressed in a forward's points | Reports, ISA directive | ETF-75 |
+| שיעור פעילות נטרול החשיפה למט"ח, עלות פעילות הגידור | Hedge line | The figure a hedged fund's report prints beside its return and its index's; the wording differs by manager | Reports | ETF-77 |
 | מגודרות מט"ח | Currency-hedged (ISA wording) | Fully or partly hedged funds on foreign securities | ISA report | ISA 2025 p.20 |
 | חשיפת מט"ח | Foreign-currency exposure | In classification and brochures | Reports, BlackRock brochure | IBI report p.1; BlackRock brochure |
 | קרן צבירה | Accumulating fund | Manager may not pay distributions unless it decides otherwise | Report | IBI report p.10 |
@@ -854,6 +928,9 @@ What a saver must check to compare, for example, an S&P 500 Israeli ETF, an S&P 
 27. **TA-90 launch base.** The guidelines give 299.89 for ת"א-75 on 3.1.1999; the index page shows "מדד בסיס בעת השקה 100" (ETF-45).
 28. **Does a swap counterparty pass any withholding saving to the fund?** The net index deducts 30% on U.S. dividends; if the counterparty hedges with shares taxed at a lower rate, the swap price may pay the fund more than the net index. No Israeli document read says whether this happens (ETF-53, ETF-54). The swap agreements are not public; the managers' prospectuses are the place to look.
 29. **Was the ISA's proposal of 15.10.2025 on foreign-currency liquidity in tracking funds finalised (ETF-70)?** The Authority's directive list, read in a browser on 2026-10-31, shows no text later than 9.10.2024 for the tracking-fund directive. A Reshumot notice was not checked. Where: new.isa.gov.il/nav-index/supervised-mutualfunds/Mutual-Funds-Instructions, or Reshumot.
+30. **The ISA's own, current text of the variable-fee directive (ETF-75).** Read from the Chamber of Commerce's copy, a PDF of 23.8.2018. The 2024 draft and the 2026 prospectuses still cite the directive; amendments were not checked. The Authority's list does not render to scripts. Where: the same list, in a browser.
+31. **Why the hedge lines differ for one year and one pair, and how big quanto is (ETF-77).** 2025: −0.60 (Kesem, Meitav, Mor), −1.85 and −1.78 (Harel), +0.12 (MTF, part of the year). 2023: −1.65 (Meitav), −0.77 (MTF). Meitav's heading and footnote also read in opposite directions on the sign. No report prints the quanto part. Computing `Q` from ETF-75 needs daily index values and the fund's own valuation time: FRED timed out and Stooq asked for a browser check on 2026-10-31. Where: daily index data; the managers.
+32. **Hedged funds' record before 2019, above all 2011 to 2014, when the shekel policy rate was above the dollar's (ETF-78).** Would show whether any fund ever beat its index. Reports print four years, so a report for 2014 or 2017 is needed; the earliest read prints 2019. Maya's list of a fund's reports stays by the founder's hand; web search also gave [MTF S&P 500, statements near 2017](https://mayafiles.tase.co.il/rpdf/1183001-1184000/P1183646-00.pdf), not opened. Where: Maya, for 1150507, 5123161, 5125760, 5125869.
 
 ## Left out and why
 
@@ -870,6 +947,13 @@ What a saver must check to compare, for example, an S&P 500 Israeli ETF, an S&P 
 |---|---|---|---|---|
 | פעילות קרנות נאמנות בישראל 2025 (pages 1–20 read) | ISA (hosted by Funder) | primary (third-party host) | https://cdn.funder.co.il/%D7%A4%D7%A2%D7%99%D7%9C%D7%95%D7%AA%20%D7%A7%D7%A8%D7%A0%D7%95%D7%AA%20%D7%A0%D7%90%D7%9E%D7%A0%D7%95%D7%AA%20%D7%91%D7%99%D7%A9%D7%A8%D7%90%D7%9C%202025_YJoJL5D9H.pdf | 2026-10-22 |
 | פעילות קרנות נאמנות בישראל 2024 (pages 2–20 read) | ISA | primary | https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/fundsReport24.pdf | 2026-10-22 |
+| הוראה בעניין חישוב דמי ניהול משתנים בקרן מחקה (ETF-75) | ISA (hosted by the Chamber of Commerce) | primary (mirror) | https://www.chamber.org.il/media/159262/fees.pdf | 2026-10-31 |
+| כללי השקעות משותפות בנאמנות (פרטים נוספים בתשקיף קרן מחקה...), התשע"ט-2018 (ETF-75) | ISA | primary | https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/shared_investments_rules.pdf | 2026-10-31 |
+| Draft amendment to the tracking-fund directive, 9.10.2024 (ETF-75) | ISA | primary (draft) | https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/indexfund091024.pdf | 2026-10-31 |
+| Financial Stability Report 2024 H1, p.47 (ETF-76) | Bank of Israel | primary | https://www.boi.org.il/media/atwl5mcy/fsr2024fe1.pdf | 2026-10-31 |
+| Covered interest parity lost, BIS Quarterly Review, September 2016 (ETF-76) | BIS | primary (foreign institution) | https://www.bis.org/publ/qtrpdf/r_qt1609e.htm | 2026-10-31 |
+| Bank of Israel rate, daily series (ETF-78) | Bank of Israel | primary | https://edge.boi.org.il/FusionEdgeServer/sdmx/v2/data/dataflow/BOI.STATISTICS/BR/1.0/?format=csv&startperiod=2011-01-01 | 2026-10-31 |
+| Effective federal funds rate, daily (ETF-78) | Federal Reserve Bank of New York | primary | https://markets.newyorkfed.org/api/rates/unsecured/effr/search.csv?startDate=2011-01-01&endDate=2026-10-30 | 2026-10-31 |
 | הוראה למנהלי קרנות נאמנות בדבר ניהול ההשקעות בקרן מחקה (update 3, 15.10.2024) | ISA | primary | https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/mutualfund091024.pdf | 2026-10-22 |
 | חוק השקעות משותפות בנאמנות, תשנ"ד-1994 | Securities Authority's consolidated copy (file of 31.8.2026) | primary (state body's consolidated copy, not the binding gazette wording) | https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf | 2026-10-31 |
 | תקנות השקעות משותפות בנאמנות (קרנות מחקות), התשע"ח-2018 | Minister of Finance (Wikisource mirror; original text) | primary (mirror) | https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/MOnw27H4IBa9ZTkifP5j5xzxBdxgaU9CgjQ1742zkV4= (gazette ק״ת תשע״ח, 2394, as enacted); https://he.wikisource.org/wiki/תקנות_השקעות_משותפות_בנאמנות_(קרנות_מחקות) (unofficial consolidated text, the only copy found of the current wording) | 2026-10-31 |
