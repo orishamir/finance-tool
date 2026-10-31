@@ -22,3 +22,9 @@
 {"looked_for":"Slice and Globalnet sites","result":"no site known; guesses do not answer","where":"curl of guessed hosts","date":"2026-10-31"}
 {"looked_for":"Kesem and Tachlit fund managers' own sites","result":"kesem.co.il is a hotel, tachlit.co.il a marketing firm; ksm.co.il title only, unconfirmed","where":"curl","date":"2026-10-31"}
 {"looked_for":"Israeli fund managers' fee pages","result":"fund pages of IBI, More and Meitav list no fund agreement or prospectus; documents are on Maya","where":"ibi.co.il/mutual-funds, moreinvest funds page, meitav.co.il/mutual_funds","date":"2026-10-31"}
+{"looked_for":"ריביות תכניות החיסכון של בנק מסד","result":"לא נקרא: עמוד הריביות מכיל תפריט בלבד","where":"ספרייה 4c6e5d2d9bd65e09","date":"2026-10-31"}
+{"looked_for":"ריביות פיקדונות ענבים של מזרחי טפחות","result":"לא נקרא: GetNabatDeposits ריק, עמוד הגילוי דל","where":"ספרייה dba5166ad9db9ba6, e9340e615527454f","date":"2026-10-31"}
+{"looked_for":"תנאי פיקדונות של בנק ירושלים","result":"לא נבדק: הקובץ בספרייה הוא captcha","where":"ספרייה fb822c7f76b85dad","date":"2026-10-31"}
+{"looked_for":"סכום הפקדה מינימלי בתקנון גמל להשקעה","result":"אין ניסוח של סכום מינימלי בשבעה תקנונים (חיפוש מילים)","where":"אלטשולר, הראל, מיטב, מגדל, כלל, אנליסט, יחד","date":"2026-10-31"}
+{"looked_for":"צו הרחבה או הסכם שמחייב קרן השתלמות","result":"לא נמצא בספרייה; לא חופש ברשת בעבודה זו","where":"library find","date":"2026-10-31"}
+{"looked_for":"הצעת חוק העלאת תקרת גמל להשקעה ל-300,000","result":"לא נמצא בספרייה; לא חופש ברשת בעבודה זו","where":"library find","date":"2026-10-31"}
