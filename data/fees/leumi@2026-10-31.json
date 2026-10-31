@@ -1291,5 +1291,51 @@
   "notice_rule_ids": [
     "BRK-21",
     "BRK-20"
+  ],
+  "availability": [
+    {
+      "applies_to": [
+        "mutual_fund_units",
+        "etf_units"
+      ],
+      "available": true,
+      "source": {
+        "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
+        "title": "תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים - בנק לאומי, חלק 4 - ניירות ערך (עמ' 30-34), נספח ה' - הטבות בערוצי בנק",
+        "checked": "2026-10-31",
+        "page": 34,
+        "quote": "אך לרבות קרן מחקה"
+      }
+    },
+    {
+      "applies_to": [
+        "foreign_securities"
+      ],
+      "available": true,
+      "source": {
+        "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
+        "title": "תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים - בנק לאומי, חלק 4 - ניירות ערך (עמ' 30-34), נספח ה' - הטבות בערוצי בנק",
+        "checked": "2026-10-31",
+        "page": 14,
+        "quote": "מניות וקרנות נאמנות"
+      }
+    }
+  ],
+  "price_for_he": "לקוח רגיל, בלי הטבה לקבוצה",
+  "left_out": [
+    {
+      "what": "מחירים לקבוצות אוכלוסייה",
+      "page": 2,
+      "why": "The ranking uses the ordinary customer; group prices and how long they last are not collected (issue 140)."
+    },
+    {
+      "what": "לקוחות ישיר לאומי: החזר 20% מעמלות מסוימות",
+      "page": 10,
+      "why": "The listed parts do not include securities; a foreign-currency refund is not priced."
+    },
+    {
+      "what": "קניה מרוכזת לתיק",
+      "why": "A percentage with no minimum, for one kind of order; not priced."
+    }
   ]
 }

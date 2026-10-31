@@ -848,5 +848,32 @@
     "BRK-21",
     "BRK-20"
   ],
-  "missing_reason_he": "המחירון של פפר נוקב במניות, מק״מ ואגרות חוב, ואף מסמך שלה לא אומר שאפשר לקנות שם קרן על מדד."
+  "availability": [
+    {
+      "applies_to": [
+        "mutual_fund_units",
+        "etf_units",
+        "tase_foreign_fund_units",
+        "foreign_securities"
+      ],
+      "available": "unknown",
+      "source": {
+        "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
+        "title": "תעריפון העמלות המלא, בנק לאומי: נספח 'לקוחות PEPPER' (עמ' 11) ומעליו שורות התעריפון של לאומי בערוץ הישיר (חלק 4, עמ' 30-",
+        "checked": "2026-10-31",
+        "page": 11,
+        "quote": "מניות ,מק \"מ ואגרות חוב"
+      },
+      "reason_he": "המחירון של פפר נוקב במניות, מק״מ ואגרות חוב, ואף מסמך שלה לא אומר שאפשר לקנות שם קרן על מדד.",
+      "note": "The founder, a PEPPER customer, says an S&P 500 fund cannot be bought there (2026-10-31). The annex also prints foreign shares, bonds and mutual funds; no document says an index fund abroad can be bought through PEPPER."
+    }
+  ],
+  "price_for_he": "לקוחות פפר",
+  "left_out": [
+    {
+      "what": "כל קרן על מדד",
+      "page": 11,
+      "why": "No PEPPER document names one."
+    }
+  ]
 }

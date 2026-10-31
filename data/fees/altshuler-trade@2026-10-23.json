@@ -468,5 +468,45 @@
   },
   "notice_rule_ids": [
     "BRK-15"
+  ],
+  "availability": [
+    {
+      "applies_to": [
+        "mutual_fund_units",
+        "etf_units"
+      ],
+      "available": "unknown",
+      "source": {
+        "url": "https://www.as-invest.co.il/media/oqdfpafo/תעריפון-מלא-אלטשולר-שחם-טרייד.pdf",
+        "title": "תעריפון אלטשולר שחם טרייד בע\"מ (3 עמ'; המסמך אינו מודפס עם תאריך; מטא-נתוני ה-PDF: נוצר 9.12.2024, שונה 22.5.2025; זה הק",
+        "checked": "2026-10-31",
+        "page": 2,
+        "quote": "נאמנות וסל הנסחרות בבורסה"
+      },
+      "reason_he": "התעריפון מדפיס דמי ניהול של 0.15%, מינימום 75 שקלים לחודש, ולא אומר אם 0.15% הם לחודש או לשנה.",
+      "note": "Printed \"אחת לחודש, 0.15% מינימום ₪ 75 לחודש\", p.2. As a monthly rate this is 1.8% a year; the document does not say."
+    },
+    {
+      "applies_to": [
+        "foreign_securities"
+      ],
+      "available": "unknown",
+      "source": {
+        "url": "https://www.as-invest.co.il/media/oqdfpafo/תעריפון-מלא-אלטשולר-שחם-טרייד.pdf",
+        "title": "תעריפון אלטשולר שחם טרייד בע\"מ (3 עמ'; המסמך אינו מודפס עם תאריך; מטא-נתוני ה-PDF: נוצר 9.12.2024, שונה 22.5.2025; זה הק",
+        "checked": "2026-10-31",
+        "page": 2,
+        "quote": "מסחר במניות ו ETF'S"
+      },
+      "reason_he": "התעריפון מדפיס דמי ניהול של 0.15%, מינימום 75 שקלים לחודש, ולא אומר אם 0.15% הם לחודש או לשנה.",
+      "note": "Printed \"אחת לחודש, 0.15% מינימום ₪ 75 לחודש\", p.2. As a monthly rate this is 1.8% a year; the document does not say."
+    }
+  ],
+  "price_for_he": "לקוח רגיל, בלי הטבה לקבוצה",
+  "left_out": [
+    {
+      "what": "תקנון מבצע הצטרפות: פטור מדמי ניהול חשבון לחשבון פעיל",
+      "why": "An offer with its own conditions, in a separate document; not priced."
+    }
   ]
 }

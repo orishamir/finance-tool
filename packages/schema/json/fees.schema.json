@@ -2551,7 +2551,15 @@
             }
           },
           "available": {
-            "type": "boolean"
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "string",
+                "const": "unknown"
+              }
+            ]
           },
           "source": {
             "type": "object",
@@ -2588,12 +2596,46 @@
           },
           "note": {
             "type": "string"
+          },
+          "reason_he": {
+            "type": "string",
+            "minLength": 1
           }
         },
         "required": [
           "applies_to",
           "available",
           "source"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "price_for_he": {
+      "type": "string",
+      "minLength": 1
+    },
+    "left_out": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "what": {
+            "type": "string",
+            "minLength": 1
+          },
+          "page": {
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "maximum": 9007199254740991
+          },
+          "why": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "what",
+          "why"
         ],
         "additionalProperties": false
       }

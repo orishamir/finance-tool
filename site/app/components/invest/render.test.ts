@@ -100,7 +100,10 @@ describe("every house keeps a row in the account list (founder, 2026-10-31)", ()
   it("lists Meitav Trade and both Interactives, told apart as no data and not possible there", () => {
     for (const p of view.providers) expect(out).toContain(p.short.replace(/"/g, "&quot;"));
     expect(out).toContain("אין נתון");
-    expect(out).toContain("לא אפשרי שם");
+    // what a house's documents leave open is no data; only what they say is closed reads as not possible
+    const etf = view.options.find((o) => o.id === "il-etf")!.funds[0]!;
+    const closed = html(createElement(AccountColumn, { view, bundle, years: 20, pick: { ...pick, fund: etf.rec.id }, onPick: () => undefined }));
+    expect(closed).toContain("לא אפשרי שם");
   });
   it("links a fund to its Maya page at the address that exists", () => {
     const fund = html(createElement(FundColumn, { view, bundle, plan, today: t, pick, onPick: () => undefined, filter: [], onFilter: () => undefined } as never));
@@ -117,6 +120,15 @@ describe("no price on what no document says can be done (2026-10-31)", () => {
       expect("valueN" in x).toBe(false);
       expect("availability" in x && x.availability).toBeFalsy();
     }
+  });
+  it("a house whose document names funds abroad is priced there, on the row that names them", () => {
+    for (const house of ["hapoalim", "yahav"]) for (const x of at("abroad", house)) expect("valueN" in x).toBe(true);
+  });
+  it("One Zero prices tracking funds, not ETFs, and no fund traded outside the US", () => {
+    for (const x of at("il-tracking", "one-zero")) expect("valueN" in x).toBe(true);
+    for (const x of at("il-etf", "one-zero")) expect("valueN" in x).toBe(false);
+    const uk = view.options.find((o) => o.id === "abroad")!.funds.find((f) => /UCITS/.test(f.rec.names.en[0] ?? ""));
+    if (uk) expect("valueN" in uk.byHouse["one-zero"]!).toBe(false);
   });
   it("Fair still prices tracking funds and no ETF", () => {
     for (const x of at("il-tracking", "fair")) expect("valueN" in x).toBe(true);

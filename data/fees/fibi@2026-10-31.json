@@ -1662,5 +1662,45 @@
   "notice_rule_ids": [
     "BRK-21",
     "BRK-20"
+  ],
+  "availability": [
+    {
+      "applies_to": [
+        "mutual_fund_units",
+        "etf_units"
+      ],
+      "available": true,
+      "source": {
+        "url": "https://www.fibi.co.il/media/jqob143q/חלק-4-ניירות-ערך-31.pdf",
+        "title": "תעריפון ליחידים ועסקים קטנים - הבנק הבינלאומי הראשון; עמוד התעריפון (https://www.fibi.co.il/private/general/commissionsr",
+        "checked": "2026-10-31",
+        "page": 1,
+        "quote": "אך לרבות \"קרן מחקה\""
+      }
+    },
+    {
+      "applies_to": [
+        "foreign_securities"
+      ],
+      "available": true,
+      "source": {
+        "url": "https://www.fibi.co.il/media/rgketaam/נספח-ה-הטבות-בערוצי-בנקאות-בתקשורת-31.pdf",
+        "title": "תעריפון ליחידים ועסקים קטנים - הבנק הבינלאומי הראשון; עמוד התעריפון (https://www.fibi.co.il/private/general/commissionsr",
+        "checked": "2026-10-31",
+        "page": 3,
+        "quote": "קניית/מכירת של ניירות ערך בחו\"ל מניות אג\"ח וקרנות"
+      }
+    }
+  ],
+  "price_for_he": "לקוח רגיל, בלי הטבה לקבוצה",
+  "left_out": [
+    {
+      "what": "מחירים לקבוצות אוכלוסייה",
+      "why": "The ranking uses the ordinary customer; group prices and how long they last are not collected (issue 140)."
+    },
+    {
+      "what": "מועדון HighTech 10",
+      "why": "A club's prices, with their own conditions; recorded in a rule, not priced."
+    }
   ]
 }

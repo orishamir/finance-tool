@@ -349,10 +349,160 @@
       }
     },
     {
+      "id": "interactive-brokers-buy-sell-tase-fixed",
+      "base": "trade",
+      "applies_to": [
+        "etf_units"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.1,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.interactivebrokers.com/en/pricing/commissions-stocks.php",
+          "title": "Commissions Stocks, ETFs, Warrants and Structured Products (interactivebrokers.com, no date shown), Israel (Tel Aviv Exchange), Fixed",
+          "publisher": "Interactive Brokers LLC",
+          "strength": "institution",
+          "quote": "0.05% of Trade Value 0.1% of Trade Value"
+        },
+        "checked": "2026-10-25",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-42",
+          "BRK-43"
+        ],
+        "state": "sourced",
+        "notes": "'0.1% of Trade Value', 'Minimum per order ILS 15.00', 'Maximum per order None'; example '200 Shares @ ILS 75 Share Price = ILS 15.00'. The section prices TASE stocks and ETFs; applies_to names ETF units only because the class for shares also covers bonds, which this line does not price. Whether an Israeli-resident retail client may trade TASE at IBKR directly is not stated on any page read (BRK-43). The page: 'The published rates are for direct clients of IBKR. Clients introduced through another broker or managed by an advisor may pay additional commissions set by their introducing broker or advisor.' The same tables are on interactivebrokers.ie (IB Ireland) as read on 2026-10-25."
+      },
+      "min": {
+        "value": 15.0,
+        "unit": "nis",
+        "source": {
+          "url": "https://www.interactivebrokers.com/en/pricing/commissions-stocks.php",
+          "title": "Commissions Stocks, ETFs, Warrants and Structured Products (interactivebrokers.com, no date shown), Israel, Fixed, Minimum per order",
+          "publisher": "Interactive Brokers LLC",
+          "strength": "institution",
+          "quote": "Minimum per order ILS 5.25 ILS 15.00"
+        },
+        "checked": "2026-10-25",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-42",
+          "BRK-43"
+        ],
+        "state": "sourced",
+        "notes": "'ILS 15.00'."
+      },
+      "max": null,
+      "period": null,
+      "channel": null,
+      "band": "IBKR Pro - Fixed: בורסת תל אביב",
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "IBKR Pro - Fixed",
+          "Israel",
+          "Tel Aviv Exchange"
+        ]
+      }
+    },
+    {
+      "id": "interactive-brokers-buy-sell-tase-tiered",
+      "base": "trade",
+      "applies_to": [
+        "etf_units"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.05,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.interactivebrokers.com/en/pricing/commissions-stocks.php",
+          "title": "Commissions Stocks, ETFs, Warrants and Structured Products (interactivebrokers.com, no date shown), Israel (Tel Aviv Exchange), Tiered",
+          "publisher": "Interactive Brokers LLC",
+          "strength": "institution",
+          "quote": "0.05% of Trade Value 0.1% of Trade Value"
+        },
+        "checked": "2026-10-25",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-42",
+          "BRK-43"
+        ],
+        "state": "sourced",
+        "notes": "'0.05% of Trade Value' up to EUR 50,000,000 a month (then 0.03%, 0.02%, 0.015%), 'Minimum per order ILS 5.25', 'Maximum per order ILS 120.00', plus clearing fees (amounts in a collapsed section, not collected). The page: 'The published rates are for direct clients of IBKR. Clients introduced through another broker or managed by an advisor may pay additional commissions set by their introducing broker or advisor.' The same tables are on interactivebrokers.ie (IB Ireland) as read on 2026-10-25."
+      },
+      "min": {
+        "value": 5.25,
+        "unit": "nis",
+        "source": {
+          "url": "https://www.interactivebrokers.com/en/pricing/commissions-stocks.php",
+          "title": "Commissions Stocks, ETFs, Warrants and Structured Products (interactivebrokers.com, no date shown), Israel, Tiered, Minimum per order",
+          "publisher": "Interactive Brokers LLC",
+          "strength": "institution",
+          "quote": "Minimum per order ILS 5.25 ILS 15.00"
+        },
+        "checked": "2026-10-25",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-42",
+          "BRK-43"
+        ],
+        "state": "sourced",
+        "notes": "'ILS 5.25'."
+      },
+      "max": {
+        "value": 120.0,
+        "unit": "nis",
+        "source": {
+          "url": "https://www.interactivebrokers.com/en/pricing/commissions-stocks.php",
+          "title": "Commissions Stocks, ETFs, Warrants and Structured Products (interactivebrokers.com, no date shown), Israel, Tiered, Maximum per order",
+          "publisher": "Interactive Brokers LLC",
+          "strength": "institution",
+          "quote": "Maximum per order ILS 120.00"
+        },
+        "checked": "2026-10-25",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-42",
+          "BRK-43"
+        ],
+        "state": "sourced",
+        "notes": "'ILS 120.00'."
+      },
+      "period": null,
+      "channel": null,
+      "band": "IBKR Pro - Tiered: בורסת תל אביב",
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "IBKR Pro - Tiered",
+          "Israel",
+          "Tel Aviv Exchange"
+        ]
+      }
+    },
+    {
       "id": "interactive-brokers-custody",
       "base": "custody",
       "applies_to": [
-        "foreign_securities"
+        "foreign_securities",
+        "etf_units"
       ],
       "level": "list",
       "rate": {
@@ -526,22 +676,49 @@
       "source": {
         "url": "https://www.interactivebrokers.com/en/pricing/commissions-stocks.php",
         "title": "Interactive Brokers: Commissions Stocks, ETFs, Warrants and Structured Products (BRK-42)",
-        "checked": "2026-10-25"
+        "checked": "2026-10-25",
+        "quote": "Stocks, ETFs"
       },
-      "note": "The price list prices US listings and USD-denominated shares on the London Stock Exchange (BRK-42). US-listed ETFs: IBKR's PRIIPs block covers retail clients resident in the EEA or the UK, not an Israeli resident (BRK-44); the entity for Israelis is not named (BRK-43)."
+      "note": "The price list prices US listings and USD-denominated shares on the London Stock Exchange (BRK-42). US-listed ETFs: IBKR's PRIIPs block covers retail clients resident in the EEA or the UK, not an Israeli resident (BRK-44); the entity for Israelis is not named (BRK-43). The regulator's list of section 49A permit holders names Interactive Brokers LLC and Interactive Brokers (U.K.) Limited among foreign brokers permitted to offer to the public (BRK-43)."
     },
     {
       "applies_to": [
         "mutual_fund_units"
       ],
-      "available": false,
+      "available": "unknown",
       "source": {
         "url": "https://www.interactivebrokers.com/en/pricing/commissions-mutual-funds.php",
         "title": "Interactive Brokers: Mutual Funds commissions",
         "checked": "2026-10-31"
       },
-      "note": "The mutual-fund price page prices US and European funds and names no Israeli fund and no shekel price; the stock tariff's Tel Aviv line names shares and ETFs. Read as an Israeli tracking fund not being sold there; no document says so in words."
+      "note": "The mutual-fund price page prices US and European funds and names no Israeli fund and no shekel price; the stock tariff's Tel Aviv line names shares and ETFs. Read as an Israeli tracking fund not being sold there; no document says so in words.",
+      "reason_he": "בדף קרנות הנאמנות של החברה אין קרן ישראלית ואין מחיר בשקלים, אבל לא כתוב שאי אפשר לקנות קרן כזאת."
+    },
+    {
+      "applies_to": [
+        "etf_units",
+        "tase_foreign_fund_units"
+      ],
+      "available": "unknown",
+      "source": {
+        "url": "https://www.interactivebrokers.com/en/pricing/commissions-stocks.php",
+        "title": "Commissions: Stocks, ETFs, Warrants and Structured Products; Spot Currencies; Other Fees; Required Minimums (interactive",
+        "checked": "2026-10-31",
+        "quote": "0.1% of Trade Value"
+      },
+      "reason_he": "בדף המחירים יש שורה לבורסה בתל אביב, אבל באף עמוד לא כתוב אם תושב ישראל רשאי לסחור בה ישירות.",
+      "note": "BRK-43: no page read says which entity serves an Israeli resident or whether that client may trade Tel Aviv; the lines stay as printed and do not rank."
     }
   ],
-  "missing_reason_he": "בדף המחירים יש שורה לבורסה בתל אביב, אבל באף עמוד לא כתוב אם תושב ישראל רשאי לסחור בה ישירות."
+  "price_for_he": "לקוח ישיר של הברוקר",
+  "left_out": [
+    {
+      "what": "מסלול IBKR Lite",
+      "why": "For US residents only (BRK-42)."
+    },
+    {
+      "what": "לקוח שהגיע דרך ברוקר מציג",
+      "why": "Pays the introducing broker's own tariff; Interactive Israel has its own row."
+    }
+  ]
 }

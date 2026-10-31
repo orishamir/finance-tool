@@ -47,9 +47,11 @@ export const feeLine = z.strictObject({
 /** S3 (2026-10-25): sourced availability of an instrument class at the provider. */
 export const availabilityEntry = z.strictObject({
   applies_to: z.array(instrumentClass).min(1),
-  available: z.boolean(),
+  /** "unknown" (2026-10-31): the documents leave it open, so the class is not priced anywhere and the row says why in `reason_he`. */
+  available: z.union([z.boolean(), z.literal("unknown")]),
   source: z.strictObject({ url: z.string().min(1), title: z.string().min(1), checked: isoDate, ...place }),
   note: z.string().optional(),
+  reason_he: z.string().min(1).optional(),
 });
 
 export const feesSnapshot = z.strictObject({
@@ -86,6 +88,10 @@ export const feesSnapshot = z.strictObject({
   minimums: z.strictObject({ account_opening: feeValue.nullable() }),
   notice_rule_ids: ruleIds,
   availability: z.array(availabilityEntry).optional(),
+  /** Who pays the prices on this record (2026-10-31): required of a bank's or broker's record by the data check. */
+  price_for_he: z.string().min(1).optional(),
+  /** What the documents hold that this record does not use, and why (2026-10-31); empty means nothing was found. */
+  left_out: z.array(z.strictObject({ what: z.string().min(1), page: z.number().int().positive().optional(), why: z.string().min(1) })).optional(),
 })
   .superRefine((snap, ctx) => {
     const { regulator, regulator_foreign } = snap.provider;

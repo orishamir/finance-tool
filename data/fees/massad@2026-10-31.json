@@ -1662,5 +1662,41 @@
   "notice_rule_ids": [
     "BRK-21",
     "BRK-20"
+  ],
+  "availability": [
+    {
+      "applies_to": [
+        "mutual_fund_units",
+        "etf_units"
+      ],
+      "available": true,
+      "source": {
+        "url": "https://www.bankmassad.co.il/media/qb0h1di4/חלק-4-ניירות-ערך-46.pdf",
+        "title": "תעריפון ליחידים ולעסקים קטנים - בנק מסד; עמוד התעריפון (https://www.bankmassad.co.il/private/general/commissionsrate/ind",
+        "checked": "2026-10-31",
+        "page": 1,
+        "quote": "אך לרבות \"קרן מחקה\""
+      }
+    },
+    {
+      "applies_to": [
+        "foreign_securities"
+      ],
+      "available": true,
+      "source": {
+        "url": "https://www.bankmassad.co.il/media/qb0h1di4/חלק-4-ניירות-ערך-46.pdf",
+        "title": "תעריפון ליחידים ולעסקים קטנים - בנק מסד; עמוד התעריפון (https://www.bankmassad.co.il/private/general/commissionsrate/ind",
+        "checked": "2026-10-31",
+        "page": 2,
+        "quote": "קרנות 008624 - ניירות ערך בחוץ לארץ"
+      }
+    }
+  ],
+  "price_for_he": "לקוח רגיל, בלי הטבה לקבוצה",
+  "left_out": [
+    {
+      "what": "מחירים לקבוצות אוכלוסייה",
+      "why": "The ranking uses the ordinary customer; group prices and how long they last are not collected (issue 140)."
+    }
   ]
 }

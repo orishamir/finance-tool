@@ -344,7 +344,7 @@
       }
     },
     {
-      "id": "yahav-buy-sell-foreign-branch",
+      "id": "yahav-buy-sell-foreign",
       "base": "trade",
       "applies_to": [
         "foreign_securities"
@@ -369,7 +369,7 @@
           "BRK-19"
         ],
         "state": "sourced",
-        "notes": "Printed as 0.95% (cell 0.0095); 'קניה, מכירה, פדיון של ניירות ערך בחוץ לארץ - מניות, אגרות חוב וקרנות נאמנות (לא כולל הוצאות צד ג')'. Note (02): third-party costs per the third-party chapter are added. Note (06): fee may not exceed 25% of the trade value. Note (07): fees quoted in foreign currency are computed at the known representative rate on the trade date. Note (08) gives the internet price, recorded as the direct line."
+        "notes": "Printed as 0.95% (cell 0.0095); 'קניה, מכירה, פדיון של ניירות ערך בחוץ לארץ - מניות, אגרות חוב וקרנות נאמנות (לא כולל הוצאות צד ג')'. Note (02): third-party costs per the third-party chapter are added. Note (06): fee may not exceed 25% of the trade value. Note (07): fees quoted in foreign currency are computed at the known representative rate on the trade date. Note (08) gives the internet price, recorded as the direct line. The printed row limits no channel; the lower internet prices name shares only (see left_out), so a fund abroad pays this row on any channel."
       },
       "min": {
         "value": 25,
@@ -412,91 +412,12 @@
         "notes": "'$1,500.00'."
       },
       "period": null,
-      "channel": "branch",
+      "channel": null,
       "band": null,
       "statement_code": null,
       "names": {
         "tariff": [
           "קניה, מכירה, פדיון של ניירות ערך בחוץ לארץ - מניות, אגרות חוב וקרנות נאמנות (לא כולל הוצאות צד ג')"
-        ]
-      }
-    },
-    {
-      "id": "yahav-buy-sell-foreign-direct",
-      "base": "trade",
-      "applies_to": [
-        "foreign_securities"
-      ],
-      "level": "list",
-      "rate": {
-        "value": 0.3,
-        "unit": "pct_of_trade",
-        "source": {
-          "url": "https://www.bank-yahav.co.il/media/020jnu0x/22026_taarifon_male.xlsx",
-          "title": "בנק יהב - תעריפון יחיד / עסק קטן, מספר סידורי 2.2026 (נכון ליום: 01/10/2026), פרק: ניירות ערך (ניירות ערך בחוץ לארץ), הערה (08)",
-          "publisher": "Bank Yahav for State Employees Ltd.",
-          "strength": "institution"
-        },
-        "checked": "2026-10-24",
-        "effective_from": "2026-10-01",
-        "effective_to": null,
-        "tax_year": null,
-        "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16",
-          "BRK-19"
-        ],
-        "state": "sourced",
-        "notes": "Note (08): 'עבור פעולה המבוצעת ישירות באמצעות האינטרנט ייגבה שיעור מופחת של 0.3 אחוז לפעולה במניות, מינימום 24 $, מקסימום 1,000 $'. The note names shares only (לפעולה במניות); whether foreign bonds and fund units get the internet price is not printed."
-      },
-      "min": {
-        "value": 24,
-        "unit": "usd",
-        "source": {
-          "url": "https://www.bank-yahav.co.il/media/020jnu0x/22026_taarifon_male.xlsx",
-          "title": "בנק יהב - תעריפון יחיד / עסק קטן, מספר סידורי 2.2026 (נכון ליום: 01/10/2026), פרק: ניירות ערך (ניירות ערך בחוץ לארץ), הערה (08), מינימום",
-          "publisher": "Bank Yahav for State Employees Ltd.",
-          "strength": "institution"
-        },
-        "checked": "2026-10-24",
-        "effective_from": "2026-10-01",
-        "effective_to": null,
-        "tax_year": null,
-        "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
-        "state": "sourced",
-        "notes": "'מינימום 24 $'."
-      },
-      "max": {
-        "value": 1000,
-        "unit": "usd",
-        "source": {
-          "url": "https://www.bank-yahav.co.il/media/020jnu0x/22026_taarifon_male.xlsx",
-          "title": "בנק יהב - תעריפון יחיד / עסק קטן, מספר סידורי 2.2026 (נכון ליום: 01/10/2026), פרק: ניירות ערך (ניירות ערך בחוץ לארץ), הערה (08), מקסימום",
-          "publisher": "Bank Yahav for State Employees Ltd.",
-          "strength": "institution"
-        },
-        "checked": "2026-10-24",
-        "effective_from": "2026-10-01",
-        "effective_to": null,
-        "tax_year": null,
-        "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
-        "state": "sourced",
-        "notes": "'מקסימום 1,000 $'."
-      },
-      "period": null,
-      "channel": "direct",
-      "band": null,
-      "statement_code": null,
-      "names": {
-        "tariff": [
-          "קניה, מכירה, פדיון של ניירות ערך בחוץ לארץ - מניות, אגרות חוב וקרנות נאמנות (לא כולל הוצאות צד ג')",
-          "פעולה המבוצעת ישירות באמצעות האינטרנט"
         ]
       }
     },
@@ -993,5 +914,43 @@
   "notice_rule_ids": [
     "BRK-21",
     "BRK-20"
+  ],
+  "availability": [
+    {
+      "applies_to": [
+        "mutual_fund_units",
+        "etf_units"
+      ],
+      "available": true,
+      "source": {
+        "url": "https://www.bank-yahav.co.il/media/020jnu0x/22026_taarifon_male.xlsx",
+        "title": "בנק יהב - תעריפון יחיד / עסק קטן, מספר סידורי 2.2026 (נכון ליום: 01/10/2026); פרק: ניירות ערך (שירותים נפוצים, ניירות ער",
+        "checked": "2026-10-31",
+        "quote": "לרבות \"קרן מחקה\" ו \"קרן סל\""
+      }
+    },
+    {
+      "applies_to": [
+        "foreign_securities"
+      ],
+      "available": true,
+      "source": {
+        "url": "https://www.bank-yahav.co.il/media/020jnu0x/22026_taarifon_male.xlsx",
+        "title": "בנק יהב - תעריפון יחיד / עסק קטן, מספר סידורי 2.2026 (נכון ליום: 01/10/2026); פרק: ניירות ערך (שירותים נפוצים, ניירות ער",
+        "checked": "2026-10-31",
+        "quote": "מניות, אגרות חוב וקרנות נאמנות"
+      }
+    }
+  ],
+  "price_for_he": "לקוח רגיל, בלי הטבה לקבוצה",
+  "left_out": [
+    {
+      "what": "מחירים לקבוצות אוכלוסייה",
+      "why": "The ranking uses the ordinary customer; group prices and how long they last are not collected (issue 140)."
+    },
+    {
+      "what": "מחיר מופחת באינטרנט למניות בחוץ לארץ: 0.3%, מינימום 24 דולר, מקסימום 1,000 דולר",
+      "why": "The printed row names shares, not funds, so a fund abroad is priced on the row that names funds (founder, 2026-10-31: no price from analogy)."
+    }
   ]
 }

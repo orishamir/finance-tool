@@ -447,5 +447,54 @@
   },
   "notice_rule_ids": [
     "BRK-15"
+  ],
+  "availability": [
+    {
+      "applies_to": [
+        "mutual_fund_units"
+      ],
+      "available": true,
+      "source": {
+        "url": "https://campaign.ibi.co.il/PDF/TRADE/TAARIFON_IBI.pdf",
+        "title": "תעריפון עמלות - שרותי בורסה והשקעות בישראל אי.בי.אי. בע\"מ (8 עמ', 'נכון לתאריך: 1.7.2026'); חלק 4 - ניירות ערך (עמ' 2-5)",
+        "checked": "2026-10-31",
+        "page": 3,
+        "quote": "קניה ,מכירה ופדיון של קרנות נאמנות"
+      }
+    },
+    {
+      "applies_to": [
+        "etf_units"
+      ],
+      "available": true,
+      "source": {
+        "url": "https://campaign.ibi.co.il/PDF/TRADE/TAARIFON_IBI.pdf",
+        "title": "תעריפון עמלות - שרותי בורסה והשקעות בישראל אי.בי.אי. בע\"מ (8 עמ', 'נכון לתאריך: 1.7.2026'); חלק 4 - ניירות ערך (עמ' 2-5)",
+        "checked": "2026-10-31",
+        "page": 3,
+        "quote": "מניות ,אגרות חוב וקרנות סל"
+      }
+    },
+    {
+      "applies_to": [
+        "foreign_securities"
+      ],
+      "available": true,
+      "source": {
+        "url": "https://campaign.ibi.co.il/PDF/TRADE/TAARIFON_IBI.pdf",
+        "title": "תעריפון עמלות - שרותי בורסה והשקעות בישראל אי.בי.אי. בע\"מ (8 עמ', 'נכון לתאריך: 1.7.2026'); חלק 4 - ניירות ערך (עמ' 2-5)",
+        "checked": "2026-10-31",
+        "page": 3,
+        "quote": "מניות/תעודת סל בארה\"ב"
+      }
+    }
+  ],
+  "price_for_he": "לקוח רגיל, בלי הטבה לקבוצה",
+  "left_out": [
+    {
+      "what": "מסלולים נוספים לבחירה בחוץ לארץ",
+      "page": 3,
+      "why": "One track is priced. Every printed price is a ceiling (\"עד\"); the actual one is set in the account agreement."
+    }
   ]
 }

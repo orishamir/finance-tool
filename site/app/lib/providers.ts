@@ -38,6 +38,23 @@ export interface RefLink {
   ruleId: string;
 }
 
+const PRICED_ON_PREMISE = ["mutual_fund_units", "etf_units", "tase_foreign_fund_units", "foreign_securities"];
+/**
+ * A bank's or broker's lines for ranking (founder, 2026-10-31): a kind of holding keeps its price only where the record's
+ * `availability` quotes the document saying a person can do it. Pages that show a tariff as printed read the record itself.
+ */
+export function onlyWhatCanBeDone<S extends FeesSnapshot>(s: S): S {
+  if (!["bank", "broker", "foreign_broker"].includes(s.provider.class) || s.missing) return s;
+  const can = new Set<string>((s.availability ?? []).filter((a) => a.available === true).flatMap((a) => a.applies_to));
+  const blocked = (c: string) => PRICED_ON_PREMISE.includes(c) && !can.has(c);
+  const lines = s.lines.flatMap((l) => {
+    if (!l.applies_to.some(blocked)) return [l];
+    const applies_to = l.applies_to.filter((c) => !blocked(c));
+    return applies_to.length ? [{ ...l, applies_to }] : [];
+  });
+  return { ...s, lines };
+}
+
 export interface WorkbenchBundle {
   today: string;
   /** The latest snapshot of each provider in `data/fees/`. */
