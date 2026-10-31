@@ -234,11 +234,17 @@ export const STANDING_ORDER_BAND = "הוראת קבע";
 
 const standingLines = (snapshot: FeesSnapshot) => snapshot.lines.filter((l) => l.base === "trade" && l.level === "list" && l.band === STANDING_ORDER_BAND);
 
+/**
+ * The classes a tariff line may name for a security of this class. A bond (`tase_bonds`) is also a `tase_shares_bonds` security, and a line
+ * that names the class itself is the more specific and wins. A foreign fund listed on TASE trades on the exchange-traded lines, and a line
+ * can leave it out (`excludes`), as the standing-order lines do: they name a tracking fund as the law defines it (MF-58).
+ */
+export const lineClasses = (cls: string): string[] => (cls === "tase_bonds" ? ["tase_bonds", "tase_shares_bonds"] : cls === "tase_foreign_fund_units" ? ["tase_foreign_fund_units", "etf_units"] : [cls]);
+
 /** A tariff can be read without a fund (the goal comparison's list of brokers): only a fee per share and a distribution line need one. */
 export function buildTariff(input: Omit<WorkbenchInput, "fund"> & { fund?: WorkbenchInput["fund"] }, p: ProviderInput, snapshot: FeesSnapshot): TariffBuild {
   const wrapper = input.wrapper ?? "brokerage-account";
-  // A bond (`tase_bonds`) is also a `tase_shares_bonds` security; a line that names the class itself is the more specific and wins below.
-  const classes = input.instrumentClass === "tase_bonds" ? ["tase_bonds", "tase_shares_bonds"] : [input.instrumentClass];
+  const classes = lineClasses(input.instrumentClass);
   const applicable = (l: SnapLine) =>
     l.applies_to.some((a) => a === "all" || classes.includes(a) || a === wrapper) && !(l.excludes ?? []).some((x) => classes.includes(x));
   const out: TariffBuild = { tariff: {}, linesUsed: [], lineSources: [], noLine: [], notModelled: [], averagesApplied: 0, strengths: [], flags: [] };

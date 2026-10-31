@@ -43,12 +43,15 @@ describe("the account's other houses are read for the way's fund (F-12, F-63)", 
     return { list: ways.filter((w) => isEtf(w) === (kind === "etf")), plan };
   };
   const withWay = (w: Parameters<typeof applyIndexWay>[2]) => applyIndexWay(bundle, wb, w, "chosen")!.wrappers.find((x) => x.id === BRK)!;
-  it("an ETF's way carries no standing-order price at any house, as the invest page charges it", () => {
+  it("an Israeli ETF's way carries the printed standing-order price at the three houses that print one, as the invest page charges it (MF-58)", () => {
     const { list } = way("etf");
+    expect(list.length).toBeGreaterThan(0);
     for (const w of list) {
       const entry = withWay(w);
-      for (const [id, p] of Object.entries(entry.providers ?? {})) expect(p.tariff.buyStanding, `${w.fundRecordId} at ${id}`).toBeUndefined();
+      const marked = Object.entries(entry.providers ?? {}).filter(([, p]) => p.tariff.buyStanding).map(([id]) => id).sort();
+      expect(marked, w.fundRecordId).toEqual(["fibi", "leumi", "massad"]);
       expect(entry.providers?.massad?.tariff.buy?.min).toBe(35);
+      expect(entry.providers?.massad?.tariff.buyStanding?.min).toBe(7);
     }
   });
   it("a tracking fund's way carries the printed standing-order price at the three houses that print one", () => {
