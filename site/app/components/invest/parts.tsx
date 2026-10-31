@@ -62,6 +62,8 @@ export function reasonText(r: Reason, cls: string): string {
       return c.reasons.noBroker;
     case "no-hedge-record":
       return c.reasons.noHedgeRecord;
+    case "no-hedge-entered":
+      return c.reasons.noHedgeEntered;
     default:
       return reasonSentence(r, cls, r4workbench.providers.behaviour.channelOptions.direct);
   }

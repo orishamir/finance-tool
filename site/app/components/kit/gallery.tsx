@@ -11,7 +11,7 @@ import { IdRef, Num } from "../provenance";
 import { IconDrillIn } from "../icons";
 import { label } from "../../lib/labels";
 import { fmt } from "../../lib/format";
-import { Button, Callout, Card, ChartLegend, CostStack, LabelFilter, PickList, ScenarioChart, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, CompareTable, CoverageFold, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, Disclosure, FieldState, FoldGroup, GainBars, GapNote, HeadlineFigure, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, NumberField, ParameterLine, PercentField, PlanChips, KnobStrip, ChangeChart, RangeField, RankBadge, Section, SegmentedControl, SelectField, Sentence, ShareRings, SourceLine, Stat, StatRow, StepButtons, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth } from "./index";
+import { Button, Callout, Card, ChartLegend, CostStack, LabelFilter, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, CompareTable, CoverageFold, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, Disclosure, FieldState, FoldGroup, GainBars, GapNote, HeadlineFigure, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, CheckField, FieldGroup, TextField, NumberField, ParameterLine, PercentField, PlanChips, KnobStrip, ChangeChart, RangeField, RankBadge, Section, SegmentedControl, SelectField, Sentence, ShareRings, SourceLine, Stat, StatRow, StatTile, StepButtons, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth } from "./index";
 
 const g = copy.gallery;
 
@@ -359,6 +359,21 @@ function Words({ today }: { today: string }) {
           </StatRow>
         </State>
       </Demo>
+      <Demo name="StatTile" use={g.uses.StatTile}>
+        <State label="StatRow cols=tiles: three in a row from lg, one under another below" wide>
+          <StatRow cols="tiles">
+            <StatTile label={g.sample.statLabels[0]!} note={g.sample.note}>
+              <Num value={s.comp} />
+            </StatTile>
+            <StatTile label={g.sample.statLabels[1]!} note={g.sample.note}>
+              <Num value={s.comp2} />
+            </StatTile>
+            <StatTile label={g.sample.statLabels[2]!} note={g.sample.note}>
+              <Num value={s.stale} />
+            </StatTile>
+          </StatRow>
+        </State>
+      </Demo>
       <Demo name="KeyValue, KeyValueList" use={g.uses.KeyValue}>
         <Grid>
           <State label="KeyValue">
@@ -426,6 +441,8 @@ function Fields() {
   const [share, setShare] = useState(20);
   const [pick, setPick] = useState<string | null>(null);
   const [count, setCount] = useState(1);
+  const [typed, setTyped] = useState("");
+  const [ticked, setTicked] = useState(true);
   return (
     <>
       <Demo name="NumberField" use={g.uses.NumberField}>
@@ -528,6 +545,32 @@ function Fields() {
           </State>
           <State label={g.states.error}>
             <PercentField label={g.sample.percent} value={120} range={{ min: 0, max: 50 }} isEntered onCommit={() => undefined} onReset={() => undefined} externalError="הזינו אחוז בין 0 ל־50." />
+          </State>
+        </Grid>
+      </Demo>
+      <Demo name="TextField" use={g.uses.TextField}>
+        <Grid>
+          <State label={`${g.states.empty}, ${g.states.interactive}`}>
+            <TextField label={g.sample.text.label} value={typed} onChange={setTyped} hint={g.sample.hint} />
+          </State>
+          <State label={g.states.error}>
+            <TextField label={g.sample.text.label} value="" onChange={() => undefined} error={g.sample.error} />
+          </State>
+        </Grid>
+      </Demo>
+      <Demo name="CheckField" use={g.uses.CheckField}>
+        <Grid>
+          <State label={g.states.interactive}>
+            <CheckField label={g.sample.text.check} checked={ticked} onChange={setTicked} />
+          </State>
+        </Grid>
+      </Demo>
+      <Demo name="FieldGroup" use={g.uses.FieldGroup}>
+        <Grid>
+          <State label={g.states.filled}>
+            <FieldGroup title={g.sample.text.group}>
+              <NumberField label={g.sample.field} unit="nis" value={null} isEntered={false} validate={() => null} onCommit={() => undefined} onReset={() => undefined} optional placeholder="0" />
+            </FieldGroup>
           </State>
         </Grid>
       </Demo>
@@ -775,24 +818,18 @@ function Lists({ today }: { today: string }) {
           />
         </State>
       </Demo>
-      <Demo name="ScenarioChart" use={g.uses.ScenarioChart}>
-        <State label="a line across the assumption, a band, a shaded past stretch and where they meet" wide>
-          <ScenarioChart
-            label={p.figure}
-            xMin={-3}
-            xMax={3}
-            xTicks={[-3, -2, -1, 0, 1, 2, 3]}
-            xFormat={(x) => `${x > 0 ? "+" : x < 0 ? "−" : ""}${Math.abs(x)}%`}
-            yFormat={(v) => v.toLocaleString("he-IL")}
-            shade={{ from: -3.12, to: 1.35, label: p.c }}
-            crossing={{ x: -2.38, label: "−2.38%" }}
-            lines={[{ id: "u", label: p.a, stroke: "stroke-chart-kind-unhedged", fill: "fill-chart-kind-unhedged", points: [74820, 78450, 82334, 86492, 90942, 95704, 100798].map((y, i) => ({ x: i - 3, y })) }]}
-            bands={[{ id: "h", label: p.b, fill: "fill-chart-kind-hedged", text: "fill-chart-kind-hedged", low: 74212, high: 78267 }]}
-          />
+      <Demo name="PairBars" use={g.uses.PairBars}>
+        <State label="two series each year, from zero, a figure on each bar" wide>
+          <PairBars label={p.figure} tickStep={20} format={(v) => `${v > 0 ? "+" : v < 0 ? "−" : ""}${Math.abs(v).toFixed(Number.isInteger(v) ? 0 : 1)}`} fillA="fill-chart-kind-unhedged" fillB="fill-chart-kind-hedged" items={[{ year: 2022, a: -7.8, b: -21.8 }, { year: 2023, a: 30.1, b: 23.6 }, { year: 2024, a: 24.8, b: 21.9 }, { year: 2025, a: 2.4, b: 15.3 }]} />
+        </State>
+      </Demo>
+      <Demo name="FixedTable" use={g.uses.FixedTable}>
+        <State label="a fixed width per column, a closing row, the second column hidden on a phone" wide>
+          <FixedTable rowHead={p.a} columns={[{ id: "a", head: p.b }, { id: "b", head: p.c, hideOnPhone: true }, { id: "c", head: p.figure }]} rows={[{ key: "1", head: "2022", cells: ["+13.4%", "−18.5%", "−21.8%"] }, { key: "2", head: "2025", cells: ["−12.5%", "+17.4%", "+15.3%"] }, { key: "3", head: p.a, cells: ["+2.7%", "+49.3%", "+35.9%"], strong: true }]} />
         </State>
       </Demo>
       <Demo name="YearBars" use={g.uses.YearBars}>
-        <State label="the dollar against the shekel each year, from zero" wide>
+        <State label="the dollar against the shekel each year, from zero; bright years set apart in the second" wide>
           <YearBars label={p.figure} tickStep={10} format={(v) => `${v > 0 ? "+" : v < 0 ? "−" : ""}${Math.abs(v).toFixed(Number.isInteger(v) ? 0 : 1)}`} items={[[2021, -3.4], [2022, 13.4], [2023, 2.8], [2024, 0.8], [2025, -12.5]].map(([year, value]) => ({ year: year!, value: value! }))} />
         </State>
       </Demo>

@@ -19,6 +19,7 @@ import {
 import type { ExposureRecord, FeesSnapshot, FundListFile, FundRecord, ParameterRecord, RuleRecord, ValueObject } from "@finance-tool/schema";
 import { flags as flagCopy, formulaNames, guideBlocks, r4workbench } from "../copy";
 import { fxRunInput, nisPerNumber, type FxHistory, type FxSnapshot } from "./fx";
+import type { EnteredInBundle } from "./custom-entries";
 import { toEnteredTariff, type EnteredOffer } from "./offers";
 import { computed, entered as enteredValue, ownBy, type SiteValue, type Staleness } from "./value";
 
@@ -81,6 +82,8 @@ export interface WorkbenchBundle {
   fxHistory?: FxHistory;
   /** P-02's bounds for the dollar's yearly change against the shekel (A-03), percent a year, with the record (F-94). */
   dollarRange?: { lo: number; hi: number; p02: ParameterRecord };
+  /** The broker and fund the person typed (D44): only the index page's copy of the bundle has them (`withCustomEntries`). */
+  entered?: EnteredInBundle;
 }
 
 export const BROKERAGE = "brokerage-account";
@@ -266,7 +269,7 @@ export type RunSpecError = { kind: "fund-type" } | { kind: "need-rate"; currency
 /** The run inputs a fund fixes: its kind and drag (the same builder as F-65), the currency and how the return is quoted (F-04). */
 export function fundRun(
   s: SubjectFund,
-  exposure: ExposureRecord | undefined,
+  exposure: Pick<ExposureRecord, "cash_like" | "currency"> | undefined,
   grossReturn: number,
   assumptions: FundAssumptions,
   fx?: FxSnapshot,

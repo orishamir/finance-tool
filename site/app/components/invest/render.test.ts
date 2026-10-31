@@ -14,6 +14,8 @@ import { LabelSheetHost } from "../kit";
 import { Headline, IndexHeader } from "./sections";
 import { AccountColumn, allFunds, bestFor, FundColumn, PairResult, pickOfHeadline } from "./pair";
 import { Foot } from "./foot";
+import { DollarSection } from "./dollar";
+import { hasKinds, kindOf } from "../../lib/invest";
 import { PlanBlock } from "./chips";
 import { ProvenanceProvider } from "../provenance";
 
@@ -178,5 +180,35 @@ describe("no price on what no document says can be done (2026-10-31)", () => {
   it("Fair still prices tracking funds and no ETF", () => {
     for (const x of at("il-tracking", "fair")) expect("valueN" in x).toBe(true);
     for (const x of at("il-etf", "fair")) expect("availability" in x && x.availability).toBeTruthy();
+  });
+});
+
+describe("hedged or not: what happened (F-95, founder 2026-10-31)", () => {
+  const sp = buildInvest({ bundle, index: indexById(bundle, "index-sp500")!, plan });
+  const pick = pickOfHeadline(sp)!;
+  const out = html(createElement(DollarSection, { view: sp, bundle, plan, pick })).replace(/<!-- -->/g, "");
+  it("says the 2022 and 2025 reports as they are, in the order of the card", () => {
+    expect(out).toContain("המדד ירד");
+    expect(out).toContain("18.5%");
+    expect(out).toContain("21.8%");
+    expect(out).toContain("קרה ההפך");
+    expect(out).toContain("15.3%");
+    expect(out).toContain("השורה התחתונה");
+  });
+  it("draws on the seven funds of 2022 and the eleven of 2025", () => {
+    expect(out).toContain("7 קרנות");
+    expect(out).toContain("11 קרנות");
+  });
+  // the words say a hedged fund earned less than its index in every reported year: a report that says otherwise means changing them
+  it("every hedged fund's report falls short of its index", () => {
+    for (const f of bundle.funds.filter((x) => x.hedged === true)) for (const y of f.tracking_record?.years ?? []) expect(y.fund_pct, `${f.id} ${y.year}`).toBeLessThan(y.tracking_pct);
+  });
+  it("renders on every index with both kinds", () => {
+    for (const id of ["index-nasdaq100", "index-msci-world", "index-msci-acwi"]) {
+      const v = buildInvest({ bundle, index: indexById(bundle, id)!, plan });
+      expect(hasKinds(v), id).toBe(true);
+      expect(html(createElement(DollarSection, { view: v, bundle, plan, pick: pickOfHeadline(v)! }))).toContain("השורה התחתונה");
+    }
+    expect(allFunds(sp).some((f) => kindOf(f.rec) === "hedged")).toBe(true);
   });
 });
