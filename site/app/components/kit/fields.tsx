@@ -256,6 +256,53 @@ export function ParameterLine({ className }: { className?: string }) {
   return <p className={cx("text-xs text-muted-foreground", className)}>{copy.stateStart}</p>;
 }
 
+/** One line of text the person types (a name): a label above, an optional help line and error under. For a number, `NumberField`. */
+export function TextField({ label, value, onChange, hint, error, placeholder, maxLength, dir = "rtl", className }: { label: ReactNode; value: string; onChange: (v: string) => void; hint?: ReactNode; error?: ReactNode | null; placeholder?: string; maxLength?: number; /** `ltr` for an identifier. */ dir?: "rtl" | "ltr"; className?: string }) {
+  const id = useId();
+  return (
+    <div className={cx("field", className)}>
+      <label htmlFor={id} className="field-label">
+        {label}
+      </label>
+      <div className="field-body">
+        <div className={cx("field-box", error ? "field-box-error" : false)}>
+          <input id={id} type="text" dir={dir} value={value} placeholder={placeholder} maxLength={maxLength} autoComplete="off" aria-invalid={error ? true : undefined} aria-describedby={error ? `${id}-err` : hint ? `${id}-hint` : undefined} onChange={(e) => onChange(e.target.value)} className="field-input !text-start text-mixed" />
+        </div>
+        {error ? (
+          <span id={`${id}-err`} className="text-xs text-destructive">
+            {error}
+          </span>
+        ) : hint ? (
+          <span id={`${id}-hint`} className="text-xs text-muted-foreground">
+            {hint}
+          </span>
+        ) : null}
+      </div>
+    </div>
+  );
+}
+
+/** One yes or no the person can tick on its own, beside others that are not exclusive: the whole row is the target. For one choice of a few, `SegmentedControl`. */
+export function CheckField({ label, checked, onChange }: { label: ReactNode; checked: boolean; onChange: (v: boolean) => void }) {
+  return (
+    <label className="flex items-center gap-3 min-h-target cursor-pointer">
+      <input type="checkbox" checked={checked} onChange={(e) => onChange(e.target.checked)} className="size-5 shrink-0 accent-[var(--primary)]" />
+      <span>{label}</span>
+    </label>
+  );
+}
+
+/** Fields that belong together under one heading, with a line between groups. */
+export function FieldGroup({ title, children, note }: { title: ReactNode; children: ReactNode; note?: ReactNode }) {
+  return (
+    <fieldset className="flex flex-col gap-3 min-w-0 border-t border-border pt-3 first:border-t-0 first:pt-0">
+      <legend className="font-medium mb-1">{title}</legend>
+      {children}
+      {note}
+    </fieldset>
+  );
+}
+
 /** A choice from a list of names in a native select: a label above, an optional "none" first option, an optional help line under. The default for picking one item out of many (an account, a provider). */
 export function SelectField({ label, options, value, onChange, none, help, className }: { label: ReactNode; options: { id: string; name: string }[]; value: string | null; onChange: (id: string | null) => void; /** The first option, chosen when `value` is null ("not chosen"); without it the list has no empty choice. */ none?: string; help?: ReactNode; className?: string }) {
   const id = useId();

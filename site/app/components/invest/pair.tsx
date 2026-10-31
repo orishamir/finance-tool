@@ -7,6 +7,7 @@ import { mayaFundHref } from "../../lib/sources";
 import { useMemo } from "react";
 import type { FeeLine } from "@finance-tool/engine";
 import { brands, invest as c } from "../../copy";
+import { isCustomFund } from "../../lib/custom-entries";
 import { doubtOf, gapOf, inputMap, hasKinds, kindOf, kindScenarios, opensOn, pairCosts, pairValue, type FundWay, type InvestView, type Kind, type KindScenarios, type PairCosts, type Reason, type WayPrice } from "../../lib/invest";
 import type { WorkbenchBundle, WorkbenchInputs } from "../../lib/providers";
 import { brokerLabels, fundLabels, optionLabels, type Label } from "../../lib/labels";
@@ -18,6 +19,8 @@ import { Button, Card, ChartLegend, CostStack, LabelChip, LabelFilter, LabelRow,
 import { optionClass, OptionTag, reasonText } from "./parts";
 import { ProviderLink, providerName } from "./sections";
 import { Fees } from "./funds";
+import { AddEntryButton, BrokerTerms, FundTerms } from "./custom-entries";
+import { StateTag } from "../provenance";
 
 export interface Pick {
   house: string;
@@ -134,17 +137,20 @@ function CostLegend({ lines }: { lines: string[] }) {
   );
 }
 
-function CostBar({ who, sub, pc, scale, you, today }: { who: string; sub: string; pc: PairCosts; scale: number; you?: boolean; today: string }) {
+function CostBar({ who, sub, pc, scale, you, entered, today }: { who: string; sub: string; pc: PairCosts; scale: number; you?: boolean; /** The person typed this account (D44). */ entered?: boolean; today: string }) {
   const parts = partsOf(pc);
   // shown as the rounded base less the rounded value left: two bars then differ by exactly what the two "left" figures differ by
   const total = Math.round(pc.base) - Math.round(pc.left.value as number);
   return (
     <div className="grid grid-cols-[minmax(0,1fr)_auto] md:grid-cols-[10rem_minmax(0,1fr)_6rem] items-center gap-x-3 gap-y-1.5">
-      <span className={cx("flex flex-col min-w-0 leading-tight font-semibold", you && "text-entered")}>
+      <span className={cx("flex flex-col min-w-0 leading-tight font-semibold", (you || entered) && "text-entered")}>
         <span className="truncate" title={who}>
           {who}
         </span>
-        <span className="text-xs font-normal text-muted-foreground">{sub}</span>
+        <span className="text-xs font-normal text-muted-foreground">
+          {sub}
+          {entered && ` · ${c.customEntries.enteredWord}`}
+        </span>
       </span>
       <div className="min-w-0 max-md:col-span-2 max-md:row-start-2">
         <CostStack parts={parts} scale={scale} label={`${who}: ${fmt.nisWhole(total)}`} />
@@ -191,7 +197,10 @@ function KindCards({ view, bundle, plan, pick, onPick }: { view: InvestView; bun
   const lo = sc.unhedged[0]!, mid = sc.unhedged.find((x) => x.fx === 0)!, hi = sc.unhedged[sc.unhedged.length - 1]!;
   const markAt = ((0 - sc.lo) / (sc.hi - sc.lo)) * 100;
   const fundName = (p: Pick) => funds.find((f) => f.rec.id === p.fund)?.name ?? p.fund;
-  const house = (p: Pick) => providerName(view, p.house)?.short ?? p.house;
+  const house = (p: Pick) => {
+    const info = providerName(view, p.house);
+    return info?.custom ? `${info.short} (${c.customEntries.enteredWord})` : (info?.short ?? p.house);
+  };
   const card = (k: Kind) => {
     const p = pairs[k];
     const isPick = k === mine;
@@ -386,8 +395,8 @@ export function PairResult({ view, bundle, plan, settled, pick, onPick }: { view
       </div>
       <div className="flex flex-col gap-2">
         <h3 className="font-semibold">{c.pair.costTitleBoth(years)}</h3>
-        <CostBar who={nameOf(pick)} sub={c.pair.yours} pc={pc} scale={scale} you today={bundle.today} />
-        {pcOther && other && <CostBar who={nameOf(other)} sub={onBest ? c.pair.next : c.pair.cheapest} pc={pcOther} scale={scale} today={bundle.today} />}
+        <CostBar who={nameOf(pick)} sub={c.pair.yours} pc={pc} scale={scale} you entered={providerName(view, pick.house)?.custom} today={bundle.today} />
+        {pcOther && other && <CostBar who={nameOf(other)} sub={onBest ? c.pair.next : c.pair.cheapest} pc={pcOther} scale={scale} entered={providerName(view, other.house)?.custom} today={bundle.today} />}
         <CostLegend lines={lines} />
         {pcOther && (
           <Sentence size="sm" tone="muted">
@@ -423,13 +432,14 @@ function GroupLine({ id, snapshots }: { id: string; snapshots: WorkbenchBundle["
 }
 
 export function AccountColumn({ view, bundle, years, pick, onPick }: { view: InvestView; bundle: WorkbenchBundle; years: number; pick: Pick; onPick: (p: Pick) => void }) {
-  const held = useHeldHeight<HTMLDivElement>(view.index.id);
+  // a row added or removed starts the held height over, so a removed row leaves no hole (D44)
+  const held = useHeldHeight<HTMLDivElement>(`${view.index.id}:${view.providers.length}`);
   const fund = allFunds(view).find((f) => f.rec.id === pick.fund);
   const house = providerName(view, pick.house);
   if (!fund || !house) return null;
   const best = bestFor(view, pick);
-  // counted over every fund of the index, so the sentence stays as it is when another fund is picked
-  const local = view.providers.filter((p) => !p.foreign);
+  // counted over every fund of the index, so the sentence stays as it is when another fund is picked; a count over the collected houses
+  const local = view.providers.filter((p) => !p.foreign && !p.custom);
   const standingCount = local.filter((p) => allFunds(view).some((f) => { const a = f.byHouse[p.id]; return priced(a) && a.standing; })).length;
   const rows = view.providers.map((p) => ({ p, at: fund.byHouse[p.id] }));
   const ok = rows.filter((r): r is { p: typeof r.p; at: WayPrice } => priced(r.at)).sort((a, b) => Number(a.at.open) - Number(b.at.open) || b.at.valueN - a.at.valueN);
@@ -452,7 +462,7 @@ export function AccountColumn({ view, bundle, years, pick, onPick }: { view: Inv
       cells: (
         <>
           <span className="text-sm text-muted-foreground tabular-nums text-center">{r.at.open ? "—" : i + 1}</span>
-          <span className={cx("flex flex-col min-w-0 leading-tight font-semibold", isYours && "text-entered")}>
+          <span className={cx("flex flex-col min-w-0 leading-tight font-semibold [overflow-wrap:anywhere]", (isYours || r.p.custom) && "text-entered")}>
             {r.p.short}
             {/* one line reserved on every row, so a re-sort never changes a row's height (2026-10-31) */}
             <span className="flex flex-wrap gap-x-2 min-h-5 text-xs font-normal text-muted-foreground">
@@ -471,6 +481,7 @@ export function AccountColumn({ view, bundle, years, pick, onPick }: { view: Inv
             <Num value={r.at.value} />
           </span>
           <GroupLine id={r.p.id} snapshots={bundle.snapshots} />
+          {r.p.custom && <span className="col-start-2 col-end-[-1]"><BrokerTerms id={r.p.id} /></span>}
         </>
       ),
     };
@@ -489,13 +500,13 @@ export function AccountColumn({ view, bundle, years, pick, onPick }: { view: Inv
       cells: (
         <>
           <span className="text-sm tabular-nums text-center">—</span>
-          <span className="flex flex-col min-w-0 leading-tight font-semibold">
+          <span className={cx("flex flex-col min-w-0 leading-tight font-semibold [overflow-wrap:anywhere]", r.p.custom && "text-entered")}>
             {r.p.short}
             <span className="flex flex-wrap gap-x-2 min-h-5 text-xs font-normal">{r.p.id === view.yourBroker && <span>{c.pair.yoursTag}</span>}</span>
           </span>
           <span className="flex flex-wrap items-center gap-x-2 gap-y-0.5 min-w-0 text-xs max-md:row-start-2 max-md:col-start-3 max-md:col-span-2">
             <Tag tone={na ? undefined : "caution"}>{na ? c.pair.notPossible : c.pair.noData}</Tag>
-            {na && (
+            {na && !r.p.custom && (
               <a href={na.source.url} target="_blank" rel="noopener noreferrer" title={na.note ?? na.source.title} className="text-link hover:underline">
                 {c.pair.notPossibleSource} ↗
               </a>
@@ -504,6 +515,7 @@ export function AccountColumn({ view, bundle, years, pick, onPick }: { view: Inv
           <span className="text-end font-semibold">—</span>
           {/* the reason takes the row's width, like the group line: in the charges column it stood one word to a line (2026-10-31) */}
           <span className="col-start-2 col-end-[-1] flex flex-col gap-0.5 text-xs leading-snug">
+            {na && r.p.custom && <span>{c.customEntries.notSold}</span>}
             {!na && <span>{doubtOf(bundle.snapshots.find((s) => s.id === r.p.id), fund.option) ?? bundle.snapshots.find((s) => s.id === r.p.id)?.missing_reason_he ?? (r.at && "reason" in r.at ? reasonText(r.at.reason, optionClass[fund.option]) : c.funds.cannot)}</span>}
             {other && (
               <span>
@@ -513,6 +525,7 @@ export function AccountColumn({ view, bundle, years, pick, onPick }: { view: Inv
             )}
           </span>
           <GroupLine id={r.p.id} snapshots={bundle.snapshots} />
+          {r.p.custom && <span className="col-start-2 col-end-[-1]"><BrokerTerms id={r.p.id} /></span>}
         </>
       ),
     };
@@ -522,7 +535,7 @@ export function AccountColumn({ view, bundle, years, pick, onPick }: { view: Inv
       <div className="bg-popover border-b border-border px-5 py-4 flex flex-col gap-1">
         <span className="text-sm text-muted-foreground">{c.pair.accountSlot}</span>
         {/* two lines on a phone: the longest legal name's, so the card keeps its height when the cheapest house changes (2026-10-31) */}
-        <span className="text-xl font-bold max-md:min-h-14.5">
+        <span className={cx("text-xl font-bold max-md:min-h-14.5 [overflow-wrap:anywhere]", house.custom && "text-entered")}>
           <ProviderLink p={house} />
         </span>
         <span className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm max-md:min-h-12.25">
@@ -532,10 +545,14 @@ export function AccountColumn({ view, bundle, years, pick, onPick }: { view: Inv
             </span>
           )}
           <LabelRow labels={brokerLabels(house, false)} />
-          {snapshot && (
-            <a href={snapshot.tariff.url} target="_blank" rel="noopener noreferrer" title={snapshot.tariff.title} className="text-link hover:underline">
-              {c.pair.tariff} ↗
-            </a>
+          {house.custom ? (
+            <StateTag state="entered" />
+          ) : (
+            snapshot && (
+              <a href={snapshot.tariff.url} target="_blank" rel="noopener noreferrer" title={snapshot.tariff.title} className="text-link hover:underline">
+                {c.pair.tariff} ↗
+              </a>
+            )
           )}
         </span>
       </div>
@@ -562,6 +579,7 @@ export function AccountColumn({ view, bundle, years, pick, onPick }: { view: Inv
         rows={[...pickRows, ...greyRows]}
       />
       <div className="px-5 py-3 flex flex-col gap-3">
+        <AddEntryButton kind="broker" />
         <ChartLegend
           items={[
             ...lines.map((l) => ({ id: l, swatch: <Swatch shape="box" className={lineClass[l] ?? "bg-chart-cost-other"} />, label: c.pair.lines[l] ?? c.pair.lines.other })),
@@ -581,7 +599,7 @@ const FILTER_FAMILIES = new Set<Label["family"]>(["trade", "follow", "currency",
 
 const mayaHrefOf = (f: FundWay) => {
   // Maya's page of the fund exists for a fund listed in Israel
-  return (f.option === "il-etf" || f.option === "il-tracking") && f.rec.identifiers.tase_number ? mayaFundHref(f.rec.identifiers.tase_number) : null;
+  return !isCustomFund(f.rec) && (f.option === "il-etf" || f.option === "il-tracking") && f.rec.identifiers.tase_number ? mayaFundHref(f.rec.identifiers.tase_number) : null;
 };
 
 /** The fund's labels: how it trades (the type, from its option; a foreign fund, where it is listed, since the same fund can have a row for each), then what the record says about it. */
@@ -610,8 +628,9 @@ function GapCell({ rec, today }: { rec: FundWay["rec"]; today: string }) {
 }
 
 export function FundColumn({ view, bundle, plan, today, pick, onPick, filter, onFilter }: { view: InvestView; bundle: WorkbenchBundle; plan: WorkbenchInputs; today: string; pick: Pick; onPick: (p: Pick) => void; filter: string | null; onFilter: (id: string | null) => void }) {
-  const held = useHeldHeight<HTMLDivElement>(view.index.id);
   const funds = allFunds(view);
+  // a row added or removed starts the held height over, so a removed row leaves no hole (D44)
+  const held = useHeldHeight<HTMLDivElement>(`${view.index.id}:${funds.length}`);
   const kinds = hasKinds(view) && !!bundle.dollarRange;
   const range = bundle.dollarRange;
   const pickRec = funds.find((f) => f.rec.id === pick.fund)?.rec;
@@ -680,8 +699,10 @@ export function FundColumn({ view, bundle, plan, today, pick, onPick, filter, on
     );
     // a fund priced nowhere says why on its row, the same at every house; the reasons that depend on the house are under the list, once each (2026-10-31)
     const why = !r.at && r.f.reason ? reasonText(r.f.reason, optionClass[r.f.option]) : null;
+    const mineTyped = isCustomFund(r.f.rec);
     return {
       key: r.f.rec.id,
+      ...(mineTyped ? { keep: true } : {}),
       ...(heading ? { heading } : {}),
       selected: isSel,
       muted: !priced(at),
@@ -691,8 +712,8 @@ export function FundColumn({ view, bundle, plan, today, pick, onPick, filter, on
       cells: (
         <>
           <span className="flex flex-col gap-1.5 min-w-0">
-            <span className="leading-snug md:whitespace-nowrap">
-              <span className="font-semibold">
+            <span className={cx("leading-snug", mineTyped ? "[overflow-wrap:anywhere]" : "md:whitespace-nowrap")}>
+              <span className={cx("font-semibold", mineTyped && "text-entered")}>
                 <bdi>{r.f.name}</bdi>
               </span>{" "}
               <span className="inline-block ms-1" onClick={(e) => e.stopPropagation()}>
@@ -710,6 +731,7 @@ export function FundColumn({ view, bundle, plan, today, pick, onPick, filter, on
               )}
             </span>
             {why && <span className="text-xs text-muted-foreground">{why}</span>}
+            {mineTyped && <FundTerms id={r.f.rec.id} />}
           </span>
           {/* on a phone the gap goes under the fund's name and the difference stays at the row's end */}
           <span className="self-center max-md:row-start-2 max-md:col-start-2">
@@ -725,7 +747,7 @@ export function FundColumn({ view, bundle, plan, today, pick, onPick, filter, on
       <div className="bg-popover border-b border-border px-5 py-4 flex flex-col gap-1.5">
         <span className="text-sm text-muted-foreground">{c.pair.fundSlot}</span>
         <span className="flex items-baseline gap-2 flex-wrap">
-          <span className="text-lg font-bold md:whitespace-nowrap">
+          <span className={cx("text-lg font-bold", isCustomFund(fund.rec) ? "text-entered [overflow-wrap:anywhere]" : "md:whitespace-nowrap")}>
             <bdi>{fund.name}</bdi>
           </span>
           <ProductIdLink id={fund.number} href={mayaHrefOf(fund)} label={brands.funds.mayaLink(fund.number)} />
@@ -763,6 +785,7 @@ export function FundColumn({ view, bundle, plan, today, pick, onPick, filter, on
         rows={pickRows}
       />
       <div className="px-5 py-3 flex flex-col gap-1.5 text-sm text-muted-foreground">
+        <AddEntryButton kind="fund" />
         {houseWhys.length > 0 && (
           <div className="flex flex-col gap-0.5">
             <span className="font-medium text-foreground">{c.pair.noPriceWhy(house.short)}</span>

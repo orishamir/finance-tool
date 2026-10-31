@@ -11,7 +11,7 @@ import { IdRef, Num } from "../provenance";
 import { IconDrillIn } from "../icons";
 import { label } from "../../lib/labels";
 import { fmt } from "../../lib/format";
-import { Button, Callout, Card, ChartLegend, CostStack, LabelFilter, PickList, ScenarioChart, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, CompareTable, CoverageFold, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, Disclosure, FieldState, FoldGroup, GainBars, GapNote, HeadlineFigure, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, NumberField, ParameterLine, PercentField, PlanChips, KnobStrip, ChangeChart, RangeField, RankBadge, Section, SegmentedControl, SelectField, Sentence, ShareRings, SourceLine, Stat, StatRow, StepButtons, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth } from "./index";
+import { Button, Callout, Card, ChartLegend, CostStack, LabelFilter, PickList, ScenarioChart, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, CompareTable, CoverageFold, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, Disclosure, FieldState, FoldGroup, GainBars, GapNote, HeadlineFigure, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, CheckField, FieldGroup, TextField, NumberField, ParameterLine, PercentField, PlanChips, KnobStrip, ChangeChart, RangeField, RankBadge, Section, SegmentedControl, SelectField, Sentence, ShareRings, SourceLine, Stat, StatRow, StepButtons, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth } from "./index";
 
 const g = copy.gallery;
 
@@ -426,6 +426,8 @@ function Fields() {
   const [share, setShare] = useState(20);
   const [pick, setPick] = useState<string | null>(null);
   const [count, setCount] = useState(1);
+  const [typed, setTyped] = useState("");
+  const [ticked, setTicked] = useState(true);
   return (
     <>
       <Demo name="NumberField" use={g.uses.NumberField}>
@@ -528,6 +530,32 @@ function Fields() {
           </State>
           <State label={g.states.error}>
             <PercentField label={g.sample.percent} value={120} range={{ min: 0, max: 50 }} isEntered onCommit={() => undefined} onReset={() => undefined} externalError="הזינו אחוז בין 0 ל־50." />
+          </State>
+        </Grid>
+      </Demo>
+      <Demo name="TextField" use={g.uses.TextField}>
+        <Grid>
+          <State label={`${g.states.empty}, ${g.states.interactive}`}>
+            <TextField label={g.sample.text.label} value={typed} onChange={setTyped} hint={g.sample.hint} />
+          </State>
+          <State label={g.states.error}>
+            <TextField label={g.sample.text.label} value="" onChange={() => undefined} error={g.sample.error} />
+          </State>
+        </Grid>
+      </Demo>
+      <Demo name="CheckField" use={g.uses.CheckField}>
+        <Grid>
+          <State label={g.states.interactive}>
+            <CheckField label={g.sample.text.check} checked={ticked} onChange={setTicked} />
+          </State>
+        </Grid>
+      </Demo>
+      <Demo name="FieldGroup" use={g.uses.FieldGroup}>
+        <Grid>
+          <State label={g.states.filled}>
+            <FieldGroup title={g.sample.text.group}>
+              <NumberField label={g.sample.field} unit="nis" value={null} isEntered={false} validate={() => null} onCommit={() => undefined} onReset={() => undefined} optional placeholder="0" />
+            </FieldGroup>
           </State>
         </Grid>
       </Demo>

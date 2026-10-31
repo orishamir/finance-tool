@@ -17,7 +17,7 @@ export { HeadlineFigure, KeyValue, KeyValueList, Stat, StatRow, type KeyValueIte
 export { GapNote, NoteList, SourceLine } from "./notes";
 export { RankBadge } from "./rank";
 export { StepButtons } from "./stepper";
-export { FieldState, NumberField, ParameterLine, PercentField, RangeField, SelectField, flushPendingFields, percentCheck, type FieldProps, type RangeFieldProps } from "./fields";
+export { CheckField, FieldGroup, FieldState, TextField, NumberField, ParameterLine, PercentField, RangeField, SelectField, flushPendingFields, percentCheck, type FieldProps, type RangeFieldProps } from "./fields";
 export { GainBars, LaneLabel, Marker, MarkerMark, useWidth, type GainBar, type MarkerProps } from "./marker";
 export { ChartLegend, ChartReadout, ChartTable, Swatch, scrollCueStyle, type LegendItem, type ReadoutRow, type SwatchShape, type TableColumn, type TableRowData } from "./chart-parts";
 export { CompanyLinks, type CompanyLinkItem } from "./company-links";
