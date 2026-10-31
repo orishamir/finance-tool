@@ -44,7 +44,7 @@ An IRA is a provident fund (tagmulim or annuity) or a study fund opened for one 
 - Figures: none
 - Source: Gemel-Net as in IRA-03; [Nevo, IRA regulations, reg. 10](https://www.nevo.co.il/law_html/law01/500_217.htm) · checked 2026-10-22 · primary (mirror); [CMA draft amendment 2025, explanatory notes "ביטול תקנה 10"](https://www.gov.il/BlobFolder/legalinfo/regulation_0059/he/regulation_ira_pdf.pdf) · checked 2026-10-22 · primary (draft)
 - Dimensions: `transfer-switch-process`
-- Likely to change: yes, the 2025 draft deletes regulation 10
+- Likely to change: yes, the 2025 draft deletes regulation 10. It is still a draft: the Commissioner's 2025 report, chapter 2, PDF p.9 (published 7.9.2026) says no proposal has been laid before the Knesset. The Authority's regulation list, read on 2026-10-31, shows the draft of 11.6.2025 and an extended comment period on 1.7.2025, and no final regulations since.
 
 ### IRA-05 Who gives investment instructions
 - Rule: The money is invested only on the member's instructions, given to the managing company directly or through a portfolio manager the member has a written agreement with. Each account has one person ("אדם אחד") authorised to give instructions. The member chooses that person and may change the choice at any time. The managing company "לא תטיל כל מגבלה" on that choice. The 2025 draft would add "בכפוף לכל דין" after those words.

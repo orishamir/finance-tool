@@ -432,6 +432,7 @@ Note: the web-search budget for this session ran out partway through; questions 
 | מס על רווחי הון בבורסה (17.2.2020) | Meitav | https://www.meitav.co.il/trade/financial_info/stock-exchange-tax-return/ | institution | 2026-10-31 |
 | Tried, not usable: Form 150 service page (403) | gov.il | https://www.gov.il/he/service/itc-150 | none | 2026-10-22 |
 | Tried, not usable: tax treaties collector (403) | gov.il | https://www.gov.il/he/departments/dynamiccollectors/tax-treaties | none | 2026-10-22 |
+| Tax treaties in general: a treaty takes priority over domestic law where it is kinder on the rate; the collector above now gives an error page | Tax Authority, gov.il | https://www.gov.il/he/pages/double-tax-prevention-agreements | primary | 2026-10-31 |
 | Tried, not usable: capitax article on "קרנות חוץ" withholding (Hebrew encoding garbled; led to the 2019 letter) | capitax.co.il | https://www.capitax.co.il/content/2/1986 | none | 2026-10-22 |
 | Tried, not usable: iShares plc prospectus (redirect to error page) | BlackRock iShares | https://www.ishares.com/uk/individual/en/literature/prospectus/ishares-plc-prospectus.pdf | none | 2026-10-22 |
 | Tried, not usable: Irish Revenue manual page (404) | Revenue (Ireland) | https://www.revenue.ie/en/tax-professionals/tdm/income-tax-capital-gains-tax-corporation-tax/part-27/27-01a-01.pdf | none | 2026-10-22 |
