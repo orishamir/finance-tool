@@ -3,14 +3,15 @@ import { describe, expect, it } from "vitest";
 import { bondPrice, makamPrice } from "@finance-tool/engine";
 import { buildGuidePage } from "./guide.server";
 import { runTimeline } from "./engine";
-import { accountAxis, accountFact, bankYearlyMax, bondModel, breakKindOf, slowerPayNoMore, bundleAtBank, currentAccountModel, depositModel, fact, fixedDateModel, largestCeiling, ladderRows, makamModel, payingBanks, planModel, runAtMonths, addMonthsIso, silentBanks, topPayer } from "./guide-signature";
+import { accountAxis, accountFact, bankYearlyMax, bondModel, breakKindOf, slowerPayNoMore, bundleAtBank, currentAccountModel, depositEndBanks, depositModel, fact, fixedDateModel, largestCeiling, ladderRows, makamModel, payingBanks, planModel, runAtMonths, addMonthsIso, silentBanks, topPayer } from "./guide-signature";
 
 const page = (id: string) => buildGuidePage(id)!;
 const cashRate = (id: string) => ((page(id).bundle!.p05 as unknown as { inputs: { cash_rate: { value: number } } }).inputs.cash_rate.value);
 
 describe("timeline fixes on the cash-like pages", () => {
   it("runs the deposit family on the record's published rate, not on P-05's cash rate", () => {
-    expect(cashRate("bank-deposit")).toBe(1.8);
+    // 2026-10-31 (issue 112): the deposit's example is the highest rate of the collected banks (F-86, Discount's 2.25%), not Leumi's 1.8%
+    expect(cashRate("bank-deposit")).toBe(2.25);
     expect(cashRate("savings-plan")).toBe(1.5);
     // 2026-10-25: the current account starts from the rate most of the collected banks publish (F-85), 0%, not Leumi's 1%
     expect(cashRate("current-account")).toBe(0);
@@ -192,8 +193,23 @@ describe("current account", () => {
 
 describe("bank deposit", () => {
   const d = page("bank-deposit").signature!;
-  it("takes the term and break from the record and equals the engine", () => {
-    expect(breakKindOf(fact(d, "break"))).toBe("not-allowed");
+  it("stands on the highest rate the collected banks print, named as the site's pick, with the lowest beside it (F-86)", () => {
+    const own = page("bank-deposit").bundle!;
+    expect(own.pick).toMatchObject({ kind: "deposit", id: "discount-pikadon-leshana-0122" });
+    expect(own.pick!.count.value).toBe(4);
+    expect(own.feeValues.term?.own).toBe("דיסקונט");
+    expect(fact(d, "rate")!.value).toBe(2.25);
+    expect(fact(d, "break")).toBeUndefined(); // whether it locks is a count over the banks, not one bank's terms
+    expect([fact(d, "depositNoExitCount")!.value, fact(d, "depositCount")!.value]).toEqual([3, 4]);
+    const ends = depositEndBanks(d)!;
+    expect([ends.top.bank, ends.bottom.bank]).toEqual(["discount", "mizrahi-tefahot"]);
+    const m = depositModel(d, { amount: 10000 })!;
+    expect(m.atTermLo).toBe(runAtMonths(d.bundles["bank-deposit-lo"]!, { amount_now: 10000, monthly_deposit: 0 }, 12)!.nominal);
+    expect(m.atTermLo!).toBeLessThan(m.atTerm);
+    expect(breakKindOf(d.depositBanks!.find((b) => b.bank === "hapoalim")!.exit)).toBe("not-allowed");
+    expect(breakKindOf(d.depositBanks!.find((b) => b.bank === "discount")!.exit)).toBe("other");
+  });
+  it("takes the term from the record and equals the engine", () => {
     const m = depositModel(d, { amount: 10000 })!;
     expect(m.term).toBe(12);
     expect(m.atTerm).toBe(runAtMonths(d.bundles["bank-deposit"]!, { amount_now: 10000, monthly_deposit: 0 }, 12)!.nominal);

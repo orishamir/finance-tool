@@ -11,12 +11,13 @@
 // across the collected banks (F-86); `oneYearDepositRecords` and `depositRange` make it, and the bank-deposit page lists each bank.
 import { mostCommonRate, rateRange } from "@finance-tool/engine";
 import type { Bundle } from "./engine";
-import { p05Range, runTimeline } from "./engine";
+import { p05Number, p05Range, runTimeline } from "./engine";
 import type { DepositTerms, ParameterRecord, RuleRecord, ValueObject, ProductId, ProductRecord } from "@finance-tool/schema";
 import type { AccountBank } from "./guide-signature";
+import { runWith, sideOf } from "./guide-signature-g2";
 import { buildInstrumentTerms, loadDepositTerms, loadFunds } from "./instruments.server";
 import { loadFees } from "./data.server";
-import { shortName } from "./providers";
+import { onlyWhatCanBeDone, shortName } from "./providers";
 import { computed, ownBy, type SiteValue, type Strength } from "./value";
 import { publisherHe } from "./publisher-he.server";
 
@@ -248,4 +249,82 @@ export function buildInstrumentBundle(
   }
   const touched = rulesTouched(draft);
   return { bundle: { ...draft, rules: Object.values(allRules).filter((r) => touched.has(r.id)) }, noGraph: null, published };
+}
+
+/** One collected tariff's run of an account or a security held in one, on the example plan (P-05's amount, monthly deposit and horizon). */
+export interface AccountRun {
+  id: string;
+  name: string;
+  gain: number;
+  bundle: Bundle;
+  source: ValueObject["source"];
+  checked: string;
+}
+
+/** The classes a tariff needs a buy and sell line for, for each product the example prices on a collected tariff (F-63, "No line, no price"; D42). */
+const accountClasses: Partial<Record<ProductId, string[]>> = {
+  // the example is an Israeli tracking fund
+  "brokerage-account": ["mutual_fund_units"],
+  makam: ["makam"],
+  "government-bond": ["tase_bonds", "tase_shares_bonds"],
+};
+
+/**
+ * The product run once on each collected tariff with a line for its class, on the example plan, least left first (F-80, "On the guide
+ * pages"). A security is bought on TASE through an Israeli member, so a foreign broker is left out of makam and the bond.
+ */
+export function accountRuns(record: ProductRecord, family: InstrumentFamily, p05: ParameterRecord, allRules: Record<string, RuleRecord>, t: string): AccountRun[] {
+  const classes = accountClasses[record.id] ?? [];
+  const months = 12 * p05Number(p05, "horizon_years");
+  const plan = { amount_now: p05Number(p05, "amount_now"), monthly_deposit: p05Number(p05, "monthly_deposit") };
+  const rows: AccountRun[] = [];
+  const all = loadFees();
+  for (const id of new Set(all.map((f) => f.id))) {
+    const latest = all.filter((x) => x.id === id).sort((a, b) => a.snapshot.localeCompare(b.snapshot)).at(-1)!;
+    if (latest.missing) continue;
+    if (record.id !== "brokerage-account" && latest.provider.class === "foreign_broker") continue;
+    if (!onlyWhatCanBeDone(latest).lines.some((l) => l.base === "trade" && l.applies_to.some((a) => classes.includes(a)))) continue;
+    const spec = { ...p05.instruments?.[record.id], tariff: id };
+    const bundle = buildInstrumentBundle(record, family, { ...p05, instruments: { ...p05.instruments, [record.id]: spec } } as ParameterRecord, allRules, t).bundle;
+    const run = bundle ? runWith(bundle, plan, months) : null;
+    if (!bundle || !run || run.outcome.code !== "eligible") continue;
+    rows.push({ id, name: latest.provider.name_he, gain: sideOf(run, plan.amount_now).gain, bundle, source: { url: latest.tariff.url, title: latest.tariff.title, publisher: latest.provider.name_he, strength: "institution" }, checked: latest.snapshot });
+  }
+  return rows.sort((a, b) => a.gain - b.gain);
+}
+
+/** The highest and the lowest rate of the banks' one-year deposits (F-86): the records themselves. */
+export function depositEnds(deposits: DepositTerms[]): { top: DepositTerms; bottom: DepositTerms; count: number } | null {
+  const records = oneYearDepositRecords(deposits).filter((r) => typeof r.rate_offered.value === "number");
+  if (records.length === 0) return null;
+  const sorted = [...records].sort((a, b) => Number(a.rate_offered.value) - Number(b.rate_offered.value));
+  return { top: sorted[sorted.length - 1]!, bottom: sorted[0]!, count: records.length };
+}
+
+/** The bank deposit's bundle on one bank's record. */
+export function depositBundleOf(record: ProductRecord, rec: DepositTerms, p05: ParameterRecord, allRules: Record<string, RuleRecord>, t: string): ReturnType<typeof buildInstrumentBundle> {
+  const spec = { ...p05.instruments?.[record.id], deposit_terms: rec.id };
+  return buildInstrumentBundle(record, "deposit", { ...p05, instruments: { ...p05.instruments, [record.id]: spec } } as ParameterRecord, allRules, t);
+}
+
+/**
+ * The guide page's bundle of a wrapper or security: never one institution presented as general. An account and a security held in one run
+ * on the collected tariff that leaves the example plan the most, and a bank deposit on the highest rate the collected banks print, each
+ * named by the terms block with the number compared (`Bundle.pick`). Anything else is the run on the records P-05 names.
+ */
+export function guideInstrumentBundle(record: ProductRecord, family: InstrumentFamily, p05: ParameterRecord, allRules: Record<string, RuleRecord>, t: string): ReturnType<typeof buildInstrumentBundle> {
+  if (record.id === "bank-deposit") {
+    const ends = depositEnds(loadDepositTerms());
+    if (!ends) return buildInstrumentBundle(record, family, p05, allRules, t);
+    const built = depositBundleOf(record, ends.top, p05, allRules, t);
+    const inputs = Object.fromEntries(oneYearDepositRecords(loadDepositTerms()).map((r) => [shortName(r.bank, r.bank), { ...r.rate_offered } as SiteValue]));
+    const count = computed(ends.count, "count", "F-86", inputs, { today: t, about: "כמה בנקים נאספו" });
+    return { ...built, bundle: built.bundle ? { ...built.bundle, pick: { kind: "deposit", id: ends.top.id, count } } : null };
+  }
+  if (accountClasses[record.id]) {
+    const rows = accountRuns(record, family, p05, allRules, t);
+    const best = rows.at(-1);
+    if (best) return { bundle: { ...best.bundle, pick: { kind: "account", id: best.id, count: computed(rows.length, "count", "F-80", {}, { today: t, about: "כמה בנקים ובתי השקעות שהתעריפון שלהם נאסף ושהאתר מחשב בשבילם את הדוגמה" }) } }, noGraph: null, published: null };
+  }
+  return buildInstrumentBundle(record, family, p05, allRules, t);
 }
