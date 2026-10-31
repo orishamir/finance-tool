@@ -1,6 +1,6 @@
 // "השקעה במדד" on the collected data (spec §8): the founder's plan, the grid, the custom index and D27.
 import { describe, expect, it } from "vitest";
-import { buildInvest, cheapestWay, pairCosts, indexById, knownIndices, matchKnownIndex, optionOfFund, rangeOverKnownIndices, refOfCustom, venueOfBand, type CustomIndex } from "./invest";
+import { buildInvest, cheapestWay, pairCosts, indexById, knownIndices, matchKnownIndex, optionOfFund, rangeOverKnownIndices, refOfCustom, venueOfBand, type CustomIndex, doubtOf } from "./invest";
 import { buildWorkbenchBundle } from "./providers.server";
 import type { WorkbenchInputs } from "./providers";
 import { entered } from "./value";
@@ -37,12 +37,12 @@ describe("invest page computation", () => {
     expect(fair.best?.price?.valueN).toBeGreaterThan(0);
   });
 
-  it("Psagot prices a fund abroad on its European line and its dollar conversion (issue 144)", () => {
-    const abroad = view.options.find((o) => o.id === "abroad")!.funds[0]!;
-    const at = abroad.byHouse.psagot!;
-    if (!("valueN" in at)) throw new Error(`Psagot has no price: ${at.reason.code}`);
-    expect(at.venue).toBe("europe");
-    expect(at.lines.map((l) => l.line).sort()).toEqual(["custody", "fx", "trade"]);
+  it("Psagot is grey on funds abroad, with its tariff's own words on why (issue 144, D42)", () => {
+    const abroad = view.options.find((o) => o.id === "abroad")!;
+    const accumulating = abroad.funds.filter((f) => f.rec.distribution_policy === "accumulating");
+    expect(accumulating.length).toBeGreaterThan(0);
+    for (const f of accumulating) expect("valueN" in f.byHouse.psagot!).toBe(false);
+    expect(doubtOf(bundle.snapshots.find((s) => s.id === "psagot"), "abroad")).toContain("עשויה להשתנות");
     expect(view.headline!.providerId).toBe("fair");
   });
 

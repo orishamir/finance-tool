@@ -4,7 +4,7 @@ import { renderToString } from "react-dom/server";
 import { MemoryRouter } from "react-router";
 import { describe, expect, it } from "vitest";
 import { buildWorkbenchBundle } from "../../lib/providers.server";
-import { buildInvest, indexById, refOfCustom } from "../../lib/invest";
+import { buildInvest, indexById, knownIndices, refOfCustom } from "../../lib/invest";
 import { brokerLabels, fundLabels, optionLabels } from "../../lib/labels";
 import { entered } from "../../lib/value";
 import type { WorkbenchInputs } from "../../lib/providers";
@@ -131,6 +131,26 @@ describe("who reports the tax is the route's, not the fund's (issue 126, TXF-29)
     expect(funds.find((f) => f.rec.id === "ie00b5bmr087")!.option).toBe("abroad");
     expect(funds.find((f) => f.rec.id === "1159250")!.number).toBe("1159250");
     expect(funds.find((f) => f.rec.id === "ie00b5bmr087")!.number).toBe("IE00B5BMR087");
+  });
+});
+
+describe("the page's finish line (2026-10-31)", () => {
+  it("on every index, every house has a price on a fund or a named reason on each", () => {
+    for (const i of knownIndices(bundle)) {
+      const view = buildInvest({ bundle, index: indexById(bundle, i.id)!, plan });
+      for (const f of allFunds(view)) {
+        // a fund priced nowhere names why on its own row, the same at every house
+        if (Object.keys(f.byHouse).length === 0) {
+          expect(f.reason, f.rec.id).toBeTruthy();
+          continue;
+        }
+        for (const p of view.providers) {
+          const at = f.byHouse[p.id];
+          expect(at, `${f.rec.id} at ${p.id}`).toBeTruthy();
+          if (!("valueN" in at!)) expect(at!.reason, `${f.rec.id} at ${p.id}`).toBeTruthy();
+        }
+      }
+    }
   });
 });
 
