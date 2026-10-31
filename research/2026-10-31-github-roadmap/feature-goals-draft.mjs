@@ -8,6 +8,7 @@ import { execSync } from "node:child_process";
 // the newest milestone first.
 const EACH_PRODUCT = "Done when: each has sourced terms, computed tax, its formulas with checked results, and a page.";
 const CHOSEN = {
+  "Law and terms browser (מה כתוב בחוק ובתנאים)": `Someone told me something about my money, or I'm reading my bank's terms: what's actually written, and where?\nDone when: a claim typed in plain words finds both the law or regulator source and the company's own term; each link opens at the exact page or highlighted text; terms are collected for all the banks and the popular investment houses.`,
   "Indices page": `I want to invest in the S&P 500, a TA index or another index: which broker or fund should I use?\nDone when: on every index, every collected bank and investment house has a price or a named reason, and international funds are included.`,
   "Guides": `What is this product, and does it fit me?\nDone when: each guide has a structure that suits it, no example stands on one bank, and the held visuals are decided.`,
   "Corporate bonds, REITs and gold": `What else can I hold in a securities account: corporate bonds, real-estate funds or gold funds?\n${EACH_PRODUCT}`,
@@ -31,7 +32,7 @@ const GOALS = {
   "Managed and robo portfolios": [100, 103],
   "Retirement savings": [65, 70, 73, 85, 88, 89, 90],
   "Switching": [50],
-  "Rules and sources": [15, 19, 27, 76, 78, 79, 80, 81, 82, 83, 84, 87],
+  "Law and terms browser (מה כתוב בחוק ובתנאים)": [15, 19, 27, 76, 78, 79, 80, 81, 82, 83, 84, 87, 123],
   "Whole site": [18, 22, 24, 25, 32, 52, 68, 74, 113, 116],
   "Upkeep": [31, 77, 97, 98, 117, 118, 119, 120],
 };
