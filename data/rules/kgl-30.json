@@ -20,9 +20,118 @@
     {
       "id": "infinity",
       "name_he": "אינפיניטי"
+    },
+    {
+      "id": "harel",
+      "name_he": "הראל"
+    },
+    {
+      "id": "meitav",
+      "name_he": "מיטב"
+    },
+    {
+      "id": "migdal",
+      "name_he": "מגדל"
+    },
+    {
+      "id": "clal",
+      "name_he": "כלל"
+    },
+    {
+      "id": "analyst",
+      "name_he": "אנליסט"
     }
   ],
   "sources": [
+    {
+      "url": "https://media.harel-group.co.il/media/zzqn4mnc/%D7%AA%D7%A7%D7%A0%D7%95%D7%9F-%D7%94%D7%A8%D7%90%D7%9C-%D7%92%D7%9E%D7%9C-%D7%9C%D7%94%D7%A9%D7%A7%D7%A2%D7%94-%D7%A4%D7%91%D7%A8%D7%95%D7%90%D7%A8-2021.pdf",
+      "title": "Harel 02/2021",
+      "publisher": "Harel",
+      "publisher_he": "הראל",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.10, s.36.1",
+      "locator_he": "עמוד 10, סעיף 36.1",
+      "page": 10,
+      "quote": "תקופה של לפחות שנתיים",
+      "checked": "2026-10-31"
+    },
+    {
+      "url": "https://media.harel-group.co.il/media/zzqn4mnc/%D7%AA%D7%A7%D7%A0%D7%95%D7%9F-%D7%94%D7%A8%D7%90%D7%9C-%D7%92%D7%9E%D7%9C-%D7%9C%D7%94%D7%A9%D7%A7%D7%A2%D7%94-%D7%A4%D7%91%D7%A8%D7%95%D7%90%D7%A8-2021.pdf",
+      "title": "Harel 02/2021",
+      "publisher": "Harel",
+      "publisher_he": "הראל",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.11, s.37.3",
+      "locator_he": "עמוד 11, סעיף 37.3",
+      "page": 11,
+      "quote": "אף אם לא שלחה אליו הודעה",
+      "checked": "2026-10-31"
+    },
+    {
+      "url": "https://www.meitav.co.il/media/iejme0rs/%D7%AA%D7%A7%D7%A0%D7%95%D7%9F-%D7%A7%D7%95%D7%A4%D7%AA-%D7%92%D7%9E%D7%9C-%D7%9C%D7%94%D7%A9%D7%A7%D7%A2%D7%94-172024.pdf",
+      "title": "Meitav 7.24",
+      "publisher": "Meitav",
+      "publisher_he": "מיטב",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.9, s.36.1, s.37.3",
+      "locator_he": "עמוד 9, סעיף 36.1, סעיף 37.3",
+      "page": 9,
+      "quote": "אף אם לא שלחה אליו הודעה",
+      "checked": "2026-10-31"
+    },
+    {
+      "url": "https://www.migdal.co.il/_files/ugd/5adfdb_58e4fcd54a9e450987ff9f6b3bfd00a5.pdf",
+      "title": "Migdal 05.2024",
+      "publisher": "migdal.co.il",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.10, s.36.1",
+      "locator_he": "עמוד 10, סעיף 36.1",
+      "page": 10,
+      "quote": "תקופה של לפחות שנתיים",
+      "checked": "2026-10-31"
+    },
+    {
+      "url": "https://www.migdal.co.il/_files/ugd/5adfdb_58e4fcd54a9e450987ff9f6b3bfd00a5.pdf",
+      "title": "Migdal 05.2024",
+      "publisher": "migdal.co.il",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.11, s.37.3",
+      "locator_he": "עמוד 11, סעיף 37.3",
+      "page": 11,
+      "quote": "אף אם לא שלחה אליו הודעה",
+      "checked": "2026-10-31"
+    },
+    {
+      "url": "https://www.clalbit.co.il/media/qu1isf3m/%D7%9B%D7%9C%D7%9C-%D7%92%D7%9E%D7%9C-%D7%9C%D7%A2%D7%AA%D7%99%D7%93-%D7%A7%D7%95%D7%A4%D7%AA-%D7%92%D7%9E%D7%9C-%D7%9C%D7%94%D7%A9%D7%A7%D7%A2%D7%94-7987-308.pdf",
+      "title": "Clal 2/2025",
+      "publisher": "Clal Insurance",
+      "publisher_he": "כלל ביטוח",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.10, s.36.1, s.37.3",
+      "locator_he": "עמוד 10, סעיף 36.1, סעיף 37.3",
+      "page": 10,
+      "quote": "אף אם לא שלחה אליו הודעה",
+      "checked": "2026-10-31"
+    },
+    {
+      "url": "https://www.analyst.co.il/media/otpnangh/%D7%AA%D7%A7%D7%A0%D7%95%D7%9F-%D7%A7%D7%95%D7%A4%D7%AA-%D7%92%D7%9E%D7%9C-%D7%9C%D7%94%D7%A9%D7%A7%D7%A2%D7%94-%D7%94%D7%97%D7%9C-%D7%9E-28032022-%D7%A0%D7%A7%D7%99.pdf",
+      "title": "Analyst",
+      "publisher": "Analyst",
+      "publisher_he": "אנליסט",
+      "kind": "circular",
+      "strength": "institution",
+      "locator": "p.10, s.36.1, s.37.3",
+      "locator_he": "עמוד 10, סעיף 36.1, סעיף 37.3",
+      "page": 10,
+      "quote": "אף אם לא שלחה אליו הודעה",
+      "checked": "2026-10-31"
+    },
     {
       "url": "https://www.as-invest.co.il/media/md1afb1l/אלטשולר-שחם-גמל-להשקעה-חיסכון-פלוס-תקנון-נקי-מרץ-2025.pdf",
       "title": "Altshuler bylaws March 2025",

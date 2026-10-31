@@ -146,8 +146,30 @@
       "checked": "2026-10-25"
     },
     {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/HiehF7UL8gSftjhlpLxrKPH+yuGCEINw6ptzinFLzLk=#page=17",
+      "title": "s.3, gazette ק״ת תשנ״ה, 317",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "s.3",
+      "locator_he": "סעיף 3",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fphh3DPmvYX3FiarYq7bbZFo=#page=21",
+      "title": "s.7, gazette תשס״ח, 149",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "s.7",
+      "locator_he": "סעיף 7",
+      "checked": "2026-10-25"
+    },
+    {
       "url": "https://he.wikisource.org/wiki/תקנות_השקעות_משותפות_בנאמנות_(נכסים_שמותר_לקנות_ולהחזיק_בקרן_ושיעוריהם_המרביים)",
-      "title": "תקנות השקעות משותפות בנאמנות (נכסים שמותר לקנות ולהחזיק בקרן ושיעוריהם המרביים), התשנ\"ה-1994",
+      "title": "תקנות השקעות משותפות בנאמנות (נכסים שמותר לקנות ולהחזיק בקרן ושיעוריהם המרביים), התשנ\"ה-1994, unofficial consolidated text, the only copy found of the current wording",
       "title_he": "תקנות השקעות משותפות בנאמנות (נכסים שמותר לקנות ולהחזיק בקרן ושיעוריהם המרביים), התשנ״ה-1994",
       "publisher": "Hebrew Wikisource",
       "publisher_he": "רשומות (משרד המשפטים)",
@@ -157,12 +179,12 @@
       "locator": "regs. 2, 3",
       "locator_he": "תקנות 2, 3",
       "anchor": "סעיף_2",
-      "checked": "2026-10-25"
+      "checked": "2026-10-31",
+      "note": "(gazette for the text as enacted or amended there; the Wikisource page, unofficial, is the only consolidated copy of the current wording found)"
     },
     {
       "url": "https://he.wikisource.org/wiki/תקנות_השקעות_משותפות_בנאמנות_(אופציות,_חוזים_עתידיים_ומכירות_בחסר)",
-      "title": "תקנות השקעות משותפות בנאמנות (אופציות, חוזים עתידיים ומכירות בחסר), התשס\"א-2001",
-      "title_he": "תקנות השקעות משותפות בנאמנות (אופציות, חוזים עתידיים ומכירות בחסר), התשס\"א-2001",
+      "title": "תקנות השקעות משותפות בנאמנות (אופציות, חוזים עתידיים ומכירות בחסר), התשס\"א-2001, unofficial consolidated text, the only copy found of the current wording",
       "publisher": "Hebrew Wikisource",
       "publisher_he": "ויקיטקסט",
       "kind": "regulation",
@@ -171,7 +193,8 @@
       "locator": "regs. 1, 2, 7",
       "locator_he": "תקנות 1, 2, 7",
       "anchor": "סעיף_1",
-      "checked": "2026-10-25"
+      "checked": "2026-10-31",
+      "note": "(gazette for the text as enacted or amended there; the Wikisource page, unofficial, is the only consolidated copy of the current wording found)"
     },
     {
       "url": "https://content.tase.co.il/media/iftghzjt/274765-1.pdf",

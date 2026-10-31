@@ -70,9 +70,11 @@
       "publisher_he": "בנק יהב",
       "kind": "institution_doc",
       "strength": "institution",
-      "locator": "s.3.8",
-      "locator_he": "סעיף 3.8",
-      "checked": "2026-10-25"
+      "locator": "p.4, s.3.8",
+      "locator_he": "עמוד 4, סעיף 3.8",
+      "page": 4,
+      "quote": "בכל מקרה ונסיבות לא יפחת הסכום הצבור בחשבון החיסכון מסכום הכספים שהופקדו בו",
+      "checked": "2026-10-31"
     }
   ]
 }

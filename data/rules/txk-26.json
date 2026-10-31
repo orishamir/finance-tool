@@ -55,16 +55,25 @@
       "qualifier": "(consolidated to ק\"ת 7907, 27.12.2017)"
     },
     {
+      "url": "https://www.btl.gov.il/Laws1/02_0103_100269.pdf#page=2",
+      "title": "Income Tax Regulations (Withholding from Interest, Dividend and Certain Gains), National Insurance Institute's consolidated copy, file of 3.1.2018",
+      "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס״ו-2005",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "שר האוצר (נוסח משולב באתר המוסד לביטוח לאומי)",
+      "kind": "regulation",
+      "strength": "primary",
+      "quote": "תשע״ב, 600",
+      "checked": "2026-10-31"
+    },
+    {
       "url": "https://he.wikisource.org/wiki/תקנות_מס_הכנסה_(ניכוי_מריבית,_מדיבידנד_ומרווחים_מסוימים)?action=raw",
-      "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס\"ו-2005, נוסח משולב (ויקיטקסט, מראה של התקנות)",
-      "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס\"ו-2005, נוסח משולב (ויקיטקסט, מראה של התקנות)",
+      "title": "Wikisource, unofficial",
       "publisher": "Hebrew Wikisource",
       "publisher_he": "ויקיטקסט",
-      "kind": "regulation",
+      "kind": "law",
       "strength": "primary-mirror",
       "mirror_host": "wikisource",
-      "quote": "תשע״ב, 600",
-      "checked": "2026-10-26"
+      "checked": "2026-10-31"
     },
     {
       "url": "https://olaw.org.il/takanot/takanot-7076.pdf",

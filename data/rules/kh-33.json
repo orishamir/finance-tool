@@ -25,9 +25,73 @@
     {
       "id": "meitav",
       "name_he": "מיטב"
+    },
+    {
+      "id": "mor",
+      "name_he": "מור"
+    },
+    {
+      "id": "yachad-rofim",
+      "name_he": "יחד רופאים"
     }
   ],
   "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-989/he/regulation_h_2017-9-15.pdf",
+      "title": "חוזר גופים מוסדיים 2017-9-15",
+      "title_he": "חוזר גופים מוסדיים 2017-9-15: דמי ניהול במכשירי החיסכון הפנסיוני – תיקון",
+      "publisher": "gov.il",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "p.1, s.3(א)",
+      "locator_he": "עמוד 1, סעיף 3(א)",
+      "page": 1,
+      "quote": "תקופה של חמש שנים",
+      "checked": "2026-10-31"
+    },
+    {
+      "url": "https://www.meitav.co.il/media/vgtmhdow/תקנון-קרן-השתלמות-172024.pdf",
+      "title": "מיטב: תקנון קרן השתלמות 880, 7.24",
+      "title_he": "מיטב: תקנון קרן השתלמות 880, 7.24",
+      "publisher": "Meitav",
+      "publisher_he": "מיטב",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.15, s.20.3",
+      "locator_he": "עמוד 15, סעיף 20.3",
+      "page": 15,
+      "quote": "תקופה של שנתיים או יותר",
+      "checked": "2026-10-31"
+    },
+    {
+      "url": "https://www.moreinvest.co.il/media/bojjdhiw/res_קרן-השתלמות-פברואר-2026-נקי-הוספת-מסלול-השקעה.pdf",
+      "title": "מור: תקנון קרן השתלמות, 18.2.2026",
+      "title_he": "מור: תקנון קרן השתלמות, 18.2.2026",
+      "publisher": "Mor Investment House",
+      "publisher_he": "מור בית השקעות",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.8, s.21.3",
+      "locator_he": "עמוד 8, סעיף 21.3",
+      "page": 8,
+      "quote": "דמי הניהול יהיו אחידים לכל העמיתים",
+      "checked": "2026-10-31"
+    },
+    {
+      "url": "https://www.krn-rofim.co.il/wp-content/uploads/2026/09/תקנון_קרן_רופאים_-_21.2.2024.pdf",
+      "title": "יחד רופאים: תקנון קרן השתלמות 419, 21.2.2024",
+      "title_he": "יחד רופאים: תקנון קרן השתלמות 419, 21.2.2024",
+      "publisher": "Yachad Rofim",
+      "publisher_he": "יחד רופאים",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.10, s.22",
+      "locator_he": "עמוד 10, סעיף 22",
+      "page": 10,
+      "quote": "דמי הניהול יהיו בגובה הוצאותיה בפועל",
+      "checked": "2026-10-31"
+    },
     {
       "url": "https://as-invest.co.il/media/khpp32k5/אלטשולר-שחם-השתלמות-תקנון-מהדורת-שינויים-דצמבר-2024.pdf",
       "title": "Altshuler bylaws 1.12.2024",

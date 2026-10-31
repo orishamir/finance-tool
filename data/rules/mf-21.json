@@ -13,6 +13,17 @@
   "scope": "general",
   "sources": [
     {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fphh3DPmvYX3FiarYq7bbZFo=#page=26",
+      "title": "s.3, gazette ק״ת תשס״ח, 152",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "s.3",
+      "locator_he": "סעיף 3",
+      "checked": "2026-10-31"
+    },
+    {
       "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf",
       "title": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994",
       "title_he": "חוק השקעות משותפות בנאמנות, התשנ״ד-1994",
@@ -67,7 +78,7 @@
     },
     {
       "url": "https://he.wikisource.org/wiki/תקנות_השקעות_משותפות_בנאמנות_(סיווג_קרנות_לצורך_פרסום)",
-      "title": "תקנות השקעות משותפות בנאמנות (סיווג קרנות לצורך פרסום), התשס\"ח-2007 (Wikisource mirror)",
+      "title": "תקנות השקעות משותפות בנאמנות (סיווג קרנות לצורך פרסום), התשס\"ח-2007 (Wikisource mirror), unofficial consolidated text, the only copy found of the current wording",
       "title_he": "תקנות השקעות משותפות בנאמנות (סיווג קרנות לצורך פרסום), התשס״ח-2007 (קובץ התקנות 6625)",
       "publisher": "Hebrew Wikisource",
       "publisher_he": "רשומות (משרד המשפטים)",
@@ -78,7 +89,7 @@
       "locator_he": "תקנה 3(א)(8)",
       "anchor": "סעיף_3.א",
       "quote": "שיעור הוספה בקרן אם נגבית הוספה",
-      "checked": "2026-10-26"
+      "checked": "2026-10-31"
     }
   ]
 }
