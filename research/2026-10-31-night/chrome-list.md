@@ -18,3 +18,8 @@
 - https://www.bank-yahav.co.il/clients-agreements (job 4; take the exact path from the site's menu): Yahav's agreements list, empty by curl. Wanted: the current edition of the account agreement, because the filed one has no edition date.
 - https://www.menoramivt.co.il/links/regulations-hishtalmut-omega (job 5): Menora's study fund regulations and its provident fund for investing regulations. Radware captcha to scripts.
 - https://www.yl-invest.co.il/ (job 5): Yalin Lapidot's provident regulations and fund fee page. Imperva answer to scripts (302 with no destination).
+- https://www.bankjerusalem.co.il/ (job 6; the deposit-types page, library fb822c7f76b85dad holds a Radware check instead of the page): Bank of Jerusalem's deposits and savings plans, with rates.
+- https://www.bankhapoalim.co.il/forms/he/savings/deposit-interest (job 6): the rates of Hapoalim's savings plans (חיסכון גמיש, חיסכון צומח לעתיד).
+- https://www.bankmassad.co.il/ (job 6; the interest table, library 4c6e5d2d9bd65e09 holds only its menu): the rate table for Massad's savings plans.
+- https://www.mizrahi-tefahot.co.il/ (job 6; the rate list, library dba5166ad9db9ba6 is empty): the rates of פיקדונות ענבים and other savings plans.
+- https://www.onezerobank.com/ (job 6; deposit pages): One Zero's deposits and any savings plan.
