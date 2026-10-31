@@ -60,6 +60,19 @@
   "scope": "general",
   "sources": [
     {
+      "url": "https://www.btl.gov.il/Laws1/02_0103_100009.pdf#page=1",
+      "title": "Income Tax Regulations (Exemption from Filing a Return), National Insurance Institute's consolidated copy, file of 23.12.2025",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "המוסד לביטוח לאומי",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "locator": "reg. 1",
+      "locator_he": "תקנה 1",
+      "quote": "הכנסה מנייר ערך",
+      "checked": "2026-10-31",
+      "qualifier": "(state body's consolidated copy)"
+    },
+    {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/Rw7wUk704REbG2yxl42bdFeT2Z6A1RTn4GqifMATFc4=#page=8",
       "title": "תקנות מס הכנסה (פטור מהגשת דין וחשבון) (תיקון), התשס\"ד-2004 (קובץ התקנות 6317א)",
       "title_he": "תקנות מס הכנסה (פטור מהגשת דין וחשבון) (תיקון), התשס\"ד-2004 (קובץ התקנות 6317א)",
@@ -96,6 +109,7 @@
       "kind": "official_pdf",
       "strength": "primary",
       "locator": "p.5 s.2 items 1, 3, 4, p.6 items 5-8",
+      "locator_he": "עמוד 5 סעיף 2 פרטים 1, 3, 4, עמוד 6 פרטים 5-8",
       "page": 5,
       "quote": "אלה הסכומים המרביים לשנת 2025, המקנים פטור מהגשת דוח",
       "checked": "2026-10-25"
@@ -169,18 +183,13 @@
     },
     {
       "url": "https://he.wikisource.org/wiki/תקנות_מס_הכנסה_(פטור_מהגשת_דין_וחשבון)?action=raw",
-      "title": "תקנות מס הכנסה (פטור מהגשת דין וחשבון), התשמ\"ח-1988, נוסח משולב (ויקיטקסט, מראה של התקנות)",
-      "title_he": "תקנות מס הכנסה (פטור מהגשת דין וחשבון), התשמ״ח-1988",
+      "title": "Wikisource, unofficial",
       "publisher": "Hebrew Wikisource",
-      "publisher_he": "רשומות (משרד המשפטים)",
-      "kind": "regulation",
+      "publisher_he": "ויקיטקסט",
+      "kind": "law",
       "strength": "primary-mirror",
       "mirror_host": "wikisource",
-      "locator": "reg. 1",
-      "locator_he": "תקנה 1",
-      "anchor": "סעיף_1",
-      "quote": "הכנסה מנייר ערך",
-      "checked": "2026-10-26"
+      "checked": "2026-10-25"
     }
   ]
 }

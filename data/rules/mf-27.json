@@ -51,6 +51,7 @@
       "strength": "primary-mirror",
       "mirror_host": "other",
       "locator": "p.10 ; p.11, s.3 item 3",
+      "locator_he": "עמוד 10 ; עמוד 11, סעיף 3 פרט 3",
       "page": 10,
       "quote": "ביחס לחברי בורסה שאינם בעלי רישיון שיווק, שהם בעיקר בנקים",
       "checked": "2026-10-26",
@@ -66,6 +67,7 @@
       "strength": "primary-mirror",
       "mirror_host": "other",
       "locator": "p.11, s.3 item 3",
+      "locator_he": "עמוד 11, סעיף 3 פרט 3",
       "page": 11,
       "checked": "2026-10-26",
       "qualifier": "(third-party host: funder.co.il)"

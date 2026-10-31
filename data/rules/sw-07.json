@@ -73,6 +73,7 @@
       "kind": "circular",
       "strength": "primary",
       "locator": "p.12, Annex A",
+      "locator_he": "עמוד 12, נספח א",
       "page": 12,
       "quote": "על-ידי חתימה על טופס הודעת ביטול והעברתו לקופה המעבירה",
       "checked": "2026-10-25"

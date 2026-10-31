@@ -42,6 +42,20 @@
   "scope": "general",
   "sources": [
     {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/r_2020-9-22/he/2020-9-22.pdf",
+      "title": "חוזר גופים מוסדיים 2020-9-22 – דוח שנתי ודוח רבעוני לעמיתים ולמבוטחים בגוף מוסדי – תיקון",
+      "title_he": "חוזר גופים מוסדיים 2020-9-22 – דוח שנתי ודוח רבעוני לעמיתים ולמבוטחים בגוף מוסדי – תיקון",
+      "publisher": "gov.il",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "p.37",
+      "locator_he": "עמוד 37",
+      "page": 37,
+      "quote": "למעט במקרים בהם לא ניתן לגבות דמי ניהול מהפקדה כגון: קופה בניהול אישי, קרן השתלמות",
+      "checked": "2026-10-26"
+    },
+    {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=6",
       "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012",
       "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע״ב-2012",
@@ -82,6 +96,20 @@
       "checked": "2026-10-25"
     },
     {
+      "url": "https://www.gov.il/BlobFolder/reports/tender-0102/he/Commissioner%20Report%202025%20chapter%204_Digital%20-%20%D7%9E%D7%95%D7%A0%D7%92%D7%A9%20%D7%A1%D7%95%D7%A4%D7%99.pdf",
+      "title": "דוח הממונה על שוק ההון, ביטוח וחיסכון לשנת 2025 – פרק 4",
+      "title_he": "דוח הממונה על שוק ההון, ביטוח וחיסכון לשנת 2025",
+      "publisher": "gov.il",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.7, s.4.1.2",
+      "locator_he": "עמוד 7, סעיף 4.1.2",
+      "page": 7,
+      "quote": "קופות גמל – למעט קרנות השתלמות שבהן אין דמי ניהול מהפקדה",
+      "checked": "2026-10-25"
+    },
+    {
       "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf",
       "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005",
       "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005",
@@ -106,34 +134,6 @@
       "locator": "p.2, s.1",
       "locator_he": "עמוד 2, סעיף 1",
       "page": 2,
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/r_2020-9-22/he/2020-9-22.pdf",
-      "title": "חוזר גופים מוסדיים 2020-9-22 – דוח שנתי ודוח רבעוני לעמיתים ולמבוטחים בגוף מוסדי – תיקון",
-      "title_he": "חוזר גופים מוסדיים 2020-9-22 – דוח שנתי ודוח רבעוני לעמיתים ולמבוטחים בגוף מוסדי – תיקון",
-      "publisher": "gov.il",
-      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
-      "kind": "circular",
-      "strength": "primary",
-      "locator": "p.37",
-      "locator_he": "עמוד 37",
-      "page": 37,
-      "quote": "למעט במקרים בהם לא ניתן לגבות דמי ניהול מהפקדה כגון: קופה בניהול אישי, קרן השתלמות, קופה לפי הוצאות בפועל",
-      "checked": "2026-10-26"
-    },
-    {
-      "url": "https://www.gov.il/BlobFolder/reports/tender-0102/he/Commissioner%20Report%202025%20chapter%204_Digital%20-%20%D7%9E%D7%95%D7%A0%D7%92%D7%A9%20%D7%A1%D7%95%D7%A4%D7%99.pdf",
-      "title": "דוח הממונה על שוק ההון, ביטוח וחיסכון לשנת 2025 – פרק 4: נתונים כמותיים – החיסכון הפנסיוני",
-      "title_he": "דוח הממונה על שוק ההון, ביטוח וחיסכון לשנת 2025 – פרק 4: נתונים כמותיים – החיסכון הפנסיוני",
-      "publisher": "gov.il",
-      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
-      "kind": "official_pdf",
-      "strength": "primary",
-      "locator": "p.7, s.4.1.2, chart ד-3",
-      "locator_he": "עמוד 7, סעיף 4.1.2, תרשים ד-3",
-      "page": 7,
-      "quote": "קופות גמל – למעט קרנות השתלמות שבהן אין דמי ניהול מהפקדה",
       "checked": "2026-10-25"
     }
   ]

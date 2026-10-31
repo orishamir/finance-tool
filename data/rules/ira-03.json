@@ -34,6 +34,28 @@
       "checked": "2026-10-25"
     },
     {
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf#page=1",
+      "title": "s.1, gazette ס״ח תשס״ה, 889",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "s.1",
+      "locator_he": "סעיף 1",
+      "checked": "2026-10-26"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf#page=8",
+      "title": "s.13",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "s.13",
+      "locator_he": "סעיף 13",
+      "checked": "2026-10-26"
+    },
+    {
       "url": "https://fs.knesset.gov.il/20/law/20_lsr_343169.pdf",
       "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 15), התשע\"ו-2016, ספר החוקים 2554",
       "title_he": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 15), התשע\"ו-2016",
@@ -61,7 +83,7 @@
     },
     {
       "url": "https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)",
-      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005, נוסח משולב (ויקיטקסט, mirror of the law)",
+      "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005, נוסח משולב (ויקיטקסט, mirror of the law), unofficial consolidated text, the only copy found of the current wording",
       "publisher": "Hebrew Wikisource",
       "publisher_he": "ויקיטקסט",
       "kind": "law",
@@ -71,7 +93,8 @@
       "locator_he": "סעיף 1",
       "anchor": "סעיף_1",
       "quote": "”קופת גמל בניהול אישי“ – קרן שאושרה לפי הוראות סעיף 13(א) כקופת גמל לתגמולים, כקופת גמל לקצבה או כקרן השתלמות, או תכנית ביטוח שאושרה לפי הוראות סעיף 13(ב) כקופת גמל לתגמולים או כקופת גמל לקצבה",
-      "checked": "2026-10-26"
+      "checked": "2026-10-31",
+      "note": "(gazette for the text as enacted or amended there; the Wikisource page, unofficial, is the only consolidated copy of the current wording found)"
     }
   ]
 }

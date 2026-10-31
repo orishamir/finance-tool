@@ -18,7 +18,8 @@ describe("the providers the brokerage wrapper carries", () => {
     for (const id of ["psagot", "ibi"]) expect(ids).toContain(id);
     expect(ids).not.toContain("meitav-trade"); // its snapshot is marked missing
     // the representative fund (5139282) is a tracking fund, `mutual_fund_units`: a tariff with no buy/sell line for that class gives no price, never a free trade (F-63 "No line, no price", MF-26, 2026-10-25)
-    for (const id of ["one-zero", "leumi", "hapoalim", "discount"]) expect(ids).not.toContain(id);
+    for (const id of ["leumi", "interactive-brokers"]) expect(ids).not.toContain(id);
+    expect(ids).toContain("one-zero"); // its TASE line covers tracking funds by footnote 9 (MF-27; snapshot 2026-10-31)
     for (const p of Object.values(wrapper.providers!)) {
       expect(p.name.length).toBeGreaterThan(2);
       expect(p.tariff.buy).toBeDefined();
@@ -56,9 +57,9 @@ describe("the 20-year case on the cheapest collected broker", () => {
   it("ranks the providers by what the option ends at; the cheapest is the one the workbench's lines make cheapest", () => {
     expect(outcomes.length).toBe(Object.keys(wrapper.providers!).length);
     for (let i = 1; i < outcomes.length; i++) expect(outcomes[i - 1]!.real).toBeGreaterThanOrEqual(outcomes[i]!.real);
-    expect(best.id).toBe("psagot"); // One Zero has no line for tracking funds (no line, no price), so it is not in the ranking at all
-    expect(outcomes[1]!.id).toBe("ibi");
-    expect(outcomes.at(-1)!.id).toBe("altshuler-trade");
+    expect(best.id).toBe("one-zero"); // no custody fee; its TASE line covers tracking funds by footnote (MF-27, snapshot 2026-10-31)
+    expect(outcomes[1]!.id).toBe("psagot");
+    expect(outcomes.at(-1)!.id).toBe("excellence");
   });
   it("shows the card's own run (P-05's Leumi tariff, which the picker no longer lists) as the site's choice, on the direct channel", () => {
     expect(all.site).toMatchObject({ id: "leumi", current: true, channel: "direct" });
@@ -79,7 +80,7 @@ describe("the 20-year case on the cheapest collected broker", () => {
     expect(kgl - dflt).toBeCloseTo(2_169, -2); // 3,154 on the branch line (the scenario audit); 2,169 on the direct channel (review fix 2026-10-24)
     expect(cheapest).toBeGreaterThan(kgl);
     expect(Math.round(kgl)).toBe(1_032_222);
-    expect(cheapest).toBeCloseTo(1_094_858, -2);
+    expect(cheapest).toBeCloseTo(1_098_743, -2);
     expect(Math.abs(dflt - 1_030_053)).toBeLessThan(100);
     // the ranking moves: the brokerage account leads outright with that broker
     const ev = evaluate(chosen, goal);
@@ -108,14 +109,14 @@ describe("the site's pick of the brokerage tariff (F-80, 2026-10-24, Doron's cas
   it("prices the account on the collected tariff that leaves the goal the most, named as the site's pick", () => {
     const b = applyProviders(bundle, doron);
     const w = b.wrappers.find((x) => x.id === BRK)!;
-    expect(w.representative).toMatchObject({ providerId: "psagot", pickedBy: "site", compared: Object.keys(wrapper.providers!).length });
+    expect(w.representative).toMatchObject({ providerId: "one-zero", pickedBy: "site", compared: Object.keys(wrapper.providers!).length });
     expect(w.representative!.chosen).toBeUndefined();
     expect(w.feeValues.custodyRate).toMatchObject({ state: "sourced" });
     expect(real(b, BRK, doron)).toBeGreaterThan(real(bundle, BRK, doron) + 3_000);
-    expect(Math.round(real(b, BRK, doron))).toBe(89_357);
+    expect(Math.round(real(b, BRK, doron))).toBe(89_759);
   });
-  it("never picks a provider whose tariff has no line for the fund's class: One Zero (no tracking-fund line) was 89,759 here before 2026-10-25 and is not a candidate now", () => {
-    expect(Object.keys(wrapper.providers!)).not.toContain("one-zero");
+  it("never picks a provider whose tariff has no line for the fund's class: Interactive Brokers has no tracking-fund line and is not a candidate", () => {
+    expect(Object.keys(wrapper.providers!)).not.toContain("interactive-brokers");
     for (const g of [doron, { ...doron, monthly: 1_200 }, goal, { ...goal, horizonYears: 3 }]) {
       const id = applyProviders(bundle, g).wrappers.find((x) => x.id === BRK)!.representative!.providerId!;
       expect(Object.keys(wrapper.providers!)).toContain(id);
@@ -148,8 +149,8 @@ describe("the site's pick of the brokerage tariff (F-80, 2026-10-24, Doron's cas
     const b = applyProviders(bundle, doron);
     const out = providerOutcomes(b, doron, BRK);
     expect(out.site).toBeNull();
-    expect(out.providers.find((p) => p.current)?.id).toBe("psagot");
-    expect(out.providers[0]!.id).toBe("psagot");
+    expect(out.providers.find((p) => p.current)?.id).toBe("one-zero");
+    expect(out.providers[0]!.id).toBe("one-zero");
   });
   it("names the pair behind a tax gap that is a fee effect, and not a pair without custody fees", () => {
     const v = buildView(bundle, doron);

@@ -62,6 +62,19 @@
   "scope": "general",
   "sources": [
     {
+      "url": "https://www.btl.gov.il/Laws1/00_0022_000000.pdf#page=4",
+      "title": "VAT Law, National Insurance Institute's consolidated copy, file of 16.7.2026",
+      "title_he": "חוק מס ערך מוסף, התשל״ו-1975",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "s.4(ב)",
+      "locator_he": "סעיף 4(ב)",
+      "checked": "2026-10-31",
+      "qualifier": "(state body's consolidated copy, not the binding gazette wording; the \"מס שכר וריווח\" sentence is on file p.4)"
+    },
+    {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/ZsA~3yZgyGvixaLSmrNuT9FNV0Dr87ujJ8ymJhX0qnM=#page=2",
       "title": "צו מס ערך מוסף (שיעור המס על עסקה ועל יבוא טובין) (תיקון), התשפ\"ד-2024 (קובץ התקנות 11179)",
       "title_he": "צו מס ערך מוסף (שיעור המס על עסקה ועל יבוא טובין), התשס״ה-2005 (קובץ התקנות 6416; תיקון אחרון: קובץ התקנות 11179)",
@@ -173,18 +186,13 @@
     },
     {
       "url": "https://he.wikisource.org/wiki/חוק_מס_ערך_מוסף",
-      "title": "חוק מס ערך מוסף, התשל\"ו-1975, s.4(ב) (Wikisource)",
-      "title_he": "חוק מס ערך מוסף, התשל״ו-1975",
+      "title": "Wikisource, unofficial",
       "publisher": "Hebrew Wikisource",
-      "publisher_he": "הכנסת",
+      "publisher_he": "ויקיטקסט",
       "kind": "law",
       "strength": "primary-mirror",
       "mirror_host": "wikisource",
-      "locator": "s.4(ב)",
-      "locator_he": "סעיף 4(ב)",
-      "anchor": "סעיף_4.ב",
-      "checked": "2026-10-25",
-      "qualifier": "(mirror; no official text of the current s.4(ב) wording found, so the \"מס שכר וריווח\" sentence rests on the mirror only)"
+      "checked": "2026-10-25"
     }
   ]
 }

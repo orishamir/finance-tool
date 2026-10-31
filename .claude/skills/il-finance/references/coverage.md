@@ -47,7 +47,7 @@ These apply to the whole knowledge base, not to one topic.
      - The clearing-house page lists its six attachments.
      - Circular 7/2003, on this list's not-done items, has its PDF at
        `/BlobFolder/policy/income-tax-professional-inst-7-2003/he/Policy_IncomeTaxInst_hoz7-2003.pdf`.
-     - The tax-treaties collector address in `tax-securities-foreign.md` now leads to gov.il's error page.
+     - Tax treaties: the collector address in `tax-securities-foreign.md` leads to gov.il's error page. The Tax Authority's real page is https://www.gov.il/he/pages/double-tax-prevention-agreements (read in Chrome 2026-10-31, updated 17.07.2024): a treaty takes priority over domestic law where it is kinder on the rate, domestic law applies where the treaty is harsher. It does not link each treaty's text in what was read; the Hebrew texts sit under `BlobFolder/dynamiccollectorresultitem/<country>_dtpa/` for some countries (Luxembourg opens, the United States, Ireland and the United Kingdom under that pattern answer 404), so the US treaty is still cited from the IRS's copy.
      These are not behind such a check: fs.knesset.gov.il (Reshumot PDFs), the Knesset OData API, data.gov.il,
      btl.gov.il, new.isa.gov.il, boi.org.il and gemelnet.cma.gov.il.
    - **Bank of Israel:** consumer pages and the makam auction pages (bot check).

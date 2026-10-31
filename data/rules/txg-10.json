@@ -63,6 +63,33 @@
   "scope": "general",
   "sources": [
     {
+      "url": "https://www.gov.il/BlobFolder/policy/inst-05-2025/he/IncomeTax_inst-05-2025.pdf",
+      "title": "רשות המסים, הוראת ביצוע 5/2025",
+      "title_he": "רשות המסים, הוראת ביצוע 5/2025",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.2, s.2 ; pp.3-4, s.3.3",
+      "locator_he": "עמוד 2, סעיף 2 ; עמודים 3 עד 4, סעיף 3.3",
+      "page": 2,
+      "quote": "ורק הכנסות אלו יילקחו",
+      "checked": "2026-10-31"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/policy/inst-05-2025/he/IncomeTax_inst-05-2025.pdf",
+      "title": "רשות המסים, הוראת ביצוע 5/2025",
+      "title_he": "רשות המסים, הוראת ביצוע 5/2025",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "pp.3-4, s.3.3",
+      "locator_he": "עמודים 3 עד 4, סעיף 3.3",
+      "page": 3,
+      "checked": "2026-10-31"
+    },
+    {
       "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
       "title": "Deductions booklet 2026",
       "title_he": "לוח עזר לחישוב מס הכנסה ממשכורת ושכר עבודה (חוברת הניכויים) 2026",

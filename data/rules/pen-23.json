@@ -84,6 +84,19 @@
   "scope": "general",
   "sources": [
     {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2025-26/he/clarification_regarding_the_selected_funds_procedure_pdf.pdf",
+      "title": "הבהרה לעניין הליך קביעת קרנות נבחרות, 11.6.2025",
+      "title_he": "הבהרה לעניין הליך קביעת קרנות נבחרות, 11.6.2025",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.1",
+      "locator_he": "עמוד 1",
+      "page": 1,
+      "checked": "2026-10-31"
+    },
+    {
       "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2024-097/he/Regulations_regarding_the_selection_of_%20a_provident_fund-updating%20_(pdf).pdf",
       "title": "חוזר גופים מוסדיים 2024-9-6 – הוראות לעניין בחירת קופת גמל – עדכון",
       "title_he": "חוזר גופים מוסדיים 2024-9-6: הוראות לעניין בחירת קופת גמל – עדכון",

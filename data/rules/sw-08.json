@@ -100,7 +100,8 @@
       "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
       "kind": "circular",
       "strength": "primary",
-      "locator": "p.12, Annex A",
+      "locator": "p.12, Annex A part 1 item 6",
+      "locator_he": "עמוד 12, נספח א חלק 1 פרט 6",
       "page": 12,
       "checked": "2026-10-25"
     }

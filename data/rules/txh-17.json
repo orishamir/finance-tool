@@ -22,6 +22,7 @@
       "kind": "official_pdf",
       "strength": "primary",
       "locator": "p.5, item 2",
+      "locator_he": "עמוד 5, פרט 2",
       "page": 5,
       "quote": "פטור ממס רווחי הון בעת שינוי הרכב הנכסים (דחיית מס)",
       "checked": "2026-10-25"
