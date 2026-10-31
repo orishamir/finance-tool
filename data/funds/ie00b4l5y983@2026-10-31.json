@@ -1,0 +1,83 @@
+{
+  "id": "ie00b4l5y983",
+  "names": {
+    "en": [
+      "iShares Core MSCI World UCITS ETF",
+      "iShares Core MSCI World UCITS ETF USD (Acc)"
+    ],
+    "he": [],
+    "tase": []
+  },
+  "identifiers": {
+    "isin": "IE00B4L5Y983",
+    "tase_number": null,
+    "cusip": null,
+    "ticker": {
+      "LSE_GBP": "SWDA",
+      "LSE": "IWDA",
+      "Euronext Amsterdam": "IWDA"
+    }
+  },
+  "manager": "BlackRock (fund: iShares III plc)",
+  "domicile": "IE",
+  "legal_form": "UCITS ETF, share class USD Accumulating of iShares III plc, Ireland; 'Product Structure: Physical', 'Methodology: Optimised' (a sample of the index, not every share); launch 25-Sept-2009; benchmark 'MSCI World Index (Net)'. The factsheet has no Tel Aviv line and BlackRock's Israel brochure has no row for it.",
+  "exposure_id": "index-msci-world",
+  "currency": "USD",
+  "trading_currency_on_tase": null,
+  "distribution_policy": "accumulating",
+  "tax_status": {
+    "il_fund_tax_track": null,
+    "tase_foreign_fund_90pct_test": null
+  },
+  "fees": {
+    "fixed_management": {
+      "value": 0.2,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://www.ishares.com/gls-download/literature/fact-sheet/swda-ishares-core-msci-world-ucits-etf-fund-fact-sheet-en-gb.pdf#page=1",
+        "title": "iShares Core MSCI World UCITS ETF USD (Acc), factsheet, data at 05-Oct-2026, p. 1: 'Total Expense Ratio : 0.20%' (library 2460e00d3df1b43d)",
+        "publisher": "BlackRock (iShares III plc)",
+        "strength": "institution"
+      },
+      "checked": "2026-10-31",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "ETF-28",
+        "TXF-16",
+        "TXF-29",
+        "TXF-30",
+        "TXF-31"
+      ],
+      "state": "sourced",
+      "notes": "Total expense ratio of the share class as the factsheet prints it (marketing material for UK investors; performance and net assets at 30-Sep-2026, all other data at 05-Oct-2026). The prospectus and key information document were not opened."
+    },
+    "trustee": null,
+    "variable_management": null,
+    "tracking_difference_12m": null,
+    "median_spread": null,
+    "fund_level_withholding_drag": null
+  },
+  "dimensions": {
+    "foreign-withholding-domicile": "covered:TXF-16",
+    "distribution-policy": "covered:ETF-28",
+    "currency": "covered:ETF-28",
+    "fee-management-balance": "covered:ETF-28",
+    "fee-trade": "covered:ETF-29"
+  },
+  "prospectus": {
+    "url": "https://www.ishares.com/gls-download/literature/fact-sheet/swda-ishares-core-msci-world-ucits-etf-fund-fact-sheet-en-gb.pdf",
+    "date": null
+  },
+  "snapshot": "2026-10-31",
+  "replication": {
+    "method": "physical",
+    "source": {
+      "url": "https://www.ishares.com/gls-download/literature/fact-sheet/swda-ishares-core-msci-world-ucits-etf-fund-fact-sheet-en-gb.pdf",
+      "page": 1,
+      "checked": "2026-10-31"
+    }
+  }
+}

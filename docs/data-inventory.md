@@ -22,6 +22,7 @@ Status: **for founder review.** Section 3 lists what the inventory found that ne
 
   N6 is no longer "Leumi only".
 - `data/series/` (row 24): 4. `ecb-fx.json` (the ECB's daily reference rates, D26, F-84) joined on 2026-10-25; `ecb-fx-month-end.json` (the ECB's month-end rates of the dollar and the shekel since 2000, F-93) on 2026-10-29.
+- `data/funds/` (row 22), 2026-10-31: 60 funds. Nine foreign funds and three Tel Aviv lines joined (issue 30): iShares and Vanguard on the S&P 500, iShares on NASDAQ-100, MSCI World and MSCI ACWI. A record is one listing: a share class with a Tel Aviv line and a foreign one has a record for each, because they are priced apart (1159250 and ie00b5bmr087; 1159243 and ie00b53szb19; 1159235 and ie00b6r52259). Not collected: Invesco (invesco.com refuses scripts) and iShares TA-35 (only third-party pages found, and they disagree on whether it is active). The distributing funds (IUSA, VUSA, VOO, IVV, ACWI) carry no yield, so they stay rows without a price.
 - `data/funds/` (row 22), 2026-10-29: 43 records carry `tracking_record`, the yearly fund and index returns their reports print (F-92), taken from the notes already collected; 5 have no full year (ATF 1218916, MTF 5140165, iShares, the two money-market funds).
 - `data/parameters/`: 10. `home-guide-door.json` joined the nine named above.
 - `data/open-questions.json`: added 2026-10-26 (data-schema 3.15).

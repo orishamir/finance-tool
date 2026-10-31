@@ -158,7 +158,8 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
   // the account and the fund the two lists are priced on: the person's picks on this index, else the cheapest way (2026-10-27)
   const [picked, setPicked] = useState<{ index: string; pick: Pick } | null>(null);
   const [labelFilter, setLabelFilter] = useState<string | null>(null);
-  const validPick = (p: Pick) => !!view && allFunds(view).some((f) => f.rec.id === p.fund) && view.providers.some((x) => x.id === p.house);
+  // a fund priced nowhere (a distributing fund whose yield is not known) keeps its row with the reason, and is not a pair to show
+  const validPick = (p: Pick) => !!view && allFunds(view).some((f) => f.rec.id === p.fund && Object.values(f.byHouse).some((x) => "valueN" in x)) && view.providers.some((x) => x.id === p.house);
   const pick: Pick | null = view && index && picked && picked.index === index.id && validPick(picked.pick) ? picked.pick : view ? pickOfHeadline(view) : null;
   const onPick = (p: Pick) => index && setPicked({ index: index.id, pick: p });
   // an index with no fund records (a custom one): the houses and their broker costs, and the request for funds
@@ -190,13 +191,15 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
       fx={wb.fx}
       today={data.today}
       example={Object.keys(released.state.entered).length === 0}
+      dollar={!index?.israeli}
     />
   );
 
   return (
     <LabelSheetHost>
-      <div className="flex flex-col gap-section pt-2 lg:pt-8">
-        <div className="flex flex-col gap-5">
+      {/* tighter than a page's sections: the sliders and the result they move stay in one view (founder, 2026-10-31) */}
+      <div className="flex flex-col gap-5 lg:gap-6 pt-2 lg:pt-6">
+        <div className="flex flex-col gap-4">
           <Head />
           {chips}
         </div>

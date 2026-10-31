@@ -304,7 +304,8 @@ export function PairResult({ view, bundle, plan, settled, pick, onPick }: { view
   const years = plan.years;
   const months = 12 * plan.years;
   // the legend names every account line whichever pair is shown, so it keeps its size from one pick to the next
-  const lines = [...Object.keys(lineClass), ...([...pc.account, ...(pcOther?.account ?? [])].some((l) => lineOf(l.line) === "other") ? ["other"] : [])];
+  // an index in shekels has no conversion line to name
+  const lines = [...Object.keys(lineClass).filter((l) => l !== "fx" || !view.index.israeli), ...([...pc.account, ...(pcOther?.account ?? [])].some((l) => lineOf(l.line) === "other") ? ["other"] : [])];
   // a gap names its two inputs by whose they are, as the figure's sheet lists them
   const gap = (a: SiteValue, aName: string, b: SiteValue, bName: string, about: string) => nis((a.value as number) - (b.value as number), "F-65", about, bundle.today, { [aName]: a, [bName]: b });
   const otherRole = onBest ? c.pair.next : c.pair.cheapest;
@@ -578,8 +579,8 @@ const mayaHrefOf = (f: FundWay) => {
   return (f.option === "il-etf" || f.option === "il-tracking") && f.rec.identifiers.tase_number ? mayaFundHref(f.rec.identifiers.tase_number) : null;
 };
 
-/** The fund's labels: how it trades (the type, from its option), then what the record says about it. */
-const labelsOf = (view: InvestView, f: FundWay): Label[] => [optionLabels(f.option)[1] ?? optionLabels(f.option)[0]!, ...fundLabels(f.rec, view.index, f.option)];
+/** The fund's labels: how it trades (the type, from its option; a foreign fund, where it is listed, since the same fund can have a row for each), then what the record says about it. */
+const labelsOf = (view: InvestView, f: FundWay): Label[] => [f.option === "tase-foreign" ? optionLabels(f.option)[0]! : optionLabels(f.option)[1] ?? optionLabels(f.option)[0]!, ...fundLabels(f.rec, view.index, f.option)];
 
 /** F-92 (a) in a row: the gap with its sign, and the years it rests on. */
 function GapCell({ rec, today }: { rec: FundWay["rec"]; today: string }) {

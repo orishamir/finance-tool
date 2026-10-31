@@ -12,6 +12,7 @@ import {
   feesSnapshot,
   fundListFile,
   fundRecord,
+  type FundRecord,
   type FundListFile,
   openQuestionsFile,
   type OpenQuestionEntry,
@@ -122,6 +123,9 @@ export function validateData(ctx: ValidationContext): Problem[] {
     if (collection === "fund-lists" && result.success) {
       for (const message of checkFundList(parsed.value as FundListFile, parts[parts.length - 1]!)) report(file, message);
     }
+    if (collection === "funds" && result.success) {
+      for (const message of checkFundLoad(parsed.value as Pick<FundRecord, "fees">)) report(file, message);
+    }
     if (collection === "catalog" && result.success && cmaFundIds) {
       const maps = (parsed.value as { maps_to: { cma_fund_id: number | null; track_ids: number[] } }).maps_to;
       // `cma_fund_id` is the fund (קופה) number from the institution's documents and transfer_bank (CAT-09); the
@@ -171,6 +175,16 @@ export function validateData(ctx: ValidationContext): Problem[] {
     emit(`warning: ${category}: ${ids.length} (${ids.slice(0, 6).join(", ")}${ids.length > 6 ? ", ..." : ""})`);
   }
   return problems;
+}
+
+/**
+ * data-schema §3.5 and §4 item 15 (issue 44): the page shows no load and prices none while every collected load is zero. A load
+ * above zero would be a cost the reader never sees, so it fails until the page prices it.
+ */
+export function checkFundLoad(record: Pick<FundRecord, "fees">): string[] {
+  const value = record.fees.load?.value;
+  if (typeof value !== "number" || value <= 0) return [];
+  return [`fees.load: this fund charges a load on purchase of ${value}%, and the page does not yet price it; show and price the load before adding this value (issue 44)`];
 }
 
 /** The words a document must use before a house ranks on a kind of holding (founder, 2026-10-31: no price from analogy). */

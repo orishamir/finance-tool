@@ -154,6 +154,26 @@
       ],
       "state": "sourced",
       "notes": "Not applicable as a foreign-withholding figure: the fund tracks a TASE index and holds its shares (ETF-11, local index); no computation is made here."
+    },
+    "load": {
+      "value": 0,
+      "unit": "pct_of_trade",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1769001-1770000/P1769340-00.pdf#page=1",
+        "title": "דוח שנתי 'הראל מחקה (4A) ת\"א 35' (מספר בורסה 5130661), תאריך הדוח 30 ביוני 2026, הראל קרנות נאמנות בע\"מ (Maya filing 1769340, PDF), עמ' 1: 'שיעור ההוספה המשולמת בעת רכישת היחידות 0%'",
+        "publisher": "הראל קרנות נאמנות בע\"מ",
+        "strength": "institution"
+      },
+      "checked": "2026-10-31",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "MF-21"
+      ],
+      "state": "sourced",
+      "notes": "Words as printed on page 1 of the report. A zero is the rate this report states; the maximum sits in the fund agreement (MF-21), which was not read for this record, and the report says a manager raises its pay, the load included, only at the start of a calendar year. Any commission a distributor charges on buying or selling is a tariff line, not this load."
     }
   },
   "dimensions": {

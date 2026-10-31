@@ -155,6 +155,26 @@
       ],
       "state": "sourced",
       "notes": "Not collected: no computation is made here and the report prints no withholding figure; any dividend-withholding drag sits inside the pricing of the instruments the fund uses and is not published as a rate."
+    },
+    "load": {
+      "value": 0,
+      "unit": "pct_of_trade",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1731001-1732000/P1731568-00.pdf#page=1",
+        "title": "דוח שנתי 'אלטשולר שחם מחקה (4D) S&P 500' (מספר בורסה 5139100), תאריך הדוח 31 בדצמבר 2025, אלטשולר - שחם ניהול קרנות נאמנות בע\"מ (Maya filing 1731568, PDF), עמ' 1: 'שיעור ההוספה המשולמת בעת רכישת יחידות הקרן 0%'",
+        "publisher": "אלטשולר - שחם ניהול קרנות נאמנות בע\"מ",
+        "strength": "institution"
+      },
+      "checked": "2026-10-31",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "MF-21"
+      ],
+      "state": "sourced",
+      "notes": "Words as printed on page 1 of the report. A zero is the rate this report states; the maximum sits in the fund agreement (MF-21), which was not read for this record, and the report says a manager raises its pay, the load included, only at the start of a calendar year. Any commission a distributor charges on buying or selling is a tariff line, not this load."
     }
   },
   "dimensions": {

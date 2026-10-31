@@ -208,6 +208,8 @@ export interface ProviderInfo {
   short: string;
   providerClass: FeesSnapshot["provider"]["class"];
   foreign: boolean;
+  /** A foreign broker whose own terms offer a service that withholds Israeli tax (BRK-36). */
+  taxService: boolean;
   /** Whether a company page exists (banks and brokers only). */
   hasPage: boolean;
 }
@@ -320,7 +322,7 @@ export function providersOfInvest(bundle: Pick<WorkbenchBundle, "snapshots">): F
   return bundle.snapshots.filter((s) => s.provider.class === "bank" || s.provider.class === "broker" || s.provider.class === "foreign_broker").sort((a, b) => a.provider.name_he.localeCompare(b.provider.name_he, "he"));
 }
 
-export const providerInfo = (s: FeesSnapshot): ProviderInfo => ({ id: s.id, name: s.provider.name_he, short: shortName(s.id, s.provider.name_he), providerClass: s.provider.class, foreign: s.provider.class === "foreign_broker", hasPage: s.provider.class === "bank" || s.provider.class === "broker" });
+export const providerInfo = (s: FeesSnapshot): ProviderInfo => ({ id: s.id, name: s.provider.name_he, short: shortName(s.id, s.provider.name_he), providerClass: s.provider.class, foreign: s.provider.class === "foreign_broker", taxService: s.provider.israeli_tax_service === true, hasPage: s.provider.class === "bank" || s.provider.class === "broker" });
 
 interface Cand {
   venue: Venue | null;

@@ -30,6 +30,7 @@ export type LabelId =
   | "pays-accumulating"
   | "pays-distributing"
   | "ask-self-report"
+  | "ask-tax-service"
   | "ask-estate"
   | "risk-unsupervised"
   | "ask-w8"
@@ -62,7 +63,8 @@ export const labelDefs: Record<LabelId, LabelDef> = {
   "tax-on-sale-open": { icon: "lock", tone: "open", rules: ["TXF-11"] },
   "pays-accumulating": { icon: "piggy", tone: "neutral", rules: ["MF-49"] },
   "pays-distributing": { icon: "handCoins", tone: "neutral", rules: ["MF-49"] },
-  "ask-self-report": { icon: "file", tone: "caution", rules: ["TXF-22"] },
+  "ask-self-report": { icon: "file", tone: "caution", rules: ["TXF-22", "TXF-29"] },
+  "ask-tax-service": { icon: "file", tone: "caution", rules: ["BRK-36", "TXF-22"] },
   "ask-estate": { icon: "alert", tone: "caution", rules: ["TXF-27"] },
   "risk-unsupervised": { icon: "ban", tone: "caution", rules: ["BRK-06", "ETF-24"] },
   "ask-w8": { icon: "file", tone: "caution", rules: ["TXF-13"] },
@@ -101,6 +103,7 @@ const familyOf: Record<LabelId, Label["family"]> = {
   "pays-accumulating": "payout",
   "pays-distributing": "payout",
   "ask-self-report": "asks",
+  "ask-tax-service": "asks",
   "ask-estate": "asks",
   "risk-unsupervised": "asks",
   "ask-w8": "asks",
@@ -129,7 +132,7 @@ export function optionLabels(option: OptionId): Label[] {
     case "tase-foreign":
       return [label("held-tase-foreign"), label("trade-etf")];
     case "abroad":
-      return [label("held-abroad"), label("ask-self-report")];
+      return [label("held-abroad")];
   }
 }
 
@@ -157,11 +160,14 @@ export function fundLabels(rec: FundRecord, index: IndexRef, option: OptionId): 
   return out;
 }
 
-/** What a broker adds for an option: not available there, or a foreign broker outside the Securities Authority's supervision. */
+/**
+ * What a broker adds for an option: not available there, a foreign broker outside the Securities Authority's supervision, and who
+ * deals with the tax. Reporting is the route's, never the fund's: a bank or a member of the exchange withholds on any fund (TXF-29).
+ */
 export function brokerLabels(p: ProviderInfo, unavailable: boolean): Label[] {
   const out: Label[] = [];
   if (unavailable) out.push(label("unavailable"));
-  if (p.foreign) out.push(label("risk-unsupervised"));
+  if (p.foreign) out.push(label("risk-unsupervised"), label(p.taxService ? "ask-tax-service" : "ask-self-report"));
   return out;
 }
 

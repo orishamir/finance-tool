@@ -1,0 +1,77 @@
+{
+  "id": "us-voo",
+  "names": {
+    "en": [
+      "Vanguard S&P 500 ETF"
+    ],
+    "he": [],
+    "tase": []
+  },
+  "identifiers": {
+    "isin": null,
+    "tase_number": null,
+    "cusip": "922908363",
+    "ticker": {
+      "NYSE Arca": "VOO"
+    }
+  },
+  "manager": "Vanguard",
+  "domicile": "US",
+  "legal_form": "US-listed ETF; 'passively managed, full-replication strategy'; inception 2010-09-07; dividend schedule quarterly; benchmark 'S&P 500 Index'. The ISIN is not printed on this fact sheet.",
+  "exposure_id": "index-sp500",
+  "currency": "USD",
+  "trading_currency_on_tase": null,
+  "distribution_policy": "distributing",
+  "tax_status": {
+    "il_fund_tax_track": null,
+    "tase_foreign_fund_90pct_test": null
+  },
+  "fees": {
+    "fixed_management": {
+      "value": 0.03,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://fund-docs.vanguard.com/F0968.pdf#page=1",
+        "title": "Vanguard S&P 500 ETF (VOO), fact sheet as of September 30, 2026, p. 1: 'Expense ratio 0.03%' (library e96f5ad4c4aee46c)",
+        "publisher": "Vanguard",
+        "strength": "institution"
+      },
+      "checked": "2026-10-31",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "TXF-12",
+        "TXF-27",
+        "TXF-29"
+      ],
+      "state": "sourced",
+      "notes": "Expense ratio 'as reported in the most recent prospectus'. A US-domiciled fund: rules TXF-12 and TXF-27 apply to the holder; ETF-23 and ETF-29 frame how it may be offered in Israel. Its legal form is not printed on this fact sheet, so whether Israeli tax treats it as a company or a trust stays open (tax open question 19, job 1). The prospectus was not opened."
+    },
+    "trustee": null,
+    "variable_management": null,
+    "tracking_difference_12m": null,
+    "median_spread": null,
+    "fund_level_withholding_drag": null
+  },
+  "dimensions": {
+    "foreign-withholding-domicile": "covered:TXF-12",
+    "distribution-policy": "covered:ETF-28",
+    "currency": "covered:ETF-28",
+    "fee-management-balance": "covered:ETF-28"
+  },
+  "prospectus": {
+    "url": "https://fund-docs.vanguard.com/F0968.pdf",
+    "date": null
+  },
+  "snapshot": "2026-10-31",
+  "replication": {
+    "method": "physical",
+    "source": {
+      "url": "https://fund-docs.vanguard.com/F0968.pdf",
+      "page": 1,
+      "checked": "2026-10-31"
+    }
+  }
+}

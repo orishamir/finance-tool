@@ -105,6 +105,8 @@ export const feesSnapshot = z.strictObject({
     /** S1 (2026-10-25): required when `regulator` is `foreign`. */
     regulator_foreign: z.strictObject({ name: z.string().min(1), name_he: z.string().min(1), country: z.string().min(1) }).optional(),
     tase_member: z.boolean(),
+    /** A foreign broker whose own terms offer a service that withholds Israeli tax for those who join (2026-10-31, BRK-36). */
+    israeli_tax_service: z.boolean().optional(),
     protection_rule_ids: ruleIds,
   }),
   tariff: z.strictObject({
