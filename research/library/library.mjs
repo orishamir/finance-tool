@@ -7,6 +7,7 @@
 //   node research/library/library.mjs find <words> [--publisher X] [--limit N] [--all]   best pages first
 //   node research/library/library.mjs add <url|file> --publisher X --title Y [--kind K] [--version D] [--url U]
 //   node research/library/library.mjs note <id> [--topic T --page N] [--digest "what this document is"]
+//   node research/library/library.mjs cite <id> --page N --quote "the document's own words" [--topic T]   checks them, prints the exact link
 //   node research/library/library.mjs tried "what was looked for" --result "what came of it" [--where W]
 //   node research/library/library.mjs mirror [--limit N]      fetch every link the repository cites
 //   node research/library/library.mjs scan <folder>           file what is already on disk
@@ -144,6 +145,13 @@ const refusal = (got) => {
 const reversed = (w) => [...w].reverse().join("");
 const clean = (t) => t.replace(/[‎‏‪-‮⁦-⁩]/g, "");
 const count = (page, w) => page.split(w).length - 1 + (w.length > 1 ? page.split(reversed(w)).length - 1 : 0);
+// A PDF opens at its page (the file's own page, not the number printed on the sheet); a web page at the quoted words.
+const exactLink = (doc, page, quote) => {
+  if (!doc.url) return null;
+  const base = doc.url.split("#")[0];
+  if (doc.ext === ".pdf") return `${base}#page=${page}`;
+  return quote ? `${base}#:~:text=${encodeURIComponent(quote.split(/\s+/).slice(0, 12).join(" "))}` : base;
+};
 
 if (command === "find") {
   const words = positional;
@@ -176,7 +184,7 @@ if (command === "find") {
     shown++;
     const at = Math.max(h.page.indexOf(words[0]), h.page.indexOf(reversed(words[0])));
     const snippet = h.page.slice(Math.max(0, at - 70), at + 90).replace(/\s+/g, " ").trim();
-    console.log(`${h.d.id} p.${h.k + 1} | ${h.d.publisher ?? "?"} | ${h.d.title ?? h.d.from} | ${h.d.url ?? "no link"}${h.d.digest ? `\n    digest: ${h.d.digest}` : ""}\n    ${snippet}`);
+    console.log(`${h.d.id} p.${h.k + 1} | ${h.d.publisher ?? "?"} | ${h.d.title ?? h.d.from} | ${exactLink(h.d, h.k + 1) ?? "no link"}${h.d.digest ? `\n    digest: ${h.d.digest}` : ""}\n    ${snippet}`);
   }
   console.log(`${hits.length} pages in ${new Set(hits.map((h) => h.d.id)).size} documents, ${shown} shown`);
   mkdirSync(store, { recursive: true });
@@ -211,6 +219,25 @@ if (command === "find") {
     if (flag("digest")) doc.digest = flag("digest");
     if (flag("topic")) doc.topics = [...(doc.topics ?? []), { topic: flag("topic"), page: Number(flag("page")) }];
   });
+} else if (command === "cite") {
+  // The exact place of a fact, recorded once while the page is open. The quote must really be on that page.
+  const page = Number(flag("page"));
+  const quote = flag("quote");
+  if (!page || !quote) throw new Error("cite needs --page and --quote");
+  const link = withIndex((docs) => {
+    const doc = docs.find((d) => d.id === positional[0]);
+    if (!doc) throw new Error(`no document ${positional[0]}`);
+    const pages = clean(readFileSync(textOf(doc), "utf8")).split("\f");
+    const on = (p) => quote.split(/\s+/).filter(Boolean).every((w) => count(p ?? "", w));
+    if (!on(pages[page - 1])) {
+      const elsewhere = pages.flatMap((p, k) => (on(p) ? [k + 1] : []));
+      throw new Error(`those words are not on page ${page}${elsewhere.length ? `; they are on page ${elsewhere.slice(0, 5).join(", ")}` : " or anywhere in this document"}`);
+    }
+    doc.cites = [...(doc.cites ?? []), { page, quote, ...(flag("topic") ? { topic: flag("topic") } : {}) }];
+    if (flag("topic")) doc.topics = [...(doc.topics ?? []), { topic: flag("topic"), page }];
+    return exactLink(doc, page, quote);
+  });
+  console.log(link ?? "recorded, but this document has no link");
 } else if (command === "tried") {
   appendFileSync(triedPath, JSON.stringify({ looked_for: positional[0], result: flag("result"), where: flag("where"), date: today }) + "\n");
 } else if (command === "scan") {
