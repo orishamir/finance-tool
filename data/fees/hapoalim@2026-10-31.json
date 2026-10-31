@@ -948,12 +948,316 @@
   "price_for_he": "לקוח רגיל, בלי הטבה לקבוצה",
   "left_out": [
     {
-      "what": "מחירים לקבוצות אוכלוסייה",
-      "why": "The ranking uses the ordinary customer; group prices and how long they last are not collected (issue 140)."
-    },
-    {
       "what": "מחיר מופחת בערוץ ישיר למניות בחוץ לארץ: 0.30% בארצות הברית ו-0.50% מחוצה לה, מינימום 20 דולר, מקסימום 7,000 דולר",
       "why": "The printed row names shares, not funds, so a fund abroad is priced on the row that names funds (founder, 2026-10-31: no price from analogy)."
     }
-  ]
+  ],
+  "groups": {
+    "state": "prices",
+    "row_he": "לקבוצות: הנחה של 40% עד 50% בדמי הניהול, לרוב לזמן מוגבל. לסטודנטים ההנחה רק על קנייה ומכירה.",
+    "note": "The clubs in the sheet (rows 178-665) and the student page read in the filed copies. Students have no custody price. Ages 60+, retirees and new immigrants are listed under other only by their custody or trade rows; the 60+ club has been closed to new members since 1.7.2013 and the retiree club since 01.06.2003 (rows 551, 583), and both say so; the family and academics clubs print no securities price (academics closed on 30.6.22).",
+    "read": [
+      {
+        "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
+        "title": "תעריפון ליחיד ועסק קטן (גיליון), מועדונים"
+      },
+      {
+        "url": "https://www.bankhapoalim.co.il/he/open-account/students",
+        "title": "חשבון PRO סטודנט, בנק הפועלים"
+      }
+    ],
+    "entries": [
+      {
+        "kind": "young",
+        "name_he": "פועלים צעיר נוער",
+        "who_he": "גילאי 14 עד 20",
+        "who_source": {
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
+          "title": "תעריפון ליחיד ועסק קטן (גיליון), מועדונים",
+          "row": 490,
+          "quote": "מועדון פועלים צעיר נוער גילאי 20 - 14"
+        },
+        "ends_printed": false,
+        "ends_he": "הגילים כתובים בשם המועדון במסמך. תקופה לא כתובה.",
+        "prices": [
+          {
+            "fee": "trade_israel",
+            "price_he": "מניות 0.50%, אגרות חוב 0.35%, בכפוף למינימום",
+            "holdings_he": "מניות ואגרות חוב הנסחרים בבורסה של תל אביב",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
+              "title": "תעריפון ליחיד ועסק קטן (גיליון), מועדונים",
+              "row": 500,
+              "quote": "קניית/מכירת מניות הנסחרים בבורסה"
+            }
+          },
+          {
+            "fee": "custody_israel",
+            "price_he": "50% הנחה",
+            "holdings_he": "דמי ניהול פיקדון ניירות ערך הנסחרים בארץ",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
+              "title": "תעריפון ליחיד ועסק קטן (גיליון), מועדונים",
+              "row": 506,
+              "quote": "דמי ניהול פיקדון ניירות ערך"
+            }
+          }
+        ]
+      },
+      {
+        "kind": "soldier",
+        "name_he": "פועלים חייל",
+        "who_he": "גילאי 17 עד 26: חיילי חובה עם משכורת צבאית בחשבון; משרתים בשירות לאומי המצהירים על כך; מועמדים לשירות ביטחון 3 חודשים לפני הגיוס",
+        "who_source": {
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
+          "title": "תעריפון ליחיד ועסק קטן (גיליון), מועדונים",
+          "row": 474,
+          "quote": "חיילי חובה המקבלים בחשבון משכורת צבאית בגין שירות חובה"
+        },
+        "ends_printed": true,
+        "ends_he": "חיילי חובה: עד 3 שנים; שירות לאומי: שנה, ואפשר להאריך בשנה; מועמדים לשירות: שנה. הכול עד גיל 26 או 5 שנים מהצירוף, המוקדם מביניהם.",
+        "ends_source": {
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
+          "title": "תעריפון ליחיד ועסק קטן (גיליון), מועדונים",
+          "row": 482,
+          "quote": "הזכאות למועדון לגיל 26 או עד תום חמש שנים לצירוף החשבון למועדון"
+        },
+        "prices": [
+          {
+            "fee": "trade_israel",
+            "price_he": "ערוצים ישירים: מניות 0.30%, אגרות חוב 0.30%",
+            "holdings_he": "מניות ואגרות חוב הנסחרים בבורסה של תל אביב בערוצים ישירים",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
+              "title": "תעריפון ליחיד ועסק קטן (גיליון), מועדונים",
+              "row": 415,
+              "quote": "קניית/מכירת מניות הנסחרים בבורסה"
+            }
+          },
+          {
+            "fee": "custody_israel",
+            "price_he": "50% הנחה",
+            "holdings_he": "דמי ניהול פיקדון ניירות ערך הנסחרים בארץ (לרבות יחידות השתתפות בקרנות נאמנות)",
+            "names_fund": true,
+            "source": {
+              "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
+              "title": "תעריפון ליחיד ועסק קטן (גיליון), מועדונים",
+              "row": 421,
+              "quote": "דמי ניהול פיקדון ני\"ע הנסחרים"
+            }
+          }
+        ]
+      },
+      {
+        "kind": "released",
+        "name_he": "חייל משוחרר",
+        "who_he": "גילאי 19 עד 26 שהפסיקו לקבל משכורת צבאית במשך 45 יום לפחות, או שהצהירו על סיום שירות חובה או שירות לאומי",
+        "who_source": {
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
+          "title": "תעריפון ליחיד ועסק קטן (גיליון), מועדונים",
+          "row": 216,
+          "quote": "לקוח בגילאי26 - 19 שהפסיק לקבל משכורת צבאית"
+        },
+        "ends_printed": true,
+        "ends_he": "עד גיל 26 או 3 שנים מהצירוף, המוקדם מביניהם",
+        "ends_source": {
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
+          "title": "תעריפון ליחיד ועסק קטן (גיליון), מועדונים",
+          "row": 219,
+          "quote": "תקופת החברות מקסימאלית במועדון היא עד הגיע הלקוח הזכאי לגיל 26"
+        },
+        "prices": [
+          {
+            "fee": "trade_israel",
+            "price_he": "ערוצים ישירים: מניות 0.40%",
+            "holdings_he": "מניות הנסחרים בבורסה של תל אביב בערוצים ישירים",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
+              "title": "תעריפון ליחיד ועסק קטן (גיליון), מועדונים",
+              "row": 196,
+              "quote": "קניית/מכירת מניות הנסחרים בבורסה"
+            }
+          },
+          {
+            "fee": "custody_israel",
+            "price_he": "40% הנחה",
+            "holdings_he": "דמי ניהול פיקדון ניירות ערך הנסחרים בארץ (לרבות יחידות השתתפות בקרנות נאמנות)",
+            "names_fund": true,
+            "source": {
+              "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
+              "title": "תעריפון ליחיד ועסק קטן (גיליון), מועדונים",
+              "row": 199,
+              "quote": "דמי ניהול פיקדון ניירות ערך"
+            }
+          },
+          {
+            "fee": "custody_abroad",
+            "price_he": "40% הנחה",
+            "holdings_he": "דמי ניהול פיקדון ניירות ערך הנסחרים בבורסות חו״ל, קרנות זרות (לרבות יחידות השתתפות בקרנות נאמנות)",
+            "names_fund": true,
+            "source": {
+              "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
+              "title": "תעריפון ליחיד ועסק קטן (גיליון), מועדונים",
+              "row": 203,
+              "quote": "דמי ניהול פיקדון ניירות ערך"
+            }
+          }
+        ]
+      },
+      {
+        "kind": "student",
+        "name_he": "סטודנט",
+        "who_he": "סטודנטים בגילאי 18 עד 35 שמצהירים על לימודים במוסד להשכלה גבוהה או במוסד על־תיכוני מוכר, במערכת מלאה ובמסלול של שנה ומעלה",
+        "who_source": {
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
+          "title": "תעריפון ליחיד ועסק קטן (גיליון), מועדונים",
+          "row": 375,
+          "quote": "סטודנט בגילאי 35 - 18 המצהיר על לימודיו"
+        },
+        "ends_printed": true,
+        "ends_he": "3 שנים, ואפשר להאריך עד 5, ולכל היותר עד גיל 35",
+        "ends_source": {
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
+          "title": "תעריפון ליחיד ועסק קטן (גיליון), מועדונים",
+          "row": 379,
+          "quote": "למועדון לגיל 35 או עד תום חמש שנים מצירוף החשבון למועדון"
+        },
+        "prices": [
+          {
+            "fee": "trade_israel",
+            "price_he": "ערוצים ישירים: מניות 0.35%, אגרות חוב 0.25%",
+            "holdings_he": "מניות ואגרות חוב הנסחרים בבורסה של תל אביב בערוצים ישירים",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
+              "title": "תעריפון ליחיד ועסק קטן (גיליון), מועדונים",
+              "row": 278,
+              "quote": "קניית/מכירת מניות הנסחרים בבורסה"
+            }
+          }
+        ]
+      },
+      {
+        "kind": "other",
+        "name_he": "גמלאי",
+        "who_he": "מועדון שחסום למצטרפים חדשים מ־1.6.2003",
+        "who_source": {
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
+          "title": "תעריפון ליחיד ועסק קטן (גיליון), מועדונים",
+          "row": 583,
+          "quote": "חסום למצטרפים חדשים מ -01.06.2003"
+        },
+        "ends_printed": false,
+        "ends_he": "תקופה לא כתובה",
+        "prices": [
+          {
+            "fee": "trade_israel",
+            "price_he": "מניות 0.50%, אגרות חוב 0.35%",
+            "holdings_he": "מניות ואגרות חוב הנסחרים בבורסה של תל אביב",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
+              "title": "תעריפון ליחיד ועסק קטן (גיליון), מועדונים",
+              "row": 571,
+              "quote": "קניית/מכירת מניות הנסחרים בבורסה"
+            }
+          },
+          {
+            "fee": "custody_israel",
+            "price_he": "33% הנחה",
+            "holdings_he": "דמי ניהול פיקדון ניירות ערך",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
+              "title": "תעריפון ליחיד ועסק קטן (גיליון), מועדונים",
+              "row": 577,
+              "quote": "דמי ניהול פיקדון ניירות ערך"
+            }
+          }
+        ]
+      },
+      {
+        "kind": "other",
+        "name_he": "פועלים 60+",
+        "who_he": "מועדון שחסום למצטרפים חדשים מ־1.7.2013. לקוח מגיל 65, לקוחה מגיל 60, בחשבון עם 100,000 שקלים ומעלה.",
+        "who_source": {
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
+          "title": "תעריפון ליחיד ועסק קטן (גיליון), מועדונים",
+          "row": 551,
+          "quote": "חסום למצטרפים חדשים מ- 1.7.2013"
+        },
+        "ends_printed": false,
+        "ends_he": "נמשך כל עוד התנאים מתקיימים",
+        "ends_source": {
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
+          "title": "תעריפון ליחיד ועסק קטן (גיליון), מועדונים",
+          "row": 552,
+          "quote": "ימשיכו להנות מההטבות כל עוד"
+        },
+        "prices": [
+          {
+            "fee": "trade_israel",
+            "price_he": "מניות 0.50%, אגרות חוב 0.50%",
+            "holdings_he": "מניות ואגרות חוב הנסחרים בבורסה של תל אביב",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
+              "title": "תעריפון ליחיד ועסק קטן (גיליון), מועדונים",
+              "row": 539,
+              "quote": "קניית/מכירת מניות הנסחרים בבורסה"
+            }
+          },
+          {
+            "fee": "custody_israel",
+            "price_he": "33% הנחה",
+            "holdings_he": "דמי ניהול פיקדון ניירות ערך",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
+              "title": "תעריפון ליחיד ועסק קטן (גיליון), מועדונים",
+              "row": 545,
+              "quote": "דמי ניהול פיקדון ניירות ערך"
+            }
+          }
+        ]
+      },
+      {
+        "kind": "other",
+        "name_he": "עולים חדשים",
+        "who_he": "עולים חדשים",
+        "who_source": {
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
+          "title": "תעריפון ליחיד ועסק קטן (גיליון), מועדונים",
+          "row": 587,
+          "quote": "מועדון עולים חדשים"
+        },
+        "ends_printed": true,
+        "ends_he": "עד שנה מתאריך העלייה",
+        "ends_source": {
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
+          "title": "תעריפון ליחיד ועסק קטן (גיליון), מועדונים",
+          "row": 616,
+          "quote": "תוקף ההטבות עד שנה מתאריך העלייה"
+        },
+        "prices": [
+          {
+            "fee": "trade_israel",
+            "price_he": "50% הנחה, ולא פחות מ־0.25%",
+            "holdings_he": "מניות הנסחרים בבורסה של תל אביב",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
+              "title": "תעריפון ליחיד ועסק קטן (גיליון), מועדונים",
+              "row": 602,
+              "quote": "קניית/מכירת מניות הנסחרים בבורסה"
+            }
+          }
+        ]
+      }
+    ]
+  }
 }

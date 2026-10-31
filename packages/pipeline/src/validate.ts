@@ -186,8 +186,9 @@ interface PremiseSnapshot {
   missing?: boolean;
   price_for_he?: string;
   left_out?: unknown[];
-  lines: { base: string; applies_to: string[] }[];
+  lines: { base: string; applies_to: string[]; rate?: { value?: number | null } | null }[];
   availability?: { applies_to: string[]; available: boolean | "unknown"; reason_he?: string; source: { quote?: string } }[];
+  groups?: { state: string; row_he?: string; entries: { name_he: string; ends_printed: boolean; ends_source?: unknown; prices: { price_he: string; holdings_he: string; names_fund: boolean }[] }[] };
 }
 /** Before a price ranks: who pays it, on what named holding, and whether a person can do it there. */
 export function checkPricePremises(snap: PremiseSnapshot): string[] {
@@ -195,6 +196,23 @@ export function checkPricePremises(snap: PremiseSnapshot): string[] {
   const out: string[] = [];
   if (!snap.price_for_he) out.push("price_for_he: a bank's or broker's record says who pays its prices");
   if (!snap.left_out) out.push("left_out: a bank's or broker's record lists what its documents hold that it does not use; empty means nothing was found");
+  const g = snap.groups;
+  if (!g) out.push("groups: a bank's or broker's record says its group prices, or that it has none, or that they could not be read");
+  else {
+    if (g.state === "prices" ? !g.entries.length || !g.row_he : g.entries.length > 0 || !!g.row_he) out.push(`groups: state ${g.state} does not fit its entries and row line`);
+    for (const e of g.entries) {
+      if (e.ends_printed && !e.ends_source) out.push(`groups: ${e.name_he} says its end is printed and does not say where`);
+      // a price reaches a fund only where the row's own words name funds (D42): the same stretch as a ranked line; words after "למעט" take funds out
+      for (const x of e.prices) if (x.names_fund !== /קרן|קרנות/.test(x.holdings_he.replace(/למעט[^)]*/g, ""))) out.push(`groups: ${e.name_he}: names_fund does not fit the words "${x.holdings_he}"`);
+    }
+    // a row line's comparison is the record's own: the lower price stands in an entry, the ordinary one on a line of the same fee
+    const row = g.row_he ?? "";
+    for (const m of row.matchAll(/([\d.]+)%[^%]*?במקום ([\d.]+)%/g)) {
+      const base = /דמי ניהול/.test(row.slice(0, m.index)) ? "custody" : "trade";
+      if (!snap.lines.some((l) => l.base === base && l.rate?.value === Number(m[2]))) out.push(`groups: the row line's ${m[2]}% is no ${base} rate in this record`);
+      if (!g.entries.some((e) => e.prices.some((x) => [...x.price_he.matchAll(/[\d.]+(?=%)/g)].some(([n]) => Number(n) === Number(m[1]))))) out.push(`groups: the row line's ${m[1]}% stands in no entry of this record`);
+    }
+  }
   const entries = snap.availability ?? [];
   if (snap.lines.some((l) => l.base === "trade" && l.applies_to.some((c) => c === "all" || c === "brokerage-account")))
     out.push("lines: a trade line names every holding or the account, which no availability entry can vouch for; name the kinds");

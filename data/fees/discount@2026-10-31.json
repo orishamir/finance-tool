@@ -1097,14 +1097,509 @@
   "price_for_he": "לקוח רגיל, בלי הטבה לקבוצה",
   "left_out": [
     {
-      "what": "מחירים לקבוצות אוכלוסייה",
-      "page": 32,
-      "why": "The ranking uses the ordinary customer; group prices and how long they last are not collected (issue 140)."
-    },
-    {
       "what": "מסלול INVEST או ניהול תיקים",
       "page": 32,
       "why": "Its own securities benefits, with their own conditions; not collected."
     }
-  ]
+  ],
+  "groups": {
+    "state": "prices",
+    "row_he": "לקבוצות: בלי דמי ניהול עד פיקדון של 150,000 ₪, או מ־0.06% לרבעון במקום 0.2%, לזמן מוגבל. דיגיטל פרימיום בלי דמי ניהול ובלי תאריך סיום, בתנאי משכורת או תיק השקעות.",
+    "note": "Annex A pp.32-40 and the young-investor page read in the filed copies. The soldiers' and youth pages gave a script a bot check and were not read. Annex p.34 gives released soldiers one year; the young-investor page gives ages 16-25 until 25; both are recorded, neither is chosen. Digital Premium is a plan with a salary condition, not a population group, and is listed because the annex lists it. Touch is closed to new customers since 1.11.2024 and is not listed for that reason.",
+    "read": [
+      {
+        "url": "https://www.discountbank.co.il/media/fnibqzdx/tarifon_single-united_11026.pdf",
+        "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה"
+      },
+      {
+        "url": "https://www.discountbank.co.il/private/savings-investments/capital-market/young_investor/",
+        "title": "המשקיע הצעיר, בנק דיסקונט"
+      }
+    ],
+    "entries": [
+      {
+        "kind": "young",
+        "name_he": "נוער",
+        "who_he": "מגיל 14 ועד הגיוס לצה״ל, ולכל היותר עד גיל 21 כולל",
+        "who_source": {
+          "url": "https://www.discountbank.co.il/media/fnibqzdx/tarifon_single-united_11026.pdf",
+          "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+          "page": 32,
+          "quote": "תקופת זכאות להטבות -מגיל 14ועד מועד הגיוס לצה\"ל .גיל מקסימום בקבוצה 21 :שנים כולל"
+        },
+        "ends_printed": true,
+        "ends_he": "עד הגיוס, ולכל היותר עד גיל 21",
+        "ends_source": {
+          "url": "https://www.discountbank.co.il/media/fnibqzdx/tarifon_single-united_11026.pdf",
+          "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+          "page": 32,
+          "quote": "גיל מקסימום בקבוצה 21 :שנים כולל"
+        },
+        "prices": [
+          {
+            "fee": "trade_israel",
+            "price_he": "פטור",
+            "holdings_he": "מניות ואגרות חוב הנסחרים בבורסה בת״א",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.discountbank.co.il/media/fnibqzdx/tarifon_single-united_11026.pdf",
+              "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+              "page": 32,
+              "quote": "פטור קניה ומכירה של ני\"ע הנסחרים בבורסה בת\"א -מניות ואגרות חוב"
+            }
+          },
+          {
+            "fee": "trade_abroad",
+            "price_he": "0.01%, מינימום 5.5 דולר",
+            "holdings_he": "מניות ואגרות חוב בחו״ל",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.discountbank.co.il/media/fnibqzdx/tarifon_single-united_11026.pdf",
+              "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+              "page": 32,
+              "quote": "0.01%משווי העסקה"
+            }
+          },
+          {
+            "fee": "custody_israel",
+            "price_he": "פטור כשהפיקדון נמוך מ־150,000 ₪ לפחות פעם אחת ברבעון",
+            "holdings_he": "דמי ניהול פיקדון ניירות ערך (לרבות יחידות השתתפות בקרנות נאמנות)",
+            "names_fund": true,
+            "source": {
+              "url": "https://www.discountbank.co.il/media/fnibqzdx/tarifon_single-united_11026.pdf",
+              "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+              "page": 32,
+              "quote": "פיקדון ני\"ע עד 150א' - ₪פטור (**) דמי ניהול פיקדון ניירות ערך-הנסחרים בארץ"
+            }
+          },
+          {
+            "fee": "custody_abroad",
+            "price_he": "פטור כשהפיקדון נמוך מ־150,000 ₪ לפחות פעם אחת ברבעון",
+            "holdings_he": "דמי ניהול פיקדון ניירות ערך (לרבות יחידות השתתפות בקרנות נאמנות)",
+            "names_fund": true,
+            "source": {
+              "url": "https://www.discountbank.co.il/media/fnibqzdx/tarifon_single-united_11026.pdf",
+              "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+              "page": 32,
+              "quote": "פיקדון ני\"ע עד 150א' - ₪פטור (**) דמי ניהול פיקדון ניירות ערך -הנסחרים בחוץ לארץ"
+            }
+          }
+        ]
+      },
+      {
+        "kind": "soldier",
+        "name_he": "חיילים / שירות לאומי",
+        "who_he": "חיילים שמקבלים משכורת חובה לחשבון; משרתי שירות לאומי (כולל חיילי מג״ב, נח״ל, ישיבות הסדר ומתנדבים)",
+        "who_source": {
+          "url": "https://www.discountbank.co.il/media/fnibqzdx/tarifon_single-united_11026.pdf",
+          "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+          "page": 33,
+          "quote": "תקופת זכאות להטבות לחיילים :עם זקיפת מת\"ש חובה -משך כל השירות"
+        },
+        "ends_printed": true,
+        "ends_he": "חיילים: כל השירות. שירות לאומי: שנה, ואפשר לשנה נוספת באישור.",
+        "ends_source": {
+          "url": "https://www.discountbank.co.il/media/fnibqzdx/tarifon_single-united_11026.pdf",
+          "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+          "page": 33,
+          "quote": "תקופת זכאות להטבות למשך שנה אחת מיום ההצטרפות לקבוצה"
+        },
+        "prices": [
+          {
+            "fee": "trade_israel",
+            "price_he": "פטור",
+            "holdings_he": "מניות ואגרות חוב הנסחרים בבורסה בת״א",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.discountbank.co.il/media/fnibqzdx/tarifon_single-united_11026.pdf",
+              "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+              "page": 33,
+              "quote": "פטור קניה ומכירה של ני\"ע הנסחרים בבורסה בת\"א -מניות ואגרות חוב"
+            }
+          },
+          {
+            "fee": "trade_abroad",
+            "price_he": "0.01%, מינימום 5.5 דולר",
+            "holdings_he": "מניות ואגרות חוב בחו״ל",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.discountbank.co.il/media/fnibqzdx/tarifon_single-united_11026.pdf",
+              "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+              "page": 33,
+              "quote": "0.01%משווי העסקה"
+            }
+          },
+          {
+            "fee": "custody_israel",
+            "price_he": "פטור כשהפיקדון נמוך מ־150,000 ₪ לפחות פעם אחת ברבעון",
+            "holdings_he": "דמי ניהול פיקדון ניירות ערך (לרבות יחידות השתתפות בקרנות נאמנות)",
+            "names_fund": true,
+            "source": {
+              "url": "https://www.discountbank.co.il/media/fnibqzdx/tarifon_single-united_11026.pdf",
+              "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+              "page": 33,
+              "quote": "פיקדון ני\"ע עד 150א' - ₪פטור (**) דמי ניהול פיקדון ניירות ערך-הנסחרים בארץ"
+            }
+          },
+          {
+            "fee": "custody_abroad",
+            "price_he": "פטור כשהפיקדון נמוך מ־150,000 ₪ לפחות פעם אחת ברבעון",
+            "holdings_he": "דמי ניהול פיקדון ניירות ערך (לרבות יחידות השתתפות בקרנות נאמנות)",
+            "names_fund": true,
+            "source": {
+              "url": "https://www.discountbank.co.il/media/fnibqzdx/tarifon_single-united_11026.pdf",
+              "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+              "page": 33,
+              "quote": "פיקדון ני\"ע עד 150א' - ₪פטור (**) דמי ניהול פיקדון ניירות ערך -הנסחרים בחוץ לארץ"
+            }
+          }
+        ]
+      },
+      {
+        "kind": "released",
+        "name_he": "חיילים משוחררים",
+        "who_he": "בהצגת תעודת השחרור הצבאית או אוטומטית אם חלפו חודשיים בלי משכורת חובה בחשבון",
+        "who_source": {
+          "url": "https://www.discountbank.co.il/media/fnibqzdx/tarifon_single-united_11026.pdf",
+          "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+          "page": 34,
+          "quote": "בהצגת תעודת השחרור הצבאית או אוטומטית אם חלפו חודשיים"
+        },
+        "ends_printed": true,
+        "ends_he": "שנה מיום ההצטרפות לקבוצה",
+        "ends_source": {
+          "url": "https://www.discountbank.co.il/media/fnibqzdx/tarifon_single-united_11026.pdf",
+          "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+          "page": 34,
+          "quote": "תקופת זכאות -למשך שנה אחת מיום ההצטרפות לקבוצה"
+        },
+        "prices": [
+          {
+            "fee": "trade_israel",
+            "price_he": "פטור",
+            "holdings_he": "מניות ואגרות חוב הנסחרים בבורסה בת״א",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.discountbank.co.il/media/fnibqzdx/tarifon_single-united_11026.pdf",
+              "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+              "page": 34,
+              "quote": "פטור קניה ומכירה של ני\"ע הנסחרים בבורסה בת\"א -מניות ואגרות חוב"
+            }
+          },
+          {
+            "fee": "trade_abroad",
+            "price_he": "0.01%, מינימום 5.5 דולר",
+            "holdings_he": "מניות ואגרות חוב בחו״ל",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.discountbank.co.il/media/fnibqzdx/tarifon_single-united_11026.pdf",
+              "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+              "page": 34,
+              "quote": "0.01%משווי העסקה"
+            }
+          },
+          {
+            "fee": "custody_israel",
+            "price_he": "פטור כשהפיקדון נמוך מ־150,000 ₪ לפחות פעם אחת ברבעון",
+            "holdings_he": "דמי ניהול פיקדון ניירות ערך (לרבות יחידות השתתפות בקרנות נאמנות)",
+            "names_fund": true,
+            "source": {
+              "url": "https://www.discountbank.co.il/media/fnibqzdx/tarifon_single-united_11026.pdf",
+              "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+              "page": 34,
+              "quote": "פיקדון ני\"ע עד 150א' - ₪פטור (**) דמי ניהול פיקדון ניירות ערך-הנסחרים בארץ"
+            }
+          },
+          {
+            "fee": "custody_abroad",
+            "price_he": "פטור כשהפיקדון נמוך מ־150,000 ₪ לפחות פעם אחת ברבעון",
+            "holdings_he": "דמי ניהול פיקדון ניירות ערך (לרבות יחידות השתתפות בקרנות נאמנות)",
+            "names_fund": true,
+            "source": {
+              "url": "https://www.discountbank.co.il/media/fnibqzdx/tarifon_single-united_11026.pdf",
+              "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+              "page": 34,
+              "quote": "פיקדון ני\"ע עד 150א' - ₪פטור (**) דמי ניהול פיקדון ניירות ערך -הנסחרים בחוץ לארץ"
+            }
+          }
+        ]
+      },
+      {
+        "kind": "student",
+        "name_he": "סטודנטים לתואר ראשון",
+        "who_he": "לומדים לתואר ראשון או בלימודי תעודה של 3 שנים לפחות, עם תעודת סטודנט בתוקף או שובר שכר לימוד. גיל מקסימלי להצטרפות 32.",
+        "who_source": {
+          "url": "https://www.discountbank.co.il/media/fnibqzdx/tarifon_single-united_11026.pdf",
+          "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+          "page": 35,
+          "quote": "גיל מקסימאלי להצטרפות לקבוצה 32 -שנים"
+        },
+        "ends_printed": true,
+        "ends_he": "4 שנים מיום ההצטרפות",
+        "ends_source": {
+          "url": "https://www.discountbank.co.il/media/fnibqzdx/tarifon_single-united_11026.pdf",
+          "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+          "page": 35,
+          "quote": "תקופת זכאות להטבות בקבוצה -למשך 4שנים מיום ההצטרפות"
+        },
+        "prices": [
+          {
+            "fee": "trade_israel",
+            "price_he": "0.25%, מינימום 22 שקלים",
+            "holdings_he": "מניות ואג״ח",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.discountbank.co.il/media/fnibqzdx/tarifon_single-united_11026.pdf",
+              "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+              "page": 35,
+              "quote": "מניות ואג\"ח לפי 0.25%"
+            }
+          },
+          {
+            "fee": "trade_abroad",
+            "price_he": "0.35%, בכפוף למינימום",
+            "holdings_he": "מניות ואג״ח בבורסות ארה״ב",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.discountbank.co.il/media/fnibqzdx/tarifon_single-united_11026.pdf",
+              "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+              "page": 35,
+              "quote": "מניות ואג\"ח בבורסות ארה\"ב לפי 0.35%"
+            }
+          },
+          {
+            "fee": "custody_israel",
+            "price_he": "0.075% לרבעון",
+            "holdings_he": "דמי ניהול פיקדון ניירות ערך (לרבות יחידות השתתפות בקרנות נאמנות)",
+            "names_fund": true,
+            "source": {
+              "url": "https://www.discountbank.co.il/media/fnibqzdx/tarifon_single-united_11026.pdf",
+              "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+              "page": 35,
+              "quote": "0.075%לנייר ערך לרבעון דמי ניהול פיקדון ניירות ערך-הנסחרים בארץ"
+            }
+          },
+          {
+            "fee": "custody_abroad",
+            "price_he": "0.1% לרבעון",
+            "holdings_he": "דמי ניהול פיקדון ניירות ערך (לרבות יחידות השתתפות בקרנות נאמנות)",
+            "names_fund": true,
+            "source": {
+              "url": "https://www.discountbank.co.il/media/fnibqzdx/tarifon_single-united_11026.pdf",
+              "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+              "page": 35,
+              "quote": "0.1%לנייר ערך לרבעון דמי ניהול פיקדון ניירות ערך -הנסחרים בחוץ לארץ"
+            }
+          }
+        ]
+      },
+      {
+        "kind": "student",
+        "name_he": "סטודנטים לתואר שני ודוקטורנטים",
+        "who_he": "לומדים לתואר שני או דוקטורט, עם תעודת סטודנט בתוקף או שובר שכר לימוד. גיל מקסימלי להצטרפות 36.",
+        "who_source": {
+          "url": "https://www.discountbank.co.il/media/fnibqzdx/tarifon_single-united_11026.pdf",
+          "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+          "page": 36,
+          "quote": "סטודנטים הלומדים לתואר שני או דוקטורט"
+        },
+        "ends_printed": true,
+        "ends_he": "שנתיים מיום ההצטרפות",
+        "ends_source": {
+          "url": "https://www.discountbank.co.il/media/fnibqzdx/tarifon_single-united_11026.pdf",
+          "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+          "page": 36,
+          "quote": "תקופת זכאות להטבות בקבוצה -למשך שנתיים מיום ההצטרפות"
+        },
+        "prices": [
+          {
+            "fee": "trade_israel",
+            "price_he": "0.25%, מינימום 22 שקלים",
+            "holdings_he": "מניות ואג״ח",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.discountbank.co.il/media/fnibqzdx/tarifon_single-united_11026.pdf",
+              "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+              "page": 36,
+              "quote": "מניות ואג\"ח לפי 0.25%"
+            }
+          },
+          {
+            "fee": "trade_abroad",
+            "price_he": "0.30%, בכפוף למינימום",
+            "holdings_he": "מניות ואג״ח בבורסות ארה״ב",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.discountbank.co.il/media/fnibqzdx/tarifon_single-united_11026.pdf",
+              "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+              "page": 36,
+              "quote": "מניות ואג\"ח בבורסות ארה\"ב לפי"
+            }
+          },
+          {
+            "fee": "custody_israel",
+            "price_he": "0.06% לרבעון",
+            "holdings_he": "דמי ניהול פיקדון ניירות ערך (לרבות יחידות השתתפות בקרנות נאמנות)",
+            "names_fund": true,
+            "source": {
+              "url": "https://www.discountbank.co.il/media/fnibqzdx/tarifon_single-united_11026.pdf",
+              "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+              "page": 36,
+              "quote": "0.06%לנייר ערך לרבעון דמי ניהול פיקדון ניירות ערך-הנסחרים בארץ"
+            }
+          },
+          {
+            "fee": "custody_abroad",
+            "price_he": "0.075% לרבעון",
+            "holdings_he": "דמי ניהול פיקדון ניירות ערך (לרבות יחידות השתתפות בקרנות נאמנות)",
+            "names_fund": true,
+            "source": {
+              "url": "https://www.discountbank.co.il/media/fnibqzdx/tarifon_single-united_11026.pdf",
+              "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+              "page": 36,
+              "quote": "0.075%לנייר ערך לרבעון דמי ניהול פיקדון ניירות ערך -הנסחרים בחוץ לארץ"
+            }
+          }
+        ]
+      },
+      {
+        "kind": "young",
+        "name_he": "המשקיע הצעיר",
+        "who_he": "לקוחות בגילאי 16 עד 25 (כולל) שמשויכים לאחת מהקבוצות: נוער, מלש״בים, חיילים/שירות לאומי, חיילים משוחררים או זינוק",
+        "who_source": {
+          "url": "https://www.discountbank.co.il/private/savings-investments/capital-market/young_investor/",
+          "title": "המשקיע הצעיר, בנק דיסקונט",
+          "page": 1,
+          "quote": "לקוחות בגילאי 16-25 (כולל) שמשויכים לאחת מהקבוצות הבאות בלבד"
+        },
+        "ends_printed": true,
+        "ends_he": "עד גיל 25, כולל",
+        "ends_source": {
+          "url": "https://www.discountbank.co.il/private/savings-investments/capital-market/young_investor/",
+          "title": "המשקיע הצעיר, בנק דיסקונט",
+          "page": 1,
+          "quote": "תוקף ההטבות עד גיל 25, כולל"
+        },
+        "prices": [
+          {
+            "fee": "trade_israel",
+            "price_he": "פטור",
+            "holdings_he": "מניות ואג״ח הנסחרות בארץ",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.discountbank.co.il/private/savings-investments/capital-market/young_investor/",
+              "title": "המשקיע הצעיר, בנק דיסקונט",
+              "page": 1,
+              "quote": "פטור מעמלות קנייה ומכירה של מניות ואג\"ח הנסחרות בארץ"
+            }
+          },
+          {
+            "fee": "trade_abroad",
+            "price_he": "0.01%, מינימום 5.5 דולר",
+            "holdings_he": "מניות ואג״ח בחו״ל",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.discountbank.co.il/private/savings-investments/capital-market/young_investor/",
+              "title": "המשקיע הצעיר, בנק דיסקונט",
+              "page": 1,
+              "quote": "קנייה/ מכירה של ני\"ע בחו\"ל -מניות ואג\"ח - 0.01% משווי העסקה"
+            }
+          },
+          {
+            "fee": "custody_israel",
+            "price_he": "פטור כשהפיקדון נמוך מ־150,000 ₪ לפחות פעם אחת ברבעון",
+            "holdings_he": "ני״ע ישראליים וזרים",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.discountbank.co.il/private/savings-investments/capital-market/young_investor/",
+              "title": "המשקיע הצעיר, בנק דיסקונט",
+              "page": 1,
+              "quote": "פטור מלא מדמי ניהול פיקדון ני\"ע ישראליים וזרים"
+            }
+          },
+          {
+            "fee": "custody_abroad",
+            "price_he": "פטור כשהפיקדון נמוך מ־150,000 ₪ לפחות פעם אחת ברבעון",
+            "holdings_he": "ני״ע ישראליים וזרים",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.discountbank.co.il/private/savings-investments/capital-market/young_investor/",
+              "title": "המשקיע הצעיר, בנק דיסקונט",
+              "page": 1,
+              "quote": "פטור מלא מדמי ניהול פיקדון ני\"ע ישראליים וזרים"
+            }
+          }
+        ]
+      },
+      {
+        "kind": "other",
+        "name_he": "דיגיטל פרימיום",
+        "who_he": "בסניף הדיגיטלי, מעבירי משכורת חודשית מעל 8,000 שקלים ליחיד או 14,000 לזוג, או מחזיקי תיק השקעות בבנק מעל 500,000 שקלים",
+        "who_source": {
+          "url": "https://www.discountbank.co.il/media/fnibqzdx/tarifon_single-united_11026.pdf",
+          "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+          "page": 40,
+          "quote": "מעבירי משכורת חודשית מעל ₪ 8,000ליחיד ₪ 14,000 /לזוג"
+        },
+        "ends_printed": false,
+        "ends_he": "אין תאריך סיום. נמשך כל עוד התנאי מתקיים.",
+        "ends_source": {
+          "url": "https://www.discountbank.co.il/media/fnibqzdx/tarifon_single-united_11026.pdf",
+          "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+          "page": 40,
+          "quote": "הלקוח ייהנה מהטבות הקבוצה המפורטות לעיל בכפוף להתמדה בהעברת משכורת חודשית"
+        },
+        "prices": [
+          {
+            "fee": "trade_israel",
+            "price_he": "0.20%, מינימום 25 שקלים",
+            "holdings_he": "מניות ואגרות חוב",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.discountbank.co.il/media/fnibqzdx/tarifon_single-united_11026.pdf",
+              "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+              "page": 40,
+              "quote": "0.20% קניה ומכירה של ני\"ע הנסחרים בבורסה בת\"א -מניות ואגרות חוב"
+            }
+          },
+          {
+            "fee": "trade_abroad",
+            "price_he": "0.25%, מינימום 25 דולר",
+            "holdings_he": "מניות ואגרות חוב",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.discountbank.co.il/media/fnibqzdx/tarifon_single-united_11026.pdf",
+              "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+              "page": 40,
+              "quote": "0.25% קניה ,מכירה של ני\"ע בחו\"ל -מניות ואגרות חוב"
+            }
+          },
+          {
+            "fee": "custody_israel",
+            "price_he": "פטור",
+            "holdings_he": "דמי ניהול פיקדון ניירות ערך (לרבות יחידות השתתפות בקרנות נאמנות)",
+            "names_fund": true,
+            "source": {
+              "url": "https://www.discountbank.co.il/media/fnibqzdx/tarifon_single-united_11026.pdf",
+              "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+              "page": 40,
+              "quote": "פטור דמי ניהול פיקדון ניירות ערך-הנסחרים בארץ דמי ניהול פיקדון ניירות ערך (לרבות יחידות"
+            }
+          },
+          {
+            "fee": "custody_abroad",
+            "price_he": "פטור",
+            "holdings_he": "דמי ניהול פיקדון ניירות ערך (לרבות יחידות השתתפות בקרנות נאמנות)",
+            "names_fund": true,
+            "source": {
+              "url": "https://www.discountbank.co.il/media/fnibqzdx/tarifon_single-united_11026.pdf",
+              "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+              "page": 40,
+              "quote": "פטור דמי ניהול פיקדון ניירות ערך -הנסחרים בחוץ לארץ השתתפות בקרנות נאמנות)"
+            }
+          }
+        ]
+      }
+    ]
+  }
 }

@@ -945,12 +945,19 @@
   "price_for_he": "לקוח רגיל, בלי הטבה לקבוצה",
   "left_out": [
     {
-      "what": "מחירים לקבוצות אוכלוסייה",
-      "why": "The ranking uses the ordinary customer; group prices and how long they last are not collected (issue 140)."
-    },
-    {
       "what": "מחיר מופחת באינטרנט למניות בחוץ לארץ: 0.3%, מינימום 24 דולר, מקסימום 1,000 דולר",
       "why": "The printed row names shares, not funds, so a fund abroad is priced on the row that names funds (founder, 2026-10-31: no price from analogy)."
     }
-  ]
+  ],
+  "groups": {
+    "state": "none_on_securities",
+    "note": "Annex A (sheet rows 157-174) read in the filed copy: young, soldier and student clubs lower teller and direct-channel fees, credit allocation and cards. No securities row.",
+    "read": [
+      {
+        "url": "https://www.bank-yahav.co.il/media/020jnu0x/22026_taarifon_male.xlsx",
+        "title": "תעריפון מלא, נספח א'"
+      }
+    ],
+    "entries": []
+  }
 }

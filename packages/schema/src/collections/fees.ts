@@ -54,6 +54,48 @@ export const availabilityEntry = z.strictObject({
   reason_he: z.string().min(1).optional(),
 });
 
+/** A group price's place in a document: its page or sheet row, and the document's own words there (2026-10-31, issue 140). */
+const groupSource = z.strictObject({
+  url: z.string().min(1),
+  title: z.string().min(1),
+  page: z.number().int().positive().optional(),
+  row: z.number().int().positive().optional(),
+  quote: z.string().min(1),
+});
+/** One fee a group pays less of, as printed. `names_fund`: the row's own words name fund units; a row that does not is never read as covering a tracking fund (D42). */
+const groupPrice = z.strictObject({
+  fee: z.enum(["trade_israel", "trade_abroad", "custody_israel", "custody_abroad"]),
+  price_he: z.string().min(1),
+  holdings_he: z.string().min(1),
+  names_fund: z.boolean(),
+  source: groupSource,
+});
+const groupEntry = z.strictObject({
+  kind: z.enum(["young", "soldier", "released", "student", "other"]),
+  name_he: z.string().min(1),
+  who_he: z.string().min(1),
+  who_source: groupSource,
+  /** Whether the document prints when the price ends; a person's leaving the group is not a printed end. */
+  ends_printed: z.boolean(),
+  ends_he: z.string().min(1),
+  ends_source: groupSource.optional(),
+  prices: z.array(groupPrice).min(1),
+  /** What was inferred rather than read. */
+  inferred: z.string().min(1).optional(),
+});
+/**
+ * Prices for groups such as young customers, students and released soldiers, stated beside the ranking and never part of it (D43).
+ * `state`: `prices`, or `none_on_securities` (a group annex with no securities row), `no_mention` (the documents read name no group),
+ * `not_read`; `note` says what was read and what came of it.
+ */
+export const feeGroups = z.strictObject({
+  state: z.enum(["prices", "none_on_securities", "no_mention", "not_read"]),
+  note: z.string().min(1),
+  row_he: z.string().min(1).optional(),
+  read: z.array(z.strictObject({ url: z.string().min(1), title: z.string().min(1), read_in: z.literal("chrome").optional() })).min(1),
+  entries: z.array(groupEntry),
+});
+
 export const feesSnapshot = z.strictObject({
   id: z.string().regex(/^[a-z0-9-]+$/),
   provider: z.strictObject({
@@ -92,6 +134,7 @@ export const feesSnapshot = z.strictObject({
   price_for_he: z.string().min(1).optional(),
   /** What the documents hold that this record does not use, and why (2026-10-31); empty means nothing was found. */
   left_out: z.array(z.strictObject({ what: z.string().min(1), page: z.number().int().positive().optional(), why: z.string().min(1) })).optional(),
+  groups: feeGroups.optional(),
 })
   .superRefine((snap, ctx) => {
     const { regulator, regulator_foreign } = snap.provider;

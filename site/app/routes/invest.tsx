@@ -10,6 +10,7 @@ import { OtherAssumptions, PlanChanges, PlanKnobs } from "../components/invest/k
 import { IndexChips, PlanBlock } from "../components/invest/chips";
 import { HousesSection } from "../components/invest/houses";
 import { FundsSection } from "../components/invest/funds";
+import { GroupPrices } from "../components/invest/groups";
 import { AccountColumn, FundColumn, PairResult, pickOfHeadline, allFunds, type Pick } from "../components/invest/pair";
 import { LabelSheetHost } from "../components/kit";
 import { Headline, IndexHeader } from "../components/invest/sections";
@@ -228,6 +229,8 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
                 <FundsSection view={view} houseId={house} onHouse={(id) => setGenericHouse(id)} mayaHref={wb.links.maya?.href ?? null} />
               </>
             )}
+            {/* who pays less, stated beside the ranking and not in it (D43) */}
+            <GroupPrices snapshots={wb.snapshots} nameOf={(id) => view.providers.find((p) => p.id === id)?.short ?? wb.snapshots.find((s) => s.id === id)?.provider.name_he ?? id} />
             {/* what moves the result most: every number changed by the same share, at the bottom (founder, 2026-10-28) */}
             <PlanChanges plan={plan} share={data.form.share} bundle={wb} view={view} pick={pick} />
             <Foot view={view} />

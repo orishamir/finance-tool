@@ -2639,6 +2639,244 @@
         ],
         "additionalProperties": false
       }
+    },
+    "groups": {
+      "type": "object",
+      "properties": {
+        "state": {
+          "type": "string",
+          "enum": [
+            "prices",
+            "none_on_securities",
+            "no_mention",
+            "not_read"
+          ]
+        },
+        "note": {
+          "type": "string",
+          "minLength": 1
+        },
+        "row_he": {
+          "type": "string",
+          "minLength": 1
+        },
+        "read": {
+          "minItems": 1,
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "url": {
+                "type": "string",
+                "minLength": 1
+              },
+              "title": {
+                "type": "string",
+                "minLength": 1
+              },
+              "read_in": {
+                "type": "string",
+                "const": "chrome"
+              }
+            },
+            "required": [
+              "url",
+              "title"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "entries": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "young",
+                  "soldier",
+                  "released",
+                  "student",
+                  "other"
+                ]
+              },
+              "name_he": {
+                "type": "string",
+                "minLength": 1
+              },
+              "who_he": {
+                "type": "string",
+                "minLength": 1
+              },
+              "who_source": {
+                "type": "object",
+                "properties": {
+                  "url": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "title": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "page": {
+                    "type": "integer",
+                    "exclusiveMinimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "row": {
+                    "type": "integer",
+                    "exclusiveMinimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "quote": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": [
+                  "url",
+                  "title",
+                  "quote"
+                ],
+                "additionalProperties": false
+              },
+              "ends_printed": {
+                "type": "boolean"
+              },
+              "ends_he": {
+                "type": "string",
+                "minLength": 1
+              },
+              "ends_source": {
+                "type": "object",
+                "properties": {
+                  "url": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "title": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "page": {
+                    "type": "integer",
+                    "exclusiveMinimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "row": {
+                    "type": "integer",
+                    "exclusiveMinimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "quote": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": [
+                  "url",
+                  "title",
+                  "quote"
+                ],
+                "additionalProperties": false
+              },
+              "prices": {
+                "minItems": 1,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "fee": {
+                      "type": "string",
+                      "enum": [
+                        "trade_israel",
+                        "trade_abroad",
+                        "custody_israel",
+                        "custody_abroad"
+                      ]
+                    },
+                    "price_he": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "holdings_he": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "names_fund": {
+                      "type": "boolean"
+                    },
+                    "source": {
+                      "type": "object",
+                      "properties": {
+                        "url": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "title": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "page": {
+                          "type": "integer",
+                          "exclusiveMinimum": 0,
+                          "maximum": 9007199254740991
+                        },
+                        "row": {
+                          "type": "integer",
+                          "exclusiveMinimum": 0,
+                          "maximum": 9007199254740991
+                        },
+                        "quote": {
+                          "type": "string",
+                          "minLength": 1
+                        }
+                      },
+                      "required": [
+                        "url",
+                        "title",
+                        "quote"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "required": [
+                    "fee",
+                    "price_he",
+                    "holdings_he",
+                    "names_fund",
+                    "source"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "inferred": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "kind",
+              "name_he",
+              "who_he",
+              "who_source",
+              "ends_printed",
+              "ends_he",
+              "prices"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "state",
+        "note",
+        "read",
+        "entries"
+      ],
+      "additionalProperties": false
     }
   },
   "required": [

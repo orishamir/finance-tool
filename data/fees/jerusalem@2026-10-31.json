@@ -1012,11 +1012,16 @@
     }
   ],
   "price_for_he": "לקוח רגיל, בלי הטבה לקבוצה",
-  "left_out": [
-    {
-      "what": "מחירים לקבוצות אוכלוסייה",
-      "page": 15,
-      "why": "The ranking uses the ordinary customer; group prices and how long they last are not collected (issue 140)."
-    }
-  ]
+  "left_out": [],
+  "groups": {
+    "state": "none_on_securities",
+    "note": "Annex A (pp.15-18) read in the filed copy: it lists only holders of prepaid cards under arrangements. No young, soldier or student group and no securities row.",
+    "read": [
+      {
+        "url": "https://www.bankjerusalem.co.il/media/7012/%D7%A2%D7%95%D7%AA%D7%A7-%D7%A9%D7%9C-1759155996_2_%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F_%D7%9E%D7%9C%D7%90_%D7%9C%D7%99%D7%97%D7%99%D7%93_%D7%A2%D7%A1%D7%A7_%D7%A7%D7%98%D7%9F-1-1.pdf",
+        "title": "תעריפון מלא, נספח א'"
+      }
+    ],
+    "entries": []
+  }
 }

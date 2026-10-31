@@ -1095,11 +1095,294 @@
     }
   ],
   "price_for_he": "לקוח רגיל, בלי הטבה לקבוצה",
-  "left_out": [
-    {
-      "what": "מחירים לקבוצות אוכלוסייה",
-      "page": 30,
-      "why": "The ranking uses the ordinary customer; group prices and how long they last are not collected (issue 140)."
-    }
-  ]
+  "left_out": [],
+  "groups": {
+    "state": "prices",
+    "row_he": "לקבוצות: דמי ניהול 0.1% לרבעון במקום 0.2%, לזמן מוגבל",
+    "note": "Annex A pp.30-31 read in the filed copy, and p.30 by eye, because the text layer's order of the columns misleads. Senior citizens: the rendered cells on securities are blank; the text layer holds 'אין מידע'.",
+    "read": [
+      {
+        "url": "https://www.mercantile.co.il/media/5sgkpskc/taarifon_private_full.pdf",
+        "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה"
+      }
+    ],
+    "entries": [
+      {
+        "kind": "young",
+        "name_he": "צעירים",
+        "who_he": "מגיל 14 ועד מעבר לקבוצה זכאית אחרת או עד גיל 19, המוקדם מביניהם",
+        "who_source": {
+          "url": "https://www.mercantile.co.il/media/5sgkpskc/taarifon_private_full.pdf",
+          "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+          "page": 31,
+          "quote": "מגיל 14ועד שיוך הלקוח לקבוצת אוכלוסייה זכאית אחרת או עד גיל ,19לפי המוקדם מבניהם"
+        },
+        "ends_printed": true,
+        "ends_he": "עד גיל 19, או עד מעבר לקבוצה אחרת",
+        "ends_source": {
+          "url": "https://www.mercantile.co.il/media/5sgkpskc/taarifon_private_full.pdf",
+          "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+          "page": 31,
+          "quote": "לפי המוקדם מבניהם"
+        },
+        "prices": [
+          {
+            "fee": "trade_israel",
+            "price_he": "מניות 0.4%, אגרות חוב 0.35%, בכפוף למינימום",
+            "holdings_he": "מניות ואגרות חוב",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.mercantile.co.il/media/5sgkpskc/taarifon_private_full.pdf",
+              "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+              "page": 30,
+              "quote": "קניה ,מכירה -מניות ואגרות חוב"
+            }
+          },
+          {
+            "fee": "trade_abroad",
+            "price_he": "מניות 0.35% ועמלת סוכן, בכפוף למינימום, מעל גיל 16",
+            "holdings_he": "מניות ואגרות חוב בחו״ל",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.mercantile.co.il/media/5sgkpskc/taarifon_private_full.pdf",
+              "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+              "page": 30,
+              "quote": "קניה ,מכירה בחו\"ל -מניות ואגרות חוב"
+            }
+          },
+          {
+            "fee": "custody_israel",
+            "price_he": "0.1% לרבעון",
+            "holdings_he": "דמי ניהול פיקדון ניירות ערך (לרבות יחידות השתתפות בקרנות נאמנות)",
+            "names_fund": true,
+            "source": {
+              "url": "https://www.mercantile.co.il/media/5sgkpskc/taarifon_private_full.pdf",
+              "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+              "page": 30,
+              "quote": "דמי ניהול פיקדון ניירות ערך"
+            }
+          },
+          {
+            "fee": "custody_abroad",
+            "price_he": "0.125% לרבעון",
+            "holdings_he": "דמי ניהול פיקדון ניירות ערך (לרבות יחידות השתתפות בקרנות נאמנות)",
+            "names_fund": true,
+            "source": {
+              "url": "https://www.mercantile.co.il/media/5sgkpskc/taarifon_private_full.pdf",
+              "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+              "page": 30,
+              "quote": "0.125%לנייר ערך דמי ניהול פיקדון ניירות ערך-הנסחרים בחו\"ל"
+            }
+          }
+        ]
+      },
+      {
+        "kind": "soldier",
+        "name_he": "חיילים / שירות לאומי",
+        "who_he": "חיילים שמקבלים משכורת חובה לחשבון; משרתי שירות לאומי עם אישור על השירות",
+        "who_source": {
+          "url": "https://www.mercantile.co.il/media/5sgkpskc/taarifon_private_full.pdf",
+          "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+          "page": 31,
+          "quote": "תקופת זכאות להטבות לחיילים :עם זקיפת מת\"ש חובה -משך כל השירות"
+        },
+        "ends_printed": true,
+        "ends_he": "חיילים: כל השירות. שירות לאומי: שנה, ואפשר לשנה נוספת באישור.",
+        "ends_source": {
+          "url": "https://www.mercantile.co.il/media/5sgkpskc/taarifon_private_full.pdf",
+          "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+          "page": 31,
+          "quote": "תקופת זכאות להטבות למשך שנה אחת מיום ההצטרפות לקבוצה"
+        },
+        "prices": [
+          {
+            "fee": "trade_israel",
+            "price_he": "מניות 0.3%, אגרות חוב 0.3%, בכפוף למינימום",
+            "holdings_he": "מניות ואגרות חוב",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.mercantile.co.il/media/5sgkpskc/taarifon_private_full.pdf",
+              "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+              "page": 30,
+              "quote": "קניה ,מכירה -מניות ואגרות חוב"
+            }
+          },
+          {
+            "fee": "trade_abroad",
+            "price_he": "מניות 0.35% ועמלת סוכן, בכפוף למינימום",
+            "holdings_he": "מניות ואגרות חוב בחו״ל",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.mercantile.co.il/media/5sgkpskc/taarifon_private_full.pdf",
+              "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+              "page": 30,
+              "quote": "קניה ,מכירה בחו\"ל -מניות ואגרות חוב"
+            }
+          },
+          {
+            "fee": "custody_israel",
+            "price_he": "0.1% לרבעון",
+            "holdings_he": "דמי ניהול פיקדון ניירות ערך (לרבות יחידות השתתפות בקרנות נאמנות)",
+            "names_fund": true,
+            "source": {
+              "url": "https://www.mercantile.co.il/media/5sgkpskc/taarifon_private_full.pdf",
+              "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+              "page": 30,
+              "quote": "דמי ניהול פיקדון ניירות ערך"
+            }
+          },
+          {
+            "fee": "custody_abroad",
+            "price_he": "0.125% לרבעון",
+            "holdings_he": "דמי ניהול פיקדון ניירות ערך (לרבות יחידות השתתפות בקרנות נאמנות)",
+            "names_fund": true,
+            "source": {
+              "url": "https://www.mercantile.co.il/media/5sgkpskc/taarifon_private_full.pdf",
+              "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+              "page": 30,
+              "quote": "0.125%לנייר ערך דמי ניהול פיקדון ניירות ערך-הנסחרים בחו\"ל"
+            }
+          }
+        ]
+      },
+      {
+        "kind": "released",
+        "name_he": "חיילים משוחררים",
+        "who_he": "בהצגת תעודת השחרור הצבאית או אוטומטית אם חלפו חודשיים בלי משכורת בחשבון חיילים",
+        "who_source": {
+          "url": "https://www.mercantile.co.il/media/5sgkpskc/taarifon_private_full.pdf",
+          "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+          "page": 31,
+          "quote": "בהצגת תעודת השחרור הצבאית ע\"י הלקוח או אוטומטית"
+        },
+        "ends_printed": true,
+        "ends_he": "שנתיים מיום ההצטרפות לקבוצה",
+        "ends_source": {
+          "url": "https://www.mercantile.co.il/media/5sgkpskc/taarifon_private_full.pdf",
+          "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+          "page": 31,
+          "quote": "תקופת הזכאות -למשך שנתיים מיום ההצטרפות לקבוצה"
+        },
+        "prices": [
+          {
+            "fee": "trade_israel",
+            "price_he": "מניות 0.4%, אגרות חוב 0.35%, בכפוף למינימום",
+            "holdings_he": "מניות ואגרות חוב",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.mercantile.co.il/media/5sgkpskc/taarifon_private_full.pdf",
+              "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+              "page": 30,
+              "quote": "קניה ,מכירה -מניות ואגרות חוב"
+            }
+          },
+          {
+            "fee": "trade_abroad",
+            "price_he": "מניות 0.35% ועמלת סוכן, בכפוף למינימום",
+            "holdings_he": "מניות ואגרות חוב בחו״ל",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.mercantile.co.il/media/5sgkpskc/taarifon_private_full.pdf",
+              "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+              "page": 30,
+              "quote": "קניה ,מכירה בחו\"ל -מניות ואגרות חוב"
+            }
+          },
+          {
+            "fee": "custody_israel",
+            "price_he": "0.1% לרבעון",
+            "holdings_he": "דמי ניהול פיקדון ניירות ערך (לרבות יחידות השתתפות בקרנות נאמנות)",
+            "names_fund": true,
+            "source": {
+              "url": "https://www.mercantile.co.il/media/5sgkpskc/taarifon_private_full.pdf",
+              "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+              "page": 30,
+              "quote": "דמי ניהול פיקדון ניירות ערך"
+            }
+          },
+          {
+            "fee": "custody_abroad",
+            "price_he": "0.125% לרבעון",
+            "holdings_he": "דמי ניהול פיקדון ניירות ערך (לרבות יחידות השתתפות בקרנות נאמנות)",
+            "names_fund": true,
+            "source": {
+              "url": "https://www.mercantile.co.il/media/5sgkpskc/taarifon_private_full.pdf",
+              "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+              "page": 30,
+              "quote": "0.125%לנייר ערך דמי ניהול פיקדון ניירות ערך-הנסחרים בחו\"ל"
+            }
+          }
+        ]
+      },
+      {
+        "kind": "student",
+        "name_he": "סטודנטים",
+        "who_he": "לומדים לתואר ראשון או שני, עם תעודת סטודנט בתוקף או שובר שכר לימוד ממוסד שאישרה המועצה להשכלה גבוהה. גיל מקסימלי להצטרפות 36.",
+        "who_source": {
+          "url": "https://www.mercantile.co.il/media/5sgkpskc/taarifon_private_full.pdf",
+          "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+          "page": 31,
+          "quote": "סטודנטים הלומדים לתואר ראשון או שני"
+        },
+        "ends_printed": true,
+        "ends_he": "4 שנים מיום ההצטרפות, עם תעודת סטודנט לכל שנה",
+        "ends_source": {
+          "url": "https://www.mercantile.co.il/media/5sgkpskc/taarifon_private_full.pdf",
+          "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+          "page": 31,
+          "quote": "תקופת הזכאות -למשך 4שנים מיום ההצטרפות לקבוצה"
+        },
+        "prices": [
+          {
+            "fee": "trade_israel",
+            "price_he": "מניות 0.25%, אגרות חוב 0.25%, בכפוף למינימום",
+            "holdings_he": "מניות ואגרות חוב",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.mercantile.co.il/media/5sgkpskc/taarifon_private_full.pdf",
+              "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+              "page": 30,
+              "quote": "קניה ,מכירה -מניות ואגרות חוב"
+            }
+          },
+          {
+            "fee": "trade_abroad",
+            "price_he": "מניות 0.35% ועמלת סוכן, בכפוף למינימום",
+            "holdings_he": "מניות ואגרות חוב בחו״ל",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.mercantile.co.il/media/5sgkpskc/taarifon_private_full.pdf",
+              "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+              "page": 30,
+              "quote": "קניה ,מכירה בחו\"ל -מניות ואגרות חוב"
+            }
+          },
+          {
+            "fee": "custody_israel",
+            "price_he": "0.1% לרבעון",
+            "holdings_he": "דמי ניהול פיקדון ניירות ערך (לרבות יחידות השתתפות בקרנות נאמנות)",
+            "names_fund": true,
+            "source": {
+              "url": "https://www.mercantile.co.il/media/5sgkpskc/taarifon_private_full.pdf",
+              "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+              "page": 30,
+              "quote": "דמי ניהול פיקדון ניירות ערך"
+            }
+          },
+          {
+            "fee": "custody_abroad",
+            "price_he": "0.125% לרבעון",
+            "holdings_he": "דמי ניהול פיקדון ניירות ערך (לרבות יחידות השתתפות בקרנות נאמנות)",
+            "names_fund": true,
+            "source": {
+              "url": "https://www.mercantile.co.il/media/5sgkpskc/taarifon_private_full.pdf",
+              "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה",
+              "page": 30,
+              "quote": "0.125%לנייר ערך דמי ניהול פיקדון ניירות ערך-הנסחרים בחו\"ל"
+            }
+          }
+        ]
+      }
+    ]
+  }
 }

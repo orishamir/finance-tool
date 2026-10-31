@@ -409,6 +409,12 @@ function barScale(costs: number[]): number {
   return Math.max(...inGroup);
 }
 
+/** A house's group prices, on its row and never in its figure (D43). The line belongs to the house, so a re-sort or a new input never changes the row's height. */
+function GroupLine({ id, snapshots }: { id: string; snapshots: WorkbenchBundle["snapshots"] }) {
+  const line = snapshots.find((s) => s.id === id)?.groups?.row_he;
+  return line ? <span className="col-start-2 col-end-[-1] text-xs text-muted-foreground leading-snug">{line}</span> : null;
+}
+
 export function AccountColumn({ view, bundle, years, pick, onPick }: { view: InvestView; bundle: WorkbenchBundle; years: number; pick: Pick; onPick: (p: Pick) => void }) {
   const fund = allFunds(view).find((f) => f.rec.id === pick.fund);
   const house = providerName(view, pick.house);
@@ -456,6 +462,7 @@ export function AccountColumn({ view, bundle, years, pick, onPick }: { view: Inv
           <span className="text-end font-semibold">
             <Num value={r.at.value} />
           </span>
+          <GroupLine id={r.p.id} snapshots={bundle.snapshots} />
         </>
       ),
     };
@@ -485,6 +492,7 @@ export function AccountColumn({ view, bundle, years, pick, onPick }: { view: Inv
             )}
           </span>
           <span className="text-end font-semibold">—</span>
+          <GroupLine id={r.p.id} snapshots={bundle.snapshots} />
         </>
       ),
     };

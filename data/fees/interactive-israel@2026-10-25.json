@@ -446,5 +446,16 @@
     }
   ],
   "price_for_he": "כל לקוח",
-  "left_out": []
+  "left_out": [],
+  "groups": {
+    "state": "no_mention",
+    "note": "Tariff read in the filed copy; p.7 says this tariff applies to every customer. Searched for young, student, soldier, released-soldier, group and club wording; none found on a price. This covers the tariff read, not a personal offer.",
+    "read": [
+      {
+        "url": "https://www.inter-il.com/wp-content/uploads/2026/09/%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F-%D7%A2%D7%9E%D7%9C%D7%95%D7%AA-23.09.2026-1.pdf",
+        "title": "תעריפון עמלות"
+      }
+    ],
+    "entries": []
+  }
 }

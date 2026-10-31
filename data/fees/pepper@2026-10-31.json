@@ -875,5 +875,71 @@
       "page": 11,
       "why": "No PEPPER document names one."
     }
-  ]
+  ],
+  "groups": {
+    "state": "prices",
+    "row_he": "למצטרפים חדשים מגיל 18, גם בלי להיות סטודנטים: בלי עמלה על מניות ואיגרות חוב, למשך שנה ובתנאי משכורת",
+    "note": "PEPPER's own student page (the regular-account address files the same text) and home page read in the filed copies. The page says one need not be a student and the home page says all customers aged 18+; the only printed date is for a student account, so whether it binds others is not settled. The annex rows for PEPPER customers in Leumi's tariff are this record's ordinary price, not a group. Nothing from Leumi's student, young or released-soldier groups is carried here. The offer's last joining date is the day this was read, so it may be gone at the next check.",
+    "read": [
+      {
+        "url": "https://lp.pepper.co.il/minisite/open-account/students/student-account",
+        "title": "חשבון סטודנט, PEPPER"
+      },
+      {
+        "url": "https://www.pepper.co.il/",
+        "title": "PEPPER, דף הבית"
+      },
+      {
+        "url": "https://lp.pepper.co.il/minisite/open-account/students/regular-account",
+        "title": "חשבון רגיל, מבצע סטודנטים"
+      }
+    ],
+    "entries": [
+      {
+        "kind": "other",
+        "name_he": "הטבת הצטרפות",
+        "who_he": "מצטרפים חדשים מגיל 18 שלא היה להם חשבון בלאומי או ב־PEPPER ב־6 החודשים האחרונים. בדף כתוב שלא חייבים להיות סטודנטים. התאריך היחיד שכתוב הוא לחשבון סטודנט: פתיחה עד 31.10.2026.",
+        "who_source": {
+          "url": "https://lp.pepper.co.il/minisite/open-account/students/student-account",
+          "title": "חשבון סטודנט, PEPPER",
+          "page": 1,
+          "quote": "הזכאות לחבילת ההטבות למצטרפים חדשים בגילאי 18+ פותחי חשבון סטודנט עד לתאריך 31.10.2026"
+        },
+        "ends_printed": true,
+        "ends_he": "לשנה, עד 30 פעולות בחודש, בתנאי משכורת של 1,200 שקלים נטו וחיוב של 100 שקלים בכרטיס",
+        "ends_source": {
+          "url": "https://lp.pepper.co.il/minisite/open-account/students/student-account",
+          "title": "חשבון סטודנט, PEPPER",
+          "page": 1,
+          "quote": "חבילת ההטבות בעמלות למסחר בני\"ע הינה לשנה ומוגבלת עד 30 פעולות בחודש"
+        },
+        "prices": [
+          {
+            "fee": "trade_israel",
+            "price_he": "0 עמלה",
+            "holdings_he": "ני״ע ישראלים וזרים (מניות ואג״ח)",
+            "names_fund": false,
+            "source": {
+              "url": "https://lp.pepper.co.il/minisite/open-account/students/student-account",
+              "title": "חשבון סטודנט, PEPPER",
+              "page": 1,
+              "quote": "0 עמלת קניה ומכירה לני\"ע ישראלים וזרים (מניות ואג\"ח)"
+            }
+          },
+          {
+            "fee": "trade_abroad",
+            "price_he": "0 עמלה",
+            "holdings_he": "ני״ע ישראלים וזרים (מניות ואג״ח)",
+            "names_fund": false,
+            "source": {
+              "url": "https://lp.pepper.co.il/minisite/open-account/students/student-account",
+              "title": "חשבון סטודנט, PEPPER",
+              "page": 1,
+              "quote": "0 עמלת קניה ומכירה לני\"ע ישראלים וזרים (מניות ואג\"ח)"
+            }
+          }
+        ]
+      }
+    ]
+  }
 }
