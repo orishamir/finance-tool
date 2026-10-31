@@ -7,3 +7,9 @@
 {"looked_for":"iShares TA-35 Israel UCITS ETF (IE00BP3QZG05) factsheet or product page","result":"Three likely factsheet links answer with the BlackRock global directory, not a document; only third-party sites surfaced in search, and they conflict on whether the fund is still active. Not read; no record written","where":"ishares.com, web search","date":"2026-10-31"}
 {"looked_for":"Invesco QQQ and Invesco EMEA fund documents","result":"invesco.com answers 406 to curl for the QQQ page, its fact sheet and the IE00B60SX394 document; left for Chrome","where":"invesco.com","date":"2026-10-31"}
 {"looked_for":"Vanguard FTSE Developed World UCITS Acc factsheet","result":"fund-docs.vanguard.com answers 403 at the guessed name 9678; the key investor information was read instead","where":"fund-docs.vanguard.com","date":"2026-10-31"}
+{"looked_for":"בנק אש ישראל: תנאי לקוח שפורסמו","result":"לא נמצאו. במרשם בנק ישראל אין לו אתר; בחיפוש אחד נמצאו רק ידיעות על הרישיון","where":"web search; BoI register","date":"2026-10-31"}
+{"looked_for":"בנק מסד: פרק ניירות הערך של התנאים הכלליים","result":"לא נמצא בשני חיפושים; עמודי האתר חסומים. פרק א נמצא","where":"web search בדומיין bankmassad.co.il; curl","date":"2026-10-31"}
+{"looked_for":"בנק דיסקונט: /private/legal-and-terms/","result":"404; המרכז הוא עמוד אחר, כבר בתיק","where":"discountbank.co.il","date":"2026-10-31"}
+{"looked_for":"מזרחי טפחות: /standard-contracts/","result":"404; המרכז הוא disclosure-links/bank-agreements","where":"mizrahi-tefahot.co.il","date":"2026-10-31"}
+{"looked_for":"בנק יהב: רשימת ההסכמים clients-agreements","result":"העמוד חוזר כמעט ריק ב-curl, הרשימה לא ב-HTML","where":"bank-yahav.co.il","date":"2026-10-31"}
+{"looked_for":"מזרחי טפחות: תנאים כלליים 1.2026 כטקסט","result":"הקובץ 'מונגש' זהה לקובץ שבתיק, עמודים כתמונות בלי טקסט","where":"mizrahi-tefahot.co.il/media/agublu4s","date":"2026-10-31"}

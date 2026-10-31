@@ -358,3 +358,7 @@
 {"url":"https://www.bankhapoalim.co.il/forms/he/_api/deposit-products-data","why":"answered 302","date":"2026-10-31"}
 {"url":"https://apps.fibi.co.il/bff-depositmanagement/api/v1/bankmassad/depositDetails/46","why":"answered 400","date":"2026-10-31"}
 {"url":"https://www.mizrahi-tefahot.co.il/umbraco/surface/NabatDeposits/GetNabatDeposits","why":"answered 400","date":"2026-10-31"}
+{"url":"https://www.bankhapoalim.co.il/he/standard-contract","why":"answered 302","date":"2026-10-31"}
+{"url":"https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/standard-contract/single_open_account.pdf","why":"answered 302","date":"2026-10-31"}
+{"url":"https://www.onezerobank.com/warehouse/userUploadFiles/Image/One%20Zero%20General%20terms%20and%20conditions_output.pdf","why":"answered 403","date":"2026-10-31"}
+{"url":"https://www.bankmassad.co.il/private/general/standardcontracts/","why":"a bot check","date":"2026-10-31"}
