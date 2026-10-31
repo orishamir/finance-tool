@@ -4,9 +4,10 @@
 // figure, or a P-05 parameter, and a missing one becomes a `gap` (shown as "עוד לא חושב" with its reason).
 import type { DepositTerms, FundRecord, ParameterRecord, RuleRecord, ProductRecord } from "@finance-tool/schema";
 import { loadParameters, loadRules, loadProducts, today } from "./data.server";
+import { guideSignature } from "../copy";
 import type { Bundle } from "./engine";
 import { p05Value } from "./engine";
-import { accountBanks, commonAccountRate, currentAccountRecords, depositBundleOf, depositEnds, depositRange, familyOf, guideInstrumentBundle, oneYearDepositRecords, publishedDeposit, type InstrumentFamily } from "./guide-signature-bundle.server";
+import { accountBanks, commonAccountRate, currentAccountRecords, depositBundleOf, depositEnds, depositExample, depositRange, familyOf, guideInstrumentBundle, oneYearDepositRecords, publishedDeposit, type InstrumentFamily } from "./guide-signature-bundle.server";
 import type { SignatureData } from "./guide-signature";
 import { loadDepositTerms, loadFunds } from "./instruments.server";
 import { buildPension, buildProvident, buildStudyFund } from "./guide-signature-g2.server";
@@ -125,7 +126,7 @@ function addDepositBanks(d: SignatureData, c: Ctx): ReturnType<typeof depositRan
     // F-86: of the same deposits, how many forbid taking the money out before the end of the term (each record's 447 column); a count
     // over the collected banks, naming none (D30)
     const inputs = Object.fromEntries(records.map((r) => [shortName(r.bank, r.bank), breakFact(r)]));
-    d.facts.depositNoExitCount = computed(records.filter((r) => !r.break.allowed).length, "count", "F-86", inputs, { today: c.t, about: "בכמה מהבנקים שנאספו אי אפשר למשוך מהפיקדון לפני סוף התקופה" });
+    d.facts.depositNoExitCount = computed(records.filter((r) => !r.break.allowed).length, "count", "F-86", inputs, { today: c.t, about: guideSignature.deposit.about.noExitCount });
   }
   return range;
 }
@@ -166,13 +167,16 @@ builders["bank-deposit"] = (c) => {
   const d = emptyData(c.id);
   addBundle(d, c, "bank-deposit");
   addBundle(d, c, "money-market-fund-daily");
-  // the run stands on the highest rate the collected banks print and the sentence under the bars on the lowest (F-86), each bank named
+  // the run stands on the middle of the collected deposits that cannot be broken, and the sentence under the bars on the two ends of all of them (F-86), each bank named
   const ends = depositEnds(c.deposits);
+  const example = depositExample(c.deposits);
   const record = c.wrappers.find((w) => w.id === "bank-deposit");
-  if (ends && record) {
-    depositFacts(d, c, "bank-deposit", { deposit_terms: ends.top.id });
+  if (ends && example && record) {
+    depositFacts(d, c, "bank-deposit", { deposit_terms: example.record.id });
     const low = depositBundleOf(record, ends.bottom, c.p05, c.allRules, c.t).bundle;
     if (low) d.bundles["bank-deposit-lo"] = low;
+    const high = depositBundleOf(record, ends.top, c.p05, c.allRules, c.t).bundle;
+    if (high) d.bundles["bank-deposit-hi"] = high;
   } else d.gaps.push("deposit:bank-deposit");
   // whether the money is locked is a count over the banks, not the terms of the one bank the run stands on
   delete d.facts.break;

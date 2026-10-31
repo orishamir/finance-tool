@@ -1,7 +1,7 @@
 // F-85 (the rate most banks pay on a current account) and the F-26 yearly reading used by the current-account page.
 import { readdirSync, readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import { currentAccountYearlyInterest, formulas, mostCommonRate, rateRange } from "../src/index.ts";
+import { currentAccountYearlyInterest, formulas, mostCommonRate, rateRange, middleIndex } from "../src/index.ts";
 
 describe("F-85 the rate most banks pay", () => {
   it("is registered", () => {
@@ -64,5 +64,14 @@ describe("F-26 the most a current account pays in a year", () => {
     expect(currentAccountYearlyInterest(10_000, 0, 10_000, 15)).toBe(0);
     expect(currentAccountYearlyInterest(0, 3, 10_000, 15)).toBe(0);
     expect(currentAccountYearlyInterest(20_000, 1, null, 15)).toBeCloseTo(170, 9);
+  });
+});
+
+describe("F-86: the middle of rates of one kind (2026-10-31)", () => {
+  it("is the middle one, and of an even count the lower of the two", () => {
+    expect(middleIndex(3)).toBe(1);
+    expect(middleIndex(4)).toBe(1);
+    expect(middleIndex(1)).toBe(0);
+    expect(middleIndex(0)).toBeNull();
   });
 });

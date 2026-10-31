@@ -9,7 +9,8 @@
 //
 // 2026-10-26 (founder: a general page names no single bank's rate): the one-year deposit on the money-market ladder is the range
 // across the collected banks (F-86); `oneYearDepositRecords` and `depositRange` make it, and the bank-deposit page lists each bank.
-import { isTie, mostCommonRate, rateRange, tieThreshold } from "@finance-tool/engine";
+import { isTie, middleIndex, mostCommonRate, rateRange, tieThreshold } from "@finance-tool/engine";
+import { guideBlocks, guideSignature } from "../copy";
 import type { Bundle } from "./engine";
 import { p05Number, p05Range, runTimeline } from "./engine";
 import type { DepositTerms, ParameterRecord, RuleRecord, ValueObject, ProductId, ProductRecord } from "@finance-tool/schema";
@@ -173,9 +174,9 @@ export function depositRange(banks: AccountBank[], today: string): DepositRange 
   const inputs = Object.fromEntries(banks.map((b) => [b.name, b.rate]));
   const make = (value: number, unit: SiteValue["unit"], about: string) => computed(value, unit, "F-86", inputs, { today, about });
   return {
-    lo: make(result.lo, "pct_per_year", "הריבית הנמוכה ביותר על פיקדון לשנה בריבית קבועה בבנקים שנאספו"),
-    hi: make(result.hi, "pct_per_year", "הריבית הגבוהה ביותר על פיקדון לשנה בריבית קבועה בבנקים שנאספו"),
-    count: make(result.count, "count", "כמה בנקים נאספו"),
+    lo: make(result.lo, "pct_per_year", guideSignature.deposit.about.rangeLo),
+    hi: make(result.hi, "pct_per_year", guideSignature.deposit.about.rangeHi),
+    count: make(result.count, "count", guideSignature.deposit.about.rangeCount),
   };
 }
 
@@ -304,6 +305,18 @@ export function depositEnds(deposits: DepositTerms[]): { top: DepositTerms; bott
   return { top: sorted[sorted.length - 1]!, bottom: sorted[0]!, count: records.length };
 }
 
+/**
+ * The deposit the guide's example runs on (F-86, 2026-10-31): the middle rate among the collected one-year deposits that cannot be broken,
+ * the kind most of them are, so that like is compared with like. Not the highest: a deposit that can be broken and opens only at a branch
+ * is another product, and the collected deposits are not the whole market, so no rate here is called the market's highest or the site's pick.
+ */
+export function depositExample(deposits: DepositTerms[]): { record: DepositTerms; count: number } | null {
+  const alike = oneYearDepositRecords(deposits).filter((r) => typeof r.rate_offered.value === "number" && !r.break.allowed);
+  const sorted = [...alike].sort((a, b) => Number(a.rate_offered.value) - Number(b.rate_offered.value));
+  const at = middleIndex(sorted.length);
+  return at === null ? null : { record: sorted[at]!, count: sorted.length };
+}
+
 /** The bank deposit's bundle on one bank's record. */
 export function depositBundleOf(record: ProductRecord, rec: DepositTerms, p05: ParameterRecord, allRules: Record<string, RuleRecord>, t: string): ReturnType<typeof buildInstrumentBundle> {
   const spec = { ...p05.instruments?.[record.id], deposit_terms: rec.id };
@@ -312,23 +325,23 @@ export function depositBundleOf(record: ProductRecord, rec: DepositTerms, p05: P
 
 /**
  * The guide page's bundle of a wrapper or security: never one institution presented as general. An account and a security held in one run
- * on the collected tariff that leaves the example plan the most, and a bank deposit on the highest rate the collected banks print, each
- * named by the terms block with the number compared (`Bundle.pick`). Anything else is the run on the records P-05 names.
+ * on the collected tariff that leaves the example plan the most, and a bank deposit on the middle of the collected deposits that cannot be
+ * broken (F-86), each named by the terms block with the number compared (`Bundle.pick`). Anything else is the run on the records P-05 names.
  */
 export function guideInstrumentBundle(record: ProductRecord, family: InstrumentFamily, p05: ParameterRecord, allRules: Record<string, RuleRecord>, t: string): ReturnType<typeof buildInstrumentBundle> {
   if (record.id === "bank-deposit") {
-    const ends = depositEnds(loadDepositTerms());
-    if (!ends) return buildInstrumentBundle(record, family, p05, allRules, t);
-    const built = depositBundleOf(record, ends.top, p05, allRules, t);
-    const inputs = Object.fromEntries(oneYearDepositRecords(loadDepositTerms()).map((r) => [shortName(r.bank, r.bank), { ...r.rate_offered } as SiteValue]));
-    const count = computed(ends.count, "count", "F-86", inputs, { today: t, about: "כמה בנקים נאספו" });
-    return { ...built, bundle: built.bundle ? { ...built.bundle, pick: { kind: "deposit", id: ends.top.id, count } } : null };
+    const example = depositExample(loadDepositTerms());
+    if (!example) return buildInstrumentBundle(record, family, p05, allRules, t);
+    const built = depositBundleOf(record, example.record, p05, allRules, t);
+    const inputs = Object.fromEntries(oneYearDepositRecords(loadDepositTerms()).filter((r) => !r.break.allowed).map((r) => [shortName(r.bank, r.bank), { ...r.rate_offered } as SiteValue]));
+    const count = computed(example.count, "count", "F-86", inputs, { today: t, about: guideSignature.deposit.about.exampleCount });
+    return { ...built, bundle: built.bundle ? { ...built.bundle, pick: { kind: "deposit", id: example.record.id, count } } : null };
   }
   if (accountClasses[record.id]) {
     const rows = accountRuns(record, family, p05, allRules, t);
     const best = rows.at(-1);
     if (best) {
-      const count = computed(rows.length, "count", "F-80", {}, { today: t, about: "כמה בנקים ובתי השקעות שהתעריפון שלהם נאסף ושהאתר מחשב בשבילם את הדוגמה" });
+      const count = computed(rows.length, "count", "F-80", {}, { today: t, about: guideBlocks.terms.pick.accountCount });
       // F-80: every tariff within P-01 of the top is a tie, compared with the top; the page says so and crowns none
       const parameters = loadParameters();
       const others = rows.slice(0, -1).reverse().filter((r) => isTie(best.real, r.real, tieThreshold(parameters)));
