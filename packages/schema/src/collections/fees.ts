@@ -29,6 +29,8 @@ export const feeLine = z.strictObject({
   max: feeValue.nullable(),
   /** S2 (2026-10-25): a cap as a share of the trade value (unit `pct_of_trade`): commission = min(cap x trade, max(min, rate x base)). */
   cap: feeValue.optional(),
+  /** F-12 (2026-10-31): a flat price for an order up to a sum; a larger order pays the line's rate, minimum and maximum. */
+  flat_up_to: z.strictObject({ amount: feeValue, up_to: feeValue }).optional(),
   spread: feeValue.nullable().optional(),
   period: z.enum(["month", "quarter", "year"]).nullable(),
   channel: z.string().nullable(),

@@ -2,6 +2,7 @@
 // Expected figures computed by a separate script from the formula, with no return, fund cost or inflation.
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
+import { buyWithCash, tradeCommission } from "../src/formulas/fees.ts";
 import { runSecurities, type SecuritiesInput } from "../src/ledgers/securities.ts";
 import { buildTariff, type WorkbenchInput } from "../src/providers/workbench.ts";
 import { context } from "./golden/harness.ts";
@@ -69,5 +70,25 @@ describe("which tariff line is the standing-order price (F-12)", () => {
     const t = buildTariff({ instrumentClass: "mutual_fund_units", channel: "direct", wrapper: "brokerage-account" } as Omit<WorkbenchInput, "fund">, { snapshot: snap, level: "list" }, snap).tariff;
     expect(t.buyStanding).toBeUndefined();
     expect(t.buy?.min).toBe(35);
+  });
+});
+
+describe("a flat price for an order up to a sum (F-12, BRK-54)", () => {
+  const line = { rate: 0.004, min: 26, max: 6_300, flatUpTo: { amount: 4, upTo: 30_000 } };
+  const nis = { fxRate: 1 };
+  it("an order up to the sum pays the flat price, and a larger one the line", () => {
+    expect(tradeCommission(line, 30_000, nis)).toBe(4);
+    expect(tradeCommission(line, 30_001, nis)).toBeCloseTo(120.004, 6);
+    expect(tradeCommission(line, 0, nis)).toBe(0);
+  });
+  it("a purchase is measured on the trade after the flat price, and never oscillates at the sum", () => {
+    expect(buyWithCash(30_004, line, nis)).toEqual({ trade: 30_000, commission: 4 });
+    const over = buyWithCash(30_010, line, nis);
+    expect(over.commission).toBeCloseTo(30_010 - 30_010 / 1.004, 6);
+  });
+  it("a dollar bound is read at the trade's rate", () => {
+    const usd = { rate: 0.003, in: "instrument" as const, flatUpTo: { amount: 4, upTo: 8_000 } };
+    expect(tradeCommission(usd, 3.5 * 8_000, { fxRate: 3.5 })).toBe(14);
+    expect(tradeCommission(usd, 3.5 * 8_001, { fxRate: 3.5 })).toBeCloseTo(0.003 * 3.5 * 8_001, 6);
   });
 });

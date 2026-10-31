@@ -35,9 +35,9 @@ describe("invest page computation", () => {
     expect(knownIndices(bundle).every((i) => i.exposure?.kind === "equity_index")).toBe(true);
   });
 
-  it("the founder's plan: the cheapest way is Psagot Trade with a tracking fund, priced with the fund's own class", () => {
+  it("the founder's plan: the cheapest way is Fair with a tracking fund, priced with the fund's own class", () => {
     expect(view.headline).not.toBeNull();
-    expect(view.headline!.providerId).toBe("psagot");
+    expect(view.headline!.providerId).toBe("fair");
     expect(view.headline!.option).toBe("il-tracking");
     expect(optionOfFund(view.headline!.fund.rec, sp.exposure!)).toBe("il-tracking");
   });
@@ -111,7 +111,7 @@ describe("invest page computation", () => {
 
   it("the API: the cheapest way for an index, and the range over the known indices", () => {
     const w = cheapestWay(bundle, sp, plan());
-    expect(w?.providerId).toBe("psagot");
+    expect(w?.providerId).toBe("fair");
     const r = rangeOverKnownIndices(bundle, plan())!;
     expect(r.low.valueN).toBeLessThanOrEqual(r.high.valueN);
     expect(r.perIndex.length).toBeGreaterThan(3);

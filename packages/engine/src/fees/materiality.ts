@@ -92,7 +92,11 @@ function changeLine(plan: RunPlan, line: FeeLine, rate: number): RunPlan {
       const set = (key: "buy" | "sell") => {
         const old = tariff[key];
         if (rate === 0) delete tariff[key];
-        else tariff[key] = { ...old, rate };
+        else {
+          // a person's own rate replaces the line, its flat price too (F-12)
+          const { flatUpTo: _, ...rest } = old ?? ({} as NonNullable<typeof old>);
+          tariff[key] = { ...rest, rate };
+        }
       };
       switch (line) {
         case "trade":

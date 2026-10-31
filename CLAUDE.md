@@ -65,12 +65,13 @@ These override any older rule they conflict with, in the docs, older specs or
 the memory notes; where one conflicts, the older text is amended to match.
 The evidence behind them is `research/2026-10-28-founder-patterns.md`.
 
-1. **Draw before building anything a person sees.** Every change to what a
-   screen shows starts as a Hebrew mockup with the site's real numbers, in
-   two or three options with one recommended; a made-up value is marked. A
-   fix shows the symptom I saw and the same screen without it. This holds for
-   a choice I delegated too: a delegated choice that changes a screen still
-   goes through a mockup. Technical settings stay Claude's to set.
+1. **Draw before building a major graphic visualization** (narrowed
+   2026-10-31). A major chart or picture starts as a Hebrew mockup with the
+   site's real numbers, in two or three options with one recommended; a
+   made-up value is marked. A fix to one shows the symptom I saw and the same
+   screen without it. This holds for a choice I delegated too. Text and label
+   changes need no mockup, and neither does anything else short of a major
+   graphic visualization. Technical settings stay Claude's to set.
 2. **Fair and general comparisons.** Name the holding; change one thing at
    a time; show differences rather than two absolutes; use a range or a
    count over every collected institution, never one bank and never my own
@@ -97,6 +98,10 @@ The evidence behind them is `research/2026-10-28-founder-patterns.md`.
 9. **Full words.** Full terms, headers on every table, no process language
    on the site (Claude, audit ids, test names); builders' Hebrew goes
    through the Hebrew editor.
+
+**Work order (founder, 2026-10-31).** Finish the indices page and the guides
+before anything else; the workbench, holdings and idle-cash pages wait. This
+overrides the Roadmap issue's ranking, which counts what unblocks the most.
 
 ## Fixed constraints
 

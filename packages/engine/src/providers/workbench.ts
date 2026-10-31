@@ -341,6 +341,8 @@ export function buildTariff(input: Omit<WorkbenchInput, "fund"> & { fund?: Workb
         if (hasBound(l.max)) c.max = bound(l.max, `${l.line.id} max`);
         // E3: the cap is a share of the trade value and wins over the minimum.
         if (hasBound(l.cap)) c.cap = pct(l.cap, "pct_of_trade", `${l.line.id} cap`);
+        // F-12 (2026-10-31): a flat price for an order up to a sum (BRK-54).
+        if (l.line.flat_up_to) c.flatUpTo = { amount: bound(l.line.flat_up_to.amount, `${l.line.id} flat amount`), upTo: bound(l.line.flat_up_to.up_to, `${l.line.id} flat up to`) };
         return c;
       };
       const c = commission(r);
