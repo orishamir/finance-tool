@@ -217,6 +217,15 @@ Scope: in: what TASE-listed corporate bonds (תעודות התחייבות / א�
 - Dimensions: `regulator`
 - Likely to change: no
 
+### CORP-26 A bond that repays all its principal at the end: no official name was found
+- Rule: No law, regulation or ISA or TASE document read names a class of bond that repays its whole principal in one payment. "אג"ח בולט" as a bond term appears in no authority read. The law's definition speaks only of "בתאריך קבוע או בהתקיים תנאי" (CORP-01). For government bonds the regulations say it in plain words: "וייפדו במלואן ביום תשלום הקרן" (regulation 6).
+- Conditions / exceptions: How a corporate series repays is set in its own deed (CORP-10 to CORP-12), so it is a fact about a series. The ISA's investor page on bonds and TASE's knowledge pages could not be read by script (open question 16). The Bank of Israel uses "הלוואות "בולט" ו"בלון"" for housing loans, a different product ([review of the banking system, first half 2025](https://boi.org.il/media/trqltwil/סקירת-מערכת-הבנקאות-מחצית-ראשונה-2025.pdf#page=37), p.37).
+- Figures: none.
+- Source: [תקנות מילווה המדינה (איגרות חוב מסוג "אג"ח ממשלתית"), התשס"ו-2006, קובץ התקנות 6457](https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmWhyAjAO9sieYV7GsTkIsdY=#page=3), file p.3 reg.6 · primary · checked 2026-11-01.
+- Scope: general
+- Dimensions: `product-marking`
+- Likely to change: no
+
 ## Terms
 
 | Hebrew | English | Meaning | Where it appears | Source |
@@ -281,6 +290,7 @@ Scope: in: what TASE-listed corporate bonds (תעודות התחייבות / א�
 13. **Disclosure content:** which periodic and immediate reports an issuer must publish, including covenant compliance and rating changes (Securities Regulations on periodic and immediate reports). Not read.
 14. **Market value of corporate bonds outstanding at end-2025.** Not found in the TASE report pages read.
 15. **Unlisted commercial paper:** whether it is offered to the public, and on what terms. Not found.
+16. **An official word for a bond repaying its whole principal at the end (CORP-26).** No authority read has one. Not readable by script: the ISA's investor page on bonds (investors.isa.gov.il/nav-index/nav-bar/bonds) and TASE's knowledge pages. Would settle it: either page in Chrome.
 
 ## Left out and why
 
