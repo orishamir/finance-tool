@@ -5,7 +5,7 @@
 import { existsSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { memberKindOf, recordDistribution, REDEMPTION_BAND, STANDING_ORDER_BAND, type InstrumentTerms } from "@finance-tool/engine";
-import { instrumentClassOf } from "./providers";
+import { feeAbsent, instrumentClassOf } from "./providers";
 import {
   catalogEntry,
   depositTerms,
@@ -364,7 +364,10 @@ function buildFund(wrapperId: string, spec: InstrumentSpec, src: InstrumentSourc
     const notCollected: string[] = [];
     const take = (field: keyof FundRecord["fees"], key: keyof typeof drag, label: string) => {
       const v = rec.fees[field];
-      if (!v || v.value === null) return void notCollected.push(field);
+      if (!v || v.value === null) {
+        if (!feeAbsent(rec, field)) notCollected.push(field);
+        return;
+      }
       if (!isNum(v) || (v.unit !== "pct_per_year" && v.unit !== "pct")) return void missing.push(`${wrapperId}: fund "${rec.id}" fees.${field} is not a percent a year`);
       drag[key] = pct(v);
       feeValues[label] = { ...v };

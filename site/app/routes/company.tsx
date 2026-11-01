@@ -13,7 +13,7 @@ import { BrokerageGroupCard } from "../components/decoder/institutions/brokerage
 import { IconDrillIn } from "../components/icons";
 import { IdRef, Num, NumAfter, NumberLegend } from "../components/provenance";
 import { Breadcrumb, PageShell } from "../components/shell";
-import { Callout, Card, Disclosure } from "../components/kit";
+import { Callout, Card, Disclosure, FeeWordsNote } from "../components/kit";
 import type { SiteValue } from "../lib/value";
 import { fmt } from "../lib/format";
 import { cmaFeeValue, compactFee, expandFee, feeYear, type CompactFee } from "../lib/value";
@@ -264,6 +264,7 @@ function ManagerCompany({ data }: { data: CompanyData }) {
                 render: (open: boolean) => (
               <Disclosure key={g.kind} defaultOpen={open} className="flex flex-col gap-2" summaryClassName="min-h-12 md:min-h-14" label={<GroupLabel title={brandsCopy.funds.groups[g.kind]} count={fundCountLine(g.funds.length)} />}>
                 <p className="text-sm text-muted-foreground max-w-measure px-1">{brandsCopy.funds.collected}</p>
+                {g.funds.some((f) => f.noVariable || f.noTrustee) && <FeeWordsNote className="px-1" />}
                 <BrandFundList funds={g.funds} kind={g.kind} />
               </Disclosure>
                 ),

@@ -6,19 +6,18 @@ import { brands as copy, invest } from "../../copy";
 import type { BrandFundRow, FundKind } from "../../lib/brands.server";
 import type { SiteValue } from "../../lib/value";
 import { IconDrillIn } from "../icons";
-import { Num } from "../provenance";
-import { LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, type ProductColumn } from "../kit";
+import { FeeFigure, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, type ProductColumn } from "../kit";
 
 const c = copy.funds;
 
-/** The three fees, each with its word: in the table one under the other, on the phone in one line; one not collected says so. */
+/** The three fees, each with its word: in the table one under the other, on the phone in one line; one the fund does not have, or one not collected, says so. */
 function Fees({ f, inline }: { f: BrandFundRow; inline?: boolean }) {
-  const lines: { id: string; v: SiteValue | null; word: string }[] = [
+  const lines: { id: string; v: SiteValue | null; absent?: boolean; word: string }[] = [
     { id: "fixed", v: f.fixed, word: c.feeWords.fixed },
-    { id: "variable", v: f.variable, word: c.feeWords.variable },
-    { id: "trustee", v: f.trustee, word: c.feeWords.trustee },
+    { id: "variable", v: f.variable, absent: f.noVariable, word: c.feeWords.variable },
+    { id: "trustee", v: f.trustee, absent: f.noTrustee, word: f.noTrustee ? invest.funds.noTrusteeWord : c.feeWords.trustee },
   ];
-  const items = lines.map((l) => ({ id: l.id, word: l.word, figure: l.v ? <Num value={l.v} size={inline ? "inline" : "cell"} /> : <span className="text-sm text-muted-foreground">{invest.funds.notCollected}</span> }));
+  const items = lines.map((l) => ({ id: l.id, word: l.word, figure: <FeeFigure value={l.v} absent={l.absent} inline={inline} /> }));
   return <ProductFigures items={items} inline={inline} />;
 }
 
