@@ -13,6 +13,8 @@ export { ChipList, dropOrder, type ChipItem, type ChipListProps, type ChipListWo
 export { PlanChips, type PlanChipItem } from "./plan-chips";
 export { KnobStrip, type Knob } from "./knobs";
 export { ChangeChart, type ChangeLine, type ChangeRow } from "./change-chart";
+export { STAIRS_MARGIN, STAIRS_SLOTS, STAIR_SWATCH, StairsChart, StairsSteps, StairsTable, wrapLines, type StairColumn, type StairHue, type StairStep } from "./stairs-chart";
+export { DiffBar, DiffFigure, DiffHead, DiffRow, GreyLine, barShare, type DiffRowProps } from "./diff-row";
 export { InputSlot, Sentence, Tpl, fill } from "./sentence";
 export { HeadlineFigure, KeyValue, KeyValueList, Stat, StatRow, StatTile, type KeyValueItem } from "./stat";
 export { GapNote, NoteList, SourceLine } from "./notes";

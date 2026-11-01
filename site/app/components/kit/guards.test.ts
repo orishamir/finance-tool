@@ -201,3 +201,21 @@ describe("a chart's motion is the kit's", () => {
     expect(hits).toEqual([]);
   });
 });
+
+// 10. the stairs and the rows of single changes (2026-11-01): a gain is green and a loss red through the roles, never a literal colour, and a
+//     row is a stretched button with its figures above it, never a button that holds a figure (a figure is itself a button).
+describe("the stairs and the difference rows", () => {
+  const stairs = code(read(join(root, "components/kit/stairs-chart.tsx")));
+  const diff = code(read(join(root, "components/kit/diff-row.tsx")));
+  it("use roles, no literal colour or palette step", () => {
+    for (const src of [stairs, diff]) expect(src).not.toMatch(/#[0-9a-fA-F]{3,8}\b|oklch\(|palette-|rgb\(/);
+  });
+  it("draw a gain with the gain role and a loss with the loss role, so the two signs never share a colour", () => {
+    expect(diff).toMatch(/bg-gain/);
+    expect(diff).toMatch(/bg-loss/);
+    expect(stairs).toMatch(/fill-loss/);
+  });
+  it("a tap row holds no Num inside its button", () => {
+    expect(diff).not.toMatch(/<button[^>]*>[^<]*<Num/);
+  });
+});
