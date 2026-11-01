@@ -32,7 +32,7 @@ const lineOf = (line: FeeLine) => (line in lineClass ? line : "other");
 /** A computed shekel figure of this page, whole shekels (the totals and gaps the bars and lists show). */
 const nis = (n: number, formula: string, about: string, today: string, inputs: Record<string, SiteValue> = {}): SiteValue => computed(Math.round(n), "nis", formula, inputs, { today, about });
 /** A gain shown with its plus sign, isolated so it reads "+2,621 ₪" inside Hebrew. */
-const plus = (v: SiteValue) => (typeof v.value === "number" && v.value > 0 ? `\u2066+${fmt.nisWhole(v.value)}\u2069` : undefined);
+const plus = (n: number) => (n > 0 ? `\u2066+${fmt.nisWhole(n)}\u2069` : undefined);
 const priced = (x: WayPrice | { reason: Reason } | undefined): x is WayPrice => !!x && "valueN" in x;
 
 /** Every fund on the index, of every option that exists for it. */
@@ -218,7 +218,7 @@ export function PairResult({ view, bundle, plan, settled, pick, onPick }: { view
         <div className="flex flex-col gap-0.5">
           <span className="text-sm text-muted-foreground">{c.pair.paidIn}</span>
           <span className="text-2xl md:text-3xl font-bold leading-tight">
-            <Num value={pc.paidIn} />
+            <Num animate value={pc.paidIn} />
           </span>
           <span className="text-xs text-muted-foreground">{c.pair.paidInNote(months)}</span>
         </div>
@@ -232,7 +232,7 @@ export function PairResult({ view, bundle, plan, settled, pick, onPick }: { view
               {onBest && <span className="text-primary font-medium"> · {c.pair.cheapestTag}</span>}
             </span>
             <span className="text-2xl md:text-3xl font-bold leading-tight">
-              <Num value={pc.left} />
+              <Num animate value={pc.left} />
             </span>
             <span className="text-xs text-muted-foreground">
               {c.pair.left(years)}, {c.pair.leftNote}
@@ -243,17 +243,17 @@ export function PairResult({ view, bundle, plan, settled, pick, onPick }: { view
             <div className="md:flex-1 md:min-w-64 rounded-lg border border-border p-3 flex flex-col gap-1">
               <span className="text-sm text-muted-foreground max-md:min-h-[2lh]">{otherTitle}</span>
               <span className={cx("text-2xl md:text-3xl font-bold leading-tight", !onBest && "text-primary")}>
-                <Num value={pcOther.left} />
+                <Num animate value={pcOther.left} />
               </span>
               <span className="flex flex-wrap items-center gap-x-3 text-sm">
                 <span>
                   {onBest ? (
                     <>
-                      <Num value={gap(pcOther.left, c.pair.input(otherRole, c.pair.colLeft), pc.left, c.pair.input(c.pair.yours, c.pair.colLeft), c.pair.vsYours)} /> {c.pair.vsYours}
+                      <Num animate value={gap(pcOther.left, c.pair.input(otherRole, c.pair.colLeft), pc.left, c.pair.input(c.pair.yours, c.pair.colLeft), c.pair.vsYours)} /> {c.pair.vsYours}
                     </>
                   ) : (
                     <>
-                      <Num value={moreIfOther!} display={plus(moreIfOther!)} /> {c.pair.moreIfCheapest}
+                      <Num animate value={moreIfOther!} display={plus} /> {c.pair.moreIfCheapest}
                     </>
                   )}
                 </span>
@@ -351,11 +351,11 @@ export function AccountColumn({ view, bundle, years, pick, onPick }: { view: Inv
           <span className="flex items-center gap-2 min-w-0 max-md:row-start-2 max-md:col-start-3 max-md:col-span-2">
             <CostStack size="sm" parts={parts} scale={scale} highlight={legendPick.active} label={`${r.p.short}: ${fmt.nisWhole(r.at.accountCost)}`} />
             <span className="text-xs text-muted-foreground whitespace-nowrap">
-              <Num value={nis(r.at.accountCost, "F-63", `${r.p.short}: ${c.pair.colChargesShort}`, bundle.today)} />
+              <Num animate value={nis(r.at.accountCost, "F-63", `${r.p.short}: ${c.pair.colChargesShort}`, bundle.today)} />
             </span>
           </span>
           <span className="text-end font-semibold">
-            <Num value={r.at.value} />
+            <Num animate value={r.at.value} />
           </span>
           <GroupLine id={r.p.id} snapshots={bundle.snapshots} />
           {r.p.custom && <span className="col-start-2 col-end-[-1]"><BrokerTerms id={r.p.id} /></span>}
@@ -419,7 +419,7 @@ export function AccountColumn({ view, bundle, years, pick, onPick }: { view: Inv
         <span className="flex flex-wrap items-center content-start gap-x-4 gap-y-1 text-sm max-md:min-h-12.25">
           {priced(at) && (
             <span className="text-muted-foreground whitespace-nowrap max-md:basis-full">
-              {c.pair.colCharges(years)}: <Num value={nis(at.accountCost, "F-63", c.pair.colCharges(years), bundle.today)} />
+              {c.pair.colCharges(years)}: <Num animate value={nis(at.accountCost, "F-63", c.pair.colCharges(years), bundle.today)} />
             </span>
           )}
           <LabelRow labels={brokerLabels(house, false)} />
@@ -564,14 +564,14 @@ export function FundColumn({ view, bundle, plan, today, pick, onPick, filter, on
     ) : x && range ? (
       <span className="flex flex-col items-end gap-0.5 text-sm">
         <span className="block font-semibold min-h-[2lh]">
-          {c.kinds.between} <Num value={nis(x.atLo, "F-94", c.pair.colDiff, today)} display={plus(nis(x.atLo, "F-94", c.pair.colDiff, today))} /> {c.kinds.and}
-          <Num value={nis(x.atHi, "F-94", c.pair.colDiff, today)} display={plus(nis(x.atHi, "F-94", c.pair.colDiff, today))} />
+          {c.kinds.between} <Num animate value={nis(x.atLo, "F-94", c.pair.colDiff, today)} display={plus} /> {c.kinds.and}
+          <Num animate value={nis(x.atHi, "F-94", c.pair.colDiff, today)} display={plus} />
         </span>
         <span className="text-xs text-muted-foreground text-end">{c.kinds.crossWhy(`${Math.abs(range.lo)}%`, `${range.hi}%`)}</span>
       </span>
     ) : priced(at) && priced(selAt) ? (
       <span className="font-semibold">
-        <Num value={diff(at.valueN - selAt.valueN, r.f.name, at.value, selAt.value)} display={plus(diff(at.valueN - selAt.valueN, r.f.name, at.value, selAt.value))} />
+        <Num animate value={diff(at.valueN - selAt.valueN, r.f.name, at.value, selAt.value)} display={plus} />
       </span>
     ) : (
       <span className="text-xs text-muted-foreground">{c.pair.noPriceHere}</span>
