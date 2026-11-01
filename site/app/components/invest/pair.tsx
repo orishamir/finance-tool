@@ -15,7 +15,7 @@ import { computed, ownBy, type SiteValue } from "../../lib/value";
 import { fmt } from "../../lib/format";
 import { IconLock } from "../icons";
 import { Num } from "../provenance";
-import { Button, Card, ChartLegend, CostStack, LabelChip, LabelFilter, LabelRow, PickList, ProductIdLink, Sentence, Swatch, Tag, cx, useChartPick, type ChartPick, useHeldHeight, type CostPart, type PickRow } from "../kit";
+import { Button, Card, ChartLegend, CostStack, LabelChip, LabelFilter, LabelRow, PickList, ProductIdLink, Sentence, Stat, StatRow, Swatch, Tag, cx, useChartPick, type ChartPick, useHeldHeight, type CostPart, type PickRow } from "../kit";
 import { optionClass, OptionTag, reasonText } from "./parts";
 import { ProviderLink, providerName } from "./sections";
 import { Fees } from "./funds";
@@ -29,6 +29,9 @@ export interface Pick {
 
 const lineClass: Record<string, string> = { trade: "bg-chart-cost-trade", custody: "bg-chart-cost-custody", fixed: "bg-chart-cost-fixed", fx: "bg-chart-cost-fx" };
 const lineOf = (line: FeeLine) => (line in lineClass ? line : "other");
+/** A legend names every account line whichever row or pair is shown, in one order, so its items keep their places from one pick to the next.
+ * An index in shekels has no conversion line to name. */
+const legendLines = (israeli: boolean, used: readonly string[]) => [...Object.keys(lineClass).filter((l) => l !== "fx" || !israeli), ...(used.includes("other") ? ["other"] : [])];
 /** A computed shekel figure of this page, whole shekels (the totals and gaps the bars and lists show). */
 const nis = (n: number, formula: string, about: string, today: string, inputs: Record<string, SiteValue> = {}): SiteValue => computed(Math.round(n), "nis", formula, inputs, { today, about });
 /** A gain shown with its plus sign, isolated so it reads "+2,621 ₪" inside Hebrew. */
@@ -188,9 +191,7 @@ export function PairResult({ view, bundle, plan, settled, pick, onPick }: { view
   const steady = (fund: string) => !view.index.israeli && <span className="text-xs text-muted-foreground min-h-[1lh] max-md:min-h-[2lh]">{onSteadyDollar(fund) ? c.pair.steadyDollar : ""}</span>;
   const years = plan.years;
   const months = 12 * plan.years;
-  // the legend names every account line whichever pair is shown, so it keeps its size from one pick to the next
-  // an index in shekels has no conversion line to name
-  const lines = [...Object.keys(lineClass).filter((l) => l !== "fx" || !view.index.israeli), ...([...pc.account, ...(pcOther?.account ?? [])].some((l) => lineOf(l.line) === "other") ? ["other"] : [])];
+  const lines = legendLines(!!view.index.israeli, [...pc.account, ...(pcOther?.account ?? [])].map((l) => lineOf(l.line)));
   // a gap names its two inputs by whose they are, as the figure's sheet lists them
   const gap = (a: SiteValue, aName: string, b: SiteValue, bName: string, about: string) => nis((a.value as number) - (b.value as number), "F-65", about, bundle.today, { [aName]: a, [bName]: b });
   const otherRole = onBest ? c.pair.next : c.pair.cheapest;
@@ -215,7 +216,8 @@ export function PairResult({ view, bundle, plan, settled, pick, onPick }: { view
   return (
     <Card pad="roomy" className="flex flex-col gap-5">
       <div className="flex flex-col gap-4 md:flex-row md:flex-wrap md:items-stretch md:gap-x-6">
-        <div className="flex flex-col gap-0.5">
+        {/* one width for the longest case: another digit in the months or the amount moved the two cards beside it */}
+        <div className="flex flex-col gap-0.5 md:w-72 md:shrink-0">
           <span className="text-sm text-muted-foreground">{c.pair.paidIn}</span>
           <span className="text-2xl md:text-3xl font-bold leading-tight">
             <Num animate value={pc.paidIn} />
@@ -245,7 +247,8 @@ export function PairResult({ view, bundle, plan, settled, pick, onPick }: { view
               <span className={cx("text-2xl md:text-3xl font-bold leading-tight", !onBest && "text-primary")}>
                 <Num animate value={pcOther.left} />
               </span>
-              <span className="flex flex-wrap items-center gap-x-3 text-sm">
+              {/* the button on a line of its own: beside the figure, another digit moved it from under the finger */}
+              <span className="flex flex-col items-start gap-1 text-sm">
                 <span>
                   {onBest ? (
                     <>
@@ -272,17 +275,17 @@ export function PairResult({ view, bundle, plan, settled, pick, onPick }: { view
         {pcOther && other && <CostBar highlight={legendPick.active} who={nameOf(other)} sub={onBest ? c.pair.next : c.pair.cheapest} pc={pcOther} scale={scale} entered={providerName(view, other.house)?.custom} today={bundle.today} />}
         <CostLegend lines={lines} pick={legendPick} />
         {pcOther && (
-          // three lines on a phone: the longest case, with the tax's reason (nothing moves when a number changes)
-          <div className="text-sm max-md:min-h-[3lh]">
-            <Sentence size="sm" tone="muted">
-              {c.pair.gapLead} {c.pair.gapPart.account} {gapNum(gapParts![0]!, c.pair.gapPart.account, nis(sumAccount(pc), "F-91", c.pair.gapPart.account, bundle.today), nis(sumAccount(pcOther), "F-91", c.pair.gapPart.account, bundle.today))}
-              {" · "}
-              {c.pair.gapPart.fund} {gapNum(gapParts![1]!, c.pair.gapPart.fund, pc.fund, pcOther.fund)}
-              {" · "}
-              {c.pair.gapPart.tax} {gapNum(gapParts![2]!, c.pair.gapPart.tax, pc.tax, pcOther.tax)}
-              {/* more tax with more left: the gain explains it; with a different tax treatment the signs part, and nothing is said */}
-              {gapParts![2]! !== 0 && Math.sign(gapParts![2]!) === Math.sign(leftGap) && <>, {gapParts![2]! > 0 ? c.pair.taxBecauseMore : c.pair.taxBecauseLess}</>}
-            </Sentence>
+          // three columns of one width: in a sentence, a number with another digit pushed everything after it (nothing moves when a number changes)
+          <div className="flex flex-col gap-2 mt-1">
+            <p className="text-sm text-muted-foreground">{c.pair.gapLead}</p>
+            <StatRow cols={3}>
+              <Stat label={c.pair.gapPart.account}>{gapNum(gapParts![0]!, c.pair.gapPart.account, nis(sumAccount(pc), "F-91", c.pair.gapPart.account, bundle.today), nis(sumAccount(pcOther), "F-91", c.pair.gapPart.account, bundle.today))}</Stat>
+              <Stat label={c.pair.gapPart.fund}>{gapNum(gapParts![1]!, c.pair.gapPart.fund, pc.fund, pcOther.fund)}</Stat>
+              {/* more tax with more left: the gain explains it; with a different tax treatment the signs part, and nothing is said. The line keeps its room either way */}
+              <Stat label={c.pair.gapPart.tax} note={<span className="block min-h-[1lh]">{gapParts![2]! !== 0 && Math.sign(gapParts![2]!) === Math.sign(leftGap) && (gapParts![2]! > 0 ? c.pair.taxBecauseMore : c.pair.taxBecauseLess)}</span>}>
+                {gapNum(gapParts![2]!, c.pair.gapPart.tax, pc.tax, pcOther.tax)}
+              </Stat>
+            </StatRow>
           </div>
         )}
       </div>
@@ -324,7 +327,7 @@ export function AccountColumn({ view, bundle, years, pick, onPick }: { view: Inv
   // every house keeps a row: what cannot be priced is grey, "no data" first and "not possible there" last (founder, 2026-10-31)
   const missing = rows.filter((r) => !priced(r.at)).sort((a, b) => Number(!!noWay(a)) - Number(!!noWay(b)) || a.p.short.localeCompare(b.p.short, "he"));
   const scale = barScale(ok.map((r) => r.at.accountCost));
-  const lines = [...new Set(ok.flatMap((r) => r.at.lines.map((l) => lineOf(l.line))))];
+  const lines = legendLines(!!view.index.israeli, ok.flatMap((r) => r.at.lines.map((l) => lineOf(l.line))));
   const snapshot = bundle.snapshots.find((s) => s.id === pick.house);
   const at = fund.byHouse[pick.house];
   const pickRows: PickRow[] = ok.map((r, i) => {
@@ -436,10 +439,12 @@ export function AccountColumn({ view, bundle, years, pick, onPick }: { view: Inv
       </div>
       <div className="px-5 pt-4 pb-2 flex flex-col gap-0.5">
         <h3 className="font-semibold">{c.pair.accounts}</h3>
-        <span className="text-sm text-muted-foreground flex flex-wrap items-center gap-1.5">
-          {c.pair.accountsCond} <Tag><bdi>{fund.name}</bdi></Tag> · {c.pair.accountsHint}
+        <span className="text-sm text-muted-foreground flex items-center gap-1.5 max-md:flex-col max-md:items-start md:flex-wrap">
+          {c.pair.accountsCond} <Tag><bdi>{fund.name}</bdi></Tag>
         </span>
-        {standingCount > 0 && <span className="text-xs text-muted-foreground">{c.pair.standingNote(standingCount, local.length)}</span>}
+        {/* on lines of their own, kept whatever the fund's name: a longer name pushed the hint to a new line, and the page with it */}
+        <span className="text-sm text-muted-foreground">{c.pair.accountsHint}</span>
+        <span className="text-xs text-muted-foreground min-h-[1lh] max-md:min-h-[2lh]">{standingCount > 0 && c.pair.standingNote(standingCount, local.length)}</span>
         <span className="text-xs text-muted-foreground">{c.pair.whichPrice}</span>
       </div>
       <PickList
@@ -648,8 +653,9 @@ export function FundColumn({ view, bundle, plan, today, pick, onPick, filter, on
         <div className="flex flex-col gap-0.5">
           <h3 className="font-semibold">{c.pair.funds(view.index.name)}</h3>
           <span className="text-sm text-muted-foreground flex flex-wrap items-center gap-1.5">
-            {c.pair.fundsCond} <Tag>{house.short}</Tag> · {c.pair.fundsHint}
+            {c.pair.fundsCond} <Tag>{house.short}</Tag>
           </span>
+          <span className="text-sm text-muted-foreground">{c.pair.fundsHint}</span>
         </div>
         <LabelFilter lead={c.pair.filter} allLabel={c.pair.clearFilter} value={active} onChange={onFilter} options={options} />
       </div>
