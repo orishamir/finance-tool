@@ -228,6 +228,17 @@
   --chart-entered: var(--palette-blue-400); /* dashed: a series that rests on a return the person entered */
   --chart-blocked: var(--blocked); /* hatch over a part the method cannot compute */
   --chart-marker: var(--palette-neutral-400); /* "locked until", exit points */
+  /* The indices page's stairs (founder, 2026-11-01): a difference between two ways is money more or money less, never a fee kind.
+     The bar of a difference goes right and green for more money left, left and red for less; the same red colours a stair that loses. */
+  --gain: oklch(0.74 0.17 150);
+  --loss: oklch(0.63 0.2 25);
+  /* a stair takes the hue of what changed (the account, the kind of fund, the fund): teal, magenta, gold, the validated fee-kind hues, so the
+     three never read as shades of one family; the start is neutral and the column under a floating stair is the card's own darker step */
+  --chart-stairs-start: var(--palette-neutral-600);
+  --chart-stairs-below: var(--palette-neutral-850);
+  --chart-stairs-account: var(--palette-teal-300);
+  --chart-stairs-kind: var(--palette-magenta-400);
+  --chart-stairs-fund: var(--palette-gold-200);
   /* The comparison chart (design-system 6.5): the ranking is ordinal, so one hue in steps (lighter is better);
      the baseline is neutral. Width and a direct label also tell the lines apart. */
   --chart-option-1: var(--palette-teal-200);
@@ -427,6 +438,13 @@
   --color-chart-entered: var(--chart-entered);
   --color-chart-blocked: var(--chart-blocked);
   --color-chart-marker: var(--chart-marker);
+  --color-gain: var(--gain);
+  --color-loss: var(--loss);
+  --color-chart-stairs-start: var(--chart-stairs-start);
+  --color-chart-stairs-below: var(--chart-stairs-below);
+  --color-chart-stairs-account: var(--chart-stairs-account);
+  --color-chart-stairs-kind: var(--chart-stairs-kind);
+  --color-chart-stairs-fund: var(--chart-stairs-fund);
   --color-chart-option-1: var(--chart-option-1);
   --color-chart-option-2: var(--chart-option-2);
   --color-chart-option-3: var(--chart-option-3);
