@@ -8,6 +8,8 @@ Scope: in: the legal framework shared by every Israeli mutual fund (manager, tru
 
 An Israeli mutual fund (קרן נאמנות) is a trust: a trustee holds the assets as separate property for the unit holders and a licensed fund manager invests them under a prospectus the ISA allowed (MF-01 to MF-04). Open funds are bought and redeemed through a bank or TASE member at a price the manager calculates once per pricing day; an order before the fund's designated hour gets that day's price, a later one the next day's (MF-09 to MF-12). Money-market funds hold short, highly rated shekel or FX assets with an average life of at most 90 days (MF-29 to MF-33). Since 3 October 2024 they come in two kinds: daily funds (redeemable any trading day, no expected yield) and fixed-date "renewable" funds that lock money until a fixed date, may publish an expected yield net of fees, and renew automatically (MF-34 to MF-38). Fees: an annual management fee and trustee fee inside the price; a possible load or exit deduction; a distribution fee the manager pays the bank (capped at 0.1% a year for money-market funds); and bank or broker commissions and custody fees that differ by institution (MF-16 to MF-28). The ISA's 2025 average management fee was 0.17% for money-market funds, 1.01% for active funds and 0.31% for open tracking funds (MF-18). Every fund name carries a two-character code for maximum equity and FX exposure, for example (4A) or (00) (MF-43).
 
+A fund's life can be limited: the law's heading is "תקופת קיום הקרן", and at its end the fund is wound up and its units are redeemed (MF-59, MF-60). Bond funds of this kind exist at several managers, and the market calls them "bullet"; no authority defines that as a name for a fund. A year in a fund's name does not show that it ends, because some funds roll on (MF-61 to MF-65).
+
 ## Rules
 
 ### MF-01 A mutual fund is a trust between a trustee and a fund manager
@@ -487,7 +489,7 @@ An Israeli mutual fund (קרן נאמנות) is a trust: a trustee holds the ass
 
 ### MF-52 Funds can be merged or liquidated
 - Rule: Funds are opened, merged and liquidated every year; a saver's fund can disappear or be merged into another.
-- Conditions / exceptions: The legal process and the tax effect of a merger were not researched (tax effect: `tax-securities-israeli.md`).
+- Conditions / exceptions: The legal process of a liquidation is in MF-60 (2026-11-01). The legal process and the tax effect of a merger were not researched (tax effect: `tax-securities-israeli.md`).
 - Figures: 2025: 222 new funds, 6 mergers, 64 liquidations (2025 report p. 18). 2024: 191 new, 98 mergers, 100 liquidations, mostly from Kesem's and IBI's purchase of Psagot's funds and reorganisation (2024 report p. 17).
 - Source: [פעילות קרנות נאמנות בישראל 2025](https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/Funds_Report2025.pdf), p.18 · primary · checked 2026-10-25. [פעילות קרנות נאמנות בישראל 2024](https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/fundsReport24.pdf), p.17 · primary · checked 2026-10-25.
 - Scope: general
@@ -538,6 +540,71 @@ An Israeli mutual fund (קרן נאמנות) is a trust: a trustee holds the ass
 - Dimensions: protection
 - Proposed dimension: product-marking
 - Likely to change: no; just rewritten, with a first review five years after it starts (p.5).
+
+### MF-59 A fund whose existence is limited in time (תקופת קיום הקרן): the law's concept, and no named class of fund
+- Rule: The fund agreement states "תקופת קיומה של הקרן, אם הוגבלה התקופה" (s.5(א)(10)). The prospectus regulations require: "אם תקופת קיום הקרן מוגבלת - תחת הכותרת "תקופת קיום הקרן", יצוין הדבר, וכן תקופת קיום הקרן והודעה כי עם סיום התקופה תפורק הקרן". The end of that period is a ground for winding up: "נסתיימה תקופת קיומה של הקרן כפי שנקבע בהסכם הקרן (להלן - תום תקופת הקרן)" (s.103(1)).
+- Conditions / exceptions: This is an attribute of a fund, not a product name: nothing read in the law, the regulations or the ISA's documents gives such funds a name, and the classification headings seen (MF-45, CAT-42) have no heading for them. The wording covers any fund, not only bond funds. It is not "קרן מועדים קבועים" (MF-08), which means fixed offer and redemption dates; the funds found here are open funds with daily orders. Page 32 of the gazette file falls inside the prospectus-particulars amendment, read from the issue's contents (gazette pp.1022 to 1034); the regulation's current consolidated text was not read (open question 12).
+- Figures: none.
+- Source: [חוק השקעות משותפות בנאמנות, התשנ"ד-1994](https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf#page=6), file p.6 s.5(א)(10), [file p.67](https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf#page=67) s.103(1) · primary · checked 2026-11-01. [תקנות השקעות משותפות בנאמנות (פרטי תשקיף של קרן, מבנהו וצורתו) (תיקון), התשע"ו-2016, קובץ התקנות 7646](https://olaw.org.il/takanot/takanot-7646.pdf#page=32), file p.32 item (12) · primary (third-party host of the gazette) · checked 2026-11-01.
+- Scope: general
+- Dimensions: `liquidity-lockup`
+- Proposed dimension: `fund-closure-merger`, `product-marking`
+- Likely to change: no
+
+### MF-60 How a fund is wound up at the end of its period: what the law sets
+- Rule: At the end of the fund's period the wind-up date is "תום תקופת קיום הקרן כפי שנקבע בהסכם הקרן" (s.107(ב)(1)). The manager serves as liquidator unless a court appoints another (s.105(א)). The liquidator gives notice to holders, the trustee, the ISA and the exchange, and in a newspaper, 60 to 30 days before the wind-up date (s.106(א)). Offering units of an open fund stops from the first pricing day after the notice to the ISA (s.106(א1)). During realisation the manager may depart from the investment policy (s.106(א2)). Realisation finishes by the wind-up date (s.109(א)), and "מפרק קרן יפדה את יחידות הקרן במועד הפירוק" (s.108(ה)). The liquidator's pay is capped (s.105(א2)); wind-up expenses come out of that pay, and commissions on selling assets come out of the fund's assets (s.105(ג)).
+- Conditions / exceptions: The same sections cover the other grounds for winding up (s.103). The minister may set earlier dates for an ETF (s.107א). Whether an order to sell or redeem units is still possible after the notice was not found stated; the law stops only offering. No evidence was found of a past bond fund actually wound up this way, so how it runs in practice is unread (open question 18).
+- Figures: 60 and 30 days.
+- Source: [Joint Investment Trust Law](https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf#page=69), file pp.69 to 71 · primary · checked 2026-11-01.
+- Scope: general
+- Dimensions: `liquidity-lockup`
+- Proposed dimension: `fund-closure-merger`
+- Likely to change: yes, amendments to the law start 2.2.2027 (open question 17); these sections were not named among them.
+
+### MF-61 TASE's bullet indices (מדדי בולט): the exchange's word, for an index
+- Rule: TASE launched three indices in November 2024, "המורכבים מתעודות התחייבות שמועד פדיונן הסופי חל במהלך אותה שנה": תל-בונד בולט 2029 שקלי, תל-בונד בולט 10/2028 צמוד and תל-בונד בולט 2029 ישראל. In its words: "מדדי בולט נועדו לאפשר למשקיעים לקבע תשואה לפדיון של תיק אג"ח בעל מאפיינים מוגדרים. בשונה מרוב המדדים, למדדי בולט יש מועד סופי וכאשר נפדית האג"ח האחרונה הנכללת בו, המדד מפסיק להתקיים". Proceeds of each bond that finally redeems move into a set filler (government bond or makam) at the same weight until the index holds only the filler; "כאשר אג"ח הפילר מגיעה לפדיון, המדד מגיע לסוף דרכו".
+- Conditions / exceptions: Read in the notice as Funder and Mondo Visione reprinted it (18.3.2025), not on TASE's own site, and TASE's index rules were not reachable. The notice describes indices and uses "קרנות הבולט" in passing; it defines neither a fund nor a bond. "לקבע" is TASE's description of an index. The funds' own documents do not promise a return (MF-62, MF-63). The notice's market count is TASE's, at March 2025: "3 עורכי מדדים המחשבים למעלה מ- 40 מדדים, עליהם הושקו מוצרים בשווי של כ- 3.2 מיליארד ש"ח".
+- Figures: three indices; minimum rating A- on launch day; more than 40 indices, three editors and about NIS 3.2 bn at March 2025 (TASE's figures).
+- Source: [TASE notice of 18.3.2025, Hebrew reprint on Funder](https://www.funder.co.il/article/178662) · secondary (reprint of the exchange's notice) · checked 2026-11-01. [English reprint on Mondo Visione](https://mondovisione.com/news/tel-aviv-stock-exchange-launches-3-new-bullet-indices-tel-bond-bullet-2029-ils-2025318) · secondary · checked 2026-11-01.
+- Scope: institution: Tel Aviv Stock Exchange
+- Dimensions: `product-marking`
+- Likely to change: yes, new indices are added
+
+### MF-62 Kesem: 20 tracking funds named "אינדקס Bullet", each with a stated end
+- Rule: Kesem's main prospectus names 20 open tracking funds "אינדקס Bullet", and its footnotes state for them "תקופת קיום הקרן: מיום ... עד תום שנת .... עם סיום התקופה תפורק הקרן". The fixed management fee runs from 0.20% to 0.45% and the trustee fee from 0.025% to 0.03%, with no distribution fee; all read "פטורה", distribution type 3. The prospectus's named list of funds with a load (p.74) includes none of them. End years 2026 to 2035.
+- Conditions / exceptions: The prospectus ties footnotes to funds by a mark; the tie used here is each footnote's start date against the fund's first-offer date, and every end year agrees with the year in the fund's name. Fund list: 5138565, 5136114, 5138557, 5137575 (2026); 5138581, 5138573, 5136882 (2027); 5138102, 5139241 (2028); 5138110, 5138599, 5138607 (2029); 5138128, 5139050, 5140777 (2030); 5140538 (2031); 5140520 (2032); 5141973 (2033); 5141965 (2034); 5141957 (2035). The payment date is not in the prospectus; Funder's copy of the fund policy for 5136882 says not later than 15.1.2028 unless the manager says otherwise (secondary).
+- Figures: as above, per fund in `research/discovery/2026-11-01-bullet-bond-funds.md`; prospectus of 9.8.2026.
+- Source: [Kesem main prospectus, 9.8.2026](https://mayafiles.tase.co.il/rpdf/1761001-1762000/P1761574-00.pdf#page=19), pp.15 to 19 (fees and end dates), pp.49, 51, 59, 60 (names) · institution · checked 2026-11-01.
+- Scope: institution: Kesem
+- Dimensions: `fee-management-balance`, `liquidity-lockup`
+- Likely to change: yes, new funds and new prospectuses
+
+### MF-63 Yalin Lapidot: 21 tracking funds named "quabify אג"ח לפדיון", with a year of redemption and a latest payment date
+- Rule: Yalin's main prospectus names 21 open tracking funds "quabify אג"ח לפדיון" for the years 2026 to 2032, three a year (צמוד, שקלי, מאוזן), each 0.24% fixed management fee and 0.02% trustee fee, "פטורה", distribution type 3. In its annual report for fund 5137492: "תקופת קיום הקרן: בשנת 2026, אשר הינה שנת פדיון הקרן, האג"ח שבמדד יפדו בהתאם למתודולוגית המדד וכך תבוא הקרן לפירוקה". As each series leaves the index a makam series nearest year end replaces it at equal weight; on the last trading day all makam leave; after year end the manager sells what remains and holds shekel cash; payment to holders on the wind-up date "יהיה לא יאוחר מתאריך ה-15/01/2027". And: "אין באמור לעיל כדי להוות התחייבות מנהל הקרן ו/או הבטחה מצידו להשיג את מטרת הקרן".
+- Conditions / exceptions: The fund-level wording was read for 5137492 and 5139555 only; the other 19 rest on the same name and the prospectus's list. Fund 5137492's annual report at 30.9.2024 showed 0.19% and 0.02% and an institutional refund of 0.09%; the prospectus of 20.12.2025 prints 0.24%. The index at 30.9.2024: 20 series, a floor of A3/A-, market value at least NIS 200 m, a cap of 7.26% per series and 20% per issuer. Whether Yalin has opened 2033 or later funds since the prospectus is unread. Distributor's commission: Yalin's new-fund document (5139555) says a distributor takes no distribution fee on a tracking fund but "רשאי לגבות מבעל יחידות עמלה בגין קניית ו/או מכירת יחידות הקרן".
+- Figures: as above; prospectus of 20.12.2025.
+- Source: [Yalin Lapidot main prospectus, 20.12.2025](https://mayafiles.tase.co.il/rpdf/1709001-1710000/P1709452-00.pdf#page=7), pp.7 to 10, p.34 · institution · checked 2026-11-01. [Annual report, fund 5137492, 30.9.2024](https://mayafiles.tase.co.il/rpdf/1629001-1630000/P1629790-00.pdf#page=1), pp.1, 2 · institution · checked 2026-11-01. [Report on fund 5139555](https://mayafiles.tase.co.il/rpdf/1632001-1633000/P1632868-00.pdf#page=1), pp.1, 2 · institution · checked 2026-11-01.
+- Scope: institution: Yalin Lapidot
+- Dimensions: `fee-management-balance`, `liquidity-lockup`
+- Likely to change: yes
+
+### MF-64 Meitav (Tachlit) and Migdal (MTF): funds on bullet indices
+- Rule: Meitav's prospectus names three Tachlit funds on TASE's bullet indices (MF-61): 5140249 תל-בונד בולט 10/2028 צמוד (0.15%, 0.03%), 5140231 תל-בונד בולט 2029 שקלי (0.15%, 0.03%) and 5140256 תל-בונד בולט 2029 ישראל (0.20%, 0.03%), all "פטורה", distribution type 3. Migdal's prospectus names 5138276 MTF מחקה A.B. (0A) אג"ח מאוזן AAA-A 2028 Bullet (0.20%, 0.03%, "פטורה") with the footnote "הקרן נוצרה לתקופה מוגבלת, לקראת תום שנת 2028 ידווח מנהל הקרן על פירוק הקרן בהתאם להוראות הדין".
+- Conditions / exceptions: No wind-up line of Meitav's own was read for the three Tachlit funds: the main prospectus has none and Funder's copy of 5140256's policy is silent. That they end rests on TASE's notice about the index. Migdal's footnote carries mark 5, and the fund's row carries a 5 (read in the text layer). A payment date of 15.1.2029 for 5138276 was read only on Funder (secondary).
+- Figures: as above; prospectuses of 7.7.2026 and 30.1.2026.
+- Source: [Meitav main prospectus, 7.7.2026](https://mayafiles.tase.co.il/rpdf/1753001-1754000/P1753287-00.pdf#page=12), p.12 · institution · checked 2026-11-01. [Migdal main prospectus, 30.1.2026](https://mayafiles.tase.co.il/rpdf/1719001-1720000/P1719487-00.pdf#page=19), pp.19, 20 · institution · checked 2026-11-01.
+- Scope: institution: Meitav, Migdal
+- Dimensions: `fee-management-balance`, `liquidity-lockup`
+- Likely to change: yes
+
+### MF-65 A year in a fund's name does not mean the fund ends: rolling funds
+- Rule: Some bond funds carry a redemption year in their name and go on past it, moving to a later year. Tracking funds print it in the name: Harel 5124912, 5129424, 5134705, 5140991, 5141460; Tachlit 5136023; MTF 5135942, 5139514 ("מתגלגל כל N שנים"). Two have already rolled: Tachlit 5136023 changed from 2025 to 2028 on 30.12.2025, and MTF 5135942 from 2025 to 2029 on 31.12.2025. Active funds can do the same: Migdal 5106547 was "עד 2025" until 10.7.2024 and is now "עד 2027".
+- Conditions / exceptions: Count over the nine prospectuses read, not the whole market. The active funds' rollover wording was read on Funder's copy of their policy, not in a manager's own document (Migdal 5137120, 5138284, 5138391; Ayalon 5136791, 5136296). So neither "לפדיון" nor a year in a name identifies a fund that winds up; only the fund's own "תקופת קיום הקרן" wording does. The index editor's description of the difference, "במקום להפסיק את חישוב המדד ... המדד "מתגלגל" אוטומטית", is that company's (Funder 185866).
+- Figures: fees per fund in `research/discovery/2026-11-01-bullet-bond-funds.md`.
+- Source: [Harel main prospectus, 2.5.2026](https://mayafiles.tase.co.il/rpdf/1737001-1738000/P1737042-00.pdf#page=25), pp.25, 27, 30 · institution · checked 2026-11-01. [Meitav main prospectus](https://mayafiles.tase.co.il/rpdf/1753001-1754000/P1753287-00.pdf#page=40), p.40 note 10 · institution · checked 2026-11-01. [Migdal main prospectus, 30.1.2026](https://mayafiles.tase.co.il/rpdf/1719001-1720000/P1719487-00.pdf#page=24), pp.11, 13, 18, 19, 24 · institution · checked 2026-11-01. [Migdal prospectus, 30.1.2025](https://mayafiles.tase.co.il/rpdf/1643001-1644000/P1643524-00.pdf#page=27), p.27 · institution · checked 2026-11-01. [Article on the index editor's indices, Funder, 14.8.2025](https://www.funder.co.il/article/185866) · secondary (the company's text) · checked 2026-11-01.
+- Scope: unsettled: a general statement needs a count over all 15 managers' funds; seen at: Harel, Meitav, Migdal
+- Dimensions: `product-marking`, `liquidity-lockup`
+- Likely to change: yes
 
 ## Proposed dimensions
 
@@ -615,6 +682,11 @@ An Israeli mutual fund (קרן נאמנות) is a trust: a trustee holds the ass
 | קרן השקעות פרטיות בנאמנות | private investment trust fund | New category from 2.2.2027 | Law | Law s. 129ג1 (ס"ח 3579) |
 | הוסטינג / מנהל תיקים חיצוני | hosting / external portfolio manager | External manager running a fund's investments | ISA reports, fund names | ISA 2025 p. 8; ISA guide p. 7 |
 | מוצרי שוק הכסף | money-market products | Bank display grouping deposits, MMFs and makam | Bank sites and apps | 447A s. 5; ISA 2025 p. 2 |
+| תקופת קיום הקרן | the fund's period of existence | Required prospectus heading when a fund's life is limited; at its end the fund is wound up (MF-59) | Law, regulations, prospectus | Law s.5(א)(10); ק"ת 7646 file p.32 |
+| תום תקופת הקרן | end of the fund's period | A ground for winding up (MF-60) | Law | Law s.103(1) |
+| מדד בולט / קרנות הבולט | bullet index / bullet funds | The exchange's word for an index with a final date; "funds" only in passing; neither defined as a fund (MF-61) | TASE notice, fund names, press | TASE notice 18.3.2025, Funder reprint |
+| שנת פדיון הקרן | the fund's redemption year | Yalin's wording (MF-63) | Yalin's reports | Yalin annual report p.1 |
+| מדד אג"ח לפדיון בולט / מתגלגל | bullet / rolling bond-to-maturity index | An index editor's wording: ends, or moves to a later year (MF-65) | Index editor, Harel's fund names | Funder 185866 |
 
 ## Institutions
 
@@ -668,6 +740,11 @@ Distributors: banks and TASE members. Tariffs read for Leumi and IBI only (MF-27
 15. URL of the ISA's general information page on money-market funds that A447 requires banks to link to.
 16. Where the law or regulations set distribution rules for funds (only the guide's description and section 58(ב) bonus units were found), and how many funds distribute today.
 17. Content of the 5786 (2025-26) amendments to the law (ס"ח תשפ"ו 359, 1070), including private investment trust funds and changes effective 2.2.2027 to sections 5, 44, 47 and 49. **[2026-10-26 open-questions audit]** Narrowed: the gazette text of ס"ח 3579 (p.1070 on, [fs.knesset.gov.il](https://fs.knesset.gov.il/25/law/25_lsr_14375739.pdf)) was read. Section 3 adds the private investment trust fund (new s.129ג1); in s.5(א)(3) it replaces "קרן פתוחה, קרן סגורה או קרן ייחודית" with "קרן פתוחה או קרן סגורה"; it changes s.44 (MF-11) and s.49(ד) (MF-16); and in s.47(א)(3) it only adds at the end "ובקרן השקעות פרטיות בנאמנות - לא תעלה על 15 שנים", so the fixed-date rules for renewable money-market funds (MF-08) do not change; s.3 takes effect six months after publication on 2.8.2026 (s.4). Still open: the content of the amendment at ס"ח התשפ"ו p.359.
+18. **Limited-period bond funds: how a wind-up runs in practice (MF-60).** No record was found of a past wind-up of such a fund; the earliest end year in the funds read is 2026, and whether earlier ones existed and ended is unknown. Unread: the 60-to-30-day notice of a real fund, the last day to sell, how long after the fund's end the money reaches the account, whether a distributor charges at payment. Would settle it: a wind-up notice on Maya for a Kesem or Yalin fund ending in 2026. By the law's 60-to-30-day window such a notice would fall about now, if the wind-up date is near the end of the year (computed, not read).
+19. **Limited-period bond funds: full list (MF-62 to MF-65).** Nine of 15 managers' main prospectuses were read (Kesem, Meitav, Harel, Migdal, More, Yalin, Analyst, Altshuler Shaham, IBI). Analyst: none named. IBI: its list of 234 funds with Yubank as trustee names none, and whether that covers all IBI funds is not confirmed. Not reached: Ayalon, Sigma, Ilim, Forest, Tamir Fishman, Barak. One web search on those names returned no fund. Would settle it: Maya's fund list searched for "Bullet", "בולט", "לפדיון" in Chrome.
+20. **Doubtful funds, no end stated (MF-65).** More 5137153, Sigma 5125653, Ayalon 5137286, MTF 5136312, Altshuler 5138946: a redemption word in the name, and nothing read on what happens then. Migdal 5102017 was in the 30.1.2025 prospectus and not in the 30.1.2026 one. Would settle it: each fund's policy text in its report on Maya.
+21. **Expected yield for these funds.** MF-36's regime is written for fixed-date money-market funds. Nothing read lets or bars a manager of a limited-period bond fund from publishing an expected yield. The index editors publish a yield to maturity for the index (a company's statement, Funder 185866). Would settle it: an ISA staff position, if any, or the ISA directive on advertising.
+22. **Whether any ISA text uses a name for these funds.** No use was found in the 57 ISA documents in the library or in one search limited to isa.gov.il and gov.il; the ISA's investor pages and its full heading list could not be read by script (open question 8).
 
 ## Left out and why
 
@@ -680,8 +757,23 @@ Distributors: banks and TASE members. Tariffs read for Leumi and IBI only (MF-27
 - The ISA directive on money-market fund advice and marketing (MoneyMarketAdvisingRegulation.pdf): not opened; MF-40 uses the amendment's own text instead.
 - Press pieces on renewable funds (Globes, Calcalist, TheMarker, ynet, Bizzness, Moneyplan) and Wikipedia's money-market article: search results only, not opened, not used.
 - Funder weekly fund-flow articles (204605, 204368, 204773): opened, no rule content.
+- Tax at a limited-period fund's wind-up: not written here; no rule base entry names it and it goes to the tax-specialist (`research/discovery/2026-11-01-bullet-bond-funds.md`).
+- Constant-duration funds (מח"מ קבוע) and weighting words such as "משקל תשואה לפדיון": a different thing, left out of MF-62 to MF-65.
 
 ## Sources
+
+| Source | Publisher | Strength | Checked |
+|---|---|---|---|
+| [קובץ התקנות 7646, 12.4.2016](https://olaw.org.il/takanot/takanot-7646.pdf) | Reshumot (third-party host) | primary | 2026-11-01 |
+| [Kesem main prospectus, 9.8.2026](https://mayafiles.tase.co.il/rpdf/1761001-1762000/P1761574-00.pdf) | Kesem | institution | 2026-11-01 |
+| [Yalin Lapidot main prospectus, 20.12.2025](https://mayafiles.tase.co.il/rpdf/1709001-1710000/P1709452-00.pdf), [annual report 5137492](https://mayafiles.tase.co.il/rpdf/1629001-1630000/P1629790-00.pdf), [report on 5139555](https://mayafiles.tase.co.il/rpdf/1632001-1633000/P1632868-00.pdf) | Yalin Lapidot | institution | 2026-11-01 |
+| [Meitav main prospectus, 7.7.2026](https://mayafiles.tase.co.il/rpdf/1753001-1754000/P1753287-00.pdf) | Meitav | institution | 2026-11-01 |
+| [Migdal main prospectus, 30.1.2026](https://mayafiles.tase.co.il/rpdf/1719001-1720000/P1719487-00.pdf), [30.1.2025](https://mayafiles.tase.co.il/rpdf/1643001-1644000/P1643524-00.pdf) | Migdal | institution | 2026-11-01 |
+| [Harel main prospectus, 2.5.2026](https://mayafiles.tase.co.il/rpdf/1737001-1738000/P1737042-00.pdf) | Harel | institution | 2026-11-01 |
+| [TASE notice of 18.3.2025 on Funder](https://www.funder.co.il/article/178662), [on Mondo Visione](https://mondovisione.com/news/tel-aviv-stock-exchange-launches-3-new-bullet-indices-tel-bond-bullet-2029-ils-2025318) | TASE, reprinted | secondary | 2026-11-01 |
+| [Funder 185866, 14.8.2025](https://www.funder.co.il/article/185866) | An index editor's text on Funder | secondary | 2026-11-01 |
+
+Earlier sources:
 
 | Source | Publisher | Strength | Checked |
 |---|---|---|---|
