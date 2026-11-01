@@ -2368,6 +2368,7 @@ export const r4workbench = {
     trading: { nis: "נסחרת בשקלים בבורסה", abroad: (ccy: string) => `נקנית ב־${ccy} בחו״ל`, quoted: (ccy: string) => `נקובה ב־${ccy}` },
     fees: { fixed_management: "דמי ניהול קבועים", trustee: "שכר נאמן", variable_management: "דמי ניהול משתנים", tracking_difference_12m: "הפרש עקיבה, שנה אחרונה", median_spread: "מרווח ציטוט חציוני" } as Record<string, string>,
     feeNotCollected: "לא נאסף",
+    feeNone: "אין",
     feeTakenZero: "נלקח כאפס בחישוב",
     feesHeading: "עלויות הקרן",
     value: "נשאר לכם במועד המטרה, בכסף של היום",
@@ -3637,6 +3638,10 @@ export const invest = {
     gapNote: "מול המדד: כמה הקרן הקדימה (+) או פיגרה (−) אחרי המדד שלה בשנה, בממוצע השנים המלאות בדוחות השנתיים שלה, אחרי כל ההוצאות. כשקרן פיגרה יותר מדמי הניהול שלה, ההפרש נכנס לחישוב כעלות; קרן שהקדימה את המדד לא מקבלת על זה תוספת.",
     kindsNote: "בכל סוג הקרנות מסודרות לפי מה שנשאר, והסדר לא תלוי בדולר. הסכומים הם אם השער לא משתנה.",
     notCollected: "לא נאסף",
+    noSuchFee: "אין",
+    feeWordsNote: "״אין״ ליד דמי ניהול משתנים או שכר נאמן: אלה שורות של החוק הישראלי לקרנות, והוא לא חל על קרן זרה. ״לא נאסף״: לקרן יש שורה כזאת, והאתר עוד לא אסף את המספר שלה.",
+    /** After "אין": "אין נאמן" alone could read as a fund with no custodian, which is not what the site knows. */
+    noTrusteeWord: "שכר נאמן",
     cannot: "אי אפשר לחשב",
     currencyMismatch: (fund: string, index: string) => `הקרן נקובה ב${fund} והמדד ב${index}; האתר לא מחשב את ההפרש ביניהם.`,
     mismatchTag: "מטבע שונה ממטבע המדד",

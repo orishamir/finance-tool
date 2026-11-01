@@ -54,6 +54,7 @@ describe("a fund row", () => {
   const row = {
     fees: { fixed_management: fee({ own: "הראל" }), trustee: fee({ value: 0.005, own: "הראל" }), variable_management: fee({ value: 0.1, own: "הראל" }), tracking_difference_12m: null, median_spread: null },
     takenAsZero: [],
+    absentFees: [],
   } as unknown as FundVariantRowView;
   it("has fee figures and no caution icon", () => {
     const html = inProvider(createElement(FundFeesBlock, { row }));

@@ -15,7 +15,7 @@ import { computed, ownBy, type SiteValue } from "../../lib/value";
 import { fmt } from "../../lib/format";
 import { IconLock } from "../icons";
 import { Num } from "../provenance";
-import { Button, Card, ChartLegend, CostStack, LabelChip, LabelFilter, LabelRow, PickList, ProductIdLink, Sentence, Stat, StatRow, Swatch, Tag, cx, useChartPick, type ChartPick, useHeldHeight, type CostPart, type PickRow } from "../kit";
+import { Button, Card, ChartLegend, CostStack, FeeWordsNote, LabelChip, LabelFilter, LabelRow, PickList, ProductIdLink, Sentence, Stat, StatRow, Swatch, Tag, cx, useChartPick, type ChartPick, useHeldHeight, type CostPart, type PickRow } from "../kit";
 import { optionClass, OptionTag, reasonText } from "./parts";
 import { ProviderLink, providerName } from "./sections";
 import { Fees } from "./funds";
@@ -687,6 +687,7 @@ export function FundColumn({ view, bundle, plan, today, pick, onPick, filter, on
         {active && <span>{c.pair.shown(shown.length, rows.length)}</span>}
         {kinds && <span>{c.funds.kindsNote}</span>}
         <span>{c.funds.gapNote}</span>
+        {!view.index.israeli && <FeeWordsNote />}
       </div>
     </Card>
   );

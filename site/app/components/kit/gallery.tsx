@@ -11,7 +11,7 @@ import { IdRef, Num } from "../provenance";
 import { IconDrillIn } from "../icons";
 import { label } from "../../lib/labels";
 import { fmt } from "../../lib/format";
-import { YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, Button, Callout, Card, ChartLegend, CostStack, LabelFilter, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, CompareTable, TableCols, CoverageFold, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, Disclosure, FieldState, FoldGroup, GainBars, GapNote, HeadlineFigure, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, CheckField, FieldGroup, TextField, NumberField, ParameterLine, PercentField, PlanChips, KnobStrip, ChangeChart, RangeField, RankBadge, Section, SegmentedControl, SelectField, Sentence, ShareRings, SourceLine, Stat, StatRow, StatTile, StepButtons, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth } from "./index";
+import { YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, Button, Callout, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, LabelFilter, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, CompareTable, TableCols, CoverageFold, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, Disclosure, FieldState, FoldGroup, GainBars, GapNote, HeadlineFigure, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, CheckField, FieldGroup, TextField, NumberField, ParameterLine, PercentField, PlanChips, KnobStrip, ChangeChart, RangeField, RankBadge, Section, SegmentedControl, SelectField, Sentence, ShareRings, SourceLine, Stat, StatRow, StatTile, StepButtons, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth } from "./index";
 
 const g = copy.gallery;
 
@@ -772,6 +772,12 @@ function Lists({ today }: { today: string }) {
   });
   return (
     <LabelSheetHost>
+      <Demo name="FeeFigure, FeeWordsNote" use={g.uses.ProductTable}>
+        <State label="a fee: its number, one the fund does not have, one not collected; the note says what the two words mean" wide>
+          <ProductFigures items={[{ id: "a", figure: <FeeFigure value={s.rate} />, word: p.figure }, { id: "b", figure: <FeeFigure value={null} absent />, word: p.figure }, { id: "c", figure: <FeeFigure value={null} />, word: p.figure }]} />
+          <FeeWordsNote />
+        </State>
+      </Demo>
       <Demo name="ProductTable, ProductPhoneRow, ProductIdLink, ProductFigures" use={g.uses.ProductTable}>
         <State label="three products: one alone, two under a banner; the number, link and figure columns fit" wide>
           <ProductTable

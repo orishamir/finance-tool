@@ -225,6 +225,12 @@ export interface SubjectFund {
   record: FundRecord;
 }
 
+/**
+ * A fee this fund does not have, not one left uncollected (issue 156). The variable fee and the trustee fee are lines of Israeli fund law (ETF-14, MF-20),
+ * which does not apply to a foreign fund (ETF-71), so its record holds null for them. A value object with no value is a fee not collected.
+ */
+export const feeAbsent = (rec: FundRecord, key: keyof FundRecord["fees"]): boolean => rec.domicile !== "IL" && (key === "variable_management" || key === "trustee") && !rec.fees[key];
+
 /** The tariff class a fund falls under (`applies_to` of a snapshot line). A TASE-listed foreign fund is its own class, read on the exchange-traded lines (`lineClasses`). */
 export function instrumentClassOf(rec: FundRecord, exposure: ExposureRecord | undefined): string {
   if (exposure?.cash_like) return "money_market_units";

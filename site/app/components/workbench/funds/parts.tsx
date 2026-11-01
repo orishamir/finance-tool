@@ -190,6 +190,8 @@ export function FundFeesBlock({ row }: { row: FundVariantRowView }) {
               <dd className="text-end">
                 {v ? (
                   <Num value={v} size="cell" />
+                ) : row.absentFees.includes(k) ? (
+                  <span className="text-muted-foreground">{t.feeNone}</span>
                 ) : (
                   <span className="text-muted-foreground">
                     {t.feeNotCollected}

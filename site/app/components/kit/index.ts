@@ -33,4 +33,4 @@ export { clamp } from "./chart-zoom";
 export { CountingFigures, countsByItself, useCounting } from "./counting";
 export { ChartTip, ZoomBar, ZoomBrush, pickDim, useChartPick, useYearZoom, type ChartPick, type YearZoom } from "./chart-interact";
 export { TableCols, type ColWidth } from "./table-cols";
-export { ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, type ProductColumn, type ProductGroup, type ProductRow } from "./product-table";
+export { FeeFigure, FeeWordsNote, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, type ProductColumn, type ProductGroup, type ProductRow } from "./product-table";
