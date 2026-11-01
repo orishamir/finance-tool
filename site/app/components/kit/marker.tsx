@@ -3,27 +3,37 @@ import { useCallback, useEffect, useLayoutEffect, useRef, useState, type Keyboar
 import type { SiteValue } from "../../lib/value";
 import { Num } from "../provenance";
 import { cx } from "./cx";
+import { clamp } from "./chart-zoom";
 import { Tpl } from "./sentence";
 
 const useIsoLayoutEffect = typeof window === "undefined" ? useEffect : useLayoutEffect;
 
-/** The measured width of a box (the SVG plots are as wide as their card), 326 px before the script runs. */
-export function useWidth(initial = 326): [RefObject<HTMLDivElement | null>, number] {
+/** The measured size of a box (the SVG plots are as wide as their card), `initialWidth` before the script runs. */
+export function useBox(minWidth = 240, minHeight = 180, initialWidth = 326): [RefObject<HTMLDivElement | null>, { width: number; height: number }] {
   const ref = useRef<HTMLDivElement>(null);
-  const [width, setWidth] = useState(initial);
+  const [size, setSize] = useState({ width: initialWidth, height: 240 });
   useIsoLayoutEffect(() => {
     const el = ref.current;
     if (!el) return;
-    const measure = () => setWidth(Math.max(240, Math.round(el.clientWidth)));
+    const measure = () => {
+      const width = Math.max(minWidth, el.clientWidth);
+      const height = Math.max(minHeight, el.clientHeight);
+      setSize((p) => (p.width === width && p.height === height ? p : { width, height }));
+    };
     measure();
     const ro = new ResizeObserver(measure);
     ro.observe(el);
     return () => ro.disconnect();
-  }, []);
-  return [ref, width];
+  }, [minWidth, minHeight]);
+  return [ref, size];
 }
 
-const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, v));
+/** The same for a chart that only needs the width. */
+export function useWidth(initial = 326): [RefObject<HTMLDivElement | null>, number] {
+  const [ref, size] = useBox(240, 180, initial);
+  return [ref, size.width];
+}
+
 
 export interface MarkerProps {
   min: number;
@@ -160,7 +170,7 @@ export function GainBars({ bars, diff, diffLabel }: { bars: GainBar[]; diff: Sit
           <span className="text-sm text-muted-foreground">{b.label}</span>
           <div className="flex items-center gap-2">
             <div className="flex-1 min-w-0 h-5 relative">
-              <div className={cx("h-full rounded-sm", b.tone === "alt" ? "bg-chart-alt" : "bg-chart-value")} style={{ width: `${Math.max(0.5, (nums[i]! / max) * 100)}%` }} />
+              <div className={cx("h-full rounded-sm transition-[width] duration-[var(--duration-chart)]", b.tone === "alt" ? "bg-chart-alt" : "bg-chart-value")} style={{ width: `${Math.max(0.5, (nums[i]! / max) * 100)}%` }} />
             </div>
             <span className="shrink-0 font-semibold w-28 text-end">
               <Num value={b.value} />
@@ -172,7 +182,7 @@ export function GainBars({ bars, diff, diffLabel }: { bars: GainBar[]; diff: Sit
         <div className="flex items-start gap-2">
           <div className="flex-1 min-w-0">
             <div className="relative h-3">
-              <div className="absolute top-0 h-3 border-x-2 border-b-2 border-foreground/60 rounded-b-sm" style={{ insetInlineStart: `${(lo / max) * 100}%`, width: `${((hi - lo) / max) * 100}%` }} />
+              <div className="absolute top-0 h-3 border-x-2 border-b-2 border-foreground/60 rounded-b-sm transition-[inset-inline-start,width] duration-[var(--duration-chart)]" style={{ insetInlineStart: `${(lo / max) * 100}%`, width: `${((hi - lo) / max) * 100}%` }} />
             </div>
             {/* the label sits under the bracket's end of the row at full width: padding it to the bracket squeezed it into one word a line (2026-10-25) */}
             <p className="text-sm mt-0.5 text-end">

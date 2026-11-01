@@ -1,6 +1,7 @@
 // Screen 6: the comparison result (design-spec 8, flows 13 to 16 and 19). The goal lives on the device, so the
 // page is a shell until it is read; then the engine runs here, on the bundle fetched once. No saved goal opens the form.
 import { useEffect, useId, useMemo, useRef, useState } from "react";
+import { useAfterRender } from "../lib/settled";
 import { Link, Navigate, useLoaderData, useNavigate, useSearchParams } from "react-router";
 import type { RuleRecord } from "@finance-tool/schema";
 import { r2, scnCompare, site, system } from "../copy";
@@ -15,7 +16,8 @@ import { ChartLegend, ChartReadout, ChartTable, ComparisonChart } from "../compo
 import type { ResultCtx } from "../components/compare/ctx";
 import { CoverageLine } from "../components/compare/coverage";
 import { type FormData } from "../components/compare/goal-form";
-import { AvailableCard, ListedRow, RankedRow, useFlip } from "../components/compare/rows";
+import { AvailableCard, ListedRow, RankedRow } from "../components/compare/rows";
+import { useFlip } from "../components/kit";
 import { ReasonLines } from "../components/compare/reasons";
 import { SensitivityPanel } from "../components/compare/sensitivity";
 import { SavedGoalStrip } from "../components/compare/strip";
@@ -26,7 +28,7 @@ import { IconExternal } from "../components/icons";
 import { IdRef, Num, NumberLegend, RulesLine } from "../components/provenance";
 import { Sheet } from "../components/Sheet";
 import { Breadcrumb, PageShell } from "../components/shell";
-import { Callout, Card, Disclosure, SegmentedControl, Sentence, Tag } from "../components/kit";
+import { Callout, Card, Disclosure, SegmentedControl, Sentence, Tag, useChartPick } from "../components/kit";
 import { applyProviders, buildView, computeSensitivity, makeValues, runGoalOf, nothingToCompare, cashRateOf, type CompareBundle, type CompareView, type FeeKind, type RankedOption, type SensitivityView } from "../lib/compare";
 import { loadBundle } from "../lib/bundle";
 import { fmt } from "../lib/format";
@@ -148,7 +150,7 @@ function Body({ bundle: bundle0, wb, data, fit, frame, exposureId, registerSave 
   const outcome = useMemo(() => buildView(bundle, g), [bundle, key]); // eslint-disable-line react-hooks/exhaustive-deps
   const [mode, setMode] = useValueMode();
   const [hover, setHover] = useState<number | null>(null);
-  const [sens, setSens] = useState<SensitivityView | null>(null);
+  const legendPick = useChartPick();
   const [panelOpen, setPanelOpen] = useState(false);
   const { saved, view: revisit } = useRevisit("wrapper");
   const [changes, setChanges] = useState<HTMLElement | null | false>(false);
@@ -166,25 +168,12 @@ function Body({ bundle: bundle0, wb, data, fit, frame, exposureId, registerSave 
   }, [hasSaved]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // F-81 runs after the result is on screen, so typing stays light.
-  useEffect(() => {
-    setSens(null);
-    if (outcome.kind !== "ok") return;
-    let cancelled = false;
-    const t = window.setTimeout(() => {
-      if (cancelled) return;
-      try {
-        const labels = { return: r2.result.sensNames["A-01"]!, inflation: r2.result.sensNames["A-02"]!, horizon: r2.result.sensNames.horizon! };
-        const s = computeSensitivity(bundle, g, outcome.evaluated, (kind: FeeKind, name: string) => `${r2.result.sensFee[kind]} · ${name}`, labels);
-        if (!cancelled) setSens(s);
-      } catch {
-        if (!cancelled) setSens(null);
-      }
-    }, 80);
-    return () => {
-      cancelled = true;
-      window.clearTimeout(t);
-    };
-  }, [outcome]); // eslint-disable-line react-hooks/exhaustive-deps
+  const sens = useAfterRender<SensitivityView>(
+    outcome.kind === "ok"
+      ? () => computeSensitivity(bundle, g, outcome.evaluated, (kind: FeeKind, name: string) => `${r2.result.sensFee[kind]} · ${name}`, { return: r2.result.sensNames["A-01"]!, inflation: r2.result.sensNames["A-02"]!, horizon: r2.result.sensNames.horizon! })
+      : null,
+    [outcome],
+  );
 
   const openField = (field: FieldKey, suggested?: number) => {
     setSuggestion(suggested === undefined ? null : { field, value: suggested });
@@ -365,8 +354,8 @@ function Body({ bundle: bundle0, wb, data, fit, frame, exposureId, registerSave 
               ) : (
                 <>
                   <SegmentedControl label={r2.result.realNominal} options={[{ value: "real", label: r2.result.modes.real }, { value: "nominal", label: r2.result.modes.nominal }]} value={mode} onChange={setMode} />
-                  <ChartLegend lines={view.series} />
-                  <ComparisonChart lines={view.series} mode={mode} horizon={g.horizonYears} ctx={ctx} hover={hover} onHover={setHover} />
+                  <ChartLegend lines={view.series} pick={legendPick} />
+                  <ComparisonChart lines={view.series} mode={mode} horizon={g.horizonYears} ctx={ctx} hover={hover} onHover={setHover} highlight={legendPick.active} />
                   {view.series.some((l) => l.enteredReturn) && <p className="text-xs text-entered">{r2.result.chartEnteredCaption}</p>}
                   <FallEcho ctx={ctx} />
                   <ChartReadout lines={view.series} mode={mode} year={hover ?? g.horizonYears} ctx={ctx} />

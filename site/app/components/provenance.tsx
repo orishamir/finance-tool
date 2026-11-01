@@ -16,7 +16,7 @@ import type { TermRow } from "../lib/data.server";
 import { IconAlert, IconCalculator, IconCheck, IconClock, IconCopy, IconExternal, IconFile, IconLock, IconPencil, IconReset } from "./icons";
 import { Sheet } from "./Sheet";
 import { Button, Callout, cx, Disclosure, LinkButton, Tag } from "./ui";
-import { CompanyLinks, Tpl } from "./kit";
+import { CompanyLinks, Tpl, countsByItself, useCounting, useGlidingNumbers } from "./kit";
 import { chipName, companyLinksOf, generalOnly, isGeneral, isNotRule, isOwnSourceOf, joinNames, listedCompanies, noCompanyAnchor, ownDocCompanies, scopeCompanies, pageView, shownCompanies, sourceCompany, sourcesForPage, type CompanyLink, type OwnDocs } from "../lib/scope";
 
 // ---------------------------------------------------------------- context
@@ -145,7 +145,7 @@ export interface NumProps {
   /** Keeps two decimals on a shekel amount (it sits within 0.50 ₪ of a threshold, so rounding could cross it). */
   exact?: boolean;
   /** Replaces the formatted text (for example "שנתיים" for a horizon of two years). */
-  display?: string;
+  display?: string | ((shown: number) => string | undefined);
   /** Moves the digits to a new value over --duration-chart when it changes (design-spec 1.6). */
   animate?: boolean;
   className?: string;
@@ -174,11 +174,14 @@ export function Num({ value, size = "inline", display, animate, className, prefi
   const open = useOpen();
   const today = useContext(TodayCtx);
   const param = isParameter(value);
-  const shown = useAnimatedValue(typeof value.value === "number" ? value.value : null, !!animate);
+  const counting = useCounting();
+  const shown = useAnimatedValue(typeof value.value === "number" ? value.value : null, animate ?? (counting && countsByItself(value.state, value.unit)));
   // display rounding (A13): a table cell keeps two decimals, everything else rounds computed and entered amounts
   const keepDecimals = size === "cell" || !!exact;
   const roundState = keepDecimals ? undefined : value.state;
-  const text = display ?? (shown !== null && typeof value.value === "number" ? formatValue(shown, value.unit, roundState, param) : formatValue(value.value, value.unit, roundState, param));
+  // a formatter gets the moving value, so a signed figure counts like any other
+  const written = typeof display === "function" ? (shown !== null ? display(shown) : undefined) : display;
+  const text = written ?? (shown !== null && typeof value.value === "number" ? formatValue(shown, value.unit, roundState, param) : formatValue(value.value, value.unit, roundState, param));
   const strength = strengthOf(value);
   const weak = isWeak(value) && (strength === "institution" || strength === "secondary") ? numbers.weak[strength] : null;
   const fromDate = startsAfter(value, today);
@@ -195,7 +198,7 @@ export function Num({ value, size = "inline", display, animate, className, prefi
       type="button"
       className={cx("num", `num-${value.state}`, size === "figure" && "num-figure", size === "cell" && "num-cell", value.value === null && "num-unknown", className)}
       aria-label={label}
-      onClick={(e) => open({ kind: "value", value, ...(keepDecimals ? { exact: true } : {}), ...(value.value === null && display ? { display } : {}) }, e.currentTarget)}
+      onClick={(e) => open({ kind: "value", value, ...(keepDecimals ? { exact: true } : {}), ...(value.value === null && written ? { display: written } : {}) }, e.currentTarget)}
     >
       {value.stale && <IconClock size={14} className={cx("text-caution me-1", mark)} aria-hidden="true" />}
       {((showMark && fromDate) || markWeak) && <IconAlert size={14} className={cx("text-caution me-1", mark)} aria-hidden="true" />}
@@ -243,39 +246,10 @@ function staleDate(v: SiteValue): string {
 
 /** Digits count to a new value over --duration-chart; zero when the device asks for reduced motion. */
 export function useAnimatedValue(target: number | null, enabled: boolean): number | null {
-  const [shown, setShown] = useState(target);
-  const from = useRef(target);
-  useEffect(() => {
-    if (!enabled || target === null || from.current === null || from.current === target) {
-      setShown(target);
-      from.current = target;
-      return;
-    }
-    const ms = durationChart();
-    if (ms === 0) {
-      setShown(target);
-      from.current = target;
-      return;
-    }
-    const start = performance.now();
-    const a = from.current;
-    let raf = 0;
-    const tick = (now: number) => {
-      const t = Math.min(1, (now - start) / ms);
-      const e = 1 - Math.pow(1 - t, 3);
-      setShown(a + (target - a) * e);
-      if (t < 1) raf = requestAnimationFrame(tick);
-      else from.current = target;
-    };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, [target, enabled]);
-  return enabled ? shown : target;
-}
-
-export function durationChart(): number {
-  if (typeof window === "undefined") return 0;
-  return parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--duration-chart")) || 0;
+  // not a number to glide to: NaN takes its goal at once, either way
+  const moves = enabled && target !== null;
+  const shown = useGlidingNumbers([moves ? target : NaN])[0]!;
+  return moves && Number.isFinite(shown) ? shown : target;
 }
 
 // ---------------------------------------------------------------- tags, chips, lines

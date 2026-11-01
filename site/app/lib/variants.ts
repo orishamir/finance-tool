@@ -19,7 +19,7 @@ import {
 } from "@finance-tool/engine";
 import type { ExposureRecord, FundRecord, ValueObject } from "@finance-tool/schema";
 import { deviceStore } from "./device-store";
-import { BROKERAGE, a28Value, instrumentClassOf, parameterValue, ruleContext, staleTariff, type FundAssumptions, type WorkbenchBundle, type WorkbenchInputs } from "./providers";
+import { BROKERAGE, a28Value, feeAbsent, instrumentClassOf, parameterValue, ruleContext, staleTariff, type FundAssumptions, type WorkbenchBundle, type WorkbenchInputs } from "./providers";
 import { fxRunInput, nisPer } from "./fx";
 import { computed, ownBy, weaker, type SiteValue, type Strength } from "./value";
 
@@ -98,6 +98,8 @@ export interface FundVariantRowView {
   fees: Record<FeeKey, SiteValue | null> | null;
   /** Fee fields the record leaves empty that the engine takes as zero (A-07 to A-11). */
   takenAsZero: FeeKey[];
+  /** Fee fields this fund does not have (a foreign fund's variable and trustee fee), which are not "not collected". */
+  absentFees: FeeKey[];
   value?: SiteValue;
   /** The exposure's own return (D9) is not entered: the figure waits. */
   waitsForReturn: boolean;
@@ -349,7 +351,8 @@ export function buildFundVariants(a: VariantArgs): VariantResult {
       tags: { domicile: rec?.domicile ?? null, policy: rec ? (rec.distribution_policy ?? "not-collected") : "not-collected" },
       trading: rec ? { currency: isIls(rec.currency) ? "ILS" : rec.currency, onTaseInNis: rec.trading_currency_on_tase !== null && isIls(rec.trading_currency_on_tase), abroad: rec.domicile !== "IL" && rec.trading_currency_on_tase === null } : null,
       fees,
-      takenAsZero: row.notCollected.filter((k): k is FeeKey => feeKeys.includes(k as FeeKey)),
+      takenAsZero: row.notCollected.filter((k): k is FeeKey => feeKeys.includes(k as FeeKey) && !(rec && feeAbsent(rec, k as FeeKey))),
+      absentFees: rec ? feeKeys.filter((k) => feeAbsent(rec, k)) : [],
       ...(run && !waits ? { value: figure(run.real, "מה שנשאר במועד המטרה, בכסף של היום", run) } : {}),
       waitsForReturn: waits && kind !== "not-evaluated",
       ...(reasonOf(row) && !(waits && kind !== "not-evaluated" && !secondary.length) ? { reason: reasonOf(row)! } : {}),

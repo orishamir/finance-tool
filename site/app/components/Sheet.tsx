@@ -1,9 +1,10 @@
 // A native <dialog>: a bottom sheet below lg (grab handle, overlay, slides up), and at lg either a card
 // beside its anchor (provenance, rule and term cards) or a centred dialog (design-system 3.9, spec 3).
-import { useEffect, useLayoutEffect, useRef, type ReactNode } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
 import { site } from "../copy";
 import { IconArrowBack, IconClose } from "./icons";
 import { Button, cx } from "./ui";
+import { cssMs } from "./kit/chart-glide-math";
 
 export interface SheetProps {
   open: boolean;
@@ -33,6 +34,10 @@ const useIsoLayoutEffect = typeof window === "undefined" ? useEffect : useLayout
 export function Sheet({ open, onClose, anchor, pc = "popover", height = 70, labelledBy, describedBy, onBack, children, className }: SheetProps) {
   const ref = useRef<HTMLDialogElement>(null);
   const closing = useRef<number | null>(null);
+  // Many sheets drop their content when they close: what was in it stays until the sheet has finished leaving.
+  const kept = useRef(children);
+  if (open) kept.current = children;
+  const [, leftSheet] = useState(0);
 
   useIsoLayoutEffect(() => {
     const dialog = ref.current;
@@ -47,11 +52,12 @@ export function Sheet({ open, onClose, anchor, pc = "popover", height = 70, labe
       place(dialog, anchor ?? null, pc);
     } else if (dialog.open && !closing.current) {
       dialog.setAttribute("data-closing", "");
-      const ms = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--duration-base")) || 0;
+      const ms = cssMs(getComputedStyle(document.documentElement).getPropertyValue("--duration-base"));
       closing.current = window.setTimeout(() => {
         dialog.removeAttribute("data-closing");
         dialog.close();
         closing.current = null;
+        leftSheet((n) => n + 1);
       }, ms);
     }
   }, [open, anchor, pc]);
@@ -114,7 +120,7 @@ export function Sheet({ open, onClose, anchor, pc = "popover", height = 70, labe
             <IconClose size={20} />
           </Button>
         </div>
-        {children}
+        {open || !ref.current?.open ? children : kept.current}
       </div>
     </dialog>
   );

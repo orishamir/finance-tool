@@ -3,16 +3,18 @@ import { createElement } from "react";
 import { renderToString } from "react-dom/server";
 import { MemoryRouter } from "react-router";
 import { describe, expect, it } from "vitest";
+import { invest } from "../../copy";
+import { feeAbsent } from "../../lib/providers";
 import { buildWorkbenchBundle } from "../../lib/providers.server";
 import { buildInvest, indexById, knownIndices, refOfCustom } from "../../lib/invest";
 import { brokerLabels, fundLabels, optionLabels } from "../../lib/labels";
 import { entered } from "../../lib/value";
 import type { WorkbenchInputs } from "../../lib/providers";
 import { HousesSection } from "./houses";
-import { FundsSection } from "./funds";
+import { Fees, FundsSection } from "./funds";
 import { LabelSheetHost } from "../kit";
 import { Headline, IndexHeader } from "./sections";
-import { AccountColumn, allFunds, bestFor, FundColumn, PairResult, pickOfHeadline } from "./pair";
+import { AccountColumn, allFunds, bestFor, FundColumn, GapCell, PairResult, pickOfHeadline } from "./pair";
 import { Foot } from "./foot";
 import { DollarSection } from "./dollar";
 import { hasKinds, kindOf } from "../../lib/invest";
@@ -126,6 +128,37 @@ describe("who reports the tax is the route's, not the fund's (issue 126, TXF-29)
     expect(ids("interactive-brokers")).toContain("ask-self-report");
     expect(ids("interactive-israel")).toContain("ask-tax-service");
     expect(ids("interactive-israel")).not.toContain("ask-self-report");
+  });
+  it("a foreign fund says it has no variable or trustee fee, and an Israeli fund's missing fee stays not collected (issue 156)", () => {
+    const foreign = allFunds(view).find((f) => f.rec.id === "1159250")!.rec;
+    for (const key of ["variable_management", "trustee"] as const) expect(feeAbsent(foreign, key)).toBe(true);
+    expect(feeAbsent(foreign, "fixed_management")).toBe(false);
+    expect(feeAbsent(foreign, "tracking_difference_12m")).toBe(false);
+    expect(feeAbsent({ ...foreign, domicile: "IL" }, "trustee")).toBe(false);
+    const unknown = { ...foreign.fees.fixed_management!, value: null };
+    expect(feeAbsent({ ...foreign, fees: { ...foreign.fees, trustee: unknown } }, "trustee")).toBe(false);
+    const cell = html(createElement(Fees, { rec: foreign }));
+    expect(cell).toContain(invest.funds.noSuchFee);
+    expect(cell).toContain(invest.funds.noTrusteeWord);
+    expect(cell).not.toContain(invest.funds.notCollected);
+    const israeli = html(createElement(Fees, { rec: { ...foreign, domicile: "IL" } }));
+    expect(israeli).toContain(invest.funds.notCollected);
+    expect(israeli).not.toContain(invest.funds.noSuchFee);
+  });
+  it("a foreign fund with no yearly figures says they were not collected, never that it has no full year", () => {
+    const today = "2026-11-01";
+    const iusa = allFunds(view).find((f) => f.rec.id === "ie0031442068")!.rec;
+    const cell = html(createElement(GapCell, { rec: iusa, today }));
+    expect(cell).toContain(invest.kinds.gapNotCollected);
+    expect(cell).not.toContain(invest.kinds.gapNone);
+    const young = html(createElement(GapCell, { rec: { ...iusa, domicile: "IL" }, today }));
+    expect(young).toContain(invest.kinds.gapNone);
+  });
+  it("an accumulating iShares fund's name says so, as the distributing one's does", () => {
+    const funds = allFunds(view);
+    expect(funds.find((f) => f.rec.id === "ie00b5bmr087")!.name).toContain("Accumulating");
+    expect(funds.find((f) => f.rec.id === "1159250")!.name).toContain("Accumulating");
+    expect(funds.find((f) => f.rec.id === "ie0031442068")!.name).toContain("Dist");
   });
   it("the same fund on Tel Aviv and abroad is a row each, told apart by where it is listed", () => {
     const funds = allFunds(view);

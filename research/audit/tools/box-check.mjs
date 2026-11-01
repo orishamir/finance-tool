@@ -1,4 +1,4 @@
-// Box check (2026-10-31, design-system 2.5a "Nothing moves when a number changes"). Sets every slider on a page to its ends and its middle,
+// Box check (2026-10-31, design-system 2.5a "Nothing moves when a number changes"). Sets every slider and marker on a page to its ends and its middle,
 // and every select to each option, one change at a time, and after each change compares the boxes of every visible element with the
 // boxes before it. It reports the innermost elements whose height changed, the blocks and table columns whose width changed, and how
 // far the page under them moved. jump-check.mjs presses buttons and watches the control itself; this one moves inputs and watches the rest.
@@ -6,7 +6,7 @@
 //   BASE=http://127.0.0.1:4173/finance-tool node research/audit/tools/box-check.mjs /indices/sp500 phone,pc,wide
 //
 // The second argument picks the widths: phone (390), pc (1280), wide (1920). `--pick=<text>` first clicks the visible element with that
-// text (a list's row that shows more once picked). `--tables` opens every closed fold first, so the tables behind them are measured too.
+// text (a list's row that shows more once picked). `--tables` opens every closed fold first, so the tables behind them are measured too. `--goal` saves a goal on the device first.
 import { createRequire } from "node:module";
 
 const require = createRequire(process.env.PLAYWRIGHT_DIR ?? "/home/ori/.npm/_npx/e41f203b7505f1fb/node_modules/");
@@ -18,6 +18,7 @@ const flags = args.filter((a) => a.startsWith("--"));
 const [paths = "/indices/sp500", widths = "phone,pc"] = args.filter((a) => !a.startsWith("--"));
 const pick = flags.find((f) => f.startsWith("--pick="))?.slice(7);
 const openFolds = flags.includes("--tables");
+const seedGoal = flags.includes("--goal");
 const VIEW = { phone: { width: 390, height: 844, hasTouch: true }, pc: { width: 1280, height: 900 }, wide: { width: 1920, height: 1080 } };
 const TOL = 1; // a pixel of rounding is not a jump
 // a width that must hold: a bar's or a figure's own width is meant to follow its number
@@ -28,11 +29,15 @@ const snapshot = () => {
   const ids = (window.__boxIds ??= new WeakMap());
   window.__boxNext ??= 1;
   const out = [];
+  const stuck = new Set();
   for (const e of document.body.querySelectorAll("*")) {
     if (e.closest("svg") && e.tagName.toLowerCase() !== "svg") continue;
     if (["SCRIPT", "STYLE", "OPTION"].includes(e.tagName)) continue;
     const cs = getComputedStyle(e);
     if (cs.display === "none" || cs.visibility === "hidden" || cs.position === "fixed") continue;
+    // what sticks follows the scroll, and moving a marker by its keys scrolls it into view
+    if (cs.position === "sticky") stuck.add(e);
+    if (stuck.has(e) || [...stuck].some((s) => s.contains(e))) continue;
     if (!e.checkVisibility({ contentVisibilityAuto: true })) continue; // inside a closed fold
     const r = e.getBoundingClientRect();
     if (r.width === 0 || r.height === 0) continue;
@@ -83,8 +88,16 @@ for (const path of paths.split(",")) {
   for (const w of widths.split(",")) {
     const ctx = await browser.newContext({ viewport: { width: VIEW[w].width, height: VIEW[w].height }, hasTouch: !!VIEW[w].hasTouch, locale: "he-IL" });
     const page = await ctx.newPage();
+    if (seedGoal) {
+      // the page shows its result with a goal saved on the device: the first page's form saves one
+      await page.goto(`${BASE}/`, { waitUntil: "networkidle" });
+      await page.waitForTimeout(700);
+      for (const [field, value] of [["amount", "50000"], ["monthly", "1000"], ["years", "12"]]) await page.locator(`[data-quick="${field}"] input`).first().fill(value).catch(() => {});
+      await page.locator('form button[type="submit"]').first().click();
+      await page.waitForTimeout(2500);
+    }
     await page.goto(`${BASE}${path}`, { waitUntil: "networkidle" });
-    await page.waitForTimeout(700);
+    await page.waitForTimeout(seedGoal ? 2500 : 700);
     if (pick) {
       await page.locator(":visible", { hasText: pick }).last().dispatchEvent("click");
       await page.waitForTimeout(500);
@@ -121,6 +134,18 @@ for (const path of paths.split(",")) {
           e.dispatchEvent(new Event("change", { bubbles: true }));
         }, v);
         await after(`${label} ${word}`);
+      }
+    }
+    // the kit's Marker: a slider that is not an input (role=slider), moved by its keys: both ends, then a tenth of the way at a time
+    const markers = await page.locator("[role=slider]:visible").count();
+    if (markers) console.log(`  ${markers} markers`);
+    for (let i = 0; i < markers; i++) {
+      const m = page.locator("[role=slider]:visible").nth(i);
+      const label = (await m.getAttribute("aria-label")) ?? `marker ${i + 1}`;
+      await m.focus();
+      for (const key of ["End", "Home", "PageUp", "PageUp", "PageUp", "PageUp", "PageUp", "PageUp", "End"]) {
+        await page.keyboard.press(key);
+        await after(`${label} ${key} = ${await m.getAttribute("aria-valuenow")}`);
       }
     }
     for (let i = 0; i < selects; i++) {

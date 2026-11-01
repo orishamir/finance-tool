@@ -6,7 +6,9 @@
 //  4. the gallery at /kit stays out of the menu and the search;
 //  5. a question data/open-questions.json has as closed is not named as open (2026-10-26);
 //  6. "אחר" in a row of choices is the kit's OtherChip (ChoiceChips `other`), never an ordinary chip (2026-10-26);
-//  7. every <table> is fixed with a width per column (design-system 2.5a, 2026-10-31).
+//  7. every <table> is fixed with a width per column (design-system 2.5a, 2026-10-31);
+//  8. a year chart's pointer is the kit's useYearZoom: a chart that clears its reading when the pointer lifts lost the year on a phone (issue 22);
+//  9. a chart's motion is the kit's glide: a chart with a loop of its own restarted from its last rest on every step of a slider (2026-11-01).
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { join, relative } from "node:path";
@@ -178,5 +180,24 @@ describe("every table has fixed columns", () => {
     expect(unfixed(`<table className="tbl"><thead /></table>`)).toHaveLength(1);
     expect(unfixed(`<table className="w-full"><TableCols widths={[]} /></table>`)).toHaveLength(1);
     expect(unfixed(`<table className="w-full table-fixed"><TableCols widths={[]} /></table>`)).toEqual([]);
+  });
+});
+
+describe("a year chart's pointer is the kit's", () => {
+  it("no chart clears its reading when the pointer lifts", () => {
+    const hits = files.filter((f) => /\.tsx$/.test(f) && !rel(f).startsWith("components/kit/") && /onPointerUp=\{\(\) => onHover\(null\)\}/.test(code(read(f)))).map(rel);
+    expect(hits).toEqual([]);
+  });
+});
+
+describe("a chart's motion is the kit's", () => {
+  it("no chart has an animation loop of its own", () => {
+    const charts = /^components\/(chart|compare|fees|workbench\/providers|guide-signature|invest|timeline|exposure-mode)\//;
+    const hits = files.filter((f) => /\.tsx$/.test(f) && charts.test(rel(f)) && /<svg[\s>]/.test(code(read(f))) && /requestAnimationFrame/.test(code(read(f)))).map(rel);
+    expect(hits).toEqual([]);
+  });
+  it("a chart measures its box and a list slides its rows with the kit's piece", () => {
+    const hits = files.filter((f) => /\.tsx$/.test(f) && !/^components\/(kit\/|shell)/.test(rel(f)) && /new ResizeObserver|\.animate\(\[/.test(code(read(f))));
+    expect(hits).toEqual([]);
   });
 });

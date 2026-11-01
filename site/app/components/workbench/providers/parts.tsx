@@ -37,7 +37,7 @@ export function CostByTypeBar({ view }: { view: ProviderRowView }) {
   const parts = view.byType.filter((t) => t.share > 0);
   return (
     <div className="h-2 w-full rounded-sm bg-muted/50 overflow-hidden" role="img" aria-label={`${c.providers.barAria}: ${parts.map((t) => c.feeTypes[t.type]).join(", ")}`}>
-      <div className="h-full flex" style={{ width: `${Math.max(2, (view.barScale ?? 1) * 100)}%` }}>
+      <div className="h-full flex transition-[width] duration-[var(--duration-chart)]" style={{ width: `${Math.max(2, (view.barScale ?? 1) * 100)}%` }}>
         {parts.map((t) => (
           <span key={t.type} title={`${c.feeTypes[t.type]}: ${fmt.nis(t.cost.value as number)}`} className={cx("h-full border-e-[1.5px] border-card last:border-e-0", typeHue[t.type].bg)} style={{ flexGrow: t.share, flexBasis: 0, minWidth: t.share < 0.04 ? 2 : undefined }} />
         ))}

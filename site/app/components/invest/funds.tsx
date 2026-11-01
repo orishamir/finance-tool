@@ -8,9 +8,10 @@ import { brands, invest as c } from "../../copy";
 import type { FundRecord } from "@finance-tool/schema";
 import type { HouseEntry, HouseRow, InvestView } from "../../lib/invest";
 import { fundLabels } from "../../lib/labels";
+import { feeAbsent } from "../../lib/providers";
 import { IconCopy, IconExternal, IconLock } from "../icons";
 import { Num } from "../provenance";
-import { Button, LabelChip, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RankBadge, Section, SelectField, Tag, type ProductColumn, type ProductRow } from "../kit";
+import { Button, FeeFigure, FeeWordsNote, LabelChip, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RankBadge, Section, SelectField, Tag, type ProductColumn, type ProductRow } from "../kit";
 import { LabelsLegend, optionClass, OptionTag, reasonText } from "./parts";
 import { AddEntryButton, FundTerms } from "./custom-entries";
 import { isCustomFund } from "../../lib/custom-entries";
@@ -38,6 +39,7 @@ export function FundsSection({ view, houseId, onHouse, mayaHref }: { view: Inves
           <LabelsLegend />
           <FundList view={view} house={house} />
           <p className="text-sm text-muted-foreground">{c.funds.gapNote}</p>
+          {!view.index.israeli && <FeeWordsNote />}
         </>
       )}
       <AddEntryButton kind="fund" />
@@ -66,14 +68,15 @@ function FundList({ view, house }: { view: InvestView; house: HouseRow }) {
   return <ProductTable columns={columns} groups={rows.map((r) => ({ key: r.key, rows: [r] }))} />;
 }
 
-/** The three fees, each with its word; one not collected says so (also the index page's fund slot). */
+/** The three fees, each with its word; one the fund does not have, or one not collected, says so (also the index page's fund slot). */
 export function Fees({ rec, inline }: { rec: FundRecord; inline?: boolean }) {
   // a foreign fund the person typed has one yearly charge, and nothing "not collected" beside it (D44)
   const yearlyOnly = isCustomFund(rec) && rec.domicile !== "IL";
   const items = (yearlyOnly ? (["fixed_management"] as const) : (["fixed_management", "variable_management", "trustee"] as const)).map((key, i) => {
     const v = feeOf(rec, key);
     const word = yearlyOnly ? c.customEntries.yearlyWord : [b.feeWords.fixed, b.feeWords.variable, b.feeWords.trustee][i]!;
-    return { id: key, word, figure: v ? <Num value={v} size={inline ? "inline" : "cell"} /> : <span className="text-sm text-muted-foreground">{c.funds.notCollected}</span> };
+    const absent = feeAbsent(rec, key);
+    return { id: key, word: absent && key === "trustee" ? c.funds.noTrusteeWord : word, figure: <FeeFigure value={v} absent={absent} inline={inline} /> };
   });
   return <ProductFigures items={items} inline={inline} />;
 }

@@ -7,12 +7,14 @@ import { guideSignature as copy, values as valuesCopy } from "../../copy";
 import { fmt } from "../../lib/format";
 import { fact, factNumber, planModel } from "../../lib/guide-signature";
 import { entered as enteredValue } from "../../lib/value";
-import { Callout, ChartLegend, InputSlot, Marker, MarkerMark, NumberField, SegmentedControl, Stat, StatRow, Swatch, useWidth } from "../kit";
+import { Callout, ChartLegend, InputSlot, Marker, MarkerMark, NumberField, SegmentedControl, Stat, StatRow, Swatch, useGlidingNumbers, useWidth } from "../kit";
 import { IdText, Num, RulesLine } from "../provenance";
 import { SourceLine, figure, inputSite, rulesOfBundle, useSigInputs, type VisualProps } from "./kit";
 
 const TOP = 22;
 const AXIS = 24;
+/** The ladder's height in px: 5 px a row at the most deposits on offer, 36. */
+const LADDER = 180;
 
 type Count = "6" | "12" | "24" | "36";
 
@@ -35,10 +37,11 @@ export function SavingsPlanVisual({ data, today }: VisualProps) {
   const m = Math.min(last, Math.max(0, month ?? term + Math.floor(n / 2)));
   const [box, width] = useWidth();
   const pid = useId().replace(/:/g, "");
-  const rowH = n <= 12 ? 11 : n <= 24 ? 7 : 5;
-  const height = TOP + n * rowH + AXIS + 6;
+  // another number of deposits: the ladder's axis and its rows glide there, and the rows share one height, so nothing under it moves
+  const [lastNow, rowH] = useGlidingNumbers([last, LADDER / n]) as [number, number];
+  const height = TOP + LADDER + AXIS + 6;
   const plotW = width - 8;
-  const x = scaleLinear().domain([0, last]).range([0, plotW]);
+  const x = scaleLinear().domain([0, lastNow]).range([0, plotW]);
   const ticks = Array.from({ length: Math.floor(last / 12) + 1 }, (_, i) => i * 12);
   const at = model?.at(m);
   const outOfRange = (min && typeof min.value === "number" && monthly < min.value) || (max && typeof max.value === "number" && monthly > max.value);
