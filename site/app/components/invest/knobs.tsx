@@ -10,7 +10,7 @@ import type { FeeInputs } from "../../lib/fees";
 import { fmt } from "../../lib/format";
 import { useInputs, type Employment } from "../../lib/inputs";
 import { useSettled } from "../../lib/settled";
-import { pairCosts, type InvestView } from "../../lib/invest";
+import { pairCosts, pairLeft, type InvestView } from "../../lib/invest";
 import type { WorkbenchBundle, WorkbenchInputs } from "../../lib/providers";
 import { computed, type SiteValue } from "../../lib/value";
 import { Num } from "../provenance";
@@ -30,14 +30,17 @@ const KNOBS: { id: Id; key: "amountNow" | "monthly" | "years" | "grossReturn"; r
 const k = c.plan.knobs;
 const labelOf: Record<Id, string> = { amount: k.amount, monthly: k.monthly, years: k.years, ret: k.ret };
 
-/** The value left for the pair the page prices, as a function of the plan (F-63's `L`); null when the page prices no pair. */
+/** The pair the page prices, with the value left as a function of the plan (F-63's `L`): the figure with its provenance for the plan itself, the number alone for each run of a sweep. Null when the page prices no pair. */
 function usePairLeft(bundle: WorkbenchBundle, view: InvestView | null, pick: Pair) {
   const house = pick?.house;
   const fund = pick?.fund;
   const index = view?.index;
   return useMemo(() => {
     if (!index || !house || !fund) return null;
-    return (p: WorkbenchInputs) => pairCosts({ bundle, index, plan: p, fundId: fund, providerId: house })?.left ?? null;
+    return {
+      value: (p: WorkbenchInputs) => pairCosts({ bundle, index, plan: p, fundId: fund, providerId: house })?.left ?? null,
+      number: (p: WorkbenchInputs) => pairLeft({ bundle, index, plan: p, fundId: fund, providerId: house }),
+    };
   }, [bundle, index, house, fund]);
 }
 
@@ -82,12 +85,11 @@ export function PlanChanges({ plan: resting, share, bundle, view, pick }: { plan
   const shares = useMemo(() => Array.from({ length: Math.round((share.max - share.min) / share.step) + 1 }, (_, i) => share.min + i * share.step), [share]);
   const run = useMemo(() => {
     if (!left) return null;
-    const base = left(plan);
+    const base = left.value(plan);
     if (!base) return null;
-    const L = (p: WorkbenchInputs) => (left(p)?.value as number | undefined) ?? null;
     const lines = KNOBS.map(({ id, key, scale }) => {
       const tos = shares.map((sh) => changedByShare(plan[key] * scale, sh / 100, id === "years"));
-      return { id, key, scale, tos, ys: sweep(L, plan, key, tos, scale) };
+      return { id, key, scale, tos, ys: sweep(left.number, plan, key, tos, scale) };
     });
     return { base, lines };
   }, [left, plan, shares]);
