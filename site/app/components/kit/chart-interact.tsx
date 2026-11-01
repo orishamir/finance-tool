@@ -4,45 +4,14 @@
 // item, a bar or a row picks its series with `useChartPick`: a mouse previews it, a click or a tap keeps it. Nothing here moves the layout.
 import { useCallback, useEffect, useRef, useState, type PointerEvent, type ReactNode } from "react";
 import { kit as kitCopy } from "../../copy";
-import { durationChart } from "../provenance";
+import { useGlidingNumbers } from "./chart-glide";
 import { cx } from "./cx";
 import { canZoomYears, domainOf, pickYear, viewFromDrag, viewFromWheel, yearAt, type Domain, type YearView } from "./chart-zoom";
 
 /** Pixels a mouse must travel before a press is a drag, not a click. */
 const DRAG_PX = 8;
-/** A zoom's glide is shorter than a value's: the person is waiting to read the result of their own hand. */
-const GLIDE_MS = 240;
 /** The wheel's travel that makes one zoom step: one notch of a mouse, a few events of a touchpad's pinch. */
 const WHEEL_STEP = 40;
-
-function useGlide(target: Domain): Domain {
-  const [shown, setShown] = useState(target);
-  const prev = useRef(target);
-  const [a, b] = target;
-  useEffect(() => {
-    const from = prev.current;
-    const to: Domain = [a, b];
-    const ms = Math.min(GLIDE_MS, durationChart());
-    if (ms === 0 || (from[0] === a && from[1] === b)) {
-      setShown(to);
-      prev.current = to;
-      return;
-    }
-    const start = performance.now();
-    let raf = 0;
-    const tick = (now: number) => {
-      const t = Math.min(1, (now - start) / ms);
-      const e = 1 - Math.pow(1 - t, 3);
-      const at: Domain = [from[0] + (a - from[0]) * e, from[1] + (b - from[1]) * e];
-      prev.current = at;
-      setShown(at);
-      if (t < 1) raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, [a, b]);
-  return shown;
-}
 
 export interface YearZoom {
   /** On the chart's `<svg>`. */
@@ -61,8 +30,10 @@ export interface YearZoom {
   settled: Domain;
   view: YearView | null;
   canZoom: boolean;
-  /** Whether a year is drawn in the view (what a chart's value axis fits). */
+  /** Whether a year is in the part of the axis drawn right now, on the way to a new view. */
   has: (year: number) => boolean;
+  /** Whether a year is in the view the glide ends on: what a chart's value axis fits, so the axis does not hunt on the way. */
+  seen: (year: number) => boolean;
   /** The drag in progress, in px from the plot's left edge. */
   brush: { from: number; to: number } | null;
   reset: () => void;
@@ -76,7 +47,8 @@ export function useYearZoom({ first = 0, last, plotLeft = 0, plotWidth, band = f
   const [view, setView] = useState<YearView | null>(null);
   const [brush, setBrush] = useState<{ from: number; to: number } | null>(null);
   const settled = domainOf(view, first, last, band);
-  const domain = useGlide(settled);
+  const glide = useGlidingNumbers(settled);
+  const domain: Domain = [glide[0]!, glide[1]!];
   const canZoom = canZoomYears(first, last);
 
   const pin = useRef<number | null>(null);
@@ -139,6 +111,7 @@ export function useYearZoom({ first = 0, last, plotLeft = 0, plotWidth, band = f
     brush,
     reset,
     has: (year) => year >= Math.floor(domain[0]) && year <= Math.ceil(domain[1]),
+    seen: (year) => year >= Math.floor(settled[0]) && year <= Math.ceil(settled[1]),
     handlers: {
       onPointerDown: (e) => {
         if (e.pointerType === "mouse" && e.button !== 0) return;

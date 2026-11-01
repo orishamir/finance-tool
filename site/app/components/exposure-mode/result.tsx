@@ -16,7 +16,7 @@ import { goalTitle } from "../compare/goal-form";
 import { DimensionChecklist, type ChecklistRowView } from "../guide/sections";
 import { Num, NumberLegend, RulesLine } from "../provenance";
 import { Sheet } from "../Sheet";
-import { Callout, Card, CoverageFold, Disclosure, SegmentedControl, TableCols, Tag } from "../kit";
+import { Callout, Card, CoverageFold, Disclosure, SegmentedControl, TableCols, Tag, useFlip } from "../kit";
 import { ChooseButton, RevisitBanner, SaveComparisonButton, UnreadableSavedForm, WhatChangedSheet } from "../revisit/revisit";
 import { forgetRevisit, useRevisit } from "../revisit/use-revisit";
 import { computed } from "../../lib/value";
@@ -28,7 +28,7 @@ import { snapshotExposure } from "../../lib/revisit";
 import { deleteSavedComparison, isoToday, saveComparisonRecord, type CompareMode } from "../../lib/state";
 import { ExposureChartCard } from "./chart";
 import type { ExpCtx } from "./ctx";
-import { ExposureRow, useFlipList } from "./row";
+import { ExposureRow } from "./row";
 import { ExposureReason } from "./reason";
 import { Tpl } from "./tpl";
 import { IconDash, IconDashed, IconEdit, IconOk } from "../compare/icons";
@@ -354,7 +354,7 @@ export function ExposureBody({ bundle, data, frame, registerSave }: { bundle: Co
 
   // the ranked rows keep a stable order key for the FLIP animation
   const rankedOrder = outcome.view ? outcome.view.rows.map((r) => `${r.id}:${r.kind}`).join(",") : "";
-  const listRef = useFlipList(rankedOrder);
+  const listRef = useFlip<HTMLDivElement>(rankedOrder);
 
   useEffect(() => {
     if (!saveFailed) return;

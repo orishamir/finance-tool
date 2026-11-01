@@ -499,6 +499,17 @@
       opacity: 0;
     }
   }
+  /* an axis's label or gridline coming or going while the scale glides (kit, chart-glide) */
+  .chart-tick-in {
+    animation: fade-in var(--duration-chart) both;
+  }
+  .chart-tick-out {
+    animation: fade-out var(--duration-chart) both;
+  }
+  /* a line or band that comes in; backwards only, so afterwards its own opacity (a dimmed series) holds */
+  .chart-line {
+    animation: fade-in var(--duration-chart) backwards;
+  }
   @media (min-width: 64rem) {
     @keyframes sheet-in {
       from {

@@ -2,6 +2,7 @@
 // right from less to more, all lines crossing at the plan; a marker the person drags (or sets with a choice) reads every line at one
 // share, and the table under it says, for each number, what it was, what it becomes, what is left and the difference. Own SVG.
 import { useState, type PointerEvent, type ReactNode } from "react";
+import { tickFade, ticksOn, useFadingTicks, useGlidingNumbers, useGlidingSeries, valueOn } from "./chart-glide";
 import { pickDim, useChartPick } from "./chart-interact";
 import { cx } from "./cx";
 import { TableCols } from "./table-cols";
@@ -77,8 +78,11 @@ export function ChangeChart({
   const hi = shares[shares.length - 1]!;
   const step = shares.length > 1 ? shares[1]! - shares[0]! : 1;
   const all = lines.flatMap((l) => l.ys.filter((v): v is number => v !== null));
-  const yMax = Math.max(1, ...all);
-  const yMin = Math.min(0, ...all);
+  const maxGoal = Math.max(1, ...all);
+  const minGoal = Math.min(0, ...all);
+  // no price is NaN on the way: the line has a gap there, at once
+  const drawn = useGlidingSeries(Object.fromEntries(lines.map((l) => [l.id, shares.map((year, i) => ({ year, v: l.ys[i] ?? NaN }))])));
+  const [yMax, yMin] = useGlidingNumbers([maxGoal, minGoal]) as [number, number];
   const plotR = w - RIGHT;
   const x = (s: number) => LEFT + ((s - lo) / (hi - lo)) * (plotR - LEFT);
   const y = (v: number) => TOP + (1 - (v - yMin) / (yMax - yMin)) * (H - TOP - BOTTOM);
@@ -90,19 +94,19 @@ export function ChangeChart({
   };
   // direct labels at the right ends, pushed apart where they would overlap
   const ends = lines
-    .map((l) => ({ l, v: l.ys[l.ys.length - 1] }))
-    .filter((e): e is { l: ChangeLine; v: number } => e.v !== null && e.v !== undefined)
+    .map((l) => ({ l, v: drawn[l.id]?.at(-1)?.v }))
+    .filter((e): e is { l: ChangeLine; v: number } => e.v !== undefined && Number.isFinite(e.v))
     .map((e) => ({ l: e.l, y: y(e.v) }))
     .sort((a, b) => a.y - b.y);
   for (let i = 1; i < ends.length; i++) if (ends[i]!.y - ends[i - 1]!.y < 15) ends[i]!.y = ends[i - 1]!.y + 15;
   // a phone keeps the two ends and the plan; a computer also the halves
   const ticks = (w < 520 ? [lo, 0, hi] : [lo, lo / 2, 0, hi / 2, hi]).filter((s, i, a) => a.indexOf(s) === i);
   // round amounts on the axis: a step of 1, 2 or 5 times a power of ten
-  const raw = (yMax - yMin) / 4;
+  const raw = (maxGoal - minGoal) / 4;
   const mag = Math.pow(10, Math.floor(Math.log10(raw)));
   const gstep = [1, 2, 5, 10].map((m) => m * mag).find((v) => v >= raw)!;
-  const grid = Array.from({ length: Math.floor((yMax - yMin) / gstep) + 1 }, (_, i) => Math.ceil(yMin / gstep) * gstep + i * gstep).filter((v) => v <= yMax);
-  const path = (ys: (number | null)[]) => ys.reduce<string>((acc, v, i) => (v === null ? acc : `${acc}${acc && ys[i - 1] !== null ? "L" : "M"}${x(shares[i]!).toFixed(1)} ${y(v).toFixed(1)}`), "");
+  const grid = ticksOn(useFadingTicks(Array.from({ length: Math.floor((maxGoal - minGoal) / gstep) + 1 }, (_, i) => Math.ceil(minGoal / gstep) * gstep + i * gstep).filter((v) => v <= maxGoal)), y, [TOP, H - BOTTOM]);
+  const path = (pts: { year: number; v: number }[]) => pts.reduce<string>((acc, p, i) => (!Number.isFinite(p.v) ? acc : `${acc}${acc && Number.isFinite(pts[i - 1]?.v) ? "L" : "M"}${x(p.year).toFixed(1)} ${y(p.v).toFixed(1)}`), "");
   const ids = choices.map(String);
   return (
     <div className="flex flex-col gap-3">
@@ -122,11 +126,11 @@ export function ChangeChart({
           onPointerMove={(e) => drag && set(e)}
           onPointerUp={() => setDrag(false)}
         >
-          {grid.map((v) => (
-            <g key={v}>
-              <line x1={LEFT} x2={plotR} y1={y(v)} y2={y(v)} className="stroke-chart-grid" strokeWidth={1} />
-              <text x={LEFT - 6} y={y(v) + 4} textAnchor="end" className="fill-chart-text text-[11px] tabular-nums">
-                {yFormat(v)}
+          {grid.map((t) => (
+            <g key={t.value} className={tickFade(t)}>
+              <line x1={LEFT} x2={plotR} y1={y(t.value)} y2={y(t.value)} className="stroke-chart-grid" strokeWidth={1} />
+              <text x={LEFT - 6} y={y(t.value) + 4} textAnchor="end" className="fill-chart-text text-[11px] tabular-nums">
+                {yFormat(t.value)}
               </text>
             </g>
           ))}
@@ -137,7 +141,7 @@ export function ChangeChart({
           ))}
           <line x1={x(0)} x2={x(0)} y1={TOP} y2={H - BOTTOM} className="stroke-chart-axis" strokeDasharray="3 3" />
           {lines.map((l) => (
-            <path key={l.id} d={path(l.ys)} fill="none" className={cx(l.stroke, pickDim(pick.active, l.id))} strokeWidth={2.2} />
+            <path key={l.id} d={path(drawn[l.id] ?? [])} fill="none" className={cx(l.stroke, pickDim(pick.active, l.id))} strokeWidth={2.2} />
           ))}
           {ends.map((e) => (
             <text key={e.l.id} x={plotR + 8} y={e.y + 4} className={cx(e.l.fill, "text-xs", pickDim(pick.active, e.l.id))}>
@@ -146,8 +150,8 @@ export function ChangeChart({
           ))}
           {at !== 0 && <line x1={x(at)} x2={x(at)} y1={TOP} y2={H - BOTTOM} className="stroke-chart-crosshair" strokeWidth={1.5} />}
           {lines.map((l) => {
-            const v = l.ys[idx(at)];
-            return v === null || v === undefined ? null : <circle key={l.id} cx={x(at)} cy={y(v)} r={4.5} className={cx(l.fill, "stroke-card", pickDim(pick.active, l.id))} strokeWidth={1.5} />;
+            const v = l.ys[idx(at)] === null || l.ys[idx(at)] === undefined ? null : valueOn(drawn[l.id] ?? [], at);
+            return v === null || !Number.isFinite(v) ? null : <circle key={l.id} cx={x(at)} cy={y(v)} r={4.5} className={cx(l.fill, "stroke-card", pickDim(pick.active, l.id))} strokeWidth={1.5} />;
           })}
         </svg>
       </div>

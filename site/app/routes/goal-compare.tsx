@@ -15,7 +15,8 @@ import { ChartLegend, ChartReadout, ChartTable, ComparisonChart } from "../compo
 import type { ResultCtx } from "../components/compare/ctx";
 import { CoverageLine } from "../components/compare/coverage";
 import { type FormData } from "../components/compare/goal-form";
-import { AvailableCard, ListedRow, RankedRow, useFlip } from "../components/compare/rows";
+import { AvailableCard, ListedRow, RankedRow } from "../components/compare/rows";
+import { useFlip } from "../components/kit";
 import { ReasonLines } from "../components/compare/reasons";
 import { SensitivityPanel } from "../components/compare/sensitivity";
 import { SavedGoalStrip } from "../components/compare/strip";

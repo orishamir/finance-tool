@@ -1,40 +1,19 @@
 // The exposure row (design-spec 21.3, design-system 9.2): the ranked row of release 2 with the inputs strip added,
 // in its ranked, listed, excluded and not-evaluated forms. Every ranked or listed row carries the label of the
 // return it ran at.
-import { useLayoutEffect, useRef, type ReactNode } from "react";
+import type { ReactNode } from "react";
 import { Link } from "react-router";
 import { r2, r5, scnCompare } from "../../copy";
 import { decidingFormulaOf } from "../../lib/compare";
 import type { ExposureRowView } from "../../lib/exposure-mode";
 import { IconDrillIn, IconLock } from "../icons";
 import { IconDash, IconDashed, IconEdit, IconEqual } from "../compare/icons";
-import { durationChart, Num } from "../provenance";
+import { Num } from "../provenance";
 import { Card, cx, HeadlineFigure, RankBadge, Sentence, Tag } from "../kit";
 import type { ExpCtx } from "./ctx";
 import { AcceptedFallChip, CashRateLine, EnteredReturnField, ExclusionTag, HoldingWrapperChips, LossNote, ReturnLabel, WorstFallField } from "./fields";
 import { ExposureReason } from "./reason";
 import { Tpl } from "./tpl";
-
-/** Rows slide to their new places over --duration-chart when the order or the group changes (FLIP); nothing with reduced motion. */
-export function useFlipList(order: string) {
-  const ref = useRef<HTMLDivElement>(null);
-  const prev = useRef<Map<string, DOMRect>>(new Map());
-  useLayoutEffect(() => {
-    const root = ref.current;
-    if (!root) return;
-    const ms = durationChart();
-    const next = new Map<string, DOMRect>();
-    root.querySelectorAll<HTMLElement>("[data-flip]").forEach((el) => {
-      const id = el.dataset.flip!;
-      const rect = el.getBoundingClientRect();
-      next.set(id, rect);
-      const was = prev.current.get(id);
-      if (ms > 0 && was && Math.abs(was.top - rect.top) > 1) el.animate([{ transform: `translateY(${was.top - rect.top}px)` }, { transform: "none" }], { duration: ms, easing: "cubic-bezier(0.2, 0, 0, 1)" });
-    });
-    prev.current = next;
-  }, [order]);
-  return ref;
-}
 
 function Mark({ row }: { row: ExposureRowView }) {
   if (row.kind === "ranked")
