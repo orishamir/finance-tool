@@ -22,6 +22,7 @@ type NavItem = { href: string; label: string; current?: Current };
 /** The doors, in the order the first page gives them (audit 2026-10-24, A54): what the person came to do. */
 const doorItems: NavItem[] = [
   byHref("/guide"),
+  byHref("/rules"),
   byHref("/questions"),
   byHref("/companies"),
   goalItem,
@@ -31,7 +32,7 @@ const doorItems: NavItem[] = [
 ].filter((i) => shown(i.href)); // a page held for review has no menu item (lib/review.ts)
 /** "Behind the scenes": the rule base, the parameters, what is not covered, the tool for moving to another device. */
 const documentsItem: NavItem = { href: "/documents", label: knowledgeEntry.menuDocuments, current: "documents" };
-const behindItems: NavItem[] = [byHref("/rules"), documentsItem, byHref("/parameters"), { href: site.notCovered.href, label: site.notCovered.label }, { href: r3workbench.entry.transfer.href, label: r3workbench.entry.transfer.label }];
+const behindItems: NavItem[] = [documentsItem, byHref("/parameters"), { href: site.notCovered.href, label: site.notCovered.label }, { href: r3workbench.entry.transfer.href, label: r3workbench.entry.transfer.label }];
 
 /** The footer links: the same pages, destinations first, then the reference pages, then the tool. */
 const footerLinks = (() => {

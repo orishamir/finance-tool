@@ -1,7 +1,7 @@
 // The search ranking and number matching (audit 2026-10-24, A4, A92): numbers find tracks, pages come before catalogue
 // rows, one row per page, exact beats partial.
 import { describe, expect, it } from "vitest";
-import { groupHits, normalize, scoreEntry, searchEntries, type SearchEntry, isRuleKind } from "./search";
+import { groupHits, normalize, scoreEntry, searchEntries, type SearchEntry, isRuleKind, claimConcepts } from "./search";
 
 const e = (kind: SearchEntry["kind"], name: string, href: string, ids?: string[]): SearchEntry => ({ kind, name, line: "", href, norm: normalize(name), ...(ids ? { ids } : {}) });
 
@@ -161,7 +161,6 @@ describe("the nineteen queries (top href)", () => {
     ["P-03", "/parameters#P-03"],
     ["סף תיקו", "/parameters#P-01"],
     ["מעבר מסלול", "/rules#TXH-17"],
-    ["האם אפשר להחליף מסלול בלי מס", "/rules#TXH-17"],
     ["כמה מס על פיקדון", "/rules#TXI-03"],
     ["תקרת הפקדה קופת גמל להשקעה", "/rules#KGL-02"],
     ["מס רווחי הון", "/guide/brokerage-account#terms"],
@@ -178,6 +177,12 @@ describe("the nineteen queries (top href)", () => {
   ];
   it.each(cases.map((c, i) => [i + 1, ...c] as const))("%i: %s", (_i, query, href) => {
     expect(top(query)[0]?.entry.href).toBe(href);
+  });
+  // two rules answer it, for every provident product and for a study fund; both lead, either first (claims, 2026-11-01)
+  it("האם אפשר להחליף מסלול בלי מס", () => {
+    const first = top("האם אפשר להחליף מסלול בלי מס").slice(0, 2).map((h) => h.entry.href);
+    expect(first).toContain("/rules#TXH-17");
+    expect(first).toContain("/rules#TXK-04");
   });
 });
 
@@ -285,5 +290,16 @@ describe("empty states", () => {
     const s = snippetOf(texts["TXH-17"]!, analyze("אינו אירוע מס"));
     expect(s).toBeTruthy();
     expect(s!.length).toBeLessThanOrEqual(110);
+  });
+});
+
+describe("what a claim is read as", () => {
+  const said = (q: string) => claimConcepts(q).concepts.map((c) => c[0]!.join(" "));
+  it("skips a compared name whole", () => {
+    expect(said("קופת גמל פטורה ממס בדיוק כמו קרן השתלמות").some((w) => w.includes("השתלמות"))).toBe(false);
+  });
+  it("keeps a word that only looks like a filler", () => {
+    expect(said("בעל מניות מהותי")[0]).toBe(normalize("בעל"));
+    expect(said("פיקדון בשקלים פטור ממס").some((w) => w.includes(normalize("שקלים")))).toBe(true);
   });
 });

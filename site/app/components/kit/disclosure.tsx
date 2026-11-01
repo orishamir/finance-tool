@@ -58,7 +58,7 @@ export function Disclosure({ label, openLabel, children, className, defaultOpen,
       ) : (
         <summary className={cx("flex items-center", spread ? "justify-between gap-3" : "gap-2", size === "field" ? "min-h-12" : "min-h-target", SUMMARY_BASE, "select-none rounded-md", summaryClassName)}>
           {as ? <LabelAs as={as} className={labelClassName}>{shown}</LabelAs> : <span className={labelClassName}>{shown}</span>}
-          <IconChevronDown className={cx("text-muted-foreground shrink-0 transition-transform duration-[var(--duration-fast)]", open && "rotate-180")} />
+          <IconChevronDown className={cx("text-muted-foreground shrink-0 transition-transform duration-[var(--duration-fold)] ease-standard", open && "rotate-180")} />
         </summary>
       )}
       {children}
@@ -143,7 +143,7 @@ export function CoverageFold({ lead, openLabel, closeLabel, children, defaultOpe
           <span>{lead}</span>
           <span className="text-sm text-link flex items-center gap-1 min-h-9">
             {open ? closeLabel : openLabel}
-            <IconChevronDown size={16} className={cx("transition-transform duration-[var(--duration-fast)]", open && "rotate-180")} />
+            <IconChevronDown size={16} className={cx("transition-transform duration-[var(--duration-fold)] ease-standard", open && "rotate-180")} />
           </span>
         </span>
       </summary>

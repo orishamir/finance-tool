@@ -289,3 +289,9 @@ export async function loadDocumentData(): Promise<DocumentData> {
   }
   return { tariffs, funds, deposits: depositCards, series, datasetsHref: "/companies" };
 }
+
+/** The rows of data/sources/documents.json read for where each topic sits: the rules page leads a claim to their pages (2026-11-01). */
+export function loadCompanyDocRows(): { id: string; publisher_he: string; title_he: string; version?: string; official_url: string; doc_kind?: string; topics: { topic: string; page: number }[] }[] {
+  const rows = readJsonCached(join(dataServer.root, "data/sources/documents.json")) as { id: string; publisher_he: string; title_he: string; version?: string; official_url: string; doc_kind?: string; topics?: { topic: string; page: number }[] }[];
+  return rows.filter((d): d is typeof d & { topics: { topic: string; page: number }[] } => (d.topics?.length ?? 0) > 0);
+}

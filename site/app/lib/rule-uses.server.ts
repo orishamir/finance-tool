@@ -308,3 +308,11 @@ export function shelfBundle(shelf: ShelfId) {
   Object.assign(rules, pointedRecords(rules, all));
   return { rules, ruleUses: loadRuleUses(Object.keys(rules)) };
 }
+
+/** Every company's term, for the file a claim's results read: the same shape as a shelf's. */
+export function companyTermsBundle() {
+  const all = loadRules();
+  const rules: Record<string, RuleRecord> = Object.fromEntries(Object.values(all).filter((r) => r.scope !== "general").map((r) => [r.id, r]));
+  Object.assign(rules, pointedRecords(rules, all));
+  return { rules, ruleUses: loadRuleUses(Object.keys(rules)) };
+}

@@ -52,7 +52,6 @@ const INPUT: Record<string, number> = {
     "components/workbench/funds/controls.tsx": 2,
     "components/workbench/providers/offer-card.tsx": 2,
     "routes/companies.tsx": 1,
-    "routes/rules.tsx": 1,
   };
 const SELECT: Record<string, number> = {
     "components/compare/why.tsx": 1,

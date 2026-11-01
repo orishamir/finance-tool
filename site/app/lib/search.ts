@@ -1,7 +1,7 @@
 // The search (architecture 3.5; design in research/knowledge/2026-10-24-search.md, scope in the synthesis 3.6).
 // Pure functions, no I/O: the index is a list of entries built at build time (routes/search-index.ts), the second file
 // (routes/search-texts.ts) holds the raw texts of rules, terms and parameters and only re-ranks and answers questions.
-import { aliasRows } from "./search-aliases";
+import { aliasRows, wordFamilies } from "./search-aliases";
 import { parseNumber } from "./format";
 import { shown } from "./review";
 
@@ -614,7 +614,16 @@ export function searchEntries(index: SearchEntry[], q: string, texts?: SearchTex
       prev.also.push(entry.name);
     }
   }
-  return hits;
+  // a claim of two words or more (founder, 2026-11-01): the rules come in the order of `claimHits`, one search across the site
+  if (a.type === "number" || isRuleIdShape(a.q) || a.content.length < 2) return hits;
+  const claimed = claimHits(index, texts, q);
+  const first = hits.findIndex((h) => isRuleKind(h.entry.kind));
+  if (claimed.length === 0) return hits;
+  const score = first >= 0 ? hits[first]!.score : Infinity;
+  const seen = new Set(claimed.map((h) => h.entry.href));
+  const rest = hits.filter((h) => !isRuleKind(h.entry.kind) || !seen.has(h.entry.href));
+  const at = first >= 0 ? rest.slice(0, first).length : rest.length;
+  return [...rest.slice(0, at), ...claimed.map((h) => ({ ...h, score })), ...rest.slice(at)];
 }
 
 /** The hits grouped by kind, groups in the order their best hit appears. */
@@ -680,6 +689,133 @@ export function relaxedHits(index: SearchEntry[], texts: SearchTexts | null | un
   }
   out.sort((x, y) => x.score - y.score || (x.entry.st ?? 3) - (y.entry.st ?? 3) || x.entry.name.length - y.entry.name.length);
   return out.slice(0, limit);
+}
+
+// ------------------------------------------------------------------------------------------------ claims
+
+/** Words that say nothing about what a claim is about. */
+const claimStop = new Set(
+  N("מותר אסור יכול יכולה יכולים לא כן נכון כל רק אחרי לפני אחר אחרת הרבה יותר פחות שלו שלה לו לה להם בכל עד מעל מתחת כמו עוד נחשב נחשבת קורה זה כסף לכסף משלם משלמים לשלם משלמת שנים שנה בלי ללא רגע ישראל בישראל אחוז אחוזים ₪ שתי שני שלוש ארבע חמש שש שבע שמונה תשע עשר אמר אמרו אמרה אמרתי שמעתי ממני אלי אותי לקבל לוקח לוקחת זמן יועץ פקיד שביקשתי ביקשתי שילמתי באמת על של את עם אם או גם אז כי כדי בגלל מה מי מתי איך למה כמה אני אתה את אנחנו הם הן היא הוא שם פה כאן אי אפשר צריך צריכה צריכים עדיף טוב בדיוק ממש לבד אחד אחת הכול הכל כולם רוצה רוצים לשים בא חבר חברים אותו אותה ככה כך יש אין היה היו יהיה בסוף פעם תמיד אף דווקא שוב בעצם מישהו משהו דבר קצת המון סתם בכלל".split(" ")),
+);
+
+/** A word of a sentence with nothing to say: on the list as it stands, or after "ש" or "ו" at its start (שעדיף, ולא, שעל), or "ה" or "ב" before three letters or more (בלבד, but not בעל). */
+const isFiller = (t: string) => claimStop.has(t) || stopWords.has(t) || ("שו".includes(t[0]!) && t.length > 2 && claimStop.has(t.slice(1))) || ("הב".includes(t[0]!) && t.length > 3 && claimStop.has(t.slice(1)));
+
+/** Each family as its members, each member as its normalised words; `aliasRows` count as families too. */
+const familyIndex: string[][][] = [...wordFamilies, ...aliasRows.map((r) => [...r.from, ...r.to])].map((row) => row.map((m) => normalize(m).split(" ")));
+
+const sameWord = (a: string, b: string) => forms(a).some((f) => forms(b).includes(f));
+
+/** What must be found for one idea of the claim: any one of these members, each a list of words next to each other. */
+type Concept = string[][];
+
+/** The claim as ideas: the longest family phrase at each place, a family word, or a word on its own; numbers apart. */
+export function claimConcepts(q: string): { concepts: Concept[]; numbers: number[] } {
+  const toks = tokenize(normalize(q));
+  const concepts: Concept[] = [];
+  const numbers: number[] = [];
+  for (let i = 0; i < toks.length; ) {
+    const t = toks[i]!;
+    if (/^\d+$/.test(t)) {
+      numbers.push(Number(t));
+      i++;
+      continue;
+    }
+    let len = 0;
+    for (const row of familyIndex) for (const m of row) if (m.length > len && i + m.length <= toks.length && m.every((w, j) => sameWord(toks[i + j]!, w))) len = m.length;
+    // "בדיוק כמו בפיקדון", "כמו קרן השתלמות": what a thing is compared to is not what the claim is about, whole name and all
+    if (i > 0 && toks[i - 1] === normalize("כמו")) {
+      i += Math.max(len, 1);
+      continue;
+    }
+    if (len === 0) {
+      if (!isFiller(t) && t.length >= 2) concepts.push([[t]]);
+      i++;
+      continue;
+    }
+    if (len === 1 && isFiller(t)) {
+      i++;
+      continue;
+    }
+    const said = toks.slice(i, i + len);
+    const rows = familyIndex.filter((row) => row.some((m) => m.length === len && m.every((w, j) => sameWord(said[j]!, w))));
+    concepts.push([said, ...rows.flat()]);
+    i += len;
+  }
+  return { concepts, numbers };
+}
+
+const wordsMemo = new Map<string, string[]>();
+const wordsOf = (norm: string): string[] => {
+  let w = wordsMemo.get(norm);
+  if (!w) wordsMemo.set(norm, (w = tokenize(norm)));
+  return w;
+};
+
+function memberIn(tokens: string[], set: Set<string>, m: string[]): boolean {
+  if (m.length === 1) return forms(m[0]!).some((f) => set.has(f));
+  const wf = m.map(forms);
+  if (!wf.every((f) => f.some((x) => set.has(x)))) return false;
+  return phraseIn({ tokens, forms: set }, wf);
+}
+
+/** A query shaped like a rule id ("txg 2", "bank-20"): one id, looked up by the plain search, never a claim. */
+function isRuleIdShape(q: string): boolean {
+  return /^[a-z]+\d*[- ]?\d*$/.test(q);
+}
+
+/**
+ * The rules that answer a claim typed in plain words, best first: each idea of the claim counts by how rare it is among the rules, more
+ * in the title than in the text; a rule must hold enough of the claim, and a figure the claim names adds to it. A number or an id on its
+ * own goes through `searchEntries`. Every entry is a rule of `index`.
+ */
+export function claimHits(index: SearchEntry[], texts: SearchTexts | null | undefined, q: string, limit = 40): SearchHit[] {
+  const a = analyze(q);
+  const rules = index.filter((e) => isRuleKind(e.kind));
+  if (!a.q) return [];
+  if (a.type === "number" || isRuleIdShape(a.q)) return searchEntries(rules, q, texts);
+  const { concepts, numbers } = claimConcepts(q);
+  if (concepts.length === 0) return [];
+  const docs = texts ? textDocs(texts) : null;
+  const inTitle = (e: SearchEntry, c: Concept) => c.some((m) => memberIn(wordsOf(e.norm), entryTokens(e).forms, m));
+  const inAlt = (e: SearchEntry, c: Concept) => !!e.alt && c.some((m) => memberIn(wordsOf(e.alt!), altForms(e), m));
+  const inText = (e: SearchEntry, c: Concept) => {
+    const d = docs?.get(e.key ?? "");
+    return !!d && c.some((m) => memberIn(d.tokens, d.forms, m));
+  };
+  const matrix = rules.map((e) => concepts.map((c) => (inTitle(e, c) ? 2 : inAlt(e, c) ? 1.2 : inText(e, c) ? 1 : 0)));
+  const idf = concepts.map((_, i) => {
+    const df = matrix.filter((row) => row[i]! > 0).length;
+    // a name of two words or more (קרן השתלמות, דמי ניהול) says what the claim is about, more than a word said around it
+    return df === 0 ? 0 : Math.log(1 + rules.length / df) * (concepts[i]![0]!.length > 1 ? 1.6 : 1);
+  });
+  const total = idf.reduce((x, y) => x + y, 0);
+  if (total === 0) return [];
+  // a share of the claim's weight, or less when no rule holds that much (a word of the claim the rules never use must not empty the list)
+  const shareOf = (row: number[]) => row.reduce((sum, w, i) => sum + (w > 0 ? idf[i]! : 0), 0) / total;
+  // a long sentence says more than any one rule answers, so the bar is lower the more ideas it holds
+  const floor = Math.min(concepts.length >= 5 ? 0.3 : 0.5, Math.max(...matrix.map(shareOf)) * 0.8);
+  const out: SearchHit[] = [];
+  rules.forEach((e, r) => {
+    let s = 0;
+    let covered = 0;
+    matrix[r]!.forEach((w, i) => {
+      if (w > 0) {
+        s += w * idf[i]!;
+        covered += idf[i]!;
+      }
+    });
+    const share = covered / total;
+    if (share < floor) return;
+    // a rule that lacks the name the claim is about is rarely its answer
+    const name = concepts.findIndex((c) => c[0]!.length > 1);
+    const off = name >= 0 && matrix[r]![name] === 0 ? 0.5 : 1;
+    const fig = numbers.length > 0 ? (e.figs ?? []).find((f) => numbers.includes(f.n)) : undefined;
+    out.push({ entry: e, score: -(s * off * (0.4 + 0.6 * share) + (fig ? 1.5 : 0)), also: [], viaText: true, ...(fig ? { fig } : {}) });
+  });
+  out.sort((x, y) => x.score - y.score || (x.entry.st ?? 3) - (y.entry.st ?? 3) || x.entry.name.length - y.entry.name.length);
+  const top = out[0]?.score ?? 0;
+  return out.filter((h) => h.score <= top * 0.45).slice(0, limit);
 }
 
 /** About 80 characters of the record's own text around the first word that matches the query, in the raw spelling; null when none does. */
