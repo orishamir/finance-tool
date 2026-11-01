@@ -59,6 +59,8 @@ export function PageShell({ current, data: pageData, children, wide }: { current
     const formulas = pageData.formulas ?? Object.fromEntries([...new Set([...Object.keys(formulaNames), ...Object.keys(method.formulaParameters)])].filter((f) => f !== "_other").map((f) => [f, { name: formulaNames[f] ?? "", parameters: method.formulaParameters[f] ?? [] }]));
     return { ...pageData, formulas, parameters: pageData.parameters ?? method.parameterAnchors, publishersHe: pageData.publishersHe ?? method.publishersHe, openQuestions: pageData.openQuestions ?? method.openQuestions, companies: pageData.companies ?? method.companies, ownDocs: pageData.ownDocs ?? method.ownDocs };
   }, [pageData, method]);
+  // the header, the page and the footer share one width, so their edges line up on a large screen too
+  const width = wide === "large" ? "max-w-page 2xl:max-w-wide" : wide ? "max-w-wide" : "max-w-page";
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchAnchor, setSearchAnchor] = useState<HTMLElement | null>(null);
@@ -83,8 +85,8 @@ export function PageShell({ current, data: pageData, children, wide }: { current
     <ProvenanceProvider data={data}>
       <SearchOpenCtx.Provider value={openSearch}>
         <div className="min-h-dvh flex flex-col">
-          <Header current={current} ready={ready} onMenu={() => setMenuOpen(true)} onSearch={openSearch} />
-          <main className={cx("flex-1 w-full mx-auto px-gutter pb-10", wide === "large" ? "max-w-page 2xl:max-w-wide" : wide ? "max-w-wide" : "max-w-page")}>
+          <Header width={width} current={current} ready={ready} onMenu={() => setMenuOpen(true)} onSearch={openSearch} />
+          <main className={cx("flex-1 w-full mx-auto px-gutter pb-10", width)}>
             {isHeld(location.pathname) && (
               <Callout tone="caution" title={site.held.title} className="mt-4">
                 {site.held.page}
@@ -92,7 +94,7 @@ export function PageShell({ current, data: pageData, children, wide }: { current
             )}
             <CountingFigures>{children}</CountingFigures>
           </main>
-          <Footer />
+          <Footer width={width} />
         </div>
         <ToTop />
         <MenuSheet open={menuOpen} onClose={() => setMenuOpen(false)} current={current} />
@@ -149,7 +151,7 @@ function useNavFits(row: RefObject<HTMLDivElement | null>, name: RefObject<HTMLA
   return fits;
 }
 
-function Header({ current, ready, onMenu, onSearch }: { current: Current; ready: boolean; onMenu: () => void; onSearch: OpenSearch }) {
+function Header({ width, current, ready, onMenu, onSearch }: { width: string; current: Current; ready: boolean; onMenu: () => void; onSearch: OpenSearch }) {
   const { pathname } = useLocation();
   const row = useRef<HTMLDivElement>(null);
   const name = useRef<HTMLAnchorElement>(null);
@@ -157,7 +159,7 @@ function Header({ current, ready, onMenu, onSearch }: { current: Current; ready:
   const navFits = useNavFits(row, name, navRef);
   return (
     <header className="group/header sticky top-0 z-[var(--z-sticky)] bg-background/90 backdrop-blur border-b border-border">
-      <div ref={row} className="mx-auto max-w-page 2xl:max-w-wide h-14 lg:h-16 px-gutter flex items-center justify-between gap-4">
+      <div ref={row} className={cx("mx-auto h-14 lg:h-16 px-gutter flex items-center justify-between gap-4", width)}>
         <div className="flex items-center gap-6 xl:gap-8 min-w-0">
           <Link ref={name} to="/" className="text-lg font-semibold text-foreground py-2 whitespace-nowrap">
             {site.name}
@@ -192,10 +194,10 @@ function Header({ current, ready, onMenu, onSearch }: { current: Current; ready:
   );
 }
 
-function Footer() {
+function Footer({ width }: { width: string }) {
   return (
     <footer className="border-t border-border mt-section">
-      <div className="mx-auto max-w-page 2xl:max-w-wide px-gutter py-3 pb-7 flex flex-wrap items-center gap-x-6 gap-y-0 text-sm">
+      <div className={cx("mx-auto px-gutter py-3 pb-7 flex flex-wrap items-center gap-x-6 gap-y-0 text-sm", width)}>
         <span className="w-full lg:w-auto font-medium text-foreground pt-2 lg:pt-0">{site.name}</span>
         {footerLinks.map((f) => (
           <Link key={f.href} to={f.href} className="min-h-target inline-flex items-center text-link hover:underline">

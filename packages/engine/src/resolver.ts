@@ -79,8 +79,19 @@ export interface RuleBook {
   labels(): Label[];
 }
 
+/** A run looks up a few rules among hundreds, and a page makes thousands of runs on one list: the list is indexed once. */
+const indexed = new WeakMap<RunContext["rules"], Map<string, RuleRecord>>();
+function rulesById(rules: RunContext["rules"]): Map<string, RuleRecord> {
+  let byId = indexed.get(rules);
+  if (!byId) {
+    byId = new Map(rules.map((r) => [r.id, r]));
+    indexed.set(rules, byId);
+  }
+  return byId;
+}
+
 export function ruleBook(ctx: RunContext): RuleBook {
-  const byId = new Map(ctx.rules.map((r) => [r.id, r]));
+  const byId = rulesById(ctx.rules);
   const taxYear = Number(ctx.runDate.slice(0, 4));
   const used = new Map<string, UsedRule>();
   const extraLabels: Label[] = [];
