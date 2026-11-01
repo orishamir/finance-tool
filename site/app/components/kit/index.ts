@@ -20,7 +20,7 @@ export { HeadlineFigure, KeyValue, KeyValueList, Stat, StatRow, StatTile, type K
 export { GapNote, NoteList, SourceLine } from "./notes";
 export { RankBadge } from "./rank";
 export { StepButtons } from "./stepper";
-export { CheckField, FieldGroup, FieldState, TextField, NumberField, ParameterLine, PercentField, RangeField, SelectField, flushPendingFields, percentCheck, type FieldProps, type RangeFieldProps } from "./fields";
+export { CheckField, FieldGroup, FieldState, AskField, TextField, NumberField, ParameterLine, PercentField, RangeField, SelectField, flushPendingFields, percentCheck, type FieldProps, type RangeFieldProps } from "./fields";
 export { GainBars, LaneLabel, Marker, MarkerMark, useBox, useWidth, type GainBar, type MarkerProps } from "./marker";
 export { ChartLegend, ChartReadout, ChartTable, FixedTable, Swatch, scrollCueStyle, type LegendItem, type ReadoutRow, type SwatchShape, type TableColumn, type TableRowData } from "./chart-parts";
 export { CompanyLinks, type CompanyLinkItem } from "./company-links";
@@ -36,4 +36,7 @@ export { clamp } from "./chart-zoom";
 export { CountingFigures, countsByItself, useCounting } from "./counting";
 export { ChartTip, ZoomBar, ZoomBrush, pickDim, useChartPick, useYearZoom, type ChartPick, type YearZoom } from "./chart-interact";
 export { TableCols, type ColWidth } from "./table-cols";
+export { FilterChip } from "./filter-chip";
+export { DidYouKnow, type FactItem } from "./did-you-know";
+export { useSoftSwap } from "./soft-swap";
 export { FeeFigure, FeeWordsNote, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, type ProductColumn, type ProductGroup, type ProductRow } from "./product-table";

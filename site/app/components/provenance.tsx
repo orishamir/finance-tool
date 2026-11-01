@@ -11,7 +11,8 @@ import { hasHebrew, hostOf, isHebrewTitle, mostlyHebrew, sourceLabel } from "../
 import { isExperience } from "../lib/rule-shelves";
 import { citationText, mayHaveChanged, moreSourcesLabel, pickSources, sourceHref, sourceLabel2, shownTitle, type RuleSource, type SourcedRule } from "../lib/sources";
 import { useInputs } from "../lib/inputs";
-import { isParameter, isProvisional, isWeak, ownBy, strengthOf, type SiteValue, type Strength } from "../lib/value";
+import { isParameter, isProvisional, isWeak, ownBy, ruleFigure, strengthOf, type SiteValue, type Strength } from "../lib/value";
+import { parseAnswer } from "../lib/answer-slots";
 import type { TermRow } from "../lib/data.server";
 import { IconAlert, IconCalculator, IconCheck, IconClock, IconCopy, IconExternal, IconFile, IconLock, IconPencil, IconReset } from "./icons";
 import { Sheet } from "./Sheet";
@@ -805,6 +806,29 @@ export function ParameterWhy({ value }: { value: SiteValue }) {
           <p className="text-sm text-muted-foreground pt-1">{more}</p>
         </Disclosure>
       )}
+    </>
+  );
+}
+
+const slotUnitWords = ["months", "years", "days", "business_days", "usd", "eur"];
+
+/** A sentence with {ID:figure} slots (the questions' answers, the "הידעת?" facts): each slot is that rule's figure, with its unit in words where the number carries none. */
+export function SlottedText({ text, rules, today }: { text: string; rules: Record<string, RuleRecord>; today: string }) {
+  return (
+    <>
+      {parseAnswer(text).map((p, k) => {
+        if (p.kind === "text") return <span key={k}>{p.text}</span>;
+        const rule = rules[p.id];
+        const v = rule ? ruleFigure(rule, p.figure, today) : null;
+        if (!v) return <span key={k}>—</span>;
+        const word = (copy.unit as Record<string, string>)[v.unit];
+        return (
+          <span key={k} className="whitespace-nowrap">
+            <Num value={{ ...v, notes: "" }} />
+            {typeof v.value === "number" && word && slotUnitWords.includes(v.unit) && <> {word}</>}
+          </span>
+        );
+      })}
     </>
   );
 }

@@ -374,10 +374,32 @@ function checkRuleSources(rule: RuleLike, ctx: ValidationContext, all: Map<strin
 function checkPinnedRules(files: string[], dataDir: string, all: Map<string, RuleLike>, report: (file: string, message: string) => void) {
   const file = files.find((f) => relative(dataDir, f).replace(/\\/g, "/") === "parameters/pinned-rules.json");
   if (!file) return;
-  const rec = parseJson(readFileSync(file, "utf8")).value as { rows?: { ids?: string[]; answer_he?: string }[]; guide_blocks?: Record<string, string[]> } | undefined;
+  const rec = parseJson(readFileSync(file, "utf8")).value as { rows?: { ids?: string[]; answer_he?: string }[]; facts?: { id?: string; text_he?: string }[]; guide_blocks?: Record<string, string[]> } | undefined;
   if (!rec) return;
   const ids = [...(rec.rows ?? []).flatMap((r) => r.ids ?? []), ...Object.values(rec.guide_blocks ?? {}).flat()];
   for (const id of new Set(ids)) if (!all.has(id)) report(file, `pinned-rules: ${id} has no record under data/rules/`);
+  // the "הידעת?" block: each fact rests on one general rule with a primary source, once; no digit typed by hand, every figure a slot over that rule
+  const factIds = new Set<string>();
+  for (const fact of rec.facts ?? []) {
+    const id = fact.id ?? "";
+    if (factIds.has(id)) report(file, `pinned-rules: fact ${id} appears twice`);
+    factIds.add(id);
+    const rule = all.get(id) as (RuleLike & { scope?: string; figures?: Record<string, unknown> }) | undefined;
+    if (!rule) {
+      report(file, `pinned-rules: fact ${id} has no record under data/rules/`);
+      continue;
+    }
+    if (rule.scope !== "general") report(file, `pinned-rules: fact ${id} rests on a company's term, which is never a fact in general`);
+    if (rule.sources && !rule.sources.some((s) => s.strength === "primary" || s.strength === "primary-mirror")) report(file, `pinned-rules: fact ${id} has no primary or primary-mirror source`);
+    const text = fact.text_he ?? "";
+    if (text.length > 200) report(file, `pinned-rules: fact ${id} is ${text.length} characters; the block's cards hold 200`);
+    if (/\d/.test(text.replace(/\{[A-Z0-9-]+:[a-z0-9_]+\}/g, ""))) report(file, `pinned-rules: fact ${id} carries a typed digit; use a {ID:figure} slot`);
+    for (const m of text.matchAll(/\{([A-Z0-9-]+):([a-z0-9_]+)\}/g)) {
+      const [, slotId, figure] = m as unknown as [string, string, string];
+      if (slotId !== id) report(file, `pinned-rules: fact ${id} has a slot of another rule ({${slotId}:${figure}})`);
+      else if (!(figure in (rule.figures ?? {}))) report(file, `pinned-rules: fact ${id} names a figure the rule does not have (${figure})`);
+    }
+  }
   for (const row of rec.rows ?? []) {
     const first = row.ids?.[0];
     const rule = first ? all.get(first) : undefined;

@@ -383,6 +383,8 @@ export function loadParameterAnchors(): Record<string, string> {
 
 export interface PinnedRules {
   rows: { ids: string[]; question_he: string; answer_he?: string }[];
+  /** The "הידעת?" block of the rules page (founder, 2026-11-01): a sentence per rule, its figures in {ID:figure} slots, most interesting first. */
+  facts: { id: string; text_he: string }[];
   /** Wrapper id → two or three rule ids for its guide page's "worth knowing" block. */
   guide_blocks: Record<string, string[]>;
   rationale_he?: string;

@@ -11,7 +11,7 @@ import { IdRef, Num } from "../provenance";
 import { IconDrillIn } from "../icons";
 import { label } from "../../lib/labels";
 import { fmt } from "../../lib/format";
-import { LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, Button, Callout, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, LabelFilter, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, CompareTable, TableCols, CoverageFold, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, Disclosure, FieldState, FoldGroup, GainBars, GapNote, HeadlineFigure, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, CheckField, FieldGroup, TextField, NumberField, ParameterLine, PercentField, PlanChips, KnobStrip, ChangeChart, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, RangeField, RankBadge, Section, SegmentedControl, SelectField, Sentence, ShareRings, SourceLine, Stat, StatRow, StatTile, StepButtons, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth } from "./index";
+import { AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, Button, Callout, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, LabelFilter, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, CompareTable, TableCols, CoverageFold, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, Disclosure, FieldState, FoldGroup, GainBars, GapNote, HeadlineFigure, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, CheckField, FieldGroup, TextField, NumberField, ParameterLine, PercentField, PlanChips, KnobStrip, ChangeChart, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, RangeField, RankBadge, Section, SegmentedControl, SelectField, Sentence, ShareRings, SourceLine, Stat, StatRow, StatTile, StepButtons, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth } from "./index";
 
 const g = copy.gallery;
 
@@ -140,6 +140,32 @@ function Folds() {
   const [topic, setTopic] = useState(true);
   return (
     <>
+      <Demo name="FilterChip" use={g.uses.FilterChip}>
+        <Grid>
+          <State label={g.states.closed}>
+            <FilterChip on={false} count={42} onClick={() => undefined}>{g.sample.foldLabel}</FilterChip>
+          </State>
+          <State label={g.states.open}>
+            <FilterChip on count={7} onClick={() => undefined}>{g.sample.foldLabel}</FilterChip>
+          </State>
+          <State label="0">
+            <FilterChip on={false} count={0} onClick={() => undefined}>{g.sample.foldLabel}</FilterChip>
+          </State>
+        </Grid>
+      </Demo>
+      <Demo name="AskField" use={g.uses.AskField}>
+        <AskDemo />
+      </Demo>
+      <Demo name="DidYouKnow" use={g.uses.DidYouKnow}>
+        <div className="max-w-xs">
+          <DidYouKnow
+            title={g.sample.foldLabel}
+            more={g.sample.foldHide}
+            orderKey="demo"
+            items={["1", "2", "3", "4"].map((id) => ({ id, body: `${g.sample.foldLabel} ${id}`, source: g.sample.foldHide, action: id }))}
+          />
+        </div>
+      </Demo>
       <Demo name="Disclosure" use={g.uses.Disclosure}>
         <Grid>
           <State label={`${g.states.closed}, label and openLabel`}>
@@ -626,6 +652,11 @@ function Fields() {
       </Demo>
     </>
   );
+}
+
+function AskDemo() {
+  const [value, setValue] = useState("");
+  return <AskField value={value} onChange={setValue} label={g.sample.foldLabel} placeholder={g.sample.foldLabel} clearLabel={g.sample.foldHide} />;
 }
 
 function MarkerDemo({ today }: { today: string }) {
