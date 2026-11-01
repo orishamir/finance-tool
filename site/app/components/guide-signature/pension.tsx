@@ -149,7 +149,7 @@ function Inner({ data, today, bundle }: VisualProps & { bundle: Bundle }) {
         </p>
         <div className="flex gap-0.5 text-sm" aria-hidden="false">
           {parts.map((p) => (
-            <div key={p.key} className="min-w-0 flex flex-col gap-0.5" style={{ width: share(p.n) }}>
+            <div key={p.key} className="min-w-0 flex flex-col gap-0.5 transition-[width] duration-[var(--duration-chart)]" style={{ width: share(p.n) }}>
               <span className="text-xs text-muted-foreground leading-tight">{p.key === "severance" ? <Term id="מרכיב הפיצויים">{p.label}</Term> : p.label}</span>
               <span className="font-semibold">
                 <Num value={p.value} />
@@ -159,11 +159,11 @@ function Inner({ data, today, bundle }: VisualProps & { bundle: Bundle }) {
         </div>
         <div className="flex gap-0.5 h-3.5" role="img" aria-label={copy.pension.chart.aria}>
           {parts.map((p) => (
-            <div key={p.key} className={`${p.bar} first:rounded-s-sm last:rounded-e-sm`} style={{ width: share(p.n) }} />
+            <div key={p.key} className={`${p.bar} first:rounded-s-sm last:rounded-e-sm transition-[width] duration-[var(--duration-chart)]`} style={{ width: share(p.n) }} />
           ))}
         </div>
         <div className="flex flex-col">
-          <div className="h-3 border-x-2 border-b-2 border-foreground/60 rounded-b-sm" style={{ width: share(model.you) }} />
+          <div className="h-3 border-x-2 border-b-2 border-foreground/60 rounded-b-sm transition-[width] duration-[var(--duration-chart)]" style={{ width: share(model.you) }} />
           <span className="block text-sm text-muted-foreground mt-0.5">
             {copy.pension.returns.before} <Num value={v.relief} /> {copy.pension.returns.after}
           </span>

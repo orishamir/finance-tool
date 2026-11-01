@@ -12,7 +12,7 @@ import { providentModel } from "../../lib/guide-signature-g2";
 import { useInputs } from "../../lib/inputs";
 import { entered as enteredValue, type SiteValue } from "../../lib/value";
 import type { Bundle } from "../../lib/engine";
-import { Callout, GainBars, InputSlot, LaneLabel, Marker, MarkerMark, NumberField, Sentence, useWidth } from "../kit";
+import { Callout, GainBars, InputSlot, LaneLabel, Marker, MarkerMark, NumberField, Sentence, clamp, useGlidingNumbers, useWidth } from "../kit";
 import { Num, RuleRef, RulesLine, Term } from "../provenance";
 import { G2Gap, HoldRow, PlanInputs, text } from "./g2-parts";
 import { figure, inputSite, notFeeFlag, rulesOfBundle, runFigure, useSigInputs, yearsRange, type VisualProps } from "./kit";
@@ -21,7 +21,6 @@ const HEIGHT = 92;
 const LANE_Y = 26;
 const LANE_H = 28;
 const AXIS_Y = 66;
-const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, v));
 
 export function KupatGemelLehashkaaVisual(props: VisualProps) {
   const base = props.data.bundles["kupat-gemel-lehashkaa"] ?? props.data.bundles["brokerage-account"];
@@ -69,6 +68,7 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
   const indexName = text(data, "indexName");
   const brokerName = text(data, "brokerName");
   const earlyYears = age !== null && earlyAge && typeof earlyAge.value === "number" ? earlyAge.value - age : null;
+  const earlyNow = useGlidingNumbers([earlyYears ?? 0])[0]!;
 
   // ---- value objects
   const amountIn = inputSite(base, "amount_now", inputs.amount, inputs.source.amount, today, copy.common.inputNames.amount);
@@ -180,8 +180,8 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
               <rect x={0} y={LANE_Y} width={plotW} height={LANE_H} rx={3} className="fill-chart-marker" fillOpacity="0.35" />
             ) : (
               <>
-                <rect x={0} y={LANE_Y} width={clamp(x(earlyYears), 0, plotW)} height={LANE_H} rx={3} className="fill-chart-marker" fillOpacity="0.35" />
-                <rect x={clamp(x(earlyYears), 0, plotW)} y={LANE_Y} width={plotW - clamp(x(earlyYears), 0, plotW)} height={LANE_H} rx={3} className="fill-chart-value" />
+                <rect x={0} y={LANE_Y} width={clamp(x(earlyNow), 0, plotW)} height={LANE_H} rx={3} className="fill-chart-marker" fillOpacity="0.35" />
+                <rect x={clamp(x(earlyNow), 0, plotW)} y={LANE_Y} width={plotW - clamp(x(earlyNow), 0, plotW)} height={LANE_H} rx={3} className="fill-chart-value" />
               </>
             )}
             <line x1={0} x2={plotW} y1={AXIS_Y} y2={AXIS_Y} className="stroke-chart-axis" strokeWidth="1" />
@@ -195,13 +195,13 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
           </svg>
           {earlyYears === null ? null : (
             <>
-              {earlyYears > 0 && x(earlyYears) > 110 && (
-                <LaneLabel from={0} to={clamp(x(earlyYears), 0, plotW)} top={LANE_Y - 24}>
+              {earlyYears > 0 && x(earlyNow) > 110 && (
+                <LaneLabel from={0} to={clamp(x(earlyNow), 0, plotW)} top={LANE_Y - 24}>
                   {copy.provident.chart.one}
                 </LaneLabel>
               )}
-              {x(earlyYears) < plotW - 130 && (
-                <LaneLabel from={clamp(x(earlyYears), 0, plotW)} to={plotW} top={LANE_Y - 24} prefer="end">
+              {x(earlyNow) < plotW - 130 && (
+                <LaneLabel from={clamp(x(earlyNow), 0, plotW)} to={plotW} top={LANE_Y - 24} prefer="end">
                   {copy.provident.chart.two}
                 </LaneLabel>
               )}

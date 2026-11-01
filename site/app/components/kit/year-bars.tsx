@@ -2,6 +2,7 @@
 // right, the value axis at the left edge, each bar's figure at its end. One neutral hue: the bars are one series. Own SVG. Pointing at or
 // tapping a year reads it; on a computer a drag zooms to the years it covers, and a zoomed bar has room for its figure (issue 22).
 import { useId, useState } from "react";
+import { tickFade, ticksOn, useFadingTicks, useGlidingNumbers, useGlidingRows } from "./chart-glide";
 import { ChartTip, ZoomBar, ZoomBrush, useYearZoom } from "./chart-interact";
 import { useWidth } from "./marker";
 
@@ -10,19 +11,23 @@ const TOP = 16;
 const BOTTOM = 22;
 const LEFT = 40;
 
-export function YearBars({ items, format, tickStep, label, bright }: { items: { year: number; value: number }[]; format: (v: number) => string; tickStep: number; label: string; /** The years to set apart: these are bright with their figure, the rest dim without one. */ bright?: readonly number[] }) {
+const VALUE = ["value"] as const;
+
+export function YearBars({ items: goal, format, tickStep, label, bright }: { items: { year: number; value: number }[]; format: (v: number) => string; tickStep: number; label: string; /** The years to set apart: these are bright with their figure, the rest dim without one. */ bright?: readonly number[] }) {
   const [ref, w] = useWidth(420);
   const [hover, setHover] = useState<number | null>(null);
+  const items = useGlidingRows(goal, VALUE);
   const plotW = w - LEFT - 4;
-  const zoom = useYearZoom({ first: items[0]?.year ?? 0, last: items[items.length - 1]?.year ?? 0, plotLeft: LEFT, plotWidth: plotW, band: true, onHover: setHover });
+  const zoom = useYearZoom({ first: goal[0]?.year ?? 0, last: goal[goal.length - 1]?.year ?? 0, plotLeft: LEFT, plotWidth: plotW, band: true, onHover: setHover });
   const clip = useId().replace(/:/g, "");
   const [from, to] = zoom.domain;
   const inView = items.filter((i) => zoom.has(i.year));
-  const max = Math.max(tickStep, ...inView.map((i) => Math.abs(i.value)));
-  const top = Math.ceil(max / tickStep) * tickStep;
+  const max = Math.max(tickStep, ...goal.filter((i) => zoom.seen(i.year)).map((i) => Math.abs(i.value)));
+  const topGoal = Math.ceil(max / tickStep) * tickStep;
+  const top = useGlidingNumbers([topGoal])[0]!;
   const y = (v: number) => TOP + ((top - v) / (2 * top)) * (H - TOP - BOTTOM);
   const bw = plotW / Math.max(1, to - from);
-  const ticks = Array.from({ length: (2 * top) / tickStep + 1 }, (_, i) => -top + i * tickStep);
+  const ticks = ticksOn(useFadingTicks(Array.from({ length: (2 * topGoal) / tickStep + 1 }, (_, i) => -topGoal + i * tickStep)), y, [TOP, H - BOTTOM]);
   // year labels at least 34 px apart (every second or fifth year on a phone); a bar keeps its figure when there is room for it
   const every = [1, 2, 5, 10].find((n) => n * bw >= 34) ?? 10;
   // among the bright years, only the highest and lowest carry a figure: the bars are too narrow for more
@@ -40,10 +45,10 @@ export function YearBars({ items, format, tickStep, label, bright }: { items: { 
             </clipPath>
           </defs>
           {ticks.map((t) => (
-            <g key={t}>
-              <line x1={LEFT} x2={w - 4} y1={y(t)} y2={y(t)} className={t === 0 ? "stroke-chart-axis" : "stroke-chart-grid"} strokeWidth={1} />
-              <text x={LEFT - 6} y={y(t) + 4} textAnchor="end" className="fill-chart-text text-[11px] tabular-nums">
-                {format(t)}
+            <g key={t.value} className={tickFade(t)}>
+              <line x1={LEFT} x2={w - 4} y1={y(t.value)} y2={y(t.value)} className={t.value === 0 ? "stroke-chart-axis" : "stroke-chart-grid"} strokeWidth={1} />
+              <text x={LEFT - 6} y={y(t.value) + 4} textAnchor="end" className="fill-chart-text text-[11px] tabular-nums">
+                {format(t.value)}
               </text>
             </g>
           ))}

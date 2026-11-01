@@ -2,14 +2,14 @@
 // left to right; the value axis labels sit at the plot's left edge above their gridlines (one rule shared by
 // the three SVG charts, see AxisLabels); bands bottom-up are what is left, tax and fees, with a neutral
 // contributions line over them.
-import { useEffect, useId, useLayoutEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
+import { useId, type CSSProperties, type ReactNode } from "react";
 import { area, line } from "d3-shape";
 import { scaleLinear } from "d3-scale";
 import { guide as copy } from "../../copy";
 import { fmt } from "../../lib/format";
 import { IconLock } from "../icons";
-import { IdRef, durationChart } from "../provenance";
-import { ZoomBar, ZoomBrush, cx, pickDim, useYearZoom } from "../kit";
+import { IdRef } from "../provenance";
+import { YearLabels, ZoomBar, ZoomBrush, cx, pickDim, tickFade, useFadingTicks, useGlidingNumbers, useGlidingRows, useYearZoom, type GlideTick, useBox, ticksOn } from "../kit";
 
 export interface ChartPoint {
   year: number;
@@ -60,14 +60,14 @@ export function yearTicksIn(from: number, to: number): number[] {
 }
 
 /** The shared value-axis rule: labels at the plot's start edge, just above their gridline, with a card-colour halo. */
-export function AxisLabels({ ticks, y }: { ticks: number[]; y: (v: number) => number }) {
+export function AxisLabels({ ticks, y }: { ticks: GlideTick[]; y: (v: number) => number }) {
   return (
     <>
       {ticks.map(
         (t) =>
-          t > 0 && (
-            <text key={t} x={2} y={y(t) - 4} textAnchor="start" direction="ltr" className="text-xs fill-chart-text stroke-card [paint-order:stroke]" strokeWidth="3" data-scale>
-              {fmt.compactNisAxis(t)}
+          t.value > 0 && (
+            <text key={t.value} x={2} y={y(t.value) - 4} textAnchor="start" direction="ltr" className={cx("text-xs fill-chart-text stroke-card [paint-order:stroke]", tickFade(t))} strokeWidth="3" data-scale>
+              {fmt.compactNisAxis(t.value)}
             </text>
           ),
       )}
@@ -81,32 +81,25 @@ export const scrollCueStyle: CSSProperties = {
     "linear-gradient(to right, var(--card) 30%, transparent) left center / 32px 100% no-repeat local, linear-gradient(to left, var(--card) 30%, transparent) right center / 32px 100% no-repeat local, radial-gradient(farthest-side at 0 50%, rgb(255 255 255 / 0.22), transparent) left center / 14px 100% no-repeat scroll, radial-gradient(farthest-side at 100% 50%, rgb(255 255 255 / 0.22), transparent) right center / 14px 100% no-repeat scroll",
 };
 
-const useIsoLayoutEffect = typeof window === "undefined" ? useEffect : useLayoutEffect;
+const ROW_KEYS = ["net", "tax", "fees", "contributions"] as const;
 
 export function TimelineChart({ points, hover, onHover, markers = [], blocked, enteredReturn, ariaLabel, dimmed, highlight }: TimelineChartProps) {
-  const box = useRef<HTMLDivElement>(null);
-  const [size, setSize] = useState({ width: 326, height: 240 });
-  useIsoLayoutEffect(() => {
-    const el = box.current;
-    if (!el) return;
-    const measure = () => setSize({ width: Math.max(200, el.clientWidth), height: Math.max(160, el.clientHeight) });
-    measure();
-    const ro = new ResizeObserver(measure);
-    ro.observe(el);
-    return () => ro.disconnect();
-  }, []);
+  const [box, size] = useBox(200, 160);
 
-  const shown = useAnimatedPoints(points);
+  const shown = useGlidingRows(points, ROW_KEYS);
   const horizon = Math.max(1, points[points.length - 1]?.year ?? 1);
   const { width, height } = size;
   const plotW = width - STRIP;
   const zoom = useYearZoom({ last: horizon, plotWidth: plotW, onHover });
   const clip = useId().replace(/:/g, "");
   const x = scaleLinear().domain(zoom.domain).range([0, plotW]);
-  const inView = shown.filter((p) => zoom.has(p.year));
+  // the axis fits the numbers it is going to, and glides there: fitted to the numbers on their way, its rounded top jumped every few frames
+  const inView = points.filter((p) => zoom.seen(p.year));
   const maxTop = Math.max(1, ...inView.map((p) => p.net + p.tax + p.fees), ...inView.map((p) => p.contributions));
-  const y = scaleLinear().domain([0, maxTop]).nice(4).range([height - BOTTOM, TOP]);
-  const ticks = y.ticks(4);
+  const yGoal = scaleLinear().domain([0, maxTop]).nice(4);
+  const top = useGlidingNumbers([yGoal.domain()[1]!])[0]!;
+  const y = scaleLinear().domain([0, top]).range([height - BOTTOM, TOP]);
+  const ticks = ticksOn(useFadingTicks(yGoal.ticks(4)), y, y.range());
 
   const bandNet = area<ChartPoint>().x((d) => x(d.year)).y0(() => y(0)).y1((d) => y(d.net));
   const bandTax = area<ChartPoint>().x((d) => x(d.year)).y0((d) => y(d.net)).y1((d) => y(d.net + d.tax));
@@ -115,8 +108,8 @@ export function TimelineChart({ points, hover, onHover, markers = [], blocked, e
   const topLine = line<ChartPoint>().x((d) => x(d.year)).y((d) => y(d.net + d.tax + d.fees));
   const contribLine = line<ChartPoint>().x((d) => x(d.year)).y((d) => y(d.contributions));
 
-  const yearTicks = yearTicksIn(zoom.settled[0], zoom.settled[1]);
-  const seen = markers.filter((m) => zoom.has(m.year));
+  const yearTicks = useFadingTicks(yearTicksIn(zoom.settled[0], zoom.settled[1]));
+  const seen = markers.filter((m) => zoom.seen(m.year));
   const hovered = hover === null ? null : shown.find((p) => p.year === hover) ?? null;
 
   return (
@@ -142,7 +135,7 @@ export function TimelineChart({ points, hover, onHover, markers = [], blocked, e
           </clipPath>
         </defs>
         {ticks.map((t) => (
-          <line key={t} x1={0} x2={plotW} y1={y(t)} y2={y(t)} className={t === 0 ? "stroke-chart-axis" : "stroke-chart-grid"} strokeWidth="1" />
+          <line key={t.value} x1={0} x2={plotW} y1={y(t.value)} y2={y(t.value)} className={cx(t.value === 0 ? "stroke-chart-axis" : "stroke-chart-grid", tickFade(t))} strokeWidth="1" />
         ))}
         <g clipPath={`url(#${clip})`}>
           <g className="stroke-card" strokeWidth="1.5" strokeLinejoin="round">
@@ -162,13 +155,9 @@ export function TimelineChart({ points, hover, onHover, markers = [], blocked, e
           </g>
         )}
         {seen.map((m) => (
-          <line key={m.year} x1={x(m.year)} x2={x(m.year)} y1={TOP} y2={height - BOTTOM} className="stroke-chart-marker" strokeWidth="1" />
+          <line key={m.year} x1={Math.min(plotW, x(m.year))} x2={Math.min(plotW, x(m.year))} y1={TOP} y2={height - BOTTOM} className="stroke-chart-marker" strokeWidth="1" />
         ))}
-        {yearTicks.map((yr) => (
-          <text key={yr} x={x(yr)} y={height - 8} textAnchor={yr <= zoom.settled[0] ? "start" : yr >= zoom.settled[1] ? "end" : "middle"} direction="ltr" className="text-xs fill-chart-text" data-scale>
-            {yr === 0 ? copy.readout.today : yr}
-          </text>
-        ))}
+        <YearLabels ticks={yearTicks} x={x} y={height - 8} left={0} right={plotW} word={(yr) => (yr === 0 ? copy.readout.today : String(yr))} />
         {hovered && (
           <g>
             <line x1={x(hovered.year)} x2={x(hovered.year)} y1={TOP} y2={height - BOTTOM} className="stroke-chart-crosshair" strokeWidth="1" />
@@ -178,7 +167,7 @@ export function TimelineChart({ points, hover, onHover, markers = [], blocked, e
         <ZoomBrush brush={zoom.brush} top={TOP} bottom={height - BOTTOM} />
       </svg>
       {seen.map((m) => (
-        <span key={`l${m.year}`} className="absolute top-0 text-xs text-chart-text whitespace-nowrap px-1 bg-card/80 rounded-sm" style={{ left: `${x(m.year)}px`, transform: x(m.year) > plotW / 2 ? "translateX(-100%)" : undefined }} dir="rtl">
+        <span key={`l${m.year}`} className="absolute top-0 text-xs text-chart-text whitespace-nowrap px-1 bg-card/80 rounded-sm" style={{ left: `${Math.min(plotW, x(m.year))}px`, transform: x(m.year) > plotW / 2 ? "translateX(-100%)" : undefined }} dir="rtl">
           {m.label}
         </span>
       ))}
@@ -191,51 +180,4 @@ export function TimelineChart({ points, hover, onHover, markers = [], blocked, e
     <ZoomBar zoom={zoom} yearWord={(yr) => (yr === 0 ? copy.readout.today : String(yr))} />
     </div>
   );
-}
-
-/** Paths move to their new shape over --duration-chart; a changed horizon stretches the old curve over the new one. */
-function useAnimatedPoints(target: ChartPoint[]): ChartPoint[] {
-  const [shown, setShown] = useState(target);
-  const prev = useRef(target);
-  useEffect(() => {
-    const from = prev.current;
-    const ms = durationChart();
-    if (ms === 0 || from === target || from.length < 2 || target.length < 2) {
-      setShown(target);
-      prev.current = target;
-      return;
-    }
-    const start = performance.now();
-    const fromR = resample(from, target);
-    let raf = 0;
-    const tick = (now: number) => {
-      const t = Math.min(1, (now - start) / ms);
-      const e = 1 - Math.pow(1 - t, 3);
-      setShown(
-        target.map((p, i) => {
-          const f = fromR[i]!;
-          return { year: p.year, net: f.net + (p.net - f.net) * e, tax: f.tax + (p.tax - f.tax) * e, fees: f.fees + (p.fees - f.fees) * e, contributions: f.contributions + (p.contributions - f.contributions) * e };
-        }),
-      );
-      if (t < 1) raf = requestAnimationFrame(tick);
-      else prev.current = target;
-    };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, [target]);
-  return shown;
-}
-
-function resample(from: ChartPoint[], target: ChartPoint[]): ChartPoint[] {
-  const fh = from[from.length - 1]!.year;
-  const th = target[target.length - 1]!.year;
-  return target.map((p) => {
-    const pos = (p.year / th) * fh;
-    const i = Math.min(from.length - 2, Math.max(0, Math.floor(pos)));
-    const a = from[i]!;
-    const b = from[i + 1]!;
-    const t = b.year === a.year ? 0 : (pos - a.year) / (b.year - a.year);
-    const l = (u: number, v: number) => u + (v - u) * Math.max(0, Math.min(1, t));
-    return { year: p.year, net: l(a.net, b.net), tax: l(a.tax, b.tax), fees: l(a.fees, b.fees), contributions: l(a.contributions, b.contributions) };
-  });
 }

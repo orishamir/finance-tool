@@ -11,7 +11,7 @@ import { r4workbench as c, site } from "../copy";
 import { AssumptionsPanel } from "../components/compare/assumptions";
 import type { FormData } from "../components/compare/goal-form";
 import { SavedGoalStrip } from "../components/compare/strip";
-import { useFlip } from "../components/compare/rows";
+import { useFlip } from "../components/kit";
 import { NumberLegend, RulesLine } from "../components/provenance";
 import { Sheet } from "../components/Sheet";
 import { Breadcrumb, PageShell } from "../components/shell";

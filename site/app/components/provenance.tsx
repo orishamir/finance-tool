@@ -16,7 +16,7 @@ import type { TermRow } from "../lib/data.server";
 import { IconAlert, IconCalculator, IconCheck, IconClock, IconCopy, IconExternal, IconFile, IconLock, IconPencil, IconReset } from "./icons";
 import { Sheet } from "./Sheet";
 import { Button, Callout, cx, Disclosure, LinkButton, Tag } from "./ui";
-import { CompanyLinks, Tpl } from "./kit";
+import { CompanyLinks, Tpl, useGlidingNumbers } from "./kit";
 import { chipName, companyLinksOf, generalOnly, isGeneral, isNotRule, isOwnSourceOf, joinNames, listedCompanies, noCompanyAnchor, ownDocCompanies, scopeCompanies, pageView, shownCompanies, sourceCompany, sourcesForPage, type CompanyLink, type OwnDocs } from "../lib/scope";
 
 // ---------------------------------------------------------------- context
@@ -243,39 +243,10 @@ function staleDate(v: SiteValue): string {
 
 /** Digits count to a new value over --duration-chart; zero when the device asks for reduced motion. */
 export function useAnimatedValue(target: number | null, enabled: boolean): number | null {
-  const [shown, setShown] = useState(target);
-  const from = useRef(target);
-  useEffect(() => {
-    if (!enabled || target === null || from.current === null || from.current === target) {
-      setShown(target);
-      from.current = target;
-      return;
-    }
-    const ms = durationChart();
-    if (ms === 0) {
-      setShown(target);
-      from.current = target;
-      return;
-    }
-    const start = performance.now();
-    const a = from.current;
-    let raf = 0;
-    const tick = (now: number) => {
-      const t = Math.min(1, (now - start) / ms);
-      const e = 1 - Math.pow(1 - t, 3);
-      setShown(a + (target - a) * e);
-      if (t < 1) raf = requestAnimationFrame(tick);
-      else from.current = target;
-    };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, [target, enabled]);
-  return enabled ? shown : target;
-}
-
-export function durationChart(): number {
-  if (typeof window === "undefined") return 0;
-  return parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--duration-chart")) || 0;
+  // not a number to glide to: NaN takes its goal at once, either way
+  const moves = enabled && target !== null;
+  const shown = useGlidingNumbers([moves ? target : NaN])[0]!;
+  return moves && Number.isFinite(shown) ? shown : target;
 }
 
 // ---------------------------------------------------------------- tags, chips, lines

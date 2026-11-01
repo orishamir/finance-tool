@@ -4,7 +4,7 @@
 import type { ReactNode } from "react";
 import { kit as kitCopy } from "../../copy";
 import { fmt } from "../../lib/format";
-import { pickDim, useChartPick } from "./chart-interact";
+import { useChartPick } from "./chart-interact";
 import { cx } from "./cx";
 
 export interface CostPart {
@@ -33,7 +33,7 @@ export function CostStack({ parts, scale, size = "md", label, highlight }: { par
   const pick = useChartPick();
   let before = 0;
   return (
-    <div role="img" aria-label={label} className={cx("relative flex rounded-sm", size === "sm" ? "h-3" : "h-7")} style={{ width: `${Math.max(width * 100, total > 0 ? 1 : 0)}%` }}>
+    <div role="img" aria-label={label} className={cx("relative flex rounded-sm transition-[width] duration-[var(--duration-chart)]", size === "sm" ? "h-3" : "h-7")} style={{ width: `${Math.max(width * 100, total > 0 ? 1 : 0)}%` }}>
       {shown.map((p, i) => {
         const share = p.value / total;
         // the middle of the part along the whole scale: past the middle of the scale its box opens toward the bar's start, so it stays on the screen
@@ -43,7 +43,7 @@ export function CostStack({ parts, scale, size = "md", label, highlight }: { par
           <span
             key={p.id}
             {...(p.name ? pick.bind(p.id, size === "md") : {})}
-            className={cx("relative flex items-center justify-center border-e border-card last:border-e-0 text-[11px] font-semibold text-background tabular-nums whitespace-nowrap", i === 0 && "rounded-s-sm", i === shown.length - 1 && "rounded-e-sm", p.name && "cursor-pointer", size === "md" && p.name && "before:absolute before:inset-x-0 before:-inset-y-2", p.className, pickDim(highlight ?? pick.active, highlight ? (p.legendId ?? p.id) : p.id))}
+            className={cx("relative flex items-center justify-center border-e border-card last:border-e-0 text-[11px] font-semibold text-background tabular-nums whitespace-nowrap", i === 0 && "rounded-s-sm", i === shown.length - 1 && "rounded-e-sm", p.name && "cursor-pointer", size === "md" && p.name && "before:absolute before:inset-x-0 before:-inset-y-2", "[transition:width_var(--duration-chart),opacity_var(--duration-fast)]", p.className, (highlight ? highlight !== (p.legendId ?? p.id) : pick.active && pick.active !== p.id) && "opacity-20")}
             style={{ width: `${share * 100}%` }}
           >
             <span className="overflow-hidden">{size === "md" && p.inside && p.value / Math.max(total, scale) > 0.07 ? p.inside : null}</span>

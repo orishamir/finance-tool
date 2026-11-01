@@ -1,15 +1,15 @@
 // The comparison chart (design-spec 6.4, design-system 6.5): the top three options and the baseline on one
 // axis, time left to right, direct labels at the right end, dashed where a line rests on a return the person
 // entered. Our own SVG on D3 scales, sharing the timeline chart's grid, axis, crosshair and table view.
-import { useEffect, useId, useLayoutEffect, useRef, useState } from "react";
+import { useId } from "react";
 import { scaleLinear } from "d3-scale";
 import { line } from "d3-shape";
 import { guide as guideCopy, r2 } from "../../copy";
 import type { SeriesLine } from "../../lib/compare";
 import { fmt } from "../../lib/format";
-import { durationChart, Num } from "../provenance";
+import { Num } from "../provenance";
 import { AxisLabels, niceYearTicks, yearTicksIn } from "../chart/TimelineChart";
-import { ChartLegend as Legend, ChartReadout as Readout, ChartTable as Table, Swatch, ZoomBar, ZoomBrush, cx, pickDim, useYearZoom, type ChartPick } from "../kit";
+import { ChartLegend as Legend, ChartReadout as Readout, ChartTable as Table, Swatch, YearLabels, ZoomBar, ZoomBrush, cx, pickDim, tickFade, useFadingTicks, useGlidingNumbers, useGlidingSeries, useYearZoom, valueOn, type ChartPick, type GlidePoint, useBox, ticksOn } from "../kit";
 import type { Mode, ResultCtx } from "./ctx";
 
 /** The direct label's strip at the right of the plot; narrower on a phone, where the plot had 175 of 296 px (2026-10-26). */
@@ -17,7 +17,6 @@ const strip = (width: number) => (width < 400 ? 84 : 104);
 const TOP = 20; // room for the top axis label above its gridline (audit 2026-10-24 (sweep))
 const BOTTOM = 26;
 const LABEL_H = 54;
-const useIsoLayoutEffect = typeof window === "undefined" ? useEffect : useLayoutEffect;
 
 /** The baseline (the current account) is dotted: its grey sits within 15 ΔE of one of the three teal steps, and a dash already means an
  * entered return (2026-10-26). */
@@ -30,66 +29,15 @@ const roleClass = {
   baseline: { stroke: "stroke-chart-baseline", bg: "bg-chart-baseline", fill: "fill-chart-baseline", width: 1.5 },
 } as const;
 
-interface Pt {
-  year: number;
-  v: number;
-}
-
-/** A line's value at a year between its yearly points, read on the straight segment the chart draws there. */
-function valueAt(pts: Pt[], year: number): number {
-  const i = pts.findIndex((p) => p.year >= year);
-  if (i === -1) return pts[pts.length - 1]?.v ?? 0;
-  if (i === 0) return pts[0]!.v;
-  const a = pts[i - 1]!;
-  const b = pts[i]!;
-  return a.v + ((b.v - a.v) * (year - a.year)) / (b.year - a.year || 1);
-}
+type Pt = GlidePoint;
 
 const valueOf = (l: SeriesLine, mode: Mode): Pt[] => l.points.map((p) => ({ year: p.year, v: mode === "real" ? p.real : p.nominal }));
 
-/** Values move to their new numbers over --duration-chart when an input changes and the shape (the lines, the years) is the same. */
-function useTween(target: Record<string, Pt[]>): Record<string, Pt[]> {
-  const [shown, setShown] = useState(target);
-  const prev = useRef(target);
-  useEffect(() => {
-    const from = prev.current;
-    const ms = durationChart();
-    const same = Object.keys(target).length === Object.keys(from).length && Object.entries(target).every(([id, pts]) => from[id]?.length === pts.length);
-    if (ms === 0 || !same) {
-      setShown(target);
-      prev.current = target;
-      return;
-    }
-    const start = performance.now();
-    let raf = 0;
-    const tick = (now: number) => {
-      const t = Math.min(1, (now - start) / ms);
-      const e = 1 - Math.pow(1 - t, 3);
-      setShown(Object.fromEntries(Object.entries(target).map(([id, pts]) => [id, pts.map((p, i) => ({ year: p.year, v: from[id]![i]!.v + (p.v - from[id]![i]!.v) * e }))])));
-      if (t < 1) raf = requestAnimationFrame(tick);
-      else prev.current = target;
-    };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, [target]);
-  return shown;
-}
-
 export function ComparisonChart({ lines, mode, horizon, ctx, hover, onHover, dimmed, highlight }: { lines: SeriesLine[]; mode: Mode; horizon: number; ctx: ResultCtx; hover: number | null; onHover: (y: number | null) => void; dimmed?: boolean; /** The line the legend sets apart. */ highlight?: string | null }) {
-  const box = useRef<HTMLDivElement>(null);
-  const [size, setSize] = useState({ width: 326, height: 240 });
-  useIsoLayoutEffect(() => {
-    const el = box.current;
-    if (!el) return;
-    const measure = () => setSize({ width: Math.max(220, el.clientWidth), height: Math.max(180, el.clientHeight) });
-    measure();
-    const ro = new ResizeObserver(measure);
-    ro.observe(el);
-    return () => ro.disconnect();
-  }, []);
+  const [box, size] = useBox(220, 180);
 
   const target = Object.fromEntries(lines.map((l) => [l.id, valueOf(l, mode)]));
-  const shown = useTween(target);
+  const shown = useGlidingSeries(target);
   const { width, height } = size;
   const STRIP = strip(width);
   const plotW = width - STRIP;
@@ -97,11 +45,14 @@ export function ComparisonChart({ lines, mode, horizon, ctx, hover, onHover, dim
   const clip = useId().replace(/:/g, "");
   const [from, to] = zoom.domain;
   const x = scaleLinear().domain(zoom.domain).range([0, plotW]);
-  const maxV = Math.max(1, ...Object.values(shown).flatMap((p) => p.filter((q) => zoom.has(q.year)).map((q) => q.v)));
-  const y = scaleLinear().domain([0, maxV]).nice(4).range([height - BOTTOM, TOP]);
-  const ticks = y.ticks(4);
+  const maxV = Math.max(1, ...Object.values(target).flatMap((p) => p.filter((q) => zoom.seen(q.year)).map((q) => q.v)));
+  const yGoal = scaleLinear().domain([0, maxV]).nice(4);
+  const top = useGlidingNumbers([yGoal.domain()[1]!])[0]!;
+  const y = scaleLinear().domain([0, top]).range([height - BOTTOM, TOP]);
+  const ticks = ticksOn(useFadingTicks(yGoal.ticks(4)), y, y.range());
   const path = line<Pt>().x((d) => x(d.year)).y((d) => y(d.v));
-  const yearTicks = yearTicksIn(zoom.settled[0], zoom.settled[1]);
+  const yearTicks = useFadingTicks(yearTicksIn(zoom.settled[0], zoom.settled[1]));
+  const horizonX = Math.min(plotW, x(horizon));
   const horizonSeen = zoom.settled[1] >= horizon;
   // A12: the fall the person accepts, as a band from today's amount down by that share (D11 unchanged: it filters in exposure mode only)
   const fallStart = ctx.g.amountNow - ctx.g.available;
@@ -114,12 +65,12 @@ export function ComparisonChart({ lines, mode, horizon, ctx, hover, onHover, dim
   const lead = ctx.view.ranked[0] ? lines.find((l) => l.id === ctx.view.ranked[0]!.id) ?? lines[0] : lines[0];
   // the last year in view: zoomed in, the label reads there, beside its line
   const endYear = zoom.view ? zoom.settled[1] : horizon;
-  const leadEnd = lead ? y(zoom.view ? valueAt(shown[lead.id] ?? [], to) : (shown[lead.id]?.[shown[lead.id]!.length - 1]?.v ?? 0)) : 0;
+  const leadEnd = lead ? y(valueOn(shown[lead.id] ?? [], to)) : 0;
   const leadY = Math.max(TOP + LABEL_H / 2 + 14, Math.min(height - BOTTOM - LABEL_H / 2, leadEnd));
 
   const leadOpt = lead ? ctx.view.ranked.find((o) => o.id === lead.id) : undefined;
   const leadLast = lead?.points[lead.points.length - 1];
-  const leadRaw = zoom.view && lead ? valueAt(valueOf(lead, mode), endYear) : ((mode === "real" ? leadOpt?.real ?? leadLast?.real : leadOpt?.nominal ?? leadLast?.nominal) ?? 0);
+  const leadRaw = zoom.view && lead ? valueOn(valueOf(lead, mode), endYear) : ((mode === "real" ? leadOpt?.real ?? leadLast?.real : leadOpt?.nominal ?? leadLast?.nominal) ?? 0);
   const leadValue = ctx.mk.nis(leadRaw, mode === "real" ? "F-06" : "F-09", lead?.name ?? "", leadOpt);
   const hovered = hover === null ? null : hover;
   // Each ranked line carries its place in a small circle, the number its card shows: the three options are shades of one teal and
@@ -131,7 +82,7 @@ export function ComparisonChart({ lines, mode, horizon, ctx, hover, onHover, dim
     .sort((a, b) => a.rank - b.rank)
     .map((b, i) => {
       const at = Math.max(from, to - (to - from) * (0.08 + 0.12 * i));
-      return { ...b, x: x(at), y: y(valueAt(shown[b.l.id] ?? [], at)) };
+      return { ...b, x: x(at), y: y(valueOn(shown[b.l.id] ?? [], at)) };
     });
   return (
     <div className="flex flex-col gap-1">
@@ -152,7 +103,7 @@ export function ComparisonChart({ lines, mode, horizon, ctx, hover, onHover, dim
           </clipPath>
         </defs>
         {ticks.map((t) => (
-          <line key={t} x1={0} x2={plotW} y1={y(t)} y2={y(t)} className={t === 0 ? "stroke-chart-axis" : "stroke-chart-grid"} strokeWidth="1" />
+          <line key={t.value} x1={0} x2={plotW} y1={y(t.value)} y2={y(t.value)} className={cx(t.value === 0 ? "stroke-chart-axis" : "stroke-chart-grid", tickFade(t))} strokeWidth="1" />
         ))}
         {fallDrop > 0 && (
           <g role="img" aria-label={r2.result.fallBand} data-fall-band clipPath={`url(#${clip})`}>
@@ -160,10 +111,10 @@ export function ComparisonChart({ lines, mode, horizon, ctx, hover, onHover, dim
             <line x1={0} x2={fallW} y1={y(fallStart - fallDrop)} y2={y(fallStart - fallDrop)} className="stroke-chart-marker" strokeWidth="1" strokeDasharray="2 3" />
           </g>
         )}
-        {horizonSeen && <line x1={x(horizon)} x2={x(horizon)} y1={TOP} y2={height - BOTTOM} className="stroke-chart-marker" strokeWidth="1" />}
+        {horizonSeen && <line x1={horizonX} x2={horizonX} y1={TOP} y2={height - BOTTOM} className="stroke-chart-marker" strokeWidth="1" />}
         <g clipPath={`url(#${clip})`}>
         {[...lines].reverse().map((l) => (
-          <path key={l.id} d={path(shown[l.id] ?? []) ?? ""} fill="none" className={cx(roleClass[l.role].stroke, pickDim(highlight, l.id))} strokeWidth={l.role === "baseline" ? 2.5 : roleClass[l.role].width} strokeDasharray={l.enteredReturn ? "6 4" : l.role === "baseline" ? BASELINE_DOTS : undefined} strokeLinejoin="round" strokeLinecap="round" />
+          <path key={l.id} d={path(shown[l.id] ?? []) ?? ""} fill="none" className={cx("chart-line", roleClass[l.role].stroke, pickDim(highlight, l.id))} strokeWidth={l.role === "baseline" ? 2.5 : roleClass[l.role].width} strokeDasharray={l.enteredReturn ? "6 4" : l.role === "baseline" ? BASELINE_DOTS : undefined} strokeLinejoin="round" strokeLinecap="round" />
         ))}
         </g>
         {/* after the lines, with the card-colour halo: on a phone the lines ran through "100 אלף ₪" (2026-10-26) */}
@@ -178,11 +129,7 @@ export function ComparisonChart({ lines, mode, horizon, ctx, hover, onHover, dim
             </g>
           ))}
         </g>
-        {yearTicks.map((yr) => (
-          <text key={yr} x={x(yr)} y={height - 8} textAnchor={yr <= zoom.settled[0] ? "start" : yr >= zoom.settled[1] ? "end" : "middle"} direction="ltr" className="text-xs fill-chart-text" data-scale>
-            {yr === 0 ? guideCopy.readout.today : yr}
-          </text>
-        ))}
+        <YearLabels ticks={yearTicks} x={x} y={height - 8} left={0} right={plotW} word={(yr) => (yr === 0 ? guideCopy.readout.today : String(yr))} />
         {hovered !== null && (
           <g>
             <line x1={x(hovered)} x2={x(hovered)} y1={TOP} y2={height - BOTTOM} className="stroke-chart-crosshair" strokeWidth="1" />
@@ -195,7 +142,7 @@ export function ComparisonChart({ lines, mode, horizon, ctx, hover, onHover, dim
         <ZoomBrush brush={zoom.brush} top={TOP} bottom={height - BOTTOM} />
       </svg>
       {horizonSeen && (
-        <span className="absolute top-0 text-xs text-chart-text whitespace-nowrap px-1 bg-card/80 rounded-sm" style={{ left: `${x(horizon)}px`, transform: "translateX(-100%)" }} dir="rtl">
+        <span className="absolute top-0 text-xs text-chart-text whitespace-nowrap px-1 bg-card/80 rounded-sm" style={{ left: `${horizonX}px`, transform: "translateX(-100%)" }} dir="rtl">
           {r2.result.chartHorizon}
         </span>
       )}
@@ -203,7 +150,7 @@ export function ComparisonChart({ lines, mode, horizon, ctx, hover, onHover, dim
         <div className="absolute text-xs leading-tight" style={{ left: `${plotW + 8}px`, top: `${leadY - LABEL_H / 2}px`, width: `${STRIP - 10}px`, height: `${LABEL_H}px` }}>
           <span className="line-clamp-2 font-medium">{lead.name}</span>
           {/* whole shekels, as on the ranked cards (design-system 2.7); "cell" kept the agorot */}
-          <Num value={leadValue} />
+          <Num value={leadValue} animate />
         </div>
       )}
     </div>

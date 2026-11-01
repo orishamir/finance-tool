@@ -13,7 +13,7 @@ import { hishtalmutModel, type Employment } from "../../lib/guide-signature-g2";
 import { p05Number, p05Value, type Bundle } from "../../lib/engine";
 import { useInputs } from "../../lib/inputs";
 import { entered as enteredValue, type SiteValue } from "../../lib/value";
-import { Callout, GainBars, InputSlot, LaneLabel, Marker, MarkerMark, NumberField, SegmentedControl, Sentence, TableCols, useWidth } from "../kit";
+import { Callout, GainBars, InputSlot, LaneLabel, Marker, MarkerMark, NumberField, SegmentedControl, Sentence, TableCols, clamp, useGlidingNumbers, useWidth } from "../kit";
 import { Num, RulesLine, Term } from "../provenance";
 import { G2Gap, HoldRow, PlanInputs, text } from "./g2-parts";
 import { figure, inputSite, rulesOfBundle, useSigInputs, type VisualProps } from "./kit";
@@ -23,7 +23,6 @@ const LANE_Y = 26;
 const LANE_H = 28;
 const AXIS_Y = 66;
 const MAX_YEARS = 12;
-const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, v));
 
 export function KerenHishtalmutVisual(props: VisualProps) {
   const base = props.data.bundles["keren-hishtalmut"] ?? props.data.bundles["brokerage-account"];
@@ -46,7 +45,8 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
   const years = clamp(yearsPick ?? Math.round(inputs.years), 1, MAX_YEARS);
 
   const model = useMemo(() => hishtalmutModel(data, { amount: inputs.amount, monthly: inputs.monthly, years, employment, income }), [data, inputs.amount, inputs.monthly, years, employment, income]);
-  const lock = model.lockYears ?? 0;
+  // the lock's end moves with the kind of employment, and the lane's two parts glide with it
+  const lock = useGlidingNumbers([model.lockYears ?? 0])[0]!;
   const [box, width] = useWidth();
   const pid = useId().replace(/:/g, "");
   const plotW = width - 8;

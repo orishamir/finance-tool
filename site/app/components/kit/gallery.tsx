@@ -11,7 +11,7 @@ import { IdRef, Num } from "../provenance";
 import { IconDrillIn } from "../icons";
 import { label } from "../../lib/labels";
 import { fmt } from "../../lib/format";
-import { useChartPick, pickDim, Button, Callout, Card, ChartLegend, CostStack, LabelFilter, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, CompareTable, TableCols, CoverageFold, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, Disclosure, FieldState, FoldGroup, GainBars, GapNote, HeadlineFigure, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, CheckField, FieldGroup, TextField, NumberField, ParameterLine, PercentField, PlanChips, KnobStrip, ChangeChart, RangeField, RankBadge, Section, SegmentedControl, SelectField, Sentence, ShareRings, SourceLine, Stat, StatRow, StatTile, StepButtons, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth } from "./index";
+import { YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, Button, Callout, Card, ChartLegend, CostStack, LabelFilter, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, CompareTable, TableCols, CoverageFold, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, Disclosure, FieldState, FoldGroup, GainBars, GapNote, HeadlineFigure, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, CheckField, FieldGroup, TextField, NumberField, ParameterLine, PercentField, PlanChips, KnobStrip, ChangeChart, RangeField, RankBadge, Section, SegmentedControl, SelectField, Sentence, ShareRings, SourceLine, Stat, StatRow, StatTile, StepButtons, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth } from "./index";
 
 const g = copy.gallery;
 
@@ -845,6 +845,14 @@ function Lists({ today }: { today: string }) {
           <FixedTable rowHead={p.a} columns={[{ id: "a", head: p.b }, { id: "b", head: p.c, hideOnPhone: true }, { id: "c", head: p.figure }]} rows={[{ key: "1", head: "2022", cells: ["+13.4%", "−18.5%", "−21.8%"] }, { key: "2", head: "2025", cells: ["−12.5%", "+17.4%", "+15.3%"] }, { key: "3", head: p.a, cells: ["+2.7%", "+49.3%", "+35.9%"], strong: true }]} />
         </State>
       </Demo>
+      <Demo name="useGlidingSeries, useGlidingRows, useGlidingNumbers, useFadingTicks, ticksOn, YearLabels, valueOn, useFlip, useBox" use={g.uses.Glide}>
+        <State label="choose another horizon or rate: the line, the axis and its labels glide from wherever they stand" wide>
+          <GlideDemo />
+        </State>
+        <State label="useFlip: rows slide to their new places">
+          <FlipDemo />
+        </State>
+      </Demo>
       <Demo name="useYearZoom, ZoomBar, ZoomBrush, ChartTip" use={g.uses.YearZoom}>
         <State label="a longer range: pointing at or tapping a year reads it; on a computer a drag zooms, ctrl with the wheel too, and a double click returns" wide>
           <YearBars label={p.figure} tickStep={10} format={(v) => `${v > 0 ? "+" : v < 0 ? "−" : ""}${Math.abs(v).toFixed(0)}`} items={Array.from({ length: 16 }, (_, n) => ({ year: 2010 + n, value: ((n * 7) % 23) - 11 }))} />
@@ -939,6 +947,58 @@ function LegendPickDemo() {
         <span className={cx("flex-[2] rounded-s-sm bg-chart-value", dim("a"))} />
         <span className={cx("flex-1 rounded-e-sm bg-chart-fee", dim("b"))} />
       </div>
+    </div>
+  );
+}
+
+function FlipDemo() {
+  const [rows, setRows] = useState([1, 2, 3, 4, 5]);
+  const ref = useFlip(rows.join());
+  return (
+    <div className="flex flex-col gap-2 items-start">
+      <Button variant="quiet" onClick={() => setRows((r) => [...r].reverse())}>
+        reverse
+      </Button>
+      <ol ref={ref} className="flex flex-col gap-1 w-40">
+        {rows.map((n) => (
+          <li key={n} data-flip={n} className="bg-card border border-border rounded-sm px-2 tabular-nums">
+            {n}
+          </li>
+        ))}
+      </ol>
+    </div>
+  );
+}
+
+function GlideDemo() {
+  const [years, setYears] = useState("10");
+  const [rate, setRate] = useState("5");
+  const n = Number(years);
+  const goal = Array.from({ length: n + 1 }, (_, year) => ({ year, v: 100 * Math.pow(1 + Number(rate) / 100, year) }));
+  const top = Math.ceil(goal[n]!.v / 100) * 100;
+  const shown = useGlidingSeries({ a: goal }).a ?? goal;
+  const [end, ceil] = useGlidingNumbers([n, top]) as [number, number];
+  const ticks = useFadingTicks(Array.from({ length: top / 100 + 1 }, (_, i) => i * 100));
+  const yearTicks = useFadingTicks(Array.from({ length: Math.floor(n / 5) + 1 }, (_, i) => i * 5));
+  const x = (year: number) => 8 + (year / end) * 304;
+  const y = (v: number) => 130 - (v / ceil) * 120;
+  const path = shown.map((p, i) => `${i ? "L" : "M"}${x(p.year).toFixed(1)} ${y(p.v).toFixed(1)}`).join("");
+  const opts = (xs: string[]) => Object.fromEntries(xs.map((v) => [v, v]));
+  return (
+    <div className="flex flex-col gap-2">
+      <ChoiceChips ids={["5", "10", "20", "30"]} labels={opts(["5", "10", "20", "30"])} value={years} onChange={setYears} ariaLabel={g.sample.yearWord} wrap />
+      <ChoiceChips ids={["2", "5", "9"]} labels={opts(["2", "5", "9"])} value={rate} onChange={setRate} ariaLabel={g.sample.seriesA} wrap />
+      <svg viewBox="0 0 320 156" aria-hidden="true" className="block w-full max-w-md">
+        <clipPath id="glide-demo">
+          <rect x={8} y={0} width={304} height={156} />
+        </clipPath>
+        {ticks.map((t) => (
+          <line key={t.value} x1={8} x2={312} y1={y(t.value)} y2={y(t.value)} className={cx("stroke-chart-grid", tickFade(t))} />
+        ))}
+        <path d={path} fill="none" clipPath="url(#glide-demo)" className="stroke-chart-value" strokeWidth={2} />
+        <circle cx={x(Math.min(end, n))} cy={y(valueOn(shown, Math.min(end, n)))} r={3} className="fill-chart-value" />
+        <YearLabels ticks={yearTicks} x={x} y={150} left={8} right={312} />
+      </svg>
     </div>
   );
 }

@@ -11,7 +11,7 @@ export type Domain = readonly [number, number];
 /** The fewest years apart a zoomed view's two ends stand: nearer, a yearly chart has too few points to draw. */
 export const MIN_SPAN = 2;
 
-const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, v));
+export const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, v));
 
 /** Whether a chart's whole range is longer than the narrowest view, so a zoom can show less of it. */
 export const canZoomYears = (first: number, last: number) => Math.floor(last) - first > MIN_SPAN;

@@ -9,6 +9,7 @@ import { invest as c, r2, values as valuesCopy } from "../../copy";
 import type { FeeInputs } from "../../lib/fees";
 import { fmt } from "../../lib/format";
 import { useInputs, type Employment } from "../../lib/inputs";
+import { useSettled } from "../../lib/settled";
 import { pairCosts, type InvestView } from "../../lib/invest";
 import type { WorkbenchBundle, WorkbenchInputs } from "../../lib/providers";
 import { computed, type SiteValue } from "../../lib/value";
@@ -33,10 +34,11 @@ const labelOf: Record<Id, string> = { amount: k.amount, monthly: k.monthly, year
 function usePairLeft(bundle: WorkbenchBundle, view: InvestView | null, pick: Pair) {
   const house = pick?.house;
   const fund = pick?.fund;
+  const index = view?.index;
   return useMemo(() => {
-    if (!view || !house || !fund) return null;
-    return (p: WorkbenchInputs) => pairCosts({ bundle, index: view.index, plan: p, fundId: fund, providerId: house })?.left ?? null;
-  }, [bundle, view, house, fund]);
+    if (!index || !house || !fund) return null;
+    return (p: WorkbenchInputs) => pairCosts({ bundle, index, plan: p, fundId: fund, providerId: house })?.left ?? null;
+  }, [bundle, index, house, fund]);
 }
 
 const KEY: Record<Id, P05Input> = { amount: "amount_now", monthly: "monthly_deposit", years: "horizon_years", ret: "A-01" };
@@ -71,8 +73,9 @@ export function PlanKnobs({ fi, ranges, pct, only }: { fi: FeeInputs; ranges: Kn
 }
 
 /** F-89 and F-90: every plan number changed by the same share, on one chart with a marker and a table, at the bottom of the page.
- * 4 lines of 21 runs, so it takes the plan once a slider rests. */
-export function PlanChanges({ plan, share, bundle, view, pick }: { plan: WorkbenchInputs; share: { min: number; max: number; step: number; start: number }; bundle: WorkbenchBundle; view: InvestView | null; pick: Pair }) {
+ * 4 lines of 21 runs, the page's heaviest work, so it waits for the charts above to finish moving. */
+export function PlanChanges({ plan: resting, share, bundle, view, pick }: { plan: WorkbenchInputs; share: { min: number; max: number; step: number; start: number }; bundle: WorkbenchBundle; view: InvestView | null; pick: Pair }) {
+  const plan = useSettled(resting, 400);
   const left = usePairLeft(bundle, view, pick);
   const [at, setAt] = useState(share.start);
   const ch = k.changes;
