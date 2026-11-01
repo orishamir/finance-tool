@@ -178,19 +178,13 @@ function makeApp(D) {
   }
 
   // one row of a choice: its name, a bar from "as it is now", the difference
-  function bar(r, U) {
-    const px = (Math.abs(r.d) / U) * 100;
-    const hue = LANE[r.lane].hue;
-    const look = r.open ? `border:1.5px solid ${hue};background:none` : `background:${hue};${r.d < 0 || r.hedged ? "opacity:.5" : ""}`;
-    return `<span class="tk"><i class="br" style="width:${Math.min(px, 100)}%;${look}"></i>${px > 100 ? '<i class="cut"></i>' : ""}</span>`;
-  }
   const more = (d) => (Math.round(d) === 0 ? `<span class="df same">אותו סכום</span>` : `<span class="df ${d < 0 ? "less" : ""}"><span class="w">${d < 0 ? "פחות" : "עוד"}</span>${N(money(Math.abs(d)))}</span>`);
-  function choiceRow(r, U, withKind, turn) {
+  function choiceRow(r, withKind, turn) {
     const kd = withKind ? `<span class="kd">${swatch(r.lane)}<span class="kw">${LANE[r.lane].word}</span></span>` : "";
     const nm = `<span class="nm"><b>${r.label}${r.open ? LOCK : ""}</b>${r.sub ? `<small>${r.sub}</small>` : ""}${r.hedged ? '<small class="chip mini">מנוטרלת מט״ח</small>' : ""}</span>`;
-    return `<button type="button" class="rw ${withKind ? "wk" : ""} ${turn ? "turn" : ""}" data-step="${r.lane}|${r.to.a}|${r.to.f}">${kd}${nm}${bar(r, U)}${more(r.d)}</button>`;
+    return `<button type="button" class="rw ${withKind ? "wk" : ""} ${turn ? "turn" : ""} ${r.d < 0 ? "less" : ""}" data-step="${r.lane}|${r.to.a}|${r.to.f}">${kd}${nm}<span class="vl n">${money(r.v)}</span>${more(r.d)}</button>`;
   }
-  const priced = (rows, U, withKind) => rows.filter((r) => r.d != null).map((r, i, all) => choiceRow(r, U, withKind, i > 0 && all[i - 1].d >= 0 && r.d < 0)).join("");
+  const priced = (rows, withKind) => rows.filter((r) => r.d != null).map((r, i, all) => choiceRow(r, withKind, i > 0 && all[i - 1].d >= 0 && r.d < 0)).join("");
   function greyLines(rows) {
     const out = [];
     for (const why of ["u", "n", "d"]) { const mine = rows.filter((r) => r.d == null && r.why === why); if (mine.length) out.push(`<div class="gl xs"><b>${WHY[why]}:</b> ${mine.map((r) => r.label).join(", ")}</div>`); }
@@ -200,13 +194,9 @@ function makeApp(D) {
     if (s.frozen) { const ix = new Map(s.frozen.map((k, i) => [k, i])); return [...rows].sort((a, b) => (ix.get(a.key) ?? 99) - (ix.get(b.key) ?? 99)); }
     return [...rows].sort(byGain);
   }
-  function unitOf(s, p, ceiling) {
-    const v0 = val(p, s.start);
-    return Math.max(ceiling.v - v0, ceiling.v * 0.1, 1);
-  }
-  function laneBlock(s, rows, lane, U) {
+  function laneBlock(s, rows, lane) {
     const mine = ordered(s, rows.filter((r) => r.lane === lane));
-    return `<div class="lane"><h4>${swatch(lane)}${LANE[lane].title}</h4><div class="rw hd"><span>${LANE[lane].head}</span><span class="df-h">נשאר בסוף, לעומת עכשיו</span></div>${mine.length ? priced(mine, U) + greyLines(mine) : '<p class="xs muted">אין קרן אחרת מהסוג הזה.</p>'}</div>`;
+    return `<div class="lane"><h4>${swatch(lane)}${LANE[lane].title}</h4><div class="rw hd"><span>${LANE[lane].head}</span><span class="vl">נשאר בסוף</span><span>לעומת עכשיו</span></div>${mine.length ? priced(mine) + greyLines(mine) : '<p class="xs muted">אין קרן אחרת מהסוג הזה.</p>'}</div>`;
   }
 
   // what is true where the climb stopped; one height, so nothing under it moves
@@ -227,9 +217,8 @@ function makeApp(D) {
     const compact = W < 720;
     const view = chainOf(s);
     const rows = rowsAt(view.p, view.at);
-    const U = unitOf(s, view.p, view.ceiling);
     return `<div class="panel">${headBar(s, view, "מנקודת ההתחלה ועד הכי הרבה")}<p class="xs muted axis-t">הגובה הוא מה שנשאר בסוף, אחרי מס, בכסף של היום. לחיצה על מדרגה לוקחת אותה, או חוזרת אליה אם כבר נלקחה.</p>${stairsSVG(view, { W, H: compact ? 300 : 340, compact })}${compact ? stepList(view) : underTable(view, W)}${statusLine(view)}${legend()}</div>
-    <div class="panel"><div class="phd"><h3>${here(view)}</h3></div><p class="small muted">כל שורה משנה דבר אחד, ואומרת כמה יישאר בסוף לעומת עכשיו. לחיצה על שורה מוסיפה אותה למדרגות.</p><div class="lanes"><div>${laneBlock(s, rows, "account", U)}</div><div class="stack">${laneBlock(s, rows, "kind", U)}${laneBlock(s, rows, "fund", U)}</div></div></div>`;
+    <div class="panel"><div class="phd"><h3>${here(view)}</h3></div><p class="small muted">כל שורה משנה דבר אחד. לחיצה על שורה מוסיפה אותה למדרגות.</p><div class="lanes"><div>${laneBlock(s, rows, "account")}</div><div class="stack">${laneBlock(s, rows, "kind")}${laneBlock(s, rows, "fund")}</div></div></div>`;
   }
 
   // ---- option B: every choice in one ranked list, beside the stairs
@@ -237,9 +226,8 @@ function makeApp(D) {
     const compact = W < 900;
     const view = chainOf(s);
     const rows = ordered(s, rowsAt(view.p, view.at));
-    const U = unitOf(s, view.p, view.ceiling);
     const sw = compact ? W : W * 0.42 - 16;
-    const list = `<div class="panel"><div class="phd"><h3>${here(view)}</h3></div><p class="small muted">כל שורה משנה דבר אחד. מה שמשאיר הכי הרבה למעלה, ומה שמשאיר פחות מעכשיו למטה. לחיצה על שורה מוסיפה אותה למדרגות.</p><div class="rw hd wk"><span class="kw">מה משתנה</span><span>אל מה</span><span class="df-h">נשאר בסוף, לעומת עכשיו</span></div>${priced(rows, U, true)}${greyLines(rows)}</div>`;
+    const list = `<div class="panel"><div class="phd"><h3>${here(view)}</h3></div><p class="small muted">כל שורה משנה דבר אחד. מה שמשאיר הכי הרבה למעלה, ומה שמשאיר פחות מעכשיו למטה. לחיצה על שורה מוסיפה אותה למדרגות.</p><div class="rw hd wk"><span class="kw">מה משתנה</span><span>אל מה</span><span class="vl">נשאר בסוף</span><span>לעומת עכשיו</span></div>${priced(rows, true)}${greyLines(rows)}</div>`;
     const stairs = `<div class="panel">${headBar(s, view, "המדרגות")}<p class="xs muted axis-t">הגובה הוא מה שנשאר בסוף, אחרי מס, בכסף של היום. לחיצה על מדרגה לוקחת אותה, או חוזרת אליה אם כבר נלקחה.</p>${stairsSVG(view, { W: sw - 40, H: 300, compact: true })}${stepList(view)}<p class="small">הכי הרבה בכל המחירונים: <b>${N(money(view.ceiling.v))}</b>, ${nameOf(view.ceiling)}.</p>${statusLine(view)}${legend()}</div>`;
     return `<div class="two">${list}${stairs}</div>`;
   }
