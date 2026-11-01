@@ -337,7 +337,7 @@ export function WorkbenchGroup({
               </span>
             )}
           </span>
-          <IconChevronDown className={cx("text-muted-foreground shrink-0 transition-transform duration-[var(--duration-fast)]", open && "rotate-180")} />
+          <IconChevronDown className={cx("text-muted-foreground shrink-0 transition-transform duration-[var(--duration-fold)] ease-standard", open && "rotate-180")} />
         </button>
       </h2>
       {open && <Card className="p-0 md:p-0 overflow-hidden lg:overflow-visible">{body}</Card>}

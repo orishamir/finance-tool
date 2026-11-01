@@ -2,7 +2,7 @@
 import { useEffect, useId, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { buttons, values as copy } from "../../copy";
 import { fmt, formatTyped, parseNumber, unitWord } from "../../lib/format";
-import { IconReset } from "../icons";
+import { IconClose, IconReset, IconSearch } from "../icons";
 import { StateTag } from "../provenance";
 import { Button } from "./button";
 import { cx } from "./cx";
@@ -263,6 +263,34 @@ export function ParameterLine({ className }: { className?: string }) {
 }
 
 /** One line of text the person types (a name): a label above, an optional help line and error under. For a number, `NumberField`. */
+/** The one large field a page leads with (the rules page's claim, 2026-11-01): a whole sentence fits, and × empties it. Its words are the caller's. */
+export function AskField({ value, onChange, onFocus, label, placeholder, clearLabel }: { value: string; onChange: (value: string) => void; onFocus?: () => void; label: string; placeholder: string; clearLabel: string }) {
+  const id = useId();
+  const input = useRef<HTMLInputElement>(null);
+  return (
+    <div className="field-box !h-14 lg:!h-16 border-primary bg-card text-muted-foreground text-base lg:text-lg">
+      <IconSearch size={20} />
+      <label htmlFor={id} className="sr-only">
+        {label}
+      </label>
+      <input ref={input} id={id} dir="rtl" value={value} onChange={(e) => onChange(e.target.value)} onFocus={onFocus} placeholder={placeholder} autoComplete="off" className="field-input !text-start text-mixed text-foreground" />
+      {value && (
+        <button
+          type="button"
+          aria-label={clearLabel}
+          onClick={() => {
+            onChange("");
+            input.current?.focus();
+          }}
+          className="min-w-target min-h-target inline-flex items-center justify-center"
+        >
+          <IconClose size={18} />
+        </button>
+      )}
+    </div>
+  );
+}
+
 export function TextField({ label, value, onChange, hint, error, placeholder, maxLength, dir = "rtl", className }: { label: ReactNode; value: string; onChange: (v: string) => void; hint?: ReactNode; error?: ReactNode | null; placeholder?: string; maxLength?: number; /** `ltr` for an identifier. */ dir?: "rtl" | "ltr"; className?: string }) {
   const id = useId();
   return (

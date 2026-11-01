@@ -219,3 +219,10 @@ describe("the stairs and the difference rows", () => {
     expect(diff).not.toMatch(/<button[^>]*>[^<]*<Num/);
   });
 });
+
+describe("the shared stylesheet", () => {
+  it("every enabled button and summary shows the hand (audit A99): nothing was pasted into that selector", () => {
+    const css = readFileSync(join(root, "app.css"), "utf8");
+    expect(css).toMatch(/button:not\(:disabled\),\s*\[role="button"\]:not\(\[aria-disabled="true"\]\),\s*summary \{\s*cursor: pointer;/);
+  });
+});

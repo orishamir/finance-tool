@@ -299,7 +299,8 @@
 
   /* Motion. Set to zero when the device asks for reduced motion. */
   --duration-fast: 120ms; /* press, hover, toggles */
-  --duration-base: 200ms; /* sheets, popovers, disclosure */
+  --duration-base: 200ms; /* sheets, popovers */
+  --duration-fold: 280ms; /* a fold opening or closing, and what fades in with it */
   --duration-chart: 400ms; /* graphs and numbers moving to new values after an input changes */
 
   /* Stacking (popovers and sheets use the top layer and need none) */
@@ -311,6 +312,7 @@
   :root {
     --duration-fast: 0ms;
     --duration-base: 0ms;
+    --duration-fold: 0ms;
     --duration-chart: 0ms;
   }
 }
