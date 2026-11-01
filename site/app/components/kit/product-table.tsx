@@ -3,7 +3,10 @@
 // carry a caution banner (tracks that share a name). The cells and the phone rows are the caller's; the shell, the banner and the
 // widths are here.
 import { Fragment, useId, type ReactNode } from "react";
+import { invest } from "../../copy";
+import type { SiteValue } from "../../lib/value";
 import { IconAlert, IconExternal } from "../icons";
+import { Num, RulesLine } from "../provenance";
 import { Card } from "./card";
 import { cx } from "./cx";
 import { TableCols } from "./table-cols";
@@ -118,6 +121,22 @@ export function ProductFigures({ items, inline }: { items: { id: string; figure:
         </span>
       ))}
     </span>
+  );
+}
+
+/** A fee among a product's figures: its number, "אין" for a fee the product does not have, "לא נאסף" for one whose number was not collected. */
+export function FeeFigure({ value, absent, inline }: { value: SiteValue | null; absent?: boolean; inline?: boolean }) {
+  if (value) return <Num value={value} size={inline ? "inline" : "cell"} />;
+  return <span className="text-sm text-muted-foreground">{absent ? invest.funds.noSuchFee : invest.funds.notCollected}</span>;
+}
+
+/** What "אין" and "לא נאסף" say, under a list of funds that may hold a foreign fund, with the rules behind it. */
+export function FeeWordsNote({ className }: { className?: string }) {
+  return (
+    <div className={cx("flex flex-col gap-1", className)}>
+      <span className="text-sm text-muted-foreground">{invest.funds.feeWordsNote}</span>
+      <RulesLine ids={["ETF-71", "ETF-14", "MF-20"]} />
+    </div>
   );
 }
 

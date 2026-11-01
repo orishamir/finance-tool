@@ -323,8 +323,15 @@ export function scoped(s: FeesSnapshot): FeesSnapshot {
   return out;
 }
 
-export function providersOfInvest(bundle: Pick<WorkbenchBundle, "snapshots">): FeesSnapshot[] {
-  return bundle.snapshots.filter((s) => s.provider.class === "bank" || s.provider.class === "broker" || s.provider.class === "foreign_broker").sort((a, b) => a.provider.name_he.localeCompare(b.provider.name_he, "he"));
+const investProviders = new WeakMap<readonly FeesSnapshot[], readonly FeesSnapshot[]>();
+/** Sorted once per list of snapshots: a page's pricing asks for it on every run, and comparing Hebrew names is slow. */
+export function providersOfInvest(bundle: Pick<WorkbenchBundle, "snapshots">): readonly FeesSnapshot[] {
+  let out = investProviders.get(bundle.snapshots);
+  if (!out) {
+    out = bundle.snapshots.filter((s) => s.provider.class === "bank" || s.provider.class === "broker" || s.provider.class === "foreign_broker").sort((a, b) => a.provider.name_he.localeCompare(b.provider.name_he, "he"));
+    investProviders.set(bundle.snapshots, out);
+  }
+  return out;
 }
 
 export const providerInfo = (s: FeesSnapshot): ProviderInfo => {
@@ -365,13 +372,23 @@ interface Ctx {
   plan: WorkbenchInputs;
   fx: Record<string, number>;
   theta: number;
-  snaps: FeesSnapshot[];
+  snaps: readonly FeesSnapshot[];
   assumptions: FundAssumptions;
+}
+
+const runRates = new WeakMap<NonNullable<WorkbenchBundle["fx"]>, Record<string, number>>();
+function ratesOf(fx: NonNullable<WorkbenchBundle["fx"]>): Record<string, number> {
+  let out = runRates.get(fx);
+  if (!out) {
+    out = fxRunInput(fx);
+    runRates.set(fx, out);
+  }
+  return out;
 }
 
 function makeCtx(bundle: WorkbenchBundle, plan: WorkbenchInputs, assumptions: FundAssumptions = {}): Ctx {
   const theta = ((bundle.p01 as unknown as { value: { value: number } }).value.value as number) / 100;
-  return { bundle, plan, fx: bundle.fx ? fxRunInput(bundle.fx) : {}, theta, snaps: providersOfInvest(bundle), assumptions };
+  return { bundle, plan, fx: bundle.fx ? ratesOf(bundle.fx) : {}, theta, snaps: providersOfInvest(bundle), assumptions };
 }
 
 function genericSpec(ctx: Ctx, option: OptionId): Spec | null {
@@ -510,8 +527,28 @@ function wayPrice(ctx: Ctx, p: Extract<Priced, { kind: "ok" }>, providerId: stri
   const row = p.row;
   const open = row.run.outcome.code === "listed-not-ranked";
   const value = computed(row.real, "nis", "F-65", inputsOfRun(ctx, providerId, fundId), { today: ctx.bundle.today, rules: rulesOf(row), flags: row.run.flags.map((f) => f.code), about });
-  const lines = row.byType.map((x) => ({ line: x.line, cost: x.costBeforeTax }));
-  return { providerId, value, valueN: row.real, venue: p.venue, open, accountCost: row.horizonCostBeforeTax, lines, interaction: row.horizonCostBeforeTax - lines.reduce((t, l) => t + l.cost, 0), standing: p.standing };
+  let split: Pick<WayPrice, "lines" | "interaction"> | undefined;
+  // the lines of a way take a run each and the page shows the picked fund's only: read when shown
+  const splitOf = () => {
+    if (split) return split;
+    const lines = row.byType.map((x) => ({ line: x.line, cost: x.costBeforeTax }));
+    return (split = { lines, interaction: row.horizonCostBeforeTax - lines.reduce((t, l) => t + l.cost, 0) });
+  };
+  return {
+    providerId,
+    value,
+    valueN: row.real,
+    venue: p.venue,
+    open,
+    accountCost: row.horizonCostBeforeTax,
+    get lines() {
+      return splitOf().lines;
+    },
+    get interaction() {
+      return splitOf().interaction;
+    },
+    standing: p.standing,
+  };
 }
 
 // ---------------------------------------------------------------- funds
@@ -792,16 +829,9 @@ export interface PairCosts {
   tax: SiteValue;
 }
 
-/**
- * The cost of one complete way, split by who takes it (F-91, founder 2026-10-28): the account (its tariff lines) and the fund
- * (all its own costs) before the tax they save, the fund measured with no account so it is the same at every account, and the
- * state what remains (the tax paid, with the growth a tax paid along the way would have earned). The parts add up to
- * `base − left`, base being the deposits grown at the plan's return with no cost and no tax, the same for every way on the
- * plan: so the gap in what is left between two ways is the gap in their costs. Null when the account cannot price the fund.
- */
-export function pairCosts(a: InvestArgs & { fundId: string; providerId: string }): PairCosts | null {
-  const ctx = makeCtx(a.bundle, a.plan, a.assumptions);
-  const rec = a.bundle.funds.find((f) => f.id === a.fundId);
+/** One account and one fund on a plan, ready to price; null when the account does not sell the fund or the fund cannot be run. */
+function pairOf(ctx: Ctx, a: { index: IndexRef; fundId: string; providerId: string }) {
+  const rec = ctx.bundle.funds.find((f) => f.id === a.fundId);
   const s = ctx.snaps.find((x) => x.id === a.providerId);
   if (!rec || !s) return null;
   const option = optionOfFund(rec, a.index.exposure ?? undefined);
@@ -813,6 +843,21 @@ export function pairCosts(a: InvestArgs & { fundId: string; providerId: string }
     const p = priceMany(ctx, spec, option, [s], venue).get(s.id);
     return p && p.kind === "ok" ? p.row : null;
   };
+  return { rec, s, fs, price };
+}
+
+/**
+ * The cost of one complete way, split by who takes it (F-91, founder 2026-10-28): the account (its tariff lines) and the fund
+ * (all its own costs) before the tax they save, the fund measured with no account so it is the same at every account, and the
+ * state what remains (the tax paid, with the growth a tax paid along the way would have earned). The parts add up to
+ * `base − left`, base being the deposits grown at the plan's return with no cost and no tax, the same for every way on the
+ * plan: so the gap in what is left between two ways is the gap in their costs. Null when the account cannot price the fund.
+ */
+export function pairCosts(a: InvestArgs & { fundId: string; providerId: string }): PairCosts | null {
+  const ctx = makeCtx(a.bundle, a.plan, a.assumptions);
+  const pair = pairOf(ctx, a);
+  if (!pair) return null;
+  const { rec, s, fs, price } = pair;
   const row = price(fs.spec);
   if (!row) return null;
   const fund0 = fs.spec.fund as { drag?: Record<string, number>; halfSpread?: number; distribution?: unknown };
@@ -914,21 +959,20 @@ export function hasKinds(view: InvestView): boolean {
 
 /** One pair's real value left (F-65) at a dollar change `fxChange` (percent a year, A-03), A-07 replaced by `tracking` when given. */
 export function pairValue(a: InvestArgs & { fundId: string; providerId: string; fxChange: number; tracking?: number }): number | null {
-  const ctx = makeCtx(a.bundle, a.plan, { ...a.assumptions, fxChange: a.fxChange });
-  const rec = a.bundle.funds.find((f) => f.id === a.fundId);
-  const s = ctx.snaps.find((x) => x.id === a.providerId);
-  if (!rec || !s) return null;
-  const option = optionOfFund(rec, a.index.exposure ?? undefined);
-  if (unavailable(s, option)) return null;
-  const fs = fundSpec(ctx, rec);
-  if ("reason" in fs) return null;
-  let spec = fs.spec;
+  const pair = pairOf(makeCtx(a.bundle, a.plan, { ...a.assumptions, fxChange: a.fxChange }), a);
+  if (!pair) return null;
+  let spec = pair.fs.spec;
   if (a.tracking !== undefined) {
     const fund = spec.fund as { drag?: Record<string, number> };
     spec = { ...spec, fund: { ...fund, drag: { ...fund.drag, tracking: a.tracking } } } as Spec;
   }
-  const p = priceMany(ctx, spec, option, [s], option === "abroad" ? venueOfFund(rec) : null).get(s.id);
-  return p && p.kind === "ok" ? p.row.real : null;
+  return pair.price(spec)?.real ?? null;
+}
+
+/** One pair's real value left (F-65) on the plan: the figure `pairCosts` gives as `left`, without the runs that split the cost by who takes it. */
+export function pairLeft(a: InvestArgs & { fundId: string; providerId: string }): number | null {
+  const pair = pairOf(makeCtx(a.bundle, a.plan, a.assumptions), a);
+  return pair ? (pair.price(pair.fs.spec)?.real ?? null) : null;
 }
 
 /** A fund's listed fees together, percent a year. */

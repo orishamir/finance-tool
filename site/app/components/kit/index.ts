@@ -2,6 +2,7 @@
 // "components/kit", not from a neighbouring feature. One file per component or small family; the gallery at /kit shows each in its states.
 export { cx } from "./cx";
 export { useHeldHeight } from "./held-height";
+export { LongestCase } from "./longest-case";
 export { Button, LinkButton } from "./button";
 export { StepTag, Tag } from "./tag";
 export { Callout } from "./callout";
@@ -18,7 +19,7 @@ export { GapNote, NoteList, SourceLine } from "./notes";
 export { RankBadge } from "./rank";
 export { StepButtons } from "./stepper";
 export { CheckField, FieldGroup, FieldState, TextField, NumberField, ParameterLine, PercentField, RangeField, SelectField, flushPendingFields, percentCheck, type FieldProps, type RangeFieldProps } from "./fields";
-export { GainBars, LaneLabel, Marker, MarkerMark, useWidth, type GainBar, type MarkerProps } from "./marker";
+export { GainBars, LaneLabel, Marker, MarkerMark, useBox, useWidth, type GainBar, type MarkerProps } from "./marker";
 export { ChartLegend, ChartReadout, ChartTable, FixedTable, Swatch, scrollCueStyle, type LegendItem, type ReadoutRow, type SwatchShape, type TableColumn, type TableRowData } from "./chart-parts";
 export { CompanyLinks, type CompanyLinkItem } from "./company-links";
 export { CompareTable, ValueBar, type CompareRow } from "./compare-table";
@@ -28,5 +29,9 @@ export { CostStack, type CostPart } from "./cost-stack";
 export { PickList, holdOnPick, type PickRow } from "./pick-list";
 export { PairBars, type PairBarYear } from "./pair-bars";
 export { YearBars } from "./year-bars";
+export { YearLabels, durationChart, tickFade, ticksOn, useFadingTicks, useFlip, useGlidingNumbers, useGlidingRows, useGlidingSeries, valueOn, type GlidePoint, type GlideSeries, type GlideTick } from "./chart-glide";
+export { clamp } from "./chart-zoom";
+export { CountingFigures, countsByItself, useCounting } from "./counting";
+export { ChartTip, ZoomBar, ZoomBrush, pickDim, useChartPick, useYearZoom, type ChartPick, type YearZoom } from "./chart-interact";
 export { TableCols, type ColWidth } from "./table-cols";
-export { ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, type ProductColumn, type ProductGroup, type ProductRow } from "./product-table";
+export { FeeFigure, FeeWordsNote, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, type ProductColumn, type ProductGroup, type ProductRow } from "./product-table";

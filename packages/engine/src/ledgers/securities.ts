@@ -265,8 +265,9 @@ export function runSecurities(input: SecuritiesInput, ctx: RunContext): RunResul
     if (m <= goal.months && C[m]! > 0) for (let k = 0; k < orders; k++) buy(C[m]! / orders, m, m, true, tariff.buyStanding ?? tariff.buy, tariff.fxStanding ?? tariff.fx);
     tally.paidIn += (m === 1 ? C[0]! : 0) + (m <= goal.months ? C[m]! : 0);
 
-    // 3. Growth less drag (F-10).
-    const before = totalUnits(lots) * nav;
+    // 3. Growth less drag (F-10). The sum over the lots is kept while the lots stand: at 40 years it is 480 lots, several times a month, in every run.
+    let units = totalUnits(lots);
+    const before = units * nav;
     tally.fee("fund", (before * delta) / 12);
     fundLevelTax += before * fundLevelRate * g;
     nav *= 1 + g - delta / 12 - fundLevelRate * g;
@@ -274,7 +275,7 @@ export function runSecurities(input: SecuritiesInput, ctx: RunContext): RunResul
     // 4. Distributions (F-20): paid out of the fund's value; the net is reinvested as a new lot.
     if (fund.distribution && m % (12 / fund.distribution.perYear) === 0) {
       const share = fund.distribution.yield / fund.distribution.perYear;
-      const dist = totalUnits(lots) * nav * share;
+      const dist = units * nav * share;
       nav *= 1 - share;
       const t = distributionTax(dist, israeliDistRate, foreignWithholding);
       foreignTax += t.foreign;
@@ -282,13 +283,17 @@ export function runSecurities(input: SecuritiesInput, ctx: RunContext): RunResul
       tally.taxDuring += t.foreign + t.israeli;
       distThisYear += dist;
       buy(t.net, m, m, false);
+      units = totalUnits(lots);
     }
 
     // 5. Holding costs, paid by removing units oldest first (F-14, F-17, F-15 for the IRA manager).
-    const manager = (wrapperFee / 12) * totalUnits(lots) * nav;
-    const custody = custodyFee(custodyLine, m + offset, totalUnits(lots) * nav - manager);
-    const fixed = fixedFee(tariff.monthlyFee, totalUnits(lots) * nav - manager - custody);
-    if (custody + fixed + manager > 0) lots = removeFifo(lots, (custody + fixed + manager) / nav);
+    const manager = (wrapperFee / 12) * units * nav;
+    const custody = custodyFee(custodyLine, m + offset, units * nav - manager);
+    const fixed = fixedFee(tariff.monthlyFee, units * nav - manager - custody);
+    if (custody + fixed + manager > 0) {
+      lots = removeFifo(lots, (custody + fixed + manager) / nav);
+      units = totalUnits(lots);
+    }
     tally.fee("custody", custody);
     tally.fee("fixed", fixed);
     tally.fee("manager", manager);
@@ -299,8 +304,8 @@ export function runSecurities(input: SecuritiesInput, ctx: RunContext): RunResul
       if (m === T) exitYearDist = distThisYear;
       distThisYear = 0;
     }
-    if (estateThreshold !== undefined && (totalUnits(lots) * nav) / fxRate(m) > estateThreshold) tally.flag("TXF-27", m);
-    tally.point(m, I[m]!, totalUnits(lots) * nav);
+    if (estateThreshold !== undefined && (units * nav) / fxRate(m) > estateThreshold) tally.flag("TXF-27", m);
+    tally.point(m, I[m]!, units * nav);
   }
 
   // F-09 exit: sold at the bid; commission and FX fee paid out of the proceeds; consideration is the gross

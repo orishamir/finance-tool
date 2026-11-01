@@ -1485,6 +1485,7 @@ Added 2026-10-24 for the briefs in `docs/flows.md` section 15 and the handoff in
 | No average, reason | ממוצעי בנק ישראל ומחשבון העמלות של הבורסה מוצגים רק בקישור: הפרסום מחדש דורש הסכמה בכתב. |
 | No average, links out | ללוח הנתונים של בנק ישראל · למחשבון העמלות של הבורסה · changed 2026-10-24 (Hebrew editor); was ״לדשבורד העמלות של בנק ישראל״ |
 | Not collected (a fee, a list, a record) | לא נאסף · לא נאספה · עוד לא נאספו |
+| A fee the fund does not have (a foreign fund's variable and trustee fee; issue 156) | אין |
 | Not printed (a list field) | לא מודפס |
 | Stale tariff line | התעריפון נאסף ב־`{תאריך}`; מאז ייתכן שהשתנה. |
 | No published date | ללא תאריך פרסום |
@@ -2130,6 +2131,7 @@ Added 2026-10-24 for the briefs in `docs/flows.md` section 18 and the handoff in
 | Diff row, dates | נבדק ב־`{תאריך}` |
 | Diff row, removed | הוסר מהמאגר · הקובץ לא קיים עוד |
 | Diff row, added | קובץ חדש · לא היה |
+| Diff row, a table of brackets: its column heads (2026-11-01) | עד סכום · שיעור |
 | Diff row, state change | היה פרמטר · עכשיו הזנתם · changed 2026-10-24 (Hebrew editor); was ״הוזן על ידך״ |
 | Diff row, re-checked data | הקובץ נבדק מחדש; הערכים לא השתנו. |
 | More rows | עוד `{מספר}` |

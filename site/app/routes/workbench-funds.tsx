@@ -10,7 +10,7 @@ import { r4workbench as c, site } from "../copy";
 import { AssumptionsPanel } from "../components/compare/assumptions";
 import type { FormData } from "../components/compare/goal-form";
 import { SavedGoalStrip } from "../components/compare/strip";
-import { useFlip } from "../components/compare/rows";
+import { useFlip } from "../components/kit";
 import { IconExternal } from "../components/icons";
 import { NumberLegend, RulesLine } from "../components/provenance";
 import { Sheet } from "../components/Sheet";
@@ -145,7 +145,7 @@ function Body({ wb, compare, data, presets, search }: { wb: WorkbenchBundle; com
   const rows = view?.rows ?? [];
   const filtered = filter.trim() ? rows.filter((r) => matchesVariant(r, filter)) : rows;
   const groups = (["ranked", "listed", "not-evaluated"] as const).map((k) => ({ key: k, rows: sortVariants(filtered.filter((r) => r.kind === k), effectiveSort) })).filter((g) => g.rows.length > 0);
-  const flipRef = useFlip(groups.map((g) => g.rows.map((r) => r.id).join(",")).join("|"));
+  const flipRef = useFlip<HTMLDivElement>(groups.map((g) => g.rows.map((r) => r.id).join(",")).join("|"));
   const providers = wb.snapshots.filter((s) => (s.provider.class === "bank" || s.provider.class === "broker" || s.provider.class === "foreign_broker") && !s.missing).sort((a, b) => a.provider.name_he.localeCompare(b.provider.name_he, "he")).map((s) => ({ id: s.id, name: s.provider.name_he }));
   const form = data.form as FormData;
   const onField = (f: "yield" | "rate" | "return") => (f === "return" ? navigate("/goal") : setPanelOpen(true));
@@ -225,7 +225,7 @@ function Body({ wb, compare, data, presets, search }: { wb: WorkbenchBundle; com
           ) : groups.length === 0 ? (
             <p className="text-muted-foreground">{c.funds.noMatch}</p>
           ) : (
-            <div ref={flipRef as unknown as React.Ref<HTMLDivElement>} className="flex flex-col gap-6">
+            <div ref={flipRef} className="flex flex-col gap-6">
               {groups.map((g) => {
                 const limit = shown[g.key] ?? PAGE;
                 const visible = g.rows.slice(0, limit);

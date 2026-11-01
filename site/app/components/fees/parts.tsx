@@ -7,7 +7,7 @@ import { anyWeak, type SiteValue } from "../../lib/value";
 import { fmt } from "../../lib/format";
 import { IconAlert, IconExternal, IconLock } from "../icons";
 import { IdRef, LeadTail, Num, NumberLegend, RuleRef, StateTag, StrengthLabel } from "../provenance";
-import { Callout, Card, cx, Sentence, Tag } from "../kit";
+import { Callout, Card, cx, LongestCase, Sentence, Tag } from "../kit";
 import { IconNotWorth, IconPhone, IconSwap, IconUnevaluated } from "./icons";
 
 // ---------------------------------------------------------------- subject strip
@@ -103,63 +103,72 @@ export function FeeHeadline({ product, total, withFees, withoutFees, years, preT
   const h = r3fees.headline;
   const g = r3fees.gap;
   const rk = r3fees.ranked;
+  // stands in for any figure in the unseen longest case of a line: what the longest amount a slider can reach takes on the screen
+  const big: SiteValue = { ...total, value: 9_999_999 };
+  const gapLine = (worth: SiteValue, overYears: number) => (
+    <p className="text-lg font-medium">
+      {g.more[0]}
+      <Num value={worth} size="figure" />
+      <LeadTail lead={g.more[1]}>{fmt.years(overYears)}</LeadTail>
+      {g.more[2]}
+    </p>
+  );
+  const placeLine = (rank: number, tied: boolean) => (
+    <p>
+      {rank === 1 ? rk.first : (
+        <>
+          {rk.other[0]}
+          <bdi>{rank}</bdi>
+          {rk.other[1]}
+        </>
+      )}
+      {tied && rk.tied}
+    </p>
+  );
+  const totalLine = (value: SiteValue, overYears: number, animate: boolean) => (
+    <Sentence size="lg">
+      {h.before}
+      <bdi>{product}</bdi>
+      {h.mid}
+      <span className="figure">
+        <Num value={value} size="figure" animate={animate} />
+      </span>
+      <LeadTail lead={h.in}>{fmt.years(overYears)}</LeadTail>
+      {h.after}
+      {/* On a phone the state tag sits under the sentence (UX fix 31); from md it follows it inline. */}
+      <span className="mt-2 flex flex-wrap items-center gap-2 md:mt-0 md:ms-2 md:inline-flex">
+        <StateTag state="computed" />
+        <ReadingMark value={value} />
+        {preTax.length > 0 && (
+          <Tag tone="blocked" icon={<IconLock size={14} className="text-blocked" />}>
+            {r3fees.preTax} <bdi dir="ltr">{preTax[0]}</bdi>
+          </Tag>
+        )}
+      </span>
+    </Sentence>
+  );
+  const underLine = (without: SiteValue, withThem: SiteValue) => (
+    <Sentence tone="muted">
+      {h.under}
+      <Num value={without} />
+      {h.with}
+      <Num value={withThem} />.
+    </Sentence>
+  );
   return (
     <header className="flex flex-col gap-3">
       <h1 className="text-2xl lg:text-3xl font-semibold">{r3fees.title}</h1>
       <NumberLegend institution={anyWeak([total, withFees, withoutFees])} />
       {/* the one plain sentence first (audit 2026-10-24, A18): what bringing the fee to the average is worth, from the figure of the "אם יורידו ל־" field */}
       {gap && (
-        <p className="text-lg font-medium">
-          {gap.kind === "more" ? (
-            <>
-              {g.more[0]}
-              <Num value={gap.worth} size="figure" />
-              <LeadTail lead={g.more[1]}>{fmt.years(years)}</LeadTail>
-              {g.more[2]}
-            </>
-          ) : (
-            g.less
-          )}
-        </p>
+        <LongestCase cases={[gapLine(big, 40), <p key="less" className="text-lg font-medium">{g.less}</p>]}>
+          {gap.kind === "more" ? gapLine(gap.worth, years) : <p className="text-lg font-medium">{g.less}</p>}
+        </LongestCase>
       )}
-      {place && (
-        <p>
-          {place.rank === 1 ? rk.first : (
-            <>
-              {rk.other[0]}
-              <bdi>{place.rank}</bdi>
-              {rk.other[1]}
-            </>
-          )}
-          {place.tied && rk.tied}
-        </p>
-      )}
-      <Sentence size="lg">
-        {h.before}
-        <bdi>{product}</bdi>
-        {h.mid}
-        <span className="figure">
-          <Num value={total} size="figure" animate />
-        </span>
-        <LeadTail lead={h.in}>{fmt.years(years)}</LeadTail>
-        {h.after}
-        {/* On a phone the state tag sits under the sentence (UX fix 31); from md it follows it inline. */}
-        <span className="mt-2 flex flex-wrap items-center gap-2 md:mt-0 md:ms-2 md:inline-flex">
-          <StateTag state="computed" />
-          <ReadingMark value={total} />
-          {preTax.length > 0 && (
-            <Tag tone="blocked" icon={<IconLock size={14} className="text-blocked" />}>
-              {r3fees.preTax} <bdi dir="ltr">{preTax[0]}</bdi>
-            </Tag>
-          )}
-        </span>
-      </Sentence>
-      <Sentence tone="muted">
-        {h.under}
-        <Num value={withoutFees} />
-        {h.with}
-        <Num value={withFees} />.
-      </Sentence>
+      {/* the place among the options is not there on every plan: its room stays, or the page moves when it comes back */}
+      <LongestCase cases={[placeLine(1, true), placeLine(99, true)]}>{place && placeLine(place.rank, place.tied)}</LongestCase>
+      <LongestCase cases={[totalLine(big, 40, false)]}>{totalLine(total, years, true)}</LongestCase>
+      <LongestCase cases={[underLine(big, big)]}>{underLine(withoutFees, withFees)}</LongestCase>
       {omitted.length > 0 && (
         <Callout tone="caution">
           {omitted.map((o) => (

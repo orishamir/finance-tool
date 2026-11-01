@@ -1,6 +1,6 @@
 // The ranked list and what sits beside it (design-system 6.3, design-spec 6.3): ranked row, listed row,
 // the part kept available, outcome tags, and the row animation when the order changes.
-import { useLayoutEffect, useRef, useState, type ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import { Link } from "react-router";
 import { ownTermsCopy, r2, r3fees, scnCompare } from "../../copy";
 import { addMonths, decidingFormulaOf, depositRangeFlag, feeShieldPair, providerOutcomes, workbenchHref, type CoverageRow, type ListedOption, type ProviderOutcome, type RankedOption } from "../../lib/compare";
@@ -8,7 +8,7 @@ import { fmt } from "../../lib/format";
 import { Button, Card, cx, HeadlineFigure, PercentField, RankBadge, Sentence, Tag } from "../kit";
 import { Tpl } from "../exposure-mode/tpl";
 import { IconAlert, IconDrillIn, IconLock } from "../icons";
-import { durationChart, Num } from "../provenance";
+import { Num } from "../provenance";
 import type { ResultCtx } from "./ctx";
 import { IconBan, IconDash, IconDashed, IconEdit, IconEqual, IconOk } from "./icons";
 import { ReasonLines } from "./reasons";
@@ -35,27 +35,6 @@ export function OutcomeTag({ kind, blocked, fixableByPerson }: { kind: CoverageR
 }
 
 // ---------------------------------------------------------------- row animation
-
-/** Rows slide to their new places over --duration-chart when the order changes (FLIP); nothing with reduced motion. */
-export function useFlip(order: string) {
-  const ref = useRef<HTMLOListElement>(null);
-  const prev = useRef<Map<string, DOMRect>>(new Map());
-  useLayoutEffect(() => {
-    const list = ref.current;
-    if (!list) return;
-    const ms = durationChart();
-    const next = new Map<string, DOMRect>();
-    list.querySelectorAll<HTMLElement>("[data-flip]").forEach((el) => {
-      const id = el.dataset.flip!;
-      const rect = el.getBoundingClientRect();
-      next.set(id, rect);
-      const was = prev.current.get(id);
-      if (ms > 0 && was && Math.abs(was.top - rect.top) > 1) el.animate([{ transform: `translateY(${was.top - rect.top}px)` }, { transform: "none" }], { duration: ms, easing: "cubic-bezier(0.2, 0, 0, 1)" });
-    });
-    prev.current = next;
-  }, [order]);
-  return ref;
-}
 
 // ---------------------------------------------------------------- ranked row
 

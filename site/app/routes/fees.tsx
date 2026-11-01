@@ -22,13 +22,14 @@ import { Num, NumberLegend, RuleRef, RulesLine } from "../components/provenance"
 import { anyWeak } from "../lib/value";
 import { Sheet } from "../components/Sheet";
 import { Breadcrumb, PageShell } from "../components/shell";
-import { Button, Callout, Card, Sentence } from "../components/kit";
+import { Button, Callout, Card, LongestCase, Sentence, useChartPick } from "../components/kit";
 import { loadBundle } from "../lib/bundle";
 import { type CompareBundle } from "../lib/compare";
 import { buildFees, buildHoldingFees, feeInputs, type FeeInputs, feeSensitivity, headlineGap, loadFeesData, parseSubject, rankedFor, ruleMap, softensAvoid, type FeeSensitivity, type FeesData, type FeesResult, type PlanError, type SubjectSpec } from "../lib/fees";
 import type { FieldKey } from "../lib/goal";
 import { useInputs } from "../lib/inputs";
-import { useSettled } from "../lib/settled";
+import { useAfterRender, useSettled } from "../lib/settled";
+import type { SiteValue } from "../lib/value";
 import { fmt } from "../lib/format";
 import { holdingName, useHolding } from "../lib/holdings";
 import { bundleLinks } from "../lib/bundle";
@@ -195,32 +196,14 @@ function Body({ bundle, fees, form, publisherNames, subject, frame }: { bundle: 
     }
   }, [bundle, fees, subject, inputs, holding.holding]);
   const [hover, setHover] = useState<number | null>(null);
-  const [sens, setSens] = useState<FeeSensitivity | null>(null);
+  const legendPick = useChartPick();
+  const sens = useAfterRender<FeeSensitivity>(result?.kind === "ok" ? () => feeSensitivity(result.args, result.analysis, result.args.runBundle) : null, [result]);
   const [reductions, setReductions] = useState<Record<string, number | null>>({});
   const [panelOpen, setPanelOpen] = useState(false);
   const [suggestion, setSuggestion] = useState<{ field: FieldKey; value: number } | null>(null);
   const headId = useId();
   const key = JSON.stringify(subject);
   useEffect(() => setReductions({}), [key]);
-
-  useEffect(() => {
-    setSens(null);
-    if (!result || result.kind !== "ok") return;
-    let cancelled = false;
-    const t = window.setTimeout(() => {
-      if (cancelled) return;
-      try {
-        const s = feeSensitivity(result.args, result.analysis, result.args.runBundle);
-        if (!cancelled) setSens(s);
-      } catch {
-        if (!cancelled) setSens(null);
-      }
-    }, 80);
-    return () => {
-      cancelled = true;
-      window.clearTimeout(t);
-    };
-  }, [result]);
 
   const openField = (field: FieldKey, suggested: number) => {
     setSuggestion({ field, value: suggested });
@@ -311,15 +294,10 @@ function Body({ bundle, fees, form, publisherNames, subject, frame }: { bundle: 
         {r3fees.chart.title}
       </h2>
       <Card className="flex flex-col gap-4">
-        <ChartLegend an={an} />
-        <FeeDragChart an={an} horizonYears={years} hover={hover} onHover={setHover} />
-        {grossNote && an.exitGap && (
-          <Sentence size="xs" tone="muted">
-            {r3fees.review.chartGross.before}
-            <Num value={an.exitGap} />
-            {r3fees.review.chartGross.after}
-          </Sentence>
-        )}
+        <ChartLegend an={an} pick={legendPick} />
+        <FeeDragChart an={an} horizonYears={years} hover={hover} onHover={setHover} highlight={legendPick.active} />
+        {/* the note comes and goes with the amounts: its room stays, or the page below the chart moves */}
+        <LongestCase cases={[<GrossNote key="note" gap={an.total} />]}>{grossNote && an.exitGap && <GrossNote gap={an.exitGap} />}</LongestCase>
         <ChartReadout an={an} year={hover ?? Math.round(an.series!.exitMonth / 12)} />
         <ChartTable an={an} />
       </Card>
@@ -387,6 +365,17 @@ function Body({ bundle, fees, form, publisherNames, subject, frame }: { bundle: 
   );
 }
 
+/** The chart's line when it shows the value before the tax at exit. */
+function GrossNote({ gap }: { gap: SiteValue }) {
+  return (
+    <Sentence size="xs" tone="muted">
+      {r3fees.review.chartGross.before}
+      <Num value={gap} />
+      {r3fees.review.chartGross.after}
+    </Sentence>
+  );
+}
+
 /** Wrappers whose run reads the age (an exit or annuity rule by age), as the guide page asks it; or an age already entered. */
 const AGE_WRAPPERS = new Set(["pension-comprehensive", "pension-general", "provident-for-annuity", "kupat-gemel-lehashkaa", "ira-provident"]);
 const ageMatters = (wrapperId: string | null, age: number | null) => age !== null || (!!wrapperId && AGE_WRAPPERS.has(wrapperId));
@@ -402,7 +391,7 @@ function FeePlan({ fi, form, holding, onOpen }: { fi: FeeInputs; form: FeeForm; 
         <Button variant="secondary" className="!h-9 px-3 text-sm" onClick={onOpen}>
           {r3fees.othersButton}
         </Button>
-        {example && <span>{r3fees.siteExample}</span>}
+        <LongestCase cases={[<span key="example">{r3fees.siteExample}</span>]}>{example && <span>{r3fees.siteExample}</span>}</LongestCase>
       </p>
     </section>
   );

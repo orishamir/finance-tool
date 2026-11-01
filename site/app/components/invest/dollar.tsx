@@ -7,7 +7,7 @@ import { inputMap, kindMoney, kindOf, sumFeesPct, type InvestView } from "../../
 import type { WorkbenchBundle, WorkbenchInputs } from "../../lib/providers";
 import { computed, ownBy, type SiteValue } from "../../lib/value";
 import { Num, RuleRef } from "../provenance";
-import { Card, ChartLegend, FixedTable, PairBars, SourceLine, StatRow, StatTile, Swatch, YearBars, useHeldHeight } from "../kit";
+import { Card, ChartLegend, FixedTable, PairBars, SourceLine, StatRow, StatTile, Swatch, YearBars, useChartPick, useHeldHeight } from "../kit";
 import { allFunds, kindPairs, type Pick } from "./pair";
 import { providerName } from "./sections";
 
@@ -33,6 +33,7 @@ export function DollarSection({ view, bundle, plan, pick }: { view: InvestView; 
   const h = Math.round(plan.years);
   const stretch = history ? stretchRange(history.points, h) : null;
   const held = useHeldHeight<HTMLParagraphElement>(view.index.id);
+  const legendPick = useChartPick();
   if (!rec || !pairs || !history) return null;
 
   const hedgedFunds = reporting.filter((f) => kindOf(f.rec) === "hedged" && f.rec.tracking_record!.years.some((y) => rec.years.some((r) => r.year === y.year)));
@@ -81,6 +82,7 @@ export function DollarSection({ view, bundle, plan, pick }: { view: InvestView; 
     };
   };
   const allYears = rec.years.map((y) => y.year);
+  const hedgedName = single ? c.dollar.legendHedgedOne(single.name) : c.dollar.legendHedgedMany(hedgedFunds.length);
   const rows = rec.years.map((y) => rowOf(String(y.year), String(y.year), [y.year], y.dollar, y.index, y.unhedged, y.hedged, c.kinds.groupCount(y.unhedged.count)));
   if (rec.together) rows.push(rowOf("together", c.dollar.together(rec.years.length), allYears, rec.together.dollar, rec.together.index, rec.together.unhedged, rec.together.hedged, c.dollar.togetherFunds(rec.together.unhedged.count, rec.years.length), true));
 
@@ -154,12 +156,13 @@ export function DollarSection({ view, bundle, plan, pick }: { view: InvestView; 
           <h3 className="font-semibold">{c.dollar.fundsTitle}</h3>
           <p className="text-xs text-muted-foreground">{c.dollar.fundsNote}</p>
           <ChartLegend
+            pick={legendPick}
             items={[
               { id: "u", swatch: <Swatch shape="box" className="bg-chart-kind-unhedged" />, label: c.dollar.legendUnhedged },
-              { id: "h", swatch: <Swatch shape="box" className="bg-chart-kind-hedged" />, label: <bdi>{single ? c.dollar.legendHedgedOne(single.name) : c.dollar.legendHedgedMany(hedgedFunds.length)}</bdi> },
+              { id: "h", swatch: <Swatch shape="box" className="bg-chart-kind-hedged" />, label: <bdi>{hedgedName}</bdi> },
             ]}
           />
-          <PairBars label={c.dollar.fundsLabel} tickStep={20} format={barLabel} fillA="fill-chart-kind-unhedged" fillB="fill-chart-kind-hedged" items={rec.years.map((y) => ({ year: y.year, a: (y.unhedged.low + y.unhedged.high) / 2, b: (y.hedged.low + y.hedged.high) / 2 }))} />
+          <PairBars label={c.dollar.fundsLabel} tickStep={20} format={barLabel} fillA="fill-chart-kind-unhedged" fillB="fill-chart-kind-hedged" nameA={c.dollar.legendUnhedged} nameB={hedgedName} highlight={legendPick.active === "u" ? "a" : legendPick.active === "h" ? "b" : null} items={rec.years.map((y) => ({ year: y.year, a: (y.unhedged.low + y.unhedged.high) / 2, b: (y.hedged.low + y.hedged.high) / 2 }))} />
         </div>
       </div>
       <FixedTable
