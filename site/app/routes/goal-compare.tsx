@@ -1,6 +1,7 @@
 // Screen 6: the comparison result (design-spec 8, flows 13 to 16 and 19). The goal lives on the device, so the
 // page is a shell until it is read; then the engine runs here, on the bundle fetched once. No saved goal opens the form.
 import { useEffect, useId, useMemo, useRef, useState } from "react";
+import { useAfterRender } from "../lib/settled";
 import { Link, Navigate, useLoaderData, useNavigate, useSearchParams } from "react-router";
 import type { RuleRecord } from "@finance-tool/schema";
 import { r2, scnCompare, site, system } from "../copy";
@@ -150,7 +151,6 @@ function Body({ bundle: bundle0, wb, data, fit, frame, exposureId, registerSave 
   const [mode, setMode] = useValueMode();
   const [hover, setHover] = useState<number | null>(null);
   const legendPick = useChartPick();
-  const [sens, setSens] = useState<SensitivityView | null>(null);
   const [panelOpen, setPanelOpen] = useState(false);
   const { saved, view: revisit } = useRevisit("wrapper");
   const [changes, setChanges] = useState<HTMLElement | null | false>(false);
@@ -168,25 +168,12 @@ function Body({ bundle: bundle0, wb, data, fit, frame, exposureId, registerSave 
   }, [hasSaved]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // F-81 runs after the result is on screen, so typing stays light.
-  useEffect(() => {
-    setSens(null);
-    if (outcome.kind !== "ok") return;
-    let cancelled = false;
-    const t = window.setTimeout(() => {
-      if (cancelled) return;
-      try {
-        const labels = { return: r2.result.sensNames["A-01"]!, inflation: r2.result.sensNames["A-02"]!, horizon: r2.result.sensNames.horizon! };
-        const s = computeSensitivity(bundle, g, outcome.evaluated, (kind: FeeKind, name: string) => `${r2.result.sensFee[kind]} · ${name}`, labels);
-        if (!cancelled) setSens(s);
-      } catch {
-        if (!cancelled) setSens(null);
-      }
-    }, 80);
-    return () => {
-      cancelled = true;
-      window.clearTimeout(t);
-    };
-  }, [outcome]); // eslint-disable-line react-hooks/exhaustive-deps
+  const sens = useAfterRender<SensitivityView>(
+    outcome.kind === "ok"
+      ? () => computeSensitivity(bundle, g, outcome.evaluated, (kind: FeeKind, name: string) => `${r2.result.sensFee[kind]} · ${name}`, { return: r2.result.sensNames["A-01"]!, inflation: r2.result.sensNames["A-02"]!, horizon: r2.result.sensNames.horizon! })
+      : null,
+    [outcome],
+  );
 
   const openField = (field: FieldKey, suggested?: number) => {
     setSuggestion(suggested === undefined ? null : { field, value: suggested });
