@@ -845,7 +845,7 @@ function Lists({ today }: { today: string }) {
           <FixedTable rowHead={p.a} columns={[{ id: "a", head: p.b }, { id: "b", head: p.c, hideOnPhone: true }, { id: "c", head: p.figure }]} rows={[{ key: "1", head: "2022", cells: ["+13.4%", "−18.5%", "−21.8%"] }, { key: "2", head: "2025", cells: ["−12.5%", "+17.4%", "+15.3%"] }, { key: "3", head: p.a, cells: ["+2.7%", "+49.3%", "+35.9%"], strong: true }]} />
         </State>
       </Demo>
-      <Demo name="useGlidingSeries, useGlidingRows, useGlidingNumbers, useFadingTicks, ticksOn, YearLabels, valueOn, useFlip, useBox" use={g.uses.Glide}>
+      <Demo name="useGlidingSeries, useGlidingRows, useGlidingNumbers, useFadingTicks, ticksOn, YearLabels, valueOn, useFlip, useBox, CountingFigures" use={g.uses.Glide}>
         <State label="choose another horizon or rate: the line, the axis and its labels glide from wherever they stand" wide>
           <GlideDemo />
         </State>

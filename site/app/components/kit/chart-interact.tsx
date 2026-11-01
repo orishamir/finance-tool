@@ -5,6 +5,7 @@
 import { useCallback, useEffect, useRef, useState, type PointerEvent, type ReactNode } from "react";
 import { kit as kitCopy } from "../../copy";
 import { useGlidingNumbers } from "./chart-glide";
+import { CountingFigures } from "./counting";
 import { cx } from "./cx";
 import { canZoomYears, domainOf, pickYear, viewFromDrag, viewFromWheel, yearAt, type Domain, type YearView } from "./chart-zoom";
 
@@ -234,7 +235,7 @@ export const pickDim = (active: string | null | undefined, id: string) => cx("tr
 export function ChartTip({ x, top = 0, width, children }: { x: number; top?: number; width: number; children: ReactNode }) {
   return (
     <div dir="rtl" className="absolute z-20 pointer-events-none whitespace-nowrap rounded-md border border-border bg-popover px-2 py-1 text-xs leading-snug shadow-sm" style={{ left: x, top, transform: x > width / 2 ? "translateX(calc(-100% - 8px))" : "translateX(8px)" }}>
-      {children}
+      <CountingFigures on={false}>{children}</CountingFigures>
     </div>
   );
 }
