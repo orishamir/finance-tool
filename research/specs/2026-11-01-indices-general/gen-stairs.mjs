@@ -35,7 +35,7 @@ ${knob("yi", "לכמה שנים", data.YEARS.length - 1, s0.yi, `${data.YEARS[s0
 <p class="xs muted note-f" id="msg">תשואה <span class="n">7%</span> לשנה, אינפלציה <span class="n">2%</span>, לפי המחירונים המפורסמים של כל חשבון.</p>
 </section>
 <div id="out">${TITLES.map((_, i) => `<section class="option ${i === 0 ? "on" : ""}" data-o="${i}"><h2 class="nojs">${TITLES[i][0]}: ${TITLES[i][1]}</h2>${app.render(s0, i, 1160)}</section>`).join("")}</div>
-<aside class="lab-n xs muted"><b>על השרטוט.</b> כל הסכומים יצאו ממנוע האתר, ל־${Object.keys(data.plans).length} תוכניות שחושבו מראש, ולכן הסרגלים כאן קופצים בין ערכים; בדף עצמו הם רציפים. אין כאן אף מספר מומצא. שמות החשבונות והקרנות קוצרו לשרטוט. הפתיחה היא החשבון האמצעי והקרן האמצעית מבין קרנות הסל, ולא מקרה של מישהו מסוים.</aside>
+<aside class="lab-n xs muted"><b>על השרטוט.</b> בדף עצמו הקטע הזה מתווסף מתחת לגרף הקיים, ולא מחליף אותו. כל הסכומים יצאו ממנוע האתר, ל־${Object.keys(data.plans).length} תוכניות שחושבו מראש, ולכן הסרגלים כאן קופצים בין ערכים; בדף עצמו הם רציפים. אין כאן אף מספר מומצא. שמות החשבונות והקרנות קוצרו לשרטוט. הפתיחה היא החשבון האמצעי והקרן האמצעית מבין קרנות הסל, ולא מקרה של מישהו מסוים.</aside>
 </main>
 <script>${src}
 const app=makeApp(${JSON.stringify(data)});
