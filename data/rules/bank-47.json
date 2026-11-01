@@ -1,0 +1,105 @@
+{
+  "id": "BANK-47",
+  "title": "How a spread from prime is written: no law or regulator sets a form",
+  "title_he": "איך כותבים מרווח מהפריים: אין חוק או הוראה שקובעים צורה",
+  "text_he": "הוראת הפרסום של בנק ישראל מחייבת להציג גם את ריבית העוגן והמרווח וגם את התוצאה, ולא קובעת איך לכתוב אותם. החוק כותב \"פריים מינוס רבע אחוז נקודות\". בנק ישראל כותב \"פריים+מרווח\", ובמדריך ההלוואות שלו באנגלית גם \"P+5%\". בנק ישראל כותב גם שהמרווח נשאר קבוע לכל תקופת הפיקדון. המרווח נספר בנקודות אחוז מהפריים, לא באחוזים ממנו. זו מסקנה מהחשבון של הבנקים; בטקסטים שנקראו אין לכך הגדרה.",
+  "strength": "primary",
+  "dimensions": [
+    "fee-change-over-time"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "bank-current-account-deposits.md",
+  "checked": "2026-11-01",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.boi.org.il/media/orgfwntb/447.pdf#page=2",
+      "title": "הוראה 447 (5/24)",
+      "title_he": "הוראה 447 (5/24)",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "locator": "p.2, s.5(ב)",
+      "locator_he": "עמוד 2, סעיף 5(ב)",
+      "page": 2,
+      "checked": "2026-11-01"
+    },
+    {
+      "url": "https://www.boi.org.il/en/information-and-service-to-the-public/banking-customer-service-information/public-guides/taking-a-loan/",
+      "title": "Bank of Israel: Taking a Loan",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "locator": "section 6",
+      "locator_he": "סעיף 6",
+      "checked": "2026-11-01"
+    },
+    {
+      "url": "https://www.boi.org.il/media/nvadftgk/150.pdf#page=26",
+      "title": "חוק הבנקאות (שירות ללקוח), נוסח משולב (בנק ישראל)",
+      "title_he": "חוק הבנקאות (שירות ללקוח), נוסח משולב (בנק ישראל)",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "locator": "p.26, s.9ז(ג)",
+      "locator_he": "עמוד 26, סעיף 9ז(ג)",
+      "page": 26,
+      "checked": "2026-11-01"
+    },
+    {
+      "url": "https://boi.org.il/media/32gc3dpb/%D7%9E%D7%A2%D7%A8%D7%9B%D7%AA-%D7%94%D7%91%D7%A0%D7%A7%D7%90%D7%95%D7%AA-%D7%91%D7%99%D7%A9%D7%A8%D7%90%D7%9C-%D7%A1%D7%A7%D7%99%D7%A8%D7%94-%D7%A9%D7%A0%D7%AA%D7%99%D7%AA-%D7%9C%D7%A9%D7%A0%D7%AA-2023.pdf#page=59",
+      "title": "בנק ישראל: סקירה שנתית 2023",
+      "title_he": "בנק ישראל: סקירה שנתית 2023",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "locator": "p.59",
+      "locator_he": "עמוד 59",
+      "page": 59,
+      "checked": "2026-11-01"
+    },
+    {
+      "url": "https://www.boi.org.il/media/n5yb3vy2/201111.pdf#page=3",
+      "title": "המפקח על הבנקים: הלוואות לדיור בריבית משתנה, 3.5.2011",
+      "title_he": "המפקח על הבנקים: הלוואות לדיור בריבית משתנה, 3.5.2011",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "locator": "p.3",
+      "locator_he": "עמוד 3",
+      "page": 3,
+      "checked": "2026-11-01"
+    },
+    {
+      "url": "https://www.boi.org.il/media/pwcogjaw/421.pdf#page=1",
+      "title": "הוראה 421, גרסה 2 (12/13)",
+      "title_he": "הוראה 421, גרסה 2 (12/13)",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "locator": "p.1",
+      "locator_he": "עמוד 1",
+      "page": 1,
+      "checked": "2026-11-01"
+    },
+    {
+      "url": "https://www.boi.org.il/media/nwjkv14l/184b.pdf#page=2",
+      "title": "צו הריבית, נוסח משולב (בנק ישראל)",
+      "title_he": "צו הריבית, נוסח משולב (בנק ישראל)",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "locator": "p.2",
+      "locator_he": "עמוד 2",
+      "page": 2,
+      "checked": "2026-11-01"
+    }
+  ]
+}
