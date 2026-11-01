@@ -1,6 +1,7 @@
 // A list to choose one row from (founder, 2026-10-27, the index page's two linked lists): every row is a radio, the chosen one is
 // tinted with a bar at its start; the rows' cells are the caller's, on a grid the caller names, and a head row can name the columns.
 import { Fragment, useLayoutEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
+import { useFlip } from "./chart-glide";
 import { cx } from "./cx";
 
 export interface PickRow {
@@ -41,8 +42,9 @@ export function PickList({ label, columns, phoneColumns, head, rows, phoneLimit,
   const [open, setOpen] = useState(false);
   // a pick re-prices what is above the list (founder, 2026-10-27: "the whole page jumps up and down"): keep the tapped row where it
   // was on the screen, wherever the list now puts it
-  const root = useRef<HTMLDivElement>(null);
   const anchor = useRef<{ key: string; top: number } | null>(null);
+  // when the order changes the rows slide to their new places, and the tapped row is the one that stands still
+  const root = useFlip<HTMLDivElement>(rows.map((r) => r.key).join(), () => anchor.current?.key ?? pending?.key);
   useLayoutEffect(() => {
     const outside = pending && rows.some((r) => r.key === pending!.key) ? pending : null;
     const a = anchor.current ?? outside;
@@ -85,6 +87,7 @@ export function PickList({ label, columns, phoneColumns, head, rows, phoneLimit,
           role="radio"
           aria-checked={r.selected}
           data-pick-key={r.key}
+          data-flip={r.key}
           tabIndex={r.selected ? 0 : -1}
           onClick={(e) => {
             if (!inControl(e.target, e.currentTarget)) choose(r, e.currentTarget);

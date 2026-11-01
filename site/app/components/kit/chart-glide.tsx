@@ -131,9 +131,11 @@ export function YearLabels({ ticks, x, y, left, right, word = String }: { ticks:
 
 /**
  * Rows slide to their new places when the order changes: put `data-flip` with an id on each row, and the ref on their list. Places are read
- * inside the list, so scrolling between two changes moves nothing; a change during a slide carries on from where the row stands.
+ * inside the list, so scrolling between two changes moves nothing; a change during a slide carries on from where the row stands. `held()`
+ * names a row the page keeps in place on the screen (a tapped row): it does not slide, and the others slide around it. A row folded away is
+ * left out, and when it comes back it is simply there.
  */
-export function useFlip<E extends HTMLElement = HTMLOListElement>(order: string) {
+export function useFlip<E extends HTMLElement = HTMLOListElement>(order: string, held?: () => string | null | undefined) {
   const ref = useRef<E>(null);
   const prev = useRef<Map<string, number>>(new Map());
   const sliding = useRef<Map<string, Animation>>(new Map());
@@ -142,18 +144,28 @@ export function useFlip<E extends HTMLElement = HTMLOListElement>(order: string)
     if (!list) return;
     const ms = durationChart();
     const listTop = list.getBoundingClientRect().top;
+    const rows = [...list.querySelectorAll<HTMLElement>("[data-flip]")].filter((el) => el.offsetParent);
+    // first where each row stands, then where it belongs: `before` is a row's place on the screen just before this change, inside the list
+    const before = new Map<string, number>();
+    for (const el of rows) {
+      const was = prev.current.get(el.dataset.flip!);
+      if (was !== undefined) before.set(el.dataset.flip!, was + new DOMMatrixReadOnly(getComputedStyle(el).transform).m42);
+    }
     const next = new Map<string, number>();
-    list.querySelectorAll<HTMLElement>("[data-flip]").forEach((el) => {
+    for (const el of rows) {
+      sliding.current.get(el.dataset.flip!)?.cancel();
+      next.set(el.dataset.flip!, el.getBoundingClientRect().top - listTop);
+    }
+    const anchor = held?.();
+    const shift = anchor ? (before.get(anchor) ?? next.get(anchor) ?? 0) - (next.get(anchor) ?? 0) : 0;
+    for (const el of rows) {
       const id = el.dataset.flip!;
-      const moved = new DOMMatrixReadOnly(getComputedStyle(el).transform).m42;
-      sliding.current.get(id)?.cancel();
-      const top = el.getBoundingClientRect().top - listTop;
-      next.set(id, top);
-      const was = prev.current.get(id);
-      const from = was === undefined ? 0 : was + moved - top;
+      const was = before.get(id);
+      const from = was === undefined ? 0 : was - next.get(id)! - shift;
       if (ms > 0 && Math.abs(from) > 1) sliding.current.set(id, el.animate([{ transform: `translateY(${from}px)` }, { transform: "none" }], { duration: ms, easing: "cubic-bezier(0.2, 0, 0, 1)" }));
-    });
+    }
     prev.current = next;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [order]);
   return ref;
 }

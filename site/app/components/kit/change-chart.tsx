@@ -2,7 +2,7 @@
 // right from less to more, all lines crossing at the plan; a marker the person drags (or sets with a choice) reads every line at one
 // share, and the table under it says, for each number, what it was, what it becomes, what is left and the difference. Own SVG.
 import { useState, type PointerEvent, type ReactNode } from "react";
-import { tickFade, ticksOn, useFadingTicks, useGlidingNumbers, useGlidingSeries, valueOn } from "./chart-glide";
+import { tickFade, ticksOn, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn } from "./chart-glide";
 import { pickDim, useChartPick } from "./chart-interact";
 import { cx } from "./cx";
 import { TableCols } from "./table-cols";
@@ -108,6 +108,7 @@ export function ChangeChart({
   const grid = ticksOn(useFadingTicks(Array.from({ length: Math.floor((maxGoal - minGoal) / gstep) + 1 }, (_, i) => Math.ceil(minGoal / gstep) * gstep + i * gstep).filter((v) => v <= maxGoal)), y, [TOP, H - BOTTOM]);
   const path = (pts: { year: number; v: number }[]) => pts.reduce<string>((acc, p, i) => (!Number.isFinite(p.v) ? acc : `${acc}${acc && Number.isFinite(pts[i - 1]?.v) ? "L" : "M"}${x(p.year).toFixed(1)} ${y(p.v).toFixed(1)}`), "");
   const ids = choices.map(String);
+  const tableRows = useFlip<HTMLTableSectionElement>(rows.map((r) => r.id).join());
   return (
     <div className="flex flex-col gap-3">
       <ChoiceChips ids={ids} labels={Object.fromEntries(choices.map((s) => [String(s), shareWord(s)]))} value={ids.includes(String(at)) ? String(at) : null} onChange={(id) => onAt(Number(id))} ariaLabel={choicesLabel} wrap />
@@ -168,9 +169,9 @@ export function ChangeChart({
               ))}
             </tr>
           </thead>
-          <tbody>
+          <tbody ref={tableRows}>
             {rows.map((r) => (
-              <tr key={r.id} {...pick.bind(r.id)} className={cx("cursor-pointer transition-colors duration-[var(--duration-fast)]", pick.active === r.id && "bg-accent")}>
+              <tr key={r.id} data-flip={r.id} {...pick.bind(r.id)} className={cx("cursor-pointer transition-colors duration-[var(--duration-fast)]", pick.active === r.id && "bg-accent")}>
                 {r.cells.map((c, i) => (
                   <td key={i} className={widths[i]?.phone === "0" ? GONE : undefined}>
                     {i === 0 ? (

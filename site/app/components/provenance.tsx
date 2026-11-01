@@ -145,7 +145,7 @@ export interface NumProps {
   /** Keeps two decimals on a shekel amount (it sits within 0.50 ₪ of a threshold, so rounding could cross it). */
   exact?: boolean;
   /** Replaces the formatted text (for example "שנתיים" for a horizon of two years). */
-  display?: string;
+  display?: string | ((shown: number) => string | undefined);
   /** Moves the digits to a new value over --duration-chart when it changes (design-spec 1.6). */
   animate?: boolean;
   className?: string;
@@ -178,7 +178,9 @@ export function Num({ value, size = "inline", display, animate, className, prefi
   // display rounding (A13): a table cell keeps two decimals, everything else rounds computed and entered amounts
   const keepDecimals = size === "cell" || !!exact;
   const roundState = keepDecimals ? undefined : value.state;
-  const text = display ?? (shown !== null && typeof value.value === "number" ? formatValue(shown, value.unit, roundState, param) : formatValue(value.value, value.unit, roundState, param));
+  // a formatter gets the moving value, so a signed figure counts like any other
+  const written = typeof display === "function" ? (shown !== null ? display(shown) : undefined) : display;
+  const text = written ?? (shown !== null && typeof value.value === "number" ? formatValue(shown, value.unit, roundState, param) : formatValue(value.value, value.unit, roundState, param));
   const strength = strengthOf(value);
   const weak = isWeak(value) && (strength === "institution" || strength === "secondary") ? numbers.weak[strength] : null;
   const fromDate = startsAfter(value, today);
@@ -195,7 +197,7 @@ export function Num({ value, size = "inline", display, animate, className, prefi
       type="button"
       className={cx("num", `num-${value.state}`, size === "figure" && "num-figure", size === "cell" && "num-cell", value.value === null && "num-unknown", className)}
       aria-label={label}
-      onClick={(e) => open({ kind: "value", value, ...(keepDecimals ? { exact: true } : {}), ...(value.value === null && display ? { display } : {}) }, e.currentTarget)}
+      onClick={(e) => open({ kind: "value", value, ...(keepDecimals ? { exact: true } : {}), ...(value.value === null && written ? { display: written } : {}) }, e.currentTarget)}
     >
       {value.stale && <IconClock size={14} className={cx("text-caution me-1", mark)} aria-hidden="true" />}
       {((showMark && fromDate) || markWeak) && <IconAlert size={14} className={cx("text-caution me-1", mark)} aria-hidden="true" />}
