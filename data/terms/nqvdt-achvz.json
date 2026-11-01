@@ -1,0 +1,27 @@
+{
+  "id": "nqvdt-achvz",
+  "he": "נקודת אחוז",
+  "en": null,
+  "meaning": "הפרש של אחוז אחד בין שתי ריביות, לא אחוז מהריבית עצמה.",
+  "where": [
+    "provider-site"
+  ],
+  "wrapper_ids": [
+    "bank-deposit",
+    "savings-plan"
+  ],
+  "variants": [
+    "נקודות אחוז",
+    "אחוז נקודות"
+  ],
+  "rule_ids": [
+    "BANK-47"
+  ],
+  "source": {
+    "url": "https://www.boi.org.il/media/nwjkv14l/184b.pdf#page=2",
+    "title": "צו הריבית (קביעת שיעור הריבית המכסימלי), התש\"ל-1970, נוסח משולב (בנק ישראל), עמוד 2",
+    "publisher": "Bank of Israel",
+    "strength": "primary",
+    "checked": "2026-11-01"
+  }
+}

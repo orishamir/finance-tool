@@ -1,0 +1,172 @@
+{
+  "id": "BANK-46",
+  "title": "What prime is, and how it stands to the Bank of Israel rate",
+  "title_he": "מהי ריבית הפריים, ואיך היא קשורה לריבית בנק ישראל",
+  "text_he": "צו הריבית מגדיר את ריבית הפריים כ\"ריבית בסיסית תעריפית ללקוחות מועדפים בעלי חשבון דביטורי\", ולא כותב מספר. בנק ישראל כותב בדפי ההסבר שלו לציבור שהיא ריבית בנק ישראל \"בתוספת קבועה של 1.5%\", ושהיא מתעדכנת סמוך לכל שינוי בריבית בנק ישראל. החוק מודד אותה כממוצע של כמה בנקים גדולים, ומכאן שלכל בנק פריים משלו. בטקסטים שנקראו אין הוראה המחייבת בנק לשמור על התוספת הזו.",
+  "strength": "primary",
+  "dimensions": [
+    "real-vs-nominal",
+    "fee-change-over-time"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "il_finance_file": "bank-current-account-deposits.md",
+  "checked": "2026-11-01",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.boi.org.il/media/nwjkv14l/184b.pdf#page=2",
+      "title": "צו הריבית (קביעת שיעור הריבית המכסימלי), התש\"ל-1970, נוסח משולב (בנק ישראל)",
+      "title_he": "צו הריבית (קביעת שיעור הריבית המכסימלי), התש\"ל-1970, נוסח משולב (בנק ישראל)",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "locator": "p.2, s.1, s.2א(ב)",
+      "locator_he": "עמוד 2, סעיף 1, סעיף 2א(ב)",
+      "page": 2,
+      "checked": "2026-11-01"
+    },
+    {
+      "url": "https://www.boi.org.il/media/utld2tgp/451.pdf#page=28",
+      "title": "הוראת ניהול בנקאי תקין 451, גרסה 22 (7/23), תוספת 6: דף הסבר למבקש הלוואה",
+      "title_he": "הוראת ניהול בנקאי תקין 451, גרסה 22 (7/23), תוספת 6: דף הסבר למבקש הלוואה",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "locator": "p.28",
+      "locator_he": "עמוד 28",
+      "page": 28,
+      "checked": "2026-11-01"
+    },
+    {
+      "url": "https://boi.org.il/media/32gc3dpb/%D7%9E%D7%A2%D7%A8%D7%9B%D7%AA-%D7%94%D7%91%D7%A0%D7%A7%D7%90%D7%95%D7%AA-%D7%91%D7%99%D7%A9%D7%A8%D7%90%D7%9C-%D7%A1%D7%A7%D7%99%D7%A8%D7%94-%D7%A9%D7%A0%D7%AA%D7%99%D7%AA-%D7%9C%D7%A9%D7%A0%D7%AA-2023.pdf#page=79",
+      "title": "בנק ישראל: מערכת הבנקאות בישראל, סקירה שנתית 2023",
+      "title_he": "בנק ישראל: מערכת הבנקאות בישראל, סקירה שנתית 2023",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "locator": "p.79",
+      "locator_he": "עמוד 79",
+      "page": 79,
+      "checked": "2026-11-01"
+    },
+    {
+      "url": "https://www.boi.org.il/media/nvadftgk/150.pdf#page=26",
+      "title": "חוק הבנקאות (שירות ללקוח), נוסח משולב (בנק ישראל)",
+      "title_he": "חוק הבנקאות (שירות ללקוח), נוסח משולב (בנק ישראל)",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "locator": "p.26, s.9ז(ג)",
+      "locator_he": "עמוד 26, סעיף 9ז(ג)",
+      "page": 26,
+      "checked": "2026-11-01"
+    },
+    {
+      "url": "https://www.boi.org.il/information/interestrates/primerates/",
+      "title": "בנק ישראל: ריבית ממוצעת בסיסית בחח\"ד (פריים)",
+      "title_he": "בנק ישראל: ריבית ממוצעת בסיסית בחח\"ד (פריים)",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "checked": "2026-11-01"
+    },
+    {
+      "url": "https://www.boi.org.il/information/bank-paymnts/financial-education/competition-in-mortgages/",
+      "title": "בנק ישראל: הרפורמה להגברת שקיפות המידע והתחרות במשכנתאות",
+      "title_he": "בנק ישראל: הרפורמה להגברת שקיפות המידע והתחרות במשכנתאות",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "checked": "2026-11-01"
+    },
+    {
+      "url": "https://www.boi.org.il/en/information-and-service-to-the-public/banking-customer-service-information/public-guides/taking-a-loan/",
+      "title": "Bank of Israel: Taking a Loan",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "checked": "2026-11-01"
+    },
+    {
+      "url": "https://edge.boi.org.il/FusionEdgeServer/sdmx/v2/data/dataflow/BOI.STATISTICS/BR/1.0/MNT_RIB_BOI_D?format=csv&startPeriod=2026-08-20&endPeriod=2026-11-01&labels=name",
+      "title": "EDGE, MNT_RIB_BOI_D",
+      "publisher": "Bank of Israel (data)",
+      "publisher_he": "בנק ישראל (מאגר הנתונים)",
+      "kind": "dataset",
+      "strength": "primary",
+      "checked": "2026-11-01"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/globaldocs/MMM/72cda6f6-f4ad-ed11-8152-005056aac6c3/2_72cda6f6-f4ad-ed11-8152-005056aac6c3_11_19994.pdf#page=5",
+      "title": "מרכז המחקר והמידע של הכנסת: שמץ של מושג, פברואר 2023",
+      "title_he": "מרכז המחקר והמידע של הכנסת: שמץ של מושג, פברואר 2023",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "other",
+      "strength": "secondary",
+      "locator": "p.5",
+      "locator_he": "עמוד 5",
+      "page": 5,
+      "checked": "2026-11-01"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/globaldocs/MMM/60df63df-bab2-ed11-8158-005056aa4246/2_60df63df-bab2-ed11-8158-005056aa4246_11_19986.pdf#page=3",
+      "title": "סקירה 19.2.2023",
+      "title_he": "סקירה 19.2.2023",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "other",
+      "strength": "secondary",
+      "locator": "pp.3-4",
+      "locator_he": "עמודים 3 עד 4",
+      "page": 3,
+      "checked": "2026-11-01"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/globaldocs/MMM/3e698876-8db3-ee11-8162-005056aa4246/2_3e698876-8db3-ee11-8162-005056aa4246_11_20379.pdf#page=4",
+      "title": "סקירה 21.1.2024",
+      "title_he": "סקירה 21.1.2024",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "other",
+      "strength": "secondary",
+      "locator": "p.4",
+      "locator_he": "עמוד 4",
+      "page": 4,
+      "checked": "2026-11-01"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/globaldocs/MMM/06bc8d55-f7f7-e411-80c8-00155d010977/2_06bc8d55-f7f7-e411-80c8-00155d010977_11_13867.pdf#page=2",
+      "title": "ריבית פיגורים, 2009",
+      "title_he": "ריבית פיגורים, 2009",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "other",
+      "strength": "secondary",
+      "locator": "p.2",
+      "locator_he": "עמוד 2",
+      "page": 2,
+      "checked": "2026-11-01",
+      "qualifier": "(not binding)"
+    },
+    {
+      "url": "https://he.wikisource.org/wiki/%D7%A6%D7%95_%D7%94%D7%A8%D7%99%D7%91%D7%99%D7%AA_(%D7%A7%D7%91%D7%99%D7%A2%D7%AA_%D7%A9%D7%99%D7%A2%D7%95%D7%A8_%D7%94%D7%A8%D7%99%D7%91%D7%99%D7%AA_%D7%94%D7%9E%D7%9B%D7%A1%D7%99%D7%9E%D7%9C%D7%99)",
+      "title": "ויקיטקסט, אותו צו",
+      "title_he": "ויקיטקסט, אותו צו",
+      "publisher": "Hebrew Wikisource",
+      "publisher_he": "ויקיטקסט",
+      "kind": "law",
+      "strength": "primary-mirror",
+      "mirror_host": "wikisource",
+      "checked": "2026-11-01"
+    }
+  ]
+}

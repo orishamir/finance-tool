@@ -27,6 +27,16 @@ function Item({ id, label, children, rules, known, after }: { id: string; label:
   );
 }
 
+/** A spread in words: the unit is percentage points and a minus sign misreads in Hebrew (BANK-47). */
+function SpreadWords({ spread }: { spread: NonNullable<ProductRowData["spread"]> }) {
+  const v = Number(spread.value);
+  return (
+    <>
+      {v < 0 ? copy.rateType.less : copy.rateType.more} <Num value={spread} display={`${fmt.number(Math.abs(v))} ${copy.rateType.points}`} />
+    </>
+  );
+}
+
 export function BankProductRow({ p, known, wrapperName }: { p: ProductRowData; known: ReadonlySet<string>; wrapperName: string }) {
   const l = copy.labels;
   const taxWord = String(p.taxBucket.value).startsWith("unlinked") ? copy.tax.unlinked : String(p.taxBucket.value).startsWith("linked") ? copy.tax.linked : String(p.taxBucket.value);
@@ -74,7 +84,8 @@ export function BankProductRow({ p, known, wrapperName }: { p: ProductRowData; k
           <Item id="rateType" label={l.rateType} known={known}>
             {p.rateType === "variable" ? (
               <>
-                {copy.rateType.variable} {p.anchor && <bdi>{p.anchor}</bdi>} {p.spread && <Num value={p.spread} />}
+                {copy.rateType.variable} {p.anchor === "prime" ? copy.rateType.prime : p.anchor && <bdi>{p.anchor}</bdi>}{" "}
+                {p.spread && <SpreadWords spread={p.spread} />}
               </>
             ) : (
               copy.rateType.fixed

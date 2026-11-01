@@ -2041,7 +2041,7 @@ export const r4catalogue = {
     autoRenew: "חידוש אוטומטי",
   },
   term: { months: "חודשים", none: "ללא תקופה" },
-  rateType: { fixed: "ריבית קבועה", variable: "ריבית משתנה:" },
+  rateType: { fixed: "ריבית קבועה", variable: "ריבית משתנה:", prime: "פריים", less: "פחות", more: "ועוד", points: "נקודות אחוז" },
   linkage: { none: "לא צמוד", cpi: "צמוד למדד", fx: "צמוד למט״ח" },
   tax: { unlinked: "ריבית לא צמודה; השיעור בעמוד המדריך.", linked: "ריבית צמודה; השיעור בעמוד המדריך." },
   amount: { from: "מ־", to: "עד", noMin: "ללא מינימום" },
