@@ -11,7 +11,7 @@ import { r4workbench as c, site } from "../copy";
 import { AssumptionsPanel } from "../components/compare/assumptions";
 import type { FormData } from "../components/compare/goal-form";
 import { SavedGoalStrip } from "../components/compare/strip";
-import { useFlip } from "../components/compare/rows";
+import { useFlip } from "../components/kit";
 import { NumberLegend, RulesLine } from "../components/provenance";
 import { Sheet } from "../components/Sheet";
 import { Breadcrumb, PageShell } from "../components/shell";
@@ -25,6 +25,7 @@ import { BarLegend, NotComparableRow, ProviderRow, RowDetail, type RowCtx } from
 import { ProvidentListing } from "../components/workbench/providers/provident";
 import { loadBundle } from "../lib/bundle";
 import { runGoalOf, type CompareBundle } from "../lib/compare";
+import { useChartPick } from "../components/kit";
 import { feeInputs } from "../lib/fees";
 import { GoalsProvider, hasMeaning, useGoals, type Presets } from "../lib/goal";
 import { useInputs } from "../lib/inputs";
@@ -173,6 +174,7 @@ function Body({ wb, compare, data, presets, rules, search }: { wb: WorkbenchBund
   const result = useMemo(() => buildProviderWorkbench({ bundle: wb, wrapperId: data.wrapperId, query, inputs, offers: offersApi.offers, assumptions: assumptions.value }), [wb, data.wrapperId, query, inputs, offersApi.offers, assumptions.value]);
 
   const [hover, setHover] = useState<number | null>(null);
+  const legendPick = useChartPick();
   const [panelOpen, setPanelOpen] = useState(false);
   const [detail, setDetail] = useState<{ id: string; anchor: HTMLElement } | null>(null);
   const [offerFor, setOfferFor] = useState<{ id: string; anchor: HTMLElement | null } | null>(null);
@@ -302,8 +304,8 @@ function Body({ wb, compare, data, presets, rules, search }: { wb: WorkbenchBund
         {c.providers.chart.title}
       </h2>
       <Card className="flex flex-col gap-4">
-        <ChartLegend lines={v.chart} />
-        <CumulativeCostChart lines={v.chart} years={v.years} today={data.today} hover={hover} onHover={setHover} />
+        <ChartLegend lines={v.chart} pick={legendPick} />
+        <CumulativeCostChart lines={v.chart} years={v.years} today={data.today} hover={hover} onHover={setHover} highlight={legendPick.active} />
         <p className="text-xs text-muted-foreground">
           {c.providers.chart.realNote}
           {chartHasEntered && ` ${c.providers.chart.dashed}`}

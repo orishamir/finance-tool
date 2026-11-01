@@ -97,10 +97,10 @@ export function GovernmentBondVisual({ data, today }: VisualProps) {
               <Num value={v.price} />
             </Stat>
             <Stat label={copy.bond.figures.change}>
-              <Num value={v.change} display={signed(Math.round(model.changePct * 10) / 10) + "%"} />
+              <Num value={v.change} display={(n) => signed(Math.round(n * 10) / 10) + "%"} />
             </Stat>
             <Stat label={copy.bond.figures.makam} tone="alt">
-              <Num value={v.makam} display={signed(Math.round(model.makamChangePct * 10) / 10) + "%"} />
+              <Num value={v.makam} display={(n) => signed(Math.round(n * 10) / 10) + "%"} />
             </Stat>
           </StatRow>
           <GainBars

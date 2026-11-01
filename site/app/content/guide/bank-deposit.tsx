@@ -21,11 +21,11 @@ export const content: GuideContent = {
         <p className="max-w-measure">
           פיקדון <Term id="לא צמוד">לא צמוד</Term> מחזיר את הקרן ועוד ריבית, גם אם המחירים עלו; פיקדון <Term id="צמוד למדד המחירים לצרכן">צמוד למדד</Term> מעדכן את הקרן לפי המדד, והריבית באה בנוסף. האם הקרן מוגנת כשהמדד יורד הוא תנאי של המוצר (<Term id="הבטחת קרן">הבטחת קרן</Term>), לא משהו שהחוק קובע.
         </p>
-        {/* D30: which rate is the anchor is each bank's own term (BANK-25 sets no anchor; BANK-34 holds three banks' definitions) */}
+        {/* D30: "usually prime" is the Bank of Israel's word (BANK-47); each bank's definition of prime is its own term (BANK-34, nine banks) */}
         <p className="max-w-measure">
-          <VariesByCompany ids={[{ rule: "BANK-34", companies: ["leumi", "hapoalim", "yahav"] }]} lead="איזו ריבית היא העוגן תלוי בבנק" />
+          <VariesByCompany ids={[{ rule: "BANK-34", companies: ["leumi", "hapoalim", "discount", "mercantile", "mizrahi-tefahot", "fibi", "massad", "yahav", "jerusalem"] }]} lead="העוגן הוא בדרך כלל ריבית הפריים, וכל בנק קובע אותה בעצמו" />
         </p>
-        <RulesLine ids={["BANK-13", "BANK-14", "BANK-25", "BANK-26", "BANK-05"]} />
+        <RulesLine ids={["BANK-13", "BANK-14", "BANK-25", "BANK-46", "BANK-47", "BANK-26", "BANK-05"]} />
       </>
     );
   },

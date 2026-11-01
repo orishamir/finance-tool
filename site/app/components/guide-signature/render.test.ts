@@ -52,7 +52,8 @@ describe("current account page", () => {
     expect(text).toContain("הפועלים, מזרחי טפחות ומסד");
     expect(text).toContain("״לא מוצעת ריבית על יתרת זכות״");
     expect(text).toMatch(/מרכנתיל\s+יש ספק\s+כתב בפרסום ריבית/);
-    expect(html.match(/aria-pressed/g)).toHaveLength(8);
+    // the picker's chips only: the chart's legend items press too (issue 22)
+    expect(html.match(/aria-pressed="[^"]*" class="sec-chip/g)).toHaveLength(8);
   });
 
   it("flags First International and Mercantile with the caution mark and their own doubt", () => {

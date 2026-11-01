@@ -1,6 +1,8 @@
 // The three parts that sit around every chart: the legend, the readout of the hovered year, and the table view.
+import { CountingFigures } from "./counting";
 import type { CSSProperties, ReactNode } from "react";
 import { buttons, kit as kitCopy } from "../../copy";
+import type { ChartPick } from "./chart-interact";
 import { cx } from "./cx";
 import { Disclosure } from "./disclosure";
 import { TableCols } from "./table-cols";
@@ -39,14 +41,26 @@ export interface LegendItem {
   label: ReactNode;
 }
 
-/** What each colour or line on a chart means: one item per series, under the chart's title. Colour never works alone, so every item has its name. */
-export function ChartLegend({ items }: { items: LegendItem[] }) {
+/**
+ * What each colour or line on a chart means: one item per series, under the chart's title. Colour never works alone, so every item has its
+ * name. With `pick`, an item that has a mark sets its series apart on the chart: a mouse previews, a click or a tap keeps (issue 22).
+ */
+export function ChartLegend({ items, pick }: { items: LegendItem[]; pick?: ChartPick<string> }) {
   return (
     <ul className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground" aria-label={kitCopy.legend}>
       {items.map((it) => (
         <li key={it.id} className={it.swatch ? "flex items-center gap-1.5" : undefined}>
-          {it.swatch}
-          {it.label}
+          {pick && it.swatch ? (
+            <button type="button" aria-pressed={pick.pinned === it.id} {...pick.bind(it.id)} className={cx("inline-flex items-center gap-1.5 max-md:min-h-target cursor-pointer transition-opacity duration-[var(--duration-fast)] hover:text-foreground", pick.active === it.id && "text-foreground", pick.active && pick.active !== it.id && "opacity-50")}>
+              {it.swatch}
+              {it.label}
+            </button>
+          ) : (
+            <>
+              {it.swatch}
+              {it.label}
+            </>
+          )}
         </li>
       ))}
     </ul>
@@ -64,6 +78,7 @@ export interface ReadoutRow {
 /** The values of every series at the hovered year (or at the horizon): a head line with the year, then one row per series. */
 export function ChartReadout({ title, rows }: { title: ReactNode; rows: ReadoutRow[] }) {
   return (
+    <CountingFigures on={false}>
     <dl className="readout" aria-live="polite">
       <div className="readout-row readout-head">
         <dt>{title}</dt>
@@ -79,6 +94,7 @@ export function ChartReadout({ title, rows }: { title: ReactNode; rows: ReadoutR
         </div>
       ))}
     </dl>
+    </CountingFigures>
   );
 }
 
@@ -137,6 +153,7 @@ const CHART_FIGURE_REM = 8;
  */
 export function ChartTable({ rowHead, columns, rows, scroll = "cue", compact, regionLabel }: { rowHead: ReactNode; columns: TableColumn[]; rows: TableRowData[]; scroll?: "cue" | "bleed"; compact?: boolean; regionLabel?: string }) {
   return (
+    <CountingFigures on={false}>
     <Disclosure label={buttons.showTable} openLabel={buttons.hideTable} summaryClassName="text-sm">
       <div className={cx("overflow-x-auto overflow-y-hidden mt-2", scroll === "bleed" && "-mx-4 px-4 md:mx-0 md:px-0")} style={scroll === "cue" ? scrollCueStyle : undefined} {...(regionLabel ? { tabIndex: 0, role: "region", "aria-label": regionLabel } : {})}>
         <table className={cx("tbl text-sm [&_td]:whitespace-nowrap", compact && "[&_td]:px-2 [&_th]:px-2")} style={{ minWidth: `${CHART_YEAR_REM + columns.length * CHART_FIGURE_REM}rem` }}>
@@ -166,5 +183,6 @@ export function ChartTable({ rowHead, columns, rows, scroll = "cue", compact, re
         </table>
       </div>
     </Disclosure>
+    </CountingFigures>
   );
 }

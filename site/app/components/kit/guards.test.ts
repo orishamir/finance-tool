@@ -6,7 +6,9 @@
 //  4. the gallery at /kit stays out of the menu and the search;
 //  5. a question data/open-questions.json has as closed is not named as open (2026-10-26);
 //  6. "אחר" in a row of choices is the kit's OtherChip (ChoiceChips `other`), never an ordinary chip (2026-10-26);
-//  7. every <table> is fixed with a width per column (design-system 2.5a, 2026-10-31).
+//  7. every <table> is fixed with a width per column (design-system 2.5a, 2026-10-31);
+//  8. a year chart's pointer is the kit's useYearZoom: a chart that clears its reading when the pointer lifts lost the year on a phone (issue 22);
+//  9. a chart's motion is the kit's glide: a chart with a loop of its own restarted from its last rest on every step of a slider (2026-11-01).
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { join, relative } from "node:path";
@@ -178,5 +180,49 @@ describe("every table has fixed columns", () => {
     expect(unfixed(`<table className="tbl"><thead /></table>`)).toHaveLength(1);
     expect(unfixed(`<table className="w-full"><TableCols widths={[]} /></table>`)).toHaveLength(1);
     expect(unfixed(`<table className="w-full table-fixed"><TableCols widths={[]} /></table>`)).toEqual([]);
+  });
+});
+
+describe("a year chart's pointer is the kit's", () => {
+  it("no chart clears its reading when the pointer lifts", () => {
+    const hits = files.filter((f) => /\.tsx$/.test(f) && !rel(f).startsWith("components/kit/") && /onPointerUp=\{\(\) => onHover\(null\)\}/.test(code(read(f)))).map(rel);
+    expect(hits).toEqual([]);
+  });
+});
+
+describe("a chart's motion is the kit's", () => {
+  it("no chart has an animation loop of its own", () => {
+    const charts = /^components\/(chart|compare|fees|workbench\/providers|guide-signature|invest|timeline|exposure-mode)\//;
+    const hits = files.filter((f) => /\.tsx$/.test(f) && charts.test(rel(f)) && /<svg[\s>]/.test(code(read(f))) && /requestAnimationFrame/.test(code(read(f)))).map(rel);
+    expect(hits).toEqual([]);
+  });
+  it("a chart measures its box and a list slides its rows with the kit's piece", () => {
+    const hits = files.filter((f) => /\.tsx$/.test(f) && !/^components\/(kit\/|shell)/.test(rel(f)) && /new ResizeObserver|\.animate\(\[/.test(code(read(f))));
+    expect(hits).toEqual([]);
+  });
+});
+
+// 10. the stairs and the rows of single changes (2026-11-01): a gain is green and a loss red through the roles, never a literal colour, and a
+//     row is a stretched button with its figures above it, never a button that holds a figure (a figure is itself a button).
+describe("the stairs and the difference rows", () => {
+  const stairs = code(read(join(root, "components/kit/stairs-chart.tsx")));
+  const diff = code(read(join(root, "components/kit/diff-row.tsx")));
+  it("use roles, no literal colour or palette step", () => {
+    for (const src of [stairs, diff]) expect(src).not.toMatch(/#[0-9a-fA-F]{3,8}\b|oklch\(|palette-|rgb\(/);
+  });
+  it("draw a gain with the gain role and a loss with the loss role, so the two signs never share a colour", () => {
+    expect(diff).toMatch(/bg-gain/);
+    expect(diff).toMatch(/bg-loss/);
+    expect(stairs).toMatch(/fill-loss/);
+  });
+  it("a tap row holds no Num inside its button", () => {
+    expect(diff).not.toMatch(/<button[^>]*>[^<]*<Num/);
+  });
+});
+
+describe("the shared stylesheet", () => {
+  it("every enabled button and summary shows the hand (audit A99): nothing was pasted into that selector", () => {
+    const css = readFileSync(join(root, "app.css"), "utf8");
+    expect(css).toMatch(/button:not\(:disabled\),\s*\[role="button"\]:not\(\[aria-disabled="true"\]\),\s*summary \{\s*cursor: pointer;/);
   });
 });

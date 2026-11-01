@@ -304,6 +304,12 @@ function RenderedValue({ v }: { v: Rendered }): ReactNode {
       <Disclosure label={<span className="text-xs">{r5.revisit.sheet.detail}</span>} summaryClassName="text-sm">
         <table className="tbl text-xs mt-1">
           <TableCols widths={["50%", "50%"]} />
+          <thead>
+            <tr>
+              <th scope="col">{r5.revisit.sheet.upTo}</th>
+              <th scope="col">{r5.revisit.sheet.rate}</th>
+            </tr>
+          </thead>
           <tbody>
             {v.rows.map((b, i) => (
               <tr key={i}>

@@ -98,6 +98,34 @@
     unicode-bidi: isolate;
   }
 
+  /* Every fold opens and closes by height and fades as it goes (founder, 2026-11-01). While it moves its content is clipped; once open,
+     nothing is, so a popover or a sticky head inside it works as before. A browser without ::details-content snaps, as it did. */
+  :root {
+    interpolate-size: allow-keywords;
+  }
+  details::details-content {
+    height: 0;
+    min-height: 0; /* a fold laid out as a flex column would otherwise hold its content's height and snap */
+    opacity: 0;
+    overflow: clip;
+    transition:
+      height var(--duration-fold) var(--ease-standard),
+      opacity var(--duration-fold) var(--ease-standard),
+      content-visibility var(--duration-fold) allow-discrete;
+  }
+  details[open]::details-content {
+    height: auto;
+    opacity: 1;
+    overflow: visible;
+    animation: fold-clip var(--duration-fold);
+  }
+  @keyframes fold-clip {
+    from,
+    to {
+      overflow: clip;
+    }
+  }
+
   /* audit 2026-10-24 (A99): every enabled button shows the hand */
   button:not(:disabled),
   [role="button"]:not([aria-disabled="true"]),
@@ -498,6 +526,17 @@
     to {
       opacity: 0;
     }
+  }
+  /* an axis's label or gridline coming or going while the scale glides (kit, chart-glide) */
+  .chart-tick-in {
+    animation: fade-in var(--duration-chart) both;
+  }
+  .chart-tick-out {
+    animation: fade-out var(--duration-chart) both;
+  }
+  /* a line or band that comes in; backwards only, so afterwards its own opacity (a dimmed series) holds */
+  .chart-line {
+    animation: fade-in var(--duration-chart) backwards;
   }
   @media (min-width: 64rem) {
     @keyframes sheet-in {

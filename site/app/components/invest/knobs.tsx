@@ -9,7 +9,8 @@ import { invest as c, r2, values as valuesCopy } from "../../copy";
 import type { FeeInputs } from "../../lib/fees";
 import { fmt } from "../../lib/format";
 import { useInputs, type Employment } from "../../lib/inputs";
-import { pairCosts, type InvestView } from "../../lib/invest";
+import { useSettled } from "../../lib/settled";
+import { pairCosts, pairLeft, type InvestView } from "../../lib/invest";
 import type { WorkbenchBundle, WorkbenchInputs } from "../../lib/providers";
 import { computed, type SiteValue } from "../../lib/value";
 import { Num } from "../provenance";
@@ -29,14 +30,18 @@ const KNOBS: { id: Id; key: "amountNow" | "monthly" | "years" | "grossReturn"; r
 const k = c.plan.knobs;
 const labelOf: Record<Id, string> = { amount: k.amount, monthly: k.monthly, years: k.years, ret: k.ret };
 
-/** The value left for the pair the page prices, as a function of the plan (F-63's `L`); null when the page prices no pair. */
+/** The pair the page prices, with the value left as a function of the plan (F-63's `L`): the figure with its provenance for the plan itself, the number alone for each run of a sweep. Null when the page prices no pair. */
 function usePairLeft(bundle: WorkbenchBundle, view: InvestView | null, pick: Pair) {
   const house = pick?.house;
   const fund = pick?.fund;
+  const index = view?.index;
   return useMemo(() => {
-    if (!view || !house || !fund) return null;
-    return (p: WorkbenchInputs) => pairCosts({ bundle, index: view.index, plan: p, fundId: fund, providerId: house })?.left ?? null;
-  }, [bundle, view, house, fund]);
+    if (!index || !house || !fund) return null;
+    return {
+      value: (p: WorkbenchInputs) => pairCosts({ bundle, index, plan: p, fundId: fund, providerId: house })?.left ?? null,
+      number: (p: WorkbenchInputs) => pairLeft({ bundle, index, plan: p, fundId: fund, providerId: house }),
+    };
+  }, [bundle, index, house, fund]);
 }
 
 const KEY: Record<Id, P05Input> = { amount: "amount_now", monthly: "monthly_deposit", years: "horizon_years", ret: "A-01" };
@@ -71,20 +76,20 @@ export function PlanKnobs({ fi, ranges, pct, only }: { fi: FeeInputs; ranges: Kn
 }
 
 /** F-89 and F-90: every plan number changed by the same share, on one chart with a marker and a table, at the bottom of the page.
- * 4 lines of 21 runs, so it takes the plan once a slider rests. */
-export function PlanChanges({ plan, share, bundle, view, pick }: { plan: WorkbenchInputs; share: { min: number; max: number; step: number; start: number }; bundle: WorkbenchBundle; view: InvestView | null; pick: Pair }) {
+ * 4 lines of 21 runs, the page's heaviest work, so it waits for the charts above to finish moving. */
+export function PlanChanges({ plan: resting, share, bundle, view, pick }: { plan: WorkbenchInputs; share: { min: number; max: number; step: number; start: number }; bundle: WorkbenchBundle; view: InvestView | null; pick: Pair }) {
+  const plan = useSettled(resting, 400);
   const left = usePairLeft(bundle, view, pick);
   const [at, setAt] = useState(share.start);
   const ch = k.changes;
   const shares = useMemo(() => Array.from({ length: Math.round((share.max - share.min) / share.step) + 1 }, (_, i) => share.min + i * share.step), [share]);
   const run = useMemo(() => {
     if (!left) return null;
-    const base = left(plan);
+    const base = left.value(plan);
     if (!base) return null;
-    const L = (p: WorkbenchInputs) => (left(p)?.value as number | undefined) ?? null;
     const lines = KNOBS.map(({ id, key, scale }) => {
       const tos = shares.map((sh) => changedByShare(plan[key] * scale, sh / 100, id === "years"));
-      return { id, key, scale, tos, ys: sweep(L, plan, key, tos, scale) };
+      return { id, key, scale, tos, ys: sweep(left.number, plan, key, tos, scale) };
     });
     return { base, lines };
   }, [left, plan, shares]);

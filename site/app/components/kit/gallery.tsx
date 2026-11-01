@@ -11,7 +11,7 @@ import { IdRef, Num } from "../provenance";
 import { IconDrillIn } from "../icons";
 import { label } from "../../lib/labels";
 import { fmt } from "../../lib/format";
-import { Button, Callout, Card, ChartLegend, CostStack, LabelFilter, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, CompareTable, TableCols, CoverageFold, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, Disclosure, FieldState, FoldGroup, GainBars, GapNote, HeadlineFigure, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, CheckField, FieldGroup, TextField, NumberField, ParameterLine, PercentField, PlanChips, KnobStrip, ChangeChart, RangeField, RankBadge, Section, SegmentedControl, SelectField, Sentence, ShareRings, SourceLine, Stat, StatRow, StatTile, StepButtons, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth } from "./index";
+import { AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, Button, Callout, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, LabelFilter, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, CompareTable, TableCols, CoverageFold, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, Disclosure, FieldState, FoldGroup, GainBars, GapNote, HeadlineFigure, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, CheckField, FieldGroup, TextField, NumberField, ParameterLine, PercentField, PlanChips, KnobStrip, ChangeChart, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, RangeField, RankBadge, Section, SegmentedControl, SelectField, Sentence, ShareRings, SourceLine, Stat, StatRow, StatTile, StepButtons, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth } from "./index";
 
 const g = copy.gallery;
 
@@ -140,6 +140,32 @@ function Folds() {
   const [topic, setTopic] = useState(true);
   return (
     <>
+      <Demo name="FilterChip" use={g.uses.FilterChip}>
+        <Grid>
+          <State label={g.states.closed}>
+            <FilterChip on={false} count={42} onClick={() => undefined}>{g.sample.foldLabel}</FilterChip>
+          </State>
+          <State label={g.states.open}>
+            <FilterChip on count={7} onClick={() => undefined}>{g.sample.foldLabel}</FilterChip>
+          </State>
+          <State label="0">
+            <FilterChip on={false} count={0} onClick={() => undefined}>{g.sample.foldLabel}</FilterChip>
+          </State>
+        </Grid>
+      </Demo>
+      <Demo name="AskField" use={g.uses.AskField}>
+        <AskDemo />
+      </Demo>
+      <Demo name="DidYouKnow" use={g.uses.DidYouKnow}>
+        <div className="max-w-xs">
+          <DidYouKnow
+            title={g.sample.foldLabel}
+            more={g.sample.foldHide}
+            orderKey="demo"
+            items={["1", "2", "3", "4"].map((id) => ({ id, body: `${g.sample.foldLabel} ${id}`, source: g.sample.foldHide, action: id }))}
+          />
+        </div>
+      </Demo>
       <Demo name="Disclosure" use={g.uses.Disclosure}>
         <Grid>
           <State label={`${g.states.closed}, label and openLabel`}>
@@ -326,6 +352,15 @@ function Words({ today }: { today: string }) {
           </State>
           <State label="Tpl">
             <Tpl t="{a} · {b}" vars={{ a: <Num value={s.sourced} display="8" />, b: <Num value={s.comp} /> }} />
+          </State>
+        </Grid>
+      </Demo>
+      <Demo name="LongestCase" use={g.uses.LongestCase}>
+        <Grid>
+          <State label={g.states.entered}>
+            <LongestCase cases={[<Sentence key="long" size="sm">{g.uses.LongestCase}</Sentence>]}>
+              <Sentence size="sm">{g.sample.sentenceBefore}</Sentence>
+            </LongestCase>
           </State>
         </Grid>
       </Demo>
@@ -538,6 +573,37 @@ function Fields() {
           />
         </State>
       </Demo>
+      <Demo name="StairsChart, StairsTable, StairsSteps" use={g.uses.StairsChart}>
+        <State label={g.states.interactive} wide>
+          <StairsChart
+            columns={[
+              { id: "0", level: 79273, from: 79273, top: "79,273 ₪", hue: "start", loses: false, taken: true, open: false, current: true, label: g.sample.rowA },
+              { id: "1", level: 84148, from: 79273, top: "+4,875 ₪", hue: "account", loses: false, taken: false, open: false, current: false, label: g.sample.rowB },
+              { id: "2", level: 82000, from: 84148, top: "−2,148 ₪", hue: "kind", loses: true, taken: false, open: false, current: false, label: g.sample.rowB },
+              { id: "3", level: 86492, from: 82000, top: "+4,492 ₪", hue: "fund", loses: false, taken: false, open: true, current: false, label: g.sample.rowB },
+            ]}
+            fold={0}
+            axis={{ lo: 70000, hi: 90000, step: 5000 }}
+            ceiling={{ level: 86955, lines: [g.sample.rowA, "86,955 ₪", g.sample.rowB] }}
+            endsAt={null}
+            now={g.sample.stairsNow}
+            label={g.sample.rowA}
+            tick={(n) => fmt.number(n)}
+            onGo={() => undefined}
+          />
+          <StairsTable rows={[{ id: "a", head: g.sample.rowA, cells: ["1", "2", "3", "4"] }]} />
+          <StairsSteps steps={[{ id: "a", hue: "account", loses: false, head: g.sample.rowA, delta: "+4,875 ₪", parts: g.sample.rowB, next: true, label: g.sample.rowA }]} onGo={() => undefined} />
+        </State>
+      </Demo>
+      <Demo name="DiffRow, DiffHead, DiffFigure, GreyLine" use={g.uses.DiffRow}>
+        <State label={g.states.interactive} wide>
+          <DiffHead name={g.sample.rowA} left={g.sample.rowB} versus={g.sample.diff} less="פחות" more="יותר" money="כסף" />
+          <DiffRow name={g.sample.rowA} left="84,148 ₪" d={4875} unit={4875} open={false} label={g.sample.rowA} onTake={() => undefined} diff={<DiffFigure d={4875} words={{ more: "עוד", fewer: "פחות", same: "אותו סכום" }} figure="4,875 ₪" />} />
+          <DiffRow name={g.sample.rowB} left="77,749 ₪" d={-1524} unit={4875} open={false} turn label={g.sample.rowB} onTake={() => undefined} diff={<DiffFigure d={-1524} words={{ more: "עוד", fewer: "פחות", same: "אותו סכום" }} figure="1,524 ₪" />} />
+          <DiffRow name={g.sample.rowA} left="61,931 ₪" d={-17342} unit={4875} open={false} label={g.sample.rowA} onTake={() => undefined} diff={<DiffFigure d={-17342} words={{ more: "עוד", fewer: "פחות", same: "אותו סכום" }} figure="17,342 ₪" />} />
+          <GreyLine why={g.sample.note}>{g.sample.rowA}</GreyLine>
+        </State>
+      </Demo>
       <Demo name="PercentField" use={g.uses.PercentField}>
         <Grid>
           <State label={`range 0 to 50, ${g.states.interactive}`}>
@@ -586,6 +652,11 @@ function Fields() {
       </Demo>
     </>
   );
+}
+
+function AskDemo() {
+  const [value, setValue] = useState("");
+  return <AskField value={value} onChange={setValue} label={g.sample.foldLabel} placeholder={g.sample.foldLabel} clearLabel={g.sample.foldHide} />;
 }
 
 function MarkerDemo({ today }: { today: string }) {
@@ -694,6 +765,9 @@ function ChartParts({ today }: { today: string }) {
           ]}
         />
       </State>
+      <State label="ChartLegend with pick: a mouse previews a series, a click or a tap keeps it" wide>
+        <LegendPickDemo />
+      </State>
       <State label="ChartReadout" wide>
         <ChartReadout
           title={`${g.sample.yearWord} 10`}
@@ -769,6 +843,12 @@ function Lists({ today }: { today: string }) {
   });
   return (
     <LabelSheetHost>
+      <Demo name="FeeFigure, FeeWordsNote" use={g.uses.ProductTable}>
+        <State label="a fee: its number, one the fund does not have, one not collected; the note says what the two words mean" wide>
+          <ProductFigures items={[{ id: "a", figure: <FeeFigure value={s.rate} />, word: p.figure }, { id: "b", figure: <FeeFigure value={null} absent />, word: p.figure }, { id: "c", figure: <FeeFigure value={null} />, word: p.figure }]} />
+          <FeeWordsNote />
+        </State>
+      </Demo>
       <Demo name="ProductTable, ProductPhoneRow, ProductIdLink, ProductFigures" use={g.uses.ProductTable}>
         <State label="three products: one alone, two under a banner; the number, link and figure columns fit" wide>
           <ProductTable
@@ -834,7 +914,7 @@ function Lists({ today }: { today: string }) {
       </Demo>
       <Demo name="PairBars" use={g.uses.PairBars}>
         <State label="two series each year, from zero, a figure on each bar" wide>
-          <PairBars label={p.figure} tickStep={20} format={(v) => `${v > 0 ? "+" : v < 0 ? "−" : ""}${Math.abs(v).toFixed(Number.isInteger(v) ? 0 : 1)}`} fillA="fill-chart-kind-unhedged" fillB="fill-chart-kind-hedged" items={[{ year: 2022, a: -7.8, b: -21.8 }, { year: 2023, a: 30.1, b: 23.6 }, { year: 2024, a: 24.8, b: 21.9 }, { year: 2025, a: 2.4, b: 15.3 }]} />
+          <PairBars label={p.figure} tickStep={20} format={(v) => `${v > 0 ? "+" : v < 0 ? "−" : ""}${Math.abs(v).toFixed(Number.isInteger(v) ? 0 : 1)}`} fillA="fill-chart-kind-unhedged" fillB="fill-chart-kind-hedged" nameA={p.a} nameB={p.b} items={[{ year: 2022, a: -7.8, b: -21.8 }, { year: 2023, a: 30.1, b: 23.6 }, { year: 2024, a: 24.8, b: 21.9 }, { year: 2025, a: 2.4, b: 15.3 }]} />
         </State>
       </Demo>
       <Demo name="FixedTable" use={g.uses.FixedTable}>
@@ -842,11 +922,24 @@ function Lists({ today }: { today: string }) {
           <FixedTable rowHead={p.a} columns={[{ id: "a", head: p.b }, { id: "b", head: p.c, hideOnPhone: true }, { id: "c", head: p.figure }]} rows={[{ key: "1", head: "2022", cells: ["+13.4%", "−18.5%", "−21.8%"] }, { key: "2", head: "2025", cells: ["−12.5%", "+17.4%", "+15.3%"] }, { key: "3", head: p.a, cells: ["+2.7%", "+49.3%", "+35.9%"], strong: true }]} />
         </State>
       </Demo>
+      <Demo name="useGlidingSeries, useGlidingRows, useGlidingNumbers, useFadingTicks, ticksOn, YearLabels, valueOn, useFlip, useBox, CountingFigures" use={g.uses.Glide}>
+        <State label="choose another horizon or rate: the line, the axis and its labels glide from wherever they stand" wide>
+          <GlideDemo />
+        </State>
+        <State label="useFlip: rows slide to their new places">
+          <FlipDemo />
+        </State>
+      </Demo>
+      <Demo name="useYearZoom, ZoomBar, ZoomBrush, ChartTip" use={g.uses.YearZoom}>
+        <State label="a longer range: pointing at or tapping a year reads it; on a computer a drag zooms, ctrl with the wheel too, and a double click returns" wide>
+          <YearBars label={p.figure} tickStep={10} format={(v) => `${v > 0 ? "+" : v < 0 ? "−" : ""}${Math.abs(v).toFixed(0)}`} items={Array.from({ length: 16 }, (_, n) => ({ year: 2010 + n, value: ((n * 7) % 23) - 11 }))} />
+        </State>
+      </Demo>
       <Demo name="YearBars" use={g.uses.YearBars}>
         <State label="the dollar against the shekel each year, from zero; bright years set apart in the second" wide>
           <YearBars label={p.figure} tickStep={10} format={(v) => `${v > 0 ? "+" : v < 0 ? "−" : ""}${Math.abs(v).toFixed(Number.isInteger(v) ? 0 : 1)}`} items={[[2021, -3.4], [2022, 13.4], [2023, 2.8], [2024, 0.8], [2025, -12.5]].map(([year, value]) => ({ year: year!, value: value! }))} />
         </State>
-      </Demo>
+                </Demo>
       <Demo name="PickList (phone)" use={g.uses.PickList}>
         <State label="phoneColumns: the figure on a second line below md; phoneLimit 1: on a phone the rows after the first fold behind a button (the chosen row stays)" wide>
           <PickList
@@ -911,6 +1004,78 @@ export function KitGallery({ today }: { today: string }) {
         <Rings />
         <Lists today={today} />
       </div>
+    </div>
+  );
+}
+
+function LegendPickDemo() {
+  const pick = useChartPick();
+  const dim = (id: string) => pickDim(pick.active, id);
+  return (
+    <div className="flex flex-col gap-2">
+      <ChartLegend
+        pick={pick}
+        items={[
+          { id: "a", swatch: <Swatch shape="box" className="bg-chart-value" />, label: <bdi>{g.sample.seriesA}</bdi> },
+          { id: "b", swatch: <Swatch shape="box" className="bg-chart-fee" />, label: <bdi>{g.sample.fee}</bdi> },
+        ]}
+      />
+      <div className="flex h-7 gap-px">
+        <span className={cx("flex-[2] rounded-s-sm bg-chart-value", dim("a"))} />
+        <span className={cx("flex-1 rounded-e-sm bg-chart-fee", dim("b"))} />
+      </div>
+    </div>
+  );
+}
+
+function FlipDemo() {
+  const [rows, setRows] = useState([1, 2, 3, 4, 5]);
+  const ref = useFlip(rows.join());
+  return (
+    <div className="flex flex-col gap-2 items-start">
+      <Button variant="quiet" onClick={() => setRows((r) => [...r].reverse())}>
+        reverse
+      </Button>
+      <ol ref={ref} className="flex flex-col gap-1 w-40">
+        {rows.map((n) => (
+          <li key={n} data-flip={n} className="bg-card border border-border rounded-sm px-2 tabular-nums">
+            {n}
+          </li>
+        ))}
+      </ol>
+    </div>
+  );
+}
+
+function GlideDemo() {
+  const [years, setYears] = useState("10");
+  const [rate, setRate] = useState("5");
+  const n = Number(years);
+  const goal = Array.from({ length: n + 1 }, (_, year) => ({ year, v: 100 * Math.pow(1 + Number(rate) / 100, year) }));
+  const top = Math.ceil(goal[n]!.v / 100) * 100;
+  const shown = useGlidingSeries({ a: goal }).a ?? goal;
+  const [end, ceil] = useGlidingNumbers([n, top]) as [number, number];
+  const ticks = useFadingTicks(Array.from({ length: top / 100 + 1 }, (_, i) => i * 100));
+  const yearTicks = useFadingTicks(Array.from({ length: Math.floor(n / 5) + 1 }, (_, i) => i * 5));
+  const x = (year: number) => 8 + (year / end) * 304;
+  const y = (v: number) => 130 - (v / ceil) * 120;
+  const path = shown.map((p, i) => `${i ? "L" : "M"}${x(p.year).toFixed(1)} ${y(p.v).toFixed(1)}`).join("");
+  const opts = (xs: string[]) => Object.fromEntries(xs.map((v) => [v, v]));
+  return (
+    <div className="flex flex-col gap-2">
+      <ChoiceChips ids={["5", "10", "20", "30"]} labels={opts(["5", "10", "20", "30"])} value={years} onChange={setYears} ariaLabel={g.sample.yearWord} wrap />
+      <ChoiceChips ids={["2", "5", "9"]} labels={opts(["2", "5", "9"])} value={rate} onChange={setRate} ariaLabel={g.sample.seriesA} wrap />
+      <svg viewBox="0 0 320 156" aria-hidden="true" className="block w-full max-w-md">
+        <clipPath id="glide-demo">
+          <rect x={8} y={0} width={304} height={156} />
+        </clipPath>
+        {ticks.map((t) => (
+          <line key={t.value} x1={8} x2={312} y1={y(t.value)} y2={y(t.value)} className={cx("stroke-chart-grid", tickFade(t))} />
+        ))}
+        <path d={path} fill="none" clipPath="url(#glide-demo)" className="stroke-chart-value" strokeWidth={2} />
+        <circle cx={x(Math.min(end, n))} cy={y(valueOn(shown, Math.min(end, n)))} r={3} className="fill-chart-value" />
+        <YearLabels ticks={yearTicks} x={x} y={150} left={8} right={312} />
+      </svg>
     </div>
   );
 }

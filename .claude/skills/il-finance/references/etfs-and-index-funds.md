@@ -788,6 +788,33 @@ Answers issue #149; the working, including what was searched and not found, is `
 - Dimensions: currency, (proposed) tracking-difference
 - Likely to change: yes, a past record that grows each year; never a forecast.
 
+### ETF-79 No foreign fund on TASE holds bonds to one end date (read 2026-10-31)
+- Rule: The ISA's list of foreign funds registered in Israel, read on 2026-10-31, has 37 funds, all iShares or Invesco, and none is a defined-term fund: no iBonds and no BulletShares. By their names, the 11 bond-market foreign funds on TASE at 23.10.2026 (ETF-43) carry no end date.
+- Conditions / exceptions: A finding of absence on a dated list. The ISA list's copy is `research/2026-10-31-night/isa-foreign-funds.tsv`; ETF-71 holds its source. For an Israeli fund of this kind see MF-59 to MF-65.
+- Figures: 37 funds on the ISA list; 11 bond-market funds on TASE; dates as above.
+- Source: as cited in ETF-43 and ETF-71 · primary · checked 2026-11-01 (the lists themselves read 2026-10-23 and 2026-10-31).
+- Scope: general
+- Dimensions: `currency`
+- Likely to change: yes, a foreign fund can be registered at any time
+
+### ETF-80 iShares iBonds UCITS: defined-term funds, redeemed without further notice
+- Rule: The iShares V plc prospectus groups them as "Defined Term Funds": iShares iBonds Dec 2025 to Dec 2037 Term $ Corp and € Corp (one each year), $ Treasury (2025, 2027, 2029) and € Italy Govt Bond (2026, 2028), 31 funds in all. Holders on the Maturity Date "will have their Shares redeemed without further notice or Shareholder approval on the Redemption Date"; the fund is delisted. "The Funds do not seek to return any predetermined amount at maturity"; they hold bonds "which have a decreasing term to maturity" and move to cash and short government paper in the final 12 months. They "should not be considered as an alternative to investing in a regular deposit account". TER for unhedged share classes: 0.12%, and 0.10% for the three $ Treasury funds; hedged classes up to 1.00%.
+- Conditions / exceptions: The dates differ by fund: Dec 2028 $ Corp has Maturity Date 31.12.2028 and Redemption Date 1.1.2029; Dec 2030 $ Corp 2.12.2030 and 3.12.2030. The prospectus prints no ISINs. Two read from fact sheets (September 2026): Dec 2028 $ Corp USD Acc IE0000UJ3480, 0.12%, 545 holdings; Dec 2030 € Corp EUR Acc IE000Y2BJVK9, 0.12%, 338 holdings. The fact sheet of the first: "Fixed maturity products are designed for investors to hold the shares/units for the full period of the fund, otherwise the loss of capital may be greater". The word "iBonds" also appears on high-yield funds (Dec 2028 Term $ High Yield Corp, seen in a search) outside this list, so this is not the whole family. Whether a broker serving Israelis carries them was not researched (open question 33). Tax is not in this record (`tax-securities-foreign.md`).
+- Figures: as above; prospectus dated 3.9.2026.
+- Source: [iShares V plc prospectus, 3.9.2026](https://mayafiles.tase.co.il/rpdf/1775001-1776000/P1775855-00.pdf#page=155), pp.10, 19, 154, 155, 188, 189 · institution · checked 2026-11-01. [Fact sheet, Dec 2028 $ Corp](https://www.ishares.com/gls-download/literature/fact-sheet/d28a-ishares-ibonds-dec-2028-term-corp-ucits-etf-fund-fact-sheet-en-de.pdf), [fact sheet, Dec 2030 € Corp](https://www.ishares.com/gls-download/literature/fact-sheet/30ia-ishares-ibonds-dec-2030-term-corp-ucits-etf-fund-fact-sheet-en-de.pdf) · institution · checked 2026-11-01.
+- Scope: institution: iShares
+- Dimensions: `fee-management-balance`, `currency`, `liquidity-lockup`
+- Likely to change: yes
+
+### ETF-81 Invesco BulletShares: UCITS funds redeemed at net asset value, US funds paid as a cash distribution
+- Rule: Invesco BulletShares 2030 USD Corporate Bond UCITS ETF: "Maturity Date" is "the second Wednesday in December 2030 or such other date as determined by the Directors"; "On the Maturity Date the Fund will be redeemed by reference to the Net Asset Value"; proceeds less fees, expenses and transaction costs are paid to shareholders; "The Fund will not distribute a predetermined or guaranteed return". Invesco's release of 24.6.2024 prints 0.10% a year for its five EUR funds, 2026 to 2030, and says the proceeds of a maturing bond go into short-dated government debt. A list dated 31.12.2022, for Swiss professional investors, shows the US funds: 0.10% investment grade and 0.42% high yield, ending about 15 December of their year, when "each fund will make a cash distribution to then current shareholders of its net assets".
+- Conditions / exceptions: The supplement sends the fee to an appendix of the prospectus that was not read. The 2022 list is four years old and read for its wording, not for current fees. The word "BulletShares" is Invesco's mark, usage only. ISINs were seen only in third-party search results and are not recorded. The UCITS supplement says redeemed and the US list says distribution. Whether that matters for tax is a question for the tax-specialist, listed in `research/discovery/2026-11-01-bullet-bond-funds.md`.
+- Figures: as above.
+- Source: [Invesco BulletShares 2030 USD supplement](https://www.borsaitaliana.it/CAETF/2026-10616-SUPPLEMENTS-aa18ab11-20b7-43dc-a408-d922e55ab17e.pdf#page=3), pp.2, 3 · institution · checked 2026-11-01. [Invesco release, 24.6.2024](https://www.invesco.com/content/dam/invesco/uk/en/pdf/press/2024/Invesco-expands-its-range-of-fixed-maturity-ucits-etfs-24-jun-2024_uk.pdf), pp.2 to 4 · institution · checked 2026-11-01. [BulletShares ETFs list, 31.12.2022](https://invesco.com/content/dam/invesco/ch/en/pdf/bulletshares/BulletShares-ETFs-product-list.pdf), p.1 · institution · checked 2026-11-01.
+- Scope: institution: Invesco
+- Dimensions: `fee-management-balance`, `currency`, `liquidity-lockup`
+- Likely to change: yes
+
 ## Comparing variants of the same index (feeds the dimension checklist)
 
 What a saver must check to compare, for example, an S&P 500 Israeli ETF, an S&P 500 open tracking fund, an iShares S&P 500 registered on TASE, and the same fund bought abroad. Each line names the rule above.
@@ -931,6 +958,7 @@ What a saver must check to compare, for example, an S&P 500 Israeli ETF, an S&P 
 30. **The ISA's own, current text of the variable-fee directive (ETF-75).** Read from the Chamber of Commerce's copy, a PDF of 23.8.2018. The 2024 draft and the 2026 prospectuses still cite the directive; amendments were not checked. The Authority's list does not render to scripts. Where: the same list, in a browser.
 31. **Why the hedge lines differ for one year and one pair, and how big quanto is (ETF-77).** 2025: −0.60 (Kesem, Meitav, Mor), −1.85 and −1.78 (Harel), +0.12 (MTF, part of the year). 2023: −1.65 (Meitav), −0.77 (MTF). Meitav's heading and footnote also read in opposite directions on the sign. No report prints the quanto part. Computing `Q` from ETF-75 needs daily index values and the fund's own valuation time: FRED timed out and Stooq asked for a browser check on 2026-10-31. Where: daily index data; the managers.
 32. **Hedged funds' record before 2019, above all 2011 to 2014, when the shekel policy rate was above the dollar's (ETF-78).** Would show whether any fund ever beat its index. Reports print four years, so a report for 2014 or 2017 is needed; the earliest read prints 2019. Maya's list of a fund's reports stays by the founder's hand; web search also gave [MTF S&P 500, statements near 2017](https://mayafiles.tase.co.il/rpdf/1183001-1184000/P1183646-00.pdf), not opened. Where: Maya, for 1150507, 5123161, 5125760, 5125869.
+33. **Defined-term funds abroad: the whole list and who carries them (ETF-80, ETF-81).** No official general list was found: the iShares V prospectus prints names without ISINs and leaves out the high-yield iBonds, and Invesco's own product list is the US family at 31.12.2022. Whether Israeli bank or broker accounts offer them, and the EU retail limit in question 11 as applied to them, were not researched. Where: each fund house's list in a browser, and each broker's instrument search.
 
 ## Left out and why
 

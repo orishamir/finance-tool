@@ -24,7 +24,7 @@ export function ShareRings({ rings, size = 36, className }: { rings: Ring[]; siz
         return (
           <g key={r.id}>
             <circle cx={c} cy={c} r={radius} fill="none" strokeWidth={stroke} className="stroke-chart-grid" />
-            {filled > 0 && <circle cx={c} cy={c} r={radius} fill="none" strokeWidth={stroke} strokeDasharray={`${filled} ${length}`} transform={`rotate(-90 ${c} ${c})`} className={r.className} />}
+            {filled > 0 && <circle cx={c} cy={c} r={radius} fill="none" strokeWidth={stroke} strokeDasharray={`${filled} ${length}`} transform={`rotate(-90 ${c} ${c})`} className={cx(r.className, "transition-[stroke-dasharray] duration-[var(--duration-chart)]")} />}
           </g>
         );
       })}

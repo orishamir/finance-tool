@@ -1,0 +1,30 @@
+{
+  "id": "pryym-pchvt",
+  "he": "פריים פחות",
+  "en": null,
+  "meaning": "ריבית הפריים של הבנק פחות מספר נקודות האחוז של המרווח. בלוחות של חלק מהבנקים זה כתוב באות P: הכתיב P-2.7 הוא פריים פחות 2.7 נקודות אחוז.",
+  "where": [
+    "provider-site"
+  ],
+  "wrapper_ids": [
+    "bank-deposit",
+    "savings-plan"
+  ],
+  "variants": [
+    "פריים מינוס",
+    "פריים בניכוי",
+    "מרווח מהפריים",
+    "P-"
+  ],
+  "rule_ids": [
+    "BANK-47",
+    "BANK-34"
+  ],
+  "source": {
+    "url": "https://www.boi.org.il/media/nvadftgk/150.pdf#page=26",
+    "title": "חוק הבנקאות (שירות ללקוח), נוסח משולב (בנק ישראל), עמוד 26, סעיף 9ז(ג)",
+    "publisher": "Bank of Israel",
+    "strength": "primary",
+    "checked": "2026-11-01"
+  }
+}

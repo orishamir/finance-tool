@@ -12,7 +12,7 @@ import { pensionModel } from "../../lib/guide-signature-g2";
 import { p05Number, p05Value, type Bundle } from "../../lib/engine";
 import { useInputs } from "../../lib/inputs";
 import { entered as enteredValue, type SiteValue } from "../../lib/value";
-import { Callout, NumberField, RangeField, Sentence, Stat, StatRow } from "../kit";
+import { Callout, LongestCase, NumberField, RangeField, Sentence, Stat, StatRow } from "../kit";
 import { Num, RulesLine, Term } from "../provenance";
 import { G2Gap } from "./g2-parts";
 import { figure, inputSite, rulesOfBundle, useSigInputs, yearsRange, type VisualProps } from "./kit";
@@ -37,6 +37,12 @@ function Inner({ data, today, bundle }: VisualProps & { bundle: Bundle }) {
   const [insurancePick, setInsurancePick] = useState<number | null>(null);
   const insurancePct = insurancePick;
   const insuranceSource = insurancePick !== null ? "guide" : null;
+  const sourceLine = (salaryFrom: string, yearsFrom: string, insuranceFrom: string | null) => (
+    <p className="text-xs text-muted-foreground">
+      {copy.pension.salarySource} {copy.common.source[salaryFrom]}. {copy.pension.yearsSource} {copy.common.source[yearsFrom]}.
+      {insuranceFrom ? ` ${copy.pension.insuranceSource} ${copy.common.source[insuranceFrom]}.` : ""}
+    </p>
+  );
   const yr = yearsRange(bundle);
   const years = Math.min(yr.max, Math.max(yr.min, Math.round(inputs.years)));
   const model = useMemo(() => pensionModel(data, id, { salary, years, insurancePct }), [data, id, salary, years, insurancePct]);
@@ -138,10 +144,10 @@ function Inner({ data, today, bundle }: VisualProps & { bundle: Bundle }) {
           disabled={!inputs.ready}
         />
       </div>
-      <p className="text-xs text-muted-foreground -mt-3">
-        {copy.pension.salarySource} {copy.common.source[salarySource]}. {copy.pension.yearsSource} {copy.common.source[inputs.source.years]}.
-        {insuranceSource ? ` ${copy.pension.insuranceSource} ${copy.common.source[insuranceSource]}.` : ""}
-      </p>
+      {/* which of them the person entered changes the words: the longest wording keeps the line's room */}
+      <LongestCase className="-mt-3" cases={[sourceLine("p05", "p05", "p05")]}>
+        {sourceLine(salarySource, inputs.source.years, insuranceSource)}
+      </LongestCase>
 
       <div className="flex flex-col gap-2">
         <p className="text-sm font-medium">
@@ -149,7 +155,7 @@ function Inner({ data, today, bundle }: VisualProps & { bundle: Bundle }) {
         </p>
         <div className="flex gap-0.5 text-sm" aria-hidden="false">
           {parts.map((p) => (
-            <div key={p.key} className="min-w-0 flex flex-col gap-0.5" style={{ width: share(p.n) }}>
+            <div key={p.key} className="min-w-0 flex flex-col gap-0.5 transition-[width] duration-[var(--duration-chart)]" style={{ width: share(p.n) }}>
               <span className="text-xs text-muted-foreground leading-tight">{p.key === "severance" ? <Term id="מרכיב הפיצויים">{p.label}</Term> : p.label}</span>
               <span className="font-semibold">
                 <Num value={p.value} />
@@ -159,11 +165,11 @@ function Inner({ data, today, bundle }: VisualProps & { bundle: Bundle }) {
         </div>
         <div className="flex gap-0.5 h-3.5" role="img" aria-label={copy.pension.chart.aria}>
           {parts.map((p) => (
-            <div key={p.key} className={`${p.bar} first:rounded-s-sm last:rounded-e-sm`} style={{ width: share(p.n) }} />
+            <div key={p.key} className={`${p.bar} first:rounded-s-sm last:rounded-e-sm transition-[width] duration-[var(--duration-chart)]`} style={{ width: share(p.n) }} />
           ))}
         </div>
         <div className="flex flex-col">
-          <div className="h-3 border-x-2 border-b-2 border-foreground/60 rounded-b-sm" style={{ width: share(model.you) }} />
+          <div className="h-3 border-x-2 border-b-2 border-foreground/60 rounded-b-sm transition-[width] duration-[var(--duration-chart)]" style={{ width: share(model.you) }} />
           <span className="block text-sm text-muted-foreground mt-0.5">
             {copy.pension.returns.before} <Num value={v.relief} /> {copy.pension.returns.after}
           </span>

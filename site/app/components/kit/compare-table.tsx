@@ -60,8 +60,8 @@ export function ValueBar({ value, frac, lo, note }: { value: ReactNode; frac: nu
           <div className="absolute inset-y-0 start-0 w-0.5 rounded-sm bg-chart-value" />
         ) : (
           <>
-            {lo !== undefined && <div className="absolute inset-y-0 start-0 rounded-sm hatch-value" style={{ width: w(frac) }} />}
-            <div className="absolute inset-y-0 start-0 rounded-sm bg-chart-value" style={{ width: w(lo ?? frac) }} />
+            {lo !== undefined && <div className="absolute inset-y-0 start-0 rounded-sm hatch-value transition-[width] duration-[var(--duration-chart)]" style={{ width: w(frac) }} />}
+            <div className="absolute inset-y-0 start-0 rounded-sm bg-chart-value transition-[width] duration-[var(--duration-chart)]" style={{ width: w(lo ?? frac) }} />
           </>
         )}
       </div>

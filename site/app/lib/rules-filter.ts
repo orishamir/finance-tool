@@ -150,3 +150,35 @@ export function buildSections(matches: readonly LightRule[], changing: boolean):
   }
   return out;
 }
+
+export interface FacetCounts {
+  all: number;
+  shelf: Map<string, number>;
+  product: Map<string, number>;
+  prefix: Map<string, number>;
+  changing: number;
+}
+
+/** Whether a rule passes the filters, the search text apart; `skip` leaves one filter out (a chip counts what choosing it would show). */
+export function passesFilters(r: LightRule, f: Filters, skip?: "shelf" | "product" | "prefix" | "changing"): boolean {
+  return (skip === "shelf" || !f.shelf || r.shelf === f.shelf) && (skip === "product" || !f.product || r.products.includes(f.product)) && (skip === "prefix" || !f.prefix || r.prefix === f.prefix) && (skip === "changing" || !f.changing || !!r.recheck_date) && (f.ids.length === 0 || f.ids.includes(r.id));
+}
+
+/** What each chip would show given the other filters: the chips' live counts over `pool` (every rule, or those a claim found). */
+export function facetCounts(pool: LightRule[], f: Filters): FacetCounts {
+  const c: FacetCounts = { all: 0, shelf: new Map(), product: new Map(), prefix: new Map(), changing: 0 };
+  const add = (m: Map<string, number>, k: string) => m.set(k, (m.get(k) ?? 0) + 1);
+  for (const r of pool) {
+    if (passesFilters(r, f, "shelf")) {
+      c.all += 1;
+      add(c.shelf, r.shelf);
+    }
+    if (passesFilters(r, f, "product")) for (const p of r.products) add(c.product, p);
+    if (passesFilters(r, f, "prefix")) add(c.prefix, r.prefix);
+    if (r.recheck_date && passesFilters(r, f, "changing")) c.changing += 1;
+  }
+  return c;
+}
+
+/** Any filter but the search text. */
+export const isNarrowing = (f: Filters) => !!(f.shelf || f.product || f.prefix || f.changing || f.ids.length > 0);

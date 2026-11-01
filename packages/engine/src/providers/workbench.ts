@@ -478,6 +478,25 @@ export function buildTariff(input: Omit<WorkbenchInput, "fund"> & { fund?: Workb
 
 const providerLines: readonly FeeLine[] = ["trade", "custody", "fx", "fixed"];
 
+/** The function's result, computed at the first call. */
+function once<T>(work: () => T): () => T {
+  let done: { value: T } | null = null;
+  return () => (done ??= { value: work() }).value;
+}
+
+/** A snapshot is read the same way every time it is run: checked once per object, since a page runs each one hundreds of times. */
+const checked = new WeakMap<object, FeesSnapshot>();
+function checkedSnapshot(snapshot: unknown): FeesSnapshot {
+  const known = typeof snapshot === "object" && snapshot !== null ? checked.get(snapshot) : undefined;
+  if (known) return known;
+  const parsed = feesSnapshot.safeParse(snapshot);
+  if (!parsed.success) {
+    throw new RecordInputError(`fee snapshot: ${parsed.error.issues.map((i) => `${i.path.join(".") || "(top)"}: ${i.message}`).join("; ")}`);
+  }
+  if (typeof snapshot === "object" && snapshot !== null) checked.set(snapshot, parsed.data);
+  return parsed.data;
+}
+
 /** The CPI index at the run's exit, `I_T` (F-03): from the run's own series, else from `V_T / V_T^real`. */
 function indexAtExit(r: RunResult): number {
   const p = r.series.find((x) => x.month === r.exitMonth) ?? r.series[r.series.length - 1];
@@ -542,11 +561,7 @@ export function providerWorkbench(input: WorkbenchInput, ctx: RunContext): Provi
 
   const rows: ProviderRow[] = [];
   for (const p of input.providers) {
-    const parsed = feesSnapshot.safeParse(p.snapshot);
-    if (!parsed.success) {
-      throw new RecordInputError(`fee snapshot: ${parsed.error.issues.map((i) => `${i.path.join(".") || "(top)"}: ${i.message}`).join("; ")}`);
-    }
-    const s = parsed.data;
+    const s = checkedSnapshot(p.snapshot);
     const base: ProviderBase = {
       id: s.id,
       name: s.provider.name_he,
@@ -595,16 +610,19 @@ export function providerWorkbench(input: WorkbenchInput, ctx: RunContext): Provi
     const run = runSecurities(planF.input, ctx);
     const run12 = runSecurities(plan(built.tariff, 12, memberKind), ctx);
     const total = noneT.real - run.real;
-    const byType = feeLines(planF)
-      .filter((l) => providerLines.includes(l))
-      .map((line) => {
-        const w = withoutFeeLine(planF, line);
-        if (w.run !== "runSecurities") throw new Error("unreachable: a securities plan stays a securities plan");
-        const without = runSecurities(w.input, ctx);
-        return { line, cost: without.real - run.real, costBeforeTax: beforeTax(without) - beforeTax(run) };
-      })
-      .sort((a, b) => b.cost - a.cost);
-    const sum = byType.reduce((acc, t) => acc + t.cost, 0);
+    // F-61's split takes a whole run per fee line, and a page that ranks every fund at every house reads it for few: run when first read.
+    const split = once(() => {
+      const byType = feeLines(planF)
+        .filter((l) => providerLines.includes(l))
+        .map((line) => {
+          const w = withoutFeeLine(planF, line);
+          if (w.run !== "runSecurities") throw new Error("unreachable: a securities plan stays a securities plan");
+          const without = runSecurities(w.input, ctx);
+          return { line, cost: without.real - run.real, costBeforeTax: beforeTax(without) - beforeTax(run) };
+        })
+        .sort((a, b) => b.cost - a.cost);
+      return { byType, interaction: total - byType.reduce((acc, t) => acc + t.cost, 0) };
+    });
 
     const strength = weakestStrength([...run.rules.map((r) => r.strength), ...(p.level === "entered" ? (["entered"] as const) : built.strengths)]);
     const ruleIds = run.rules.map((r) => r.id);
@@ -635,8 +653,12 @@ export function providerWorkbench(input: WorkbenchInput, ctx: RunContext): Provi
         common,
       ),
       yearOneFeesPaid: run12.fees.trade + run12.fees.custody + run12.fees.fixed + run12.fees.fx,
-      byType,
-      interaction: total - sum,
+      get byType() {
+        return split().byType;
+      },
+      get interaction() {
+        return split().interaction;
+      },
       real: run.real,
       horizonCostBeforeTax: beforeTax(noneT) - beforeTax(run),
       taxReal: taxReal(run),
@@ -659,7 +681,9 @@ export function providerWorkbench(input: WorkbenchInput, ctx: RunContext): Provi
   const top = sorted[0];
   if (top) ranking.tieSet = sorted.filter((r) => r === top || isTie(top.real, r.real, input.theta)).map((r) => r.id);
   const second = sorted[1];
-  if (top && second) {
+  // read from the rows' split, so it runs only when first read too
+  const decide = once(() => {
+    if (!top || !second) throw new Error("unreachable: read only with two ranked providers");
     const gaps: Partial<Record<FeeLine, number>> = {};
     let line: FeeLine | null = null;
     let best = 0;
@@ -674,8 +698,9 @@ export function providerWorkbench(input: WorkbenchInput, ctx: RunContext): Provi
       }
     }
     const gap = relativeGap(top.real, second.real);
-    ranking.topTwo = { top: top.id, second: second.id, gap, tie: gap < input.theta, deciding: { line, gaps } };
-  }
+    return { top: top.id, second: second.id, gap, tie: gap < input.theta, deciding: { line, gaps } };
+  });
+  if (top && second) Object.defineProperty(ranking, "topTwo", { enumerable: true, get: decide });
 
   const reasonOf = (r: NotComparableProvider): Reason => ({
     code: r.reason.code === "data-missing" || r.reason.code === "record-error" ? "missing-record" : "missing-input",

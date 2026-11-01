@@ -29,7 +29,7 @@ function saveData(): boolean {
 }
 
 /** The index once `active` is true (it is fetched at the first need, then kept), and the texts right after it. */
-function useSearchIndex(active: boolean, text: string): { index: SearchEntry[] | null; texts: SearchTexts | null } {
+export function useSearchIndex(active: boolean, text: string): { index: SearchEntry[] | null; texts: SearchTexts | null } {
   const [index, setIndex] = useState<SearchEntry[] | null>(null);
   const [texts, setTexts] = useState<SearchTexts | null>(null);
   useEffect(() => {

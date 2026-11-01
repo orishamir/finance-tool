@@ -82,6 +82,10 @@
     "status": "open"
   },
   {
+    "id": "BANK OQ19",
+    "status": "open"
+  },
+  {
     "id": "BPN OQ1",
     "status": "closed",
     "closed_on": "2026-10-22"
@@ -408,6 +412,10 @@
     "status": "open"
   },
   {
+    "id": "CORP OQ16",
+    "status": "open"
+  },
+  {
     "id": "ETF OQ1",
     "status": "closed",
     "closed_on": "2026-10-31"
@@ -543,6 +551,10 @@
   },
   {
     "id": "ETF OQ32",
+    "status": "open"
+  },
+  {
+    "id": "ETF OQ33",
     "status": "open"
   },
   {
@@ -1013,6 +1025,26 @@
     "id": "MF OQ17",
     "status": "narrowed",
     "title_he": "מה קובעים התיקונים האחרונים לחוק השקעות משותפות בנאמנות"
+  },
+  {
+    "id": "MF OQ18",
+    "status": "open"
+  },
+  {
+    "id": "MF OQ19",
+    "status": "open"
+  },
+  {
+    "id": "MF OQ20",
+    "status": "open"
+  },
+  {
+    "id": "MF OQ21",
+    "status": "open"
+  },
+  {
+    "id": "MF OQ22",
+    "status": "open"
   },
   {
     "id": "PEN OQ1",
@@ -2045,6 +2077,14 @@
     "status": "open"
   },
   {
+    "id": "TXF OQ24",
+    "status": "open"
+  },
+  {
+    "id": "TXF OQ25",
+    "status": "open"
+  },
+  {
     "id": "TXS OQ1",
     "status": "closed",
     "closed_on": "2026-10-22"
@@ -2131,6 +2171,18 @@
   },
   {
     "id": "TXS OQ20",
+    "status": "open"
+  },
+  {
+    "id": "TXS OQ21",
+    "status": "open"
+  },
+  {
+    "id": "TXS OQ22",
+    "status": "open"
+  },
+  {
+    "id": "TXS OQ23",
     "status": "open"
   },
   {
