@@ -3708,6 +3708,7 @@ export const invest = {
     colGap: "מול המדד",
     gapYears: (n: number) => (n === 1 ? "בשנה · שנה אחת" : `בשנה · ${n} שנים`),
     gapNone: "אין שנה מלאה",
+    gapNotCollected: "עוד לא נאסף",
     gapInputFund: (year: number) => `תשואת הקרן ב־${year}`,
     gapInputIndex: (year: number) => `תשואת המדד שלה ב־${year}`,
     crossWhy: (lo: string, hi: string) => `לפי הדולר, מירידה של ${lo} בשנה ועד עלייה של ${hi}`,

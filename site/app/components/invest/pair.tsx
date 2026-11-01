@@ -523,10 +523,11 @@ const mayaHrefOf = (f: FundWay) => {
 const labelsOf = (view: InvestView, f: FundWay): Label[] => [f.option === "tase-foreign" ? optionLabels(f.option)[0]! : optionLabels(f.option)[1] ?? optionLabels(f.option)[0]!, ...fundLabels(f.rec, view.index, f.option)];
 
 /** F-92 (a) in a row: the gap with its sign, and the years it rests on. */
-function GapCell({ rec, today }: { rec: FundWay["rec"]; today: string }) {
+export function GapCell({ rec, today }: { rec: FundWay["rec"]; today: string }) {
   const g = gapOf(rec);
   const td = rec.fees.tracking_difference_12m;
-  if (!g || !rec.tracking_record || !td) return <span className="text-xs text-muted-foreground">{c.kinds.gapNone}</span>;
+  // "no full year" is what an Israeli fund's annual report says; a foreign or typed fund's years were never read, which says nothing about its age
+  if (!g || !rec.tracking_record || !td) return <span className="text-xs text-muted-foreground">{rec.domicile === "IL" && !isCustomFund(rec) ? c.kinds.gapNone : c.kinds.gapNotCollected}</span>;
   // the inputs are the report's own figures for each year, from the same document as the fund's tracking note (D31: the fund's own report)
   const inputs: Record<string, SiteValue> = {};
   for (const y of rec.tracking_record.years) {

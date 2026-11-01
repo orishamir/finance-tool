@@ -14,7 +14,7 @@ import { HousesSection } from "./houses";
 import { Fees, FundsSection } from "./funds";
 import { LabelSheetHost } from "../kit";
 import { Headline, IndexHeader } from "./sections";
-import { AccountColumn, allFunds, bestFor, FundColumn, PairResult, pickOfHeadline } from "./pair";
+import { AccountColumn, allFunds, bestFor, FundColumn, GapCell, PairResult, pickOfHeadline } from "./pair";
 import { Foot } from "./foot";
 import { DollarSection } from "./dollar";
 import { hasKinds, kindOf } from "../../lib/invest";
@@ -144,6 +144,21 @@ describe("who reports the tax is the route's, not the fund's (issue 126, TXF-29)
     const israeli = html(createElement(Fees, { rec: { ...foreign, domicile: "IL" } }));
     expect(israeli).toContain(invest.funds.notCollected);
     expect(israeli).not.toContain(invest.funds.noSuchFee);
+  });
+  it("a foreign fund with no yearly figures says they were not collected, never that it has no full year", () => {
+    const today = "2026-11-01";
+    const iusa = allFunds(view).find((f) => f.rec.id === "ie0031442068")!.rec;
+    const cell = html(createElement(GapCell, { rec: iusa, today }));
+    expect(cell).toContain(invest.kinds.gapNotCollected);
+    expect(cell).not.toContain(invest.kinds.gapNone);
+    const young = html(createElement(GapCell, { rec: { ...iusa, domicile: "IL" }, today }));
+    expect(young).toContain(invest.kinds.gapNone);
+  });
+  it("an accumulating iShares fund's name says so, as the distributing one's does", () => {
+    const funds = allFunds(view);
+    expect(funds.find((f) => f.rec.id === "ie00b5bmr087")!.name).toContain("Accumulating");
+    expect(funds.find((f) => f.rec.id === "1159250")!.name).toContain("Accumulating");
+    expect(funds.find((f) => f.rec.id === "ie0031442068")!.name).toContain("Dist");
   });
   it("the same fund on Tel Aviv and abroad is a row each, told apart by where it is listed", () => {
     const funds = allFunds(view);
