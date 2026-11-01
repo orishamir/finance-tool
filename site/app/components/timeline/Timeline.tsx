@@ -13,7 +13,7 @@ import { TimelineChart, type ChartPoint, type Marker } from "../chart/TimelineCh
 import { IconPencil, IconReset } from "../icons";
 import { Num, RuleRef, RulesLine, StateTag } from "../provenance";
 import { Sheet } from "../Sheet";
-import { Button, Callout, Card, ChartLegend, ChartReadout, ChartTable, cx, useChartPick, InputSlot, NumberField, ParameterLine, RangeField, SegmentedControl, Swatch } from "../kit";
+import { Button, Callout, Card, ChartLegend, ChartReadout, ChartTable, cx, useChartPick, InputSlot, LongestCase, NumberField, ParameterLine, RangeField, SegmentedControl, Swatch } from "../kit";
 
 export interface TimelineProps {
   bundle: Bundle;
@@ -245,7 +245,7 @@ export function Timeline({ bundle: pageBundle, initial, wrapperName, ageMarker, 
 
         {/* issue 23: a figure in future shekels read as ignoring inflation; each mode names the other's figure and why deposits exceed what was typed */}
         {values && timeline.kind === "ok" ? (
-          <p className="text-sm text-muted-foreground max-w-measure min-h-[6rem] lg:min-h-12">
+          <p className="text-sm text-muted-foreground max-w-measure min-h-[6rem] lg:min-h-[3lh]">
             {copy.modeNote[mode].before} <Num value={values.yearValues(timeline.years[timeline.years.length - 1]!, mode === "real" ? "nominal" : "real").net} /> {copy.modeNote[mode].after}
             {(state.entered.monthly_deposit ?? p05Number(bundle.p05, "monthly_deposit")) > 0 ? ` ${copy.modeNote.deposits}` : ""}
           </p>
@@ -321,7 +321,8 @@ export function Timeline({ bundle: pageBundle, initial, wrapperName, ageMarker, 
         <h3 className="text-lg font-semibold mb-4">{valuesCopy.title}</h3>
         {panel}
         <TermsList bundle={bundle} />
-        {anyEntered && <ResetAll onReset={resetAll} />}
+        {/* its room stays until something is entered: the panel is taller than the graph beside it, so a new button moved the page below */}
+        <LongestCase cases={[<ResetAll key="reset" onReset={resetAll} />]}>{anyEntered && <ResetAll onReset={resetAll} />}</LongestCase>
       </Card>
 
       <Sheet open={sheetOpen} onClose={() => setSheetOpen(false)} pc="center" height={78} labelledBy={`${titleId}-v`} className="lg:hidden">

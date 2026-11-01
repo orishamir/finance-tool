@@ -2131,6 +2131,7 @@ Added 2026-10-24 for the briefs in `docs/flows.md` section 18 and the handoff in
 | Diff row, dates | נבדק ב־`{תאריך}` |
 | Diff row, removed | הוסר מהמאגר · הקובץ לא קיים עוד |
 | Diff row, added | קובץ חדש · לא היה |
+| Diff row, a table of brackets: its column heads (2026-11-01) | עד סכום · שיעור |
 | Diff row, state change | היה פרמטר · עכשיו הזנתם · changed 2026-10-24 (Hebrew editor); was ״הוזן על ידך״ |
 | Diff row, re-checked data | הקובץ נבדק מחדש; הערכים לא השתנו. |
 | More rows | עוד `{מספר}` |

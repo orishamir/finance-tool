@@ -13,7 +13,7 @@ import { hishtalmutModel, type Employment } from "../../lib/guide-signature-g2";
 import { p05Number, p05Value, type Bundle } from "../../lib/engine";
 import { useInputs } from "../../lib/inputs";
 import { entered as enteredValue, type SiteValue } from "../../lib/value";
-import { Callout, GainBars, InputSlot, LaneLabel, Marker, MarkerMark, NumberField, SegmentedControl, Sentence, TableCols, clamp, useGlidingNumbers, useWidth } from "../kit";
+import { Callout, GainBars, InputSlot, LaneLabel, LongestCase, Marker, MarkerMark, NumberField, SegmentedControl, Sentence, TableCols, clamp, useGlidingNumbers, useWidth } from "../kit";
 import { Num, RulesLine, Term } from "../provenance";
 import { G2Gap, HoldRow, PlanInputs, text } from "./g2-parts";
 import { figure, inputSite, rulesOfBundle, useSigInputs, type VisualProps } from "./kit";
@@ -23,6 +23,14 @@ const LANE_Y = 26;
 const LANE_H = 28;
 const AXIS_Y = 66;
 const MAX_YEARS = 12;
+
+function IncomeSourceLine({ source }: { source: string }) {
+  return (
+    <p className="text-xs text-muted-foreground">
+      {copy.hishtalmut.incomeSource} {copy.common.source[source]}.
+    </p>
+  );
+}
 
 export function KerenHishtalmutVisual(props: VisualProps) {
   const base = props.data.bundles["keren-hishtalmut"] ?? props.data.bundles["brokerage-account"];
@@ -112,6 +120,97 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
   const lockYears = fact(data, "lockYears");
   const lockShort = fact(data, "lockYearsShort");
 
+  /** Stands in for a figure in a line's unseen longest case: what the longest amount takes on the screen. */
+  const big: SiteValue = { ...amountIn, value: 9_999_999 };
+  const bars = (study: SiteValue, brokerV: SiteValue, gap: SiteValue | null, costStudy: SiteValue | null, costBroker: SiteValue | null, taxStudy: SiteValue | null, taxBroker: SiteValue | null, diffN: number) => (
+    <div className="flex flex-col gap-3">
+      <GainBars
+        bars={[
+          { key: "study", label: copy.hishtalmut.study, value: study, tone: "value" },
+          { key: "broker", label: copy.hishtalmut.broker, value: brokerV, tone: "alt" },
+        ]}
+        diff={gap}
+        diffLabel={diffN >= 0 ? copy.hishtalmut.diffMore : copy.hishtalmut.diffLess}
+      />
+      <p className="text-xs text-muted-foreground">{copy.hishtalmut.barsNote}</p>
+      <table className="text-sm w-full max-w-md table-fixed tabular-nums [&_td]:whitespace-nowrap">
+        <TableCols widths={["26%", "37%", "37%"]} />
+        <thead>
+          <tr className="text-muted-foreground text-start">
+            <th scope="col" className="font-normal text-start pb-1" />
+            <th scope="col" className="font-normal text-start pb-1">
+              {copy.hishtalmut.study}
+            </th>
+            <th scope="col" className="font-normal text-start pb-1">
+              {copy.hishtalmut.broker}
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row" className="font-normal text-start text-muted-foreground pe-3 py-0.5">
+              {copy.hishtalmut.costsRow}
+            </th>
+            <td>{costStudy && <Num value={costStudy} size="cell" />}</td>
+            <td>{costBroker && <Num value={costBroker} size="cell" />}</td>
+          </tr>
+          <tr>
+            <th scope="row" className="font-normal text-start text-muted-foreground pe-3 py-0.5">
+              {copy.hishtalmut.taxRow}
+            </th>
+            <td>{taxStudy && <Num value={taxStudy} size="cell" />}</td>
+            <td>{taxBroker && <Num value={taxBroker} size="cell" />}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  );
+  const reliefLine = (saves: SiteValue) => (
+    <p>
+      {copy.hishtalmut.self.before} <Num value={fact(data, "deductionPct")!} /> {copy.hishtalmut.self.middle} <Num value={fact(data, "deductionCeiling")!} />
+      {copy.hishtalmut.self.saves} <Num value={saves} /> {copy.hishtalmut.self.after}
+    </p>
+  );
+  const ranges = (brokerR: typeof brokerRange, managerR: typeof managerRange) => (
+    <div className="flex flex-col gap-2 text-sm max-w-measure">
+      <p className="font-medium">{copy.hishtalmut.rangeLead}</p>
+      <ul className="flex flex-col gap-1.5 list-disc ps-5">
+        {brokerR && (
+          <li>
+            {copy.hishtalmut.rangeBroker.before} <Num value={brokerR.low} /> {copy.hishtalmut.rangeBroker.to} <Num value={brokerR.high} />
+            {brokerCount ? (
+              <>
+                {" "}
+                ({copy.hishtalmut.rangeBroker.of} <Num value={brokerCount} /> {copy.hishtalmut.rangeBroker.collected}
+                {brokerName ? `; ${copy.hishtalmut.rangeBroker.here} ${brokerName}` : ""})
+              </>
+            ) : null}
+            .{" "}
+            <Link to="/indices" className="text-link hover:underline">
+              {copy.hishtalmut.rangeBroker.more}
+            </Link>
+          </li>
+        )}
+        {managerR && rangeMin && rangeMax && (
+          <li>
+            {copy.hishtalmut.rangeManager.before} <Num value={managerR.low} /> {copy.hishtalmut.rangeManager.to} <Num value={managerR.high} /> ({copy.hishtalmut.rangeManager.fees} <Num value={rangeMin} /> {copy.hishtalmut.rangeManager.toFee}{" "}
+            <Num value={rangeMax} />
+            {rangeCount ? (
+              <>
+                {copy.hishtalmut.rangeManager.across} <Num value={rangeCount} /> {copy.hishtalmut.rangeManager.tracks}
+              </>
+            ) : null}
+            ).
+          </li>
+        )}
+      </ul>
+    </div>
+  );
+  const earlyLine = (rate: SiteValue) => (
+    <Sentence size="sm" measure>
+      {copy.hishtalmut.earlyLine.before} <Num value={rate} /> {copy.hishtalmut.earlyLine.after}
+    </Sentence>
+  );
   const gapText = model.studyGap === "self-employed-early" ? copy.hishtalmut.gaps.selfEmployedEarly : model.studyGap === "no-run" ? copy.common.gapFallback : model.studyGap === "blocked" ? copy.hishtalmut.gaps.blocked : null;
 
   return (
@@ -173,9 +272,9 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
           optional
         />
       </div>
-      <p className="text-xs text-muted-foreground -mt-3">
-        {copy.hishtalmut.incomeSource} {copy.common.source[incomeSource]}.
-      </p>
+      <LongestCase className="-mt-3" cases={[<IncomeSourceLine key="long" source="p05" />, <IncomeSourceLine key="short" source="guide" />]}>
+        <IncomeSourceLine source={incomeSource} />
+      </LongestCase>
       <PlanInputs bundle={base} inputs={inputs} today={today} />
 
       <div className="flex flex-col gap-2">
@@ -218,57 +317,12 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
           {copy.hishtalmut.at.before} <InputSlot chars={7}><bdi>{fmt.years(years)}</bdi></InputSlot>
           {copy.hishtalmut.at.after}
         </p>
-        {gapText && (
-          <Callout tone="caution">{gapText}</Callout>
-        )}
-        {v.study && v.broker ? (
-          <>
-            <GainBars
-              bars={[
-                { key: "study", label: copy.hishtalmut.study, value: v.study, tone: "value" },
-                { key: "broker", label: copy.hishtalmut.broker, value: v.broker, tone: "alt" },
-              ]}
-              diff={diff}
-              diffLabel={(model.diff ?? 0) >= 0 ? copy.hishtalmut.diffMore : copy.hishtalmut.diffLess}
-            />
-            <p className="text-xs text-muted-foreground">{copy.hishtalmut.barsNote}</p>
-            <table className="text-sm w-full max-w-md table-fixed tabular-nums [&_td]:whitespace-nowrap">
-              <TableCols widths={["26%", "37%", "37%"]} />
-              <thead>
-                <tr className="text-muted-foreground text-start">
-                  <th scope="col" className="font-normal text-start pb-1" />
-                  <th scope="col" className="font-normal text-start pb-1">
-                    {copy.hishtalmut.study}
-                  </th>
-                  <th scope="col" className="font-normal text-start pb-1">
-                    {copy.hishtalmut.broker}
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <th scope="row" className="font-normal text-start text-muted-foreground pe-3 py-0.5">
-                    {copy.hishtalmut.costsRow}
-                  </th>
-                  <td>{costs.study && <Num value={costs.study} size="cell" />}</td>
-                  <td>{costs.broker && <Num value={costs.broker} size="cell" />}</td>
-                </tr>
-                <tr>
-                  <th scope="row" className="font-normal text-start text-muted-foreground pe-3 py-0.5">
-                    {copy.hishtalmut.taxRow}
-                  </th>
-                  <td>{taxes.study && <Num value={taxes.study} size="cell" />}</td>
-                  <td>{taxes.broker && <Num value={taxes.broker} size="cell" />}</td>
-                </tr>
-              </tbody>
-            </table>
-          </>
-        ) : null}
-        {model.early && !gapText && firstBracket && (
-          <Sentence size="sm" measure>
-            {copy.hishtalmut.earlyLine.before} <Num value={firstBracket} /> {copy.hishtalmut.earlyLine.after}
-          </Sentence>
-        )}
+        {/* a self-employed person's early years have no run: the words take the bars' place, and everything keeps its height (issue 155) */}
+        <LongestCase cases={[bars(big, { ...big, value: 1 }, big, big, big, big, big, 0), <Callout key="gap" tone="caution">{copy.hishtalmut.gaps.selfEmployedEarly}</Callout>]}>
+          {gapText ? <Callout tone="caution">{gapText}</Callout> : v.study && v.broker ? bars(v.study, v.broker, diff, costs.study, costs.broker, taxes.study, taxes.broker, model.diff ?? 0) : null}
+        </LongestCase>
+        {/* said only before the lock's end: its room stays for the later years, so what is below does not move with the marker */}
+        {firstBracket && <LongestCase cases={[earlyLine(firstBracket)]}>{model.early && !gapText && earlyLine(firstBracket)}</LongestCase>}
       </div>
 
       {employment === "employee" ? (
@@ -292,51 +346,13 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
           )}
         </div>
       ) : (
-        <div className="flex flex-col gap-2 text-sm max-w-measure">
-          {relief && (
-            <p>
-              {copy.hishtalmut.self.before} <Num value={fact(data, "deductionPct")!} /> {copy.hishtalmut.self.middle} <Num value={fact(data, "deductionCeiling")!} />
-              {copy.hishtalmut.self.saves} <Num value={relief} /> {copy.hishtalmut.self.after}
-            </p>
-          )}
+        <div className="text-sm max-w-measure">
+          <LongestCase cases={[reliefLine(big)]}>{relief && reliefLine(relief)}</LongestCase>
         </div>
       )}
 
-      {(brokerRange || managerRange) && (
-        <div className="flex flex-col gap-2 text-sm max-w-measure">
-          <p className="font-medium">{copy.hishtalmut.rangeLead}</p>
-          <ul className="flex flex-col gap-1.5 list-disc ps-5">
-            {brokerRange && (
-              <li>
-                {copy.hishtalmut.rangeBroker.before} <Num value={brokerRange.low} /> {copy.hishtalmut.rangeBroker.to} <Num value={brokerRange.high} />
-                {brokerCount ? (
-                  <>
-                    {" "}
-                    ({copy.hishtalmut.rangeBroker.of} <Num value={brokerCount} /> {copy.hishtalmut.rangeBroker.collected}
-                    {brokerName ? `; ${copy.hishtalmut.rangeBroker.here} ${brokerName}` : ""})
-                  </>
-                ) : null}
-                .{" "}
-                <Link to="/indices" className="text-link hover:underline">
-                  {copy.hishtalmut.rangeBroker.more}
-                </Link>
-              </li>
-            )}
-            {managerRange && rangeMin && rangeMax && (
-              <li>
-                {copy.hishtalmut.rangeManager.before} <Num value={managerRange.low} /> {copy.hishtalmut.rangeManager.to} <Num value={managerRange.high} /> ({copy.hishtalmut.rangeManager.fees} <Num value={rangeMin} /> {copy.hishtalmut.rangeManager.toFee}{" "}
-                <Num value={rangeMax} />
-                {rangeCount ? (
-                  <>
-                    {copy.hishtalmut.rangeManager.across} <Num value={rangeCount} /> {copy.hishtalmut.rangeManager.tracks}
-                  </>
-                ) : null}
-                ).
-              </li>
-            )}
-          </ul>
-        </div>
-      )}
+      {/* the ranges need the run, which a self-employed person's early years do not have: their room stays */}
+      <LongestCase cases={[ranges({ low: big, high: big }, { low: big, high: big })]}>{(brokerRange || managerRange) && ranges(brokerRange, managerRange)}</LongestCase>
 
       <div className="flex flex-col gap-1.5 text-sm text-muted-foreground max-w-measure">
         {lockYears && lockShort && (
