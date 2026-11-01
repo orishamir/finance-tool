@@ -11,7 +11,7 @@ import { IdRef, Num } from "../provenance";
 import { IconDrillIn } from "../icons";
 import { label } from "../../lib/labels";
 import { fmt } from "../../lib/format";
-import { LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, Button, Callout, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, LabelFilter, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, CompareTable, TableCols, CoverageFold, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, Disclosure, FieldState, FoldGroup, GainBars, GapNote, HeadlineFigure, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, CheckField, FieldGroup, TextField, NumberField, ParameterLine, PercentField, PlanChips, KnobStrip, ChangeChart, RangeField, RankBadge, Section, SegmentedControl, SelectField, Sentence, ShareRings, SourceLine, Stat, StatRow, StatTile, StepButtons, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth } from "./index";
+import { AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, Button, Callout, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, LabelFilter, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, CompareTable, TableCols, CoverageFold, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, Disclosure, FieldState, FoldGroup, GainBars, GapNote, HeadlineFigure, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, CheckField, FieldGroup, TextField, NumberField, ParameterLine, PercentField, PlanChips, KnobStrip, ChangeChart, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, RangeField, RankBadge, Section, SegmentedControl, SelectField, Sentence, ShareRings, SourceLine, Stat, StatRow, StatTile, StepButtons, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth } from "./index";
 
 const g = copy.gallery;
 
@@ -140,6 +140,32 @@ function Folds() {
   const [topic, setTopic] = useState(true);
   return (
     <>
+      <Demo name="FilterChip" use={g.uses.FilterChip}>
+        <Grid>
+          <State label={g.states.closed}>
+            <FilterChip on={false} count={42} onClick={() => undefined}>{g.sample.foldLabel}</FilterChip>
+          </State>
+          <State label={g.states.open}>
+            <FilterChip on count={7} onClick={() => undefined}>{g.sample.foldLabel}</FilterChip>
+          </State>
+          <State label="0">
+            <FilterChip on={false} count={0} onClick={() => undefined}>{g.sample.foldLabel}</FilterChip>
+          </State>
+        </Grid>
+      </Demo>
+      <Demo name="AskField" use={g.uses.AskField}>
+        <AskDemo />
+      </Demo>
+      <Demo name="DidYouKnow" use={g.uses.DidYouKnow}>
+        <div className="max-w-xs">
+          <DidYouKnow
+            title={g.sample.foldLabel}
+            more={g.sample.foldHide}
+            orderKey="demo"
+            items={["1", "2", "3", "4"].map((id) => ({ id, body: `${g.sample.foldLabel} ${id}`, source: g.sample.foldHide, action: id }))}
+          />
+        </div>
+      </Demo>
       <Demo name="Disclosure" use={g.uses.Disclosure}>
         <Grid>
           <State label={`${g.states.closed}, label and openLabel`}>
@@ -547,6 +573,37 @@ function Fields() {
           />
         </State>
       </Demo>
+      <Demo name="StairsChart, StairsTable, StairsSteps" use={g.uses.StairsChart}>
+        <State label={g.states.interactive} wide>
+          <StairsChart
+            columns={[
+              { id: "0", level: 79273, from: 79273, top: "79,273 ₪", hue: "start", loses: false, taken: true, open: false, current: true, label: g.sample.rowA },
+              { id: "1", level: 84148, from: 79273, top: "+4,875 ₪", hue: "account", loses: false, taken: false, open: false, current: false, label: g.sample.rowB },
+              { id: "2", level: 82000, from: 84148, top: "−2,148 ₪", hue: "kind", loses: true, taken: false, open: false, current: false, label: g.sample.rowB },
+              { id: "3", level: 86492, from: 82000, top: "+4,492 ₪", hue: "fund", loses: false, taken: false, open: true, current: false, label: g.sample.rowB },
+            ]}
+            fold={0}
+            axis={{ lo: 70000, hi: 90000, step: 5000 }}
+            ceiling={{ level: 86955, lines: [g.sample.rowA, "86,955 ₪", g.sample.rowB] }}
+            endsAt={null}
+            now={g.sample.stairsNow}
+            label={g.sample.rowA}
+            tick={(n) => fmt.number(n)}
+            onGo={() => undefined}
+          />
+          <StairsTable rows={[{ id: "a", head: g.sample.rowA, cells: ["1", "2", "3", "4"] }]} />
+          <StairsSteps steps={[{ id: "a", hue: "account", loses: false, head: g.sample.rowA, delta: "+4,875 ₪", parts: g.sample.rowB, next: true, label: g.sample.rowA }]} onGo={() => undefined} />
+        </State>
+      </Demo>
+      <Demo name="DiffRow, DiffHead, DiffFigure, GreyLine" use={g.uses.DiffRow}>
+        <State label={g.states.interactive} wide>
+          <DiffHead name={g.sample.rowA} left={g.sample.rowB} versus={g.sample.diff} less="פחות" more="יותר" money="כסף" />
+          <DiffRow name={g.sample.rowA} left="84,148 ₪" d={4875} unit={4875} open={false} label={g.sample.rowA} onTake={() => undefined} diff={<DiffFigure d={4875} words={{ more: "עוד", fewer: "פחות", same: "אותו סכום" }} figure="4,875 ₪" />} />
+          <DiffRow name={g.sample.rowB} left="77,749 ₪" d={-1524} unit={4875} open={false} turn label={g.sample.rowB} onTake={() => undefined} diff={<DiffFigure d={-1524} words={{ more: "עוד", fewer: "פחות", same: "אותו סכום" }} figure="1,524 ₪" />} />
+          <DiffRow name={g.sample.rowA} left="61,931 ₪" d={-17342} unit={4875} open={false} label={g.sample.rowA} onTake={() => undefined} diff={<DiffFigure d={-17342} words={{ more: "עוד", fewer: "פחות", same: "אותו סכום" }} figure="17,342 ₪" />} />
+          <GreyLine why={g.sample.note}>{g.sample.rowA}</GreyLine>
+        </State>
+      </Demo>
       <Demo name="PercentField" use={g.uses.PercentField}>
         <Grid>
           <State label={`range 0 to 50, ${g.states.interactive}`}>
@@ -595,6 +652,11 @@ function Fields() {
       </Demo>
     </>
   );
+}
+
+function AskDemo() {
+  const [value, setValue] = useState("");
+  return <AskField value={value} onChange={setValue} label={g.sample.foldLabel} placeholder={g.sample.foldLabel} clearLabel={g.sample.foldHide} />;
 }
 
 function MarkerDemo({ today }: { today: string }) {

@@ -16,6 +16,7 @@ import { LabelSheetHost } from "../components/kit";
 import { Headline, IndexHeader } from "../components/invest/sections";
 import { Foot } from "../components/invest/foot";
 import { DollarSection } from "../components/invest/dollar";
+import { StairsSection } from "../components/invest/stairs";
 import { CustomEntriesHost } from "../components/invest/custom-entries";
 import { Callout } from "../components/kit";
 import { Sheet } from "../components/Sheet";
@@ -166,6 +167,8 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
   // a pair the account no longer prices (a broker the person typed and changed, D44)
   const validPick = (p: Pick) => !!view && allFunds(view).some((f) => f.rec.id === p.fund && Object.values(f.byHouse).some((x) => "valueN" in x) && "valueN" in (f.byHouse[p.house] ?? {})) && view.providers.some((x) => x.id === p.house);
   const pick: Pick | null = view && index && picked && picked.index === index.id && validPick(picked.pick) ? picked.pick : view ? pickOfHeadline(view) : null;
+  // the stairs start from the person's own pick; with none they open on the middle account and the middle exchange-traded fund
+  const picks = !!(view && index && picked && picked.index === index.id && validPick(picked.pick));
   const onPick = (p: Pick) => index && setPicked({ index: index.id, pick: p });
   // an index with no fund records (a custom one): the houses and their broker costs, and the request for funds
   const [genericHouse, setGenericHouse] = useState<string | null>(null);
@@ -242,6 +245,8 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
             <PlanChanges plan={plan} share={data.form.share} bundle={bundle} view={view} pick={pick} />
             {/* hedged or not, across the dollar (F-94): only on a foreign index with funds of both kinds; at the bottom (founder, 2026-10-31) */}
             {pick && hasKinds(view) && wb.dollarRange && <DollarSection view={view} bundle={bundle} plan={plan} pick={pick} />}
+            {/* the stairs: which single change leaves more, one step at a time; appended last (founder, 2026-11-01) */}
+            {pick && <StairsSection key={index.id} view={view} bundle={bundle} plan={plan} startHouse={picks ? pick.house : null} startFund={picks ? pick.fund : null} />}
             <Foot view={view} />
             <RulesLine ids={rules} />
           </>

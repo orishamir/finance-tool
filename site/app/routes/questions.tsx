@@ -2,12 +2,11 @@
 // then the rules the answer rests on. The answer is a sentence with slots {ID:figure}, rendered as the rule's figure with its unit.
 import { Link, useLoaderData } from "react-router";
 import type { Route } from "./+types/questions";
-import { provenance as provCopy, questions as copy, site, topicName } from "../copy";
-import { Num, RuleRef, StrengthLabel } from "../components/provenance";
+import { questions as copy, site, topicName } from "../copy";
+import { RuleRef, StrengthLabel, SlottedText } from "../components/provenance";
 import { PageShell } from "../components/shell";
-import { parseAnswer } from "../lib/answer-slots";
 import { ruleTitle } from "../lib/rule-title";
-import { ruleFigure, weaker, type Strength } from "../lib/value";
+import { weaker, type Strength } from "../lib/value";
 import type { RuleRecord } from "@finance-tool/schema";
 
 export async function loader() {
@@ -29,21 +28,6 @@ export async function loader() {
 
 export function meta(_: Route.MetaArgs) {
   return [{ title: `${copy.title} · ${site.name}` }];
-}
-
-const unitWords = ["months", "years", "days", "business_days", "usd", "eur"];
-
-function Slot({ id, figure, rules, today }: { id: string; figure: string; rules: Record<string, RuleRecord>; today: string }) {
-  const rule = rules[id];
-  const v = rule ? ruleFigure(rule, figure, today) : null;
-  if (!v) return <>—</>;
-  const word = (provCopy.unit as Record<string, string>)[v.unit];
-  return (
-    <span className="whitespace-nowrap">
-      <Num value={{ ...v, notes: "" }} />
-      {typeof v.value === "number" && word && unitWords.includes(v.unit) && <> {word}</>}
-    </span>
-  );
 }
 
 function shortTitle(r: RuleRecord): string {
@@ -73,7 +57,7 @@ export default function Questions() {
                 </h2>
                 {row.answer ? (
                   <p className="max-w-measure">
-                    {parseAnswer(row.answer).map((p, k) => (p.kind === "text" ? <span key={k}>{p.text}</span> : <Slot key={k} id={p.id} figure={p.figure} rules={rules} today={data.today} />))}
+                    <SlottedText text={row.answer} rules={rules} today={data.today} />
                   </p>
                 ) : (
                   <p className="text-muted-foreground max-w-measure">{copy.noAnswer}</p>

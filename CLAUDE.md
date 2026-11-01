@@ -28,6 +28,8 @@ On 2026-10-24 (night) the knowledge layer (D25) followed: every rule record carr
 
 On 2026-10-26 D6 was amended: makam, government bonds and the money-market funds are securities bought in a securities account, not wrappers (`data/instruments/securities/`, `research/discovery/2026-10-26-wrappers-and-securities.md`); a guide page or comparison option stands for a product, a wrapper or a security held in one.
 
+On 2026-11-01 the rules page was rebuilt around a claim typed in plain words (D47): filters and a "הידעת?" block while nothing is typed; the law, then each company's documents and terms, once something is.
+
 Since 2026-10-26 some pages and visuals are held for the founder's review (D32): not linked from the site, still at their addresses; the list is `site/app/lib/review.ts` and issues #45 to #48 say what each needs.
 
 All five releases of `docs/roadmap.md` are built (release 1 on 2026-10-23,
