@@ -8,7 +8,7 @@ import { IconBack, IconMenu, IconSearch } from "./icons";
 import { ProvenanceProvider, type ProvenanceData } from "./provenance";
 import { SearchCombo, SearchSheet } from "./search";
 import { Sheet } from "./Sheet";
-import { Button, Callout, cx } from "./kit";
+import { Button, Callout, CountingFigures, cx } from "./kit";
 
 export type Current = "guide" | "questions" | "decoder" | "rules" | "documents" | "parameters" | "home" | "goal" | "holdings" | "other";
 
@@ -90,7 +90,7 @@ export function PageShell({ current, data: pageData, children, wide }: { current
                 {site.held.page}
               </Callout>
             )}
-            {children}
+            <CountingFigures>{children}</CountingFigures>
           </main>
           <Footer />
         </div>

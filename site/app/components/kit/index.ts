@@ -30,6 +30,7 @@ export { PairBars, type PairBarYear } from "./pair-bars";
 export { YearBars } from "./year-bars";
 export { YearLabels, durationChart, tickFade, ticksOn, useFadingTicks, useFlip, useGlidingNumbers, useGlidingRows, useGlidingSeries, valueOn, type GlidePoint, type GlideSeries, type GlideTick } from "./chart-glide";
 export { clamp } from "./chart-zoom";
+export { CountingFigures, countsByItself, useCounting } from "./counting";
 export { ChartTip, ZoomBar, ZoomBrush, pickDim, useChartPick, useYearZoom, type ChartPick, type YearZoom } from "./chart-interact";
 export { TableCols, type ColWidth } from "./table-cols";
 export { ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, type ProductColumn, type ProductGroup, type ProductRow } from "./product-table";

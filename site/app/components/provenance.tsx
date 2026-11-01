@@ -16,7 +16,7 @@ import type { TermRow } from "../lib/data.server";
 import { IconAlert, IconCalculator, IconCheck, IconClock, IconCopy, IconExternal, IconFile, IconLock, IconPencil, IconReset } from "./icons";
 import { Sheet } from "./Sheet";
 import { Button, Callout, cx, Disclosure, LinkButton, Tag } from "./ui";
-import { CompanyLinks, Tpl, useGlidingNumbers } from "./kit";
+import { CompanyLinks, Tpl, countsByItself, useCounting, useGlidingNumbers } from "./kit";
 import { chipName, companyLinksOf, generalOnly, isGeneral, isNotRule, isOwnSourceOf, joinNames, listedCompanies, noCompanyAnchor, ownDocCompanies, scopeCompanies, pageView, shownCompanies, sourceCompany, sourcesForPage, type CompanyLink, type OwnDocs } from "../lib/scope";
 
 // ---------------------------------------------------------------- context
@@ -174,7 +174,8 @@ export function Num({ value, size = "inline", display, animate, className, prefi
   const open = useOpen();
   const today = useContext(TodayCtx);
   const param = isParameter(value);
-  const shown = useAnimatedValue(typeof value.value === "number" ? value.value : null, !!animate);
+  const counting = useCounting();
+  const shown = useAnimatedValue(typeof value.value === "number" ? value.value : null, animate ?? (counting && countsByItself(value.state, value.unit)));
   // display rounding (A13): a table cell keeps two decimals, everything else rounds computed and entered amounts
   const keepDecimals = size === "cell" || !!exact;
   const roundState = keepDecimals ? undefined : value.state;
