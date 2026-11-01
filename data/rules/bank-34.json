@@ -1,8 +1,8 @@
 {
   "id": "BANK-34",
-  "title": "Bank Leumi, Bank Hapoalim and Bank Yahav: prime as the anchor, each bank's own definition",
-  "title_he": "לאומי, הפועלים ויהב: הפריים כעוגן, וכל בנק מגדיר אותו",
-  "text_he": "בשלושת הבנקים שנבדקו, לאומי, הפועלים ויהב, העוגן של פיקדונות בריבית משתנה הוא הפריים, וכל בנק מגדיר אותו בעצמו. לאומי מגדיר אותו כריבית המקובלת אצלו מזמן לזמן כריבית הבסיס על יתרות חובה בעובר ושב; הפועלים מציין שהפריים הוא ריבית בנק ישראל בתוספת מרווח קבוע; יהב מציג את ריבית בנק ישראל ואת הפריים זו לצד זו ומצטט פיקדונות משתנים כמרווח מהפריים. יהב מציין גם שהוא רשאי לשנות ריביות או לסגור מוצר להפקדות חדשות בכל עת. בנקים אחרים לא נבדקו.",
+  "title": "Nine banks: prime as the anchor, each bank's own definition, how each prints the spread",
+  "title_he": "תשעה בנקים: הפריים כעוגן, וכל בנק מגדיר אותו",
+  "text_he": "בכל תשעת הבנקים שנבדקו, הפיקדונות בריבית משתנה בשקלים נמדדים מול הפריים. שמונה מהם מגדירים אותו בתנאים שלהם כריבית הבסיס של הבנק, בלי מספר: לאומי, הפועלים, דיסקונט, מרכנתיל, הבינלאומי, מסד, יהב וירושלים. שניים כותבים שהוא ריבית בנק ישראל ועוד 1.5%: מזרחי טפחות בתנאים שלו, והפועלים בדף שינויי הריבית אבל לא בתנאים. שמונה בנקים מדפיסים פריים של 4.75% בנתונים שנקראו עד 1.11.2026, כשריבית בנק ישראל 3.25%; בבנק ירושלים לא נקרא נתון. שישה בנקים כותבים את המרווח באות P, למשל P-2.80%, ושניים במילה \"פריים\" עם סימן מינוס. בבינלאומי ובמסד יש פיקדון אחד, \"גולן\", שהמרווח שלו משתפר מדי תקופה. וואן זירו ובנק אש לא נקראו.",
   "strength": "institution",
   "dimensions": [
     "real-vs-nominal",
@@ -11,7 +11,7 @@
   "likely_to_change": "yes",
   "recheck_date": "2027-01-01",
   "il_finance_file": "bank-current-account-deposits.md",
-  "checked": "2026-10-25",
+  "checked": "2026-11-01",
   "scope": "institution",
   "scope_institutions": [
     {
@@ -23,15 +23,154 @@
       "name_he": "בנק הפועלים"
     },
     {
+      "id": "discount",
+      "name_he": "בנק דיסקונט"
+    },
+    {
+      "id": "mercantile",
+      "name_he": "בנק מרכנתיל דיסקונט"
+    },
+    {
+      "id": "mizrahi-tefahot",
+      "name_he": "בנק מזרחי טפחות"
+    },
+    {
+      "id": "fibi",
+      "name_he": "הבנק הבינלאומי"
+    },
+    {
+      "id": "massad",
+      "name_he": "בנק מסד"
+    },
+    {
       "id": "yahav",
       "name_he": "בנק יהב"
+    },
+    {
+      "id": "jerusalem",
+      "name_he": "בנק ירושלים"
     }
   ],
   "sources": [
     {
-      "url": "https://www.bank-yahav.co.il/media/zidh1r2r/deposit-interest.pdf",
-      "title": "בנק יהב: לוח שיעורי ריבית על פיקדונות 13_26",
-      "title_he": "בנק יהב: לוח שיעורי ריבית על פיקדונות 13_26",
+      "url": "https://www.leumi.co.il/leumi-hebrew/s3fs-public/newsite/General/chozim%20achidim/310-93%20-%20%D7%AA%D7%99%D7%A7%D7%95%D7%9F%20%D7%94%D7%9C%D7%95%D7%95%D7%90%D7%95%D7%AA%20%D7%90%D7%95%D7%9F%20%D7%A7%D7%95%D7%9C%20(002)%20-%20%D7%9E%D7%95%D7%A0%D7%92%D7%A9-PDFUA.pdf#page=61",
+      "title": "לאומי: תנאים כלליים 310-93 (06.26)",
+      "title_he": "לאומי: תנאים כלליים 310-93 (06.26)",
+      "publisher": "Bank Leumi",
+      "publisher_he": "בנק לאומי",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.61",
+      "locator_he": "עמוד 61",
+      "page": 61,
+      "checked": "2026-11-01"
+    },
+    {
+      "url": "https://www.bankhapoalim.co.il/api/media/rvvhcfel/account-opening-request-adult-0923.pdf#page=15",
+      "title": "הפועלים: תנאים כלליים לבגיר (09.23)",
+      "title_he": "הפועלים: תנאים כלליים לבגיר (09.23)",
+      "publisher": "Bank Hapoalim",
+      "publisher_he": "בנק הפועלים",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.15",
+      "locator_he": "עמוד 15",
+      "page": 15,
+      "checked": "2026-11-01"
+    },
+    {
+      "url": "https://www.discountbank.co.il/media/c3gbk0om/general_terms.pdf#page=18",
+      "title": "דיסקונט: חוברת תנאים כלליים",
+      "title_he": "דיסקונט: חוברת תנאים כלליים",
+      "publisher": "Discount Bank",
+      "publisher_he": "בנק דיסקונט",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.18",
+      "locator_he": "עמוד 18",
+      "page": 18,
+      "checked": "2026-11-01"
+    },
+    {
+      "url": "https://www.mercantile.co.il/media/yjketkgh/booklet_terms_open_account_nagish725.pdf#page=17",
+      "title": "מרכנתיל: חוברת תנאים כלליים (07.25)",
+      "title_he": "מרכנתיל: חוברת תנאים כלליים (07.25)",
+      "publisher": "Mercantile Discount Bank",
+      "publisher_he": "בנק מרכנתיל דיסקונט",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.17",
+      "locator_he": "עמוד 17",
+      "page": 17,
+      "checked": "2026-11-01"
+    },
+    {
+      "url": "https://www.mizrahi-tefahot.co.il/media/tckjpll1/%D7%AA%D7%A0%D7%90%D7%99%D7%9D-%D7%9B%D7%9C%D7%9C%D7%99%D7%99%D7%9D-%D7%A2%D7%91%D7%A8%D7%99%D7%AA-82025-%D7%9E%D7%95%D7%A0%D7%92%D7%A9.pdf#page=4",
+      "title": "מזרחי טפחות: תנאים כלליים (08.2025), 601-01",
+      "title_he": "מזרחי טפחות: תנאים כלליים (08.2025), 601-01",
+      "publisher": "Mizrahi Tefahot Bank",
+      "publisher_he": "בנק מזרחי טפחות",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.4",
+      "locator_he": "עמוד 4",
+      "page": 4,
+      "checked": "2026-11-01"
+    },
+    {
+      "url": "https://www.fibi.co.il/media/g1gbjhvt/%D7%A4%D7%97-90-%D7%94%D7%A1%D7%9B%D7%9D-%D7%AA%D7%A0%D7%90%D7%99%D7%9D-%D7%9B%D7%9C%D7%9C%D7%99%D7%99%D7%9D-%D7%97%D7%95%D7%91%D7%A8%D7%AA-%D7%A0%D7%99%D7%94%D7%95%D7%9C-%D7%97%D7%A9%D7%91%D7%95%D7%9F-825-%D7%A8%D7%91-%D7%9E%D7%95%D7%AA%D7%92%D7%99-%D7%AA%D7%99%D7%A7%D7%95%D7%9F-%D7%9C%D7%93%D7%A4%D7%95%D7%A1-%D7%95%D7%9C%D7%93%D7%99%D7%92%D7%99%D7%98%D7%9C-%D7%9E%D7%95%D7%A0%D7%92%D7%A9-61125.pdf#page=5",
+      "title": "FIBI terms פח-90 (8.2025)",
+      "publisher": "First International Bank",
+      "publisher_he": "הבנק הבינלאומי",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.5",
+      "locator_he": "עמוד 5",
+      "page": 5,
+      "checked": "2026-11-01"
+    },
+    {
+      "url": "https://www.fibi.co.il/media/cmsbfk0k/טבלת-ריביות.pdf#page=1",
+      "title": "FIBI rate table",
+      "publisher": "First International Bank",
+      "publisher_he": "הבנק הבינלאומי",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.1",
+      "locator_he": "עמוד 1",
+      "page": 1,
+      "checked": "2026-11-01"
+    },
+    {
+      "url": "https://www.bankmassad.co.il/media/wlcicay2/חוברת-תנאים-כלליים-לניהול-חשבון-מלאה.pdf#page=5",
+      "title": "מסד: חוברת תנאים כלליים מלאה",
+      "title_he": "מסד: חוברת תנאים כלליים מלאה",
+      "publisher": "Bank Massad",
+      "publisher_he": "בנק מסד",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.5",
+      "locator_he": "עמוד 5",
+      "page": 5,
+      "checked": "2026-11-01"
+    },
+    {
+      "url": "https://www.bank-yahav.co.il/media/zordhsxh/new-account-agreement.pdf#page=22",
+      "title": "יהב: הסכם פתיחת חשבון",
+      "title_he": "יהב: הסכם פתיחת חשבון",
+      "publisher": "Bank Yahav",
+      "publisher_he": "בנק יהב",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.22",
+      "locator_he": "עמוד 22",
+      "page": 22,
+      "checked": "2026-11-01"
+    },
+    {
+      "url": "https://www.bank-yahav.co.il/media/zidh1r2r/deposit-interest.pdf#page=2",
+      "title": "לוח שיעורי ריבית 13_26",
+      "title_he": "לוח שיעורי ריבית 13_26",
       "publisher": "Bank Yahav",
       "publisher_he": "בנק יהב",
       "kind": "institution_doc",
@@ -39,17 +178,28 @@
       "locator": "pp.1-2",
       "locator_he": "עמודים 1 עד 2",
       "page": 1,
-      "checked": "2026-10-25"
+      "checked": "2026-11-01"
+    },
+    {
+      "url": "https://www.bankjerusalem.co.il/media/5757/%D7%A0%D7%92%D7%99%D7%A9_%D7%94%D7%A1%D7%9B%D7%9D_%D7%AA%D7%A0%D7%90%D7%99%D7%9D_%D7%9B%D7%9C%D7%9C%D7%99%D7%9D_%D7%9C%D7%A4%D7%AA%D7%99%D7%97%D7%AA_%D7%97%D7%A9%D7%91%D7%95%D7%9F_73813_%D7%A2%D7%91%D7%A8%D7%99%D7%AA_%D7%9E%D7%94%D7%93%D7%95%D7%A8%D7%AA_%D7%99%D7%A0%D7%95%D7%90%D7%A8_2024_%D7%93%D7%99%D7%92%D7%99%D7%98%D7%9C.pdf#page=5",
+      "title": "Jerusalem terms 73813 (01.2024)",
+      "publisher": "Bank of Jerusalem",
+      "publisher_he": "בנק ירושלים",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.5, and its",
+      "page": 5,
+      "checked": "2026-11-01"
     },
     {
       "url": "https://www.leumi.co.il/he/savings/interest-rate-table",
-      "title": "לאומי: טבלת שיעורי הריבית, הגדרות",
-      "title_he": "לאומי: טבלת שיעורי הריבית, הגדרות",
+      "title": "לאומי: טבלת שיעורי הריבית",
+      "title_he": "לאומי: טבלת שיעורי הריבית",
       "publisher": "Bank Leumi",
       "publisher_he": "בנק לאומי",
       "kind": "institution_doc",
       "strength": "institution",
-      "checked": "2026-10-25"
+      "checked": "2026-11-01"
     },
     {
       "url": "https://www.bankhapoalim.co.il/interest-update",
@@ -59,20 +209,52 @@
       "publisher_he": "בנק הפועלים",
       "kind": "institution_doc",
       "strength": "institution",
-      "checked": "2026-10-25"
+      "checked": "2026-11-01"
     },
     {
-      "url": "https://www.leumi.co.il/he/savings",
-      "title": "לאומי: חסכונות, שאלות ותשובות",
-      "title_he": "לאומי: חסכונות, שאלות ותשובות",
-      "publisher": "Bank Leumi",
-      "publisher_he": "בנק לאומי",
+      "url": "https://www.mercantile.co.il/private/investments-savings/deposit-savings/deposits-without-account/",
+      "title": "מרכנתיל: פיקדונות ללא חשבון",
+      "title_he": "מרכנתיל: פיקדונות ללא חשבון",
+      "publisher": "Mercantile Discount Bank",
+      "publisher_he": "בנק מרכנתיל דיסקונט",
       "kind": "institution_doc",
       "strength": "institution",
-      "checked": "2026-10-25"
+      "checked": "2026-11-01"
+    },
+    {
+      "url": "https://www.bankmassad.co.il/private/depositsandsavings/savingtypes/advanced/",
+      "title": "אופק להשתלמות",
+      "title_he": "אופק להשתלמות",
+      "publisher": "Bank Massad",
+      "publisher_he": "בנק מסד",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-11-01"
+    },
+    {
+      "url": "https://www.bankmassad.co.il/private/depositsandsavings/savingtypes/golan/",
+      "title": "גולן, מסד",
+      "title_he": "גולן, מסד",
+      "publisher": "Bank Massad",
+      "publisher_he": "בנק מסד",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-11-01"
+    },
+    {
+      "url": "https://www.fibi.co.il/private/depositsandsavings/savingtypes/depositsteam/",
+      "title": "גולן, הבינלאומי",
+      "title_he": "גולן, הבינלאומי",
+      "publisher": "First International Bank",
+      "publisher_he": "הבנק הבינלאומי",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-11-01"
     }
   ],
   "derived_from": [
-    "BANK-25"
+    "BANK-25",
+    "BANK-46",
+    "BANK-47"
   ]
 }
