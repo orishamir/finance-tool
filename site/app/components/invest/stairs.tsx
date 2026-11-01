@@ -71,7 +71,7 @@ export const StairsSection = memo(function StairsSection({ view, bundle, plan, s
         fundName,
         house: house(stair.pos.a),
         left: p.value,
-        account: nis(p.accountCost, "F-63", `${t.table.accountCost}: ${fundName}, ${house(stair.pos.a).name}`),
+        account: nis(p.accountCost, "F-63", `${t.table.accountCost}: ${fundName}, ${house(stair.pos.a).short}`),
         fund: pc?.fund ?? nis(0, "F-91", t.table.fundCost),
         tax: pc?.tax ?? nis(0, "F-91", t.table.tax),
         dParts: null,
@@ -97,7 +97,7 @@ export const StairsSection = memo(function StairsSection({ view, bundle, plan, s
   const visible = levels.slice(fold);
   const scale = yScale(g, chain.chain, ceiling);
   const ceilingPrice = priceAt(ceiling.pos)!;
-  const nameOfPos = (p: Pos) => `${nameOfFund(p.f)}, ${house(p.a).name}`;
+  const nameOfPos = (p: Pos) => `${nameOfFund(p.f)}, ${house(p.a).short}`;
 
   const set = (next: Partial<{ start: Pos | null; taken: Taken[] }>) => setDone({ key: baseKey, start: current.start, taken: current.taken, ...next });
   const take = (r: { lane: Lane; to: Pos }) => set({ taken: [...current.taken, { lane: r.lane, to: r.to }] });
@@ -106,11 +106,11 @@ export const StairsSection = memo(function StairsSection({ view, bundle, plan, s
   const jump = (p: Pos) => set({ start: p, taken: [] });
 
   const delta = (n: number, a: SiteValue, an: string, b: SiteValue, bn: string, about: string) => computed(n, "nis", "F-91", { [an]: a, [bn]: b }, { today, about });
-  const diffOf = (l: Level, prev: Level) => delta(l.stair.d ?? 0, l.left, `${t.about.left}: ${l.fundName}, ${l.house.name}`, prev.left, `${t.about.left}: ${prev.fundName}, ${prev.house.name}`, t.about.versus);
+  const diffOf = (l: Level, prev: Level) => delta(l.stair.d ?? 0, l.left, `${t.about.left}: ${l.fundName}, ${l.house.short}`, prev.left, `${t.about.left}: ${prev.fundName}, ${prev.house.short}`, t.about.versus);
   const partOf = (l: Level, prev: Level, k: 0 | 1 | 2) => {
     const key = (["account", "fund", "tax"] as const)[k];
     const name = [t.table.accountCost, t.table.fundCost, t.table.tax][k]!;
-    return delta(l.dParts![k], l[key], `${name}: ${l.fundName}, ${l.house.name}`, prev[key], `${name}: ${prev.fundName}, ${prev.house.name}`, `${t.about.cost}: ${name}`);
+    return delta(l.dParts![k], l[key], `${name}: ${l.fundName}, ${l.house.short}`, prev[key], `${name}: ${prev.fundName}, ${prev.house.short}`, `${t.about.cost}: ${name}`);
   };
 
   // ---------------------------------------------------------------- the chart and what sits under it
@@ -128,7 +128,7 @@ export const StairsSection = memo(function StairsSection({ view, bundle, plan, s
       taken: s.taken,
       open: s.open,
       current: fold + i === chain.here,
-      label: `${s.lane ? t.lanes[s.lane].word : t.startPoint}: ${l.fundName}, ${l.house.name}`,
+      label: `${s.lane ? t.lanes[s.lane].word : t.startPoint}: ${l.fundName}, ${l.house.short}`,
     };
   });
   const endsBelow = Math.round(end.stair.v) !== Math.round(ceiling.v);
@@ -176,7 +176,7 @@ export const StairsSection = memo(function StairsSection({ view, bundle, plan, s
       head: t.table.account,
       cells: visible.map((l) => (
         <span key={l.stair.pos.f + l.stair.pos.a} className={cx("block min-h-[3lh]", l.stair.lane === "account" ? "font-semibold" : "text-muted-foreground")}>
-          <ProviderLink p={l.house} className={l.stair.lane === "account" ? undefined : "text-muted-foreground"} />
+          <ProviderLink short p={l.house} className={l.stair.lane === "account" ? undefined : "text-muted-foreground"} />
         </span>
       )),
     },
@@ -190,7 +190,7 @@ export const StairsSection = memo(function StairsSection({ view, bundle, plan, s
     const s = l.stair;
     const prev = levels[i - 1];
     const parts = prev && l.dParts ? ([0, 1, 2] as const).filter((k) => l.dParts![k] !== 0).map((k, n) => <span key={k}>{n > 0 && " · "}{[t.table.accountCost, t.table.fundCost, t.table.tax][k]} <Num value={partOf(l, prev, k)} display={signedNis} /></span>) : null;
-    const what = !s.lane ? `${t.stepStart} ${l.fundName}, ${l.house.name}` : `${t.lanes[s.lane].word}: ${s.lane === "account" ? l.house.name : l.fundName}`;
+    const what = !s.lane ? `${t.stepStart} ${l.fundName}, ${l.house.short}` : `${t.lanes[s.lane].word}: ${s.lane === "account" ? l.house.short : l.fundName}`;
     return {
       id: `${s.pos.a}|${s.pos.f}|${i}`,
       hue: hueOf(s.lane),
@@ -213,7 +213,7 @@ export const StairsSection = memo(function StairsSection({ view, bundle, plan, s
     const fw = ways.get(f);
     return fw ? fundLabels(fw.rec, view.index, fw.option).filter((l) => l.id === "hedged" || l.id === "hedged-many") : [];
   };
-  const titleOf = (r: Row) => (r.lane === "account" ? house(r.to.a).name : r.lane === "kind" ? t.kinds[r.kind!] ?? r.kind! : nameOfFund(r.to.f));
+  const titleOf = (r: Row) => (r.lane === "account" ? house(r.to.a).short : r.lane === "kind" ? t.kinds[r.kind!] ?? r.kind! : nameOfFund(r.to.f));
   const laneBlock = (lane: Lane) => {
     const mine = rows.filter((r) => r.lane === lane);
     const priced = mine.filter((r) => r.d != null).sort(byGain);
@@ -230,7 +230,7 @@ export const StairsSection = memo(function StairsSection({ view, bundle, plan, s
           const sub = r.lane === "kind" ? <small className="text-xs font-normal text-muted-foreground"><bdi>{nameOfFund(r.to.f)}</bdi></small> : null;
           const chips = r.hedged ? hedgedChip(r.to.f) : [];
           const d = r.d!;
-          const diffValue = delta(Math.abs(d), price.value, `${t.about.left}: ${nameOfFund(r.to.f)}, ${house(r.to.a).name}`, here.left, `${t.about.left}: ${here.fundName}, ${here.house.name}`, t.about.versus);
+          const diffValue = delta(Math.abs(d), price.value, `${t.about.left}: ${nameOfFund(r.to.f)}, ${house(r.to.a).short}`, here.left, `${t.about.left}: ${here.fundName}, ${here.house.name}`, t.about.versus);
           return (
             <DiffRow
               key={r.key}
@@ -314,7 +314,7 @@ export const StairsSection = memo(function StairsSection({ view, bundle, plan, s
           columns={columns}
           fold={fold}
           axis={{ lo: scale.LO, hi: scale.HI, step: scale.step }}
-          ceiling={{ level: ceiling.v, lines: [t.ceiling, fmt.nisWhole(ceiling.v), nameOfFund(ceiling.pos.f), house(ceiling.pos.a).name] }}
+          ceiling={{ level: ceiling.v, lines: [t.ceiling, fmt.nisWhole(ceiling.v), nameOfFund(ceiling.pos.f), house(ceiling.pos.a).short] }}
           endsAt={endsBelow ? { level: end.stair.v, text: `${t.endsAt} ${fmt.nisWhole(end.stair.v)}` } : null}
           now={t.now}
           label={t.chartLabel}
@@ -353,7 +353,7 @@ export const StairsSection = memo(function StairsSection({ view, bundle, plan, s
       </Card>
       <Card pad="roomy" className="flex flex-col gap-2">
         <h3 className="text-lg font-semibold">
-          {t.here} <bdi>{here.fundName}</bdi>, <ProviderLink p={here.house} />. {t.hereLeft} <Num value={here.left} />.
+          {t.here} <bdi>{here.fundName}</bdi>, <ProviderLink short p={here.house} />. {t.hereLeft} <Num value={here.left} />.
         </h3>
         <p className="text-sm text-muted-foreground">{t.rowsHint}</p>
         <div className="grid items-start gap-x-9 gap-y-3 lg:grid-cols-2">

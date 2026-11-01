@@ -3730,14 +3730,13 @@ export const invest = {
     endsAt: "בסוף:",
     lockLabel: "כלל מס פתוח",
     startPoint: "נקודת ההתחלה",
-    afterSteps: (n: number) => `אחרי ⁦${n}⁩ צעדים`,
     lanes: {
       account: { word: "חשבון אחר", title: "חשבון אחר, אותה קרן", head: "החשבון" },
       kind: { word: "סוג קרן אחר", title: "סוג קרן אחר, אותו חשבון", head: "סוג הקרן" },
       fund: { word: "קרן אחרת", title: "קרן אחרת מאותו סוג, אותו חשבון", head: "הקרן" },
     },
     kinds: { "il-tracking": "קרן מחקה ישראלית", "il-etf": "קרן סל ישראלית", "tase-foreign": "קרן חוץ בבורסה בתל אביב", abroad: "קרן שנקנית בחו״ל" } as Record<string, string>,
-    why: { u: "לא נמכרת שם", n: "אין מחיר", d: "המחיר לא אומת" },
+    why: { u: "לא נמכרת שם", n: "אין מחיר", d: "יש ספק אם נמכרת שם" },
     noOtherFund: "אין קרן אחרת מהסוג הזה.",
     table: { step: "הצעד", fund: "הקרן", account: "החשבון", accountCost: "עלות החשבון", fundCost: "עלות הקרן", tax: "מס", left: "נשאר בסוף" },
     stepStart: "נקודת ההתחלה:",
@@ -3755,7 +3754,6 @@ export const invest = {
     openNote: "עם כלל מס פתוח מופיע גם",
     legendNext: "הצעד הכי גדול שנשאר, עוד לא נלקח",
     legendOpen: "נשען על כלל מס פתוח: מוצג ולא מדורג",
-    aboutStep: (what: string) => `מה משתנה בצעד: ${what}`,
     about: { left: "מה שנשאר בסוף", versus: "ההפרש מההחזקה שבה עומדים", cost: "ההפרש בעלות", ceilingGap: "מה שחסר עד הכי הרבה" },
   },
 
