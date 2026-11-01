@@ -119,7 +119,7 @@ function makeApp(D) {
         if (c.open) o.push(`<rect x="${bx(i) + 1}" y="${y(lvl) + 1}" width="${bw - 2}" height="${floor - y(lvl) - 2}" rx="3" fill="var(--card)" stroke="var(--palette-neutral-400)" stroke-width="1.5"/>`);
         o.push(`<path d="M${bx(i)} ${floor - 12}l${bw / 6} -5l${bw / 3} 10l${bw / 3} -10l${bw / 6} 5" fill="none" stroke="var(--card)" stroke-width="3"/>`);
       } else {
-        const hue = LANE[c.lane].hue;
+        const hue = c.d < 0 ? "var(--loss)" : LANE[c.lane].hue;
         o.push(`<rect x="${bx(i)}" y="${y(low)}" width="${bw}" height="${floor - y(low)}" fill="var(--palette-neutral-850)"/>`);
         if (c.open) o.push(`<rect x="${bx(i) + 1}" y="${y(high) + 1}" width="${bw - 2}" height="${Math.max(y(low) - y(high) - 2, 2)}" rx="3" fill="var(--card)" stroke="${hue}" stroke-width="2"/>`);
         else o.push(`<rect x="${bx(i)}" y="${y(high)}" width="${bw}" height="${Math.max(y(low) - y(high), 2)}" rx="3" fill="${hue}" opacity="${solid ? 1 : 0.5}"/>${solid ? "" : `<rect x="${bx(i) + 0.75}" y="${y(high) + 0.75}" width="${bw - 1.5}" height="${Math.max(y(low) - y(high) - 1.5, 1)}" rx="3" fill="none" stroke="${hue}" stroke-width="1.5"/>`}`);
@@ -128,7 +128,7 @@ function makeApp(D) {
       const top = first ? y(lvl) : y(high);
       const txt = first ? money(lvl) : signed(c.d);
       o.push(T(bx(i) + bw / 2, top - 7, txt, { a: "mid", size: compact ? 11.5 : 15, fill: "var(--foreground)", w: 600 }));
-      if (fold + i === here) o.push(`<path d="M${bx(i) + bw / 2 - 6} ${top - 30}h12l-6 7z" fill="var(--primary)"/>`, T(bx(i) + bw / 2, top - 34, "כאן", { a: "mid", size: compact ? 11 : 13, fill: "var(--primary)", w: 600 }));
+      if (fold + i === here) o.push(`<path d="M${bx(i) + bw / 2 - 6} ${top - 30}h12l-6 7z" fill="var(--primary)"/>`, T(bx(i) + bw / 2, top - 34, "עכשיו", { a: "mid", size: compact ? 11 : 13, fill: "var(--primary)", w: 600 }));
       o.push(`<rect class="hit" data-go="${fold + i}" x="${m.l + i * cw}" y="0" width="${cw}" height="${H}" fill="transparent"/>`);
     });
     // the highest over every collected pair, and the end of this climb when it stops below it
@@ -179,22 +179,21 @@ function makeApp(D) {
 
   // one row of a choice: its name, a bar from "as it is now", the difference
   function bar(r, U) {
-    const Z = 30;
-    if (r.d == null) return `<span class="tk none"></span>`;
-    const px = (Math.abs(r.d) / U) * (100 - Z);
-    const hue = LANE[r.lane].hue;
-    const st = r.d >= 0
-      ? `left:${Z}%;width:${Math.min(px, 100 - Z)}%`
-      : `left:${Math.max(Z - px, 0)}%;width:${Math.min(px, Z)}%`;
-    const clipped = r.d < 0 && px > Z;
-    const look = r.open ? `border:1.5px solid ${hue};background:none` : `background:${hue};${r.d < 0 || r.hedged ? "opacity:.5" : ""}`;
-    return `<span class="tk"><i class="zr" style="left:${Z}%"></i><i class="br" style="${st};${look}"></i>${clipped ? '<i class="cut"></i>' : ""}</span>`;
+    if (Math.round(r.d) === 0) return `<span class="tk"><i class="zr"></i></span>`;
+    const w = (Math.abs(r.d) / U) * 50, up = r.d > 0, col = up ? "var(--gain)" : "var(--loss)";
+    const look = r.open ? `border:1.5px solid ${col};background:none` : `background:${col}`;
+    return `<span class="tk"><i class="zr"></i><i class="br" style="${up ? "left" : "right"}:50%;width:${Math.min(w, 50)}%;${look}"></i>${w > 50 ? `<i class="cut ${up ? "cr" : "cl"}"></i>` : ""}</span>`;
   }
-  function choiceRow(r, U, withKind) {
+  // one unit for every row on screen, set by the rows that rank; one on an open rule that runs further is cut, with a mark
+  const unitOf = (rows) => { const ranked = rows.filter(ranks); return Math.max(1, ...(ranked.length ? ranked : rows.filter((r) => r.d != null)).map((r) => Math.abs(r.d))); };
+  const barHead = () => `<span class="tkh"><i class="zr"></i><span class="l">פחות<span class="ks"> כסף</span></span><span class="r">יותר<span class="ks"> כסף</span></span></span>`;
+  const more = (d) => (Math.round(d) === 0 ? `<span class="df same">אותו סכום</span>` : `<span class="df ${d < 0 ? "less" : ""}"><span class="w">${d < 0 ? "פחות" : "עוד"}</span>${N(money(Math.abs(d)))}</span>`);
+  function choiceRow(r, U, withKind, turn) {
     const kd = withKind ? `<span class="kd">${swatch(r.lane)}<span class="kw">${LANE[r.lane].word}</span></span>` : "";
     const nm = `<span class="nm"><b>${r.label}${r.open ? LOCK : ""}</b>${r.sub ? `<small>${r.sub}</small>` : ""}${r.hedged ? '<small class="chip mini">מנוטרלת מט״ח</small>' : ""}</span>`;
-    return `<button type="button" class="rw ${withKind ? "wk" : ""}" data-step="${r.lane}|${r.to.a}|${r.to.f}">${kd}${nm}${bar(r, U)}<span class="df">${N(signed(r.d))}</span></button>`;
+    return `<button type="button" class="rw ${withKind ? "wk" : ""} ${turn ? "turn" : ""} ${r.d < 0 ? "less" : ""}" data-step="${r.lane}|${r.to.a}|${r.to.f}">${kd}${nm}<span class="vl n">${money(r.v)}</span>${bar(r, U)}${more(r.d)}</button>`;
   }
+  const priced = (rows, U, withKind) => rows.filter((r) => r.d != null).map((r, i, all) => choiceRow(r, U, withKind, i > 0 && all[i - 1].d >= 0 && r.d < 0)).join("");
   function greyLines(rows) {
     const out = [];
     for (const why of ["u", "n", "d"]) { const mine = rows.filter((r) => r.d == null && r.why === why); if (mine.length) out.push(`<div class="gl xs"><b>${WHY[why]}:</b> ${mine.map((r) => r.label).join(", ")}</div>`); }
@@ -204,14 +203,9 @@ function makeApp(D) {
     if (s.frozen) { const ix = new Map(s.frozen.map((k, i) => [k, i])); return [...rows].sort((a, b) => (ix.get(a.key) ?? 99) - (ix.get(b.key) ?? 99)); }
     return [...rows].sort(byGain);
   }
-  function unitOf(s, p, ceiling) {
-    const v0 = val(p, s.start);
-    return Math.max(ceiling.v - v0, ceiling.v * 0.1, 1);
-  }
-  const trackHead = () => `<span class="tkh"><span>פחות</span><span class="mid">כמו עכשיו</span><span>יותר</span></span>`;
   function laneBlock(s, rows, lane, U) {
     const mine = ordered(s, rows.filter((r) => r.lane === lane));
-    return `<div class="lane"><h4>${swatch(lane)}${LANE[lane].title}</h4><div class="rw hd"><span>${LANE[lane].head}</span>${trackHead()}<span class="df">ההפרש בסוף</span></div>${mine.length ? mine.filter((r) => r.d != null).map((r) => choiceRow(r, U)).join("") + greyLines(mine) : '<p class="xs muted">אין קרן אחרת מהסוג הזה.</p>'}</div>`;
+    return `<div class="lane"><h4>${swatch(lane)}${LANE[lane].title}</h4><div class="rw hd"><span>${LANE[lane].head}</span><span class="vl">נשאר בסוף</span>${barHead()}<span>לעומת עכשיו</span></div>${mine.length ? priced(mine, U) + greyLines(mine) : '<p class="xs muted">אין קרן אחרת מהסוג הזה.</p>'}</div>`;
   }
 
   // what is true where the climb stopped; one height, so nothing under it moves
@@ -225,16 +219,16 @@ function makeApp(D) {
   }
   const headBar = (s, view, title) => `<div class="phd"><h3>${title}</h3><button type="button" class="ghost" data-reset ${s.taken.length ? "" : "disabled"}>חזרה לנקודת ההתחלה</button></div>`;
   const legend = () => `<div class="lgd xs"><span><i class="sw" style="background:var(--palette-neutral-600)"></i>נקודת ההתחלה</span>${Object.keys(LANE).map((l) => `<span>${swatch(l)}${LANE[l].word}</span>`).join("")}<span><i class="sw ghosted"></i>הצעד הכי גדול שנשאר, עוד לא נלקח</span><span>${LOCK} נשען על כלל מס פתוח: מוצג ולא מדורג</span></div>`;
-  const here = (view) => `מכאן, ${N(money(view.chain[view.here].c.v))} בסוף: ${nameOf(view.at)}`;
+  const here = (view) => `עכשיו: ${nameOf(view.at)}. נשארים בסוף ${N(money(view.chain[view.here].c.v))}.`;
 
   // ---- option A: the stairs, and under them every choice, by what it changes
   function optionA(s, W) {
     const compact = W < 720;
     const view = chainOf(s);
     const rows = rowsAt(view.p, view.at);
-    const U = unitOf(s, view.p, view.ceiling);
+    const U = unitOf(rows);
     return `<div class="panel">${headBar(s, view, "מנקודת ההתחלה ועד הכי הרבה")}<p class="xs muted axis-t">הגובה הוא מה שנשאר בסוף, אחרי מס, בכסף של היום. לחיצה על מדרגה לוקחת אותה, או חוזרת אליה אם כבר נלקחה.</p>${stairsSVG(view, { W, H: compact ? 300 : 340, compact })}${compact ? stepList(view) : underTable(view, W)}${statusLine(view)}${legend()}</div>
-    <div class="panel"><div class="phd"><h3>${here(view)}</h3></div><p class="small muted">כל שורה משנה דבר אחד. לחיצה על שורה לוקחת אותה כמדרגה הבאה.</p><div class="lanes"><div>${laneBlock(s, rows, "account", U)}</div><div class="stack">${laneBlock(s, rows, "kind", U)}${laneBlock(s, rows, "fund", U)}</div></div></div>`;
+    <div class="panel"><div class="phd"><h3>${here(view)}</h3></div><p class="small muted">כל שורה משנה דבר אחד. לחיצה על שורה מוסיפה אותה למדרגות.</p><div class="lanes"><div>${laneBlock(s, rows, "account", U)}</div><div class="stack">${laneBlock(s, rows, "kind", U)}${laneBlock(s, rows, "fund", U)}</div></div></div>`;
   }
 
   // ---- option B: every choice in one ranked list, beside the stairs
@@ -242,9 +236,9 @@ function makeApp(D) {
     const compact = W < 900;
     const view = chainOf(s);
     const rows = ordered(s, rowsAt(view.p, view.at));
-    const U = unitOf(s, view.p, view.ceiling);
+    const U = unitOf(rows);
     const sw = compact ? W : W * 0.42 - 16;
-    const list = `<div class="panel"><div class="phd"><h3>${here(view)}</h3></div><p class="small muted">כל הבחירות בדירוג אחד, מה שמוסיף הכי הרבה למעלה. לחיצה על שורה לוקחת אותה.</p><div class="rw hd wk"><span class="kw">מה משתנה</span><span>אל מה</span>${trackHead()}<span class="df">ההפרש בסוף</span></div>${rows.filter((r) => r.d != null).map((r) => choiceRow(r, U, true)).join("")}${greyLines(rows)}</div>`;
+    const list = `<div class="panel"><div class="phd"><h3>${here(view)}</h3></div><p class="small muted">כל שורה משנה דבר אחד. מה שמשאיר הכי הרבה למעלה, ומה שמשאיר פחות מעכשיו למטה. לחיצה על שורה מוסיפה אותה למדרגות.</p><div class="rw hd wk"><span class="kw">מה משתנה</span><span>אל מה</span><span class="vl">נשאר בסוף</span>${barHead()}<span>לעומת עכשיו</span></div>${priced(rows, U, true)}${greyLines(rows)}</div>`;
     const stairs = `<div class="panel">${headBar(s, view, "המדרגות")}<p class="xs muted axis-t">הגובה הוא מה שנשאר בסוף, אחרי מס, בכסף של היום. לחיצה על מדרגה לוקחת אותה, או חוזרת אליה אם כבר נלקחה.</p>${stairsSVG(view, { W: sw - 40, H: 300, compact: true })}${stepList(view)}<p class="small">הכי הרבה בכל המחירונים: <b>${N(money(view.ceiling.v))}</b>, ${nameOf(view.ceiling)}.</p>${statusLine(view)}${legend()}</div>`;
     return `<div class="two">${list}${stairs}</div>`;
   }
@@ -268,7 +262,7 @@ function makeApp(D) {
     const step = (() => { const raw = (hi - lo) / 5, mag = 10 ** Math.floor(Math.log10(raw)); return [1, 2, 2.5, 5, 10].map((q) => q * mag).find((q) => q >= raw); })();
     for (let g = Math.ceil(lo / step) * step; g <= hi; g += step) o.push(`<line x1="${x(g)}" x2="${x(g)}" y1="${y0 - 4}" y2="${H - 26}" stroke="var(--chart-grid)"/><text x="${x(g)}" y="${H - 8}" text-anchor="middle" font-size="${compact ? 10.5 : 12}" fill="var(--chart-text)">${fmt(g)}</text>`);
     o.push(`<line x1="${x(ceiling.v)}" x2="${x(ceiling.v)}" y1="${y0 - 8}" y2="${H - 26}" stroke="var(--palette-neutral-300)" stroke-width="1.5" stroke-dasharray="3 5"/>`);
-    o.push(`<line x1="${x(cur)}" x2="${x(cur)}" y1="${y0 - 8}" y2="${H - 26}" stroke="var(--primary)" stroke-width="2"/>`, x(ceiling.v) - x(cur) < 150 ? T(x(cur) + 4, y0 - 14, `כאן: ${money(cur)}`, { a: "right", size: compact ? 12 : 13, fill: "var(--primary)", w: 600 }) : T(x(cur), y0 - 14, `כאן: ${money(cur)}`, { a: "mid", size: compact ? 12 : 13, fill: "var(--primary)", w: 600 }));
+    o.push(`<line x1="${x(cur)}" x2="${x(cur)}" y1="${y0 - 8}" y2="${H - 26}" stroke="var(--primary)" stroke-width="2"/>`, x(ceiling.v) - x(cur) < 150 ? T(x(cur) + 4, y0 - 14, `עכשיו: ${money(cur)}`, { a: "right", size: compact ? 12 : 13, fill: "var(--primary)", w: 600 }) : T(x(cur), y0 - 14, `עכשיו: ${money(cur)}`, { a: "mid", size: compact ? 12 : 13, fill: "var(--primary)", w: 600 }));
     if (!compact) o.push(T(x(ceiling.v) + 8, y0 - 14, `הכי הרבה: ${money(ceiling.v)}`, { a: "left", size: 13, fill: "var(--foreground)" }));
     shown.forEach((c, i) => {
       const yy = y0 + i * rowH, h = rowH - 9, lvl = c.c.v;
@@ -277,7 +271,7 @@ function makeApp(D) {
         o.push(`<rect x="${m.l}" y="${yy}" width="${x(lvl) - m.l}" height="${h}" rx="3" fill="var(--palette-neutral-600)"/>`);
         if (!compact) o.push(T(m.l - 8, yy + h - 3, `נקודת ההתחלה ${money(lvl)}`, { a: "right", size: 13, fill: "var(--foreground)" }));
       } else {
-        const from = lvl - c.d, a = Math.min(from, lvl), b = Math.max(from, lvl), hue = LANE[c.lane].hue;
+        const from = lvl - c.d, a = Math.min(from, lvl), b = Math.max(from, lvl), hue = c.d < 0 ? "var(--loss)" : LANE[c.lane].hue;
         o.push(c.open ? `<rect x="${x(a)}" y="${yy}" width="${Math.max(x(b) - x(a), 2)}" height="${h}" rx="3" fill="var(--card)" stroke="${hue}" stroke-width="2"/>` : `<rect x="${x(a)}" y="${yy}" width="${Math.max(x(b) - x(a), 2)}" height="${h}" rx="3" fill="${hue}" opacity="${solid ? 1 : 0.5}"/>`);
         const name = c.lane === "account" ? AN[D.accts[c.pos.a]] : FN[D.funds[c.pos.f].id];
         if (compact) o.push(T(x(a) > W / 2 ? x(a) - 6 : x(b) + 6, yy + h - 3, x(a) > W / 2 ? `${signed(c.d)} ${name}` : `${signed(c.d)} ${name}`, { a: x(a) > W / 2 ? "right" : "left", size: 11.5, fill: "var(--foreground)" }));
@@ -293,10 +287,10 @@ function makeApp(D) {
       o.push(`<line x1="${m.l}" x2="${W - m.r}" y1="${cy}" y2="${cy}" stroke="var(--palette-neutral-800)"/>`);
       if (!mine.length) { o.push(T(x(cur) + 10, cy - 8, "אין כאן בחירה אחרת", { a: "left", size: 12 })); return; }
       const best = mine.find((r) => !r.open) ?? mine[0], worst = mine[mine.length - 1];
-      if (best.d > 0) o.push(`<line x1="${x(cur)}" x2="${x(best.v)}" y1="${cy}" y2="${cy}" stroke="${hue}" stroke-width="6"/>`);
-      for (const r of [...mine].reverse()) o.push(`<circle cx="${x(r.v)}" cy="${cy}" r="${r === best ? 8 : 6}" fill="${r.open ? "var(--card)" : hue}" stroke="${r.open ? hue : "var(--card)"}" stroke-width="2" opacity="${r.d < 0 && !r.open ? 0.6 : 1}"/>`);
+      if (best.d > 0) o.push(`<line x1="${x(cur)}" x2="${x(best.v)}" y1="${cy}" y2="${cy}" stroke="var(--gain)" stroke-width="6"/>`);
+      for (const r of [...mine].reverse()) o.push(`<circle cx="${x(r.v)}" cy="${cy}" r="${r === best ? 8 : 6}" fill="${r.open ? "var(--card)" : r.d < 0 ? "var(--loss)" : "var(--gain)"}" stroke="${r.open ? (r.d < 0 ? "var(--loss)" : "var(--gain)") : "var(--card)"}" stroke-width="2"/>`);
       for (const r of [...mine].reverse()) o.push(`<circle class="hit" data-step="${r.lane}|${r.to.a}|${r.to.f}" cx="${x(r.v)}" cy="${cy}" r="${compact ? 14 : 11}" fill="transparent"/>`);
-      const lb = (r) => `${signed(r.d)} ${r.lane === "kind" ? r.sub ?? r.label : r.label}`;
+      const lb = (r) => `${r.lane === "kind" ? r.sub ?? r.label : r.label}: ${Math.round(r.d) === 0 ? "אותו סכום" : `${r.d < 0 ? "פחות" : "עוד"} ${money(Math.abs(r.d))}`}`;
       if (compact) {
         o.push(T(W - 2, cy + 26, lb(best), { size: 11.5, fill: "var(--foreground)" }));
         if (worst !== best) o.push(T(2, cy + 26, lb(worst), { a: "left", size: 11.5 }));
@@ -310,7 +304,7 @@ function makeApp(D) {
   function optionC(s, W) {
     const compact = W < 720;
     const view = chainOf(s);
-    return `<div class="panel">${headBar(s, view, here(view))}<p class="small muted">סרגל אחד של כסף: נשאר בסוף, אחרי מס, בכסף של היום. המדרגות שוכבות עליו, וכל נקודה היא בחירה שמשנה דבר אחד. לחיצה על נקודה לוקחת אותה.</p>${rulerSVG(s, view, { W, compact })}${statusLine(view)}${legend()}</div><div class="panel"><div class="phd"><h3>מה השתנה בכל צעד</h3></div>${stepList(view)}</div>`;
+    return `<div class="panel">${headBar(s, view, here(view))}<p class="small muted">סרגל אחד של כסף: מה שנשאר בסוף, אחרי מס, בכסף של היום. הקו הוא עכשיו. נקודה מימין לקו משאירה יותר, ונקודה משמאל לו פחות. לחיצה על נקודה מוסיפה אותה למדרגות.</p>${rulerSVG(s, view, { W, compact })}${statusLine(view)}${legend()}</div><div class="panel"><div class="phd"><h3>מה השתנה בכל צעד</h3></div>${stepList(view)}</div>`;
   }
 
   const OPTS = [optionA, optionB, optionC];
