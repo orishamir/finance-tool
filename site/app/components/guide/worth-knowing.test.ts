@@ -24,6 +24,12 @@ describe("worthRows", () => {
     expect(isCapName("min_order_cap")).toBe(false);
     expect(isCapName("capital_multiplier")).toBe(false);
   });
+  it("does not show a law's base amount as the amount in force (2026-11-02, KGL-02's 70,000 beside the 2026 ceiling)", () => {
+    const fig = (value: number) => ({ value, unit: "nis", source: { url: "https://x", title: "t", publisher: "p", strength: "primary" }, checked: "2026-10-24", effective_from: null, effective_to: null, tax_year: null, update_rule: "fixed", rule_ids: ["A"], state: "sourced" });
+    const [row] = worthRows(["A"], { A: rule("A", { figures: { base_ceiling: fig(70000) } }) }, "2026-10-24");
+    expect(row!.figure).toBeNull();
+    expect(row!.upTo).toBe(false);
+  });
   it("marks weak strength", () => {
     expect(worthRows(["A"], { A: rule("A", { strength: "secondary" }) }, "2026-10-24")[0]!.weak).toBe("secondary");
   });
