@@ -14,7 +14,7 @@ import { useInputs } from "../lib/inputs";
 import { isParameter, isProvisional, isWeak, ownBy, ruleFigure, strengthOf, type SiteValue, type Strength } from "../lib/value";
 import { parseAnswer } from "../lib/answer-slots";
 import type { TermRow } from "../lib/data.server";
-import { IconAlert, IconCalculator, IconCheck, IconClock, IconCopy, IconExternal, IconFile, IconLock, IconPencil, IconReset } from "./icons";
+import { IconAlert, IconCalculator, IconCheck, IconClock, IconCopy, IconDrillIn, IconExternal, IconFile, IconLock, IconPencil, IconReset } from "./icons";
 import { Sheet } from "./Sheet";
 import { Button, Callout, cx, Disclosure, LinkButton, Tag } from "./ui";
 import { CompanyLinks, Tpl, countsByItself, useCounting, useGlidingNumbers } from "./kit";
@@ -22,7 +22,7 @@ import { chipName, companyLinksOf, generalOnly, isGeneral, isNotRule, isOwnSourc
 
 // ---------------------------------------------------------------- context
 
-export type Item = { kind: "value"; value: SiteValue; /** The figure was shown with two decimals (a table cell, or near a threshold): the sheet shows the same digits. */ exact?: boolean; /** The word an empty value was shown as ("אין", "עוד לא דווח"): the sheet heads with the same word. */ display?: string } | { kind: "rule"; id: string } | { kind: "term"; id: string } | { kind: "formula"; id: string } | { kind: "question"; id: string; /** The question was closed on this date (a closure on the not-covered page): the sheet says so. */ closedOn?: string };
+export type Item = { kind: "value"; value: SiteValue; /** The figure was shown with two decimals (a table cell, or near a threshold): the sheet shows the same digits. */ exact?: boolean; /** The word an empty value was shown as ("אין", "עוד לא דווח"): the sheet heads with the same word. */ display?: string } | { kind: "rule"; id: string } | { kind: "rules"; ids: readonly string[]; /** What the list backs: the fact it closes, under the sheet's title. */ name?: string } | { kind: "term"; id: string } | { kind: "formula"; id: string } | { kind: "question"; id: string; /** The question was closed on this date (a closure on the not-covered page): the sheet says so. */ closedOn?: string };
 
 interface ProvenanceApi {
   open: (item: Item, anchor: HTMLElement | null) => void;
@@ -348,7 +348,7 @@ export function IdText({ text, assumptions }: { text: string; assumptions?: bool
  * company's name instead of the code (spec 2026-10-25-rules-scope §4): on that company's page its own name, elsewhere the first with
  * "ועוד" and the count of the others. The code stays in the card it opens and in the chip's spoken name.
  */
-export function RuleRef({ id, className, withId }: { id: string; className?: string; /** Adds the code after the name: a line where two chips would read the same (RulesLine sets it). */ withId?: boolean }) {
+export function RuleRef({ id, className }: { id: string; className?: string }) {
   const open = useOpen();
   const data = useContext(DataCtx);
   const rule = ruleOf(data, id);
@@ -357,24 +357,8 @@ export function RuleRef({ id, className, withId }: { id: string; className?: str
   return (
     <button type="button" className={cx("rule-chip", className)} onClick={(e) => open({ kind: "rule", id }, e.currentTarget)} aria-label={`${ruleCopy.title} ${id}, ${scopeTag(rule!, data?.ownDocs)}`}>
       <bdi className="whitespace-nowrap">{name}</bdi>
-      {withId && (
-        <>
-          {/* the chip lays its children out as flex items, so the separator carries its own space */}
-          <span aria-hidden="true" className="mx-1 text-muted-foreground">·</span>
-          <bdi dir="ltr" className="slashed-zero whitespace-nowrap">{id}</bdi>
-        </>
-      )}
     </button>
   );
-}
-
-/** The chip words a line would show for each id (a company's name, or null for a code), so a name two chips share can carry its code. */
-function useChipNames(ids: readonly string[]): (string | null)[] {
-  const data = useContext(DataCtx);
-  return ids.map((id) => {
-    const rule = ruleOf(data, id);
-    return rule && !isGeneral(rule) ? chipName(rule, data?.ownDocs, data?.company, chipMore) : null;
-  });
 }
 
 const chipMore = (n: number) => (n === 1 ? scopeWords.chipMore.one : n === 2 ? scopeWords.chipMore.two : scopeWords.chipMore.many.replace("{n}", String(n)));
@@ -414,20 +398,74 @@ export function VariesByCompany({ ids, lead = scopeWords.varies, size, className
   return <CompanyLinks lead={lead} items={items} size={size} className={className} />;
 }
 
-/** "כללים:" then the chips. Always the last line of its block, never inside a sentence (design review C1). */
-export function RulesLine({ ids, lead, className }: { ids: readonly string[]; lead?: ReactNode; className?: string }) {
-  const names = useChipNames(ids);
+/**
+ * The rules behind one fact, as one chip with their count (founder, 2026-11-02, issue 15): a code says nothing to the reader, and a block
+ * could carry 25 of them. It opens the list of their titles; one rule opens its card at once. No ids, no chip: a control with nothing behind it cannot exist.
+ */
+export function RulesChip({ ids, name, className }: { ids: readonly string[]; /** The fact it closes, under the title of the list. */ name?: string; className?: string }) {
+  const open = useOpen();
+  const only = ids.length === 1 ? ids[0]! : null;
+  if (ids.length === 0) return null;
+  // a line that cites one formula or open question keeps that id's own chip: its code is what the reader is told about
+  if (only && idKind(only) !== "rule") return <IdRef id={only} className={className} />;
+  const item: Item = only ? { kind: "rule", id: only } : { kind: "rules", ids, ...(name ? { name } : {}) };
+  return (
+    <button type="button" className={cx("rule-chip", className)} onClick={(e) => open(item, e.currentTarget)} aria-label={`${ruleCopy.set}, ${ids.length}`}>
+      {ruleCopy.set}
+      {/* the chip lays its children out as flex items, so the separator carries its own space */}
+      <span aria-hidden="true" className="mx-1 text-muted-foreground">·</span>
+      <bdi dir="ltr">{ids.length}</bdi>
+    </button>
+  );
+}
+
+/** `RulesChip` as the last line of its block, never inside a sentence (design review C1). */
+export function RulesLine({ ids, lead, name, className }: { ids: readonly string[]; lead?: ReactNode; name?: string; className?: string }) {
   if (ids.length === 0 && !lead) return null;
-  // a company's name shown on two chips of the line (four S&P rulebook records on the index page) keeps each chip's code beside it
-  const repeated = new Set(names.filter((n, i) => n !== null && names.indexOf(n) !== i));
   return (
     <p className={cx("rules-line text-xs text-muted-foreground flex flex-wrap items-center gap-x-2 gap-y-1", className)}>
       {lead}
-      {ids.length > 0 && <span>כללים:</span>}
-      {ids.map((id, i) => (
-        <RuleRef key={id} id={id} withId={names[i] !== null && repeated.has(names[i]!)} />
-      ))}
+      <RulesChip ids={ids} name={name} />
     </p>
+  );
+}
+
+/** What a `RulesChip` opens: each rule as "id, title", a company's term named; a row opens the card, with the sheet's back arrow to the list. */
+function RulesListSheet({ ids, name, data, headId }: { ids: readonly string[]; name?: string; data: ProvenanceData; headId: string }) {
+  const open = useOpen();
+  return (
+    <div className="flex flex-col gap-3">
+      <div className="flex flex-col gap-1">
+        <h2 id={headId} className="text-lg font-semibold">
+          {ruleCopy.set} · <bdi dir="ltr">{ids.length}</bdi>
+        </h2>
+        {name && <p className="text-sm text-muted-foreground">{name}</p>}
+      </div>
+      <ul className="flex flex-col">
+        {ids.map((id) => {
+          const rule = ruleOf(data, id);
+          const title = rule ? ruleTitle(rule) : null;
+          return (
+            <li key={id} className="border-t border-border">
+              {idKind(id) === "rule" ? (
+                <button type="button" onClick={(e) => open({ kind: "rule", id }, e.currentTarget)} className="flex w-full min-h-target items-center gap-3 py-2 text-start text-sm hover:underline">
+                  <span className="min-w-16 shrink-0 text-xs text-link">
+                    <bdi dir="ltr" className="slashed-zero whitespace-nowrap">{id}</bdi>
+                  </span>
+                  <span className="flex min-w-0 flex-1 flex-col">
+                    {title && (title.english ? <bdi dir="ltr">{title.text}</bdi> : <span>{title.text}</span>)}
+                    {rule && !isGeneral(rule) && <span className="text-xs text-muted-foreground">{scopeTag(rule, data.ownDocs, { company: data.company })}</span>}
+                  </span>
+                  <IconDrillIn size={16} className="shrink-0 text-muted-foreground" />
+                </button>
+              ) : (
+                <span className="flex min-h-target items-center"><IdRef id={id} /></span>
+              )}
+            </li>
+          );
+        })}
+      </ul>
+    </div>
   );
 }
 
@@ -611,6 +649,7 @@ function SheetContent({ item, data, headId, descId }: { item: Item; data: Proven
     <InsideSheetCtx.Provider value={true}>
       {item.kind === "value" && <ValueSheet value={item.value} exact={!!item.exact} display={item.display} data={data} headId={headId} descId={descId} />}
       {item.kind === "rule" && <RuleCard id={item.id} data={data} headId={headId} />}
+      {item.kind === "rules" && <RulesListSheet ids={item.ids} name={item.name} data={data} headId={headId} />}
       {item.kind === "term" && <TermCard id={item.id} data={data} headId={headId} />}
       {item.kind === "formula" && <FormulaSheet id={item.id} data={data} headId={headId} />}
       {item.kind === "question" && <QuestionSheet id={item.id} closedOn={item.closedOn} data={data} headId={headId} />}

@@ -129,34 +129,15 @@ export default function GuidePage() {
         return { value: exitCopy.otherKind as string, rules: [] };
     }
   };
-  const hebrewExit = data.exitTextRules.filter((id) => isGeneral(rules[id])).map((id) => ({ id, text: rules[id]?.text_he ?? "" })).filter((h) => h.text !== "");
+  // the rules the record's sentence cites join the fact's own, so its detail is read in their cards (issue 15)
+  const exitTextRules = exit.kind === "any_time" ? [] : data.exitTextRules.filter((id) => isGeneral(rules[id]));
   const exitItem = (): KeyValueItem => {
     const v = exitValue();
     return {
       id: "withdraw",
       label: lockUp ? blocks.exit.labelFree : blocks.exit.labelWithdraw,
       value: v.value,
-      rules: v.rules,
-      // the Hebrew text of the rules the record's sentence cites; the English sentence only when there is none, said to be English (audit A22)
-      line: exit.text && exit.kind !== "any_time" ? (
-        hebrewExit.length > 0 ? (
-          <Disclosure label={<span className="text-sm text-link">{exitCopy.textNoteHe as string}</span>} summaryClassName="min-h-9 justify-start gap-1 [&>svg]:size-4">
-            <span className="flex flex-col gap-2 pb-2">
-              {hebrewExit.map((h) => (
-                <span key={h.id} className="block text-sm">
-                  <RuleRef id={h.id} /> {h.text}
-                </span>
-              ))}
-            </span>
-          </Disclosure>
-        ) : (
-          <Disclosure label={<span className="text-sm text-link">{exitCopy.textNoteEn as string}</span>} summaryClassName="min-h-9 justify-start gap-1 [&>svg]:size-4">
-            <bdi dir="ltr" className="text-sm block pb-2">
-              {exit.text}
-            </bdi>
-          </Disclosure>
-        )
-      ) : undefined,
+      rules: [...new Set([...v.rules, ...exitTextRules])],
     };
   };
   const inout: KeyValueItem[] = [];
@@ -425,14 +406,14 @@ export default function GuidePage() {
             <NumberLegend term institution={anyWeak([...Object.values(data.bundle?.feeValues ?? {}), ...Object.values(signature?.facts ?? {}), ...(signature?.banks ?? []).flatMap((b) => [b.rate, b.ceiling])])} />
           </header>
 
-          <GuideSection id="what" title={title("what")} rulesToggle>
+          <GuideSection id="what" title={title("what")}>
             {content?.what(cp)}
             {/* D29: a page with a visual folds the timeline under it; without one (or without a run) it stays here */}
             {!(signature && timelineNode) && (timelineNode ?? <NoGraphLine data={data} />)}
           </GuideSection>
 
           {/* audit A42: who it is for sits directly under what it is */}
-          <GuideSection id="use" title={title("use")} rulesToggle>
+          <GuideSection id="use" title={title("use")}>
             {content?.use(cp)}
             <RelatedProducts items={data.related} />
             <RelatedProducts items={data.securities} label={copy.securitiesRow} />
@@ -440,7 +421,7 @@ export default function GuidePage() {
           </GuideSection>
 
           {signature && (
-            <GuideSection id="different" title={signatureTitle(record.id)} rulesToggle>
+            <GuideSection id="different" title={signatureTitle(record.id)}>
               <SignatureFrame id={record.id} data={signature} today={today} timeline={timelineNode} held={held} />
             </GuideSection>
           )}
@@ -448,7 +429,7 @@ export default function GuidePage() {
           <WorthKnowing rows={worthRows(data.worthIds, rules, today)} facts={worthFacts} />
 
           {!omitted("who") && (
-            <GuideSection id="who" title={title("who")} rulesToggle>
+            <GuideSection id="who" title={title("who")}>
               {content?.who(cp) ?? (
                 <p className="max-w-measure">
                   {regulatorName}. {copy.whoLine}
@@ -459,25 +440,25 @@ export default function GuidePage() {
           )}
 
           {!omitted("inout") && (
-            <GuideSection id="inout" title={title("inout")} rulesToggle>
+            <GuideSection id="inout" title={title("inout")}>
               <KeyValueList items={inout} />
             </GuideSection>
           )}
 
           {!omitted("cost") && (
-            <GuideSection id="cost" title={title("cost")} rulesToggle>
+            <GuideSection id="cost" title={title("cost")}>
               <FeeTable fees={fees} note={provident ? copy.feeNote : copy.feeNoteOther} />
             </GuideSection>
           )}
 
           {!omitted("tax") && (
-            <GuideSection id="tax" title={title("tax")} rulesToggle>
+            <GuideSection id="tax" title={title("tax")}>
               <TaxSteps steps={steps} />
               {content?.afterTax?.(cp)}
             </GuideSection>
           )}
 
-          <GuideSection id="risk" title={title("risk")} rulesToggle>
+          <GuideSection id="risk" title={title("risk")}>
             {content?.risks(cp) ?? (
               <>
                 <p className="max-w-measure">

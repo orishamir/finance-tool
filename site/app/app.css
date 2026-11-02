@@ -224,7 +224,7 @@
   .rule-chip::after {
     content: "";
     position: absolute;
-    inset: -11px -4px;
+    inset: -12px -4px;
   }
   .rule-chip:hover {
     text-decoration: underline;

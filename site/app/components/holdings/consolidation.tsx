@@ -7,7 +7,7 @@ import { fmt } from "../../lib/format";
 import type { ConsolidationGroup, Fit, HoldingView } from "../../lib/holdings";
 import { IconBan, IconDash, IconDashed, IconHelp, IconOk } from "../compare/icons";
 import { IconLock } from "../icons";
-import { LeadTail, Num, RuleRef } from "../provenance";
+import { LeadTail, Num, RuleRef, RulesChip } from "../provenance";
 import { Callout, Card, cx, Disclosure, Sentence, Tag } from "../kit";
 import { OpenQuestion, RuleBullet, RuleText, YearsNum, type RuleMap } from "./shared";
 import { fit as fitCopy } from "../../copy";
@@ -87,9 +87,7 @@ export function ConsolidationCard({ group, views, rules }: { group: Consolidatio
                 {group.wrapperName}
                 {c.route.after}
               </span>
-              {route.ruleIds.slice(0, 3).map((id) => (
-                <RuleRef key={id} id={id} />
-              ))}
+              <RulesChip ids={route.ruleIds} />
             </p>
           )}
 
@@ -107,9 +105,8 @@ export function ConsolidationCard({ group, views, rules }: { group: Consolidatio
                 {c.notYet.before}
                 <Num value={group.notYet.liquidFrom} />
                 {c.notYet.after}
-                {group.notYet.ruleIds.map((id) => (
-                  <span key={id}> <RuleRef id={id} /></span>
-                ))}
+                {" "}
+                <RulesChip ids={group.notYet.ruleIds} />
               </Sentence>
             </div>
           )}

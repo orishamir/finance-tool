@@ -6,7 +6,7 @@ import { notCovered as copy, r5, site } from "../copy";
 import { IconExternal, IconLock, IconCheck } from "../components/icons";
 import { IconDashed } from "../components/compare/icons";
 import { Tpl } from "../components/exposure-mode/tpl";
-import { IdRef, RuleRef, RulesLine, StrengthLabel } from "../components/provenance";
+import { IdRef, RuleRef, RulesChip, RulesLine, StrengthLabel } from "../components/provenance";
 import { PageShell } from "../components/shell";
 import { Callout, Card, Disclosure, Tag } from "../components/kit";
 import type { GraduationStatusView } from "../lib/graduation.server";
@@ -95,9 +95,7 @@ function GraduationStatus({ s }: { s: GraduationStatusView }) {
                 <span className="line-through">
                   {c.closedOn ? <Tpl t={g.closure} vars={{ date: dateNode(c.closedOn), rule: <IdRef id={c.code} closedOn={c.closedOn} /> }} /> : <Tpl t={g.closureNoDate} vars={{ rule: <IdRef id={c.code} closedOn={c.closedOn} /> }} />}
                 </span>
-                {c.ruleIds.map((id) => (
-                  <RuleRef key={id} id={id} />
-                ))}
+                <RulesChip ids={c.ruleIds} />
               </li>
             ))}
           </ul>

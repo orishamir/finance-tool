@@ -79,7 +79,7 @@ export default function ExposurePage() {
             <NumberLegend term />
           </header>
 
-          <GuideSection id="what" title={copy.sections[0].title} rulesToggle>
+          <GuideSection id="what" title={copy.sections[0].title}>
             {content ? content.what(cp) : <p className="text-muted-foreground max-w-measure">{copy.noProse}</p>}
           </GuideSection>
 
@@ -127,7 +127,7 @@ export default function ExposurePage() {
             )}
           </GuideSection>
 
-          <GuideSection id="risk" title={copy.sections[2].title} rulesToggle>
+          <GuideSection id="risk" title={copy.sections[2].title}>
             {content ? content.risks(cp) : <p className="text-muted-foreground max-w-measure">{copy.noProse}</p>}
           </GuideSection>
 

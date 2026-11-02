@@ -223,7 +223,7 @@ Why "למי ששלח לכם את האתר": every friend reached the site throug
 | Readout heading | היום / שנה `{n}` |
 | Table headings | שנה · ההפקדות שלכם · דמי ניהול · מס · נשאר לכם |
 | Graph's screen-reader name | גרף: הכסף לאורך `{שנים}`. הנתונים המלאים בטבלה. |
-| Rules line | כללים: |
+| Rules line (2026-11-02, D48) | חוקים וכללים · `{מספר}` |
 | Marker, money becomes free | אפשר למשוך מכאן |
 | Marker, age | גיל `{גיל}` |
 | Caption, return entered by the reader | הקו המקווקו מבוסס על תשואה שהזנתם, לא על הערכה של האתר. |

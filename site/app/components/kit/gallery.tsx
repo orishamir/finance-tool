@@ -7,7 +7,7 @@ import type { SiteValue } from "../../lib/value";
 import { computed, entered } from "../../lib/value";
 import { CalendarCheck, CalendarDays, Lock, Zap } from "lucide-react";
 import { IconLock } from "../icons";
-import { IdRef, Num } from "../provenance";
+import { IdRef, Num, RulesLine } from "../provenance";
 import { IconDrillIn } from "../icons";
 import { label } from "../../lib/labels";
 import { fmt } from "../../lib/format";
@@ -338,6 +338,14 @@ function Words({ today }: { today: string }) {
           <State label="formula: opens the formula sheet"><div><IdRef id="F-80" /></div></State>
           <State label="parameter: goes to its card on /parameters"><div><IdRef id="P-01" /></div></State>
           <State label="open question: opens the question sheet"><div><IdRef id="TX2 OQ6" /></div></State>
+        </Grid>
+      </Demo>
+      <Demo name="RulesLine, RulesChip" use={g.uses.RulesLine}>
+        <Grid>
+          <State label="several rules: opens the list of their titles"><RulesLine ids={["TXS-05", "TXS-06", "TXS-09"]} name="מס על הרווח במכירה" /></State>
+          <State label="one rule: opens its card at once"><RulesLine ids={["TXS-05"]} /></State>
+          <State label="one open question: keeps its own chip"><RulesLine ids={["TX2 OQ6"]} /></State>
+          <State label="no rules: renders nothing"><div><RulesLine ids={[]} /></div></State>
         </Grid>
       </Demo>
       <Demo name="Sentence, Tpl" use={g.uses.Sentence}>
