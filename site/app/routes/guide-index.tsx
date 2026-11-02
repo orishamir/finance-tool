@@ -1,7 +1,7 @@
 // The guide list (flows 6.4): where the money is held, what it is invested in, and the not-covered card.
 import { Link, useLoaderData } from "react-router";
 import type { Route } from "./+types/guide-index";
-import { guideIndex as copy, site } from "../copy";
+import { guideIndex as copy, limitedBondFund, site } from "../copy";
 import { IconDrillIn } from "../components/icons";
 import { PageShell } from "../components/shell";
 import { Card, ChipList } from "../components/kit";
@@ -32,6 +32,8 @@ export async function loader() {
     const name = funds[0]!.names.he[0]!;
     exposures.push({ key: "money-market-funds", name, line: line(name), href: `/guide/${funds[0]!.id}`, kinds: funds.map((f) => ({ href: `/guide/${f.id}`, label: copy.fundKinds[f.id] ?? f.names.he[0]! })) });
   }
+  // a guide of its own, no product id: not an option in the comparison (issue 159)
+  exposures.push({ key: "limited-bond-fund", name: limitedBondFund.title, line: limitedBondFund.indexLine, href: "/guide/limited-bond-fund", kinds: [] });
   exposures.sort((a, b) => rank(a.key) - rank(b.key));
   return { wrappers, exposures, today: today() };
 }
@@ -45,7 +47,7 @@ interface ExposureItem {
 }
 
 /** The cash-like and bond entries first, short to long, then the rest in file order. */
-const exposureOrder = ["shekel-cash", "money-market-funds", "makam", "government-bond"];
+const exposureOrder = ["shekel-cash", "money-market-funds", "makam", "government-bond", "limited-bond-fund"];
 const rank = (key: string) => (exposureOrder.includes(key) ? exposureOrder.indexOf(key) : exposureOrder.length);
 
 export function meta() {
