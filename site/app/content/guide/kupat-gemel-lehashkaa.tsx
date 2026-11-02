@@ -24,8 +24,8 @@ export const content: GuideContent = {
       <RulesLine ids={["REG-17"]} />
     </>
   ),
-  switchLine: "בלי מס, גם מעבר לקופת גמל להשקעה אחרת",
-  switchRules: ["TXK-04", "PF-23"],
+  switchLine: "בלי מס, גם מעבר לקופת גמל להשקעה אחרת, של כל היתרה או של חלק ממנה",
+  switchRules: ["TXK-04", "PF-23", "KGL-10"],
   termIds: ["מסלול השקעה", "משיכה", "חברה מנהלת", "קופת גמל לקצבה", "קצבה"],
   afterTax: ({ figure }) => {
     const age = figure("TXK-10", "early_retirement_age");
