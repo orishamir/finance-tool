@@ -11,8 +11,10 @@ export const content: GuideContent = {
   what: () => (
     <>
       <p className="max-w-measure">
-        קופת גמל שכל אדם יכול לפתוח, בכל גיל, ולהפקיד אליה בעצמו. הכסף מושקע <Term prefix="ב" id="מסלול השקעה">מסלול השקעה</Term> שבוחרים. על הרווחים בתוך הקופה לא משלמים מס, ומשלמים רק כש
-        <Term id="משיכה">מושכים</Term> את הכסף.
+        קופת גמל שמפקידים אליה בעצמכם, עד תקרה שנתית. החוק לא קובע תנאי גיל או תושבות לפתיחה, והחברה המנהלת מחליטה אם לקבל בקשת הצטרפות.
+      </p>
+      <p className="max-w-measure">
+        הכסף מושקע <Term prefix="ב" id="מסלול השקעה">מסלול השקעה</Term> שבוחרים. על הרווחים בתוך הקופה לא משלמים מס. משלמים רק כש<Term id="משיכה">מושכים</Term>, ורק על הרווח.
       </p>
       <RulesLine ids={["KGL-01", "KGL-06", "TXK-03", "TXK-05"]} />
     </>
@@ -25,12 +27,13 @@ export const content: GuideContent = {
       <RulesLine ids={["REG-17"]} />
     </>
   ),
-  switchLine: "בלי מס, גם מעבר לקופת גמל להשקעה אחרת, של כל היתרה או של חלק ממנה",
+  switchLine: "בלי מס. אפשר גם לעבור לקופת גמל להשקעה אחרת, עם כל היתרה או עם חלק ממנה",
   switchRules: ["TXK-04", "PF-23", "KGL-10"],
   termIds: ["מסלול השקעה", "משיכה", "חברה מנהלת", "קופת גמל לקצבה", "קצבה"],
   afterTax: ({ figure }) => {
     const age = figure("TXK-10", "early_retirement_age");
     const sixty = figure("TXG-04", "age");
+    const rate = figure("TXK-06", "rate");
     const withheld = figure("TXK-26", "regulation_text_rate");
     const proposedCap = figure("TXK-21", "proposed_cap");
     return (
@@ -38,18 +41,21 @@ export const content: GuideContent = {
         {proposedCap ? (
           <>
             <Callout tone="caution" className="max-w-measure">
-              <span className="font-medium">המלצה, לא חוק.</span> צוות של משרד האוצר המליץ ביולי 2026 על חשבון השקעות עם הטבת מס, עם תקרה אחת של <Num value={proposedCap} display={fmt.nisWhole(Number(proposedCap.value))} /> לאדם. מעל התקרה ההטבות של היום היו מסתיימות. זה יכול לשנות את הכדאיות של המוצר, אבל זה לא החוק היום, ולא נמצאה הצעת חוק.
+              <span className="font-medium">המלצה, לא חוק.</span> צוות של משרד האוצר המליץ ביולי 2026 על חשבון השקעות עם הטבת מס, עם תקרה אחת של <Num value={proposedCap} display={fmt.nisWhole(Number(proposedCap.value))} /> לאדם. מעל התקרה ההטבות של היום היו מסתיימות. זה יכול לשנות את הכדאיות של המוצר, אבל לא נמצאה הצעת חוק.
             </Callout>
             <RulesLine ids={["TXK-21"]} />
           </>
         ) : null}
         <Callout tone="blocked" className="max-w-measure">
-          <span className="font-medium">מגיל {age ? <Num value={age} /> : null} אפשר להעביר את הכסף <Term prefix="ל" id="קופת גמל לקצבה">קופת גמל לקצבה</Term>.</span> את <Term prefix="ה" id="קצבה">קצבה</Term> האתר עוד לא מחשב, כי חסרים מקדמי ההמרה. שאלה פתוחה (<IdRef id="PEN OQ7" />).
+          <span className="font-medium">מגיל {age ? <Num value={age} /> : null} אפשר להעביר את הכסף <Term prefix="ל" id="קופת גמל לקצבה">קופת גמל לקצבה</Term>.</span> הכסף נכנס שם למסלול למקבלי קצבה, לקבלת <Term id="קצבה">קצבה</Term> בלבד. את הקצבה האתר עוד לא מחשב, כי חסרים מקדמי ההמרה. שאלה פתוחה (<IdRef id="PEN OQ7" />).
         </Callout>
         <RulesLine ids={["TXK-10", "KGL-09"]} />
         <Callout tone="caution" className="max-w-measure">
-          <span className="font-medium">מגיל {sixty ? <Num value={sixty} /> : null} המס על הרווח במשיכה יכול להיות נמוך יותר.</span> השיעור על הרווח הוא שיעור מרבי, ולכן מדרגות המס הנמוכות של בני {sixty ? <Num value={sixty} /> : null} ומעלה חלות עליו קודם; מאחר שהרווח הוא המדרגה העליונה של ההכנסה, זה עוזר רק כשהכנסות אחרות משאירות את המדרגות האלה פנויות. כשמזינים גיל, האתר מחשב את ההקלה לפי ההכנסה השנתית שבחישוב. החברה המנהלת מנכה במקור {withheld ? <Num value={withheld} /> : "לפי התקנות"} מהרווח, בלי להתחשב בגיל, והמס הסופי נקבע מול הניכוי הזה בדוח השנתי: על חלק הרווח שהמדרגה שלו נמוכה משיעור הניכוי מקבלים החזר, ועל חלק שהמדרגה שלו גבוהה ממנו משלמים עוד, עד השיעור המרבי <RuleRef id="TXK-26" />.
+          <span className="font-medium">מגיל {sixty ? <Num value={sixty} /> : null} המס על הרווח יכול להיות נמוך יותר.</span> {rate ? <Num value={rate} /> : "השיעור על הרווח"} הוא תקרה, לא שיעור קבוע. מגיל {sixty ? <Num value={sixty} /> : null} חלות על ההכנסה מדרגות המס הנמוכות, ואם המדרגה נמוכה מהתקרה, משלמים לפיה. הרווח נספר כחלק העליון של ההכנסה, ולכן זה עוזר רק כשהכנסות אחרות לא ממלאות את המדרגות הנמוכות. כשמזינים גיל, האתר מחשב את ההקלה לפי ההכנסה השנתית שבחישוב.
         </Callout>
+        <Sentence measure>
+          החברה המנהלת מנכה במקור {withheld ? <Num value={withheld} /> : "לפי התקנות"} מהרווח, בכל גיל. זו מקדמה: המס הסופי נקבע בדוח השנתי, ושם מקבלים בחזרה את מה שנוכה יותר מדי או משלימים את מה שחסר, עד התקרה <RuleRef id="TXK-26" />.
+        </Sentence>
         <RulesLine ids={["TXK-06", "TXG-04", "TXG-07", "TXK-26"]} />
         <OpenLossOffset />
       </>
@@ -57,8 +63,7 @@ export const content: GuideContent = {
   },
   risks: () => (
     <>
-      <p className="max-w-measure">הנכסים מוחזקים בנאמנות, בנפרד מהרכוש של החברה המנהלת, ואי אפשר לעקל אותם. אם החברה המנהלת קורסת, הניהול עובר לחברה אחרת. אין ערבות של המדינה לשווי הקופה.</p>
-      <p className="max-w-measure">השווי עולה ויורד עם ההשקעות של המסלול שבחרתם.</p>
+      <p className="max-w-measure">הנכסים מוחזקים בנאמנות, בנפרד מהרכוש של החברה המנהלת, ואי אפשר לעקל אותם. זכויות של עמית אפשר לעקל רק לפי כללים שהשר קובע. אם החברה המנהלת קורסת, הניהול עובר לחברה אחרת. המדינה לא ערבה לשווי הקופה, והוא עולה ויורד עם ההשקעות של המסלול שבחרתם.</p>
       <RulesLine ids={["PF-29", "REG-18", "REG-19"]} />
     </>
   ),
@@ -67,9 +72,9 @@ export const content: GuideContent = {
     return (
       <>
         <Sentence measure>
-          חיסכון שצריך להישאר זמין, בלי נעילה, עם השקעה במסלול לבחירה. מגיל {age ? <Num value={age} /> : null} אפשר להעביר אותו לקופת גמל לקצבה.
+          חיסכון שצריך להישאר זמין: אין נעילה, ומושכים בכל עת. מעבר בין מסלולים לא ממוסה, ולכן אפשר לשנות את ההשקעה בדרך בלי לשלם מס על הרווח. מגיל {age ? <Num value={age} /> : null} אפשר גם להעביר את הכסף לקופת גמל לקצבה.
         </Sentence>
-        <RulesLine ids={["KGL-08", "TXK-10"]} />
+        <RulesLine ids={["KGL-08", "TXK-04", "TXK-10"]} />
       </>
     );
   },
