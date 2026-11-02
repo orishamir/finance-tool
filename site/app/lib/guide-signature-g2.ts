@@ -6,10 +6,12 @@ import {
   employeeCredit,
   employerLinePension,
   insuranceCost,
+  moneyStory,
   ruleBook,
   runInputs,
   runPlanned,
   type InstrumentTerms,
+  type MoneyStory,
   type P05Input,
   type Profile,
   type RunResult,
@@ -76,38 +78,7 @@ export const settled = (r: RunResult) => r.outcome.code === "eligible";
 
 // ---------------------------------------------------------------- study fund
 
-export interface HishtalmutCase {
-  amount: number;
-  monthly: number;
-  /** Years until the money is taken out. */
-  years: number;
-  employment: Employment;
-  /** An employee's monthly salary, or a self-employed person's monthly income (A-12). */
-  income: number;
-}
-
 export type HishtalmutGap = "self-employed-early" | "blocked" | "no-run";
-
-export interface HishtalmutModel {
-  years: number;
-  /** The rule's lock in years (TXH-09); null when the rule's figure is missing, and then there is no study-fund side. */
-  lockYears: number | null;
-  /** The money is taken out before the lock ends. */
-  early: boolean;
-  study: Side | null;
-  studyGap: HishtalmutGap | null;
-  broker: Side | null;
-  /** Study fund less brokerage account, both after fees and tax, in today's money; null when either side is missing. */
-  diff: number | null;
-  /** Rule 3: how far the difference moves with the bank or broker, and with the fund manager: the lowest and the highest difference. */
-  range: { broker: DiffRange | null; manager: DiffRange | null };
-  /** An employee: the part of the monthly deposit that is a benefited deposit and the part above it (F-27, TXH-08). */
-  benefitedMonthly: number | null;
-  excessMonthly: number | null;
-  /** A self-employed person: the tax the deduction saved over the whole run and the yearly deduction ceiling (F-30, TXH-05). */
-  reliefTotal: number | null;
-  deductionCap: number | null;
-}
 
 export interface DiffRange {
   low: number;
@@ -131,59 +102,87 @@ const rangeOf = (diffs: (number | null)[]): DiffRange | null => {
   return v.length < 2 ? null : { low: Math.min(...v), high: Math.max(...v) };
 };
 
+/** The plan the study fund's drawing runs. An employee's two deposits are a share of the salary; a self-employed person has one deposit, the net outlay. */
+export interface StudyStoryCase {
+  employment: Employment;
+  /** An employee's monthly salary, or a self-employed person's monthly income (A-12). */
+  income: number;
+  /** The person's own monthly deposit: for a self-employed person, what it costs after the deduction. */
+  ownMonthly: number;
+  /** The employer's monthly deposit; 0 for a self-employed person. */
+  employerMonthly: number;
+  /** A-01, percent a year. */
+  returnPct: number;
+}
+
+export type StudySlice = MoneyStory;
+
+export type StudyYear = { slice: StudySlice; gap: null; runs: RunResult[] } | { slice: null; gap: HishtalmutGap; runs: [] };
+
 /**
- * What the six-year lock buys (F-46, F-47 against F-08 and F-40): the same index in a study fund and in a brokerage account, the same
- * outlay, after fees and tax, taken out after `years` years. Before the lock ends the study fund is withdrawn early (F-47). A self-employed
- * person's early withdrawal is business income including the deducted deposits (TXH-07), which the engine does not compute: no figure.
+ * One withdrawal's story (F-96). An employee's own and employer's money are two runs of F-27, each with its own limit (TXH-08, TXH-01): the
+ * employer's run alone taxes its deposits at an early withdrawal (F-47). The gains of the own run are stacked on the salary plus the employer's benefited
+ * deposits and gains withdrawn (a modelling choice, as in F-47; the part above the limit was income when paid, TXH-03). A self-employed person's early withdrawal is business income including the deducted deposits (TXH-07), which
+ * the engine does not compute: no figure.
  */
-export function hishtalmutModel(d: SignatureData, c: HishtalmutCase): HishtalmutModel {
+export function studyYear(study: Bundle, lockYears: number, c: StudyStoryCase, year: number, feePct?: number): StudyYear {
+  const early = year < lockYears;
+  const months = year * 12;
+  const annualIncome = 12 * c.income;
+  const entered = (monthly: number) => ({ amount_now: 0, monthly_deposit: monthly, "A-01": c.returnPct });
+  const terms = (money?: "employer") => {
+    const t = hishtalmutTerms(study, { employment: c.employment, income: c.income, early });
+    const withMoney = c.employment === "employee" ? { ...t, hishtalmut: { ...t.hishtalmut!, salaryFollowsPrices: true, ...(money ? { money } : {}) } } : t;
+    return feePct === undefined ? withMoney : withBalanceFee(withMoney, feePct);
+  };
+  const fail = (run: RunOutcome): StudyYear | null => ("error" in run ? { slice: null, gap: "no-run", runs: [] } : settled(run.run) ? null : { slice: null, gap: "blocked", runs: [] });
+  if (c.employment === "self-employed") {
+    if (early) return { slice: null, gap: "self-employed-early", runs: [] };
+    const run = runWithResult(study, entered(c.ownMonthly), months, { terms: terms(), profile: { annualIncome } });
+    if ("error" in run || !settled(run.run)) return fail(run)!;
+    return { slice: moneyStory(paidInToday(run.run, 0), run.run.detail.reliefToday ?? 0, [run.run]), gap: null, runs: [run.run] };
+  }
+  const employer = runWithResult(study, entered(c.employerMonthly), months, { terms: terms("employer"), profile: { annualIncome } });
+  if ("error" in employer || !settled(employer.run)) return fail(employer)!;
+  const stacked = early ? { otherIncome: annualIncome + (employer.run.detail.earlyEmployerDeposits ?? 0) + (employer.run.detail.earlyGains ?? 0) } : {};
+  const mine = runWithResult(study, entered(c.ownMonthly), months, { terms: terms(), profile: { annualIncome, ...stacked } });
+  if ("error" in mine || !settled(mine.run)) return fail(mine)!;
+  return { slice: moneyStory(paidInToday(mine.run, 0), paidInToday(employer.run, 0), [mine.run, employer.run]), gap: null, runs: [mine.run, employer.run] };
+}
+
+/** Every year of the drawing's strip, from the first to `years`. */
+export function studyYears(d: SignatureData, c: StudyStoryCase, years: number): StudyYear[] {
   const study = d.bundles["keren-hishtalmut"];
   const lockYears = factNumber(d, "lockYears");
-  const early = lockYears !== null && c.years < lockYears;
-  const entered = { amount_now: c.amount, monthly_deposit: c.monthly };
-  const months = c.years * 12;
-  const profile = { annualIncome: 12 * c.income };
-  const studyRun = (feePct?: number): { side: Side | null; gap: HishtalmutGap | null; detail: Record<string, number> } => {
-    if (!study || lockYears === null) return { side: null, gap: "no-run", detail: {} };
-    if (early && c.employment === "self-employed") return { side: null, gap: "self-employed-early", detail: {} };
-    const terms = hishtalmutTerms(study, { employment: c.employment, income: c.income, early });
-    const r = runWithResult(study, entered, months, { terms: feePct === undefined ? terms : withBalanceFee(terms, feePct), profile });
-    if (!("run" in r)) return { side: null, gap: "no-run", detail: {} };
-    if (!settled(r.run)) return { side: null, gap: "blocked", detail: {} };
-    return { side: sideOf(r.run, c.amount), gap: null, detail: r.run.detail };
-  };
-  // The same income on both sides (2026-10-26): the brokerage account's gain is taxed on top of the reader's yearly income (the surtax,
-  // F-43), as the study fund's excess is; before, that side took P-05's scenario income. No age is entered here, so no F-42 on either side.
-  const brokerSide = (key: string): Side | null => {
+  const none: StudyYear = { slice: null, gap: "no-run", runs: [] };
+  return Array.from({ length: years }, (_, i) => (study && lockYears !== null ? studyYear(study, lockYears, c, i + 1) : none));
+}
+
+export interface StudyRange {
+  /** What is left at the dearest and the cheapest fee reported on the index (rule 3), everything else the same. */
+  fund: DiffRange | null;
+  /** A self-employed person only: the same outlay in a securities account on the same index, and how far it moves with the bank or broker. */
+  account: { net: number; range: DiffRange | null } | null;
+}
+
+/** What depends on who is chosen, at the year picked. */
+export function studyRange(d: SignatureData, c: StudyStoryCase, year: number): StudyRange {
+  const study = d.bundles["keren-hishtalmut"];
+  const lockYears = factNumber(d, "lockYears");
+  const low = d.facts.rangeMin?.value;
+  const high = d.facts.rangeMax?.value;
+  const netAt = (fee: unknown) => (study && lockYears !== null && typeof fee === "number" ? (studyYear(study, lockYears, c, year, fee).slice?.net ?? null) : null);
+  const [dear, cheap] = [netAt(high), netAt(low)];
+  const fund = dear !== null && cheap !== null ? { low: Math.min(dear, cheap), high: Math.max(dear, cheap) } : null;
+  if (c.employment !== "self-employed") return { fund, account: null };
+  const accountNet = (key: string) => {
     const b = d.bundles[key];
-    const run = b ? runWith(b, entered, months, { profile }) : null;
-    return run && settled(run) ? sideOf(run, c.amount) : null;
+    const run = b ? runWith(b, { amount_now: 0, monthly_deposit: c.ownMonthly, "A-01": c.returnPct }, year * 12, { profile: { annualIncome: 12 * c.income } }) : null;
+    return run && settled(run) ? run.real : null;
   };
-  const main = studyRun();
-  const broker = brokerSide("brokerage-account");
-  const diff = main.side && broker ? main.side.gain - broker.gain : null;
-  const diffWith = (s: Side | null, b: Side | null) => (s && b ? s.gain - b.gain : null);
-  const lowFee = d.facts.rangeMin?.value;
-  const highFee = d.facts.rangeMax?.value;
-  const range = {
-    broker: main.side ? rangeOf([diff, diffWith(main.side, brokerSide("brokerage-best")), diffWith(main.side, brokerSide("brokerage-worst"))]) : null,
-    manager: broker && typeof lowFee === "number" && typeof highFee === "number" ? rangeOf([diff, diffWith(studyRun(lowFee).side, broker), diffWith(studyRun(highFee).side, broker)]) : null,
-  };
-  const detail = main.detail;
-  return {
-    years: c.years,
-    lockYears,
-    early,
-    study: main.side,
-    studyGap: main.gap,
-    broker,
-    diff,
-    range,
-    benefitedMonthly: c.employment === "employee" ? (detail.benefitedMonthly ?? null) : null,
-    excessMonthly: c.employment === "employee" ? (detail.excessMonthly ?? null) : null,
-    reliefTotal: c.employment === "self-employed" ? (detail.reliefTotal ?? null) : null,
-    deductionCap: c.employment === "self-employed" ? (detail.deductionCap ?? null) : null,
-  };
+  const net = accountNet("brokerage-account");
+  const [best, worst] = [accountNet("brokerage-best"), accountNet("brokerage-worst")];
+  return { fund, account: net === null ? null : { net, range: best !== null && worst !== null ? { low: Math.min(best, worst), high: Math.max(best, worst) } : null } };
 }
 
 // ---------------------------------------------------------------- provident fund for investing

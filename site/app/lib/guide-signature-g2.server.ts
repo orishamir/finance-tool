@@ -214,10 +214,11 @@ export function buildStudyFund(c: G2Ctx): SignatureData {
       const variants = ([ "employee", "self-employed" ] as Employment[]).flatMap((employment) =>
         [8_000, 12_000, 40_000].flatMap((income) =>
           [false, true].flatMap((early) =>
-            [10_000, 5_000_000].flatMap((amount_now) =>
-              [0, 500, 10_000].map((monthly_deposit) => (b: Bundle) =>
-                runWith(b, { amount_now, monthly_deposit }, early ? 36 : 144, { terms: hishtalmutTerms(b, { employment, income, early }), profile: { annualIncome: 12 * income } }),
-              ),
+            [0, 500, 10_000].flatMap((monthly_deposit) =>
+              [undefined, "employer" as const].filter((money) => !money || employment === "employee").map((money) => (b: Bundle) => {
+                const t = hishtalmutTerms(b, { employment, income, early });
+                return runWith(b, { amount_now: 0, monthly_deposit }, early ? 36 : 144, { terms: employment === "employee" ? { ...t, hishtalmut: { ...t.hishtalmut!, salaryFollowsPrices: true, ...(money ? { money } : {}) } } : t, profile: { annualIncome: 12 * income } });
+              }),
             ),
           ),
         ),
