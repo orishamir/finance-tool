@@ -21,6 +21,7 @@ Scope: in: what TASE-listed corporate bonds (תעודות התחייבות / א�
 - Conditions / exceptions: Section 35א1 takes debt certificates whose purpose is joint investment or joint profit out of most of the law and places them under the Joint Investment Trust Law. Government bonds are in `government-bonds-and-makam.md`.
 - Figures: none.
 - Source: [Securities Law, Securities Authority's consolidated copy, file of 26.8.2026](https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Nyarot01.pdf#page=37) (file pages: s.35א 37; s.35א1 37-38), s. 35א (definition), s. 35א1 · checked 2026-10-31 · primary (state body's consolidated copy, not the binding gazette wording)
+- Scope: general
 - Dimensions: `regulator`, `protection`
 - Likely to change: no
 
@@ -190,6 +191,7 @@ Scope: in: what TASE-listed corporate bonds (תעודות התחייבות / א�
 - Conditions / exceptions: A bond fund holds many issuers, so one default hits only part of it; the trustee and acceleration rules (CORP-04 to CORP-09) still apply to the bonds inside the fund. ISA fund categories include "אג"ח בארץ - חברות והמרה" (`mutual-funds-and-money-market-funds.md`, fee figures by category). A "קרן כספית ללא קונצרני" holds no corporate paper (MF-32). Bond-index ETF specifics were left out of `etfs-and-index-funds.md`.
 - Figures: as above (31.12.2025 and calendar 2025).
 - Source: [TASE periodic report 2025](https://content.tase.co.il/media/kvjpsnmx/tase_ltd_periodic_report_for_2025.pdf?guid=b4232a8e-909e-473e-84c6-3ece08e3158a), part A ss. 1.10.4, 1.10.4.1, 1.10.4.2, pp.40 to 41 · checked 2026-10-22 · primary
+- Scope: general
 - Dimensions: `fee-management-balance`, `liquidity-lockup`
 - Likely to change: yes
 
@@ -198,6 +200,7 @@ Scope: in: what TASE-listed corporate bonds (תעודות התחייבות / א�
 - Conditions / exceptions: Tariff figures per provider are the data-researcher's job (`brokerage-account.md`, Institutions).
 - Figures: none.
 - Source: as cited in BRK-16, BRK-17 and CORP-05 · checked 2026-10-22 · primary · links from the cited rules: [Securities Law, Securities Authority's consolidated copy, file of 26.8.2026](https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Nyarot01.pdf)
+- Scope: general
 - Dimensions: `fee-trade`, `fee-custody`
 - Likely to change: no
 

@@ -111,6 +111,14 @@ const patterns: Record<string, { kit: string; count: (s: string) => number; allo
   },
 };
 
+// Founder, 2026-11-02 (issue 15): the rules behind a fact are one chip with a count, never a row or a column of codes. Left: the lists
+// inside a figure's sheet, already one tap from the reading, and the open questions of a held product, whose codes are what the reader is told.
+patterns["a row of rule chips"] = {
+  count: (s) => (s.match(/\.map\(\([^)]*\)\s*=>\s*\(?\s*(?:<span key=\{\w+\}>\s*)?<RuleRef\b/g) ?? []).length,
+  kit: "RulesLine or RulesChip (provenance.tsx)",
+  allowed: { "components/provenance.tsx": 4, "routes/exposure.tsx": 2 },
+};
+
 for (const [name, p] of Object.entries(patterns)) {
   describe(`ratchet: ${name}`, () => {
     const now: Record<string, number> = {};

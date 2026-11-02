@@ -17,7 +17,7 @@ export { STAIRS_MARGIN, STAIRS_SLOTS, STAIR_SWATCH, StairsChart, StairsSteps, St
 export { DiffBar, DiffFigure, DiffHead, DiffRow, GreyLine, barShare, type DiffRowProps } from "./diff-row";
 export { InputSlot, Sentence, Tpl, fill } from "./sentence";
 export { HeadlineFigure, KeyValue, KeyValueList, Stat, StatRow, StatTile, type KeyValueItem } from "./stat";
-export { GapNote, NoteList, SourceLine } from "./notes";
+export { GapNote, NoteList, ProseList, SourceLine } from "./notes";
 export { RankBadge } from "./rank";
 export { StepButtons } from "./stepper";
 export { CheckField, FieldGroup, FieldState, AskField, TextField, NumberField, ParameterLine, PercentField, RangeField, SelectField, flushPendingFields, percentCheck, type FieldProps, type RangeFieldProps } from "./fields";

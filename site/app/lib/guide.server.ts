@@ -1,13 +1,13 @@
 // Builds the data of one guide page at build time (design-spec 2): the wrapper record, its rule figures,
-// the engine bundle and its first run on P-05, the checklist marks, the terms and the companies that offer it.
+// the engine bundle and its first run on P-05, the terms and the companies that offer it.
 import { pending as pendingFormulaReleases, type P05Input } from "@finance-tool/engine";
 import { join } from "node:path";
 import { companyTermRule, isSecurity, productIds, type ExposureRecord, type RuleRecord, type ProductRecord } from "@finance-tool/schema";
 import { buildHishtalmutTerms, exposureFolds, loadExposures } from "./instruments.server";
 import { providentTerms } from "./compare.server";
-import { loadChecklistRows, loadCma, loadFees, loadParameters, loadRules, loadTerms, loadProducts, pointedRecords, root, today, type ChecklistRow, type TermRow } from "./data.server";
+import { loadChecklistRows, loadCma, loadFees, loadParameters, loadRules, loadTerms, loadProducts, pointedRecords, root, today, type TermRow } from "./data.server";
 import { runTimeline, type Bundle, type Timeline } from "./engine";
-import { guideInstrumentBundle, familyOf, missingParts, rulesTouched, type NoGraph } from "./guide-signature-bundle.server";
+import { guideInstrumentBundle, familyOf, rulesTouched } from "./guide-signature-bundle.server";
 import { buildSignatureData } from "./guide-signature.server";
 import type { SignatureData } from "./guide-signature";
 import { isClosedAudience } from "./guide-nav";
@@ -28,10 +28,7 @@ export interface GuidePageData {
   /** How many products the site knows (wrappers and securities): a term that names this many is shared by every product (the guide shows it under "מונחים כלליים"). */
   wrapperCount: number;
   termsById: Record<string, TermRow>;
-  checklist: ChecklistRow[];
   dimensionNames: Record<string, string>;
-  /** Marks from the record (regenerated from its rule_ids) and from the rules the first run read. */
-  marks: Record<string, string>;
   /** `closed`: every track the company has under this product is for a sector's or a plant's workers (CMA target population, CAT-10), so it is not open to anyone (audit A86). */
   companies: { id: string; name: string; closed: boolean }[];
   /** The exposures whose record lists this wrapper among those that can hold them (audit A43), each with its page (D6 as amended 2026-10-27). */
@@ -40,8 +37,6 @@ export interface GuidePageData {
   exitTextRules: string[];
   /** The data of this page's "what makes it different" visual (D29), or null when the wrapper has none and its timeline stays open. */
   signature: SignatureData | null;
-  /** Why there is no graph, when there is none (copy: guideBlocks.noGraph). */
-  noGraph: NoGraph | null;
   /** The record's formulas the engine does not compute yet, with the release number that brings each. */
   pendingFormulas: Record<string, string>;
   related: { href: string; label: string }[];
@@ -55,7 +50,6 @@ export interface GuidePageData {
   today: string;
 }
 
-export type { NoGraph };
 
 /** Every rule id a prose module names, found in its source (a name is kept only when a rule record has that id). */
 function scanRuleIds(relPath: string, allRules: Record<string, RuleRecord>): string[] {
@@ -95,7 +89,6 @@ export function buildGuidePage(id: string, extraRuleIds: string[] = [], extraTer
   // ---- the engine bundle: provident from the provider's list fees (method §2.4; the illustrative run uses S47's list
   // fees); every other family from the instrument records P-05's `instruments` map names (method §2.4 "Instrument terms")
   let bundle: Bundle | null = null;
-  let noGraph: NoGraph | null = null;
   const family = familyOf(record.id);
   const recordFormulas = [record.deposit_side_tax.formula, record.tax_during.formula, record.tax_at_exit.formula];
   const pendingFormulas: Record<string, string> = {};
@@ -122,27 +115,17 @@ export function buildGuidePage(id: string, extraRuleIds: string[] = [], extraTer
         const probe = runTimeline(draft, { entered: {}, age: null });
         if (probe.kind === "failed") {
           console.log(`[guide] ${id}: no timeline: the run stops (${probe.message})`);
-          noGraph = { kind: "stops", code: /G-\d+|OQ\d+/.exec(probe.message)?.[0] ?? null };
         } else {
           const touched = rulesTouched(draft);
           bundle = { ...draft, rules: Object.values(allRules).filter((r) => touched.has(r.id)) };
         }
       }
     }
-    if (missing.length > 0) {
-      for (const m of missing) console.log(`[guide] ${id}: no timeline: ${m}`);
-      noGraph = { kind: "missing", parts: missingParts(missing) };
-    }
+    for (const m of missing) console.log(`[guide] ${id}: no timeline: ${m}`);
   } else if (family) {
     const r = guideInstrumentBundle(record, family, p05, allRules, t);
     bundle = r.bundle;
-    noGraph = r.noGraph;
   } else console.log(`[guide] ${id}: no timeline: no run for this wrapper`);
-  if (!bundle) {
-    // a formula the engine does not compute yet is the reason that names the release; missing data comes next
-    if (Object.keys(pendingFormulas).length > 0) noGraph = { kind: "pending", formulas: Object.keys(pendingFormulas) };
-    else if (!noGraph) noGraph = { kind: "none" };
-  }
   const signature = buildSignatureData(id, bundle);
   const initial = bundle ? runTimeline(bundle, { entered: {}, age: null }) : null;
   if (initial?.kind === "failed") console.log(`[guide] ${id}: the first run stops (${initial.message})`);
@@ -164,12 +147,7 @@ export function buildGuidePage(id: string, extraRuleIds: string[] = [], extraTer
   const rules: Record<string, RuleRecord> = {};
   for (const rid of cited) if (allRules[rid]) rules[rid] = allRules[rid]!;
 
-  // ---- checklist marks: the record's (validated against its rule_ids) plus the rules the run read
-  const marks: Record<string, string> = { ...record.dimensions };
-  if (initial?.kind === "ok") for (const r of initial.rules) for (const d of allRules[r.id]?.dimensions ?? []) if (!(d in marks)) marks[d] = "covered";
-
-  const checklist = loadChecklistRows();
-  const dimensionNames = Object.fromEntries(checklist.map((r) => [r.id, r.name]));
+  const dimensionNames = Object.fromEntries(loadChecklistRows().map((r) => [r.id, r.name]));
   const all = loadTerms();
   const onPage = (row: TermRow) => row.wrapperIds.includes(id);
   const terms = all.filter(onPage);
@@ -207,7 +185,7 @@ export function buildGuidePage(id: string, extraRuleIds: string[] = [], extraTer
   // an exposure that is this page, or a security the row above already links, is not linked twice
   const exposures = exposuresHeld.filter((e) => e.href !== `/guide/${record.id}` && !securities.some((x) => x.href === e.href));
 
-  return { record, name: record.names.he[0]!, lede, bundle, initial, rules, pointed: pointedRecords(rules, allRules), terms, wrapperCount: productIds.length, heldIn, securities, termsById, checklist, dimensionNames, marks, companies, exposures, exitTextRules, signature, noGraph, pendingFormulas, related, today: t };
+  return { record, name: record.names.he[0]!, lede, bundle, initial, rules, pointed: pointedRecords(rules, allRules), terms, wrapperCount: productIds.length, heldIn, securities, termsById, dimensionNames, companies, exposures, exitTextRules, signature, pendingFormulas, related, today: t };
 }
 
 export { familyOf };
@@ -252,7 +230,6 @@ export interface ExposurePageData {
    * do not block the run (TXI-OQ14, TXI-OQ3), others are not tax questions (BANK-OQ8, MF-OQ3), so the card shows them in a neutral tag.
    */
   holders: { id: string; name: string; blockedBy: string[]; openQuestions: string[] }[];
-  checklist: (ChecklistRow & { mark: "covered" | "na"; rules: string[] })[];
   dimensionNames: Record<string, string>;
   today: string;
 }
@@ -278,13 +255,6 @@ export function buildExposurePage(id: string, extraTermIds: string[] = []): Expo
   const rules: Record<string, RuleRecord> = {};
   for (const rid of cited) if (allRules[rid]) rules[rid] = allRules[rid]!;
 
-  // marks: `covered` when a rule the exposure cites carries the dimension; the rest stays unmarked
-  const own = (record.rule_ids ?? []).map((r) => allRules[r]).filter((r): r is RuleRecord => !!r);
-  const checklist = loadChecklistRows().map((row) => {
-    const carrying = own.filter((r) => r.dimensions.includes(row.id)).map((r) => r.id);
-    return { ...row, mark: carrying.length > 0 ? ("covered" as const) : ("na" as const), rules: carrying };
-  });
-
   const all = loadTerms();
   const onPage = (row: TermRow) => row.exposureIds.includes(id);
   const terms = all.filter(onPage);
@@ -294,5 +264,5 @@ export function buildExposurePage(id: string, extraTermIds: string[] = []): Expo
   const name = record.names.he[0] ?? record.id;
   // the exposure record's own one-line description, else the glossary line (F: one_line_he)
   const lede = record.one_line_he ?? termsById[name]?.explanation ?? all.find((r) => r.he === name)?.explanation ?? null;
-  return { record, name, lede, rules, pointed: pointedRecords(rules, allRules), terms, termsById, holders, checklist, dimensionNames: Object.fromEntries(checklist.map((r) => [r.id, r.name])), today: t };
+  return { record, name, lede, rules, pointed: pointedRecords(rules, allRules), terms, termsById, holders, dimensionNames: Object.fromEntries(loadChecklistRows().map((r) => [r.id, r.name])), today: t };
 }

@@ -352,7 +352,7 @@ Amended 2026-10-24 (knowledge layer, D25): a **"שווה לדעת" block** follo
   - "מה זה": what the exposure is;
   - "איך מחזיקים את זה": a card for each product that can hold it, linking to its guide page;
   - "סיכונים": risks;
-  - "מה האתר לקח בחשבון" ("מה לבדוק" until 2026-10-24): the dimension checklist for this exposure;
+  - ~~"מה האתר לקח בחשבון": the dimension checklist for this exposure~~ (removed 2026-11-02, D49);
   - "מונחים": the words used for it.
 - The cards under "איך מחזיקים את זה" carry no ranking and no figures; ranking for a goal comes in release 2.
 

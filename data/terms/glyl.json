@@ -2,7 +2,7 @@
   "id": "glyl",
   "he": "גליל",
   "en": null,
-  "meaning": "שם ותיק לאיגרות חוב ממשלתיות צמודות למדד המחירים לצרכן",
+  "meaning": "סוג ישן ונפרד של איגרות חוב ממשלתיות צמודות למדד המחירים לצרכן, עם תקנות משלו",
   "where": [
     "ad"
   ],
@@ -15,10 +15,10 @@
     "GOV-19"
   ],
   "source": {
-    "url": "https://he.wikipedia.org/wiki/איגרות_חוב_ממשלתיות_בישראל",
-    "title": "Wikipedia, איגרות חוב ממשלתיות בישראל (last edited 21 Jul 2026)",
-    "publisher": "see title",
-    "strength": "secondary",
-    "checked": "2026-10-22"
+    "url": "https://www.gov.il/he/pages/govermental-bonds",
+    "title": "משרד האוצר, אגף החשב הכללי: מאפייני אג\"ח סחיר ולא סחיר ותקנותיו",
+    "publisher": "משרד האוצר, אגף החשב הכללי",
+    "strength": "primary",
+    "checked": "2026-10-26"
   }
 }

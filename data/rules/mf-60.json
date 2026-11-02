@@ -1,0 +1,69 @@
+{
+  "id": "MF-60",
+  "title": "How a fund is wound up at the end of its period: what the law sets",
+  "title_he": "פירוק בסוף התקופה: מה קובע החוק",
+  "text_he": "מועד הפירוק הוא סוף התקופה שנקבעה בהסכם הקרן, והמנהל משמש מפרק, אלא אם בית המשפט מינה אחר. המפרק מודיע לבעלי היחידות, לנאמן, לרשות ולבורסה, וגם בעיתון, בין 60 ל־30 ימים לפני המועד, ומאז ההודעה קרן פתוחה מפסיקה להציע יחידות. במכירת הנכסים מותר למנהל לחרוג ממדיניות ההשקעה. המכירה מסתיימת עד מועד הפירוק, ובו המפרק פודה את היחידות. הוצאות הפירוק יורדות משכר המפרק, שיש לו תקרה, ועמלות מכירת הנכסים יורדות מנכסי הקרן. לא נאמר אם אפשר עדיין לפדות יחידות אחרי ההודעה, ולא נמצא תיעוד של פירוק כזה שכבר קרה.",
+  "strength": "primary",
+  "dimensions": [
+    "liquidity-lockup"
+  ],
+  "likely_to_change": "yes",
+  "il_finance_file": "mutual-funds-and-money-market-funds.md",
+  "checked": "2026-11-01",
+  "recheck_date": "2027-07-01",
+  "figures": {
+    "notice_days_max": {
+      "value": 60,
+      "unit": "days",
+      "source": {
+        "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf#page=69",
+        "title": "חוק השקעות משותפות בנאמנות, סעיף 106(א)",
+        "publisher": "רשות ניירות ערך (נוסח משולב)",
+        "strength": "primary"
+      },
+      "checked": "2026-11-02",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "MF-60"
+      ],
+      "state": "sourced",
+      "notes": "הודעה לפני מועד הפירוק: לכל היותר"
+    },
+    "notice_days_min": {
+      "value": 30,
+      "unit": "days",
+      "source": {
+        "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf#page=69",
+        "title": "חוק השקעות משותפות בנאמנות, סעיף 106(א)",
+        "publisher": "רשות ניירות ערך (נוסח משולב)",
+        "strength": "primary"
+      },
+      "checked": "2026-11-02",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "MF-60"
+      ],
+      "state": "sourced",
+      "notes": "הודעה לפני מועד הפירוק: לכל הפחות"
+    }
+  },
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf#page=69",
+      "title": "Joint Investment Trust Law",
+      "title_he": "חוק השקעות משותפות בנאמנות, התשנ״ד-1994",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "checked": "2026-11-01"
+    }
+  ]
+}

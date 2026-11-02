@@ -38,6 +38,7 @@ export const notRules: Readonly<Record<string, { why: string; files: readonly st
   "SW-X04": { why: "forum post", files: ["site/app/lib/rule-shelves.ts"] },
   "IRA-28": { why: "press report (events at Slice and Globalnet)", files: ["data/dimensions/protection.json", "data/dimensions/regulator.json", "data/instruments/wrappers/ira-hishtalmut.json", "data/instruments/wrappers/ira-provident.json", "site/app/content/guide/ira-hishtalmut.tsx", "site/app/content/guide/ira-provident.tsx"] },
   "TXH-24": { why: "press report", files: [] },
+  "MF-61": { why: "reprint of the exchange's notice: its own copy could not be reached", files: ["site/app/content/guide/limited-bond-fund.tsx", "site/app/routes/guide-limited-bond-fund.tsx"] },
   "MKT-01": { why: "a series (J.P. Morgan's past-return slide)", files: ["site/app/lib/compare.server.ts", "site/app/lib/rule-shelves.ts"] },
   "PEN-46": { why: "a per-fund series", files: [] },
   "PF-41": { why: "a per-fund series", files: [] },
@@ -87,6 +88,14 @@ export const notRuleAllowedIn = (id: string, file: string): boolean => Object.ha
  */
 export const ownContextExposures: Readonly<Record<string, readonly string[]>> = {
   "index-sp500": ["ETF-37", "ETF-38", "ETF-39", "ETF-40"],
+};
+
+/**
+ * A guide whose subject has no general source for its terms (issue 159, 2026-11-02): no law or regulator lists these funds or their fees, so the
+ * page shows each company's own documents, every one under that company's name. The list names the records; it only grows with a new company's document.
+ */
+export const ownContextGuides: Readonly<Record<string, readonly string[]>> = {
+  "limited-bond-fund": ["MF-62", "MF-63", "MF-64", "MF-65", "MF-66", "ETF-80", "ETF-81"],
 };
 
 // ---------------------------------------------------------------- a company's own document (review, 2026-10-26)

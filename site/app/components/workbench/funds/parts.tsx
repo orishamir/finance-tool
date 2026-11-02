@@ -216,7 +216,7 @@ export function GroupLine({ held }: { held: SiteValue }) {
       <span>
         {t.before}
         <Num value={held} />
-        {t.after}
+        <IdText text={t.after} />
       </span>
       <Tag tone="parameter"><bdi dir="ltr">G-29</bdi></Tag>
     </p>

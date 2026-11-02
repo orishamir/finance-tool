@@ -6,7 +6,7 @@ import { guide as copy, r3fees, scopeWords } from "../../copy";
 import type { TermRow } from "../../lib/data.server";
 import type { Strength } from "../../lib/value";
 import { IconCheck, IconChevronDown, IconDrillIn, IconFile, IconLock, IconMinus } from "../icons";
-import { IdRef, RuleRef, RulesLine, StrengthLabel } from "../provenance";
+import { IdRef, RulesLine, StrengthLabel } from "../provenance";
 import { Card, cx, Disclosure, KeyValueList as KitKeyValueList, Section, TableCols, Tag } from "../kit";
 
 export interface SectionDef {
@@ -64,26 +64,11 @@ export function SectionIndex({ sections, current }: { sections: readonly Section
   );
 }
 
-/**
- * A section of a guide page. With `rulesToggle` the rule chips of its blocks (`.rules-line`) stay hidden until the person
- * taps "הצגת הכללים" beside the heading (audit A42: the chips are sources, not the reading).
- */
-export function GuideSection({ id, title, children, className, rulesToggle }: { id: string; title: string; children: ReactNode; className?: string; rulesToggle?: boolean }) {
-  const [rulesOpen, setRulesOpen] = useState(false);
+/** A section of a guide page. */
+export function GuideSection({ id, title, children, className }: { id: string; title: string; children: ReactNode; className?: string }) {
   return (
-    <Section
-      id={id}
-      title={title}
-      className={className}
-      action={
-        rulesToggle && (
-          <button type="button" aria-expanded={rulesOpen} onClick={() => setRulesOpen((v) => !v)} className="text-sm text-link hover:underline min-h-target inline-flex items-center">
-            {rulesOpen ? copy.rulesToggle.hide : copy.rulesToggle.show}
-          </button>
-        )
-      }
-    >
-      <div className={cx("flex flex-col gap-4", rulesToggle && !rulesOpen && "[&_.rules-line]:hidden")}>{children}</div>
+    <Section id={id} title={title} className={className}>
+      <div className="flex flex-col gap-4">{children}</div>
     </Section>
   );
 }
@@ -100,7 +85,7 @@ export interface KeyValueItem {
 
 /** The guide page's facts as the kit's key/value cards, each closed by its rule chips (design-spec 2). */
 export function KeyValueList({ items }: { items: KeyValueItem[] }) {
-  return <KitKeyValueList items={items.map((it) => ({ id: it.id, label: it.label, value: it.value, tag: it.tag, line: it.line, lead: it.lead, footer: <RulesLine ids={it.rules} /> }))} />;
+  return <KitKeyValueList items={items.map((it) => ({ id: it.id, label: it.label, value: it.value, tag: it.tag, line: it.line, lead: it.lead, footer: <RulesLine ids={it.rules} name={typeof it.label === "string" ? it.label : undefined} /> }))} />;
 }
 
 export interface FeeRow {
@@ -128,19 +113,18 @@ export function FeeTable({ fees, note }: { fees: FeeRow[]; note: string }) {
               {f.tag}
             </span>
             {f.varies && <span className="block">{f.varies}</span>}
-            <RulesLine ids={f.rules} />
+            <RulesLine ids={f.rules} name={f.name} className="pt-1" />
           </div>
         ))}
       </Card>
       <Card className="hidden md:block p-0 md:p-0 overflow-hidden">
         <table className="tbl">
-          <TableCols widths={["20%", "34%", "24%", "22%"]} />
+          <TableCols widths={["22%", "38%", "40%"]} />
           <thead>
             <tr>
               <th scope="col">{copy.feeTable.type}</th>
               <th scope="col">{copy.feeTable.base}</th>
               <th scope="col">{copy.feeTable.cap}</th>
-              <th scope="col">{copy.feeTable.rules}</th>
             </tr>
           </thead>
           <tbody>
@@ -154,13 +138,7 @@ export function FeeTable({ fees, note }: { fees: FeeRow[]; note: string }) {
                     {f.tag}
                   </span>
                   {f.varies && <span className="block pt-1">{f.varies}</span>}
-                </td>
-                <td>
-                  <span className="flex flex-wrap gap-2">
-                    {f.rules.map((id) => (
-                      <RuleRef key={id} id={id} />
-                    ))}
-                  </span>
+                  <RulesLine ids={f.rules} name={f.name} className="pt-1" />
                 </td>
               </tr>
             ))}
@@ -187,6 +165,9 @@ export interface TaxStep {
   alt?: ReactNode;
 }
 
+/** The step's name on the list of its rules: its headline when that is words alone, else when it happens. */
+const stepName = (s: TaxStep) => (typeof s.headline === "string" ? s.headline : s.when);
+
 /** Phone: vertical with a line joining 28px circles at the start side, each holding a down chevron (UX fix 22). PC: three cards joined by arrows pointing left. */
 export function TaxSteps({ steps }: { steps: TaxStep[] }) {
   return (
@@ -204,7 +185,7 @@ export function TaxSteps({ steps }: { steps: TaxStep[] }) {
               <span className="text-sm">{s.text}</span>
               {s.tag}
               {s.alt && <span className="text-sm text-muted-foreground">{s.alt}</span>}
-              <RulesLine ids={s.rules} />
+              <RulesLine ids={s.rules} name={stepName(s)} />
             </div>
           </li>
         ))}
@@ -218,7 +199,7 @@ export function TaxSteps({ steps }: { steps: TaxStep[] }) {
               <span className="text-sm">{s.text}</span>
               {s.alt && <span className="text-sm text-muted-foreground">{s.alt}</span>}
               {s.tag && <span>{s.tag}</span>}
-              <RulesLine ids={s.rules} className="mt-auto" />
+              <RulesLine ids={s.rules} name={stepName(s)} className="mt-auto" />
             </Card>
             {i < steps.length - 1 && (
               <span className="flex items-center justify-center text-muted-foreground" aria-hidden="true">
@@ -236,14 +217,11 @@ export interface ChecklistRowView {
   id: string;
   name: string;
   explanation: string;
-  /** `varies`: no general rule carries it, and each company sets it for itself (the wrapper's `company_terms`, D30). */
-  mark: "covered" | "na" | "blocked" | "varies";
+  mark: "covered" | "na" | "blocked";
   code?: string;
   rules: readonly string[];
   weak?: Strength | null;
   applies?: ReactNode;
-  /** "תלוי בחברה" and the companies whose own terms the site holds for this property (a `VariesByCompany`), under the explanation. */
-  varies?: ReactNode;
 }
 
 function ChecklistRow({ r }: { r: ChecklistRowView }) {
@@ -251,13 +229,13 @@ function ChecklistRow({ r }: { r: ChecklistRowView }) {
   return (
     <li className="flex gap-3 py-3 border-b border-border">
       <span className="shrink-0 mt-0.5" aria-hidden="true">
-        {r.mark === "covered" ? <IconCheck size={24} className="text-positive" /> : r.mark === "blocked" ? <IconLock size={24} className="text-blocked" /> : r.mark === "varies" ? <IconFile size={24} className="text-muted-foreground" /> : <IconMinus size={24} className="text-muted-foreground" />}
+        {r.mark === "covered" ? <IconCheck size={24} className="text-positive" /> : r.mark === "blocked" ? <IconLock size={24} className="text-blocked" /> : <IconMinus size={24} className="text-muted-foreground" />}
       </span>
       <div className="flex flex-col gap-0.5 min-w-0 flex-1">
         <span className="flex flex-wrap items-center gap-x-2 gap-y-1">
           <span className="font-medium">{r.name}</span>
           <span className={cx("text-xs", r.mark === "covered" ? "text-positive-foreground" : r.mark === "blocked" ? "text-blocked-foreground" : "text-muted-foreground")}>
-            {r.mark === "covered" ? copy.checklist.considered : r.mark === "na" ? copy.checklist.notRelevant : r.mark === "varies" ? scopeWords.varies : <>{copy.checklist.blockedMark} {r.code ? <IdRef id={r.code} /> : null}</>}
+            {r.mark === "covered" ? copy.checklist.considered : r.mark === "na" ? copy.checklist.notRelevant : <>{copy.checklist.blockedMark} {r.code ? <IdRef id={r.code} /> : null}</>}
           </span>
           {r.weak && (r.weak === "institution" || r.weak === "secondary") && <StrengthLabel strength={r.weak} />}
           {r.applies}
@@ -268,7 +246,6 @@ function ChecklistRow({ r }: { r: ChecklistRowView }) {
         </span>
         {/* audit A90: the status sentence is its own line, not glued to the question */}
         {r.mark === "blocked" && <span className="block text-sm text-blocked-foreground">{copy.checklist.blockedLast}</span>}
-        {r.varies && <span className="block">{r.varies}</span>}
         {r.rules.length > 0 && (
           <Disclosure label={<span className="text-xs text-link">{copy.checklist.expand}</span>} summaryClassName="min-h-9 justify-start gap-1 [&>svg]:size-4">
             <RulesLine ids={r.rules} className="pb-2" />

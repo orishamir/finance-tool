@@ -1,0 +1,55 @@
+{
+  "id": "ETF-80",
+  "title": "iShares iBonds UCITS: defined-term funds, redeemed without further notice",
+  "title_he": "iShares iBonds: קרנות לתקופה מוגדרת שנפדות בלי הודעה נוספת",
+  "text_he": "בתשקיף iShares V נכתב שיחידות של מי שמחזיק בהן במועד הפירעון ייפדו בלי הודעה נוספת ובלי אישור, שהקרנות לא מכוונות להחזיר סכום קבוע מראש, ושהן אינן חלופה לפיקדון. הן אינן בבורסה בתל אביב, ולא נבדק אם חשבון ישראלי מציע אותן.",
+  "strength": "institution",
+  "dimensions": [
+    "fee-management-balance",
+    "currency",
+    "liquidity-lockup"
+  ],
+  "likely_to_change": "yes",
+  "il_finance_file": "etfs-and-index-funds.md",
+  "checked": "2026-11-01",
+  "recheck_date": "2027-07-01",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "ishares",
+      "name_he": "iShares"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://mayafiles.tase.co.il/rpdf/1775001-1776000/P1775855-00.pdf#page=155",
+      "title": "iShares V plc prospectus, 3.9.2026",
+      "publisher": "Maya (TASE filings)",
+      "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "pp.10, 19, 154, 155, 188, 189",
+      "locator_he": "עמודים 10, 19, 154, 155, 188, 189",
+      "page": 10,
+      "checked": "2026-11-01"
+    },
+    {
+      "url": "https://www.ishares.com/gls-download/literature/fact-sheet/d28a-ishares-ibonds-dec-2028-term-corp-ucits-etf-fund-fact-sheet-en-de.pdf",
+      "title": "Fact sheet, Dec 2028 $ Corp",
+      "publisher": "iShares",
+      "publisher_he": "iShares",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-11-01"
+    },
+    {
+      "url": "https://www.ishares.com/gls-download/literature/fact-sheet/30ia-ishares-ibonds-dec-2030-term-corp-ucits-etf-fund-fact-sheet-en-de.pdf",
+      "title": "fact sheet, Dec 2030 € Corp",
+      "publisher": "iShares",
+      "publisher_he": "iShares",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-11-01"
+    }
+  ]
+}

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { exposureFoldedInto, groupGuides, guideLayout, isClosedAudience, rulesAnchor, splitTerms } from "./guide-nav";
+import { exposureFoldedInto, groupGuides, guideLayout, isClosedAudience, rulesAnchor, splitTerms, omitsSection } from "./guide-nav";
 
 const allIds = guideLayout.flatMap((g) => g.ids);
 
@@ -86,5 +86,15 @@ describe("exposureFoldedInto (D6 as amended 2026-10-27)", () => {
   });
   it("an exposure held only through funds or wrappers keeps its own page", () => {
     expect(exposureFoldedInto(["money-market-fund-daily", "brokerage-account"], products)).toBeNull();
+  });
+});
+
+describe("omitsSection (issue 33, D49)", () => {
+  it("leaves out only what a guide lists", () => {
+    expect(omitsSection("bank-deposit", "cost")).toBe(true);
+    expect(omitsSection("bank-deposit", "tax")).toBe(false);
+    expect(omitsSection("money-market-fund-daily", "inout")).toBe(true);
+    expect(omitsSection("money-market-fund-daily", "cost")).toBe(false);
+    expect(omitsSection("keren-hishtalmut", "inout")).toBe(false);
   });
 });

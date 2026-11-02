@@ -66,6 +66,7 @@ How sources were read: the Income Tax Ordinance was read on the Hebrew Wikisourc
 - Conditions / exceptions: Withholding: a non-bank payer withholds 25%, or 15% on an unlinked asset (TXI-09); a TASE member that receives interest for its clients withholds (TXI-08). Discount on issue is interest (TXI-01). Accrued interest bought with a bond: TXI-16. Bonds issued before 8.5.2000 and interest accrued before 2012 have legacy rates (TXI-10). A same-year securities loss can absorb corporate-bond interest taxed at no more than 25% (TXI-17, TXS-17). The TXI-06 exclusions apply, including a substantial shareholder in the issuer.
 - Figures: 15% / up to 25% (tax year 2026; 15% can be changed by ministerial order, TXG-32).
 - Source: [Income Tax Ordinance, National Insurance Institute's consolidated copy, file of 21.6.2026](https://www.btl.gov.il/Laws1/00_0103_000000.pdf#page=120) (file pages: s.125ג 120), s.125C(a)-(c) · checked 2026-10-31 · primary (state body's consolidated copy, not the binding gazette wording). [Tax Authority guide 2025](https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf), p.41, section "1. ריבית על ניירות ערך (למעט אג"ח/ני"ע זרים)" and section "2. ריבית על אגרות חוב", items 2 and 4 · checked 2026-10-22 · primary (page image)
+- Scope: general
 - Dimensions: `tax-during`, `real-vs-nominal`, `currency`
 - Likely to change: yes, the 15% by order (TXG-32)
 

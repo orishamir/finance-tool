@@ -26,7 +26,16 @@ export function exposureFoldedInto(holderIds: readonly string[], products: reado
 
 /** The sections a product guide leaves out (founder, issue 33: one template does not fit every guide). Unlisted guides keep them all. */
 const omittedSections: Record<string, readonly string[]> = {
-  "current-account": ["who", "inout", "cost", "tax", "check"],
+  "current-account": ["who", "inout", "cost", "tax"],
+  // a section of one row that says nothing the page does not (2026-11-02): "by the provider's tariff", "withdraw on any trading day"
+  "bank-deposit": ["inout", "cost"],
+  "savings-plan": ["inout", "cost"],
+  "child-savings-bank": ["inout", "cost"],
+  makam: ["inout", "cost"],
+  "government-bond": ["inout", "cost"],
+  "money-market-fund-daily": ["inout"],
+  "money-market-fund-renewable": ["inout"],
+  "brokerage-account": ["inout"],
 };
 export const omitsSection = (guideId: string, section: string): boolean => omittedSections[guideId]?.includes(section) ?? false;
 

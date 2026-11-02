@@ -1,0 +1,92 @@
+{
+  "id": "MF-65",
+  "title": "A year in a fund's name does not mean the fund ends: rolling funds",
+  "title_he": "שנה בשם הקרן לא אומרת שהקרן נגמרת: קרנות מתגלגלות",
+  "text_he": "יש קרנות אג״ח עם שנת פדיון בשם שממשיכות אחריה ועוברות לשנה מאוחרת יותר. בקרנות מחקות כתוב בשם ״מתגלגל כל N שנים״: אצל הראל, תכלית ו־MTF. שתיים כבר התגלגלו בסוף 2025. גם קרן אקטיבית של מגדל שינתה שנה. לכן לא המילה ״לפדיון״ ולא שנה בשם מזהים קרן שמתפרקת; מזהים אותה רק לפי הנוסח של הקרן עצמה על תקופת הקיום. נבדקו התשקיפים של תשעה מנהלי קרנות, ורשימות הקרנות של שישה נוספים לפי השם בלבד: אצל ארבעה מהשישה לא נמצאה קרן כזו, ואצל איילון וסיגמא רק קרנות עם תאריך בשם.",
+  "strength": "institution",
+  "dimensions": [
+    "product-marking",
+    "liquidity-lockup"
+  ],
+  "likely_to_change": "yes",
+  "il_finance_file": "mutual-funds-and-money-market-funds.md",
+  "checked": "2026-11-02",
+  "recheck_date": "2027-07-01",
+  "scope": "unsettled",
+  "scope_institutions": [
+    {
+      "id": "harel",
+      "name_he": "הראל"
+    },
+    {
+      "id": "meitav",
+      "name_he": "מיטב"
+    },
+    {
+      "id": "migdal",
+      "name_he": "מגדל"
+    }
+  ],
+  "scope_settle": "a general statement needs a count over all 15 managers' funds",
+  "sources": [
+    {
+      "url": "https://mayafiles.tase.co.il/rpdf/1737001-1738000/P1737042-00.pdf#page=25",
+      "title": "Harel main prospectus, 2.5.2026",
+      "publisher": "Maya (TASE filings)",
+      "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "pp.25, 27, 30",
+      "locator_he": "עמודים 25, 27, 30",
+      "page": 25,
+      "checked": "2026-11-01"
+    },
+    {
+      "url": "https://mayafiles.tase.co.il/rpdf/1753001-1754000/P1753287-00.pdf#page=40",
+      "title": "Meitav main prospectus",
+      "publisher": "Maya (TASE filings)",
+      "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.40",
+      "locator_he": "עמוד 40",
+      "page": 40,
+      "checked": "2026-11-01"
+    },
+    {
+      "url": "https://mayafiles.tase.co.il/rpdf/1719001-1720000/P1719487-00.pdf#page=24",
+      "title": "Migdal main prospectus, 30.1.2026",
+      "title_he": "תשקיף ראשי של מגדל קרנות נאמנות (30.1.2025)",
+      "publisher": "Maya (TASE filings)",
+      "publisher_he": "מגדל קרנות נאמנות",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "pp.11, 13, 18, 19, 24",
+      "locator_he": "עמודים 11, 13, 18, 19, 24",
+      "page": 11,
+      "checked": "2026-11-01"
+    },
+    {
+      "url": "https://mayafiles.tase.co.il/rpdf/1643001-1644000/P1643524-00.pdf#page=27",
+      "title": "Migdal prospectus, 30.1.2025",
+      "publisher": "Maya (TASE filings)",
+      "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.27",
+      "locator_he": "עמוד 27",
+      "page": 27,
+      "checked": "2026-11-01"
+    },
+    {
+      "url": "https://www.funder.co.il/article/185866",
+      "title": "Article on the index editor's indices, Funder, 14.8.2025",
+      "publisher": "Funder",
+      "publisher_he": "פאנדר",
+      "kind": "article",
+      "strength": "secondary",
+      "checked": "2026-11-01",
+      "qualifier": "(the company's text)"
+    }
+  ]
+}
