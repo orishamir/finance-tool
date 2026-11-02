@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 import { Link, useLoaderData } from "react-router";
 import type { Route } from "./+types/guide";
 import { formulaNames, guideBlocks as blocks, guide as copy, guideIndex, site } from "../copy";
-import { DimensionChecklist, ExposureLinks, FeeTable, GuideSection, InstitutionChips, KeyValueList, RelatedProducts, SectionIndex, TaxSteps, TermTable, useCurrentSection, type ChecklistRowView, type FeeRow, type KeyValueItem, type TaxStep } from "../components/guide/sections";
+import { ExposureLinks, FeeTable, GuideSection, InstitutionChips, KeyValueList, RelatedProducts, SectionIndex, TaxSteps, TermTable, useCurrentSection, type FeeRow, type KeyValueItem, type TaxStep } from "../components/guide/sections";
 import { Num, NumberLegend, RuleRef, RulesLine, StrengthLabel, VariesByCompany } from "../components/provenance";
 import { Breadcrumb, PageShell } from "../components/shell";
 import { WorthKnowing, worthRows } from "../components/guide/worth-knowing";
@@ -59,7 +59,7 @@ function exitRateLines(formula: string): ExitRate[][] {
 export async function loader({ params }: Route.LoaderArgs) {
   const { buildGuidePage } = await import("../lib/guide.server");
   const content = guideContent[params.id];
-  const data = buildGuidePage(params.id, content ? [...content.switchRules] : [], content ? [...content.termIds] : []);
+  const data = buildGuidePage(params.id, content ? [...(content.switchRules ?? [])] : [], content ? [...content.termIds] : []);
   if (!data) throw new Response("Not found", { status: 404 });
   // the pinned facts of this wrapper (P-09 guide_blocks); their rules join the page's provenance data
   const { loadPinnedRules, loadRules, pointedRecords } = await import("../lib/data.server");
@@ -82,7 +82,7 @@ export default function GuidePage() {
   const current = useCurrentSection(copy.sections.map((s) => s.id));
   const { state: inputsState } = useInputs();
   const review = useReviewMode();
-  const title = (id: string) => copy.sections.find((x) => x.id === id)!.title;
+  const title = (id: string) => copy.sectionTitles[record.id]?.[id] ?? copy.sections.find((x) => x.id === id)!.title;
   const omitted = (id: string) => omitsSection(record.id, id);
   const figure = (ruleId: string, name: string): SiteValue | null => {
     const r = rules[ruleId];
@@ -129,34 +129,15 @@ export default function GuidePage() {
         return { value: exitCopy.otherKind as string, rules: [] };
     }
   };
-  const hebrewExit = data.exitTextRules.filter((id) => isGeneral(rules[id])).map((id) => ({ id, text: rules[id]?.text_he ?? "" })).filter((h) => h.text !== "");
+  // the rules the record's sentence cites join the fact's own, so its detail is read in their cards (issue 15)
+  const exitTextRules = exit.kind === "any_time" ? [] : data.exitTextRules.filter((id) => isGeneral(rules[id]));
   const exitItem = (): KeyValueItem => {
     const v = exitValue();
     return {
       id: "withdraw",
       label: lockUp ? blocks.exit.labelFree : blocks.exit.labelWithdraw,
       value: v.value,
-      rules: v.rules,
-      // the Hebrew text of the rules the record's sentence cites; the English sentence only when there is none, said to be English (audit A22)
-      line: exit.text && exit.kind !== "any_time" ? (
-        hebrewExit.length > 0 ? (
-          <Disclosure label={<span className="text-sm text-link">{exitCopy.textNoteHe as string}</span>} summaryClassName="min-h-9 justify-start gap-1 [&>svg]:size-4">
-            <span className="flex flex-col gap-2 pb-2">
-              {hebrewExit.map((h) => (
-                <span key={h.id} className="block text-sm">
-                  <RuleRef id={h.id} /> {h.text}
-                </span>
-              ))}
-            </span>
-          </Disclosure>
-        ) : (
-          <Disclosure label={<span className="text-sm text-link">{exitCopy.textNoteEn as string}</span>} summaryClassName="min-h-9 justify-start gap-1 [&>svg]:size-4">
-            <bdi dir="ltr" className="text-sm block pb-2">
-              {exit.text}
-            </bdi>
-          </Disclosure>
-        )
-      ) : undefined,
+      rules: [...new Set([...v.rules, ...exitTextRules])],
     };
   };
   const inout: KeyValueItem[] = [];
@@ -204,8 +185,8 @@ export default function GuidePage() {
   const lowOne = withdrawalRules(record.id).includes("TXP-18") ? figure("TXP-18", "low_income_one") : null;
   const lowDouble = lowOne ? figure("TXP-18", "low_income_double") : null;
   if (lowOne && lowDouble) inout.push({ id: "low-income", label: blocks.withdrawal.lowIncome.label, value: <>{blocks.withdrawal.lowIncome.before} <Num value={lowOne} /> {blocks.withdrawal.lowIncome.one} <Num value={lowDouble} /> {blocks.withdrawal.lowIncome.after}</>, rules: ["TXP-18"] });
-  if (content && record.switch_is_tax_event.value === false) {
-    inout.push({ id: "switch", label: blocks.exit.labelSwitch, value: content.switchLine, rules: [...(record.switch_is_tax_event.rule_ids ?? []), ...content.switchRules.filter((r) => !(record.switch_is_tax_event.rule_ids ?? []).includes(r))] });
+  if (content?.switchLine && record.switch_is_tax_event.value === false) {
+    inout.push({ id: "switch", label: blocks.exit.labelSwitch, value: content.switchLine, rules: [...(record.switch_is_tax_event.rule_ids ?? []), ...(content.switchRules ?? []).filter((r) => !(record.switch_is_tax_event.rule_ids ?? []).includes(r))] });
   }
 
   for (const it of inout) it.rules = gen(it.rules);
@@ -215,6 +196,12 @@ export default function GuidePage() {
     const ids = record.company_terms?.[feeDimension[base] ?? ""] ?? [];
     return ids.length > 0 ? <VariesByCompany ids={ids} size="xs" /> : undefined;
   };
+
+  // ---- what each company sets for itself (D30): the fee table says it for its own fees; the rest, with the general rules on the same property, sit under "who offers it" (D49)
+  const companyTerms = (): KeyValueItem[] =>
+    Object.entries(record.company_terms ?? {})
+      .filter(([dim, ids]) => ids.length > 0 && !(!omitted("cost") && fees.some((f) => feeDimension[f.id] === dim)))
+      .map(([dim, ids]) => ({ id: dim, label: data.dimensionNames[dim] ?? feeCopy[Object.keys(feeDimension).find((b) => feeDimension[b] === dim) ?? ""]?.name ?? dim, value: <VariesByCompany ids={ids} size="xs" />, rules: Object.values(rules).filter((r) => isGeneral(r) && r.dimensions.includes(dim)).map((r) => r.id) }));
 
   // ---- fees: every base the record allows, in a fixed order; the cap is the record's figure, else the provider's own tariff
   const provident = isProvidentFamily(record.id);
@@ -355,26 +342,6 @@ export default function GuidePage() {
   ];
   for (const st of steps) st.rules = gen(st.rules);
 
-  // ---- checklist
-  const checklist: ChecklistRowView[] = data.checklist.map((row) => {
-    const mark = data.marks[row.id];
-    // the general rules only (D30); where each company sets the property, the record's company_terms give "תלוי בחברה" and the companies
-    const carrying = Object.values(rules).filter((r) => isGeneral(r) && r.dimensions.includes(row.id)).map((r) => r.id);
-    const allWeak = carrying.length > 0 && carrying.every((id) => rules[id]!.strength === "institution" || rules[id]!.strength === "secondary");
-    const companyTerms = record.company_terms?.[row.id] ?? [];
-    const base = mark === "covered" ? "covered" : mark?.startsWith("blocked:") ? "blocked" : "na";
-    return {
-      id: row.id,
-      name: row.name,
-      explanation: row.explanation,
-      mark: base === "na" && companyTerms.length > 0 ? "varies" : base,
-      code: mark?.startsWith("blocked:") ? mark.slice("blocked:".length) : undefined,
-      rules: carrying,
-      weak: allWeak ? (carrying.some((id) => rules[id]!.strength === "secondary") ? "secondary" : "institution") : null,
-      varies: companyTerms.length > 0 ? <VariesByCompany ids={companyTerms} size="xs" /> : undefined,
-    };
-  });
-
   const regulatorName = blocks.regulatorNames[String(record.regulator.value)] ?? String(record.regulator.value);
   const provenance = { rules, pointed: data.pointed, terms: data.termsById, dimensions: data.dimensionNames, today, rulesOf: { name: data.name, href: `/rules?product=${record.id}` } }; // the rules page's product filter (2026-10-25): the old `#<file>` anchor stopped existing when groups became `<shelf>-<file>`
   const cp = { figure };
@@ -400,7 +367,7 @@ export default function GuidePage() {
   return (
     <PageShell current="guide" data={provenance} wide="large">
       <div className="lg:flex lg:gap-12 pt-2 lg:pt-8">
-        <SectionIndex sections={copy.sections.filter((x) => !omitted(x.id) && (x.id !== "terms" || !mainTerms.hide || generalTerms.length > 0) && ((x.id as string) !== "worth" || worthRows(data.worthIds, rules, today).length > 0 || worthFacts.length > 0) && ((x.id as string) !== "different" || !!signature))} current={current} />
+        <SectionIndex sections={copy.sections.filter((x) => !omitted(x.id) && (x.id !== "terms" || !mainTerms.hide || generalTerms.length > 0) && ((x.id as string) !== "worth" || worthRows(data.worthIds, rules, today).length > 0 || worthFacts.length > 0) && ((x.id as string) !== "different" || !!signature)).map((x) => ({ ...x, title: title(x.id) }))} current={current} />
         <div className="flex-1 min-w-0 flex flex-col gap-section">
           <header className="flex flex-col gap-3">
             <Breadcrumb parent={{ href: "/guide", label: guideIndex.title }} current={data.name} />
@@ -425,14 +392,14 @@ export default function GuidePage() {
             <NumberLegend term institution={anyWeak([...Object.values(data.bundle?.feeValues ?? {}), ...Object.values(signature?.facts ?? {}), ...(signature?.banks ?? []).flatMap((b) => [b.rate, b.ceiling])])} />
           </header>
 
-          <GuideSection id="what" title={title("what")} rulesToggle>
+          <GuideSection id="what" title={title("what")}>
             {content?.what(cp)}
-            {/* D29: a page with a visual folds the timeline under it; without one (or without a run) it stays here */}
-            {!(signature && timelineNode) && (timelineNode ?? <NoGraphLine data={data} />)}
+            {/* D29: a page with a visual folds the timeline under it; without one it stays here */}
+            {!signature && timelineNode}
           </GuideSection>
 
           {/* audit A42: who it is for sits directly under what it is */}
-          <GuideSection id="use" title={title("use")} rulesToggle>
+          <GuideSection id="use" title={title("use")}>
             {content?.use(cp)}
             <RelatedProducts items={data.related} />
             <RelatedProducts items={data.securities} label={copy.securitiesRow} />
@@ -440,7 +407,7 @@ export default function GuidePage() {
           </GuideSection>
 
           {signature && (
-            <GuideSection id="different" title={signatureTitle(record.id)} rulesToggle>
+            <GuideSection id="different" title={signatureTitle(record.id)}>
               <SignatureFrame id={record.id} data={signature} today={today} timeline={timelineNode} held={held} />
             </GuideSection>
           )}
@@ -448,36 +415,37 @@ export default function GuidePage() {
           <WorthKnowing rows={worthRows(data.worthIds, rules, today)} facts={worthFacts} />
 
           {!omitted("who") && (
-            <GuideSection id="who" title={title("who")} rulesToggle>
-              {content?.who(cp) ?? (
+            <GuideSection id="who" title={title("who")}>
+              {content?.who?.(cp) ?? (
                 <p className="max-w-measure">
                   {regulatorName}. {copy.whoLine}
                 </p>
               )}
+              {companyTerms().length > 0 && <KeyValueList items={companyTerms()} />}
               <InstitutionChips companies={data.companies} allHref="/companies" />
             </GuideSection>
           )}
 
           {!omitted("inout") && (
-            <GuideSection id="inout" title={title("inout")} rulesToggle>
+            <GuideSection id="inout" title={title("inout")}>
               <KeyValueList items={inout} />
             </GuideSection>
           )}
 
           {!omitted("cost") && (
-            <GuideSection id="cost" title={title("cost")} rulesToggle>
+            <GuideSection id="cost" title={title("cost")}>
               <FeeTable fees={fees} note={provident ? copy.feeNote : copy.feeNoteOther} />
             </GuideSection>
           )}
 
           {!omitted("tax") && (
-            <GuideSection id="tax" title={title("tax")} rulesToggle>
+            <GuideSection id="tax" title={title("tax")}>
               <TaxSteps steps={steps} />
               {content?.afterTax?.(cp)}
             </GuideSection>
           )}
 
-          <GuideSection id="risk" title={title("risk")} rulesToggle>
+          <GuideSection id="risk" title={title("risk")}>
             {content?.risks(cp) ?? (
               <>
                 <p className="max-w-measure">
@@ -487,12 +455,6 @@ export default function GuidePage() {
               </>
             )}
           </GuideSection>
-
-          {!omitted("check") && (
-            <GuideSection id="check" title={title("check")}>
-              <DimensionChecklist rows={checklist} />
-            </GuideSection>
-          )}
 
           {(mainTerms.hide ? 0 : 1) + (generalTerms.length > 0 ? 1 : 0) > 0 && (
             <GuideSection id="terms" title={title("terms")}>
@@ -519,42 +481,3 @@ export default function GuidePage() {
 
 export { Link };
 
-/**
- * In place of the graph card when the run cannot happen: one quiet line with the reason in words (audit A45), never a code.
- * The parts of a missing-data line join as "{before}{parts}, {after}" (the editor's request): a comma, no space before it.
- */
-function NoGraphLine({ data }: { data: ReturnType<typeof useLoaderData<typeof loader>> }) {
-  const n = data.noGraph;
-  const c = blocks.noGraph;
-  if (!n) return null;
-  const line = "text-sm text-muted-foreground max-w-measure";
-  if (n.kind === "pending") {
-    return (
-      <p className={line}>
-        {n.formulas.map((f, i) => (
-          <span key={f}>
-            {i > 0 && " "}
-            {blocks.taxSteps[f]?.headline ?? formulaNames[f] ?? formulaNames._other}: {blocks.notComputed.text}
-            {data.pendingFormulas[f] && (
-              <>
-                {" · "}
-                {blocks.notComputed.releaseBefore} <bdi dir="ltr">{data.pendingFormulas[f]}</bdi>
-              </>
-            )}
-            .
-          </span>
-        ))}
-      </p>
-    );
-  }
-  if (n.kind === "missing") {
-    const parts = n.parts.map((p) => (c.parts as Record<string, string>)[p] ?? c.parts.other);
-    return (
-      <p className={line}>
-        {c.missingBefore}
-        {[...new Set(parts)].join(" ול")}, {c.missingAfter}
-      </p>
-    );
-  }
-  return <p className={line}>{c.unknownCause}</p>;
-}

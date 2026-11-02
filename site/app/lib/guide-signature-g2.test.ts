@@ -6,7 +6,7 @@ import { buildGuidePage } from "./guide.server";
 import { fact } from "./guide-signature";
 import { paidInToday } from "./engine";
 import { entered as enteredValue } from "./value";
-import { hishtalmutModel, hishtalmutTerms, pensionModel, providentModel, runWith } from "./guide-signature-g2";
+import { hishtalmutTerms, pensionModel, providentModel, runWith, studyRange, studyYear, studyYears } from "./guide-signature-g2";
 import { signatureRegistry } from "../components/guide-signature";
 import { guideSignature as copy } from "../copy";
 import { buildInvest, indexById } from "./invest";
@@ -37,55 +37,92 @@ describe("study fund", () => {
     expect(d.bundles["keren-hishtalmut"]!.terms.fees!.balance).toBeCloseTo(0.0054, 10);
     expect(Number(fact(d, "rangeMin")!.value)).toBeLessThan(Number(fact(d, "rangeMax")!.value));
   });
-  it("is the engine's run: an employee's gain after the lock, the early withdrawal before it", () => {
-    const b = d.bundles["keren-hishtalmut"]!;
-    const m = hishtalmutModel(d, { amount: 10000, monthly: 500, years: 8, employment: "employee", income: 12000 });
-    const plan = runInputs(b.record, [b.p05], hishtalmutTerms(b, { employment: "employee", income: 12000, early: false }), { profile: { annualIncome: 144000 }, scenarioIncome: true });
-    const run = runPlanned({ ...plan, input: { ...plan.input, goal: { ...plan.input.goal, months: 96 } } } as typeof plan, { rules: b.rules, runDate: b.runDate });
-    expect(m.early).toBe(false);
-    expect(m.study!.net).toBe(run.real);
-    // what was paid in is in today's money deposit by deposit (F-06), not the whole sum over the last month's index
-    const lastIndex = run.series[run.series.length - 1]!.index;
-    expect(m.study!.paidIn).toBe(paidInToday(run, 10000));
-    expect(m.study!.paidIn).toBeGreaterThan(run.paidIn / lastIndex);
-    expect(m.study!.gain).toBeCloseTo(run.real - paidInToday(run, 10000), 9);
-    // the amount now counts in full and each month's deposit at its own index: 10,000 plus 96 deposits of 500 in today's money
-    expect(m.study!.paidIn).toBeCloseTo(10000 + 96 * 500, -1);
-    expect(m.study!.tax).toBeGreaterThan(0); // the part above the benefited deposit is taxed at exit (TXH-11)
-    expect(m.diff).toBeCloseTo(m.study!.gain - m.broker!.gain, 9);
-    // an employee's benefited deposit is 2.5% of the determining salary a month (TXH-08, TXH-02): 300 of 500
-    expect(m.benefitedMonthly).toBeCloseTo(300, 9);
-    expect(m.excessMonthly).toBeCloseTo(200, 9);
+  const employee = { employment: "employee" as const, income: 12000, ownMonthly: 300, employerMonthly: 900, returnPct: 7 };
+  const self = { employment: "self-employed" as const, income: 12000, ownMonthly: 500, employerMonthly: 0, returnPct: 7 };
 
-    const early = hishtalmutModel(d, { amount: 10000, monthly: 500, years: 3, employment: "employee", income: 12000 });
-    expect(early.early).toBe(true);
-    expect(early.studyGap).toBeNull();
-    expect(early.study!.tax).toBeGreaterThan(0);
-    expect(early.study!.run.detail.earlyGains).toBeGreaterThan(0); // F-47 ran
+  it("tells an employee's money as two runs, which add up: own, employer, return, tax, left", () => {
+    const b = d.bundles["keren-hishtalmut"]!;
+    const years = studyYears(d, employee, 12);
+    expect(years).toHaveLength(12);
+    const y8 = years[7]!.slice!;
+    expect(y8.own + y8.extra + y8.gain - y8.tax).toBeCloseTo(y8.net, 6);
+    const terms = hishtalmutTerms(b, { employment: "employee", income: 12000, early: false });
+    const own = runWith(b, { amount_now: 0, monthly_deposit: 300, "A-01": 7 }, 96, { terms: { ...terms, hishtalmut: { ...terms.hishtalmut!, salaryFollowsPrices: true } }, profile: { annualIncome: 144000 } })!;
+    const emp = runWith(b, { amount_now: 0, monthly_deposit: 900, "A-01": 7 }, 96, { terms: { ...terms, hishtalmut: { ...terms.hishtalmut!, salaryFollowsPrices: true, money: "employer" } }, profile: { annualIncome: 144000 } })!;
+    expect(y8.net).toBeCloseTo(own.real + emp.real, 6);
+    // each month's deposit in today's money
+    expect(y8.own).toBeCloseTo(96 * 300, -1);
+    expect(y8.extra).toBeCloseTo(96 * 900, -1);
+    expect(y8.gain).toBeGreaterThan(0);
   });
-  it("gives a self-employed person no number before the lock ends (TXH-07 is not in the engine) and the deduction after it", () => {
-    const early = hishtalmutModel(d, { amount: 10000, monthly: 500, years: 3, employment: "self-employed", income: 12000 });
-    expect(early.study).toBeNull();
-    expect(early.studyGap).toBe("self-employed-early");
-    expect(early.diff).toBeNull();
+  it("taxes nothing from the lock's end while the deposits stay under the limits, and the employer's deposits before it", () => {
+    const years = studyYears(d, employee, 12);
+    for (let y = 6; y <= 12; y++) expect(years[y - 1]!.slice!.tax).toBeCloseTo(0, 6);
+    expect(years[2]!.slice!.taxFromSalary).toBe(0); // under the ceiling, all of an early withdrawal's tax is paid at the withdrawal
+    const y3 = years[2]!.slice!;
+    expect(y3.tax).toBeGreaterThan(0.1 * y3.extra); // F-47: the employer's deposits are income, not only the gains
+    expect(y3.own + y3.extra + y3.gain - y3.tax).toBeCloseTo(y3.net, 6);
+    expect(years[2]!.runs).toHaveLength(2);
+  });
+  it("does not stack what was income when paid under the own gains of an early withdrawal", () => {
+    const b = d.bundles["keren-hishtalmut"]!;
+    const y = studyYear(b, 6, { ...employee, income: 35000, ownMonthly: 875, employerMonthly: 2625 }, 5);
+    const [mine, employer] = y.runs;
+    expect(employer!.detail.earlyEmployerDeposits!).toBeLessThan(employer!.detail.grossBalance! - employer!.detail.earlyGains!);
+    // the same own run stacked on the whole balance is taxed more: the salary 35,000 case crosses a schedule's step between the two
+    const t = hishtalmutTerms(b, { employment: "employee", income: 35000, early: true });
+    const whole = runWith(b, { amount_now: 0, monthly_deposit: 875, "A-01": 7 }, 60, { terms: { ...t, hishtalmut: { ...t.hishtalmut!, salaryFollowsPrices: true } }, profile: { annualIncome: 420000, otherIncome: 420000 + employer!.detail.grossBalance! } })!;
+    expect(mine!.taxAtExit).toBeLessThan(whole.taxAtExit);
+  });
+  it("stacks the own gains of an early withdrawal on the salary and what the employer's run paid out", () => {
+    const b = d.bundles["keren-hishtalmut"]!;
+    const low = studyYear(b, 6, { ...employee, employerMonthly: 0 }, 5).slice!;
+    const high = studyYear(b, 6, employee, 5).slice!;
+    expect(high.tax).toBeGreaterThan(low.tax);
+  });
+  it("taxes what is above a limit even after the lock", () => {
+    const over = studyYears(d, { ...employee, ownMonthly: 840 }, 12); // 7% of the salary, the benefit stops at 2.5%
+    expect(over[7]!.slice!.tax).toBeGreaterThan(0);
+    const high = studyYears(d, { ...employee, income: 20000, ownMonthly: 500, employerMonthly: 1500 }, 12);
+    const y8 = high[7]!.slice!;
+    expect(y8.tax).toBeGreaterThan(0); // the employer's part above the ceiling is salary when paid (TXH-03)
+    expect(y8.taxFromSalary).toBeGreaterThan(0); // most of it was paid along the way, and what is left is the tax on the gains at the withdrawal (TXH-11)
+    expect(y8.taxFromSalary).toBeLessThan(y8.tax);
+    expect(y8.own + y8.extra + y8.gain - y8.tax).toBeCloseTo(y8.net, 6);
+  });
+  it("moves with every input", () => {
+    const base = studyYears(d, employee, 12)[9]!.slice!.net;
+    expect(studyYears(d, { ...employee, ownMonthly: 200 }, 12)[9]!.slice!.net).toBeLessThan(base);
+    expect(studyYears(d, { ...employee, employerMonthly: 600 }, 12)[9]!.slice!.net).toBeLessThan(base);
+    expect(studyYears(d, { ...employee, returnPct: 3 }, 12)[9]!.slice!.net).toBeLessThan(base);
+    expect(studyYears(d, { ...employee, returnPct: 1 }, 12)[9]!.slice!.gain).toBeLessThan(0);
+    expect(studyYears(d, { ...employee, feePct: 1.5 }, 12)[9]!.slice!.net).toBeLessThan(base);
+    expect(studyYears(d, { ...employee, feePct: 0.54 }, 12)[9]!.slice!.net).toBeCloseTo(base, 6); // the track's own fee, typed
+    expect(fact(d, "feeCap")!.value).toBe(2);
+    expect(studyRange(d, { ...employee, feePct: 1.5 }, 10).fund).toEqual(studyRange(d, employee, 10).fund); // the collected range does not move with the typed fee
+  });
+  it("gives a self-employed person no number before the lock ends (TXH-07 is not in the engine) and the tax back after it", () => {
+    const years = studyYears(d, self, 12);
+    for (let y = 1; y < 6; y++) expect(years[y - 1]).toEqual({ slice: null, gap: "self-employed-early", runs: [] });
     expect(d.gaps).toContain("selfEmployedEarly");
-    const late = hishtalmutModel(d, { amount: 10000, monthly: 500, years: 8, employment: "self-employed", income: 12000 });
-    expect(late.study!.tax).toBe(0);
-    expect(late.reliefTotal!).toBeGreaterThan(0);
-    expect(late.deductionCap).toBeCloseTo(0.045 * 144000, 6); // TXH-05: 4.5% of the income, under its ceiling
-    expect(late.diff!).toBeGreaterThan(0);
+    const y10 = years[9]!.slice!;
+    expect(y10.tax).toBe(0);
+    expect(y10.extra).toBeGreaterThan(0);
+    expect(y10.own).toBeCloseTo(120 * 500, -1);
+    expect(y10.own + y10.extra + y10.gain).toBeCloseTo(y10.net, 6);
+    expect(studyYears(d, { ...self, income: 30000 }, 12)[9]!.slice!.extra).toBeGreaterThan(y10.extra); // a higher bracket saves more
   });
-  it("shows how far the difference moves with the broker and the manager (rule 3)", () => {
-    const m = hishtalmutModel(d, { amount: 10000, monthly: 500, years: 8, employment: "employee", income: 12000 });
-    expect(m.range.broker!.low).toBeLessThanOrEqual(m.diff!);
-    expect(m.range.broker!.high).toBeGreaterThanOrEqual(m.diff!);
-    expect(m.range.broker!.high).toBeGreaterThan(m.range.broker!.low);
-    expect(m.range.manager!.low).toBeLessThanOrEqual(m.diff!);
-    expect(m.range.manager!.high).toBeGreaterThanOrEqual(m.diff!);
-    // the cheapest manager leaves more than the dearest
-    const best = runWith(d.bundles["brokerage-best"]!, entered(10000, 500), 96)!;
-    const worst = runWith(d.bundles["brokerage-worst"]!, entered(10000, 500), 96)!;
-    expect(best.real).toBeGreaterThan(worst.real);
+  it("gives the range over the collected fees and, for a self-employed person, the account's range (rule 3)", () => {
+    const y = studyYears(d, employee, 12)[7]!.slice!;
+    const r = studyRange(d, employee, 8);
+    expect(r.fund!.low).toBeLessThanOrEqual(y.net);
+    expect(r.fund!.high).toBeGreaterThanOrEqual(y.net);
+    expect(r.account).toBeNull();
+    const s = studyRange(d, self, 10);
+    expect(s.fund!.high).toBeGreaterThan(s.fund!.low);
+    expect(s.account!.net).toBeGreaterThanOrEqual(s.account!.range!.low);
+    expect(s.account!.net).toBeLessThanOrEqual(s.account!.range!.high);
+    expect(studyRange(d, self, 3).fund).toBeNull();
   });
 });
 

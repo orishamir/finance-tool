@@ -1,0 +1,30 @@
+{
+  "id": "CORP-01",
+  "title": "What a corporate bond is in law",
+  "title_he": "מהי איגרת חוב של חברה לפי החוק",
+  "text_he": "חוק ניירות ערך מגדיר תעודות התחייבות: תעודות שתאגיד מנפיק בסדרה, שנותנות זכות לתבוע ממנו כסף בתאריך קבוע או בהתקיים תנאי, ואינן נותנות זכות חברות או השתתפות בתאגיד. תעודות שהמדינה מנפיקה וניירות ערך מסחריים אינם נכללים בהגדרה.",
+  "strength": "primary",
+  "dimensions": [
+    "regulator",
+    "protection"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "corporate-bonds.md",
+  "checked": "2026-11-02",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Nyarot01.pdf#page=37",
+      "title": "Securities Law, Securities Authority's consolidated copy, file of 26.8.2026",
+      "title_he": "חוק ניירות ערך, התשכ״ח-1968",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "s. 35א, s. 35א1",
+      "locator_he": "סעיף 35א, סעיף 35א1",
+      "checked": "2026-10-31",
+      "qualifier": "(state body's consolidated copy, not the binding gazette wording)"
+    }
+  ]
+}

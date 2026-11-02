@@ -239,6 +239,14 @@
   --chart-stairs-account: var(--palette-teal-300);
   --chart-stairs-kind: var(--palette-magenta-400);
   --chart-stairs-fund: var(--palette-gold-200);
+  /* the money's story (2026-11-02): each part of the pile, tax as a hatch over a veil, and what is left */
+  --chart-pile-own: var(--palette-neutral-400);
+  --chart-pile-extra: var(--palette-gold-200);
+  --chart-pile-gain: var(--palette-teal-500);
+  --chart-pile-tax: var(--palette-rose-400);
+  --chart-pile-salary-tax: var(--palette-orange-500); /* tax paid out of the salary month by month, apart from the tax at the withdrawal */
+  --chart-pile-veil: color-mix(in oklch, var(--palette-neutral-975) 62%, transparent);
+  --chart-pile-left: var(--palette-neutral-100);
   /* The comparison chart (design-system 6.5): the ranking is ordinal, so one hue in steps (lighter is better);
      the baseline is neutral. Width and a direct label also tell the lines apart. */
   --chart-option-1: var(--palette-teal-200);
@@ -447,6 +455,13 @@
   --color-chart-stairs-account: var(--chart-stairs-account);
   --color-chart-stairs-kind: var(--chart-stairs-kind);
   --color-chart-stairs-fund: var(--chart-stairs-fund);
+  --color-chart-pile-own: var(--chart-pile-own);
+  --color-chart-pile-extra: var(--chart-pile-extra);
+  --color-chart-pile-gain: var(--chart-pile-gain);
+  --color-chart-pile-tax: var(--chart-pile-tax);
+  --color-chart-pile-salary-tax: var(--chart-pile-salary-tax);
+  --color-chart-pile-veil: var(--chart-pile-veil);
+  --color-chart-pile-left: var(--chart-pile-left);
   --color-chart-option-1: var(--chart-option-1);
   --color-chart-option-2: var(--chart-option-2);
   --color-chart-option-3: var(--chart-option-3);

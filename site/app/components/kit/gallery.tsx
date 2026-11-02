@@ -7,11 +7,12 @@ import type { SiteValue } from "../../lib/value";
 import { computed, entered } from "../../lib/value";
 import { CalendarCheck, CalendarDays, Lock, Zap } from "lucide-react";
 import { IconLock } from "../icons";
-import { IdRef, Num } from "../provenance";
+import { IdRef, Num, RulesLine } from "../provenance";
 import { IconDrillIn } from "../icons";
 import { label } from "../../lib/labels";
 import { fmt } from "../../lib/format";
-import { AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, Button, Callout, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, LabelFilter, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, CompareTable, TableCols, CoverageFold, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, Disclosure, FieldState, FoldGroup, GainBars, GapNote, HeadlineFigure, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, CheckField, FieldGroup, TextField, NumberField, ParameterLine, PercentField, PlanChips, KnobStrip, ChangeChart, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, RangeField, RankBadge, Section, SegmentedControl, SelectField, Sentence, ShareRings, SourceLine, Stat, StatRow, StatTile, StepButtons, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth } from "./index";
+import { PileStory, PileYears } from "./pile-story";
+import { AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, Button, Callout, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, LabelFilter, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, CompareTable, TableCols, CoverageFold, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, Disclosure, FieldState, FoldGroup, GainBars, GapNote, HeadlineFigure, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, ParameterLine, PercentField, PlanChips, KnobStrip, ChangeChart, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, RangeField, RankBadge, Section, SegmentedControl, SelectField, Sentence, ShareRings, SourceLine, Stat, StatRow, StatTile, StepButtons, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth } from "./index";
 
 const g = copy.gallery;
 
@@ -340,6 +341,14 @@ function Words({ today }: { today: string }) {
           <State label="open question: opens the question sheet"><div><IdRef id="TX2 OQ6" /></div></State>
         </Grid>
       </Demo>
+      <Demo name="RulesLine, RulesChip" use={g.uses.RulesLine}>
+        <Grid>
+          <State label="several rules: opens the list of their titles"><RulesLine ids={["TXS-05", "TXS-06", "TXS-09"]} name="מס על הרווח במכירה" /></State>
+          <State label="one rule: opens its card at once"><RulesLine ids={["TXS-05"]} /></State>
+          <State label="one open question: keeps its own chip"><RulesLine ids={["TX2 OQ6"]} /></State>
+          <State label="no rules: renders nothing"><div><RulesLine ids={[]} /></div></State>
+        </Grid>
+      </Demo>
       <Demo name="Sentence, Tpl" use={g.uses.Sentence}>
         <Grid>
           <State label={`${g.states.sourced} / ${g.states.computed} / ${g.states.entered}`}>
@@ -456,6 +465,11 @@ function Words({ today }: { today: string }) {
           <NoteList items={[...g.sample.notes]} />
         </State>
       </Demo>
+      <Demo name="ProseList" use={g.uses.ProseList}>
+        <State label="ProseList" wide>
+          <ProseList items={[...g.sample.notes]} />
+        </State>
+      </Demo>
       <Demo name="SourceLine, GapNote" use={g.uses.SourceLine}>
         <State label="SourceLine">
           <SourceLine lead={g.sample.sourceLead} items={[...g.sample.sourceItems]} />
@@ -570,6 +584,29 @@ function Fields() {
               { id: "a", swatch: "bg-chart-lever-2", cells: [g.sample.range, fmt.nisWhole(1200)] },
               { id: "b", swatch: "bg-chart-lever-4", cells: [g.sample.percent, fmt.nisWhole(400)] },
             ]}
+          />
+        </State>
+      </Demo>
+      <Demo name="PileYears, PileStory" use={g.uses.PileStory}>
+        <State label={g.states.interactive} wide>
+          <PileYears
+            years={[null, { own: 7200, extra: 21600, gain: 3100, tax: 4900, net: 27000 }, { own: 10800, extra: 32400, gain: 6200, tax: 0, net: 49400 }, { own: 14400, extra: 43200, gain: 11800, tax: 5000, taxFromSalary: 4000, net: 64400 }]}
+            year={3}
+            onYear={() => undefined}
+            lockYear={3}
+            before={g.sample.rowA}
+            after={g.sample.rowB}
+            label={g.sample.rowA}
+            valueText="3"
+          />
+          <PileStory
+            slice={{ own: 10800, extra: 32400, gain: 6200, tax: 2500, taxFromSalary: 1900, net: 46900 }}
+            names={{ own: [g.sample.rowA], extra: [g.sample.rowB], gain: [g.sample.rowA], tax: [g.sample.rowB], left: [g.sample.rowA] }}
+            fine={{ gain: g.sample.rowB }}
+            number={(step) => ({ own: "10,800 ₪", extra: "+32,400 ₪", gain: "+6,200 ₪", tax: "−2,500 ₪", left: "46,900 ₪" })[step]}
+            firstRow={0.25}
+            taxParts={{ salary: { word: g.sample.rowA, number: () => "1,900 ₪" }, withdrawal: { word: g.sample.rowB, number: () => "600 ₪" } }}
+            label={g.sample.rowA}
           />
         </State>
       </Demo>

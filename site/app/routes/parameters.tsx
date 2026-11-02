@@ -84,7 +84,7 @@ export default function Parameters() {
               <dl className="sheet-dl">
                 <dt className="text-sm text-muted-foreground">{copy.rows.why}</dt>
                 <dd className="text-sm">
-                  {p.rationaleHe ?? (mostlyHebrew(p.rationale) ? p.rationale : provCopy.parameter.noRationale)}
+                  <IdText text={p.rationaleHe ?? (mostlyHebrew(p.rationale) ? p.rationale : provCopy.parameter.noRationale)} />
                 </dd>
                 <dt className="text-sm text-muted-foreground">{copy.rows.approved}</dt>
                 <dd>{p.signedOffOn ? <bdi dir="ltr">{fmt.date(p.signedOffOn)}</bdi> : provCopy.parameter.notApproved}</dd>

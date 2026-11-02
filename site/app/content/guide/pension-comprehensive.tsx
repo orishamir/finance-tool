@@ -1,11 +1,11 @@
 // Guide prose for קרן חדשה מקיפה (new comprehensive pension fund). Same shape and register as
 // kupat-gemel-lehashkaa.tsx; checked against the rule base (PEN, TXP, PF, REG); each block ends with the
-// rules it rests on. No <Term>: the glossary tags the pension terms under guide:pension-and-gemel-lekitzba,
-// not under this wrapper id. NEW copy for the founder to review.
+// rules it rests on. NEW copy for the founder to review.
 import type { GuideContent } from "./types";
 import type { SiteValue } from "../../lib/value";
-import { IdRef, Num, RuleRef, RulesLine } from "../../components/provenance";
+import { IdRef, Num, RuleRef, RulesLine, Term } from "../../components/provenance";
 import { Callout } from "../../components/kit";
+import { OpenSwitchTax } from "./open-tax";
 
 const N = ({ v }: { v: SiteValue | null }) => (v ? <Num value={v} /> : null);
 
@@ -13,18 +13,21 @@ export const content: GuideContent = {
   what: ({ figure }) => (
     <>
       <p className="max-w-measure">
-        קרן הפנסיה שכמעט כל שכיר מבוטח בה דרך המעסיק: לפחות <N v={figure("PEN-03", "employee_pct")} /> מכם, <N v={figure("PEN-03", "employer_pct")} /> מהמעסיק ו־
-        <N v={figure("PEN-03", "severance_pct")} /> לפיצויים, מהשכר עד השכר הממוצע במשק. הכסף חוסך לקצבה חודשית מגיל <N v={figure("PEN-26", "early_retirement_age")} /> ומעלה, והקרן
-        כוללת גם ביטוח נכות וביטוח שאירים שמשולם מהחשבון. <N v={figure("PEN-18", "guaranteed_share")} /> מהנכסים נמצאים במסלול עם הבטחת תשואה של המדינה.
+        צו ההרחבה מחייב חיסכון לפנסיה לכל עובד מגיל <N v={figure("PEN-01", "minimum_age_men")} /> לגברים ומגיל <N v={figure("PEN-01", "minimum_age_women")} /> לנשים, חוץ ממי שיש לו הסדר טוב לפחות כמו זה. העובד בוחר קרן מקיפה או קופת גמל לקצבה עם כיסוי ביטוחי. מי שלא בוחר, המעסיק מבטח אותו בקרן מקיפה.
       </p>
-      <RulesLine ids={["PEN-01", "PEN-03", "PEN-04", "PEN-11", "PEN-15", "PEN-18", "PEN-27"]} />
+      <p className="max-w-measure">
+        ההפקדה היא לפחות <N v={figure("PEN-03", "employee_pct")} /> מכם, <N v={figure("PEN-03", "employer_pct")} /> מהמעסיק ו־<N v={figure("PEN-03", "severance_pct")} /> לפיצויים, מהשכר עד השכר הממוצע במשק.
+      </p>
+      <p className="max-w-measure">
+        הכסף נחסך לקצבה חודשית מגיל <N v={figure("PEN-26", "early_retirement_age")} /> ומעלה. הקרן כוללת גם ביטוח נכות וביטוח שאירים, שעלותם יורדת מהחשבון. <N v={figure("PEN-18", "guaranteed_share")} /> מהנכסים נמצאים במסלול עם הבטחת תשואה של המדינה.
+      </p>
+      <RulesLine ids={["PEN-01", "PEN-03", "PEN-04", "PEN-05", "PEN-11", "PEN-15", "PEN-18", "PEN-26", "PEN-27"]} />
     </>
   ),
   who: ({ figure }) => (
     <>
       <p className="max-w-measure">
-        חברות מנהלות של קרנות פנסיה, בפיקוח רשות שוק ההון, ביטוח וחיסכון. מי שלא בוחר קרן מצורף לאחת מארבע הקרנות הנבחרות, בדמי ניהול של <N v={figure("PEN-23", "selected_deposit_fee")} /> מההפקדה ו־
-        <N v={figure("PEN-23", "selected_balance_fee")} /> מהצבירה, שמובטחים לפחות <N v={figure("PEN-23", "guarantee_years")} /> שנים.
+        חברות מנהלות של קרנות פנסיה, בפיקוח רשות שוק ההון, ביטוח וחיסכון. מי שלא בוחר קרן מצורף לאחת מארבע <Term prefix="ה" id="קרן נבחרת">קרנות הנבחרות</Term>, בדמי ניהול של <N v={figure("PEN-23", "selected_deposit_fee")} /> מההפקדה ו־<N v={figure("PEN-23", "selected_balance_fee")} /> מהחיסכון, שמובטחים לפחות <N v={figure("PEN-23", "guarantee_years")} /> שנים. מעסיק יכול גם לבחור קרן בהליך תחרותי משלו.
       </p>
       <p className="max-w-measure">
         מ־<bdi>1.6.2025</bdi> עד <bdi>31.10.2028</bdi> הקרן הנבחרת נקבעת לפי ספרת הביקורת בתעודת הזהות: <bdi>7, 8, 9</bdi> אינפיניטי; <bdi>4, 5, 6</bdi> מור; <bdi>2, 3</bdi> אלטשולר שחם; <bdi>0, 1</bdi> מיטב.
@@ -32,42 +35,55 @@ export const content: GuideContent = {
       <RulesLine ids={["REG-17", "PEN-06", "PEN-23"]} />
     </>
   ),
-  switchLine: "בלי מס. מעבר לקרן פנסיה אחרת מתחיל מחדש את תקופת האכשרה של הביטוח",
-  switchRules: ["PEN-17", "PF-23", "SW-22", "PF-28"],
-  termIds: [],
+  switchLine: "בין מסלולים בתוך הקרן בלי מס. במעבר לקרן פנסיה אחרת חודשי הביטוח נספרים, חוץ מחריגים",
+  switchRules: ["PEN-17", "PF-23", "SW-22", "SW-12", "PF-28"],
+  termIds: ["זיכוי ממס", "הכנסה מזכה", "מקדם המרה", "קצבה מזכה", "משיכה שלא כדין", "איזון אקטוארי", "קרן נבחרת", "קופת גמל לקצבה"],
   afterTax: ({ figure }) => (
     <>
       <p className="max-w-measure">
-        ההפקדה שלכם מזכה בזיכוי של <N v={figure("TXP-01", "credit_pct")} /> ממנה, על הפקדה של עד <N v={figure("TXP-02", "credited_pct_of_income")} /> מהכנסה מזכה של עד{" "}
-        <N v={figure("TXP-02", "eligible_income_cap")} /> בשנה. הפקדות המעסיק עד <N v={figure("TXP-10", "employer_exempt_pct")} /> מהשכר, ועד שכר של <N v={figure("TXP-10", "employer_ceiling")} /> בחודש,
-        לא ממוסות בהפקדה.
+        ההפקדה שלכם מורידה את המס ב־<N v={figure("TXP-01", "credit_pct")} /> מסכום ההפקדה, בלי קשר למדרגת המס שלכם. זה <Term id="זיכוי ממס">זיכוי ממס</Term>, והוא חל על הפקדה של עד <N v={figure("TXP-02", "credited_pct_of_income")} /> <Term prefix="מ" id="הכנסה מזכה">הכנסה מזכה</Term> של עד <N v={figure("TXP-02", "eligible_income_cap")} /> בשנה.
+      </p>
+      <p className="max-w-measure">
+        הפקדות המעסיק לא ממוסות בהפקדה, עד <N v={figure("TXP-10", "employer_exempt_pct")} /> מהשכר ועד שכר של <N v={figure("TXP-10", "employer_ceiling")} /> בחודש.
       </p>
       <RulesLine ids={["TXP-01", "TXP-02", "TXP-10", "TXP-11"]} />
       <Callout tone="blocked" className="max-w-measure">
-        <span className="font-medium">את הקצבה האתר עוד לא מחשב, כי חסרים מקדמי ההמרה.</span> שאלה פתוחה: <IdRef id="PEN OQ7" />. מגיל הפרישה חלק מהקצבה פטור ממס:{" "}
-        <N v={figure("TXP-14", "exempt_share")} /> מתקרה של <N v={figure("TXP-14", "annuity_ceiling")} /> בחודש, והשיעור עולה בחוק ב־2027 וב־2028. משיכה שלא כדין לפני הפרישה ממוסה על כל הסכום שמשולם, בגבוה מבין{" "}
-        <N v={figure("TXP-18", "minimum_rate")} /> והשיעור השולי <RuleRef id="TXP-18" />.
+        <span className="font-medium">את הקצבה האתר עוד לא מחשב, כי חסרים <Term id="מקדם המרה">מקדמי ההמרה</Term>.</span> שאלה פתוחה (<IdRef id="PEN OQ7" />).
       </Callout>
-      <RulesLine ids={["TXP-14", "TXP-15", "TXP-18", "PEN-27", "PEN-30"]} />
+      <p className="max-w-measure">
+        קצבה אפשר לקבל מגיל <N v={figure("PEN-26", "early_retirement_age")} />, אבל הפטור ממס מתחיל רק בגיל הפרישה לפי החוק: <N v={figure("PEN-26", "retirement_age_men")} /> לגברים ו־<N v={figure("PEN-26", "retirement_age_women")} /> לנשים. לנשים שנולדו עד סוף שנות השישים הגיל מדורג לפי שנת הלידה.
+      </p>
+      <p className="max-w-measure">
+        הפטור הוא סכום, זהה לכל מי שזכאי, ולא חלק מהקצבה של כל אדם: <N v={figure("TXP-14", "exempt_share")} /> מתקרה של <N v={figure("TXP-14", "annuity_ceiling")} /> בחודש על <Term id="קצבה מזכה">קצבה מזכה</Term>. השיעור עולה בחוק ב־2027 וב־2028.
+      </p>
+      <p className="max-w-measure">
+        משיכה שלא כקצבה אפשרית רק במקרים מסוימים. החוק קורא לה <Term id="משיכה שלא כדין">משיכה שלא כדין</Term>, והיא ממוסה על כל הסכום שמשולם: הגבוה מבין <N v={figure("TXP-18", "minimum_rate")} /> והשיעור השולי <RuleRef id="TXP-18" />. יש חריגים, כמו הוצאות רפואיות גבוהות.
+      </p>
+      <RulesLine ids={["TXP-14", "TXP-15", "TXP-18", "PEN-26", "PEN-27", "PEN-30"]} />
+      <OpenSwitchTax />
     </>
   ),
   risks: ({ figure }) => (
     <>
-      <p className="max-w-measure">הנכסים מוחזקים בנאמנות, בנפרד מהרכוש של החברה המנהלת, ואי אפשר לעקל אותם. אם החברה המנהלת קורסת, הניהול עובר לחברה אחרת.</p>
+      <p className="max-w-measure">הנכסים מוחזקים בנאמנות, בנפרד מהרכוש של החברה המנהלת, ואי אפשר לעקל אותם. זכויות של עמית אפשר לעקל רק לפי כללים שהשר קובע. אם החברה המנהלת קורסת, הניהול עובר לחברה אחרת.</p>
       <p className="max-w-measure">
-        היתרה שלכם משתנה גם בלי קשר להשקעות: כל רבעון הקרן מעדכנת את כל החשבונות לפי העודף או הגירעון האקטוארי שנובע מגורמים דמוגרפיים, כמו תמותה ונכות; עודף או גירעון מתשואות חל רק על מקבלי הקצבה. דמי הביטוח יורדים מהחיסכון כל חודש. על <N v={figure("PEN-18", "guaranteed_share")} /> מהנכסים
-        המדינה משלימה תשואה ליעד של <N v={figure("PEN-18", "target_return")} /> בשנה, צמוד למדד, ונבדק כל חמש שנים <RuleRef id="PEN-18" />. השאר עולה ויורד עם המסלול.
+        היתרה שלכם משתנה גם בלי קשר להשקעות. כל רבעון הקרן מעדכנת את כל החשבונות לפי <Term id="איזון אקטוארי">איזון אקטוארי</Term>: העודף או הגירעון שנובעים מגורמים דמוגרפיים, כמו תמותה ונכות. עודף או גירעון מתשואות חל רק על מקבלי הקצבה. גם עלות הביטוח יורדת מהחיסכון כל חודש.
+      </p>
+      <p className="max-w-measure">
+        על <N v={figure("PEN-18", "guaranteed_share")} /> מהנכסים המדינה משלימה תשואה ליעד של <N v={figure("PEN-18", "target_return")} /> בשנה, צמוד למדד, והיעד נבדק כל חמש שנים <RuleRef id="PEN-18" />. השאר עולה ויורד עם המסלול.
       </p>
       <RulesLine ids={["PF-29", "REG-18", "REG-19", "REG-21", "PEN-18", "PEN-19", "PEN-15"]} />
     </>
   ),
-  use: () => (
+  use: ({ figure }) => (
     <>
       <p className="max-w-measure">
-        הבסיס של כל חוסך שכיר: המעסיק מפקיד רק לכאן או לקופת גמל לקצבה, ההפקדה שלכם מזכה בזיכוי ממס, וחלק מהנכסים בהבטחת תשואה. התמורה: הכסף נעול עד הפרישה ויוצא כקצבה, לא כסכום אחד.
-        לעומת קופת גמל לקצבה יש כאן ביטוח ואיזון אקטוארי, ודמי ניהול עם תקרה נמוכה יותר.
+        הבסיס של החיסכון לפרישה של שכירים: הפקדות המעסיק לפנסיה מגיעות רק לכאן או <Term prefix="ל" id="קופת גמל לקצבה">קופת גמל לקצבה</Term>, ההפקדה שלכם מורידה את המס, וחלק מהנכסים בהבטחת תשואה. המחיר: הכסף מיועד לקצבה, ומשיכה בסכום אחד אפשרית רק במקרים שבחוק ובתקנון.
       </p>
-      <RulesLine ids={["PEN-05", "TXP-01", "PEN-18", "PEN-35", "PF-04"]} />
+      <p className="max-w-measure">
+        לעומת קופת גמל לקצבה יש כאן ביטוח ואיזון אקטוארי. תקרת דמי הניהול מהחיסכון נמוכה יותר, <N v={figure("PF-04", "balance_cap")} /> מול <N v={figure("PF-02", "balance_cap")} />, ותקרת דמי הניהול מההפקדה גבוהה יותר, <N v={figure("PF-04", "deposit_cap")} /> מול <N v={figure("PF-02", "deposit_cap")} />.
+      </p>
+      <RulesLine ids={["PEN-05", "PEN-28", "PEN-30", "TXP-01", "PEN-18", "PEN-35", "PF-04", "PF-02"]} />
     </>
   ),
 };

@@ -184,7 +184,7 @@ export function FieldState({ entered, onReset, disabled, canReset = true }: { en
         <>
           <StateTag state="entered" />
           {canReset && (
-            <Button variant="quiet" className="text-sm -ms-2 min-h-target" onClick={onReset}>
+            <Button variant="quiet" className="text-sm leading-tight -ms-2 min-h-target" onClick={onReset}>
               <IconReset size={16} /> {buttons.resetOne}
             </Button>
           )}

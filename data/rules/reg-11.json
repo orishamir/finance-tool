@@ -2,9 +2,10 @@
   "id": "REG-11",
   "title": "If a fund manager or trustee fails",
   "title_he": "אם מנהל קרן או נאמן קורסים",
-  "text_he": "נאמן: כהונתו מסתיימת אם מונה לו כונס נכסים זמני או מפרק והצו לא בוטל בזמן; המנהל חייב אז להחתים נאמן מאושר אחר על הסכם הקרן, ואם אף נאמן לא מתחיל בתוך תקופת ההחלפה, הרשות רשאית להורות להעביר את הקרן למנהל אחר. מנהל: אישורו פוקע עם צו כינוס זמני או פירוק, ובביטול האישור ניהול הקרנות עובר למנהל אחר בתוך תקופה שיושב ראש הרשות קובע; אם לא, בית המשפט רשאי למנות כונס שיעביר אותן. הרשות רשאית לבקש לפרק קרן, ובית המשפט רשאי להורות במקום זאת על העברה למנהל אחר.",
+  "text_he": "נאמן: כהונתו מסתיימת אם מונה לו כונס נכסים זמני או מפרק זמני והצו לא הוסר בזמן; המנהל חייב אז לדאוג שנאמן מאושר אחר יחתום על הסכם הקרן ויתחיל לכהן בתוך תקופת ההחלפה, והנאמן הקודם ממשיך עד אז. אם אף נאמן לא מתחיל לכהן בתוך התקופה, הרשות רשאית להורות למנהל להעביר את הקרן למנהל אחר. מנהל: אישורו פוקע אם מונה לו כונס נכסים זמני או מפרק זמני והצו לא הוסר בזמן. במקרה כזה, כמו בביטול או בהתליה של האישור, החברה חייבת להעביר את ניהול הקרנות למנהל אחר שלא קשור אליה, בתוך תקופה שיושב ראש הרשות קובע; אם לא, בית המשפט רשאי, לבקשת הרשות, למנות כונס שיעביר אותן. הרשות רשאית לבקש לפרק קרן לטובת בעלי היחידות, ובית המשפט רשאי להורות במקום זאת על הסדר להמשך הפעילות או על העברה למנהל אחר. בצו פירוק, הנאמן הוא המפרק, אלא אם יש טעם למנות אחר. המפרק מממש את הנכסים ופודה את היחידות במועד הפירוק. הסעיפים האלה אומרים מי נכנס במקום; מה קורה לכסף של בעלי היחידות בחדלות הפירעון של החברה עצמה לא כתוב במפורש, וזו שאלה פתוחה.",
   "figure_names_he": {
-    "trustee_replacement_days": "ימים להחלפת נאמן לפני שהרשות רשאית להעביר את הקרן"
+    "trustee_replacement_days": "ימים להחלפת נאמן לפני שהרשות רשאית להעביר את הקרן",
+    "order_lift_days": "ימים להסרת צו כינוס זמני או פירוק זמני לפני שהכהונה או האישור מסתיימים"
   },
   "strength": "primary",
   "dimensions": [
@@ -21,7 +22,7 @@
         "publisher": "Israel Securities Authority",
         "strength": "primary"
       },
-      "checked": "2026-10-25",
+      "checked": "2026-11-02",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -31,10 +32,30 @@
       ],
       "state": "sourced",
       "notes": "If no new approved trustee starts within 90 days of the old one's office ending, the ISA may order the fund transferred to another manager."
+    },
+    "order_lift_days": {
+      "value": 60,
+      "unit": "days",
+      "source": {
+        "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf",
+        "title": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994 (נוסח רשות ניירות ערך), p.11, s.11(א)(4); p.14, s.14(ב)",
+        "publisher": "Israel Securities Authority",
+        "strength": "primary"
+      },
+      "checked": "2026-11-02",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "REG-11"
+      ],
+      "state": "sourced",
+      "notes": "A temporary receivership or liquidation order not lifted within 60 days, or a later date the ISA chair sets for special reasons, ends a trustee's office and lapses a manager's approval."
     }
   },
   "il_finance_file": "regulators-and-protection.md",
-  "checked": "2026-10-22",
+  "checked": "2026-11-02",
   "scope": "general",
   "sources": [
     {
@@ -45,10 +66,39 @@
       "publisher_he": "הכנסת",
       "kind": "law",
       "strength": "primary",
-      "locator": "p.11, ss.11, 12; p.14, ss.14, 15; p.67, s.104",
-      "locator_he": "עמוד 11, סעיפים 11, 12; עמוד 14, סעיפים 14, 15; עמוד 67, סעיף 104",
+      "locator": "pp.11-12, ss.11, 12; p.14, ss.14, 15; pp.67-68, s.104; p.69, s.105; p.71, ss.108, 109",
+      "locator_he": "עמודים 11 עד 12, סעיפים 11, 12; עמוד 14, סעיפים 14, 15; עמודים 67 עד 68, סעיף 104; עמוד 69, סעיף 105; עמוד 71, סעיפים 108, 109",
       "page": 11,
-      "checked": "2026-10-25"
+      "checked": "2026-11-02",
+      "quote": "ניתן צו בית משפט למינוי כונס נכסים זמני או מפרק זמני"
+    },
+    {
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf#page=14",
+      "title": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994 (נוסח רשות ניירות ערך)",
+      "title_he": "חוק השקעות משותפות בנאמנות, התשנ״ד-1994",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.14, s.15(ד)",
+      "locator_he": "עמוד 14, סעיף 15(ד)",
+      "page": 14,
+      "checked": "2026-11-02",
+      "quote": "תעביר החברה את ניהול הקרנות למנהל אחר"
+    },
+    {
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf#page=71",
+      "title": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994 (נוסח רשות ניירות ערך)",
+      "title_he": "חוק השקעות משותפות בנאמנות, התשנ״ד-1994",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.71, s.108(ה)",
+      "locator_he": "עמוד 71, סעיף 108(ה)",
+      "page": 71,
+      "checked": "2026-11-02",
+      "quote": "מפרק קרן יפדה את יחידות הקרן במועד הפירוק"
     }
   ]
 }

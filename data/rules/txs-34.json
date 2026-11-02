@@ -1,0 +1,77 @@
+{
+  "id": "TXS-34",
+  "title": "Who withholds when a unit is redeemed, a wind-up included",
+  "title_he": "מי מנכה מס כשיחידה נפדית, גם בפירוק",
+  "text_he": "המס מנוכה בשעת התשלום. על רווח ממכירת יחידה חוזר של רשות המסים מטיל את הניכוי על המפיץ, חבר הבורסה שדרכו היא נמכרת. הקביעה שכך הדבר גם בפירוק היא מסקנה, ועוד לא נבדק טופס של פירוק בפועל.",
+  "strength": "primary",
+  "dimensions": [
+    "reporting-obligation",
+    "tax-at-exit"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "tax-securities-israeli.md",
+  "checked": "2026-11-01",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=238",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "s.164",
+      "locator_he": "סעיף 164",
+      "quote": "בשעת התשלום",
+      "checked": "2026-11-01"
+    },
+    {
+      "url": "https://www.btl.gov.il/Laws1/02_0103_100228.pdf#page=1",
+      "title": "תקנות מס הכנסה (ניכוי מתמורה, מתשלום או מרווח הון במכירת נייר ערך, במכירת יחידה בקרן נאמנות או בעסקה עתידית), התשס\"ג-2002",
+      "title_he": "תקנות מס הכנסה (ניכוי מתמורה, מתשלום או מרווח הון במכירת נייר ערך, במכירת יחידה בקרן נאמנות או בעסקה עתידית), התשס״ג-2002",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "שר האוצר (נוסח משולב באתר המוסד לביטוח לאומי)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.1, reg. 1(א), definitions חייב, מוכר, מוסד כספי, צו קרנות נאמנות; reg. 3א",
+      "page": 1,
+      "checked": "2026-11-01"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/policy/income-tax-professional-inst-7-2003/he/Policy_IncomeTaxInst_hoz7-2003.pdf#page=21",
+      "title": "חוזר מס הכנסה 7/2003: הרפורמה במס הכנסה – מיסוי קרנות נאמנות ובעלי היחידות בהן",
+      "title_he": "חוזר מס הכנסה 7/2003: הרפורמה במס הכנסה – מיסוי קרנות נאמנות ובעלי היחידות בהן",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "pp.21-22, s.4.6",
+      "locator_he": "עמודים 21 עד 22, סעיף 4.6",
+      "page": 21,
+      "quote": "חלה על המפיץ",
+      "checked": "2026-11-01"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/SJCa7BPhZiMZ9l0U5Xe3n9TN+DoBVFvYjWC1z45JPDc=#page=18",
+      "title": "צו מס הכנסה (קביעת תשלומים ששולמו לבעל יחידה בקרן נאמנות כהכנסה), התשס\"ג-2002, קובץ התקנות 6218",
+      "title_he": "צו מס הכנסה (קביעת תשלומים ששולמו לבעל יחידה בקרן נאמנות כהכנסה), התשס\"ג-2002, קובץ התקנות 6218",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "checked": "2026-11-01",
+      "qualifier": "(as enacted)"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmTO82n6LewtS3~kBf4O~zss=#page=2",
+      "title": "תיקון התקנות וביטול תקנות הניכוי מתשלומים לבעל יחידה, קובץ התקנות 6449, 29.12.2005",
+      "title_he": "תיקון התקנות וביטול תקנות הניכוי מתשלומים לבעל יחידה, קובץ התקנות 6449, 29.12.2005",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "checked": "2026-11-01"
+    }
+  ]
+}
