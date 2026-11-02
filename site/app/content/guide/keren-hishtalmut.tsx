@@ -4,23 +4,40 @@
 import type { GuideContent } from "./types";
 import type { SiteValue } from "../../lib/value";
 import { Num, RuleRef, RulesLine, Term } from "../../components/provenance";
-import { Callout } from "../../components/kit";
+import { Callout, ProseList } from "../../components/kit";
+import { fmt } from "../../lib/format";
 
 const N = ({ v }: { v: SiteValue | null }) => (v ? <Num value={v} /> : null);
+const Whole = ({ v }: { v: SiteValue | null }) => (v ? <Num value={v} display={fmt.nisWhole} /> : null);
 
 export const content: GuideContent = {
   what: ({ figure }) => (
     <>
       <p className="max-w-measure">
-        חיסכון <Term prefix="ש" id="הפקדות המעסיק">המעסיק</Term> ואתם מפקידים אליו כל חודש מהשכר, בשיעורים שבהסכם העבודה. <Term id="עמית-עצמאי">עצמאים</Term> מפקידים בעצמם. הכסף מושקע <Term prefix="ב" id="מסלול השקעה">מסלול השקעה</Term> שבוחרים, וכל עוד הוא בקרן לא משלמים מס על הרווחים.
+        קרן השתלמות היא קופת גמל שבה הכסף מושקע <Term prefix="ב" id="מסלול השקעה">מסלול השקעה</Term> לבחירתכם.
       </p>
       <p className="max-w-measure">
-        <N v={figure("TXH-09", "lock_years")} /> שנים אחרי <Term id="מועד התשלום הראשון">התשלום הראשון</Term> אפשר <Term id="משיכה">למשוך</Term> את הכסף, והרווחים מההפקדות שעד התקרה פטורים ממס. למי שהגיע לגיל הפרישה, או למי שמושך לצורך השתלמות, התקופה היא <N v={figure("TXH-10", "lock_years")} /> שנים. אפשר למשוך גם קודם: הכסף לא נעול, אבל המשיכה ממוסה.
+        כל חודש <Term id="הפקדות המעסיק">המעסיק</Term> מפקיד לקרן כסף בנוסף לשכר הברוטו, ואתם מפקידים חלק מהשכר שלכם. האחוז שכל צד מעביר לקרן כתוב בהסכם העבודה. <Term id="עמית-עצמאי">עצמאים</Term> מפקידים בעצמם.
       </p>
       <p className="max-w-measure">
-        הטבת המס חלה על הפקדות של עד <N v={figure("KH-04", "employer_pct")} /> מהשכר מהמעסיק ועד <N v={figure("KH-04", "employee_pct")} /> מכם. החלק שלכם חייב להיות לפחות שליש ממה שהמעסיק מפקיד.
+        אחרי <N v={figure("TXH-09", "lock_years")} /> שנים <Term prefix="מ" id="מועד התשלום הראשון">ההפקדה הראשונה</Term> אפשר <Term id="משיכה">למשוך</Term> את הכסף בלי מס הכנסה ובלי <Term id="מס רווחי הון">מס רווחי הון</Term>. למי שהגיע <Term prefix="ל" id="גיל הפרישה">גיל הפרישה</Term> מספיקות <N v={figure("TXH-10", "lock_years")} /> שנים. גם על כסף שמושכים כדי לשלם על לימודים מספיקות <N v={figure("TXH-10", "lock_years")} /> שנים: בחוק זה נקרא "השתלמות", ומכאן שם הקרן. אילו לימודים נחשבים כתוב בתקנון של כל קרן.
       </p>
-      <RulesLine ids={["KH-01", "KH-02", "KH-04", "TXH-18", "TXH-09", "TXH-10", "KH-10"]} />
+      <p className="max-w-measure">אפשר למשוך גם לפני <N v={figure("TXH-09", "lock_years")} /> השנים, אבל אז משלמים:</p>
+      <ProseList
+        items={[
+          <>כסף שהמעסיק הפקיד לקרן: מס הכנסה, כמו על משכורת.</>,
+          <>הרווח מההשקעות: מס הכנסה ולא מס רווחי הון. מתחת לגיל <N v={figure("TXG-04", "age")} /> זה לפחות <N v={figure("TXG-03", "first_rate")} />.</>,
+          <>כסף שהפקדתם מהשכר: כבר שילמתם עליו מס הכנסה כשקיבלתם את השכר, אז לא משלמים עליו שוב.</>,
+          <>עצמאים: מס הכנסה, כמו על הכנסה מהעסק, על הרווח ועל ההפקדות שקיבלתם עליהן ניכוי ממס.</>,
+        ]}
+      />
+      <p className="max-w-measure">
+        יש גבול לכמה כסף מקבל את הפטור ממס. לשכירים זה עד <N v={figure("KH-04", "employer_pct")} /> מהשכר מהמעסיק ועד <N v={figure("KH-04", "employee_pct")} /> מהשכר מכם, ורק על שכר של עד <Whole v={figure("TXH-02", "determining_salary_cap")} /> בחודש. אז גם מי שמרוויח יותר בחודש מחשב את האחוזים לפי <Whole v={figure("TXH-02", "determining_salary_cap")} />. לעצמאים זה עד <Whole v={figure("TXH-08", "self_employed_benefited")} /> בשנה.
+      </p>
+      <p className="max-w-measure">
+        אפשר להפקיד גם יותר, אבל אז הפטור ממס כבר לא חל על הכסף הנוסף. על הרווח ממנו משלמים מס רווחי הון כשמושכים: עד <N v={figure("TXH-11", "rate")} />, ורק על החלק של הרווח שמעל האינפלציה. כסף שהמעסיק מפקיד מעל הגבול ממוסה במס הכנסה כבר באותו חודש, כמו משכורת.
+      </p>
+      <RulesLine ids={["KH-01", "KH-02", "KH-04", "KH-10", "TXH-09", "TXH-10", "TXH-13", "TXH-04", "TXG-03", "TXG-04", "TXH-02", "TXH-08", "TXH-11", "TXH-03"]} />
     </>
   ),
   who: () => (
