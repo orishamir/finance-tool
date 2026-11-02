@@ -148,7 +148,7 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
   const accountRange = (low: SiteValue, high: SiteValue) =>
     brokerCount && (
       <>
-        {story.range.inAccount} <Num value={brokerCount} /> {story.range.tariffs} <Num value={low} /> {story.range.to} <Num value={high} />.
+        {story.range.inAccount} <Num value={brokerCount} /> {story.range.tariffs} <Num value={high} /> {story.range.to} <Num value={low} />.
       </>
     );
   const trackNote = (typed: boolean, fund: { low: SiteValue; high: SiteValue; gap: SiteValue } | null, account: { low: SiteValue; high: SiteValue } | null) => (
@@ -169,46 +169,92 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
   // ---- the reader's own values, not the rule: that is in the guide's text above (founder, 2026-11-02)
   const lockWords = lockYears && <Num value={lockYears} display={fmt.years(lock)} />;
   const standingNum = (value: number, about: string, unit: SiteValue["unit"] = "nis") => figure(value, unit, "F-97", deposits, today, about, rules);
+  const capWords = cap && <Num value={cap} display={fmt.nisWhole} />;
+  const inflationWords = inflationPct && <Num value={inflationPct} />;
   const standingLine = (st: StudyStanding, taxed: boolean, employee: boolean) => {
     const words = story.standing;
+    const whole = (value: number, about: string) => <Num value={standingNum(value, about)} display={fmt.nisWhole(value)} />;
     const [own = 0, employer = 0] = st.over.map(Math.round);
     const over = own + employer;
     const per = st.per === "year" ? "year" : "month";
     if (over >= 1)
       return (
         <Sentence size="sm">
-          {words.over.lead} <Num value={standingNum(over, employee ? story.about.over : story.about.overSelf)} display={fmt.nisWhole(over)} /> {words.over[per]}
-          {employee && own >= 1 && employer >= 1 && (
+          {whole(over, employee ? story.about.over : story.about.overSelf)} {words.over[per]}{" "}
+          {employee && own >= 1 && employer >= 1 ? (
             <>
-              : <Num value={standingNum(own, story.about.overOwn)} display={fmt.nisWhole(own)} /> {words.over.own}
-              <Num value={standingNum(employer, story.about.overEmployer)} display={fmt.nisWhole(employer)} /> {words.over.employer}
+              {words.over.lead}: {whole(own, story.about.overOwn)} {words.over.own}
+              {whole(employer, story.about.overEmployer)} {words.over.employer}
+            </>
+          ) : employee ? (
+            own >= 1 ? words.over.leadOwn : words.over.leadEmployer
+          ) : (
+            `${words.over.lead}.`
+          )}{" "}
+          {taxed ? (
+            <>
+              {words.over.why} {lockWords}.
+            </>
+          ) : (
+            <>
+              {words.over.noTax} {lockWords}
+              {words.over.noTaxWhy}
             </>
           )}
-          {employee && (own < 1 || employer < 1) && (own >= 1 ? words.over.onlyOwn : words.over.onlyEmployer)}
-          {!employee && "."}
-          {taxed && (
+          {st.grows && (
             <>
               {" "}
-              {words.over.why} {lockWords}
-              {st.grows ? words.over.grows : "."}
+              {words.over.grows} {capWords} {words.over.growsAfter}
             </>
           )}
-          {!taxed && st.grows && ` ${words.over.growsAlone}`}
         </Sentence>
       );
-    if (st.firstOverYear !== null)
+    if (st.firstOverYear !== null) {
+      const yearWords = <Num value={standingNum(st.firstOverYear, story.about.crossYear, "years")} display={String(st.firstOverYear)} />;
       return (
         <Sentence size="sm">
-          {words.crossing.before} <Num value={standingNum(st.firstOverYear, story.about.crossYear, "years")} display={String(st.firstOverYear)} /> {employee ? words.crossing.employee : words.crossing.self}
+          {words.crossing.today}{" "}
+          {employee ? (
+            <>
+              {words.crossing.employee} {capWords} {words.crossing.employeeRise} {inflationWords} {words.crossing.employeeThen}
+              {yearWords}
+            </>
+          ) : (
+            <>
+              {words.crossing.self}
+              {selfBenefited && <Num value={selfBenefited} display={fmt.nisWhole} />} {words.crossing.selfRise} {inflationWords} {words.crossing.selfThen}
+              {yearWords}
+            </>
+          )}{" "}
+          {words.crossing.part}
+          {taxed ? words.crossing.taxed : "."}
+          {employee && ` ${words.crossing.ifNot}`}
         </Sentence>
       );
-    if (st.room >= 1)
-      return (
-        <Sentence size="sm">
-          {words.room.before} <Num value={standingNum(st.room, employee ? story.about.room : story.about.roomSelf)} display={fmt.nisWhole(st.room)} /> {words.room[per]}
-        </Sentence>
-      );
-    return <Sentence size="sm">{words.all}</Sentence>;
+    }
+    const [ownRoom = 0, employerRoom = 0] = st.room.map(Math.round);
+    if (ownRoom < 1 && employerRoom < 1) return null; // all of it is exempt at the limit: the strip says so already
+    const about = employee ? story.about.room : story.about.roomSelf;
+    return (
+      <Sentence size="sm">
+        {ownRoom >= 1 ? (
+          <>
+            {words.room.you} {whole(ownRoom, about)} {words.room[per]}
+            {employerRoom >= 1 && (
+              <>
+                {" "}
+                {words.room.andEmployer} {whole(employerRoom, about)}
+              </>
+            )}
+          </>
+        ) : (
+          <>
+            {words.room.employer} {whole(employerRoom, about)} {words.room[per]}
+          </>
+        )}
+        , {words.room.exempt}
+      </Sentence>
+    );
   };
   const settlementInputs = { ...common, ...(withheld ? { [story.early.rate]: withheld } : {}) };
   const earlyLine = (e: EarlySettlement) => (
@@ -227,10 +273,12 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
   );
   const notes = (n: { employee: boolean; st: StudyStanding | null; e: EarlySettlement | null; taxed: boolean; retTyped: boolean; feeTyped: boolean; fund: { low: SiteValue; high: SiteValue; gap: SiteValue } | null; account: { low: SiteValue; high: SiteValue } | null }) => (
     <div className="flex flex-col gap-5">
-      <div className="flex flex-col gap-1.5 text-sm max-w-measure">
-        {n.st && standingLine(n.st, n.taxed, n.employee)}
-        {n.e && earlyLine(n.e)}
-      </div>
+      {((n.st && standingLine(n.st, n.taxed, n.employee)) || n.e) && (
+        <div className="flex flex-col gap-1.5 text-sm max-w-measure">
+          {n.st && standingLine(n.st, n.taxed, n.employee)}
+          {n.e && earlyLine(n.e)}
+        </div>
+      )}
       <div className="flex flex-col gap-1.5 text-sm text-muted-foreground max-w-measure">
         {/* a return the person typed is theirs, not the site's assumption */}
         {n.retTyped ? (
@@ -243,7 +291,17 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
           </p>
         )}
         <p>{story.held.today}</p>
-        <p>{n.employee ? story.held.follows.employee : story.held.follows.self}</p>
+        <p>
+          {n.employee ? story.held.follows.employee : story.held.follows.self}
+          {inflationPct && <Num value={inflationPct} />}
+          {n.employee ? (
+            <>
+              {story.held.follows.employeeAfter} {capWords} {story.held.follows.employeeCapAfter}
+            </>
+          ) : (
+            story.held.follows.selfAfter
+          )}
+        </p>
         {!n.employee && fundName && brokerCount && (
           <p>
             {story.held.account} ״<bdi>{fundName}</bdi>״ (<bdi dir="ltr">{fundNumber}</bdi>) {story.held.tariff} <bdi>{brokerName}</bdi>, {story.held.pick} <Num value={brokerCount} /> {story.held.collected}
@@ -255,7 +313,7 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
     </div>
   );
   // the notes follow one another and only the card keeps its size (founder, 2026-11-03): its room is the longest notes of either kind of work, so what is under the card stays where it is
-  const longest = (employee: boolean, over: StudyStanding["over"], firstOverYear: number | null): StudyStanding => ({ over, room: 0, per: employee ? "month" : "year", firstOverYear, grows: employee });
+  const longest = (employee: boolean, over: StudyStanding["over"], firstOverYear: number | null): StudyStanding => ({ over, room: over.map(() => 0), per: employee ? "month" : "year", firstOverYear, grows: employee });
   const notesCases = [true, false].flatMap((employee) =>
     [longest(employee, employee ? [99_999, 99_999] : [99_999], 1), longest(employee, employee ? [0, 0] : [0], 12)].map((st) =>
       notes({ employee, st, e: employee ? { withheld: 9_999_999, back: 9_999_999 } : null, taxed: true, retTyped: true, feeTyped: true, fund: { low: big, high: big, gap: big }, account: employee ? null : { low: big, high: big } }),

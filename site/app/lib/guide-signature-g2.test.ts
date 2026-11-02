@@ -122,10 +122,10 @@ describe("study fund", () => {
     expect(crossing.over).toEqual([0, 0]);
     expect(crossing.firstOverYear).toBe(6);
     const room = stand({ ...employee, employerMonthly: 600 });
-    expect(room.room).toBeCloseTo(300, 6);
+    expect(room.room[1]).toBeCloseTo(300, 6);
     expect(room.firstOverYear).toBeNull();
     const exact = stand(employee);
-    expect(exact.room).toBeCloseTo(0, 6);
+    expect(exact.room[1]).toBeCloseTo(0, 6);
     expect(exact.firstOverYear).toBeNull();
     expect(exact.grows).toBe(false);
     const self12 = stand(self);

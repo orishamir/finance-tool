@@ -31,8 +31,8 @@ export function moneyStory(own: number, extra: number, runs: readonly RunResult[
 export interface LimitStanding {
   /** What each run deposits above the limit: a month's at today's amounts for an employee, the first tax year's as deposited for a self-employed person. */
   over: number[];
-  /** What the deposits could still grow by inside the limit, for the same period. */
-  room: number;
+  /** What each run's deposit could still grow by inside its limit, for the same period; one run's room is not the other's. */
+  room: number[];
   per: "month" | "year";
   /** The first year a deposit goes above the limit; null when none does in these runs. */
   firstOverYear: number | null;
@@ -44,7 +44,7 @@ export function limitStanding(runs: readonly RunResult[]): LimitStanding {
   const months = runs.flatMap((r) => (r.detail.firstExcessMonth === undefined ? [] : [r.detail.firstExcessMonth]));
   return {
     over: runs.map((r) => (yearly ? r.detail.excessFirstYear : r.detail.excessMonthly) ?? 0),
-    room: runs.reduce((a, r) => a + ((yearly ? r.detail.roomFirstYear : r.detail.roomMonthly) ?? 0), 0),
+    room: runs.map((r) => (yearly ? r.detail.roomFirstYear : r.detail.roomMonthly) ?? 0),
     per: yearly ? "year" : "month",
     firstOverYear: months.length ? Math.ceil(Math.min(...months) / 12) : null,
   };
