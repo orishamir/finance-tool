@@ -9,6 +9,8 @@ export interface MoneyStory {
   gain: number;
   /** The tax at the withdrawal, and the income tax, National Insurance and health on what the employer paid above the limit (F-52). */
   tax: number;
+  /** The part of `tax` paid out of the salary month by month, on what the employer paid above the limit; the rest is paid at the withdrawal. */
+  taxFromSalary: number;
   net: number;
 }
 
@@ -23,5 +25,5 @@ export function moneyStory(own: number, extra: number, runs: readonly RunResult[
   const face = (r: RunResult) => ((r.detail.employerDepositTax ?? 0) + (r.detail.employerSocial ?? 0)) / index(r);
   const tax = runs.reduce((a, r) => a + (r.taxAtExit + r.taxDuring) / index(r) + paid(r), 0);
   const net = runs.reduce((a, r) => a + r.real + face(r) - paid(r), 0);
-  return { own, extra, gain: net + tax - own - extra, tax, net };
+  return { own, extra, gain: net + tax - own - extra, tax, taxFromSalary: runs.reduce((a, r) => a + paid(r), 0), net };
 }

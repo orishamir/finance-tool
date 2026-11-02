@@ -244,6 +244,7 @@
   --chart-pile-extra: var(--palette-gold-200);
   --chart-pile-gain: var(--palette-teal-500);
   --chart-pile-tax: var(--palette-rose-400);
+  --chart-pile-salary-tax: var(--palette-orange-500); /* tax paid out of the salary month by month, apart from the tax at the withdrawal */
   --chart-pile-veil: color-mix(in oklch, var(--palette-neutral-975) 62%, transparent);
   --chart-pile-left: var(--palette-neutral-100);
   /* The comparison chart (design-system 6.5): the ranking is ordinal, so one hue in steps (lighter is better);
@@ -458,6 +459,7 @@
   --color-chart-pile-extra: var(--chart-pile-extra);
   --color-chart-pile-gain: var(--chart-pile-gain);
   --color-chart-pile-tax: var(--chart-pile-tax);
+  --color-chart-pile-salary-tax: var(--chart-pile-salary-tax);
   --color-chart-pile-veil: var(--chart-pile-veil);
   --color-chart-pile-left: var(--chart-pile-left);
   --color-chart-option-1: var(--chart-option-1);

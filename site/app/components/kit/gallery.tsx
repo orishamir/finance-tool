@@ -590,7 +590,7 @@ function Fields() {
       <Demo name="PileYears, PileStory" use={g.uses.PileStory}>
         <State label={g.states.interactive} wide>
           <PileYears
-            years={[null, { own: 7200, extra: 21600, gain: 3100, tax: 4900, net: 27000 }, { own: 10800, extra: 32400, gain: 6200, tax: 0, net: 49400 }, { own: 14400, extra: 43200, gain: 11800, tax: 0, net: 69400 }]}
+            years={[null, { own: 7200, extra: 21600, gain: 3100, tax: 4900, net: 27000 }, { own: 10800, extra: 32400, gain: 6200, tax: 0, net: 49400 }, { own: 14400, extra: 43200, gain: 11800, tax: 5000, taxFromSalary: 4000, net: 64400 }]}
             year={3}
             onYear={() => undefined}
             lockYear={3}
@@ -600,11 +600,12 @@ function Fields() {
             valueText="3"
           />
           <PileStory
-            slice={{ own: 10800, extra: 32400, gain: 6200, tax: 2500, net: 46900 }}
+            slice={{ own: 10800, extra: 32400, gain: 6200, tax: 2500, taxFromSalary: 1900, net: 46900 }}
             names={{ own: [g.sample.rowA], extra: [g.sample.rowB], gain: [g.sample.rowA], tax: [g.sample.rowB], left: [g.sample.rowA] }}
             fine={{ gain: g.sample.rowB }}
             number={(step) => ({ own: "10,800 ₪", extra: "+32,400 ₪", gain: "+6,200 ₪", tax: "−2,500 ₪", left: "46,900 ₪" })[step]}
             firstRow={0.25}
+            taxParts={{ salary: { word: g.sample.rowA, number: () => "1,900 ₪" }, withdrawal: { word: g.sample.rowB, number: () => "600 ₪" } }}
             label={g.sample.rowA}
           />
         </State>
