@@ -1,0 +1,938 @@
+<!doctype html><html lang="he" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>קרן השתלמות: שרטוט</title><style>:root{
+  --n-50:oklch(.978 .004 80);--n-100:oklch(.955 .005 80);--n-300:oklch(.82 .008 80);--n-400:oklch(.7 .009 80);--n-500:oklch(.58 .01 80);--n-600:oklch(.5 .01 80);--n-700:oklch(.4 .009 80);--n-850:oklch(.27 .007 80);--n-900:oklch(.235 .006 80);--n-950:oklch(.2 .005 80);--n-975:oklch(.17 .004 80);
+  --background:var(--n-975);--foreground:var(--n-100);--card:var(--n-950);--muted:var(--n-300);--border:var(--n-850);--primary:oklch(.82 .081 190);
+  --computed:oklch(.73 .168 302);--caution:oklch(.73 .149 70);--caution-border:oklch(.39 .084 70);
+  --own:var(--n-400);--employer:oklch(.84 .17 85);--gain:oklch(.64 .109 190);--tax:oklch(.73 .171 358);--tax-deep:oklch(.55 .19 358);
+  --up:oklch(.73 .135 150);--grid:var(--n-850);--axis:var(--n-700);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--background);color:var(--foreground)}
+body{font-family:Inter,Heebo,system-ui,sans-serif;font-size:16px;line-height:1.7;font-variant-numeric:tabular-nums}
+.doc{max-width:1000px;margin:0 auto;padding:32px;display:flex;flex-direction:column;gap:48px}
+h1{font-size:30px;line-height:1.25;margin:0;font-weight:700}
+h2{font-size:24px;line-height:1.3;margin:0;font-weight:600}
+h3{font-size:18px;line-height:1.4;margin:0;font-weight:600}
+p{margin:0}
+.muted{color:var(--muted)}.small{font-size:14px;line-height:1.6}.xs{font-size:13px;line-height:1.5}
+.n{unicode-bidi:isolate;direction:ltr;white-space:nowrap;display:inline-block}
+.c{border-bottom:1.5px dotted var(--computed)}
+.madeup{color:var(--caution)}
+.head{display:flex;flex-direction:column;gap:8px}
+.finds{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.find{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px 20px;display:flex;flex-direction:column;gap:4px}
+.find strong{font-size:24px;line-height:1.3;font-weight:600}
+.find .t{font-size:14px;color:var(--muted);font-weight:500}
+.option{display:flex;flex-direction:column;gap:12px}
+.opt-h{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px}
+.tag{display:inline-block;font-size:13px;font-weight:600;padding:1px 10px;border-radius:999px;border:1px solid var(--primary);color:var(--primary);white-space:nowrap;line-height:1.6}
+.site{border:1px solid var(--n-700);border-radius:14px;background:var(--background);padding:24px 28px 28px;display:flex;flex-direction:column;gap:20px}
+.site h3 .slot{display:inline-block;min-width:4.6em;text-align:start}
+.seg{display:inline-flex;border:1px solid var(--n-600);border-radius:10px;overflow:hidden;align-self:flex-start}
+.seg button{all:unset;cursor:pointer;min-height:44px;padding:0 18px;display:flex;align-items:center;font-size:14px;color:var(--muted)}
+.seg button.on{background:var(--primary);color:var(--background);font-weight:600}
+.strip{position:relative;touch-action:pan-y;cursor:ew-resize;user-select:none}
+.strip svg{display:block}
+.towers{display:flex;justify-content:center;gap:40px;direction:ltr}
+.tower{display:flex;flex-direction:column;gap:6px;direction:rtl}
+.tower .name{font-weight:600;font-size:16px}
+.tower .sub{font-size:13px;color:var(--muted);line-height:1.4;min-height:2.8em}
+.tower .big{font-size:32px;line-height:1.2;font-weight:600;height:40px;white-space:nowrap}
+.tower .under{font-size:13px;color:var(--muted);margin-top:-6px}
+.tower svg{display:block;direction:ltr}
+.tower .stage{position:relative}
+.tower .gap{position:absolute;inset:0;display:none;align-items:flex-end;font-size:13px;line-height:1.5;color:var(--caution);border-bottom:1px solid var(--axis);padding-bottom:12px}
+.coin{transition:fill .12s linear,stroke .12s linear}
+.c-none{fill:transparent;stroke:transparent}
+.c-own{fill:var(--own);stroke:oklch(0 0 0/.28)}
+.c-extra{fill:var(--employer);stroke:oklch(0 0 0/.28)}
+.c-gain{fill:var(--gain);stroke:oklch(0 0 0/.28)}
+.sentence{height:32px;text-align:center;font-size:18px;font-weight:500}
+.keytable{width:100%;table-layout:fixed;border-collapse:collapse;font-size:14px;line-height:1.5;font-variant-numeric:tabular-nums}
+.keytable th,.keytable td{padding:6px 8px;text-align:start;border-bottom:1px solid var(--border);white-space:nowrap}
+.keytable thead th{color:var(--muted);font-weight:500}
+.keytable tbody th{font-weight:400;white-space:normal}
+.keytable tr.total th,.keytable tr.total td{font-weight:600;border-bottom:0}
+.dot{display:inline-block;width:12px;height:12px;border-radius:50%;margin-inline-end:8px;vertical-align:-1px}
+.dot.own{background:var(--own)}.dot.extra{background:var(--employer)}.dot.gain{background:var(--gain)}
+.dot.tax{background:repeating-linear-gradient(45deg,var(--tax) 0 1.5px,transparent 1.5px 4px);outline:1.5px solid var(--tax);outline-offset:-1.5px}
+.legend{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:13px;color:var(--muted)}
+.selected{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px 16px;font-size:14px;line-height:1.5}
+.selected b{display:block;font-size:20px;font-weight:600}
+.note{font-size:13px;line-height:1.5;color:var(--muted)}
+.note[data-k="range"]{height:44px}
+.keytable tbody th,.keytable tbody td{height:40px}
+.keytable td{line-height:24px}
+.why{font-size:14px;line-height:1.6;color:var(--muted);max-width:44rem}
+.later{display:flex;flex-direction:column;gap:12px;padding-top:8px}
+@media (max-width:640px){
+  .doc{padding:16px;gap:40px}
+  h1{font-size:24px}
+  .finds{grid-template-columns:minmax(0,1fr)}
+  .site{padding:16px 14px 18px}
+  .towers{gap:16px}
+  .tower .big{font-size:22px;height:28px}
+  .sentence{font-size:16px;height:58px}
+  .selected b{font-size:16px}
+  .selected{font-size:13px}
+  .keytable{font-size:13px}
+  .keytable th,.keytable td{padding:4px}
+  .keytable thead th{white-space:normal;vertical-align:bottom}
+  .keytable tbody th,.keytable tbody td{height:48px}
+  .tower .sub{min-height:4.2em}
+  .note[data-k="range"]{height:100px}
+}
+</style></head><body>
+<div class="doc">
+  <header class="head">
+    <h1>קרן השתלמות: מה הכי מעניין, ושלוש דרכים לצייר את זה</h1>
+    <p class="muted">שרטוט לבחירה, עם המספרים של מנוע החישוב של האתר (2.11.2026). כל הציורים חיים: אפשר לגרור את השנים.</p>
+  </header>
+
+  <section class="finds">
+    <div class="find"><span class="t">הכסף של המעסיק</span><strong id="find-emp"></strong><p class="small muted" id="find-emp-t"></p></div>
+    <div class="find"><span class="t">הקפיצה בשנה 6</span><strong class="n" id="find-jump"></strong><p class="small muted" id="find-jump-t"></p></div>
+    <div class="find"><span class="t">הכסף שלכם לבד, בלי המעסיק</span><strong class="n" id="find-own"></strong><p class="small muted" id="find-own-t"></p></div>
+  </section>
+  <p class="note" id="assume"></p>
+
+  <section class="option">
+    <div class="opt-h"><h2>א. מגדלי מטבעות</h2><span class="tag">מומלץ</span></div>
+    <p class="why">מגדל מול מגדל, כסף אמיתי שאפשר לספור. את הכסף של המעסיק רואים בזהב, ואת הקפיצה רואים ברצועת השנים בלי לגרור. כשעוברים משנה 5 לשנה 6 המטבעות המקווקווים הופכים למלאים. אותו ציור עובד גם לעצמאים, עם החזר המס במקום המעסיק.</p>
+    <div class="site" id="opt-a"></div>
+    <div class="later">
+      <p class="small muted">אותו ציור שנה אחת אחר כך, בלי לגעת בכלום חוץ מהשנה:</p>
+      <div class="site" id="opt-a2"></div>
+    </div>
+  </section>
+
+  <section class="option">
+    <div class="opt-h"><h2>ב. מדרגות</h2></div>
+    <p class="why">מתחילים מחשבון ניירות ערך ורואים מה כל צעד מוסיף, דבר אחד בכל פעם. אבל המדרגה של המעבר לקרן כמעט לא נראית ליד הכסף של המעסיק, והיא גם מצב שאף אחד לא נמצא בו: קרן בלי המעסיק.</p>
+    <div class="site" id="opt-b"></div>
+  </section>
+
+  <section class="option">
+    <div class="opt-h"><h2>ג. כל השנים בעמודות</h2></div>
+    <p class="why">הכול בבת אחת, בלי שום פקד: לוחצים על שנה רק כדי לקרוא מספרים. הצוק הכי ברור כאן, אבל זה גרף עמודות רגיל, וקשה יותר להרגיש את היחס מול חשבון ניירות ערך.</p>
+    <div class="site" id="opt-c"></div>
+  </section>
+</div>
+<script>window.__DATA__={
+"rows": [
+{
+"y": 1,
+"own": {
+"net": 3652.107388371812,
+"tax": 37.99791569378815,
+"paid": 3600,
+"fees": 10.664050804820624
+},
+"emp": {
+"net": 8815.8033356318,
+"tax": 2254.5125765650005,
+"paid": 10800,
+"fees": 31.992152414461877
+},
+"acct": {
+"net": 3636.1364624401463,
+"tax": 24.898043068683293,
+"paid": 3600,
+"fees": 38.62476614843601
+},
+"acctWorst": 1884.5010689143294,
+"low": 12487.374085895237,
+"high": 12459.027106364314,
+"self": {
+"study": null,
+"broker": {
+"net": 6084.467919131332,
+"tax": 41.66307936279066,
+"paid": 6000,
+"fees": 40.850668820058466
+},
+"relief": null,
+"range": {
+"broker": null,
+"manager": null
+}
+}
+},
+{
+"y": 2,
+"own": {
+"net": 7392.95449232967,
+"tax": 147.29192777807464,
+"paid": 7200,
+"fees": 41.33723053715443
+},
+"emp": {
+"net": 17939.796775462568,
+"tax": 4680.942484860665,
+"paid": 21600,
+"fees": 124.01169161146329
+},
+"acct": {
+"net": 7406.994052927952,
+"tax": 94.51156008720791,
+"paid": 7200,
+"fees": 76.72267163259441
+},
+"acctWorst": 3900.8243029889168,
+"low": 25409.86220043881,
+"high": 25297.616182164973,
+"self": {
+"study": null,
+"broker": {
+"net": 12393.855397956511,
+"tax": 158.14655242188445,
+"paid": 12000,
+"fees": 81.7846839680195
+},
+"relief": null,
+"range": {
+"broker": null,
+"manager": null
+}
+}
+},
+{
+"y": 3,
+"own": {
+"net": 11227.755506185946,
+"tax": 329.60841924238423,
+"paid": 10800,
+"fees": 92.50404566459572
+},
+"emp": {
+"net": 27386.799942479636,
+"tax": 7285.291833805339,
+"paid": 32399.999999999996,
+"fees": 277.5121369937871
+},
+"acct": {
+"net": 11319.095189335123,
+"tax": 211.03158418272335,
+"paid": 10800,
+"fees": 114.393348086316
+},
+"acctWorst": 6047.814914208967,
+"low": 38790.910206198925,
+"high": 38534.339646901644,
+"self": {
+"study": null,
+"broker": {
+"net": 18939.118493819708,
+"tax": 353.1109036183169,
+"paid": 18000,
+"fees": 122.89106538001454
+},
+"relief": null,
+"range": {
+"broker": null,
+"manager": null
+}
+}
+},
+{
+"y": 4,
+"own": {
+"net": 15161.923980672345,
+"tax": 586.7754218674723,
+"paid": 14400,
+"fees": 164.67753021616534
+},
+"emp": {
+"net": 37172.24666539793,
+"tax": 10073.851542221517,
+"paid": 43200,
+"fees": 494.0325906484959
+},
+"acct": {
+"net": 15379.322543738703,
+"tax": 376.75592978990534,
+"paid": 14400,
+"fees": 151.69706100062396
+},
+"acctWorst": 8333.508179595025,
+"low": 52655.00808786448,
+"high": 52188.4905721924,
+"self": {
+"study": null,
+"broker": {
+"net": 25731.74848122455,
+"tax": 630.3951240924455,
+"paid": 24000,
+"fees": 164.2605812742619
+},
+"relief": null,
+"range": {
+"broker": null,
+"manager": null
+}
+}
+},
+{
+"y": 5,
+"own": {
+"net": 19201.081993856973,
+"tax": 920.7264995734865,
+"paid": 18000,
+"fees": 258.40033563741173
+},
+"emp": {
+"net": 47312.212175009714,
+"tax": 13053.21330528167,
+"paid": 54000,
+"fees": 775.201006912235
+},
+"acct": {
+"net": 19594.884686873113,
+"tax": 594.094407993168,
+"paid": 18000,
+"fees": 188.70479229585598
+},
+"acctWorst": 10764.009493377622,
+"low": 67027.74020238988,
+"high": 66280.1137882004,
+"self": {
+"study": null,
+"broker": {
+"net": 32783.79796767289,
+"tax": 994.0254280144468,
+"paid": 30000,
+"fees": 205.9859026633411
+},
+"relief": null,
+"range": {
+"broker": null,
+"manager": null
+}
+}
+},
+{
+"y": 6,
+"own": {
+"net": 24684.574519978632,
+"tax": 0,
+"paid": 21600,
+"fees": 374.24587080062145
+},
+"emp": {
+"net": 74053.72355993594,
+"tax": 0,
+"paid": 64800.00000000001,
+"fees": 1122.7376124018645
+},
+"acct": {
+"net": 23973.34247092863,
+"tax": 865.5742963714052,
+"paid": 21600,
+"fees": 225.48835058320242
+},
+"acctWorst": 13345.735295913699,
+"low": 99841.67009625504,
+"high": 98239.06197550445,
+"self": {
+"study": {
+"net": 49533.96384668189,
+"tax": 0,
+"paid": 36000,
+"fees": 753.2128239136794
+},
+"broker": {
+"net": 40107.90828441331,
+"tax": 1448.2243943040971,
+"paid": 36000,
+"fees": 248.16176369395944
+},
+"relief": 7776,
+"range": {
+"broker": {
+"low": 9426.055562268579,
+"high": 20247.89368566017
+},
+"manager": {
+"low": 9174.814048805689,
+"high": 9981.338977996478
+}
+}
+}
+},
+{
+"y": 7,
+"own": {
+"net": 29445.22269506961,
+"tax": 0,
+"paid": 25200,
+"fees": 512.8194942886598
+},
+"emp": {
+"net": 88335.66808520886,
+"tax": 0,
+"paid": 75600.00000000001,
+"fees": 1538.4584828659797
+},
+"acct": {
+"net": 28522.62621645079,
+"tax": 1193.8460757691114,
+"paid": 25200,
+"fees": 262.1204807908335
+},
+"acctWorst": 16047.738922580811,
+"low": 119325.6736484326,
+"high": 117083.17570309417,
+"self": {
+"study": {
+"net": 58999.50247976048,
+"tax": 0,
+"paid": 42000,
+"fees": 1030.9987509662265
+},
+"broker": {
+"net": 47717.33821432583,
+"tax": 1997.4205545047755,
+"paid": 42000,
+"fees": 290.88512813929276
+},
+"relief": 9072,
+"range": {
+"broker": {
+"low": 11282.16426543465,
+"high": 24378.11039549578
+},
+"manager": {
+"low": 10931.39231581585,
+"high": 12058.811887226897
+}
+}
+}
+},
+{
+"y": 8,
+"own": {
+"net": 34412.33495003275,
+"tax": 0,
+"paid": 28800,
+"fees": 674.7597611639475
+},
+"emp": {
+"net": 103237.0048500983,
+"tax": 0,
+"paid": 86400.00000000001,
+"fees": 2024.279283491843
+},
+"acct": {
+"net": 33251.053738312665,
+"tax": 1581.6894470239301,
+"paid": 28800,
+"fees": 298.6749774385683
+},
+"acctWorst": 18785.57306772684,
+"low": 139725.9749209527,
+"high": 136713.08867295104,
+"self": {
+"study": {
+"net": 68852.66622858252,
+"tax": 0,
+"paid": 48000,
+"fees": 1355.1336114763574
+},
+"broker": {
+"net": 55625.994122206495,
+"tax": 2646.258448590208,
+"paid": 48000,
+"fees": 334.2553623839147
+},
+"relief": 10368,
+"range": {
+"broker": {
+"low": 13226.67210637602,
+"high": 28786.764867713602
+},
+"manager": {
+"low": 12756.442125763991,
+"high": 14269.687715954497
+}
+}
+}
+},
+{
+"y": 9,
+"own": {
+"net": 39594.86540512855,
+"tax": 0,
+"paid": 32400.000000000007,
+"fees": 860.739726531084
+},
+"emp": {
+"net": 118784.59621538564,
+"tax": 0,
+"paid": 97200.00000000001,
+"fees": 2582.2191795932517
+},
+"acct": {
+"net": 38167.349251712556,
+"tax": 2032.019641316943,
+"paid": 32400.000000000007,
+"fees": 335.22680177930255
+},
+"acctWorst": 21606.166510771527,
+"low": 161085.66575118116,
+"high": 157161.5687009605,
+"self": {
+"study": {
+"net": 79110.7146918499,
+"tax": 0,
+"paid": 54000,
+"fees": 1726.8337162658415
+},
+"broker": {
+"net": 63848.461555901,
+"tax": 3399.609171545334,
+"paid": 54000,
+"fees": 378.3744152570104
+},
+"relief": 11664,
+"range": {
+"broker": {
+"low": 15262.253135948908,
+"high": 33488.41848483594
+},
+"manager": {
+"low": 14651.159242387002,
+"high": 16620.176260471155
+}
+}
+}
+},
+{
+"y": 10,
+"own": {
+"net": 45002.15651097341,
+"tax": 0,
+"paid": 36000.00000000001,
+"fees": 1071.4683083028049
+},
+"emp": {
+"net": 135006.46953292025,
+"tax": 0,
+"paid": 108000.00000000001,
+"fees": 3214.404924908415
+},
+"acct": {
+"net": 43280.66320114909,
+"tax": 2547.8940384787124,
+"paid": 36000.00000000001,
+"fees": 371.85220303514285
+},
+"acctWorst": 24496.80881566273,
+"low": 183449.86450826086,
+"high": 178462.75002040822,
+"self": {
+"study": {
+"net": 89791.64719959573,
+"tax": 0,
+"paid": 60000,
+"fees": 2147.386067423123
+},
+"broker": {
+"net": 72400.03839007801,
+"tax": 4262.581434677641,
+"paid": 60000,
+"fees": 423.34700508604277
+},
+"relief": 12960,
+"range": {
+"broker": {
+"low": 17391.60880951771,
+"high": 38498.36769626445
+},
+"manager": {
+"low": 16616.676392239955,
+"high": 19116.744142597687
+}
+}
+}
+},
+{
+"y": 11,
+"own": {
+"net": 50643.955890000616,
+"tax": 0,
+"paid": 39600.00000000001,
+"fees": 1307.6917116845266
+},
+"emp": {
+"net": 151931.8676700019,
+"tax": 0,
+"paid": 118800.00000000001,
+"fees": 3923.075135053581
+},
+"acct": {
+"net": 48600.593057422026,
+"tax": 3132.5191082839783,
+"paid": 39600.00000000001,
+"fees": 408.6288439664261
+},
+"acctWorst": 27458.27554447468,
+"low": 206865.81139726428,
+"high": 200652.19026156416,
+"self": {
+"study": {
+"net": 100914.23506703877,
+"tax": 0,
+"paid": 65999.99999999999,
+"fees": 2618.1510257163336
+},
+"broker": {
+"net": 81296.76958793701,
+"tax": 5240.533166784719,
+"paid": 65999.99999999999,
+"fees": 469.28081436032926
+},
+"relief": 14256,
+"range": {
+"broker": {
+"low": 19617.465479101753,
+"high": 43832.538426645355
+},
+"manager": {
+"low": 18654.05575072464,
+"high": 21766.125798322042
+}
+}
+}
+},
+{
+"y": 12,
+"own": {
+"net": 56530.433908316685,
+"tax": 0,
+"paid": 43200.00000000001,
+"fees": 1570.1949180028264
+},
+"emp": {
+"net": 169591.3017249501,
+"tax": 0,
+"paid": 129600,
+"fees": 4710.584754008481
+},
+"acct": {
+"net": 54137.20512990623,
+"tax": 3789.2576905015267,
+"paid": 43200.00000000001,
+"fees": 445.63593102254737
+},
+"acctWorst": 30491.801759024,
+"low": 231382.96824532963,
+"high": 223766.92980731433,
+"self": {
+"study": {
+"net": 112498.05524386962,
+"tax": 0,
+"paid": 71999.99999999999,
+"fees": 3140.565102414377
+},
+"broker": {
+"net": 90555.48365982034,
+"tax": 6339.083681529991,
+"paid": 71999.99999999999,
+"fees": 516.286692412147
+},
+"relief": 15552,
+"range": {
+"broker": {
+"low": 21942.571584049278,
+"high": 49507.567324903604
+},
+"manager": {
+"low": 20764.280864064494,
+"high": 24575.334917700922
+}
+}
+}
+}
+],
+"facts": {
+"returnPct": 7,
+"inflationPct": 2,
+"trackFee": 0.54,
+"rangeMin": 0.19,
+"rangeMax": 0.7,
+"rangeCount": 19,
+"brokerCount": 14,
+"employerPct": 7.5,
+"ownPct": 2.5,
+"determiningCap": 15712,
+"lockYears": 6,
+"lockYearsShort": 3,
+"firstBracket": 31,
+"taxRate": 25,
+"deductionPct": 4.5,
+"deductionCeiling": 293397
+},
+"names": {
+"trackName": "מיטב השתלמות עוקב מדד S&P500",
+"trackNumber": "13245",
+"fundName": "ילין לפידות מחקה (4D) S&P 500",
+"fundNumber": "5139282",
+"indexName": "מדד S&P 500",
+"brokerName": "פייר פיננשיאל טכנולוג'יז בע\"מ"
+},
+"salary": 12000,
+"own": 300,
+"emp": 900,
+"selfMonthly": 500
+};</script>
+<script>// Three drawings of the study-fund guide's signature, over the engine's figures in numbers.json. A mockup, not site code.
+const D = window.__DATA__;
+const LOCK = D.facts.lockYears;
+const YEARS = D.rows.length;
+const COIN = 1000;
+const row = (y) => D.rows[y - 1];
+const fmtN = (n) => Math.round(Math.abs(n)).toLocaleString("en-US");
+const nis = (n) => `<span class="n c">${n < 0 ? "−" : ""}${fmtN(n)} ₪</span>`;
+const signed = (n) => `<span class="n c">${n < 0 ? "−" : "+"}${fmtN(n)} ₪</span>`;
+const per = (n) => `<span class="n c">${n.toFixed(2)} ₪</span>`;
+const yrs = (y) => (y === 1 ? "שנה אחת" : y === 2 ? "שנתיים" : `${y} שנים`);
+const narrow = () => window.innerWidth <= 640;
+
+function fundOf(y, who) {
+  const r = row(y);
+  if (who === "employee") {
+    const net = r.own.net + r.emp.net, tax = r.own.tax + r.emp.tax;
+    return { own: r.own.paid, extra: r.emp.paid, gain: net + tax - r.own.paid - r.emp.paid, tax, net, paid: r.own.paid };
+  }
+  const s = r.self.study;
+  if (!s) return null;
+  return { own: s.paid, extra: r.self.relief, gain: s.net + s.tax - s.paid - r.self.relief, tax: s.tax, net: s.net, paid: s.paid };
+}
+function acctOf(y, who) {
+  const a = who === "employee" ? row(y).acct : row(y).self.broker;
+  return { own: a.paid, extra: 0, gain: a.net + a.tax - a.paid, tax: a.tax, net: a.net, paid: a.paid };
+}
+const MAX_GROSS = Math.max(...D.rows.map((_, i) => { const f = fundOf(i + 1, "employee"); return f.net + f.tax; }));
+
+// ---- the year strip: twelve small columns, the tax hatched on top, and a marker to drag
+function hatch(id, color, gap = 4) {
+  return `<pattern id="${id}" patternUnits="userSpaceOnUse" width="${gap}" height="${gap}" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="${gap}" stroke="${color}" stroke-width="1.6"/></pattern>`;
+}
+let uid = 0;
+function stripSvg(width, year, who) {
+  const id = `h${++uid}`;
+  const H = 132, top = 24, base = 104, band = width / YEARS, barW = Math.min(band - 4, 34);
+  const y = (v) => base - (v / MAX_GROSS) * (base - top);
+  let bars = "";
+  for (let i = 1; i <= YEARS; i++) {
+    const f = fundOf(i, who), x = (i - 0.5) * band - barW / 2;
+    if (!f) { bars += `<rect x="${x}" y="${base - 6}" width="${barW}" height="6" fill="none" stroke="var(--n-600)" stroke-dasharray="2 2"/>`; continue; }
+    const on = i === year;
+    bars += `<rect x="${x}" y="${y(f.net)}" width="${barW}" height="${base - y(f.net)}" rx="2" fill="${on ? "var(--n-50)" : "var(--n-600)"}"/>`;
+    if (f.tax > 1) bars += `<rect x="${x}" y="${y(f.net + f.tax)}" width="${barW}" height="${y(f.net) - y(f.net + f.tax)}" fill="url(#${id})" stroke="var(--tax)" stroke-width="1"/>`;
+  }
+  const lockX = (LOCK - 1) * band, mx = (year - 0.5) * band;
+  const ticks = Array.from({ length: YEARS }, (_, k) => k + 1).map((t) => `<text x="${(t - 0.5) * band}" y="${base + 18}" text-anchor="middle" font-size="13" fill="${t === year ? "var(--n-50)" : "var(--muted)"}" font-weight="${t === year ? 600 : 400}">${t}</text>`).join("");
+  return `<svg width="${width}" height="${H}" viewBox="0 0 ${width} ${H}" dir="ltr"><defs>${hatch(id, "var(--tax)")}</defs>
+    <text x="${lockX / 2}" y="13" text-anchor="middle" font-size="13" fill="var(--tax)" direction="rtl">לפני ${LOCK} שנים: מס</text>
+    <text x="${lockX + (width - lockX) / 2}" y="13" text-anchor="middle" font-size="13" fill="var(--muted)" direction="rtl">מ-${LOCK} שנים: פטור ממס</text>
+    <line x1="${lockX}" x2="${lockX}" y1="2" y2="${base + 4}" stroke="var(--n-500)" stroke-dasharray="3 3"/>
+    <line x1="0" x2="${width}" y1="${base}" y2="${base}" stroke="var(--axis)"/>${bars}${ticks}
+    <circle cx="${mx}" cy="${base + 13}" r="12" fill="none" stroke="var(--primary)" stroke-width="2"/></svg>`;
+}
+function strip(el, get, set) {
+  const draw = () => { el.innerHTML = stripSvg(el.clientWidth, get().year, get().who); };
+  const pick = (ev) => {
+    const b = el.getBoundingClientRect();
+    set(Math.max(1, Math.min(YEARS, Math.ceil(((ev.clientX - b.left) / b.width) * YEARS))));
+  };
+  el.addEventListener("pointerdown", (ev) => { el.setPointerCapture(ev.pointerId); pick(ev); });
+  el.addEventListener("pointermove", (ev) => { if (ev.buttons) pick(ev); });
+  return draw;
+}
+
+// ---- drawing A: two towers of coins
+function towerGrid() {
+  return narrow() ? { cols: 10, rows: 24, cell: Math.floor(((Math.min(window.innerWidth, 640) - 62 - 16) / 2) / 10) } : { cols: 20, rows: 12, cell: 19 };
+}
+function towerSvg(g, id) {
+  const W = g.cols * g.cell, H = g.rows * g.cell + 1, r = g.cell * 0.43;
+  let c = "";
+  for (let i = 0; i < g.cols * g.rows; i++) {
+    const col = i % g.cols, rw = Math.floor(i / g.cols);
+    c += `<circle class="coin c-none" data-i="${i}" cx="${(col + 0.5) * g.cell}" cy="${H - 1 - (rw + 0.5) * g.cell}" r="${r}" stroke-width="1"/>`;
+  }
+  return `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}"><defs>${hatch(id, "var(--tax)", 3.5)}</defs>${c}<line x1="0" x2="${W}" y1="${H - 0.5}" y2="${H - 0.5}" stroke="var(--axis)"/></svg>`;
+}
+function paintTower(svg, m, hatchId) {
+  const kinds = [];
+  if (m) {
+    const a = Math.round(m.own / COIN), b = Math.round((m.own + m.extra) / COIN), g = Math.round((m.own + m.extra + m.gain) / COIN), t = Math.round(m.tax / COIN);
+    for (let i = 0; i < g; i++) kinds.push(i >= g - t ? "tax" : i < a ? "c-own" : i < b ? "c-extra" : "c-gain");
+  }
+  svg.querySelectorAll("circle").forEach((c, i) => {
+    const k = kinds[i] ?? "c-none";
+    c.setAttribute("class", `coin ${k === "tax" ? "" : k}`);
+    if (k === "tax") { c.style.fill = `url(#${hatchId})`; c.style.stroke = "var(--tax)"; } else { c.style.fill = ""; c.style.stroke = ""; }
+  });
+}
+function towersBlock(el, start, opts = {}) {
+  const st = { year: start, who: "employee" };
+  const id = `t${++uid}`;
+  el.innerHTML = `
+    ${opts.fixed ? "" : `<div class="seg"><button data-w="employee">שכירים</button><button data-w="self">עצמאים</button></div>`}
+    <h3>מושכים את הכסף אחרי <span class="slot" data-k="yrs"></span></h3>
+    <div class="strip"></div>
+    <p class="sentence" data-k="line"></p>
+    <div class="towers">
+      <div class="tower"><div class="stage" data-k="stA"></div><div class="big" data-k="netA"></div><div class="under">נשאר בידיים</div><div class="name">חשבון ניירות ערך</div><div class="sub" data-k="subA"></div></div>
+      <div class="tower"><div class="stage" data-k="stF"><div class="gap" data-k="gap">לעצמאים אין עדיין מספר לפני ${LOCK} שנים: משיכה מוקדמת ממוסה כהכנסה מעסק, כולל ההפקדות שנוכו.</div></div><div class="big" data-k="netF"></div><div class="under">נשאר בידיים</div><div class="name">קרן השתלמות</div><div class="sub" data-k="subF"></div></div>
+    </div>
+    ${opts.fixed ? "" : `<table class="keytable"><colgroup><col style="width:44%"><col style="width:28%"><col style="width:28%"></colgroup>
+      <thead><tr><th scope="col">מה יש במגדל</th><th scope="col">חשבון ניירות ערך</th><th scope="col">קרן השתלמות</th></tr></thead>
+      <tbody>
+        <tr><th scope="row"><span class="dot own"></span>ההפקדות שלכם</th><td data-k="ownA"></td><td data-k="ownF"></td></tr>
+        <tr><th scope="row"><span class="dot extra"></span><span data-k="extraName"></span></th><td data-k="extraA"></td><td data-k="extraF"></td></tr>
+        <tr><th scope="row"><span class="dot gain"></span>רווח אחרי דמי ניהול</th><td data-k="gainA"></td><td data-k="gainF"></td></tr>
+        <tr><th scope="row"><span class="dot tax"></span>מס במשיכה</th><td data-k="taxA"></td><td data-k="taxF"></td></tr>
+        <tr class="total"><th scope="row">נשאר בידיים</th><td data-k="netA2"></td><td data-k="netF2"></td></tr>
+      </tbody></table>
+    <p class="note" data-k="range"></p>`}
+    <p class="note">מטבע אחד הוא ${COIN.toLocaleString("en-US")} ₪, בעיגול. מטבע מקווקו הולך למס.</p>`;
+  const $ = (k) => el.querySelector(`[data-k="${k}"]`);
+  const set = (k, html) => { const n = $(k); if (n) n.innerHTML = html; };
+  const stripEl = el.querySelector(".strip");
+  const g = towerGrid();
+  $("stA").insertAdjacentHTML("afterbegin", towerSvg(g, `${id}a`));
+  $("stF").insertAdjacentHTML("afterbegin", towerSvg(g, `${id}f`));
+  const drawStrip = strip(stripEl, () => st, (y) => { if (opts.fixed) return; st.year = y; paint(); });
+  function paint() {
+    const f = fundOf(st.year, st.who), a = acctOf(st.year, st.who), emp = st.who === "employee";
+    set("yrs", yrs(st.year));
+    drawStrip();
+    paintTower($("stA").querySelector("svg"), a, `${id}a`);
+    paintTower($("stF").querySelector("svg"), f, `${id}f`);
+    $("gap").style.display = f ? "none" : "flex";
+    set("subA", emp ? `${fmtN(D.own)} ₪ בחודש מכם` : `${D.selfMonthly} ₪ בחודש מכם`);
+    set("subF", emp ? `${fmtN(D.own)} ₪ בחודש מכם, ${fmtN(D.emp)} ₪ מהמעסיק` : `${D.selfMonthly} ₪ בחודש מכם, אחרי החזר המס`);
+    set("netA", nis(a.net)); set("netF", f ? nis(f.net) : `<span class="n">אין מספר</span>`);
+    set("line", f ? `כל שקל שהפקדתם נהיה ${per(f.net / f.paid)} בקרן <span style="white-space:nowrap">ו-${per(a.net / a.paid)}</span> בחשבון ניירות ערך.` : `כל שקל שהפקדתם נהיה ${per(a.net / a.paid)} בחשבון ניירות ערך.`);
+    set("extraName", emp ? "הפקדות המעסיק" : "החזר המס על ההפקדות");
+    const v = (x) => (f ? nis(x) : "");
+    set("ownA", nis(a.own)); set("ownF", v(f?.own));
+    set("extraA", `<span class="n">אין</span>`); set("extraF", v(f?.extra));
+    set("gainA", nis(a.gain)); set("gainF", v(f?.gain));
+    set("taxA", nis(-a.tax)); set("taxF", f ? nis(-f.tax) : "");
+    set("netA2", nis(a.net)); set("netF2", f ? nis(f.net) : "");
+    const r = row(st.year);
+    const rangeText = (lowF, highF, lowA, highA) => `בקרן, בין ${D.facts.rangeCount} המסלולים שנאספו: ${nis(lowF)} בדמי ניהול של ${D.facts.rangeMax}% עד ${nis(highF)} בדמי ניהול של ${D.facts.rangeMin}%. בחשבון, בין ${D.facts.brokerCount} התעריפים שנאספו: ${nis(lowA)} בתעריף היקר עד ${nis(highA)} בתעריף הזול.`;
+    if (emp) set("range", rangeText(r.high, r.low, r.acctWorst, r.acct.net));
+    else if (r.self.range?.manager) set("range", rangeText(r.self.study.paid + r.self.range.manager.low, r.self.study.paid + r.self.range.manager.high, r.self.broker.paid + r.self.range.broker.low, r.self.broker.paid + r.self.range.broker.high));
+    else set("range", "");
+    el.querySelectorAll(".seg button").forEach((b) => b.classList.toggle("on", b.dataset.w === st.who));
+  }
+  el.querySelectorAll(".seg button").forEach((b) => b.addEventListener("click", () => { st.who = b.dataset.w; paint(); }));
+  return paint;
+}
+
+// ---- drawing B: stairs in shekels
+function stairsBlock(el, start) {
+  const st = { year: start, who: "employee" };
+  el.innerHTML = `<h3>מושכים את הכסף אחרי <span class="slot" data-k="yrs"></span></h3><div class="strip"></div><div data-k="plot"></div><p class="note">בשקלים. אותם ${fmtN(D.own)} ₪ בחודש מכם בכל העמודות, וכל עמודה משנה דבר אחד.</p>`;
+  const stripEl = el.querySelector(".strip"), plot = el.querySelector('[data-k="plot"]');
+  const drawStrip = strip(stripEl, () => st, (y) => { st.year = y; paint(); });
+  function paint() {
+    const r = row(st.year), a = r.acct.net, ownGross = r.own.net + r.own.tax, empGross = r.emp.net + r.emp.tax, tax = r.own.tax + r.emp.tax, end = r.own.net + r.emp.net;
+    el.querySelector('[data-k="yrs"]').textContent = yrs(st.year);
+    drawStrip();
+    const W = plot.clientWidth, compact = W < 520, H = compact ? 300 : 340, top = compact ? 44 : 40, base = H - (compact ? 74 : 62), left = compact ? 44 : 62;
+    const y = (v) => base - (v / 240000) * (base - top);
+    const cols = [
+      { name: compact ? ["בחשבון", "ניירות ערך"] : ["אותו כסף בחשבון", "ניירות ערך"], from: 0, to: a, fill: "var(--own)", label: nis0(a) },
+      { name: ["אותו כסף", "עובר לקרן"], from: a, to: ownGross, fill: ownGross >= a ? "var(--up)" : "var(--tax-deep)", label: sign0(ownGross - a) },
+      { name: ["הכסף", "של המעסיק"], from: ownGross, to: ownGross + empGross, fill: "var(--employer)", label: sign0(empGross) },
+      { name: ["מס", "במשיכה"], from: ownGross + empGross, to: end, fill: "url(#sh)", stroke: "var(--tax)", label: tax > 1 ? sign0(-tax) : "0 ₪" },
+      { name: ["נשאר", "בידיים"], from: 0, to: end, fill: "var(--gain)", label: nis0(end), strong: true },
+    ];
+    const band = (W - left) / cols.length, bw = Math.min(band - (compact ? 10 : 28), 92);
+    let s = `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" dir="ltr"><defs>${hatch("sh", "var(--tax)")}</defs>`;
+    for (const t of [0, 50000, 100000, 150000, 200000]) s += `<line x1="${left}" x2="${W}" y1="${y(t)}" y2="${y(t)}" stroke="var(--grid)"/><text x="${left - 6}" y="${y(t) + 4}" text-anchor="end" font-size="${compact ? 11 : 13}" fill="var(--muted)">${t.toLocaleString("en-US")}</text>`;
+    cols.forEach((c, i) => {
+      const cx = left + (i + 0.5) * band, x = cx - bw / 2, hi = Math.max(c.from, c.to), lo = Math.min(c.from, c.to), h = Math.max(y(lo) - y(hi), hi - lo > 1 ? 2 : 0);
+      s += `<rect x="${x}" y="${y(hi)}" width="${bw}" height="${h}" rx="3" fill="${c.fill}" ${c.stroke ? `stroke="${c.stroke}"` : ""}/>`;
+      if (i < cols.length - 1) s += `<line x1="${x + bw}" x2="${x + band}" y1="${y(c.to)}" y2="${y(c.to)}" stroke="var(--n-500)" stroke-dasharray="3 3"/>`;
+      s += `<text x="${cx}" y="${top - 16}" text-anchor="middle" font-size="${compact ? 11 : 15}" font-weight="${c.strong ? 700 : 500}" fill="var(--foreground)" direction="ltr">${compact ? c.label.replace(" ₪", "") : c.label}</text>`;
+      c.name.forEach((n, k) => { s += `<text x="${cx}" y="${base + 20 + k * (compact ? 15 : 18)}" text-anchor="middle" font-size="${compact ? 11 : 13}" fill="var(--muted)" direction="rtl">${n}</text>`; });
+    });
+    plot.innerHTML = s + "</svg>";
+  }
+  return paint;
+}
+const nis0 = (n) => `${fmtN(n)} ₪`;
+const sign0 = (n) => `${n < 0 ? "−" : "+"}${fmtN(n)} ₪`;
+
+// ---- drawing C: all the years at once, in shekels
+function yearsBlock(el, start) {
+  const st = { year: start };
+  el.innerHTML = `<div class="legend"><span><span class="dot own"></span>ההפקדות שלכם</span><span><span class="dot extra"></span>הפקדות המעסיק</span><span><span class="dot gain"></span>רווח אחרי דמי ניהול</span><span><span class="dot tax"></span>מס במשיכה</span><span>▬ אותם ${fmtN(D.own)} ₪ בחודש בחשבון ניירות ערך, אחרי מס</span></div><div class="strip" data-k="plot"></div><div class="selected" data-k="sel"></div>`;
+  const plot = el.querySelector('[data-k="plot"]'), sel = el.querySelector('[data-k="sel"]');
+  function paint() {
+    const W = plot.clientWidth, compact = W < 520, H = compact ? 320 : 400, top = 44, base = H - 40, left = compact ? 44 : 62;
+    const band = (W - left) / YEARS, bw = Math.min(band - (compact ? 3 : 10), 52);
+    const y = (v) => base - (v / 240000) * (base - top);
+    let s = `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" dir="ltr"><defs>${hatch("yh", "var(--tax)")}</defs>`;
+    for (const t of [0, 50000, 100000, 150000, 200000]) s += `<line x1="${left}" x2="${W}" y1="${y(t)}" y2="${y(t)}" stroke="var(--grid)"/><text x="${left - 6}" y="${y(t) + 4}" text-anchor="end" font-size="${compact ? 11 : 13}" fill="var(--muted)">${t.toLocaleString("en-US")}</text>`;
+    const lockX = left + (LOCK - 1) * band;
+    let linePts = "";
+    for (let i = 1; i <= YEARS; i++) {
+      const f = fundOf(i, "employee"), cx = left + (i - 0.5) * band, x = cx - bw / 2, on = i === st.year;
+      const gross = f.net + f.tax;
+      const seg = (from, to, fill, extra = "") => (to > from ? `<rect x="${x}" y="${y(to)}" width="${bw}" height="${y(from) - y(to)}" fill="${fill}" ${extra}/>` : "");
+      // the solid part ends where the tax starts, so the hatched part sits on top of what is left
+      const a = Math.min(f.own, f.net), b = Math.min(f.own + f.extra, f.net);
+      s += seg(0, a, "var(--own)") + seg(a, b, "var(--employer)") + seg(b, f.net, "var(--gain)");
+      if (f.tax > 1) s += seg(f.net, gross, "url(#yh)", 'stroke="var(--tax)"');
+      if (on) s += `<rect x="${x - 2}" y="${y(gross) - 2}" width="${bw + 4}" height="${base - y(gross) + 2}" fill="none" stroke="var(--n-50)" stroke-width="1.5" rx="2"/>`;
+      s += `<text x="${cx}" y="${base + 18}" text-anchor="middle" font-size="13" fill="${on ? "var(--n-50)" : "var(--muted)"}" font-weight="${on ? 600 : 400}">${i}</text>`;
+      linePts += `${linePts ? "L" : "M"}${cx} ${y(row(i).acct.net)}`;
+    }
+    s += `<path d="${linePts}" fill="none" stroke="var(--n-50)" stroke-width="2"/>`;
+    s += `<line x1="${lockX}" x2="${lockX}" y1="${top - 26}" y2="${base}" stroke="var(--n-500)" stroke-dasharray="3 3"/>`;
+    const jump = fundOf(LOCK, "employee").net - fundOf(LOCK - 1, "employee").net;
+    s += `<text x="${lockX - 8}" y="${top - 12}" text-anchor="start" font-size="${compact ? 12 : 14}" font-weight="600" fill="var(--foreground)" direction="rtl">${compact ? "" : "בשנה הזאת: "}\u2066+${fmtN(jump)} ₪\u2069</text>`;
+    s += `<text x="${lockX + 8}" y="${top - 12}" text-anchor="end" font-size="13" fill="var(--muted)" direction="rtl">מ-${LOCK} שנים: פטור ממס</text>`;
+    s += `<text x="${(left + W) / 2}" y="${H - 2}" text-anchor="middle" font-size="13" fill="var(--muted)" direction="rtl">שנים עד המשיכה</text>`;
+    plot.innerHTML = s + "</svg>";
+    const f = fundOf(st.year, "employee");
+    sel.innerHTML = `<div>אחרי ${yrs(st.year)}, נשאר בידיים<b>${nis(f.net)}</b></div><div>מתוך זה הפקדתם<b>${nis(f.paid)}</b></div><div>אותו כסף בחשבון ניירות ערך<b>${nis(row(st.year).acct.net)}</b></div>`;
+  }
+  plot.addEventListener("pointerdown", (ev) => { plot.setPointerCapture(ev.pointerId); pick(ev); });
+  plot.addEventListener("pointermove", (ev) => { if (ev.buttons) pick(ev); });
+  function pick(ev) {
+    const b = plot.getBoundingClientRect(), left = b.width < 520 ? 44 : 62;
+    st.year = Math.max(1, Math.min(YEARS, Math.ceil(((ev.clientX - b.left - left) / (b.width - left)) * YEARS)));
+    paint();
+  }
+  return paint;
+}
+
+// ---- the page
+const f5 = fundOf(LOCK - 1, "employee"), f6 = fundOf(LOCK, "employee"), f4 = fundOf(LOCK - 2, "employee"), f7 = fundOf(LOCK + 1, "employee");
+document.querySelector("#find-jump").innerHTML = `+${fmtN(f6.net - f5.net)} ₪`;
+document.querySelector("#find-jump-t").innerHTML = `בין משיכה אחרי ${LOCK - 1} שנים למשיכה אחרי ${LOCK}: ${nis(f5.net)} מול ${nis(f6.net)}, כי המס נעלם. שנה קודם הקפיצה היא ${nis(f5.net - f4.net)}, שנה אחר כך ${nis(f7.net - f6.net)}.`;
+document.querySelector("#find-own").innerHTML = `+${fmtN(row(10).own.net - row(10).acct.net)} ₪`;
+document.querySelector("#find-own-t").innerHTML = `אחרי 10 שנים, אותם ${fmtN(D.own)} ₪ בחודש בקרן מול חשבון ניירות ערך. אחרי ${LOCK - 1} שנים הקרן דווקא ${nis(row(LOCK - 1).acct.net - row(LOCK - 1).own.net)} פחות. זה כל מה שהגרפיקה מראה היום.`;
+document.querySelector("#find-emp").innerHTML = `<span class="n">+${fmtN(D.emp)} ₪</span> בחודש`;
+document.querySelector("#find-emp-t").innerHTML = `על כל שקל שלכם נכנסים עוד ${D.emp / D.own} שקלים מהמעסיק: <span class="n">${fmtN(D.own)} ₪</span> בחודש הופכים ל-<span class="n">${fmtN(D.own + D.emp)} ₪</span>. הגרפיקה היום משאירה את זה בחוץ.`;
+document.querySelector("#assume").innerHTML = `הדוגמה: שכר ברוטו ${fmtN(D.salary)} ₪ בחודש (הדוגמה של האתר). <span class="madeup">⚠ הנחה: אתם ${D.facts.ownPct}% והמעסיק ${D.facts.employerPct}%, עד התקרה בחוק. האחוזים האמיתיים כתובים בהסכם העבודה.</span> תשואה ${D.facts.returnPct}% בשנה, אינפלציה ${D.facts.inflationPct}%, הכול בכסף של היום. הקרן: מסלול ״<bdi>${D.names.trackName}</bdi>״ (<bdi>${D.names.trackNumber}</bdi>), דמי ניהול ${D.facts.trackFee}%. החשבון: קרן ״<bdi>${D.names.fundName}</bdi>״ (<bdi>${D.names.fundNumber}</bdi>) בתעריף של <bdi>${D.names.brokerName}</bdi>, החשבון שמשאיר הכי הרבה מבין ${D.facts.brokerCount} שנאספו. עצמאים: ${D.selfMonthly} ₪ בחודש.`;
+const paints = [
+  towersBlock(document.querySelector("#opt-a"), +(new URLSearchParams(location.search).get("y") ?? LOCK - 1)),
+  towersBlock(document.querySelector("#opt-a2"), LOCK, { fixed: true }),
+  stairsBlock(document.querySelector("#opt-b"), LOCK - 1),
+  yearsBlock(document.querySelector("#opt-c"), LOCK - 1),
+];
+const all = () => paints.forEach((p) => p());
+all();
+window.__ready = true;
+</script>
+</body></html>
