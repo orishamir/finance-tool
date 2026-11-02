@@ -1,7 +1,7 @@
 {
   "id": "real-vs-nominal",
   "he": "ריאלי או נומינלי",
-  "one_line": "האם המס מחושב רק על הרווח שמעבר לעליית המדד, או על כל הרווח בשקלים",
+  "one_line": "האם המס מחושב רק על הרווח שמעבר לאינפלציה, או על כל הרווח בשקלים",
   "source": {
     "url": "docs/product.md#33-dimension-checklist-or-what-you-are-not-considering",
     "title": "product.md 3.3 and glossary.md section 2",

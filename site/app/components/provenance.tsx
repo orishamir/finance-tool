@@ -479,10 +479,22 @@ function RulesListSheet({ ids, name, data, headId }: { ids: readonly string[]; n
  */
 export function Term({ id, children, prefix }: { id: string; children?: ReactNode; prefix?: string }) {
   const open = useOpen();
+  // An inline element, not a <button>: a line may break after a button, which left a sentence's full stop alone at the start of the next line (2026-11-02).
   const button = (
-    <button type="button" className="term" onClick={(e) => open({ kind: "term", id }, e.currentTarget)}>
+    <span
+      role="button"
+      tabIndex={0}
+      className="term"
+      onClick={(e) => open({ kind: "term", id }, e.currentTarget)}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          open({ kind: "term", id }, e.currentTarget);
+        }
+      }}
+    >
       {children ?? id}
-    </button>
+    </span>
   );
   return prefix ? (
     <span className="whitespace-nowrap">
