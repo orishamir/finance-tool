@@ -10,7 +10,7 @@ import { fmt } from "../../lib/format";
 import { isChild, liquidityOf, type HoldingView, type HoldingsCtx, type Liquidity } from "../../lib/holdings";
 import { IconAlert, IconClock, IconLock } from "../icons";
 import { IconDash, IconHelp, IconOk } from "../compare/icons";
-import { LeadTail, Num, RuleRef } from "../provenance";
+import { LeadTail, Num, RuleRef, RulesChip } from "../provenance";
 import { Button, Card, cx, Disclosure, KeyValue, Sentence, Tag } from "../kit";
 import { ImportedTag } from "../transfer/imported-tag";
 import { IconDown, IconUp } from "../compare/icons";
@@ -334,7 +334,7 @@ function DecisionRow({ label, text, ids, ctx, children }: { label: string; text:
         </p>
       ) : (
         <p className="text-sm max-w-measure">
-          {text} {ids.map((id) => <RuleRef key={id} id={id} />)}
+          {text} <RulesChip ids={ids} />
         </p>
       )}
       {children}

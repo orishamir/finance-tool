@@ -6,7 +6,7 @@ import { headlineGap, type CapView, type LineView, type NoRefReason, type Refere
 import { anyWeak, type SiteValue } from "../../lib/value";
 import { fmt } from "../../lib/format";
 import { IconAlert, IconExternal, IconLock } from "../icons";
-import { IdRef, LeadTail, Num, NumberLegend, RuleRef, StateTag, StrengthLabel } from "../provenance";
+import { IdRef, LeadTail, Num, NumberLegend, RuleRef, RulesChip, StateTag, StrengthLabel } from "../provenance";
 import { Callout, Card, cx, LongestCase, Sentence, Tag } from "../kit";
 import { IconNotWorth, IconPhone, IconSwap, IconUnevaluated } from "./icons";
 
@@ -344,9 +344,7 @@ export function CapLine({ cap }: { cap: CapView }) {
     return (
       <p className="text-sm text-muted-foreground flex flex-wrap items-center gap-x-2 gap-y-1">
         <span>{c.eachManager}</span>
-        {cap.ruleIds.map((id) => (
-          <RuleRef key={id} id={id} />
-        ))}
+        <RulesChip ids={cap.ruleIds} />
       </p>
     );
   if (cap.state === "open")
@@ -361,9 +359,8 @@ export function CapLine({ cap }: { cap: CapView }) {
   return (
     <Sentence size="sm" tone="muted">
       {c.yearly} <Num value={cap.rate} /> {cap.word === "per-year" ? c.perYear.trim() : c.perDeposit.trim()}
-      {cap.ruleIds.map((id) => (
-        <span key={id}> <RuleRef id={id} /></span>
-      ))}
+      {" "}
+      <RulesChip ids={cap.ruleIds} />
     </Sentence>
   );
 }

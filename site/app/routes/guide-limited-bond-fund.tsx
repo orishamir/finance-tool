@@ -41,7 +41,7 @@ export default function GuideLimitedBondFund() {
             <NumberLegend term />
           </header>
           {copy.sections.map((s) => (
-            <GuideSection key={s.id} id={s.id} title={s.title} rulesToggle>
+            <GuideSection key={s.id} id={s.id} title={s.title}>
               {body[s.id as keyof typeof body]}
             </GuideSection>
           ))}

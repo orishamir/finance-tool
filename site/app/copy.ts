@@ -200,8 +200,6 @@ export const guide = {
     { id: "check", title: "מה האתר לקח בחשבון" }, // audit 2026-10-24 (A42): was "מה לבדוק"
     { id: "terms", title: "מונחים" },
   ] as const,
-  // audit 2026-10-24 (A42, A43, A86)
-  rulesToggle: { show: "הצגת החוקים והכללים", hide: "הסתרת החוקים והכללים" },
   exposuresRow: "במה אפשר להשקיע בתוכו:",
   // D6 (2026-10-26): on a wrapper's page, the securities bought inside it that have a page of their own (makam, bonds, money-market funds)
   securitiesRow: "מה קונים בתוכו, ולכל אחד עמוד משלו:",
@@ -243,7 +241,7 @@ export const guide = {
   selfEmployedOnly: "לעצמאים בלבד",
   whoLine: "לכל חברה יש עמוד עם כל המסלולים שלה.",
   allCompanies: "כל החברות",
-  feeTable: { type: "סוג", base: "על מה נגבה", cap: "תקרה", rules: "חוקים וכללים" },
+  feeTable: { type: "סוג", base: "על מה נגבה", cap: "תקרה" },
   feeNote: "אלה התקרות שבחוק. כמה כל חברה גובה בפועל, בכל מסלול, מופיע בעמוד של החברה.",
   feeNoteOther: "הסכומים בפועל נקבעים אצל הגורם המציע. כאן מופיעים סוגי העלויות, ותקרה כשיש תקרה בחוק.",
   taxSteps: { deposit: "בהפקדה", during: "כל עוד הכסף בפנים", exit: "כשמושכים" },
@@ -335,6 +333,7 @@ export const provenance = {
 } as const;
 
 export const rule = {
+  set: "חוקים וכללים",
   title: "חוק או כלל",
   conditions: "תנאים וחריגים",
   figures: "המספרים",
@@ -781,11 +780,7 @@ export const guideBlocks = {
     atAge: { before: "מגיל", after: "" },
     atChildAge: { before: "כשהילד מגיע לגיל", after: "" },
     tradingDay: "בכל יום מסחר, במחיר של אותו יום",
-    otherKind: "לפי התנאים שבנוסח שלמטה",
-    textNote: "הנוסח המלא, כפי שהוא במקור:",
-    // audit 2026-10-24 (A22): the Hebrew text of the rules the sentence cites, else the English wording, said to be English
-    textNoteHe: "הפירוט המלא, לפי החוקים והכללים:",
-    textNoteEn: "הנוסח באנגלית:",
+    otherKind: "לפי התנאים שבחוקים ובכללים",
   },
   fees: {
     balance: { name: "דמי ניהול מחיסכון", base: "כל שנה, מכל הכסף שנצבר", after: "בשנה" },
@@ -3950,6 +3945,7 @@ export const kit = {
       FilterChip: "מסנן שדולק או כבוי, עם מספר השורות שיוצגו כשהוא דולק. למספר יש מקום קבוע, ומסנן שלא יציג כלום מתעמעם ונשאר במקומו.",
       AskField: "השדה הגדול שהעמוד נפתח בו: נכנס בו משפט שלם, ו־× מרוקן אותו.",
       DidYouKnow: "״הידעת?״: עובדות קצרות מהחוקים והכללים, כל אחת עם המקור שלה והדרך לפירוט המלא. כל הכרטיסים באותו גובה.",
+      RulesLine: "החוקים והכללים שמאחורי עובדה: שבב אחד עם המספר שלהם, השורה האחרונה בבלוק, ולעולם לא עמודה בטבלה. שבב שפותח רשימה של השמות המלאים, וכלל אחד נפתח ישר בכרטיס. בלי חוקים וכללים אין שבב. גר ב־provenance.tsx, לא ב־kit.",
       IdRef: "שבב לכל מזהה שהאתר מציג: חוק, נוסחה, פרמטר או שאלה פתוחה. לא כותבים מזהה כטקסט חשוף. גר ב־provenance.tsx, לא ב־kit.",
       Button: "Button לפעולה, LinkButton למעבר לעמוד. כפתור primary אחד בכל מסך.",
       Tag: "תווית קצרה עם גוון: מצב, סוג, דגל. הגוון לא עובד לבד: מוסיפים מילה או אייקון.",

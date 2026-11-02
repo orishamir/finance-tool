@@ -6,7 +6,7 @@ import type { CoverageRow, ListedOption, ReasonView } from "../../lib/compare";
 import { addMonths, equityFit, fitDropOf, openConstraintCode } from "../../lib/compare";
 import { Tpl } from "../exposure-mode/tpl";
 import type { FieldKey } from "../../lib/goal";
-import { Num, RuleRef } from "../provenance";
+import { Num, RulesChip } from "../provenance";
 import type { ResultCtx } from "./ctx";
 
 const profileFields: FieldKey[] = ["age", "salary", "employment"];
@@ -29,9 +29,7 @@ function Rules({ ids }: { ids: readonly string[] }) {
   if (ids.length === 0) return null;
   return (
     <span className="inline-flex flex-wrap items-center gap-1 ms-1.5 align-middle">
-      {ids.map((id) => (
-        <RuleRef key={id} id={id} />
-      ))}
+      <RulesChip ids={ids} />
     </span>
   );
 }

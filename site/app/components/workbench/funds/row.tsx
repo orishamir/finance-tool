@@ -6,7 +6,7 @@ import { r4workbench as c } from "../../../copy";
 import type { FundVariantRowView, VariantReason } from "../../../lib/variants";
 import { IconAlert, IconDrillIn, IconLock } from "../../icons";
 import { IconDash, IconDashed } from "../../compare/icons";
-import { IdText, Num, RuleRef } from "../../provenance";
+import { IdText, Num, RuleRef, RulesLine } from "../../provenance";
 import { Card, cx, RankBadge, Tag } from "../../kit";
 import { CopyForFounder, FundFeesBlock, RowTags, SecurityNumber, TradingLine } from "./parts";
 
@@ -183,14 +183,7 @@ export function VariantDetail({ row }: { row: FundVariantRowView }) {
         </div>
       </dl>
       {row.reason?.code === "g18" && <p className="text-sm text-blocked-foreground">{reasonText(row.reason)}</p>}
-      {row.ruleIds.length > 0 && (
-        <p className="text-xs text-muted-foreground flex flex-wrap items-center gap-x-2 gap-y-1">
-          <span>{t.rules}:</span>
-          {row.ruleIds.map((id) => (
-            <RuleRef key={id} id={id} />
-          ))}
-        </p>
-      )}
+      <RulesLine ids={row.ruleIds} />
     </div>
   );
 }

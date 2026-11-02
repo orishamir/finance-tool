@@ -7,7 +7,7 @@ import type { NotComparable, ProviderRowView, UiLevel } from "../../../lib/provi
 import type { SiteValue } from "../../../lib/value";
 import { IconDrillIn, IconPencil } from "../../icons";
 import { IconDashed, IconEqual } from "../../compare/icons";
-import { Num, RuleRef } from "../../provenance";
+import { Num, RulesLine } from "../../provenance";
 import { Card, cx, Disclosure, KeyValue, RankBadge, Sentence, Tag } from "../../kit";
 import { BarLegend, CostByTypeBar, DecidingLine, MinimumsLine, ModelLines, ProtectionLine, TariffLine, typeHue, typeOrder } from "./parts";
 
@@ -338,14 +338,7 @@ export function RowDetail({ view, ctx }: { view: ProviderRowView; ctx: RowCtx })
           {c.providers.tieThresholdAfter}
         </Sentence>
       )}
-      {view.ruleIds.length > 0 && (
-        <p className="text-xs text-muted-foreground flex flex-wrap items-center gap-x-2 gap-y-1">
-          <span>{d.rules}:</span>
-          {view.ruleIds.map((id) => (
-            <RuleRef key={id} id={id} />
-          ))}
-        </p>
-      )}
+      <RulesLine ids={view.ruleIds} />
     </div>
   );
 }
