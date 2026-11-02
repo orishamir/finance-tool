@@ -34,12 +34,15 @@ export interface WorthFactRow {
  */
 export const isCapName = (name: string) => /(^|_)cap(_|$)/.test(name) && !/(^|_)min(_|$)/.test(name) && !/(^|_)market_cap(_|$)/.test(name);
 
+/** A figure name that is the amount written in the law before indexation (`base_ceiling`, KGL-02): never the amount in force, so a row does not show it (2026-11-02). */
+export const isBaseName = (name: string) => name.startsWith("base_");
+
 export function worthRows(ids: readonly string[] | undefined, rules: Record<string, RuleRecord>, today: string): WorthRow[] {
   const rows: WorthRow[] = [];
   for (const id of ids ?? []) {
     const r = rules[id];
     if (!r?.title_he) continue;
-    const first = Object.keys(r.figures ?? {}).find((n) => ruleFigure(r, n, today));
+    const first = Object.keys(r.figures ?? {}).find((n) => !isBaseName(n) && ruleFigure(r, n, today));
     rows.push({ kind: "rule", id, title: r.title_he, figure: first ? ruleFigure(r, first, today) : null, upTo: first !== undefined && isCapName(first), weak: r.strength === "institution" || r.strength === "secondary" ? r.strength : null });
     if (rows.length === 3) break;
   }
