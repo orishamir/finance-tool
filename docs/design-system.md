@@ -209,6 +209,7 @@ Why this pair: Heebo is clear on small screens and matches Inter's proportions; 
 | A block whose content varies by choice | One shape for every choice: what may be missing is replaced, not removed (on the cheapest pair the result block shows the next pair beside it) | the index page's `PairResult` |
 | A header that varies by subject | One height, sized for the longest subject | the index page's `IndexHeader` |
 | A block or line that varies, at any width | Every case is laid out unseen in the same cell, so the block has the longest case's height at every width; a sample figure stands in for one that changes (2026-11-01) | `LongestCase`: the index page's account and fund headers, the fee page's headline, the study-fund guide |
+| Notes under a chart, whose lines come and go | The notes follow one another with no hole between them, and the whole stack sits in one `LongestCase`, so the blank falls at the card's bottom; the card and what is under it keep their place (founder, 2026-11-03) | `LongestCase` around all the notes: the study fund's drawing |
 | A block computed just after the render | The last answer stays until the next is ready; the block never empties and comes back (2026-11-01) | `useAfterRender` in `lib/settled.ts`: the fee page's and the comparison's "what would change the answer" |
 | A list that re-sorts after a tap | The tapped row is held at its place on the screen, and the others slide around it (2026-11-01) | `PickList` (`holdOnPick`, `useFlip`) |
 
