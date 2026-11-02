@@ -129,7 +129,7 @@ Scope: in: the three CMA monthly datasets on data.gov.il (Gemel-Net, Pension-Net
   4. the fund (קופה), with its own income-tax number and name ("מיטב גמל להשקעה", 7857), found only in `transfer_bank` and in the institution's documents;
   5. the track (מסלול), with its own income-tax number = Gemel-Net `FUND_ID`;
   6. the track name (`FUND_NAME`), which in Gemel-Net is the full string brand + product + standard track name (for example "מיטב גמל להשקעה כללי").
-  A marketing name can hide the product type: in 202609 the general investment-provident tracks include "אלטשולר שחם חיסכון פלוס כללי", "אנליסט מסלולית - קופת גמל להשקעה כללי", "כלל גמל לעתיד כללי" and "מחוג חיסכון פלוס כללי", and Meitav markets "מיטב קידס" as a children's plan "המבוצעת באמצעות קופת גמל להשקעה".
+  A marketing name can hide the product type: in 202609 the general investment-provident tracks include "אלטשולר שחם חיסכון פלוס כללי", "אנליסט מסלולית - קופת גמל להשקעה כללי" and "כלל גמל לעתיד כללי", and Meitav markets "מיטב קידס" as a children's plan "המבוצעת באמצעות קופת גמל להשקעה".
 - Conditions / exceptions: Names in `transfer_bank` ("שם מסלול ארוך", "שם מסלול קצר") can differ from Gemel-Net `FUND_NAME`, and from institution pages. For example Meitav writes "כספי (שיקלי)" in its flyer, while the data has "כספי (שקלי)". Match on track number, not name.
 - Figures: n/a
 - Source: [Gemel-Net general gemel lehashkaa tracks 202609](https://data.gov.il/api/3/action/datastore_search?resource_id=a30dcbea-a1d2-482c-ae29-8f781f5025fb&limit=100&filters={"REPORT_PERIOD":202609,"FUND_CLASSIFICATION":"קופת%20גמל%20להשקעה","SPECIALIZATION":"כללי"}&sort=MANAGING_CORPORATION); [transfer_bank, fund 7857](https://data.gov.il/api/3/action/datastore_search?resource_id=b5223cbc-e1b2-4503-a499-97cdcd7190d2&limit=60&filters={"מספר%20קופה%20-אישור%20מס%20הכנסה":7857}); [Meitav Kids page](https://www.meitav.co.il/provident_pension/saving_kids/); [Meitav flyer](https://www.meitav.co.il/media/0lhfrzgy/פלייר-תפעולי-מונגש.pdf) · checked 2026-10-22 · primary, institution
@@ -585,7 +585,7 @@ Open to all (12):
 - מיטב גמל ופנסיה
 - מנורה מבטחים פנסיה וגמל
 
-Sector or employer funds (6): גל (teachers), הנדסאים וטכנאים, האוניברסיטה העברית, יחד רופאים, מחוג (Israel Electric), עמ"י.
+Sector or employer funds in the stored data (2): גל (teachers), הנדסאים וטכנאים. Others in the register are left out by the founder's decision of 2026-11-03; the list is `EXCLUDED_COMPANIES` in `packages/pipeline/src/adapters/cma.ts`.
 
 The full list of managing companies per product is in research/discovery/domain-landscape.md 5.1, taken from the same data. The catalogue should pull it from Gemel-Net each month, not from this list.
 

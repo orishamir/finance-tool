@@ -16,7 +16,9 @@ import {
   balanceFeeOnly,
   buildFees,
   buildHoldings,
+  listPeriods,
   readCmaFile,
+  EXCLUDED_COMPANIES,
   KEPT_COLUMNS,
   feeYear,
   renormaliseFees,
@@ -134,6 +136,25 @@ describe("normalise", () => {
     // a file without the amount columns writes no holdings and keeps only the columns it has
     expect(r.file!.funds[0]!.holdings).toBeUndefined();
     expect(Object.keys(r.file!.funds[0]!.raw_fields)).toEqual(["AVG_ANNUAL_MANAGEMENT_FEE", "AVG_DEPOSIT_FEE"]);
+  });
+
+  it("leaves out a company on the excluded list, in a refresh and in the stored files", () => {
+    const table = parseCsv(decodeWindows1255(fixture));
+    const col = table[0]!.indexOf("MANAGING_CORPORATION_LEGAL_ID");
+    const fundId = good().funds[0]!.fund_id;
+    const [excludedId] = EXCLUDED_COMPANIES.keys();
+    for (const r of table) if (r[0] === String(fundId)) r[col] = excludedId!;
+    const csv = table.map((r) => r.map((c) => `"${c.replaceAll('"', '""')}"`).join(",")).join("\n");
+    const refreshed = normalise(csv, ctx).file!;
+    expect(refreshed.funds.map((f) => f.fund_id)).toEqual(good().funds.map((f) => f.fund_id).filter((id) => id !== fundId));
+
+    const cmaDir = fileURLToPath(new URL("../../../data/cma", import.meta.url));
+    for (const dataset of ["gemelnet", "pensia-net"] as const) {
+      for (const period of listPeriods(cmaDir, dataset)) {
+        const left = readCmaFile(cmaDir, dataset, period).funds.filter((f) => EXCLUDED_COMPANIES.has(f.managing_corporation.legal_id.trim()));
+        expect(left.map((f) => f.fund_id)).toEqual([]);
+      }
+    }
   });
 
   it("keeps every further numeric column as received, for later use", () => {

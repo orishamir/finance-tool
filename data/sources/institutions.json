@@ -165,38 +165,6 @@
     ]
   },
   {
-    "id": "yachad-rofim",
-    "name_he": "יחד רופאים",
-    "kind": "provident-manager",
-    "scope_names": [
-      {
-        "name": "Yachad Rofim"
-      }
-    ],
-    "cma_legal_id": "510930654",
-    "fees_id": null,
-    "deposit_bank_id": null,
-    "own_hosts": [
-      "krn-rofim.co.il"
-    ]
-  },
-  {
-    "id": "huji-provident",
-    "name_he": "קופת הגמל של עובדי האוניברסיטה העברית",
-    "kind": "provident-manager",
-    "scope_names": [
-      {
-        "name": "Hebrew University provident fund"
-      }
-    ],
-    "cma_legal_id": "510960586",
-    "fees_id": null,
-    "deposit_bank_id": null,
-    "own_hosts": [
-      "gemel.huji.ac.il"
-    ]
-  },
-  {
     "id": "slice",
     "name_he": "סלייס",
     "kind": "provident-manager",
