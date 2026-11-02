@@ -21,6 +21,17 @@ export function GapNote({ reason, label = copy.common.notComputed, className }: 
   );
 }
 
+/** Points inside the body text of a guide (2026-11-02): body size, one point each, for a sentence that ends "..., אבל אז משלמים:". Notes under a visual are NoteList. */
+export function ProseList({ items, className }: { items: ReactNode[]; className?: string }) {
+  return (
+    <ul className={cx("flex flex-col gap-1 max-w-measure list-disc ps-5 marker:text-chart-axis", className)}>
+      {items.map((item, i) => (
+        <li key={i}>{item}</li>
+      ))}
+    </ul>
+  );
+}
+
 /** The notes under a visual, one point each (2026-10-26): what a figure leaves out, where a rate comes from. Never one long sentence. */
 export function NoteList({ items, className }: { items: ReactNode[]; className?: string }) {
   return (

@@ -16,15 +16,24 @@ export const content: GuideContent = {
     const cardCap = figure("BANK-35", "immediate_debit_card_fee");
     const cardFrom = effectiveFromValue(cardCap, "המועד שבו התקרה לדמי כרטיס חיוב מיידי נכנסה לתוקף");
     const accountFrom = effectiveFromValue(figure("BANK-35", "account_fee_3_to_100_actions"), "המועד שבו התקרות לעמלת ניהול חשבון נכנסות לתוקף והמסלולים מתבטלים");
+    const feeFew = figure("BANK-35", "account_fee_up_to_2_actions");
+    const feeMost = figure("BANK-35", "account_fee_3_to_100_actions");
+    const feeEach = figure("BANK-35", "account_fee_per_action_above_100");
     return (
       <>
         <p className="max-w-measure">
-          <Term id="חשבון עובר ושב">חשבון הבנק השוטף</Term>: המשכורת נכנסת אליו וההוצאות יוצאות ממנו. לא כל בנק משלם <Term id="ריבית על יתרת זכות">ריבית על יתרת זכות</Term>; בנק שמשלם חייב להציג את התנאים, ובנק שלא משלם חייב לכתוב זאת בטבלת הריביות שלו. על ריבית שכן משולמת הבנק מנכה מס כבר כשהיא נזקפת לחשבון.
+          <Term id="חשבון עובר ושב">חשבון הבנק השוטף</Term>: המשכורת נכנסת אליו וההוצאות יוצאות ממנו.
+        </p>
+        <p className="max-w-measure">
+          לא כל בנק משלם <Term id="ריבית על יתרת זכות">ריבית על יתרת זכות</Term>. בנק שמשלם חייב להציג את התנאים, ובנק שלא משלם חייב לכתוב זאת בטבלת הריביות שלו. מריבית שכן משולמת הבנק מנכה מס.
         </p>
         <Sentence measure>
-          העלות היא מסלול העמלות: <Term prefix="ה" id="מסלול בסיסי">מסלול הבסיסי</Term> כולל {basicTeller ? <>עד <Num value={basicTeller} /> פעולה בפקיד ו</> : null}
-          {basicDirect ? <>עד <Num value={basicDirect} /> פעולות בערוץ ישיר בחודש</> : "מעט פעולות בחודש"}, <Term prefix="ה" id="מסלול מורחב">מורחב</Term>{" "}
-          {extendedTeller && extendedDirect ? <>עד <Num value={extendedTeller} /> ו־<Num value={extendedDirect} /></> : "יותר"}. כל בנק חייב להציע את שניהם ולתת לכל לקוח להצטרף, ובמסלול הבסיסי העמלה מוגבלת בצו{basicCap ? <>: עד <Num value={basicCap} /> בחודש</> : null} <RuleRef id="BANK-17" />. צו חדש קבע תקרה לדמי כרטיס חיוב מיידי{cardCap ? <>, עד <Num value={cardCap} /> בחודש,</> : null} שחלה {cardFrom ? <Num value={cardFrom} prefix="מ־" /> : "כבר"}; {accountFrom ? <Num value={accountFrom} prefix="מ־" /> : "בהמשך"} אותו צו יבטל את המסלולים ויקבע במקומם תקרה לעמלת ניהול חשבון, לפי מספר הפעולות בחודש <RuleRef id="BANK-35" />.
+          העלות היא עמלות החשבון. כל בנק חייב להציע שני מסלולים ולתת לכל לקוח להצטרף אליהם: <Term prefix="ה" id="מסלול בסיסי">מסלול הבסיסי</Term> כולל {basicTeller ? <>עד <Num value={basicTeller} /> פעולה בפקיד ו</> : null}
+          {basicDirect ? <>עד <Num value={basicDirect} /> פעולות בערוץ ישיר בחודש</> : "מעט פעולות בחודש"}, <Term prefix="וה" id="מסלול מורחב">מסלול המורחב</Term>{" "}
+          {extendedTeller && extendedDirect ? <>עד <Num value={extendedTeller} /> ו־<Num value={extendedDirect} /></> : "יותר"}. פעולות מעבר למסלול מחויבות לפי התעריפון המלא. המחיר של המסלול הבסיסי מוגבל בצו{basicCap ? <>: עד <Num value={basicCap} /> בחודש</> : null} <RuleRef id="BANK-17" />.
+        </Sentence>
+        <Sentence measure>
+          הכללים האלה עומדים להשתנות. צו חדש קבע תקרה לדמי כרטיס חיוב מיידי{cardCap ? <>, עד <Num value={cardCap} /> בחודש,</> : null} שחלה {cardFrom ? <Num value={cardFrom} prefix="מ־" /> : "כבר"}. {accountFrom ? <Num value={accountFrom} prefix="מ־" /> : "בהמשך"} אותו צו מבטל את המסלולים וקובע במקומם תקרה לעמלת ניהול חשבון, לפי מספר הפעולות בחודש: {feeFew ? <>עד <Num value={feeFew} /> למי שעושה עד שתי פעולות, </> : null}{feeMost ? <>עד <Num value={feeMost} /> משלוש עד מאה פעולות</> : null}{feeEach ? <>, ועוד <Num value={feeEach} /> לכל פעולה מעל מאה</> : null} <RuleRef id="BANK-35" />.
         </Sentence>
         <RulesLine ids={["BANK-01", "BANK-09", "BANK-17", "BANK-35", "TXI-08"]} />
       </>
@@ -34,15 +43,18 @@ export const content: GuideContent = {
   risks: ({ figure }) => {
     const months = figure("REG-04", "examination_deadline_months");
     const proposed = figure("REG-05", "proposed_guarantee");
+    const notice = figure("BANK-19", "notice_days");
     return (
       <>
         <p className="max-w-measure">
-          אין בישראל ביטוח פיקדונות. אם בנק לא יכול לעמוד בהתחייבויותיו, נגיד בנק ישראל רשאי למנות לו מנהל מורשה ולהעביר את נכסיו והתחייבויותיו, ובאישור הממשלה גם להכריז על ערבות לפיקדונותיו; זו סמכות שבשיקול דעת, לא זכות שלכם.
+          אין בישראל ביטוח פיקדונות: אם בנק קורס, אין חוק שמחזיר לכם את הכסף. נגיד בנק ישראל יכול למנות לבנק מנהל מורשה ולהעביר את נכסיו והתחייבויותיו, ובאישור הממשלה גם להכריז על ערבות לפיקדונות. אלה סמכויות שלו, לא זכויות שלכם.
         </p>
         <Sentence measure>
-          חוק חדש מחייב לבחון {months ? <>תוך <Num value={months} /> חודשים </> : null}אם צריך ביטוח פיקדונות, והצעת חוק פרטית מציעה ערבות {proposed ? <>של <Num value={proposed} /> </> : null}בבנקים קטנים; היא רק הצעה, ויתרת עו"ש ממילא לא נכללת בה.
+          חוק משנת 2026 מחייב את שר האוצר ואת הנגיד לבחון {months ? <>תוך <Num value={months} /> חודשים </> : null}אם צריך ביטוח פיקדונות; זו חובת בדיקה, לא ביטוח. הצעת חוק פרטית מציעה ערבות {proposed ? <>של עד <Num value={proposed} /> </> : null}ללקוח בבנקים קטנים, אבל היא רק הצעה, ויתרת עו״ש ממילא לא נכללת בה.
         </Sentence>
-        <p className="max-w-measure">כסף שיושב בעו"ש בלי ריבית לא גדל, ולכן החוק מחייב את הבנק להזכיר לכם חלופות. <Term id="הטבה בנקאית">הטבה</Term> על ריבית או עמלה נגמרת רק אחרי הודעה מראש.</p>
+        <Sentence measure>
+          כסף שיושב בעו״ש בלי ריבית לא גדל. <Term id="הטבה בנקאית">הטבה</Term> בריבית או בעמלה שנמשכת יותר משלושה חודשים מסתיימת אחרי הודעה{notice ? <> של לפחות <Num value={notice} /> ימים</> : " מראש"}.
+        </Sentence>
         <RulesLine ids={["REG-04", "REG-05", "REG-06", "BANK-23", "BANK-20", "BANK-19"]} />
       </>
     );
@@ -52,7 +64,7 @@ export const content: GuideContent = {
     return (
       <>
         <p className="max-w-measure">
-          העו"ש הוא המקום לכסף שצריך להיות זמין באותו יום: המשכורת, ההוצאות של החודש והתשלומים הקרובים. יחידות של קרן כספית נפדות רק ביום מסחר, ופיקדון נפתח לתקופה, ולכן כסף שעשוי לצאת היום נשאר בעו"ש.
+          העו״ש הוא המקום לכסף שצריך להיות זמין באותו יום: המשכורת, ההוצאות של החודש והתשלומים הקרובים. יחידות של קרן כספית נפדות רק ביום מסחר, ופיקדון נפתח לתקופה, ולכן כסף שעשוי לצאת היום נשאר בעו״ש.
         </p>
         <Sentence measure>
           כסף שלא צריכים באותו יום לא חייב לשבת שם. אם <Term prefix="ה" id="יתרת זכות בחשבון">יתרה</Term> נשארת {threshold ? <>מעל <Num value={threshold} /> </> : "מעל הסף שקבוע בחוק "}במשך רבעון שלם, החוק מחייב את הבנק לשלוח הודעה שמפנה לחלופות.
