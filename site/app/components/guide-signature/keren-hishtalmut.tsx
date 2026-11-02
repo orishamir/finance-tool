@@ -51,17 +51,20 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
   const [ownPick, setOwnPick] = useState<number | null>(null);
   const [employerPick, setEmployerPick] = useState<number | null>(null);
   const [returnPick, setReturnPick] = useState<number | null>(null);
+  const [feePick, setFeePick] = useState<number | null>(null);
   const [yearPick, setYearPick] = useState<number | null>(null);
 
   const income = incomePick ?? p05Number(base.p05, "annual_income") / 12;
   const ownShare = ownPick ?? Number(ownPct?.value ?? 0);
   const employerShare = employerPick ?? Number(employerPct?.value ?? 0);
   const returnPct = returnPick ?? p05Number(base.p05, "A-01");
+  const feeShown = feePick ?? Number(trackFee?.value ?? 0);
+  const feeCap = fact(data, "feeCap");
   const year = clamp(yearPick ?? lock - 1, 1, YEARS);
 
   const ownMonthly = isEmployee ? (income * ownShare) / 100 : inputs.monthly;
   const employerMonthly = isEmployee ? (income * employerShare) / 100 : 0;
-  const plan = useMemo<StudyStoryCase>(() => ({ employment, income, ownMonthly, employerMonthly, returnPct }), [employment, income, ownMonthly, employerMonthly, returnPct]);
+  const plan = useMemo<StudyStoryCase>(() => ({ employment, income, ownMonthly, employerMonthly, returnPct, feePct: feePick }), [employment, income, ownMonthly, employerMonthly, returnPct, feePick]);
   const years = useMemo(() => studyYears(data, plan, YEARS), [data, plan]);
   const range = useMemo(() => studyRange(data, plan, year), [data, plan, year]);
   const slices = useMemo(() => years.map((y) => y.slice), [years]);
@@ -79,7 +82,7 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
     ...(isEmployee ? { [story.fields.own]: pctIn(ownPick, ownPct, ownShare, story.fields.own), [story.fields.employer]: pctIn(employerPick, employerPct, employerShare, story.fields.employer) } : { [copy.common.inputNames.monthly]: monthlyIn }),
     [copy.hishtalmut.inputNames.ret]: returnIn,
     ...(inflationPct ? { [copy.hishtalmut.inputNames.inflation]: inflationPct } : {}),
-    ...(trackFee ? { [copy.hishtalmut.inputNames.trackFee]: trackFee } : {}),
+    ...(feePick !== null ? { [story.fields.fee]: enteredValue(feePick, "pct_per_year", today, story.fields.fee) } : trackFee ? { [copy.hishtalmut.inputNames.trackFee]: trackFee } : {}),
     [story.yearName]: enteredValue(year, "years", today, story.yearName),
   };
   const rules = rulesOfBundle(base);
@@ -159,6 +162,12 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
     </Sentence>
   );
 
+  const trackLine = (typed: boolean) => (
+    <p>
+      {story.held.track} ״<bdi>{trackName}</bdi>״ (<bdi dir="ltr">{trackNumber}</bdi>), {copy.hishtalmut.trackFee} {trackFee && <Num value={trackFee} />} {copy.hishtalmut.perYearAvg}
+      {typed && ` ${story.held.feeEntered}`}
+    </p>
+  );
   const sharesLine = <p>{isEmployee ? story.held.shares : null}</p>;
 
   const shownYear = fmt.years(year);
@@ -194,8 +203,11 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
         value={employment}
         onChange={(e) => setEmployment(e)}
       />
-      <div className="grid gap-4 grid-cols-2 lg:grid-cols-4">
-        <NumberField label={copy.hishtalmut.income[employment]!} unit="nis" value={income} isEntered={incomePick !== null} validate={(n) => (n <= 0 ? valuesCopy.errors.negative : null)} onCommit={setIncomePick} onReset={() => setIncomePick(null)} disabled={!inputs.ready} />
+      {/* the first field takes a phone's whole row, so five fields and four take the same rows */}
+      <div className="grid gap-4 grid-cols-2 lg:grid-cols-3">
+        <div className="col-span-2 lg:col-span-1">
+          <NumberField label={copy.hishtalmut.income[employment]!} unit="nis" value={income} isEntered={incomePick !== null} validate={(n) => (n <= 0 ? valuesCopy.errors.negative : null)} onCommit={setIncomePick} onReset={() => setIncomePick(null)} disabled={!inputs.ready} />
+        </div>
         {isEmployee ? (
           <>
             <PercentField unit="pct" label={story.fields.own} value={ownShare} isEntered={ownPick !== null} onCommit={setOwnPick} onReset={() => setOwnPick(null)} disabled={!inputs.ready} />
@@ -205,6 +217,7 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
           <NumberField label={copy.g2.plan.monthly} unit="nis" value={inputs.monthly} isEntered={inputs.source.monthly === "guide"} validate={(n) => (n < 0 ? valuesCopy.errors.negative : null)} onCommit={inputs.setMonthly} onReset={() => inputs.setMonthly(null)} disabled={!inputs.ready} />
         )}
         <PercentField label={story.fields.ret} value={returnPct} isEntered={returnPick !== null} validate={percentCheck(p05Range(base.p05, "sliders", "A-01") ?? { min: 0, max: 20 })} onCommit={setReturnPick} onReset={() => setReturnPick(null)} disabled={!inputs.ready} />
+        <PercentField label={story.fields.fee} value={feeShown} isEntered={feePick !== null} validate={percentCheck({ min: 0, max: Number(feeCap?.value ?? 100) })} onCommit={setFeePick} onReset={() => setFeePick(null)} disabled={!inputs.ready} />
       </div>
 
       <div className="flex flex-col gap-3">
@@ -244,9 +257,7 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
       <div className="flex flex-col gap-1.5 text-sm text-muted-foreground max-w-measure">
         <p>{story.stretch}</p>
         {trackName && (
-          <p>
-            {story.held.track} ״<bdi>{trackName}</bdi>״ (<bdi dir="ltr">{trackNumber}</bdi>), {copy.hishtalmut.trackFee} {trackFee && <Num value={trackFee} />} {copy.hishtalmut.perYearAvg}
-          </p>
+          <LongestCase cases={[trackLine(true)]}>{trackLine(feePick !== null)}</LongestCase>
         )}
         {!isEmployee && fundName && brokerCount && (
           <p>

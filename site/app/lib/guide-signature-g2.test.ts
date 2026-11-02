@@ -93,6 +93,10 @@ describe("study fund", () => {
     expect(studyYears(d, { ...employee, employerMonthly: 600 }, 12)[9]!.slice!.net).toBeLessThan(base);
     expect(studyYears(d, { ...employee, returnPct: 3 }, 12)[9]!.slice!.net).toBeLessThan(base);
     expect(studyYears(d, { ...employee, returnPct: 1 }, 12)[9]!.slice!.gain).toBeLessThan(0);
+    expect(studyYears(d, { ...employee, feePct: 1.5 }, 12)[9]!.slice!.net).toBeLessThan(base);
+    expect(studyYears(d, { ...employee, feePct: 0.54 }, 12)[9]!.slice!.net).toBeCloseTo(base, 6); // the track's own fee, typed
+    expect(fact(d, "feeCap")!.value).toBe(2);
+    expect(studyRange(d, { ...employee, feePct: 1.5 }, 10).fund).toEqual(studyRange(d, employee, 10).fund); // the collected range does not move with the typed fee
   });
   it("gives a self-employed person no number before the lock ends (TXH-07 is not in the engine) and the tax back after it", () => {
     const years = studyYears(d, self, 12);
