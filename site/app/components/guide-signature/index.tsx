@@ -1,6 +1,7 @@
 // The "what makes it different" block of a guide page (D29): the frame (title, the one question, the visual, the nearest alternative,
 // the old illustrative timeline folded below) and the registry from wrapper id to its visual. A wrapper not in the registry has no
-// block and keeps its timeline open where it was (brokerage account, child savings, IRA study fund, IRA provident).
+// block and keeps its timeline open where it was (brokerage account, child savings, IRA study fund, IRA provident). A page whose visual
+// already answers what the timeline would, with more of the person's money in it, has no fold (`NO_TIMELINE`, founder 2026-11-02, D50).
 // Builder G2 adds its visuals to `signatureRegistry` (and its data builders to `builders` in lib/guide-signature.server.ts).
 import { useEffect, useState, type ComponentType, type ReactNode } from "react";
 import { Link } from "react-router";
@@ -34,6 +35,9 @@ export const signatureRegistry: Record<string, ComponentType<VisualProps>> = {
   "pension-general": PensionVisual,
   "provident-for-annuity": PensionVisual,
 };
+
+/** The study fund: the timeline has no employer money and a return field of its own, so under the drawing it gave a second, weaker answer. */
+const NO_TIMELINE = new Set(["keren-hishtalmut"]);
 
 export const hasSignatureVisual = (id: string, data: SignatureData | null): data is SignatureData => !!data && id in signatureRegistry && id in copy.pages;
 
@@ -76,7 +80,7 @@ export function SignatureFrame({ id, data, today, timeline, held }: { id: string
         // a product with no alternative on the same holding (a pension is required for salaried people): only the page's own line
         <p className="text-sm max-w-measure">{page.altLine}</p>
       )}
-      {timeline && (
+      {timeline && !NO_TIMELINE.has(id) && (
         <Card pad="none" className="px-4 py-1 md:px-6">
           <Disclosure label={<span className="font-medium">{copy.timeline.summary}</span>} openLabel={<span className="font-medium">{copy.timeline.hide}</span>} summaryClassName="justify-between">
             <div className="flex flex-col gap-4 pb-4">
