@@ -243,7 +243,7 @@
   },
   "lawful_exit": {
     "kind": "trading_day",
-    "text": "any TASE trading day (Monday to Friday since 5.1.2026, BRK-29): sell on the exchange, or redeem Israeli ETF and fund units through the member (ETF-04); the proceeds settle through the TASE clearing house. The settlement cycle for secondary trades is not sourced (GOV OQ7). Foreign funds on TASE and foreign-domiciled funds are sold on an exchange only."
+    "text": "any TASE trading day (Monday to Friday since 5.1.2026, BRK-29): sell on the exchange, or redeem Israeli ETF and fund units through the member (ETF-04); the proceeds settle through the TASE clearing house. A trade on the exchange settles on the next business day (GOV-24). Foreign funds on TASE and foreign-domiciled funds are sold on an exchange only."
   },
   "switch_is_tax_event": {
     "value": true,
