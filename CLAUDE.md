@@ -135,6 +135,7 @@ overrides the Roadmap issue's ranking, which counts what unblocks the most.
   expected test numbers change only with that evidence. In chat, every figure
   carries its assumption, and what was read is told apart from what was
   inferred; what I report first-hand is treated as true and then checked.
+- **Companies not to research** (founder, 2026-11-03). Nineteen managing companies closed to one profession, employer or municipality are out of the data; never collect or research them, because it wastes tokens and time and is not relevant. The list, by legal id, is `EXCLUDED_COMPANIES` in `packages/pipeline/src/adapters/cma.ts` (D51).
 - **Never fill in a financial or tax rule from memory.** Use the
   `il-finance` skill. If a rule is missing from it, say the
   rule is missing and stop; do not guess or approximate. Site judgements

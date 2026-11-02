@@ -52,6 +52,33 @@ export const USER_AGENT =
 // Pipeline configuration (not site parameters): the sanity thresholds.
 export const SANITY = { minRowRatio: 0.8, maxDisappearedFundRatio: 0.2 } as const;
 
+/**
+ * Managing companies left out of the data, by legal id (founder, 2026-11-03): their funds serve one profession,
+ * employer or municipality, or are otherwise not relevant to the site's readers. A refresh skips their rows, and they
+ * are not to be collected or researched. docs/product.md D51.
+ */
+export const EXCLUDED_COMPANIES: ReadonlyMap<string, string> = new Map([
+  ["510930654", "יחד רופאים"],
+  ["570002618", "תגמולים של עובדים בעירית ת\"א-יפו"],
+  ["570005959", "קופת\"ג של עובדי עירית חיפה"],
+  ["570014928", "קופת תגמולים של עובדי התעשיה האוירית"],
+  ["520030198", "ק.ה.ר, קרן השתלמות לרוקחים"],
+  ["512362914", "מחוג, מינהל גמל לעובדי חברת חשמל"],
+  ["510960586", "חברת הגמל לעובדי האוניברסיטה העברית"],
+  ["520027954", "קרן השתלמות לאקדמאים במדעי החברה והרוח"],
+  ["520031824", "רום, קרן ההשתלמות לעובדי הרשויות המקומיות"],
+  ["520028861", "קרן השתלמות למשפטנים"],
+  ["520005497", "קופות התגמולים והפיצויים של עובדי בנק לאומי"],
+  ["520030743", "קרן השתלמות לשופטים"],
+  ["513452003", "קופות גמל של העובדים בעיריית תל אביב יפו"],
+  ["510930670", "יהב פ.ר.ח."],
+  ["520042615", "מחר"],
+  ["520030941", "ק.ל.ע., קרן השתלמות לעובדים סוציאליים"],
+  ["570009852", "קרן מקפת מרכז לפנסיה ותגמולים"],
+  ["511033060", "קרן החסכון לצבא הקבע"],
+  ["520042581", "עמ\"י, קופות גמל ענפיות"],
+]);
+
 export const REQUIRED_COLUMNS = [
   "FUND_ID",
   "FUND_NAME",
@@ -379,6 +406,7 @@ export function normalise(csvText: string, ctx: NormaliseContext): NormaliseResu
   const seen = new Set<number>();
   const funds: CmaFund[] = [];
   for (const r of rows) {
+    if (EXCLUDED_COMPANIES.has(get(r, "MANAGING_CORPORATION_LEGAL_ID").trim())) continue;
     const id = Number(get(r, "FUND_ID").trim());
     if (!Number.isInteger(id) || id <= 0) {
       problems.push(`unreadable FUND_ID "${get(r, "FUND_ID")}"`);
