@@ -364,6 +364,14 @@ export default function GuidePage() {
     content?.termIds ?? [],
   );
 
+  const links = (
+    <>
+      <RelatedProducts items={data.related} />
+      <RelatedProducts items={data.securities} label={copy.securitiesRow} />
+      <ExposureLinks items={data.exposures} />
+    </>
+  );
+
   return (
     <PageShell current="guide" data={provenance} wide="large">
       <div className="lg:flex lg:gap-12 pt-2 lg:pt-8">
@@ -396,18 +404,19 @@ export default function GuidePage() {
             {content?.what(cp)}
             {/* D29: a page with a visual folds the timeline under it; without one it stays here */}
             {!signature && timelineNode}
+            {omitted("use") && links}
           </GuideSection>
 
           {/* audit A42: who it is for sits directly under what it is */}
-          <GuideSection id="use" title={title("use")}>
-            {content?.use(cp)}
-            <RelatedProducts items={data.related} />
-            <RelatedProducts items={data.securities} label={copy.securitiesRow} />
-            <ExposureLinks items={data.exposures} />
-          </GuideSection>
+          {!omitted("use") && (
+            <GuideSection id="use" title={title("use")}>
+              {content?.use?.(cp)}
+              {links}
+            </GuideSection>
+          )}
 
           {signature && (
-            <GuideSection id="different" title={signatureTitle(record.id)}>
+            <GuideSection id="different" title={copy.sectionTitles[record.id]?.different ?? signatureTitle(record.id)}>
               <SignatureFrame id={record.id} data={signature} today={today} timeline={timelineNode} held={held} />
             </GuideSection>
           )}

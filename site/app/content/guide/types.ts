@@ -18,7 +18,8 @@ export interface GuideContent {
   /** Anything after the tax steps (a blocked route, a note). */
   afterTax?: (p: ContentProps) => ReactNode;
   risks: (p: ContentProps) => ReactNode;
-  use: (p: ContentProps) => ReactNode;
+  /** Left out on a guide that omits the section (`omitsSection`). */
+  use?: (p: ContentProps) => ReactNode;
 }
 
 /** Prose of an exposure guide page (flows 6.6: no timeline, no money-in-and-out section). */

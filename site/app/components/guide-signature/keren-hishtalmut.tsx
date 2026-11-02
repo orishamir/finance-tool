@@ -6,7 +6,8 @@ import { useMemo, useState } from "react";
 import { guideSignature as copy, values as valuesCopy } from "../../copy";
 import { fmt } from "../../lib/format";
 import { fact } from "../../lib/guide-signature";
-import { studyRange, studyYears, type Employment, type StudyStoryCase } from "../../lib/guide-signature-g2";
+import { earlySettlement, type EarlySettlement } from "@finance-tool/engine";
+import { studyRange, studyStanding, studyYears, taxedAfterLock, type Employment, type StudyStanding, type StudyStoryCase } from "../../lib/guide-signature-g2";
 import { p05Number, p05Range, p05Value, type Bundle } from "../../lib/engine";
 import { useInputs } from "../../lib/inputs";
 import { computed, entered as enteredValue, type SiteValue } from "../../lib/value";
@@ -68,18 +69,23 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
   const years = useMemo(() => studyYears(data, plan, YEARS), [data, plan]);
   const range = useMemo(() => studyRange(data, plan, year), [data, plan, year]);
   const slices = useMemo(() => years.map((y) => y.slice), [years]);
+  const standing = useMemo(() => studyStanding(data, plan, years), [data, plan, years]);
   const picked = years[year - 1]!;
+  const early = useMemo(() => (isEmployee ? earlySettlement(picked.runs) : null), [isEmployee, picked]);
   const slice = picked.slice;
-  const overLimit = years.some((y, i) => i + 1 >= lock && (y.slice?.tax ?? 0) > 1);
+  const overLimit = taxedAfterLock(years, lock);
 
   // ---- value objects
   const returnIn: SiteValue = returnPick !== null ? enteredValue(returnPick, "pct_per_year", today, story.fields.ret) : p05Value(base.p05, "A-01");
   const incomeIn: SiteValue = incomePick !== null ? enteredValue(income, "nis", today, copy.hishtalmut.incomeAbout) : figure(income, "nis", "F-67", { [copy.hishtalmut.incomeAnnual]: p05Value(base.p05, "annual_income") }, today, copy.hishtalmut.incomeAbout);
   const pctIn = (pick: number | null, shared: SiteValue | undefined, value: number, about: string): SiteValue => (pick === null && shared ? shared : enteredValue(value, "pct", today, about));
   const monthlyIn = inputSite(base, "monthly_deposit", inputs.monthly, inputs.source.monthly, today, copy.common.inputNames.monthly);
-  const common: Record<string, SiteValue> = {
+  const deposits: Record<string, SiteValue> = {
     [copy.hishtalmut.income[employment]!]: incomeIn,
     ...(isEmployee ? { [story.fields.own]: pctIn(ownPick, ownPct, ownShare, story.fields.own), [story.fields.employer]: pctIn(employerPick, employerPct, employerShare, story.fields.employer) } : { [copy.common.inputNames.monthly]: monthlyIn }),
+  };
+  const common: Record<string, SiteValue> = {
+    ...deposits,
     [copy.hishtalmut.inputNames.ret]: returnIn,
     ...(inflationPct ? { [copy.hishtalmut.inputNames.inflation]: inflationPct } : {}),
     ...(feePick !== null ? { [story.fields.fee]: enteredValue(feePick, "pct_per_year", today, story.fields.fee) } : trackFee ? { [copy.hishtalmut.inputNames.trackFee]: trackFee } : {}),
@@ -88,9 +94,9 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
   const rules = rulesOfBundle(base);
   const nis = (value: number, about: string) => figure(value, "nis", "F-96", common, today, about, rules);
   // what a run qualifies travels with what comes out of it: the deposits are plain, the tax leaves the fee flags behind
-  const ranValue = (value: number, about: string, isTax: boolean) => {
+  const ranValue = (value: number, about: string, isTax: boolean, formula = "F-96", inputs = common) => {
     const flags = [...new Set(picked.runs.flatMap((r) => r.flags.map((f) => f.code)))].filter(isTax ? notFeeFlag : () => true);
-    return computed(value, "nis", "F-96", common, { today, about, rules, flags, labels: picked.runs.flatMap((r) => r.labels.map((l) => ({ code: l.code, ruleId: l.ruleId }))) });
+    return computed(value, "nis", formula, inputs, { today, about, rules, flags, labels: picked.runs.flatMap((r) => r.labels.map((l) => ({ code: l.code, ruleId: l.ruleId }))) });
   };
   const stepValue = (step: PileStep): SiteValue | null => {
     if (!slice) return null;
@@ -128,12 +134,15 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
       )}
     </Sentence>
   );
-  const fundRange = (low: SiteValue, high: SiteValue) =>
+  const fundRange = (low: SiteValue, high: SiteValue, gap: SiteValue) =>
     rangeCount &&
     rangeMin &&
     rangeMax && (
       <>
-        {story.range.among} <Num value={rangeCount} /> {story.range.tracks} <Num value={low} /> {story.range.atFee} <Num value={rangeMax} /> {story.range.to} <Num value={high} /> {story.range.atFee} <Num value={rangeMin} />.
+        {story.range.among} <Num value={rangeCount} /> {story.range.tracks}
+        <Num value={rangeMin} /> {story.range.to} <Num value={rangeMax} />
+        {story.range.moves} <Num value={gap} display={fmt.nisWhole} />
+        {story.range.left} <Num value={high} display={fmt.nisWhole} /> {story.range.to} <Num value={low} display={fmt.nisWhole} />.
       </>
     );
   const accountRange = (low: SiteValue, high: SiteValue) =>
@@ -142,40 +151,92 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
         {story.range.inAccount} <Num value={brokerCount} /> {story.range.tariffs} <Num value={low} /> {story.range.to} <Num value={high} />.
       </>
     );
-  const rangeLine = (fund: { low: SiteValue; high: SiteValue } | null, account: { low: SiteValue; high: SiteValue } | null) => (
+  const trackNote = (typed: boolean, fund: { low: SiteValue; high: SiteValue; gap: SiteValue } | null, account: { low: SiteValue; high: SiteValue } | null) => (
     <Sentence size="sm">
-      {fund && fundRange(fund.low, fund.high)}
+      {trackName && (
+        <>
+          {story.held.track} ״<bdi>{trackName}</bdi>״ (<bdi dir="ltr">{trackNumber}</bdi>), {story.held.trackFee} {trackFee && <Num value={trackFee} />} {story.held.trackAvg}
+          {typed && ` ${story.held.feeEntered}`}{" "}
+        </>
+      )}
+      {fund && fundRange(fund.low, fund.high, fund.gap)}
       {fund && account && " "}
       {account && accountRange(account.low, account.high)}
     </Sentence>
   );
-  const limitLine = (
+
+  const shownYear = fmt.years(year);
+  // ---- the reader's own values, not the rule: that is in the guide's text above (founder, 2026-11-02)
+  const lockWords = lockYears && <Num value={lockYears} display={fmt.years(lock)} />;
+  const standingNum = (value: number, about: string, unit: SiteValue["unit"] = "nis") => figure(value, unit, "F-97", deposits, today, about, rules);
+  const standingLine = (st: StudyStanding, taxed: boolean) => {
+    const words = story.standing;
+    const [own = 0, employer = 0] = st.over.map(Math.round);
+    const over = own + employer;
+    const per = st.per === "year" ? "year" : "month";
+    if (over >= 1)
+      return (
+        <Sentence size="sm">
+          {words.over.lead} <Num value={standingNum(over, isEmployee ? story.about.over : story.about.overSelf)} display={fmt.nisWhole(over)} /> {words.over[per]}
+          {isEmployee && own >= 1 && employer >= 1 && (
+            <>
+              : <Num value={standingNum(own, story.about.overOwn)} display={fmt.nisWhole(own)} /> {words.over.own}
+              <Num value={standingNum(employer, story.about.overEmployer)} display={fmt.nisWhole(employer)} /> {words.over.employer}
+            </>
+          )}
+          {isEmployee && (own < 1 || employer < 1) && (own >= 1 ? words.over.onlyOwn : words.over.onlyEmployer)}
+          {!isEmployee && "."}
+          {taxed && (
+            <>
+              {" "}
+              {words.over.why} {lockWords}
+              {st.grows ? words.over.grows : "."}
+            </>
+          )}
+          {!taxed && st.grows && ` ${words.over.growsAlone}`}
+        </Sentence>
+      );
+    if (st.firstOverYear !== null)
+      return (
+        <Sentence size="sm">
+          {words.crossing.before} <Num value={standingNum(st.firstOverYear, story.about.crossYear, "years")} display={String(st.firstOverYear)} /> {isEmployee ? words.crossing.employee : words.crossing.self}
+        </Sentence>
+      );
+    if (st.room >= 1)
+      return (
+        <Sentence size="sm">
+          {words.room.before} <Num value={standingNum(st.room, isEmployee ? story.about.room : story.about.roomSelf)} display={fmt.nisWhole(st.room)} /> {words.room[per]}
+        </Sentence>
+      );
+    return <Sentence size="sm">{words.all}</Sentence>;
+  };
+  const settlementInputs = { ...common, ...(withheld ? { [story.early.rate]: withheld } : {}) };
+  const earlyLine = (e: EarlySettlement) => (
     <Sentence size="sm">
-      {isEmployee && ownPct && employerPct && cap ? (
-        <>
-          {story.over.employee.before} <Num value={ownPct} /> {story.over.employee.own}
-          <Num value={employerPct} /> {story.over.employee.employer} <Num value={cap} display={(n) => `${fmt.number(n)} ₪`} /> {story.over.employee.after}
-        </>
+      {story.early.before} <bdi>{shownYear}</bdi>
+      {story.early.withheld} <Num value={ranValue(e.withheld, story.about.withheld, true, "F-98", settlementInputs)} display={fmt.nisWhole} />{" "}
+      {e.back < 1 ? (
+        story.early.stop
       ) : (
-        selfBenefited && (
-          <>
-            {story.over.self.before} <Num value={selfBenefited} display={(n) => `${fmt.number(n)} ₪`} /> {story.over.self.after}
-          </>
-        )
+        <>
+          {story.early.more}
+          <Num value={ranValue(e.back, story.about.back, true, "F-98", settlementInputs)} display={fmt.nisWhole} /> {story.early.back}
+        </>
       )}
     </Sentence>
   );
-
-  const trackLine = (typed: boolean) => (
-    <p>
-      {story.held.track} ״<bdi>{trackName}</bdi>״ (<bdi dir="ltr">{trackNumber}</bdi>), {copy.hishtalmut.trackFee} {trackFee && <Num value={trackFee} />} {copy.hishtalmut.perYearAvg}
-      {typed && ` ${story.held.feeEntered}`}
-    </p>
+  // one block for all of it, in the room of the longest case, so nothing below moves as a value or the year changes
+  const readerBlock = (st: StudyStanding | null, e: EarlySettlement | null, shares: boolean, taxed: boolean) => (
+    <div className="flex flex-col gap-1.5">
+      {st && standingLine(st, taxed)}
+      {e && earlyLine(e)}
+      {shares && <Sentence size="sm">{story.shares}</Sentence>}
+    </div>
   );
-  const sharesLine = <p>{isEmployee ? story.held.shares : null}</p>;
+  const longest = (over: StudyStanding["over"], firstOverYear: number | null): StudyStanding => ({ over, room: 0, per: isEmployee ? "month" : "year", firstOverYear, grows: isEmployee });
+  const readerCases = [longest(isEmployee ? [99_999, 99_999] : [99_999], 1), longest(isEmployee ? [0, 0] : [0], 12)].map((st) => readerBlock(st, isEmployee ? { withheld: 9_999_999, back: 9_999_999 } : null, isEmployee, true));
 
-  const shownYear = fmt.years(year);
-  const lockText = lockYears && <Num value={lockYears} display={fmt.years(lock)} />;
+  const lockText = lockWords;
   const account = range.account;
   const accountOther = !isEmployee
     ? {
@@ -253,40 +314,31 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
         />
       </div>
 
-      <div className="flex flex-col gap-1.5 text-sm max-w-measure">
-        <LongestCase cases={[rangeLine({ low: big, high: big }, isEmployee ? null : { low: big, high: big })]}>
-          {rangeLine(range.fund ? { low: nis(range.fund.low, story.about.rangeFund), high: nis(range.fund.high, story.about.rangeFund) } : null, account?.range ? { low: nis(account.range.low, story.about.rangeAccount), high: nis(account.range.high, story.about.rangeAccount) } : null)}
-        </LongestCase>
+      <div className="text-sm max-w-measure">
+        <LongestCase cases={readerCases}>{readerBlock(standing, early, isEmployee && ownPick === null && employerPick === null, overLimit)}</LongestCase>
       </div>
 
       <div className="flex flex-col gap-1.5 text-sm text-muted-foreground max-w-measure">
-        <p>{story.stretch}</p>
-        {trackName && (
-          <LongestCase cases={[trackLine(true)]}>{trackLine(feePick !== null)}</LongestCase>
+        {/* a return the person typed is theirs, not the site's assumption */}
+        {returnPick !== null ? (
+          <p>
+            {story.held.retEntered.before} <Num value={returnIn} /> {story.held.retEntered.middle} {inflationPct && <Num value={inflationPct} />} {story.held.retEntered.after}
+          </p>
+        ) : (
+          <p>
+            {story.held.ret} <Num value={returnIn} /> {story.held.inflation} {inflationPct && <Num value={inflationPct} />} {copy.hishtalmut.assumption.after}
+          </p>
         )}
+        <p>{story.held.today}</p>
+        <p>{isEmployee ? story.held.follows.employee : story.held.follows.self}</p>
         {!isEmployee && fundName && brokerCount && (
           <p>
             {story.held.account} ״<bdi>{fundName}</bdi>״ (<bdi dir="ltr">{fundNumber}</bdi>) {story.held.tariff} <bdi>{brokerName}</bdi>, {story.held.pick} <Num value={brokerCount} /> {story.held.collected}
           </p>
         )}
-        {/* a return the person typed is theirs, not the site's assumption */}
-        {returnPick !== null ? (
-          <p>
-            {story.held.retEntered.before} <Num value={returnIn} /> {story.held.retEntered.middle} {inflationPct && <Num value={inflationPct} />} {story.held.retEntered.after} {copy.common.todayMoney}
-          </p>
-        ) : (
-          <p>
-            {story.held.ret} <Num value={returnIn} /> {story.held.inflation} {inflationPct && <Num value={inflationPct} />} {copy.hishtalmut.assumption.after} {copy.common.todayMoney}
-          </p>
-        )}
-        <p>{isEmployee ? story.held.follows.employee : story.held.follows.self}</p>
-        {isEmployee && withheld && (
-          <p>
-            {story.held.early.before} <Num value={withheld} /> {story.held.early.after}
-          </p>
-        )}
-        {/* a deposit above a limit takes the place of the line about the limits, in the room of the longer one, so nothing moves */}
-        <LongestCase cases={[limitLine, sharesLine]}>{overLimit ? limitLine : sharesLine}</LongestCase>
+        <LongestCase cases={[trackNote(true, { low: big, high: big, gap: big }, isEmployee ? null : { low: big, high: big })]}>
+          {trackNote(feePick !== null, range.fund ? { low: nis(range.fund.low, story.about.rangeFund), high: nis(range.fund.high, story.about.rangeFund), gap: nis(range.fund.high - range.fund.low, story.about.rangeGap) } : null, account?.range ? { low: nis(account.range.low, story.about.rangeAccount), high: nis(account.range.high, story.about.rangeAccount) } : null)}
+        </LongestCase>
       </div>
       <RulesLine ids={data.ruleIds} />
     </div>

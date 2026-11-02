@@ -1,6 +1,6 @@
 // F-96: a salary that rises with prices moves the benefited limit, and the ceiling of the determining salary is held at today's amount (TXH-02).
 import { describe, expect, it } from "vitest";
-import { moneyStory, RecordInputError, runProvident, type ProvidentInput } from "../src/index.ts";
+import { earlySettlement, limitStanding, moneyStory, RecordInputError, runProvident, type ProvidentInput } from "../src/index.ts";
 import { context } from "./golden/harness.ts";
 
 const ctx = context();
@@ -70,5 +70,64 @@ describe("moneyStory (F-96)", () => {
     expect(s.net).toBeCloseTo(r.real, 6);
     expect(s.tax).toBeCloseTo(0, 6);
     expect(s.taxFromSalary).toBe(0);
+  });
+});
+
+describe("limitStanding (F-97)", () => {
+  const months = (salary: number, monthly: number, money?: "employer", n = 144) => ({ ...plan(salary, monthly, true, money), goal: { amountNow: 0, monthly, months: n } });
+  it("gives today's amounts above the limit, by the rule's share of the ceiling", () => {
+    const s = limitStanding([runProvident(months(18_000, 450), ctx), runProvident(months(18_000, 1_350, "employer"), ctx)]);
+    expect(s.per).toBe("month");
+    expect(s.over[0]).toBeCloseTo(450 - 0.025 * 15_712, 6);
+    expect(s.over[1]).toBeCloseTo(1_350 - 0.075 * 15_712, 6);
+    expect(s.room).toBe(0);
+    expect(s.firstOverYear).toBe(1);
+  });
+  it("finds the year the deposits pass a ceiling that does not move: 14,000 at 2% in the sixth year", () => {
+    const s = limitStanding([runProvident(months(14_000, 350), ctx), runProvident(months(14_000, 1_050, "employer"), ctx)]);
+    expect(s.over).toEqual([0, 0]);
+    // 14,000 × 1.02^(m/12) passes 15,712 at month 70
+    expect(s.firstOverYear).toBe(6);
+  });
+  it("gives the room left when the deposits are under the share, and no year inside the runs when none passes", () => {
+    const s = limitStanding([runProvident(months(12_000, 300), ctx), runProvident(months(12_000, 600, "employer"), ctx)]);
+    expect(s.room).toBeCloseTo(300, 6);
+    expect(s.firstOverYear).toBeNull();
+  });
+  it("measures a self-employed person's first year against the yearly amount", () => {
+    const self = (monthly: number): ProvidentInput => ({ ...plan(0, monthly, false), goal: { amountNow: 0, monthly, months: 144 }, hishtalmut: { employment: "self-employed", clockStartMonth: 0 }, profile: { annualIncome: 300_000 } });
+    const under = limitStanding([runProvident(self(500), ctx)]);
+    expect(under.per).toBe("year");
+    expect(under.over[0]).toBe(0);
+    expect(under.room).toBeGreaterThan(0);
+    const over = limitStanding([runProvident(self(3_000), ctx)]);
+    expect(over.over[0]).toBeGreaterThan(0);
+    expect(over.room).toBe(0);
+    expect(over.firstOverYear).toBe(1);
+  });
+});
+
+describe("earlySettlement (F-98)", () => {
+  const early = (monthly: number, money?: "employer") => {
+    const p = plan(12_000, monthly, true, money);
+    return { ...p, goal: { amountNow: 0, monthly, months: 60 }, hishtalmut: { ...p.hishtalmut!, earlyWithdrawal: true } };
+  };
+  it("withholds the rule's rate on the gains and the employer's benefited deposits, and leaves the own deposits out", () => {
+    const own = runProvident(early(300), ctx);
+    const emp = runProvident(early(900, "employer"), ctx);
+    const index = own.series[own.series.length - 1]!.index;
+    const s = earlySettlement([own, emp])!;
+    expect(s.withheld).toBeCloseTo((0.47 * (own.detail.earlyGains! + emp.detail.earlyGains! + emp.detail.earlyEmployerDeposits!)) / index, 6);
+    expect(own.detail.earlyEmployerDeposits).toBe(0);
+  });
+  it("gives back what the withheld exceeds the tax by, so the tax is the withheld less the back", () => {
+    const runs = [runProvident(early(300), ctx), runProvident(early(900, "employer"), ctx)];
+    const s = earlySettlement(runs)!;
+    const index = runs[0]!.series[runs[0]!.series.length - 1]!.index;
+    expect(s.back).toBeGreaterThan(0);
+    expect(s.withheld - s.back).toBeCloseTo(runs.reduce((a, r) => a + r.taxAtExit / index, 0), 6);
+  });
+  it("has nothing to say after the lock", () => {
+    expect(earlySettlement([runProvident({ ...plan(12_000, 300, true), goal: { amountNow: 0, monthly: 300, months: 84 } }, ctx)])).toBeNull();
   });
 });
