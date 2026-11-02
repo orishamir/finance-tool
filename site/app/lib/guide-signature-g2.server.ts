@@ -233,6 +233,7 @@ export function buildStudyFund(c: G2Ctx): SignatureData {
     ["determiningCap", "TXH-02", "determining_salary_cap"],
     ["ownPct", "TXH-08", "own_benefited_pct"],
     ["selfBenefited", "TXH-08", "self_employed_benefited"],
+    ["feeCap", "PF-06", "balance_cap"],
     ["deductionPct", "TXH-05", "deduction_pct"],
     ["deductionCeiling", "TXH-05", "income_ceiling"],
     ["taxRate", "TXH-11", "rate"],

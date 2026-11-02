@@ -113,6 +113,8 @@ export interface StudyStoryCase {
   employerMonthly: number;
   /** A-01, percent a year. */
   returnPct: number;
+  /** The fund's balance fee, percent a year, when the person typed one; otherwise the track's. */
+  feePct?: number | null;
 }
 
 export type StudySlice = MoneyStory;
@@ -133,7 +135,8 @@ export function studyYear(study: Bundle, lockYears: number, c: StudyStoryCase, y
   const terms = (money?: "employer") => {
     const t = hishtalmutTerms(study, { employment: c.employment, income: c.income, early });
     const withMoney = c.employment === "employee" ? { ...t, hishtalmut: { ...t.hishtalmut!, salaryFollowsPrices: true, ...(money ? { money } : {}) } } : t;
-    return feePct === undefined ? withMoney : withBalanceFee(withMoney, feePct);
+    const fee = feePct ?? c.feePct;
+    return fee === undefined || fee === null ? withMoney : withBalanceFee(withMoney, fee);
   };
   const fail = (run: RunOutcome): StudyYear | null => ("error" in run ? { slice: null, gap: "no-run", runs: [] } : settled(run.run) ? null : { slice: null, gap: "blocked", runs: [] });
   if (c.employment === "self-employed") {
