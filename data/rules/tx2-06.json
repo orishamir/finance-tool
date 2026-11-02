@@ -1,0 +1,46 @@
+{
+  "id": "TX2-06",
+  "title": "Corporate bonds and commercial paper: interest by linkage",
+  "title_he": "ריבית על איגרת חוב של חברה: לפי ההצמדה",
+  "text_he": "ריבית על איגרת חוב של חברה ממוסה כמו כל ריבית. נכס שאינו צמוד למדד, או צמוד בחלקו: שיעור מס נמוך יותר, על הריבית הנומינלית. נכס צמוד במלואו: עד השיעור הגבוה, על הריבית הריאלית. חבר בורסה שמקבל את הריבית בשביל לקוחותיו מנכה ממנה מס.",
+  "strength": "primary",
+  "dimensions": [
+    "tax-during",
+    "real-vs-nominal",
+    "currency"
+  ],
+  "likely_to_change": "yes",
+  "il_finance_file": "tax-tier2-other.md",
+  "checked": "2026-11-02",
+  "recheck_date": "2027-07-01",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.btl.gov.il/Laws1/00_0103_000000.pdf#page=120",
+      "title": "Income Tax Ordinance, National Insurance Institute's consolidated copy, file of 21.6.2026",
+      "title_he": "פקודת מס הכנסה",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "s.125C(a)-(c)",
+      "locator_he": "סעיף 125ג(א)-(ג)",
+      "checked": "2026-10-31",
+      "qualifier": "(state body's consolidated copy, not the binding gazette wording)"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
+      "title": "Tax Authority guide 2025",
+      "title_he": "דע זכויותיך וחובותיך 2025",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.41, section",
+      "page": 41,
+      "quote": "1. ריבית על ניירות ערך (למעט אג״ח/ני״ע זרים)",
+      "checked": "2026-10-22",
+      "qualifier": "(page image)"
+    }
+  ]
+}

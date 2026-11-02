@@ -29,6 +29,9 @@
     "deposit_bank_id": null,
     "own_hosts": [
       "harel-group.co.il"
+    ],
+    "filing_names": [
+      "Harel main prospectus"
     ]
   },
   {
@@ -45,6 +48,10 @@
     "deposit_bank_id": null,
     "own_hosts": [
       "meitav.co.il"
+    ],
+    "filing_names": [
+      "Annual report, fund 51402",
+      "Meitav main prospectus"
     ]
   },
   {
@@ -91,7 +98,11 @@
     "cma_legal_id": "512237744",
     "fees_id": null,
     "deposit_bank_id": null,
-    "own_hosts": []
+    "own_hosts": [],
+    "filing_names": [
+      "Migdal main prospectus",
+      "Migdal prospectus"
+    ]
   },
   {
     "id": "clal",
@@ -712,6 +723,7 @@
     "deposit_bank_id": null,
     "own_hosts": [],
     "filing_names": [
+      "Kesem",
       "קסם"
     ]
   },
@@ -880,6 +892,22 @@
     "deposit_bank_id": null,
     "own_hosts": [
       "reit1.co.il"
+    ]
+  },
+  {
+    "id": "invesco",
+    "name_he": "Invesco",
+    "kind": "fund-manager",
+    "scope_names": [
+      {
+        "name": "Invesco"
+      }
+    ],
+    "cma_legal_id": null,
+    "fees_id": null,
+    "deposit_bank_id": null,
+    "own_hosts": [
+      "invesco.com"
     ]
   }
 ]

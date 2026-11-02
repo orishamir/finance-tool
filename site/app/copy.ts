@@ -167,6 +167,22 @@ export const guideIndex = {
   alsoCalled: "בשפה פשוטה:",
 } as const;
 
+// A guide of its own, no product id (issue 159); the prose is in content/guide/limited-bond-fund.tsx
+export const limitedBondFund = {
+  title: "קרן אג״ח שתקופת קיומה מוגבלת",
+  lede: "קרן נאמנות שמחזיקה איגרות חוב שנגמרות בערך באותה שנה, ומתפרקת במועד שנקבע מראש. יש שקוראים לה קרן בולט, ויש שקוראים לה קרן אג״ח לפדיון.",
+  indexLine: "קרן אג״ח שנגמרת במועד שנקבע מראש, ויש שקוראים לה קרן בולט",
+  searchNames: ["קרן אג״ח שתקופת קיומה מוגבלת", "קרן בולט", "קרנות בולט", "אג״ח בולט", "אג״ח לפדיון"],
+  sections: [
+    { id: "what", title: "מה זה" },
+    { id: "compare", title: "לעומת איגרת חוב וקרן אג״ח רגילה" },
+    { id: "who", title: "מי מציע, ובכמה" },
+    { id: "end", title: "מה קורה בסוף" },
+    { id: "tax", title: "מס" },
+    { id: "risks", title: "סיכונים" },
+  ],
+};
+
 export const guide = {
   indexTitle: "בעמוד הזה",
   // D6 (amended 2026-10-26): makam, a government bond and a money-market fund are bought inside an account, not a container of their own

@@ -1,0 +1,26 @@
+{
+  "id": "CORP-26",
+  "title": "A bond that repays all its principal at the end: no official name was found",
+  "title_he": "איגרת שמחזירה את כל קרן החוב בסוף: לא נמצא לה שם רשמי",
+  "text_he": "באף מקור רשמי שנקרא אין מילה לאיגרת חוב שמחזירה את כל קרן החוב שלה בתשלום אחד בסוף. התקנות על מילווה המדינה אומרות רק שהיא נפדית במלואה ביום תשלום הקרן.",
+  "strength": "primary",
+  "dimensions": [
+    "product-marking"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "corporate-bonds.md",
+  "checked": "2026-11-01",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmWhyAjAO9sieYV7GsTkIsdY=#page=3",
+      "title": "תקנות מילווה המדינה (איגרות חוב מסוג \"אג\"ח ממשלתית\"), התשס\"ו-2006, קובץ התקנות 6457",
+      "title_he": "תקנות מילווה המדינה (איגרות חוב מסוג \"אג\"ח ממשלתית\"), התשס\"ו-2006, קובץ התקנות 6457",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "checked": "2026-11-01"
+    }
+  ]
+}

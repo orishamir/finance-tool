@@ -8,7 +8,7 @@ import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
-import { isOwnDocument, notRuleAllowedIn, notRules, ownContextExposures, type RuleRecord } from "@finance-tool/schema";
+import { isOwnDocument, notRuleAllowedIn, notRules, ownContextExposures, ownContextGuides, type RuleRecord } from "@finance-tool/schema";
 import { chipName, companyTermsHref, generalOnly, isOwnSourceOf, joinNames, listedCompanies, ownDocCompanies, shownCompanies } from "./scope";
 import { companyLinks, companyTermGroups, loadInstitutionRegistry, noPageCompanyTerms, ownDocuments, registryIdsOfPage } from "./institutions.server";
 
@@ -32,7 +32,7 @@ describe("guide and exposure prose cites general rules only", () => {
       const file = `site/app/content/${kind}/${f}`;
       cites.set(file, citedOutsideVaries(readFileSync(join(dir, f), "utf8")));
       it(`${kind}/${f}`, () => {
-        const own = new Set(kind === "exposure" ? (ownContextExposures[f.replace(/\.tsx$/, "")] ?? []) : []);
+        const own = new Set((kind === "exposure" ? ownContextExposures : ownContextGuides)[f.replace(/\.tsx$/, "")] ?? []);
         const bad = cites.get(file)!.filter((id) => rules.get(id)!.scope !== "general" && !own.has(id) && !notRuleAllowedIn(id, file));
         expect(bad.map((id) => `${id} (${rules.get(id)!.scope}: ${(rules.get(id)!.scope_institutions ?? []).map((n) => n.id).join(", ")})`)).toEqual([]);
       });

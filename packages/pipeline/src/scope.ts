@@ -3,7 +3,7 @@
 // (scripts/extract-sources.ts) writes what `scopeFromLine` returns; the validator re-reads the line and fails a record that drifted.
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join, relative } from "node:path";
-import { companyTermRule, generalSourceKinds, listedAt, notRuleAllowedIn, notRules, ownContextExposures, ownDocumentCompanies, type CompanyTermRef, type InstitutionRegistryRow, type RuleScope, type ScopeInstitution } from "@finance-tool/schema";
+import { companyTermRule, generalSourceKinds, listedAt, notRuleAllowedIn, notRules, ownContextExposures, ownContextGuides, ownDocumentCompanies, type CompanyTermRef, type InstitutionRegistryRow, type RuleScope, type ScopeInstitution } from "@finance-tool/schema";
 import type { RuleBaseIds } from "./references.ts";
 
 export interface ScopeFields {
@@ -299,6 +299,13 @@ export function checkScope(ctx: { dataDir: string; ruleBase: RuleBaseIds }, rule
       const r = rules.get(id);
       const kinds = (r?.scope_institutions ?? []).map((i) => byId.get(i.id)?.kind);
       if (r && registry.length > 0 && (r.scope === "general" || kinds.length === 0 || kinds.some((k) => k !== "index-provider"))) report(registryPath, `ownContextExposures: ${exposure} may cite ${id}, which is not an index provider's own term (${scopeWord(id)})`);
+    }
+  }
+  // a guide's own-context list holds only existing records that are not general (a general record needs no exception)
+  for (const [guide, ids] of Object.entries(ownContextGuides)) {
+    for (const id of ids) {
+      const r = rules.get(id);
+      if (registry.length > 0 && (!r || r.scope === "general")) report(registryPath, `ownContextGuides: ${guide} names ${id}, ${r ? "a general record" : "which does not exist"}`);
     }
   }
   // ---- the not-rules: every data file that cites one is named in its entry, and every data file named still cites it (the site test
