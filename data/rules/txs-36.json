@@ -1,0 +1,67 @@
+{
+  "id": "TXS-36",
+  "title": "Foreign currency at wind-up: the wind-up changes no index rule",
+  "title_he": "מטבע חוץ בפירוק: הפירוק לא משנה את כלל המדד",
+  "text_he": "ביחידות הנקובות בדולר המדד הוא שער המטבע. ביחידות שקליות של קרן רגילה המדד הוא מדד המחירים לצרכן, ובקרן להשקעות חוץ שער המטבע העיקרי שלה. הפירוק לא משנה זאת. לא נמצא באיזה יום נקבע השער, ובאיזה מטבע משולמת יחידה דולרית.",
+  "strength": "primary",
+  "dimensions": [
+    "real-vs-nominal",
+    "currency",
+    "tax-at-exit"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "tax-securities-israeli.md",
+  "checked": "2026-11-01",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=148",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "s.88, definition יתרת המחיר המקורי המתואם",
+      "checked": "2026-11-01"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/policy/income-tax-professional-inst-7-2003/he/Policy_IncomeTaxInst_hoz7-2003.pdf#page=18",
+      "title": "חוזר מס הכנסה 7/2003: הרפורמה במס הכנסה – מיסוי קרנות נאמנות ובעלי היחידות בהן",
+      "title_he": "חוזר מס הכנסה 7/2003: הרפורמה במס הכנסה – מיסוי קרנות נאמנות ובעלי היחידות בהן",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "pp.17-18, s.4.1",
+      "locator_he": "עמודים 17 עד 18, סעיף 4.1",
+      "page": 17,
+      "quote": "מרגע הקמתה ועד סוף ימיה",
+      "checked": "2026-11-01"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=146",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "s.88, definition מדד",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/SJCa7BPhZiMZ9l0U5Xe3nxVBukfCLPiTSKOFP3CGC94=#page=9",
+      "title": "תקנות מס הכנסה (חישוב סכום אינפלציוני במכירת יחידה בקרן נאמנות), התשס\"ג-2003",
+      "title_he": "תקנות מס הכנסה (חישוב סכום אינפלציוני במכירת יחידה בקרן נאמנות), התשס״ג-2003 (קובץ התקנות 6223)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "pp.9-10, reg. 1",
+      "locator_he": "עמודים 9 עד 10, תקנה 1",
+      "page": 9,
+      "checked": "2026-10-25"
+    }
+  ]
+}

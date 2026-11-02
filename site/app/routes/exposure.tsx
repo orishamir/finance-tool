@@ -1,9 +1,9 @@
 // Screen: the exposure guide page (flows 6.6, design-spec 2 without the timeline): what the money is invested in,
-// which products can hold it, risks, the dimension checklist for this exposure, and the words used for it.
+// which products can hold it, risks, and the words used for it.
 import { Link, redirect, useLoaderData } from "react-router";
 import type { Route } from "./+types/exposure";
 import { exposurePage as copy, guide, guideIndex, site } from "../copy";
-import { DimensionChecklist, GuideSection, SectionIndex, TermTable, useCurrentSection, type ChecklistRowView } from "../components/guide/sections";
+import { GuideSection, SectionIndex, TermTable, useCurrentSection } from "../components/guide/sections";
 import { IconDrillIn, IconLock } from "../components/icons";
 import { NumberLegend, RuleRef } from "../components/provenance";
 import { Breadcrumb, PageShell } from "../components/shell";
@@ -42,17 +42,6 @@ export default function ExposurePage() {
     return v ? { ...v, rule_ids: v.rule_ids ?? [ruleId] } : null;
   };
   const cp = { figure };
-  const checklist: ChecklistRowView[] = data.checklist.map((row) => {
-    const allWeak = row.rules.length > 0 && row.rules.every((id) => rules[id]?.strength === "institution" || rules[id]?.strength === "secondary");
-    return {
-      id: row.id,
-      name: row.name,
-      explanation: row.explanation,
-      mark: row.mark,
-      rules: row.rules,
-      weak: allWeak ? (row.rules.some((id) => rules[id]?.strength === "secondary") ? "secondary" : "institution") : null,
-    };
-  });
   const provenance = { rules, pointed: data.pointed, terms: data.termsById, dimensions: data.dimensionNames, today };
   const kind = copy.kinds[record.kind] ?? record.kind;
   // audit A83: no terms table under three rows; the page's own terms first, the rest behind a toggle
@@ -79,7 +68,7 @@ export default function ExposurePage() {
             <NumberLegend term />
           </header>
 
-          <GuideSection id="what" title={copy.sections[0].title} rulesToggle>
+          <GuideSection id="what" title={copy.sections[0].title}>
             {content ? content.what(cp) : <p className="text-muted-foreground max-w-measure">{copy.noProse}</p>}
           </GuideSection>
 
@@ -127,16 +116,12 @@ export default function ExposurePage() {
             )}
           </GuideSection>
 
-          <GuideSection id="risk" title={copy.sections[2].title} rulesToggle>
+          <GuideSection id="risk" title={copy.sections[2].title}>
             {content ? content.risks(cp) : <p className="text-muted-foreground max-w-measure">{copy.noProse}</p>}
           </GuideSection>
 
-          <GuideSection id="check" title={copy.sections[3].title}>
-            <DimensionChecklist rows={checklist} />
-          </GuideSection>
-
           {!terms.hide && (
-            <GuideSection id="terms" title={copy.sections[4].title}>
+            <GuideSection id="terms" title={copy.sections[3].title}>
               <p className="text-sm text-muted-foreground">{guide.termsLine}</p>
               {terms.main.length > 0 && <TermTable terms={terms.main} />}
               {terms.rest.length > 0 && (

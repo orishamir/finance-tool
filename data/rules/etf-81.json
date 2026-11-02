@@ -1,0 +1,58 @@
+{
+  "id": "ETF-81",
+  "title": "Invesco BulletShares: UCITS funds redeemed at net asset value, US funds paid as a cash distribution",
+  "title_he": "Invesco BulletShares: קרנות אירופיות נפדות, ואמריקניות משלמות חלוקה במזומן",
+  "text_he": "בקרנות UCITS של Invesco הקרן נפדית במועד הפירעון לפי שווי הנכסים הנקי, בלי תשואה קבועה מראש, והדירקטורים יכולים לקבוע מועד אחר. בקרנות האמריקניות, לפי רשימה מ־2022, הקרן משלמת בסוף חלוקה במזומן. הן אינן בבורסה בתל אביב.",
+  "strength": "institution",
+  "dimensions": [
+    "fee-management-balance",
+    "currency",
+    "liquidity-lockup"
+  ],
+  "likely_to_change": "yes",
+  "il_finance_file": "etfs-and-index-funds.md",
+  "checked": "2026-11-01",
+  "recheck_date": "2027-07-01",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "invesco",
+      "name_he": "Invesco"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.borsaitaliana.it/CAETF/2026-10616-SUPPLEMENTS-aa18ab11-20b7-43dc-a408-d922e55ab17e.pdf#page=3",
+      "title": "Invesco BulletShares 2030 USD supplement",
+      "publisher": "borsaitaliana.it",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "pp.2, 3",
+      "locator_he": "עמודים 2, 3",
+      "page": 2,
+      "checked": "2026-11-01"
+    },
+    {
+      "url": "https://www.invesco.com/content/dam/invesco/uk/en/pdf/press/2024/Invesco-expands-its-range-of-fixed-maturity-ucits-etfs-24-jun-2024_uk.pdf",
+      "title": "Invesco release, 24.6.2024",
+      "publisher": "invesco.com",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "pp.2 to 4",
+      "locator_he": "עמודים 2 עד 4",
+      "page": 2,
+      "checked": "2026-11-01"
+    },
+    {
+      "url": "https://invesco.com/content/dam/invesco/ch/en/pdf/bulletshares/BulletShares-ETFs-product-list.pdf",
+      "title": "BulletShares ETFs list, 31.12.2022",
+      "publisher": "invesco.com",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.1",
+      "locator_he": "עמוד 1",
+      "page": 1,
+      "checked": "2026-11-01"
+    }
+  ]
+}

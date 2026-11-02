@@ -1,0 +1,31 @@
+{
+  "id": "CORP-23",
+  "title": "Costs of buying and holding (pointer)",
+  "title_he": "עלות הקנייה וההחזקה של איגרת חוב של חברה",
+  "text_he": "איגרת חוב של חברה נקנית ומוחזקת בחשבון ניירות ערך, עם עמלת קנייה ומכירה ודמי משמרת לפי התעריפון. הפטור מדמי משמרת בבנק חל על מק״ם ועל קרנות כספיות בלבד. שכר הנאמן של האיגרת משולם על ידי המנפיק ולא יורד מהמחזיק.",
+  "strength": "primary",
+  "dimensions": [
+    "fee-trade",
+    "fee-custody"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "corporate-bonds.md",
+  "checked": "2026-11-02",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Nyarot01.pdf",
+      "title": "Securities Law, Securities Authority's consolidated copy, file of 26.8.2026",
+      "title_he": "חוק ניירות ערך, התשכ״ח-1968",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "checked": "2026-10-22"
+    }
+  ],
+  "derived_from": [
+    "BRK-16",
+    "BRK-17"
+  ]
+}

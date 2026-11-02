@@ -223,7 +223,7 @@ Why "למי ששלח לכם את האתר": every friend reached the site throug
 | Readout heading | היום / שנה `{n}` |
 | Table headings | שנה · ההפקדות שלכם · דמי ניהול · מס · נשאר לכם |
 | Graph's screen-reader name | גרף: הכסף לאורך `{שנים}`. הנתונים המלאים בטבלה. |
-| Rules line | כללים: |
+| Rules line (2026-11-02, D48) | חוקים וכללים · `{מספר}` |
 | Marker, money becomes free | אפשר למשוך מכאן |
 | Marker, age | גיל `{גיל}` |
 | Caption, return entered by the reader | הקו המקווקו מבוסס על תשואה שהזנתם, לא על הערכה של האתר. |
@@ -1843,7 +1843,7 @@ Added 2026-10-24 for the briefs in `docs/flows.md` section 15 and the handoff in
 | Auto renew | כן · לא · עד `{מספר}` פעמים |
 | Current-account conditions | תנאי הריבית, כפי שהבנק כותב |
 | Not an offer line (BANK-13) | הריבית המוצעת היא המינימום שהבנק מפרסם לסוג הפיקדון, לא הצעה אליכם. התנאים המחייבים הם בהסכם הפיקדון. |
-| Row links | מה זה `{סוג}` · מה האתר לקח בחשבון · changed 2026-10-24 (sweep); was ״מה לבדוק״, follows the renamed guide section |
+| Row links | מה זה `{סוג}`; the link to "מה האתר לקח בחשבון" left with the section (2026-11-02, D49) |
 | Brokerage card title | התעריפון |
 | Lines collected | `{מספר}` שורות עמלה נאספו: `{בסיסים}` |
 | Notice line | הודעה על שינוי בעמלות |

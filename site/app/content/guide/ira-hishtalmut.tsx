@@ -4,6 +4,7 @@
 import type { GuideContent } from "./types";
 import { IdRef, Num, RuleRef, RulesLine, Term, VariesByCompany } from "../../components/provenance";
 import { Callout, Sentence } from "../../components/kit";
+import { OpenLossOffset } from "./open-tax";
 
 export const content: GuideContent = {
   what: ({ figure }) => {
@@ -43,6 +44,7 @@ export const content: GuideContent = {
         <span className="font-medium">מה משלמים מעבר <Term prefix="ל" id="דמי ניהול">דמי הניהול</Term>.</span> <Term id="עמלות ברוקראז'">עמלות ברוקראז'</Term> על כל קנייה ומכירה, <Term id="דמי משמרת">דמי משמרת</Term> ודמי ניהול של הקרנות שמחזיקים נגבים מהקופה לפי תעריף הברוקר שבחרתם. התקרה לדמי הניהול של קופה אישית היא {cap ? <Num value={cap} /> : null} לשנה מהיתרה, ואין בתקנות דמי ניהול מהפקדה <RuleRef id="PF-06" />.
       </Callout>
       <RulesLine ids={["IRA-16", "IRA-17", "PF-06"]} />
+      <OpenLossOffset />
     </>
     );
   },

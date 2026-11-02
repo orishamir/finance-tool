@@ -23,28 +23,6 @@ import { onlyWhatCanBeDone, shortName } from "./providers";
 import { computed, ownBy, type SiteValue, type Strength } from "./value";
 import { publisherHe } from "./publisher-he.server";
 
-export type NoGraph =
-  | { kind: "missing"; parts: string[] }
-  | { kind: "pending"; formulas: string[] }
-  | { kind: "stops"; code: string | null }
-  | { kind: "none" };
-
-/** The part of the data a missing-input line (instruments.server.ts) is about, in the words of copy noGraph. */
-export function missingParts(messages: string[]): string[] {
-  const parts: string[] = [];
-  const add = (p: string) => parts.includes(p) || parts.push(p);
-  for (const m of messages) {
-    if (/deposit/i.test(m) && !/fees/i.test(m)) add("deposit");
-    else if (/ira_fees/.test(m)) add("ira");
-    else if (/employment/.test(m)) add("employment");
-    else if (/series_rule|GOV rule|data\/rules/.test(m)) add("series");
-    else if (/tariff|fees/i.test(m)) add("tariff");
-    else if (/fund/i.test(m)) add("fund");
-    else add("other");
-  }
-  return parts;
-}
-
 /** The rules a run may read, found by running the engine over the profiles that change its path. */
 export function rulesTouched(bundle: Bundle): Set<string> {
   const ids = new Set<string>();
@@ -215,13 +193,13 @@ export function buildInstrumentBundle(
   p05: ParameterRecord,
   allRules: Record<string, RuleRecord>,
   t: string,
-): { bundle: Bundle | null; noGraph: NoGraph | null; published: PublishedDeposit | null } {
+): { bundle: Bundle | null; published: PublishedDeposit | null } {
   const spec = p05.instruments?.[record.id];
   const deposits = loadDepositTerms();
   const built = buildInstrumentTerms(record.id, family, spec, { fees: loadFees(), funds: loadFunds(), deposits, rules: allRules, today: t });
   if ("missing" in built) {
     for (const m of built.missing) console.log(`[guide] ${record.id}: no timeline: ${m}`);
-    return { bundle: null, noGraph: { kind: "missing", parts: missingParts(built.missing) }, published: null };
+    return { bundle: null, published: null };
   }
   const published = family === "deposit" ? publishedDeposit(record.id, spec, deposits) : null;
   // the current account starts from the rate most banks pay (F-85, 2026-10-25), not from the one bank P-05 names
@@ -247,10 +225,10 @@ export function buildInstrumentBundle(
   const probe = runTimeline(draft, { entered: {}, age: null });
   if (probe.kind === "failed") {
     console.log(`[guide] ${record.id}: no timeline: the run stops (${probe.message})`);
-    return { bundle: null, noGraph: { kind: "stops", code: /G-\d+|OQ\d+/.exec(probe.message)?.[0] ?? null }, published };
+    return { bundle: null, published };
   }
   const touched = rulesTouched(draft);
-  return { bundle: { ...draft, rules: Object.values(allRules).filter((r) => touched.has(r.id)) }, noGraph: null, published };
+  return { bundle: { ...draft, rules: Object.values(allRules).filter((r) => touched.has(r.id)) }, published };
 }
 
 /** One collected tariff's run of an account or a security held in one, on the example plan (P-05's amount, monthly deposit and horizon). */
@@ -348,7 +326,7 @@ export function guideInstrumentBundle(record: ProductRecord, family: InstrumentF
       const p01 = parameters.find((p) => p.method_id === "P-01");
       const theta = p01?.value ? asParameter(p01, p01.value) : undefined;
       const tied = others.length > 0 && theta ? { names: [best, ...others].map((r) => shortName(r.id, r.name)), theta } : undefined;
-      return { bundle: { ...best.bundle, pick: { kind: "account", id: best.id, count, ...(tied ? { tied } : {}) } }, noGraph: null, published: null };
+      return { bundle: { ...best.bundle, pick: { kind: "account", id: best.id, count, ...(tied ? { tied } : {}) } }, published: null };
     }
   }
   return buildInstrumentBundle(record, family, p05, allRules, t);

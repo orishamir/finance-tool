@@ -792,7 +792,7 @@ Answers issue #149; the working, including what was searched and not found, is `
 - Rule: The ISA's list of foreign funds registered in Israel, read on 2026-10-31, has 37 funds, all iShares or Invesco, and none is a defined-term fund: no iBonds and no BulletShares. By their names, the 11 bond-market foreign funds on TASE at 23.10.2026 (ETF-43) carry no end date.
 - Conditions / exceptions: A finding of absence on a dated list. The ISA list's copy is `research/2026-10-31-night/isa-foreign-funds.tsv`; ETF-71 holds its source. For an Israeli fund of this kind see MF-59 to MF-65.
 - Figures: 37 funds on the ISA list; 11 bond-market funds on TASE; dates as above.
-- Source: as cited in ETF-43 and ETF-71 · primary · checked 2026-11-01 (the lists themselves read 2026-10-23 and 2026-10-31).
+- Source: [ISA, foreign traded funds approved to offer their units in Israel](https://www.new.isa.gov.il/nav-index/supervised-mutualfunds/tax-foreignfunds-etf-faq), pages 1 to 5 of the list, read 2026-10-31 · checked 2026-11-01 · primary; [הבורסה, קרנות חוץ נסחרות](https://market.tase.co.il/he/market_data/f-etfs), read 2026-10-23 · checked 2026-11-01 · primary.
 - Scope: general
 - Dimensions: `currency`
 - Likely to change: yes, a foreign fund can be registered at any time

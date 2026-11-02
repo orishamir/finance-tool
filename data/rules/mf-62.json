@@ -1,0 +1,178 @@
+{
+  "id": "MF-62",
+  "title": "Kesem: 20 tracking funds named \"אינדקס Bullet\", each with a stated end",
+  "title_he": "קסם: קרנות מחקות ״אינדקס Bullet״, לכל אחת כתוב סוף",
+  "text_he": "בתשקיף של קסם יש קרנות מחקות פתוחות בשם ״אינדקס Bullet״, ובהערות נכתב שלכל אחת תקופת קיום עד סוף שנה מסוימת, בין 2026 ל־2035, ושעם סיום התקופה הקרן תפורק. כולן במסלול מס של קרן פטורה. התאריך שבו הכסף משולם לא מופיע בתשקיף.",
+  "strength": "institution",
+  "dimensions": [
+    "fee-management-balance",
+    "liquidity-lockup"
+  ],
+  "likely_to_change": "yes",
+  "il_finance_file": "mutual-funds-and-money-market-funds.md",
+  "checked": "2026-11-01",
+  "recheck_date": "2027-07-01",
+  "figures": {
+    "funds": {
+      "value": 20,
+      "unit": "count",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1761001-1762000/P1761574-00.pdf#page=19",
+        "title": "תשקיף עיקרי של קסם, 9.8.2026, עמודים 15 עד 19",
+        "publisher": "קסם קרנות נאמנות",
+        "strength": "institution"
+      },
+      "checked": "2026-11-02",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "MF-62"
+      ],
+      "state": "sourced",
+      "notes": "קרנות בתשקיף"
+    },
+    "fee_low": {
+      "value": 0.2,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1761001-1762000/P1761574-00.pdf#page=19",
+        "title": "תשקיף עיקרי של קסם, 9.8.2026, עמודים 15 עד 19",
+        "publisher": "קסם קרנות נאמנות",
+        "strength": "institution"
+      },
+      "checked": "2026-11-02",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "MF-62"
+      ],
+      "state": "sourced",
+      "notes": "דמי ניהול קבועים, הנמוך"
+    },
+    "fee_high": {
+      "value": 0.45,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1761001-1762000/P1761574-00.pdf#page=19",
+        "title": "תשקיף עיקרי של קסם, 9.8.2026, עמודים 15 עד 19",
+        "publisher": "קסם קרנות נאמנות",
+        "strength": "institution"
+      },
+      "checked": "2026-11-02",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "MF-62"
+      ],
+      "state": "sourced",
+      "notes": "דמי ניהול קבועים, הגבוה"
+    },
+    "trustee_low": {
+      "value": 0.025,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1761001-1762000/P1761574-00.pdf#page=19",
+        "title": "תשקיף עיקרי של קסם, 9.8.2026, עמודים 15 עד 19",
+        "publisher": "קסם קרנות נאמנות",
+        "strength": "institution"
+      },
+      "checked": "2026-11-02",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "MF-62"
+      ],
+      "state": "sourced",
+      "notes": "שכר נאמן, הנמוך"
+    },
+    "trustee_high": {
+      "value": 0.03,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1761001-1762000/P1761574-00.pdf#page=19",
+        "title": "תשקיף עיקרי של קסם, 9.8.2026, עמודים 15 עד 19",
+        "publisher": "קסם קרנות נאמנות",
+        "strength": "institution"
+      },
+      "checked": "2026-11-02",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "MF-62"
+      ],
+      "state": "sourced",
+      "notes": "שכר נאמן, הגבוה"
+    },
+    "end_first": {
+      "value": "2026",
+      "unit": "text",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1761001-1762000/P1761574-00.pdf#page=19",
+        "title": "תשקיף עיקרי של קסם, 9.8.2026, עמודים 15 עד 19",
+        "publisher": "קסם קרנות נאמנות",
+        "strength": "institution"
+      },
+      "checked": "2026-11-02",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "MF-62"
+      ],
+      "state": "sourced",
+      "notes": "שנת הסיום הראשונה בתשקיף"
+    },
+    "end_last": {
+      "value": "2035",
+      "unit": "text",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1761001-1762000/P1761574-00.pdf#page=19",
+        "title": "תשקיף עיקרי של קסם, 9.8.2026, עמודים 15 עד 19",
+        "publisher": "קסם קרנות נאמנות",
+        "strength": "institution"
+      },
+      "checked": "2026-11-02",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "MF-62"
+      ],
+      "state": "sourced",
+      "notes": "שנת הסיום האחרונה בתשקיף"
+    }
+  },
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "kesem",
+      "name_he": "קסם קרנות נאמנות"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://mayafiles.tase.co.il/rpdf/1761001-1762000/P1761574-00.pdf#page=19",
+      "title": "Kesem main prospectus, 9.8.2026",
+      "publisher": "Maya (TASE filings)",
+      "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "pp.15 to 19, pp.49, 51, 59, 60",
+      "locator_he": "עמודים 15 עד 19, עמודים 49, 51, 59, 60",
+      "page": 15,
+      "checked": "2026-11-01"
+    }
+  ]
+}
