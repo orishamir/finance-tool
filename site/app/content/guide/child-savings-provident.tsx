@@ -4,6 +4,7 @@
 import type { GuideContent } from "./types";
 import { IdRef, Num, RuleRef, RulesLine, Term, VariesByCompany } from "../../components/provenance";
 import { Callout, Sentence } from "../../components/kit";
+import { OpenLossOffset } from "./open-tax";
 
 export const content: GuideContent = {
   what: ({ figure }) => {
@@ -44,12 +45,13 @@ export const content: GuideContent = {
   afterTax: () => (
     <>
       <Callout tone="caution" className="max-w-measure">
-        <span className="font-medium">שיעור המס <Term prefix="ב" id="משיכה">משיכה</Term> מגיע ממקור משני.</span> הביטוח הלאומי אומר רק שבמשיכה משלמים <Term id="מס רווחי הון">מס רווחי הון</Term>, בלי שיעור; החוק מתייחס לקופת גמל להשקעה בלי לנקוב בחיסכון לכל ילד. שאלה פתוחה: <IdRef id="TXK OQ1" />.
+        <span className="font-medium">שיעור המס <Term prefix="ב" id="משיכה">משיכה</Term> מגיע ממקור משני.</span> הביטוח הלאומי אומר רק שבמשיכה משלמים <Term id="מס רווחי הון">מס רווחי הון</Term>, בלי שיעור; החוק מתייחס לקופת גמל להשקעה בלי לנקוב בחיסכון לכל ילד. שאלה פתוחה (<IdRef id="TXK OQ1" />).
       </Callout>
       <Callout tone="blocked" className="max-w-measure">
         <span className="font-medium">הביטוח הלאומי מתאר גם מסלול <Term id="קצבה">קצבה</Term>:</span> להשאיר את הכסף בקופה עד הפרישה ולקבל אותו כקצבה בלי מס. הבסיס לכך בחוק לא נמצא, והאתר לא מחשב אותו.
       </Callout>
       <RulesLine ids={["TXK-20", "TXK-23", "TXK-25"]} />
+      <OpenLossOffset />
     </>
   ),
   risks: () => (

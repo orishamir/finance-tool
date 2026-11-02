@@ -68,7 +68,7 @@ function GraduationStatus({ s }: { s: GraduationStatusView }) {
             <div key={o.code} className="flex flex-col gap-1">
               <span className="flex items-center gap-2 text-sm text-blocked-foreground">
                 <IconLock size={16} className="text-blocked shrink-0" />
-                <Tpl t={g.blockerShort} vars={{ code: <IdRef id={o.code} /> }} />
+                <Tpl t={g.blockerShort} vars={{ code: <IdRef id={o.code} titled /> }} />
               </span>
               {o.narrowedOn && o.narrowedBy && (
                 <span className="text-sm text-muted-foreground flex flex-wrap items-center gap-1.5">
@@ -93,7 +93,7 @@ function GraduationStatus({ s }: { s: GraduationStatusView }) {
             {s.closed.map((c, i) => (
               <li key={`${c.code}-${i}`} className={`text-sm flex flex-wrap items-center gap-1.5 ${c.closedOn ? "text-muted-foreground" : "text-caution-foreground"}`}>
                 <span className="line-through">
-                  {c.closedOn ? <Tpl t={g.closure} vars={{ date: dateNode(c.closedOn), rule: <IdRef id={c.code} closedOn={c.closedOn} /> }} /> : <Tpl t={g.closureNoDate} vars={{ rule: <IdRef id={c.code} closedOn={c.closedOn} /> }} />}
+                  {c.closedOn ? <Tpl t={g.closure} vars={{ date: dateNode(c.closedOn), rule: <IdRef id={c.code} closedOn={c.closedOn} titled /> }} /> : <Tpl t={g.closureNoDate} vars={{ rule: <IdRef id={c.code} closedOn={c.closedOn} titled /> }} />}
                 </span>
                 <RulesChip ids={c.ruleIds} />
               </li>

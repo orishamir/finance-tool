@@ -197,9 +197,15 @@ export const guide = {
     { id: "cost", title: "כמה זה עולה" },
     { id: "tax", title: "מיסוי" },
     { id: "risk", title: "סיכונים ומה לא מוגן" },
-    { id: "check", title: "מה האתר לקח בחשבון" }, // audit 2026-10-24 (A42): was "מה לבדוק"
     { id: "terms", title: "מונחים" },
   ] as const,
+  /** A section whose usual title does not fit this guide (2026-11-02, issue 33). */
+  sectionTitles: {
+    "current-account": { use: "כמה כסף להחזיק בעו״ש" },
+    "pension-general": { use: "מתי מגיעים אליה" },
+    makam: { who: "איפה קונים ומי מנפיק" },
+    "government-bond": { who: "איפה קונים ומי מנפיק" },
+  } as Record<string, Record<string, string>>,
   exposuresRow: "במה אפשר להשקיע בתוכו:",
   // D6 (2026-10-26): on a wrapper's page, the securities bought inside it that have a page of their own (makam, bonds, money-market funds)
   securitiesRow: "מה קונים בתוכו, ולכל אחד עמוד משלו:",
@@ -299,7 +305,7 @@ export const provenance = {
   // audit 2026-10-24 (A21): a flag with no sentence of its own
   flagOther: "הערה על החישוב:",
   // 2026-10-26: one chip for every id (IdRef); the formula sheet and the open-question sheet
-  idRef: { formula: "נוסחה", parameter: "פרמטר", question: "שאלה פתוחה", howComputed: "איך זה מחושב" },
+  idRef: { formula: "נוסחה", parameter: "פרמטר", question: "שאלה פתוחה", questionChip: "פרטים", howComputed: "איך זה מחושב" }, // questionChip (2026-11-02): an open question's chip says a word, not its code
   formulaSheet: {
     usesLabel: "פרמטרים של האתר שהנוסחה משתמשת בהם",
     noParameters: "הנוסחה לא משתמשת בפרמטרים של האתר.",
@@ -852,13 +858,6 @@ export const guideBlocks = {
   /** Shown on a tax step whose formula the site does not compute yet. */
   notComputed: { text: "האתר עוד לא מחשב את זה", releaseBefore: "יתווסף בגרסה", releaseAfter: "" },
   regulatorNames: { CMA: "רשות שוק ההון, ביטוח וחיסכון", BoI: "בנק ישראל", ISA: "רשות ניירות ערך", MoF: "משרד האוצר" } as Record<string, string>,
-  /** Why a guide page has no graph (in place of the empty card). */
-  noGraph: {
-    missingBefore: "עוד לא נאספו נתונים ל",
-    missingAfter: "ולכן עוד אין גרף לעמוד הזה.",
-    unknownCause: "הגרף של העמוד הזה עוד לא מחושב.",
-    parts: { deposit: "תנאי הפיקדון", fund: "קרן מייצגת", tariff: "תעריפון העמלות", series: "סדרת האג״ח הממשלתית", ira: "דמי הניהול של מנהל החשבון", employment: "סוג ההעסקה בדוגמה", other: "כל מה שהחישוב צריך" } as Record<string, string>,
-  },
   /** The product terms an illustrative run read (values sheet and panel). */
   terms: {
     title: "תנאי המוצר בדוגמה",
@@ -916,7 +915,6 @@ export const exposurePage = {
     { id: "what", title: "מה זה" },
     { id: "hold", title: "איך מחזיקים את זה" },
     { id: "risk", title: "סיכונים" },
-    { id: "check", title: "מה האתר לקח בחשבון" }, // audit 2026-10-24 (A42)
     { id: "terms", title: "מונחים" },
   ] as const,
   // audit 2026-10-24 (A83, A85)
@@ -2062,7 +2060,7 @@ export const r4catalogue = {
   autoRenewWord: { yes: "כן", no: "לא", upTo: "עד", times: "פעמים" },
   currentConditions: "תנאי הריבית, כפי שהבנק כותב",
   notAnOffer: "הריבית המוצעת היא המינימום שהבנק מפרסם לסוג הפיקדון, לא הצעה אליכם. התנאים המחייבים הם בהסכם הפיקדון.",
-  rowLinks: { whatIs: "מה זה", whatToCheck: "מה האתר לקח בחשבון" }, // audit 2026-10-24 (sweep): follows the renamed guide section
+  rowLinks: { whatIs: "מה זה" },
   /** copy.md 8.4: the page's "נכון ליום" is after the day the record was read (flow 33, point 11); no string in copy.md */
   asOfAfterRead: "התאריך מאוחר מיום הקריאה",
   card: {
@@ -2301,7 +2299,7 @@ export const r4workbench = {
       who: "מי הציע ומתי",
       whoText: "מי הציע (לא חובה)",
       when: "תאריך ההצעה",
-      binding: "להצעה שלא בכתב לא נמצא מקור שמחייב אותה. שאלה פתוחה SW OQ4",
+      binding: "להצעה שלא בכתב לא נמצא מקור שמחייב אותה. שאלה פתוחה (SW OQ4)",
       buttons: { save: "שמירה", clear: "ניקוי ההצעה", cancel: "ביטול" },
       /** copy.md 8.1: the line under the entered level's table, and the storage note */
       belowTable: "ההצעה שלכם מושווית לתעריפון של האחרים.",
@@ -2388,21 +2386,21 @@ export const r4workbench = {
       noRecord: "הפרטים עוד לא נאספו.",
       fieldMissing: (field: string) => `הפרטים עוד לא נאספו: ${field}.`,
       fields: { "fees.fixed_management": "דמי ניהול קבועים", distribution_policy: "מדיניות חלוקה", "tax_status.il_fund_tax_track": "מעמד מס" } as Record<string, string>,
-      g18: "מקור משני: רשות המסים לא אישרה שקרן זרה שאינה מחלקת ממוסה רק במכירה. שאלה פתוחה TXF OQ1",
+      g18: "מקור משני: רשות המסים לא אישרה שקרן זרה שאינה מחלקת ממוסה רק במכירה. שאלה פתוחה (TXF OQ1)",
       taxableIsraeli: "לקרן נאמנות חייבת אין עדיין חישוב.",
       yieldMissing: "הזינו את תשואת החלוקה.",
       noRate: (ccy: string) => `אין שער ל־${ccy} בשערי הייחוס של הבנק המרכזי האירופי.`,
       withholding: (country: string) => `ניכוי במקור ב${country}: לא נקבע.`,
       moneyMarket: "סוג הקרן הכספית אינו ברשומה.",
       otherCurrency: (a: string, b: string) => `אין חישוב לקרן ב־${a} על חשיפה ב־${b}.`,
-      exitBlocked: (code: string) => `המס ביציאה חסום: שאלה פתוחה ${code}`,
+      exitBlocked: (code: string) => `המס ביציאה חסום: שאלה פתוחה (${code})`,
       /** copy.md 8.2: a reason the engine gives that the table has no sentence for, shown with its detail as the engine wrote it */
       other: "אין חישוב לקרן הזו:",
     },
     secondaryTag: "מקור משני",
     rowLinks: { providers: "השוואת ספקים לקרן הזו", check: "מה לבדוק" },
     detail: { heading: "פירוט החישוב", /* copy.md 8.2 */ nominalNote: "הסכומים ששולמו לאורך הדרך, בשקלים של אז; השורה האחרונה בכסף של היום.", fund: "עלויות הקרן", spread: "מרווח הקנייה והמכירה", provider: "עמלות הספק", taxDuring: "מס במהלך התקופה", taxExit: "מס ביציאה", result: "נשאר לכם", rules: "החוקים והכללים שהחישוב נשען עליהם" },
-    groupLine: { before: "קרנות זרות הנסחרות בחו״ל: ", after: " מוחזקות אחת־אחת והושוו; לרשימה המלאה אין מקור. ETF OQ4" },
+    groupLine: { before: "קרנות זרות הנסחרות בחו״ל: ", after: " מוחזקות אחת־אחת והושוו; לרשימה המלאה אין מקור (ETF OQ4)" },
     coverage: {
       before: "נבדקו ",
       mid1: " קרנות: ",
@@ -2641,7 +2639,7 @@ export const r5 = {
     remainingItems: { record: "רשומה עם מקור", formula: "שיטת חישוב" },
     graduated: "עבר לכיסוי מלא ב־{date}",
     blockersHeading: "מה חוסם",
-    blocker: "שאלה פתוחה {code}: {text}",
+    blocker: "שאלה פתוחה ({code}): {text}",
     blockerShort: "שאלה פתוחה {code}",
     narrowed: "צומצם ב־{date}: {rule}",
     institution: "יש תשובה של מוסד; האתר מחשב לפיה ומסמן ״לפי החברה״, אבל היא לא סוגרת שאלת מס לצורך מעבר לכיסוי מלא.", // copy.md 9.5 (D23, 2026-10-24)

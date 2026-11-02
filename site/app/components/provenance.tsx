@@ -295,7 +295,7 @@ export function idKind(id: string): IdKind | null {
  * - `asLabel`: the id as a label that does nothing (a parameter's own card, which a link would only point back at).
  * An empty id renders nothing; an id that is no kind, or an `A-nn` no card has, renders as plain text.
  */
-export function IdRef({ id, className, closedOn, asLabel }: { id: string; className?: string; closedOn?: string; asLabel?: boolean }) {
+export function IdRef({ id, className, closedOn, asLabel, titled }: { id: string; className?: string; closedOn?: string; asLabel?: boolean; /** A list of questions: the chip says the question's title, the rows being otherwise alike (D49). */ titled?: boolean }) {
   const open = useOpen();
   const close = useContext(CloseCtx);
   const data = useContext(DataCtx);
@@ -304,7 +304,10 @@ export function IdRef({ id, className, closedOn, asLabel }: { id: string; classN
   const plain = <bdi dir="ltr" className="slashed-zero whitespace-nowrap">{id}</bdi>;
   if (!kind) return plain;
   const shown = kind === "question" ? id.replace("-OQ", " OQ") : id;
-  if (asLabel) return <span className={cx("rule-chip pointer-events-none", className)}><bdi dir="ltr" className="whitespace-nowrap">{shown}</bdi></span>;
+  // an open question's chip says a word, not its code (2026-11-02): the sentence around it says "שאלה פתוחה", the sheet says which
+  const title = titled && kind === "question" ? questionOf(data, shown)?.title_he : undefined;
+  const chip = title ? <span className="text-start">{title}</span> : kind === "question" ? <span className="whitespace-nowrap">{copy.idRef.questionChip}</span> : <bdi dir="ltr" className="whitespace-nowrap">{shown}</bdi>;
+  if (asLabel) return <span className={cx("rule-chip pointer-events-none", className)}>{chip}</span>;
   let card: string | undefined;
   if (kind === "parameter") card = data?.parameters ? data.parameters[id] : id;
   if (kind === "assumption") card = data?.parameters?.[id];
@@ -316,13 +319,13 @@ export function IdRef({ id, className, closedOn, asLabel }: { id: string; classN
       </Link>
     );
   }
-  const aria = kind === "rule" ? `${ruleCopy.title} ${id}` : kind === "formula" && id.startsWith("A-") ? `${copy.idRef.howComputed} ${id}` : `${copy.idRef[kind as "formula" | "question"]} ${shown}`;
+  const aria = kind === "rule" ? `${ruleCopy.title} ${id}` : kind === "formula" && id.startsWith("A-") ? `${copy.idRef.howComputed} ${id}` : kind === "question" ? copy.idRef.question : `${copy.idRef.formula} ${shown}`;
   const known = kind === "question" ? questionOf(data, shown) : undefined;
   const closed = closedOn ?? (known?.status === "closed" ? known.closed_on : undefined);
   const item: Item = kind === "question" ? { kind: "question", id: shown, ...(closed ? { closedOn: closed } : {}) } : { kind: kind as "rule" | "formula", id: shown };
   return (
-    <button type="button" className={cx("rule-chip", className)} onClick={(e) => open(item, e.currentTarget)} aria-label={aria}>
-      <bdi dir="ltr" className="whitespace-nowrap">{shown}</bdi>
+    <button type="button" className={cx("rule-chip", title && "whitespace-normal", className)} onClick={(e) => open(item, e.currentTarget)} aria-label={aria}>
+      {chip}
     </button>
   );
 }
@@ -406,7 +409,7 @@ export function RulesChip({ ids, name, className }: { ids: readonly string[]; /*
   const open = useOpen();
   const only = ids.length === 1 ? ids[0]! : null;
   if (ids.length === 0) return null;
-  // a line that cites one formula or open question keeps that id's own chip: its code is what the reader is told about
+  // a line that cites one formula or open question keeps that id's own chip
   if (only && idKind(only) !== "rule") return <IdRef id={only} className={className} />;
   const item: Item = only ? { kind: "rule", id: only } : { kind: "rules", ids, ...(name ? { name } : {}) };
   return (
@@ -706,7 +709,7 @@ function QuestionSheet({ id, closedOn, data, headId }: { id: string; closedOn?: 
   return (
     <div className="flex flex-col gap-3">
       <h2 id={headId} className="text-lg font-semibold">
-        {q?.title_he ?? copy.idRef.question} <bdi dir="ltr" className="slashed-zero whitespace-nowrap text-muted-foreground text-base">{id}</bdi>
+        {q?.title_he ?? copy.idRef.question}
       </h2>
       {(status || blocks) && (
         <dl className="sheet-dl">
@@ -974,7 +977,7 @@ export function ValueSheet({ value, exact, display, data, headId, descId }: { va
               </span>
             </Row>
           )}
-          {mostlyHebrew(value.notes) && <Row label=""><span className="text-sm text-muted-foreground">{value.notes}</span></Row>}
+          {mostlyHebrew(value.notes) && <Row label=""><span className="text-sm text-muted-foreground"><IdText text={value.notes ?? ""} /></span></Row>}
         </dl>
         </>
       )}
@@ -1024,7 +1027,7 @@ export function ValueSheet({ value, exact, display, data, headId, descId }: { va
               {flagCopy[code] ?? copy.flagOther} <bdi dir="ltr" className="text-xs">{code}</bdi>
             </Callout>
           ))}
-          {mostlyHebrew(value.notes) && <p className="text-sm text-muted-foreground">{value.notes}</p>}
+          {mostlyHebrew(value.notes) && <p className="text-sm text-muted-foreground"><IdText text={value.notes ?? ""} /></p>}
         </>
       )}
 

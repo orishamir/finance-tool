@@ -8,10 +8,11 @@ export interface ContentProps {
 
 export interface GuideContent {
   what: (p: ContentProps) => ReactNode;
-  who: (p: ContentProps) => ReactNode;
-  /** The "מעבר בין מסלולים" line of the money-in-and-out list, and its rules. */
-  switchLine: string;
-  switchRules: string[];
+  /** Left out where the guide has no such section (lib/guide-nav.ts). */
+  who?: (p: ContentProps) => ReactNode;
+  /** The "מעבר בין מסלולים" line of the money-in-and-out list, and its rules; only a guide with that section has them. */
+  switchLine?: string;
+  switchRules?: string[];
   /** Glossary terms the prose opens with <Term>, so their cards ship with the page. */
   termIds: string[];
   /** Anything after the tax steps (a blocked route, a note). */
