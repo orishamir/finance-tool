@@ -40,8 +40,6 @@ export const content: GuideContent = {
       </>
     );
   },
-  switchLine: "פיקדון רץ לא עובר לבנק אחר: הוא נפרע בסוף התקופה או בתחנת יציאה, או נשבר לפי תנאי הבנק, והריבית ממוסה כרגיל",
-  switchRules: ["SW-32", "BANK-06"],
   termIds: [
     "ריבית קבועה",
     "ריבית משתנה",
@@ -74,7 +72,7 @@ export const content: GuideContent = {
         </Sentence>
         <RulesLine ids={["TXI-17"]} />
         <Callout tone="blocked" className="max-w-measure">
-          <span className="font-medium">שבירת פיקדון לפני הזמן: האתר לא מחשב אותה.</span> <Term prefix="ה" id="קנס שבירה">קנס</Term> הוא תנאי של הבנק, ואיך המס מתייחס לפיקדון שנשבר עוד פתוח. שאלה פתוחה: <IdRef id="TXI OQ14" />.
+          <span className="font-medium">שבירת פיקדון לפני הזמן: האתר לא מחשב אותה.</span> <Term prefix="ה" id="קנס שבירה">קנס</Term> הוא תנאי של הבנק, ואיך המס מתייחס לפיקדון שנשבר עוד פתוח. שאלה פתוחה (<IdRef id="TXI OQ14" />).
         </Callout>
         <p className="max-w-measure text-sm text-muted-foreground">
           פיקדון צמוד פריים ממוסה כפיקדון לא צמוד: המדד בחוק הוא מדד המחירים לצרכן או שער של מטבע חוץ, והפריים אינו אף אחד מהם, ולכן כל הריבית ממוסה ומנוכה בשיעור של פיקדון לא צמוד <RuleRef id="TXI-04" />.

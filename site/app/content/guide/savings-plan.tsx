@@ -30,8 +30,6 @@ export const content: GuideContent = {
       <RulesLine ids={["REG-01", "REG-03", "BANK-01", "BANK-28"]} />
     </>
   ),
-  switchLine: "תוכנית רצה לא עוברת לבנק אחר: מושכים בתחנת יציאה או בסוף התקופה, או שוברים לפי תנאי הבנק, והריבית ממוסה כרגיל",
-  switchRules: ["SW-32", "BANK-06"],
   termIds: ["תכנית חיסכון", "פיקדון בהוראת קבע", "ריבית משתנה", "ריבית הפריים", "צמוד למדד המחירים לצרכן", "תחנת יציאה", "שבירת פיקדון", "פטור למעוט הכנסה"],
   afterTax: ({ figure }) => {
     const ceiling = figure("TXI-20", "favoured_ceiling");
@@ -47,7 +45,7 @@ export const content: GuideContent = {
         </Sentence>
         <RulesLine ids={["TXI-17"]} />
         <Callout tone="blocked" className="max-w-measure">
-          <span className="font-medium"><Term id="שבירת פיקדון">שבירה</Term> של תוכנית חיסכון: האתר לא מחשב אותה.</span> איך בנק מתמחר שבירה, האם לכל הפקדה חודשית נעילה משלה, ואיך המס מתייחס לתוכנית שנשברה עוד פתוח. שאלות פתוחות: <IdRef id="BANK OQ12" />, <IdRef id="TXI OQ14" />.
+          <span className="font-medium"><Term id="שבירת פיקדון">שבירה</Term> של תוכנית חיסכון: האתר לא מחשב אותה.</span> איך בנק מתמחר שבירה, האם לכל הפקדה חודשית נעילה משלה, ואיך המס מתייחס לתוכנית שנשברה עוד פתוח. שאלות פתוחות (<IdRef id="BANK OQ12" />, <IdRef id="TXI OQ14" />).
         </Callout>
         <RulesLine ids={["BANK-06", "BANK-28"]} />
       </>

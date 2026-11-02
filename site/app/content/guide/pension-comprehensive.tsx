@@ -6,6 +6,7 @@ import type { GuideContent } from "./types";
 import type { SiteValue } from "../../lib/value";
 import { IdRef, Num, RuleRef, RulesLine } from "../../components/provenance";
 import { Callout } from "../../components/kit";
+import { OpenSwitchTax } from "./open-tax";
 
 const N = ({ v }: { v: SiteValue | null }) => (v ? <Num value={v} /> : null);
 
@@ -32,7 +33,7 @@ export const content: GuideContent = {
       <RulesLine ids={["REG-17", "PEN-06", "PEN-23"]} />
     </>
   ),
-  switchLine: "בלי מס. מעבר לקרן פנסיה אחרת מתחיל מחדש את תקופת האכשרה של הביטוח",
+  switchLine: "בין מסלולים בתוך הקרן בלי מס. מעבר לקרן פנסיה אחרת מתחיל מחדש את תקופת האכשרה של הביטוח.",
   switchRules: ["PEN-17", "PF-23", "SW-22", "PF-28"],
   termIds: [],
   afterTax: ({ figure }) => (
@@ -44,11 +45,12 @@ export const content: GuideContent = {
       </p>
       <RulesLine ids={["TXP-01", "TXP-02", "TXP-10", "TXP-11"]} />
       <Callout tone="blocked" className="max-w-measure">
-        <span className="font-medium">את הקצבה האתר עוד לא מחשב, כי חסרים מקדמי ההמרה.</span> שאלה פתוחה: <IdRef id="PEN OQ7" />. מגיל הפרישה חלק מהקצבה פטור ממס:{" "}
+        <span className="font-medium">את הקצבה האתר עוד לא מחשב, כי חסרים מקדמי ההמרה.</span> שאלה פתוחה (<IdRef id="PEN OQ7" />). מגיל הפרישה חלק מהקצבה פטור ממס:{" "}
         <N v={figure("TXP-14", "exempt_share")} /> מתקרה של <N v={figure("TXP-14", "annuity_ceiling")} /> בחודש, והשיעור עולה בחוק ב־2027 וב־2028. משיכה שלא כדין לפני הפרישה ממוסה על כל הסכום שמשולם, בגבוה מבין{" "}
         <N v={figure("TXP-18", "minimum_rate")} /> והשיעור השולי <RuleRef id="TXP-18" />.
       </Callout>
       <RulesLine ids={["TXP-14", "TXP-15", "TXP-18", "PEN-27", "PEN-30"]} />
+      <OpenSwitchTax />
     </>
   ),
   risks: ({ figure }) => (

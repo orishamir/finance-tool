@@ -4,6 +4,7 @@
 import type { GuideContent } from "./types";
 import { IdRef, Num, RuleRef, RulesLine, Term, VariesByCompany } from "../../components/provenance";
 import { Callout, Sentence } from "../../components/kit";
+import { OpenLossOffset } from "./open-tax";
 
 export const content: GuideContent = {
   what: ({ figure }) => {
@@ -40,12 +41,13 @@ export const content: GuideContent = {
     return (
       <>
         <Callout tone="blocked" className="max-w-measure">
-          <span className="font-medium">את המס ביציאה האתר לא מחשב.</span> הקצבה דורשת מקדמי המרה שלא נאספו, והקופה עצמה לא משלמת קצבה. שאלה פתוחה: <IdRef id="PEN OQ7" />. <Term id="משיכה">משיכה</Term> שלא כדין ממוסה ב־{rate ? <Num value={rate} /> : null} לפחות, על כל הסכום שמשולם <RuleRef id="TXP-18" />.
+          <span className="font-medium">את המס ביציאה האתר לא מחשב.</span> הקצבה דורשת מקדמי המרה שלא נאספו, והקופה עצמה לא משלמת קצבה. שאלה פתוחה (<IdRef id="PEN OQ7" />). <Term id="משיכה">משיכה</Term> שלא כדין ממוסה ב־{rate ? <Num value={rate} /> : null} לפחות, על כל הסכום שמשולם <RuleRef id="TXP-18" />.
         </Callout>
         <Callout tone="caution" className="max-w-measure">
           <span className="font-medium">מה משלמים מעבר <Term prefix="ל" id="דמי ניהול">דמי הניהול</Term>.</span> <Term id="עמלות ברוקראז'">עמלות ברוקראז'</Term> על כל קנייה ומכירה, <Term id="דמי משמרת">דמי משמרת</Term> ודמי ניהול של הקרנות שמחזיקים נגבים מהקופה לפי תעריף הברוקר שבחרתם. התקרה לדמי הניהול של קופה אישית היא {cap ? <Num value={cap} /> : null} לשנה מהיתרה, ואין בתקנות דמי ניהול מהפקדה <RuleRef id="PF-06" />.
         </Callout>
         <RulesLine ids={["TXP-14", "TXP-18", "PEN-30", "IRA-16", "IRA-17", "PF-06"]} />
+        <OpenLossOffset />
       </>
     );
   },
