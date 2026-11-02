@@ -6,7 +6,7 @@ import { buildGuidePage } from "./guide.server";
 import { fact } from "./guide-signature";
 import { paidInToday } from "./engine";
 import { entered as enteredValue } from "./value";
-import { hishtalmutTerms, pensionModel, providentModel, runWith, studyRange, studyYear, studyYears } from "./guide-signature-g2";
+import { hishtalmutTerms, pensionModel, providentModel, runWith, studyRange, studyStanding, studyYear, studyYears, taxedAfterLock } from "./guide-signature-g2";
 import { signatureRegistry } from "../components/guide-signature";
 import { guideSignature as copy } from "../copy";
 import { buildInvest, indexById } from "./invest";
@@ -111,6 +111,34 @@ describe("study fund", () => {
     expect(y10.own).toBeCloseTo(120 * 500, -1);
     expect(y10.own + y10.extra + y10.gain).toBeCloseTo(y10.net, 6);
     expect(studyYears(d, { ...self, income: 30000 }, 12)[9]!.slice!.extra).toBeGreaterThan(y10.extra); // a higher bracket saves more
+  });
+  it("says where the reader's own deposits stand against the limit", () => {
+    const stand = (c: Parameters<typeof studyYears>[1]) => studyStanding(d, c, studyYears(d, c, 12))!;
+    const over = stand({ ...employee, income: 18000, ownMonthly: 450, employerMonthly: 1350 });
+    expect(over.over[0]).toBeCloseTo(450 - 0.025 * 15712, 6);
+    expect(over.over[1]).toBeCloseTo(1350 - 0.075 * 15712, 6);
+    expect(over.grows).toBe(true);
+    const crossing = stand({ ...employee, income: 14000, ownMonthly: 350, employerMonthly: 1050 });
+    expect(crossing.over).toEqual([0, 0]);
+    expect(crossing.firstOverYear).toBe(6);
+    const room = stand({ ...employee, employerMonthly: 600 });
+    expect(room.room).toBeCloseTo(300, 6);
+    expect(room.firstOverYear).toBeNull();
+    const exact = stand(employee);
+    expect(exact.room).toBeCloseTo(0, 6);
+    expect(exact.firstOverYear).toBeNull();
+    expect(exact.grows).toBe(false);
+    const self12 = stand(self);
+    expect(self12.per).toBe("year");
+    expect(self12.grows).toBe(false);
+  });
+  it("has no tax after the lock on an own deposit above the limit that earned less than prices rose", () => {
+    const low = { ...employee, income: 10000, ownMonthly: 500, employerMonthly: 500, returnPct: 1 };
+    const years = studyYears(d, low, 12);
+    expect(studyStanding(d, low, years)!.over[0]).toBeCloseTo(250, 6);
+    expect(taxedAfterLock(years, 6)).toBe(false);
+    expect(taxedAfterLock(studyYears(d, { ...low, returnPct: 7 }, 12), 6)).toBe(true);
+    expect(taxedAfterLock(studyYears(d, { ...employee, income: 20000, ownMonthly: 500, employerMonthly: 1500, returnPct: 1 }, 12), 6)).toBe(true); // the employer's part above the ceiling is salary when paid
   });
   it("gives the range over the collected fees and, for a self-employed person, the account's range (rule 3)", () => {
     const y = studyYears(d, employee, 12)[7]!.slice!;

@@ -36,6 +36,8 @@ const omittedSections: Record<string, readonly string[]> = {
   "money-market-fund-daily": ["inout"],
   "money-market-fund-renewable": ["inout"],
   "brokerage-account": ["inout"],
+  // founder, 2026-11-02: the page's links move up to "what it is"
+  "keren-hishtalmut": ["use"],
 };
 export const omitsSection = (guideId: string, section: string): boolean => omittedSections[guideId]?.includes(section) ?? false;
 

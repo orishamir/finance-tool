@@ -6,11 +6,13 @@ import {
   employeeCredit,
   employerLinePension,
   insuranceCost,
+  limitStanding,
   moneyStory,
   ruleBook,
   runInputs,
   runPlanned,
   type InstrumentTerms,
+  type LimitStanding,
   type MoneyStory,
   type P05Input,
   type Profile,
@@ -160,6 +162,23 @@ export function studyYears(d: SignatureData, c: StudyStoryCase, years: number): 
   const none: StudyYear = { slice: null, gap: "no-run", runs: [] };
   return Array.from({ length: years }, (_, i) => (study && lockYears !== null ? studyYear(study, lockYears, c, i + 1) : none));
 }
+
+export type StudyStanding = LimitStanding & {
+  /** The salary passes the ceiling within the strip, so what is above the limit keeps growing in today's money (TXH-02). */
+  grows: boolean;
+};
+
+/** F-97 over the runs of the strip's last year, which hold every deposit. */
+export function studyStanding(d: SignatureData, c: StudyStoryCase, years: readonly StudyYear[]): StudyStanding | null {
+  const runs = years[years.length - 1]?.runs ?? [];
+  if (runs.length === 0) return null;
+  const cap = factNumber(d, "determiningCap");
+  const index = runs[0]!.series[runs[0]!.series.length - 1]!.index;
+  return { ...limitStanding(runs), grows: c.employment === "employee" && cap !== null && c.income * index > cap };
+}
+
+/** Whether any year from the lock's end has tax: what is above the limit is taxed only where it earned more than prices rose or was the employer's (F-46, F-52). */
+export const taxedAfterLock = (years: readonly StudyYear[], lockYears: number) => years.some((y, i) => i + 1 >= lockYears && (y.slice?.tax ?? 0) > 1);
 
 export interface StudyRange {
   /** What is left at the dearest and the cheapest fee reported on the index (rule 3), everything else the same. */
