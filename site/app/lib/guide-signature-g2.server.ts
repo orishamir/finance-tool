@@ -4,6 +4,7 @@
 // becomes a `gap` (shown as "עוד לא חושב" with its reason).
 import type { CatalogEntry, DepositTerms, ExposureRecord, FundRecord, ParameterRecord, RuleRecord, ValueObject, ProductRecord } from "@finance-tool/schema";
 import { loadCma, loadCmaFees, loadFees } from "./data.server";
+import { isClosedAudience } from "./guide-nav";
 import type { Bundle } from "./engine";
 import { p05Value } from "./engine";
 import type { SignatureData } from "./guide-signature";
@@ -67,8 +68,9 @@ interface IndexTrack {
 function indexTracks(c: G2Ctx, wrapperId: string, exposure: ExposureRecord): IndexTrack[] {
   const keys = indexKeys(exposure);
   const fees = loadCmaFees();
+  // a track for one employer's or one sector's workers is no fee the reader can get (rule 2, 2026-11-03)
   return loadCma()
-    .tracks.filter((t) => t.wrapperId === wrapperId && namesIndex([t.name], keys))
+    .tracks.filter((t) => t.wrapperId === wrapperId && !isClosedAudience([t.targetPopulation]) && namesIndex([t.name], keys))
     .map((t) => {
       const f = fees.get(t.fundId);
       const fee = f && typeof f.balance.value === "number" ? cmaFeeValue(f.balance, c.t) : null;
@@ -123,7 +125,7 @@ function addHoldings(d: SignatureData, c: G2Ctx, holding: { fund: FundRecord; ex
     const sorted = [...all].sort((a, b) => (a.fee!.value as number) - (b.fee!.value as number));
     d.facts.rangeMin = sorted[0]!.fee!;
     d.facts.rangeMax = sorted[sorted.length - 1]!.fee!;
-    d.facts.rangeCount = computed(all.length, "count", "F-64", {}, { today: c.t, about: "כמה מסלולים על המדד הזה דיווחה הרשות בתקופה האחרונה, עם דמי ניהול" });
+    d.facts.rangeCount = computed(all.length, "count", "F-64", {}, { today: c.t, about: "כמה מסלולים על המדד הזה, פתוחים לכלל הציבור, דיווחה הרשות בתקופה האחרונה, עם דמי ניהול" });
     d.facts.rangeMinName = textFact(sorted[0]!.name, { source: sorted[0]!.fee!.source, checked: c.t }, sorted[0]!.company);
     d.facts.rangeMaxName = textFact(sorted[sorted.length - 1]!.name, { source: sorted[sorted.length - 1]!.fee!.source, checked: c.t }, sorted[sorted.length - 1]!.company);
   }
