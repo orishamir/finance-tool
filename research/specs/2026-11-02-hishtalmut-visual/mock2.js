@@ -141,7 +141,7 @@ function barsBlock(el, start, opts = {}) {
     const r = row(st.year);
     const rangeText = (lowF, highF, lowA, highA) => `בקרן, בין ${D.facts.rangeCount} המסלולים שנאספו: ${nis(lowF)} בדמי ניהול של ${D.facts.rangeMax}% עד ${nis(highF)} בדמי ניהול של ${D.facts.rangeMin}%. בחשבון, בין ${D.facts.brokerCount} התעריפים שנאספו: ${nis(lowA)} בתעריף היקר עד ${nis(highA)} בתעריף הזול.`;
     if (st.who === "employee") set("range", rangeText(r.high, r.low, r.acctWorst, r.acct.net));
-    else if (r.self.range?.manager) set("range", rangeText(r.self.study.paid + r.self.range.manager.low, r.self.study.paid + r.self.range.manager.high, r.self.broker.paid + r.self.range.broker.low, r.self.broker.paid + r.self.range.broker.high));
+    else if (r.self.range?.manager) set("range", rangeText(r.self.broker.net + r.self.range.manager.low, r.self.broker.net + r.self.range.manager.high, r.self.study.net - r.self.range.broker.high, r.self.study.net - r.self.range.broker.low));
     else set("range", "");
     el.querySelectorAll(".seg button").forEach((b) => b.classList.toggle("on", b.dataset.w === st.who));
   }

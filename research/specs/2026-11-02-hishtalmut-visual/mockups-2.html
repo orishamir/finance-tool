@@ -181,7 +181,9 @@ p{margin:0}
 "broker": null,
 "manager": null
 }
-}
+},
+"wait": 18251.064106192738,
+"reinvest": 14959.464042318847
 },
 {
 "y": 2,
@@ -219,7 +221,9 @@ p{margin:0}
 "broker": null,
 "manager": null
 }
-}
+},
+"wait": 35743.50046975534,
+"reinvest": 29275.193692760156
 },
 {
 "y": 3,
@@ -257,7 +261,9 @@ p{margin:0}
 "broker": null,
 "manager": null
 }
-}
+},
+"wait": 52508.84237820131,
+"reinvest": 42996.21570115205
 },
 {
 "y": 4,
@@ -295,7 +301,9 @@ p{margin:0}
 "broker": null,
 "manager": null
 }
-}
+},
+"wait": 68577.31239948364,
+"reinvest": 56168.23867390237
 },
 {
 "y": 5,
@@ -333,7 +341,9 @@ p{margin:0}
 "broker": null,
 "manager": null
 }
-}
+},
+"wait": 83977.87686365221,
+"reinvest": 68837.04736755458
 },
 {
 "y": 6,
@@ -853,7 +863,7 @@ function barsBlock(el, start, opts = {}) {
     const r = row(st.year);
     const rangeText = (lowF, highF, lowA, highA) => `בקרן, בין ${D.facts.rangeCount} המסלולים שנאספו: ${nis(lowF)} בדמי ניהול של ${D.facts.rangeMax}% עד ${nis(highF)} בדמי ניהול של ${D.facts.rangeMin}%. בחשבון, בין ${D.facts.brokerCount} התעריפים שנאספו: ${nis(lowA)} בתעריף היקר עד ${nis(highA)} בתעריף הזול.`;
     if (st.who === "employee") set("range", rangeText(r.high, r.low, r.acctWorst, r.acct.net));
-    else if (r.self.range?.manager) set("range", rangeText(r.self.study.paid + r.self.range.manager.low, r.self.study.paid + r.self.range.manager.high, r.self.broker.paid + r.self.range.broker.low, r.self.broker.paid + r.self.range.broker.high));
+    else if (r.self.range?.manager) set("range", rangeText(r.self.broker.net + r.self.range.manager.low, r.self.broker.net + r.self.range.manager.high, r.self.study.net - r.self.range.broker.high, r.self.study.net - r.self.range.broker.low));
     else set("range", "");
     el.querySelectorAll(".seg button").forEach((b) => b.classList.toggle("on", b.dataset.w === st.who));
   }
