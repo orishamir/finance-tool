@@ -58,6 +58,7 @@ describe("study fund", () => {
   it("taxes nothing from the lock's end while the deposits stay under the limits, and the employer's deposits before it", () => {
     const years = studyYears(d, employee, 12);
     for (let y = 6; y <= 12; y++) expect(years[y - 1]!.slice!.tax).toBeCloseTo(0, 6);
+    expect(years[2]!.slice!.taxFromSalary).toBe(0); // under the ceiling, all of an early withdrawal's tax is paid at the withdrawal
     const y3 = years[2]!.slice!;
     expect(y3.tax).toBeGreaterThan(0.1 * y3.extra); // F-47: the employer's deposits are income, not only the gains
     expect(y3.own + y3.extra + y3.gain - y3.tax).toBeCloseTo(y3.net, 6);
@@ -85,6 +86,8 @@ describe("study fund", () => {
     const high = studyYears(d, { ...employee, income: 20000, ownMonthly: 500, employerMonthly: 1500 }, 12);
     const y8 = high[7]!.slice!;
     expect(y8.tax).toBeGreaterThan(0); // the employer's part above the ceiling is salary when paid (TXH-03)
+    expect(y8.taxFromSalary).toBeGreaterThan(0); // most of it was paid along the way, and what is left is the tax on the gains at the withdrawal (TXH-11)
+    expect(y8.taxFromSalary).toBeLessThan(y8.tax);
     expect(y8.own + y8.extra + y8.gain - y8.tax).toBeCloseTo(y8.net, 6);
   });
   it("moves with every input", () => {

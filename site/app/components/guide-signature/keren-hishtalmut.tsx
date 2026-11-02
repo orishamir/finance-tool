@@ -87,15 +87,19 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
   };
   const rules = rulesOfBundle(base);
   const nis = (value: number, about: string) => figure(value, "nis", "F-96", common, today, about, rules);
+  // what a run qualifies travels with what comes out of it: the deposits are plain, the tax leaves the fee flags behind
+  const ranValue = (value: number, about: string, isTax: boolean) => {
+    const flags = [...new Set(picked.runs.flatMap((r) => r.flags.map((f) => f.code)))].filter(isTax ? notFeeFlag : () => true);
+    return computed(value, "nis", "F-96", common, { today, about, rules, flags, labels: picked.runs.flatMap((r) => r.labels.map((l) => ({ code: l.code, ruleId: l.ruleId }))) });
+  };
   const stepValue = (step: PileStep): SiteValue | null => {
     if (!slice) return null;
     const value = { own: slice.own, extra: slice.extra, gain: slice.gain, tax: slice.tax, left: slice.net }[step];
     const about = step === "extra" && !isEmployee ? story.about.extraSelf : story.about[step];
-    // what a run qualifies travels with what comes out of it: the deposits are plain, the tax leaves the fee flags behind
     if (step === "own" || step === "extra") return nis(value, about);
-    const flags = [...new Set(picked.runs.flatMap((r) => r.flags.map((f) => f.code)))].filter(step === "tax" ? notFeeFlag : () => true);
-    return computed(value, "nis", "F-96", common, { today, about, rules, flags, labels: picked.runs.flatMap((r) => r.labels.map((l) => ({ code: l.code, ruleId: l.ruleId }))) });
+    return ranValue(value, about, step === "tax");
   };
+  const taxPart = (word: string, value: number, about: string) => ({ word, number: (compact: boolean) => <Num value={ranValue(value, about, true)} display={signed("", compact)} /> });
   const PLUS: Record<PileStep, string> = { own: "", extra: "+", gain: slice && slice.gain < 0 ? "−" : "+", tax: "−", left: "" };
   const stepNumber = (step: PileStep, compact: boolean) => {
     const v = stepValue(step);
@@ -242,6 +246,7 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
           fine={{ gain: story.names.gainFine }}
           number={stepNumber}
           firstRow={pileFirstRow(slices)}
+          {...(isEmployee && slice ? { taxParts: { salary: taxPart(story.names.taxSalary, slice.taxFromSalary, story.about.taxSalary), withdrawal: taxPart(story.names.taxWithdrawal, slice.tax - slice.taxFromSalary, story.about.taxWithdrawal) } } : {})}
           {...(accountOther ? { other: accountOther } : {})}
           gap={gapWords}
           label={story.aria}

@@ -1,6 +1,6 @@
 // The money's story (founder, 2026-11-02, the study fund): one strip of every year, and under it the year picked, step by step. Each column of
 // the story is the whole pile so far: what this step adds is bright and what was there already is dim, with a dashed line from each column's top
-// to the next. Tax is hatched over the part it takes; the last column is what is left. Names and numbers are written on the chart, in the
+// to the next. Tax is hatched over the part it takes, in two hues when part of it was paid out of the salary along the way; the last column is what is left. Names and numbers are written on the chart, in the
 // fixed rows of `docs/design-system.md` 2.5a, so only the bars and the figures change. Own SVG; the numbers are HTML, so they go through `Num`.
 import { useId, type ReactNode } from "react";
 import { useGlidingNumbers } from "./chart-glide";
@@ -14,6 +14,8 @@ export interface PileSlice {
   /** Below zero when the fees took more than the return did. */
   gain: number;
   tax: number;
+  /** The part of `tax` paid out of the salary along the way; the rest is paid at the withdrawal. */
+  taxFromSalary?: number;
   net: number;
 }
 
@@ -32,8 +34,9 @@ const parts = (s: PileSlice) => {
   ].filter((p) => p.to - p.from > 0);
 };
 const FILL = { own: "fill-chart-pile-own", extra: "fill-chart-pile-extra", gain: "fill-chart-pile-gain" };
-const flat = (s: PileSlice | null) => (s ? [s.own, s.extra, s.gain, s.tax, s.net] : [0, 0, 0, 0, 0]);
-const sliceAt = (v: readonly number[], i: number): PileSlice => ({ own: v[i]!, extra: v[i + 1]!, gain: v[i + 2]!, tax: v[i + 3]!, net: v[i + 4]! });
+const flat = (s: PileSlice | null) => (s ? [s.own, s.extra, s.gain, s.tax, s.taxFromSalary ?? 0, s.net] : [0, 0, 0, 0, 0, 0]);
+const FLAT = 6;
+const sliceAt = (v: readonly number[], i: number): PileSlice => ({ own: v[i]!, extra: v[i + 1]!, gain: v[i + 2]!, tax: v[i + 3]!, taxFromSalary: v[i + 4]!, net: v[i + 5]! });
 
 /** The share of the tallest column the first number stands above, over all the years: it keeps its row while the year changes. */
 export function pileFirstRow(years: readonly (PileSlice | null)[]): number {
@@ -42,12 +45,32 @@ export function pileFirstRow(years: readonly (PileSlice | null)[]): number {
   return Math.min(1, row);
 }
 
-function Hatch({ id, gap }: { id: string; gap: number }) {
+function Hatches({ id, gap }: { id: string; gap: number }) {
   return (
-    <pattern id={id} patternUnits="userSpaceOnUse" width={gap} height={gap} patternTransform="rotate(45)">
-      <rect width={gap} height={gap} className="fill-chart-pile-veil" />
-      <line x1={0} y1={0} x2={0} y2={gap} className="stroke-chart-pile-tax" strokeWidth={1.8} />
-    </pattern>
+    <>
+      {[
+        { key: `${id}-tax`, cls: "stroke-chart-pile-tax" },
+        { key: `${id}-salary`, cls: "stroke-chart-pile-salary-tax" },
+      ].map((h) => (
+        <pattern key={h.key} id={h.key} patternUnits="userSpaceOnUse" width={gap} height={gap} patternTransform="rotate(45)">
+          <rect width={gap} height={gap} className="fill-chart-pile-veil" />
+          <line x1={0} y1={0} x2={0} y2={gap} className={h.cls} strokeWidth={1.8} />
+        </pattern>
+      ))}
+    </>
+  );
+}
+
+/** What tax takes, from the top of the pile down: what was paid out of the salary along the way, then what the withdrawal took. */
+function TaxBlock({ s, x, width, y, id, stroke }: { s: PileSlice; x: number; width: number; y: (v: number) => number; id: string; stroke: number }) {
+  if (s.tax <= 1) return null;
+  const g = top(s);
+  const paid = Math.min(s.taxFromSalary ?? 0, s.tax);
+  return (
+    <>
+      {paid > 1 && <rect x={x} y={y(g)} width={width} height={Math.max(0, y(g - paid) - y(g))} fill={`url(#${id}-salary)`} className="stroke-chart-pile-salary-tax" strokeWidth={stroke} />}
+      {s.tax - paid > 1 && <rect x={x} y={y(g - paid)} width={width} height={Math.max(0, y(g - s.tax) - y(g - paid))} fill={`url(#${id}-tax)`} className="stroke-chart-pile-tax" strokeWidth={stroke} />}
+    </>
   );
 }
 
@@ -82,7 +105,7 @@ export function PileYears({
   const n = years.length;
   const band = W / n;
   const barW = Math.min(band - 4, 40);
-  const slices = years.map((s, i) => (s ? sliceAt(shown, i * 5) : null));
+  const slices = years.map((s, i) => (s ? sliceAt(shown, i * FLAT) : null));
   const max = Math.max(1, ...slices.map((s) => (s ? tallest(s) : 0)));
   const y = (v: number) => STRIP_BASE - (v / max) * (STRIP_BASE - STRIP_TOP);
   const lockX = (lockYear - 1) * band;
@@ -90,7 +113,7 @@ export function PileYears({
     <div ref={ref} className="relative w-full" dir="ltr" style={{ height: STRIP_H }}>
       <svg width={W} height={STRIP_H} viewBox={`0 0 ${W} ${STRIP_H}`} role="img" aria-label={label} className="block select-none">
         <defs>
-          <Hatch id={pid} gap={4} />
+          <Hatches id={pid} gap={4} />
         </defs>
         <line x1={lockX} x2={lockX} y1={2} y2={STRIP_BASE + 4} className="stroke-chart-marker" strokeDasharray="3 3" />
         <line x1={0} x2={W} y1={STRIP_BASE} y2={STRIP_BASE} className="stroke-chart-axis" />
@@ -98,14 +121,13 @@ export function PileYears({
           const x = (i + 0.5) * band - barW / 2;
           const on = i + 1 === year;
           if (!s) return <rect key={i} x={x} y={STRIP_BASE - 8} width={barW} height={8} className="fill-none stroke-chart-axis" strokeDasharray="2 2" />;
-          const g = top(s);
           return (
             <g key={i}>
               <g opacity={on ? 1 : 0.86}>
                 {parts(s).map((p) => (
                   <rect key={p.key} x={x} y={y(p.to)} width={barW} height={Math.max(0.5, y(p.from) - y(p.to) - 1)} className={FILL[p.key]} />
                 ))}
-                {s.tax > 1 && <rect x={x} y={y(g)} width={barW} height={Math.max(0, y(g - s.tax) - y(g))} fill={`url(#${pid})`} className="stroke-chart-pile-tax" strokeWidth={1} />}
+                <TaxBlock s={s} x={x} width={barW} y={y} id={pid} stroke={1} />
               </g>
               {on && <rect x={x - 2.5} y={y(tallest(s)) - 2.5} width={barW + 5} height={STRIP_BASE - y(tallest(s)) + 2.5} rx={2} className="fill-none stroke-foreground" strokeWidth={1.5} />}
             </g>
@@ -141,6 +163,7 @@ export function PileStory({
   fine,
   number,
   firstRow,
+  taxParts,
   other,
   gap,
   label,
@@ -154,6 +177,8 @@ export function PileStory({
   number: (step: PileStep, compact: boolean) => ReactNode;
   /** `pileFirstRow` of all the years. */
   firstRow: number;
+  /** Under the tax column, in room kept for them, when part of the tax was paid out of the salary: each part's word and figure. */
+  taxParts?: Record<"salary" | "withdrawal", { word: string; number: (compact: boolean) => ReactNode }>;
   other?: { to: number | null; names: readonly string[]; fine?: string; number: (compact: boolean) => ReactNode };
   gap?: ReactNode;
   label: string;
@@ -161,9 +186,9 @@ export function PileStory({
   const [ref, W] = useWidth(720);
   const pid = useId().replace(/:/g, "");
   const compact = W < 520;
-  // a sixth column on a phone is narrow: its words take more lines
-  const nameH = compact ? (other ? 94 : 78) : 58;
-  const H = compact ? 288 + nameH : 400;
+  // the words under the columns, with the room for the parts of the tax; a block whose content varies keeps one height, and the phone's sixth column needs as many lines
+  const nameH = compact ? 144 : 100;
+  const H = compact ? 288 + nameH : 342 + nameH;
   const plotTop = compact ? 46 : 30;
   const base = H - nameH;
   const room = base - plotTop;
@@ -173,8 +198,8 @@ export function PileStory({
   const bw = Math.min(band - (compact ? 7 : 22), 96);
   const shown = useGlidingNumbers([...flat(slice), other?.to ?? 0, firstRow]);
   const s = sliceAt(shown, 0);
-  const otherTo = shown[5]!;
-  const row = shown[6]!;
+  const otherTo = shown[FLAT]!;
+  const row = shown[FLAT + 1]!;
   const biggest = Math.max(slice ? tallest(s) : 0, otherTo) || 1;
   const scale = (room / biggest) * (slice ? 1 : 0.6);
   const y = (v: number) => base - v * scale;
@@ -185,7 +210,17 @@ export function PileStory({
   const numberY = (i: number) => (i === 0 ? Math.max(rowY, base - row * room * (slice ? 1 : 0.6) - 24) : rowY - (compact && i % 2 === 0 ? 16 : 0));
   const rect = (key: string, from: number, to: number, cls: string, x: number, op = 1) => <rect key={key} x={x} y={y(to)} width={bw} height={Math.max(1, y(from) - y(to) - 1.5)} rx={1.5} className={cls} opacity={op} />;
   const dim = 0.36;
-  const Words = ({ i, lines, small, strong }: { i: number; lines: readonly string[]; small?: string; strong?: boolean }) => (
+  const salaryTax = Math.min(slice?.taxFromSalary ?? 0, slice?.tax ?? 0);
+  const TaxPart = ({ part, swatch }: { part: { word: string; number: (compact: boolean) => ReactNode }; swatch: string }) => (
+    <div className={cx("text-xs leading-tight mt-1", compact ? "flex flex-col items-center" : "flex flex-wrap items-center justify-center gap-x-1.5")}>
+      <span className="flex items-center gap-1 whitespace-nowrap">
+        <span aria-hidden="true" className={cx("size-2 shrink-0 rounded-[1px]", swatch)} />
+        {part.number(compact)}
+      </span>
+      <span className="text-muted-foreground">{part.word}</span>
+    </div>
+  );
+  const Words = ({ i, lines, small, strong, below }: { i: number; lines: readonly string[]; small?: string; strong?: boolean; below?: ReactNode }) => (
     <div className="absolute text-center" dir="rtl" style={{ left: cx5(i) - band / 2, width: band, top: base + 5 }}>
       <div className={cx("leading-tight", compact ? "text-xs" : "text-sm", strong && "font-semibold")}>
         {lines.map((l) => (
@@ -193,13 +228,14 @@ export function PileStory({
         ))}
       </div>
       {small && <div className="text-xs leading-tight text-muted-foreground mt-0.5">{small}</div>}
+      {below}
     </div>
   );
   return (
     <div ref={ref} className="relative w-full" dir="ltr" style={{ height: H }}>
       <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`} role="img" aria-label={label} className="block select-none">
         <defs>
-          <Hatch id={pid} gap={5} />
+          <Hatches id={pid} gap={5} />
         </defs>
         <line x1={0} x2={W} y1={base} y2={base} className="stroke-chart-axis" />
         {slice &&
@@ -225,7 +261,7 @@ export function PileStory({
                 {c === "tax" && (
                   <>
                     {full.map((p) => rect(p.key, p.from, p.to, FILL[p.key], x, dim))}
-                    {s.tax > 1 && <rect x={x} y={y(g)} width={bw} height={Math.max(0, y(g - s.tax) - y(g))} fill={`url(#${pid})`} className="stroke-chart-pile-tax" strokeWidth={1.2} />}
+                    <TaxBlock s={s} x={x} width={bw} y={y} id={pid} stroke={1.2} />
                   </>
                 )}
                 {c === "left" && <rect x={x} y={y(s.net)} width={bw} height={Math.max(0, base - y(s.net))} rx={2} className="fill-chart-pile-left" />}
@@ -246,7 +282,20 @@ export function PileStory({
             <span className={cx("absolute -translate-x-1/2 whitespace-nowrap leading-4", compact ? "text-xs" : "text-sm", c === "left" ? "font-bold" : "font-semibold")} style={{ left: cx5(i), top: numberY(i) }}>
               {number(c, compact)}
             </span>
-            <Words i={i} lines={names[c]} {...(fine?.[c] ? { small: fine[c]! } : {})} strong={c === "left"} />
+            <Words
+              i={i}
+              lines={names[c]}
+              {...(fine?.[c] ? { small: fine[c]! } : {})}
+              strong={c === "left"}
+              below={
+                c === "tax" && taxParts && salaryTax > 1 ? (
+                  <>
+                    <TaxPart part={taxParts.salary} swatch="bg-chart-pile-salary-tax" />
+                    {(slice?.tax ?? 0) - salaryTax > 1 && <TaxPart part={taxParts.withdrawal} swatch="bg-chart-pile-tax" />}
+                  </>
+                ) : undefined
+              }
+            />
           </div>
         ))}
       {!slice && gap && (

@@ -55,6 +55,8 @@ describe("moneyStory (F-96)", () => {
     expect(over.detail.employerPaidToday).toBeLessThan(paid);
     const s = moneyStory(70_000, 0, [over]);
     expect(s.tax).toBeCloseTo(over.detail.employerPaidToday! + over.taxAtExit / lastIndex, 6); // the gains on the excess are taxed at exit (TXH-11)
+    expect(s.taxFromSalary).toBeCloseTo(over.detail.employerPaidToday!, 6);
+    expect(s.tax - s.taxFromSalary).toBeCloseTo(over.taxAtExit / lastIndex, 6);
     expect(s.net).toBeLessThan(over.real);
   });
   it("adds up, and its gain is the balance over the last index less what went in", () => {
@@ -67,5 +69,6 @@ describe("moneyStory (F-96)", () => {
     const s = moneyStory(25_000, 0, [r]);
     expect(s.net).toBeCloseTo(r.real, 6);
     expect(s.tax).toBeCloseTo(0, 6);
+    expect(s.taxFromSalary).toBe(0);
   });
 });
