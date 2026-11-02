@@ -49,6 +49,8 @@ export interface MarkerProps {
   top: number;
   width: number;
   height: number;
+  /** Each value owns an equal band of the width, as the columns of a bar chart do, and the ends are no narrower than the rest. */
+  bands?: boolean;
 }
 
 /**
@@ -56,12 +58,16 @@ export interface MarkerProps {
  * drag follows the finger or the mouse, and the arrow keys, Home, End, Page Up and Page Down move it (D29 rule 8). The parent draws
  * the marker itself from the same value. Vertical scrolling of the page is left to the browser (`touch-action: pan-y`).
  */
-export function Marker({ min, max, step, value, onChange, label, valueText, left, top, width, height }: MarkerProps) {
+export function Marker({ min, max, step, value, onChange, label, valueText, left, top, width, height, bands }: MarkerProps) {
   const ref = useRef<HTMLDivElement>(null);
   const snap = useCallback((v: number) => clamp(Math.round((v - min) / step) * step + min, min, max), [min, max, step]);
   const at = (clientX: number) => {
     const r = ref.current?.getBoundingClientRect();
     if (!r || r.width === 0) return value;
+    if (bands) {
+      const n = Math.round((max - min) / step) + 1;
+      return min + clamp(Math.floor(((clientX - r.left) / r.width) * n), 0, n - 1) * step;
+    }
     return snap(min + clamp((clientX - r.left) / r.width, 0, 1) * (max - min));
   };
   const down = (e: PointerEvent<HTMLDivElement>) => {

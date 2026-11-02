@@ -11,6 +11,7 @@ import { IdRef, Num, RulesLine } from "../provenance";
 import { IconDrillIn } from "../icons";
 import { label } from "../../lib/labels";
 import { fmt } from "../../lib/format";
+import { PileStory, PileYears } from "./pile-story";
 import { AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, Button, Callout, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, LabelFilter, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, CompareTable, TableCols, CoverageFold, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, Disclosure, FieldState, FoldGroup, GainBars, GapNote, HeadlineFigure, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, ParameterLine, PercentField, PlanChips, KnobStrip, ChangeChart, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, RangeField, RankBadge, Section, SegmentedControl, SelectField, Sentence, ShareRings, SourceLine, Stat, StatRow, StatTile, StepButtons, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth } from "./index";
 
 const g = copy.gallery;
@@ -583,6 +584,28 @@ function Fields() {
               { id: "a", swatch: "bg-chart-lever-2", cells: [g.sample.range, fmt.nisWhole(1200)] },
               { id: "b", swatch: "bg-chart-lever-4", cells: [g.sample.percent, fmt.nisWhole(400)] },
             ]}
+          />
+        </State>
+      </Demo>
+      <Demo name="PileYears, PileStory" use={g.uses.PileStory}>
+        <State label={g.states.interactive} wide>
+          <PileYears
+            years={[null, { own: 7200, extra: 21600, gain: 3100, tax: 4900, net: 27000 }, { own: 10800, extra: 32400, gain: 6200, tax: 0, net: 49400 }, { own: 14400, extra: 43200, gain: 11800, tax: 0, net: 69400 }]}
+            year={3}
+            onYear={() => undefined}
+            lockYear={3}
+            before={g.sample.rowA}
+            after={g.sample.rowB}
+            label={g.sample.rowA}
+            valueText="3"
+          />
+          <PileStory
+            slice={{ own: 10800, extra: 32400, gain: 6200, tax: 2500, net: 46900 }}
+            names={{ own: [g.sample.rowA], extra: [g.sample.rowB], gain: [g.sample.rowA], tax: [g.sample.rowB], left: [g.sample.rowA] }}
+            fine={{ gain: g.sample.rowB }}
+            number={(step) => ({ own: "10,800 ₪", extra: "+32,400 ₪", gain: "+6,200 ₪", tax: "−2,500 ₪", left: "46,900 ₪" })[step]}
+            firstRow={0.25}
+            label={g.sample.rowA}
           />
         </State>
       </Demo>

@@ -1,369 +1,276 @@
-// Study fund (D29): what does the six-year lock buy? The same index held in a study fund and in a brokerage account, the same outlay, taken
-// out after a year the person drags on a 12-year line (locked to year 6, exempt after). Two bars with the difference on a bracket, never
-// a third box. Employment (employee or self-employed) changes what the run does: an employee's own deposit is benefited only up to a share
-// of the determining salary; a self-employed person deducts the deposit. The employer's deposit is money only a salary fund receives (B2):
-// shown as its ceiling, outside the comparison.
-import { scaleLinear } from "d3-scale";
-import { useId, useMemo, useState } from "react";
-import { Link } from "react-router";
+// Study fund (D29, founder 2026-11-02, D50): the money's story. A strip of twelve years, and under it the year picked, step by step: what the
+// person deposited, what the employer added (a self-employed person: the tax back), what the return added after fees, what tax took, what is left.
+// An employee's fund stands alone, since no other place receives the employer's money (B2); a self-employed person's stands beside the same outlay
+// in a securities account, which is a choice they really have. Every figure is an engine run on the person's own values (F-96).
+import { useMemo, useState } from "react";
 import { guideSignature as copy, values as valuesCopy } from "../../copy";
 import { fmt } from "../../lib/format";
 import { fact } from "../../lib/guide-signature";
-import { hishtalmutModel, type Employment } from "../../lib/guide-signature-g2";
-import { p05Number, p05Value, type Bundle } from "../../lib/engine";
+import { studyRange, studyYears, type Employment, type StudyStoryCase } from "../../lib/guide-signature-g2";
+import { p05Number, p05Range, p05Value, type Bundle } from "../../lib/engine";
 import { useInputs } from "../../lib/inputs";
-import { entered as enteredValue, type SiteValue } from "../../lib/value";
-import { Callout, GainBars, InputSlot, LaneLabel, LongestCase, Marker, MarkerMark, NumberField, SegmentedControl, Sentence, TableCols, clamp, useGlidingNumbers, useWidth } from "../kit";
-import { Num, RulesLine, Term } from "../provenance";
-import { G2Gap, HoldRow, PlanInputs, text } from "./g2-parts";
-import { figure, inputSite, rulesOfBundle, useSigInputs, type VisualProps } from "./kit";
+import { computed, entered as enteredValue, type SiteValue } from "../../lib/value";
+import { InputSlot, LongestCase, NumberField, PercentField, PileStory, PileYears, SegmentedControl, Sentence, clamp, percentCheck, pileFirstRow, type PileStep } from "../kit";
+import { Num, RulesLine } from "../provenance";
+import { G2Gap, text } from "./g2-parts";
+import { figure, inputSite, notFeeFlag, rulesOfBundle, useSigInputs, type VisualProps } from "./kit";
 
-const HEIGHT = 92;
-const LANE_Y = 26;
-const LANE_H = 28;
-const AXIS_Y = 66;
-const MAX_YEARS = 12;
-
-function IncomeSourceLine({ source }: { source: string }) {
-  return (
-    <p className="text-xs text-muted-foreground">
-      {copy.hishtalmut.incomeSource} {copy.common.source[source]}.
-    </p>
-  );
-}
+const YEARS = 12;
+const story = copy.hishtalmut.story;
 
 export function KerenHishtalmutVisual(props: VisualProps) {
-  const base = props.data.bundles["keren-hishtalmut"] ?? props.data.bundles["brokerage-account"];
+  const base = props.data.bundles["keren-hishtalmut"];
   if (!base) return <G2Gap id="bundle" />;
   return <Inner {...props} base={base} />;
 }
 
+/** "+54,000 ₪" and "−13,970 ₪"; on a phone-wide chart the shekel sign has no room. */
+const signed = (plus: string, compact: boolean) => (v: number) => {
+  const n = Math.round(Math.abs(v));
+  return `${n === 0 ? "" : plus}${fmt.number(n)}${compact ? "" : " ₪"}`;
+};
+
 function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
-  const study = data.bundles["keren-hishtalmut"];
-  const broker = data.bundles["brokerage-account"];
   const inputs = useSigInputs(base);
   const { state, setEmployment } = useInputs();
   // the page's own values and the site's example, never the saved goal (founder, 2026-10-28)
   const employment: Employment = state.employment ?? "employee";
-  const [incomePick, setIncomePick] = useState<number | null>(null);
-  const p05Income = p05Number(base.p05, "annual_income") / 12;
-  const income = incomePick ?? p05Income;
-  const incomeSource = incomePick !== null ? "guide" : "p05";
-  const [yearsPick, setYearsPick] = useState<number | null>(null);
-  const years = clamp(yearsPick ?? Math.round(inputs.years), 1, MAX_YEARS);
+  const isEmployee = employment === "employee";
 
-  const model = useMemo(() => hishtalmutModel(data, { amount: inputs.amount, monthly: inputs.monthly, years, employment, income }), [data, inputs.amount, inputs.monthly, years, employment, income]);
-  // the lock's end moves with the kind of employment, and the lane's two parts glide with it
-  const lock = useGlidingNumbers([model.lockYears ?? 0])[0]!;
-  const [box, width] = useWidth();
-  const pid = useId().replace(/:/g, "");
-  const plotW = width - 8;
-  const x = scaleLinear().domain([0, MAX_YEARS]).range([0, plotW]);
-  const ticks = Array.from({ length: MAX_YEARS / 2 + 1 }, (_, i) => i * 2);
-
-  // ---- value objects
-  const amountIn = inputSite(base, "amount_now", inputs.amount, inputs.source.amount, today, copy.common.inputNames.amount);
-  const monthlyIn = inputSite(base, "monthly_deposit", inputs.monthly, inputs.source.monthly, today, copy.common.inputNames.monthly);
-  const incomeLabel = copy.hishtalmut.income[employment]!;
-  const incomeLabelEmployee = copy.hishtalmut.income.employee!;
-  const yearsIn = enteredValue(years, "years", today, copy.hishtalmut.marker);
-  const returnPct = fact(data, "returnPct");
+  const lockYears = fact(data, "lockYears");
+  const lock = Number(lockYears?.value ?? 6);
+  const employerPct = fact(data, "employerPct");
+  const ownPct = fact(data, "ownPct");
+  const cap = fact(data, "determiningCap");
+  const selfBenefited = fact(data, "selfBenefited");
   const inflationPct = fact(data, "inflationPct");
   const trackFee = fact(data, "trackFee");
-  const incomeIn: SiteValue = incomeSource === "p05" ? figure(income, "nis", "F-67", { [copy.hishtalmut.incomeAnnual]: p05Value(base.p05, "annual_income") }, today, copy.hishtalmut.incomeAbout) : enteredValue(income, "nis", today, copy.hishtalmut.incomeAbout);
+  const withheld = fact(data, "earlyWithholding");
+
+  const [incomePick, setIncomePick] = useState<number | null>(null);
+  const [ownPick, setOwnPick] = useState<number | null>(null);
+  const [employerPick, setEmployerPick] = useState<number | null>(null);
+  const [returnPick, setReturnPick] = useState<number | null>(null);
+  const [yearPick, setYearPick] = useState<number | null>(null);
+
+  const income = incomePick ?? p05Number(base.p05, "annual_income") / 12;
+  const ownShare = ownPick ?? Number(ownPct?.value ?? 0);
+  const employerShare = employerPick ?? Number(employerPct?.value ?? 0);
+  const returnPct = returnPick ?? p05Number(base.p05, "A-01");
+  const year = clamp(yearPick ?? lock - 1, 1, YEARS);
+
+  const ownMonthly = isEmployee ? (income * ownShare) / 100 : inputs.monthly;
+  const employerMonthly = isEmployee ? (income * employerShare) / 100 : 0;
+  const plan = useMemo<StudyStoryCase>(() => ({ employment, income, ownMonthly, employerMonthly, returnPct }), [employment, income, ownMonthly, employerMonthly, returnPct]);
+  const years = useMemo(() => studyYears(data, plan, YEARS), [data, plan]);
+  const range = useMemo(() => studyRange(data, plan, year), [data, plan, year]);
+  const slices = useMemo(() => years.map((y) => y.slice), [years]);
+  const picked = years[year - 1]!;
+  const slice = picked.slice;
+  const overLimit = years.some((y, i) => i + 1 >= lock && (y.slice?.tax ?? 0) > 1);
+
+  // ---- value objects
+  const returnIn: SiteValue = returnPick !== null ? enteredValue(returnPick, "pct_per_year", today, story.fields.ret) : p05Value(base.p05, "A-01");
+  const incomeIn: SiteValue = incomePick !== null ? enteredValue(income, "nis", today, copy.hishtalmut.incomeAbout) : figure(income, "nis", "F-67", { [copy.hishtalmut.incomeAnnual]: p05Value(base.p05, "annual_income") }, today, copy.hishtalmut.incomeAbout);
+  const pctIn = (pick: number | null, shared: SiteValue | undefined, value: number, about: string): SiteValue => (pick === null && shared ? shared : enteredValue(value, "pct", today, about));
+  const monthlyIn = inputSite(base, "monthly_deposit", inputs.monthly, inputs.source.monthly, today, copy.common.inputNames.monthly);
   const common: Record<string, SiteValue> = {
-    [copy.common.inputNames.amount]: amountIn,
-    [copy.common.inputNames.monthly]: monthlyIn,
-    [copy.hishtalmut.marker]: yearsIn,
-    ...(returnPct ? { [copy.hishtalmut.inputNames.ret]: returnPct } : {}),
+    [copy.hishtalmut.income[employment]!]: incomeIn,
+    ...(isEmployee ? { [story.fields.own]: pctIn(ownPick, ownPct, ownShare, story.fields.own), [story.fields.employer]: pctIn(employerPick, employerPct, employerShare, story.fields.employer) } : { [copy.common.inputNames.monthly]: monthlyIn }),
+    [copy.hishtalmut.inputNames.ret]: returnIn,
     ...(inflationPct ? { [copy.hishtalmut.inputNames.inflation]: inflationPct } : {}),
-    [incomeLabel]: incomeIn,
+    ...(trackFee ? { [copy.hishtalmut.inputNames.trackFee]: trackFee } : {}),
+    [story.yearName]: enteredValue(year, "years", today, story.yearName),
   };
-  const studyRules = study ? rulesOfBundle(study) : [];
-  const v = {
-    study: model.study ? figure(model.study.gain, "nis", "F-67", { ...common, ...(trackFee ? { [copy.hishtalmut.inputNames.trackFee]: trackFee } : {}) }, today, copy.hishtalmut.about.study, studyRules) : null,
-    broker: model.broker && broker ? figure(model.broker.gain, "nis", "F-67", common, today, copy.hishtalmut.about.broker, rulesOfBundle(broker)) : null,
+  const rules = rulesOfBundle(base);
+  const nis = (value: number, about: string) => figure(value, "nis", "F-96", common, today, about, rules);
+  const stepValue = (step: PileStep): SiteValue | null => {
+    if (!slice) return null;
+    const value = { own: slice.own, extra: slice.extra, gain: slice.gain, tax: slice.tax, left: slice.net }[step];
+    const about = step === "extra" && !isEmployee ? story.about.extraSelf : story.about[step];
+    // what a run qualifies travels with what comes out of it: the deposits are plain, the tax leaves the fee flags behind
+    if (step === "own" || step === "extra") return nis(value, about);
+    const flags = [...new Set(picked.runs.flatMap((r) => r.flags.map((f) => f.code)))].filter(step === "tax" ? notFeeFlag : () => true);
+    return computed(value, "nis", "F-96", common, { today, about, rules, flags, labels: picked.runs.flatMap((r) => r.labels.map((l) => ({ code: l.code, ruleId: l.ruleId }))) });
   };
-  const diff = v.study && v.broker && model.diff !== null ? figure(Math.abs(model.diff), "nis", "F-67", { [copy.hishtalmut.study]: v.study, [copy.hishtalmut.broker]: v.broker }, today, copy.hishtalmut.about.diff) : null;
-  const detail = (s: typeof model.study, kind: "fees" | "tax", about: string) => (s ? figure(s[kind], "nis", "F-67", common, today, about) : null);
-  const costs = { study: detail(model.study, "fees", copy.hishtalmut.about.fees), broker: detail(model.broker, "fees", copy.hishtalmut.about.fees) };
-  const taxes = { study: detail(model.study, "tax", copy.hishtalmut.about.tax), broker: detail(model.broker, "tax", copy.hishtalmut.about.tax) };
+  const PLUS: Record<PileStep, string> = { own: "", extra: "+", gain: slice && slice.gain < 0 ? "−" : "+", tax: "−", left: "" };
+  const stepNumber = (step: PileStep, compact: boolean) => {
+    const v = stepValue(step);
+    return v && <Num value={v} display={signed(PLUS[step], compact)} />;
+  };
 
-  // the sensitivities (rule 3)
-  const rangeFig = (r: { low: number; high: number } | null, about: string) => (r ? { low: figure(r.low, "nis", "F-67", common, today, about), high: figure(r.high, "nis", "F-67", common, today, about) } : null);
-  const brokerRange = rangeFig(model.range.broker, copy.hishtalmut.about.rangeBroker);
-  const managerRange = rangeFig(model.range.manager, copy.hishtalmut.about.rangeManager);
-
-  // the employer's ceiling (employee) and the deduction (self-employed), from the rule figures
-  const employerPct = fact(data, "employerPct");
-  const cap = fact(data, "determiningCap");
-  const ownPct = fact(data, "ownPct");
-  const employerMax = employerPct && cap ? figure((Number(employerPct.value) / 100) * Math.min(income, Number(cap.value)), "nis", "F-67", { [copy.hishtalmut.inputNames.employerPct]: employerPct, [copy.hishtalmut.inputNames.cap]: cap, [incomeLabelEmployee]: incomeIn }, today, copy.hishtalmut.about.employerMax) : null;
-  const benefited = model.benefitedMonthly !== null ? figure(model.benefitedMonthly, "nis", "F-27", { ...common, ...(ownPct ? { [copy.hishtalmut.inputNames.ownPct]: ownPct } : {}), ...(cap ? { [copy.hishtalmut.inputNames.cap]: cap } : {}) }, today, copy.hishtalmut.about.benefited) : null;
-  const excess = model.excessMonthly !== null ? figure(model.excessMonthly, "nis", "F-27", common, today, copy.hishtalmut.about.excess) : null;
-  const relief = model.reliefTotal !== null ? figure(model.reliefTotal, "nis", "F-30", common, today, copy.hishtalmut.about.relief) : null;
-
-  const trackName = text(data, "trackName");
-  const trackNumber = text(data, "trackNumber");
-  const fundName = text(data, "fundName");
-  const fundNumber = text(data, "fundNumber");
-  const indexName = text(data, "indexName");
-  const brokerName = text(data, "brokerName");
+  const big: SiteValue = { ...monthlyIn, value: 9_999_999 };
   const rangeMin = fact(data, "rangeMin");
   const rangeMax = fact(data, "rangeMax");
   const rangeCount = fact(data, "rangeCount");
   const brokerCount = fact(data, "brokerCount");
-  const trustee = fact(data, "fundTrustee");
-  const management = fact(data, "fundManagement");
-  const taxRate = fact(data, "taxRate");
-  const firstBracket = fact(data, "firstBracket");
-  const lockYears = fact(data, "lockYears");
-  const lockShort = fact(data, "lockYearsShort");
+  const trackName = text(data, "trackName");
+  const trackNumber = text(data, "trackNumber");
+  const fundName = text(data, "fundName");
+  const fundNumber = text(data, "fundNumber");
+  const brokerName = text(data, "brokerName");
 
-  /** Stands in for a figure in a line's unseen longest case: what the longest amount takes on the screen. */
-  const big: SiteValue = { ...amountIn, value: 9_999_999 };
-  const bars = (study: SiteValue, brokerV: SiteValue, gap: SiteValue | null, costStudy: SiteValue | null, costBroker: SiteValue | null, taxStudy: SiteValue | null, taxBroker: SiteValue | null, diffN: number) => (
-    <div className="flex flex-col gap-3">
-      <GainBars
-        bars={[
-          { key: "study", label: copy.hishtalmut.study, value: study, tone: "value" },
-          { key: "broker", label: copy.hishtalmut.broker, value: brokerV, tone: "alt" },
-        ]}
-        diff={gap}
-        diffLabel={diffN >= 0 ? copy.hishtalmut.diffMore : copy.hishtalmut.diffLess}
-      />
-      <p className="text-xs text-muted-foreground">{copy.hishtalmut.barsNote}</p>
-      <table className="text-sm w-full max-w-md table-fixed tabular-nums [&_td]:whitespace-nowrap">
-        <TableCols widths={["26%", "37%", "37%"]} />
-        <thead>
-          <tr className="text-muted-foreground text-start">
-            <th scope="col" className="font-normal text-start pb-1" />
-            <th scope="col" className="font-normal text-start pb-1">
-              {copy.hishtalmut.study}
-            </th>
-            <th scope="col" className="font-normal text-start pb-1">
-              {copy.hishtalmut.broker}
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th scope="row" className="font-normal text-start text-muted-foreground pe-3 py-0.5">
-              {copy.hishtalmut.costsRow}
-            </th>
-            <td>{costStudy && <Num value={costStudy} size="cell" />}</td>
-            <td>{costBroker && <Num value={costBroker} size="cell" />}</td>
-          </tr>
-          <tr>
-            <th scope="row" className="font-normal text-start text-muted-foreground pe-3 py-0.5">
-              {copy.hishtalmut.taxRow}
-            </th>
-            <td>{taxStudy && <Num value={taxStudy} size="cell" />}</td>
-            <td>{taxBroker && <Num value={taxBroker} size="cell" />}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  );
-  const reliefLine = (saves: SiteValue) => (
-    <p>
-      {copy.hishtalmut.self.before} <Num value={fact(data, "deductionPct")!} /> {copy.hishtalmut.self.middle} <Num value={fact(data, "deductionCeiling")!} />
-      {copy.hishtalmut.self.saves} <Num value={saves} /> {copy.hishtalmut.self.after}
-    </p>
-  );
-  const ranges = (brokerR: typeof brokerRange, managerR: typeof managerRange) => (
-    <div className="flex flex-col gap-2 text-sm max-w-measure">
-      <p className="font-medium">{copy.hishtalmut.rangeLead}</p>
-      <ul className="flex flex-col gap-1.5 list-disc ps-5">
-        {brokerR && (
-          <li>
-            {copy.hishtalmut.rangeBroker.before} <Num value={brokerR.low} /> {copy.hishtalmut.rangeBroker.to} <Num value={brokerR.high} />
-            {brokerCount ? (
-              <>
-                {" "}
-                ({copy.hishtalmut.rangeBroker.of} <Num value={brokerCount} /> {copy.hishtalmut.rangeBroker.collected}
-                {brokerName ? `; ${copy.hishtalmut.rangeBroker.here} ${brokerName}` : ""})
-              </>
-            ) : null}
-            .{" "}
-            <Link to="/indices" className="text-link hover:underline">
-              {copy.hishtalmut.rangeBroker.more}
-            </Link>
-          </li>
-        )}
-        {managerR && rangeMin && rangeMax && (
-          <li>
-            {copy.hishtalmut.rangeManager.before} <Num value={managerR.low} /> {copy.hishtalmut.rangeManager.to} <Num value={managerR.high} /> ({copy.hishtalmut.rangeManager.fees} <Num value={rangeMin} /> {copy.hishtalmut.rangeManager.toFee}{" "}
-            <Num value={rangeMax} />
-            {rangeCount ? (
-              <>
-                {copy.hishtalmut.rangeManager.across} <Num value={rangeCount} /> {copy.hishtalmut.rangeManager.tracks}
-              </>
-            ) : null}
-            ).
-          </li>
-        )}
-      </ul>
-    </div>
-  );
-  const earlyLine = (rate: SiteValue) => (
-    <Sentence size="sm" measure>
-      {copy.hishtalmut.earlyLine.before} <Num value={rate} /> {copy.hishtalmut.earlyLine.after}
+  const subLine = (own: SiteValue, employer: SiteValue) => (
+    <Sentence size="sm">
+      {story.sub.lead} <Num value={own} /> {isEmployee ? story.sub.fromYou : story.sub.afterRefund}
+      {isEmployee && (
+        <>
+          {" "}
+          <Num value={employer} /> {story.sub.fromEmployer}
+        </>
+      )}
     </Sentence>
   );
-  const gapText = model.studyGap === "self-employed-early" ? copy.hishtalmut.gaps.selfEmployedEarly : model.studyGap === "no-run" ? copy.common.gapFallback : model.studyGap === "blocked" ? copy.hishtalmut.gaps.blocked : null;
+  const fundRange = (low: SiteValue, high: SiteValue) =>
+    rangeCount &&
+    rangeMin &&
+    rangeMax && (
+      <>
+        {story.range.among} <Num value={rangeCount} /> {story.range.tracks} <Num value={low} /> {story.range.atFee} <Num value={rangeMax} /> {story.range.to} <Num value={high} /> {story.range.atFee} <Num value={rangeMin} />.
+      </>
+    );
+  const accountRange = (low: SiteValue, high: SiteValue) =>
+    brokerCount && (
+      <>
+        {story.range.inAccount} <Num value={brokerCount} /> {story.range.tariffs} <Num value={low} /> {story.range.to} <Num value={high} />.
+      </>
+    );
+  const rangeLine = (fund: { low: SiteValue; high: SiteValue } | null, account: { low: SiteValue; high: SiteValue } | null) => (
+    <Sentence size="sm">
+      {fund && fundRange(fund.low, fund.high)}
+      {fund && account && " "}
+      {account && accountRange(account.low, account.high)}
+    </Sentence>
+  );
+  const limitLine = (
+    <Sentence size="sm">
+      {isEmployee && ownPct && employerPct && cap ? (
+        <>
+          {story.over.employee.before} <Num value={ownPct} /> {story.over.employee.own}
+          <Num value={employerPct} /> {story.over.employee.employer} <Num value={cap} display={(n) => `${fmt.number(n)} ₪`} /> {story.over.employee.after}
+        </>
+      ) : (
+        selfBenefited && (
+          <>
+            {story.over.self.before} <Num value={selfBenefited} display={(n) => `${fmt.number(n)} ₪`} /> {story.over.self.after}
+          </>
+        )
+      )}
+    </Sentence>
+  );
+
+  const sharesLine = <p>{isEmployee ? story.held.shares : null}</p>;
+
+  const shownYear = fmt.years(year);
+  const lockText = lockYears && <Num value={lockYears} display={fmt.years(lock)} />;
+  const account = range.account;
+  const accountOther = !isEmployee
+    ? {
+        to: account?.net ?? null,
+        names: story.names.account,
+        fine: story.names.accountFine,
+        number: (compact: boolean) => account && <Num value={nis(account.net, story.about.account)} display={signed("", compact)} />,
+      }
+    : undefined;
+  const gapWords = picked.gap === "self-employed-early" ? (
+    <p>
+      {story.selfGap.before} {lockText}
+      {story.selfGap.after}
+    </p>
+  ) : picked.gap === "blocked" ? (
+    copy.hishtalmut.gaps.blocked
+  ) : (
+    copy.common.gapFallback
+  );
 
   return (
     <div className="flex flex-col gap-5">
-      {lockYears && (
-        <Sentence measure>
-          {copy.hishtalmut.lead.before} <Num value={lockYears} display={fmt.years(Number(lockYears.value))} /> {copy.hishtalmut.lead.after}
-        </Sentence>
-      )}
-      {indexName && trackName && fundName ? (
-        <div className="flex flex-col gap-2 text-sm">
-          <p className="font-medium">
-            {copy.hishtalmut.heldLead} <span className="text-foreground">{indexName}</span>
-          </p>
-          <ul className="flex flex-col gap-1.5">
-            <HoldRow tone="value" name={copy.hishtalmut.study}>
-              {copy.hishtalmut.track} ״<bdi>{trackName}</bdi>״ (<bdi dir="ltr">{trackNumber}</bdi>). {copy.hishtalmut.trackFee} {trackFee && <Num value={trackFee} />} {copy.hishtalmut.perYearAvg}
-            </HoldRow>
-            <HoldRow tone="alt" name={copy.hishtalmut.broker}>
-              {copy.hishtalmut.fund} ״<bdi>{fundName}</bdi>״ (<bdi dir="ltr">{fundNumber}</bdi>). {copy.hishtalmut.trusteeLead} {trustee && <Num value={trustee} />}
-              {management ? (
-                <>
-                  {" "}
-                  {copy.hishtalmut.andMgmt} <Num value={management} />
-                </>
-              ) : null}{" "}
-              {brokerName ? `${copy.hishtalmut.perYearTariff} ${brokerName}.` : copy.hishtalmut.perYear}
-            </HoldRow>
-          </ul>
-        </div>
-      ) : (
-        <G2Gap id="indexTrack" />
-      )}
-
-      <div className="grid gap-4 sm:grid-cols-2">
-        <div className="flex flex-col gap-1.5">
-          <span className="field-label" id="sig-hish-emp">
-            {copy.hishtalmut.employmentLabel}
-          </span>
-          <SegmentedControl<Employment>
-            labelledBy="sig-hish-emp"
-            options={[
-              { value: "employee", label: copy.hishtalmut.employment.employee! },
-              { value: "self-employed", label: copy.hishtalmut.employment["self-employed"]! },
-            ]}
-            value={employment}
-            onChange={(e) => setEmployment(e)}
-          />
-        </div>
-        <NumberField
-          label={incomeLabel}
-          unit="nis"
-          value={income}
-          isEntered={incomePick !== null}
-          validate={(n) => (n <= 0 ? valuesCopy.errors.negative : null)}
-          onCommit={(n) => setIncomePick(n)}
-          onReset={() => setIncomePick(null)}
-          disabled={!inputs.ready}
-          optional
-        />
-      </div>
-      <LongestCase className="-mt-3" cases={[<IncomeSourceLine key="long" source="p05" />, <IncomeSourceLine key="short" source="guide" />]}>
-        <IncomeSourceLine source={incomeSource} />
-      </LongestCase>
-      <PlanInputs bundle={base} inputs={inputs} today={today} />
-
-      <div className="flex flex-col gap-2">
-        <span className="text-sm font-medium">{copy.hishtalmut.marker}</span>
-        <div ref={box} className="relative w-full" dir="ltr" style={{ height: HEIGHT }}>
-          <svg width={width} height={HEIGHT} viewBox={`0 0 ${width} ${HEIGHT}`} role="img" aria-label={copy.hishtalmut.chart.aria} className="block select-none">
-            <defs>
-              <pattern id={`${pid}-lock`} patternUnits="userSpaceOnUse" width="8" height="8" patternTransform="rotate(45)">
-                <rect width="8" height="8" className="fill-muted" />
-                <line x1="0" y1="0" x2="0" y2="8" className="stroke-chart-marker" strokeWidth="2" />
-              </pattern>
-            </defs>
-            <rect x={0} y={LANE_Y} width={Math.max(0, x(lock))} height={LANE_H} rx={3} fill={`url(#${pid}-lock)`} />
-            <rect x={x(lock)} y={LANE_Y} width={Math.max(0, plotW - x(lock))} height={LANE_H} rx={3} className="fill-chart-value" />
-            <line x1={0} x2={plotW} y1={AXIS_Y} y2={AXIS_Y} className="stroke-chart-axis" strokeWidth="1" />
-            {ticks.map((t) => (
-              <text key={t} x={x(t)} y={AXIS_Y + 16} textAnchor={t === 0 ? "start" : t === MAX_YEARS ? "end" : "middle"} className="text-xs fill-chart-text" data-scale>
-                {t}
-              </text>
-            ))}
-            {/* the line starts at the lane, so the row above it holds the bands' names clear of the marker (2026-10-26) */}
-            <MarkerMark x={x(years)} y1={LANE_Y - 2} y2={AXIS_Y + 2} />
-          </svg>
-          <LaneLabel from={0} to={x(lock)} top={LANE_Y - 24}>
-            {copy.hishtalmut.chart.locked}
-          </LaneLabel>
-          <LaneLabel from={x(lock)} to={plotW} top={LANE_Y - 24} prefer="end">
-            {copy.hishtalmut.chart.open}
-          </LaneLabel>
-          <span className="absolute text-xs text-chart-text" dir="rtl" style={{ right: 0, top: AXIS_Y + 18 }}>
-            {copy.hishtalmut.unit}
-          </span>
-          <Marker min={1} max={MAX_YEARS} step={1} value={years} onChange={setYearsPick} label={copy.hishtalmut.marker} valueText={fmt.years(years)} left={0} top={LANE_Y - 12} width={plotW} height={AXIS_Y - LANE_Y + 16} />
-        </div>
-        <p className="text-xs text-muted-foreground">{copy.common.drag}</p>
+      <SegmentedControl<Employment>
+        label={copy.hishtalmut.employmentLabel}
+        options={[
+          { value: "employee", label: story.employment.employee },
+          { value: "self-employed", label: story.employment.self },
+        ]}
+        value={employment}
+        onChange={(e) => setEmployment(e)}
+      />
+      <div className="grid gap-4 grid-cols-2 lg:grid-cols-4">
+        <NumberField label={copy.hishtalmut.income[employment]!} unit="nis" value={income} isEntered={incomePick !== null} validate={(n) => (n <= 0 ? valuesCopy.errors.negative : null)} onCommit={setIncomePick} onReset={() => setIncomePick(null)} disabled={!inputs.ready} />
+        {isEmployee ? (
+          <>
+            <PercentField unit="pct" label={story.fields.own} value={ownShare} isEntered={ownPick !== null} onCommit={setOwnPick} onReset={() => setOwnPick(null)} disabled={!inputs.ready} />
+            <PercentField unit="pct" label={story.fields.employer} value={employerShare} isEntered={employerPick !== null} onCommit={setEmployerPick} onReset={() => setEmployerPick(null)} disabled={!inputs.ready} />
+          </>
+        ) : (
+          <NumberField label={copy.g2.plan.monthly} unit="nis" value={inputs.monthly} isEntered={inputs.source.monthly === "guide"} validate={(n) => (n < 0 ? valuesCopy.errors.negative : null)} onCommit={inputs.setMonthly} onReset={() => inputs.setMonthly(null)} disabled={!inputs.ready} />
+        )}
+        <PercentField label={story.fields.ret} value={returnPct} isEntered={returnPick !== null} validate={percentCheck(p05Range(base.p05, "sliders", "A-01") ?? { min: 0, max: 20 })} onCommit={setReturnPick} onReset={() => setReturnPick(null)} disabled={!inputs.ready} />
       </div>
 
       <div className="flex flex-col gap-3">
-        <p className="text-sm font-medium">
-          {copy.hishtalmut.at.before} <InputSlot chars={7}><bdi>{fmt.years(years)}</bdi></InputSlot>
-          {copy.hishtalmut.at.after}
-        </p>
-        {/* a self-employed person's early years have no run: the words take the bars' place, and everything keeps its height (issue 155) */}
-        <LongestCase cases={[bars(big, { ...big, value: 1 }, big, big, big, big, big, 0), <Callout key="gap" tone="caution">{copy.hishtalmut.gaps.selfEmployedEarly}</Callout>]}>
-          {gapText ? <Callout tone="caution">{gapText}</Callout> : v.study && v.broker ? bars(v.study, v.broker, diff, costs.study, costs.broker, taxes.study, taxes.broker, model.diff ?? 0) : null}
-        </LongestCase>
-        {/* said only before the lock's end: its room stays for the later years, so what is below does not move with the marker */}
-        {firstBracket && <LongestCase cases={[earlyLine(firstBracket)]}>{model.early && !gapText && earlyLine(firstBracket)}</LongestCase>}
+        <h3 className="text-lg font-semibold">
+          {story.title} <InputSlot chars={7}><bdi>{shownYear}</bdi></InputSlot>
+        </h3>
+        <PileYears
+          years={slices}
+          year={year}
+          onYear={setYearPick}
+          lockYear={lock}
+          before={<span className="text-chart-pile-tax">{story.strip.before} {lockText}{story.strip.taxed}</span>}
+          after={<span className="text-muted-foreground">{story.strip.from}{lockText}{overLimit ? story.strip.exemptUnderLimit : story.strip.exempt}</span>}
+          label={story.strip.aria}
+          valueText={shownYear}
+        />
+        <p className="text-xs text-muted-foreground">{copy.common.drag}</p>
+        <LongestCase cases={[subLine(big, big)]}>{subLine(isEmployee ? nis(ownMonthly, story.about.ownMonthly) : monthlyIn, nis(employerMonthly, story.about.employerMonthly))}</LongestCase>
+        <PileStory
+          slice={slice}
+          names={{ own: story.names.own, extra: isEmployee ? story.names.employer : story.names.refund, gain: slice && slice.gain < 0 ? story.names.loss : story.names.gain, tax: story.names.tax, left: story.names.left }}
+          fine={{ gain: story.names.gainFine }}
+          number={stepNumber}
+          firstRow={pileFirstRow(slices)}
+          {...(accountOther ? { other: accountOther } : {})}
+          gap={gapWords}
+          label={story.aria}
+        />
       </div>
 
-      {employment === "employee" ? (
-        <div className="flex flex-col gap-2 text-sm max-w-measure">
-          {benefited && ownPct && (
-            <p>
-              {copy.hishtalmut.employee.own.before} <Num value={benefited} /> {copy.hishtalmut.employee.own.middle} <Term id="הפקדה מוטבת">{copy.hishtalmut.employee.own.term}</Term>
-              {copy.hishtalmut.employee.own.after} <Num value={ownPct} /> {copy.hishtalmut.employee.own.end}
-            </p>
-          )}
-          {excess && taxRate && Number(excess.value) > 0 && (
-            <p>
-              {copy.hishtalmut.employee.excess.before} <Num value={excess} /> {copy.hishtalmut.employee.excess.middle} <Num value={taxRate} /> {copy.hishtalmut.employee.excess.after}
-            </p>
-          )}
-          {employerMax && employerPct && cap && (
-            <p>
-              {copy.hishtalmut.employee.employer.before} <Num value={employerPct} /> {copy.hishtalmut.employee.employer.middle} <Num value={cap} /> {copy.hishtalmut.employee.employer.max} <Num value={employerMax} />.{" "}
-              {copy.hishtalmut.employee.employer.after}
-            </p>
-          )}
-        </div>
-      ) : (
-        <div className="text-sm max-w-measure">
-          <LongestCase cases={[reliefLine(big)]}>{relief && reliefLine(relief)}</LongestCase>
-        </div>
-      )}
-
-      {/* the ranges need the run, which a self-employed person's early years do not have: their room stays */}
-      <LongestCase cases={[ranges({ low: big, high: big }, { low: big, high: big })]}>{(brokerRange || managerRange) && ranges(brokerRange, managerRange)}</LongestCase>
+      <div className="flex flex-col gap-1.5 text-sm max-w-measure">
+        <LongestCase cases={[rangeLine({ low: big, high: big }, isEmployee ? null : { low: big, high: big })]}>
+          {rangeLine(range.fund ? { low: nis(range.fund.low, story.about.rangeFund), high: nis(range.fund.high, story.about.rangeFund) } : null, account?.range ? { low: nis(account.range.low, story.about.rangeAccount), high: nis(account.range.high, story.about.rangeAccount) } : null)}
+        </LongestCase>
+      </div>
 
       <div className="flex flex-col gap-1.5 text-sm text-muted-foreground max-w-measure">
-        {lockYears && lockShort && (
+        <p>{story.stretch}</p>
+        {trackName && (
           <p>
-            {copy.hishtalmut.lockLine.before} <Num value={lockYears} display={fmt.years(Number(lockYears.value))} /> {copy.hishtalmut.lockLine.middle} <Num value={lockShort} display={fmt.years(Number(lockShort.value))} />.
+            {story.held.track} ״<bdi>{trackName}</bdi>״ (<bdi dir="ltr">{trackNumber}</bdi>), {copy.hishtalmut.trackFee} {trackFee && <Num value={trackFee} />} {copy.hishtalmut.perYearAvg}
           </p>
         )}
-        <p>
-          {copy.hishtalmut.assumption.before} {returnPct && <Num value={returnPct} />} {copy.hishtalmut.assumption.middle} {inflationPct && <Num value={inflationPct} />} {copy.hishtalmut.assumption.after}
-        </p>
-        <p>{copy.common.todayMoney}</p>
+        {!isEmployee && fundName && brokerCount && (
+          <p>
+            {story.held.account} ״<bdi>{fundName}</bdi>״ (<bdi dir="ltr">{fundNumber}</bdi>) {story.held.tariff} <bdi>{brokerName}</bdi>, {story.held.pick} <Num value={brokerCount} /> {story.held.collected}
+          </p>
+        )}
+        {/* a return the person typed is theirs, not the site's assumption */}
+        {returnPick !== null ? (
+          <p>
+            {story.held.retEntered.before} <Num value={returnIn} /> {story.held.retEntered.middle} {inflationPct && <Num value={inflationPct} />} {story.held.retEntered.after} {copy.common.todayMoney}
+          </p>
+        ) : (
+          <p>
+            {story.held.ret} <Num value={returnIn} /> {story.held.inflation} {inflationPct && <Num value={inflationPct} />} {copy.hishtalmut.assumption.after} {copy.common.todayMoney}
+          </p>
+        )}
+        <p>{isEmployee ? story.held.follows.employee : story.held.follows.self}</p>
+        {isEmployee && withheld && (
+          <p>
+            {story.held.early.before} <Num value={withheld} /> {story.held.early.after}
+          </p>
+        )}
+        {/* a deposit above a limit takes the place of the line about the limits, in the room of the longer one, so nothing moves */}
+        <LongestCase cases={[limitLine, sharesLine]}>{overLimit ? limitLine : sharesLine}</LongestCase>
       </div>
       <RulesLine ids={data.ruleIds} />
     </div>

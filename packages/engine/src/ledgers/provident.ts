@@ -38,6 +38,16 @@ export interface ProvidentInput {
      * separately inside the same run (its salary tax is subtracted from the value, its gains are taxed at exit).
      */
     employerMonthly?: number;
+    /**
+     * The salary rises with prices, as the deposits do (A-04), so each month's benefited limit is the rule's share of that
+     * month's salary. The determining salary's ceiling is held at today's amount: it is not linked to the index and moves
+     * only with its agreement (TXH-02). The run's deposits are then limited as a payslip's are; without this the limit stands
+     * at today's salary and a deposit exactly at the limit crosses it in the first month that prices rise (F-96). Only the
+     * limit moves: the brackets, the income they are read at and the nominal amounts read against them stay as they are.
+     * An employee's run of one kind of money with real contributions only: a split (`employerMonthly`) or flat deposits
+     * would limit the deposits by a salary that does not match them.
+     */
+    salaryFollowsPrices?: boolean;
   };
   /**
    * A balance already in the fund (a holding under review, F-61), as `runPension` has it: it starts the ledger as
@@ -141,6 +151,9 @@ export function runProvident(input: ProvidentInput, ctx: RunContext): ProvidentR
         outcome = { code: "listed-not-ranked", reason: "B3", untilMonth: lockMonth };
       }
     }
+    if (h.salaryFollowsPrices && (h.employerMonthly !== undefined || goal.contributions === "nominal")) {
+      throw new RecordInputError("hishtalmut.salaryFollowsPrices limits deposits that rise with the salary: it does not take employerMonthly or nominal contributions");
+    }
     if (h.employment === "employee") {
       const determining = Math.min(h.monthlySalary ?? 0, book.amount("TXH-02", "determining_salary_cap"));
       // TXH-08: own deposit benefited up to 2.5% of the determining salary; TXH-01: the employer's up to 7.5%.
@@ -192,6 +205,7 @@ export function runProvident(input: ProvidentInput, ctx: RunContext): ProvidentR
   // outlay. Without the person's income there is no run: "missing input" (F-83).
   let grossDeposits = [...C];
   let reliefTotal = 0;
+  let reliefToday = 0;
   let deductionCap = 0;
   if (!kgl && hish?.employment === "self-employed" && !employerMoney) {
     if (profile.annualIncome === undefined) {
@@ -211,6 +225,8 @@ export function runProvident(input: ProvidentInput, ctx: RunContext): ProvidentR
   // F-52: what the employer pays above the benefited limit is the employee's salary when paid (TXH-03):
   // income tax at the brackets (TXG-02) and National Insurance and health (TXG-35, labelled a reading).
   const employerExcessByYear = new Map<number, number>();
+  const employerExcessTodayByYear = new Map<number, number>();
+  let employerPaidToday = 0;
   let employerSocial = 0;
   const salary = hish?.monthlySalary ?? 0;
   const employerOverActive = !kgl && hish?.employerMonthly !== undefined && hish.employerMonthly > employerLimit;
@@ -223,6 +239,13 @@ export function runProvident(input: ProvidentInput, ctx: RunContext): ProvidentR
       }
     : undefined;
 
+  // F-96: the benefited limit of the month's own salary, under the ceiling that does not move (TXH-02)
+  const limitOfMonth = (m: number) => {
+    if (!hish?.salaryFollowsPrices || hish.employment !== "employee") return benefitedMonthly;
+    const share = employerMoney ? book.rate("TXH-01", "employer_exempt_pct") : book.rate("TXH-08", "own_benefited_pct");
+    return share * Math.min(salary * I[m]!, book.amount("TXH-02", "determining_salary_cap"));
+  };
+
   const deposit = (amount: number, eventMonth: number, outlay = amount) => {
     if (amount <= 0) return;
     let accepted = amount;
@@ -234,6 +257,7 @@ export function runProvident(input: ProvidentInput, ctx: RunContext): ProvidentR
     const share = accepted / amount;
     tally.paidIn += outlay * share;
     reliefTotal += (amount - outlay) * share;
+    reliefToday += ((amount - outlay) * share) / I[eventMonth]!;
     const fee = depositFee(fees.deposit, depositCap, accepted);
     tally.fee("deposit", fee);
     const net = accepted - fee;
@@ -243,14 +267,17 @@ export function runProvident(input: ProvidentInput, ctx: RunContext): ProvidentR
     const empOverFrac = hish?.employerMonthly !== undefined && eventMonth > 0 && goal.monthly > 0 ? Math.max(0, hish.employerMonthly - employerLimit) / goal.monthly : 0;
     const employerPart = net * empWithinFrac;
     const employerOver = net * empOverFrac;
-    const inBenefit = employerPart + Math.min(net - employerPart - employerOver, benefitedMonthly, benefitedLeft);
+    const inBenefit = employerPart + Math.min(net - employerPart - employerOver, limitOfMonth(eventMonth), benefitedLeft);
     benefitedLeft -= inBenefit - employerPart;
     const over = employerMoney ? net - inBenefit : employerOver;
     if (social && over > 0) {
       const y = taxYearOf(eventMonth, first);
       employerExcessByYear.set(y, (employerExcessByYear.get(y) ?? 0) + over);
+      employerExcessTodayByYear.set(y, (employerExcessTodayByYear.get(y) ?? 0) + over / I[eventMonth]!);
       const band = (lo: number, hi: number) => Math.max(0, Math.min(salary + over, hi) - Math.max(salary, lo));
-      employerSocial += social.reduced * band(0, social.reducedUpTo) + social.full * band(social.reducedUpTo, social.maxIncome);
+      const socialNow = social.reduced * band(0, social.reducedUpTo) + social.full * band(social.reducedUpTo, social.maxIncome);
+      employerSocial += socialNow;
+      employerPaidToday += socialNow / I[eventMonth]!;
     }
     const pots: [Pot, number][] = [
       [benefited, inBenefit],
@@ -363,6 +390,7 @@ export function runProvident(input: ProvidentInput, ctx: RunContext): ProvidentR
       const surtax = surtaxOn(book, withIncome, gains + employerDeposits).general + surtaxOn(book, withIncome, gains).onCapital;
       taxAtExit = t.tax + surtax;
       detail.earlyGains = gains;
+      detail.earlyEmployerDeposits = employerDeposits;
       detail.earlyWithheld = t.withheld;
       detail.earlyRefund = t.refund;
       detail.earlyTaxOnGains = t.taxOnGains;
@@ -397,15 +425,22 @@ export function runProvident(input: ProvidentInput, ctx: RunContext): ProvidentR
   let employerDepositTax = 0;
   if (employerMoney || employerOverActive) {
     const brackets = book.brackets("TXG-02", "brackets");
-    for (const x of employerExcessByYear.values()) employerDepositTax += deductionValue(brackets, 12 * salary + x, x);
+    for (const [y, x] of employerExcessByYear) {
+      const paid = deductionValue(brackets, 12 * salary + x, x);
+      employerDepositTax += paid;
+      // F-96: each year's tax at the index of the deposits it is on, as F-06 has an amount of month m
+      employerPaidToday += (paid * employerExcessTodayByYear.get(y)!) / x;
+    }
     book.cite("TXH-03");
     book.label("reading", "TXG-35");
     detail.employerDepositTax = employerDepositTax;
     detail.employerSocial = employerSocial;
+    detail.employerPaidToday = employerPaidToday;
     formulas.push("F-52");
   }
   if (grossDeposits.some((d, m) => d !== C[m])) {
     detail.reliefTotal = reliefTotal;
+    detail.reliefToday = reliefToday;
     detail.deductionCap = deductionCap;
   }
 
