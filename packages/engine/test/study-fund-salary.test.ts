@@ -80,7 +80,7 @@ describe("limitStanding (F-97)", () => {
     expect(s.per).toBe("month");
     expect(s.over[0]).toBeCloseTo(450 - 0.025 * 15_712, 6);
     expect(s.over[1]).toBeCloseTo(1_350 - 0.075 * 15_712, 6);
-    expect(s.room).toBe(0);
+    expect(s.room).toEqual([0, 0]);
     expect(s.firstOverYear).toBe(1);
   });
   it("finds the year the deposits pass a ceiling that does not move: 14,000 at 2% in the sixth year", () => {
@@ -91,7 +91,8 @@ describe("limitStanding (F-97)", () => {
   });
   it("gives the room left when the deposits are under the share, and no year inside the runs when none passes", () => {
     const s = limitStanding([runProvident(months(12_000, 300), ctx), runProvident(months(12_000, 600, "employer"), ctx)]);
-    expect(s.room).toBeCloseTo(300, 6);
+    expect(s.room[0]).toBeCloseTo(0, 6);
+    expect(s.room[1]).toBeCloseTo(300, 6); // the employer's room: the own deposit at its share has none
     expect(s.firstOverYear).toBeNull();
   });
   it("measures a self-employed person's first year against the yearly amount", () => {
@@ -99,10 +100,10 @@ describe("limitStanding (F-97)", () => {
     const under = limitStanding([runProvident(self(500), ctx)]);
     expect(under.per).toBe("year");
     expect(under.over[0]).toBe(0);
-    expect(under.room).toBeGreaterThan(0);
+    expect(under.room[0]).toBeGreaterThan(0);
     const over = limitStanding([runProvident(self(3_000), ctx)]);
     expect(over.over[0]).toBeGreaterThan(0);
-    expect(over.room).toBe(0);
+    expect(over.room).toEqual([0]);
     expect(over.firstOverYear).toBe(1);
   });
 });
