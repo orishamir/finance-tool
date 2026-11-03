@@ -16,7 +16,6 @@ import { NumberLegend, RulesLine } from "../components/provenance";
 import { Sheet } from "../components/Sheet";
 import { Breadcrumb, PageShell } from "../components/shell";
 import { Button, Callout } from "../components/ui";
-import { WorkbenchTabs } from "../components/workbench/workbench";
 import { FundChips, VariantControls, VariantFields } from "../components/workbench/funds/controls";
 import { GroupLine, ListLine, VariantCoverage, CopyForFounder } from "../components/workbench/funds/parts";
 import { FundVariantRow, VariantDetail } from "../components/workbench/funds/row";
@@ -25,7 +24,7 @@ import { runGoalOf, type CompareBundle } from "../lib/compare";
 import { feeInputs } from "../lib/fees";
 import { GoalsProvider, hasMeaning, useGoals, type Presets } from "../lib/goal";
 import { useInputs } from "../lib/inputs";
-import { BROKERAGE, loadWorkbenchBundle, type WorkbenchBundle, type WorkbenchInputs } from "../lib/providers";
+import { loadWorkbenchBundle, type WorkbenchBundle, type WorkbenchInputs } from "../lib/providers";
 import { buildFundVariants, withExposureReturn, matchesVariant, parseVariantQuery, sortVariants, useFundAssumptions, variantQueryString, type FundVariantRowView, type SortKey, type VariantQuery } from "../lib/variants";
 import { bundleLinks } from "../lib/bundle";
 import { recordsById } from "../lib/scope";
@@ -151,9 +150,6 @@ function Body({ wb, compare, data, presets, search }: { wb: WorkbenchBundle; com
   const onField = (f: "yield" | "rate" | "return") => (f === "return" ? navigate("/goal") : setPanelOpen(true));
 
   const head = <Head data={data} />;
-  const firstFund = view?.rows.find((r) => r.recordId)?.recordId;
-  const providerHref = `/workbench/providers/${BROKERAGE}${firstFund ? `?fund=${encodeURIComponent(firstFund)}` : ""}`;
-  const tabs = <WorkbenchTabs current="fund" wrapperId={BROKERAGE} providerHref={providerHref} fundHref={`/workbench/funds/${data.exposureId}`} />;
 
   if (result.kind === "error") {
     return (
@@ -185,7 +181,6 @@ function Body({ wb, compare, data, presets, search }: { wb: WorkbenchBundle; com
       {head}
       <ListLine lists={v.lists} links={wb.links} />
       <SavedGoalStrip variant="compact" presets={presets} meta={data.meta} today={data.today} emptyLine />
-      {tabs}
       <FundChips view={v} inputs={inputs} assumptions={assumptions.value} onOpen={() => setPanelOpen(true)} />
       {v.waitsForReturn && (
         <Callout tone="info">

@@ -21,6 +21,7 @@ import type { ExposureRecord, FundRecord, ValueObject } from "@finance-tool/sche
 import { deviceStore } from "./device-store";
 import { BROKERAGE, a28Value, feeAbsent, instrumentClassOf, parameterValue, ruleContext, staleTariff, type FundAssumptions, type WorkbenchBundle, type WorkbenchInputs } from "./providers";
 import { fxRunInput, nisPer } from "./fx";
+import { indexPath } from "./invest";
 import { computed, ownBy, weaker, type SiteValue, type Strength } from "./value";
 
 /**
@@ -108,8 +109,8 @@ export interface FundVariantRowView {
   secondary: string[];
   detail?: { fund: SiteValue; spread: SiteValue; provider: SiteValue; taxDuring: SiteValue; taxExit: SiteValue };
   ruleIds: string[];
-  /** Fund-record id of a fund that has one, for the workbench link. */
-  providersHref: string;
+  /** The index page on this fund's index, where every house is priced with it (issue 172); null off an equity index. */
+  indexHref: string | null;
   checkHref: string;
   /** Another record shares this row's ISIN (two records for one paper, 3.7). */
   duplicateOf?: string;
@@ -146,6 +147,8 @@ export interface FundVariantsView {
   startRates: { code: string; rate: SiteValue | null }[];
   ordersN: number;
   orders: SiteValue;
+  /** The index page on this exposure, where the houses are compared (issue 172); null off an equity index. */
+  indexHref: string | null;
 }
 
 export type VariantResult = { kind: "ok"; view: FundVariantsView } | { kind: "error"; code: "no-exposure" | "no-tariff" | "engine"; detail?: string };
@@ -250,6 +253,7 @@ export function buildFundVariants(a: VariantArgs): VariantResult {
   const exposure = bundle.exposures.find((e) => e.id === exposureId);
   if (!exposure) return { kind: "error", code: "no-exposure" };
   const mine = bundle.funds.filter((f) => f.exposure_id === exposure.id);
+  const indexHref = exposure.kind === "equity_index" ? indexPath(exposure.id) : null;
   // Each fund is priced with its own instrument class (2026-10-25): a tracking fund on the mutual-fund lines, an ETF and a TASE-traded
   // foreign fund on the exchange-traded lines, a fund bought abroad on the foreign-securities lines. A list row with no record has no run.
   const classOf = new Map(mine.map((f) => [f.id, instrumentClassOf(f, exposure)] as const));
@@ -359,7 +363,7 @@ export function buildFundVariants(a: VariantArgs): VariantResult {
       secondary,
       ...(detail ? { detail } : {}),
       ruleIds: run ? run.rules.map((r) => r.id) : [],
-      providersHref: rec ? `/workbench/providers/${BROKERAGE}?fund=${encodeURIComponent(rec.id)}` : `/workbench/providers/${BROKERAGE}`,
+      indexHref,
       checkHref: exposureHref ?? `/exposure/${exposure.id}`,
       ...(sameIsin.length > 0 ? { duplicateOf: sameIsin[0]! } : {}),
     };
@@ -401,6 +405,7 @@ export function buildFundVariants(a: VariantArgs): VariantResult {
     distributing: mine.filter((f) => f.distribution_policy === "distributing" && !f.distribution).map((f) => ({ recordId: f.id, name: f.names.he[0] ?? f.names.en[0] ?? f.id })),
     startRates,
     ordersN,
+    indexHref,
     orders: query.orders !== null ? ({ ...a28Value(query.orders, "פעולות בחודש", today), state: "entered", update_rule: "founder" } as SiteValue) : a28Value(1, "פעולות בחודש", today),
   };
   return { kind: "ok", view };

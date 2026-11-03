@@ -1,7 +1,7 @@
 // The four side stores the export file carries beside the state document (audit 2026-10-24, A32): the entered offers
-// (`mekor.v2.offers`), the variant assumptions (`mekor.v2.variants`) and the switching checklist's ticks (`mekor.v2.playbook-ticks`;
-// the switching page is gone, D38, and the ticks stay on the device). Offers and variants are owned by their modules (lib/offers.ts,
-// lib/variants.ts) through `device-store.ts`; this file
+// (`mekor.v2.offers`; the house-ranking page that wrote them is gone, issue 172, and they stay on the device), the variant
+// assumptions (`mekor.v2.variants`) and the switching checklist's ticks (`mekor.v2.playbook-ticks`; the switching page is gone,
+// D38, and the ticks stay on the device). Variants are owned by lib/variants.ts through `device-store.ts`; this file
 // only reads and writes their storage keys, checks every item, and merges. The merge of the three INTO the state
 // document is pending the founder's approval (roadmap), so the document's version stays 3.
 //

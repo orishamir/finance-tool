@@ -1515,6 +1515,8 @@ Added 2026-10-24 for the briefs in `docs/flows.md` section 15 and the handoff in
 
 ### 8.1 Provider workbench page
 
+*(2026-11-03, D52: removed for the securities account; the indices page ranks the houses. Only the provident wrappers' company listing remains at this address, and only its strings stay in `copy.ts`.)*
+
 | Element | Hebrew |
 |---|---|
 | Title | איזה בנק או בית השקעות: `{מוצר}` |

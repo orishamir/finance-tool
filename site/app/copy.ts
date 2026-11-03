@@ -1491,7 +1491,6 @@ export const r3workbench = {
   },
   noGoal: "אין מטרה שמורה. הגדירו מטרה כדי לראות התאמה.",
   tabs: { aria: "תצוגה", byTrack: "לפי מסלול", byProvider: "לפי ספק" },
-  providerLine: "הטבלה לפי ספקים, עם התעריפונים: בעמוד ״איזה בנק או בית השקעות״.",
   chips: { aria: "במה הכסף מושקע", all: "הכול", noClass: "בלי סיווג בנתונים" }, // noClass: the coverage group's words (copy 7.3)
   filter: "חיפוש חברה או מסלול",
   sort: { aria: "סדר ההצגה", company: "חברה", "fee-balance": "מחיסכון", "fee-deposit": "מהפקדה", name: "שם" },
@@ -1642,7 +1641,7 @@ export const r3fees = {
   },
   ranked: { first: "לפי המספרים בעמוד, המוצר הזה במקום הראשון מבין כל האפשרויות, גם אחרי העמלות.", other: ["למרות העמלה, לפי המספרים בעמוד המוצר הזה במקום ", " מבין כל האפשרויות."], tied: " (שקול לאחרים)" },
   verdictSoft: "יקר יחסית לחלופות בלי עמלה",
-  linkProviders: "השוואת הספקים",
+  linkProviders: "השוואה מול שאר הבנקים ובתי ההשקעות, בהשקעה במדד", // the index page (issue 172)
   remainder: { before: "השפעה משולבת של העמלות זו על זו: ", line: "הסכום של כל השורות והשורה הזו הוא העלות הכוללת." },
   thresholds: { before: "הספים: שווה להתמקח מ־", mid: "; שווה להימנע מ־", after: ". פרמטר של האתר.", link: "לכל הפרמטרים" },
   chart: {
@@ -2073,7 +2072,8 @@ export const r4catalogue = {
     linesBefore: "",
     linesMid: "שורות עמלה נאספו:",
     notice: "הודעה על שינוי בעמלות",
-    compare: "להשוואת הספקים",
+    /** the index page with this house picked (issue 172) */
+    compare: "להשוואה מול שאר הבנקים ובתי ההשקעות",
     stale: { before: "התעריפון נאסף ב־", after: "; מאז ייתכן שהשתנה." },
     minimum: "מינימום לפתיחת חשבון:",
     minimumNone: "לא נמצא בתעריפון",
@@ -2097,7 +2097,7 @@ export const r4catalogue = {
   },
   missingTariff: "התעריפון לא נאסף.",
   recordedReason: "הסיבה כפי שנרשמה בקובץ הנתונים",
-  missingLinks: { tariffPageBefore: "לעמוד התעריפון של ", compare: "להשוואת הספקים (הבנק מופיע שם כ״אי אפשר להשוות״)", /* copy.md 8.4: the broker's form of the parenthesis */ compareBroker: "להשוואת הספקים (בית ההשקעות מופיע שם כ״אי אפשר להשוות״)" },
+  missingLinks: { tariffPageBefore: "לעמוד התעריפון של ", compare: "להשוואה מול שאר הבנקים ובתי ההשקעות (הבנק מופיע שם בלי מחיר)", /* copy.md 8.4: the broker's form of the parenthesis */ compareBroker: "להשוואה מול שאר הבנקים ובתי ההשקעות (בית ההשקעות מופיע שם בלי מחיר)" },
   brokerClassLine: "בית השקעות, חבר בורסה שאינו בנק",
   searchGroupBank: "בנקים ומוצרי בנק",
 } as const;
@@ -2148,122 +2148,23 @@ export const r4workbench = {
   domicile: { IL: "ישראל", IE: "אירלנד", US: "ארה״ב" } as Record<string, string>,
   policy: { accumulating: "לא מחלקת", distributing: "מחלקת", "not-collected": "לא נאסף" } as Record<string, string>,
   links: {
-    providers: "איזה בנק או בית השקעות",
-    providersForFund: "השוואת ספקים לקרן הזו",
-    providersCompare: "להשוואת הספקים",
-    funds: "איזו קרן לקנות",
-    fundsFor: (exposure: string) => `כל הקרנות על ${exposure}`,
-    changeFund: "להחליף קרן",
+    /** the index page, where every house is priced (issue 172) */
+    providersCompare: "להשוואת הבנקים ובתי ההשקעות",
   },
-  tabs: { aria: "תצוגות של ההשוואה", byProvider: "לפי ספק", byTrack: "לפי מסלול", byFund: "לפי קרן", noTracks: "למוצר הזה אין מסלולים בנתוני הרשות." },
 
-  // ---- 8.1 provider workbench page
+  tabs: { aria: "תצוגות של ההשוואה", byProvider: "לפי ספק", byTrack: "לפי מסלול" },
+
+  // ---- 8.1 a provident wrapper's company listing (the securities account's house ranking went to the index page, issue 172)
   providers: {
-    title: { before: "איזה בנק או בית השקעות: ", after: "" },
     back: "המדריך למוצר",
-    subject: { before: "לפי ", sep: " · " },
-    subjectP05: "לפי הרשומה המייצגת: ",
-    changeFund: "להחליף קרן",
-    noFund: "בחרו קרן כדי להשוות ספקים.",
-    /** copy.md 8.1: the saved goal's absence, one line; the strip carries the link */
-    noGoal: "אין מטרה שמורה: ההשוואה לפי התרחיש לדוגמה של האתר.",
     behaviour: {
-      title: "הפעילות שלכם",
       orders: "פעולות בחודש",
-      // copy.md 8.1 (changed 2026-10-24, B14): the number is a Num in the sentence; one and two are words
-      ordersHint: { before: "כל הפקדה חודשית מתחלקת ל־", many: " פקודות, ולכל פקודה עמלה משלה.", one: "כל הפקדה חודשית היא פקודה אחת, ולכל פקודה עמלה משלה.", two: "כל הפקדה חודשית מתחלקת לשתי פקודות, ולכל פקודה עמלה משלה." },
-      /** copy.md 8.1: the aria names of the stepper's two buttons */
-      ordersUp: "עוד פעולה בחודש",
-      ordersDown: "פחות פעולות בחודש",
-      channel: "ערוץ",
       channelOptions: { direct: "ערוצים ישירים", branch: "סניף" },
-      channelBrokers: "לא רלוונטי לבתי השקעות",
-      fxForeign: (ccy: string) => `הקרן נקובה ב־${ccy}: כל הפקדה מומרת.`,
-      fxShekels: "הקרן נקובה בשקלים: אין המרה.",
-      deposits: "הפקדה אחת בכל חודש של השנה.",
-      /** copy.md 8.1: the amounts chips' labels */
-      chips: { amount: "סכום", monthly: "הפקדה חודשית", years: "תקופה", all: "כל ההנחות" },
     },
-    levelAria: "רמת העמלה",
-    levelLine: {
-      list: "לפי התעריפון המלא של כל ספק, בלי הנחות.",
-      averageNone: "אין ממוצע שנאסף: ממוצעי בנק ישראל ומחשבון העמלות של הבורסה מוצגים רק בקישור.",
-      averageSome: (source: string) => `ממוצע העמלות שנגבו בפועל, כפי שפורסם ב${source}. ספק בלי ממוצע מופיע כ״אי אפשר להשוות״.`,
-      entered: "ההצעה שלכם מושווית לתעריפון של האחרים.",
-    },
-    entered: { none: "עוד לא הזנתם הצעה.", link: "להזין הצעה", count: (n: number) => `ההצעה שלכם · ${n}` },
-    tableHeading: "לפי העלות, מהזולה ליקרה",
-    columns: ["דירוג", "ספק", "עלות", "בשנה הראשונה", "לפי סוג עמלה", "תעריפון מ־", "מינימום", "פיקוח", "פתיחה"],
-    horizon: { after: ", בכסף של היום" },
-    yearOne: "בשנה הראשונה",
-    yearOneTag: "בשקלים של השנה הראשונה",
-    barAria: "לפי סוג עמלה",
-    deciding: (other: string, type: string) => `מכריע מול ${other}: ${type}`,
-    decidingDetail: "הפער לפי סוג:",
-    tie: (other: string) => `שקולה ל־${other}`,
-    tieMany: (others: string) => `שקולות: ${others}`,
-    tieThreshold: "ההפרש קטן מסף התיקו של האתר:",
-    tieThresholdAfter: ". פרמטר של האתר.",
     tariffLine: { before: "תעריפון מ־", mid: ", נאסף ב־", /* copy.md 8.1: the form with no published date */ collected: "נאסף ב־" },
     tariffLink: "לתעריפון",
     /** copy.md 8.1: the file formats the tariff link names */
     formats: { pdf: "PDF", html: "דף אינטרנט", xlsx: "גיליון" } as Record<string, string>,
-    minimums: "מינימום לפתיחת חשבון:",
-    minimumsNone: "לא נמצא בתעריפון",
-    perTrade: { min: "מינימום לפעולה", max: "מקסימום" },
-    protection: "מפוקח:",
-    taseMember: "חבר בורסה",
-    notIsaSupervised: "לא מפוקח על ידי רשות ניירות ערך",
-    protectionDisclosure: "מה מגן על הכסף",
-    notModelled: (name: string) => `לא נכלל בחישוב: ${name}.`,
-    notModelledF18: "הנוסחה לעמלה הזו עוד לא נכתבה.",
-    /** copy.md 8.1: a snapshot line that applies but is no part of a holding's running cost (a transfer out) */
-    notModelledOther: "עמלה שאינה חלק מעלות ההחזקה השוטפת.",
-    noLine: (base: string) => `אין בתעריפון שורה ל${base}; לא נגבה בחישוב.`,
-    /** 2026-10-26 (method F-14, F-63; BRK OQ11 closed): the note on a non-bank member's custody line when the fund is a money-market fund */
-    mmfCustodyNonBank: "בבנק אסור לגבות דמי ניהול פיקדון ניירות ערך על קרן כספית. אצל חבר בורסה שאינו בנק לא נמצא כלל שמגביל אותם, ולכן החישוב לפי התעריפון. רק חבר בורסה שאינו משווק השקעות ויש לו הסכם הפצה לקרן הזאת אסור לו, לפי תקנות עמלת הפצה, לגבות עליה עמלה. לפי הדוח המשותף של הרגולטורים, אצל חברי בורסה שאינם בנקים יש פטור גורף מדמי משמרת, ודמי טיפול בפיקדון הם בדרך כלל סכום קבוע שלעתים קרובות מוחזר או לא נגבה. זה נוהג, לא תנאי בתעריפון.",
-    /** copy.md 8.1: the bases a missing line is named by, in the sentence above */
-    noLineBases: { trade: "קנייה ומכירה", custody: "דמי ניהול פיקדון ניירות ערך", fx: "המרת מטבע" } as Record<string, string>,
-    fixedSpread: (name: string) => `${name} נפרסו לחודשים.`,
-    rowLinks: { offer: "קיבלתם הצעה? הזינו אותה", edit: "עריכת ההצעה שלכם", fees: "מה העמלות האלה יעלו לכם", company: (name: string) => `לעמוד ${name}` },
-    vsTag: "מושווה",
-    vsSet: "להשוות אליו",
-    vsClear: "ביטול ההשוואה",
-    // scenario fix 2026-10-24 (sc-broker): the broker the goal comparison runs the brokerage account on is the person's choice, made here or on the card
-    useInCompare: {
-      use: "לחשב את ההשוואה לפי הספק הזה", // scenario fix 2026-10-24
-      active: "ההשוואה שלכם רצה על הספק הזה", // scenario fix 2026-10-24
-      clear: "לחזור לספק שהאתר בחר", // scenario fix 2026-10-24
-      toCompare: "לתוצאות ההשוואה", // scenario fix 2026-10-24
-      noGoal: "אין מטרה שמורה, ולכן אין השוואה שאפשר להריץ על הספק הזה.", // scenario fix 2026-10-24
-      toGoal: "להגדיר מטרה", // scenario fix 2026-10-24
-    },
-    detail: {
-      heading: "השורות שנקראו מהתעריפון",
-      entered: (lines: string) => `הוחלפו בהצעה שלכם: ${lines}`,
-      typeCosts: "העלות לפי סוג עמלה",
-      /** copy.md 8.1: the remainder line of F-61 inside F-63 and the labels of a line's facts */
-      remainder: "השפעה משולבת של העמלות",
-      rate: "שיעור",
-      min: "מינימום",
-      max: "מקסימום",
-      period: "תקופה",
-      channel: "ערוץ",
-      level: "רמה",
-      fromAverage: "ממוצע",
-      rules: "החוקים והכללים שהחישוב נשען עליהם",
-      /** copy.md 8.1: what each line charges on, by the snapshot's base */
-      bases: { trade: "קנייה ומכירה", custody: "דמי ניהול פיקדון ני״ע", fx: "המרת מטבע", fixed_period: "דמי חשבון קבועים" } as Record<string, string>,
-    },
-    notComparableOffer: (name: string) => `יש לכם הצעה מ${name}? הזינו אותה`,
-    notComparableLinks: { tariff: (name: string) => `לעמוד התעריפון של ${name}` },
-    coverage: {
-      // audit 2026-10-24 (sweep): the counts in their Hebrew forms ("נבדק ספק אחד", "נבדקו שני ספקים", "נבדקו 5 ספקים"), as the compare coverage line
-      sentence: { verbOne: "נבדק ", verbMany: "נבדקו ", one: "ספק אחד", two: "שני ספקים", after: " ספקים", colon: ": ", numerals: { one: "אחד", two: "שניים" }, ranked: { one: "דורג", other: "דורגו" }, sep: ", ", not: "אי אפשר להשוות", end: "." },
-      oneRanked: { before: "דורג ", mid: " מתוך ", after: " ספקים." },
-      groups: { ranked: "דורגו", notComparable: "אי אפשר להשוות" },
-    },
-    allMissing: "אין עדיין תעריפון שנאסף למוצר הזה.",
     provident: {
       note: "למוצר הזה הדירוג הוא לפי מסלול. כאן מופיעים דמי הניהול לפי התעריפון של כל חברה, בלי דירוג.",
       label: "דמי ניהול לפי התעריפון של החברה, לא מדורג",
@@ -2277,60 +2178,16 @@ export const r4workbench = {
       title: { before: "איזו חברה: ", after: "" },
       covered: { before: "נאסף תעריפון של ", one: "חברה אחת", many: " חברות", mid: " מתוך ", after: "; הדירוג הוא לפי מסלול." },
     },
-    chart: {
-      title: "העלות המצטברת לאורך הזמן",
-      marker: { yearOne: "שנה ראשונה", horizon: "מועד המטרה", end: "סוף התקופה" },
-      dashed: "הקו המקווקו מבוסס על הצעה שהזנתם.",
-      aria: (n: number, years: string) => `גרף: העמלות המצטברות של ${n} ספקים לאורך ${years}. הנתונים המלאים בטבלה.`,
-      /** copy.md 8.1: the chart's year readout, the reading under it and the roles of the lines */
-      year: "שנה",
-      today: "היום",
-      yearOneMarker: "שנה ראשונה",
-      legendVs: "מושווה",
-      realNote: "העמלות ששולמו עד החודש הזה, בכסף של היום. הנקודה האחרונה כוללת את עמלת המכירה.",
-    },
     offer: {
-      title: (name: string) => `ההצעה שלכם מ${name}`,
-      hint: "מלאו רק את השורות שהוצעו לכם; השאר נשאר לפי התעריפון.",
-      fields: { trade: "עמלת קנייה ומכירה", custody: "דמי ניהול פיקדון ניירות ערך", fx: "המרת מטבע", fixed: "דמי חשבון קבועים" },
-      sub: { pct: "אחוז", min: "מינימום", max: "מקסימום", pctPeriod: (p: string) => `אחוז ${p}`, nisMonth: "₪ לחודש" },
-      periods: { month: "לחודש", quarter: "לרבעון", year: "לשנה" } as Record<string, string>,
-      placeholder: (v: string) => `תעריפון: ${v}`,
-      above: "גבוה מהתעריפון",
-      who: "מי הציע ומתי",
-      whoText: "מי הציע (לא חובה)",
-      when: "תאריך ההצעה",
-      binding: "להצעה שלא בכתב לא נמצא מקור שמחייב אותה. שאלה פתוחה (SW OQ4)",
-      buttons: { save: "שמירה", clear: "ניקוי ההצעה", cancel: "ביטול" },
-      /** copy.md 8.1: the line under the entered level's table, and the storage note */
-      belowTable: "ההצעה שלכם מושווית לתעריפון של האחרים.",
-      noStorage: "אי אפשר לשמור במכשיר הזה. ההצעה תישאר רק בזמן הביקור.",
-      empty: "מלאו לפחות שורה אחת.",
-      noList: "אין שורה כזו בתעריפון",
       errors: {
         percent: (max: number) => `הזינו אחוז בין 0 ל־${max}.`,
-        negative: "הסכום לא יכול להיות שלילי.",
-        future: "תאריך ההצעה עוד לא הגיע.",
-        minAboveMax: "המינימום לא יכול להיות גבוה מהמקסימום.",
-        /** copy.md 8.1: a bound without a rate */
-        needRate: "הזינו קודם את השיעור של השורה.",
         orders: (min: number, max: number) => `הזינו בין ${min} ל־${max} פעולות בחודש.`,
       },
     },
-    links: { funds: (exposure: string) => `כל הקרנות על ${exposure}`, guide: "לעמוד המדריך" },
+    links: { guide: "לעמוד המדריך" },
+    allMissing: "אין עדיין תעריפון שנאסף למוצר הזה.",
     loading: "טוען…",
     failed: "האתר לא הצליח לטעון את נתוני הספקים. נסו לרענן.",
-    /** copy.md 8.1: the cases the page cannot run, each with the word it needs */
-    cannotRun: {
-      fundType: "אין עדיין השוואת ספקים לקרן מהסוג הזה.",
-      needRate: (ccy: string) => `אין שער ל־${ccy} בשערי הייחוס של הבנק המרכזי האירופי, ולכן אי אפשר להשוות ספקים לקרן הזו.`,
-      needYield: "הקרן מחלקת: הזינו את תשואת החלוקה בעמוד הקרנות כדי להשוות ספקים.",
-      engine: "החישוב נעצר על נתון בתעריפון:",
-      noWrapper: "אין השוואת ספקים למוצר הזה.",
-      noP05: "אין קרן מייצגת למוצר הזה.",
-    },
-    pendingLine: (id: string) => `התוצאה חלקית: העמלה ${id} עוד לא מחושבת.`,
-    incompleteRules: "הנוסחה לעמלות על חלוקת רווחים עוד לא נכתבה, ולכן הדירוג חלקי.",
   },
 
   // ---- 8.2 fund-variant page
@@ -2399,7 +2256,7 @@ export const r4workbench = {
       other: "אין חישוב לקרן הזו:",
     },
     secondaryTag: "מקור משני",
-    rowLinks: { providers: "השוואת ספקים לקרן הזו", check: "מה לבדוק" },
+    rowLinks: { providers: "השוואת הבנקים ובתי ההשקעות", check: "מה לבדוק" },
     detail: { heading: "פירוט החישוב", /* copy.md 8.2 */ nominalNote: "הסכומים ששולמו לאורך הדרך, בשקלים של אז; השורה האחרונה בכסף של היום.", fund: "עלויות הקרן", spread: "מרווח הקנייה והמכירה", provider: "עמלות הספק", taxDuring: "מס במהלך התקופה", taxExit: "מס ביציאה", result: "נשאר לכם", rules: "החוקים והכללים שהחישוב נשען עליהם" },
     groupLine: { before: "קרנות זרות הנסחרות בחו״ל: ", after: " מוחזקות אחת־אחת והושוו; לרשימה המלאה אין מקור (ETF OQ4)" },
     coverage: {
@@ -2649,7 +2506,7 @@ export const r5 = {
     closure: "נסגר ב־{date}: {rule}",
     none: "עוד לא נרשמו סגירות.",
     closureNoDate: "נסגר: {rule} (התאריך לא נרשם)",
-    path: "כשייסגר: יופיע במדריך, בהשוואה למטרה, ב״חברות ומסלולים״ ובעמודי ״איזה בנק או בית השקעות״ ו״איזו קרן לקנות״, ויימנה בשורת הכיסוי של כל השוואה.",
+    path: "כשייסגר: יופיע במדריך, בהשוואה למטרה, ב״חברות ומסלולים״ ובעמודים ״השקעה במדד״ ו״איזו קרן לקנות״, ויימנה בשורת הכיסוי של כל השוואה.",
     nearest: "הקרוב ביותר לכיסוי מלא",
     graduatedHeading: "עברו לכיסוי מלא",
     graduatedItem: "{name}, מ־{date}",

@@ -139,9 +139,11 @@ export function FundVariantRow({ row, onDetail, onField }: { row: FundVariantRow
       )}
       {row.kind === "not-evaluated" && (row.reason?.code === "no-record" || row.reason?.code === "field-missing") && <CopyForFounder text={`${row.name} ${row.number}`} />}
       <div className="flex flex-wrap gap-x-5">
-        <Link to={row.providersHref} className={quiet}>
-          {t.rowLinks.providers}
-        </Link>
+        {row.indexHref && (
+          <Link to={row.indexHref} className={quiet}>
+            {t.rowLinks.providers}
+          </Link>
+        )}
         <Link to={row.checkHref} className={quiet}>
           {t.rowLinks.check}
         </Link>

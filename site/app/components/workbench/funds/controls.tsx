@@ -113,9 +113,11 @@ export function VariantFields({
         </div>
         <span className="text-xs text-muted-foreground">
           {view.provider.fellBack ? c.funds.providerNote.missing(view.provider.name) : view.provider.fromP05 ? c.funds.providerNote.p05(view.provider.name) : c.funds.providerNote.chosen(view.provider.name)}{" "}
-          <Link to={`/workbench/providers/brokerage-account`} className="text-link hover:underline">
-            {c.links.providersCompare}
-          </Link>
+          {view.indexHref && (
+            <Link to={view.indexHref} className="text-link hover:underline">
+              {c.links.providersCompare}
+            </Link>
+          )}
         </span>
       </div>
       <ParameterLine />

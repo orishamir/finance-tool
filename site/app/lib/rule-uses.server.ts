@@ -5,11 +5,10 @@
 import { existsSync, readdirSync, statSync } from "node:fs";
 import { join, relative, sep } from "node:path";
 import type { RuleRecord } from "@finance-tool/schema";
-import { guideIndex, idle, limitedBondFund, r2, r3fees, r3holdings, r3transfer, r3workbench, r4workbench, companies as companiesCopy } from "../copy";
+import { guideIndex, idle, invest, limitedBondFund, r2, r3fees, r3holdings, r3transfer, r3workbench, r4workbench, companies as companiesCopy } from "../copy";
 import { exposureHref, loadExposures } from "./instruments.server";
 import { loadRules, loadProducts, pointedRecords, root } from "./data.server";
 import { fileProducts, commonRulesFile, shelfOf, tier2RuleFiles, type ShelfId } from "./rule-shelves";
-import { providerWrapperIds } from "./providers.server";
 import { workbenchWrapperIds } from "./workbench.server";
 import { shown } from "./review";
 import { readTextCached } from "./read-cache.server";
@@ -67,7 +66,6 @@ const trimColon = (s: string) => s.replace(/[:\s]+$/, "");
 /** Pages that take a wrapper or exposure in the address: one stable example address, the label without the subject. */
 function pageTable(): Record<string, RuleUsePage> {
   const wb = workbenchWrapperIds()[0];
-  const pw = providerWrapperIds()[0];
   const fx = loadExposures()[0]?.id;
   const t: Record<string, RuleUsePage> = {
     idle: { href: "/idle-cash", label: idle.title },
@@ -78,8 +76,9 @@ function pageTable(): Record<string, RuleUsePage> {
     transfer: { href: "/transfer", label: r3transfer.title },
     companies: { href: "/companies", label: companiesCopy.title },
     guide: { href: "/guide", label: guideIndex.title },
+    // the securities run the house-ranking page made is the index page's now (issue 172)
+    indices: { href: "/indices", label: invest.nav },
   };
-  if (pw) t.providers = { href: `/workbench/providers/${pw}`, label: trimColon(r4workbench.providers.title.before) };
   if (wb) {
     const name = loadProducts().find((w) => w.id === wb)?.names.he[0] ?? "";
     t.tracks = { href: `/workbench/tracks/${wb}`, label: `${r3workbench.title.before}${name}${r3workbench.title.after}` };
@@ -98,10 +97,10 @@ const routeKey: Record<string, string> = {
   "goal-compare": "compare",
   "compare-bundle": "compare",
   goal: "goal",
-  "workbench-providers": "providers",
+  invest: "indices",
   "workbench-tracks": "tracks",
   "workbench-funds": "funds",
-  "workbench-bundle": "providers",
+  "workbench-bundle": "indices",
   transfer: "transfer",
   companies: "companies",
   company: "companies",
@@ -113,7 +112,8 @@ const componentKey: Record<string, string> = {
   compare: "compare",
   fees: "fees",
   holdings: "holdings",
-  workbench: "providers",
+  workbench: "tracks",
+  invest: "indices",
   "exposure-mode": "compare",
   revisit: "compare",
   transfer: "transfer",
@@ -130,8 +130,9 @@ const libPrefixes: [string, string][] = [
   ["holdings", "holdings"],
   ["idle", "idle"],
   ["fees", "fees"],
-  ["workbench", "providers"],
-  ["providers", "providers"],
+  ["workbench", "tracks"],
+  ["providers", "indices"],
+  ["invest", "indices"],
   ["variants", "funds"],
 ];
 

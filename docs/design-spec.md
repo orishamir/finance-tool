@@ -1491,6 +1491,8 @@ Every `ValueObject` carries its state, so styling follows `state` as in 1.3: tar
 
 ## 17. Screen 13: provider workbench page
 
+*(2026-11-03, D52: removed for the securities account; the indices page ranks the houses. Only the provident wrappers' company listing remains at this address, and only its strings stay in `copy.ts`.)*
+
 ### Overview
 
 Every bank and broker that offers the wrapper, ranked by what its tariff would cost the person over the horizon for one fund and their own behaviour, at the list price, a published average, or their own offer; the deciding fee type, ties, minimums and protection; the providers the site could not compare, with the reason (flows 28, 29, 33). Route `/workbench/providers/{wrapper}?fund=…&orders=…&channel=…&level=…&vs=…`. Data: every `data/fees/` snapshot of class bank or broker (fifteen today: eleven with lines, four `missing`), the fund record (instrument class, currency, distribution policy), P-05's instrument when no fund is given, the saved goal or P-05's amounts, A-28, P-01, the protection and notice rules from the bundle (BRK-06 to BRK-13, BRK-16, BRK-21, BRK-24, REG-16), the saved offers (16.5), and the engine's F-63 output. Not pre-rendered.

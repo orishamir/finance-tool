@@ -166,9 +166,14 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
   // a fund priced nowhere (a distributing fund whose yield is not known, or a US fund, TXF-37) keeps its row with the reason, and is not a pair to show; nor is
   // a pair the account no longer prices (a broker the person typed and changed, D44)
   const validPick = (p: Pick) => !!view && allFunds(view).some((f) => f.rec.id === p.fund && Object.values(f.byHouse).some((x) => "valueN" in x) && "valueN" in (f.byHouse[p.house] ?? {})) && view.providers.some((x) => x.id === p.house);
-  const pick: Pick | null = view && index && picked && picked.index === index.id && validPick(picked.pick) ? picked.pick : view ? pickOfHeadline(view) : null;
+  // a house's page opens this one with that house picked (`?house=`, issue 172): its cheapest way on the index, until the person picks
+  const houseParam = new URLSearchParams(search).get("house");
+  const houseBest = view && houseParam ? view.houses.find((h) => h.provider.id === houseParam)?.best : null;
+  const fromAddress: Pick | null = houseParam && houseBest && validPick({ house: houseParam, fund: houseBest.fund.rec.id }) ? { house: houseParam, fund: houseBest.fund.rec.id } : null;
+  const own: Pick | null = view && index && picked && picked.index === index.id && validPick(picked.pick) ? picked.pick : fromAddress;
+  const pick: Pick | null = own ?? (view ? pickOfHeadline(view) : null);
   // the stairs start from the person's own pick; with none they open on the middle account and the middle exchange-traded fund
-  const picks = !!(view && index && picked && picked.index === index.id && validPick(picked.pick));
+  const picks = own !== null;
   const onPick = (p: Pick) => index && setPicked({ index: index.id, pick: p });
   // an index with no fund records (a custom one): the houses and their broker costs, and the request for funds
   const [genericHouse, setGenericHouse] = useState<string | null>(null);

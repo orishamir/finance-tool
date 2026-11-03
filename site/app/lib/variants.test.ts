@@ -5,7 +5,7 @@ import { buildWorkbenchBundle } from "./providers.server";
 import type { FundAssumptions, WorkbenchInputs } from "./providers";
 import { entered } from "./value";
 import { loadFx } from "./fx.server";
-import { buildProviderWorkbench } from "./providers";
+import { indexById, pairValue } from "./invest";
 
 const bundle = buildWorkbenchBundle();
 const t = bundle.today;
@@ -37,16 +37,14 @@ describe("fund-variant view", () => {
     expect(r.view.rows.find((x) => x.trading?.abroad && x.reason?.code === "no-rate")).toBeUndefined();
   });
 
-  it("prices each fund with its own instrument class, so the funds page agrees with the brokers page for the same fund and provider", () => {
+  it("prices each fund with its own instrument class, so the funds page agrees with the index page for the same fund and provider", () => {
     const withFx = { ...bundle, fx: loadFx()! };
     const v = buildFundVariants({ bundle: withFx, exposureId: "index-sp500", query: { provider: "psagot", orders: null }, inputs: inputs(), assumptions: {} });
     if (v.kind !== "ok") throw new Error("not ok");
     for (const fund of ["5139282", "1144385"]) {
       const row = v.view.rows.find((r) => r.recordId === fund)!;
-      const w = buildProviderWorkbench({ bundle: withFx, wrapperId: "brokerage-account", query: { fund, orders: null, channel: null, level: "list", vs: null }, inputs: inputs(), offers: {}, assumptions: {} });
-      if (w.kind !== "ok") throw new Error("not ok");
-      const psagot = w.view.rows.find((r) => r.id === "psagot")!;
-      expect(row.value!.value as number).toBeCloseTo(psagot.real!, 4);
+      const atPsagot = pairValue({ bundle: withFx, index: indexById(withFx, "index-sp500")!, plan: inputs(), fundId: fund, providerId: "psagot", fxChange: 0 });
+      expect(row.value!.value as number).toBeCloseTo(atPsagot!, 4);
     }
     // the tracking fund and the ETF sit on different Psagot lines (a mutual-fund line and the exchange-traded one)
     const tracking = v.view.rows.find((r) => r.recordId === "5139282")!;

@@ -294,7 +294,7 @@ Approval of this document fixes the release contents and order. It did not start
 
 *Written 2026-10-26.* Built and linked from the site, but not final: the founder has not settled their design and UX, and they may change. Unlike the held items above they stay reachable from the company pages, the guides and search.
 
-- **The workbench pages (`/workbench/*`):** the tracks of a product across every company (`/workbench/tracks/<wrapper>`, F-64), the banks and investment houses for a fund (`/workbench/providers/<wrapper>`, F-63) and the fund variants of an exposure (`/workbench/funds/<exposure>`, F-65). They still carry the saved-goal strip and a fit mark on each track, which D34 moves off the company and track pages to the goals page. **Before they are final:** the founder walks through them and says what each should answer and in what order; whether their goal UI stays or moves with D34 is decided then.
+- **The workbench pages (`/workbench/*`):** the tracks of a product across every company (`/workbench/tracks/<wrapper>`, F-64), the banks and investment houses for a fund (`/workbench/providers/<wrapper>`, F-63; removed for the securities account on 2026-11-03, D52: the indices page ranks the houses) and the fund variants of an exposure (`/workbench/funds/<exposure>`, F-65). They still carry the saved-goal strip and a fit mark on each track, which D34 moves off the company and track pages to the goals page. **Before they are final:** the founder walks through them and says what each should answer and in what order; whether their goal UI stays or moves with D34 is decided then.
 
 ## Removed, to build again
 
