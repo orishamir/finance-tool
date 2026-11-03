@@ -243,7 +243,7 @@ function Body({ bundle, fees, form, publisherNames, subject, frame }: { bundle: 
       <>
         <header className="flex flex-col gap-3">
           <h1 className="text-2xl lg:text-3xl font-semibold">{r3fees.title}</h1>
-          <NumberLegend institution={bundle ? anyWeak(bundle.wrappers.flatMap((w) => [w.cashRate, ...Object.values(w.feeValues)])) : false} />
+          <NumberLegend canEnter institution={bundle ? anyWeak(bundle.wrappers.flatMap((w) => [w.cashRate, ...Object.values(w.feeValues)])) : false} />
           {own && holding.holding && (
             <p className="text-lg">
               {r3fees.strip.holding}

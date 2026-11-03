@@ -1,7 +1,7 @@
 // Provenance: the number component and the sheet behind it (design-system 3.2, design-spec 1.3 and 3).
 // Every figure on the site is a Num; a tap opens where it comes from. Rule and term chips open their cards
 // in the same sheet, with a back arrow when they were reached from a number.
-import { createContext, useCallback, useContext, useEffect, useId, useMemo, useRef, useState, type ReactNode } from "react";
+import { createContext, useCallback, useContext, useEffect, useId, useMemo, useRef, useState, useSyncExternalStore, type ReactNode } from "react";
 import { Link } from "react-router";
 import { companyTermRule, type CompanyTermRef, type RuleRecord } from "@finance-tool/schema";
 import { buttons, computedInputs, flags as flagCopy, formulaNames, numbers, provenance as copy, rule as ruleCopy, ruleCardMore, scopeWords, sourceBlock as sourceCopy, strength as strengthCopy, updateRules } from "../copy";
@@ -17,7 +17,7 @@ import type { TermRow } from "../lib/data.server";
 import { IconAlert, IconCalculator, IconCheck, IconClock, IconCopy, IconDrillIn, IconExternal, IconFile, IconLock, IconPencil, IconReset } from "./icons";
 import { Sheet } from "./Sheet";
 import { Button, Callout, cx, Disclosure, LinkButton, Tag } from "./ui";
-import { CompanyLinks, Tpl, countsByItself, useCounting, useGlidingNumbers } from "./kit";
+import { CompanyLinks, LongestCase, Tpl, countsByItself, useCounting, useGlidingNumbers, useUnseen } from "./kit";
 import { chipName, companyLinksOf, generalOnly, isGeneral, isNotRule, isOwnSourceOf, joinNames, listedCompanies, noCompanyAnchor, ownDocCompanies, scopeCompanies, pageView, shownCompanies, sourceCompany, sourcesForPage, type CompanyLink, type OwnDocs } from "../lib/scope";
 
 // ---------------------------------------------------------------- context
@@ -99,8 +99,10 @@ export function ProvenanceProvider({ data, children }: { data: ProvenanceData; c
   const push = useCallback((item: Item) => setStack((s) => [...s, item]), []);
   const headId = useId();
   const descId = useId();
+  const [entered] = useState(enteredStore);
   return (
     <Ctx.Provider value={api}>
+      <EnteredCtx.Provider value={entered}>
       <DataCtx.Provider value={data}>
       <TodayCtx.Provider value={data.today}>
       {children}
@@ -113,6 +115,7 @@ export function ProvenanceProvider({ data, children }: { data: ProvenanceData; c
       </PushCtx.Provider>
       </TodayCtx.Provider>
       </DataCtx.Provider>
+      </EnteredCtx.Provider>
     </Ctx.Provider>
   );
 }
@@ -138,6 +141,30 @@ const InsideSheetCtx = createContext(false);
 
 /** A notice above already says the figures are old (founder, 2026-11-03: "the whole table is full of warnings"). */
 const StaleSaidCtx = createContext(false);
+
+/** How many figures the person entered the page shows now: the legend's "you entered" sample stands only beside one (founder,
+ *  2026-11-03). A store, not state, so a figure that comes or goes redraws the legend alone. */
+function enteredStore() {
+  let n = 0;
+  const subs = new Set<() => void>();
+  const ping = () => subs.forEach((f) => f());
+  return {
+    add: () => {
+      n++;
+      ping();
+      return () => {
+        n--;
+        ping();
+      };
+    },
+    subscribe: (f: () => void) => {
+      subs.add(f);
+      return () => subs.delete(f);
+    },
+    get: () => n,
+  };
+}
+const EnteredCtx = createContext<ReturnType<typeof enteredStore> | null>(null);
 
 /**
  * The figures inside leave out their own clock: a notice above them already says their source is old (the regulator's period on the
@@ -189,6 +216,10 @@ export function Num({ value, size = "inline", display, animate, className, prefi
   const staleSaid = useContext(StaleSaidCtx);
   const param = isParameter(value);
   const counting = useCounting();
+  const entered = useContext(EnteredCtx);
+  const unseen = useUnseen();
+  const isEntered = value.state === "entered" && !unseen;
+  useEffect(() => (isEntered && entered ? entered.add() : undefined), [isEntered, entered]);
   const shown = useAnimatedValue(typeof value.value === "number" ? value.value : null, animate ?? (counting && countsByItself(value.state, value.unit)));
   // display rounding (A13): a table cell keeps two decimals, everything else rounds computed and entered amounts
   const keepDecimals = size === "cell" || !!exact;
@@ -524,7 +555,20 @@ export function Term({ id, children, prefix }: { id: string; children?: ReactNod
  * carries when it rests on a company's document used out of its own context (D31); a page passes `institution` only when it has such a figure. `term`
  * adds the glossary-term sample (dashed teal underline, `.term`) for pages whose text has `Term`s (the guide, exposure pages; wp6, A78).
  */
-export function NumberLegend({ className, institution = false, term = false }: { className?: string; institution?: boolean; term?: boolean }) {
+const noSubscribe = () => () => {};
+const zero = () => 0;
+
+/** The key to the number states. "You entered" stands only while the page shows a figure the person entered (founder, 2026-11-03: not
+ *  on a page where nothing was entered); a page with fields (`canEnter`) keeps its room, so nothing below moves when the first one comes. */
+export function NumberLegend({ className, institution = false, term = false, canEnter = false }: { className?: string; institution?: boolean; term?: boolean; canEnter?: boolean }) {
+  const store = useContext(EnteredCtx);
+  const seen = useSyncExternalStore(store?.subscribe ?? noSubscribe, store?.get ?? zero, zero) > 0;
+  const legend = (withEntered: boolean) => <LegendLine className={className} institution={institution} term={term} entered={withEntered} />;
+  if (!canEnter) return legend(false);
+  return <LongestCase cases={[legend(true)]}>{legend(seen)}</LongestCase>;
+}
+
+function LegendLine({ className, institution, term, entered }: { className?: string; institution: boolean; term: boolean; entered: boolean }) {
   return (
     <p className={cx("flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground", className)} data-sample>
       <span>
@@ -533,9 +577,11 @@ export function NumberLegend({ className, institution = false, term = false }: {
       <span>
         <span className="num num-computed num-sample" aria-hidden="true">123</span> {numbers.legend.computed}
       </span>
-      <span>
-        <span className="num num-entered num-sample" aria-hidden="true">123</span> {numbers.legend.entered}
-      </span>
+      {entered && (
+        <span>
+          <span className="num num-entered num-sample" aria-hidden="true">123</span> {numbers.legend.entered}
+        </span>
+      )}
       {institution && (
         <span>
           <IconAlert size={14} className="text-caution inline-block align-[-2px] me-1" aria-hidden="true" />
