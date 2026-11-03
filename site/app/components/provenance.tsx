@@ -99,10 +99,10 @@ export function ProvenanceProvider({ data, children }: { data: ProvenanceData; c
   const push = useCallback((item: Item) => setStack((s) => [...s, item]), []);
   const headId = useId();
   const descId = useId();
-  const [entered] = useState(enteredStore);
+  const [states] = useState(statesStore);
   return (
     <Ctx.Provider value={api}>
-      <EnteredCtx.Provider value={entered}>
+      <StatesCtx.Provider value={states}>
       <DataCtx.Provider value={data}>
       <TodayCtx.Provider value={data.today}>
       {children}
@@ -115,7 +115,7 @@ export function ProvenanceProvider({ data, children }: { data: ProvenanceData; c
       </PushCtx.Provider>
       </TodayCtx.Provider>
       </DataCtx.Provider>
-      </EnteredCtx.Provider>
+      </StatesCtx.Provider>
     </Ctx.Provider>
   );
 }
@@ -144,16 +144,18 @@ const StaleSaidCtx = createContext(false);
 
 /** How many figures the person entered the page shows now: the legend's "you entered" sample stands only beside one (founder,
  *  2026-11-03). A store, not state, so a figure that comes or goes redraws the legend alone. */
-function enteredStore() {
-  let n = 0;
+/** How many figures of each state the page shows (a `Num` counts itself while it is on the page), so the legend names only the states the
+ *  page has (founder, 2026-11-03). */
+function statesStore() {
+  const n: Record<string, number> = {};
   const subs = new Set<() => void>();
   const ping = () => subs.forEach((f) => f());
   return {
-    add: () => {
-      n++;
+    add: (state: string) => {
+      n[state] = (n[state] ?? 0) + 1;
       ping();
       return () => {
-        n--;
+        n[state]! -= 1;
         ping();
       };
     },
@@ -161,10 +163,10 @@ function enteredStore() {
       subs.add(f);
       return () => subs.delete(f);
     },
-    get: () => n,
+    has: (state: string) => (n[state] ?? 0) > 0,
   };
 }
-const EnteredCtx = createContext<ReturnType<typeof enteredStore> | null>(null);
+const StatesCtx = createContext<ReturnType<typeof statesStore> | null>(null);
 
 /**
  * The figures inside leave out their own clock: a notice above them already says their source is old (the regulator's period on the
@@ -216,10 +218,10 @@ export function Num({ value, size = "inline", display, animate, className, prefi
   const staleSaid = useContext(StaleSaidCtx);
   const param = isParameter(value);
   const counting = useCounting();
-  const entered = useContext(EnteredCtx);
+  const states = useContext(StatesCtx);
   const unseen = useUnseen();
-  const isEntered = value.state === "entered" && !unseen;
-  useEffect(() => (isEntered && entered ? entered.add() : undefined), [isEntered, entered]);
+  // a copy that only holds a block's size (LongestCase) is not on the page
+  useEffect(() => (!unseen && states ? states.add(value.state) : undefined), [value.state, unseen, states]);
   const shown = useAnimatedValue(typeof value.value === "number" ? value.value : null, animate ?? (counting && countsByItself(value.state, value.unit)));
   // display rounding (A13): a table cell keeps two decimals, everything else rounds computed and entered amounts
   const keepDecimals = size === "cell" || !!exact;
@@ -575,27 +577,37 @@ export function Term({ id, children, prefix, name, lead }: { /** Several ids ope
  * adds the glossary-term sample (dashed teal underline, `.term`) for pages whose text has `Term`s (the guide, exposure pages; wp6, A78).
  */
 const noSubscribe = () => () => {};
-const zero = () => 0;
+const yes = () => true;
+const no = () => false;
 
-/** The key to the number states. "You entered" stands only while the page shows a figure the person entered (founder, 2026-11-03: not
- *  on a page where nothing was entered); a page with fields (`canEnter`) keeps its room, so nothing below moves when the first one comes. */
+/** The key to the number states: each sample stands only while the page shows a figure of its state (founder, 2026-11-03: "you entered"
+ *  on a page where nothing was entered, "computed" on a page with no computed figure). The room of every sample is kept, so nothing below
+ *  moves when one comes or goes; "you entered" has room only on a page with fields (`canEnter`), and "press a number" stands only beside a
+ *  number sample (a calculator before anything is typed has no figure to press). Before the page is in the browser the
+ *  figures are not counted yet, and the legend shows the sourced and computed samples as it always did. */
 export function NumberLegend({ className, institution = false, term = false, canEnter = false }: { className?: string; institution?: boolean; term?: boolean; canEnter?: boolean }) {
-  const store = useContext(EnteredCtx);
-  const seen = useSyncExternalStore(store?.subscribe ?? noSubscribe, store?.get ?? zero, zero) > 0;
-  const legend = (withEntered: boolean) => <LegendLine className={className} institution={institution} term={term} entered={withEntered} />;
-  if (!canEnter) return legend(false);
-  return <LongestCase cases={[legend(true)]}>{legend(seen)}</LongestCase>;
+  const store = useContext(StatesCtx);
+  const subscribe = store?.subscribe ?? noSubscribe;
+  const sourced = useSyncExternalStore(subscribe, () => store?.has("sourced") ?? true, yes);
+  const computed = useSyncExternalStore(subscribe, () => store?.has("computed") ?? true, yes);
+  const entered = useSyncExternalStore(subscribe, () => store?.has("entered") ?? false, no);
+  const legend = (shown: { sourced: boolean; computed: boolean; entered: boolean }) => <LegendLine className={className} institution={institution} term={term} {...shown} />;
+  return <LongestCase cases={[legend({ sourced: true, computed: true, entered: canEnter })]}>{legend({ sourced, computed, entered: canEnter && entered })}</LongestCase>;
 }
 
-function LegendLine({ className, institution, term, entered }: { className?: string; institution: boolean; term: boolean; entered: boolean }) {
+function LegendLine({ className, institution, term, sourced, computed, entered }: { className?: string; institution: boolean; term: boolean; sourced: boolean; computed: boolean; entered: boolean }) {
   return (
     <p className={cx("flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground", className)} data-sample>
-      <span className="whitespace-nowrap">
-        <span className="num num-sourced num-sample" aria-hidden="true">123</span> {numbers.legend.sourced}
-      </span>
-      <span className="whitespace-nowrap">
-        <span className="num num-computed num-sample" aria-hidden="true">123</span> {numbers.legend.computed}
-      </span>
+      {sourced && (
+        <span className="whitespace-nowrap">
+          <span className="num num-sourced num-sample" aria-hidden="true">123</span> {numbers.legend.sourced}
+        </span>
+      )}
+      {computed && (
+        <span className="whitespace-nowrap">
+          <span className="num num-computed num-sample" aria-hidden="true">123</span> {numbers.legend.computed}
+        </span>
+      )}
       {entered && (
         <span className="whitespace-nowrap">
           <span className="num num-entered num-sample" aria-hidden="true">123</span> {numbers.legend.entered}
@@ -611,8 +623,12 @@ function LegendLine({ className, institution, term, entered }: { className?: str
           <span className="term" aria-hidden="true">{numbers.legend.term}</span> {numbers.legend.termMeaning}
         </span>
       )}
-      <span className="lg:hidden">{numbers.legendHintPhone}</span>
-      <span className="hidden lg:inline">{numbers.legendHintPc}</span>
+      {(sourced || computed || entered || institution) && (
+        <>
+          <span className="lg:hidden">{numbers.legendHintPhone}</span>
+          <span className="hidden lg:inline">{numbers.legendHintPc}</span>
+        </>
+      )}
     </p>
   );
 }
