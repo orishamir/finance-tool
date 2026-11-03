@@ -11,11 +11,10 @@ import { isChild, liquidityOf, type HoldingView, type HoldingsCtx, type Liquidit
 import { IconAlert, IconClock, IconLock } from "../icons";
 import { IconDash, IconHelp, IconOk } from "../compare/icons";
 import { LeadTail, Num, RuleRef, RulesChip } from "../provenance";
-import { Button, Card, cx, Disclosure, KeyValue, Sentence, Tag } from "../kit";
+import { Button, Card, cx, Disclosure, FeeNum, KeyValue, Sentence, Tag } from "../kit";
 import { ImportedTag } from "../transfer/imported-tag";
 import { IconDown, IconUp } from "../compare/icons";
 import { OpenQuestion, YearsNum, sourcedText } from "./shared";
-import { FeeNum } from "../decoder/fees";
 
 const about = (v: SiteValue, text: string): SiteValue => ({ ...v, about: text });
 

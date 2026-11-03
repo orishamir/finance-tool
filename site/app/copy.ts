@@ -1510,9 +1510,11 @@ export const trackBrowser = {
   },
   /** The count line: "143 מסלולים של 12 חברות (מתוך 143)", then the guide link. */
   count: {
+    tracksNone: "אין מסלולים",
     tracksOne: "מסלול אחד",
     tracksTwo: "שני מסלולים",
     tracksMany: "מסלולים",
+    companiesNone: "אין חברות",
     companiesOne: "חברה אחת",
     companiesTwo: "שתי חברות",
     companiesMany: "חברות",
@@ -1547,6 +1549,7 @@ export const trackBrowser = {
     company: "החברה",
     fund: "קופה",
     fee: "דמי ניהול, ממוצע {year}",
+    feeNoYear: "דמי ניהול, ממוצע",
     feeSavings: "מהחיסכון",
     feeDeposits: "מההפקדות",
     exposure: "חשיפה למניות ולמט״ח, סוף {period}",

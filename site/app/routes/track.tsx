@@ -2,15 +2,14 @@
 import { Link, useLoaderData } from "react-router";
 import type { Route } from "./+types/track";
 import { catalogue, companies as companiesCopy, company as companyCopy, r3workbench, site, track as copy } from "../copy";
-import { FeeNum, feeLabel } from "../components/decoder/fees";
+import { feeLabel } from "../components/decoder/fees";
 import { DimensionChecklist, type ChecklistRowView } from "../components/guide/sections";
 import { IconDrillIn } from "../components/icons";
 import { Num, NumAfter } from "../components/provenance";
 import { Breadcrumb, PageShell } from "../components/shell";
-import { Callout, Card, Sentence, Tag } from "../components/kit";
+import { Callout, Card, FeeNum, Sentence, ShareNum, Tag } from "../components/kit";
 import { cmaFeeValue, feeYear, type SiteValue } from "../lib/value";
 import { compactHoldings, exposureShares, holdingsTemplate, type ExposureShares, type Holdings } from "../lib/track-exposure";
-import { ShareNum } from "../components/decoder/tracks";
 import { trackLabels } from "../lib/track-labels";
 import { fmt } from "../lib/format";
 
@@ -142,7 +141,7 @@ export default function TrackPage() {
                   </Link>
                 )}
                 {data.wrapper && (
-                  <Link to={`/workbench/tracks/${data.wrapper.id}`} className="inline-flex items-center gap-0.5 text-sm text-link hover:underline">
+                  <Link to={`/tracks/${data.wrapper.id}`} className="inline-flex items-center gap-0.5 text-sm text-link hover:underline">
                     {r3workbench.links.group.before}
                     {data.wrapper.name}
                     {r3workbench.links.group.after}

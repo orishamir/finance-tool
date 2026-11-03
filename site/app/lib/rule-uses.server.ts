@@ -5,11 +5,10 @@
 import { existsSync, readdirSync, statSync } from "node:fs";
 import { join, relative, sep } from "node:path";
 import type { RuleRecord } from "@finance-tool/schema";
-import { guideIndex, idle, invest, limitedBondFund, r2, r3fees, r3holdings, r3transfer, r3workbench, companies as companiesCopy } from "../copy";
+import { guideIndex, idle, invest, limitedBondFund, r2, r3fees, r3holdings, r3transfer, trackBrowser, companies as companiesCopy } from "../copy";
 import { exposureHref, loadExposures } from "./instruments.server";
 import { loadRules, loadProducts, pointedRecords, root } from "./data.server";
 import { fileProducts, commonRulesFile, shelfOf, tier2RuleFiles, type ShelfId } from "./rule-shelves";
-import { workbenchWrapperIds } from "./workbench.server";
 import { shown } from "./review";
 import { readTextCached } from "./read-cache.server";
 
@@ -61,9 +60,8 @@ function idsIn(text: string, re: RegExp, known: Set<string>): Set<string> {
   return found;
 }
 
-/** Pages that take a wrapper or exposure in the address: one stable example address, the label without the subject. */
+/** The pages a rule can be used on: the address and the label of each. */
 function pageTable(): Record<string, RuleUsePage> {
-  const wb = workbenchWrapperIds()[0];
   const t: Record<string, RuleUsePage> = {
     idle: { href: "/idle-cash", label: idle.title },
     fees: { href: "/fees", label: r3fees.title },
@@ -75,11 +73,8 @@ function pageTable(): Record<string, RuleUsePage> {
     guide: { href: "/guide", label: guideIndex.title },
     // the securities run the house-ranking page made is the index page's now (issue 172)
     indices: { href: "/indices", label: invest.nav },
+    tracks: { href: "/tracks", label: trackBrowser.title },
   };
-  if (wb) {
-    const name = loadProducts().find((w) => w.id === wb)?.names.he[0] ?? "";
-    t.tracks = { href: `/workbench/tracks/${wb}`, label: `${r3workbench.title.before}${name}${r3workbench.title.after}` };
-  }
   return t;
 }
 
@@ -94,7 +89,7 @@ const routeKey: Record<string, string> = {
   "compare-bundle": "compare",
   goal: "goal",
   invest: "indices",
-  "workbench-tracks": "tracks",
+  tracks: "tracks",
   "workbench-bundle": "indices",
   transfer: "transfer",
   companies: "companies",
@@ -107,7 +102,7 @@ const componentKey: Record<string, string> = {
   compare: "compare",
   fees: "fees",
   holdings: "holdings",
-  workbench: "tracks",
+  tracks: "tracks",
   invest: "indices",
   "exposure-mode": "compare",
   revisit: "compare",
@@ -125,7 +120,10 @@ const libPrefixes: [string, string][] = [
   ["holdings", "holdings"],
   ["idle", "idle"],
   ["fees", "fees"],
-  ["workbench", "tracks"],
+  ["track-browser", "tracks"],
+  ["track-names", "tracks"],
+  ["track-labels", "tracks"],
+  ["track-exposure", "tracks"],
   ["providers", "indices"],
   ["invest", "indices"],
 ];

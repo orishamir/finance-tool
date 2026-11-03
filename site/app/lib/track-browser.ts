@@ -8,6 +8,7 @@ import { trackBrowser as t } from "../copy";
 import { exposureShares, type CompactHoldings, type ExposureShares, type HoldingsTemplate } from "./track-exposure";
 import { trackLabels, youngerThanYears } from "./track-labels";
 import { kindLabel, kindWordSet, nameAddsToKind, nameSaysKind, normName, shortTrackNames } from "./track-names";
+import { fmt } from "./format";
 import { computed, expandFee, type CompactFee, type SiteValue } from "./value";
 
 // ---------------------------------------------------------------- what the loader ships
@@ -74,6 +75,9 @@ export interface TbTrack {
   /** The regulator's kind (SPECIALIZATION). */
   kind: string;
   isNew: boolean;
+  /** The inception date and the report period: what the labels beside the name read (lib/track-labels.ts). */
+  inception: string | null;
+  reportPeriod: string;
   fee: SiteValue;
   deposit: SiteValue;
   exposure: ExposureShares | null;
@@ -137,6 +141,8 @@ export function buildProductView(data: TbData, productId: string): ProductView |
       sub: kindLabel(r.sub),
       kind: r.sp.trim(),
       isNew: trackLabels({ inception: r.inc, reportPeriod: p.period }).includes("new"),
+      inception: r.inc,
+      reportPeriod: p.period,
       fee: expandFee(r.b, tpl.balance),
       deposit: expandFee(r.d, tpl.deposit),
       exposure,
@@ -300,3 +306,26 @@ export function missingYield(x: TbTrack, years: 3 | 5): string {
 
 /** The number of companies among the shown tracks. */
 export const companiesIn = (list: readonly TbTrack[]): number => new Set(list.map((x) => x.company)).size;
+
+// ---------------------------------------------------------------- the words of the page
+
+/** "מסלול אחד", "שני מסלולים", "16 מסלולים": one and two are words, not "1 מסלולים" (copy.md 7.3). */
+export function tracksPhrase(k: number): string {
+  return k === 0 ? t.count.tracksNone : k === 1 ? t.count.tracksOne : k === 2 ? t.count.tracksTwo : `${fmt.number(k)} ${t.count.tracksMany}`;
+}
+
+export function companiesPhrase(k: number): string {
+  return k === 0 ? t.count.companiesNone : k === 1 ? t.count.companiesOne : k === 2 ? t.count.companiesTwo : `${fmt.number(k)} ${t.count.companiesMany}`;
+}
+
+/** An amount in NIS millions as the page writes it: "19.1 מיליארד ₪" from a thousand million up, else "850 מיליון ₪". */
+export function assetsText(millions: number): string {
+  return millions >= 1000 ? `${fmt.number(Math.round(millions / 100) / 10)} ${t.assets.billion}` : `${fmt.number(Math.round(millions))} ${t.assets.million}`;
+}
+
+/** The sort in words, for the line above the list: "דמי הניהול מהחיסכון, מהזול ליקר". The name column is the track's name under a company and the company's under a kind. */
+export function sortWords(s: SortState, by: GroupBy): string {
+  const w = t.sorts[s.id];
+  const what = s.id === "name" ? (by === "company" ? t.sorts.name.what : t.sorts.name.whatKind) : w.what;
+  return `${what}, ${ascending(s) ? w.up : w.down}`;
+}

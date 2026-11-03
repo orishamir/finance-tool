@@ -22,6 +22,9 @@ export default [
   route("goal", "routes/goal.tsx"),
   route("goal/compare", "routes/goal-compare.tsx"),
   route("compare-bundle.json", "routes/compare-bundle.ts"),
+  // one route for /tracks and every /tracks/<product>: choosing another product keeps the page and fetches nothing (routes/tracks.tsx)
+  route("tracks/:product?", "routes/tracks.tsx"),
+  // the old address of a product's tracks, sent on to the new one
   route("workbench/tracks/:wrapper", "routes/workbench-tracks.tsx"),
   route("fees", "routes/fees.tsx"),
   route("fees-data.json", "routes/fees-data.ts"),

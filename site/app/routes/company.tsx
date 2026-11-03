@@ -232,7 +232,7 @@ function ManagerCompany({ data }: { data: CompanyData }) {
                     </Link>
                   )}
                   {g.workbenchId && (
-                    <Link to={`/workbench/tracks/${g.workbenchId}`} className="inline-flex items-center gap-0.5 min-h-target text-sm text-link hover:underline self-start px-1">
+                    <Link to={`/tracks/${g.workbenchId}`} className="inline-flex items-center gap-0.5 min-h-target text-sm text-link hover:underline self-start px-1">
                       {r3workbench.links.group.before}
                       {g.wrapper?.name ?? g.classification}
                       {r3workbench.links.group.after}

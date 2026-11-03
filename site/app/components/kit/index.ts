@@ -41,3 +41,6 @@ export { FilterChip } from "./filter-chip";
 export { DidYouKnow, type FactItem } from "./did-you-know";
 export { useSoftSwap } from "./soft-swap";
 export { FeeFigure, FeeWordsNote, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, type ProductColumn, type ProductGroup, type ProductRow } from "./product-table";
+export { PageTabs, type PageTab } from "./page-tabs";
+export { SortHead, type SortState } from "./sort-head";
+export { ExposureCell, FeeKey, FeeNum, ShareNum, TrackFeeLines, TrackLabels } from "./track-cells";

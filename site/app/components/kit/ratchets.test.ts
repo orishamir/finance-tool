@@ -25,7 +25,6 @@ const PILL: Record<string, number> = {
     "components/guide-signature/current-account.tsx": 2,
     "components/guide/sections.tsx": 4,
     "components/timeline/Timeline.tsx": 3,
-    "components/workbench/controls.tsx": 4,
   };
 const CARD: Record<string, number> = {
     "components/compare/fit.tsx": 1,
@@ -44,7 +43,6 @@ const INPUT: Record<string, number> = {
     "components/invest/chips.tsx": 1,
     "components/search.tsx": 2,
     "components/transfer/panel.tsx": 1,
-    "components/workbench/controls.tsx": 1,
     "routes/companies.tsx": 1,
   };
 const SELECT: Record<string, number> = {
@@ -61,7 +59,6 @@ const HEADINGFOLD: Record<string, number> = {
 const OLDUI: Record<string, number> = {
     "components/Sheet.tsx": 1,
     "components/provenance.tsx": 1,
-    "routes/workbench-tracks.tsx": 1,
   };
 
 const patterns: Record<string, { kit: string; count: (s: string) => number; allowed: Record<string, number> }> = {
