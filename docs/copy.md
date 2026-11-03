@@ -1515,6 +1515,8 @@ Added 2026-10-24 for the briefs in `docs/flows.md` section 15 and the handoff in
 
 ### 8.1 Provider workbench page
 
+*(2026-11-03, D52: removed for the securities account; the indices page ranks the houses. Only the provident wrappers' company listing remains at this address, and only its strings stay in `copy.ts`.)*
+
 | Element | Hebrew |
 |---|---|
 | Title | איזה בנק או בית השקעות: `{מוצר}` |
@@ -1628,6 +1630,8 @@ Added 2026-10-24 for the briefs in `docs/flows.md` section 15 and the handoff in
 | `r4workbench.providers.behaviour.ordersHint` | כל הפקדה חודשית מתחלקת ל־`{מספר}` פקודות, ולכל פקודה עמלה משלה. · כל הפקדה חודשית היא פקודה אחת, ולכל פקודה עמלה משלה. · כל הפקדה חודשית מתחלקת לשתי פקודות, ולכל פקודה עמלה משלה. | B14, added 2026-10-24 (QA fixes): the number is a Num inside the sentence for three and more; one and two are words. Was a function that typed the digit |
 
 ### 8.2 Fund-variant page
+
+*(2026-11-03, D53: the funds page is deleted; the indices page lists and prices every fund of an index, and no other holding has a priced fund.)*
 
 | Element | Hebrew |
 |---|---|

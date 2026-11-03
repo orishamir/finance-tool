@@ -5,6 +5,7 @@ import { CircleDashed } from "lucide-react";
 import { useId } from "react";
 import { r4catalogue as copy, guideBlocks } from "../../../copy";
 import { fmt } from "../../../lib/format";
+import { housePath } from "../../../lib/invest";
 import { IconAlert, IconExternal } from "../../icons";
 import { LeadTail, Num, NumAfter, RuleRef, RulesLine } from "../../provenance";
 import { Card, Disclosure, LinkButton, Sentence, Tag } from "../../kit";
@@ -49,7 +50,7 @@ function LineItem({ l }: { l: TariffLineRow }) {
 
 export function BrokerageGroupCard({ id, tariff, kind, className }: { id: string; tariff: TariffCardData | null; kind: InstitutionKind; className?: string }) {
   const h = useId();
-  const compareHref = `/workbench/providers/brokerage-account?vs=${id}`;
+  const compareHref = housePath(id);
   if (!tariff || tariff.missing) {
     return (
       <Card as="section" aria-labelledby={h} className={className}>

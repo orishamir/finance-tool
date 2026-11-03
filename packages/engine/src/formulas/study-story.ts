@@ -55,6 +55,10 @@ export interface EarlySettlement {
   withheld: number;
   /** What the annual return gives back: the withheld less the tax the withdrawal owes (A-14). */
   back: number;
+  /** What the annual return still asks for, when the tax is above the withheld (surtax). */
+  owed: number;
+  /** What reaches the account at the withdrawal, before any return. */
+  first: number;
 }
 
 /** F-98 An early withdrawal's withholding and what a return gives back, in today's money. Null when no run withdraws before the lock ends. */
@@ -63,5 +67,5 @@ export function earlySettlement(runs: readonly RunResult[]): EarlySettlement | n
   if (!runs.some((r) => r.detail.earlyWithheld !== undefined)) return null;
   const withheld = runs.reduce((a, r) => a + today(r, r.detail.earlyWithheld ?? 0), 0);
   const due = runs.reduce((a, r) => a + today(r, r.taxAtExit), 0);
-  return { withheld, back: Math.max(0, withheld - due) };
+  return { withheld, back: Math.max(0, withheld - due), owed: Math.max(0, due - withheld), first: moneyStory(0, 0, runs).net + due - withheld };
 }

@@ -117,22 +117,20 @@ export function Workbench({ data }: { data: WbData }) {
 
 // ---------------------------------------------------------------- the tabs (flows 15.1, 15.2, 15.5)
 
-export type WorkbenchTab = "provider" | "track" | "fund";
+export type WorkbenchTab = "provider" | "track";
 
 /**
- * "לפי ספק" · "לפי מסלול" · "לפי קרן", on the three workbench pages. The tab you are on is a label; the others are links
- * to the same subject. A brokerage account has no tracks in the regulator's data, so its track tab is disabled with the line
- * that says why; a provident wrapper has no fund tab (no exposure to list funds for). A wrapper with a track page and no providers
- * page (`hasProviders` false, from `providerWrapperIds()`) has no provider tab, and a strip left with the tab you are on is not drawn
- * (2026-10-25: the tab led to `/workbench/providers/child-savings-provident`, which does not exist).
+ * "לפי ספק" · "לפי מסלול", on the track page and a provident wrapper's company listing. The tab you are on is a label; the other is a
+ * link to the same subject. A wrapper with a track page and no listing (`hasProviders` false, from `providerWrapperIds()`) has no
+ * provider tab, and a strip left with the tab you are on is not drawn (2026-10-25: the tab led to
+ * `/workbench/providers/child-savings-provident`, which does not exist). The securities account's house ranking and its fund tab
+ * went to the index page (issue 172).
  */
-export function WorkbenchTabs({ current, wrapperId, providerHref, trackHref, fundHref, hasProviders = true }: { current: WorkbenchTab; wrapperId: string; providerHref?: string; trackHref?: string | null; fundHref?: string | null; hasProviders?: boolean }) {
+export function WorkbenchTabs({ current, wrapperId, hasProviders = true }: { current: WorkbenchTab; wrapperId: string; hasProviders?: boolean }) {
   const t = r4workbench.tabs;
-  const brokerage = wrapperId === "brokerage-account";
-  const tabs: { key: WorkbenchTab; label: string; href: string | null; disabled?: boolean }[] = [
-    ...(hasProviders || current === "provider" ? [{ key: "provider" as const, label: t.byProvider, href: providerHref ?? `/workbench/providers/${wrapperId}` }] : []),
-    { key: "track", label: t.byTrack, href: brokerage ? null : (trackHref ?? `/workbench/tracks/${wrapperId}`), disabled: brokerage },
-    ...(fundHref ? [{ key: "fund" as const, label: t.byFund, href: fundHref }] : []),
+  const tabs: { key: WorkbenchTab; label: string; href: string }[] = [
+    ...(hasProviders || current === "provider" ? [{ key: "provider" as const, label: t.byProvider, href: `/workbench/providers/${wrapperId}` }] : []),
+    { key: "track", label: t.byTrack, href: `/workbench/tracks/${wrapperId}` },
   ];
   if (tabs.length < 2) return null;
   const base = "min-h-target lg:min-h-10 px-4 inline-flex items-center rounded-[5px] text-sm";
@@ -144,18 +142,13 @@ export function WorkbenchTabs({ current, wrapperId, providerHref, trackHref, fun
             <span key={x.key} role="tab" aria-selected="true" tabIndex={0} className={`${base} bg-secondary font-medium shadow-sm`}>
               {x.label}
             </span>
-          ) : x.href && !x.disabled ? (
+          ) : (
             <Link key={x.key} role="tab" aria-selected="false" to={x.href} className={`${base} hover:bg-accent/60`}>
               {x.label}
             </Link>
-          ) : (
-            <span key={x.key} role="tab" aria-selected="false" aria-disabled="true" className={`${base} text-muted-foreground cursor-not-allowed`}>
-              {x.label}
-            </span>
           ),
         )}
       </div>
-      {brokerage && current !== "track" && <p className="text-xs text-muted-foreground">{t.noTracks}</p>}
     </div>
   );
 }

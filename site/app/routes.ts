@@ -31,7 +31,6 @@ export default [
   // one route for /indices and every /indices/<x>: choosing another index keeps the page and fetches nothing (routes/invest.tsx)
   route("indices/:slug?", "routes/invest.tsx"),
   route("workbench/providers/:wrapper", "routes/workbench-providers.tsx"),
-  route("workbench/funds/:exposure", "routes/workbench-funds.tsx"),
   route("workbench-bundle.json", "routes/workbench-bundle.ts"),
   route("kit", "routes/kit.tsx"),
   route("*", "routes/not-found.tsx"),

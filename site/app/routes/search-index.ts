@@ -36,14 +36,16 @@ export async function loader() {
     const ids = c.maps_to.track_ids.length === 1 ? c.maps_to.track_ids.map(String) : [];
     for (const name of c.names.he) entries.push({ kind: "product", name, line, href, norm: normalize(name), ...(ids.length > 0 ? { ids } : {}) });
   }
-  // audit 2026-10-24 (A4): the funds the site holds a record of, by name and by TASE number, on their variants page
+  // audit 2026-10-24 (A4): the funds the site holds a record of, by name and by TASE number: an index fund on its index's page,
+  // any other on its holding's page (the funds page is gone, issue 174)
   const { loadFunds } = await import("../lib/instruments.server");
+  const { indexPath } = await import("../lib/invest");
   for (const f of loadFunds()) {
     const exposure = exposures.find((e) => e.id === f.exposure_id);
     const num = f.identifiers.tase_number;
     const ids = [num, f.identifiers.isin].filter((x): x is string => Boolean(x)).map((x) => x.toLowerCase());
     const line = [exposure?.names.he[0], num ? `${search.securityWord} ${num}` : ""].filter(Boolean).join(" · ");
-    for (const name of [...f.names.he, ...f.names.en]) entries.push({ kind: "track", name, line, href: exposure ? `/workbench/funds/${exposure.id}` : `/exposure/${f.exposure_id}`, norm: normalize(name), ids });
+    for (const name of [...f.names.he, ...f.names.en]) entries.push({ kind: "track", name, line, href: exposure?.kind === "equity_index" ? indexPath(exposure.id) : exposureHref(f.exposure_id), norm: normalize(name), ids });
   }
   // audit 2026-10-24 (A92): what the site does not cover yet is a result too, pointing at the page that says so
   const { graduationStatuses } = await import("../lib/graduation.server");

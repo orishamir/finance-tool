@@ -1456,6 +1456,8 @@ Top to bottom:
 
 ### 15.2 Fund-variant page
 
+*(2026-11-03, D53: the funds page is deleted; the indices page lists and prices every fund of an index, and no other holding has a priced fund.)*
+
 **Flows:** 30, 33. **Route:** `/workbench/funds/{exposure}` with `?provider={id}` (the tariff the variants run on) and the assumptions in the saved state (chosen 2026-10-24, revisable). **Mockup:** none.
 
 - Back link; h1 "כל הקרנות שעוקבות אחרי {חשיפה}"; the **list line** (copy 8.2) with the two list dates, or the list-not-collected sentence with the Maya and TASE links; the compact saved-goal strip.

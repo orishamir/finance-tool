@@ -247,7 +247,11 @@ export interface DocumentData {
 export async function loadDocumentData(): Promise<DocumentData> {
   const { root } = dataServer;
   const { institutionIds } = await import("./institutions.server");
-  const { loadDepositTerms, loadFunds } = await import("./instruments.server");
+  const { loadDepositTerms, loadExposures, loadFunds, exposureHref } = await import("./instruments.server");
+  const { indexPath } = await import("./invest");
+  // an index fund on its index's page, any other on its holding's page (the funds page is gone, issue 174)
+  const indexIds = new Set(loadExposures().filter((e) => e.kind === "equity_index").map((e) => e.id));
+  const fundHref = (exposureId: string) => (indexIds.has(exposureId) ? indexPath(exposureId) : exposureHref(exposureId));
   const { latestSnapshots, companyLinks } = await import("./providers.server");
   const collator = new Intl.Collator("he");
   const snaps = latestSnapshots();
@@ -265,7 +269,7 @@ export async function loadDocumentData(): Promise<DocumentData> {
     }))
     .sort((a, b) => collator.compare(a.title, b.title));
   const funds = loadFunds()
-    .map((f) => ({ key: f.id, title: f.names.he[0] ?? f.names.en[0] ?? f.id, line: f.manager, href: `/workbench/funds/${f.exposure_id}` }))
+    .map((f) => ({ key: f.id, title: f.names.he[0] ?? f.names.en[0] ?? f.id, line: f.manager, href: fundHref(f.exposure_id) }))
     .sort((a, b) => collator.compare(a.title, b.title));
   const deposits = loadDepositTerms().map((d) => ({ key: d.id, title: d.names["447"]?.[0] ?? d.type_447, line: d.bank, href: `/companies/${d.bank}`, bank: d.bank }));
   const { institutionRows } = await import("./institutions.server");

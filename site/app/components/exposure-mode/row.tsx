@@ -128,8 +128,8 @@ export function ExposureRow({ row, ctx, above, onDetail, choose }: { row: Exposu
         ) : (
           <span className="text-sm text-muted-foreground min-h-target inline-flex items-center">{r5.exposure.links.holdItNoReturn}</span>
         )}
-        {row.entry.variantsHref && (
-          <Link to={row.entry.variantsHref} className="text-sm text-link hover:underline min-h-target inline-flex items-center">
+        {row.entry.fundsHref && (
+          <Link to={row.entry.fundsHref} className="text-sm text-link hover:underline min-h-target inline-flex items-center">
             {r5.exposure.links.buyFund}
           </Link>
         )}
