@@ -131,15 +131,15 @@ function frame(inner, { sortPast = false } = {}) {
 }
 
 // ---- the three options ----
-const shown = groups.slice(0, 3);
-const restA = groups.slice(3).map((g) => `${g.sub} (${g.list.length})`).join(" · ");
+const shown = groups.slice(0, 2);
+const restA = groups.slice(2).map((g) => `${g.sub} (${g.list.length})`).join(" · ");
 const optA = frame(
-  `<p class="small muted">הקבוצות מסודרות מהחשיפה למניות הגבוהה לנמוכה; בתוך כל קבוצה מהזול ליקר.</p>${table({ groups: shown, tail: `<span class="note">בציור בלבד, כדי לקצר: אחרי שלוש הקבוצות האלה באות עוד ${groups.length - 3}, פתוחות באותו אופן: ${restA}.</span>` })}${phone({ groups: shown.slice(0, 1), tail: `<span class="note">בציור בלבד: אחרי הקבוצה הזאת באות עוד ${groups.length - 1}.</span>` })}`,
+  `<p class="small muted">הקבוצות מסודרות מהחשיפה למניות הגבוהה לנמוכה; בתוך כל קבוצה מהזול ליקר.</p>${table({ groups: shown, tail: `<span class="note">בשרטוט בלבד, כדי לקצר: אחרי שתי הקבוצות האלה באות עוד ${groups.length - 2}, פתוחות באותו אופן: ${restA}.</span>` })}${phone({ groups: shown.slice(0, 1), tail: `<span class="note">בשרטוט בלבד: אחרי הקבוצה הזאת באות עוד ${groups.length - 1}.</span>` })}`,
 );
 
 const flat = [...rows].sort(byFee);
 const top = flat.slice(0, 14);
-const optB = frame(table({ list: top, withKind: true, tail: `<span class="note">בציור בלבד, כדי לקצר: עוד ${rows.length - top.length} מסלולים.</span>` }) + phone({ list: top.slice(0, 6), withKind: true, tail: `<span class="note">בציור בלבד: עוד ${rows.length - 6} מסלולים.</span>` }));
+const optB = frame(table({ list: top, withKind: true, tail: `<span class="note">בשרטוט בלבד, כדי לקצר: עוד ${rows.length - top.length} מסלולים.</span>` }) + phone({ list: top.slice(0, 6), withKind: true, tail: `<span class="note">בשרטוט בלבד: עוד ${rows.length - 6} מסלולים.</span>` }));
 
 const sp = groups.find((g) => g.sub.includes("s&p"));
 const optC = frame(
@@ -153,41 +153,68 @@ const blanks = rows.filter((r) => r.fee == null).length;
 const spRange = sp.list.map((r) => r.fee).filter((v) => v != null);
 const spY3 = sp.list.filter((r) => r.y3 != null).length, spY5 = sp.list.filter((r) => r.y5 != null).length;
 
-const html = `<!doctype html>
-<html lang="he" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>כל המסלולים בכל החברות: אפשרויות</title>
+const OPTIONS = [
+  {
+    id: "a", tab: "א. קבוצה לכל סוג השקעה", rec: true,
+    text: `כל הקבוצות פתוחות, לפי הסיווג של הרשות, ובתוך כל קבוצה מהזול ליקר. כך כל השוואה היא בין מסלולים שמשקיעים באותו דבר, ורק החברה משתנה. עמודת "במה הכסף מושקע" יורדת, כי בתוך קבוצה היא זהה בכל שורה; שם הקבוצה אומר אותה פעם אחת, עם הטווח של דמי הניהול בה.`,
+    body: optA,
+  },
+  {
+    id: "b", tab: "ב. רשימה אחת מהזול ליקר",
+    text: `כל ${n(String(rows.length))} המסלולים ברשימה אחת, וסוג ההשקעה כתווית בכל שורה. פשוט יותר, אבל בראש הרשימה עומדים זה ליד זה מסלולים שמחזיקים דברים שונים: ${b0.sub} ב־${n(pct2(b0.fee))} עם ${n(Math.round(b0.stock) + "%")} מניות, ושתי שורות מתחתיו ${b3.sub} ב־${n(pct2(b3.fee))} עם ${n(Math.round(b3.stock) + "%")} מניות. ההבדל בדמי הניהול קטן בהרבה מההבדל במה שהם מחזיקים.`,
+    body: optB,
+  },
+  {
+    id: "c", tab: "ג. כמו א׳, ועוד תשואה וגודל",
+    text: `קבוצה אחת מאפשרות א׳ (${sp.sub}, ${n(String(sp.list.length))} מסלולים) עם שתי עמודות נוספות מאותו קובץ של הרשות: תשואה שנתית ממוצעת לשלוש ולחמש שנים, ונכסי המסלול. ${n(String(spY3))} מתוך ${n(String(sp.list.length))} המסלולים בקבוצה הזאת קיימים שלוש שנים, ו־${n(String(spY5))} חמש. הרשימה עדיין ממוינת לפי דמי הניהול.`,
+    body: optC,
+  },
+];
+
+// The page is published as an artifact: no doctype, html, head or body of its own (the host wraps it).
+const html = `<title>שרטוטי עמוד המסלולים</title>
+<meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>${css}</style></head>
-<body><main class="doc">
+<style>${css}</style>
+<div class="doc" dir="rtl" lang="he">
 <header class="doc-h">
   <h1>כל המסלולים בכל החברות: שלוש אפשרויות</h1>
   <p class="muted">קופת גמל להשקעה: ${n(String(rows.length))} מסלולים של ${n(String(companies))} חברות, מנתוני רשות שוק ההון לספטמבר ${n("2026")}. כל מספר כאן אמיתי; אף מספר לא הומצא.</p>
+  <details class="common"><summary>משותף לשלוש, ומה שהנתונים מראים</summary>
   <ul class="small">
     <li><b>משותף לשלוש:</b> התפריט "חברות ומסלולים" מוביל לשתי לשוניות, לפי חברה (העמוד של היום) ולפי מוצר (העמוד הזה), וכל אחד משישת המדריכים מקשר לכאן. המוצר מתחלף במקום. השורה היא השורה של עמוד החברה. יורדים פס המטרה השמורה, עמודת ההתאמה, הלשונית "לפי ספק" והמתג למסלולים סגורים.</li>
     <li><b>מה שהנתונים מראים:</b> דמי הניהול מהחיסכון בכל ${n(String(feeAll.length))} המסלולים שדיווחו נעים רק בין ${n(pct2(Math.min(...feeAll)))} ל־${n(pct2(Math.max(...feeAll)))}, וכל סוג השקעה חוצה כמעט את כל הטווח. מה שבאמת מבדיל בין המסלולים הוא במה הכסף מושקע. ${n(String(blanks))} מסלולים חדשים עוד לא דיווחו דמי ניהול, והם בסוף כל קבוצה.</li>
     <li><b>בשתי הקרנות החדשות</b> (מקיפה וכללית) הרשות לא מסווגת מסלולים, ולכן שם אין קבוצות: רשימה אחת מהזול ליקר, והחשיפה מבדילה ביניהם. האתר לא מנחש סוג מהשם.</li>
-  </ul>
+  </ul></details>
 </header>
-
-<section class="option">
-  <div class="opt-h"><h2>א. קבוצה לכל סוג השקעה</h2><span class="tag rec">מומלץ</span></div>
-  <p class="muted small opt-p">כל הקבוצות פתוחות, לפי הסיווג של הרשות, ובתוך כל קבוצה מהזול ליקר. כך כל השוואה היא בין מסלולים שמשקיעים באותו דבר, ורק החברה משתנה. עמודת "במה הכסף מושקע" יורדת, כי בתוך קבוצה היא זהה בכל שורה; שם הקבוצה אומר אותה פעם אחת, עם הטווח של דמי הניהול בה.</p>
-  ${optA}
-</section>
-
-<section class="option">
-  <div class="opt-h"><h2>ב. רשימה אחת מהזול ליקר</h2></div>
-  <p class="muted small opt-p">כל ${n(String(rows.length))} המסלולים ברשימה אחת, וסוג ההשקעה כתווית בכל שורה. פשוט יותר, אבל בראש הרשימה עומדים זה ליד זה מסלולים שמחזיקים דברים שונים: ${b0.sub} ב־${n(pct2(b0.fee))} עם ${n(Math.round(b0.stock) + "%")} מניות, ומתחתיו ${b3.sub} ב־${n(pct2(b3.fee))} עם ${n(Math.round(b3.stock) + "%")} מניות. ההבדל בדמי הניהול קטן בהרבה מההבדל במה שהם מחזיקים.</p>
-  ${optB}
-</section>
-
-<section class="option">
-  <div class="opt-h"><h2>ג. כמו א׳, ועוד תשואת עבר וגודל</h2><span class="tag">השאלה הפתוחה על תשואה וגודל</span></div>
-  <p class="muted small opt-p">קבוצה אחת מאפשרות א׳ (${sp.sub}, ${n(String(sp.list.length))} מסלולים) עם שתי עמודות נוספות מאותו קובץ של הרשות: תשואה שנתית ממוצעת לשלוש ולחמש שנים, ונכסי המסלול. ${n(String(spY3))} מתוך ${n(String(sp.list.length))} המסלולים בקבוצה הזאת קיימים שלוש שנים, ו־${n(String(spY5))} חמש. הרשימה עדיין ממוינת לפי דמי הניהול.</p>
-  ${optC}
-</section>
-</main></body></html>`;
+<div class="bar">
+  <div class="opt-tabs" role="tablist" aria-label="אפשרות">${OPTIONS.map((o, i) => `<button type="button" role="tab" id="tab-${o.id}" data-opt="${o.id}" aria-selected="${i === 0}">${o.tab}${o.rec ? ` <span class="tag rec">מומלץ</span>` : ""}</button>`).join("")}</div>
+  <div class="view" role="group" aria-label="גודל מסך"><button type="button" data-view="pc" aria-pressed="true">מחשב</button><button type="button" data-view="phone" aria-pressed="false">טלפון</button></div>
+</div>
+${OPTIONS.map((o, i) => `<section class="option" id="${o.id}" role="tabpanel" aria-labelledby="tab-${o.id}"${i === 0 ? "" : " hidden"}>
+  <p class="muted small opt-p">${o.text}</p>
+  <div class="stage">${o.body}</div>
+</section>`).join("\n")}
+</div>
+<script>
+(() => {
+  const tabs = [...document.querySelectorAll("[data-opt]")];
+  const views = [...document.querySelectorAll("[data-view]")];
+  const show = (id) => {
+    for (const t of tabs) t.setAttribute("aria-selected", String(t.dataset.opt === id));
+    for (const s of document.querySelectorAll(".option")) s.hidden = s.id !== id;
+  };
+  const view = (v) => {
+    for (const b of views) b.setAttribute("aria-pressed", String(b.dataset.view === v));
+    for (const s of document.querySelectorAll(".stage")) s.classList.toggle("phone", v === "phone");
+  };
+  tabs.forEach((t) => t.addEventListener("click", () => show(t.dataset.opt)));
+  views.forEach((b) => b.addEventListener("click", () => view(b.dataset.view)));
+  const start = location.hash.slice(1);
+  if (["a", "b", "c"].includes(start)) show(start);
+})();
+</script>`;
 
 writeFileSync(new URL("mockups.html", here), html);
 console.log(`wrote mockups.html: ${rows.length} tracks, ${groups.length} groups; first groups ${shown.map((g) => g.sub).join(", ")}; S&P fees ${Math.min(...spRange)}-${Math.max(...spRange)}`);
