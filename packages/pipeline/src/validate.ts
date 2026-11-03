@@ -152,6 +152,7 @@ export function validateData(ctx: ValidationContext): Problem[] {
       const name = rel.split(/[\\/]/).pop()!;
       const isLatest = !files.some((f) => { const n = f.split(/[\\/]/).pop()!; return n.startsWith(`${name.split("@")[0]}@`) && n > name; });
       if (isLatest) for (const message of checkPricePremises(parsed.value as PremiseSnapshot)) report(file, message);
+      for (const message of checkTariffTitle((parsed.value as { tariff: { title: string } }).tariff.title)) report(file, message);
     }
     if (collection === "instruments/exposures" && result.success && fundIds) {
       for (const v of (parsed.value as { variants: string[] }).variants) {
@@ -195,6 +196,16 @@ export function checkFundDistribution(record: Pick<FundRecord, "distribution_pol
   const out: string[] = [];
   if (record.distribution_policy !== "distributing") out.push("distribution: a yield on a fund that does not distribute");
   if (d.yield.unit !== "pct_per_year" || typeof d.yield.value !== "number" || d.yield.value <= 0) out.push("distribution.yield: a number above zero in pct_per_year, read from the fund's document");
+  return out;
+}
+
+/** The words of a reading note, not of a document's name (2026-11-03: a 1,321-character note stood as a bank's tariff name on its page). */
+const READING_NOTE = /https?:\/\/|Chrome|curl|founder|pdf\.js|script|סקריפט|מטא-נתוני|אינו נושא תאריך|אינו מודפס/;
+/** A tariff's title is the document's name, which the site shows as the source; the notes on how it was read go in `tariff.notes`. */
+export function checkTariffTitle(title: string): string[] {
+  const out: string[] = [];
+  if (title.length > 100) out.push(`tariff.title: ${title.length} characters; the document's name only, notes in tariff.notes`);
+  if (READING_NOTE.test(title)) out.push("tariff.title: holds a link or a note on how the document was read; move it to tariff.notes");
   return out;
 }
 

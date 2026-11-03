@@ -13,7 +13,8 @@
   },
   "tariff": {
     "url": "https://www.onezerobank.com/company/information/2250",
-    "title": "תעריפון - One Zero (עמוד פרטי החברה, BRK-34; חסום לסקריפטים)",
+    "title": "תעריפון - One Zero",
+    "notes": "תעריפון - One Zero (עמוד פרטי החברה, BRK-34; חסום לסקריפטים)",
     "published": null,
     "format": "html"
   },
