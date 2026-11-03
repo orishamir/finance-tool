@@ -148,6 +148,11 @@ describe("normalise", () => {
     expect(closedTrack("כלל האוכלוסיה", "מיטב השתלמות כללי")).toBe(false);
   });
 
+  it("reports a population it does not know, in place of treating the track as open", () => {
+    const csv = decodeWindows1255(fixture).replace("כלל האוכלוסיה", "אוכלוסיה חדשה");
+    expect(normalise(csv, ctx).problems.join(" ")).toContain("unknown TARGET_POPULATION");
+  });
+
   it("leaves out a company on the excluded list, in a refresh and in the stored files", () => {
     const table = parseCsv(decodeWindows1255(fixture));
     const col = table[0]!.indexOf("MANAGING_CORPORATION_LEGAL_ID");

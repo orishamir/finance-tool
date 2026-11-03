@@ -438,6 +438,8 @@ export function normalise(csvText: string, ctx: NormaliseContext): NormaliseResu
   const funds: CmaFund[] = [];
   for (const r of rows) {
     if (EXCLUDED_COMPANIES.has(get(r, "MANAGING_CORPORATION_LEGAL_ID").trim()) || closedTrack(get(r, "TARGET_POPULATION"), get(r, "FUND_NAME"))) continue;
+    const population = get(r, "TARGET_POPULATION").trim();
+    if (population !== "" && population !== "כלל האוכלוסיה") problems.push(`fund ${get(r, "FUND_ID")}: unknown TARGET_POPULATION "${population}"; say whether it is closed to joiners`);
     const id = Number(get(r, "FUND_ID").trim());
     if (!Number.isInteger(id) || id <= 0) {
       problems.push(`unreadable FUND_ID "${get(r, "FUND_ID")}"`);

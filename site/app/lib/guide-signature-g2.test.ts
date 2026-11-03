@@ -2,8 +2,6 @@
 // on each side is the same index; a gap is a gap, never a number.
 import { describe, expect, it } from "vitest";
 import { runInputs, runPlanned } from "@finance-tool/engine";
-import { loadCma } from "./data.server";
-import { isClosedAudience } from "./guide-nav";
 import { buildGuidePage } from "./guide.server";
 import { fact } from "./guide-signature";
 import { paidInToday } from "./engine";
@@ -38,12 +36,6 @@ describe("study fund", () => {
     // the page's own run (P-05 track 880, a general track) is not the holding: the bundle carries the index track's fee
     expect(d.bundles["keren-hishtalmut"]!.terms.fees!.balance).toBeCloseTo(0.0054, 10);
     expect(Number(fact(d, "rangeMin")!.value)).toBeLessThan(Number(fact(d, "rangeMax")!.value));
-  });
-  it("takes the fee range only from tracks open to the public: a sector's or one employer's track is no fee the reader can get", () => {
-    expect(String(fact(d, "rangeMinName")!.value)).not.toContain("צבא הקבע");
-    const closed = loadCma().tracks.filter((t) => t.wrapperId === "keren-hishtalmut" && isClosedAudience([t.targetPopulation]));
-    expect(closed.length).toBeGreaterThan(0);
-    for (const name of ["rangeMinName", "rangeMaxName"]) expect(closed.map((t) => t.name)).not.toContain(fact(d, name)!.value);
   });
   const employee = { employment: "employee" as const, income: 12000, ownMonthly: 300, employerMonthly: 900, returnPct: 7 };
   const self = { employment: "self-employed" as const, income: 12000, ownMonthly: 500, employerMonthly: 0, returnPct: 7 };

@@ -17,7 +17,6 @@ export interface WbRow {
   n: string; // the name as the source writes it
   sp: string; // SPECIALIZATION
   sub: string; // SUB_SPECIALIZATION
-  pop: string; // the target population when it is not the whole public (CAT-10), else ""
   b: CompactFee; // average fee on balance
   d: CompactFee; // average fee on deposits
   def?: 1; // the catalogue marks it a default at joining
@@ -57,33 +56,28 @@ export interface WbData {
 }
 
 export type Fit = "fits" | "no-fit" | "no-rule" | "no-goal";
-/** F-83 read for F-64 (method note, flow 25): the workbench ranks nothing. */
-export type WorkbenchOutcome = "shown" | "no-rule" | "ineligible" | "not-evaluated";
 /** The finer split the coverage sentence draws. */
-export type CoverageKey = "fits" | "no-fit" | "no-rule" | "ineligible" | "no-goal" | "no-class";
-export const coverageOrder: CoverageKey[] = ["fits", "no-fit", "no-rule", "ineligible", "no-goal", "no-class"];
+export type CoverageKey = "fits" | "no-fit" | "no-rule" | "no-goal" | "no-class";
+export const coverageOrder: CoverageKey[] = ["fits", "no-fit", "no-rule", "no-goal", "no-class"];
 
 export interface WorkbenchRow {
   row: WbRow;
   company: { name: string; href: string };
   track: { fundId: number; name: string; href: string };
   fit: Fit;
-  outcome: WorkbenchOutcome;
   key: CoverageKey;
-  /** The word the row shows for its outcome ("פתוח רק ל…", "לא נבדק: …"). */
+  /** The word the row shows for its outcome ("לא נבדק: …"). */
   reason?: { text: string; code: string };
   feesHref: string;
 }
 
-/** The outcome of one track against the saved goal's horizon (null: no saved goal). A sector or employer track
- *  (CAT-10) is not eligible whatever the goal; then a missing goal; then a classification the data does not carry. */
-export function outcomeOf(r: WbRow, years: number | null, table: FitTableData, classification: string, words: { onlyFor: string; noGoal: string; noClass: string }): Pick<WorkbenchRow, "fit" | "outcome" | "key" | "reason"> {
-  if (r.pop) return { fit: "no-goal", outcome: "ineligible", key: "ineligible", reason: { text: `${words.onlyFor}${r.pop}`, code: "CAT-10" } };
-  if (years === null) return { fit: "no-goal", outcome: "not-evaluated", key: "no-goal", reason: { text: words.noGoal, code: "no-goal" } };
-  if (r.sp === NO_CLASS && r.sub === "") return { fit: "no-goal", outcome: "not-evaluated", key: "no-class", reason: { text: words.noClass, code: "no-class" } };
+/** The outcome of one track against the saved goal's horizon (null: no saved goal): a missing goal first, then a classification the data does not carry. */
+export function outcomeOf(r: WbRow, years: number | null, table: FitTableData, classification: string, words: { noGoal: string; noClass: string }): Pick<WorkbenchRow, "fit" | "outcome" | "key" | "reason"> {
+  if (years === null) return { fit: "no-goal", key: "no-goal", reason: { text: words.noGoal, code: "no-goal" } };
+  if (r.sp === NO_CLASS && r.sub === "") return { fit: "no-goal", key: "no-class", reason: { text: words.noClass, code: "no-class" } };
   const res = fitOf(table, { specialization: r.sp, subSpecialization: r.sub, classification }, years);
-  if (res.kind === "no-rule") return { fit: "no-rule", outcome: "no-rule", key: "no-rule" };
-  return { fit: res.kind, outcome: "shown", key: res.kind };
+  if (res.kind === "no-rule") return { fit: "no-rule", key: "no-rule" };
+  return { fit: res.kind, key: res.kind };
 }
 
 export type SortKey = "company" | "fee-balance" | "fee-deposit" | "name";
@@ -132,11 +126,6 @@ export function sortRows(rows: WorkbenchRow[], sort: SortKey, dir: SortDir = "as
   return units.flat();
 }
 
-/** Rows the person can open: a sector or employer track (CAT-10) is not, whatever the goal. With `openToAll` off, every row stays. */
-export function eligibleOnly(rows: WorkbenchRow[], openToAll: boolean): WorkbenchRow[] {
-  return openToAll ? rows.filter((w) => w.outcome !== "ineligible") : rows;
-}
-
 /** Everything the controls hold, and what the address carries so a reload or the back button keeps it. */
 export interface WbQuery {
   q: string;
@@ -144,11 +133,9 @@ export interface WbQuery {
   dir: SortDir;
   /** One exposure group (its `SPECIALIZATION`, `""` for the no-class group), `"all"` for every group, or null for the default groups. */
   chip: string | null;
-  /** Only tracks open to everyone (the default); false shows the sector and employer tracks too. */
-  openToAll: boolean;
 }
 
-export const defaultWbQuery: WbQuery = { q: "", sort: "company", dir: "asc", chip: null, openToAll: true };
+export const defaultWbQuery: WbQuery = { q: "", sort: "company", dir: "asc", chip: null };
 const SORTS: SortKey[] = ["company", "fee-balance", "fee-deposit", "name"];
 
 export function parseWbQuery(search: string): WbQuery {
@@ -160,7 +147,6 @@ export function parseWbQuery(search: string): WbQuery {
     sort: SORTS.includes(sort as SortKey) ? (sort as SortKey) : "company",
     dir: p.get("dir") === "desc" ? "desc" : "asc",
     chip: chip === null ? null : chip === "none" ? NO_CLASS : chip,
-    openToAll: p.get("all") !== "1",
   };
 }
 
@@ -170,7 +156,6 @@ export function wbQueryString(q: WbQuery): string {
   if (q.sort !== "company") p.set("sort", q.sort);
   if (q.dir === "desc") p.set("dir", "desc");
   if (q.chip !== null) p.set("chip", q.chip === NO_CLASS ? "none" : q.chip);
-  if (!q.openToAll) p.set("all", "1");
   const s = p.toString();
   return s ? `?${s}` : "";
 }

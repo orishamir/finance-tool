@@ -153,7 +153,6 @@ export default function TrackPage() {
             )}
             {track.specialization && row(copy.labels.classification, <bdi>{track.specialization}</bdi>)}
             {track.subSpecialization && row(copy.labels.holds, <bdi>{track.subSpecialization}</bdi>)}
-            {track.targetPopulation && row(copy.labels.population, <bdi>{track.targetPopulation}</bdi>)}
             {row(feeText(copy.feeBalanceLabel, data.values.balanceFee), <FeeNum value={data.values.balanceFee} />)}
             {row(feeText(copy.feeDepositLabel, data.values.depositFee), <FeeNum value={data.values.depositFee} />)}
             {data.values.exposure?.stock && row(companyCopy.stock.rowStock.replace("{period}", fmt.period(track.reportPeriod)), <ShareNum value={data.values.exposure.stock} />)}

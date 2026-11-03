@@ -216,9 +216,6 @@ export const guide = {
   securitiesRow: "מה קונים בתוכו, ולכל אחד עמוד משלו:",
   companiesShow: "הצגת החברות",
   companiesHide: "הסתרת החברות",
-  companiesOpen: "פתוחות לכלל הציבור",
-  companiesClosed: "לעובדי מגזר או מפעל מסוים",
-  companiesClosedLine: "אצל החברות האלה המסלולים של המוצר הזה מיועדים רק לעובדים של מגזר או של מפעל מסוים.",
   generalTermsShow: "הצגת המונחים הכלליים",
   termsShowAll: "הצגת כל המונחים של העמוד",
   termsHideAll: "הסתרת המונחים",
@@ -255,7 +252,7 @@ export const guide = {
   feeTable: { type: "סוג", base: "על מה נגבה", cap: "תקרה" },
   feeNote: "אלה התקרות שבחוק. כמה כל חברה גובה בפועל, בכל מסלול, מופיע בעמוד של החברה.",
   feeNoteOther: "הסכומים בפועל נקבעים אצל הגורם המציע. כאן מופיעים סוגי העלויות, ותקרה כשיש תקרה בחוק.",
-  feeRange: { caps: "אלה התקרות שבחוק. בפועל גובים הרבה פחות: ב־", tracks: "המסלולים הפתוחים לכלל הציבור העמיתים שילמו בממוצע", to: "עד", reported: "בשנה, תלוי במסלול, לפי רשות שוק ההון. כמה כל חברה גובה, בכל מסלול, מופיע בעמוד של החברה." },
+  feeRange: { caps: "אלה התקרות שבחוק. בפועל גובים הרבה פחות: ב־", tracks: "המסלולים, העמיתים שילמו בממוצע", to: "עד", reported: "בשנה, תלוי במסלול, לפי רשות שוק ההון. כמה כל חברה גובה, בכל מסלול, מופיע בעמוד של החברה." },
   taxSteps: { deposit: "בהפקדה", during: "כל עוד הכסף בפנים", exit: "כשמושכים" },
   // audit 2026-10-24 (A46): the study fund's deposit-side row by employment (TXH-04, TXH-01, TXH-03 for employees; TXH-05 for the self-employed)
   hishtalmutDeposit: {
@@ -519,7 +516,7 @@ export const company = {
     direct: "בנוסף לדמי הניהול יורדות מהקופה הוצאות ישירות (עמלות מסחר, משמורת ועוד), שלא מופיעות כאן: הן נראות בתשואה, לא כשורה בחשבון.",
   },
   /** The labels beside a track's name (lib/track-labels.ts): facts about this track only (D35). */
-  labels: { new: "חדש", sector: "לעובדי סקטור מסוים", body: "לעובדי גוף מסוים" } as Record<string, string>,
+  labels: { new: "חדש" } as Record<string, string>,
   feeRowWhole: "לקרן כולה",
   listHeading: "כל המסלולים של",
   tracks: { one: "מסלול אחד", two: "שני מסלולים", many: "מסלולים" },
@@ -554,7 +551,7 @@ export const company = {
 
 export const track = {
   fundLine: "קופה",
-  labels: { manager: "חברה מנהלת", product: "סוג מוצר", classification: "סיווג", holds: "במה הכסף מושקע", feeBalance: "דמי ניהול מחיסכון", feeDeposit: "דמי ניהול מהפקדה", period: "נכון לחודש", population: "למי מיועד", inception: "נפתח ב־" },
+  labels: { manager: "חברה מנהלת", product: "סוג מוצר", classification: "סיווג", holds: "במה הכסף מושקע", feeBalance: "דמי ניהול מחיסכון", feeDeposit: "דמי ניהול מהפקדה", period: "נכון לחודש", inception: "נפתח ב־" },
   feeBalanceLabel: "ממוצע דמי הניהול מחיסכון שנגבו בפועל בשנת {year}",
   feeDepositLabel: "ממוצע דמי הניהול מהפקדה שנגבו בפועל בשנת {year}",
   feeWhole: "לקרן כולה",
@@ -1499,8 +1496,7 @@ export const r3workbench = {
   filter: "חיפוש חברה או מסלול",
   sort: { aria: "סדר ההצגה", company: "חברה", "fee-balance": "מחיסכון", "fee-deposit": "מהפקדה", name: "שם" },
   notAnOffer: "ממוצע הוא מה שהעמיתים שילמו בפועל, לא הצעה אליכם.",
-  // audit 2026-10-24 (A36, A82, A87): the open-to-all filter, the sort direction words, the key for "עוד לא דווח"
-  openToAll: { label: "פתוח לכולם", hidden: "מסלולים הפתוחים רק לקבוצה מסוימת מוסתרים", none: "אין מסלולים שפתוחים רק לקבוצה מסוימת" },
+  // audit 2026-10-24 (A82, A87): the sort direction words, the key for "עוד לא דווח"
   sortDir: { asc: "מהנמוך לגבוה", desc: "מהגבוה לנמוך" },
   // 2026-10-27: the key said the company had not reported; the data says why only sometimes, so the key points to the value's note.
   missingKey: "עוד לא דווח: השדה ריק בנתוני הרשות. לחצו על הערך כדי לראות אם הסיבה ידועה.",
@@ -1508,7 +1504,6 @@ export const r3workbench = {
   // copy.md 7.3 (added 2026-10-24, B14): one and two are words, not "1 מסלולים"
   group: { suffix: "מסלולים", matching: "תואמים", one: "מסלול אחד", two: "שני מסלולים", matchingOne: "אחד תואם" },
   showMore: "להציג עוד",
-  sectorOnly: "פתוח רק ל",
   columns: { company: "חברה", track: "מסלול", fund: "קופה", holds: "במה הכסף מושקע", balance: "ניהול מחיסכון, {year}", deposit: "ניהול מהפקדה", fit: "התאמה", open: "פתיחה" },
   phoneFee: { balance: "דמי ניהול מחיסכון", deposit: "מהפקדה" },
   wholeFund: "לקרן כולה",
@@ -1520,7 +1515,6 @@ export const r3workbench = {
     fits: "מתאימים למטרה",
     "no-fit": "לא מתאימים",
     "no-rule": "בלי כלל לסיווג",
-    ineligible: "פתוחים רק לקבוצה מסוימת",
     "no-goal": "בלי מטרה לבדוק מולה",
     "no-class": "בלי סיווג בנתונים",
   } as Record<string, string>,
@@ -3153,7 +3147,7 @@ export const guideSignature = {
         accountFine: "ניירות ערך",
       },
       selfGap: { before: "לעצמאים עוד אין כאן חישוב למשיכה לפני", after: ": במשיכה כזו משלמים מס כמו על הכנסה מהעסק, על הרווח ועל ההפקדות שקיבלתם עליהן ניכוי." },
-      range: { among: "בין", tracks: "המסלולים שעוקבים אחרי אותו מדד ופתוחים לכלל הציבור, ההבדל בדמי הניהול (", to: "עד", moves: ") שווה עד", left: ": נשאר בידיים", inAccount: "בחשבון ניירות ערך, בין", tariffs: "התעריפים שיש באתר, נשאר בידיים" },
+      range: { among: "בין", tracks: "המסלולים שעוקבים אחרי אותו מדד, ההבדל בדמי הניהול (", to: "עד", moves: ") שווה עד", left: ": נשאר בידיים", inAccount: "בחשבון ניירות ערך, בין", tariffs: "התעריפים שיש באתר, נשאר בידיים" },
       // the reader's own values against the limit (founder, 2026-11-02): the rule itself is in the guide's text above
       standing: {
         over: { month: "בחודש", year: "בשנה", lead: "מההפקדות לא מקבלים פטור", leadOwn: "מההפקדות שלכם לא מקבלים פטור.", leadEmployer: "מההפקדות של המעסיק לא מקבלים פטור.", own: "מכם ו־", employer: "מהמעסיק.", why: "בגללם יש מס גם אחרי", noTax: "בתשואה הזו אין עליהם מס אחרי", noTaxWhy: ", כי הרווח לא עובר את עליית המחירים.", grows: "החלק הזה גדל עם השנים, כי השכר עולה והפטור עוצר בשכר של", growsAfter: "בחודש." },

@@ -588,7 +588,7 @@ Why "בשקלים של העתיד" rather than "נומינלי": the reader sees
 
 | Key in `copy.ts` | Hebrew | Note |
 |---|---|---|
-| `track.labels.population · inception` | למי מיועד · נפתח ב־ | two more record labels from the regulator's data |
+| `track.labels.inception` | נפתח ב־ | one more record label from the regulator's data |
 | `track.feeWhole` | לקרן כולה | appended to both fee labels on a pension track |
 | `track.feeNotReported` | עוד לא דווח | an empty fee field is not zero. Was "טרם דווח" |
 | `track.feeNone` | אין | an empty deposit-fee field of a product type that may charge from the balance only (PF-06: study, IRA, central and other-purpose funds): no fee, by rule. No caution mark (2026-10-27) |
@@ -897,7 +897,7 @@ Added 2026-10-23 for the briefs in `docs/flows.md` section 9 and the handoff in 
 | Coverage, open / close | כל האפשרויות ולמה · הסתרת הרשימה |
 | Coverage groups | לא מתאימות לכם · נפסלו לפי האילוצים שלכם · עוד לא נבדקו · מוצגות בלי דירוג · דורגו |
 | Coverage reasons, not evaluated | אין עדיין תנאים של תוכניות חיסכון · הפקדות חודשיות לקרן כספית מתחדשת עוד לא מוגדרות · לא נכלל בהשוואה המהירה · עוד לא מכוסה: שאלות פתוחות · הזינו תשואה · הזינו שכר · הנתון לא עודכן: `{כלל}` · changed 2026-10-24 (Hebrew editor); was ״עוד לא מכוסה, שאלות פתוחות״ |
-| Coverage reasons, not eligible | מקבל רק את הכספים מהביטוח הלאומי ואת הפקדת ההורה, לא את הכסף הזה · פתוח רק ל`{קבוצה}` · changed 2026-10-24 (Hebrew editor); was ״מקבל רק את הכספים מביטוח לאומי ואת הפקדת ההורה״ |
+| Coverage reasons, not eligible | מקבל רק את הכספים מהביטוח הלאומי ואת הפקדת ההורה, לא את הכסף הזה · changed 2026-10-24 (Hebrew editor); was ״מקבל רק את הכספים מביטוח לאומי ואת הפקדת ההורה״ |
 | Coverage reason, excluded | נפסלה לפי האילוץ: `{אילוץ}` · changed 2026-10-24 (Hebrew editor); was ״נפסל לפי האילוץ:״ |
 | Coverage, group line | `{קבוצה}`: `{מספר}` מוחזקות אחת־אחת, השאר לא |
 | Coverage, last line | המסלולים והקרנות בתוך כל מוצר מושווים בעמודים ״כל המסלולים בכל החברות״ ו״איזו קרן לקנות״. · changed 2026-10-24 (Hebrew editor); was ״המסלולים והקרנות בתוך כל מוצר מופיעים בעמודי החברות. ההשוואה ביניהם תתווסף בהמשך.״ |
@@ -1348,10 +1348,9 @@ Added 2026-10-23 for the briefs in `docs/flows.md` section 12 and the handoff in
 | Show more | להציג עוד `{מספר}` |
 | PC columns | חברה · מסלול · קופה · במה הכסף מושקע · ניהול מחיסכון, `{שנה}` · ניהול מהפקדה · התאמה · פתיחה (changed 2026-10-24, audit A82: shorter headers; the lead line above the table says these are fee averages) |
 | Phone fee line | דמי ניהול מחיסכון `{אחוז}` · מהפקדה `{אחוז}` |
-| Sector track | פתוח רק ל`{קבוצה}` |
-| Coverage sentence | נבדקו `{מספר}` מסלולים ב־`{מספר}` חברות: `{מספר}` מתאימים למטרה, `{מספר}` לא מתאימים, `{מספר}` בלי כלל לסיווג, `{מספר}` פתוחים רק לקבוצה מסוימת, `{מספר}` בלי מטרה לבדוק מולה. |
-| Coverage groups | מתאימים למטרה · לא מתאימים · בלי כלל לסיווג · פתוחים רק לקבוצה מסוימת · בלי מטרה לבדוק מולה · בלי סיווג בנתונים |
-| Coverage outcome words, one row | מתאים · לא מתאים · אין כלל לסיווג הזה · פתוח רק ל`{קבוצה}` · לא נבדק: אין מטרה שמורה · לא נבדק: אין סיווג בנתונים |
+| Coverage sentence | נבדקו `{מספר}` מסלולים ב־`{מספר}` חברות: `{מספר}` מתאימים למטרה, `{מספר}` לא מתאימים, `{מספר}` בלי כלל לסיווג, `{מספר}` בלי מטרה לבדוק מולה. |
+| Coverage groups | מתאימים למטרה · לא מתאימים · בלי כלל לסיווג · בלי מטרה לבדוק מולה · בלי סיווג בנתונים |
+| Coverage outcome words, one row | מתאים · לא מתאים · אין כלל לסיווג הזה · לא נבדק: אין מטרה שמורה · לא נבדק: אין סיווג בנתונים |
 | No tracks for the wrapper | למוצר הזה אין מסלולים בנתוני הרשות. · changed 2026-10-24 (Hebrew editor); was ״למוצר הזה אין מסלולים בנתוני הרשות. הטבלה לפי ספקים תתווסף בהמשך.״ |
 | Old data | נתוני הרשות לא עודכנו מאז `{חודש}`. |
 
@@ -1951,7 +1950,7 @@ The founder, 2026-10-26: the company page's last column shows something other th
 | The sheet, the inputs | החשיפה לשוק המניות · החשיפה למטבע חוץ · סך נכסי המסלול |
 | The unit of the regulator's amounts | `{מספר}` מיליון ₪ |
 
-Fee cell and labels (D36, the same day): header "דמי ניהול, ממוצע `{שנה}`"; each cell "`{אחוז}` מהחיסכון" over "`{אחוז}` מההפקדות" (phone: "דמי ניהול, ממוצע: `{אחוז}` מהחיסכון `{אחוז}` מההפקדות"); under the table "התקרה בחוק: `{אחוז}` מהחיסכון, `{אחוז}` מההפקדות" and "בנוסף לדמי הניהול יורדות מהקופה הוצאות ישירות (עמלות מסחר, משמורת ועוד), שלא מופיעות כאן: הן נראות בתשואה, לא כשורה בחשבון." with the PF-10 chip; labels "חדש" · "לעובדי סקטור מסוים" · "לעובדי גוף מסוים" beside "ברירת המחדל".
+Fee cell and labels (D36, the same day): header "דמי ניהול, ממוצע `{שנה}`"; each cell "`{אחוז}` מהחיסכון" over "`{אחוז}` מההפקדות" (phone: "דמי ניהול, ממוצע: `{אחוז}` מהחיסכון `{אחוז}` מההפקדות"); under the table "התקרה בחוק: `{אחוז}` מהחיסכון, `{אחוז}` מההפקדות" and "בנוסף לדמי הניהול יורדות מהקופה הוצאות ישירות (עמלות מסחר, משמורת ועוד), שלא מופיעות כאן: הן נראות בתשואה, לא כשורה בחשבון." with the PF-10 chip; the label "חדש" beside "ברירת המחדל".
 
 Removed the same day with the fit mark on these pages: the row mark (מתאים · לא מתאים · אין כלל לסיווג הזה, "התאמה למטרה:") and the strip's "ההתאמה לפי המטרה השמורה:" there; the workbench keeps them (`docs/roadmap.md`, "Not final").
 
@@ -2611,7 +2610,6 @@ Also fixed outside `copy.ts` the same day, at the lead's request: "הודעו" �
 
 | Key | Text | Note |
 |---|---|---|
-| `r3workbench.openToAll` | פתוח לכולם · `{n}` מסלולים הפתוחים רק לקבוצה מסוימת מוסתרים | A36: the toggle, on by default; the count is the sector and employer tracks it hides |
 | `r3workbench.sortDir` | מהנמוך לגבוה · מהגבוה לנמוך | A36: screen-reader words for the sort direction; a second press reverses |
 | `r3workbench.missingKey` | עוד לא דווח: השדה ריק בנתוני הרשות. לחצו על הערך כדי לראות אם הסיבה ידועה. | A87: one-line key under a table that holds an unreported fee. 2026-10-27: was "החברה לא דיווחה לרשות את הנתון לתקופה הזו", a cause the data does not state; the value's note says the reason when it is known |
 | `r3workbench.noneKey` | אין: בסוג הקופה הזה מותר לגבות דמי ניהול רק מהחיסכון, לא מההפקדות. | key line for `track.feeNone`, followed by the PF-06 chip (2026-10-27) |

@@ -91,16 +91,6 @@ export function rulesAnchor(rules: readonly { id: string; il_finance_file: strin
 }
 
 /**
- * A company is closed to the public under a product when every track it runs there says its target population is the
- * workers of one sector or one plant (CMA field `target_population`, CAT-10); a track with no population stated, or for the
- * whole public, keeps it open (audit A86).
- */
-export function isClosedAudience(populations: readonly string[]): boolean {
-  const stated = populations.map((p) => p.trim()).filter((p) => p !== "");
-  return stated.length > 0 && stated.length === populations.length && stated.every((p) => p.startsWith("עובדי"));
-}
-
-/**
  * The terms table of a guide or exposure page (audit A83): nothing under `min` rows (an empty or one-row table teaches
  * nothing); otherwise the terms the page's own text opens (`highlighted`) when there are enough of them, with the rest
  * behind a toggle; when too few are highlighted, all of them sit behind the toggle.

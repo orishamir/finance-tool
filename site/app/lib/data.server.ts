@@ -130,7 +130,6 @@ export interface Track {
   classification: string;
   specialization: string;
   subSpecialization: string;
-  targetPopulation: string;
   inception: string | null;
   reportPeriod: string;
   wrapperId: WrapperId | null;
@@ -203,7 +202,6 @@ export function loadCma(): CmaData {
         classification: fund.fund_classification.trim(),
         specialization: fund.specialization.trim(),
         subSpecialization: fund.sub_specialization.trim(),
-        targetPopulation: fund.target_population.trim(),
         inception: fund.inception_date,
         reportPeriod: f.report_period,
         wrapperId: classificationToWrapper[fund.fund_classification.trim()] ?? null,

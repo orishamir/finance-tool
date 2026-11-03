@@ -332,31 +332,14 @@ function CompanyLinks({ companies }: { companies: { id: string; name: string }[]
   );
 }
 
-/**
- * The companies that offer the product, behind one toggle (audit A42), the ones open to everyone first and the ones for a
- * sector's or a plant's workers under their own line (audit A86); the "all companies" link stays outside.
- */
-export function InstitutionChips({ companies, allHref }: { companies: { id: string; name: string; closed?: boolean }[]; allHref: string }) {
-  const open = companies.filter((c) => !c.closed);
-  const closed = companies.filter((c) => c.closed);
+/** The companies that offer the product, behind one toggle (audit A42); the "all companies" link stays outside. */
+export function InstitutionChips({ companies, allHref }: { companies: { id: string; name: string }[]; allHref: string }) {
   return (
     <div className="flex flex-col gap-1">
       {companies.length > 0 && (
         <Disclosure label={<span className="text-link">{copy.companiesShow}</span>} openLabel={<span className="text-link">{copy.companiesHide}</span>} summaryClassName="justify-start">
-          <div className="flex flex-col gap-3 pb-2">
-            {open.length > 0 && (
-              <div className="flex flex-col gap-1">
-                {closed.length > 0 && <span className="text-sm font-medium">{copy.companiesOpen}</span>}
-                <CompanyLinks companies={open} />
-              </div>
-            )}
-            {closed.length > 0 && (
-              <div className="flex flex-col gap-1">
-                <span className="text-sm font-medium">{copy.companiesClosed}</span>
-                <span className="text-xs text-muted-foreground">{copy.companiesClosedLine}</span>
-                <CompanyLinks companies={closed} />
-              </div>
-            )}
+          <div className="pb-2">
+            <CompanyLinks companies={companies} />
           </div>
         </Disclosure>
       )}

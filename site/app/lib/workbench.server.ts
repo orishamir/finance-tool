@@ -25,7 +25,6 @@ function cmaFiles(): CmaPeriodFile[] {
 }
 
 const references: WorkbenchReferences = { classificationToWrapper };
-const GENERAL = "כלל האוכלוסיה";
 
 /** The wrappers that have tracks in the latest CMA period: the pages the build prerenders. */
 export function workbenchWrapperIds(): WrapperId[] {
@@ -83,7 +82,6 @@ export function buildWorkbench(wrapperId: string): WbData | null {
       n: r.name,
       sp: r.specialization,
       sub: r.subSpecialization,
-      pop: r.targetPopulation && r.targetPopulation !== GENERAL ? r.targetPopulation : "",
       b: compactFee(r.fees.management, balance),
       d: compactFee(r.fees.deposit, deposit),
     };
