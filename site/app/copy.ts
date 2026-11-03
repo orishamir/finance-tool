@@ -2110,11 +2110,8 @@ export const r4catalogue = {
 export const r4workbench = {
   // ---- 8.0 everywhere
   levels: { list: "תעריפון", average: "ממוצע שפורסם", entered: "ההצעה שלכם" },
-  classWords: { bank: "בנק", broker: "בית השקעות", foreign_broker: "ברוקר זר", "provident-manager": "חברה מנהלת", "fund-manager": "מנהל קרנות" } as Record<string, string>,
   regulators: { BoI: "בנק ישראל", ISA: "רשות ניירות ערך", CMA: "רשות שוק ההון, ביטוח וחיסכון" } as Record<string, string>,
-  feeTypes: { trade: "עמלת קנייה ומכירה", custody: "דמי ניהול פיקדון ניירות ערך", fx: "המרת מטבע", fixed: "דמי חשבון קבועים" } as Record<string, string>,
   notComparable: {
-    heading: "אי אפשר להשוות",
     dataMissing: "התעריפון לא נאסף.",
     noLine: (cls: string) => `בתעריפון אין שורה ל${cls}.`,
     noLineChannel: (cls: string, channel: string) => `בתעריפון אין שורה ל${cls} ב${channel}.`,
@@ -2137,7 +2134,6 @@ export const r4workbench = {
   notPrinted: "לא מודפס",
   staleTariff: { before: "התעריפון נאסף ב־", after: "; מאז ייתכן שהשתנה." },
   noPublishedDate: "ללא תאריך פרסום",
-  enteredTag: "לפי ההצעה שלכם",
   instrumentClasses: {
     etf_units: "קרן סל",
     tase_shares_bonds: "מניות ואיגרות חוב",
@@ -2161,7 +2157,7 @@ export const r4workbench = {
     back: "המדריך למוצר",
     behaviour: {
       orders: "פעולות בחודש",
-      channelOptions: { direct: "ערוצים ישירים", branch: "סניף" },
+      channelOptions: { direct: "ערוצים ישירים" },
     },
     tariffLine: { before: "תעריפון מ־", mid: ", נאסף ב־", /* copy.md 8.1: the form with no published date */ collected: "נאסף ב־" },
     tariffLink: "לתעריפון",

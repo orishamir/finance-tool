@@ -66,7 +66,6 @@ const OLDUI: Record<string, number> = {
     "components/Sheet.tsx": 1,
     "components/provenance.tsx": 1,
     "routes/workbench-funds.tsx": 1,
-    "routes/workbench-providers.tsx": 1,
     "routes/workbench-tracks.tsx": 1,
   };
 

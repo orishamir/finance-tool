@@ -145,7 +145,7 @@ const withStale = (v: ValueObject, stale: Staleness | null, owner: string): Site
 
 // ---------------------------------------------------------------- the subject fund
 
-export interface SubjectFund {
+interface SubjectFund {
   recordId: string;
   name: string;
   number: string;
@@ -202,7 +202,7 @@ export interface FundAssumptions {
 
 const isIls = (c: string) => c === "NIS" || c === "ILS";
 
-export type RunSpecError = { kind: "fund-type" } | { kind: "need-rate"; currency: string } | { kind: "need-yield" } | { kind: "other-currency"; fund: string; exposure: string };
+type RunSpecError = { kind: "fund-type" } | { kind: "need-rate"; currency: string } | { kind: "need-yield" } | { kind: "other-currency"; fund: string; exposure: string };
 
 /** The run inputs a fund fixes: its kind and drag (the same builder as F-65), the currency and how the return is quoted (F-04). */
 export function fundRun(
@@ -328,7 +328,7 @@ export function ruleContext(bundle: WorkbenchBundle): RunContext {
 
 // ---------------------------------------------------------------- provident wrappers: a sourced listing
 
-export interface ListingLine {
+interface ListingLine {
   id: string;
   line: string;
   base: string;
@@ -336,7 +336,7 @@ export interface ListingLine {
 }
 
 /** One company's card: its lines of the tariff (one fee base each), the company id its page is addressed by. */
-export interface ListingCard {
+interface ListingCard {
   provider: string;
   providerName: string;
   /** The regulator's company id, or null when the data holds no company of that name (then the name is not a link). */
