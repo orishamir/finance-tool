@@ -1,6 +1,6 @@
 // The track browser's list (D54, 2026-11-03): one table on a computer, one row per track on a phone, built on the kit's ProductTable.
-// Under a company's heading the row says the short name and, when the name leaves it out, the kind; under a kind's heading it says
-// the company first. The column heads sort. Every figure goes through the provenance component.
+// Under a company's heading the row says the short name and, when the name leaves it out, the kind; in the one list of a chosen kind
+// (no heading) it says the company first. The column heads sort. Every figure goes through the provenance component.
 import { useMemo } from "react";
 import { Link } from "react-router";
 import { trackBrowser as t } from "../../copy";
@@ -37,7 +37,8 @@ function AssetsFigure({ value, size = "cell" }: { value: SiteValue | null; size?
   return <Num value={value} size={size} display={typeof value.value === "number" ? assetsText(value.value) : t.assets.missing} />;
 }
 
-function FeeRange({ fees }: { fees: TbGroup["fees"] }) {
+/** "דמי ניהול מהחיסכון: מ־0.54% עד 0.61%" (F-100), or that none was reported. */
+export function FeeRange({ fees }: { fees: TbGroup["fees"] }) {
   if (!fees) return <span>{t.group.noFee}</span>;
   return (
     <span>
@@ -46,15 +47,14 @@ function FeeRange({ fees }: { fees: TbGroup["fees"] }) {
   );
 }
 
-/** A group's line under its title: by company "16 מסלולים · כסף מנוהל 19.1 מיליארד ₪ · דמי ניהול…"; by kind the regulator's kind, the count and the fee range. */
+/** A company's line under its name: "16 מסלולים · כסף מנוהל 19.1 מיליארד ₪ · דמי ניהול…". */
 function GroupLine({ g }: { g: TbGroup }) {
   const filtered = g.tracks.length < g.total;
   const count = `${tracksPhrase(g.tracks.length)}${filtered ? ` ${t.count.outOf} ${fmt.number(g.total)}` : ""}`;
   return (
     <>
-      {g.by === "kind" && g.regulatorKind && <span>{g.regulatorKind} · </span>}
       <span>{count}</span>
-      {g.by === "company" && g.assets && (
+      {g.assets && (
         <>
           {" · "}
           {t.group.assets} <AssetsFigure value={g.assets} size="inline" />
@@ -246,8 +246,9 @@ export function TrackList({ view, groups, by, sort, sortable, onSort, feeYear, p
     left -= drawn.length;
     tableGroups.push({
       key: g.key,
-      heading: {
-        title: g.by === "company" && g.companyId ? (
+      // a chosen kind is one list with no heading: the chip names it, and the count line holds its count and its fees
+      heading: g.by === "kind" ? undefined : {
+        title: g.companyId ? (
           <Link to={`/companies/${g.companyId}`} className="hover:underline inline-flex items-center min-h-target min-w-11 md:min-h-0 md:min-w-0">
             <bdi>{g.title}</bdi>
           </Link>

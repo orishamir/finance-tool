@@ -1506,16 +1506,13 @@ export const trackBrowser = {
   },
   controls: {
     product: "מוצר",
-    group: "קיבוץ לפי",
-    groupCompany: "חברה",
-    groupKind: "במה הכסף מושקע",
     search: "חיפוש",
     searchPlaceholder: "שם המסלול או החברה",
     kind: "במה הכסף מושקע",
     kindAll: "הכול",
-    sort: "מיון בתוך כל קבוצה",
+    sort: "מיון",
   },
-  /** The count line: "143 מסלולים של 12 חברות (מתוך 143)", then the guide link. */
+  /** The count line: "143 מסלולים של 12 חברות (מתוך 143) · דמי ניהול מהחיסכון: מ־0.10% עד 0.90%", then the guide link. */
   count: {
     tracksNone: "אין מסלולים",
     tracksOne: "מסלול אחד",
@@ -1528,7 +1525,7 @@ export const trackBrowser = {
     of: "של",
     outOf: "מתוך",
     whatIs: "מה זה",
-    noKinds: "הרשות לא מסווגת את המסלולים של המוצר הזה לפי סוג ההשקעה, ולכן אין כאן קיבוץ כזה.",
+    noKinds: "הרשות לא מסווגת את המסלולים של המוצר הזה לפי סוג ההשקעה, ולכן אי אפשר לבחור כאן במה הכסף מושקע.",
   },
   /** What each sort says in the line above the list: the column, then the direction. */
   sorts: {
@@ -1540,7 +1537,7 @@ export const trackBrowser = {
   },
   order: {
     company: { before: "החברות מסודרות מהגדולה לקטנה לפי הכסף שהן מנהלות ב", mid: "; בתוך כל חברה לפי " },
-    kind: { before: "הקבוצות מסודרות לפי החשיפה למניות, מהגבוהה לנמוכה; בתוך כל קבוצה לפי " },
+    kind: { before: "המסלולים של כל החברות ברשימה אחת, לפי " },
   },
   /** The heading of a group: "16 מסלולים · כסף מנוהל 19.1 מיליארד ₪ · דמי ניהול מהחיסכון: מ־0.54% עד 0.61%". */
   group: {
@@ -1566,8 +1563,8 @@ export const trackBrowser = {
   },
   yield: { years3: "3 שנים", years5: "5 שנים", young3: "פחות מ־3 שנים", young5: "פחות מ־5 שנים", missing: "לא דווח", selfManaged: "בניהול אישי: כל חוסך מחליט במה להשקיע" },
   assets: { million: "מיליון ₪", billion: "מיליארד ₪", missing: "לא דווח", phone: "כסף מנוהל" },
-  /** The sheets' headers of the two group figures (F-99, F-100). */
-  about: { assets: "הכסף שהחברה מנהלת במוצר, בכל המסלולים יחד", feeLow: "הנמוך מדמי הניהול מהחיסכון שדווחו למסלולים בקבוצה", feeHigh: "הגבוה מדמי הניהול מהחיסכון שדווחו למסלולים בקבוצה" },
+  /** The sheets' headers of the two group figures (F-99, F-100), and of the whole list's fee range on the count line. */
+  about: { assets: "הכסף שהחברה מנהלת במוצר, בכל המסלולים יחד", feeLow: "הנמוך מדמי הניהול מהחיסכון שדווחו למסלולים בקבוצה", feeHigh: "הגבוה מדמי הניהול מהחיסכון שדווחו למסלולים בקבוצה", listLow: "הנמוך מדמי הניהול מהחיסכון שדווחו למסלולים ברשימה", listHigh: "הגבוה מדמי הניהול מהחיסכון שדווחו למסלולים ברשימה" },
   noResult: { before: "אין מסלולים שמתאימים לחיפוש ״", after: "״." },
   /** The guide's link to a product's tracks: "כל המסלולים של קופת גמל להשקעה בכל החברות". */
   guideLink: { before: "כל המסלולים של ", after: " בכל החברות" },

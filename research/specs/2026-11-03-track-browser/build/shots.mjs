@@ -48,11 +48,10 @@ for (const [name, view] of Object.entries(VIEWS)) {
     await go(`/tracks/${p}`);
     await shotPage(`product-${p}`);
   }
-  // the grouping by kind, a kind filter, a search with no result, and each sort
-  await go("/tracks/kupat-gemel-lehashkaa");
-  await page.getByRole("button", { name: "במה הכסף מושקע", exact: true }).click();
-  await shotPage("group-kind");
-  await shotList("group-kind-list");
+  // a kind chosen (one list of every company's track, 2026-11-03), sorted by the fee from the highest, and a search with no result
+  await go(`/tracks/kupat-gemel-lehashkaa?kind=${encodeURIComponent("עוקב מדדי מניות")}&sort=fee&order=reverse`);
+  await shotPage("kind-list");
+  await shotList("kind-list-rows");
   await go("/tracks/kupat-gemel-lehashkaa");
   const chip = page.locator("[aria-labelledby=tb-kind] button").nth(2);
   if (await chip.isVisible().catch(() => false)) await chip.click();
@@ -72,7 +71,7 @@ for (const [name, view] of Object.entries(VIEWS)) {
     await page.evaluate(() => window.scrollTo(0, document.querySelector("table").getBoundingClientRect().top + scrollY + 1500));
     await shot("sticky-head");
   } else {
-    const sel = page.getByLabel("מיון בתוך כל קבוצה");
+    const sel = page.getByLabel("מיון", { exact: true });
     for (const id of ["name", "fee", "dep", "stock", "assets"]) {
       await sel.selectOption(id);
       await shotList(`sort-${id}`);

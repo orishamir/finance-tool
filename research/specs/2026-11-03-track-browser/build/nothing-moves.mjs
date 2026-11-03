@@ -1,5 +1,5 @@
-// Check 4: nothing moves. Changes the sort, the grouping, the kind filter, the search and the product, and after each change compares
-// the boxes of the controls (product chips, count line, grouping, search, kind chips, order line) and of the table's heads and columns
+// Check 4: nothing moves. Changes the sort, the kind (and the sort with a kind chosen), the search and the product, and after each change compares
+// the boxes of the controls (product chips, count line, search, kind chips, order line) and of the table's heads and columns
 // with the boxes before it. A pixel of rounding is not a move. Reports every box that moved, per change.
 //   node research/specs/2026-11-03-track-browser/build/nothing-moves.mjs     (the server: serve.mjs, port 4173)
 import { createRequire } from "node:module";
@@ -23,12 +23,10 @@ const snapshot = () => {
   [...document.querySelectorAll("[aria-labelledby=tb-product] button")].forEach((b, i) => (out[`product chip ${i + 1}`] = box(b)));
   const count = [...document.querySelectorAll("p")].find((p) => /מה זה/.test(p.textContent));
   out["count line (block)"] = box(count?.parentElement);
-  out["group label"] = box(document.getElementById("tb-group"));
-  [...document.querySelectorAll("[aria-labelledby=tb-group] button")].forEach((b, i) => (out[`group button ${i + 1}`] = box(b)));
   out["search field"] = box(document.querySelector("input[placeholder='שם המסלול או החברה']"));
   out["kind label"] = box(document.getElementById("tb-kind"));
   [...document.querySelectorAll("[aria-labelledby=tb-kind] button")].forEach((b, i) => (out[`kind chip ${i + 1}`] = box(b)));
-  const order = [...document.querySelectorAll("p")].find((p) => /מסודרות/.test(p.textContent));
+  const order = [...document.querySelectorAll("p")].find((p) => /מסודרות|ברשימה אחת/.test(p.textContent));
   out["order line (block)"] = box(order?.parentElement);
   const table = document.querySelector("table");
   out["table"] = box(table);
@@ -71,19 +69,22 @@ for (const [name, view] of Object.entries(VIEWS)) {
     for (const h of heads) await change(`press the head "${h}" (sort)`, () => page.locator("thead button", { hasText: h }).first().click());
     for (const h of heads) await change(`press the head "${h}" again (reverse)`, () => page.locator("thead button", { hasText: h }).first().click());
   } else {
-    const sel = page.getByLabel("מיון בתוך כל קבוצה");
+    const sel = page.getByLabel("מיון", { exact: true });
     for (const id of ["name", "dep", "stock", "assets", "fee"]) await change(`sort select: ${id}`, () => sel.selectOption(id));
   }
-  await change("group by kind", () => page.getByRole("button", { name: "במה הכסף מושקע", exact: true }).click());
-  await change("group by company", () => page.getByRole("button", { name: "חברה", exact: true }).click());
-  // a filter changes the count line and the order line text, never their boxes; the list under them is the thing that changes
-  if (name === "pc") await change("kind chip: second", () => page.locator("[aria-labelledby=tb-kind] button").nth(2).click(), { ignore: [/^(table|column|table head)/] });
-  else await change("kind select: second", () => page.locator("select").first().selectOption({ index: 2 }), { ignore: [/^(table|column|table head)/] });
-  await change("search: הראל", () => page.getByPlaceholder("שם המסלול או החברה").fill("הראל"), { ignore: [/^table$/] });
-  await change("search cleared", () => page.getByPlaceholder("שם המסלול או החברה").fill(""), { ignore: [/^table$/] });
+  // a kind changes the count line and the order line text, never their boxes, nor the columns; the rows under them are what changes
+  if (name === "pc") await change("kind chip: second", () => page.locator("[aria-labelledby=tb-kind] button").nth(2).click(), { ignore: [/^table:/] });
+  else await change("kind select: second", () => page.locator("select").first().selectOption({ index: 2 }), { ignore: [/^table:/] });
+  // with a kind chosen the list is one, and the sort orders it across the companies
+  if (name === "pc") for (const h of ["מהחיסכון", "מהחיסכון", "המסלול"]) await change(`kind chosen, press the head "${h}"`, () => page.locator("thead button", { hasText: h }).first().click());
+  else for (const id of ["stock", "fee"]) await change(`kind chosen, sort select: ${id}`, () => page.getByLabel("מיון", { exact: true }).selectOption(id));
+  if (name === "pc") await change("kind chip: all", () => page.locator("[aria-labelledby=tb-kind] button").first().click(), { ignore: [/^table:/] });
+  else await change("kind select: all", () => page.locator("select").first().selectOption({ index: 0 }), { ignore: [/^table:/] });
+  await change("search: הראל", () => page.getByPlaceholder("שם המסלול או החברה").fill("הראל"), { ignore: [/^table:/] });
+  await change("search cleared", () => page.getByPlaceholder("שם המסלול או החברה").fill(""), { ignore: [/^table:/] });
   await change("search with no result", () => page.getByPlaceholder("שם המסלול או החברה").fill("xyzxyz"), { ignore: [/^(table|column|table head|sort head)/] });
   await change("search cleared", () => page.getByPlaceholder("שם המסלול או החברה").fill(""), { ignore: [/^(table|column|table head|sort head)/] });
-  // another product: the chips and the grouping controls stay; the kinds row and the list differ by product, so only what is above them is compared
+  // another product: the chips and the search stay; the kinds row and the list differ by product, so only what is above them is compared
   const above = (m) => !/^(kind|order|table|column|sort head|count line)/.test(m);
   for (const [text, label] of [["תגמולים ואישית", "provident for annuity"], ["קרן חדשה מקיפה", "pension comprehensive"], ["קופת גמל להשקעה", "investment fund"]]) {
     const before = await page.evaluate(snapshot);

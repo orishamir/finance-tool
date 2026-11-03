@@ -158,13 +158,19 @@ describe("groups", () => {
     expect(feeRangeOf(none, data.today)).toBeNull();
   });
 
-  it("by kind: the groups keep the order of the kinds; a filter drops the groups left empty and keeps each kind's own total", () => {
-    const shown = filterTracks(gemel, { kind: "", q: "הראל" });
-    const groups = buildGroups(gemel, sortTracks(shown, defaultSort, "kind"), "kind", data.today);
-    expect(groups.length).toBeGreaterThan(0);
-    expect(groups.every((g) => g.tracks.every((x) => x.companyName === "הראל"))).toBe(true);
-    expect(groups.find((g) => g.title === "עוקב מדד s&p 500")!.total).toBe(12);
-    expect(groups[0]!.regulatorKind).toBe("עוקבי מדדים");
+  it("a chosen kind is one list of every company's track, and the sort orders it across the companies", () => {
+    // founder, 2026-11-03: "sorting by דמי ניהול doesnt work" with a kind chosen, when each company held one row under its own heading
+    const kind = "עוקב מדדי מניות";
+    const shown = filterTracks(gemel, { kind, q: "" });
+    expect(sortableIn(gemel, "kind")).toEqual(sortableIn(gemel, "company"));
+    const groups = buildGroups(gemel, sortTracks(shown, { id: "fee", dir: -1 }, "kind"), "kind", data.today);
+    expect(groups).toHaveLength(1);
+    expect(new Set(groups[0]!.tracks.map((x) => x.company)).size).toBe(11);
+    // the highest fee first; a track that reported none is last either way
+    const fees = groups[0]!.tracks.map((x) => x.fee.value as number | null);
+    const reported = fees.filter((f): f is number => f !== null);
+    expect(fees.slice(0, reported.length)).toEqual([...reported].sort((a, b) => b - a));
+    expect(reported[0]).toBeGreaterThan(reported.at(-1)!);
   });
 
   it("a product without kinds is always grouped by company", () => {

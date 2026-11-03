@@ -205,6 +205,7 @@ export const HELP_TERMS = {
 
 // ---------------------------------------------------------------- filter, sort, group
 
+/** "company": the tracks under their companies' headings; "kind": one kind chosen, its tracks of every company in one list (2026-11-03). */
 export type GroupBy = "company" | "kind";
 export type SortId = "name" | "fee" | "dep" | "stock" | "assets";
 
@@ -264,7 +265,8 @@ export function sortTracks(list: readonly TbTrack[], s: SortState, by: GroupBy):
 /**
  * The columns whose head sorts in this grouping: those whose figure differs between the tracks of at least one group, since the sort
  * acts inside each group (founder, 2026-11-03: "sorting by דמי ניהול doesnt work" on the pension products, whose fee is the fund's
- * own, one for all its tracks; and no study fund has a fee from deposits). The name always sorts.
+ * own, one for all its tracks; and no study fund has a fee from deposits). The name always sorts. A chosen kind is one of the groups by
+ * kind; the heads do not change with it, so a column whose figures are equal in that kind still sorts (nothing moves, 2026-11-03).
  */
 export function sortableIn(view: ProductView, by: GroupBy): ReadonlySet<SortId> {
   const groups = new Map<string | number, TbTrack[]>();
@@ -306,8 +308,6 @@ export interface TbGroup {
   title: string;
   /** The company's page. */
   companyId?: string;
-  /** The regulator's kind of a group by kind. */
-  regulatorKind?: string;
   /** The tracks shown, in the chosen order. */
   tracks: TbTrack[];
   /** The tracks of the group before the filter (a company's own). */
@@ -318,13 +318,13 @@ export interface TbGroup {
   fees: { low: SiteValue; high: SiteValue } | null;
 }
 
-/** F-100's fee range of a group's shown tracks as two computed values over the fees it read. */
-export function feeRangeOf(list: readonly TbTrack[], today: string): TbGroup["fees"] {
+/** F-100's fee range of a group's shown tracks as two computed values over the fees it read. `about`: the sheets' headers, the group's by default. */
+export function feeRangeOf(list: readonly TbTrack[], today: string, about: { low: string; high: string } = { low: t.about.feeLow, high: t.about.feeHigh }): TbGroup["fees"] {
   const range = groupFeeRange(list.map((x) => shareOf(x.fee)));
   if (!range) return null;
   const inputs = Object.fromEntries(list.filter((x) => shareOf(x.fee) !== null).map((x) => [`${x.companyName}: ${x.fullName} (${x.id})`, x.fee]));
-  const make = (value: number, about: string) => computed(value, "pct_per_year", "F-100", inputs, { today, about });
-  return { low: make(range.low, t.about.feeLow), high: make(range.high, t.about.feeHigh) };
+  const make = (value: number, header: string) => computed(value, "pct_per_year", "F-100", inputs, { today, about: header });
+  return { low: make(range.low, about.low), high: make(range.high, about.high) };
 }
 
 /** The groups of the shown tracks, in their order, without the groups left empty. `sorted` is already in the chosen order. */
@@ -340,7 +340,7 @@ export function buildGroups(view: ProductView, sorted: readonly TbTrack[], by: G
   for (const x of sorted) bucket.set(x.sub, [...(bucket.get(x.sub) ?? []), x]);
   return view.kinds
     .filter((k) => bucket.has(k.sub))
-    .map((k) => ({ key: `k:${k.sub}`, by: "kind" as const, title: k.sub, regulatorKind: k.kind, tracks: bucket.get(k.sub)!, total: k.count, assets: null, fees: feeRangeOf(bucket.get(k.sub)!, today) }));
+    .map((k) => ({ key: `k:${k.sub}`, by: "kind" as const, title: k.sub, tracks: bucket.get(k.sub)!, total: k.count, assets: null, fees: feeRangeOf(bucket.get(k.sub)!, today) }));
 }
 
 /** Whether a row under a company's heading shows its kind as a chip: its short name does not say it already. */
