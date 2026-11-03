@@ -11,33 +11,19 @@ import { PageShell } from "../components/shell";
 import { Callout } from "../components/kit";
 import { fmt } from "../lib/format";
 
-/** Every rule id any value of the page's templates names: the sheets open on them. */
-function ruleIdsIn(x: unknown, out = new Set<string>()): Set<string> {
-  if (Array.isArray(x)) for (const v of x) ruleIdsIn(v, out);
-  else if (x && typeof x === "object") {
-    for (const [k, v] of Object.entries(x)) {
-      if (k === "rule_ids" && Array.isArray(v)) {
-        for (const id of v) if (typeof id === "string") out.add(id);
-      } else ruleIdsIn(v, out);
-    }
-  }
-  return out;
-}
-
 /** The data covers the six products, so moving between them keeps it (the address is read from the params). */
 export function shouldRevalidate() {
   return false;
 }
 
 export async function loader({ params }: Route.LoaderArgs) {
-  const { buildTrackBrowser, trackProductIds } = await import("../lib/track-browser.server");
+  const { buildTrackBrowser, templateRuleIds, trackProductIds } = await import("../lib/track-browser.server");
   const { loadRules, loadTerms, pointedRecords } = await import("../lib/data.server");
   const { HELP_TERMS } = await import("../lib/track-browser");
   if (params.product && !(trackProductIds as readonly string[]).includes(params.product)) throw new Response("Not found", { status: 404 });
   const data = buildTrackBrowser();
   const all = loadRules();
-  const wanted = new Set<string>(["CAT-36", "CAT-37", "CAT-04", "CAT-05", "PF-06"]);
-  for (const p of data.products) ruleIdsIn(p.templates, wanted);
+  const wanted = new Set<string>(["CAT-36", "CAT-37", "CAT-04", "CAT-05", "PF-06", ...templateRuleIds(data)]);
   const lineIds = [...wanted].filter((id) => all[id]);
   // the cards behind the column heads' "?" (and the phone's line of them), with the rules they cite
   const wantedTerms = new Set<string>(Object.values(HELP_TERMS));

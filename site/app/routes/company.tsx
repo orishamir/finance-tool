@@ -1,7 +1,9 @@
 // Screen 4: the company page (design-spec 5 as redrawn 2026-10-23; flows 6.11): every track the company
 // runs, grouped by the regulator's product type, same-name tracks grouped, the fee-pending note, the paste card.
+// Since 2026-11-03 (founder: "a more similar UI to the one we have in /tracks") the tracks of the six products the tracks page covers
+// are that page's browser over this company alone; the other product types, the funds and the brokerage account stay folds under it.
 import { useId } from "react";
-import { Link, useLoaderData } from "react-router";
+import { Link, useLoaderData, type ShouldRevalidateFunctionArgs } from "react-router";
 import type { Route } from "./+types/company";
 import { brands as brandsCopy, catalogue, companies as companiesCopy, company as copy, r4catalogue, site, trackBrowser } from "../copy";
 import { feeLabel } from "../components/decoder/fees";
@@ -13,7 +15,8 @@ import { BrokerageGroupCard } from "../components/decoder/institutions/brokerage
 import { IconDrillIn } from "../components/icons";
 import { IdRef, Num, NumAfter, NumberLegend, StaleSaid } from "../components/provenance";
 import { Breadcrumb, PageShell } from "../components/shell";
-import { Callout, Card, Disclosure, FeeWordsNote } from "../components/kit";
+import { TrackBrowser } from "../components/tracks/browser";
+import { Callout, Card, Disclosure, FeeWordsNote, cx } from "../components/kit";
 import type { SiteValue } from "../lib/value";
 import { fmt } from "../lib/format";
 import { cmaFeeValue, compactFee, expandFee, feeYear, type CompactFee } from "../lib/value";
@@ -32,7 +35,7 @@ export async function loader({ params }: Route.LoaderArgs) {
   const cma = loadCma();
   // D33: a brand's every address shows its one page: the managing company's tracks, the funds, the brokerage account
   const { brandOfPage, brandFunds } = await import("../lib/brands.server");
-  const { shortCompanyName } = await import("../lib/track-browser.server");
+  const { buildTrackBrowser, shortCompanyName, templateRuleIds } = await import("../lib/track-browser.server");
   const brand = brandOfPage(params.id) ?? null;
   const companyId = brand ? brand.cmaId : params.id;
   const company = companyId ? cma.companies.find((c) => c.id === companyId) : undefined;
@@ -90,6 +93,11 @@ export async function loader({ params }: Route.LoaderArgs) {
         wrapper: wrapper ? { id: wrapper.id, name: wrapper.names.he[0]!, line: terms.find((t) => t.he === wrapper.names.he[0])?.explanation ?? null } : null,
       };
     });
+  // the six products of the tracks page: that page's browser over this company's tracks, opened on the first in the founder's order
+  const tb = company ? buildTrackBrowser(company.id) : null;
+  const browser = tb && tb.products.length > 0 ? tb : null;
+  const first = browser ? (classificationOrder.map((c) => tracks.find((x) => x.classification === c)?.wrapperId).find((id) => id && browser.products.some((p) => p.id === id)) ?? browser.products[0]!.id) : null;
+  const caps = browser ? Object.fromEntries(browser.products.map((p) => [p.id, wrapperCaps.get(p.id) ?? null])) : {};
   // the catalogue: this company's entries (data/catalog/), found through the tracks they name
   const catalog = loadCatalog();
   const owner = institutionCompanies(catalog, cma.tracks);
@@ -113,10 +121,12 @@ export async function loader({ params }: Route.LoaderArgs) {
   const labelRuleIds = [...new Set(funds.flatMap((g) => g.funds.flatMap((f) => f.labels.flatMap((l) => l.rules))))].filter((id) => allRules[id]);
   // the glossary cards behind the track list's "?" (the fee and exposure heads), with the rules they cite
   const { HELP_TERMS } = await import("../lib/track-browser");
-  const helpNames = new Set<string>([HELP_TERMS.fee, HELP_TERMS.exposure]);
+  const helpNames = new Set<string>(Object.values(HELP_TERMS));
   const helpTerms = Object.fromEntries(terms.filter((x) => helpNames.has(x.he)).map((x) => [x.he, x]));
   const helpRuleIds = Object.values(helpTerms).flatMap((x) => x.ruleIds).filter((id) => allRules[id]);
-  const termRules = { ...brokerage?.rules, ...Object.fromEntries([...termGroups.flatMap((g) => g.ids), ...labelRuleIds, ...helpRuleIds].map((id) => [id, allRules[id]!])) };
+  // and the rules the browser's figures name (their sheets), as on the tracks page
+  const browserRuleIds = browser ? ["PF-06", ...templateRuleIds(browser)].filter((id) => allRules[id]) : [];
+  const termRules = { ...brokerage?.rules, ...Object.fromEntries([...termGroups.flatMap((g) => g.ids), ...labelRuleIds, ...helpRuleIds, ...browserRuleIds].map((id) => [id, allRules[id]!])) };
   const { loadInstitutionRegistry } = await import("../lib/institutions.server");
   const name = brand?.name ?? shortCompanyName(company!.id, company!.name);
   const shortName = brand?.name ?? loadInstitutionRegistry().find((r) => r.id === registryIds[0])?.name_he ?? name;
@@ -124,7 +134,12 @@ export async function loader({ params }: Route.LoaderArgs) {
   // the legal companies the page stands for, as their own data writes them (the CMA, the tariff, the fund records)
   const members = brand ? [...new Set([company?.name, brokerage?.tariff.providerName, ...brand.fundManagers].filter((x): x is string => !!x))] : [];
   const brokerageCard = brokerage && brand?.brokerId ? { id: brand.brokerId, kind: brokerage.kind, tariff: brokerage.tariff } : null;
-  return { kind: "company" as const, name, company: company ?? null, groups, funds, brokerage: brokerageCard, members, period: cma.periodValue, defaultIds, known, unassigned, today: t, companyTerms };
+  return { kind: "company" as const, name, company: company ?? null, groups, browser: browser && first ? { data: browser, first, caps } : null, funds, brokerage: brokerageCard, members, period: cma.periodValue, defaultIds, known, unassigned, today: t, companyTerms };
+}
+
+/** The product, the kind and the order are in the query: changing them keeps the page's data (it is all loaded). */
+export function shouldRevalidate({ currentUrl, nextUrl, defaultShouldRevalidate }: ShouldRevalidateFunctionArgs) {
+  return currentUrl.pathname === nextUrl.pathname ? false : defaultShouldRevalidate;
 }
 
 export function meta({ loaderData: data }: Route.MetaArgs) {
@@ -172,8 +187,11 @@ function ManagerCompany({ data }: { data: CompanyData }) {
   // or brokerage account (most managing companies run several types; each group heading links to its own guide)
   const side = data.groups.length === 1 && data.funds.length === 0 && !data.brokerage ? data.groups[0]!.wrapper : null;
   const company = data.company;
+  const browser = data.browser;
+  // the product types the browser shows are not folds as well
+  const folded = data.groups.filter((g) => !browser?.data.products.some((p) => p.id === g.workbenchId));
   return (
-    <PageShell current="decoder" data={{ rules: data.companyTerms.rules, pointed: data.companyTerms.pointed, terms: data.companyTerms.helpTerms, dimensions: data.companyTerms.dimensions, today: data.today, ...(data.companyTerms.company ? { company: data.companyTerms.company } : {}), pageCompanies: data.companyTerms.pageCompanies }}>
+    <PageShell current="decoder" wide={!!browser} data={{ rules: data.companyTerms.rules, pointed: data.companyTerms.pointed, terms: data.companyTerms.helpTerms, dimensions: data.companyTerms.dimensions, today: data.today, ...(data.companyTerms.company ? { company: data.companyTerms.company } : {}), pageCompanies: data.companyTerms.pageCompanies }}>
       <div className="pt-2 lg:pt-8">
         <div className="flex-1 min-w-0 flex flex-col gap-6 lg:gap-8">
           <header className="flex flex-col gap-3">
@@ -181,10 +199,25 @@ function ManagerCompany({ data }: { data: CompanyData }) {
             <h1 className="text-2xl lg:text-3xl font-semibold">
               <bdi>{data.name}</bdi>
             </h1>
-            {company && (
-              <p className="text-sm lg:text-base text-muted-foreground max-w-measure">
-                <NumAfter lead={copy.lineBefore} value={data.period} />.
+            {browser ? (
+              // the tracks page's line: what the fee, the exposure, the yield and the assets are and when
+              <p className="text-muted-foreground max-w-measure">
+                {browser.data.feeYear ? (
+                  <>
+                    <NumAfter lead={trackBrowser.lead.intro} value={browser.data.feeYear} />
+                    <NumAfter lead={trackBrowser.lead.figures} value={data.period} />
+                  </>
+                ) : (
+                  <NumAfter lead={trackBrowser.lead.noYear} value={data.period} />
+                )}
+                {trackBrowser.lead.source}
               </p>
+            ) : (
+              company && (
+                <p className="text-sm lg:text-base text-muted-foreground max-w-measure">
+                  <NumAfter lead={copy.lineBefore} value={data.period} />.
+                </p>
+              )
             )}
             {data.members.length > 1 && (
               <p className="text-sm text-muted-foreground max-w-measure">
@@ -217,12 +250,19 @@ function ManagerCompany({ data }: { data: CompanyData }) {
                 {company && data.funds.length === 0 && !data.brokerage ? copy.listHeading : brandsCopy.listHeading} <bdi>{data.name}</bdi>
               </h2>
             </div>
-            {company && <Callout tone="info">{copy.feesLine}</Callout>}
+            {/* the fee's "?" says what the average is, on the browser's head; the old folds keep the line */}
+            {company && !browser && <Callout tone="info">{copy.feesLine}</Callout>}
+            {browser && (
+              <StaleSaid on={!!data.period.stale}>
+                <TrackBrowser data={browser.data} company={{ first: browser.first, defaults: data.defaultIds, foot: (id) => <FeeFoot caps={browser.caps[id] ?? null} /> }} />
+              </StaleSaid>
+            )}
 
-            {/* one list in the founder's order (groupOrder): the first group is open */}
+            {/* one list in the founder's order (groupOrder): the first group is open, unless the browser stands above them */}
+            <div className={cx("flex flex-col gap-3.5", browser && "pt-4")}>
             {[
               ...(company
-                ? data.groups.map((g) => ({
+                ? folded.map((g) => ({
                     key: `track:${g.classification}`,
                     render: (open: boolean) => (
                   <Disclosure key={g.classification} defaultOpen={open} className="flex flex-col gap-2" summaryClassName="min-h-12 md:min-h-14" label={<GroupLabel title={g.wrapper?.name ?? g.classification} count={countLine(g.tracks.length)} />}>
@@ -288,7 +328,8 @@ function ManagerCompany({ data }: { data: CompanyData }) {
             ]
               .map((e, i) => ({ ...e, i, rank: groupOrder.indexOf(e.key) === -1 ? groupOrder.length : groupOrder.indexOf(e.key) }))
               .sort((x, y) => x.rank - y.rank || x.i - y.i)
-              .map((e, j) => e.render(j === 0))}
+              .map((e, j) => e.render(j === 0 && !browser))}
+            </div>
           </section>
           {data.unassigned.length > 0 && (
             <section aria-labelledby="un-h" className="flex flex-col gap-3">

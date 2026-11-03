@@ -1,7 +1,8 @@
 // The track browser's list (D54, 2026-11-03): one table on a computer, one row per track on a phone, built on the kit's ProductTable.
 // Under a company's heading the row says the short name and, when the name leaves it out, the kind; in the one list of a chosen kind
-// (no heading) it says the company first. The column heads sort. Every figure goes through the provenance component.
-import { useMemo } from "react";
+// (no heading) it says the company first. The column heads sort. Every figure goes through the provenance component. On a company's page
+// (`fixed`) the list is that company's alone: no heading over it, and a track a new member joins by default says so.
+import { useMemo, type ReactNode } from "react";
 import { Link } from "react-router";
 import { trackBrowser as t } from "../../copy";
 import { fmt } from "../../lib/format";
@@ -56,7 +57,7 @@ export function FeeRange({ fees }: { fees: TbGroup["fees"] }) {
 
 /** "16 מסלולים · כסף מנוהל 19.1 מיליארד ₪": the company's size in the product, each part unbroken. `stacked`: one part under the other, in a
  *  table cell too narrow to hold both on every row (so no row has one line where its neighbour has two). */
-function CompanySize({ count, assets, stacked }: { count: string; assets: SiteValue | null; stacked?: boolean }) {
+export function CompanySize({ count, assets, stacked }: { count: string; assets: SiteValue | null; stacked?: boolean }) {
   const money = assets && (
     <span className="whitespace-nowrap">
       {t.group.assets} <AssetsFigure value={assets} size="inline" />
@@ -96,7 +97,13 @@ function GroupLine({ g }: { g: TbGroup }) {
   );
 }
 
-function NameCell({ x, by, view }: { x: TbTrack; by: GroupBy; view: ProductView }) {
+/** How a row under a company's heading reads on a company's page: `isDefault`, the track a new member joins; `noKind`, a kind is chosen, so its chip would repeat it. */
+interface RowNotes {
+  isDefault?: boolean;
+  noKind?: boolean;
+}
+
+function NameCell({ x, by, view, notes }: { x: TbTrack; by: GroupBy; view: ProductView; notes: RowNotes }) {
   if (by === "company") {
     return (
       <span className="flex flex-col items-start gap-1.5">
@@ -104,8 +111,8 @@ function NameCell({ x, by, view }: { x: TbTrack; by: GroupBy; view: ProductView 
           <bdi>{x.short}</bdi>
         </Link>
         <span className="flex flex-wrap gap-1.5 empty:hidden">
-          <TrackLabels track={{ inception: x.inception, reportPeriod: x.reportPeriod }} />
-          {showsKindChip(x) && <Tag>{x.sub}</Tag>}
+          <TrackLabels isDefault={notes.isDefault} track={{ inception: x.inception, reportPeriod: x.reportPeriod }} />
+          {!notes.noKind && showsKindChip(x) && <Tag>{x.sub}</Tag>}
         </span>
       </span>
     );
@@ -135,7 +142,7 @@ function NameCell({ x, by, view }: { x: TbTrack; by: GroupBy; view: ProductView 
   );
 }
 
-function PhoneRow({ x, by, view }: { x: TbTrack; by: GroupBy; view: ProductView }) {
+function PhoneRow({ x, by, view, notes }: { x: TbTrack; by: GroupBy; view: ProductView; notes: RowNotes }) {
   const company = view.companies.find((c) => c.index === x.company);
   return (
     <ProductPhoneRow stacked>
@@ -158,8 +165,8 @@ function PhoneRow({ x, by, view }: { x: TbTrack; by: GroupBy; view: ProductView 
             </>
           )}
           <span className="flex flex-wrap gap-1.5 empty:hidden">
-            <TrackLabels track={{ inception: x.inception, reportPeriod: x.reportPeriod }} />
-            {by === "company" && showsKindChip(x) && <Tag>{x.sub}</Tag>}
+            <TrackLabels isDefault={notes.isDefault} track={{ inception: x.inception, reportPeriod: x.reportPeriod }} />
+            {by === "company" && !notes.noKind && showsKindChip(x) && <Tag>{x.sub}</Tag>}
           </span>
         </span>
         <IconDrillIn className="text-muted-foreground shrink-0" />
@@ -192,8 +199,10 @@ function PhoneRow({ x, by, view }: { x: TbTrack; by: GroupBy; view: ProductView 
   );
 }
 
-/** `limit`: how many rows are drawn, from the top; the headings, the counts and the key under the list always speak of every row of the group. */
-export function TrackList({ view, groups, by, sort, sortable, onSort, feeYear, period, limit = Infinity }: { view: ProductView; groups: TbGroup[]; by: GroupBy; sort: Sort; /** The columns whose head sorts here (lib/track-browser sortableIn); the others are plain words. */ sortable: ReadonlySet<SortId>; onSort: (id: SortId) => void; feeYear: string | null; period: string; limit?: number }) {
+/** `limit`: how many rows are drawn, from the top; the headings, the counts and the key under the list always speak of every row of the group.
+ *  `fixed`: a company's page, its one group with no heading; `defaults`, its tracks a new member joins; `kindChosen`, rows leave out the
+ *  chosen kind's chip; `foot`, lines under the key. */
+export function TrackList({ view, groups, by, sort, sortable, onSort, feeYear, period, limit = Infinity, fixed, defaults, kindChosen, foot }: { view: ProductView; groups: TbGroup[]; by: GroupBy; sort: Sort; /** The columns whose head sorts here (lib/track-browser sortableIn); the others are plain words. */ sortable: ReadonlySet<SortId>; onSort: (id: SortId) => void; feeYear: string | null; period: string; limit?: number; fixed?: boolean; defaults?: readonly number[]; kindChosen?: boolean; foot?: ReactNode }) {
   const state = (...ids: SortId[]) => (ids.includes(sort.id) ? (ascending(sort) ? ("ascending" as const) : ("descending" as const)) : ("none" as const));
   const head = (id: SortId, label: string, alsoHolds?: string[]) =>
     sortable.has(id) ? <SortHead label={label} state={state(id)} onPress={() => onSort(id)} alsoHolds={alsoHolds} /> : <span className="inline-flex min-h-11 -my-1 pt-1">{label}</span>;
@@ -248,12 +257,14 @@ export function TrackList({ view, groups, by, sort, sortable, onSort, feeYear, p
   const parts = useMemo(
     () =>
       new Map(
-        view.tracks.map((x) => [
+        view.tracks.map((x): [number, { phone: ReactNode; cells: ReactNode[] }] => {
+          const notes: RowNotes = { isDefault: defaults?.includes(x.id), noKind: kindChosen };
+          return [
           x.id,
           {
-            phone: <PhoneRow x={x} by={by} view={view} />,
+            phone: <PhoneRow x={x} by={by} view={view} notes={notes} />,
             cells: [
-              <NameCell x={x} by={by} view={view} />,
+              <NameCell x={x} by={by} view={view} notes={notes} />,
               <TrackFundId fundId={x.id} dataset={view.dataset} />,
               <TrackFeeLines fee={x.fee} deposit={x.deposit} size="cell" />,
               x.exposure ? <ExposureCell value={x.exposure} size="cell" /> : <span className={mutedWord}>{t.assets.missing}</span>,
@@ -266,9 +277,10 @@ export function TrackList({ view, groups, by, sort, sortable, onSort, feeYear, p
               </Link>,
             ],
           },
-        ]),
+          ];
+        }),
       ),
-    [view, by],
+    [view, by, defaults, kindChosen],
   );
   const fees = groups.flatMap((g) => g.tracks.flatMap((x) => [x.fee, x.deposit]));
   let left = limit;
@@ -280,7 +292,7 @@ export function TrackList({ view, groups, by, sort, sortable, onSort, feeYear, p
     tableGroups.push({
       key: g.key,
       // a chosen kind is one list with no heading: the chip names it, and the count line holds its count and its fees
-      heading: g.by === "kind" ? undefined : {
+      heading: g.by === "kind" || fixed ? undefined : {
         title: g.companyId ? (
           <Link to={`/companies/${g.companyId}`} className="hover:underline inline-flex items-center min-h-target min-w-11 md:min-h-0 md:min-w-0">
             <bdi>{g.title}</bdi>
@@ -298,7 +310,12 @@ export function TrackList({ view, groups, by, sort, sortable, onSort, feeYear, p
       stickyHead
       columns={columns}
       groups={tableGroups}
-      foot={(place) => <FeeKey values={fees} className={cx("flex flex-col gap-1 py-2 text-xs text-muted-foreground border-t border-border", place === "phone" ? "px-4" : "px-3")} />}
+      foot={(place) => (
+        <>
+          <FeeKey values={fees} className={cx("flex flex-col gap-1 py-2 text-xs text-muted-foreground border-t border-border", place === "phone" ? "px-4" : "px-3")} />
+          {foot && <div className={cx("py-3 border-t border-border", place === "phone" ? "px-4" : "px-3")}>{foot}</div>}
+        </>
+      )}
     />
   );
 }

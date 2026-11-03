@@ -636,7 +636,8 @@ export function SourceBlock({ source, rule, today, inline, english, own }: { sou
   const [first, ...rest] = list;
   if (!first) return null;
   // no "לקריאה נוחה" copy after an official source any more: pickSources leaves copies out when there is one (2026-10-25)
-  const more = rest.map((s) => <OneSource key={s.url + (s.locator ?? "")} source={s} rule={rule} today={today} english={english} own={own} />);
+  // one page may be cited twice, for two quotes (IRA-29): the place in the list keeps the keys apart
+  const more = rest.map((s, i) => <OneSource key={`${i}:${s.url}${s.locator ?? ""}`} source={s} rule={rule} today={today} english={english} own={own} />);
   return (
     <div className="flex flex-col gap-3">
       <OneSource source={first} rule={rule} today={today} english={english} own={own} />

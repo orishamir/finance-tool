@@ -90,7 +90,8 @@ export function BrokerageGroupCard({ id, tariff, kind, className }: { id: string
         <h3 id={h} className="text-lg font-semibold">
           {copy.card.title}
         </h3>
-        <p className="text-sm max-w-measure">
+        {/* a document's title may hold an address with no space in it: it breaks anywhere rather than widen the page */}
+        <p className="text-sm max-w-measure [overflow-wrap:anywhere]">
           <bdi>{tariff.title}</bdi>
         </p>
         <Sentence size="sm">

@@ -22,7 +22,8 @@ export function shortCompanyName(id: string, legalName: string): string {
   return withoutLtd(legalName);
 }
 
-export function buildTrackBrowser(): TbData {
+/** `companyId`: one company's tracks only (its page, 2026-11-03); the figures' templates are then built over its tracks. */
+export function buildTrackBrowser(companyId?: string): TbData {
   const cma = loadCma();
   const feesOf = loadCmaFees();
   const holdingsOf = loadCmaHoldings();
@@ -32,7 +33,7 @@ export function buildTrackBrowser(): TbData {
 
   const companyIds: string[] = [];
   const products: TbProduct[] = trackProductIds.flatMap((id) => {
-    const list = cma.tracks.filter((x) => x.wrapperId === id);
+    const list = cma.tracks.filter((x) => x.wrapperId === id && (!companyId || x.companyId === companyId));
     if (list.length === 0) return [];
     const period = list[0]!.reportPeriod;
     const balances = list.map((x) => feesOf.get(x.fundId)!.balance);
@@ -79,4 +80,21 @@ export function buildTrackBrowser(): TbData {
   const firstBalance = products.find((p) => feeYear(p.templates.balance))?.templates.balance;
   const year = firstBalance ? feeYear(firstBalance) : null;
   return { today: t, reportPeriod: cma.periodValue.value as string, feeYear: firstBalance && year ? { ...firstBalance, value: year, unit: "text", notes: "" } : null, period: cma.periodValue, companies, products };
+}
+
+/** Every rule id any value of the products' templates names: the sheets open on them, so the page's loader ships these rules. */
+export function templateRuleIds(data: TbData): Set<string> {
+  const out = new Set<string>();
+  const walk = (x: unknown) => {
+    if (Array.isArray(x)) for (const v of x) walk(v);
+    else if (x && typeof x === "object") {
+      for (const [k, v] of Object.entries(x)) {
+        if (k === "rule_ids" && Array.isArray(v)) {
+          for (const id of v) if (typeof id === "string") out.add(id);
+        } else walk(v);
+      }
+    }
+  };
+  for (const p of data.products) walk(p.templates);
+  return out;
 }
