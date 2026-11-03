@@ -135,6 +135,18 @@ export function useOpen() {
 }
 
 const InsideSheetCtx = createContext(false);
+
+/** A notice above already says the figures are old (founder, 2026-11-03: "the whole table is full of warnings"). */
+const StaleSaidCtx = createContext(false);
+
+/**
+ * The figures inside leave out their own clock: a notice above them already says their source is old (the regulator's period on the
+ * track browser and a company's track list). Their aria-label and their sheet still say it. Use it only where that notice covers every
+ * figure inside, from the same source.
+ */
+export function StaleSaid({ on = true, children }: { on?: boolean; children: ReactNode }) {
+  return <StaleSaidCtx.Provider value={on}>{children}</StaleSaidCtx.Provider>;
+}
 /** Closes the sheet: a link inside it that leaves the page calls it. */
 const CloseCtx = createContext<() => void>(() => {});
 
@@ -174,6 +186,7 @@ const textDir = (text: string): "ltr" | "rtl" => (/[\u0590-\u05FF]/.test(text) ?
 export function Num({ value, size = "inline", display, animate, className, prefix, exact, mark: showMark = true }: NumProps) {
   const open = useOpen();
   const today = useContext(TodayCtx);
+  const staleSaid = useContext(StaleSaidCtx);
   const param = isParameter(value);
   const counting = useCounting();
   const shown = useAnimatedValue(typeof value.value === "number" ? value.value : null, animate ?? (counting && countsByItself(value.state, value.unit)));
@@ -201,7 +214,7 @@ export function Num({ value, size = "inline", display, animate, className, prefi
       aria-label={label}
       onClick={(e) => open({ kind: "value", value, ...(keepDecimals ? { exact: true } : {}), ...(value.value === null && written ? { display: written } : {}) }, e.currentTarget)}
     >
-      {value.stale && <IconClock size={14} className={cx("text-caution me-1", mark)} aria-hidden="true" />}
+      {value.stale && !staleSaid && <IconClock size={14} className={cx("text-caution me-1", mark)} aria-hidden="true" />}
       {((showMark && fromDate) || markWeak) && <IconAlert size={14} className={cx("text-caution me-1", mark)} aria-hidden="true" />}
       {fromDate && size === "figure" && <span className="text-xs text-caution-foreground font-normal me-1 no-underline select-none">{numbers.startsOn}<bdi dir="ltr">{fmt.date(fromDate)}</bdi></span>}
       {/* a long text value (a fund's full name) may wrap: kept on one line it ran 73 px past a phone's edge (2026-10-26) */}

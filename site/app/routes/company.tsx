@@ -11,7 +11,7 @@ import { CompanyTerms } from "../components/decoder/company-terms";
 import { BrandFundList } from "../components/decoder/brand-funds";
 import { BrokerageGroupCard } from "../components/decoder/institutions/brokerage-card";
 import { IconDrillIn } from "../components/icons";
-import { IdRef, Num, NumAfter, NumberLegend } from "../components/provenance";
+import { IdRef, Num, NumAfter, NumberLegend, StaleSaid } from "../components/provenance";
 import { Breadcrumb, PageShell } from "../components/shell";
 import { Callout, Card, Disclosure, FeeWordsNote } from "../components/kit";
 import type { SiteValue } from "../lib/value";
@@ -239,6 +239,7 @@ function ManagerCompany({ data }: { data: CompanyData }) {
                       <IconDrillIn size={16} />
                     </Link>
                   )}
+                  <StaleSaid on={!!data.period.stale}>
                   <TrackList
                     feeHead={feeHeadOf(g.feeTemplate) + (g.tracks[0]?.dataset === "pensia-net" ? ` ${copy.feeRowWhole}` : "")}
                     exposureHead={g.stockTemplate ? copy.stock.column.replace("{period}", fmt.period(g.period)) : undefined}
@@ -255,6 +256,7 @@ function ManagerCompany({ data }: { data: CompanyData }) {
                     )}
                     foot={<FeeFoot caps={g.caps} />}
                   />
+                  </StaleSaid>
                 </Disclosure>
                     ),
                   }))

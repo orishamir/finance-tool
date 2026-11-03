@@ -6,7 +6,7 @@ import type { Route } from "./+types/tracks";
 import { site, trackBrowser as copy } from "../copy";
 import { TrackBrowser } from "../components/tracks/browser";
 import { CompanyTabs } from "../components/decoder/company-tabs";
-import { NumAfter, NumberLegend, RulesLine } from "../components/provenance";
+import { NumAfter, NumberLegend, RulesLine, StaleSaid } from "../components/provenance";
 import { PageShell } from "../components/shell";
 import { Callout } from "../components/kit";
 import { fmt } from "../lib/format";
@@ -72,7 +72,10 @@ export default function Tracks() {
             </Callout>
           )}
         </header>
-        <TrackBrowser data={data} />
+        {/* the notice above says the regulator's figures are old: the list's figures do not each repeat it */}
+        <StaleSaid on={!!data.period.stale}>
+          <TrackBrowser data={data} />
+        </StaleSaid>
         <RulesLine ids={ruleIds} />
       </div>
     </PageShell>
