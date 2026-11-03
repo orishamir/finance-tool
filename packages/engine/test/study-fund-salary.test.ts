@@ -128,6 +128,12 @@ describe("earlySettlement (F-98)", () => {
     expect(s.back).toBeGreaterThan(0);
     expect(s.withheld - s.back).toBeCloseTo(runs.reduce((a, r) => a + r.taxAtExit / index, 0), 6);
   });
+  it("puts in the account what the column shows less the back", () => {
+    const runs = [runProvident(early(300), ctx), runProvident(early(900, "employer"), ctx)];
+    const s = earlySettlement(runs)!;
+    expect(s.owed).toBe(0);
+    expect(s.first + s.back).toBeCloseTo(moneyStory(0, 0, runs).net, 6);
+  });
   it("has nothing to say after the lock", () => {
     expect(earlySettlement([runProvident({ ...plan(12_000, 300, true), goal: { amountNow: 0, monthly: 300, months: 84 } }, ctx)])).toBeNull();
   });

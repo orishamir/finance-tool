@@ -260,14 +260,19 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
   const earlyLine = (e: EarlySettlement) => (
     <Sentence size="sm">
       {story.early.before} <bdi>{shownYear}</bdi>
+      {e.back < 1 ? story.early.first : story.early.firstThenBack} <Num value={ranValue(e.first, story.about.first, true, "F-98", settlementInputs)} display={fmt.nisWhole} />
       {story.early.withheld} <Num value={ranValue(e.withheld, story.about.withheld, true, "F-98", settlementInputs)} display={fmt.nisWhole} />{" "}
-      {e.back < 1 ? (
-        story.early.stop
-      ) : (
+      {e.back >= 1 ? (
         <>
-          {story.early.more}
-          <Num value={ranValue(e.back, story.about.back, true, "F-98", settlementInputs)} display={fmt.nisWhole} /> {story.early.back}
+          {story.early.more} <Num value={ranValue(e.back, story.about.back, true, "F-98", settlementInputs)} display={fmt.nisWhole} /> {story.early.back}
         </>
+      ) : e.owed >= 1 ? (
+        <>
+          {story.early.owedBefore} <Num value={ranValue(e.owed, story.about.owed, true, "F-98", settlementInputs)} display={fmt.nisWhole} />
+          {story.early.owed}
+        </>
+      ) : (
+        story.early.stop
       )}
     </Sentence>
   );
@@ -316,7 +321,7 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
   const longest = (employee: boolean, over: StudyStanding["over"], firstOverYear: number | null): StudyStanding => ({ over, room: over.map(() => 0), per: employee ? "month" : "year", firstOverYear, grows: employee });
   const notesCases = [true, false].flatMap((employee) =>
     [longest(employee, employee ? [99_999, 99_999] : [99_999], 1), longest(employee, employee ? [0, 0] : [0], 12)].map((st) =>
-      notes({ employee, st, e: employee ? { withheld: 9_999_999, back: 9_999_999 } : null, taxed: true, retTyped: true, feeTyped: true, fund: { low: big, high: big, gap: big }, account: employee ? null : { low: big, high: big } }),
+      notes({ employee, st, e: employee ? { withheld: 9_999_999, back: 9_999_999, owed: 0, first: 9_999_999 } : null, taxed: true, retTyped: true, feeTyped: true, fund: { low: big, high: big, gap: big }, account: employee ? null : { low: big, high: big } }),
     ),
   );
 
@@ -402,7 +407,8 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
         {notes({
           employee: isEmployee,
           st: standing,
-          e: early,
+          // whole shekels, so what enters plus what returns is exactly the column
+          e: early && early.withheld >= 1 ? { ...early, first: slice ? Math.round(slice.net) - Math.round(early.back) + Math.round(early.owed) : early.first } : null,
           taxed: overLimit,
           retTyped: returnPick !== null,
           feeTyped: feePick !== null,
