@@ -46,6 +46,19 @@ const groups = [...groupMap.entries()]
   .sort((a, b) => b.stock - a.stock || b.list.length - a.list.length);
 const companies = new Set(rows.map((r) => r.company)).size;
 
+// each company in this product: its tracks and the sum of their assets (largest first)
+const coStats = new Map();
+for (const r of rows) {
+  const s = coStats.get(r.company) ?? { company: r.company, list: [], assets: 0 };
+  s.list.push(r);
+  s.assets += r.assets ?? 0;
+  coStats.set(r.company, s);
+}
+const kindOrder = new Map(groups.map((g, i) => [g.sub, i]));
+const byCompany = [...coStats.values()]
+  .sort((a, b) => b.assets - a.assets)
+  .map((s) => ({ ...s, list: s.list.sort((a, b) => kindOrder.get(a.sub) - kindOrder.get(b.sub) || byFee(a, b)) }));
+
 // ---- formatting ----
 const n = (s, cls = "") => `<span class="n ${cls}">${s}</span>`;
 const pct2 = (v) => (v === 0 ? "0%" : `${v.toFixed(2)}%`);
@@ -80,30 +93,36 @@ const tags = (r, withKind) => {
   if (withKind) t.push(`<span class="tag kind">${r.sub}</span>`);
   return t.length ? `<span class="tags">${t.join("")}</span>` : "";
 };
-const nameCell = (r, withKind) => `<span class="nm"><a class="tname">${r.name}</a>${tags(r, withKind)}</span>`;
+const moneyC = (m) => (m >= 1000 ? `${n((m / 1000).toLocaleString("he-IL", { maximumFractionDigits: 1 }), "c")} מיליארד ₪` : `${n(Math.round(m).toLocaleString("he-IL"), "c")} מיליון ₪`);
+const coLine = (c) => { const s = coStats.get(c); return `${s.list.length} מסלולים · ${moneyC(s.assets)} בקופות גמל להשקעה`; };
+const nameCell = (r, withKind, coFirst) =>
+  coFirst
+    ? `<span class="nm"><span class="co"><a class="coname">${r.company}</a><span class="w">${coLine(r.company)}</span></span><span class="tsub">${r.name}</span>${tags(r, withKind)}</span>`
+    : `<span class="nm"><a class="tname">${r.name}</a>${tags(r, withKind)}</span>`;
 
 function groupHead(g, cols) {
   const fees = g.list.map((r) => r.fee).filter((v) => v != null);
   const range = fees.length ? `דמי ניהול מהחיסכון: מ־${n(pct2(Math.min(...fees)), "s")} עד ${n(pct2(Math.max(...fees)), "s")}` : "דמי ניהול עוד לא דווחו";
   const count = g.list.length === 1 ? "מסלול אחד" : `${g.list.length} מסלולים`;
-  return `<tr class="grp"><th colspan="${cols}" scope="rowgroup"><span class="grp-t">${g.sub}</span><span class="grp-l">${g.kind} · ${count} · ${range}</span></th></tr>`;
+  const line = g.company ? `${count} · נכסים ${moneyC(g.assets)} · ${range}` : `${g.kind} · ${count} · ${range}`;
+  return `<tr class="grp"><th colspan="${cols}" scope="rowgroup"><span class="grp-t">${g.company ?? g.sub}</span><span class="grp-l">${line}</span></th></tr>`;
 }
 
 // ---- one table (PC) and one list (phone) ----
-function table({ list, groups: gs, withKind = false, withPast = false, tail = "" }) {
+function table({ list, groups: gs, withKind = false, withPast = false, coFirst = false, tail = "" }) {
   const cols = 5 + (withPast ? 2 : 0);
-  const head = `<thead><tr><th class="c-name">שם המסלול, כמו שהחברה כותבת אותו</th><th class="c-id">קופה</th><th class="c-fee">דמי ניהול, ממוצע 2025</th><th class="c-exp">חשיפה בסוף ספטמבר 2026</th>${withPast ? `<th class="c-y">תשואה שנתית ממוצעת, לפני דמי ניהול</th><th class="c-a">נכסים בסוף ספטמבר 2026</th>` : ""}<th class="c-open"><span class="sr">פתיחה</span></th></tr></thead>`;
+  const head = `<thead><tr><th class="c-name">${coFirst ? "החברה, ושם המסלול כמו שהיא כותבת אותו" : "שם המסלול, כמו שהחברה כותבת אותו"}</th><th class="c-id">קופה</th><th class="c-fee">דמי ניהול, ממוצע 2025</th><th class="c-exp">חשיפה בסוף ספטמבר 2026</th>${withPast ? `<th class="c-y">תשואה שנתית ממוצעת, לפני דמי ניהול</th><th class="c-a">נכסים בסוף ספטמבר 2026</th>` : ""}<th class="c-open"><span class="sr">פתיחה</span></th></tr></thead>`;
   const row = (r) =>
-    `<tr><td>${nameCell(r, withKind)}</td><td>${n(r.id, "id")}</td><td><span class="figs">${feeCell(r)}</span></td><td>${exposureCell(r)}</td>${withPast ? `<td><span class="figs">${yieldCell(r)}</span></td><td>${money(r.assets)}</td>` : ""}<td>${chev}</td></tr>`;
+    `<tr><td>${nameCell(r, withKind, coFirst)}</td><td>${n(r.id, "id")}</td><td><span class="figs">${feeCell(r)}</span></td><td>${exposureCell(r)}</td>${withPast ? `<td><span class="figs">${yieldCell(r)}</span></td><td>${money(r.assets)}</td>` : ""}<td>${chev}</td></tr>`;
   const body = gs ? gs.map((g) => `<tbody>${groupHead(g, cols)}${g.list.map(row).join("")}</tbody>`).join("") : `<tbody>${list.map(row).join("")}</tbody>`;
   return `<div class="pc"><table class="fixed${withPast ? " past" : ""}">${head}${body}${tail ? `<tbody><tr class="more"><td colspan="${cols}">${tail}</td></tr></tbody>` : ""}</table></div>`;
 }
 
-function phone({ list, groups: gs, withKind = false, withPast = false, tail = "" }) {
-  const row = (r) => `<div class="prow"><div class="pmain">${nameCell(r, withKind)}<span class="pline">${r.fee == null ? `<span class="muted small">דמי ניהול עוד לא דווחו</span>` : `<span class="fig">${sourced(pct2(r.fee))}<span class="w">מהחיסכון</span></span><span class="fig">${sourced(pct2(r.dep ?? 0))}<span class="w">מההפקדות</span></span>`}<span class="fig pid"><span class="w">קופה</span>${n(r.id, "id")}</span></span><span class="pline">${exposureCell(r)}</span>${withPast ? `<span class="pline">${yieldCell(r)}</span><span class="pline"><span class="w">נכסים</span>${money(r.assets)}</span>` : ""}</div>${chev}</div>`;
+function phone({ list, groups: gs, withKind = false, withPast = false, coFirst = false, tail = "" }) {
+  const row = (r) => `<div class="prow"><div class="pmain">${nameCell(r, withKind, coFirst)}<span class="pline">${r.fee == null ? `<span class="muted small">דמי ניהול עוד לא דווחו</span>` : `<span class="fig">${sourced(pct2(r.fee))}<span class="w">מהחיסכון</span></span><span class="fig">${sourced(pct2(r.dep ?? 0))}<span class="w">מההפקדות</span></span>`}<span class="fig pid"><span class="w">קופה</span>${n(r.id, "id")}</span></span><span class="pline">${exposureCell(r)}</span>${withPast ? `<span class="pline">${yieldCell(r)}</span><span class="pline"><span class="w">נכסים</span>${money(r.assets)}</span>` : ""}</div>${chev}</div>`;
   const grp = (g) => {
     const fees = g.list.map((r) => r.fee).filter((v) => v != null);
-    return `<div class="pgrp"><span class="grp-t">${g.sub}</span><span class="grp-l">${g.list.length} מסלולים · מ־${n(pct2(Math.min(...fees)), "s")} עד ${n(pct2(Math.max(...fees)), "s")} מהחיסכון</span></div>${g.list.map(row).join("")}`;
+    return `<div class="pgrp"><span class="grp-t">${g.company ?? g.sub}</span><span class="grp-l">${g.list.length} מסלולים · מ־${n(pct2(Math.min(...fees)), "s")} עד ${n(pct2(Math.max(...fees)), "s")} מהחיסכון</span></div>${g.list.map(row).join("")}`;
   };
   return `<div class="ph">${gs ? gs.map(grp).join("") : list.map(row).join("")}${tail ? `<p class="more">${tail}</p>` : ""}</div>`;
 }
@@ -130,44 +149,64 @@ function frame(inner, { sortPast = false } = {}) {
 </div>`;
 }
 
-// ---- the three options ----
-const shown = groups.slice(0, 2);
-const restA = groups.slice(2).map((g) => `${g.sub} (${g.list.length})`).join(" · ");
-const optA = frame(
-  `<p class="small muted">הקבוצות מסודרות מהחשיפה למניות הגבוהה לנמוכה; בתוך כל קבוצה מהזול ליקר.</p>${table({ groups: shown, tail: `<span class="note">בשרטוט בלבד, כדי לקצר: אחרי שתי הקבוצות האלה באות עוד ${groups.length - 2}, פתוחות באותו אופן: ${restA}.</span>` })}${phone({ groups: shown.slice(0, 1), tail: `<span class="note">בשרטוט בלבד: אחרי הקבוצה הזאת באות עוד ${groups.length - 1}.</span>` })}`,
-);
-
-const flat = [...rows].sort(byFee);
-const top = flat.slice(0, 14);
-const optB = frame(table({ list: top, withKind: true, tail: `<span class="note">בשרטוט בלבד, כדי לקצר: עוד ${rows.length - top.length} מסלולים.</span>` }) + phone({ list: top.slice(0, 6), withKind: true, tail: `<span class="note">בשרטוט בלבד: עוד ${rows.length - 6} מסלולים.</span>` }));
-
+// ---- the three options, all built on the earlier option ג (past returns and size beside the fees) ----
 const sp = groups.find((g) => g.sub.includes("s&p"));
-const optC = frame(
-  `${table({ groups: [sp], withPast: true })}${phone({ groups: [sp], withPast: true })}<p class="small muted past-note">התשואה היא תשואת עבר כמו שהרשות מפרסמת אותה: לפני דמי הניהול ולפני מס. היא לא אומרת מה יקרה בהמשך, ולכן הרשימה לא ממוינת לפיה.</p>`,
+const pastNote = `<p class="small muted past-note">התשואה היא תשואת עבר כמו שהרשות מפרסמת אותה: לפני דמי הניהול ולפני מס. היא לא אומרת מה יקרה בהמשך, ולכן הרשימה לא ממוינת לפיה.</p>`;
+
+// 1: the company leads each row
+const opt1 = frame(`${table({ groups: [sp], withPast: true, coFirst: true })}${phone({ groups: [sp], withPast: true, coFirst: true })}${pastNote}`);
+
+// 2: a switch between grouping by kind and by company; drawn on "by company"
+const coGroups = byCompany.map((c) => ({ ...c, company: c.company }));
+const groupSwitch = `<div class="ctl"><span class="ctl-l">קיבוץ לפי</span><div class="segs"><span class="seg">במה הכסף מושקע</span><span class="seg on">חברה</span></div></div>`;
+const opt2 = frame(
+  `${groupSwitch}<p class="small muted">החברות מסודרות מהגדולה לקטנה בנכסים בקופות גמל להשקעה; בתוך כל חברה לפי סוג ההשקעה.</p>${table({ groups: coGroups.slice(0, 2), withKind: true, withPast: true, tail: `<span class="note">בשרטוט בלבד, כדי לקצר: אחרי שתי החברות האלה באות עוד ${coGroups.length - 2}: ${coGroups.slice(2).map((c) => `${c.company} (${c.list.length})`).join(" · ")}.</span>` })}${phone({ groups: coGroups.slice(0, 1), withKind: true, withPast: true, tail: `<span class="note">בשרטוט בלבד: אחרי החברה הזאת באות עוד ${coGroups.length - 1}.</span>` })}${pastNote}`,
 );
+
+// 3: a table of every company against every kind, each cell the fee of that company's track of that kind
+const gridKinds = groups.filter((g) => g.list.length >= 7);
+const otherKinds = groups.filter((g) => g.list.length < 7);
+const feeAll = rows.map((r) => r.fee).filter((v) => v != null);
+const lo = Math.min(...feeAll), hi = Math.max(...feeAll);
+function gridCell(c, g) {
+  const mine = c.list.filter((r) => r.sub === g.sub);
+  if (!mine.length) return `<td class="gc none" title="אין מסלול כזה">—</td>`;
+  const reported = mine.filter((r) => r.fee != null).sort(byFee);
+  const more = mine.length > 1 ? `<span class="gmore">${mine.length} מסלולים</span>` : "";
+  if (!reported.length) return `<td class="gc"><span class="muted small">חדש</span>${more}</td>`;
+  const f = reported[0].fee;
+  const t = (f - lo) / (hi - lo);
+  return `<td class="gc" style="--t:${t.toFixed(3)}"><span class="n s">${pct2(f)}</span>${more}</td>`;
+}
+const grid = `<section class="grid-sec">
+  <div class="grid-h"><h3 class="h3">כל החברות מול כל סוגי ההשקעה</h3><p class="small muted">בכל משבצת דמי הניהול מהחיסכון של המסלול של החברה מהסוג הזה (ממוצע ${n("2025")}). כתום חזק יותר הוא דמי ניהול גבוהים יותר, מ־${n(pct2(lo), "s")} עד ${n(pct2(hi), "s")}; קו מפריד הוא סוג שאין לחברה. לחיצה על משבצת פותחת את המסלול ברשימה למטה.</p></div>
+  <div class="grid-wrap"><table class="grid"><thead><tr><th class="g-co">חברה</th><th class="g-n">נכסים בקופות גמל להשקעה</th>${gridKinds.map((g) => `<th>${g.sub}</th>`).join("")}</tr></thead>
+  <tbody>${byCompany.map((c) => `<tr><th scope="row" class="g-co">${c.company}<span class="w">${c.list.length} מסלולים</span></th><td class="g-n">${moneyC(c.assets)}</td>${gridKinds.map((g) => gridCell(c, g)).join("")}</tr>`).join("")}</tbody></table></div>
+  <p class="small muted">סוגים עם פחות משבעה מסלולים מופיעים רק ברשימה: ${otherKinds.map((g) => `${g.sub} (${g.list.length})`).join(" · ")}. החברות מסודרות מהגדולה לקטנה בנכסים.</p>
+</section>`;
+const opt3 = frame(`${grid}<h3 class="h3 list-h">כל המסלולים</h3>${table({ groups: [sp], withPast: true, coFirst: true, tail: `<span class="note">בשרטוט בלבד: אחרי הקבוצה הזאת באות שאר הקבוצות, כמו באפשרות 1.</span>` })}${phone({ groups: [sp], withPast: true, coFirst: true })}${pastNote}`);
 
 // ---- numbers quoted in the notes, from the same rows ----
-const b0 = top[0], b3 = top[3];
-const feeAll = rows.map((r) => r.fee).filter((v) => v != null);
 const blanks = rows.filter((r) => r.fee == null).length;
 const spRange = sp.list.map((r) => r.fee).filter((v) => v != null);
-const spY3 = sp.list.filter((r) => r.y3 != null).length, spY5 = sp.list.filter((r) => r.y5 != null).length;
+const shown = [sp];
+const big = byCompany[0], small = byCompany.at(-1);
 
 const OPTIONS = [
   {
-    id: "a", tab: "א. קבוצה לכל סוג השקעה", rec: true,
-    text: `כל הקבוצות פתוחות, לפי הסיווג של הרשות, ובתוך כל קבוצה מהזול ליקר. כך כל השוואה היא בין מסלולים שמשקיעים באותו דבר, ורק החברה משתנה. עמודת "במה הכסף מושקע" יורדת, כי בתוך קבוצה היא זהה בכל שורה; שם הקבוצה אומר אותה פעם אחת, עם הטווח של דמי הניהול בה.`,
-    body: optA,
+    id: "a", tab: "1. החברה בראש השורה",
+    text: `כמו ג׳, אבל כל שורה פותחת בשם החברה, ומתחתיו שם המסלול כמו שהחברה כותבת אותו. ליד שם החברה: כמה מסלולים יש לה במוצר הזה וכמה כסף מנוהל בהם בסך הכול (${big.company} ${moneyC(big.assets)}, ${small.company} ${moneyC(small.assets)}). בתוך קבוצה כמעט לכל חברה מסלול אחד, ולכן השורה היא בעצם החברה.`,
+    body: opt1,
   },
   {
-    id: "b", tab: "ב. רשימה אחת מהזול ליקר",
-    text: `כל ${n(String(rows.length))} המסלולים ברשימה אחת, וסוג ההשקעה כתווית בכל שורה. פשוט יותר, אבל בראש הרשימה עומדים זה ליד זה מסלולים שמחזיקים דברים שונים: ${b0.sub} ב־${n(pct2(b0.fee))} עם ${n(Math.round(b0.stock) + "%")} מניות, ושתי שורות מתחתיו ${b3.sub} ב־${n(pct2(b3.fee))} עם ${n(Math.round(b3.stock) + "%")} מניות. ההבדל בדמי הניהול קטן בהרבה מההבדל במה שהם מחזיקים.`,
-    body: optB,
+    id: "b", tab: "2. קיבוץ לפי חברה",
+    text: `מתג "קיבוץ לפי": במה הכסף מושקע (כמו 1) או חברה. בקיבוץ לפי חברה רואים את כל המסלולים של כל חברה יחד, עם סוג ההשקעה כתווית בכל שורה, ובכותרת: כמה מסלולים, כמה נכסים, ומה טווח דמי הניהול שלה. טוב למי שכבר יודע באיזו חברה הוא; פחות טוב להשוואה, כי ההשוואה בין חברות מתפזרת על פני ${n(String(byCompany.length))} קבוצות.`,
+    body: opt2,
   },
   {
-    id: "c", tab: "ג. כמו א׳, ועוד תשואה וגודל",
-    text: `קבוצה אחת מאפשרות א׳ (${sp.sub}, ${n(String(sp.list.length))} מסלולים) עם שתי עמודות נוספות מאותו קובץ של הרשות: תשואה שנתית ממוצעת לשלוש ולחמש שנים, ונכסי המסלול. ${n(String(spY3))} מתוך ${n(String(sp.list.length))} המסלולים בקבוצה הזאת קיימים שלוש שנים, ו־${n(String(spY5))} חמש. הרשימה עדיין ממוינת לפי דמי הניהול.`,
-    body: optC,
+    id: "c", tab: "3. טבלת חברות מול סוגים", rec: true,
+    text: `מעל הרשימה של 1, טבלה אחת שמשווה הכול בבת אחת: שורה לכל חברה, עמודה לכל סוג השקעה, ובכל משבצת דמי הניהול. במבט אחד רואים איזו חברה זולה כמעט בכל סוג, איזו יקרה, ומה אין לכל חברה. מתחתיה הרשימה המלאה, עם התשואה והגודל.`,
+    body: opt3,
   },
 ];
 
@@ -179,7 +218,7 @@ const html = `<title>שרטוטי עמוד המסלולים</title>
 <style>${css}</style>
 <div class="doc" dir="rtl" lang="he">
 <header class="doc-h">
-  <h1>כל המסלולים בכל החברות: שלוש אפשרויות</h1>
+  <h1>כל המסלולים בכל החברות: איך רואים את החברות</h1>
   <p class="muted">קופת גמל להשקעה: ${n(String(rows.length))} מסלולים של ${n(String(companies))} חברות, מנתוני רשות שוק ההון לספטמבר ${n("2026")}. כל מספר כאן אמיתי; אף מספר לא הומצא.</p>
   <details class="common"><summary>משותף לשלוש, ומה שהנתונים מראים</summary>
   <ul class="small">

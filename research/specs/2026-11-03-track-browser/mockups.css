@@ -136,3 +136,25 @@ tr.more td{padding:14px 22px}
   .opt-tabs button{font-size:14px;padding:6px 12px}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+/* round 2: the company in the row, and the table of companies against kinds */
+:root{--chart-fee:oklch(.72 .16 55)}
+.co{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 10px}
+.coname{font-weight:600;font-size:16px}
+.tsub{font-size:14px;color:var(--muted-foreground)}
+.h3{font-size:20px;font-weight:600;line-height:1.35;margin:0}
+.list-h{margin-top:8px}
+.grid-sec{display:flex;flex-direction:column;gap:10px}
+.grid-h{display:flex;flex-direction:column;gap:4px;max-width:52rem}
+.grid-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:12px;background:var(--card)}
+table.grid{min-width:1060px;table-layout:fixed;font-size:14px}
+table.grid th,table.grid td{padding:8px 6px;text-align:center;border-top:1px solid var(--border)}
+table.grid thead th{font-size:12.5px;line-height:1.35;vertical-align:bottom;color:var(--muted-foreground);font-weight:500;border-top:0}
+table.grid .g-co{width:118px;text-align:start;padding-inline-start:16px;font-weight:600;color:var(--foreground);position:sticky;inset-inline-start:0;background:var(--card);z-index:1}
+table.grid tbody .g-co{display:table-cell}
+table.grid .g-co .w{display:block;font-weight:400;font-size:12.5px}
+table.grid .g-n{width:118px;font-size:13px;color:var(--muted-foreground)}
+td.gc{background:color-mix(in oklch,var(--chart-fee) calc(var(--t,0)*50% + 6%),var(--card));border-inline-start:2px solid var(--card)}
+td.gc .n.s{border-bottom-color:color-mix(in oklch,var(--foreground) 45%,transparent)}
+td.gc.none{background:var(--card);color:var(--input)}
+.gmore{display:block;font-size:11.5px;color:var(--muted-foreground)}
