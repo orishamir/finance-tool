@@ -5,11 +5,11 @@ import { useMemo } from "react";
 import { Link } from "react-router";
 import { trackBrowser as t } from "../../copy";
 import { fmt } from "../../lib/format";
-import { assetsText, missingYield, showsKindChip, showsShortName, tracksPhrase, type GroupBy, type ProductView, type SortId, type SortState as Sort, type TbGroup, type TbTrack, ascending } from "../../lib/track-browser";
+import { HELP_TERMS, assetsText, missingYield, showsKindChip, showsShortName, tracksPhrase, type GroupBy, type ProductView, type SortId, type SortState as Sort, type TbGroup, type TbTrack, ascending } from "../../lib/track-browser";
 import type { SiteValue } from "../../lib/value";
 import { IconDrillIn } from "../icons";
 import { Num } from "../provenance";
-import { ExposureCell, FeeKey, ProductFigures, ProductPhoneRow, ProductTable, SortHead, Tag, TrackFeeLines, TrackLabels, cx, type ProductColumn, type ProductGroup } from "../kit";
+import { ExposureCell, FeeKey, HelpMark, ProductFigures, ProductPhoneRow, ProductTable, SortHead, Tag, TrackFeeLines, TrackFundId, TrackLabels, cx, type ProductColumn, type ProductGroup } from "../kit";
 
 const mutedWord = "text-sm text-muted-foreground";
 
@@ -46,7 +46,7 @@ function FeeRange({ fees }: { fees: TbGroup["fees"] }) {
   );
 }
 
-/** A group's line under its title: by company "16 מסלולים · נכסים 19.1 מיליארד ₪ · דמי ניהול…"; by kind the regulator's kind, the count and the fee range. */
+/** A group's line under its title: by company "16 מסלולים · כסף מנוהל 19.1 מיליארד ₪ · דמי ניהול…"; by kind the regulator's kind, the count and the fee range. */
 function GroupLine({ g }: { g: TbGroup }) {
   const filtered = g.tracks.length < g.total;
   const count = `${tracksPhrase(g.tracks.length)}${filtered ? ` ${t.count.outOf} ${fmt.number(g.total)}` : ""}`;
@@ -144,7 +144,7 @@ function PhoneRow({ x, by, view }: { x: TbTrack; by: GroupBy; view: ProductView 
       <span className="flex flex-wrap items-center gap-x-3 gap-y-1">
         <TrackFeeLines fee={x.fee} deposit={x.deposit} inline />
         <span className={mutedWord}>
-          {t.columns.fund} <bdi dir="ltr" className="num-id">{x.id}</bdi>
+          {t.columns.fund} <TrackFundId fundId={x.id} dataset={view.dataset} />
         </span>
       </span>
       {x.exposure ? <ExposureCell value={x.exposure} /> : <span className={mutedWord}>{t.assets.missing}</span>}
@@ -160,9 +160,10 @@ function PhoneRow({ x, by, view }: { x: TbTrack; by: GroupBy; view: ProductView 
 }
 
 /** `limit`: how many rows are drawn, from the top; the headings, the counts and the key under the list always speak of every row of the group. */
-export function TrackList({ view, groups, by, sort, onSort, feeYear, period, limit = Infinity }: { view: ProductView; groups: TbGroup[]; by: GroupBy; sort: Sort; onSort: (id: SortId) => void; feeYear: string | null; period: string; limit?: number }) {
+export function TrackList({ view, groups, by, sort, sortable, onSort, feeYear, period, limit = Infinity }: { view: ProductView; groups: TbGroup[]; by: GroupBy; sort: Sort; /** The columns whose head sorts here (lib/track-browser sortableIn); the others are plain words. */ sortable: ReadonlySet<SortId>; onSort: (id: SortId) => void; feeYear: string | null; period: string; limit?: number }) {
   const state = (...ids: SortId[]) => (ids.includes(sort.id) ? (ascending(sort) ? ("ascending" as const) : ("descending" as const)) : ("none" as const));
-  const head = (id: SortId, label: string, alsoHolds?: string[]) => <SortHead label={label} state={state(id)} onPress={() => onSort(id)} alsoHolds={alsoHolds} />;
+  const head = (id: SortId, label: string, alsoHolds?: string[]) =>
+    sortable.has(id) ? <SortHead label={label} state={state(id)} onPress={() => onSort(id)} alsoHolds={alsoHolds} /> : <span className="min-h-target inline-flex items-center">{label}</span>;
   const periodText = fmt.period(period);
   const columns: ProductColumn[] = [
     { id: "name", head: head("name", by === "company" ? t.columns.track : t.columns.company, [t.columns.track, t.columns.company]), sort: state("name") },
@@ -171,19 +172,42 @@ export function TrackList({ view, groups, by, sort, onSort, feeYear, period, lim
       id: "fee",
       head: (
         <span className="flex flex-col">
-          <span>{feeYear ? t.columns.fee.replace("{year}", feeYear) : t.columns.feeNoYear}</span>
+          <span className="inline-flex items-center gap-1">
+            {feeYear ? t.columns.fee.replace("{year}", feeYear) : t.columns.feeNoYear}
+            <HelpMark term={HELP_TERMS.fee} about={t.help.fee} />
+          </span>
           <span className="flex flex-wrap gap-x-3">
             {head("fee", t.columns.feeSavings)}
-            {view.depSorts ? head("dep", t.columns.feeDeposits) : <span className="min-h-target inline-flex items-center">{t.columns.feeDeposits}</span>}
+            {head("dep", t.columns.feeDeposits)}
           </span>
         </span>
       ),
       width: 14,
       sort: state("fee", "dep"),
     },
-    { id: "exposure", head: head("stock", t.columns.exposure.replace("{period}", periodText)), width: 13.5, sort: state("stock") },
+    {
+      id: "exposure",
+      head: (
+        <span className="inline-flex items-start gap-1">
+          {head("stock", t.columns.exposure.replace("{period}", periodText))}
+          <HelpMark term={HELP_TERMS.exposure} about={t.help.exposure} className="mt-3" />
+        </span>
+      ),
+      width: 13.5,
+      sort: state("stock"),
+    },
     { id: "yield", head: t.columns.yield, width: 11 },
-    { id: "assets", head: head("assets", t.columns.assets.replace("{period}", periodText)), width: 10, sort: state("assets") },
+    {
+      id: "assets",
+      head: (
+        <span className="inline-flex items-start gap-1">
+          {head("assets", t.columns.assets.replace("{period}", periodText))}
+          <HelpMark term={HELP_TERMS.assets} about={t.help.assets} className="mt-3" />
+        </span>
+      ),
+      width: 10,
+      sort: state("assets"),
+    },
     { id: "open", head: <span className="sr-only">{t.columns.open}</span>, width: 4.5 },
   ];
   // A row's cells do not depend on the order or the filter, so they are built once per product and grouping: a sort or a search then
@@ -197,7 +221,7 @@ export function TrackList({ view, groups, by, sort, onSort, feeYear, period, lim
             phone: <PhoneRow x={x} by={by} view={view} />,
             cells: [
               <NameCell x={x} by={by} view={view} />,
-              <bdi dir="ltr" className="num-id">{x.id}</bdi>,
+              <TrackFundId fundId={x.id} dataset={view.dataset} />,
               <TrackFeeLines fee={x.fee} deposit={x.deposit} size="cell" />,
               x.exposure ? <ExposureCell value={x.exposure} size="cell" /> : <span className={mutedWord}>{t.assets.missing}</span>,
               <span className="flex flex-col gap-1">

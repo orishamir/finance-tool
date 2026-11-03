@@ -16,7 +16,7 @@ export function SortHead({ label, state, onPress, className, alsoHolds }: { labe
     >
       <span className="inline-grid *:[grid-area:1/1]">
         <span className={on ? "font-bold" : undefined}>{label}</span>
-        {[label, ...(alsoHolds ?? [])].map((w) => (
+        {[...new Set([label, ...(alsoHolds ?? [])])].map((w) => (
           <span key={w} aria-hidden="true" className="invisible font-bold">
             {w}
           </span>

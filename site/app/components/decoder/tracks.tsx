@@ -2,13 +2,15 @@
 // near-duplicate groups, paste card.
 import { useId, type ReactNode } from "react";
 import { Link } from "react-router";
-import { company as copy } from "../../copy";
+import { company as copy, trackBrowser as tb } from "../../copy";
+import { HELP_TERMS } from "../../lib/track-browser";
+import { Term } from "../provenance";
 import type { Track } from "../../lib/data.server";
 import type { SiteValue } from "../../lib/value";
 import type { ExposureShares } from "../../lib/track-exposure";
 import { IconDrillIn, IconSearch } from "../icons";
 import { useOpenSearch } from "../shell";
-import { Card, cx, ExposureCell, FeeKey, ProductPhoneRow, ProductTable, TrackFeeLines, TrackLabels, type ProductColumn } from "../kit";
+import { Card, cx, ExposureCell, FeeKey, HelpMark, ProductPhoneRow, ProductTable, TrackFeeLines, TrackFundId, TrackLabels, type ProductColumn } from "../kit";
 
 export type Resolution = "distinct" | "twice" | "unresolved";
 
@@ -59,6 +61,7 @@ export function groupTracks(rows: TrackRowView[], known: { name: string; trackId
 function TrackLine({ t }: { t: Track }) {
   return (
     <span className="text-sm text-muted-foreground">
+      {/* the phone row is itself a link to the track page: a link inside it would nest (the track page links to Gemel-Net) */}
       {copy.trackLine.fund} <bdi dir="ltr" className="num-id">{t.fundId}</bdi>
       {t.specialization && <> · {copy.trackLine.classification} {t.specialization}</>}
     </span>
@@ -79,8 +82,8 @@ export function TrackList({ groups, feeHead, exposureHead, foot }: { groups: Gro
     { id: "name", head: copy.pcColumns.name },
     { id: "fund", head: copy.pcColumns.fund, width: 5.5 },
     { id: "holds", head: copy.pcColumns.holds },
-    ...(feeHead ? [{ id: "fee", head: feeHead, width: 13 }] : []),
-    ...(exposureHead ? [{ id: "exposure", head: exposureHead, width: 11.5 }] : []),
+    ...(feeHead ? [{ id: "fee", head: <span className="inline-flex items-start gap-1">{feeHead}<HelpMark term={HELP_TERMS.fee} about={tb.help.fee} className="mt-0.5" /></span>, width: 13 }] : []),
+    ...(exposureHead ? [{ id: "exposure", head: <span className="inline-flex items-start gap-1">{exposureHead}<HelpMark term={HELP_TERMS.exposure} about={tb.help.exposure} className="mt-0.5" /></span>, width: 11.5 }] : []),
     { id: "open", head: <span className="sr-only">{copy.pcColumns.open}</span>, width: 4.5 },
   ];
   const fees = groups.flatMap((g) => g.tracks.flatMap((r) => [r.fee, r.deposit]));
@@ -100,7 +103,7 @@ export function TrackList({ groups, feeHead, exposureHead, foot }: { groups: Gro
               </Link>
               <TrackLabels isDefault={r.isDefault} track={{ inception: r.track.inception, reportPeriod: r.track.reportPeriod }} />
             </span>,
-            <bdi dir="ltr" className="num-id">{r.track.fundId}</bdi>,
+            <TrackFundId fundId={r.track.fundId} dataset={r.track.dataset} />,
             <span className="flex flex-col gap-0.5">
               <span>{r.track.specialization}</span>
               {r.track.subSpecialization && (
@@ -121,6 +124,14 @@ export function TrackList({ groups, feeHead, exposureHead, foot }: { groups: Gro
         <>
           {/* the key of the empty-cell words, on the phone too (2026-10-27: it was on the PC table only) */}
           <FeeKey values={fees} className={cx("flex flex-col gap-1 py-2 text-xs text-muted-foreground border-t border-border", place === "phone" ? "px-4" : "px-3")} />
+          {/* the phone's rows have no column heads to hold the "?": one line opens the same cards */}
+          {place === "phone" && (feeHead || exposureHead) && (
+            <p className="px-4 py-2 text-sm text-muted-foreground border-t border-border">
+              {tb.help.phoneLead} {feeHead && <Term id={HELP_TERMS.fee}>{tb.help.fee}</Term>}
+              {feeHead && exposureHead && " · "}
+              {exposureHead && <Term id={HELP_TERMS.exposure}>{tb.help.exposure}</Term>}
+            </p>
+          )}
           {foot && <div className={cx("py-3 border-t border-border", place === "phone" ? "px-4" : "px-3")}>{foot}</div>}
         </>
       )}

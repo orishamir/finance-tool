@@ -31,15 +31,21 @@ export function shouldRevalidate() {
 
 export async function loader({ params }: Route.LoaderArgs) {
   const { buildTrackBrowser, trackProductIds } = await import("../lib/track-browser.server");
-  const { loadRules, pointedRecords } = await import("../lib/data.server");
+  const { loadRules, loadTerms, pointedRecords } = await import("../lib/data.server");
+  const { HELP_TERMS } = await import("../lib/track-browser");
   if (params.product && !(trackProductIds as readonly string[]).includes(params.product)) throw new Response("Not found", { status: 404 });
   const data = buildTrackBrowser();
   const all = loadRules();
   const wanted = new Set<string>(["CAT-36", "CAT-37", "CAT-04", "CAT-05", "PF-06"]);
   for (const p of data.products) ruleIdsIn(p.templates, wanted);
+  const lineIds = [...wanted].filter((id) => all[id]);
+  // the cards behind the column heads' "?" (and the phone's line of them), with the rules they cite
+  const wantedTerms = new Set<string>(Object.values(HELP_TERMS));
+  const terms = Object.fromEntries(loadTerms().filter((x) => wantedTerms.has(x.he)).map((x) => [x.he, x]));
+  for (const term of Object.values(terms)) for (const id of term.ruleIds) wanted.add(id);
   const ids = [...wanted].filter((id) => all[id]);
   const rules = Object.fromEntries(ids.map((id) => [id, all[id]!]));
-  return { data, rules, pointed: pointedRecords(rules, all), ruleIds: ids };
+  return { data, rules, pointed: pointedRecords(rules, all), ruleIds: lineIds, terms };
 }
 
 export function meta() {
@@ -47,9 +53,9 @@ export function meta() {
 }
 
 export default function Tracks() {
-  const { data, rules, pointed, ruleIds } = useLoaderData<typeof loader>();
+  const { data, rules, pointed, ruleIds, terms } = useLoaderData<typeof loader>();
   return (
-    <PageShell current="decoder" wide data={{ rules, pointed, terms: {}, dimensions: {}, today: data.today }}>
+    <PageShell current="decoder" wide data={{ rules, pointed, terms, dimensions: {}, today: data.today }}>
       <div className="flex flex-col gap-5 lg:gap-6 pt-2 lg:pt-8">
         <CompanyTabs current="product" />
         <header className="flex flex-col gap-3">

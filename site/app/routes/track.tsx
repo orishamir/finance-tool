@@ -7,7 +7,7 @@ import { DimensionChecklist, type ChecklistRowView } from "../components/guide/s
 import { IconDrillIn } from "../components/icons";
 import { Num, NumAfter } from "../components/provenance";
 import { Breadcrumb, PageShell } from "../components/shell";
-import { Callout, Card, FeeNum, Sentence, ShareNum, Tag } from "../components/kit";
+import { Callout, Card, FeeNum, GemelNetLink, Sentence, ShareNum, Tag } from "../components/kit";
 import { cmaFeeValue, feeYear, type SiteValue } from "../lib/value";
 import { compactHoldings, exposureShares, holdingsTemplate, type ExposureShares, type Holdings } from "../lib/track-exposure";
 import { trackLabels } from "../lib/track-labels";
@@ -114,7 +114,7 @@ export default function TrackPage() {
             ))}
           </h1>
           <Sentence tone="muted">
-            {copy.fundLine} <Num value={data.values.fundId} />
+            {copy.fundLine} <Num value={data.values.fundId} /> <GemelNetLink fundId={track.fundId} dataset={track.dataset} />
           </Sentence>
           {data.others.length > 0 && (
             <Callout tone="caution">

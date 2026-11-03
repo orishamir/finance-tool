@@ -110,11 +110,16 @@ export async function loader({ params }: Route.LoaderArgs) {
   const funds = brand ? brandFunds(brand) : [];
   // the rules the funds' label sheets name (the label set's own, as on the index page)
   const labelRuleIds = [...new Set(funds.flatMap((g) => g.funds.flatMap((f) => f.labels.flatMap((l) => l.rules))))].filter((id) => allRules[id]);
-  const termRules = { ...brokerage?.rules, ...Object.fromEntries([...termGroups.flatMap((g) => g.ids), ...labelRuleIds].map((id) => [id, allRules[id]!])) };
+  // the glossary cards behind the track list's "?" (the fee and exposure heads), with the rules they cite
+  const { HELP_TERMS } = await import("../lib/track-browser");
+  const helpNames = new Set<string>([HELP_TERMS.fee, HELP_TERMS.exposure]);
+  const helpTerms = Object.fromEntries(terms.filter((x) => helpNames.has(x.he)).map((x) => [x.he, x]));
+  const helpRuleIds = Object.values(helpTerms).flatMap((x) => x.ruleIds).filter((id) => allRules[id]);
+  const termRules = { ...brokerage?.rules, ...Object.fromEntries([...termGroups.flatMap((g) => g.ids), ...labelRuleIds, ...helpRuleIds].map((id) => [id, allRules[id]!])) };
   const { loadInstitutionRegistry } = await import("../lib/institutions.server");
   const name = brand?.name ?? company!.name;
   const shortName = brand?.name ?? loadInstitutionRegistry().find((r) => r.id === registryIds[0])?.name_he ?? name;
-  const companyTerms = { groups: termGroups, rules: termRules, pointed: pointedRecords(termRules, allRules), company: registryIds[0] ?? null, pageCompanies: registryIds, name: shortName, dimensions: termGroups.length ? Object.fromEntries(loadChecklistRows().map((r) => [r.id, r.name])) : {} };
+  const companyTerms = { groups: termGroups, rules: termRules, pointed: pointedRecords(termRules, allRules), company: registryIds[0] ?? null, pageCompanies: registryIds, helpTerms, name: shortName, dimensions: termGroups.length ? Object.fromEntries(loadChecklistRows().map((r) => [r.id, r.name])) : {} };
   // the legal companies the page stands for, as their own data writes them (the CMA, the tariff, the fund records)
   const members = brand ? [...new Set([company?.name, brokerage?.tariff.providerName, ...brand.fundManagers].filter((x): x is string => !!x))] : [];
   const brokerageCard = brokerage && brand?.brokerId ? { id: brand.brokerId, kind: brokerage.kind, tariff: brokerage.tariff } : null;
@@ -167,7 +172,7 @@ function ManagerCompany({ data }: { data: CompanyData }) {
   const side = data.groups.length === 1 && data.funds.length === 0 && !data.brokerage ? data.groups[0]!.wrapper : null;
   const company = data.company;
   return (
-    <PageShell current="decoder" data={{ rules: data.companyTerms.rules, pointed: data.companyTerms.pointed, terms: {}, dimensions: data.companyTerms.dimensions, today: data.today, ...(data.companyTerms.company ? { company: data.companyTerms.company } : {}), pageCompanies: data.companyTerms.pageCompanies }}>
+    <PageShell current="decoder" data={{ rules: data.companyTerms.rules, pointed: data.companyTerms.pointed, terms: data.companyTerms.helpTerms, dimensions: data.companyTerms.dimensions, today: data.today, ...(data.companyTerms.company ? { company: data.companyTerms.company } : {}), pageCompanies: data.companyTerms.pageCompanies }}>
       <div className="pt-2 lg:pt-8">
         <div className="flex-1 min-w-0 flex flex-col gap-6 lg:gap-8">
           <header className="flex flex-col gap-3">

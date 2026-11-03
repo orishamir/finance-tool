@@ -66,7 +66,7 @@ for (const [name, view] of Object.entries(VIEWS)) {
     total += moved.length;
     console.log(`${moved.length === 0 ? "ok   " : "MOVED"} ${label}${moved.length ? "\n       " + moved.join("\n       ") : ""}`);
   };
-  const heads = ["המסלול", "מהחיסכון", "מההפקדות", "חשיפה למניות", "נכסים בסוף"];
+  const heads = ["המסלול", "מהחיסכון", "מההפקדות", "חשיפה למניות", "כסף מנוהל, סוף"];
   if (name === "pc") {
     for (const h of heads) await change(`press the head "${h}" (sort)`, () => page.locator("thead button", { hasText: h }).first().click());
     for (const h of heads) await change(`press the head "${h}" again (reverse)`, () => page.locator("thead button", { hasText: h }).first().click());

@@ -127,8 +127,6 @@ export interface ProductView {
   companies: TbCompany[];
   /** In the order of the groups by kind: the highest median stock share first. */
   kinds: TbKind[];
-  /** The fee from deposits differs between the tracks, so its head sorts (in study funds every track has none). */
-  depSorts: boolean;
 }
 
 const collator = new Intl.Collator("he");
@@ -194,9 +192,16 @@ export function buildProductView(data: TbData, productId: string): ProductView |
   });
   // F-99: the company with the most assets in this product first, ties by name
   companies.sort((a, b) => (shareOf(b.assets) ?? -1) - (shareOf(a.assets) ?? -1) || collator.compare(a.name, b.name));
-  const depSorts = new Set(tracks.map((x) => keyOf(x, "dep"))).size > 1;
-  return { id: p.id, name: p.name, dataset: p.dataset, hasKinds, tracks, companies, kinds, depSorts };
+  return { id: p.id, name: p.name, dataset: p.dataset, hasKinds, tracks, companies, kinds };
 }
+
+/** The glossary terms behind the "?" of the column heads, by their Hebrew names: only where the card says what the head leaves out (an
+ * average, not anyone's price; the money of all the savers together). The loader ships these cards. */
+export const HELP_TERMS = {
+  fee: "שיעור דמי ניהול ממוצעת שנתי – נכסים",
+  exposure: 'חשיפה למניות ולמט"ח',
+  assets: "יתרת נכסים לסוף תקופה",
+} as const;
 
 // ---------------------------------------------------------------- filter, sort, group
 
@@ -254,6 +259,32 @@ export function sortTracks(list: readonly TbTrack[], s: SortState, by: GroupBy):
     if (x === null || y === null) return x === null && y === null ? tie(a, b) : x === null ? 1 : -1;
     return d * (x - y) || tie(a, b);
   });
+}
+
+/**
+ * The columns whose head sorts in this grouping: those whose figure differs between the tracks of at least one group, since the sort
+ * acts inside each group (founder, 2026-11-03: "sorting by דמי ניהול doesnt work" on the pension products, whose fee is the fund's
+ * own, one for all its tracks; and no study fund has a fee from deposits). The name always sorts.
+ */
+export function sortableIn(view: ProductView, by: GroupBy): ReadonlySet<SortId> {
+  const groups = new Map<string | number, TbTrack[]>();
+  for (const x of view.tracks) {
+    const g = by === "company" ? x.company : x.sub;
+    groups.set(g, [...(groups.get(g) ?? []), x]);
+  }
+  const out = new Set<SortId>(["name"]);
+  for (const id of ["fee", "dep", "stock", "assets"] as const) {
+    // a missing figure is last either way, so only reported figures that differ give an order
+    if ([...groups.values()].some((list) => new Set(list.map((x) => keyOf(x, id)).filter((k) => k !== null)).size > 1)) out.add(id);
+  }
+  return out;
+}
+
+/** The sort in force: the one chosen, or, where its column does not sort here, the first that does of fee, stock, assets, name. */
+export function sortInForce(chosen: SortState, sortable: ReadonlySet<SortId>): SortState {
+  if (sortable.has(chosen.id)) return chosen;
+  const id = (["fee", "stock", "assets", "name"] as const).find((x) => sortable.has(x))!;
+  return { id, dir: 1 };
 }
 
 /** The search matches the name as the company writes it and the company's name (spaces, quotes and dashes ignored). */

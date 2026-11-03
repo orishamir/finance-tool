@@ -43,4 +43,5 @@ export { useSoftSwap } from "./soft-swap";
 export { FeeFigure, FeeWordsNote, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, type ProductColumn, type ProductGroup, type ProductRow } from "./product-table";
 export { PageTabs, type PageTab } from "./page-tabs";
 export { SortHead, type SortState } from "./sort-head";
-export { ExposureCell, FeeKey, FeeNum, ShareNum, TrackFeeLines, TrackLabels } from "./track-cells";
+export { ExposureCell, FeeKey, FeeNum, GemelNetLink, ShareNum, TrackFeeLines, TrackFundId, TrackLabels, gemelNetUrl } from "./track-cells";
+export { HelpMark } from "./help-mark";

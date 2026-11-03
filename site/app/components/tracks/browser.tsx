@@ -2,17 +2,28 @@
 // (`/tracks/<id>`), so the back button and a shared link work; the grouping, the kind, the search and the sort are the person's state on
 // the page. The loader's data covers the six products, so choosing another keeps the page and fetches nothing.
 import { startTransition, useDeferredValue, useEffect, useMemo, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router";
+import { Link, useNavigate, useParams, useSearchParams } from "react-router";
 import { trackBrowser as t } from "../../copy";
 import { fmt } from "../../lib/format";
-import { SORTS, buildGroups, buildProductView, companiesIn, companiesPhrase, defaultProduct, defaultSort, filterTracks, pressSort, sortTracks, sortWords, tracksPhrase, type GroupBy, type ProductView, type SortId, type SortState, type TbData } from "../../lib/track-browser";
+import { HELP_TERMS, SORTS, sortInForce, sortableIn, buildGroups, buildProductView, companiesIn, companiesPhrase, defaultProduct, defaultSort, filterTracks, pressSort, sortTracks, sortWords, tracksPhrase, type GroupBy, type ProductView, type SortId, type SortState, type TbData } from "../../lib/track-browser";
 import { FilterChip, LongestCase, SegmentedControl, SelectField, TextField } from "../kit";
+import { Term } from "../provenance";
 import { TrackList } from "./list";
 
 const ids = Object.keys(SORTS) as SortId[];
 
 /** The rows drawn at once when the list is new (a product, a grouping): the first screens. The rest are drawn the moment after, in a transition, so a click is answered at once. */
 const FIRST_ROWS = 12;
+
+const EMPTY_PARAMS = new URLSearchParams();
+
+/** The address's query for another product: the grouping and the sort carry over, the kind does not (each product has its own). */
+function keepFor(search: URLSearchParams): string {
+  const next = new URLSearchParams(search);
+  next.delete("kind");
+  const s = next.toString();
+  return s ? `?${s}` : "";
+}
 
 /** "143 מסלולים של 12 חברות (מתוך 143)." then the guide's link and, on the pension products, why there is no grouping by kind. */
 function CountLine({ view, shown, companies, noteFor }: { view: ProductView; shown: number; companies: number; noteFor?: boolean }) {
@@ -36,16 +47,34 @@ export function TrackBrowser({ data }: { data: TbData }) {
   // every product's view is built once: a switch of product then only redraws, and the count line can hold the longest of them
   const views = useMemo(() => data.products.map((p) => buildProductView(data, p.id)!), [data]);
   const view = views.find((v) => v.id === productId)!;
-  const [group, setGroup] = useState<GroupBy>("company");
-  // the kind belongs to the product it was chosen in: another product starts with every kind
-  const [kindIn, setKindIn] = useState<{ product: string; sub: string }>({ product: productId, sub: "" });
-  const kind = kindIn.product === productId && view.kinds.some((k) => k.sub === kindIn.sub) ? kindIn.sub : "";
+  // the grouping, the kind and the sort live in the address (founder, 2026-11-03), so a link opens the same list:
+  // ?group=kind&kind=מניות&sort=assets&order=reverse; the defaults are left out. The page is pre-rendered without them, so they are
+  // read once the page is in the browser (reading them while hydrating would not match the pre-rendered page).
+  const [search, setSearch] = useSearchParams();
+  const [hydrated, setHydrated] = useState(false);
+  useEffect(() => setHydrated(true), []);
+  const sp = hydrated ? search : EMPTY_PARAMS;
+  const group: GroupBy = sp.get("group") === "kind" ? "kind" : "company";
+  const kindParam = sp.get("kind") ?? "";
+  const kind = view.kinds.some((k) => k.sub === kindParam) ? kindParam : "";
+  const sortParam = sp.get("sort");
+  const sortSet: SortState = sortParam && sortParam in SORTS ? { id: sortParam as SortId, dir: sp.get("order") === "reverse" ? -1 : 1 } : defaultSort;
+  const update = (changes: Record<string, string | null>) => {
+    const next = new URLSearchParams(search);
+    for (const [k, v] of Object.entries(changes)) {
+      if (v) next.set(k, v);
+      else next.delete(k);
+    }
+    setSearch(next, { replace: true, preventScrollReset: true });
+  };
+  const setGroup = (g: GroupBy) => update({ group: g === "kind" ? "kind" : null });
+  const setKind = (sub: string) => update({ kind: sub || null });
+  const setSort = (s: SortState) => update({ sort: s.id === defaultSort.id && s.dir === 1 ? null : s.id, order: s.dir === -1 ? "reverse" : null });
   const [q, setQ] = useState("");
   const dq = useDeferredValue(q);
-  const [sortSet, setSort] = useState<SortState>(defaultSort);
-  // a product whose fee from deposits is the same on every track has no such sort: it falls back to the fee from savings
-  const sort = sortSet.id === "dep" && !view.depSorts ? defaultSort : sortSet;
   const by: GroupBy = view.hasKinds ? group : "company";
+  const sortable = useMemo(() => sortableIn(view, by), [view, by]);
+  const sort = sortInForce(sortSet, sortable);
 
   const shown = useMemo(() => filterTracks(view, { kind, q: dq }), [view, kind, dq]);
   const sorted = useMemo(() => sortTracks(shown, sort, by), [shown, sort, by]);
@@ -68,7 +97,7 @@ export function TrackBrowser({ data }: { data: TbData }) {
         </span>
         <div role="group" aria-labelledby="tb-product" className="flex flex-wrap gap-2">
           {data.products.map((p) => (
-            <FilterChip key={p.id} on={p.id === productId} count={p.rows.length} onClick={() => p.id !== productId && navigate(`/tracks/${p.id}`, { preventScrollReset: true })}>
+            <FilterChip key={p.id} on={p.id === productId} count={p.rows.length} onClick={() => p.id !== productId && navigate(`/tracks/${p.id}${keepFor(search)}`, { preventScrollReset: true })}>
               {p.name}
             </FilterChip>
           ))}
@@ -104,11 +133,11 @@ export function TrackBrowser({ data }: { data: TbData }) {
               {t.controls.kind}
             </span>
             <div role="group" aria-labelledby="tb-kind" className="flex flex-wrap gap-2">
-              <FilterChip on={kind === ""} count={view.tracks.length} onClick={() => setKindIn({ product: productId, sub: "" })}>
+              <FilterChip on={kind === ""} count={view.tracks.length} onClick={() => setKind("")}>
                 {t.controls.kindAll}
               </FilterChip>
               {view.kinds.map((k) => (
-                <FilterChip key={k.sub} on={kind === k.sub} count={k.count} onClick={() => setKindIn({ product: productId, sub: k.sub })}>
+                <FilterChip key={k.sub} on={kind === k.sub} count={k.count} onClick={() => setKind(k.sub)}>
                   {k.sub}
                 </FilterChip>
               ))}
@@ -120,14 +149,14 @@ export function TrackBrowser({ data }: { data: TbData }) {
             none={`${t.controls.kindAll} (${fmt.number(view.tracks.length)})`}
             options={view.kinds.map((k) => ({ id: k.sub, name: `${k.sub} (${fmt.number(k.count)})` }))}
             value={kind || null}
-            onChange={(v) => setKindIn({ product: productId, sub: v ?? "" })}
+            onChange={(v) => setKind(v ?? "")}
           />
         </>
       )}
       <SelectField
         className="md:hidden !max-w-none"
         label={t.controls.sort}
-        options={ids.filter((id) => id !== "dep" || view.depSorts).map((id) => ({ id, name: t.sorts[id].label }))}
+        options={ids.filter((id) => sortable.has(id)).map((id) => ({ id, name: t.sorts[id].label }))}
         value={sort.id}
         onChange={(v) => v && setSort({ id: v as SortId, dir: 1 })}
       />
@@ -136,6 +165,10 @@ export function TrackBrowser({ data }: { data: TbData }) {
         <p className="text-sm text-muted-foreground">{orderLine(view, sort, by)}</p>
       </LongestCase>
 
+      {/* the phone's rows have no column heads to hold the "?": one line opens the same cards */}
+      <p className="md:hidden text-sm text-muted-foreground">
+        {t.help.phoneLead} <Term id={HELP_TERMS.fee}>{t.help.fee}</Term> · <Term id={HELP_TERMS.exposure}>{t.help.exposure}</Term> · <Term id={HELP_TERMS.assets}>{t.help.assets}</Term>
+      </p>
       {groups.length === 0 ? (
         <p className="py-6 text-muted-foreground">
           {t.noResult.before}
@@ -143,7 +176,7 @@ export function TrackBrowser({ data }: { data: TbData }) {
           {t.noResult.after}
         </p>
       ) : (
-        <TrackList view={view} groups={groups} by={by} sort={sort} onSort={(id) => setSort((s) => pressSort(s, id))} feeYear={feeYear} period={product.period} limit={limit} />
+        <TrackList view={view} groups={groups} by={by} sort={sort} sortable={sortable} onSort={(id) => setSort(pressSort(sort, id))} feeYear={feeYear} period={product.period} limit={limit} />
       )}
       <p className="text-sm text-muted-foreground max-w-measure">{t.pastNote}</p>
     </div>

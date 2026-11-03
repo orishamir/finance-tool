@@ -64,7 +64,7 @@ for (const [name, view] of Object.entries(VIEWS)) {
   await shotPage("search-none", view.span / 2);
   await go("/tracks/kupat-gemel-lehashkaa");
   if (name === "pc") {
-    for (const [id, label] of [["name", "המסלול"], ["fee", "מהחיסכון"], ["dep", "מההפקדות"], ["stock", "חשיפה למניות"], ["assets", "נכסים בסוף"]]) {
+    for (const [id, label] of [["name", "המסלול"], ["fee", "מהחיסכון"], ["dep", "מההפקדות"], ["stock", "חשיפה למניות"], ["assets", "כסף מנוהל, סוף"]]) {
       await page.locator("thead button", { hasText: label }).first().click();
       await shotList(`sort-${id}`);
     }

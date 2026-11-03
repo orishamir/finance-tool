@@ -1,7 +1,7 @@
 // The track browser's pure logic over the real September 2026 tracks (data/cma/): the order of the groups (F-99, F-100), the filter, the
 // search, the sort and its missing figures, and the group headings' figures.
 import { describe, expect, it } from "vitest";
-import { SORTS, ascending, buildGroups, buildProductView, defaultSort, feeRangeOf, filterTracks, missingYield, pressSort, showsKindChip, showsShortName, sortTracks, type ProductView, type TbData } from "./track-browser";
+import { SORTS, sortInForce, sortableIn, ascending, buildGroups, buildProductView, defaultSort, feeRangeOf, filterTracks, missingYield, pressSort, showsKindChip, showsShortName, sortTracks, type ProductView, type TbData } from "./track-browser";
 import { buildTrackBrowser, defaultProduct, trackProductIds } from "./track-browser.server";
 
 const data: TbData = buildTrackBrowser();
@@ -209,9 +209,14 @@ describe("rows", () => {
     expect(subs).not.toContain("עוקב מדדים גמיש");
   });
 
-  it("the fee from deposits sorts only where it differs between tracks; a fee the rule says is none counts as 0", () => {
-    expect(view("keren-hishtalmut").depSorts).toBe(false);
-    expect(view("provident-for-annuity").depSorts).toBe(true);
+  it("a head sorts only where its figure differs inside a group; a fee the rule says is none counts as 0", () => {
+    expect(sortableIn(view("keren-hishtalmut"), "company").has("dep")).toBe(false);
+    expect(sortableIn(view("provident-for-annuity"), "company").has("dep")).toBe(true);
+    // a pension fund's fee is the fund's own, one for all its tracks: within a company it cannot sort
+    const pension = sortableIn(view("pension-comprehensive"), "company");
+    expect(pension.has("fee")).toBe(false);
+    expect(sortInForce(defaultSort, pension)).toEqual({ id: "stock", dir: 1 });
+    expect(sortableIn(gemel, "company").has("fee")).toBe(true);
   });
 
   it("a track's own page is under its company's", () => {
