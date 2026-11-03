@@ -3,7 +3,7 @@
 import { z } from "zod";
 import { feeBase, securityId, isoDate, productId, valueObject, wrapperId } from "../value.ts";
 
-const formulaId = z.string().regex(/^F-\d{2}$/, "formula must be a method.md ID, e.g. F-44");
+const formulaId = z.string().regex(/^F-\d{2,3}$/, "formula must be a method.md ID, e.g. F-44");
 const ruleIds = z.array(z.string().min(1));
 
 const taxStep = z.strictObject({ formula: formulaId, rule_ids: ruleIds });

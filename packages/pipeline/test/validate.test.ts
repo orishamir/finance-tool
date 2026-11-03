@@ -68,8 +68,8 @@ describe("validateData", () => {
   });
 
   it("rejects a formula that is not in method.md", () => {
-    const problems = run({ "rules/txs-09.json": { ...rule, extra: { formula: "F-99" } } });
-    expect(problems.some((p) => /F-99/.test(p.message))).toBe(true);
+    const problems = run({ "rules/txs-09.json": { ...rule, extra: { formula: "F-998" } } });
+    expect(problems.some((p) => /F-998/.test(p.message))).toBe(true);
   });
 
   it("rejects a collection with no schema yet", () => {

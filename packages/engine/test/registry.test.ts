@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import { formulas, pending } from "../src/index.ts";
 
 const method = readFileSync(new URL("../../../docs/method.md", import.meta.url), "utf8");
-const defined = new Set([...method.matchAll(/\*\*(F-\d{2})\b/g)].map((m) => m[1]!));
+const defined = new Set([...method.matchAll(/\*\*(F-\d{2,3})\b/g)].map((m) => m[1]!));
 
 describe("formula registry", () => {
   it("implements only formulas defined in docs/method.md", () => {

@@ -5,13 +5,10 @@ import { Link } from "react-router";
 import { company as copy } from "../../copy";
 import type { Track } from "../../lib/data.server";
 import type { SiteValue } from "../../lib/value";
-import { FeeKey, FeeNum } from "./fees";
-import { Num } from "../provenance";
-import { ringFraction, shareText, type ExposureShares } from "../../lib/track-exposure";
-import { trackLabels } from "../../lib/track-labels";
+import type { ExposureShares } from "../../lib/track-exposure";
 import { IconDrillIn, IconSearch } from "../icons";
 import { useOpenSearch } from "../shell";
-import { Card, cx, ProductFigures, ProductPhoneRow, ProductTable, ShareRings, Swatch, Tag, type ProductColumn } from "../kit";
+import { Card, cx, ExposureCell, FeeKey, ProductPhoneRow, ProductTable, TrackFeeLines, TrackLabels, type ProductColumn } from "../kit";
 
 export type Resolution = "distinct" | "twice" | "unresolved";
 
@@ -77,65 +74,6 @@ function Holds({ t }: { t: Track }) {
   );
 }
 
-/** F-87 or F-88 (D34) through the provenance component; a share that could not be computed says why in its words and sheet. */
-export function ShareNum({ value, size = "inline" }: { value: SiteValue; size?: "inline" | "cell" }) {
-  return <Num value={value} size={size} display={shareText(value)} />;
-}
-
-/** A track's exposure (D34): two rings, stocks outside and foreign currency inside, and beside them each share with its own dot and name. */
-export function ExposureCell({ value, size = "inline" }: { value: ExposureShares; size?: "inline" | "cell" }) {
-  const lines = [
-    { id: "stocks", v: value.stock, word: copy.stock.stocks, swatch: "bg-chart-stocks", ring: "stroke-chart-stocks" },
-    { id: "currency", v: value.currency, word: copy.stock.currency, swatch: "bg-chart-currency", ring: "stroke-chart-currency" },
-  ].filter((l): l is typeof l & { v: SiteValue } => !!l.v);
-  return (
-    <span className="inline-flex items-center gap-2.5">
-      <ShareRings rings={lines.map((l) => ({ id: l.id, fraction: ringFraction(l.v), className: l.ring }))} />
-      <span className="grid grid-cols-[auto_auto] items-center gap-x-2 gap-y-0.5 text-sm text-muted-foreground">
-        {lines.map((l) => (
-          <span key={l.id} className="contents">
-            <span className="inline-flex items-center gap-1.5">
-              <Swatch shape="box" className={l.swatch} />
-              {l.word}
-            </span>
-            <ShareNum value={l.v} size={size} />
-          </span>
-        ))}
-      </span>
-    </span>
-  );
-}
-
-/** The default track's tag, then the facts about this track (lib/track-labels.ts). */
-function Labels({ row }: { row: TrackRowView }) {
-  const labels = trackLabels(row.track);
-  if (!row.isDefault && labels.length === 0) return null;
-  return (
-    <span className="inline-flex flex-wrap gap-1.5">
-      {row.isDefault && <Tag tone="parameter">{copy.default}</Tag>}
-      {labels.map((l) => (
-        <Tag key={l}>{copy.labels[l]}</Tag>
-      ))}
-    </span>
-  );
-}
-
-/** Both fee averages, each with its word: the balance fee, then the deposit fee (D34). */
-function FeeLines({ row, size = "inline", inline }: { row: TrackRowView; size?: "inline" | "cell"; inline?: boolean }) {
-  const lines = [
-    { id: "savings", v: row.fee, word: copy.fees.savings },
-    { id: "deposits", v: row.deposit, word: copy.fees.deposits },
-  ].filter((l): l is typeof l & { v: SiteValue } => !!l.v);
-  const items = lines.map((l) => ({ id: l.id, figure: <FeeNum value={l.v} size={size} />, word: l.word }));
-  return inline ? (
-    <span className="flex flex-wrap items-center gap-x-3 gap-y-1">
-      <ProductFigures items={items} inline />
-    </span>
-  ) : (
-    <ProductFigures items={items} />
-  );
-}
-
 export function TrackList({ groups, feeHead, exposureHead, foot }: { groups: Group[]; feeHead?: string; exposureHead?: string; foot?: ReactNode }) {
   const columns: ProductColumn[] = [
     { id: "name", head: copy.pcColumns.name },
@@ -160,7 +98,7 @@ export function TrackList({ groups, feeHead, exposureHead, foot }: { groups: Gro
               <Link to={r.href} className="font-medium hover:underline">
                 <bdi>{r.track.name}</bdi>
               </Link>
-              <Labels row={r} />
+              <TrackLabels isDefault={r.isDefault} track={{ inception: r.track.inception, reportPeriod: r.track.reportPeriod }} />
             </span>,
             <bdi dir="ltr" className="num-id">{r.track.fundId}</bdi>,
             <span className="flex flex-col gap-0.5">
@@ -171,7 +109,7 @@ export function TrackList({ groups, feeHead, exposureHead, foot }: { groups: Gro
                 </span>
               )}
             </span>,
-            ...(feeHead ? [r.fee && <FeeLines row={r} size="cell" />] : []),
+            ...(feeHead ? [r.fee && <TrackFeeLines fee={r.fee} deposit={r.deposit} size="cell" />] : []),
             ...(exposureHead ? [r.exposure && <ExposureCell value={r.exposure} size="cell" />] : []),
             <Link to={r.href} aria-label={r.track.name} className="inline-flex size-target items-center justify-center -my-2">
               <IconDrillIn className="text-muted-foreground" />
@@ -200,7 +138,7 @@ function TrackRow({ row }: { row: TrackRowView }) {
         <span className="flex flex-col gap-0.5 min-w-0">
           <span className="font-medium flex flex-wrap items-center gap-2">
             <bdi>{t.name}</bdi>
-            <Labels row={row} />
+            <TrackLabels isDefault={row.isDefault} track={{ inception: t.inception, reportPeriod: t.reportPeriod }} />
           </span>
           <TrackLine t={t} />
           <Holds t={t} />
@@ -213,7 +151,7 @@ function TrackRow({ row }: { row: TrackRowView }) {
         <span className="text-sm text-muted-foreground flex flex-wrap items-center gap-x-1.5 gap-y-1">
           {copy.feeRow}
           {t.dataset === "pensia-net" && <> {copy.feeRowWhole}</>}:
-          <FeeLines row={row} inline />
+          <TrackFeeLines fee={row.fee} deposit={row.deposit} inline />
         </span>
       )}
       {row.exposure && <ExposureCell value={row.exposure} />}

@@ -3,7 +3,7 @@
 import { useId } from "react";
 import { Link, useLoaderData } from "react-router";
 import type { Route } from "./+types/company";
-import { brands as brandsCopy, catalogue, companies as companiesCopy, company as copy, r3workbench, r4catalogue, site } from "../copy";
+import { brands as brandsCopy, catalogue, companies as companiesCopy, company as copy, r4catalogue, site, trackBrowser } from "../copy";
 import { feeLabel } from "../components/decoder/fees";
 import { groupTracks, PasteCard, TrackList } from "../components/decoder/tracks";
 import { InstitutionPage } from "../components/decoder/institutions/page";
@@ -232,10 +232,10 @@ function ManagerCompany({ data }: { data: CompanyData }) {
                     </Link>
                   )}
                   {g.workbenchId && (
-                    <Link to={`/workbench/tracks/${g.workbenchId}`} className="inline-flex items-center gap-0.5 min-h-target text-sm text-link hover:underline self-start px-1">
-                      {r3workbench.links.group.before}
+                    <Link to={`/tracks/${g.workbenchId}`} className="inline-flex items-center gap-0.5 min-h-target text-sm text-link hover:underline self-start px-1">
+                      {trackBrowser.guideLink.before}
                       {g.wrapper?.name ?? g.classification}
-                      {r3workbench.links.group.after}
+                      {trackBrowser.guideLink.after}
                       <IconDrillIn size={16} />
                     </Link>
                   )}

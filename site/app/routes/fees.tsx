@@ -283,7 +283,7 @@ function Body({ bundle, fees, form, publisherNames, subject, frame }: { bundle: 
   const gap = headlineGap(an);
   const place = rankedFor(result.comparison, sv.wrapperId);
   const providersLink = sv.wrapperId === "brokerage-account";
-  const otherRecords = workbench ? { href: `/workbench/tracks/${sv.wrapperId}`, label: r3fees.linksWorkbench } : providersLink ? { href: "/indices/sp500", label: r3fees.linkProviders } : null;
+  const otherRecords = workbench ? { href: `/tracks/${sv.wrapperId}`, label: r3fees.linksWorkbench } : providersLink ? { href: "/indices/sp500", label: r3fees.linkProviders } : null;
 
   const rows = an.lines.map((l) => (
     <FeeRow key={l.line} line={l} an={an} subject={sv} years={years} thresholds={an.thresholds} reduction={reductions[l.line] ?? null} onReduce={(n) => setReductions((r) => ({ ...r, [l.line]: n }))} rules={rules} soften={softensAvoid(l.verdict, place)} />
@@ -339,7 +339,7 @@ function Body({ bundle, fees, form, publisherNames, subject, frame }: { bundle: 
       )}
       <nav className="flex flex-wrap gap-x-6 gap-y-1 text-sm" aria-label={site.linksAria}>
         {workbench && (
-          <Link to={`/workbench/tracks/${sv.wrapperId}`} className="text-link hover:underline min-h-target inline-flex items-center">
+          <Link to={`/tracks/${sv.wrapperId}`} className="text-link hover:underline min-h-target inline-flex items-center">
             {r3fees.linksWorkbench}
           </Link>
         )}

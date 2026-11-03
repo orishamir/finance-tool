@@ -10,6 +10,7 @@ import { normalize } from "../lib/search";
 import { fmt } from "../lib/format";
 import type { InstitutionRow } from "../components/decoder/institutions/types";
 import { NoPageCompanyTerms } from "../components/decoder/company-terms";
+import { CompanyTabs } from "../components/decoder/company-tabs";
 
 export async function loader() {
   const { loadCma, today } = await import("../lib/data.server");
@@ -62,7 +63,8 @@ function Body({ brands, companies, institutions }: { brands: (CompanyRow & { mat
   const shownInstitutions = nq ? institutions.filter((c) => normalize(`${c.name} ${c.id}`).includes(nq)) : institutions;
   const headed = institutions.length > 0 || brands.length > 0;
   return (
-    <div className="flex flex-col gap-6 pt-6 lg:pt-10">
+    <div className="flex flex-col gap-6 pt-2 lg:pt-8">
+      <CompanyTabs current="company" />
       <header className="flex flex-col gap-2">
         <h1 className="text-2xl lg:text-3xl font-semibold">{copy.title}</h1>
         <p className="text-lg text-muted-foreground max-w-measure">{copy.lede}</p>

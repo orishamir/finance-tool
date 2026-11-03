@@ -14,6 +14,7 @@ import { accountWorthRow } from "../components/guide-signature/current-account";
 import { cashLikeIds } from "../lib/guide-signature";
 import { Disclosure, Sentence, Tag } from "../components/kit";
 import { fmt } from "../lib/format";
+import { trackProductIds } from "../lib/track-browser";
 import { omitsSection, sectionTitle, splitTerms, withdrawalRules } from "../lib/guide-nav";
 import { useInputs } from "../lib/inputs";
 import { guideContent } from "../content/guide";
@@ -435,7 +436,7 @@ export default function GuidePage() {
                 </p>
               )}
               {companyTerms().length > 0 && <KeyValueList items={companyTerms()} />}
-              <InstitutionChips companies={data.companies} allHref="/companies" />
+              <InstitutionChips companies={data.companies} allHref="/companies" tracks={trackProductIds.includes(record.id) ? { href: `/tracks/${record.id}`, name: data.name } : undefined} />
             </GuideSection>
           )}
 

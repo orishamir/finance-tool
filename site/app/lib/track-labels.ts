@@ -14,3 +14,15 @@ export function trackLabels(t: { inception: string | null; reportPeriod: string 
   if (t.inception && Number(t.inception.slice(0, 4)) >= feeYear) out.push("new");
   return out;
 }
+
+/**
+ * Whether a track opened less than `years` full years before the end of the report period: it cannot have an average annual yield for
+ * that window, so its empty yield says "less than N years" and not "not reported" (CAT-05: the regulator leaves the field empty then).
+ * `period` is "2026-09"; the window starts after the last day of the same month `years` earlier.
+ */
+export function youngerThanYears(inception: string | null | undefined, period: string, years: number): boolean {
+  if (!inception) return false;
+  const [y, m] = period.split("-").map(Number) as [number, number];
+  const windowStart = new Date(Date.UTC(y - years, m, 0)).toISOString().slice(0, 10);
+  return inception > windowStart;
+}

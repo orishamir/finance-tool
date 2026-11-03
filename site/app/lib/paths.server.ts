@@ -1,7 +1,7 @@
 // Every path the site pre-renders (react-router.config.ts): one page per guide, company and track.
 import { loadCma, loadProducts } from "./data.server";
 import { exposureFolds, loadExposures } from "./instruments.server";
-import { workbenchWrapperIds } from "./workbench.server";
+import { trackProductIds } from "./track-browser.server";
 import { institutionIds } from "./institutions.server";
 import { loadBrands } from "./brands.server";
 import { INDICES_PATH, indexPath } from "./invest";
@@ -16,7 +16,10 @@ export function prerenderPaths(): string[] {
   const cma = loadCma();
   for (const c of cma.companies) paths.push(`/companies/${c.id}`);
   for (const t of cma.tracks) paths.push(`/companies/${t.companyId}/${t.fundId}`);
-  for (const w of workbenchWrapperIds()) paths.push(`/workbench/tracks/${w}`);
+  // the track browser (D54): /tracks shows the default product, /tracks/<id> each of the six; the old address of each is a redirect
+  paths.push("/tracks");
+  for (const w of trackProductIds) paths.push(`/tracks/${w}`);
+  for (const w of trackProductIds) paths.push(`/workbench/tracks/${w}`);
   paths.push("/fees", "/fees-data.json");
   paths.push("/holdings", "/holdings-bundle.json", "/transfer");
   // the index page (D28; at /indices since 2026-10-26): one page per equity index, /indices/<x> for index-<x>; a custom index opens client-side at /indices?custom=<id>
