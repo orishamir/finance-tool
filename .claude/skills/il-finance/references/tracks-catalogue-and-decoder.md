@@ -585,7 +585,7 @@ Open to all (12):
 - מיטב גמל ופנסיה
 - מנורה מבטחים פנסיה וגמל
 
-Sector or employer funds in the stored data (2): גל (teachers), הנדסאים וטכנאים. Others in the register are left out by the founder's decision of 2026-11-03; the list is `EXCLUDED_COMPANIES` in `packages/pipeline/src/adapters/cma.ts`.
+Sector or employer funds are left out of the stored data by the founder's decision of 2026-11-03; the list is `EXCLUDED_COMPANIES` in `packages/pipeline/src/adapters/cma.ts`.
 
 The full list of managing companies per product is in research/discovery/domain-landscape.md 5.1, taken from the same data. The catalogue should pull it from Gemel-Net each month, not from this list.
 

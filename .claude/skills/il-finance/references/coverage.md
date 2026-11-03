@@ -8,7 +8,7 @@ This file lists what is still missing, in the order of `docs/product.md`. Each g
 open question (OQ) or rule where the detail is. "Out of scope for the knowledge base" marks
 things product.md asks for that are data, method or design work rather than rules.
 
-**Do not research (founder, 2026-11-03).** Nineteen managing companies closed to one profession, employer or municipality are left out of the data and of this rule base. Do not collect, read or cite anything of theirs, and do not count their eligibility as a gap. The list, by legal id, is `EXCLUDED_COMPANIES` in `packages/pipeline/src/adapters/cma.ts`.
+**Do not research (founder, 2026-11-03).** Forty-three managing companies closed to one profession, employer or municipality are left out of the data and of this rule base. Do not collect, read or cite anything of theirs, and do not count their eligibility as a gap. The list, by legal id, is `EXCLUDED_COMPANIES` in `packages/pipeline/src/adapters/cma.ts`.
 
 ---
 
