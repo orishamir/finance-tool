@@ -5,13 +5,13 @@ import { join } from "node:path";
 import { companyTermRule, isSecurity, productIds, type ExposureRecord, type RuleRecord, type ProductRecord } from "@finance-tool/schema";
 import { buildHishtalmutTerms, exposureFolds, loadExposures } from "./instruments.server";
 import { providentTerms } from "./compare.server";
-import { loadChecklistRows, loadCma, loadFees, loadParameters, loadRules, loadTerms, loadProducts, pointedRecords, root, today, type TermRow } from "./data.server";
+import { loadChecklistRows, loadCma, loadCmaFees, loadFees, loadParameters, loadRules, loadTerms, loadProducts, pointedRecords, root, today, type TermRow } from "./data.server";
 import { runTimeline, type Bundle, type Timeline } from "./engine";
 import { guideInstrumentBundle, familyOf, rulesTouched } from "./guide-signature-bundle.server";
 import { buildSignatureData } from "./guide-signature.server";
 import type { SignatureData } from "./guide-signature";
 import { isClosedAudience } from "./guide-nav";
-import { ruleFigure, weaker, type SiteValue, type Strength } from "./value";
+import { cmaFeeValue, computed, ruleFigure, weaker, type SiteValue, type Strength } from "./value";
 import { readTextCached } from "./read-cache.server";
 
 export interface GuidePageData {
@@ -40,6 +40,8 @@ export interface GuidePageData {
   /** The record's formulas the engine does not compute yet, with the release number that brings each. */
   pendingFormulas: Record<string, string>;
   related: { href: string; label: string }[];
+  /** What the regulator reports is charged on the tracks open to the public (F-64), on a guide whose cap alone would read as the price. Null elsewhere. */
+  feeRange: { low: SiteValue; high: SiteValue; tracks: SiteValue } | null;
   /**
    * A security's wrapper (D6, amended 2026-10-26): the first of its record's `held_in`, the account its run and its page sit in, with
    * the rules that say it is held there. Null for a wrapper.
@@ -77,7 +79,21 @@ function collectRuleIds(node: unknown, out = new Set<string>()): Set<string> {
   return out;
 }
 
-export function buildGuidePage(id: string, extraRuleIds: string[] = [], extraTermIds: string[] = []): GuidePageData | null {
+/** The lowest and highest fee the regulator reports on the wrapper's tracks open to the public, without self-directed tracks, which have a guide of their own (F-64). */
+function publicFeeRange(id: string, t: string): GuidePageData["feeRange"] {
+  const fees = loadCmaFees();
+  const reported = loadCma()
+    .tracks.filter((x) => x.wrapperId === id && !isClosedAudience([x.targetPopulation]) && !/IRA|בניהול אישי/.test(`${x.name} ${x.subSpecialization}`))
+    .flatMap((x) => {
+      const f = fees.get(x.fundId)?.balance;
+      return f && typeof f.value === "number" ? [cmaFeeValue(f, t)] : [];
+    })
+    .sort((a, b) => (a.value as number) - (b.value as number));
+  if (reported.length < 2) return null;
+  return { low: reported[0]!, high: reported.at(-1)!, tracks: computed(reported.length, "count", "F-64", {}, { today: t, about: "כמה מסלולים פתוחים לכלל הציבור, בלי מסלולים בניהול אישי, דיווחה הרשות בתקופה האחרונה עם דמי ניהול" }) };
+}
+
+export function buildGuidePage(id: string, extraRuleIds: string[] = [], extraTermIds: string[] = [], relatedIds?: readonly string[]): GuidePageData | null {
   const record = loadProducts().find((w) => w.id === id);
   if (!record) return null;
   const allRules = loadRules();
@@ -173,8 +189,7 @@ export function buildGuidePage(id: string, extraRuleIds: string[] = [], extraTer
     .map((e) => ({ id: e.id, name: e.names.he[0] ?? e.id, href: folds[e.id] ? `/guide/${folds[e.id]}` : `/exposure/${e.id}` }));
 
   const wrappers = loadProducts();
-  const related = record.transfer_routes
-    .map((r) => r.to)
+  const related = (relatedIds ?? record.transfer_routes.map((r) => r.to))
     .filter((to, i, a) => to !== id && a.indexOf(to) === i)
     .map((to) => wrappers.find((w) => w.id === to))
     .filter((w): w is ProductRecord => !!w)
@@ -185,7 +200,9 @@ export function buildGuidePage(id: string, extraRuleIds: string[] = [], extraTer
   // an exposure that is this page, or a security the row above already links, is not linked twice
   const exposures = exposuresHeld.filter((e) => e.href !== `/guide/${record.id}` && !securities.some((x) => x.href === e.href));
 
-  return { record, name: record.names.he[0]!, lede, bundle, initial, rules, pointed: pointedRecords(rules, allRules), terms, wrapperCount: productIds.length, heldIn, securities, termsById, dimensionNames, companies, exposures, exitTextRules, signature, pendingFormulas, related, today: t };
+  const feeRange = id === "keren-hishtalmut" ? publicFeeRange(id, t) : null;
+
+  return { record, name: record.names.he[0]!, lede, bundle, initial, rules, pointed: pointedRecords(rules, allRules), terms, wrapperCount: productIds.length, heldIn, securities, termsById, dimensionNames, companies, exposures, exitTextRules, signature, pendingFormulas, related, feeRange, today: t };
 }
 
 export { familyOf };

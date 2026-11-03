@@ -99,7 +99,7 @@ export interface FeeRow {
   varies?: ReactNode;
 }
 
-export function FeeTable({ fees, note }: { fees: FeeRow[]; note: string }) {
+export function FeeTable({ fees, note }: { fees: FeeRow[]; note: ReactNode }) {
   const { id } = useParams();
   return (
     <div className="flex flex-col gap-3">

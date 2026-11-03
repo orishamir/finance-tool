@@ -2,7 +2,7 @@
 import type { ReactNode } from "react";
 import { Link, useLoaderData } from "react-router";
 import type { Route } from "./+types/guide";
-import { formulaNames, guideBlocks as blocks, guide as copy, guideIndex, site } from "../copy";
+import { formulaNames, guideBlocks as blocks, guide as copy, guideIndex, scopeWords, site } from "../copy";
 import { ExposureLinks, FeeTable, GuideSection, InstitutionChips, KeyValueList, RelatedProducts, SectionIndex, TaxSteps, TermTable, useCurrentSection, type FeeRow, type KeyValueItem, type TaxStep } from "../components/guide/sections";
 import { Num, NumberLegend, RuleRef, RulesLine, StrengthLabel, VariesByCompany } from "../components/provenance";
 import { Breadcrumb, PageShell } from "../components/shell";
@@ -14,7 +14,7 @@ import { accountWorthRow } from "../components/guide-signature/current-account";
 import { cashLikeIds } from "../lib/guide-signature";
 import { Disclosure, Sentence, Tag } from "../components/kit";
 import { fmt } from "../lib/format";
-import { omitsSection, splitTerms, withdrawalRules } from "../lib/guide-nav";
+import { omitsSection, sectionTitle, splitTerms, withdrawalRules } from "../lib/guide-nav";
 import { useInputs } from "../lib/inputs";
 import { guideContent } from "../content/guide";
 import { anyWeak, type SiteValue } from "../lib/value";
@@ -59,7 +59,7 @@ function exitRateLines(formula: string): ExitRate[][] {
 export async function loader({ params }: Route.LoaderArgs) {
   const { buildGuidePage } = await import("../lib/guide.server");
   const content = guideContent[params.id];
-  const data = buildGuidePage(params.id, content ? [...(content.switchRules ?? [])] : [], content ? [...content.termIds] : []);
+  const data = buildGuidePage(params.id, content ? [...(content.switchRules ?? [])] : [], content ? [...content.termIds] : [], content?.relatedIds);
   if (!data) throw new Response("Not found", { status: 404 });
   // the pinned facts of this wrapper (P-09 guide_blocks); their rules join the page's provenance data
   const { loadPinnedRules, loadRules, pointedRecords } = await import("../lib/data.server");
@@ -82,7 +82,7 @@ export default function GuidePage() {
   const current = useCurrentSection(copy.sections.map((s) => s.id));
   const { state: inputsState } = useInputs();
   const review = useReviewMode();
-  const title = (id: string) => copy.sectionTitles[record.id]?.[id] ?? copy.sections.find((x) => x.id === id)!.title;
+  const title = (id: string) => sectionTitle(record.id, id);
   const omitted = (id: string) => omitsSection(record.id, id);
   const figure = (ruleId: string, name: string): SiteValue | null => {
     const r = rules[ruleId];
@@ -99,6 +99,8 @@ export default function GuidePage() {
     const s = strengthOfRules(ids);
     return s ? <StrengthLabel strength={s} /> : undefined;
   };
+
+  const cp = { figure };
 
   // ---- money in and out
   const exit = record.lawful_exit;
@@ -141,7 +143,7 @@ export default function GuidePage() {
     };
   };
   const inout: KeyValueItem[] = [];
-  if (lockUp) inout.push(exitItem());
+  if (lockUp && !content?.omitFreeRow) inout.push(exitItem());
   if (record.ceiling) {
     const amount = record.ceiling.amount as SiteValue;
     inout.push({
@@ -186,22 +188,23 @@ export default function GuidePage() {
   const lowDouble = lowOne ? figure("TXP-18", "low_income_double") : null;
   if (lowOne && lowDouble) inout.push({ id: "low-income", label: blocks.withdrawal.lowIncome.label, value: <>{blocks.withdrawal.lowIncome.before} <Num value={lowOne} /> {blocks.withdrawal.lowIncome.one} <Num value={lowDouble} /> {blocks.withdrawal.lowIncome.after}</>, rules: ["TXP-18"] });
   if (content?.switchLine && record.switch_is_tax_event.value === false) {
-    inout.push({ id: "switch", label: blocks.exit.labelSwitch, value: content.switchLine, rules: [...(record.switch_is_tax_event.rule_ids ?? []), ...(content.switchRules ?? []).filter((r) => !(record.switch_is_tax_event.rule_ids ?? []).includes(r))] });
+    inout.push({ id: "switch", label: blocks.exit.labelSwitch, value: typeof content.switchLine === "function" ? content.switchLine(cp) : content.switchLine, rules: [...(record.switch_is_tax_event.rule_ids ?? []), ...(content.switchRules ?? []).filter((r) => !(record.switch_is_tax_event.rule_ids ?? []).includes(r))] });
   }
+  inout.push(...(content?.inoutRows?.(cp) ?? []));
 
   for (const it of inout) it.rules = gen(it.rules);
   // where each company sets a fee, the record's company_terms name the companies' own terms under the checklist dimension of that fee
   const feeDimension: Record<string, string> = { balance: "fee-management-balance", deposit: "fee-deposit", trade: "fee-trade", custody: "fee-custody", fx: "fee-fx", fixed_period: "fee-account", exit: "fee-exit" };
   const feeVaries = (base: string) => {
     const ids = record.company_terms?.[feeDimension[base] ?? ""] ?? [];
-    return ids.length > 0 ? <VariesByCompany ids={ids} size="xs" /> : undefined;
+    return ids.length > 0 ? <VariesByCompany ids={ids} lead={scopeWords.variesExamples} size="xs" /> : undefined;
   };
 
   // ---- what each company sets for itself (D30): the fee table says it for its own fees; the rest, with the general rules on the same property, sit under "who offers it" (D49)
   const companyTerms = (): KeyValueItem[] =>
     Object.entries(record.company_terms ?? {})
-      .filter(([dim, ids]) => ids.length > 0 && !(!omitted("cost") && fees.some((f) => feeDimension[f.id] === dim)))
-      .map(([dim, ids]) => ({ id: dim, label: data.dimensionNames[dim] ?? feeCopy[Object.keys(feeDimension).find((b) => feeDimension[b] === dim) ?? ""]?.name ?? dim, value: <VariesByCompany ids={ids} size="xs" />, rules: Object.values(rules).filter((r) => isGeneral(r) && r.dimensions.includes(dim)).map((r) => r.id) }));
+      .filter(([dim, ids]) => ids.length > 0 && !content?.omitCompanyTerms?.includes(dim) && !(!omitted("cost") && fees.some((f) => feeDimension[f.id] === dim)))
+      .map(([dim, ids]) => ({ id: dim, label: copy.companyTermTitles[record.id]?.[dim] ?? data.dimensionNames[dim] ?? feeCopy[Object.keys(feeDimension).find((b) => feeDimension[b] === dim) ?? ""]?.name ?? dim, value: <VariesByCompany ids={ids} lead={scopeWords.variesExamples} size="xs" />, rules: Object.values(rules).filter((r) => isGeneral(r) && r.dimensions.includes(dim)).map((r) => r.id) }));
 
   // ---- fees: every base the record allows, in a fixed order; the cap is the record's figure, else the provider's own tariff
   const provident = isProvidentFamily(record.id);
@@ -235,6 +238,7 @@ export default function GuidePage() {
   if (record.fee_bases_allowed.includes("direct_expenses")) fees.push({ id: "direct", name: blocks.fees.direct_expenses.name, base: blocks.fees.direct_expenses.base, cap: blocks.fees.direct_expenses.cap, rules: ["PF-10"] });
   // "no exit fee" is the law's (PF-01); the payout-time rule no longer lends it its rules or its strength tag (scope pass 2026-10-25)
   if (provident && !record.fee_bases_allowed.includes("exit")) fees.push({ id: "exit", name: blocks.fees.exit.name, base: blocks.fees.exit.base, cap: blocks.fees.exit.cap, rules: ["PF-01"], tag: weakTag(["PF-01"]) });
+
 
   // ---- tax steps
   const stepCopy = (formula: string) => blocks.taxSteps[formula];
@@ -271,16 +275,17 @@ export default function GuidePage() {
     .map((c) => ({ ...c, value: figure(c.rule, c.figure)! }));
   const exitStepCopy = stepCopy(record.tax_at_exit.formula);
   const exitFormula = record.tax_at_exit.formula;
-  const exitRate = exitFormula === "F-44" ? figure("TXK-06", "rate") : null;
+  const exitFigure = exitFormula === "F-44" ? figure("TXK-06", "rate") : exitFormula === "F-46" ? figure("TXH-09", "lock_years") : null;
   const altRate = exitFormula === "F-44" ? figure("TXK-06", "nominal_rate") : null;
   const exitWeak = strengthOfRules(record.tax_at_exit.rule_ids);
   // audit A46: the study fund's deposit row depends on employment: an employee's own deposit has no deduction (TXH-04) and the
   // employer's within the limits is not income at deposit (TXH-01, TXH-03); the self-employed deduct up to a ceiling (TXH-05)
   const hd = copy.hishtalmutDeposit;
   const deductionPct = figure("TXH-05", "deduction_pct");
+  const deductionCeiling = figure("TXH-05", "income_ceiling");
   const selfText = (
     <>
-      {hd.selfEmployed.before} {deductionPct ? <Num value={deductionPct} /> : null} {hd.selfEmployed.middle}
+      {hd.selfEmployed.before} {deductionPct ? <Num value={deductionPct} /> : null} {hd.selfEmployed.middle} {deductionCeiling ? <Num value={deductionCeiling} display={fmt.nisWhole(Number(deductionCeiling.value))} /> : null} {hd.selfEmployed.after}
     </>
   );
   const hishtalmutDeposit = (employment: "employee" | "self-employed" | null): TaxStep => {
@@ -311,9 +316,9 @@ export default function GuidePage() {
       id: "exit",
       when: copy.taxSteps.exit,
       headline:
-        exitStepCopy && exitRate && "before" in exitStepCopy ? (
+        exitStepCopy && exitFigure && "before" in exitStepCopy ? (
           <>
-            {exitStepCopy.before} <Num value={exitRate} /> {exitStepCopy.after}
+            {exitStepCopy.before} <Num value={exitFigure} /> {exitStepCopy.after}
           </>
         ) : (
           exitStepCopy?.headline ?? formulaHeadline(exitFormula)
@@ -344,7 +349,6 @@ export default function GuidePage() {
 
   const regulatorName = blocks.regulatorNames[String(record.regulator.value)] ?? String(record.regulator.value);
   const provenance = { rules, pointed: data.pointed, terms: data.termsById, dimensions: data.dimensionNames, today, rulesOf: { name: data.name, href: `/rules?product=${record.id}` } }; // the rules page's product filter (2026-10-25): the old `#<file>` anchor stopped existing when groups became `<shelf>-<file>`
-  const cp = { figure };
   // a visual held for review (lib/review.ts) shows only with ?review in the address; the page then keeps its timeline open, as one without a visual
   const held = heldSignatures.includes(record.id);
   const signature = hasSignatureVisual(record.id, data.signature) && (!held || review) ? data.signature : null;
@@ -443,7 +447,20 @@ export default function GuidePage() {
 
           {!omitted("cost") && (
             <GuideSection id="cost" title={title("cost")}>
-              <FeeTable fees={fees} note={provident ? copy.feeNote : copy.feeNoteOther} />
+              <FeeTable
+                fees={fees}
+                note={
+                  data.feeRange ? (
+                    <>
+                      {copy.feeRange.caps}<Num value={data.feeRange.tracks} /> {copy.feeRange.tracks} <Num value={data.feeRange.low} /> {copy.feeRange.to} <Num value={data.feeRange.high} /> {copy.feeRange.reported}
+                    </>
+                  ) : provident ? (
+                    copy.feeNote
+                  ) : (
+                    copy.feeNoteOther
+                  )
+                }
+              />
             </GuideSection>
           )}
 
