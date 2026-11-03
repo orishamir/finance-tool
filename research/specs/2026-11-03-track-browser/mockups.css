@@ -159,3 +159,14 @@ select{min-height:48px;width:100%}
 .ph-ctl input[type=search]{min-height:48px;width:100%}
 .empty{padding:28px 22px;border:1px solid var(--border);border-radius:12px;background:var(--card);color:var(--muted-foreground)}
 .ctl .segs,.ctl .chips{align-self:flex-start}
+
+/* round 4: the column heads sort */
+.sh{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0;font-size:13px;font-weight:500;color:var(--muted-foreground);text-align:start;line-height:1.35}
+.sh:hover{color:var(--foreground)}
+.sh.on{color:var(--foreground);font-weight:600}
+.sh .arr{font-size:11px;opacity:.55;flex:none}
+.sh.on .arr{opacity:1;color:var(--primary)}
+.c-fee .hd{display:block;font-size:13px;font-weight:500;color:var(--muted-foreground)}
+.sh-pair{display:flex;gap:14px}
+.sh-pair .sh{min-height:32px}
+thead th{vertical-align:bottom}

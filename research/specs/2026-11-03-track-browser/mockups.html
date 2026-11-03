@@ -163,6 +163,17 @@ select{min-height:48px;width:100%}
 .ph-ctl input[type=search]{min-height:48px;width:100%}
 .empty{padding:28px 22px;border:1px solid var(--border);border-radius:12px;background:var(--card);color:var(--muted-foreground)}
 .ctl .segs,.ctl .chips{align-self:flex-start}
+
+/* round 4: the column heads sort */
+.sh{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0;font-size:13px;font-weight:500;color:var(--muted-foreground);text-align:start;line-height:1.35}
+.sh:hover{color:var(--foreground)}
+.sh.on{color:var(--foreground);font-weight:600}
+.sh .arr{font-size:11px;opacity:.55;flex:none}
+.sh.on .arr{opacity:1;color:var(--primary)}
+.c-fee .hd{display:block;font-size:13px;font-weight:500;color:var(--muted-foreground)}
+.sh-pair{display:flex;gap:14px}
+.sh-pair .sh{min-height:32px}
+thead th{vertical-align:bottom}
 </style>
 <div class="doc" dir="rtl" lang="he">
 <header class="doc-h">
@@ -216,7 +227,7 @@ select{min-height:48px;width:100%}
     return { ...p, rows, hasKinds, kinds, co, coOrder: [...co.entries()].sort((a, b) => b[1].assets - a[1].assets).map(([c]) => c) };
   });
 
-  const st = { p: products.findIndex((p) => p.id === "kupat-gemel-lehashkaa"), group: "company", kind: "", sort: "fee", q: "" };
+  const st = { p: products.findIndex((p) => p.id === "kupat-gemel-lehashkaa"), group: "company", kind: "", sort: "fee", dir: 1, q: "" };
 
   // ---- formatting, as the site draws numbers ----
   const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
@@ -265,11 +276,13 @@ select{min-height:48px;width:100%}
   };
 
   // ---- the controls, drawn once per product ----
+  // what each column head sorts by; dir 1 is the order a first click gives (the lowest fee, the most stocks, the largest)
   const SORTS = [
-    { id: "fee", label: "דמי ניהול מהחיסכון", words: "דמי הניהול מהחיסכון, מהזול ליקר" },
-    { id: "dep", label: "דמי ניהול מההפקדות", words: "דמי הניהול מההפקדות, מהזול ליקר" },
-    { id: "stock", label: "חשיפה למניות", words: "החשיפה למניות, מהגבוהה לנמוכה" },
-    { id: "company", label: "שם החברה", words: "שם החברה" },
+    { id: "fee", label: "דמי ניהול מהחיסכון", what: "דמי הניהול מהחיסכון", dir: 1, up: "מהזול ליקר", down: "מהיקר לזול", key: (r) => r.fee },
+    { id: "dep", label: "דמי ניהול מההפקדות", what: "דמי הניהול מההפקדות", dir: 1, up: "מהזול ליקר", down: "מהיקר לזול", key: (r) => r.dep },
+    { id: "stock", label: "חשיפה למניות", what: "החשיפה למניות", dir: -1, up: "מהנמוכה לגבוהה", down: "מהגבוהה לנמוכה", key: (r) => r.stock },
+    { id: "assets", label: "נכסים", what: "הנכסים", dir: -1, up: "מהקטן לגדול", down: "מהגדול לקטן", key: (r) => r.assets },
+    { id: "name", label: "שם", what: "השם", dir: 1, up: "לפי הא״ב", down: "לפי הא״ב מהסוף", text: true },
   ];
   const site = document.getElementById("site");
   site.innerHTML = `
@@ -286,7 +299,6 @@ select{min-height:48px;width:100%}
     <label class="search-f pc-only"><span class="ctl-l">חיפוש</span><input id="q" type="search" placeholder="שם המסלול או החברה" autocomplete="off"></label>
   </div>
   <div class="ctl pc-only" id="kinds-pc"><span class="ctl-l">במה הכסף מושקע</span><div class="chips" id="kinds" role="group" aria-label="במה הכסף מושקע"></div></div>
-  <div class="ctl pc-only"><span class="ctl-l">מיון בתוך כל קבוצה</span><div class="segs" id="sort" role="group" aria-label="מיון"></div></div>
   <div class="ph-ctl">
     <label class="field"><span class="ctl-l">חיפוש</span><input id="q2" type="search" placeholder="שם המסלול או החברה" autocomplete="off"></label>
     <label class="field" id="kinds-ph"><span class="ctl-l">במה הכסף מושקע</span><select id="kindSel"></select></label>
@@ -307,22 +319,34 @@ select{min-height:48px;width:100%}
       $("kinds").innerHTML = [`<button type="button" class="ix" data-kind="" aria-pressed="${st.kind === ""}">הכול <span class="cnt">${p.rows.length}</span></button>`, ...p.kinds.map((k) => `<button type="button" class="ix" data-kind="${esc(k.sub)}" aria-pressed="${st.kind === k.sub}">${esc(k.sub)} <span class="cnt">${k.count}</span></button>`)].join("");
       $("kindSel").innerHTML = [`<option value="">הכול (${p.rows.length})</option>`, ...p.kinds.map((k) => `<option value="${esc(k.sub)}"${st.kind === k.sub ? " selected" : ""}>${esc(k.sub)} (${k.count})</option>`)].join("");
     }
-    $("sort").innerHTML = SORTS.map((s) => `<button type="button" class="seg" data-sort="${s.id}" aria-pressed="${st.sort === s.id}">${s.label}</button>`).join("");
     $("sortSel").value = st.sort;
   }
 
   // ---- the list ----
-  const sorters = {
-    fee: (a, b) => (a.fee ?? 99) - (b.fee ?? 99) || (a.dep ?? 99) - (b.dep ?? 99) || he.compare(a.co, b.co),
-    dep: (a, b) => (a.dep ?? 99) - (b.dep ?? 99) || (a.fee ?? 99) - (b.fee ?? 99) || he.compare(a.co, b.co),
-    stock: (a, b) => (b.stock ?? -1) - (a.stock ?? -1) || (a.fee ?? 99) - (b.fee ?? 99),
-    company: (a, b) => he.compare(a.co, b.co) || he.compare(a.name, b.name),
+  // a missing figure goes last in either direction; ties fall back to the lower fee, then the company
+  function sorter() {
+    const s = SORTS.find((x) => x.id === st.sort);
+    const d = st.dir * s.dir;
+    const label = (r) => (st.group === "company" ? r.short : r.co);
+    const tie = (a, b) => (a.fee ?? 99) - (b.fee ?? 99) || he.compare(a.co, b.co) || he.compare(a.short, b.short);
+    if (s.text) return (a, b) => d * he.compare(label(a), label(b)) || tie(a, b);
+    return (a, b) => {
+      const x = s.key(a), y = s.key(b);
+      if (x == null || y == null) return x == null && y == null ? tie(a, b) : x == null ? 1 : -1;
+      return d * (x - y) || tie(a, b);
+    };
+  }
+  const sortHead = (id, text) => {
+    const on = st.sort === id;
+    const arrow = on ? (st.dir * SORTS.find((x) => x.id === id).dir === 1 ? "▲" : "▼") : "⇅";
+    return `<button type="button" class="sh${on ? " on" : ""}" data-sort="${id}">${text}<span class="arr" aria-hidden="true">${arrow}</span></button>`;
   };
+  const ariaSort = (...ids) => (ids.includes(st.sort) ? ` aria-sort="${st.dir * SORTS.find((x) => x.id === st.sort).dir === 1 ? "ascending" : "descending"}"` : "");
 
   function drawList() {
     const p = products[st.p];
     const q = st.q.trim();
-    const rows = p.rows.filter((r) => (!st.kind || r.sub === st.kind) && (!q || r.name.includes(q) || r.co.includes(q))).sort(sorters[st.sort]);
+    const rows = p.rows.filter((r) => (!st.kind || r.sub === st.kind) && (!q || r.name.includes(q) || r.co.includes(q))).sort(sorter());
     const byCo = st.group === "company";
     let groups;
     if (byCo) {
@@ -340,7 +364,8 @@ select{min-height:48px;width:100%}
     groups = groups.filter((g) => g.list.length);
     const shownCos = new Set(rows.map((r) => r.co)).size;
     $("countline").innerHTML = `${n(String(rows.length))} מסלולים של ${n(String(shownCos))} חברות${rows.length < p.rows.length ? ` (מתוך ${n(String(p.rows.length))})` : ""}. <a class="link">מה זה ${p.name}</a>${p.hasKinds ? "" : ` · הרשות לא מסווגת את המסלולים של המוצר הזה לפי במה הכסף מושקע, ולכן אין קיבוץ כזה.`}`;
-    const sortWords = SORTS.find((s) => s.id === st.sort).words;
+    const cur = SORTS.find((s) => s.id === st.sort);
+    const sortWords = `${cur.id === "name" ? (byCo ? "שם המסלול" : "שם החברה") : cur.what}, ${st.dir * cur.dir === 1 ? cur.up : cur.down}`;
     $("order").textContent = byCo ? `החברות מסודרות מהגדולה לקטנה בנכסים ב${p.name}; בתוך כל חברה לפי ${sortWords}.` : `הקבוצות מסודרות מהחשיפה למניות הגבוהה לנמוכה; בתוך כל קבוצה לפי ${sortWords}.`;
     if (!rows.length) {
       $("list").innerHTML = `<div class="empty">אין מסלולים שמתאימים לחיפוש "${esc(q)}".</div>`;
@@ -353,7 +378,7 @@ select{min-height:48px;width:100%}
       byCo
         ? `<span class="nm"><a class="tname" title="${esc(r.name)}">${esc(r.short)}</a>${tags(r, !norm(r.short).includes(norm(r.sub)))}</span>`
         : `<span class="nm"><span class="co"><a class="coname" title="${esc(r.name)}">${esc(r.co)}</a><span class="w">${coLine(r.co)}</span></span>${norm(r.short) === norm(r.sub) ? "" : `<span class="tsub">${esc(r.short)}</span>`}${tags(r, false)}</span>`;
-    const head = `<thead><tr><th class="c-name">${byCo ? "המסלול" : "החברה"}</th><th class="c-id">קופה</th><th class="c-fee">דמי ניהול, ממוצע ${FEE_YEAR}</th><th class="c-exp">חשיפה בסוף ספטמבר 2026</th><th class="c-y">תשואה שנתית ממוצעת, לפני דמי ניהול</th><th class="c-a">נכסים בסוף ספטמבר 2026</th><th class="c-open"><span class="sr">פתיחה</span></th></tr></thead>`;
+    const head = `<thead><tr><th class="c-name"${ariaSort("name")}>${sortHead("name", byCo ? "המסלול" : "החברה")}</th><th class="c-id">קופה</th><th class="c-fee"${ariaSort("fee", "dep")}><span class="hd">דמי ניהול, ממוצע ${FEE_YEAR}</span><span class="sh-pair">${sortHead("fee", "מהחיסכון")}${sortHead("dep", "מההפקדות")}</span></th><th class="c-exp"${ariaSort("stock")}>${sortHead("stock", "חשיפה למניות ולמט״ח, סוף ספטמבר 2026")}</th><th class="c-y">תשואה שנתית ממוצעת, לפני דמי ניהול</th><th class="c-a"${ariaSort("assets")}>${sortHead("assets", "נכסים בסוף ספטמבר 2026")}</th><th class="c-open"><span class="sr">פתיחה</span></th></tr></thead>`;
     const tr = (r) => `<tr><td>${nameCell(r)}</td><td>${n(r.id, "id")}</td><td><span class="figs">${feeFigs(r)}</span></td><td>${exposureCell(r)}</td><td><span class="figs">${yieldCell(r)}</span></td><td>${money(r.assets)}</td><td>${chev}</td></tr>`;
     const table = `<div class="pc"><table class="fixed past">${head}${groups.map((g) => `<tbody><tr class="grp"><th colspan="7" scope="rowgroup"><span class="grp-t">${esc(g.title)}</span><span class="grp-l">${g.line}</span></th></tr>${g.list.map(tr).join("")}</tbody>`).join("")}</table></div>`;
     const prow = (r) => `<div class="prow"><div class="pmain">${nameCell(r)}<span class="pline">${feeFigs(r)}<span class="fig pid"><span class="w">קופה</span>${n(r.id, "id")}</span></span><span class="pline">${exposureCell(r)}</span><span class="pline">${yieldCell(r)}</span><span class="pline"><span class="w">נכסים</span>${money(r.assets)}</span></div>${chev}</div>`;
@@ -368,10 +393,10 @@ select{min-height:48px;width:100%}
     if (b.dataset.p != null) { st.p = Number(b.dataset.p); st.kind = ""; drawControls(); drawList(); }
     else if (b.dataset.group) { st.group = b.dataset.group; drawControls(); drawList(); }
     else if (b.dataset.kind != null) { st.kind = b.dataset.kind; drawControls(); drawList(); }
-    else if (b.dataset.sort) { st.sort = b.dataset.sort; drawControls(); drawList(); }
+    else if (b.dataset.sort) { if (st.sort === b.dataset.sort) st.dir = -st.dir; else { st.sort = b.dataset.sort; st.dir = 1; } drawControls(); drawList(); }
   });
   $("kindSel").addEventListener("change", (e) => { st.kind = e.target.value; drawControls(); drawList(); });
-  $("sortSel").addEventListener("change", (e) => { st.sort = e.target.value; drawControls(); drawList(); });
+  $("sortSel").addEventListener("change", (e) => { st.sort = e.target.value; st.dir = 1; drawControls(); drawList(); });
   for (const id of ["q", "q2"]) $(id).addEventListener("input", (e) => { st.q = e.target.value; $(id === "q" ? "q2" : "q").value = st.q; drawList(); });
 
   const stage = document.getElementById("stage");
