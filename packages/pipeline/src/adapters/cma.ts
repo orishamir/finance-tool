@@ -53,6 +53,13 @@ export const USER_AGENT =
 export const SANITY = { minRowRatio: 0.8, maxDisappearedFundRatio: 0.2 } as const;
 
 /**
+ * A track closed to joiners, left out with those companies (founder, 2026-11-03): the regulator marks it as for workers of
+ * one sector or body, or its name says it is for those already entitled to an annuity on a past date (the regulator's list
+ * of investment tracks).
+ */
+export const closedTrack = (population: string, name: string): boolean => population.trim().startsWith("עובדי ") || /קצבה קיימים|זכאים קיימים/.test(name);
+
+/**
  * Managing companies left out of the data, by legal id (founder, 2026-11-03, 43 companies): their funds serve one
  * profession, employer or municipality, or are otherwise not relevant to the site's readers. A refresh skips their rows, and they
  * are not to be collected or researched. docs/product.md D51.
@@ -430,7 +437,7 @@ export function normalise(csvText: string, ctx: NormaliseContext): NormaliseResu
   const seen = new Set<number>();
   const funds: CmaFund[] = [];
   for (const r of rows) {
-    if (EXCLUDED_COMPANIES.has(get(r, "MANAGING_CORPORATION_LEGAL_ID").trim())) continue;
+    if (EXCLUDED_COMPANIES.has(get(r, "MANAGING_CORPORATION_LEGAL_ID").trim()) || closedTrack(get(r, "TARGET_POPULATION"), get(r, "FUND_NAME"))) continue;
     const id = Number(get(r, "FUND_ID").trim());
     if (!Number.isInteger(id) || id <= 0) {
       problems.push(`unreadable FUND_ID "${get(r, "FUND_ID")}"`);
