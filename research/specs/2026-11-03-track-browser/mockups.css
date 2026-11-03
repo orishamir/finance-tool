@@ -144,17 +144,18 @@ tr.more td{padding:14px 22px}
 .tsub{font-size:14px;color:var(--muted-foreground)}
 .h3{font-size:20px;font-weight:600;line-height:1.35;margin:0}
 .list-h{margin-top:8px}
-.grid-sec{display:flex;flex-direction:column;gap:10px}
-.grid-h{display:flex;flex-direction:column;gap:4px;max-width:52rem}
-.grid-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:12px;background:var(--card)}
-table.grid{min-width:1060px;table-layout:fixed;font-size:14px}
-table.grid th,table.grid td{padding:8px 6px;text-align:center;border-top:1px solid var(--border)}
-table.grid thead th{font-size:12.5px;line-height:1.35;vertical-align:bottom;color:var(--muted-foreground);font-weight:500;border-top:0}
-table.grid .g-co{width:118px;text-align:start;padding-inline-start:16px;font-weight:600;color:var(--foreground);position:sticky;inset-inline-start:0;background:var(--card);z-index:1}
-table.grid tbody .g-co{display:table-cell}
-table.grid .g-co .w{display:block;font-weight:400;font-size:12.5px}
-table.grid .g-n{width:118px;font-size:13px;color:var(--muted-foreground)}
-td.gc{background:color-mix(in oklch,var(--chart-fee) calc(var(--t,0)*50% + 6%),var(--card));border-inline-start:2px solid var(--card)}
-td.gc .n.s{border-bottom-color:color-mix(in oklch,var(--foreground) 45%,transparent)}
-td.gc.none{background:var(--card);color:var(--input)}
-.gmore{display:block;font-size:11.5px;color:var(--muted-foreground)}
+
+/* round 3: the controls are real */
+[hidden]{display:none!important}
+.ix[aria-pressed="true"]{color:var(--background);background:var(--primary);border-color:var(--primary);font-weight:600}
+.ix:hover,.seg:hover:not(:disabled){color:var(--foreground)}
+.ix[aria-pressed="true"]:hover{color:var(--background)}
+.seg[aria-pressed="true"]{background:var(--popover);color:var(--foreground);font-weight:600;box-shadow:inset 0 -2px 0 var(--primary)}
+.seg:disabled{opacity:.4;cursor:not-allowed}
+.ix:focus-visible,.seg:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
+.search-f{display:flex;flex-direction:column;gap:6px}
+input[type=search],select{font:inherit;font-size:15px;color:var(--foreground);background:var(--background);border:1px solid var(--input);border-radius:8px;padding:0 12px;min-height:44px;min-width:min(280px,100%)}
+select{min-height:48px;width:100%}
+.ph-ctl input[type=search]{min-height:48px;width:100%}
+.empty{padding:28px 22px;border:1px solid var(--border);border-radius:12px;background:var(--card);color:var(--muted-foreground)}
+.ctl .segs,.ctl .chips{align-self:flex-start}
