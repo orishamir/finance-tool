@@ -7,7 +7,7 @@ import type { RuleRecord } from "@finance-tool/schema";
 import type { Route } from "./+types/workbench-providers";
 import { r4workbench as c, site } from "../copy";
 import { Breadcrumb, PageShell } from "../components/shell";
-import { Callout } from "../components/ui";
+import { Callout } from "../components/kit";
 import { WorkbenchTabs } from "../components/workbench/workbench";
 import { ProvidentListing } from "../components/workbench/providers/provident";
 import { buildProvidentListing, loadWorkbenchBundle, type WorkbenchBundle } from "../lib/providers";
@@ -64,7 +64,7 @@ export default function WorkbenchProviders() {
           <>
             <WorkbenchTabs current="provider" wrapperId={data.wrapperId} />
             <ProvidentListing listing={listing} wrapperId={data.wrapperId} />
-            <nav className="flex flex-wrap gap-x-6 text-sm" aria-label="קישורים">
+            <nav className="flex flex-wrap gap-x-6 text-sm" aria-label={site.linksAria}>
               <Link to={`/guide/${data.wrapperId}`} className="text-link hover:underline min-h-target inline-flex items-center">
                 {c.providers.links.guide}
               </Link>

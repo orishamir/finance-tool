@@ -9,6 +9,8 @@ export const site = {
   searchPlaceholder: "הדביקו שם של מוצר, מסלול או מונח",
   menu: "תפריט",
   close: "סגירה",
+  /** the name of a page's row of links at its foot */
+  linksAria: "קישורים",
   // 2026-10-26 (founder): a page or visual held for review (lib/review.ts) says so where it still shows
   held: { title: "בבדיקה", page: "העמוד הזה עוד לא מקושר מהאתר: הוא מחכה לבדיקה של העיצוב והחוויה. אפשר להגיע אליו רק מהכתובת.", signature: "התרשים הזה מוסתר בעמוד: הוא מחכה לבדיקה. רואים אותו כאן רק בגלל ⁦?review⁩ בכתובת." },
   back: "חזרה",

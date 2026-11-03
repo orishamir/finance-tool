@@ -337,7 +337,7 @@ function Body({ bundle, fees, form, publisherNames, subject, frame }: { bundle: 
           <FeeSensitivityPanel view={sens} an={an} bundle={bundle} onOpen={(f, v) => openField(f, v)} />
         </section>
       )}
-      <nav className="flex flex-wrap gap-x-6 gap-y-1 text-sm" aria-label="קישורים">
+      <nav className="flex flex-wrap gap-x-6 gap-y-1 text-sm" aria-label={site.linksAria}>
         {workbench && (
           <Link to={`/workbench/tracks/${sv.wrapperId}`} className="text-link hover:underline min-h-target inline-flex items-center">
             {r3fees.linksWorkbench}
