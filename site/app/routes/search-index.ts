@@ -6,13 +6,14 @@ export async function loader() {
   const { loadCma, loadTerms, loadProducts, loadRules, loadParameters } = await import("../lib/data.server");
   const { exposureHref, loadCatalog, loadExposures } = await import("../lib/instruments.server");
   const { normalize, pageAliases, ruleFigs } = await import("../lib/search");
-  const { limitedBondFund, search, searchMore, sourceBlock, parametersPage, topicName } = await import("../copy");
+  const { limitedBondFund, mutualFunds, search, searchMore, sourceBlock, parametersPage, topicName } = await import("../copy");
   const entries: SearchEntry[] = [];
   const wrappers = loadProducts();
   for (const w of wrappers) {
     for (const name of [...w.names.he, ...w.names.app, ...w.names.statement]) entries.push({ kind: "guide", name, line: search.groups.guide, href: `/guide/${w.id}`, norm: normalize(name) });
   }
   for (const name of limitedBondFund.searchNames) entries.push({ kind: "guide", name, line: search.groups.guide, href: "/guide/limited-bond-fund", norm: normalize(name) });
+  for (const name of mutualFunds.searchNames) entries.push({ kind: "guide", name, line: search.groups.guide, href: "/guide/mutual-funds", norm: normalize(name) });
   // audit 2026-10-24 (A4): the fund and track numbers are searchable, and the row says which number it is
   const idLine = (n: number | string) => `${search.fundWord} ${n}`;
   const cma = loadCma();

@@ -1,0 +1,34 @@
+{
+  "id": "krn-mchkh",
+  "he": "קרן מחקה",
+  "en": null,
+  "meaning": "קרן נאמנות שמטרתה תוצאות שנגזרות מהשינוי במדד או במחיר של סחורה. יחידות של קרן מחקה פתוחה קונים מהקרן ופודים לה במחיר של סוף היום; קרן סל היא קרן מחקה סגורה שיחידותיה נסחרות בבורסה, והסכם הקרן שלה קובע שהיא קרן סל.",
+  "where": [
+    "app",
+    "fund-name",
+    "law",
+    "prospectus"
+  ],
+  "wrapper_ids": [
+    "brokerage-account"
+  ],
+  "exposure_ids": [
+    "index-sp500",
+    "index-ta125"
+  ],
+  "variants": [
+    "קרנות מחקות"
+  ],
+  "rule_ids": [
+    "ETF-01",
+    "MF-05",
+    "ETF-04"
+  ],
+  "source": {
+    "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf",
+    "title": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994, סעיף 1 (נוסח משולב באתר רשות ניירות ערך)",
+    "publisher": "Israel Securities Authority",
+    "strength": "primary",
+    "checked": "2026-10-25"
+  }
+}

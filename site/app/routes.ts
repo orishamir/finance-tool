@@ -4,6 +4,7 @@ export default [
   index("routes/home.tsx"),
   route("guide", "routes/guide-index.tsx"),
   route("guide/limited-bond-fund", "routes/guide-limited-bond-fund.tsx"),
+  route("guide/mutual-funds", "routes/guide-mutual-funds.tsx"),
   route("guide/:id", "routes/guide.tsx"),
   route("exposure/:id", "routes/exposure.tsx"),
   route("companies", "routes/companies.tsx"),

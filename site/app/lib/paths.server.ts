@@ -9,7 +9,7 @@ import { providerWrapperIds } from "./providers.server";
 
 export function prerenderPaths(): string[] {
   const paths = ["/", "/guide", "/questions", "/companies", "/rules", "/rules/state", "/rules/costs", "/rules/access", "/rules/protection", "/rules/structure", "/rules-data/state.json", "/rules-data/companies.json", "/rules-data/costs.json", "/rules-data/access.json", "/rules-data/protection.json", "/rules-data/structure.json", "/documents", "/parameters", "/not-covered", "/search-index.json", "/search-texts.json", "/goal", "/goal/compare", "/idle-cash", "/compare-bundle.json"];
-  paths.push("/guide/limited-bond-fund");
+  paths.push("/guide/limited-bond-fund", "/guide/mutual-funds");
   for (const w of loadProducts()) paths.push(`/guide/${w.id}`);
   const folds = exposureFolds();
   for (const e of loadExposures()) if (!folds[e.id]) paths.push(`/exposure/${e.id}`);

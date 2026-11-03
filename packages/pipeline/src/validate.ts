@@ -168,6 +168,7 @@ export function validateData(ctx: ValidationContext): Problem[] {
   checkHoldingParameter(files, ctx.dataDir, report);
   checkPinnedRules(files, ctx.dataDir, ruleRecords, report);
   checkHomeGuideDoor(files, ctx.dataDir, report);
+  checkTermNames(files, ctx.dataDir, report);
   checkOpenQuestions(files, ctx, report, warn);
   // who each rule applies to and where it may appear (D30; research/specs/2026-10-25-rules-scope/spec.md §3): scope.ts
   const scopeCounts = checkScope(ctx, ruleRecords, report, warn);
@@ -444,6 +445,39 @@ function checkHomeGuideDoor(files: string[], dataDir: string, report: (file: str
     if (seen.has(id)) report(file, `home-guide-door: ${id} is listed twice`);
     seen.add(id);
   }
+}
+
+/**
+ * Glossary records that share a Hebrew name (data-schema §4 item 16, 2026-11-03). A page keys its term cards by the Hebrew name, so
+ * where two records of one name both belong to a page (a shared wrapper or exposure id) one wins silently, and two records of "קרן
+ * מחקה" said opposite things. Two records of one name may stand only for different products; the pairs below are the leftovers,
+ * each as "<id> <id>" in file order, and the list only shrinks.
+ */
+export const TERM_NAME_LEFTOVERS: readonly string[] = [];
+function checkTermNames(files: string[], dataDir: string, report: (file: string, message: string) => void) {
+  const at = (f: string) => relative(dataDir, f).replace(/\\/g, "/");
+  const terms = files
+    .filter((f) => /^terms\/[^/]+\.json$/.test(at(f)))
+    .sort()
+    .map((f) => ({ file: f, rec: parseJson(readFileSync(f, "utf8")).value as { id?: string; he?: string; wrapper_ids?: string[]; exposure_ids?: string[] } | undefined }))
+    .filter((t): t is { file: string; rec: { id: string; he: string; wrapper_ids?: string[]; exposure_ids?: string[] } } => typeof t.rec?.id === "string" && typeof t.rec.he === "string");
+  const used = new Set<string>();
+  for (let i = 0; i < terms.length; i++) {
+    for (let j = i + 1; j < terms.length; j++) {
+      const a = terms[i]!.rec;
+      const b = terms[j]!.rec;
+      if (a.he !== b.he) continue;
+      const pages = [...(a.wrapper_ids ?? []).filter((x) => b.wrapper_ids?.includes(x)), ...(a.exposure_ids ?? []).filter((x) => b.exposure_ids?.includes(x))];
+      if (pages.length === 0) continue;
+      const pair = `${a.id} ${b.id}`;
+      if (TERM_NAME_LEFTOVERS.includes(pair)) {
+        used.add(pair);
+        continue;
+      }
+      report(terms[j]!.file, `terms: "${b.he}" has two records on the same pages (${pages.join(", ")}): ${a.id} and ${b.id}; a page shows only one, so merge them or give each its own products`);
+    }
+  }
+  if (terms.length > 0) for (const pair of TERM_NAME_LEFTOVERS) if (!used.has(pair)) report(join(dataDir, "terms"), `terms: the leftover pair "${pair}" no longer shares a page; take it off TERM_NAME_LEFTOVERS (the list only shrinks)`);
 }
 
 /**

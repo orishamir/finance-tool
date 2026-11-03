@@ -185,6 +185,22 @@ export const limitedBondFund = {
   ],
 };
 
+// A guide of its own on funds of every kind (D55, 2026-11-03), no product id; the prose is in content/guide/mutual-funds.tsx
+export const mutualFunds = {
+  title: "קרנות נאמנות",
+  lede: "קרן סל, קרן מחקה פתוחה וקרן כספית הן כולן קרנות נאמנות לפי אותו חוק: מנהל קרן משקיע את הכסף, ונאמן מחזיק את הנכסים בשביל בעלי היחידות.",
+  indexLine: "מה זו קרן נאמנות, מה ההבדל בין קרן סל לקרן מחקה פתוחה, וכמה זה עולה",
+  searchNames: ["קרנות נאמנות", "קרן נאמנות", "קרן סל", "קרנות סל", "קרן מחקה", "קרנות מחקות", "קרן מחקה פתוחה", "קרן פתוחה", "קרן סגורה", "ETF"],
+  sections: [
+    { id: "what", title: "מה זה" },
+    { id: "kinds", title: "סוגי הקרנות" },
+    { id: "trade", title: "קנייה ומכירה" },
+    { id: "cost", title: "כמה זה עולה" },
+    { id: "safety", title: "מי מחזיק את הכסף" },
+    { id: "tax", title: "מיסוי" },
+  ],
+};
+
 export const guide = {
   indexTitle: "בעמוד הזה",
   // D6 (amended 2026-10-26): makam, a government bond and a money-market fund are bought inside an account, not a container of their own

@@ -13,10 +13,15 @@
     "money-market-fund-daily",
     "money-market-fund-renewable"
   ],
+  "exposure_ids": [
+    "index-sp500",
+    "index-ta125"
+  ],
   "variants": [],
   "rule_ids": [
     "MF-43",
-    "MF-54"
+    "MF-54",
+    "ETF-12"
   ],
   "source": {
     "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-64186b589b352/080217.pdf",
