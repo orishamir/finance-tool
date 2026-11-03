@@ -247,11 +247,16 @@ const fees = brands.funds;
 
 /** The head of a fund list's three fees, with the "?" that opens the three terms on one sheet (founder, 2026-11-03). */
 export function FundFeesHead() {
+  // the mark never stands alone on a line: it is held to the head's last word (founder, 2026-11-03: a "?" alone under the head)
+  const head = fees.columns.fees;
+  const cut = head.lastIndexOf(" ");
   return (
-    <span>
-      {fees.columns.fees}
-      {/* inline, so the mark follows the head's last word when the head wraps */}
-      <HelpMark term={fees.feeTerms} about={fees.columns.fees} lead={fees.feeHelpLead} className="ms-1" />
+    <span className="block text-balance">
+      {head.slice(0, cut + 1)}
+      <span className="whitespace-nowrap">
+        {head.slice(cut + 1)}
+        <HelpMark term={fees.feeTerms} about={head} lead={fees.feeHelpLead} className="ms-1" />
+      </span>
     </span>
   );
 }
