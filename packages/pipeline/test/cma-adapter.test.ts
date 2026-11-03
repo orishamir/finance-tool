@@ -149,7 +149,7 @@ describe("normalise", () => {
   });
 
   it("reports a population it does not know, in place of treating the track as open", () => {
-    const csv = decodeWindows1255(fixture).replace("כלל האוכלוסיה", "אוכלוסיה חדשה");
+    const csv = decodeWindows1255(fixture).replaceAll("כלל האוכלוסיה", "אוכלוסיה חדשה");
     expect(normalise(csv, ctx).problems.join(" ")).toContain("unknown TARGET_POPULATION");
   });
 

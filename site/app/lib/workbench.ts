@@ -72,7 +72,7 @@ export interface WorkbenchRow {
 }
 
 /** The outcome of one track against the saved goal's horizon (null: no saved goal): a missing goal first, then a classification the data does not carry. */
-export function outcomeOf(r: WbRow, years: number | null, table: FitTableData, classification: string, words: { noGoal: string; noClass: string }): Pick<WorkbenchRow, "fit" | "outcome" | "key" | "reason"> {
+export function outcomeOf(r: WbRow, years: number | null, table: FitTableData, classification: string, words: { noGoal: string; noClass: string }): Pick<WorkbenchRow, "fit" | "key" | "reason"> {
   if (years === null) return { fit: "no-goal", key: "no-goal", reason: { text: words.noGoal, code: "no-goal" } };
   if (r.sp === NO_CLASS && r.sub === "") return { fit: "no-goal", key: "no-class", reason: { text: words.noClass, code: "no-class" } };
   const res = fitOf(table, { specialization: r.sp, subSpecialization: r.sub, classification }, years);

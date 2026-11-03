@@ -308,9 +308,9 @@ A study fund is a provident fund (קופת גמל) "intended to pay study allowa
 - Likely to change: yes (each company's bylaws).
 
 ### KH-24 Who offers study funds (Gemel-Net register)
-- Rule: In Gemel-Net period 202609, 39 managing companies report study funds (`FUND_CLASSIFICATION = קרנות השתלמות`). 15 report funds open to the general population (`כלל האוכלוסיה`), listed in the Institutions section. The other 24 report funds for a specific sector (`עובדי סקטור מסויים`) or a specific employer or body (`עובדי מפעל/גוף מסויים`). Meitav also reports an employer-specific study fund. All of them except Meitav's fund are left out of the stored data by the founder's decision of 2026-11-03 and are not researched; the list is `EXCLUDED_COMPANIES` in `packages/pipeline/src/adapters/cma.ts`.
+- Rule: In Gemel-Net period 202609, 39 managing companies report study funds (`FUND_CLASSIFICATION = קרנות השתלמות`). 15 report funds open to the general population (`כלל האוכלוסיה`), listed in the Institutions section. The other 24 report funds for a specific sector (`עובדי סקטור מסויים`) or a specific employer or body (`עובדי מפעל/גוף מסויים`). Meitav also reports an employer-specific study fund. All of them, Meitav's fund included, are left out of the stored data by the founder's decision of 2026-11-03 and are not researched; the companies are `EXCLUDED_COMPANIES` in `packages/pipeline/src/adapters/cma.ts`, and `closedTrack` there skips a closed track of an open company.
 - Conditions / exceptions: Eligibility for sector funds is not researched (open question 12, closed). The discovery domain report counted "18 public managers incl. IRA-only firms". This query gives 15, including the IRA-only firms Action, Globalnet and Slice (open question 13).
-- Figures: 15 general-public managers; 24 sector or employer managers in the register, only Meitav's employer fund of them in the stored data; period 202609.
+- Figures: 15 general-public managers; 24 sector or employer managers in the register, none of them in the stored data; period 202609.
 - Source: [Gemel-Net datastore, distinct MANAGING_CORPORATION and TARGET_POPULATION, REPORT_PERIOD=202609, FUND_CLASSIFICATION=קרנות השתלמות](https://data.gov.il/api/3/action/datastore_search?resource_id=a30dcbea-a1d2-482c-ae29-8f781f5025fb&filters={"REPORT_PERIOD":202609,"FUND_CLASSIFICATION":"קרנות%20השתלמות"}&fields=MANAGING_CORPORATION,TARGET_POPULATION&distinct=true&limit=500) · checked 2026-10-22 · primary.
 - Dimensions: `regulator`, `eligibility`
 - Likely to change: yes. Managers enter and leave; refresh monthly.
@@ -412,7 +412,7 @@ General population (`כלל האוכלוסיה`), 15 managers:
 | מנורה מבטחים פנסיה וגמל בע"מ | |
 | סלייס גמל בע"מ | self-directed fund only |
 
-Sector or employer funds (`עובדי סקטור מסויים` or `עובדי מפעל/גוף מסויים`): left out of the stored data and not researched (founder, 2026-11-03; `EXCLUDED_COMPANIES` in `packages/pipeline/src/adapters/cma.ts`), except Meitav's employer fund.
+Sector or employer funds (`עובדי סקטור מסויים` or `עובדי מפעל/גוף מסויים`): left out of the stored data and not researched (founder, 2026-11-03; `EXCLUDED_COMPANIES` and `closedTrack` in `packages/pipeline/src/adapters/cma.ts`).
 
 Regulator: Capital Market, Insurance and Savings Authority (law s.1, s.13 approval; see `regulators-and-protection.md`).
 
