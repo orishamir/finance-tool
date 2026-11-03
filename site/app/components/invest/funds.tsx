@@ -11,7 +11,7 @@ import { fundLabels } from "../../lib/labels";
 import { feeAbsent } from "../../lib/providers";
 import { IconCopy, IconExternal, IconLock } from "../icons";
 import { Num } from "../provenance";
-import { Button, FeeFigure, FeeWordsNote, LabelChip, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RankBadge, Section, SelectField, Tag, type ProductColumn, type ProductRow } from "../kit";
+import { Button, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, LabelChip, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RankBadge, Section, SelectField, Tag, type ProductColumn, type ProductRow } from "../kit";
 import { LabelsLegend, optionClass, OptionTag, reasonText } from "./parts";
 import { AddEntryButton, FundTerms } from "./custom-entries";
 import { isCustomFund } from "../../lib/custom-entries";
@@ -62,10 +62,15 @@ function FundList({ view, house }: { view: InvestView; house: HouseRow }) {
     { id: "rank", head: <span className="sr-only">{c.funds.rank}</span>, width: 3 },
     { id: "name", head: b.columns.name },
     { id: "number", head: b.columns.number, width: 7.5 },
-    { id: "fees", head: b.columns.fees, width: 11 },
+    { id: "fees", head: <FundFeesHead />, width: 11 },
     { id: "value", head: c.funds.value(house.provider.short), width: 13.5 },
   ];
-  return <ProductTable columns={columns} groups={rows.map((r) => ({ key: r.key, rows: [r] }))} />;
+  return (
+    <>
+      <FundFeesPhoneHelp />
+      <ProductTable columns={columns} groups={rows.map((r) => ({ key: r.key, rows: [r] }))} />
+    </>
+  );
 }
 
 /** The three fees, each with its word; one the fund does not have, or one not collected, says so (also the index page's fund slot). */

@@ -5,7 +5,7 @@
 import { existsSync, readdirSync, statSync } from "node:fs";
 import { join, relative, sep } from "node:path";
 import type { RuleRecord } from "@finance-tool/schema";
-import { guideIndex, idle, invest, limitedBondFund, r2, r3fees, r3holdings, r3transfer, trackBrowser, companies as companiesCopy } from "../copy";
+import { guideIndex, idle, invest, limitedBondFund, mutualFunds, r2, r3fees, r3holdings, r3transfer, trackBrowser, companies as companiesCopy } from "../copy";
 import { exposureHref, loadExposures } from "./instruments.server";
 import { loadRules, loadProducts, pointedRecords, root } from "./data.server";
 import { fileProducts, commonRulesFile, shelfOf, tier2RuleFiles, type ShelfId } from "./rule-shelves";
@@ -166,7 +166,7 @@ function build(): Scan {
     let page: RuleUsePage | null = null;
     if (rel[0] === "content" && rel[1] === "guide") {
       if (base === "index" || base === "types") continue;
-      page = { href: `/guide/${base}`, label: base === "limited-bond-fund" ? limitedBondFund.title : (wrapperName.get(base) ?? base) };
+      page = { href: `/guide/${base}`, label: base === "limited-bond-fund" ? limitedBondFund.title : base === "mutual-funds" ? mutualFunds.title : (wrapperName.get(base) ?? base) };
     } else if (rel[0] === "content" && rel[1] === "exposure") {
       const e = loadExposures().find((x) => x.id === base);
       page = { href: exposureHref(base), label: e?.names?.he?.[0] ?? base };

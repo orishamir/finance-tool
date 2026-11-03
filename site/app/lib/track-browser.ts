@@ -44,6 +44,8 @@ export interface TbTemplates {
 export interface TbProduct {
   id: string;
   name: string;
+  /** A type the site has no guide or tracks page for (a company's page only): its id is the regulator's type. */
+  noPage?: true;
   dataset: "gemelnet" | "pensia-net";
   /** The report period of this product's tracks ("2026-09"). */
   period: string;
@@ -68,6 +70,8 @@ export interface TbData {
 
 export interface TbTrack {
   id: number;
+  /** The regulator's file the track is in: where its fund number links. */
+  dataset: TbProduct["dataset"];
   /** Index into `TbData.companies`. */
   company: number;
   companyName: string;
@@ -96,6 +100,8 @@ export interface TbTrack {
   selfManaged: boolean;
   /** F-87, for the order of the kinds and the sort. */
   stock: number | null;
+  /** Its company has another track of the same kind in this product: in the one list of a kind, its name tells the two apart. */
+  twin: boolean;
   href: string;
 }
 
@@ -120,6 +126,7 @@ export interface TbKind {
 export interface ProductView {
   id: string;
   name: string;
+  noPage?: true;
   dataset: TbProduct["dataset"];
   hasKinds: boolean;
   tracks: TbTrack[];
@@ -127,8 +134,6 @@ export interface ProductView {
   companies: TbCompany[];
   /** In the order of the groups by kind: the highest median stock share first. */
   kinds: TbKind[];
-  /** The fee from deposits differs between the tracks, so its head sorts (in study funds every track has none). */
-  depSorts: boolean;
 }
 
 const collator = new Intl.Collator("he");
@@ -143,6 +148,7 @@ export function buildProductView(data: TbData, productId: string): ProductView |
     const co = data.companies[r.c]!;
     return {
       id: r.f,
+      dataset: p.dataset,
       company: r.c,
       companyName: co.name,
       fullName: r.n,
@@ -162,6 +168,7 @@ export function buildProductView(data: TbData, productId: string): ProductView |
       young5: youngerThanYears(r.inc, p.period, 5),
       selfManaged: r.s === 1,
       stock: shareOf(exposure?.stock),
+      twin: false,
       href: `/companies/${co.id}/${r.f}`,
     };
   });
@@ -176,6 +183,7 @@ export function buildProductView(data: TbData, productId: string): ProductView |
   for (const x of tracks) if (x.sub) x.sub = [...spellings.get(normName(x.sub))!.entries()].sort((a, b) => b[1] - a[1] || collator.compare(a[0], b[0]))[0]![0];
   const bySub = new Map<string, TbTrack[]>();
   for (const x of tracks) if (x.sub) bySub.set(x.sub, [...(bySub.get(x.sub) ?? []), x]);
+  for (const list of bySub.values()) for (const x of list) x.twin = list.some((y) => y !== x && y.company === x.company);
   // F-100: the kinds from the highest median stock share to the lowest, ties by the number of tracks, a kind with no share last
   const kinds: TbKind[] = [...bySub.entries()]
     .map(([sub, list]) => ({ sub, kind: list[0]!.kind, count: list.length, median: kindStockMedian(list.map((x) => x.stock)) }))
@@ -194,12 +202,20 @@ export function buildProductView(data: TbData, productId: string): ProductView |
   });
   // F-99: the company with the most assets in this product first, ties by name
   companies.sort((a, b) => (shareOf(b.assets) ?? -1) - (shareOf(a.assets) ?? -1) || collator.compare(a.name, b.name));
-  const depSorts = new Set(tracks.map((x) => keyOf(x, "dep"))).size > 1;
-  return { id: p.id, name: p.name, dataset: p.dataset, hasKinds, tracks, companies, kinds, depSorts };
+  return { id: p.id, name: p.name, ...(p.noPage ? { noPage: p.noPage } : {}), dataset: p.dataset, hasKinds, tracks, companies, kinds };
 }
+
+/** The glossary terms behind the "?" of the column heads, by their Hebrew names: only where the card says what the head leaves out (an
+ * average, not anyone's price; the money of all the savers together). The loader ships these cards. */
+export const HELP_TERMS = {
+  fee: "שיעור דמי ניהול ממוצעת שנתי – נכסים",
+  exposure: 'חשיפה למניות ולמט"ח',
+  assets: "יתרת נכסים לסוף תקופה",
+} as const;
 
 // ---------------------------------------------------------------- filter, sort, group
 
+/** "company": the tracks under their companies' headings; "kind": one kind chosen, its tracks of every company in one list (2026-11-03). */
 export type GroupBy = "company" | "kind";
 export type SortId = "name" | "fee" | "dep" | "stock" | "assets";
 
@@ -256,6 +272,33 @@ export function sortTracks(list: readonly TbTrack[], s: SortState, by: GroupBy):
   });
 }
 
+/**
+ * The columns whose head sorts in this grouping: those whose figure differs between the tracks of at least one group, since the sort
+ * acts inside each group (founder, 2026-11-03: "sorting by דמי ניהול doesnt work" on the pension products, whose fee is the fund's
+ * own, one for all its tracks; and no study fund has a fee from deposits). The name always sorts. A chosen kind is one of the groups by
+ * kind; the heads do not change with it, so a column whose figures are equal in that kind still sorts (nothing moves, 2026-11-03).
+ */
+export function sortableIn(view: ProductView, by: GroupBy): ReadonlySet<SortId> {
+  const groups = new Map<string | number, TbTrack[]>();
+  for (const x of view.tracks) {
+    const g = by === "company" ? x.company : x.sub;
+    groups.set(g, [...(groups.get(g) ?? []), x]);
+  }
+  const out = new Set<SortId>(["name"]);
+  for (const id of ["fee", "dep", "stock", "assets"] as const) {
+    // a missing figure is last either way, so only reported figures that differ give an order
+    if ([...groups.values()].some((list) => new Set(list.map((x) => keyOf(x, id)).filter((k) => k !== null)).size > 1)) out.add(id);
+  }
+  return out;
+}
+
+/** The sort in force: the one chosen, or, where its column does not sort here, the first that does of fee, stock, assets, name. */
+export function sortInForce(chosen: SortState, sortable: ReadonlySet<SortId>): SortState {
+  if (sortable.has(chosen.id)) return chosen;
+  const id = (["fee", "stock", "assets", "name"] as const).find((x) => sortable.has(x))!;
+  return { id, dir: 1 };
+}
+
 /** The search matches the name as the company writes it and the company's name (spaces, quotes and dashes ignored). */
 export function matchesSearch(x: TbTrack, company: TbCompany | undefined, q: string): boolean {
   const n = normName(q.trim());
@@ -275,8 +318,6 @@ export interface TbGroup {
   title: string;
   /** The company's page. */
   companyId?: string;
-  /** The regulator's kind of a group by kind. */
-  regulatorKind?: string;
   /** The tracks shown, in the chosen order. */
   tracks: TbTrack[];
   /** The tracks of the group before the filter (a company's own). */
@@ -287,13 +328,13 @@ export interface TbGroup {
   fees: { low: SiteValue; high: SiteValue } | null;
 }
 
-/** F-100's fee range of a group's shown tracks as two computed values over the fees it read. */
-export function feeRangeOf(list: readonly TbTrack[], today: string): TbGroup["fees"] {
+/** F-100's fee range of a group's shown tracks as two computed values over the fees it read. `about`: the sheets' headers, the group's by default. */
+export function feeRangeOf(list: readonly TbTrack[], today: string, about: { low: string; high: string } = { low: t.about.feeLow, high: t.about.feeHigh }): TbGroup["fees"] {
   const range = groupFeeRange(list.map((x) => shareOf(x.fee)));
   if (!range) return null;
   const inputs = Object.fromEntries(list.filter((x) => shareOf(x.fee) !== null).map((x) => [`${x.companyName}: ${x.fullName} (${x.id})`, x.fee]));
-  const make = (value: number, about: string) => computed(value, "pct_per_year", "F-100", inputs, { today, about });
-  return { low: make(range.low, t.about.feeLow), high: make(range.high, t.about.feeHigh) };
+  const make = (value: number, header: string) => computed(value, "pct_per_year", "F-100", inputs, { today, about: header });
+  return { low: make(range.low, about.low), high: make(range.high, about.high) };
 }
 
 /** The groups of the shown tracks, in their order, without the groups left empty. `sorted` is already in the chosen order. */
@@ -309,14 +350,15 @@ export function buildGroups(view: ProductView, sorted: readonly TbTrack[], by: G
   for (const x of sorted) bucket.set(x.sub, [...(bucket.get(x.sub) ?? []), x]);
   return view.kinds
     .filter((k) => bucket.has(k.sub))
-    .map((k) => ({ key: `k:${k.sub}`, by: "kind" as const, title: k.sub, regulatorKind: k.kind, tracks: bucket.get(k.sub)!, total: k.count, assets: null, fees: feeRangeOf(bucket.get(k.sub)!, today) }));
+    .map((k) => ({ key: `k:${k.sub}`, by: "kind" as const, title: k.sub, tracks: bucket.get(k.sub)!, total: k.count, assets: null, fees: feeRangeOf(bucket.get(k.sub)!, today) }));
 }
 
 /** Whether a row under a company's heading shows its kind as a chip: its short name does not say it already. */
 export const showsKindChip = (x: TbTrack): boolean => !!x.sub && !nameSaysKind(x.short, x.sub);
 
-/** Whether a row under a kind's heading shows its short name: it says more than the kind. */
-export const showsShortName = (x: TbTrack): boolean => nameAddsToKind(x.short, x.sub);
+/** Whether a row in the one list of a kind shows its short name under the company: only to tell apart two tracks of one company in
+ *  that kind (founder, 2026-11-03: a name that only says the kind again, "עוקב S&P 500" under the S&P 500 kind, is not wanted). */
+export const showsShortName = (x: TbTrack): boolean => x.twin && nameAddsToKind(x.short, x.sub);
 
 /** The yield's empty word: "less than N years" for a track younger than the window, else "not reported". */
 export function missingYield(x: TbTrack, years: 3 | 5): string {
@@ -332,6 +374,12 @@ export const companiesIn = (list: readonly TbTrack[]): number => new Set(list.ma
 /** "מסלול אחד", "שני מסלולים", "16 מסלולים": one and two are words, not "1 מסלולים" (copy.md 7.3). */
 export function tracksPhrase(k: number): string {
   return k === 0 ? t.count.tracksNone : k === 1 ? t.count.tracksOne : k === 2 ? t.count.tracksTwo : `${fmt.number(k)} ${t.count.tracksMany}`;
+}
+
+/** "במוצר אחד", "בשני מוצרים", "ב־8 מוצרים": where a company's tracks are, on its page's count line. */
+export function inProductsPhrase(k: number): string {
+  const w = t.company.inProducts;
+  return k === 1 ? w.one : k === 2 ? w.two : `${w.many}${fmt.number(k)} ${w.manyAfter}`;
 }
 
 export function companiesPhrase(k: number): string {

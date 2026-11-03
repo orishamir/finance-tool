@@ -757,6 +757,15 @@
       top: 4rem;
     }
   }
+  /* A row of a list of products lights under the pointer, so the eye keeps it across the columns (ProductTable). Nothing depends on it. */
+  @media (hover: hover) {
+    .tbl-rows tbody tr:not(.grp-row, .dup-row) > td {
+      transition: background-color var(--duration-fast);
+    }
+    .tbl-rows tbody tr:not(.grp-row, .dup-row):hover > td {
+      background: var(--accent);
+    }
+  }
   /* A group's heading over its rows (a company, a kind of money): on the table's width, and on a phone. */
   .grp-row th,
   .grp-phone {
@@ -785,6 +794,33 @@
   .grp-title {
     font-weight: 600;
     color: var(--foreground);
+  }
+  /* A heading that folds its group (ProductTable `foldable`): the strip is pressed, its chevron at the inline end. */
+  .grp-foldable {
+    cursor: pointer;
+  }
+  .grp-foldable th,
+  .grp-phone.grp-foldable {
+    position: relative;
+    padding-inline-end: 52px;
+  }
+  @media (hover: hover) {
+    .grp-foldable:hover th,
+    .grp-phone.grp-foldable:hover {
+      background: var(--accent);
+    }
+  }
+  .grp-fold {
+    position: absolute;
+    inset-inline-end: 4px;
+    top: 50%;
+    translate: 0 -50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    color: var(--muted-foreground);
   }
   .grp-line {
     font-size: var(--text-sm);
@@ -825,6 +861,14 @@
   }
   .dup-row {
     background: color-mix(in oklch, var(--caution-subtle) 55%, transparent);
+  }
+  /* A row of a list on its way to its new place (useFlip) covers the rows it passes, so two rows' words never show through each other. */
+  .flip-moving {
+    background-color: var(--card);
+  }
+  .flip-moving.dup-row,
+  .flip-moving.dup {
+    background: linear-gradient(color-mix(in oklch, var(--caution-subtle) 55%, transparent) 0 0), var(--card);
   }
   .dup-bar {
     width: 3px;

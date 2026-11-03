@@ -208,6 +208,15 @@ describe("new collections", () => {
     expect(problems[0]?.message).toMatch(/fund:missing/);
   });
 
+  it("fails two term records of one Hebrew name on the same page, and passes them on different products (§4 item 16)", () => {
+    const other = { ...term, id: "kupat-gemel-b", meaning: "הסבר אחר" };
+    const problems = run({ "terms/kupat-gemel.json": term, "terms/kupat-gemel-b.json": other });
+    expect(problems).toHaveLength(1);
+    expect(problems[0]!.message).toMatch(/two records on the same pages \(kupat-gemel-lehashkaa\): kupat-gemel-b and kupat-gemel;/);
+    expect(run({ "terms/kupat-gemel.json": term, "terms/kupat-gemel-b.json": { ...other, wrapper_ids: ["keren-hishtalmut"] } })).toEqual([]);
+    expect(run({ "terms/a.json": { ...term, id: "a", exposure_ids: ["index-sp500"], wrapper_ids: [] }, "terms/b.json": { ...other, id: "b", exposure_ids: ["index-sp500"], wrapper_ids: [] } })).toHaveLength(1);
+  });
+
   it("checks rule_ids of terms and dimensions with the generic walk", () => {
     expect(run({ "terms/a.json": { ...term, rule_ids: ["NOPE-1"] } })[0]?.message).toMatch(/NOPE-1/);
     expect(run({ "dimensions/tax-at-exit.json": { ...dimension, rule_ids: ["NOPE-2"] } })[0]?.message).toMatch(/NOPE-2/);

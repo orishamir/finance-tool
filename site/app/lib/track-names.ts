@@ -11,8 +11,9 @@ const words = (s: string): string[] =>
     .split(/\s+/)
     .filter(Boolean);
 
-/** The regulator's pension file writes "S&P" as "S1;P" (14054 "עוקב מדד S1;P 500"); the short name puts the "&" back. */
-const SP_GARBLED = /([sS])1;([pP])/g;
+/** The regulator writes "S&P" as "S1;P" in the pension file (14054 "עוקב מדד S1;P 500") and as "s&p" in many kinds and names; the site writes "S&P". */
+const SP_WRITTEN = /(?<![A-Za-z])[sS](?:1;|&)[pP](?![A-Za-z])/g;
+const mendSP = (s: string): string => s.replace(SP_WRITTEN, "S&P");
 
 /** Hebrew's one-letter prefixes: "לחוסכים" is "חוסכים" with a "to". */
 const PREFIXES = "לבהוכמש";
@@ -21,7 +22,7 @@ const PREFIXES = "לבהוכמש";
 export const normName = (s: string): string => s.toLowerCase().replace(/[\s"״'׳\-–()]/g, "");
 
 /** The regulator's kind of a child-savings track repeats the product's name ("חיסכון לילד - חוסכים המעדיפים סיכון גבוה"); the product is already chosen. */
-export const kindLabel = (kind: string): string => kind.trim().replace(/^חיסכון לילד\s*-\s*/, "");
+export const kindLabel = (kind: string): string => mendSP(kind.trim().replace(/^חיסכון לילד\s*-\s*/, ""));
 
 /** The words of every kind's name, normalised: a cut never takes one of them away from a track's name. */
 export function kindWordSet(kinds: Iterable<string>): Set<string> {
@@ -65,7 +66,7 @@ export function shortTrackNames<T extends { key: string | number; name: string }
     }
   }
   const out = new Map<string | number, string>();
-  tracks.forEach((t, i) => out.set(t.key, split[i]!.slice(cuts[i]).join(" ").replace(/^[-–:]\s*/, "").replace(/^מסלול\s+/, "").replace(SP_GARBLED, "$1&$2") || t.name));
+  tracks.forEach((t, i) => out.set(t.key, mendSP(split[i]!.slice(cuts[i]).join(" ").replace(/^[-–:]\s*/, "").replace(/^מסלול\s+/, "") || t.name)));
   return out;
 }
 

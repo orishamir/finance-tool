@@ -5,7 +5,7 @@ import { useEffect, useId, useMemo, useState } from "react";
 import { useLoaderData, useLocation, useNavigate, useParams } from "react-router";
 import type { RuleRecord } from "@finance-tool/schema";
 import type { Route } from "./+types/invest";
-import { invest as c, site } from "../copy";
+import { brands, invest as c, site } from "../copy";
 import { OtherAssumptions, PlanChanges, PlanKnobs } from "../components/invest/knobs";
 import { IndexChips, PlanBlock } from "../components/invest/chips";
 import { HousesSection } from "../components/invest/houses";
@@ -51,7 +51,13 @@ export async function loader({ params }: Route.LoaderArgs) {
     .map((e) => ({ id: e.id, name: e.names.he[0] ?? e.id, israeli: e.constituents_israeli === true }));
   const id = params.slug ? exposureIdOfSlug(params.slug) : null;
   if (id && !indices.some((i) => i.id === id)) throw new Response("Not found", { status: 404 });
-  return { ...goalFormData(), indices };
+  // the glossary cards behind the fund list's fees "?", with the rules they cite
+  const { loadRules, loadTerms } = await import("../lib/data.server");
+  const names = new Set<string>(brands.funds.feeTerms);
+  const feeTerms = Object.fromEntries(loadTerms().filter((t) => names.has(t.he)).map((t) => [t.he, t]));
+  const all = loadRules();
+  const feeRules = [...new Set(Object.values(feeTerms).flatMap((t) => t.ruleIds))].flatMap((id) => (all[id] ? [all[id]] : []));
+  return { ...goalFormData(), indices, feeTerms, feeRules };
 }
 
 /** The known index the address names (`/indices/<x>` is `index-<x>`), or null. */
@@ -82,9 +88,9 @@ export default function Invest() {
       .catch(() => setFailed(true));
   }, []);
   const provenance = useMemo(() => {
-    const rules: Record<string, RuleRecord> = Object.fromEntries([...(compare?.rules ?? []), ...(wb?.rules ?? [])].map((r) => [r.id, r as RuleRecord]));
-    return { rules, pointed: recordsById(compare?.pointed, wb?.pointed), terms: {}, dimensions: Object.fromEntries((compare?.checklist ?? []).map((x) => [x.id, x.name])), today: data.today };
-  }, [compare, wb, data.today]);
+    const rules: Record<string, RuleRecord> = Object.fromEntries([...data.feeRules, ...(compare?.rules ?? []), ...(wb?.rules ?? [])].map((r) => [r.id, r as RuleRecord]));
+    return { rules, pointed: recordsById(compare?.pointed, wb?.pointed), terms: data.feeTerms, dimensions: Object.fromEntries((compare?.checklist ?? []).map((x) => [x.id, x.name])), today: data.today };
+  }, [compare, wb, data.today, data.feeRules, data.feeTerms]);
   return (
     <PageShell current="other" data={provenance} wide>
       <Page wb={wb} compare={compare} failed={failed} data={data} />

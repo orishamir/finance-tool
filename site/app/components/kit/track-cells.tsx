@@ -5,12 +5,35 @@ import { r3workbench, company as copy, track as trackCopy } from "../../copy";
 import { ringFraction, shareText, type ExposureShares } from "../../lib/track-exposure";
 import { trackLabels } from "../../lib/track-labels";
 import { depositFeeNoneByRule, type SiteValue } from "../../lib/value";
-import { IconAlert } from "../icons";
+import { IconAlert, IconExternal } from "../icons";
 import { IdRef, Num } from "../provenance";
-import { ProductFigures } from "./product-table";
+import { ProductFigures, ProductIdLink } from "./product-table";
 import { ShareRings } from "./rings";
 import { Swatch } from "./chart-parts";
 import { Tag } from "./tag";
+
+/** The track's page on the regulator's Gemel-Net (read in a browser 2026-11-03: idGuf is the fund number, OCHLUSIYA=1 the general
+ * population, which every listed track is). Pensia-Net is a search form with no page per fund: a pension track has no link. */
+export function gemelNetUrl(dataset: string, fundId: number | string): string | null {
+  return dataset === "gemelnet" ? `https://gemelnet.cma.gov.il/views/perutHodshi.aspx?idGuf=${fundId}&OCHLUSIYA=1` : null;
+}
+
+/** A track's fund number, the link out to its page on Gemel-Net where there is one (`13414 ↗`). */
+export function TrackFundId({ fundId, dataset }: { fundId: number | string; dataset: string }) {
+  return <ProductIdLink id={String(fundId)} href={gemelNetUrl(dataset, fundId)} label={trackCopy.gemelNet.label.replace("{id}", String(fundId))} />;
+}
+
+/** The link to the track's page on Gemel-Net, in words, for the track's own page; nothing for a pension track. */
+export function GemelNetLink({ fundId, dataset }: { fundId: number | string; dataset: string }) {
+  const href = gemelNetUrl(dataset, fundId);
+  if (!href) return null;
+  return (
+    <a href={href} target="_blank" rel="noopener noreferrer" className="text-link hover:underline inline-flex items-center gap-1 min-h-target">
+      {trackCopy.gemelNet.page}
+      <IconExternal size={14} />
+    </a>
+  );
+}
 
 /** A regulator fee average: the number, "אין" for a deposit fee the product's regulation does not have (PF-06), "עוד לא דווח" with the caution mark for an empty one, and the mark for a negative one. Nothing here ranks a track. */
 export function FeeNum({ value, size = "inline" }: { value: SiteValue; size?: "inline" | "cell" }) {

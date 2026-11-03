@@ -185,6 +185,22 @@ export const limitedBondFund = {
   ],
 };
 
+// A guide of its own on funds of every kind (D55, 2026-11-03), no product id; the prose is in content/guide/mutual-funds.tsx
+export const mutualFunds = {
+  title: "קרנות נאמנות",
+  lede: "קרן סל, קרן מחקה פתוחה וקרן כספית הן כולן קרנות נאמנות לפי אותו חוק: מנהל קרן משקיע את הכסף, ונאמן מחזיק את הנכסים בשביל בעלי היחידות.",
+  indexLine: "מה זו קרן נאמנות, מה ההבדל בין קרן סל לקרן מחקה פתוחה, וכמה זה עולה",
+  searchNames: ["קרנות נאמנות", "קרן נאמנות", "קרן סל", "קרנות סל", "קרן מחקה", "קרנות מחקות", "קרן מחקה פתוחה", "קרן פתוחה", "קרן סגורה", "ETF"],
+  sections: [
+    { id: "what", title: "מה זה" },
+    { id: "kinds", title: "סוגי הקרנות" },
+    { id: "trade", title: "קנייה ומכירה" },
+    { id: "cost", title: "כמה זה עולה" },
+    { id: "safety", title: "מי מחזיק את הכסף" },
+    { id: "tax", title: "מיסוי" },
+  ],
+};
+
 export const guide = {
   indexTitle: "בעמוד הזה",
   // D6 (amended 2026-10-26): makam, a government bond and a money-market fund are bought inside an account, not a container of their own
@@ -496,7 +512,6 @@ export const parametersPage = {
 
 export const companies = {
   title: "מה חברה מציעה לי",
-  lede: "בחרו חברה כדי לראות את כל המוצרים והמסלולים שלה, ומה כל אחד מהם.",
   filter: "חיפוש חברה",
   noMatch: "אין חברה בשם הזה.",
   searchAll: "לחיפוש בכל האתר",
@@ -504,10 +519,6 @@ export const companies = {
 } as const;
 
 export const company = {
-  lineBefore: "כל מה שהחברה מציעה, עם הסבר לכל מסלול. המסלולים לפי נתוני רשות שוק ההון, ביטוח וחיסכון, נכון ל",
-  feesLine: "דמי הניהול שמופיעים ליד כל מסלול הם ממוצע של כל העמיתים במסלול, אחרי הנחות, לפי דיווח המסלול לרשות שוק ההון. לא בהכרח מה שתשלמו אתם.",
-  feeColumn: "דמי ניהול, ממוצע {year}",
-  feeRow: "דמי ניהול, ממוצע",
   /** D34 (founder, 2026-10-26): both fees on every row, the words after each figure; the legal cap and the direct expenses under the table. */
   fees: {
     savings: "מהחיסכון",
@@ -519,20 +530,11 @@ export const company = {
   },
   /** The labels beside a track's name (lib/track-labels.ts): facts about this track only (D35). */
   labels: { new: "חדש" } as Record<string, string>,
-  feeRowWhole: "לקרן כולה",
-  listHeading: "כל המסלולים של",
-  tracks: { one: "מסלול אחד", two: "שני מסלולים", many: "מסלולים" },
-  trackLine: { fund: "קופה", classification: "במה הכסף מושקע:" },
-  sameName: { distinct: "שני מסלולים באותו שם: שתי קופות נפרדות", twice: "אותו מסלול מופיע פעמיים", unresolved: "לא הוכרע: הנתונים לא מראים אם זו אותה קופה" },
+  /** The track page's note when another track has its name (the company page's same-name banners went with its old list, 2026-11-03). */
+  sameName: { distinct: "שני מסלולים באותו שם: שתי קופות נפרדות" },
   oldData: "נתוני הרשות לא עודכנו מאז",
   paste: { title: "לא מצאתם שם?", label: "הקלידו או הדביקו את השם כמו שהוא מופיע באפליקציה, בפרסומת או בדוח.", placeholder: "למשל: גמל להשקעה כללי" },
-  whatIs: "מה זה", // "מה זה קופת גמל להשקעה" link under a group, from the approved mockup
-  productType: "סוג המוצר", // PC side card, from the approved mockup
-  toGuide: "לעמוד המדריך על",
-  pcColumns: { name: "שם המסלול, כמו שהחברה כותבת אותו", fund: "קופה", classification: "סיווג", holds: "במה הכסף מושקע", open: "פתיחה", group: "קבוצה" }, // from the approved mockup
-  notInData: "לא נמצא בנתוני הרשות",
   default: "ברירת המחדל",
-  subSpecialization: "התמחות:",
   /** D34 (founder, 2026-10-26): the exposure rings in the last column of the track table, and two rows of the track page (F-87, F-88). */
   stock: {
     column: "חשיפה בסוף {period}",
@@ -553,6 +555,8 @@ export const company = {
 
 export const track = {
   fundLine: "קופה",
+  /** The fund number as a link to the track's page on the regulator's Gemel-Net (Pensia-Net has no page per fund). */
+  gemelNet: { label: "מסלול {id} באתר גמל נט של רשות שוק ההון", page: "עמוד המסלול בגמל נט" },
   labels: { manager: "חברה מנהלת", product: "סוג מוצר", classification: "סיווג", holds: "במה הכסף מושקע", feeBalance: "דמי ניהול מחיסכון", feeDeposit: "דמי ניהול מהפקדה", period: "נכון לחודש", inception: "נפתח ב־" },
   feeBalanceLabel: "ממוצע דמי הניהול מחיסכון שנגבו בפועל בשנת {year}",
   feeDepositLabel: "ממוצע דמי הניהול מהפקדה שנגבו בפועל בשנת {year}",
@@ -1488,27 +1492,31 @@ export const fit = {
 // ---------------------------------------------------------------- the track browser (D54, 2026-11-03, issue 173)
 
 /** "כל המסלולים בכל החברות" at /tracks: every company's tracks of one product, from the approved prototype (research/specs/2026-11-03-track-browser). */
+/** The "?" beside a label that opens its glossary card (kit/help-mark.tsx). */
+export const help = {
+  markLabel: "מה זה {about}",
+};
+
 export const trackBrowser = {
   title: "כל המסלולים בכל החברות",
   tabs: { aria: "איך לראות את החברות והמסלולים", byCompany: "לפי חברה", byProduct: "לפי מוצר" },
   lead: {
-    intro: "בוחרים מוצר ורואים את המסלולים של כל החברות שמנהלות אותו. דמי הניהול הם הממוצע שנגבה בפועל ב־",
-    figures: "; החשיפה, התשואה והנכסים נכונים לסוף ",
+    intro: "דמי הניהול הם הממוצע שנגבה בפועל ב־",
+    figures: "; החשיפה, התשואה והכסף המנוהל נכונים לסוף ",
     source: ". מנתוני רשות שוק ההון.",
-    noYear: "בוחרים מוצר ורואים את המסלולים של כל החברות שמנהלות אותו. החשיפה, התשואה והנכסים נכונים לסוף ",
+    noYear: "החשיפה, התשואה והכסף המנוהל נכונים לסוף ",
   },
   controls: {
     product: "מוצר",
-    group: "קיבוץ לפי",
-    groupCompany: "חברה",
-    groupKind: "במה הכסף מושקע",
     search: "חיפוש",
     searchPlaceholder: "שם המסלול או החברה",
     kind: "במה הכסף מושקע",
     kindAll: "הכול",
-    sort: "מיון בתוך כל קבוצה",
+    /** In place of the kinds, on a product the regulator does not sort by kind (the pension funds). */
+    noKinds: "הרשות לא מסווגת את המסלולים של המוצר הזה לפי סוג ההשקעה.",
+    sort: "מיון",
   },
-  /** The count line: "143 מסלולים של 12 חברות (מתוך 143)", then the guide link. */
+  /** The count line over the list: "143 מסלולים של 12 חברות (מתוך 143) · דמי ניהול מהחיסכון: מ־0.10% עד 0.90%"; the guide link is under the products. */
   count: {
     tracksNone: "אין מסלולים",
     tracksOne: "מסלול אחד",
@@ -1521,28 +1529,26 @@ export const trackBrowser = {
     of: "של",
     outOf: "מתוך",
     whatIs: "מה זה",
-    noKinds: "הרשות לא מסווגת את המסלולים של המוצר הזה לפי סוג ההשקעה, ולכן אין כאן קיבוץ כזה.",
   },
   /** What each sort says in the line above the list: the column, then the direction. */
   sorts: {
-    name: { label: "שם", what: "שם המסלול", whatKind: "שם החברה", up: "לפי הא״ב", down: "לפי הא״ב מהסוף" },
+    name: { label: "שם", what: "שם המסלול", whatKind: "שם החברה", up: "בסדר הא״ב", down: "בסדר הא״ב ההפוך" },
     fee: { label: "דמי ניהול מהחיסכון", what: "דמי הניהול מהחיסכון", up: "מהזול ליקר", down: "מהיקר לזול" },
     dep: { label: "דמי ניהול מההפקדות", what: "דמי הניהול מההפקדות", up: "מהזול ליקר", down: "מהיקר לזול" },
     stock: { label: "חשיפה למניות", what: "החשיפה למניות", up: "מהנמוכה לגבוהה", down: "מהגבוהה לנמוכה" },
-    assets: { label: "נכסים", what: "הנכסים", up: "מהקטן לגדול", down: "מהגדול לקטן" },
+    assets: { label: "כסף מנוהל", what: "הכסף המנוהל", up: "מהמעט להרבה", down: "מההרבה למעט" },
   },
   order: {
-    company: { before: "החברות מסודרות מהגדולה לקטנה בנכסים ב", mid: "; בתוך כל חברה לפי " },
-    kind: { before: "הקבוצות מסודרות לפי החשיפה למניות, מהגבוהה לנמוכה; בתוך כל קבוצה לפי " },
+    company: "החברות מסודרות מהגדולה לקטנה לפי הכסף המנוהל; בתוך כל חברה לפי ",
+    kind: "המסלולים מסודרים לפי ",
   },
-  /** The heading of a group: "16 מסלולים · נכסים 19.1 מיליארד ₪ · דמי ניהול מהחיסכון: מ־0.54% עד 0.61%". */
+  /** The heading of a group: "16 מסלולים · כסף מנוהל 19.1 מיליארד ₪ · דמי ניהול מהחיסכון: מ־0.54% עד 0.61%". */
   group: {
-    assets: "נכסים",
+    assets: "כסף מנוהל",
     feeLead: "דמי ניהול מהחיסכון:",
     feeFrom: "מ־",
     feeTo: "עד",
     noFee: "דמי ניהול עוד לא דווחו",
-    inProduct: "ב",
   },
   columns: {
     track: "המסלול",
@@ -1554,16 +1560,24 @@ export const trackBrowser = {
     feeDeposits: "מההפקדות",
     exposure: "חשיפה למניות ולמט״ח, סוף {period}",
     yield: "תשואה שנתית ממוצעת, לפני דמי ניהול",
-    assets: "נכסים בסוף {period}",
+    assets: "כסף מנוהל, סוף {period}",
     open: "פתיחה",
   },
-  yield: { years3: "3 שנים", years5: "5 שנים", young3: "פחות מ־3 שנים", young5: "פחות מ־5 שנים", missing: "לא דווח", selfManaged: "בניהול אישי: כל חוסך מחליט במה להשקיע" },
-  assets: { million: "מיליון ₪", billion: "מיליארד ₪", missing: "לא דווח", phone: "נכסים" },
-  /** The sheets' headers of the two group figures (F-99, F-100). */
-  about: { assets: "סך הנכסים של החברה במוצר", feeLow: "הנמוך מדמי הניהול מהחיסכון שדווחו למסלולים בקבוצה", feeHigh: "הגבוה מדמי הניהול מהחיסכון שדווחו למסלולים בקבוצה" },
+  yield: { phone: "תשואה שנתית ממוצעת", years3: "3 שנים", years5: "5 שנים", young3: "פחות מ־3 שנים", young5: "פחות מ־5 שנים", missing: "לא דווח", selfManaged: "בניהול אישי: כל חוסך מחליט במה להשקיע" },
+  assets: { million: "מיליון ₪", billion: "מיליארד ₪", missing: "לא דווח", phone: "כסף מנוהל" },
+  /** The sheets' headers of the two group figures (F-99, F-100), and of the whole list's fee range on the count line. */
+  about: { assets: "הכסף שהחברה מנהלת במוצר, בכל המסלולים יחד", feeLow: "הנמוך מדמי הניהול מהחיסכון שדווחו למסלולים בקבוצה", feeHigh: "הגבוה מדמי הניהול מהחיסכון שדווחו למסלולים בקבוצה", listLow: "הנמוך מדמי הניהול מהחיסכון שדווחו למסלולים ברשימה", listHigh: "הגבוה מדמי הניהול מהחיסכון שדווחו למסלולים ברשימה" },
   noResult: { before: "אין מסלולים שמתאימים לחיפוש ״", after: "״." },
   /** The guide's link to a product's tracks: "כל המסלולים של קופת גמל להשקעה בכל החברות". */
   guideLink: { before: "כל המסלולים של ", after: " בכל החברות" },
+  /** A company's page (2026-11-03): its products as chips, "כל המוצרים" first; the count line of that view ("112 מסלולים ב־8 מוצרים") and its order line. */
+  company: {
+    all: "כל המוצרים",
+    inProducts: { one: "במוצר אחד", two: "בשני מוצרים", many: "ב־", manyAfter: "מוצרים" },
+    order: "בתוך כל מוצר, המסלולים מסודרים לפי ",
+  },
+  /** What each "?" explains, for its spoken name; on a phone, the line above the list that opens the same cards. */
+  help: { fee: "דמי ניהול ממוצעים", assets: "כסף מנוהל", exposure: "חשיפה למניות ולמט״ח", phoneLead: "מה אומרים המספרים:" },
   pastNote: "התשואה היא תשואת עבר כמו שהרשות מפרסמת אותה: לפני דמי הניהול ולפני מס. היא לא אומרת מה יקרה בהמשך, ולכן אין מיון לפיה.",
   oldData: "נתוני הרשות לא עודכנו מאז",
 } as const;
@@ -2050,7 +2064,6 @@ export const r3transfer = {
 export const brands = {
   heading: "בתי השקעות",
   searchLine: "בית השקעות",
-  lede: "כל מה שהחברה מציעה, כל סוג מוצר תחת כותרת משלו.",
   members: "כולל את החברות:",
   listHeading: "כל המוצרים של",
   funds: {
@@ -2059,6 +2072,9 @@ export const brands = {
     collected: "רק הקרנות שהאתר אסף עליהן דוח, לא כל הקרנות של החברה. דמי הניהול לפי הדוח של כל קרן.",
     /** The fund table (founder, 2026-10-27; design-system 11 "Lists of products"): the head carries the words, the cell the value. */
     columns: { name: "שם הקרן", number: "מספר נייר", index: "המדד", kind: "סוג הקרן", fees: "דמי ניהול לפי הדוח של הקרן" },
+    /** The "?" by the fees' head (founder, 2026-11-03): one sheet of the three glossary terms, under this line. The names are the glossary's keys. */
+    feeTerms: ["דמי ניהול קבועים", "דמי ניהול משתנים", "שכר נאמן"],
+    feeHelpLead: "בכל שורה שלושה מספרים מהדוח של הקרן:",
     feeWords: { fixed: "קבועים", variable: "משתנים", trustee: "נאמן" },
     /** The phone row's lead before the three fees, and the word before the index's name (the head the phone has not got). */
     phoneFees: "דמי ניהול:",
@@ -2071,7 +2087,7 @@ export const brands = {
 } as const;
 
 export const r4catalogue = {
-  headings: { companies: "חברות מנהלות", institutions: "בנקים ובתי השקעות", fundManagers: "מנהלי קרנות" },
+  headings: { companies: "חברות מנהלות", institutions: "בנקים ובתי השקעות נוספים", fundManagers: "מנהלי קרנות" },
   classWord: { bank: "בנק", broker: "בית השקעות" },
   /** Row line: `{סוג}` · תעריפון מ־`{תאריך}` · or "התעריפון לא נאסף" in caution. */
   rowLine: { tariffFrom: "תעריפון מ־", missing: "התעריפון לא נאסף", noDate: "ללא תאריך פרסום" },
@@ -2555,9 +2571,8 @@ export const scopeWords = {
   },
   noPage: {
     title: "מה כתוב במסמכים של חברות שאין להן עמוד כאן",
-    line: "מה שנמצא במסמכים של חברות שלאתר אין עליהן עמוד משלהן, לפי חברה.",
     // what no company's section lists: the records the rule base keeps that are not rules (review, 2026-10-26)
-    none: { title: "לא נכלל ככלל: פרסומים, ספירות ונתונים", line: "מה שהאתר שומר עם המקור אבל לא מציג ככלל: סיפורים מפורומים, כתבות, רשימות וספירות, נתונים, תנאי שימוש של אתרים, תעריפים של חברות, ומקומות שבהם חיפשנו כלל ולא מצאנו." },
+    none: { title: "לא נכלל ככלל: פרסומים, ספירות ונתונים", line: "מה שהאתר שומר עם המקור אבל לא מציג ככלל: סיפורים מפורומים, כתבות, רשימות וספירות, נתונים, תנאי שימוש של אתרים, תעריפים של חברות, ומקומות שבהם חיפשנו כלל ולא מצאנו.", fold: "כל הרשומות" },
   },
   /** The rules page: company terms are not listed there. */
   rulesLine: { before: "כאן רק חוקים וכללים שלא תלויים בחברה מסוימת. מה שכתוב רק במסמכים של חברה מסוימת מופיע בעמוד של אותה חברה.", link: "לרשימת החברות" },
@@ -3760,6 +3775,8 @@ export const invest = {
 /** The kit's own words (components/kit): names that assistive technology reads, and the gallery at /kit (a page for builders, not in the menu or the search). */
 export const kit = {
   legend: "מקרא",
+  /** The chevron of a list's group heading, which folds the group's rows (2026-11-03). */
+  groupFold: "הצגה או הסתרה של השורות בקבוצה",
   chart: {
     hint: "לחיצה על הגרף נועלת שנה, וגרירה עליו מקרבת לטווח שנים.",
     hintShort: "לחיצה על הגרף נועלת שנה.",
@@ -3792,6 +3809,7 @@ export const kit = {
       interactive: "אפשר לנסות",
       draggable: "אפשר לגרור",
       withIcon: "עם אייקון",
+      wide: "על כל הרוחב",
     },
     uses: {
       FilterChip: "מסנן שדולק או כבוי, עם מספר השורות שיוצגו כשהוא דולק. למספר יש מקום קבוע, ומסנן שלא יציג כלום מתעמעם ונשאר במקומו.",
@@ -3831,7 +3849,7 @@ export const kit = {
       TextField: "שורת טקסט אחת שהאדם מקליד, כמו שם: תווית מעל, ושורת עזר או שגיאה מתחת. למספר, NumberField.",
       CheckField: "סימון של כן או לא, ליד סימונים אחרים שלא שוללים זה את זה; כל השורה היא אזור ההקשה.",
       FieldGroup: "שדות ששייכים יחד תחת כותרת אחת, עם קו בין קבוצה לקבוצה.",
-      SelectField: "בחירה של פריט אחד מרשימה של שמות, ב־select רגיל: תווית מעל, אפשרות \"לא נבחר\" ראשונה אם צריך, ושורת עזר מתחת. חשבון, ספק.",
+      SelectField: "בחירה של פריט אחד מרשימה של שמות, ב־select רגיל: תווית מעל, אפשרות \"לא נבחר\" ראשונה אם צריך, ושורת עזר מתחת. חשבון, ספק. עם wide הרשימה ממלאת את הרוחב, כמו שדה טקסט שלצידה.",
       PercentField: "שדה מספר לאחוז: שיעור שנתי אלא אם unit אומר אחרת, ומשפט הטווח הרגיל (0 עד 100, או הטווח שניתן).",
       Marker: "סמן שנגררים אותו על ציר של תרשים: לחיצה בכל מקום בשטח מזיזה אותו, וגם מקשי החצים. Marker הוא המחוון הבלתי נראה; MarkerMark הוא מה שהתרשים מצייר. LaneLabel הוא שם של פס על הנתיב: כשהסמן עומד עליו הוא זז לקצה השני של הפס או לצד הסמן.",
       StepTag: "תגית אפורה על סולם מסודר (1 עד 4), עם אייקון ומילה תמיד: כמה מהר הכסף חוזר, מ״בכל רגע״ עד ״בסוף השנה״. רק האייקון צבעוני, מטורקיז לאדום, כך שהתגית לא נקראת כדגל.",
@@ -3843,8 +3861,11 @@ export const kit = {
       GainBars: "שני סכומים כעמודות מאותה נקודת התחלה, וההפרש כסוגר עם מספר משלו (אף פעם לא עמודה שלישית).",
       ChartLegend: "שלושת החלקים סביב כל תרשים: מה כל סימן אומר, הערכים בשנה שמצביעים עליה, ואותם מספרים כטבלה.",
       CompanyLinks: "פתיח ואחריו החברות שהוא עוסק בהן, כל אחת קישור לעמוד שלה: ״תלוי בחברה״ כשכל חברה קובעת לעצמה, ״לכל מה שמצאנו אצל״ מתחת לתנאי של חברה. רצוף: יכול לסגור משפט או לעמוד בשורה משלו.",
-      ProductTableGroups: "רשימה ארוכה של מוצרים שמתחלקת לקבוצות (חברה, סוג השקעה): כותרת מעל כל קבוצה עם שורה של מספרים, כותרות עמודה שממיינות את הטבלה (SortHead, ו־aria-sort בעמודה), וכותרת שנשארת מתחת לכותרת האתר בזמן הגלילה (stickyHead) כל עוד הטבלה נכנסת ברוחבה. במחשב ובטלפון נבנית רק הפריסה שהמסך מציג.",
+      RowArrow: "החץ בסוף שורה שפותחת עמוד אחר באתר, בצבע של קישור. חץ שפותח חלון באותו עמוד שייך לכפתור שלו, לא לזה.",
+      ProductTableGroups: "רשימה ארוכה של מוצרים שמתחלקת לקבוצות (חברה, סוג השקעה): כותרת מעל כל קבוצה עם שורה של מספרים, כותרות עמודה שממיינות את הטבלה (SortHead, ו־aria-sort בעמודה), כותרת קבוצה שלחיצה עליה מקפלת את שורות הקבוצה (foldable), וכותרת שנשארת מתחת לכותרת האתר בזמן הגלילה (stickyHead) כל עוד הטבלה נכנסת ברוחבה. במחשב ובטלפון נבנית רק הפריסה שהמסך מציג.",
       SortHead: "כותרת עמודה שממיינת את הטבלה בלחיצה: מודגשת עם ▲ או ▼ כשהיא פעילה, ⇅ חלש כשלא. לחיצה ראשונה נותנת את הסדר הטבעי של העמודה והשנייה הופכת אותו. החץ במקום קבוע ורוחב המודגש נשמר, ולכן לחיצה לא מזיזה דבר.",
+      MarkHold: "סימן קטן לפני מילים או אחריהן (אזהרה, מנעול, חץ של קישור, סימן שאלה) נצמד למילה שלידו, כדי שלא יעמוד לבד בשורה.",
+      HelpMark: "סימן שאלה ליד כותרת או תווית, שפותח בהקשה את כרטיס המונח ממילון המונחים, עם המקור: רק במקום שהכרטיס מוסיף משהו שהכותרת לא אומרת.",
       PageTabs: "לשוניות בראש עמוד שהוא אחת מכמה תצוגות של אותו נושא (לפי חברה, לפי מוצר): כל לשונית היא עמוד משלה, ולכן קישור; הנוכחית מסומנת בקו תחתון וב־aria-current.",
       TrackCells: "מה שהתאים של מסלול מכילים, לכל רשימת מסלולים: שני ממוצעי דמי הניהול של הרשות (TrackFeeLines, FeeNum), המפתח של המילים בתא ריק (FeeKey), החשיפה למניות ולמט״ח עם הטבעות (ExposureCell) והתוויות שליד השם (TrackLabels). כל מספר עובר דרך רכיב המקור.",
       ProductTable: "רשימה של מוצרים מאותו סוג (מסלולים, קרנות): טבלה אחת במחשב ושורה לכל מוצר בטלפון, אף פעם לא ערימה של כרטיסים. הכותרת נושאת את המילים והתא את הערך; fit לעמודה ברוחב התוכן שלה (מספר, קישור, דמי ניהול), והשם מקבל את השאר. banner: שורת זהירות מעל שורות ששייכות יחד. ProductPhoneRow: שורה של מוצר בטלפון. ProductIdLink: המזהה הוא הקישור החוצה (מספר הקרן למאיה), עם אייקון קישור חיצוני. ProductFigures: מספרים, כל אחד עם המילה שלו, אחד מתחת לשני בתא ובשורה אחת בטלפון.",

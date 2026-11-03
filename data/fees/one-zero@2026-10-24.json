@@ -13,7 +13,8 @@
   },
   "tariff": {
     "url": "https://www.onezerobank.com/warehouse/userUploadFiles/Image/01-%20%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F%20%D7%94%D7%A2%D7%9E%D7%9C%D7%95%D7%AA%20%D7%94%D7%9E%D7%9C%D7%90%20-%20%D7%9E%D7%94%D7%93%D7%95%D7%A8%D7%94%20%D7%9E%D7%99%D7%95%D7%9D%2026.7.26_announcement.pdf",
-    "title": "ONE ZERO - תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (שאינם תאגידים), תאריך פרסום: 24/6/2026, בתוקף מיום 26.7.2026 (33 עמ'): חלק 4 - ניירות ערך (עמ' 9-12), חלק 5 - מטבע חוץ (עמ' 13-14), חלק 1 מסלולים (עמ' 5), נספח ו' - הטבות למסלולים מסוג מורחב פלוס (מסלול ONE עמ' 20-25, ONE PLUS עמ' 26-33). Linked as 'תעריפון עמלות מלא' from https://www.onezerobank.com/company/information/2250 (BRK-34), which also states: 'בשלב זה הבנק מאפשר מסחר במניות ישראליות הנכללות במדד 125, קרנות נאמנות בישראל וניירות ערך זרים הנסחרים בארה״ב'. The host returns HTTP 403 to curl, so the PDF was fetched inside the founder's Chrome tab and its text extracted there with pdf.js on 2026-10-24; the PDF's text layer places each letter as a separate glyph, so names were re-joined by hand against the page.",
+    "title": "ONE ZERO - תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים",
+    "notes": "ONE ZERO - תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (שאינם תאגידים), תאריך פרסום: 24/6/2026, בתוקף מיום 26.7.2026 (33 עמ'): חלק 4 - ניירות ערך (עמ' 9-12), חלק 5 - מטבע חוץ (עמ' 13-14), חלק 1 מסלולים (עמ' 5), נספח ו' - הטבות למסלולים מסוג מורחב פלוס (מסלול ONE עמ' 20-25, ONE PLUS עמ' 26-33). Linked as 'תעריפון עמלות מלא' from https://www.onezerobank.com/company/information/2250 (BRK-34), which also states: 'בשלב זה הבנק מאפשר מסחר במניות ישראליות הנכללות במדד 125, קרנות נאמנות בישראל וניירות ערך זרים הנסחרים בארה״ב'. The host returns HTTP 403 to curl, so the PDF was fetched inside the founder's Chrome tab and its text extracted there with pdf.js on 2026-10-24; the PDF's text layer places each letter as a separate glyph, so names were re-joined by hand against the page.",
     "published": "2026-06-24",
     "format": "pdf"
   },
@@ -34,7 +35,7 @@
         "unit": "pct_of_trade",
         "source": {
           "url": "https://www.onezerobank.com/warehouse/userUploadFiles/Image/01-%20%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F%20%D7%94%D7%A2%D7%9E%D7%9C%D7%95%D7%AA%20%D7%94%D7%9E%D7%9C%D7%90%20-%20%D7%9E%D7%94%D7%93%D7%95%D7%A8%D7%94%20%D7%9E%D7%99%D7%95%D7%9D%2026.7.26_announcement.pdf",
-          "title": "ONE ZERO - תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (שאינם תאגידים), תאריך פרסום: 24/6/2026, בתוקף מיום 26.7.2026, חלק 4 - ניירות ערך, 4(א)(1), מניות ואגרות חוב (עמ' 9-10)",
+          "title": "ONE ZERO - תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (שאינם תאגידים), תאריך פרסום: 24/6/2026, בתוקף מיום 26.7.2026, חלק 4 - ניירות ערך, 4 (א) (1), מניות ואגרות חוב (עמ' 9-10)",
           "publisher": "One Zero Digital Bank Ltd.",
           "strength": "institution"
         },
@@ -55,7 +56,7 @@
         "unit": "nis_per_trade",
         "source": {
           "url": "https://www.onezerobank.com/warehouse/userUploadFiles/Image/01-%20%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F%20%D7%94%D7%A2%D7%9E%D7%9C%D7%95%D7%AA%20%D7%94%D7%9E%D7%9C%D7%90%20-%20%D7%9E%D7%94%D7%93%D7%95%D7%A8%D7%94%20%D7%9E%D7%99%D7%95%D7%9D%2026.7.26_announcement.pdf",
-          "title": "ONE ZERO - תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (שאינם תאגידים), תאריך פרסום: 24/6/2026, בתוקף מיום 26.7.2026, 4(א)(1), מניות ואגרות חוב, מינימום (עמ' 9)",
+          "title": "ONE ZERO - תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (שאינם תאגידים), תאריך פרסום: 24/6/2026, בתוקף מיום 26.7.2026, 4 (א) (1), מניות ואגרות חוב, מינימום (עמ' 9)",
           "publisher": "One Zero Digital Bank Ltd.",
           "strength": "institution"
         },
@@ -75,7 +76,7 @@
         "unit": "nis_per_trade",
         "source": {
           "url": "https://www.onezerobank.com/warehouse/userUploadFiles/Image/01-%20%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F%20%D7%94%D7%A2%D7%9E%D7%9C%D7%95%D7%AA%20%D7%94%D7%9E%D7%9C%D7%90%20-%20%D7%9E%D7%94%D7%93%D7%95%D7%A8%D7%94%20%D7%9E%D7%99%D7%95%D7%9D%2026.7.26_announcement.pdf",
-          "title": "ONE ZERO - תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (שאינם תאגידים), תאריך פרסום: 24/6/2026, בתוקף מיום 26.7.2026, 4(א)(1), מניות ואגרות חוב, מקסימום (עמ' 9)",
+          "title": "ONE ZERO - תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (שאינם תאגידים), תאריך פרסום: 24/6/2026, בתוקף מיום 26.7.2026, 4 (א) (1), מניות ואגרות חוב, מקסימום (עמ' 9)",
           "publisher": "One Zero Digital Bank Ltd.",
           "strength": "institution"
         },
@@ -113,7 +114,7 @@
         "unit": "pct_of_trade",
         "source": {
           "url": "https://www.onezerobank.com/warehouse/userUploadFiles/Image/01-%20%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F%20%D7%94%D7%A2%D7%9E%D7%9C%D7%95%D7%AA%20%D7%94%D7%9E%D7%9C%D7%90%20-%20%D7%9E%D7%94%D7%93%D7%95%D7%A8%D7%94%20%D7%9E%D7%99%D7%95%D7%9D%2026.7.26_announcement.pdf",
-          "title": "ONE ZERO - תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (שאינם תאגידים), תאריך פרסום: 24/6/2026, בתוקף מיום 26.7.2026, 4(א)(4), מניות, אגרות חוב וקרנות נאמנות (עמ' 10)",
+          "title": "ONE ZERO - תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (שאינם תאגידים), תאריך פרסום: 24/6/2026, בתוקף מיום 26.7.2026, 4 (א) (4), מניות, אגרות חוב וקרנות נאמנות (עמ' 10)",
           "publisher": "One Zero Digital Bank Ltd.",
           "strength": "institution"
         },
@@ -133,7 +134,7 @@
         "unit": "usd",
         "source": {
           "url": "https://www.onezerobank.com/warehouse/userUploadFiles/Image/01-%20%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F%20%D7%94%D7%A2%D7%9E%D7%9C%D7%95%D7%AA%20%D7%94%D7%9E%D7%9C%D7%90%20-%20%D7%9E%D7%94%D7%93%D7%95%D7%A8%D7%94%20%D7%9E%D7%99%D7%95%D7%9D%2026.7.26_announcement.pdf",
-          "title": "ONE ZERO - תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (שאינם תאגידים), תאריך פרסום: 24/6/2026, בתוקף מיום 26.7.2026, 4(א)(4), מינימום (עמ' 10)",
+          "title": "ONE ZERO - תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (שאינם תאגידים), תאריך פרסום: 24/6/2026, בתוקף מיום 26.7.2026, 4 (א) (4), מינימום (עמ' 10)",
           "publisher": "One Zero Digital Bank Ltd.",
           "strength": "institution"
         },
@@ -153,7 +154,7 @@
         "unit": "usd",
         "source": {
           "url": "https://www.onezerobank.com/warehouse/userUploadFiles/Image/01-%20%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F%20%D7%94%D7%A2%D7%9E%D7%9C%D7%95%D7%AA%20%D7%94%D7%9E%D7%9C%D7%90%20-%20%D7%9E%D7%94%D7%93%D7%95%D7%A8%D7%94%20%D7%9E%D7%99%D7%95%D7%9D%2026.7.26_announcement.pdf",
-          "title": "ONE ZERO - תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (שאינם תאגידים), תאריך פרסום: 24/6/2026, בתוקף מיום 26.7.2026, 4(א)(4), מקסימום (עמ' 10)",
+          "title": "ONE ZERO - תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (שאינם תאגידים), תאריך פרסום: 24/6/2026, בתוקף מיום 26.7.2026, 4 (א) (4), מקסימום (עמ' 10)",
           "publisher": "One Zero Digital Bank Ltd.",
           "strength": "institution"
         },
@@ -201,7 +202,7 @@
         "unit": "pct_of_balance_per_period",
         "source": {
           "url": "https://www.onezerobank.com/warehouse/userUploadFiles/Image/01-%20%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F%20%D7%94%D7%A2%D7%9E%D7%9C%D7%95%D7%AA%20%D7%94%D7%9E%D7%9C%D7%90%20-%20%D7%9E%D7%94%D7%93%D7%95%D7%A8%D7%94%20%D7%9E%D7%99%D7%95%D7%9D%2026.7.26_announcement.pdf",
-          "title": "ONE ZERO - תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (שאינם תאגידים), תאריך פרסום: 24/6/2026, בתוקף מיום 26.7.2026, 4(א)(5) דמי ניהול פיקדון ניירות ערך, הנסחרים בארץ (עמ' 11)",
+          "title": "ONE ZERO - תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (שאינם תאגידים), תאריך פרסום: 24/6/2026, בתוקף מיום 26.7.2026, 4 (א) (5) דמי ניהול פיקדון ניירות ערך, הנסחרים בארץ (עמ' 11)",
           "publisher": "One Zero Digital Bank Ltd.",
           "strength": "institution"
         },
@@ -242,7 +243,7 @@
         "unit": "pct_of_balance_per_period",
         "source": {
           "url": "https://www.onezerobank.com/warehouse/userUploadFiles/Image/01-%20%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F%20%D7%94%D7%A2%D7%9E%D7%9C%D7%95%D7%AA%20%D7%94%D7%9E%D7%9C%D7%90%20-%20%D7%9E%D7%94%D7%93%D7%95%D7%A8%D7%94%20%D7%9E%D7%99%D7%95%D7%9D%2026.7.26_announcement.pdf",
-          "title": "ONE ZERO - תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (שאינם תאגידים), תאריך פרסום: 24/6/2026, בתוקף מיום 26.7.2026, 4(א)(5) דמי ניהול פיקדון ניירות ערך, הנסחרים בחוץ לארץ (עמ' 11)",
+          "title": "ONE ZERO - תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (שאינם תאגידים), תאריך פרסום: 24/6/2026, בתוקף מיום 26.7.2026, 4 (א) (5) דמי ניהול פיקדון ניירות ערך, הנסחרים בחוץ לארץ (עמ' 11)",
           "publisher": "One Zero Digital Bank Ltd.",
           "strength": "institution"
         },
@@ -285,7 +286,7 @@
         "unit": "nis_per_transfer",
         "source": {
           "url": "https://www.onezerobank.com/warehouse/userUploadFiles/Image/01-%20%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F%20%D7%94%D7%A2%D7%9E%D7%9C%D7%95%D7%AA%20%D7%94%D7%9E%D7%9C%D7%90%20-%20%D7%9E%D7%94%D7%93%D7%95%D7%A8%D7%94%20%D7%9E%D7%99%D7%95%D7%9D%2026.7.26_announcement.pdf",
-          "title": "ONE ZERO - תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (שאינם תאגידים), תאריך פרסום: 24/6/2026, בתוקף מיום 26.7.2026, 4(א)(6) העברת ניירות ערך, לחשבון אותו לקוח בגוף פיננסי אחר (עמ' 11)",
+          "title": "ONE ZERO - תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (שאינם תאגידים), תאריך פרסום: 24/6/2026, בתוקף מיום 26.7.2026, 4 (א) (6) העברת ניירות ערך, לחשבון אותו לקוח בגוף פיננסי אחר (עמ' 11)",
           "publisher": "One Zero Digital Bank Ltd.",
           "strength": "institution"
         },
@@ -326,7 +327,7 @@
         "unit": "pct_of_trade",
         "source": {
           "url": "https://www.onezerobank.com/warehouse/userUploadFiles/Image/01-%20%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F%20%D7%94%D7%A2%D7%9E%D7%9C%D7%95%D7%AA%20%D7%94%D7%9E%D7%9C%D7%90%20-%20%D7%9E%D7%94%D7%93%D7%95%D7%A8%D7%94%20%D7%9E%D7%99%D7%95%D7%9D%2026.7.26_announcement.pdf",
-          "title": "ONE ZERO - תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (שאינם תאגידים), תאריך פרסום: 24/6/2026, בתוקף מיום 26.7.2026, חלק 5 - מטבע חוץ, 5(1) עמלת חליפין מט\"י למט\"ח (עמ' 13)",
+          "title": "ONE ZERO - תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (שאינם תאגידים), תאריך פרסום: 24/6/2026, בתוקף מיום 26.7.2026, חלק 5 - מטבע חוץ, 5 (1) עמלת חליפין מט\"י למט\"ח (עמ' 13)",
           "publisher": "One Zero Digital Bank Ltd.",
           "strength": "institution"
         },
@@ -346,7 +347,7 @@
         "unit": "usd",
         "source": {
           "url": "https://www.onezerobank.com/warehouse/userUploadFiles/Image/01-%20%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F%20%D7%94%D7%A2%D7%9E%D7%9C%D7%95%D7%AA%20%D7%94%D7%9E%D7%9C%D7%90%20-%20%D7%9E%D7%94%D7%93%D7%95%D7%A8%D7%94%20%D7%9E%D7%99%D7%95%D7%9D%2026.7.26_announcement.pdf",
-          "title": "ONE ZERO - תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (שאינם תאגידים), תאריך פרסום: 24/6/2026, בתוקף מיום 26.7.2026, 5(1) עמלת חליפין מט\"י למט\"ח, מינימום (עמ' 13)",
+          "title": "ONE ZERO - תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (שאינם תאגידים), תאריך פרסום: 24/6/2026, בתוקף מיום 26.7.2026, 5 (1) עמלת חליפין מט\"י למט\"ח, מינימום (עמ' 13)",
           "publisher": "One Zero Digital Bank Ltd.",
           "strength": "institution"
         },
@@ -366,7 +367,7 @@
         "unit": "usd",
         "source": {
           "url": "https://www.onezerobank.com/warehouse/userUploadFiles/Image/01-%20%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F%20%D7%94%D7%A2%D7%9E%D7%9C%D7%95%D7%AA%20%D7%94%D7%9E%D7%9C%D7%90%20-%20%D7%9E%D7%94%D7%93%D7%95%D7%A8%D7%94%20%D7%9E%D7%99%D7%95%D7%9D%2026.7.26_announcement.pdf",
-          "title": "ONE ZERO - תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (שאינם תאגידים), תאריך פרסום: 24/6/2026, בתוקף מיום 26.7.2026, 5(1) עמלת חליפין מט\"י למט\"ח, מקסימום (עמ' 13)",
+          "title": "ONE ZERO - תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (שאינם תאגידים), תאריך פרסום: 24/6/2026, בתוקף מיום 26.7.2026, 5 (1) עמלת חליפין מט\"י למט\"ח, מקסימום (עמ' 13)",
           "publisher": "One Zero Digital Bank Ltd.",
           "strength": "institution"
         },
@@ -404,7 +405,7 @@
         "unit": "pct_of_trade",
         "source": {
           "url": "https://www.onezerobank.com/warehouse/userUploadFiles/Image/01-%20%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F%20%D7%94%D7%A2%D7%9E%D7%9C%D7%95%D7%AA%20%D7%94%D7%9E%D7%9C%D7%90%20-%20%D7%9E%D7%94%D7%93%D7%95%D7%A8%D7%94%20%D7%9E%D7%99%D7%95%D7%9D%2026.7.26_announcement.pdf",
-          "title": "ONE ZERO - תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (שאינם תאגידים), תאריך פרסום: 24/6/2026, בתוקף מיום 26.7.2026, 5(1) עמלת חליפין מט\"ח למט\"ח (עמ' 13)",
+          "title": "ONE ZERO - תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (שאינם תאגידים), תאריך פרסום: 24/6/2026, בתוקף מיום 26.7.2026, 5 (1) עמלת חליפין מט\"ח למט\"ח (עמ' 13)",
           "publisher": "One Zero Digital Bank Ltd.",
           "strength": "institution"
         },
@@ -424,7 +425,7 @@
         "unit": "usd",
         "source": {
           "url": "https://www.onezerobank.com/warehouse/userUploadFiles/Image/01-%20%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F%20%D7%94%D7%A2%D7%9E%D7%9C%D7%95%D7%AA%20%D7%94%D7%9E%D7%9C%D7%90%20-%20%D7%9E%D7%94%D7%93%D7%95%D7%A8%D7%94%20%D7%9E%D7%99%D7%95%D7%9D%2026.7.26_announcement.pdf",
-          "title": "ONE ZERO - תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (שאינם תאגידים), תאריך פרסום: 24/6/2026, בתוקף מיום 26.7.2026, 5(1) עמלת חליפין מט\"ח למט\"ח, מינימום (עמ' 13)",
+          "title": "ONE ZERO - תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (שאינם תאגידים), תאריך פרסום: 24/6/2026, בתוקף מיום 26.7.2026, 5 (1) עמלת חליפין מט\"ח למט\"ח, מינימום (עמ' 13)",
           "publisher": "One Zero Digital Bank Ltd.",
           "strength": "institution"
         },
@@ -444,7 +445,7 @@
         "unit": "usd",
         "source": {
           "url": "https://www.onezerobank.com/warehouse/userUploadFiles/Image/01-%20%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F%20%D7%94%D7%A2%D7%9E%D7%9C%D7%95%D7%AA%20%D7%94%D7%9E%D7%9C%D7%90%20-%20%D7%9E%D7%94%D7%93%D7%95%D7%A8%D7%94%20%D7%9E%D7%99%D7%95%D7%9D%2026.7.26_announcement.pdf",
-          "title": "ONE ZERO - תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (שאינם תאגידים), תאריך פרסום: 24/6/2026, בתוקף מיום 26.7.2026, 5(1) עמלת חליפין מט\"ח למט\"ח, מקסימום (עמ' 13)",
+          "title": "ONE ZERO - תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (שאינם תאגידים), תאריך פרסום: 24/6/2026, בתוקף מיום 26.7.2026, 5 (1) עמלת חליפין מט\"ח למט\"ח, מקסימום (עמ' 13)",
           "publisher": "One Zero Digital Bank Ltd.",
           "strength": "institution"
         },
@@ -482,7 +483,7 @@
         "unit": "nis_per_month",
         "source": {
           "url": "https://www.onezerobank.com/warehouse/userUploadFiles/Image/01-%20%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F%20%D7%94%D7%A2%D7%9E%D7%9C%D7%95%D7%AA%20%D7%94%D7%9E%D7%9C%D7%90%20-%20%D7%9E%D7%94%D7%93%D7%95%D7%A8%D7%94%20%D7%9E%D7%99%D7%95%D7%9D%2026.7.26_announcement.pdf",
-          "title": "ONE ZERO - תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (שאינם תאגידים), תאריך פרסום: 24/6/2026, בתוקף מיום 26.7.2026, חלק 1, 1(ג)(3) מסלול מורחב פלוס - מסלול ONE (עמ' 5)",
+          "title": "ONE ZERO - תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (שאינם תאגידים), תאריך פרסום: 24/6/2026, בתוקף מיום 26.7.2026, חלק 1, 1 (ג) (3) מסלול מורחב פלוס - מסלול ONE (עמ' 5)",
           "publisher": "One Zero Digital Bank Ltd.",
           "strength": "institution"
         },

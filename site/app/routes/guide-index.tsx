@@ -1,10 +1,9 @@
 // The guide list (flows 6.4): where the money is held, what it is invested in, and the not-covered card.
 import { Link, useLoaderData } from "react-router";
 import type { Route } from "./+types/guide-index";
-import { guideIndex as copy, limitedBondFund, site } from "../copy";
-import { IconDrillIn } from "../components/icons";
+import { guideIndex as copy, limitedBondFund, mutualFunds, site } from "../copy";
 import { PageShell } from "../components/shell";
-import { Card, ChipList } from "../components/kit";
+import { Card, ChipList, RowArrow } from "../components/kit";
 import { groupGuides } from "../lib/guide-nav";
 
 export async function loader() {
@@ -34,6 +33,8 @@ export async function loader() {
   }
   // a guide of its own, no product id: not an option in the comparison (issue 159)
   exposures.push({ key: "limited-bond-fund", name: limitedBondFund.title, line: limitedBondFund.indexLine, href: "/guide/limited-bond-fund", kinds: [] });
+  // funds of every kind, before the kinds that have pages of their own (D55)
+  exposures.push({ key: "mutual-funds", name: mutualFunds.title, line: mutualFunds.indexLine, href: "/guide/mutual-funds", kinds: [] });
   exposures.sort((a, b) => rank(a.key) - rank(b.key));
   return { wrappers, exposures, today: today() };
 }
@@ -47,7 +48,7 @@ interface ExposureItem {
 }
 
 /** The cash-like and bond entries first, short to long, then the rest in file order. */
-const exposureOrder = ["shekel-cash", "money-market-funds", "makam", "government-bond", "limited-bond-fund"];
+const exposureOrder = ["shekel-cash", "mutual-funds", "money-market-funds", "makam", "government-bond", "limited-bond-fund"];
 const rank = (key: string) => (exposureOrder.includes(key) ? exposureOrder.indexOf(key) : exposureOrder.length);
 
 export function meta() {
@@ -68,7 +69,7 @@ function InstrumentCard({ href, name, line, plain, quiet }: { href: string; name
             )}
             {line && <span className="text-sm text-muted-foreground">{line}</span>}
           </span>
-          <IconDrillIn className="text-muted-foreground shrink-0 mt-1" />
+          <RowArrow className="mt-1" />
         </Card>
       </Link>
     </li>
@@ -118,7 +119,7 @@ export default function GuideIndex() {
                     <Card className="h-full flex flex-col gap-2">
                       <Link to={e.href} className="flex items-start justify-between gap-4 hover:underline">
                         <span className="text-lg font-semibold">{e.name}</span>
-                        <IconDrillIn className="text-muted-foreground shrink-0 mt-1" />
+                        <RowArrow className="mt-1" />
                       </Link>
                       {e.line && <span className="text-sm text-muted-foreground">{e.line}</span>}
                       <ChipList heading={`${e.name} ${copy.fundKindsLine}`} headingHidden items={e.kinds.map((k) => ({ id: k.href, label: k.label, href: k.href }))} value={null} />

@@ -11,13 +11,14 @@ import type { WorkbenchBundle, WorkbenchInputs } from "../../lib/providers";
 import { LANES, byGain, chainOf, gridOf, middleStart, openTopOf, rowsAt, unitOf, yScale, type Lane, type Pos, type Row, type Stair, type Taken } from "../../lib/stairs";
 import { computed, type SiteValue } from "../../lib/value";
 import { IconLock } from "../icons";
-import { Num } from "../provenance";
+import { LeadTail, Num } from "../provenance";
 import { Card, DiffFigure, DiffHead, DiffRow, GreyLine, LabelRow, STAIRS_SLOTS, STAIR_SWATCH, StairsChart, StairsSteps, StairsTable, cx, type StairColumn, type StairHue, type StairStep } from "../kit";
 import { allFunds, wholeParts } from "./pair";
 import { ProviderLink, providerName } from "./sections";
 
 /** A signed whole-shekel figure isolated for a Hebrew line: "+4,875 ₪", "−1,524 ₪", "0 ₪". */
 const signedNis = (n: number) => (Math.round(n) === 0 ? fmt.nisWhole(0) : `⁦${n > 0 ? "+" : "−"}${fmt.nisWhole(Math.abs(n))}⁩`);
+/** The lock after a name, held to its last word by `LeadTail` so it never stands alone on a line (2026-11-03). */
 const lockIcon = (label: string) => <IconLock size={14} aria-label={label} className="inline-block align-[-1px] mx-0.5 text-blocked" />;
 const NONE: Taken[] = [];
 const hueOf = (lane: Lane | null): StairHue => lane ?? "start";
@@ -166,8 +167,7 @@ export const StairsSection = memo(function StairsSection({ view, bundle, plan, s
       head: t.table.fund,
       cells: visible.map((l) => (
         <span key={l.stair.pos.f + l.stair.pos.a} className={cx("block min-h-[3lh]", l.stair.lane === "kind" || l.stair.lane === "fund" ? "font-semibold" : "text-muted-foreground")}>
-          <bdi>{l.fundName}</bdi>
-          {l.stair.open && lockIcon(t.lockLabel)}
+          <bdi>{l.stair.open ? <LeadTail lead={l.fundName}>{lockIcon(t.lockLabel)}</LeadTail> : l.fundName}</bdi>
         </span>
       )),
     },
@@ -197,8 +197,7 @@ export const StairsSection = memo(function StairsSection({ view, bundle, plan, s
       loses: (s.d ?? 0) < 0,
       head: (
         <>
-          {what}
-          {s.open && lockIcon(t.lockLabel)}
+          {s.open ? <LeadTail lead={what}>{lockIcon(t.lockLabel)}</LeadTail> : what}
         </>
       ),
       delta: s.lane && prev ? <Num value={diffOf(l, prev)} display={signedNis} /> : <Num value={l.left} />,
@@ -236,8 +235,7 @@ export const StairsSection = memo(function StairsSection({ view, bundle, plan, s
               key={r.key}
               name={
                 <>
-                  {titleOf(r)}
-                  {r.open && lockIcon(t.lockLabel)}
+                  {r.open ? <LeadTail lead={titleOf(r)}>{lockIcon(t.lockLabel)}</LeadTail> : titleOf(r)}
                 </>
               }
               sub={

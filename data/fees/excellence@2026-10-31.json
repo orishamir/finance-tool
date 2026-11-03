@@ -16,7 +16,8 @@
   },
   "tariff": {
     "url": "https://www.xnes.co.il/media/nwogkoos/taarifon.pdf",
-    "title": "תעריפון מלא - אקסלנס טרייד (xnes.co.il, 6 עמ'; המסמך אינו מודפס עם תאריך, קובץ ה-PDF נוצר 15.7.2026); חלק 4 - ניירות ערך (עמ' 3-5), חלק 5 - מט\"ח (עמ' 5), חלק 6 - שירותים ועמלות נוספים (עמ' 5-6)",
+    "title": "תעריפון מלא - אקסלנס טרייד",
+    "notes": "תעריפון מלא - אקסלנס טרייד (xnes.co.il, 6 עמ'; המסמך אינו מודפס עם תאריך, קובץ ה-PDF נוצר 15.7.2026); חלק 4 - ניירות ערך (עמ' 3-5), חלק 5 - מט\"ח (עמ' 5), חלק 6 - שירותים ועמלות נוספים (עמ' 5-6)",
     "published": null,
     "format": "pdf"
   },
@@ -39,7 +40,7 @@
         "unit": "pct_of_trade",
         "source": {
           "url": "https://www.xnes.co.il/media/nwogkoos/taarifon.pdf",
-          "title": "תעריפון מלא - אקסלנס טרייד (xnes.co.il; המסמך אינו נושא תאריך, קובץ ה-PDF נוצר 15.7.2026), חלק 4 - ניירות ערך, (4א) שירותים נפוצים, סעיף 1 (עמ' 3)",
+          "title": "תעריפון מלא - אקסלנס טרייד, חלק 4 - ניירות ערך, (4א) שירותים נפוצים, סעיף 1 (עמ' 3)",
           "publisher": "Excellence Trade (Phoenix investment house)",
           "strength": "institution",
           "page": 3,
@@ -62,7 +63,7 @@
         "unit": "nis_per_trade",
         "source": {
           "url": "https://www.xnes.co.il/media/nwogkoos/taarifon.pdf",
-          "title": "תעריפון מלא - אקסלנס טרייד (xnes.co.il; המסמך אינו נושא תאריך, קובץ ה-PDF נוצר 15.7.2026), חלק 4, (4א) סעיף 1, מינימום (עמ' 3)",
+          "title": "תעריפון מלא - אקסלנס טרייד, חלק 4, (4א) סעיף 1, מינימום (עמ' 3)",
           "publisher": "Excellence Trade (Phoenix investment house)",
           "strength": "institution",
           "page": 3,
@@ -103,7 +104,7 @@
         "unit": "pct_of_trade",
         "source": {
           "url": "https://www.xnes.co.il/media/nwogkoos/taarifon.pdf",
-          "title": "תעריפון מלא - אקסלנס טרייד (xnes.co.il; המסמך אינו נושא תאריך, קובץ ה-PDF נוצר 15.7.2026), חלק 4 - ניירות ערך, (4א) שירותים נפוצים, סעיף 1 (עמ' 3)",
+          "title": "תעריפון מלא - אקסלנס טרייד, חלק 4 - ניירות ערך, (4א) שירותים נפוצים, סעיף 1 (עמ' 3)",
           "publisher": "Excellence Trade (Phoenix investment house)",
           "strength": "institution",
           "page": 3,
@@ -126,7 +127,7 @@
         "unit": "nis_per_trade",
         "source": {
           "url": "https://www.xnes.co.il/media/nwogkoos/taarifon.pdf",
-          "title": "תעריפון מלא - אקסלנס טרייד (xnes.co.il; המסמך אינו נושא תאריך, קובץ ה-PDF נוצר 15.7.2026), חלק 4, (4א) סעיף 1, מינימום (עמ' 3)",
+          "title": "תעריפון מלא - אקסלנס טרייד, חלק 4, (4א) סעיף 1, מינימום (עמ' 3)",
           "publisher": "Excellence Trade (Phoenix investment house)",
           "strength": "institution",
           "page": 3,
@@ -167,7 +168,7 @@
         "unit": "nis_per_trade",
         "source": {
           "url": "https://www.xnes.co.il/media/nwogkoos/taarifon.pdf",
-          "title": "תעריפון מלא - אקסלנס טרייד (xnes.co.il; המסמך אינו נושא תאריך, קובץ ה-PDF נוצר 15.7.2026), חלק 4, (4א) סעיף 2, קניה, מכירה ופדיון של קרנות נאמנות מסורתיות הנסחרות בבורסה בתל אביב (עמ' 3)",
+          "title": "תעריפון מלא - אקסלנס טרייד, חלק 4, (4א) סעיף 2, קניה, מכירה ופדיון של קרנות נאמנות מסורתיות הנסחרות בבורסה בתל אביב (עמ' 3)",
           "publisher": "Excellence Trade (Phoenix investment house)",
           "strength": "institution",
           "page": 3,
@@ -209,7 +210,7 @@
         "unit": "pct_of_trade",
         "source": {
           "url": "https://www.xnes.co.il/media/nwogkoos/taarifon.pdf",
-          "title": "תעריפון מלא - אקסלנס טרייד (xnes.co.il; המסמך אינו נושא תאריך, קובץ ה-PDF נוצר 15.7.2026), חלק 4, (4א) סעיף 6, קניה, מכירה ופדיון של ניירות ערך בחוץ לארץ – רק ארה\"ב (עמ' 3-4)",
+          "title": "תעריפון מלא - אקסלנס טרייד, חלק 4, (4א) סעיף 6, קניה, מכירה ופדיון של ניירות ערך בחוץ לארץ – רק ארה\"ב (עמ' 3-4)",
           "publisher": "Excellence Trade (Phoenix investment house)",
           "strength": "institution",
           "page": 4,
@@ -232,7 +233,7 @@
         "unit": "usd",
         "source": {
           "url": "https://www.xnes.co.il/media/nwogkoos/taarifon.pdf",
-          "title": "תעריפון מלא - אקסלנס טרייד (xnes.co.il; המסמך אינו נושא תאריך, קובץ ה-PDF נוצר 15.7.2026), חלק 4, (4א) סעיף 6, מינימום (עמ' 3)",
+          "title": "תעריפון מלא - אקסלנס טרייד, חלק 4, (4א) סעיף 6, מינימום (עמ' 3)",
           "publisher": "Excellence Trade (Phoenix investment house)",
           "strength": "institution",
           "page": 4,
@@ -255,7 +256,7 @@
         "unit": "pct_of_trade",
         "source": {
           "url": "https://www.xnes.co.il/media/nwogkoos/taarifon.pdf",
-          "title": "תעריפון מלא - אקסלנס טרייד (xnes.co.il; המסמך אינו נושא תאריך, קובץ ה-PDF נוצר 15.7.2026), חלק 4, (4א) סעיף 6, עמלת מקסימום (עמ' 4)",
+          "title": "תעריפון מלא - אקסלנס טרייד, חלק 4, (4א) סעיף 6, עמלת מקסימום (עמ' 4)",
           "publisher": "Excellence Trade (Phoenix investment house)",
           "strength": "institution",
           "page": 4,
@@ -296,7 +297,7 @@
         "unit": "pct_of_trade",
         "source": {
           "url": "https://www.xnes.co.il/media/nwogkoos/taarifon.pdf",
-          "title": "תעריפון מלא - אקסלנס טרייד (xnes.co.il; המסמך אינו נושא תאריך, קובץ ה-PDF נוצר 15.7.2026), חלק 4, (4א) סעיף 7, קניה, מכירה ופדיון של ניירות ערך בחוץ לארץ – מחוץ לארה\"ב (עמ' 4)",
+          "title": "תעריפון מלא - אקסלנס טרייד, חלק 4, (4א) סעיף 7, קניה, מכירה ופדיון של ניירות ערך בחוץ לארץ – מחוץ לארה\"ב (עמ' 4)",
           "publisher": "Excellence Trade (Phoenix investment house)",
           "strength": "institution",
           "page": 4,
@@ -319,7 +320,7 @@
         "unit": "usd",
         "source": {
           "url": "https://www.xnes.co.il/media/nwogkoos/taarifon.pdf",
-          "title": "תעריפון מלא - אקסלנס טרייד (xnes.co.il; המסמך אינו נושא תאריך, קובץ ה-PDF נוצר 15.7.2026), חלק 4, (4א) סעיף 7, מינימום (עמ' 4)",
+          "title": "תעריפון מלא - אקסלנס טרייד, חלק 4, (4א) סעיף 7, מינימום (עמ' 4)",
           "publisher": "Excellence Trade (Phoenix investment house)",
           "strength": "institution"
         },
@@ -363,7 +364,7 @@
         "unit": "pct_of_balance_per_period",
         "source": {
           "url": "https://www.xnes.co.il/media/nwogkoos/taarifon.pdf",
-          "title": "תעריפון מלא - אקסלנס טרייד (xnes.co.il; המסמך אינו נושא תאריך, קובץ ה-PDF נוצר 15.7.2026), חלק 4, (4א) סעיף 8, דמי ניהול/טיפול פיקדון ניירות ערך (לרבות יחידות השתתפות בקרנות נאמנות) (עמ' 4)",
+          "title": "תעריפון מלא - אקסלנס טרייד, חלק 4, (4א) סעיף 8, דמי ניהול/טיפול פיקדון ניירות ערך (לרבות יחידות השתתפות בקרנות נאמנות) (עמ' 4)",
           "publisher": "Excellence Trade (Phoenix investment house)",
           "strength": "institution",
           "page": 4,
@@ -386,7 +387,7 @@
         "unit": "nis_per_month",
         "source": {
           "url": "https://www.xnes.co.il/media/nwogkoos/taarifon.pdf",
-          "title": "תעריפון מלא - אקסלנס טרייד (xnes.co.il; המסמך אינו נושא תאריך, קובץ ה-PDF נוצר 15.7.2026), חלק 4, (4א) סעיף 8, מינימום (עמ' 4)",
+          "title": "תעריפון מלא - אקסלנס טרייד, חלק 4, (4א) סעיף 8, מינימום (עמ' 4)",
           "publisher": "Excellence Trade (Phoenix investment house)",
           "strength": "institution",
           "page": 4,
@@ -427,7 +428,7 @@
         "unit": "pct_of_trade",
         "source": {
           "url": "https://www.xnes.co.il/media/nwogkoos/taarifon.pdf",
-          "title": "תעריפון מלא - אקסלנס טרייד (xnes.co.il; המסמך אינו נושא תאריך, קובץ ה-PDF נוצר 15.7.2026), חלק 5 - מט\"ח, (5א) שירותים נפוצים, סעיף 1, עמלת חליפין (עמ' 5)",
+          "title": "תעריפון מלא - אקסלנס טרייד, חלק 5 - מט\"ח, (5א) שירותים נפוצים, סעיף 1, עמלת חליפין (עמ' 5)",
           "publisher": "Excellence Trade (Phoenix investment house)",
           "strength": "institution",
           "page": 5,
@@ -452,7 +453,7 @@
         "unit": "pct_of_trade",
         "source": {
           "url": "https://www.xnes.co.il/media/nwogkoos/taarifon.pdf",
-          "title": "תעריפון מלא - אקסלנס טרייד (xnes.co.il; המסמך אינו נושא תאריך, קובץ ה-PDF נוצר 15.7.2026), חלק 5, (5א) סעיף 1, עמלת חליפין, הערות (עמ' 5)",
+          "title": "תעריפון מלא - אקסלנס טרייד, חלק 5, (5א) סעיף 1, עמלת חליפין, הערות (עמ' 5)",
           "publisher": "Excellence Trade (Phoenix investment house)",
           "strength": "institution"
         },
@@ -490,7 +491,7 @@
         "unit": "nis_per_month",
         "source": {
           "url": "https://www.xnes.co.il/media/nwogkoos/taarifon.pdf",
-          "title": "תעריפון מלא - אקסלנס טרייד (xnes.co.il; המסמך אינו נושא תאריך, קובץ ה-PDF נוצר 15.7.2026), חלק 6 - שירותים ועמלות נוספים, (6א) סעיף 1, דמי טיפול (עמ' 5)",
+          "title": "תעריפון מלא - אקסלנס טרייד, חלק 6 - שירותים ועמלות נוספים, (6א) סעיף 1, דמי טיפול (עמ' 5)",
           "publisher": "Excellence Trade (Phoenix investment house)",
           "strength": "institution",
           "page": 5,
@@ -537,7 +538,7 @@
       "available": true,
       "source": {
         "url": "https://www.xnes.co.il/media/nwogkoos/taarifon.pdf",
-        "title": "תעריפון מלא - אקסלנס טרייד (xnes.co.il, 6 עמ'; המסמך אינו מודפס עם תאריך, קובץ ה-PDF נוצר 15.7.2026); חלק 4 - ניירות ערך",
+        "title": "תעריפון מלא - אקסלנס טרייד; חלק 4 - ניירות ערך",
         "checked": "2026-10-31",
         "page": 3,
         "quote": "סל וקרנות מחקות"
@@ -550,7 +551,7 @@
       "available": true,
       "source": {
         "url": "https://www.xnes.co.il/media/nwogkoos/taarifon.pdf",
-        "title": "תעריפון מלא - אקסלנס טרייד (xnes.co.il, 6 עמ'; המסמך אינו מודפס עם תאריך, קובץ ה-PDF נוצר 15.7.2026); חלק 4 - ניירות ערך",
+        "title": "תעריפון מלא - אקסלנס טרייד; חלק 4 - ניירות ערך",
         "checked": "2026-10-31",
         "page": 4,
         "quote": "ניירות ערך בחוץ לארץ"

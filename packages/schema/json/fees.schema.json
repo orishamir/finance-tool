@@ -90,6 +90,10 @@
           "type": "string",
           "minLength": 1
         },
+        "notes": {
+          "type": "string",
+          "minLength": 1
+        },
         "published": {
           "anyOf": [
             {

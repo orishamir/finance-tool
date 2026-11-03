@@ -158,7 +158,7 @@ export function FeeHeadline({ product, total, withFees, withoutFees, years, preT
   return (
     <header className="flex flex-col gap-3">
       <h1 className="text-2xl lg:text-3xl font-semibold">{r3fees.title}</h1>
-      <NumberLegend institution={anyWeak([total, withFees, withoutFees])} />
+      <NumberLegend canEnter institution={anyWeak([total, withFees, withoutFees])} />
       {/* the one plain sentence first (audit 2026-10-24, A18): what bringing the fee to the average is worth, from the figure of the "אם יורידו ל־" field */}
       {gap && (
         <LongestCase cases={[gapLine(big, 40), <p key="less" className="text-lg font-medium">{g.less}</p>]}>

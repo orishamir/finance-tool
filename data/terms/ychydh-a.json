@@ -2,21 +2,30 @@
   "id": "ychydh-a",
   "he": "יחידה",
   "en": null,
-  "meaning": "חלק שווה בקרן נאמנות; כשמשקיעים בקרן מקבלים יחידות לפי הסכום ששילמתם",
+  "meaning": "חלק שווה בקרן נאמנות: כל יחידה נותנת זכות שווה בקרן. בקרן פתוחה קונים בסכום כסף ומקבלים יחידות לפי מחיר היום, וביחידות של קרן סל סוחרים בבורסה.",
   "where": [
-    "statement"
+    "statement",
+    "app"
   ],
   "wrapper_ids": [
     "brokerage-account",
     "money-market-fund-daily",
     "money-market-fund-renewable"
   ],
+  "exposure_ids": [
+    "index-sp500",
+    "index-ta125"
+  ],
   "variants": [
-    "יחידת השתתפות"
+    "יחידת השתתפות",
+    "יחידות השתתפות"
   ],
   "rule_ids": [
     "MF-01",
-    "MF-11"
+    "MF-11",
+    "ETF-06",
+    "ETF-20",
+    "TXS-07"
   ],
   "source": {
     "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-64186b589b352/080217.pdf",

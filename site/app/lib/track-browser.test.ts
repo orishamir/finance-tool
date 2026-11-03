@@ -1,7 +1,7 @@
 // The track browser's pure logic over the real September 2026 tracks (data/cma/): the order of the groups (F-99, F-100), the filter, the
 // search, the sort and its missing figures, and the group headings' figures.
 import { describe, expect, it } from "vitest";
-import { SORTS, ascending, buildGroups, buildProductView, defaultSort, feeRangeOf, filterTracks, missingYield, pressSort, showsKindChip, showsShortName, sortTracks, type ProductView, type TbData } from "./track-browser";
+import { SORTS, sortInForce, sortableIn, ascending, buildGroups, buildProductView, defaultSort, feeRangeOf, filterTracks, missingYield, pressSort, showsKindChip, showsShortName, sortTracks, type ProductView, type TbData } from "./track-browser";
 import { buildTrackBrowser, defaultProduct, trackProductIds } from "./track-browser.server";
 
 const data: TbData = buildTrackBrowser();
@@ -50,7 +50,7 @@ describe("the order of the groups", () => {
   });
 
   it("kinds by the median stock share, the highest first, ties by size (F-100)", () => {
-    expect(gemel.kinds[0]!.sub).toBe("עוקב מדד s&p 500");
+    expect(gemel.kinds[0]!.sub).toBe("עוקב מדד S&P 500");
     expect(gemel.kinds[0]!.median!).toBeCloseTo(99.49, 2);
     const names = gemel.kinds.map((k) => k.sub);
     expect(names.slice(-3)).toEqual(["כספי (שקלי)", "אג\"ח ממשלות", "אג\"ח ממשלתי סחיר"]);
@@ -147,7 +147,7 @@ describe("groups", () => {
     expect(range.low.computed_from?.formula).toBe("F-100");
     expect(range.low.unit).toBe("pct_per_year");
     // narrowed by a kind, the range follows the shown tracks
-    const sp = harel.tracks.filter((x) => x.sub === "עוקב מדד s&p 500");
+    const sp = harel.tracks.filter((x) => x.sub === "עוקב מדד S&P 500");
     expect(feeRangeOf(sp, data.today)!.low.value).toBe(sp[0]!.fee.value);
     expect(feeRangeOf([], data.today)).toBeNull();
   });
@@ -158,13 +158,19 @@ describe("groups", () => {
     expect(feeRangeOf(none, data.today)).toBeNull();
   });
 
-  it("by kind: the groups keep the order of the kinds; a filter drops the groups left empty and keeps each kind's own total", () => {
-    const shown = filterTracks(gemel, { kind: "", q: "הראל" });
-    const groups = buildGroups(gemel, sortTracks(shown, defaultSort, "kind"), "kind", data.today);
-    expect(groups.length).toBeGreaterThan(0);
-    expect(groups.every((g) => g.tracks.every((x) => x.companyName === "הראל"))).toBe(true);
-    expect(groups.find((g) => g.title === "עוקב מדד s&p 500")!.total).toBe(12);
-    expect(groups[0]!.regulatorKind).toBe("עוקבי מדדים");
+  it("a chosen kind is one list of every company's track, and the sort orders it across the companies", () => {
+    // founder, 2026-11-03: "sorting by דמי ניהול doesnt work" with a kind chosen, when each company held one row under its own heading
+    const kind = "עוקב מדדי מניות";
+    const shown = filterTracks(gemel, { kind, q: "" });
+    expect(sortableIn(gemel, "kind")).toEqual(sortableIn(gemel, "company"));
+    const groups = buildGroups(gemel, sortTracks(shown, { id: "fee", dir: -1 }, "kind"), "kind", data.today);
+    expect(groups).toHaveLength(1);
+    expect(new Set(groups[0]!.tracks.map((x) => x.company)).size).toBe(11);
+    // the highest fee first; a track that reported none is last either way
+    const fees = groups[0]!.tracks.map((x) => x.fee.value as number | null);
+    const reported = fees.filter((f): f is number => f !== null);
+    expect(fees.slice(0, reported.length)).toEqual([...reported].sort((a, b) => b - a));
+    expect(reported[0]).toBeGreaterThan(reported.at(-1)!);
   });
 
   it("a product without kinds is always grouped by company", () => {
@@ -209,9 +215,14 @@ describe("rows", () => {
     expect(subs).not.toContain("עוקב מדדים גמיש");
   });
 
-  it("the fee from deposits sorts only where it differs between tracks; a fee the rule says is none counts as 0", () => {
-    expect(view("keren-hishtalmut").depSorts).toBe(false);
-    expect(view("provident-for-annuity").depSorts).toBe(true);
+  it("a head sorts only where its figure differs inside a group; a fee the rule says is none counts as 0", () => {
+    expect(sortableIn(view("keren-hishtalmut"), "company").has("dep")).toBe(false);
+    expect(sortableIn(view("provident-for-annuity"), "company").has("dep")).toBe(true);
+    // a pension fund's fee is the fund's own, one for all its tracks: within a company it cannot sort
+    const pension = sortableIn(view("pension-comprehensive"), "company");
+    expect(pension.has("fee")).toBe(false);
+    expect(sortInForce(defaultSort, pension)).toEqual({ id: "stock", dir: 1 });
+    expect(sortableIn(gemel, "company").has("fee")).toBe(true);
   });
 
   it("a track's own page is under its company's", () => {

@@ -96,6 +96,8 @@ export const ownContextExposures: Readonly<Record<string, readonly string[]>> = 
  */
 export const ownContextGuides: Readonly<Record<string, readonly string[]>> = {
   "limited-bond-fund": ["MF-62", "MF-63", "MF-64", "MF-65", "MF-66", "ETF-80", "ETF-81"],
+  // the words "סל" and "מחקה" as two companies' fund names use them, stated under those companies' names (D55)
+  "mutual-funds": ["ETF-61"],
 };
 
 // ---------------------------------------------------------------- a company's own document (review, 2026-10-26)
