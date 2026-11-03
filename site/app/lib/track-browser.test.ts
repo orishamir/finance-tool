@@ -50,7 +50,7 @@ describe("the order of the groups", () => {
   });
 
   it("kinds by the median stock share, the highest first, ties by size (F-100)", () => {
-    expect(gemel.kinds[0]!.sub).toBe("עוקב מדד s&p 500");
+    expect(gemel.kinds[0]!.sub).toBe("עוקב מדד S&P 500");
     expect(gemel.kinds[0]!.median!).toBeCloseTo(99.49, 2);
     const names = gemel.kinds.map((k) => k.sub);
     expect(names.slice(-3)).toEqual(["כספי (שקלי)", "אג\"ח ממשלות", "אג\"ח ממשלתי סחיר"]);
@@ -147,7 +147,7 @@ describe("groups", () => {
     expect(range.low.computed_from?.formula).toBe("F-100");
     expect(range.low.unit).toBe("pct_per_year");
     // narrowed by a kind, the range follows the shown tracks
-    const sp = harel.tracks.filter((x) => x.sub === "עוקב מדד s&p 500");
+    const sp = harel.tracks.filter((x) => x.sub === "עוקב מדד S&P 500");
     expect(feeRangeOf(sp, data.today)!.low.value).toBe(sp[0]!.fee.value);
     expect(feeRangeOf([], data.today)).toBeNull();
   });

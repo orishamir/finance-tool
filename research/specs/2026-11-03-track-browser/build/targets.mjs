@@ -29,7 +29,8 @@ const scan = () => {
 
 for (const [path, act, label] of [
   ["/tracks/kupat-gemel-lehashkaa", null, "investment fund, by company"],
-  ["/tracks/kupat-gemel-lehashkaa", async () => page.getByRole("button", { name: "במה הכסף מושקע", exact: true }).click(), "investment fund, by kind"],
+  // 2026-11-03 (polish): the grouping switch is gone; a kind chosen (the phone's first select) is one list of every company's tracks
+  ["/tracks/kupat-gemel-lehashkaa", async () => page.locator("select").first().selectOption({ index: 1 }), "investment fund, a kind chosen"],
   ["/tracks/pension-comprehensive", null, "pension (no kinds)"],
   ["/companies", null, "/companies with the tabs"],
 ]) {

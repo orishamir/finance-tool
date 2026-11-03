@@ -338,14 +338,14 @@ export function FieldGroup({ title, children, note }: { title: ReactNode; childr
 }
 
 /** A choice from a list of names in a native select: a label above, an optional "none" first option, an optional help line under. The default for picking one item out of many (an account, a provider). */
-export function SelectField({ label, options, value, onChange, none, help, className }: { label: ReactNode; options: { id: string; name: string }[]; value: string | null; onChange: (id: string | null) => void; /** The first option, chosen when `value` is null ("not chosen"); without it the list has no empty choice. */ none?: string; help?: ReactNode; className?: string }) {
+export function SelectField({ label, options, value, onChange, none, help, wide, className }: { label: ReactNode; options: { id: string; name: string }[]; value: string | null; onChange: (id: string | null) => void; /** The first option, chosen when `value` is null ("not chosen"); without it the list has no empty choice. */ none?: string; help?: ReactNode; /** The list fills the width, as a text field beside it does (a phone's controls over a list). */ wide?: boolean; className?: string }) {
   const id = useId();
   return (
-    <div className={cx("flex flex-col gap-1 max-w-measure", className)}>
+    <div className={cx("flex flex-col gap-1", wide ? null : "max-w-measure", className)}>
       <label htmlFor={id} className="text-sm font-medium">
         {label}
       </label>
-      <select id={id} value={value ?? ""} onChange={(e) => onChange(e.target.value || null)} className="h-field rounded-md bg-card border border-input px-3 max-w-72">
+      <select id={id} value={value ?? ""} onChange={(e) => onChange(e.target.value || null)} className={cx("h-field rounded-md bg-card border border-input px-3", wide ? "w-full" : "max-w-72")}>
         {none !== undefined && <option value="">{none}</option>}
         {options.map((o) => (
           <option key={o.id} value={o.id}>

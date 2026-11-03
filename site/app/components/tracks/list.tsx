@@ -37,29 +37,59 @@ function AssetsFigure({ value, size = "cell" }: { value: SiteValue | null; size?
   return <Num value={value} size={size} display={typeof value.value === "number" ? assetsText(value.value) : t.assets.missing} />;
 }
 
-/** "דמי ניהול מהחיסכון: מ־0.54% עד 0.61%" (F-100), or that none was reported. */
+/** "דמי ניהול מהחיסכון: מ־0.54% עד 0.61%" (F-100), one figure when every track has the same, or that none was reported. It does not break inside. */
 export function FeeRange({ fees }: { fees: TbGroup["fees"] }) {
-  if (!fees) return <span>{t.group.noFee}</span>;
+  if (!fees) return <span className="whitespace-nowrap">{t.group.noFee}</span>;
   return (
-    <span>
-      {t.group.feeLead} <Num value={fees.low} size="inline" prefix={t.group.feeFrom} /> {t.group.feeTo} <Num value={fees.high} size="inline" />
+    <span className="whitespace-nowrap">
+      {t.group.feeLead}{" "}
+      {fees.low.value === fees.high.value ? (
+        <Num value={fees.low} size="inline" />
+      ) : (
+        <>
+          <Num value={fees.low} size="inline" prefix={t.group.feeFrom} /> {t.group.feeTo} <Num value={fees.high} size="inline" />
+        </>
+      )}
     </span>
   );
 }
 
-/** A company's line under its name: "16 מסלולים · כסף מנוהל 19.1 מיליארד ₪ · דמי ניהול…". */
+/** "16 מסלולים · כסף מנוהל 19.1 מיליארד ₪": the company's size in the product, each part unbroken. `stacked`: one part under the other, in a
+ *  table cell too narrow to hold both on every row (so no row has one line where its neighbour has two). */
+function CompanySize({ count, assets, stacked }: { count: string; assets: SiteValue | null; stacked?: boolean }) {
+  const money = assets && (
+    <span className="whitespace-nowrap">
+      {t.group.assets} <AssetsFigure value={assets} size="inline" />
+    </span>
+  );
+  if (stacked) {
+    return (
+      <span className="flex flex-col">
+        <span className="whitespace-nowrap">{count}</span>
+        {money}
+      </span>
+    );
+  }
+  return (
+    <>
+      <span className="whitespace-nowrap">{count}</span>
+      {money && (
+        <>
+          {" · "}
+          {money}
+        </>
+      )}
+    </>
+  );
+}
+
+/** A company's line under its name: "16 מסלולים · כסף מנוהל 19.1 מיליארד ₪ · דמי ניהול…"; a narrow screen breaks it at the dots. */
 function GroupLine({ g }: { g: TbGroup }) {
   const filtered = g.tracks.length < g.total;
   const count = `${tracksPhrase(g.tracks.length)}${filtered ? ` ${t.count.outOf} ${fmt.number(g.total)}` : ""}`;
   return (
     <>
-      <span>{count}</span>
-      {g.assets && (
-        <>
-          {" · "}
-          {t.group.assets} <AssetsFigure value={g.assets} size="inline" />
-        </>
-      )}
+      <CompanySize count={count} assets={g.assets} />
       {" · "}
       <FeeRange fees={g.fees} />
     </>
@@ -89,8 +119,7 @@ function NameCell({ x, by, view }: { x: TbTrack; by: GroupBy; view: ProductView 
         </Link>
         {company && (
           <span className={mutedWord}>
-            {tracksPhrase(company.tracks.length)} · <AssetsFigure value={company.assets} size="inline" /> {t.group.inProduct}
-            {view.name}
+            <CompanySize count={tracksPhrase(company.tracks.length)} assets={company.assets} stacked />
           </span>
         )}
       </span>
@@ -137,23 +166,27 @@ function PhoneRow({ x, by, view }: { x: TbTrack; by: GroupBy; view: ProductView 
       </Link>
       {by === "kind" && company && (
         <span className={mutedWord}>
-          {tracksPhrase(company.tracks.length)} · <AssetsFigure value={company.assets} size="inline" /> {t.group.inProduct}
-          {view.name}
+          <CompanySize count={tracksPhrase(company.tracks.length)} assets={company.assets} />
         </span>
       )}
-      <span className="flex flex-wrap items-center gap-x-3 gap-y-1">
-        <TrackFeeLines fee={x.fee} deposit={x.deposit} inline />
+      <TrackFeeLines fee={x.fee} deposit={x.deposit} inline />
+      {/* the exposure and the two yields are two short lines each: side by side, as their columns stand on a computer */}
+      <span className="flex flex-wrap items-start justify-between gap-x-4 gap-y-2">
+        {x.exposure ? <ExposureCell value={x.exposure} /> : <span className={mutedWord}>{t.assets.missing}</span>}
+        <span className="flex flex-col gap-0.5 min-w-0">
+          {!x.selfManaged && <span className={mutedWord}>{t.yield.phone}</span>}
+          <Yields x={x} size="inline" />
+        </span>
+      </span>
+      {/* the fund's number closes every row at the same place, whatever the lines above it hold */}
+      <span className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1">
+        <span className="flex items-center gap-1.5">
+          <span className={mutedWord}>{t.assets.phone}</span>
+          <AssetsFigure value={x.assets} size="inline" />
+        </span>
         <span className={mutedWord}>
           {t.columns.fund} <TrackFundId fundId={x.id} dataset={view.dataset} />
         </span>
-      </span>
-      {x.exposure ? <ExposureCell value={x.exposure} /> : <span className={mutedWord}>{t.assets.missing}</span>}
-      <span className="flex flex-wrap items-center gap-x-3 gap-y-1">
-        <Yields x={x} size="inline" inline />
-      </span>
-      <span className="flex items-center gap-1.5">
-        <span className={mutedWord}>{t.assets.phone}</span>
-        <AssetsFigure value={x.assets} size="inline" />
       </span>
     </ProductPhoneRow>
   );
@@ -163,7 +196,7 @@ function PhoneRow({ x, by, view }: { x: TbTrack; by: GroupBy; view: ProductView 
 export function TrackList({ view, groups, by, sort, sortable, onSort, feeYear, period, limit = Infinity }: { view: ProductView; groups: TbGroup[]; by: GroupBy; sort: Sort; /** The columns whose head sorts here (lib/track-browser sortableIn); the others are plain words. */ sortable: ReadonlySet<SortId>; onSort: (id: SortId) => void; feeYear: string | null; period: string; limit?: number }) {
   const state = (...ids: SortId[]) => (ids.includes(sort.id) ? (ascending(sort) ? ("ascending" as const) : ("descending" as const)) : ("none" as const));
   const head = (id: SortId, label: string, alsoHolds?: string[]) =>
-    sortable.has(id) ? <SortHead label={label} state={state(id)} onPress={() => onSort(id)} alsoHolds={alsoHolds} /> : <span className="min-h-target inline-flex items-center">{label}</span>;
+    sortable.has(id) ? <SortHead label={label} state={state(id)} onPress={() => onSort(id)} alsoHolds={alsoHolds} /> : <span className="inline-flex min-h-11 -my-1 pt-1">{label}</span>;
   const periodText = fmt.period(period);
   const columns: ProductColumn[] = [
     { id: "name", head: head("name", by === "company" ? t.columns.track : t.columns.company, [t.columns.track, t.columns.company]), sort: state("name") },
@@ -190,7 +223,7 @@ export function TrackList({ view, groups, by, sort, sortable, onSort, feeYear, p
       head: (
         <span className="inline-flex items-start gap-1">
           {head("stock", t.columns.exposure.replace("{period}", periodText))}
-          <HelpMark term={HELP_TERMS.exposure} about={t.help.exposure} className="mt-3" />
+          <HelpMark term={HELP_TERMS.exposure} about={t.help.exposure} />
         </span>
       ),
       width: 13.5,
@@ -202,7 +235,7 @@ export function TrackList({ view, groups, by, sort, sortable, onSort, feeYear, p
       head: (
         <span className="inline-flex items-start gap-1">
           {head("assets", t.columns.assets.replace("{period}", periodText))}
-          <HelpMark term={HELP_TERMS.assets} about={t.help.assets} className="mt-3" />
+          <HelpMark term={HELP_TERMS.assets} about={t.help.assets} />
         </span>
       ),
       width: 10,

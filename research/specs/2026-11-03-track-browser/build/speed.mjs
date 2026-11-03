@@ -47,12 +47,16 @@ for (const [name, view] of Object.entries(VIEWS)) {
   await step("product: to the 182-track product", chip("תגמולים ואישית"), `${rows} > 0 && ${rows} <= 12`, `${rows} === 182`);
   await step("product: back to 143", chip("קופת גמל להשקעה"), `${rows} > 0 && ${rows} <= 12`, `${rows} === 143`);
   await step("product: to 182 again", chip("תגמולים ואישית"), `${rows} > 0 && ${rows} <= 12`, `${rows} === 182`);
-  await step("group by kind (182)", press("במה הכסף מושקע"), `${rows} > 0 && ${rows} <= 12`, `${rows} === 182`);
-  await step("group by company again (182)", press("חברה"), `${rows} > 0 && ${rows} <= 12`, `${rows} === 182`);
+  // 2026-11-03 (polish): the grouping switch is gone (a kind chosen is one list); a kind is a chip on a computer and the first select on a phone
+  const kindChip = (i) => `document.querySelectorAll('[aria-labelledby=tb-kind] button')[${i}].click()`;
+  const kindSelect = (i) => `(() => { const s = document.querySelectorAll('select')[0]; s.selectedIndex = ${i}; s.dispatchEvent(new Event('change', { bubbles: true })); })()`;
+  const kindOn = (i) => (name === "pc" ? `document.querySelectorAll('[aria-labelledby=tb-kind] button')[${i}]?.getAttribute('aria-pressed') === 'true'` : `document.querySelectorAll('select')[0].selectedIndex === ${i}`);
+  await step("kind: the first kind (one list)", name === "pc" ? kindChip(1) : kindSelect(1), `${kindOn(1)} && ${rows} > 0 && ${rows} < 182`, `${kindOn(1)} && ${rows} > 0 && ${rows} < 182`);
+  await step("kind: all again (182, under the companies)", name === "pc" ? kindChip(0) : kindSelect(0), `${rows} > 0 && ${rows} <= 12`, `${rows} === 182`);
   if (name === "pc") {
     const head = (t) => `[...document.querySelectorAll('thead button')].find((b) => b.textContent.includes(${JSON.stringify(t)})).click()`;
-    const sorted = (t) => `document.querySelector('th[aria-sort=descending] button')?.textContent.includes(${JSON.stringify(t)})`;
-    await step("sort by assets (column head)", head("נכסים"), sorted("נכסים"), sorted("נכסים"));
+    const sorted = (t) => `!!document.querySelector('th[aria-sort=ascending] button, th[aria-sort=descending] button')?.textContent.includes(${JSON.stringify(t)})`;
+    await step("sort by assets (column head)", head("כסף מנוהל"), sorted("כסף מנוהל"), sorted("כסף מנוהל"));
     await step("sort by stock (column head)", head("חשיפה"), sorted("חשיפה"), sorted("חשיפה"));
   } else {
     await step("sort by assets (select)", `(() => { const s = [...document.querySelectorAll('select')].at(-1); s.value = 'assets'; s.dispatchEvent(new Event('change', { bubbles: true })); })()`, `${rows} === 182`, `${rows} === 182`);

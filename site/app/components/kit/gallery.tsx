@@ -690,6 +690,9 @@ function Fields() {
           <State label={g.states.filled}>
             <SelectField label={g.sample.select.label} value="b" options={[...g.sample.select.options]} onChange={() => undefined} />
           </State>
+          <State label={g.states.wide}>
+            <SelectField wide label={g.sample.select.label} value="b" options={[...g.sample.select.options]} onChange={() => undefined} />
+          </State>
         </Grid>
       </Demo>
     </>

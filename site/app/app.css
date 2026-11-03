@@ -757,6 +757,15 @@
       top: 4rem;
     }
   }
+  /* A row of a list of products lights under the pointer, so the eye keeps it across the columns (ProductTable). Nothing depends on it. */
+  @media (hover: hover) {
+    .tbl-rows tbody tr:not(.grp-row, .dup-row) > td {
+      transition: background-color var(--duration-fast);
+    }
+    .tbl-rows tbody tr:not(.grp-row, .dup-row):hover > td {
+      background: var(--accent);
+    }
+  }
   /* A group's heading over its rows (a company, a kind of money): on the table's width, and on a phone. */
   .grp-row th,
   .grp-phone {

@@ -1,12 +1,14 @@
 // The track browser (D54, 2026-11-03; issue 173): the controls and the list for one product. The product is in the address
 // (`/tracks/<id>`), so the back button and a shared link work; the kind, the search and the sort are the person's state on the page.
 // No kind chosen, the tracks stand under their companies; a kind chosen, its tracks of every company are one list (founder, 2026-11-03). The loader's data covers the six products, so choosing another keeps the page and fetches nothing.
+// The controls stand in the order they narrow the list (product, search, kind); the count and the order are said right over the list.
 import { startTransition, useDeferredValue, useEffect, useMemo, useState } from "react";
 import { Link, useNavigate, useParams, useSearchParams } from "react-router";
 import { trackBrowser as t } from "../../copy";
 import { fmt } from "../../lib/format";
 import { HELP_TERMS, SORTS, sortInForce, sortableIn, buildGroups, buildProductView, companiesIn, companiesPhrase, defaultProduct, defaultSort, feeRangeOf, filterTracks, pressSort, sortTracks, sortWords, tracksPhrase, type GroupBy, type ProductView, type SortId, type SortState, type TbData, type TbGroup } from "../../lib/track-browser";
-import { FilterChip, LongestCase, SelectField, TextField } from "../kit";
+import { normName } from "../../lib/track-names";
+import { FilterChip, LongestCase, SelectField, TextField, useSoftSwap } from "../kit";
 import { Term } from "../provenance";
 import { FeeRange, TrackList } from "./list";
 
@@ -25,24 +27,22 @@ function keepFor(search: URLSearchParams): string {
   return s ? `?${s}` : "";
 }
 
-/** "143 מסלולים של 12 חברות (מתוך 143) · דמי ניהול מהחיסכון: מ־0.10% עד 0.90%." then the guide's link and, on the pension products, why no kind can be chosen. */
-function CountLine({ view, shown, companies, fees, noteFor }: { view: ProductView; shown: number; companies: number; fees: TbGroup["fees"]; noteFor?: boolean }) {
+/** "143 מסלולים של 12 חברות (מתוך 143) · דמי ניהול מהחיסכון: מ־0.10% עד 0.90%." A narrow screen breaks it at the dot, never inside a part. */
+function CountLine({ view, shown, companies, fees }: { view: ProductView; shown: number; companies: number; fees: TbGroup["fees"] }) {
   const total = view.tracks.length;
   return (
     <p className="text-sm text-muted-foreground">
-      {shown === 0 ? t.count.tracksNone : `${tracksPhrase(shown)} ${t.count.of} ${companiesPhrase(companies)}`}
-      {shown < total && ` (${t.count.outOf} ${fmt.number(total)})`}
+      <span className="whitespace-nowrap">
+        {shown === 0 ? t.count.tracksNone : `${tracksPhrase(shown)} ${t.count.of} ${companiesPhrase(companies)}`}
+        {shown < total && ` (${t.count.outOf} ${fmt.number(total)})`}
+      </span>
       {shown > 0 && (
         <>
           {" · "}
           <FeeRange fees={fees} />
         </>
       )}
-      .{" "}
-      <Link to={`/guide/${view.id}`} className="text-link hover:underline inline-flex items-center min-h-target">
-        {t.count.whatIs} {view.name}
-      </Link>
-      {(noteFor ?? !view.hasKinds) && ` · ${t.count.noKinds}`}
+      .
     </p>
   );
 }
@@ -51,11 +51,11 @@ export function TrackBrowser({ data }: { data: TbData }) {
   const params = useParams();
   const navigate = useNavigate();
   const productId = data.products.some((p) => p.id === params.product) ? params.product! : (data.products.find((p) => p.id === defaultProduct) ?? data.products[0]!).id;
-  // every product's view is built once: a switch of product then only redraws, and the count line can hold the longest of them
+  // every product's view is built once: a switch of product then only redraws
   const views = useMemo(() => data.products.map((p) => buildProductView(data, p.id)!), [data]);
   const view = views.find((v) => v.id === productId)!;
-  // each product's whole fee range, for the count line's longest case
-  const allFees = useMemo(() => new Map(views.map((v) => [v.id, feeRangeOf(v.tracks, data.today, { low: t.about.listLow, high: t.about.listHigh })])), [views, data.today]);
+  // the product's whole fee range, for the count line's longest case
+  const allFees = useMemo(() => feeRangeOf(view.tracks, data.today, { low: t.about.listLow, high: t.about.listHigh }), [view, data.today]);
   // the kind and the sort live in the address (founder, 2026-11-03), so a link opens the same list:
   // ?kind=מניות&sort=assets&order=reverse; the defaults are left out. The page is pre-rendered without them, so they are
   // read once the page is in the browser (reading them while hydrating would not match the pre-rendered page).
@@ -63,8 +63,9 @@ export function TrackBrowser({ data }: { data: TbData }) {
   const [hydrated, setHydrated] = useState(false);
   useEffect(() => setHydrated(true), []);
   const sp = hydrated ? search : EMPTY_PARAMS;
-  const kindParam = sp.get("kind") ?? "";
-  const kind = view.kinds.some((k) => k.sub === kindParam) ? kindParam : "";
+  // an address written before a kind's spelling was mended ("s&p" for "S&P") still opens it
+  const kindParam = normName(sp.get("kind") ?? "");
+  const kind = (kindParam && view.kinds.find((k) => normName(k.sub) === kindParam)?.sub) || "";
   const sortParam = sp.get("sort");
   const sortSet: SortState = sortParam && sortParam in SORTS ? { id: sortParam as SortId, dir: sp.get("order") === "reverse" ? -1 : 1 } : defaultSort;
   const update = (changes: Record<string, string | null>) => {
@@ -96,8 +97,16 @@ export function TrackBrowser({ data }: { data: TbData }) {
   }, [grown, listKey]);
   const feeYear = data.feeYear && typeof data.feeYear.value === "string" ? data.feeYear.value : null;
   const product = data.products.find((p) => p.id === productId)!;
+  // another product, kind or order: the new rows fade in where the old ones stood
+  const list = useSoftSwap<HTMLDivElement>(`${listKey}|${sort.id}|${sort.dir}`);
+  /** A head pressed while the list is scrolled under it: the list starts again from its first row, under the same head. */
+  const pressHead = (id: SortId) => {
+    setSort(pressSort(sort, id));
+    const el = list.current;
+    if (el && el.getBoundingClientRect().top < parseFloat(getComputedStyle(el).scrollMarginTop)) el.scrollIntoView({ block: "start", behavior: "instant" });
+  };
 
-  const longestOrder = ids.flatMap((id) => ([1, -1] as const).flatMap((dir) => (["company", "kind"] as const).map((mode) => orderLine(view, { id, dir }, mode))));
+  const longestOrder = ids.flatMap((id) => ([1, -1] as const).flatMap((dir) => (["company", "kind"] as const).map((mode) => orderLine({ id, dir }, mode))));
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-1.5">
@@ -111,17 +120,16 @@ export function TrackBrowser({ data }: { data: TbData }) {
             </FilterChip>
           ))}
         </div>
+        <Link to={`/guide/${view.id}`} className="self-start -mb-2 text-sm text-link hover:underline inline-flex items-center min-h-target">
+          {t.count.whatIs} {view.name}
+        </Link>
       </div>
-
-      <LongestCase cases={views.flatMap((v) => [<CountLine key={`${v.id}a`} view={v} shown={v.tracks.length} companies={v.companies.length} fees={allFees.get(v.id)!} noteFor />, <CountLine key={`${v.id}b`} view={v} shown={v.tracks.length - 1} companies={v.companies.length} fees={allFees.get(v.id)!} noteFor />])}>
-        <CountLine view={view} shown={shown.length} companies={companiesIn(shown)} fees={fees} />
-      </LongestCase>
 
       <div className="grid md:grid-cols-[minmax(0,22rem)]">
         <TextField label={t.controls.search} value={q} onChange={setQ} placeholder={t.controls.searchPlaceholder} />
       </div>
 
-      {view.hasKinds && (
+      {view.hasKinds ? (
         <>
           <div className="hidden md:flex flex-col gap-1.5">
             <span className="text-sm font-medium" id="tb-kind">
@@ -139,7 +147,8 @@ export function TrackBrowser({ data }: { data: TbData }) {
             </div>
           </div>
           <SelectField
-            className="md:hidden !max-w-none"
+            className="md:hidden"
+            wide
             label={t.controls.kind}
             none={`${t.controls.kindAll} (${fmt.number(view.tracks.length)})`}
             options={view.kinds.map((k) => ({ id: k.sub, name: `${k.sub} (${fmt.number(k.count)})` }))}
@@ -147,37 +156,51 @@ export function TrackBrowser({ data }: { data: TbData }) {
             onChange={(v) => setKind(v ?? "")}
           />
         </>
+      ) : (
+        // the place of the kinds says why there are none, so the control is not just gone
+        <div className="flex flex-col gap-1.5">
+          <span className="text-sm font-medium">{t.controls.kind}</span>
+          <p className="text-sm text-muted-foreground max-w-measure">{t.controls.noKinds}</p>
+        </div>
       )}
       <SelectField
-        className="md:hidden !max-w-none"
+        className="md:hidden"
+        wide
         label={t.controls.sort}
         options={ids.filter((id) => sortable.has(id)).map((id) => ({ id, name: t.sorts[id].label }))}
         value={sort.id}
         onChange={(v) => v && setSort({ id: v as SortId, dir: 1 })}
       />
 
-      <LongestCase cases={longestOrder.map((line, i) => <p key={i} className="text-sm">{line}</p>)}>
-        <p className="text-sm text-muted-foreground">{orderLine(view, sort, by)}</p>
-      </LongestCase>
+      <div className="flex flex-col gap-1 pt-1">
+        <LongestCase cases={[<CountLine key="a" view={view} shown={view.tracks.length} companies={view.companies.length} fees={allFees} />, <CountLine key="b" view={view} shown={view.tracks.length - 1} companies={view.companies.length} fees={allFees} />]}>
+          <CountLine view={view} shown={shown.length} companies={companiesIn(shown)} fees={fees} />
+        </LongestCase>
+        <LongestCase cases={longestOrder.map((line, i) => <p key={i} className="text-sm">{line}</p>)}>
+          <p className="text-sm text-muted-foreground">{orderLine(sort, by)}</p>
+        </LongestCase>
+      </div>
 
       {/* the phone's rows have no column heads to hold the "?": one line opens the same cards */}
       <p className="md:hidden text-sm text-muted-foreground">
         {t.help.phoneLead} <Term id={HELP_TERMS.fee}>{t.help.fee}</Term> · <Term id={HELP_TERMS.exposure}>{t.help.exposure}</Term> · <Term id={HELP_TERMS.assets}>{t.help.assets}</Term>
       </p>
-      {groups.length === 0 ? (
-        <p className="py-6 text-muted-foreground">
-          {t.noResult.before}
-          {q.trim()}
-          {t.noResult.after}
-        </p>
-      ) : (
-        <TrackList view={view} groups={groups} by={by} sort={sort} sortable={sortable} onSort={(id) => setSort(pressSort(sort, id))} feeYear={feeYear} period={product.period} limit={limit} />
-      )}
+      <div ref={list} className="scroll-mt-14 lg:scroll-mt-16">
+        {groups.length === 0 ? (
+          <p className="py-6 text-muted-foreground">
+            {t.noResult.before}
+            {q.trim()}
+            {t.noResult.after}
+          </p>
+        ) : (
+          <TrackList view={view} groups={groups} by={by} sort={sort} sortable={sortable} onSort={pressHead} feeYear={feeYear} period={product.period} limit={limit} />
+        )}
+      </div>
       <p className="text-sm text-muted-foreground max-w-measure">{t.pastNote}</p>
     </div>
   );
 }
 
-function orderLine(view: ProductView, sort: SortState, by: GroupBy): string {
-  return by === "company" ? `${t.order.company.before}${view.name}${t.order.company.mid}${sortWords(sort, by)}.` : `${t.order.kind.before}${sortWords(sort, by)}.`;
+function orderLine(sort: SortState, by: GroupBy): string {
+  return `${by === "company" ? t.order.company : t.order.kind}${sortWords(sort, by)}.`;
 }

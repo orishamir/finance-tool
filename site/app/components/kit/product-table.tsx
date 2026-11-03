@@ -120,7 +120,7 @@ export function ProductTable({ columns, groups, foot, stickyHead }: { columns: P
       )}
       {place !== "phone" && (
       <Card ref={card} pad="none" className={cx("relative hidden md:block", fits ? "overflow-x-clip" : "overflow-x-auto overflow-y-hidden")}>
-        <table className={cx("tbl", fits && "tbl-sticky")} style={{ minWidth: `${minRem}rem` }}>
+        <table className={cx("tbl tbl-rows", fits && "tbl-sticky")} style={{ minWidth: `${minRem}rem` }}>
           <TableCols widths={columns.map((c) => (c.width ? `${c.width}rem` : "auto"))} />
           <thead>
             <tr>
@@ -209,7 +209,7 @@ export function FeeWordsNote({ className }: { className?: string }) {
   );
 }
 
-/** A product's identifier as the link to its official page elsewhere (a fund's number to Maya): the number, then the external icon. Without an address, the number alone. `label` is the link's spoken name, saying where it leads. */
+/** A product's identifier as the link to its official page elsewhere (a fund's number to Maya): the number, then the external icon. Without an address, the number alone. `label` is the link's spoken name, saying where it leads. The touch area is 44 px high while the line keeps its own height (2026-11-03: it sits inside a line of a phone's row). */
 export function ProductIdLink({ id, href, label }: { id: string; href: string | null; label: string }) {
   const n = (
     <bdi dir="ltr" className="num-id">
@@ -218,7 +218,7 @@ export function ProductIdLink({ id, href, label }: { id: string; href: string | 
   );
   if (!href) return n;
   return (
-    <a href={href} target="_blank" rel="noopener noreferrer" aria-label={label} className="text-link hover:underline inline-flex items-center gap-1 whitespace-nowrap">
+    <a href={href} target="_blank" rel="noopener noreferrer" aria-label={label} className="text-link hover:underline inline-flex items-center gap-1 whitespace-nowrap min-h-target -my-2.5">
       {n}
       <IconExternal size={14} />
     </a>

@@ -1,6 +1,7 @@
 // Check 4: nothing moves. Changes the sort, the kind (and the sort with a kind chosen), the search and the product, and after each change compares
-// the boxes of the controls (product chips, count line, search, kind chips, order line) and of the table's heads and columns
+// the boxes of the controls (product chips, guide link, search, kind chips, count line, order line) and of the table's heads and columns
 // with the boxes before it. A pixel of rounding is not a move. Reports every box that moved, per change.
+// 2026-11-03 (polish): the count line moved from under the products to over the list, beside the order line; the guide link stayed under the products.
 //   node research/specs/2026-11-03-track-browser/build/nothing-moves.mjs     (the server: serve.mjs, port 4173)
 import { createRequire } from "node:module";
 
@@ -21,12 +22,15 @@ const snapshot = () => {
   const product = document.getElementById("tb-product");
   out["product label"] = box(product);
   [...document.querySelectorAll("[aria-labelledby=tb-product] button")].forEach((b, i) => (out[`product chip ${i + 1}`] = box(b)));
-  const count = [...document.querySelectorAll("p")].find((p) => /מה זה/.test(p.textContent));
+  // the guide link names the product, so its width follows the name: its start (the right edge) and its line are what must stay
+  const guide = box([...document.querySelectorAll("a")].find((a) => /^מה זה/.test(a.textContent.trim())));
+  out["guide link (start edge)"] = guide && { ...guide, x: guide.x + guide.w, w: 0 };
+  const count = [...document.querySelectorAll("p")].find((p) => /מסלולים של|מסלול אחד של|אין מסלולים/.test(p.textContent));
   out["count line (block)"] = box(count?.parentElement);
   out["search field"] = box(document.querySelector("input[placeholder='שם המסלול או החברה']"));
   out["kind label"] = box(document.getElementById("tb-kind"));
   [...document.querySelectorAll("[aria-labelledby=tb-kind] button")].forEach((b, i) => (out[`kind chip ${i + 1}`] = box(b)));
-  const order = [...document.querySelectorAll("p")].find((p) => /מסודרות|ברשימה אחת/.test(p.textContent));
+  const order = [...document.querySelectorAll("p")].find((p) => /מסודרות|מסודרים/.test(p.textContent));
   out["order line (block)"] = box(order?.parentElement);
   const table = document.querySelector("table");
   out["table"] = box(table);

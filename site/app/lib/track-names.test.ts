@@ -41,6 +41,14 @@ describe("short names, from the real tracks", () => {
     expect(shortOf("pension-comprehensive", "אינפיניטי", "אינפיניטי מקיפה עוקב מדד S1;P 500")).toBe("מקיפה עוקב מדד S&P 500");
   });
 
+  it("the regulator's lower-case s&p is written S&P in the kinds and the short names, and only as its own word", () => {
+    expect(kindLabel("עוקב מדד s&p 500")).toBe("עוקב מדד S&P 500");
+    expect(kindLabel("מניות s&p500")).toBe("מניות S&P500");
+    expect(kindLabel("AT&T")).toBe("AT&T");
+    const gemel = buildProductView(data, "kupat-gemel-lehashkaa")!;
+    expect(gemel.tracks.filter((x) => /s&p/.test(x.short) || /s&p/.test(x.sub))).toEqual([]);
+  });
+
   it("a company with one track loses only its own name", () => {
     const view = buildProductView(data, "keren-hishtalmut")!;
     const one = view.companies.find((c) => c.tracks.length === 1)!;
