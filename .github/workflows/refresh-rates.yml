@@ -1,0 +1,73 @@
+# Daily refresh of the ECB exchange rates (decision D26, method F-84 and F-93): the day's euro reference rates, and
+# the month-end rates once a new month is out. Apart from refresh.yml so that a failure there never holds the rates
+# back, and timed after the ECB publishes (around 16:00 CET on working days). A day with no new rate changes nothing.
+#
+# A source that fails (no download, or the sanity check in ecb-fx.ts) writes nothing and turns the run red, after the
+# other source's rates were committed; the site keeps the last rate with its date. refresh-watchdog.yml reports days of red.
+#
+# As in refresh.yml: a push made with GITHUB_TOKEN starts no workflow, so this dispatches ci.yml for the checks and the deploy.
+name: refresh-rates
+
+on:
+  schedule:
+    - cron: "30 15 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: refresh-rates
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ github.token }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+
+      - id: refresh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set +e
+          npm run refresh -- ecb-fx ecb-fx-month-end
+          echo "code=$?" >> "$GITHUB_OUTPUT"
+
+      - id: changes
+        run: |
+          if [ -n "$(git status --porcelain -- data)" ]; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - if: steps.changes.outputs.changed == 'true'
+        run: npm run validate
+
+      # A bot commit; no Co-Authored-By.
+      - if: steps.changes.outputs.changed == 'true'
+        env:
+          PERIOD: ${{ steps.refresh.outputs.period }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data
+          git commit -m "Refresh data: ${PERIOD}"
+          git pull --rebase origin main
+          git push origin HEAD:main
+      - if: steps.changes.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run ci.yml --ref main
+
+      - if: steps.refresh.outputs.code != '0'
+        run: exit 1

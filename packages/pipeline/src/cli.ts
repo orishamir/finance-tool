@@ -2,6 +2,7 @@ import { appendFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { refreshCbsCpi } from "./adapters/cbs-cpi.ts";
 import { refreshCma } from "./adapters/cma.ts";
+import { refreshEcbFx, refreshEcbMonthEnd } from "./adapters/ecb-fx.ts";
 import { refreshMofChildSavings } from "./adapters/mof-child-savings.ts";
 import type { SourceReport } from "./adapters/series-common.ts";
 import { readFormulaIds, readRuleBaseIds } from "./references.ts";
@@ -11,13 +12,13 @@ const root = fileURLToPath(new URL("../../../", import.meta.url));
 const [command, ...rest] = process.argv.slice(2);
 
 /**
- * Refresh sources. `cma`, `cbs-cpi` and `mof-child-savings` run in the order given.
+ * Refresh sources. They run in the order given.
  * Gated, no adapter on purpose: the Bank of Israel series (policy rate A-20, per-bank deposit averages A-21,
  * makam yields A-22). Its terms of use forbid copying and publishing without the Bank's prior written
  * consent and no data.gov.il copy exists (research report r2-series, finding 1, 2026-10-23), so under the terms
  * gate (docs/architecture.md 3.3) they are not fetched into data/. Revisit if the Bank consents in writing.
  */
-const SOURCES = ["cma", "cbs-cpi", "mof-child-savings"] as const;
+const SOURCES = ["cma", "cbs-cpi", "mof-child-savings", "ecb-fx", "ecb-fx-month-end"] as const;
 const USAGE = `usage: cli.ts refresh <${SOURCES.join("|")}>... [--dry-run] [--no-archive] [--force]`;
 
 /** Exit codes of `refresh`: 0 ok (written or nothing changed), 1 error, 3 sanity failed, 2 usage. */
@@ -43,6 +44,8 @@ async function refresh(args: string[]): Promise<number> {
         reports.push({ source: r.dataset, status: r.status, period: r.period, reasons: r.reasons, written: r.written, ...(r.note ? { note: r.note } : {}) });
       }
     } else if (source === "cbs-cpi") reports.push(await refreshCbsCpi(opts));
+    else if (source === "ecb-fx") reports.push(await refreshEcbFx(opts));
+    else if (source === "ecb-fx-month-end") reports.push(await refreshEcbMonthEnd(opts));
     else reports.push(await refreshMofChildSavings(opts));
   }
   const failed = reports.some((r) => r.status === "sanity-failed");
