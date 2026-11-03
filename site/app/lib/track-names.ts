@@ -1,0 +1,57 @@
+// A track's short name in the track browser (D54, 2026-11-03, the founder: "this is repeated a lot of times"). Every track of a company in
+// one product begins with the same words, the company and the product ("הראל גמל להשקעה - אשראי ואג"ח"): the group's heading says them,
+// so the row keeps only what tells it from its neighbours. The full name as the company writes it stays on the track page and in the
+// search. Pure: no React, no storage.
+
+/** The words of a name. A dash glued to one side only ("לילד- שריעה", "-הלכה") is a word of its own, so two spellings of one name share a prefix. */
+const words = (s: string): string[] =>
+  s
+    .replace(/(\S)-(\s)/g, "$1 -$2")
+    .replace(/(\s)-(\S)/g, "$1- $2")
+    .split(/\s+/)
+    .filter(Boolean);
+
+/** Hebrew's one-letter prefixes: "לחוסכים" is "חוסכים" with a "to". */
+const PREFIXES = "לבהוכמש";
+
+/** A name for comparing: lower case, without spaces, quotes, dashes and brackets ("אג"ח" and "אג״ח" and "אגח" are one word). */
+export const normName = (s: string): string => s.toLowerCase().replace(/[\s"״'׳\-–()]/g, "");
+
+/** The regulator's kind of a child-savings track repeats the product's name ("חיסכון לילד - חוסכים המעדיפים סיכון גבוה"); the product is already chosen. */
+export const kindLabel = (kind: string): string => kind.trim().replace(/^חיסכון לילד\s*-\s*/, "");
+
+/** The words of every kind's name, normalised: a cut never takes one of them away from a track's name. */
+export function kindWordSet(kinds: Iterable<string>): Set<string> {
+  const out = new Set<string>();
+  for (const k of kinds) for (const w of words(kindLabel(k))) if (normName(w)) out.add(normName(w));
+  return out;
+}
+
+/**
+ * The short names of one company's tracks in one product. The cut is the words every track begins with, always leaving each track at
+ * least one word, and it stops before a word of a kind's name ("חוסכים המעדיפים סיכון מוגבר" keeps its words). A company with one
+ * track loses only its own name (the words of `company`), when the name begins with them. A leading dash or "מסלול" goes too. A name
+ * that would be left empty stays whole.
+ */
+export function shortTrackNames<T extends { key: string | number; name: string }>(company: string, tracks: readonly T[], kindWords: ReadonlySet<string>): Map<string | number, string> {
+  const split = tracks.map((t) => words(t.name));
+  let cut = 0;
+  if (tracks.length > 1) {
+    const min = Math.min(...split.map((w) => w.length));
+    while (cut < min - 1 && split.every((w) => w[cut] === split[0]![cut])) cut++;
+    const isKindWord = (w: string) => {
+      const n = normName(w);
+      return kindWords.has(n) || (n.length > 3 && PREFIXES.includes(n[0]!) && kindWords.has(n.slice(1)));
+    };
+    while (cut > 0 && isKindWord(split[0]![cut - 1]!)) cut--;
+  } else if (tracks.length === 1 && words(company).every((w, i) => split[0]![i] === w)) cut = words(company).length;
+  const out = new Map<string | number, string>();
+  tracks.forEach((t, i) => out.set(t.key, split[i]!.slice(cut).join(" ").replace(/^[-–:]\s*/, "").replace(/^מסלול\s+/, "") || t.name));
+  return out;
+}
+
+/** Whether the row's short name already says the kind (spaces, dashes, quotes and case ignored): then the kind is not repeated beside it. */
+export const nameSaysKind = (short: string, kind: string): boolean => !!normName(kind) && normName(short).includes(normName(kind));
+
+/** Whether the short name says more than the group's kind: under a kind's heading the name is shown only then. */
+export const nameAddsToKind = (short: string, kind: string): boolean => normName(short) !== normName(kind);

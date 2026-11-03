@@ -657,6 +657,8 @@ export const formulaNames: Record<string, string> = {
   "F-85": "הריבית שרוב הבנקים משלמים בעו״ש",
   "F-87": "החלק מנכסי המסלול שחשוף למניות",
   "F-88": "החלק מנכסי המסלול שחשוף למטבע חוץ",
+  "F-99": "הנכסים של חברה במוצר: סכום הנכסים של המסלולים שלה",
+  "F-100": "טווח דמי הניהול בקבוצה, וסדר הקבוצות לפי החשיפה למניות",
   "F-89": "כמה שינוי באחוז ממספר אחד משנה את מה שנשאר",
   "F-90": "מה נשאר בסוף כשכל מספר משתנה באותו אחוז",
   "F-96": "הכסף בקרן השתלמות, שלב אחרי שלב",
@@ -1483,6 +1485,85 @@ export const fit = {
 
 // Release 3: the track workbench and the entry points (docs/copy.md 7.0, 7.3, 7.5; flows 12.3, 12.5). The strings the
 // build added are in copy.md 7.3's "Added 2026-10-24" table, keyed by path.
+// ---------------------------------------------------------------- the track browser (D54, 2026-11-03, issue 173)
+
+/** "כל המסלולים בכל החברות" at /tracks: every company's tracks of one product, from the approved prototype (research/specs/2026-11-03-track-browser). */
+export const trackBrowser = {
+  title: "כל המסלולים בכל החברות",
+  tabs: { aria: "איך לראות את החברות והמסלולים", byCompany: "לפי חברה", byProduct: "לפי מוצר" },
+  lead: {
+    intro: "בוחרים מוצר ורואים את המסלולים של כל החברות שמנהלות אותו. דמי הניהול הם הממוצע שנגבה בפועל ב־",
+    figures: "; החשיפה, התשואה והנכסים נכונים לסוף ",
+    source: ". מנתוני רשות שוק ההון.",
+    noYear: "בוחרים מוצר ורואים את המסלולים של כל החברות שמנהלות אותו. החשיפה, התשואה והנכסים נכונים לסוף ",
+  },
+  controls: {
+    product: "מוצר",
+    group: "קיבוץ לפי",
+    groupCompany: "חברה",
+    groupKind: "במה הכסף מושקע",
+    search: "חיפוש",
+    searchPlaceholder: "שם המסלול או החברה",
+    kind: "במה הכסף מושקע",
+    kindAll: "הכול",
+    sort: "מיון בתוך כל קבוצה",
+  },
+  /** The count line: "143 מסלולים של 12 חברות (מתוך 143)", then the guide link. */
+  count: {
+    tracksOne: "מסלול אחד",
+    tracksTwo: "שני מסלולים",
+    tracksMany: "מסלולים",
+    companiesOne: "חברה אחת",
+    companiesTwo: "שתי חברות",
+    companiesMany: "חברות",
+    of: "של",
+    outOf: "מתוך",
+    whatIs: "מה זה",
+    noKinds: "הרשות לא מסווגת את המסלולים של המוצר הזה לפי במה הכסף מושקע, ולכן אין קיבוץ כזה.",
+  },
+  /** What each sort says in the line above the list: the column, then the direction. */
+  sorts: {
+    name: { label: "שם", what: "שם המסלול", whatKind: "שם החברה", up: "לפי הא״ב", down: "לפי הא״ב מהסוף" },
+    fee: { label: "דמי ניהול מהחיסכון", what: "דמי הניהול מהחיסכון", up: "מהזול ליקר", down: "מהיקר לזול" },
+    dep: { label: "דמי ניהול מההפקדות", what: "דמי הניהול מההפקדות", up: "מהזול ליקר", down: "מהיקר לזול" },
+    stock: { label: "חשיפה למניות", what: "החשיפה למניות", up: "מהנמוכה לגבוהה", down: "מהגבוהה לנמוכה" },
+    assets: { label: "נכסים", what: "הנכסים", up: "מהקטן לגדול", down: "מהגדול לקטן" },
+  },
+  order: {
+    company: { before: "החברות מסודרות מהגדולה לקטנה בנכסים ב", mid: "; בתוך כל חברה לפי " },
+    kind: { before: "הקבוצות מסודרות מהחשיפה למניות הגבוהה לנמוכה; בתוך כל קבוצה לפי " },
+  },
+  /** The heading of a group: "16 מסלולים · נכסים 19.1 מיליארד ₪ · דמי ניהול מהחיסכון: מ־0.54% עד 0.61%". */
+  group: {
+    assets: "נכסים",
+    feeLead: "דמי ניהול מהחיסכון:",
+    feeFrom: "מ־",
+    feeTo: "עד",
+    noFee: "דמי ניהול עוד לא דווחו",
+    inProduct: "ב",
+  },
+  columns: {
+    track: "המסלול",
+    company: "החברה",
+    fund: "קופה",
+    fee: "דמי ניהול, ממוצע {year}",
+    feeSavings: "מהחיסכון",
+    feeDeposits: "מההפקדות",
+    exposure: "חשיפה למניות ולמט״ח, סוף {period}",
+    yield: "תשואה שנתית ממוצעת, לפני דמי ניהול",
+    assets: "נכסים בסוף {period}",
+    open: "פתיחה",
+  },
+  yield: { years3: "3 שנים", years5: "5 שנים", young3: "פחות מ־3 שנים", young5: "פחות מ־5 שנים", missing: "לא דווח" },
+  assets: { million: "מיליון ₪", billion: "מיליארד ₪", missing: "לא דווח", phone: "נכסים" },
+  /** The sheets' headers of the two group figures (F-99, F-100). */
+  about: { assets: "סך הנכסים של החברה במוצר", feeLow: "הנמוך מדמי הניהול מהחיסכון שדווחו למסלולים בקבוצה", feeHigh: "הגבוה מדמי הניהול מהחיסכון שדווחו למסלולים בקבוצה" },
+  noResult: { before: "אין מסלולים שמתאימים לחיפוש ״", after: "״." },
+  pastNote: "התשואה היא תשואת עבר כמו שהרשות מפרסמת אותה: לפני דמי הניהול ולפני מס. היא לא אומרת מה יקרה בהמשך, ולכן אין מיון לפיה.",
+  oldData: "נתוני הרשות לא עודכנו מאז",
+  failed: "אין מסלולים למוצר הזה בנתוני הרשות.",
+} as const;
+
 export const r3workbench = {
   title: { before: "כל המסלולים של ", after: " בכל החברות" },
   line: {

@@ -185,6 +185,13 @@ export function loadCmaHoldings(): Map<number, NonNullable<CmaPeriodFile["funds"
   return out;
 }
 
+/** Each track's two average annual yields (data-schema 3.13 `yields`), by fund id; a track of a file without them is absent. */
+export function loadCmaYields(): Map<number, NonNullable<CmaPeriodFile["funds"][number]["yields"]>> {
+  const out = new Map<number, NonNullable<CmaPeriodFile["funds"][number]["yields"]>>();
+  for (const f of latestCmaFiles().values()) for (const fund of f.funds) if (fund.yields) out.set(fund.fund_id, fund.yields);
+  return out;
+}
+
 export function loadCma(): CmaData {
   const latest = latestCmaFiles();
   const tracks: Track[] = [];
