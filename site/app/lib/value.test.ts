@@ -1,6 +1,6 @@
 // D31: a company's figure about its own product is not weak; the same figure out of context is.
 import { describe, expect, it } from "vitest";
-import { compactFee, computed, depositFeeNoneByRule, expandFee, isWeak, ownBy, ownEach, type SiteValue } from "./value";
+import { compactFee, computed, depositFeeNoneByRule, expandFee, isWeak, ownBy, ownEach, staleCma, staleCmaFee, type SiteValue } from "./value";
 
 const fig = (strength: SiteValue["source"]["strength"], extra: Partial<SiteValue> = {}): SiteValue => ({
   value: 0.24,
@@ -77,5 +77,25 @@ describe("compact fees keep the rule that explains an empty deposit fee (PF-06)"
   });
   it("a reported value is never 'none by rule'", () => {
     expect(depositFeeNoneByRule({ value: 0, rule_ids: ["PF-06"] })).toBe(false);
+  });
+});
+
+describe("staleCma allows the regulator's publication lag", () => {
+  it("September's figures are current until October's are overdue", () => {
+    expect(staleCma("2026-09", "2026-11-03")).toBeNull();
+    expect(staleCma("2026-09", "2026-11-30")).toBeNull();
+    expect(staleCma("2026-09", "2026-12-01")).toEqual({ since: "2026-09", cadence: "monthly" });
+  });
+  it("crosses the year end", () => {
+    expect(staleCma("2026-11", "2027-01-31")).toBeNull();
+    expect(staleCma("2026-11", "2027-02-01")).not.toBeNull();
+  });
+});
+
+describe("staleCmaFee waits for the January rows that carry the next year's average", () => {
+  it("the 2025 average is current until the January 2027 rows are overdue", () => {
+    expect(staleCmaFee("2025-12-31", "2026-11-03")).toBeNull();
+    expect(staleCmaFee("2025-12-31", "2027-02-28")).toBeNull();
+    expect(staleCmaFee("2025-12-31", "2027-03-01")).toEqual({ since: "2025-12-31", cadence: "yearly" });
   });
 });
