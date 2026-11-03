@@ -2,8 +2,7 @@
 import type { ReactNode } from "react";
 import { Link, useLoaderData } from "react-router";
 import type { Route } from "./+types/guide";
-import { formulaNames, guideBlocks as blocks, guide as copy, guideIndex, site } from "../copy";
-import { scopeWords } from "../copy";
+import { formulaNames, guideBlocks as blocks, guide as copy, guideIndex, scopeWords, site } from "../copy";
 import { ExposureLinks, FeeTable, GuideSection, InstitutionChips, KeyValueList, RelatedProducts, SectionIndex, TaxSteps, TermTable, useCurrentSection, type FeeRow, type KeyValueItem, type TaxStep } from "../components/guide/sections";
 import { Num, NumberLegend, RuleRef, RulesLine, StrengthLabel, VariesByCompany } from "../components/provenance";
 import { Breadcrumb, PageShell } from "../components/shell";
@@ -15,7 +14,7 @@ import { accountWorthRow } from "../components/guide-signature/current-account";
 import { cashLikeIds } from "../lib/guide-signature";
 import { Disclosure, Sentence, Tag } from "../components/kit";
 import { fmt } from "../lib/format";
-import { omitsSection, splitTerms, withdrawalRules } from "../lib/guide-nav";
+import { omitsSection, sectionTitle, splitTerms, withdrawalRules } from "../lib/guide-nav";
 import { useInputs } from "../lib/inputs";
 import { guideContent } from "../content/guide";
 import { anyWeak, type SiteValue } from "../lib/value";
@@ -83,7 +82,7 @@ export default function GuidePage() {
   const current = useCurrentSection(copy.sections.map((s) => s.id));
   const { state: inputsState } = useInputs();
   const review = useReviewMode();
-  const title = (id: string) => copy.sectionTitles[record.id]?.[id] ?? copy.sections.find((x) => x.id === id)!.title;
+  const title = (id: string) => sectionTitle(record.id, id);
   const omitted = (id: string) => omitsSection(record.id, id);
   const figure = (ruleId: string, name: string): SiteValue | null => {
     const r = rules[ruleId];
@@ -240,8 +239,6 @@ export default function GuidePage() {
   // "no exit fee" is the law's (PF-01); the payout-time rule no longer lends it its rules or its strength tag (scope pass 2026-10-25)
   if (provident && !record.fee_bases_allowed.includes("exit")) fees.push({ id: "exit", name: blocks.fees.exit.name, base: blocks.fees.exit.base, cap: blocks.fees.exit.cap, rules: ["PF-01"], tag: weakTag(["PF-01"]) });
 
-  // KH-22: the regulator says in so many words that a study fund has no deposit fee; it sits under the balance fee it would be read against
-  if (record.id === "keren-hishtalmut") fees.splice(1, 0, { id: "deposit", name: feeCopy.deposit.name, base: feeCopy.deposit.base, cap: feeCopy.exit.cap, rules: ["KH-22"] });
 
   // ---- tax steps
   const stepCopy = (formula: string) => blocks.taxSteps[formula];
@@ -278,7 +275,7 @@ export default function GuidePage() {
     .map((c) => ({ ...c, value: figure(c.rule, c.figure)! }));
   const exitStepCopy = stepCopy(record.tax_at_exit.formula);
   const exitFormula = record.tax_at_exit.formula;
-  const exitRate = exitFormula === "F-44" ? figure("TXK-06", "rate") : exitFormula === "F-46" ? figure("TXH-09", "lock_years") : null;
+  const exitFigure = exitFormula === "F-44" ? figure("TXK-06", "rate") : exitFormula === "F-46" ? figure("TXH-09", "lock_years") : null;
   const altRate = exitFormula === "F-44" ? figure("TXK-06", "nominal_rate") : null;
   const exitWeak = strengthOfRules(record.tax_at_exit.rule_ids);
   // audit A46: the study fund's deposit row depends on employment: an employee's own deposit has no deduction (TXH-04) and the
@@ -319,9 +316,9 @@ export default function GuidePage() {
       id: "exit",
       when: copy.taxSteps.exit,
       headline:
-        exitStepCopy && exitRate && "before" in exitStepCopy ? (
+        exitStepCopy && exitFigure && "before" in exitStepCopy ? (
           <>
-            {exitStepCopy.before} <Num value={exitRate} /> {exitStepCopy.after}
+            {exitStepCopy.before} <Num value={exitFigure} /> {exitStepCopy.after}
           </>
         ) : (
           exitStepCopy?.headline ?? formulaHeadline(exitFormula)

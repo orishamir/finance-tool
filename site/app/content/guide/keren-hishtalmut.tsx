@@ -5,12 +5,11 @@ import type { GuideContent } from "./types";
 import type { SiteValue } from "../../lib/value";
 import { Num, RuleRef, RulesLine, Term } from "../../components/provenance";
 import { Callout, ProseList } from "../../components/kit";
-import { guide as guideCopy } from "../../copy";
+import { sectionTitle } from "../../lib/guide-nav";
 import { fmt } from "../../lib/format";
 
 const N = ({ v }: { v: SiteValue | null }) => (v ? <Num value={v} /> : null);
 const Whole = ({ v }: { v: SiteValue | null }) => (v ? <Num value={v} display={fmt.nisWhole} /> : null);
-const taxTitle = guideCopy.sections.find((s) => s.id === "tax")!.title;
 
 export const content: GuideContent = {
   what: ({ figure }) => (
@@ -28,7 +27,7 @@ export const content: GuideContent = {
         הפטור לא חל על כל סכום. לשכירים הוא חל על הפקדות של עד <N v={figure("KH-04", "employer_pct")} /> מהשכר מהמעסיק ועד <N v={figure("KH-04", "employee_pct")} /> מהשכר שלכם, ורק על שכר של עד <Whole v={figure("TXH-02", "determining_salary_cap")} /> בחודש: גם מי שמרוויח יותר מחשב את האחוזים לפי <Whole v={figure("TXH-02", "determining_salary_cap")} />. לעצמאים הוא חל על הפקדות של עד <Whole v={figure("TXH-08", "self_employed_benefited")} /> בשנה.
       </p>
       <p className="max-w-measure">
-        אפשר להפקיד גם יותר, אבל על הרווח מהכסף שמעל הגבול הפטור לא חל. בשאר המקרים אפשר למשוך גם לפני <N v={figure("TXH-09", "lock_years")} /> השנים, אבל אז משלמים מס. כמה משלמים בכל מקרה כתוב ב״{taxTitle}״.
+        אפשר להפקיד גם יותר, אבל על הרווח מהכסף שמעל הגבול הפטור לא חל. בשאר המקרים אפשר למשוך גם לפני <N v={figure("TXH-09", "lock_years")} /> השנים, אבל אז משלמים מס. כמה משלמים בכל מקרה כתוב ב״{sectionTitle("keren-hishtalmut", "tax")}״.
       </p>
       <RulesLine ids={["KH-01", "KH-02", "KH-03", "KH-04", "KH-10", "TXH-09", "TXH-10", "TXH-02", "TXH-08", "TXH-03"]} />
     </>
@@ -82,7 +81,7 @@ export const content: GuideContent = {
       <p className="max-w-measure">עצמאים משלמים מס הכנסה, כמו על הכנסה מהעסק, על הרווח ועל ההפקדות שקיבלו עליהן ניכוי ממס.</p>
       <RulesLine ids={["TXH-13", "TXH-04", "TXG-03", "TXG-04"]} />
       <Callout tone="caution" className="max-w-measure">
-        <span className="font-medium">לא כל הסכום מגיע לחשבון.</span> במשיכה לפני הזמן, מהכסף שחייב במס הקרן מעבירה <N v={figure("TXH-15", "withholding_early")} /> ישירות למס הכנסה. זה לא בהכרח המס שלכם: מי שהמס שלו נמוך יותר מקבל את ההפרש בחזרה רק אם מבקש החזר ממס הכנסה. לשכירים הסכומים מופיעים למעלה, ב״{guideCopy.sectionTitles["keren-hishtalmut"]!.different}״, כשבוחרים פחות מ־<N v={figure("TXH-09", "lock_years")} /> שנים; לעצמאים האתר עוד לא מחשב אותם.
+        <span className="font-medium">לא כל הסכום מגיע לחשבון.</span> במשיכה לפני הזמן, מהכסף שחייב במס הקרן מעבירה <N v={figure("TXH-15", "withholding_early")} /> ישירות למס הכנסה. זה לא בהכרח המס שלכם: מי שהמס שלו נמוך יותר מקבל את ההפרש בחזרה רק אם מבקש החזר ממס הכנסה. לשכירים הסכומים מופיעים למעלה, ב״{sectionTitle("keren-hishtalmut", "different")}״, כשבוחרים פחות מ־<N v={figure("TXH-09", "lock_years")} /> שנים; לעצמאים האתר עוד לא מחשב אותם.
       </Callout>
       <RulesLine ids={["TXH-13", "TXH-15"]} />
       <p className="max-w-measure text-sm text-muted-foreground">

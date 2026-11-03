@@ -1,6 +1,12 @@
 // Pure helpers of the guide pages: how /guide groups its product pages (audit A44) and which section of /rules a guide's
 // "all the rules of X" link lands on (audit A27). No I/O, so both are unit-tested.
 
+import { guide as guideCopy } from "../copy";
+
+/** A section's title on a guide: its own where the usual one does not fit (copy `sectionTitles`). */
+export const sectionTitle = (wrapperId: string, sectionId: string): string =>
+  guideCopy.sectionTitles[wrapperId]?.[sectionId] ?? guideCopy.sections.find((x) => x.id === sectionId)!.title;
+
 /**
  * The guide list by purpose, everyday to advanced inside each group (audit A44). The ids are the wrapper ids; the group
  * titles are in copy (`guideIndex.purposeGroups`). A wrapper this table does not name still shows, in a last group, so a new

@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import type { KeyValueItem } from "../../components/guide/sections";
 import type { SiteValue } from "../../lib/value";
 
 export interface ContentProps {
@@ -14,10 +15,10 @@ export interface GuideContent {
   switchLine?: ReactNode | ((p: ContentProps) => ReactNode);
   switchRules?: string[];
   /** More rows of that list, after the shared ones. A rule named here ships with the page, as any rule its prose names. */
-  inoutRows?: (p: ContentProps) => { id: string; label: string; value: ReactNode; rules: string[] }[];
-  /** The prose already says when the money is free, so the list does not say it again. */
+  inoutRows?: (p: ContentProps) => KeyValueItem[];
   /** A company-terms row left off this page, where general rules also apply and the company names would mislead. */
   omitCompanyTerms?: readonly string[];
+  /** The prose already says when the money is free, so the list does not say it again. */
   omitFreeRow?: boolean;
   /** The guides under "כדאי להכיר גם", where the record's transfer routes would not be the ones a reader of this page wants. */
   relatedIds?: string[];
