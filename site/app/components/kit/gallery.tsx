@@ -862,7 +862,9 @@ function SortableTable({ row }: { row: (key: string, name: string, n: string, ra
   const press = () => setSort((x) => (x === "ascending" ? "descending" : "ascending"));
   const rates: [string, string, string, number][] = [["a", p.a, "1148808", 0.35], ["b", p.b, "1209444", 0.1], ["c", p.c, "1148162", 0.8]];
   const ordered = [...rates].sort((x, y) => (sort === "ascending" ? x[3] - y[3] : y[3] - x[3]));
+  const glide = useFlip<HTMLDivElement>(sort);
   return (
+    <div ref={glide}>
     <ProductTable
       stickyHead
       foldable
@@ -877,6 +879,7 @@ function SortableTable({ row }: { row: (key: string, name: string, n: string, ra
         { key: "g2", heading: { title: p.b, line: p.number }, rows: ordered.slice(2).map(([k, n, id, r]) => row(k, n, id, r, false)) },
       ]}
     />
+    </div>
   );
 }
 
@@ -936,7 +939,7 @@ function Lists({ today }: { today: string }) {
         </State>
       </Demo>
       <Demo name="ProductTable (headings, folding, sortable heads, sticky head)" use={g.uses.ProductTableGroups}>
-        <State label="groups with a heading (a title, then a line of figures); a press on a heading's strip or its chevron folds the group; the heads sort the table and set aria-sort; the head row sticks under the site's header while the table fits its card" wide>
+        <State label="groups with a heading (a title, then a line of figures); a press on a heading's strip or its chevron folds the group; the heads sort the table and set aria-sort; the head row sticks under the site's header while the table fits its card; a sort slides each row to its new place (useFlip)" wide>
           <SortableTable row={row} />
         </State>
       </Demo>

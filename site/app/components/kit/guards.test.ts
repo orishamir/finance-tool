@@ -236,3 +236,10 @@ describe("the arrow that opens a page", () => {
     expect(hits.map(rel)).toEqual([]);
   });
 });
+
+describe("a list of products sorted or filtered again", () => {
+  it("slides its rows with useFlip, never fades as a whole with useSoftSwap", () => {
+    const hits = files.filter((f) => /\.tsx$/.test(f) && !rel(f).startsWith("components/kit/") && /\b(ProductTable|TrackList)\b/.test(code(read(f))) && /\buseSoftSwap\b/.test(code(read(f))));
+    expect(hits.map(rel)).toEqual([]);
+  });
+});

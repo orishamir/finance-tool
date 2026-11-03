@@ -862,6 +862,14 @@
   .dup-row {
     background: color-mix(in oklch, var(--caution-subtle) 55%, transparent);
   }
+  /* A row of a list on its way to its new place (useFlip) covers the rows it passes, so two rows' words never show through each other. */
+  .flip-moving {
+    background-color: var(--card);
+  }
+  .flip-moving.dup-row,
+  .flip-moving.dup {
+    background: linear-gradient(color-mix(in oklch, var(--caution-subtle) 55%, transparent) 0 0), var(--card);
+  }
   .dup-bar {
     width: 3px;
     padding: 0;

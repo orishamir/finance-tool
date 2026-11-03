@@ -4,7 +4,8 @@
 // A column head can sort the table (`SortHead`), and the head row can stay under the site's header while a long list scrolls. With
 // `foldable`, a heading's strip folds its group's rows (founder, 2026-11-03: "make the company name strip clickable for collapsible"); a
 // link in the strip (the company's page) still opens. The cells and the phone rows are the caller's; the shell, the banner, the heading
-// and the widths are here. `RowArrow` is the arrow at the end of a row that opens a page of the site.
+// and the widths are here. `RowArrow` is the arrow at the end of a row that opens a page of the site. The body and the phone card are the
+// lists `useFlip` slides when the rows are sorted or filtered again.
 import { Fragment, useId, useLayoutEffect, useRef, useState, useSyncExternalStore, type ReactNode } from "react";
 import { invest, kit } from "../../copy";
 import type { SiteValue } from "../../lib/value";
@@ -123,7 +124,7 @@ export function ProductTable({ columns, groups, foot, stickyHead, foldable }: { 
   return (
     <>
       {place !== "table" && (
-      <Card pad="none" className="md:hidden overflow-hidden flex flex-col">
+      <Card pad="none" data-flip-list className="md:hidden overflow-hidden flex flex-col">
         {groups.map((g) => {
           const fold = g.heading ? foldOf(g.key) : undefined;
           const rows = fold?.open === false ? [] : g.rows.map((r) => <Fragment key={r.key}>{r.phone}</Fragment>);
@@ -164,7 +165,7 @@ export function ProductTable({ columns, groups, foot, stickyHead, foldable }: { 
               ))}
             </tr>
           </thead>
-          <tbody>
+          <tbody data-flip-list>
             {groups.flatMap((g) => {
               const fold = g.heading ? foldOf(g.key) : undefined;
               const shut = fold?.open === false;

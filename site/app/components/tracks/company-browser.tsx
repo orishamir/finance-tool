@@ -8,7 +8,7 @@ import { Link, useSearchParams } from "react-router";
 import { trackBrowser as t } from "../../copy";
 import { fmt } from "../../lib/format";
 import { HELP_TERMS, SORTS, buildProductView, defaultSort, feeRangeOf, inProductsPhrase, pressSort, sortInForce, sortTracks, sortWords, sortableIn, tracksPhrase, type ProductView, type SortId, type SortState, type TbData, type TbGroup } from "../../lib/track-browser";
-import { FilterChip, LongestCase, SelectField, useSoftSwap } from "../kit";
+import { FilterChip, LongestCase, SelectField, useFlip } from "../kit";
 import { Term } from "../provenance";
 import { FeeRange, TrackList } from "./list";
 
@@ -92,7 +92,8 @@ export function CompanyTracks({ data, extras, defaults, foot }: { data: TbData; 
   useEffect(() => {
     if (grown !== productId) startTransition(() => setGrown(productId));
   }, [grown, productId]);
-  const list = useSoftSwap<HTMLDivElement>(`${productId}|${sort.id}|${sort.dir}`);
+  // another product or order: the rows that stay slide to their new places and the new ones fade in
+  const list = useFlip<HTMLDivElement>(hydrated ? `${productId}|${sort.id}|${sort.dir}` : null);
   const pressHead = (id: SortId) => {
     setSort(pressSort(sort, id));
     const el = list.current;

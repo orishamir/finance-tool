@@ -8,7 +8,7 @@ import { trackBrowser as t } from "../../copy";
 import { fmt } from "../../lib/format";
 import { HELP_TERMS, SORTS, sortInForce, sortableIn, buildGroups, buildProductView, companiesIn, companiesPhrase, defaultProduct, defaultSort, feeRangeOf, filterTracks, pressSort, sortTracks, sortWords, tracksPhrase, type GroupBy, type ProductView, type SortId, type SortState, type TbData, type TbGroup } from "../../lib/track-browser";
 import { normName } from "../../lib/track-names";
-import { FilterChip, LongestCase, SelectField, TextField, useSoftSwap } from "../kit";
+import { FilterChip, LongestCase, SelectField, TextField, useFlip } from "../kit";
 import { Term } from "../provenance";
 import { FeeRange, TrackList } from "./list";
 
@@ -97,8 +97,8 @@ export function TrackBrowser({ data }: { data: TbData }) {
   }, [grown, listKey]);
   const feeYear = data.feeYear && typeof data.feeYear.value === "string" ? data.feeYear.value : null;
   const product = data.products.find((p) => p.id === productId)!;
-  // another product, kind or order: the new rows fade in where the old ones stood
-  const list = useSoftSwap<HTMLDivElement>(`${listKey}|${sort.id}|${sort.dir}`);
+  // another product, kind, order or search: the rows that stay slide to their new places and the new ones fade in
+  const list = useFlip<HTMLDivElement>(hydrated ? `${listKey}|${sort.id}|${sort.dir}|${dq}` : null);
   /** A head pressed while the list is scrolled under it: the list starts again from its first row, under the same head. */
   const pressHead = (id: SortId) => {
     setSort(pressSort(sort, id));
