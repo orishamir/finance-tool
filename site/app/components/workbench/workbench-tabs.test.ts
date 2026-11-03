@@ -11,8 +11,8 @@ import { workbenchWrapperIds } from "../../lib/workbench.server";
 import { loader } from "../../routes/workbench-tracks";
 import { WorkbenchTabs, type WorkbenchTab } from "./workbench";
 
-const tabs = (current: WorkbenchTab, wrapperId: string, hasProviders?: boolean, extra: object = {}) =>
-  renderToStaticMarkup(createElement(MemoryRouter, null, createElement(WorkbenchTabs, { current, wrapperId, hasProviders, ...extra })));
+const tabs = (current: WorkbenchTab, wrapperId: string, hasProviders?: boolean) =>
+  renderToStaticMarkup(createElement(MemoryRouter, null, createElement(WorkbenchTabs, { current, wrapperId, hasProviders })));
 
 describe("the workbench tabs", () => {
   it("child savings in a provident fund has a track page and no providers page", () => {
@@ -23,10 +23,6 @@ describe("the workbench tabs", () => {
 
   it("drops the provider tab where there is no providers page, and the strip with it when only the current tab is left", () => {
     expect(tabs("track", "child-savings-provident", false)).toBe("");
-    const withFund = tabs("track", "child-savings-provident", false, { fundHref: "/workbench/funds/x" });
-    expect(withFund).not.toContain(r4workbench.tabs.byProvider);
-    expect(withFund).not.toContain("/workbench/providers/");
-    expect(withFund).toContain(r4workbench.tabs.byFund);
   });
 
   it("keeps the provider tab where the page exists", () => {
@@ -34,7 +30,12 @@ describe("the workbench tabs", () => {
     expect(html).toContain(r4workbench.tabs.byProvider);
     expect(html).toContain("/workbench/providers/kupat-gemel-lehashkaa");
     // the providers page itself always shows its own tab
-    expect(tabs("provider", "brokerage-account", false)).toContain(r4workbench.tabs.byProvider);
+    expect(tabs("provider", "kupat-gemel-lehashkaa", false)).toContain(r4workbench.tabs.byProvider);
+  });
+
+  it("the securities account has no providers page: the index page ranks the houses (issue 172)", () => {
+    expect(providerWrapperIds()).not.toContain("brokerage-account");
+    expect(prerenderPaths()).not.toContain("/workbench/providers/brokerage-account");
   });
 
   it("the track page's loader says which wrappers have a providers page", async () => {

@@ -16,7 +16,10 @@ import {
   balanceFeeOnly,
   buildFees,
   buildHoldings,
+  listPeriods,
   readCmaFile,
+  EXCLUDED_COMPANIES,
+  closedTrack,
   KEPT_COLUMNS,
   feeYear,
   renormaliseFees,
@@ -134,6 +137,39 @@ describe("normalise", () => {
     // a file without the amount columns writes no holdings and keeps only the columns it has
     expect(r.file!.funds[0]!.holdings).toBeUndefined();
     expect(Object.keys(r.file!.funds[0]!.raw_fields)).toEqual(["AVG_ANNUAL_MANAGEMENT_FEE", "AVG_DEPOSIT_FEE"]);
+  });
+
+  it("leaves out a track closed to joiners, and keeps one for whoever starts an annuity", () => {
+    expect(closedTrack("עובדי סקטור מסויים", "מור מנורה מבטחים מסלול מניות")).toBe(true);
+    expect(closedTrack("עובדי מפעל/גוף מסויים", "קרן השתלמות לעובדי בנק ישראל")).toBe(true);
+    expect(closedTrack("", "הראל פנסיה - מקבלי קצבה קיימים")).toBe(true);
+    expect(closedTrack("", "כלל פנסיה קצבה לזכאים קיימים")).toBe(true);
+    expect(closedTrack("", "הראל פנסיה - בסיסי למקבלי קצבה")).toBe(false);
+    expect(closedTrack("כלל האוכלוסיה", "מיטב השתלמות כללי")).toBe(false);
+  });
+
+  it("reports a population it does not know, in place of treating the track as open", () => {
+    const csv = decodeWindows1255(fixture).replaceAll("כלל האוכלוסיה", "אוכלוסיה חדשה");
+    expect(normalise(csv, ctx).problems.join(" ")).toContain("unknown TARGET_POPULATION");
+  });
+
+  it("leaves out a company on the excluded list, in a refresh and in the stored files", () => {
+    const table = parseCsv(decodeWindows1255(fixture));
+    const col = table[0]!.indexOf("MANAGING_CORPORATION_LEGAL_ID");
+    const fundId = good().funds[0]!.fund_id;
+    const [excludedId] = EXCLUDED_COMPANIES.keys();
+    for (const r of table) if (r[0] === String(fundId)) r[col] = excludedId!;
+    const csv = table.map((r) => r.map((c) => `"${c.replaceAll('"', '""')}"`).join(",")).join("\n");
+    const refreshed = normalise(csv, ctx).file!;
+    expect(refreshed.funds.map((f) => f.fund_id)).toEqual(good().funds.map((f) => f.fund_id).filter((id) => id !== fundId));
+
+    const cmaDir = fileURLToPath(new URL("../../../data/cma", import.meta.url));
+    for (const dataset of ["gemelnet", "pensia-net"] as const) {
+      for (const period of listPeriods(cmaDir, dataset)) {
+        const left = readCmaFile(cmaDir, dataset, period).funds.filter((f) => EXCLUDED_COMPANIES.has(f.managing_corporation.legal_id.trim()) || closedTrack(f.target_population, f.names.cma[0]!));
+        expect(left.map((f) => f.fund_id)).toEqual([]);
+      }
+    }
   });
 
   it("keeps every further numeric column as received, for later use", () => {

@@ -5,13 +5,13 @@ import { useEffect, useMemo, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router";
 import { r3workbench as copy, r4workbench } from "../../copy";
 import { useGoals } from "../../lib/goal";
-import { defaultWbQuery, eligibleOnly, matches, outcomeOf, parseWbQuery, pressSort, wbQueryString, type WbData, type WbQuery, type WorkbenchRow } from "../../lib/workbench";
+import { defaultWbQuery, matches, outcomeOf, parseWbQuery, pressSort, wbQueryString, type WbData, type WbQuery, type WorkbenchRow } from "../../lib/workbench";
 import { useGoalHorizon } from "../compare/fit";
 import { WorkbenchCoverage } from "./coverage";
 import { ExposureChips, WorkbenchControls } from "./controls";
 import { WorkbenchGroup } from "./group";
 
-const words = { onlyFor: copy.sectorOnly, noGoal: copy.outcomeWords["no-goal"]!, noClass: copy.outcomeWords["no-class"]! };
+const words = { noGoal: copy.outcomeWords["no-goal"]!, noClass: copy.outcomeWords["no-class"]! };
 
 export function Workbench({ data }: { data: WbData }) {
   const { status } = useGoals();
@@ -29,7 +29,7 @@ export function Workbench({ data }: { data: WbData }) {
     setQueryState(next);
     navigate({ search: wbQueryString(next) }, { replace: true, preventScrollReset: true });
   };
-  const { q: filter, sort, dir, chip, openToAll } = query;
+  const { q: filter, sort, dir, chip } = query;
   const searching = filter.trim() !== "";
 
   const views = useMemo<WorkbenchRow[]>(
@@ -47,27 +47,25 @@ export function Workbench({ data }: { data: WbData }) {
     [data, years],
   );
 
-  // the rows the person can open (the toggle), per group; the search narrows them further
+  // the rows per group; the search narrows them further
   const byGroup = useMemo(() => {
     const m = new Map<string, WorkbenchRow[]>();
-    for (const v of eligibleOnly(views, openToAll)) m.set(v.row.sp, [...(m.get(v.row.sp) ?? []), v]);
+    for (const v of views) m.set(v.row.sp, [...(m.get(v.row.sp) ?? []), v]);
     return m;
-  }, [views, openToAll]);
-  const hiddenCount = useMemo(() => (openToAll ? views.length - eligibleOnly(views, true).length : 0), [views, openToAll]);
-  const visibleGroups = data.groups.filter((g) => (byGroup.get(g.key)?.length ?? 0) > 0);
+  }, [views]);
 
   // Default: with a saved goal, the groups with a track that fits it; without one, the biggest group (the person chooses).
   const defaults = useMemo(() => {
     if (years !== null) {
-      const fitting = visibleGroups.filter((g) => byGroup.get(g.key)!.some((v) => v.fit === "fits")).map((g) => g.key);
+      const fitting = data.groups.filter((g) => byGroup.get(g.key)!.some((v) => v.fit === "fits")).map((g) => g.key);
       if (fitting.length) return new Set(fitting);
     }
-    return new Set(visibleGroups.slice(0, 1).map((g) => g.key));
-  }, [visibleGroups, byGroup, years]);
+    return new Set(data.groups.slice(0, 1).map((g) => g.key));
+  }, [data.groups, byGroup, years]);
   const matching = (key: string) => (byGroup.get(key) ?? []).filter((v) => matches(v, filter));
-  const fromChip = chip === "all" ? new Set(visibleGroups.map((g) => g.key)) : chip !== null ? new Set([chip]) : defaults;
+  const fromChip = chip === "all" ? new Set(data.groups.map((g) => g.key)) : chip !== null ? new Set([chip]) : defaults;
   // a search opens the groups it finds something in and closes the rest
-  const open = chosen ?? (searching ? new Set(visibleGroups.filter((g) => matching(g.key).length > 0).map((g) => g.key)) : fromChip);
+  const open = chosen ?? (searching ? new Set(data.groups.filter((g) => matching(g.key).length > 0).map((g) => g.key)) : fromChip);
   const toggle = (key: string) => {
     const next = new Set(open);
     if (next.has(key)) next.delete(key);
@@ -83,19 +81,16 @@ export function Workbench({ data }: { data: WbData }) {
 
   return (
     <div className="flex flex-col gap-4 lg:gap-5">
-      <ExposureChips groups={visibleGroups.map((g) => ({ ...g, count: byGroup.get(g.key)!.length, label: label(g.key) }))} open={open} onPress={press} onAll={() => { setChosen(null); setQuery({ chip: "all" }); }} />
+      <ExposureChips groups={data.groups.map((g) => ({ ...g, label: label(g.key) }))} open={open} onPress={press} onAll={() => { setChosen(null); setQuery({ chip: "all" }); }} />
       <WorkbenchControls
         filter={filter}
         sort={sort}
         dir={dir}
-        openToAll={openToAll}
-        hiddenCount={hiddenCount}
         onFilter={(v) => { setChosen(null); setQuery({ q: v }); }}
         onSort={(k) => setQuery(pressSort(query, k))}
-        onOpenToAll={(v) => { setChosen(null); setQuery({ openToAll: v }); }}
       />
       <div className="flex flex-col gap-3">
-        {visibleGroups.map((g) => {
+        {data.groups.map((g) => {
           const all = byGroup.get(g.key)!;
           const rows = searching ? all.filter((v) => matches(v, filter)) : all;
           return (
@@ -122,22 +117,20 @@ export function Workbench({ data }: { data: WbData }) {
 
 // ---------------------------------------------------------------- the tabs (flows 15.1, 15.2, 15.5)
 
-export type WorkbenchTab = "provider" | "track" | "fund";
+export type WorkbenchTab = "provider" | "track";
 
 /**
- * "לפי ספק" · "לפי מסלול" · "לפי קרן", on the three workbench pages. The tab you are on is a label; the others are links
- * to the same subject. A brokerage account has no tracks in the regulator's data, so its track tab is disabled with the line
- * that says why; a provident wrapper has no fund tab (no exposure to list funds for). A wrapper with a track page and no providers
- * page (`hasProviders` false, from `providerWrapperIds()`) has no provider tab, and a strip left with the tab you are on is not drawn
- * (2026-10-25: the tab led to `/workbench/providers/child-savings-provident`, which does not exist).
+ * "לפי ספק" · "לפי מסלול", on the track page and a provident wrapper's company listing. The tab you are on is a label; the other is a
+ * link to the same subject. A wrapper with a track page and no listing (`hasProviders` false, from `providerWrapperIds()`) has no
+ * provider tab, and a strip left with the tab you are on is not drawn (2026-10-25: the tab led to
+ * `/workbench/providers/child-savings-provident`, which does not exist). The securities account's house ranking and its fund tab
+ * went to the index page (issue 172).
  */
-export function WorkbenchTabs({ current, wrapperId, providerHref, trackHref, fundHref, hasProviders = true }: { current: WorkbenchTab; wrapperId: string; providerHref?: string; trackHref?: string | null; fundHref?: string | null; hasProviders?: boolean }) {
+export function WorkbenchTabs({ current, wrapperId, hasProviders = true }: { current: WorkbenchTab; wrapperId: string; hasProviders?: boolean }) {
   const t = r4workbench.tabs;
-  const brokerage = wrapperId === "brokerage-account";
-  const tabs: { key: WorkbenchTab; label: string; href: string | null; disabled?: boolean }[] = [
-    ...(hasProviders || current === "provider" ? [{ key: "provider" as const, label: t.byProvider, href: providerHref ?? `/workbench/providers/${wrapperId}` }] : []),
-    { key: "track", label: t.byTrack, href: brokerage ? null : (trackHref ?? `/workbench/tracks/${wrapperId}`), disabled: brokerage },
-    ...(fundHref ? [{ key: "fund" as const, label: t.byFund, href: fundHref }] : []),
+  const tabs: { key: WorkbenchTab; label: string; href: string }[] = [
+    ...(hasProviders || current === "provider" ? [{ key: "provider" as const, label: t.byProvider, href: `/workbench/providers/${wrapperId}` }] : []),
+    { key: "track", label: t.byTrack, href: `/workbench/tracks/${wrapperId}` },
   ];
   if (tabs.length < 2) return null;
   const base = "min-h-target lg:min-h-10 px-4 inline-flex items-center rounded-[5px] text-sm";
@@ -149,18 +142,13 @@ export function WorkbenchTabs({ current, wrapperId, providerHref, trackHref, fun
             <span key={x.key} role="tab" aria-selected="true" tabIndex={0} className={`${base} bg-secondary font-medium shadow-sm`}>
               {x.label}
             </span>
-          ) : x.href && !x.disabled ? (
+          ) : (
             <Link key={x.key} role="tab" aria-selected="false" to={x.href} className={`${base} hover:bg-accent/60`}>
               {x.label}
             </Link>
-          ) : (
-            <span key={x.key} role="tab" aria-selected="false" aria-disabled="true" className={`${base} text-muted-foreground cursor-not-allowed`}>
-              {x.label}
-            </span>
           ),
         )}
       </div>
-      {brokerage && current !== "track" && <p className="text-xs text-muted-foreground">{t.noTracks}</p>}
     </div>
   );
 }

@@ -3,10 +3,9 @@ import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { MemoryRouter } from "react-router";
 import { describe, expect, it } from "vitest";
-import type { FundVariantRowView } from "../lib/variants";
 import type { SiteValue } from "../lib/value";
 import { Num, NumberLegend, ProvenanceProvider, ValueSheet } from "./provenance";
-import { FundFeesBlock } from "./workbench/funds/parts";
+import { FeeFigure } from "./kit";
 
 const fee = (extra: Partial<SiteValue> = {}): SiteValue => ({
   value: 0.24,
@@ -50,14 +49,9 @@ describe("the sheet", () => {
   });
 });
 
-describe("a fund row", () => {
-  const row = {
-    fees: { fixed_management: fee({ own: "הראל" }), trustee: fee({ value: 0.005, own: "הראל" }), variable_management: fee({ value: 0.1, own: "הראל" }), tracking_difference_12m: null, median_spread: null },
-    takenAsZero: [],
-    absentFees: [],
-  } as unknown as FundVariantRowView;
-  it("has fee figures and no caution icon", () => {
-    const html = inProvider(createElement(FundFeesBlock, { row }));
+describe("a fund's fee in a list of funds", () => {
+  it("has the figure and no caution icon", () => {
+    const html = inProvider(createElement(FeeFigure, { value: fee({ own: "הראל" }) }));
     expect(html).toContain("0.24");
     expect(caution(html)).toBe(0);
   });

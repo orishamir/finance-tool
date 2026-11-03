@@ -63,7 +63,7 @@
     "government-bond": ["TXI-14", "GOV-17", "TXI-12"],
     "brokerage-account": ["TXS-21", "TXS-02", "TXS-19"],
     "kupat-gemel-lehashkaa": ["TXK-04", "KGL-02", "TXK-05"],
-    "keren-hishtalmut": ["TXH-09", "KH-15", "PF-18"],
+    "keren-hishtalmut": ["KH-19", "KH-15", "PF-18"],
     "pension-comprehensive": ["PEN-23", "PEN-15", "REG-18"],
     "pension-general": ["REG-18", "PEN-15", "TXP-15"],
     "provident-for-annuity": ["TXP-15", "REG-18", "PF-19"],

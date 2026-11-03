@@ -21,19 +21,14 @@ export interface WorkbenchGoal {
 }
 
 /**
- * F-83 read for F-64 (method, 2026-10-24): the workbench ranks nothing, so each track has exactly one of four outcomes.
- * Not eligible comes first (a track open only to a sector or an employer, CAT-10), then not evaluated (no goal given,
- * or the track has no classification in the data), then shown without a rule (the fit table has no row), else shown
+ * F-83 read for F-64 (method, 2026-10-24): the workbench ranks nothing, so each track has exactly one of three outcomes.
+ * Not evaluated comes first (no goal given, or the track has no classification in the data), then shown without a rule (the fit table has no row), else shown
  * with the mark.
  */
 export type TrackOutcome =
-  | { code: "not-eligible"; ruleIds: ["CAT-10"]; population: string }
   | { code: "not-evaluated"; reason: "no-goal" | "no-classification" }
   | { code: "shown-without-rule" }
   | { code: "shown-with-mark"; mark: "fits" | "does-not-fit" };
-
-/** The CMA's own words for a track open to the whole public (CAT-10); the other values name a sector or an employer. */
-export const generalPopulation = "כלל האוכלוסיה";
 
 export interface TrackRow {
   fundId: number;
@@ -44,7 +39,6 @@ export interface TrackRow {
   classification: string;
   specialization: string;
   subSpecialization: string;
-  targetPopulation: string;
   reportPeriod: string;
   /** `AVG_ANNUAL_MANAGEMENT_FEE` and `AVG_DEPOSIT_FEE` as the record holds them: a null value stays null, with its notes. */
   fees: { management: ValueObject; deposit: ValueObject };
@@ -78,10 +72,10 @@ export interface TrackCoverage {
   /** Tracks without a reported average deposit fee. */
   depositFeeNotReported: number;
   invariant: { ok: boolean };
-  /** Tracks by F-83 outcome: the four counts add up to `considered`. */
-  outcomes: { "not-eligible": number; "not-evaluated": number; "shown-without-rule": number; "shown-with-mark": number };
+  /** Tracks by F-83 outcome: the three counts add up to `considered`. */
+  outcomes: { "not-evaluated": number; "shown-without-rule": number; "shown-with-mark": number };
   /** The finer split the coverage sentence draws, adding up to `considered`. */
-  split: { fits: number; "does-not-fit": number; "no-rule": number; "not-eligible": number; "no-goal": number; "no-classification": number };
+  split: { fits: number; "does-not-fit": number; "no-rule": number; "no-goal": number; "no-classification": number };
 }
 
 export interface TrackWorkbench {
@@ -143,8 +137,6 @@ export function trackWorkbench(
   }
 
   const outcomeOf = (t: CmaTrack, fit: ClassificationFit | null): TrackOutcome => {
-    const population = t.target_population.trim();
-    if (population !== "" && population !== generalPopulation) return { code: "not-eligible", ruleIds: ["CAT-10"], population };
     if (!goal) return { code: "not-evaluated", reason: "no-goal" };
     if (t.specialization.trim() === "" && t.sub_specialization.trim() === "") return { code: "not-evaluated", reason: "no-classification" };
     if (!fit || fit.mark === "no-rule") return { code: "shown-without-rule" };
@@ -162,7 +154,6 @@ export function trackWorkbench(
     classification: t.fund_classification.trim(),
     specialization: t.specialization.trim(),
     subSpecialization: t.sub_specialization.trim(),
-    targetPopulation: t.target_population.trim(),
     reportPeriod: t.report_period,
     fees: { management: t.fees.avg_annual_management_fee, deposit: t.fees.avg_deposit_fee },
     reference: referenceOf(t),
@@ -175,7 +166,6 @@ export function trackWorkbench(
   const periods = [...new Map(forWrapper.map((t) => [t.dataset, t.report_period])).entries()].map(([dataset, period]) => ({ dataset, period }));
   const count = (f: (o: TrackOutcome) => boolean) => rows.filter((r) => f(r.outcome)).length;
   const outcomes = {
-    "not-eligible": count((o) => o.code === "not-eligible"),
     "not-evaluated": count((o) => o.code === "not-evaluated"),
     "shown-without-rule": count((o) => o.code === "shown-without-rule"),
     "shown-with-mark": count((o) => o.code === "shown-with-mark"),
@@ -190,14 +180,13 @@ export function trackWorkbench(
       ok:
         rows.length === forWrapper.length &&
         new Set(rows.map((r) => r.fundId)).size === rows.length &&
-        outcomes["not-eligible"] + outcomes["not-evaluated"] + outcomes["shown-without-rule"] + outcomes["shown-with-mark"] === rows.length,
+        outcomes["not-evaluated"] + outcomes["shown-without-rule"] + outcomes["shown-with-mark"] === rows.length,
     },
     outcomes,
     split: {
       fits: count((o) => o.code === "shown-with-mark" && o.mark === "fits"),
       "does-not-fit": count((o) => o.code === "shown-with-mark" && o.mark === "does-not-fit"),
       "no-rule": outcomes["shown-without-rule"],
-      "not-eligible": outcomes["not-eligible"],
       "no-goal": count((o) => o.code === "not-evaluated" && o.reason === "no-goal"),
       "no-classification": count((o) => o.code === "not-evaluated" && o.reason === "no-classification"),
     },

@@ -1,8 +1,8 @@
 {
   "id": "KGL-26",
-  "title": "Altshuler Shaham, Meitav and the Hebrew University fund: opening an account, and in another person's name",
-  "title_he": "אלטשולר שחם, מיטב וקופת האוניברסיטה העברית: פתיחת חשבון, גם על שם אדם אחר",
-  "text_he": "באלטשולר שחם כותבים שכל אדם רשאי לפתוח קופת גמל להשקעה, בכל גיל ובכל סכום, כלומר בלי סכום מינימלי ובתוך התקרה. לפי מיטב, פתיחת חשבון על שם אדם אחר, כמו ילד, נכד או בן זוג, היא מתנה בלתי חוזרת, והחשבון מנוהל על ידי אותו אדם, חוץ מקטין. בטופס ההצטרפות של קופת האוניברסיטה העברית יש שורה לחתימת אפוטרופוס.",
+  "title": "Altshuler Shaham and Meitav: opening an account, and in another person's name",
+  "title_he": "אלטשולר שחם ומיטב: פתיחת חשבון, גם על שם אדם אחר",
+  "text_he": "באלטשולר שחם כותבים שכל אדם רשאי לפתוח קופת גמל להשקעה, בכל גיל ובכל סכום, כלומר בלי סכום מינימלי ובתוך התקרה. לפי מיטב, פתיחת חשבון על שם אדם אחר, כמו ילד, נכד או בן זוג, היא מתנה בלתי חוזרת, והחשבון מנוהל על ידי אותו אדם, חוץ מקטין.",
   "strength": "institution",
   "dimensions": [
     "eligibility"
@@ -19,27 +19,9 @@
     {
       "id": "meitav",
       "name_he": "מיטב"
-    },
-    {
-      "id": "huji-provident",
-      "name_he": "קופת הגמל של עובדי האוניברסיטה העברית"
     }
   ],
   "sources": [
-    {
-      "url": "https://gemel.huji.ac.il/wp-content/uploads/2026/05/‏‏‏‏‏‏הצטרפות-קופת-גמל-להשקעה-מאי-2026.pdf",
-      "title": "Hebrew University fund joining form",
-      "title_he": "טופס הצטרפות לקופת הגמל של עובדי האוניברסיטה העברית",
-      "publisher": "Hebrew University provident fund",
-      "publisher_he": "קופת הגמל של עובדי האוניברסיטה העברית",
-      "kind": "form",
-      "strength": "institution",
-      "locator": "p.3",
-      "locator_he": "עמוד 3",
-      "page": 3,
-      "quote": "חתימת אפוטרופוס",
-      "checked": "2026-10-25"
-    },
     {
       "url": "https://www.as-invest.co.il/interstedin/saving_plus_deposit/",
       "title": "אלטשולר שחם – הפקדות סוף שנה, קופת גמל להשקעה",

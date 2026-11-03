@@ -290,7 +290,7 @@ Added 2026-10-23 (added 2026-10-23, for the founder's review). The lines of the 
 | `guideBlocks.exit.labelCeiling` | תקרת הפקדה | row label, yearly or monthly cap |
 | `guideBlocks.fees.balance` | דמי ניהול מחיסכון · כל שנה, מכל הכסף שנצבר · בשנה | name · what it is charged on · word after the cap |
 | `guideBlocks.fees.deposit` | דמי ניהול מהפקדה · מכל סכום שמפקידים · מכל הפקדה |  |
-| `guideBlocks.fees.direct_expenses` | הוצאות ישירות · עלויות הקנייה והמכירה של ההשקעות, מהקופה · אין תקרה כוללת | name · base · cap cell |
+| `guideBlocks.fees.direct_expenses` | הוצאות ישירות · נוספות על דמי הניהול: עלויות כמו קנייה ומכירה של ההשקעות, מהקופה · לא נמצאה תקרה כוללת | name · base · cap cell |
 | `guideBlocks.fees.exit` | דמי יציאה · כשמושכים · אין | name · base · cap cell (provident family) |
 | `guideBlocks.fees.trade` | עמלת קנייה ומכירה · מכל פעולת קנייה או מכירה | glossary term |
 | `guideBlocks.fees.custody` | דמי ניהול פיקדון ניירות ערך · כל תקופה, על ניירות הערך שבחשבון | glossary term |
@@ -588,7 +588,7 @@ Why "בשקלים של העתיד" rather than "נומינלי": the reader sees
 
 | Key in `copy.ts` | Hebrew | Note |
 |---|---|---|
-| `track.labels.population · inception` | למי מיועד · נפתח ב־ | two more record labels from the regulator's data |
+| `track.labels.inception` | נפתח ב־ | one more record label from the regulator's data |
 | `track.feeWhole` | לקרן כולה | appended to both fee labels on a pension track |
 | `track.feeNotReported` | עוד לא דווח | an empty fee field is not zero. Was "טרם דווח" |
 | `track.feeNone` | אין | an empty deposit-fee field of a product type that may charge from the balance only (PF-06: study, IRA, central and other-purpose funds): no fee, by rule. No caution mark (2026-10-27) |
@@ -897,7 +897,7 @@ Added 2026-10-23 for the briefs in `docs/flows.md` section 9 and the handoff in 
 | Coverage, open / close | כל האפשרויות ולמה · הסתרת הרשימה |
 | Coverage groups | לא מתאימות לכם · נפסלו לפי האילוצים שלכם · עוד לא נבדקו · מוצגות בלי דירוג · דורגו |
 | Coverage reasons, not evaluated | אין עדיין תנאים של תוכניות חיסכון · הפקדות חודשיות לקרן כספית מתחדשת עוד לא מוגדרות · לא נכלל בהשוואה המהירה · עוד לא מכוסה: שאלות פתוחות · הזינו תשואה · הזינו שכר · הנתון לא עודכן: `{כלל}` · changed 2026-10-24 (Hebrew editor); was ״עוד לא מכוסה, שאלות פתוחות״ |
-| Coverage reasons, not eligible | מקבל רק את הכספים מהביטוח הלאומי ואת הפקדת ההורה, לא את הכסף הזה · פתוח רק ל`{קבוצה}` · changed 2026-10-24 (Hebrew editor); was ״מקבל רק את הכספים מביטוח לאומי ואת הפקדת ההורה״ |
+| Coverage reasons, not eligible | מקבל רק את הכספים מהביטוח הלאומי ואת הפקדת ההורה, לא את הכסף הזה · changed 2026-10-24 (Hebrew editor); was ״מקבל רק את הכספים מביטוח לאומי ואת הפקדת ההורה״ |
 | Coverage reason, excluded | נפסלה לפי האילוץ: `{אילוץ}` · changed 2026-10-24 (Hebrew editor); was ״נפסל לפי האילוץ:״ |
 | Coverage, group line | `{קבוצה}`: `{מספר}` מוחזקות אחת־אחת, השאר לא |
 | Coverage, last line | המסלולים והקרנות בתוך כל מוצר מושווים בעמודים ״כל המסלולים בכל החברות״ ו״איזו קרן לקנות״. · changed 2026-10-24 (Hebrew editor); was ״המסלולים והקרנות בתוך כל מוצר מופיעים בעמודי החברות. ההשוואה ביניהם תתווסף בהמשך.״ |
@@ -1348,10 +1348,9 @@ Added 2026-10-23 for the briefs in `docs/flows.md` section 12 and the handoff in
 | Show more | להציג עוד `{מספר}` |
 | PC columns | חברה · מסלול · קופה · במה הכסף מושקע · ניהול מחיסכון, `{שנה}` · ניהול מהפקדה · התאמה · פתיחה (changed 2026-10-24, audit A82: shorter headers; the lead line above the table says these are fee averages) |
 | Phone fee line | דמי ניהול מחיסכון `{אחוז}` · מהפקדה `{אחוז}` |
-| Sector track | פתוח רק ל`{קבוצה}` |
-| Coverage sentence | נבדקו `{מספר}` מסלולים ב־`{מספר}` חברות: `{מספר}` מתאימים למטרה, `{מספר}` לא מתאימים, `{מספר}` בלי כלל לסיווג, `{מספר}` פתוחים רק לקבוצה מסוימת, `{מספר}` בלי מטרה לבדוק מולה. |
-| Coverage groups | מתאימים למטרה · לא מתאימים · בלי כלל לסיווג · פתוחים רק לקבוצה מסוימת · בלי מטרה לבדוק מולה · בלי סיווג בנתונים |
-| Coverage outcome words, one row | מתאים · לא מתאים · אין כלל לסיווג הזה · פתוח רק ל`{קבוצה}` · לא נבדק: אין מטרה שמורה · לא נבדק: אין סיווג בנתונים |
+| Coverage sentence | נבדקו `{מספר}` מסלולים ב־`{מספר}` חברות: `{מספר}` מתאימים למטרה, `{מספר}` לא מתאימים, `{מספר}` בלי כלל לסיווג, `{מספר}` בלי מטרה לבדוק מולה. |
+| Coverage groups | מתאימים למטרה · לא מתאימים · בלי כלל לסיווג · בלי מטרה לבדוק מולה · בלי סיווג בנתונים |
+| Coverage outcome words, one row | מתאים · לא מתאים · אין כלל לסיווג הזה · לא נבדק: אין מטרה שמורה · לא נבדק: אין סיווג בנתונים |
 | No tracks for the wrapper | למוצר הזה אין מסלולים בנתוני הרשות. · changed 2026-10-24 (Hebrew editor); was ״למוצר הזה אין מסלולים בנתוני הרשות. הטבלה לפי ספקים תתווסף בהמשך.״ |
 | Old data | נתוני הרשות לא עודכנו מאז `{חודש}`. |
 
@@ -1516,6 +1515,8 @@ Added 2026-10-24 for the briefs in `docs/flows.md` section 15 and the handoff in
 
 ### 8.1 Provider workbench page
 
+*(2026-11-03, D52: removed for the securities account; the indices page ranks the houses. Only the provident wrappers' company listing remains at this address, and only its strings stay in `copy.ts`.)*
+
 | Element | Hebrew |
 |---|---|
 | Title | איזה בנק או בית השקעות: `{מוצר}` |
@@ -1629,6 +1630,8 @@ Added 2026-10-24 for the briefs in `docs/flows.md` section 15 and the handoff in
 | `r4workbench.providers.behaviour.ordersHint` | כל הפקדה חודשית מתחלקת ל־`{מספר}` פקודות, ולכל פקודה עמלה משלה. · כל הפקדה חודשית היא פקודה אחת, ולכל פקודה עמלה משלה. · כל הפקדה חודשית מתחלקת לשתי פקודות, ולכל פקודה עמלה משלה. | B14, added 2026-10-24 (QA fixes): the number is a Num inside the sentence for three and more; one and two are words. Was a function that typed the digit |
 
 ### 8.2 Fund-variant page
+
+*(2026-11-03, D53: the funds page is deleted; the indices page lists and prices every fund of an index, and no other holding has a priced fund.)*
 
 | Element | Hebrew |
 |---|---|
@@ -1951,7 +1954,7 @@ The founder, 2026-10-26: the company page's last column shows something other th
 | The sheet, the inputs | החשיפה לשוק המניות · החשיפה למטבע חוץ · סך נכסי המסלול |
 | The unit of the regulator's amounts | `{מספר}` מיליון ₪ |
 
-Fee cell and labels (D36, the same day): header "דמי ניהול, ממוצע `{שנה}`"; each cell "`{אחוז}` מהחיסכון" over "`{אחוז}` מההפקדות" (phone: "דמי ניהול, ממוצע: `{אחוז}` מהחיסכון `{אחוז}` מההפקדות"); under the table "התקרה בחוק: `{אחוז}` מהחיסכון, `{אחוז}` מההפקדות" and "בנוסף לדמי הניהול יורדות מהקופה הוצאות ישירות (עמלות מסחר, משמורת ועוד), שלא מופיעות כאן: הן נראות בתשואה, לא כשורה בחשבון." with the PF-10 chip; labels "חדש" · "לעובדי סקטור מסוים" · "לעובדי גוף מסוים" beside "ברירת המחדל".
+Fee cell and labels (D36, the same day): header "דמי ניהול, ממוצע `{שנה}`"; each cell "`{אחוז}` מהחיסכון" over "`{אחוז}` מההפקדות" (phone: "דמי ניהול, ממוצע: `{אחוז}` מהחיסכון `{אחוז}` מההפקדות"); under the table "התקרה בחוק: `{אחוז}` מהחיסכון, `{אחוז}` מההפקדות" and "בנוסף לדמי הניהול יורדות מהקופה הוצאות ישירות (עמלות מסחר, משמורת ועוד), שלא מופיעות כאן: הן נראות בתשואה, לא כשורה בחשבון." with the PF-10 chip; the label "חדש" beside "ברירת המחדל".
 
 Removed the same day with the fit mark on these pages: the row mark (מתאים · לא מתאים · אין כלל לסיווג הזה, "התאמה למטרה:") and the strip's "ההתאמה לפי המטרה השמורה:" there; the workbench keeps them (`docs/roadmap.md`, "Not final").
 
@@ -2611,7 +2614,6 @@ Also fixed outside `copy.ts` the same day, at the lead's request: "הודעו" �
 
 | Key | Text | Note |
 |---|---|---|
-| `r3workbench.openToAll` | פתוח לכולם · `{n}` מסלולים הפתוחים רק לקבוצה מסוימת מוסתרים | A36: the toggle, on by default; the count is the sector and employer tracks it hides |
 | `r3workbench.sortDir` | מהנמוך לגבוה · מהגבוה לנמוך | A36: screen-reader words for the sort direction; a second press reverses |
 | `r3workbench.missingKey` | עוד לא דווח: השדה ריק בנתוני הרשות. לחצו על הערך כדי לראות אם הסיבה ידועה. | A87: one-line key under a table that holds an unreported fee. 2026-10-27: was "החברה לא דיווחה לרשות את הנתון לתקופה הזו", a cause the data does not state; the value's note says the reason when it is known |
 | `r3workbench.noneKey` | אין: בסוג הקופה הזה מותר לגבות דמי ניהול רק מהחיסכון, לא מההפקדות. | key line for `track.feeNone`, followed by the PF-06 chip (2026-10-27) |
@@ -2870,7 +2872,7 @@ Spoken questions, no number inside them, no "ידעתם?". Rows 1, 2, 4 and 10 k
 
 ### Hand tables (`data/sources/`)
 
-- `publishers.json`: 99 hosts (the lead's count of 78 was the markdown alone; the rule records' figure sources add 21). Regulators and ministries by their official names (רשות המסים, רשות שוק ההון, ביטוח וחיסכון, רשות ניירות ערך, בנק ישראל, המוסד לביטוח לאומי, הכנסת, הלשכה המרכזית לסטטיסטיקה, הבורסה לניירות ערך בתל אביב, מאיה (מערכת ההודעות של הבורסה)); `gov.il` is "אתר הממשלה (gov.il)" because its sub-paths cannot be told apart by host, and `documents.json` names the issuing authority; `hly.gov.il` is the official "חיסכון לכל ילד" site; mirrors are ויקיטקסט and נבו; banks and managers by their Hebrew trading names as the site writes them (בנק לאומי, מיטב, אלטשולר שחם, מור בית השקעות, הראל, הפניקס, יחד רופאים); copies of official documents on private hosts carry "(עותק)" (פאנדר, עדיף); Latin brand names stay Latin (S&P Dow Jones Indices, iShares, J.P. Morgan Asset Management, SIPC, LBMA). One host, `behar-law.co.il` (a law firm mirroring regulations once), keeps its host as its name: the firm's Hebrew name is not certain.
+- `publishers.json`: 99 hosts (the lead's count of 78 was the markdown alone; the rule records' figure sources add 21). Regulators and ministries by their official names (רשות המסים, רשות שוק ההון, ביטוח וחיסכון, רשות ניירות ערך, בנק ישראל, המוסד לביטוח לאומי, הכנסת, הלשכה המרכזית לסטטיסטיקה, הבורסה לניירות ערך בתל אביב, מאיה (מערכת ההודעות של הבורסה)); `gov.il` is "אתר הממשלה (gov.il)" because its sub-paths cannot be told apart by host, and `documents.json` names the issuing authority; `hly.gov.il` is the official "חיסכון לכל ילד" site; mirrors are ויקיטקסט and נבו; banks and managers by their Hebrew trading names as the site writes them (בנק לאומי, מיטב, אלטשולר שחם, מור בית השקעות, הראל, הפניקס); copies of official documents on private hosts carry "(עותק)" (פאנדר, עדיף); Latin brand names stay Latin (S&P Dow Jones Indices, iShares, J.P. Morgan Asset Management, SIPC, LBMA). One host, `behar-law.co.il` (a law firm mirroring regulations once), keeps its host as its name: the firm's Hebrew name is not certain.
 - `documents.json`: 135 recurring documents. Laws by their official short names with the Hebrew year where it is certain (פקודת מס הכנסה; חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס״ה-2005; חוק השקעות משותפות בנאמנות, התשנ״ד-1994; חוק הביטוח הלאומי [נוסח משולב], התשנ״ה-1995; חוק מילווה קצר מועד, התשמ״ד-1984 …); regulations in full with the Reshumot year (תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס״ח-2008; … (דמי ניהול), התשע״ב-2012; כללי הבנקאות (שירות ללקוח) (עמלות), התשס״ח-2008). Two regulations are named without a year because the year was not certain: the IRA regulations (קופת גמל בניהול אישי) and the child-savings regulations (חיסכון ארוך טווח לילד). The deductions booklet is "לוח עזר לחישוב מס הכנסה ממשכורת ושכר עבודה (חוברת הניכויים) 2026"; the Tax Authority guide "דע זכויותיך וחובותיך 2025"; CMA circulars as "חוזר גופים מוסדיים {code}: {name}"; Bank of Israel directives as "הוראת ניהול בנקאי תקין {n}: {name}" (425 has no name: the title was not in the sources); Sefer HaChukim issues as "ספר החוקים {n} ({date}): {the amending law}".
 
 ## Amended 2026-10-28: only the goal pages speak of a goal (product D37)

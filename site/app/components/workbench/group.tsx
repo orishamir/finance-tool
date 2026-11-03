@@ -16,7 +16,6 @@ const PAGE = 50;
 
 /** The fit mark of a row: icon and word, never red (an answer, not a warning). Nothing when the row has no mark. */
 function Mark({ w, stale }: { w: WorkbenchRow; stale: boolean }) {
-  if (w.outcome === "ineligible") return null;
   if (w.fit === "no-goal") return null;
   const Icon = w.fit === "fits" ? IconOk : w.fit === "no-fit" ? IconDash : IconHelp;
   return (
@@ -32,15 +31,6 @@ function Mark({ w, stale }: { w: WorkbenchRow; stale: boolean }) {
   );
 }
 
-function Reason({ w }: { w: WorkbenchRow }) {
-  if (w.outcome !== "ineligible" || !w.reason) return null;
-  return (
-    <span className="text-xs text-muted-foreground">
-      <bdi>{w.reason.text}</bdi>
-    </span>
-  );
-}
-
 function fees(data: WbData, w: WorkbenchRow) {
   return { b: expandFee(w.row.b, data.feeTemplate.balance), d: expandFee(w.row.d, data.feeTemplate.deposit) };
 }
@@ -48,15 +38,14 @@ function fees(data: WbData, w: WorkbenchRow) {
 function PhoneRow({ w, data, showFit }: { w: WorkbenchRow; data: WbData; showFit: boolean }) {
   const f = fees(data, w);
   const whole = data.dataset === "pensia-net";
-  const quiet = w.outcome === "ineligible";
   return (
-    <div className={cx("track !flex-col !items-stretch !gap-1.5", quiet && "text-muted-foreground")}>
+    <div className="track !flex-col !items-stretch !gap-1.5">
       <Link to={w.company.href} className="text-sm font-medium text-link hover:underline self-start">
         <bdi>{w.company.name}</bdi>
       </Link>
       <Link to={w.track.href} className="flex items-center justify-between gap-3 min-w-0">
         <span className="flex flex-col gap-0.5 min-w-0">
-          <span className={cx("font-medium flex flex-wrap items-center gap-2", !quiet && "text-foreground")}>
+          <span className="font-medium flex flex-wrap items-center gap-2 text-foreground">
             <bdi>{w.row.n}</bdi>
             {w.row.def && <Tag tone="parameter">{companyCopy.default}</Tag>}
           </span>
@@ -76,7 +65,6 @@ function PhoneRow({ w, data, showFit }: { w: WorkbenchRow; data: WbData; showFit
         {copy.phoneFee.balance} <FeeNum value={f.b} /> · {copy.phoneFee.deposit} <FeeNum value={f.d} />
         {whole && <span className="text-xs">({copy.wholeFund})</span>}
       </span>
-      <Reason w={w} />
       {showFit && <Mark w={w} stale={!!data.stale} />}
       <Link to={w.feesHref} className="text-sm text-link hover:underline min-h-target inline-flex items-center self-start">
         {copy.links.fees}
@@ -247,20 +235,18 @@ export function WorkbenchGroup({
                     );
                   for (const w of u.rows) {
                     const f = fees(data, w);
-                    const quiet = w.outcome === "ineligible";
                     out.push(
-                      <tr key={w.row.f} className={cx(u.dup !== undefined && "dup-row", quiet && "text-muted-foreground")}>
+                      <tr key={w.row.f} className={cx(u.dup !== undefined && "dup-row")}>
                         <td className={cx(u.dup !== undefined && "border-s-[3px] border-s-caution")}>
                           <Link to={w.company.href} className="text-link hover:underline">
                             <bdi>{w.company.name}</bdi>
                           </Link>
                         </td>
                         <td>
-                          <Link to={w.track.href} className={cx("font-medium hover:underline", !quiet && "text-foreground")}>
+                          <Link to={w.track.href} className="font-medium hover:underline text-foreground">
                             <bdi>{w.row.n}</bdi>
                           </Link>{" "}
                           {w.row.def && <Tag tone="parameter">{companyCopy.default}</Tag>}
-                          <Reason w={w} />
                         </td>
                         <td>
                           <bdi dir="ltr" className="num-id">{w.row.f}</bdi>

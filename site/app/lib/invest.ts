@@ -84,6 +84,8 @@ export const INDICES_PATH = "/indices";
 export const indexPath = (exposureId: string): string => `${INDICES_PATH}/${exposureId.replace(/^index-/, "")}`;
 export const customIndexPath = (id: string): string => `${INDICES_PATH}?custom=${encodeURIComponent(id)}`;
 export const exposureIdOfSlug = (slug: string): string => `index-${slug}`;
+/** The index page with one house picked, for a house's own page (issue 172: it replaced the page that ranked the houses on one S&P 500 fund). */
+export const housePath = (houseId: string, exposureId = "index-sp500"): string => `${indexPath(exposureId)}?house=${encodeURIComponent(houseId)}`;
 
 export function indexById(bundle: Pick<WorkbenchBundle, "exposures">, id: string, customs: readonly CustomIndex[] = []): IndexRef | null {
   const known = knownIndices(bundle).find((i) => i.id === id);
