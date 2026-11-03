@@ -185,6 +185,13 @@ export function loadCmaHoldings(): Map<number, NonNullable<CmaPeriodFile["funds"
   return out;
 }
 
+/** Each track's two average annual yields (data-schema 3.13 `yields`), by fund id; a track of a file without them is absent. */
+export function loadCmaYields(): Map<number, NonNullable<CmaPeriodFile["funds"][number]["yields"]>> {
+  const out = new Map<number, NonNullable<CmaPeriodFile["funds"][number]["yields"]>>();
+  for (const f of latestCmaFiles().values()) for (const fund of f.funds) if (fund.yields) out.set(fund.fund_id, fund.yields);
+  return out;
+}
+
 export function loadCma(): CmaData {
   const latest = latestCmaFiles();
   const tracks: Track[] = [];
@@ -326,7 +333,7 @@ export function loadParameterUses(): Record<string, string[]> {
   const doc = readTextCached(join(root, "docs/method.md"));
   const section = doc.slice(doc.indexOf("### 2.3"), doc.indexOf("### 2.4"));
   const out: Record<string, string[]> = {};
-  for (const m of section.matchAll(/^\| (P-\d{2}) \| .+? \| (.+?) \|$/gm)) out[m[1]!] = [...m[2]!.matchAll(/F-\d{2}/g)].map((x) => x[0]);
+  for (const m of section.matchAll(/^\| (P-\d{2}) \| .+? \| (.+?) \|$/gm)) out[m[1]!] = [...m[2]!.matchAll(/F-\d{2,3}/g)].map((x) => x[0]);
   return out;
 }
 

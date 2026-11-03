@@ -213,7 +213,7 @@ describe("a missing or unexpected field fails loudly", () => {
   it("in a formula the record names that the engine does not compute yet", () => {
     const later = { ...records.kgl, deposit_side_tax: { formula: "F-18", rule_ids: [] } };
     fails(() => runInputs(later, parameters, terms.kgl), /F-18.*R4/);
-    fails(() => runInputs({ ...records.kgl, tax_at_exit: { ...records.kgl.tax_at_exit, formula: "F-99" } }, parameters, terms.kgl), /F-99/);
+    fails(() => runInputs({ ...records.kgl, tax_at_exit: { ...records.kgl.tax_at_exit, formula: "F-998" } }, parameters, terms.kgl), /F-998/);
   });
 
   it("for a wrapper with no run in this release", () => {

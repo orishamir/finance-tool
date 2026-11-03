@@ -4,10 +4,10 @@ import { Link, redirect, useLoaderData } from "react-router";
 import type { Route } from "./+types/exposure";
 import { exposurePage as copy, guide, guideIndex, site } from "../copy";
 import { GuideSection, SectionIndex, TermTable, useCurrentSection } from "../components/guide/sections";
-import { IconDrillIn, IconLock } from "../components/icons";
+import { IconLock } from "../components/icons";
 import { NumberLegend, RuleRef } from "../components/provenance";
 import { Breadcrumb, PageShell } from "../components/shell";
-import { Card, Disclosure, Tag } from "../components/kit";
+import { Card, Disclosure, RowArrow, Tag } from "../components/kit";
 import { exposureContent } from "../content/exposure";
 import { splitTerms } from "../lib/guide-nav";
 import type { SiteValue } from "../lib/value";
@@ -84,7 +84,7 @@ export default function ExposurePage() {
                     <Card className="h-full flex flex-col gap-2 hover:bg-accent/40 transition-colors duration-[var(--duration-fast)]">
                       <Link to={`/guide/${h.id}`} className="flex items-center justify-between gap-4">
                         <span className="text-lg font-semibold">{h.name}</span>
-                        <IconDrillIn className="text-muted-foreground shrink-0" />
+                        <RowArrow />
                       </Link>
                       {/* audit A85: red only when the product's own exit tax is blocked; the shared open questions get a neutral tag */}
                       {h.blockedBy.length > 0 && (

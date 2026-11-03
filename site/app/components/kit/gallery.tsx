@@ -2,17 +2,17 @@
 // in one place; not in the menu, not in the search, noindex. Every number on it is a labelled example.
 import { useState, type ReactNode } from "react";
 import { Link } from "react-router";
-import { kit as copy } from "../../copy";
+import { brands, kit as copy, trackBrowser } from "../../copy";
 import type { SiteValue } from "../../lib/value";
 import { computed, entered } from "../../lib/value";
 import { CalendarCheck, CalendarDays, Lock, Zap } from "lucide-react";
-import { IconLock } from "../icons";
-import { IdRef, Num, RulesLine } from "../provenance";
+import { IconAlert, IconExternal, IconLock } from "../icons";
+import { IdRef, LeadTail, MarkHead, Num, RulesLine, StaleSaid } from "../provenance";
 import { IconDrillIn } from "../icons";
 import { label } from "../../lib/labels";
 import { fmt } from "../../lib/format";
 import { PileStory, PileYears } from "./pile-story";
-import { AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, Button, Callout, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, LabelFilter, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, CompareTable, TableCols, CoverageFold, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, Disclosure, FieldState, FoldGroup, GainBars, GapNote, HeadlineFigure, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, ParameterLine, PercentField, PlanChips, KnobStrip, ChangeChart, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, RangeField, RankBadge, Section, SegmentedControl, SelectField, Sentence, ShareRings, SourceLine, Stat, StatRow, StatTile, StepButtons, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth } from "./index";
+import { AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, Button, Callout, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, LabelFilter, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, CompareTable, TableCols, CoverageFold, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, SortHead, ExposureCell, FeeKey, FeeNum, HelpMark, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, GainBars, GapNote, HeadlineFigure, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, ParameterLine, PercentField, PlanChips, KnobStrip, ChangeChart, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, RangeField, RankBadge, Section, SegmentedControl, SelectField, Sentence, ShareRings, SourceLine, Stat, StatRow, StatTile, StepButtons, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth } from "./index";
 
 const g = copy.gallery;
 
@@ -359,6 +359,11 @@ function Words({ today }: { today: string }) {
           <State label={`${g.states.stale}, tone=muted`}>
             <Sentence size="sm" tone="muted" t="{a} · {b}" vars={{ a: <Num value={s.stale} />, b: <Num value={s.rate} /> }} />
           </State>
+          <State label="StaleSaid: under a notice that already says the source is old, the figure leaves out its clock (the sheet still says it)">
+            <StaleSaid>
+              <Sentence size="sm" tone="muted" t="{a} · {b}" vars={{ a: <Num value={s.stale} />, b: <Num value={s.rate} /> }} />
+            </StaleSaid>
+          </State>
           <State label="Tpl">
             <Tpl t="{a} · {b}" vars={{ a: <Num value={s.sourced} display="8" />, b: <Num value={s.comp} /> }} />
           </State>
@@ -685,6 +690,9 @@ function Fields() {
           <State label={g.states.filled}>
             <SelectField label={g.sample.select.label} value="b" options={[...g.sample.select.options]} onChange={() => undefined} />
           </State>
+          <State label={g.states.wide}>
+            <SelectField wide label={g.sample.select.label} value="b" options={[...g.sample.select.options]} onChange={() => undefined} />
+          </State>
         </Grid>
       </Demo>
     </>
@@ -847,6 +855,34 @@ function Rings() {
   );
 }
 
+/** The table of the track browser's kind in the gallery: two groups with headings and heads that sort the rows by their figure. */
+function SortableTable({ row }: { row: (key: string, name: string, n: string, rate: number, withLabels: boolean) => { key: string; cells: ReactNode[]; phone: ReactNode } }) {
+  const p = g.sample.products;
+  const [sort, setSort] = useState<SortState>("ascending");
+  const press = () => setSort((x) => (x === "ascending" ? "descending" : "ascending"));
+  const rates: [string, string, string, number][] = [["a", p.a, "1148808", 0.35], ["b", p.b, "1209444", 0.1], ["c", p.c, "1148162", 0.8]];
+  const ordered = [...rates].sort((x, y) => (sort === "ascending" ? x[3] - y[3] : y[3] - x[3]));
+  const glide = useFlip<HTMLDivElement>(sort);
+  return (
+    <div ref={glide}>
+    <ProductTable
+      stickyHead
+      foldable
+      columns={[
+        { id: "name", head: p.name },
+        { id: "number", head: p.number, width: 7.5 },
+        { id: "link", head: p.link, width: 6 },
+        { id: "figure", head: <SortHead label={p.figure} state={sort} onPress={press} />, width: 10, sort },
+      ]}
+      groups={[
+        { key: "g1", heading: { title: p.a, line: p.number }, rows: ordered.slice(0, 2).map(([k, n, id, r]) => row(k, n, id, r, false)) },
+        { key: "g2", heading: { title: p.b, line: p.number }, rows: ordered.slice(2).map(([k, n, id, r]) => row(k, n, id, r, false)) },
+      ]}
+    />
+    </div>
+  );
+}
+
 function Lists({ today }: { today: string }) {
   const s = samples(today);
   const p = g.sample.products;
@@ -900,6 +936,78 @@ function Lists({ today }: { today: string }) {
               { key: "bc", banner: p.banner, rows: [row("b", p.b, "1209444", 0.1, false), row("c", p.c, "1148162", 0.8, false)] },
             ]}
           />
+        </State>
+      </Demo>
+      <Demo name="ProductTable (headings, folding, sortable heads, sticky head)" use={g.uses.ProductTableGroups}>
+        <State label="groups with a heading (a title, then a line of figures); a press on a heading's strip or its chevron folds the group; the heads sort the table and set aria-sort; the head row sticks under the site's header while the table fits its card; a sort slides each row to its new place (useFlip)" wide>
+          <SortableTable row={row} />
+        </State>
+      </Demo>
+      <Demo name="RowArrow" use={g.uses.RowArrow}>
+        <State label="a row that opens a page of the site ends in the arrow, in the link's colour" wide>
+          <a href="#kit" className="flex items-center justify-between gap-3 min-h-14 px-2 border-b border-border hover:bg-accent/40">
+            <span className="font-medium">{p.a}</span>
+            <RowArrow />
+          </a>
+        </State>
+      </Demo>
+      <Demo name="SortHead" use={g.uses.SortHead}>
+        <State label="active small to large, active large to small, and not active: the arrow has a fixed slot and the bold width is held, so a press moves nothing" wide>
+          <div className="flex flex-wrap gap-6">
+            <SortHead label={p.name} state="ascending" onPress={() => {}} />
+            <SortHead label={p.name} state="descending" onPress={() => {}} />
+            <SortHead label={p.name} state="none" onPress={() => {}} />
+          </div>
+        </State>
+      </Demo>
+      <Demo name="HelpMark, FundFeesHead, FundFeesPhoneHelp" use={g.uses.HelpMark}>
+        <State label="beside a column head: a 16 px mark in a 44 px target; a tap opens the term's card">
+          <span className="inline-flex items-center gap-1 text-sm font-medium">
+            {trackBrowser.columns.assets.replace("{period}", "09.2026")}
+            <HelpMark term="יתרת נכסים לסוף תקופה" about={trackBrowser.help.assets} />
+          </span>
+        </State>
+        <State label="a column of several figures (a fund's three fees): one mark opens one sheet with each term's card, under the column's name and a line; the phone, with no heads, has one line over the list">
+          <span className="text-sm font-medium">
+            <FundFeesHead />
+          </span>
+          <FundFeesPhoneHelp />
+        </State>
+      </Demo>
+      <Demo name="LeadTail, MarkHead" use={g.uses.MarkHold}>
+        <State label="in a narrow box: the mark after a text wraps with the text's last word, the mark before it with its first word; never alone on a line">
+          <span className="block w-40 text-sm">
+            <LeadTail lead={brands.funds.columns.fees}>
+              <IconExternal size={14} className="inline-block align-text-bottom ms-1" />
+            </LeadTail>
+          </span>
+          <span className="block w-40 text-sm">
+            <MarkHead mark={<IconAlert size={14} className="text-caution inline-block align-[-2px] me-1" />} text={brands.funds.collected} />
+          </span>
+        </State>
+      </Demo>
+      <Demo name="PageTabs" use={g.uses.PageTabs}>
+        <State label="two views of one subject, each a page of its own; the current one is underlined and marked" wide>
+          <PageTabs
+            ariaLabel={trackBrowser.tabs.aria}
+            current="b"
+            tabs={[
+              { key: "a", label: trackBrowser.tabs.byCompany, href: "#kit" },
+              { key: "b", label: trackBrowser.tabs.byProduct, href: "#kit" },
+            ]}
+          />
+        </State>
+      </Demo>
+      <Demo name="FeeNum, FeeKey, TrackFeeLines, ExposureCell, ShareNum, TrackLabels" use={g.uses.TrackCells}>
+        <State label="the cells of a track: both fee averages, a fee the product does not have, an empty one, the exposure with its rings, the labels" wide>
+          <div className="flex flex-wrap items-start gap-x-10 gap-y-4">
+            <TrackFeeLines fee={s.rate} deposit={{ ...s.rate, value: 0.3 }} size="cell" />
+            <FeeNum value={{ ...s.rate, value: null }} size="cell" />
+            <ExposureCell size="cell" value={{ stock: { ...s.comp, value: 49, unit: "pct" }, currency: { ...s.comp, value: 21, unit: "pct" } }} />
+            <ShareNum value={{ ...s.comp, value: 49, unit: "pct" }} />
+            <TrackLabels isDefault track={{ inception: "2025-06-01", reportPeriod: "2026-09" }} />
+          </div>
+          <FeeKey values={[{ ...s.rate, value: null }]} className="flex flex-col gap-1 text-xs text-muted-foreground" />
         </State>
       </Demo>
       <Demo name="CostStack" use={g.uses.CostStack}>
@@ -957,6 +1065,9 @@ function Lists({ today }: { today: string }) {
       <Demo name="FixedTable" use={g.uses.FixedTable}>
         <State label="a fixed width per column, a closing row, the second column hidden on a phone" wide>
           <FixedTable rowHead={p.a} columns={[{ id: "a", head: p.b }, { id: "b", head: p.c, hideOnPhone: true }, { id: "c", head: p.figure }]} rows={[{ key: "1", head: "2022", cells: ["+13.4%", "−18.5%", "−21.8%"] }, { key: "2", head: "2025", cells: ["−12.5%", "+17.4%", "+15.3%"] }, { key: "3", head: p.a, cells: ["+2.7%", "+49.3%", "+35.9%"], strong: true }]} />
+        </State>
+        <State label="measure: a table of words inside guide prose, no wider than the text (38 rem)" wide>
+          <FixedTable measure rowHead={p.a} columns={[{ id: "a", head: p.b }, { id: "b", head: p.c }]} rows={[{ key: "1", head: p.figure, cells: [p.b, p.c] }]} />
         </State>
       </Demo>
       <Demo name="useGlidingSeries, useGlidingRows, useGlidingNumbers, useFadingTicks, ticksOn, YearLabels, valueOn, useFlip, useBox, CountingFigures" use={g.uses.Glide}>

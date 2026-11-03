@@ -13,7 +13,8 @@
   },
   "tariff": {
     "url": "https://www.bank-yahav.co.il/media/020jnu0x/22026_taarifon_male.xlsx",
-    "title": "בנק יהב - תעריפון יחיד / עסק קטן, מספר סידורי 2.2026 (נכון ליום: 01/10/2026); פרק: ניירות ערך (שירותים נפוצים, ניירות ערך בחוץ לארץ, דמי ניהול פיקדון ניירות ערך, העברת ניירות ערך, עמלת הפצה), פרק: מטבע חוץ. קובץ PDF תאום של אותו תעריפון: https://www.bank-yahav.co.il/media/fhukyxkr/22026_taarifon_male.pdf. Read in the founder's Chrome and fetched with curl on 2026-10-24; the tariff page https://www.bank-yahav.co.il/footer/footer-menu/bank-tariff/ links it as 'תעריפון מלא- יחיד/עסק קטן'. The tariff has no separate buy/sell line for open mutual-fund units.",
+    "title": "בנק יהב - תעריפון יחיד / עסק קטן",
+    "notes": "בנק יהב - תעריפון יחיד / עסק קטן, מספר סידורי 2.2026 (נכון ליום: 01/10/2026); פרק: ניירות ערך (שירותים נפוצים, ניירות ערך בחוץ לארץ, דמי ניהול פיקדון ניירות ערך, העברת ניירות ערך, עמלת הפצה), פרק: מטבע חוץ. קובץ PDF תאום של אותו תעריפון: https://www.bank-yahav.co.il/media/fhukyxkr/22026_taarifon_male.pdf. Read in the founder's Chrome and fetched with curl on 2026-10-24; the tariff page https://www.bank-yahav.co.il/footer/footer-menu/bank-tariff/ links it as 'תעריפון מלא- יחיד/עסק קטן'. The tariff has no separate buy/sell line for open mutual-fund units.",
     "published": "2026-10-01",
     "format": "xlsx"
   },

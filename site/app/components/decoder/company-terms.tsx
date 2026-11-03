@@ -110,7 +110,7 @@ export function NoPageCompanyTerms({ companies, none }: { companies: readonly { 
   return (
     <div className="flex flex-col gap-section">
       {companies.length > 0 && (
-        <Section id={companyTermsAnchor} title={scopeWords.noPage.title} lead={scopeWords.noPage.line}>
+        <Section id={companyTermsAnchor} title={scopeWords.noPage.title}>
           <div className="flex flex-col gap-3">
             {companies.map((c) => (
               <FoldGroup key={c.id} variant="section" id={noPageAnchor(c.id)} className={scrollMargin} title={<bdi>{c.name}</bdi>} count={c.ids.length} open={opened.has(c.id)} onOpenChange={toggle(c.id)}>
@@ -121,8 +121,11 @@ export function NoPageCompanyTerms({ companies, none }: { companies: readonly { 
         </Section>
       )}
       {none.length > 0 && (
+        // a long run of cards beside the point of the page (what a company offers): folded, and opened by a link to it
         <Section id={noCompanyAnchor} title={scopeWords.noPage.none.title} lead={scopeWords.noPage.none.line}>
-          <Cards ids={none} />
+          <FoldGroup variant="section" title={scopeWords.noPage.none.fold} count={none.length} open={opened.has(noCompanyAnchor)} onOpenChange={toggle(noCompanyAnchor)}>
+            <Cards ids={none} />
+          </FoldGroup>
         </Section>
       )}
     </div>

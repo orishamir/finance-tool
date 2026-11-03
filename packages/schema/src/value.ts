@@ -73,7 +73,7 @@ export const source = z.object({
 });
 
 export const computedFrom = z.object({
-  formula: z.string().regex(/^[FA]-\d{2}$/),
+  formula: z.string().regex(/^[FA]-\d{2,3}$/),
   inputs: z.record(z.string(), z.unknown()),
 });
 

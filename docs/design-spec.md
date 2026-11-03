@@ -214,7 +214,7 @@ One page per product type (wrapper); the mockup shows kupat gemel lehashkaa. The
 | Component | Variant | Props | Notes |
 |---|---|---|---|
 | `SectionIndex` | chips (phone) / list (PC) | `sections: {id, label}[]; current` | The current section follows the scroll (IntersectionObserver). Phone chips 44px tall; the current one `bg-foreground text-background`. PC list items 10×14px padding with a 2px `border-s` (teal when current). |
-| `NumberLegend` | `institution?; term?` | none | Three sample numbers, a fourth for the institution mark ("לפי החברה: המספר מבוסס על מסמך של החברה"), optionally a fifth for a glossary term, and the hint (copy 2). Not interactive. Shown under the h1 of every page that shows numbers (2026-10-24, UX audit). |
+| `NumberLegend` | `institution?; term?` | none | Three sample numbers, a fourth for the institution mark ("לפי החברה: המספר מבוסס על מסמך של החברה"), optionally a fifth for a glossary term, and the hint (copy 2). Not interactive. Shown under the h1 of every page that shows numbers (2026-10-24, UX audit). Each sample stands only while the page shows a figure of its state, with its room held (2026-11-03, `docs/design-system.md` "Page header"). |
 | `GuideSection` | | `id; title; children` | Anchor target; scroll margin = header height + 8px. |
 | `AssumptionChips` | phone only | `inputs: Input[]; onOpen(field?)` | Buttons, 44px, `rounded-full`, 1px `border`; an entered input uses `bg-entered-subtle`, an `#2a3f6b` border, a pencil icon and an `entered` value. The last chip, "כל ההנחות", opens the sheet at the top. The row scrolls sideways and bleeds to the screen edge. |
 | `ValuesPanel` | PC only | as screen 3 | |

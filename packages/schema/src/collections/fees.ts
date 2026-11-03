@@ -113,7 +113,10 @@ export const feesSnapshot = z.strictObject({
   }),
   tariff: z.strictObject({
     url: z.string().min(1),
+    /** The document's name as its publisher writes it: the site shows it as the source's name (2026-11-03). */
     title: z.string().min(1),
+    /** How the document was read: its parts, pages and dates per part, files read alongside, what it leaves out. Kept with the data, not shown. */
+    notes: z.string().min(1).optional(),
     published: isoDate.nullable(),
     format: z.enum(["pdf", "html", "xlsx"]),
   }),

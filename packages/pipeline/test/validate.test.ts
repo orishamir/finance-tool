@@ -68,8 +68,8 @@ describe("validateData", () => {
   });
 
   it("rejects a formula that is not in method.md", () => {
-    const problems = run({ "rules/txs-09.json": { ...rule, extra: { formula: "F-99" } } });
-    expect(problems.some((p) => /F-99/.test(p.message))).toBe(true);
+    const problems = run({ "rules/txs-09.json": { ...rule, extra: { formula: "F-998" } } });
+    expect(problems.some((p) => /F-998/.test(p.message))).toBe(true);
   });
 
   it("rejects a collection with no schema yet", () => {
@@ -206,6 +206,15 @@ describe("new collections", () => {
     const problems = run(files);
     expect(problems).toHaveLength(1);
     expect(problems[0]?.message).toMatch(/fund:missing/);
+  });
+
+  it("fails two term records of one Hebrew name on the same page, and passes them on different products (§4 item 16)", () => {
+    const other = { ...term, id: "kupat-gemel-b", meaning: "הסבר אחר" };
+    const problems = run({ "terms/kupat-gemel.json": term, "terms/kupat-gemel-b.json": other });
+    expect(problems).toHaveLength(1);
+    expect(problems[0]!.message).toMatch(/two records on the same pages \(kupat-gemel-lehashkaa\): kupat-gemel-b and kupat-gemel;/);
+    expect(run({ "terms/kupat-gemel.json": term, "terms/kupat-gemel-b.json": { ...other, wrapper_ids: ["keren-hishtalmut"] } })).toEqual([]);
+    expect(run({ "terms/a.json": { ...term, id: "a", exposure_ids: ["index-sp500"], wrapper_ids: [] }, "terms/b.json": { ...other, id: "b", exposure_ids: ["index-sp500"], wrapper_ids: [] } })).toHaveLength(1);
   });
 
   it("checks rule_ids of terms and dimensions with the generic walk", () => {

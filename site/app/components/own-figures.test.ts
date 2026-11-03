@@ -59,7 +59,9 @@ describe("a fund's fee in a list of funds", () => {
 
 describe("the legend", () => {
   it("leaves the company item out unless the page has an out-of-context company figure", () => {
-    expect(renderToStaticMarkup(createElement(NumberLegend, null))).not.toContain("לפי החברה");
-    expect(renderToStaticMarkup(createElement(NumberLegend, { institution: true }))).toContain("לפי החברה");
+    // the words as read: the item's icon is held to its first word by a span of its own
+    const words = (props: { institution?: boolean } | null) => renderToStaticMarkup(createElement(NumberLegend, props)).replace(/<[^>]+>/g, "");
+    expect(words(null)).not.toContain("לפי החברה");
+    expect(words({ institution: true })).toContain("לפי החברה");
   });
 });

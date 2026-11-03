@@ -148,21 +148,25 @@ export function ruleFigure(rule: RuleRecord, name: string, today: string): SiteV
 }
 
 export function staleCma(reportPeriod: string, today: string): Staleness | null {
-  // Flow 9: the regulator's monthly data counts as stale once the month after its period has passed.
+  // Flow 9 and product §6: the flag is for a refresh that failed, not for the regulator's publication lag. A month's figures
+  // appear about three weeks after it ends (September's were on data.gov.il by 23 October), so the next period is due in the
+  // month after next; the stored one counts as stale only once that month has passed without it (2026-11-03, was: from the
+  // first day of the month after next, which flagged current data for most of every month).
   const [y, m] = reportPeriod.split("-").map(Number) as [number, number];
-  const limit = new Date(Date.UTC(y, m - 1 + 2, 1)).toISOString().slice(0, 10);
+  const limit = new Date(Date.UTC(y, m - 1 + 3, 1)).toISOString().slice(0, 10);
   return today >= limit ? { since: reportPeriod, cadence: "monthly" } : null;
 }
 
 /**
- * A CMA fee average belongs to a calendar year (CAT-36). It is stale once the previous calendar year is
- * older than that year, i.e. a newer year's average should have appeared in the January rows.
+ * A CMA fee average belongs to a calendar year (CAT-36). The next year's average arrives with the January rows of the
+ * year after it, which carry the same publication lag as any month (`staleCma`), so the average is stale once those
+ * rows are overdue: from 1 March two years after its own year (2026-11-03, was: from 1 January, before they could exist).
  * `effectiveTo` is the fee's `effective_to` (YYYY-12-31), `today` is YYYY-MM-DD.
  */
 export function staleCmaFee(effectiveTo: string | null, today: string): Staleness | null {
   if (!effectiveTo) return null;
   const feeYear = Number(effectiveTo.slice(0, 4));
-  return Number(today.slice(0, 4)) - 1 > feeYear ? { since: effectiveTo, cadence: "yearly" } : null;
+  return staleCma(`${feeYear + 1}-12`, today) ? { since: effectiveTo, cadence: "yearly" } : null;
 }
 
 /** A CMA fee average (data-schema 3.13) as a site value: the file's value object plus the yearly stale rule. */

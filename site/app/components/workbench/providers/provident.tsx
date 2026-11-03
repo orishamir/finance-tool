@@ -17,7 +17,7 @@ export function ProvidentListing({ listing, wrapperId }: { listing: Listing; wra
     <div className="flex flex-col gap-4">
       <Callout tone="info">
         {t.note}{" "}
-        <Link to={`/workbench/tracks/${wrapperId}`} className="text-link hover:underline">
+        <Link to={`/tracks/${wrapperId}`} className="text-link hover:underline">
           {t.toTracks}
         </Link>
       </Callout>
@@ -33,7 +33,7 @@ export function ProvidentListing({ listing, wrapperId }: { listing: Listing; wra
               {t.covered.mid}
               <bdi dir="ltr" className="tabular-nums">{companies}</bdi>
               {t.covered.after}{" "}
-              <Link to={`/workbench/tracks/${wrapperId}`} className="text-link hover:underline">
+              <Link to={`/tracks/${wrapperId}`} className="text-link hover:underline">
                 {t.toTracks}
               </Link>
             </p>

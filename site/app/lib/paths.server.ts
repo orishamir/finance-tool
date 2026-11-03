@@ -1,7 +1,7 @@
 // Every path the site pre-renders (react-router.config.ts): one page per guide, company and track.
 import { loadCma, loadProducts } from "./data.server";
 import { exposureFolds, loadExposures } from "./instruments.server";
-import { workbenchWrapperIds } from "./workbench.server";
+import { trackProductIds } from "./track-browser.server";
 import { institutionIds } from "./institutions.server";
 import { loadBrands } from "./brands.server";
 import { INDICES_PATH, indexPath } from "./invest";
@@ -9,14 +9,17 @@ import { providerWrapperIds } from "./providers.server";
 
 export function prerenderPaths(): string[] {
   const paths = ["/", "/guide", "/questions", "/companies", "/rules", "/rules/state", "/rules/costs", "/rules/access", "/rules/protection", "/rules/structure", "/rules-data/state.json", "/rules-data/companies.json", "/rules-data/costs.json", "/rules-data/access.json", "/rules-data/protection.json", "/rules-data/structure.json", "/documents", "/parameters", "/not-covered", "/search-index.json", "/search-texts.json", "/goal", "/goal/compare", "/idle-cash", "/compare-bundle.json"];
-  paths.push("/guide/limited-bond-fund");
+  paths.push("/guide/limited-bond-fund", "/guide/mutual-funds");
   for (const w of loadProducts()) paths.push(`/guide/${w.id}`);
   const folds = exposureFolds();
   for (const e of loadExposures()) if (!folds[e.id]) paths.push(`/exposure/${e.id}`);
   const cma = loadCma();
   for (const c of cma.companies) paths.push(`/companies/${c.id}`);
   for (const t of cma.tracks) paths.push(`/companies/${t.companyId}/${t.fundId}`);
-  for (const w of workbenchWrapperIds()) paths.push(`/workbench/tracks/${w}`);
+  // the track browser (D54): /tracks shows the default product, /tracks/<id> each of the six; the old address of each is a redirect
+  paths.push("/tracks");
+  for (const w of trackProductIds) paths.push(`/tracks/${w}`);
+  for (const w of trackProductIds) paths.push(`/workbench/tracks/${w}`);
   paths.push("/fees", "/fees-data.json");
   paths.push("/holdings", "/holdings-bundle.json", "/transfer");
   // the index page (D28; at /indices since 2026-10-26): one page per equity index, /indices/<x> for index-<x>; a custom index opens client-side at /indices?custom=<id>

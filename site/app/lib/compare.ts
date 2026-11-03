@@ -1224,7 +1224,7 @@ export const decidingFormulaOf = (f: string): string => decidingFormulaId[f] ?? 
 
 /** Where the person picks the actual product the card's run stands for (A10, A14): the track, provider or fund workbench of the wrapper, when it has one. */
 export function workbenchHref(wrapperId: string): string | null {
-  if (["kupat-gemel-lehashkaa", "keren-hishtalmut", "pension-comprehensive", "pension-general", "provident-for-annuity"].includes(wrapperId)) return `/workbench/tracks/${wrapperId}`;
+  if (["kupat-gemel-lehashkaa", "keren-hishtalmut", "pension-comprehensive", "pension-general", "provident-for-annuity"].includes(wrapperId)) return `/tracks/${wrapperId}`;
   // the index page, on the S&P 500 the house-ranking page it replaced defaulted to (issue 172)
   if (wrapperId === "brokerage-account") return "/indices/sp500";
   return null;

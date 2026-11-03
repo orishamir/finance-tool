@@ -79,7 +79,7 @@ export function readRuleBaseIds(referencesDir: string): RuleBaseIds {
 
 export function readFormulaIds(methodPath: string): Set<string> {
   const text = readFileSync(methodPath, "utf8");
-  return new Set([...text.matchAll(/\*\*(F-\d{2})\b/g)].map((m) => m[1]!));
+  return new Set([...text.matchAll(/\*\*(F-\d{2,3})\b/g)].map((m) => m[1]!));
 }
 
 /** `[ref]: url` lines of a markdown file (the switching file uses them), keyed by lower-cased name. */
