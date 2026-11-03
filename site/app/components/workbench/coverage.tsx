@@ -1,5 +1,5 @@
 // The workbench coverage line (design-spec 11.3, flow 25 step 5): every track accounted for once, with its outcome.
-// The workbench ranks nothing, so the outcomes are: fits, does not fit, no rule, not eligible (CAT-10), not
+// The workbench ranks nothing, so the outcomes are: fits, does not fit, no rule, not
 // evaluated (no saved goal; no classification in the data). Counts are computed (F-64) and equal the rows.
 import { Link } from "react-router";
 import { r2, r3workbench as copy } from "../../copy";
@@ -19,8 +19,8 @@ export function WorkbenchCoverage({ data, views, ready }: { data: WbData; views:
     ) : (
       <span className="inline-block w-6 h-4 align-middle rounded bg-muted animate-pulse" aria-hidden="true" />
     );
-  // the sentence names five outcomes (copy 7.3); the sixth appears when some track has no classification in the data
-  const sentence: CoverageKey[] = ["fits", "no-fit", "no-rule", "ineligible", "no-goal"];
+  // the sentence names four outcomes (copy 7.3); the fifth appears when some track has no classification in the data
+  const sentence: CoverageKey[] = ["fits", "no-fit", "no-rule", "no-goal"];
   if (!ready || counts["no-class"] > 0) sentence.push("no-class");
   return (
     <CoverageFold

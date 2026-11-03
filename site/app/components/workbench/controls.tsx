@@ -1,8 +1,6 @@
-// The workbench's controls (design-spec 11.3): exposure chips (filters), search, sort (a second press reverses), the
-// open-to-all toggle. On a phone the sticky block shrinks to the search row once the page is scrolled.
+// The workbench's controls (design-spec 11.3): exposure chips (filters), search, sort (a second press reverses). On a phone the sticky block shrinks to the search row once the page is scrolled.
 import { useEffect, useState } from "react";
 import { r3workbench as copy } from "../../copy";
-import { fmt } from "../../lib/format";
 import type { SortDir, SortKey } from "../../lib/workbench";
 import { IconChevronDown, IconSearch } from "../icons";
 import { cx } from "../kit";
@@ -44,21 +42,14 @@ export function WorkbenchControls({
   filter,
   sort,
   dir,
-  openToAll,
-  hiddenCount,
   onFilter,
   onSort,
-  onOpenToAll,
 }: {
   filter: string;
   sort: SortKey;
   dir: SortDir;
-  openToAll: boolean;
-  /** Tracks open only to a sector or an employer's staff: how many the toggle hides. */
-  hiddenCount: number;
   onFilter: (v: string) => void;
   onSort: (v: SortKey) => void;
-  onOpenToAll: (v: boolean) => void;
 }) {
   const compact = useScrolled();
   return (
@@ -97,19 +88,6 @@ export function WorkbenchControls({
           })}
         </div>
       </div>
-      <label className={cx("flex items-center gap-2 text-sm min-h-target lg:min-h-0 cursor-pointer", compact && "max-lg:hidden")}>
-        <input type="checkbox" checked={openToAll} onChange={(e) => onOpenToAll(e.target.checked)} className="size-5 accent-[var(--primary)]" />
-        <span className="font-medium whitespace-nowrap">{copy.openToAll.label}</span>
-        <span className="text-muted-foreground">
-          {openToAll ? (
-            hiddenCount > 0 ? (
-              <>
-                · <bdi dir="ltr" className="tabular-nums">{fmt.number(hiddenCount)}</bdi> {copy.openToAll.hidden}
-              </>
-            ) : null
-          ) : null}
-        </span>
-      </label>
       <p className={cx("text-xs text-muted-foreground", compact && "max-lg:hidden")}>{copy.notAnOffer}</p>
     </div>
   );

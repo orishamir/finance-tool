@@ -10,8 +10,6 @@
     "validate": "tsx src/cli.ts validate",
     "extract:sources": "tsx scripts/extract-sources.ts",
     "gen:open-questions": "tsx scripts/gen-open-questions.ts",
-    "fetch:ecb": "tsx scripts/fetch-ecb-rates.ts",
-    "fetch:ecb-month": "tsx scripts/fetch-ecb-month-end.ts",
     "refresh": "tsx src/cli.ts refresh"
   },
   "dependencies": {

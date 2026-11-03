@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { exposureFoldedInto, groupGuides, guideLayout, isClosedAudience, rulesAnchor, splitTerms, omitsSection } from "./guide-nav";
+import { exposureFoldedInto, groupGuides, guideLayout, rulesAnchor, splitTerms, omitsSection } from "./guide-nav";
 
 const allIds = guideLayout.flatMap((g) => g.ids);
 
@@ -48,15 +48,6 @@ describe("rulesAnchor (audit A27)", () => {
   });
   it("is empty with no rules", () => {
     expect(rulesAnchor([])).toBe("");
-  });
-});
-
-describe("isClosedAudience (audit A86)", () => {
-  it("is closed only when every track is for a sector's or a plant's workers", () => {
-    expect(isClosedAudience(["עובדי סקטור מסויים", "עובדי מפעל/גוף מסויים"])).toBe(true);
-    expect(isClosedAudience(["עובדי סקטור מסויים", "כלל האוכלוסיה"])).toBe(false);
-    expect(isClosedAudience(["עובדי סקטור מסויים", ""])).toBe(false);
-    expect(isClosedAudience([])).toBe(false);
   });
 });
 

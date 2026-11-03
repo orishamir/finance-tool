@@ -52,6 +52,64 @@ export const USER_AGENT =
 // Pipeline configuration (not site parameters): the sanity thresholds.
 export const SANITY = { minRowRatio: 0.8, maxDisappearedFundRatio: 0.2 } as const;
 
+/**
+ * A track closed to joiners, left out with those companies (founder, 2026-11-03): the regulator marks it as for workers of
+ * one sector or body, or its name says it is for those already entitled to an annuity on a past date (the regulator's list
+ * of investment tracks).
+ */
+export const closedTrack = (population: string, name: string): boolean => population.trim().startsWith("עובדי ") || /קצבה קיימים|זכאים קיימים/.test(name);
+
+/**
+ * Managing companies left out of the data, by legal id (founder, 2026-11-03, 43 companies): their funds serve one
+ * profession, employer or municipality, or are otherwise not relevant to the site's readers. A refresh skips their rows, and they
+ * are not to be collected or researched. docs/product.md D51.
+ */
+export const EXCLUDED_COMPANIES: ReadonlyMap<string, string> = new Map([
+  ["510930654", "יחד רופאים"],
+  ["570002618", "תגמולים של עובדים בעירית ת\"א-יפו"],
+  ["570005959", "קופת\"ג של עובדי עירית חיפה"],
+  ["570014928", "קופת תגמולים של עובדי התעשיה האוירית"],
+  ["520030198", "ק.ה.ר, קרן השתלמות לרוקחים"],
+  ["512362914", "מחוג, מינהל גמל לעובדי חברת חשמל"],
+  ["510960586", "חברת הגמל לעובדי האוניברסיטה העברית"],
+  ["520027954", "קרן השתלמות לאקדמאים במדעי החברה והרוח"],
+  ["520031824", "רום, קרן ההשתלמות לעובדי הרשויות המקומיות"],
+  ["520028861", "קרן השתלמות למשפטנים"],
+  ["520005497", "קופות התגמולים והפיצויים של עובדי בנק לאומי"],
+  ["520030743", "קרן השתלמות לשופטים"],
+  ["513452003", "קופות גמל של העובדים בעיריית תל אביב יפו"],
+  ["510930670", "יהב פ.ר.ח."],
+  ["520042615", "מחר"],
+  ["520030941", "ק.ל.ע., קרן השתלמות לעובדים סוציאליים"],
+  ["570009852", "קרן מקפת מרכז לפנסיה ותגמולים"],
+  ["511033060", "קרן החסכון לצבא הקבע"],
+  ["520042581", "עמ\"י, קופות גמל ענפיות"],
+  ["520027251", "קרנות השתלמות למורים ולגננות"],
+  ["520024985", "עגור"],
+  ["520028390", "קרנות השתלמות למורים תיכוניים, מורי סמינרים ומפקחים"],
+  ["512711409", "גל, קופות גמל לעובדי הוראה"],
+  ["520032269", "קרן ההשתלמות לעובדי המדינה"],
+  ["510806870", "רעות"],
+  ["520027715", "מנורה מבטחים והסתדרות המהנדסים"],
+  ["510927536", "יהב אחים ואחיות"],
+  ["520028556", "קרן ההשתלמות להנדסאים וטכנאים"],
+  ["512008335", "קו הבריאות"],
+  ["520030990", "קרן ההשתלמות לפקידים, עובדי המנהל והשירותים"],
+  ["520030693", "שיבולת"],
+  ["510773922", "ארם גמולים"],
+  ["570011767", "קופת תגמולים של עובדי אל על"],
+  ["520042607", "הנדסאים וטכנאים, קופות גמל"],
+  ["510142789", "חברת ב'ת למ'ד דל'ת"],
+  ["520034968", "קרן השתלמות של עובדי חברת החשמל"],
+  ["570009449", "עוצ\"מ, אגודה שיתופית"],
+  ["520029620", "קרן השתלמות לביוכימאים ומקרוביולוגים"],
+  ["520042573", "עו\"ס"],
+  ["570007476", "קרן ביטוח ופנסיה לפועלים חקלאים"],
+  ["520031659", "עוצ\"מ, קופות גמל והשתלמות"],
+  ["510694821", "לאומי קמ\"פ"],
+  ["570005850", "קרן הביטוח והפנסיה של פועלי בנין"],
+]);
+
 export const REQUIRED_COLUMNS = [
   "FUND_ID",
   "FUND_NAME",
@@ -379,6 +437,9 @@ export function normalise(csvText: string, ctx: NormaliseContext): NormaliseResu
   const seen = new Set<number>();
   const funds: CmaFund[] = [];
   for (const r of rows) {
+    if (EXCLUDED_COMPANIES.has(get(r, "MANAGING_CORPORATION_LEGAL_ID").trim()) || closedTrack(get(r, "TARGET_POPULATION"), get(r, "FUND_NAME"))) continue;
+    const population = get(r, "TARGET_POPULATION").trim();
+    if (population !== "" && population !== "כלל האוכלוסיה") problems.push(`fund ${get(r, "FUND_ID")}: unknown TARGET_POPULATION "${population}"; say whether it is closed to joiners`);
     const id = Number(get(r, "FUND_ID").trim());
     if (!Number.isInteger(id) || id <= 0) {
       problems.push(`unreadable FUND_ID "${get(r, "FUND_ID")}"`);

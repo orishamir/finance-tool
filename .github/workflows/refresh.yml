@@ -1,6 +1,6 @@
 # Scheduled refresh of the CMA monthly datasets and the series (CBS consumer price index, Ministry of Finance
 # child-savings rates) (docs/architecture.md sections 3.3 and 6). The Bank of Israel series are not fetched: their
-# terms of use do not permit republication (the terms gate).
+# terms of use do not permit republication (the terms gate). The ECB exchange rates have their own run: refresh-rates.yml.
 #
 # The new month appears on an unknown day, so this runs daily; the adapter is idempotent (it writes
 # only when the normalised data differs from the stored files, so most runs change nothing).

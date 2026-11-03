@@ -434,7 +434,6 @@ interface Fixture {
   sub?: string;
   mgmt: number | null;
   dep?: number | null;
-  population?: string;
 }
 
 function fund(f: Fixture): CmaPeriodFile["funds"][number] {
@@ -444,7 +443,7 @@ function fund(f: Fixture): CmaPeriodFile["funds"][number] {
     managing_corporation: { name: `${f.company ?? "c1"} ltd`, legal_id: f.company ?? "c1" },
     controlling_corporation: "",
     fund_classification: f.classification ?? "קרנות השתלמות",
-    target_population: f.population ?? "כלל האוכלוסיה",
+    target_population: "כלל האוכלוסיה",
     specialization: f.specialization ?? "כללי",
     sub_specialization: f.sub ?? "",
     inception_date: null,
@@ -600,8 +599,8 @@ describe("F-64 track workbench", () => {
       feeNotReported: 1,
       depositFeeNotReported: 1,
       invariant: { ok: true },
-      outcomes: { "not-eligible": 0, "not-evaluated": 0, "shown-without-rule": 1, "shown-with-mark": 4 },
-      split: { fits: 3, "does-not-fit": 1, "no-rule": 1, "not-eligible": 0, "no-goal": 0, "no-classification": 0 },
+      outcomes: { "not-evaluated": 0, "shown-without-rule": 1, "shown-with-mark": 4 },
+      split: { fits: 3, "does-not-fit": 1, "no-rule": 1, "no-goal": 0, "no-classification": 0 },
     });
   });
 
@@ -610,35 +609,28 @@ describe("F-64 track workbench", () => {
       { id: 1, name: "fits", specialization: "כללי", mgmt: 0.5 },
       { id: 2, name: "too short", specialization: "מניות", mgmt: 0.5 },
       { id: 3, name: "no rule", specialization: "עוקבי מדדים", mgmt: 0.5 },
-      { id: 4, name: "sector", specialization: "כללי", population: "עובדי סקטור מסויים", mgmt: 0.5 },
-      { id: 5, name: "employer", specialization: "כללי", population: "עובדי מפעל/גוף מסויים", mgmt: 0.5 },
       { id: 6, name: "no classification", specialization: "", sub: "", mgmt: 0.5 },
-      // A sector track with no classification is still "not eligible": that comes first.
-      { id: 7, name: "sector, no class", specialization: "", sub: "", population: "עובדי סקטור מסויים", mgmt: 0.5 },
     ];
     const withGoal = trackWorkbench("keren-hishtalmut", [file(mixed)], { horizonYears: 7 }, p04, { classificationToWrapper: map });
     const noGoal = trackWorkbench("keren-hishtalmut", [file(mixed)], undefined, p04, { classificationToWrapper: map });
     const code = (w: typeof withGoal, id: number) => w.rows.find((r) => r.fundId === id)!.outcome;
 
-    it("not eligible (CAT-10) comes first, then not evaluated, then shown without a rule, else shown with the mark", () => {
+    it("not evaluated comes first, then shown without a rule, else shown with the mark", () => {
       expect(code(withGoal, 1)).toEqual({ code: "shown-with-mark", mark: "fits" });
       expect(code(withGoal, 2)).toEqual({ code: "shown-with-mark", mark: "does-not-fit" });
       expect(code(withGoal, 3)).toEqual({ code: "shown-without-rule" });
-      expect(code(withGoal, 4)).toEqual({ code: "not-eligible", ruleIds: ["CAT-10"], population: "עובדי סקטור מסויים" });
-      expect(code(withGoal, 5)).toMatchObject({ code: "not-eligible", population: "עובדי מפעל/גוף מסויים" });
       expect(code(withGoal, 6)).toEqual({ code: "not-evaluated", reason: "no-classification" });
-      expect(code(withGoal, 7).code).toBe("not-eligible");
     });
 
-    it("with no goal every eligible track is not evaluated; a sector track is still not eligible", () => {
-      expect(noGoal.rows.map((r) => r.outcome.code)).toEqual(["not-evaluated", "not-evaluated", "not-evaluated", "not-eligible", "not-eligible", "not-evaluated", "not-eligible"]);
+    it("with no goal every track is not evaluated", () => {
+      expect(noGoal.rows.map((r) => r.outcome.code)).toEqual(["not-evaluated", "not-evaluated", "not-evaluated", "not-evaluated"]);
       expect(code(noGoal, 1)).toEqual({ code: "not-evaluated", reason: "no-goal" });
     });
 
     it("counts are in the coverage line and add up to the rows", () => {
-      expect(withGoal.coverage.outcomes).toEqual({ "not-eligible": 3, "not-evaluated": 1, "shown-without-rule": 1, "shown-with-mark": 2 });
-      expect(withGoal.coverage.split).toEqual({ fits: 1, "does-not-fit": 1, "no-rule": 1, "not-eligible": 3, "no-goal": 0, "no-classification": 1 });
-      expect(noGoal.coverage.split).toMatchObject({ "no-goal": 4, "not-eligible": 3, fits: 0 });
+      expect(withGoal.coverage.outcomes).toEqual({ "not-evaluated": 1, "shown-without-rule": 1, "shown-with-mark": 2 });
+      expect(withGoal.coverage.split).toEqual({ fits: 1, "does-not-fit": 1, "no-rule": 1, "no-goal": 0, "no-classification": 1 });
+      expect(noGoal.coverage.split).toMatchObject({ "no-goal": 4, fits: 0 });
       for (const w of [withGoal, noGoal]) {
         expect(Object.values(w.coverage.outcomes).reduce((a, b) => a + b, 0)).toBe(w.coverage.considered);
         expect(Object.values(w.coverage.split).reduce((a, b) => a + b, 0)).toBe(w.coverage.considered);

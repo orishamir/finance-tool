@@ -36,6 +36,7 @@
   },
   "fee_bases_allowed": [
     "balance",
+    "deposit",
     "direct_expenses"
   ],
   "fee_caps": {
@@ -59,6 +60,26 @@
       ],
       "state": "sourced",
       "notes": "Maximum management fee of a study fund, per year, of each member's accumulated balance; applies to each track as a separate account (reg. 6). In force since 1.1.2013. Reg. 4 authorises only a fee on the balance and law s.32(א) forbids any charge not allowed, so no deposit fee (inference; Gemel-Net reports no deposit fee on any study-fund track, KH-23). Reported averages for 2026-09: 0.34% to 0.74% outside IRA tracks (KH-23)."
+    },
+    "deposit": {
+      "value": 0,
+      "unit": "pct_of_deposit",
+      "source": {
+        "url": "https://www.nevo.co.il/law_html/law01/500_714.htm",
+        "title": "Provident Funds (Management Fees) Regulations 2012, reg. 4 (Nevo mirror; cross-read on Wikisource): \"בשיעור שלא יעלה על 2% לשנה\"",
+        "publisher": "Knesset legislation (Nevo mirror)",
+        "strength": "primary-mirror"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2013-01-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "KH-22"
+      ],
+      "state": "sourced",
+      "notes": "Reg. 4 authorises only a fee on the balance and law s.32(א) forbids any charge not allowed, so a study fund charges no deposit fee (inference; KH-22)."
     }
   },
   "ceiling": null,
