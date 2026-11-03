@@ -41,7 +41,7 @@ export function meta() {
 export default function Tracks() {
   const { data, rules, pointed, ruleIds, terms } = useLoaderData<typeof loader>();
   return (
-    <PageShell current="decoder" wide data={{ rules, pointed, terms, dimensions: {}, today: data.today }}>
+    <PageShell current="decoder" data={{ rules, pointed, terms, dimensions: {}, today: data.today }}>
       <div className="flex flex-col gap-5 lg:gap-6 pt-2 lg:pt-8">
         <CompanyTabs current="product" />
         <header className="flex flex-col gap-3">

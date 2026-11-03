@@ -46,7 +46,7 @@ export default function Questions() {
           <h1 className="text-2xl lg:text-3xl font-semibold">{copy.title}</h1>
           <p className="text-lg text-muted-foreground max-w-measure">{copy.lede}</p>
         </header>
-        <ol className="flex flex-col lg:max-w-3xl">
+        <ol className="flex flex-col xl:grid xl:grid-cols-2 xl:gap-x-12">
           {data.rows.map((row, i) => {
             const weakest = row.ids.reduce<Strength | undefined>((w, id) => weaker(w, rules[id]!.strength as Strength), undefined);
             const showStrength = weakest === "institution" || weakest === "secondary";

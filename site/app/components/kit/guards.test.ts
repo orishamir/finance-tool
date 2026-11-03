@@ -243,3 +243,12 @@ describe("a list of products sorted or filtered again", () => {
     expect(hits.map(rel)).toEqual([]);
   });
 });
+
+describe("the page frame", () => {
+  // founder, 2026-11-04: some pages used the room of a large screen and others did not. PageShell sets one frame for every page; a page
+  // never narrows its whole content to the old 72rem frame again (prose keeps max-w-measure, a form may keep its own field widths).
+  it("is the shell's alone: no page sets max-w-page or a wide prop", () => {
+    const hits = files.filter((f) => /\.tsx$/.test(f) && (/\bmax-w-page\b/.test(code(read(f))) || /<PageShell[^>]*\bwide\b/.test(code(read(f)))));
+    expect(hits.map(rel)).toEqual([]);
+  });
+});

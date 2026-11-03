@@ -107,7 +107,7 @@ function HomeBody({ presets, meta, today, bounds, questions, guideTypes }: { que
   const names = holdings.map((h) => h.track?.name ?? h.typedName ?? h.company.name);
   const holdingsLine = ready && holdings.length > 0 ? (holdings.length === 1 ? copy.holdingsSaved.one : copy.holdingsSaved.many).replace("{n}", String(holdings.length)).replace("{names}", names.slice(0, 2).join(", ") + (names.length > 2 ? "…" : "")) : null;
   return (
-    <div className="mx-auto max-w-measure xl:max-w-page flex flex-col gap-8 pt-6 lg:pt-20 xl:grid xl:grid-cols-12 xl:gap-x-12 xl:items-start">
+    <div className="mx-auto max-w-measure xl:max-w-none flex flex-col gap-8 pt-6 lg:pt-20 xl:grid xl:grid-cols-12 xl:gap-x-12 xl:items-start">
       <div className="flex flex-col gap-8 xl:col-span-7">
         <header className="flex flex-col gap-2">
           <h1 className="text-3xl font-semibold">{site.name}</h1>

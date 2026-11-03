@@ -103,7 +103,7 @@ export default function TrackPage() {
   const feeText = (template: string, v: SiteValue) => feeLabel(template, feeYear(v)) + (track.dataset === "pensia-net" ? ` ${copy.feeWhole}` : "");
   return (
     <PageShell current="decoder" data={{ rules: data.rules, pointed: data.pointed, terms: {}, dimensions: data.dimensionNames, today: data.today, ...(data.companyIds[0] ? { company: data.companyIds[0], pageCompanies: data.companyIds } : {}) }}>
-      <div className="flex flex-col gap-8 pt-2 lg:pt-8 max-w-page">
+      <div className="flex flex-col gap-8 pt-2 lg:pt-8">
         <header className="flex flex-col gap-3">
           <Breadcrumb parent={{ href: `/companies/${track.companyId}`, label: track.companyName }} current={track.name} />
           <h1 className="text-2xl lg:text-3xl font-semibold flex flex-wrap items-center gap-3">

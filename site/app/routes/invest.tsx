@@ -92,7 +92,7 @@ export default function Invest() {
     return { rules, pointed: recordsById(compare?.pointed, wb?.pointed), terms: data.feeTerms, dimensions: Object.fromEntries((compare?.checklist ?? []).map((x) => [x.id, x.name])), today: data.today };
   }, [compare, wb, data.today, data.feeRules, data.feeTerms]);
   return (
-    <PageShell current="other" data={provenance} wide>
+    <PageShell current="other" data={provenance}>
       <Page wb={wb} compare={compare} failed={failed} data={data} />
     </PageShell>
   );
