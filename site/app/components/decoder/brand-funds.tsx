@@ -30,7 +30,7 @@ function NumberLink({ f }: { f: BrandFundRow }) {
 function Follows({ f, phone }: { f: BrandFundRow; phone?: boolean }) {
   if (!f.follows) return null;
   return (
-    <Link to={f.follows.href} className="text-link hover:underline inline-flex items-center gap-0.5 whitespace-nowrap self-start">
+    <Link to={f.follows.href} className="relative before:absolute before:inset-x-0 before:-inset-y-[9px] text-link hover:underline inline-flex items-center gap-0.5 whitespace-nowrap self-start">
       {phone && f.follows.kind === "index" && <span className="text-muted-foreground">{c.indexWord}&nbsp;</span>}
       <bdi>{f.follows.name}</bdi>
       <IconDrillIn size={16} />

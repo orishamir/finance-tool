@@ -7,17 +7,19 @@ import { loadInstitutionRegistry } from "./institutions.server";
 import { compactHoldings, holdingsTemplate } from "./track-exposure";
 import { defaultProduct, trackProductIds, type TbData, type TbProduct, type TbRow } from "./track-browser";
 import { cmaFeeValue, compactFee, feeYear, staleCma, type SiteValue } from "./value";
+import { withoutLtd } from "./company-name";
 
 // the six products and the default are in lib/track-browser.ts (the guides read them too)
 export { defaultProduct, trackProductIds };
 
-/** The name the site calls a company by: its brand's, else the company registry's, else the regulator's name without the legal suffix. */
-function shortCompanyName(id: string, legalName: string): string {
+/** The name the site calls a company by: its brand's, else the company registry's, else the regulator's name without the legal suffix.
+ *  The tracks page, the companies list and a company's page all call it so. */
+export function shortCompanyName(id: string, legalName: string): string {
   const brand = brandOfPage(id);
   if (brand) return brand.name;
   const registered = loadInstitutionRegistry().find((r) => r.cma_legal_id === id);
   if (registered) return registered.name_he;
-  return legalName.replace(/\s*בע["״]מ\s*$/, "").trim();
+  return withoutLtd(legalName);
 }
 
 export function buildTrackBrowser(): TbData {

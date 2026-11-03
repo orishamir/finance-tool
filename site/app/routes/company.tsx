@@ -32,6 +32,7 @@ export async function loader({ params }: Route.LoaderArgs) {
   const cma = loadCma();
   // D33: a brand's every address shows its one page: the managing company's tracks, the funds, the brokerage account
   const { brandOfPage, brandFunds } = await import("../lib/brands.server");
+  const { shortCompanyName } = await import("../lib/track-browser.server");
   const brand = brandOfPage(params.id) ?? null;
   const companyId = brand ? brand.cmaId : params.id;
   const company = companyId ? cma.companies.find((c) => c.id === companyId) : undefined;
@@ -117,7 +118,7 @@ export async function loader({ params }: Route.LoaderArgs) {
   const helpRuleIds = Object.values(helpTerms).flatMap((x) => x.ruleIds).filter((id) => allRules[id]);
   const termRules = { ...brokerage?.rules, ...Object.fromEntries([...termGroups.flatMap((g) => g.ids), ...labelRuleIds, ...helpRuleIds].map((id) => [id, allRules[id]!])) };
   const { loadInstitutionRegistry } = await import("../lib/institutions.server");
-  const name = brand?.name ?? company!.name;
+  const name = brand?.name ?? shortCompanyName(company!.id, company!.name);
   const shortName = brand?.name ?? loadInstitutionRegistry().find((r) => r.id === registryIds[0])?.name_he ?? name;
   const companyTerms = { groups: termGroups, rules: termRules, pointed: pointedRecords(termRules, allRules), company: registryIds[0] ?? null, pageCompanies: registryIds, helpTerms, name: shortName, dimensions: termGroups.length ? Object.fromEntries(loadChecklistRows().map((r) => [r.id, r.name])) : {} };
   // the legal companies the page stands for, as their own data writes them (the CMA, the tariff, the fund records)
@@ -180,15 +181,11 @@ function ManagerCompany({ data }: { data: CompanyData }) {
             <h1 className="text-2xl lg:text-3xl font-semibold">
               <bdi>{data.name}</bdi>
             </h1>
-            <p className="text-sm lg:text-base text-muted-foreground max-w-measure">
-              {company ? (
-                <>
-                  <NumAfter lead={copy.lineBefore} value={data.period} />.
-                </>
-              ) : (
-                brandsCopy.lede
-              )}
-            </p>
+            {company && (
+              <p className="text-sm lg:text-base text-muted-foreground max-w-measure">
+                <NumAfter lead={copy.lineBefore} value={data.period} />.
+              </p>
+            )}
             {data.members.length > 1 && (
               <p className="text-sm text-muted-foreground max-w-measure">
                 {brandsCopy.members}{" "}
@@ -219,7 +216,6 @@ function ManagerCompany({ data }: { data: CompanyData }) {
               <h2 id="tr-h" className="text-xl lg:text-2xl font-semibold">
                 {company && data.funds.length === 0 && !data.brokerage ? copy.listHeading : brandsCopy.listHeading} <bdi>{data.name}</bdi>
               </h2>
-              {company && <span className="hidden lg:inline text-sm text-muted-foreground">{"בחרו מסלול כדי לראות את כל הפרטים ומה לבדוק"}</span>}
             </div>
             {company && <Callout tone="info">{copy.feesLine}</Callout>}
 
@@ -229,7 +225,7 @@ function ManagerCompany({ data }: { data: CompanyData }) {
                 ? data.groups.map((g) => ({
                     key: `track:${g.classification}`,
                     render: (open: boolean) => (
-                  <Disclosure key={g.classification} defaultOpen={open} className="flex flex-col gap-2" summaryClassName="min-h-12 md:min-h-14" label={<GroupLabel title={g.classification} count={countLine(g.tracks.length)} />}>
+                  <Disclosure key={g.classification} defaultOpen={open} className="flex flex-col gap-2" summaryClassName="min-h-12 md:min-h-14" label={<GroupLabel title={g.wrapper?.name ?? g.classification} count={countLine(g.tracks.length)} />}>
                   {g.wrapper && (
                     <Link to={`/guide/${g.wrapper.id}`} className="inline-flex items-center gap-0.5 min-h-target text-sm text-link hover:underline self-start px-1">
                       {copy.whatIs} {g.wrapper.name}
@@ -248,6 +244,7 @@ function ManagerCompany({ data }: { data: CompanyData }) {
                   <TrackList
                     feeHead={feeHeadOf(g.feeTemplate) + (g.tracks[0]?.dataset === "pensia-net" ? ` ${copy.feeRowWhole}` : "")}
                     exposureHead={g.stockTemplate ? copy.stock.column.replace("{period}", fmt.period(g.period)) : undefined}
+                    company={data.name}
                     groups={groupTracks(
                       g.tracks.map((t) => ({
                         track: t,

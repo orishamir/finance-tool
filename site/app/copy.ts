@@ -496,7 +496,6 @@ export const parametersPage = {
 
 export const companies = {
   title: "מה חברה מציעה לי",
-  lede: "בחרו חברה כדי לראות את כל המוצרים והמסלולים שלה, ומה כל אחד מהם.",
   filter: "חיפוש חברה",
   noMatch: "אין חברה בשם הזה.",
   searchAll: "לחיפוש בכל האתר",
@@ -504,7 +503,7 @@ export const companies = {
 } as const;
 
 export const company = {
-  lineBefore: "כל מה שהחברה מציעה, עם הסבר לכל מסלול. המסלולים לפי נתוני רשות שוק ההון, ביטוח וחיסכון, נכון ל",
+  lineBefore: "המסלולים לפי נתוני רשות שוק ההון, ביטוח וחיסכון, נכון ל",
   feesLine: "דמי הניהול שמופיעים ליד כל מסלול הם ממוצע של כל העמיתים במסלול, אחרי הנחות, לפי דיווח המסלול לרשות שוק ההון. לא בהכרח מה שתשלמו אתם.",
   feeColumn: "דמי ניהול, ממוצע {year}",
   feeRow: "דמי ניהול, ממוצע",
@@ -522,17 +521,16 @@ export const company = {
   feeRowWhole: "לקרן כולה",
   listHeading: "כל המסלולים של",
   tracks: { one: "מסלול אחד", two: "שני מסלולים", many: "מסלולים" },
-  trackLine: { fund: "קופה", classification: "במה הכסף מושקע:" },
+  trackLine: { fund: "קופה" },
   sameName: { distinct: "שני מסלולים באותו שם: שתי קופות נפרדות", twice: "אותו מסלול מופיע פעמיים", unresolved: "לא הוכרע: הנתונים לא מראים אם זו אותה קופה" },
   oldData: "נתוני הרשות לא עודכנו מאז",
   paste: { title: "לא מצאתם שם?", label: "הקלידו או הדביקו את השם כמו שהוא מופיע באפליקציה, בפרסומת או בדוח.", placeholder: "למשל: גמל להשקעה כללי" },
   whatIs: "מה זה", // "מה זה קופת גמל להשקעה" link under a group, from the approved mockup
   productType: "סוג המוצר", // PC side card, from the approved mockup
   toGuide: "לעמוד המדריך על",
-  pcColumns: { name: "שם המסלול, כמו שהחברה כותבת אותו", fund: "קופה", classification: "סיווג", holds: "במה הכסף מושקע", open: "פתיחה", group: "קבוצה" }, // from the approved mockup
+  pcColumns: { name: "המסלול", fund: "קופה", classification: "סיווג", open: "פתיחה", group: "קבוצה" }, // from the approved mockup
   notInData: "לא נמצא בנתוני הרשות",
   default: "ברירת המחדל",
-  subSpecialization: "התמחות:",
   /** D34 (founder, 2026-10-26): the exposure rings in the last column of the track table, and two rows of the track page (F-87, F-88). */
   stock: {
     column: "חשיפה בסוף {period}",
@@ -2056,7 +2054,6 @@ export const r3transfer = {
 export const brands = {
   heading: "בתי השקעות",
   searchLine: "בית השקעות",
-  lede: "כל מה שהחברה מציעה, כל סוג מוצר תחת כותרת משלו.",
   members: "כולל את החברות:",
   listHeading: "כל המוצרים של",
   funds: {
@@ -2077,7 +2074,7 @@ export const brands = {
 } as const;
 
 export const r4catalogue = {
-  headings: { companies: "חברות מנהלות", institutions: "בנקים ובתי השקעות", fundManagers: "מנהלי קרנות" },
+  headings: { companies: "חברות מנהלות", institutions: "בנקים ובתי השקעות נוספים", fundManagers: "מנהלי קרנות" },
   classWord: { bank: "בנק", broker: "בית השקעות" },
   /** Row line: `{סוג}` · תעריפון מ־`{תאריך}` · or "התעריפון לא נאסף" in caution. */
   rowLine: { tariffFrom: "תעריפון מ־", missing: "התעריפון לא נאסף", noDate: "ללא תאריך פרסום" },
@@ -2561,9 +2558,8 @@ export const scopeWords = {
   },
   noPage: {
     title: "מה כתוב במסמכים של חברות שאין להן עמוד כאן",
-    line: "מה שנמצא במסמכים של חברות שלאתר אין עליהן עמוד משלהן, לפי חברה.",
     // what no company's section lists: the records the rule base keeps that are not rules (review, 2026-10-26)
-    none: { title: "לא נכלל ככלל: פרסומים, ספירות ונתונים", line: "מה שהאתר שומר עם המקור אבל לא מציג ככלל: סיפורים מפורומים, כתבות, רשימות וספירות, נתונים, תנאי שימוש של אתרים, תעריפים של חברות, ומקומות שבהם חיפשנו כלל ולא מצאנו." },
+    none: { title: "לא נכלל ככלל: פרסומים, ספירות ונתונים", line: "מה שהאתר שומר עם המקור אבל לא מציג ככלל: סיפורים מפורומים, כתבות, רשימות וספירות, נתונים, תנאי שימוש של אתרים, תעריפים של חברות, ומקומות שבהם חיפשנו כלל ולא מצאנו.", fold: "כל הרשומות" },
   },
   /** The rules page: company terms are not listed there. */
   rulesLine: { before: "כאן רק חוקים וכללים שלא תלויים בחברה מסוימת. מה שכתוב רק במסמכים של חברה מסוימת מופיע בעמוד של אותה חברה.", link: "לרשימת החברות" },
