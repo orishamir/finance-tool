@@ -4,6 +4,25 @@
   const FEE_YEAR = DATA.feeYear;
   const he = new Intl.Collator("he");
   const R = (a) => ({ id: a[0], co: CO[a[1]], name: a[2], sub: a[3], kind: a[4], fee: a[5], dep: a[6], stock: a[7], fx: a[8], assets: a[9], y3: a[10], y5: a[11], open: a[12] });
+  const words = (s) => s.split(/\s+/).filter(Boolean);
+  const norm = (s) => s.toLowerCase().replace(/[\s"״'׳\-–()]/g, "");
+  /**
+   * Each track's short name: its name without the words every track of its company in this product starts with (the
+   * company and product, "הראל גמל להשקעה"), and without a leading dash or "מסלול". The cut stops before a word of a
+   * kind's name, so "חוסכים המעדיפים סיכון מוגבר" keeps its words. A company with one track loses only its own name.
+   */
+  function shortNames(cos, kindWords) {
+    for (const [c, s] of cos) {
+      const ws = s.list.map((r) => words(r.name));
+      let k = 0;
+      if (ws.length > 1) {
+        const min = Math.min(...ws.map((w) => w.length));
+        while (k < min - 1 && ws.every((w) => w[k] === ws[0][k])) k++;
+        while (k > 0 && kindWords.has(norm(ws[0][k - 1]))) k--;
+      } else if (words(c).every((w, i) => ws[0][i] === w)) k = words(c).length;
+      s.list.forEach((r, i) => (r.short = ws[i].slice(k).join(" ").replace(/^[-–:]\s*/, "").replace(/^מסלול\s+/, "") || r.name));
+    }
+  }
   const median = (xs) => { const s = xs.filter((x) => x != null).sort((a, b) => a - b); return s.length ? s[Math.floor(s.length / 2)] : 0; };
 
   const products = DATA.products.map((p) => {
@@ -14,7 +33,8 @@
     // kinds from the highest stock share to the lowest (median over the kind's tracks), ties by size
     const kinds = [...bySub.entries()].map(([sub, list]) => ({ sub, kind: list[0].kind, count: list.length, stock: median(list.map((r) => r.stock)) })).sort((a, b) => b.stock - a.stock || b.count - a.count);
     const co = new Map();
-    for (const r of rows) { const s = co.get(r.co) ?? { count: 0, assets: 0 }; s.count++; s.assets += r.assets ?? 0; co.set(r.co, s); }
+    for (const r of rows) { const s = co.get(r.co) ?? { count: 0, assets: 0, list: [] }; s.count++; s.assets += r.assets ?? 0; s.list.push(r); co.set(r.co, s); }
+    shortNames([...co.entries()], new Set(kinds.flatMap((k) => words(k.sub).map(norm)).filter(Boolean)));
     return { ...p, rows, hasKinds, kinds, co, coOrder: [...co.entries()].sort((a, b) => b[1].assets - a[1].assets).map(([c]) => c) };
   });
 
@@ -149,11 +169,13 @@
       return;
     }
     const coLine = (c) => { const s = p.co.get(c); return `${count(s.count)} · ${bigNum(s.assets, "c")} ב${p.name}`; };
+    // say only what the group's heading does not: by company the kind is shown only when the short name leaves it out;
+    // by kind the short name is shown only when it says more than the kind
     const nameCell = (r) =>
       byCo
-        ? `<span class="nm"><a class="tname">${esc(r.name)}</a>${tags(r, true)}</span>`
-        : `<span class="nm"><span class="co"><a class="coname">${esc(r.co)}</a><span class="w">${coLine(r.co)}</span></span><span class="tsub">${esc(r.name)}</span>${tags(r, false)}</span>`;
-    const head = `<thead><tr><th class="c-name">${byCo ? "שם המסלול, כמו שהחברה כותבת אותו" : "החברה, ושם המסלול כמו שהיא כותבת אותו"}</th><th class="c-id">קופה</th><th class="c-fee">דמי ניהול, ממוצע ${FEE_YEAR}</th><th class="c-exp">חשיפה בסוף ספטמבר 2026</th><th class="c-y">תשואה שנתית ממוצעת, לפני דמי ניהול</th><th class="c-a">נכסים בסוף ספטמבר 2026</th><th class="c-open"><span class="sr">פתיחה</span></th></tr></thead>`;
+        ? `<span class="nm"><a class="tname" title="${esc(r.name)}">${esc(r.short)}</a>${tags(r, !norm(r.short).includes(norm(r.sub)))}</span>`
+        : `<span class="nm"><span class="co"><a class="coname" title="${esc(r.name)}">${esc(r.co)}</a><span class="w">${coLine(r.co)}</span></span>${norm(r.short) === norm(r.sub) ? "" : `<span class="tsub">${esc(r.short)}</span>`}${tags(r, false)}</span>`;
+    const head = `<thead><tr><th class="c-name">${byCo ? "המסלול" : "החברה"}</th><th class="c-id">קופה</th><th class="c-fee">דמי ניהול, ממוצע ${FEE_YEAR}</th><th class="c-exp">חשיפה בסוף ספטמבר 2026</th><th class="c-y">תשואה שנתית ממוצעת, לפני דמי ניהול</th><th class="c-a">נכסים בסוף ספטמבר 2026</th><th class="c-open"><span class="sr">פתיחה</span></th></tr></thead>`;
     const tr = (r) => `<tr><td>${nameCell(r)}</td><td>${n(r.id, "id")}</td><td><span class="figs">${feeFigs(r)}</span></td><td>${exposureCell(r)}</td><td><span class="figs">${yieldCell(r)}</span></td><td>${money(r.assets)}</td><td>${chev}</td></tr>`;
     const table = `<div class="pc"><table class="fixed past">${head}${groups.map((g) => `<tbody><tr class="grp"><th colspan="7" scope="rowgroup"><span class="grp-t">${esc(g.title)}</span><span class="grp-l">${g.line}</span></th></tr>${g.list.map(tr).join("")}</tbody>`).join("")}</table></div>`;
     const prow = (r) => `<div class="prow"><div class="pmain">${nameCell(r)}<span class="pline">${feeFigs(r)}<span class="fig pid"><span class="w">קופה</span>${n(r.id, "id")}</span></span><span class="pline">${exposureCell(r)}</span><span class="pline">${yieldCell(r)}</span><span class="pline"><span class="w">נכסים</span>${money(r.assets)}</span></div>${chev}</div>`;

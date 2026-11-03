@@ -26,6 +26,8 @@ const SHORT = {
 };
 const shortName = (c) => SHORT[c.legal_id] ?? c.name.replace(/\s*בע["״]מ\s*/g, "").trim();
 const num = (s) => (s === "" || s == null ? null : Number(s));
+// the child-savings kinds repeat the product's name ("חיסכון לילד -חוסכים המעדיפים סיכון גבוה"); the product is already chosen
+const kindName = (k) => k.trim().replace(/^חיסכון לילד\s*-\s*/, "");
 const r2 = (v) => (v == null || !isFinite(v) ? null : Math.round(v * 100) / 100);
 
 const companies = [];
@@ -39,7 +41,7 @@ const products = PRODUCTS.map((p) => {
     if (!coIndex.has(name)) coIndex.set(name, companies.push(name) - 1);
     // [fund id, company, name as written, sub-kind, kind, fee from savings, fee from deposits, stock %, currency %, assets (NIS m), 3y, 5y, opened]
     return [
-      f.fund_id, coIndex.get(name), f.names.cma[0].trim(), f.sub_specialization.trim(), f.specialization.trim(),
+      f.fund_id, coIndex.get(name), f.names.cma[0].trim(), kindName(f.sub_specialization), f.specialization.trim(),
       num(r.AVG_ANNUAL_MANAGEMENT_FEE), num(r.AVG_DEPOSIT_FEE),
       assets ? r2((num(r.STOCK_MARKET_EXPOSURE) / assets) * 100) : null, assets ? r2((num(r.FOREIGN_CURRENCY_EXPOSURE) / assets) * 100) : null,
       r2(assets), num(r.AVG_ANNUAL_YIELD_TRAILING_3YRS), num(r.AVG_ANNUAL_YIELD_TRAILING_5YRS), f.inception_date ?? "",
