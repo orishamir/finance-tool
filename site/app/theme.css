@@ -365,8 +365,7 @@
   --ease-exit: cubic-bezier(0.3, 0, 1, 1);
 
   --container-measure: 38rem; /* prose line length; check real Hebrew lines in the browser */
-  --container-page: 72rem;
-  --container-wide: 96rem; /* a page whose lists sit side by side (the index page) */
+  --container-wide: 96rem; /* the page frame, the same on every page (2026-11-04) */
 }
 
 @theme inline {

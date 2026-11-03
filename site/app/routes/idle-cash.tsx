@@ -108,7 +108,7 @@ function Screen({ bundle, failed, rules, today, p03 }: { bundle: CompareBundle |
 
 
   return (
-    <div className={cx("flex flex-col gap-6 pt-2 lg:pt-8 mx-auto w-full", resultShown ? "max-w-page" : "max-w-3xl")}>
+    <div className={cx("flex flex-col gap-6 pt-2 lg:pt-8 mx-auto w-full", resultShown ? undefined : "max-w-3xl")}>
       <Breadcrumb parent={{ href: "/", label: site.name }} current={copy.title} />
       <header className="flex flex-col gap-2">
         <h1 className="text-2xl lg:text-3xl font-semibold">{copy.title}</h1>
