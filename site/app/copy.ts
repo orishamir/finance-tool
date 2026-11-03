@@ -503,10 +503,6 @@ export const companies = {
 } as const;
 
 export const company = {
-  lineBefore: "המסלולים לפי נתוני רשות שוק ההון, ביטוח וחיסכון, נכון ל",
-  feesLine: "דמי הניהול שמופיעים ליד כל מסלול הם ממוצע של כל העמיתים במסלול, אחרי הנחות, לפי דיווח המסלול לרשות שוק ההון. לא בהכרח מה שתשלמו אתם.",
-  feeColumn: "דמי ניהול, ממוצע {year}",
-  feeRow: "דמי ניהול, ממוצע",
   /** D34 (founder, 2026-10-26): both fees on every row, the words after each figure; the legal cap and the direct expenses under the table. */
   fees: {
     savings: "מהחיסכון",
@@ -518,18 +514,10 @@ export const company = {
   },
   /** The labels beside a track's name (lib/track-labels.ts): facts about this track only (D35). */
   labels: { new: "חדש" } as Record<string, string>,
-  feeRowWhole: "לקרן כולה",
-  listHeading: "כל המסלולים של",
-  tracks: { one: "מסלול אחד", two: "שני מסלולים", many: "מסלולים" },
-  trackLine: { fund: "קופה" },
-  sameName: { distinct: "שני מסלולים באותו שם: שתי קופות נפרדות", twice: "אותו מסלול מופיע פעמיים", unresolved: "לא הוכרע: הנתונים לא מראים אם זו אותה קופה" },
+  /** The track page's note when another track has its name (the company page's same-name banners went with its old list, 2026-11-03). */
+  sameName: { distinct: "שני מסלולים באותו שם: שתי קופות נפרדות" },
   oldData: "נתוני הרשות לא עודכנו מאז",
   paste: { title: "לא מצאתם שם?", label: "הקלידו או הדביקו את השם כמו שהוא מופיע באפליקציה, בפרסומת או בדוח.", placeholder: "למשל: גמל להשקעה כללי" },
-  whatIs: "מה זה", // "מה זה קופת גמל להשקעה" link under a group, from the approved mockup
-  productType: "סוג המוצר", // PC side card, from the approved mockup
-  toGuide: "לעמוד המדריך על",
-  pcColumns: { name: "המסלול", fund: "קופה", classification: "סיווג", open: "פתיחה", group: "קבוצה" }, // from the approved mockup
-  notInData: "לא נמצא בנתוני הרשות",
   default: "ברירת המחדל",
   /** D34 (founder, 2026-10-26): the exposure rings in the last column of the track table, and two rows of the track page (F-87, F-88). */
   stock: {
@@ -1566,6 +1554,12 @@ export const trackBrowser = {
   noResult: { before: "אין מסלולים שמתאימים לחיפוש ״", after: "״." },
   /** The guide's link to a product's tracks: "כל המסלולים של קופת גמל להשקעה בכל החברות". */
   guideLink: { before: "כל המסלולים של ", after: " בכל החברות" },
+  /** A company's page (2026-11-03): its products as chips, "כל המוצרים" first; the count line of that view ("112 מסלולים ב־8 מוצרים") and its order line. */
+  company: {
+    all: "כל המוצרים",
+    inProducts: { one: "במוצר אחד", two: "בשני מוצרים", many: "ב־", manyAfter: "מוצרים" },
+    order: "בתוך כל מוצר, המסלולים מסודרים לפי ",
+  },
   /** What each "?" explains, for its spoken name; on a phone, the line above the list that opens the same cards. */
   help: { fee: "דמי ניהול ממוצעים", assets: "כסף מנוהל", exposure: "חשיפה למניות ולמט״ח", phoneLead: "מה אומרים המספרים:" },
   pastNote: "התשואה היא תשואת עבר כמו שהרשות מפרסמת אותה: לפני דמי הניהול ולפני מס. היא לא אומרת מה יקרה בהמשך, ולכן אין מיון לפיה.",

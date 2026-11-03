@@ -44,6 +44,8 @@ export interface TbTemplates {
 export interface TbProduct {
   id: string;
   name: string;
+  /** A type the site has no guide or tracks page for (a company's page only): its id is the regulator's type. */
+  noPage?: true;
   dataset: "gemelnet" | "pensia-net";
   /** The report period of this product's tracks ("2026-09"). */
   period: string;
@@ -68,6 +70,8 @@ export interface TbData {
 
 export interface TbTrack {
   id: number;
+  /** The regulator's file the track is in: where its fund number links. */
+  dataset: TbProduct["dataset"];
   /** Index into `TbData.companies`. */
   company: number;
   companyName: string;
@@ -120,6 +124,7 @@ export interface TbKind {
 export interface ProductView {
   id: string;
   name: string;
+  noPage?: true;
   dataset: TbProduct["dataset"];
   hasKinds: boolean;
   tracks: TbTrack[];
@@ -141,6 +146,7 @@ export function buildProductView(data: TbData, productId: string): ProductView |
     const co = data.companies[r.c]!;
     return {
       id: r.f,
+      dataset: p.dataset,
       company: r.c,
       companyName: co.name,
       fullName: r.n,
@@ -192,7 +198,7 @@ export function buildProductView(data: TbData, productId: string): ProductView |
   });
   // F-99: the company with the most assets in this product first, ties by name
   companies.sort((a, b) => (shareOf(b.assets) ?? -1) - (shareOf(a.assets) ?? -1) || collator.compare(a.name, b.name));
-  return { id: p.id, name: p.name, dataset: p.dataset, hasKinds, tracks, companies, kinds };
+  return { id: p.id, name: p.name, ...(p.noPage ? { noPage: p.noPage } : {}), dataset: p.dataset, hasKinds, tracks, companies, kinds };
 }
 
 /** The glossary terms behind the "?" of the column heads, by their Hebrew names: only where the card says what the head leaves out (an
@@ -363,6 +369,12 @@ export const companiesIn = (list: readonly TbTrack[]): number => new Set(list.ma
 /** "מסלול אחד", "שני מסלולים", "16 מסלולים": one and two are words, not "1 מסלולים" (copy.md 7.3). */
 export function tracksPhrase(k: number): string {
   return k === 0 ? t.count.tracksNone : k === 1 ? t.count.tracksOne : k === 2 ? t.count.tracksTwo : `${fmt.number(k)} ${t.count.tracksMany}`;
+}
+
+/** "במוצר אחד", "בשני מוצרים", "ב־8 מוצרים": where a company's tracks are, on its page's count line. */
+export function inProductsPhrase(k: number): string {
+  const w = t.company.inProducts;
+  return k === 1 ? w.one : k === 2 ? w.two : `${w.many}${fmt.number(k)} ${w.manyAfter}`;
 }
 
 export function companiesPhrase(k: number): string {

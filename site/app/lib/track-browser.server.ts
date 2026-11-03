@@ -22,7 +22,8 @@ export function shortCompanyName(id: string, legalName: string): string {
   return withoutLtd(legalName);
 }
 
-/** `companyId`: one company's tracks only (its page, 2026-11-03); the figures' templates are then built over its tracks. */
+/** `companyId`: one company's tracks only (its page, 2026-11-03); the figures' templates are then built over its tracks, and its
+ *  tracks of a type the site has no product page for (מרכזית לפיצויים, מטרה אחרת) are products too, named by the regulator's type. */
 export function buildTrackBrowser(companyId?: string): TbData {
   const cma = loadCma();
   const feesOf = loadCmaFees();
@@ -32,8 +33,13 @@ export function buildTrackBrowser(companyId?: string): TbData {
   const wrappers = loadWrappers();
 
   const companyIds: string[] = [];
-  const products: TbProduct[] = trackProductIds.flatMap((id) => {
-    const list = cma.tracks.filter((x) => x.wrapperId === id && (!companyId || x.companyId === companyId));
+  const own = (x: (typeof cma.tracks)[number]) => !companyId || x.companyId === companyId;
+  const kinds = [
+    ...trackProductIds.map((id) => ({ id, page: true, of: (x: (typeof cma.tracks)[number]) => x.wrapperId === id })),
+    ...(companyId ? [...new Set(cma.tracks.filter((x) => own(x) && !x.wrapperId).map((x) => x.classification))].map((c) => ({ id: c, page: false, of: (x: (typeof cma.tracks)[number]) => !x.wrapperId && x.classification === c })) : []),
+  ];
+  const products: TbProduct[] = kinds.flatMap(({ id, page, of }) => {
+    const list = cma.tracks.filter((x) => of(x) && own(x));
     if (list.length === 0) return [];
     const period = list[0]!.reportPeriod;
     const balances = list.map((x) => feesOf.get(x.fundId)!.balance);
@@ -70,7 +76,7 @@ export function buildTrackBrowser(companyId?: string): TbData {
       };
     });
     const wrapper = wrappers.find((w) => w.id === id);
-    return [{ id, name: wrapper?.names.he[0] ?? list[0]!.classification, dataset: list[0]!.dataset, period, templates: { balance, deposit, holdings, y3, y5 }, rows }];
+    return [{ id, name: wrapper?.names.he[0] ?? list[0]!.classification, ...(page ? {} : { noPage: true as const }), dataset: list[0]!.dataset, period, templates: { balance, deposit, holdings, y3, y5 }, rows }];
   });
 
   const companies = companyIds.map((id) => {
