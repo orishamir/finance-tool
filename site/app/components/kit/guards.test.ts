@@ -8,7 +8,8 @@
 //  6. "אחר" in a row of choices is the kit's OtherChip (ChoiceChips `other`), never an ordinary chip (2026-10-26);
 //  7. every <table> is fixed with a width per column (design-system 2.5a, 2026-10-31);
 //  8. a year chart's pointer is the kit's useYearZoom: a chart that clears its reading when the pointer lifts lost the year on a phone (issue 22);
-//  9. a chart's motion is the kit's glide: a chart with a loop of its own restarted from its last rest on every step of a slider (2026-11-01).
+//  9. a chart's motion is the kit's glide: a chart with a loop of its own restarted from its last rest on every step of a slider (2026-11-01);
+// 11. the arrow at the end of a row that opens a page is the kit's RowArrow, in the link's colour (founder, 2026-11-03), never a grey one.
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { join, relative } from "node:path";
@@ -224,5 +225,14 @@ describe("the shared stylesheet", () => {
   it("every enabled button and summary shows the hand (audit A99): nothing was pasted into that selector", () => {
     const css = readFileSync(join(root, "app.css"), "utf8");
     expect(css).toMatch(/button:not\(:disabled\),\s*\[role="button"\]:not\(\[aria-disabled="true"\]\),\s*summary \{\s*cursor: pointer;/);
+  });
+});
+
+describe("the arrow that opens a page", () => {
+  /** The source sheet's row arrow opens a sheet on the same page, not a page: it stays grey. */
+  const GREY_ALLOWED = new Set(["components/provenance.tsx"]);
+  it("is the kit's RowArrow, not a grey IconDrillIn", () => {
+    const hits = files.filter((f) => /\.tsx$/.test(f) && !rel(f).startsWith("components/kit/") && !GREY_ALLOWED.has(rel(f)) && /<IconDrillIn[^>]*text-muted-foreground/.test(code(read(f))));
+    expect(hits.map(rel)).toEqual([]);
   });
 });

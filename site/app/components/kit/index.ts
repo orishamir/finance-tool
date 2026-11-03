@@ -40,7 +40,7 @@ export { TableCols, type ColWidth } from "./table-cols";
 export { FilterChip } from "./filter-chip";
 export { DidYouKnow, type FactItem } from "./did-you-know";
 export { useSoftSwap } from "./soft-swap";
-export { FeeFigure, FeeWordsNote, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, type ProductColumn, type ProductGroup, type ProductRow } from "./product-table";
+export { FeeFigure, FeeWordsNote, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, type ProductColumn, type ProductGroup, type ProductRow } from "./product-table";
 export { PageTabs, type PageTab } from "./page-tabs";
 export { SortHead, type SortState } from "./sort-head";
 export { ExposureCell, FeeKey, FeeNum, GemelNetLink, ShareNum, TrackFeeLines, TrackFundId, TrackLabels, gemelNetUrl } from "./track-cells";

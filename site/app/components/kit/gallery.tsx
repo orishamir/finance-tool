@@ -12,7 +12,7 @@ import { IconDrillIn } from "../icons";
 import { label } from "../../lib/labels";
 import { fmt } from "../../lib/format";
 import { PileStory, PileYears } from "./pile-story";
-import { AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, Button, Callout, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, LabelFilter, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, CompareTable, TableCols, CoverageFold, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, PageTabs, SortHead, ExposureCell, FeeKey, FeeNum, HelpMark, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, GainBars, GapNote, HeadlineFigure, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, ParameterLine, PercentField, PlanChips, KnobStrip, ChangeChart, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, RangeField, RankBadge, Section, SegmentedControl, SelectField, Sentence, ShareRings, SourceLine, Stat, StatRow, StatTile, StepButtons, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth } from "./index";
+import { AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, Button, Callout, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, LabelFilter, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, CompareTable, TableCols, CoverageFold, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, SortHead, ExposureCell, FeeKey, FeeNum, HelpMark, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, GainBars, GapNote, HeadlineFigure, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, ParameterLine, PercentField, PlanChips, KnobStrip, ChangeChart, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, RangeField, RankBadge, Section, SegmentedControl, SelectField, Sentence, ShareRings, SourceLine, Stat, StatRow, StatTile, StepButtons, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth } from "./index";
 
 const g = copy.gallery;
 
@@ -865,6 +865,7 @@ function SortableTable({ row }: { row: (key: string, name: string, n: string, ra
   return (
     <ProductTable
       stickyHead
+      foldable
       columns={[
         { id: "name", head: p.name },
         { id: "number", head: p.number, width: 7.5 },
@@ -934,9 +935,17 @@ function Lists({ today }: { today: string }) {
           />
         </State>
       </Demo>
-      <Demo name="ProductTable (headings, sortable heads, sticky head)" use={g.uses.ProductTableGroups}>
-        <State label="groups with a heading (a title, then a line of figures); the heads sort the table and set aria-sort; the head row sticks under the site's header while the table fits its card" wide>
+      <Demo name="ProductTable (headings, folding, sortable heads, sticky head)" use={g.uses.ProductTableGroups}>
+        <State label="groups with a heading (a title, then a line of figures); a press on a heading's strip or its chevron folds the group; the heads sort the table and set aria-sort; the head row sticks under the site's header while the table fits its card" wide>
           <SortableTable row={row} />
+        </State>
+      </Demo>
+      <Demo name="RowArrow" use={g.uses.RowArrow}>
+        <State label="a row that opens a page of the site ends in the arrow, in the link's colour" wide>
+          <a href="#kit" className="flex items-center justify-between gap-3 min-h-14 px-2 border-b border-border hover:bg-accent/40">
+            <span className="font-medium">{p.a}</span>
+            <RowArrow />
+          </a>
         </State>
       </Demo>
       <Demo name="SortHead" use={g.uses.SortHead}>

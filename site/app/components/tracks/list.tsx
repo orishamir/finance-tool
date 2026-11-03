@@ -8,9 +8,8 @@ import { trackBrowser as t } from "../../copy";
 import { fmt } from "../../lib/format";
 import { HELP_TERMS, assetsText, missingYield, showsKindChip, showsShortName, tracksPhrase, type GroupBy, type ProductView, type SortId, type SortState as Sort, type TbGroup, type TbTrack, ascending } from "../../lib/track-browser";
 import type { SiteValue } from "../../lib/value";
-import { IconDrillIn } from "../icons";
 import { Num } from "../provenance";
-import { ExposureCell, FeeKey, HelpMark, ProductFigures, ProductPhoneRow, ProductTable, SortHead, Tag, TrackFeeLines, TrackFundId, TrackLabels, cx, type ProductColumn, type ProductGroup } from "../kit";
+import { ExposureCell, FeeKey, HelpMark, ProductFigures, ProductPhoneRow, ProductTable, RowArrow, SortHead, Tag, TrackFeeLines, TrackFundId, TrackLabels, cx, type ProductColumn, type ProductGroup } from "../kit";
 
 const mutedWord = "text-sm text-muted-foreground";
 
@@ -168,7 +167,7 @@ function PhoneRow({ x, by, view, notes }: { x: TbTrack; by: GroupBy; view: Produ
             {by === "company" && showsKindChip(x) && <Tag>{x.sub}</Tag>}
           </span>
         </span>
-        <IconDrillIn className="text-muted-foreground shrink-0" />
+        <RowArrow />
       </Link>
       {by === "kind" && company && (
         <span className={mutedWord}>
@@ -271,7 +270,7 @@ export function TrackList({ view, groups, by, sort, sortable, onSort, feeYear, p
               </span>,
               <AssetsFigure value={x.assets} />,
               <Link to={x.href} aria-label={x.fullName} className="inline-flex size-target items-center justify-center -my-2">
-                <IconDrillIn className="text-muted-foreground" />
+                <RowArrow />
               </Link>,
             ],
           },
@@ -306,6 +305,7 @@ export function TrackList({ view, groups, by, sort, sortable, onSort, feeYear, p
   return (
     <ProductTable
       stickyHead
+      foldable
       columns={columns}
       groups={tableGroups}
       foot={(place) => (

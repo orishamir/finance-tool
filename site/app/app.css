@@ -795,6 +795,33 @@
     font-weight: 600;
     color: var(--foreground);
   }
+  /* A heading that folds its group (ProductTable `foldable`): the strip is pressed, its chevron at the inline end. */
+  .grp-foldable {
+    cursor: pointer;
+  }
+  .grp-foldable th,
+  .grp-phone.grp-foldable {
+    position: relative;
+    padding-inline-end: 52px;
+  }
+  @media (hover: hover) {
+    .grp-foldable:hover th,
+    .grp-phone.grp-foldable:hover {
+      background: var(--accent);
+    }
+  }
+  .grp-fold {
+    position: absolute;
+    inset-inline-end: 4px;
+    top: 50%;
+    translate: 0 -50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    color: var(--muted-foreground);
+  }
   .grp-line {
     font-size: var(--text-sm);
     color: var(--muted-foreground);

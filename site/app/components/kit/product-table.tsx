@@ -1,12 +1,14 @@
 // A list of products of one kind (founder, 2026-10-27, design-system 11 "Lists of products"): one table on a desktop, one row per
 // product on a phone, never a stack of cards. The company page's tracks, a brand's funds and the track browser are built on it. A group
 // of rows can carry a caution banner (tracks that share a name) or a heading (a company, a kind of money: 2026-11-03, the track browser).
-// A column head can sort the table (`SortHead`), and the head row can stay under the site's header while a long list scrolls. The cells
-// and the phone rows are the caller's; the shell, the banner, the heading and the widths are here.
+// A column head can sort the table (`SortHead`), and the head row can stay under the site's header while a long list scrolls. With
+// `foldable`, a heading's strip folds its group's rows (founder, 2026-11-03: "make the company name strip clickable for collapsible"); a
+// link in the strip (the company's page) still opens. The cells and the phone rows are the caller's; the shell, the banner, the heading
+// and the widths are here. `RowArrow` is the arrow at the end of a row that opens a page of the site.
 import { Fragment, useId, useLayoutEffect, useRef, useState, useSyncExternalStore, type ReactNode } from "react";
-import { invest } from "../../copy";
+import { invest, kit } from "../../copy";
 import type { SiteValue } from "../../lib/value";
-import { IconAlert, IconExternal } from "../icons";
+import { IconAlert, IconChevronDown, IconDrillIn, IconExternal } from "../icons";
 import { Num, RulesLine } from "../provenance";
 import { Card } from "./card";
 import { cx } from "./cx";
@@ -81,9 +83,40 @@ function useFitsWidth(on: boolean, place: "phone" | "table" | null) {
   return { card, fits: on && fits };
 }
 
-export function ProductTable({ columns, groups, foot, stickyHead }: { columns: ProductColumn[]; groups: ProductGroup[]; foot?: (place: "phone" | "table") => ReactNode; /** The head row stays under the site's header while the page scrolls (a long list). It sticks while the table fits its card; a table that scrolls sideways scrolls its head with it. */ stickyHead?: boolean }) {
+/** A heading's strip, folding its group when `fold` is given: a press anywhere on it but a link toggles; the chevron is its button. */
+function HeadingParts({ heading, fold }: { heading: NonNullable<ProductGroup["heading"]>; fold?: { open: boolean; toggle: () => void } }) {
+  return (
+    <>
+      <span className="grp-title">{heading.title}</span>
+      {heading.line && <span className="grp-line">{heading.line}</span>}
+      {fold && (
+        <button
+          type="button"
+          aria-expanded={fold.open}
+          aria-label={kit.groupFold}
+          onClick={(e) => {
+            e.stopPropagation();
+            fold.toggle();
+          }}
+          className="grp-fold"
+        >
+          <IconChevronDown size={18} className={cx("transition-transform duration-[var(--duration-fold)] ease-standard", fold.open && "rotate-180")} />
+        </button>
+      )}
+    </>
+  );
+}
+
+/** The strip's own press: a link or a button inside it keeps its own. */
+const stripPress = (toggle: () => void) => (e: React.MouseEvent) => {
+  if (!(e.target as HTMLElement).closest("a, button")) toggle();
+};
+
+export function ProductTable({ columns, groups, foot, stickyHead, foldable }: { columns: ProductColumn[]; groups: ProductGroup[]; foot?: (place: "phone" | "table") => ReactNode; /** The head row stays under the site's header while the page scrolls (a long list). It sticks while the table fits its card; a table that scrolls sideways scrolls its head with it. */ stickyHead?: boolean; /** A heading's strip folds its group's rows; every group starts open. */ foldable?: boolean }) {
   const bannerId = useId();
   const place = usePlace();
+  const [closed, setClosed] = useState<ReadonlySet<string>>(() => new Set());
+  const foldOf = (key: string) => (foldable ? { open: !closed.has(key), toggle: () => setClosed((c) => { const n = new Set(c); if (!n.delete(key)) n.add(key); return n; }) } : undefined);
   const { card, fits } = useFitsWidth(!!stickyHead, place);
   // the columns that share the rest keep a readable width: under that the table scrolls inside its card (a narrow tablet)
   const minRem = columns.reduce((sum, c) => sum + (c.width ?? MIN_SHARED_REM), 0);
@@ -92,11 +125,11 @@ export function ProductTable({ columns, groups, foot, stickyHead }: { columns: P
       {place !== "table" && (
       <Card pad="none" className="md:hidden overflow-hidden flex flex-col">
         {groups.map((g) => {
-          const rows = g.rows.map((r) => <Fragment key={r.key}>{r.phone}</Fragment>);
+          const fold = g.heading ? foldOf(g.key) : undefined;
+          const rows = fold?.open === false ? [] : g.rows.map((r) => <Fragment key={r.key}>{r.phone}</Fragment>);
           const heading = g.heading && (
-            <div className="grp-phone">
-              <span className="grp-title">{g.heading.title}</span>
-              {g.heading.line && <span className="grp-line">{g.heading.line}</span>}
+            <div className={cx("grp-phone", fold && "grp-foldable")} onClick={fold && stripPress(fold.toggle)}>
+              <HeadingParts heading={g.heading} fold={fold} />
             </div>
           );
           return g.banner ? (
@@ -132,18 +165,20 @@ export function ProductTable({ columns, groups, foot, stickyHead }: { columns: P
             </tr>
           </thead>
           <tbody>
-            {groups.flatMap((g) => [
+            {groups.flatMap((g) => {
+              const fold = g.heading ? foldOf(g.key) : undefined;
+              const shut = fold?.open === false;
+              return [
               ...(g.heading
                 ? [
-                    <tr key={`${g.key}-heading`} className="grp-row">
+                    <tr key={`${g.key}-heading`} className={cx("grp-row", fold && "grp-foldable")} onClick={fold && stripPress(fold.toggle)}>
                       <th colSpan={columns.length} scope="rowgroup">
-                        <span className="grp-title">{g.heading.title}</span>
-                        {g.heading.line && <span className="grp-line">{g.heading.line}</span>}
+                        <HeadingParts heading={g.heading} fold={fold} />
                       </th>
                     </tr>,
                   ]
                 : []),
-              ...(g.banner
+              ...(g.banner && !shut
                 ? [
                     <tr key={`${g.key}-banner`} className="dup-row">
                       <td colSpan={columns.length} className="!pb-1 !border-b-0 border-s-[3px] border-s-caution">
@@ -155,7 +190,7 @@ export function ProductTable({ columns, groups, foot, stickyHead }: { columns: P
                     </tr>,
                   ]
                 : []),
-              ...g.rows.map((r) => (
+              ...(shut ? [] : g.rows).map((r) => (
                 <tr key={r.key} className={cx(g.banner ? "dup-row" : null)}>
                   {r.cells.map((cell, i) => (
                     <td key={columns[i]?.id ?? i} className={cx(i === 0 && g.banner ? "border-s-[3px] border-s-caution" : null, columns[i]?.width ? "whitespace-nowrap" : null, columns[i]?.cellClassName)}>
@@ -164,7 +199,8 @@ export function ProductTable({ columns, groups, foot, stickyHead }: { columns: P
                   ))}
                 </tr>
               )),
-            ])}
+              ];
+            })}
           </tbody>
         </table>
         {foot?.("table")}
@@ -172,6 +208,12 @@ export function ProductTable({ columns, groups, foot, stickyHead }: { columns: P
       )}
     </>
   );
+}
+
+/** The arrow at the end of a row that opens a page of the site, in the link's colour (founder, 2026-11-03: "appear like a link to the
+ *  site"). An arrow that opens a sheet on the same page is the button's own, not this. */
+export function RowArrow({ className }: { className?: string }) {
+  return <IconDrillIn className={cx("text-link shrink-0", className)} />;
 }
 
 /** One product on a phone: a row of the list card. `stacked` when lines (fees, figures, labels) sit under the name. */

@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Link, useLoaderData } from "react-router";
 import type { Route } from "./+types/companies";
 import { brands as brandsCopy, companies as copy, r4catalogue as r4, site } from "../copy";
-import { IconDrillIn, IconSearch } from "../components/icons";
+import { IconSearch } from "../components/icons";
 import { PageShell, useOpenSearch } from "../components/shell";
 import { normalize } from "../lib/search";
 import { fmt } from "../lib/format";
@@ -12,6 +12,7 @@ import type { InstitutionRow } from "../components/decoder/institutions/types";
 import { NoPageCompanyTerms } from "../components/decoder/company-terms";
 import { CompanyTabs } from "../components/decoder/company-tabs";
 import { withoutLtd } from "../lib/company-name";
+import { RowArrow } from "../components/kit";
 
 export async function loader() {
   const { loadCma, loadProducts, classificationToWrapper, today } = await import("../lib/data.server");
@@ -171,7 +172,7 @@ function Row({ id, name, children }: { id: string; name: string; children: React
           <bdi className="font-medium">{name}</bdi>
           {children}
         </span>
-        <IconDrillIn className="text-muted-foreground shrink-0" />
+        <RowArrow />
       </Link>
     </li>
   );

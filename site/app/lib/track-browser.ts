@@ -100,6 +100,8 @@ export interface TbTrack {
   selfManaged: boolean;
   /** F-87, for the order of the kinds and the sort. */
   stock: number | null;
+  /** Its company has another track of the same kind in this product: in the one list of a kind, its name tells the two apart. */
+  twin: boolean;
   href: string;
 }
 
@@ -166,6 +168,7 @@ export function buildProductView(data: TbData, productId: string): ProductView |
       young5: youngerThanYears(r.inc, p.period, 5),
       selfManaged: r.s === 1,
       stock: shareOf(exposure?.stock),
+      twin: false,
       href: `/companies/${co.id}/${r.f}`,
     };
   });
@@ -180,6 +183,7 @@ export function buildProductView(data: TbData, productId: string): ProductView |
   for (const x of tracks) if (x.sub) x.sub = [...spellings.get(normName(x.sub))!.entries()].sort((a, b) => b[1] - a[1] || collator.compare(a[0], b[0]))[0]![0];
   const bySub = new Map<string, TbTrack[]>();
   for (const x of tracks) if (x.sub) bySub.set(x.sub, [...(bySub.get(x.sub) ?? []), x]);
+  for (const list of bySub.values()) for (const x of list) x.twin = list.some((y) => y !== x && y.company === x.company);
   // F-100: the kinds from the highest median stock share to the lowest, ties by the number of tracks, a kind with no share last
   const kinds: TbKind[] = [...bySub.entries()]
     .map(([sub, list]) => ({ sub, kind: list[0]!.kind, count: list.length, median: kindStockMedian(list.map((x) => x.stock)) }))
@@ -352,8 +356,9 @@ export function buildGroups(view: ProductView, sorted: readonly TbTrack[], by: G
 /** Whether a row under a company's heading shows its kind as a chip: its short name does not say it already. */
 export const showsKindChip = (x: TbTrack): boolean => !!x.sub && !nameSaysKind(x.short, x.sub);
 
-/** Whether a row under a kind's heading shows its short name: it says more than the kind. */
-export const showsShortName = (x: TbTrack): boolean => nameAddsToKind(x.short, x.sub);
+/** Whether a row in the one list of a kind shows its short name under the company: only to tell apart two tracks of one company in
+ *  that kind (founder, 2026-11-03: a name that only says the kind again, "עוקב S&P 500" under the S&P 500 kind, is not wanted). */
+export const showsShortName = (x: TbTrack): boolean => x.twin && nameAddsToKind(x.short, x.sub);
 
 /** The yield's empty word: "less than N years" for a track younger than the window, else "not reported". */
 export function missingYield(x: TbTrack, years: 3 | 5): string {

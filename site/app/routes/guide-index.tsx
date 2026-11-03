@@ -2,9 +2,8 @@
 import { Link, useLoaderData } from "react-router";
 import type { Route } from "./+types/guide-index";
 import { guideIndex as copy, limitedBondFund, site } from "../copy";
-import { IconDrillIn } from "../components/icons";
 import { PageShell } from "../components/shell";
-import { Card, ChipList } from "../components/kit";
+import { Card, ChipList, RowArrow } from "../components/kit";
 import { groupGuides } from "../lib/guide-nav";
 
 export async function loader() {
@@ -68,7 +67,7 @@ function InstrumentCard({ href, name, line, plain, quiet }: { href: string; name
             )}
             {line && <span className="text-sm text-muted-foreground">{line}</span>}
           </span>
-          <IconDrillIn className="text-muted-foreground shrink-0 mt-1" />
+          <RowArrow className="mt-1" />
         </Card>
       </Link>
     </li>
@@ -118,7 +117,7 @@ export default function GuideIndex() {
                     <Card className="h-full flex flex-col gap-2">
                       <Link to={e.href} className="flex items-start justify-between gap-4 hover:underline">
                         <span className="text-lg font-semibold">{e.name}</span>
-                        <IconDrillIn className="text-muted-foreground shrink-0 mt-1" />
+                        <RowArrow className="mt-1" />
                       </Link>
                       {e.line && <span className="text-sm text-muted-foreground">{e.line}</span>}
                       <ChipList heading={`${e.name} ${copy.fundKindsLine}`} headingHidden items={e.kinds.map((k) => ({ id: k.href, label: k.label, href: k.href }))} value={null} />
