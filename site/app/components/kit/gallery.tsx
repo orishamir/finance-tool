@@ -2,12 +2,12 @@
 // in one place; not in the menu, not in the search, noindex. Every number on it is a labelled example.
 import { useState, type ReactNode } from "react";
 import { Link } from "react-router";
-import { kit as copy, trackBrowser } from "../../copy";
+import { brands, kit as copy, trackBrowser } from "../../copy";
 import type { SiteValue } from "../../lib/value";
 import { computed, entered } from "../../lib/value";
 import { CalendarCheck, CalendarDays, Lock, Zap } from "lucide-react";
-import { IconLock } from "../icons";
-import { IdRef, Num, RulesLine, StaleSaid } from "../provenance";
+import { IconAlert, IconExternal, IconLock } from "../icons";
+import { IdRef, LeadTail, MarkHead, Num, RulesLine, StaleSaid } from "../provenance";
 import { IconDrillIn } from "../icons";
 import { label } from "../../lib/labels";
 import { fmt } from "../../lib/format";
@@ -972,6 +972,18 @@ function Lists({ today }: { today: string }) {
             <FundFeesHead />
           </span>
           <FundFeesPhoneHelp />
+        </State>
+      </Demo>
+      <Demo name="LeadTail, MarkHead" use={g.uses.MarkHold}>
+        <State label="in a narrow box: the mark after a text wraps with the text's last word, the mark before it with its first word; never alone on a line">
+          <span className="block w-40 text-sm">
+            <LeadTail lead={brands.funds.columns.fees}>
+              <IconExternal size={14} className="inline-block align-text-bottom ms-1" />
+            </LeadTail>
+          </span>
+          <span className="block w-40 text-sm">
+            <MarkHead mark={<IconAlert size={14} className="text-caution inline-block align-[-2px] me-1" />} text={brands.funds.collected} />
+          </span>
         </State>
       </Demo>
       <Demo name="PageTabs" use={g.uses.PageTabs}>

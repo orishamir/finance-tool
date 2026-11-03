@@ -238,18 +238,20 @@ export function Num({ value, size = "inline", display, animate, className, prefi
   // is also said in words, before the digits.
   const markWeak = showMark && weak && (value.state !== "computed" || size === "figure");
   const mark = "inline-block align-[-2px] select-none";
+  // a long text value (a fund's full name) may wrap: kept on one line it ran 73 px past a phone's edge (2026-10-26); any other figure is
+  // one unit with its icon, which stood alone on the line above its digits in a phone's table (2026-11-03)
+  const oneLine = !(typeof value.value === "string" && text.length > 24);
   const button = (
     <button
       type="button"
-      className={cx("num", `num-${value.state}`, size === "figure" && "num-figure", size === "cell" && "num-cell", value.value === null && "num-unknown", className)}
+      className={cx("num", `num-${value.state}`, size === "figure" && "num-figure", size === "cell" && "num-cell", value.value === null && "num-unknown", oneLine && "whitespace-nowrap", className)}
       aria-label={label}
       onClick={(e) => open({ kind: "value", value, ...(keepDecimals ? { exact: true } : {}), ...(value.value === null && written ? { display: written } : {}) }, e.currentTarget)}
     >
       {value.stale && !staleSaid && <IconClock size={14} className={cx("text-caution me-1", mark)} aria-hidden="true" />}
       {((showMark && fromDate) || markWeak) && <IconAlert size={14} className={cx("text-caution me-1", mark)} aria-hidden="true" />}
       {fromDate && size === "figure" && <span className="text-xs text-caution-foreground font-normal me-1 no-underline select-none">{numbers.startsOn}<bdi dir="ltr">{fmt.date(fromDate)}</bdi></span>}
-      {/* a long text value (a fund's full name) may wrap: kept on one line it ran 73 px past a phone's edge (2026-10-26) */}
-      <bdi dir={textDir(text)} className={typeof value.value === "string" && text.length > 24 ? undefined : "whitespace-nowrap"}>{text}</bdi>
+      <bdi dir={textDir(text)} className={oneLine ? "whitespace-nowrap" : undefined}>{text}</bdi>
     </button>
   );
   return prefix ? <span className="whitespace-nowrap">{prefix}{button}</span> : button;
@@ -268,6 +270,22 @@ export function LeadTail({ lead, children }: { lead: string; children: ReactNode
         {m[3]}
         {children}
       </span>
+    </>
+  );
+}
+
+/** A mark before a text (a caution icon, a lock): bound to the text's first word, so it never ends a line alone (2026-11-03). The mirror
+ *  of `LeadTail`, which binds a text's last word to what follows it: a mark after a text is `<LeadTail lead={text}>{mark}</LeadTail>`. */
+export function MarkHead({ mark, text }: { mark: ReactNode; text: string }) {
+  const m = /^(\s*\S+)([\s\S]*)$/.exec(text);
+  if (!m) return <>{mark}{text}</>;
+  return (
+    <>
+      <span className="whitespace-nowrap">
+        {mark}
+        {m[1]}
+      </span>
+      {m[2]}
     </>
   );
 }
@@ -572,25 +590,24 @@ export function NumberLegend({ className, institution = false, term = false, can
 function LegendLine({ className, institution, term, entered }: { className?: string; institution: boolean; term: boolean; entered: boolean }) {
   return (
     <p className={cx("flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground", className)} data-sample>
-      <span>
+      <span className="whitespace-nowrap">
         <span className="num num-sourced num-sample" aria-hidden="true">123</span> {numbers.legend.sourced}
       </span>
-      <span>
+      <span className="whitespace-nowrap">
         <span className="num num-computed num-sample" aria-hidden="true">123</span> {numbers.legend.computed}
       </span>
       {entered && (
-        <span>
+        <span className="whitespace-nowrap">
           <span className="num num-entered num-sample" aria-hidden="true">123</span> {numbers.legend.entered}
         </span>
       )}
       {institution && (
         <span>
-          <IconAlert size={14} className="text-caution inline-block align-[-2px] me-1" aria-hidden="true" />
-          {numbers.legend.institution}
+          <MarkHead mark={<IconAlert size={14} className="text-caution inline-block align-[-2px] me-1" aria-hidden="true" />} text={numbers.legend.institution} />
         </span>
       )}
       {term && (
-        <span>
+        <span className="whitespace-nowrap">
           <span className="term" aria-hidden="true">{numbers.legend.term}</span> {numbers.legend.termMeaning}
         </span>
       )}

@@ -6,7 +6,7 @@ import { notCovered as copy, r5, site } from "../copy";
 import { IconExternal, IconLock, IconCheck } from "../components/icons";
 import { IconDashed } from "../components/compare/icons";
 import { Tpl } from "../components/exposure-mode/tpl";
-import { IdRef, RuleRef, RulesChip, RulesLine, StrengthLabel } from "../components/provenance";
+import { IdRef, LeadTail, RuleRef, RulesChip, RulesLine, StrengthLabel } from "../components/provenance";
 import { PageShell } from "../components/shell";
 import { Callout, Card, Disclosure, Tag } from "../components/kit";
 import type { GraduationStatusView } from "../lib/graduation.server";
@@ -152,8 +152,17 @@ export default function NotCovered() {
                           const label = sourceLabel(r.source, provenance.sourced.localFile);
                           return (
                             <a href={r.source.url} target="_blank" rel="noopener noreferrer" className="text-link hover:underline" title={label.english ?? undefined}>
-                              {label.host ? <bdi dir="ltr">{label.text}</bdi> : label.text}
-                              <IconExternal size={16} className="inline-block align-text-bottom ms-1" />
+                              {/* the arrow is held to the title's last word: alone, it stood on a line under a long title (2026-11-03) */}
+                              {label.host ? (
+                                <span className="whitespace-nowrap">
+                                  <bdi dir="ltr">{label.text}</bdi>
+                                  <IconExternal size={16} className="inline-block align-text-bottom ms-1" />
+                                </span>
+                              ) : (
+                                <LeadTail lead={label.text}>
+                                  <IconExternal size={16} className="inline-block align-text-bottom ms-1" />
+                                </LeadTail>
+                              )}
                             </a>
                           );
                         })()}

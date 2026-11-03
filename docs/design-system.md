@@ -214,6 +214,8 @@ Why this pair: Heebo is clear on small screens and matches Inter's proportions; 
 | A list that re-sorts after a tap | The tapped row is held at its place on the screen, and the others slide around it (2026-11-01) | `PickList` (`holdOnPick`, `useFlip`) |
 | A list sorted or filtered again (a column head, a filter chip, a search) | The rows that stay slide to their new places and the new ones fade in; the list never fades or redraws as a whole (founder, 2026-11-03) | `useFlip` around a `ProductTable`: the tracks page, a company's page |
 
+**A mark is never alone on a line** (founder, 2026-11-03: a "?" stood alone under a column head). A small mark before or after words (a "?", a caution icon, a lock, a link's arrow) is held to the nearest word: `LeadTail` for a mark after a text, `MarkHead` for one before it; a figure holds its own icons. `research/audit/tools/alone-check.mjs` finds any mark alone on a line on every page at four widths, and runs before a change to a head, a link or a figure merges.
+
 **Check.** `research/audit/tools/pick-check.mjs` taps every row of a page's linked lists and reads where each list's top stands. The builder runs a script (`research/audit/tools/box-check.mjs`) that sets each input to several values (the choices, a slider's ends, a large typed number) and compares the boxes of the parts that must stay (column widths, block heights, the tapped row's top); the result goes in the builder's report and the structure review. A part that moves is a finding, fixed in the kit piece, not on the page.
 
 

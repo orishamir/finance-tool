@@ -10,7 +10,7 @@ import { Fragment, useId, useLayoutEffect, useRef, useState, useSyncExternalStor
 import { brands, invest, kit, trackBrowser } from "../../copy";
 import type { SiteValue } from "../../lib/value";
 import { IconAlert, IconChevronDown, IconDrillIn, IconExternal } from "../icons";
-import { Num, RulesLine, Term } from "../provenance";
+import { LeadTail, Num, RulesLine, Term } from "../provenance";
 import { Card } from "./card";
 import { HelpMark } from "./help-mark";
 import { cx } from "./cx";
@@ -249,14 +249,11 @@ const fees = brands.funds;
 export function FundFeesHead() {
   // the mark never stands alone on a line: it is held to the head's last word (founder, 2026-11-03: a "?" alone under the head)
   const head = fees.columns.fees;
-  const cut = head.lastIndexOf(" ");
   return (
     <span className="block text-balance">
-      {head.slice(0, cut + 1)}
-      <span className="whitespace-nowrap">
-        {head.slice(cut + 1)}
+      <LeadTail lead={head}>
         <HelpMark term={fees.feeTerms} about={head} lead={fees.feeHelpLead} className="ms-1" />
-      </span>
+      </LeadTail>
     </span>
   );
 }
