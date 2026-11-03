@@ -194,6 +194,26 @@ describe("rows", () => {
     expect(showsShortName(split)).toBe(true);
   });
 
+  it("a self-managed fund shows no yield, and says why (the file reports 0 there; IRA-01: each member directs the money)", () => {
+    const ira = view("keren-hishtalmut").tracks.find((x) => x.id === 1487)!;
+    expect(ira.selfManaged).toBe(true);
+    expect(ira.y3).toBeNull();
+    expect(ira.y5).toBeNull();
+    expect(missingYield(ira, 3)).toBe(missingYield(ira, 5));
+    expect(gemel.tracks.every((x) => !x.selfManaged)).toBe(true);
+  });
+
+  it("one kind written two ways is one group (עוקב מדדים - גמיש and עוקב מדדים גמיש)", () => {
+    const subs = view("provident-for-annuity").kinds.map((k) => k.sub);
+    expect(subs).toContain("עוקב מדדים - גמיש");
+    expect(subs).not.toContain("עוקב מדדים גמיש");
+  });
+
+  it("the fee from deposits sorts only where it differs between tracks; a fee the rule says is none counts as 0", () => {
+    expect(view("keren-hishtalmut").depSorts).toBe(false);
+    expect(view("provident-for-annuity").depSorts).toBe(true);
+  });
+
   it("a track's own page is under its company's", () => {
     const x = gemel.tracks[0]!;
     expect(x.href).toBe(`/companies/${data.companies[x.company]!.id}/${x.id}`);

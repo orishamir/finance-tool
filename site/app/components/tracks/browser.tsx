@@ -5,7 +5,7 @@ import { startTransition, useDeferredValue, useEffect, useMemo, useState } from 
 import { Link, useNavigate, useParams } from "react-router";
 import { trackBrowser as t } from "../../copy";
 import { fmt } from "../../lib/format";
-import { SORTS, buildGroups, buildProductView, companiesIn, companiesPhrase, defaultSort, filterTracks, pressSort, sortTracks, sortWords, tracksPhrase, type GroupBy, type ProductView, type SortId, type SortState, type TbData } from "../../lib/track-browser";
+import { SORTS, buildGroups, buildProductView, companiesIn, companiesPhrase, defaultProduct, defaultSort, filterTracks, pressSort, sortTracks, sortWords, tracksPhrase, type GroupBy, type ProductView, type SortId, type SortState, type TbData } from "../../lib/track-browser";
 import { FilterChip, LongestCase, SegmentedControl, SelectField, TextField } from "../kit";
 import { TrackList } from "./list";
 
@@ -32,15 +32,19 @@ function CountLine({ view, shown, companies, noteFor }: { view: ProductView; sho
 export function TrackBrowser({ data }: { data: TbData }) {
   const params = useParams();
   const navigate = useNavigate();
-  const productId = data.products.some((p) => p.id === params.product) ? params.product! : (data.products.find((p) => p.id === "kupat-gemel-lehashkaa") ?? data.products[0]!).id;
-  const view = useMemo(() => buildProductView(data, productId)!, [data, productId]);
+  const productId = data.products.some((p) => p.id === params.product) ? params.product! : (data.products.find((p) => p.id === defaultProduct) ?? data.products[0]!).id;
+  // every product's view is built once: a switch of product then only redraws, and the count line can hold the longest of them
+  const views = useMemo(() => data.products.map((p) => buildProductView(data, p.id)!), [data]);
+  const view = views.find((v) => v.id === productId)!;
   const [group, setGroup] = useState<GroupBy>("company");
   // the kind belongs to the product it was chosen in: another product starts with every kind
   const [kindIn, setKindIn] = useState<{ product: string; sub: string }>({ product: productId, sub: "" });
   const kind = kindIn.product === productId && view.kinds.some((k) => k.sub === kindIn.sub) ? kindIn.sub : "";
   const [q, setQ] = useState("");
   const dq = useDeferredValue(q);
-  const [sort, setSort] = useState<SortState>(defaultSort);
+  const [sortSet, setSort] = useState<SortState>(defaultSort);
+  // a product whose fee from deposits is the same on every track has no such sort: it falls back to the fee from savings
+  const sort = sortSet.id === "dep" && !view.depSorts ? defaultSort : sortSet;
   const by: GroupBy = view.hasKinds ? group : "company";
 
   const shown = useMemo(() => filterTracks(view, { kind, q: dq }), [view, kind, dq]);
@@ -71,7 +75,7 @@ export function TrackBrowser({ data }: { data: TbData }) {
         </div>
       </div>
 
-      <LongestCase cases={[<CountLine key="a" view={view} shown={view.tracks.length} companies={view.companies.length} noteFor />, <CountLine key="b" view={view} shown={view.tracks.length - 1} companies={view.companies.length} noteFor />]}>
+      <LongestCase cases={views.flatMap((v) => [<CountLine key={`${v.id}a`} view={v} shown={v.tracks.length} companies={v.companies.length} noteFor />, <CountLine key={`${v.id}b`} view={v} shown={v.tracks.length - 1} companies={v.companies.length} noteFor />])}>
         <CountLine view={view} shown={shown.length} companies={companiesIn(shown)} />
       </LongestCase>
 
@@ -123,7 +127,7 @@ export function TrackBrowser({ data }: { data: TbData }) {
       <SelectField
         className="md:hidden !max-w-none"
         label={t.controls.sort}
-        options={ids.map((id) => ({ id, name: t.sorts[id].label }))}
+        options={ids.filter((id) => id !== "dep" || view.depSorts).map((id) => ({ id, name: t.sorts[id].label }))}
         value={sort.id}
         onChange={(v) => v && setSort({ id: v as SortId, dir: 1 })}
       />

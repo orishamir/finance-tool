@@ -9,7 +9,7 @@ import { exposureShares, type CompactHoldings, type ExposureShares, type Holding
 import { trackLabels, youngerThanYears } from "./track-labels";
 import { kindLabel, kindWordSet, nameAddsToKind, nameSaysKind, normName, shortTrackNames } from "./track-names";
 import { fmt } from "./format";
-import { computed, expandFee, type CompactFee, type SiteValue } from "./value";
+import { computed, depositFeeNoneByRule, expandFee, type CompactFee, type SiteValue } from "./value";
 
 /** The six products with tracks of the regulator's, in the order of the chips; the first one the page opens with is `defaultProduct`. */
 export const trackProductIds: readonly string[] = ["provident-for-annuity", "keren-hishtalmut", "kupat-gemel-lehashkaa", "pension-comprehensive", "pension-general", "child-savings-provident"];
@@ -30,6 +30,7 @@ export interface TbRow {
   h: CompactHoldings | null; // assets, stock exposure, currency exposure (NIS millions at the period end)
   y3: CompactFee | null; // average annual yield, 3 years
   y5: CompactFee | null; // average annual yield, 5 years
+  s?: 1; // a self-managed (IRA) fund: each member directs its money (IRA-01), so it has no one yield to show
 }
 
 export interface TbTemplates {
@@ -91,6 +92,8 @@ export interface TbTrack {
   /** The track is younger than the window: its empty yield says "less than N years" and not "not reported". */
   young3: boolean;
   young5: boolean;
+  /** A self-managed (IRA) fund: each member directs its money (IRA-01); its yields are not shown, its cell says why. */
+  selfManaged: boolean;
   /** F-87, for the order of the kinds and the sort. */
   stock: number | null;
   href: string;
@@ -124,6 +127,8 @@ export interface ProductView {
   companies: TbCompany[];
   /** In the order of the groups by kind: the highest median stock share first. */
   kinds: TbKind[];
+  /** The fee from deposits differs between the tracks, so its head sorts (in study funds every track has none). */
+  depSorts: boolean;
 }
 
 const collator = new Intl.Collator("he");
@@ -155,12 +160,20 @@ export function buildProductView(data: TbData, productId: string): ProductView |
       y5: r.y5 && tpl.y5 ? expandFee(r.y5, tpl.y5) : null,
       young3: youngerThanYears(r.inc, p.period, 3),
       young5: youngerThanYears(r.inc, p.period, 5),
+      selfManaged: r.s === 1,
       stock: shareOf(exposure?.stock),
       href: `/companies/${co.id}/${r.f}`,
     };
   });
   const hasKinds = tracks.some((x) => x.sub !== "");
 
+  // one kind written two ways ("עוקב מדדים - גמיש", "עוקב מדדים גמיש") is one group, under the spelling most of its tracks use
+  const spellings = new Map<string, Map<string, number>>();
+  for (const x of tracks) if (x.sub) {
+    const m = spellings.get(normName(x.sub)) ?? new Map<string, number>();
+    spellings.set(normName(x.sub), m.set(x.sub, (m.get(x.sub) ?? 0) + 1));
+  }
+  for (const x of tracks) if (x.sub) x.sub = [...spellings.get(normName(x.sub))!.entries()].sort((a, b) => b[1] - a[1] || collator.compare(a[0], b[0]))[0]![0];
   const bySub = new Map<string, TbTrack[]>();
   for (const x of tracks) if (x.sub) bySub.set(x.sub, [...(bySub.get(x.sub) ?? []), x]);
   // F-100: the kinds from the highest median stock share to the lowest, ties by the number of tracks, a kind with no share last
@@ -181,7 +194,8 @@ export function buildProductView(data: TbData, productId: string): ProductView |
   });
   // F-99: the company with the most assets in this product first, ties by name
   companies.sort((a, b) => (shareOf(b.assets) ?? -1) - (shareOf(a.assets) ?? -1) || collator.compare(a.name, b.name));
-  return { id: p.id, name: p.name, dataset: p.dataset, hasKinds, tracks, companies, kinds };
+  const depSorts = new Set(tracks.map((x) => keyOf(x, "dep"))).size > 1;
+  return { id: p.id, name: p.name, dataset: p.dataset, hasKinds, tracks, companies, kinds, depSorts };
 }
 
 // ---------------------------------------------------------------- filter, sort, group
@@ -216,7 +230,8 @@ export const ascending = (s: SortState): boolean => s.dir * SORTS[s.id].natural 
 
 const keyOf = (x: TbTrack, id: SortId): number | null => {
   if (id === "fee") return shareOf(x.fee);
-  if (id === "dep") return shareOf(x.deposit);
+  // a fee from deposits the rule says the product has none of (PF-06) is 0, as the calculations take it; one not reported stays empty
+  if (id === "dep") return depositFeeNoneByRule(x.deposit) ? 0 : shareOf(x.deposit);
   if (id === "stock") return x.stock;
   if (id === "assets") return shareOf(x.assets);
   return null;
@@ -305,6 +320,7 @@ export const showsShortName = (x: TbTrack): boolean => nameAddsToKind(x.short, x
 
 /** The yield's empty word: "less than N years" for a track younger than the window, else "not reported". */
 export function missingYield(x: TbTrack, years: 3 | 5): string {
+  if (x.selfManaged) return t.yield.selfManaged;
   return (years === 3 ? x.young3 : x.young5) ? (years === 3 ? t.yield.young3 : t.yield.young5) : t.yield.missing;
 }
 

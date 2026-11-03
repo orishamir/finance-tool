@@ -22,7 +22,7 @@ describe("the track browser's addresses", () => {
 
   it("the old address sends the browser to the new one", () => {
     const res = oldLoader({ params: { wrapper: "kupat-gemel-lehashkaa" } } as never) as Response;
-    expect(res.status).toBe(302);
+    expect(res.status).toBe(301);
     expect(res.headers.get("Location")).toBe("/tracks/kupat-gemel-lehashkaa");
   });
 

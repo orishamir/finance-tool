@@ -22,6 +22,7 @@ function YieldFigure({ value, track, years, size }: { value: SiteValue | null; t
 
 /** The two yields, each followed by its window; an empty one is its words alone. */
 function Yields({ x, size, inline }: { x: TbTrack; size: "inline" | "cell"; inline?: boolean }) {
+  if (x.selfManaged) return <span className={cx(mutedWord, "block whitespace-normal")}>{t.yield.selfManaged}</span>;
   const items = ([3, 5] as const).map((years) => {
     const v = years === 3 ? x.y3 : x.y5;
     const empty = !v || v.value === null;
@@ -173,7 +174,7 @@ export function TrackList({ view, groups, by, sort, onSort, feeYear, period, lim
           <span>{feeYear ? t.columns.fee.replace("{year}", feeYear) : t.columns.feeNoYear}</span>
           <span className="flex flex-wrap gap-x-3">
             {head("fee", t.columns.feeSavings)}
-            {head("dep", t.columns.feeDeposits)}
+            {view.depSorts ? head("dep", t.columns.feeDeposits) : <span className="min-h-target inline-flex items-center">{t.columns.feeDeposits}</span>}
           </span>
         </span>
       ),

@@ -11,6 +11,9 @@ const words = (s: string): string[] =>
     .split(/\s+/)
     .filter(Boolean);
 
+/** The regulator's pension file writes "S&P" as "S1;P" (14054 "עוקב מדד S1;P 500"); the short name puts the "&" back. */
+const SP_GARBLED = /([sS])1;([pP])/g;
+
 /** Hebrew's one-letter prefixes: "לחוסכים" is "חוסכים" with a "to". */
 const PREFIXES = "לבהוכמש";
 
@@ -29,24 +32,40 @@ export function kindWordSet(kinds: Iterable<string>): Set<string> {
 
 /**
  * The short names of one company's tracks in one product. The cut is the words every track begins with, always leaving each track at
- * least one word, and it stops before a word of a kind's name ("חוסכים המעדיפים סיכון מוגבר" keeps its words). A company with one
- * track loses only its own name (the words of `company`), when the name begins with them. A leading dash or "מסלול" goes too. A name
- * that would be left empty stays whole.
+ * least one word, and it stops before a word of a kind's name ("חוסכים המעדיפים סיכון מוגבר" keeps its words). When one track's name
+ * does not begin like the others ("מסלול בסיסי למקבלי קצבה" beside "אינפיניטי מקיפה מסלול לבני 50 עד 60"), the cut is taken over the
+ * tracks that begin with the company's name, and the others keep theirs. A company with one track loses only its own name (the words
+ * of `company`), when the name begins with them. A leading dash or "מסלול" goes too. A name that would be left empty stays whole.
  */
 export function shortTrackNames<T extends { key: string | number; name: string }>(company: string, tracks: readonly T[], kindWords: ReadonlySet<string>): Map<string | number, string> {
   const split = tracks.map((t) => words(t.name));
-  let cut = 0;
-  if (tracks.length > 1) {
-    const min = Math.min(...split.map((w) => w.length));
-    while (cut < min - 1 && split.every((w) => w[cut] === split[0]![cut])) cut++;
-    const isKindWord = (w: string) => {
-      const n = normName(w);
-      return kindWords.has(n) || (n.length > 3 && PREFIXES.includes(n[0]!) && kindWords.has(n.slice(1)));
-    };
-    while (cut > 0 && isKindWord(split[0]![cut - 1]!)) cut--;
-  } else if (tracks.length === 1 && words(company).every((w, i) => split[0]![i] === w)) cut = words(company).length;
+  const own = words(company);
+  const isKindWord = (w: string) => {
+    const n = normName(w);
+    return kindWords.has(n) || (n.length > 3 && PREFIXES.includes(n[0]!) && kindWords.has(n.slice(1)));
+  };
+  const commonCut = (list: string[][]): number => {
+    if (list.length === 1) return own.every((w, i) => list[0]![i] === w) ? own.length : 0;
+    const min = Math.min(...list.map((w) => w.length));
+    let cut = 0;
+    while (cut < min - 1 && list.every((w) => w[cut] === list[0]![cut])) cut++;
+    while (cut > 0 && isKindWord(list[0]![cut - 1]!)) cut--;
+    return cut;
+  };
+  const cuts = split.map(() => 0);
+  if (tracks.length > 0) {
+    const all = commonCut(split);
+    if (all > 0 || tracks.length === 1) cuts.fill(all);
+    else {
+      const named = split.flatMap((w, i) => (own.length > 0 && w[0] === own[0] ? [i] : []));
+      if (named.length > 0 && named.length < split.length) {
+        const cut = commonCut(named.map((i) => split[i]!));
+        for (const i of named) cuts[i] = cut;
+      }
+    }
+  }
   const out = new Map<string | number, string>();
-  tracks.forEach((t, i) => out.set(t.key, split[i]!.slice(cut).join(" ").replace(/^[-–:]\s*/, "").replace(/^מסלול\s+/, "") || t.name));
+  tracks.forEach((t, i) => out.set(t.key, split[i]!.slice(cuts[i]).join(" ").replace(/^[-–:]\s*/, "").replace(/^מסלול\s+/, "").replace(SP_GARBLED, "$1&$2") || t.name));
   return out;
 }
 

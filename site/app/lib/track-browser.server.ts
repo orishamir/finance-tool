@@ -48,7 +48,9 @@ export function buildTrackBrowser(): TbData {
     const y5 = yieldTemplate((y) => y.avg_annual_yield_5y as SiteValue);
     const rows: TbRow[] = list.map((x, i) => {
       if (!companyIds.includes(x.companyId)) companyIds.push(x.companyId);
-      const y = yieldsOf.get(x.fundId);
+      // a self-managed (IRA) fund: each member directs its money (IRA-01), and the file reports 0 in its yields
+      const ira = /בניהול אישי|\bIRA\b/i.test(x.name);
+      const y = ira ? undefined : yieldsOf.get(x.fundId);
       return {
         f: x.fundId,
         c: companyIds.indexOf(x.companyId),
@@ -61,6 +63,7 @@ export function buildTrackBrowser(): TbData {
         h: compactHoldings(holdingsOf.get(x.fundId), holdings),
         y3: y && y3 ? compactFee(y.avg_annual_yield_3y, y3) : null,
         y5: y && y5 ? compactFee(y.avg_annual_yield_5y, y5) : null,
+        ...(ira ? { s: 1 as const } : {}),
       };
     });
     const wrapper = wrappers.find((w) => w.id === id);

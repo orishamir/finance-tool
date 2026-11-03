@@ -32,6 +32,15 @@ describe("short names, from the real tracks", () => {
     expect(shortOf("keren-hishtalmut", "מור", "מור קרן השתלמות לשכירים ולעצמאים - אשראי ואג\"ח")).toBe("אשראי ואג\"ח");
   });
 
+  it("a track that does not begin like the others keeps its name, and the others still lose the company's (Infinity, comprehensive pension)", () => {
+    expect(shortOf("pension-comprehensive", "אינפיניטי", "מסלול בסיסי למקבלי קצבה")).toBe("בסיסי למקבלי קצבה");
+    expect(shortOf("pension-comprehensive", "אינפיניטי", "אינפיניטי מקיפה הלכה")).toBe("מקיפה הלכה");
+  });
+
+  it("the regulator's garbled S&P is written right in the short name", () => {
+    expect(shortOf("pension-comprehensive", "אינפיניטי", "אינפיניטי מקיפה עוקב מדד S1;P 500")).toBe("מקיפה עוקב מדד S&P 500");
+  });
+
   it("a company with one track loses only its own name", () => {
     const view = buildProductView(data, "keren-hishtalmut")!;
     const one = view.companies.find((c) => c.tracks.length === 1)!;
