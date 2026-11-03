@@ -306,7 +306,7 @@
                     "properties": {
                       "formula": {
                         "type": "string",
-                        "pattern": "^[FA]-\\d{2}$"
+                        "pattern": "^[FA]-\\d{2,3}$"
                       },
                       "inputs": {
                         "type": "object",
@@ -495,7 +495,7 @@
                     "properties": {
                       "formula": {
                         "type": "string",
-                        "pattern": "^[FA]-\\d{2}$"
+                        "pattern": "^[FA]-\\d{2,3}$"
                       },
                       "inputs": {
                         "type": "object",
@@ -694,7 +694,7 @@
                     "properties": {
                       "formula": {
                         "type": "string",
-                        "pattern": "^[FA]-\\d{2}$"
+                        "pattern": "^[FA]-\\d{2,3}$"
                       },
                       "inputs": {
                         "type": "object",
@@ -883,7 +883,7 @@
                     "properties": {
                       "formula": {
                         "type": "string",
-                        "pattern": "^[FA]-\\d{2}$"
+                        "pattern": "^[FA]-\\d{2,3}$"
                       },
                       "inputs": {
                         "type": "object",
@@ -1072,7 +1072,7 @@
                     "properties": {
                       "formula": {
                         "type": "string",
-                        "pattern": "^[FA]-\\d{2}$"
+                        "pattern": "^[FA]-\\d{2,3}$"
                       },
                       "inputs": {
                         "type": "object",
@@ -1271,7 +1271,7 @@
                     "properties": {
                       "formula": {
                         "type": "string",
-                        "pattern": "^[FA]-\\d{2}$"
+                        "pattern": "^[FA]-\\d{2,3}$"
                       },
                       "inputs": {
                         "type": "object",
@@ -1460,7 +1460,7 @@
                     "properties": {
                       "formula": {
                         "type": "string",
-                        "pattern": "^[FA]-\\d{2}$"
+                        "pattern": "^[FA]-\\d{2,3}$"
                       },
                       "inputs": {
                         "type": "object",

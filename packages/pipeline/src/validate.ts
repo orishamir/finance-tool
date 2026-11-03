@@ -111,7 +111,7 @@ export function validateData(ctx: ValidationContext): Problem[] {
       }
     }
     for (const id of collectStrings(parsed.value, "formula")) {
-      if (/^F-\d{2}$/.test(id) && !ctx.formulas.has(id)) report(file, `formula: ${id} is not defined in docs/method.md (data-schema §4 item 6)`);
+      if (/^F-\d{2,3}$/.test(id) && !ctx.formulas.has(id)) report(file, `formula: ${id} is not defined in docs/method.md (data-schema §4 item 6)`);
     }
     if (collection === "rules" && result.success) {
       const rec = parsed.value as RuleLike;

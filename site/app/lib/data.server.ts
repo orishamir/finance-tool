@@ -326,7 +326,7 @@ export function loadParameterUses(): Record<string, string[]> {
   const doc = readTextCached(join(root, "docs/method.md"));
   const section = doc.slice(doc.indexOf("### 2.3"), doc.indexOf("### 2.4"));
   const out: Record<string, string[]> = {};
-  for (const m of section.matchAll(/^\| (P-\d{2}) \| .+? \| (.+?) \|$/gm)) out[m[1]!] = [...m[2]!.matchAll(/F-\d{2}/g)].map((x) => x[0]);
+  for (const m of section.matchAll(/^\| (P-\d{2}) \| .+? \| (.+?) \|$/gm)) out[m[1]!] = [...m[2]!.matchAll(/F-\d{2,3}/g)].map((x) => x[0]);
   return out;
 }
 
