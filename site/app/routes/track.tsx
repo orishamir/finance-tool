@@ -1,7 +1,7 @@
 // The track page (flows 6.12): the fund's official record and its date, what to check, and the guide link.
 import { Link, useLoaderData } from "react-router";
 import type { Route } from "./+types/track";
-import { catalogue, companies as companiesCopy, company as companyCopy, r3workbench, site, track as copy } from "../copy";
+import { catalogue, companies as companiesCopy, company as companyCopy, r3workbench, site, trackBrowser, track as copy } from "../copy";
 import { feeLabel } from "../components/decoder/fees";
 import { DimensionChecklist, type ChecklistRowView } from "../components/guide/sections";
 import { IconDrillIn } from "../components/icons";
@@ -142,9 +142,9 @@ export default function TrackPage() {
                 )}
                 {data.wrapper && (
                   <Link to={`/tracks/${data.wrapper.id}`} className="inline-flex items-center gap-0.5 text-sm text-link hover:underline">
-                    {r3workbench.links.group.before}
+                    {trackBrowser.guideLink.before}
                     {data.wrapper.name}
-                    {r3workbench.links.group.after}
+                    {trackBrowser.guideLink.after}
                     <IconDrillIn size={16} />
                   </Link>
                 )}

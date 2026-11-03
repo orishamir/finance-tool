@@ -1,17 +1,15 @@
 // The track browser's data, built at build time (D54, issue 173): for each of the six products that have regulator tracks, every
 // company's tracks with the two fee averages, the amounts the exposure shares are computed from, and the two average annual
 // yields, compacted against one template per product (as the company page does). Server-only.
-import type { WrapperId } from "@finance-tool/schema";
 import { loadCma, loadCmaFees, loadCmaHoldings, loadCmaYields, loadWrappers, today } from "./data.server";
 import { brandOfPage } from "./brands.server";
 import { loadInstitutionRegistry } from "./institutions.server";
 import { compactHoldings, holdingsTemplate } from "./track-exposure";
-import type { TbData, TbProduct, TbRow } from "./track-browser";
+import { defaultProduct, trackProductIds, type TbData, type TbProduct, type TbRow } from "./track-browser";
 import { cmaFeeValue, compactFee, feeYear, staleCma, type SiteValue } from "./value";
 
-/** The six products with tracks of the regulator's, in the order of the chips; the first one the page opens with is `defaultProduct`. */
-export const trackProductIds: readonly WrapperId[] = ["provident-for-annuity", "keren-hishtalmut", "kupat-gemel-lehashkaa", "pension-comprehensive", "pension-general", "child-savings-provident"];
-export const defaultProduct: WrapperId = "kupat-gemel-lehashkaa";
+// the six products and the default are in lib/track-browser.ts (the guides read them too)
+export { defaultProduct, trackProductIds };
 
 /** The name the site calls a company by: its brand's, else the company registry's, else the regulator's name without the legal suffix. */
 function shortCompanyName(id: string, legalName: string): string {

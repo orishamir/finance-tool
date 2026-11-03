@@ -2,7 +2,7 @@
 // dimension checklist, related products, term table, institution chips.
 import { useEffect, useState, type ReactNode } from "react";
 import { Link, useParams } from "react-router";
-import { guide as copy, r3fees, scopeWords } from "../../copy";
+import { guide as copy, r3fees, scopeWords, trackBrowser } from "../../copy";
 import type { TermRow } from "../../lib/data.server";
 import type { Strength } from "../../lib/value";
 import { IconCheck, IconChevronDown, IconDrillIn, IconFile, IconLock, IconMinus } from "../icons";
@@ -333,7 +333,7 @@ function CompanyLinks({ companies }: { companies: { id: string; name: string }[]
 }
 
 /** The companies that offer the product, behind one toggle (audit A42); the "all companies" link stays outside. */
-export function InstitutionChips({ companies, allHref }: { companies: { id: string; name: string }[]; allHref: string }) {
+export function InstitutionChips({ companies, allHref, tracks }: { companies: { id: string; name: string }[]; allHref: string; /** The product's track browser (`/tracks/<id>`) and the product's name, for the link to every company's tracks of it. */ tracks?: { href: string; name: string } }) {
   return (
     <div className="flex flex-col gap-1">
       {companies.length > 0 && (
@@ -346,6 +346,13 @@ export function InstitutionChips({ companies, allHref }: { companies: { id: stri
       <Link to={allHref} className="text-link font-medium hover:underline text-sm min-h-target inline-flex items-center self-start">
         {copy.allCompanies}
       </Link>
+      {tracks && (
+        <Link to={tracks.href} className="text-link font-medium hover:underline text-sm min-h-target inline-flex items-center self-start">
+          {trackBrowser.guideLink.before}
+          {tracks.name}
+          {trackBrowser.guideLink.after}
+        </Link>
+      )}
     </div>
   );
 }

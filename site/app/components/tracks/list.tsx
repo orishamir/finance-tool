@@ -82,7 +82,7 @@ function NameCell({ x, by, view }: { x: TbTrack; by: GroupBy; view: ProductView 
   const company = view.companies.find((c) => c.index === x.company);
   return (
     <span className="flex flex-col items-start gap-1">
-      <span className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
+      <span className="flex flex-col items-start gap-0.5">
         <Link to={`/companies/${company?.id ?? ""}`} className="font-semibold hover:underline">
           <bdi>{x.companyName}</bdi>
         </Link>

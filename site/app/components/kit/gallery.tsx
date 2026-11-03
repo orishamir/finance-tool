@@ -2,7 +2,7 @@
 // in one place; not in the menu, not in the search, noindex. Every number on it is a labelled example.
 import { useState, type ReactNode } from "react";
 import { Link } from "react-router";
-import { kit as copy } from "../../copy";
+import { kit as copy, trackBrowser } from "../../copy";
 import type { SiteValue } from "../../lib/value";
 import { computed, entered } from "../../lib/value";
 import { CalendarCheck, CalendarDays, Lock, Zap } from "lucide-react";
@@ -12,7 +12,7 @@ import { IconDrillIn } from "../icons";
 import { label } from "../../lib/labels";
 import { fmt } from "../../lib/format";
 import { PileStory, PileYears } from "./pile-story";
-import { AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, Button, Callout, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, LabelFilter, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, CompareTable, TableCols, CoverageFold, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, Disclosure, FieldState, FoldGroup, GainBars, GapNote, HeadlineFigure, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, ParameterLine, PercentField, PlanChips, KnobStrip, ChangeChart, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, RangeField, RankBadge, Section, SegmentedControl, SelectField, Sentence, ShareRings, SourceLine, Stat, StatRow, StatTile, StepButtons, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth } from "./index";
+import { AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, Button, Callout, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, LabelFilter, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, CompareTable, TableCols, CoverageFold, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, PageTabs, SortHead, ExposureCell, FeeKey, FeeNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, GainBars, GapNote, HeadlineFigure, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, ParameterLine, PercentField, PlanChips, KnobStrip, ChangeChart, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, RangeField, RankBadge, Section, SegmentedControl, SelectField, Sentence, ShareRings, SourceLine, Stat, StatRow, StatTile, StepButtons, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth } from "./index";
 
 const g = copy.gallery;
 
@@ -847,6 +847,30 @@ function Rings() {
   );
 }
 
+/** The table of the track browser's kind in the gallery: two groups with headings and heads that sort the rows by their figure. */
+function SortableTable({ row }: { row: (key: string, name: string, n: string, rate: number, withLabels: boolean) => { key: string; cells: ReactNode[]; phone: ReactNode } }) {
+  const p = g.sample.products;
+  const [sort, setSort] = useState<SortState>("ascending");
+  const press = () => setSort((x) => (x === "ascending" ? "descending" : "ascending"));
+  const rates: [string, string, string, number][] = [["a", p.a, "1148808", 0.35], ["b", p.b, "1209444", 0.1], ["c", p.c, "1148162", 0.8]];
+  const ordered = [...rates].sort((x, y) => (sort === "ascending" ? x[3] - y[3] : y[3] - x[3]));
+  return (
+    <ProductTable
+      stickyHead
+      columns={[
+        { id: "name", head: p.name },
+        { id: "number", head: p.number, width: 7.5 },
+        { id: "link", head: p.link, width: 6 },
+        { id: "figure", head: <SortHead label={p.figure} state={sort} onPress={press} />, width: 10, sort },
+      ]}
+      groups={[
+        { key: "g1", heading: { title: p.a, line: p.number }, rows: ordered.slice(0, 2).map(([k, n, id, r]) => row(k, n, id, r, false)) },
+        { key: "g2", heading: { title: p.b, line: p.number }, rows: ordered.slice(2).map(([k, n, id, r]) => row(k, n, id, r, false)) },
+      ]}
+    />
+  );
+}
+
 function Lists({ today }: { today: string }) {
   const s = samples(today);
   const p = g.sample.products;
@@ -900,6 +924,43 @@ function Lists({ today }: { today: string }) {
               { key: "bc", banner: p.banner, rows: [row("b", p.b, "1209444", 0.1, false), row("c", p.c, "1148162", 0.8, false)] },
             ]}
           />
+        </State>
+      </Demo>
+      <Demo name="ProductTable (headings, sortable heads, sticky head)" use={g.uses.ProductTableGroups}>
+        <State label="groups with a heading (a title, then a line of figures); the heads sort the table and set aria-sort; the head row sticks under the site's header while the table fits its card" wide>
+          <SortableTable row={row} />
+        </State>
+      </Demo>
+      <Demo name="SortHead" use={g.uses.SortHead}>
+        <State label="active small to large, active large to small, and not active: the arrow has a fixed slot and the bold width is held, so a press moves nothing" wide>
+          <div className="flex flex-wrap gap-6">
+            <SortHead label={p.name} state="ascending" onPress={() => {}} />
+            <SortHead label={p.name} state="descending" onPress={() => {}} />
+            <SortHead label={p.name} state="none" onPress={() => {}} />
+          </div>
+        </State>
+      </Demo>
+      <Demo name="PageTabs" use={g.uses.PageTabs}>
+        <State label="two views of one subject, each a page of its own; the current one is underlined and marked" wide>
+          <PageTabs
+            ariaLabel={trackBrowser.tabs.aria}
+            current="b"
+            tabs={[
+              { key: "a", label: trackBrowser.tabs.byCompany, href: "#kit" },
+              { key: "b", label: trackBrowser.tabs.byProduct, href: "#kit" },
+            ]}
+          />
+        </State>
+      </Demo>
+      <Demo name="FeeNum, FeeKey, TrackFeeLines, ExposureCell, TrackLabels" use={g.uses.TrackCells}>
+        <State label="the cells of a track: both fee averages, a fee the product does not have, an empty one, the exposure with its rings, the labels" wide>
+          <div className="flex flex-wrap items-start gap-x-10 gap-y-4">
+            <TrackFeeLines fee={s.rate} deposit={{ ...s.rate, value: 0.3 }} size="cell" />
+            <FeeNum value={{ ...s.rate, value: null }} size="cell" />
+            <ExposureCell size="cell" value={{ stock: { ...s.comp, value: 49, unit: "pct" }, currency: { ...s.comp, value: 21, unit: "pct" } }} />
+            <TrackLabels isDefault track={{ inception: "2025-06-01", reportPeriod: "2026-09" }} />
+          </div>
+          <FeeKey values={[{ ...s.rate, value: null }]} className="flex flex-col gap-1 text-xs text-muted-foreground" />
         </State>
       </Demo>
       <Demo name="CostStack" use={g.uses.CostStack}>
