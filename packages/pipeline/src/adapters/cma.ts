@@ -53,8 +53,8 @@ export const USER_AGENT =
 export const SANITY = { minRowRatio: 0.8, maxDisappearedFundRatio: 0.2 } as const;
 
 /**
- * Managing companies left out of the data, by legal id (founder, 2026-11-03): their funds serve one profession,
- * employer or municipality, or are otherwise not relevant to the site's readers. A refresh skips their rows, and they
+ * Managing companies left out of the data, by legal id (founder, 2026-11-03, 43 companies): their funds serve one
+ * profession, employer or municipality, or are otherwise not relevant to the site's readers. A refresh skips their rows, and they
  * are not to be collected or researched. docs/product.md D51.
  */
 export const EXCLUDED_COMPANIES: ReadonlyMap<string, string> = new Map([
@@ -77,6 +77,30 @@ export const EXCLUDED_COMPANIES: ReadonlyMap<string, string> = new Map([
   ["570009852", "קרן מקפת מרכז לפנסיה ותגמולים"],
   ["511033060", "קרן החסכון לצבא הקבע"],
   ["520042581", "עמ\"י, קופות גמל ענפיות"],
+  ["520027251", "קרנות השתלמות למורים ולגננות"],
+  ["520024985", "עגור"],
+  ["520028390", "קרנות השתלמות למורים תיכוניים, מורי סמינרים ומפקחים"],
+  ["512711409", "גל, קופות גמל לעובדי הוראה"],
+  ["520032269", "קרן ההשתלמות לעובדי המדינה"],
+  ["510806870", "רעות"],
+  ["520027715", "מנורה מבטחים והסתדרות המהנדסים"],
+  ["510927536", "יהב אחים ואחיות"],
+  ["520028556", "קרן ההשתלמות להנדסאים וטכנאים"],
+  ["512008335", "קו הבריאות"],
+  ["520030990", "קרן ההשתלמות לפקידים, עובדי המנהל והשירותים"],
+  ["520030693", "שיבולת"],
+  ["510773922", "ארם גמולים"],
+  ["570011767", "קופת תגמולים של עובדי אל על"],
+  ["520042607", "הנדסאים וטכנאים, קופות גמל"],
+  ["510142789", "חברת ב'ת למ'ד דל'ת"],
+  ["520034968", "קרן השתלמות של עובדי חברת החשמל"],
+  ["570009449", "עוצ\"מ, אגודה שיתופית"],
+  ["520029620", "קרן השתלמות לביוכימאים ומקרוביולוגים"],
+  ["520042573", "עו\"ס"],
+  ["570007476", "קרן ביטוח ופנסיה לפועלים חקלאים"],
+  ["520031659", "עוצ\"מ, קופות גמל והשתלמות"],
+  ["510694821", "לאומי קמ\"פ"],
+  ["570005850", "קרן הביטוח והפנסיה של פועלי בנין"],
 ]);
 
 export const REQUIRED_COLUMNS = [

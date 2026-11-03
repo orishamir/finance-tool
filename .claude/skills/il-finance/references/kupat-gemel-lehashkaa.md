@@ -269,13 +269,8 @@ Out of scope: tax at deposit, during and at exit, including the annuity exemptio
 - Likely to change: no.
 
 ### KGL-20 Sector (closed) gemel lehashkaa funds and who may join (domain open question 13)
-- Rule: Two managing companies in the stored data run gemel lehashkaa funds for defined groups. In Gemel-Net 202609 they appear with TARGET_POPULATION "עובדי סקטור מסויים":
-  - גל - ניהול קופות גמל לעובדי הוראה (teachers);
-  - הנדסאים וטכנאים.
-
-  Other sector companies in the register are left out by the founder's decision of 2026-11-03 and are not researched; the list is `EXCLUDED_COMPANIES` in `packages/pipeline/src/adapters/cma.ts`.
-- Conditions / exceptions: Eligibility was not found (open question 11). Sector funds use the same template bylaws, including the general default track and the ceiling clause. They charge fees by actual expenses (KGL-14).
-- Figures: 2 sector managers, period 202609.
+- Rule: Gemel-Net 202609 reports gemel lehashkaa funds for defined groups. Those companies are left out of the stored data by the founder's decision of 2026-11-03 and are not researched; the list is `EXCLUDED_COMPANIES` in `packages/pipeline/src/adapters/cma.ts`.
+- Figures: none.
 - Source: [Gemel-Net datastore, REPORT_PERIOD 202609, distinct MANAGING_CORPORATION and TARGET_POPULATION](https://data.gov.il/api/3/action/datastore_search?resource_id=a30dcbea-a1d2-482c-ae29-8f781f5025fb) · primary · checked 2026-10-22.
 - Dimensions: `eligibility`
 - Likely to change: yes, monthly data.
@@ -431,8 +426,7 @@ Note for the discovery report: `domain-landscape.md` 4.3 says "14 public manager
    - Where the answer probably is: the official transfer regulations and the CMA transfer circular.
 10. ~~**Whether circular 2020-9-18 is still the binding track rule.**~~ Closed 2026-10-31: no. [Circular 2022-9-30 (20.12.2022)](https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf#page=6), p.6 s.7(א) lets a body run, in study funds and gemel lehashkaa, "מסלול השקעה כללי ומסלולי השקעה כמפורט בסעיף 6", with no ten-track limit; [its notes](https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf#page=12), p.12 say the limit "מגבלה לנהל עשרה מסלולים מתמחים" applied "עד לכניסתן לתוקף של כל הוראות החוזר". Circular's start: 1 January 2024 ([s.17](https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf#page=9), p.9); Meitav and Harel state 1.7.2024 (tracks catalogue, question 10); both dates have passed. KGL-12 corrected. checked 2026-10-31.
     - Where the answer probably is: the CMA consolidated circular ("החוזר המאוחד") or a later amendment to the investment-tracks circular, plus the CMA "רשימת מסלולי ההשקעה" page.
-11. **Eligibility for the two sector funds in the data** (domain question 13): Gal and Handasaim and Technicians. Can family members join?
-    - Where the answer probably is: each fund's bylaws, under the definition of "עמית".
+11. ~~**Eligibility for sector funds** (domain question 13).~~ Closed 2026-11-03: they are out of the data and not researched, by the founder's decision.
 12. **Status of the bill to raise the ceiling to NIS 300,000** (preliminary reading reported 20 Mar 2024; secondary source). Where the answer probably is: the Knesset bills database.
 13. ~~**Meitav's own gemel lehashkaa bylaws**~~ Closed 2026-10-31: found: [תקנון קופת גמל להשקעה 7857, July 2024](https://www.meitav.co.il/media/iejme0rs/%D7%AA%D7%A7%D7%A0%D7%95%D7%9F-%D7%A7%D7%95%D7%A4%D7%AA-%D7%92%D7%9E%D7%9C-%D7%9C%D7%94%D7%A9%D7%A7%D7%A2%D7%94-172024.pdf#page=11), p.11. Default: 7978 מיטב גמל להשקעה כללי, "מסלול זה הינו מסלול ברירת המחדל". Loans ([s.38.1](https://www.meitav.co.il/media/iejme0rs/%D7%AA%D7%A7%D7%A0%D7%95%D7%9F-%D7%A7%D7%95%D7%A4%D7%AA-%D7%92%D7%9E%D7%9C-%D7%9C%D7%94%D7%A9%D7%A7%D7%A2%D7%94-172024.pdf#page=10), p.10): "סכום ההלוואה לא יעלה על 80אחוזים" of the balance, up to 10% of the fund's assets, 7 years, repayment starting within the first year. Discount terms: [s.36](https://www.meitav.co.il/media/iejme0rs/%D7%AA%D7%A7%D7%A0%D7%95%D7%9F-%D7%A7%D7%95%D7%A4%D7%AA-%D7%92%D7%9E%D7%9C-%D7%9C%D7%94%D7%A9%D7%A7%D7%A2%D7%94-172024.pdf#page=9), p.9, "תקופת ההנחה". Institution: Meitav only. checked 2026-10-31.
     - Lead for the founder's duplicate "general" track: Gemel-Net shows only one Meitav gemel lehashkaa "כללי" track (7978). The duplicate in the app may be the Meitav Kids entry point, or a general track listed for another product.
