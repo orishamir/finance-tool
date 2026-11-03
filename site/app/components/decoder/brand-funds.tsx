@@ -6,7 +6,7 @@ import { brands as copy, invest } from "../../copy";
 import type { BrandFundRow, FundKind } from "../../lib/brands.server";
 import type { SiteValue } from "../../lib/value";
 import { IconDrillIn } from "../icons";
-import { FeeFigure, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, type ProductColumn } from "../kit";
+import { FeeFigure, FundFeesHead, FundFeesPhoneHelp, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, type ProductColumn } from "../kit";
 
 const c = copy.funds;
 
@@ -30,7 +30,7 @@ function NumberLink({ f }: { f: BrandFundRow }) {
 function Follows({ f, phone }: { f: BrandFundRow; phone?: boolean }) {
   if (!f.follows) return null;
   return (
-    <Link to={f.follows.href} className="text-link hover:underline inline-flex items-center gap-0.5 whitespace-nowrap self-start">
+    <Link to={f.follows.href} className="relative before:absolute before:inset-x-0 before:-inset-y-[9px] text-link hover:underline inline-flex items-center gap-0.5 whitespace-nowrap self-start">
       {phone && f.follows.kind === "index" && <span className="text-muted-foreground">{c.indexWord}&nbsp;</span>}
       <bdi>{f.follows.name}</bdi>
       <IconDrillIn size={16} />
@@ -44,11 +44,12 @@ export function BrandFundList({ funds, kind }: { funds: BrandFundRow[]; kind: Fu
     { id: "name", head: c.columns.name },
     { id: "number", head: c.columns.number, width: 7.5 },
     ...(funds.some((f) => f.follows) ? [{ id: "follows", head: followsHead, width: 12 }] : []),
-    { id: "fees", head: c.columns.fees, width: 12 },
+    { id: "fees", head: <FundFeesHead />, width: 12 },
   ];
   const withFollows = columns.some((col) => col.id === "follows");
   return (
     <LabelSheetHost>
+      <FundFeesPhoneHelp />
       <ProductTable
         columns={columns}
         groups={funds.map((f) => ({

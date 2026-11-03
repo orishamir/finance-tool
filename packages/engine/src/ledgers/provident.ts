@@ -228,6 +228,10 @@ export function runProvident(input: ProvidentInput, ctx: RunContext): ProvidentR
   const employerExcessTodayByYear = new Map<number, number>();
   let employerPaidToday = 0;
   let employerSocial = 0;
+  // F-97: where the deposits stand against the limit
+  let firstExcessMonth: number | null = null;
+  let excessFirstYear = 0;
+  let benefitedFirstYear = 0;
   const salary = hish?.monthlySalary ?? 0;
   const employerOverActive = !kgl && hish?.employerMonthly !== undefined && hish.employerMonthly > employerLimit;
   const social = employerMoney || employerOverActive
@@ -269,6 +273,11 @@ export function runProvident(input: ProvidentInput, ctx: RunContext): ProvidentR
     const employerOver = net * empOverFrac;
     const inBenefit = employerPart + Math.min(net - employerPart - employerOver, limitOfMonth(eventMonth), benefitedLeft);
     benefitedLeft -= inBenefit - employerPart;
+    if (net - inBenefit > 1e-6) firstExcessMonth ??= eventMonth;
+    if (taxYearOf(eventMonth, first) === taxYearOf(1, first)) {
+      excessFirstYear += net - inBenefit;
+      benefitedFirstYear += inBenefit;
+    }
     const over = employerMoney ? net - inBenefit : employerOver;
     if (social && over > 0) {
       const y = taxYearOf(eventMonth, first);
@@ -418,6 +427,12 @@ export function runProvident(input: ProvidentInput, ctx: RunContext): ProvidentR
       split !== undefined && !employerMoney ? Math.min(benefitedMonthly, goal.monthly - split) + Math.min(split, employerLimit) : Math.min(benefitedMonthly, goal.monthly);
     detail.benefitedMonthly = benefitedPerMonth;
     detail.excessMonthly = Math.max(0, goal.monthly - benefitedPerMonth);
+    // F-97
+    if (firstExcessMonth !== null) detail.firstExcessMonth = firstExcessMonth;
+    if (Number.isFinite(benefitedYearly)) {
+      detail.excessFirstYear = excessFirstYear;
+      detail.roomFirstYear = Math.max(0, benefitedYearly - benefitedFirstYear);
+    } else if (split === undefined) detail.roomMonthly = Math.max(0, benefitedMonthly - goal.monthly);
   }
 
   // F-30 (deduction) and F-52 (employer money above the limit): what the person got back, and what the

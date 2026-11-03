@@ -3918,5 +3918,31 @@
       "guide:*:regulator"
     ],
     "notes": "Which regulators it covers (BoI, ISA, CMA, NII, Tax Authority) was not verified (REG OQ17)."
+  },
+  {
+    "term_he": "חשיפה למניות ולמט\"ח",
+    "term_source": {
+      "title": "חוזר גופים מוסדיים 2015-9-9: דוח חודשי לגבי קופות גמל, קרנות פנסיה וחברות ביטוח (רשות שוק ההון), עמ' 10 עד 11",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1446/he/regulation_h_2015-9-9.pdf#page=10"
+    },
+    "variants_he": [
+      "חשיפה כוללת",
+      "חשיפה משוערת במונחי דלתא"
+    ],
+    "explain_he": "כמה מהכסף במסלול חשוף למחירי המניות ולשער המטבע הזר: מה שהמסלול מחזיק, ועוד חוזים פיננסיים (נגזרים) על מניות ועל מטבע. החשיפה דרך החוזים נוספת על מה שהמסלול מחזיק, ולכן היא יכולה לעבור את 100%. השקעה אחת יכולה להיספר בשתיהן: מניה בחו\"ל היא גם מניה וגם מט\"ח.",
+    "rule_ids": [
+      "CAT-44",
+      "CAT-03"
+    ],
+    "source": {
+      "title": "חוזר גופים מוסדיים 2015-9-9: דוח חודשי לגבי קופות גמל, קרנות פנסיה וחברות ביטוח (רשות שוק ההון), עמ' 10 עד 11",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1446/he/regulation_h_2015-9-9.pdf#page=10",
+      "checked": "2026-11-03",
+      "strength": "primary"
+    },
+    "where": [
+      "decoder:track"
+    ],
+    "notes": "The column of the track browser and the company page's track list (2026-11-03). Definition: 'חשיפה כוללת הינה סך החשיפה לאפיק על ידי אחזקה ישירה (שווי נכס המוחזק), בצירוף החשיפה בגין הפעילות בנגזרים על אותו נכס' (p. 10)."
   }
 ]

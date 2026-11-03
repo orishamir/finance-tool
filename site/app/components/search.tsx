@@ -6,9 +6,9 @@ import { buttons, search as searchCopy, searchMore, site } from "../copy";
 import { formatValue } from "../lib/format";
 import { rememberUncatalogued } from "../lib/inputs";
 import { analyze, contentWords, groupHits, highlightRanges, isRuleKind, nearHits, normalize, relaxedHits, searchEntries, snippetOf, type Analysis, type SearchEntry, type SearchHit, type SearchKind, type SearchTexts } from "../lib/search";
-import { IconClose, IconCopy, IconDrillIn, IconLock, IconSearch } from "./icons";
+import { IconClose, IconCopy, IconLock, IconSearch } from "./icons";
 import { Sheet } from "./Sheet";
-import { Button, cx } from "./kit";
+import { Button, RowArrow, cx } from "./kit";
 
 let indexPromise: Promise<SearchEntry[]> | null = null;
 function loadIndex(): Promise<SearchEntry[]> {
@@ -176,7 +176,7 @@ function SearchBody({ text, setText, found }: { text: string; setText: (t: strin
                             </span>
                           )}
                         </span>
-                        <IconDrillIn className="text-muted-foreground shrink-0" />
+                        <RowArrow />
                       </Link>
                     </li>
                     );
@@ -263,7 +263,7 @@ function MaybeRows({ rows, found, text, heading }: { rows: SearchHit[]; found: F
                   <RowLine hit={hit} found={found} text={text} />
                 </span>
               </span>
-              <IconDrillIn className="text-muted-foreground shrink-0" />
+              <RowArrow />
             </Link>
           </li>
         ))}

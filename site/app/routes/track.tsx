@@ -1,16 +1,15 @@
 // The track page (flows 6.12): the fund's official record and its date, what to check, and the guide link.
 import { Link, useLoaderData } from "react-router";
 import type { Route } from "./+types/track";
-import { catalogue, companies as companiesCopy, company as companyCopy, r3workbench, site, track as copy } from "../copy";
-import { FeeNum, feeLabel } from "../components/decoder/fees";
+import { catalogue, companies as companiesCopy, company as companyCopy, r3workbench, site, trackBrowser, track as copy } from "../copy";
+import { feeLabel } from "../components/decoder/fees";
 import { DimensionChecklist, type ChecklistRowView } from "../components/guide/sections";
 import { IconDrillIn } from "../components/icons";
 import { Num, NumAfter } from "../components/provenance";
 import { Breadcrumb, PageShell } from "../components/shell";
-import { Callout, Card, Sentence, Tag } from "../components/kit";
+import { Callout, Card, FeeNum, GemelNetLink, Sentence, ShareNum, Tag } from "../components/kit";
 import { cmaFeeValue, feeYear, type SiteValue } from "../lib/value";
 import { compactHoldings, exposureShares, holdingsTemplate, type ExposureShares, type Holdings } from "../lib/track-exposure";
-import { ShareNum } from "../components/decoder/tracks";
 import { trackLabels } from "../lib/track-labels";
 import { fmt } from "../lib/format";
 
@@ -115,7 +114,7 @@ export default function TrackPage() {
             ))}
           </h1>
           <Sentence tone="muted">
-            {copy.fundLine} <Num value={data.values.fundId} />
+            {copy.fundLine} <Num value={data.values.fundId} /> <GemelNetLink fundId={track.fundId} dataset={track.dataset} />
           </Sentence>
           {data.others.length > 0 && (
             <Callout tone="caution">
@@ -142,10 +141,10 @@ export default function TrackPage() {
                   </Link>
                 )}
                 {data.wrapper && (
-                  <Link to={`/workbench/tracks/${data.wrapper.id}`} className="inline-flex items-center gap-0.5 text-sm text-link hover:underline">
-                    {r3workbench.links.group.before}
+                  <Link to={`/tracks/${data.wrapper.id}`} className="inline-flex items-center gap-0.5 text-sm text-link hover:underline">
+                    {trackBrowser.guideLink.before}
                     {data.wrapper.name}
-                    {r3workbench.links.group.after}
+                    {trackBrowser.guideLink.after}
                     <IconDrillIn size={16} />
                   </Link>
                 )}
@@ -153,7 +152,6 @@ export default function TrackPage() {
             )}
             {track.specialization && row(copy.labels.classification, <bdi>{track.specialization}</bdi>)}
             {track.subSpecialization && row(copy.labels.holds, <bdi>{track.subSpecialization}</bdi>)}
-            {track.targetPopulation && row(copy.labels.population, <bdi>{track.targetPopulation}</bdi>)}
             {row(feeText(copy.feeBalanceLabel, data.values.balanceFee), <FeeNum value={data.values.balanceFee} />)}
             {row(feeText(copy.feeDepositLabel, data.values.depositFee), <FeeNum value={data.values.depositFee} />)}
             {data.values.exposure?.stock && row(companyCopy.stock.rowStock.replace("{period}", fmt.period(track.reportPeriod)), <ShareNum value={data.values.exposure.stock} />)}

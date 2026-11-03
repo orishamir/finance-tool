@@ -14,6 +14,7 @@ import { CompanyTerms } from "../company-terms";
 import { BankProductRow } from "./product-row";
 import type { InstitutionPageData } from "./types";
 import { shown } from "../../../lib/review";
+import { withoutLtd } from "../../../lib/company-name";
 
 function countLine(n: number) {
   if (n === 1) return copy.count.one;
@@ -56,9 +57,9 @@ export function InstitutionPage({ data }: { data: InstitutionPageData }) {
       <div className="lg:flex lg:gap-12 lg:items-start pt-2 lg:pt-8">
         <div className="flex-1 min-w-0 flex flex-col gap-6 lg:gap-8">
           <header className="flex flex-col gap-3">
-            <Breadcrumb parent={{ href: "/companies", label: companiesCopy.back }} current={data.name} />
+            <Breadcrumb parent={{ href: "/companies", label: companiesCopy.back }} current={withoutLtd(data.name)} />
             <h1 className="text-2xl lg:text-3xl font-semibold">
-              <bdi>{data.name}</bdi>
+              <bdi>{withoutLtd(data.name)}</bdi>
             </h1>
             {isBank ? (
               <p className="text-sm lg:text-base text-muted-foreground max-w-measure">

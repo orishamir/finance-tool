@@ -81,11 +81,12 @@ const familyClass: Partial<Record<Label["family"], string>> = {
 const chipClass = (label: Label) => (label.tone === "neutral" ? (familyClass[label.family] ?? "bg-muted text-foreground border-border") : toneClass[label.tone]);
 const chipShape = "inline-flex items-center gap-1 text-xs font-medium rounded-full border px-2 py-0.5 min-h-6 whitespace-nowrap";
 
-/** A label: an icon and two or three words; colour never alone (the icon and the words carry it; the open tone also has the lock). */
+/** A label: an icon and two or three words; colour never alone (the icon and the words carry it; the open tone also has the lock). Its tap area
+ *  reaches 44 px high, beyond the drawn chip, so a row of chips keeps its height (2026-11-03). */
 export function LabelChip({ label }: { label: Label }) {
   const open = useContext(OpenCtx);
   return (
-    <button type="button" onClick={(e) => open(label, e.currentTarget)} className={cx(chipShape, "hover:brightness-110", chipClass(label))} data-label={label.id}>
+    <button type="button" onClick={(e) => open(label, e.currentTarget)} className={cx(chipShape, "relative before:absolute before:inset-x-0 before:-inset-y-[11px] hover:brightness-110", chipClass(label))} data-label={label.id}>
       <LabelIcon name={label.icon} />
       {label.text}
     </button>

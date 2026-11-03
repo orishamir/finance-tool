@@ -110,8 +110,8 @@ function NegotiationCard({ line, an, subject, toPct, rules }: { line: LineView; 
   const [fallback, setFallback] = useState(false);
   const cma = line.reference.cma!;
   const n = r3fees.negotiation;
-  const to = toPct ?? (cma.mean.value as number);
-  const toV = enteredValue(to, "pct", an.ctx.runDate, "העמלה שביקשתם");
+  // nothing typed, the script asks for the regulator's average: the figure is that average, not one the person entered (2026-11-03)
+  const toV = toPct === null ? cma.mean : enteredValue(toPct, "pct", an.ctx.runDate, "העמלה שביקשתם");
   const cls = cma.specialization ? `${cma.classification} · ${cma.specialization}` : cma.classification;
   const dataset = n.datasets[cma.dataset] ?? cma.dataset;
   const segs: Seg[] = [

@@ -3,10 +3,11 @@
 // its name links to the company page by the regulator's company id.
 import { Link } from "react-router";
 import { r4workbench as c } from "../../../copy";
-import { companyHref, type Listing } from "../../../lib/providers";
-import { Num } from "../../provenance";
+import { fmt } from "../../../lib/format";
+import { companyHref, type Listing, type RowTariff } from "../../../lib/providers";
+import { IconClock, IconExternal } from "../../icons";
+import { LeadTail, Num, NumAfter } from "../../provenance";
 import { Callout, Card } from "../../kit";
-import { TariffLine } from "./parts";
 
 export function ProvidentListing({ listing, wrapperId }: { listing: Listing; wrapperId: string }) {
   const t = c.providers.provident;
@@ -16,7 +17,7 @@ export function ProvidentListing({ listing, wrapperId }: { listing: Listing; wra
     <div className="flex flex-col gap-4">
       <Callout tone="info">
         {t.note}{" "}
-        <Link to={`/workbench/tracks/${wrapperId}`} className="text-link hover:underline">
+        <Link to={`/tracks/${wrapperId}`} className="text-link hover:underline">
           {t.toTracks}
         </Link>
       </Callout>
@@ -32,7 +33,7 @@ export function ProvidentListing({ listing, wrapperId }: { listing: Listing; wra
               {t.covered.mid}
               <bdi dir="ltr" className="tabular-nums">{companies}</bdi>
               {t.covered.after}{" "}
-              <Link to={`/workbench/tracks/${wrapperId}`} className="text-link hover:underline">
+              <Link to={`/tracks/${wrapperId}`} className="text-link hover:underline">
                 {t.toTracks}
               </Link>
             </p>
@@ -74,5 +75,42 @@ export function ProvidentListing({ listing, wrapperId }: { listing: Listing; wra
         </section>
       )}
     </div>
+  );
+}
+
+export function TariffLine({ tariff, noPublished = true }: { tariff: RowTariff; noPublished?: boolean }) {
+  const t = c.providers;
+  return (
+    <p className="text-sm flex flex-col gap-0.5">
+      <span>
+        {tariff.published ? (
+          <>
+            <NumAfter lead={t.tariffLine.before} value={tariff.published} />
+            <NumAfter lead={t.tariffLine.mid} value={tariff.snapshot} />
+          </>
+        ) : (
+          <>
+            <span className="text-caution-foreground">{noPublished ? c.noPublishedDate : ""}</span>
+            {" · "}
+            <NumAfter lead={t.tariffLine.collected} value={tariff.snapshot} />
+          </>
+        )}{" "}
+        <a href={tariff.href} target="_blank" rel="noopener noreferrer" className="text-link hover:underline inline-flex items-center gap-1 min-h-9 align-middle">
+          {t.tariffLink} <span className="text-xs text-muted-foreground">({t.formats[tariff.format]})</span>
+          <IconExternal size={14} />
+        </a>
+      </span>
+      {tariff.stale && (
+        <span className="text-caution-foreground flex items-start gap-1.5">
+          <IconClock size={14} className="text-caution mt-1 shrink-0" />
+          <span>
+            <LeadTail lead={c.staleTariff.before}>
+              <bdi dir="ltr">{fmt.date(tariff.snapshot.value as string)}</bdi>
+            </LeadTail>
+            {c.staleTariff.after}
+          </span>
+        </span>
+      )}
+    </p>
   );
 }

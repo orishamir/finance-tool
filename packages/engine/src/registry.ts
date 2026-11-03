@@ -2,7 +2,7 @@
 // Wrapper records name their formulas; the engine dispatches through this map. A test checks every key
 // against docs/method.md, and that every F-ID in the method is either here or in `pending`.
 import { balanceFee, custodyFee, depositFee, feeForMonth, fixedFee, navBought, tradeCommission } from "./formulas/fees.ts";
-import { moneyStory } from "./formulas/study-story.ts";
+import { earlySettlement, limitStanding, moneyStory } from "./formulas/study-story.ts";
 import { kindRecord, stretchRange, trackingBeyondFees } from "./formulas/fund-gap.ts";
 import {
   bracketTaxOnTopSlice,
@@ -22,6 +22,7 @@ import {
 } from "./formulas/holding-tax.ts";
 import { mostCommonRate, rateRange } from "./formulas/account-interest.ts";
 import { currencyExposureShare, stockExposureShare } from "./formulas/track-exposure.ts";
+import { companyAssets, groupFeeRange } from "./formulas/track-groups.ts";
 import { changeEffect, sweep } from "./formulas/step-effect.ts";
 import { annualToMonthly, contributions, cpiPath, crossRate, fxPath, monthlyInflation, realValue, taxYearOf } from "./formulas/time.ts";
 import { runBond } from "./ledgers/bond.ts";
@@ -128,6 +129,10 @@ export const formulas = {
   "F-94": fundVariants,
   "F-95": kindRecord,
   "F-96": moneyStory,
+  "F-97": limitStanding,
+  "F-98": earlySettlement,
+  "F-99": companyAssets,
+  "F-100": groupFeeRange,
 } as const;
 
 /** Ledger runs, by the instrument family they model. */

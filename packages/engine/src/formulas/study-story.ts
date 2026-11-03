@@ -27,3 +27,45 @@ export function moneyStory(own: number, extra: number, runs: readonly RunResult[
   const net = runs.reduce((a, r) => a + r.real + face(r) - paid(r), 0);
   return { own, extra, gain: net + tax - own - extra, tax, taxFromSalary: runs.reduce((a, r) => a + paid(r), 0), net };
 }
+
+export interface LimitStanding {
+  /** What each run deposits above the limit: a month's at today's amounts for an employee, the first tax year's as deposited for a self-employed person. */
+  over: number[];
+  /** What each run's deposit could still grow by inside its limit, for the same period; one run's room is not the other's. */
+  room: number[];
+  per: "month" | "year";
+  /** The first year a deposit goes above the limit; null when none does in these runs. */
+  firstOverYear: number | null;
+}
+
+/** F-97 Where a study fund's deposits stand against the limit (TXH-08, TXH-01), from the runs that hold them. */
+export function limitStanding(runs: readonly RunResult[]): LimitStanding {
+  const yearly = runs.some((r) => r.detail.excessFirstYear !== undefined);
+  const months = runs.flatMap((r) => (r.detail.firstExcessMonth === undefined ? [] : [r.detail.firstExcessMonth]));
+  return {
+    over: runs.map((r) => (yearly ? r.detail.excessFirstYear : r.detail.excessMonthly) ?? 0),
+    room: runs.map((r) => (yearly ? r.detail.roomFirstYear : r.detail.roomMonthly) ?? 0),
+    per: yearly ? "year" : "month",
+    firstOverYear: months.length ? Math.ceil(Math.min(...months) / 12) : null,
+  };
+}
+
+export interface EarlySettlement {
+  /** What the fund withholds at the withdrawal (TXH-15). */
+  withheld: number;
+  /** What the annual return gives back: the withheld less the tax the withdrawal owes (A-14). */
+  back: number;
+  /** What the annual return still asks for, when the tax is above the withheld (surtax). */
+  owed: number;
+  /** What reaches the account at the withdrawal, before any return. */
+  first: number;
+}
+
+/** F-98 An early withdrawal's withholding and what a return gives back, in today's money. Null when no run withdraws before the lock ends. */
+export function earlySettlement(runs: readonly RunResult[]): EarlySettlement | null {
+  const today = (r: RunResult, v: number) => v / r.series[r.series.length - 1]!.index;
+  if (!runs.some((r) => r.detail.earlyWithheld !== undefined)) return null;
+  const withheld = runs.reduce((a, r) => a + today(r, r.detail.earlyWithheld ?? 0), 0);
+  const due = runs.reduce((a, r) => a + today(r, r.taxAtExit), 0);
+  return { withheld, back: Math.max(0, withheld - due), owed: Math.max(0, due - withheld), first: moneyStory(0, 0, runs).net + due - withheld };
+}

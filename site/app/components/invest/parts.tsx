@@ -5,7 +5,7 @@ import { invest as c, r4workbench } from "../../copy";
 import { allLabels, label, optionLabels, type Label } from "../../lib/labels";
 import type { OptionId } from "../../lib/invest";
 import type { Reason } from "../../lib/invest";
-import { reasonSentence } from "../workbench/providers/row";
+import type { NotComparable } from "../../lib/providers";
 import { Disclosure, LabelChip } from "../kit";
 
 // ---------------------------------------------------------------- labels
@@ -68,5 +68,29 @@ export function reasonText(r: Reason, cls: string): string {
       return c.reasons.noHedgeEntered;
     default:
       return reasonSentence(r, cls, r4workbench.providers.behaviour.channelOptions.direct);
+  }
+}
+
+/** The sentence for a house the engine could not price (moved here with the house-ranking page's removal, issue 172). */
+export function reasonSentence(r: NotComparable, instrumentClass: string, channelWord: string): string {
+  const n = r4workbench.notComparable;
+  const cls = r4workbench.instrumentClasses[instrumentClass] ?? instrumentClass;
+  switch (r.code) {
+    case "data-missing":
+      return n.dataMissing;
+    case "no-applicable-line":
+      return / through /.test(r.detail) ? n.noLineChannel(cls, channelWord) : n.noLine(cls);
+    case "no-average":
+      return n.noAverage(cls);
+    case "line-without-value":
+      return n.lineWithoutValue(r.lineName ?? r.detail);
+    case "ambiguous":
+      return n.ambiguous(cls);
+    case "needs-share-price":
+      return n.needsSharePrice;
+    case "needs-fx-rate":
+      return n.needsFxRate;
+    case "record-error":
+      return n.recordError;
   }
 }

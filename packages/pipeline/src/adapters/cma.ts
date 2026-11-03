@@ -52,6 +52,64 @@ export const USER_AGENT =
 // Pipeline configuration (not site parameters): the sanity thresholds.
 export const SANITY = { minRowRatio: 0.8, maxDisappearedFundRatio: 0.2 } as const;
 
+/**
+ * A track closed to joiners, left out with those companies (founder, 2026-11-03): the regulator marks it as for workers of
+ * one sector or body, or its name says it is for those already entitled to an annuity on a past date (the regulator's list
+ * of investment tracks).
+ */
+export const closedTrack = (population: string, name: string): boolean => population.trim().startsWith("עובדי ") || /קצבה קיימים|זכאים קיימים/.test(name);
+
+/**
+ * Managing companies left out of the data, by legal id (founder, 2026-11-03, 43 companies): their funds serve one
+ * profession, employer or municipality, or are otherwise not relevant to the site's readers. A refresh skips their rows, and they
+ * are not to be collected or researched. docs/product.md D51.
+ */
+export const EXCLUDED_COMPANIES: ReadonlyMap<string, string> = new Map([
+  ["510930654", "יחד רופאים"],
+  ["570002618", "תגמולים של עובדים בעירית ת\"א-יפו"],
+  ["570005959", "קופת\"ג של עובדי עירית חיפה"],
+  ["570014928", "קופת תגמולים של עובדי התעשיה האוירית"],
+  ["520030198", "ק.ה.ר, קרן השתלמות לרוקחים"],
+  ["512362914", "מחוג, מינהל גמל לעובדי חברת חשמל"],
+  ["510960586", "חברת הגמל לעובדי האוניברסיטה העברית"],
+  ["520027954", "קרן השתלמות לאקדמאים במדעי החברה והרוח"],
+  ["520031824", "רום, קרן ההשתלמות לעובדי הרשויות המקומיות"],
+  ["520028861", "קרן השתלמות למשפטנים"],
+  ["520005497", "קופות התגמולים והפיצויים של עובדי בנק לאומי"],
+  ["520030743", "קרן השתלמות לשופטים"],
+  ["513452003", "קופות גמל של העובדים בעיריית תל אביב יפו"],
+  ["510930670", "יהב פ.ר.ח."],
+  ["520042615", "מחר"],
+  ["520030941", "ק.ל.ע., קרן השתלמות לעובדים סוציאליים"],
+  ["570009852", "קרן מקפת מרכז לפנסיה ותגמולים"],
+  ["511033060", "קרן החסכון לצבא הקבע"],
+  ["520042581", "עמ\"י, קופות גמל ענפיות"],
+  ["520027251", "קרנות השתלמות למורים ולגננות"],
+  ["520024985", "עגור"],
+  ["520028390", "קרנות השתלמות למורים תיכוניים, מורי סמינרים ומפקחים"],
+  ["512711409", "גל, קופות גמל לעובדי הוראה"],
+  ["520032269", "קרן ההשתלמות לעובדי המדינה"],
+  ["510806870", "רעות"],
+  ["520027715", "מנורה מבטחים והסתדרות המהנדסים"],
+  ["510927536", "יהב אחים ואחיות"],
+  ["520028556", "קרן ההשתלמות להנדסאים וטכנאים"],
+  ["512008335", "קו הבריאות"],
+  ["520030990", "קרן ההשתלמות לפקידים, עובדי המנהל והשירותים"],
+  ["520030693", "שיבולת"],
+  ["510773922", "ארם גמולים"],
+  ["570011767", "קופת תגמולים של עובדי אל על"],
+  ["520042607", "הנדסאים וטכנאים, קופות גמל"],
+  ["510142789", "חברת ב'ת למ'ד דל'ת"],
+  ["520034968", "קרן השתלמות של עובדי חברת החשמל"],
+  ["570009449", "עוצ\"מ, אגודה שיתופית"],
+  ["520029620", "קרן השתלמות לביוכימאים ומקרוביולוגים"],
+  ["520042573", "עו\"ס"],
+  ["570007476", "קרן ביטוח ופנסיה לפועלים חקלאים"],
+  ["520031659", "עוצ\"מ, קופות גמל והשתלמות"],
+  ["510694821", "לאומי קמ\"פ"],
+  ["570005850", "קרן הביטוח והפנסיה של פועלי בנין"],
+]);
+
 export const REQUIRED_COLUMNS = [
   "FUND_ID",
   "FUND_NAME",
@@ -318,16 +376,74 @@ export function buildHoldings(
   };
 }
 
-/** Attach a fund's derived value objects (fees, and holdings when its raw fields have them). */
+const YIELD_FIELDS = [
+  { key: "avg_annual_yield_3y", raw: "AVG_ANNUAL_YIELD_TRAILING_3YRS", heName: "תשואה שנתית ממוצעת 3 שנים אחרונות", years: 3 },
+  { key: "avg_annual_yield_5y", raw: "AVG_ANNUAL_YIELD_TRAILING_5YRS", heName: "תשואה שנתית ממוצעת 5 שנים אחרונות", years: 5 },
+] as const;
+
+/** Whether a track opened less than `years` full years before the end of the report period (it cannot have a figure for the window). */
+export const youngerThan = (inception: string | null | undefined, period: string, years: number): boolean => {
+  if (!inception) return false;
+  const [y, m] = period.split("-").map(Number) as [number, number];
+  return inception > periodEnd(`${y - years}-${String(m).padStart(2, "0")}`);
+};
+
+/**
+ * CMA average annual yields (3 and 5 years) to value objects, in percent per year (CAT-04, CAT-05). The regulator states they are
+ * nominal and gross: before management fees, and not net of tax. That the window ends at the report month and that the figure is a
+ * geometric annualisation are read from the data, not stated by the regulator (CAT-05). Undefined when the file has neither column. Pure.
+ */
+export function buildYields(
+  file: Pick<CmaPeriodFile, "dataset" | "report_period" | "checked" | "source">,
+  fund: Pick<CmaFund, "raw_fields" | "inception_date">,
+): CmaFund["yields"] | undefined {
+  if (!YIELD_FIELDS.some((f) => f.raw in fund.raw_fields)) return undefined;
+  const config = DATASETS.find((d) => d.dataset === file.dataset)!;
+  const make = (f: (typeof YIELD_FIELDS)[number]) => {
+    const rawText = (fund.raw_fields[f.raw] ?? "").trim();
+    const n = rawText === "" ? null : Number(rawText);
+    const value = n !== null && Number.isFinite(n) ? n : null;
+    const notes =
+      value === null
+        ? youngerThan(fund.inception_date, file.report_period, f.years)
+          ? `לא דווח: למסלול עוד אין ${f.years} שנים מלאות (נפתח ${fund.inception_date}).`
+          : "לא דווח."
+        : `התשואה השנתית הממוצעת של המסלול ב־${f.years} השנים עד סוף ${file.report_period}: נומינלית וברוטו, כלומר לפני דמי ניהול ולפני מס. זו תשואת עבר, לא הבטחה לעתיד. שנות החישוב נקראות כמסתיימות בחודש הדיווח, והרשות לא כותבת זאת במפורש (CAT-05).`;
+    return {
+      value,
+      unit: "pct_per_year" as const,
+      source: {
+        url: file.source.url,
+        title: `${config.heTitle}, resource 2024-today, field ${f.raw} ("${f.heName}"), REPORT_PERIOD ${file.report_period.replace("-", "")}`,
+        publisher: file.source.publisher,
+        strength: "primary" as const,
+      },
+      checked: file.checked,
+      effective_from: `${file.report_period}-01`,
+      effective_to: periodEnd(file.report_period),
+      tax_year: null,
+      update_rule: "market" as const,
+      rule_ids: ["CAT-04", "CAT-05"],
+      state: "sourced" as const,
+      notes,
+    };
+  };
+  return { avg_annual_yield_3y: make(YIELD_FIELDS[0]), avg_annual_yield_5y: make(YIELD_FIELDS[1]) };
+}
+
+/** Attach a fund's derived value objects (fees, and holdings and yields when its raw fields have them). */
 const derive = (file: Pick<CmaPeriodFile, "dataset" | "report_period" | "checked" | "source">, f: CmaFund): CmaFund => {
   const next: CmaFund = { ...f, fees: buildFees(file, f) };
   const holdings = buildHoldings(file, f);
   if (holdings) next.holdings = holdings;
   else delete next.holdings;
+  const yields = buildYields(file, f);
+  if (yields) next.yields = yields;
+  else delete next.yields;
   return next;
 };
 
-/** Rebuild `fees` and `holdings` of every fund from the stored raw_fields; nothing else changes. */
+/** Rebuild `fees`, `holdings` and `yields` of every fund from the stored raw_fields; nothing else changes. */
 export function renormaliseFees(file: CmaPeriodFile): CmaPeriodFile {
   return { ...file, funds: file.funds.map((f) => derive(file, f)) };
 }
@@ -379,6 +495,9 @@ export function normalise(csvText: string, ctx: NormaliseContext): NormaliseResu
   const seen = new Set<number>();
   const funds: CmaFund[] = [];
   for (const r of rows) {
+    if (EXCLUDED_COMPANIES.has(get(r, "MANAGING_CORPORATION_LEGAL_ID").trim()) || closedTrack(get(r, "TARGET_POPULATION"), get(r, "FUND_NAME"))) continue;
+    const population = get(r, "TARGET_POPULATION").trim();
+    if (population !== "" && population !== "כלל האוכלוסיה") problems.push(`fund ${get(r, "FUND_ID")}: unknown TARGET_POPULATION "${population}"; say whether it is closed to joiners`);
     const id = Number(get(r, "FUND_ID").trim());
     if (!Number.isInteger(id) || id <= 0) {
       problems.push(`unreadable FUND_ID "${get(r, "FUND_ID")}"`);

@@ -214,7 +214,7 @@ One page per product type (wrapper); the mockup shows kupat gemel lehashkaa. The
 | Component | Variant | Props | Notes |
 |---|---|---|---|
 | `SectionIndex` | chips (phone) / list (PC) | `sections: {id, label}[]; current` | The current section follows the scroll (IntersectionObserver). Phone chips 44px tall; the current one `bg-foreground text-background`. PC list items 10×14px padding with a 2px `border-s` (teal when current). |
-| `NumberLegend` | `institution?; term?` | none | Three sample numbers, a fourth for the institution mark ("לפי החברה: המספר מבוסס על מסמך של החברה"), optionally a fifth for a glossary term, and the hint (copy 2). Not interactive. Shown under the h1 of every page that shows numbers (2026-10-24, UX audit). |
+| `NumberLegend` | `institution?; term?` | none | Three sample numbers, a fourth for the institution mark ("לפי החברה: המספר מבוסס על מסמך של החברה"), optionally a fifth for a glossary term, and the hint (copy 2). Not interactive. Shown under the h1 of every page that shows numbers (2026-10-24, UX audit). Each sample stands only while the page shows a figure of its state, with its room held (2026-11-03, `docs/design-system.md` "Page header"). |
 | `GuideSection` | | `id; title; children` | Anchor target; scroll margin = header height + 8px. |
 | `AssumptionChips` | phone only | `inputs: Input[]; onOpen(field?)` | Buttons, 44px, `rounded-full`, 1px `border`; an entered input uses `bg-entered-subtle`, an `#2a3f6b` border, a pencil icon and an `entered` value. The last chip, "כל ההנחות", opens the sheet at the top. The row scrolls sideways and bleeds to the screen edge. |
 | `ValuesPanel` | PC only | as screen 3 | |
@@ -266,7 +266,7 @@ One page per product type (wrapper); the mockup shows kupat gemel lehashkaa. The
 
 **Amended 2026-11-02 (D49).** The check section is gone from every guide and exposure page, and `omitsSection` (`lib/guide-nav.ts`) lists the sections each guide leaves out; `guide.sectionTitles` (`copy.ts`) holds a section's own title on a guide.
 
-**Amended 2026-10-24 (UX audit).** Section order is what, use directly after it, who and so on; ~~the rule chips sit behind a per-section "הצגת הכללים" toggle~~ (replaced 2026-11-02 by one chip per fact, D48) and the companies behind "הצגת החברות"; the check section is "מה האתר לקח בחשבון" (it was "מה לבדוק"): an intro, the blocked rows each on its own line, and the full list behind "הצגת כל הבדיקות". The chart table is its own full-width card under the chart-and-inputs row (it was inside the chart card), with an edge fade as a scroll cue. The institution chips are a plain link list, two columns from `md`. The expander shows the Hebrew `text_he` of the rules the exit sentence cites (English only when none, labelled). The terms table is hidden under three rows, capped to the page's own terms with the rest behind "הצגת המונחים הכלליים". The example headline reads "דוגמה: X ועוד Y בחודש, בתשואה של Z בשנה, משאירים לכם אחרי N…"; stubs are one quiet sentence with no codes. The study-fund deposit row follows the saved employment (both lines when unset). The tax-at-exit badge is red only when the wrapper itself has a blocking open question; shared open questions get the neutral tag "יש שאלות פתוחות". Companies are split into "פתוחות לכלל הציבור" and "לעובדי מגזר או מפעל מסוים". Pages with a playbook link to it ("איך עוברים, שלב אחרי שלב"). The `/guide` list is grouped, with "מאיפה להתחיל" (three links) and a "במה אפשר להשקיע בתוכו" chip row per guide.
+**Amended 2026-10-24 (UX audit).** Section order is what, use directly after it, who and so on; ~~the rule chips sit behind a per-section "הצגת הכללים" toggle~~ (replaced 2026-11-02 by one chip per fact, D48) and the companies behind "הצגת החברות"; the check section is "מה האתר לקח בחשבון" (it was "מה לבדוק"): an intro, the blocked rows each on its own line, and the full list behind "הצגת כל הבדיקות". The chart table is its own full-width card under the chart-and-inputs row (it was inside the chart card), with an edge fade as a scroll cue. The institution chips are a plain link list, two columns from `md`. The expander shows the Hebrew `text_he` of the rules the exit sentence cites (English only when none, labelled). The terms table is hidden under three rows, capped to the page's own terms with the rest behind "הצגת המונחים הכלליים". The example headline reads "דוגמה: X ועוד Y בחודש, בתשואה של Z בשנה, משאירים לכם אחרי N…"; stubs are one quiet sentence with no codes. The study-fund deposit row follows the saved employment (both lines when unset). The tax-at-exit badge is red only when the wrapper itself has a blocking open question; shared open questions get the neutral tag "יש שאלות פתוחות". Pages with a playbook link to it ("איך עוברים, שלב אחרי שלב"). The `/guide` list is grouped, with "מאיפה להתחיל" (three links) and a "במה אפשר להשקיע בתוכו" chip row per guide.
 
 **Amended (2026-10-24, scenario audit).** *Exposure note for the S&P 500* (`content/exposure/index-sp500.tsx`, `holdNote`): the sentence "במסלול בקופה לא משלמים מס עד המשיכה" is replaced by what the rule base says. Inside a fund the gains are not taxed (TXH-18, TXK-03, TXK-17; TXP-13 for pension); at the exit of a study fund, gains on benefited deposits are exempt after the wait (TXH-09, the years from `lock_years`) and gains on deposits above the ceiling are taxed up to the rate of TXH-11 (the figures come from the rules through `figure()`, base real or nominal open, TXH OQ1); tax withheld abroad inside a provident fund is a cost that no source says can be reduced (TXK-18, TXK OQ7); for pension the tax is set at withdrawal by the type of fund. The rules line gained TXK-03, TXK-17, TXK-18, TXH-09, TXH-11, TXH-18 and TXP-13. The card's earlier "עוד לא ברור איך זה ממוסה כאן: שאלה פתוחה PEN-OQ7" on the study fund was the old logic and is gone (PEN-OQ7 is an insurance-cost question carried by the pension wrappers, not an exposure question). *Makam and government-bond guides* each gained one sentence naming GOV OQ7 as the open minimum for buying and selling on the exchange and tying it to the blocked "סכום מינימלי" row of the checklist (the guides' other minimum questions, GOV OQ2 and OQ8, are the auction's). The checklist row "פטורים לפי גיל ושימוש" is shown as a covered row with a second line naming the options blocked on it (8).
 
@@ -906,7 +906,7 @@ interface ConsolidationGroup {
   openQuestion?: string;
 }
 
-type WorkbenchOutcome = 'shown' | 'no-rule' | 'ineligible' | 'not-evaluated';   // F-83 read for F-64 (method note, flow 25)
+type WorkbenchOutcome = 'shown' | 'no-rule' | 'not-evaluated';   // F-83 read for F-64 (method note, flow 25)
 interface WorkbenchRow {
   company: { name: string; href: string };
   track: { fundId: number; name: string; href: string };
@@ -967,7 +967,7 @@ Every `ValueObject` carries its state, so styling follows `state` as in 1.3: sta
 | `ExposureChips` | `groups: Workbench['groups']; open: string[]; onChange` | Multi-choice chips (Radix ToggleGroup multiple, `dir="rtl"`), each "{classification} · {count}", plus "הכול"; sideways scroll under `md`. |
 | `WorkbenchControls` | `filter; sort: 'company' \| 'fee-balance' \| 'fee-deposit' \| 'name'; onChange` | Filter `NumberField`-styled text field with `IconSearch`; `SegmentedControl` for sort; the "average is not an offer" line. Sticky under the header on a phone. |
 | `WorkbenchGroup` | `group; open; rows; sort; page: number` | Heading "{classification} · {count} מסלולים" as a `Disclosure` (44px); open: `WorkbenchRow`s (phone) or a `<table>` (PC); "להציג עוד {n}" after fifty. |
-| `WorkbenchRow` | `row: WorkbenchRow` | 7.7: company link, track link, "קופה {n}", sub-specialisation, `FeeNum` ×2 with the year ("לקרן כולה" tag when `perFund`), `FitMark`, default `Tag`, `IconDrillIn`, the quiet "מה העמלות האלה יעלו לכם" link. `ineligible` draws the quiet style with the reason and no mark. Near duplicates: `groupTracks` inside a company, the 3.7 bracket and banner. |
+| `WorkbenchRow` | `row: WorkbenchRow` | 7.7: company link, track link, "קופה {n}", sub-specialisation, `FeeNum` ×2 with the year ("לקרן כולה" tag when `perFund`), `FitMark`, default `Tag`, `IconDrillIn`, the quiet "מה העמלות האלה יעלו לכם" link. Near duplicates: `groupTracks` inside a company, the 3.7 bracket and banner. |
 | `WorkbenchCoverage` | `coverage; rows` | `CoverageLine` with the workbench sentence (copy 7.3) and a `CoverageList` grouped by `WorkbenchOutcome` (+ fits / no-fit), the "shown with a mark" group collapsed. |
 | `ProviderTabPlaceholder` | none | The disabled "לפי ספק" tab with its line. |
 | `TransferSheet` | `state: StateV2 \| null; onExport(kind: 'share' \| 'download' \| 'copy'); onImport(file \| text, mode: 'add' \| 'replace')` | 7.8: export half, import half, `ImportPreview`. Page form at `/transfer`. |
@@ -1189,7 +1189,6 @@ Every track of every managing company for one wrapper in the latest CMA period, 
 | `WorkbenchControls` | sort changed | Rows re-order inside each group (FLIP); the "not an offer" line stays |
 | `WorkbenchRow` | fee not reported | "טרם דווח" with the caution mark (CAT-40) |
 | `WorkbenchRow` | pension fund | "לקרן כולה" tag on both fee cells (CAT-39) |
-| `WorkbenchRow` | sector or employer track (CAT-10) | Quiet style; "פתוח רק ל{קבוצה}"; no mark; counted as not eligible |
 | `WorkbenchRow` | no rule for the classification | `CircleHelp` muted "אין כלל לסיווג הזה" |
 | `WorkbenchRow` | near duplicates in one company | The 3.7 bracket and banner |
 | `WorkbenchRow` | "מה העמלות האלה יעלו לכם" | Opens `/fees?track={fundId}` |
@@ -1214,7 +1213,7 @@ Every track of every managing company for one wrapper in the latest CMA period, 
 - **A default track that does not fit the goal:** shown plainly with the default tag and the "לא מתאים" mark; no warning tone.
 - **Sorting by fee with "לא דווח" rows:** they sort last, in their own quiet block.
 
-**Amended 2026-10-24 (UX audit).** ~~The chips are accordions that toggle groups~~ the exposure chips filter the table to one group (a second press returns to the default, "הכול" shows all); the search opens only groups with matches; "פתוח לכולם" (on by default) hides sector and employer tracks and says how many; filter, sort, direction and chip live in the address; a second press on the active sort reverses it, unreported fees last. The table has no group-bar column: the near-duplicate bar is a start border on the first cell; the headers are "ניהול מחיסכון, {שנה}" and "ניהול מהפקדה"; the phone label reads "במה הכסף מושקע:"; a one-line key sits under a table with an unreported fee. Phone and tablet (below `lg`) use cards and the table starts at `lg` (it started at `md`); the thead is `bg-card` with a bottom rule and no longer slides under the filter bar; on a phone the filter block shrinks to the search row after 160px of scroll. The funds page's return chip shows the exposure's own entered return when there is one, else the goal's.
+**Amended 2026-10-24 (UX audit).** ~~The chips are accordions that toggle groups~~ the exposure chips filter the table to one group (a second press returns to the default, "הכול" shows all); the search opens only groups with matches; filter, sort, direction and chip live in the address; a second press on the active sort reverses it, unreported fees last. The table has no group-bar column: the near-duplicate bar is a start border on the first cell; the headers are "ניהול מחיסכון, {שנה}" and "ניהול מהפקדה"; the phone label reads "במה הכסף מושקע:"; a one-line key sits under a table with an unreported fee. Phone and tablet (below `lg`) use cards and the table starts at `lg` (it started at `md`); the thead is `bg-card` with a bottom rule and no longer slides under the filter bar; on a phone the filter block shrinks to the search row after 160px of scroll. The funds page's return chip shows the exposure's own entered return when there is one, else the goal's.
 
 ---
 
@@ -1492,6 +1491,8 @@ Every `ValueObject` carries its state, so styling follows `state` as in 1.3: tar
 
 ## 17. Screen 13: provider workbench page
 
+*(2026-11-03, D52: removed for the securities account; the indices page ranks the houses. Only the provident wrappers' company listing remains at this address, and only its strings stay in `copy.ts`.)*
+
 ### Overview
 
 Every bank and broker that offers the wrapper, ranked by what its tariff would cost the person over the horizon for one fund and their own behaviour, at the list price, a published average, or their own offer; the deciding fee type, ties, minimums and protection; the providers the site could not compare, with the reason (flows 28, 29, 33). Route `/workbench/providers/{wrapper}?fund=…&orders=…&channel=…&level=…&vs=…`. Data: every `data/fees/` snapshot of class bank or broker (fifteen today: eleven with lines, four `missing`), the fund record (instrument class, currency, distribution policy), P-05's instrument when no fund is given, the saved goal or P-05's amounts, A-28, P-01, the protection and notice rules from the bundle (BRK-06 to BRK-13, BRK-16, BRK-21, BRK-24, REG-16), the saved offers (16.5), and the engine's F-63 output. Not pre-rendered.
@@ -1567,6 +1568,8 @@ Worked examples: S44 (four invented providers; list level, one order a month: C 
 ---
 
 ## 18. Screen 14: fund-variant page
+
+*(2026-11-03, D53: the funds page is deleted; the indices page lists and prices every fund of an index, and no other holding has a priced fund.)*
 
 ### Overview
 

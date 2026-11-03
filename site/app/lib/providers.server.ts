@@ -79,7 +79,7 @@ export function workbenchBundle(): WorkbenchBundle {
   return (cached ??= buildWorkbenchBundle());
 }
 
-/** The wrappers whose provider page is built: the brokerage account (ranked) and the provident wrappers (a listing of managers' list fees; empty where none is collected, and the page says so). */
+/** The wrappers whose provider page is built: the provident wrappers (a listing of managers' list fees; empty where none is collected, and the page says so). */
 export function providerWrapperIds(): string[] {
-  return [BROKERAGE, ...PROVIDENT_WRAPPERS];
+  return [...PROVIDENT_WRAPPERS];
 }

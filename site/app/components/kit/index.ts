@@ -2,7 +2,7 @@
 // "components/kit", not from a neighbouring feature. One file per component or small family; the gallery at /kit shows each in its states.
 export { cx } from "./cx";
 export { useHeldHeight } from "./held-height";
-export { LongestCase } from "./longest-case";
+export { LongestCase, useUnseen } from "./longest-case";
 export { Button, LinkButton } from "./button";
 export { StepTag, Tag } from "./tag";
 export { Callout } from "./callout";
@@ -40,4 +40,8 @@ export { TableCols, type ColWidth } from "./table-cols";
 export { FilterChip } from "./filter-chip";
 export { DidYouKnow, type FactItem } from "./did-you-know";
 export { useSoftSwap } from "./soft-swap";
-export { FeeFigure, FeeWordsNote, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, type ProductColumn, type ProductGroup, type ProductRow } from "./product-table";
+export { FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, type ProductColumn, type ProductGroup, type ProductRow } from "./product-table";
+export { PageTabs, type PageTab } from "./page-tabs";
+export { SortHead, type SortState } from "./sort-head";
+export { ExposureCell, FeeKey, FeeNum, GemelNetLink, ShareNum, TrackFeeLines, TrackFundId, TrackLabels, gemelNetUrl } from "./track-cells";
+export { HelpMark } from "./help-mark";

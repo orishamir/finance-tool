@@ -154,7 +154,7 @@ function Screen({ hb, cb, failed, form }: { hb: HoldingsBundle | null; cb: Compa
                 ) : (
                   <p className="text-sm text-muted-foreground">{copy.consolidation.oneHolding}</p>
                 )}
-                {types.size > 1 && <DifferentTypesLine workbenchHref={`/workbench/tracks/${[...types][0]}`} />}
+                {types.size > 1 && <DifferentTypesLine workbenchHref={`/tracks/${[...types][0]}`} />}
               </section>
             )}
             {childViews.length > 0 && (

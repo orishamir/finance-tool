@@ -21,7 +21,8 @@
   },
   "tariff": {
     "url": "https://www.interactivebrokers.com/en/pricing/commissions-stocks.php",
-    "title": "Commissions: Stocks, ETFs, Warrants and Structured Products; Spot Currencies; Other Fees; Required Minimums (interactivebrokers.com, ללא תאריך; אותן טבלאות ב-interactivebrokers.ie). התעריף ללקוח ישיר; לקוח שהופנה דרך ברוקר מציג משלם את תעריף הברוקר המציג",
+    "title": "Interactive Brokers - Commissions",
+    "notes": "Commissions: Stocks, ETFs, Warrants and Structured Products; Spot Currencies; Other Fees; Required Minimums (interactivebrokers.com, ללא תאריך; אותן טבלאות ב-interactivebrokers.ie). התעריף ללקוח ישיר; לקוח שהופנה דרך ברוקר מציג משלם את תעריף הברוקר המציג",
     "published": null,
     "format": "html"
   },
@@ -41,7 +42,7 @@
         "unit": "usd_per_share",
         "source": {
           "url": "https://www.interactivebrokers.com/en/pricing/commissions-stocks.php",
-          "title": "Commissions Stocks, ETFs, Warrants and Structured Products (interactivebrokers.com, no date shown), United States, IBKR Pro - Fixed",
+          "title": "Commissions Stocks, ETFs, Warrants and Structured Products, United States, IBKR Pro - Fixed",
           "publisher": "Interactive Brokers LLC",
           "strength": "institution",
           "quote": "≤ 300,000 USD 0.0035 USD 0.005"
@@ -63,7 +64,7 @@
         "unit": "usd_per_trade",
         "source": {
           "url": "https://www.interactivebrokers.com/en/pricing/commissions-stocks.php",
-          "title": "Commissions Stocks, ETFs, Warrants and Structured Products (interactivebrokers.com, no date shown), United States, IBKR Pro - Fixed, Minimum per order (shares)",
+          "title": "Commissions Stocks, ETFs, Warrants and Structured Products, United States, IBKR Pro - Fixed, Minimum per order (shares)",
           "publisher": "Interactive Brokers LLC",
           "strength": "institution",
           "quote": "Minimum per order (shares) USD 0.35 12 USD 1.00 12"
@@ -86,7 +87,7 @@
         "unit": "pct_of_trade",
         "source": {
           "url": "https://www.interactivebrokers.com/en/pricing/commissions-stocks.php",
-          "title": "Commissions Stocks, ETFs, Warrants and Structured Products (interactivebrokers.com), United States, IBKR Pro - Fixed, 'Maximum per order 1% of Trade Value'",
+          "title": "Commissions Stocks, ETFs, Warrants and Structured Products, United States, IBKR Pro - Fixed, 'Maximum per order 1% of Trade Value'",
           "publisher": "Interactive Brokers LLC",
           "strength": "institution",
           "quote": "Maximum per order 1% of Trade Value 4,8 1% of Trade Value 4,8"
@@ -126,7 +127,7 @@
         "unit": "usd_per_share",
         "source": {
           "url": "https://www.interactivebrokers.com/en/pricing/commissions-stocks.php",
-          "title": "Commissions Stocks, ETFs, Warrants and Structured Products (interactivebrokers.com, no date shown), United States, IBKR Pro - Tiered",
+          "title": "Commissions Stocks, ETFs, Warrants and Structured Products, United States, IBKR Pro - Tiered",
           "publisher": "Interactive Brokers LLC",
           "strength": "institution",
           "quote": "≤ 300,000 USD 0.0035 USD 0.005"
@@ -148,7 +149,7 @@
         "unit": "usd_per_trade",
         "source": {
           "url": "https://www.interactivebrokers.com/en/pricing/commissions-stocks.php",
-          "title": "Commissions Stocks, ETFs, Warrants and Structured Products (interactivebrokers.com, no date shown), United States, IBKR Pro - Tiered, Minimum per order (shares)",
+          "title": "Commissions Stocks, ETFs, Warrants and Structured Products, United States, IBKR Pro - Tiered, Minimum per order (shares)",
           "publisher": "Interactive Brokers LLC",
           "strength": "institution",
           "quote": "Minimum per order (shares) USD 0.35 12 USD 1.00 12"
@@ -171,7 +172,7 @@
         "unit": "pct_of_trade",
         "source": {
           "url": "https://www.interactivebrokers.com/en/pricing/commissions-stocks.php",
-          "title": "Commissions Stocks, ETFs, Warrants and Structured Products (interactivebrokers.com), United States, IBKR Pro - Tiered, 'Maximum per order 1% of Trade Value'",
+          "title": "Commissions Stocks, ETFs, Warrants and Structured Products, United States, IBKR Pro - Tiered, 'Maximum per order 1% of Trade Value'",
           "publisher": "Interactive Brokers LLC",
           "strength": "institution",
           "quote": "Maximum per order 1% of Trade Value 4,8 1% of Trade Value 4,8"
@@ -211,7 +212,7 @@
         "unit": "pct_of_trade",
         "source": {
           "url": "https://www.interactivebrokers.com/en/pricing/commissions-stocks.php",
-          "title": "Commissions Stocks, ETFs, Warrants and Structured Products (interactivebrokers.com, no date shown), United Kingdom, USD Denominated, Fixed - IB SmartRouting",
+          "title": "Commissions Stocks, ETFs, Warrants and Structured Products, United Kingdom, USD Denominated, Fixed - IB SmartRouting",
           "publisher": "Interactive Brokers LLC",
           "strength": "institution",
           "quote": "≤ 50,000,000 0.05% of Trade Value 0.05% of Trade Value 0.10% of Trade Value"
@@ -233,7 +234,7 @@
         "unit": "usd_per_trade",
         "source": {
           "url": "https://www.interactivebrokers.com/en/pricing/commissions-stocks.php",
-          "title": "Commissions Stocks, ETFs, Warrants and Structured Products (interactivebrokers.com, no date shown), United Kingdom, USD Denominated, Fixed - IB SmartRouting, Minimum per order (shares)",
+          "title": "Commissions Stocks, ETFs, Warrants and Structured Products, United Kingdom, USD Denominated, Fixed - IB SmartRouting, Minimum per order (shares)",
           "publisher": "Interactive Brokers LLC",
           "strength": "institution",
           "quote": "Minimum per order (shares) USD 1.70 USD 4.00 USD 6.00"
@@ -275,7 +276,7 @@
         "unit": "pct_of_trade",
         "source": {
           "url": "https://www.interactivebrokers.com/en/pricing/commissions-stocks.php",
-          "title": "Commissions Stocks, ETFs, Warrants and Structured Products (interactivebrokers.com, no date shown), United Kingdom, USD Denominated, Tiered",
+          "title": "Commissions Stocks, ETFs, Warrants and Structured Products, United Kingdom, USD Denominated, Tiered",
           "publisher": "Interactive Brokers LLC",
           "strength": "institution",
           "quote": "≤ 50,000,000 0.05% of Trade Value 0.05% of Trade Value 0.10% of Trade Value"
@@ -297,7 +298,7 @@
         "unit": "usd_per_trade",
         "source": {
           "url": "https://www.interactivebrokers.com/en/pricing/commissions-stocks.php",
-          "title": "Commissions Stocks, ETFs, Warrants and Structured Products (interactivebrokers.com, no date shown), United Kingdom, USD Denominated, Tiered, Minimum per order (shares)",
+          "title": "Commissions Stocks, ETFs, Warrants and Structured Products, United Kingdom, USD Denominated, Tiered, Minimum per order (shares)",
           "publisher": "Interactive Brokers LLC",
           "strength": "institution",
           "quote": "Minimum per order (shares) USD 1.70 USD 4.00 USD 6.00"
@@ -319,7 +320,7 @@
         "unit": "usd_per_trade",
         "source": {
           "url": "https://www.interactivebrokers.com/en/pricing/commissions-stocks.php",
-          "title": "Commissions Stocks, ETFs, Warrants and Structured Products (interactivebrokers.com, no date shown), United Kingdom, USD Denominated, Tiered, Maximum per order (shares)",
+          "title": "Commissions Stocks, ETFs, Warrants and Structured Products, United Kingdom, USD Denominated, Tiered, Maximum per order (shares)",
           "publisher": "Interactive Brokers LLC",
           "strength": "institution",
           "quote": "Maximum per order (shares) USD 39.00"
@@ -360,7 +361,7 @@
         "unit": "pct_of_trade",
         "source": {
           "url": "https://www.interactivebrokers.com/en/pricing/commissions-stocks.php",
-          "title": "Commissions Stocks, ETFs, Warrants and Structured Products (interactivebrokers.com, no date shown), Israel (Tel Aviv Exchange), Fixed",
+          "title": "Commissions Stocks, ETFs, Warrants and Structured Products, Israel (Tel Aviv Exchange), Fixed",
           "publisher": "Interactive Brokers LLC",
           "strength": "institution",
           "quote": "0.05% of Trade Value 0.1% of Trade Value"
@@ -382,7 +383,7 @@
         "unit": "nis",
         "source": {
           "url": "https://www.interactivebrokers.com/en/pricing/commissions-stocks.php",
-          "title": "Commissions Stocks, ETFs, Warrants and Structured Products (interactivebrokers.com, no date shown), Israel, Fixed, Minimum per order",
+          "title": "Commissions Stocks, ETFs, Warrants and Structured Products, Israel, Fixed, Minimum per order",
           "publisher": "Interactive Brokers LLC",
           "strength": "institution",
           "quote": "Minimum per order ILS 5.25 ILS 15.00"
@@ -424,7 +425,7 @@
         "unit": "pct_of_trade",
         "source": {
           "url": "https://www.interactivebrokers.com/en/pricing/commissions-stocks.php",
-          "title": "Commissions Stocks, ETFs, Warrants and Structured Products (interactivebrokers.com, no date shown), Israel (Tel Aviv Exchange), Tiered",
+          "title": "Commissions Stocks, ETFs, Warrants and Structured Products, Israel (Tel Aviv Exchange), Tiered",
           "publisher": "Interactive Brokers LLC",
           "strength": "institution",
           "quote": "0.05% of Trade Value 0.1% of Trade Value"
@@ -446,7 +447,7 @@
         "unit": "nis",
         "source": {
           "url": "https://www.interactivebrokers.com/en/pricing/commissions-stocks.php",
-          "title": "Commissions Stocks, ETFs, Warrants and Structured Products (interactivebrokers.com, no date shown), Israel, Tiered, Minimum per order",
+          "title": "Commissions Stocks, ETFs, Warrants and Structured Products, Israel, Tiered, Minimum per order",
           "publisher": "Interactive Brokers LLC",
           "strength": "institution",
           "quote": "Minimum per order ILS 5.25 ILS 15.00"
@@ -468,7 +469,7 @@
         "unit": "nis",
         "source": {
           "url": "https://www.interactivebrokers.com/en/pricing/commissions-stocks.php",
-          "title": "Commissions Stocks, ETFs, Warrants and Structured Products (interactivebrokers.com, no date shown), Israel, Tiered, Maximum per order",
+          "title": "Commissions Stocks, ETFs, Warrants and Structured Products, Israel, Tiered, Maximum per order",
           "publisher": "Interactive Brokers LLC",
           "strength": "institution",
           "quote": "Maximum per order ILS 120.00"
@@ -510,7 +511,7 @@
         "unit": "pct_of_balance_per_period",
         "source": {
           "url": "https://www.interactivebrokers.com/en/pricing/commissions-stocks.php",
-          "title": "Commissions Stocks, ETFs, Warrants and Structured Products (interactivebrokers.com, no date shown), page footer",
+          "title": "Commissions Stocks, ETFs, Warrants and Structured Products, page footer",
           "publisher": "Interactive Brokers LLC",
           "strength": "institution",
           "quote": "IBKR charges no custody fees."
@@ -551,7 +552,7 @@
         "unit": "pct_of_trade",
         "source": {
           "url": "https://www.interactivebrokers.com/en/pricing/commissions-spot-currencies.php",
-          "title": "Commissions Spot Currencies (interactivebrokers.com, no date shown), Tiered",
+          "title": "Commissions Spot Currencies, Tiered",
           "publisher": "Interactive Brokers LLC",
           "strength": "institution"
         },
@@ -612,7 +613,7 @@
         "unit": "pct_of_trade",
         "source": {
           "url": "https://www.interactivebrokers.com/en/pricing/commissions-spot-currencies.php",
-          "title": "Commissions Spot Currencies (interactivebrokers.com), note on the auto currency conversion service",
+          "title": "Commissions Spot Currencies, note on the auto currency conversion service",
           "publisher": "Interactive Brokers LLC",
           "strength": "institution",
           "quote": "typically add or subtract (at its discretion) 0.03% to the exchange rate"
@@ -649,7 +650,7 @@
       "unit": "usd",
       "source": {
         "url": "https://www.interactivebrokers.com/en/accounts/required-minimums.php",
-        "title": "Required Minimums, Individual, Joint, Trust and Org Accounts (interactivebrokers.com)",
+        "title": "Required Minimums, Individual, Joint, Trust and Org Accounts",
         "publisher": "Interactive Brokers LLC",
         "strength": "institution"
       },

@@ -129,42 +129,81 @@ export function YearLabels({ ticks, x, y, left, right, word = String }: { ticks:
   );
 }
 
+type FlipKey = string | Element;
+
+/** A list's rows: each `[data-flip]` (named by its id), and each child of a `[data-flip-list]` (named by itself: React keeps a kept row's
+ *  element). A row that is not shown (folded away, the other screen size's layout) is left out. */
+function flipRows(root: HTMLElement): { el: HTMLElement; key: FlipKey; box: Element }[] {
+  const named = [...root.querySelectorAll<HTMLElement>("[data-flip]")].map((el) => ({ el, key: el.dataset.flip! as FlipKey, box: root as Element }));
+  const children = [...root.querySelectorAll<HTMLElement>("[data-flip-list]")].flatMap((list) => [...list.children].map((el) => ({ el: el as HTMLElement, key: el as FlipKey, box: list })));
+  return [...named, ...children].filter((r) => r.el.offsetParent);
+}
+
+/** Each row's top on the screen, from the list's top, with its slide where it is in one: scrolling between two changes moves nothing. */
+function flipPlaces(root: HTMLElement): Map<FlipKey, number> {
+  const top = root.getBoundingClientRect().top;
+  return new Map(flipRows(root).map((r) => [r.key, r.el.getBoundingClientRect().top - top]));
+}
+
+const sliding = new WeakMap<Element, Animation>();
+
 /**
- * Rows slide to their new places when the order changes: put `data-flip` with an id on each row, and the ref on their list. Places are read
- * inside the list, so scrolling between two changes moves nothing; a change during a slide carries on from where the row stands. `held()`
- * names a row the page keeps in place on the screen (a tapped row): it does not slide, and the others slide around it. A row folded away is
- * left out, and when it comes back it is simply there.
+ * Rows slide to their new places when the order changes, and a row new to the list fades in, rather than the list snapping (founder,
+ * 2026-11-03: "even when clicking sorting by something it redraws everything"). The rows are each `[data-flip]` with an id, and the
+ * children of a `[data-flip-list]` (ProductTable's body and its phone card); the ref goes on the block around them. Where each row stands is
+ * read while the new order renders, before it is written to the page, so a fold, a resize or a scroll since the last change moves nothing;
+ * a change during a slide carries on from where the row stands. `held()` names a row the page keeps in place on the screen (a tapped row):
+ * it does not slide, and the others slide around it. A row far off the screen before and after does not slide, and one that would slide in
+ * from outside its list's new box fades in where it stands. Transform and opacity only: nothing around the list moves. `order` is `null`
+ * while the page has no order of its own yet (one read from the address once the page is in the browser): nothing moves on that change.
  */
-export function useFlip<E extends HTMLElement = HTMLOListElement>(order: string, held?: () => string | null | undefined) {
+export function useFlip<E extends HTMLElement = HTMLOListElement>(order: string | null, held?: () => string | null | undefined) {
   const ref = useRef<E>(null);
-  const prev = useRef<Map<string, number>>(new Map());
-  const sliding = useRef<Map<string, Animation>>(new Map());
+  const shown = useRef(order);
+  const reading = useRef<{ order: string | null; places: Map<FlipKey, number> } | null>(null);
+  // read once per new order: a render that is thrown away and done again keeps the first reading
+  if (order !== shown.current && shown.current !== null && reading.current?.order !== order && ref.current) reading.current = { order, places: flipPlaces(ref.current) };
   useLayoutEffect(() => {
+    if (shown.current === order) return;
+    shown.current = order;
+    const before = reading.current?.order === order ? reading.current.places : null;
+    reading.current = null;
     const list = ref.current;
-    if (!list) return;
     const ms = durationChart();
-    const listTop = list.getBoundingClientRect().top;
-    const rows = [...list.querySelectorAll<HTMLElement>("[data-flip]")].filter((el) => el.offsetParent);
-    // first where each row stands, then where it belongs: `before` is a row's place on the screen just before this change, inside the list
-    const before = new Map<string, number>();
-    for (const el of rows) {
-      const was = prev.current.get(el.dataset.flip!);
-      if (was !== undefined) before.set(el.dataset.flip!, was + new DOMMatrixReadOnly(getComputedStyle(el).transform).m42);
+    if (!list || !before || ms === 0) return;
+    const rows = flipRows(list);
+    for (const r of rows) {
+      sliding.get(r.el)?.cancel();
+      r.el.classList.remove("flip-moving");
     }
-    const next = new Map<string, number>();
-    for (const el of rows) {
-      sliding.current.get(el.dataset.flip!)?.cancel();
-      next.set(el.dataset.flip!, el.getBoundingClientRect().top - listTop);
-    }
+    const top = list.getBoundingClientRect().top;
+    const next = new Map(rows.map((r) => [r.key, r.el.getBoundingClientRect().top - top]));
     const anchor = held?.();
     const shift = anchor ? (before.get(anchor) ?? next.get(anchor) ?? 0) - (next.get(anchor) ?? 0) : 0;
-    for (const el of rows) {
-      const id = el.dataset.flip!;
-      const was = before.get(id);
-      const from = was === undefined ? 0 : was - next.get(id)! - shift;
-      if (ms > 0 && Math.abs(from) > 1) sliding.current.set(id, el.animate([{ transform: `translateY(${from}px)` }, { transform: "none" }], { duration: ms, easing: "cubic-bezier(0.2, 0, 0, 1)" }));
+    const screen = window.innerHeight;
+    const timing = { duration: ms, easing: "cubic-bezier(0.2, 0, 0, 1)" };
+    for (const r of rows) {
+      const now = r.el.getBoundingClientRect();
+      const was = before.get(r.key);
+      const from = was === undefined ? null : was - next.get(r.key)! - shift;
+      if (from === null) {
+        if (now.bottom > 0 && now.top < screen) sliding.set(r.el, r.el.animate([{ opacity: 0 }, { opacity: 1 }], timing));
+        continue;
+      }
+      if (Math.abs(from) <= 1) continue;
+      const box = r.box.getBoundingClientRect();
+      // off the screen where it was and where it is: nobody sees it
+      if ((now.bottom < 0 || now.top > screen) && (now.bottom + from < 0 || now.top + from > screen)) continue;
+      const inside = Math.abs(from) < screen && now.top + from >= box.top - 1 && now.bottom + from <= box.bottom + 1;
+      const slide = r.el.animate(inside ? [{ transform: `translateY(${from}px)` }, { transform: "none" }] : [{ opacity: 0 }, { opacity: 1 }], timing);
+      sliding.set(r.el, slide);
+      // a list's own row (a table's, a phone card's) has no surface of its own: it gets one while it slides
+      if (inside && r.box !== list) {
+        r.el.classList.add("flip-moving");
+        const done = () => sliding.get(r.el) === slide && r.el.classList.remove("flip-moving");
+        slide.onfinish = slide.oncancel = done;
+      }
     }
-    prev.current = next;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [order]);
   return ref;

@@ -73,8 +73,6 @@
   "infinity.co.il": { "publisher": "Infinity", "publisher_he": "אינפיניטי", "kind": "institution_doc", "mirror": null },
   "psagot.co.il": { "publisher": "Psagot", "publisher_he": "פסגות", "kind": "institution_doc", "mirror": null },
   "campaign.ibi.co.il": { "publisher": "IBI", "publisher_he": "אי.בי.אי", "kind": "institution_doc", "mirror": null },
-  "krn-rofim.co.il": { "publisher": "Yachad Rofim", "publisher_he": "יחד רופאים", "kind": "institution_doc", "mirror": null },
-  "gemel.huji.ac.il": { "publisher": "Hebrew University provident fund", "publisher_he": "קופת הגמל של עובדי האוניברסיטה העברית", "kind": "form", "mirror": null },
   "lp3.inter-il.com": { "publisher": "Interactive Israel", "publisher_he": "אינטראקטיב ישראל", "kind": "institution_doc", "mirror": null },
   "inter-il.com": { "publisher": "Interactive Israel", "publisher_he": "אינטראקטיב ישראל", "kind": "institution_doc", "mirror": null },
   "reit1.co.il": { "publisher": "Reit 1", "publisher_he": "ריט 1", "kind": "institution_doc", "mirror": null },

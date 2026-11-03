@@ -429,7 +429,7 @@ export function ExposureBody({ bundle, data, frame, registerSave }: { bundle: Co
         <h1 className="text-2xl lg:text-3xl font-semibold">
           <Tpl t={r5.exposure.title} vars={{ goal: <bdi>{title}</bdi> }} />
         </h1>
-        <NumberLegend />
+        <NumberLegend canEnter />
         {h.kind === "all-excluded" ? (
           <Callout tone="blocked">
             <Tpl t={r5.exposure.headline.allExcluded} vars={{ accepted: <span className="text-entered"><bdi dir="ltr">{goal.assumptions.acceptedFall !== null && goal.assumptions.acceptedFall !== undefined ? fmt.pct(goal.assumptions.acceptedFall) : ""}</bdi></span> }} />{" "}

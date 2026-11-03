@@ -13,7 +13,8 @@
   },
   "tariff": {
     "url": "https://www.bankmassad.co.il/media/qb0h1di4/חלק-4-ניירות-ערך-46.pdf",
-    "title": "תעריפון ליחידים ולעסקים קטנים - בנק מסד; עמוד התעריפון (https://www.bankmassad.co.il/private/general/commissionsrate/individuals/) מציין 'החל מתאריך ה- 06/09/2026' (הקובץ המלא נקרא תעריפון-מסד-ליחידים-06092026.pdf); קבצי ה-PDF עצמם אינם מודפסים עם תאריך. חלק 4 - ניירות ערך (עמ' 15-19), חלק 5 - מטבע חוץ (עמ' 20), נספח ה' - הטבות בערוצים ישירים (עמ' 52-53)",
+    "title": "תעריפון ליחידים ולעסקים קטנים - בנק מסד",
+    "notes": "תעריפון ליחידים ולעסקים קטנים - בנק מסד; עמוד התעריפון (https://www.bankmassad.co.il/private/general/commissionsrate/individuals/) מציין 'החל מתאריך ה- 06/09/2026' (הקובץ המלא נקרא תעריפון-מסד-ליחידים-06092026.pdf); קבצי ה-PDF עצמם אינם מודפסים עם תאריך. חלק 4 - ניירות ערך (עמ' 15-19), חלק 5 - מטבע חוץ (עמ' 20), נספח ה' - הטבות בערוצים ישירים (עמ' 52-53)",
     "published": "2026-09-06",
     "format": "pdf"
   },
@@ -1780,7 +1781,7 @@
       "available": true,
       "source": {
         "url": "https://www.bankmassad.co.il/media/qb0h1di4/חלק-4-ניירות-ערך-46.pdf",
-        "title": "תעריפון ליחידים ולעסקים קטנים - בנק מסד; עמוד התעריפון (https://www.bankmassad.co.il/private/general/commissionsrate/ind",
+        "title": "תעריפון ליחידים ולעסקים קטנים - בנק מסד",
         "checked": "2026-10-31",
         "page": 1,
         "quote": "אך לרבות \"קרן מחקה\""
@@ -1793,7 +1794,7 @@
       "available": true,
       "source": {
         "url": "https://www.bankmassad.co.il/media/qb0h1di4/חלק-4-ניירות-ערך-46.pdf",
-        "title": "תעריפון ליחידים ולעסקים קטנים - בנק מסד; עמוד התעריפון (https://www.bankmassad.co.il/private/general/commissionsrate/ind",
+        "title": "תעריפון ליחידים ולעסקים קטנים - בנק מסד",
         "checked": "2026-10-31",
         "page": 2,
         "quote": "קרנות 008624 - ניירות ערך בחוץ לארץ"

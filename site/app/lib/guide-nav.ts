@@ -1,6 +1,12 @@
 // Pure helpers of the guide pages: how /guide groups its product pages (audit A44) and which section of /rules a guide's
 // "all the rules of X" link lands on (audit A27). No I/O, so both are unit-tested.
 
+import { guide as guideCopy } from "../copy";
+
+/** A section's title on a guide: its own where the usual one does not fit (copy `sectionTitles`). */
+export const sectionTitle = (wrapperId: string, sectionId: string): string =>
+  guideCopy.sectionTitles[wrapperId]?.[sectionId] ?? guideCopy.sections.find((x) => x.id === sectionId)!.title;
+
 /**
  * The guide list by purpose, everyday to advanced inside each group (audit A44). The ids are the wrapper ids; the group
  * titles are in copy (`guideIndex.purposeGroups`). A wrapper this table does not name still shows, in a last group, so a new
@@ -36,6 +42,8 @@ const omittedSections: Record<string, readonly string[]> = {
   "money-market-fund-daily": ["inout"],
   "money-market-fund-renewable": ["inout"],
   "brokerage-account": ["inout"],
+  // founder, 2026-11-02: the page's links move up to "what it is"
+  "keren-hishtalmut": ["use"],
 };
 export const omitsSection = (guideId: string, section: string): boolean => omittedSections[guideId]?.includes(section) ?? false;
 
@@ -80,16 +88,6 @@ export function rulesAnchor(rules: readonly { id: string; il_finance_file: strin
     else if (rank(file) < rank(best) || (rank(file) === rank(best) && n > count.get(best)!)) best = file;
   }
   return best ? best.replace(/\.md$/, "") : rules[0]?.id ?? "";
-}
-
-/**
- * A company is closed to the public under a product when every track it runs there says its target population is the
- * workers of one sector or one plant (CMA field `target_population`, CAT-10); a track with no population stated, or for the
- * whole public, keeps it open (audit A86).
- */
-export function isClosedAudience(populations: readonly string[]): boolean {
-  const stated = populations.map((p) => p.trim()).filter((p) => p !== "");
-  return stated.length > 0 && stated.length === populations.length && stated.every((p) => p.startsWith("עובדי"));
 }
 
 /**

@@ -126,8 +126,8 @@ export interface ExposureEntry {
   name: string;
   oneLine: string | null;
   guideHref: string;
-  /** `/workbench/funds/{id}` when a fund record exists for it. */
-  variantsHref: string | null;
+  /** The index page, for an index with a fund record (the funds page is gone, issue 174). */
+  fundsHref: string | null;
 }
 
 /** The terms of a securities-family wrapper holding one exposure through the fund collected for it (`exposure_id`). */
@@ -1224,9 +1224,9 @@ export const decidingFormulaOf = (f: string): string => decidingFormulaId[f] ?? 
 
 /** Where the person picks the actual product the card's run stands for (A10, A14): the track, provider or fund workbench of the wrapper, when it has one. */
 export function workbenchHref(wrapperId: string): string | null {
-  if (["kupat-gemel-lehashkaa", "keren-hishtalmut", "pension-comprehensive", "pension-general", "provident-for-annuity"].includes(wrapperId)) return `/workbench/tracks/${wrapperId}`;
-  if (wrapperId === "brokerage-account") return "/workbench/providers/brokerage-account";
-  if (wrapperId === "money-market-fund-daily" || wrapperId === "money-market-fund-renewable") return "/workbench/funds/shekel-cash";
+  if (["kupat-gemel-lehashkaa", "keren-hishtalmut", "pension-comprehensive", "pension-general", "provident-for-annuity"].includes(wrapperId)) return `/tracks/${wrapperId}`;
+  // the index page, on the S&P 500 the house-ranking page it replaced defaulted to (issue 172)
+  if (wrapperId === "brokerage-account") return "/indices/sp500";
   return null;
 }
 

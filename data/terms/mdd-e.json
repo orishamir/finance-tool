@@ -7,12 +7,9 @@
     "statement"
   ],
   "wrapper_ids": [
-    "bank-deposit",
-    "brokerage-account",
     "child-savings-bank",
     "child-savings-provident",
     "current-account",
-    "government-bond",
     "ira-hishtalmut",
     "ira-provident",
     "keren-hishtalmut",

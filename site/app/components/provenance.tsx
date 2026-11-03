@@ -1,7 +1,7 @@
 // Provenance: the number component and the sheet behind it (design-system 3.2, design-spec 1.3 and 3).
 // Every figure on the site is a Num; a tap opens where it comes from. Rule and term chips open their cards
 // in the same sheet, with a back arrow when they were reached from a number.
-import { createContext, useCallback, useContext, useEffect, useId, useMemo, useRef, useState, type ReactNode } from "react";
+import { createContext, useCallback, useContext, useEffect, useId, useMemo, useRef, useState, useSyncExternalStore, type ReactNode } from "react";
 import { Link } from "react-router";
 import { companyTermRule, type CompanyTermRef, type RuleRecord } from "@finance-tool/schema";
 import { buttons, computedInputs, flags as flagCopy, formulaNames, numbers, provenance as copy, rule as ruleCopy, ruleCardMore, scopeWords, sourceBlock as sourceCopy, strength as strengthCopy, updateRules } from "../copy";
@@ -17,12 +17,12 @@ import type { TermRow } from "../lib/data.server";
 import { IconAlert, IconCalculator, IconCheck, IconClock, IconCopy, IconDrillIn, IconExternal, IconFile, IconLock, IconPencil, IconReset } from "./icons";
 import { Sheet } from "./Sheet";
 import { Button, Callout, cx, Disclosure, LinkButton, Tag } from "./ui";
-import { CompanyLinks, Tpl, countsByItself, useCounting, useGlidingNumbers } from "./kit";
+import { CompanyLinks, LongestCase, Tpl, countsByItself, useCounting, useGlidingNumbers, useUnseen } from "./kit";
 import { chipName, companyLinksOf, generalOnly, isGeneral, isNotRule, isOwnSourceOf, joinNames, listedCompanies, noCompanyAnchor, ownDocCompanies, scopeCompanies, pageView, shownCompanies, sourceCompany, sourcesForPage, type CompanyLink, type OwnDocs } from "../lib/scope";
 
 // ---------------------------------------------------------------- context
 
-export type Item = { kind: "value"; value: SiteValue; /** The figure was shown with two decimals (a table cell, or near a threshold): the sheet shows the same digits. */ exact?: boolean; /** The word an empty value was shown as ("אין", "עוד לא דווח"): the sheet heads with the same word. */ display?: string } | { kind: "rule"; id: string } | { kind: "rules"; ids: readonly string[]; /** What the list backs: the fact it closes, under the sheet's title. */ name?: string } | { kind: "term"; id: string } | { kind: "formula"; id: string } | { kind: "question"; id: string; /** The question was closed on this date (a closure on the not-covered page): the sheet says so. */ closedOn?: string };
+export type Item = { kind: "value"; value: SiteValue; /** The figure was shown with two decimals (a table cell, or near a threshold): the sheet shows the same digits. */ exact?: boolean; /** The word an empty value was shown as ("אין", "עוד לא דווח"): the sheet heads with the same word. */ display?: string } | { kind: "rule"; id: string } | { kind: "rules"; ids: readonly string[]; /** What the list backs: the fact it closes, under the sheet's title. */ name?: string } | { kind: "term"; id: string } | { kind: "terms"; ids: readonly string[]; /** What the terms make up (a column's head): the sheet's title. */ name: string; /** One line under the title, before the terms. */ lead?: string } | { kind: "formula"; id: string } | { kind: "question"; id: string; /** The question was closed on this date (a closure on the not-covered page): the sheet says so. */ closedOn?: string };
 
 interface ProvenanceApi {
   open: (item: Item, anchor: HTMLElement | null) => void;
@@ -99,8 +99,10 @@ export function ProvenanceProvider({ data, children }: { data: ProvenanceData; c
   const push = useCallback((item: Item) => setStack((s) => [...s, item]), []);
   const headId = useId();
   const descId = useId();
+  const [states] = useState(statesStore);
   return (
     <Ctx.Provider value={api}>
+      <StatesCtx.Provider value={states}>
       <DataCtx.Provider value={data}>
       <TodayCtx.Provider value={data.today}>
       {children}
@@ -113,6 +115,7 @@ export function ProvenanceProvider({ data, children }: { data: ProvenanceData; c
       </PushCtx.Provider>
       </TodayCtx.Provider>
       </DataCtx.Provider>
+      </StatesCtx.Provider>
     </Ctx.Provider>
   );
 }
@@ -135,6 +138,44 @@ export function useOpen() {
 }
 
 const InsideSheetCtx = createContext(false);
+
+/** A notice above already says the figures are old (founder, 2026-11-03: "the whole table is full of warnings"). */
+const StaleSaidCtx = createContext(false);
+
+/** How many figures the person entered the page shows now: the legend's "you entered" sample stands only beside one (founder,
+ *  2026-11-03). A store, not state, so a figure that comes or goes redraws the legend alone. */
+/** How many figures of each state the page shows (a `Num` counts itself while it is on the page), so the legend names only the states the
+ *  page has (founder, 2026-11-03). */
+function statesStore() {
+  const n: Record<string, number> = {};
+  const subs = new Set<() => void>();
+  const ping = () => subs.forEach((f) => f());
+  return {
+    add: (state: string) => {
+      n[state] = (n[state] ?? 0) + 1;
+      ping();
+      return () => {
+        n[state]! -= 1;
+        ping();
+      };
+    },
+    subscribe: (f: () => void) => {
+      subs.add(f);
+      return () => subs.delete(f);
+    },
+    has: (state: string) => (n[state] ?? 0) > 0,
+  };
+}
+const StatesCtx = createContext<ReturnType<typeof statesStore> | null>(null);
+
+/**
+ * The figures inside leave out their own clock: a notice above them already says their source is old (the regulator's period on the
+ * track browser and a company's track list). Their aria-label and their sheet still say it. Use it only where that notice covers every
+ * figure inside, from the same source.
+ */
+export function StaleSaid({ on = true, children }: { on?: boolean; children: ReactNode }) {
+  return <StaleSaidCtx.Provider value={on}>{children}</StaleSaidCtx.Provider>;
+}
 /** Closes the sheet: a link inside it that leaves the page calls it. */
 const CloseCtx = createContext<() => void>(() => {});
 
@@ -174,8 +215,13 @@ const textDir = (text: string): "ltr" | "rtl" => (/[\u0590-\u05FF]/.test(text) ?
 export function Num({ value, size = "inline", display, animate, className, prefix, exact, mark: showMark = true }: NumProps) {
   const open = useOpen();
   const today = useContext(TodayCtx);
+  const staleSaid = useContext(StaleSaidCtx);
   const param = isParameter(value);
   const counting = useCounting();
+  const states = useContext(StatesCtx);
+  const unseen = useUnseen();
+  // a copy that only holds a block's size (LongestCase) is not on the page
+  useEffect(() => (!unseen && states ? states.add(value.state) : undefined), [value.state, unseen, states]);
   const shown = useAnimatedValue(typeof value.value === "number" ? value.value : null, animate ?? (counting && countsByItself(value.state, value.unit)));
   // display rounding (A13): a table cell keeps two decimals, everything else rounds computed and entered amounts
   const keepDecimals = size === "cell" || !!exact;
@@ -194,18 +240,20 @@ export function Num({ value, size = "inline", display, animate, className, prefi
   // is also said in words, before the digits.
   const markWeak = showMark && weak && (value.state !== "computed" || size === "figure");
   const mark = "inline-block align-[-2px] select-none";
+  // a long text value (a fund's full name) may wrap: kept on one line it ran 73 px past a phone's edge (2026-10-26); any other figure is
+  // one unit with its icon, which stood alone on the line above its digits in a phone's table (2026-11-03)
+  const oneLine = !(typeof value.value === "string" && text.length > 24);
   const button = (
     <button
       type="button"
-      className={cx("num", `num-${value.state}`, size === "figure" && "num-figure", size === "cell" && "num-cell", value.value === null && "num-unknown", className)}
+      className={cx("num", `num-${value.state}`, size === "figure" && "num-figure", size === "cell" && "num-cell", value.value === null && "num-unknown", oneLine && "whitespace-nowrap", className)}
       aria-label={label}
       onClick={(e) => open({ kind: "value", value, ...(keepDecimals ? { exact: true } : {}), ...(value.value === null && written ? { display: written } : {}) }, e.currentTarget)}
     >
-      {value.stale && <IconClock size={14} className={cx("text-caution me-1", mark)} aria-hidden="true" />}
+      {value.stale && !staleSaid && <IconClock size={14} className={cx("text-caution me-1", mark)} aria-hidden="true" />}
       {((showMark && fromDate) || markWeak) && <IconAlert size={14} className={cx("text-caution me-1", mark)} aria-hidden="true" />}
       {fromDate && size === "figure" && <span className="text-xs text-caution-foreground font-normal me-1 no-underline select-none">{numbers.startsOn}<bdi dir="ltr">{fmt.date(fromDate)}</bdi></span>}
-      {/* a long text value (a fund's full name) may wrap: kept on one line it ran 73 px past a phone's edge (2026-10-26) */}
-      <bdi dir={textDir(text)} className={typeof value.value === "string" && text.length > 24 ? undefined : "whitespace-nowrap"}>{text}</bdi>
+      <bdi dir={textDir(text)} className={oneLine ? "whitespace-nowrap" : undefined}>{text}</bdi>
     </button>
   );
   return prefix ? <span className="whitespace-nowrap">{prefix}{button}</span> : button;
@@ -224,6 +272,22 @@ export function LeadTail({ lead, children }: { lead: string; children: ReactNode
         {m[3]}
         {children}
       </span>
+    </>
+  );
+}
+
+/** A mark before a text (a caution icon, a lock): bound to the text's first word, so it never ends a line alone (2026-11-03). The mirror
+ *  of `LeadTail`, which binds a text's last word to what follows it: a mark after a text is `<LeadTail lead={text}>{mark}</LeadTail>`. */
+export function MarkHead({ mark, text }: { mark: ReactNode; text: string }) {
+  const m = /^(\s*\S+)([\s\S]*)$/.exec(text);
+  if (!m) return <>{mark}{text}</>;
+  return (
+    <>
+      <span className="whitespace-nowrap">
+        {mark}
+        {m[1]}
+      </span>
+      {m[2]}
     </>
   );
 }
@@ -477,23 +541,24 @@ function RulesListSheet({ ids, name, data, headId }: { ids: readonly string[]; n
  * `prefix` is the one-letter Hebrew prefix of the word ("ה", "ו", "ב", "ל", "מ", "ש", "כ"; "וה" and the like too): it is
  * rendered inside the same non-breaking span, so a line never breaks between the letter and the term (audit A48).
  */
-export function Term({ id, children, prefix }: { id: string; children?: ReactNode; prefix?: string }) {
+export function Term({ id, children, prefix, name, lead }: { /** Several ids open one sheet of them all, titled `name` (`HelpMark`'s too). */ id: string | readonly string[]; children?: ReactNode; prefix?: string; name?: string; lead?: string }) {
   const open = useOpen();
+  const item: Item = typeof id === "string" ? { kind: "term", id } : { kind: "terms", ids: id, name: name ?? "", lead };
   // An inline element, not a <button>: a line may break after a button, which left a sentence's full stop alone at the start of the next line (2026-11-02).
   const button = (
     <span
       role="button"
       tabIndex={0}
       className="term"
-      onClick={(e) => open({ kind: "term", id }, e.currentTarget)}
+      onClick={(e) => open(item, e.currentTarget)}
       onKeyDown={(e) => {
         if (e.key === "Enter" || e.key === " ") {
           e.preventDefault();
-          open({ kind: "term", id }, e.currentTarget);
+          open(item, e.currentTarget);
         }
       }}
     >
-      {children ?? id}
+      {children ?? (typeof id === "string" ? id : name)}
     </span>
   );
   return prefix ? (
@@ -511,31 +576,59 @@ export function Term({ id, children, prefix }: { id: string; children?: ReactNod
  * carries when it rests on a company's document used out of its own context (D31); a page passes `institution` only when it has such a figure. `term`
  * adds the glossary-term sample (dashed teal underline, `.term`) for pages whose text has `Term`s (the guide, exposure pages; wp6, A78).
  */
-export function NumberLegend({ className, institution = false, term = false }: { className?: string; institution?: boolean; term?: boolean }) {
+const noSubscribe = () => () => {};
+const yes = () => true;
+const no = () => false;
+
+/** The key to the number states: each sample stands only while the page shows a figure of its state (founder, 2026-11-03: "you entered"
+ *  on a page where nothing was entered, "computed" on a page with no computed figure). The room of every sample is kept, so nothing below
+ *  moves when one comes or goes; "you entered" has room only on a page with fields (`canEnter`), and "press a number" stands only beside a
+ *  number sample (a calculator before anything is typed has no figure to press). Before the page is in the browser the
+ *  figures are not counted yet, and the legend shows the sourced and computed samples as it always did. */
+export function NumberLegend({ className, institution = false, term = false, canEnter = false }: { className?: string; institution?: boolean; term?: boolean; canEnter?: boolean }) {
+  const store = useContext(StatesCtx);
+  const subscribe = store?.subscribe ?? noSubscribe;
+  const sourced = useSyncExternalStore(subscribe, () => store?.has("sourced") ?? true, yes);
+  const computed = useSyncExternalStore(subscribe, () => store?.has("computed") ?? true, yes);
+  const entered = useSyncExternalStore(subscribe, () => store?.has("entered") ?? false, no);
+  const legend = (shown: { sourced: boolean; computed: boolean; entered: boolean }) => <LegendLine className={className} institution={institution} term={term} {...shown} />;
+  return <LongestCase cases={[legend({ sourced: true, computed: true, entered: canEnter })]}>{legend({ sourced, computed, entered: canEnter && entered })}</LongestCase>;
+}
+
+function LegendLine({ className, institution, term, sourced, computed, entered }: { className?: string; institution: boolean; term: boolean; sourced: boolean; computed: boolean; entered: boolean }) {
   return (
     <p className={cx("flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground", className)} data-sample>
-      <span>
-        <span className="num num-sourced num-sample" aria-hidden="true">123</span> {numbers.legend.sourced}
-      </span>
-      <span>
-        <span className="num num-computed num-sample" aria-hidden="true">123</span> {numbers.legend.computed}
-      </span>
-      <span>
-        <span className="num num-entered num-sample" aria-hidden="true">123</span> {numbers.legend.entered}
-      </span>
+      {sourced && (
+        <span className="whitespace-nowrap">
+          <span className="num num-sourced num-sample" aria-hidden="true">123</span> {numbers.legend.sourced}
+        </span>
+      )}
+      {computed && (
+        <span className="whitespace-nowrap">
+          <span className="num num-computed num-sample" aria-hidden="true">123</span> {numbers.legend.computed}
+        </span>
+      )}
+      {entered && (
+        <span className="whitespace-nowrap">
+          <span className="num num-entered num-sample" aria-hidden="true">123</span> {numbers.legend.entered}
+        </span>
+      )}
       {institution && (
         <span>
-          <IconAlert size={14} className="text-caution inline-block align-[-2px] me-1" aria-hidden="true" />
-          {numbers.legend.institution}
+          <MarkHead mark={<IconAlert size={14} className="text-caution inline-block align-[-2px] me-1" aria-hidden="true" />} text={numbers.legend.institution} />
         </span>
       )}
       {term && (
-        <span>
+        <span className="whitespace-nowrap">
           <span className="term" aria-hidden="true">{numbers.legend.term}</span> {numbers.legend.termMeaning}
         </span>
       )}
-      <span className="lg:hidden">{numbers.legendHintPhone}</span>
-      <span className="hidden lg:inline">{numbers.legendHintPc}</span>
+      {(sourced || computed || entered || institution) && (
+        <>
+          <span className="lg:hidden">{numbers.legendHintPhone}</span>
+          <span className="hidden lg:inline">{numbers.legendHintPc}</span>
+        </>
+      )}
     </p>
   );
 }
@@ -623,7 +716,8 @@ export function SourceBlock({ source, rule, today, inline, english, own }: { sou
   const [first, ...rest] = list;
   if (!first) return null;
   // no "לקריאה נוחה" copy after an official source any more: pickSources leaves copies out when there is one (2026-10-25)
-  const more = rest.map((s) => <OneSource key={s.url + (s.locator ?? "")} source={s} rule={rule} today={today} english={english} own={own} />);
+  // one page may be cited twice, for two quotes (IRA-29): the place in the list keeps the keys apart
+  const more = rest.map((s, i) => <OneSource key={`${i}:${s.url}${s.locator ?? ""}`} source={s} rule={rule} today={today} english={english} own={own} />);
   return (
     <div className="flex flex-col gap-3">
       <OneSource source={first} rule={rule} today={today} english={english} own={own} />
@@ -666,6 +760,7 @@ function SheetContent({ item, data, headId, descId }: { item: Item; data: Proven
       {item.kind === "rule" && <RuleCard id={item.id} data={data} headId={headId} />}
       {item.kind === "rules" && <RulesListSheet ids={item.ids} name={item.name} data={data} headId={headId} />}
       {item.kind === "term" && <TermCard id={item.id} data={data} headId={headId} />}
+      {item.kind === "terms" && <TermsSheet ids={item.ids} name={item.name} lead={item.lead} data={data} headId={headId} />}
       {item.kind === "formula" && <FormulaSheet id={item.id} data={data} headId={headId} />}
       {item.kind === "question" && <QuestionSheet id={item.id} closedOn={item.closedOn} data={data} headId={headId} />}
     </InsideSheetCtx.Provider>
@@ -1379,14 +1474,15 @@ function CitationBox({ text }: { text: string }) {
 
 // ---------------------------------------------------------------- term card
 
-export function TermCard({ id, data, headId }: { id: string; data: ProvenanceData; headId?: string }) {
+export function TermCard({ id, data, headId, sub }: { id: string; data: ProvenanceData; headId?: string; /** One of several on a sheet (`TermsSheet`): a smaller heading under the sheet's own. */ sub?: boolean }) {
   const term = data.terms[id];
   if (!term) return <p id={headId}>{id}</p>;
+  const Heading = sub ? "h3" : "h2";
   return (
     <div className="flex flex-col gap-3">
-      <h2 id={headId} className="text-lg font-semibold">
+      <Heading id={headId} className={sub ? "text-base font-semibold" : "text-lg font-semibold"}>
         {term.he}
-      </h2>
+      </Heading>
       <p>{term.explanation}</p>
       {term.variants.length > 0 && (
         <p className="text-sm text-muted-foreground">
@@ -1408,6 +1504,25 @@ export function TermCard({ id, data, headId }: { id: string; data: ProvenanceDat
       )}
       {/* a definition rests on general rules only (D30): a company's term the glossary row cites is on that company's page */}
       {generalOnly(term.ruleIds, data.rules).length > 0 && <RulesLine ids={generalOnly(term.ruleIds, data.rules)} />}
+    </div>
+  );
+}
+
+/** Several glossary terms that make up one thing (a column of three fees): its name, a line, then each term's card under a rule. */
+function TermsSheet({ ids, name, lead, data, headId }: { ids: readonly string[]; name: string; lead?: string; data: ProvenanceData; headId: string }) {
+  return (
+    <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-1">
+        <h2 id={headId} className="text-lg font-semibold">
+          {name}
+        </h2>
+        {lead && <p className="text-muted-foreground">{lead}</p>}
+      </div>
+      {ids.map((id) => (
+        <div key={id} className="border-t border-border pt-4">
+          <TermCard id={id} data={data} sub />
+        </div>
+      ))}
     </div>
   );
 }

@@ -2,7 +2,7 @@
 // dimension checklist, related products, term table, institution chips.
 import { useEffect, useState, type ReactNode } from "react";
 import { Link, useParams } from "react-router";
-import { guide as copy, r3fees, scopeWords } from "../../copy";
+import { guide as copy, r3fees, scopeWords, trackBrowser } from "../../copy";
 import type { TermRow } from "../../lib/data.server";
 import type { Strength } from "../../lib/value";
 import { IconCheck, IconChevronDown, IconDrillIn, IconFile, IconLock, IconMinus } from "../icons";
@@ -99,7 +99,7 @@ export interface FeeRow {
   varies?: ReactNode;
 }
 
-export function FeeTable({ fees, note }: { fees: FeeRow[]; note: string }) {
+export function FeeTable({ fees, note }: { fees: FeeRow[]; note: ReactNode }) {
   const { id } = useParams();
   return (
     <div className="flex flex-col gap-3">
@@ -332,37 +332,27 @@ function CompanyLinks({ companies }: { companies: { id: string; name: string }[]
   );
 }
 
-/**
- * The companies that offer the product, behind one toggle (audit A42), the ones open to everyone first and the ones for a
- * sector's or a plant's workers under their own line (audit A86); the "all companies" link stays outside.
- */
-export function InstitutionChips({ companies, allHref }: { companies: { id: string; name: string; closed?: boolean }[]; allHref: string }) {
-  const open = companies.filter((c) => !c.closed);
-  const closed = companies.filter((c) => c.closed);
+/** The companies that offer the product, behind one toggle (audit A42); the "all companies" link stays outside. */
+export function InstitutionChips({ companies, allHref, tracks }: { companies: { id: string; name: string }[]; allHref: string; /** The product's track browser (`/tracks/<id>`) and the product's name, for the link to every company's tracks of it. */ tracks?: { href: string; name: string } }) {
   return (
     <div className="flex flex-col gap-1">
       {companies.length > 0 && (
         <Disclosure label={<span className="text-link">{copy.companiesShow}</span>} openLabel={<span className="text-link">{copy.companiesHide}</span>} summaryClassName="justify-start">
-          <div className="flex flex-col gap-3 pb-2">
-            {open.length > 0 && (
-              <div className="flex flex-col gap-1">
-                {closed.length > 0 && <span className="text-sm font-medium">{copy.companiesOpen}</span>}
-                <CompanyLinks companies={open} />
-              </div>
-            )}
-            {closed.length > 0 && (
-              <div className="flex flex-col gap-1">
-                <span className="text-sm font-medium">{copy.companiesClosed}</span>
-                <span className="text-xs text-muted-foreground">{copy.companiesClosedLine}</span>
-                <CompanyLinks companies={closed} />
-              </div>
-            )}
+          <div className="pb-2">
+            <CompanyLinks companies={companies} />
           </div>
         </Disclosure>
       )}
       <Link to={allHref} className="text-link font-medium hover:underline text-sm min-h-target inline-flex items-center self-start">
         {copy.allCompanies}
       </Link>
+      {tracks && (
+        <Link to={tracks.href} className="text-link font-medium hover:underline text-sm min-h-target inline-flex items-center self-start">
+          {trackBrowser.guideLink.before}
+          {tracks.name}
+          {trackBrowser.guideLink.after}
+        </Link>
+      )}
     </div>
   );
 }

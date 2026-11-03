@@ -16,7 +16,12 @@ import {
   balanceFeeOnly,
   buildFees,
   buildHoldings,
+  buildYields,
+  youngerThan,
+  listPeriods,
   readCmaFile,
+  EXCLUDED_COMPANIES,
+  closedTrack,
   KEPT_COLUMNS,
   feeYear,
   renormaliseFees,
@@ -104,6 +109,10 @@ describe("normalise", () => {
         stock_market_exposure: expect.objectContaining({ value: 12378.07, unit: "nis_millions", source: expect.objectContaining({ title: expect.stringContaining("STOCK_MARKET_EXPOSURE") }) }),
         foreign_currency_exposure: expect.objectContaining({ value: 5156.92, unit: "nis_millions", notes: expect.stringContaining("מטבע חוץ") }),
       },
+      yields: {
+        avg_annual_yield_3y: expect.objectContaining({ value: 13.16, unit: "pct_per_year", state: "sourced", rule_ids: ["CAT-04", "CAT-05"] }),
+        avg_annual_yield_5y: expect.objectContaining({ value: 8.19, unit: "pct_per_year", state: "sourced", rule_ids: ["CAT-04", "CAT-05"] }),
+      },
     });
     expect(file.checked).toBe("2026-10-23");
     expect(file.raw).toEqual({ archive_key: "cma/gemelnet/2026-10-23.csv.gz", sha256: "a".repeat(64) });
@@ -136,6 +145,39 @@ describe("normalise", () => {
     expect(Object.keys(r.file!.funds[0]!.raw_fields)).toEqual(["AVG_ANNUAL_MANAGEMENT_FEE", "AVG_DEPOSIT_FEE"]);
   });
 
+  it("leaves out a track closed to joiners, and keeps one for whoever starts an annuity", () => {
+    expect(closedTrack("עובדי סקטור מסויים", "מור מנורה מבטחים מסלול מניות")).toBe(true);
+    expect(closedTrack("עובדי מפעל/גוף מסויים", "קרן השתלמות לעובדי בנק ישראל")).toBe(true);
+    expect(closedTrack("", "הראל פנסיה - מקבלי קצבה קיימים")).toBe(true);
+    expect(closedTrack("", "כלל פנסיה קצבה לזכאים קיימים")).toBe(true);
+    expect(closedTrack("", "הראל פנסיה - בסיסי למקבלי קצבה")).toBe(false);
+    expect(closedTrack("כלל האוכלוסיה", "מיטב השתלמות כללי")).toBe(false);
+  });
+
+  it("reports a population it does not know, in place of treating the track as open", () => {
+    const csv = decodeWindows1255(fixture).replaceAll("כלל האוכלוסיה", "אוכלוסיה חדשה");
+    expect(normalise(csv, ctx).problems.join(" ")).toContain("unknown TARGET_POPULATION");
+  });
+
+  it("leaves out a company on the excluded list, in a refresh and in the stored files", () => {
+    const table = parseCsv(decodeWindows1255(fixture));
+    const col = table[0]!.indexOf("MANAGING_CORPORATION_LEGAL_ID");
+    const fundId = good().funds[0]!.fund_id;
+    const [excludedId] = EXCLUDED_COMPANIES.keys();
+    for (const r of table) if (r[0] === String(fundId)) r[col] = excludedId!;
+    const csv = table.map((r) => r.map((c) => `"${c.replaceAll('"', '""')}"`).join(",")).join("\n");
+    const refreshed = normalise(csv, ctx).file!;
+    expect(refreshed.funds.map((f) => f.fund_id)).toEqual(good().funds.map((f) => f.fund_id).filter((id) => id !== fundId));
+
+    const cmaDir = fileURLToPath(new URL("../../../data/cma", import.meta.url));
+    for (const dataset of ["gemelnet", "pensia-net"] as const) {
+      for (const period of listPeriods(cmaDir, dataset)) {
+        const left = readCmaFile(cmaDir, dataset, period).funds.filter((f) => EXCLUDED_COMPANIES.has(f.managing_corporation.legal_id.trim()) || closedTrack(f.target_population, f.names.cma[0]!));
+        expect(left.map((f) => f.fund_id)).toEqual([]);
+      }
+    }
+  });
+
   it("keeps every further numeric column as received, for later use", () => {
     const raw = good().funds.find((f) => f.fund_id === 103)!.raw_fields;
     for (const c of KEPT_COLUMNS.filter((c) => c !== "MONTHLY_DEPOSITS")) expect(raw).toHaveProperty(c);
@@ -161,6 +203,50 @@ describe("holdings (F-87 inputs)", () => {
     // a file without the currency column has no currency value, and still has the other two
     expect(h.foreign_currency_exposure).toBeUndefined();
     expect(buildHoldings(base, { raw_fields: { TOTAL_ASSETS: "10", STOCK_MARKET_EXPOSURE: "5", FOREIGN_CURRENCY_EXPOSURE: "2" } })!.foreign_currency_exposure!.value).toBe(2);
+  });
+});
+
+describe("yields (the track browser's past returns, CAT-04, CAT-05)", () => {
+  const base = { dataset: "gemelnet" as const, report_period: "2026-09", checked: "2026-10-23", source: good().source };
+
+  it("reads the two average annual yields as sourced percents per year, nominal and before fees", () => {
+    const y = buildYields(base, { raw_fields: { AVG_ANNUAL_YIELD_TRAILING_3YRS: "13.16", AVG_ANNUAL_YIELD_TRAILING_5YRS: "8.19" }, inception_date: "1970-01-01" })!;
+    expect(y.avg_annual_yield_3y.value).toBe(13.16);
+    expect(y.avg_annual_yield_5y.value).toBe(8.19);
+    expect(y.avg_annual_yield_3y.unit).toBe("pct_per_year");
+    expect(y.avg_annual_yield_3y.state).toBe("sourced");
+    expect(y.avg_annual_yield_3y.rule_ids).toEqual(["CAT-04", "CAT-05"]);
+    expect(y.avg_annual_yield_3y.source.title).toContain("AVG_ANNUAL_YIELD_TRAILING_3YRS");
+    expect(y.avg_annual_yield_5y.source.title).toContain("202609");
+    expect(y.avg_annual_yield_3y.notes).toContain("לפני דמי ניהול ולפני מס");
+    expect([y.avg_annual_yield_3y.effective_from, y.avg_annual_yield_3y.effective_to]).toEqual(["2026-09-01", "2026-09-30"]);
+  });
+
+  it("an empty yield is null, and says when the track is younger than the window", () => {
+    const y = buildYields(base, { raw_fields: { AVG_ANNUAL_YIELD_TRAILING_3YRS: "", AVG_ANNUAL_YIELD_TRAILING_5YRS: "" }, inception_date: "2022-05-01" })!;
+    expect(y.avg_annual_yield_3y.value).toBeNull();
+    expect(y.avg_annual_yield_3y.notes).toBe("לא דווח.");
+    expect(y.avg_annual_yield_5y.notes).toContain("עוד אין 5 שנים מלאות");
+    // a negative return is a return, kept as reported
+    expect(buildYields(base, { raw_fields: { AVG_ANNUAL_YIELD_TRAILING_3YRS: "-1.5" }, inception_date: null })!.avg_annual_yield_3y.value).toBe(-1.5);
+  });
+
+  it("a file without the columns has no yields", () => {
+    expect(buildYields(base, { raw_fields: { AVG_DEPOSIT_FEE: "0" }, inception_date: null })).toBeUndefined();
+  });
+
+  it("youngerThan: opened after the window's first day", () => {
+    expect(youngerThan("2023-09-30", "2026-09", 3)).toBe(false);
+    expect(youngerThan("2023-10-01", "2026-09", 3)).toBe(true);
+    expect(youngerThan(null, "2026-09", 3)).toBe(false);
+  });
+
+  it("the stored files carry the yields of every track that reports them", () => {
+    const cmaDir = fileURLToPath(new URL("../../../data/cma", import.meta.url));
+    const gemel = readCmaFile(cmaDir, "gemelnet", "2026-09");
+    const t = gemel.funds.find((x) => x.fund_id === 103)!;
+    expect(t.yields!.avg_annual_yield_3y.value).toBe(13.16);
+    expect(t.yields!.avg_annual_yield_5y.value).toBe(8.19);
   });
 });
 

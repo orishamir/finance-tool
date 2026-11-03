@@ -113,7 +113,7 @@ function Screen({ bundle, failed, rules, today, p03 }: { bundle: CompareBundle |
       <header className="flex flex-col gap-2">
         <h1 className="text-2xl lg:text-3xl font-semibold">{copy.title}</h1>
         <p className="text-lg text-muted-foreground max-w-measure">{copy.lede}</p>
-        <NumberLegend institution={outcome?.kind === "ok" ? anyWeak([outcome.headline, outcome.yearly, outcome.baseline?.rate, ...outcome.rows.flatMap((r) => [r.rate, r.cost])]) : false} />
+        <NumberLegend canEnter institution={outcome?.kind === "ok" ? anyWeak([outcome.headline, outcome.yearly, outcome.baseline?.rate, ...outcome.rows.flatMap((r) => [r.rate, r.cost])]) : false} />
       </header>
       <div className={cx("flex flex-col gap-6", resultShown && "lg:grid lg:grid-cols-[360px_minmax(0,1fr)] lg:gap-x-12 lg:items-start")}>
         <div className="flex flex-col gap-6">

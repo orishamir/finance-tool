@@ -13,7 +13,8 @@
   },
   "tariff": {
     "url": "https://www.bank-yahav.co.il/footer/footer-menu/bank-tariff/",
-    "title": "תעריפון הבנק - בנק יהב (עמוד התעריפון; לא נמצא קובץ חלק 4 - ניירות ערך)",
+    "title": "תעריפון הבנק - בנק יהב",
+    "notes": "תעריפון הבנק - בנק יהב (עמוד התעריפון; לא נמצא קובץ חלק 4 - ניירות ערך)",
     "published": null,
     "format": "html"
   },
