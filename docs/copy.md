@@ -290,7 +290,7 @@ Added 2026-10-23 (added 2026-10-23, for the founder's review). The lines of the 
 | `guideBlocks.exit.labelCeiling` | תקרת הפקדה | row label, yearly or monthly cap |
 | `guideBlocks.fees.balance` | דמי ניהול מחיסכון · כל שנה, מכל הכסף שנצבר · בשנה | name · what it is charged on · word after the cap |
 | `guideBlocks.fees.deposit` | דמי ניהול מהפקדה · מכל סכום שמפקידים · מכל הפקדה |  |
-| `guideBlocks.fees.direct_expenses` | הוצאות ישירות · עלויות הקנייה והמכירה של ההשקעות, מהקופה · אין תקרה כוללת | name · base · cap cell |
+| `guideBlocks.fees.direct_expenses` | הוצאות ישירות · נוספות על דמי הניהול: עלויות כמו קנייה ומכירה של ההשקעות, מהקופה · לא נמצאה תקרה כוללת | name · base · cap cell |
 | `guideBlocks.fees.exit` | דמי יציאה · כשמושכים · אין | name · base · cap cell (provident family) |
 | `guideBlocks.fees.trade` | עמלת קנייה ומכירה · מכל פעולת קנייה או מכירה | glossary term |
 | `guideBlocks.fees.custody` | דמי ניהול פיקדון ניירות ערך · כל תקופה, על ניירות הערך שבחשבון | glossary term |

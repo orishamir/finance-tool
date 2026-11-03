@@ -203,11 +203,15 @@ export const guide = {
   sectionTitles: {
     "current-account": { use: "כמה כסף להחזיק בעו״ש" },
     "pension-general": { use: "מתי מגיעים אליה" },
-    "keren-hishtalmut": { different: "מה קורה לכסף בקרן" },
+    "keren-hishtalmut": { different: "מה קורה לכסף בקרן", who: "מי מציע ומי מצטרף", inout: "משיכה ומעבר", risk: "סיכונים ומה מוגן" },
     makam: { who: "איפה קונים ומי מנפיק" },
     "government-bond": { who: "איפה קונים ומי מנפיק" },
   } as Record<string, Record<string, string>>,
-  exposuresRow: "במה אפשר להשקיע בתוכו:",
+  /** A row of what each company sets for itself, where the checklist's general name would not say what the companies differ on (2026-11-03). */
+  companyTermTitles: {
+    "keren-hishtalmut": { eligibility: "מה קורה כשהמעסיק מפסיק להפקיד, או כשעוברים לעצמאים" },
+  } as Record<string, Record<string, string>>,
+  exposuresRow: "במה אפשר להשקיע:",
   // D6 (2026-10-26): on a wrapper's page, the securities bought inside it that have a page of their own (makam, bonds, money-market funds)
   securitiesRow: "מה קונים בתוכו, ולכל אחד עמוד משלו:",
   companiesShow: "הצגת החברות",
@@ -251,17 +255,18 @@ export const guide = {
   feeTable: { type: "סוג", base: "על מה נגבה", cap: "תקרה" },
   feeNote: "אלה התקרות שבחוק. כמה כל חברה גובה בפועל, בכל מסלול, מופיע בעמוד של החברה.",
   feeNoteOther: "הסכומים בפועל נקבעים אצל הגורם המציע. כאן מופיעים סוגי העלויות, ותקרה כשיש תקרה בחוק.",
+  feeRange: { caps: "אלה התקרות שבחוק. בפועל גובים הרבה פחות: ב־", tracks: "המסלולים הפתוחים לכלל הציבור העמיתים שילמו בממוצע", to: "עד", reported: "בשנה, תלוי במסלול, לפי רשות שוק ההון. כמה כל חברה גובה, בכל מסלול, מופיע בעמוד של החברה." },
   taxSteps: { deposit: "בהפקדה", during: "כל עוד הכסף בפנים", exit: "כשמושכים" },
   // audit 2026-10-24 (A46): the study fund's deposit-side row by employment (TXH-04, TXH-01, TXH-03 for employees; TXH-05 for the self-employed)
   hishtalmutDeposit: {
     unknown: { headline: "תלוי אם אתם שכירים או עצמאים", employee: "שכירים:", selfEmployed: "עצמאים:" },
-    employee: { headline: "אין ניכוי על ההפקדה שלכם", text: "הפקדת המעסיק בגבולות המותרים לא נחשבת הכנסה כשהיא נכנסת לקרן; מה שמעבר לגבולות ממוסה כשכר." },
-    employeeShort: "אין ניכוי על ההפקדה שלכם. הפקדת המעסיק בגבולות המותרים לא ממוסה בהפקדה, ומעבר להם היא ממוסה כשכר.",
-    selfEmployed: { headline: "ניכוי מההכנסה, עד תקרה", before: "אפשר לנכות עד", middle: "מההכנסה הקובעת, עד תקרה שנתית." },
+    employee: { headline: "ההפקדה שלכם לא מקטינה את המס", text: "היא יורדת מהשכר אחרי מס. הפקדת המעסיק עד הגבול לא נחשבת הכנסה כשהיא נכנסת לקרן; מה שמעל הגבול ממוסה כשכר." },
+    employeeShort: "ההפקדה שלכם יורדת מהשכר אחרי מס, ולא מקטינה את המס. הפקדת המעסיק עד הגבול לא נחשבת הכנסה כשהיא נכנסת לקרן; מה שמעל הגבול ממוסה כשכר.",
+    selfEmployed: { headline: "ההפקדה מקטינה את המס, עד תקרה", before: "אפשר להפחית מההכנסה מהעסק או מהמקצוע עד", middle: "ממנה, ורק על הכנסה של עד", after: "בשנה, ופחות למי שגם שכיר. זה גבול נפרד מהגבול של הפטור כשמושכים." },
   },
   related: "כדאי להכיר גם:",
   checklist: { blocked: "חסום:", considered: "נלקח בחשבון", notRelevant: "לא רלוונטי", blockedMark: "חסום: שאלה פתוחה", expand: "מאיפה זה", blockedLast: "עד שהשאלה תיסגר, האתר לא מחשב את זה.", intro: "כך האתר בודק כל מוצר, מול אותן שאלות. כאן מה שעוד פתוח; את כל הבדיקות אפשר לפתוח למטה.", showAll: "הצגת כל הבדיקות", hideAll: "הסתרת הבדיקות" }, // audit 2026-10-24 (A42)
-  termsLine: "איך קוראים לזה בדוח, באפליקציה ובחוק.",
+  termsLine: "המונחים שבעמוד, ואיפה פוגשים כל אחד מהם.",
   generalTermsLabel: "מונחים כלליים",
   generalTermsLine: "מונחים שמשותפים לרוב המוצרים, לא רק לזה.",
   where: { statement: "דוח שנתי", "bank-statement": "דף חשבון", payslip: "תלוש שכר", app: "אפליקציה", ad: "פרסומת", law: "חוק", form: "טופס", bylaws: "תקנון", "gemel-net": "גמל נט", prospectus: "תשקיף", tariff: "תעריפון", "fund-name": "שם הקרן", "tax-form": "טופס מס", "pensia-net": "פנסיה נט", "provider-site": "אתר הגורם המציע" } as Record<string, string>,
@@ -793,8 +798,8 @@ export const guideBlocks = {
   fees: {
     balance: { name: "דמי ניהול מחיסכון", base: "כל שנה, מכל הכסף שנצבר", after: "בשנה" },
     deposit: { name: "דמי ניהול מהפקדה", base: "מכל סכום שמפקידים", after: "מכל הפקדה" },
-    direct_expenses: { name: "הוצאות ישירות", base: "עלויות הקנייה והמכירה של ההשקעות, מהקופה", cap: "אין תקרה כוללת" },
-    exit: { name: "דמי יציאה", base: "כשמושכים", cap: "אין" },
+    direct_expenses: { name: "הוצאות ישירות", base: "נוספות על דמי הניהול: עלויות כמו קנייה ומכירה של ההשקעות, מהקופה", cap: "לא נמצאה תקרה כוללת" },
+    exit: { name: "דמי יציאה", base: "כשמושכים", cap: "לא גובים" },
     // the other fee bases of the schema (`feeBase`), name and what they are charged on; copy.md 3.5a
     trade: { name: "עמלת קנייה ומכירה", base: "מכל פעולת קנייה או מכירה" },
     custody: { name: "דמי ניהול פיקדון ניירות ערך", base: "כל תקופה, על ניירות הערך שבחשבון" },
@@ -810,7 +815,7 @@ export const guideBlocks = {
     trustee: { name: "שכר נאמן", base: "כל שנה, מנכסי הקרן, בתוך מחיר היחידה" },
     insurance_premium: { name: "דמי ביטוח", base: "כל חודש, מהחיסכון, על כיסוי למקרה מוות או נכות" },
     upTo: "עד",
-    zeroCap: "אין",
+    zeroCap: "לא גובים",
     noCap: "אין תקרה בחוק",
     tariffSet: "לפי התעריפון של הגורם המציע",
     unitAfter: { pct_per_year: "בשנה", pct_of_deposit: "מכל הפקדה", pct_of_trade: "מכל פעולה", pct_of_balance_per_period: "בכל תקופה", nis_per_month: "בחודש", nis_per_trade: "לכל פעולה", nis: "", pct: "" } as Record<string, string>,
@@ -834,7 +839,7 @@ export const guideBlocks = {
     "F-42": { headline: "מגיל הפרישה המוקדמת: מדרגות המס שלכם", text: "על רווחים מסוימים חלות מדרגות המס של האדם, אם הן נמוכות מהשיעור הקבוע." },
     "F-43": { headline: "מס נוסף על הכנסה גבוהה", text: "מי שההכנסה השנתית שלו עוברת סף שבחוק משלם מס נוסף, דרך הדוח השנתי." },
     "F-45": { headline: "העברה לקצבה מגיל הפרישה המוקדמת" },
-    "F-46": { headline: "בקרן השתלמות: פטור במשיכה אחרי תקופת ההמתנה", text: "הרווח מההפקדות המוטבות פטור ממס. רווח מהפקדה מעל הסכום המוטב ממוסה במשיכה." },
+    "F-46": { before: "אחרי", after: "שנים אין מס", text: "גם על ההפקדות וגם על הרווח, חוץ מרווח על כסף שהופקד מעל הגבול." },
     "F-47": { headline: "משיכה מוקדמת מקרן השתלמות" },
     "F-48": { headline: "משיכה מוקדמת מפנסיה" },
     "F-49": { headline: "קצבה בפרישה" },
@@ -852,7 +857,7 @@ export const guideBlocks = {
     unlinkedInterest: { before: "ריבית לא צמודה:", after: "מהריבית, מנוכה בבנק" },
     linkedInterestCeiling: { before: "ריבית צמודה למדד: עד", after: "מהריבית הריאלית, מנוכה בבנק" },
     linkedInterest: { before: "ריבית צמודה למדד:", after: "מהריבית הריאלית, מנוכה בבנק" },
-    hishtalmutExcess: { before: "על הפקדה מעל הסכום המוטב:", after: "מהרווח הריאלי" },
+    hishtalmutExcess: { before: "על הרווח הזה: עד", after: "מהחלק שמעל האינפלציה" },
     childProvident: { before: "במסלול קופת גמל:", after: "מהרווח הריאלי" },
     childBankLinked: { before: "בבנק, פיקדון צמוד למדד:", after: "מהרווח הריאלי" },
     childBankUnlinked: { before: "בבנק, פיקדון לא צמוד:", after: "מהרווח הנומינלי" },
@@ -2741,6 +2746,8 @@ export const scopeWords = {
   chipMore: { one: "ועוד אחת", two: "ועוד שתיים", many: "ועוד {n}" },
   /** Where a property is each company's own: the guide's line and checklist mark, with the companies as links. */
   varies: "תלוי בחברה",
+  /** On a guide's row: the companies named are the ones read, not the whole market. */
+  variesExamples: "תלוי בחברה, לדוגמה",
   variesBank: "תלוי בבנק",
   section: {
     title: "מה כתוב במסמכים של {name}",
@@ -3164,7 +3171,7 @@ export const guideSignature = {
         },
         room: { you: "אם תפקידו עוד", employer: "אם המעסיק יפקיד עוד", andEmployer: "והמעסיק עוד", month: "בחודש", year: "בשנה", exempt: "גם הם יקבלו פטור." },
       },
-      early: { before: "משיכה אחרי", withheld: ": הקרן מנכה קודם", stop: "מס במקור.", more: "מס במקור, ו־", back: "מהם חוזרים רק אם מגישים דוח שנתי. ״נשאר בידיים״ כבר כולל את ההחזר.", rate: "שיעור הניכוי במקור" },
+      early: { before: "משיכה אחרי", withheld: ": הקרן מנכה קודם", stop: "מס במקור.", more: "מס במקור, ו־", back: "מהם חוזרים רק אם מבקשים החזר ממס הכנסה. ״נשאר בידיים״ כבר כולל את ההחזר.", rate: "שיעור הניכוי במקור" },
       held: {
         track: "החישוב על מסלול לדוגמה:",
         trackFee: "עם דמי ניהול של",
@@ -3202,7 +3209,7 @@ export const guideSignature = {
         roomSelf: "כמה עוד אפשר להפקיד בשנה הראשונה עד התקרה של הפטור, לפני החזר המס",
         crossYear: "השנה הראשונה שבה הפקדה עוברת את התקרה של הפטור",
         withheld: "מה שהקרן מנכה במקור במשיכה בשנה שנבחרה: על הרווחים ועל הפקדות המעסיק עד התקרה, בכסף של היום",
-        back: "מה שחוזר אחרי דוח שנתי: מה שנוכה פחות המס על המשיכה, בכסף של היום",
+        back: "מה שחוזר אחרי בקשת החזר ממס הכנסה: מה שנוכה פחות המס על המשיכה, בכסף של היום",
         rangeAccount: "מה שנשאר בחשבון לפי התעריף שמשאיר הכי מעט ולפי זה שמשאיר הכי הרבה",
       },
     },

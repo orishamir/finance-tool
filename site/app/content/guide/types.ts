@@ -11,8 +11,16 @@ export interface GuideContent {
   /** Left out where the guide has no such section (lib/guide-nav.ts). */
   who?: (p: ContentProps) => ReactNode;
   /** The "מעבר בין מסלולים" line of the money-in-and-out list, and its rules; only a guide with that section has them. */
-  switchLine?: string;
+  switchLine?: ReactNode | ((p: ContentProps) => ReactNode);
   switchRules?: string[];
+  /** More rows of that list, after the shared ones. A rule named here ships with the page, as any rule its prose names. */
+  inoutRows?: (p: ContentProps) => { id: string; label: string; value: ReactNode; rules: string[] }[];
+  /** The prose already says when the money is free, so the list does not say it again. */
+  /** A company-terms row left off this page, where general rules also apply and the company names would mislead. */
+  omitCompanyTerms?: readonly string[];
+  omitFreeRow?: boolean;
+  /** The guides under "כדאי להכיר גם", where the record's transfer routes would not be the ones a reader of this page wants. */
+  relatedIds?: string[];
   /** Glossary terms the prose opens with <Term>, so their cards ship with the page. */
   termIds: string[];
   /** Anything after the tax steps (a blocked route, a note). */
