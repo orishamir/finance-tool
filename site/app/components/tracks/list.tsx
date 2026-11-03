@@ -109,7 +109,7 @@ function PhoneRow({ x, by, view }: { x: TbTrack; by: GroupBy; view: ProductView 
   const company = view.companies.find((c) => c.index === x.company);
   return (
     <ProductPhoneRow stacked>
-      <Link to={x.href} className="flex items-center justify-between gap-3 min-w-0">
+      <Link to={x.href} className="flex items-center justify-between gap-3 min-w-0 min-h-11">
         <span className="flex flex-col gap-1 min-w-0 items-start">
           {by === "company" ? (
             <span className="font-medium">
@@ -161,10 +161,10 @@ function PhoneRow({ x, by, view }: { x: TbTrack; by: GroupBy; view: ProductView 
 /** `limit`: how many rows are drawn, from the top; the headings, the counts and the key under the list always speak of every row of the group. */
 export function TrackList({ view, groups, by, sort, onSort, feeYear, period, limit = Infinity }: { view: ProductView; groups: TbGroup[]; by: GroupBy; sort: Sort; onSort: (id: SortId) => void; feeYear: string | null; period: string; limit?: number }) {
   const state = (...ids: SortId[]) => (ids.includes(sort.id) ? (ascending(sort) ? ("ascending" as const) : ("descending" as const)) : ("none" as const));
-  const head = (id: SortId, label: string) => <SortHead label={label} state={state(id)} onPress={() => onSort(id)} />;
+  const head = (id: SortId, label: string, alsoHolds?: string[]) => <SortHead label={label} state={state(id)} onPress={() => onSort(id)} alsoHolds={alsoHolds} />;
   const periodText = fmt.period(period);
   const columns: ProductColumn[] = [
-    { id: "name", head: head("name", by === "company" ? t.columns.track : t.columns.company), sort: state("name") },
+    { id: "name", head: head("name", by === "company" ? t.columns.track : t.columns.company, [t.columns.track, t.columns.company]), sort: state("name") },
     { id: "fund", head: t.columns.fund, width: 5.5 },
     {
       id: "fee",
@@ -223,7 +223,7 @@ export function TrackList({ view, groups, by, sort, onSort, feeYear, period, lim
       key: g.key,
       heading: {
         title: g.by === "company" && g.companyId ? (
-          <Link to={`/companies/${g.companyId}`} className="hover:underline">
+          <Link to={`/companies/${g.companyId}`} className="hover:underline inline-flex items-center min-h-target min-w-11 md:min-h-0 md:min-w-0">
             <bdi>{g.title}</bdi>
           </Link>
         ) : (

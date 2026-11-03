@@ -21,7 +21,7 @@ function CountLine({ view, shown, companies, noteFor }: { view: ProductView; sho
     <p className="text-sm text-muted-foreground">
       {shown === 0 ? t.count.tracksNone : `${tracksPhrase(shown)} ${t.count.of} ${companiesPhrase(companies)}`}
       {shown < total && ` (${t.count.outOf} ${fmt.number(total)})`}.{" "}
-      <Link to={`/guide/${view.id}`} className="text-link hover:underline">
+      <Link to={`/guide/${view.id}`} className="text-link hover:underline inline-flex items-center min-h-target">
         {t.count.whatIs} {view.name}
       </Link>
       {(noteFor ?? !view.hasKinds) && ` · ${t.count.noKinds}`}

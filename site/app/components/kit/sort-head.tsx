@@ -6,7 +6,7 @@ import { cx } from "./cx";
 
 export type SortState = "none" | "ascending" | "descending";
 
-export function SortHead({ label, state, onPress, className }: { label: string; state: SortState; onPress: () => void; className?: string }) {
+export function SortHead({ label, state, onPress, className, alsoHolds }: { label: string; state: SortState; onPress: () => void; className?: string; /** The other words this head can carry (the name column says "המסלול" or "החברה"): it holds the longest, so a change of word moves nothing. */ alsoHolds?: string[] }) {
   const on = state !== "none";
   return (
     <button
@@ -16,9 +16,11 @@ export function SortHead({ label, state, onPress, className }: { label: string; 
     >
       <span className="inline-grid *:[grid-area:1/1]">
         <span className={on ? "font-bold" : undefined}>{label}</span>
-        <span aria-hidden="true" className="invisible font-bold">
-          {label}
-        </span>
+        {[label, ...(alsoHolds ?? [])].map((w) => (
+          <span key={w} aria-hidden="true" className="invisible font-bold">
+            {w}
+          </span>
+        ))}
       </span>
       <span aria-hidden="true" className={cx("inline-block w-[1.1em] shrink-0 text-center text-[0.8em]", on ? "text-primary" : "opacity-45")}>
         {state === "ascending" ? "▲" : state === "descending" ? "▼" : "⇅"}
