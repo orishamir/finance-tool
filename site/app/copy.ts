@@ -1566,7 +1566,6 @@ export const trackBrowser = {
   guideLink: { before: "כל המסלולים של ", after: " בכל החברות" },
   pastNote: "התשואה היא תשואת עבר כמו שהרשות מפרסמת אותה: לפני דמי הניהול ולפני מס. היא לא אומרת מה יקרה בהמשך, ולכן אין מיון לפיה.",
   oldData: "נתוני הרשות לא עודכנו מאז",
-  failed: "אין מסלולים למוצר הזה בנתוני הרשות.",
 } as const;
 
 /** What is left of the track workbench's strings (2026-11-03: its page became the track browser, `trackBrowser`): the fee table's empty-cell key, the links of the fee page and the entrances to holdings and transfer. */
