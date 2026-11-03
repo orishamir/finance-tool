@@ -5,7 +5,7 @@
 import { existsSync, readdirSync, statSync } from "node:fs";
 import { join, relative, sep } from "node:path";
 import type { RuleRecord } from "@finance-tool/schema";
-import { guideIndex, idle, invest, limitedBondFund, r2, r3fees, r3holdings, r3transfer, r3workbench, r4workbench, companies as companiesCopy } from "../copy";
+import { guideIndex, idle, invest, limitedBondFund, r2, r3fees, r3holdings, r3transfer, r3workbench, companies as companiesCopy } from "../copy";
 import { exposureHref, loadExposures } from "./instruments.server";
 import { loadRules, loadProducts, pointedRecords, root } from "./data.server";
 import { fileProducts, commonRulesFile, shelfOf, tier2RuleFiles, type ShelfId } from "./rule-shelves";
@@ -61,12 +61,9 @@ function idsIn(text: string, re: RegExp, known: Set<string>): Set<string> {
   return found;
 }
 
-const trimColon = (s: string) => s.replace(/[:\s]+$/, "");
-
 /** Pages that take a wrapper or exposure in the address: one stable example address, the label without the subject. */
 function pageTable(): Record<string, RuleUsePage> {
   const wb = workbenchWrapperIds()[0];
-  const fx = loadExposures()[0]?.id;
   const t: Record<string, RuleUsePage> = {
     idle: { href: "/idle-cash", label: idle.title },
     fees: { href: "/fees", label: r3fees.title },
@@ -83,7 +80,6 @@ function pageTable(): Record<string, RuleUsePage> {
     const name = loadProducts().find((w) => w.id === wb)?.names.he[0] ?? "";
     t.tracks = { href: `/workbench/tracks/${wb}`, label: `${r3workbench.title.before}${name}${r3workbench.title.after}` };
   }
-  if (fx) t.funds = { href: `/workbench/funds/${fx}`, label: trimColon(r4workbench.funds.title.before) };
   return t;
 }
 
@@ -99,7 +95,6 @@ const routeKey: Record<string, string> = {
   goal: "goal",
   invest: "indices",
   "workbench-tracks": "tracks",
-  "workbench-funds": "funds",
   "workbench-bundle": "indices",
   transfer: "transfer",
   companies: "companies",
@@ -133,7 +128,6 @@ const libPrefixes: [string, string][] = [
   ["workbench", "tracks"],
   ["providers", "indices"],
   ["invest", "indices"],
-  ["variants", "funds"],
 ];
 
 interface Scan {

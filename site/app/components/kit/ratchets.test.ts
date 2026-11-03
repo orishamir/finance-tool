@@ -26,7 +26,6 @@ const PILL: Record<string, number> = {
     "components/guide/sections.tsx": 4,
     "components/timeline/Timeline.tsx": 3,
     "components/workbench/controls.tsx": 4,
-    "components/workbench/funds/controls.tsx": 3,
   };
 const CARD: Record<string, number> = {
     "components/compare/fit.tsx": 1,
@@ -36,7 +35,6 @@ const CARD: Record<string, number> = {
     "components/revisit/revisit.tsx": 2,
     "routes/home.tsx": 1,
     "routes/idle-cash.tsx": 1,
-    "routes/workbench-funds.tsx": 1,
   };
 const INPUT: Record<string, number> = {
     "components/compare/fields.tsx": 2,
@@ -47,13 +45,11 @@ const INPUT: Record<string, number> = {
     "components/search.tsx": 2,
     "components/transfer/panel.tsx": 1,
     "components/workbench/controls.tsx": 1,
-    "components/workbench/funds/controls.tsx": 2,
     "routes/companies.tsx": 1,
   };
 const SELECT: Record<string, number> = {
     "components/compare/why.tsx": 1,
     "components/holdings/fields.tsx": 1,
-    "components/workbench/funds/controls.tsx": 1,
   };
 const STATGRID: Record<string, number> = {
     "components/holdings/card.tsx": 1,
@@ -65,7 +61,6 @@ const HEADINGFOLD: Record<string, number> = {
 const OLDUI: Record<string, number> = {
     "components/Sheet.tsx": 1,
     "components/provenance.tsx": 1,
-    "routes/workbench-funds.tsx": 1,
     "routes/workbench-tracks.tsx": 1,
   };
 

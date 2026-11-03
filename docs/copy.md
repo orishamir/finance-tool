@@ -1631,6 +1631,8 @@ Added 2026-10-24 for the briefs in `docs/flows.md` section 15 and the handoff in
 
 ### 8.2 Fund-variant page
 
+*(2026-11-03, D53: the funds page is deleted; the indices page lists and prices every fund of an index, and no other holding has a priced fund.)*
+
 | Element | Hebrew |
 |---|---|
 | Title | כל הקרנות שעוקבות אחרי `{חשיפה}` |

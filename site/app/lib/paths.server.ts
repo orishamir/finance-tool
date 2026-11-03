@@ -26,9 +26,8 @@ export function prerenderPaths(): string[] {
   for (const id of institutionIds()) if (!cma.companies.some((c) => c.id === id)) paths.push(`/companies/${id}`);
   // the brands (D33): every address of a brand shows its one page (a fund manager or a foreign broker has no other page)
   for (const b of loadBrands()) for (const id of b.pageIds) if (!paths.includes(`/companies/${id}`)) paths.push(`/companies/${id}`);
-  // the provider workbench and the fund-variant page (release 4): the subject is in the address, read in the browser
+  // the provider workbench (release 4): the subject is in the address, read in the browser
   for (const w of providerWrapperIds()) paths.push(`/workbench/providers/${w}`);
-  for (const e of loadExposures()) paths.push(`/workbench/funds/${e.id}`);
   paths.push("/workbench-bundle.json");
   // the component gallery: for builders, noindex, in no menu and no search
   paths.push("/kit");

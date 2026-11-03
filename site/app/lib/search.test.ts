@@ -8,7 +8,7 @@ const e = (kind: SearchEntry["kind"], name: string, href: string, ids?: string[]
 const index: SearchEntry[] = [
   e("track", "איילון קרן השתלמות כללית", "/companies/1/880", ["880"]),
   e("track", "מנורה קרן השתלמות מניות", "/companies/2/7978", ["7978"]),
-  e("track", "אי.בי.אי. סל (4D) S&P 500", "/workbench/funds/index-sp500", ["1148162", "il0011481622"]),
+  e("track", "אי.בי.אי. סל (4D) S&P 500", "/indices/sp500", ["1148162", "il0011481622"]),
   e("guide", "קרן השתלמות", "/guide/keren-hishtalmut"),
   e("guide", "קרן השתלמות לעצמאים", "/guide/keren-hishtalmut"),
   e("guide", "קרן השתלמות", "/guide/keren-hishtalmut"),
@@ -42,13 +42,13 @@ describe("number matching", () => {
   it("finds a track by its number, from two digits", () => {
     expect(search("880")[0]!.entry.href).toBe("/companies/1/880");
     expect(search("7978")[0]!.entry.href).toBe("/companies/2/7978");
-    expect(search("1148162")[0]!.entry.href).toBe("/workbench/funds/index-sp500");
-    expect(search("11481")[0]!.entry.href).toBe("/workbench/funds/index-sp500");
+    expect(search("1148162")[0]!.entry.href).toBe("/indices/sp500");
+    expect(search("11481")[0]!.entry.href).toBe("/indices/sp500");
     expect(search("88")[0]!.entry.href).toBe("/companies/1/880");
   });
   it("finds a company by its legal number and an ISIN by its text", () => {
     expect(search("512065202")[0]!.entry.href).toBe("/companies/512065202");
-    expect(search("IL0011481622")[0]!.entry.href).toBe("/workbench/funds/index-sp500");
+    expect(search("IL0011481622")[0]!.entry.href).toBe("/indices/sp500");
   });
   it("does not match a number in the middle of an id", () => {
     expect(search("481")).toHaveLength(0);

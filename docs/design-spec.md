@@ -1569,6 +1569,8 @@ Worked examples: S44 (four invented providers; list level, one order a month: C 
 
 ## 18. Screen 14: fund-variant page
 
+*(2026-11-03, D53: the funds page is deleted; the indices page lists and prices every fund of an index, and no other holding has a priced fund.)*
+
 ### Overview
 
 Every fund the site knows for an exposure, from the Israeli fund list, TASE's foreign-fund list and the collected records, ranked where its details are collected, listed where a tax rule is open, not evaluated where they are not, with the security number, domicile, distribution policy and fees (flows 30, 33). Route `/workbench/funds/{exposure}?provider=…`. Data: the exposure record, the latest `data/fund-lists/` files (none today; the page must render without them), every `data/funds/` record for the exposure, the provider tariff (the workbench's choice or P-05's), the saved goal and variant assumptions (16.5), P-01, the rules TXF-11, TXF-13, TXS-22, TXS-24, CAT-34, ETF-32, MF-54 from the bundle, and the engine's F-65 output. Not pre-rendered.

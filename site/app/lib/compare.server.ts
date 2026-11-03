@@ -16,6 +16,7 @@ import { accountBanks, commonAccountRate, currentAccountRecords } from "./guide-
 const tariffKeys: string[] = ["tradeRate", "tradeMin", "tradeMax", "tradeFlat", "tradeFlatUpTo", "redeemRate", "redeemMin", "redeemMax", "redeemFlat", "redeemFlatUpTo", "standingRate", "standingMin", "standingMax", "custodyRate", "custodyMin", "custodyMax", "fxRate", "monthlyFee"];
 import { BROKERAGE, instrumentClassOf, onlyWhatCanBeDone, providersOf, shortName } from "./providers";
 import { latestSnapshots } from "./providers.server";
+import { indexPath } from "./invest";
 import { readJsonCached, readTextCached } from "./read-cache.server";
 
 const familyById: Partial<Record<ProductId, Family>> = {
@@ -297,7 +298,7 @@ function exposureData(wrappers: WrapperEntry[], p05: ParameterRecord, sources: P
       }
       (exposureTerms[record.id] ??= {})[wid] = { fundId: fund.id, terms: built.terms, feeValues: built.feeValues };
     }
-    return { record, name: record.names.he[0] ?? record.id, oneLine: record.one_line_he ?? null, guideHref: exposureHref(record.id), variantsHref: forExposure.length > 0 ? `/workbench/funds/${record.id}` : null };
+    return { record, name: record.names.he[0] ?? record.id, oneLine: record.one_line_he ?? null, guideHref: exposureHref(record.id), fundsHref: forExposure.length > 0 && record.kind === "equity_index" ? indexPath(record.id) : null };
   });
   void wrappers;
   return { exposures, exposureTerms };

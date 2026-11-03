@@ -126,8 +126,8 @@ export interface ExposureEntry {
   name: string;
   oneLine: string | null;
   guideHref: string;
-  /** `/workbench/funds/{id}` when a fund record exists for it. */
-  variantsHref: string | null;
+  /** The index page, for an index with a fund record (the funds page is gone, issue 174). */
+  fundsHref: string | null;
 }
 
 /** The terms of a securities-family wrapper holding one exposure through the fund collected for it (`exposure_id`). */
@@ -1227,7 +1227,6 @@ export function workbenchHref(wrapperId: string): string | null {
   if (["kupat-gemel-lehashkaa", "keren-hishtalmut", "pension-comprehensive", "pension-general", "provident-for-annuity"].includes(wrapperId)) return `/workbench/tracks/${wrapperId}`;
   // the index page, on the S&P 500 the house-ranking page it replaced defaulted to (issue 172)
   if (wrapperId === "brokerage-account") return "/indices/sp500";
-  if (wrapperId === "money-market-fund-daily" || wrapperId === "money-market-fund-renewable") return "/workbench/funds/shekel-cash";
   return null;
 }
 
