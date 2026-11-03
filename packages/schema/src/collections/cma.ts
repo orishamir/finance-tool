@@ -17,6 +17,8 @@ const cmaFund = z.object({
   fees: z.object({ avg_annual_management_fee: valueObject, avg_deposit_fee: valueObject }),
   // NIS millions at the period end (D34, F-87, F-88); absent in files written before 2026-10-26.
   holdings: z.object({ total_assets: valueObject, stock_market_exposure: valueObject, foreign_currency_exposure: valueObject.optional() }).optional(),
+  // The average annual yields of the last 3 and 5 years, percent per year, nominal and before management fees (CAT-04, CAT-05); absent in files written before 2026-11-03.
+  yields: z.object({ avg_annual_yield_3y: valueObject, avg_annual_yield_5y: valueObject }).optional(),
 });
 
 export const cmaPeriodFile = z.object({

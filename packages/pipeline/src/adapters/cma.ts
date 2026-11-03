@@ -376,16 +376,74 @@ export function buildHoldings(
   };
 }
 
-/** Attach a fund's derived value objects (fees, and holdings when its raw fields have them). */
+const YIELD_FIELDS = [
+  { key: "avg_annual_yield_3y", raw: "AVG_ANNUAL_YIELD_TRAILING_3YRS", heName: "תשואה שנתית ממוצעת 3 שנים אחרונות", years: 3 },
+  { key: "avg_annual_yield_5y", raw: "AVG_ANNUAL_YIELD_TRAILING_5YRS", heName: "תשואה שנתית ממוצעת 5 שנים אחרונות", years: 5 },
+] as const;
+
+/** Whether a track opened less than `years` full years before the end of the report period (it cannot have a figure for the window). */
+export const youngerThan = (inception: string | null | undefined, period: string, years: number): boolean => {
+  if (!inception) return false;
+  const [y, m] = period.split("-").map(Number) as [number, number];
+  return inception > periodEnd(`${y - years}-${String(m).padStart(2, "0")}`);
+};
+
+/**
+ * CMA average annual yields (3 and 5 years) to value objects, in percent per year (CAT-04, CAT-05). The regulator states they are
+ * nominal and gross: before management fees, and not net of tax. That the window ends at the report month and that the figure is a
+ * geometric annualisation are read from the data, not stated by the regulator (CAT-05). Undefined when the file has neither column. Pure.
+ */
+export function buildYields(
+  file: Pick<CmaPeriodFile, "dataset" | "report_period" | "checked" | "source">,
+  fund: Pick<CmaFund, "raw_fields" | "inception_date">,
+): CmaFund["yields"] | undefined {
+  if (!YIELD_FIELDS.some((f) => f.raw in fund.raw_fields)) return undefined;
+  const config = DATASETS.find((d) => d.dataset === file.dataset)!;
+  const make = (f: (typeof YIELD_FIELDS)[number]) => {
+    const rawText = (fund.raw_fields[f.raw] ?? "").trim();
+    const n = rawText === "" ? null : Number(rawText);
+    const value = n !== null && Number.isFinite(n) ? n : null;
+    const notes =
+      value === null
+        ? youngerThan(fund.inception_date, file.report_period, f.years)
+          ? `לא דווח: למסלול עוד אין ${f.years} שנים מלאות (נפתח ${fund.inception_date}).`
+          : "לא דווח."
+        : `התשואה השנתית הממוצעת של המסלול ב־${f.years} השנים עד סוף ${file.report_period}: נומינלית וברוטו, כלומר לפני דמי ניהול ולפני מס. זו תשואת עבר, לא הבטחה לעתיד. שנות החישוב נקראות כמסתיימות בחודש הדיווח, והרשות לא כותבת זאת במפורש (CAT-05).`;
+    return {
+      value,
+      unit: "pct_per_year" as const,
+      source: {
+        url: file.source.url,
+        title: `${config.heTitle}, resource 2024-today, field ${f.raw} ("${f.heName}"), REPORT_PERIOD ${file.report_period.replace("-", "")}`,
+        publisher: file.source.publisher,
+        strength: "primary" as const,
+      },
+      checked: file.checked,
+      effective_from: `${file.report_period}-01`,
+      effective_to: periodEnd(file.report_period),
+      tax_year: null,
+      update_rule: "market" as const,
+      rule_ids: ["CAT-04", "CAT-05"],
+      state: "sourced" as const,
+      notes,
+    };
+  };
+  return { avg_annual_yield_3y: make(YIELD_FIELDS[0]), avg_annual_yield_5y: make(YIELD_FIELDS[1]) };
+}
+
+/** Attach a fund's derived value objects (fees, and holdings and yields when its raw fields have them). */
 const derive = (file: Pick<CmaPeriodFile, "dataset" | "report_period" | "checked" | "source">, f: CmaFund): CmaFund => {
   const next: CmaFund = { ...f, fees: buildFees(file, f) };
   const holdings = buildHoldings(file, f);
   if (holdings) next.holdings = holdings;
   else delete next.holdings;
+  const yields = buildYields(file, f);
+  if (yields) next.yields = yields;
+  else delete next.yields;
   return next;
 };
 
-/** Rebuild `fees` and `holdings` of every fund from the stored raw_fields; nothing else changes. */
+/** Rebuild `fees`, `holdings` and `yields` of every fund from the stored raw_fields; nothing else changes. */
 export function renormaliseFees(file: CmaPeriodFile): CmaPeriodFile {
   return { ...file, funds: file.funds.map((f) => derive(file, f)) };
 }

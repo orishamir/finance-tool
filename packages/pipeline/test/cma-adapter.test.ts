@@ -16,6 +16,8 @@ import {
   balanceFeeOnly,
   buildFees,
   buildHoldings,
+  buildYields,
+  youngerThan,
   listPeriods,
   readCmaFile,
   EXCLUDED_COMPANIES,
@@ -107,6 +109,10 @@ describe("normalise", () => {
         stock_market_exposure: expect.objectContaining({ value: 12378.07, unit: "nis_millions", source: expect.objectContaining({ title: expect.stringContaining("STOCK_MARKET_EXPOSURE") }) }),
         foreign_currency_exposure: expect.objectContaining({ value: 5156.92, unit: "nis_millions", notes: expect.stringContaining("מטבע חוץ") }),
       },
+      yields: {
+        avg_annual_yield_3y: expect.objectContaining({ value: 13.16, unit: "pct_per_year", state: "sourced", rule_ids: ["CAT-04", "CAT-05"] }),
+        avg_annual_yield_5y: expect.objectContaining({ value: 8.19, unit: "pct_per_year", state: "sourced", rule_ids: ["CAT-04", "CAT-05"] }),
+      },
     });
     expect(file.checked).toBe("2026-10-23");
     expect(file.raw).toEqual({ archive_key: "cma/gemelnet/2026-10-23.csv.gz", sha256: "a".repeat(64) });
@@ -197,6 +203,50 @@ describe("holdings (F-87 inputs)", () => {
     // a file without the currency column has no currency value, and still has the other two
     expect(h.foreign_currency_exposure).toBeUndefined();
     expect(buildHoldings(base, { raw_fields: { TOTAL_ASSETS: "10", STOCK_MARKET_EXPOSURE: "5", FOREIGN_CURRENCY_EXPOSURE: "2" } })!.foreign_currency_exposure!.value).toBe(2);
+  });
+});
+
+describe("yields (the track browser's past returns, CAT-04, CAT-05)", () => {
+  const base = { dataset: "gemelnet" as const, report_period: "2026-09", checked: "2026-10-23", source: good().source };
+
+  it("reads the two average annual yields as sourced percents per year, nominal and before fees", () => {
+    const y = buildYields(base, { raw_fields: { AVG_ANNUAL_YIELD_TRAILING_3YRS: "13.16", AVG_ANNUAL_YIELD_TRAILING_5YRS: "8.19" }, inception_date: "1970-01-01" })!;
+    expect(y.avg_annual_yield_3y.value).toBe(13.16);
+    expect(y.avg_annual_yield_5y.value).toBe(8.19);
+    expect(y.avg_annual_yield_3y.unit).toBe("pct_per_year");
+    expect(y.avg_annual_yield_3y.state).toBe("sourced");
+    expect(y.avg_annual_yield_3y.rule_ids).toEqual(["CAT-04", "CAT-05"]);
+    expect(y.avg_annual_yield_3y.source.title).toContain("AVG_ANNUAL_YIELD_TRAILING_3YRS");
+    expect(y.avg_annual_yield_5y.source.title).toContain("202609");
+    expect(y.avg_annual_yield_3y.notes).toContain("לפני דמי ניהול ולפני מס");
+    expect([y.avg_annual_yield_3y.effective_from, y.avg_annual_yield_3y.effective_to]).toEqual(["2026-09-01", "2026-09-30"]);
+  });
+
+  it("an empty yield is null, and says when the track is younger than the window", () => {
+    const y = buildYields(base, { raw_fields: { AVG_ANNUAL_YIELD_TRAILING_3YRS: "", AVG_ANNUAL_YIELD_TRAILING_5YRS: "" }, inception_date: "2022-05-01" })!;
+    expect(y.avg_annual_yield_3y.value).toBeNull();
+    expect(y.avg_annual_yield_3y.notes).toBe("לא דווח.");
+    expect(y.avg_annual_yield_5y.notes).toContain("עוד אין 5 שנים מלאות");
+    // a negative return is a return, kept as reported
+    expect(buildYields(base, { raw_fields: { AVG_ANNUAL_YIELD_TRAILING_3YRS: "-1.5" }, inception_date: null })!.avg_annual_yield_3y.value).toBe(-1.5);
+  });
+
+  it("a file without the columns has no yields", () => {
+    expect(buildYields(base, { raw_fields: { AVG_DEPOSIT_FEE: "0" }, inception_date: null })).toBeUndefined();
+  });
+
+  it("youngerThan: opened after the window's first day", () => {
+    expect(youngerThan("2023-09-30", "2026-09", 3)).toBe(false);
+    expect(youngerThan("2023-10-01", "2026-09", 3)).toBe(true);
+    expect(youngerThan(null, "2026-09", 3)).toBe(false);
+  });
+
+  it("the stored files carry the yields of every track that reports them", () => {
+    const cmaDir = fileURLToPath(new URL("../../../data/cma", import.meta.url));
+    const gemel = readCmaFile(cmaDir, "gemelnet", "2026-09");
+    const t = gemel.funds.find((x) => x.fund_id === 103)!;
+    expect(t.yields!.avg_annual_yield_3y.value).toBe(13.16);
+    expect(t.yields!.avg_annual_yield_5y.value).toBe(8.19);
   });
 });
 
