@@ -5,13 +5,13 @@ import { help as copy } from "../../copy";
 import { useOpen } from "../provenance";
 import { cx } from "./cx";
 
-export function HelpMark({ term, about, className }: { /** The glossary term's Hebrew name, as the page's provenance data keys it. */ term: string; /** What the mark explains, in the reader's words ("כסף מנוהל"): the button's spoken name. */ about: string; className?: string }) {
+export function HelpMark({ term, about, lead, className }: { /** The glossary term's Hebrew name, as the page's provenance data keys it; several terms open one sheet of them all, titled `about` (a column of three fees). */ term: string | readonly string[]; /** What the mark explains, in the reader's words ("כסף מנוהל"): the button's spoken name. */ about: string; /** With several terms, the line under the sheet's title. */ lead?: string; className?: string }) {
   const open = useOpen();
   return (
     <button
       type="button"
       aria-label={copy.markLabel.replace("{about}", about)}
-      onClick={(e) => open({ kind: "term", id: term }, e.currentTarget)}
+      onClick={(e) => open(typeof term === "string" ? { kind: "term", id: term } : { kind: "terms", ids: term, name: about, lead }, e.currentTarget)}
       className={cx("help-mark inline-flex items-center justify-center min-h-target min-w-target -my-3 -mx-3 align-middle shrink-0 text-muted-foreground hover:text-foreground", className)}
     >
       <span aria-hidden="true" className="inline-flex items-center justify-center size-4 rounded-full border border-current text-[11px] font-semibold leading-none">

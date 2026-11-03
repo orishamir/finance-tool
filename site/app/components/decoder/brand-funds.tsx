@@ -6,7 +6,7 @@ import { brands as copy, invest } from "../../copy";
 import type { BrandFundRow, FundKind } from "../../lib/brands.server";
 import type { SiteValue } from "../../lib/value";
 import { IconDrillIn } from "../icons";
-import { FeeFigure, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, type ProductColumn } from "../kit";
+import { FeeFigure, FundFeesHead, FundFeesPhoneHelp, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, type ProductColumn } from "../kit";
 
 const c = copy.funds;
 
@@ -44,11 +44,12 @@ export function BrandFundList({ funds, kind }: { funds: BrandFundRow[]; kind: Fu
     { id: "name", head: c.columns.name },
     { id: "number", head: c.columns.number, width: 7.5 },
     ...(funds.some((f) => f.follows) ? [{ id: "follows", head: followsHead, width: 12 }] : []),
-    { id: "fees", head: c.columns.fees, width: 12 },
+    { id: "fees", head: <FundFeesHead />, width: 12 },
   ];
   const withFollows = columns.some((col) => col.id === "follows");
   return (
     <LabelSheetHost>
+      <FundFeesPhoneHelp />
       <ProductTable
         columns={columns}
         groups={funds.map((f) => ({

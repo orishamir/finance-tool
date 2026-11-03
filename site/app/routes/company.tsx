@@ -78,9 +78,9 @@ export async function loader({ params }: Route.LoaderArgs) {
   const funds = brand ? brandFunds(brand) : [];
   // the rules the funds' label sheets name (the label set's own, as on the index page)
   const labelRuleIds = [...new Set(funds.flatMap((g) => g.funds.flatMap((f) => f.labels.flatMap((l) => l.rules))))].filter((id) => allRules[id]);
-  // the glossary cards behind the track list's "?" (the fee and exposure heads), with the rules they cite
+  // the glossary cards behind the track list's "?" (the fee and exposure heads) and the fund lists' fees, with the rules they cite
   const { HELP_TERMS } = await import("../lib/track-browser");
-  const helpNames = new Set<string>(Object.values(HELP_TERMS));
+  const helpNames = new Set<string>([...Object.values(HELP_TERMS), ...(funds.length ? brandsCopy.funds.feeTerms : [])]);
   const helpTerms = Object.fromEntries(terms.filter((x) => helpNames.has(x.he)).map((x) => [x.he, x]));
   const helpRuleIds = Object.values(helpTerms).flatMap((x) => x.ruleIds).filter((id) => allRules[id]);
   // and the rules the browser's figures name (their sheets), as on the tracks page

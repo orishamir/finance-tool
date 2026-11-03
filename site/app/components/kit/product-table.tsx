@@ -7,11 +7,12 @@
 // and the widths are here. `RowArrow` is the arrow at the end of a row that opens a page of the site. The body and the phone card are the
 // lists `useFlip` slides when the rows are sorted or filtered again.
 import { Fragment, useId, useLayoutEffect, useRef, useState, useSyncExternalStore, type ReactNode } from "react";
-import { invest, kit } from "../../copy";
+import { brands, invest, kit, trackBrowser } from "../../copy";
 import type { SiteValue } from "../../lib/value";
 import { IconAlert, IconChevronDown, IconDrillIn, IconExternal } from "../icons";
-import { Num, RulesLine } from "../provenance";
+import { Num, RulesLine, Term } from "../provenance";
 import { Card } from "./card";
+import { HelpMark } from "./help-mark";
 import { cx } from "./cx";
 import { TableCols } from "./table-cols";
 
@@ -240,6 +241,31 @@ export function ProductFigures({ items, inline }: { items: { id: string; figure:
 export function FeeFigure({ value, absent, inline }: { value: SiteValue | null; absent?: boolean; inline?: boolean }) {
   if (value) return <Num value={value} size={inline ? "inline" : "cell"} />;
   return <span className="text-sm text-muted-foreground">{absent ? invest.funds.noSuchFee : invest.funds.notCollected}</span>;
+}
+
+const fees = brands.funds;
+
+/** The head of a fund list's three fees, with the "?" that opens the three terms on one sheet (founder, 2026-11-03). */
+export function FundFeesHead() {
+  return (
+    <span>
+      {fees.columns.fees}
+      {/* inline, so the mark follows the head's last word when the head wraps */}
+      <HelpMark term={fees.feeTerms} about={fees.columns.fees} lead={fees.feeHelpLead} className="ms-1" />
+    </span>
+  );
+}
+
+/** The same sheet on a phone, whose rows have no column heads: one line over the list, as the tracks page's. */
+export function FundFeesPhoneHelp() {
+  return (
+    <p className="md:hidden text-sm text-muted-foreground">
+      {trackBrowser.help.phoneLead}{" "}
+      <Term id={fees.feeTerms} name={fees.columns.fees} lead={fees.feeHelpLead}>
+        {fees.columns.fees}
+      </Term>
+    </p>
+  );
 }
 
 /** What "אין" and "לא נאסף" say, under a list of funds that may hold a foreign fund, with the rules behind it. */

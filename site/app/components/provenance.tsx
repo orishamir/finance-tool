@@ -22,7 +22,7 @@ import { chipName, companyLinksOf, generalOnly, isGeneral, isNotRule, isOwnSourc
 
 // ---------------------------------------------------------------- context
 
-export type Item = { kind: "value"; value: SiteValue; /** The figure was shown with two decimals (a table cell, or near a threshold): the sheet shows the same digits. */ exact?: boolean; /** The word an empty value was shown as ("אין", "עוד לא דווח"): the sheet heads with the same word. */ display?: string } | { kind: "rule"; id: string } | { kind: "rules"; ids: readonly string[]; /** What the list backs: the fact it closes, under the sheet's title. */ name?: string } | { kind: "term"; id: string } | { kind: "formula"; id: string } | { kind: "question"; id: string; /** The question was closed on this date (a closure on the not-covered page): the sheet says so. */ closedOn?: string };
+export type Item = { kind: "value"; value: SiteValue; /** The figure was shown with two decimals (a table cell, or near a threshold): the sheet shows the same digits. */ exact?: boolean; /** The word an empty value was shown as ("אין", "עוד לא דווח"): the sheet heads with the same word. */ display?: string } | { kind: "rule"; id: string } | { kind: "rules"; ids: readonly string[]; /** What the list backs: the fact it closes, under the sheet's title. */ name?: string } | { kind: "term"; id: string } | { kind: "terms"; ids: readonly string[]; /** What the terms make up (a column's head): the sheet's title. */ name: string; /** One line under the title, before the terms. */ lead?: string } | { kind: "formula"; id: string } | { kind: "question"; id: string; /** The question was closed on this date (a closure on the not-covered page): the sheet says so. */ closedOn?: string };
 
 interface ProvenanceApi {
   open: (item: Item, anchor: HTMLElement | null) => void;
@@ -521,23 +521,24 @@ function RulesListSheet({ ids, name, data, headId }: { ids: readonly string[]; n
  * `prefix` is the one-letter Hebrew prefix of the word ("ה", "ו", "ב", "ל", "מ", "ש", "כ"; "וה" and the like too): it is
  * rendered inside the same non-breaking span, so a line never breaks between the letter and the term (audit A48).
  */
-export function Term({ id, children, prefix }: { id: string; children?: ReactNode; prefix?: string }) {
+export function Term({ id, children, prefix, name, lead }: { /** Several ids open one sheet of them all, titled `name` (`HelpMark`'s too). */ id: string | readonly string[]; children?: ReactNode; prefix?: string; name?: string; lead?: string }) {
   const open = useOpen();
+  const item: Item = typeof id === "string" ? { kind: "term", id } : { kind: "terms", ids: id, name: name ?? "", lead };
   // An inline element, not a <button>: a line may break after a button, which left a sentence's full stop alone at the start of the next line (2026-11-02).
   const button = (
     <span
       role="button"
       tabIndex={0}
       className="term"
-      onClick={(e) => open({ kind: "term", id }, e.currentTarget)}
+      onClick={(e) => open(item, e.currentTarget)}
       onKeyDown={(e) => {
         if (e.key === "Enter" || e.key === " ") {
           e.preventDefault();
-          open({ kind: "term", id }, e.currentTarget);
+          open(item, e.currentTarget);
         }
       }}
     >
-      {children ?? id}
+      {children ?? (typeof id === "string" ? id : name)}
     </span>
   );
   return prefix ? (
@@ -726,6 +727,7 @@ function SheetContent({ item, data, headId, descId }: { item: Item; data: Proven
       {item.kind === "rule" && <RuleCard id={item.id} data={data} headId={headId} />}
       {item.kind === "rules" && <RulesListSheet ids={item.ids} name={item.name} data={data} headId={headId} />}
       {item.kind === "term" && <TermCard id={item.id} data={data} headId={headId} />}
+      {item.kind === "terms" && <TermsSheet ids={item.ids} name={item.name} lead={item.lead} data={data} headId={headId} />}
       {item.kind === "formula" && <FormulaSheet id={item.id} data={data} headId={headId} />}
       {item.kind === "question" && <QuestionSheet id={item.id} closedOn={item.closedOn} data={data} headId={headId} />}
     </InsideSheetCtx.Provider>
@@ -1439,14 +1441,15 @@ function CitationBox({ text }: { text: string }) {
 
 // ---------------------------------------------------------------- term card
 
-export function TermCard({ id, data, headId }: { id: string; data: ProvenanceData; headId?: string }) {
+export function TermCard({ id, data, headId, sub }: { id: string; data: ProvenanceData; headId?: string; /** One of several on a sheet (`TermsSheet`): a smaller heading under the sheet's own. */ sub?: boolean }) {
   const term = data.terms[id];
   if (!term) return <p id={headId}>{id}</p>;
+  const Heading = sub ? "h3" : "h2";
   return (
     <div className="flex flex-col gap-3">
-      <h2 id={headId} className="text-lg font-semibold">
+      <Heading id={headId} className={sub ? "text-base font-semibold" : "text-lg font-semibold"}>
         {term.he}
-      </h2>
+      </Heading>
       <p>{term.explanation}</p>
       {term.variants.length > 0 && (
         <p className="text-sm text-muted-foreground">
@@ -1468,6 +1471,25 @@ export function TermCard({ id, data, headId }: { id: string; data: ProvenanceDat
       )}
       {/* a definition rests on general rules only (D30): a company's term the glossary row cites is on that company's page */}
       {generalOnly(term.ruleIds, data.rules).length > 0 && <RulesLine ids={generalOnly(term.ruleIds, data.rules)} />}
+    </div>
+  );
+}
+
+/** Several glossary terms that make up one thing (a column of three fees): its name, a line, then each term's card under a rule. */
+function TermsSheet({ ids, name, lead, data, headId }: { ids: readonly string[]; name: string; lead?: string; data: ProvenanceData; headId: string }) {
+  return (
+    <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-1">
+        <h2 id={headId} className="text-lg font-semibold">
+          {name}
+        </h2>
+        {lead && <p className="text-muted-foreground">{lead}</p>}
+      </div>
+      {ids.map((id) => (
+        <div key={id} className="border-t border-border pt-4">
+          <TermCard id={id} data={data} sub />
+        </div>
+      ))}
     </div>
   );
 }

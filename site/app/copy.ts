@@ -2056,6 +2056,9 @@ export const brands = {
     collected: "רק הקרנות שהאתר אסף עליהן דוח, לא כל הקרנות של החברה. דמי הניהול לפי הדוח של כל קרן.",
     /** The fund table (founder, 2026-10-27; design-system 11 "Lists of products"): the head carries the words, the cell the value. */
     columns: { name: "שם הקרן", number: "מספר נייר", index: "המדד", kind: "סוג הקרן", fees: "דמי ניהול לפי הדוח של הקרן" },
+    /** The "?" by the fees' head (founder, 2026-11-03): one sheet of the three glossary terms, under this line. The names are the glossary's keys. */
+    feeTerms: ["דמי ניהול קבועים", "דמי ניהול משתנים", "שכר נאמן"],
+    feeHelpLead: "בכל שורה שלושה מספרים מהדוח של הקרן:",
     feeWords: { fixed: "קבועים", variable: "משתנים", trustee: "נאמן" },
     /** The phone row's lead before the three fees, and the word before the index's name (the head the phone has not got). */
     phoneFees: "דמי ניהול:",
