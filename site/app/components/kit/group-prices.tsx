@@ -106,7 +106,7 @@ function SourceLinks({ entries }: { entries: readonly GroupEntry[] }) {
  * one "what is cheaper" (one "until when" too when they all end alike). `sources`: a line under each sub-row with where its words stand
  * (a house's own page). A note under the rows says what "names no fund" means, when a sub-row carries it.
  */
-export function GroupPriceRows({ entries, sources, className, own }: { entries: readonly GroupEntry[]; sources?: boolean; className?: string; /** The caller's link under a sub-row that states prices in numbers: it gets the key of the sub-row's first such entry (`group:<n>`, its place in the house's record), and opens the account panel on it (2026-11-04). */ own?: (key: string) => ReactNode }) {
+export function GroupPriceRows({ entries, sources, className, own, choice }: { entries: readonly GroupEntry[]; sources?: boolean; className?: string; /** The caller's link under a sub-row that states prices in numbers: it gets the key of the sub-row's first such entry (`group:<n>`, its place in the house's record), and opens the account panel on it (2026-11-04). */ own?: (key: string) => ReactNode; /** A radio before each group the person can pick (`group:<n>`), the picked one checked (founder, 2026-11-04: opening the fold shows more choices). */ choice?: GroupChoice }) {
   const blocks = groupBlocks(entries);
   // the sub-row's first entry that states a price in numbers: the one the account panel starts from
   const startOf = (b: GroupBlock) => {
@@ -135,7 +135,11 @@ export function GroupPriceRows({ entries, sources, className, own }: { entries: 
                 return (
                   <tr key={e.name_he}>
                     <td className={cx("[overflow-wrap:anywhere]", own)}>
-                      <bdi>{e.who_short_he ?? e.name_he}</bdi>
+                      {choice?.can(`group:${entries.indexOf(e)}`) ? (
+                        <GroupRadio choice={choice} k={`group:${entries.indexOf(e)}`} who={e.who_short_he ?? e.name_he} />
+                      ) : (
+                        <bdi>{e.who_short_he ?? e.name_he}</bdi>
+                      )}
                       {sources && e.who_short_he && e.who_short_he !== e.name_he && <span className="block text-xs text-muted-foreground"><bdi>{e.name_he}</bdi></span>}
                     </td>
                     {i === 0 && (
@@ -171,7 +175,26 @@ export function GroupPriceRows({ entries, sources, className, own }: { entries: 
         </tbody>
       </table>
       {marked && <p className="text-xs text-muted-foreground max-w-measure">{copy.noFundNote}</p>}
+      {choice && entries.some((_, i) => choice.can(`group:${i}`)) && <p className="text-xs text-muted-foreground max-w-measure">{copy.pickNote}</p>}
     </div>
+  );
+}
+
+/** The groups a person can pick in a fold, the picked one, and what picking does. */
+export interface GroupChoice {
+  can: (key: string) => boolean;
+  selected: string | null;
+  onChoose: (key: string) => void;
+}
+
+/** A group's radio and its words, one 44 px target; a click on it is not a pick of the row around it (a button, `PickList`). */
+function GroupRadio({ choice, k, who }: { choice: GroupChoice; k: string; who: string }) {
+  const on = choice.selected === k;
+  return (
+    <button type="button" role="radio" aria-checked={on} aria-label={copy.pickLabel(who)} onClick={() => choice.onChoose(k)} className="flex items-start gap-2 min-h-target -my-2 py-2 text-start cursor-pointer focus-visible:outline-2 focus-visible:outline-ring rounded-sm">
+      <span aria-hidden="true" className={cx("size-4 shrink-0 rounded-full border-[1.5px] mt-1", on ? "border-[5px] border-primary" : "border-input")} />
+      <bdi>{who}</bdi>
+    </button>
   );
 }
 
@@ -179,7 +202,7 @@ export function GroupPriceRows({ entries, sources, className, own }: { entries: 
  * The closed line under a house's row on a comparison: a "not in the figure" tag and who gets another price; it opens, at the person's
  * own tap, to the sub-rows and a link to the house's page, where the sources stand. Nothing in it is a figure of the ranking.
  */
-export function GroupPriceFold({ entries, house, href, open, onOpenChange, className, own }: { entries: readonly GroupEntry[]; /** The house's short name, for the link. */ house: string; /** The house's page, where the sources stand. */ href: string; open?: boolean; onOpenChange?: (open: boolean) => void; className?: string; /** See `GroupPriceRows`. */ own?: (key: string) => ReactNode }) {
+export function GroupPriceFold({ entries, house, href, open, onOpenChange, className, own, choice }: { entries: readonly GroupEntry[]; /** The house's short name, for the link. */ house: string; /** The house's page, where the sources stand. */ href: string; open?: boolean; onOpenChange?: (open: boolean) => void; className?: string; /** See `GroupPriceRows`. */ own?: (key: string) => ReactNode; /** See `GroupPriceRows`. */ choice?: GroupChoice }) {
   if (entries.length === 0) return null;
   return (
     <Disclosure
@@ -196,7 +219,7 @@ export function GroupPriceFold({ entries, house, href, open, onOpenChange, class
       }
     >
       <div className="flex flex-col gap-2 pb-2">
-        <GroupPriceRows entries={entries} own={own} />
+        <GroupPriceRows entries={entries} own={own} choice={choice} />
         <GroupPageLink house={house} href={href} />
       </div>
     </Disclosure>

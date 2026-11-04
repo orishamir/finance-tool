@@ -2212,6 +2212,14 @@ export const groupPrices = {
   noFundNote: "כשהמסמך לא מזכיר קרנות, לא ידוע אם המחיר חל גם על קרן מחקה או על קרן סל.",
   /** The link on a sub-row that opens the account panel with this group's prices in the person's column (2026-11-04). */
   ownAccount: "חשבון במחירים האלה",
+  /** The held account of a house's group picked on the index page (2026-11-04): its name wherever the pair names it. */
+  pickedName: (house: string, group: string) => `${house}, ל${group}`,
+  /** The radio on a sub-row the person can pick: what picking it does, for a screen reader. */
+  pickLabel: (group: string) => `חשבון במחיר ל${group}`,
+  /** On the chosen account's card, under its name, when a group is picked. */
+  pickedLine: (group: string) => `במחיר ל${group} כל עוד הוא נמשך, ואחר כך לפי התעריפון`,
+  /** Under the sub-rows, when some can be picked: why the others cannot. */
+  pickNote: "אפשר לבחור מחיר של קבוצה כשהמסמך מזכיר בו קרנות וכתוב בו כמה זמן הוא נמשך.",
   toPage: (house: string) => `לעמוד של ${house}, עם המקורות`,
   sources: "איפה זה כתוב:",
   atPage: (n: number) => `עמוד ${n}`,

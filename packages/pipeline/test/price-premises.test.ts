@@ -135,7 +135,9 @@ describe("group prices stay beside the ranking (D43)", () => {
   });
   // 2026-11-04 (F-101): the one reader is own-account.ts, which lists a house's groups as starting points for an account on the person's own terms and
   // copies the one chosen into that entry; the ranking, the comparison and the engine still never read a group price.
-  const READERS = ["own-account.ts"];
+  // 2026-11-04 (founder, D43 (5)): group-pick.ts names a house's group the person picked in its fold and prices it the same way, marked so no
+  // ranking, cheapest pair or stairs reads it (isGroupPrice, isGroupProvider).
+  const READERS = ["own-account.ts", "group-pick.ts"];
   it("the page's calculation never reads a group price", () => {
     const dirs = ["../../engine/src", "../../../site/app/lib"];
     for (const rel of dirs) {

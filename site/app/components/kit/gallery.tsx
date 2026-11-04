@@ -885,6 +885,12 @@ function SortableTable({ row }: { row: (key: string, name: string, n: string, ra
 }
 
 /** Three groups of a made-up house: the first two share a price (one sub-row, two ends), the third names funds. */
+/** The fold with the first group pickable, as the index page offers it. */
+function GroupChoiceDemo() {
+  const [selected, setSelected] = useState<string | null>("group:0");
+  return <GroupPriceFold entries={sampleGroups()} house={g.sample.groups.house} href="/kit" open choice={{ can: (k) => k === "group:0", selected, onChoose: setSelected }} />;
+}
+
 function sampleGroups(): GroupEntry[] {
   const w = g.sample.groups;
   const source = { url: "#kit", title: w.doc, page: 2, quote: w.quote };
@@ -981,6 +987,9 @@ function Lists({ today }: { today: string }) {
         </State>
         <State label="on the house's own page: the same rows, each group's name under its short words and a line of where the words stand" wide>
           <GroupPriceRows entries={sampleGroups()} sources />
+        </State>
+        <State label="on the index page (2026-11-04): a radio before each group the person can pick (its price names funds and ends after a printed number of months), the picked one checked, and a line on why the others have none" wide>
+          <GroupChoiceDemo />
         </State>
       </Demo>
       <Demo name="DocLink, atPdfPage" use={g.uses.DocLink}>
