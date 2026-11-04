@@ -58,3 +58,11 @@ Write `research/2026-11-04-binding-prices/<house-id>.md`, at most about 200 line
 5. **Still open**, and what would settle it (a written answer from the company, a customer's statement).
 
 Your final message to the lead: under 250 words. The verdicts in one line each, the record's changes that move a price, the test failures, and anything the founder must decide.
+
+## Second round (banks and the remaining houses, 2026-11-04)
+
+- **A bank's current account.** A bank's securities account rests on a current account. Report what the current account costs an ordinary customer a month, from the bank's price list, but do not add it as a line: no record prices it yet, and adding it is a decision for all banks at once.
+- **Groups (D43).** Banks print prices for young customers, students, soldiers and other groups. Re-check the record's `groups` entry: who qualifies, the end dates, and whether each price names fund units.
+- **Contradicted advertising, in one list.** End your report with a short list of every advertised claim the binding documents contradict, in the advert's own Hebrew words beside the price list's, one line each: the founder may show these on the house's row.
+- **Your final message** to the lead lists every price value you changed as old → new with its line id, every test failure with its name, and the decisions for the founder. Nothing else long.
+- Close every Chrome tab you opened, including any that fell out of the tab group, before you finish.
