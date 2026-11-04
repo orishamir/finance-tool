@@ -1262,19 +1262,20 @@ function FlipDemo() {
 function CostStackDemo() {
   const [state, setState] = useState("list");
   const c = g.sample.cost;
-  const by: Record<string, [number, number, number]> = { list: [1699, 1888, 189], group: [1699, 0, 189], yours: [300, 200, 0] };
+  const by: Record<string, [number, number, number, number]> = { list: [1699, 1888, 189, 120], group: [1699, 0, 189, 40], yours: [300, 200, 0, 20] };
   const from: Record<string, string> = { list: c.fromList, group: c.fromGroup, yours: c.fromYours };
-  const [trade, custody, fixed] = by[state]!;
+  const [trade, custody, fixed, both] = by[state]!;
   const parts: CostPart[] = [
     { id: "t", value: trade, className: "bg-chart-cost-trade", inside: true, name: c.trade, source: from[state]! },
     { id: "c", value: custody, className: "bg-chart-cost-custody", inside: true, name: c.custody, source: from[state]! },
     { id: "f", value: fixed, className: "bg-chart-cost-fixed", inside: true, name: c.fixed, source: from[state]! },
+    { id: "r", value: both, className: "bg-chart-cost-other", inside: true, name: c.remainder, about: c.remainderAbout, source: c.fromComputed },
   ];
   return (
     <div className="flex flex-col gap-3">
       <ChoiceChips ids={["list", "group", "yours"]} labels={c.states} value={state} onChange={setState} ariaLabel={c.stateLabel} wrap />
       <div className="pt-12">
-        <CostStack label={fmt.nisWhole(trade + custody + fixed)} scale={4000} parts={parts} />
+        <CostStack label={fmt.nisWhole(trade + custody + fixed + both)} scale={4000} parts={parts} />
       </div>
     </div>
   );

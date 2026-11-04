@@ -174,7 +174,7 @@ function ListCell({ layer }: { layer: FeeLayers }) {
 function costParts(pc: PairCosts, lines: readonly string[], source: (line: string) => ReactNode): CostPart[] {
   const n = (v: SiteValue) => (typeof v.value === "number" ? v.value : 0);
   const parts: CostPart[] = lines.map((line) => ({ id: line, legendId: line, name: pairWords.lines[line] ?? pairWords.lines.other, value: pc.account.filter((l) => l.line === (line as FeeLine)).reduce((a, l) => a + n(l.cost), 0), className: lineClass(line), inside: true as const, source: source(line) }));
-  return [...parts, { id: "remainder", legendId: "remainder", name: pairWords.remainder, value: pc.interaction, className: "bg-chart-cost-other", inside: true as const, source: p.costs.computed }];
+  return [...parts, { id: "remainder", legendId: "remainder", name: pairWords.remainder, about: pairWords.remainderAbout, value: pc.interaction, className: "bg-chart-cost-other", inside: true as const, source: p.costs.computed }];
 }
 const total = (parts: CostPart[]) => parts.reduce((a, x) => a + x.value, 0);
 

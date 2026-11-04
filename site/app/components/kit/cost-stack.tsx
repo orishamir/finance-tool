@@ -4,7 +4,7 @@
 //
 // It moves and answers (founder, 2026-11-04): when a figure changes, every part's width and the amount written in it glide to the new value
 // (the chart glide of chart-glide.tsx, so one that keeps changing never restarts), and a part that falls to zero shrinks to nothing, keeping its
-// place, rather than vanishing. Pointing at a part, or tapping it, shows its name, amount, share and where its price comes from.
+// place, rather than vanishing. Pointing at a part, or tapping it, shows its name, amount, share, what it is when the name does not say, and where its price comes from.
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { kit as kitCopy } from "../../copy";
 import { fmt } from "../../lib/format";
@@ -21,6 +21,8 @@ export interface CostPart {
   inside?: true | ReactNode;
   /** The part's name: with it, pointing at the part (on `md`, also tapping it) shows its name, amount and share of the bar. */
   name?: string;
+  /** What the part is, when its name alone does not say it: one sentence in the same box, under its name. */
+  about?: ReactNode;
   /** Where the part's price comes from ("the price list", "what you entered"), written in the same box under its name. */
   source?: ReactNode;
   /** The legend item this part belongs to, when it is not `id`. */
@@ -134,6 +136,7 @@ function Tip({ part, share, toStart }: { part: CostPart; share: number; toStart:
       <span>
         <bdi>{part.name}</bdi>: <bdi dir="ltr">{fmt.nisWhole(part.value)}</bdi> ({kitCopy.chart.shareOf(Math.round(share * 100))})
       </span>
+      {part.about && <span>{part.about}</span>}
       {part.source && <span className="text-muted-foreground">{part.source}</span>}
     </span>
   );

@@ -3642,7 +3642,9 @@ export const invest = {
     fundAbout: "דמי הניהול של הקרן",
     taxLine: "מס",
     taxAbout: "מס במכירה, בכסף של היום",
-    remainder: "השפעת השורות יחד",
+    /** The part of the account's cost no single fee line explains (F-91), founder 2026-11-04. */
+    remainder: "העמלות זו על זו",
+    remainderAbout: "כל עמלה מקטינה את הסכום שעליו נגבות האחרות, ואת מה שהיה צומח ממנו; החלק הזה לא שייך לעמלה אחת",
     accountSlot: "חשבון ניירות ערך",
     fundSlot: "קרן",
     accounts: "כל החשבונות",
@@ -4038,7 +4040,7 @@ export const kit = {
       ClaimCheck: "טענה מהפרסום של חברה מול המסמך שמחייב אותה: העמלה והמסקנה במילים, ואז שני הצדדים במילים שלהם, כל אחד עם קישור למקום שבו הוא כתוב. ClaimList: כמה טענות זו אחר זו.",
     },
     sample: {
-      cost: { trade: "קנייה ומכירה", custody: "דמי משמרת", fixed: "דמי ניהול חשבון", fromList: "מהתעריפון של בית השקעות לדוגמה", fromGroup: "מהמסמך של קבוצה לדוגמה", fromYours: "מה שהזנתם", states: { list: "התעריפון", group: "קבוצה", yours: "שלכם" } as Record<string, string>, stateLabel: "מחירים לדוגמה" },
+      cost: { trade: "קנייה ומכירה", custody: "דמי משמרת", fixed: "דמי ניהול חשבון", remainder: "העמלות זו על זו", remainderAbout: "כל עמלה מקטינה את הסכום שעליו נגבות האחרות, ואת מה שהיה צומח ממנו; החלק הזה לא שייך לעמלה אחת", fromComputed: "חישוב של האתר", fromList: "מהתעריפון של בית השקעות לדוגמה", fromGroup: "מהמסמך של קבוצה לדוגמה", fromYours: "מה שהזנתם", states: { list: "התעריפון", group: "קבוצה", yours: "שלכם" } as Record<string, string>, stateLabel: "מחירים לדוגמה" },
       strip: { label: "השנים של התוכנית, לדוגמה", first: "מחירי הקבוצה", middle: "קנייה בלבד במחיר הקבוצה", after: "התעריפון", today: "היום", year: (y: number) => `שנה ${y}` },
       groups: {
         house: "בית השקעות לדוגמה",

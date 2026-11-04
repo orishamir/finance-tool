@@ -110,7 +110,7 @@ function partsOf(pc: PairCosts, from: string): CostPart[] {
   const n = (v: SiteValue) => (typeof v.value === "number" ? v.value : 0);
   const account = pc.account.map((l) => ({ id: l.line, legendId: lineOf(l.line), name: c.pair.lines[lineOf(l.line)] ?? c.pair.lines.other, value: n(l.cost), className: lineClass[lineOf(l.line)] ?? "bg-chart-cost-other", inside: true as const, source: from }));
   // the account's remainder no single line explains is part of what it takes, so the bar holds the whole cost (F-91)
-  return [...account, { id: "remainder", name: c.pair.remainder, value: pc.interaction, className: "bg-chart-cost-other", inside: true as const, source: c.pair.sourceComputed }, { id: "fund", name: c.pair.fundLine, value: n(pc.fund), className: "bg-chart-cost-fund", inside: true as const, source: c.pair.sourceFund }, { id: "tax", name: c.pair.taxLine, value: n(pc.tax), className: "bg-chart-tax", inside: true as const, source: c.pair.sourceTax }];
+  return [...account, { id: "remainder", name: c.pair.remainder, about: c.pair.remainderAbout, value: pc.interaction, className: "bg-chart-cost-other", inside: true as const, source: c.pair.sourceComputed }, { id: "fund", name: c.pair.fundLine, value: n(pc.fund), className: "bg-chart-cost-fund", inside: true as const, source: c.pair.sourceFund }, { id: "tax", name: c.pair.taxLine, value: n(pc.tax), className: "bg-chart-tax", inside: true as const, source: c.pair.sourceTax }];
 }
 /** Whole shekels that add up to `target` (by default the rounded sum; largest remainder): a sentence of parts never disagrees with its total. */
 export function wholeParts(xs: number[], target = Math.round(xs.reduce((a, x) => a + x, 0))): number[] {
@@ -380,7 +380,7 @@ export function AccountColumn({ view, bundle, years, pick, onPick }: { view: Inv
   const snapshot = bundle.snapshots.find((s) => s.id === pick.house);
   const at = fund.byHouse[pick.house];
   const pickRows: PickRow[] = ok.map((r, i) => {
-    const parts: CostPart[] = [...r.at.lines.map((l) => ({ id: l.line, legendId: lineOf(l.line), name: c.pair.lines[lineOf(l.line)] ?? c.pair.lines.other, value: l.cost, className: lineClass[lineOf(l.line)] ?? "bg-chart-cost-other", source: r.p.custom ? c.pair.sourceEntered : c.pair.sourceList(r.p.short) })), { id: "remainder", name: c.pair.remainder, value: r.at.interaction, className: "bg-chart-cost-other", source: c.pair.sourceComputed }];
+    const parts: CostPart[] = [...r.at.lines.map((l) => ({ id: l.line, legendId: lineOf(l.line), name: c.pair.lines[lineOf(l.line)] ?? c.pair.lines.other, value: l.cost, className: lineClass[lineOf(l.line)] ?? "bg-chart-cost-other", source: r.p.custom ? c.pair.sourceEntered : c.pair.sourceList(r.p.short) })), { id: "remainder", name: c.pair.remainder, about: c.pair.remainderAbout, value: r.at.interaction, className: "bg-chart-cost-other", source: c.pair.sourceComputed }];
     const isYours = r.p.id === view.yourBroker;
     // shown on the row whether or not it is picked, so a pick never adds or removes a line (founder, 2026-10-27)
     const isBest = best?.house === r.p.id && best.fund === pick.fund;
