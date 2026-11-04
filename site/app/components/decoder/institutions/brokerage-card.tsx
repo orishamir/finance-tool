@@ -7,7 +7,7 @@ import { Link } from "react-router";
 import type { AdvertisingEntry, FeesSnapshot } from "@finance-tool/schema";
 import { groupPrices as groupWords, invest as investCopy, r4catalogue as copy, guideBlocks } from "../../../copy";
 import { fmt } from "../../../lib/format";
-import { housePath, ownAccountPath } from "../../../lib/invest";
+import { groupPath, housePath, ownAccountPath } from "../../../lib/invest";
 import { IconAlert, IconExternal } from "../../icons";
 import { LeadTail, Num, NumAfter, RuleRef, RulesLine } from "../../provenance";
 import { Card, ClaimList, Disclosure, DocLink, GroupPriceRows, LinkButton, Sentence, Tag, atPdfPage } from "../../kit";
@@ -115,7 +115,7 @@ function Claims({ entries }: { entries: readonly AdvertisingEntry[] }) {
 }
 
 /** Group prices and offers, beside the comparison and never in it (D43): the sub-rows with where each stands, or why there are none. */
-function Groups({ groups, houseId }: { groups: FeesSnapshot["groups"] | null; houseId: string }) {
+function Groups({ groups, houseId, linked }: { groups: FeesSnapshot["groups"] | null; houseId: string; linked: readonly string[] }) {
   if (!groups) return null;
   return (
     <section className="flex flex-col gap-1.5">
@@ -123,7 +123,7 @@ function Groups({ groups, houseId }: { groups: FeesSnapshot["groups"] | null; ho
       {groups.state === "prices" ? (
         <>
           <p className="text-sm text-muted-foreground max-w-measure">{copy.card.groupsLead}</p>
-          <GroupPriceRows entries={groups.entries} sources own={(key) => <Link to={ownAccountPath(houseId, key)} className="text-link hover:underline inline-flex items-center min-h-target text-sm">{groupWords.ownAccount}</Link>} />
+          <GroupPriceRows entries={groups.entries} sources own={{ can: (key) => linked.includes(key), link: (key) => <Link to={groupPath(houseId, key)} className="text-link hover:underline inline-flex items-center min-h-target text-sm">{groupWords.ownAccount}</Link> }} />
         </>
       ) : (
         <p className="text-sm text-muted-foreground max-w-measure">{groupWords.states[groups.state]}</p>
@@ -132,7 +132,7 @@ function Groups({ groups, houseId }: { groups: FeesSnapshot["groups"] | null; ho
   );
 }
 
-export function BrokerageGroupCard({ id, tariff, kind, className, advertising = [], groups = null }: { id: string; tariff: TariffCardData | null; kind: InstitutionKind; className?: string; /** What its advertising says against its documents (D57). */ advertising?: readonly AdvertisingEntry[]; /** Its group prices and offers (D43). */ groups?: FeesSnapshot["groups"] | null }) {
+export function BrokerageGroupCard({ id, tariff, kind, className, advertising = [], groups = null, linked = [] }: { id: string; tariff: TariffCardData | null; kind: InstitutionKind; className?: string; /** What its advertising says against its documents (D57). */ advertising?: readonly AdvertisingEntry[]; /** Its group prices and offers (D43). */ groups?: FeesSnapshot["groups"] | null; /** The groups the index page offers as radios (`group:<n>`): each links there with it picked, the others have no link (D43 amended (5)). */ linked?: readonly string[] }) {
   const h = useId();
   const compareHref = housePath(id);
   if (!tariff || tariff.missing) {
@@ -221,7 +221,7 @@ export function BrokerageGroupCard({ id, tariff, kind, className, advertising = 
         </section>
         <CanBuy rows={tariff.availability} />
         <Claims entries={advertising} />
-        <Groups groups={groups} houseId={id} />
+        <Groups groups={groups} houseId={id} linked={linked} />
         <Sentence size="sm">
           {tariff.minimum ? (
             <>

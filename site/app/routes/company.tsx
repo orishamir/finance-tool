@@ -28,12 +28,14 @@ const classificationOrder = ["קופת גמל להשקעה", "קרנות השת�
 
 /**
  * What a house's page says beside its prices (D57 amended 2026-11-04): its advertising against its binding documents and its group
- * prices. Read here, for the page alone: the site's calculations never read them (site/app/lib stays blind to both).
+ * prices. Read here, for the page alone: the site's calculations never read them (site/app/lib stays blind to both). The groups the index
+ * page offers as radios are named here too, so each links to that page with it picked (D43 amended (5)).
  */
 async function houseNotes(id: string) {
   const { latestSnapshots } = await import("../lib/institutions.server");
+  const { pickableOnEitherSide } = await import("../lib/group-pick");
   const snap = latestSnapshots().find((s) => s.id === id);
-  return { advertising: snap?.advertising ?? [], groups: snap?.groups ?? null };
+  return { advertising: snap?.advertising ?? [], groups: snap?.groups ?? null, linked: [...pickableOnEitherSide(snap)] };
 }
 
 export async function loader({ params }: Route.LoaderArgs) {
@@ -149,7 +151,7 @@ function ManagerCompany({ data }: { data: CompanyData }) {
         </div>
       ),
     })),
-    ...(data.brokerage ? [{ id: "brokerage", name: r4catalogue.groups.brokerage, content: <BrokerageGroupCard id={data.brokerage.id} tariff={data.brokerage.tariff} kind={data.brokerage.kind} advertising={data.brokerage.advertising} groups={data.brokerage.groups} /> }] : []),
+    ...(data.brokerage ? [{ id: "brokerage", name: r4catalogue.groups.brokerage, content: <BrokerageGroupCard id={data.brokerage.id} tariff={data.brokerage.tariff} kind={data.brokerage.kind} advertising={data.brokerage.advertising} groups={data.brokerage.groups} linked={data.brokerage.linked} /> }] : []),
   ]
     .map((e, i) => ({ e, i, rank: extraOrder.indexOf(e.id) === -1 ? extraOrder.length : extraOrder.indexOf(e.id) }))
     .sort((a, b) => a.rank - b.rank || a.i - b.i)

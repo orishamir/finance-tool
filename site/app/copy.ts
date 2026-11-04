@@ -2211,7 +2211,7 @@ export const groupPrices = {
   fees: { trade: "קנייה ומכירה", custody: "דמי הניהול", trade_israel: "קנייה ומכירה בארץ", trade_abroad: "קנייה ומכירה בחוץ לארץ", custody_israel: "דמי הניהול בארץ", custody_abroad: "דמי הניהול בחוץ לארץ" } as Record<string, string>,
   noFundNote: "כשהמסמך לא מזכיר קרנות, לא ידוע אם המחיר חל גם על קרן מחקה או על קרן סל.",
   /** The link on a sub-row that opens the account panel with this group's prices in the person's column (2026-11-04). */
-  ownAccount: "חשבון במחירים האלה",
+  ownAccount: "לחשבון במחיר הזה בהשקעה במדד",
   /** The held account of a house's group picked on the index page (2026-11-04): its name wherever the pair names it. */
   pickedName: (house: string, group: string) => `${house}, ל${group}`,
   /** The radio on a sub-row the person can pick: what picking it does, for a screen reader. */

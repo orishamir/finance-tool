@@ -34,6 +34,11 @@ export function pickableGroups(snapshot: FeesSnapshot | undefined, option: Optio
   return new Set(startingPointsOf(snapshot).filter((p) => p.kind !== "list" && canPick(p, option)).map((p) => p.key));
 }
 
+/** The groups of a house the person can pick for some fund, on either side (a house's own page links each to the index page). */
+export function pickableOnEitherSide(snapshot: FeesSnapshot | undefined): Set<string> {
+  return new Set([...pickableGroups(snapshot, "il-etf"), ...pickableGroups(snapshot, "abroad")]);
+}
+
 /** The id of the held account for a house's group: a custom broker's prefix, so the pricing treats it as an account built on the house. */
 export const groupBrokerId = (house: string, key: string) => `custom-broker-group-${house}-${key.replace(":", "-")}`;
 

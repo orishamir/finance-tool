@@ -196,7 +196,12 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
     if (!view || (!houseParam && !fundParam)) return null;
     if (houseParam && fundParam) return validPick({ house: houseParam, fund: fundParam }) ? { house: houseParam, fund: fundParam } : null;
     if (houseParam) {
-      const best = view.houses.find((h) => h.provider.id === houseParam)?.best;
+      // a group sent from the house's page opens on the house's cheapest fund for which that group is offered (the side it trades on)
+      const row = view.houses.find((h) => h.provider.id === houseParam);
+      const snap = groupParam ? wb.snapshots.find((x) => x.id === houseParam) : undefined;
+      const forGroup = snap && row?.entries.find((e) => e.price && pickableGroups(snap, e.fund.option).has(groupParam!) && validPick({ house: houseParam, fund: e.fund.rec.id }));
+      if (forGroup) return { house: houseParam, fund: forGroup.fund.rec.id };
+      const best = row?.best;
       return best && validPick({ house: houseParam, fund: best.fund.rec.id }) ? { house: houseParam, fund: best.fund.rec.id } : null;
     }
     const best = allFunds(view).find((f) => f.rec.id === fundParam)?.best;

@@ -2,7 +2,7 @@
 // in one place; not in the menu, not in the search, noindex. Every number on it is a labelled example.
 import { useState, type ReactNode } from "react";
 import { Link } from "react-router";
-import { brands, kit as copy, trackBrowser } from "../../copy";
+import { brands, groupPrices as groupWordsDemo, kit as copy, trackBrowser } from "../../copy";
 import type { SiteValue } from "../../lib/value";
 import { computed, entered } from "../../lib/value";
 import { CalendarCheck, CalendarDays, Lock, Zap } from "lucide-react";
@@ -985,8 +985,8 @@ function Lists({ today }: { today: string }) {
         <State label="under a house's row: closed by default; a tap opens one sub-row per price, two groups with the same price on one sub-row, and the link to the house's page" wide>
           <GroupPriceFold entries={sampleGroups()} house={g.sample.groups.house} href="/kit" />
         </State>
-        <State label="on the house's own page: the same rows, each group's name under its short words and a line of where the words stand" wide>
-          <GroupPriceRows entries={sampleGroups()} sources />
+        <State label="on the house's own page: the same rows, each group's name under its short words, a line of where the words stand, and a link under a group the index page offers as a radio (to that page with it picked)" wide>
+          <GroupPriceRows entries={sampleGroups()} sources own={{ can: (k) => k === "group:0", link: () => <a href="/kit" className="text-link hover:underline inline-flex items-center min-h-target text-sm">{groupWordsDemo.ownAccount}</a> }} />
         </State>
         <State label="on the index page (2026-11-04): a radio before each group the person can pick (its price names funds and ends after a printed number of months), the picked one checked, and a line on why the others have none" wide>
           <GroupChoiceDemo />

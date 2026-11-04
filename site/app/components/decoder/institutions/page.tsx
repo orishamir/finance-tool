@@ -46,13 +46,13 @@ function CopyLine({ text }: { text: string }) {
   );
 }
 
-export function InstitutionPage({ data, notes }: { data: InstitutionPageData; /** What the page says beside the prices: advertising against the documents, group prices (D57 amended). */ notes?: { advertising: readonly AdvertisingEntry[]; groups: FeesSnapshot["groups"] | null } }) {
+export function InstitutionPage({ data, notes }: { data: InstitutionPageData; /** What the page says beside the prices: advertising against the documents, group prices (D57 amended). */ notes?: { advertising: readonly AdvertisingEntry[]; groups: FeesSnapshot["groups"] | null; linked: readonly string[] } }) {
   const known = new Set(Object.keys(data.rules));
   const isBank = data.kind === "bank";
   const tariff = data.tariff;
   const notCollected = `${copy.depositsNotCollected.before}${data.name}${copy.depositsNotCollected.after}`;
   const wrapperName = (id: string) => data.groups.find((g) => g.wrapperId === id)?.wrapperName ?? "";
-  const brokerage = <BrokerageGroupCard id={data.id} tariff={tariff} kind={data.kind} advertising={notes?.advertising} groups={notes?.groups} />;
+  const brokerage = <BrokerageGroupCard id={data.id} tariff={tariff} kind={data.kind} advertising={notes?.advertising} groups={notes?.groups} linked={notes?.linked} />;
   // "?product=brokerage" (a link from the indices page) opens the securities account and brings it into view, once the page is in
   // the browser, as the company pages read their product (D57 amended 2026-11-04)
   const [search] = useSearchParams();
