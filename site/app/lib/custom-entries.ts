@@ -108,7 +108,11 @@ function baseFrom(raw: unknown): BrokerBase | null | undefined {
     if (!isObj(g) || typeof g.name !== "string" || !g.name.trim() || !GROUP_KINDS.includes(g.kind as never) || typeof g.snapshot !== "string" || !DATE.test(g.snapshot) || !Array.isArray(g.prices) || g.prices.length === 0) return undefined;
     const prices = g.prices.map((p) => groupPrice.safeParse(p));
     if (prices.some((p) => !p.success)) return undefined;
-    group = { name: g.name, kind: g.kind as GroupCopy["kind"], snapshot: g.snapshot, prices: prices.map((p) => (p as { data: GroupCopy["prices"][number] }).data) };
+    const kept = prices.map((p) => (p as { data: GroupCopy["prices"][number] }).data);
+    // the fees whose price the person chose to use (own-account.ts, `GroupCopy.adopted`): only fees of the group's own prices count; an older entry has none
+    const wanted = Array.isArray(g.adopted) ? (g.adopted as unknown[]) : [];
+    const adopted = kept.map((p) => p.fee).filter((f, i, all) => wanted.includes(f) && all.indexOf(f) === i);
+    group = { name: g.name, kind: g.kind as GroupCopy["kind"], snapshot: g.snapshot, prices: kept, ...(adopted.length ? { adopted } : {}) };
   }
   return { houseId: raw.houseId, houseName: raw.houseName, group };
 }

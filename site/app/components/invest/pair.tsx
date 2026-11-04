@@ -6,7 +6,7 @@
 import { mayaFundHref } from "../../lib/sources";
 import { useMemo, useState, type ReactNode } from "react";
 import type { FeeLine } from "@finance-tool/engine";
-import { brands, invest as c } from "../../copy";
+import { brands, groupPrices, invest as c } from "../../copy";
 import { isCustomFund } from "../../lib/custom-entries";
 import { brokeragePagePath, doubtOf, gapOf, inputMap, hasKinds, kindOf, opensOn, pairCosts, pairValue, type FundWay, type InvestView, type Kind, type PairCosts, type Reason, type WayPrice } from "../../lib/invest";
 import type { WorkbenchBundle, WorkbenchInputs } from "../../lib/providers";
@@ -20,6 +20,7 @@ import { optionClass, OptionTag, reasonText } from "./parts";
 import { ProviderLink, providerName } from "./sections";
 import { Fees } from "./funds";
 import { AddEntryButton, BrokerTerms, FundTerms } from "./custom-entries";
+import { OwnAccountButton } from "./own-account";
 import { StateTag } from "../provenance";
 
 export interface Pick {
@@ -105,12 +106,11 @@ export const isoPct = (x: number, digits = 0) => `\u2066${signedPct(x, digits)}\
 
 // ---------------------------------------------------------------- the result
 
-function partsOf(pc: PairCosts): CostPart[] {
+function partsOf(pc: PairCosts, from: string): CostPart[] {
   const n = (v: SiteValue) => (typeof v.value === "number" ? v.value : 0);
-  const whole = (x: number) => Math.round(x).toLocaleString("he-IL");
-  const account = pc.account.map((l) => ({ id: l.line, legendId: lineOf(l.line), name: c.pair.lines[lineOf(l.line)] ?? c.pair.lines.other, value: n(l.cost), className: lineClass[lineOf(l.line)] ?? "bg-chart-cost-other", inside: whole(n(l.cost)) }));
+  const account = pc.account.map((l) => ({ id: l.line, legendId: lineOf(l.line), name: c.pair.lines[lineOf(l.line)] ?? c.pair.lines.other, value: n(l.cost), className: lineClass[lineOf(l.line)] ?? "bg-chart-cost-other", inside: true as const, source: from }));
   // the account's remainder no single line explains is part of what it takes, so the bar holds the whole cost (F-91)
-  return [...account, { id: "remainder", name: c.pair.remainder, value: pc.interaction, className: "bg-chart-cost-other", inside: whole(pc.interaction) }, { id: "fund", name: c.pair.fundLine, value: n(pc.fund), className: "bg-chart-cost-fund", inside: whole(n(pc.fund)) }, { id: "tax", name: c.pair.taxLine, value: n(pc.tax), className: "bg-chart-tax", inside: whole(n(pc.tax)) }];
+  return [...account, { id: "remainder", name: c.pair.remainder, value: pc.interaction, className: "bg-chart-cost-other", inside: true as const, source: c.pair.sourceComputed }, { id: "fund", name: c.pair.fundLine, value: n(pc.fund), className: "bg-chart-cost-fund", inside: true as const, source: c.pair.sourceFund }, { id: "tax", name: c.pair.taxLine, value: n(pc.tax), className: "bg-chart-tax", inside: true as const, source: c.pair.sourceTax }];
 }
 /** Whole shekels that add up to `target` (by default the rounded sum; largest remainder): a sentence of parts never disagrees with its total. */
 export function wholeParts(xs: number[], target = Math.round(xs.reduce((a, x) => a + x, 0))): number[] {
@@ -142,7 +142,7 @@ function CostLegend({ lines, pick }: { lines: string[]; pick: ChartPick<string> 
 }
 
 function CostBar({ who, sub, pc, scale, you, entered, today, highlight }: { who: string; sub: string; pc: PairCosts; scale: number; highlight: string | null; you?: boolean; /** The person typed this account (D44). */ entered?: boolean; today: string }) {
-  const parts = partsOf(pc);
+  const parts = partsOf(pc, entered ? c.pair.sourceEntered : c.pair.sourceList(who));
   // shown as the rounded base less the rounded value left: two bars then differ by exactly what the two "left" figures differ by
   const total = Math.round(pc.base) - Math.round(pc.left.value as number);
   return (
@@ -195,8 +195,8 @@ export function PairResult({ view, bundle, plan, settled, pick, onPick }: { view
   // a gap names its two inputs by whose they are, as the figure's sheet lists them
   const gap = (a: SiteValue, aName: string, b: SiteValue, bName: string, about: string) => nis((a.value as number) - (b.value as number), "F-65", about, bundle.today, { [aName]: a, [bName]: b });
   const otherRole = onBest ? c.pair.next : c.pair.cheapest;
-  const parts = partsOf(pc);
-  const scale = Math.max(totalOf(parts), pcOther ? totalOf(partsOf(pcOther)) : 0);
+  const parts = partsOf(pc, "");
+  const scale = Math.max(totalOf(parts), pcOther ? totalOf(partsOf(pcOther, "")) : 0);
   const sumAccount = (x: PairCosts) => x.account.reduce((a, l) => a + (l.cost.value as number), 0) + x.interaction;
   // the three parts of the gap, rounded so they add up to the gap between the two shown values left (F-91: the costs add up to it exactly)
   const shownLeft = (x: PairCosts) => Math.round(x.left.value as number);
@@ -311,7 +311,7 @@ function barScale(costs: number[]): number {
 function GroupLine({ id, house, snapshots, open, onOpen }: { id: string; house: string; snapshots: WorkbenchBundle["snapshots"]; open: boolean; onOpen: (id: string, open: boolean) => void }) {
   const g = snapshots.find((s) => s.id === id)?.groups;
   if (!g || g.state !== "prices") return null;
-  return <GroupPriceFold className="col-start-2 col-end-[-1]" entries={g.entries} house={house} href={brokeragePagePath(id)} open={open} onOpenChange={(o) => onOpen(id, o)} />;
+  return <GroupPriceFold className="col-start-2 col-end-[-1]" entries={g.entries} house={house} href={brokeragePagePath(id)} open={open} onOpenChange={(o) => onOpen(id, o)} own={(key) => <OwnAccountButton houseId={id} house={house} from={key}>{groupPrices.ownAccount}</OwnAccountButton>} />;
 }
 
 /** What the account card says of its house, under its name: what it charges, its labels and its price list. */
@@ -373,7 +373,7 @@ export function AccountColumn({ view, bundle, years, pick, onPick }: { view: Inv
   const snapshot = bundle.snapshots.find((s) => s.id === pick.house);
   const at = fund.byHouse[pick.house];
   const pickRows: PickRow[] = ok.map((r, i) => {
-    const parts: CostPart[] = [...r.at.lines.map((l) => ({ id: l.line, legendId: lineOf(l.line), name: c.pair.lines[lineOf(l.line)] ?? c.pair.lines.other, value: l.cost, className: lineClass[lineOf(l.line)] ?? "bg-chart-cost-other" })), { id: "remainder", name: c.pair.remainder, value: r.at.interaction, className: "bg-chart-cost-other" }];
+    const parts: CostPart[] = [...r.at.lines.map((l) => ({ id: l.line, legendId: lineOf(l.line), name: c.pair.lines[lineOf(l.line)] ?? c.pair.lines.other, value: l.cost, className: lineClass[lineOf(l.line)] ?? "bg-chart-cost-other", source: r.p.custom ? c.pair.sourceEntered : c.pair.sourceList(r.p.short) })), { id: "remainder", name: c.pair.remainder, value: r.at.interaction, className: "bg-chart-cost-other", source: c.pair.sourceComputed }];
     const isYours = r.p.id === view.yourBroker;
     // shown on the row whether or not it is picked, so a pick never adds or removes a line (founder, 2026-10-27)
     const isBest = best?.house === r.p.id && best.fund === pick.fund;
@@ -403,6 +403,7 @@ export function AccountColumn({ view, bundle, years, pick, onPick }: { view: Inv
             <Num animate value={r.at.value} />
           </span>
           <GroupLine id={r.p.id} house={r.p.short} snapshots={bundle.snapshots} open={openGroups.includes(r.p.id)} onOpen={onGroup} />
+          {!r.p.custom && <span className="col-start-2 col-end-[-1] flex"><OwnAccountButton houseId={r.p.id} house={r.p.short} /></span>}
           {r.p.custom && <span className="col-start-2 col-end-[-1]"><BrokerTerms id={r.p.id} /></span>}
         </>
       ),

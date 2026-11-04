@@ -21,6 +21,11 @@ export interface GroupCopy {
   snapshot: string;
   /** Every price of the entry, with its words and source; the ones with a `value` are the ones the row prices. */
   prices: GroupPrice[];
+  /**
+   * The fees whose price the person chose to use although its words do not name fund units (the panel's "use this price"). An adopted price is
+   * read like one that names funds: it keeps its own end (`for_months`) and the person's stay in the group. Absent: none.
+   */
+  adopted?: GroupFee[];
 }
 
 /** The house an account is built on, by its provider id (so a newer price list is followed), and the group it started from, if any. */
@@ -122,7 +127,7 @@ export function groupInputs(b: Pick<CustomBroker, "base">): Record<string, SiteV
   const g = b.base?.group;
   if (!b.base || !g) return {};
   const out: Record<string, SiteValue> = {};
-  for (const { price } of Object.values(groupValues(g))) for (const part of price.names_fund ? PARTS : []) {
+  for (const { price } of Object.values(groupValues(g))) for (const part of price.names_fund || g.adopted?.includes(price.fee) ? PARTS : []) {
     const fig = groupFigure(g, b.base.houseName, price, part);
     if (fig) out[`${g.name}: ${price.fee} ${part}`] = fig;
   }
@@ -212,16 +217,17 @@ interface Part {
 
 /**
  * The group's prices the run reads on this kind of holding. A price is read only if its own words name fund units (`names_fund`, D42 and "no price
- * from analogy": a price for shares and bonds is not a price for a fund); the panel shows the others' words beside the list price, and the person
- * may adopt one as their own value (`adoptGroupPrice`). A house whose price list has no line for the kind of holding has none for a group's price
+ * from analogy": a price for shares and bonds is not a price for a fund) or the person adopted it (`GroupCopy.adopted`); the panel shows the others'
+ * words beside the list price, with a way to use one. A house whose price list has no line for the kind of holding has none for a group's price
  * to replace. Each price ends at its own `for_months`, and the person's stay in the group (`stayMonths`) ends them all no later.
  */
 export function partsOf(g: GroupCopy | null | undefined, list: SecuritiesTariff, run: LayeredRun, stayMonths: number | null): Part[] {
   const values = groupValues(g);
   const side = run.instrumentClass === "foreign_securities" ? "abroad" : "israel";
   const out: Part[] = [];
+  const adopted = g?.adopted ?? [];
   const add = (fee: Part["fee"], at: (typeof values)[GroupFee]) => {
-    if (!at || !at.price.names_fund) return;
+    if (!at || !(at.price.names_fund || adopted.includes(at.price.fee))) return;
     out.push({ fee, value: at.value, side: at.value.side, end: Math.min(at.value.for_months ?? Infinity, stayMonths ?? Infinity) });
   };
   if (list.buy || list.sell) add("trade", values[`trade_${side}`]);
@@ -238,7 +244,7 @@ export function applyParts(list: SecuritiesTariff, parts: readonly Part[], run: 
       if (part.side !== "sell") out.buy = groupTrade(list.buy, part.value, run);
       if (part.side !== "buy") out.sell = groupTrade(list.sell, part.value, run);
       // the list's standing-order line stays; a monthly purchase pays the lower of it and the group's regular price
-      if (part.side !== "sell" && list.buyStanding) out.cheaperOfStanding = true;
+      if (part.side !== "sell" && list.buyStanding) out.cheaperOfStandingTrade = true;
     } else {
       const c = groupCustody(list.custody, part.value, run);
       if (c) out.custody = c;
@@ -280,7 +286,7 @@ export function applyOwn(base: SecuritiesTariff, own: Own, list: SecuritiesTarif
     };
     out.buy = line(base.buy);
     out.sell = line(base.sell);
-    if (base.buyStanding) out.cheaperOfStanding = true;
+    if (base.buyStanding) out.cheaperOfStandingTrade = true;
   }
   const cPct = num(own.custodyPct);
   const cMin = num(own.custodyMin);
@@ -299,7 +305,7 @@ export function applyOwn(base: SecuritiesTariff, own: Own, list: SecuritiesTarif
   const fx = num(own.fxPct);
   if (fx !== null) {
     out.fx = typeof base.fx === "object" ? { ...without(base.fx, "perCurrencyUnit"), rate: fx / 100 } : fx / 100;
-    if (base.fxStanding !== undefined) out.cheaperOfStanding = true;
+    if (base.fxStanding !== undefined) out.cheaperOfStandingFx = true;
   }
   const monthly = num(own.monthlyFee);
   if (monthly !== null) out.monthlyFee = monthly;
@@ -308,47 +314,13 @@ export function applyOwn(base: SecuritiesTariff, own: Own, list: SecuritiesTarif
 
 // ---------------------------------------------------------------- adopting a price the group's words do not give for a fund
 
-/** The numbers of the person's own fields a group price comes to; a field the price does not touch is absent (as the base). */
-export interface AdoptedValues {
-  tradePct?: number;
-  tradeMin?: number;
-  custodyPct?: number;
-  custodyMin?: number;
-}
-
-/**
- * What adopting a group's price as the person's own value sets: the price laid over the house's list tariff, read back as the fields the person
- * can type (a percent of each trade and a minimum; a percent a year and a minimum a month). Null where the price cannot be written in those
- * fields: a price per share, a flat price up to a sum, a bound the price states beyond the list's own. The panel shows a group price that does
- * not name fund units beside the list price with a one-tap "use this price", which sets these fields (entered, blue); the price is then the
- * person's own for the whole plan.
- */
-export function adoptGroupPrice(list: SecuritiesTariff, price: GroupPrice, run: LayeredRun): AdoptedValues | null {
-  const v = price.value;
-  if (!v) return null;
-  try {
-    if (price.fee.startsWith("trade")) {
-      const line = list.buy ?? list.sell;
-      const c = groupTrade(line, v, run);
-      if (c.perShare || c.perCurrencyUnit || c.perShareAbove) return null;
-      if (c.flatUpTo) return Number.isFinite(c.flatUpTo.upTo) ? null : { tradePct: 0, tradeMin: c.flatUpTo.amount };
-      if (v.exempt) return { tradePct: 0, tradeMin: 0 };
-      if (c.max !== undefined && c.max !== line?.max) return null;
-      return { tradePct: c.rate * 100, ...(v.min !== undefined && c.min !== undefined ? { tradeMin: c.min } : {}) };
-    }
-    const c = groupCustody(list.custody, v, run);
-    if (!c) return null;
-    if (v.max !== undefined) {
-      // the person's own fields hold no maximum: the list's stays, so a maximum the price states must be the list's own
-      const listMax = list.custody?.max === undefined ? undefined : (list.custody.max / list.custody.everyMonths) * c.everyMonths;
-      if (listMax === undefined || c.max === undefined || Math.abs(c.max - listMax) > 1e-9) return null;
-    }
-    if (v.exempt) return { custodyPct: 0, custodyMin: 0 };
-    return { custodyPct: (c.rate * 100 * 12) / c.everyMonths, ...(v.min !== undefined && c.min !== undefined ? { custodyMin: c.min / c.everyMonths } : {}) };
-  } catch (e) {
-    if (e instanceof Unusable) return null;
-    throw e;
-  }
+/** The group with the price of one fee used (or not) although its words do not name fund units: the person's choice, kept on the account. */
+export function withAdopted(g: GroupCopy, fee: GroupFee, on: boolean): GroupCopy {
+  const rest = (g.adopted ?? []).filter((f) => f !== fee);
+  const adopted = on ? [...rest, fee] : rest;
+  const { adopted: _drop, ...bare } = g;
+  void _drop;
+  return adopted.length ? { ...bare, adopted } : bare;
 }
 
 // ---------------------------------------------------------------- the sequence of tariffs
@@ -364,7 +336,8 @@ function enteredOf(t: SecuritiesTariff): Omit<EnteredTariff, "until"> {
   if (t.fx !== undefined) out.fx = t.fx;
   if (t.fxStanding !== undefined) out.fxStanding = t.fxStanding;
   if (t.monthlyFee !== undefined) out.monthlyFee = t.monthlyFee;
-  if (t.cheaperOfStanding) out.cheaperOfStanding = true;
+  if (t.cheaperOfStandingTrade) out.cheaperOfStandingTrade = true;
+  if (t.cheaperOfStandingFx) out.cheaperOfStandingFx = true;
   return out;
 }
 

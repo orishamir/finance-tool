@@ -52,8 +52,14 @@ const EXPECTED = {
   lower_small_orders: { trade: 9, custody: 0, fixed: 0, left: 2991 },
   lower_large_orders: { trade: 59.94005994005889, custody: 0, fixed: 0, left: 29940.05994005994 },
   replacing_large_orders: { trade: 89.82035928143586, custody: 0, fixed: 0, left: 29910.179640718565 },
+  conv_only_fx: { trade: 11.970059880239205, custody: 0, fixed: 0, fx: 5.99251497005988, left: 5982.0374251497005 },
+  conv_only_trade: { trade: 11.964071856287319, custody: 0, fixed: 0, fx: 65.82035928143713, left: 5922.215568862276 },
+  conv_both: { trade: 2.9955022488757095, custody: 0, fixed: 0, fx: 11.991004497751124, left: 5985.013493253373 },
+  conv_neither: { trade: 11.964071856287319, custody: 0, fixed: 0, fx: 65.82035928143713, left: 5922.215568862276 },
+  conv_periods: { trade: 12.952586580961224, custody: 0, fixed: 0, fx: 34.93609482683807, left: 7952.1113185922 },
 };
-const expectRun = (r: ReturnType<typeof run>, e: { trade: number; custody: number; fixed: number; left: number }) => {
+const expectRun = (r: ReturnType<typeof run>, e: { trade: number; custody: number; fixed: number; left: number; fx?: number }) => {
+  if (e.fx !== undefined) expect(r.fees.fx).toBeCloseTo(e.fx, 6);
   expect(r.fees.trade).toBeCloseTo(e.trade, 6);
   expect(r.fees.custody).toBeCloseTo(e.custody, 6);
   expect(r.fees.fixed).toBeCloseTo(e.fixed, 6);
@@ -100,8 +106,8 @@ describe("a price for a time in the securities ledger (F-101)", () => {
   });
   it("where a regular price sits over a standing-order price, a monthly purchase pays the lower of the two, order by order", () => {
     const goal = (monthly: number) => ({ amountNow: 0, monthly, months: 6 });
-    const lower = { buy: { rate: 0.001, min: 3 }, buyStanding: { rate: 0.002, min: 1 }, sell: { rate: 0.001, min: 3 }, cheaperOfStanding: true };
-    const { cheaperOfStanding: _, ...replacing } = lower;
+    const lower = { buy: { rate: 0.001, min: 3 }, buyStanding: { rate: 0.002, min: 1 }, sell: { rate: 0.001, min: 3 }, cheaperOfStandingTrade: true };
+    const { cheaperOfStandingTrade: _, ...replacing } = lower;
     // 500 a month: the standing price (1.00) is the lower; 5,000 a month: the regular one (5.00 against 10.00)
     expectRun(run(lower, goal(500)), EXPECTED.lower_small_orders);
     expectRun(run(lower, goal(5000)), EXPECTED.lower_large_orders);
@@ -109,15 +115,44 @@ describe("a price for a time in the securities ledger (F-101)", () => {
     expectRun(run(replacing, goal(5000)), EXPECTED.replacing_large_orders);
     // the flag with no standing-order line changes nothing
     const noStanding = { buy: lower.buy, sell: lower.sell };
-    expect(run({ ...noStanding, cheaperOfStanding: true }, goal(500)).nominal).toBe(run(noStanding, goal(500)).nominal);
+    expect(run({ ...noStanding, cheaperOfStandingTrade: true }, goal(500)).nominal).toBe(run(noStanding, goal(500)).nominal);
   });
   it("the conversion of a monthly purchase is the lower of the plan's price and the regular one too", () => {
     // three deposits of 500 at no return; conversion 1% regular and 2% on a plan: with the flag 5 a deposit, without it 10; the exit converts back at 1%
     const base = { fx: 0.01, fxStanding: 0.02, currency: { code: "USD", startRate: 1 } };
     const goal = { amountNow: 0, monthly: 500, months: 3 };
     const fees = (tariff: SecuritiesInput["tariff"]) => run(tariff, goal).fees.fx;
-    expect(fees({ ...base, cheaperOfStanding: true })).toBeCloseTo(15 + 0.01 * 1485, 6);
+    expect(fees({ ...base, cheaperOfStandingFx: true })).toBeCloseTo(15 + 0.01 * 1485, 6);
     expect(fees(base)).toBeCloseTo(30 + 0.01 * 1470, 6);
+  });
+  describe("one flag for each side, and the cheaper whole order (F-101, amended 2026-11-04)", () => {
+    // 1,000 a month for six months at no return, a currency fund; orders cost conversion plus commission, tests/golden/expected_tariff_period.py
+    const ccy = { code: "USD", startRate: 1 };
+    const conv = (buy: number, standing: number, fx: number, fxStanding: number, flags: object = {}): SecuritiesInput["tariff"] => ({
+      buy: { rate: buy }, buyStanding: { rate: standing }, sell: { rate: 0 }, fx, fxStanding, currency: ccy, ...flags,
+    });
+    const six = { amountNow: 0, monthly: 1000, months: 6 };
+    it("(a) a person who types only a conversion price gets the standing commission, not the lower of standing and regular", () => {
+      // commission 2.00 a month (the regular 0.50 is not offered), conversion the lower of the plan's 2.00 and the regular 0.50
+      expectRun(run(conv(0.0005, 0.002, 0.0005, 0.002, { cheaperOfStandingFx: true }), six), EXPECTED.conv_only_fx);
+    });
+    it("(b) a regular commission never combines with the plan's conversion: the cheaper whole order is paid", () => {
+      // trade flag alone: the standing order (1.00 + 2.00) beats the regular order (10.00 + 0.50); the old per-part lower paid 1.00 + 0.50
+      expectRun(run(conv(0.0005, 0.002, 0.01, 0.001, { cheaperOfStandingTrade: true }), six), EXPECTED.conv_only_trade);
+      // both flags: the regular order (1.00 + 0.50) beats the standing one (1.20 + 2.00)
+      expectRun(run(conv(0.0005, 0.002, 0.001, 0.0012, { cheaperOfStandingTrade: true, cheaperOfStandingFx: true }), six), EXPECTED.conv_both);
+    });
+    it("a tariff with neither flag pays the standing-order price on both sides, as before", () => {
+      expectRun(run(conv(0.0005, 0.002, 0.01, 0.001), six), EXPECTED.conv_neither);
+      // the trade flag alone with the standing order the cheaper whole order is the same figures
+      expect(run(conv(0.0005, 0.002, 0.01, 0.001, { cheaperOfStandingTrade: true }), six).nominal).toBeCloseTo(EXPECTED.conv_neither.left, 6);
+    });
+    it("a conversion that changes between periods: each month's order, the lump sum and the sale pay the conversion of their month", () => {
+      const early = conv(0.0005, 0.002, 0.005, 0.001, { cheaperOfStandingFx: true });
+      const late = conv(0.0005, 0.002, 0.002, 0.004, { cheaperOfStandingFx: true });
+      const { currency: _c, ...laterLines } = late;
+      expectRun(run({ ...early, until: { months: 3, then: laterLines } }, { amountNow: 2000, monthly: 1000, months: 6 }), EXPECTED.conv_periods);
+    });
   });
   it("the worked example of the method: 100,000 held a year, the student price for six months, then the list price", () => {
     const student = { custody: { rate: 0.00075, everyMonths: 3 } };

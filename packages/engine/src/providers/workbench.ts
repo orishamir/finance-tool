@@ -31,8 +31,9 @@ export interface EnteredTariff {
   /** F-13: the conversion of a monthly purchase on a recurring plan. */
   fxStanding?: number | Commission;
   monthlyFee?: number;
-  /** F-12, F-13: a monthly purchase pays the lower of the standing-order price and the regular one (see `SecuritiesTariff.cheaperOfStanding`). */
-  cheaperOfStanding?: boolean;
+  /** F-12, F-13: a monthly purchase may be placed the regular way, one flag for each side (see `SecuritiesTariff.cheaperOfStandingTrade`). */
+  cheaperOfStandingTrade?: boolean;
+  cheaperOfStandingFx?: boolean;
   /**
    * F-101 (2026-11-04): a price for a time, as a sequence. These lines apply to the run's months 1 to `months`; `then` is the tariff after
    * them (the provider's own list lines under whatever `then` names), and may carry a period of its own, counted from the start of the run.
@@ -364,7 +365,7 @@ export function buildTariff(input: Omit<WorkbenchInput, "fund"> & { fund?: Workb
     if (entered.sell) out.tariff.sell = entered.sell;
     if (entered.buyStanding) out.tariff.buyStanding = entered.buyStanding;
     if (entered.redeem) out.tariff.redeem = entered.redeem;
-    if (entered.cheaperOfStanding) out.tariff.cheaperOfStanding = true;
+    if (entered.cheaperOfStandingTrade) out.tariff.cheaperOfStandingTrade = true;
   } else {
     const r = resolve("trade");
     if (r) {
@@ -455,6 +456,7 @@ export function buildTariff(input: Omit<WorkbenchInput, "fund"> & { fund?: Workb
     if (entered?.fx !== undefined) {
       out.tariff.fx = entered.fx;
       if (entered.fxStanding !== undefined) out.tariff.fxStanding = entered.fxStanding;
+      if (entered.cheaperOfStandingFx) out.tariff.cheaperOfStandingFx = true;
     } else {
       const r = resolve("fx");
       if (r) {

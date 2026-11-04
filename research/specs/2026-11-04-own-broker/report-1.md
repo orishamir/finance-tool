@@ -95,3 +95,10 @@ Test gaps to close: the golden scripts add conversion by period, a standing-orde
 **Tests added** (15): sequence of three, T and T-1 with monthly custody, refusal cases, the lower-of rule for orders and for conversion, a standing price only in the later tariff (engine); Leumi opening offer for the whole plan, 5 years, 3 years, 6 months; Total Digital not applied, then adopted; adopted over the offer; buy-only; two ends; mid-quarter refusal; rate-shape replacement; adoption (site); side validation (pipeline). Expected figures from `tests/golden/expected_tariff_period.py` and `tests/golden/expected_own_account.py`, which now compute the layering from the written rules (Leumi and Mercantile data lines).
 
 **Not followed**: none. One consequence to know: 82 of the 108 valued group prices name no fund units, so most groups (Top, Deluxe, Leumi's offers, Total Digital) now leave the row at the price list until the person adopts a price; the Mercantile Top test cases were replaced by the student custody line (names funds) and by synthetic groups read as if the words named funds.
+
+## Second finance check (2026-11-04)
+
+Rulings 1, 2, 3, 4 and 6 confirmed as implemented, and the golden scripts independent. Found:
+- **Adopting a price lost its end and the stay cap** (`adoptGroupPrice` copied it into the person's flat values): Leumi's opening offer adopted gave custody exempt for 60 months instead of 12, 2,074.18 ₪ overstated. Sent to the panel builder: adopting records the price on the account (`base.group.adopted`), and `partsOf` treats it as a price that names funds, with its own end.
+- **One `cheaperOfStanding` flag for trade and conversion**, and the lower-of chosen per part: a person typing only a conversion price makes the commission the lower of standing and regular (F-12 forbids), and a regular commission can combine with the plan's conversion price, which no single order offers. To fix after the panel job: one flag per side, and the cheaper whole order (commission and conversion together) chosen per order.
+- Test gap: conversion that changes between periods is in neither golden script.

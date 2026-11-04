@@ -29,6 +29,7 @@ export { CompareTable, ValueBar, type CompareRow } from "./compare-table";
 export { ShareRings, type Ring } from "./rings";
 export { LabelChip, LabelFilter, LabelIcon, LabelRow, LabelSheetHost } from "./label-chip";
 export { CostStack, type CostPart } from "./cost-stack";
+export { PeriodStrip, type PeriodSegment } from "./period-strip";
 export { PickList, holdOnPick, type PickRow } from "./pick-list";
 export { PairBars, type PairBarYear } from "./pair-bars";
 export { YearBars } from "./year-bars";

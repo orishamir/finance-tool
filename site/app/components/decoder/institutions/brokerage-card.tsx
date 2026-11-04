@@ -3,10 +3,11 @@
 // the stale line; minimums, protection, the notice rules, and the link to the provider workbench.
 import { CircleDashed } from "lucide-react";
 import { useId } from "react";
+import { Link } from "react-router";
 import type { AdvertisingEntry, FeesSnapshot } from "@finance-tool/schema";
-import { groupPrices as groupWords, r4catalogue as copy, guideBlocks } from "../../../copy";
+import { groupPrices as groupWords, invest as investCopy, r4catalogue as copy, guideBlocks } from "../../../copy";
 import { fmt } from "../../../lib/format";
-import { housePath } from "../../../lib/invest";
+import { housePath, ownAccountPath } from "../../../lib/invest";
 import { IconAlert, IconExternal } from "../../icons";
 import { LeadTail, Num, NumAfter, RuleRef, RulesLine } from "../../provenance";
 import { Card, ClaimList, Disclosure, DocLink, GroupPriceRows, LinkButton, Sentence, Tag, atPdfPage } from "../../kit";
@@ -114,7 +115,7 @@ function Claims({ entries }: { entries: readonly AdvertisingEntry[] }) {
 }
 
 /** Group prices and offers, beside the comparison and never in it (D43): the sub-rows with where each stands, or why there are none. */
-function Groups({ groups }: { groups: FeesSnapshot["groups"] | null }) {
+function Groups({ groups, houseId }: { groups: FeesSnapshot["groups"] | null; houseId: string }) {
   if (!groups) return null;
   return (
     <section className="flex flex-col gap-1.5">
@@ -122,7 +123,7 @@ function Groups({ groups }: { groups: FeesSnapshot["groups"] | null }) {
       {groups.state === "prices" ? (
         <>
           <p className="text-sm text-muted-foreground max-w-measure">{copy.card.groupsLead}</p>
-          <GroupPriceRows entries={groups.entries} sources />
+          <GroupPriceRows entries={groups.entries} sources own={(key) => <Link to={ownAccountPath(houseId, key)} className="text-link hover:underline inline-flex items-center min-h-target text-sm">{groupWords.ownAccount}</Link>} />
         </>
       ) : (
         <p className="text-sm text-muted-foreground max-w-measure">{groupWords.states[groups.state]}</p>
@@ -220,7 +221,7 @@ export function BrokerageGroupCard({ id, tariff, kind, className, advertising = 
         </section>
         <CanBuy rows={tariff.availability} />
         <Claims entries={advertising} />
-        <Groups groups={groups} />
+        <Groups groups={groups} houseId={id} />
         <Sentence size="sm">
           {tariff.minimum ? (
             <>
@@ -253,9 +254,15 @@ export function BrokerageGroupCard({ id, tariff, kind, className, advertising = 
           )}
         </div>
         {tariff.notice.length > 0 && <RulesLine ids={tariff.notice} lead={<span>{copy.card.notice}</span>} />}
-        <LinkButton to={compareHref} variant="primary" className="self-start">
-          {copy.card.compare}
-        </LinkButton>
+        <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+          <LinkButton to={compareHref} variant="primary" className="self-start">
+            {copy.card.compare}
+          </LinkButton>
+          {/* the index page opens with the panel on this house's price list (2026-11-04) */}
+          <LinkButton to={ownAccountPath(id)} variant="secondary" className="self-start">
+            {investCopy.ownAccount.open(tariff.providerName)}
+          </LinkButton>
+        </div>
       </div>
     </Card>
   );

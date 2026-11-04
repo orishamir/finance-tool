@@ -61,11 +61,13 @@ export type SecuritiesTariff = {
   /** The instrument's currency, for tariff lines set in it: code and NIS per unit at the start. */
   currency?: { code: string; startRate: number };
   /**
-   * F-12, F-13 (2026-11-04, own account): a regular price over the house's standing-order price. When set, a monthly purchase pays, order by
-   * order, the lower of `buyStanding` and `buy` (and of `fxStanding` and `fx`), because the person can place either; unset, `buyStanding`
+   * F-12 (2026-11-04, own account): the group or the person set the regular trade price over the house's standing-order price. A monthly purchase
+   * may then be placed the regular way, and the order pays the cheaper whole order (see `buy` in the securities ledger). Unset, `buyStanding`
    * replaces `buy` for a monthly purchase as always.
    */
-  cheaperOfStanding?: boolean;
+  cheaperOfStandingTrade?: boolean;
+  /** F-13 (2026-11-04, own account): the same for the conversion; set only where the group or the person set the regular conversion price. */
+  cheaperOfStandingFx?: boolean;
 };
 
 /**
@@ -243,23 +245,29 @@ export function runSecurities(input: SecuritiesInput, ctx: RunContext): RunResul
   const sharePrice = (m: number) => (fund.sharePrice ? (fund.sharePrice * nav) / X[m]! : undefined);
   let lots: Lot[] = [];
 
-  /** One order: FX fee on a contribution, then trade value and commission, bought at the ask. */
+  /**
+   * One order: FX fee on a contribution, then trade value and commission, bought at the ask. A monthly purchase (`standing`) is placed the
+   * standing-order way: the standing commission with the standing conversion, where the tariff prints them. Where the group or the person set the
+   * regular price of a side (`cheaperOfStandingTrade`, `cheaperOfStandingFx`), the person can place the order the regular way instead: the regular
+   * commission (a side with no flag keeps its standing commission, F-12) with the regular conversion. The order pays the cheaper whole order
+   * (F-101); a commission of one way never combines with the conversion of the other.
+   */
   const buy = (cash: number, month: number, eventMonth: number, convert: boolean, standing = false) => {
     const at = tariffAt(month);
-    const price = standing ? (at.buyStanding ?? at.buy) : at.buy;
-    const conversion = standing ? (at.fxStanding ?? at.fx) : at.fx;
     const terms = { fxRate: fxRate(eventMonth) };
-    let fx = convert && tariff.currency ? fxFee(conversion, cash, terms) : 0;
-    // F-12, F-13: where a regular price sits over the house's standing-order price, the order pays the lower of the two, as the person can place either
-    const lower = standing && at.cheaperOfStanding;
-    if (lower && convert && tariff.currency && at.fxStanding !== undefined) fx = Math.min(fx, fxFee(at.fx, cash, terms));
-    tally.fee("fx", fx);
-    let sized = buyWithCash(cash - fx, price, { ...terms, sharePrice: sharePrice(month) });
-    if (lower && at.buyStanding && at.buy) {
-      const regular = buyWithCash(cash - fx, at.buy, { ...terms, sharePrice: sharePrice(month) });
-      if (regular.commission < sized.commission) sized = regular;
+    const order = (line: Commission | undefined, conversion: SecuritiesTariff["fx"]) => {
+      const fx = convert && tariff.currency ? fxFee(conversion, cash, terms) : 0;
+      const sized = buyWithCash(cash - fx, line, { ...terms, sharePrice: sharePrice(month) });
+      return { fx, sized, cost: fx + sized.commission };
+    };
+    const standingLine = standing ? (at.buyStanding ?? at.buy) : at.buy;
+    let chosen = order(standingLine, standing ? (at.fxStanding ?? at.fx) : at.fx);
+    if (standing && (at.cheaperOfStandingTrade || at.cheaperOfStandingFx)) {
+      const regular = order(at.cheaperOfStandingTrade && at.buy ? at.buy : standingLine, at.fx);
+      if (regular.cost < chosen.cost) chosen = regular;
     }
-    const { trade, commission } = sized;
+    tally.fee("fx", chosen.fx);
+    const { trade, commission } = chosen.sized;
     tally.fee("trade", commission);
     const value = navBought(trade, spread);
     tally.fee("spread", trade - value);

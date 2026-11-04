@@ -5,7 +5,7 @@ import { buildTariff, providerWorkbench, type ComparedProvider, type SecuritiesI
 import { beforeEach, describe, expect, it } from "vitest";
 import { brokerDraftOf, brokerFromDraft, tariffOfBroker, validCustomBrokers, withCustomEntries, type CustomBroker } from "./custom-entries";
 import { buildInvest, listReading, indexById } from "./invest";
-import { adoptGroupPrice, baseOf, groupValues, layeredOf, layeredTariff, priceEndsOf, startingPointsOf, type GroupCopy } from "./own-account";
+import { baseOf, groupValues, layeredOf, layeredTariff, priceEndsOf, startingPointsOf, withAdopted, type GroupCopy } from "./own-account";
 import { FEE_TYPES, layersOf, ownAccountResult, withoutGroupLine } from "./own-account-view";
 import { buildWorkbenchBundle } from "./providers.server";
 import { ruleContext, type WorkbenchInputs } from "./providers";
@@ -273,14 +273,15 @@ describe("the tariff built in layers (F-101)", () => {
   it("a group or typed regular price leaves the list's standing-order line in place; a monthly purchase pays the lower of the two", () => {
     const got = unwrap(layeredTariff(accountAtLeumi(named(OFFER.group!)), leumiList, leumiReading.run));
     expect(got.buyStanding).toEqual(EXPECTED.layers.leumi_standing);
-    expect(got.cheaperOfStanding).toBe(true);
+    expect(got.cheaperOfStandingTrade).toBe(true);
     const typed = unwrap(layeredTariff(accountAtLeumi({ group: null }, { tradePct: 0.4 }), leumiList, leumiReading.run));
     expect(typed.buyStanding).toEqual(EXPECTED.layers.leumi_standing);
-    expect(typed.cheaperOfStanding).toBe(true);
+    expect(typed.cheaperOfStandingTrade).toBe(true);
     expect(typed.buy).toMatchObject(EXPECTED.layers.leumi_buy);
     // a custody price alone leaves the trade lines as the list's, with no flag: the standing-order price replaces the regular one as it does for the house
     const custodyOnly = unwrap(layeredTariff(accountAtLeumi({ group: null }, { custodyPct: 0.5 }), leumiList, leumiReading.run));
-    expect(custodyOnly.cheaperOfStanding).toBeUndefined();
+    expect(custodyOnly.cheaperOfStandingTrade).toBeUndefined();
+    expect(custodyOnly.cheaperOfStandingFx).toBeUndefined();
     // the account on the price list alone is the list tariff, line for line
     const alone = unwrap(layeredTariff(accountAtLeumi(points[0]!), leumiList, leumiReading.run));
     expect(alone).toEqual({ buy: leumiList.buy, buyStanding: leumiList.buyStanding, sell: leumiList.sell, custody: leumiList.custody, ...(leumiList.fx !== undefined ? { fx: leumiList.fx } : {}), ...(leumiList.fxStanding !== undefined ? { fxStanding: leumiList.fxStanding } : {}), ...(leumiList.monthlyFee !== undefined ? { monthlyFee: leumiList.monthlyFee } : {}) });
@@ -298,21 +299,36 @@ describe("the tariff built in layers (F-101)", () => {
     for (const name of ["מרכנתיל טופ", "מרכנתיל דלקס"]) expect(point(name).group!.prices.find((p) => p.fee === "trade_abroad")!.value!.side).toBe("buy");
     expect(trade(TOP.group!).value!.side).toBeUndefined();
   });
-  it("adopting a price whose words do not name funds sets the person's own fields to its numbers, where they can be written there", () => {
-    const priceOf = (g: GroupCopy, fee: string) => g.prices.find((p) => p.fee === fee)!;
-    expect(adoptGroupPrice(leumiList, priceOf(TOTAL.group!, "trade_israel"), leumiReading.run)).toEqual({ tradePct: 0.4 });
-    expect(adoptGroupPrice(leumiList, priceOf(TOTAL.group!, "custody_israel"), leumiReading.run)).toEqual({ custodyPct: 0.5 });
-    // a flat price for every order is a rate of nothing and a minimum; an exemption is nothing, and no minimum
-    expect(adoptGroupPrice(leumiList, priceOf(OFFER.group!, "trade_israel"), leumiReading.run)).toEqual({ tradePct: 0, tradeMin: 7 });
-    expect(adoptGroupPrice(leumiList, priceOf(OFFER.group!, "custody_israel"), leumiReading.run)).toEqual({ custodyPct: 0, custodyMin: 0 });
-    // a flat price up to a sum, or a maximum the list does not have, cannot be written in those fields
-    const pepper = startingPointsOf(leumi).find((p) => p.nameHe === "לקוחות פפר")!;
-    expect(adoptGroupPrice(leumiList, priceOf(pepper.group!, "trade_israel"), leumiReading.run)).toBeNull();
-    expect(adoptGroupPrice({ ...leumiList, custody: { rate: 0.0015, everyMonths: 3 } }, { ...priceOf(pepper.group!, "custody_abroad") }, { ...leumiReading.run, instrumentClass: "foreign_securities" })).toBeNull();
-    // the numbers it sets, typed, make the row the price list with Total Digital's two prices
-    const adopted = accountAtLeumi(TOTAL, { tradePct: 0.4, custodyPct: 0.5 });
-    expect(adopted.tradePct!.state).toBe("entered");
-    expect(unwrap(layeredTariff(adopted, leumiList, leumiReading.run)).custody).toEqual({ rate: EXPECTED.layers.adopted_custody_rate_a_quarter, everyMonths: 3, max: 3700 });
+  it("adopting a price whose words do not name funds is the person's choice, kept on the account: it reads like a price that names funds, with its own end and the person's stay", () => {
+    const all = (g: GroupCopy) => groupValues(g) && (Object.keys(groupValues(g)) as GroupCopy["prices"][number]["fee"][]).reduce((acc, fee) => withAdopted(acc, fee, true), g);
+    // Leumi's opening offer adopted, five years in the group: custody exempt to month 12 and 7 shekels a trade to month 60 (F-101's example)
+    const offer = all(OFFER.group!);
+    expect([...offer.adopted!].sort()).toEqual(["custody_abroad", "custody_israel", "trade_abroad", "trade_israel"]);
+    const five = rowAt(leumi, accountAtLeumi({ group: offer }, { untilYears: 5 }));
+    expectFigures(five, EXPECTED.offer_stay_5_years);
+    expect(five.run.fees.trade).toBeCloseTo(314, 9);
+    expect(five.run.fees.custody).toBeCloseTo(2074.18, 2);
+    expect(five.real).not.toBeCloseTo(rowAt(leumi, accountAtLeumi({ group: { ...offer, adopted: undefined } }, { untilYears: 5 })).real, 0);
+    // the exemption's year is the price's own: adopted for the whole plan it does not become 60 months of exemption
+    expectFigures(rowAt(leumi, accountAtLeumi({ group: offer })), EXPECTED.offer_whole_plan);
+    expectFigures(rowAt(leumi, accountAtLeumi({ group: offer }, { untilYears: 3 })), EXPECTED.offer_stay_3_years);
+    // Total Digital's two prices, adopted: the price list's trade price at 0.4%, and custody at 0.5% a year, as typed
+    expectFigures(rowAt(leumi, accountAtLeumi({ group: all(TOTAL.group!) })), EXPECTED.adopted_total_digital);
+    // one price adopted, the other not: only that line is the group's
+    const custodyOnly = withAdopted(TOTAL.group!, "custody_israel", true);
+    expect(unwrap(layeredTariff(accountAtLeumi({ group: custodyOnly }), leumiList, leumiReading.run)).buy).toEqual(leumiList.buy);
+    expect(unwrap(layeredTariff(accountAtLeumi({ group: custodyOnly }), leumiList, leumiReading.run)).custody).toEqual({ rate: EXPECTED.layers.adopted_custody_rate_a_quarter, everyMonths: 3, max: 3700 });
+    // undone: the group as it was
+    expect(withAdopted(custodyOnly, "custody_israel", false)).toEqual(TOTAL.group);
+    // saved with the entry, carried through export and import; an entry without it loads as before
+    const saved = accountAtLeumi({ group: offer });
+    const back = validCustomBrokers(JSON.parse(JSON.stringify([saved])))[0]!;
+    expect([...back.base!.group!.adopted!].sort()).toEqual([...offer.adopted!].sort());
+    expect(validCustomBrokers(JSON.parse(JSON.stringify([accountAtLeumi(OFFER)])))[0]!.base!.group!.adopted).toBeUndefined();
+    // an adopted fee the group has no price for is dropped
+    const odd = JSON.parse(JSON.stringify([saved]));
+    odd[0].base.group.adopted = ["custody_israel", "nonsense", 7];
+    expect(validCustomBrokers(odd)[0]!.base!.group!.adopted).toEqual(["custody_israel"]);
   });
   it("a group's price in dollars needs the dollar rate and says so when the run has none", () => {
     const abroad = { ...run, instrumentClass: "foreign_securities", fx: {} };
@@ -366,7 +382,7 @@ describe("a price for a time through the page's own run (F-101)", () => {
     const row = rowAt(leumi, accountAtLeumi(TOTAL, { tradePct: 0.4, custodyPct: 0.5 }));
     expectFigures(row, EXPECTED.adopted_total_digital);
     expect(row.tariff.buyStanding).toEqual(rowAt(leumi, null).tariff.buyStanding);
-    expect(row.tariff.cheaperOfStanding).toBe(true);
+    expect(row.tariff.cheaperOfStandingTrade).toBe(true);
     // the trade cost differs from the list's only by the sale on a larger balance: the monthly purchases pay 5 each
     const list = rowAt(leumi, null);
     expect(Math.abs(row.run.fees.trade - list.run.fees.trade)).toBeLessThan(5);
@@ -586,7 +602,8 @@ describe("what the panel shows", () => {
     expect(trade.group!.figures[0]!.value.source.url).toBe(STUDENT.group!.prices[0]!.source.url);
     expect(trade.group!.namesFund).toBe(false);
     expect(trade.group!.applied).toBe(false);
-    expect(trade.group!.adopt).toEqual({ tradePct: 0.25 });
+    expect(trade.group!.adoptable).toBe(true);
+    expect(trade.group!.adopted).toBe(false);
     expect(trade.group!.side).toBeNull();
     expect(trade.yours.map((f) => [f.kind, f.value.state, f.value.value])).toEqual([["min", "entered", 12]]);
     expect(trade.setBy).toBe("yours");
@@ -594,7 +611,7 @@ describe("what the panel shows", () => {
     expect(custody.group!.figures.map((f) => [f.kind, f.per])).toEqual([["rate", "quarter"]]);
     expect(custody.group!.forMonths).toBe(48);
     expect(custody.group!.applied).toBe(true);
-    expect(custody.group!.adopt).toBeNull();
+    expect(custody.group!.adoptable).toBe(false);
     expect(custody.setBy).toBe("group");
     expect(layers.find((l) => l.fee === "fixed")!.setBy).toBe("list");
     // a price of a group that names no fund does not decide the line: the list does

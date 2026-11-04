@@ -11,7 +11,7 @@ The layering rules, as the finance review of 2026-11-04 settled them (docs/metho
     that never end (the list and the person's own values alone, if none). The person's own values hold for the whole plan.
  3. A price that names a purchase alone (`side` buy) leaves the sale the list's price, and a sale alone the purchase.
  4. A custody rate the person typed (or a group's) keeps the list's minimum and maximum, per month, in every stretch, unless it states its own.
- 5. A group price whose words do not name fund units is not applied to a fund; a person who adopts it types its numbers as their own.
+ 5. A group price whose words do not name fund units is not applied to a fund; a person who adopts it (chooses to use it) has it read like any price that names funds, with its own end and the person's stay.
 
 Two houses. Leumi (direct channel, a tracking fund on the Tel Aviv exchange): the list's regular trade price 0.4% with a minimum of 26, its
 standing-order price 0.225% with a minimum of 5, custody 0.15% a quarter with a maximum of 3,700, and the group "לאומי סטודנט, בפתיחת חשבון": custody

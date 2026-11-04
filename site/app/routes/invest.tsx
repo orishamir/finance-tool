@@ -1,7 +1,7 @@
 // "השקעה במדד" (D28, spec research/specs/2026-10-25-invest-page/spec.md): for an index the person chooses (or adds), the options
 // for owning it, the cheapest broker for each, and the cheapest complete way for the plan. `/indices` chooses nothing (D27);
 // `/indices/<x>` opens the known index `index-<x>` (pre-rendered); a custom index lives on the device and opens at `/indices?custom=<id>`.
-import { useEffect, useId, useMemo, useState } from "react";
+import { useCallback, useEffect, useId, useMemo, useState } from "react";
 import { useLoaderData, useLocation, useNavigate, useParams } from "react-router";
 import type { RuleRecord } from "@finance-tool/schema";
 import type { Route } from "./+types/invest";
@@ -164,9 +164,22 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
   const view = useMemo(() => (index ? buildInvest({ bundle, index, plan, yourBroker }) : null), [bundle, index, plan, yourBroker]);
 
   const [panelOpen, setPanelOpen] = useState(false);
+  // a house's page opens the account panel through the address (`own` and `from`): once, and the address is cleaned
+  const ownParam = new URLSearchParams(search).get("own");
+  const fromParam = new URLSearchParams(search).get("from");
+  const opening = useMemo(() => (ownParam ? { houseId: ownParam, from: fromParam ?? "list" } : null), [ownParam, fromParam]);
+  const { pathname } = useLocation();
+  const onOpened = useCallback(() => {
+    const q = new URLSearchParams(search);
+    q.delete("own");
+    q.delete("from");
+    const rest = q.toString();
+    navigate(`${pathname}${rest ? `?${rest}` : ""}`, { replace: true });
+  }, [search, pathname, navigate]);
   const headId = useId();
 
   // the account and the fund the two lists are priced on: the person's picks on this index, else the cheapest way (2026-10-27)
+  const world = useMemo(() => (index && view ? { wb, bundle, index, plan, view, customs } : null), [wb, bundle, index, plan, view, customs]);
   const [picked, setPicked] = useState<{ index: string; pick: Pick } | null>(null);
   const [labelFilter, setLabelFilter] = useState<string | null>(null);
   // a fund priced nowhere (a distributing fund whose yield is not known, or a US fund, TXF-37) keeps its row with the reason, and is not a pair to show; nor is
@@ -216,7 +229,7 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
 
   return (
     <LabelSheetHost>
-      <CustomEntriesHost index={index} brokers={invest.customBrokers} funds={invest.customFunds} writable={invest.status !== "unavailable"} onSaveBroker={invest.saveBroker} onRemoveBroker={invest.removeBroker} onSaveFund={invest.saveFund} onRemoveFund={invest.removeFund}>
+      <CustomEntriesHost index={index} brokers={invest.customBrokers} funds={invest.customFunds} writable={invest.status !== "unavailable"} onSaveBroker={invest.saveBroker} onRemoveBroker={invest.removeBroker} onSaveFund={invest.saveFund} onRemoveFund={invest.removeFund} world={world} opening={opening} onOpened={onOpened}>
       {/* tighter than a page's sections: the sliders and the result they move stay in one view (founder, 2026-10-31) */}
       <div className="flex flex-col gap-5 lg:gap-6 pt-2 lg:pt-6">
         <div className="flex flex-col gap-4">

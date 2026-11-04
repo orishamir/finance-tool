@@ -106,8 +106,13 @@ function SourceLinks({ entries }: { entries: readonly GroupEntry[] }) {
  * one "what is cheaper" (one "until when" too when they all end alike). `sources`: a line under each sub-row with where its words stand
  * (a house's own page). A note under the rows says what "names no fund" means, when a sub-row carries it.
  */
-export function GroupPriceRows({ entries, sources, className }: { entries: readonly GroupEntry[]; sources?: boolean; className?: string }) {
+export function GroupPriceRows({ entries, sources, className, own }: { entries: readonly GroupEntry[]; sources?: boolean; className?: string; /** The caller's link under a sub-row that states prices in numbers: it gets the key of the sub-row's first such entry (`group:<n>`, its place in the house's record), and opens the account panel on it (2026-11-04). */ own?: (key: string) => ReactNode }) {
   const blocks = groupBlocks(entries);
+  // the sub-row's first entry that states a price in numbers: the one the account panel starts from
+  const startOf = (b: GroupBlock) => {
+    const e = b.entries.find((x) => x.prices.some((y) => y.value));
+    return e ? `group:${entries.indexOf(e)}` : null;
+  };
   const marked = blocks.some((b) => b.funds !== "all");
   return (
     <div className={cx("flex flex-col gap-2", className)}>
@@ -149,8 +154,15 @@ export function GroupPriceRows({ entries, sources, className }: { entries: reado
               })}
               {sources && (
                 <tr>
-                  <td colSpan={3} className="pt-0">
+                  <td colSpan={3} className={cx("pt-0", own && startOf(b) && "border-b-0")}>
                     <SourceLinks entries={b.entries} />
+                  </td>
+                </tr>
+              )}
+              {own && startOf(b) && (
+                <tr>
+                  <td colSpan={3} className="pt-0">
+                    {own(startOf(b)!)}
                   </td>
                 </tr>
               )}
@@ -167,7 +179,7 @@ export function GroupPriceRows({ entries, sources, className }: { entries: reado
  * The closed line under a house's row on a comparison: a "not in the figure" tag and who gets another price; it opens, at the person's
  * own tap, to the sub-rows and a link to the house's page, where the sources stand. Nothing in it is a figure of the ranking.
  */
-export function GroupPriceFold({ entries, house, href, open, onOpenChange, className }: { entries: readonly GroupEntry[]; /** The house's short name, for the link. */ house: string; /** The house's page, where the sources stand. */ href: string; open?: boolean; onOpenChange?: (open: boolean) => void; className?: string }) {
+export function GroupPriceFold({ entries, house, href, open, onOpenChange, className, own }: { entries: readonly GroupEntry[]; /** The house's short name, for the link. */ house: string; /** The house's page, where the sources stand. */ href: string; open?: boolean; onOpenChange?: (open: boolean) => void; className?: string; /** See `GroupPriceRows`. */ own?: (key: string) => ReactNode }) {
   if (entries.length === 0) return null;
   return (
     <Disclosure
@@ -184,7 +196,7 @@ export function GroupPriceFold({ entries, house, href, open, onOpenChange, class
       }
     >
       <div className="flex flex-col gap-2 pb-2">
-        <GroupPriceRows entries={entries} />
+        <GroupPriceRows entries={entries} own={own} />
         <GroupPageLink house={house} href={href} />
       </div>
     </Disclosure>

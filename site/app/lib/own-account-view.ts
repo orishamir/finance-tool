@@ -7,7 +7,7 @@ import type { FeesSnapshot, GroupPrice } from "@finance-tool/schema";
 import { invest as copy } from "../copy";
 import type { CustomBroker } from "./custom-entries";
 import { buildInvest, inputMap, listReading, pairCosts, type InvestArgs, type InvestView, type OptionId, type PairCosts } from "./invest";
-import { adoptGroupPrice, groupFigure, groupValues, type AdoptedValues, type FigurePart, type GroupCopy } from "./own-account";
+import { groupFigure, groupValues, type FigurePart, type GroupCopy } from "./own-account";
 import type { WorkbenchBundle, WorkbenchInputs } from "./providers";
 import { computed, type SiteValue } from "./value";
 
@@ -35,6 +35,8 @@ export interface FeeLayers {
   list: LayerFigure[];
   /** The group's price for this fee; null when the group says nothing on it. `figures` is empty when its words state no single price (the words alone stand). */
   group: {
+    /** The group price's fee key (`custody_israel`), the one `withAdopted` takes. */
+    key: GroupPrice["fee"];
     figures: LayerFigure[];
     words: string;
     /** The words the price is about ("מניות ואגרות חוב…") and whether they name fund units: when they do not, the panel says so beside the line (D42). */
@@ -46,13 +48,14 @@ export interface FeeLayers {
     /** `buy` or `sell` where the words name only that side; the other side keeps the list's price. */
     side: "buy" | "sell" | null;
     /**
-     * Whether the row's price is the group's for this holding. False where the group's words do not name fund units (`namesFund` false): the site
-     * does not apply the price to a fund. The panel shows `words` and `holdings` beside the list price, and, when `adopt` is not null, a one-tap
-     * "use this price" that sets the person's own fields to `adopt` (entered, blue; for the whole plan).
+     * Whether the row's price is the group's for this holding: the words name fund units, or the person chose to use the price (`adopted`). False
+     * otherwise (the site does not apply a price for shares and bonds to a fund, D42): the panel shows `words` and `holdings` beside the list price.
      */
     applied: boolean;
-    /** The person's fields the price comes to, if they were to adopt it; null when it states no numbers or cannot be written in those fields. */
-    adopt: AdoptedValues | null;
+    /** The person chose to use this price although its words do not name fund units: it is their choice (entered, blue), with the group's source beside it, and it can be undone. */
+    adopted: boolean;
+    /** A price that does not name funds and states numbers: the panel offers "use this price" (`withAdopted`). */
+    adoptable: boolean;
   } | null;
   /** What the person typed for this fee. */
   yours: LayerFigure[];
@@ -116,7 +119,9 @@ export function layersOf(bundle: WorkbenchBundle, plan: WorkbenchInputs, b: Cust
         add("min");
         add("max");
       }
+      const adopted = !!group.adopted?.includes(price.fee);
       groupLayer = {
+        key: price.fee,
         figures,
         words: price.price_he,
         holdings: price.holdings_he,
@@ -124,8 +129,9 @@ export function layersOf(bundle: WorkbenchBundle, plan: WorkbenchInputs, b: Cust
         source: price.source,
         forMonths: v?.for_months ?? null,
         side: v?.side ?? null,
-        applied: !!v && price.names_fund,
-        adopt: v && !price.names_fund ? adoptGroupPrice(built.tariff, price, run) : null,
+        applied: !!v && (price.names_fund || adopted),
+        adopted: !!v && !price.names_fund && adopted,
+        adoptable: !!v && !price.names_fund,
       };
     }
     const yours: LayerFigure[] = [];
@@ -133,7 +139,7 @@ export function layersOf(bundle: WorkbenchBundle, plan: WorkbenchInputs, b: Cust
       const value = b[key] as SiteValue | null;
       if (value) yours.push({ kind, ...(per ? { per } : {}), value });
     }
-    const groupPriced = !!gf && !!values[gf] && values[gf]!.price.names_fund;
+    const groupPriced = !!gf && !!values[gf] && (values[gf]!.price.names_fund || !!group?.adopted?.includes(values[gf]!.price.fee));
     return { fee, list: listFigures, group: groupLayer, yours, setBy: yours.length ? "yours" : groupPriced ? "group" : "list" };
   });
 }

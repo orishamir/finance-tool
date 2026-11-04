@@ -12,7 +12,7 @@ import { IconDrillIn } from "../icons";
 import { label } from "../../lib/labels";
 import { fmt } from "../../lib/format";
 import { PileStory, PileYears } from "./pile-story";
-import { AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, Button, Callout, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, LabelFilter, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, CompareTable, TableCols, CoverageFold, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, SortHead, ExposureCell, FeeKey, FeeNum, HelpMark, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, GainBars, GapNote, HeadlineFigure, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, ParameterLine, PercentField, PlanChips, KnobStrip, ChangeChart, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, RangeField, RankBadge, Section, SegmentedControl, SelectField, Sentence, ShareRings, SourceLine, Stat, StatRow, StatTile, StepButtons, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, ClaimList, DocLink, atPdfPage, GroupPriceFold, GroupPriceRows, type GroupEntry } from "./index";
+import { AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, Button, Callout, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, LabelFilter, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, CompareTable, TableCols, CoverageFold, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, SortHead, ExposureCell, FeeKey, FeeNum, HelpMark, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, GainBars, GapNote, HeadlineFigure, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, ParameterLine, PercentField, PlanChips, KnobStrip, ChangeChart, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, RangeField, RankBadge, Section, SegmentedControl, SelectField, Sentence, ShareRings, SourceLine, Stat, StatRow, StatTile, StepButtons, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, ClaimList, DocLink, atPdfPage, GroupPriceFold, GroupPriceRows, PeriodStrip, type CostPart, type GroupEntry } from "./index";
 import type { AdvertisingEntry } from "@finance-tool/schema";
 
 const g = copy.gallery;
@@ -1069,12 +1069,23 @@ function Lists({ today }: { today: string }) {
             <CostStack label="3,050" scale={7200} parts={[{ id: "t", value: 300, className: "bg-chart-cost-trade", inside: "300" }, { id: "c", value: 200, className: "bg-chart-cost-custody" }, { id: "u", value: 150, className: "bg-chart-cost-fund" }, { id: "x", value: 2400, className: "bg-chart-tax", inside: "2,400" }]} />
           </div>
         </State>
+        <State label="pointing or tapping a part shows its name, amount, share and where its price comes from; changing the prices makes every part and figure glide, and a part that falls to zero shrinks to nothing in its place" wide>
+          <CostStackDemo />
+        </State>
         <State label="list rows (sm), the last past the scale: drawn to the edge with a break" wide>
           <div className="flex flex-col gap-2">
             <CostStack size="sm" label="500" scale={10000} parts={[{ id: "t", value: 300, className: "bg-chart-cost-trade" }, { id: "c", value: 200, className: "bg-chart-cost-custody" }]} />
             <CostStack size="sm" label="9,620" scale={10000} parts={[{ id: "t", value: 4300, className: "bg-chart-cost-trade" }, { id: "c", value: 4800, className: "bg-chart-cost-custody" }, { id: "f", value: 520, className: "bg-chart-cost-fixed" }]} />
             <CostStack size="sm" label="25,126" scale={10000} parts={[{ id: "t", value: 7500, className: "bg-chart-cost-trade" }, { id: "c", value: 7500, className: "bg-chart-cost-custody" }, { id: "f", value: 10126, className: "bg-chart-cost-fixed" }]} />
           </div>
+        </State>
+      </Demo>
+      <Demo name="PeriodStrip" use={g.uses.PeriodStrip}>
+        <State label="three stretches: all of a group's prices, one of them, then the price list" wide>
+          <PeriodStrip years={10} label={g.sample.strip.label} today={g.sample.strip.today} word={g.sample.strip.year} segments={[{ from: 0, to: 1, label: g.sample.strip.first, tone: "first" }, { from: 1, to: 4, label: g.sample.strip.middle, tone: "middle" }, { from: 4, to: 10, label: g.sample.strip.after, tone: "after" }]} />
+        </State>
+        <State label="one stretch: the group's prices for the whole plan" wide>
+          <PeriodStrip years={10} label={g.sample.strip.label} today={g.sample.strip.today} word={g.sample.strip.year} segments={[{ from: 0, to: 10, label: g.sample.strip.first, tone: "first" }]} />
         </State>
       </Demo>
       <Demo name="PickList" use={g.uses.PickList}>
@@ -1243,6 +1254,28 @@ function FlipDemo() {
           </li>
         ))}
       </ol>
+    </div>
+  );
+}
+
+/** The cost bar of an account at three sets of prices: the list's, a group's (the custody exempt: that part shrinks to nothing) and the person's. */
+function CostStackDemo() {
+  const [state, setState] = useState("list");
+  const c = g.sample.cost;
+  const by: Record<string, [number, number, number]> = { list: [1699, 1888, 189], group: [1699, 0, 189], yours: [300, 200, 0] };
+  const from: Record<string, string> = { list: c.fromList, group: c.fromGroup, yours: c.fromYours };
+  const [trade, custody, fixed] = by[state]!;
+  const parts: CostPart[] = [
+    { id: "t", value: trade, className: "bg-chart-cost-trade", inside: true, name: c.trade, source: from[state]! },
+    { id: "c", value: custody, className: "bg-chart-cost-custody", inside: true, name: c.custody, source: from[state]! },
+    { id: "f", value: fixed, className: "bg-chart-cost-fixed", inside: true, name: c.fixed, source: from[state]! },
+  ];
+  return (
+    <div className="flex flex-col gap-3">
+      <ChoiceChips ids={["list", "group", "yours"]} labels={c.states} value={state} onChange={setState} ariaLabel={c.stateLabel} wrap />
+      <div className="pt-12">
+        <CostStack label={fmt.nisWhole(trade + custody + fixed)} scale={4000} parts={parts} />
+      </div>
     </div>
   );
 }
