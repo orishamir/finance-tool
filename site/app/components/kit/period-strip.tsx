@@ -31,7 +31,7 @@ export function PeriodStrip({ years, segments, today, word, label }: { years: nu
   const unnamed = segments.filter((s) => (s.to - s.from) / years < WIDE);
   const at = (y: number) => `${(Math.min(Math.max(y, 0), years) / years) * 100}%`;
   return (
-    <div role="img" aria-label={label} className="flex flex-col gap-1">
+    <div role="img" aria-label={label} className="flex w-full min-w-0 flex-col gap-1">
       <div dir="ltr" className="flex h-11 rounded-md overflow-hidden">
         {segments.map((s, i) => (
           <span key={`${s.from}-${i}`} className={cx("flex items-center justify-center px-1.5 text-center text-xs font-semibold leading-tight text-background overflow-hidden border-e border-card last:border-e-0", TONE[s.tone])} style={{ width: `${((s.to - s.from) / years) * 100}%` }}>

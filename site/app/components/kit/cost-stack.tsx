@@ -88,7 +88,7 @@ export function CostStack({ parts, scale, size = "md", label, highlight }: { par
 
   let before = 0;
   return (
-    <div ref={root} className="relative">
+    <div ref={root} className="relative w-full min-w-0">
       <div role="img" aria-label={label} className={cx("flex", size === "sm" ? "h-3" : "h-7")}>
         {list.map((p, i) => {
           const w = widths[i]!;

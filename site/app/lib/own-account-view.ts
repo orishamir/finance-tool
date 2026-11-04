@@ -9,7 +9,7 @@ import type { CustomBroker } from "./custom-entries";
 import { buildInvest, inputMap, listReading, pairCosts, type InvestArgs, type InvestView, type OptionId, type PairCosts } from "./invest";
 import { groupFigure, groupValues, type FigurePart, type GroupCopy } from "./own-account";
 import type { WorkbenchBundle, WorkbenchInputs } from "./providers";
-import { computed, type SiteValue } from "./value";
+import { computed, ownBy, type SiteValue } from "./value";
 
 // ---------------------------------------------------------------- the layers by fee type
 
@@ -92,10 +92,12 @@ export function layersOf(bundle: WorkbenchBundle, plan: WorkbenchInputs, b: Cust
     const l = listLine(fee);
     const listFigures: LayerFigure[] = [];
     if (l) {
+      // the house's own price list, shown in the panel named after that house: its own figure (D31), not a caution
+      const own = (v: unknown) => ownBy(v as SiteValue, b.base?.houseName ?? house.provider.name_he);
       const per = l.period ?? (fee === "trade" || fee === "conversion" ? "trade" : "month");
-      listFigures.push({ kind: "rate", per, value: l.rate as SiteValue });
-      if (l.min && l.min.value !== null) listFigures.push({ kind: "min", value: l.min as SiteValue });
-      if (l.max && l.max.value !== null) listFigures.push({ kind: "max", value: l.max as SiteValue });
+      listFigures.push({ kind: "rate", per, value: own(l.rate) });
+      if (l.min && l.min.value !== null) listFigures.push({ kind: "min", value: own(l.min) });
+      if (l.max && l.max.value !== null) listFigures.push({ kind: "max", value: own(l.max) });
     }
     const gf = groupFee(fee);
     const price = gf ? (group?.prices ?? []).find((p) => p.fee === gf) : undefined;

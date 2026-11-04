@@ -87,7 +87,8 @@ export function groupValues(g: GroupCopy | null | undefined): Partial<Record<Gro
 
 export type FigurePart = "rate" | "discount" | "floor" | "flat" | "flat_up_to" | "per_share" | "min" | "max" | "exempt" | "for_months";
 
-/** One number of a group price as a sourced value: the group's own document is its source, a company's figure (institution strength). */
+/** One number of a group price as a sourced value: the group's own document is its source, a company's figure (institution strength)
+ * shown only beside that house, so its own (D31: plain sourced, no caution). */
 export function groupFigure(g: GroupCopy, houseName: string, price: GroupPrice, part: FigurePart): SiteValue | null {
   const v = price.value;
   if (!v) return null;
@@ -112,6 +113,7 @@ export function groupFigure(g: GroupCopy, houseName: string, price: GroupPrice, 
     value,
     unit,
     source: { url: price.source.url, title: price.source.title, publisher: houseName, strength: "institution" },
+    own: houseName,
     checked: g.snapshot,
     effective_from: null,
     effective_to: null,
