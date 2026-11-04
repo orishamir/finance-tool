@@ -318,7 +318,8 @@ function snapshotValues(s: FeesSnapshot, today: string): { tariff: RowTariff; st
 /** Providers of the wrapper: every bank, broker and foreign-broker snapshot (F-83; the foreign class joined 2026-10-25 so the brokers page, the funds page and "השקעה במדד" list the same providers). */
 export function providersOf(bundle: Pick<WorkbenchBundle, "snapshots">, wrapperId: string): FeesSnapshot[] {
   if (wrapperId !== BROKERAGE) return [];
-  return bundle.snapshots.filter((s) => s.provider.class === "bank" || s.provider.class === "broker" || s.provider.class === "foreign_broker").sort((a, b) => a.provider.name_he.localeCompare(b.provider.name_he, "he"));
+  // a house that is part of another (PEPPER of Leumi, founder 2026-11-04: PEPPER Invest moved into Leumi Trade) is not a house of its own
+  return bundle.snapshots.filter((s) => (s.provider.class === "bank" || s.provider.class === "broker" || s.provider.class === "foreign_broker") && !s.provider.part_of).sort((a, b) => a.provider.name_he.localeCompare(b.provider.name_he, "he"));
 }
 
 export function ruleContext(bundle: WorkbenchBundle): RunContext {

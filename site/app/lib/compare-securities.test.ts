@@ -102,7 +102,8 @@ describe("the guides price an account and its securities on the comparison's pic
   it("makam: a redemption is priced by the house's line that names it, on both paths (F-24)", () => {
     const makam = entry("makam");
     for (const p of Object.values(makam.providers!)) expect(p.tariff.redeem).toBeDefined();
-    expect(makam.providers!.pepper!.tariff.redeem).toMatchObject({ flatUpTo: { amount: 4, upTo: 30_000 }, rate: 0.001, min: 20 });
+    // PEPPER is part of Leumi since 2026-11-04 (its own tariff's redemption line, flat 4 NIS up to 30,000, is no longer a house here)
+    expect(makam.providers!.pepper).toBeUndefined();
     expect(makam.providers!.psagot!.tariff.redeem).toMatchObject({ rate: 0.0005, min: 2 });
     // the reduced price of an order placed online is not the redemption's
     expect(makam.providers!.leumi!.tariff.redeem).toMatchObject({ rate: 0.001, min: 20 });
@@ -111,14 +112,14 @@ describe("the guides price an account and its securities on the comparison's pic
     expect(own.terms.tariff!.redeem).toEqual(makam.providers![own.pick!.id]!.tariff.redeem);
     expect(own.feeValues.redeemRate?.own).toBe(own.feeValues.tradeRate?.own);
   });
-  it("makam: houses within the tie threshold of the top tie, and the page crowns none (F-80, P-01)", () => {
+  it("makam: Psagot alone on top once PEPPER is part of Leumi, and the page names no tie (F-80, P-01)", () => {
+    // until 2026-11-04 Psagot and PEPPER tied within P-01; PEPPER Invest moved into Leumi Trade (founder), so it is no house of its own
     const own = buildGuidePage("makam")!.bundle!;
     const rows = providerOutcomes(bundle, plan, "makam").providers;
     const tied = rows.filter((r) => isTie(rows[0]!.real, r.real, 0.005));
-    expect(tied.length).toBeGreaterThan(1);
-    expect(own.pick!.tied!.names).toEqual(tied.map((r) => shortName(r.id, r.name)));
-    expect(own.pick!.tied!.names).toEqual(["פסגות", "פפר"]);
-    expect(own.pick!.tied!.theta.value).toBe(0.5);
+    expect(tied.map((r) => r.id)).toEqual(["psagot"]);
+    expect(own.pick!.id).toBe("psagot");
+    expect(own.pick!.tied).toBeUndefined();
   });
   it("names no bank on a money-market fund: the fees are the law's zero (MF-26, BANK-18)", () => {
     const own = buildGuidePage("money-market-fund-daily")!.bundle!;
