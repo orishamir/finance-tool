@@ -393,13 +393,15 @@ export function AccountColumn({ view, bundle, years, pick, onPick }: { view: Inv
               {r.at.standing && <span>{c.pair.standingTag}</span>}
             </span>
           </span>
-          <span className="flex items-center gap-2 min-w-0 max-md:row-start-2 max-md:col-start-3 max-md:col-span-2">
+          {/* a narrow list (a phone, or this panel beside the funds on a computer) gives the bar a line of its own under the name, so it is wide enough to compare (2026-11-04) */}
+          <span className="flex items-center gap-2 min-w-0 @max-2xl:row-start-2 @max-2xl:col-start-3 @max-2xl:col-end-[-1]">
             <CostStack size="sm" parts={parts} scale={scale} highlight={legendPick.active} label={`${r.p.short}: ${fmt.nisWhole(r.at.accountCost)}`} />
-            <span className="text-xs text-muted-foreground whitespace-nowrap">
+            {/* one width on every row, for the longest amount: a longer figure would shorten its own bar, and the bars share one scale */}
+            <span className="w-[4.75rem] shrink-0 text-xs text-muted-foreground whitespace-nowrap">
               <Num animate value={nis(r.at.accountCost, "F-63", `${r.p.short}: ${c.pair.colChargesShort}`, bundle.today)} />
             </span>
           </span>
-          <span className="text-end font-semibold">
+          <span className="col-end-[-1] text-end font-semibold">
             <Num animate value={r.at.value} />
           </span>
           <GroupLine id={r.p.id} house={r.p.short} snapshots={bundle.snapshots} open={openGroups.includes(r.p.id)} onOpen={onGroup} />
@@ -427,7 +429,7 @@ export function AccountColumn({ view, bundle, years, pick, onPick }: { view: Inv
             {r.p.short}
             <span className="flex flex-wrap gap-x-2 min-h-5 text-xs font-normal">{r.p.id === view.yourBroker && <span>{c.pair.yoursTag}</span>}</span>
           </span>
-          <span className="flex flex-wrap items-center gap-x-2 gap-y-0.5 min-w-0 text-xs max-md:row-start-2 max-md:col-start-3 max-md:col-span-2">
+          <span className="flex flex-wrap items-center gap-x-2 gap-y-0.5 min-w-0 text-xs @max-2xl:row-start-2 @max-2xl:col-start-3 @max-2xl:col-end-[-1]">
             <Tag tone={na ? undefined : "caution"}>{na ? c.pair.notPossible : c.pair.noData}</Tag>
             {na && !r.p.custom && (
               <a href={na.source.url} target="_blank" rel="noopener noreferrer" title={na.note ?? na.source.title} className="text-link hover:underline">
@@ -435,7 +437,7 @@ export function AccountColumn({ view, bundle, years, pick, onPick }: { view: Inv
               </a>
             )}
           </span>
-          <span className="text-end font-semibold">—</span>
+          <span className="col-end-[-1] text-end font-semibold">—</span>
           {/* the reason takes the row's width, like the group line: in the charges column it stood one word to a line (2026-10-31) */}
           <span className="col-start-2 col-end-[-1] flex flex-col gap-0.5 text-xs leading-snug">
             {na && r.p.custom && <span>{c.customEntries.notSold}</span>}
@@ -488,6 +490,7 @@ export function AccountColumn({ view, bundle, years, pick, onPick }: { view: Inv
         <span className="text-xs text-muted-foreground min-h-[1lh] max-md:min-h-[2lh]">{standingCount > 0 && c.pair.standingNote(standingCount, local.length)}</span>
         <span className="text-xs text-muted-foreground">{c.pair.whichPrice}</span>
       </div>
+      <div className="@container">
       <PickList
         label={c.pair.listLabelAccounts}
         columns="1.5rem 9.5rem minmax(0,1fr) 6.5rem"
@@ -496,12 +499,13 @@ export function AccountColumn({ view, bundle, years, pick, onPick }: { view: Inv
           <>
             <span>#</span>
             <span>{c.pair.colAccount}</span>
-            <span className="max-md:hidden">{c.pair.colChargesShort}</span>
+            <span className="max-md:hidden @max-2xl:invisible">{c.pair.colChargesShort}</span>
             <span className="text-end">{c.pair.colLeft}</span>
           </>
         }
         rows={[...pickRows, ...greyRows]}
       />
+      </div>
       <div className="px-5 py-3 flex flex-col gap-3">
         <AddEntryButton kind="broker" />
         <ChartLegend
