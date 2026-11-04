@@ -654,7 +654,7 @@
   "groups": {
     "state": "prices",
     "note": "Full tariff re-read 2026-11-04, with the promotion's terms (PDF created 22.10.2026, Last-Modified 25.10.2026, unchanged since 2026-10-31), the landing, joining-benefits, about, deposit, monthly-investment and currency pages, and the exchange's member sheet (read in Chrome; not listed in read because psagot lists that host). No young, student, soldier or released-soldier price is printed. The joining promotion is the only offer, recorded as an entry of kind 'other' (D56: an offer stated on the row, never ranked). This covers what was read, not a personal offer.",
-    "row_he": "למצטרפים חדשים שהחברה רואה בחשבונם ״ביצוע תדיר של עסקאות״, לפי שיקול דעתה: 0.07% במקום 0.15% לקנייה ולמכירה של מניות, קרנות סל וקרנות מחקות, ו״פטור מדמי ניהול״ שהמסמכים לא אומרים על איזה מהשניים שבתעריפון הוא חל.",
+    "row_he": "למצטרפים חדשים שבחשבונם יש, לפי שיקול דעת החברה, ״ביצוע תדיר של עסקאות״: 0.07% במקום 0.15% לקנייה ולמכירה של מניות, קרנות סל וקרנות מחקות, ו״פטור מדמי ניהול״ בלי לומר על איזה משני דמי הניהול שבתעריפון.",
     "read": [
       {
         "url": "https://www.as-invest.co.il/media/oqdfpafo/תעריפון-מלא-אלטשולר-שחם-טרייד.pdf",
@@ -710,7 +710,7 @@
           },
           {
             "fee": "custody_israel",
-            "price_he": "״פטור קבוע מדמי ניהול חשבון״, בלי לומר אם על דמי הניהול/טיפול פיקדון או על דמי הניהול התקופתיים",
+            "price_he": "״פטור קבוע מדמי ניהול חשבון״, בלי לומר אם הוא חל על דמי ניהול הפיקדון או על דמי הניהול התקופתיים",
             "holdings_he": "דמי ניהול חשבון",
             "names_fund": false,
             "source": {
@@ -722,9 +722,9 @@
           },
           {
             "fee": "trade_abroad",
-            "price_he": "1 סנט למניה, מינימום 6$",
-            "holdings_he": "מניות ו־ETF'S בארה״ב",
-            "names_fund": false,
+            "price_he": "1 סנט למניה, מינימום 6 דולר",
+            "holdings_he": "מניות וקרנות סל בארה״ב",
+            "names_fund": true,
             "source": {
               "url": "https://www.as-invest.co.il/trade/trading_benefits/",
               "title": "מבצע הצטרפות, פירוט הטבות ועמלות",

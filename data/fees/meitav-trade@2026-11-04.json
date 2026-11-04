@@ -667,7 +667,7 @@
   "groups": {
     "state": "prices",
     "note": "Full tariff 04/2026 re-read 2026-11-04, with the landing, self-trading, about, app, currency, tracks and terms pages, the three promotion terms linked from the terms page, and the exchange's member sheet (read in Chrome; not listed in read because psagot lists that host). No young, student, soldier or released-soldier price is printed. The November 2026 joining offer is the only current offer, recorded as an entry of kind 'other' (D56: an offer stated on the row, never ranked); its terms are not published. The ended offers are under left_out. This covers what was read, not a personal offer.",
-    "row_he": "למצטרפים חדשים שמפקידים לראשונה עד 30.11.2026: ״פטור מדמי טיפול לארבע שנים״, לפי דף הפרסום בלבד, כי תקנון המבצע לא מפורסם. לא נאמר אם הפטור חל על דמי ניהול הפיקדון או על דמי השימוש/טיפול שבתעריפון.",
+    "row_he": "למצטרפים חדשים שמפקידים לראשונה עד 30.11.2026: ״פטור מדמי טיפול לארבע שנים״, לפי דף הפרסום בלבד. תקנון המבצע לא מפורסם, ולא נאמר אם הפטור חל על דמי ניהול הפיקדון או על דמי השימוש והטיפול.",
     "read": [
       {
         "url": "https://www.meitav.co.il/media/zitlfr4f/עמלות-תעריפון-42026.pdf",
@@ -710,7 +710,7 @@
         "prices": [
           {
             "fee": "custody_israel",
-            "price_he": "״פטור מדמי טיפול לארבע שנים״, בלי לומר אם על דמי ניהול הפיקדון (0.15% לרבעון, מינימום 270 ₪) או על דמי השימוש/טיפול (עד 90 ₪ לחודש)",
+            "price_he": "״פטור מדמי טיפול לארבע שנים״, בלי לומר אם הוא חל על דמי ניהול הפיקדון (0.15% לרבעון, מינימום 270 ₪) או על דמי השימוש והטיפול (עד 90 ₪ לחודש)",
             "holdings_he": "דמי טיפול בחשבון",
             "names_fund": false,
             "source": {
