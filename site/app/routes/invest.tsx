@@ -180,20 +180,35 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
 
   // the account and the fund the two lists are priced on: the person's picks on this index, else the cheapest way (2026-10-27)
   const world = useMemo(() => (index && view ? { wb, bundle, index, plan, view, customs } : null), [wb, bundle, index, plan, view, customs]);
-  const [picked, setPicked] = useState<{ index: string; pick: Pick } | null>(null);
   const [labelFilter, setLabelFilter] = useState<string | null>(null);
   // a fund priced nowhere (a distributing fund whose yield is not known, or a US fund, TXF-37) keeps its row with the reason, and is not a pair to show; nor is
   // a pair the account no longer prices (a broker the person typed and changed, D44)
   const validPick = (p: Pick) => !!view && allFunds(view).some((f) => f.rec.id === p.fund && Object.values(f.byHouse).some((x) => "valueN" in x) && "valueN" in (f.byHouse[p.house] ?? {})) && view.providers.some((x) => x.id === p.house);
-  // a house's page opens this one with that house picked (`?house=`, issue 172): its cheapest way on the index, until the person picks
+  // the pick lives in the address (`?house=` and `?fund=`, founder 2026-11-04), so a link opens the same pair: a house's page sends `house`
+  // alone (issue 172), which opens on its cheapest way on the index; a fund alone opens at the house where it leaves the most
   const houseParam = new URLSearchParams(search).get("house");
-  const houseBest = view && houseParam ? view.houses.find((h) => h.provider.id === houseParam)?.best : null;
-  const fromAddress: Pick | null = houseParam && houseBest && validPick({ house: houseParam, fund: houseBest.fund.rec.id }) ? { house: houseParam, fund: houseBest.fund.rec.id } : null;
-  const own: Pick | null = view && index && picked && picked.index === index.id && validPick(picked.pick) ? picked.pick : fromAddress;
+  const fundParam = new URLSearchParams(search).get("fund");
+  const fromAddress = ((): Pick | null => {
+    if (!view || (!houseParam && !fundParam)) return null;
+    if (houseParam && fundParam) return validPick({ house: houseParam, fund: fundParam }) ? { house: houseParam, fund: fundParam } : null;
+    if (houseParam) {
+      const best = view.houses.find((h) => h.provider.id === houseParam)?.best;
+      return best && validPick({ house: houseParam, fund: best.fund.rec.id }) ? { house: houseParam, fund: best.fund.rec.id } : null;
+    }
+    const best = allFunds(view).find((f) => f.rec.id === fundParam)?.best;
+    return best && validPick({ house: best.providerId, fund: fundParam! }) ? { house: best.providerId, fund: fundParam! } : null;
+  })();
+  const own: Pick | null = fromAddress;
   const pick: Pick | null = own ?? (view ? pickOfHeadline(view) : null);
   // the stairs start from the person's own pick; with none they open on the middle account and the middle exchange-traded fund
   const picks = own !== null;
-  const onPick = (p: Pick) => index && setPicked({ index: index.id, pick: p });
+  // a pick replaces the address in place: the back button leaves the page rather than stepping through every pick, and the page keeps its scroll
+  const onPick = (p: Pick) => {
+    const q = new URLSearchParams(search);
+    q.set("house", p.house);
+    q.set("fund", p.fund);
+    navigate(`${pathname}?${q.toString()}`, { replace: true, preventScrollReset: true });
+  };
   // an index with no fund records (a custom one): the houses and their broker costs, and the request for funds
   const [genericHouse, setGenericHouse] = useState<string | null>(null);
   const house = genericHouse ?? view?.genericHeadline?.cell.providerId ?? view?.houses.find((h) => h.generic)?.provider.id ?? null;
