@@ -9,7 +9,7 @@ Out of scope: meitav (מיטב גמל ופנסיה) and phoenix: provident manag
 | Job | Houses | Status |
 |---|---|---|
 | 1 | discount, mercantile | done, no price moved |
-| 2 | fibi, massad | |
+| 2 | fibi, massad | done; standing order to branch rate (ranking change) |
 | 3 | hapoalim | |
 | 4 | mizrahi-tefahot | |
 | 5 | jerusalem | |
