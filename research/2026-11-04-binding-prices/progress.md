@@ -13,9 +13,9 @@ Out of scope: meitav (מיטב גמל ופנסיה) and phoenix: provident manag
 | 3 | hapoalim | done, no price moved |
 | 4 | mizrahi-tefahot | done, no ranked price moved |
 | 5 | jerusalem | done, no price moved |
-| 6 | yahav | |
-| 7 | excellence | |
-| 8 | interactive-israel, interactive-brokers | |
+| 6 | yahav | done; online conversion 0.185% → 0.13% (moves no figure on the page) |
+| 7 | excellence | done, no price moved |
+| 8 | interactive-israel, interactive-brokers | done; Interactive Brokers priced on the spot order (ranking change, cc9a718) |
 
 Open from round 1: the founder was asked (not yet answered) whether to add a line on rows whose advertising the price list contradicts (Psagot, IBI, Altshuler, Meitav Trade). Issues 178, 179 (you decide), 180.
 
