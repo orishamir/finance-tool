@@ -16,7 +16,7 @@ describe("the providers the brokerage wrapper carries", () => {
   it("are the banks and brokers whose tariff has a line for the class of the fund the account holds, with their tariff lines and Hebrew names", () => {
     const ids = Object.keys(wrapper.providers ?? {});
     for (const id of ["psagot", "ibi"]) expect(ids).toContain(id);
-    expect(ids).not.toContain("meitav-trade"); // its snapshot is marked missing
+    expect(ids).toContain("meitav-trade"); // priced at its price list since 2026-11-04 (D56): custody 0.15% a quarter, at least 270 NIS, and a handling fee up to 90 NIS a month
     // the representative fund (5139282) is a tracking fund, `mutual_fund_units`: a tariff with no buy/sell line for that class gives no price, never a free trade (F-63 "No line, no price", MF-26, 2026-10-25)
     expect(ids).not.toContain("interactive-brokers");
     for (const id of ["one-zero", "leumi"]) expect(ids).toContain(id); // their TASE lines cover tracking funds by footnote (MF-27; snapshot 2026-10-31)
