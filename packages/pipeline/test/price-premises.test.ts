@@ -24,7 +24,6 @@ const LEFTOVERS = [
   "leumi-tracking-fund-standing-order",
   "massad-standing-order-tase-direct",
   "massad-standing-order-tase-branch",
-  "mizrahi-custody-foreign",
 ];
 
 describe("what a ranked price rests on", () => {
