@@ -3297,6 +3297,13 @@ export const invest = {
     missing: "המדד הזה לא שמור במכשיר הזה. בחרו מדד מהרשימה או הוסיפו אותו שוב.",
   },
 
+  /** An account on your own terms, started from a house (F-101, 2026-11-04): what the sheets of its computed figures call them. The panel's own words come with the panel. */
+  ownAccount: {
+    placeAbout: (of: number) => `המקום בין ${of} חשבונות, לפי מה שנשאר בסוף`,
+    differenceAbout: "מה שנשאר בחשבון שלכם פחות מה שנשאר בחשבון לפי המחירון של אותו בית, באותה קרן",
+    decidingAbout: (line: string) => `ההפרש בין המחירון לחשבון שלכם: ${line}`,
+  },
+
   /** A broker and a fund the person types (D44). */
   customEntries: {
     addBroker: "הוספת חשבון בתנאים שקיבלתם",

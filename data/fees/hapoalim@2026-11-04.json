@@ -1145,6 +1145,9 @@
           {
             "fee": "custody_israel",
             "price_he": "50% הנחה",
+            "value": {
+              "discount_pct": 50
+            },
             "holdings_he": "דמי ניהול פיקדון ניירות ערך הנסחרים בארץ",
             "names_fund": false,
             "source": {
@@ -1181,6 +1184,10 @@
           {
             "fee": "trade_israel",
             "price_he": "ערוצים ישירים: מניות 0.30%, אגרות חוב 0.30%",
+            "value": {
+              "rate_pct": 0.3,
+              "per": "trade"
+            },
             "holdings_he": "מניות ואגרות חוב הנסחרים בבורסה של תל אביב בערוצים ישירים",
             "names_fund": false,
             "source": {
@@ -1193,6 +1200,9 @@
           {
             "fee": "custody_israel",
             "price_he": "50% הנחה",
+            "value": {
+              "discount_pct": 50
+            },
             "holdings_he": "דמי ניהול פיקדון ניירות ערך הנסחרים בארץ (לרבות יחידות השתתפות בקרנות נאמנות)",
             "names_fund": true,
             "source": {
@@ -1229,6 +1239,10 @@
           {
             "fee": "trade_israel",
             "price_he": "ערוצים ישירים: מניות 0.40%",
+            "value": {
+              "rate_pct": 0.4,
+              "per": "trade"
+            },
             "holdings_he": "מניות הנסחרים בבורסה של תל אביב בערוצים ישירים",
             "names_fund": false,
             "source": {
@@ -1241,6 +1255,9 @@
           {
             "fee": "custody_israel",
             "price_he": "40% הנחה",
+            "value": {
+              "discount_pct": 40
+            },
             "holdings_he": "דמי ניהול פיקדון ניירות ערך הנסחרים בארץ (לרבות יחידות השתתפות בקרנות נאמנות)",
             "names_fund": true,
             "source": {
@@ -1253,6 +1270,9 @@
           {
             "fee": "custody_abroad",
             "price_he": "40% הנחה",
+            "value": {
+              "discount_pct": 40
+            },
             "holdings_he": "דמי ניהול פיקדון ניירות ערך הנסחרים בבורסות חו״ל, קרנות זרות (לרבות יחידות השתתפות בקרנות נאמנות)",
             "names_fund": true,
             "source": {
@@ -1331,6 +1351,9 @@
           {
             "fee": "custody_israel",
             "price_he": "33% הנחה",
+            "value": {
+              "discount_pct": 33
+            },
             "holdings_he": "דמי ניהול פיקדון ניירות ערך",
             "names_fund": false,
             "source": {
@@ -1379,6 +1402,9 @@
           {
             "fee": "custody_israel",
             "price_he": "33% הנחה",
+            "value": {
+              "discount_pct": 33
+            },
             "holdings_he": "דמי ניהול פיקדון ניירות ערך",
             "names_fund": false,
             "source": {
@@ -1415,6 +1441,10 @@
           {
             "fee": "trade_israel",
             "price_he": "50% הנחה, ולא פחות מ־0.25%",
+            "value": {
+              "discount_pct": 50,
+              "not_below_pct": 0.25
+            },
             "holdings_he": "מניות הנסחרים בבורסה של תל אביב",
             "names_fund": false,
             "source": {

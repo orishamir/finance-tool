@@ -2824,6 +2824,79 @@
                       "type": "string",
                       "minLength": 1
                     },
+                    "value": {
+                      "type": "object",
+                      "properties": {
+                        "rate_pct": {
+                          "type": "number",
+                          "minimum": 0,
+                          "maximum": 100
+                        },
+                        "per": {
+                          "type": "string",
+                          "enum": [
+                            "trade",
+                            "month",
+                            "quarter",
+                            "year"
+                          ]
+                        },
+                        "side": {
+                          "type": "string",
+                          "enum": [
+                            "buy",
+                            "sell"
+                          ]
+                        },
+                        "flat": {
+                          "type": "number",
+                          "exclusiveMinimum": 0
+                        },
+                        "flat_up_to": {
+                          "type": "number",
+                          "exclusiveMinimum": 0
+                        },
+                        "per_share_cents": {
+                          "type": "number",
+                          "exclusiveMinimum": 0
+                        },
+                        "discount_pct": {
+                          "type": "number",
+                          "exclusiveMinimum": 0,
+                          "maximum": 100
+                        },
+                        "not_below_pct": {
+                          "type": "number",
+                          "exclusiveMinimum": 0,
+                          "maximum": 100
+                        },
+                        "exempt": {
+                          "type": "boolean",
+                          "const": true
+                        },
+                        "min": {
+                          "type": "number",
+                          "exclusiveMinimum": 0
+                        },
+                        "max": {
+                          "type": "number",
+                          "exclusiveMinimum": 0
+                        },
+                        "currency": {
+                          "type": "string",
+                          "enum": [
+                            "ILS",
+                            "USD"
+                          ]
+                        },
+                        "for_months": {
+                          "type": "integer",
+                          "exclusiveMinimum": 0,
+                          "maximum": 9007199254740991
+                        }
+                      },
+                      "additionalProperties": false
+                    },
                     "holdings_he": {
                       "type": "string",
                       "minLength": 1

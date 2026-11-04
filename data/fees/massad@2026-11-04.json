@@ -1912,6 +1912,10 @@
           {
             "fee": "trade_israel",
             "price_he": "0.39%, בכפוף למינימום",
+            "value": {
+              "rate_pct": 0.39,
+              "per": "trade"
+            },
             "holdings_he": "מניות ואגרות חוב הנסחרים בבורסה בת״א (למעט קרנות נאמנות, אופציות מעו״ף וחוזים עתידיים במעו״ף)",
             "names_fund": false,
             "source": {
@@ -1924,6 +1928,10 @@
           {
             "fee": "trade_abroad",
             "price_he": "0.4%, בכפוף למינימום",
+            "value": {
+              "rate_pct": 0.4,
+              "per": "trade"
+            },
             "holdings_he": "מניות, אגרות חוב וקרנות נאמנות בחו״ל",
             "names_fund": true,
             "source": {
@@ -1936,6 +1944,10 @@
           {
             "fee": "custody_israel",
             "price_he": "0.1% לרבעון",
+            "value": {
+              "rate_pct": 0.1,
+              "per": "quarter"
+            },
             "holdings_he": "דמי ניהול פקדון ני״ע בארץ",
             "names_fund": false,
             "source": {
@@ -1948,6 +1960,10 @@
           {
             "fee": "custody_abroad",
             "price_he": "0.1% לרבעון",
+            "value": {
+              "rate_pct": 0.1,
+              "per": "quarter"
+            },
             "holdings_he": "דמי ניהול פקדון ני״ע בחו״ל",
             "names_fund": false,
             "source": {
@@ -1984,6 +2000,10 @@
           {
             "fee": "trade_israel",
             "price_he": "0.39%, בכפוף למינימום",
+            "value": {
+              "rate_pct": 0.39,
+              "per": "trade"
+            },
             "holdings_he": "מניות ואגרות חוב הנסחרים בבורסה בת״א (למעט קרנות נאמנות, אופציות מעו״ף וחוזים עתידיים במעו״ף)",
             "names_fund": false,
             "source": {
@@ -1996,6 +2016,10 @@
           {
             "fee": "trade_abroad",
             "price_he": "0.4%, בכפוף למינימום",
+            "value": {
+              "rate_pct": 0.4,
+              "per": "trade"
+            },
             "holdings_he": "מניות, אגרות חוב וקרנות נאמנות בחו״ל",
             "names_fund": true,
             "source": {
@@ -2008,6 +2032,10 @@
           {
             "fee": "custody_israel",
             "price_he": "0.1% לרבעון",
+            "value": {
+              "rate_pct": 0.1,
+              "per": "quarter"
+            },
             "holdings_he": "דמי ניהול פקדון ני״ע בארץ",
             "names_fund": false,
             "source": {
@@ -2020,6 +2048,10 @@
           {
             "fee": "custody_abroad",
             "price_he": "0.1% לרבעון",
+            "value": {
+              "rate_pct": 0.1,
+              "per": "quarter"
+            },
             "holdings_he": "דמי ניהול פקדון ני״ע בחו״ל",
             "names_fund": false,
             "source": {
@@ -2056,6 +2088,10 @@
           {
             "fee": "trade_israel",
             "price_he": "0.39%, בכפוף למינימום",
+            "value": {
+              "rate_pct": 0.39,
+              "per": "trade"
+            },
             "holdings_he": "מניות ואגרות חוב הנסחרים בבורסה בת״א (למעט קרנות נאמנות, אופציות מעו״ף וחוזים עתידיים במעו״ף)",
             "names_fund": false,
             "source": {
@@ -2068,6 +2104,10 @@
           {
             "fee": "trade_abroad",
             "price_he": "0.4%, בכפוף למינימום",
+            "value": {
+              "rate_pct": 0.4,
+              "per": "trade"
+            },
             "holdings_he": "מניות, אגרות חוב וקרנות נאמנות בחו״ל",
             "names_fund": true,
             "source": {
@@ -2080,6 +2120,10 @@
           {
             "fee": "custody_israel",
             "price_he": "0.1% לרבעון",
+            "value": {
+              "rate_pct": 0.1,
+              "per": "quarter"
+            },
             "holdings_he": "דמי ניהול פקדון ני״ע בארץ",
             "names_fund": false,
             "source": {
@@ -2092,6 +2136,10 @@
           {
             "fee": "custody_abroad",
             "price_he": "0.1% לרבעון",
+            "value": {
+              "rate_pct": 0.1,
+              "per": "quarter"
+            },
             "holdings_he": "דמי ניהול פקדון ני״ע בחו״ל",
             "names_fund": false,
             "source": {
@@ -2128,6 +2176,10 @@
           {
             "fee": "trade_israel",
             "price_he": "0.39%, בכפוף למינימום",
+            "value": {
+              "rate_pct": 0.39,
+              "per": "trade"
+            },
             "holdings_he": "מניות ואגרות חוב הנסחרים בבורסה בת״א (למעט קרנות נאמנות, אופציות מעו״ף וחוזים עתידיים במעו״ף)",
             "names_fund": false,
             "source": {
@@ -2140,6 +2192,10 @@
           {
             "fee": "trade_abroad",
             "price_he": "0.4%, בכפוף למינימום",
+            "value": {
+              "rate_pct": 0.4,
+              "per": "trade"
+            },
             "holdings_he": "מניות, אגרות חוב וקרנות נאמנות בחו״ל",
             "names_fund": true,
             "source": {
@@ -2152,6 +2208,10 @@
           {
             "fee": "custody_israel",
             "price_he": "0.133% לרבעון",
+            "value": {
+              "rate_pct": 0.133,
+              "per": "quarter"
+            },
             "holdings_he": "דמי ניהול פקדון ני״ע בארץ",
             "names_fund": false,
             "source": {
@@ -2164,6 +2224,10 @@
           {
             "fee": "custody_abroad",
             "price_he": "0.133% לרבעון",
+            "value": {
+              "rate_pct": 0.133,
+              "per": "quarter"
+            },
             "holdings_he": "דמי ניהול פקדון ני״ע בחו״ל",
             "names_fund": false,
             "source": {

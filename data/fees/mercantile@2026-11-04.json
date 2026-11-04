@@ -1318,6 +1318,10 @@
           {
             "fee": "custody_israel",
             "price_he": "0.1% לרבעון",
+            "value": {
+              "rate_pct": 0.1,
+              "per": "quarter"
+            },
             "holdings_he": "דמי ניהול פיקדון ניירות ערך (לרבות יחידות השתתפות בקרנות נאמנות)",
             "names_fund": true,
             "source": {
@@ -1330,6 +1334,10 @@
           {
             "fee": "custody_abroad",
             "price_he": "0.125% לרבעון",
+            "value": {
+              "rate_pct": 0.125,
+              "per": "quarter"
+            },
             "holdings_he": "דמי ניהול פיקדון ניירות ערך (לרבות יחידות השתתפות בקרנות נאמנות)",
             "names_fund": true,
             "source": {
@@ -1366,6 +1374,10 @@
           {
             "fee": "trade_israel",
             "price_he": "מניות 0.3%, אגרות חוב 0.3%, בכפוף למינימום",
+            "value": {
+              "rate_pct": 0.3,
+              "per": "trade"
+            },
             "holdings_he": "מניות ואגרות חוב",
             "names_fund": false,
             "source": {
@@ -1390,6 +1402,10 @@
           {
             "fee": "custody_israel",
             "price_he": "0.1% לרבעון",
+            "value": {
+              "rate_pct": 0.1,
+              "per": "quarter"
+            },
             "holdings_he": "דמי ניהול פיקדון ניירות ערך (לרבות יחידות השתתפות בקרנות נאמנות)",
             "names_fund": true,
             "source": {
@@ -1402,6 +1418,10 @@
           {
             "fee": "custody_abroad",
             "price_he": "0.125% לרבעון",
+            "value": {
+              "rate_pct": 0.125,
+              "per": "quarter"
+            },
             "holdings_he": "דמי ניהול פיקדון ניירות ערך (לרבות יחידות השתתפות בקרנות נאמנות)",
             "names_fund": true,
             "source": {
@@ -1462,6 +1482,11 @@
           {
             "fee": "custody_israel",
             "price_he": "0.1% לרבעון",
+            "value": {
+              "rate_pct": 0.1,
+              "per": "quarter",
+              "for_months": 24
+            },
             "holdings_he": "דמי ניהול פיקדון ניירות ערך (לרבות יחידות השתתפות בקרנות נאמנות)",
             "names_fund": true,
             "source": {
@@ -1474,6 +1499,11 @@
           {
             "fee": "custody_abroad",
             "price_he": "0.125% לרבעון",
+            "value": {
+              "rate_pct": 0.125,
+              "per": "quarter",
+              "for_months": 24
+            },
             "holdings_he": "דמי ניהול פיקדון ניירות ערך (לרבות יחידות השתתפות בקרנות נאמנות)",
             "names_fund": true,
             "source": {
@@ -1510,6 +1540,11 @@
           {
             "fee": "trade_israel",
             "price_he": "מניות 0.25%, אגרות חוב 0.25%, בכפוף למינימום",
+            "value": {
+              "rate_pct": 0.25,
+              "per": "trade",
+              "for_months": 48
+            },
             "holdings_he": "מניות ואגרות חוב",
             "names_fund": false,
             "source": {
@@ -1534,6 +1569,11 @@
           {
             "fee": "custody_israel",
             "price_he": "0.1% לרבעון",
+            "value": {
+              "rate_pct": 0.1,
+              "per": "quarter",
+              "for_months": 48
+            },
             "holdings_he": "דמי ניהול פיקדון ניירות ערך (לרבות יחידות השתתפות בקרנות נאמנות)",
             "names_fund": true,
             "source": {
@@ -1546,6 +1586,11 @@
           {
             "fee": "custody_abroad",
             "price_he": "0.125% לרבעון",
+            "value": {
+              "rate_pct": 0.125,
+              "per": "quarter",
+              "for_months": 48
+            },
             "holdings_he": "דמי ניהול פיקדון ניירות ערך (לרבות יחידות השתתפות בקרנות נאמנות)",
             "names_fund": true,
             "source": {
@@ -1582,6 +1627,13 @@
           {
             "fee": "trade_israel",
             "price_he": "0.12%, מינימום 10 ש״ח",
+            "value": {
+              "rate_pct": 0.12,
+              "per": "trade",
+              "min": 10,
+              "currency": "ILS",
+              "for_months": 36
+            },
             "holdings_he": "ני\"ע (בלי פירוט)",
             "names_fund": false,
             "source": {
@@ -1594,6 +1646,12 @@
           {
             "fee": "trade_abroad",
             "price_he": "0.15%, כפוף למינימום",
+            "value": {
+              "rate_pct": 0.15,
+              "per": "trade",
+              "side": "buy",
+              "for_months": 36
+            },
             "holdings_he": "ני\"ע (בלי פירוט)",
             "names_fund": false,
             "source": {
@@ -1606,6 +1664,10 @@
           {
             "fee": "custody_israel",
             "price_he": "פטור מדמי ניהול חשבון ני״ע",
+            "value": {
+              "exempt": true,
+              "for_months": 36
+            },
             "holdings_he": "דמי ניהול חשבון ני\"ע",
             "names_fund": false,
             "source": {
@@ -1618,6 +1680,10 @@
           {
             "fee": "custody_abroad",
             "price_he": "פטור מדמי ניהול חשבון ני״ע",
+            "value": {
+              "exempt": true,
+              "for_months": 36
+            },
             "holdings_he": "דמי ניהול חשבון ני\"ע",
             "names_fund": false,
             "source": {
@@ -1655,6 +1721,13 @@
           {
             "fee": "trade_israel",
             "price_he": "0.12%, מינימום 10 ש״ח",
+            "value": {
+              "rate_pct": 0.12,
+              "per": "trade",
+              "min": 10,
+              "currency": "ILS",
+              "for_months": 36
+            },
             "holdings_he": "ני\"ע (בלי פירוט)",
             "names_fund": false,
             "source": {
@@ -1667,6 +1740,12 @@
           {
             "fee": "trade_abroad",
             "price_he": "0.15%, כפוף למינימום",
+            "value": {
+              "rate_pct": 0.15,
+              "per": "trade",
+              "side": "buy",
+              "for_months": 36
+            },
             "holdings_he": "ני\"ע (בלי פירוט)",
             "names_fund": false,
             "source": {
@@ -1679,6 +1758,10 @@
           {
             "fee": "custody_israel",
             "price_he": "פטור מדמי ניהול חשבון ני״ע",
+            "value": {
+              "exempt": true,
+              "for_months": 36
+            },
             "holdings_he": "דמי ניהול חשבון ני\"ע",
             "names_fund": false,
             "source": {
@@ -1691,6 +1774,10 @@
           {
             "fee": "custody_abroad",
             "price_he": "פטור מדמי ניהול חשבון ני״ע",
+            "value": {
+              "exempt": true,
+              "for_months": 36
+            },
             "holdings_he": "דמי ניהול חשבון ני\"ע",
             "names_fund": false,
             "source": {

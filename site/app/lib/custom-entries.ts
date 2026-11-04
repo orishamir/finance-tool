@@ -4,10 +4,11 @@
 // `withCustomEntries` adds them to one copy of the bundle, which only the index page uses.
 //
 // No runtime import of invest.ts or the engine: state.ts reads this file on every page.
-import { valueObject, type ExposureRecord, type FeesSnapshot, type FundRecord, type ValueObject } from "@finance-tool/schema";
-import type { EnteredTariff } from "@finance-tool/engine";
+import { groupPrice, valueObject, type ExposureRecord, type FeesSnapshot, type FundRecord, type ValueObject } from "@finance-tool/schema";
+import type { EnteredTariff, ProviderInput } from "@finance-tool/engine";
 import { invest as copy } from "../copy";
 import type { CustomIndex, OptionId } from "./invest";
+import { groupInputs, layeredOf, type BrokerBase, type GroupCopy } from "./own-account";
 import type { WorkbenchBundle } from "./providers";
 import { entered, type SiteValue } from "./value";
 
@@ -15,7 +16,10 @@ const c = copy.customEntries;
 
 // ---------------------------------------------------------------- what the state holds
 
-/** Null: left empty, which counts as zero (the row says so). */
+/**
+ * Null: left empty, which counts as zero (the row says so). In an account built on a house (`base`, F-101) it means "as the base": the house's
+ * price list, with the group's prices over it where the account started from a group; only what the person typed is theirs.
+ */
 export interface CustomBroker {
   id: string;
   name: string;
@@ -33,6 +37,13 @@ export interface CustomBroker {
   /** Shekels a month. */
   monthlyFee: ValueObject | null;
   sells: { israeli: boolean; abroad: boolean };
+  /**
+   * 2026-11-04: the house this account is built on and, when it started from one, the group or offer whose prices were copied in. Absent in an
+   * entry typed from scratch, which is read exactly as before.
+   */
+  base?: BrokerBase;
+  /** With a `base` that has a group: how many years the group's prices hold, then the house's price list follows; null or absent: the whole plan. */
+  untilYears?: number | null;
 }
 
 /** Null: left empty, which counts as zero. A foreign fund has one yearly charge, held in `fixed`. */
@@ -84,6 +95,30 @@ function figure(raw: unknown, unit: ValueObject["unit"], max: number): ValueObje
 
 const ANY_SUM = Number.MAX_SAFE_INTEGER;
 
+const HOUSE_ID = /^[a-z0-9-]+$/;
+const GROUP_KINDS = ["young", "soldier", "released", "student", "salary", "other"] as const;
+
+/** `null`: no base (an entry from scratch); `undefined`: a base that is not the shape of one, so the entry is left out. */
+function baseFrom(raw: unknown): BrokerBase | null | undefined {
+  if (raw === undefined || raw === null) return null;
+  if (!isObj(raw) || typeof raw.houseId !== "string" || !HOUSE_ID.test(raw.houseId) || typeof raw.houseName !== "string" || !raw.houseName.trim()) return undefined;
+  let group: GroupCopy | null = null;
+  if (raw.group !== null && raw.group !== undefined) {
+    const g = raw.group;
+    if (!isObj(g) || typeof g.name !== "string" || !g.name.trim() || !GROUP_KINDS.includes(g.kind as never) || typeof g.snapshot !== "string" || !DATE.test(g.snapshot) || !Array.isArray(g.prices) || g.prices.length === 0) return undefined;
+    const prices = g.prices.map((p) => groupPrice.safeParse(p));
+    if (prices.some((p) => !p.success)) return undefined;
+    group = { name: g.name, kind: g.kind as GroupCopy["kind"], snapshot: g.snapshot, prices: prices.map((p) => (p as { data: GroupCopy["prices"][number] }).data) };
+  }
+  return { houseId: raw.houseId, houseName: raw.houseName, group };
+}
+
+/** `null`: the whole plan; `undefined`: not a number of years, so the entry is left out. */
+function untilFrom(raw: unknown): number | null | undefined {
+  if (raw === undefined || raw === null) return null;
+  return typeof raw === "number" && Number.isFinite(raw) && raw > 0 && raw <= 100 ? raw : undefined;
+}
+
 /** The custom brokers of a document that pass the check; a bad entry is left out, never a reason to refuse the file. */
 export function validCustomBrokers(list: unknown[]): CustomBroker[] {
   const out: CustomBroker[] = [];
@@ -98,7 +133,10 @@ export function validCustomBrokers(list: unknown[]): CustomBroker[] {
     if (tradePct === undefined || tradeMin === undefined || custodyPct === undefined || custodyMin === undefined || fxPct === undefined || monthlyFee === undefined) continue;
     const s = b.sells;
     if (!isObj(s) || typeof s.israeli !== "boolean" || typeof s.abroad !== "boolean" || (!s.israeli && !s.abroad)) continue;
-    out.push({ id: b.id, name: b.name, added: b.added, tradePct, tradeMin, custodyPct, custodyMin, fxPct, monthlyFee, sells: { israeli: s.israeli, abroad: s.abroad } });
+    const base = baseFrom(b.base);
+    const untilYears = untilFrom(b.untilYears);
+    if (base === undefined || untilYears === undefined) continue;
+    out.push({ id: b.id, name: b.name, added: b.added, tradePct, tradeMin, custodyPct, custodyMin, fxPct, monthlyFee, sells: { israeli: s.israeli, abroad: s.abroad }, ...(base ? { base } : {}), ...(base && untilYears !== null ? { untilYears } : {}) });
   }
   return out;
 }
@@ -132,6 +170,10 @@ export interface BrokerDraft {
   monthlyFee: number | null;
   sellsIsraeli: boolean;
   sellsAbroad: boolean;
+  /** An account built on a house (F-101): the house and, when started from one, the group; left out for one from scratch. */
+  base?: BrokerBase | null;
+  /** With a group: the years it holds, then the house's price list; null: the whole plan. */
+  untilYears?: number | null;
 }
 
 export interface FundDraft {
@@ -149,7 +191,7 @@ const norm = (s: string) => s.trim().replace(/\s+/g, " ");
 
 export const brokerDraftOf = (b: CustomBroker | null): BrokerDraft =>
   b
-    ? { name: b.name, tradePct: num(b.tradePct), tradeMin: num(b.tradeMin), custodyPct: num(b.custodyPct), custodyMin: num(b.custodyMin), fxPct: num(b.fxPct), monthlyFee: num(b.monthlyFee), sellsIsraeli: b.sells.israeli, sellsAbroad: b.sells.abroad }
+    ? { name: b.name, tradePct: num(b.tradePct), tradeMin: num(b.tradeMin), custodyPct: num(b.custodyPct), custodyMin: num(b.custodyMin), fxPct: num(b.fxPct), monthlyFee: num(b.monthlyFee), sellsIsraeli: b.sells.israeli, sellsAbroad: b.sells.abroad, ...(b.base ? { base: b.base, untilYears: b.untilYears ?? null } : {}) }
     : { name: "", tradePct: null, tradeMin: null, custodyPct: null, custodyMin: null, fxPct: null, monthlyFee: null, sellsIsraeli: true, sellsAbroad: true };
 
 export const fundDraftOf = (f: CustomFund | null, kind: OptionId): FundDraft =>
@@ -188,6 +230,7 @@ export function brokerFromDraft(d: BrokerDraft, id: string, today: string): Cust
     fxPct: vo(d.fxPct, "pct_of_trade", today, w.fx),
     monthlyFee: vo(d.monthlyFee, "nis_per_month", today, w.monthly),
     sells: { israeli: d.sellsIsraeli, abroad: d.sellsAbroad },
+    ...(d.base ? { base: d.base, ...(d.untilYears != null && d.untilYears > 0 && d.base.group ? { untilYears: d.untilYears } : {}) } : {}),
   };
 }
 
@@ -255,9 +298,18 @@ export function fundTerms(f: CustomFund): { shown: EntryTerm[]; empty: string[] 
 const IL_CLASSES = ["mutual_fund_units", "etf_units", "tase_foreign_fund_units"] as const;
 const ABROAD_CLASSES = ["foreign_securities"] as const;
 
-/** A broker as a fee snapshot with no lines: the entered tariff is its whole price (F-63). `class: broker`: no tax or custody rule of this page reads more of it. */
-export function snapshotOfBroker(b: CustomBroker): FeesSnapshot {
+/**
+ * A broker as a fee snapshot with no lines: the entered tariff is its whole price (F-63). `class: broker`: no tax or custody rule of this page reads more of it.
+ * With `house`, an account built on it (F-101): the house's own record under the person's name, so its lines, availability and kind of house are the house's,
+ * and what the person's row leaves to the house is read from them; its group prices, price-list notes and what is said against its binding documents stay on the house.
+ */
+export function snapshotOfBroker(b: CustomBroker, house?: FeesSnapshot): FeesSnapshot {
   const closed = (applies: readonly (typeof IL_CLASSES[number] | typeof ABROAD_CLASSES[number])[]) => ({ applies_to: [...applies], available: false, source: { url: "local", title: c.notSoldSource, checked: b.added } });
+  const shut = [...(b.sells.israeli ? [] : [closed(IL_CLASSES)]), ...(b.sells.abroad ? [] : [closed(ABROAD_CLASSES)])];
+  if (house) {
+    const { provider, tariff, snapshot, missing, missing_reason, missing_reason_he, lines, averages, minimums, notice_rule_ids } = house;
+    return { id: b.id, provider: { ...provider, name_he: b.name, part_of: undefined }, tariff, snapshot, missing, missing_reason, ...(missing_reason_he ? { missing_reason_he } : {}), lines, averages, minimums, notice_rule_ids, availability: [...(house.availability ?? []), ...shut] };
+  }
   return {
     id: b.id,
     provider: { name_he: b.name, class: "broker", regulator: "ISA", tase_member: false, protection_rule_ids: [] },
@@ -269,7 +321,7 @@ export function snapshotOfBroker(b: CustomBroker): FeesSnapshot {
     averages: [],
     minimums: { account_opening: null },
     notice_rule_ids: [],
-    availability: [...(b.sells.israeli ? [] : [closed(IL_CLASSES)]), ...(b.sells.abroad ? [] : [closed(ABROAD_CLASSES)])],
+    availability: shut,
   };
 }
 
@@ -331,6 +383,8 @@ function inputsOf(terms: { shown: EntryTerm[] }, owner: string): Record<string, 
 
 export interface EnteredInBundle {
   tariffs: Record<string, EnteredTariff>;
+  /** By broker id: an account built on a house (F-101) is priced on the house's own list tariff for each fund, so its tariff is built per run. */
+  layered: Record<string, NonNullable<ProviderInput["layered"]>>;
   /** By broker or fund id: what its run's provenance sheet lists. */
   inputs: Record<string, Record<string, SiteValue>>;
   /** What a fund on a custom index needs of its index: no exposure record exists for one (F-65). */
@@ -342,13 +396,17 @@ export function withCustomEntries(bundle: WorkbenchBundle, brokers: readonly Cus
   if (brokers.length === 0 && funds.length === 0) return bundle;
   const exposures: EnteredInBundle["exposures"] = Object.fromEntries(indices.map((i) => [i.id, { cash_like: false, currency: i.israeli ? "ILS" : "USD" }]));
   const currencyOf = (f: CustomFund) => bundle.exposures.find((e) => e.id === f.indexId)?.currency ?? exposures[f.indexId]?.currency ?? null;
+  // an account built on a house that is still on the site is priced on that house's record; one whose house is gone keeps only what the person typed
+  const houseOf = (b: CustomBroker) => (b.base ? bundle.snapshots.find((x) => x.id === b.base!.houseId && !isCustomBrokerId(x.id)) : undefined);
+  const onHouse = brokers.filter((b) => houseOf(b));
   return {
     ...bundle,
-    snapshots: [...bundle.snapshots, ...brokers.map(snapshotOfBroker)],
+    snapshots: [...bundle.snapshots, ...brokers.map((b) => snapshotOfBroker(b, houseOf(b)))],
     funds: [...bundle.funds, ...funds.map((f) => recordOfFund(f, currencyOf(f)))],
     entered: {
-      tariffs: Object.fromEntries(brokers.map((b) => [b.id, tariffOfBroker(b)])),
-      inputs: Object.fromEntries([...brokers.map((b) => [b.id, inputsOf(brokerTerms(b), b.name)] as const), ...funds.map((f) => [f.id, inputsOf(fundTerms(f), f.name)] as const)]),
+      tariffs: Object.fromEntries(brokers.filter((b) => !houseOf(b)).map((b) => [b.id, tariffOfBroker(b)])),
+      layered: Object.fromEntries(onHouse.map((b) => [b.id, layeredOf(b)])),
+      inputs: Object.fromEntries([...brokers.map((b) => [b.id, { ...(houseOf(b) ? groupInputs(b) : {}), ...inputsOf(brokerTerms(b), b.name) }] as const), ...funds.map((f) => [f.id, inputsOf(fundTerms(f), f.name)] as const)]),
       exposures,
     },
   };

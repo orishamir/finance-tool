@@ -244,7 +244,23 @@ interface GroupEntryLike {
   who_short_he?: string;
   cheaper_he?: string;
   ends_short_he?: string;
-  prices: { fee?: string; price_he: string; holdings_he: string; names_fund: boolean }[];
+  prices: { fee?: string; price_he: string; holdings_he: string; names_fund: boolean; value?: GroupValueLike; source?: { quote?: string } }[];
+}
+/** The structured numbers of a group price (schema `groupPriceValue`); the check below reads them against the price's words. */
+interface GroupValueLike {
+  rate_pct?: number;
+  per?: string;
+  side?: string;
+  flat?: number;
+  flat_up_to?: number;
+  per_share_cents?: number;
+  discount_pct?: number;
+  not_below_pct?: number;
+  exempt?: boolean;
+  min?: number;
+  max?: number;
+  currency?: string;
+  for_months?: number;
 }
 interface AdvertisingLike {
   fee: string;
@@ -351,6 +367,65 @@ export function checkGroupWords(snap: PremiseSnapshot): string[] {
   }
   return out;
 }
+/** The months a text says: "שנתיים" is 24, "4 שנים" is 48, "שנה" or "לשנה" is 12, "6 חודשים" is 6. */
+const monthsIn = (text: string): number[] => {
+  const out: number[] = [];
+  if (/שנתיים/.test(text)) out.push(24);
+  for (const [, n] of text.matchAll(/(\d+) שנים/g)) out.push(Number(n) * 12);
+  for (const [, n] of text.matchAll(/(\d+) חודשים/g)) out.push(Number(n));
+  if (/(?:^|[\s,ל])שנה(?![\s]*אקדמית)(?=$|[\s,.])/.test(text)) out.push(12);
+  return out;
+};
+const PERIOD_WORD: Record<string, RegExp> = { quarter: /רבעון/, month: /חודש/, year: /שנה|שנתי/ };
+const ILS_WORD = /₪|שקל|ש״ח|ש"ח/;
+const USD_WORD = /דולר|\$/;
+
+/**
+ * A group price's `value` states what the price's words state and nothing more (2026-11-04, F-101): every number is a number of the price's
+ * words or of the quote it rests on, a rate says the period the words give it, an amount's currency is the one the words print, an exemption
+ * is a word of the price, and the months a price holds are the months its words say or its entry's printed end says (`ends_printed`).
+ */
+export function checkGroupValues(snap: PremiseSnapshot): string[] {
+  const g = snap.groups;
+  if (!g || g.state !== "prices") return [];
+  const out: string[] = [];
+  for (const e of g.entries) {
+    for (const x of e.prices) {
+      const v = x.value;
+      if (!v) continue;
+      const at = `groups: ${e.name_he} ${x.fee}`;
+      const pool = [...numbersOf(x.price_he), ...numbersOf(x.source?.quote ?? "")];
+      const stated: [string, number | undefined][] = [["rate_pct", v.rate_pct], ["flat", v.flat], ["flat_up_to", v.flat_up_to], ["per_share_cents", v.per_share_cents], ["discount_pct", v.discount_pct], ["not_below_pct", v.not_below_pct], ["min", v.min], ["max", v.max]];
+      for (const [k, n] of stated) if (n !== undefined && !pool.some((p) => Math.abs(p - n) < 1e-9)) out.push(`${at}: value.${k} ${n} is in neither the price's words nor its quote`);
+      if (v.exempt && !/פטור|0 עמלה/.test(`${x.price_he} ${x.source?.quote ?? ""}`)) out.push(`${at}: value.exempt, and the words do not say פטור`);
+      const trade = x.fee?.startsWith("trade");
+      if (v.rate_pct !== undefined) {
+        if (trade ? v.per !== "trade" : v.per === "trade" || v.per === undefined) out.push(`${at}: value.per ${v.per} does not fit a ${trade ? "trade" : "custody"} fee`);
+        const word = v.per ? PERIOD_WORD[v.per] : undefined;
+        if (word && !word.test(x.price_he)) out.push(`${at}: value.per ${v.per}, and the words do not say it`);
+      }
+      if (v.side !== undefined) {
+        const words = `${x.price_he} ${x.source?.quote ?? ""}`;
+        if (!trade) out.push(`${at}: value.side belongs to a trade fee`);
+        const buyWord = /קני|רכיש/.test(words);
+        const sellWord = /מכיר|מכר/.test(words);
+        if (v.side === "buy" ? !buyWord || sellWord : !sellWord || buyWord) out.push(`${at}: value.side ${v.side}, and the words do not name ${v.side === "buy" ? "a purchase alone" : "a sale alone"}`);
+      }
+      if (v.side === undefined && trade) {
+        const words = `${x.price_he} ${x.source?.quote ?? ""}`;
+        if (/קני|רכיש/.test(words) !== /מכיר|מכר/.test(words) && (/קני|רכיש|מכיר|מכר/.test(words))) out.push(`${at}: the words name one side of a trade alone and value.side is absent`);
+      }
+      if (v.flat !== undefined && !trade) out.push(`${at}: a flat price per operation belongs to a trade fee`);
+      if (v.currency === "USD" && !USD_WORD.test(x.price_he)) out.push(`${at}: value.currency USD, and the words print no dollar`);
+      if (v.currency === "ILS" && !ILS_WORD.test(x.price_he)) out.push(`${at}: value.currency ILS, and the words print no shekel`);
+      if (v.for_months !== undefined) {
+        const said = [...monthsIn(x.price_he), ...(e.ends_printed ? monthsIn(e.ends_he ?? "") : [])];
+        if (!said.includes(v.for_months)) out.push(`${at}: value.for_months ${v.for_months} is neither in the price's words nor in its entry's printed end`);
+      }
+    }
+  }
+  return out;
+}
 /** Before a price ranks: who pays it, on what named holding, and whether a person can do it there. */
 export function checkPricePremises(snap: PremiseSnapshot): string[] {
   if (!["bank", "broker", "foreign_broker"].includes(snap.provider.class) || snap.missing) return [];
@@ -367,6 +442,7 @@ export function checkPricePremises(snap: PremiseSnapshot): string[] {
       for (const x of e.prices) if (x.names_fund !== /קרן|קרנות/.test(x.holdings_he.replace(/למעט[^)]*/g, ""))) out.push(`groups: ${e.name_he}: names_fund does not fit the words "${x.holdings_he}"`);
     }
     out.push(...checkGroupWords(snap));
+    out.push(...checkGroupValues(snap));
   }
   out.push(...checkAdvertising(snap));
   const entries = snap.availability ?? [];

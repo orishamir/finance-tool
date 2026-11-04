@@ -5,7 +5,7 @@ import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
-import { checkAdvertising, checkPricePremises } from "../src/validate.ts";
+import { checkAdvertising, checkGroupValues, checkPricePremises } from "../src/validate.ts";
 
 const dir = fileURLToPath(new URL("../../../data/fees", import.meta.url));
 type Line = { id: string; base: string; applies_to: string[]; [k: string]: unknown };
@@ -133,12 +133,15 @@ describe("group prices stay beside the ranking (D43)", () => {
     const shared = [...hostsOf].flatMap(([a, x], i) => [...hostsOf].slice(i + 1).flatMap(([b, y]) => [...x].filter((h) => y.has(h)).map((h) => `${a} and ${b}: ${h}`)));
     expect(shared).toEqual([]);
   });
+  // 2026-11-04 (F-101): the one reader is own-account.ts, which lists a house's groups as starting points for an account on the person's own terms and
+  // copies the one chosen into that entry; the ranking, the comparison and the engine still never read a group price.
+  const READERS = ["own-account.ts"];
   it("the page's calculation never reads a group price", () => {
     const dirs = ["../../engine/src", "../../../site/app/lib"];
     for (const rel of dirs) {
       const dir = fileURLToPath(new URL(rel + "/", import.meta.url));
       for (const f of readdirSync(dir, { recursive: true }) as string[]) {
-        if (!/\.tsx?$/.test(f) || /\.test\./.test(f)) continue;
+        if (!/\.tsx?$/.test(f) || /\.test\./.test(f) || READERS.includes(f)) continue;
         expect(readFileSync(dir + f, "utf8"), f).not.toMatch(/who_short_he|cheaper_he|ends_short_he|feeGroups|snapshots?\??\.groups|\bs\.groups\b|\{[^}]*\bgroups\b[^}]*\}\s*=\s*(snap|s\b)/);
       }
     }
@@ -186,5 +189,43 @@ describe("advertising stays beside the ranking (D57)", () => {
         expect(readFileSync(dir + f, "utf8"), f).not.toMatch(/advertising|claim_he|binding_he/);
       }
     }
+  });
+});
+
+describe("a group price's numbers (F-101)", () => {
+  const entry = (price_he: string, value: Record<string, unknown>, extra: Record<string, unknown> = {}, ends_he = "3 שנים ממועד ההצטרפות לקבוצה", fee = "trade_israel", quote = "") => ({
+    state: "prices",
+    entries: [{ name_he: "קבוצה", ends_printed: true, ends_he, prices: [{ fee, price_he, holdings_he: "מניות", names_fund: false, value: { ...value, ...extra }, source: { quote } }] }],
+  });
+  const check = (groups: ReturnType<typeof entry>) => checkGroupValues({ provider: { class: "bank" }, lines: [], groups } as never);
+  it("passes a value whose numbers, period and currency are the words'", () => {
+    expect(check(entry("0.12%, מינימום 10 ש״ח", { rate_pct: 0.12, per: "trade", min: 10, currency: "ILS", for_months: 36 }))).toEqual([]);
+    expect(check(entry("0.075% לרבעון", { rate_pct: 0.075, per: "quarter" }, {}, "x", "custody_israel"))).toEqual([]);
+    expect(check(entry("פטור, לשנה", { exempt: true, for_months: 12 }, {}, "x", "custody_abroad"))).toEqual([]);
+    expect(check(entry("1 סנט למניה, מינימום 6 דולר", { per_share_cents: 1, min: 6, currency: "USD" }))).toEqual([]);
+  });
+  it("refuses a number the words do not hold, a period or currency they do not say, and an end nobody printed", () => {
+    expect(check(entry("0.12%, מינימום 10 ש״ח", { rate_pct: 0.2, per: "trade" }))[0]).toMatch(/rate_pct 0.2 is in neither/);
+    expect(check(entry("0.12%, מינימום 10 ש״ח", { rate_pct: 0.12, per: "trade", min: 10, currency: "USD" }))[0]).toMatch(/currency USD/);
+    expect(check(entry("0.075% לרבעון", { rate_pct: 0.075, per: "year" }, {}, "x", "custody_israel"))[0]).toMatch(/per year/);
+    expect(check(entry("0.075% לרבעון", { rate_pct: 0.075, per: "trade" }, {}, "x", "custody_israel"))[0]).toMatch(/does not fit a custody fee/);
+    expect(check(entry("0.12%", { rate_pct: 0.12, per: "trade", for_months: 24 }))[0]).toMatch(/for_months 24/);
+    expect(check(entry("פטור", { exempt: true }, {}, "x", "trade_israel", "x"))).toEqual([]);
+    expect(check(entry("0.12%", { exempt: true }))[0]).toMatch(/do not say פטור/);
+  });
+  it("holds a side to the words: a purchase named alone needs side buy, a price for both has none", () => {
+    const words = "0.15%, כפוף למינימום";
+    const quote = 'עמלת קניה בחו"ל 0.15%';
+    expect(check(entry(words, { rate_pct: 0.15, per: "trade", side: "buy" }, {}, "x", "trade_abroad", quote))).toEqual([]);
+    expect(check(entry(words, { rate_pct: 0.15, per: "trade" }, {}, "x", "trade_abroad", quote))[0]).toMatch(/one side of a trade alone/);
+    expect(check(entry(words, { rate_pct: 0.15, per: "trade", side: "sell" }, {}, "x", "trade_abroad", quote))[0]).toMatch(/side sell/);
+    expect(check(entry("0.15%", { rate_pct: 0.15, per: "trade", side: "buy" }, {}, "x", "trade_abroad", "קניה ומכירה 0.15%"))[0]).toMatch(/side buy/);
+    expect(check(entry("0.075% לרבעון", { rate_pct: 0.075, per: "quarter", side: "buy" }, {}, "x", "custody_israel", "קניה"))[0]).toMatch(/belongs to a trade fee/);
+    expect(check(entry("0.15%", { rate_pct: 0.15, per: "trade" }, {}, "x", "trade_abroad", "קניה ומכירה 0.15%"))).toEqual([]);
+  });
+  it("takes an end only from an entry that prints one", () => {
+    const g = entry("0.12%", { rate_pct: 0.12, per: "trade", for_months: 36 });
+    g.entries[0]!.ends_printed = false;
+    expect(check(g)[0]).toMatch(/for_months 36/);
   });
 });

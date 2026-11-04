@@ -57,22 +57,63 @@ export const availabilityEntry = z.strictObject({
 });
 
 /** A group price's place in a document: its page or sheet row, and the document's own words there (2026-10-31, issue 140). */
-const groupSource = z.strictObject({
+export const groupSource = z.strictObject({
   url: z.string().min(1),
   title: z.string().min(1),
   page: z.number().int().positive().optional(),
   row: z.number().int().positive().optional(),
   quote: z.string().min(1),
 });
+/**
+ * A group price's numbers, as the words state them and nothing more (2026-11-04, own account on a house, F-101). Exactly one kind of price:
+ * `exempt` ("פטור", "0 עמלה"); `discount_pct` off the house's own price for the same fee ("50% הנחה", with `not_below_pct` where the words
+ * floor it); `rate_pct` of the trade value (`per: "trade"`) or of the balance for each `per` ("0.075% לרבעון"); `flat` for each operation, up to
+ * `flat_up_to` where the words limit the order's size; `per_share_cents` for each share. `side` (`buy` or `sell`) only where the words name a purchase only or a sale only (Mercantile Top's "עמלת קניה בחו\"ל"); absent, the price is for both. `min` and `max` are the bounds the words print
+ * (a custody `max` is the one per security); a bound the words do not print is left out, and the house's own stays (silence is not zero).
+ * Amounts are in `currency`. `for_months` is how long the price holds from joining where the price's words say so, or its entry's printed end
+ * is a plain period from joining ("3 שנים ממועד ההצטרפות"). A price whose words give two prices, tiers, a condition on the balance or on the
+ * order count, or an extra fee they do not size has no `value`: the words alone stand. The data check holds each number to the price's words
+ * or its quote.
+ */
+export const groupPriceValue = z
+  .strictObject({
+    rate_pct: z.number().min(0).max(100).optional(),
+    per: z.enum(["trade", "month", "quarter", "year"]).optional(),
+    /** Set only where the words name a purchase only or a sale only; absent means both sides (2026-11-04, finance review). A trade price only. */
+    side: z.enum(["buy", "sell"]).optional(),
+    flat: z.number().positive().optional(),
+    flat_up_to: z.number().positive().optional(),
+    per_share_cents: z.number().positive().optional(),
+    discount_pct: z.number().positive().max(100).optional(),
+    not_below_pct: z.number().positive().max(100).optional(),
+    exempt: z.literal(true).optional(),
+    min: z.number().positive().optional(),
+    max: z.number().positive().optional(),
+    currency: z.enum(["ILS", "USD"]).optional(),
+    for_months: z.number().int().positive().optional(),
+  })
+  .superRefine((v, ctx) => {
+    const kinds = [v.exempt, v.discount_pct, v.rate_pct, v.flat, v.per_share_cents].filter((x) => x !== undefined);
+    if (kinds.length !== 1) ctx.addIssue({ code: "custom", message: "a price value is exactly one of exempt, discount_pct, rate_pct, flat, per_share_cents" });
+    if (v.rate_pct !== undefined && v.per === undefined) ctx.addIssue({ code: "custom", path: ["per"], message: "a rate says what it is of: per" });
+    if (v.rate_pct === undefined && v.per !== undefined) ctx.addIssue({ code: "custom", path: ["per"], message: "per belongs to a rate" });
+    if ((v.flat !== undefined || v.per_share_cents !== undefined || v.min !== undefined || v.max !== undefined) && v.currency === undefined) ctx.addIssue({ code: "custom", path: ["currency"], message: "an amount says its currency" });
+    if (v.flat_up_to !== undefined && v.flat === undefined) ctx.addIssue({ code: "custom", path: ["flat_up_to"], message: "flat_up_to belongs to flat" });
+    if (v.not_below_pct !== undefined && v.discount_pct === undefined) ctx.addIssue({ code: "custom", path: ["not_below_pct"], message: "not_below_pct belongs to discount_pct" });
+    if (v.exempt && (v.min !== undefined || v.max !== undefined)) ctx.addIssue({ code: "custom", message: "an exempt price has no bounds" });
+  });
+
 /** One fee a group pays less of, as printed. `names_fund`: the row's own words name fund units; a row that does not is never read as covering a tracking fund (D42). */
-const groupPrice = z.strictObject({
+export const groupPrice = z.strictObject({
   fee: z.enum(["trade_israel", "trade_abroad", "custody_israel", "custody_abroad"]),
   price_he: z.string().min(1),
+  /** The price's numbers where the words state exactly one price (see `groupPriceValue`); absent where they do not. */
+  value: groupPriceValue.optional(),
   holdings_he: z.string().min(1),
   names_fund: z.boolean(),
   source: groupSource,
 });
-const groupEntry = z.strictObject({
+export const groupEntry = z.strictObject({
   /** `salary` (2026-11-04, D43 amended): a lower price for those who move their salary to the bank or hold a portfolio there. */
   kind: z.enum(["young", "soldier", "released", "student", "salary", "other"]),
   name_he: z.string().min(1),
@@ -198,5 +239,9 @@ export const feesSnapshot = z.strictObject({
   });
 
 export type FeeLine = z.infer<typeof feeLine>;
+export type GroupPrice = z.infer<typeof groupPrice>;
+export type GroupPriceValue = z.infer<typeof groupPriceValue>;
+export type GroupSource = z.infer<typeof groupSource>;
+export type GroupEntry = z.infer<typeof groupEntry>;
 export type AdvertisingEntry = z.infer<typeof advertisingEntry>;
 export type FeesSnapshot = z.infer<typeof feesSnapshot>;

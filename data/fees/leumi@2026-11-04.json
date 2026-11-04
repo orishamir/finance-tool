@@ -1577,6 +1577,10 @@
           {
             "fee": "custody_israel",
             "price_he": "0.075% לרבעון",
+            "value": {
+              "rate_pct": 0.075,
+              "per": "quarter"
+            },
             "holdings_he": "דמי ניהול ני״ע ישראל",
             "names_fund": false,
             "source": {
@@ -1589,6 +1593,10 @@
           {
             "fee": "custody_abroad",
             "price_he": "0.100% לרבעון",
+            "value": {
+              "rate_pct": 0.1,
+              "per": "quarter"
+            },
             "holdings_he": "דמי ניהול ני״ע חו״ל",
             "names_fund": false,
             "source": {
@@ -1632,6 +1640,10 @@
           {
             "fee": "custody_israel",
             "price_he": "0.075% לרבעון",
+            "value": {
+              "rate_pct": 0.075,
+              "per": "quarter"
+            },
             "holdings_he": "דמי ניהול ני״ע ישראל",
             "names_fund": false,
             "source": {
@@ -1644,6 +1656,10 @@
           {
             "fee": "custody_abroad",
             "price_he": "0.100% לרבעון",
+            "value": {
+              "rate_pct": 0.1,
+              "per": "quarter"
+            },
             "holdings_he": "דמי ניהול ני״ע חו״ל",
             "names_fund": false,
             "source": {
@@ -1687,6 +1703,10 @@
           {
             "fee": "custody_israel",
             "price_he": "0.090% לרבעון",
+            "value": {
+              "rate_pct": 0.09,
+              "per": "quarter"
+            },
             "holdings_he": "דמי ניהול ני״ע ישראל",
             "names_fund": false,
             "source": {
@@ -1699,6 +1719,10 @@
           {
             "fee": "custody_abroad",
             "price_he": "0.120% לרבעון",
+            "value": {
+              "rate_pct": 0.12,
+              "per": "quarter"
+            },
             "holdings_he": "דמי ניהול ני״ע חו״ל",
             "names_fund": false,
             "source": {
@@ -1736,6 +1760,10 @@
           {
             "fee": "custody_israel",
             "price_he": "פטור, לשנה",
+            "value": {
+              "exempt": true,
+              "for_months": 12
+            },
             "holdings_he": "ני״ע ישראליים וזרים",
             "names_fund": false,
             "source": {
@@ -1748,6 +1776,10 @@
           {
             "fee": "custody_abroad",
             "price_he": "פטור, לשנה",
+            "value": {
+              "exempt": true,
+              "for_months": 12
+            },
             "holdings_he": "ני״ע ישראליים וזרים",
             "names_fund": false,
             "source": {
@@ -1760,6 +1792,10 @@
           {
             "fee": "trade_israel",
             "price_he": "7 שקלים לפעולה",
+            "value": {
+              "flat": 7,
+              "currency": "ILS"
+            },
             "holdings_he": "ני״ע ישראליים",
             "names_fund": false,
             "source": {
@@ -1772,6 +1808,10 @@
           {
             "fee": "trade_abroad",
             "price_he": "7 דולר לפעולה",
+            "value": {
+              "flat": 7,
+              "currency": "USD"
+            },
             "holdings_he": "ני״ע זרים",
             "names_fund": false,
             "source": {
@@ -1802,6 +1842,9 @@
           {
             "fee": "custody_israel",
             "price_he": "פטור",
+            "value": {
+              "exempt": true
+            },
             "holdings_he": "ני״ע ישראליים וזרים",
             "names_fund": false,
             "source": {
@@ -1814,6 +1857,9 @@
           {
             "fee": "custody_abroad",
             "price_he": "פטור",
+            "value": {
+              "exempt": true
+            },
             "holdings_he": "ני״ע ישראליים וזרים",
             "names_fund": false,
             "source": {
@@ -1826,6 +1872,10 @@
           {
             "fee": "trade_israel",
             "price_he": "7 שקלים לפעולה",
+            "value": {
+              "flat": 7,
+              "currency": "ILS"
+            },
             "holdings_he": "ני״ע ישראליים",
             "names_fund": false,
             "source": {
@@ -1838,6 +1888,10 @@
           {
             "fee": "trade_abroad",
             "price_he": "7 דולר לפעולה",
+            "value": {
+              "flat": 7,
+              "currency": "USD"
+            },
             "holdings_he": "ני״ע זרים",
             "names_fund": false,
             "source": {
@@ -1880,6 +1934,10 @@
           {
             "fee": "custody_israel",
             "price_he": "0.075% לרבעון",
+            "value": {
+              "rate_pct": 0.075,
+              "per": "quarter"
+            },
             "holdings_he": "דמי ניהול ני״ע ישראל",
             "names_fund": false,
             "source": {
@@ -1892,6 +1950,10 @@
           {
             "fee": "custody_abroad",
             "price_he": "0.100% לרבעון",
+            "value": {
+              "rate_pct": 0.1,
+              "per": "quarter"
+            },
             "holdings_he": "דמי ניהול ני״ע חו״ל",
             "names_fund": false,
             "source": {
@@ -1929,6 +1991,10 @@
           {
             "fee": "custody_israel",
             "price_he": "פטור, לשנה",
+            "value": {
+              "exempt": true,
+              "for_months": 12
+            },
             "holdings_he": "ניירות ערך ישראליים וזרים",
             "names_fund": false,
             "source": {
@@ -1941,6 +2007,10 @@
           {
             "fee": "custody_abroad",
             "price_he": "פטור, לשנה",
+            "value": {
+              "exempt": true,
+              "for_months": 12
+            },
             "holdings_he": "ניירות ערך ישראליים וזרים",
             "names_fund": false,
             "source": {
@@ -1953,6 +2023,10 @@
           {
             "fee": "trade_israel",
             "price_he": "7 שקלים לפעולה",
+            "value": {
+              "flat": 7,
+              "currency": "ILS"
+            },
             "holdings_he": "ניירות ערך ישראלים",
             "names_fund": false,
             "source": {
@@ -1965,6 +2039,10 @@
           {
             "fee": "trade_abroad",
             "price_he": "7 דולר לפעולה",
+            "value": {
+              "flat": 7,
+              "currency": "USD"
+            },
             "holdings_he": "ניירות ערך זרים",
             "names_fund": false,
             "source": {
@@ -1995,6 +2073,10 @@
           {
             "fee": "trade_israel",
             "price_he": "0.400%",
+            "value": {
+              "rate_pct": 0.4,
+              "per": "trade"
+            },
             "holdings_he": "אג״ח ומניות הנסחרות בארץ, בערוץ ישיר",
             "names_fund": false,
             "source": {
@@ -2007,6 +2089,10 @@
           {
             "fee": "custody_israel",
             "price_he": "0.125% לרבעון",
+            "value": {
+              "rate_pct": 0.125,
+              "per": "quarter"
+            },
             "holdings_he": "ני״ע הנסחרים בארץ",
             "names_fund": false,
             "source": {
@@ -2037,6 +2123,11 @@
           {
             "fee": "trade_israel",
             "price_he": "4 ₪ לפעולה, עד 30,000 ₪ להוראה",
+            "value": {
+              "flat": 4,
+              "flat_up_to": 30000,
+              "currency": "ILS"
+            },
             "holdings_he": "מניות, מק״מ ואגרות חוב הנסחרים בבורסה בת״א",
             "names_fund": false,
             "source": {
@@ -2049,6 +2140,11 @@
           {
             "fee": "trade_abroad",
             "price_he": "4 דולר לפעולה, עד 8,000 דולר להוראה",
+            "value": {
+              "flat": 4,
+              "flat_up_to": 8000,
+              "currency": "USD"
+            },
             "holdings_he": "מניות, אגרות חוב וקרנות נאמנות הנסחרים בחוץ לארץ",
             "names_fund": true,
             "source": {
@@ -2061,6 +2157,12 @@
           {
             "fee": "custody_abroad",
             "price_he": "0.150% לרבעון, מקסימום 3,700 ₪ לנייר ערך ו־11,500 ₪ לפיקדון",
+            "value": {
+              "rate_pct": 0.15,
+              "per": "quarter",
+              "max": 3700,
+              "currency": "ILS"
+            },
             "holdings_he": "דמי ניהול ני״ע חו״ל",
             "names_fund": false,
             "source": {

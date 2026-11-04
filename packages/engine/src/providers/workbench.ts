@@ -10,7 +10,7 @@ import { feeLines, withoutFeeLine, type FeeLine } from "../fees/materiality.ts";
 import type { Commission, Custody } from "../formulas/fees.ts";
 import type { Goal } from "../formulas/time.ts";
 import type { Profile } from "../ledgers/common.ts";
-import { memberKindOf, runSecurities, type Fund, type SecuritiesInput } from "../ledgers/securities.ts";
+import { checkTariffPeriods, memberKindOf, runSecurities, type Fund, type SecuritiesInput } from "../ledgers/securities.ts";
 import { RecordInputError } from "../resolver.ts";
 import type { RunContext, RunResult } from "../result.ts";
 
@@ -20,11 +20,37 @@ export type FeeLevel = "list" | "regulator_average" | "tase_average" | "entered"
 /** The tariff lines of a securities run the person may type in (state "entered"); a line left out stays at the list price. */
 export interface EnteredTariff {
   buy?: Commission;
+  /** F-12: the price of a monthly purchase by standing order. Set only where the tariff has one; a line left out is the provider's own list line, if any (an entered `buy` or `sell` leaves the list's standing line out). */
+  buyStanding?: Commission;
   sell?: Commission;
+  /** F-24: a redemption. Read by the makam run only. */
+  redeem?: Commission;
   custody?: Custody;
   /** A bare number is the percentage with no bounds; the `Commission` shape adds min and max in the instrument's currency (`in: "instrument"`). */
   fx?: number | Commission;
+  /** F-13: the conversion of a monthly purchase on a recurring plan. */
+  fxStanding?: number | Commission;
   monthlyFee?: number;
+  /** F-12, F-13: a monthly purchase pays the lower of the standing-order price and the regular one (see `SecuritiesTariff.cheaperOfStanding`). */
+  cheaperOfStanding?: boolean;
+  /**
+   * F-101 (2026-11-04): a price for a time, as a sequence. These lines apply to the run's months 1 to `months`; `then` is the tariff after
+   * them (the provider's own list lines under whatever `then` names), and may carry a period of its own, counted from the start of the run.
+   */
+  until?: { months: number; then: EnteredTariff };
+}
+
+/** What the run holds that a layered account may need (F-101): the shekels per unit of a currency, the fund's class and currency, its share price. */
+export interface LayeredRun {
+  fx: Record<string, number> | undefined;
+  instrumentClass: string;
+  currency: { code: string; startRate: number } | undefined;
+  sharePrice: number | undefined;
+}
+/** A layer that needs what the run lacks: the provider's row is "not comparable" with this reason, as a list line that needs it would be. */
+export interface LayeredUnusable {
+  unusable: "needs-fx-rate" | "needs-share-price";
+  detail: string;
 }
 
 export interface ProviderInput {
@@ -40,6 +66,13 @@ export interface ProviderInput {
    * 2026-10-25: several texts may be given, one per base the snapshot splits by band (a trade band and an FX band); a line is asked for when its band contains any of them.
    */
   band?: string | readonly string[];
+  /**
+   * F-101 (2026-11-04): an account the person builds on this provider. With level `entered`, the provider's own list tariff for this fund
+   * and channel is built first (the same `buildTariff` at level `list`, so no second reading of a price list exists) and handed to this
+   * function, whose result is the entered tariff. A list tariff that cannot be built makes this provider's row "not comparable" as its own
+   * list row would be.
+   */
+  layered?: (list: SecuritiesInput["tariff"], run: LayeredRun) => EnteredTariff | LayeredUnusable;
 }
 
 export interface WorkbenchInput {
@@ -329,6 +362,9 @@ export function buildTariff(input: Omit<WorkbenchInput, "fund"> & { fund?: Workb
   if (entered?.buy || entered?.sell) {
     if (entered.buy) out.tariff.buy = entered.buy;
     if (entered.sell) out.tariff.sell = entered.sell;
+    if (entered.buyStanding) out.tariff.buyStanding = entered.buyStanding;
+    if (entered.redeem) out.tariff.redeem = entered.redeem;
+    if (entered.cheaperOfStanding) out.tariff.cheaperOfStanding = true;
   } else {
     const r = resolve("trade");
     if (r) {
@@ -416,8 +452,10 @@ export function buildTariff(input: Omit<WorkbenchInput, "fund"> & { fund?: Workb
   // FX: only a fund quoted in a foreign currency is converted (F-13).
   if (input.currency) {
     out.tariff.currency = input.currency;
-    if (entered?.fx !== undefined) out.tariff.fx = entered.fx;
-    else {
+    if (entered?.fx !== undefined) {
+      out.tariff.fx = entered.fx;
+      if (entered.fxStanding !== undefined) out.tariff.fxStanding = entered.fxStanding;
+    } else {
       const r = resolve("fx");
       if (r) {
         const c: Commission = { rate: 0 };
@@ -459,6 +497,15 @@ export function buildTariff(input: Omit<WorkbenchInput, "fund"> & { fund?: Workb
         }
       }
     }
+  }
+
+  // F-101: a price for a time. The tariff after it is built the same way from its own lines, over the provider's list lines.
+  if (entered?.until) {
+    const after = buildTariff(input, { ...p, level: "entered", entered: entered.until.then, layered: undefined }, snapshot);
+    const { currency: _, ...then } = after.tariff;
+    out.tariff.until = { months: entered.until.months, then };
+    // a period that ends between two custody charges is refused here, so that the provider's row says so (the run refuses it too)
+    checkTariffPeriods(out.tariff);
   }
 
   // Lines that apply to the fund but that no formula here charges (F-18 is pending; the rest are not part of a holding's running cost).
@@ -560,7 +607,8 @@ export function providerWorkbench(input: WorkbenchInput, ctx: RunContext): Provi
   const none12 = runSecurities(plan(bare, 12), ctx);
 
   const rows: ProviderRow[] = [];
-  for (const p of input.providers) {
+  for (const given of input.providers) {
+    let p = given;
     const s = checkedSnapshot(p.snapshot);
     const base: ProviderBase = {
       id: s.id,
@@ -581,7 +629,15 @@ export function providerWorkbench(input: WorkbenchInput, ctx: RunContext): Provi
     }
     let built: TariffBuild;
     try {
-      built = buildTariff(input, p, s.missing ? { ...s, lines: [], averages: [] } : s);
+      const forBuild = s.missing ? { ...s, lines: [], averages: [] } : s;
+      if (p.level === "entered" && p.layered) {
+        // F-101: the provider's own list tariff first, then the layers on it
+        const list = buildTariff(input, { ...p, level: "list", entered: undefined, layered: undefined }, forBuild);
+        const layers = p.layered(list.tariff, { fx: input.fx, instrumentClass: input.instrumentClass, currency: input.currency, sharePrice: input.fund?.sharePrice });
+        if ("unusable" in layers) throw new Unusable(layers.unusable, layers.detail);
+        p = { ...p, entered: layers, layered: undefined };
+      }
+      built = buildTariff(input, p, forBuild);
     } catch (e) {
       if (e instanceof Unusable) {
         notComparable({ code: e.code, detail: e.message });

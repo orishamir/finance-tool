@@ -3,7 +3,7 @@
 // numbers come from the engine's provider workbench (F-63) and from the fund runs of F-65, over the bundle the other
 // workbench pages use. No fee, rate or rule figure is written here: tariffs are snapshots, fund fees are fund records,
 // exchange rates are the ECB's (D26). Nothing is chosen for the person (D27): an index is always an argument.
-import { STANDING_CONVERSION_BAND, STANDING_ORDER_BAND, beforeTax, costByWho, gapToIndex, sumFees, trackingBeyondFees, providerWorkbench, relativeGap, type ComparedProvider, type FeeLine, type NotComparableProvider, type ProviderRow } from "@finance-tool/engine";
+import { STANDING_CONVERSION_BAND, STANDING_ORDER_BAND, beforeTax, buildTariff, costByWho, gapToIndex, sumFees, trackingBeyondFees, providerWorkbench, relativeGap, type ComparedProvider, type FeeLine, type LayeredRun, type NotComparableProvider, type ProviderRow, type TariffBuild } from "@finance-tool/engine";
 import type { ExposureRecord, FeesSnapshot, FundRecord } from "@finance-tool/schema";
 import { invest as copy } from "../copy";
 import { isCustomBrokerId, isCustomFund } from "./custom-entries";
@@ -422,6 +422,9 @@ function runSlot(ctx: Ctx, spec: Spec, items: { s: FeesSnapshot; cand: Cand }[])
     providers: list.map((x) => {
       // the person's own broker has no lines of its own: its whole price is what was typed (F-63, D44)
       const entered = ctx.bundle.entered?.tariffs[x.s.id];
+      // an account built on a house (F-101): the house's own list tariff for this fund and reading, with the group's and the person's prices over it
+      const layered = ctx.bundle.entered?.layered?.[x.s.id];
+      if (layered) return { snapshot: scoped(x.s), level: "entered" as const, layered, ...(x.cand.band ? { band: x.cand.band } : {}) };
       return entered ? { snapshot: scoped(x.s), level: "entered" as const, entered } : { snapshot: scoped(x.s), level: "list" as const, ...(x.cand.band ? { band: x.cand.band } : {}) };
     }),
   });
@@ -438,6 +441,31 @@ function runSlot(ctx: Ctx, spec: Spec, items: { s: FeesSnapshot; cand: Cand }[])
       }
     });
   }
+}
+
+/**
+ * A house's own list tariff for a kind of holding, read as the comparison reads it for a generic fund of the option (the first reading of its
+ * tariff that builds): what an account built on the house starts from (F-101), with the run facts the layers need. Null when the option cannot
+ * run (no exchange rate for a fund abroad) or no reading of the house's tariff builds.
+ */
+export function listReading(bundle: WorkbenchBundle, s: FeesSnapshot, option: OptionId, plan: WorkbenchInputs): { built: TariffBuild; run: LayeredRun; line: (id: string) => FeesSnapshot["lines"][number] | undefined } | null {
+  const ctx = makeCtx(bundle, plan);
+  const spec = genericSpec(ctx, option);
+  if (!spec) return null;
+  const scopedSnap = scoped(s);
+  for (const cand of candidates(scopedSnap, option)) {
+    try {
+      const built = buildTariff(
+        { goal: { amountNow: plan.amountNow, monthly: plan.monthly, months: 12 * plan.years }, market: { ...spec.market, inflation: plan.inflation }, profile: {}, instrumentClass: spec.cls, channel: "direct", ...(spec.currency ? { currency: spec.currency } : {}), fx: ctx.fx, theta: ctx.theta, providers: [] },
+        { snapshot: scopedSnap, level: "list", ...(cand.band ? { band: cand.band } : {}) },
+        scopedSnap,
+      );
+      return { built, run: { fx: ctx.fx, instrumentClass: spec.cls, currency: spec.currency, sharePrice: undefined }, line: (id) => scopedSnap.lines.find((l) => l.id === id) };
+    } catch {
+      continue;
+    }
+  }
+  return null;
 }
 
 function ambiguity(message: string, s: FeesSnapshot): NotComparable | null {
