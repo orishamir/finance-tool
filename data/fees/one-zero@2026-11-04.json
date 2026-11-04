@@ -519,265 +519,6 @@
         "state": "sourced",
         "notes": "Not limited by the documents (D56). The tariff prints a conversion fee but no spread; the general terms define 'שער הבנק הדיגיטלי' as the rate the bank publishes, 'נקבע על ידי הבנק בהתאם לנהלים ולכללים הנהוגים בבנק מעת לעת', with the conversion fee added on top. The securities standing-order terms (4.4.2): 'תבוצע המרה של סכום ההשקעה בהתאם לשער של הבנק הדיגטלי'. Advertising 'ללא עמלת המרת מט\"ח' (lp/tradenew) holds for the One plans only (annex ו'); for ZERO the fee is 0.15%, minimum 5 USD."
       }
-    },
-    {
-      "id": "one-zero-plan-one-monthly-fee",
-      "base": "fixed_period",
-      "applies_to": [
-        "all"
-      ],
-      "level": "list",
-      "rate": {
-        "value": 49,
-        "unit": "nis_per_month",
-        "source": {
-          "url": "https://www.onezerobank.com/warehouse/userUploadFiles/Image/01-%20%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F%20%D7%94%D7%A2%D7%9E%D7%9C%D7%95%D7%AA%20%D7%94%D7%9E%D7%9C%D7%90%20-%20%D7%9E%D7%94%D7%93%D7%95%D7%A8%D7%94%20%D7%9E%D7%99%D7%95%D7%9D%2026.7.26_announcement.pdf",
-          "title": "ONE ZERO - תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (שאינם תאגידים), תאריך פרסום: 24/6/2026, בתוקף מיום 26.7.2026, חלק 1, 1 (ג) (3) מסלול מורחב פלוס - מסלול ONE (עמ' 5)",
-          "publisher": "One Zero Digital Bank Ltd.",
-          "strength": "institution"
-        },
-        "checked": "2026-11-04",
-        "effective_from": "2026-07-26",
-        "effective_to": null,
-        "tax_year": null,
-        "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-24"
-        ],
-        "state": "sourced",
-        "notes": "'מסלול ONE חשבון יחיד – 49 ש״ח לחודש', 'מסלול ONE חשבון משותף – 49 ש״ח לחודש', charged at the start of the month for the month before. ONE PLUS: 'מסלול PLUS ONE חשבון יחיד – 89 ש״ח לחודש' (page 6), joint the same. Footnote 6: a downgrade takes effect on the 1st of the next month; an upgrade mid-month is charged pro rata. The plan buys the annex ו' benefits recorded in the plan lines. Re-read 2026-11-04: no plan is required to trade: 'תנאים משפטיים - עמלות ומסלולים' s.1 lets new customers choose 'שלא לשייך את החשבון למסלול עמלות באופן שכל פעולה בחשבון תחויב בהתאם לתעריפון הבנק (ZERO)'; s.3.2 charges the plan 'וללא תלות בניצול השירותים'. Advertising (plans page footnote, seen 2026-11-04): 'One/One Business ללא עלות בהעברת 5,000₪ בחודש לחשבון או תשלום חודשי בסך 49₪. +One ללא עלות בהעברת 10,000₪'; no promotion terms for that waiver were found (see left_out)."
-      },
-      "min": null,
-      "max": null,
-      "period": "month",
-      "channel": null,
-      "band": "מסלול ONE",
-      "statement_code": null,
-      "names": {
-        "tariff": [
-          "מסלול מורחב פלוס",
-          "מסלול ONE"
-        ]
-      }
-    },
-    {
-      "id": "one-zero-buy-sell-tase-plan-one",
-      "base": "trade",
-      "applies_to": [
-        "tase_shares_bonds",
-        "etf_units"
-      ],
-      "level": "list",
-      "rate": {
-        "value": 0.1,
-        "unit": "pct_of_trade",
-        "source": {
-          "url": "https://www.onezerobank.com/warehouse/userUploadFiles/Image/01-%20%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F%20%D7%94%D7%A2%D7%9E%D7%9C%D7%95%D7%AA%20%D7%94%D7%9E%D7%9C%D7%90%20-%20%D7%9E%D7%94%D7%93%D7%95%D7%A8%D7%94%20%D7%9E%D7%99%D7%95%D7%9D%2026.7.26_announcement.pdf",
-          "title": "ONE ZERO - תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (שאינם תאגידים), תאריך פרסום: 24/6/2026, בתוקף מיום 26.7.2026, נספח ו' - הטבות למסלולים מסוג מורחב פלוס, הטבות לחשבון יחיד במסלול ONE, חלק 4 - ניירות ערך (עמ' 21; חשבון משותף עמ' 24)",
-          "publisher": "One Zero Digital Bank Ltd.",
-          "strength": "institution"
-        },
-        "checked": "2026-11-04",
-        "effective_from": "2026-07-26",
-        "effective_to": null,
-        "tax_year": null,
-        "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
-        "state": "sourced",
-        "notes": "'עמלה בשיעור של 0.1%, מינימום 10 ₪, מקסימום 2,000 ₪ (הטבה בשיעור של 66%)' for 'קניה, מכירה ופדיון של ניירות ערך הנסחרים בבורסה בתל אביב - מניות ואגרות חוב', for a ONE plan account (49 NIS a month). ONE PLUS (עמ' 27, 31): exempt for up to 10 trades a calendar month in TASE and foreign securities together (the reasonable-use limit), then 0.1%, minimum 10 NIS, maximum 2,000 NIS."
-      },
-      "min": {
-        "value": 10,
-        "unit": "nis_per_trade",
-        "source": {
-          "url": "https://www.onezerobank.com/warehouse/userUploadFiles/Image/01-%20%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F%20%D7%94%D7%A2%D7%9E%D7%9C%D7%95%D7%AA%20%D7%94%D7%9E%D7%9C%D7%90%20-%20%D7%9E%D7%94%D7%93%D7%95%D7%A8%D7%94%20%D7%9E%D7%99%D7%95%D7%9D%2026.7.26_announcement.pdf",
-          "title": "ONE ZERO - תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (שאינם תאגידים), תאריך פרסום: 24/6/2026, בתוקף מיום 26.7.2026, נספח ו', מסלול ONE, חלק 4, מינימום (עמ' 21)",
-          "publisher": "One Zero Digital Bank Ltd.",
-          "strength": "institution"
-        },
-        "checked": "2026-11-04",
-        "effective_from": "2026-07-26",
-        "effective_to": null,
-        "tax_year": null,
-        "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
-        "state": "sourced",
-        "notes": "'מינימום 10 ₪'."
-      },
-      "max": {
-        "value": 2000,
-        "unit": "nis_per_trade",
-        "source": {
-          "url": "https://www.onezerobank.com/warehouse/userUploadFiles/Image/01-%20%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F%20%D7%94%D7%A2%D7%9E%D7%9C%D7%95%D7%AA%20%D7%94%D7%9E%D7%9C%D7%90%20-%20%D7%9E%D7%94%D7%93%D7%95%D7%A8%D7%94%20%D7%9E%D7%99%D7%95%D7%9D%2026.7.26_announcement.pdf",
-          "title": "ONE ZERO - תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (שאינם תאגידים), תאריך פרסום: 24/6/2026, בתוקף מיום 26.7.2026, נספח ו', מסלול ONE, חלק 4, מקסימום (עמ' 21)",
-          "publisher": "One Zero Digital Bank Ltd.",
-          "strength": "institution"
-        },
-        "checked": "2026-11-04",
-        "effective_from": "2026-07-26",
-        "effective_to": null,
-        "tax_year": null,
-        "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
-        "state": "sourced",
-        "notes": "'מקסימום 2,000 ₪'."
-      },
-      "period": null,
-      "channel": null,
-      "band": "מסלול ONE",
-      "statement_code": null,
-      "names": {
-        "tariff": [
-          "קניה, מכירה ופדיון של ניירות ערך הנסחרים בבורסה בתל אביב - מניות ואגרות חוב",
-          "הטבות לחשבון יחיד במסלול ONE"
-        ]
-      }
-    },
-    {
-      "id": "one-zero-buy-sell-foreign-plan-one",
-      "base": "trade",
-      "applies_to": [
-        "foreign_securities"
-      ],
-      "level": "list",
-      "rate": {
-        "value": 0.1,
-        "unit": "pct_of_trade",
-        "source": {
-          "url": "https://www.onezerobank.com/warehouse/userUploadFiles/Image/01-%20%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F%20%D7%94%D7%A2%D7%9E%D7%9C%D7%95%D7%AA%20%D7%94%D7%9E%D7%9C%D7%90%20-%20%D7%9E%D7%94%D7%93%D7%95%D7%A8%D7%94%20%D7%9E%D7%99%D7%95%D7%9D%2026.7.26_announcement.pdf",
-          "title": "ONE ZERO - תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (שאינם תאגידים), תאריך פרסום: 24/6/2026, בתוקף מיום 26.7.2026, נספח ו', הטבות לחשבון יחיד במסלול ONE, חלק 4 - ניירות ערך בחוץ לארץ (עמ' 21; חשבון משותף עמ' 24)",
-          "publisher": "One Zero Digital Bank Ltd.",
-          "strength": "institution"
-        },
-        "checked": "2026-11-04",
-        "effective_from": "2026-07-26",
-        "effective_to": null,
-        "tax_year": null,
-        "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
-        "state": "sourced",
-        "notes": "'עמלה בשיעור של 0.1%, מינימום 8 דולר ארה\"ב, מקסימום 500 דולר ארה\"ב (הטבה בשיעור של 66%)' for 'קניה, מכירה ופדיון של ניירות ערך בחוץ לארץ - מניות, אגרות חוב וקרנות נאמנות'. ONE PLUS: exempt for up to 10 trades a calendar month not in the pre-market phase, then (and for every pre-market trade) 0.1%, minimum 8 USD, maximum 500 USD."
-      },
-      "min": {
-        "value": 8,
-        "unit": "usd",
-        "source": {
-          "url": "https://www.onezerobank.com/warehouse/userUploadFiles/Image/01-%20%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F%20%D7%94%D7%A2%D7%9E%D7%9C%D7%95%D7%AA%20%D7%94%D7%9E%D7%9C%D7%90%20-%20%D7%9E%D7%94%D7%93%D7%95%D7%A8%D7%94%20%D7%9E%D7%99%D7%95%D7%9D%2026.7.26_announcement.pdf",
-          "title": "ONE ZERO - תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (שאינם תאגידים), תאריך פרסום: 24/6/2026, בתוקף מיום 26.7.2026, נספח ו', מסלול ONE, ניירות ערך בחוץ לארץ, מינימום (עמ' 21)",
-          "publisher": "One Zero Digital Bank Ltd.",
-          "strength": "institution"
-        },
-        "checked": "2026-11-04",
-        "effective_from": "2026-07-26",
-        "effective_to": null,
-        "tax_year": null,
-        "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
-        "state": "sourced",
-        "notes": "'מינימום 8 דולר ארה\"ב'."
-      },
-      "max": {
-        "value": 500,
-        "unit": "usd",
-        "source": {
-          "url": "https://www.onezerobank.com/warehouse/userUploadFiles/Image/01-%20%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F%20%D7%94%D7%A2%D7%9E%D7%9C%D7%95%D7%AA%20%D7%94%D7%9E%D7%9C%D7%90%20-%20%D7%9E%D7%94%D7%93%D7%95%D7%A8%D7%94%20%D7%9E%D7%99%D7%95%D7%9D%2026.7.26_announcement.pdf",
-          "title": "ONE ZERO - תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (שאינם תאגידים), תאריך פרסום: 24/6/2026, בתוקף מיום 26.7.2026, נספח ו', מסלול ONE, ניירות ערך בחוץ לארץ, מקסימום (עמ' 21)",
-          "publisher": "One Zero Digital Bank Ltd.",
-          "strength": "institution"
-        },
-        "checked": "2026-11-04",
-        "effective_from": "2026-07-26",
-        "effective_to": null,
-        "tax_year": null,
-        "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
-        "state": "sourced",
-        "notes": "'מקסימום 500 דולר ארה\"ב'."
-      },
-      "period": null,
-      "channel": null,
-      "band": "מסלול ONE · ניירות ערך הנסחרים בארה\"ב",
-      "statement_code": null,
-      "names": {
-        "tariff": [
-          "קניה, מכירה ופדיון של ניירות ערך בחוץ לארץ - מניות, אגרות חוב וקרנות נאמנות",
-          "הטבות לחשבון יחיד במסלול ONE"
-        ]
-      }
-    },
-    {
-      "id": "one-zero-fx-conversion-plan-one",
-      "base": "fx",
-      "applies_to": [
-        "all"
-      ],
-      "level": "list",
-      "rate": {
-        "value": 0,
-        "unit": "pct_of_trade",
-        "source": {
-          "url": "https://www.onezerobank.com/warehouse/userUploadFiles/Image/01-%20%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F%20%D7%94%D7%A2%D7%9E%D7%9C%D7%95%D7%AA%20%D7%94%D7%9E%D7%9C%D7%90%20-%20%D7%9E%D7%94%D7%93%D7%95%D7%A8%D7%94%20%D7%9E%D7%99%D7%95%D7%9D%2026.7.26_announcement.pdf",
-          "title": "ONE ZERO - תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (שאינם תאגידים), תאריך פרסום: 24/6/2026, בתוקף מיום 26.7.2026, נספח ו', הטבות לחשבון יחיד במסלול ONE, חלק 5 - מטבע חוץ (עמ' 21)",
-          "publisher": "One Zero Digital Bank Ltd.",
-          "strength": "institution"
-        },
-        "checked": "2026-11-04",
-        "effective_from": "2026-07-26",
-        "effective_to": null,
-        "tax_year": null,
-        "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-23"
-        ],
-        "state": "sourced",
-        "notes": "'עמלת חליפין - מט״י למט״ח פטור מעמלה', 'עמלת חליפין - מט״ח למט״ח פטור מעמלה' for ONE (and ONE PLUS, עמ' 28). The spread is not printed (BRK-23)."
-      },
-      "min": null,
-      "max": null,
-      "period": null,
-      "channel": null,
-      "band": "מסלול ONE",
-      "statement_code": null,
-      "names": {
-        "tariff": [
-          "עמלת חליפין - מט״י למט״ח",
-          "פטור מעמלה",
-          "הטבות לחשבון יחיד במסלול ONE"
-        ]
-      },
-      "spread": {
-        "value": null,
-        "unit": "pct_of_trade",
-        "source": {
-          "url": "https://www.onezerobank.com/warehouse/userUploadFiles/Image/One%20Zero%20General%20terms%20and%20conditions_output%20(3)%20(1)%20(1)_announcement%20(1).pdf",
-          "title": "וואן זירו - תנאים כלליים לפתיחת חשבון, מהדורה 07/25, הגדרת \"שער הבנק הדיגיטלי\" (עמ' 16)",
-          "publisher": "One Zero Digital Bank Ltd.",
-          "strength": "institution",
-          "page": 16
-        },
-        "checked": "2026-11-04",
-        "effective_from": "2025-08-01",
-        "effective_to": null,
-        "tax_year": null,
-        "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-23"
-        ],
-        "state": "sourced",
-        "notes": "Not limited by the documents (D56). The tariff prints a conversion fee but no spread; the general terms define 'שער הבנק הדיגיטלי' as the rate the bank publishes, 'נקבע על ידי הבנק בהתאם לנהלים ולכללים הנהוגים בבנק מעת לעת', with the conversion fee added on top. The securities standing-order terms (4.4.2): 'תבוצע המרה של סכום ההשקעה בהתאם לשער של הבנק הדיגטלי'. Advertising 'ללא עמלת המרת מט\"ח' (lp/tradenew) holds for the One plans only (annex ו'); for ZERO the fee is 0.15%, minimum 5 USD."
-      }
     }
   ],
   "averages": [],
@@ -834,7 +575,7 @@
   "left_out": [
     {
       "what": "מסלולי ONE ו-ONE PLUS",
-      "why": "Plans with a monthly fee (49 and 89 NIS); not required to trade (legal terms on plans, s.1). Ranked at the plan-less (ZERO) price except where a line says so."
+      "why": "Plans with a monthly fee (49 and 89 NIS); not required to trade (legal terms on plans, s.1). Ranked at the plan-less (ZERO) price; the ONE plan's prices are a group entry (D43 amended (2)), ONE PLUS stays out because its price depends on the number of trades a month."
     },
     {
       "what": "פטור מדמי מנוי בהעברת משכורת או העברות: One ללא עלות בהעברת 5,000₪ בחודש, +One בהעברת 10,000₪ (עמוד המסלולים, עמוד ניירות ערך, lp/tradenew)",
@@ -866,8 +607,8 @@
     }
   ],
   "groups": {
-    "state": "none_on_securities",
-    "note": "Tariff of 26.7.26 read in Chrome, all 33 pages searched with the letter spacing removed; no copy can be saved, the bank refuses scripts. Annex A on p.18 lists only Founder customers, who opened by 16.8.22, on the account plan. No securities row. Re-read 2026-11-04: the same annex A (now page 18) lists only Founder customers on the ONE and ONE PLUS plan fees; no securities row. The change notice of 24.6.26 names a 'Startrade' category with a discount on foreign trades, absent from the tariff (see left_out).",
+    "state": "prices",
+    "note": "Tariff of 26.7.26 read in Chrome, all 33 pages searched with the letter spacing removed; no copy can be saved, the bank refuses scripts. Annex A on p.18 lists only Founder customers, who opened by 16.8.22, on the account plan. No securities row. Re-read 2026-11-04: the same annex A (now page 18) lists only Founder customers on the ONE and ONE PLUS plan fees; no securities row. The change notice of 24.6.26 names a 'Startrade' category with a discount on foreign trades, absent from the tariff (see left_out). 2026-11-04: the ONE plan (annex ו', a monthly fee of 49 NIS that anyone may choose) was recorded as plan lines beside the price list; under D43 amended (2) a plan is a group like any other, stated in the sub-rows and never ranked, so it moved here and its four lines left the record's lines (their doubled trade lines left funds bought abroad unpriced).",
     "read": [
       {
         "url": "https://www.onezerobank.com/warehouse/userUploadFiles/Image/01-%20%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F%20%D7%94%D7%A2%D7%9E%D7%9C%D7%95%D7%AA%20%D7%94%D7%9E%D7%9C%D7%90%20-%20%D7%9E%D7%94%D7%93%D7%95%D7%A8%D7%94%20%D7%9E%D7%99%D7%95%D7%9D%2026.7.26_announcement.pdf",
@@ -875,6 +616,64 @@
         "read_in": "chrome"
       }
     ],
-    "entries": []
+    "entries": [
+      {
+        "kind": "other",
+        "name_he": "מסלול ONE",
+        "who_he": "לקוחות שמצטרפים למסלול ONE ומשלמים עליו 49 שקלים לחודש. אפשר לסחור גם בלי מסלול (ZERO), במחיר התעריפון.",
+        "who_source": {
+          "url": "https://www.onezerobank.com/warehouse/userUploadFiles/Image/01-%20%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F%20%D7%94%D7%A2%D7%9E%D7%9C%D7%95%D7%AA%20%D7%94%D7%9E%D7%9C%D7%90%20-%20%D7%9E%D7%94%D7%93%D7%95%D7%A8%D7%94%20%D7%9E%D7%99%D7%95%D7%9D%2026.7.26_announcement.pdf",
+          "title": "תעריפון העמלות המלא (בתוקף מיום 26.7.2026), חלק 1, 1 (ג) (3) מסלול ONE",
+          "page": 5,
+          "quote": "מסלול ONE חשבון יחיד – 49 ש״ח לחודש"
+        },
+        "ends_printed": false,
+        "ends_he": "אין תאריך סיום. נמשך כל עוד משלמים על המסלול.",
+        "prices": [
+          {
+            "fee": "trade_israel",
+            "price_he": "0.1%, מינימום 10 שקלים, מקסימום 2,000 שקלים",
+            "value": {
+              "rate_pct": 0.1,
+              "per": "trade",
+              "min": 10,
+              "max": 2000,
+              "currency": "ILS"
+            },
+            "holdings_he": "ניירות ערך הנסחרים בבורסה בתל אביב - מניות ואגרות חוב",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.onezerobank.com/warehouse/userUploadFiles/Image/01-%20%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F%20%D7%94%D7%A2%D7%9E%D7%9C%D7%95%D7%AA%20%D7%94%D7%9E%D7%9C%D7%90%20-%20%D7%9E%D7%94%D7%93%D7%95%D7%A8%D7%94%20%D7%9E%D7%99%D7%95%D7%9D%2026.7.26_announcement.pdf",
+              "title": "תעריפון העמלות המלא (בתוקף מיום 26.7.2026), נספח ו', הטבות לחשבון יחיד במסלול ONE, חלק 4",
+              "page": 21,
+              "quote": "עמלה בשיעור של 0.1%, מינימום 10 ₪, מקסימום 2,000 ₪ (הטבה בשיעור של 66%)"
+            }
+          },
+          {
+            "fee": "trade_abroad",
+            "price_he": "0.1%, מינימום 8 דולר, מקסימום 500 דולר",
+            "value": {
+              "rate_pct": 0.1,
+              "per": "trade",
+              "min": 8,
+              "max": 500,
+              "currency": "USD"
+            },
+            "holdings_he": "ניירות ערך בחוץ לארץ - מניות, אגרות חוב וקרנות נאמנות",
+            "names_fund": true,
+            "source": {
+              "url": "https://www.onezerobank.com/warehouse/userUploadFiles/Image/01-%20%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F%20%D7%94%D7%A2%D7%9E%D7%9C%D7%95%D7%AA%20%D7%94%D7%9E%D7%9C%D7%90%20-%20%D7%9E%D7%94%D7%93%D7%95%D7%A8%D7%94%20%D7%9E%D7%99%D7%95%D7%9D%2026.7.26_announcement.pdf",
+              "title": "תעריפון העמלות המלא (בתוקף מיום 26.7.2026), נספח ו', הטבות לחשבון יחיד במסלול ONE, חלק 4 - ניירות ערך בחוץ לארץ",
+              "page": 21,
+              "quote": "עמלה בשיעור של 0.1%, מינימום 8 דולר ארה\"ב, מקסימום 500 דולר ארה\"ב (הטבה בשיעור של 66%)"
+            }
+          }
+        ],
+        "inferred": "Also in the plan, not a fee this table holds: currency conversion 'פטור מעמלה' (annex ו', p.21). ONE PLUS (89 NIS a month) is exempt for up to 10 trades a month, then the same prices (pp.27, 31); not entered, since its price depends on the order count.",
+        "who_short_he": "לקוחות מסלול ONE, 49 ₪ לחודש",
+        "cheaper_he": "קנייה ומכירה 0.1% במקום 0.3%",
+        "ends_short_he": "כל עוד משלמים על המסלול"
+      }
+    ]
   }
 }

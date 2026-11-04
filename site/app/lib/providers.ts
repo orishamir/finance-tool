@@ -281,7 +281,9 @@ export type NotComparable =
   | { code: "line-without-value"; detail: string; lineName: string | null }
   /** 2026-10-25 (engine E1, E2, E5): a per-share line and no share price; a line in a foreign currency and no rate; a record the engine cannot read. */
   | { code: "needs-share-price" | "needs-fx-rate" | "record-error"; detail: string }
-  | { code: "ambiguous"; detail: string; lines: { id: string; name: string; band: string | null }[] };
+  | { code: "ambiguous"; detail: string; lines: { id: string; name: string; band: string | null }[] }
+  /** 2026-11-04: the house's trade lines abroad name one exchange (`venue`) and the fund trades on the other. */
+  | { code: "other-venue"; venue: "us" | "europe" };
 
 const FORMATS = ["pdf", "html", "xlsx"] as const;
 

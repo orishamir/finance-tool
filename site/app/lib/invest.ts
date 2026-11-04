@@ -514,12 +514,17 @@ function priceMany(ctx: Ctx, spec: Spec, option: OptionId, snaps: FeesSnapshot[]
   for (const { s } of per) {
     const got = results.get(s.id) ?? [];
     let best: { row: ComparedProvider; venue: Venue | null } | null = null;
+    // the exchange of a reading set aside because the fund trades on another: the house's lines abroad name only that one
+    let otherVenue: Venue | null = null;
     for (const g of got) {
       if (g.row.kind !== "compared") continue;
       // no trade line for the class: the run would charge nothing, which the tariff does not say; derived availability (spec 6, S3)
       if (g.row.noLine.includes("trade")) continue;
       const venue = rowVenue(g.row, scoped(s), g.cand);
-      if (fundVenue !== null && venue !== null && venue !== fundVenue) continue;
+      if (fundVenue !== null && venue !== null && venue !== fundVenue) {
+        otherVenue = venue;
+        continue;
+      }
       if (!best || g.row.real > best.row.real || (g.row.real === best.row.real && venue !== null && best.venue === null)) best = { row: g.row, venue };
     }
     if (best) {
@@ -528,7 +533,7 @@ function priceMany(ctx: Ctx, spec: Spec, option: OptionId, snaps: FeesSnapshot[]
     }
     const fails = got.flatMap((g) => (g.row.kind === "not-comparable" ? [reasonOf(g.row, scoped(s))] : g.row.noLine.includes("trade") ? [{ code: "no-applicable-line" as const, detail: `no trade line of the ${s.snapshot} snapshot applies to ${spec.cls}` }] : []));
     // the most telling reason: any but "no line" and "ambiguous", then ambiguous, then no line
-    const pick = fails.find((f) => f.code !== "no-applicable-line" && f.code !== "ambiguous") ?? fails.find((f) => f.code === "ambiguous") ?? fails[0] ?? { code: "data-missing" as const, recorded: null };
+    const pick: NotComparable = fails.find((f) => f.code !== "no-applicable-line" && f.code !== "ambiguous") ?? (otherVenue ? { code: "other-venue", venue: otherVenue } : null) ?? fails.find((f) => f.code === "ambiguous") ?? fails[0] ?? { code: "data-missing" as const, recorded: null };
     out.set(s.id, { kind: "fail", reason: pick });
   }
   return out;

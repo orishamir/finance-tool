@@ -2255,6 +2255,8 @@ export const r4workbench = {
   notComparable: {
     dataMissing: "התעריפון לא נאסף.",
     noLine: (cls: string) => `בתעריפון אין שורה ל${cls}.`,
+    // 2026-11-04: a house whose trade lines abroad name one exchange only (One Zero: "ניירות ערך זרים הנסחרים בארה״ב"), and a fund on the other
+    otherVenue: (houseVenue: "us" | "europe") => (houseVenue === "us" ? "כאן קונים בחו״ל רק ניירות ערך שנסחרים בארה״ב, והקרן הזו נסחרת באירופה." : "כאן קונים בחו״ל רק ניירות ערך שנסחרים באירופה, והקרן הזו נסחרת בארה״ב."),
     noLineChannel: (cls: string, channel: string) => `בתעריפון אין שורה ל${cls} ב${channel}.`,
     noAverage: (cls: string) => `לא נאסף ממוצע לשורות שחלות על ${cls}.`,
     lineWithoutValue: (name: string) => `בשורה ״${name}״ חסר ערך בתעריפון.`,
