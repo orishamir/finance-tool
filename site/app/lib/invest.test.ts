@@ -81,7 +81,10 @@ describe("invest page computation", () => {
     expect(abroad.cells.length).toBe(view.providers.length);
     for (const c of abroad.cells) expect(c.kind === "cost" ? typeof c.costN === "number" : c.kind === "unavailable" || !!c.reason).toBe(true);
     expect(abroad.cells.some((c) => c.kind === "cost")).toBe(true);
-    expect(abroad.cells.filter((c) => c.kind === "not-comparable").length).toBeGreaterThan(0);
+    // 2026-11-04: One Zero's doubled plan lines, the column's one engine failure, left its lines (D43 amended (2)); a house whose price
+    // list leaves the price abroad open (Psagot, IBI, Altshuler) is a grey cell with its reason
+    expect(abroad.cells.filter((c) => c.kind === "not-comparable")).toEqual([]);
+    expect(abroad.cells.filter((c) => c.kind === "no-line").map((c) => c.providerId).sort()).toEqual(["altshuler-trade", "ibi", "psagot"]);
   });
 
   it("the Europe line of Interactive Israel prices a London fund and names the exchange", () => {

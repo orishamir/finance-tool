@@ -584,15 +584,16 @@
       "applies_to": [
         "foreign_securities"
       ],
-      "available": true,
+      "available": "unknown",
       "source": {
         "url": "https://www.as-invest.co.il/media/oqdfpafo/תעריפון-מלא-אלטשולר-שחם-טרייד.pdf",
         "title": "תעריפון אלטשולר שחם טרייד בע\"מ, חלק 4, (4א) סעיף 7 (עמ' 2)",
         "checked": "2026-11-04",
         "page": 2,
-        "quote": "מסחר במניות ו ETF'S בארה\"ב (על פי אחד מהמסלולים)"
+        "quote": "(ד) אג\"ח וקרנות נאמנות - 0.3% מינימום 24$"
       },
-      "note": "US shares and ETFs; (ד) 'אג\"ח וקרנות נאמנות - 0.3% מינימום 24$'. No exchange outside the US is named in the tariff, and the exchange's member sheet leaves 'מחוץ לארה\"ב' blank. 2026-11-04 (D56): the 'unknown' entry of 2026-10-31 (who pays custody) is removed; custody is priced at the list rate."
+      "note": "US shares and ETFs; (ד) 'אג\"ח וקרנות נאמנות - 0.3% מינימום 24$'. No exchange outside the US is named in the tariff, and the exchange's member sheet leaves 'מחוץ לארה\"ב' blank. 2026-11-04 (D56): the 'unknown' entry of 2026-10-31 (who pays custody) is removed; custody is priced at the list rate. 2026-11-04 (sweep after One Zero): funds bought abroad on the site trade in Europe; they were priced on the US shares-and-ETFs track (3), which does not name them (D42). Section 7 has rows for US shares and ETFs, pink sheets, OTC and '(ד) אג\"ח וקרנות נאמנות - 0.3% מינימום 24$' with no exchange named; no exchange outside the US is named anywhere. The US line stays recorded.",
+      "reason_he": "התעריפון כותב מחיר למניות ולקרנות סל בארה״ב, ול״אג״ח וקרנות נאמנות״ בחו״ל 0.3%, מינימום 24 דולר, ולא מזכיר אף בורסה מחוץ לארה״ב. לא כתוב אם אפשר לקנות קרן סל שנסחרת באירופה, ואם כן לפי איזו שורה. לכן האתר לא מחשב לה מחיר."
     }
   ],
   "price_for_he": "לקוח רגיל, בלי הטבה לקבוצה",

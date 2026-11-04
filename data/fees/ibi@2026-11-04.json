@@ -562,14 +562,16 @@
       "applies_to": [
         "foreign_securities"
       ],
-      "available": true,
+      "available": "unknown",
       "source": {
         "url": "https://campaign.ibi.co.il/PDF/TRADE/TAARIFON_IBI.pdf",
         "title": "תעריפון עמלות - שרותי בורסה והשקעות בישראל אי.בי.אי. בע\"מ (8 עמ', 'נכון לתאריך: 1.7.2026'); חלק 4 - ניירות ערך (עמ' 2-5)",
         "checked": "2026-11-04",
         "page": 3,
-        "quote": "מניות/תעודת סל בארה\"ב"
-      }
+        "quote": "ני\"ע באסיה ובאירופה 0.3% משווי העסקה, מינימום 30 במטבע העסקה"
+      },
+      "reason_he": "בתעריפון המחיר על ניירות ערך באירופה לא סופי: ״עמלת ני״ע באסיה ובאירופה עשויה להשתנות בהתאם לסוג המניה ואופי הפעילות. באחריות הלקוח לפנות לחברה על מנת לברר גובה העמלה לפני ביצוע הפעילות״. לקרנות נאמנות זרות התעריפון כותב ״0.275% משווי העסקה + עלות ברוקר״, בלי סכום לעלות הברוקר, ולא כתוב לאיזו משתי השורות שייכת קרן סל שנסחרת באירופה. לכן האתר לא מחשב לה מחיר.",
+      "note": "2026-11-04 (sweep after One Zero): funds bought abroad on the site trade in Europe; they were priced on the US shares-and-ETFs line, which does not name them (D42). The tariff's own rows for them: 'ני\"ע באסיה ובאירופה 0.3% משווי העסקה, מינימום 30 במטבע העסקה' with the note that it may change and the customer must ask first (the same words that grey Psagot), and 'קרנות נאמנות זרות ... 0.275% משווי העסקה + עלות ברוקר' with the broker cost not sized. Which row an Irish UCITS ETF falls under is not stated. The US line stays recorded."
     }
   ],
   "price_for_he": "לקוח רגיל, בלי הטבה לקבוצה",
