@@ -4,18 +4,18 @@
 // is left, and what it costs, split by who takes it: the person's pair and the cheapest one above each other, or, on the cheapest pair,
 // the next one beside it (one shape, so a pick never resizes the block).
 import { mayaFundHref } from "../../lib/sources";
-import { useMemo, type ReactNode } from "react";
+import { useMemo, useState, type ReactNode } from "react";
 import type { FeeLine } from "@finance-tool/engine";
 import { brands, invest as c } from "../../copy";
 import { isCustomFund } from "../../lib/custom-entries";
-import { doubtOf, gapOf, inputMap, hasKinds, kindOf, opensOn, pairCosts, pairValue, type FundWay, type InvestView, type Kind, type PairCosts, type Reason, type WayPrice } from "../../lib/invest";
+import { brokeragePagePath, doubtOf, gapOf, inputMap, hasKinds, kindOf, opensOn, pairCosts, pairValue, type FundWay, type InvestView, type Kind, type PairCosts, type Reason, type WayPrice } from "../../lib/invest";
 import type { WorkbenchBundle, WorkbenchInputs } from "../../lib/providers";
 import { brokerLabels, fundLabels, optionLabels, type Label } from "../../lib/labels";
 import { computed, ownBy, type SiteValue } from "../../lib/value";
 import { fmt } from "../../lib/format";
 import { IconLock } from "../icons";
 import { Num } from "../provenance";
-import { Button, Card, ChartLegend, CostStack, FeeWordsNote, LabelChip, LabelFilter, LabelRow, LongestCase, PickList, ProductIdLink, Sentence, Stat, StatRow, Swatch, Tag, cx, useChartPick, type ChartPick, useHeldHeight, type CostPart, type PickRow } from "../kit";
+import { Button, Card, ChartLegend, CostStack, FeeWordsNote, LabelChip, LabelFilter, LabelRow, LongestCase, PickList, ProductIdLink, Sentence, Stat, StatRow, Swatch, Tag, cx, GroupPriceFold, useChartPick, type ChartPick, useHeldHeight, type CostPart, type PickRow } from "../kit";
 import { optionClass, OptionTag, reasonText } from "./parts";
 import { ProviderLink, providerName } from "./sections";
 import { Fees } from "./funds";
@@ -304,16 +304,14 @@ function barScale(costs: number[]): number {
   return Math.max(...inGroup);
 }
 
-/** A house's group prices, on its row and never in its figure (D43). The line belongs to the house, so a re-sort or a new input never changes the row's height. */
-function GroupLine({ id, snapshots }: { id: string; snapshots: WorkbenchBundle["snapshots"] }) {
-  const line = snapshots.find((s) => s.id === id)?.groups?.row_he;
-  // the tag says which price the row's figure uses: the price list's, not the lower one in the note (founder, 2026-11-04)
-  return line ? (
-    <span className="col-start-2 col-end-[-1] text-xs text-muted-foreground leading-snug">
-      <Tag className="me-1.5">{c.pair.groupNotCounted}</Tag>
-      {line}
-    </span>
-  ) : null;
+/**
+ * A house's group prices, on its row and never in its figure (D43, amended 2026-11-04): one closed line that opens, at the person's own
+ * tap, to a sub-row per price. The line belongs to the house, so a re-sort or a new input never changes the row's height.
+ */
+function GroupLine({ id, house, snapshots, open, onOpen }: { id: string; house: string; snapshots: WorkbenchBundle["snapshots"]; open: boolean; onOpen: (id: string, open: boolean) => void }) {
+  const g = snapshots.find((s) => s.id === id)?.groups;
+  if (!g || g.state !== "prices") return null;
+  return <GroupPriceFold className="col-start-2 col-end-[-1]" entries={g.entries} house={house} href={brokeragePagePath(id)} open={open} onOpenChange={(o) => onOpen(id, o)} />;
 }
 
 /** What the account card says of its house, under its name: what it charges, its labels and its price list. */
@@ -345,7 +343,10 @@ export function AccountColumn({ view, bundle, years, pick, onPick }: { view: Inv
   const legendPick = useChartPick();
   // a row added or removed starts the held height over, so a removed row leaves no hole (D44)
   const heldKey = `${view.index.id}:${view.providers.length}`;
-  const held = useHeldHeight<HTMLDivElement>(heldKey);
+  // a house's group prices open and close at the person's tap: the held height starts over, so a closed fold leaves no hole
+  const [openGroups, setOpenGroups] = useState<string[]>([]);
+  const onGroup = (id: string, open: boolean) => setOpenGroups((xs) => (open ? (xs.includes(id) ? xs : [...xs, id]) : xs.filter((x) => x !== id)));
+  const held = useHeldHeight<HTMLDivElement>(`${heldKey}:${openGroups.join()}`);
   // every house and every fund the header can name, laid out unseen, so a long one moves nothing above the list (issue 160)
   const longest = useMemo(() => {
     const houses = view.providers.map((p) => providerName(view, p.id)!);
@@ -401,7 +402,7 @@ export function AccountColumn({ view, bundle, years, pick, onPick }: { view: Inv
           <span className="text-end font-semibold">
             <Num animate value={r.at.value} />
           </span>
-          <GroupLine id={r.p.id} snapshots={bundle.snapshots} />
+          <GroupLine id={r.p.id} house={r.p.short} snapshots={bundle.snapshots} open={openGroups.includes(r.p.id)} onOpen={onGroup} />
           {r.p.custom && <span className="col-start-2 col-end-[-1]"><BrokerTerms id={r.p.id} /></span>}
         </>
       ),
@@ -445,7 +446,7 @@ export function AccountColumn({ view, bundle, years, pick, onPick }: { view: Inv
               </span>
             )}
           </span>
-          <GroupLine id={r.p.id} snapshots={bundle.snapshots} />
+          <GroupLine id={r.p.id} house={r.p.short} snapshots={bundle.snapshots} open={openGroups.includes(r.p.id)} onOpen={onGroup} />
           {r.p.custom && <span className="col-start-2 col-end-[-1]"><BrokerTerms id={r.p.id} /></span>}
         </>
       ),

@@ -1260,7 +1260,6 @@
   ],
   "groups": {
     "state": "prices",
-    "row_he": "לקבוצות: דמי ניהול 0.1% לרבעון במקום 0.2%, לזמן מוגבל",
     "note": "Annex A pp.30-31 read in the filed copy, and p.30 by eye, because the text layer's order of the columns misleads. Senior citizens: the rendered cells on securities are blank; the text layer holds 'אין מידע'. Re-read 2026-11-04 in the newer tariff (taarifon_private_full_11026.pdf, annex A pp.31-33 dated 22/06/2026; pp.31-32 read by eye at 90 dpi): the same groups, eligibility, periods and prices. The custody cells now read '0.1% לנייר ערך לרבעון בכפוף למקסימום' and '0.125% לנייר ערך לרבעון בכפוף למקסימום'. The group pages (youth-banking, solders, discharged-soldiers-benefits, students) print the same figures. The salary groups Pro, Top and Deluxe are a promotion on the new-account-groups page, not in annex A; they are recorded under left_out.",
     "read": [
       {
@@ -1336,7 +1335,10 @@
               "quote": "דמי ניהול פיקדון ניירות ערך-הנסחרים בחו\"ל"
             }
           }
-        ]
+        ],
+        "who_short_he": "צעירים בגילאי 14 עד 19",
+        "cheaper_he": "דמי ניהול בארץ 0.1% במקום 0.2%, בחוץ לארץ 0.125% במקום 0.25%",
+        "ends_short_he": "עד גיל 19"
       },
       {
         "kind": "soldier",
@@ -1405,7 +1407,10 @@
               "quote": "דמי ניהול פיקדון ניירות ערך-הנסחרים בחו\"ל"
             }
           }
-        ]
+        ],
+        "who_short_he": "חיילים ומשרתי שירות לאומי",
+        "cheaper_he": "דמי ניהול 0.1% במקום 0.2%; קנייה ומכירה 0.3% במקום 0.4%",
+        "ends_short_he": "כל השירות, ובשירות לאומי שנה"
       },
       {
         "kind": "released",
@@ -1474,7 +1479,10 @@
               "quote": "דמי ניהול פיקדון ניירות ערך-הנסחרים בחו\"ל"
             }
           }
-        ]
+        ],
+        "who_short_he": "חיילים משוחררים",
+        "cheaper_he": "דמי ניהול בארץ 0.1% במקום 0.2%, בחוץ לארץ 0.125% במקום 0.25%",
+        "ends_short_he": "שנתיים מההצטרפות לקבוצה"
       },
       {
         "kind": "student",
@@ -1543,7 +1551,10 @@
               "quote": "דמי ניהול פיקדון ניירות ערך-הנסחרים בחו\"ל"
             }
           }
-        ]
+        ],
+        "who_short_he": "סטודנטים, עד גיל 36",
+        "cheaper_he": "דמי ניהול 0.1% במקום 0.2%; קנייה ומכירה 0.25% במקום 0.4%",
+        "ends_short_he": "4 שנים מההצטרפות"
       }
     ]
   }

@@ -12,7 +12,8 @@ import { IconDrillIn } from "../icons";
 import { label } from "../../lib/labels";
 import { fmt } from "../../lib/format";
 import { PileStory, PileYears } from "./pile-story";
-import { AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, Button, Callout, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, LabelFilter, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, CompareTable, TableCols, CoverageFold, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, SortHead, ExposureCell, FeeKey, FeeNum, HelpMark, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, GainBars, GapNote, HeadlineFigure, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, ParameterLine, PercentField, PlanChips, KnobStrip, ChangeChart, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, RangeField, RankBadge, Section, SegmentedControl, SelectField, Sentence, ShareRings, SourceLine, Stat, StatRow, StatTile, StepButtons, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth } from "./index";
+import { AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, Button, Callout, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, LabelFilter, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, CompareTable, TableCols, CoverageFold, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, SortHead, ExposureCell, FeeKey, FeeNum, HelpMark, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, GainBars, GapNote, HeadlineFigure, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, ParameterLine, PercentField, PlanChips, KnobStrip, ChangeChart, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, RangeField, RankBadge, Section, SegmentedControl, SelectField, Sentence, ShareRings, SourceLine, Stat, StatRow, StatTile, StepButtons, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, ClaimList, DocLink, atPdfPage, GroupPriceFold, GroupPriceRows, type GroupEntry } from "./index";
+import type { AdvertisingEntry } from "@finance-tool/schema";
 
 const g = copy.gallery;
 
@@ -883,6 +884,37 @@ function SortableTable({ row }: { row: (key: string, name: string, n: string, ra
   );
 }
 
+/** Three groups of a made-up house: the first two share a price (one sub-row, two ends), the third names funds. */
+function sampleGroups(): GroupEntry[] {
+  const w = g.sample.groups;
+  const source = { url: "#kit", title: w.doc, page: 2, quote: w.quote };
+  const entry = (x: { name: string; who: string; whoShort: string; ends: string; endsShort: string }, kind: GroupEntry["kind"], cheaper: string, fund: boolean): GroupEntry => ({
+    kind,
+    name_he: x.name,
+    who_he: x.who,
+    who_source: source,
+    ends_printed: false,
+    ends_he: x.ends,
+    prices: [{ fee: fund ? "trade_israel" : "custody_israel", price_he: w.price, holdings_he: fund ? w.holdingsFunds : w.holdings, names_fund: fund, source }],
+    who_short_he: x.whoShort,
+    cheaper_he: cheaper,
+    ends_short_he: x.endsShort,
+  });
+  return [entry(w.a, "young", w.cheaperA, false), entry(w.b, "student", w.cheaperA, false), entry(w.c, "other", w.cheaperB, true)];
+}
+
+/** One claim of each verdict, all made up. */
+function sampleClaims(today: string): AdvertisingEntry[] {
+  const w = g.sample.claim;
+  const seen = { url: "#kit", title: w.ad, seen: today };
+  const doc = (kind: AdvertisingEntry["binding_source"]["kind"], title: string) => ({ kind, url: "#kit", title, dated: today, dated_from: "printed" as const, checked: today });
+  return [
+    { fee: "custody", verdict: "contradicted", claim_he: w.claim, claim_source: seen, binding_he: w.binding, binding_source: doc("price_list", w.doc) },
+    { fee: "account", verdict: "offer", claim_he: w.claim, claim_source: seen, binding_he: w.binding, binding_source: doc("promotion_terms", w.terms) },
+    { fee: "trade", verdict: "not_found", claim_he: w.claim, claim_source: seen, binding_source: doc("price_list", w.doc) },
+  ];
+}
+
 function Lists({ today }: { today: string }) {
   const s = samples(today);
   const p = g.sample.products;
@@ -941,6 +973,26 @@ function Lists({ today }: { today: string }) {
       <Demo name="ProductTable (headings, folding, sortable heads, sticky head)" use={g.uses.ProductTableGroups}>
         <State label="groups with a heading (a title, then a line of figures); a press on a heading's strip or its chevron folds the group; the heads sort the table and set aria-sort; the head row sticks under the site's header while the table fits its card; a sort slides each row to its new place (useFlip)" wide>
           <SortableTable row={row} />
+        </State>
+      </Demo>
+      <Demo name="GroupPriceFold, GroupPriceRows" use={g.uses.GroupPrices}>
+        <State label="under a house's row: closed by default; a tap opens one sub-row per price, two groups with the same price on one sub-row, and the link to the house's page" wide>
+          <GroupPriceFold entries={sampleGroups()} house={g.sample.groups.house} href="/kit" />
+        </State>
+        <State label="on the house's own page: the same rows, each group's name under its short words and a line of where the words stand" wide>
+          <GroupPriceRows entries={sampleGroups()} sources />
+        </State>
+      </Demo>
+      <Demo name="DocLink, atPdfPage" use={g.uses.DocLink}>
+        <State label="a document's name, and a PDF opened at its page" wide>
+          <DocLink href={atPdfPage("https://example.com/tariff.pdf", 2)} className="text-sm">
+            {g.sample.claim.doc}
+          </DocLink>
+        </State>
+      </Demo>
+      <Demo name="ClaimCheck, ClaimList" use={g.uses.ClaimCheck}>
+        <State label="the binding document says otherwise; a promotion's terms make it conditional; no binding document says it" wide>
+          <ClaimList entries={sampleClaims(today)} />
         </State>
       </Demo>
       <Demo name="RowArrow" use={g.uses.RowArrow}>

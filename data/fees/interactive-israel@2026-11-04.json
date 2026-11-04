@@ -544,5 +544,27 @@
       }
     ],
     "entries": []
-  }
+  },
+  "advertising": [
+    {
+      "fee": "custody",
+      "verdict": "contradicted",
+      "claim_he": "עמלות המסחר באינטראקטיב ישראל הינן עמלות ביצוע בלבד, אין דמי החזקה כלל",
+      "claim_source": {
+        "url": "https://www.inter-il.com/regulation-and-security/",
+        "title": "אינטראקטיב ישראל: רגולציה ואבטחה",
+        "seen": "2026-11-04"
+      },
+      "binding_he": "עבור מניות ותעודות סל הנסחרות בבורסת תל אביב (TASE), תחול עמלת אחזקה (Custody Fee) בשיעור של 0.08%",
+      "binding_source": {
+        "kind": "price_list",
+        "url": "https://www.inter-il.com/wp-content/uploads/2026/09/%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F-%D7%A2%D7%9E%D7%9C%D7%95%D7%AA-23.09.2026-1.pdf",
+        "title": "תעריף עמלות מסחר - אינטראקטיב ישראל, עמוד 1",
+        "page": 1,
+        "dated": "2026-09-23",
+        "dated_from": "printed",
+        "checked": "2026-11-04"
+      }
+    }
+  ]
 }

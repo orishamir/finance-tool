@@ -811,5 +811,45 @@
       }
     ],
     "entries": []
-  }
+  },
+  "advertising": [
+    {
+      "fee": "custody",
+      "verdict": "contradicted",
+      "claim_he": "פטור מלא מדמי ניהול ללא הגבלת זמן",
+      "claim_source": {
+        "url": "https://www.psagot.co.il/website/",
+        "title": "פסגות טרייד- דף נחיתה",
+        "seen": "2026-11-04"
+      },
+      "binding_he": "דמי משמרת 0.12% גבייה רבעונית 0.03%",
+      "binding_source": {
+        "kind": "price_list",
+        "url": "https://www.psagot.co.il/%d7%aa%d7%a2%d7%a8%d7%99%d7%a4%d7%95%d7%9f-%d7%91%d7%95%d7%a8%d7%a1%d7%94-%d7%a4%d7%a1%d7%92%d7%95%d7%aa-%d7%98%d7%a8%d7%99%d7%99%d7%93-2/",
+        "title": "תעריפון עמלות פסגות טרייד, חלק 4, סעיף 8",
+        "dated": "2026-08-09",
+        "dated_from": "file",
+        "checked": "2026-11-04"
+      }
+    },
+    {
+      "fee": "conversion",
+      "verdict": "contradicted",
+      "claim_he": "המרה ישירה של מטבעות זרים בשערים תחרותיים, במרווחים. צמודים וללא עמלות המרה",
+      "claim_source": {
+        "url": "https://www.psagot.co.il/trade_heb/",
+        "title": "פסגות טרייד: מסחר חכם, אין-סוף הזדמנויות",
+        "seen": "2026-11-04"
+      },
+      "binding_he": "עבור המרה מדולר או לדולר – 1.5 אגורות עבור כל דולר/שקל",
+      "binding_source": {
+        "kind": "price_list",
+        "url": "https://www.psagot.co.il/%d7%aa%d7%a2%d7%a8%d7%99%d7%a4%d7%95%d7%9f-%d7%91%d7%95%d7%a8%d7%a1%d7%94-%d7%a4%d7%a1%d7%92%d7%95%d7%aa-%d7%98%d7%a8%d7%99%d7%99%d7%93-2/",
+        "title": "תעריפון עמלות פסגות טרייד, חלק 5 – מטבע חוץ, סעיף 1",
+        "dated": "2026-08-09",
+        "dated_from": "file",
+        "checked": "2026-11-04"
+      }
+    }
+  ]
 }

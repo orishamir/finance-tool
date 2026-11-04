@@ -45,3 +45,6 @@ export { PageTabs, type PageTab } from "./page-tabs";
 export { SortHead, type SortState } from "./sort-head";
 export { ExposureCell, FeeKey, FeeNum, GemelNetLink, ShareNum, TrackFeeLines, TrackFundId, TrackLabels, gemelNetUrl } from "./track-cells";
 export { HelpMark } from "./help-mark";
+export { GroupPriceFold, GroupPriceRows, groupBlocks, groupLineWho, type GroupBlock, type GroupEntry } from "./group-prices";
+export { ClaimCheck, ClaimList } from "./claim-check";
+export { DocLink, atPdfPage } from "./doc-link";

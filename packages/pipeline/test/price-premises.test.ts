@@ -5,7 +5,7 @@ import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
-import { checkPricePremises } from "../src/validate.ts";
+import { checkAdvertising, checkPricePremises } from "../src/validate.ts";
 
 const dir = fileURLToPath(new URL("../../../data/fees", import.meta.url));
 type Line = { id: string; base: string; applies_to: string[]; [k: string]: unknown };
@@ -71,26 +71,54 @@ describe("what a ranked price rests on", () => {
 describe("group prices stay beside the ranking (D43)", () => {
   const lines = [{ base: "custody", applies_to: ["etf_units"], rate: { value: 0.15 } }, { base: "trade", applies_to: ["etf_units"], rate: { value: 0.52 } }];
   const base = { provider: { class: "bank" }, price_for_he: "לקוח רגיל", left_out: [], lines, availability: [] };
-  const entry = { name_he: "סטודנט", ends_printed: false, prices: [{ price_he: "0.1% לרבעון", holdings_he: "מניות ואגרות חוב", names_fund: false }] };
-  const withRow = (row_he: string, entries: unknown[] = [entry]) => checkPricePremises({ ...base, groups: { state: "prices", row_he, entries } } as never).filter((x) => x.startsWith("groups")).join();
+  const entry = {
+    kind: "student",
+    name_he: "סטודנט",
+    who_he: "סטודנטים עד גיל 35",
+    ends_printed: false,
+    ends_he: "3 שנים מההצטרפות",
+    who_short_he: "סטודנטים, עד גיל 35",
+    cheaper_he: "דמי ניהול 0.1% במקום 0.15%",
+    ends_short_he: "3 שנים",
+    prices: [{ fee: "custody_israel", price_he: "0.1% לרבעון", holdings_he: "מניות ואגרות חוב", names_fund: false }],
+  };
+  const withEntries = (entries: unknown[] = [entry]) => checkPricePremises({ ...base, groups: { state: "prices", entries } } as never).filter((x) => x.startsWith("groups")).join();
+  const saying = (words: Partial<typeof entry>) => withEntries([{ ...entry, ...words }]);
   it("refuses a record that says nothing, a state that does not fit, and an end with no place", () => {
     expect(checkPricePremises(base as never).join()).toMatch(/groups: a bank/);
     expect(checkPricePremises({ ...base, groups: { state: "prices", entries: [] } } as never).join()).toMatch(/does not fit/);
-    expect(withRow("ש", [{ ...entry, ends_printed: true }])).toMatch(/does not say where/);
+    expect(saying({ ends_printed: true })).toMatch(/does not say where/);
   });
   it("reads words after an exclusion as taking funds out, and refuses a fund read into a row that does not name one", () => {
-    const words = (holdings_he: string, names_fund: boolean) => [{ ...entry, prices: [{ ...entry.prices[0], holdings_he, names_fund }] }];
-    expect(withRow("ש", words("מניות ואגרות חוב", true))).toMatch(/names_fund/);
-    expect(withRow("ש", words("מניות (למעט קרנות נאמנות)", false))).toBe("");
-    expect(withRow("ש", words("מניות (למעט קרנות נאמנות)", true))).toMatch(/names_fund/);
-    expect(withRow("ש", words('מניות לרבות "קרן מחקה" (למעט קרנות נאמנות)', true))).toBe("");
+    const words = (holdings_he: string, names_fund: boolean) => [{ ...entry, prices: [{ ...entry.prices[0]!, holdings_he, names_fund }] }];
+    expect(withEntries(words("מניות ואגרות חוב", true))).toMatch(/names_fund/);
+    expect(withEntries(words("מניות (למעט קרנות נאמנות)", false))).toBe("");
+    expect(withEntries(words("מניות (למעט קרנות נאמנות)", true))).toMatch(/names_fund/);
+    expect(withEntries(words('מניות לרבות "קרן מחקה" (למעט קרנות נאמנות)', true))).toBe("");
   });
-  it("holds a row line's comparison to the record: the ordinary price on the same fee, the lower one in an entry", () => {
-    expect(withRow("דמי ניהול 0.1% לרבעון במקום 0.15%")).toBe("");
-    expect(withRow("דמי ניהול 0.1% לרבעון במקום 0.2%")).toMatch(/no custody rate/);
-    expect(withRow("דמי ניהול 0.1% לרבעון במקום 0.52%")).toMatch(/no custody rate/);
-    expect(withRow("דמי ניהול 0.07% לרבעון במקום 0.15%")).toMatch(/stands in no entry/);
-    expect(withRow("קנייה ומכירה 0.1% במקום 0.52%")).toBe("");
+  it("holds the sub-row's comparison to the record: the ordinary price on a line of the same fee, the lower one in the entry", () => {
+    expect(withEntries()).toBe("");
+    expect(saying({ cheaper_he: "דמי ניהול 0.1% במקום 0.2%" })).toMatch(/no custody rate/);
+    expect(saying({ cheaper_he: "דמי ניהול 0.1% במקום 0.52%" })).toMatch(/no custody rate/);
+    expect(saying({ cheaper_he: "דמי ניהול 0.07% במקום 0.15%" })).toMatch(/0.07 is not in the entry's prices/);
+    // the lower figure must be a price of the same fee: the entry's 0.1% is custody, so it cannot stand for a trade price (2026-11-04)
+    expect(saying({ cheaper_he: "דמי ניהול 0.1% במקום 0.15%; קנייה ומכירה 0.1% במקום 0.52%" })).toMatch(/0.1% is no trade price/);
+    const trade = { ...entry.prices[0]!, fee: "trade_israel", price_he: "0.1%" };
+    expect(withEntries([{ ...entry, prices: [...entry.prices, trade], cheaper_he: "דמי ניהול 0.1% במקום 0.15%; קנייה ומכירה 0.1% במקום 0.52%" }])).toBe("");
+    expect(saying({ cheaper_he: "קנייה ומכירה 0.6% במקום 0.52%" })).toMatch(/not cheaper/);
+    expect(saying({ cheaper_he: "פטור מדמי ניהול" })).toMatch(/פטור/);
+  });
+  it("holds the who and until-when words to the long ones, and asks for all three", () => {
+    expect(saying({ who_short_he: "סטודנטים, עד גיל 30" })).toMatch(/who_short_he's 30/);
+    expect(saying({ ends_short_he: "4 שנים" })).toMatch(/ends_short_he's 4/);
+    expect(saying({ ends_short_he: undefined })).toMatch(/needs who_short_he/);
+    expect(saying({ kind: "other", who_short_he: "המשקיע הצעיר" })).toMatch(/article/);
+    expect(saying({ kind: "other", who_short_he: "לקוחות פפר" })).toBe("");
+  });
+  it("makes entries with the same prices one sub-row, and only entries that name the same fees", () => {
+    expect(withEntries([entry, { ...entry, name_he: "אחר", cheaper_he: "דמי ניהול 0.1% לרבעון במקום 0.15%" }])).toMatch(/not one sub-row/);
+    const trade = { ...entry, name_he: "אחר", prices: [{ fee: "trade_israel", price_he: "0.1%", holdings_he: "מניות", names_fund: false }] };
+    expect(withEntries([entry, trade])).toMatch(/names other fees/);
   });
   it("every bank and broker accounts for its groups, and no house's sources are another's", () => {
     type Src = { url: string };
@@ -111,7 +139,51 @@ describe("group prices stay beside the ranking (D43)", () => {
       const dir = fileURLToPath(new URL(rel + "/", import.meta.url));
       for (const f of readdirSync(dir, { recursive: true }) as string[]) {
         if (!/\.tsx?$/.test(f) || /\.test\./.test(f)) continue;
-        expect(readFileSync(dir + f, "utf8"), f).not.toMatch(/row_he|feeGroups|snapshots?\??\.groups|\bs\.groups\b|\{[^}]*\bgroups\b[^}]*\}\s*=\s*(snap|s\b)/);
+        expect(readFileSync(dir + f, "utf8"), f).not.toMatch(/who_short_he|cheaper_he|ends_short_he|feeGroups|snapshots?\??\.groups|\bs\.groups\b|\{[^}]*\bgroups\b[^}]*\}\s*=\s*(snap|s\b)/);
+      }
+    }
+  });
+});
+
+describe("advertising stays beside the ranking (D57)", () => {
+  const tariff = "https://www.house.co.il/media/taarifon.pdf";
+  const base = { provider: { class: "broker" }, snapshot: "2026-11-04", tariff: { url: tariff }, lines: [{ base: "custody", applies_to: ["etf_units"], rate: { value: 0.1, source: { url: tariff } } }] };
+  const claim = { url: "https://www.house.co.il/trade/", seen: "2026-11-04" };
+  const binding = { kind: "price_list", url: `${tariff}#page=3`, dated: "2026-07-01", checked: "2026-11-04" };
+  const entry = { fee: "custody", verdict: "contradicted", claim_he: "ללא דמי משמרת", claim_source: claim, binding_he: "דמי משמרת 0.1% לרבעון", binding_source: binding };
+  const check = (...advertising: unknown[]) => checkAdvertising({ ...base, advertising } as never).join(" ");
+  it("passes a claim set against the record's own price list, and terms on the house's own site", () => {
+    expect(check(entry)).toBe("");
+    expect(check({ ...entry, verdict: "offer", binding_source: { ...binding, kind: "promotion_terms", url: "https://campaign.house.co.il/terms.pdf" } })).toBe("");
+    expect(check({ ...entry, verdict: "not_found", binding_he: undefined })).toBe("");
+  });
+  it("refuses a contradiction or an offer without the document's words, and a claim not found that has them", () => {
+    expect(check({ ...entry, binding_he: undefined })).toMatch(/needs the binding document's words/);
+    expect(check({ ...entry, verdict: "offer", binding_he: undefined })).toMatch(/needs the binding document's words/);
+    expect(check({ ...entry, verdict: "not_found" })).toMatch(/not_found has no binding words/);
+  });
+  it("refuses an advert as its own binding document, a price list the record does not cite, and terms on another site", () => {
+    expect(check({ ...entry, binding_source: { ...binding, kind: "promotion_terms", url: "https://www.house.co.il/trade" } })).toMatch(/advert's own page/);
+    expect(check({ ...entry, binding_source: { ...binding, url: "https://www.house.co.il/old-taarifon.pdf" } })).toMatch(/neither the record's tariff/);
+    expect(check({ ...entry, binding_source: { ...binding, kind: "promotion_terms", url: "https://market.tase.co.il/he/market_data/trading_fees" } })).toMatch(/not on the house's own site/);
+  });
+  it("refuses a date after the reading, a reading after the record, and the same claim twice", () => {
+    expect(check({ ...entry, binding_source: { ...binding, dated: "2026-12-01" } })).toMatch(/dated after/);
+    expect(check({ ...entry, claim_source: { ...claim, seen: "2026-11-05" } })).toMatch(/after the record's snapshot/);
+    expect(check(entry, entry)).toMatch(/the same claim twice/);
+  });
+  it("runs on every bank's and broker's record with the other premises", () => {
+    const groups = { state: "no_mention", entries: [] };
+    const premises = { ...base, price_for_he: "לקוח רגיל", left_out: [], groups, availability: [{ applies_to: ["etf_units"], available: true, source: { quote: "קרנות סל" } }] };
+    expect(checkPricePremises({ ...premises, advertising: [{ ...entry, binding_he: undefined }] } as never).join(" ")).toMatch(/needs the binding document's words/);
+  });
+  it("the page's calculation never reads the advertising", () => {
+    const dirs = ["../../engine/src", "../../../site/app/lib"];
+    for (const rel of dirs) {
+      const dir = fileURLToPath(new URL(rel + "/", import.meta.url));
+      for (const f of readdirSync(dir, { recursive: true }) as string[]) {
+        if (!/\.tsx?$/.test(f) || /\.test\./.test(f)) continue;
+        expect(readFileSync(dir + f, "utf8"), f).not.toMatch(/advertising|claim_he|binding_he/);
       }
     }
   });

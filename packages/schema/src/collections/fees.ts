@@ -73,7 +73,8 @@ const groupPrice = z.strictObject({
   source: groupSource,
 });
 const groupEntry = z.strictObject({
-  kind: z.enum(["young", "soldier", "released", "student", "other"]),
+  /** `salary` (2026-11-04, D43 amended): a lower price for those who move their salary to the bank or hold a portfolio there. */
+  kind: z.enum(["young", "soldier", "released", "student", "salary", "other"]),
   name_he: z.string().min(1),
   who_he: z.string().min(1),
   who_source: groupSource,
@@ -84,6 +85,15 @@ const groupEntry = z.strictObject({
   prices: z.array(groupPrice).min(1),
   /** What was inferred rather than read. */
   inferred: z.string().min(1).optional(),
+  /**
+   * The sub-row under the house's row (D43 amended 2026-11-04): who in a few words, what is cheaper than the record's own price, until
+   * when. Each restates the long words above with no new fact: the data check holds every number in them to those words (and an
+   * ordinary price after "במקום" to a line of the record). Entries with the same `cheaper_he` share one sub-row. Required of a bank's or
+   * broker's latest record; who_short_he of an `other` entry follows "ל" in the line above the sub-rows ("מחיר אחר לרופאים עצמאיים").
+   */
+  who_short_he: z.string().min(1).max(48).optional(),
+  cheaper_he: z.string().min(1).max(80).optional(),
+  ends_short_he: z.string().min(1).max(40).optional(),
 });
 /**
  * Prices for groups such as young customers, students and released soldiers, stated beside the ranking and never part of it (D43).
@@ -93,9 +103,37 @@ const groupEntry = z.strictObject({
 export const feeGroups = z.strictObject({
   state: z.enum(["prices", "none_on_securities", "no_mention", "not_read"]),
   note: z.string().min(1),
-  row_he: z.string().min(1).optional(),
   read: z.array(z.strictObject({ url: z.string().min(1), title: z.string().min(1), read_in: z.literal("chrome").optional() })).min(1),
   entries: z.array(groupEntry),
+});
+
+/**
+ * What a house's advertising says against its binding documents (D57, 2026-11-04): one entry per claim, both sides in their own words.
+ * `contradicted`: a binding document prints the fee the advert says is not charged. `offer`: the advert reads as for everyone, and the
+ * binding terms give it only to some customers, or for a time, or let the house withdraw it. `not_found`: no binding document says it.
+ * `binding_source` is what was read: the price list, the account terms, the fee annex or the promotion's terms, never an advertising page;
+ * `dated` is the document's own date, printed on it or, when it prints none, the file's (`dated_from`). Shown on the house's page; no
+ * calculation reads it (D56: advertising is a claim to check, never a price).
+ */
+export const advertisingEntry = z.strictObject({
+  /** The fee the claim is about, in the page's words: custody, a handling or account fee, buying and selling, conversion, a standing order. */
+  fee: z.enum(["custody", "account", "trade", "conversion", "standing_order"]),
+  verdict: z.enum(["contradicted", "offer", "not_found"]),
+  /** The advert's own words, exactly as printed; the cells of one table row are joined with " … ". */
+  claim_he: z.string().min(1).max(240),
+  claim_source: z.strictObject({ url: z.string().min(1), title: z.string().min(1), seen: isoDate }),
+  /** The binding document's own words that differ; absent for `not_found`. Fragments of one place are joined with " … ". */
+  binding_he: z.string().min(1).max(400).optional(),
+  binding_source: z.strictObject({
+    kind: z.enum(["price_list", "account_terms", "fee_annex", "promotion_terms"]),
+    url: z.string().min(1),
+    title: z.string().min(1),
+    page: z.number().int().positive().optional(),
+    row: z.number().int().positive().optional(),
+    dated: isoDate,
+    dated_from: z.enum(["printed", "file"]),
+    checked: isoDate,
+  }),
 });
 
 export const feesSnapshot = z.strictObject({
@@ -110,6 +148,12 @@ export const feesSnapshot = z.strictObject({
     /** A foreign broker whose own terms offer a service that withholds Israeli tax for those who join (2026-10-31, BRK-36). */
     israeli_tax_service: z.boolean().optional(),
     protection_rule_ids: ruleIds,
+    /**
+     * The house whose price list holds this one's prices (2026-11-04, D43 amended): PEPPER's customers trade in Leumi's app at the
+     * prices of the PEPPER annex of Leumi's price list, stated there as a group. Such a record stays as it was read; the indices page
+     * lists it under that house, not as a house of its own.
+     */
+    part_of: z.string().regex(/^[a-z0-9-]+$/).optional(),
   }),
   tariff: z.strictObject({
     url: z.string().min(1),
@@ -142,6 +186,8 @@ export const feesSnapshot = z.strictObject({
   /** What the documents hold that this record does not use, and why (2026-10-31); empty means nothing was found. */
   left_out: z.array(z.strictObject({ what: z.string().min(1), page: z.number().int().positive().optional(), why: z.string().min(1) })).optional(),
   groups: feeGroups.optional(),
+  /** What the house's advertising says against its binding documents (D57); absent or empty when nothing was found. */
+  advertising: z.array(advertisingEntry).optional(),
 })
   .superRefine((snap, ctx) => {
     const { regulator, regulator_foreign } = snap.provider;
@@ -152,4 +198,5 @@ export const feesSnapshot = z.strictObject({
   });
 
 export type FeeLine = z.infer<typeof feeLine>;
+export type AdvertisingEntry = z.infer<typeof advertisingEntry>;
 export type FeesSnapshot = z.infer<typeof feesSnapshot>;

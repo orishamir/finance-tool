@@ -1,7 +1,8 @@
 // The bank page and the broker page (flows 32, 33; design-spec 20): a bank's deposits, savings plans and current
 // account as product rows, its brokerage card, the catalogue's names, the paste card; a broker's card alone.
-import { useState } from "react";
-import { Link } from "react-router";
+import { useEffect, useRef, useState } from "react";
+import { Link, useSearchParams } from "react-router";
+import type { AdvertisingEntry, FeesSnapshot } from "@finance-tool/schema";
 import { buttons, catalogue, companies as companiesCopy, r4catalogue as copy } from "../../../copy";
 import { fmt } from "../../../lib/format";
 import { IconAlert, IconDrillIn, IconExternal } from "../../icons";
@@ -45,13 +46,24 @@ function CopyLine({ text }: { text: string }) {
   );
 }
 
-export function InstitutionPage({ data }: { data: InstitutionPageData }) {
+export function InstitutionPage({ data, notes }: { data: InstitutionPageData; /** What the page says beside the prices: advertising against the documents, group prices (D57 amended). */ notes?: { advertising: readonly AdvertisingEntry[]; groups: FeesSnapshot["groups"] | null } }) {
   const known = new Set(Object.keys(data.rules));
   const isBank = data.kind === "bank";
   const tariff = data.tariff;
   const notCollected = `${copy.depositsNotCollected.before}${data.name}${copy.depositsNotCollected.after}`;
   const wrapperName = (id: string) => data.groups.find((g) => g.wrapperId === id)?.wrapperName ?? "";
-  const brokerage = <BrokerageGroupCard id={data.id} tariff={tariff} kind={data.kind} />;
+  const brokerage = <BrokerageGroupCard id={data.id} tariff={tariff} kind={data.kind} advertising={notes?.advertising} groups={notes?.groups} />;
+  // "?product=brokerage" (a link from the indices page) opens the securities account and brings it into view, once the page is in
+  // the browser, as the company pages read their product (D57 amended 2026-11-04)
+  const [search] = useSearchParams();
+  const asked = search.get("product") === "brokerage";
+  const [accountOpen, setAccountOpen] = useState(!data.hasDeposits);
+  const account = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!asked) return;
+    setAccountOpen(true);
+    account.current?.scrollIntoView({ block: "start" });
+  }, [asked]);
   return (
     <PageShell current="decoder" data={{ rules: data.rules, pointed: data.pointed, terms: {}, dimensions: data.terms.dimensions, today: data.today, ...(data.terms.company ? { company: data.terms.company } : {}), pageCompanies: data.terms.pageCompanies }}>
       <div className="lg:flex lg:gap-12 lg:items-start pt-2 lg:pt-8">
@@ -153,18 +165,26 @@ export function InstitutionPage({ data }: { data: InstitutionPageData }) {
                   </div>
                 </Disclosure>
               ))}
-              <Disclosure
-                className="lg:hidden flex flex-col gap-2"
-                summaryClassName="min-h-12 md:min-h-14"
-                defaultOpen={!data.hasDeposits}
-                label={<span className="text-lg font-semibold">{copy.groups.brokerage}</span>}
-              >
-                {brokerage}
-              </Disclosure>
+              {/* in the page's column at every width since the card holds the account's details (D57 amended 2026-11-04) */}
+              <div ref={account} className="scroll-mt-[112px] lg:scroll-mt-[88px]">
+                <Disclosure
+                  className="flex flex-col gap-2"
+                  summaryClassName="min-h-12 md:min-h-14"
+                  open={accountOpen}
+                  onOpenChange={setAccountOpen}
+                  label={<span className="text-lg lg:text-xl font-semibold">{copy.groups.brokerage}</span>}
+                >
+                  {brokerage}
+                </Disclosure>
+              </div>
             </section>
           )}
 
-          {!isBank && brokerage}
+          {!isBank && (
+            <div ref={account} className="scroll-mt-[112px] lg:scroll-mt-[88px]">
+              {brokerage}
+            </div>
+          )}
 
           {data.catalogue.length > 0 && (
             <section aria-labelledby="inst-also" className="flex flex-col gap-3">
@@ -194,7 +214,6 @@ export function InstitutionPage({ data }: { data: InstitutionPageData }) {
         </div>
 
         <aside className="hidden lg:flex w-[38%] max-w-[420px] shrink-0 flex-col gap-4 pt-[100px]" aria-label="עוד">
-          {isBank && brokerage}
           <PasteCard />
         </aside>
       </div>

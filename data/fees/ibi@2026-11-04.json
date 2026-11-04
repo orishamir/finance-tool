@@ -653,5 +653,45 @@
       }
     ],
     "entries": []
-  }
+  },
+  "advertising": [
+    {
+      "fee": "custody",
+      "verdict": "contradicted",
+      "claim_he": "עד 90% חיסכון בעמלות, ללא דמי משמרת וללא עמלות מיותרות",
+      "claim_source": {
+        "url": "https://www.ibi.co.il/solutions/trading/app-ibi-smart-2/",
+        "title": "אפליקציית IBI SMART",
+        "seen": "2026-11-04"
+      },
+      "binding_he": "דמי משמרת … 0.1% משווי החשבון לרבעון",
+      "binding_source": {
+        "kind": "price_list",
+        "url": "https://campaign.ibi.co.il/PDF/TRADE/TAARIFON_IBI.pdf",
+        "title": "תעריפון עמלות - שרותי בורסה והשקעות בישראל אי.בי.אי. בע\"מ, חלק 4(א), סעיף 8",
+        "page": 4,
+        "dated": "2026-07-01",
+        "dated_from": "printed",
+        "checked": "2026-11-04"
+      }
+    },
+    {
+      "fee": "account",
+      "verdict": "not_found",
+      "claim_he": "300 ש\"ח מתנה לחשבון המסחר + 0 ש\"ח דמי טיפול לשנה!",
+      "claim_source": {
+        "url": "https://www.ibi.co.il/solutions/trading/app-ibi-smart-2/",
+        "title": "אפליקציית IBI SMART",
+        "seen": "2026-11-04"
+      },
+      "binding_source": {
+        "kind": "promotion_terms",
+        "url": "https://www.ibi.co.il/תקנון-מבצע-הטבת-הצטרפות/",
+        "title": "תקנון מבצע – הטבת הצטרפות (חשבון מסחר עצמאי)",
+        "dated": "2026-11-02",
+        "dated_from": "file",
+        "checked": "2026-11-04"
+      }
+    }
+  ]
 }

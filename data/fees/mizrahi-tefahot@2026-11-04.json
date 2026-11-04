@@ -1301,7 +1301,6 @@
   ],
   "groups": {
     "state": "prices",
-    "row_he": "לקבוצות: רק קנייה ומכירה בתל אביב, 0.40% במקום 0.52%, לזמן מוגבל. דמי הניהול לא יורדים.",
     "note": "Annex A pp.33-34, 'מעודכן לתאריך: 13.01.2026', re-read 2026-11-04 in the same file. Only the Tel Aviv trade line is lowered ('0.40% עמלה מופחתת, אך לא פחות מהעמלה המזערית', fee number 4.1); no group lowers custody. That 0.40 replaces the direct rate of 0.52 rather than the branch rate of 0.64 is inferred: the annex row names no channel, and 0.52 is the rate the ranking uses. The benefit excludes accounts with a portfolio manager's power of attorney ('(*)'). The same four groups also get 50% off the conversion fee and a rate benefit of '3 פרומיל'; retirees get only the 50% conversion discount. The young, soldier and student account pages (Wayback 2026-05-21 and 2026-09-13; library bd6b289ec5246358, c0940a7266d99c8a) advertise the same '0.4% עמלת קנייה/מכירה של ני\"ע בבורסת בתל אביב, אך לא פחות מהעמלה המזערית'. Ages and periods are unchanged.",
     "read": [
       {
@@ -1350,7 +1349,10 @@
             }
           }
         ],
-        "inferred": "The annex row carries line number 4.1, the ordinary line whose footnote takes tracking funds in. That the group price reaches a tracking fund is inferred from the number, not printed on the row, so it is not priced. No group custody price is printed."
+        "inferred": "The annex row carries line number 4.1, the ordinary line whose footnote takes tracking funds in. That the group price reaches a tracking fund is inferred from the number, not printed on the row, so it is not priced. No group custody price is printed.",
+        "who_short_he": "צעירים בגילאי 14 עד 21.5",
+        "cheaper_he": "קנייה ומכירה 0.40% במקום 0.52%",
+        "ends_short_he": "עד גיל 21.5"
       },
       {
         "kind": "soldier",
@@ -1384,7 +1386,10 @@
             }
           }
         ],
-        "inferred": "The annex row carries line number 4.1, the ordinary line whose footnote takes tracking funds in. That the group price reaches a tracking fund is inferred from the number, not printed on the row, so it is not priced. No group custody price is printed."
+        "inferred": "The annex row carries line number 4.1, the ordinary line whose footnote takes tracking funds in. That the group price reaches a tracking fund is inferred from the number, not printed on the row, so it is not priced. No group custody price is printed.",
+        "who_short_he": "חיילים ובנות שירות לאומי",
+        "cheaper_he": "קנייה ומכירה 0.40% במקום 0.52%",
+        "ends_short_he": "עד גיל 21.5, ואחר כך עם אישורים"
       },
       {
         "kind": "released",
@@ -1418,7 +1423,10 @@
             }
           }
         ],
-        "inferred": "The annex row carries line number 4.1, the ordinary line whose footnote takes tracking funds in. That the group price reaches a tracking fund is inferred from the number, not printed on the row, so it is not priced. No group custody price is printed."
+        "inferred": "The annex row carries line number 4.1, the ordinary line whose footnote takes tracking funds in. That the group price reaches a tracking fund is inferred from the number, not printed on the row, so it is not priced. No group custody price is printed.",
+        "who_short_he": "חיילים משוחררים, עד גיל 27",
+        "cheaper_he": "קנייה ומכירה 0.40% במקום 0.52%",
+        "ends_short_he": "3 שנים, ולא אחרי גיל 30"
       },
       {
         "kind": "student",
@@ -1452,7 +1460,10 @@
             }
           }
         ],
-        "inferred": "The annex row carries line number 4.1, the ordinary line whose footnote takes tracking funds in. That the group price reaches a tracking fund is inferred from the number, not printed on the row, so it is not priced. No group custody price is printed."
+        "inferred": "The annex row carries line number 4.1, the ordinary line whose footnote takes tracking funds in. That the group price reaches a tracking fund is inferred from the number, not printed on the row, so it is not priced. No group custody price is printed.",
+        "who_short_he": "סטודנטים, עד גיל 35",
+        "cheaper_he": "קנייה ומכירה 0.40% במקום 0.52%",
+        "ends_short_he": "4 שנים, ולא אחרי גיל 35"
       }
     ]
   }

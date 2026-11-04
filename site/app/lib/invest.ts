@@ -86,6 +86,8 @@ export const customIndexPath = (id: string): string => `${INDICES_PATH}?custom=$
 export const exposureIdOfSlug = (slug: string): string => `index-${slug}`;
 /** The index page with one house picked, for a house's own page (issue 172: it replaced the page that ranked the houses on one S&P 500 fund). */
 export const housePath = (houseId: string, exposureId = "index-sp500"): string => `${indexPath(exposureId)}?house=${encodeURIComponent(houseId)}`;
+/** A house's own page, opened at its securities account: who its price is for, its fees and where they stand, its offers (D57 amended). */
+export const brokeragePagePath = (houseId: string): string => `/companies/${encodeURIComponent(houseId)}?product=brokerage`;
 
 export function indexById(bundle: Pick<WorkbenchBundle, "exposures">, id: string, customs: readonly CustomIndex[] = []): IndexRef | null {
   const known = knownIndices(bundle).find((i) => i.id === id);
@@ -328,7 +330,8 @@ const investProviders = new WeakMap<readonly FeesSnapshot[], readonly FeesSnapsh
 export function providersOfInvest(bundle: Pick<WorkbenchBundle, "snapshots">): readonly FeesSnapshot[] {
   let out = investProviders.get(bundle.snapshots);
   if (!out) {
-    out = bundle.snapshots.filter((s) => s.provider.class === "bank" || s.provider.class === "broker" || s.provider.class === "foreign_broker").sort((a, b) => a.provider.name_he.localeCompare(b.provider.name_he, "he"));
+    // a house that is part of another (PEPPER of Leumi, D43 amended 2026-11-04) is not a house of its own here: its prices stand under that house
+    out = bundle.snapshots.filter((s) => (s.provider.class === "bank" || s.provider.class === "broker" || s.provider.class === "foreign_broker") && !s.provider.part_of).sort((a, b) => a.provider.name_he.localeCompare(b.provider.name_he, "he"));
     investProviders.set(bundle.snapshots, out);
   }
   return out;

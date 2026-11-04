@@ -667,7 +667,6 @@
   "groups": {
     "state": "prices",
     "note": "Full tariff 04/2026 re-read 2026-11-04, with the landing, self-trading, about, app, currency, tracks and terms pages, the three promotion terms linked from the terms page, and the exchange's member sheet (read in Chrome; not listed in read because psagot lists that host). No young, student, soldier or released-soldier price is printed. The November 2026 joining offer is the only current offer, recorded as an entry of kind 'other' (D56: an offer stated on the row, never ranked); its terms are not published. The ended offers are under left_out. This covers what was read, not a personal offer.",
-    "row_he": "למצטרפים חדשים שמפקידים לראשונה עד 30.11.2026: ״פטור מדמי טיפול לארבע שנים״, לפי דף הפרסום בלבד. תקנון המבצע לא מפורסם, ולא נאמר אם הפטור חל על דמי ניהול הפיקדון או על דמי השימוש והטיפול.",
     "read": [
       {
         "url": "https://www.meitav.co.il/media/zitlfr4f/עמלות-תעריפון-42026.pdf",
@@ -720,8 +719,111 @@
             }
           }
         ],
-        "inferred": "The exemption is printed only on the landing and self-trading pages, which are advertising; no terms for it are published (the terms page lists only ended offers). The reservists' terms of May-June 2026 (section 4.1) used the same words, 'פטור מדמי טיפול בחשבון המסחר'. By its name 'דמי טיפול' matches part 9 item 1 ('דמי שימוש/ טיפול', up to 90 NIS a month), not the custody line ('דמי ניהול פיקדון'), so it may waive only the 90 NIS; inferred from the names, never read."
+        "inferred": "The exemption is printed only on the landing and self-trading pages, which are advertising; no terms for it are published (the terms page lists only ended offers). The reservists' terms of May-June 2026 (section 4.1) used the same words, 'פטור מדמי טיפול בחשבון המסחר'. By its name 'דמי טיפול' matches part 9 item 1 ('דמי שימוש/ טיפול', up to 90 NIS a month), not the custody line ('דמי ניהול פיקדון'), so it may waive only the 90 NIS; inferred from the names, never read.",
+        "who_short_he": "מצטרפים חדשים עד 30.11.2026",
+        "cheaper_he": "״פטור מדמי טיפול״, בלי לומר מאילו",
+        "ends_short_he": "ארבע שנים"
       }
     ]
-  }
+  },
+  "advertising": [
+    {
+      "fee": "custody",
+      "verdict": "contradicted",
+      "claim_he": "פטור מדמי משמרת",
+      "claim_source": {
+        "url": "https://www.meitav.co.il/trade/independent_trading/",
+        "title": "מיטב טרייד: מסחר עצמאי",
+        "seen": "2026-11-04"
+      },
+      "binding_he": "דמי ניהול פיקדון ניירות ערך (לרבות יחידות השתתפות בקרנות נאמנות) … 0.15%, מינימום ₪ 270 … לרבעון",
+      "binding_source": {
+        "kind": "price_list",
+        "url": "https://www.meitav.co.il/media/zitlfr4f/עמלות-תעריפון-42026.pdf",
+        "title": "תעריפון עמלות מיטב טרייד, חלק 4(א), סעיף 8",
+        "page": 3,
+        "dated": "2026-04-23",
+        "dated_from": "file",
+        "checked": "2026-11-04"
+      }
+    },
+    {
+      "fee": "account",
+      "verdict": "contradicted",
+      "claim_he": "ללא עמלות אחזקת חשבון",
+      "claim_source": {
+        "url": "https://www.meitav.co.il/trade/currency_exchange/",
+        "title": "מיטב טרייד: המרת מט\"ח",
+        "seen": "2026-11-04"
+      },
+      "binding_he": "דמי שימוש/ טיפול … עד ₪ 90 … אחת לחודש",
+      "binding_source": {
+        "kind": "price_list",
+        "url": "https://www.meitav.co.il/media/zitlfr4f/עמלות-תעריפון-42026.pdf",
+        "title": "תעריפון עמלות מיטב טרייד, חלק 9, סעיף 1",
+        "page": 5,
+        "dated": "2026-04-23",
+        "dated_from": "file",
+        "checked": "2026-11-04"
+      }
+    },
+    {
+      "fee": "conversion",
+      "verdict": "contradicted",
+      "claim_he": "ללא עמלת חליפין",
+      "claim_source": {
+        "url": "https://www.meitav.co.il/trade/currency_exchange/",
+        "title": "מיטב טרייד: המרת מט\"ח",
+        "seen": "2026-11-04"
+      },
+      "binding_he": "עמלת חליפין … 0.13%",
+      "binding_source": {
+        "kind": "price_list",
+        "url": "https://www.meitav.co.il/media/zitlfr4f/עמלות-תעריפון-42026.pdf",
+        "title": "תעריפון עמלות מיטב טרייד, חלק 5, סעיף 1",
+        "page": 5,
+        "dated": "2026-04-23",
+        "dated_from": "file",
+        "checked": "2026-11-04"
+      }
+    },
+    {
+      "fee": "account",
+      "verdict": "not_found",
+      "claim_he": "מצטרפים למיטב טרייד במהלך חודש נובמבר ונהנים מהטבות שלא יחזרו … פטור מדמי טיפול לארבע שנים",
+      "claim_source": {
+        "url": "https://www.meitav.co.il/trade/",
+        "title": "מיטב טרייד: דף הבית",
+        "seen": "2026-11-04"
+      },
+      "binding_source": {
+        "kind": "price_list",
+        "url": "https://www.meitav.co.il/media/zitlfr4f/עמלות-תעריפון-42026.pdf",
+        "title": "תעריפון עמלות מיטב טרייד, חלק 9, סעיף 1",
+        "page": 5,
+        "dated": "2026-04-23",
+        "dated_from": "file",
+        "checked": "2026-11-04"
+      }
+    },
+    {
+      "fee": "custody",
+      "verdict": "not_found",
+      "claim_he": "מסלול קרנות ללא עמלות … אין דמי טיפול חודשיים, אין דמי משמרת ואין עמלות קניה מכירה על קרנות מנוהלות אקטיבית",
+      "claim_source": {
+        "url": "https://www.meitav.co.il/trade/tel-aviv-trading/information_about_independent_trading_on_the_stock_exchange/",
+        "title": "מידע על מסחר עצמאי בבורסה: ארבעה מסלולים",
+        "seen": "2026-11-04"
+      },
+      "binding_source": {
+        "kind": "price_list",
+        "url": "https://www.meitav.co.il/media/zitlfr4f/עמלות-תעריפון-42026.pdf",
+        "title": "תעריפון עמלות מיטב טרייד, חלק 4(א), סעיף 8",
+        "page": 3,
+        "dated": "2026-04-23",
+        "dated_from": "file",
+        "checked": "2026-11-04"
+      }
+    }
+  ]
 }

@@ -192,8 +192,12 @@ describe("the page's finish line (2026-10-31)", () => {
 describe("no price on what no document says can be done (2026-10-31)", () => {
   const view = buildInvest({ bundle, index: indexById(bundle, "index-sp500")!, plan });
   const at = (option: string, house: string) => view.options.find((o) => o.id === option)!.funds.map((f) => f.byHouse[house]!);
-  it("PEPPER prices no fund and Interactive Brokers nothing on Tel Aviv: grey as no data, not as not possible", () => {
-    for (const x of [...at("il-tracking", "pepper"), ...at("il-etf", "pepper"), ...at("il-etf", "interactive-brokers")]) {
+  it("PEPPER is no house of its own (its prices stand under Leumi, D43 amended 2026-11-04)", () => {
+    expect(view.providers.map((p) => p.id)).not.toContain("pepper");
+    expect(view.providers.map((p) => p.id)).toContain("leumi");
+  });
+  it("Interactive Brokers prices nothing on Tel Aviv: grey as no data, not as not possible", () => {
+    for (const x of at("il-etf", "interactive-brokers")) {
       expect("valueN" in x).toBe(false);
       expect("availability" in x && x.availability).toBeFalsy();
     }

@@ -1105,7 +1105,6 @@
   ],
   "groups": {
     "state": "prices",
-    "row_he": "לקבוצות: הנחה של 40% עד 50% בדמי הניהול, לרוב לזמן מוגבל. לסטודנטים ההנחה רק על קנייה ומכירה.",
     "note": "The clubs in the sheet (rows 178-665) and the student page read in the filed copies. Students have no custody price. Ages 60+, retirees and new immigrants are listed under other only by their custody or trade rows; the 60+ club has been closed to new members since 1.7.2013 and the retiree club since 01.06.2003 (rows 551, 583), and both say so; the family and academics clubs print no securities price (academics closed on 30.6.22). Re-checked 2026-11-04 against the same sheet and the annex A file of 24/12/2023 and the short tariff of 01/10/2026: the clubs, their ages and periods are unchanged. The young trading package ('צעירים משקיעים בחינם') and the Poalim Plus page's 'הטבות בעמלות ניירות ערך' are not in annex A (see left_out).",
     "read": [
       {
@@ -1155,7 +1154,10 @@
               "quote": "דמי ניהול פיקדון ניירות ערך"
             }
           }
-        ]
+        ],
+        "who_short_he": "נוער בגילאי 14 עד 20",
+        "cheaper_he": "הנחה של 50% בדמי ניהול",
+        "ends_short_he": "לא כתוב"
       },
       {
         "kind": "soldier",
@@ -1200,7 +1202,10 @@
               "quote": "דמי ניהול פיקדון ני\"ע הנסחרים"
             }
           }
-        ]
+        ],
+        "who_short_he": "חיילים ומשרתי שירות לאומי, בגילאי 17 עד 26",
+        "cheaper_he": "הנחה של 50% בדמי ניהול; קנייה ומכירה 0.30% במקום 0.4%",
+        "ends_short_he": "עד 3 שנים, ולא אחרי גיל 26"
       },
       {
         "kind": "released",
@@ -1257,7 +1262,10 @@
               "quote": "דמי ניהול פיקדון ניירות ערך"
             }
           }
-        ]
+        ],
+        "who_short_he": "חיילים משוחררים בגילאי 19 עד 26",
+        "cheaper_he": "הנחה של 40% בדמי ניהול",
+        "ends_short_he": "3 שנים, ולא אחרי גיל 26"
       },
       {
         "kind": "student",
@@ -1290,7 +1298,10 @@
               "quote": "קניית/מכירת מניות הנסחרים בבורסה"
             }
           }
-        ]
+        ],
+        "who_short_he": "סטודנטים בגילאי 18 עד 35",
+        "cheaper_he": "קנייה ומכירה 0.35% במקום 0.4%",
+        "ends_short_he": "3 שנים, אפשר עד 5, ולא אחרי גיל 35"
       },
       {
         "kind": "other",
@@ -1329,7 +1340,10 @@
               "quote": "דמי ניהול פיקדון ניירות ערך"
             }
           }
-        ]
+        ],
+        "who_short_he": "גמלאים (סגור למצטרפים)",
+        "cheaper_he": "הנחה של 33% בדמי ניהול",
+        "ends_short_he": "לא כתוב"
       },
       {
         "kind": "other",
@@ -1374,7 +1388,10 @@
               "quote": "דמי ניהול פיקדון ניירות ערך"
             }
           }
-        ]
+        ],
+        "who_short_he": "נשים מגיל 60 וגברים מגיל 65 (סגור למצטרפים)",
+        "cheaper_he": "הנחה של 33% בדמי ניהול",
+        "ends_short_he": "כל עוד התנאים מתקיימים"
       },
       {
         "kind": "other",
@@ -1407,7 +1424,10 @@
               "quote": "קניית/מכירת מניות הנסחרים בבורסה"
             }
           }
-        ]
+        ],
+        "who_short_he": "עולים חדשים",
+        "cheaper_he": "הנחה של 50% בעמלת קנייה ומכירה, ולא פחות מ־0.25%",
+        "ends_short_he": "שנה מהעלייה"
       }
     ]
   }

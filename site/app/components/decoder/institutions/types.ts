@@ -55,7 +55,7 @@ export interface ProductGroup {
   products: ProductRowData[];
 }
 
-export type LineBase = "trade" | "custody" | "fx";
+export type LineBase = "trade" | "custody" | "fx" | "fixed_period";
 
 export interface TariffLineRow {
   id: string;
@@ -67,6 +67,18 @@ export interface TariffLineRow {
   period: "month" | "quarter" | "year" | null;
   min: SiteValue | null;
   max: SiteValue | null;
+  /** Where the rate stands (D57 amended 2026-11-04): its document, and the page of a PDF; `tariff` when it is the record's own price list. */
+  where: { url: string; title: string; page?: number; tariff: boolean } | null;
+  /** A conversion's spread: printed ("עד 0.7%"), or not limited by the documents (D56: never zero); null when the line has none. */
+  spread: SiteValue | "not_limited" | null;
+}
+
+/** Whether a kind of holding can be bought at the house, from its own documents (S3), with the reason when the documents leave it open. */
+export interface AvailabilityRow {
+  classes: string[];
+  state: "yes" | "no" | "unknown";
+  reason: string | null;
+  source: { url: string; title: string; page?: number };
 }
 
 export interface TariffCardData {
@@ -89,6 +101,9 @@ export interface TariffCardData {
   protection: { id: string; title: string }[];
   notice: string[];
   providerName: string;
+  /** Who pays the card's prices (a bank's or broker's record says so, 2026-10-31). */
+  priceFor: string | null;
+  availability: AvailabilityRow[];
 }
 
 export interface InstitutionPageData {

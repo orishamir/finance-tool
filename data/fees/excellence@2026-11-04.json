@@ -648,7 +648,6 @@
   "groups": {
     "state": "prices",
     "note": "Full tariff re-read 2026-11-04, with the promotion terms on /trading/full-disclosure/ (two handling-fee exemptions, course gift, referral), the Kesem-funds arrangement page, the self-trading, joining, kids, teens, standing-order and dealer-information pages, and the exchange's member sheet (read in Chrome, not listed in read because psagot lists that host). No young, student, soldier or released-soldier price is printed; the teens page says 'העמלות בחשבון מסחר לנוער זהות לעמלות הנהוגות בחשבון מסחר רגיל'. The Kesem-funds buy exemption is the only offer on a trade or custody fee, recorded as an entry of kind 'other' (D56: stated on the row, never ranked). The handling-fee exemptions are under left_out. This covers what was read, not a personal offer.",
-    "row_he": "עד סוף 2026, ללקוחות חדשים וקיימים: פטור מעמלת קנייה בקרנות נאמנות ובקרנות סל של קסם, עד 40 קניות בשנה. המכירה, דמי המשמרת ודמי הטיפול במחיר הרגיל.",
     "read": [
       {
         "url": "https://www.xnes.co.il/media/nwogkoos/taarifon.pdf",
@@ -705,8 +704,72 @@
             }
           }
         ],
-        "inferred": "The page is in the sitemap but no menu links to it. 'מפיצים נוספים' are named only in the disclosure document it points to. The exemption is on buys only; selling is at the tariff. With one buy a month, 40 buys cover the rest of 2026."
+        "inferred": "The page is in the sitemap but no menu links to it. 'מפיצים נוספים' are named only in the disclosure document it points to. The exemption is on buys only; selling is at the tariff. With one buy a month, 40 buys cover the rest of 2026.",
+        "who_short_he": "קונים בקרנות קסם",
+        "cheaper_he": "פטור מעמלת קנייה בקרנות קסם, עד 40 קניות",
+        "ends_short_he": "עד 31.12.2026"
       }
     ]
-  }
+  },
+  "advertising": [
+    {
+      "fee": "custody",
+      "verdict": "contradicted",
+      "claim_he": "ללא דמי משמרת",
+      "claim_source": {
+        "url": "https://lp.xnes.co.il/trade/",
+        "title": "אקסלנס טרייד: דף הצטרפות",
+        "seen": "2026-11-04"
+      },
+      "binding_he": "דמי ניהול/טיפול פיקדון ניירות ערך (לרבות יחידות השתתפות בקרנות נאמנות) … 0.6% לרבעון עם מינימום 40 ₪ לחודש",
+      "binding_source": {
+        "kind": "price_list",
+        "url": "https://www.xnes.co.il/media/nwogkoos/taarifon.pdf",
+        "title": "תעריפון מלא - אקסלנס טרייד, חלק 4(א), סעיף 8",
+        "page": 4,
+        "dated": "2026-07-15",
+        "dated_from": "file",
+        "checked": "2026-11-04"
+      }
+    },
+    {
+      "fee": "conversion",
+      "verdict": "contradicted",
+      "claim_he": "ללא עמלת מט\"ח",
+      "claim_source": {
+        "url": "https://lp.xnes.co.il/trade/",
+        "title": "אקסלנס טרייד: דף הצטרפות",
+        "seen": "2026-11-04"
+      },
+      "binding_he": "עמלת חליפין … 0.1% … אינו כולל מרווח הנקבע בהסכם מול הלקוח",
+      "binding_source": {
+        "kind": "price_list",
+        "url": "https://www.xnes.co.il/media/nwogkoos/taarifon.pdf",
+        "title": "תעריפון מלא - אקסלנס טרייד, חלק 5(א), סעיף 1",
+        "page": 5,
+        "dated": "2026-07-15",
+        "dated_from": "file",
+        "checked": "2026-11-04"
+      }
+    },
+    {
+      "fee": "account",
+      "verdict": "offer",
+      "claim_he": "פותחים חשבון מסחר עצמאי באקסלנס טרייד ומקבלים פטור מדמי טיפול לכל החיים!",
+      "claim_source": {
+        "url": "https://lp.xnes.co.il/trade/",
+        "title": "אקסלנס טרייד: דף הצטרפות",
+        "seen": "2026-11-04"
+      },
+      "binding_he": "לקוחות פרטיים שאינם בעלי חשבון בחברה ולא היו בשנה האחרונה בעלי חשבון בחברה, אשר פותחים חשבון מסחר עצמאי חדש ומפקידים בחשבון סך מינימלי של 10,000 ש\"ח עד ליום 31 בדצמבר 2026 … ההטבה מתייחסת לדמי טיפול חודשיים בלבד, ואינה חלה על עמלות מסחר, דמי משמרת",
+      "binding_source": {
+        "kind": "promotion_terms",
+        "url": "https://www.xnes.co.il/trading/full-disclosure/",
+        "title": "תקנון מבצע פטור מדמי טיפול לכל חיי החשבון",
+        "dated": "2026-10-01",
+        "dated_from": "printed",
+        "checked": "2026-11-04"
+      }
+    }
+  ]
 }

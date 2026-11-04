@@ -1874,7 +1874,6 @@
   ],
   "groups": {
     "state": "prices",
-    "row_he": "לצעירים, חיילים וסטודנטים: דמי ניהול 0.1% לרבעון במקום 0.195%, בלי תאריך סיום בתעריפון",
     "note": "Annex A pp.1-2 fetched and filed in this work. It prints no period for any group; only the young column carries ages 14 to 19. The retiree club closed to new members on 30.09.2024. Teacher 10 prints no securities price. Re-checked 2026-11-04: annex A is the same file (2024-09-15). The account-type pages add: students join the student club 'עד גיל 35' (page offer 'בתוקף עד תאריך 31.12.26', library b7544a94ce50f8ae; the annex price itself prints no end); the young, soldier and student pages advertise no securities price; the retirees' page says '33% הנחה בדמי ניהול פיקדון ני\"ע' (= the annex's 0.133%). Teachers' 50% custody discount is advertising only, left out.",
     "read": [
       {
@@ -1950,7 +1949,10 @@
               "quote": "0.1%"
             }
           }
-        ]
+        ],
+        "who_short_he": "צעירים בגילאי 14 עד 19",
+        "cheaper_he": "דמי ניהול 0.1% במקום 0.195%; קנייה ומכירה 0.39% במקום 0.4%",
+        "ends_short_he": "לא כתוב"
       },
       {
         "kind": "soldier",
@@ -2019,7 +2021,10 @@
               "quote": "0.1%"
             }
           }
-        ]
+        ],
+        "who_short_he": "חיילים",
+        "cheaper_he": "דמי ניהול 0.1% במקום 0.195%; קנייה ומכירה 0.39% במקום 0.4%",
+        "ends_short_he": "לא כתוב"
       },
       {
         "kind": "student",
@@ -2088,7 +2093,10 @@
               "quote": "0.1%"
             }
           }
-        ]
+        ],
+        "who_short_he": "סטודנטים",
+        "cheaper_he": "דמי ניהול 0.1% במקום 0.195%; קנייה ומכירה 0.39% במקום 0.4%",
+        "ends_short_he": "לא כתוב"
       },
       {
         "kind": "other",
@@ -2157,7 +2165,10 @@
               "quote": "0.133%"
             }
           }
-        ]
+        ],
+        "who_short_he": "גמלאים (סגור למצטרפים)",
+        "cheaper_he": "דמי ניהול 0.133% במקום 0.195%; קנייה ומכירה 0.39% במקום 0.4%",
+        "ends_short_he": "לא כתוב"
       }
     ]
   }

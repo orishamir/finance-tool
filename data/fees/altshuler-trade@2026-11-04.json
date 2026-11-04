@@ -654,7 +654,6 @@
   "groups": {
     "state": "prices",
     "note": "Full tariff re-read 2026-11-04, with the promotion's terms (PDF created 22.10.2026, Last-Modified 25.10.2026, unchanged since 2026-10-31), the landing, joining-benefits, about, deposit, monthly-investment and currency pages, and the exchange's member sheet (read in Chrome; not listed in read because psagot lists that host). No young, student, soldier or released-soldier price is printed. The joining promotion is the only offer, recorded as an entry of kind 'other' (D56: an offer stated on the row, never ranked). This covers what was read, not a personal offer.",
-    "row_he": "למצטרפים חדשים שבחשבונם יש, לפי שיקול דעת החברה, ״ביצוע תדיר של עסקאות״: 0.07% במקום 0.15% לקנייה ולמכירה של מניות, קרנות סל וקרנות מחקות, ו״פטור מדמי ניהול״ בלי לומר על איזה משני דמי הניהול שבתעריפון.",
     "read": [
       {
         "url": "https://www.as-invest.co.il/media/oqdfpafo/תעריפון-מלא-אלטשולר-שחם-טרייד.pdf",
@@ -732,8 +731,90 @@
             }
           }
         ],
-        "inferred": "The trade prices are printed only on the joining page, which is advertising; the terms (3.1) put the account benefits in fee annex B of the account agreement, which is not published, so no binding document read prints 0.07%, 2.9 NIS or 6 USD. The terms do not say which tariff fee 'דמי ניהול חשבון' is. Whether one buy a month counts as 'ביצוע תדיר של עסקאות' is the company's sole discretion. The page's footnote '*קרנות סל במסלול רציף' may narrow the 0.07% to ETFs in continuous trading; not settled."
+        "inferred": "The trade prices are printed only on the joining page, which is advertising; the terms (3.1) put the account benefits in fee annex B of the account agreement, which is not published, so no binding document read prints 0.07%, 2.9 NIS or 6 USD. The terms do not say which tariff fee 'דמי ניהול חשבון' is. Whether one buy a month counts as 'ביצוע תדיר של עסקאות' is the company's sole discretion. The page's footnote '*קרנות סל במסלול רציף' may narrow the 0.07% to ETFs in continuous trading; not settled.",
+        "who_short_he": "מצטרפים חדשים שסוחרים הרבה",
+        "cheaper_he": "קנייה ומכירה 0.07% במקום 0.15%; ״פטור קבוע מדמי ניהול חשבון״, בלי לומר מאילו",
+        "ends_short_he": "עד החלטה אחרת של החברה"
       }
     ]
-  }
+  },
+  "advertising": [
+    {
+      "fee": "custody",
+      "verdict": "contradicted",
+      "claim_he": "אלטשולר שחם טרייד מציעה מחירים אטרקטיביים במיוחד, ללא דמי משמרת",
+      "claim_source": {
+        "url": "https://www.as-invest.co.il/trade/about/",
+        "title": "אלטשולר שחם טרייד: אודות",
+        "seen": "2026-11-04"
+      },
+      "binding_he": "דמי ניהול/טיפול פקדון ני\"ע … 0.15%, מינימום ₪ 75 לחודש",
+      "binding_source": {
+        "kind": "price_list",
+        "url": "https://www.as-invest.co.il/media/oqdfpafo/תעריפון-מלא-אלטשולר-שחם-טרייד.pdf",
+        "title": "תעריפון אלטשולר שחם טרייד בע\"מ, חלק 4(א), סעיף 10",
+        "page": 2,
+        "dated": "2025-05-22",
+        "dated_from": "file",
+        "checked": "2026-11-04"
+      }
+    },
+    {
+      "fee": "custody",
+      "verdict": "offer",
+      "claim_he": "מצטרפים ונהנים מפטור מלא מדמי ניהול ללא הגבלת זמן!*",
+      "claim_source": {
+        "url": "https://www.as-invest.co.il/trade/",
+        "title": "אלטשולר שחם טרייד: דף הבית של המסחר העצמאי",
+        "seen": "2026-11-04"
+      },
+      "binding_he": "מקיים פעילות שוטפת ואקטיבית בחשבון, הכוללת ביצוע תדיר של עסקאות בנכסי החשבון … הפעילות תיבחן בין היתר לפי אופי הפעילות בחשבון, לפי שיקול דעתה הבלעדי של החברה",
+      "binding_source": {
+        "kind": "promotion_terms",
+        "url": "https://www.as-invest.co.il/media/p1pb1i2x/תקנון-אלטשולר-שחם-טרייד.pdf",
+        "title": "תקנון מבצע הצטרפות לאלטשולר שחם טרייד",
+        "page": 1,
+        "dated": "2026-10-26",
+        "dated_from": "printed",
+        "checked": "2026-11-04"
+      }
+    },
+    {
+      "fee": "trade",
+      "verdict": "not_found",
+      "claim_he": "קנייה / מכירה מניות, קרנות סל וקרנות מחקות בישראל* … 0.07% (מינימום 2.9 ₪)",
+      "claim_source": {
+        "url": "https://www.as-invest.co.il/trade/trading_benefits/",
+        "title": "אלטשולר שחם טרייד: מבצע הצטרפות, פירוט הטבות ועמלות",
+        "seen": "2026-11-04"
+      },
+      "binding_source": {
+        "kind": "promotion_terms",
+        "url": "https://www.as-invest.co.il/media/p1pb1i2x/תקנון-אלטשולר-שחם-טרייד.pdf",
+        "title": "תקנון מבצע הצטרפות לאלטשולר שחם טרייד",
+        "page": 1,
+        "dated": "2026-10-26",
+        "dated_from": "printed",
+        "checked": "2026-11-04"
+      }
+    },
+    {
+      "fee": "standing_order",
+      "verdict": "not_found",
+      "claim_he": "השקעה חודשית קבועה בהוראת קבע … ללא עלות",
+      "claim_source": {
+        "url": "https://www.as-invest.co.il/trade/trading_benefits/",
+        "title": "אלטשולר שחם טרייד: מבצע הצטרפות, פירוט הטבות ועמלות",
+        "seen": "2026-11-04"
+      },
+      "binding_source": {
+        "kind": "price_list",
+        "url": "https://www.as-invest.co.il/media/oqdfpafo/תעריפון-מלא-אלטשולר-שחם-טרייד.pdf",
+        "title": "תעריפון אלטשולר שחם טרייד בע\"מ",
+        "dated": "2025-05-22",
+        "dated_from": "file",
+        "checked": "2026-11-04"
+      }
+    }
+  ]
 }

@@ -1275,7 +1275,6 @@
   ],
   "groups": {
     "state": "prices",
-    "row_he": "לקבוצות: בלי דמי ניהול עד פיקדון של 150,000 ₪, או מ־0.06% לרבעון במקום 0.2%, לזמן מוגבל. דיגיטל פרימיום בלי דמי ניהול ובלי תאריך סיום, בתנאי משכורת או תיק השקעות.",
     "note": "Annex A pp.32-40 and the young-investor page read in the filed copies. The soldiers' and youth pages gave a script a bot check and were not read. Annex p.34 gives released soldiers one year; the young-investor page gives ages 16-25 until 25; both are recorded, neither is chosen. Digital Premium is a plan with a salary condition, not a population group, and is listed because the annex lists it. Touch is closed to new customers since 1.11.2024 and is not listed for that reason. Re-checked 2026-11-04 in the same tariff (annex A pp.32-40, all dated 22/06/2026 except retirees 15/04/2026) and the young-investor page fetched today (library 4619d67b8cad911d): the same groups, conditions and prices. Digital Premium: the toucher page (library df2d3991de9837b1, on the Wayback Machine since 2025-06-23 with the same terms) says new joiners choose Classic or Premium by joining through a banker at a branch, that one single-owner account gets the benefit, and that the bank may change or cancel the plan with notice. Its trade rows name 'מניות ואגרות חוב' only, so they are never read as covering a tracking fund (D42); its custody rows name fund units.",
     "read": [
       {
@@ -1355,7 +1354,10 @@
               "quote": "פיקדון ני\"ע עד 150א' - ₪פטור (**) דמי ניהול פיקדון ניירות ערך -הנסחרים בחוץ לארץ"
             }
           }
-        ]
+        ],
+        "who_short_he": "נוער, מגיל 14",
+        "cheaper_he": "פטור מעמלת קנייה ומכירה בארץ, ומדמי ניהול כשהפיקדון מתחת ל־150,000 ₪",
+        "ends_short_he": "עד הגיוס, ולכל היותר עד גיל 21"
       },
       {
         "kind": "soldier",
@@ -1424,7 +1426,10 @@
               "quote": "פיקדון ני\"ע עד 150א' - ₪פטור (**) דמי ניהול פיקדון ניירות ערך -הנסחרים בחוץ לארץ"
             }
           }
-        ]
+        ],
+        "who_short_he": "חיילים ומשרתי שירות לאומי",
+        "cheaper_he": "פטור מעמלת קנייה ומכירה בארץ, ומדמי ניהול כשהפיקדון מתחת ל־150,000 ₪",
+        "ends_short_he": "כל השירות, ובשירות לאומי שנה"
       },
       {
         "kind": "released",
@@ -1493,7 +1498,10 @@
               "quote": "פיקדון ני\"ע עד 150א' - ₪פטור (**) דמי ניהול פיקדון ניירות ערך -הנסחרים בחוץ לארץ"
             }
           }
-        ]
+        ],
+        "who_short_he": "חיילים משוחררים",
+        "cheaper_he": "פטור מעמלת קנייה ומכירה בארץ, ומדמי ניהול כשהפיקדון מתחת ל־150,000 ₪",
+        "ends_short_he": "שנה מההצטרפות לקבוצה"
       },
       {
         "kind": "student",
@@ -1562,7 +1570,10 @@
               "quote": "0.1%לנייר ערך לרבעון דמי ניהול פיקדון ניירות ערך -הנסחרים בחוץ לארץ"
             }
           }
-        ]
+        ],
+        "who_short_he": "סטודנטים לתואר ראשון, עד גיל 32",
+        "cheaper_he": "דמי ניהול 0.075% במקום 0.2%; קנייה ומכירה 0.25% במקום 0.4%",
+        "ends_short_he": "4 שנים מההצטרפות"
       },
       {
         "kind": "student",
@@ -1631,7 +1642,10 @@
               "quote": "0.075%לנייר ערך לרבעון דמי ניהול פיקדון ניירות ערך -הנסחרים בחוץ לארץ"
             }
           }
-        ]
+        ],
+        "who_short_he": "סטודנטים לתואר שני ודוקטורט, עד גיל 36",
+        "cheaper_he": "דמי ניהול 0.06% במקום 0.2%; קנייה ומכירה 0.25% במקום 0.4%",
+        "ends_short_he": "שנתיים מההצטרפות"
       },
       {
         "kind": "young",
@@ -1700,10 +1714,13 @@
               "quote": "פטור מלא מדמי ניהול פיקדון ני\"ע ישראליים וזרים"
             }
           }
-        ]
+        ],
+        "who_short_he": "צעירים בגילאי 16 עד 25",
+        "cheaper_he": "פטור מעמלת קנייה ומכירה בארץ, ומדמי ניהול כשהפיקדון מתחת ל־150,000 ₪",
+        "ends_short_he": "עד גיל 25"
       },
       {
-        "kind": "other",
+        "kind": "salary",
         "name_he": "דיגיטל פרימיום",
         "who_he": "בסניף הדיגיטלי, מעבירי משכורת חודשית מעל 8,000 שקלים ליחיד או 14,000 לזוג, או מחזיקי תיק השקעות בבנק מעל 500,000 שקלים",
         "who_source": {
@@ -1769,7 +1786,10 @@
               "quote": "פטור דמי ניהול פיקדון ניירות ערך -הנסחרים בחוץ לארץ השתתפות בקרנות נאמנות)"
             }
           }
-        ]
+        ],
+        "who_short_he": "מעבירי משכורת מעל 8,000 ₪ או תיק מעל 500,000 ₪",
+        "cheaper_he": "פטור מדמי ניהול; קנייה ומכירה 0.20% במקום 0.4%",
+        "ends_short_he": "כל עוד התנאי מתקיים"
       }
     ]
   }

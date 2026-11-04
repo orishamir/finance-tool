@@ -1533,8 +1533,7 @@
   ],
   "groups": {
     "state": "prices",
-    "row_he": "לקבוצות: דמי ניהול 0.075% לרבעון במקום 0.15% בתעריפון, ובדפי החשבונות פטור. בתעריפון אין תאריך סיום.",
-    "note": "Tariff annex A pp.2-9 read in the filed copy; who qualifies from the bank's account-types page and student page, both filed. The tariff prints no end for securities prices. The account-types and student pages print a custody exemption and 7 NIS or 7 USD a trade beside the tariff's rates; how the two combine, and when the released soldier's exemption ends, is not printed. Page 1: no double benefit, the higher benefit counts. A bulletin for doctors (library 4e658539456f3ef7) is about one profession and was not used. Re-checked 2026-11-04: annex A unchanged (same tariff file); the account-types page text is the same as the filed copy. The 2026 campaigns for new joiners (custody free for a year) are closed and recorded in left_out, not here. Offers to single professions or organisations (tax advisers, real-estate brokers, teachers, lawyers) were seen and not used.",
+    "note": "Tariff annex A pp.2-9 read in the filed copy; who qualifies from the bank's account-types page and student page, both filed. The tariff prints no end for securities prices. The account-types and student pages print a custody exemption and 7 NIS or 7 USD a trade beside the tariff's rates; how the two combine, and when the released soldier's exemption ends, is not printed. Page 1: no double benefit, the higher benefit counts. A bulletin for doctors (library 4e658539456f3ef7) is about one profession and was not used. Re-checked 2026-11-04: annex A unchanged (same tariff file); the account-types page text is the same as the filed copy. The 2026 campaigns for new joiners (custody free for a year) are closed and recorded in left_out, not here. Offers to single professions or organisations (tax advisers, real-estate brokers, teachers, lawyers) were seen and not used. PEPPER (2026-11-04, D43 amended): the PEPPER annex of this tariff (p.11) is a group here, built from the PEPPER record's own lines; the PEPPER record stays as read and names Leumi in provider.part_of.",
     "read": [
       {
         "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
@@ -1600,7 +1599,10 @@
             }
           }
         ],
-        "inferred": "That a group price ends when the person leaves the group is inferred: Leumi's tariff prints no end for these securities prices, only 3 or 4 years on credit cards. The age ranges come from its account-types page, not from the tariff."
+        "inferred": "That a group price ends when the person leaves the group is inferred: Leumi's tariff prints no end for these securities prices, only 3 or 4 years on credit cards. The age ranges come from its account-types page, not from the tariff.",
+        "who_short_he": "צעירים בגילאי 14 עד 18",
+        "cheaper_he": "דמי ניהול בארץ 0.075% במקום 0.15%, בחוץ לארץ 0.1% במקום 0.2%",
+        "ends_short_he": "לא כתוב"
       },
       {
         "kind": "young",
@@ -1652,7 +1654,10 @@
             }
           }
         ],
-        "inferred": "That a group price ends when the person leaves the group is inferred: Leumi's tariff prints no end for these securities prices, only 3 or 4 years on credit cards. The age ranges come from its account-types page, not from the tariff."
+        "inferred": "That a group price ends when the person leaves the group is inferred: Leumi's tariff prints no end for these securities prices, only 3 or 4 years on credit cards. The age ranges come from its account-types page, not from the tariff.",
+        "who_short_he": "צעירים בגילאי 18 עד 21, עתודאים ובני ישיבות",
+        "cheaper_he": "דמי ניהול בארץ 0.075% במקום 0.15%, בחוץ לארץ 0.1% במקום 0.2%",
+        "ends_short_he": "לא כתוב"
       },
       {
         "kind": "released",
@@ -1704,7 +1709,10 @@
             }
           }
         ],
-        "inferred": "That a group price ends when the person leaves the group is inferred: Leumi's tariff prints no end for these securities prices, only 3 or 4 years on credit cards. The age ranges come from its account-types page, not from the tariff."
+        "inferred": "That a group price ends when the person leaves the group is inferred: Leumi's tariff prints no end for these securities prices, only 3 or 4 years on credit cards. The age ranges come from its account-types page, not from the tariff.",
+        "who_short_he": "חיילים משוחררים",
+        "cheaper_he": "דמי ניהול בארץ 0.09% במקום 0.15%, בחוץ לארץ 0.12% במקום 0.2%",
+        "ends_short_he": "לא כתוב"
       },
       {
         "kind": "young",
@@ -1773,7 +1781,10 @@
               "quote": "(7 ₪ ישראליים, 7$ בזרים)"
             }
           }
-        ]
+        ],
+        "who_short_he": "חיילים וצעירים מגיל 18",
+        "cheaper_he": "באתר הבנק: פטור מדמי ניהול, ו־7 ₪ או 7 דולר לפעולה",
+        "ends_short_he": "הפטור לשנה; על העמלות לא כתוב"
       },
       {
         "kind": "released",
@@ -1836,7 +1847,10 @@
               "quote": "(7 ₪ ישראליים, 7$ בזרים)"
             }
           }
-        ]
+        ],
+        "who_short_he": "חיילים משוחררים",
+        "cheaper_he": "באתר הבנק: פטור מדמי ניהול, ו־7 ₪ או 7 דולר לפעולה",
+        "ends_short_he": "לא כתוב"
       },
       {
         "kind": "student",
@@ -1888,7 +1902,10 @@
             }
           }
         ],
-        "inferred": "That a group price ends when the person leaves the group is inferred: Leumi's tariff prints no end for these securities prices, only 3 or 4 years on credit cards. The age ranges come from its account-types page, not from the tariff."
+        "inferred": "That a group price ends when the person leaves the group is inferred: Leumi's tariff prints no end for these securities prices, only 3 or 4 years on credit cards. The age ranges come from its account-types page, not from the tariff.",
+        "who_short_he": "סטודנטים בגילאי 21 עד 35",
+        "cheaper_he": "דמי ניהול בארץ 0.075% במקום 0.15%, בחוץ לארץ 0.1% במקום 0.2%",
+        "ends_short_he": "לא כתוב"
       },
       {
         "kind": "student",
@@ -1957,7 +1974,10 @@
               "quote": "עמלה בסך 7$ בלבד בניירות ערך זרים"
             }
           }
-        ]
+        ],
+        "who_short_he": "סטודנטים שפותחים חשבון",
+        "cheaper_he": "באתר הבנק: פטור מדמי ניהול, ו־7 ₪ או 7 דולר לפעולה",
+        "ends_short_he": "הפטור לשנה; על העמלות לא כתוב"
       },
       {
         "kind": "other",
@@ -1996,7 +2016,65 @@
               "quote": "0.125 אחוז גביה ד .נ .פקדון ני \"ע הנסחרים בארץלרבעון"
             }
           }
-        ]
+        ],
+        "who_short_he": "לקוחות טוטאל דיגיטל",
+        "cheaper_he": "דמי ניהול 0.125% במקום 0.15%",
+        "ends_short_he": "לא כתוב"
+      },
+      {
+        "kind": "other",
+        "name_he": "לקוחות פפר",
+        "who_he": "לקוחות PEPPER, בנספח שלהם בתעריפון של לאומי",
+        "who_source": {
+          "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
+          "title": "תעריפון העמלות המלא, נספח לקוחות PEPPER",
+          "page": 11,
+          "quote": "לקוחות PEPPER"
+        },
+        "ends_printed": false,
+        "ends_he": "בתעריפון לא כתוב מתי המחיר של הקבוצה נגמר",
+        "prices": [
+          {
+            "fee": "trade_israel",
+            "price_he": "4 ₪ לפעולה, עד 30,000 ₪ להוראה",
+            "holdings_he": "מניות, מק״מ ואגרות חוב הנסחרים בבורסה בת״א",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
+              "title": "תעריפון העמלות המלא, נספח לקוחות PEPPER",
+              "page": 11,
+              "quote": "בבורסה בת \"א­ מניות ,מק \"מ ואגרות חוב"
+            }
+          },
+          {
+            "fee": "trade_abroad",
+            "price_he": "4 דולר לפעולה, עד 8,000 דולר להוראה",
+            "holdings_he": "מניות, אגרות חוב וקרנות נאמנות הנסחרים בחוץ לארץ",
+            "names_fund": true,
+            "source": {
+              "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
+              "title": "תעריפון העמלות המלא, נספח לקוחות PEPPER",
+              "page": 11,
+              "quote": "לארץ­ מניות ,אגרות חוב וקרנות נאמנות"
+            }
+          },
+          {
+            "fee": "custody_abroad",
+            "price_he": "0.150% לרבעון, מקסימום 3,700 ₪ לנייר ערך ו־11,500 ₪ לפיקדון",
+            "holdings_he": "דמי ניהול ני״ע חו״ל",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
+              "title": "תעריפון העמלות המלא, נספח לקוחות PEPPER",
+              "page": 11,
+              "quote": "0.150אחוז גביה"
+            }
+          }
+        ],
+        "inferred": "From the PEPPER record's own lines (its flat 4 NIS and 4 USD and its foreign custody, all on the PEPPER annex, p.11). That PEPPER's customers now trade in Leumi's app at these prices is the founder's report (a PEPPER customer, 2026-11-04, D43 amended), not a document. The annex's custody in Israel is Leumi's own 0.15% and its conversion discount is not a trade or custody fee, so neither is here.",
+        "who_short_he": "לקוחות פפר",
+        "cheaper_he": "4 ₪ לפעולה עד 30,000 ₪, ו־4 דולר עד 8,000 דולר; דמי ניהול בחו״ל 0.15% במקום 0.2%",
+        "ends_short_he": "לא כתוב"
       }
     ]
   }

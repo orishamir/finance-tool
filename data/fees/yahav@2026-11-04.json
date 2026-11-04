@@ -1317,7 +1317,6 @@
   "groups": {
     "state": "prices",
     "note": "Re-read 2026-11-04. Annex A of the 2.2026 tariff (PDF p.7) lists 'מועדון צעיר / חייל / סטודנט': exemptions from the clerk and direct-channel fees, credit allocation and some card fees; young up to 18, soldiers and students on proof; no securities row. The bank's group pages (state employees, teachers, students, soldiers, senior citizens, government corporations, public sector, salaried, self-employed) were read; the only securities prices with figures are in the self-employed doctors' flyer (September 2026), recorded as an entry. The state-employee leaflet of 11.2024, the teachers' and Koral flyers and the young customers' refund are in left_out. Every flyer says eligibility follows 'התעריפון הרלבנטי למועדון הלקוחות', which is not published.",
-    "row_he": "לרופאים עצמאיים שמעבירים תיק של יותר מ־200,000 ₪ ופעילות עסקית של 15,000 ₪ בחודש, לפי עלון פרסום לשנה: 0.15% במקום 0.4% לקנייה ולמכירה בבורסה בתל אביב, ודמי ניהול 0.05% לרבעון במקום 0.15%. אף מסמך מחייב שפורסם אינו מדפיס את המחירים האלה.",
     "read": [
       {
         "url": "https://www.bank-yahav.co.il/media/020jnu0x/22026_taarifon_male.xlsx",
@@ -1407,7 +1406,10 @@
             }
           }
         ],
-        "inferred": "Printed only in an advertising flyer (PDF modified 2026-09-07, linked from the self-employed page; earlier copies in the Wayback Machine from 2026-01-08). The flyer says eligibility follows the club's own tariff, which is not published, so no binding document read prints these prices. The table does not say whether the custody rate covers holdings abroad; it is recorded for Israel only. The minimum the trade prices are 'בכפוף' to is not printed."
+        "inferred": "Printed only in an advertising flyer (PDF modified 2026-09-07, linked from the self-employed page; earlier copies in the Wayback Machine from 2026-01-08). The flyer says eligibility follows the club's own tariff, which is not published, so no binding document read prints these prices. The table does not say whether the custody rate covers holdings abroad; it is recorded for Israel only. The minimum the trade prices are 'בכפוף' to is not printed.",
+        "who_short_he": "רופאים עצמאיים",
+        "cheaper_he": "דמי ניהול 0.05% במקום 0.15%; קנייה ומכירה 0.15% במקום 0.4%",
+        "ends_short_he": "שנה, והבנק רשאי להפסיק"
       }
     ]
   }
