@@ -46,11 +46,6 @@ describe("invest page computation", () => {
     expect(marked.sort()).toEqual(["fibi", "interactive-israel", "leumi", "massad"]);
   });
 
-  it("Fair stays priced below 250 NIS a month: its pages put that floor on the first investment (issue 141)", () => {
-    const low = buildInvest({ bundle, index: sp, plan: plan({ amountNow: 0, monthly: 100 }) });
-    const fair = low.houses.find((h) => h.provider.id === "fair")!;
-    expect(fair.best?.price?.valueN).toBeGreaterThan(0);
-  });
 
   it("Psagot is grey on funds abroad, with its tariff's own words on why (issue 144, D42)", () => {
     const abroad = view.options.find((o) => o.id === "abroad")!;
@@ -58,7 +53,7 @@ describe("invest page computation", () => {
     expect(accumulating.length).toBeGreaterThan(0);
     for (const f of accumulating) expect("valueN" in f.byHouse.psagot!).toBe(false);
     expect(doubtOf(bundle.snapshots.find((s) => s.id === "psagot"), "abroad")).toContain("עשויה להשתנות");
-    expect(view.headline!.providerId).toBe("fair");
+    expect(view.headline!.providerId).toBe("psagot");
   });
 
   it("lists the equity indices of the records, none chosen for the person", () => {
@@ -66,9 +61,9 @@ describe("invest page computation", () => {
     expect(knownIndices(bundle).every((i) => i.exposure?.kind === "equity_index")).toBe(true);
   });
 
-  it("the founder's plan: the cheapest way is Fair with a tracking fund, priced with the fund's own class", () => {
+  it("the founder's plan: the cheapest way is Psagot Trade with a tracking fund, priced with the fund's own class", () => {
     expect(view.headline).not.toBeNull();
-    expect(view.headline!.providerId).toBe("fair");
+    expect(view.headline!.providerId).toBe("psagot");
     expect(view.headline!.option).toBe("il-tracking");
     expect(optionOfFund(view.headline!.fund.rec, sp.exposure!)).toBe("il-tracking");
   });
@@ -86,7 +81,10 @@ describe("invest page computation", () => {
     expect(abroad.cells.length).toBe(view.providers.length);
     for (const c of abroad.cells) expect(c.kind === "cost" ? typeof c.costN === "number" : c.kind === "unavailable" || !!c.reason).toBe(true);
     expect(abroad.cells.some((c) => c.kind === "cost")).toBe(true);
-    expect(abroad.cells.filter((c) => c.kind === "not-comparable").length).toBeGreaterThan(0);
+    // 2026-11-04: One Zero's doubled plan lines, the column's one engine failure, left its lines (D43 amended (2)); a house whose price
+    // list leaves the price abroad open (Psagot, IBI, Altshuler) is a grey cell with its reason
+    expect(abroad.cells.filter((c) => c.kind === "not-comparable")).toEqual([]);
+    expect(abroad.cells.filter((c) => c.kind === "no-line").map((c) => c.providerId).sort()).toEqual(["altshuler-trade", "ibi", "psagot"]);
   });
 
   it("the Europe line of Interactive Israel prices a London fund and names the exchange", () => {
@@ -142,7 +140,7 @@ describe("invest page computation", () => {
 
   it("the API: the cheapest way for an index, and the range over the known indices", () => {
     const w = cheapestWay(bundle, sp, plan());
-    expect(w?.providerId).toBe("fair");
+    expect(w?.providerId).toBe("psagot");
     const r = rangeOverKnownIndices(bundle, plan())!;
     expect(r.low.valueN).toBeLessThanOrEqual(r.high.valueN);
     expect(r.perIndex.length).toBeGreaterThan(3);

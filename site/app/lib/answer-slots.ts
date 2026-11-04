@@ -1,4 +1,4 @@
-// The answer of a question on /questions (data/parameters/pinned-rules.json, `answer_he`) is a sentence with slots "{ID:figure}":
+// An answer with figure slots (data/parameters/pinned-rules.json, `answer_he`) is a sentence with slots "{ID:figure}":
 // the page renders each slot as the figure of that rule, with its unit. Pure, so the split is tested.
 export type AnswerPart = { kind: "text"; text: string } | { kind: "slot"; id: string; figure: string };
 

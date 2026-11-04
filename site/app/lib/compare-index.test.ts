@@ -4,7 +4,7 @@ import { describe, expect, it } from "vitest";
 import { applyProviders, buildView, evaluate, providerOf, type RunGoal } from "./compare";
 import { applyIndex, applyIndexWay, planOfGoal, readIndex } from "./compare-index";
 import { compareBundle } from "./compare.server";
-import { cheapestWay, knownIndices, rangeOverKnownIndices } from "./invest";
+import { buildInvest, cheapestWay, knownIndices, rangeOverKnownIndices, type CheapestWay, type OptionId } from "./invest";
 import { parseOwnRates, splitOwnTerms, termsOfGoal } from "./own-rate";
 import { instrumentClassOf } from "./providers";
 import { buildWorkbenchBundle } from "./providers.server";
@@ -27,6 +27,11 @@ describe("the account's way is priced like the invest page's", () => {
       expect(ways.length).toBe(knownIndices(wb).length);
       for (const w of ways) {
         const b = applyIndexWay(bundle, wb, w, "chosen");
+        // the comparison runs shekel funds only: a dollar fund's way (iShares ACWI on TASE since 2026-11-04, TXF-11) is not run, and the card says so
+        if (!["ILS", "NIS"].includes(wb.funds.find((f) => f.id === w.fundRecordId)?.currency ?? "")) {
+          expect(b, `${w.indexId} via ${w.providerId}`).toBeNull();
+          continue;
+        }
         expect(b, `${w.indexId} via ${w.providerId}`).not.toBeNull();
         expect(real(b!, g), `${w.indexId} via ${w.providerId} ${w.fundRecordId}`).toBeCloseTo(w.valueN, 0);
       }
@@ -37,7 +42,12 @@ describe("the account's way is priced like the invest page's", () => {
 describe("the account's other houses are read for the way's fund (F-12, F-63)", () => {
   const way = (kind: "etf" | "tracking") => {
     const plan = planOfGoal(bundle, founder, state);
-    const ways = rangeOverKnownIndices(wb, plan)!.perIndex;
+    // each index's cheapest way, and its best Israeli ETF and tracking fund: since 2026-11-04 no index's cheapest way is an Israeli ETF (TXF-11)
+    const best = (o: OptionId) => knownIndices(wb).flatMap((i): CheapestWay[] => {
+      const w = buildInvest({ bundle: wb, index: i, plan }).options.find((x) => x.id === o)?.bestWay;
+      return w ? [{ indexId: i.id, option: w.option, providerId: w.providerId, providerName: w.providerId, fundRecordId: w.fund.rec.id, fundName: w.fund.name, value: w.value, valueN: w.valueN }] : [];
+    });
+    const ways = [...rangeOverKnownIndices(wb, plan)!.perIndex, ...best("il-etf"), ...best("il-tracking")];
     const fundOf = (w: (typeof ways)[number]) => wb.funds.find((f) => f.id === w.fundRecordId);
     const isEtf = (w: (typeof ways)[number]) => instrumentClassOf(fundOf(w)!, wb.exposures.find((e) => e.id === fundOf(w)!.exposure_id)) === "etf_units";
     return { list: ways.filter((w) => isEtf(w) === (kind === "etf")), plan };
@@ -83,10 +93,11 @@ describe("before a choice (D27)", () => {
     expect(again.wrappers.find((w) => w.id === BRK)).toBe(out.bundle.wrappers.find((w) => w.id === BRK));
   });
   // since 2026-10-28 an index's way opens on an unhedged fund: MSCI World runs through MTF's unhedged fund, no longer Kesem's hedged one
-  it("the founder's plan: the lowest is MSCI ACWI, the highest the S&P 500 at 156,939", () => {
+  it("the founder's plan: the lowest is MSCI World at about 146,712, the highest the S&P 500 at 155,116", () => {
     if (out.reading?.kind !== "range") throw new Error("range");
-    expect(out.reading.low.indexId).toBe("index-msci-acwi");
-    expect(Math.round(out.reading.high.valueN)).toBe(156_939);
+    expect(out.reading.low.indexId).toBe("index-msci-world");
+    expect(Math.round(out.reading.low.valueN)).toBe(146_712);
+    expect(Math.round(out.reading.high.valueN)).toBe(155_116);
   });
 });
 
@@ -98,18 +109,18 @@ describe("after a choice", () => {
     expect(out.reading?.kind).toBe("chosen");
     const way = cheapestWay(wb, knownIndices(wb).find((i) => i.id === "index-sp500")!, plan)!;
     expect(out.ranked).toEqual(way);
-    expect(Math.round(real(out.bundle, g))).toBe(156_939);
+    expect(Math.round(real(out.bundle, g))).toBe(155_116);
     const w = out.bundle.wrappers.find((x) => x.id === BRK)!;
-    expect(w.representative).toMatchObject({ providerId: "fair", viaIndex: "chosen" });
+    expect(w.representative).toMatchObject({ providerId: "psagot", viaIndex: "chosen" });
     expect(w.representative!.name).toContain("S&P 500");
-    expect(providerOf(out.bundle, BRK)?.name).toContain("פייר");
+    expect(providerOf(out.bundle, BRK)?.name).toContain("פסגות");
   });
   it("an unknown or removed index id falls back to the range", () => {
     expect(readIndex(wb, plan, "index-nope")?.kind).toBe("range");
   });
   it("another index changes the figure through the fund's costs only", () => {
     const o = applyIndex(bundle, wb, plan, { ...founder, ownIndices: { [BRK]: "index-ta35" } });
-    expect(Math.round(real(o.bundle, founder))).toBe(156_134);
+    expect(Math.round(real(o.bundle, founder))).toBe(154_323);
   });
 });
 

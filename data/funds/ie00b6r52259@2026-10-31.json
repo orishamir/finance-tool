@@ -72,6 +72,22 @@
     "url": "https://www.ishares.com/gls-download/literature/fact-sheet/ssac-ishares-msci-all-country-world-ucits-etf-fund-fact-sheet-en-gb.pdf",
     "date": null
   },
+  "tax_ruling": {
+    "ruling_date": "2019-07-01",
+    "source": {
+      "url": "https://mayafiles.tase.co.il/rpdf/1244001-1245000/P1244039-01.pdf",
+      "title": "נספח לתשקיף קרן חוץ נסחרת: iShares MSCI ACWI UCITS ETF USD (Acc) (iShares V plc), 2019",
+      "publisher": "BlackRock (iShares V plc)",
+      "strength": "institution"
+    },
+    "pages": {
+      "ruling": 15,
+      "sale": 16,
+      "distribution": 17
+    },
+    "quote": "ביום 1 ביולי 2019 התקבלה בידי הקרן החלטת המיסוי מהמחלקה המקצועית של רשות המיסים",
+    "checked": "2026-11-04"
+  },
   "snapshot": "2026-10-31",
   "replication": {
     "method": "physical",

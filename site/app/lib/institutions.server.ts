@@ -5,6 +5,7 @@ import { existsSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { feesSnapshot, institutionsTable, ownDocumentCompanies, type DepositTerms, type FeeLine, type FeesSnapshot, type InstitutionRegistryRow, type RuleRecord, type ValueObject } from "@finance-tool/schema";
 import type {
+  AvailabilityRow,
   InstitutionKind,
   InstitutionPageData,
   InstitutionRow,
@@ -193,7 +194,11 @@ function productRow(d: DepositTerms, t: string): ProductRowData {
 const tasePapers = ["tase_shares_bonds", "etf_units"];
 const custodyPapers = [...tasePapers, "foreign_securities"];
 
-function lineRow(l: FeeLine, t: string, snapshot: string, owner: string): TariffLineRow {
+function lineRow(l: FeeLine, t: string, snapshot: string, owner: string, tariffUrl: string): TariffLineRow {
+  const src = l.rate.source as { url?: string; title?: string; page?: number };
+  const docOf = (u: string) => u.replace(/#.*$/, "");
+  // a spread the documents do not limit is said so, never shown as zero (D56)
+  const spread = l.base !== "fx" || l.spread === undefined ? null : l.spread === null || l.spread.value === null ? ("not_limited" as const) : site(l.spread, t, snapshot, owner);
   return {
     id: l.id,
     base: l.base as LineBase,
@@ -203,7 +208,19 @@ function lineRow(l: FeeLine, t: string, snapshot: string, owner: string): Tariff
     period: l.period,
     min: l.min ? site(l.min, t, snapshot, owner) : null,
     max: l.max ? site(l.max, t, snapshot, owner) : null,
+    where: src.url && src.title ? { url: src.url, title: src.title, ...(src.page ? { page: src.page } : {}), tariff: docOf(src.url) === docOf(tariffUrl) } : null,
+    spread,
   };
+}
+
+/** What can be bought at the house, entry by entry, as its documents say. */
+function availabilityRows(s: FeesSnapshot): AvailabilityRow[] {
+  return (s.availability ?? []).map((a) => ({
+    classes: a.applies_to,
+    state: a.available === true ? "yes" : a.available === false ? "no" : "unknown",
+    reason: a.reason_he ?? null,
+    source: { url: a.source.url, title: a.source.title, ...(a.source.page ? { page: a.source.page } : {}) },
+  }));
 }
 
 function tariffCard(s: FeesSnapshot, rules: Record<string, RuleRecord>, t: string): TariffCardData {
@@ -213,9 +230,12 @@ function tariffCard(s: FeesSnapshot, rules: Record<string, RuleRecord>, t: strin
   for (const l of s.lines) {
     if (l.level !== "list") continue;
     const covers = (papers: string[]) => l.applies_to.some((a) => papers.includes(a));
-    if (l.base === "trade" && covers(tasePapers)) lines.push(lineRow(l, t, s.snapshot, s.provider.name_he));
-    else if (l.base === "custody" && covers(custodyPapers)) lines.push(lineRow(l, t, s.snapshot, s.provider.name_he));
-    else if (l.base === "fx") lines.push(lineRow(l, t, s.snapshot, s.provider.name_he));
+    const row = () => lineRow(l, t, s.snapshot, s.provider.name_he, s.tariff.url);
+    if (l.base === "trade" && covers(tasePapers)) lines.push(row());
+    else if (l.base === "custody" && covers(custodyPapers)) lines.push(row());
+    else if (l.base === "fx") lines.push(row());
+    // a fixed fee for the account (a handling fee each month) is a cost under another name (D56): the card shows it
+    else if (l.base === "fixed_period") lines.push(row());
   }
   const bases = [...new Set(s.lines.map((l) => l.base as string))];
   const min = s.minimums.account_opening;
@@ -238,6 +258,8 @@ function tariffCard(s: FeesSnapshot, rules: Record<string, RuleRecord>, t: strin
     protection: s.provider.protection_rule_ids.filter((id) => rules[id]).map((id) => ({ id, title: rules[id]!.title_he ?? rules[id]!.title })),
     notice: s.notice_rule_ids.filter((id) => rules[id]),
     providerName: s.provider.name_he,
+    priceFor: s.price_for_he ?? null,
+    availability: availabilityRows(s),
   };
 }
 

@@ -26,6 +26,18 @@ import { fmt } from "../lib/format";
 const extraOrder = ["funds-tracking", "brokerage", "funds-money-market"];
 const classificationOrder = ["קופת גמל להשקעה", "קרנות השתלמות", "תגמולים ואישית לפיצויים", "קופת גמל להשקעה - חסכון לילד", "קרנות חדשות", "קרנות כלליות", "מרכזית לפיצויים", "מטרה אחרת"];
 
+/**
+ * What a house's page says beside its prices (D57 amended 2026-11-04): its advertising against its binding documents and its group
+ * prices. Read here, for the page alone: the site's calculations never read them (site/app/lib stays blind to both). The groups the index
+ * page offers as radios are named here too, so each links to that page with it picked (D43 amended (5)).
+ */
+async function houseNotes(id: string) {
+  const { latestSnapshots } = await import("../lib/institutions.server");
+  const { pickableOnEitherSide } = await import("../lib/group-pick");
+  const snap = latestSnapshots().find((s) => s.id === id);
+  return { advertising: snap?.advertising ?? [], groups: snap?.groups ?? null, linked: [...pickableOnEitherSide(snap)] };
+}
+
 export async function loader({ params }: Route.LoaderArgs) {
   const { loadCma, loadTerms, loadWrappers, today } = await import("../lib/data.server");
   const { institutionCompanies, loadCatalog, seenValue, seenWhere } = await import("../lib/instruments.server");
@@ -41,7 +53,7 @@ export async function loader({ params }: Route.LoaderArgs) {
     const { buildInstitution } = await import("../lib/institutions.server");
     const institution = buildInstitution(params.id);
     if (!institution) throw new Response("Not found", { status: 404 });
-    return { kind: "institution" as const, institution };
+    return { kind: "institution" as const, institution, notes: await houseNotes(params.id) };
   }
   const wrapperCaps = new Map<string, { balance: SiteValue | null; deposit: SiteValue | null }>(
     loadWrappers()
@@ -92,7 +104,7 @@ export async function loader({ params }: Route.LoaderArgs) {
   const companyTerms = { groups: termGroups, rules: termRules, pointed: pointedRecords(termRules, allRules), company: registryIds[0] ?? null, pageCompanies: registryIds, helpTerms, name: shortName, dimensions: termGroups.length ? Object.fromEntries(loadChecklistRows().map((r) => [r.id, r.name])) : {} };
   // the legal companies the page stands for, as their own data writes them (the CMA, the tariff, the fund records)
   const members = brand ? [...new Set([company?.name, brokerage?.tariff.providerName, ...brand.fundManagers].filter((x): x is string => !!x))] : [];
-  const brokerageCard = brokerage && brand?.brokerId ? { id: brand.brokerId, kind: brokerage.kind, tariff: brokerage.tariff } : null;
+  const brokerageCard = brokerage && brand?.brokerId ? { id: brand.brokerId, kind: brokerage.kind, tariff: brokerage.tariff, ...(await houseNotes(brand.brokerId)) } : null;
   return { kind: "company" as const, name, company: company ?? null, browser, caps, funds, brokerage: brokerageCard, members, period: cma.periodValue, defaultIds, unassigned, today: t, companyTerms };
 }
 
@@ -108,7 +120,7 @@ export function meta({ loaderData: data }: Route.MetaArgs) {
 
 export default function Company() {
   const data = useLoaderData<typeof loader>();
-  if (data.kind === "institution") return <InstitutionPage data={data.institution} />;
+  if (data.kind === "institution") return <InstitutionPage data={data.institution} notes={data.notes} />;
   return <ManagerCompany data={data} />;
 }
 
@@ -139,13 +151,13 @@ function ManagerCompany({ data }: { data: CompanyData }) {
         </div>
       ),
     })),
-    ...(data.brokerage ? [{ id: "brokerage", name: r4catalogue.groups.brokerage, content: <BrokerageGroupCard id={data.brokerage.id} tariff={data.brokerage.tariff} kind={data.brokerage.kind} /> }] : []),
+    ...(data.brokerage ? [{ id: "brokerage", name: r4catalogue.groups.brokerage, content: <BrokerageGroupCard id={data.brokerage.id} tariff={data.brokerage.tariff} kind={data.brokerage.kind} advertising={data.brokerage.advertising} groups={data.brokerage.groups} linked={data.brokerage.linked} /> }] : []),
   ]
     .map((e, i) => ({ e, i, rank: extraOrder.indexOf(e.id) === -1 ? extraOrder.length : extraOrder.indexOf(e.id) }))
     .sort((a, b) => a.rank - b.rank || a.i - b.i)
     .map((x) => x.e);
   return (
-    <PageShell current="decoder" wide data={{ rules: data.companyTerms.rules, pointed: data.companyTerms.pointed, terms: data.companyTerms.helpTerms, dimensions: data.companyTerms.dimensions, today: data.today, ...(data.companyTerms.company ? { company: data.companyTerms.company } : {}), pageCompanies: data.companyTerms.pageCompanies }}>
+    <PageShell current="decoder" data={{ rules: data.companyTerms.rules, pointed: data.companyTerms.pointed, terms: data.companyTerms.helpTerms, dimensions: data.companyTerms.dimensions, today: data.today, ...(data.companyTerms.company ? { company: data.companyTerms.company } : {}), pageCompanies: data.companyTerms.pageCompanies }}>
       <div className="pt-2 lg:pt-8">
         <div className="flex-1 min-w-0 flex flex-col gap-6 lg:gap-8">
           <header className="flex flex-col gap-3">

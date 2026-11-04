@@ -113,9 +113,12 @@ export function TransferPanel({ site, headingId, page }: { site?: Site; headingI
         </p>
         {!snap.saved && snap.ready && <Callout tone="caution">{copy.unavailable}</Callout>}
       </header>
-      <ExportHalf site={siteInfo} />
-      <hr className="border-border" />
-      <ImportHalf />
+      {/* on the page, from a computer up, the two halves stand side by side and use the frame's room (2026-11-04) */}
+      <div className={cx("flex flex-col gap-6", page && "lg:grid lg:grid-cols-2 lg:gap-x-12 lg:items-start")}>
+        <ExportHalf site={siteInfo} />
+        <hr className={cx("border-border", page && "lg:hidden")} />
+        <ImportHalf />
+      </div>
     </div>
   );
 }
@@ -409,9 +412,11 @@ function ImportHalf() {
                 {copy.afterLinks.holdings}
               </Link>
             )}
-            <Link to="/goal/compare" className="text-link min-h-target inline-flex items-center hover:underline">
-              {copy.afterLinks.result}
-            </Link>
+            {shown("/goal/compare") && (
+              <Link to="/goal/compare" className="text-link min-h-target inline-flex items-center hover:underline">
+                {copy.afterLinks.result}
+              </Link>
+            )}
           </p>
         </Card>
       )}

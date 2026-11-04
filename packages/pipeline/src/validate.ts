@@ -152,6 +152,10 @@ export function validateData(ctx: ValidationContext): Problem[] {
       const name = rel.split(/[\\/]/).pop()!;
       const isLatest = !files.some((f) => { const n = f.split(/[\\/]/).pop()!; return n.startsWith(`${name.split("@")[0]}@`) && n > name; });
       if (isLatest) for (const message of checkPricePremises(parsed.value as PremiseSnapshot)) report(file, message);
+      // a house that is part of another (D43 amended 2026-11-04) names one that has a record, and not itself
+      const partOf = (parsed.value as { provider: { part_of?: string } }).provider.part_of;
+      if (partOf && (partOf === name.split("@")[0] || !files.some((f) => f.split(/[\\/]/).pop()!.startsWith(`${partOf}@`))))
+        report(file, `provider.part_of: ${partOf} is no other house with a record under data/fees/`);
       for (const message of checkTariffTitle((parsed.value as { tariff: { title: string } }).tariff.title)) report(file, message);
     }
     if (collection === "instruments/exposures" && result.success && fundIds) {
@@ -223,9 +227,204 @@ interface PremiseSnapshot {
   missing?: boolean;
   price_for_he?: string;
   left_out?: unknown[];
-  lines: { base: string; applies_to: string[]; rate?: { value?: number | null } | null }[];
+  lines: { base: string; applies_to: string[]; rate?: { value?: number | null; source?: { url?: string } } | null }[];
   availability?: { applies_to: string[]; available: boolean | "unknown"; reason_he?: string; source: { quote?: string } }[];
-  groups?: { state: string; row_he?: string; entries: { name_he: string; ends_printed: boolean; ends_source?: unknown; prices: { price_he: string; holdings_he: string; names_fund: boolean }[] }[] };
+  groups?: { state: string; entries: GroupEntryLike[] };
+  snapshot?: string;
+  tariff?: { url: string };
+  advertising?: AdvertisingLike[];
+}
+interface GroupEntryLike {
+  kind?: string;
+  name_he: string;
+  who_he?: string;
+  ends_he?: string;
+  ends_printed: boolean;
+  ends_source?: unknown;
+  who_short_he?: string;
+  cheaper_he?: string;
+  ends_short_he?: string;
+  prices: { fee?: string; price_he: string; holdings_he: string; names_fund: boolean; value?: GroupValueLike; source?: { quote?: string } }[];
+}
+/** The structured numbers of a group price (schema `groupPriceValue`); the check below reads them against the price's words. */
+interface GroupValueLike {
+  rate_pct?: number;
+  per?: string;
+  side?: string;
+  flat?: number;
+  flat_up_to?: number;
+  per_share_cents?: number;
+  discount_pct?: number;
+  not_below_pct?: number;
+  exempt?: boolean;
+  min?: number;
+  max?: number;
+  currency?: string;
+  for_months?: number;
+}
+interface AdvertisingLike {
+  fee: string;
+  verdict: string;
+  claim_he: string;
+  claim_source: { url: string; seen: string };
+  binding_he?: string;
+  binding_source: { kind: string; url: string; dated: string; checked: string };
+}
+
+/** A document's address without its page anchor or a closing slash, so two links to one document compare equal. */
+const docOf = (url: string) => url.replace(/#.*$/, "").replace(/\/+$/, "");
+/** The site an address belongs to: the last three labels under .co.il and the like, else the last two (campaign.ibi.co.il is ibi.co.il). */
+function siteOf(url: string): string {
+  try {
+    const labels = new URL(url).hostname.split(".");
+    return labels.slice(/\.(co|org|gov|ac|net)\.[a-z]{2}$/.test(new URL(url).hostname) ? -3 : -2).join(".");
+  } catch {
+    return "";
+  }
+}
+
+/**
+ * The advertising a record sets against its binding documents (D57): each side in its own words, and the binding side a binding
+ * document of the house itself (D56: the price list, the account terms, the fee annex or a promotion's terms; never an advert).
+ */
+export function checkAdvertising(snap: PremiseSnapshot): string[] {
+  const out: string[] = [];
+  const cited = new Set([snap.tariff?.url, ...snap.lines.map((l) => l.rate?.source?.url)].filter((u): u is string => !!u).map(docOf));
+  const home = snap.tariff ? siteOf(snap.tariff.url) : "";
+  const seen = new Set<string>();
+  for (const a of snap.advertising ?? []) {
+    const at = `advertising: "${a.claim_he.slice(0, 40)}"`;
+    const b = a.binding_source;
+    if (a.verdict !== "not_found" && !a.binding_he) out.push(`${at}: ${a.verdict} needs the binding document's words (binding_he)`);
+    if (a.verdict === "not_found" && a.binding_he) out.push(`${at}: not_found has no binding words; a document that says it makes it contradicted or offer`);
+    if (docOf(b.url) === docOf(a.claim_source.url)) out.push(`${at}: the binding source is the advert's own page`);
+    if (b.kind === "price_list" && !cited.has(docOf(b.url))) out.push(`${at}: a price_list that is neither the record's tariff nor a document its lines cite`);
+    if (b.kind !== "price_list" && siteOf(b.url) !== home) out.push(`${at}: ${b.kind} on ${siteOf(b.url)}, not on the house's own site (${home})`);
+    if (b.dated > b.checked) out.push(`${at}: the document is dated after the day it was checked`);
+    if (snap.snapshot && (b.checked > snap.snapshot || a.claim_source.seen > snap.snapshot)) out.push(`${at}: read after the record's snapshot date`);
+    const key = `${a.fee}|${a.claim_he}`;
+    if (seen.has(key)) out.push(`${at}: the same claim twice`);
+    seen.add(key);
+  }
+  return out;
+}
+/** The numbers a text holds, as values ("0.500%" and "0.5%" are one number, "150,000" is 150000). */
+const numbersOf = (text: string): number[] => [...text.matchAll(/\d+(?:,\d{3})*(?:\.\d+)?/g)].map(([n]) => Number(n.replace(/,/g, "")));
+/** A price comparison in the short words: "X% במקום Y%", the fee named by the last fee word before it. */
+const INSTEAD = /([\d.]+)%\s*במקום\s*([\d.]+)%/g;
+const feeBefore = (text: string): "custody" | "trade" => {
+  const custody = text.lastIndexOf("דמי ניהול");
+  const trade = Math.max(text.lastIndexOf("קנייה"), text.lastIndexOf("מכירה"), text.lastIndexOf("לפעולה"));
+  return custody > trade ? "custody" : "trade";
+};
+
+/**
+ * The sub-row's short words (D43 amended 2026-11-04): each restates its entry's long words with no new fact. Every number in the who
+ * and until-when words stands in the long ones; every number in what is cheaper stands in the entry's prices, except an ordinary price
+ * after "במקום", which must be a rate on a line of the same fee in this record and above the group's. Entries with the same prices
+ * share their words (they are one sub-row), and entries that share words name the same fees.
+ */
+export function checkGroupWords(snap: PremiseSnapshot): string[] {
+  const g = snap.groups;
+  if (!g || g.state !== "prices") return [];
+  const out: string[] = [];
+  const priceKey = (e: GroupEntryLike) => JSON.stringify(e.prices.map((x) => [x.fee, x.price_he.replace(/\s+/g, " ").trim()]).sort());
+  const feeKey = (e: GroupEntryLike) => [...new Set(e.prices.map((x) => x.fee))].sort().join();
+  const byPrice = new Map<string, string | undefined>();
+  const byWords = new Map<string, string>();
+  for (const e of g.entries) {
+    const at = `groups: ${e.name_he}`;
+    if (!e.who_short_he || !e.cheaper_he || !e.ends_short_he) {
+      out.push(`${at}: the sub-row needs who_short_he, cheaper_he and ends_short_he`);
+      continue;
+    }
+    const has = (pool: string, n: number) => numbersOf(pool).includes(n);
+    for (const n of numbersOf(e.who_short_he)) if (!has(`${e.name_he} ${e.who_he ?? ""}`, n)) out.push(`${at}: who_short_he's ${n} is not in name_he or who_he`);
+    for (const n of numbersOf(e.ends_short_he)) if (!has(e.ends_he ?? "", n)) out.push(`${at}: ends_short_he's ${n} is not in ends_he`);
+    const prices = e.prices.map((x) => x.price_he).join(" ");
+    const ordinary: number[] = [];
+    for (const m of e.cheaper_he.matchAll(INSTEAD)) {
+      const [x, y] = [Number(m[1]), Number(m[2])];
+      const base = feeBefore(e.cheaper_he.slice(0, m.index));
+      if (!snap.lines.some((l) => l.base === base && l.rate?.value === y)) out.push(`${at}: cheaper_he's ${y}% is no ${base} rate in this record`);
+      if (!(x < y)) out.push(`${at}: cheaper_he says ${x}% instead of ${y}%, which is not cheaper`);
+      // the group's own figure belongs to a price of the same fee (a custody figure cannot stand for a trade one)
+      if (!has(e.prices.filter((p) => p.fee?.startsWith(`${base}_`)).map((p) => p.price_he).join(" "), x)) out.push(`${at}: cheaper_he's ${x}% is no ${base} price of the entry`);
+      ordinary.push(y);
+    }
+    const rest = numbersOf(e.cheaper_he);
+    for (const y of ordinary) rest.splice(rest.indexOf(y), 1);
+    for (const n of rest) if (!has(prices, n)) out.push(`${at}: cheaper_he's ${n} is not in the entry's prices`);
+    if (/פטור/.test(e.cheaper_he) && !/פטור/.test(prices)) out.push(`${at}: cheaper_he says פטור and no price of the entry does`);
+    // the line above the sub-rows puts "ל" before an other entry's words ("מחיר אחר לרופאים עצמאיים")
+    if (e.kind === "other" && !/^[א-דו-ת]/.test(e.who_short_he)) out.push(`${at}: who_short_he of an other entry follows "ל", so it starts with a Hebrew letter and not with the article ה`);
+    const k = priceKey(e);
+    if (byPrice.has(k) && byPrice.get(k) !== e.cheaper_he) out.push(`${at}: the same prices as another entry and other words, so the two are not one sub-row`);
+    byPrice.set(k, e.cheaper_he);
+    const w = byWords.get(e.cheaper_he);
+    if (w !== undefined && w !== feeKey(e)) out.push(`${at}: shares cheaper_he with an entry that names other fees`);
+    byWords.set(e.cheaper_he, feeKey(e));
+  }
+  return out;
+}
+/** The months a text says: "שנתיים" is 24, "4 שנים" is 48, "שנה" or "לשנה" is 12, "6 חודשים" is 6. */
+const monthsIn = (text: string): number[] => {
+  const out: number[] = [];
+  if (/שנתיים/.test(text)) out.push(24);
+  for (const [, n] of text.matchAll(/(\d+) שנים/g)) out.push(Number(n) * 12);
+  for (const [, n] of text.matchAll(/(\d+) חודשים/g)) out.push(Number(n));
+  if (/(?:^|[\s,ל])שנה(?![\s]*אקדמית)(?=$|[\s,.])/.test(text)) out.push(12);
+  return out;
+};
+const PERIOD_WORD: Record<string, RegExp> = { quarter: /רבעון/, month: /חודש/, year: /שנה|שנתי/ };
+const ILS_WORD = /₪|שקל|ש״ח|ש"ח/;
+const USD_WORD = /דולר|\$/;
+
+/**
+ * A group price's `value` states what the price's words state and nothing more (2026-11-04, F-101): every number is a number of the price's
+ * words or of the quote it rests on, a rate says the period the words give it, an amount's currency is the one the words print, an exemption
+ * is a word of the price, and the months a price holds are the months its words say or its entry's printed end says (`ends_printed`).
+ */
+export function checkGroupValues(snap: PremiseSnapshot): string[] {
+  const g = snap.groups;
+  if (!g || g.state !== "prices") return [];
+  const out: string[] = [];
+  for (const e of g.entries) {
+    for (const x of e.prices) {
+      const v = x.value;
+      if (!v) continue;
+      const at = `groups: ${e.name_he} ${x.fee}`;
+      const pool = [...numbersOf(x.price_he), ...numbersOf(x.source?.quote ?? "")];
+      const stated: [string, number | undefined][] = [["rate_pct", v.rate_pct], ["flat", v.flat], ["flat_up_to", v.flat_up_to], ["per_share_cents", v.per_share_cents], ["discount_pct", v.discount_pct], ["not_below_pct", v.not_below_pct], ["min", v.min], ["max", v.max]];
+      for (const [k, n] of stated) if (n !== undefined && !pool.some((p) => Math.abs(p - n) < 1e-9)) out.push(`${at}: value.${k} ${n} is in neither the price's words nor its quote`);
+      if (v.exempt && !/פטור|0 עמלה/.test(`${x.price_he} ${x.source?.quote ?? ""}`)) out.push(`${at}: value.exempt, and the words do not say פטור`);
+      const trade = x.fee?.startsWith("trade");
+      if (v.rate_pct !== undefined) {
+        if (trade ? v.per !== "trade" : v.per === "trade" || v.per === undefined) out.push(`${at}: value.per ${v.per} does not fit a ${trade ? "trade" : "custody"} fee`);
+        const word = v.per ? PERIOD_WORD[v.per] : undefined;
+        if (word && !word.test(x.price_he)) out.push(`${at}: value.per ${v.per}, and the words do not say it`);
+      }
+      if (v.side !== undefined) {
+        const words = `${x.price_he} ${x.source?.quote ?? ""}`;
+        if (!trade) out.push(`${at}: value.side belongs to a trade fee`);
+        const buyWord = /קני|רכיש/.test(words);
+        const sellWord = /מכיר|מכר/.test(words);
+        if (v.side === "buy" ? !buyWord || sellWord : !sellWord || buyWord) out.push(`${at}: value.side ${v.side}, and the words do not name ${v.side === "buy" ? "a purchase alone" : "a sale alone"}`);
+      }
+      if (v.side === undefined && trade) {
+        const words = `${x.price_he} ${x.source?.quote ?? ""}`;
+        if (/קני|רכיש/.test(words) !== /מכיר|מכר/.test(words) && (/קני|רכיש|מכיר|מכר/.test(words))) out.push(`${at}: the words name one side of a trade alone and value.side is absent`);
+      }
+      if (v.flat !== undefined && !trade) out.push(`${at}: a flat price per operation belongs to a trade fee`);
+      if (v.currency === "USD" && !USD_WORD.test(x.price_he)) out.push(`${at}: value.currency USD, and the words print no dollar`);
+      if (v.currency === "ILS" && !ILS_WORD.test(x.price_he)) out.push(`${at}: value.currency ILS, and the words print no shekel`);
+      if (v.for_months !== undefined) {
+        const said = [...monthsIn(x.price_he), ...(e.ends_printed ? monthsIn(e.ends_he ?? "") : [])];
+        if (!said.includes(v.for_months)) out.push(`${at}: value.for_months ${v.for_months} is neither in the price's words nor in its entry's printed end`);
+      }
+    }
+  }
+  return out;
 }
 /** Before a price ranks: who pays it, on what named holding, and whether a person can do it there. */
 export function checkPricePremises(snap: PremiseSnapshot): string[] {
@@ -236,20 +435,16 @@ export function checkPricePremises(snap: PremiseSnapshot): string[] {
   const g = snap.groups;
   if (!g) out.push("groups: a bank's or broker's record says its group prices, or that it has none, or that they could not be read");
   else {
-    if (g.state === "prices" ? !g.entries.length || !g.row_he : g.entries.length > 0 || !!g.row_he) out.push(`groups: state ${g.state} does not fit its entries and row line`);
+    if (g.state === "prices" ? !g.entries.length : g.entries.length > 0) out.push(`groups: state ${g.state} does not fit its entries`);
     for (const e of g.entries) {
       if (e.ends_printed && !e.ends_source) out.push(`groups: ${e.name_he} says its end is printed and does not say where`);
       // a price reaches a fund only where the row's own words name funds (D42): the same stretch as a ranked line; words after "למעט" take funds out
       for (const x of e.prices) if (x.names_fund !== /קרן|קרנות/.test(x.holdings_he.replace(/למעט[^)]*/g, ""))) out.push(`groups: ${e.name_he}: names_fund does not fit the words "${x.holdings_he}"`);
     }
-    // a row line's comparison is the record's own: the lower price stands in an entry, the ordinary one on a line of the same fee
-    const row = g.row_he ?? "";
-    for (const m of row.matchAll(/([\d.]+)%[^%]*?במקום ([\d.]+)%/g)) {
-      const base = /דמי ניהול/.test(row.slice(0, m.index)) ? "custody" : "trade";
-      if (!snap.lines.some((l) => l.base === base && l.rate?.value === Number(m[2]))) out.push(`groups: the row line's ${m[2]}% is no ${base} rate in this record`);
-      if (!g.entries.some((e) => e.prices.some((x) => [...x.price_he.matchAll(/[\d.]+(?=%)/g)].some(([n]) => Number(n) === Number(m[1]))))) out.push(`groups: the row line's ${m[1]}% stands in no entry of this record`);
-    }
+    out.push(...checkGroupWords(snap));
+    out.push(...checkGroupValues(snap));
   }
+  out.push(...checkAdvertising(snap));
   const entries = snap.availability ?? [];
   if (snap.lines.some((l) => l.base === "trade" && l.applies_to.some((c) => c === "all" || c === "brokerage-account")))
     out.push("lines: a trade line names every holding or the account, which no availability entry can vouch for; name the kinds");

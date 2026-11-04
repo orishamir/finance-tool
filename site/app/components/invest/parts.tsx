@@ -92,5 +92,7 @@ export function reasonSentence(r: NotComparable, instrumentClass: string, channe
       return n.needsFxRate;
     case "record-error":
       return n.recordError;
+    case "other-venue":
+      return n.otherVenue(r.venue);
   }
 }

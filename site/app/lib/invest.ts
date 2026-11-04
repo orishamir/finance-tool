@@ -3,7 +3,7 @@
 // numbers come from the engine's provider workbench (F-63) and from the fund runs of F-65, over the bundle the other
 // workbench pages use. No fee, rate or rule figure is written here: tariffs are snapshots, fund fees are fund records,
 // exchange rates are the ECB's (D26). Nothing is chosen for the person (D27): an index is always an argument.
-import { STANDING_CONVERSION_BAND, STANDING_ORDER_BAND, beforeTax, costByWho, gapToIndex, sumFees, trackingBeyondFees, providerWorkbench, relativeGap, type ComparedProvider, type FeeLine, type NotComparableProvider, type ProviderRow } from "@finance-tool/engine";
+import { STANDING_CONVERSION_BAND, STANDING_ORDER_BAND, beforeTax, buildTariff, costByWho, gapToIndex, sumFees, trackingBeyondFees, providerWorkbench, relativeGap, type ComparedProvider, type FeeLine, type LayeredRun, type NotComparableProvider, type ProviderRow, type TariffBuild } from "@finance-tool/engine";
 import type { ExposureRecord, FeesSnapshot, FundRecord } from "@finance-tool/schema";
 import { invest as copy } from "../copy";
 import { isCustomBrokerId, isCustomFund } from "./custom-entries";
@@ -86,6 +86,12 @@ export const customIndexPath = (id: string): string => `${INDICES_PATH}?custom=$
 export const exposureIdOfSlug = (slug: string): string => `index-${slug}`;
 /** The index page with one house picked, for a house's own page (issue 172: it replaced the page that ranked the houses on one S&P 500 fund). */
 export const housePath = (houseId: string, exposureId = "index-sp500"): string => `${indexPath(exposureId)}?house=${encodeURIComponent(houseId)}`;
+/** A house's own page, opened at its securities account: who its price is for, its fees and where they stand, its offers (D57 amended). */
+/** A house's page opens the index page with the account panel started from its price list (`list`) or one of its groups (`group:<n>`): 2026-11-04. */
+/** A house's group on the index page, picked (`?group=<n>`, D43 amended (5)): the link under a group on the house's own page. */
+export const groupPath = (houseId: string, key: string, exposureId = "index-sp500"): string => `${housePath(houseId, exposureId)}&group=${encodeURIComponent(key.replace("group:", ""))}`;
+export const ownAccountPath = (houseId: string, key = "list", exposureId = "index-sp500"): string => `${indexPath(exposureId)}?house=${encodeURIComponent(houseId)}&own=${encodeURIComponent(houseId)}&from=${encodeURIComponent(key)}`;
+export const brokeragePagePath = (houseId: string): string => `/companies/${encodeURIComponent(houseId)}?product=brokerage`;
 
 export function indexById(bundle: Pick<WorkbenchBundle, "exposures">, id: string, customs: readonly CustomIndex[] = []): IndexRef | null {
   const known = knownIndices(bundle).find((i) => i.id === id);
@@ -145,6 +151,11 @@ export interface BrokerCell {
   venue?: Venue | null;
   /** The monthly purchases ran on the house's printed standing-order line (F-12, D41). */
   standing?: boolean;
+  /** The option the cell prices (a custom index's account list names the kind of fund each house's cost is for). */
+  option?: OptionId;
+  /** The cost split by fee line, before tax (F-91 on F-61), and the remainder no single line explains: read when shown, a run per line. */
+  lines?: { line: FeeLine; cost: number }[];
+  interaction?: number;
   reason?: Reason;
   availability?: Availability;
 }
@@ -308,8 +319,6 @@ export interface InvestView {
 
 /** A conversion between two foreign currencies is not the conversion a shekel investor pays: the shekel-to-currency line is read (2026-10-25). */
 const FX_TO_FX = /מט["״]ח ל?מט["״]ח|בין שני מטבעות זרים/;
-/** A provider-specific band the engine needs and the tariff cannot say alone: Interactive Brokers' spot line has no rate recorded, its automatic conversion has. */
-const FX_BAND: Record<string, string> = { "interactive-brokers": "המרה אוטומטית" };
 
 const scopedCache = new WeakMap<FeesSnapshot, FeesSnapshot>();
 /**
@@ -330,7 +339,8 @@ const investProviders = new WeakMap<readonly FeesSnapshot[], readonly FeesSnapsh
 export function providersOfInvest(bundle: Pick<WorkbenchBundle, "snapshots">): readonly FeesSnapshot[] {
   let out = investProviders.get(bundle.snapshots);
   if (!out) {
-    out = bundle.snapshots.filter((s) => s.provider.class === "bank" || s.provider.class === "broker" || s.provider.class === "foreign_broker").sort((a, b) => a.provider.name_he.localeCompare(b.provider.name_he, "he"));
+    // a house that is part of another (PEPPER of Leumi, D43 amended 2026-11-04) is not a house of its own here: its prices stand under that house
+    out = bundle.snapshots.filter((s) => (s.provider.class === "bank" || s.provider.class === "broker" || s.provider.class === "foreign_broker") && !s.provider.part_of).sort((a, b) => a.provider.name_he.localeCompare(b.provider.name_he, "he"));
     investProviders.set(bundle.snapshots, out);
   }
   return out;
@@ -348,14 +358,15 @@ interface Cand {
 
 /** The ways to read a snapshot for an option: for a fund bought abroad, one per exchange its tariff names, then the plain reading. */
 function candidates(s: FeesSnapshot, option: OptionId): Cand[] {
-  const fxBand = FX_BAND[s.id];
-  const plain: Cand = { venue: null, ...(fxBand ? { band: [fxBand] } : {}) };
+  // Interactive Brokers' conversion is its spot order, the standard line (D56, 2026-11-04): its automatic conversion adds a markup
+  // "at its discretion" that no document limits, the spot order's 0.2 basis point (at least USD 2) and "no mark-ups on quotes" are printed
+  const plain: Cand = { venue: null };
   if (option !== "abroad") return [plain];
   const trade = s.lines.filter((l) => l.base === "trade" && l.level === "list" && l.applies_to.includes("foreign_securities") && l.band);
   const out: Cand[] = [];
   for (const v of ["us", "europe"] as Venue[]) {
     const bands = [...new Set(trade.filter((l) => venueOfBand(l.band) === v).map((l) => l.band!))];
-    if (bands.length) out.push({ venue: v, band: [...bands, ...(fxBand ? [fxBand] : [])] });
+    if (bands.length) out.push({ venue: v, band: bands });
   }
   return [...out, plain];
 }
@@ -420,6 +431,9 @@ function runSlot(ctx: Ctx, spec: Spec, items: { s: FeesSnapshot; cand: Cand }[])
     providers: list.map((x) => {
       // the person's own broker has no lines of its own: its whole price is what was typed (F-63, D44)
       const entered = ctx.bundle.entered?.tariffs[x.s.id];
+      // an account built on a house (F-101): the house's own list tariff for this fund and reading, with the group's and the person's prices over it
+      const layered = ctx.bundle.entered?.layered?.[x.s.id];
+      if (layered) return { snapshot: scoped(x.s), level: "entered" as const, layered, ...(x.cand.band ? { band: x.cand.band } : {}) };
       return entered ? { snapshot: scoped(x.s), level: "entered" as const, entered } : { snapshot: scoped(x.s), level: "list" as const, ...(x.cand.band ? { band: x.cand.band } : {}) };
     }),
   });
@@ -436,6 +450,31 @@ function runSlot(ctx: Ctx, spec: Spec, items: { s: FeesSnapshot; cand: Cand }[])
       }
     });
   }
+}
+
+/**
+ * A house's own list tariff for a kind of holding, read as the comparison reads it for a generic fund of the option (the first reading of its
+ * tariff that builds): what an account built on the house starts from (F-101), with the run facts the layers need. Null when the option cannot
+ * run (no exchange rate for a fund abroad) or no reading of the house's tariff builds.
+ */
+export function listReading(bundle: WorkbenchBundle, s: FeesSnapshot, option: OptionId, plan: WorkbenchInputs): { built: TariffBuild; run: LayeredRun; line: (id: string) => FeesSnapshot["lines"][number] | undefined } | null {
+  const ctx = makeCtx(bundle, plan);
+  const spec = genericSpec(ctx, option);
+  if (!spec) return null;
+  const scopedSnap = scoped(s);
+  for (const cand of candidates(scopedSnap, option)) {
+    try {
+      const built = buildTariff(
+        { goal: { amountNow: plan.amountNow, monthly: plan.monthly, months: 12 * plan.years }, market: { ...spec.market, inflation: plan.inflation }, profile: {}, instrumentClass: spec.cls, channel: "direct", ...(spec.currency ? { currency: spec.currency } : {}), fx: ctx.fx, theta: ctx.theta, providers: [] },
+        { snapshot: scopedSnap, level: "list", ...(cand.band ? { band: cand.band } : {}) },
+        scopedSnap,
+      );
+      return { built, run: { fx: ctx.fx, instrumentClass: spec.cls, currency: spec.currency, sharePrice: undefined }, line: (id) => scopedSnap.lines.find((l) => l.id === id) };
+    } catch {
+      continue;
+    }
+  }
+  return null;
 }
 
 function ambiguity(message: string, s: FeesSnapshot): NotComparable | null {
@@ -480,12 +519,17 @@ function priceMany(ctx: Ctx, spec: Spec, option: OptionId, snaps: FeesSnapshot[]
   for (const { s } of per) {
     const got = results.get(s.id) ?? [];
     let best: { row: ComparedProvider; venue: Venue | null } | null = null;
+    // the exchange of a reading set aside because the fund trades on another: the house's lines abroad name only that one
+    let otherVenue: Venue | null = null;
     for (const g of got) {
       if (g.row.kind !== "compared") continue;
       // no trade line for the class: the run would charge nothing, which the tariff does not say; derived availability (spec 6, S3)
       if (g.row.noLine.includes("trade")) continue;
       const venue = rowVenue(g.row, scoped(s), g.cand);
-      if (fundVenue !== null && venue !== null && venue !== fundVenue) continue;
+      if (fundVenue !== null && venue !== null && venue !== fundVenue) {
+        otherVenue = venue;
+        continue;
+      }
       if (!best || g.row.real > best.row.real || (g.row.real === best.row.real && venue !== null && best.venue === null)) best = { row: g.row, venue };
     }
     if (best) {
@@ -494,7 +538,7 @@ function priceMany(ctx: Ctx, spec: Spec, option: OptionId, snaps: FeesSnapshot[]
     }
     const fails = got.flatMap((g) => (g.row.kind === "not-comparable" ? [reasonOf(g.row, scoped(s))] : g.row.noLine.includes("trade") ? [{ code: "no-applicable-line" as const, detail: `no trade line of the ${s.snapshot} snapshot applies to ${spec.cls}` }] : []));
     // the most telling reason: any but "no line" and "ambiguous", then ambiguous, then no line
-    const pick = fails.find((f) => f.code !== "no-applicable-line" && f.code !== "ambiguous") ?? fails.find((f) => f.code === "ambiguous") ?? fails[0] ?? { code: "data-missing" as const, recorded: null };
+    const pick: NotComparable = fails.find((f) => f.code !== "no-applicable-line" && f.code !== "ambiguous") ?? (otherVenue ? { code: "other-venue", venue: otherVenue } : null) ?? fails.find((f) => f.code === "ambiguous") ?? fails[0] ?? { code: "data-missing" as const, recorded: null };
     out.set(s.id, { kind: "fail", reason: pick });
   }
   return out;
@@ -588,7 +632,32 @@ function computeOption(ctx: Ctx, index: IndexRef, option: OptionId, yourBroker: 
     const na = unavailable(s, option);
     if (na) return { providerId: s.id, kind: "unavailable", availability: na };
     const p = priced.get(s.id)!;
-    if (p.kind === "ok") return { providerId: s.id, kind: "cost", cost: costValue(ctx, p.row, `עלות ${s.provider.name_he}`), costN: p.row.horizonCostBeforeTax, leftN: p.row.real, venue: p.venue, standing: p.standing };
+    if (p.kind === "ok") {
+      const row = p.row;
+      // the split takes a run per fee line: read only for the house rows a custom index's list shows
+      let split: { lines: { line: FeeLine; cost: number }[]; interaction: number } | undefined;
+      const splitOf = () => {
+        if (split) return split;
+        const lines = row.byType.map((x) => ({ line: x.line, cost: x.costBeforeTax }));
+        return (split = { lines, interaction: row.horizonCostBeforeTax - lines.reduce((t, l) => t + l.cost, 0) });
+      };
+      return {
+        providerId: s.id,
+        kind: "cost",
+        option,
+        cost: costValue(ctx, row, copy.houses.costAbout(s.provider.name_he)),
+        costN: row.horizonCostBeforeTax,
+        leftN: row.real,
+        venue: p.venue,
+        standing: p.standing,
+        get lines() {
+          return splitOf().lines;
+        },
+        get interaction() {
+          return splitOf().interaction;
+        },
+      };
+    }
     return { providerId: s.id, kind: p.reason.code === "no-applicable-line" ? "no-line" : "not-comparable", reason: p.reason };
   });
   // ordered as the ranking orders (F-80 on what is left), not by the cost shown, which is before tax (F-91)

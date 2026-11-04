@@ -31,10 +31,15 @@ export function feeLines(plan: RunPlan): FeeLine[] {
     }
     case "runSecurities": {
       const { tariff, fund, wrapper } = plan.input;
-      if (configured(tariff.buy) || configured(tariff.sell)) has.add("trade");
-      if (configured(tariff.custody)) has.add("custody");
-      if (typeof tariff.fx === "number" ? positive(tariff.fx) : configured(tariff.fx)) has.add("fx");
-      if (positive(tariff.monthlyFee)) has.add("fixed");
+      // F-101: a price for a time is a sequence of tariffs; a line any of them charges counts
+      const chain = [];
+      for (let t: typeof tariff | undefined = tariff; t; t = t.until?.then) chain.push(t);
+      for (const t of chain) {
+        if (configured(t.buy) || configured(t.sell)) has.add("trade");
+        if (configured(t.custody)) has.add("custody");
+        if (typeof t.fx === "number" ? positive(t.fx) : configured(t.fx)) has.add("fx");
+        if (positive(t.monthlyFee)) has.add("fixed");
+      }
       if (positive(fund.halfSpread)) has.add("spread");
       const d = fund.drag;
       if (positive(d?.management) || positive(d?.variable) || positive(d?.trustee)) has.add("fund");
@@ -87,6 +92,24 @@ function changeLine(plan: RunPlan, line: FeeLine, rate: number): RunPlan {
         : { run: "runPension", input: { ...plan.input, fees } };
     }
     case "runSecurities": {
+      // F-101: a tariff line is changed in every tariff of a price for a time; a tariff without the line stays as it is
+      const { until, ...head } = plan.input.tariff;
+      if (until && (line === "trade" || line === "custody" || line === "fx" || line === "fixed")) {
+        const part = (tariff: typeof head): typeof head | null => {
+          try {
+            const changed = changeLine({ run: "runSecurities", input: { ...plan.input, tariff } }, line, rate);
+            return changed.run === "runSecurities" ? changed.input.tariff : null;
+          } catch (e) {
+            if (e instanceof RecordInputError) return null;
+            throw e;
+          }
+        };
+        const first = part(head);
+        const second = part({ ...until.then, ...(head.currency ? { currency: head.currency } : {}) });
+        if (!first && !second) return noLine(plan, line);
+        const { currency: _, ...then } = second ?? until.then;
+        return { run: "runSecurities", input: { ...plan.input, tariff: { ...(first ?? head), until: { months: until.months, then } } } };
+      }
       const input = plan.input;
       const tariff = { ...input.tariff };
       const set = (key: "buy" | "sell") => {

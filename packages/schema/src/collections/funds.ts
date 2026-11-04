@@ -77,6 +77,21 @@ export const fundRecord = z.strictObject({
       per_year: z.union([z.literal(1), z.literal(2), z.literal(3), z.literal(4), z.literal(6), z.literal(12)]),
     })
     .optional(),
+  /**
+   * 2026-11-04 (TXF-11, issue 75): the fund's own Israeli prospectus annex ("נספח לתשקיף קרן חוץ נסחרת") reports a Tax Authority ruling given
+   * to the fund, and names a sale and a distribution as the only taxed events. The founder judged that enough for that fund (D10): an
+   * accumulating fund with it is ranked, not listed under G-18. Units of the same ISIN bought abroad are the same units, so both records carry it.
+   */
+  tax_ruling: z
+    .strictObject({
+      ruling_date: isoDate,
+      source,
+      /** The PDF pages of the ruling's report, the sale and the distribution. */
+      pages: z.strictObject({ ruling: z.number().int().positive(), sale: z.number().int().positive(), distribution: z.number().int().positive() }),
+      quote: z.string().min(1),
+      checked: isoDate,
+    })
+    .optional(),
   /** S4: the price of one unit, in a currency unit, for per-share commissions. */
   share_price: valueObject.optional(),
   snapshot: isoDate,

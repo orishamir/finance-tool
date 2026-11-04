@@ -4,36 +4,40 @@
 // is left, and what it costs, split by who takes it: the person's pair and the cheapest one above each other, or, on the cheapest pair,
 // the next one beside it (one shape, so a pick never resizes the block).
 import { mayaFundHref } from "../../lib/sources";
-import { useMemo, type ReactNode } from "react";
+import { useMemo, useState, type ReactNode } from "react";
 import type { FeeLine } from "@finance-tool/engine";
-import { brands, invest as c } from "../../copy";
+import { brands, groupPrices, invest as c } from "../../copy";
 import { isCustomFund } from "../../lib/custom-entries";
-import { doubtOf, gapOf, inputMap, hasKinds, kindOf, opensOn, pairCosts, pairValue, type FundWay, type InvestView, type Kind, type PairCosts, type Reason, type WayPrice } from "../../lib/invest";
+import { brokeragePagePath, doubtOf, gapOf, inputMap, hasKinds, kindOf, opensOn, pairCosts, pairValue, type FundWay, type InvestView, type Kind, type PairCosts, type Reason, type WayPrice } from "../../lib/invest";
 import type { WorkbenchBundle, WorkbenchInputs } from "../../lib/providers";
 import { brokerLabels, fundLabels, optionLabels, type Label } from "../../lib/labels";
 import { computed, ownBy, type SiteValue } from "../../lib/value";
 import { fmt } from "../../lib/format";
 import { IconLock } from "../icons";
 import { Num } from "../provenance";
-import { Button, Card, ChartLegend, CostStack, FeeWordsNote, LabelChip, LabelFilter, LabelRow, LongestCase, PickList, ProductIdLink, Sentence, Stat, StatRow, Swatch, Tag, cx, useChartPick, type ChartPick, useHeldHeight, type CostPart, type PickRow } from "../kit";
+import { Button, Card, ChartLegend, CostStack, FeeWordsNote, LabelChip, LabelFilter, LabelRow, LongestCase, PickList, ProductIdLink, Sentence, Stat, StatRow, Swatch, Tag, cx, GroupPriceFold, useChartPick, type ChartPick, useHeldHeight, type CostPart, type GroupChoice, type PickRow } from "../kit";
+import { groupNameOf, isGroupPrice, isGroupProvider, pickableGroups } from "../../lib/group-pick";
 import { optionClass, OptionTag, reasonText } from "./parts";
 import { ProviderLink, providerName } from "./sections";
 import { Fees } from "./funds";
 import { AddEntryButton, BrokerTerms, FundTerms } from "./custom-entries";
+import { OwnAccountButton } from "./own-account";
 import { StateTag } from "../provenance";
 
 export interface Pick {
   house: string;
   fund: string;
+  /** A group of the house picked in its fold (`group:<n>`): the pair is priced at that group's prices, beside the ranking (D43). */
+  group?: string;
 }
 
-const lineClass: Record<string, string> = { trade: "bg-chart-cost-trade", custody: "bg-chart-cost-custody", fixed: "bg-chart-cost-fixed", fx: "bg-chart-cost-fx" };
-const lineOf = (line: FeeLine) => (line in lineClass ? line : "other");
+export const lineClass: Record<string, string> = { trade: "bg-chart-cost-trade", custody: "bg-chart-cost-custody", fixed: "bg-chart-cost-fixed", fx: "bg-chart-cost-fx" };
+export const lineOf = (line: FeeLine) => (line in lineClass ? line : "other");
 /** A legend names every account line whichever row or pair is shown, in one order, so its items keep their places from one pick to the next.
  * An index in shekels has no conversion line to name. */
-const legendLines = (israeli: boolean, used: readonly string[]) => [...Object.keys(lineClass).filter((l) => l !== "fx" || !israeli), ...(used.includes("other") ? ["other"] : [])];
+export const legendLines = (israeli: boolean, used: readonly string[]) => [...Object.keys(lineClass).filter((l) => l !== "fx" || !israeli), ...(used.includes("other") ? ["other"] : [])];
 /** A computed shekel figure of this page, whole shekels (the totals and gaps the bars and lists show). */
-const nis = (n: number, formula: string, about: string, today: string, inputs: Record<string, SiteValue> = {}): SiteValue => computed(Math.round(n), "nis", formula, inputs, { today, about });
+export const nis = (n: number, formula: string, about: string, today: string, inputs: Record<string, SiteValue> = {}): SiteValue => computed(Math.round(n), "nis", formula, inputs, { today, about });
 /** A gain shown with its plus sign, isolated so it reads "+2,621 ₪" inside Hebrew. */
 const plus = (n: number) => (n > 0 ? `\u2066+${fmt.nisWhole(n)}\u2069` : undefined);
 const priced = (x: WayPrice | { reason: Reason } | undefined): x is WayPrice => !!x && "valueN" in x;
@@ -43,6 +47,11 @@ export const allFunds = (view: InvestView): FundWay[] => view.options.filter((o)
 
 /** The default pick: the cheapest complete way. */
 export const pickOfHeadline = (view: InvestView): Pick | null => (view.headline ? { house: view.headline.providerId, fund: view.headline.fund.rec.id } : null);
+/** With no ranked way, the way that leaves the most on an open rule (a fund the person typed abroad that accumulates): shown, not ranked. */
+export const pickOfOpen = (view: InvestView): Pick | null => {
+  const w = view.options.find((o) => o.bestWay)?.bestWay;
+  return w ? { house: w.providerId, fund: w.fund.rec.id } : null;
+};
 
 /**
  * The cheapest pair to set beside the person's: the headline, unless they picked a currency-hedged fund, which is compared with the best
@@ -53,14 +62,14 @@ export function bestFor(view: InvestView, pick: Pick): Pick | null {
   if (!rec || opensOn(rec)) return pickOfHeadline(view);
   const top = allFunds(view)
     .filter((f) => !opensOn(f.rec))
-    .flatMap((f) => Object.entries(f.byHouse).flatMap(([house, at]) => (priced(at) && !at.open ? [{ house, fund: f.rec.id, v: at.valueN }] : [])))
+    .flatMap((f) => Object.entries(f.byHouse).flatMap(([house, at]) => (priced(at) && !at.open && !isGroupPrice(at) ? [{ house, fund: f.rec.id, v: at.valueN }] : [])))
     .sort((a, b) => b.v - a.v)[0];
   return top ? { house: top.house, fund: top.fund } : pickOfHeadline(view);
 }
 
 /** A house's way that leaves the most: a ranked one first, else one on an open rule, which is shown and not ranked. Its row names it when the picked fund has no price there. */
 function otherWay(view: InvestView, house: string): { fund: FundWay; at: WayPrice } | null {
-  const ways = allFunds(view).flatMap((f) => { const at = f.byHouse[house]; return priced(at) ? [{ fund: f, at }] : []; });
+  const ways = allFunds(view).flatMap((f) => { const at = f.byHouse[house]; return priced(at) && !isGroupPrice(at) ? [{ fund: f, at }] : []; });
   return ways.sort((a, b) => Number(a.at.open) - Number(b.at.open) || b.at.valueN - a.at.valueN)[0] ?? null;
 }
 
@@ -84,7 +93,7 @@ export function repick(view: InvestView, cur: Pick, change: Partial<Pick>): Pick
 export function bestOfKind(view: InvestView, kind: Kind): Pick | null {
   const top = allFunds(view)
     .filter((f) => kindOf(f.rec) === kind)
-    .flatMap((f) => Object.entries(f.byHouse).flatMap(([house, at]) => (priced(at) && !at.open ? [{ house, fund: f.rec.id, v: at.valueN }] : [])))
+    .flatMap((f) => Object.entries(f.byHouse).flatMap(([house, at]) => (priced(at) && !at.open && !isGroupPrice(at) ? [{ house, fund: f.rec.id, v: at.valueN }] : [])))
     .sort((a, b) => b.v - a.v)[0];
   return top ? { house: top.house, fund: top.fund } : null;
 }
@@ -105,12 +114,11 @@ export const isoPct = (x: number, digits = 0) => `\u2066${signedPct(x, digits)}\
 
 // ---------------------------------------------------------------- the result
 
-function partsOf(pc: PairCosts): CostPart[] {
+function partsOf(pc: PairCosts, from: string): CostPart[] {
   const n = (v: SiteValue) => (typeof v.value === "number" ? v.value : 0);
-  const whole = (x: number) => Math.round(x).toLocaleString("he-IL");
-  const account = pc.account.map((l) => ({ id: l.line, legendId: lineOf(l.line), name: c.pair.lines[lineOf(l.line)] ?? c.pair.lines.other, value: n(l.cost), className: lineClass[lineOf(l.line)] ?? "bg-chart-cost-other", inside: whole(n(l.cost)) }));
+  const account = pc.account.map((l) => ({ id: l.line, legendId: lineOf(l.line), name: c.pair.lines[lineOf(l.line)] ?? c.pair.lines.other, value: n(l.cost), className: lineClass[lineOf(l.line)] ?? "bg-chart-cost-other", inside: true as const, source: from }));
   // the account's remainder no single line explains is part of what it takes, so the bar holds the whole cost (F-91)
-  return [...account, { id: "remainder", name: c.pair.remainder, value: pc.interaction, className: "bg-chart-cost-other", inside: whole(pc.interaction) }, { id: "fund", name: c.pair.fundLine, value: n(pc.fund), className: "bg-chart-cost-fund", inside: whole(n(pc.fund)) }, { id: "tax", name: c.pair.taxLine, value: n(pc.tax), className: "bg-chart-tax", inside: whole(n(pc.tax)) }];
+  return [...account, { id: "remainder", name: c.pair.remainder, about: c.pair.remainderAbout, value: pc.interaction, className: "bg-chart-cost-other", inside: true as const, source: c.pair.sourceComputed }, { id: "fund", name: c.pair.fundLine, value: n(pc.fund), className: "bg-chart-cost-fund", inside: true as const, source: c.pair.sourceFund }, { id: "tax", name: c.pair.taxLine, value: n(pc.tax), className: "bg-chart-tax", inside: true as const, source: c.pair.sourceTax }];
 }
 /** Whole shekels that add up to `target` (by default the rounded sum; largest remainder): a sentence of parts never disagrees with its total. */
 export function wholeParts(xs: number[], target = Math.round(xs.reduce((a, x) => a + x, 0))): number[] {
@@ -142,7 +150,7 @@ function CostLegend({ lines, pick }: { lines: string[]; pick: ChartPick<string> 
 }
 
 function CostBar({ who, sub, pc, scale, you, entered, today, highlight }: { who: string; sub: string; pc: PairCosts; scale: number; highlight: string | null; you?: boolean; /** The person typed this account (D44). */ entered?: boolean; today: string }) {
-  const parts = partsOf(pc);
+  const parts = partsOf(pc, entered ? c.pair.sourceEntered : c.pair.sourceList(who));
   // shown as the rounded base less the rounded value left: two bars then differ by exactly what the two "left" figures differ by
   const total = Math.round(pc.base) - Math.round(pc.left.value as number);
   return (
@@ -171,7 +179,7 @@ function runnerUp(view: InvestView, best: Pick): Pick | null {
   const bestRec = allFunds(view).find((f) => f.rec.id === best.fund)?.rec;
   const pairs = allFunds(view)
     .filter((f) => !bestRec || opensOn(f.rec) === opensOn(bestRec))
-    .flatMap((f) => Object.entries(f.byHouse).flatMap(([house, at]) => (priced(at) && !at.open && !(house === best.house && f.rec.id === best.fund) ? [{ house, fund: f.rec.id, v: at.valueN }] : [])));
+    .flatMap((f) => Object.entries(f.byHouse).flatMap(([house, at]) => (priced(at) && !at.open && !isGroupPrice(at) && !(house === best.house && f.rec.id === best.fund) ? [{ house, fund: f.rec.id, v: at.valueN }] : [])));
   const top = pairs.sort((a, b) => b.v - a.v)[0];
   return top ? { house: top.house, fund: top.fund } : null;
 }
@@ -195,8 +203,8 @@ export function PairResult({ view, bundle, plan, settled, pick, onPick }: { view
   // a gap names its two inputs by whose they are, as the figure's sheet lists them
   const gap = (a: SiteValue, aName: string, b: SiteValue, bName: string, about: string) => nis((a.value as number) - (b.value as number), "F-65", about, bundle.today, { [aName]: a, [bName]: b });
   const otherRole = onBest ? c.pair.next : c.pair.cheapest;
-  const parts = partsOf(pc);
-  const scale = Math.max(totalOf(parts), pcOther ? totalOf(partsOf(pcOther)) : 0);
+  const parts = partsOf(pc, "");
+  const scale = Math.max(totalOf(parts), pcOther ? totalOf(partsOf(pcOther, "")) : 0);
   const sumAccount = (x: PairCosts) => x.account.reduce((a, l) => a + (l.cost.value as number), 0) + x.interaction;
   // the three parts of the gap, rounded so they add up to the gap between the two shown values left (F-91: the costs add up to it exactly)
   const shownLeft = (x: PairCosts) => Math.round(x.left.value as number);
@@ -296,7 +304,7 @@ export function PairResult({ view, bundle, plan, settled, pick, onPick }: { view
 // ---------------------------------------------------------------- the account column
 
 /** The bars' scale: the costs of the main group, so one or two far larger accounts do not flatten the rest (they get a break mark). */
-function barScale(costs: number[]): number {
+export function barScale(costs: number[]): number {
   if (costs.length === 0) return 0;
   const sorted = [...costs].sort((a, b) => a - b);
   const median = sorted[Math.floor(sorted.length / 2)]!;
@@ -304,14 +312,21 @@ function barScale(costs: number[]): number {
   return Math.max(...inGroup);
 }
 
-/** A house's group prices, on its row and never in its figure (D43). The line belongs to the house, so a re-sort or a new input never changes the row's height. */
-function GroupLine({ id, snapshots }: { id: string; snapshots: WorkbenchBundle["snapshots"] }) {
-  const line = snapshots.find((s) => s.id === id)?.groups?.row_he;
-  return line ? <span className="col-start-2 col-end-[-1] text-xs text-muted-foreground leading-snug">{line}</span> : null;
+/**
+ * A house's group prices, on its row and never in its figure (D43, amended 2026-11-04): one closed line that opens, at the person's own
+ * tap, to a sub-row per price. The line belongs to the house, so a re-sort or a new input never changes the row's height.
+ */
+export function GroupLine({ id, house, snapshots, open, onOpen, choice }: { id: string; house: string; snapshots: WorkbenchBundle["snapshots"]; open: boolean; onOpen: (id: string, open: boolean) => void; choice?: GroupChoice }) {
+  const g = snapshots.find((s) => s.id === id)?.groups;
+  if (!g || g.state !== "prices") return null;
+  // the groups the person can pick are radios in the fold (founder, 2026-11-04), in place of a link to the account panel on every sub-row
+  return <GroupPriceFold className="col-start-2 col-end-[-1]" entries={g.entries} house={house} href={brokeragePagePath(id)} open={open} onOpenChange={(o) => onOpen(id, o)} {...(choice ? { choice } : {})} />;
 }
 
 /** What the account card says of its house, under its name: what it charges, its labels and its price list. */
-function HouseLine({ house, snapshot, charge }: { house: NonNullable<ReturnType<typeof providerName>>; snapshot: WorkbenchBundle["snapshots"][number] | undefined; charge: ReactNode }) {
+export function HouseLine({ house, snapshot, charge }: { house: NonNullable<ReturnType<typeof providerName>>; snapshot: WorkbenchBundle["snapshots"][number] | undefined; charge: ReactNode }) {
+  // the house's account on your own terms opens from here, the chosen account's card, not from a line on every row (founder, 2026-11-04);
+  // a 44 px target that takes no more height than the words beside it
   return (
     <span className="flex flex-wrap items-center content-start gap-x-4 gap-y-1 text-sm">
       {/* on a phone the charge has its own line, so a longer figure does not push the words beside it to another line */}
@@ -321,9 +336,14 @@ function HouseLine({ house, snapshot, charge }: { house: NonNullable<ReturnType<
         <StateTag state="entered" />
       ) : (
         snapshot && (
-          <a href={snapshot.tariff.url} target="_blank" rel="noopener noreferrer" title={snapshot.tariff.title} className="text-link hover:underline">
-            {c.pair.tariff} ↗
-          </a>
+          <>
+            <a href={snapshot.tariff.url} target="_blank" rel="noopener noreferrer" title={snapshot.tariff.title} className="text-link hover:underline">
+              {c.pair.tariff} ↗
+            </a>
+            <OwnAccountButton houseId={house.id} house={house.short} className="-mx-2 -my-2.5">
+              {c.pair.ownPrice}
+            </OwnAccountButton>
+          </>
         )
       )}
     </span>
@@ -331,48 +351,72 @@ function HouseLine({ house, snapshot, charge }: { house: NonNullable<ReturnType<
 }
 
 /** The largest amount the unseen longest case of a line holds: it stands in for a figure the sliders can change, and is never shown. */
-const LONGEST_AMOUNT = 9_999_999;
+export const LONGEST_AMOUNT = 9_999_999;
 /** The most years a plan's sliders give, for a sentence's unseen longest case. */
-const LONGEST_YEARS = 40;
+export const LONGEST_YEARS = 40;
 
-export function AccountColumn({ view, bundle, years, pick, onPick }: { view: InvestView; bundle: WorkbenchBundle; years: number; pick: Pick; onPick: (p: Pick) => void }) {
+export function AccountColumn({ view, bundle, years, pick, onPick, group = null }: { view: InvestView; bundle: WorkbenchBundle; years: number; pick: Pick; onPick: (p: Pick) => void; /** The house's group picked in its fold: `pick.house` is then the held account priced at it, and this its house. */ group?: { house: string; key: string; name: string } | null }) {
   const legendPick = useChartPick();
   // a row added or removed starts the held height over, so a removed row leaves no hole (D44)
-  const heldKey = `${view.index.id}:${view.providers.length}`;
-  const held = useHeldHeight<HTMLDivElement>(heldKey);
+  // the houses of the list: a picked group's held account stands beside its house, never as a row of its own (D43)
+  const providers = view.providers.filter((p) => !isGroupProvider(p));
+  const heldKey = `${view.index.id}:${providers.length}`;
+  // a house's group prices open and close at the person's tap: the held height starts over, so a closed fold leaves no hole; an address
+  // that names a group opens its house's fold, so the picked radio is in view
+  const [openGroups, setOpenGroups] = useState<string[]>(() => (group ? [group.house] : []));
+  const onGroup = (id: string, open: boolean) => setOpenGroups((xs) => (open ? (xs.includes(id) ? xs : [...xs, id]) : xs.filter((x) => x !== id)));
+  const held = useHeldHeight<HTMLDivElement>(`${heldKey}:${openGroups.join()}`);
   // every house and every fund the header can name, laid out unseen, so a long one moves nothing above the list (issue 160)
   const longest = useMemo(() => {
-    const houses = view.providers.map((p) => providerName(view, p.id)!);
+    const houses = providers.map((p) => providerName(view, p.id)!);
+    // each house's longest group that some fund can be priced at: its line under the house's, inside the same held height
+    const pickedOf = (id: string) => {
+      const s = bundle.snapshots.find((x) => x.id === id);
+      const names = (["il-etf", "abroad"] as const).flatMap((o) => [...pickableGroups(s, o)].map((k) => groupNameOf(s, k)));
+      return names.sort((a, b) => b.length - a.length)[0] ?? null;
+    };
     return {
       names: houses.map((h) => <span key={h.id} className={cx("block text-xl font-bold [overflow-wrap:anywhere]", h.custom && "text-entered")}><ProviderLink p={h} /></span>),
-      lines: houses.map((h) => <HouseLine key={h.id} house={h} snapshot={bundle.snapshots.find((s) => s.id === h.id)} charge={<>{c.pair.colCharges(LONGEST_YEARS)}: {fmt.nisWhole(LONGEST_AMOUNT)}</>} />),
+      lines: houses.map((h) => (
+        <span key={h.id} className="flex flex-col gap-1">
+          <HouseLine house={h} snapshot={bundle.snapshots.find((s) => s.id === h.id)} charge={<>{c.pair.colCharges(LONGEST_YEARS)}: {fmt.nisWhole(LONGEST_AMOUNT)}</>} />
+          {pickedOf(h.id) && <span className="block text-sm text-muted-foreground">{groupPrices.pickedLine(pickedOf(h.id)!)}</span>}
+        </span>
+      )),
       funds: allFunds(view).map((f) => <span key={f.rec.id} className="text-sm flex items-center gap-1.5 max-md:flex-col max-md:items-start md:flex-wrap">{c.pair.accountsCond} <Tag><bdi>{f.name}</bdi></Tag></span>),
     };
   }, [heldKey, bundle.snapshots]); // eslint-disable-line react-hooks/exhaustive-deps
   const fund = allFunds(view).find((f) => f.rec.id === pick.fund);
-  const house = providerName(view, pick.house);
+  const baseHouse = group?.house ?? pick.house;
+  const house = providerName(view, baseHouse);
   if (!fund || !house) return null;
   const best = bestFor(view, pick);
+  // the groups each house offers that change this fund's figure and end after a printed number of months (lib/group-pick)
+  const choiceOf = (id: string): GroupChoice | undefined => {
+    const can = pickableGroups(bundle.snapshots.find((s) => s.id === id), fund.option);
+    if (can.size === 0) return undefined;
+    return { can: (k) => can.has(k), selected: group?.house === id ? group.key : null, onChoose: (k) => onPick({ ...repick(view, pick, { house: id }), group: k }) };
+  };
   // counted over every fund of the index, so the sentence stays as it is when another fund is picked; a count over the collected houses
-  const local = view.providers.filter((p) => !p.foreign && !p.custom);
+  const local = providers.filter((p) => !p.foreign && !p.custom);
   const standingCount = local.filter((p) => allFunds(view).some((f) => { const a = f.byHouse[p.id]; return priced(a) && a.standing; })).length;
-  const rows = view.providers.map((p) => ({ p, at: fund.byHouse[p.id] }));
+  const rows = providers.map((p) => ({ p, at: fund.byHouse[p.id] }));
   const ok = rows.filter((r): r is { p: typeof r.p; at: WayPrice } => priced(r.at)).sort((a, b) => Number(a.at.open) - Number(b.at.open) || b.at.valueN - a.at.valueN);
   const noWay = (r: (typeof rows)[number]) => (r.at && "availability" in r.at && r.at.availability ? r.at.availability : null);
   // every house keeps a row: what cannot be priced is grey, "no data" first and "not possible there" last (founder, 2026-10-31)
   const missing = rows.filter((r) => !priced(r.at)).sort((a, b) => Number(!!noWay(a)) - Number(!!noWay(b)) || a.p.short.localeCompare(b.p.short, "he"));
   const scale = barScale(ok.map((r) => r.at.accountCost));
   const lines = legendLines(!!view.index.israeli, ok.flatMap((r) => r.at.lines.map((l) => lineOf(l.line))));
-  const snapshot = bundle.snapshots.find((s) => s.id === pick.house);
+  const snapshot = bundle.snapshots.find((s) => s.id === baseHouse);
   const at = fund.byHouse[pick.house];
   const pickRows: PickRow[] = ok.map((r, i) => {
-    const parts: CostPart[] = [...r.at.lines.map((l) => ({ id: l.line, legendId: lineOf(l.line), name: c.pair.lines[lineOf(l.line)] ?? c.pair.lines.other, value: l.cost, className: lineClass[lineOf(l.line)] ?? "bg-chart-cost-other" })), { id: "remainder", name: c.pair.remainder, value: r.at.interaction, className: "bg-chart-cost-other" }];
+    const parts: CostPart[] = [...r.at.lines.map((l) => ({ id: l.line, legendId: lineOf(l.line), name: c.pair.lines[lineOf(l.line)] ?? c.pair.lines.other, value: l.cost, className: lineClass[lineOf(l.line)] ?? "bg-chart-cost-other", source: r.p.custom ? c.pair.sourceEntered : c.pair.sourceList(r.p.short) })), { id: "remainder", name: c.pair.remainder, about: c.pair.remainderAbout, value: r.at.interaction, className: "bg-chart-cost-other", source: c.pair.sourceComputed }];
     const isYours = r.p.id === view.yourBroker;
     // shown on the row whether or not it is picked, so a pick never adds or removes a line (founder, 2026-10-27)
     const isBest = best?.house === r.p.id && best.fund === pick.fund;
     return {
       key: r.p.id,
-      selected: r.p.id === pick.house,
+      selected: r.p.id === baseHouse,
       onSelect: () => onPick(repick(view, pick, { house: r.p.id })),
       cells: (
         <>
@@ -386,16 +430,18 @@ export function AccountColumn({ view, bundle, years, pick, onPick }: { view: Inv
               {r.at.standing && <span>{c.pair.standingTag}</span>}
             </span>
           </span>
-          <span className="flex items-center gap-2 min-w-0 max-md:row-start-2 max-md:col-start-3 max-md:col-span-2">
+          {/* a narrow list (a phone, or this panel beside the funds on a computer) gives the bar a line of its own under the name, so it is wide enough to compare (2026-11-04) */}
+          <span className="flex items-center gap-2 min-w-0 @max-2xl:row-start-2 @max-2xl:col-start-3 @max-2xl:col-end-[-1]">
             <CostStack size="sm" parts={parts} scale={scale} highlight={legendPick.active} label={`${r.p.short}: ${fmt.nisWhole(r.at.accountCost)}`} />
-            <span className="text-xs text-muted-foreground whitespace-nowrap">
+            {/* one width on every row, for the longest amount: a longer figure would shorten its own bar, and the bars share one scale */}
+            <span className="w-[4.75rem] shrink-0 text-xs text-muted-foreground whitespace-nowrap">
               <Num animate value={nis(r.at.accountCost, "F-63", `${r.p.short}: ${c.pair.colChargesShort}`, bundle.today)} />
             </span>
           </span>
-          <span className="text-end font-semibold">
+          <span className="col-end-[-1] text-end font-semibold">
             <Num animate value={r.at.value} />
           </span>
-          <GroupLine id={r.p.id} snapshots={bundle.snapshots} />
+          <GroupLine id={r.p.id} house={r.p.short} snapshots={bundle.snapshots} open={openGroups.includes(r.p.id)} onOpen={onGroup} choice={choiceOf(r.p.id)} />
           {r.p.custom && <span className="col-start-2 col-end-[-1]"><BrokerTerms id={r.p.id} /></span>}
         </>
       ),
@@ -406,7 +452,7 @@ export function AccountColumn({ view, bundle, years, pick, onPick }: { view: Inv
     const other = otherWay(view, r.p.id);
     return {
       key: r.p.id,
-      selected: r.p.id === pick.house,
+      selected: r.p.id === baseHouse,
       muted: true,
       // a house with no way on this index has nothing to show as a pair: its row stays, with the reason
       onSelect: () => {
@@ -419,7 +465,7 @@ export function AccountColumn({ view, bundle, years, pick, onPick }: { view: Inv
             {r.p.short}
             <span className="flex flex-wrap gap-x-2 min-h-5 text-xs font-normal">{r.p.id === view.yourBroker && <span>{c.pair.yoursTag}</span>}</span>
           </span>
-          <span className="flex flex-wrap items-center gap-x-2 gap-y-0.5 min-w-0 text-xs max-md:row-start-2 max-md:col-start-3 max-md:col-span-2">
+          <span className="flex flex-wrap items-center gap-x-2 gap-y-0.5 min-w-0 text-xs @max-2xl:row-start-2 @max-2xl:col-start-3 @max-2xl:col-end-[-1]">
             <Tag tone={na ? undefined : "caution"}>{na ? c.pair.notPossible : c.pair.noData}</Tag>
             {na && !r.p.custom && (
               <a href={na.source.url} target="_blank" rel="noopener noreferrer" title={na.note ?? na.source.title} className="text-link hover:underline">
@@ -427,7 +473,7 @@ export function AccountColumn({ view, bundle, years, pick, onPick }: { view: Inv
               </a>
             )}
           </span>
-          <span className="text-end font-semibold">—</span>
+          <span className="col-end-[-1] text-end font-semibold">—</span>
           {/* the reason takes the row's width, like the group line: in the charges column it stood one word to a line (2026-10-31) */}
           <span className="col-start-2 col-end-[-1] flex flex-col gap-0.5 text-xs leading-snug">
             {na && r.p.custom && <span>{c.customEntries.notSold}</span>}
@@ -439,7 +485,7 @@ export function AccountColumn({ view, bundle, years, pick, onPick }: { view: Inv
               </span>
             )}
           </span>
-          <GroupLine id={r.p.id} snapshots={bundle.snapshots} />
+          <GroupLine id={r.p.id} house={r.p.short} snapshots={bundle.snapshots} open={openGroups.includes(r.p.id)} onOpen={onGroup} choice={choiceOf(r.p.id)} />
           {r.p.custom && <span className="col-start-2 col-end-[-1]"><BrokerTerms id={r.p.id} /></span>}
         </>
       ),
@@ -455,6 +501,7 @@ export function AccountColumn({ view, bundle, years, pick, onPick }: { view: Inv
           </span>
         </LongestCase>
         <LongestCase cases={longest.lines}>
+          <span className="flex flex-col gap-1">
           <HouseLine
             house={house}
             snapshot={snapshot}
@@ -466,6 +513,9 @@ export function AccountColumn({ view, bundle, years, pick, onPick }: { view: Inv
               )
             }
           />
+          {/* the picked group's line: the held height counts each house's longest group, so picking one moves nothing below */}
+          {group && <span className="block text-sm text-muted-foreground">{groupPrices.pickedLine(group.name)}</span>}
+          </span>
         </LongestCase>
       </div>
       <div className="px-5 pt-4 pb-2 flex flex-col gap-0.5">
@@ -480,6 +530,7 @@ export function AccountColumn({ view, bundle, years, pick, onPick }: { view: Inv
         <span className="text-xs text-muted-foreground min-h-[1lh] max-md:min-h-[2lh]">{standingCount > 0 && c.pair.standingNote(standingCount, local.length)}</span>
         <span className="text-xs text-muted-foreground">{c.pair.whichPrice}</span>
       </div>
+      <div className="@container">
       <PickList
         label={c.pair.listLabelAccounts}
         columns="1.5rem 9.5rem minmax(0,1fr) 6.5rem"
@@ -488,12 +539,13 @@ export function AccountColumn({ view, bundle, years, pick, onPick }: { view: Inv
           <>
             <span>#</span>
             <span>{c.pair.colAccount}</span>
-            <span className="max-md:hidden">{c.pair.colChargesShort}</span>
+            <span className="max-md:hidden @max-2xl:invisible">{c.pair.colChargesShort}</span>
             <span className="text-end">{c.pair.colLeft}</span>
           </>
         }
         rows={[...pickRows, ...greyRows]}
       />
+      </div>
       <div className="px-5 py-3 flex flex-col gap-3">
         <AddEntryButton kind="broker" />
         <ChartLegend

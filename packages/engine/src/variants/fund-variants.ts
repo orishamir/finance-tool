@@ -185,6 +185,8 @@ export function fundOf(rec: FundRecord, kind: Fund["kind"], dist: { yield: numbe
     fund.sharePrice = price.value;
   }
   if (kind === "tase-foreign-fund" && rec.tax_status.tase_foreign_fund_90pct_test?.value === true) fund.ninetyPercentTest = true;
+  // TXF-11 (2026-11-04): the fund's own annex reports a ruling that taxes it at sale and on distributions only.
+  if (rec.tax_ruling && rec.distribution_policy === "accumulating") fund.saleOnlyRuling = true;
   return { fund, notCollected, hasManagement: management !== undefined };
 }
 
@@ -280,7 +282,7 @@ function evaluate(c: Cand, exposure: VariantExposure, ctx: RunContext): VariantR
  * the exposure that no list row stands for (traded abroad); a record of an Israeli fund the list no longer prints is
  * kept as a candidate too. Each candidate with a record runs F-08 with its own drag (A-06 to A-11), currency (F-04),
  * distribution policy with the yield its record holds (F-20, A-10) and domicile rules (F-40, F-41); an accumulating foreign fund is computed under the
- * secondary reading of TXF-11 (labelled) and listed, not ranked (G-18). A candidate without a record is "not evaluated:
+ * secondary reading of TXF-11 (labelled) and listed, not ranked (G-18), unless its record carries the ruling its own annex reports (`tax_ruling`). A candidate without a record is "not evaluated:
  * details not collected". Foreign-domiciled funds traded abroad that are not in `funds` are one group line (G-29).
  * The rest are ranked by real value with ties by F-80, and the coverage line (F-83) accounts for each candidate once.
  * F-94 Hedged or not, across the dollar: this same calculation at another A-03, which moves an unhedged fund and not a hedged one.

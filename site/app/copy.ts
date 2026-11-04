@@ -17,7 +17,6 @@ export const site = {
   currentPage: "העמוד הנוכחי",
   menuItems: [
     { href: "/guide", label: "מדריך", current: "guide" },
-    { href: "/questions", label: "שאלות שכולם שואלים", current: "questions" }, // the questions page (founder, 2026-10-24 evening)
     { href: "/companies", label: "חברות ומסלולים", current: "decoder" },
     { href: "/rules", label: "חוקים וכללים", current: "rules" },
     { href: "/parameters", label: "פרמטרים", current: "parameters" },
@@ -32,8 +31,6 @@ export const site = {
   footerAsOf: "נתונים נכון ל־",
   toTop: "חזרה למעלה",
   footer: [
-    { href: "/questions", label: "שאלות שכולם שואלים" },
-    { href: "/rules", label: "חוקים וכללים" },
     { href: "/parameters", label: "פרמטרים" },
     { href: "/goal", label: "השוואה למטרה" },
     { href: "/not-covered", label: "מה האתר עוד לא מכסה" },
@@ -2146,12 +2143,34 @@ export const r4catalogue = {
     minimum: "מינימום לפתיחת חשבון:",
     minimumNone: "לא נמצא בתעריפון",
     tradeBounds: { min: "מינימום לפעולה", max: "מקסימום" },
+    /** a custody or account fee's own bounds (2026-11-04): "per trade" was wrong of them */
+    bounds: { min: "מינימום", max: "מקסימום" },
     protection: "מפוקח:",
     tase: "חבר בורסה",
     protectionDisclosure: "מה מגן על הכסף",
     channel: { direct: "ערוצים ישירים", branch: "סניף" },
     /** copy.md 8.4: how often a custody percentage is charged; the tariff states the period, copy.md names none */
     period: { month: "לחודש", quarter: "לרבעון", year: "לשנה" },
+    /** D57 amended (2026-11-04): the details of a house's account stand on its page, each as its own part of the card */
+    priceFor: "למי המחירים כאן",
+    whereTariff: (page?: number) => (page ? `בתעריפון, עמוד ${page}` : "בתעריפון"),
+    // a document whose name already says its page is not given the page twice
+    whereOther: (title: string, page?: number) => (page && !/עמ'|עמוד/.test(title) ? `${title}, עמוד ${page}` : title),
+    /** a conversion spread the binding documents do not limit is never shown as zero (D56) */
+    spreadNotLimited: "מרווח ההמרה: המסמכים לא קובעים לו תקרה",
+    spreadUpTo: "מרווח ההמרה: עד",
+    linesTitle: "העמלות",
+    canBuy: {
+      title: "מה אפשר לקנות כאן",
+      state: { yes: "אפשר", no: "אי אפשר", unknown: "לא ידוע" } as Record<"yes" | "no" | "unknown", string>,
+      source: "איפה זה כתוב",
+    },
+    claims: {
+      title: "מה כתוב בפרסום, ומה במסמכים",
+      lead: "המחירים כאן הם לפי התעריפון והתקנונים, המסמכים שמחייבים את החברה. מה שכתוב בפרסום שלה לא תמיד תואם אותם:",
+    },
+    groupsTitle: "מחירים לקבוצות ומבצעים",
+    groupsLead: "המחירים האלה לא נכנסים להשוואה בין הבנקים ובתי ההשקעות, כי הם תלויים במי שקונה. ההשוואה מחשבת לפי המחיר ללקוח רגיל.",
   },
   regulators: { BoI: "בנק ישראל", ISA: "רשות ניירות ערך", CMA: "רשות שוק ההון, ביטוח וחיסכון" },
   instrumentClasses: {
@@ -2162,6 +2181,7 @@ export const r4catalogue = {
     foreign_securities: "ניירות ערך זרים",
     makam: "מק״מ",
     money_market_units: "קרן כספית",
+    tase_bonds: "איגרות חוב בבורסה בתל אביב",
   },
   missingTariff: "התעריפון לא נאסף.",
   recordedReason: "הסיבה כפי שנרשמה בקובץ הנתונים",
@@ -2169,6 +2189,58 @@ export const r4catalogue = {
   brokerClassLine: "בית השקעות, חבר בורסה שאינו בנק",
   searchGroupBank: "בנקים ומוצרי בנק",
 } as const;
+
+/** "א, ב וג": a list in running Hebrew, "ו" before the last. */
+const andList = (items: string[]) => (items.length < 2 ? (items[0] ?? "") : `${items.slice(0, -1).join(", ")} ו${items[items.length - 1]}`);
+
+/** Group prices (D43, amended 2026-11-04): the line under a house's row and its sub-rows, on the indices page and on the house's page (kit/group-prices.tsx). */
+export const groupPrices = {
+  /** the row's figure uses the price list's price, not the lower one under it */
+  notCounted: "לא בחישוב",
+  /** "מחיר אחר לצעירים, לסטודנטים וללקוחות פפר": each group after "ל" */
+  line: (who: string[]) => `מחיר אחר ${andList(who.map((w) => `ל${w}`))}`,
+  kinds: { young: "צעירים", soldier: "חיילים", released: "חיילים משוחררים", student: "סטודנטים", salary: "מעבירי משכורת" } as Record<string, string>,
+  colWho: "מי",
+  colCheaper: "מה זול יותר",
+  colEnds: "עד מתי",
+  noFund: "המסמך לא מזכיר קרנות",
+  fundsOnly: (fees: string[]) => `המסמך מזכיר קרנות רק לגבי ${andList(fees)}`,
+  fees: { trade: "קנייה ומכירה", custody: "דמי הניהול", trade_israel: "קנייה ומכירה בארץ", trade_abroad: "קנייה ומכירה בחוץ לארץ", custody_israel: "דמי הניהול בארץ", custody_abroad: "דמי הניהול בחוץ לארץ" } as Record<string, string>,
+  noFundNote: "כשהמסמך לא מזכיר קרנות, לא ידוע אם המחיר חל גם על קרן מחקה או על קרן סל.",
+  /** The link on a sub-row that opens the account panel with this group's prices in the person's column (2026-11-04). */
+  ownAccount: "לחשבון במחיר הזה בהשקעה במדד",
+  /** The held account of a house's group picked on the index page (2026-11-04): its name wherever the pair names it. */
+  pickedName: (house: string, group: string) => `${house}, ל${group}`,
+  /** The radio on a sub-row the person can pick: what picking it does, for a screen reader. */
+  pickLabel: (group: string) => `חשבון במחיר ל${group}`,
+  /** On the chosen account's card, under its name, when a group is picked. */
+  pickedLine: (group: string) => `במחיר ל${group} כל עוד הוא נמשך, ואחר כך לפי התעריפון`,
+  /** Under the sub-rows, when some can be picked: why the others cannot. */
+  pickNote: "אפשר לבחור מחיר של קבוצה כשהמסמך מזכיר בו קרנות וכתוב בו כמה זמן הוא נמשך.",
+  toPage: (house: string) => `לעמוד של ${house}, עם המקורות`,
+  sources: "איפה זה כתוב:",
+  atPage: (n: number) => `עמוד ${n}`,
+  atRows: (rows: number[]) => (rows.length === 1 ? `שורה ${rows[0]}` : `שורות ${rows.slice(0, -1).join(", ")} ו־${rows[rows.length - 1]}`),
+  /** a house with no group price on securities says why */
+  states: {
+    none_on_securities: "יש נספח לקבוצות, אבל אין בו מחיר לניירות ערך.",
+    no_mention: "במסמכים שנקראו לא מוזכרת קבוצה עם מחיר אחר.",
+    not_read: "האתר לא הצליח לקרוא את המחירים לקבוצות.",
+  } as Record<string, string>,
+};
+
+/** A claim of a house's advertising set against its binding documents (D57; kit/claim-check.tsx). */
+export const claims = {
+  verdict: { contradicted: "המסמך אומר אחרת", offer: "רק בתנאים", not_found: "לא כתוב במסמכים" } as Record<string, string>,
+  fee: { custody: "דמי משמרת", account: "דמי טיפול", trade: "קנייה ומכירה", conversion: "המרת מטבע", standing_order: "הוראת קבע" } as Record<string, string>,
+  ad: "בפרסום",
+  binding: "במסמך המחייב",
+  notFound: "במסמכים המחייבים זה לא כתוב. המסמך שנבדק:",
+  seen: (date: string) => `נראה ב־${date}`,
+  dated: (date: string) => `מ־${date}`,
+  quote: (words: string) => `״${words}״`,
+  atPage: (title: string, page: number) => `${title}, עמוד ${page}`,
+};
 
 // Release 4: the provider workbench and the fund-variant page (docs/copy.md 8.0, 8.1, 8.2; flows 15.1, 15.2). The
 // strings the build added are in the "Added 2026-10-24" tables of copy.md 8.0, 8.1 and 8.2, keyed by path. A `{…}` of
@@ -2180,6 +2252,8 @@ export const r4workbench = {
   notComparable: {
     dataMissing: "התעריפון לא נאסף.",
     noLine: (cls: string) => `בתעריפון אין שורה ל${cls}.`,
+    // 2026-11-04: a house whose trade lines abroad name one exchange only (One Zero: "ניירות ערך זרים הנסחרים בארה״ב"), and a fund on the other
+    otherVenue: (houseVenue: "us" | "europe") => (houseVenue === "us" ? "כאן קונים בחו״ל רק ניירות ערך שנסחרים בארה״ב, והקרן הזו נסחרת באירופה." : "כאן קונים בחו״ל רק ניירות ערך שנסחרים באירופה, והקרן הזו נסחרת בארה״ב."),
     noLineChannel: (cls: string, channel: string) => `בתעריפון אין שורה ל${cls} ב${channel}.`,
     noAverage: (cls: string) => `לא נאסף ממוצע לשורות שחלות על ${cls}.`,
     lineWithoutValue: (name: string) => `בשורה ״${name}״ חסר ערך בתעריפון.`,
@@ -2668,17 +2742,6 @@ export const rulesFront = {
     presetAll: "לכל החוקים והכללים",
   },
   experience: { title: "ניסיון של אחרים", line: "עדויות של אנשים מהפורום, לא חוקים ולא כללים; מסומנות כך גם בעמוד ״איך עוברים״." },
-  /** The quiet line under the filter field: the questions left this page for /questions (founder, 2026-10-24 evening). */
-  questionsLine: { before: "יש לכם שאלה?", link: "השאלות שכולם שואלים" },
-} as const;
-
-/** The questions page (/questions): the common questions left the rules page and got a one-line answer each (founder, 2026-10-24 evening). */
-export const questions = {
-  title: "השאלות שכולם שואלים",
-  lede: "תשובה של שורה לכל שאלה, ומתחתיה החוקים והכללים שאפשר לפתוח ולבדוק במקור.",
-  toRules: "לכל החוקים והכללים בנושא",
-  noAnswer: "התשובה עוד לא נכתבה; החוקים והכללים שעונים על השאלה מופיעים מתחת.",
-  home: { title: "שאלות שכולם שואלים", all: "לכל השאלות" },
 } as const;
 
 /** The documents page (synthesis §3.5). */
@@ -3232,6 +3295,108 @@ export const invest = {
     missing: "המדד הזה לא שמור במכשיר הזה. בחרו מדד מהרשימה או הוסיפו אותו שוב.",
   },
 
+  /** An index with no fund the page can price (a custom one, 2026-11-04): the same two lists, the accounts by what they charge, and one request to add the fund. */
+  noFund: {
+    callTitle: "כמה נשאר בסוף תלוי בקרן",
+    callBody: (index: string) => `האתר לא אסף קרנות על ${index}. הוסיפו את הקרן שאתם שוקלים, והעמוד יחשב כמה נשאר בכל חשבון. עד אז, הרשימה מסדרת את החשבונות לפי מה שהם גובים.`,
+    accountsCond: "מסודרים לפי מה שכל חשבון גובה, בסוג הקרן שהכי זול לקנות בו",
+    accountsHint: "בחרו חשבון כדי לראות את התעריפון שלו",
+    fundTitle: "עוד לא נבחרה קרן",
+    fundWhy: "בלי רשומת קרן האתר לא מנחש דמי ניהול.",
+    none: "אין עדיין קרנות ברשימה.",
+    unpriced: "הקרנות שהוספתם, בלי מחיר:",
+    mayaLead: "את דמי הניהול של קרן אפשר למצוא במאיה.",
+  },
+
+  /** An account on your own terms, started from a house (F-101, 2026-11-04): what the sheets of its computed figures call them. The panel's own words come with the panel. */
+  ownAccount: {
+    placeAbout: (of: number) => `המקום בין ${of} חשבונות, לפי מה שנשאר בסוף`,
+    differenceAbout: "מה שנשאר בחשבון שלכם פחות מה שנשאר בחשבון לפי התעריפון של אותו בית, באותה קרן",
+    decidingAbout: (line: string) => `ההפרש בין התעריפון לחשבון שלכם: ${line}`,
+    /** The link on a house's page (2026-11-04); in the comparison the chosen account's card opens it (`pair.ownPrice`). */
+    open: (house: string) => `חשבון בתנאים שלכם, על בסיס ${house}`,
+    panel: {
+      title: (house: string) => `${house}, בתנאים שלכם`,
+      nameDefault: (house: string) => `${house}, בתנאים שלכם`,
+      sub: "מתחילים מהתעריפון ומשנים רק את המחירים שקיבלתם בפועל. מה שלא שיניתם נשאר כמו בתעריפון. החשבון נשמר רק במכשיר הזה, ומושווה כמו כל חשבון אחר בעמוד.",
+      nameField: "השם של השורה בהשוואה",
+      startField: "על בסיס",
+      startList: (house: string) => `התעריפון של ${house}`,
+      noWay: (house: string) => `ל${house} אין מחיר לקרן במדד הזה, ולכן אי אפשר לחשב חשבון על בסיסו כאן.`,
+      computing: "מחשב…",
+      tileLeft: (years: number) => `נשאר אחרי ${years === 1 ? "שנה אחת" : years === 2 ? "שנתיים" : `${years} שנים`}`,
+      tileLeftNote: "בכסף של היום, אחרי דמי ניהול ומס",
+      tilePlace: "המקום בהשוואה",
+      tilePlaceValue: (rank: number, of: number) => `${rank} מתוך ${of}`,
+      tilePlaceNote: "לפי מה שנשאר בסוף",
+      tileDiff: (house: string) => `לעומת התעריפון של ${house}`,
+      tileDiffNote: "באותה קרן, לפי התוכנית שלכם",
+      gridLabel: "העמלות של החשבון: התעריפון, מה שהלקוחות שילמו בממוצע, והתנאים שלכם",
+      head: { fee: "עמלה", list: "בתעריפון", avg: "מה שהלקוחות שילמו בממוצע", yours: "שלכם" },
+      listLabel: "בתעריפון",
+      yoursLabel: "שלכם",
+      listNone: "בתעריפון אין שורה לסוג הזה של קרן",
+      listWord: "התעריפון",
+      avgBody: (house: string) => `הבורסה מפרסמת כמה שילמו לקוחות ${house} בממוצע, לפי גודל התיק. היא אוסרת להעתיק את המספרים, ולכן הם לא כאן.`,
+      avgLink: "למחשבון העמלות של הבורסה",
+      sameAsList: "כמו בתעריפון",
+      fromGroup: (name: string) => `לפי ${name}`,
+      groupDoc: "המסמך",
+      groupEnds: (months: number) => (months % 12 === 0 ? (months === 12 ? "שנה אחת" : months === 24 ? "שנתיים" : `${months / 12} שנים`) : months === 1 ? "חודש אחד" : months === 2 ? "חודשיים" : `${months} חודשים`),
+      groupFor: (period: string) => `תקף ${period} מההצטרפות`,
+      groupSide: { buy: "בקנייה בלבד", sell: "במכירה בלבד" },
+      groupNoFund: "המסמך של הקבוצה לא מזכיר קרנות, ולכן האתר לא מחשב את הקרן לפי המחיר הזה.",
+      kinds: { rate: "", exempt: "", discount: "הנחה של", floor: "לא פחות מ", flat: "מחיר קבוע", flat_up_to: "עד", per_share: "לכל מניה", min: "מינימום", max: "מקסימום" } as Record<string, string>,
+      cannot: "אי אפשר לחשב חשבון בתנאים האלה.",
+      groupWords: (words: string) => `בקבוצה: ${words}`,
+      adoptButton: "להשתמש במחיר הזה",
+      adoptUndo: "לחזור לתעריפון",
+      adopted: "בחרתם להשתמש במחיר של הקבוצה",
+      adoptedAbout: (name: string, words: string) => `${name}: ${words}, לפי בחירתכם`,
+      exempt: "פטור",
+      field: {
+        tradePct: "קנייה ומכירה, אחוז",
+        tradeMin: "קנייה ומכירה, מינימום לפעולה",
+        custodyPct: "דמי משמרת, אחוז לשנה",
+        custodyMin: "דמי משמרת, מינימום לחודש",
+        monthlyFee: "דמי ניהול חשבון, ₪ לחודש",
+        fxPct: "המרת מטבע, אחוז",
+        placeholder: "בלי שינוי",
+      },
+      until: {
+        label: "כמה שנים נשארים בקבוצה",
+        hint: (house: string) => `שדה ריק: נשארים בקבוצה לאורך כל התוכנית. כשיוצאים ממנה, החשבון חוזר לתעריפון של ${house}.`,
+        error: "הזינו מספר שלם של שנים.",
+        strip: "שנות התוכנית: איזה מחיר חל בכל תקופה",
+        today: "היום",
+        year: (y: number) => `שנה ${y}`,
+        allGroup: "מחירי הקבוצה",
+        someGroup: (what: string) => `${what}, במחיר הקבוצה`,
+        afterGroup: "התעריפון",
+      },
+      costs: {
+        title: "כמה כל עמלה עולה לאורך התוכנית שלכם",
+        list: "לפי התעריפון",
+        yours: "בתנאים שלכם",
+        fromList: (house: string) => `מהתעריפון של ${house}`,
+        fromGroup: (name: string) => `מהמסמך של ${name}`,
+        fromYours: "מה שהזנתם",
+        computed: "חישוב של האתר",
+        total: (who: string) => `${who}: סך העמלות של החשבון`,
+      },
+      decidesLead: (line: string) => `העמלה שההפרש בה הכי גדול היא ${line}: לאורך כל התוכנית היא עולה`,
+      decidesLess: "פחות בחשבון שלכם מאשר לפי התעריפון.",
+      decidesMore: "יותר בחשבון שלכם מאשר לפי התעריפון.",
+      decidesNone: "החשבון שלכם בדיוק בתנאי התעריפון, ולכן אין הפרש בעמלות.",
+      add: "הוספה להשוואה",
+      basedOn: (house: string, group: string | null) => (group ? `על בסיס ${house}, ${group}` : `על בסיס ${house}`),
+      rowDiff: (more: boolean) => (more ? "יותר מהתעריפון" : "פחות מהתעריפון"),
+      rowSame: "כמו בתעריפון",
+      rowMainly: (line: string) => `בעיקר מ${line}`,
+      houseGone: (house: string) => `${house} כבר לא באתר: השורה שומרת רק את מה שהזנתם.`,
+    },
+  },
+
   /** A broker and a fund the person types (D44). */
   customEntries: {
     addBroker: "הוספת חשבון בתנאים שקיבלתם",
@@ -3353,23 +3518,6 @@ export const invest = {
     israeliNote: "קרנות ישראליות שמחזיקות את המניות; אין קרן חוץ שמתמחה בישראל.",
   },
 
-  headline: {
-    title: "הדרך הזולה ביותר לתוכנית שלכם",
-    left: "נשאר בסוף, בכסף של היום",
-    at: "ב־",
-    withFund: "עם",
-    yours: (broker: string) => `ב${broker}, עם אותה קרן`,
-    yoursLess: "פחות",
-    yoursSame: "אותו סכום",
-    yoursCannot: (broker: string) => `ב${broker} אי אפשר לחשב את אותה קרן`,
-    open: "הדרך הזו נשענת על כלל פתוח, ולכן מוצגת בלי דירוג.",
-    noWay: "עוד לא חושבה דרך שלמה: אין קרן שהאתר יכול לחשב בשבילה.",
-    noFunds: "חשבון ניירות הערך הזול ביותר לקרן ישראלית על המדד:",
-    noFundsCost: "עלות חשבון ניירות הערך לאורך התקופה",
-    noFundsWhy: "האתר לא אסף קרנות על המדד הזה, ולכן אין דירוג של דרכים שלמות; חשבון ניירות הערך זול או יקר באותה מידה לכל קרן באותו סוג.",
-    onlyOpen: "כל הדרכים שחושבו נשענות על כלל פתוח; הן מוצגות למטה, בלי דירוג.",
-  },
-
   worth: {
     lines: { house: "אותה קרן, בחשבון ניירות ערך אחר", fund: "אותו חשבון ניירות ערך, קרן אחרת" },
     heading: "מה כל בחירה שווה, בפירוט",
@@ -3418,31 +3566,8 @@ export const invest = {
   },
 
   houses: {
-    heading: "איפה לפתוח את חשבון ניירות הערך",
-    sub: "בנק או בית השקעות שמחזיק בשבילכם את ניירות הערך.",
-    standingTag: ownTermsCopy.provider.standingTag,
-    standingNote: ownTermsCopy.provider.standingNote,
-    tap: "לכל אחד מופיעה הקרן שנשאר בה הכי הרבה. הקישו על שורה כדי לראות את כל הקרנות בחשבון שלו.",
     gapAbout: (name: string) => `פער מהדרך הזולה, ${name}`,
-    foreignHeading: "בחו״ל",
-    foreignSub: "ברוקרים זרים: חשבונות שבהם קונים קרנות בבורסות בחו״ל.",
-    yours: "החשבון שלכם",
-    left: "נשאר",
-    gap: "פחות מהזול",
-    cost: "עלות החשבון",
-    costNote: "בלי קרן: לא חושבה קרן שנקנית אצלו",
-    show: "הקרנות בחשבון",
-    chosen: "מוצג למטה",
-    more: (n: number) => (n === 1 ? "ועוד בנק או בית השקעות אחד" : `ועוד ${n} בנקים ובתי השקעות`),
-    less: "פחות",
-    notComputed: "בנקים ובתי השקעות שאי אפשר לחשב",
-    noWay: "אין קרן על המדד הזה שאפשר לחשב אצלו.",
-    unavailable: "לא אפשרי שם",
-    noData: "אין נתון",
-    sourceOf: "המקור",
-    foreignTag: "ברוקר זר",
-    listLabel: "חשבונות ניירות ערך לפי מה שנשאר",
-    fixedOnly: "אינטראקטיב ברוקרס: מחושבים רק תעריפי ה־Fixed. תעריפי ה־Tiered משאירים בחוץ עמלות בורסה וסליקה שהנתונים לא מכילים, ולכן הדירוג שלהם היה מקטין את העלות.",
+    costAbout: (name: string) => `עלות ${name}`,
   },
 
   /** The page as two linked lists (founder, 2026-10-27; spec research/specs/2026-10-27-invest-improvements 3.8 to 3.10): an account and a fund, each list priced on the other's choice. */
@@ -3476,11 +3601,19 @@ export const invest = {
     who: { account: "החשבון:", fund: "הקרן:", state: "המדינה:" },
     lines: { trade: "עמלות קנייה ומכירה", custody: "דמי משמרת", fixed: "דמי ניהול חשבון", fx: "המרת מטבע", other: "עמלות אחרות" } as Record<string, string>,
     lineAbout: (line: string) => `מה החשבון גובה: ${line}`,
+    /** Where a part of a cost bar's price comes from, said in the box that opens on pointing at it or tapping it (2026-11-04). */
+    sourceList: (house: string) => `מהתעריפון של ${house}`,
+    sourceEntered: "מה שהזנתם",
+    sourceFund: "מדמי הניהול של הקרן",
+    sourceTax: "מחושב לפי כללי המס",
+    sourceComputed: "חישוב של האתר",
     fundLine: "דמי ניהול הקרן",
     fundAbout: "דמי הניהול של הקרן",
     taxLine: "מס",
     taxAbout: "מס במכירה, בכסף של היום",
-    remainder: "השפעת השורות יחד",
+    /** The part of the account's cost no single fee line explains (F-91), founder 2026-11-04. */
+    remainder: "העמלות זו על זו",
+    remainderAbout: "כל עמלה מקטינה את הסכום שעליו נגבות האחרות, ואת מה שהיה צומח ממנו; החלק הזה לא שייך לעמלה אחת",
     accountSlot: "חשבון ניירות ערך",
     fundSlot: "קרן",
     accounts: "כל החשבונות",
@@ -3493,6 +3626,8 @@ export const invest = {
     colCharges: (years: number) => `מה החשבון גובה ב־${years} שנים`,
     colChargesShort: "מה החשבון גובה",
     tariff: "התעריפון",
+    /** On the chosen account's card, beside its price list: opens the house's account on your own terms (founder, 2026-11-04: one link, not a line on every row). */
+    ownPrice: "קיבלתם מחיר אחר? הזינו אותו",
     colLeft: "נשאר",
     colFund: "קרן",
     colNumber: "מספר נייר",
@@ -3565,26 +3700,15 @@ export const invest = {
     israelTitle: "קרנות ישראליות",
   },
 
-  groups: {
-    open: (n: number) => `מחירים לקבוצות כמו צעירים, סטודנטים וחיילים משוחררים, ב־${n} מהבנקים ובתי ההשקעות`,
-    close: "סגירת המחירים לקבוצות",
-    lead: "כל מחיר כתוב כאן כפי שהוא במסמך של הבנק או בית ההשקעות, והמילים שמתחתיו אומרות, לפי המסמך, על מה הוא חל. הדירוג נשאר לפי לקוח רגיל, כי לא כולם כותבים מתי המחיר נגמר, ואצל כמה מהם הסיום תלוי בגיל וביום ההצטרפות. שורה שלא מזכירה קרן לא מוכיחה שהמחיר חל על קרן מחקה.",
-    colWho: "קבוצה ומי זכאי",
-    colPrices: "מה יורד",
-    colEnds: "עד מתי",
-    fee: {
-      trade_israel: "קנייה ומכירה בתל אביב",
-      trade_abroad: "קנייה ומכירה בחוץ לארץ",
-      custody_israel: "דמי ניהול בארץ",
-      custody_abroad: "דמי ניהול בחוץ לארץ",
-    },
-    namesFund: "השורה מזכירה קרנות",
-    atPage: (n: number) => `עמוד ${n}`,
-    atRows: (rows: number[]) => (rows.length === 1 ? `שורה ${rows[0]}` : `שורות ${rows.slice(0, -1).join(", ")} ו־${rows[rows.length - 1]}`),
-    onPage: "דף הבנק",
-    noneOnSecurities: (names: string) => `יש נספח לקבוצות, אבל בלי מחיר לניירות ערך: ${names}.`,
-    noMention: (names: string) => `בתעריפון שנקרא לא מוזכרת אף קבוצה: ${names}.`,
-    notRead: (names: string) => `האתר לא הצליח לקרוא: ${names}.`,
+  /** What the site found in the houses' advertising against their binding documents (D57); the details stand on each house's page. */
+  advertising: {
+    title: "מה כתוב בפרסום, מול התעריפון",
+    lead: (n: number) => `ההשוואה כאן היא לפי התעריפונים והתקנונים, המסמכים שמחייבים את הבנקים ובתי ההשקעות, ולא לפי הפרסום. אצל ${n === 1 ? "אחד" : n} מהם, מה שכתוב בפרסום על עמלה לא תואם את מה שכתוב במסמכים.`,
+    example: { before: "למשל, בפרסום של ", ad: " כתוב ", tariff: ", ובתעריפון כתוב " },
+    negotiate: "הרבה פעמים אפשר לקבל מחיר טוב יותר במשא ומתן עם הבנק או עם בית ההשקעות.",
+    addOwn: "קיבלתם מחיר כזה? אפשר להוסיף אותו כחשבון משלכם, וההשוואה תחשב אותו כמו כל חשבון אחר.",
+    housesLead: "מה כתוב בפרסום ומה במסמכים, בעמוד של כל אחד:",
+    count: (n: number) => (n === 1 ? "טענה אחת" : `${n} טענות`),
   },
   foot: {
     returnUsed: "התשואה שבחישוב",
@@ -3869,7 +3993,8 @@ export const kit = {
       PageTabs: "לשוניות בראש עמוד שהוא אחת מכמה תצוגות של אותו נושא (לפי חברה, לפי מוצר): כל לשונית היא עמוד משלה, ולכן קישור; הנוכחית מסומנת בקו תחתון וב־aria-current.",
       TrackCells: "מה שהתאים של מסלול מכילים, לכל רשימת מסלולים: שני ממוצעי דמי הניהול של הרשות (TrackFeeLines, FeeNum), המפתח של המילים בתא ריק (FeeKey), החשיפה למניות ולמט״ח עם הטבעות (ExposureCell) והתוויות שליד השם (TrackLabels). כל מספר עובר דרך רכיב המקור.",
       ProductTable: "רשימה של מוצרים מאותו סוג (מסלולים, קרנות): טבלה אחת במחשב ושורה לכל מוצר בטלפון, אף פעם לא ערימה של כרטיסים. הכותרת נושאת את המילים והתא את הערך; fit לעמודה ברוחב התוכן שלה (מספר, קישור, דמי ניהול), והשם מקבל את השאר. banner: שורת זהירות מעל שורות ששייכות יחד. ProductPhoneRow: שורה של מוצר בטלפון. ProductIdLink: המזהה הוא הקישור החוצה (מספר הקרן למאיה), עם אייקון קישור חיצוני. ProductFigures: מספרים, כל אחד עם המילה שלו, אחד מתחת לשני בתא ובשורה אחת בטלפון.",
-      CostStack: "עלות אחת מפורקת לחלקיה, בפס אחד: כל חלק בגוון שלו, אורך הפס הוא הסכום על קנה מידה משותף. פסים להשוואה מציירים זה מעל זה. סכום שעובר את קנה המידה נחתך בקצה עם סימן שבירה.",
+      CostStack: "עלות אחת מפורקת לחלקיה, בפס אחד: כל חלק בגוון שלו, אורך הפס הוא הסכום על קנה מידה משותף. פסים להשוואה מציירים זה מעל זה. סכום שעובר את קנה המידה נחתך בקצה עם סימן שבירה. כשמספר משתנה, הרוחב של כל חלק והסכום שכתוב בו מחליקים לערך החדש, וחלק שיורד לאפס מצטמק עד שהוא נעלם בלי לעזוב את מקומו. הצבעה על חלק, או הקשה עליו בטלפון, מראה את שמו, הסכום, החלק מהפס ומאיפה בא המחיר שלו.",
+      PeriodStrip: "שנות התוכנית ברצועה אחת, לכל תקופה גוון משלה ומה שמחזיק בה כתוב עליה: שנים במחיר של קבוצה, ואז שנים בתעריפון. הזמן רץ משמאל לימין והקצוות כתובים מתחת. רצועה לקריאה בלבד, לא כפתור.",
       PickList: "רשימה שבוחרים בה שורה אחת: כל שורה היא כפתור בחירה, השורה הנבחרת צבועה עם פס בתחילתה. שורה שאי אפשר לחשב נשארת ברשימה, מעומעמת; לא מסננים אותה החוצה. כותרת קבוצה יכולה לעמוד מעל שורה, ואותה לא בוחרים.",
       PairBars: "שתי עמודות לכל שנה מאפס, השנים משמאל לימין והמספר בקצה כל עמודה. לכל סדרה גוון משלה, ומקרא לצד הגרף.",
       FixedTable: "טבלה שרוחב העמודות שלה קבוע, ולכן שום דבר לא זז כשמספר משתנה. אפשר להסתיר בטלפון עמודה שאינה הכרחית.",
@@ -3879,8 +4004,27 @@ export const kit = {
       YearBars: "ערך לכל שנה כעמודה מאפס, השנים משמאל לימין והמספר בקצה כל עמודה. גוון ניטרלי אחד: זו סדרה אחת.",
       LabelFilter: "סינון של רשימה לפי תווית אחת: רק תוויות שחלק מהשורות נושאות וחלק לא, עם מספר השורות. לחיצה שנייה, או \"הכול\", מחזירה את כל השורות.",
       LabelChip: "מה המוצר הוא או עושה, במילה או שתיים ואייקון: איך הקרן עוקבת אחרי המדד, אם היא מחלקת, המטבע. הקשה פותחת דף אחד לעמוד (LabelSheetHost) עם ההסבר והחוקים. סוג הוא תווית, לא עמודה. LabelRow: שורה של תוויות.",
+      GroupPrices: "מחירים לקבוצות לצד דירוג, אף פעם לא בתוכו: שורה סגורה מתחת לשורה של בית ההשקעות אומרת למי יש מחיר אחר, ונפתחת בהקשה לשורה לכל מחיר בשלוש עמודות: מי, מה זול יותר, עד מתי. קבוצות עם אותו מחיר הן שורה אחת. בעמוד של בית ההשקעות אותן שורות, עם המקום שבו כל אחת כתובה.",
+      DocLink: "קישור החוצה למסמך שבו כתובים מילה או מספר: עמוד בתעריפון, תקנון של מבצע, הדף שבו נראה פרסום. נפתח בלשונית חדשה ומסתיים בחץ החוצה.",
+      ClaimCheck: "טענה מהפרסום של חברה מול המסמך שמחייב אותה: העמלה והמסקנה במילים, ואז שני הצדדים במילים שלהם, כל אחד עם קישור למקום שבו הוא כתוב. ClaimList: כמה טענות זו אחר זו.",
     },
     sample: {
+      cost: { trade: "קנייה ומכירה", custody: "דמי משמרת", fixed: "דמי ניהול חשבון", remainder: "העמלות זו על זו", remainderAbout: "כל עמלה מקטינה את הסכום שעליו נגבות האחרות, ואת מה שהיה צומח ממנו; החלק הזה לא שייך לעמלה אחת", fromComputed: "חישוב של האתר", fromList: "מהתעריפון של בית השקעות לדוגמה", fromGroup: "מהמסמך של קבוצה לדוגמה", fromYours: "מה שהזנתם", states: { list: "התעריפון", group: "קבוצה", yours: "שלכם" } as Record<string, string>, stateLabel: "מחירים לדוגמה" },
+      strip: { label: "השנים של התוכנית, לדוגמה", first: "מחירי הקבוצה", middle: "קנייה בלבד במחיר הקבוצה", after: "התעריפון", today: "היום", year: (y: number) => `שנה ${y}` },
+      groups: {
+        house: "בית השקעות לדוגמה",
+        doc: "מסמך לדוגמה",
+        quote: "המילים במסמך, לדוגמה",
+        holdings: "ניירות ערך לדוגמה",
+        holdingsFunds: "קרנות לדוגמה",
+        cheaperA: "דמי ניהול 0.1% במקום 0.2% (דוגמה)",
+        cheaperB: "4 ₪ לפעולה (דוגמה)",
+        price: "מחיר לדוגמה",
+        a: { name: "קבוצה ראשונה", who: "צעירים לדוגמה", whoShort: "צעירים לדוגמה", ends: "לא כתוב", endsShort: "לא כתוב" },
+        b: { name: "קבוצה שנייה", who: "סטודנטים לדוגמה", whoShort: "סטודנטים לדוגמה", ends: "שנה מההצטרפות (דוגמה)", endsShort: "שנה (דוגמה)" },
+        c: { name: "קבוצה שלישית", who: "לקוחות לדוגמה", whoShort: "לקוחות לדוגמה", ends: "לא כתוב", endsShort: "לא כתוב" },
+      },
+      claim: { claim: "ללא דמי משמרת (דוגמה)", binding: "דמי משמרת 0.1% לרבעון (דוגמה)", ad: "דף פרסום לדוגמה", doc: "תעריפון לדוגמה", terms: "תקנון מבצע לדוגמה" },
       steps: ["בכל רגע", "תוך יום מסחר", "במועדים קבועים", "בסוף השנה"],
       products: { name: "שם", number: "מספר", link: "קישור", figure: "שיעור", a: "מוצר ראשון", b: "מוצר שני", c: "מוצר שלישי", banner: "שורת זהירות מעל שתי שורות ששייכות יחד", go: "לעמוד" },
       compare: { product: "אפשרות", when: "מתי", rate: "ריבית שנתית", a: "אפשרות ראשונה", b: "אפשרות שנייה", c: "אפשרות שלישית", mine: "בעמוד", range: "טווח לדוגמה" },

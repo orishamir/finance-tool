@@ -109,7 +109,6 @@ const SHORT_NAMES: Record<string, string> = {
   "altshuler-trade": "אלטשולר טרייד",
   excellence: "אקסלנס",
   "meitav-trade": "מיטב טרייד",
-  fair: "פייר",
   pepper: "פפר",
 };
 
@@ -282,7 +281,9 @@ export type NotComparable =
   | { code: "line-without-value"; detail: string; lineName: string | null }
   /** 2026-10-25 (engine E1, E2, E5): a per-share line and no share price; a line in a foreign currency and no rate; a record the engine cannot read. */
   | { code: "needs-share-price" | "needs-fx-rate" | "record-error"; detail: string }
-  | { code: "ambiguous"; detail: string; lines: { id: string; name: string; band: string | null }[] };
+  | { code: "ambiguous"; detail: string; lines: { id: string; name: string; band: string | null }[] }
+  /** 2026-11-04: the house's trade lines abroad name one exchange (`venue`) and the fund trades on the other. */
+  | { code: "other-venue"; venue: "us" | "europe" };
 
 const FORMATS = ["pdf", "html", "xlsx"] as const;
 
@@ -319,7 +320,8 @@ function snapshotValues(s: FeesSnapshot, today: string): { tariff: RowTariff; st
 /** Providers of the wrapper: every bank, broker and foreign-broker snapshot (F-83; the foreign class joined 2026-10-25 so the brokers page, the funds page and "השקעה במדד" list the same providers). */
 export function providersOf(bundle: Pick<WorkbenchBundle, "snapshots">, wrapperId: string): FeesSnapshot[] {
   if (wrapperId !== BROKERAGE) return [];
-  return bundle.snapshots.filter((s) => s.provider.class === "bank" || s.provider.class === "broker" || s.provider.class === "foreign_broker").sort((a, b) => a.provider.name_he.localeCompare(b.provider.name_he, "he"));
+  // a house that is part of another (PEPPER of Leumi, founder 2026-11-04: PEPPER Invest moved into Leumi Trade) is not a house of its own
+  return bundle.snapshots.filter((s) => (s.provider.class === "bank" || s.provider.class === "broker" || s.provider.class === "foreign_broker") && !s.provider.part_of).sort((a, b) => a.provider.name_he.localeCompare(b.provider.name_he, "he"));
 }
 
 export function ruleContext(bundle: WorkbenchBundle): RunContext {

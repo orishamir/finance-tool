@@ -15,7 +15,6 @@ import { workbenchBundle } from "./providers.server";
 import { buildHoldingsBundle } from "./holdings.server";
 import { buildFeesData } from "./fees.server";
 import { loader as guideLoader } from "../routes/guide";
-import { loader as questionsLoader } from "../routes/questions";
 import { loader as companiesLoader } from "../routes/companies";
 import { loader as companyLoader } from "../routes/company";
 import { loader as notCoveredLoader } from "../routes/not-covered";
@@ -87,13 +86,12 @@ describe("every chip on a page's rule cards opens its record", () => {
     expect(bad).toEqual([]);
   }, 300000);
 
-  it("the questions page, the rules shelves, the not-covered page, idle cash and the goal form", async () => {
-    const q = (await questionsLoader()) as { rules: Map_; pointed: Map_ };
+  it("the rules shelves, the not-covered page, idle cash and the goal form", async () => {
     const n = (await notCoveredLoader()) as { rules: Map_; pointed: Map_ };
     const i = (await idleLoader()) as { rules: Map_; pointed: Map_ };
     const g = goalFormData();
     const shelves = shelfIds.flatMap((s) => unopened(shelfBundle(s).rules, {}).map((x) => `${s}: ${x}`));
-    expect([...unopened(q.rules, q.pointed), ...unopened(n.rules, n.pointed), ...unopened(i.rules, i.pointed), ...unopened(g.rules as Map_, g.pointed as Map_), ...shelves]).toEqual([]);
+    expect([...unopened(n.rules, n.pointed), ...unopened(i.rules, i.pointed), ...unopened(g.rules as Map_, g.pointed as Map_), ...shelves]).toEqual([]);
   }, 120000);
 
   it("the bundles the comparison, the workbenches, holdings and fees read", () => {

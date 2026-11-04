@@ -1,0 +1,707 @@
+{
+ "_about": "Proposed D43 group entries for salary, portfolio and profession plans, 2026-11-04. Shaped like data/fees/discount@2026-11-04.json groups.entries, plus three proposal-only fields per entry: document_kind (binding | page_terms | advertising), document_dates, and library ids. Short strings use the schema's names who_short_he, cheaper_he, ends_short_he (ends_short_he is the brief's until_short_he). Every quote was checked against the filed copy by script. advertising_only lists plans with no binding document and no printed price, for the house's page or left_out, never for a sub-row price. Nothing here was written to data/.",
+ "discount": {
+  "change": "Digital Premium is today kind 'other'; under the amended D43 it is kind 'salary'. Its entry is otherwise unchanged (annex A p.40, 22/06/2026).",
+  "entries_patch": [
+   {
+    "name_he": "דיגיטל פרימיום",
+    "kind": "salary",
+    "who_short_he": "משכורת מעל 8,000 ₪ או תיק מעל 500,000 ₪",
+    "cheaper_he": "בלי דמי ניהול פיקדון, בארץ ובחו״ל",
+    "ends_short_he": "לא כתוב, כל עוד התנאי מתקיים"
+   }
+  ]
+ },
+ "leumi": {
+  "entries": [
+   {
+    "kind": "other",
+    "name_he": "עורכי דין",
+    "document_kind": "advertising",
+    "document_dates": "Campaign page, no date printed; Wayback Machine from 2024-10-15 to 2026-02-19; fetched 2026-11-04 (library e819dc89e4088a5b).",
+    "who_he": "עורכי דין, לפי שווי התיק: 50,000 עד 249,999 ₪, 250,000 עד 499,999 ₪, או 500,000 ₪ ומעלה",
+    "who_source": {
+     "url": "https://www.leumi.co.il/he/Campiagn/1707",
+     "title": "תנאי הטבות בניירות ערך ומט\"ח לעורכי דין, בנק לאומי",
+     "page": 1,
+     "quote": "שיעור העמלה לאחר הטבה ללקוח בעל תיק בשווי 50,000-249,999 ש\"ח"
+    },
+    "ends_printed": false,
+    "ends_he": "בעמוד לא כתוב מתי ההטבה נגמרת",
+    "prices": [
+     {
+      "fee": "trade_israel",
+      "price_he": "0.18%, 0.15% או 0.12% בלאומי טרייד, לפי שווי התיק, בכפוף לעמלת מינימום",
+      "holdings_he": "ני\"ע הנסחרים בבורסה בת\"א; ההטבות אינן תקפות לקרנות נאמנות",
+      "names_fund": false,
+      "source": {
+       "url": "https://www.leumi.co.il/he/Campiagn/1707",
+       "title": "תנאי הטבות בניירות ערך ומט\"ח לעורכי דין, בנק לאומי",
+       "page": 1,
+       "quote": "קנייה/מכירה של ני\"ע הנסחרים בבורסה בת\"א - לאומי טרייד 0.18% 0.15% 0.12%"
+      }
+     },
+     {
+      "fee": "trade_abroad",
+      "price_he": "0.21%, 0.18% או 0.15% בלאומי טרייד, לפי שווי התיק",
+      "holdings_he": "ני\"ע בחוץ לארץ",
+      "names_fund": false,
+      "source": {
+       "url": "https://www.leumi.co.il/he/Campiagn/1707",
+       "title": "תנאי הטבות בניירות ערך ומט\"ח לעורכי דין, בנק לאומי",
+       "page": 1,
+       "quote": "קניה/מכירה של ני\"ע בחוץ לארץ - לאומי טרייד 0.21% 0.18% 0.15%"
+      }
+     },
+     {
+      "fee": "custody_israel",
+      "price_he": "0.045%, 0.03% או 0.015% לרבעון, לפי שווי התיק",
+      "holdings_he": "ני\"ע הנסחרים בארץ",
+      "names_fund": false,
+      "source": {
+       "url": "https://www.leumi.co.il/he/Campiagn/1707",
+       "title": "תנאי הטבות בניירות ערך ומט\"ח לעורכי דין, בנק לאומי",
+       "page": 1,
+       "quote": "דמי ניהול פיקדון ני\"ע הנסחרים בארץ - רבעוני 0.045% 0.03% 0.015%"
+      }
+     },
+     {
+      "fee": "custody_abroad",
+      "price_he": "0.06%, 0.04% או 0.02% לרבעון, לפי שווי התיק",
+      "holdings_he": "ני\"ע הנסחרים בחו\"ל",
+      "names_fund": false,
+      "source": {
+       "url": "https://www.leumi.co.il/he/Campiagn/1707",
+       "title": "תנאי הטבות בניירות ערך ומט\"ח לעורכי דין, בנק לאומי",
+       "page": 1,
+       "quote": "דמי ניהול פיקדון ני\"ע הנסחרים בחו\"ל - רבעוני 0.06% 0.04% 0.02%"
+      }
+     }
+    ],
+    "inferred": "Advertising only: no tariff row and no terms document. The Tel Aviv trade rows exclude mutual funds ('אינן תקפות לקרנות נאמנות'); whether an ETF is covered is not said. The page does not say how a lawyer proves eligibility.",
+    "who_short_he": "עורכי דין עם תיק מ־50,000 ₪",
+    "cheaper_he": "דמי ניהול פיקדון מ־0.045% לרבעון; קנייה ומכירה מ־0.18%",
+    "ends_short_he": "לא כתוב"
+   },
+   {
+    "kind": "other",
+    "name_he": "יועצי מס",
+    "document_kind": "advertising",
+    "document_dates": "Flyer page, eligibility 'עד ליום 31.12.2026'; not in the Wayback Machine; fetched 2026-11-04 (library e4ded1e3478dd110).",
+    "who_he": "יועצי מס, שמזדהים כיועצי מס בכל פנייה לבנק, לפי שווי התיק: 50,000 עד 249,999 ₪, 250,000 עד 499,999 ₪, או 500,000 ₪ ומעלה",
+    "who_source": {
+     "url": "https://www.leumi.co.il/he/private-account-benefits",
+     "title": "הטבות בפתיחת חשבון פרטי (יועצי מס), בנק לאומי",
+     "page": 1,
+     "quote": "על המבקש להזדהות כיועץ מס בכל פניה לבנק"
+    },
+    "ends_printed": true,
+    "ends_he": "הזכאות עד 31.12.2026, וההטבות בתוקף שנה מהדיווח הראשון. הבנק רשאי להפסיק או לשנות בכל עת, ללא הודעה מוקדמת",
+    "ends_source": {
+     "url": "https://www.leumi.co.il/he/private-account-benefits",
+     "title": "הטבות בפתיחת חשבון פרטי (יועצי מס), בנק לאומי",
+     "page": 1,
+     "quote": "הזכאות לקבלת ההטבות המופיעות בעלון זה הינה עד ליום 31.12.2026"
+    },
+    "prices": [
+     {
+      "fee": "trade_israel",
+      "price_he": "0.18%, 0.15% או 0.12% בלאומי טרייד, לפי שווי התיק, בכפוף לעמלת מינימום",
+      "holdings_he": "ני\"ע הנסחרים בבורסה בת\"א; ההטבות אינן תקפות לקרנות נאמנות",
+      "names_fund": false,
+      "source": {
+       "url": "https://www.leumi.co.il/he/private-account-benefits",
+       "title": "הטבות בפתיחת חשבון פרטי (יועצי מס), בנק לאומי",
+       "page": 1,
+       "quote": "קניה/מכירה של ני\"ע הנסחרים בבורסה בת\"א- לאומי טרייד 0.18% 0.15% 0.12%"
+      }
+     },
+     {
+      "fee": "trade_abroad",
+      "price_he": "0.21%, 0.18% או 0.15% בלאומי טרייד, לפי שווי התיק",
+      "holdings_he": "ני\"ע בחוץ לארץ",
+      "names_fund": false,
+      "source": {
+       "url": "https://www.leumi.co.il/he/private-account-benefits",
+       "title": "הטבות בפתיחת חשבון פרטי (יועצי מס), בנק לאומי",
+       "page": 1,
+       "quote": "קניה/מכירה של ני\"ע בחוץ לארץ- לאומי טרייד 0.21% 0.18% 0.15%"
+      }
+     },
+     {
+      "fee": "custody_israel",
+      "price_he": "0.045%, 0.03% או 0.015% לרבעון, לפי שווי התיק",
+      "holdings_he": "ני\"ע הנסחרים בארץ",
+      "names_fund": false,
+      "source": {
+       "url": "https://www.leumi.co.il/he/private-account-benefits",
+       "title": "הטבות בפתיחת חשבון פרטי (יועצי מס), בנק לאומי",
+       "page": 1,
+       "quote": "דמי ניהול פיקדון ני\"ע הנסחרים בארץ- רבעוני 0.045% 0.03% 0.015%"
+      }
+     },
+     {
+      "fee": "custody_abroad",
+      "price_he": "0.06%, 0.04% או 0.02% לרבעון, לפי שווי התיק",
+      "holdings_he": "ני\"ע הנסחרים בחו\"ל",
+      "names_fund": false,
+      "source": {
+       "url": "https://www.leumi.co.il/he/private-account-benefits",
+       "title": "הטבות בפתיחת חשבון פרטי (יועצי מס), בנק לאומי",
+       "page": 1,
+       "quote": "דמי ניהול פיקדון ני\"ע הנסחרים בחו\"ל- רבעוני 0.06% 0.04% 0.02%"
+      }
+     }
+    ],
+    "inferred": "Advertising only (the flyer is a web page; no tariff row, no terms document). Same table as the lawyers' page. The Tel Aviv trade rows exclude mutual funds.",
+    "who_short_he": "יועצי מס עם תיק מ־50,000 ₪",
+    "cheaper_he": "דמי ניהול פיקדון מ־0.045% לרבעון; קנייה ומכירה מ־0.18%",
+    "ends_short_he": "הצטרפות עד 31.12.2026, ושנה"
+   }
+  ],
+  "pepper_note": "PEPPER's existing entry 'הטבת הצטרפות' (salary of 1,200 NIS net and 100 NIS on the card, joining to 31.10.2026, one year, 30 trades a month) is a salary-conditioned joining offer: as a sub-row under Leumi its kind would be 'salary'. Its joining date has passed; the current PEPPER joining page (to 30.11.2026, library ebcd26280b067495) offers a grant and card FX only. Not repeated here; carry the record's entry with kind 'salary', who_short_he 'מצטרפים עד 31.10.2026 עם משכורת', ends_short_he 'שנה, ההצטרפות נסגרה'.",
+  "advertising_only": [
+   {
+    "name_he": "פרטי, VIP, TOP (משכורת מ־7,000, 12,000, 30,000 ₪ ליחיד)",
+    "kind": "salary",
+    "words_he": "הטבות בעמלות ני\"ע ומט\"ח המותאמות לאופי החשבון והפעילות הפיננסית",
+    "url": "https://www.leumi.co.il/he/account_types",
+    "library": "d0195f8d7ee59cca, 525b6ff4770eea8d",
+    "why": "No figure; the account-types page lists only loans, grants and current-account waivers for these salary levels."
+   },
+   {
+    "name_he": "חשבון הייטק ומועדון הוט",
+    "kind": "other",
+    "words_he": "הטבות בעמלות ני\"ע ומט\"ח",
+    "url": "https://www.leumi.co.il/minisite/open-account/hitech/",
+    "library": "525b6ff4770eea8d",
+    "why": "No figure (page Last-Modified 30.10.2026)."
+   },
+   {
+    "name_he": "חברי הסתדרות המורים (עלון 2024)",
+    "kind": "other",
+    "words_he": "דמי ניהול פיקדון ני\"ע ישראלים (רבעוני) 0.0375% / 0.03% / 0.015% by portfolio from 50,000 NIS",
+    "url": "https://www.leumi.co.il/leumi-hebrew/s3fs-public/complex_link_file/03-24/LE1539_2B_Teachers_Organization_Digital_v26_acc.pdf",
+    "library": "b4bce8b7498f93f6",
+    "why": "A 2024 flyer (PDF modified 2024-07-16) whose dates are 31.12.2024 and 31.1.2025; not linked from a current page. Treated as ended."
+   }
+  ]
+ },
+ "hapoalim": {
+  "entries": [],
+  "advertising_only": [
+   {
+    "name_he": "פועלים פלוס",
+    "kind": "salary",
+    "words_he": "הטבות בעמלות ניירות ערך",
+    "url": "https://www.bankhapoalim.co.il/he/open-account/poalim-plus",
+    "library": "7e6de8c6c17a9800",
+    "why": "No figure anywhere: new account 1.10-31.12.2026, net salary 10,000 NIS (joint 15,000), three years. Annex A has no club for it; the linked terms (library 074b3666da413df1) are the April-June grant offer."
+   },
+   {
+    "name_he": "פועלים x הייטקזון",
+    "kind": "other",
+    "words_he": "(no securities words on the page; third parties report 'הנחה בעמלות')",
+    "url": "https://www.bankhapoalim.co.il/open-account/high-tech-zone",
+    "library": "12ad20b4b6f12f40, f706d75451bdf929",
+    "why": "Employees of hi-tech companies in arrangement with HighTechZone, salary 8,000 NIS (16,000 joint). The page and the terms (2.2.2025-31.01.2026) print no securities price."
+   }
+  ]
+ },
+ "mizrahi-tefahot": {
+  "entries": [],
+  "advertising_only": [
+   {
+    "name_he": "שכירים, שכירים מועדפים, מנהלים, Priority",
+    "kind": "salary",
+    "words_he": "החזר כלל העמלות בגין פעילות עו\"ש, ני\"ע ומט\"ח עד 500 ₪ בשנה למשך 3 שנים, לא כולל הוצאות צד ג'; הטבות בעמלות ני\"ע ומט\"ח מותאמות אישית לפעילות",
+    "url": "https://www.mizrahi-tefahot.co.il/open-a-bank-account/accounts-type/employees-account-favorites/",
+    "library": "366aff319792dd68, fb096743cb2d921d, 2f009d41deb7b30b, 5a881595c9b3de30",
+    "why": "A capped refund, one choice among several joining benefits, new customers only, 'הבנק רשאי לשנות את התנאים בכל עת ללא הודעה מוקדמת'; no securities rate and no binding document. Already in left_out."
+   }
+  ]
+ },
+ "mercantile": {
+  "entries": [
+   {
+    "kind": "salary",
+    "name_he": "מרכנתיל טופ",
+    "document_kind": "page_terms",
+    "document_dates": "Terms printed on the promotion page itself, no separate document and no tariff row; Wayback Machine from 2025-02-09; re-fetched 2026-11-04 with the same text (library e83a067b2644e092).",
+    "who_he": "מצטרפים חדשים מגיל 19 בתקופת המבצע, שמעבירים משכורת של 12,000 ש״ח ליחיד או 18,000 ש״ח לחשבון משותף ומחויבים ב־3,000 ש״ח בחודש בכרטיס אשראי של הבנק",
+    "who_source": {
+     "url": "https://www.mercantile.co.il/private/accounts/new-account-groups/",
+     "title": "פתיחת חשבון במרכנתיל, הטבות למצטרפים (עמוד המבצע ותנאיו)",
+     "page": 1,
+     "quote": "פירוט ההטבות בקבוצת מרכנתיל טופ למעבירי משכורת של 12,000 ש\"ח ליחיד או 18,000 ש\"ח לחשבון משותף"
+    },
+    "ends_printed": true,
+    "ends_he": "3 שנים ממועד ההצטרפות לקבוצה; הבנק רשאי לשנות את תנאי המבצע בכל עת. סוף תקופת ההצטרפות לא כתוב",
+    "ends_source": {
+     "url": "https://www.mercantile.co.il/private/accounts/new-account-groups/",
+     "title": "פתיחת חשבון במרכנתיל, הטבות למצטרפים (עמוד המבצע ותנאיו)",
+     "page": 1,
+     "quote": "תוקף ההטבות - 3 שנים ממועד ההצטרפות לקבוצה"
+    },
+    "prices": [
+     {
+      "fee": "trade_israel",
+      "price_he": "0.12%, מינימום 10 ש״ח",
+      "holdings_he": "ני\"ע (בלי פירוט)",
+      "names_fund": false,
+      "source": {
+       "url": "https://www.mercantile.co.il/private/accounts/new-account-groups/",
+       "title": "פתיחת חשבון במרכנתיל, הטבות למצטרפים (עמוד המבצע ותנאיו)",
+       "page": 1,
+       "quote": "ני\"ע עמלת קניה/מכירה בישראל 0.12% עמלת מינימום 10 ש\"ח"
+      }
+     },
+     {
+      "fee": "trade_abroad",
+      "price_he": "0.15%, כפוף למינימום",
+      "holdings_he": "ני\"ע (בלי פירוט)",
+      "names_fund": false,
+      "source": {
+       "url": "https://www.mercantile.co.il/private/accounts/new-account-groups/",
+       "title": "פתיחת חשבון במרכנתיל, הטבות למצטרפים (עמוד המבצע ותנאיו)",
+       "page": 1,
+       "quote": "עמלת קניה בחו\"ל 0.15% עמלת מינימום כפוף למינימום"
+      }
+     },
+     {
+      "fee": "custody_israel",
+      "price_he": "פטור מדמי ניהול חשבון ני״ע",
+      "holdings_he": "דמי ניהול חשבון ני\"ע",
+      "names_fund": false,
+      "source": {
+       "url": "https://www.mercantile.co.il/private/accounts/new-account-groups/",
+       "title": "פתיחת חשבון במרכנתיל, הטבות למצטרפים (עמוד המבצע ותנאיו)",
+       "page": 1,
+       "quote": "דמי ניהול חשבון ני\"ע - פטור"
+      }
+     },
+     {
+      "fee": "custody_abroad",
+      "price_he": "פטור מדמי ניהול חשבון ני״ע",
+      "holdings_he": "דמי ניהול חשבון ני\"ע",
+      "names_fund": false,
+      "source": {
+       "url": "https://www.mercantile.co.il/private/accounts/new-account-groups/",
+       "title": "פתיחת חשבון במרכנתיל, הטבות למצטרפים (עמוד המבצע ותנאיו)",
+       "page": 1,
+       "quote": "דמי ניהול חשבון ני\"ע - פטור"
+      }
+     }
+    ],
+    "inferred": "That 'דמי ניהול חשבון ני\"ע' is the tariff's custody fee ('דמי ניהול פיקדון') for Israel and abroad is inferred: the page uses a name the tariff does not. Only 'קניה' is named abroad. The page says 'כל התנאים וההטבות בקשר לעמלות הם ביחס לתעריפון הבנק'. The joining window ('תקופת המבצע') is not defined; the grant option runs to 31.12.26. Mercantile Pro (7,000 NIS) has no securities benefit.",
+    "who_short_he": "מצטרפים עם משכורת מ־12,000 ₪",
+    "cheaper_he": "בלי דמי ניהול חשבון ני״ע; קנייה ומכירה 0.12%, מינימום 10 ₪",
+    "ends_short_he": "3 שנים, והבנק רשאי לשנות"
+   },
+   {
+    "kind": "salary",
+    "name_he": "מרכנתיל דלקס",
+    "document_kind": "page_terms",
+    "document_dates": "Terms printed on the promotion page itself, no separate document and no tariff row; Wayback Machine from 2025-02-09; re-fetched 2026-11-04 with the same text (library e83a067b2644e092).",
+    "who_he": "מצטרפים חדשים מגיל 19 בתקופת המבצע, שמעבירים משכורת של 20,000 ש״ח ליחיד או 25,000 ש״ח לחשבון משותף ומחויבים ב־3,000 ש״ח בחודש בכרטיס אשראי של הבנק",
+    "who_source": {
+     "url": "https://www.mercantile.co.il/private/accounts/new-account-groups/",
+     "title": "פתיחת חשבון במרכנתיל, הטבות למצטרפים (עמוד המבצע ותנאיו)",
+     "page": 1,
+     "quote": "פירוט ההטבות בקבוצת דלקס למעבירי משכורת של 20,000 ש\"ח ליחיד או 25,000 ש\"ח לחשבון משותף"
+    },
+    "ends_printed": true,
+    "ends_he": "3 שנים ממועד ההצטרפות לקבוצה; הבנק רשאי לשנות את תנאי המבצע בכל עת. סוף תקופת ההצטרפות לא כתוב",
+    "ends_source": {
+     "url": "https://www.mercantile.co.il/private/accounts/new-account-groups/",
+     "title": "פתיחת חשבון במרכנתיל, הטבות למצטרפים (עמוד המבצע ותנאיו)",
+     "page": 1,
+     "quote": "תוקף ההטבות - 3 שנים ממועד ההצטרפות לקבוצה"
+    },
+    "prices": [
+     {
+      "fee": "trade_israel",
+      "price_he": "0.12%, מינימום 10 ש״ח",
+      "holdings_he": "ני\"ע (בלי פירוט)",
+      "names_fund": false,
+      "source": {
+       "url": "https://www.mercantile.co.il/private/accounts/new-account-groups/",
+       "title": "פתיחת חשבון במרכנתיל, הטבות למצטרפים (עמוד המבצע ותנאיו)",
+       "page": 1,
+       "quote": "ני\"ע עמלת קניה/מכירה בישראל 0.12% עמלת מינימום 10 ש\"ח"
+      }
+     },
+     {
+      "fee": "trade_abroad",
+      "price_he": "0.15%, כפוף למינימום",
+      "holdings_he": "ני\"ע (בלי פירוט)",
+      "names_fund": false,
+      "source": {
+       "url": "https://www.mercantile.co.il/private/accounts/new-account-groups/",
+       "title": "פתיחת חשבון במרכנתיל, הטבות למצטרפים (עמוד המבצע ותנאיו)",
+       "page": 1,
+       "quote": "עמלת קניה בחו\"ל 0.15% עמלת מינימום כפוף למינימום"
+      }
+     },
+     {
+      "fee": "custody_israel",
+      "price_he": "פטור מדמי ניהול חשבון ני״ע",
+      "holdings_he": "דמי ניהול חשבון ני\"ע",
+      "names_fund": false,
+      "source": {
+       "url": "https://www.mercantile.co.il/private/accounts/new-account-groups/",
+       "title": "פתיחת חשבון במרכנתיל, הטבות למצטרפים (עמוד המבצע ותנאיו)",
+       "page": 1,
+       "quote": "דמי ניהול חשבון ני\"ע - פטור"
+      }
+     },
+     {
+      "fee": "custody_abroad",
+      "price_he": "פטור מדמי ניהול חשבון ני״ע",
+      "holdings_he": "דמי ניהול חשבון ני\"ע",
+      "names_fund": false,
+      "source": {
+       "url": "https://www.mercantile.co.il/private/accounts/new-account-groups/",
+       "title": "פתיחת חשבון במרכנתיל, הטבות למצטרפים (עמוד המבצע ותנאיו)",
+       "page": 1,
+       "quote": "דמי ניהול חשבון ני\"ע - פטור"
+      }
+     }
+    ],
+    "inferred": "That 'דמי ניהול חשבון ני\"ע' is the tariff's custody fee ('דמי ניהול פיקדון') for Israel and abroad is inferred: the page uses a name the tariff does not. Only 'קניה' is named abroad. The page says 'כל התנאים וההטבות בקשר לעמלות הם ביחס לתעריפון הבנק'. The joining window ('תקופת המבצע') is not defined; the grant option runs to 31.12.26. Mercantile Pro (7,000 NIS) has no securities benefit.",
+    "who_short_he": "מצטרפים עם משכורת מ־20,000 ₪",
+    "cheaper_he": "בלי דמי ניהול חשבון ני״ע; קנייה ומכירה 0.12%, מינימום 10 ₪",
+    "ends_short_he": "3 שנים, והבנק רשאי לשנות"
+   }
+  ],
+  "advertising_only": []
+ },
+ "fibi": {
+  "entries": [
+   {
+    "kind": "other",
+    "name_he": "SMART לעורכי דין ורואי חשבון",
+    "document_kind": "page_terms",
+    "document_dates": "Account page with its terms, no tariff row; securities benefits 'בתוקף עד ה- 1/11/28'; Wayback Machine from 2024-05-07 to 2026-04-13; fetched 2026-11-04 (library 4d2dc05fc66066bd).",
+    "who_he": "בעלי רישיון לעריכת דין או לראיית חשבון, עם משכורת (שכירים מ־8,000 ₪, גמלאים מ־7,000 ₪, מתמחים מ־5,000 ₪), או מחזור חודשי מ־20,000 ₪, או תיק השקעות בבנק מ־100,000 ₪",
+    "who_source": {
+     "url": "https://www.fibi.co.il/private/fibiaccount/accounttypes/smart/",
+     "title": "חשבון SMART, הבנק הבינלאומי",
+     "page": 1,
+     "quote": "בעל רישיון בתוקף לראיית חשבון ו/או לעריכת דין"
+    },
+    "ends_printed": true,
+    "ends_he": "ההטבות בני״ע בתוקף עד 1.11.2028, ואחר כך מתעדכנות כל חמש שנים; הבנק רשאי לשנות או לבטל בהודעה",
+    "ends_source": {
+     "url": "https://www.fibi.co.il/private/fibiaccount/accounttypes/smart/",
+     "title": "חשבון SMART, הבנק הבינלאומי",
+     "page": 1,
+     "quote": "ההטבות בפעילות בני\"ע בתוקף עד ה- 1/11/28"
+    },
+    "prices": [
+     {
+      "fee": "trade_israel",
+      "price_he": "0.3% בתיק עד 350,000 ₪, 0.25% מעליו",
+      "holdings_he": "מניות ואג\"ח בבורסה בת\"א",
+      "names_fund": false,
+      "source": {
+       "url": "https://www.fibi.co.il/private/fibiaccount/accounttypes/smart/",
+       "title": "חשבון SMART, הבנק הבינלאומי",
+       "page": 1,
+       "quote": "עמלת קנייה, מכירה ופדיון של מניות ואג\"ח בבורסה בת\"א (לא כולל קניה או מכירה שלא בוצעה) 0.3% 0.25%"
+      }
+     },
+     {
+      "fee": "trade_abroad",
+      "price_he": "0.35% בתיק עד 350,000 ₪, 0.3% מעליו",
+      "holdings_he": "ני״ע בחו״ל - מניות, קרנות נאמנות ואג\"ח",
+      "names_fund": true,
+      "source": {
+       "url": "https://www.fibi.co.il/private/fibiaccount/accounttypes/smart/",
+       "title": "חשבון SMART, הבנק הבינלאומי",
+       "page": 1,
+       "quote": "עמלת קנייה, מכירה ופדיון של ני״ע בחו״ל - מניות, קרנות נאמנות ואג\"ח (לא כולל קניה או מכירה שלא בוצעה) 0.35% 0.3%"
+      }
+     },
+     {
+      "fee": "custody_israel",
+      "price_he": "0.117% לרבעון בתיק עד 350,000 ₪, 0.0975% מעליו",
+      "holdings_he": "ני״ע הנסחרים / אינם נסחרים בת\"א ובחו\"ל",
+      "names_fund": false,
+      "source": {
+       "url": "https://www.fibi.co.il/private/fibiaccount/accounttypes/smart/",
+       "title": "חשבון SMART, הבנק הבינלאומי",
+       "page": 1,
+       "quote": "דמי ניהול פיקדון ני״ע הנסחרים / אינם נסחרים בת\"א ובחו\"ל 0.117% לרבעון 0.0975% לרבעון"
+      }
+     },
+     {
+      "fee": "custody_abroad",
+      "price_he": "0.117% לרבעון בתיק עד 350,000 ₪, 0.0975% מעליו",
+      "holdings_he": "ני״ע הנסחרים / אינם נסחרים בת\"א ובחו\"ל",
+      "names_fund": false,
+      "source": {
+       "url": "https://www.fibi.co.il/private/fibiaccount/accounttypes/smart/",
+       "title": "חשבון SMART, הבנק הבינלאומי",
+       "page": 1,
+       "quote": "דמי ניהול פיקדון ני״ע הנסחרים / אינם נסחרים בת\"א ובחו\"ל 0.117% לרבעון 0.0975% לרבעון"
+      }
+     }
+    ],
+    "inferred": "The page's column heads both read 'עד 350,000 ש\"ח' in the copy fetched; that the second column is above 350,000 NIS is inferred. Minimums and maximums stay at the tariff's ('לא יחולו על עמלות מינימום / מקסימום'). Third-party costs are charged without the benefit.",
+    "who_short_he": "עורכי דין ורואי חשבון",
+    "cheaper_he": "דמי ניהול פיקדון 0.117% לרבעון; קנייה ומכירה 0.3%",
+    "ends_short_he": "עד 1.11.2028"
+   },
+   {
+    "kind": "other",
+    "name_he": "Medic 10, מסלול לפעילים עצמאית",
+    "document_kind": "page_terms",
+    "document_dates": "Account page with its legal notes, no tariff row; Wayback Machine from 2026-02-06 to 2026-07-15; fetched 2026-11-04 (library 5884f548bcbb608c).",
+    "who_he": "עובדי הרפואה במועדון Medic 10 שפועלים עצמאית באתר או באפליקציה: מצטרפים חדשים, או חברים קיימים שמעבירים תיק השקעות חדש או מוסיפים נכסים של לפחות 30% משווי התיק",
+    "who_source": {
+     "url": "https://www.fibi.co.il/private/fibiaccount/accounttypes/medic10/",
+     "title": "חשבון Medic 10, הבנק הבינלאומי",
+     "page": 1,
+     "quote": "לקוחות חדשים שהצטרפו למועדון \"Medic 10\" בבינלאומי, הפעילים עצמאית בשוק ההון"
+    },
+    "ends_printed": true,
+    "ends_he": "המסלול לשנתיים מההצטרפות; ההטבות בני״ע עד 31.12.2030; הבנק רשאי לשנות או לבטל בהודעה",
+    "ends_source": {
+     "url": "https://www.fibi.co.il/private/fibiaccount/accounttypes/medic10/",
+     "title": "חשבון Medic 10, הבנק הבינלאומי",
+     "page": 1,
+     "quote": "תוקף מסלול ההטבות הינו לשנתיים מיום ההצטרפות"
+    },
+    "prices": [
+     {
+      "fee": "trade_israel",
+      "price_he": "0.1%, מינימום 5 ₪, בקנייה בהוראת קבע",
+      "holdings_he": "תעודות סל/קרן מחקה באמצעות הוראות קבע",
+      "names_fund": true,
+      "source": {
+       "url": "https://www.fibi.co.il/private/fibiaccount/accounttypes/medic10/",
+       "title": "חשבון Medic 10, הבנק הבינלאומי",
+       "page": 1,
+       "quote": "קניה של תעודות סל/קרן מחקה באמצעות הוראות קבע (שיעור העמלה, לאחר הטבה, - 0.1% , מינימום- 5 ₪"
+      }
+     },
+     {
+      "fee": "trade_abroad",
+      "price_he": "0.1%, מינימום 8 דולר",
+      "holdings_he": "ני\"ע זרים (קרנות ואג\"ח)",
+      "names_fund": true,
+      "source": {
+       "url": "https://www.fibi.co.il/private/fibiaccount/accounttypes/medic10/",
+       "title": "חשבון Medic 10, הבנק הבינלאומי",
+       "page": 1,
+       "quote": "עמלת קנייה, מכירה ופדיון של ני\"ע זרים (קרנות ואג\"ח) (שיעור העמלה, לאחר הטבה - 0.1% , מינימום- 8$"
+      }
+     }
+    ],
+    "inferred": "The table's heading reads 'בעת ביצוע פעולות בסניף או בחדר עסקאות' while the track is for those trading online only; how the two fit is not said. The club's own prices for all members (not this track) are not printed on the page read. Who counts as a medical worker is not printed.",
+    "who_short_he": "עובדי רפואה שמעבירים תיק",
+    "cheaper_he": "קרן מחקה או תעודת סל בהוראת קבע 0.1%, מינימום 5 ₪",
+    "ends_short_he": "שנתיים, ועד 31.12.2030"
+   }
+  ],
+  "advertising_only": [
+   {
+    "name_he": "מועדוני בהצדעה, 50 פלוס, אוצר הביטחון",
+    "kind": "other",
+    "words_he": "הטבות בניירות ערך; הטבות בעמלות מסחר בניירות ערך",
+    "url": "https://www.fibi.co.il/private/fibiaccount/accounttypes/behatsdaa/",
+    "library": "6c242d15e5cce1e8, 747d75fee767da10",
+    "why": "Each page has a securities heading and legal notes ('שיעורי העמלות הנקובים לעיל') but no rate, also in Chrome; 50 פלוס asks for a salary or a portfolio of minimum amounts not stated."
+   },
+   {
+    "name_he": "טופ טרייד לצעירים עד 30",
+    "kind": "young",
+    "words_he": "הטבות מטורפות",
+    "url": "https://www.fibi.co.il/private/capitalmarket/toptrade/",
+    "library": "cd07a4daaecd8bf0",
+    "why": "Already in left_out: table empty since June 2026."
+   },
+   {
+    "name_he": "החשבון הירוק",
+    "kind": "other",
+    "words_he": "החזר עמלות בגובה 20% ... עמלות קניה ומכירה של ניירות ערך הנסחרים בבורסה בתל אביב (למעט קרנות נאמנות ...)",
+    "url": "https://www.fibi.co.il/private/fibiaccount/accounttypes/green/",
+    "library": "fd9c8f73a47440dc",
+    "why": "Not a salary plan (a paperless account); a refund, excluding mutual funds. Listed so it is not looked for again."
+   }
+  ]
+ },
+ "massad": {
+  "entries": [
+   {
+    "kind": "other",
+    "name_he": "מורים ועובדי הוראה",
+    "document_kind": "page_terms",
+    "document_dates": "Account page with its own footnotes, no tariff row (annex A 2024-09-15 prints none); Wayback Machine from 2024-03-03 to 2026-06-16; fetched 2026-11-04 (library e482d4ca74c58147).",
+    "who_he": "מורים ועובדי הוראה, לקוחות חדשים שמעבירים משכורת מ־5,000 ₪, עם פיקדון ניירות ערך מ־150,000 ₪",
+    "who_source": {
+     "url": "https://www.bankmassad.co.il/private/accountmngment/accounttypes/teachers/",
+     "title": "חשבון למורים ועובדי הוראה, בנק מסד",
+     "page": 1,
+     "quote": "*למעבירי משכורת החל מ 5000 ₪ ומעלה וללקוחות חדשים בלבד"
+    },
+    "ends_printed": true,
+    "ends_he": "לשלוש שנים; הבנק רשאי להפסיק את מתן ההטבות בכל עת",
+    "ends_source": {
+     "url": "https://www.bankmassad.co.il/private/accountmngment/accounttypes/teachers/",
+     "title": "חשבון למורים ועובדי הוראה, בנק מסד",
+     "page": 1,
+     "quote": "הבנק רשאי להפסיק את מתן ההטבות בכל עת"
+    },
+    "prices": [
+     {
+      "fee": "custody_israel",
+      "price_he": "50% הנחה, בפיקדון ניירות ערך מ־150,000 ₪",
+      "holdings_he": "דמי ניהול פיקדון ני\"ע (דנ\"פ)",
+      "names_fund": false,
+      "source": {
+       "url": "https://www.bankmassad.co.il/private/accountmngment/accounttypes/teachers/",
+       "title": "חשבון למורים ועובדי הוראה, בנק מסד",
+       "page": 1,
+       "quote": "בפיקדון ניירות ערך החל מ"
+      }
+     },
+     {
+      "fee": "custody_abroad",
+      "price_he": "50% הנחה, בפיקדון ניירות ערך מ־150,000 ₪",
+      "holdings_he": "דמי ניהול פיקדון ני\"ע (דנ\"פ)",
+      "names_fund": false,
+      "source": {
+       "url": "https://www.bankmassad.co.il/private/accountmngment/accounttypes/teachers/",
+       "title": "חשבון למורים ועובדי הוראה, בנק מסד",
+       "page": 1,
+       "quote": "50% הנחה בדמי ניהול פיקדון ני\"ע (דנ\"פ)"
+      }
+     }
+    ],
+    "inferred": "The words do not split Israel and abroad; both are recorded. Whether the 150,000 NIS is a threshold for the whole deposit or the discount applies above it is not said. The page does not say who counts as a teacher. Massad's 'אקסטרה CLASS' (salary from 4,000 NIS, 36 months) promises 'הנחות והטבות ב... ניירות ערך' with no figure (library 06f1e0b7231c02b9).",
+    "who_short_he": "מורים עם משכורת ותיק מ־150,000 ₪",
+    "cheaper_he": "50% הנחה בדמי ניהול פיקדון",
+    "ends_short_he": "3 שנים, והבנק רשאי להפסיק"
+   },
+   {
+    "kind": "other",
+    "name_he": "בני זוג של מורים",
+    "document_kind": "page_terms",
+    "document_dates": "Account page with its own footnotes, no tariff row (annex A 2024-09-15 prints none); Wayback Machine from 2024-03-03 to 2026-06-16; fetched 2026-11-04 (library af05f414e55a7416).",
+    "who_he": "בני זוג שמצטרפים לחשבון המורה, לקוחות חדשים שמעבירים משכורת מ־10,000 ₪ לזוג, עם פיקדון ניירות ערך מ־150,000 ₪",
+    "who_source": {
+     "url": "https://www.bankmassad.co.il/private/accountmngment/accounttypes/couple/",
+     "title": "חשבון עם הטבות לבני זוג, בנק מסד",
+     "page": 1,
+     "quote": "*למעבירי משכורת החל מ 10,000 ₪ לזוג ומעלה וללקוחות חדשים בלבד"
+    },
+    "ends_printed": true,
+    "ends_he": "לשלוש שנים; הבנק רשאי להפסיק את מתן ההטבות בכל עת",
+    "ends_source": {
+     "url": "https://www.bankmassad.co.il/private/accountmngment/accounttypes/couple/",
+     "title": "חשבון עם הטבות לבני זוג, בנק מסד",
+     "page": 1,
+     "quote": "הבנק רשאי להפסיק את מתן ההטבות בכל עת"
+    },
+    "prices": [
+     {
+      "fee": "custody_israel",
+      "price_he": "50% הנחה, בפיקדון ניירות ערך מ־150,000 ₪",
+      "holdings_he": "דמי ניהול פיקדון ני\"ע (דנ\"פ)",
+      "names_fund": false,
+      "source": {
+       "url": "https://www.bankmassad.co.il/private/accountmngment/accounttypes/couple/",
+       "title": "חשבון עם הטבות לבני זוג, בנק מסד",
+       "page": 1,
+       "quote": "בפיקדון ניירות ערך החל מ"
+      }
+     },
+     {
+      "fee": "custody_abroad",
+      "price_he": "50% הנחה, בפיקדון ניירות ערך מ־150,000 ₪",
+      "holdings_he": "דמי ניהול פיקדון ני\"ע (דנ\"פ)",
+      "names_fund": false,
+      "source": {
+       "url": "https://www.bankmassad.co.il/private/accountmngment/accounttypes/couple/",
+       "title": "חשבון עם הטבות לבני זוג, בנק מסד",
+       "page": 1,
+       "quote": "50% הנחה בדמי ניהול פיקדון ני\"ע (דנ\"פ)"
+      }
+     }
+    ],
+    "inferred": "The words do not split Israel and abroad; both are recorded. Whether the 150,000 NIS is a threshold for the whole deposit or the discount applies above it is not said. The page does not say who counts as a teacher. Massad's 'אקסטרה CLASS' (salary from 4,000 NIS, 36 months) promises 'הנחות והטבות ב... ניירות ערך' with no figure (library 06f1e0b7231c02b9).",
+    "who_short_he": "בני זוג של מורים עם תיק מ־150,000 ₪",
+    "cheaper_he": "50% הנחה בדמי ניהול פיקדון",
+    "ends_short_he": "3 שנים, והבנק רשאי להפסיק"
+   }
+  ],
+  "advertising_only": [
+   {
+    "name_he": "אקסטרה CLASS",
+    "kind": "salary",
+    "words_he": "הנחות והטבות בתוכניות חסכון, פיקדונות בשקלים, ניירות ערך ומטבע חוץ",
+    "url": "https://www.bankmassad.co.il/private/accountmngment/accounttypes/extra/",
+    "library": "06f1e0b7231c02b9",
+    "why": "Salary from 4,000 NIS, 36 months; no figure."
+   }
+  ]
+ },
+ "jerusalem": {
+  "entries": [],
+  "advertising_only": [],
+  "note": "None. The current-account page says 'ללא צורך בהעברת משכורת'; annex A (30/09/2025) lists prepaid-card holders only."
+ },
+ "yahav": {
+  "entries": [],
+  "note": "No salary plan with a securities price. The self-employed doctors' entry already in the record stays kind 'other'. The state employees' leaflet (11.2024, unlinked) stays in left_out."
+ },
+ "one-zero": {
+  "entries": [],
+  "advertising_only": [
+   {
+    "name_he": "מסלולי ONE ו־ONE+ בלי דמי מנוי בהעברת משכורת",
+    "kind": "salary",
+    "words_he": "One/One Business ללא עלות בהעברת 5,000₪ בחודש לחשבון או תשלום חודשי בסך 49₪. +One ללא עלות בהעברת 10,000₪",
+    "url": "https://www.onezerobank.com/plans/",
+    "library": "none (host refuses curl; read in Chrome by the earlier researcher)",
+    "why": "The plans' securities prices are binding (tariff 26.7.26, annex ו': ONE 0.1% min 10 NIS in Tel Aviv, 0.1% min 8 USD abroad, conversion fee exempt; ONE+ 10 free trades a month, then the same), but they belong to anyone paying 49 or 89 NIS a month, and the record already prices them as plan lines. Only the salary waiver of the plan fee is advertising, with no terms found."
+   }
+  ]
+ },
+ "psagot": {
+  "entries": [],
+  "note": "No price that depends on portfolio size or on transferring a portfolio in the tariff or the terms read; a web search found none."
+ },
+ "ibi": {
+  "entries": [],
+  "note": "No price that depends on portfolio size or on transferring a portfolio in the tariff or the terms read; a web search found none."
+ },
+ "altshuler-trade": {
+  "entries": [],
+  "note": "No price that depends on portfolio size or on transferring a portfolio in the tariff or the terms read; a web search found none. The existing joining offer (deposit of at least 5,000 NIS, frequent trading, at the company's discretion) stays kind 'other'."
+ },
+ "meitav-trade": {
+  "entries": [],
+  "note": "No price that depends on portfolio size or on transferring a portfolio in the tariff or the terms read; a web search found none.",
+  "advertising_only": [
+   {
+    "name_he": "מסלול קרנות ללא עמלות",
+    "kind": "salary",
+    "words_he": "אין דמי טיפול חודשיים, אין דמי משמרת ואין עמלות קניה מכירה על קרנות מנוהלות אקטיבית ... ובשווי תיק מינימאלי של 100,000 ש\"ח",
+    "url": "https://www.meitav.co.il/trade/tel-aviv-trading/information_about_independent_trading_on_the_stock_exchange/",
+    "library": "3d56645174b8a3b4",
+    "why": "Portfolio of at least 100,000 NIS, mutual funds only, 'לא כולל קרנות שמוגדרות כמניות עפ\"י הבורסה'; the buy and sell exemption names actively managed funds only, so not a tracking fund. No binding document. Already in left_out."
+   }
+  ]
+ },
+ "excellence": {
+  "entries": [],
+  "note": "No price that depends on portfolio size or on transferring a portfolio in the tariff or the terms read; a web search found none."
+ },
+ "interactive-israel": {
+  "entries": [],
+  "note": "No price that depends on portfolio size or on transferring a portfolio in the tariff or the terms read; a web search found none."
+ }
+}

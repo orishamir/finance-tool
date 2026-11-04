@@ -3,6 +3,7 @@
 // This module is the selection logic only: rows, climb, ceiling, scale. It reads a grid of account x fund prices (the page's
 // `buildInvest` output, `gridOf`) and writes no figure of its own beyond differences between two of them (F-91: the gap in what is
 // left between two ways on one plan is the gap in their costs). No I/O, no React.
+import { isGroupProvider } from "./group-pick";
 import type { FeesSnapshot } from "@finance-tool/schema";
 import { doubtOf, type InvestView, type OptionId } from "./invest";
 
@@ -45,7 +46,8 @@ export function gridOf(view: InvestView, snapshots: readonly FeesSnapshot[]): Gr
   const byFund = new Map(options.flatMap((o) => o.funds).map((f) => [f.rec.id, f] as const));
   const snap = new Map(snapshots.map((s) => [s.id, s] as const));
   return {
-    accounts: view.providers.map((p) => p.id),
+    // a picked group's held account is not a house to climb to (D43)
+    accounts: view.providers.filter((p) => !isGroupProvider(p)).map((p) => p.id),
     funds,
     kinds: options.filter((o) => o.funds.length > 0).map((o) => o.id),
     cell(a, f) {

@@ -4,7 +4,7 @@
 // Pure: no React, no storage.
 
 /** Pages no menu, door, search result or in-page link leads to. */
-export const heldPages: readonly string[] = ["/idle-cash", "/holdings"];
+export const heldPages: readonly string[] = ["/idle-cash", "/holdings", "/goal"]; // "/goal" holds the comparison at /goal/compare too (founder, 2026-11-04)
 
 /** Guide pages whose "what makes it different" visual is hidden. */
 export const heldSignatures: readonly string[] = ["money-market-fund-renewable", "bank-deposit", "kupat-gemel-lehashkaa"];

@@ -133,6 +133,7 @@ export const formulas = {
   "F-98": earlySettlement,
   "F-99": companyAssets,
   "F-100": groupFeeRange,
+  "F-101": runSecurities,
 } as const;
 
 /** Ledger runs, by the instrument family they model. */

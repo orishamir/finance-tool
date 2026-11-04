@@ -2,7 +2,7 @@
 // in one place; not in the menu, not in the search, noindex. Every number on it is a labelled example.
 import { useState, type ReactNode } from "react";
 import { Link } from "react-router";
-import { brands, kit as copy, trackBrowser } from "../../copy";
+import { brands, groupPrices as groupWordsDemo, kit as copy, trackBrowser } from "../../copy";
 import type { SiteValue } from "../../lib/value";
 import { computed, entered } from "../../lib/value";
 import { CalendarCheck, CalendarDays, Lock, Zap } from "lucide-react";
@@ -12,7 +12,8 @@ import { IconDrillIn } from "../icons";
 import { label } from "../../lib/labels";
 import { fmt } from "../../lib/format";
 import { PileStory, PileYears } from "./pile-story";
-import { AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, Button, Callout, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, LabelFilter, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, CompareTable, TableCols, CoverageFold, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, SortHead, ExposureCell, FeeKey, FeeNum, HelpMark, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, GainBars, GapNote, HeadlineFigure, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, ParameterLine, PercentField, PlanChips, KnobStrip, ChangeChart, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, RangeField, RankBadge, Section, SegmentedControl, SelectField, Sentence, ShareRings, SourceLine, Stat, StatRow, StatTile, StepButtons, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth } from "./index";
+import { AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, Button, Callout, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, LabelFilter, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, CompareTable, TableCols, CoverageFold, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, SortHead, ExposureCell, FeeKey, FeeNum, HelpMark, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, GainBars, GapNote, HeadlineFigure, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, ParameterLine, PercentField, PlanChips, KnobStrip, ChangeChart, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, RangeField, RankBadge, Section, SegmentedControl, SelectField, Sentence, ShareRings, SourceLine, Stat, StatRow, StatTile, StepButtons, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, ClaimList, DocLink, atPdfPage, GroupPriceFold, GroupPriceRows, PeriodStrip, type CostPart, type GroupEntry } from "./index";
+import type { AdvertisingEntry } from "@finance-tool/schema";
 
 const g = copy.gallery;
 
@@ -883,6 +884,43 @@ function SortableTable({ row }: { row: (key: string, name: string, n: string, ra
   );
 }
 
+/** Three groups of a made-up house: the first two share a price (one sub-row, two ends), the third names funds. */
+/** The fold with the first group pickable, as the index page offers it. */
+function GroupChoiceDemo() {
+  const [selected, setSelected] = useState<string | null>("group:0");
+  return <GroupPriceFold entries={sampleGroups()} house={g.sample.groups.house} href="/kit" open choice={{ can: (k) => k === "group:0", selected, onChoose: setSelected }} />;
+}
+
+function sampleGroups(): GroupEntry[] {
+  const w = g.sample.groups;
+  const source = { url: "#kit", title: w.doc, page: 2, quote: w.quote };
+  const entry = (x: { name: string; who: string; whoShort: string; ends: string; endsShort: string }, kind: GroupEntry["kind"], cheaper: string, fund: boolean): GroupEntry => ({
+    kind,
+    name_he: x.name,
+    who_he: x.who,
+    who_source: source,
+    ends_printed: false,
+    ends_he: x.ends,
+    prices: [{ fee: fund ? "trade_israel" : "custody_israel", price_he: w.price, holdings_he: fund ? w.holdingsFunds : w.holdings, names_fund: fund, source }],
+    who_short_he: x.whoShort,
+    cheaper_he: cheaper,
+    ends_short_he: x.endsShort,
+  });
+  return [entry(w.a, "young", w.cheaperA, false), entry(w.b, "student", w.cheaperA, false), entry(w.c, "other", w.cheaperB, true)];
+}
+
+/** One claim of each verdict, all made up. */
+function sampleClaims(today: string): AdvertisingEntry[] {
+  const w = g.sample.claim;
+  const seen = { url: "#kit", title: w.ad, seen: today };
+  const doc = (kind: AdvertisingEntry["binding_source"]["kind"], title: string) => ({ kind, url: "#kit", title, dated: today, dated_from: "printed" as const, checked: today });
+  return [
+    { fee: "custody", verdict: "contradicted", claim_he: w.claim, claim_source: seen, binding_he: w.binding, binding_source: doc("price_list", w.doc) },
+    { fee: "account", verdict: "offer", claim_he: w.claim, claim_source: seen, binding_he: w.binding, binding_source: doc("promotion_terms", w.terms) },
+    { fee: "trade", verdict: "not_found", claim_he: w.claim, claim_source: seen, binding_source: doc("price_list", w.doc) },
+  ];
+}
+
 function Lists({ today }: { today: string }) {
   const s = samples(today);
   const p = g.sample.products;
@@ -941,6 +979,29 @@ function Lists({ today }: { today: string }) {
       <Demo name="ProductTable (headings, folding, sortable heads, sticky head)" use={g.uses.ProductTableGroups}>
         <State label="groups with a heading (a title, then a line of figures); a press on a heading's strip or its chevron folds the group; the heads sort the table and set aria-sort; the head row sticks under the site's header while the table fits its card; a sort slides each row to its new place (useFlip)" wide>
           <SortableTable row={row} />
+        </State>
+      </Demo>
+      <Demo name="GroupPriceFold, GroupPriceRows" use={g.uses.GroupPrices}>
+        <State label="under a house's row: closed by default; a tap opens one sub-row per price, two groups with the same price on one sub-row, and the link to the house's page" wide>
+          <GroupPriceFold entries={sampleGroups()} house={g.sample.groups.house} href="/kit" />
+        </State>
+        <State label="on the house's own page: the same rows, each group's name under its short words, a line of where the words stand, and a link under a group the index page offers as a radio (to that page with it picked)" wide>
+          <GroupPriceRows entries={sampleGroups()} sources own={{ can: (k) => k === "group:0", link: () => <a href="/kit" className="text-link hover:underline inline-flex items-center min-h-target text-sm">{groupWordsDemo.ownAccount}</a> }} />
+        </State>
+        <State label="on the index page (2026-11-04): a radio before each group the person can pick (its price names funds and ends after a printed number of months), the picked one checked, and a line on why the others have none" wide>
+          <GroupChoiceDemo />
+        </State>
+      </Demo>
+      <Demo name="DocLink, atPdfPage" use={g.uses.DocLink}>
+        <State label="a document's name, and a PDF opened at its page" wide>
+          <DocLink href={atPdfPage("https://example.com/tariff.pdf", 2)} className="text-sm">
+            {g.sample.claim.doc}
+          </DocLink>
+        </State>
+      </Demo>
+      <Demo name="ClaimCheck, ClaimList" use={g.uses.ClaimCheck}>
+        <State label="the binding document says otherwise; a promotion's terms make it conditional; no binding document says it" wide>
+          <ClaimList entries={sampleClaims(today)} />
         </State>
       </Demo>
       <Demo name="RowArrow" use={g.uses.RowArrow}>
@@ -1017,12 +1078,23 @@ function Lists({ today }: { today: string }) {
             <CostStack label="3,050" scale={7200} parts={[{ id: "t", value: 300, className: "bg-chart-cost-trade", inside: "300" }, { id: "c", value: 200, className: "bg-chart-cost-custody" }, { id: "u", value: 150, className: "bg-chart-cost-fund" }, { id: "x", value: 2400, className: "bg-chart-tax", inside: "2,400" }]} />
           </div>
         </State>
+        <State label="pointing or tapping a part shows its name, amount, share and where its price comes from; changing the prices makes every part and figure glide, and a part that falls to zero shrinks to nothing in its place" wide>
+          <CostStackDemo />
+        </State>
         <State label="list rows (sm), the last past the scale: drawn to the edge with a break" wide>
           <div className="flex flex-col gap-2">
             <CostStack size="sm" label="500" scale={10000} parts={[{ id: "t", value: 300, className: "bg-chart-cost-trade" }, { id: "c", value: 200, className: "bg-chart-cost-custody" }]} />
             <CostStack size="sm" label="9,620" scale={10000} parts={[{ id: "t", value: 4300, className: "bg-chart-cost-trade" }, { id: "c", value: 4800, className: "bg-chart-cost-custody" }, { id: "f", value: 520, className: "bg-chart-cost-fixed" }]} />
             <CostStack size="sm" label="25,126" scale={10000} parts={[{ id: "t", value: 7500, className: "bg-chart-cost-trade" }, { id: "c", value: 7500, className: "bg-chart-cost-custody" }, { id: "f", value: 10126, className: "bg-chart-cost-fixed" }]} />
           </div>
+        </State>
+      </Demo>
+      <Demo name="PeriodStrip" use={g.uses.PeriodStrip}>
+        <State label="three stretches: all of a group's prices, one of them, then the price list" wide>
+          <PeriodStrip years={10} label={g.sample.strip.label} today={g.sample.strip.today} word={g.sample.strip.year} segments={[{ from: 0, to: 1, label: g.sample.strip.first, tone: "first" }, { from: 1, to: 4, label: g.sample.strip.middle, tone: "middle" }, { from: 4, to: 10, label: g.sample.strip.after, tone: "after" }]} />
+        </State>
+        <State label="one stretch: the group's prices for the whole plan" wide>
+          <PeriodStrip years={10} label={g.sample.strip.label} today={g.sample.strip.today} word={g.sample.strip.year} segments={[{ from: 0, to: 10, label: g.sample.strip.first, tone: "first" }]} />
         </State>
       </Demo>
       <Demo name="PickList" use={g.uses.PickList}>
@@ -1191,6 +1263,29 @@ function FlipDemo() {
           </li>
         ))}
       </ol>
+    </div>
+  );
+}
+
+/** The cost bar of an account at three sets of prices: the list's, a group's (the custody exempt: that part shrinks to nothing) and the person's. */
+function CostStackDemo() {
+  const [state, setState] = useState("list");
+  const c = g.sample.cost;
+  const by: Record<string, [number, number, number, number]> = { list: [1699, 1888, 189, 120], group: [1699, 0, 189, 40], yours: [300, 200, 0, 20] };
+  const from: Record<string, string> = { list: c.fromList, group: c.fromGroup, yours: c.fromYours };
+  const [trade, custody, fixed, both] = by[state]!;
+  const parts: CostPart[] = [
+    { id: "t", value: trade, className: "bg-chart-cost-trade", inside: true, name: c.trade, source: from[state]! },
+    { id: "c", value: custody, className: "bg-chart-cost-custody", inside: true, name: c.custody, source: from[state]! },
+    { id: "f", value: fixed, className: "bg-chart-cost-fixed", inside: true, name: c.fixed, source: from[state]! },
+    { id: "r", value: both, className: "bg-chart-cost-other", inside: true, name: c.remainder, about: c.remainderAbout, source: c.fromComputed },
+  ];
+  return (
+    <div className="flex flex-col gap-3">
+      <ChoiceChips ids={["list", "group", "yours"]} labels={c.states} value={state} onChange={setState} ariaLabel={c.stateLabel} wrap />
+      <div className="pt-12">
+        <CostStack label={fmt.nisWhole(trade + custody + fixed + both)} scale={4000} parts={parts} />
+      </div>
     </div>
   );
 }

@@ -1,30 +1,20 @@
 // The person's own broker and fund on the index page (D44): the two quiet buttons under the lists, the panel they open, and what a row of
 // an entry says. Typing stays in the panel: nothing on the page changes until the person saves (ground rule 4, "nothing moves").
-import { createContext, useContext, useEffect, useId, useMemo, useRef, useState, type ReactNode } from "react";
+import { useEffect, useId, useMemo, useRef, useState, type ReactNode } from "react";
 import { invest as root } from "../../copy";
 import { brokerDraftOf, brokerErrors, brokerFromDraft, brokerTerms, fundDraftOf, fundErrors, fundFromDraft, fundTerms, isForeignKind, NAME_MAX, newBrokerId, newFundId, type BrokerDraft, type CustomBroker, type CustomFund, type EntryError, type EntryTerm, type FundDraft } from "../../lib/custom-entries";
 import { optionsOf, type IndexRef, type OptionId } from "../../lib/invest";
 import { isoToday } from "../../lib/state";
 import { Num, StateTag } from "../provenance";
 import { Sheet } from "../Sheet";
+import { Actions, EditButton, nisCheck, useDraft, isInvalid, EditorsContext, useEditors, type Editing, type Editors, type PanelWorld } from "./editors";
+import { OwnAccountPanel, OwnTerms } from "./own-account";
 import { Button, CheckField, FieldGroup, flushPendingFields, NumberField, percentCheck, SegmentedControl, SelectField, TextField } from "../kit";
 
 const c = root.customEntries;
 
-type Editing = { kind: "broker"; id: string | null } | { kind: "fund"; id: string | null };
-
-interface Editors {
-  addBroker: () => void;
-  addFund: () => void;
-  edit: (e: Editing) => void;
-  brokers: readonly CustomBroker[];
-  funds: readonly CustomFund[];
-}
-
-const EditorsContext = createContext<Editors | null>(null);
-
 /** Holds what is being edited and the one panel; the rows and buttons below it reach it through the context. */
-export function CustomEntriesHost({ index, brokers, funds, writable, onSaveBroker, onRemoveBroker, onSaveFund, onRemoveFund, children }: { index: IndexRef | null; brokers: readonly CustomBroker[]; funds: readonly CustomFund[]; writable: boolean; onSaveBroker: (b: CustomBroker) => void; onRemoveBroker: (id: string) => void; onSaveFund: (f: CustomFund) => void; onRemoveFund: (id: string) => void; children: ReactNode }) {
+export function CustomEntriesHost({ index, brokers, funds, writable, onSaveBroker, onRemoveBroker, onSaveFund, onRemoveFund, world, opening, onOpened, children }: { /** What the account panel prices on; null while the page has no comparison. */ world: PanelWorld | null; /** A house and starting point the address asks the panel to open on (a house's page links here); `onOpened` clears it. */ opening?: { houseId: string; from: string } | null; onOpened?: () => void; index: IndexRef | null; brokers: readonly CustomBroker[]; funds: readonly CustomFund[]; writable: boolean; onSaveBroker: (b: CustomBroker) => void; onRemoveBroker: (id: string) => void; onSaveFund: (f: CustomFund) => void; onRemoveFund: (id: string) => void; children: ReactNode }) {
   const [editing, setEditing] = useState<Editing | null>(null);
   const headId = useId();
   // the row just saved may stand far above the button: it is brought into view, once
@@ -38,12 +28,45 @@ export function CustomEntriesHost({ index, brokers, funds, writable, onSaveBroke
     return () => cancelAnimationFrame(frame);
   }, [saved]);
   const close = () => setEditing(null);
-  const api = useMemo<Editors>(() => ({ addBroker: () => setEditing({ kind: "broker", id: null }), addFund: () => setEditing({ kind: "fund", id: null }), edit: setEditing, brokers, funds }), [brokers, funds]);
+  const api = useMemo<Editors>(() => ({ addBroker: () => setEditing({ kind: "broker", id: null }), addFund: () => setEditing({ kind: "fund", id: null }), openOwn: (houseId, from = "list") => setEditing({ kind: "own", houseId, from }), edit: setEditing, brokers, funds, world }), [brokers, funds, world]);
+  // a house's page asks for the panel through the address: opened once the page has its comparison
+  useEffect(() => {
+    if (!opening || !world) return;
+    setEditing({ kind: "own", houseId: opening.houseId, from: opening.from });
+    onOpened?.();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [opening, !!world]);
+  const ownOf = (b: CustomBroker | undefined) => (b?.base && world?.wb.snapshots.some((s) => s.id === b.base!.houseId && !s.id.startsWith("custom-broker-")) ? b : undefined);
+  const editedBroker = editing?.kind === "broker" ? brokers.find((b) => b.id === editing.id) : undefined;
+  const own: { houseId: string; from: string; broker: CustomBroker | null } | null = editing?.kind === "own" && world?.wb.snapshots.some((s) => s.id === editing.houseId) ? { houseId: editing.houseId, from: editing.from, broker: null } : ownOf(editedBroker) ? { houseId: editedBroker!.base!.houseId, from: "list", broker: editedBroker! } : null;
   return (
     <EditorsContext.Provider value={api}>
       {children}
-      <Sheet open={!!editing} onClose={close} pc="center" height={100} labelledBy={headId}>
-        {editing?.kind === "broker" && (
+      <Sheet open={!!editing} onClose={close} pc="center" height={100} labelledBy={headId} className={own ? "sheet-wide" : undefined}>
+        {own && world && (
+          <OwnAccountPanel
+            key={own.broker?.id ?? `${own.houseId}:${own.from}`}
+            headId={headId}
+            world={world}
+            houseId={own.houseId}
+            from={own.from}
+            broker={own.broker}
+            others={brokers}
+            funds={funds}
+            writable={writable}
+            onCancel={close}
+            onSave={(b) => {
+              onSaveBroker(b);
+              setSaved(b.id);
+              close();
+            }}
+            onRemove={(id) => {
+              onRemoveBroker(id);
+              close();
+            }}
+          />
+        )}
+        {editing?.kind === "broker" && !own && (
           <BrokerPanel
             key={editing.id ?? "new"}
             headId={headId}
@@ -90,26 +113,16 @@ export function CustomEntriesHost({ index, brokers, funds, writable, onSaveBroke
 // ---------------------------------------------------------------- the buttons and the rows
 
 /** The quiet button under a list. Outside the host (a test of a list alone) it is not drawn. */
-export function AddEntryButton({ kind }: { kind: "broker" | "fund" }) {
-  const e = useContext(EditorsContext);
+/** `primary`: the one thing a page with no fund asks for (a custom index, 2026-11-04); quiet under a list otherwise. */
+export function AddEntryButton({ kind, primary = false }: { kind: "broker" | "fund"; primary?: boolean }) {
+  const e = useEditors();
   if (!e) return null;
   return (
-    <Button variant="quiet" className="self-start -ms-2" onClick={kind === "broker" ? e.addBroker : e.addFund}>
+    <Button variant={primary ? "primary" : "quiet"} className={primary ? "self-start" : "self-start -ms-2"} onClick={kind === "broker" ? e.addBroker : e.addFund}>
       + {kind === "broker" ? c.addBroker : c.addFund}
     </Button>
   );
 }
-
-function EditButton({ editing }: { editing: Editing }) {
-  const e = useContext(EditorsContext);
-  if (!e) return null;
-  return (
-    <Button variant="quiet" className="text-sm" onClick={() => e.edit(editing)}>
-      {c.edit}
-    </Button>
-  );
-}
-
 
 function Terms({ terms, editing }: { terms: { shown: EntryTerm[]; empty: string[] }; editing: Editing }) {
   return (
@@ -135,68 +148,22 @@ function Terms({ terms, editing }: { terms: { shown: EntryTerm[]; empty: string[
 
 /** A broker row's line: that it was entered, every figure typed in the entered state, what was left empty, and the way to change it. */
 export function BrokerTerms({ id }: { id: string }) {
-  const e = useContext(EditorsContext);
+  const e = useEditors();
   const b = e?.brokers.find((x) => x.id === id);
+  if (b?.base) return <OwnTerms b={b} />;
   return b ? <Terms terms={brokerTerms(b)} editing={{ kind: "broker", id }} /> : null;
 }
 
 /** The same line on a fund's row. */
 export function FundTerms({ id }: { id: string }) {
-  const e = useContext(EditorsContext);
+  const e = useEditors();
   const f = e?.funds.find((x) => x.id === id);
   return f ? <Terms terms={fundTerms(f)} editing={{ kind: "fund", id }} /> : null;
 }
 
 // ---------------------------------------------------------------- the panels
 
-/** The draft and a ref of it: a number still waiting out the typing pause is committed by the save, and read at once. */
-function useDraft<T>(start: () => T) {
-  const [draft, setDraft] = useState<T>(start);
-  const now = useRef(draft);
-  const set = <K extends keyof T>(k: K, v: T[K]) => {
-    now.current = { ...now.current, [k]: v };
-    setDraft(now.current);
-  };
-  return { draft, now, set };
-}
-
-const isInvalid = (form: HTMLElement | null) => !!form?.querySelector('[aria-invalid="true"]');
-const nisCheck = (n: number) => (n < 0 ? c.errors.negative : null);
 const pctCheck = percentCheck();
-
-function Actions({ entry, name, writable, onSave, onCancel, onRemove }: { entry: boolean; name: string; writable: boolean; onSave: () => void; onCancel: () => void; onRemove: () => void }) {
-  const [asking, setAsking] = useState(false);
-  return (
-    <div className="flex flex-col gap-2 pt-1">
-      {!writable && <p className="text-xs text-caution-foreground">{c.noStorage}</p>}
-      {asking ? (
-        <div className="flex flex-wrap items-center gap-2">
-          <p className="text-sm w-full">{c.removeAsk(name)}</p>
-          <Button variant="destructive" onClick={onRemove}>
-            {c.removeYes}
-          </Button>
-          <Button variant="quiet" onClick={() => setAsking(false)}>
-            {c.cancel}
-          </Button>
-        </div>
-      ) : (
-        <div className="flex flex-wrap items-center gap-2">
-          <Button variant="primary" onClick={onSave}>
-            {c.save}
-          </Button>
-          <Button variant="quiet" onClick={onCancel}>
-            {c.cancel}
-          </Button>
-          {entry && (
-            <Button variant="destructive" className="ms-auto" onClick={() => setAsking(true)}>
-              {c.remove}
-            </Button>
-          )}
-        </div>
-      )}
-    </div>
-  );
-}
 
 function BrokerPanel({ headId, broker, others, writable, onSave, onCancel, onRemove }: { headId: string; broker: CustomBroker | null; others: readonly CustomBroker[]; writable: boolean; onSave: (b: CustomBroker) => void; onCancel: () => void; onRemove: (id: string) => void }) {
   const { draft, now, set } = useDraft<BrokerDraft>(() => brokerDraftOf(broker));

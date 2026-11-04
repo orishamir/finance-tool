@@ -1,19 +1,18 @@
 // "השקעה במדד" (D28, spec research/specs/2026-10-25-invest-page/spec.md): for an index the person chooses (or adds), the options
 // for owning it, the cheapest broker for each, and the cheapest complete way for the plan. `/indices` chooses nothing (D27);
 // `/indices/<x>` opens the known index `index-<x>` (pre-rendered); a custom index lives on the device and opens at `/indices?custom=<id>`.
-import { useEffect, useId, useMemo, useState } from "react";
+import { useCallback, useEffect, useId, useMemo, useState } from "react";
 import { useLoaderData, useLocation, useNavigate, useParams } from "react-router";
 import type { RuleRecord } from "@finance-tool/schema";
 import type { Route } from "./+types/invest";
 import { brands, invest as c, site } from "../copy";
 import { OtherAssumptions, PlanChanges, PlanKnobs } from "../components/invest/knobs";
 import { IndexChips, PlanBlock } from "../components/invest/chips";
-import { HousesSection } from "../components/invest/houses";
-import { FundsSection } from "../components/invest/funds";
-import { GroupPrices } from "../components/invest/groups";
-import { AccountColumn, FundColumn, PairResult, pickOfHeadline, allFunds, type Pick } from "../components/invest/pair";
+import { AdvertisingBlock } from "../components/invest/advertising";
+import { AccountColumn, FundColumn, PairResult, pickOfHeadline, pickOfOpen, allFunds, type Pick } from "../components/invest/pair";
+import { NoFundAccountColumn, NoFundCall, NoFundColumn } from "../components/invest/no-fund";
 import { LabelSheetHost } from "../components/kit";
-import { Headline, IndexHeader } from "../components/invest/sections";
+import { IndexHeader } from "../components/invest/sections";
 import { Foot } from "../components/invest/foot";
 import { DollarSection } from "../components/invest/dollar";
 import { StairsSection } from "../components/invest/stairs";
@@ -32,6 +31,7 @@ import { buildInvest, hasKinds, exposureIdOfSlug, indexById, INDICES_PATH, known
 import { loadWorkbenchBundle, type WorkbenchBundle, type WorkbenchInputs } from "../lib/providers";
 import { useInvestState } from "../lib/state";
 import { recordsById } from "../lib/scope";
+import { groupNameOf, pickableGroups, withGroupPick } from "../lib/group-pick";
 
 /** The data files this page fetches after it starts, requested with the HTML (audit 2026-10-24, A52). */
 export const links = () => bundleLinks("workbench-bundle.json", "compare-bundle.json");
@@ -92,7 +92,7 @@ export default function Invest() {
     return { rules, pointed: recordsById(compare?.pointed, wb?.pointed), terms: data.feeTerms, dimensions: Object.fromEntries((compare?.checklist ?? []).map((x) => [x.id, x.name])), today: data.today };
   }, [compare, wb, data.today, data.feeRules, data.feeTerms]);
   return (
-    <PageShell current="other" data={provenance} wide>
+    <PageShell current="other" data={provenance}>
       <Page wb={wb} compare={compare} failed={failed} data={data} />
     </PageShell>
   );
@@ -164,26 +164,83 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
   const view = useMemo(() => (index ? buildInvest({ bundle, index, plan, yourBroker }) : null), [bundle, index, plan, yourBroker]);
 
   const [panelOpen, setPanelOpen] = useState(false);
+  // a house's page opens the account panel through the address (`own` and `from`): once, and the address is cleaned
+  const ownParam = new URLSearchParams(search).get("own");
+  const fromParam = new URLSearchParams(search).get("from");
+  const opening = useMemo(() => (ownParam ? { houseId: ownParam, from: fromParam ?? "list" } : null), [ownParam, fromParam]);
+  const { pathname } = useLocation();
+  const onOpened = useCallback(() => {
+    const q = new URLSearchParams(search);
+    q.delete("own");
+    q.delete("from");
+    const rest = q.toString();
+    navigate(`${pathname}${rest ? `?${rest}` : ""}`, { replace: true });
+  }, [search, pathname, navigate]);
   const headId = useId();
 
   // the account and the fund the two lists are priced on: the person's picks on this index, else the cheapest way (2026-10-27)
-  const [picked, setPicked] = useState<{ index: string; pick: Pick } | null>(null);
+  const world = useMemo(() => (index && view ? { wb, bundle, index, plan, view, customs } : null), [wb, bundle, index, plan, view, customs]);
   const [labelFilter, setLabelFilter] = useState<string | null>(null);
   // a fund priced nowhere (a distributing fund whose yield is not known, or a US fund, TXF-37) keeps its row with the reason, and is not a pair to show; nor is
   // a pair the account no longer prices (a broker the person typed and changed, D44)
   const validPick = (p: Pick) => !!view && allFunds(view).some((f) => f.rec.id === p.fund && Object.values(f.byHouse).some((x) => "valueN" in x) && "valueN" in (f.byHouse[p.house] ?? {})) && view.providers.some((x) => x.id === p.house);
-  // a house's page opens this one with that house picked (`?house=`, issue 172): its cheapest way on the index, until the person picks
+  // the pick lives in the address (`?house=` and `?fund=`, founder 2026-11-04), so a link opens the same pair: a house's page sends `house`
+  // alone (issue 172), which opens on its cheapest way on the index; a fund alone opens at the house where it leaves the most
   const houseParam = new URLSearchParams(search).get("house");
-  const houseBest = view && houseParam ? view.houses.find((h) => h.provider.id === houseParam)?.best : null;
-  const fromAddress: Pick | null = houseParam && houseBest && validPick({ house: houseParam, fund: houseBest.fund.rec.id }) ? { house: houseParam, fund: houseBest.fund.rec.id } : null;
-  const own: Pick | null = view && index && picked && picked.index === index.id && validPick(picked.pick) ? picked.pick : fromAddress;
-  const pick: Pick | null = own ?? (view ? pickOfHeadline(view) : null);
+  const fundParam = new URLSearchParams(search).get("fund");
+  // a house's group picked in its fold (`?group=<n>`, 2026-11-04): kept only where the page offers that group for the fund
+  const groupNumber = new URLSearchParams(search).get("group");
+  const groupParam = groupNumber && /^\d+$/.test(groupNumber) ? `group:${groupNumber}` : null;
+  const fromAddress = ((): Pick | null => {
+    if (!view || (!houseParam && !fundParam)) return null;
+    if (houseParam && fundParam) return validPick({ house: houseParam, fund: fundParam }) ? { house: houseParam, fund: fundParam } : null;
+    if (houseParam) {
+      // a group sent from the house's page opens on the house's cheapest fund for which that group is offered (the side it trades on)
+      const row = view.houses.find((h) => h.provider.id === houseParam);
+      const snap = groupParam ? wb.snapshots.find((x) => x.id === houseParam) : undefined;
+      const forGroup = snap && row?.entries.find((e) => e.price && pickableGroups(snap, e.fund.option).has(groupParam!) && validPick({ house: houseParam, fund: e.fund.rec.id }));
+      if (forGroup) return { house: houseParam, fund: forGroup.fund.rec.id };
+      const best = row?.best;
+      return best && validPick({ house: houseParam, fund: best.fund.rec.id }) ? { house: houseParam, fund: best.fund.rec.id } : null;
+    }
+    const best = allFunds(view).find((f) => f.rec.id === fundParam)?.best;
+    return best && validPick({ house: best.providerId, fund: fundParam! }) ? { house: best.providerId, fund: fundParam! } : null;
+  })();
+  const groupOk = (p: Pick) => !!groupParam && !!view && pickableGroups(wb.snapshots.find((x) => x.id === p.house), allFunds(view).find((f) => f.rec.id === p.fund)?.option).has(groupParam);
+  const own: Pick | null = fromAddress && groupOk(fromAddress) ? { ...fromAddress, group: groupParam! } : fromAddress;
+  const pick: Pick | null = own ?? (view ? (pickOfHeadline(view) ?? pickOfOpen(view)) : null);
   // the stairs start from the person's own pick; with none they open on the middle account and the middle exchange-traded fund
   const picks = own !== null;
-  const onPick = (p: Pick) => index && setPicked({ index: index.id, pick: p });
-  // an index with no fund records (a custom one): the houses and their broker costs, and the request for funds
+  // a pick replaces the address in place: the back button leaves the page rather than stepping through every pick, and the page keeps its scroll
+  // the picked group's account, priced at its prices beside its house (lib/group-pick): only that house and the account are priced again
+  // the radio answers at once and the group's figures follow after the paint (2026-11-04: pricing the group in the tap's own render took
+  // it past 100 ms; a navigation is a transition, so a deferred value did not defer it)
+  const groupHouse = own?.group ? own.house : null;
+  const groupKey = own?.group ?? null;
+  const [priced, setPriced] = useState<(ReturnType<typeof withGroupPick> & { house: string; key: string }) | null>(null);
+  useEffect(() => {
+    if (!view || !index || !groupHouse || !groupKey) return setPriced(null);
+    const g = withGroupPick({ bundle, index, plan }, view, groupHouse, groupKey, view.providers.find((p) => p.id === groupHouse)?.short ?? groupHouse);
+    setPriced(g ? { ...g, house: groupHouse, key: groupKey } : null);
+  }, [view, index, bundle, plan, groupHouse, groupKey]);
+  // the group's account stands in for its house only while it is the group picked; any other pick shows its own figures at once
+  const picked = priced && priced.house === groupHouse && priced.key === groupKey ? priced : null;
+  // what the pair and the sections under it show: the group's account in place of its house when one is picked
+  const shownView = picked?.view ?? view;
+  const shownBundle = picked?.bundle ?? bundle;
+  const shown: Pick | null = pick && picked ? { house: picked.id, fund: pick.fund } : pick;
+  const onPick = (p: Pick) => {
+    // a pick on the group's account (another fund, from the fund list) stays on that group of that house
+    const next: Pick = picked && own?.group && p.house === picked.id ? { house: own.house, fund: p.fund, group: own.group } : p;
+    const q = new URLSearchParams(search);
+    q.set("house", next.house);
+    q.set("fund", next.fund);
+    if (next.group) q.set("group", next.group.replace("group:", ""));
+    else q.delete("group");
+    navigate(`${pathname}?${q.toString()}`, { replace: true, preventScrollReset: true });
+  };
+  // an index with no fund to price (a custom one): the account the person picked in the list, else the one that charges least
   const [genericHouse, setGenericHouse] = useState<string | null>(null);
-  const house = genericHouse ?? view?.genericHeadline?.cell.providerId ?? view?.houses.find((h) => h.generic)?.provider.id ?? null;
 
   const rules = ["ETF-31", "ETF-24", "ETF-51", "ETF-75", "TXS-09", "TXF-22"].filter((id) => wb.rules.some((r) => r.id === id));
 
@@ -216,7 +273,7 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
 
   return (
     <LabelSheetHost>
-      <CustomEntriesHost index={index} brokers={invest.customBrokers} funds={invest.customFunds} writable={invest.status !== "unavailable"} onSaveBroker={invest.saveBroker} onRemoveBroker={invest.removeBroker} onSaveFund={invest.saveFund} onRemoveFund={invest.removeFund}>
+      <CustomEntriesHost index={index} brokers={invest.customBrokers} funds={invest.customFunds} writable={invest.status !== "unavailable"} onSaveBroker={invest.saveBroker} onRemoveBroker={invest.removeBroker} onSaveFund={invest.saveFund} onRemoveFund={invest.removeFund} world={world} opening={opening} onOpened={onOpened}>
       {/* tighter than a page's sections: the sliders and the result they move stay in one view (founder, 2026-10-31) */}
       <div className="flex flex-col gap-5 lg:gap-6 pt-2 lg:pt-6">
         <div className="flex flex-col gap-4">
@@ -232,30 +289,38 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
             {/* the knobs write the same current goal the fees page and the panel write: a value set here is the value there; they sit
                 right above the result so it moves in view (founder, 2026-10-28) */}
             {planBlock}
-            {pick ? (
+            {pick && shown && shownView ? (
               <>
-                <PairResult view={view} bundle={bundle} plan={livePlan} settled={plan} pick={pick} onPick={onPick} />
+                <PairResult view={shownView} bundle={shownBundle} plan={livePlan} settled={plan} pick={shown} onPick={onPick} />
                 <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_2.5rem_minmax(0,32.5rem)] xl:grid-cols-[minmax(0,5fr)_2.5rem_minmax(0,7fr)] items-start">
-                  <AccountColumn view={view} bundle={bundle} years={plan.years} pick={pick} onPick={onPick} />
+                  <AccountColumn view={shownView} bundle={shownBundle} years={plan.years} pick={shown} onPick={onPick} group={own?.group ? { house: own.house, key: own.group, name: groupNameOf(wb.snapshots.find((x) => x.id === own.house), own.group) } : null} />
                   <span aria-hidden="true" className="hidden lg:grid place-items-center size-9 mt-10 rounded-full border border-input bg-popover text-xl text-muted-foreground justify-self-center">
                     +
                   </span>
-                  <FundColumn view={view} bundle={bundle} plan={plan} today={data.today} pick={pick} onPick={onPick} filter={labelFilter} onFilter={setLabelFilter} />
+                  <FundColumn view={shownView} bundle={shownBundle} plan={plan} today={data.today} pick={shown} onPick={onPick} filter={labelFilter} onFilter={setLabelFilter} />
                 </div>
               </>
             ) : (
+              // the same two lists as every index, the result card set aside until a fund is added (founder, 2026-11-04)
               <>
-                <Headline view={view} />
-                <HousesSection view={view} chosen={house} onPick={(id) => setGenericHouse(id)} />
-                <FundsSection view={view} houseId={house} onHouse={(id) => setGenericHouse(id)} mayaHref={wb.links.maya?.href ?? null} />
+                <NoFundCall view={view} />
+                <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_2.5rem_minmax(0,32.5rem)] xl:grid-cols-[minmax(0,5fr)_2.5rem_minmax(0,7fr)] items-start">
+                  <NoFundAccountColumn view={view} bundle={bundle} years={plan.years} chosen={genericHouse} onPick={setGenericHouse} />
+                  <span aria-hidden="true" className="hidden lg:grid place-items-center size-9 mt-10 rounded-full border border-input bg-popover text-xl text-muted-foreground justify-self-center">
+                    +
+                  </span>
+                  <NoFundColumn view={view} mayaHref={wb.links.maya?.href ?? null} />
+                </div>
               </>
             )}
-            {/* who pays less, stated beside the ranking and not in it (D43) */}
-            <GroupPrices snapshots={wb.snapshots} nameOf={(id) => view.providers.find((p) => p.id === id)?.short ?? wb.snapshots.find((s) => s.id === id)?.provider.name_he ?? id} />
+            {/* right under the houses the reader just compared: the rows are the price lists' prices, and here is what the advertising
+                says beside them, that a better price can be negotiated and entered as one's own account (D57); group prices stand under
+                each row (D43 amended 2026-11-04), so the page's own list of them is gone */}
+            <AdvertisingBlock snapshots={wb.snapshots} nameOf={(id) => view.providers.find((p) => p.id === id)?.short ?? wb.snapshots.find((s) => s.id === id)?.provider.name_he ?? id} />
             {/* what moves the result most: every number changed by the same share, at the bottom (founder, 2026-10-28) */}
-            <PlanChanges plan={plan} share={data.form.share} bundle={bundle} view={view} pick={pick} />
+            <PlanChanges plan={plan} share={data.form.share} bundle={shownBundle} view={shownView ?? view} pick={shown} />
             {/* hedged or not, across the dollar (F-94): only on a foreign index with funds of both kinds; at the bottom (founder, 2026-10-31) */}
-            {pick && hasKinds(view) && wb.dollarRange && <DollarSection view={view} bundle={bundle} plan={plan} pick={pick} />}
+            {shown && shownView && hasKinds(view) && wb.dollarRange && <DollarSection view={shownView} bundle={shownBundle} plan={plan} pick={shown} />}
             {/* the stairs: which single change leaves more, one step at a time; appended last (founder, 2026-11-01) */}
             {pick && <StairsSection key={index.id} view={view} bundle={bundle} plan={plan} startHouse={picks ? pick.house : null} startFund={picks ? pick.fund : null} />}
             <Foot view={view} />

@@ -58,16 +58,18 @@ describe("one bank's rate is named where it is quoted", () => {
     expect(t).not.toContain("הגבוהה בבנקים");
     expect(t.replace(/<section[\s\S]*$/, "").split("לאומי").length).toBe(2); // only the line of the list that names it
   });
-  it("the makam page names the house of its commission, says which house ties with it, and sets the deposit as a range", () => {
+  it("the makam page names the house of its commission, names no tie, and sets the deposit as a range", () => {
     const sig = buildGuidePage("makam")!.signature!;
     const t = text(render(createElement(MakamVisual, { data: sig, today: "2026-10-26" })));
     expect(t).not.toContain("לאומי");
     expect(t).not.toContain("עוד לא נאספו");
     expect(t).toMatch(/1\.55%\s*–\s*2\.25%/);
     expect(t).toMatch(/לפי התעריפון של\s*(<[^>]*>)?\s*פסגות/);
-    expect(t).toContain("הוא שקול לתעריפון של");
-    expect(t).toContain("פפר");
-    expect(t).not.toContain("הבחירה של האתר");
+    // until 2026-11-04 PEPPER tied with Psagot; PEPPER Invest moved into Leumi Trade (founder), so it is no house of its own
+    expect(t).not.toContain("הוא שקול לתעריפון של");
+    expect(t).not.toContain("פפר");
+    // with no tie the page crowns its pick (F-80), as the other guide pages do
+    expect(t).toMatch(/הבחירה של האתר:\s*מבין\s*14\s*הבנקים ובתי ההשקעות שנאספו/);
   });
   it("the savings plan's one-off deposit sentence names its bank", () => {
     const sig = buildGuidePage("savings-plan")!.signature!;

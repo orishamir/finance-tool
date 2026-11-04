@@ -263,7 +263,8 @@ export function accountRuns(record: ProductRecord, family: InstrumentFamily, p05
   const all = loadFees();
   for (const id of new Set(all.map((f) => f.id))) {
     const latest = all.filter((x) => x.id === id).sort((a, b) => a.snapshot.localeCompare(b.snapshot)).at(-1)!;
-    if (latest.missing) continue;
+    // a house that is part of another (PEPPER of Leumi, 2026-11-04) is not a house of its own, as in providersOf
+    if (latest.missing || latest.provider.part_of) continue;
     if (record.id !== "brokerage-account" && latest.provider.class === "foreign_broker") continue;
     if (!onlyWhatCanBeDone(latest).lines.some((l) => l.base === "trade" && l.applies_to.some((a) => classes.includes(a)))) continue;
     const spec = { ...p05.instruments?.[record.id], tariff: id };

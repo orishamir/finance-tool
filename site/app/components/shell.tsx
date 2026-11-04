@@ -10,7 +10,7 @@ import { SearchCombo, SearchSheet } from "./search";
 import { Sheet } from "./Sheet";
 import { Button, Callout, CountingFigures, cx } from "./kit";
 
-export type Current = "guide" | "questions" | "decoder" | "rules" | "documents" | "parameters" | "home" | "goal" | "holdings" | "other";
+export type Current = "guide" | "decoder" | "rules" | "documents" | "parameters" | "home" | "goal" | "holdings" | "other";
 
 /** The newest `checked` date across data/, fixed at build (vite.config.ts `define`, from `dataAsOf()` in lib/data.server.ts). */
 declare const __DATA_AS_OF__: string;
@@ -22,12 +22,11 @@ type NavItem = { href: string; label: string; current?: Current };
 /** The doors, in the order the first page gives them (audit 2026-10-24, A54): what the person came to do. */
 const doorItems: NavItem[] = [
   byHref("/guide"),
-  byHref("/rules"),
-  byHref("/questions"),
   byHref("/companies"),
+  byHref("/indices"),
+  byHref("/rules"), // the header order the founder set (2026-11-04): guide, companies, indices, rules
   goalItem,
   { href: r3workbench.entry.holdings.href, label: r3workbench.entry.holdings.title, current: r3workbench.entry.holdings.current },
-  byHref("/indices"),
   { href: homeCopy.door3.href, label: homeCopy.door3.title },
 ].filter((i) => shown(i.href)); // a page held for review has no menu item (lib/review.ts)
 /** "Behind the scenes": the rule base, the parameters, what is not covered, the tool for moving to another device. */
@@ -37,7 +36,7 @@ const behindItems: NavItem[] = [documentsItem, byHref("/parameters"), { href: si
 /** The footer links: the same pages, destinations first, then the reference pages, then the tool. */
 const footerLinks = (() => {
   const by = (href: string) => site.footer.find((f) => f.href === href)!;
-  return [by("/questions"), by("/goal"), { href: r3workbench.entry.holdings.href, label: r3workbench.entry.holdings.title }, by("/rules"), { href: documentsItem.href, label: documentsItem.label }, by("/parameters"), by("/not-covered"), { href: r3workbench.entry.transfer.href, label: r3workbench.entry.transfer.label }].filter((i) => shown(i.href));
+  return [by("/goal"), { href: r3workbench.entry.holdings.href, label: r3workbench.entry.holdings.title }, { href: documentsItem.href, label: documentsItem.label }, by("/parameters"), by("/not-covered"), { href: r3workbench.entry.transfer.href, label: r3workbench.entry.transfer.label }].filter((i) => shown(i.href));
 })();
 
 /** A page is the current one when the address is under the item's, or the page says it belongs to the item. */
@@ -52,7 +51,7 @@ export function useOpenSearch() {
   return useContext(SearchOpenCtx);
 }
 
-export function PageShell({ current, data: pageData, children, wide }: { current: Current; data: ProvenanceData; children: ReactNode; /** true: wide from a computer up; "large": only on a large screen (1536 px up), a guide whose prose stays at the measure while its tables and charts take the room. */ wide?: boolean | "large" }) {
+export function PageShell({ current, data: pageData, children }: { current: Current; data: ProvenanceData; children: ReactNode }) {
   // every page's sheets know the method: the formulas with their parameters, the parameter cards, the source hosts' Hebrew names, the open questions and where each company's terms are listed (root loader)
   const method = useRouteLoaderData("root") as { formulaParameters: Record<string, string[]>; parameterAnchors: Record<string, string>; publishersHe: Record<string, string>; openQuestions: NonNullable<ProvenanceData["openQuestions"]>; companies: NonNullable<ProvenanceData["companies"]>; ownDocs: NonNullable<ProvenanceData["ownDocs"]> } | undefined;
   const data = useMemo<ProvenanceData>(() => {
@@ -60,8 +59,9 @@ export function PageShell({ current, data: pageData, children, wide }: { current
     const formulas = pageData.formulas ?? Object.fromEntries([...new Set([...Object.keys(formulaNames), ...Object.keys(method.formulaParameters)])].filter((f) => f !== "_other").map((f) => [f, { name: formulaNames[f] ?? "", parameters: method.formulaParameters[f] ?? [] }]));
     return { ...pageData, formulas, parameters: pageData.parameters ?? method.parameterAnchors, publishersHe: pageData.publishersHe ?? method.publishersHe, openQuestions: pageData.openQuestions ?? method.openQuestions, companies: pageData.companies ?? method.companies, ownDocs: pageData.ownDocs ?? method.ownDocs };
   }, [pageData, method]);
-  // the header, the page and the footer share one width, so their edges line up on a large screen too
-  const width = wide === "large" ? "max-w-page 2xl:max-w-wide" : wide ? "max-w-wide" : "max-w-page";
+  // One frame for every page (founder, 2026-11-04: some pages used the room of a large screen and others did not): the header, the page and
+  // the footer share it, so their edges stay put from page to page; prose keeps its own measure inside it.
+  const width = "max-w-wide";
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchAnchor, setSearchAnchor] = useState<HTMLElement | null>(null);
