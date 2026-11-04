@@ -19,8 +19,6 @@ const CLASSES = ["mutual_fund_units", "etf_units", "tase_foreign_fund_units", "f
 const DOUBT = /not stated|not named|unconfirmed|not collected|Read as|could not be fetched|for a person to check|no document says|not confirmed/i;
 const LEFTOVERS = [
   "interactive-brokers-buy-sell-lse-usd-tiered",
-  "interactive-brokers-buy-sell-tase-fixed",
-  "interactive-brokers-buy-sell-tase-tiered",
   "leumi-tracking-fund-standing-order",
   "massad-standing-order-tase-direct",
   "massad-standing-order-tase-branch",
@@ -31,8 +29,11 @@ describe("what a ranked price rests on", () => {
     const found: string[] = [];
     for (const s of latest.values()) {
       if (!["bank", "broker", "foreign_broker"].includes(s.provider.class)) continue;
+      // a doubt already turned into an availability entry that greys every kind the line prices is what this guard asks for (2026-11-04)
+      const greyed = new Set(((s as { availability?: { applies_to: string[]; available: unknown }[] }).availability ?? []).filter((a) => a.available !== true).flatMap((a) => a.applies_to));
       for (const l of s.lines) {
-        if (!l.applies_to.some((c) => CLASSES.includes(c))) continue;
+        const kinds = l.applies_to.filter((c) => CLASSES.includes(c));
+        if (kinds.length === 0 || kinds.every((c) => greyed.has(c))) continue;
         const notes = ["rate", "min", "max", "spread"].map((k) => (l[k] as { notes?: string } | null | undefined)?.notes ?? "").join(" ");
         if (DOUBT.test(notes)) found.push(l.id);
       }
