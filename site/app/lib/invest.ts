@@ -308,8 +308,6 @@ export interface InvestView {
 
 /** A conversion between two foreign currencies is not the conversion a shekel investor pays: the shekel-to-currency line is read (2026-10-25). */
 const FX_TO_FX = /מט["״]ח ל?מט["״]ח|בין שני מטבעות זרים/;
-/** A provider-specific band the engine needs and the tariff cannot say alone: Interactive Brokers' spot line has no rate recorded, its automatic conversion has. */
-const FX_BAND: Record<string, string> = { "interactive-brokers": "המרה אוטומטית" };
 
 const scopedCache = new WeakMap<FeesSnapshot, FeesSnapshot>();
 /**
@@ -348,14 +346,15 @@ interface Cand {
 
 /** The ways to read a snapshot for an option: for a fund bought abroad, one per exchange its tariff names, then the plain reading. */
 function candidates(s: FeesSnapshot, option: OptionId): Cand[] {
-  const fxBand = FX_BAND[s.id];
-  const plain: Cand = { venue: null, ...(fxBand ? { band: [fxBand] } : {}) };
+  // Interactive Brokers' conversion is its spot order, the standard line (D56, 2026-11-04): its automatic conversion adds a markup
+  // "at its discretion" that no document limits, the spot order's 0.2 basis point (at least USD 2) and "no mark-ups on quotes" are printed
+  const plain: Cand = { venue: null };
   if (option !== "abroad") return [plain];
   const trade = s.lines.filter((l) => l.base === "trade" && l.level === "list" && l.applies_to.includes("foreign_securities") && l.band);
   const out: Cand[] = [];
   for (const v of ["us", "europe"] as Venue[]) {
     const bands = [...new Set(trade.filter((l) => venueOfBand(l.band) === v).map((l) => l.band!))];
-    if (bands.length) out.push({ venue: v, band: [...bands, ...(fxBand ? [fxBand] : [])] });
+    if (bands.length) out.push({ venue: v, band: bands });
   }
   return [...out, plain];
 }

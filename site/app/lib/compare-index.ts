@@ -46,7 +46,6 @@ export function readIndex(wb: WorkbenchBundle, plan: WorkbenchInputs, chosenId: 
   return range ? { kind: "range", low: range.low, high: range.high, perIndex: range.perIndex } : null;
 }
 
-const FX_BAND: Record<string, string> = { "interactive-brokers": "המרה אוטומטית" };
 const TARIFF_KEYS = ["tradeRate", "tradeMin", "tradeMax", "standingRate", "standingMin", "standingMax", "custodyRate", "custodyMin", "custodyMax", "fxRate", "monthlyFee"] as const;
 const isFundKey = (k: string) => k.startsWith("fund") || k === "ninetyPercentTest";
 
@@ -55,7 +54,7 @@ function houseTariff(wb: WorkbenchBundle, snap: FeesSnapshot, cls: string, chann
   const scopedSnap = scoped(snap);
   let built: ReturnType<typeof engineTariff>;
   try {
-    built = engineTariff({ instrumentClass: cls, wrapper: BROKERAGE_ID, channel, ...(wb.fx ? { fx: fxRunInput(wb.fx) } : {}) } as WorkbenchInput, { snapshot: scopedSnap, level: "list", ...(FX_BAND[snap.id] ? { band: [FX_BAND[snap.id]!] } : {}) }, scopedSnap);
+    built = engineTariff({ instrumentClass: cls, wrapper: BROKERAGE_ID, channel, ...(wb.fx ? { fx: fxRunInput(wb.fx) } : {}) } as WorkbenchInput, { snapshot: scopedSnap, level: "list" }, scopedSnap);
   } catch {
     return null;
   }
