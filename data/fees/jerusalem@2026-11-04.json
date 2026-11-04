@@ -1,0 +1,1186 @@
+{
+  "id": "jerusalem",
+  "provider": {
+    "name_he": "בנק ירושלים בע\"מ",
+    "class": "bank",
+    "regulator": "BoI",
+    "tase_member": true,
+    "protection_rule_ids": [
+      "BRK-10",
+      "BRK-12",
+      "BRK-13"
+    ]
+  },
+  "tariff": {
+    "url": "https://www.bankjerusalem.co.il/media/7012/%D7%A2%D7%95%D7%AA%D7%A7-%D7%A9%D7%9C-1759155996_2_%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F_%D7%9E%D7%9C%D7%90_%D7%9C%D7%99%D7%97%D7%99%D7%93_%D7%A2%D7%A1%D7%A7_%D7%A7%D7%98%D7%9F-1-1.pdf",
+    "title": "התעריפון המלא ליחיד / עסק קטן - בנק ירושלים",
+    "notes": "התעריפון המלא ליחיד / עסק קטן - בנק ירושלים (20 עמ'): חלק 4 - ניירות ערך ('בתוקף מתאריך : 06/02/20217' כפי שמודפס, כנראה 2017), חלק 5 - מטבע חוץ ('בתוקף מתאריך: 20/06/2021'); חלקים 1-3 ו-6 'בתוקף מתאריך 16/09/2026'. The document carries a date per part and none for the whole, so published is null. Part files read alongside (same figures): part 4 PDF https://www.bankjerusalem.co.il/media/6887/1695043873_%D7%97%D7%9C%D7%A7_4_%D7%A0%D7%99%D7%99%D7%A8%D7%95%D7%AA_%D7%A2%D7%A8%D7%9A_%D7%99%D7%97%D7%99%D7%93_%D7%95%D7%A2%D7%A1%D7%A7_%D7%A7%D7%98%D7%9F-%D7%A0%D7%92%D7%99%D7%A9-2.pdf, part 4 Excel https://www.bankjerusalem.co.il/media/6892/1695043873_%D7%97%D7%9C%D7%A7_4_%D7%A0%D7%99%D7%99%D7%A8%D7%95%D7%AA_%D7%A2%D7%A8%D7%9A_%D7%99%D7%97%D7%99%D7%93_%D7%95%D7%A2%D7%A1%D7%A7_%D7%A7%D7%98%D7%9F-%D7%A0%D7%92%D7%99%D7%A9-2.xlsx, part 5 Excel https://www.bankjerusalem.co.il/media/6852/%D7%A2%D7%95%D7%AA%D7%A7-%D7%A9%D7%9C-1698322687_%D7%97%D7%9C%D7%A7_5_%D7%9E%D7%98%D7%91%D7%A2_%D7%97%D7%95%D7%A5_%D7%99%D7%97%D7%99%D7%93_%D7%95%D7%A2%D7%A1%D7%A7_%D7%A7%D7%98%D7%9F-%D7%A0%D7%92%D7%99%D7%A9.xlsx. Read in the founder's Chrome from https://www.bankjerusalem.co.il/others/commission-yechidim ('תעריפון יחיד ועסק קטן מלא') on 2026-10-24; the files fetched with curl. /others/commissions-full is the large-business tariff. Re-read 2026-11-04 (D56): the tariff page still links the same combined file (md5 84a8730f…, library 2fddc750f3f74c72; HTTP Last-Modified 2026-09-16; PDF created and modified 2026-09-14). Parts 1-3, 6, 9 and 11 print 'בתוקף מתאריך 16/09/2026'; part 4 still prints '06/02/20217' (its separate PDF, md5 ef4e5056…, created 2026-06-08, the same figures); part 5 '20/06/2021' (separate PDF modified 2026-05-14). The newest binding document on securities is annex E as its own file, 'בתוקף מתאריך: 08/06/2026' (media/7021, PDF modified 2026-09-16, Last-Modified 2026-09-17, library e0fbba6023213674): the same securities rows as the combined file's annex E ('15/07/2025', p.19-20), but without the combined file's conversion and foreign-transfer rows. The change notice of 16/09/2026 (library 12ce26124d18f424) changes part 11's broker costs abroad and no securities fee. The exchange's sheet (market.tase.co.il trading_fees, 'עדכון אחרון: 05/07/26') prints the same direct prices and custody 'כללי - לפקדון' 0.15% a quarter with 10,000 NIS a quarter at most. No promotion terms and no securities fee annex to the account agreement were found.",
+    "published": null,
+    "format": "pdf"
+  },
+  "snapshot": "2026-11-04",
+  "missing": false,
+  "missing_reason": null,
+  "lines": [
+    {
+      "id": "jerusalem-buy-sell-tase-branch",
+      "base": "trade",
+      "applies_to": [
+        "tase_shares_bonds",
+        "etf_units",
+        "mutual_fund_units"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.55,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.bankjerusalem.co.il/media/7012/%D7%A2%D7%95%D7%AA%D7%A7-%D7%A9%D7%9C-1759155996_2_%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F_%D7%9E%D7%9C%D7%90_%D7%9C%D7%99%D7%97%D7%99%D7%93_%D7%A2%D7%A1%D7%A7_%D7%A7%D7%98%D7%9F-1-1.pdf",
+          "title": "התעריפון המלא ליחיד / עסק קטן - בנק ירושלים, חלק 4 - ניירות ערך ('בתוקף מתאריך : 06/02/20217' כפי שמודפס), 4 (א) (1), מניות ואגרות חוב",
+          "publisher": "Bank of Jerusalem Ltd.",
+          "strength": "institution",
+          "page": 6,
+          "quote": "ניירות ערך הנסחרים חוב 20 0.55% ₪ 20,000"
+        },
+        "checked": "2026-11-04",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-19",
+          "MF-27"
+        ],
+        "state": "sourced",
+        "notes": "'מניות ואגרות חוב 0.55% (20 ש\"ח מינימום 20,000 מקסימום)'. Footnote 4: the mutual-fund exclusion does not cover a tracking fund or a fund whose units are listed on TASE, so Israeli ETFs and listed fund units pay this line. Notes: (1) a split order pays one minimum per day; (2) an order not executed for a reason depending on the client pays the minimum only if a clerk acted; (3) also charged on unlisted securities; (4) gives the internet price, recorded as the direct line. The tariff states the bank may charge less than the printed amounts except for supervised services. The part's effective date is printed '06/02/20217', a misprint in the source; effective_from is left null rather than guessed. Tracking funds (2026-10-31): the exclusion of mutual funds on this line does not cover a tracking fund, so a tracking fund pays this line; a traditional fund that is not listed does not. Place: library 2fddc750f3f74c72, PDF page 6, line \"...קרנות נאמנות[4], אופציות...\", PDF page 7, note 4: \"אך לרבות 'קרן מחקה', כהגדרתה בתקנות השקעות משותפות בנאמנות (סיווג קרנות לצורך פירסום), התשס\"ח-2007, וכן של קרן...\"."
+      },
+      "min": {
+        "value": 20,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.bankjerusalem.co.il/media/7012/%D7%A2%D7%95%D7%AA%D7%A7-%D7%A9%D7%9C-1759155996_2_%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F_%D7%9E%D7%9C%D7%90_%D7%9C%D7%99%D7%97%D7%99%D7%93_%D7%A2%D7%A1%D7%A7_%D7%A7%D7%98%D7%9F-1-1.pdf",
+          "title": "התעריפון המלא ליחיד / עסק קטן - בנק ירושלים, חלק 4 - ניירות ערך ('בתוקף מתאריך : 06/02/20217' כפי שמודפס), 4 (א) (1), מניות ואגרות חוב, מינימום",
+          "publisher": "Bank of Jerusalem Ltd.",
+          "strength": "institution",
+          "page": 6,
+          "quote": "ניירות ערך הנסחרים חוב 20 0.55% ₪ 20,000"
+        },
+        "checked": "2026-11-04",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'20 ש\"ח מינימום'. The part's effective date is printed '06/02/20217', a misprint in the source; effective_from is left null rather than guessed."
+      },
+      "max": {
+        "value": 20000,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.bankjerusalem.co.il/media/7012/%D7%A2%D7%95%D7%AA%D7%A7-%D7%A9%D7%9C-1759155996_2_%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F_%D7%9E%D7%9C%D7%90_%D7%9C%D7%99%D7%97%D7%99%D7%93_%D7%A2%D7%A1%D7%A7_%D7%A7%D7%98%D7%9F-1-1.pdf",
+          "title": "התעריפון המלא ליחיד / עסק קטן - בנק ירושלים, חלק 4 - ניירות ערך ('בתוקף מתאריך : 06/02/20217' כפי שמודפס), 4 (א) (1), מניות ואגרות חוב, מקסימום",
+          "publisher": "Bank of Jerusalem Ltd.",
+          "strength": "institution",
+          "page": 6,
+          "quote": "ניירות ערך הנסחרים חוב 20 0.55% ₪ 20,000"
+        },
+        "checked": "2026-11-04",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'20,000 מקסימום' (NIS). The part's effective date is printed '06/02/20217', a misprint in the source; effective_from is left null rather than guessed."
+      },
+      "period": null,
+      "channel": "branch",
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קנייה, מכירה, ופדיון של ניירות ערך הנסחרים בבורסה בתל אביב (למעט קרנות נאמנות[4], אופציות[5] מעו\"ף וחוזים עתידיים במעו\"ף) (כולל קניה או מכירה שלא בוצעה)",
+          "מניות ואגרות חוב"
+        ]
+      }
+    },
+    {
+      "id": "jerusalem-buy-sell-tase-direct",
+      "base": "trade",
+      "applies_to": [
+        "tase_shares_bonds",
+        "etf_units",
+        "mutual_fund_units"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.5,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.bankjerusalem.co.il/media/7012/%D7%A2%D7%95%D7%AA%D7%A7-%D7%A9%D7%9C-1759155996_2_%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F_%D7%9E%D7%9C%D7%90_%D7%9C%D7%99%D7%97%D7%99%D7%93_%D7%A2%D7%A1%D7%A7_%D7%A7%D7%98%D7%9F-1-1.pdf",
+          "title": "התעריפון המלא ליחיד / עסק קטן - בנק ירושלים, חלק 4 - ניירות ערך ('בתוקף מתאריך : 06/02/20217' כפי שמודפס), 4 (א) (1), הערה (4)",
+          "publisher": "Bank of Jerusalem Ltd.",
+          "strength": "institution",
+          "page": 6,
+          "quote": "עבור פעולה המבוצעת ישירות באמצעות האינטרנט ייגבה שיעור מופחת של 0.5%"
+        },
+        "checked": "2026-11-04",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-19",
+          "MF-27"
+        ],
+        "state": "sourced",
+        "notes": "Note (4): 'עבור פעולה המבוצעת ישירות באמצעות האינטרנט ייגבה שיעור מופחת של 0.5% לפעולה במניות ובאגרות חוב'. The note does not restate a minimum or maximum for the internet price. The part's effective date is printed '06/02/20217', a misprint in the source; effective_from is left null rather than guessed. Tracking funds (2026-10-31): the exclusion of mutual funds on this line does not cover a tracking fund, so a tracking fund pays this line; a traditional fund that is not listed does not. Place: library 2fddc750f3f74c72, PDF page 6, line \"...קרנות נאמנות[4], אופציות...\", PDF page 7, note 4: \"אך לרבות 'קרן מחקה', כהגדרתה בתקנות השקעות משותפות בנאמנות (סיווג קרנות לצורך פירסום), התשס\"ח-2007, וכן של קרן...\". Channel (2026-11-04): the reduced rate is for an action 'המבוצעת ישירות באמצעות האינטרנט' (note 4); annex E of 08/06/2026 prices it under 'מחיר לפי סוגי ערוצים' as 'אינטרנט'. The banking-by-communication agreement (library cf3826dd2028c70a, p.1) counts an app ('יישומון') among the 'ערוצי אינטרנט', so a purchase placed in the app is taken here to be an internet action (inferred). A standing order to buy securities exists in the general terms (January 2024, s.138.3.2 p.45 and s.151.2 p.48, library 43f36f509e83fcf3), but no price list prints a price for one; carried out by the bank rather than placed online, it is priced at most at the clerk rate, 0.55% with a 20 NIS minimum (inferred, the same reading as FIBI and Mizrahi-Tefahot). This line prices a purchase the reader places online each month."
+      },
+      "min": {
+        "value": 20,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.bankjerusalem.co.il/media/7021/%D7%A0%D7%A1%D7%A4%D7%97_%D7%94_%D7%94%D7%98%D7%91%D7%95%D7%AA_%D7%91%D7%A2%D7%A8%D7%95%D7%A6%D7%99_%D7%91%D7%A0%D7%A7%D7%90%D7%95%D7%AA_%D7%91%D7%AA%D7%A7%D7%A9%D7%95%D7%A8%D7%AA.pdf",
+          "title": "נספח ה' - הטבות בערוצי בנקאות בתקשורת (קובץ נפרד, 'בתוקף מתאריך: 08/06/2026'), מינימום",
+          "publisher": "Bank of Jerusalem Ltd.",
+          "strength": "institution",
+          "page": 1,
+          "quote": "אינטרנט - 0.50% ( 20 ₪  מינימום 20,000 ₪  מקסימום)"
+        },
+        "checked": "2026-11-04",
+        "effective_from": "2026-06-08",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "Annex ה', PDF page 19, prints the internet price with its minimum on the shares, bonds and funds line. Note (4) on page 6 does not restate it. Corrected 2026-10-31: the record held no minimum. Re-read 2026-11-04 in annex E as its own file, dated 08/06/2026 (library e0fbba6023213674), the newest binding document: the same figure. The combined file's annex E (15/07/2025, p.19) prints it too."
+      },
+      "max": {
+        "value": 20000,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.bankjerusalem.co.il/media/7021/%D7%A0%D7%A1%D7%A4%D7%97_%D7%94_%D7%94%D7%98%D7%91%D7%95%D7%AA_%D7%91%D7%A2%D7%A8%D7%95%D7%A6%D7%99_%D7%91%D7%A0%D7%A7%D7%90%D7%95%D7%AA_%D7%91%D7%AA%D7%A7%D7%A9%D7%95%D7%A8%D7%AA.pdf",
+          "title": "נספח ה' - הטבות בערוצי בנקאות בתקשורת (קובץ נפרד, 'בתוקף מתאריך: 08/06/2026'), מקסימום",
+          "publisher": "Bank of Jerusalem Ltd.",
+          "strength": "institution",
+          "page": 1,
+          "quote": "אינטרנט - 0.50% ( 20 ₪  מינימום 20,000 ₪  מקסימום)"
+        },
+        "checked": "2026-11-04",
+        "effective_from": "2026-06-08",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "Annex ה', PDF page 19, prints the internet price with its maximum on the shares, bonds and funds line. Note (4) on page 6 does not restate it. Corrected 2026-10-31: the record held no maximum. Re-read 2026-11-04 in annex E as its own file, dated 08/06/2026 (library e0fbba6023213674), the newest binding document: the same figure. The combined file's annex E (15/07/2025, p.19) prints it too."
+      },
+      "period": null,
+      "channel": "direct",
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קנייה, מכירה, ופדיון של ניירות ערך הנסחרים בבורסה בתל אביב (למעט קרנות נאמנות[4], אופציות[5] מעו\"ף וחוזים עתידיים במעו\"ף) (כולל קניה או מכירה שלא בוצעה)",
+          "מניות ואגרות חוב",
+          "פעולה המבוצעת ישירות באמצעות האינטרנט"
+        ]
+      }
+    },
+    {
+      "id": "jerusalem-buy-sell-makam-branch",
+      "base": "trade",
+      "applies_to": [
+        "makam"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.1,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.bankjerusalem.co.il/media/7012/%D7%A2%D7%95%D7%AA%D7%A7-%D7%A9%D7%9C-1759155996_2_%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F_%D7%9E%D7%9C%D7%90_%D7%9C%D7%99%D7%97%D7%99%D7%93_%D7%A2%D7%A1%D7%A7_%D7%A7%D7%98%D7%9F-1-1.pdf",
+          "title": "התעריפון המלא ליחיד / עסק קטן - בנק ירושלים, חלק 4 - ניירות ערך ('בתוקף מתאריך : 06/02/20217' כפי שמודפס), 4 (א) (1), מלווה קצר מועד",
+          "publisher": "Bank of Jerusalem Ltd.",
+          "strength": "institution",
+          "page": 6,
+          "quote": "קצר מועד ₪ 20 0.10% מינימום 7,500"
+        },
+        "checked": "2026-11-04",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-19"
+        ],
+        "state": "sourced",
+        "notes": "'מלווה קצר מועד 0.10% (20 ש\"ח מינימום 7,500 ₪ מקסימום)'. The part's effective date is printed '06/02/20217', a misprint in the source; effective_from is left null rather than guessed."
+      },
+      "min": {
+        "value": 20,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.bankjerusalem.co.il/media/7012/%D7%A2%D7%95%D7%AA%D7%A7-%D7%A9%D7%9C-1759155996_2_%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F_%D7%9E%D7%9C%D7%90_%D7%9C%D7%99%D7%97%D7%99%D7%93_%D7%A2%D7%A1%D7%A7_%D7%A7%D7%98%D7%9F-1-1.pdf",
+          "title": "התעריפון המלא ליחיד / עסק קטן - בנק ירושלים, חלק 4 - ניירות ערך ('בתוקף מתאריך : 06/02/20217' כפי שמודפס), 4 (א) (1), מלווה קצר מועד, מינימום",
+          "publisher": "Bank of Jerusalem Ltd.",
+          "strength": "institution",
+          "page": 6,
+          "quote": "קצר מועד ₪ 20 0.10% מינימום 7,500"
+        },
+        "checked": "2026-11-04",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'20 ש\"ח מינימום'. The part's effective date is printed '06/02/20217', a misprint in the source; effective_from is left null rather than guessed."
+      },
+      "max": {
+        "value": 7500,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.bankjerusalem.co.il/media/7012/%D7%A2%D7%95%D7%AA%D7%A7-%D7%A9%D7%9C-1759155996_2_%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F_%D7%9E%D7%9C%D7%90_%D7%9C%D7%99%D7%97%D7%99%D7%93_%D7%A2%D7%A1%D7%A7_%D7%A7%D7%98%D7%9F-1-1.pdf",
+          "title": "התעריפון המלא ליחיד / עסק קטן - בנק ירושלים, חלק 4 - ניירות ערך ('בתוקף מתאריך : 06/02/20217' כפי שמודפס), 4 (א) (1), מלווה קצר מועד, מקסימום",
+          "publisher": "Bank of Jerusalem Ltd.",
+          "strength": "institution",
+          "page": 6,
+          "quote": "קצר מועד ₪ 20 0.10% מינימום 7,500"
+        },
+        "checked": "2026-11-04",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'7,500 ₪ מקסימום'. The part's effective date is printed '06/02/20217', a misprint in the source; effective_from is left null rather than guessed."
+      },
+      "period": null,
+      "channel": "branch",
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קנייה, מכירה, ופדיון של ניירות ערך הנסחרים בבורסה בתל אביב (למעט קרנות נאמנות[4], אופציות[5] מעו\"ף וחוזים עתידיים במעו\"ף) (כולל קניה או מכירה שלא בוצעה)",
+          "מלווה קצר מועד"
+        ]
+      }
+    },
+    {
+      "id": "jerusalem-buy-sell-makam-direct",
+      "base": "trade",
+      "applies_to": [
+        "makam"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.09,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.bankjerusalem.co.il/media/7012/%D7%A2%D7%95%D7%AA%D7%A7-%D7%A9%D7%9C-1759155996_2_%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F_%D7%9E%D7%9C%D7%90_%D7%9C%D7%99%D7%97%D7%99%D7%93_%D7%A2%D7%A1%D7%A7_%D7%A7%D7%98%D7%9F-1-1.pdf",
+          "title": "התעריפון המלא ליחיד / עסק קטן - בנק ירושלים, חלק 4 - ניירות ערך ('בתוקף מתאריך : 06/02/20217' כפי שמודפס), 4 (א) (1), הערה (4)",
+          "publisher": "Bank of Jerusalem Ltd.",
+          "strength": "institution",
+          "page": 6,
+          "quote": "0.09% לפעולה במלווה קצר מועד"
+        },
+        "checked": "2026-11-04",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-19"
+        ],
+        "state": "sourced",
+        "notes": "Note (4): '... ושיעור מופחת של 0.09% לפעולה במלווה קצר מועד'. No minimum or maximum restated. The part's effective date is printed '06/02/20217', a misprint in the source; effective_from is left null rather than guessed."
+      },
+      "min": {
+        "value": 20,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.bankjerusalem.co.il/media/7021/%D7%A0%D7%A1%D7%A4%D7%97_%D7%94_%D7%94%D7%98%D7%91%D7%95%D7%AA_%D7%91%D7%A2%D7%A8%D7%95%D7%A6%D7%99_%D7%91%D7%A0%D7%A7%D7%90%D7%95%D7%AA_%D7%91%D7%AA%D7%A7%D7%A9%D7%95%D7%A8%D7%AA.pdf",
+          "title": "נספח ה' - הטבות בערוצי בנקאות בתקשורת (קובץ נפרד, 'בתוקף מתאריך: 08/06/2026'), מינימום",
+          "publisher": "Bank of Jerusalem Ltd.",
+          "strength": "institution",
+          "page": 1,
+          "quote": "אינטרנט -  0.09% לפעולה (20 ₪  מינימום 7,500 ₪ מקסימום)"
+        },
+        "checked": "2026-11-04",
+        "effective_from": "2026-06-08",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "Annex ה', PDF page 19, prints the internet price with its minimum on the makam line. Note (4) on page 6 does not restate it. Corrected 2026-10-31: the record held no minimum. Re-read 2026-11-04 in annex E as its own file, dated 08/06/2026 (library e0fbba6023213674), the newest binding document: the same figure. The combined file's annex E (15/07/2025, p.19) prints it too."
+      },
+      "max": {
+        "value": 7500,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.bankjerusalem.co.il/media/7021/%D7%A0%D7%A1%D7%A4%D7%97_%D7%94_%D7%94%D7%98%D7%91%D7%95%D7%AA_%D7%91%D7%A2%D7%A8%D7%95%D7%A6%D7%99_%D7%91%D7%A0%D7%A7%D7%90%D7%95%D7%AA_%D7%91%D7%AA%D7%A7%D7%A9%D7%95%D7%A8%D7%AA.pdf",
+          "title": "נספח ה' - הטבות בערוצי בנקאות בתקשורת (קובץ נפרד, 'בתוקף מתאריך: 08/06/2026'), מקסימום",
+          "publisher": "Bank of Jerusalem Ltd.",
+          "strength": "institution",
+          "page": 1,
+          "quote": "אינטרנט -  0.09% לפעולה (20 ₪  מינימום 7,500 ₪ מקסימום)"
+        },
+        "checked": "2026-11-04",
+        "effective_from": "2026-06-08",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "Annex ה', PDF page 19, prints the internet price with its maximum on the makam line. Note (4) on page 6 does not restate it. Corrected 2026-10-31: the record held no maximum. Re-read 2026-11-04 in annex E as its own file, dated 08/06/2026 (library e0fbba6023213674), the newest binding document: the same figure. The combined file's annex E (15/07/2025, p.19) prints it too."
+      },
+      "period": null,
+      "channel": "direct",
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קנייה, מכירה, ופדיון של ניירות ערך הנסחרים בבורסה בתל אביב (למעט קרנות נאמנות[4], אופציות[5] מעו\"ף וחוזים עתידיים במעו\"ף) (כולל קניה או מכירה שלא בוצעה)",
+          "מלווה קצר מועד",
+          "פעולה המבוצעת ישירות באמצעות האינטרנט"
+        ]
+      }
+    },
+    {
+      "id": "jerusalem-redemption-makam",
+      "base": "trade",
+      "applies_to": [
+        "makam"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.1,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.bankjerusalem.co.il/media/7012/%D7%A2%D7%95%D7%AA%D7%A7-%D7%A9%D7%9C-1759155996_2_%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F_%D7%9E%D7%9C%D7%90_%D7%9C%D7%99%D7%97%D7%99%D7%93_%D7%A2%D7%A1%D7%A7_%D7%A7%D7%98%D7%9F-1-1.pdf",
+          "title": "התעריפון המלא ליחיד / עסק קטן - בנק ירושלים, חלק 4 - ניירות ערך ('בתוקף מתאריך : 06/02/20217' כפי שמודפס), 4 (א) (1), מלווה קצר מועד",
+          "publisher": "Bank of Jerusalem Ltd.",
+          "strength": "institution",
+          "page": 6,
+          "quote": "קצר מועד ₪ 20 0.10% מינימום 7,500"
+        },
+        "checked": "2026-11-04",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-19"
+        ],
+        "state": "sourced",
+        "notes": "Section 4א(1) names redemption. The reduced price (note 4, 0.09%) is for an action \"המבוצעת ישירות באמצעות האינטרנט\", so a redemption, where no order is placed, stays at the section's price (inferred from the wording)."
+      },
+      "min": {
+        "value": 20,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.bankjerusalem.co.il/media/7012/%D7%A2%D7%95%D7%AA%D7%A7-%D7%A9%D7%9C-1759155996_2_%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F_%D7%9E%D7%9C%D7%90_%D7%9C%D7%99%D7%97%D7%99%D7%93_%D7%A2%D7%A1%D7%A7_%D7%A7%D7%98%D7%9F-1-1.pdf",
+          "title": "התעריפון המלא ליחיד / עסק קטן - בנק ירושלים, חלק 4 - ניירות ערך ('בתוקף מתאריך : 06/02/20217' כפי שמודפס), 4 (א) (1), מלווה קצר מועד, מינימום",
+          "publisher": "Bank of Jerusalem Ltd.",
+          "strength": "institution",
+          "page": 6,
+          "quote": "קצר מועד ₪ 20 0.10% מינימום 7,500"
+        },
+        "checked": "2026-11-04",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'20 ש\"ח מינימום'. The part's effective date is printed '06/02/20217', a misprint in the source; effective_from is left null rather than guessed."
+      },
+      "max": {
+        "value": 7500,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.bankjerusalem.co.il/media/7012/%D7%A2%D7%95%D7%AA%D7%A7-%D7%A9%D7%9C-1759155996_2_%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F_%D7%9E%D7%9C%D7%90_%D7%9C%D7%99%D7%97%D7%99%D7%93_%D7%A2%D7%A1%D7%A7_%D7%A7%D7%98%D7%9F-1-1.pdf",
+          "title": "התעריפון המלא ליחיד / עסק קטן - בנק ירושלים, חלק 4 - ניירות ערך ('בתוקף מתאריך : 06/02/20217' כפי שמודפס), 4 (א) (1), מלווה קצר מועד, מקסימום",
+          "publisher": "Bank of Jerusalem Ltd.",
+          "strength": "institution",
+          "page": 6,
+          "quote": "קצר מועד ₪ 20 0.10% מינימום 7,500"
+        },
+        "checked": "2026-11-04",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'7,500 ₪ מקסימום'. The part's effective date is printed '06/02/20217', a misprint in the source; effective_from is left null rather than guessed."
+      },
+      "period": null,
+      "channel": null,
+      "band": "פדיון",
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קנייה, מכירה, ופדיון של ניירות ערך הנסחרים בבורסה בתל אביב",
+          "מלווה קצר מועד"
+        ]
+      }
+    },
+    {
+      "id": "jerusalem-buy-sell-foreign",
+      "base": "trade",
+      "applies_to": [
+        "foreign_securities"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.6,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.bankjerusalem.co.il/media/7012/%D7%A2%D7%95%D7%AA%D7%A7-%D7%A9%D7%9C-1759155996_2_%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F_%D7%9E%D7%9C%D7%90_%D7%9C%D7%99%D7%97%D7%99%D7%93_%D7%A2%D7%A1%D7%A7_%D7%A7%D7%98%D7%9F-1-1.pdf",
+          "title": "התעריפון המלא ליחיד / עסק קטן - בנק ירושלים, חלק 4 - ניירות ערך ('בתוקף מתאריך : 06/02/20217' כפי שמודפס), 4 (א) (4), מניות, אגרות חוב וקרנות נאמנות",
+          "publisher": "Bank of Jerusalem Ltd.",
+          "strength": "institution",
+          "page": 6,
+          "quote": "מניות אגרות חוב וקרנות נאמנות 0.6% מינימום $ 50 מקסימום $ 10,000 לעסקה"
+        },
+        "checked": "2026-11-04",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'0.6%, מינימום 50$ מקסימום 10,000$ לעסקה'.Page 20 prints an internet price, 'אינטרנט – 0.55%, מינימום 45$', on shares and bonds; it names no funds, so a fund abroad stays on this row. Notes: (1) an order not executed pays the minimum only if a clerk acted; (2) also charged on unlisted securities. The part's effective date is printed '06/02/20217', a misprint in the source; effective_from is left null rather than guessed. Re-read 2026-11-04: annex E of 08/06/2026 prices the internet rate on 'קניה מכירה - ני\"ע הנסחרים בחו\"ל - מניות, אג\"ח' only. The exchange's sheet prints 0.55%, 45$ minimum on 'מניות, אג\"ח, קרנות נאמנות - כללי', which is the exchange's own category label, so a fund abroad stays on this row. Part 11 (16/09/2026) adds third-party costs abroad without a fixed amount: a broker in the United States 'לפי חיוב בפועל ועד למקסימום 3% מהעסקה', funds in other markets up to 3%, a correspondent bank up to 100$ (see left_out)."
+      },
+      "min": {
+        "value": 50,
+        "unit": "usd",
+        "source": {
+          "url": "https://www.bankjerusalem.co.il/media/7012/%D7%A2%D7%95%D7%AA%D7%A7-%D7%A9%D7%9C-1759155996_2_%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F_%D7%9E%D7%9C%D7%90_%D7%9C%D7%99%D7%97%D7%99%D7%93_%D7%A2%D7%A1%D7%A7_%D7%A7%D7%98%D7%9F-1-1.pdf",
+          "title": "התעריפון המלא ליחיד / עסק קטן - בנק ירושלים, חלק 4 - ניירות ערך ('בתוקף מתאריך : 06/02/20217' כפי שמודפס), 4 (א) (4), מניות, אגרות חוב וקרנות נאמנות, מינימום",
+          "publisher": "Bank of Jerusalem Ltd.",
+          "strength": "institution",
+          "page": 6,
+          "quote": "מניות אגרות חוב וקרנות נאמנות 0.6% מינימום $ 50 מקסימום $ 10,000 לעסקה"
+        },
+        "checked": "2026-11-04",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'מינימום 50$'. The part's effective date is printed '06/02/20217', a misprint in the source; effective_from is left null rather than guessed."
+      },
+      "max": {
+        "value": 10000,
+        "unit": "usd",
+        "source": {
+          "url": "https://www.bankjerusalem.co.il/media/7012/%D7%A2%D7%95%D7%AA%D7%A7-%D7%A9%D7%9C-1759155996_2_%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F_%D7%9E%D7%9C%D7%90_%D7%9C%D7%99%D7%97%D7%99%D7%93_%D7%A2%D7%A1%D7%A7_%D7%A7%D7%98%D7%9F-1-1.pdf",
+          "title": "התעריפון המלא ליחיד / עסק קטן - בנק ירושלים, חלק 4 - ניירות ערך ('בתוקף מתאריך : 06/02/20217' כפי שמודפס), 4 (א) (4), מניות, אגרות חוב וקרנות נאמנות, מקסימום",
+          "publisher": "Bank of Jerusalem Ltd.",
+          "strength": "institution",
+          "page": 6,
+          "quote": "מניות אגרות חוב וקרנות נאמנות 0.6% מינימום $ 50 מקסימום $ 10,000 לעסקה"
+        },
+        "checked": "2026-11-04",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'מקסימום 10,000$ לעסקה'. The part's effective date is printed '06/02/20217', a misprint in the source; effective_from is left null rather than guessed."
+      },
+      "period": null,
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קנייה, מכירה ופדיון של ניירות ערך בחו\"ל (כולל קניה/מכירה שלא בוצעה)",
+          "מניות, אגרות חוב וקרנות נאמנות"
+        ]
+      }
+    },
+    {
+      "id": "jerusalem-custody-israel",
+      "base": "custody",
+      "applies_to": [
+        "tase_shares_bonds",
+        "etf_units",
+        "mutual_fund_units"
+      ],
+      "excludes": [
+        "makam",
+        "money_market_units"
+      ],
+      "excludes_rule_ids": [
+        "BRK-17",
+        "BANK-18"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.15,
+        "unit": "pct_of_balance_per_period",
+        "source": {
+          "url": "https://www.bankjerusalem.co.il/media/7012/%D7%A2%D7%95%D7%AA%D7%A7-%D7%A9%D7%9C-1759155996_2_%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F_%D7%9E%D7%9C%D7%90_%D7%9C%D7%99%D7%97%D7%99%D7%93_%D7%A2%D7%A1%D7%A7_%D7%A7%D7%98%D7%9F-1-1.pdf",
+          "title": "התעריפון המלא ליחיד / עסק קטן - בנק ירושלים, חלק 4 - ניירות ערך ('בתוקף מתאריך : 06/02/20217' כפי שמודפס), 4 (א) (5), הנסחרים בארץ",
+          "publisher": "Bank of Jerusalem Ltd.",
+          "strength": "institution",
+          "page": 6,
+          "quote": "לרבות יחידות השתתפות 0.15%לרבעון בקרנות נאמנות ₪ 10,000"
+        },
+        "checked": "2026-11-04",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16",
+          "BRK-17"
+        ],
+        "state": "sourced",
+        "notes": "'הנסחרים בארץ 0.15% לרבעון (10,000 ש\"ח מקסימום)'. Note (2): may not be charged on makam or on a money-market fund as defined in the 1994 assets regulations (recorded as excludes). Note (1): not charged on delisted securities (with the full-tender-offer exception). No minimum and no charging date are printed. The part's effective date is printed '06/02/20217', a misprint in the source; effective_from is left null rather than guessed. Re-read 2026-11-04: unchanged in part 4 and on the exchange's sheet (0.15% a quarter, 0.60% a year). What customers paid on average is far lower (left_out)."
+      },
+      "min": {
+        "value": null,
+        "unit": "nis",
+        "source": {
+          "url": "https://www.bankjerusalem.co.il/media/7012/%D7%A2%D7%95%D7%AA%D7%A7-%D7%A9%D7%9C-1759155996_2_%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F_%D7%9E%D7%9C%D7%90_%D7%9C%D7%99%D7%97%D7%99%D7%93_%D7%A2%D7%A1%D7%A7_%D7%A7%D7%98%D7%9F-1-1.pdf",
+          "title": "התעריפון המלא ליחיד / עסק קטן - בנק ירושלים, חלק 4 - ניירות ערך ('בתוקף מתאריך : 06/02/20217' כפי שמודפס), 4 (א) (5), הנסחרים בארץ, מינימום",
+          "publisher": "Bank of Jerusalem Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-11-04",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "No minimum is printed. The part's effective date is printed '06/02/20217', a misprint in the source; effective_from is left null rather than guessed."
+      },
+      "max": {
+        "value": 10000,
+        "unit": "nis",
+        "source": {
+          "url": "https://www.bankjerusalem.co.il/media/7012/%D7%A2%D7%95%D7%AA%D7%A7-%D7%A9%D7%9C-1759155996_2_%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F_%D7%9E%D7%9C%D7%90_%D7%9C%D7%99%D7%97%D7%99%D7%93_%D7%A2%D7%A1%D7%A7_%D7%A7%D7%98%D7%9F-1-1.pdf",
+          "title": "התעריפון המלא ליחיד / עסק קטן - בנק ירושלים, חלק 4 - ניירות ערך ('בתוקף מתאריך : 06/02/20217' כפי שמודפס), 4 (א) (5), הנסחרים בארץ, מקסימום",
+          "publisher": "Bank of Jerusalem Ltd.",
+          "strength": "institution",
+          "page": 6,
+          "quote": "לרבות יחידות השתתפות 0.15%לרבעון בקרנות נאמנות ₪ 10,000"
+        },
+        "checked": "2026-11-04",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'10,000 ש\"ח מקסימום' per quarter. The exchange's sheet (trading_fees, 'עדכון אחרון: 05/07/26') prints the ceiling as 'דמי ניהול/טיפול פקדון ני\"ע כללי - לפקדון ... 10,000.00 ₪ לרבעון', so it is per deposit. The part's effective date is printed '06/02/20217', a misprint in the source; effective_from is left null rather than guessed."
+      },
+      "period": "quarter",
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "דמי ניהול פקדון ניירות ערך (לרבות יחידות השתתפות בקרנות נאמנות)",
+          "הנסחרים בארץ"
+        ]
+      }
+    },
+    {
+      "id": "jerusalem-custody-foreign",
+      "base": "custody",
+      "applies_to": [
+        "foreign_securities"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.15,
+        "unit": "pct_of_balance_per_period",
+        "source": {
+          "url": "https://www.bankjerusalem.co.il/media/7012/%D7%A2%D7%95%D7%AA%D7%A7-%D7%A9%D7%9C-1759155996_2_%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F_%D7%9E%D7%9C%D7%90_%D7%9C%D7%99%D7%97%D7%99%D7%93_%D7%A2%D7%A1%D7%A7_%D7%A7%D7%98%D7%9F-1-1.pdf",
+          "title": "התעריפון המלא ליחיד / עסק קטן - בנק ירושלים, חלק 4 - ניירות ערך ('בתוקף מתאריך : 06/02/20217' כפי שמודפס), 4 (א) (5), הנסחרים בחוץ לארץ",
+          "publisher": "Bank of Jerusalem Ltd.",
+          "strength": "institution",
+          "page": 6,
+          "quote": "לארץ 0.15% לרבעון (10,000"
+        },
+        "checked": "2026-11-04",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'הנסחרים בחוץ לארץ 0.15% לרבעון (10,000 ש\"ח מקסימום)'; the same for securities not traded on an exchange. Part 4(ב)(4) also lists 'עמלת קסטודיאן 0.50% (50 ש\"ח מינימום 10,000 ש\"ח מקסימום)' without saying which holdings it applies to; not recorded as a line. The part's effective date is printed '06/02/20217', a misprint in the source; effective_from is left null rather than guessed. General terms s.145.11 (p.48): the customer also bears the fees of the bank's agents abroad, including for 'ארועי חברה' such as dividends, with no amount printed (left_out)."
+      },
+      "min": {
+        "value": null,
+        "unit": "nis",
+        "source": {
+          "url": "https://www.bankjerusalem.co.il/media/7012/%D7%A2%D7%95%D7%AA%D7%A7-%D7%A9%D7%9C-1759155996_2_%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F_%D7%9E%D7%9C%D7%90_%D7%9C%D7%99%D7%97%D7%99%D7%93_%D7%A2%D7%A1%D7%A7_%D7%A7%D7%98%D7%9F-1-1.pdf",
+          "title": "התעריפון המלא ליחיד / עסק קטן - בנק ירושלים, חלק 4 - ניירות ערך ('בתוקף מתאריך : 06/02/20217' כפי שמודפס), 4 (א) (5), הנסחרים בחוץ לארץ, מינימום",
+          "publisher": "Bank of Jerusalem Ltd.",
+          "strength": "institution"
+        },
+        "checked": "2026-11-04",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "No minimum is printed. The part's effective date is printed '06/02/20217', a misprint in the source; effective_from is left null rather than guessed."
+      },
+      "max": {
+        "value": 10000,
+        "unit": "nis",
+        "source": {
+          "url": "https://www.bankjerusalem.co.il/media/7012/%D7%A2%D7%95%D7%AA%D7%A7-%D7%A9%D7%9C-1759155996_2_%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F_%D7%9E%D7%9C%D7%90_%D7%9C%D7%99%D7%97%D7%99%D7%93_%D7%A2%D7%A1%D7%A7_%D7%A7%D7%98%D7%9F-1-1.pdf",
+          "title": "התעריפון המלא ליחיד / עסק קטן - בנק ירושלים, חלק 4 - ניירות ערך ('בתוקף מתאריך : 06/02/20217' כפי שמודפס), 4 (א) (5), הנסחרים בחוץ לארץ, מקסימום",
+          "publisher": "Bank of Jerusalem Ltd.",
+          "strength": "institution",
+          "page": 6,
+          "quote": "לארץ 0.15% לרבעון (10,000"
+        },
+        "checked": "2026-11-04",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-16"
+        ],
+        "state": "sourced",
+        "notes": "'10,000 ש\"ח מקסימום' per quarter, per deposit by the exchange's sheet ('כללי - לפקדון'). The part's effective date is printed '06/02/20217', a misprint in the source; effective_from is left null rather than guessed."
+      },
+      "period": "quarter",
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "דמי ניהול פקדון ניירות ערך (לרבות יחידות השתתפות בקרנות נאמנות)",
+          "הנסחרים בחוץ לארץ"
+        ]
+      }
+    },
+    {
+      "id": "jerusalem-transfer-out-same-client",
+      "base": "transfer_out",
+      "applies_to": [
+        "tase_shares_bonds",
+        "etf_units",
+        "mutual_fund_units",
+        "makam",
+        "money_market_units",
+        "foreign_securities"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 5,
+        "unit": "nis_per_transfer",
+        "source": {
+          "url": "https://www.bankjerusalem.co.il/media/7012/%D7%A2%D7%95%D7%AA%D7%A7-%D7%A9%D7%9C-1759155996_2_%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F_%D7%9E%D7%9C%D7%90_%D7%9C%D7%99%D7%97%D7%99%D7%93_%D7%A2%D7%A1%D7%A7_%D7%A7%D7%98%D7%9F-1-1.pdf",
+          "title": "התעריפון המלא ליחיד / עסק קטן - בנק ירושלים, חלק 4 - ניירות ערך ('בתוקף מתאריך : 06/02/20217' כפי שמודפס), 4 (א) (6), לחשבון אותו לקוח בגוף פיננסי אחר",
+          "publisher": "Bank of Jerusalem Ltd.",
+          "strength": "institution",
+          "page": 6,
+          "quote": "לחשבון אותו לקוח בגוף ₪ 5 להעברה"
+        },
+        "checked": "2026-11-04",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-18",
+          "SW-33"
+        ],
+        "state": "sourced",
+        "notes": "'5 ש\"ח (להעברה) (בפיקוח)', 'בתוספת הוצאות צד שלישי'. Note (2): on closing the account the transfer to the same client may not exceed 10 NIS for the portfolio plus third-party costs. Note (1): 'חשבון אותו לקוח' includes a joint account with a spouse. To another client's account: 0.25%, 40 NIS minimum, 200 NIS maximum per portfolio (not recorded). The part's effective date is printed '06/02/20217', a misprint in the source; effective_from is left null rather than guessed."
+      },
+      "min": null,
+      "max": null,
+      "period": null,
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "העברת ניירות ערך",
+          "לחשבון אותו לקוח בגוף פיננסי אחר"
+        ]
+      }
+    },
+    {
+      "id": "jerusalem-distribution-fee-type-1",
+      "base": "distribution_handling",
+      "applies_to": [
+        "mutual_fund_units"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.2,
+        "unit": "pct_of_balance_per_period",
+        "source": {
+          "url": "https://www.bankjerusalem.co.il/media/7012/%D7%A2%D7%95%D7%AA%D7%A7-%D7%A9%D7%9C-1759155996_2_%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F_%D7%9E%D7%9C%D7%90_%D7%9C%D7%99%D7%97%D7%99%D7%93_%D7%A2%D7%A1%D7%A7_%D7%A7%D7%98%D7%9F-1-1.pdf",
+          "title": "התעריפון המלא ליחיד / עסק קטן - בנק ירושלים, חלק 4 - ניירות ערך ('בתוקף מתאריך : 06/02/20217' כפי שמודפס), 4 (ב) (2), קרן מסוג 1",
+          "publisher": "Bank of Jerusalem Ltd.",
+          "strength": "institution",
+          "page": 7,
+          "quote": "קרן מסוג 1 0.20%"
+        },
+        "checked": "2026-11-04",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "MF-24",
+          "MF-26"
+        ],
+        "state": "sourced",
+        "notes": "Printed '0.20%' (cell 0.002) with no period word; the 2006 distribution-fee regulations set these as annual rates (MF-24), so period is year. Charged 'במקרים המותרים לפי תקנות השקעות משותפות בנאמנות (עמלת הפצה), התשס\"ו-2006' (MF-26). A type-2 fund is printed 'פטור'. The part's effective date is printed '06/02/20217', a misprint in the source; effective_from is left null rather than guessed."
+      },
+      "min": null,
+      "max": null,
+      "period": "year",
+      "channel": null,
+      "band": "קרן מסוג 1",
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "עמלת הפצה מרוכש יחידת השתתפות בקרן נאמנות",
+          "קרן מסוג 1"
+        ]
+      }
+    },
+    {
+      "id": "jerusalem-distribution-fee-type-3",
+      "base": "distribution_handling",
+      "applies_to": [
+        "mutual_fund_units"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.35,
+        "unit": "pct_of_balance_per_period",
+        "source": {
+          "url": "https://www.bankjerusalem.co.il/media/7012/%D7%A2%D7%95%D7%AA%D7%A7-%D7%A9%D7%9C-1759155996_2_%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F_%D7%9E%D7%9C%D7%90_%D7%9C%D7%99%D7%97%D7%99%D7%93_%D7%A2%D7%A1%D7%A7_%D7%A7%D7%98%D7%9F-1-1.pdf",
+          "title": "התעריפון המלא ליחיד / עסק קטן - בנק ירושלים, חלק 4 - ניירות ערך ('בתוקף מתאריך : 06/02/20217' כפי שמודפס), 4 (ב) (2), קרן מסוג 3",
+          "publisher": "Bank of Jerusalem Ltd.",
+          "strength": "institution",
+          "page": 7,
+          "quote": "קרן מסוג 3 0.35%"
+        },
+        "checked": "2026-11-04",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "MF-24",
+          "MF-26"
+        ],
+        "state": "sourced",
+        "notes": "Printed '0.35%' (cell 0.0035); period per MF-24 as for type 1. The part's effective date is printed '06/02/20217', a misprint in the source; effective_from is left null rather than guessed."
+      },
+      "min": null,
+      "max": null,
+      "period": "year",
+      "channel": null,
+      "band": "קרן מסוג 3",
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "עמלת הפצה מרוכש יחידת השתתפות בקרן נאמנות",
+          "קרן מסוג 3"
+        ]
+      }
+    },
+    {
+      "id": "jerusalem-distribution-fee-type-4",
+      "base": "distribution_handling",
+      "applies_to": [
+        "money_market_units"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.1,
+        "unit": "pct_of_balance_per_period",
+        "source": {
+          "url": "https://www.bankjerusalem.co.il/media/7012/%D7%A2%D7%95%D7%AA%D7%A7-%D7%A9%D7%9C-1759155996_2_%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F_%D7%9E%D7%9C%D7%90_%D7%9C%D7%99%D7%97%D7%99%D7%93_%D7%A2%D7%A1%D7%A7_%D7%A7%D7%98%D7%9F-1-1.pdf",
+          "title": "התעריפון המלא ליחיד / עסק קטן - בנק ירושלים, חלק 4 - ניירות ערך ('בתוקף מתאריך : 06/02/20217' כפי שמודפס), 4 (ב) (2), קרן מסוג 4",
+          "publisher": "Bank of Jerusalem Ltd.",
+          "strength": "institution",
+          "page": 7,
+          "quote": "קרן מסוג 4 0.10%"
+        },
+        "checked": "2026-11-04",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "MF-24",
+          "MF-26"
+        ],
+        "state": "sourced",
+        "notes": "Printed '0.10%' (cell 0.001); period per MF-24 as for type 1. The part's effective date is printed '06/02/20217', a misprint in the source; effective_from is left null rather than guessed."
+      },
+      "min": null,
+      "max": null,
+      "period": "year",
+      "channel": null,
+      "band": "קרן מסוג 4",
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "עמלת הפצה מרוכש יחידת השתתפות בקרן נאמנות",
+          "קרן מסוג 4"
+        ]
+      }
+    },
+    {
+      "id": "jerusalem-fx-conversion",
+      "base": "fx",
+      "applies_to": [
+        "all"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.2,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.bankjerusalem.co.il/media/7012/%D7%A2%D7%95%D7%AA%D7%A7-%D7%A9%D7%9C-1759155996_2_%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F_%D7%9E%D7%9C%D7%90_%D7%9C%D7%99%D7%97%D7%99%D7%93_%D7%A2%D7%A1%D7%A7_%D7%A7%D7%98%D7%9F-1-1.pdf",
+          "title": "התעריפון המלא ליחיד / עסק קטן - בנק ירושלים, חלק 5 - מטבע חוץ ('בתוקף מתאריך: 20/06/2021'), 5 (1) עמלת חליפין, ממט\"ח לשקלים ולהיפך",
+          "publisher": "Bank of Jerusalem Ltd.",
+          "strength": "institution",
+          "page": 7,
+          "quote": "ממט\"ח ל ₪ולהיפך $ 6.7 0.20% מינימום2,750"
+        },
+        "checked": "2026-11-04",
+        "effective_from": "2021-06-20",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-23"
+        ],
+        "state": "sourced",
+        "notes": "'0.20% (6.7 $ מינימום, 2,750 $ מקסימום)'. No channel split in part 5. The spread is not printed (BRK-23). Re-read 2026-11-04: part 5 unchanged. The combined file's annex E ('15/07/2025', p.20) prints 'אינטרנט / אפליקציה' 0.18% (6$ minimum, 2,730$ maximum); annex E as its own file, dated 08/06/2026 and the newest, prints no conversion row. Part 5's 0.20% is the most the documents allow."
+      },
+      "min": {
+        "value": 6.7,
+        "unit": "usd",
+        "source": {
+          "url": "https://www.bankjerusalem.co.il/media/7012/%D7%A2%D7%95%D7%AA%D7%A7-%D7%A9%D7%9C-1759155996_2_%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F_%D7%9E%D7%9C%D7%90_%D7%9C%D7%99%D7%97%D7%99%D7%93_%D7%A2%D7%A1%D7%A7_%D7%A7%D7%98%D7%9F-1-1.pdf",
+          "title": "התעריפון המלא ליחיד / עסק קטן - בנק ירושלים, חלק 5 - מטבע חוץ ('בתוקף מתאריך: 20/06/2021'), 5 (1) עמלת חליפין, ממט\"ח לשקלים ולהיפך, מינימום",
+          "publisher": "Bank of Jerusalem Ltd.",
+          "strength": "institution",
+          "page": 7,
+          "quote": "ממט\"ח ל ₪ולהיפך $ 6.7 0.20% מינימום2,750"
+        },
+        "checked": "2026-11-04",
+        "effective_from": "2021-06-20",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-23"
+        ],
+        "state": "sourced",
+        "notes": "'6.7 $ מינימום'."
+      },
+      "max": {
+        "value": 2750,
+        "unit": "usd",
+        "source": {
+          "url": "https://www.bankjerusalem.co.il/media/7012/%D7%A2%D7%95%D7%AA%D7%A7-%D7%A9%D7%9C-1759155996_2_%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F_%D7%9E%D7%9C%D7%90_%D7%9C%D7%99%D7%97%D7%99%D7%93_%D7%A2%D7%A1%D7%A7_%D7%A7%D7%98%D7%9F-1-1.pdf",
+          "title": "התעריפון המלא ליחיד / עסק קטן - בנק ירושלים, חלק 5 - מטבע חוץ ('בתוקף מתאריך: 20/06/2021'), 5 (1) עמלת חליפין, ממט\"ח לשקלים ולהיפך, מקסימום",
+          "publisher": "Bank of Jerusalem Ltd.",
+          "strength": "institution",
+          "page": 7,
+          "quote": "ממט\"ח ל ₪ולהיפך $ 6.7 0.20% מינימום2,750"
+        },
+        "checked": "2026-11-04",
+        "effective_from": "2021-06-20",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-23"
+        ],
+        "state": "sourced",
+        "notes": "'2,750 $ מקסימום'."
+      },
+      "period": null,
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "עמלת חליפין",
+          "ממט\"ח לשקלים ולהיפך"
+        ]
+      },
+      "spread": {
+        "value": null,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.bankjerusalem.co.il/media/2932/%D7%AA%D7%A0%D7%90%D7%99%D7%9D-%D7%9B%D7%9C%D7%9C%D7%99%D7%99%D7%9D-%D7%9C%D7%A0%D7%99%D7%94%D7%95%D7%9C-%D7%97%D7%A9%D7%91%D7%95%D7%9F-%D7%9E%D7%95%D7%A0%D7%92%D7%A9.pdf",
+          "title": "הסכם תנאים כלליים לפתיחת חשבון 73813, מהדורת ינואר 2024, ס' 145.12, עמ' 48",
+          "publisher": "Bank of Jerusalem Ltd.",
+          "strength": "institution",
+          "page": 48,
+          "quote": "לפי שער החליפין הגבוה ביותר שבו הבנק מוכר המחאות הנקובות במטבע החוץ הנ\"ל לציבור"
+        },
+        "checked": "2026-11-04",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-23"
+        ],
+        "state": "sourced",
+        "notes": "Not limited by the documents. For foreign securities the bank buys the currency 'לפי שער החליפין הגבוה ביותר שבו הבנק מוכר המחאות הנקובות במטבע החוץ הנ\"ל לציבור (בתוספת כל עמלות הרכישה של מטבע החוץ כמקובל בבנק)', on the day of purchase, the day payment is due or the day paid, 'הכל לפי השער הגבוה' (s.145.12); proceeds are converted at the lowest cheque-buying rate (s.145.13). The bank sets those rates; no document limits their distance from the representative rate (BRK-23). Library 43f36f509e83fcf3, p.48, checked on the page image."
+      }
+    },
+    {
+      "id": "jerusalem-fx-conversion-fx-to-fx",
+      "base": "fx",
+      "applies_to": [
+        "all"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.4,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.bankjerusalem.co.il/media/7012/%D7%A2%D7%95%D7%AA%D7%A7-%D7%A9%D7%9C-1759155996_2_%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F_%D7%9E%D7%9C%D7%90_%D7%9C%D7%99%D7%97%D7%99%D7%93_%D7%A2%D7%A1%D7%A7_%D7%A7%D7%98%D7%9F-1-1.pdf",
+          "title": "התעריפון המלא ליחיד / עסק קטן - בנק ירושלים, חלק 5 - מטבע חוץ ('בתוקף מתאריך: 20/06/2021'), 5 (1) עמלת חליפין, ממט\"ח למט\"ח",
+          "publisher": "Bank of Jerusalem Ltd.",
+          "strength": "institution",
+          "page": 7,
+          "quote": "ממט\"ח למט\"ח $ 13.4 0.40% מינימום5,500"
+        },
+        "checked": "2026-11-04",
+        "effective_from": "2021-06-20",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-23"
+        ],
+        "state": "sourced",
+        "notes": "'0.40% (13.4 $ מינימום, 5,500 $ מקסימום)'."
+      },
+      "min": {
+        "value": 13.4,
+        "unit": "usd",
+        "source": {
+          "url": "https://www.bankjerusalem.co.il/media/7012/%D7%A2%D7%95%D7%AA%D7%A7-%D7%A9%D7%9C-1759155996_2_%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F_%D7%9E%D7%9C%D7%90_%D7%9C%D7%99%D7%97%D7%99%D7%93_%D7%A2%D7%A1%D7%A7_%D7%A7%D7%98%D7%9F-1-1.pdf",
+          "title": "התעריפון המלא ליחיד / עסק קטן - בנק ירושלים, חלק 5 - מטבע חוץ ('בתוקף מתאריך: 20/06/2021'), 5 (1) עמלת חליפין, ממט\"ח למט\"ח, מינימום",
+          "publisher": "Bank of Jerusalem Ltd.",
+          "strength": "institution",
+          "page": 7,
+          "quote": "ממט\"ח למט\"ח $ 13.4 0.40% מינימום5,500"
+        },
+        "checked": "2026-11-04",
+        "effective_from": "2021-06-20",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-23"
+        ],
+        "state": "sourced",
+        "notes": "'13.4 $ מינימום'."
+      },
+      "max": {
+        "value": 5500,
+        "unit": "usd",
+        "source": {
+          "url": "https://www.bankjerusalem.co.il/media/7012/%D7%A2%D7%95%D7%AA%D7%A7-%D7%A9%D7%9C-1759155996_2_%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F_%D7%9E%D7%9C%D7%90_%D7%9C%D7%99%D7%97%D7%99%D7%93_%D7%A2%D7%A1%D7%A7_%D7%A7%D7%98%D7%9F-1-1.pdf",
+          "title": "התעריפון המלא ליחיד / עסק קטן - בנק ירושלים, חלק 5 - מטבע חוץ ('בתוקף מתאריך: 20/06/2021'), 5 (1) עמלת חליפין, ממט\"ח למט\"ח, מקסימום",
+          "publisher": "Bank of Jerusalem Ltd.",
+          "strength": "institution",
+          "page": 7,
+          "quote": "ממט\"ח למט\"ח $ 13.4 0.40% מינימום5,500"
+        },
+        "checked": "2026-11-04",
+        "effective_from": "2021-06-20",
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-23"
+        ],
+        "state": "sourced",
+        "notes": "'5,500 $ מקסימום'."
+      },
+      "period": null,
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "עמלת חליפין",
+          "ממט\"ח למט\"ח"
+        ]
+      },
+      "spread": {
+        "value": null,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.bankjerusalem.co.il/media/2932/%D7%AA%D7%A0%D7%90%D7%99%D7%9D-%D7%9B%D7%9C%D7%9C%D7%99%D7%99%D7%9D-%D7%9C%D7%A0%D7%99%D7%94%D7%95%D7%9C-%D7%97%D7%A9%D7%91%D7%95%D7%9F-%D7%9E%D7%95%D7%A0%D7%92%D7%A9.pdf",
+          "title": "הסכם תנאים כלליים לפתיחת חשבון 73813, מהדורת ינואר 2024, ס' 145.12, עמ' 48",
+          "publisher": "Bank of Jerusalem Ltd.",
+          "strength": "institution",
+          "page": 48,
+          "quote": "לפי שער החליפין הגבוה ביותר שבו הבנק מוכר המחאות הנקובות במטבע החוץ הנ\"ל לציבור"
+        },
+        "checked": "2026-11-04",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-23"
+        ],
+        "state": "sourced",
+        "notes": "Not limited by the documents. For foreign securities the bank buys the currency 'לפי שער החליפין הגבוה ביותר שבו הבנק מוכר המחאות הנקובות במטבע החוץ הנ\"ל לציבור (בתוספת כל עמלות הרכישה של מטבע החוץ כמקובל בבנק)', on the day of purchase, the day payment is due or the day paid, 'הכל לפי השער הגבוה' (s.145.12); proceeds are converted at the lowest cheque-buying rate (s.145.13). The bank sets those rates; no document limits their distance from the representative rate (BRK-23). Library 43f36f509e83fcf3, p.48, checked on the page image."
+      }
+    }
+  ],
+  "averages": [],
+  "minimums": {
+    "account_opening": null
+  },
+  "notice_rule_ids": [
+    "BRK-21",
+    "BRK-20"
+  ],
+  "availability": [
+    {
+      "applies_to": [
+        "mutual_fund_units",
+        "etf_units"
+      ],
+      "available": true,
+      "source": {
+        "url": "https://www.bankjerusalem.co.il/media/7012/%D7%A2%D7%95%D7%AA%D7%A7-%D7%A9%D7%9C-1759155996_2_%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F_%D7%9E%D7%9C%D7%90_%D7%9C%D7%99%D7%97%D7%99%D7%93_%D7%A2%D7%A1%D7%A7_%D7%A7%D7%98%D7%9F-1-1.pdf",
+        "title": "התעריפון המלא ליחיד / עסק קטן - בנק ירושלים (20 עמ'): חלק 4 - ניירות ערך ('בתוקף מתאריך : 06/02/20217' כפי שמודפס, כנראה",
+        "checked": "2026-11-04",
+        "page": 7,
+        "quote": "אך לרבות \"קרן מחקה\""
+      }
+    },
+    {
+      "applies_to": [
+        "foreign_securities"
+      ],
+      "available": true,
+      "source": {
+        "url": "https://www.bankjerusalem.co.il/media/7012/%D7%A2%D7%95%D7%AA%D7%A7-%D7%A9%D7%9C-1759155996_2_%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F_%D7%9E%D7%9C%D7%90_%D7%9C%D7%99%D7%97%D7%99%D7%93_%D7%A2%D7%A1%D7%A7_%D7%A7%D7%98%D7%9F-1-1.pdf",
+        "title": "התעריפון המלא ליחיד / עסק קטן - בנק ירושלים (20 עמ'): חלק 4 - ניירות ערך ('בתוקף מתאריך : 06/02/20217' כפי שמודפס, כנראה",
+        "checked": "2026-11-04",
+        "page": 6,
+        "quote": "מניות ,אגרות חוב וקרנות"
+      }
+    }
+  ],
+  "price_for_he": "לקוח רגיל, בלי הטבה לקבוצה",
+  "left_out": [
+    {
+      "what": "הוצאות צד ג' בחו\"ל (חלק 11, 16/09/2026): ברוקר בארה\"ב 'אג\"ח ומניות - לפי חיוב בפועל ועד למקסימום 3% מהעסקה'; ביתר השווקים עד 50$ ליחידה, 'פעילות בקרנות –לפי חיוב בפועל ועד מקסימום 3% מהעסקה'; בנק קורספונדנט 'לפי חיוב בפועל אך לא יותר מ 100 $'; נתוני זמן אמת של בורסות חו\"ל לפי מחירון Interactive Brokers",
+      "why": "Printed for every customer abroad (part 11, library 593f6863c419627e; change notice of 16/09/2026, library 12ce26124d18f424, which replaced a broker cost of 0.015$ a share, 10$ minimum, 0.25% maximum). The amounts are what the broker charges, with a ceiling of 3% of the trade for US shares and for funds elsewhere. General terms s.145.11 (p.48) add the agents' fees for corporate events such as dividends, with no amount. Not priced: no record prices third-party costs (a decision for the lead, as for FIBI, Hapoalim and Mizrahi-Tefahot)."
+    },
+    {
+      "what": "עמלת קסטודיאן 0.50% (50 ש\"ח מינימום 10,000 ש\"ח מקסימום), חלק 4 (ב)(4)",
+      "why": "Part 4, special services (PDF p.7). What it is charged on is not printed. Not priced, as at Hapoalim, Leumi, Mizrahi-Tefahot and Meitav Trade."
+    },
+    {
+      "what": "הוצאות צד ג' - תשלומים לבורסה לניירות ערך בתל-אביב, 'מחירון הבורסה': חבילות מידע (מניות, המירים ותעודות סל; נגזרים; מלאה)",
+      "why": "Part 11 row (6) passes on the exchange's data packages at the exchange's prices; nothing printed says an ordinary customer's trading screen needs one. Not priced."
+    },
+    {
+      "what": "עמלת חליפין באינטרנט / אפליקציה 0.18% (6$ מינימום, 2,730$ מקסימום)",
+      "why": "Printed only in the combined file's annex E ('15/07/2025', p.20). Annex E as its own file, dated 08/06/2026 and the newest, has no conversion row, so the conversion is priced at part 5's 0.20% with its 6.7$ minimum."
+    },
+    {
+      "what": "חשבון עובר ושב: עמלה חודשית קבועה בגובה פעולה אחת על ידי פקיד, 9.5 ₪ (בפיקוח); פעולה בערוץ ישיר ללא עמלה",
+      "why": "The securities account rests on a current account. Part 1 ('16/09/2026', library 77f184a3692d1322), items (2), (3) and track (ג): 'הבנק יגבה אך ורק עמלת מינימום בסכום קבוע בגובה עמלת פעולה אחת ע\"י פקיד, זאת ללא תלות בכמות הפעולות ובכלל זה גם אם לא בוצעו כלל', that is 9.5 NIS a month (114 NIS a year). No bank's record prices the current account yet; a decision for all banks at once."
+    },
+    {
+      "what": "עמלות ממוצעות בפועל, ינואר-יוני 2026: דמי ניהול ני\"ע ישראליים וזרים 0.08%-0.15% לשנה; קנייה ומכירה של מניות ואג\"ח 0.07%-0.38%, ני\"ע זרים 0.04%-0.19%",
+      "why": "What customers paid on average by portfolio size (the exchange's sheet, '01/01/26 - 30/06/26', and the bank's own page giluy-sherutim, library 6224e310f339a21f, which labels the same figures January to July 2026): a sourced fact, not a price. The list price is 0.60% a year."
+    }
+  ],
+  "groups": {
+    "state": "none_on_securities",
+    "note": "Annex A as its own file ('בתוקף מתאריך:30/09/2025', library eb94da01b1373635, 7 pages) and in the combined file (pp.15-18) re-read 2026-11-04: it lists only holders of prepaid cards issued under arrangements with employers or marketers (salary cards, 019 Monox, WorldCom Finance, Credit24, Shufersal S.Card). No young, soldier or student group and no securities row.",
+    "read": [
+      {
+        "url": "https://www.bankjerusalem.co.il/media/7012/%D7%A2%D7%95%D7%AA%D7%A7-%D7%A9%D7%9C-1759155996_2_%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F_%D7%9E%D7%9C%D7%90_%D7%9C%D7%99%D7%97%D7%99%D7%93_%D7%A2%D7%A1%D7%A7_%D7%A7%D7%98%D7%9F-1-1.pdf",
+        "title": "תעריפון מלא, נספח א'"
+      },
+      {
+        "url": "https://www.bankjerusalem.co.il/media/6575/1759219213_%D7%A0%D7%A1%D7%A4%D7%97_%D7%90_%D7%94%D7%98%D7%91%D7%95%D7%AA_%D7%9C%D7%A7%D7%91%D7%95%D7%A6%D7%95%D7%AA_%D7%90%D7%95%D7%9B%D7%9C%D7%95%D7%A1%D7%99%D7%99%D7%94_.pdf",
+        "title": "נספח א' - הטבות לקבוצות אוכלוסייה (קובץ נפרד, 30/09/2025)"
+      }
+    ],
+    "entries": []
+  }
+}

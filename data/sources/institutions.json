@@ -466,22 +466,6 @@
     ]
   },
   {
-    "id": "fair",
-    "name_he": "פייר",
-    "kind": "broker",
-    "scope_names": [
-      {
-        "name": "Fair"
-      }
-    ],
-    "cma_legal_id": null,
-    "fees_id": "fair",
-    "deposit_bank_id": null,
-    "own_hosts": [
-      "fair.co.il"
-    ]
-  },
-  {
     "id": "interactive-israel",
     "name_he": "אינטראקטיב ישראל",
     "kind": "foreign-broker",

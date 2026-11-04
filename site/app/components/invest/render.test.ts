@@ -210,10 +210,6 @@ describe("no price on what no document says can be done (2026-10-31)", () => {
     const uk = view.options.find((o) => o.id === "abroad")!.funds.find((f) => /UCITS/.test(f.rec.names.en[0] ?? ""));
     if (uk) expect("valueN" in uk.byHouse["one-zero"]!).toBe(false);
   });
-  it("Fair still prices tracking funds and no ETF", () => {
-    for (const x of at("il-tracking", "fair")) expect("valueN" in x).toBe(true);
-    for (const x of at("il-etf", "fair")) expect("availability" in x && x.availability).toBeTruthy();
-  });
 });
 
 describe("hedged or not: what happened (F-95, founder 2026-10-31)", () => {
