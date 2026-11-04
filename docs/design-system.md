@@ -235,6 +235,7 @@ Formatting always goes through `Intl` with `he-IL`; never hand-built strings, an
 | Kind | Form | Notes |
 |---|---|---|
 | Shekel amount | `1,234.50 ₪` | `Intl.NumberFormat('he-IL', { style: 'currency', currency: 'ILS' })`; comma thousands, point decimals; precision per method §13, display rounding below (2026-10-24, UX audit) |
+| Dollar amount | `7.00 $`, a price per share `0.0035 $` | `Intl.NumberFormat('he-IL', { style: 'currency', currency: 'USD' })`, two decimals, up to four for a price per share (units `usd`, `usd_per_trade`, `usd_per_share`; 2026-11-04: until then a dollar figure showed as a bare number) |
 | Percent | `1.05%` | data stores percent numbers (`1.05` means 1.05%), so divide by 100 for `style: 'percent'` |
 | Date | `22.10.2026` | day first, dots, `day: '2-digit', month: '2-digit', year: 'numeric'`; never ISO or a slash form on the page |
 | Report period | `ספטמבר 2026` | `month: 'long', year: 'numeric'` |
