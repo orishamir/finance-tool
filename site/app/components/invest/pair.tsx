@@ -316,6 +316,8 @@ function GroupLine({ id, house, snapshots, open, onOpen }: { id: string; house: 
 
 /** What the account card says of its house, under its name: what it charges, its labels and its price list. */
 function HouseLine({ house, snapshot, charge }: { house: NonNullable<ReturnType<typeof providerName>>; snapshot: WorkbenchBundle["snapshots"][number] | undefined; charge: ReactNode }) {
+  // the house's account on your own terms opens from here, the chosen account's card, not from a line on every row (founder, 2026-11-04);
+  // a 44 px target that takes no more height than the words beside it
   return (
     <span className="flex flex-wrap items-center content-start gap-x-4 gap-y-1 text-sm">
       {/* on a phone the charge has its own line, so a longer figure does not push the words beside it to another line */}
@@ -325,9 +327,14 @@ function HouseLine({ house, snapshot, charge }: { house: NonNullable<ReturnType<
         <StateTag state="entered" />
       ) : (
         snapshot && (
-          <a href={snapshot.tariff.url} target="_blank" rel="noopener noreferrer" title={snapshot.tariff.title} className="text-link hover:underline">
-            {c.pair.tariff} ↗
-          </a>
+          <>
+            <a href={snapshot.tariff.url} target="_blank" rel="noopener noreferrer" title={snapshot.tariff.title} className="text-link hover:underline">
+              {c.pair.tariff} ↗
+            </a>
+            <OwnAccountButton houseId={house.id} house={house.short} className="-mx-2 -my-2.5">
+              {c.pair.ownPrice}
+            </OwnAccountButton>
+          </>
         )
       )}
     </span>
@@ -405,7 +412,6 @@ export function AccountColumn({ view, bundle, years, pick, onPick }: { view: Inv
             <Num animate value={r.at.value} />
           </span>
           <GroupLine id={r.p.id} house={r.p.short} snapshots={bundle.snapshots} open={openGroups.includes(r.p.id)} onOpen={onGroup} />
-          {!r.p.custom && <span className="col-start-2 col-end-[-1] flex"><OwnAccountButton houseId={r.p.id} house={r.p.short} /></span>}
           {r.p.custom && <span className="col-start-2 col-end-[-1]"><BrokerTerms id={r.p.id} /></span>}
         </>
       ),

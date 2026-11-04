@@ -17,7 +17,7 @@ import { isoToday } from "../../lib/state";
 import { computed, entered, type SiteValue } from "../../lib/value";
 import { withCustomEntries } from "../../lib/custom-entries";
 import { Num, StateTag } from "../provenance";
-import { Button, Callout, ChartLegend, CostStack, DocLink, FieldState, flushPendingFields, NumberField, percentCheck, PeriodStrip, SelectField, StatRow, StatTile, Swatch, TextField, atPdfPage, useChartPick, type CostPart } from "../kit";
+import { Button, Callout, ChartLegend, CostStack, DocLink, FieldState, flushPendingFields, NumberField, percentCheck, PeriodStrip, SelectField, StatRow, StatTile, Swatch, TextField, atPdfPage, useChartPick, cx, type CostPart } from "../kit";
 import { Actions, EditButton, isInvalid, nisCheck, useDraft, useEditors, type PanelWorld } from "./editors";
 
 const c = root.customEntries;
@@ -398,11 +398,11 @@ const num = (v: { value: unknown } | null): number | null => (v && typeof v.valu
 // ---------------------------------------------------------------- the buttons and the row
 
 /** The button on a house's row (and in a group's sub-row): opens the panel on the house's price list, or on that group. */
-export function OwnAccountButton({ houseId, house, from = "list", children }: { houseId: string; house: string; from?: string; children?: ReactNode }) {
+export function OwnAccountButton({ houseId, house, from = "list", children, className = "self-start -ms-2" }: { houseId: string; house: string; from?: string; children?: ReactNode; className?: string }) {
   const e = useEditors();
   if (!e?.world || !e.world.wb.snapshots.some((s) => s.id === houseId)) return null;
   return (
-    <Button variant="quiet" className="self-start -ms-2 text-sm" onClick={() => e.openOwn(houseId, from)}>
+    <Button variant="quiet" className={cx("text-sm", className)} onClick={() => e.openOwn(houseId, from)}>
       {children ?? root.ownAccount.open(house)}
     </Button>
   );

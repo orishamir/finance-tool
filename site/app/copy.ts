@@ -3304,7 +3304,7 @@ export const invest = {
     placeAbout: (of: number) => `המקום בין ${of} חשבונות, לפי מה שנשאר בסוף`,
     differenceAbout: "מה שנשאר בחשבון שלכם פחות מה שנשאר בחשבון לפי התעריפון של אותו בית, באותה קרן",
     decidingAbout: (line: string) => `ההפרש בין התעריפון לחשבון שלכם: ${line}`,
-    /** The button on a house's row in the comparison, and the link on a house's page (2026-11-04). */
+    /** The link on a house's page (2026-11-04); in the comparison the chosen account's card opens it (`pair.ownPrice`). */
     open: (house: string) => `חשבון בתנאים שלכם, על בסיס ${house}`,
     panel: {
       title: (house: string) => `${house}, בתנאים שלכם`,
@@ -3655,6 +3655,8 @@ export const invest = {
     colCharges: (years: number) => `מה החשבון גובה ב־${years} שנים`,
     colChargesShort: "מה החשבון גובה",
     tariff: "התעריפון",
+    /** On the chosen account's card, beside its price list: opens the house's account on your own terms (founder, 2026-11-04: one link, not a line on every row). */
+    ownPrice: "קיבלתם מחיר אחר? הזינו אותו",
     colLeft: "נשאר",
     colFund: "קרן",
     colNumber: "מספר נייר",
