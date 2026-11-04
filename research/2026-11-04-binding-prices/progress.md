@@ -12,9 +12,11 @@ Out of scope: meitav (מיטב גמל ופנסיה) and phoenix: provident manag
 | 2 | fibi, massad | done; standing order to branch rate (ranking change) |
 | 3 | hapoalim | done, no price moved |
 | 4 | mizrahi-tefahot | done, no ranked price moved |
-| 5 | jerusalem | |
+| 5 | jerusalem | done, no price moved |
 | 6 | yahav | |
 | 7 | excellence | |
 | 8 | interactive-israel, interactive-brokers | |
 
 Open from round 1: the founder was asked (not yet answered) whether to add a line on rows whose advertising the price list contradicts (Psagot, IBI, Altshuler, Meitav Trade). Issues 178, 179 (you decide), 180.
+
+After round 2: build issue (indices page block on advertising vs price lists, D57) with one builder, then push. Founder 2026-11-04: no caveat on each row; existing D43 group lines on rows not discussed, keep them.
