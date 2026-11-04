@@ -1,0 +1,163 @@
+<!doctype html><html lang="he" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>חשבון בתנאים שלכם: שרטוט</title><style>
+:root{--bg:oklch(.17 .004 80);--fg:oklch(.955 .005 80);--card:oklch(.2 .005 80);--pop:oklch(.235 .006 80);--muted:oklch(.82 .008 80);--dim:oklch(.7 .009 80);--border:oklch(.27 .007 80);--input:oklch(.5 .01 80);--primary:oklch(.82 .081 190);--computed:oklch(.73 .168 302);--entered:oklch(.82 .088 262);--entered-bg:oklch(.24 .09 262);--caution:oklch(.73 .149 70);--trade:oklch(.64 .174 48);--custody:oklch(.84 .17 85);--fixed:oklch(.64 .2 27);--other:oklch(.58 .01 80);color-scheme:dark}
+*{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--fg)}
+body{font-family:Inter,Heebo,system-ui,sans-serif;font-size:16px;line-height:1.7;font-variant-numeric:tabular-nums}
+.doc{max-width:1240px;margin:0 auto;padding:32px;display:flex;flex-direction:column;gap:56px}
+h1{font-size:30px;line-height:1.25;margin:0;font-weight:700}h2{font-size:24px;margin:0;font-weight:600;line-height:1.3}h3{font-size:18px;margin:0;font-weight:600;line-height:1.4}p{margin:0}
+.muted{color:var(--muted)}.xs{font-size:13px;line-height:1.5}.sm{font-size:14px;line-height:1.6}
+.n{unicode-bidi:isolate;direction:ltr;white-space:nowrap;display:inline-block}
+.s{border-bottom:1.5px solid var(--dim)}.c{border-bottom:1.5px dotted var(--computed)}
+.e{color:var(--entered);background:var(--entered-bg);border-radius:3px;padding:0 3px}
+.madeup{outline:1.5px dashed var(--caution);outline-offset:2px}
+.tagx{display:inline-block;font-size:13px;font-weight:600;padding:1px 10px;border-radius:999px;border:1px solid var(--primary);color:var(--primary)}
+.chip{display:inline-block;font-size:12px;font-weight:500;padding:0 6px;border-radius:4px;background:oklch(.27 .007 80);color:var(--fg);white-space:nowrap}
+.opt{display:flex;flex-direction:column;gap:14px}.opt-h{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.page{border:1px solid oklch(.4 .009 80);border-radius:14px;background:var(--bg);overflow:hidden;position:relative}
+.dim{opacity:.35}
+.cmp{padding:16px 20px;display:flex;flex-direction:column}
+.row{display:grid;grid-template-columns:36px minmax(0,1fr) 150px 120px;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--border)}
+.row .rk{text-align:center;color:var(--muted);font-size:14px}.row .nm{font-weight:600;line-height:1.3}.row .val{font-weight:600;text-align:left}
+.row .ln{grid-column:2/-1;font-size:13px;color:var(--muted)}
+.bar{height:10px;border-radius:2px;display:flex;overflow:hidden;direction:ltr;background:oklch(.235 .006 80)}
+.bar span{display:block;height:100%}
+.sheet{position:absolute;inset:0 auto 0 0;width:600px;background:var(--pop);border-inline-start:1px solid oklch(.4 .009 80);padding:22px 24px;display:flex;flex-direction:column;gap:16px}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.stat{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:8px 12px;display:flex;flex-direction:column}
+.stat b{font-size:20px;font-weight:600;line-height:1.35}.stat span{font-size:13px;color:var(--muted)}
+table{border-collapse:collapse;width:100%;table-layout:fixed}th{font-size:13px;color:var(--muted);font-weight:500;text-align:start;padding:6px 6px;border-bottom:1px solid var(--border);vertical-align:bottom}
+td{font-size:14px;padding:9px 6px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.45}
+.field{display:inline-flex;align-items:center;gap:4px;border:1px solid var(--input);border-radius:6px;padding:2px 8px;min-height:36px;background:var(--bg)}
+.field.ch{border-color:var(--entered)}.field.ch .v{color:var(--entered)}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 18px;border-radius:8px;font-weight:600;font-size:15px}
+.btn.p{background:var(--primary);color:oklch(.17 .004 80)}.btn.g{border:1px solid var(--input)}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:13px;color:var(--muted)}.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-inline-end:4px;vertical-align:-1px}
+.note{border-inline-start:3px solid var(--primary);padding:6px 12px;background:var(--card);border-radius:0 8px 8px 0;font-size:14px}
+.cols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
+.phone{width:390px;border:1px solid oklch(.4 .009 80);border-radius:18px;background:var(--pop);padding:16px;display:flex;flex-direction:column;gap:12px}
+.fee{border-bottom:1px solid var(--border);padding:8px 0;display:flex;flex-direction:column;gap:4px}
+</style></head><body><div class="doc">
+
+<div style="display:flex;flex-direction:column;gap:10px">
+<h1>חשבון בתנאים שלכם, על בסיס בית השקעות קיים</h1>
+<p class="muted">שרטוט, 4.11.2026. אקסלנס במדד S&amp;P 500, קרן <span class="n">ילין לפידות מחקה (4D) S&amp;P 500 (5139282)</span>. תוכנית העמוד: <span class="n">10,000 ₪</span> עכשיו ו־<span class="n">500 ₪</span> לחודש, 10 שנים, תשואה 7%, אינפלציה 2%. כל סכום חושב בחישוב של האתר. המחירון ומה שהלקוחות שילמו מהמקורות שנאספו.</p>
+<p class="sm"><span class="madeup" style="padding:0 4px">מסגרת כתומה מקווקוות</span> = ערך שהומצא לדוגמה: העסקה שאדם השיג (דמי טיפול 0 ₪, דמי משמרת 0.05% לשנה בלי מינימום). קו אפור = ממקור, קו סגול מנוקד = מחושב, כחול = הזנתם.</p>
+</div>
+
+<!-- ================= OPTION A ================= -->
+<section class="opt">
+<div class="opt-h"><h2>א · חלונית עריכה: מחירון, ממוצע ושלכם, בטבלה אחת</h2><span class="tagx">מומלץ</span></div>
+<p class="muted sm">כפתור בשורה של אקסלנס, ובעמוד שלה: ״חשבון בתנאים שלכם, על בסיס אקסלנס״. החלונית נפתחת מעל ההשוואה. כל עמלה מתחילה במחיר שבמחירון, ומשנים רק את מה שקיבלתם. למעלה ובפס העלויות רואים מיד מה זה שווה ואיזו עמלה מכריעה.</p>
+<div class="page" style="height:1010px">
+ <div class="cmp dim" style="padding-inline-end:640px">
+  <div class="row"><span class="rk">1</span><span class="nm">פסגות</span><span class="xs muted">1,057 ₪</span><span class="val">86,492 ₪</span></div>
+  <div class="row"><span class="rk">2</span><span class="nm">לאומי</span><span class="xs muted">4,541 ₪</span><span class="val">83,396 ₪</span></div>
+  <div class="row"><span class="rk">3</span><span class="nm">וואן זירו</span><span class="xs muted">4,544 ₪</span><span class="val">83,141 ₪</span></div>
+  <div class="row"><span class="rk">…</span><span class="nm"></span><span></span><span></span></div>
+  <div class="row"><span class="rk">14</span><span class="nm">אקסלנס</span><span class="xs muted">26,827 ₪</span><span class="val">63,678 ₪</span></div>
+ </div>
+ <div class="sheet">
+  <div style="display:flex;flex-direction:column;gap:4px"><h3>אקסלנס, בתנאים שלכם</h3><p class="sm muted">מתחילים מהמחירון של אקסלנס. שנו רק את מה שקיבלתם, וכל השאר נשאר לפי המחירון. החשבון נשמר רק במכשיר הזה.</p></div>
+  <div class="stats">
+   <div class="stat"><span>נשאר אחרי 10 שנים</span><b class="n c">85,436 ₪</b></div>
+   <div class="stat"><span>מקום בהשוואה</span><b>2 מתוך 15</b></div>
+   <div class="stat"><span>לעומת המחירון של אקסלנס</span><b class="n c">+21,758 ₪</b></div>
+  </div>
+  <table>
+   <colgroup><col style="width:22%"><col style="width:24%"><col style="width:24%"><col style="width:30%"></colgroup>
+   <thead><tr><th>עמלה</th><th>במחירון</th><th>שילמו בממוצע<br><span class="xs">תיקים עד 25 אלף ₪</span></th><th>שלכם</th></tr></thead>
+   <tbody>
+    <tr><td>דמי טיפול בחשבון</td><td><span class="s">עד <span class="n">99 ₪</span> לחודש</span></td><td class="muted">הבורסה לא מפרסמת</td><td><span class="field ch madeup"><span class="v n">0</span> ₪ לחודש</span></td></tr>
+    <tr><td>דמי משמרת</td><td><span class="s"><span class="n">0.6%</span> לרבעון</span><br><span class="xs muted">מינימום <span class="n">40 ₪</span> לחודש</span></td><td><span class="s n">0.049%</span> לשנה</td><td><span class="field ch madeup"><span class="v n">0.05</span>% לשנה</span><br><span class="field ch madeup" style="margin-top:6px">מינימום <span class="v n">0</span> ₪</span></td></tr>
+    <tr><td>קנייה ומכירה</td><td><span class="s"><span class="n">0.4%</span></span><br><span class="xs muted">מינימום <span class="n">10 ₪</span></span></td><td><span class="s n">0.06%–0.09%</span></td><td><span class="field"><span class="n">0.4</span>%</span><br><span class="field" style="margin-top:6px">מינימום <span class="n">10</span> ₪</span></td></tr>
+   </tbody>
+  </table>
+  <div style="display:flex;flex-direction:column;gap:8px">
+   <p class="sm" style="font-weight:600">כמה כל עמלה עולה בתוכנית הזאת</p>
+   <div style="display:grid;grid-template-columns:110px minmax(0,1fr) 90px;gap:6px 10px;align-items:center" class="sm">
+    <span class="muted">לפי המחירון</span><div class="bar"><span style="width:45.3%;background:var(--fixed)"></span><span style="width:41.6%;background:var(--custody)"></span><span style="width:5.8%;background:var(--trade)"></span><span style="width:7.3%;background:var(--other)"></span></div><span class="n c">26,827 ₪</span>
+    <span class="muted">בתנאים שלכם</span><div class="bar"><span style="width:6.8%;background:var(--trade)"></span><span style="width:1.1%;background:var(--custody)"></span></div><span class="n c">2,128 ₪</span>
+   </div>
+   <div class="legend"><span><i style="background:var(--fixed)"></i>דמי טיפול <span class="n">12,153 ₪</span></span><span><i style="background:var(--custody)"></i>דמי משמרת <span class="n">11,165 ₪</span></span><span><i style="background:var(--trade)"></i>קנייה ומכירה <span class="n">1,558 ₪</span></span><span><i style="background:var(--other)"></i>שאר העלות <span class="n">1,951 ₪</span></span></div>
+  </div>
+  <p class="note">כדי לעבור את פסגות (<span class="n c">86,492 ₪</span>) בתוכנית הזאת לא מספיק לוותר על דמי המשמרת: עם עמלת קנייה ומכירה של <span class="n">0.4%</span> ומינימום <span class="n">10 ₪</span> אקסלנס נשארת מאחור גם בלי דמי משמרת בכלל. העמלה שכדאי להתמקח עליה עכשיו היא עמלת הקנייה והמכירה.</p>
+  <div style="display:flex;gap:10px;margin-top:auto"><span class="btn p">הוספה להשוואה</span><span class="btn g">ביטול</span></div>
+ </div>
+</div>
+</section>
+
+<!-- shared: the comparison after adding -->
+<section class="opt">
+<div class="opt-h"><h2>אחרי ההוספה, בכל אחת מהאפשרויות</h2></div>
+<p class="muted sm">השורה שלכם נכנסת לדירוג במקום שלה, בכחול, והשורה של אקסלנס נשארת במקומה לפי המחירון. ההפרש ביניהן כתוב בשורה שלכם.</p>
+<div class="page"><div class="cmp">
+  <div class="row"><span class="rk">1</span><span class="nm">פסגות</span><span class="xs muted">1,057 ₪</span><span class="val n">86,492 ₪</span></div>
+  <div class="row" style="background:oklch(.2 .03 262 / .5)"><span class="rk">2</span><span class="nm" style="color:var(--entered)">אקסלנס, בתנאים שלכם</span><span class="xs muted n c">2,128 ₪</span><span class="val n c">85,436 ₪</span><span class="ln"><span class="chip" style="background:var(--entered-bg);color:var(--entered)">הזנתם</span> &nbsp;<span class="n c">21,758 ₪</span> יותר מהמחירון של אקסלנס, בעיקר מדמי הטיפול ודמי המשמרת &nbsp;·&nbsp; <span style="color:var(--primary)">עריכה</span></span></div>
+  <div class="row"><span class="rk">3</span><span class="nm">לאומי</span><span class="xs muted">4,541 ₪</span><span class="val n">83,396 ₪</span></div>
+  <div class="row"><span class="rk">…</span><span></span><span></span><span></span></div>
+  <div class="row"><span class="rk">15</span><span class="nm">אקסלנס</span><span class="xs muted">26,827 ₪</span><span class="val n">63,678 ₪</span><span class="ln"><span class="chip">לא בחישוב</span> מחיר אחר ללקוחות שקונים קרנות של קסם &nbsp;·&nbsp; <span style="color:var(--primary)">חשבון בתנאים שלכם, על בסיס אקסלנס</span></span></div>
+</div></div>
+</section>
+
+<!-- ================= OPTION B ================= -->
+<section class="opt">
+<div class="opt-h"><h2>ב · עריכה בתוך השורה</h2></div>
+<p class="muted sm">השורה של אקסלנס נפתחת במקומה לשדות. בלי חלונית, בלי עמודת ממוצע ובלי פס עלויות: מה שהמחירון אומר כתוב בתוך השדה, והממוצע מתחתיו. השורה החדשה נכנסת לדירוג רק בלחיצה על ״הוספה״, כדי שהרשימה לא תזוז בזמן ההקלדה.</p>
+<div class="page"><div class="cmp">
+  <div class="row"><span class="rk">14</span><span class="nm">אקסלנס</span><span class="xs muted">26,827 ₪</span><span class="val n">63,678 ₪</span></div>
+  <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin:8px 0;display:flex;flex-direction:column;gap:12px">
+   <p class="sm" style="font-weight:600">מה קיבלתם באקסלנס?</p>
+   <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px" class="sm">
+    <div style="display:flex;flex-direction:column;gap:4px"><span>דמי טיפול בחשבון, ₪ לחודש</span><span class="field ch madeup"><span class="v n">0</span></span><span class="xs muted">במחירון: עד 99 ₪ · הבורסה לא מפרסמת ממוצע</span></div>
+    <div style="display:flex;flex-direction:column;gap:4px"><span>דמי משמרת, % לשנה</span><span class="field ch madeup"><span class="v n">0.05</span></span><span class="xs muted">במחירון: <span class="n">0.6%</span> לרבעון, מינימום <span class="n">40 ₪</span> · שילמו בממוצע <span class="n">0.049%</span></span></div>
+    <div style="display:flex;flex-direction:column;gap:4px"><span>קנייה ומכירה, %</span><span class="field"><span class="n">0.4</span></span><span class="xs muted">במחירון: <span class="n">0.4%</span>, מינימום <span class="n">10 ₪</span> · שילמו בממוצע <span class="n">0.06%–0.09%</span></span></div>
+   </div>
+   <div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap"><span class="sm">בתנאים האלה: <b class="n c">85,436 ₪</b>, מקום 2, <span class="n c">21,758 ₪</span> יותר מהמחירון</span><span class="btn p">הוספה</span><span class="btn g">ביטול</span></div>
+  </div>
+  <div class="row"><span class="rk">15</span><span class="nm">מיטב טרייד</span><span class="xs muted">26,817 ₪</span><span class="val n">63,507 ₪</span></div>
+</div></div>
+</section>
+
+<!-- ================= OPTION C ================= -->
+<section class="opt">
+<div class="opt-h"><h2>ג · שני צעדים: על בסיס מה, ואז מה קיבלתם</h2></div>
+<p class="muted sm">חלונית קצרה. בצעד הראשון בוחרים מאיפה מתחילים: המחירון, מחיר של קבוצה או מה שלקוחות שילמו בממוצע. בצעד השני כל עמלה היא שדה פשוט, ממולא מהבסיס שנבחר. התוצאה בשורה אחת, ואין עמודות השוואה בחלונית. איזו עמלה מכריעה רואים אחר כך בהשוואה.</p>
+<div class="cols">
+ <div class="phone" style="width:auto">
+  <h3>על בסיס מה?</h3>
+  <div class="field" style="justify-content:space-between;border-color:var(--primary)"><span>המחירון של אקסלנס</span><span class="xs muted">כל מה שמותר לגבות</span></div>
+  <div class="field" style="justify-content:space-between"><span>מחיר לקבוצה</span><span class="xs muted">קונים קרנות של קסם, עד סוף 2026</span></div>
+  <div class="field" style="justify-content:space-between"><span>מה שלקוחות שילמו בממוצע</span><span class="xs muted">תיקים עד 25 אלף ₪, ינואר–יוני 2026</span></div>
+  <span class="btn p" style="align-self:flex-start">המשך</span>
+ </div>
+ <div class="phone" style="width:auto">
+  <h3>מה קיבלתם?</h3>
+  <div class="fee"><span class="sm">דמי טיפול בחשבון, ₪ לחודש</span><span class="field ch madeup"><span class="v n">0</span></span></div>
+  <div class="fee"><span class="sm">דמי משמרת, % לשנה</span><span class="field ch madeup"><span class="v n">0.05</span></span><span class="xs muted">מינימום לחודש: <span class="e n">0</span></span></div>
+  <div class="fee"><span class="sm">קנייה ומכירה, %</span><span class="field"><span class="n">0.4</span></span><span class="xs muted">מינימום לפעולה: 10 ₪</span></div>
+  <p class="sm">בתנאים האלה: <b class="n c">85,436 ₪</b>, מקום 2 מתוך 15</p>
+  <div style="display:flex;gap:10px"><span class="btn p">הוספה להשוואה</span><span class="btn g">חזרה</span></div>
+ </div>
+</div>
+</section>
+
+<!-- ================= PHONE, OPTION A ================= -->
+<section class="opt">
+<div class="opt-h"><h2>א בטלפון, 390 פיקסלים</h2></div>
+<p class="muted sm">החלונית ממלאת את המסך. במקום טבלה, כל עמלה היא בלוק: המחירון והממוצע מעל השדה.</p>
+<div class="phone">
+ <h3>אקסלנס, בתנאים שלכם</h3>
+ <div class="stats" style="grid-template-columns:repeat(2,minmax(0,1fr))"><div class="stat"><span>נשאר אחרי 10 שנים</span><b class="n c">85,436 ₪</b></div><div class="stat"><span>מקום בהשוואה</span><b>2 מתוך 15</b></div></div>
+ <div class="fee"><span style="font-weight:600">דמי משמרת</span><span class="xs muted">במחירון <span class="s n">0.6%</span> לרבעון, מינימום 40 ₪ לחודש · שילמו בממוצע <span class="s n">0.049%</span> לשנה</span><span class="field ch madeup" style="align-self:flex-start"><span class="v n">0.05</span>% לשנה</span></div>
+ <div class="fee"><span style="font-weight:600">דמי טיפול בחשבון</span><span class="xs muted">במחירון עד <span class="s n">99 ₪</span> לחודש · הבורסה לא מפרסמת ממוצע</span><span class="field ch madeup" style="align-self:flex-start"><span class="v n">0</span> ₪ לחודש</span></div>
+ <div class="fee"><span style="font-weight:600">קנייה ומכירה</span><span class="xs muted">במחירון <span class="s n">0.4%</span>, מינימום 10 ₪ · שילמו בממוצע <span class="s n">0.06%–0.09%</span></span><span class="field" style="align-self:flex-start"><span class="n">0.4</span>%</span></div>
+ <p class="sm" style="font-weight:600">כמה כל עמלה עולה בתוכנית הזאת</p>
+ <span class="xs muted">לפי המחירון <span class="n c">26,827 ₪</span>: דמי טיפול <span class="n">12,153 ₪</span>, דמי משמרת <span class="n">11,165 ₪</span></span>
+ <div class="bar"><span style="width:45.3%;background:var(--fixed)"></span><span style="width:41.6%;background:var(--custody)"></span><span style="width:5.8%;background:var(--trade)"></span><span style="width:7.3%;background:var(--other)"></span></div>
+ <span class="xs muted">בתנאים שלכם <span class="n c">2,128 ₪</span>: קנייה ומכירה <span class="n">1,835 ₪</span></span>
+ <div class="bar"><span style="width:6.8%;background:var(--trade)"></span><span style="width:1.1%;background:var(--custody)"></span></div>
+ <p class="note">עם עמלת קנייה ומכירה של 0.4% אקסלנס לא עוברת את פסגות גם בלי דמי משמרת. כדאי להתמקח על עמלת הקנייה והמכירה.</p>
+ <span class="btn p">הוספה להשוואה</span>
+</div>
+</section>
+
+</div></body></html>

@@ -472,6 +472,11 @@
       border-radius: var(--radius-lg);
       max-height: min(80vh, 44rem);
     }
+    /* the account on a house's terms (2026-11-04): a table of four columns and two bars, wider than a card */
+    .sheet.sheet-wide {
+      width: min(46rem, calc(100vw - 2rem));
+      max-height: min(92vh, 62rem);
+    }
     .sheet[data-pc="popover"] {
       transform: none;
       inset: auto;
@@ -583,7 +588,7 @@
   }
   .field-box-compact {
     width: 128px;
-    height: 40px;
+    height: var(--target);
     padding: 0 10px;
   }
   .field-box-entered {
@@ -617,6 +622,8 @@
     color: var(--foreground);
     text-align: right;
     font-variant-numeric: tabular-nums;
+    /* the input fills the box's height, so a tap anywhere in the box lands on it (a 44 px target, not the text line's 27 px) */
+    align-self: stretch;
   }
   .field-unit {
     color: var(--muted-foreground);

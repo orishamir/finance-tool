@@ -587,12 +587,6 @@ export default function Rules() {
           <NumberLegend />
           <p>{sourceBlock.legendLine}</p>
           <p>
-            {copy.questionsLine.before}{" "}
-            <Link to="/questions" className="text-link hover:underline">
-              {copy.questionsLine.link}
-            </Link>
-          </p>
-          <p>
             {scopeWords.rulesLine.before}{" "}
             <Link to="/companies" className="text-link hover:underline">
               {scopeWords.rulesLine.link}

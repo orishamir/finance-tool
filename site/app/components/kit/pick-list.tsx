@@ -25,7 +25,8 @@ export interface PickRow {
  */
 /** A click on a control inside a row (a figure's sheet, a link, a label) is that control's, not a pick (founder, 2026-10-27). */
 const inControl = (target: EventTarget, row: HTMLElement) => {
-  const hit = (target as Element).closest?.("a, button, input, select, textarea, [role=button], [role=link]");
+  // a fold under a row (a house's group prices, 2026-11-04): its line opens it and a tap on what it shows is reading, not a pick
+  const hit = (target as Element).closest?.("a, button, input, select, textarea, summary, details, [role=button], [role=link]");
   return !!hit && hit !== row && row.contains(hit);
 };
 

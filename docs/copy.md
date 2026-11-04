@@ -1967,6 +1967,7 @@ The strings are `invest.pair` in `site/app/copy.ts`. The words the founder saw i
 - The lists: "כל החשבונות" / "כשקונים בהם את {קרן}", "כל הקרנות על {מדד}" / "בחשבון {חשבון}", each with "בחרו … אחר, והרשימה תסתדר מחדש"; the chosen fund's row says "הבחירה", the others their difference from it ("לעומת הבחירה").
 - Rows that cannot be priced: "{N} חשבונות לא מחושבים עם הקרן הזו:" with the reason and the names, and "כשהנתון ייאסף, הם יצטרפו לרשימה."
 - *2026-10-28 (method F-91, option A of the mockup):* under the cost bars, "העלות אצלכם, לעומת הזוג השני:" then "החשבון", "הקרן" and "המס", each with an amount and "יותר" or "פחות", or "בלי הפרש" when zero; then ", כי נשאר לכם יותר רווח" or ", כי נשאר לכם פחות רווח" when the tax moves with what is left. In the key under "החשבון:", "השפעת השורות יחד" is the part of the account's cost no single line explains. Reviewed by the Hebrew editor the same day.
+- *2026-11-04 (founder):* that part is named "העמלות זו על זו", since "השורות" meant nothing beside a bar; the box that opens on it adds "כל עמלה מקטינה את הסכום שעליו נגבות האחרות, ואת מה שהיה צומח ממנו; החלק הזה לא שייך לעמלה אחת". The same name and sentence on the accounts list and on an account on your own terms.
 
 ## 9. Release 5 screens
 

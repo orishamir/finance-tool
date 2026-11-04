@@ -4,7 +4,7 @@ import { describe, expect, it } from "vitest";
 import { applyProviders, buildView, evaluate, providerOf, type RunGoal } from "./compare";
 import { applyIndex, applyIndexWay, planOfGoal, readIndex } from "./compare-index";
 import { compareBundle } from "./compare.server";
-import { cheapestWay, knownIndices, rangeOverKnownIndices } from "./invest";
+import { buildInvest, cheapestWay, knownIndices, rangeOverKnownIndices, type CheapestWay, type OptionId } from "./invest";
 import { parseOwnRates, splitOwnTerms, termsOfGoal } from "./own-rate";
 import { instrumentClassOf } from "./providers";
 import { buildWorkbenchBundle } from "./providers.server";
@@ -27,6 +27,11 @@ describe("the account's way is priced like the invest page's", () => {
       expect(ways.length).toBe(knownIndices(wb).length);
       for (const w of ways) {
         const b = applyIndexWay(bundle, wb, w, "chosen");
+        // the comparison runs shekel funds only: a dollar fund's way (iShares ACWI on TASE since 2026-11-04, TXF-11) is not run, and the card says so
+        if (!["ILS", "NIS"].includes(wb.funds.find((f) => f.id === w.fundRecordId)?.currency ?? "")) {
+          expect(b, `${w.indexId} via ${w.providerId}`).toBeNull();
+          continue;
+        }
         expect(b, `${w.indexId} via ${w.providerId}`).not.toBeNull();
         expect(real(b!, g), `${w.indexId} via ${w.providerId} ${w.fundRecordId}`).toBeCloseTo(w.valueN, 0);
       }
@@ -37,7 +42,12 @@ describe("the account's way is priced like the invest page's", () => {
 describe("the account's other houses are read for the way's fund (F-12, F-63)", () => {
   const way = (kind: "etf" | "tracking") => {
     const plan = planOfGoal(bundle, founder, state);
-    const ways = rangeOverKnownIndices(wb, plan)!.perIndex;
+    // each index's cheapest way, and its best Israeli ETF and tracking fund: since 2026-11-04 no index's cheapest way is an Israeli ETF (TXF-11)
+    const best = (o: OptionId) => knownIndices(wb).flatMap((i): CheapestWay[] => {
+      const w = buildInvest({ bundle: wb, index: i, plan }).options.find((x) => x.id === o)?.bestWay;
+      return w ? [{ indexId: i.id, option: w.option, providerId: w.providerId, providerName: w.providerId, fundRecordId: w.fund.rec.id, fundName: w.fund.name, value: w.value, valueN: w.valueN }] : [];
+    });
+    const ways = [...rangeOverKnownIndices(wb, plan)!.perIndex, ...best("il-etf"), ...best("il-tracking")];
     const fundOf = (w: (typeof ways)[number]) => wb.funds.find((f) => f.id === w.fundRecordId);
     const isEtf = (w: (typeof ways)[number]) => instrumentClassOf(fundOf(w)!, wb.exposures.find((e) => e.id === fundOf(w)!.exposure_id)) === "etf_units";
     return { list: ways.filter((w) => isEtf(w) === (kind === "etf")), plan };

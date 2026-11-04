@@ -352,6 +352,8 @@ function buildFund(wrapperId: string, spec: InstrumentSpec, src: InstrumentSourc
       feeValues.ninetyPercentTest = { ...t };
     } else missing.push(`${wrapperId}: fund "${rec.id}" has no 90% test value (TXF-04)`);
   }
+  // TXF-11 (2026-11-04): an accumulating foreign fund whose own annex reports the ruling is taxed at sale on it, and ranked
+  if ((kind === "foreign-fund" || kind === "tase-foreign-fund") && rec.tax_ruling && rec.distribution_policy === "accumulating") fund.saleOnlyRuling = true;
   if (kind === "foreign-fund") {
     const d = rec.domicile.toUpperCase();
     if (d === "US" || d === "IE") fund.domicile = d === "US" ? "us" : "ireland";

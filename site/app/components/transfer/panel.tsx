@@ -412,9 +412,11 @@ function ImportHalf() {
                 {copy.afterLinks.holdings}
               </Link>
             )}
-            <Link to="/goal/compare" className="text-link min-h-target inline-flex items-center hover:underline">
-              {copy.afterLinks.result}
-            </Link>
+            {shown("/goal/compare") && (
+              <Link to="/goal/compare" className="text-link min-h-target inline-flex items-center hover:underline">
+                {copy.afterLinks.result}
+              </Link>
+            )}
           </p>
         </Card>
       )}
