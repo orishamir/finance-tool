@@ -78,6 +78,11 @@ function Basics() {
             <LinkButton to="/kit">{g.sample.sentenceLink}</LinkButton>
           </div>
         </State>
+        <State label="LinkButton, long words in a narrow place: the button grows">
+          <div className="max-w-64">
+            <LinkButton to="/kit">{g.sample.longTag}</LinkButton>
+          </div>
+        </State>
       </Demo>
       <Demo name="Tag" use={g.uses.Tag}>
         <div className="flex flex-wrap items-center gap-2">

@@ -2129,23 +2129,25 @@ export const r4catalogue = {
   /** copy.md 8.4: the page's "נכון ליום" is after the day the record was read (flow 33, point 11); no string in copy.md */
   asOfAfterRead: "התאריך מאוחר מיום הקריאה",
   card: {
-    title: "התעריפון",
     tariffFrom: "תעריפון מ־",
     collectedAt: ", נאסף ב־",
     noPublishedDate: "ללא תאריך פרסום",
-    link: "לתעריפון",
-    linesBefore: "",
     linesMid: "שורות עמלה נאספו:",
     notice: "הודעה על שינוי בעמלות",
     /** the index page with this house picked (issue 172) */
     compare: "להשוואה מול שאר הבנקים ובתי ההשקעות",
     stale: { before: "התעריפון נאסף ב־", after: "; מאז ייתכן שהשתנה." },
-    minimum: "מינימום לפתיחת חשבון:",
+    minimum: "מינימום לפתיחת חשבון",
     minimumNone: "לא נמצא בתעריפון",
-    tradeBounds: { min: "מינימום לפעולה", max: "מקסימום" },
-    /** a custody or account fee's own bounds (2026-11-04): "per trade" was wrong of them */
+    /** the fees as a table (2026-11-04, founder: the account "should have a standard way"): the heads carry the words */
+    cols: { fee: "העמלה", price: "המחיר" },
     bounds: { min: "מינימום", max: "מקסימום" },
-    protection: "מפוקח:",
+    /** a bound charged on each trade, after its amount */
+    perTrade: "לפעולה",
+    /** a percentage fee whose documents print no bound: the site charges none, and says so rather than leave the cell blank */
+    noBound: { min: "ללא מינימום", max: "ללא מקסימום" },
+    factsTitle: "פתיחת חשבון ופיקוח",
+    regulator: "הגוף המפקח",
     tase: "חבר בורסה",
     protectionDisclosure: "מה מגן על הכסף",
     channel: { direct: "ערוצים ישירים", branch: "סניף" },

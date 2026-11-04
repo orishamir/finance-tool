@@ -204,6 +204,7 @@ function lineRow(l: FeeLine, t: string, snapshot: string, owner: string, tariffU
     base: l.base as LineBase,
     classes: l.applies_to,
     channel: l.channel === "direct" || l.channel === "branch" ? l.channel : null,
+    band: l.band ?? null,
     rate: site(l.rate, t, snapshot, owner),
     period: l.period,
     min: l.min ? site(l.min, t, snapshot, owner) : null,

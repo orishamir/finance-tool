@@ -63,6 +63,8 @@ export interface TariffLineRow {
   /** Instrument class words (copy 8.0) the line applies to, in the tariff's order. */
   classes: string[];
   channel: "direct" | "branch" | null;
+  /** The price list's own name for a plan or sub-class (IBKR Pro Fixed or Tiered): what tells two lines of one fee apart; null on the standard line. */
+  band: string | null;
   rate: SiteValue;
   period: "month" | "quarter" | "year" | null;
   min: SiteValue | null;
