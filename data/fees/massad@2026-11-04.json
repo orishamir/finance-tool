@@ -1870,6 +1870,14 @@
     {
       "what": "עמלות ממוצעות בפועל, מחצית ראשונה 2026: דמי ניהול ני\"ע ישראליים 0.33%-0.59% לשנה, זרים 0.28%-0.67%; קנייה ומכירה של מניות ואג\"ח 0.14%-0.40%",
       "why": "What customers paid on average by portfolio size (the bank's sheet, library 820753ecaf4802d4, and the exchange's sheet, '01/01/26 - 30/06/26'): a sourced fact, not a price. The list price is 0.78% a year in Israel."
+    },
+    {
+      "what": "מורים ועובדי הוראה: מורים עם משכורת ותיק מ־150,000 ₪",
+      "why": "A plan for one profession; offers to a single profession or community are not shown as group prices (founder, 2026-11-04). Source: https://www.bankmassad.co.il/private/accountmngment/accounttypes/teachers/"
+    },
+    {
+      "what": "בני זוג של מורים: בני זוג של מורים עם תיק מ־150,000 ₪",
+      "why": "A plan for one profession; offers to a single profession or community are not shown as group prices (founder, 2026-11-04). Source: https://www.bankmassad.co.il/private/accountmngment/accounttypes/couple/"
     }
   ],
   "groups": {

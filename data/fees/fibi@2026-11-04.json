@@ -1874,6 +1874,14 @@
     {
       "what": "מועדון HighTech 10: 'פטור מעמלת חליפין מט\"י - מט\"ח' ו'הטבת שער ברכישת/המרת מט\"ח - 5 פרומיל'",
       "why": "An offer for the club's members only (employees of high-tech companies the bank selects); conversion benefits are not a group price kind in the record."
+    },
+    {
+      "what": "SMART לעורכי דין ורואי חשבון: עורכי דין ורואי חשבון",
+      "why": "A plan for one profession; offers to a single profession or community are not shown as group prices (founder, 2026-11-04). Source: https://www.fibi.co.il/private/fibiaccount/accounttypes/smart/"
+    },
+    {
+      "what": "Medic 10, מסלול לפעילים עצמאית: עובדי רפואה שמעבירים תיק",
+      "why": "A plan for one profession; offers to a single profession or community are not shown as group prices (founder, 2026-11-04). Source: https://www.fibi.co.il/private/fibiaccount/accounttypes/medic10/"
     }
   ],
   "groups": {

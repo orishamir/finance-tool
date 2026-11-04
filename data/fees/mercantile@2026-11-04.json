@@ -1260,11 +1260,15 @@
   ],
   "groups": {
     "state": "prices",
-    "note": "Annex A pp.30-31 read in the filed copy, and p.30 by eye, because the text layer's order of the columns misleads. Senior citizens: the rendered cells on securities are blank; the text layer holds 'אין מידע'. Re-read 2026-11-04 in the newer tariff (taarifon_private_full_11026.pdf, annex A pp.31-33 dated 22/06/2026; pp.31-32 read by eye at 90 dpi): the same groups, eligibility, periods and prices. The custody cells now read '0.1% לנייר ערך לרבעון בכפוף למקסימום' and '0.125% לנייר ערך לרבעון בכפוף למקסימום'. The group pages (youth-banking, solders, discharged-soldiers-benefits, students) print the same figures. The salary groups Pro, Top and Deluxe are a promotion on the new-account-groups page, not in annex A; they are recorded under left_out.",
+    "note": "Annex A pp.30-31 read in the filed copy, and p.30 by eye, because the text layer's order of the columns misleads. Senior citizens: the rendered cells on securities are blank; the text layer holds 'אין מידע'. Re-read 2026-11-04 in the newer tariff (taarifon_private_full_11026.pdf, annex A pp.31-33 dated 22/06/2026; pp.31-32 read by eye at 90 dpi): the same groups, eligibility, periods and prices. The custody cells now read '0.1% לנייר ערך לרבעון בכפוף למקסימום' and '0.125% לנייר ערך לרבעון בכפוף למקסימום'. The group pages (youth-banking, solders, discharged-soldiers-benefits, students) print the same figures. The salary groups Pro, Top and Deluxe are a promotion on the new-account-groups page, not in annex A; they are recorded under left_out. Salary plans (2026-11-04, D43 amended): Top and Deluxe from the bank's joining page, whose own printed terms are the source; the tariff has no row for them.",
     "read": [
       {
         "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
         "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה"
+      },
+      {
+        "url": "https://www.mercantile.co.il/private/accounts/new-account-groups/",
+        "title": "פתיחת חשבון במרכנתיל, הטבות למצטרפים (עמוד המבצע ותנאיו)"
       }
     ],
     "entries": [
@@ -1555,6 +1559,152 @@
         "who_short_he": "סטודנטים, עד גיל 36",
         "cheaper_he": "דמי ניהול 0.1% במקום 0.2%; קנייה ומכירה 0.25% במקום 0.4%",
         "ends_short_he": "4 שנים מההצטרפות"
+      },
+      {
+        "kind": "salary",
+        "name_he": "מרכנתיל טופ",
+        "who_he": "מצטרפים חדשים מגיל 19 בתקופת המבצע, שמעבירים משכורת של 12,000 ש״ח ליחיד או 18,000 ש״ח לחשבון משותף ומחויבים ב־3,000 ש״ח בחודש בכרטיס אשראי של הבנק",
+        "who_source": {
+          "url": "https://www.mercantile.co.il/private/accounts/new-account-groups/",
+          "title": "פתיחת חשבון במרכנתיל, הטבות למצטרפים (עמוד המבצע ותנאיו)",
+          "page": 1,
+          "quote": "פירוט ההטבות בקבוצת מרכנתיל טופ למעבירי משכורת של 12,000 ש\"ח ליחיד או 18,000 ש\"ח לחשבון משותף"
+        },
+        "ends_printed": true,
+        "ends_he": "3 שנים ממועד ההצטרפות לקבוצה; הבנק רשאי לשנות את תנאי המבצע בכל עת. סוף תקופת ההצטרפות לא כתוב",
+        "ends_source": {
+          "url": "https://www.mercantile.co.il/private/accounts/new-account-groups/",
+          "title": "פתיחת חשבון במרכנתיל, הטבות למצטרפים (עמוד המבצע ותנאיו)",
+          "page": 1,
+          "quote": "תוקף ההטבות - 3 שנים ממועד ההצטרפות לקבוצה"
+        },
+        "prices": [
+          {
+            "fee": "trade_israel",
+            "price_he": "0.12%, מינימום 10 ש״ח",
+            "holdings_he": "ני\"ע (בלי פירוט)",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.mercantile.co.il/private/accounts/new-account-groups/",
+              "title": "פתיחת חשבון במרכנתיל, הטבות למצטרפים (עמוד המבצע ותנאיו)",
+              "page": 1,
+              "quote": "ני\"ע עמלת קניה/מכירה בישראל 0.12% עמלת מינימום 10 ש\"ח"
+            }
+          },
+          {
+            "fee": "trade_abroad",
+            "price_he": "0.15%, כפוף למינימום",
+            "holdings_he": "ני\"ע (בלי פירוט)",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.mercantile.co.il/private/accounts/new-account-groups/",
+              "title": "פתיחת חשבון במרכנתיל, הטבות למצטרפים (עמוד המבצע ותנאיו)",
+              "page": 1,
+              "quote": "עמלת קניה בחו\"ל 0.15% עמלת מינימום כפוף למינימום"
+            }
+          },
+          {
+            "fee": "custody_israel",
+            "price_he": "פטור מדמי ניהול חשבון ני״ע",
+            "holdings_he": "דמי ניהול חשבון ני\"ע",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.mercantile.co.il/private/accounts/new-account-groups/",
+              "title": "פתיחת חשבון במרכנתיל, הטבות למצטרפים (עמוד המבצע ותנאיו)",
+              "page": 1,
+              "quote": "דמי ניהול חשבון ני\"ע - פטור"
+            }
+          },
+          {
+            "fee": "custody_abroad",
+            "price_he": "פטור מדמי ניהול חשבון ני״ע",
+            "holdings_he": "דמי ניהול חשבון ני\"ע",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.mercantile.co.il/private/accounts/new-account-groups/",
+              "title": "פתיחת חשבון במרכנתיל, הטבות למצטרפים (עמוד המבצע ותנאיו)",
+              "page": 1,
+              "quote": "דמי ניהול חשבון ני\"ע - פטור"
+            }
+          }
+        ],
+        "inferred": "That 'דמי ניהול חשבון ני\"ע' is the tariff's custody fee ('דמי ניהול פיקדון') for Israel and abroad is inferred: the page uses a name the tariff does not. Only 'קניה' is named abroad. The page says 'כל התנאים וההטבות בקשר לעמלות הם ביחס לתעריפון הבנק'. The joining window ('תקופת המבצע') is not defined; the grant option runs to 31.12.26. Mercantile Pro (7,000 NIS) has no securities benefit.",
+        "who_short_he": "מצטרפים עם משכורת מ־12,000 ₪",
+        "cheaper_he": "באתר הבנק: פטור מדמי ניהול, וקנייה ומכירה בארץ 0.12%, מינימום 10 ₪",
+        "ends_short_he": "3 שנים, והבנק רשאי לשנות"
+      },
+      {
+        "kind": "salary",
+        "name_he": "מרכנתיל דלקס",
+        "who_he": "מצטרפים חדשים מגיל 19 בתקופת המבצע, שמעבירים משכורת של 20,000 ש״ח ליחיד או 25,000 ש״ח לחשבון משותף ומחויבים ב־3,000 ש״ח בחודש בכרטיס אשראי של הבנק",
+        "who_source": {
+          "url": "https://www.mercantile.co.il/private/accounts/new-account-groups/",
+          "title": "פתיחת חשבון במרכנתיל, הטבות למצטרפים (עמוד המבצע ותנאיו)",
+          "page": 1,
+          "quote": "פירוט ההטבות בקבוצת דלקס למעבירי משכורת של 20,000 ש\"ח ליחיד או 25,000 ש\"ח לחשבון משותף"
+        },
+        "ends_printed": true,
+        "ends_he": "3 שנים ממועד ההצטרפות לקבוצה; הבנק רשאי לשנות את תנאי המבצע בכל עת. סוף תקופת ההצטרפות לא כתוב",
+        "ends_source": {
+          "url": "https://www.mercantile.co.il/private/accounts/new-account-groups/",
+          "title": "פתיחת חשבון במרכנתיל, הטבות למצטרפים (עמוד המבצע ותנאיו)",
+          "page": 1,
+          "quote": "תוקף ההטבות - 3 שנים ממועד ההצטרפות לקבוצה"
+        },
+        "prices": [
+          {
+            "fee": "trade_israel",
+            "price_he": "0.12%, מינימום 10 ש״ח",
+            "holdings_he": "ני\"ע (בלי פירוט)",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.mercantile.co.il/private/accounts/new-account-groups/",
+              "title": "פתיחת חשבון במרכנתיל, הטבות למצטרפים (עמוד המבצע ותנאיו)",
+              "page": 1,
+              "quote": "ני\"ע עמלת קניה/מכירה בישראל 0.12% עמלת מינימום 10 ש\"ח"
+            }
+          },
+          {
+            "fee": "trade_abroad",
+            "price_he": "0.15%, כפוף למינימום",
+            "holdings_he": "ני\"ע (בלי פירוט)",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.mercantile.co.il/private/accounts/new-account-groups/",
+              "title": "פתיחת חשבון במרכנתיל, הטבות למצטרפים (עמוד המבצע ותנאיו)",
+              "page": 1,
+              "quote": "עמלת קניה בחו\"ל 0.15% עמלת מינימום כפוף למינימום"
+            }
+          },
+          {
+            "fee": "custody_israel",
+            "price_he": "פטור מדמי ניהול חשבון ני״ע",
+            "holdings_he": "דמי ניהול חשבון ני\"ע",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.mercantile.co.il/private/accounts/new-account-groups/",
+              "title": "פתיחת חשבון במרכנתיל, הטבות למצטרפים (עמוד המבצע ותנאיו)",
+              "page": 1,
+              "quote": "דמי ניהול חשבון ני\"ע - פטור"
+            }
+          },
+          {
+            "fee": "custody_abroad",
+            "price_he": "פטור מדמי ניהול חשבון ני״ע",
+            "holdings_he": "דמי ניהול חשבון ני\"ע",
+            "names_fund": false,
+            "source": {
+              "url": "https://www.mercantile.co.il/private/accounts/new-account-groups/",
+              "title": "פתיחת חשבון במרכנתיל, הטבות למצטרפים (עמוד המבצע ותנאיו)",
+              "page": 1,
+              "quote": "דמי ניהול חשבון ני\"ע - פטור"
+            }
+          }
+        ],
+        "inferred": "That 'דמי ניהול חשבון ני\"ע' is the tariff's custody fee ('דמי ניהול פיקדון') for Israel and abroad is inferred: the page uses a name the tariff does not. Only 'קניה' is named abroad. The page says 'כל התנאים וההטבות בקשר לעמלות הם ביחס לתעריפון הבנק'. The joining window ('תקופת המבצע') is not defined; the grant option runs to 31.12.26. Mercantile Pro (7,000 NIS) has no securities benefit.",
+        "who_short_he": "מצטרפים עם משכורת מ־20,000 ₪",
+        "cheaper_he": "באתר הבנק: פטור מדמי ניהול, וקנייה ומכירה בארץ 0.12%, מינימום 10 ₪",
+        "ends_short_he": "3 שנים, והבנק רשאי לשנות"
       }
     ]
   }
