@@ -31,7 +31,6 @@ export const site = {
   footerAsOf: "נתונים נכון ל־",
   toTop: "חזרה למעלה",
   footer: [
-    { href: "/rules", label: "חוקים וכללים" },
     { href: "/parameters", label: "פרמטרים" },
     { href: "/goal", label: "השוואה למטרה" },
     { href: "/not-covered", label: "מה האתר עוד לא מכסה" },
