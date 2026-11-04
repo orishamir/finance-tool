@@ -66,8 +66,9 @@ export function InstitutionPage({ data, notes }: { data: InstitutionPageData; /*
   }, [asked]);
   return (
     <PageShell current="decoder" data={{ rules: data.rules, pointed: data.pointed, terms: {}, dimensions: data.terms.dimensions, today: data.today, ...(data.terms.company ? { company: data.terms.company } : {}), pageCompanies: data.terms.pageCompanies }}>
-      <div className="lg:flex lg:gap-12 lg:items-start pt-2 lg:pt-8">
-        <div className="flex-1 min-w-0 flex flex-col gap-6 lg:gap-8">
+      {/* one column, as the company page: the price list's table takes the page's width (2026-11-05), the paste card comes at the end */}
+      <div className="pt-2 lg:pt-8">
+        <div className="min-w-0 flex flex-col gap-6 lg:gap-8">
           <header className="flex flex-col gap-3">
             <Breadcrumb parent={{ href: "/companies", label: companiesCopy.back }} current={withoutLtd(data.name)} />
             <h1 className="text-2xl lg:text-3xl font-semibold">
@@ -210,12 +211,8 @@ export function InstitutionPage({ data, notes }: { data: InstitutionPageData; /*
             </section>
           )}
           <CompanyTerms name={data.terms.name} groups={data.terms.groups} />
-          <PasteCard className="lg:hidden" />
+          <PasteCard className="lg:w-1/2" />
         </div>
-
-        <aside className="hidden lg:flex w-[38%] max-w-[420px] shrink-0 flex-col gap-4 pt-[100px]" aria-label="עוד">
-          <PasteCard />
-        </aside>
       </div>
     </PageShell>
   );

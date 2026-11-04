@@ -522,7 +522,7 @@ export function AccountColumn({ view, bundle, years, pick, onPick, group = null 
         <h3 className="font-semibold">{c.pair.accounts}</h3>
         <LongestCase cases={longest.funds}>
           <span className="text-sm text-muted-foreground flex items-center gap-1.5 max-md:flex-col max-md:items-start md:flex-wrap">
-            {c.pair.accountsCond} <Tag><bdi>{fund.name}</bdi></Tag>
+            {c.pair.accountsCond} <Tag wrap><bdi>{fund.name}</bdi></Tag>
           </span>
         </LongestCase>
         {/* on lines of their own, kept whatever the fund's name: a longer name pushed the hint to a new line, and the page with it */}

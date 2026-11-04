@@ -1,6 +1,6 @@
 // A bank's or broker's securities account (design-system 8.7), as the company page shows its other products (founder, 2026-11-04:
 // "there should be some standard way to present it"): the price list as the account's name and quiet line, then parts with a heading
-// each: the fees as the table of products (one row per fee line, one under the next on a phone), what can be bought there, the
+// each: every fee of the price list as the table of products, grouped by kind (one row per line, one under the next on a phone), what can be bought there, the
 // advertising against the documents, the group prices, and the minimum and the supervisor as the kit's fact cards; the two links last.
 // Its missing form is one card: the reason, the price list's page, the comparison.
 import { CircleDashed } from "lucide-react";
@@ -11,20 +11,28 @@ import { groupPrices as groupWords, invest as investCopy, r4catalogue as copy, g
 import { fmt } from "../../../lib/format";
 import { groupPath, housePath, ownAccountPath } from "../../../lib/invest";
 import { IconAlert, IconExternal } from "../../icons";
-import { LeadTail, Num, NumAfter, RuleRef, RulesLine } from "../../provenance";
+import { LeadTail, Num, NumAfter, RuleRef, RulesChip, RulesLine } from "../../provenance";
 import { Card, ClaimList, Disclosure, DocLink, GroupPriceRows, KeyValueList, LinkButton, ProductPhoneRow, ProductTable, ProductFigures, Section, Sentence, Tag, atPdfPage, cx, type KeyValueItem, type ProductColumn } from "../../kit";
 import type { SiteValue } from "../../../lib/value";
-import type { AvailabilityRow, InstitutionKind, TariffCardData, TariffLineRow } from "./types";
+import { distributionRuleIds, type AvailabilityRow, type InstitutionKind, type TariffCardData, type TariffLineRow } from "./types";
 
 const baseName = (b: string) => (guideBlocks.fees as Record<string, { name: string }>)[b]?.name ?? b;
+/** What a kind of fee is charged on, in the guides' words ("מכל המרה של שקלים למטבע זר או חזרה"). */
+const baseDesc = (b: string) => (guideBlocks.fees as Record<string, { base?: string }>)[b]?.base ?? null;
 const classWord = (c: string) => (copy.instrumentClasses as Record<string, string>)[c] ?? null;
+const classWords = (classes: string[]) => classes.map(classWord).filter((x): x is string => !!x).join(", ");
 
-/** A bound's word after its amount: charged on each trade, or each month; a bound of the fee's own period has none, and an unknown one ("לא ידוע") none either. */
-const boundWord = (v: SiteValue) => (v.value === null ? null : /per_trade$/.test(v.unit) ? copy.card.perTrade : /per_month$/.test(v.unit) ? copy.card.period.month : null);
+/** A bound's word after its amount: a trade's bounds are each trade's, a monthly one says so; an unknown bound ("לא ידוע") has none. */
+const boundWord = (l: TariffLineRow, v: SiteValue) => (v.value === null ? null : l.base === "trade" || /per_trade$/.test(v.unit) ? copy.card.perTrade : /per_month$/.test(v.unit) ? copy.card.period.month : null);
+/** The price's word: its period, or "להעברה" for a fee per transfer, "למניה" for a price per share. */
+const priceWord = (l: TariffLineRow) => (l.period ? copy.card.period[l.period] : /per_transfer$/.test(l.rate.unit) ? copy.card.perTransfer : /per_share$/.test(l.rate.unit) ? copy.card.perShare : null);
 
-/** Where a line's rate stands: the price list and its page, or another document by its name (D57 amended 2026-11-04). */
+/** The page of a PDF the line stands on; a web page has none. */
+const pdfPage = (w: NonNullable<TariffLineRow["where"]>) => (/\.pdf/i.test(w.url) && !w.url.includes("#") ? w.page : undefined);
+
+/** Where a fact stands, in full: the price list and its page, or another document by its name (D57 amended 2026-11-04). */
 function WhereLink({ w }: { w: NonNullable<TariffLineRow["where"]> }) {
-  const page = /\.pdf/i.test(w.url) && !w.url.includes("#") ? w.page : undefined;
+  const page = pdfPage(w);
   return (
     <DocLink href={atPdfPage(w.url, page)} className="text-xs">
       {w.tariff ? copy.card.whereTariff(page) : copy.card.whereOther(w.title, page)}
@@ -32,36 +40,70 @@ function WhereLink({ w }: { w: NonNullable<TariffLineRow["where"]> }) {
   );
 }
 
+/**
+ * The same in the table's own column, short: "עמוד 30 ↗" (the page is the link, as a fund's number is). A line from a document
+ * other than the price list says so under the link, and the link opens that document; its long title stays out of the row (2026-11-05).
+ */
+function WhereCell({ w }: { w: TariffLineRow["where"] }) {
+  if (!w) return <span className="text-sm text-muted-foreground">—</span>;
+  const page = pdfPage(w);
+  const link = (
+    <DocLink href={atPdfPage(w.url, page)} className="text-sm -my-2.5">
+      {page ? copy.card.page(page) : w.tariff ? copy.card.inTariff : copy.card.otherDoc}
+    </DocLink>
+  );
+  if (w.tariff || !page) return link;
+  return (
+    <span className="flex flex-col items-start">
+      {link}
+      <span className="text-xs text-muted-foreground whitespace-nowrap">{copy.card.otherDoc}</span>
+    </span>
+  );
+}
+
 /** An amount and its quiet word after it ("0.15% לרבעון", "27.00 ₪ לפעולה"): the kit's figure-and-word, one of it. */
 const figure = (id: string, value: SiteValue, word: string | null, inline?: boolean) => <ProductFigures inline={inline} items={[{ id, figure: <Num value={value} size="cell" />, word }]} />;
 
-/** A percentage fee charges no bound its documents leave out (method: min and max apply only where printed); a flat fee has none to print. */
-const isPercent = (l: TariffLineRow) => /^pct_/.test(l.rate.unit);
+/** The kinds whose bounds matter: a percentage of a trade, a holding or a conversion with no printed bound charges none, and says so; the other kinds have none to print. */
+const bounded = (l: TariffLineRow) => /^pct_/.test(l.rate.unit) && (l.base === "trade" || l.base === "custody" || l.base === "fx");
 
 function Bound({ l, side }: { l: TariffLineRow; side: "min" | "max" }) {
   const v = l[side];
-  if (v) return figure(side, v, boundWord(v));
-  return <span className="text-sm text-muted-foreground">{isPercent(l) ? copy.card.noBound[side] : "—"}</span>;
+  if (v) return figure(side, v, boundWord(l, v));
+  return <span className="text-sm text-muted-foreground">{bounded(l) ? copy.card.noBound[side] : "—"}</span>;
 }
 
-/** The fee's name with its channel as a label beside it (a kind is a label, design-system 11), then what it is charged on, the plan the line belongs to, the conversion spread, and where it stands. */
-function FeeName({ l, phone }: { l: TariffLineRow; /** On a phone the spread and the source come after the price, under it. */ phone?: boolean }) {
-  // what the line is charged on; a conversion between two foreign currencies says so, beside the shekel one
-  const classes = [classWords(l.classes) || null, l.fxToFx ? copy.card.fxToFx : null].filter(Boolean).join(" · ");
+/** A bound on a phone, where no head names it: "מינימום 27.00 ₪ לפעולה"; nothing where the kind has none. */
+function PhoneBound({ l, side }: { l: TariffLineRow; side: "min" | "max" }) {
+  const v = l[side];
+  if (!v) return bounded(l) ? <span className="text-muted-foreground">{copy.card.noBound[side]}</span> : null;
+  return (
+    <span className="inline-flex items-baseline gap-1.5 whitespace-nowrap">
+      <span className="text-muted-foreground">{copy.card.bounds[side]}</span>
+      {figure(side, v, boundWord(l, v), true)}
+    </span>
+  );
+}
+
+/** A fee on the account itself (a monthly fee, a transfer out) is charged on no kind of security: these words say on what. */
+const onAccount = copy.card.onAccount as Record<string, string>;
+
+/** What the line is charged on: the kinds of securities, a conversion between two foreign currencies, or the account itself. */
+function coversText(l: TariffLineRow): string {
+  if (l.fxToFx) return copy.card.fxToFx;
+  if (onAccount[l.base]) return onAccount[l.base]!;
+  return classWords(l.classes) || (baseDesc(l.base) ?? "");
+}
+
+/** The row's first cell: what it is charged on with its channel as a label (a kind is a label, design-system 11), the plan it belongs to, and the conversion spread. */
+function Covers({ l, phone }: { l: TariffLineRow; /** On a phone the spread comes after the price. */ phone?: boolean }) {
   return (
     <span className="flex flex-col items-start gap-0.5">
       <span className="flex flex-wrap items-center gap-x-2 gap-y-1">
-        <span className="font-medium">
-          <bdi>{baseName(l.base)}</bdi>
-        </span>
+        <bdi>{coversText(l)}</bdi>
         {l.channel && <Tag>{copy.card.channel[l.channel]}</Tag>}
       </span>
-      {classes && (
-        <span className="text-sm text-muted-foreground">
-          <bdi>{classes}</bdi>
-        </span>
-      )}
-      {/* the plan's own name tells two lines of one fee apart (a fixed and a tiered price) */}
+      {/* the plan's own name tells two lines of one fee apart (a fixed and a tiered price, a standing order, a redemption) */}
       {l.band && (
         <span className="text-sm text-muted-foreground [overflow-wrap:anywhere]">
           {/* a Hebrew line even where the plan's name opens in English ("IBKR Pro - Fixed: בורסת תל אביב") */}
@@ -69,7 +111,6 @@ function FeeName({ l, phone }: { l: TariffLineRow; /** On a phone the spread and
         </span>
       )}
       {!phone && <Spread l={l} />}
-      {!phone && l.where && <WhereLink w={l.where} />}
     </span>
   );
 }
@@ -90,58 +131,69 @@ function Spread({ l }: { l: TariffLineRow }) {
   );
 }
 
-/** The price list's fee lines as the site's table of products (design-system 11): one row per line on a computer, one under the next on a phone. */
-function FeeTable({ lines }: { lines: TariffLineRow[] }) {
+/** The kinds in the order a reader looks for them; a kind not named here comes after, in the price list's order. */
+const kindOrder = ["trade", "custody", "fx", "fixed_period", "transfer_out", "distribution"];
+const kindOf = (l: TariffLineRow) => (l.distribution ? "distribution" : l.base);
+
+/**
+ * Every line of the price list (founder, 2026-11-05: "show all lines but without cluttering the view") as the site's table of products,
+ * grouped by kind under a strip with the fee's name, so a row says only what sets it apart: what it is charged on, the channel, the plan.
+ * Where each line stands is its own short column ("עמוד 30 ↗"). On a phone the strips stay, each line is one row, and the link ends the price's line.
+ */
+function FeeTable({ lines, kind }: { lines: TariffLineRow[]; kind: InstitutionKind }) {
   const columns: ProductColumn[] = [
-    { id: "fee", head: copy.card.cols.fee },
-    { id: "price", head: copy.card.cols.price, width: 9 },
-    { id: "min", head: copy.card.bounds.min, width: 10 },
-    { id: "max", head: copy.card.bounds.max, width: 11 },
+    { id: "covers", head: copy.card.cols.covers },
+    { id: "price", head: copy.card.cols.price, width: 8.5 },
+    { id: "min", head: copy.card.bounds.min, width: 9.5 },
+    { id: "max", head: copy.card.bounds.max, width: 10.5 },
+    { id: "where", head: copy.card.cols.where, width: 7 },
   ];
+  const kinds = [...new Set(lines.map(kindOf))].sort((a, b) => (kindOrder.indexOf(a) + 1 || 99) - (kindOrder.indexOf(b) + 1 || 99));
   return (
     <ProductTable
       columns={columns}
-      groups={[
-        {
-          key: "lines",
-          rows: lines.map((l) => ({
+      groups={kinds.map((k) => ({
+        key: k,
+        heading:
+          k === "distribution"
+            ? {
+                title: copy.card.distribution.name,
+                // who pays it, from the regulations (MF-24; MF-26 says what a bank may charge without an agreement): not a charge the account's price list adds
+                line: (
+                  <span className="inline-flex flex-wrap items-center gap-x-2 gap-y-1">
+                    {copy.card.distribution.who(kind === "bank" ? copy.card.distribution.toBank : copy.card.distribution.toBroker)}
+                    <RulesChip ids={distributionRuleIds(kind)} name={copy.card.distribution.name} />
+                  </span>
+                ),
+              }
+            : { title: baseName(k) },
+        rows: lines
+          .filter((l) => kindOf(l) === k)
+          .map((l) => ({
             key: l.id,
-            cells: [<FeeName l={l} />, figure("price", l.rate, l.period ? copy.card.period[l.period] : null), <Bound l={l} side="min" />, <Bound l={l} side="max" />],
+            cells: [<Covers l={l} />, figure("price", l.rate, priceWord(l)), <Bound l={l} side="min" />, <Bound l={l} side="max" />, <WhereCell w={l.where} />],
             phone: (
               <ProductPhoneRow stacked>
-                <FeeName l={l} phone />
-                {/* the price on its line, the two bounds on the next: each keeps its words whole, and no bound drops alone */}
-                {figure("price", l.rate, l.period ? copy.card.period[l.period] : null, true)}
-                {(l.min || l.max || isPercent(l)) && (
+                <Covers l={l} phone />
+                {/* the price with where it stands at the line's end, as the table's column ("עמוד 30 ↗"); the two bounds on the next line: each keeps its words whole, and no bound drops alone */}
+                <span className="flex items-center justify-between gap-3">
+                  {figure("price", l.rate, priceWord(l), true)}
+                  {l.where && <WhereCell w={l.where} />}
+                </span>
+                {(l.min || l.max || bounded(l)) && (
                   <span className="flex flex-wrap items-baseline gap-x-4 gap-y-1 text-sm">
                     <PhoneBound l={l} side="min" />
                     <PhoneBound l={l} side="max" />
                   </span>
                 )}
                 <Spread l={l} />
-                {l.where && <WhereLink w={l.where} />}
               </ProductPhoneRow>
             ),
           })),
-        },
-      ]}
+      }))}
     />
   );
 }
-
-/** A bound on a phone, where no head names it: "מינימום 27.00 ₪ לפעולה"; none on a flat fee. */
-function PhoneBound({ l, side }: { l: TariffLineRow; side: "min" | "max" }) {
-  const v = l[side];
-  if (!v) return isPercent(l) ? <span className="text-muted-foreground">{copy.card.noBound[side]}</span> : null;
-  return (
-    <span className="inline-flex items-baseline gap-1.5 whitespace-nowrap">
-      <span className="text-muted-foreground">{copy.card.bounds[side]}</span>
-      {figure(side, v, boundWord(v), true)}
-    </span>
-  );
-}
-
-const classWords = (classes: string[]) => classes.map(classWord).filter((x): x is string => !!x).join(", ");
 
 /** What can be bought at the house, as its own documents say, with the reason where they leave it open: one row per kind, in a card. */
 function CanBuy({ rows }: { rows: AvailabilityRow[] }) {
@@ -263,7 +315,6 @@ export function BrokerageGroupCard({ id, tariff, kind, className, advertising = 
       </Card>
     );
   }
-  const bases = tariff.bases.map(baseName);
   return (
     <div className={cx("flex flex-col gap-8", className)}>
       {/* the account's price list first, as a product's name and its quiet line: the document (its title is the link), its dates, who pays these prices */}
@@ -294,15 +345,8 @@ export function BrokerageGroupCard({ id, tariff, kind, className, advertising = 
         )}
       </div>
       {tariff.lines.length > 0 && (
-        <Section level="card"
-          title={copy.card.linesTitle}
-          lead={
-            <>
-              <bdi dir="ltr">{fmt.number(tariff.lineCount)}</bdi> {copy.card.linesMid} {bases.join(", ")}
-            </>
-          }
-        >
-          <FeeTable lines={tariff.lines} />
+        <Section level="card" title={copy.card.linesTitle}>
+          <FeeTable lines={tariff.lines} kind={kind} />
         </Section>
       )}
       <CanBuy rows={tariff.availability} />

@@ -2132,7 +2132,6 @@ export const r4catalogue = {
     tariffFrom: "תעריפון מ־",
     collectedAt: ", נאסף ב־",
     noPublishedDate: "ללא תאריך פרסום",
-    linesMid: "שורות עמלה נאספו:",
     notice: "הודעה על שינוי בעמלות",
     /** the index page with this house picked (issue 172) */
     compare: "להשוואה מול שאר הבנקים ובתי ההשקעות",
@@ -2140,7 +2139,26 @@ export const r4catalogue = {
     minimum: "מינימום לפתיחת חשבון",
     minimumNone: "לא נמצא בתעריפון",
     /** the fees as a table (2026-11-04, founder: the account "should have a standard way"): the heads carry the words */
-    cols: { fee: "העמלה", price: "המחיר" },
+    cols: { covers: "על מה נגבה", price: "המחיר", where: "איפה זה כתוב" },
+    /** the short link in the table's column: the page of the price list, or of another document named in the row */
+    page: (n: number) => `עמוד ${n}`,
+    inTariff: "בתעריפון",
+    otherDoc: "במסמך אחר",
+    /** a fee charged on each transfer of securities out, after its amount; a price per share, after its amount */
+    perTransfer: "להעברה",
+    perShare: "למניה",
+    /** what a fee on the account itself is charged on, in the row of the price list's table */
+    onAccount: {
+      fixed_period: "בלי קשר לסכום שבחשבון",
+      transfer_out: "כשמעבירים את ניירות הערך לחשבון שלכם בגוף פיננסי אחר",
+    },
+    /** a distribution fee (MF-24): the fund manager pays it to the house the units are held through, under a distribution agreement (MF-26 says what applies without one) */
+    distribution: {
+      name: "עמלת הפצה",
+      who: (to: string) => `מנהל הקרן משלם אותה ${to} על יחידות הקרן שמחזיקים דרכו, כשיש ביניהם הסכם הפצה.`,
+      toBank: "לבנק",
+      toBroker: "לבית ההשקעות",
+    },
     bounds: { min: "מינימום", max: "מקסימום" },
     /** a bound charged on each trade, after its amount */
     perTrade: "לפעולה",

@@ -5,6 +5,12 @@ import type { SiteValue } from "../../../lib/value";
 
 export type InstitutionKind = "bank" | "broker";
 
+/**
+ * The records behind a price list's distribution fee: the caps and who pays it (MF-24), and, at a bank, what a distributor
+ * that is not an investment marketer may charge the holder (MF-26; most stock-exchange members that are not banks are marketers).
+ */
+export const distributionRuleIds = (kind: InstitutionKind): string[] => (kind === "bank" ? ["MF-24", "MF-26"] : ["MF-24"]);
+
 /** One row of the companies list's "בנקים ובתי השקעות" heading. */
 export interface InstitutionRow {
   id: string;
@@ -67,6 +73,8 @@ export interface TariffLineRow {
   band: string | null;
   /** A conversion between two foreign currencies, by the price list's words (the ranking reads the shekel line, lib/invest `isFxToFx`). */
   fxToFx: boolean;
+  /** A distribution fee ("עמלת הפצה"), by the price list's words: the fund manager pays it (MF-24); grouped and named apart. */
+  distribution: boolean;
   rate: SiteValue;
   period: "month" | "quarter" | "year" | null;
   min: SiteValue | null;
@@ -94,8 +102,7 @@ export interface TariffCardData {
   published: SiteValue | null;
   snapshot: SiteValue;
   stale: boolean;
-  lineCount: number;
-  bases: string[];
+  /** Every line of the price list, in its order (2026-11-05). */
   lines: TariffLineRow[];
   minimum: SiteValue | null;
   regulator: "BoI" | "ISA" | "CMA" | "foreign";
