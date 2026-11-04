@@ -17,7 +17,6 @@ export const site = {
   currentPage: "העמוד הנוכחי",
   menuItems: [
     { href: "/guide", label: "מדריך", current: "guide" },
-    { href: "/questions", label: "שאלות שכולם שואלים", current: "questions" }, // the questions page (founder, 2026-10-24 evening)
     { href: "/companies", label: "חברות ומסלולים", current: "decoder" },
     { href: "/rules", label: "חוקים וכללים", current: "rules" },
     { href: "/parameters", label: "פרמטרים", current: "parameters" },
@@ -32,7 +31,6 @@ export const site = {
   footerAsOf: "נתונים נכון ל־",
   toTop: "חזרה למעלה",
   footer: [
-    { href: "/questions", label: "שאלות שכולם שואלים" },
     { href: "/rules", label: "חוקים וכללים" },
     { href: "/parameters", label: "פרמטרים" },
     { href: "/goal", label: "השוואה למטרה" },
@@ -2745,17 +2743,6 @@ export const rulesFront = {
     presetAll: "לכל החוקים והכללים",
   },
   experience: { title: "ניסיון של אחרים", line: "עדויות של אנשים מהפורום, לא חוקים ולא כללים; מסומנות כך גם בעמוד ״איך עוברים״." },
-  /** The quiet line under the filter field: the questions left this page for /questions (founder, 2026-10-24 evening). */
-  questionsLine: { before: "יש לכם שאלה?", link: "השאלות שכולם שואלים" },
-} as const;
-
-/** The questions page (/questions): the common questions left the rules page and got a one-line answer each (founder, 2026-10-24 evening). */
-export const questions = {
-  title: "השאלות שכולם שואלים",
-  lede: "תשובה של שורה לכל שאלה, ומתחתיה החוקים והכללים שאפשר לפתוח ולבדוק במקור.",
-  toRules: "לכל החוקים והכללים בנושא",
-  noAnswer: "התשובה עוד לא נכתבה; החוקים והכללים שעונים על השאלה מופיעים מתחת.",
-  home: { title: "שאלות שכולם שואלים", all: "לכל השאלות" },
 } as const;
 
 /** The documents page (synthesis §3.5). */
