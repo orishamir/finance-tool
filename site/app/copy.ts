@@ -2161,6 +2161,8 @@ export const r4catalogue = {
     /** a conversion spread the binding documents do not limit is never shown as zero (D56) */
     spreadNotLimited: "מרווח ההמרה: המסמכים לא קובעים לו תקרה",
     spreadUpTo: "מרווח ההמרה: עד",
+    /** a conversion line between two foreign currencies, beside the shekel one (the price lists' own words, "המרה בין שני מטבעות זרים") */
+    fxToFx: "בין שני מטבעות זרים",
     linesTitle: "העמלות",
     canBuy: {
       title: "מה אפשר לקנות כאן",

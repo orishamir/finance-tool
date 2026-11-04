@@ -18,6 +18,7 @@ import type {
 import { loadChecklistRows, loadRules, loadProducts, pointedRecords, root, today } from "./data.server";
 import { topicName } from "../copy";
 import { loadCatalog, loadDepositTerms, seenValue, seenWhere } from "./instruments.server";
+import { isFxToFx } from "./invest";
 import { shortName } from "./providers";
 import { ownBy, type SiteValue } from "./value";
 import { fileRank } from "./rule-shelves";
@@ -205,6 +206,7 @@ function lineRow(l: FeeLine, t: string, snapshot: string, owner: string, tariffU
     classes: l.applies_to,
     channel: l.channel === "direct" || l.channel === "branch" ? l.channel : null,
     band: l.band ?? null,
+    fxToFx: isFxToFx(l),
     rate: site(l.rate, t, snapshot, owner),
     period: l.period,
     min: l.min ? site(l.min, t, snapshot, owner) : null,

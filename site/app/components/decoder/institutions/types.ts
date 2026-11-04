@@ -65,6 +65,8 @@ export interface TariffLineRow {
   channel: "direct" | "branch" | null;
   /** The price list's own name for a plan or sub-class (IBKR Pro Fixed or Tiered): what tells two lines of one fee apart; null on the standard line. */
   band: string | null;
+  /** A conversion between two foreign currencies, by the price list's words (the ranking reads the shekel line, lib/invest `isFxToFx`). */
+  fxToFx: boolean;
   rate: SiteValue;
   period: "month" | "quarter" | "year" | null;
   min: SiteValue | null;

@@ -46,7 +46,8 @@ function Bound({ l, side }: { l: TariffLineRow; side: "min" | "max" }) {
 
 /** The fee's name with its channel as a label beside it (a kind is a label, design-system 11), then what it is charged on, the plan the line belongs to, the conversion spread, and where it stands. */
 function FeeName({ l, phone }: { l: TariffLineRow; /** On a phone the spread and the source come after the price, under it. */ phone?: boolean }) {
-  const classes = classWords(l.classes);
+  // what the line is charged on; a conversion between two foreign currencies says so, beside the shekel one
+  const classes = [classWords(l.classes) || null, l.fxToFx ? copy.card.fxToFx : null].filter(Boolean).join(" · ");
   return (
     <span className="flex flex-col items-start gap-0.5">
       <span className="flex flex-wrap items-center gap-x-2 gap-y-1">

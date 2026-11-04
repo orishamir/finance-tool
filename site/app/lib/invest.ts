@@ -319,6 +319,8 @@ export interface InvestView {
 
 /** A conversion between two foreign currencies is not the conversion a shekel investor pays: the shekel-to-currency line is read (2026-10-25). */
 const FX_TO_FX = /מט["״]ח ל?מט["״]ח|בין שני מטבעות זרים/;
+/** The line is a conversion between two foreign currencies, by the price list's own words: the ranking leaves it out, a house's page names it. */
+export const isFxToFx = (l: Pick<FeesSnapshot["lines"][number], "base" | "names">) => l.base === "fx" && FX_TO_FX.test(l.names.tariff.join(" "));
 
 const scopedCache = new WeakMap<FeesSnapshot, FeesSnapshot>();
 /**
@@ -328,7 +330,7 @@ const scopedCache = new WeakMap<FeesSnapshot, FeesSnapshot>();
 export function scoped(s: FeesSnapshot): FeesSnapshot {
   let out = scopedCache.get(s);
   if (!out) {
-    out = { ...s, lines: s.lines.filter((l) => !(l.base === "fx" && FX_TO_FX.test(l.names.tariff.join(" "))) && !(s.id === "interactive-brokers" && /Tiered/.test(l.band ?? ""))) };
+    out = { ...s, lines: s.lines.filter((l) => !isFxToFx(l) && !(s.id === "interactive-brokers" && /Tiered/.test(l.band ?? ""))) };
     scopedCache.set(s, out);
   }
   return out;
