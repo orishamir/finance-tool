@@ -348,6 +348,7 @@ A brokerage account in Israel is held at one of three provider classes: a bank t
 - Dimensions: `fee-trade`, `fee-custody`, `regulator`
 - Likely to change: yes, figures refresh; the structure is set by s.45טז.
 - **[2026-10-23 R3 research pass]** The page's definitions and legal note, and TASE's site terms on reuse of the data: BRK-37. Reporting period still not shown.
+- [2026-11-04] The calculator's data answer plain scripts: `api.tase.co.il/api/commissions/loadmembercommissions?memberId=<id>` (member ids at `api.tase.co.il/api/commissions/loadcommissions`) returns each member's sheet with `DateFrom`/`DateTo` for its averages (Psagot, member 2881: 2026-01-01 to 2026-06-30). The reporting period is therefore known. Its form has one row for foreign securities outside the US (research/2026-11-04-binding-prices/psagot-abroad.md).
 
 ### BRK-34 One Zero: where its tariff and deposit terms are published
 - Rule: One Zero (a TASE member, BRK-32) publishes its tariff at a company-information page, its deposit terms as a PDF, and its 447A money-market display page; its site states that sections 2א and 2ב of the Banking (Service to Customer) Law apply to it.

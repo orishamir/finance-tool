@@ -9,7 +9,8 @@
       "BRK-10",
       "BRK-12",
       "BRK-13"
-    ]
+    ],
+    "part_of": "leumi"
   },
   "tariff": {
     "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
@@ -1070,7 +1071,6 @@
   ],
   "groups": {
     "state": "prices",
-    "row_he": "למי שהצטרפו עד 31.10.2026 מגיל 18, גם בלי להיות סטודנטים: בלי עמלה על מניות ואיגרות חוב, למשך שנה ובתנאי משכורת",
     "note": "PEPPER's own student page (the regular-account address files the same text) and home page read in the filed copies. The page says one need not be a student and the home page says all customers aged 18+; the only printed date is for a student account, so whether it binds others is not settled. The annex rows for PEPPER customers in Leumi's tariff are this record's ordinary price, not a group. Nothing from Leumi's student, young or released-soldier groups is carried here. The offer's last joining date is the day this was read, so it may be gone at the next check. Re-read 2026-11-04: the student pages are unchanged and still print joining 'עד לתאריך 31.10.2026', which has passed; the entry stays for those who joined, and row_he now says so. The current joining page offers no securities benefit.",
     "read": [
       {
@@ -1130,7 +1130,10 @@
               "quote": "0 עמלת קניה ומכירה לני\"ע ישראלים וזרים (מניות ואג\"ח)"
             }
           }
-        ]
+        ],
+        "who_short_he": "מצטרפים חדשים מגיל 18",
+        "cheaper_he": "בלי עמלת קנייה ומכירה במניות ובאגרות חוב",
+        "ends_short_he": "שנה, עד 30 פעולות בחודש"
       }
     ]
   }

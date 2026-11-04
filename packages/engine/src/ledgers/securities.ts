@@ -4,7 +4,7 @@
 import { buyWithCash, custodyFee, fixedFee, fxFee, navBought, tradeCommission, type Commission, type Custody } from "../formulas/fees.ts";
 import { distributionTax } from "../formulas/holding-tax.ts";
 import { annualToMonthly, closesTaxYear, contributions, cpiPath, fxPath, taxYearOf, type Goal } from "../formulas/time.ts";
-import { ruleBook } from "../resolver.ts";
+import { RecordInputError, ruleBook } from "../resolver.ts";
 import type { Outcome, RunContext, RunResult } from "../result.ts";
 import { exitTax, Tally, unlessBlocked, yearlySurtax, type Profile } from "./common.ts";
 import { indexedCost, removeFifo, totalUnits, type Lot } from "./lots.ts";
@@ -37,6 +37,67 @@ export interface Fund {
   ninetyPercentTest?: boolean;
   /** Renewable money-market fund: months between fixed dates (MF-35). */
   fixedDatesEveryMonths?: number;
+  /**
+   * An accumulating foreign fund whose own Israeli prospectus annex reports a Tax Authority ruling naming a sale and a distribution as the
+   * only taxed events (TXF-11, 2026-11-04): taxed at sale on that ruling, not on the secondary reading, and ranked rather than listed (G-18).
+   */
+  saleOnlyRuling?: boolean;
+}
+
+/** The lines of a securities account's price list that the run charges (F-12 to F-14, F-17). */
+export type SecuritiesTariff = {
+  buy?: Commission;
+  /** F-12 (2026-10-31): the price of a monthly purchase by standing order, where the tariff prints one; `buy` otherwise. */
+  buyStanding?: Commission;
+  sell?: Commission;
+  /** F-24 (2026-10-31): the tariff's own line for a redemption, where it names one. Only the makam run reads it. */
+  redeem?: Commission;
+  custody?: Custody;
+  /** F-17 monthly account fee in NIS. */
+  monthlyFee?: number;
+  /**
+   * F-13 FX conversion on each order and at exit: a bare number is the percentage with no bounds (kept for
+   * callers that pass one); the `Commission` shape adds the tariff's minimum and maximum, in the instrument's
+   * currency (`in: "instrument"`), converted at the rate of the trade.
+   */
+  fx?: number | Commission;
+  /** F-13 (2026-10-31): the conversion of a monthly purchase on a recurring plan, where the tariff prints a price for one; `fx` otherwise, and always on a lump sum and at exit. */
+  fxStanding?: number | Commission;
+  /** The instrument's currency, for tariff lines set in it: code and NIS per unit at the start. */
+  currency?: { code: string; startRate: number };
+  /**
+   * F-12 (2026-11-04, own account): the group or the person set the regular trade price over the house's standing-order price. A monthly purchase
+   * may then be placed the regular way, and the order pays the cheaper whole order (see `buy` in the securities ledger). Unset, `buyStanding`
+   * replaces `buy` for a monthly purchase as always.
+   */
+  cheaperOfStandingTrade?: boolean;
+  /** F-13 (2026-11-04, own account): the same for the conversion; set only where the group or the person set the regular conversion price. */
+  cheaperOfStandingFx?: boolean;
+};
+
+/**
+ * F-101 (2026-11-04): a sequence of tariffs. The tariff applies to the run's months 1 to `until.months`, `until.then` to the months after
+ * them, and `then` may carry a period of its own (its `months` counted from the start of the run, not from the end of the one before).
+ */
+export type TariffSequence = SecuritiesTariff & { until?: { months: number; then: TariffSequence } };
+
+/**
+ * F-101: a period must end where a custody charge falls. A custody line charged every `n` months charges the quarter (or year) that ends in
+ * the month, at that month's tariff, so a period ending between two charges would put the whole straddling period on the second tariff; the
+ * engine refuses it rather than prorate (docs/method.md section 12). `gridOffset` shifts the charging phase only.
+ */
+export function checkTariffPeriods(tariff: TariffSequence, gridOffset = 0): void {
+  let t = tariff;
+  while (t.until) {
+    const u = t.until.months;
+    if (!Number.isInteger(u) || u < 0) throw new RecordInputError(`F-101: a period of ${u} months must be a whole number of months, 0 or more`);
+    const next = t.until.then;
+    for (const side of [t, next]) {
+      const every = side.custody?.everyMonths;
+      if (every && every > 1 && (u + gridOffset) % every !== 0) throw new RecordInputError(`F-101: a period of ${u} months ends between two custody charges (charged every ${every} months); a period must end where a charge falls`);
+    }
+    t = next;
+  }
 }
 
 export interface SecuritiesInput {
@@ -51,27 +112,8 @@ export interface SecuritiesInput {
     fxChange?: number;
   };
   fund: Fund;
-  tariff: {
-    buy?: Commission;
-    /** F-12 (2026-10-31): the price of a monthly purchase by standing order, where the tariff prints one; `buy` otherwise. */
-    buyStanding?: Commission;
-    sell?: Commission;
-    /** F-24 (2026-10-31): the tariff's own line for a redemption, where it names one. Only the makam run reads it. */
-    redeem?: Commission;
-    custody?: Custody;
-    /** F-17 monthly account fee in NIS. */
-    monthlyFee?: number;
-    /**
-     * F-13 FX conversion on each order and at exit: a bare number is the percentage with no bounds (kept for
-     * callers that pass one); the `Commission` shape adds the tariff's minimum and maximum, in the instrument's
-     * currency (`in: "instrument"`), converted at the rate of the trade.
-     */
-    fx?: number | Commission;
-    /** F-13 (2026-10-31): the conversion of a monthly purchase on a recurring plan, where the tariff prints a price for one; `fx` otherwise, and always on a lump sum and at exit. */
-    fxStanding?: number | Commission;
-    /** The instrument's currency, for tariff lines set in it: code and NIS per unit at the start. */
-    currency?: { code: string; startRate: number };
-  };
+  /** F-101: the tariff, or a sequence of tariffs, each with the months it holds (see `TariffSequence`). `currency` is read from this first one only. */
+  tariff: TariffSequence;
   /** Where the account is: an Israeli bank or member withholds; a foreign broker does not (TXF-21, TXF-22). */
   broker?: "israeli" | "foreign";
   /**
@@ -134,6 +176,10 @@ export function runSecurities(input: SecuritiesInput, ctx: RunContext): RunResul
   const { goal, market, fund, tariff, profile } = input;
   const tally = new Tally();
   const formulas = ["F-08", "F-09", "F-10", "F-12", "F-13", "F-14", "F-40"];
+  if (tariff.until) {
+    formulas.push("F-101");
+    checkTariffPeriods(tariff, input.gridOffset ?? 0);
+  }
 
   const isMmf = fund.kind.startsWith("money-market");
   const isForeign = fund.kind === "foreign-fund" || fund.kind === "tase-foreign-fund";
@@ -194,15 +240,39 @@ export function runSecurities(input: SecuritiesInput, ctx: RunContext): RunResul
   }
 
   const fxRate = (m: number) => (tariff.currency ? tariff.currency.startRate * X[m]! : 1);
+  // F-101: the tariff in force in month m. Without `until`, the one tariff, as always.
+  const tariffAt = (m: number): SecuritiesTariff => {
+    let at: TariffSequence = tariff;
+    while (at.until && m > at.until.months) at = at.until.then;
+    return at;
+  };
   let nav = 1;
   const sharePrice = (m: number) => (fund.sharePrice ? (fund.sharePrice * nav) / X[m]! : undefined);
   let lots: Lot[] = [];
 
-  /** One order: FX fee on a contribution, then trade value and commission, bought at the ask. */
-  const buy = (cash: number, month: number, eventMonth: number, convert: boolean, price: Commission | undefined = tariff.buy, conversion: number | Commission | undefined = tariff.fx) => {
-    const fx = convert && tariff.currency ? fxFee(conversion, cash, { fxRate: fxRate(eventMonth) }) : 0;
-    tally.fee("fx", fx);
-    const { trade, commission } = buyWithCash(cash - fx, price, { fxRate: fxRate(eventMonth), sharePrice: sharePrice(month) });
+  /**
+   * One order: FX fee on a contribution, then trade value and commission, bought at the ask. A monthly purchase (`standing`) is placed the
+   * standing-order way: the standing commission with the standing conversion, where the tariff prints them. Where the group or the person set the
+   * regular price of a side (`cheaperOfStandingTrade`, `cheaperOfStandingFx`), the person can place the order the regular way instead: the regular
+   * commission (a side with no flag keeps its standing commission, F-12) with the regular conversion. The order pays the cheaper whole order
+   * (F-101); a commission of one way never combines with the conversion of the other.
+   */
+  const buy = (cash: number, month: number, eventMonth: number, convert: boolean, standing = false) => {
+    const at = tariffAt(month);
+    const terms = { fxRate: fxRate(eventMonth) };
+    const order = (line: Commission | undefined, conversion: SecuritiesTariff["fx"]) => {
+      const fx = convert && tariff.currency ? fxFee(conversion, cash, terms) : 0;
+      const sized = buyWithCash(cash - fx, line, { ...terms, sharePrice: sharePrice(month) });
+      return { fx, sized, cost: fx + sized.commission };
+    };
+    const standingLine = standing ? (at.buyStanding ?? at.buy) : at.buy;
+    let chosen = order(standingLine, standing ? (at.fxStanding ?? at.fx) : at.fx);
+    if (standing && (at.cheaperOfStandingTrade || at.cheaperOfStandingFx)) {
+      const regular = order(at.cheaperOfStandingTrade && at.buy ? at.buy : standingLine, at.fx);
+      if (regular.cost < chosen.cost) chosen = regular;
+    }
+    tally.fee("fx", chosen.fx);
+    const { trade, commission } = chosen.sized;
     tally.fee("trade", commission);
     const value = navBought(trade, spread);
     tally.fee("spread", trade - value);
@@ -237,8 +307,9 @@ export function runSecurities(input: SecuritiesInput, ctx: RunContext): RunResul
     }
   } else if (isForeign) {
     // An accumulating foreign fund is taxed only at sale under the TXF-11 reading (secondary): computed,
-    // labelled, and listed, not ranked (F-65, G-18).
-    book.label("secondary-source", "TXF-11");
+    // labelled, and listed, not ranked (F-65, G-18); unless its own annex reports a ruling that says so (2026-11-04).
+    if (fund.saleOnlyRuling) book.cite("TXF-11");
+    else book.label("secondary-source", "TXF-11");
   }
   // The dollar value is known only when the tariff gives the currency's rate.
   const estateThreshold = fund.domicile === "us" && tariff.currency ? book.amount("TXF-27", "estate_threshold", "USD") : undefined;
@@ -249,7 +320,7 @@ export function runSecurities(input: SecuritiesInput, ctx: RunContext): RunResul
   // applies as published (F-14; BRK-17 binds banks only, and MF-26 does not bind an investment marketer).
   const mmfFree = isMmf && input.memberKind !== "non-bank";
   if (mmfFree) book.cite("BANK-18");
-  const custodyLine = mmfFree ? undefined : tariff.custody;
+  const custodyLineAt = (m: number) => (mmfFree ? undefined : tariffAt(m).custody);
 
   let exitYearFees = 0;
   let foreignTax = 0;
@@ -262,7 +333,7 @@ export function runSecurities(input: SecuritiesInput, ctx: RunContext): RunResul
   for (let m = 1; m <= T; m++) {
     // 1-2. Contributions at the start of the month, each its own order (A-28).
     if (m === 1 && C[0]! > 0) buy(C[0]!, m, 0, true);
-    if (m <= goal.months && C[m]! > 0) for (let k = 0; k < orders; k++) buy(C[m]! / orders, m, m, true, tariff.buyStanding ?? tariff.buy, tariff.fxStanding ?? tariff.fx);
+    if (m <= goal.months && C[m]! > 0) for (let k = 0; k < orders; k++) buy(C[m]! / orders, m, m, true, true);
     tally.paidIn += (m === 1 ? C[0]! : 0) + (m <= goal.months ? C[m]! : 0);
 
     // 3. Growth less drag (F-10). The sum over the lots is kept while the lots stand: at 40 years it is 480 lots, several times a month, in every run.
@@ -288,8 +359,8 @@ export function runSecurities(input: SecuritiesInput, ctx: RunContext): RunResul
 
     // 5. Holding costs, paid by removing units oldest first (F-14, F-17, F-15 for the IRA manager).
     const manager = (wrapperFee / 12) * units * nav;
-    const custody = custodyFee(custodyLine, m + offset, units * nav - manager);
-    const fixed = fixedFee(tariff.monthlyFee, units * nav - manager - custody);
+    const custody = custodyFee(custodyLineAt(m), m + offset, units * nav - manager);
+    const fixed = fixedFee(tariffAt(m).monthlyFee, units * nav - manager - custody);
     if (custody + fixed + manager > 0) {
       lots = removeFifo(lots, (custody + fixed + manager) / nav);
       units = totalUnits(lots);
@@ -313,9 +384,10 @@ export function runSecurities(input: SecuritiesInput, ctx: RunContext): RunResul
   const value = totalUnits(lots) * nav;
   const gross = value * (1 - spread);
   tally.fee("spread", value - gross);
-  const commission = tradeCommission(tariff.sell, gross, { fxRate: fxRate(T), sharePrice: sharePrice(T) });
+  const atExit = tariffAt(T);
+  const commission = tradeCommission(atExit.sell, gross, { fxRate: fxRate(T), sharePrice: sharePrice(T) });
   tally.fee("trade", commission);
-  const fx = tariff.currency ? fxFee(tariff.fx, gross - commission, { fxRate: fxRate(T) }) : 0;
+  const fx = tariff.currency ? fxFee(atExit.fx, gross - commission, { fxRate: fxRate(T) }) : 0;
   tally.fee("fx", fx);
   const proceeds = gross - commission - fx;
 
@@ -364,7 +436,7 @@ export function runSecurities(input: SecuritiesInput, ctx: RunContext): RunResul
     } else outcome = { code: "listed-not-ranked", reason: step.blocked };
     if (realGain < 0) tally.flag("G-07");
     tally.flag("G-20");
-    if (isForeign && !fund.distribution && outcome.code === "eligible") outcome = { code: "listed-not-ranked", reason: "G-18" };
+    if (isForeign && !fund.distribution && !fund.saleOnlyRuling && outcome.code === "eligible") outcome = { code: "listed-not-ranked", reason: "G-18" };
     if (atForeignBroker) tally.flag("TXF-21");
   }
 

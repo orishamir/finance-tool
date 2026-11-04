@@ -64,7 +64,8 @@ describe("on the engine's numbers (S&P 500, 10,000 now + 500 a month, 10 years, 
   const grid = gridOf(buildInvest({ bundle, index: indexById(bundle, "index-sp500")!, plan }), bundle.snapshots);
   const steps = (a: string, f: string) => chainOf(grid, { start: { a, f }, taken: [] })!.chain.map((s) => [Math.round(s.v), s.d]);
   it("Hapoalim with the MTF fund", () => expect(steps("hapoalim", "1150333")).toEqual([[79273, null], [84148, 4875], [86492, 2344]]));
-  it("Bank Jerusalem with the accumulating iShares", () => expect(steps("jerusalem", "ie00b5bmr087")).toEqual([[59435, null], [81371, 21936], [86492, 5121]]));
+  // since 2026-11-04 the accumulating iShares is ranked (TXF-11: its own annex reports the ruling), so the climb stays on it: to Interactive Israel, then no single change improves
+  it("Bank Jerusalem with the accumulating iShares", () => expect(steps("jerusalem", "ie00b5bmr087")).toEqual([[59435, null], [84198, 24763]]));
   it("Interactive Israel with the same iShares: no single change improves, the top is 2,294 away", () => {
     const c = chainOf(grid, { start: { a: "interactive-israel", f: "ie00b5bmr087" }, taken: [] })!;
     expect(c.chain).toHaveLength(1);

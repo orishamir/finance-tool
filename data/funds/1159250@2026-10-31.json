@@ -81,5 +81,21 @@
       "checked": "2026-10-24"
     }
   },
+  "tax_ruling": {
+    "ruling_date": "2019-07-01",
+    "source": {
+      "url": "https://mayafiles.tase.co.il/rpdf/1244001-1245000/P1244042-01.pdf",
+      "title": "נספח לתשקיף קרן חוץ נסחרת: iShares Core S&P 500 UCITS ETF USD (Acc) (iShares VII plc), 2019",
+      "publisher": "BlackRock (iShares VII plc)",
+      "strength": "institution"
+    },
+    "pages": {
+      "ruling": 15,
+      "sale": 16,
+      "distribution": 17
+    },
+    "quote": "ביום 1 ביולי 2019 התקבלה בידי הקרן החלטת המיסוי מהמחלקה המקצועית של רשות המיסים",
+    "checked": "2026-11-04"
+  },
   "snapshot": "2026-10-31"
 }

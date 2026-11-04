@@ -204,6 +204,8 @@ export interface ChartPick<T> {
   pinned: T | null;
   /** On the item's element. `tap: false` leaves clicks to what the item sits in (a bar inside a row that picks the row). */
   bind: (id: T, tap?: boolean) => { onPointerEnter: (e: PointerEvent) => void; onPointerLeave: (e: PointerEvent) => void; onClick?: () => void };
+  /** Lets go of the kept item (a tap outside the chart). */
+  clear: () => void;
 }
 
 /** One series, bar or row set apart: a mouse previews it, a click or a tap keeps it, and the same click or tap lets it go. */
@@ -222,6 +224,7 @@ export function useChartPick<T = string>(): ChartPick<T> {
       },
       ...(tap ? { onClick: () => setPinned((p) => (p === id ? null : id)) } : {}),
     }),
+    clear: () => setPinned(null),
   };
 }
 

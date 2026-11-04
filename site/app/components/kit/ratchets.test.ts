@@ -30,7 +30,6 @@ const CARD: Record<string, number> = {
     "components/compare/fit.tsx": 1,
     "components/compare/rows.tsx": 1,
     "components/compare/strip.tsx": 3,
-    "components/invest/funds.tsx": 1,
     "components/revisit/revisit.tsx": 2,
     "routes/home.tsx": 1,
     "routes/idle-cash.tsx": 1,

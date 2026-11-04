@@ -351,7 +351,7 @@ function Body({ bundle, fees, form, publisherNames, subject, frame }: { bundle: 
             {r3fees.strip.backHolding}
           </Link>
         )}
-        {sv.from === "compare" && (
+        {sv.from === "compare" && shown("/goal/compare") && (
           <Link to="/goal/compare" className="text-link hover:underline min-h-target inline-flex items-center">
             {r3fees.strip.backCompare}
           </Link>
