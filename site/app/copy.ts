@@ -3503,6 +3503,8 @@ export const invest = {
     cheapestTag: "★ הזול",
     whichPrice: "המחיר בכל שורה הוא של לקוח רגיל, והדירוג לפיו. מחיר לקבוצות כתוב בשורה של הבנק או בית ההשקעות ולא נכנס לחישוב.",
     yoursTag: "החשבון שלכם",
+    /** Before a house's group or joining-offer note under its row (founder, 2026-11-04): the row's figure is the price list's, the note's lower price is not in it. */
+    groupNotCounted: "לא בחישוב",
     standingTag: ownTermsCopy.provider.standingTag,
     standingNote: ownTermsCopy.provider.standingNote,
     broken: "⫽ הפס נחתך: הסכום ארוך מהשטח",

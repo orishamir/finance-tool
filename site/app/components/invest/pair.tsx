@@ -307,7 +307,13 @@ function barScale(costs: number[]): number {
 /** A house's group prices, on its row and never in its figure (D43). The line belongs to the house, so a re-sort or a new input never changes the row's height. */
 function GroupLine({ id, snapshots }: { id: string; snapshots: WorkbenchBundle["snapshots"] }) {
   const line = snapshots.find((s) => s.id === id)?.groups?.row_he;
-  return line ? <span className="col-start-2 col-end-[-1] text-xs text-muted-foreground leading-snug">{line}</span> : null;
+  // the tag says which price the row's figure uses: the price list's, not the lower one in the note (founder, 2026-11-04)
+  return line ? (
+    <span className="col-start-2 col-end-[-1] text-xs text-muted-foreground leading-snug">
+      <Tag className="me-1.5">{c.pair.groupNotCounted}</Tag>
+      {line}
+    </span>
+  ) : null;
 }
 
 /** What the account card says of its house, under its name: what it charges, its labels and its price list. */
