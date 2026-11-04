@@ -16,7 +16,7 @@ describe("the providers the brokerage wrapper carries", () => {
   it("are the banks and brokers whose tariff has a line for the class of the fund the account holds, with their tariff lines and Hebrew names", () => {
     const ids = Object.keys(wrapper.providers ?? {});
     for (const id of ["psagot", "ibi"]) expect(ids).toContain(id);
-    expect(ids).not.toContain("meitav-trade"); // its snapshot is marked missing
+    expect(ids).toContain("meitav-trade"); // priced at its price list since 2026-11-04 (D56): custody 0.15% a quarter, at least 270 NIS, and a handling fee up to 90 NIS a month
     // the representative fund (5139282) is a tracking fund, `mutual_fund_units`: a tariff with no buy/sell line for that class gives no price, never a free trade (F-63 "No line, no price", MF-26, 2026-10-25)
     expect(ids).not.toContain("interactive-brokers");
     for (const id of ["one-zero", "leumi"]) expect(ids).toContain(id); // their TASE lines cover tracking funds by footnote (MF-27; snapshot 2026-10-31)
@@ -57,8 +57,8 @@ describe("the 20-year case on the cheapest collected broker", () => {
   it("ranks the providers by what the option ends at; the cheapest is the one the workbench's lines make cheapest", () => {
     expect(outcomes.length).toBe(Object.keys(wrapper.providers!).length);
     for (let i = 1; i < outcomes.length; i++) expect(outcomes[i - 1]!.real).toBeGreaterThanOrEqual(outcomes[i]!.real);
-    expect(best.id).toBe("fair"); // no custody fee by its home page, 0.08% minimum 3 NIS on a tracking fund (BRK-53)
-    expect(outcomes[1]!.id).toBe("one-zero");
+    expect(best.id).toBe("one-zero"); // no custody fee; its TASE line covers tracking funds by footnote (MF-27, snapshot 2026-10-31)
+    expect(outcomes[1]!.id).toBe("psagot");
     expect(outcomes.at(-1)!.id).toBe("excellence");
   });
   it("marks the card's own run (P-05's Leumi tariff) on its row, on the direct channel, with no second row for it", () => {
@@ -79,7 +79,7 @@ describe("the 20-year case on the cheapest collected broker", () => {
     expect(dflt).toBeGreaterThan(kgl);
     expect(cheapest).toBeGreaterThan(kgl);
     expect(Math.round(kgl)).toBe(1_032_222);
-    expect(cheapest).toBeCloseTo(1_108_948, -2);
+    expect(cheapest).toBeCloseTo(1_098_743, -2);
     // 240 purchases of 3,000: 0.225% (6.75) instead of the regular line's 26 saves 4,620 before growth and tax
     expect(Math.abs(dflt - 1_034_620)).toBeLessThan(100);
     // the ranking moves: the brokerage account leads outright with that broker
@@ -109,11 +109,11 @@ describe("the site's pick of the brokerage tariff (F-80, 2026-10-24, Doron's cas
   it("prices the account on the collected tariff that leaves the goal the most, named as the site's pick", () => {
     const b = applyProviders(bundle, doron);
     const w = b.wrappers.find((x) => x.id === BRK)!;
-    expect(w.representative).toMatchObject({ providerId: "fair", pickedBy: "site", compared: Object.keys(wrapper.providers!).length });
+    expect(w.representative).toMatchObject({ providerId: "one-zero", pickedBy: "site", compared: Object.keys(wrapper.providers!).length });
     expect(w.representative!.chosen).toBeUndefined();
     expect(w.feeValues.custodyRate).toMatchObject({ state: "sourced" });
     expect(real(b, BRK, doron)).toBeGreaterThan(real(bundle, BRK, doron) + 3_000);
-    expect(Math.round(real(b, BRK, doron))).toBe(90_172);
+    expect(Math.round(real(b, BRK, doron))).toBe(89_759);
   });
   it("never picks a provider whose tariff has no line for the fund's class: Interactive Brokers has no tracking-fund line and is not a candidate", () => {
     expect(Object.keys(wrapper.providers!)).not.toContain("interactive-brokers");
@@ -151,8 +151,8 @@ describe("the site's pick of the brokerage tariff (F-80, 2026-10-24, Doron's cas
     const b = applyProviders(bundle, doron);
     const out = providerOutcomes(b, doron, BRK);
     expect(out.site).toBeNull();
-    expect(out.providers.find((p) => p.current)?.id).toBe("fair");
-    expect(out.providers[0]!.id).toBe("fair");
+    expect(out.providers.find((p) => p.current)?.id).toBe("one-zero");
+    expect(out.providers[0]!.id).toBe("one-zero");
   });
   it("names the pair behind a tax gap that is a fee effect, and not a pair without custody fees", () => {
     const v = buildView(bundle, doron);

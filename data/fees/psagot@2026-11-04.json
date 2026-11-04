@@ -1,0 +1,815 @@
+{
+  "id": "psagot",
+  "provider": {
+    "name_he": "פסגות ניירות ערך בע\"מ (פסגות טרייד)",
+    "class": "broker",
+    "regulator": "ISA",
+    "tase_member": true,
+    "protection_rule_ids": [
+      "BRK-07",
+      "BRK-08",
+      "BRK-09",
+      "BRK-12",
+      "BRK-13",
+      "REG-16"
+    ]
+  },
+  "tariff": {
+    "url": "https://www.psagot.co.il/%d7%aa%d7%a2%d7%a8%d7%99%d7%a4%d7%95%d7%9f-%d7%91%d7%95%d7%a8%d7%a1%d7%94-%d7%a4%d7%a1%d7%92%d7%95%d7%aa-%d7%98%d7%a8%d7%99%d7%99%d7%93-2/",
+    "title": "תעריפון עמלות פסגות טרייד",
+    "notes": "תעריפון עמלות פסגות טרייד - עמוד HTML באתר פסגות (ללא תאריך מודפס; לפי ה-API של האתר נוצר 13.1.2026 ועודכן 9.8.2026). הקישור 'להורדת התעריפון עמלות המלא' מפנה לקובץ PDF (7 עמ', ללא תאריך מודפס, CreationDate/ModDate 6.8.2026, Last-Modified 9.8.2026, ספרייה 40313c4c1c6f1d21) באותו תוכן; גרסת ינואר 2026 (PDF 13.1.2026, ספרייה 6aa0467f9b7f4207) נושאת אותם שיעורים. נקרא שוב 4.11.2026: אין תעריפון חדש יותר. חלק 4 – ניירות ערך, חלק 5 – מטבע חוץ, חלק 6 – שירותים ועמלות נוספות. הסכם פתיחת החשבון ונספח העמלות החתום אינם מפורסמים.",
+    "published": null,
+    "format": "html"
+  },
+  "snapshot": "2026-11-04",
+  "missing": false,
+  "missing_reason": null,
+  "lines": [
+    {
+      "id": "psagot-buy-sell-tase-shares",
+      "base": "trade",
+      "applies_to": [
+        "tase_shares_bonds",
+        "etf_units"
+      ],
+      "excludes": [
+        "tase_bonds"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.07,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.psagot.co.il/%d7%aa%d7%a2%d7%a8%d7%99%d7%a4%d7%95%d7%9f-%d7%91%d7%95%d7%a8%d7%a1%d7%94-%d7%a4%d7%a1%d7%92%d7%95%d7%aa-%d7%98%d7%a8%d7%99%d7%99%d7%93-2/",
+          "title": "תעריפון עמלות פסגות טרייד, חלק 4 – ניירות ערך, (4א) שירותים נפוצים, סעיף 1, '1. מניות, ניירות ערך המירים למניות, זכויות וקרנות סל שחלים עליהם כללי המסחר על מניות'",
+          "publisher": "Psagot Securities Ltd. (Psagot Trade)",
+          "strength": "institution",
+          "quote": "0.07% משווי העיסקה, מינימום 2₪ לפעולה"
+        },
+        "checked": "2026-11-04",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "'0.07% משווי העיסקה, מינימום 2₪ לפעולה' for shares, convertibles, rights and ETFs traded under share rules. Notes: charged on every buy/sell including off-exchange, custodian, issues, conversions and tender offers; the minimum for taking part in an issue is NIS 40; the minimum applies per transaction. Bonds and ETFs under bond rules are a separate row (0.06%, min NIS 2), recorded as its own line. The page says Psagot may update the fees from time to time (BRK-24)."
+      },
+      "min": {
+        "value": 2,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.psagot.co.il/%d7%aa%d7%a2%d7%a8%d7%99%d7%a4%d7%95%d7%9f-%d7%91%d7%95%d7%a8%d7%a1%d7%94-%d7%a4%d7%a1%d7%92%d7%95%d7%aa-%d7%98%d7%a8%d7%99%d7%99%d7%93-2/",
+          "title": "תעריפון עמלות פסגות טרייד, חלק 4, (4א) סעיף 1, מניות, מינימום",
+          "publisher": "Psagot Securities Ltd. (Psagot Trade)",
+          "strength": "institution",
+          "quote": "0.07% משווי העיסקה, מינימום 2₪ לפעולה"
+        },
+        "checked": "2026-11-04",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "'מינימום 2₪ לפעולה'."
+      },
+      "max": null,
+      "period": null,
+      "channel": null,
+      "band": "מניות וקרנות סל על מניות",
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קניה, מכירה ופדיון של ניירות ערך הנסחרים בבורסה ת\"א",
+          "מניות, ניירות ערך המירים למניות, זכויות וקרנות סל שחלים עליהם כללי המסחר על מניות"
+        ]
+      }
+    },
+    {
+      "id": "psagot-buy-sell-tase-bonds",
+      "base": "trade",
+      "applies_to": [
+        "tase_bonds"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.06,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.psagot.co.il/%d7%aa%d7%a2%d7%a8%d7%99%d7%a4%d7%95%d7%9f-%d7%91%d7%95%d7%a8%d7%a1%d7%94-%d7%a4%d7%a1%d7%92%d7%95%d7%aa-%d7%98%d7%a8%d7%99%d7%99%d7%93-2/",
+          "title": "תעריפון עמלות פסגות טרייד, חלק 4, (4א) סעיף 1, '2. אגרות חוב, ניירות ערך המירים לתעודות התחייבות וקרנות סל שחלים עליהם כללי המסחר החלים על תעודות התחייבות', והערת סעיף 1: תעודות התחייבות ממשלתיות זהות לתעודות התחייבות קונצרניות",
+          "publisher": "Psagot Securities Ltd. (Psagot Trade)",
+          "strength": "institution",
+          "quote": "0.06%משווי העיסקה, מינימום 2₪ לפעולה"
+        },
+        "checked": "2026-11-04",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "'0.06% משווי העיסקה, מינימום 2₪ לפעולה' for bonds, bond convertibles and ETFs under bond trading rules. Government bonds read this line, in the note under section 4(א)1: \"עמלות קנייה ומכירה של תעודות התחייבות ממשלתיות מסוג \"שחר,\" \"ממשלתית שקלית,\" \"ממשלתית קצרה,\" תעודות התחייבות ממשלתיות אחרות, זהות לעמלות קנייה ומכירה של תעודות התחייבות קונצרניות.\""
+      },
+      "min": {
+        "value": 2,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.psagot.co.il/%d7%aa%d7%a2%d7%a8%d7%99%d7%a4%d7%95%d7%9f-%d7%91%d7%95%d7%a8%d7%a1%d7%94-%d7%a4%d7%a1%d7%92%d7%95%d7%aa-%d7%98%d7%a8%d7%99%d7%99%d7%93-2/",
+          "title": "תעריפון עמלות פסגות טרייד, חלק 4, (4א) סעיף 1, אגרות חוב, מינימום",
+          "publisher": "Psagot Securities Ltd. (Psagot Trade)",
+          "strength": "institution",
+          "quote": "0.06%משווי העיסקה, מינימום 2₪ לפעולה"
+        },
+        "checked": "2026-11-04",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "'מינימום 2₪ לפעולה'."
+      },
+      "max": null,
+      "period": null,
+      "channel": null,
+      "band": "אגרות חוב וקרנות סל על אג\"ח",
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קניה, מכירה ופדיון של ניירות ערך הנסחרים בבורסה ת\"א",
+          "אגרות חוב, ניירות ערך המירים לתעודות התחייבות וקרנות סל שחלים עליהם כללי המסחר החלים על תעודות התחייבות",
+          "עמלות קנייה ומכירה של תעודות התחייבות ממשלתיות מסוג \"שחר,\" \"ממשלתית שקלית,\" \"ממשלתית קצרה,\" תעודות התחייבות ממשלתיות אחרות, זהות לעמלות קנייה ומכירה של תעודות התחייבות קונצרניות."
+        ]
+      }
+    },
+    {
+      "id": "psagot-buy-sell-makam",
+      "base": "trade",
+      "applies_to": [
+        "makam"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.05,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.psagot.co.il/%d7%aa%d7%a2%d7%a8%d7%99%d7%a4%d7%95%d7%9f-%d7%91%d7%95%d7%a8%d7%a1%d7%94-%d7%a4%d7%a1%d7%92%d7%95%d7%aa-%d7%98%d7%a8%d7%99%d7%99%d7%93-2/",
+          "title": "תעריפון עמלות פסגות טרייד, חלק 4, (4א) סעיף 1, '3. מילווה קצר מועד'",
+          "publisher": "Psagot Securities Ltd. (Psagot Trade)",
+          "strength": "institution",
+          "quote": "0.05% משווי העיסקה, מינימום ₪ 2 לפעולה"
+        },
+        "checked": "2026-11-04",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "'0.05% משווי העיסקה, מינימום ₪ 2 לפעולה'."
+      },
+      "min": {
+        "value": 2,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.psagot.co.il/%d7%aa%d7%a2%d7%a8%d7%99%d7%a4%d7%95%d7%9f-%d7%91%d7%95%d7%a8%d7%a1%d7%94-%d7%a4%d7%a1%d7%92%d7%95%d7%aa-%d7%98%d7%a8%d7%99%d7%99%d7%93-2/",
+          "title": "תעריפון עמלות פסגות טרייד, חלק 4, (4א) סעיף 1, מילווה קצר מועד, מינימום",
+          "publisher": "Psagot Securities Ltd. (Psagot Trade)",
+          "strength": "institution",
+          "quote": "0.05% משווי העיסקה, מינימום ₪ 2 לפעולה"
+        },
+        "checked": "2026-11-04",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "'מינימום ₪ 2 לפעולה'."
+      },
+      "max": null,
+      "period": null,
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קניה, מכירה ופדיון של ניירות ערך הנסחרים בבורסה ת\"א",
+          "מילווה קצר מועד"
+        ]
+      }
+    },
+    {
+      "id": "psagot-redemption-makam",
+      "base": "trade",
+      "applies_to": [
+        "makam"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.05,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.psagot.co.il/%d7%aa%d7%a2%d7%a8%d7%99%d7%a4%d7%95%d7%9f-%d7%91%d7%95%d7%a8%d7%a1%d7%94-%d7%a4%d7%a1%d7%92%d7%95%d7%aa-%d7%98%d7%a8%d7%99%d7%99%d7%93-2/",
+          "title": "תעריפון עמלות פסגות טרייד, חלק 4, (4א) סעיף 1, '3. מילווה קצר מועד'",
+          "publisher": "Psagot Securities Ltd. (Psagot Trade)",
+          "strength": "institution",
+          "quote": "0.05% משווי העיסקה, מינימום ₪ 2 לפעולה"
+        },
+        "checked": "2026-11-04",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "The tariff has one line for makam, under a heading that names redemption."
+      },
+      "min": {
+        "value": 2,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.psagot.co.il/%d7%aa%d7%a2%d7%a8%d7%99%d7%a4%d7%95%d7%9f-%d7%91%d7%95%d7%a8%d7%a1%d7%94-%d7%a4%d7%a1%d7%92%d7%95%d7%aa-%d7%98%d7%a8%d7%99%d7%99%d7%93-2/",
+          "title": "תעריפון עמלות פסגות טרייד, חלק 4, (4א) סעיף 1, מילווה קצר מועד, מינימום",
+          "publisher": "Psagot Securities Ltd. (Psagot Trade)",
+          "strength": "institution",
+          "quote": "0.05% משווי העיסקה, מינימום ₪ 2 לפעולה"
+        },
+        "checked": "2026-11-04",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "'מינימום ₪ 2 לפעולה'."
+      },
+      "max": null,
+      "period": null,
+      "channel": null,
+      "band": "פדיון",
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קניה, מכירה ופדיון של ניירות ערך הנסחרים בבורסה ת\"א",
+          "3. מילווה קצר מועד"
+        ]
+      }
+    },
+    {
+      "id": "psagot-buy-sell-mutual-fund",
+      "base": "trade",
+      "applies_to": [
+        "mutual_fund_units"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.07,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.psagot.co.il/%d7%aa%d7%a2%d7%a8%d7%99%d7%a4%d7%95%d7%9f-%d7%91%d7%95%d7%a8%d7%a1%d7%94-%d7%a4%d7%a1%d7%92%d7%95%d7%aa-%d7%98%d7%a8%d7%99%d7%99%d7%93-2/",
+          "title": "תעריפון עמלות פסגות טרייד, חלק 4, (4א) סעיף 2, קניה, מכירה, ופדיון של קרנות נאמנות הנסחרות בבורסה בת\"א",
+          "publisher": "Psagot Securities Ltd. (Psagot Trade)",
+          "strength": "institution",
+          "quote": "0.07% משווי העיסקה, מינימום ₪ 2 לפעולה"
+        },
+        "checked": "2026-11-04",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "'0.07% משווי העיסקה, מינימום ₪ 2 לפעולה'."
+      },
+      "min": {
+        "value": 2,
+        "unit": "nis_per_trade",
+        "source": {
+          "url": "https://www.psagot.co.il/%d7%aa%d7%a2%d7%a8%d7%99%d7%a4%d7%95%d7%9f-%d7%91%d7%95%d7%a8%d7%a1%d7%94-%d7%a4%d7%a1%d7%92%d7%95%d7%aa-%d7%98%d7%a8%d7%99%d7%99%d7%93-2/",
+          "title": "תעריפון עמלות פסגות טרייד, חלק 4, (4א) סעיף 2, מינימום",
+          "publisher": "Psagot Securities Ltd. (Psagot Trade)",
+          "strength": "institution",
+          "quote": "0.07% משווי העיסקה, מינימום ₪ 2 לפעולה"
+        },
+        "checked": "2026-11-04",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "'מינימום ₪ 2 לפעולה'."
+      },
+      "max": null,
+      "period": null,
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קניה, מכירה, ופדיון של קרנות נאמנות הנסחרות בבורסה בת\"א"
+        ]
+      }
+    },
+    {
+      "id": "psagot-buy-sell-foreign-us",
+      "base": "trade",
+      "applies_to": [
+        "foreign_securities"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.01,
+        "unit": "usd_per_share",
+        "source": {
+          "url": "https://www.psagot.co.il/%d7%aa%d7%a2%d7%a8%d7%99%d7%a4%d7%95%d7%9f-%d7%91%d7%95%d7%a8%d7%a1%d7%94-%d7%a4%d7%a1%d7%92%d7%95%d7%aa-%d7%98%d7%a8%d7%99%d7%99%d7%93-2/",
+          "title": "תעריפון עמלות פסגות טרייד, חלק 4, (4א) סעיף 5, קניה, מכירה, ופדיון של ניירות ערך בחו״ל, מניות ו-ETF הנסחרים בבורסות ארה\"ב",
+          "publisher": "Psagot Securities Ltd. (Psagot Trade)",
+          "strength": "institution",
+          "quote": "מניות ו-ETF הנסחרים בבורסות ארה\"ב 1 סנט למניה מינימום $ 6.5לעסקה"
+        },
+        "checked": "2026-11-04",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "Printed per share: '1 סנט למניה מינימום $ 6.5 לעסקה'; recorded in the per-share unit since 2026-10-31 (the unit did not exist when the line was first collected). Correspondent and third-party charges (SEC, ORF, ECN, TAF, tax) are added; the fee is collected in the trade currency."
+      },
+      "min": {
+        "value": 6.5,
+        "unit": "usd",
+        "source": {
+          "url": "https://www.psagot.co.il/%d7%aa%d7%a2%d7%a8%d7%99%d7%a4%d7%95%d7%9f-%d7%91%d7%95%d7%a8%d7%a1%d7%94-%d7%a4%d7%a1%d7%92%d7%95%d7%aa-%d7%98%d7%a8%d7%99%d7%99%d7%93-2/",
+          "title": "תעריפון עמלות פסגות טרייד, חלק 4, (4א) סעיף 5, מניות ו-ETF הנסחרים בבורסות ארה\"ב, מינימום",
+          "publisher": "Psagot Securities Ltd. (Psagot Trade)",
+          "strength": "institution",
+          "quote": "1 סנט למניה מינימום $ 6.5לעסקה"
+        },
+        "checked": "2026-11-04",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "'מינימום $ 6.5 לעסקה'."
+      },
+      "max": null,
+      "period": null,
+      "channel": null,
+      "band": "מניות ו-ETF הנסחרים בבורסות ארה\"ב",
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קניה, מכירה, ופדיון של ניירות ערך בחו״ל",
+          "מניות ו-ETF הנסחרים בבורסות ארה\"ב"
+        ]
+      }
+    },
+    {
+      "id": "psagot-buy-sell-foreign-europe",
+      "base": "trade",
+      "applies_to": [
+        "foreign_securities"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.15,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.psagot.co.il/%d7%aa%d7%a2%d7%a8%d7%99%d7%a4%d7%95%d7%9f-%d7%91%d7%95%d7%a8%d7%a1%d7%94-%d7%a4%d7%a1%d7%92%d7%95%d7%aa-%d7%98%d7%a8%d7%99%d7%99%d7%93-2/",
+          "title": "תעריפון עמלות פסגות טרייד, חלק 4, (4א) סעיף 5, מניות ו-ETF הנסחרות בבורסות אירופה",
+          "publisher": "Psagot Securities Ltd. (Psagot Trade)",
+          "strength": "institution",
+          "quote": "עמלה בגובה 0.15% מהעסקה, מינימום 15 יורו לעסקה"
+        },
+        "checked": "2026-11-04",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "'עמלה בגובה 0.15% מהעסקה, מינימום 15 יורו לעסקה'. Other rows: foreign bonds 0.25% min 50 currency units; Canada 0.15% min CAD 10; foreign funds 0.25% no minimum."
+      },
+      "min": {
+        "value": 15,
+        "unit": "eur",
+        "source": {
+          "url": "https://www.psagot.co.il/%d7%aa%d7%a2%d7%a8%d7%99%d7%a4%d7%95%d7%9f-%d7%91%d7%95%d7%a8%d7%a1%d7%94-%d7%a4%d7%a1%d7%92%d7%95%d7%aa-%d7%98%d7%a8%d7%99%d7%99%d7%93-2/",
+          "title": "תעריפון עמלות פסגות טרייד, חלק 4, (4א) סעיף 5, מניות ו-ETF הנסחרות בבורסות אירופה, מינימום",
+          "publisher": "Psagot Securities Ltd. (Psagot Trade)",
+          "strength": "institution",
+          "quote": "עמלה בגובה 0.15% מהעסקה, מינימום 15 יורו לעסקה"
+        },
+        "checked": "2026-11-04",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "'מינימום 15 יורו לעסקה'."
+      },
+      "max": null,
+      "period": null,
+      "channel": null,
+      "band": "מניות ו-ETF הנסחרות בבורסות אירופה",
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "קניה, מכירה, ופדיון של ניירות ערך בחו״ל",
+          "מניות ו-ETF הנסחרות בבורסות אירופה"
+        ]
+      }
+    },
+    {
+      "id": "psagot-custody",
+      "base": "custody",
+      "applies_to": [
+        "tase_shares_bonds",
+        "etf_units",
+        "mutual_fund_units",
+        "makam",
+        "money_market_units",
+        "foreign_securities"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.03,
+        "unit": "pct_of_balance_per_period",
+        "source": {
+          "url": "https://www.psagot.co.il/%d7%aa%d7%a2%d7%a8%d7%99%d7%a4%d7%95%d7%9f-%d7%91%d7%95%d7%a8%d7%a1%d7%94-%d7%a4%d7%a1%d7%92%d7%95%d7%aa-%d7%98%d7%a8%d7%99%d7%99%d7%93-2/",
+          "title": "תעריפון עמלות פסגות טרייד, חלק 4, (4א) סעיף 8, דמי משמרת",
+          "publisher": "Psagot Securities Ltd. (Psagot Trade)",
+          "strength": "institution",
+          "quote": "גבייה רבעונית 0.03%"
+        },
+        "checked": "2026-11-04",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "Printed '0.12%' with 'גבייה רבעונית 0.03%': an annual 0.12% collected as 0.03% a quarter; recorded per quarter as collected. The tariff prints no exemption of makam or money-market funds from custody; the bank ban (BRK-17) does not apply to a non-bank member, and no rule limits its custody fee on them (BRK-52; BRK open question 11 closed 2026-10-26), so no excludes are recorded. 2026-11-04 (D56 re-read): unchanged on the HTML page (modified 2026-08-09) and its PDF (6.8.2026), and the same in the January 2026 version. The exchange's member sheet (updated 10/08/26) prints the same: 'דמי ניהול/טיפול פקדון ני\"ע כללי - לפקדון 0.0300% לרבעון'. That sheet's averages actually charged to individuals and small businesses, 01/01/26-30/06/26, are 0% for 'דמי ניהול' on Israeli and on foreign securities in every portfolio band (up to 25 thousand to above 1,000 thousand NIS): a sourced fact, not a price. No published document says why; the closing form refers to the fee annex 'כפי שחתום על ידי הלקוח', which is not published. The landing page (psagot.co.il/website, created 2026-08-27) advertises 'פטור מלא מדמי ניהול ללא הגבלת זמן' and 'ללא דמי ניהול'; no binding document waives custody, so the list price stands (D56)."
+      },
+      "min": null,
+      "max": null,
+      "period": "quarter",
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "דמי משמרת"
+        ]
+      }
+    },
+    {
+      "id": "psagot-fx-conversion-usd",
+      "base": "fx",
+      "applies_to": [
+        "all"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.015,
+        "unit": "nis_per_usd",
+        "source": {
+          "url": "https://www.psagot.co.il/%d7%aa%d7%a2%d7%a8%d7%99%d7%a4%d7%95%d7%9f-%d7%91%d7%95%d7%a8%d7%a1%d7%94-%d7%a4%d7%a1%d7%92%d7%95%d7%aa-%d7%98%d7%a8%d7%99%d7%99%d7%93-2/",
+          "title": "תעריפון עמלות פסגות טרייד, חלק 5 – מטבע חוץ, סעיף 1, עמלת המרת מט\"ח, המרה מדולר או לדולר",
+          "publisher": "Psagot Securities Ltd. (Psagot Trade)",
+          "strength": "institution",
+          "quote": "עבור המרה מדולר או לדולר – 1.5 אגורות עבור כל דולר/שקל"
+        },
+        "checked": "2026-11-04",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "Printed as an amount per dollar, not a percentage: 'עבור המרה מדולר או לדולר – 1.5 אגורות עבור כל דולר/שקל'. Recorded as 0.015 NIS per dollar converted. Reading, not the document's words: 'כל דולר/שקל' is read as each dollar exchanged for shekels; at about 3.12 NIS a dollar that is about 0.48% of the amount, beside the same list's ceiling of 0.5% on other currencies, while per shekel it would be 1.5%. Charged on execution."
+      },
+      "min": null,
+      "max": null,
+      "spread": {
+        "value": null,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.psagot.co.il/%d7%aa%d7%a2%d7%a8%d7%99%d7%a4%d7%95%d7%9f-%d7%91%d7%95%d7%a8%d7%a1%d7%94-%d7%a4%d7%a1%d7%92%d7%95%d7%aa-%d7%98%d7%a8%d7%99%d7%99%d7%93-2/",
+          "title": "תעריפון עמלות פסגות טרייד, חלק 5, סעיף 1, עמלת המרת מט\"ח",
+          "publisher": "Psagot Securities Ltd. (Psagot Trade)",
+          "strength": "institution"
+        },
+        "checked": "2026-11-04",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "Not limited by the documents (D56): the tariff prints a conversion fee but no spread and no limit on the rate the company applies. Advertising only: 'שערי המרה מועדפים' (landing page) and 'בשערים תחרותיים, במרווחים צמודים וללא עמלות המרה' (trade_heb page); the words 'ללא עמלות המרה' are contradicted by this line."
+      },
+      "period": null,
+      "channel": null,
+      "band": "המרה מדולר או לדולר",
+      "conversion_currency": "USD",
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "עמלת המרת מט\"ח",
+          "המרה מדולר או לדולר"
+        ]
+      }
+    },
+    {
+      "id": "psagot-fx-conversion-other",
+      "base": "fx",
+      "applies_to": [
+        "all"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0.5,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.psagot.co.il/%d7%aa%d7%a2%d7%a8%d7%99%d7%a4%d7%95%d7%9f-%d7%91%d7%95%d7%a8%d7%a1%d7%94-%d7%a4%d7%a1%d7%92%d7%95%d7%aa-%d7%98%d7%a8%d7%99%d7%99%d7%93-2/",
+          "title": "תעריפון עמלות פסגות טרייד, חלק 5 – מטבע חוץ, סעיף 1, עמלת המרת מט\"ח, המרה למטבע אחר או ממטבע אחר",
+          "publisher": "Psagot Securities Ltd. (Psagot Trade)",
+          "strength": "institution",
+          "quote": "עבור המרה למטבע אחר או ממטבע אחר – עד 0.5% משווי העסקה"
+        },
+        "checked": "2026-11-04",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "'עבור המרה למטבע אחר או ממטבע אחר – עד 0.5% משווי העסקה' (a ceiling)."
+      },
+      "min": null,
+      "max": null,
+      "spread": {
+        "value": null,
+        "unit": "pct_of_trade",
+        "source": {
+          "url": "https://www.psagot.co.il/%d7%aa%d7%a2%d7%a8%d7%99%d7%a4%d7%95%d7%9f-%d7%91%d7%95%d7%a8%d7%a1%d7%94-%d7%a4%d7%a1%d7%92%d7%95%d7%aa-%d7%98%d7%a8%d7%99%d7%99%d7%93-2/",
+          "title": "תעריפון עמלות פסגות טרייד, חלק 5, סעיף 1, עמלת המרת מט\"ח",
+          "publisher": "Psagot Securities Ltd. (Psagot Trade)",
+          "strength": "institution"
+        },
+        "checked": "2026-11-04",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "Not limited by the documents (D56): the tariff prints a conversion fee but no spread and no limit on the rate the company applies. Advertising only: 'שערי המרה מועדפים' (landing page) and 'בשערים תחרותיים, במרווחים צמודים וללא עמלות המרה' (trade_heb page); the words 'ללא עמלות המרה' are contradicted by this line."
+      },
+      "period": null,
+      "channel": null,
+      "band": "המרה למטבע אחר או ממטבע אחר",
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "עמלת המרת מט\"ח",
+          "המרה למטבע אחר או ממטבע אחר"
+        ]
+      }
+    },
+    {
+      "id": "psagot-account-fee",
+      "base": "fixed_period",
+      "applies_to": [
+        "all"
+      ],
+      "level": "list",
+      "rate": {
+        "value": 0,
+        "unit": "nis_per_month",
+        "source": {
+          "url": "https://www.psagot.co.il/%d7%aa%d7%a2%d7%a8%d7%99%d7%a4%d7%95%d7%9f-%d7%91%d7%95%d7%a8%d7%a1%d7%94-%d7%a4%d7%a1%d7%92%d7%95%d7%aa-%d7%98%d7%a8%d7%99%d7%99%d7%93-2/",
+          "title": "תעריפון עמלות פסגות טרייד, חלק 6 – שירותים ועמלות נוספות, סעיף 1, דמי שימוש/דמי טיפול",
+          "publisher": "Psagot Securities Ltd. (Psagot Trade)",
+          "strength": "institution",
+          "quote": "דמי שימוש/דמי טיפול ללא עלות"
+        },
+        "checked": "2026-11-04",
+        "effective_from": null,
+        "effective_to": null,
+        "tax_year": null,
+        "update_rule": "provider-set",
+        "rule_ids": [
+          "BRK-24",
+          "BRK-15"
+        ],
+        "state": "sourced",
+        "notes": "Printed 'ללא עלות' (no charge); recorded as 0. Real-time TASE data: Level 1 NIS 4.60 a month, Level 2 NIS 40.32 a month; delayed data and NYSE real-time free (section 3). 2026-11-04: the landing page's 'פטור מדמי טיפול' matches this line of the tariff; the tariff also keeps the right to change its fees: 'פסגות ניירות ערך תהיה זכאית לעדכן מעת לעת ולפי שיקול דעתה את גובה או סוגי העמלות' (notice rule BRK-15)."
+      },
+      "min": null,
+      "max": null,
+      "period": "month",
+      "channel": null,
+      "band": null,
+      "statement_code": null,
+      "names": {
+        "tariff": [
+          "דמי שימוש/דמי טיפול"
+        ]
+      }
+    }
+  ],
+  "averages": [],
+  "minimums": {
+    "account_opening": {
+      "value": 10000,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.psagot.co.il/website/",
+        "title": "פסגות טרייד- דף נחיתה, הערה בתחתית העמוד",
+        "publisher": "Psagot Securities Ltd. (Psagot Trade)",
+        "strength": "institution",
+        "quote": "סכום מינימאלי לפתיחת חשבון בפסגות: 10,000 ש\"ח"
+      },
+      "checked": "2026-11-04",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "state": "sourced",
+      "notes": "The company's own words on its landing page (library a7a5c891f62dea4e), in the small print under the offer; the tariff prints no minimum. Third-party pages say the same: 'במזומן ו/או בנכסים פיננסיים' (financialninja). A condition of opening, not a price."
+    }
+  },
+  "notice_rule_ids": [
+    "BRK-15"
+  ],
+  "availability": [
+    {
+      "applies_to": [
+        "mutual_fund_units"
+      ],
+      "available": true,
+      "source": {
+        "url": "https://www.psagot.co.il/%d7%aa%d7%a2%d7%a8%d7%99%d7%a4%d7%95%d7%9f-%d7%91%d7%95%d7%a8%d7%a1%d7%94-%d7%a4%d7%a1%d7%92%d7%95%d7%aa-%d7%98%d7%a8%d7%99%d7%99%d7%93-2/",
+        "title": "תעריפון עמלות פסגות טרייד",
+        "checked": "2026-11-04",
+        "quote": "קניה, מכירה, ופדיון של קרנות נאמנות"
+      }
+    },
+    {
+      "applies_to": [
+        "etf_units"
+      ],
+      "available": true,
+      "source": {
+        "url": "https://www.psagot.co.il/%d7%aa%d7%a2%d7%a8%d7%99%d7%a4%d7%95%d7%9f-%d7%91%d7%95%d7%a8%d7%a1%d7%94-%d7%a4%d7%a1%d7%92%d7%95%d7%aa-%d7%98%d7%a8%d7%99%d7%99%d7%93-2/",
+        "title": "תעריפון עמלות פסגות טרייד",
+        "checked": "2026-11-04",
+        "quote": "וקרנות סל שחלים עליהם כללי המסחר על מניות"
+      }
+    },
+    {
+      "applies_to": [
+        "foreign_securities"
+      ],
+      "available": "unknown",
+      "reason_he": "בתעריפון המחיר על ניירות ערך באירופה לא סופי: ״עמלת ני״ע באסיה ובאירופה עשויה להשתנות בהתאם לסוג המניה ואופי הפעילות״. גם ההמרה לדולר, ״1.5 אגורות עבור כל דולר/שקל״, אפשר לקרוא ביותר מדרך אחת, בין 0.48% ל־1.5%, ולכן האתר לא מחשב לה מחיר.",
+      "note": "2026-10-31, an independent reader of the tariff (issue 144): the euro minimum is computed since that day, but the document itself leaves the European price open and the conversion wording has more than one reading (per dollar about 0.48% at 3.12, per shekel 1.5%). A doubt is a grey row (D42). The lines stay recorded as printed. 2026-11-04: the exchange's member sheet (updated 10/08/26) prints for outside the US '0.2500% משווי עסקה', minimum '50.00 במטבע העסקה', while the tariff prints 0.15% with a 15 euro minimum for European shares and ETFs: one more reason the European price is open.",
+      "source": {
+        "url": "https://www.psagot.co.il/%d7%aa%d7%a2%d7%a8%d7%99%d7%a4%d7%95%d7%9f-%d7%91%d7%95%d7%a8%d7%a1%d7%94-%d7%a4%d7%a1%d7%92%d7%95%d7%aa-%d7%98%d7%a8%d7%99%d7%99%d7%93-2/",
+        "title": "תעריפון עמלות פסגות טרייד",
+        "checked": "2026-11-04",
+        "quote": "מניות ו-ETF הנסחרים בבורסות ארה\"ב"
+      }
+    }
+  ],
+  "price_for_he": "לקוח רגיל, בלי הטבה לקבוצה",
+  "left_out": [
+    {
+      "what": "דף הנחיתה: \"פטור מלא מדמי ניהול ללא הגבלת זמן\", \"ללא דמי ניהול\"",
+      "why": "Advertising (psagot.co.il/website, created 2026-08-27, modified 2026-09-17, library a7a5c891f62dea4e). The tariff has no line named 'דמי ניהול'; its handling fee is already zero, and its custody line prints 0.12% a year. No binding document waives custody, so custody stays at the list price (D56)."
+    },
+    {
+      "what": "מחשבון העמלות של הבורסה: עמלות ממוצעות בפועל 01/01/26-30/06/26, \"דמי ניהול - ני\"ע ישראלים 0%\" ו\"דמי ניהול - ני\"ע זרים 0%\" בכל שווי תיק",
+      "why": "What customers paid on average is a sourced fact, not a price (D56); recorded in the custody line's notes, not in averages, so no calculation reads it."
+    },
+    {
+      "what": "עמוד trade_heb: המרת מט\"ח \"בשערים תחרותיים, במרווחים צמודים וללא עמלות המרה\"",
+      "why": "Advertising, contradicted by the tariff's conversion line (1.5 agorot per dollar); the spread is not limited by any document."
+    },
+    {
+      "what": "ני\"ע בחו\"ל: \"עמלת הקורספונדנט ו/או עמלות צד שלישי\" בקנייה, במכירה ו\"בעת חלוקת דיבידנד\"; \"SEC ORF, ECN, TAF TAX ועוד\"",
+      "why": "Charged on top of the commission at whatever the bank or correspondent charges; the tariff sets no amount or limit, so not limited by the documents. Foreign funds are grey on this record anyway."
+    },
+    {
+      "what": "העברת ניירות ערך מחשבון בפסגות: ישראליים 0.07% \"מקסימום 70₪ להוראת העברה\"; זרים \"10 דולר לכל נייר\"",
+      "why": "A cost on leaving, not in the holding calculation; at most 70 NIS per instruction for Israeli securities."
+    },
+    {
+      "what": "נתוני מסחר בזמן אמת: \"בורסת תל אביב רציף LEVEL 1 – עלות חודשית 4.60₪\", \"LEVEL 2 – עלות חודשית 40.32₪\"",
+      "why": "Optional; delayed TASE data is printed 'ללא תשלום', so the account works without them."
+    },
+    {
+      "what": "העברה בזה\"ב (RTGS) 27₪; משיכת מט\"ח ו\"עלות סוויפט של הבנק\"",
+      "why": "Paid only when that transfer is asked for; the swift and correspondent costs are set by the banks and not limited by the documents."
+    },
+    {
+      "what": "הוראת קבע לקנייה חודשית, דמי אי-פעילות, טיפול בדיבידנד מני\"ע ישראליים",
+      "why": "None printed in the tariff or the exchange's sheet; no standing-order purchase plan was found in any document."
+    },
+    {
+      "what": "קבוצות והפניות: עמלת ק/מ 0.06% מינ' 2₪ ומינימום 6$ בארה\"ב לחברי קהילות; מתנת הצטרפות עד 850₪",
+      "why": "Third-party referral pages (financialninja, zekestories, hasolidit) and a community post, not Psagot documents; no promotion terms were found on Psagot's site."
+    }
+  ],
+  "groups": {
+    "state": "no_mention",
+    "note": "Tariff page and PDF re-read 2026-11-04, with the landing page, the trade page and the exchange's member sheet. None names young, student, soldier, released-soldier or other groups on a price. Referral offers to community members exist only on third-party pages (see left_out). This covers what was read, not a personal offer.",
+    "read": [
+      {
+        "url": "https://www.psagot.co.il/%d7%aa%d7%a2%d7%a8%d7%99%d7%a4%d7%95%d7%9f-%d7%91%d7%95%d7%a8%d7%a1%d7%94-%d7%a4%d7%a1%d7%92%d7%95%d7%aa-%d7%98%d7%a8%d7%99%d7%99%d7%93-2/",
+        "title": "תעריפון"
+      },
+      {
+        "url": "https://www.psagot.co.il/website/",
+        "title": "פסגות טרייד- דף נחיתה"
+      },
+      {
+        "url": "https://www.psagot.co.il/trade_heb/",
+        "title": "פסגות טרייד"
+      },
+      {
+        "url": "https://market.tase.co.il/he/market_data/trading_fees",
+        "title": "מחשבון עמלות מסחר, פסגות ניירות ערך",
+        "read_in": "chrome"
+      }
+    ],
+    "entries": []
+  }
+}

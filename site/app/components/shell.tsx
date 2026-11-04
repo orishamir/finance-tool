@@ -52,7 +52,7 @@ export function useOpenSearch() {
   return useContext(SearchOpenCtx);
 }
 
-export function PageShell({ current, data: pageData, children, wide }: { current: Current; data: ProvenanceData; children: ReactNode; /** true: wide from a computer up; "large": only on a large screen (1536 px up), a guide whose prose stays at the measure while its tables and charts take the room. */ wide?: boolean | "large" }) {
+export function PageShell({ current, data: pageData, children }: { current: Current; data: ProvenanceData; children: ReactNode }) {
   // every page's sheets know the method: the formulas with their parameters, the parameter cards, the source hosts' Hebrew names, the open questions and where each company's terms are listed (root loader)
   const method = useRouteLoaderData("root") as { formulaParameters: Record<string, string[]>; parameterAnchors: Record<string, string>; publishersHe: Record<string, string>; openQuestions: NonNullable<ProvenanceData["openQuestions"]>; companies: NonNullable<ProvenanceData["companies"]>; ownDocs: NonNullable<ProvenanceData["ownDocs"]> } | undefined;
   const data = useMemo<ProvenanceData>(() => {
@@ -60,8 +60,9 @@ export function PageShell({ current, data: pageData, children, wide }: { current
     const formulas = pageData.formulas ?? Object.fromEntries([...new Set([...Object.keys(formulaNames), ...Object.keys(method.formulaParameters)])].filter((f) => f !== "_other").map((f) => [f, { name: formulaNames[f] ?? "", parameters: method.formulaParameters[f] ?? [] }]));
     return { ...pageData, formulas, parameters: pageData.parameters ?? method.parameterAnchors, publishersHe: pageData.publishersHe ?? method.publishersHe, openQuestions: pageData.openQuestions ?? method.openQuestions, companies: pageData.companies ?? method.companies, ownDocs: pageData.ownDocs ?? method.ownDocs };
   }, [pageData, method]);
-  // the header, the page and the footer share one width, so their edges line up on a large screen too
-  const width = wide === "large" ? "max-w-page 2xl:max-w-wide" : wide ? "max-w-wide" : "max-w-page";
+  // One frame for every page (founder, 2026-11-04: some pages used the room of a large screen and others did not): the header, the page and
+  // the footer share it, so their edges stay put from page to page; prose keeps its own measure inside it.
+  const width = "max-w-wide";
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchAnchor, setSearchAnchor] = useState<HTMLElement | null>(null);
