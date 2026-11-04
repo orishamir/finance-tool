@@ -37,6 +37,11 @@ export interface Fund {
   ninetyPercentTest?: boolean;
   /** Renewable money-market fund: months between fixed dates (MF-35). */
   fixedDatesEveryMonths?: number;
+  /**
+   * An accumulating foreign fund whose own Israeli prospectus annex reports a Tax Authority ruling naming a sale and a distribution as the
+   * only taxed events (TXF-11, 2026-11-04): taxed at sale on that ruling, not on the secondary reading, and ranked rather than listed (G-18).
+   */
+  saleOnlyRuling?: boolean;
 }
 
 /** The lines of a securities account's price list that the run charges (F-12 to F-14, F-17). */
@@ -302,8 +307,9 @@ export function runSecurities(input: SecuritiesInput, ctx: RunContext): RunResul
     }
   } else if (isForeign) {
     // An accumulating foreign fund is taxed only at sale under the TXF-11 reading (secondary): computed,
-    // labelled, and listed, not ranked (F-65, G-18).
-    book.label("secondary-source", "TXF-11");
+    // labelled, and listed, not ranked (F-65, G-18); unless its own annex reports a ruling that says so (2026-11-04).
+    if (fund.saleOnlyRuling) book.cite("TXF-11");
+    else book.label("secondary-source", "TXF-11");
   }
   // The dollar value is known only when the tariff gives the currency's rate.
   const estateThreshold = fund.domicile === "us" && tariff.currency ? book.amount("TXF-27", "estate_threshold", "USD") : undefined;
@@ -430,7 +436,7 @@ export function runSecurities(input: SecuritiesInput, ctx: RunContext): RunResul
     } else outcome = { code: "listed-not-ranked", reason: step.blocked };
     if (realGain < 0) tally.flag("G-07");
     tally.flag("G-20");
-    if (isForeign && !fund.distribution && outcome.code === "eligible") outcome = { code: "listed-not-ranked", reason: "G-18" };
+    if (isForeign && !fund.distribution && !fund.saleOnlyRuling && outcome.code === "eligible") outcome = { code: "listed-not-ranked", reason: "G-18" };
     if (atForeignBroker) tally.flag("TXF-21");
   }
 
