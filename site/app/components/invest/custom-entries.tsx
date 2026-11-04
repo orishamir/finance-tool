@@ -113,11 +113,12 @@ export function CustomEntriesHost({ index, brokers, funds, writable, onSaveBroke
 // ---------------------------------------------------------------- the buttons and the rows
 
 /** The quiet button under a list. Outside the host (a test of a list alone) it is not drawn. */
-export function AddEntryButton({ kind }: { kind: "broker" | "fund" }) {
+/** `primary`: the one thing a page with no fund asks for (a custom index, 2026-11-04); quiet under a list otherwise. */
+export function AddEntryButton({ kind, primary = false }: { kind: "broker" | "fund"; primary?: boolean }) {
   const e = useEditors();
   if (!e) return null;
   return (
-    <Button variant="quiet" className="self-start -ms-2" onClick={kind === "broker" ? e.addBroker : e.addFund}>
+    <Button variant={primary ? "primary" : "quiet"} className={primary ? "self-start" : "self-start -ms-2"} onClick={kind === "broker" ? e.addBroker : e.addFund}>
       + {kind === "broker" ? c.addBroker : c.addFund}
     </Button>
   );

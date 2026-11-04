@@ -10,10 +10,10 @@ import { buildInvest, indexById, knownIndices, refOfCustom } from "../../lib/inv
 import { brokerLabels, fundLabels, optionLabels } from "../../lib/labels";
 import { entered } from "../../lib/value";
 import type { WorkbenchInputs } from "../../lib/providers";
-import { HousesSection } from "./houses";
-import { Fees, FundsSection } from "./funds";
+import { Fees } from "./funds";
+import { NoFundAccountColumn, NoFundCall, NoFundColumn } from "./no-fund";
 import { LabelSheetHost } from "../kit";
-import { Headline, IndexHeader } from "./sections";
+import { IndexHeader } from "./sections";
 import { AccountColumn, allFunds, bestFor, FundColumn, GapCell, PairResult, pickOfHeadline } from "./pair";
 import { Foot } from "./foot";
 import { DollarSection } from "./dollar";
@@ -89,12 +89,17 @@ describe("the index page's sections render", () => {
     for (const p of view.providers) expect(out).toContain(p.short);
     for (const f of view.options.filter((o) => o.exists).flatMap((o) => o.funds)) expect(out).toContain(f.number);
   });
-  it("a custom index: empty funds state with the request button", () => {
+  it("a custom index: the same two lists, the accounts by what they charge, and the request to add a fund (founder, 2026-11-04)", () => {
     const v = buildInvest({ bundle, index: refOfCustom({ id: "custom-nikkei", name: "ניקיי 225", israeli: false, added: t }), plan });
-    const out = html(createElement("div", null, createElement(Headline, { view: v }), createElement(FundsSection, { view: v, houseId: v.houses.find((h) => h.generic)?.provider.id ?? null, onHouse: () => undefined, mayaHref: "https://maya.tase.co.il" })));
-    expect(out).toContain("עוד לא נאספו קרנות על המדד הזה");
-    expect(out).toContain("בקשו שנאסוף");
-    expect(out).toContain("חשבון ניירות הערך הזול ביותר לקרן ישראלית על המדד");
+    const out = html(createElement("div", null, createElement(NoFundCall, { view: v }), createElement(NoFundAccountColumn, { view: v, bundle, years: 20, chosen: null, onPick: () => undefined }), createElement(NoFundColumn, { view: v, mayaHref: "https://maya.tase.co.il" })));
+    expect(out).toContain(invest.noFund.callTitle);
+    expect(out).toContain(invest.noFund.fundTitle);
+    expect(out).toContain(invest.funds.request);
+    // every house keeps a row, and the priced ones stand in the order of what they charge
+    for (const h of v.houses) expect(out).toContain(h.provider.short);
+    const costs = v.houses.filter((h) => h.generic).map((h) => h.generic!.costN!).sort((a, b) => a - b);
+    const shown = [...out.matchAll(/data-pick-key="([^"]+)"/g)].map((m) => m[1]!).filter((id) => v.houses.find((h) => h.provider.id === id)?.generic);
+    expect(shown.map((id) => v.houses.find((h) => h.provider.id === id)!.generic!.costN!)).toEqual(costs);
   });
 });
 

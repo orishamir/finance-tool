@@ -8,12 +8,11 @@ import type { Route } from "./+types/invest";
 import { brands, invest as c, site } from "../copy";
 import { OtherAssumptions, PlanChanges, PlanKnobs } from "../components/invest/knobs";
 import { IndexChips, PlanBlock } from "../components/invest/chips";
-import { HousesSection } from "../components/invest/houses";
-import { FundsSection } from "../components/invest/funds";
 import { AdvertisingBlock } from "../components/invest/advertising";
-import { AccountColumn, FundColumn, PairResult, pickOfHeadline, allFunds, type Pick } from "../components/invest/pair";
+import { AccountColumn, FundColumn, PairResult, pickOfHeadline, pickOfOpen, allFunds, type Pick } from "../components/invest/pair";
+import { NoFundAccountColumn, NoFundCall, NoFundColumn } from "../components/invest/no-fund";
 import { LabelSheetHost } from "../components/kit";
-import { Headline, IndexHeader } from "../components/invest/sections";
+import { IndexHeader } from "../components/invest/sections";
 import { Foot } from "../components/invest/foot";
 import { DollarSection } from "../components/invest/dollar";
 import { StairsSection } from "../components/invest/stairs";
@@ -209,7 +208,7 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
   })();
   const groupOk = (p: Pick) => !!groupParam && !!view && pickableGroups(wb.snapshots.find((x) => x.id === p.house), allFunds(view).find((f) => f.rec.id === p.fund)?.option).has(groupParam);
   const own: Pick | null = fromAddress && groupOk(fromAddress) ? { ...fromAddress, group: groupParam! } : fromAddress;
-  const pick: Pick | null = own ?? (view ? pickOfHeadline(view) : null);
+  const pick: Pick | null = own ?? (view ? (pickOfHeadline(view) ?? pickOfOpen(view)) : null);
   // the stairs start from the person's own pick; with none they open on the middle account and the middle exchange-traded fund
   const picks = own !== null;
   // a pick replaces the address in place: the back button leaves the page rather than stepping through every pick, and the page keeps its scroll
@@ -240,9 +239,8 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
     else q.delete("group");
     navigate(`${pathname}?${q.toString()}`, { replace: true, preventScrollReset: true });
   };
-  // an index with no fund records (a custom one): the houses and their broker costs, and the request for funds
+  // an index with no fund to price (a custom one): the account the person picked in the list, else the one that charges least
   const [genericHouse, setGenericHouse] = useState<string | null>(null);
-  const house = genericHouse ?? view?.genericHeadline?.cell.providerId ?? view?.houses.find((h) => h.generic)?.provider.id ?? null;
 
   const rules = ["ETF-31", "ETF-24", "ETF-51", "ETF-75", "TXS-09", "TXF-22"].filter((id) => wb.rules.some((r) => r.id === id));
 
@@ -303,10 +301,16 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
                 </div>
               </>
             ) : (
+              // the same two lists as every index, the result card set aside until a fund is added (founder, 2026-11-04)
               <>
-                <Headline view={view} />
-                <HousesSection view={view} chosen={house} onPick={(id) => setGenericHouse(id)} />
-                <FundsSection view={view} houseId={house} onHouse={(id) => setGenericHouse(id)} mayaHref={wb.links.maya?.href ?? null} />
+                <NoFundCall view={view} />
+                <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_2.5rem_minmax(0,32.5rem)] xl:grid-cols-[minmax(0,5fr)_2.5rem_minmax(0,7fr)] items-start">
+                  <NoFundAccountColumn view={view} bundle={bundle} years={plan.years} chosen={genericHouse} onPick={setGenericHouse} />
+                  <span aria-hidden="true" className="hidden lg:grid place-items-center size-9 mt-10 rounded-full border border-input bg-popover text-xl text-muted-foreground justify-self-center">
+                    +
+                  </span>
+                  <NoFundColumn view={view} mayaHref={wb.links.maya?.href ?? null} />
+                </div>
               </>
             )}
             {/* right under the houses the reader just compared: the rows are the price lists' prices, and here is what the advertising

@@ -3309,6 +3309,19 @@ export const invest = {
     missing: "המדד הזה לא שמור במכשיר הזה. בחרו מדד מהרשימה או הוסיפו אותו שוב.",
   },
 
+  /** An index with no fund the page can price (a custom one, 2026-11-04): the same two lists, the accounts by what they charge, and one request to add the fund. */
+  noFund: {
+    callTitle: "כמה נשאר בסוף תלוי בקרן",
+    callBody: (index: string) => `האתר לא אסף קרנות על ${index}. הוסיפו את הקרן שאתם שוקלים, והעמוד יחשב כמה נשאר בכל חשבון. עד אז, הרשימה מסדרת את החשבונות לפי מה שהם גובים.`,
+    accountsCond: "מסודרים לפי מה שכל חשבון גובה, בסוג הקרן שהכי זול לקנות בו",
+    accountsHint: "בחרו חשבון כדי לראות את התעריפון שלו",
+    fundTitle: "עוד לא נבחרה קרן",
+    fundWhy: "בלי רשומת קרן האתר לא מנחש דמי ניהול.",
+    none: "אין עדיין קרנות ברשימה.",
+    unpriced: "הקרנות שהוספתם, בלי מחיר:",
+    mayaLead: "את דמי הניהול של קרן אפשר למצוא במאיה.",
+  },
+
   /** An account on your own terms, started from a house (F-101, 2026-11-04): what the sheets of its computed figures call them. The panel's own words come with the panel. */
   ownAccount: {
     placeAbout: (of: number) => `המקום בין ${of} חשבונות, לפי מה שנשאר בסוף`,
@@ -3519,23 +3532,6 @@ export const invest = {
     israeliNote: "קרנות ישראליות שמחזיקות את המניות; אין קרן חוץ שמתמחה בישראל.",
   },
 
-  headline: {
-    title: "הדרך הזולה ביותר לתוכנית שלכם",
-    left: "נשאר בסוף, בכסף של היום",
-    at: "ב־",
-    withFund: "עם",
-    yours: (broker: string) => `ב${broker}, עם אותה קרן`,
-    yoursLess: "פחות",
-    yoursSame: "אותו סכום",
-    yoursCannot: (broker: string) => `ב${broker} אי אפשר לחשב את אותה קרן`,
-    open: "הדרך הזו נשענת על כלל פתוח, ולכן מוצגת בלי דירוג.",
-    noWay: "עוד לא חושבה דרך שלמה: אין קרן שהאתר יכול לחשב בשבילה.",
-    noFunds: "חשבון ניירות הערך הזול ביותר לקרן ישראלית על המדד:",
-    noFundsCost: "עלות חשבון ניירות הערך לאורך התקופה",
-    noFundsWhy: "האתר לא אסף קרנות על המדד הזה, ולכן אין דירוג של דרכים שלמות; חשבון ניירות הערך זול או יקר באותה מידה לכל קרן באותו סוג.",
-    onlyOpen: "כל הדרכים שחושבו נשענות על כלל פתוח; הן מוצגות למטה, בלי דירוג.",
-  },
-
   worth: {
     lines: { house: "אותה קרן, בחשבון ניירות ערך אחר", fund: "אותו חשבון ניירות ערך, קרן אחרת" },
     heading: "מה כל בחירה שווה, בפירוט",
@@ -3584,31 +3580,8 @@ export const invest = {
   },
 
   houses: {
-    heading: "איפה לפתוח את חשבון ניירות הערך",
-    sub: "בנק או בית השקעות שמחזיק בשבילכם את ניירות הערך.",
-    standingTag: ownTermsCopy.provider.standingTag,
-    standingNote: ownTermsCopy.provider.standingNote,
-    tap: "לכל אחד מופיעה הקרן שנשאר בה הכי הרבה. הקישו על שורה כדי לראות את כל הקרנות בחשבון שלו.",
     gapAbout: (name: string) => `פער מהדרך הזולה, ${name}`,
-    foreignHeading: "בחו״ל",
-    foreignSub: "ברוקרים זרים: חשבונות שבהם קונים קרנות בבורסות בחו״ל.",
-    yours: "החשבון שלכם",
-    left: "נשאר",
-    gap: "פחות מהזול",
-    cost: "עלות החשבון",
-    costNote: "בלי קרן: לא חושבה קרן שנקנית אצלו",
-    show: "הקרנות בחשבון",
-    chosen: "מוצג למטה",
-    more: (n: number) => (n === 1 ? "ועוד בנק או בית השקעות אחד" : `ועוד ${n} בנקים ובתי השקעות`),
-    less: "פחות",
-    notComputed: "בנקים ובתי השקעות שאי אפשר לחשב",
-    noWay: "אין קרן על המדד הזה שאפשר לחשב אצלו.",
-    unavailable: "לא אפשרי שם",
-    noData: "אין נתון",
-    sourceOf: "המקור",
-    foreignTag: "ברוקר זר",
-    listLabel: "חשבונות ניירות ערך לפי מה שנשאר",
-    fixedOnly: "אינטראקטיב ברוקרס: מחושבים רק תעריפי ה־Fixed. תעריפי ה־Tiered משאירים בחוץ עמלות בורסה וסליקה שהנתונים לא מכילים, ולכן הדירוג שלהם היה מקטין את העלות.",
+    costAbout: (name: string) => `עלות ${name}`,
   },
 
   /** The page as two linked lists (founder, 2026-10-27; spec research/specs/2026-10-27-invest-improvements 3.8 to 3.10): an account and a fund, each list priced on the other's choice. */

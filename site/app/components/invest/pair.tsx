@@ -31,13 +31,13 @@ export interface Pick {
   group?: string;
 }
 
-const lineClass: Record<string, string> = { trade: "bg-chart-cost-trade", custody: "bg-chart-cost-custody", fixed: "bg-chart-cost-fixed", fx: "bg-chart-cost-fx" };
-const lineOf = (line: FeeLine) => (line in lineClass ? line : "other");
+export const lineClass: Record<string, string> = { trade: "bg-chart-cost-trade", custody: "bg-chart-cost-custody", fixed: "bg-chart-cost-fixed", fx: "bg-chart-cost-fx" };
+export const lineOf = (line: FeeLine) => (line in lineClass ? line : "other");
 /** A legend names every account line whichever row or pair is shown, in one order, so its items keep their places from one pick to the next.
  * An index in shekels has no conversion line to name. */
-const legendLines = (israeli: boolean, used: readonly string[]) => [...Object.keys(lineClass).filter((l) => l !== "fx" || !israeli), ...(used.includes("other") ? ["other"] : [])];
+export const legendLines = (israeli: boolean, used: readonly string[]) => [...Object.keys(lineClass).filter((l) => l !== "fx" || !israeli), ...(used.includes("other") ? ["other"] : [])];
 /** A computed shekel figure of this page, whole shekels (the totals and gaps the bars and lists show). */
-const nis = (n: number, formula: string, about: string, today: string, inputs: Record<string, SiteValue> = {}): SiteValue => computed(Math.round(n), "nis", formula, inputs, { today, about });
+export const nis = (n: number, formula: string, about: string, today: string, inputs: Record<string, SiteValue> = {}): SiteValue => computed(Math.round(n), "nis", formula, inputs, { today, about });
 /** A gain shown with its plus sign, isolated so it reads "+2,621 ₪" inside Hebrew. */
 const plus = (n: number) => (n > 0 ? `\u2066+${fmt.nisWhole(n)}\u2069` : undefined);
 const priced = (x: WayPrice | { reason: Reason } | undefined): x is WayPrice => !!x && "valueN" in x;
@@ -47,6 +47,11 @@ export const allFunds = (view: InvestView): FundWay[] => view.options.filter((o)
 
 /** The default pick: the cheapest complete way. */
 export const pickOfHeadline = (view: InvestView): Pick | null => (view.headline ? { house: view.headline.providerId, fund: view.headline.fund.rec.id } : null);
+/** With no ranked way, the way that leaves the most on an open rule (a fund the person typed abroad that accumulates): shown, not ranked. */
+export const pickOfOpen = (view: InvestView): Pick | null => {
+  const w = view.options.find((o) => o.bestWay)?.bestWay;
+  return w ? { house: w.providerId, fund: w.fund.rec.id } : null;
+};
 
 /**
  * The cheapest pair to set beside the person's: the headline, unless they picked a currency-hedged fund, which is compared with the best
@@ -299,7 +304,7 @@ export function PairResult({ view, bundle, plan, settled, pick, onPick }: { view
 // ---------------------------------------------------------------- the account column
 
 /** The bars' scale: the costs of the main group, so one or two far larger accounts do not flatten the rest (they get a break mark). */
-function barScale(costs: number[]): number {
+export function barScale(costs: number[]): number {
   if (costs.length === 0) return 0;
   const sorted = [...costs].sort((a, b) => a - b);
   const median = sorted[Math.floor(sorted.length / 2)]!;
@@ -311,7 +316,7 @@ function barScale(costs: number[]): number {
  * A house's group prices, on its row and never in its figure (D43, amended 2026-11-04): one closed line that opens, at the person's own
  * tap, to a sub-row per price. The line belongs to the house, so a re-sort or a new input never changes the row's height.
  */
-function GroupLine({ id, house, snapshots, open, onOpen, choice }: { id: string; house: string; snapshots: WorkbenchBundle["snapshots"]; open: boolean; onOpen: (id: string, open: boolean) => void; choice?: GroupChoice }) {
+export function GroupLine({ id, house, snapshots, open, onOpen, choice }: { id: string; house: string; snapshots: WorkbenchBundle["snapshots"]; open: boolean; onOpen: (id: string, open: boolean) => void; choice?: GroupChoice }) {
   const g = snapshots.find((s) => s.id === id)?.groups;
   if (!g || g.state !== "prices") return null;
   // the groups the person can pick are radios in the fold (founder, 2026-11-04), in place of a link to the account panel on every sub-row
@@ -319,7 +324,7 @@ function GroupLine({ id, house, snapshots, open, onOpen, choice }: { id: string;
 }
 
 /** What the account card says of its house, under its name: what it charges, its labels and its price list. */
-function HouseLine({ house, snapshot, charge }: { house: NonNullable<ReturnType<typeof providerName>>; snapshot: WorkbenchBundle["snapshots"][number] | undefined; charge: ReactNode }) {
+export function HouseLine({ house, snapshot, charge }: { house: NonNullable<ReturnType<typeof providerName>>; snapshot: WorkbenchBundle["snapshots"][number] | undefined; charge: ReactNode }) {
   // the house's account on your own terms opens from here, the chosen account's card, not from a line on every row (founder, 2026-11-04);
   // a 44 px target that takes no more height than the words beside it
   return (
@@ -346,9 +351,9 @@ function HouseLine({ house, snapshot, charge }: { house: NonNullable<ReturnType<
 }
 
 /** The largest amount the unseen longest case of a line holds: it stands in for a figure the sliders can change, and is never shown. */
-const LONGEST_AMOUNT = 9_999_999;
+export const LONGEST_AMOUNT = 9_999_999;
 /** The most years a plan's sliders give, for a sentence's unseen longest case. */
-const LONGEST_YEARS = 40;
+export const LONGEST_YEARS = 40;
 
 export function AccountColumn({ view, bundle, years, pick, onPick, group = null }: { view: InvestView; bundle: WorkbenchBundle; years: number; pick: Pick; onPick: (p: Pick) => void; /** The house's group picked in its fold: `pick.house` is then the held account priced at it, and this its house. */ group?: { house: string; key: string; name: string } | null }) {
   const legendPick = useChartPick();

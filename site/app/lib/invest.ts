@@ -151,6 +151,11 @@ export interface BrokerCell {
   venue?: Venue | null;
   /** The monthly purchases ran on the house's printed standing-order line (F-12, D41). */
   standing?: boolean;
+  /** The option the cell prices (a custom index's account list names the kind of fund each house's cost is for). */
+  option?: OptionId;
+  /** The cost split by fee line, before tax (F-91 on F-61), and the remainder no single line explains: read when shown, a run per line. */
+  lines?: { line: FeeLine; cost: number }[];
+  interaction?: number;
   reason?: Reason;
   availability?: Availability;
 }
@@ -627,7 +632,32 @@ function computeOption(ctx: Ctx, index: IndexRef, option: OptionId, yourBroker: 
     const na = unavailable(s, option);
     if (na) return { providerId: s.id, kind: "unavailable", availability: na };
     const p = priced.get(s.id)!;
-    if (p.kind === "ok") return { providerId: s.id, kind: "cost", cost: costValue(ctx, p.row, `עלות ${s.provider.name_he}`), costN: p.row.horizonCostBeforeTax, leftN: p.row.real, venue: p.venue, standing: p.standing };
+    if (p.kind === "ok") {
+      const row = p.row;
+      // the split takes a run per fee line: read only for the house rows a custom index's list shows
+      let split: { lines: { line: FeeLine; cost: number }[]; interaction: number } | undefined;
+      const splitOf = () => {
+        if (split) return split;
+        const lines = row.byType.map((x) => ({ line: x.line, cost: x.costBeforeTax }));
+        return (split = { lines, interaction: row.horizonCostBeforeTax - lines.reduce((t, l) => t + l.cost, 0) });
+      };
+      return {
+        providerId: s.id,
+        kind: "cost",
+        option,
+        cost: costValue(ctx, row, copy.houses.costAbout(s.provider.name_he)),
+        costN: row.horizonCostBeforeTax,
+        leftN: row.real,
+        venue: p.venue,
+        standing: p.standing,
+        get lines() {
+          return splitOf().lines;
+        },
+        get interaction() {
+          return splitOf().interaction;
+        },
+      };
+    }
     return { providerId: s.id, kind: p.reason.code === "no-applicable-line" ? "no-line" : "not-comparable", reason: p.reason };
   });
   // ordered as the ranking orders (F-80 on what is left), not by the cost shown, which is before tax (F-91)
