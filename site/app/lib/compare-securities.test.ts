@@ -129,7 +129,7 @@ describe("the guides price an account and its securities on the comparison's pic
   it("the securities account's page is the study-fund page's pick", () => {
     const own = buildGuidePage("brokerage-account")!.bundle!;
     const other = buildGuidePage("keren-hishtalmut")!.signature!;
-    expect(own.pick!.id).toBe("fair");
+    expect(own.pick!.id).toBe("psagot");
     expect(own.pick!.count.value).toBe(other.facts.brokerCount!.value);
     expect(own.feeValues.tradeRate?.own).toBeTruthy();
   });

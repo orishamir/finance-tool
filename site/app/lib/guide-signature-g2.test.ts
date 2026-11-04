@@ -166,9 +166,8 @@ describe("the guides' securities-account range and the indices page (issue 143)"
       const d = page(id).signature!;
       expect(fact(d, "brokerCount")!.value).toBe(onFund.length);
       const best = String(fact(d, "brokerBestName")!.value);
-      expect(onFund.some((h) => h.id === "fair")).toBe(true);
-      expect(onFund[0]!.id).toBe("fair");
-      expect(best).toContain("פייר");
+      expect(onFund[0]!.id).toBe("psagot");
+      expect(best).toContain("פסגות");
     });
   }
   it("prices the pick the same on both pages", () => {

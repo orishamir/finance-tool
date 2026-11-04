@@ -109,7 +109,6 @@ const SHORT_NAMES: Record<string, string> = {
   "altshuler-trade": "אלטשולר טרייד",
   excellence: "אקסלנס",
   "meitav-trade": "מיטב טרייד",
-  fair: "פייר",
   pepper: "פפר",
 };
 
