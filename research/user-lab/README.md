@@ -13,10 +13,12 @@ founder decided on the same screens, and the cards and instructions are improved
 |---|---|
 | `tools/` | The tools below, and `isolation.md`: how a session is kept blind to the project, and the proof |
 | `personas/` | Persona cards, one Markdown file each (the whole file is the card; `phone` in the name means a phone) |
+| (outside the repository) | Cards built from true facts about the real people who will use the site live in `~/finance-tool-private/people/`, and runs that use them write to `~/finance-tool-private/runs/`. Never copy either into this folder, an issue or a commit (founder, 2026-11-06). |
 | `behaviour-guide.md` | Evidence on how real people read and act on pages; its section 5 is written to go into a card |
 | `calibration/` | What the founder decided when shown screens (`cases.jsonl`, its own README) |
 | `bench/`, `metric.md`, `learning-loop.md` | The benchmark of problems he flagged, how a reviewer is measured, and how each new flag teaches it |
 | `predictions.md` | Sealed guesses of his choices before each decision |
+| `variants/` | Versions of the site with changes the lab chooses, shown to sessions at the live addresses (below) |
 | `runs/` | Outputs of panel runs; `runs/smoke/` and `runs/canary/` are the first ones |
 
 ## The tools
@@ -24,7 +26,7 @@ founder decided on the same screens, and the cards and instructions are improved
 All are run from the repository root with Node 22. The command line must be signed in (`claude auth status`). Running
 `claude -p` and the browser worked inside the sandbox on 2026-11-05; nothing had to be switched off.
 
-### Panel: `tools/panel.mjs <run.json> <out-folder> [--dry]`
+### Panel: `tools/panel.mjs <run.json> <out-folder> [--dry] [--variant <id>]`
 
 Runs every persona on every task, a few sessions at a time (`parallel`, default 2). A run file:
 
@@ -59,6 +61,12 @@ Runs every persona on every task, a few sessions at a time (`parallel`, default 
   shape `metric.md` scores). `note` adds one line after the prompt.
 - `--dry` prepares every session (its prompt, and the files it would get, in `given/`) without starting any: free, and
   the way to check what a reader will be shown.
+- **Captured page** (a task with `page` and no `shots`): shots mode on the page as it is at run time, captured screen by
+  screen on the persona's device (`screen-1.png`, ... top first), after the act.mjs commands in `steps`, for example
+  `"steps": [["fill", "סכום היום", "0"]]`. This is the shots step of `tools/shots.mjs`, run per session.
+- `--variant <id>` (or `"variant"` on a task, which wins, or on the run file, which comes last) shows the sessions a
+  variant of the site instead of the live one (see Variants). It works on browser tasks and captured-page tasks; a task
+  with ready-made pictures or a calibration case is refused.
 
 Each session's folder, `<out>/<task>/<persona>/`, holds `prompt.md` (exactly what it was told, and the report form),
 `transcript.jsonl` (every event, with image bytes and the account email left out), `report.md` (its answer, report form
@@ -94,6 +102,126 @@ with no tools to grade against the key or the verdict; its grade is kept in the 
 The isolation proof (see `tools/isolation.md`): one session set up exactly like a browser-mode user is asked what it can
 see and five questions only our context could answer; another is asked to read outside its folder eleven ways. Passes
 only when nothing of the project shows and every attempt is refused. Run it after every Claude Code update.
+
+### Shots step: `tools/shots.mjs <url> <out-folder> [--device pc|phone] [--variant <id>] [--steps steps.json]`
+
+A page as a person sees it scrolling down, one screenshot per screen, top first (`page-1.png`, ...), through the same
+browser a session drives, so the screens match what a browser-mode session would see. `--steps` is a JSON list of
+act.mjs commands run first. With `--variant`, `variant-log.json` beside the pictures says on how many screenshots each
+change showed; a change that never showed makes the command exit with 3.
+
+## Variants (2026-11-05)
+
+The founder: "it could also be beneficial if you were able to feed reviewers a custom-made arbitrary version of the
+site which you determine the changes. that way you can test updates on reviewers, and also you could test the reviewer
+themselves because you could inject things the reviewers are supposed to catch and see that they catch them."
+
+A variant is the live site with changes the lab chooses. The session opens the same address, sees the same title and
+the same list of what it can click, and has no way to learn that anything was changed. Three uses:
+
+- **Test an update before building it**: the new wording, a moved block, a new colour, put on the live page; or a whole
+  branch's build, put at the live address. Run the same personas and task on the variant and on `control`, and compare.
+- **Test the reviewer**: plant problems a reader should trip on (the variant's `plants`, each a neutral sentence for the
+  grader) and see whether they come up among the first ten findings. This is the "fresh instance made on purpose on
+  another screen" that `learning-loop.md` step 5 asks for, and a way to grow the benchmark without waiting for a flag.
+- **Prove the machinery changes nothing**: `control` has no change but runs every piece of it; its screenshots are the
+  live page's, pixel for pixel.
+
+### The folder
+
+`variants/<id>/variant.json`, and optionally `patch.css` (added to every page of the variant) and `patch.js` (run once
+the page is ready, given `variant.locate(spec)` and `variant.onPass(fn)`, where `fn` runs after every re-render):
+
+```json
+{
+  "id": "plant-fees-look-alike",
+  "about": "for the lab only; never reaches a session",
+  "purpose": "plant | update | control | test",
+  "pages": ["/finance-tool/indices/**"],
+  "device": "both | pc | phone",
+  "build": "http://127.0.0.1:4173/finance-tool/",
+  "plants": [{ "id": "same-colour", "problem": "a neutral sentence for the grader", "where": "...", "kind": "general" }],
+  "changes": [ ... ]
+}
+```
+
+`pages` are path patterns (`*` within one part of the address, `**` across parts); a change may carry its own `pages`
+and `device` too. A variant for one device is refused on a session on the other. `build` is optional (below).
+
+### The changes
+
+| `type` | Fields | What it does |
+|---|---|---|
+| `text` | `find` (words, or `{ "regex", "flags" }`), `replace` (`$1` works with a regex); optional `selector` to limit it | Replaces words in the page's text, and in `placeholder`, `aria-label`, `title` and `alt`. The words must sit in one piece of text (a figure and its ₪ may be separate pieces) |
+| `text` | `selector` and/or `text`, `set` | The whole text of the element found becomes `set` |
+| `number` | `find` (a number), `replace` (a number) | Finds the number however it is written (`70000` matches `70,000`) and writes the new one the same way. It follows the figure: if a slider moves it away and back, the change comes back |
+| `style` | `css` (a stylesheet), or `selector` and `set` (`{ property: value }`) | Restyles |
+| `hide` | `selector`, or `text` (the element holding these words, with `closest` or `up` to widen it); `keepSpace` | Hides it (`keepSpace`: leaves its space empty) |
+| `insert` | `at` (`{ selector, text, closest, up, nth }`), `position` (`beforebegin`, `afterbegin`, `beforeend`, `afterend`), `html` | Adds HTML; the site's own classes work |
+| `move` | `what`, `to` (both found like `at`), `position` | Moves an element |
+| `colour` | `tokens` (`{ "--css-variable": "value" }`), or `map` (`{ "from colour": "to colour" }`) with optional `scope`, `props`, `tolerance` | Recolours. A token reaches everything painted with it; a `map` compares what each element is painted with, in pixels, and repaints the matches |
+| `chart-colours` | as `colour`; `map` is limited to charts (`svg`) unless `scope` says otherwise | Recolours a chart's series |
+| `data` | `url` (part of the address, or `/regex/`), and `set` (`{ "json.path[0].field": value }`) or `file` (a file in the variant's folder) | Changes a data file the page loads, before the page reads it |
+
+Elements are found by `selector` or by the words they show (`text`); found by words, the anchor is looked up after the
+variant's own text changes, so anchor on words the variant does not change.
+
+`build` points the whole site at another build: `node research/user-lab/tools/serve-build.mjs <build/client folder>`
+serves it as GitHub Pages does, at `http://127.0.0.1:4173/finance-tool/`; every request to the live address is answered
+from there, and the address bar still shows the live one. For a branch: build it in a worktree (`npm run build -w site`)
+and serve its `site/build/client`.
+
+### How it stays hidden
+
+- The changes are made inside the browser act.mjs and the shots step drive: a script added to every page before the
+  site's own (Playwright `addInitScript`), which waits for the site to take over its pre-rendered page (changing text
+  before that would make React draw the page again) and then keeps the changes in place with a MutationObserver as the
+  site re-renders: after a slider, a typed figure, a click to another page. Its own edits are dropped from what it
+  observes, so it never loops. Styles go into a stylesheet adopted by the document, so no element is added for them.
+  Data files and whole builds go through network routes.
+- The lab's lines in act.mjs sit between `// lab:begin` and `// lab:end`; the copy a session gets has them cut out
+  (`lib/session.mjs`, `sessionAct()`, which refuses to install a copy that still says "variant"), and is otherwise the
+  same file as before variants existed. With a variant, the panel starts the lab's own act.mjs driver in the session's
+  folder before the session; the session's act.mjs finds it running and uses it. The variant's folder and log are
+  outside the session's folder, the pictures are named `screen-N.png`, and the prompt does not change.
+- The lab's own commands (`__status`, `__has`, `__slices`) answer only a request carrying a key the session never has;
+  from a session's act.mjs they answer "Unknown command", as any made-up command does.
+- Each session's `variant.jsonl` (in its output folder) records, at every screenshot, how many places each change shows
+  on; `result.json` sums it up under `variant`, and the panel prints `NEVER SHOWN` for a change that showed nowhere, so a
+  miss is never blamed on the reviewer when the change did not reach the screen.
+
+### The test: `node research/user-lab/tools/variant-test.mjs [out-folder]`
+
+Free (no session), about three minutes, on a computer and on a phone; `runs/variant-test/report.md` is the last run
+(2026-11-05: 23 of 23 passed).
+
+| Check | Result |
+|---|---|
+| `control` against no variant, every screen-high slice of the S&P 500 page | 0 differing pixels on all 10 slices (computer) and all 19 (phone) |
+| `selftest` (all eleven changes, every kind) shows after opening, through act.mjs | All shown; 288,878 pixels differ from the live first screen on a computer |
+| After moving the years slider to 20 | Still shown; the reworded line follows the slider ("... 20 שנים") |
+| After typing 750 into the monthly field | Still shown |
+| Back to 500 a month and 10 years | The changed number (70,000 shown as 71,234) is back |
+| After clicking to the Nasdaq 100 page (no reload) | Still shown |
+| A session's act.mjs asking for `__status`, `__has`, `__slices` | "Unknown command" each time |
+| The whole site from this checkout's build, at the live address | 26 requests answered by the local build; address unchanged |
+| The example planted variant | All three changes on every screenshot, both devices |
+
+No page error was logged with any variant on. Cost: a `map` recolouring makes the page slower to answer (15 slider steps
+took 1.2 s instead of 0.45 s with the eleven-change selftest), unnoticeable at act.mjs's pace; prefer `tokens`.
+
+### The first planted run (2026-11-05)
+
+`runs/variant-plant/`: `plant-fees-look-alike` (two costs drawn in the same colour in the cost bars and legend; the line
+under the amount put in rewritten as "קרן + DCA חודשי, 120 תקופות"; a note under the main result, "* הסכום אינו כולל דמי
+ניהול", contradicting the line above it), shown to `careful-retiree-pc` once from captured screens and once in the
+browser, with findings asked for. Every change showed on every screenshot. Both sessions tripped on "DCA" (the browser
+session among its findings, the screens session among words it did not understand); neither flagged the shared colour
+or the contradicting note. Neither said anything that suggests it noticed a change. One run each: an illustration of
+the method, not a measurement.
+
+**Not done:** `score.mjs` does not read a variant's `plants` yet; grading a planted run is by hand or with `--judge` and
+the plants written as the task's `answerKey`.
 
 ## The smoke runs (2026-11-05)
 
