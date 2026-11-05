@@ -333,10 +333,11 @@ const scopedCache = new WeakMap<FeesSnapshot, FeesSnapshot>();
  * The lines this page ranks. Interactive Brokers' Tiered prices leave out exchange and clearing fees the data does not hold, so they would
  * understate the cost: only its Fixed lines are read. A foreign-currency to foreign-currency conversion line is left out.
  */
-export function scoped(s: FeesSnapshot): FeesSnapshot {
+export function scoped(s: FeesSnapshot, houseId: string = s.id): FeesSnapshot {
   let out = scopedCache.get(s);
   if (!out) {
-    out = { ...s, lines: s.lines.filter((l) => !isFxToFx(l) && !(s.id === "interactive-brokers" && /Tiered/.test(l.band ?? ""))) };
+    // `houseId`: the house whose price list it is, for an account built on a house (its own id is the person's)
+    out = { ...s, lines: s.lines.filter((l) => !isFxToFx(l) && !(houseId === "interactive-brokers" && /Tiered/.test(l.band ?? ""))) };
     scopedCache.set(s, out);
   }
   return out;
@@ -422,6 +423,9 @@ function genericSpec(ctx: Ctx, option: OptionId): Spec | null {
   return { fund: { kind: "foreign-fund", drag: {} }, market: { ...market, returnIn: "instrument", fxChange: 0 }, currency: { code: "USD", startRate: usd }, cls: OPTION_CLASS.abroad };
 }
 
+/** The house whose price list a snapshot reads: its own, or, for an account built on a house (F-101), that house's. */
+const houseOfSnap = (ctx: Ctx, s: FeesSnapshot): string => ctx.bundle.entered?.bases?.[s.id] ?? s.id;
+
 function runSlot(ctx: Ctx, spec: Spec, items: { s: FeesSnapshot; cand: Cand }[]): ProviderRow[] {
   const profile: { ageAtStart?: number; annualIncome?: number } = {};
   if (ctx.plan.age !== null) profile.ageAtStart = ctx.plan.age;
@@ -442,7 +446,7 @@ function runSlot(ctx: Ctx, spec: Spec, items: { s: FeesSnapshot; cand: Cand }[])
       const entered = ctx.bundle.entered?.tariffs[x.s.id];
       // an account built on a house (F-101): the house's own list tariff for this fund and reading, with the group's and the person's prices over it
       const layered = ctx.bundle.entered?.layered?.[x.s.id];
-      if (layered) return { snapshot: scoped(x.s), level: "entered" as const, layered, ...(x.cand.band ? { band: x.cand.band } : {}) };
+      if (layered) return { snapshot: scoped(x.s, houseOfSnap(ctx, x.s)), level: "entered" as const, layered, ...(x.cand.band ? { band: x.cand.band } : {}) };
       return entered ? { snapshot: scoped(x.s), level: "entered" as const, entered } : { snapshot: scoped(x.s), level: "list" as const, ...(x.cand.band ? { band: x.cand.band } : {}) };
     }),
   });
@@ -515,11 +519,19 @@ function rowVenue(row: ComparedProvider, s: FeesSnapshot, cand: Cand): Venue | n
  * Prices each snapshot for a fund spec: every reading of its tariff (an exchange each, for a fund bought abroad), and the
  * cheapest one that computes wins. `fundVenue` limits the readings to the exchange the fund trades on.
  */
+const sameCand = (a: Cand, b: Cand) => a.venue === b.venue && JSON.stringify(a.band ?? null) === JSON.stringify(b.band ?? null);
+
 function priceMany(ctx: Ctx, spec: Spec, option: OptionId, snaps: FeesSnapshot[], fundVenue: Venue | null): Map<string, Priced> {
   // an account the person typed with a price left empty for this kind of fund (its conversion, for a fund bought abroad) has no price for
   // it: never run, so the empty field is never charged as zero (D56, #190)
-  const typedOpen = (s: FeesSnapshot) => isCustomBrokerId(s.id) && doubtOf(s, option) !== null;
-  const per = snaps.map((s) => ({ s, cands: typedOpen(s) ? [] : candidates(scoped(s), option).filter((c) => fundVenue === null || c.venue === null || c.venue === fundVenue) }));
+  // (an account built on a house reads an empty field as the house's price: it follows the house, below)
+  const baseOf = (s: FeesSnapshot) => (houseOfSnap(ctx, s) === s.id ? null : houseOfSnap(ctx, s));
+  const typedOpen = (s: FeesSnapshot) => isCustomBrokerId(s.id) && !baseOf(s) && doubtOf(s, option) !== null;
+  // an account built on a house is priced where the house is, on the house's own reading of its price list, and nowhere else (F-101,
+  // #190: the layered run has no line of its own to say which exchange it trades on, and was priced where the house's list has no line)
+  const bases = [...new Set(snaps.flatMap((s) => { const b = baseOf(s); return b && !snaps.some((x) => x.id === b) ? [b] : []; }))].flatMap((b) => ctx.bundle.snapshots.filter((x) => x.id === b));
+  const all = [...snaps, ...bases];
+  const per = all.map((s) => ({ s, cands: typedOpen(s) ? [] : candidates(scoped(s, houseOfSnap(ctx, s)), option).filter((c) => fundVenue === null || c.venue === null || c.venue === fundVenue) }));
   const results = new Map<string, { row: ProviderRow; cand: Cand }[]>();
   const slots = Math.max(0, ...per.map((p) => p.cands.length));
   for (let k = 0; k < slots; k++) {
@@ -528,13 +540,26 @@ function priceMany(ctx: Ctx, spec: Spec, option: OptionId, snaps: FeesSnapshot[]
     items.forEach((x, i) => results.set(x.s.id, [...(results.get(x.s.id) ?? []), { row: rows[i]!, cand: x.cand }]));
   }
   const out = new Map<string, Priced>();
-  for (const { s } of per) {
+  const won = new Map<string, Cand>();
+  // the houses first, so an account built on one can follow it
+  const order = [...per].sort((a, b) => Number(!!baseOf(a.s)) - Number(!!baseOf(b.s)));
+  for (const { s } of order) {
+    const base = baseOf(s);
+    if (base) {
+      const at = out.get(base);
+      const cand = won.get(base);
+      const mine = cand ? (results.get(s.id) ?? []).find((g) => sameCand(g.cand, cand)) : undefined;
+      if (!at || at.kind === "fail") out.set(s.id, at ?? { kind: "fail", reason: { code: "data-missing", recorded: null } });
+      else if (mine?.row.kind === "compared") out.set(s.id, { kind: "ok", row: mine.row, venue: at.venue, standing: at.standing });
+      else out.set(s.id, { kind: "fail", reason: mine?.row.kind === "not-comparable" ? reasonOf(mine.row, scoped(s, base)) : { code: "data-missing", recorded: null } });
+      continue;
+    }
     if (typedOpen(s)) {
       out.set(s.id, { kind: "fail", reason: { code: "data-missing", recorded: "entered-incomplete" } });
       continue;
     }
     const got = results.get(s.id) ?? [];
-    let best: { row: ComparedProvider; venue: Venue | null } | null = null;
+    let best: { row: ComparedProvider; venue: Venue | null; cand: Cand } | null = null;
     // the exchange of a reading set aside because the fund trades on another: the house's lines abroad name only that one
     let otherVenue: Venue | null = null;
     for (const g of got) {
@@ -546,10 +571,11 @@ function priceMany(ctx: Ctx, spec: Spec, option: OptionId, snaps: FeesSnapshot[]
         otherVenue = venue;
         continue;
       }
-      if (!best || g.row.real > best.row.real || (g.row.real === best.row.real && venue !== null && best.venue === null)) best = { row: g.row, venue };
+      if (!best || g.row.real > best.row.real || (g.row.real === best.row.real && venue !== null && best.venue === null)) best = { row: g.row, venue, cand: g.cand };
     }
     if (best) {
-      out.set(s.id, { kind: "ok", ...best, standing: best.row.linesUsed.some((id) => { const band = s.lines.find((l) => l.id === id)?.band; return band === STANDING_ORDER_BAND || band === STANDING_CONVERSION_BAND; }) });
+      won.set(s.id, best.cand);
+      out.set(s.id, { kind: "ok", row: best.row, venue: best.venue, standing: best.row.linesUsed.some((id) => { const band = s.lines.find((l) => l.id === id)?.band; return band === STANDING_ORDER_BAND || band === STANDING_CONVERSION_BAND; }) });
       continue;
     }
     const fails = got.flatMap((g) => (g.row.kind === "not-comparable" ? [reasonOf(g.row, scoped(s))] : g.row.noLine.includes("trade") ? [{ code: "no-applicable-line" as const, detail: `no trade line of the ${s.snapshot} snapshot applies to ${spec.cls}` }] : []));

@@ -494,6 +494,9 @@ export interface EnteredInBundle {
   tariffs: Record<string, EnteredTariff>;
   /** By broker id: an account built on a house (F-101) is priced on the house's own list tariff for each fund, so its tariff is built per run. */
   layered: Record<string, NonNullable<ProviderInput["layered"]>>;
+  /** By broker id: the house an account built on a house stands on. It is priced where that house is, on that house's own reading of its
+   *  price list, and nowhere else (#190: an account built on One Zero was priced on funds abroad that One Zero's price list leaves out). */
+  bases?: Record<string, string>;
   /** By broker or fund id: what its run's provenance sheet lists. */
   inputs: Record<string, Record<string, SiteValue>>;
   /** What a fund on a custom index needs of its index: no exposure record exists for one (F-65). */
@@ -521,6 +524,7 @@ export function withCustomEntries(bundle: WorkbenchBundle, brokers: readonly Cus
       // an account whose house is gone keeps only what was typed: an empty field there is not known either (D56)
       tariffs: Object.fromEntries(brokers.filter((b) => !houseOf(b) && !unpricedEverywhere(b, false)).map((b) => [b.id, tariffOfBroker(b)])),
       layered: Object.fromEntries(onHouse.map((b) => [b.id, layeredOf(b)])),
+      bases: Object.fromEntries(onHouse.map((b) => [b.id, b.base!.houseId])),
       inputs: Object.fromEntries([...brokers.map((b) => [b.id, { ...(houseOf(b) ? groupInputs(b) : {}), ...inputsOf(brokerTerms(b), b.name) }] as const), ...funds.map((f) => [f.id, inputsOf(fundTerms(f), f.name)] as const)]),
       exposures,
       shekelFunds: funds.filter((f) => f.shekelIndex).map((f) => f.id),

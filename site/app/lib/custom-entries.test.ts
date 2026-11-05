@@ -8,6 +8,7 @@ import { AccountColumn, allFunds, FundColumn, pickOfHeadline, PairResult, whyNoP
 import { invest } from "../copy";
 import { LabelSheetHost } from "../components/kit";
 import { ProvenanceProvider } from "../components/provenance";
+import { baseOf } from "./own-account";
 import { brokerDraftOf, brokerErrors, brokerFromDraft, fundDraftOf, fundErrors, fundFromDraft, tariffOfBroker, unknownLines, validCustomBrokers, validCustomFunds, withCustomEntries, type CustomBroker, type CustomFund } from "./custom-entries";
 import { fundLabels } from "./labels";
 import { buildInvest, cheapestWay, indexById, indexSeenBy, optionOfFund, pairCosts, refOfCustom, type WayPrice } from "./invest";
@@ -456,5 +457,30 @@ describe("kept on the device and carried in the export file (D44)", () => {
     const funds = (x: CustomFund[]) => ({ ...base, customFunds: x });
     expect(applyImport(funds([fund]), funds([abroad]), "add", t).state.customFunds!.map((x) => x.id)).toEqual([fund.id, abroad.id]);
     expect(applyImport(brokers([cheap]), brokers([dear]), "replace", t).state.customBrokers!.map((x) => x.id)).toEqual([dear.id]);
+  });
+});
+
+describe("an account built on a house is priced where the house is, and only there (F-101, #190)", () => {
+  const sp = (b: CustomBroker) => {
+    const withIt = withCustomEntries(bundle, [b], []);
+    return buildInvest({ bundle: withIt, index: indexById(withIt, "index-sp500")!, plan });
+  };
+  const built = (houseId: string) => {
+    const snap = bundle.snapshots.find((s) => s.id === houseId)!;
+    return brokerFromDraft({ ...brokerDraftOf(null), name: "שלי", base: baseOf(snap, { group: null }) }, "custom-broker-built", t);
+  };
+  const abroad = (view: ReturnType<typeof sp>) => allFunds(view).filter((f) => f.option === "abroad" && !f.reason);
+  const left = (f: { byHouse: Record<string, unknown> }, id: string) => { const a = f.byHouse[id] as { valueN?: number; reason?: { code: string } } | undefined; return a?.valueN !== undefined ? Math.round(a.valueN) : a?.reason?.code ?? "none"; };
+  it("on One Zero, a fund abroad that One Zero's price list leaves out has no price in the account built on it either", () => {
+    const view = sp(built("one-zero"));
+    const funds = abroad(view).filter((f) => !("valueN" in (f.byHouse["one-zero"] ?? {})));
+    expect(funds.length).toBeGreaterThan(0);
+    for (const f of funds) expect(left(f, "custom-broker-built")).toBe(left(f, "one-zero"));
+  });
+  it("on Interactive Brokers, with nothing changed, the account built on it leaves what the house leaves (it read the Tiered lines and failed)", () => {
+    const view = sp(built("interactive-brokers"));
+    const funds = abroad(view).filter((f) => "valueN" in (f.byHouse["interactive-brokers"] ?? {}));
+    expect(funds.length).toBeGreaterThan(0);
+    for (const f of funds) expect(left(f, "custom-broker-built")).toBe(left(f, "interactive-brokers"));
   });
 });
