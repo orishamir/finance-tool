@@ -55,8 +55,8 @@ describe("the index page's sections render", () => {
     const leumi = { house: "leumi", fund: pick.fund };
     const out = html(createElement("div", null,
       createElement(IndexHeader, { view }),
-      createElement(PairResult, { view, bundle, plan: { ...plan, returnFromParameter: true }, pick, onPick: () => undefined }),
-      createElement(PairResult, { view, bundle, plan: { ...plan, returnFromParameter: true }, pick: leumi, onPick: () => undefined }),
+      createElement(PairResult, { view, bundle, plan: { ...plan, returnFromParameter: true }, pick, chosen: false, onPick: () => undefined }),
+      createElement(PairResult, { view, bundle, plan: { ...plan, returnFromParameter: true }, pick: leumi, chosen: true, onPick: () => undefined }),
       createElement(AccountColumn, { view, bundle, years: 20, pick, onPick: () => undefined }),
       createElement(FundColumn, { view, bundle, plan, today: t, pick, onPick: () => undefined, filter: null, onFilter: () => undefined }),
       createElement(Foot, { view }),
@@ -79,9 +79,16 @@ describe("the index page's sections render", () => {
   it("an Israeli index keeps the pair beside the cheapest one (no kinds)", () => {
     const ta = buildInvest({ bundle, index: indexById(bundle, "index-ta125")!, plan: { ...plan, returnFromParameter: true } });
     const pick = pickOfHeadline(ta)!;
-    const out = html(createElement(PairResult, { view: ta, bundle, plan: { ...plan, returnFromParameter: true }, pick: { ...pick, house: "leumi" }, onPick: () => undefined }));
+    const out = html(createElement(PairResult, { view: ta, bundle, plan: { ...plan, returnFromParameter: true }, pick: { ...pick, house: "leumi" }, chosen: true, onPick: () => undefined }));
     expect(out).toContain("★ הזוג הזול ביותר לתוכנית שלכם");
     expect(out).not.toContain("עם נטרול");
+  });
+  it("before any pick, the page's own pair is never called the person's, and each tile names its account and fund (2026-11-05)", () => {
+    const pick = pickOfHeadline(view)!;
+    const out = html(createElement(PairResult, { view, bundle, plan: { ...plan, returnFromParameter: true }, pick, chosen: false, onPick: () => undefined }));
+    expect(out).not.toContain("הבחירה שלכם");
+    const fund = view.options.flatMap((o) => o.funds).find((f) => f.rec.id === pick.fund)!;
+    expect(out).toContain(fund.name.replace(/&/g, "&amp;").replace(/"/g, "&quot;"));
   });
   it("neither list leaves a row out: every account and every fund is listed, priced or with its reason", () => {
     const pick = pickOfHeadline(view)!;

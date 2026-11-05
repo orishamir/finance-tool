@@ -284,7 +284,7 @@ describe("the rows mark what was typed (D7)", () => {
   const data = { rules: {}, terms: {}, dimensions: {}, today: t };
   const html = (el: React.ReactElement) => renderToString(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data, children: createElement(LabelSheetHost, null, el) })));
   it("the account list and the result name it in the entered colour, and link to no tariff or company page", () => {
-    const out = html(createElement("div", null, createElement(AccountColumn, { view, bundle: b, years: 20, pick, onPick: () => undefined }), createElement(FundColumn, { view, bundle: b, plan, today: t, pick, onPick: () => undefined, filter: null, onFilter: () => undefined }), createElement(PairResult, { view, bundle: b, plan, pick, onPick: () => undefined })));
+    const out = html(createElement("div", null, createElement(AccountColumn, { view, bundle: b, years: 20, pick, onPick: () => undefined }), createElement(FundColumn, { view, bundle: b, plan, today: t, pick, onPick: () => undefined, filter: null, onFilter: () => undefined }), createElement(PairResult, { view, bundle: b, plan, pick, chosen: true, onPick: () => undefined })));
     expect(out).toContain(zeros.name);
     expect(out).toContain(fund.name);
     expect(out).toContain("text-entered");

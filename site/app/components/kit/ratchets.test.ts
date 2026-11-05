@@ -106,6 +106,55 @@ patterns["a row of rule chips"] = {
   allowed: { "components/provenance.tsx": 4, "routes/exposure.tsx": 2 },
 };
 
+// 2026-11-05 (issue 190): a name in a plain <bdi> takes its direction from its first letter, so a Hebrew name that starts with Latin
+// letters ("MTF סל (4D) S&P 500") was laid out left to right and read backwards. Names go through MixedName; the indices page is done.
+patterns["a name in a plain bdi"] = {
+  count: (s) => (s.match(/<bdi>\{[^}]*([nN]ame|manager)[^}]*\}<\/bdi>/g) ?? []).length,
+  kit: "MixedName (a name that may mix Hebrew and Latin)",
+  allowed: {
+    "components/compare/chart.tsx": 3,
+    "components/compare/coverage.tsx": 1,
+    "components/compare/fit.tsx": 1,
+    "components/compare/idle.tsx": 1,
+    "components/compare/index-card.tsx": 4,
+    "components/compare/reasons.tsx": 1,
+    "components/compare/representative.tsx": 2,
+    "components/compare/sensitivity.tsx": 2,
+    "components/compare/why.tsx": 11,
+    "components/decoder/brand-funds.tsx": 3,
+    "components/decoder/company-terms.tsx": 1,
+    "components/decoder/institutions/brokerage-card.tsx": 1,
+    "components/decoder/institutions/page.tsx": 1,
+    "components/decoder/institutions/product-row.tsx": 1,
+    "components/exposure-mode/chart.tsx": 1,
+    "components/exposure-mode/fields.tsx": 3,
+    "components/exposure-mode/reason.tsx": 2,
+    "components/exposure-mode/result.tsx": 4,
+    "components/exposure-mode/row.tsx": 1,
+    "components/fees/FeeDragChart.tsx": 3,
+    "components/fees/FeeRow.tsx": 1,
+    "components/fees/parts.tsx": 2,
+    "components/fees/sensitivity.tsx": 2,
+    "components/guide-signature/bank-deposit.tsx": 5,
+    "components/guide-signature/current-account.tsx": 8,
+    "components/guide-signature/keren-hishtalmut.tsx": 3,
+    "components/guide-signature/kupat-gemel-lehashkaa.tsx": 2,
+    "components/guide-signature/makam.tsx": 1,
+    "components/guide-signature/pension.tsx": 1,
+    "components/guide/sections.tsx": 1,
+    "components/holdings/add-sheet.tsx": 2,
+    "components/holdings/card.tsx": 2,
+    "components/holdings/consolidation.tsx": 2,
+    "components/revisit/revisit.tsx": 5,
+    "components/timeline/Timeline.tsx": 2,
+    "components/tracks/list.tsx": 2,
+    "routes/company.tsx": 2,
+    "routes/not-covered.tsx": 1,
+    "routes/track.tsx": 2,
+    "routes/workbench-providers.tsx": 1,
+  },
+};
+
 for (const [name, p] of Object.entries(patterns)) {
   describe(`ratchet: ${name}`, () => {
     const now: Record<string, number> = {};

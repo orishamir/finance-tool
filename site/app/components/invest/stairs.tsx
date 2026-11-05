@@ -12,7 +12,7 @@ import { LANES, byGain, chainOf, gridOf, middleStart, openTopOf, rowsAt, unitOf,
 import { computed, type SiteValue } from "../../lib/value";
 import { IconLock } from "../icons";
 import { LeadTail, Num } from "../provenance";
-import { Card, DiffFigure, DiffHead, DiffRow, GreyLine, LabelRow, STAIRS_SLOTS, STAIR_SWATCH, StairsChart, StairsSteps, StairsTable, cx, type StairColumn, type StairHue, type StairStep } from "../kit";
+import { MixedName, Card, DiffFigure, DiffHead, DiffRow, GreyLine, LabelRow, STAIRS_SLOTS, STAIR_SWATCH, StairsChart, StairsSteps, StairsTable, cx, type StairColumn, type StairHue, type StairStep } from "../kit";
 import { allFunds, wholeParts } from "./pair";
 import { ProviderLink, providerName } from "./sections";
 
@@ -36,7 +36,7 @@ interface Level {
   dParts: [number, number, number] | null;
 }
 
-export const StairsSection = memo(function StairsSection({ view, bundle, plan, startHouse, startFund }: { view: InvestView; bundle: WorkbenchBundle; plan: WorkbenchInputs; startHouse: string | null; startFund: string | null }) {
+export const StairsSection = memo(function StairsSection({ view, bundle, plan, startHouse, startFund, example }: { view: InvestView; bundle: WorkbenchBundle; plan: WorkbenchInputs; startHouse: string | null; startFund: string | null; /** Nothing is picked: the start is the page's example, never called "now" (2026-11-05). */ example: boolean }) {
   const today = bundle.today;
   const t = c.stairs;
   const g = useMemo(() => gridOf(view, bundle.snapshots), [view, bundle.snapshots]);
@@ -47,6 +47,8 @@ export const StairsSection = memo(function StairsSection({ view, bundle, plan, s
   const [done, setDone] = useState<{ key: string; start: Pos | null; taken: Taken[] }>({ key: "", start: null, taken: [] });
   const current = done.key === baseKey ? done : { key: baseKey, start: null, taken: NONE };
   const start = current.start ?? base;
+  // where the person stands is the page's example until they take a step or jump: it is not called "now" (2026-11-05)
+  const atExample = example && current.start === null && current.taken.length === 0;
   const chain = useMemo(() => (start ? (chainOf(g, { start, taken: current.taken }) ?? (base && base !== start ? chainOf(g, { start: base, taken: [] }) : null)) : null), [g, start, current.taken, base]);
 
   const priceAt = (p: Pos): WayPrice | null => {
@@ -167,7 +169,7 @@ export const StairsSection = memo(function StairsSection({ view, bundle, plan, s
       head: t.table.fund,
       cells: visible.map((l) => (
         <span key={l.stair.pos.f + l.stair.pos.a} className={cx("block min-h-[3lh]", l.stair.lane === "kind" || l.stair.lane === "fund" ? "font-semibold" : "text-muted-foreground")}>
-          <bdi>{l.stair.open ? <LeadTail lead={l.fundName}>{lockIcon(t.lockLabel)}</LeadTail> : l.fundName}</bdi>
+          <MixedName show={l.stair.open ? <LeadTail lead={l.fundName}>{lockIcon(t.lockLabel)}</LeadTail> : undefined}>{l.fundName}</MixedName>
         </span>
       )),
     },
@@ -223,10 +225,10 @@ export const StairsSection = memo(function StairsSection({ view, bundle, plan, s
           <i className={cx("inline-block size-3 flex-none rounded-[2px]", STAIR_SWATCH[lane])} />
           {t.lanes[lane].title}
         </h4>
-        <DiffHead name={t.lanes[lane].head} left={t.rowHead.left} versus={t.rowHead.versus} less={t.rowHead.less} more={t.rowHead.more} money={t.rowHead.money} />
+        <DiffHead name={t.lanes[lane].head} left={t.rowHead.left} versus={atExample ? t.rowHead.versusExample : t.rowHead.versus} less={t.rowHead.less} more={t.rowHead.more} money={t.rowHead.money} />
         {priced.map((r, i) => {
           const price = priceAt(r.to)!;
-          const sub = r.lane === "kind" ? <small className="text-xs font-normal text-muted-foreground"><bdi>{nameOfFund(r.to.f)}</bdi></small> : null;
+          const sub = r.lane === "kind" ? <small className="text-xs font-normal text-muted-foreground"><MixedName>{nameOfFund(r.to.f)}</MixedName></small> : null;
           const chips = r.hedged ? hedgedChip(r.to.f) : [];
           const d = r.d!;
           const diffValue = delta(Math.abs(d), price.value, `${t.about.left}: ${nameOfFund(r.to.f)}, ${house(r.to.a).short}`, here.left, `${t.about.left}: ${here.fundName}, ${here.house.name}`, t.about.versus);
@@ -314,7 +316,7 @@ export const StairsSection = memo(function StairsSection({ view, bundle, plan, s
           axis={{ lo: scale.LO, hi: scale.HI, step: scale.step }}
           ceiling={{ level: ceiling.v, lines: [t.ceiling, fmt.nisWhole(ceiling.v), nameOfFund(ceiling.pos.f), house(ceiling.pos.a).short] }}
           endsAt={endsBelow ? { level: end.stair.v, text: `${t.endsAt} ${fmt.nisWhole(end.stair.v)}` } : null}
-          now={t.now}
+          now={atExample ? t.nowExample : t.now}
           label={t.chartLabel}
           tick={(n, compact) => (compact && n >= 1000 ? `${fmt.number(n / 1000)}K` : fmt.number(Math.round(n)))}
           onGo={goTo}
@@ -351,8 +353,10 @@ export const StairsSection = memo(function StairsSection({ view, bundle, plan, s
       </Card>
       <Card pad="roomy" className="flex flex-col gap-2">
         <h3 className="text-lg font-semibold">
-          {t.here} <bdi>{here.fundName}</bdi>, <ProviderLink short p={here.house} />. {t.hereLeft} <Num value={here.left} />.
+          {atExample ? t.hereExample : t.here} <MixedName>{here.fundName}</MixedName>, <ProviderLink short p={here.house} />. {t.hereLeft} <Num value={here.left} />.
         </h3>
+        {/* one sentence in both states, so a pick moves nothing below it */}
+        <p className="text-sm text-muted-foreground max-md:min-h-[2lh]">{example ? t.startExample : t.startPicked}</p>
         <p className="text-sm text-muted-foreground">{t.rowsHint}</p>
         <div className="grid items-start gap-x-9 gap-y-3 lg:grid-cols-2">
           <div>{laneBlock("account")}</div>

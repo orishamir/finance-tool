@@ -7,7 +7,7 @@ import { inputMap, kindMoney, kindOf, sumFeesPct, type InvestView } from "../../
 import type { WorkbenchBundle, WorkbenchInputs } from "../../lib/providers";
 import { computed, ownBy, type SiteValue } from "../../lib/value";
 import { Num, RuleRef } from "../provenance";
-import { Card, ChartLegend, FixedTable, PairBars, SourceLine, StatRow, StatTile, Swatch, YearBars, useChartPick, useHeldHeight } from "../kit";
+import { MixedName, Card, ChartLegend, FixedTable, PairBars, SourceLine, StatRow, StatTile, Swatch, YearBars, useChartPick, useHeldHeight } from "../kit";
 import { allFunds, kindPairs, type Pick } from "./pair";
 import { providerName } from "./sections";
 
@@ -159,7 +159,7 @@ export function DollarSection({ view, bundle, plan, pick }: { view: InvestView; 
             pick={legendPick}
             items={[
               { id: "u", swatch: <Swatch shape="box" className="bg-chart-kind-unhedged" />, label: c.dollar.legendUnhedged },
-              { id: "h", swatch: <Swatch shape="box" className="bg-chart-kind-hedged" />, label: <bdi>{hedgedName}</bdi> },
+              { id: "h", swatch: <Swatch shape="box" className="bg-chart-kind-hedged" />, label: <MixedName>{hedgedName}</MixedName> },
             ]}
           />
           <PairBars label={c.dollar.fundsLabel} tickStep={20} format={barLabel} fillA="fill-chart-kind-unhedged" fillB="fill-chart-kind-hedged" nameA={c.dollar.legendUnhedged} nameB={hedgedName} highlight={legendPick.active === "u" ? "a" : legendPick.active === "h" ? "b" : null} items={rec.years.map((y) => ({ year: y.year, a: (y.unhedged.low + y.unhedged.high) / 2, b: (y.hedged.low + y.hedged.high) / 2 }))} />
@@ -179,7 +179,7 @@ export function DollarSection({ view, bundle, plan, pick }: { view: InvestView; 
       {money && (
         <p ref={held} className="min-h-[3lh] max-md:min-h-[11lh]">
           <strong className="font-semibold">{c.dollar.planLead}</strong> {c.dollar.planPoint(h)} <Num value={nisV(round100(money.worth.low), c.dollar.pointAbout)} /> {c.dollar.to} <Num value={nisV(round100(money.worth.high), c.dollar.pointAbout)} />
-          {c.dollar.planReal} {c.dollar.planSteady} <bdi>{uMore >= 0 ? nameOf(pairs.unhedged) : nameOf(pairs.hedged)}</bdi> {uMore >= 0 ? c.dollar.kindNoHedge : c.dollar.kindHedge} {c.dollar.leaves} <Num value={nisV(Math.abs(uMore), c.dollar.moreAbout)} /> {c.dollar.moreThan}<bdi>{uMore >= 0 ? nameOf(pairs.hedged) : nameOf(pairs.unhedged)}</bdi> {uMore >= 0 ? c.dollar.kindHedge : c.dollar.kindNoHedge}.
+          {c.dollar.planReal} {c.dollar.planSteady} <MixedName>{uMore >= 0 ? nameOf(pairs.unhedged) : nameOf(pairs.hedged)}</MixedName> {uMore >= 0 ? c.dollar.kindNoHedge : c.dollar.kindHedge} {c.dollar.leaves} <Num value={nisV(Math.abs(uMore), c.dollar.moreAbout)} /> {c.dollar.moreThan}<MixedName>{uMore >= 0 ? nameOf(pairs.hedged) : nameOf(pairs.unhedged)}</MixedName> {uMore >= 0 ? c.dollar.kindHedge : c.dollar.kindNoHedge}.
         </p>
       )}
       <p className="text-sm text-muted-foreground">

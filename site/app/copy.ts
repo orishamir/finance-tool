@@ -3623,12 +3623,17 @@ export const invest = {
     yours: "הבחירה שלכם",
     next: "הזוג הבא בתור",
     vsYours: "לעומת הבחירה שלכם",
+    /** Before any pick, the next pair is set against the cheapest one, never against "your choice" (2026-11-05). */
+    vsCheapest: "לעומת הזוג הזול ביותר",
+    /** Before any pick, on an index with no ranked pair: the pair shown is the one that leaves the most, on an open rule. */
+    openTop: "הזוג שמשאיר הכי הרבה, בלי דירוג",
     /** An input of a computed figure, named by whose it is: "הבחירה שלכם: נשאר". */
     input: (who: string, what: string) => `${who}: ${what}`,
     moreIfCheapest: "יותר אם עוברים לזוג הזול",
     pickCheapest: "בחרו את הזוג הזה",
     costTitleBoth: (years: number) => `כמה זה עולה לכם ב־${years} שנים, בכל אחד מהזוגות`,
     gapLead: "העלות אצלכם, לעומת הזוג השני:",
+    gapLeadCheapest: "העלות בזוג הזול ביותר, לעומת הזוג הבא בתור:",
     gapPart: { account: "החשבון", fund: "הקרן", tax: "המס" },
     /** After a part of the gap: the person's pair pays this much more, or less, to that party. */
     gapMore: "יותר",
@@ -3786,6 +3791,8 @@ export const invest = {
     reset: "חזרה לנקודת ההתחלה",
     chartLabel: "מדרגות",
     now: "עכשיו",
+    /** Over the start before any pick: the page's example, not where the person is (2026-11-05). */
+    nowExample: "לדוגמה",
     ceiling: "הכי הרבה בכל המחירונים",
     ceilingLine: "הכי הרבה בכל המחירונים:",
     endsAt: "בסוף:",
@@ -3802,9 +3809,12 @@ export const invest = {
     table: { step: "הצעד", fund: "הקרן", account: "החשבון", accountCost: "עלות החשבון", fundCost: "עלות הקרן", tax: "מס", left: "נשאר בסוף" },
     stepStart: "נקודת ההתחלה:",
     here: "עכשיו:",
+    hereExample: "נקודת התחלה לדוגמה:",
+    startExample: "עוד לא בחרתם קרן וחשבון, ולכן המדרגות מתחילות מקרן ומחשבון מאמצע הרשימות. בחירה ברשימות למעלה מתחילה אותן ממנה.",
+    startPicked: "המדרגות מתחילות מהקרן ומהחשבון שבחרתם ברשימות למעלה. בחירה אחרת שם מתחילה אותן מחדש.",
     hereLeft: "נשארים בסוף",
     rowsHint: "כל שורה משנה דבר אחד. לחיצה על שורה מוסיפה אותה למדרגות.",
-    rowHead: { left: "נשאר בסוף", versus: "לעומת עכשיו", less: "פחות", more: "יותר", money: "כסף" },
+    rowHead: { left: "נשאר בסוף", versus: "לעומת עכשיו", versusExample: "לעומת הדוגמה", less: "פחות", more: "יותר", money: "כסף" },
     more: "עוד",
     fewer: "פחות",
     same: "אותו סכום",
@@ -3977,6 +3987,7 @@ export const kit = {
       AskField: "השדה הגדול שהעמוד נפתח בו: נכנס בו משפט שלם, ו־× מרוקן אותו.",
       DidYouKnow: "״הידעת?״: עובדות קצרות מהחוקים והכללים, כל אחת עם המקור שלה והדרך לפירוט המלא. כל הכרטיסים באותו גובה.",
       RulesLine: "החוקים והכללים שמאחורי עובדה: שבב אחד עם המספר שלהם, השורה האחרונה בבלוק, ולעולם לא עמודה בטבלה. שבב שפותח רשימה של השמות המלאים, וכלל אחד נפתח ישר בכרטיס. בלי חוקים וכללים אין שבב. גר ב־provenance.tsx, לא ב־kit.",
+      MixedName: "שם של קרן או חברה בתוך שורה בעברית. שם שיש בו עברית נפרש מימין לשמאל גם כשהוא מתחיל באותיות לטיניות; שם בלי עברית שומר על הכיוון שלו.",
       IdRef: "שבב לכל מזהה שהאתר מציג: חוק, נוסחה, פרמטר או שאלה פתוחה. לא כותבים מזהה כטקסט חשוף. גר ב־provenance.tsx, לא ב־kit.",
       Button: "Button לפעולה, LinkButton למעבר לעמוד. כפתור primary אחד בכל מסך.",
       Tag: "תווית קצרה עם גוון: מצב, סוג, דגל. הגוון לא עובד לבד: מוסיפים מילה או אייקון.",

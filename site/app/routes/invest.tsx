@@ -290,7 +290,7 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
             {planBlock}
             {pick && shown && shownView ? (
               <>
-                <PairResult view={shownView} bundle={shownBundle} plan={livePlan} settled={plan} pick={shown} onPick={onPick} />
+                <PairResult view={shownView} bundle={shownBundle} plan={livePlan} settled={plan} pick={shown} chosen={picks} onPick={onPick} />
                 <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_2.5rem_minmax(0,32.5rem)] xl:grid-cols-[minmax(0,5fr)_2.5rem_minmax(0,7fr)] items-start">
                   <AccountColumn view={shownView} bundle={shownBundle} years={plan.years} pick={shown} onPick={onPick} group={own?.group ? { house: own.house, key: own.group, name: groupNameOf(wb.snapshots.find((x) => x.id === own.house), own.group) } : null} />
                   <span aria-hidden="true" className="hidden lg:grid place-items-center size-9 mt-10 rounded-full border border-input bg-popover text-xl text-muted-foreground justify-self-center">
@@ -319,7 +319,7 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
             {/* hedged or not, across the dollar (F-94): only on a foreign index with funds of both kinds; at the bottom (founder, 2026-10-31) */}
             {shown && shownView && hasKinds(view) && wb.dollarRange && <DollarSection view={shownView} bundle={shownBundle} plan={plan} pick={shown} />}
             {/* the stairs: which single change leaves more, one step at a time; appended last (founder, 2026-11-01) */}
-            {pick && <StairsSection key={index.id} view={view} bundle={bundle} plan={plan} startHouse={picks ? pick.house : null} startFund={picks ? pick.fund : null} />}
+            {pick && <StairsSection key={index.id} view={view} bundle={bundle} plan={plan} startHouse={picks ? pick.house : null} startFund={picks ? pick.fund : null} example={!picks} />}
             <Foot view={view} />
             <RulesLine ids={rules} />
           </>

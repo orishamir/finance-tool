@@ -15,7 +15,7 @@ import { computed, ownBy, type SiteValue } from "../../lib/value";
 import { fmt } from "../../lib/format";
 import { IconLock } from "../icons";
 import { Num } from "../provenance";
-import { Button, Card, ChartLegend, CostStack, FeeWordsNote, LabelChip, LabelFilter, LabelRow, LongestCase, PickList, ProductIdLink, Sentence, Stat, StatRow, Swatch, Tag, cx, GroupPriceFold, useChartPick, type ChartPick, useHeldHeight, type CostPart, type GroupChoice, type PickRow } from "../kit";
+import { MixedName, Button, Card, ChartLegend, CostStack, FeeWordsNote, LabelChip, LabelFilter, LabelRow, LongestCase, PickList, ProductIdLink, Sentence, Stat, StatRow, Swatch, Tag, cx, GroupPriceFold, useChartPick, type ChartPick, useHeldHeight, type CostPart, type GroupChoice, type PickRow } from "../kit";
 import { groupNameOf, isGroupPrice, isGroupProvider, pickableGroups } from "../../lib/group-pick";
 import { optionClass, OptionTag, reasonText } from "./parts";
 import { ProviderLink, providerName } from "./sections";
@@ -149,19 +149,21 @@ function CostLegend({ lines, pick }: { lines: string[]; pick: ChartPick<string> 
   );
 }
 
-function CostBar({ who, sub, pc, scale, you, entered, today, highlight }: { who: string; sub: string; pc: PairCosts; scale: number; highlight: string | null; you?: boolean; /** The person typed this account (D44). */ entered?: boolean; today: string }) {
+function CostBar({ who, fund, sub, pc, scale, you, entered, today, highlight }: { who: string; /** The fund's name: two bars of one house differ by the fund, and say so (2026-11-05). */ fund: string; sub: string; pc: PairCosts; scale: number; highlight: string | null; you?: boolean; /** The person typed this account (D44). */ entered?: boolean; today: string }) {
   const parts = partsOf(pc, entered ? c.pair.sourceEntered : c.pair.sourceList(who));
   // shown as the rounded base less the rounded value left: two bars then differ by exactly what the two "left" figures differ by
   const total = Math.round(pc.base) - Math.round(pc.left.value as number);
   return (
-    <div className="grid grid-cols-[minmax(0,1fr)_auto] md:grid-cols-[10rem_minmax(0,1fr)_6rem] items-center gap-x-3 gap-y-1.5">
-      <span className={cx("flex flex-col min-w-0 leading-tight font-semibold", (you || entered) && "text-entered")}>
-        <span className="truncate" title={who}>
-          {who}
-        </span>
-        <span className="text-xs font-normal text-muted-foreground">
+    <div className="grid grid-cols-[minmax(0,1fr)_auto] md:grid-cols-[15rem_minmax(0,1fr)_6rem] items-center gap-x-3 gap-y-1.5">
+      {/* three lines on every bar, whichever pair: whose pair it is, the account, the fund */}
+      <span className="flex flex-col min-w-0 leading-tight">
+        <span className="text-xs text-muted-foreground">
           {sub}
           {entered && ` · ${c.customEntries.enteredWord}`}
+        </span>
+        <span className={cx("truncate font-semibold", (you || entered) && "text-entered")}>{who}</span>
+        <span className="truncate text-xs text-muted-foreground">
+          <MixedName>{fund}</MixedName>
         </span>
       </span>
       <div className="min-w-0 max-md:col-span-2 max-md:row-start-2">
@@ -184,7 +186,7 @@ function runnerUp(view: InvestView, best: Pick): Pick | null {
   return top ? { house: top.house, fund: top.fund } : null;
 }
 
-export function PairResult({ view, bundle, plan, settled, pick, onPick }: { view: InvestView; bundle: WorkbenchBundle; plan: WorkbenchInputs; settled?: WorkbenchInputs; pick: Pick; onPick: (p: Pick) => void }) {
+export function PairResult({ view, bundle, plan, settled, pick, chosen, onPick }: { view: InvestView; bundle: WorkbenchBundle; plan: WorkbenchInputs; settled?: WorkbenchInputs; pick: Pick; /** The person picked this pair (it is in the address); else it is the page's own, and is never called theirs (2026-11-05). */ chosen: boolean; onPick: (p: Pick) => void }) {
   const best = bestFor(view, pick);
   const legendPick = useChartPick();
   const onBest = !!best && best.house === pick.house && best.fund === pick.fund;
@@ -206,6 +208,8 @@ export function PairResult({ view, bundle, plan, settled, pick, onPick }: { view
   // a gap names its two inputs by whose they are, as the figure's sheet lists them
   const gap = (a: SiteValue, aName: string, b: SiteValue, bName: string, about: string) => nis((a.value as number) - (b.value as number), "F-65", about, bundle.today, { [aName]: a, [bName]: b });
   const otherRole = onBest ? c.pair.next : c.pair.cheapest;
+  // the first pair's name: the person's pick, or, before any pick, the page's own pair, which is the cheapest when there is one
+  const mineRole = chosen ? c.pair.yours : onBest ? c.pair.cheapest : c.pair.openTop;
   const parts = partsOf(pc, "");
   const scale = Math.max(totalOf(parts), pcOther ? totalOf(partsOf(pcOther, "")) : 0);
   const sumAccount = (x: PairCosts) => x.account.reduce((a, l) => a + (l.cost.value as number), 0) + x.interaction;
@@ -218,12 +222,19 @@ export function PairResult({ view, bundle, plan, settled, pick, onPick }: { view
       c.pair.gapNone
     ) : (
       <>
-        <Num value={nis(Math.abs(n), "F-91", about, bundle.today, { [c.pair.input(c.pair.yours, about)]: a, [c.pair.input(otherRole, about)]: b })} /> {n > 0 ? c.pair.gapMore : c.pair.gapLess}
+        <Num value={nis(Math.abs(n), "F-91", about, bundle.today, { [c.pair.input(mineRole, about)]: a, [c.pair.input(otherRole, about)]: b })} /> {n > 0 ? c.pair.gapMore : c.pair.gapLess}
       </>
     );
   const nameOf = (p: Pick) => providerName(view, p.house)?.short ?? p.house;
+  const fundOf = (p: Pick) => allFunds(view).find((f) => f.rec.id === p.fund)?.name ?? p.fund;
+  // each tile names its pair on one line of its own: the account and the fund (2026-11-05: the tiles named neither)
+  const pairLine = (p: Pick) => (
+    <span className="text-sm text-muted-foreground md:truncate max-md:line-clamp-2 max-md:min-h-[2lh]">
+      <MixedName>{nameOf(p)}</MixedName> · <MixedName>{fundOf(p)}</MixedName>
+    </span>
+  );
   const otherTitle = onBest ? c.pair.next : c.pair.cheapestStar;
-  const moreIfOther = pcOther ? gap(pcOther.left, c.pair.input(otherRole, c.pair.colLeft), pc.left, c.pair.input(c.pair.yours, c.pair.colLeft), c.pair.moreIfCheapest) : null;
+  const moreIfOther = pcOther ? gap(pcOther.left, c.pair.input(otherRole, c.pair.colLeft), pc.left, c.pair.input(mineRole, c.pair.colLeft), c.pair.moreIfCheapest) : null;
   return (
     <Card pad="roomy" className="flex flex-col gap-5">
       <div className="flex flex-col gap-4 md:flex-row md:flex-wrap md:items-stretch md:gap-x-6">
@@ -239,11 +250,21 @@ export function PairResult({ view, bundle, plan, settled, pick, onPick }: { view
           ←
         </span>
         <div className="grid grid-cols-2 gap-3 md:contents">
-          <div className="md:flex-1 md:min-w-64 rounded-lg border border-entered bg-entered/10 p-3 flex flex-col gap-0.5">
+          {/* the person's colour only on the person's pick (blue is for what they entered or chose) */}
+          <div className={cx("md:flex-1 md:min-w-64 min-w-0 rounded-lg border p-3 flex flex-col gap-0.5", chosen ? "border-entered bg-entered/10" : "border-primary")}>
             <span className="text-sm text-muted-foreground max-md:min-h-[2lh]">
-              {c.pair.yours}
-              {onBest && <span className="text-primary font-medium"> · {c.pair.cheapestTag}</span>}
+              {chosen ? (
+                <>
+                  {c.pair.yours}
+                  {onBest && <span className="text-primary font-medium"> · {c.pair.cheapestTag}</span>}
+                </>
+              ) : onBest ? (
+                <span className="text-primary font-medium">{c.pair.cheapestStar}</span>
+              ) : (
+                c.pair.openTop
+              )}
             </span>
+            {pairLine(pick)}
             <span className="text-2xl md:text-3xl font-bold leading-tight">
               <Num animate value={pc.left} />
             </span>
@@ -253,8 +274,9 @@ export function PairResult({ view, bundle, plan, settled, pick, onPick }: { view
             {steady(pick.fund)}
           </div>
           {pcOther && other && (
-            <div className="md:flex-1 md:min-w-64 rounded-lg border border-border p-3 flex flex-col gap-1">
+            <div className="md:flex-1 md:min-w-64 min-w-0 rounded-lg border border-border p-3 flex flex-col gap-1">
               <span className="text-sm text-muted-foreground max-md:min-h-[2lh]">{otherTitle}</span>
+              {pairLine(other)}
               <span className={cx("text-2xl md:text-3xl font-bold leading-tight", !onBest && "text-primary")}>
                 <Num animate value={pcOther.left} />
               </span>
@@ -263,7 +285,7 @@ export function PairResult({ view, bundle, plan, settled, pick, onPick }: { view
                 <span>
                   {onBest ? (
                     <>
-                      <Num animate value={gap(pcOther.left, c.pair.input(otherRole, c.pair.colLeft), pc.left, c.pair.input(c.pair.yours, c.pair.colLeft), c.pair.vsYours)} /> {c.pair.vsYours}
+                      <Num animate value={gap(pcOther.left, c.pair.input(otherRole, c.pair.colLeft), pc.left, c.pair.input(mineRole, c.pair.colLeft), chosen ? c.pair.vsYours : c.pair.vsCheapest)} /> {chosen ? c.pair.vsYours : c.pair.vsCheapest}
                     </>
                   ) : (
                     <>
@@ -282,13 +304,13 @@ export function PairResult({ view, bundle, plan, settled, pick, onPick }: { view
       </div>
       <div className="flex flex-col gap-2">
         <h3 className="font-semibold">{c.pair.costTitleBoth(years)}</h3>
-        <CostBar who={nameOf(pick)} sub={c.pair.yours} pc={pc} scale={scale} you entered={providerName(view, pick.house)?.custom} today={bundle.today} highlight={legendPick.active} />
-        {pcOther && other && <CostBar highlight={legendPick.active} who={nameOf(other)} sub={onBest ? c.pair.next : c.pair.cheapest} pc={pcOther} scale={scale} entered={providerName(view, other.house)?.custom} today={bundle.today} />}
+        <CostBar who={nameOf(pick)} fund={fundOf(pick)} sub={mineRole} pc={pc} scale={scale} you={chosen} entered={providerName(view, pick.house)?.custom} today={bundle.today} highlight={legendPick.active} />
+        {pcOther && other && <CostBar highlight={legendPick.active} who={nameOf(other)} fund={fundOf(other)} sub={onBest ? c.pair.next : c.pair.cheapest} pc={pcOther} scale={scale} entered={providerName(view, other.house)?.custom} today={bundle.today} />}
         <CostLegend lines={lines} pick={legendPick} />
         {pcOther && (
           // three columns of one width: in a sentence, a number with another digit pushed everything after it (nothing moves when a number changes)
           <div className="flex flex-col gap-2 mt-1">
-            <p className="text-sm text-muted-foreground">{c.pair.gapLead}</p>
+            <p className="text-sm text-muted-foreground">{chosen ? c.pair.gapLead : c.pair.gapLeadCheapest}</p>
             <StatRow cols={3}>
               <Stat label={c.pair.gapPart.account}>{gapNum(gapParts![0]!, c.pair.gapPart.account, nis(sumAccount(pc), "F-91", c.pair.gapPart.account, bundle.today), nis(sumAccount(pcOther), "F-91", c.pair.gapPart.account, bundle.today))}</Stat>
               <Stat label={c.pair.gapPart.fund}>{gapNum(gapParts![1]!, c.pair.gapPart.fund, pc.fund, pcOther.fund)}</Stat>
@@ -386,7 +408,7 @@ export function AccountColumn({ view, bundle, years, pick, onPick, group = null 
           {pickedOf(h.id) && <span className="block text-sm text-muted-foreground">{groupPrices.pickedLine(pickedOf(h.id)!)}</span>}
         </span>
       )),
-      funds: allFunds(view).map((f) => <span key={f.rec.id} className="text-sm flex items-center gap-1.5 max-md:flex-col max-md:items-start md:flex-wrap">{c.pair.accountsCond} <Tag><bdi>{f.name}</bdi></Tag></span>),
+      funds: allFunds(view).map((f) => <span key={f.rec.id} className="text-sm flex items-center gap-1.5 max-md:flex-col max-md:items-start md:flex-wrap">{c.pair.accountsCond} <Tag><MixedName>{f.name}</MixedName></Tag></span>),
     };
   }, [heldKey, bundle.snapshots]); // eslint-disable-line react-hooks/exhaustive-deps
   const fund = allFunds(view).find((f) => f.rec.id === pick.fund);
@@ -483,7 +505,7 @@ export function AccountColumn({ view, bundle, years, pick, onPick, group = null 
             {!na && <span>{doubtOf(bundle.snapshots.find((s) => s.id === r.p.id), fund.option) ?? bundle.snapshots.find((s) => s.id === r.p.id)?.missing_reason_he ?? (r.at && "reason" in r.at ? reasonText(r.at.reason, optionClass[fund.option]) : c.funds.cannot)}</span>}
             {other && (
               <span>
-                {c.pair.elsewhere} <bdi>{other.fund.name}</bdi>: <Num value={other.at.value} />
+                {c.pair.elsewhere} <MixedName>{other.fund.name}</MixedName>: <Num value={other.at.value} />
                 {other.at.open && ` (${c.pair.elsewhereOpen})`}
               </span>
             )}
@@ -525,7 +547,7 @@ export function AccountColumn({ view, bundle, years, pick, onPick, group = null 
         <h3 className="font-semibold">{c.pair.accounts}</h3>
         <LongestCase cases={longest.funds}>
           <span className="text-sm text-muted-foreground flex items-center gap-1.5 max-md:flex-col max-md:items-start md:flex-wrap">
-            {c.pair.accountsCond} <Tag wrap><bdi>{fund.name}</bdi></Tag>
+            {c.pair.accountsCond} <Tag wrap><MixedName>{fund.name}</MixedName></Tag>
           </span>
         </LongestCase>
         {/* on lines of their own, kept whatever the fund's name: a longer name pushed the hint to a new line, and the page with it */}
@@ -605,7 +627,7 @@ function FundName({ fund }: { fund: FundWay }) {
   return (
     <span className="flex items-baseline gap-2 flex-wrap">
       <span className={cx("text-lg font-bold", isCustomFund(fund.rec) ? "text-entered [overflow-wrap:anywhere]" : "md:whitespace-nowrap")}>
-        <bdi>{fund.name}</bdi>
+        <MixedName>{fund.name}</MixedName>
       </span>
       <ProductIdLink id={fund.number} href={mayaHrefOf(fund)} label={brands.funds.mayaLink(fund.number)} />
     </span>
@@ -627,7 +649,7 @@ function FundKind({ fund }: { fund: FundWay }) {
   return (
     <span className="flex flex-wrap gap-1.5 items-center">
       <OptionTag option={fund.option} />
-      {fund.rec.manager && <span className="text-xs text-muted-foreground">{c.funds.manager}: <bdi>{fund.rec.manager}</bdi></span>}
+      {fund.rec.manager && <span className="text-xs text-muted-foreground">{c.funds.manager}: <MixedName>{fund.rec.manager}</MixedName></span>}
     </span>
   );
 }
@@ -730,7 +752,7 @@ export function FundColumn({ view, bundle, plan, today, pick, onPick, filter, on
           <span className="flex flex-col gap-1.5 min-w-0">
             <span className={cx("leading-snug", mineTyped ? "[overflow-wrap:anywhere]" : "md:whitespace-nowrap")}>
               <span className={cx("font-semibold", mineTyped && "text-entered")}>
-                <bdi>{r.f.name}</bdi>
+                <MixedName>{r.f.name}</MixedName>
               </span>{" "}
               <span className="inline-block ms-1" onClick={(e) => e.stopPropagation()}>
                 <ProductIdLink id={r.f.number} href={mayaHrefOf(r.f)} label={brands.funds.mayaLink(r.f.number)} />
