@@ -1,7 +1,7 @@
 {
   "id": "psagot",
   "provider": {
-    "name_he": "פסגות ניירות ערך בע\"מ (פסגות טרייד)",
+    "name_he": "פסגות ניירות ערך בע\"מ",
     "class": "broker",
     "regulator": "ISA",
     "tase_member": true,

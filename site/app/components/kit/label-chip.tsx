@@ -2,30 +2,45 @@
 // a chip of an icon and two or three words, a row of them, and the one sheet per page that a tap opens with the label's meaning
 // and its rules. The words and the rules come from lib/labels.ts.
 import { createContext, useContext, useId, useState, type ReactNode } from "react";
-import { Ban, Clock, Coins, FileText, Globe, HandCoins, House, Layers, Lock, Percent, PiggyBank, Repeat, ShieldCheck, Sun, TriangleAlert, type LucideProps } from "lucide-react";
+import { Activity, ArrowRightLeft, Ban, BadgePercent, Blend, CalendarClock, Currency, DollarSign, Euro, EyeOff, FileClock, FilePen, FileSignature, Gavel, Globe, HandCoins, House, JapaneseYen, Landmark, Lock, Percent, Package, PiggyBank, PoundSterling, ReceiptText, ScrollText, ShieldCheck, SwissFranc, TrendingUpDown, type LucideProps } from "lucide-react";
 import { invest as c } from "../../copy";
 import type { Label, LabelIconKey } from "../../lib/labels";
 import { RuleRef } from "../provenance";
 import { Sheet } from "../Sheet";
 import { cx } from "./cx";
+import { DocLink } from "./doc-link";
 
 // Lucide, 1.75px stroke, none mirrors
 const icons: Record<LabelIconKey, React.ComponentType<LucideProps>> = {
   home: House,
+  landmark: Landmark,
   globe: Globe,
-  clock: Clock,
-  layers: Layers,
-  coins: Coins,
+  pulse: Activity,
+  calendarClock: CalendarClock,
+  box: Package,
+  swap: ArrowRightLeft,
+  fileClock: FileClock,
+  blend: Blend,
+  dollar: DollarSign,
+  euro: Euro,
+  pound: PoundSterling,
+  yen: JapaneseYen,
+  franc: SwissFranc,
+  currency: Currency,
   shield: ShieldCheck,
-  file: FileText,
-  lock: Lock,
-  alert: TriangleAlert,
-  ban: Ban,
+  trendUpDown: TrendingUpDown,
+  badgePercent: BadgePercent,
   percent: Percent,
-  repeat: Repeat,
-  sun: Sun,
+  lock: Lock,
+  gavel: Gavel,
   piggy: PiggyBank,
   handCoins: HandCoins,
+  filePen: FilePen,
+  receipt: ReceiptText,
+  scroll: ScrollText,
+  eyeOff: EyeOff,
+  fileSignature: FileSignature,
+  ban: Ban,
 };
 
 export function LabelIcon({ name, size = 14 }: { name: LabelIconKey; size?: number }) {
@@ -56,6 +71,12 @@ export function LabelSheetHost({ children }: { children: ReactNode }) {
                 <RuleRef key={r} id={r} />
               ))}
             </p>
+            {open.label.doc && (
+              <p className="text-sm text-muted-foreground flex flex-wrap items-center gap-x-2">
+                {c.labelsSheet.doc}:
+                <DocLink href={open.label.doc.href}>{open.label.doc.title}</DocLink>
+              </p>
+            )}
           </div>
         )}
       </Sheet>
@@ -83,8 +104,15 @@ const chipShape = "inline-flex items-center gap-1 text-xs font-medium rounded-fu
 
 /** A label: an icon and two or three words; colour never alone (the icon and the words carry it; the open tone also has the lock). Its tap area
  *  reaches 44 px high, beyond the drawn chip, so a row of chips keeps its height (2026-11-03). */
-export function LabelChip({ label }: { label: Label }) {
+export function LabelChip({ label, still = false }: { label: Label; /** Drawn only, not a button: inside a control of its own (a tile of TileChoice), where a tap is the control's. */ still?: boolean }) {
   const open = useContext(OpenCtx);
+  if (still)
+    return (
+      <span className={cx(chipShape, chipClass(label))} data-label={label.id}>
+        <LabelIcon name={label.icon} />
+        {label.text}
+      </span>
+    );
   return (
     <button type="button" onClick={(e) => open(label, e.currentTarget)} className={cx(chipShape, "relative before:absolute before:inset-x-0 before:-inset-y-[11px] hover:brightness-110", chipClass(label))} data-label={label.id}>
       <LabelIcon name={label.icon} />
@@ -121,12 +149,12 @@ export function LabelFilter({ options, value, onChange, lead, allLabel }: { opti
   );
 }
 
-export function LabelRow({ labels, className }: { labels: Label[]; className?: string }) {
+export function LabelRow({ labels, className, still }: { labels: Label[]; className?: string; /** See LabelChip. */ still?: boolean }) {
   if (labels.length === 0) return null;
   return (
     <span className={cx("flex flex-wrap gap-1.5", className)}>
       {labels.map((l) => (
-        <LabelChip key={l.id} label={l} />
+        <LabelChip key={l.id} label={l} still={still} />
       ))}
     </span>
   );

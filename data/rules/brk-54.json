@@ -16,7 +16,7 @@
   "scope_institutions": [
     {
       "id": "pepper",
-      "name_he": "פפר (בנק לאומי)"
+      "name_he": "פפר"
     }
   ],
   "sources": [
@@ -39,7 +39,7 @@
       "title": "דף הבית של PEPPER, שאלות ותשובות",
       "title_he": "דף הבית של PEPPER, שאלות ותשובות",
       "publisher": "PEPPER (Bank Leumi)",
-      "publisher_he": "פפר (בנק לאומי)",
+      "publisher_he": "פפר",
       "kind": "institution_doc",
       "strength": "institution",
       "quote": "העמלה על קנייה או מכירה בסכום גבוה יותר תהיה בהתאם לתעריפון העמלות",

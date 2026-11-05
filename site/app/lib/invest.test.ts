@@ -82,9 +82,11 @@ describe("invest page computation", () => {
     for (const c of abroad.cells) expect(c.kind === "cost" ? typeof c.costN === "number" : c.kind === "unavailable" || !!c.reason).toBe(true);
     expect(abroad.cells.some((c) => c.kind === "cost")).toBe(true);
     // 2026-11-04: One Zero's doubled plan lines, the column's one engine failure, left its lines (D43 amended (2)); a house whose price
-    // list leaves the price abroad open (Psagot, IBI, Altshuler) is a grey cell with its reason
+    // list leaves the price abroad open (Psagot, IBI) is a grey cell with its reason. 2026-11-05: Altshuler answered in writing that it
+    // trades only on the Israeli and US exchanges (issue 188), so it is priced on its US line for a fund that trades in the US, as One Zero is
     expect(abroad.cells.filter((c) => c.kind === "not-comparable")).toEqual([]);
-    expect(abroad.cells.filter((c) => c.kind === "no-line").map((c) => c.providerId).sort()).toEqual(["altshuler-trade", "ibi", "psagot"]);
+    expect(abroad.cells.filter((c) => c.kind === "no-line").map((c) => c.providerId).sort()).toEqual(["ibi", "psagot"]);
+    expect(abroad.cells.find((c) => c.providerId === "altshuler-trade")).toMatchObject({ kind: "cost", venue: "us" });
   });
 
   it("the Europe line of Interactive Israel prices a London fund and names the exchange", () => {
