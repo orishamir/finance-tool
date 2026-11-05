@@ -4,6 +4,7 @@
 // (founder, 2026-10-27); its colour is its family's (the kit's LabelChip).
 import type { FundRecord } from "@finance-tool/schema";
 import { invest as c } from "../copy";
+import { atPdfPage } from "../components/kit/doc-link";
 import type { IndexRef, OptionId, ProviderInfo } from "./invest";
 
 export type LabelTone = "neutral" | "caution" | "open";
@@ -27,6 +28,7 @@ export type LabelId =
   | "tax-fund-dividend"
   | "tax-distribution"
   | "tax-on-sale-open"
+  | "tax-on-sale-ruling"
   | "pays-accumulating"
   | "pays-distributing"
   | "ask-self-report"
@@ -61,6 +63,7 @@ export const labelDefs: Record<LabelId, LabelDef> = {
   "tax-fund-dividend": { icon: "percent", tone: "neutral", rules: ["TXF-16"] },
   "tax-distribution": { icon: "percent", tone: "neutral", rules: ["TXF-08"] },
   "tax-on-sale-open": { icon: "lock", tone: "open", rules: ["TXF-11"] },
+  "tax-on-sale-ruling": { icon: "percent", tone: "neutral", rules: ["TXF-11"] },
   "pays-accumulating": { icon: "piggy", tone: "neutral", rules: ["MF-49"] },
   "pays-distributing": { icon: "handCoins", tone: "neutral", rules: ["MF-49"] },
   "ask-self-report": { icon: "file", tone: "caution", rules: ["TXF-22", "TXF-29"] },
@@ -80,6 +83,8 @@ export interface Label {
   rules: string[];
   /** The label's family, for the "what do the labels mean" list. */
   family: keyof typeof c.labelFamilies;
+  /** A document of the fund's own that the label rests on, shown under its rules (the ruling its annex reports, TXF-11). */
+  doc?: { href: string; title: string };
 }
 
 const familyOf: Record<LabelId, Label["family"]> = {
@@ -100,6 +105,7 @@ const familyOf: Record<LabelId, Label["family"]> = {
   "tax-fund-dividend": "tax",
   "tax-distribution": "tax",
   "tax-on-sale-open": "tax",
+  "tax-on-sale-ruling": "tax",
   "pays-accumulating": "payout",
   "pays-distributing": "payout",
   "ask-self-report": "asks",
@@ -154,7 +160,10 @@ export function fundLabels(rec: FundRecord, index: IndexRef, option: OptionId): 
   if (rec.domicile === "IL" && !index.israeli && rec.hedged !== true) out.push(label("tax-currency"));
   if (rec.domicile === "IE") out.push(label("tax-fund-dividend"));
   if (rec.distribution_policy === "distributing") out.push(label("tax-distribution"));
-  else if (rec.distribution_policy === "accumulating" && rec.domicile !== "IL") out.push(label("tax-on-sale-open"));
+  // an accumulating foreign fund: taxed only at sale on the ruling its own annex reports, else an open question (TXF-11, 2026-11-05);
+  // the same test the engine ranks it by (instruments.server.ts, saleOnlyRuling)
+  else if (rec.distribution_policy === "accumulating" && rec.domicile !== "IL")
+    out.push(rec.tax_ruling ? { ...label("tax-on-sale-ruling"), doc: { href: atPdfPage(rec.tax_ruling.source.url, rec.tax_ruling.pages.ruling), title: rec.tax_ruling.source.title } } : label("tax-on-sale-open"));
   if (rec.domicile === "US") out.push(label("ask-estate"), label("ask-w8"));
   void option;
   return out;

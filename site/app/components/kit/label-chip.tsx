@@ -8,6 +8,7 @@ import type { Label, LabelIconKey } from "../../lib/labels";
 import { RuleRef } from "../provenance";
 import { Sheet } from "../Sheet";
 import { cx } from "./cx";
+import { DocLink } from "./doc-link";
 
 // Lucide, 1.75px stroke, none mirrors
 const icons: Record<LabelIconKey, React.ComponentType<LucideProps>> = {
@@ -56,6 +57,12 @@ export function LabelSheetHost({ children }: { children: ReactNode }) {
                 <RuleRef key={r} id={r} />
               ))}
             </p>
+            {open.label.doc && (
+              <p className="text-sm text-muted-foreground flex flex-wrap items-center gap-x-2">
+                {c.labelsSheet.doc}:
+                <DocLink href={open.label.doc.href}>{open.label.doc.title}</DocLink>
+              </p>
+            )}
           </div>
         )}
       </Sheet>
