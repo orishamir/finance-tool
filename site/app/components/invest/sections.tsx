@@ -1,7 +1,7 @@
 // The index page's top sections: the index header, and the headline card an index with no fund records still uses (the linked lists, components/invest/pair.tsx, replaced the rest on 2026-10-27).
 import { Link } from "react-router";
 import { invest as c } from "../../copy";
-import type { Bar, IndexRef, InvestView, OptionView, ProviderInfo } from "../../lib/invest";
+import { brokeragePagePath, type Bar, type IndexRef, type InvestView, type OptionView, type ProviderInfo } from "../../lib/invest";
 import { optionLabels } from "../../lib/labels";
 import type { SiteValue } from "../../lib/value";
 import { IconLock } from "../icons";
@@ -15,7 +15,8 @@ export const providerName = (view: InvestView, id: string): ProviderInfo | undef
 export function ProviderLink({ p, className, short }: { p: ProviderInfo; className?: string; short?: boolean }) {
   const name = short ? p.short : p.name;
   return p.hasPage ? (
-    <Link to={`/companies/${p.id}`} className={cx("text-link hover:underline", className)}>
+    // on this page a house is a securities account: its name opens its company page at that account (founder, 2026-11-05)
+    <Link to={brokeragePagePath(p.id)} className={cx("text-link hover:underline", className)}>
       {name}
     </Link>
   ) : (

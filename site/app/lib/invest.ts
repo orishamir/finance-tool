@@ -356,7 +356,8 @@ export function providersOfInvest(bundle: Pick<WorkbenchBundle, "snapshots">): r
 
 export const providerInfo = (s: FeesSnapshot): ProviderInfo => {
   const custom = isCustomBrokerId(s.id);
-  return { id: s.id, name: s.provider.name_he, short: custom ? s.provider.name_he : shortName(s.id, s.provider.name_he), providerClass: s.provider.class, foreign: s.provider.class === "foreign_broker", taxService: s.provider.israeli_tax_service === true, hasPage: !custom && (s.provider.class === "bank" || s.provider.class === "broker"), custom };
+  return { id: s.id, name: s.provider.name_he, short: custom ? s.provider.name_he : shortName(s.id, s.provider.name_he), providerClass: s.provider.class, foreign: s.provider.class === "foreign_broker", taxService: s.provider.israeli_tax_service === true, // every bank and broker on this page has a company page, a foreign one too (2026-11-05)
+    hasPage: !custom && (s.provider.class === "bank" || s.provider.class === "broker" || s.provider.class === "foreign_broker"), custom };
 };
 
 interface Cand {

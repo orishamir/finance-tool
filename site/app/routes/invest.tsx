@@ -8,7 +8,6 @@ import type { Route } from "./+types/invest";
 import { brands, invest as c, site } from "../copy";
 import { OtherAssumptions, PlanChanges, PlanKnobs } from "../components/invest/knobs";
 import { IndexChips, PlanBlock } from "../components/invest/chips";
-import { AdvertisingBlock } from "../components/invest/advertising";
 import { AccountColumn, FundColumn, PairResult, pickOfHeadline, pickOfOpen, allFunds, type Pick } from "../components/invest/pair";
 import { NoFundAccountColumn, NoFundCall, NoFundColumn } from "../components/invest/no-fund";
 import { LabelSheetHost } from "../components/kit";
@@ -313,10 +312,8 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
                 </div>
               </>
             )}
-            {/* right under the houses the reader just compared: the rows are the price lists' prices, and here is what the advertising
-                says beside them, that a better price can be negotiated and entered as one's own account (D57); group prices stand under
-                each row (D43 amended 2026-11-04), so the page's own list of them is gone */}
-            <AdvertisingBlock snapshots={wb.snapshots} nameOf={(id) => view.providers.find((p) => p.id === id)?.short ?? wb.snapshots.find((s) => s.id === id)?.provider.name_he ?? id} />
+            {/* what the advertising says against the price lists stands on each house's page, which the house's name opens (founder,
+                2026-11-05: the page's own block of it is gone) */}
             {/* what moves the result most: every number changed by the same share, at the bottom (founder, 2026-10-28) */}
             <PlanChanges plan={plan} share={data.form.share} bundle={shownBundle} view={shownView ?? view} pick={shown} />
             {/* hedged or not, across the dollar (F-94): only on a foreign index with funds of both kinds; at the bottom (founder, 2026-10-31) */}
