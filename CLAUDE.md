@@ -97,10 +97,14 @@ The evidence behind them is `research/2026-10-28-founder-patterns.md`.
    only time. A bar inside a table row, beside its Hebrew text, may grow
    from the right with the row. Each line or category has its own clearly
    different hue, with a direct label or a legend; blue and violet stay
-   reserved for entered and computed numbers. *(2026-11-05)* Within a page
-   a colour means one thing: each page's spec carries its colour table, and
-   inside a chart the hues stay clearly different from one another, checked
-   pair by pair with the palette validator, never by eye.
+   reserved for entered and computed numbers. *(2026-11-05)* Inside a chart
+   every line, part and category keeps its own clearly different hue,
+   checked pair by pair with the palette validator and then by fresh
+   readers' eyes; that comes before one meaning per colour across the page.
+   Within one chart or panel a colour means one thing; a distant section of
+   the same page may give it another meaning, each chart with its own legend
+   or direct labels. Red, amber and green stay status colours, never a
+   series. Each page's spec carries its colour table.
 7. **One flaw means a sweep.** A flaw I report is fixed in the shared piece,
    and every other place of the same kind is fixed with it.
 8. **Both screen sizes, PC judged first.** Mockups are judged on PC; every

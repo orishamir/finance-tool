@@ -40,7 +40,7 @@ without a picture, are the ones that come back.
    change (D17, invest spec:159).
 7. **Nothing moves.** Five reports before it became a rule today (CLAUDE.md, design-system 2.5a).
 8. **One flaw means a sweep of its class**, fixed in the kit piece, not on the page (memory sweep-same-flaw).
-9. **Distinct colours with a meaning and a legend.** Every label with an icon and its own colour; a colour means one thing.
+9. **Distinct colours with a meaning and a legend.** Every label with an icon and its own colour; a colour means one thing within its chart or panel (item 19).
 10. **Differences, not two absolutes.** Stacked bars one above the other, "10x easier"; "in the fund table use differences".
 11. **Full words.** "דמי ניהול קבועים", not "קבועים"; column headers on every table; the plural imperative; nothing that reads
     translated.
@@ -103,7 +103,7 @@ A checklist to meet before the founder sees anything:
 16. **Ask once.** One product question per round, with a recommendation; record each reversal inline with its date.
 17. **The whole page** (2026-11-05). The drawing shows the page with the piece in place, its height before and after, and what it replaces; a piece that replaces nothing starts folded.
 18. **The question test** (2026-11-05). The drawing opens with the choice the reader makes differently after seeing it; a chart whose answer is the same for every option on its page does not go there.
-19. **A colour table per page** (2026-11-05). One meaning per colour on the page.
+19. **A colour table per page** (2026-11-05). One meaning per colour within each chart and panel; a distant section may reuse a hue with another meaning, because distinct hues inside a chart come first ("i'd rather have two conflicting colors on opposite sites of the pages than a graph with all its lines the same color", the same evening).
 20. **Cleanup with every reversal** (2026-11-05). List what the old layout left behind and remove it in the same change.
 
 ## 6. What could change in how work is done (proposals, not decided)
