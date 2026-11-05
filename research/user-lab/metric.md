@@ -5,7 +5,9 @@ way to measure success, how much the reviewer is really good at what we want him
 usual? we have to have a metric."
 
 The reviewer is an instruction set run in a session that knows nothing of the project. It is shown the screens a
-person saw and must say what would bother a person there. Claude is not a human and cannot judge what bothers one;
+person saw and must say what would bother a person there. It reports problems only, never fixes (founder, 2026-11-05):
+a fix needs what the site can honestly show, which the reviewer must not know, and asking for fixes turns a reader
+into a designer. Claude designs the fix; a fresh reviewer judges it on a variant. Claude is not a human and cannot judge what bothers one;
 the score therefore comes only from what people actually flagged.
 
 ## The benchmark
