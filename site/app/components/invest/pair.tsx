@@ -194,30 +194,33 @@ function CostLegend({ lines, pick }: { lines: string[]; pick: ChartPick<string> 
 /** Every role a cost bar can name, laid out unseen under its own: a longer role took a second line on a phone (#190). */
 const BAR_ROLES = [c.pair.yours, c.pair.cheapest, c.pair.next, c.pair.tieRole, c.pair.openTop];
 
-function CostBar({ who, fund, sub, pc, scale, you, entered, today, highlight }: { who: string; /** The fund's name: two bars of one house differ by the fund, and say so (2026-11-05). */ fund: string; sub: string; pc: PairCosts; scale: number; highlight: string | null; you?: boolean; /** The person typed this account (D44). */ entered?: boolean; today: string }) {
+function CostBar({ who, fund, funds, sub, pc, scale, you, entered, today, highlight }: { who: string; /** The fund's name: two bars of one house differ by the fund, and say so (2026-11-05). */ fund: string; /** Every fund name of the index: the name's lines are held at the longest, so another pair moves nothing. */ funds: string[]; sub: string; pc: PairCosts; scale: number; highlight: string | null; you?: boolean; /** The person typed this account (D44). */ entered?: boolean; today: string }) {
   const parts = partsOf(pc, entered ? c.pair.sourceEntered : c.pair.sourceList(who));
   // shown as the rounded base less the rounded value left: two bars then differ by exactly what the two "left" figures differ by
   const total = Math.round(pc.base) - Math.round(pc.left.value as number);
   return (
-    // the figure's column has one width for every plan, so a long figure never narrows the three lines beside it (#190)
-    <div className="grid grid-cols-[minmax(0,1fr)_7rem] md:grid-cols-[15rem_minmax(0,1fr)_6rem] items-center gap-x-3 gap-y-1.5">
+    // the figure's column has one width for every plan, so a long figure never narrows the lines beside it (#190); on a phone the fund's
+    // name has the bar's whole width, under the figure, and it wraps rather than being cut: cut, a Latin name lost its start (#190)
+    <div className="grid grid-cols-[minmax(0,1fr)_7rem] md:grid-cols-[15rem_minmax(0,1fr)_6rem] items-center gap-x-3 md:gap-y-1.5">
       {/* three lines on every bar, whichever pair: whose pair it is, the account, the fund */}
-      <span className="flex flex-col min-w-0 leading-tight">
-        <LongestCase className="text-xs text-muted-foreground" cases={BAR_ROLES.map((r) => <span key={r}>{r} · {c.customEntries.enteredWord}</span>)}>
+      <span className="flex flex-col min-w-0 leading-tight max-md:contents">
+        <LongestCase className="text-xs text-muted-foreground leading-tight max-md:row-start-1 max-md:col-start-1" cases={BAR_ROLES.map((r) => <span key={r}>{r} · {c.customEntries.enteredWord}</span>)}>
           <span>
             {sub}
             {entered && ` · ${c.customEntries.enteredWord}`}
           </span>
         </LongestCase>
-        <span className={cx("truncate font-semibold", (you || entered) && "text-entered")}>{who}</span>
-        <span className="truncate text-xs text-muted-foreground">
-          <MixedName>{fund}</MixedName>
-        </span>
+        <span className={cx("truncate font-semibold leading-tight max-md:row-start-2 max-md:col-start-1", (you || entered) && "text-entered")}>{who}</span>
+        <LongestCase className="text-xs text-muted-foreground leading-tight [overflow-wrap:anywhere] max-md:row-start-3 max-md:col-span-2" cases={funds.map((f) => <span key={f}><MixedName>{f}</MixedName></span>)}>
+          <span>
+            <MixedName>{fund}</MixedName>
+          </span>
+        </LongestCase>
       </span>
-      <div className="min-w-0 max-md:col-span-2 max-md:row-start-2">
+      <div className="min-w-0 max-md:col-span-2 max-md:row-start-4 max-md:mt-1.5">
         <CostStack parts={parts} scale={scale} highlight={highlight} label={`${who}: ${fmt.nisWhole(total)}`} />
       </div>
-      <span className={cx("text-end font-semibold", figureFit(total))}>
+      <span className={cx("text-end font-semibold max-md:row-start-1 max-md:row-span-2 max-md:col-start-2", figureFit(total))}>
         <Num value={nis(total, "F-91", who, today, { [c.pair.input(who, c.pair.colLeft)]: pc.left })} />
       </span>
     </div>
@@ -249,11 +252,14 @@ const valueOfPair = (view: InvestView, p: Pick): number | null => {
  * has no price (#190: the words said "one of the two" when three pairs were within it).
  */
 export function tieCount(view: InvestView, best: Pick | null, theta: number): number {
+  return tieSet(view, best, theta).length;
+}
+/** The pairs of the tie set, the best one first. */
+function tieSet(view: InvestView, best: Pick | null, theta: number): { house: string; fund: string }[] {
   const a = best ? valueOfPair(view, best) : null;
-  if (!best || a === null) return 0;
-  const pairs = pairsOfKind(view, best);
-  const inSet = pairs.filter((x) => x.v >= a || isTie(a, x.v, theta)).length;
-  return pairs.some((x) => x.house === best.house && x.fund === best.fund) ? inSet : inSet + 1;
+  if (!best || a === null) return [];
+  const inSet = pairsOfKind(view, best).filter((x) => !(x.house === best.house && x.fund === best.fund) && (x.v >= a || isTie(a, x.v, theta)));
+  return [best, ...inSet];
 }
 /**
  * The best pair is crowned only when it is alone in its tie set (P-01, F-80; 2026-11-05: a pair 43 ₪ ahead, 0.05%, took the star).
@@ -261,6 +267,19 @@ export function tieCount(view: InvestView, best: Pick | null, theta: number): nu
  */
 export function crowned(view: InvestView, best: Pick | null, theta: number): boolean {
   return tieCount(view, best, theta) === 1;
+}
+/**
+ * The account the account list stars, from the same tie set: the one house every pair of the set is at, else none (#190: on the S&P 500
+ * three of Psagot's own funds were within the threshold, no other house was, and the clearly cheapest account lost its star). The tiles
+ * speak of pairs and the list of accounts: a set of three pairs at one house crowns no pair and crowns the house.
+ */
+export function crownedHouse(view: InvestView, best: Pick | null, theta: number): string | null {
+  const set = tieSet(view, best, theta);
+  return set.length > 0 && set.every((x) => x.house === set[0]!.house) ? set[0]!.house : null;
+}
+/** The pair is in the tie set of the best one. */
+export function inTieSet(view: InvestView, best: Pick | null, p: Pick, theta: number): boolean {
+  return tieSet(view, best, theta).some((x) => x.house === p.house && x.fund === p.fund);
 }
 
 /** The longest figure a tile's gap line can hold, for its unseen longest case. */
@@ -311,6 +330,7 @@ export function PairResult({ view, bundle, plan, settled, pick, chosen, onPick }
   const leftGap = pcOther ? (pc.left.value as number) - (pcOther.left.value as number) : 0;
   const nameOf = (p: Pick) => providerName(view, p.house)?.short ?? p.house;
   const fundOf = (p: Pick) => allFunds(view).find((f) => f.rec.id === p.fund)?.name ?? p.fund;
+  const fundNames = [...new Set(allFunds(view).map((f) => f.name))];
   // a figure's sheet names its two inputs by whose they are; two pairs of one role are told apart by their account and fund
   const mineKey = mineRole === otherRole ? `${mineRole}, ${nameOf(pick)} · ${fundOf(pick)}` : mineRole;
   const otherKey = other && mineRole === otherRole ? `${otherRole}, ${nameOf(other)} · ${fundOf(other)}` : otherRole;
@@ -343,12 +363,11 @@ export function PairResult({ view, bundle, plan, settled, pick, chosen, onPick }
   const otherTitle = onBest ? (tie ? c.pair.tieOther : c.pair.next) : crown ? c.pair.cheapestStar : c.pair.tieTop(n);
   const mineTag = onBest ? (tie ? c.pair.tiedWith : c.pair.cheapestTag) : tied ? c.pair.tiedWith : null;
   const moreIfOther = pcOther ? gap(pcOther.left, c.pair.input(otherKey, c.pair.colLeft), pc.left, c.pair.input(mineKey, c.pair.colLeft), c.pair.moreIfCheapest) : null;
-  // the gap line and, under a tie, why there is no order: held at their longest case together
-  const whyTie = tie ? c.pair.tieWhy(n) : tied ? c.pair.tieWhy(2) : null;
+  // why there is no order, counted as the title counts (#190: "one of 3" stood above "the two pairs are equal")
+  const whyTie = tie || tied ? c.pair.tieWhy(Math.max(n, 2)) : null;
   const gapCases = [c.pair.vsYours, c.pair.vsRight, c.pair.vsCheapest, c.pair.moreIfCheapest].map((vs) => (
     <span key={vs} className="block">
       {LONGEST_GAP} {vs}
-      <span className="block text-xs">{c.pair.tieWhy(TIE_MOST)}</span>
     </span>
   ));
   return (
@@ -406,19 +425,23 @@ export function PairResult({ view, bundle, plan, settled, pick, chosen, onPick }
               </span>
               {/* the button on a line of its own: beside the figure, another digit moved it from under the finger */}
               <span className="flex flex-col items-start gap-1 text-sm">
-                {/* the gap and, under a tie, why: held at their longest case, so a tie that comes or goes with a slider moves nothing (#190) */}
+                {/* the gap, held at its longest case, so a tie that comes or goes with a slider moves nothing (#190) */}
                 <LongestCase className="self-stretch" cases={gapCases}>
                   <span className="block">
                     {onBest ? (
                       <>
                         <Num animate value={gap(pcOther.left, c.pair.input(otherKey, c.pair.colLeft), pc.left, c.pair.input(mineKey, c.pair.colLeft), vsMine)} /> {vsMine}
                       </>
+                    ) : tied ? (
+                      // the pick is in the tie set: the other pair is not "the cheap one", only the other one (#190)
+                      <>
+                        <Num animate value={moreIfOther!} display={plus} /> {vsMine}
+                      </>
                     ) : (
                       <>
                         <Num animate value={moreIfOther!} display={plus} /> {c.pair.moreIfCheapest}
                       </>
                     )}
-                    {whyTie && <span className="block text-xs text-muted-foreground">{whyTie}</span>}
                   </span>
                 </LongestCase>
                 <Button variant="quiet" onClick={() => onPick(other)}>
@@ -429,13 +452,18 @@ export function PairResult({ view, bundle, plan, settled, pick, chosen, onPick }
             </div>
           )}
         </div>
+        {/* under a tie, why no pair is first: a line of the block's width under both tiles, held whether or not there is a tie (#190: held
+            inside the narrow tile it left a 127 px hole on a phone when there was none) */}
+        <LongestCase className="text-xs text-muted-foreground md:basis-full" cases={[<p key="t">{c.pair.tieWhy(TIE_MOST)}</p>]}>
+          <p>{whyTie}</p>
+        </LongestCase>
       </div>
       <div className="flex flex-col gap-2">
         <LongestCase cases={[1, 2, LONGEST_YEARS].map((y) => <span key={y} className="block font-semibold">{c.pair.costTitleBoth(y)}</span>)}>
           <h3 className="font-semibold">{c.pair.costTitleBoth(years)}</h3>
         </LongestCase>
-        <CostBar who={nameOf(pick)} fund={fundOf(pick)} sub={mineRole} pc={pc} scale={scale} you={chosen} entered={providerName(view, pick.house)?.custom} today={bundle.today} highlight={legendPick.active} />
-        {pcOther && other && <CostBar highlight={legendPick.active} who={nameOf(other)} fund={fundOf(other)} sub={otherRole} pc={pcOther} scale={scale} entered={providerName(view, other.house)?.custom} today={bundle.today} />}
+        <CostBar who={nameOf(pick)} fund={fundOf(pick)} funds={fundNames} sub={mineRole} pc={pc} scale={scale} you={chosen} entered={providerName(view, pick.house)?.custom} today={bundle.today} highlight={legendPick.active} />
+        {pcOther && other && <CostBar highlight={legendPick.active} who={nameOf(other)} fund={fundOf(other)} funds={fundNames} sub={otherRole} pc={pcOther} scale={scale} entered={providerName(view, other.house)?.custom} today={bundle.today} />}
         {/* held at the legend of a foreign index, which names the conversion too: an Israeli index's legend took a line less on a phone */}
         <LongestCase cases={[<CostLegend key="l" lines={legendLines(false, ["other"])} pick={legendPick} />]}>
           <CostLegend lines={lines} pick={legendPick} />
@@ -556,7 +584,9 @@ export function AccountColumn({ view, bundle, years, monthly = 1, pick, onPick, 
   if (!fund || !house) return null;
   const best = bestFor(view, pick);
   const theta = tieShareOf(bundle);
-  const crown = crowned(view, best, theta);
+  // the account crowned from the tie set of the tiles: the house all its pairs are at, on the row of a pair in the set
+  const crownHouse = crownedHouse(view, best, theta);
+  const crownHere = !!crownHouse && inTieSet(view, best, { house: crownHouse, fund: pick.fund }, theta);
   // the groups each house offers that change this fund's figure and end after a printed number of months (lib/group-pick)
   const choiceOf = (id: string): GroupChoice | undefined => {
     const can = pickableGroups(bundle.snapshots.find((s) => s.id === id), fund.option);
@@ -589,9 +619,9 @@ export function AccountColumn({ view, bundle, years, monthly = 1, pick, onPick, 
     const parts: CostPart[] = [...r.at.lines.map((l) => ({ id: l.line, legendId: lineOf(l.line), name: c.pair.lines[lineOf(l.line)] ?? c.pair.lines.other, value: l.cost, className: lineClass[lineOf(l.line)] ?? "bg-chart-cost-other", source: r.p.custom ? c.pair.sourceEntered : c.pair.sourceList(r.p.short) })), { id: "remainder", name: c.pair.remainder, about: c.pair.remainderAbout, value: r.at.interaction, className: "bg-chart-cost-other", source: c.pair.sourceComputed }];
     const isYours = r.p.id === view.yourBroker;
     // shown on the row whether or not it is picked, so a pick never adds or removes a line (founder, 2026-10-27)
-    const isBest = crown && best?.house === r.p.id && best.fund === pick.fund;
     const place = placeOf.get(r.p.id);
     const tiedTop = sharedTop && place === 1;
+    const isBest = crownHere && crownHouse === r.p.id && !tiedTop;
     return {
       key: r.p.id,
       selected: r.p.id === baseHouse,

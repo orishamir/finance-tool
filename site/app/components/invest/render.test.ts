@@ -288,6 +288,38 @@ describe("the tie set of F-80 in the tiles (#190)", () => {
     expect(out).not.toContain(invest.pair.cheapestStar);
     expect(out).toContain(invest.pair.tieTop(3));
   });
+  it("a pick inside the tie set: the other pair is not called the cheap one, and the tie is counted as the title counts", () => {
+    const tiedPick = { house: "psagot", fund: "5139100" };
+    expect(tieCount(sp, head, theta)).toBe(3);
+    const out = shown(html(createElement(PairResult, { view: sp, bundle, plan: base, pick: tiedPick, chosen: true, onPick: () => undefined })));
+    expect(out).toContain(invest.pair.tieTop(3));
+    expect(out).toContain(invest.pair.tieWhy(3));
+    expect(out).not.toContain(invest.pair.tieWhy(2));
+    expect(out).not.toContain(invest.pair.moreIfCheapest);
+    expect(out).toContain(invest.pair.vsYours);
+  });
+  it("the account list stars the one house all the tied pairs are at: its own funds tie with one another, no other house does", () => {
+    const out = shown(html(createElement(AccountColumn, { view: sp, bundle, years: 10, pick: head, onPick: () => undefined })));
+    expect(head.house).toBe("psagot");
+    expect(out).toContain(invest.pair.cheapestTag);
+    // and not with a fund outside the set, nor when another house is in it (the tiles' R1 case keeps no star there)
+    const far = allFunds(sp).find((f) => f.rec.id !== head.fund && "valueN" in (f.byHouse.psagot ?? {}) && !["5139100", "1159250"].includes(f.rec.id))!;
+    const farOut = shown(html(createElement(AccountColumn, { view: sp, bundle, years: 10, pick: { house: "psagot", fund: far.rec.id }, onPick: () => undefined })));
+    expect(farOut).not.toContain(invest.pair.cheapestTag);
+  });
+  it("a cost bar's fund name is never cut: on a phone it has the bar's whole width, and it wraps, held at the index's longest name", () => {
+    const out = html(createElement(PairResult, { view: sp, bundle, plan: base, pick: head, chosen: false, onPick: () => undefined }));
+    expect(out).toContain("[overflow-wrap:anywhere] max-md:row-start-3 max-md:col-span-2");
+    expect(out).not.toContain("truncate text-xs");
+    const longest = allFunds(sp).map((f) => f.name).sort((a, b) => b.length - a.length)[0]!;
+    expect(out.replace(/<[^>]+>/g, "").replace(/&amp;/g, "&").split(longest).length - 1).toBeGreaterThanOrEqual(2);
+  });
+  it("why no pair is first is a line under both tiles, not inside one: held there, it left a hole in the tile when there was no tie", () => {
+    const out = html(createElement(PairResult, { view: sp, bundle, plan: base, pick: head, chosen: false, onPick: () => undefined }));
+    const tilesEnd = out.indexOf(invest.pair.pickCheapest);
+    const why = out.indexOf(invest.pair.tieWhy(10));
+    expect(why).toBeGreaterThan(tilesEnd);
+  });
   it("the account list's head holds every fund's name laid out as the shown one, a wrapping tag on each, so a long name moves nothing", () => {
     const out = html(createElement(AccountColumn, { view: sp, bundle, years: 10, pick: head, onPick: () => undefined }));
     const headPart = out.slice(out.indexOf(invest.pair.accounts), out.indexOf(invest.pair.accountsHint));
