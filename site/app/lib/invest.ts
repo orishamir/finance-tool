@@ -627,7 +627,9 @@ function fundSpec(ctx: Ctx, rec: FundRecord): { spec: Spec; mismatch: boolean } 
 
 const nameOf = (rec: FundRecord) => rec.names.he[0] ?? rec.names.en[0] ?? rec.id;
 /** A fund the person typed with no number has none to show: its id is the site's own. */
-const numberOf = (rec: FundRecord) => rec.identifiers.tase_number ?? rec.identifiers.isin ?? (isCustomFund(rec) ? "" : rec.id);
+// a fund with neither number is known by its ticker (a US fund: "VOO"), never by the site's own record id ("us-voo", #190)
+const tickerOf = (rec: FundRecord) => Object.values(rec.identifiers.ticker ?? {})[0] ?? null;
+const numberOf = (rec: FundRecord) => rec.identifiers.tase_number ?? rec.identifiers.isin ?? tickerOf(rec) ?? (isCustomFund(rec) ? "" : rec.id);
 
 // ---------------------------------------------------------------- the option
 

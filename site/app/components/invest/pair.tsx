@@ -301,7 +301,7 @@ export function PairResult({ view, bundle, plan, settled, pick, chosen, onPick }
           <span className="text-2xl md:text-3xl font-bold leading-tight">
             <Num animate value={pc.paidIn} />
           </span>
-          <span className="text-xs text-muted-foreground">{c.pair.paidInNote(months)}</span>
+          <span className="text-xs text-muted-foreground">{plan.monthly === 0 ? c.pair.paidInOnce : c.pair.paidInNote(months)}</span>
         </div>
         <span aria-hidden="true" className="hidden md:inline text-2xl text-muted-foreground self-center">
           ←
@@ -421,9 +421,12 @@ export function HouseLine({ house, snapshot, charge }: { house: NonNullable<Retu
       ) : (
         snapshot && (
           <>
-            <a href={snapshot.tariff.url} target="_blank" rel="noopener noreferrer" title={snapshot.tariff.title} className="text-link hover:underline">
-              {c.pair.tariff} ↗
-            </a>
+            <span className="whitespace-nowrap">
+              <a href={snapshot.tariff.url} target="_blank" rel="noopener noreferrer" title={snapshot.tariff.title} className="text-link hover:underline">
+                {c.pair.tariff} ↗
+              </a>
+              <span className="text-muted-foreground"> · {c.pair.collectedOn(`\u2066${fmt.date(snapshot.snapshot)}\u2069`)}</span>
+            </span>
             <OwnAccountButton houseId={house.id} house={house.short} className="-mx-2 -my-2.5">
               {c.pair.ownPrice}
             </OwnAccountButton>
@@ -439,7 +442,7 @@ export const LONGEST_AMOUNT = 9_999_999;
 /** The most years a plan's sliders give, for a sentence's unseen longest case. */
 export const LONGEST_YEARS = 40;
 
-export function AccountColumn({ view, bundle, years, pick, onPick, moved = null, group = null }: { view: InvestView; bundle: WorkbenchBundle; years: number; pick: Pick; onPick: OnPick; /** The tap before changed the fund too. */ moved?: Moved | null; /** The house's group picked in its fold: `pick.house` is then the held account priced at it, and this its house. */ group?: { house: string; key: string; name: string } | null }) {
+export function AccountColumn({ view, bundle, years, monthly = 1, pick, onPick, moved = null, group = null }: { view: InvestView; bundle: WorkbenchBundle; years: number; /** The plan's monthly deposit: at 0 no purchase runs on a standing order, and the list says so. */ monthly?: number; pick: Pick; onPick: OnPick; /** The tap before changed the fund too. */ moved?: Moved | null; /** The house's group picked in its fold: `pick.house` is then the held account priced at it, and this its house. */ group?: { house: string; key: string; name: string } | null }) {
   const legendPick = useChartPick();
   // a row added or removed starts the held height over, so a removed row leaves no hole (D44)
   // the houses of the list: a picked group's held account stands beside its house, never as a row of its own (D43)
@@ -485,6 +488,8 @@ export function AccountColumn({ view, bundle, years, pick, onPick, moved = null,
   };
   // counted over every fund of the index, so the sentence stays as it is when another fund is picked; a count over the collected houses
   const local = providers.filter((p) => !p.foreign && !p.custom);
+  // when the price lists in this list were saved: the oldest and the newest day
+  const saved = bundle.snapshots.filter((s) => providers.some((p) => p.id === s.id && !p.custom)).map((s) => s.snapshot).sort();
   const standingCount = local.filter((p) => allFunds(view).some((f) => { const a = f.byHouse[p.id]; return priced(a) && a.standing; })).length;
   const rows = providers.map((p) => ({ p, at: fund.byHouse[p.id] }));
   const ok = rows.filter((r): r is { p: typeof r.p; at: WayPrice } => priced(r.at)).sort((a, b) => Number(a.at.open) - Number(b.at.open) || b.at.valueN - a.at.valueN);
@@ -534,7 +539,7 @@ export function AccountColumn({ view, bundle, years, pick, onPick, moved = null,
                   </button>
                 </span>
               )}
-              {r.at.standing && <span>{c.pair.standingTag}</span>}
+              {r.at.standing && monthly > 0 && <span>{c.pair.standingTag}</span>}
             </span>
           </span>
           {/* a narrow list (a phone, or this panel beside the funds on a computer) gives the bar a line of its own under the name, so it is wide enough to compare (2026-11-04) */}
@@ -635,8 +640,14 @@ export function AccountColumn({ view, bundle, years, pick, onPick, moved = null,
         </LongestCase>
         {/* on lines of their own, kept whatever the fund's name: a longer name pushed the hint to a new line, and the page with it */}
         <span className="text-sm text-muted-foreground">{c.pair.accountsHint}</span>
-        <span className="text-xs text-muted-foreground min-h-[1lh] max-md:min-h-[2lh]">{standingCount > 0 && c.pair.standingNote(standingCount, local.length)}</span>
-        <span className="text-xs text-muted-foreground">{c.pair.whichPrice}</span>
+        {/* one height for both sentences, so a monthly deposit set to 0 and back moves nothing */}
+        <LongestCase cases={[<span key="s" className="text-xs">{c.pair.standingNote(Math.max(standingCount, 1), local.length)}</span>, <span key="n" className="text-xs">{c.pair.noMonthly}</span>]}>
+          <span className="text-xs text-muted-foreground">{monthly === 0 ? c.pair.noMonthly : standingCount > 0 && c.pair.standingNote(standingCount, local.length)}</span>
+        </LongestCase>
+        <span className="text-xs text-muted-foreground">
+          {c.pair.whichPrice}
+          {saved.length > 0 && <> {c.pair.collectedSpan(`\u2066${fmt.date(saved[0]!)}\u2069`, `\u2066${fmt.date(saved.at(-1)!)}\u2069`)}</>}
+        </span>
       </div>
       <div className="@container">
       <PickList
@@ -647,8 +658,9 @@ export function AccountColumn({ view, bundle, years, pick, onPick, moved = null,
           <>
             <span>#</span>
             <span>{c.pair.colAccount}</span>
-            <span className="max-md:hidden @max-2xl:invisible">{c.pair.colChargesShort}</span>
-            <span className="text-end">{c.pair.colLeft}</span>
+            {/* over the bar and its figure, wherever the bar is: beside the name, or on a line of its own under it in a narrow list (#190) */}
+            <span className="@max-2xl:row-start-2 @max-2xl:col-start-3 @max-2xl:col-end-[-1] @max-2xl:pt-1">{c.pair.colCharges(years)}</span>
+            <span className="text-end col-end-[-1] row-start-1">{c.pair.colLeft}</span>
           </>
         }
         rows={[...pickRows, ...greyRows]}

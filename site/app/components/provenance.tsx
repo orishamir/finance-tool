@@ -363,7 +363,7 @@ export function idKind(id: string): IdKind | null {
  * - `asLabel`: the id as a label that does nothing (a parameter's own card, which a link would only point back at).
  * An empty id renders nothing; an id that is no kind, or an `A-nn` no card has, renders as plain text.
  */
-export function IdRef({ id, className, closedOn, asLabel, titled }: { id: string; className?: string; closedOn?: string; asLabel?: boolean; /** A list of questions: the chip says the question's title, the rows being otherwise alike (D49). */ titled?: boolean }) {
+export function IdRef({ id, className, closedOn, asLabel, titled }: { id: string; className?: string; closedOn?: string; asLabel?: boolean; /** A list of questions: the chip says the question's title, the rows being otherwise alike (D49). A rule: its Hebrew title before its id, where the chip stands in reader's text with no words of its own (#190). */ titled?: boolean }) {
   const open = useOpen();
   const close = useContext(CloseCtx);
   const data = useContext(DataCtx);
@@ -374,7 +374,14 @@ export function IdRef({ id, className, closedOn, asLabel, titled }: { id: string
   const shown = kind === "question" ? id.replace("-OQ", " OQ") : id;
   // an open question's chip says a word, not its code (2026-11-02): the sentence around it says "שאלה פתוחה", the sheet says which
   const title = titled && kind === "question" ? questionOf(data, shown)?.title_he : undefined;
-  const chip = title ? <span className="text-start">{title}</span> : kind === "question" ? <span className="whitespace-nowrap">{copy.idRef.questionChip}</span> : <bdi dir="ltr" className="whitespace-nowrap">{shown}</bdi>;
+  const ruleTitle = titled && kind === "rule" ? ruleOf(data, shown)?.title_he : undefined;
+  const chip = title ? (
+    <span className="text-start">{title}</span>
+  ) : ruleTitle ? (
+    <span className="text-start">
+      {ruleTitle} · <bdi dir="ltr" className="slashed-zero whitespace-nowrap">{shown}</bdi>
+    </span>
+  ) : kind === "question" ? <span className="whitespace-nowrap">{copy.idRef.questionChip}</span> : <bdi dir="ltr" className="whitespace-nowrap">{shown}</bdi>;
   if (asLabel) return <span className={cx("rule-chip pointer-events-none", className)}>{chip}</span>;
   let card: string | undefined;
   if (kind === "parameter") card = data?.parameters ? data.parameters[id] : id;
@@ -392,7 +399,7 @@ export function IdRef({ id, className, closedOn, asLabel, titled }: { id: string
   const closed = closedOn ?? (known?.status === "closed" ? known.closed_on : undefined);
   const item: Item = kind === "question" ? { kind: "question", id: shown, ...(closed ? { closedOn: closed } : {}) } : { kind: kind as "rule" | "formula", id: shown };
   return (
-    <button type="button" className={cx("rule-chip", title && "whitespace-normal", className)} onClick={(e) => open(item, e.currentTarget)} aria-label={aria}>
+    <button type="button" className={cx("rule-chip", (title || ruleTitle) && "whitespace-normal", className)} onClick={(e) => open(item, e.currentTarget)} aria-label={aria}>
       {chip}
     </button>
   );
@@ -419,12 +426,12 @@ export function IdText({ text, assumptions }: { text: string; assumptions?: bool
  * company's name instead of the code (spec 2026-10-25-rules-scope §4): on that company's page its own name, elsewhere the first with
  * "ועוד" and the count of the others. The code stays in the card it opens and in the chip's spoken name.
  */
-export function RuleRef({ id, className }: { id: string; className?: string }) {
+export function RuleRef({ id, className, titled }: { id: string; className?: string; /** A general rule's chip says its Hebrew title before its id (`IdRef`'s `titled`). */ titled?: boolean }) {
   const open = useOpen();
   const data = useContext(DataCtx);
   const rule = ruleOf(data, id);
   const name = rule && !isGeneral(rule) ? chipName(rule, data?.ownDocs, data?.company, chipMore) : null;
-  if (!name) return <IdRef id={id} className={className} />;
+  if (!name) return <IdRef id={id} className={className} titled={titled} />;
   return (
     <button type="button" className={cx("rule-chip", className)} onClick={(e) => open({ kind: "rule", id }, e.currentTarget)} aria-label={`${ruleCopy.title} ${id}, ${scopeTag(rule!, data?.ownDocs)}`}>
       <bdi className="whitespace-nowrap">{name}</bdi>

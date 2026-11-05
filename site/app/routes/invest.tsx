@@ -271,6 +271,7 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
       today={data.today}
       example={Object.keys(released.state.entered).length === 0}
       dollar={!index?.israeli}
+      inflation={{ pct: fi.values.inflation.value as number, entered: released.state.entered["A-02"] !== undefined }}
     />
   );
 
@@ -296,7 +297,7 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
               <>
                 <PairResult view={shownView} bundle={shownBundle} plan={livePlan} settled={plan} pick={shown} chosen={picks} onPick={onPick} />
                 <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_2.5rem_minmax(0,32.5rem)] xl:grid-cols-[minmax(0,5fr)_2.5rem_minmax(0,7fr)] items-start">
-                  <AccountColumn view={shownView} bundle={shownBundle} years={plan.years} pick={shown} onPick={onPick} moved={movedNow} group={own?.group ? { house: own.house, key: own.group, name: groupNameOf(wb.snapshots.find((x) => x.id === own.house), own.group) } : null} />
+                  <AccountColumn view={shownView} bundle={shownBundle} years={plan.years} monthly={plan.monthly} pick={shown} onPick={onPick} moved={movedNow} group={own?.group ? { house: own.house, key: own.group, name: groupNameOf(wb.snapshots.find((x) => x.id === own.house), own.group) } : null} />
                   <span aria-hidden="true" className="hidden lg:grid place-items-center size-9 mt-10 rounded-full border border-input bg-popover text-xl text-muted-foreground justify-self-center">
                     +
                   </span>
@@ -308,7 +309,7 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
               <>
                 <NoFundCall view={view} />
                 <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_2.5rem_minmax(0,32.5rem)] xl:grid-cols-[minmax(0,5fr)_2.5rem_minmax(0,7fr)] items-start">
-                  <NoFundAccountColumn view={view} bundle={bundle} years={plan.years} chosen={genericHouse} onPick={setGenericHouse} />
+                  <NoFundAccountColumn view={view} bundle={bundle} years={plan.years} monthly={plan.monthly} chosen={genericHouse} onPick={setGenericHouse} />
                   <span aria-hidden="true" className="hidden lg:grid place-items-center size-9 mt-10 rounded-full border border-input bg-popover text-xl text-muted-foreground justify-self-center">
                     +
                   </span>

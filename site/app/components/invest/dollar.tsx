@@ -198,7 +198,7 @@ export function DollarSection({ view, bundle, plan, pick }: { view: InvestView; 
         items={[]}
       />
       <p>
-        <strong className="font-semibold">{c.dollar.bottomLead}</strong> {c.dollar.bottomLine} <RuleRef id="ETF-75" />
+        <strong className="font-semibold">{c.dollar.bottomLead}</strong> {c.dollar.bottomLine} <RuleRef id="ETF-75" titled />
       </p>
     </Card>
   );

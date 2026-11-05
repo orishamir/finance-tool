@@ -28,7 +28,8 @@ export const site = {
   menuBehind: "מאחורי הקלעים",
   homeCrumb: "ראשי",
   footerNote: "אתר אישי, לא מסחרי, בלי קישורי שיווק; הכול נשמר במכשיר שלכם",
-  footerAsOf: "נתונים נכון ל־",
+  /** The newest date any figure on the site was checked: not the date of the prices on a page, which say their own (#190). */
+  footerAsOf: "הנתון האחרון באתר נבדק ב־",
   toTop: "חזרה למעלה",
   footer: [
     { href: "/parameters", label: "פרמטרים" },
@@ -304,6 +305,8 @@ export const values = {
 } as const;
 
 export const provenance = {
+  /** A Maya citation inside a Hebrew source title, said in Hebrew (#190): the data's "(Maya filing 1725200, PDF)" read backwards in a Hebrew line. */
+  maya: { filing: "דיווח במאיה", published: "פורסם", fundPage: "דף הקרן במאיה", maya: "מאיה" },
   sourced: {
     source: "מקור",
     publisher: "פורסם על ידי",
@@ -3275,6 +3278,11 @@ Object.assign(parametersPage.names, { "P-09": "השאלות שכולם שואל�
  * "השקעה במדד" (D28, 2026-10-25; spec research/specs/2026-10-25-invest-page/spec.md). Figures never appear here: a number is a Num on the page.
  * The labels are defined in lib/labels.ts (id, icon, tone, rules); their words are here.
  */
+/** A span of years in a sentence (copy.md §1): "שנה", "שנתיים", "10 שנים"; never "1 שנים" (#190). */
+const yearsSpan = (n: number) => (n === 1 ? "שנה" : n === 2 ? "שנתיים" : `${n} שנים`);
+/** "בשנה אחת", "בשנתיים", "ב־10 שנים". */
+const inYears = (n: number) => (n === 1 ? "בשנה אחת" : n === 2 ? "בשנתיים" : `ב־${n} שנים`);
+
 export const invest = {
   nav: "השקעה במדד",
   metaTitle: "השקעה במדד",
@@ -3420,7 +3428,7 @@ export const invest = {
     edit: "עריכה",
     brokerTitle: "חשבון בתנאים שקיבלתם",
     brokerEdit: (name: string) => `התנאים של ״${name}״`,
-    brokerSub: "החשבון נשמר רק במכשיר הזה ומושווה כמו כל חשבון אחר בעמוד הזה. שדה ריק הוא מחיר לא ידוע, והחשבון לא ידורג עד שימלאו אותו. עמלה שלא גובים מכם: כתבו 0.",
+    brokerSub: "החשבון נשמר רק במכשיר הזה ומושווה כמו כל חשבון אחר בעמוד הזה. שדה ריק הוא מחיר לא ידוע, והחשבון לא ידורג עד שתמלאו אותו. עמלה שלא גובים מכם: כתבו 0.",
     /** A new account starts from a house's price list, as the account card's does (2026-11-05). */
     brokerStart: "בחרו את הבנק או בית ההשקעות. מתחילים מהתעריפון שלו ומשנים רק את המחירים שקיבלתם.",
     basis: "על בסיס",
@@ -3530,6 +3538,10 @@ export const invest = {
       retStep: "תשואה",
       most: "הכי משפיע",
       others: "אינפלציה",
+      /** The button with the value it opens on (#190): the 2% was never on the page. */
+      othersAt: (pct: string) => `אינפלציה ${pct} בשנה`,
+      /** What the yearly return is (A-01, a gross return: docs/method.md), on the line under the sliders (#190). */
+      retBefore: "התשואה לפני אינפלציה, דמי ניהול, עמלות ומס",
       changes: {
         title: "מה הכי משנה את מה שיישאר לכם",
         lead: "בכל קו משתנה מספר אחד, והשאר נשארים כמו בתוכנית שלכם. גררו את הקו האנכי בגרף, או בחרו שינוי:",
@@ -3622,7 +3634,9 @@ export const invest = {
     paidIn: "הפקדתם",
     paidInAbout: "סך ההפקדות",
     paidInNote: (months: number) => `הסכום ההתחלתי ועוד הפקדה חודשית, ${months} חודשים`,
-    left: (years: number) => `נשאר לכם בעוד ${years} שנים`,
+    /** The same line with no monthly deposit (2026-11-05). */
+    paidInOnce: "סכום חד־פעמי, בלי הפקדה חודשית",
+    left: (years: number) => `נשאר לכם בעוד ${yearsSpan(years)}`,
     steadyDollar: "אם הדולר לא זז מול השקל",
     steadyIndexCurrency: "אם שער המטבע של המדד לא זז מול השקל",
     leftNote: "אחרי דמי ניהול ומס, בכסף של היום",
@@ -3641,12 +3655,12 @@ export const invest = {
     firstPair: "הזוג הראשון",
     vsFirst: "לעומת הזוג הראשון",
     gapLeadFirst: "העלות בזוג הראשון, לעומת הזוג הבא בתור:",
-    tieWhy: "ההפרש קטן מסף התיקו של האתר, ולכן שני הזוגות שקולים.",
+    tieWhy: "ההפרש קטן מכדי לקבוע איזה זוג זול יותר, ולכן שני הזוגות שקולים.",
     /** An input of a computed figure, named by whose it is: "הבחירה שלכם: נשאר". */
     input: (who: string, what: string) => `${who}: ${what}`,
     moreIfCheapest: "יותר אם עוברים לזוג הזול",
     pickCheapest: "בחרו את הזוג הזה",
-    costTitleBoth: (years: number) => `כמה זה עולה לכם ב־${years} שנים, בכל אחד מהזוגות`,
+    costTitleBoth: (years: number) => `כמה זה עולה לכם ${inYears(years)}, בכל אחד מהזוגות`,
     gapLead: "העלות אצלכם, לעומת הזוג השני:",
     gapLeadCheapest: "העלות בזוג הזול ביותר, לעומת הזוג הבא בתור:",
     gapPart: { account: "החשבון", fund: "הקרן", tax: "המס" },
@@ -3683,9 +3697,13 @@ export const invest = {
     fundsCond: "בחשבון",
     fundsHint: "בחרו חשבון אחר, והרשימה תסתדר מחדש",
     colAccount: "חשבון",
-    colCharges: (years: number) => `מה החשבון גובה ב־${years} שנים`,
+    colCharges: (years: number) => `מה החשבון גובה ${inYears(years)}`,
     colChargesShort: "מה החשבון גובה",
     tariff: "התעריפון",
+    /** Beside the price list's link: when the site saved its copy (#190). */
+    collectedOn: (date: string) => `נאסף ב־${date}`,
+    /** Over the account list: the days the price lists were saved, oldest and newest (#190). */
+    collectedSpan: (from: string, to: string) => (from === to ? `התעריפונים נאספו ב־${from}.` : `התעריפונים נאספו בין ${from} ל־${to}.`),
     /** On the chosen account's card, beside its price list: opens the house's account on your own terms (founder, 2026-11-04: one link, not a line on every row). */
     ownPrice: "קיבלתם מחיר אחר? הזינו אותו",
     colLeft: "נשאר",
@@ -3702,6 +3720,8 @@ export const invest = {
     yoursTag: "החשבון שלכם",
     standingTag: ownTermsCopy.provider.standingTag,
     standingNote: ownTermsCopy.provider.standingNote,
+    /** In the standing-order note's place when the plan has no monthly deposit (2026-11-05). */
+    noMonthly: "בלי הפקדה חודשית אין קנייה בהוראת קבע, ולכן כל החשבונות מחושבים במחיר הרגיל.",
     broken: "⫽ הפס נחתך: הסכום ארוך מהשטח",
     notPossible: "לא אפשרי שם",
     noPriceHere: "אין מחיר כאן",
@@ -3711,7 +3731,7 @@ export const invest = {
     notPossibleAny: "לפי המסמכים של החברה, אי אפשר לקנות שם קרן על המדד הזה.",
     notPossibleWhy: (kind: string) => `לפי המסמכים של החברה, אי אפשר לקנות שם ${kind}.`,
     /** On an account row with no price for the fund: picking it picks another fund too, said before the tap (2026-11-05). */
-    elsewhere: "בחירה בחשבון הזה בוחרת גם את הקרן",
+    elsewhere: "בחירה בחשבון הזה מעבירה גם לקרן",
     elsewhereLeft: "ונשארים",
     /** On a fund row with no price at the account: picking it moves the account, said before the tap. */
     pickMoves: (toHouse: string) => `בחירה בה מעבירה את החשבון ${toHouse}`,
@@ -3785,7 +3805,7 @@ export const invest = {
     /** 2026-10-25 (lead): the order check in one line; the places it changes are behind the toggle */
     flipsSummary: (n: number) => `בתשואה של 0% או של 10% הסדר משתנה ב־${n} ${n === 1 ? "מקום" : "מקומות"}. פירוט`,
     flipWhat: { options: "הסדר בין האפשרויות", brokers: (o: string) => `הסדר בין החשבונות ב${o}`, funds: (o: string) => `הסדר בין הקרנות ב${o}` },
-    engine: "המספרים מהמנוע, על הנתונים של היום.",
+    engine: "המספרים מחושבים מהנתונים של היום.",
     values: "הערכים הם בכסף של היום.",
     ibkr: "אינטראקטיב ברוקרס: מחושבים רק תעריפי ה־Fixed; תעריפי ה־Tiered משאירים בחוץ עמלות בורסה וסליקה שהנתונים לא מכילים.",
     sharePrice: "קרנות בחו״ל שהתעריפון שלהן נקבע לפי מספר המניות מחכות למחיר היחידה של הקרן, שעוד לא נאסף.",
@@ -3839,7 +3859,7 @@ export const invest = {
     stepStart: "נקודת ההתחלה:",
     here: "עכשיו:",
     hereExample: "נקודת התחלה לדוגמה:",
-    startExample: "עוד לא בחרתם קרן וחשבון, ולכן המדרגות מתחילות מקרן ומחשבון מאמצע הרשימות. בחירה ברשימות למעלה מתחילה אותן ממנה.",
+    startExample: "עוד לא בחרתם קרן וחשבון, ולכן המדרגות מתחילות מקרן ומחשבון מאמצע הרשימות. בחרו ברשימות למעלה, והמדרגות יתחילו ממה שבחרתם.",
     startPicked: "המדרגות מתחילות מהקרן ומהחשבון שבחרתם ברשימות למעלה. בחירה אחרת שם מתחילה אותן מחדש.",
     hereLeft: "נשארים בסוף",
     rowsHint: "כל שורה משנה דבר אחד. לחיצה על שורה מוסיפה אותה למדרגות.",
@@ -3864,8 +3884,8 @@ export const invest = {
     to: "עד",
     cancelsLabel: "מה הנטרול מבטל: שער הדולר",
     cancelsNote: (from: number, to: number) => `כך זז הדולר מול השקל בשנה אחת, ${from} עד ${to}.`,
-    cancelsStretch: (h: number, lo: string, hi: string) => `בממוצע של ${h} שנים רצופות: ${lo} עד ${hi} בשנה.`,
-    cancelsNoStretch: (h: number) => `עוד אין נתונים ל־${h} שנים רצופות.`,
+    cancelsStretch: (h: number, lo: string, hi: string) => (h === 1 ? `בשנה אחת: ${lo} עד ${hi}.` : `בממוצע של ${yearsSpan(h)} רצופות: ${lo} עד ${hi} בשנה.`),
+    cancelsNoStretch: (h: number) => (h === 1 ? "עוד אין נתונים לשנה אחת." : `עוד אין נתונים ל${h === 2 ? "" : "־"}${yearsSpan(h)} רצופות.`),
     costsLabel: "מה הנטרול עולה: פער מהמדד",
     pointsAYear: "נקודות בשנה",
     costsOne: (name: string, from: number, to: number, fee: string) => `בכמה \u2068${name}\u2069 השיגה פחות מהמדד שלה, ${from === to ? `ב־${to}` : `${from} עד ${to}`}, כולל דמי ניהול של ${fee}.`,

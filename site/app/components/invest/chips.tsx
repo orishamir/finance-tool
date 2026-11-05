@@ -3,6 +3,7 @@ import { useId, useMemo, useState, type ReactNode } from "react";
 import { invest as c } from "../../copy";
 import { customIdOf, customIndexPath, indexPath, indexSuggestions, matchKnownIndex, type CustomIndex, type IndexRef } from "../../lib/invest";
 import { fxLabel, nisPer, type FxSnapshot } from "../../lib/fx";
+import { fmt } from "../../lib/format";
 import type { WorkbenchBundle } from "../../lib/providers";
 import { Num } from "../provenance";
 import { Button, Card, ChipList, Sentence, Tag, type ChipItem } from "../kit";
@@ -79,18 +80,18 @@ function CustomPanel({ bundle, customs, onCancel, onSave, onKnown }: { bundle: P
 /** The plan the page runs on: the knob strip (founder, 2026-10-28), the rest of the assumptions behind a button, and the dollar rate on the same line. */
 /** `example`: no number entered yet, so every one is the site's example; once one is entered each slider marks its own. */
 /** `dollar`: an index priced in shekels reads no exchange rate, so it shows none (founder, 2026-10-31); the line keeps its height either way. */
-export function PlanBlock({ knobs, onOpen, fx, today, example, dollar }: { knobs: ReactNode; onOpen: () => void; fx: FxSnapshot | undefined; today: string; example: boolean; dollar: boolean }) {
+export function PlanBlock({ knobs, onOpen, fx, today, example, dollar, inflation }: { knobs: ReactNode; onOpen: () => void; fx: FxSnapshot | undefined; today: string; example: boolean; dollar: boolean; /** The inflation the page runs on, in percent, said on its button; blue ink once entered. */ inflation?: { pct: number; entered: boolean } }) {
   const usd = fx ? nisPer(fx, "USD", today) : null;
   return (
     <section className="flex flex-col gap-2" aria-label={c.plan.heading}>
       {knobs}
       <div className="flex flex-wrap items-center gap-x-3 gap-y-1 content-start max-md:min-h-[7rem]">
-        <Button variant="secondary" className="!h-9 px-3 text-sm" onClick={onOpen}>
-          {c.plan.knobs.others}
+        <Button variant="secondary" className="!h-9 px-3 text-sm min-w-40 tabular-nums" onClick={onOpen}>
+          {inflation ? <span className={inflation.entered ? "text-entered" : undefined}>{c.plan.knobs.othersAt(fmt.pct(inflation.pct))}</span> : c.plan.knobs.others}
         </Button>
         <Sentence size="sm" tone="muted">
           {example && <>{c.plan.siteExample} · </>}
-          {c.plan.todayShekels}
+          {c.plan.knobs.retBefore} · {c.plan.todayShekels}
           {dollar &&
             (usd ? (
               <>
