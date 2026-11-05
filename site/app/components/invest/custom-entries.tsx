@@ -292,7 +292,7 @@ function rowLabels(d: FundDraft, index: IndexRef): Label[] {
   // a hedge not chosen yet says nothing of the currency (founder, 2026-11-05: "who said it's חשיפה לדולר?")
   return d.hedged === null ? all.filter((l) => !HEDGE_LABELS.has(l.id)) : all;
 }
-const HEDGE_LABELS = new Set<string>(["currency", "currency-many", "hedged", "hedged-many", "tax-currency"]);
+const HEDGE_LABELS = new Set<string>(["currency", "currency-many", "currency-foreign", "hedged", "hedged-many", "tax-currency"]);
 
 /**
  * The tiles of one question: each answer with the labels it adds to the row, the labels every answer shares left out (the row below shows

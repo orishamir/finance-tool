@@ -8,7 +8,17 @@ import { atPdfPage } from "../components/kit/doc-link";
 import type { IndexRef, OptionId, ProviderInfo } from "./invest";
 
 export type LabelTone = "neutral" | "caution" | "open";
-export type LabelIconKey = "home" | "globe" | "clock" | "layers" | "coins" | "shield" | "file" | "lock" | "alert" | "ban" | "percent" | "repeat" | "sun" | "piggy" | "handCoins";
+/** What each icon draws (2026-11-05 sweep): each says what its label is about, and labels about different things never share one.
+ *  "sign" is the currency's own sign, chosen by the label's currency (`signOf`). */
+export type LabelIconKey =
+  | "home" | "landmark" | "globe"
+  | "pulse" | "calendarClock"
+  | "box" | "swap" | "fileClock" | "blend"
+  | "dollar" | "euro" | "pound" | "yen" | "franc" | "currency" | "shield"
+  | "trendUpDown" | "badgePercent" | "percent" | "lock" | "gavel"
+  | "piggy" | "handCoins"
+  | "filePen" | "receipt" | "scroll" | "eyeOff" | "fileSignature" | "ban";
+type IconDef = LabelIconKey | "sign";
 
 export type LabelId =
   | "held-il"
@@ -24,6 +34,7 @@ export type LabelId =
   | "hedged"
   | "hedged-many"
   | "currency-many"
+  | "currency-foreign"
   | "tax-currency"
   | "tax-fund-dividend"
   | "tax-distribution"
@@ -39,7 +50,7 @@ export type LabelId =
   | "unavailable";
 
 interface LabelDef {
-  icon: LabelIconKey;
+  icon: IconDef;
   tone: LabelTone;
   rules: string[];
 }
@@ -47,32 +58,37 @@ interface LabelDef {
 /** Structure only: the words are in copy.ts. */
 export const labelDefs: Record<LabelId, LabelDef> = {
   "held-il": { icon: "home", tone: "neutral", rules: ["ETF-31"] },
-  "held-tase-foreign": { icon: "layers", tone: "neutral", rules: ["ETF-31", "ETF-24"] },
+  "held-tase-foreign": { icon: "landmark", tone: "neutral", rules: ["ETF-31", "ETF-24"] },
   "held-abroad": { icon: "globe", tone: "neutral", rules: ["ETF-24"] },
-  "trade-etf": { icon: "clock", tone: "neutral", rules: ["ETF-04"] },
-  "trade-tracking": { icon: "repeat", tone: "neutral", rules: ["ETF-04"] },
-  "follow-physical": { icon: "layers", tone: "neutral", rules: ["ETF-52"] },
-  "follow-swap": { icon: "repeat", tone: "neutral", rules: ["ETF-51", "ETF-52", "ETF-53"] },
-  "follow-futures": { icon: "repeat", tone: "neutral", rules: ["ETF-52"] },
-  "follow-mixed": { icon: "layers", tone: "neutral", rules: ["ETF-52", "ETF-53"] },
-  currency: { icon: "coins", tone: "neutral", rules: ["ETF-12"] },
+  "trade-etf": { icon: "pulse", tone: "neutral", rules: ["ETF-04"] },
+  "trade-tracking": { icon: "calendarClock", tone: "neutral", rules: ["ETF-04"] },
+  "follow-physical": { icon: "box", tone: "neutral", rules: ["ETF-52"] },
+  "follow-swap": { icon: "swap", tone: "neutral", rules: ["ETF-51", "ETF-52", "ETF-53"] },
+  "follow-futures": { icon: "fileClock", tone: "neutral", rules: ["ETF-52"] },
+  "follow-mixed": { icon: "blend", tone: "neutral", rules: ["ETF-52", "ETF-53"] },
+  currency: { icon: "sign", tone: "neutral", rules: ["ETF-12"] },
   hedged: { icon: "shield", tone: "neutral", rules: ["ETF-12"] },
   "hedged-many": { icon: "shield", tone: "neutral", rules: ["ETF-12"] },
-  "currency-many": { icon: "coins", tone: "neutral", rules: ["ETF-12"] },
-  "tax-currency": { icon: "percent", tone: "neutral", rules: ["TXS-09"] },
-  "tax-fund-dividend": { icon: "percent", tone: "neutral", rules: ["TXF-16"] },
+  "currency-many": { icon: "sign", tone: "neutral", rules: ["ETF-12"] },
+  "currency-foreign": { icon: "currency", tone: "neutral", rules: ["ETF-12"] },
+  "tax-currency": { icon: "trendUpDown", tone: "neutral", rules: ["TXS-09"] },
+  "tax-fund-dividend": { icon: "badgePercent", tone: "neutral", rules: ["TXF-16"] },
   "tax-distribution": { icon: "percent", tone: "neutral", rules: ["TXF-08"] },
   "tax-on-sale-open": { icon: "lock", tone: "open", rules: ["TXF-11"] },
-  "tax-on-sale-ruling": { icon: "percent", tone: "neutral", rules: ["TXF-11"] },
+  "tax-on-sale-ruling": { icon: "gavel", tone: "neutral", rules: ["TXF-11"] },
   "pays-accumulating": { icon: "piggy", tone: "neutral", rules: ["MF-49"] },
   "pays-distributing": { icon: "handCoins", tone: "neutral", rules: ["MF-49"] },
-  "ask-self-report": { icon: "file", tone: "caution", rules: ["TXF-22", "TXF-29"] },
-  "ask-tax-service": { icon: "file", tone: "caution", rules: ["BRK-36", "TXF-22"] },
-  "ask-estate": { icon: "alert", tone: "caution", rules: ["TXF-27"] },
-  "risk-unsupervised": { icon: "ban", tone: "caution", rules: ["BRK-06", "ETF-24"] },
-  "ask-w8": { icon: "file", tone: "caution", rules: ["TXF-13"] },
+  "ask-self-report": { icon: "filePen", tone: "caution", rules: ["TXF-22", "TXF-29"] },
+  "ask-tax-service": { icon: "receipt", tone: "caution", rules: ["BRK-36", "TXF-22"] },
+  "ask-estate": { icon: "scroll", tone: "caution", rules: ["TXF-27"] },
+  "risk-unsupervised": { icon: "eyeOff", tone: "caution", rules: ["BRK-06", "ETF-24"] },
+  "ask-w8": { icon: "fileSignature", tone: "caution", rules: ["TXF-13"] },
   unavailable: { icon: "ban", tone: "caution", rules: ["BRK-40"] },
 };
+
+/** A currency's own sign for its label; a currency without one in the set, or none known, takes the general currency sign. */
+const signOf = (code: string | undefined): LabelIconKey =>
+  ({ USD: "dollar", EUR: "euro", GBP: "pound", JPY: "yen", CHF: "franc" } as Record<string, LabelIconKey>)[code ?? ""] ?? "currency";
 
 export interface Label {
   id: LabelId;
@@ -101,6 +117,7 @@ const familyOf: Record<LabelId, Label["family"]> = {
   hedged: "currency",
   "hedged-many": "currency",
   "currency-many": "currency",
+  "currency-foreign": "currency",
   "tax-currency": "tax",
   "tax-fund-dividend": "tax",
   "tax-distribution": "tax",
@@ -125,7 +142,7 @@ export function label(id: LabelId, arg?: string): Label {
   const def = labelDefs[id];
   const words = c.labels[id] as { text: string | ((ccy: string) => string); explain: string | ((ccy: string) => string) };
   const say = (w: string | ((ccy: string) => string)) => (typeof w === "function" ? w(currencyName(arg ?? "USD")) : w);
-  return { id, text: say(words.text), explain: say(words.explain), icon: def.icon, tone: def.tone, rules: def.rules, family: familyOf[id] };
+  return { id, text: say(words.text), explain: say(words.explain), icon: def.icon === "sign" ? signOf(arg ?? "USD") : def.icon, tone: def.tone, rules: def.rules, family: familyOf[id] };
 }
 
 /** What holds for every fund in the option (shown once on its card): where it is held and how it trades. */
@@ -153,9 +170,10 @@ export function fundLabels(rec: FundRecord, index: IndexRef, option: OptionId): 
   const indexCurrency = index.exposure?.currency;
   // an index priced in several currencies (ETF-48): a hedge removes only its own currency, and the unhedged fund carries them all (2026-10-29)
   const many = index.exposure?.other_currencies === true;
-  if (rec.hedged === true) out.push(label(many ? "hedged-many" : "hedged", indexCurrency && !isIls(indexCurrency) ? indexCurrency : undefined));
+  if (rec.hedged === true) out.push(label(many ? "hedged-many" : "hedged", indexCurrency && !isIls(indexCurrency) ? indexCurrency : index.custom ? c.indexCurrency : undefined));
   else if (indexCurrency && !isIls(indexCurrency)) out.push(label(many ? "currency-many" : "currency", indexCurrency));
-  else if (!index.exposure && !index.israeli) out.push(label("currency", rec.currency));
+  // an index the person added: the site does not know its currency, so the label names none (founder, 2026-11-05)
+  else if (!index.exposure && !index.israeli) out.push(label(index.custom ? "currency-foreign" : "currency", rec.currency));
   // tax: an Israeli fund on a foreign index is taxed on the currency move too (TXS-09); an Irish fund pays tax inside on dividends (TXF-16)
   if (rec.domicile === "IL" && !index.israeli && rec.hedged !== true) out.push(label("tax-currency"));
   if (rec.domicile === "IE") out.push(label("tax-fund-dividend"));

@@ -3618,6 +3618,7 @@ export const invest = {
     paidInNote: (months: number) => `הסכום ההתחלתי ועוד הפקדה חודשית, ${months} חודשים`,
     left: (years: number) => `נשאר לכם בעוד ${years} שנים`,
     steadyDollar: "אם הדולר לא זז מול השקל",
+    steadyIndexCurrency: "אם שער המטבע של המדד לא זז מול השקל",
     leftNote: "אחרי דמי ניהול ומס, בכסף של היום",
     cheapest: "הזוג הזול ביותר",
     cheapestStar: "★ הזוג הזול ביותר לתוכנית שלכם",
@@ -3906,6 +3907,8 @@ export const invest = {
   /** The word for an option inside a sentence ("ב…"). */
   optionIn: { "il-tracking": "קרן מחקה ישראלית", "il-etf": "קרן סל ישראלית", "tase-foreign": "קרן חוץ בבורסה בתל אביב", abroad: "דרך בחו״ל" } as Record<string, string>,
 
+  /** The currency of an index the person added, which the site does not know, where a label names "שער ה…" (2026-11-05). */
+  indexCurrency: "מטבע של המדד",
   currencies: { USD: "דולר", EUR: "אירו", GBP: "פאונד", JPY: "ין", CHF: "פרנק שוויצרי", CAD: "דולר קנדי", AUD: "דולר אוסטרלי", CNY: "יואן", HKD: "דולר הונג קונג", NIS: "שקל", ILS: "שקל" } as Record<string, string>,
 
   labelFamilies: { held: "איפה הקרן מוחזקת", trade: "איך היא נסחרת", follow: "איך היא עוקבת אחרי המדד", currency: "מטבע", payout: "חלוקה", tax: "מס", asks: "מה היא דורשת מכם, וסיכון", availability: "זמינות" },
@@ -3923,6 +3926,7 @@ export const invest = {
     currency: { text: (ccy: string) => `חשיפה ל${ccy}`, explain: (ccy: string) => `ערך הקרן עולה ויורד גם עם שער ה${ccy} מול השקל, כי המדד מחושב בו.` },
     hedged: { text: "מנוטרלת מט״ח", explain: (ccy: string) => `הקרן מנטרלת את שער ה${ccy} מול השקל, ולכן שינוי בשער לא משנה את ערכה. הנטרול עולה כסף: הוא נראה בפער של הקרן מהמדד שלה, והחישוב באתר כולל אותו.` },
     "hedged-many": { text: (ccy: string) => `מנוטרלת ${ccy}`, explain: (ccy: string) => `הקרן מנטרלת את שער ה${ccy} מול השקל, ורק אותו. המדד מחושב ב${ccy} מתוך מניות בכמה מטבעות, ולכן המטבעות האחרים שבמדד עדיין משנים את ערכה, מול ה${ccy}. הנטרול עולה כסף: הוא נראה בפער של הקרן מהמדד שלה, והחישוב באתר כולל אותו.` },
+    "currency-foreign": { text: "חשיפה למט״ח", explain: "את המדד הזה הוספתם, והאתר לא יודע באיזה מטבע הוא מחושב. ערך הקרן עולה ויורד גם עם שער המטבע הזה מול השקל. בדיקת השער באתר זהה לכל מטבע, ולכן היא לא תלויה בשאלה איזה מטבע זה." },
     "currency-many": { text: (ccy: string) => `חשיפה ל${ccy} ולמטבעות נוספים`, explain: (ccy: string) => `ערך הקרן עולה ויורד עם שער ה${ccy} מול השקל, ועם המטבעות האחרים שבמדד, כי המדד מחושב ב${ccy} מתוך מניות בכמה מטבעות.` },
     "tax-currency": { text: "מס גם על שינויי המטבע", explain: "בקרן ישראלית המס נמדד על הרווח הריאלי ביחידות השקליות, ולכן גם עליית המטבע שבתוך הרווח ממוסה." },
     "tax-fund-dividend": { text: "מס דיבידנד בתוך הקרן", explain: "קרן אירית משלמת מס אמריקני על דיבידנדים מחברות אמריקניות. המס הזה הוא עלות של הקרן ואינו מזוכה בישראל." },

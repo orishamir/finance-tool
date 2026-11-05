@@ -181,6 +181,18 @@ describe("a fund the person types is priced at the collected houses under its ki
     expect(v.fundCount).toBe(1);
   });
 
+  it("on an index the person added, the currency is named by no one: חשיפה למט״ח, never the dollar (founder, 2026-11-05)", () => {
+    const custom = { id: "custom-nikkei", name: "ניקיי", israeli: false, added: t };
+    const onCustom = fundFromDraft({ ...said("il-tracking"), name: "על ניקיי", fixed: 0.3 }, "custom-fund-nikkei", custom.id, t);
+    const rec = withCustomEntries(bundle, [], [onCustom], [custom]).funds.at(-1)!;
+    const labels = fundLabels(rec, refOfCustom(custom), onCustom.kind);
+    expect(labels.map((l) => l.id)).toContain("currency-foreign");
+    expect(labels.map((l) => l.id)).not.toContain("currency");
+    expect(labels.map((l) => l.text).join(" ")).not.toContain("דולר");
+    const hedgedRec = withCustomEntries(bundle, [], [{ ...onCustom, hedged: true }], [custom]).funds.at(-1)!;
+    expect(fundLabels(hedgedRec, refOfCustom(custom), onCustom.kind).map((l) => l.explain).join(" ")).not.toContain("דולר");
+  });
+
   it("its number is the one typed, never the site's id, and links nowhere", () => {
     expect(mine.number).toBe("");
     const numbered = fundFromDraft({ ...said("il-etf"), name: "עם מספר", number: "1234567", fixed: 0.1 }, "custom-fund-numbered", "index-ta125", t);

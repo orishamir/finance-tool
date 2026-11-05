@@ -2,7 +2,7 @@
 // a chip of an icon and two or three words, a row of them, and the one sheet per page that a tap opens with the label's meaning
 // and its rules. The words and the rules come from lib/labels.ts.
 import { createContext, useContext, useId, useState, type ReactNode } from "react";
-import { Ban, Clock, Coins, FileText, Globe, HandCoins, House, Layers, Lock, Percent, PiggyBank, Repeat, ShieldCheck, Sun, TriangleAlert, type LucideProps } from "lucide-react";
+import { Activity, ArrowRightLeft, Ban, BadgePercent, Blend, CalendarClock, Currency, DollarSign, Euro, EyeOff, FileClock, FilePen, FileSignature, Gavel, Globe, HandCoins, House, JapaneseYen, Landmark, Lock, Percent, Package, PiggyBank, PoundSterling, ReceiptText, ScrollText, ShieldCheck, SwissFranc, TrendingUpDown, type LucideProps } from "lucide-react";
 import { invest as c } from "../../copy";
 import type { Label, LabelIconKey } from "../../lib/labels";
 import { RuleRef } from "../provenance";
@@ -13,20 +13,34 @@ import { DocLink } from "./doc-link";
 // Lucide, 1.75px stroke, none mirrors
 const icons: Record<LabelIconKey, React.ComponentType<LucideProps>> = {
   home: House,
+  landmark: Landmark,
   globe: Globe,
-  clock: Clock,
-  layers: Layers,
-  coins: Coins,
+  pulse: Activity,
+  calendarClock: CalendarClock,
+  box: Package,
+  swap: ArrowRightLeft,
+  fileClock: FileClock,
+  blend: Blend,
+  dollar: DollarSign,
+  euro: Euro,
+  pound: PoundSterling,
+  yen: JapaneseYen,
+  franc: SwissFranc,
+  currency: Currency,
   shield: ShieldCheck,
-  file: FileText,
-  lock: Lock,
-  alert: TriangleAlert,
-  ban: Ban,
+  trendUpDown: TrendingUpDown,
+  badgePercent: BadgePercent,
   percent: Percent,
-  repeat: Repeat,
-  sun: Sun,
+  lock: Lock,
+  gavel: Gavel,
   piggy: PiggyBank,
   handCoins: HandCoins,
+  filePen: FilePen,
+  receipt: ReceiptText,
+  scroll: ScrollText,
+  eyeOff: EyeOff,
+  fileSignature: FileSignature,
+  ban: Ban,
 };
 
 export function LabelIcon({ name, size = 14 }: { name: LabelIconKey; size?: number }) {

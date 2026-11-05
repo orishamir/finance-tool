@@ -9,7 +9,7 @@ import { CalendarCheck, CalendarDays, Lock, Zap } from "lucide-react";
 import { IconAlert, IconExternal, IconLock } from "../icons";
 import { IdRef, LeadTail, MarkHead, Num, RulesLine, StaleSaid } from "../provenance";
 import { IconDrillIn } from "../icons";
-import { label } from "../../lib/labels";
+import { allLabels, label } from "../../lib/labels";
 import { fmt } from "../../lib/format";
 import { PileStory, PileYears } from "./pile-story";
 import { AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, Button, Callout, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, LabelFilter, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, CompareTable, TableCols, CoverageFold, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, SortHead, ExposureCell, FeeKey, FeeNum, HelpMark, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, GainBars, GapNote, HeadlineFigure, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, ParameterLine, PercentField, PlanChips, KnobStrip, ChangeChart, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, RangeField, RankBadge, Section, SegmentedControl, SelectField, Sentence, TileChoice, ShareRings, SourceLine, Stat, StatRow, StatTile, StepButtons, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, ClaimList, DocLink, atPdfPage, GroupPriceFold, GroupPriceRows, PeriodStrip, type CostPart, type GroupEntry } from "./index";
@@ -1226,6 +1226,11 @@ function Lists({ today }: { today: string }) {
         </State>
         <State label="still: drawn only, inside a control of its own (a TileChoice tile)" wide>
           <LabelRow labels={labels} still />
+        </State>
+        <State label="every label, in its family's colour (allLabels): each icon says what its label is about, and labels about different things never share one" wide>
+          <span data-testid="all-labels">
+            <LabelRow labels={allLabels()} />
+          </span>
         </State>
         <State label="LabelIcon alone, size 18 (the sheet's heading)">
           <span className="inline-flex gap-2">

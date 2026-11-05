@@ -196,7 +196,7 @@ export function PairResult({ view, bundle, plan, settled, pick, onPick }: { view
   if (!pc) return null;
   // a foreign fund's one figure rests on a steady dollar, and says so (founder, 2026-10-31: the assumption never goes silent); a hedged fund's does not
   const onSteadyDollar = (fund: string) => kindOf(allFunds(view).find((f) => f.rec.id === fund)!.rec) === "unhedged";
-  const steady = (fund: string) => !view.index.israeli && <span className="text-xs text-muted-foreground min-h-[1lh] max-md:min-h-[2lh]">{onSteadyDollar(fund) ? c.pair.steadyDollar : ""}</span>;
+  const steady = (fund: string) => !view.index.israeli && <span className="text-xs text-muted-foreground min-h-[1lh] max-md:min-h-[2lh]">{onSteadyDollar(fund) ? (view.index.custom ? c.pair.steadyIndexCurrency : c.pair.steadyDollar) : ""}</span>;
   const years = plan.years;
   const months = 12 * plan.years;
   const lines = legendLines(!!view.index.israeli, [...pc.account, ...(pcOther?.account ?? [])].map((l) => lineOf(l.line)));
