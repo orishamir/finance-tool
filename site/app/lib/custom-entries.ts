@@ -59,6 +59,9 @@ export interface CustomFund {
   variable: ValueObject | null;
   trustee: ValueObject | null;
   hedged: boolean;
+  /** On an index the person added: they said the index is in shekels, so the fund moves with no foreign currency (founder, 2026-11-05: the
+   *  question moved from the index to the fund). Never with a hedge. */
+  shekelIndex?: true;
   /** What it does with dividends and interest, as the person said; null: not said, and the fund is listed without a price. */
   payout: FundPayout | null;
   /** A distributing fund's yield, percent a year, and the payments a year; null: not typed. */
@@ -182,7 +185,7 @@ export function validCustomFunds(list: unknown[]): CustomFund[] {
     const perYear = payout === "distributing" && PER_YEAR.includes(f.perYear as PerYear) ? (f.perYear as PerYear) : null;
     const domicile = foreign && DOMICILES.includes(f.domicile as FundDomicile) ? (f.domicile as FundDomicile) : null;
     const tracking = TRACKINGS.includes(f.tracking as FundTracking) ? (f.tracking as FundTracking) : null;
-    out.push({ id: f.id, name: f.name, number: typeof f.number === "string" && f.number ? f.number : null, indexId: f.indexId, kind, fixed, variable: foreign ? null : variable, trustee: foreign ? null : trustee, hedged: f.hedged, payout, yield: yieldPct, perYear, domicile, tracking, added: f.added });
+    out.push({ id: f.id, name: f.name, number: typeof f.number === "string" && f.number ? f.number : null, indexId: f.indexId, kind, fixed, variable: foreign ? null : variable, trustee: foreign ? null : trustee, hedged: f.hedged, ...(f.shekelIndex === true && !f.hedged ? { shekelIndex: true as const } : {}), payout, yield: yieldPct, perYear, domicile, tracking, added: f.added });
   }
   return out;
 }
@@ -214,6 +217,8 @@ export interface FundDraft {
   trustee: number | null;
   /** Null: not chosen yet, on a foreign index; saving asks for it. On an Israeli index it is false and never asked. */
   hedged: boolean | null;
+  /** On an index the person added: the third answer to the currency question, "המדד בשקלים" (hedged is then false). */
+  shekelIndex: boolean;
   payout: FundPayout | null;
   yield: number | null;
   perYear: PerYear | null;
@@ -232,8 +237,8 @@ export const brokerDraftOf = (b: CustomBroker | null): BrokerDraft =>
 /** `israeliIndex`: a fund on an Israeli index has no currency to neutralise, so it starts and stays unhedged. */
 export const fundDraftOf = (f: CustomFund | null, kind: OptionId, israeliIndex = false): FundDraft =>
   f
-    ? { name: f.name, number: f.number ?? "", kind: f.kind, fixed: num(f.fixed), variable: num(f.variable), trustee: num(f.trustee), hedged: f.hedged, payout: f.payout, yield: num(f.yield), perYear: f.perYear, domicile: f.domicile, tracking: f.tracking }
-    : { name: "", number: "", kind, fixed: null, variable: null, trustee: null, hedged: israeliIndex ? false : null, payout: null, yield: null, perYear: null, domicile: null, tracking: null };
+    ? { name: f.name, number: f.number ?? "", kind: f.kind, fixed: num(f.fixed), variable: num(f.variable), trustee: num(f.trustee), hedged: f.hedged, shekelIndex: f.shekelIndex === true, payout: f.payout, yield: num(f.yield), perYear: f.perYear, domicile: f.domicile, tracking: f.tracking }
+    : { name: "", number: "", kind, fixed: null, variable: null, trustee: null, hedged: israeliIndex ? false : null, shekelIndex: false, payout: null, yield: null, perYear: null, domicile: null, tracking: null };
 
 export type EntryError = "name-empty" | "name-taken" | "sells-none" | "hedged-none";
 
@@ -288,6 +293,7 @@ export function fundFromDraft(d: FundDraft, id: string, indexId: string, today: 
     variable: foreign ? null : vo(d.variable, "pct_per_year", today, w.variable),
     trustee: foreign ? null : vo(d.trustee, "pct_per_year", today, w.trustee),
     hedged: d.hedged === true,
+    ...(d.shekelIndex && d.hedged !== true ? { shekelIndex: true as const } : {}),
     payout: d.payout,
     yield: d.payout === "distributing" ? vo(d.yield, "pct_per_year", today, w.yield) : null,
     perYear: d.payout === "distributing" ? d.perYear : null,
@@ -452,12 +458,16 @@ export interface EnteredInBundle {
   inputs: Record<string, Record<string, SiteValue>>;
   /** What a fund on a custom index needs of its index: no exposure record exists for one (F-65). */
   exposures: Record<string, Pick<ExposureRecord, "cash_like" | "currency">>;
+  /** The person's funds whose index they said is in shekels: each runs on a shekel index and carries no currency label. */
+  shekelFunds: string[];
 }
 
 /** The bundle with the person's entries in it. Nothing entered: the same object, so the page prices nothing again. */
 export function withCustomEntries(bundle: WorkbenchBundle, brokers: readonly CustomBroker[], funds: readonly CustomFund[], indices: readonly CustomIndex[] = []): WorkbenchBundle {
   if (brokers.length === 0 && funds.length === 0) return bundle;
-  const exposures: EnteredInBundle["exposures"] = Object.fromEntries(indices.map((i) => [i.id, { cash_like: false, currency: i.israeli ? "ILS" : "USD" }]));
+  // an index the person added says nothing of its currency (2026-11-05): a foreign one in dollars, as the page's generic fund abroad; a fund
+  // whose index they said is in shekels runs on a shekel index of its own (shekelFunds, read by fundSpec)
+  const exposures: EnteredInBundle["exposures"] = Object.fromEntries(indices.map((i) => [i.id, { cash_like: false, currency: "USD" }]));
   const currencyOf = (f: CustomFund) => bundle.exposures.find((e) => e.id === f.indexId)?.currency ?? exposures[f.indexId]?.currency ?? null;
   // an account built on a house that is still on the site is priced on that house's record; one whose house is gone keeps only what the person typed
   const houseOf = (b: CustomBroker) => (b.base ? bundle.snapshots.find((x) => x.id === b.base!.houseId && !isCustomBrokerId(x.id)) : undefined);
@@ -471,6 +481,7 @@ export function withCustomEntries(bundle: WorkbenchBundle, brokers: readonly Cus
       layered: Object.fromEntries(onHouse.map((b) => [b.id, layeredOf(b)])),
       inputs: Object.fromEntries([...brokers.map((b) => [b.id, { ...(houseOf(b) ? groupInputs(b) : {}), ...inputsOf(brokerTerms(b), b.name) }] as const), ...funds.map((f) => [f.id, inputsOf(fundTerms(f), f.name)] as const)]),
       exposures,
+      shekelFunds: funds.filter((f) => f.shekelIndex).map((f) => f.id),
     },
   };
 }

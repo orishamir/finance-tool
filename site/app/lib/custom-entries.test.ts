@@ -9,7 +9,7 @@ import { LabelSheetHost } from "../components/kit";
 import { ProvenanceProvider } from "../components/provenance";
 import { brokerDraftOf, brokerErrors, brokerFromDraft, fundDraftOf, fundErrors, fundFromDraft, tariffOfBroker, validCustomBrokers, validCustomFunds, withCustomEntries, type CustomBroker, type CustomFund } from "./custom-entries";
 import { fundLabels } from "./labels";
-import { buildInvest, cheapestWay, indexById, optionOfFund, pairCosts, refOfCustom, type WayPrice } from "./invest";
+import { buildInvest, cheapestWay, indexById, indexSeenBy, optionOfFund, pairCosts, refOfCustom, type WayPrice } from "./invest";
 import { buildWorkbenchBundle } from "./providers.server";
 import type { WorkbenchInputs } from "./providers";
 import { applyImport, buildStateFile, ensureLoaded, exportCounts, flush, getSnapshot, isEmptyState, readImport, removeCustomBroker, removeCustomFund, removeCustomIndex, resetStore, saveCustomBroker, saveCustomFund, saveCustomIndex, STATE_KEY, stateFileText, type StateV3 } from "./state";
@@ -191,6 +191,34 @@ describe("a fund the person types is priced at the collected houses under its ki
     expect(labels.map((l) => l.text).join(" ")).not.toContain("דולר");
     const hedgedRec = withCustomEntries(bundle, [], [{ ...onCustom, hedged: true }], [custom]).funds.at(-1)!;
     expect(fundLabels(hedgedRec, refOfCustom(custom), onCustom.kind).map((l) => l.explain).join(" ")).not.toContain("דולר");
+  });
+
+  it("on an index the person added, \"המדד בשקלים\" is the fund's own answer: no currency label, and it is priced, at home or abroad (2026-11-05)", () => {
+    const custom = { id: "custom-ta-tech", name: "טכנולוגיה ישראלית", added: t };
+    const index = refOfCustom(custom);
+    expect(index.israeli).toBe(false);
+    for (const kind of ["il-tracking", "abroad"] as const) {
+      const f = fundFromDraft({ ...said(kind), name: kind, fixed: 0.2, shekelIndex: true }, `custom-fund-${kind}`, custom.id, t);
+      expect(f.shekelIndex).toBe(true);
+      const b = withCustomEntries(bundle, [], [f], [custom]);
+      expect(b.entered!.shekelFunds).toEqual([f.id]);
+      const rec = b.funds.at(-1)!;
+      const ids = fundLabels(rec, indexSeenBy(index, rec, b), kind).map((l) => l.id);
+      expect(ids).not.toContain("currency-foreign");
+      expect(ids).not.toContain("tax-currency");
+      const way = allFunds(buildInvest({ bundle: b, index, plan })).find((x) => x.rec.id === f.id)!;
+      expect(way.best?.valueN).toBeGreaterThan(0);
+    }
+    // the same fund, said to move with a foreign currency, keeps the foreign-currency label
+    const foreignFund = fundFromDraft({ ...said("il-tracking"), name: "זר", fixed: 0.2 }, "custom-fund-zar", custom.id, t);
+    const b2 = withCustomEntries(bundle, [], [foreignFund], [custom]);
+    expect(fundLabels(b2.funds.at(-1)!, indexSeenBy(index, b2.funds.at(-1)!, b2), "il-tracking").map((l) => l.id)).toContain("currency-foreign");
+  });
+
+  it("a hedge and \"המדד בשקלים\" never stand together", () => {
+    const f = fundFromDraft({ ...said("il-tracking"), name: "שניהם", fixed: 0.2, hedged: true, shekelIndex: true }, "custom-fund-both", "custom-x", t);
+    expect(f.shekelIndex).toBeUndefined();
+    expect(validCustomFunds([JSON.parse(JSON.stringify({ ...f, shekelIndex: true }))])[0]!.shekelIndex).toBeUndefined();
   });
 
   it("its number is the one typed, never the site's id, and links nowhere", () => {

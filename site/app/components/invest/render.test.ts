@@ -54,7 +54,7 @@ describe("the index page's sections render", () => {
     const pick = pickOfHeadline(view)!;
     const leumi = { house: "leumi", fund: pick.fund };
     const out = html(createElement("div", null,
-      createElement(IndexHeader, { view, onChangeAnswer: null }),
+      createElement(IndexHeader, { view }),
       createElement(PairResult, { view, bundle, plan: { ...plan, returnFromParameter: true }, pick, onPick: () => undefined }),
       createElement(PairResult, { view, bundle, plan: { ...plan, returnFromParameter: true }, pick: leumi, onPick: () => undefined }),
       createElement(AccountColumn, { view, bundle, years: 20, pick, onPick: () => undefined }),

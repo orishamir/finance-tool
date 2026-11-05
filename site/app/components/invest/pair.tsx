@@ -8,7 +8,7 @@ import { useMemo, useState, type ReactNode } from "react";
 import type { FeeLine } from "@finance-tool/engine";
 import { brands, groupPrices, invest as c } from "../../copy";
 import { isCustomFund } from "../../lib/custom-entries";
-import { brokeragePagePath, doubtOf, gapOf, inputMap, hasKinds, kindOf, opensOn, pairCosts, pairValue, type FundWay, type InvestView, type Kind, type PairCosts, type Reason, type WayPrice } from "../../lib/invest";
+import { brokeragePagePath, doubtOf, gapOf, indexSeenBy, inputMap, hasKinds, kindOf, opensOn, pairCosts, pairValue, type FundWay, type InvestView, type Kind, type PairCosts, type Reason, type WayPrice } from "../../lib/invest";
 import type { WorkbenchBundle, WorkbenchInputs } from "../../lib/providers";
 import { brokerLabels, fundLabels, optionLabels, type Label } from "../../lib/labels";
 import { computed, ownBy, type SiteValue } from "../../lib/value";
@@ -195,7 +195,10 @@ export function PairResult({ view, bundle, plan, settled, pick, onPick }: { view
   const pcOther = useMemo(() => (other ? pairCosts({ bundle, index: view.index, plan, fundId: other.fund, providerId: other.house }) : null), [bundle, view.index, plan, other?.fund, other?.house]);
   if (!pc) return null;
   // a foreign fund's one figure rests on a steady dollar, and says so (founder, 2026-10-31: the assumption never goes silent); a hedged fund's does not
-  const onSteadyDollar = (fund: string) => kindOf(allFunds(view).find((f) => f.rec.id === fund)!.rec) === "unhedged";
+  const onSteadyDollar = (fund: string) => {
+    const rec = allFunds(view).find((f) => f.rec.id === fund)!.rec;
+    return kindOf(rec) === "unhedged" && !indexSeenBy(view.index, rec, bundle).israeli;
+  };
   const steady = (fund: string) => !view.index.israeli && <span className="text-xs text-muted-foreground min-h-[1lh] max-md:min-h-[2lh]">{onSteadyDollar(fund) ? (view.index.custom ? c.pair.steadyIndexCurrency : c.pair.steadyDollar) : ""}</span>;
   const years = plan.years;
   const months = 12 * plan.years;
@@ -572,7 +575,7 @@ const mayaHrefOf = (f: FundWay) => {
 };
 
 /** The fund's labels: how it trades (the type, from its option; a foreign fund, where it is listed, since the same fund can have a row for each), then what the record says about it. */
-const labelsOf = (view: InvestView, f: FundWay): Label[] => [f.option === "tase-foreign" ? optionLabels(f.option)[0]! : optionLabels(f.option)[1] ?? optionLabels(f.option)[0]!, ...fundLabels(f.rec, view.index, f.option)];
+const labelsOf = (view: InvestView, f: FundWay, bundle: WorkbenchBundle): Label[] => [f.option === "tase-foreign" ? optionLabels(f.option)[0]! : optionLabels(f.option)[1] ?? optionLabels(f.option)[0]!, ...fundLabels(f.rec, indexSeenBy(view.index, f.rec, bundle), f.option)];
 
 /** F-92 (a) in a row: the gap with its sign, and the years it rests on. */
 export function GapCell({ rec, today }: { rec: FundWay["rec"]; today: string }) {
@@ -666,7 +669,7 @@ export function FundColumn({ view, bundle, plan, today, pick, onPick, filter, on
   const house = providerName(view, pick.house);
   if (!fund || !house) return null;
   const selAt = fund.byHouse[pick.house];
-  const rows = funds.map((f) => ({ f, at: f.byHouse[pick.house], labels: labelsOf(view, f) }));
+  const rows = funds.map((f) => ({ f, at: f.byHouse[pick.house], labels: labelsOf(view, f, bundle) }));
   // the labels that split the list: some funds have them, some do not
   const counts = new Map<string, { label: Label; count: number }>();
   for (const r of rows) for (const l of r.labels) counts.set(l.id, { label: l, count: (counts.get(l.id)?.count ?? 0) + 1 });

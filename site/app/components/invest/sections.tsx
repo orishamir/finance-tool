@@ -26,21 +26,18 @@ export function ProviderLink({ p, className, short }: { p: ProviderInfo; classNa
 // ---------------------------------------------------------------- 4. the index header
 
 /** What the index is and how it is held: the lines under its name. */
-function IndexBlurb({ index, onChangeAnswer }: { index: IndexRef; onChangeAnswer: (() => void) | null }) {
+function IndexBlurb({ index }: { index: IndexRef }) {
+  // an index the person added says nothing of how it is held: each fund on it says whether the index is in shekels (2026-11-05)
+  if (index.custom)
+    return (
+      <div className="flex flex-col gap-2">
+        <p className="text-muted-foreground max-w-measure">{c.custom.savedNote}</p>
+      </div>
+    );
   return (
     <div className="flex flex-col gap-2">
       <p className="text-muted-foreground max-w-measure">{index.oneLine ?? (index.israeli ? c.header.israeliNote : c.header.foreignNote)}</p>
       {index.oneLine && <p className="text-sm text-muted-foreground max-w-measure">{index.israeli ? c.header.israeliNote : c.header.foreignNote}</p>}
-      {index.custom && (
-        <p className="text-sm flex flex-wrap items-center gap-x-3">
-          <span>{c.custom.savedNote}</span>
-          {onChangeAnswer && (
-            <button type="button" onClick={onChangeAnswer} className="text-link hover:underline min-h-target">
-              {c.custom.change}
-            </button>
-          )}
-        </p>
-      )}
     </div>
   );
 }
@@ -50,23 +47,23 @@ function IndexBlurb({ index, onChangeAnswer }: { index: IndexRef; onChangeAnswer
  * block is as tall as the longest at any width and a switch of index never moves the page (founder, 2026-10-28: "make the index
  * description after choosing an index fixed size").
  */
-export function IndexHeader({ view, others = [], onChangeAnswer }: { view: InvestView; others?: IndexRef[]; onChangeAnswer: (() => void) | null }) {
+export function IndexHeader({ view, others = [] }: { view: InvestView; others?: IndexRef[] }) {
   const { index } = view;
   return (
     <header className="flex flex-col gap-2">
       <div className="flex flex-wrap items-center gap-2">
         <h2 className="text-xl lg:text-2xl font-semibold">{index.name}</h2>
-        <Tag tone="neutral">{index.israeli ? c.chips.israeliTag : c.chips.foreignTag}</Tag>
+        {!index.custom && <Tag tone="neutral">{index.israeli ? c.chips.israeliTag : c.chips.foreignTag}</Tag>}
       </div>
       <div className="grid">
         <div className="[grid-area:1/1]">
-          <IndexBlurb index={index} onChangeAnswer={onChangeAnswer} />
+          <IndexBlurb index={index} />
         </div>
         {others
           .filter((o) => o.id !== index.id)
           .map((o) => (
             <div key={o.id} aria-hidden="true" inert className="[grid-area:1/1] invisible">
-              <IndexBlurb index={o} onChangeAnswer={null} />
+              <IndexBlurb index={o} />
             </div>
           ))}
       </div>

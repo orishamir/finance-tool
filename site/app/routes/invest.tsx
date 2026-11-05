@@ -285,7 +285,7 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
           <p className="text-muted-foreground">{c.chips.none}</p>
         ) : (
           <>
-            <IndexHeader view={view} others={knownIndices(wb)} onChangeAnswer={index.custom ? () => invest.add({ ...index.custom!, israeli: !index.custom!.israeli }) : null} />
+            <IndexHeader view={view} others={knownIndices(wb)} />
             {/* the knobs write the same current goal the fees page and the panel write: a value set here is the value there; they sit
                 right above the result so it moves in view (founder, 2026-10-28) */}
             {planBlock}

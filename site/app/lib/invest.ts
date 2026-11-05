@@ -54,7 +54,8 @@ export function venueOfFund(rec: FundRecord): Venue | null {
 export interface CustomIndex {
   id: string;
   name: string;
-  israeli: boolean;
+  /** Asked before 2026-11-05 ("החברות במדד ישראליות?") and read only to carry the answer to the index's funds (state.ts, shekelFromIndex). */
+  israeli?: boolean;
   /** "לידיעתכם בלבד": shown in the header, never used (spec §1, 10.8). */
   currency?: string;
   region?: string;
@@ -77,7 +78,12 @@ export function knownIndices(bundle: Pick<WorkbenchBundle, "exposures">): IndexR
 
 export const refOfExposure = (e: ExposureRecord): IndexRef => ({ id: e.id, name: e.names.he[0] ?? e.names.en[0] ?? e.id, israeli: e.constituents_israeli === true, exposure: e, custom: null, oneLine: e.one_line_he ?? null });
 
-export const refOfCustom = (c: CustomIndex): IndexRef => ({ id: c.id, name: c.name, israeli: c.israeli, exposure: null, custom: c, oneLine: null });
+/** An index the person added asks nothing of its currency (founder, 2026-11-05): every kind of fund is offered on it, and each fund says. */
+export const refOfCustom = (c: CustomIndex): IndexRef => ({ id: c.id, name: c.name, israeli: false, exposure: null, custom: c, oneLine: null });
+
+/** The index as one fund sees it: a fund the person said is on a shekel index reads it as Israeli (no currency, no hedge, no currency tax). */
+export const indexSeenBy = (index: IndexRef, rec: Pick<FundRecord, "id">, bundle: Pick<WorkbenchBundle, "entered">): IndexRef =>
+  index.custom && bundle.entered?.shekelFunds.includes(rec.id) ? { ...index, israeli: true } : index;
 
 /** The index page's address (founder, 2026-10-26: /indices, with no redirect from /invest): `/indices/<x>` for the exposure `index-<x>`, a custom index at `/indices?custom=<id>`. */
 export const INDICES_PATH = "/indices";
@@ -602,7 +608,8 @@ function wayPrice(ctx: Ctx, p: Extract<Priced, { kind: "ok" }>, providerId: stri
 // ---------------------------------------------------------------- funds
 
 function fundSpec(ctx: Ctx, rec: FundRecord): { spec: Spec; mismatch: boolean } | { reason: Reason } {
-  const exposure = ctx.bundle.exposures.find((e) => e.id === rec.exposure_id) ?? ctx.bundle.entered?.exposures[rec.exposure_id];
+  const entered = ctx.bundle.entered?.exposures[rec.exposure_id];
+  const exposure = ctx.bundle.exposures.find((e) => e.id === rec.exposure_id) ?? (entered && ctx.bundle.entered!.shekelFunds.includes(rec.id) ? { ...entered, currency: "ILS" } : entered);
   const subject = subjectOf(ctx.bundle, rec.id);
   if (!subject) return { reason: { code: "fund-type" } };
   // a fund the person typed: what they left unsaid is named, never filled in (2026-11-05)

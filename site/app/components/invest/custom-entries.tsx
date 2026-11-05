@@ -286,9 +286,12 @@ function draftRecord(d: FundDraft, index: IndexRef): FundRecord {
   return recordOfFund(f, index.exposure?.currency ?? null);
 }
 
+/** The index as the draft sees it: on an index the person added, "המדד בשקלים" reads it as Israeli (as indexSeenBy on the page). */
+const seenBy = (d: FundDraft, index: IndexRef): IndexRef => (index.custom && d.shekelIndex ? { ...index, israeli: true } : index);
+
 /** Everything the fund's row shows: where it is held, then the fund's own labels (as `fundLabels` on the page). */
 function rowLabels(d: FundDraft, index: IndexRef): Label[] {
-  const all = [...optionLabels(d.kind), ...fundLabels(draftRecord(d, index), index, d.kind)];
+  const all = [...optionLabels(d.kind), ...fundLabels(draftRecord(d, index), seenBy(d, index), d.kind)];
   // a hedge not chosen yet says nothing of the currency (founder, 2026-11-05: "who said it's חשיפה לדולר?")
   return d.hedged === null ? all.filter((l) => !HEDGE_LABELS.has(l.id)) : all;
 }
@@ -298,8 +301,8 @@ const HEDGE_LABELS = new Set<string>(["currency", "currency-many", "currency-for
  * The tiles of one question: each answer with the labels it adds to the row, the labels every answer shares left out (the row below shows
  * them). An answer that adds none says what it leaves instead.
  */
-function tilesOf<T extends string, K extends keyof FundDraft>(d: FundDraft, index: IndexRef, key: K, answers: { value: T; as: FundDraft[K]; title?: string; empty?: string }[]): Tile<T>[] {
-  const sets = answers.map((a) => rowLabels({ ...d, [key]: a.as }, index));
+function tilesOf<T extends string>(d: FundDraft, index: IndexRef, answers: { value: T; as: Partial<FundDraft>; title?: string; empty?: string }[]): Tile<T>[] {
+  const sets = answers.map((a) => rowLabels({ ...d, ...a.as }, index));
   const everywhere = new Set(sets[0]!.map((l) => l.id).filter((id) => sets.every((x) => x.some((l) => l.id === id))));
   return answers.map((a, i) => {
     const own = sets[i]!.filter((l) => !everywhere.has(l.id));
@@ -322,13 +325,15 @@ function FundTraits({ draft, set, index, hedgedError }: { draft: FundDraft; set:
       {after}
     </div>
   );
-  const payoutTiles = tilesOf(draft, index, "payout", [...PAYOUTS.map((p) => ({ value: p as string, as: p })), { value: UNKNOWN, as: null, title: c.unknown, empty: c.noPrice }]);
-  const trackingTiles = tilesOf(draft, index, "tracking", [...TRACKINGS.map((t) => ({ value: t as string, as: t })), { value: UNKNOWN, as: null, title: c.unknown }]);
-  const domicileTiles = tilesOf(draft, index, "domicile", [...DOMICILES.map((x) => ({ value: x as string, as: x, title: c.domicileNames[x]! })), { value: UNKNOWN, as: null, title: c.domicileNames.other!, empty: draft.payout === "distributing" ? c.noPrice : c.noLabel }]);
-  // a hedged fund the person typed has no price (its gap to the index is not known): the tile says so beside its label
-  const hedgedTiles = tilesOf(draft, index, "hedged", [
-    { value: "no", as: false },
-    { value: "yes", as: true },
+  const payoutTiles = tilesOf(draft, index, [...PAYOUTS.map((p) => ({ value: p as string, as: { payout: p } })), { value: UNKNOWN, as: { payout: null }, title: c.unknown, empty: c.noPrice }]);
+  const trackingTiles = tilesOf(draft, index, [...TRACKINGS.map((t) => ({ value: t as string, as: { tracking: t } })), { value: UNKNOWN, as: { tracking: null }, title: c.unknown }]);
+  const domicileTiles = tilesOf(draft, index, [...DOMICILES.map((x) => ({ value: x as string, as: { domicile: x }, title: c.domicileNames[x]! })), { value: UNKNOWN, as: { domicile: null }, title: c.domicileNames.other!, empty: draft.payout === "distributing" ? c.noPrice : c.noLabel }]);
+  // a hedged fund the person typed has no price (its gap to the index is not known): the tile says so beside its label. On an index the
+  // person added a third answer says the index is in shekels (founder, 2026-11-05: asked of the fund, not of the index)
+  const hedgedTiles = tilesOf(draft, index, [
+    { value: "no", as: { hedged: false, shekelIndex: false } },
+    { value: "yes", as: { hedged: true, shekelIndex: false } },
+    ...(index.custom ? [{ value: "shekel", as: { hedged: false, shekelIndex: true }, title: c.shekelIndex, empty: c.shekelIndexNote }] : []),
   ]).map((t) =>
     t.value === "yes"
       ? {
@@ -362,8 +367,8 @@ function FundTraits({ draft, set, index, hedgedError }: { draft: FundDraft; set:
       {!index.israeli &&
         question(
           2,
-          c.ask.hedged,
-          <TileChoice labelledBy={`${ids}-2`} tiles={hedgedTiles} value={draft.hedged === null ? null : draft.hedged ? "yes" : "no"} onChange={(v) => set("hedged", v === "yes")} />,
+          index.custom ? c.ask.currency : c.ask.hedged,
+          <TileChoice labelledBy={`${ids}-2`} tiles={hedgedTiles} value={draft.hedged === null ? null : draft.hedged ? "yes" : draft.shekelIndex ? "shekel" : "no"} onChange={(v) => { set("hedged", v === "yes"); set("shekelIndex", v === "shekel"); }} columns={index.custom ? 3 : undefined} />,
           hedgedError && <p className="text-xs text-destructive">{c.errors["hedged-none"]}</p>,
         )}
       {foreign && question(3, c.ask.domicile, <TileChoice labelledBy={`${ids}-3`} tiles={domicileTiles} value={draft.domicile ?? UNKNOWN} onChange={(v) => set("domicile", v === UNKNOWN ? null : (v as FundDomicile))} columns={3} />)}
@@ -385,7 +390,8 @@ function FundPreview({ draft, index }: { draft: FundDraft; index: IndexRef }) {
   // the longest row any answer can give, and the longest line; only the kind and the index change what can be shown
   const longest = useMemo(() => {
     const variants: FundDraft[] = [];
-    for (const payout of [...PAYOUTS, null]) for (const domicile of [...DOMICILES, null]) for (const hedged of index.israeli ? [false] : [false, true]) for (const tracking of TRACKINGS) variants.push({ ...draft, payout, domicile, hedged, tracking, yield: 1, perYear: 4 });
+    const currencies = index.israeli ? [{ hedged: false, shekelIndex: false }] : [{ hedged: false, shekelIndex: false }, { hedged: true, shekelIndex: false }, ...(index.custom ? [{ hedged: false, shekelIndex: true }] : [])];
+    for (const payout of [...PAYOUTS, null]) for (const domicile of [...DOMICILES, null]) for (const cur of currencies) for (const tracking of TRACKINGS) variants.push({ ...draft, payout, domicile, ...cur, tracking, yield: 1, perYear: 4 });
     const size = (ls: Label[]) => ls.reduce((n, l) => n + l.text.length + 4, 0);
     const rows = variants.map((v) => rowLabels(v, index)).sort((a, b) => size(b) - size(a));
     const lines = [c.previewPriced, ...(["payout-unknown", "need-yield", "domicile-unknown", "no-hedge-entered"] as const).map((code) => reasonText({ code }, cls))].sort((a, b) => b.length - a.length);
