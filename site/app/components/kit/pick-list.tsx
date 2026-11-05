@@ -23,6 +23,19 @@ export interface PickRow {
  * a cell may move to a second line (`max-md:row-start-2`). `head`: the column names, on the same grid. `phoneLimit`: on a phone, the
  * rows after the first N fold behind a button (`more` words it), the chosen row always shown; nothing is filtered out.
  */
+/**
+ * A figure that must fit a fixed width, a size down as its digits grow, so a plan typed past the sliders' ends never cuts its leading
+ * digits (#190). `list`: a list's fixed last column (7.5rem on a computer holds "999,999,999 ₪", 6.5rem on a phone "99,999,999 ₪"), a
+ * size down past eight digits on a phone, past nine digits everywhere, and again past twelve.
+ * `tile`: a 24 px figure in one of two tiles side by side on a phone, a size down past seven digits, nine and eleven; the tile holds the
+ * 24 px line's height (`min-h-[1.875rem]` on a phone), so a smaller figure moves nothing.
+ */
+export const figureFit = (v: number, kind: "list" | "tile" = "list") => {
+  const a = Math.abs(v);
+  if (kind === "tile") return a >= 1e11 ? "max-md:text-base" : a >= 1e9 ? "max-md:text-lg" : a >= 1e7 ? "max-md:text-xl" : "";
+  return a >= 1e12 ? "text-xs" : a >= 1e9 ? "text-sm max-md:text-xs" : a >= 1e8 ? "max-md:text-sm" : "";
+};
+
 /** A click on a control inside a row (a figure's sheet, a link, a label) is that control's, not a pick (founder, 2026-10-27). */
 const inControl = (target: EventTarget, row: HTMLElement) => {
   // a fold under a row (a house's group prices, 2026-11-04): its line opens it and a tap on what it shows is reading, not a pick

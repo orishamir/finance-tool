@@ -12,7 +12,7 @@ import { LANES, byGain, chainOf, gridOf, middleStart, openTopOf, rowsAt, unitOf,
 import { computed, type SiteValue } from "../../lib/value";
 import { IconLock } from "../icons";
 import { LeadTail, Num } from "../provenance";
-import { MixedName, Card, DiffFigure, DiffHead, DiffRow, GreyLine, LabelRow, STAIRS_SLOTS, STAIR_SWATCH, StairsChart, StairsSteps, StairsTable, cx, type StairColumn, type StairHue, type StairStep } from "../kit";
+import { MixedName, Card, useHeldHeight, DiffFigure, DiffHead, DiffRow, GreyLine, LabelRow, STAIRS_SLOTS, STAIR_SWATCH, StairsChart, StairsSteps, StairsTable, cx, type StairColumn, type StairHue, type StairStep } from "../kit";
 import { allFunds, wholeParts } from "./pair";
 import { ProviderLink, providerName } from "./sections";
 
@@ -39,6 +39,10 @@ interface Level {
 export const StairsSection = memo(function StairsSection({ view, bundle, plan, startHouse, startFund, example }: { view: InvestView; bundle: WorkbenchBundle; plan: WorkbenchInputs; startHouse: string | null; startFund: string | null; /** Nothing is picked: the start is the page's example, never called "now" (2026-11-05). */ example: boolean }) {
   const today = bundle.today;
   const t = c.stairs;
+  // the two cards hold the tallest height they have had on this index: another start drew fewer stairs, or shorter lists under them,
+  // and everything below moved (#190); the hold starts over on another index or screen width
+  const heldChart = useHeldHeight<HTMLElement>(`${view.index.id}:chart`);
+  const heldRows = useHeldHeight<HTMLElement>(`${view.index.id}:rows`);
   const g = useMemo(() => gridOf(view, bundle.snapshots), [view, bundle.snapshots]);
   const ways = useMemo(() => new Map<string, FundWay>(allFunds(view).map((f) => [f.rec.id, f])), [view]);
   const base: Pos | null = useMemo(() => (startHouse && startFund && g.cell(startHouse, startFund) ? { a: startHouse, f: startFund } : middleStart(g)), [g, startHouse, startFund]);
@@ -302,7 +306,7 @@ export const StairsSection = memo(function StairsSection({ view, bundle, plan, s
       <h2 id="invest-stairs-h" className="text-xl font-semibold">
         {t.title}
       </h2>
-      <Card pad="roomy" className="flex flex-col gap-2">
+      <Card ref={heldChart} pad="roomy" className="flex flex-col gap-2">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <h3 className="text-lg font-semibold">{t.panelTitle}</h3>
           <button type="button" onClick={reset} disabled={current.taken.length === 0} className="inline-flex min-h-11 items-center rounded-lg border border-border px-3.5 text-sm text-primary disabled:cursor-default disabled:text-muted-foreground disabled:opacity-50">
@@ -318,7 +322,7 @@ export const StairsSection = memo(function StairsSection({ view, bundle, plan, s
           endsAt={endsBelow ? { level: end.stair.v, text: `${t.endsAt} ${fmt.nisWhole(end.stair.v)}` } : null}
           now={atExample ? t.nowExample : t.now}
           label={t.chartLabel}
-          tick={(n, compact) => (compact && n >= 1000 ? `${fmt.number(n / 1000)}K` : fmt.number(Math.round(n)))}
+          tick={(n, compact) => (compact && n >= 1e6 ? `${fmt.number(Math.round(n / 1e5) / 10)}M` : compact && n >= 1000 ? `${fmt.number(n / 1000)}K` : fmt.number(Math.round(n)))}
           onGo={goTo}
         />
         <div className="max-lg:hidden">
@@ -351,7 +355,7 @@ export const StairsSection = memo(function StairsSection({ view, bundle, plan, s
           </span>
         </div>
       </Card>
-      <Card pad="roomy" className="flex flex-col gap-2">
+      <Card ref={heldRows} pad="roomy" className="flex flex-col gap-2">
         <h3 className="text-lg font-semibold">
           {atExample ? t.hereExample : t.here} <MixedName>{here.fundName}</MixedName>, <ProviderLink short p={here.house} />. {t.hereLeft} <Num value={here.left} />.
         </h3>

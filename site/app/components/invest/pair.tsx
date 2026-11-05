@@ -4,7 +4,7 @@
 // is left, and what it costs, split by who takes it: the person's pair and the cheapest one above each other, or, on the cheapest pair,
 // the next one beside it (one shape, so a pick never resizes the block).
 import { mayaFundHref } from "../../lib/sources";
-import { useMemo, useState, type ReactNode } from "react";
+import { Fragment, useMemo, useState, type ReactNode } from "react";
 import { isTie, type FeeLine } from "@finance-tool/engine";
 import { brands, groupPrices, invest as c } from "../../copy";
 import { isCustomFund } from "../../lib/custom-entries";
@@ -15,7 +15,7 @@ import { computed, ownBy, type SiteValue } from "../../lib/value";
 import { fmt } from "../../lib/format";
 import { IconLock } from "../icons";
 import { Num } from "../provenance";
-import { MixedName, Button, Card, ChartLegend, CostStack, FeeWordsNote, LabelChip, LabelFilter, LabelRow, LongestCase, PickList, ProductIdLink, Sentence, Stat, StatRow, Swatch, Tag, cx, GroupPriceFold, useChartPick, type ChartPick, useHeldHeight, type CostPart, type GroupChoice, type PickRow } from "../kit";
+import { MixedName, Button, figureFit, Card, ChartLegend, CostStack, FeeWordsNote, LabelChip, LabelFilter, LabelRow, LongestCase, PickList, ProductIdLink, Sentence, Stat, StatRow, Swatch, Tag, cx, GroupPriceFold, useChartPick, type ChartPick, useHeldHeight, type CostPart, type GroupChoice, type PickRow } from "../kit";
 import { groupNameOf, isGroupPrice, isGroupProvider, pickableGroups } from "../../lib/group-pick";
 import { optionClass, OptionTag, reasonText } from "./parts";
 import { ProviderLink, providerName } from "./sections";
@@ -253,7 +253,8 @@ export function PairResult({ view, bundle, plan, settled, pick, chosen, onPick }
     const rec = allFunds(view).find((f) => f.rec.id === fund)!.rec;
     return kindOf(rec) === "unhedged" && !indexSeenBy(view.index, rec, bundle).israeli;
   };
-  const steady = (fund: string) => !view.index.israeli && <span className="text-xs text-muted-foreground min-h-[1lh] max-md:min-h-[2lh]">{onSteadyDollar(fund) ? (view.index.custom ? c.pair.steadyIndexCurrency : c.pair.steadyDollar) : ""}</span>;
+  // the line is held on an Israeli index too, empty, so the tiles keep one height from index to index (nothing moves, #190)
+  const steady = (fund: string) => <span className="text-xs text-muted-foreground min-h-[1lh] max-md:min-h-[2lh]">{!view.index.israeli && onSteadyDollar(fund) ? (view.index.custom ? c.pair.steadyIndexCurrency : c.pair.steadyDollar) : ""}</span>;
   const years = plan.years;
   const months = 12 * plan.years;
   const lines = legendLines(!!view.index.israeli, [...pc.account, ...(pcOther?.account ?? [])].map((l) => lineOf(l.line)));
@@ -321,7 +322,7 @@ export function PairResult({ view, bundle, plan, settled, pick, chosen, onPick }
               )}
             </span>
             {pairLine(pick)}
-            <span className="text-2xl md:text-3xl font-bold leading-tight">
+            <span className={cx("text-2xl md:text-3xl font-bold leading-tight max-md:min-h-[1.875rem]", figureFit(pc.left.value as number, "tile"))}>
               <Num animate value={pc.left} />
             </span>
             <span className="text-xs text-muted-foreground">
@@ -333,7 +334,7 @@ export function PairResult({ view, bundle, plan, settled, pick, chosen, onPick }
             <div className="md:flex-1 md:min-w-64 min-w-0 rounded-lg border border-border p-3 flex flex-col gap-1">
               <span className="text-sm text-muted-foreground max-md:min-h-[2lh]">{otherTitle}</span>
               {pairLine(other)}
-              <span className={cx("text-2xl md:text-3xl font-bold leading-tight", !onBest && "text-primary")}>
+              <span className={cx("text-2xl md:text-3xl font-bold leading-tight max-md:min-h-[1.875rem]", figureFit(pcOther.left.value as number, "tile"), !onBest && "text-primary")}>
                 <Num animate value={pcOther.left} />
               </span>
               {/* the button on a line of its own: beside the figure, another digit moved it from under the finger */}
@@ -487,6 +488,9 @@ export function AccountColumn({ view, bundle, years, pick, onPick, moved = null,
   const standingCount = local.filter((p) => allFunds(view).some((f) => { const a = f.byHouse[p.id]; return priced(a) && a.standing; })).length;
   const rows = providers.map((p) => ({ p, at: fund.byHouse[p.id] }));
   const ok = rows.filter((r): r is { p: typeof r.p; at: WayPrice } => priced(r.at)).sort((a, b) => Number(a.at.open) - Number(b.at.open) || b.at.valueN - a.at.valueN);
+  // the cost figure beside each bar: one width on every row, for the longest amount in the list (a plan typed past the sliders' ends
+  // ran "1,527,297,489 ₪" past the card's edge in a fixed 5.5rem, #190)
+  const costWidth = `max(5.5rem, ${Math.max(0, ...ok.map((r) => fmt.nisWhole(r.at.accountCost).length))}ch)`;
   const noWay = (r: (typeof rows)[number]) => (r.at && "availability" in r.at && r.at.availability ? r.at.availability : null);
   // every house keeps a row: what cannot be priced is grey, "no data" first and "not possible there" last (founder, 2026-10-31)
   const missing = rows.filter((r) => !priced(r.at)).sort((a, b) => Number(!!noWay(a)) - Number(!!noWay(b)) || a.p.short.localeCompare(b.p.short, "he"));
@@ -519,7 +523,8 @@ export function AccountColumn({ view, bundle, years, pick, onPick, moved = null,
             <span className="flex flex-wrap gap-x-2 min-h-5 text-xs font-normal text-muted-foreground">
               {isYours && <span>{c.pair.yoursTag}</span>}
               {isBest && <span className="font-medium text-primary">{c.pair.cheapestTag}</span>}
-              {tiedTop && <span className="font-medium text-primary">{c.pair.tieTag}</span>}
+              {/* on a phone the two equal places say it alone: the word beside a standing-order price wrapped the row to a second line (#190) */}
+              {tiedTop && <span className="font-medium text-primary max-md:hidden">{c.pair.tieTag}</span>}
               {/* the tap on this account changed the fund too: said on the row tapped, with the way back (a 44 px target in the line's height) */}
               {r.p.id === baseHouse && moved?.half === "fund" && (
                 <span className="text-foreground">
@@ -536,11 +541,11 @@ export function AccountColumn({ view, bundle, years, pick, onPick, moved = null,
           <span className="flex items-center gap-2 min-w-0 @max-2xl:row-start-2 @max-2xl:col-start-3 @max-2xl:col-end-[-1]">
             <CostStack size="sm" parts={parts} scale={scale} highlight={legendPick.active} label={`${r.p.short}: ${fmt.nisWhole(r.at.accountCost)}`} />
             {/* one width on every row, for the longest amount: a longer figure would shorten its own bar, and the bars share one scale */}
-            <span className="w-[4.75rem] shrink-0 text-xs text-muted-foreground whitespace-nowrap">
+            <span className="shrink-0 text-xs text-muted-foreground whitespace-nowrap" style={{ width: costWidth }}>
               <Num animate value={nis(r.at.accountCost, "F-63", `${r.p.short}: ${c.pair.colChargesShort}`, bundle.today)} />
             </span>
           </span>
-          <span className="col-end-[-1] text-end font-semibold">
+          <span className={cx("col-end-[-1] text-end font-semibold", figureFit(r.at.valueN))}>
             <Num animate value={r.at.value} />
           </span>
           <GroupLine id={r.p.id} house={r.p.short} snapshots={bundle.snapshots} open={openGroups.includes(r.p.id)} onOpen={onGroup} choice={choiceOf(r.p.id)} />
@@ -636,8 +641,8 @@ export function AccountColumn({ view, bundle, years, pick, onPick, moved = null,
       <div className="@container">
       <PickList
         label={c.pair.listLabelAccounts}
-        columns="1.5rem 9.5rem minmax(0,1fr) 6.5rem"
-        phoneColumns="1.25rem minmax(0,1fr) auto"
+        columns="1.5rem 9.5rem minmax(0,1fr) 7.5rem"
+        phoneColumns="1.25rem minmax(0,1fr) 6.5rem"
         head={
           <>
             <span>#</span>
@@ -784,7 +789,20 @@ export function FundColumn({ view, bundle, plan, today, pick, onPick, moved = nu
   const names = view.index.exposure?.other_currencies === true ? c.kinds.nameMany(c.currencies[cur] ?? cur) : c.kinds.name;
   const kindCount = { unhedged: shown.filter((r) => kindOf(r.f.rec) === "unhedged").length, hedged: shown.filter((r) => kindOf(r.f.rec) === "hedged").length };
   const diff = (n: number, name: string, value: SiteValue, sel: SiteValue) => nis(n, "F-65", c.pair.colDiff, today, { [c.pair.input(name, c.pair.colLeft)]: value, [c.pair.input(`${c.pair.chosen}, ${fund.name}`, c.pair.colLeft)]: sel });
-  const houseWhys = [...new Set(shown.flatMap((r) => (r.at && !priced(r.at) && "reason" in r.at ? [whyNoPrice(bundle, pick.house, r.f)] : [])))];
+  const whysAt = (houseId: string, list: { f: FundWay }[]) => [...new Set(list.flatMap(({ f }) => { const a = f.byHouse[houseId]; return a && !priced(a) && "reason" in a ? [whyNoPrice(bundle, houseId, f)] : []; }))];
+  const houseWhys = whysAt(pick.house, shown);
+  const whyBlock = (houseShort: string, lines: string[]) =>
+    lines.length > 0 ? (
+      <div className="flex flex-col gap-0.5">
+        <span className="font-medium text-foreground">{c.pair.noPriceWhy(houseShort)}</span>
+        {lines.map((w) => (
+          <span key={w}>{w}</span>
+        ))}
+      </div>
+    ) : null;
+  // the block is held at its longest case over every account on the index: a house with more reasons grew the column, and the held
+  // height kept it grown after the pick went back (#190)
+  const whyCases = view.providers.map((p) => <Fragment key={p.id}>{whyBlock(p.short, whysAt(p.id, funds.map((f) => ({ f }))))}</Fragment>);
   const pickRows: PickRow[] = shown.map((r, i) => {
     const at = r.at;
     const isSel = r.f.rec.id === pick.fund;
@@ -896,7 +914,9 @@ export function FundColumn({ view, bundle, plan, today, pick, onPick, moved = nu
       <PickList
         label={c.pair.listLabelFunds}
         columns="minmax(0,1fr) 5.5rem 10.5rem"
-        phoneColumns="minmax(0,1fr) auto"
+        // a fixed width on a phone too: each row is its own grid, and an "auto" column as wide as its own figure wrapped the fund's name
+        // differently on every row and at every plan (#190)
+        phoneColumns="minmax(0,1fr) 8.5rem"
         phoneLimit={6}
         more={c.pair.moreFunds}
         head={
@@ -910,14 +930,7 @@ export function FundColumn({ view, bundle, plan, today, pick, onPick, moved = nu
       />
       <div className="px-5 py-3 flex flex-col gap-1.5 text-sm text-muted-foreground">
         <AddEntryButton kind="fund" />
-        {houseWhys.length > 0 && (
-          <div className="flex flex-col gap-0.5">
-            <span className="font-medium text-foreground">{c.pair.noPriceWhy(house.short)}</span>
-            {houseWhys.map((w) => (
-              <span key={w}>{w}</span>
-            ))}
-          </div>
-        )}
+        <LongestCase cases={whyCases}>{whyBlock(house.short, houseWhys)}</LongestCase>
         {active && <span>{c.pair.shown(shown.length, rows.length)}</span>}
         {kinds && <span>{c.funds.kindsNote}</span>}
         <span>{c.funds.gapNote}</span>

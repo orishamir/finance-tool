@@ -226,9 +226,13 @@ export function Num({ value, size = "inline", display, animate, className, prefi
   // display rounding (A13): a table cell keeps two decimals, everything else rounds computed and entered amounts
   const keepDecimals = size === "cell" || !!exact;
   const roundState = keepDecimals ? undefined : value.state;
+  // a figure that lands on whole shekels glides through whole shekels: the frames showed agorot, then snapped (#190)
+  const target = typeof value.value === "number" ? value.value : null;
+  const landing = target === null || shown === target ? null : typeof display === "function" ? display(target) : formatValue(target, value.unit, roundState, param);
+  const frame = shown !== null && landing !== null && !/\d\.\d/.test(landing ?? "") ? Math.round(shown) : shown;
   // a formatter gets the moving value, so a signed figure counts like any other
-  const written = typeof display === "function" ? (shown !== null ? display(shown) : undefined) : display;
-  const text = written ?? (shown !== null && typeof value.value === "number" ? formatValue(shown, value.unit, roundState, param) : formatValue(value.value, value.unit, roundState, param));
+  const written = typeof display === "function" ? (frame !== null ? display(frame) : undefined) : display;
+  const text = written ?? (frame !== null && typeof value.value === "number" ? formatValue(frame, value.unit, roundState, param) : formatValue(value.value, value.unit, roundState, param));
   const strength = strengthOf(value);
   const weak = isWeak(value) && (strength === "institution" || strength === "secondary") ? numbers.weak[strength] : null;
   const fromDate = startsAfter(value, today);

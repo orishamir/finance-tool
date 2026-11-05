@@ -597,7 +597,7 @@ function Fields() {
         <State label={`${g.states.interactive}, ${g.states.draggable}`} wide>
           <KnobStrip
             knobs={[
-              { id: "years", label: g.sample.range, unit: "years", value: years, min: 1, max: 40, step: 1, isEntered: years !== 10, validate: () => null, onCommit: (n) => setYears(n), onReset: () => setYears(10), inputMode: "numeric" },
+              { id: "years", label: g.sample.range, unit: "years", value: years, min: 1, max: 40, step: 1, isEntered: years !== 10, validate: (n) => (n < 1 || n > 40 ? g.sample.error : null), onCommit: (n) => setYears(n), onReset: () => setYears(10), inputMode: "numeric" },
               { id: "pct", label: g.sample.percent, unit: "pct_per_year", value: pct, min: 0, max: 12, step: 0.5, isEntered: pct !== 5, validate: () => null, onCommit: (n) => setPct(n), onReset: () => setPct(5) },
             ]}
           />

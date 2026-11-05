@@ -7,6 +7,7 @@ import { describe, expect, it } from "vitest";
 import { ProvenanceProvider } from "../provenance";
 import { Disclosure, Sentence, Stat, StatRow } from "./index";
 import { isoNumbers } from "./stairs-chart";
+import { figureFit } from "./pick-list";
 import { KitGallery } from "./gallery";
 
 const today = "2026-10-25";
@@ -60,5 +61,22 @@ describe("the stairs chart's text", () => {
     // isolated alone, the 4 and the 500 stepped out of the name: "S&P 500 (4D)" read "(D4) 500 S&P" (2026-11-05)
     expect(isoNumbers("ילין לפידות מחקה (4D) S&P 500")).toBe("ילין לפידות מחקה (4D) S&P 500");
     expect(isoNumbers("הראל מחקה (4D) NASDAQ 100")).toBe("הראל מחקה (4D) NASDAQ 100");
+  });
+});
+
+describe("figureFit", () => {
+  it("steps a list's figure down a size past nine digits and again past twelve, so its fixed column never cuts it (#190)", () => {
+    expect(figureFit(86_492)).toBe("");
+    expect(figureFit(99_999_999)).toBe("");
+    expect(figureFit(999_999_999)).toBe("max-md:text-sm");
+    expect(figureFit(1_860_753_604)).toBe("text-sm max-md:text-xs");
+    expect(figureFit(-1_000_000_000)).toBe("text-sm max-md:text-xs");
+    expect(figureFit(2_000_000_000_000)).toBe("text-xs");
+  });
+  it("steps a phone tile's figure down past seven digits, nine and eleven", () => {
+    expect(figureFit(9_999_999, "tile")).toBe("");
+    expect(figureFit(45_073_491, "tile")).toBe("max-md:text-xl");
+    expect(figureFit(1_860_753_604, "tile")).toBe("max-md:text-lg");
+    expect(figureFit(100_000_000_000, "tile")).toBe("max-md:text-base");
   });
 });

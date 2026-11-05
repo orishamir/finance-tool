@@ -30,7 +30,7 @@ export { ShareRings, type Ring } from "./rings";
 export { LabelChip, LabelFilter, LabelIcon, LabelRow, LabelSheetHost } from "./label-chip";
 export { CostStack, type CostPart } from "./cost-stack";
 export { PeriodStrip, type PeriodSegment } from "./period-strip";
-export { PickList, holdOnPick, type PickRow } from "./pick-list";
+export { PickList, figureFit, holdOnPick, type PickRow } from "./pick-list";
 export { PairBars, type PairBarYear } from "./pair-bars";
 export { YearBars } from "./year-bars";
 export { YearLabels, durationChart, tickFade, ticksOn, useFadingTicks, useFlip, useGlidingNumbers, useGlidingRows, useGlidingSeries, valueOn, type GlidePoint, type GlideSeries, type GlideTick } from "./chart-glide";
