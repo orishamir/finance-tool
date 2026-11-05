@@ -1,0 +1,14 @@
+{
+  "case": "live-01-home-first-screen",
+  "a": {
+    "rank": 0,
+    "why": "No finding says the first screen is unappealing as a first impression; the reader's points are about specific content gaps or wasted space (a possible cause), not the overall lack of appeal itself."
+  },
+  "b": {
+    "rank": 0,
+    "why": "No finding says the first screen as a whole is unappealing or fails to draw the visitor in; each points to a specific content gap or, in #5, wasted space (a possible cause), not the overall lack of appeal itself."
+  },
+  "third": null,
+  "rank": 0,
+  "agreed": true
+}

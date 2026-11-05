@@ -1,0 +1,14 @@
+{
+  "case": "live-01-home-first-screen",
+  "a": {
+    "rank": 0,
+    "why": "The person's complaint is about the overall look of the first screen, which fails to draw them in. Finding 4, about the empty right half on desktop, is the closest, but it is one specific layout flaw that could explain the poor impression rather than the complaint itself. The other findings are about content, trust or who the site is for, not its overall appeal."
+  },
+  "b": {
+    "rank": 0,
+    "why": "None of the findings says the first screen as a whole is unappealing or fails to draw people in: #4 (empty right half) points to a layout flaw that could explain it, and #1 is about the tagline not matching what the screen shows, so each covers only a possible cause or a different issue."
+  },
+  "third": null,
+  "rank": 0,
+  "agreed": true
+}

@@ -1,0 +1,67 @@
+{
+  "id": "live-01-home-first-screen",
+  "date": "2026-11-06",
+  "page": "/ (home)",
+  "device": "pc",
+  "viewport_px": [
+    2000,
+    1198
+  ],
+  "live_commit": "fb81f1e",
+  "shots": [
+    "screen.png"
+  ],
+  "his_words": "the first one is simple. the very first screen i see of the site isnt very appealing",
+  "key": {
+    "problem": "The first screen of the site, taken as a whole, is not appealing: as a first impression it does not draw the person in.",
+    "where": "the whole first screen of the home page",
+    "kind": "general or taste: not settled; see lesson"
+  },
+  "goal_given_to_reviewer": "You heard about this site and opened it for the first time, to see whether it can help you with your savings.",
+  "split": "live (held out, never tuned on before scoring)",
+  "reviewer_before_asking": {
+    "how": "panel shots mode, the default reviewer instructions of 2026-11-06, goal only, 3 runs per persona; graded by tools/grade-flag.mjs (two blind graders, a third on disagreement)",
+    "public_run": "runs/live-01",
+    "private_run": "~/finance-tool-private/runs/live-01 (his own card; outside the repository)",
+    "by_persona": {
+      "careful-retiree-pc": {
+        "caught": 0,
+        "of": 3,
+        "ranks": [
+          0,
+          0,
+          0
+        ]
+      },
+      "self-directed-investor": {
+        "caught": 0,
+        "of": 3,
+        "ranks": [
+          0,
+          0,
+          0
+        ]
+      },
+      "student-small-amounts": {
+        "caught": 3,
+        "of": 3,
+        "ranks": [
+          6,
+          5,
+          4
+        ]
+      },
+      "his own card": {
+        "caught": 3,
+        "of": 3,
+        "ranks": [
+          2,
+          4,
+          2
+        ]
+      }
+    },
+    "caught": "6 of 12 sessions",
+    "note": "Two runs named the empty half of a wide screen and were not counted, while the same words counted on other runs: the key is too vague to grade reliably until his own reason is known."
+  }
+}

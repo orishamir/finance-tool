@@ -1,0 +1,14 @@
+{
+  "case": "live-01-home-first-screen",
+  "a": {
+    "rank": 0,
+    "why": "None of the findings says that the first screen as a whole is unappealing or fails to draw the viewer in: finding 1 is about a promise the screen doesn't keep, and finding 4 names one layout flaw (the empty right half) that might cause that impression, but neither states the overall first-impression problem itself."
+  },
+  "b": {
+    "rank": 0,
+    "why": "None of the findings says the first screen is unappealing or fails to draw you in as a whole: finding 4's empty right half and finding 1's missing numbers are specific defects that could cause a weak first impression, but neither states that problem itself."
+  },
+  "third": null,
+  "rank": 0,
+  "agreed": true
+}
