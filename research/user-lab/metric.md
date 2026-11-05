@@ -18,6 +18,13 @@ was live then). The whole screen, never a crop of the spot, so the reviewer has 
 else. Each case has a key for the grader: the problem in one neutral sentence, where it is, and whether it is
 **general** (any reader would trip on it, or a published usability finding says so) or **taste** (his preference).
 
+**Only what he said counts** (founder, 2026-11-06: "when i complain about some design choice it correct, but not every
+time that i comply it means that i like it. if i say i like it then i did. but silence or complicitness doesnt mean").
+A complaint is a flag. An explicit "I like it" is an approval, and the reviewer should not flag that very thing. Silence,
+going along with something, or picking one option of several is neither: it is no evidence that a person is fine with
+the screen. So a reviewer's finding on something he never complained about is never scored wrong for that reason; it
+goes to the noise sample, where he says yes or no.
+
 About a third of the cases are **held out**, by page and by date. The instruction set is never tuned on them, and the
 held-out score is the only one reported as the result.
 
@@ -48,7 +55,9 @@ with a key for the grader and a matched **clean control**, the same page and sta
 - **Planted catch rate:** the share of planted problems named among the first 10 findings, by kind, graded blind as
   above. Reported beside the headline, never in place of it: Claude chose what to plant, so a high score here shows
   the reviewer sees what Claude expects, not yet what people see.
-- **False alarms:** on clean controls, the share of serious findings about something that is not there.
+- **False alarms:** on clean controls, the share of findings about something that is not there: the planted problem
+  named on a screen that does not carry it, or a claim about the screen that the screen contradicts. A finding about a
+  real problem of the live page is not a false alarm; no one having flagged it does not make the page fine.
 - **No tuning to the plant.** An instruction may not be changed to catch one planted instance; the kinds are general,
   each planted on several pages and devices, and the instances used to tune are kept apart from those used to score,
   as with the real cases.
