@@ -83,14 +83,16 @@ The raw extracts (`raw/`: flags, images, CI lists, page text) are ignored by git
 
 ## What counts as his verdict
 
-Only what he said (founder, 2026-11-06): a complaint is a flag; an explicit "I like it" is an approval. Silence, going
-along with something, or choosing one of several options is neither. So:
+What he says counts; silence does not (founder, 2026-11-06). A complaint is a flag; "I like it" or "it's fine" means
+it. Silence says nothing either way; going along with something, or choosing one of several options, depends on what he
+said with it. So:
 
 - A finding that matches no flag is **not** scored wrong. It goes to the noise sample, where he says whether it would
   bother anyone.
 - The eight approvals in `raw/endorsements.jsonl` (seven explicit, one tentative: "i do think that this is good no?")
   say only that the reviewer should not flag that very thing; they say nothing about the rest of the screen.
-- A case drawn from a choice between drawings says which option he picked, not that he liked it.
+- A case drawn from a choice between drawings says which option he picked; it counts as liking that option only where
+  his words say so.
 
 ## Running a reviewer on it: avoiding leaks
 
