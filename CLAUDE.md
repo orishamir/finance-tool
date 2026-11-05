@@ -106,7 +106,12 @@ The evidence behind them is `research/2026-10-28-founder-patterns.md`.
    or direct labels. Red, amber and green stay status colours, never a
    series. Each page's spec carries its colour table.
 7. **One flaw means a sweep.** A flaw I report is fixed in the shared piece,
-   and every other place of the same kind is fixed with it.
+   and every other place of the same kind is fixed with it. *(2026-11-05)*
+   Before the fix, the reviewer learns from it: the screen I saw becomes a
+   test case, the reviewer is run on it first, and a miss becomes one
+   general instruction about what bothers a person, kept only if it catches
+   other cases it was not built from and adds no noise
+   (`research/user-lab/learning-loop.md`).
 8. **Both screen sizes, PC judged first.** Mockups are judged on PC; every
    screen is also checked at 390 px before merging, with 44 px touch
    targets and nothing that depends on hover.
