@@ -3280,6 +3280,8 @@ Object.assign(parametersPage.names, { "P-09": "השאלות שכולם שואל�
  */
 /** A span of years in a sentence (copy.md §1): "שנה", "שנתיים", "10 שנים"; never "1 שנים" (#190). */
 const yearsSpan = (n: number) => (n === 1 ? "שנה" : n === 2 ? "שנתיים" : `${n} שנים`);
+/** "ל" before a Hebrew name, "ל־" before a Latin one: "לפסגות", "ל־IBI". */
+const toName = (name: string) => `${/^[A-Za-z]/.test(name) ? "ל־" : "ל"}${name}`;
 /** "בשנה אחת", "בשנתיים", "ב־10 שנים". */
 const inYears = (n: number) => (n === 1 ? "בשנה אחת" : n === 2 ? "בשנתיים" : `ב־${n} שנים`);
 
@@ -3734,10 +3736,10 @@ export const invest = {
     elsewhere: "בחירה בחשבון הזה מעבירה גם לקרן",
     elsewhereLeft: "ונשארים",
     /** On a fund row with no price at the account: picking it moves the account, said before the tap. */
-    pickMoves: (toHouse: string) => `בחירה בה מעבירה את החשבון ${toHouse}`,
+    pickMoves: (house: string) => `בחירה בה מעבירה את החשבון ${toName(house)}`,
     /** On the row tapped, after the tap changed the other half too, with the way back. */
-    movedHouse: (toHouse: string) => `החשבון עבר ${toHouse}`,
-    moveBackTo: (toHouse: string) => `חזרה ${toHouse}`,
+    movedHouse: (house: string) => `החשבון עבר ${toName(house)}`,
+    moveBackTo: (house: string) => `חזרה ${toName(house)}`,
     movedFund: "גם הקרן הוחלפה.",
     moveBack: "חזרה לקודמת",
     elsewhereOpen: "מוצג בלי דירוג, כי כלל המס עוד פתוח",

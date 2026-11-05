@@ -121,8 +121,6 @@ export function pickHalf(view: InvestView, cur: Pick, change: Partial<Pick>, onP
   const half = change.house ? (next.fund !== cur.fund ? "fund" : null) : next.house !== cur.house ? "house" : null;
   onPick(next, half ? { prev: { house: cur.house, fund: cur.fund }, at: next, half } : undefined);
 }
-/** "ל" before a Hebrew name, "ל־" before a Latin one. */
-const toName = (name: string) => `${/^[A-Za-z]/.test(name) ? "ל־" : "ל"}${name}`;
 
 /** The best pair of one kind (hedged or not) over every ranked fund at every house; null when the kind has none priced. */
 export function bestOfKind(view: InvestView, kind: Kind): Pick | null {
@@ -831,9 +829,9 @@ export function FundColumn({ view, bundle, plan, today, pick, onPick, moved = nu
       moved?.half === "house" ? (
         // the tap on this fund moved the account: said on the row tapped, with the way back
         <span className="flex flex-col items-end text-xs">
-          <span className="text-foreground">{c.pair.movedHouse(toName(shortOf(pick.house)))}</span>
+          <span className="text-foreground">{c.pair.movedHouse(shortOf(pick.house))}</span>
           <button type="button" onClick={() => onPick(moved.prev)} className="text-link underline underline-offset-[3px] hover:no-underline min-h-target -my-2.5 px-1">
-            {c.pair.moveBackTo(toName(shortOf(moved.prev.house)))}
+            {c.pair.moveBackTo(shortOf(moved.prev.house))}
           </button>
         </span>
       ) : (
@@ -855,7 +853,7 @@ export function FundColumn({ view, bundle, plan, today, pick, onPick, moved = nu
       <span className="flex flex-col items-end text-xs text-muted-foreground">
         {c.pair.noPriceHere}
         {/* said before the tap: picking it moves the account to the house where it leaves the most */}
-        {!r.f.reason && r.f.best && r.f.best.providerId !== pick.house && <span className="text-end">{c.pair.pickMoves(toName(shortOf(r.f.best.providerId)))}</span>}
+        {!r.f.reason && r.f.best && r.f.best.providerId !== pick.house && <span className="text-end">{c.pair.pickMoves(shortOf(r.f.best.providerId))}</span>}
       </span>
     );
     // a fund priced nowhere says why on its row, the same at every house; the reasons that depend on the house are under the list, once each (2026-10-31)
