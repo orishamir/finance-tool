@@ -3420,7 +3420,15 @@ export const invest = {
     edit: "עריכה",
     brokerTitle: "חשבון בתנאים שקיבלתם",
     brokerEdit: (name: string) => `התנאים של ״${name}״`,
-    brokerSub: "החשבון נשמר רק במכשיר הזה ומושווה כמו כל חשבון אחר בעמוד הזה. שדה ריק נחשב אפס.",
+    brokerSub: "החשבון נשמר רק במכשיר הזה ומושווה כמו כל חשבון אחר בעמוד הזה. שדה ריק הוא מחיר לא ידוע, והחשבון לא ידורג עד שימלאו אותו. עמלה שלא גובים מכם: כתבו 0.",
+    /** A new account starts from a house's price list, as the account card's does (2026-11-05). */
+    brokerStart: "בחרו את הבנק או בית ההשקעות. מתחילים מהתעריפון שלו ומשנים רק את המחירים שקיבלתם.",
+    basis: "על בסיס",
+    basisNone: "בחרו",
+    basisNotListed: "בנק או בית השקעות שלא ברשימה",
+    /** The row of an account typed with a line left empty: not ranked (the founder's rule that silence is not zero). */
+    incomplete: "חסרים מחירים, ולכן החשבון לא מדורג. השלימו אותם בעריכה.",
+    unknownLine: (list: string) => `לא הזנתם, ולכן לא ידוע: ${list}.`,
     fundTitle: (index: string) => `קרן על ${index}`,
     fundEdit: (name: string) => `הפרטים של ״${name}״`,
     fundSub: "הקרן נשמרת רק במכשיר הזה, ברשימה של המדד הזה, ומתומחרת כמו כל קרן מהסוג שלה. שדה ריק נחשב אפס.",
@@ -3699,7 +3707,16 @@ export const invest = {
     noPriceHere: "אין מחיר כאן",
     noPriceWhy: (house: string) => `למה חלק מהקרנות בלי מחיר ב${house}:`,
     notPossibleSource: "המקור",
-    elsewhere: "בקרן אחרת,",
+    /** On an account row with no price for the fund: picking it picks another fund too, said before the tap (2026-11-05). */
+    elsewhere: "בחירה בחשבון הזה בוחרת גם את הקרן",
+    elsewhereLeft: "ונשארים",
+    /** On a fund row with no price at the account: picking it moves the account, said before the tap. */
+    pickMoves: (toHouse: string) => `בחירה בה מעבירה את החשבון ${toHouse}`,
+    /** On the row tapped, after the tap changed the other half too, with the way back. */
+    movedHouse: (toHouse: string) => `החשבון עבר ${toHouse}`,
+    moveBackTo: (toHouse: string) => `חזרה ${toHouse}`,
+    movedFund: "גם הקרן הוחלפה.",
+    moveBack: "חזרה לקודמת",
     elsewhereOpen: "מוצג בלי דירוג, כי כלל המס עוד פתוח",
     noData: "אין נתון",
     fundsNotPriced: (n: number, house: string) => (n === 1 ? `קרן אחת לא מחושבת ב${house}:` : `${n} קרנות לא מחושבות ב${house}:`),

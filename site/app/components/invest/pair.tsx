@@ -89,6 +89,26 @@ export function repick(view: InvestView, cur: Pick, change: Partial<Pick>): Pick
   return cur;
 }
 
+/** A pick that changed the other half too (a fund with no price at the account, an account with no price for the fund): the row tapped
+ * says so, with the way back (2026-11-05: the account moved to another house with nothing near the row to say it). */
+export interface Moved {
+  /** The pair before the tap, to go back to. */
+  prev: Pick;
+  /** The pair the tap made. */
+  at: Pick;
+  /** The half that changed without being tapped. */
+  half: "house" | "fund";
+}
+export type OnPick = (p: Pick, moved?: Moved) => void;
+/** Pick one half; when the other half has to change with it, say which. */
+export function pickHalf(view: InvestView, cur: Pick, change: Partial<Pick>, onPick: OnPick) {
+  const next = repick(view, cur, change);
+  const half = change.house ? (next.fund !== cur.fund ? "fund" : null) : next.house !== cur.house ? "house" : null;
+  onPick(next, half ? { prev: { house: cur.house, fund: cur.fund }, at: next, half } : undefined);
+}
+/** "ל" before a Hebrew name, "ל־" before a Latin one. */
+const toName = (name: string) => `${/^[A-Za-z]/.test(name) ? "ל־" : "ל"}${name}`;
+
 /** The best pair of one kind (hedged or not) over every ranked fund at every house; null when the kind has none priced. */
 export function bestOfKind(view: InvestView, kind: Kind): Pick | null {
   const top = allFunds(view)
@@ -203,7 +223,7 @@ export function crowned(view: InvestView, best: Pick | null, theta: number): boo
   return a !== null && (b === null || !isTie(a, b, theta));
 }
 
-export function PairResult({ view, bundle, plan, settled, pick, chosen, onPick }: { view: InvestView; bundle: WorkbenchBundle; plan: WorkbenchInputs; settled?: WorkbenchInputs; pick: Pick; /** The person picked this pair (it is in the address); else it is the page's own, and is never called theirs (2026-11-05). */ chosen: boolean; onPick: (p: Pick) => void }) {
+export function PairResult({ view, bundle, plan, settled, pick, chosen, onPick }: { view: InvestView; bundle: WorkbenchBundle; plan: WorkbenchInputs; settled?: WorkbenchInputs; pick: Pick; /** The person picked this pair (it is in the address); else it is the page's own, and is never called theirs (2026-11-05). */ chosen: boolean; onPick: OnPick }) {
   const best = bestFor(view, pick);
   const legendPick = useChartPick();
   const onBest = !!best && best.house === pick.house && best.fund === pick.fund;
@@ -403,7 +423,7 @@ export const LONGEST_AMOUNT = 9_999_999;
 /** The most years a plan's sliders give, for a sentence's unseen longest case. */
 export const LONGEST_YEARS = 40;
 
-export function AccountColumn({ view, bundle, years, pick, onPick, group = null }: { view: InvestView; bundle: WorkbenchBundle; years: number; pick: Pick; onPick: (p: Pick) => void; /** The house's group picked in its fold: `pick.house` is then the held account priced at it, and this its house. */ group?: { house: string; key: string; name: string } | null }) {
+export function AccountColumn({ view, bundle, years, pick, onPick, moved = null, group = null }: { view: InvestView; bundle: WorkbenchBundle; years: number; pick: Pick; onPick: OnPick; /** The tap before changed the fund too. */ moved?: Moved | null; /** The house's group picked in its fold: `pick.house` is then the held account priced at it, and this its house. */ group?: { house: string; key: string; name: string } | null }) {
   const legendPick = useChartPick();
   // a row added or removed starts the held height over, so a removed row leaves no hole (D44)
   // the houses of the list: a picked group's held account stands beside its house, never as a row of its own (D43)
@@ -445,7 +465,7 @@ export function AccountColumn({ view, bundle, years, pick, onPick, group = null 
   const choiceOf = (id: string): GroupChoice | undefined => {
     const can = pickableGroups(bundle.snapshots.find((s) => s.id === id), fund.option);
     if (can.size === 0) return undefined;
-    return { can: (k) => can.has(k), selected: group?.house === id ? group.key : null, onChoose: (k) => onPick({ ...repick(view, pick, { house: id }), group: k }) };
+    return { can: (k) => can.has(k), selected: group?.house === id ? group.key : null, onChoose: (k) => pickHalf(view, pick, { house: id }, (p, m) => onPick({ ...p, group: k }, m)) };
   };
   // counted over every fund of the index, so the sentence stays as it is when another fund is picked; a count over the collected houses
   const local = providers.filter((p) => !p.foreign && !p.custom);
@@ -474,7 +494,7 @@ export function AccountColumn({ view, bundle, years, pick, onPick, group = null 
     return {
       key: r.p.id,
       selected: r.p.id === baseHouse,
-      onSelect: () => onPick(repick(view, pick, { house: r.p.id })),
+      onSelect: () => pickHalf(view, pick, { house: r.p.id }, onPick),
       cells: (
         <>
           <span className="text-sm text-muted-foreground tabular-nums text-center">{r.at.open ? "—" : place}</span>
@@ -485,6 +505,15 @@ export function AccountColumn({ view, bundle, years, pick, onPick, group = null 
               {isYours && <span>{c.pair.yoursTag}</span>}
               {isBest && <span className="font-medium text-primary">{c.pair.cheapestTag}</span>}
               {tiedTop && <span className="font-medium text-primary">{c.pair.tieTag}</span>}
+              {/* the tap on this account changed the fund too: said on the row tapped, with the way back (a 44 px target in the line's height) */}
+              {r.p.id === baseHouse && moved?.half === "fund" && (
+                <span className="text-foreground">
+                  {c.pair.movedFund}{" "}
+                  <button type="button" onClick={() => onPick(moved.prev)} className="text-link underline underline-offset-[3px] hover:no-underline min-h-target -my-3 px-1">
+                    {c.pair.moveBack}
+                  </button>
+                </span>
+              )}
               {r.at.standing && <span>{c.pair.standingTag}</span>}
             </span>
           </span>
@@ -514,7 +543,7 @@ export function AccountColumn({ view, bundle, years, pick, onPick, group = null 
       muted: true,
       // a house with no way on this index has nothing to show as a pair: its row stays, with the reason
       onSelect: () => {
-        if (other) onPick(repick(view, pick, { house: r.p.id }));
+        if (other) pickHalf(view, pick, { house: r.p.id }, onPick);
       },
       cells: (
         <>
@@ -538,7 +567,7 @@ export function AccountColumn({ view, bundle, years, pick, onPick, group = null 
             {!na && <span>{doubtOf(bundle.snapshots.find((s) => s.id === r.p.id), fund.option) ?? bundle.snapshots.find((s) => s.id === r.p.id)?.missing_reason_he ?? (r.at && "reason" in r.at ? reasonText(r.at.reason, optionClass[fund.option]) : c.funds.cannot)}</span>}
             {other && (
               <span>
-                {c.pair.elsewhere} <MixedName>{other.fund.name}</MixedName>: <Num value={other.at.value} />
+                {c.pair.elsewhere} <MixedName>{other.fund.name}</MixedName>, {c.pair.elsewhereLeft} <Num value={other.at.value} />
                 {other.at.open && ` (${c.pair.elsewhereOpen})`}
               </span>
             )}
@@ -687,7 +716,7 @@ function FundKind({ fund }: { fund: FundWay }) {
   );
 }
 
-export function FundColumn({ view, bundle, plan, today, pick, onPick, filter, onFilter }: { view: InvestView; bundle: WorkbenchBundle; plan: WorkbenchInputs; today: string; pick: Pick; onPick: (p: Pick) => void; filter: string | null; onFilter: (id: string | null) => void }) {
+export function FundColumn({ view, bundle, plan, today, pick, onPick, moved = null, filter, onFilter }: { view: InvestView; bundle: WorkbenchBundle; plan: WorkbenchInputs; today: string; pick: Pick; onPick: OnPick; /** The tap before changed the account too. */ moved?: Moved | null; filter: string | null; onFilter: (id: string | null) => void }) {
   const funds = allFunds(view);
   // a row added or removed starts the held height over, so a removed row leaves no hole (D44)
   const heldKey = `${view.index.id}:${funds.length}`;
@@ -751,8 +780,19 @@ export function FundColumn({ view, bundle, plan, today, pick, onPick, filter, on
       </span>
     ) : undefined;
     const x = cross.get(r.f.rec.id);
+    const shortOf = (id: string) => providerName(view, id)?.short ?? id;
     const right = isSel ? (
-      <span className="text-sm text-muted-foreground">{c.pair.chosen}</span>
+      moved?.half === "house" ? (
+        // the tap on this fund moved the account: said on the row tapped, with the way back
+        <span className="flex flex-col items-end text-xs">
+          <span className="text-foreground">{c.pair.movedHouse(toName(shortOf(pick.house)))}</span>
+          <button type="button" onClick={() => onPick(moved.prev)} className="text-link underline underline-offset-[3px] hover:no-underline min-h-target -my-2.5 px-1">
+            {c.pair.moveBackTo(toName(shortOf(moved.prev.house)))}
+          </button>
+        </span>
+      ) : (
+        <span className="text-sm text-muted-foreground">{c.pair.chosen}</span>
+      )
     ) : x && range ? (
       <span className="flex flex-col items-end gap-0.5 text-sm">
         <span className="block font-semibold min-h-[2lh]">
@@ -766,7 +806,11 @@ export function FundColumn({ view, bundle, plan, today, pick, onPick, filter, on
         <Num animate value={diff(at.valueN - selAt.valueN, r.f.name, at.value, selAt.value)} display={plus} />
       </span>
     ) : (
-      <span className="text-xs text-muted-foreground">{c.pair.noPriceHere}</span>
+      <span className="flex flex-col items-end text-xs text-muted-foreground">
+        {c.pair.noPriceHere}
+        {/* said before the tap: picking it moves the account to the house where it leaves the most */}
+        {!r.f.reason && r.f.best && r.f.best.providerId !== pick.house && <span className="text-end">{c.pair.pickMoves(toName(shortOf(r.f.best.providerId)))}</span>}
+      </span>
     );
     // a fund priced nowhere says why on its row, the same at every house; the reasons that depend on the house are under the list, once each (2026-10-31)
     const why = !r.at && r.f.reason ? reasonText(r.f.reason, optionClass[r.f.option]) : null;
@@ -778,7 +822,7 @@ export function FundColumn({ view, bundle, plan, today, pick, onPick, filter, on
       selected: isSel,
       muted: !priced(at),
       onSelect: () => {
-        if (!why) onPick(repick(view, pick, { fund: r.f.rec.id }));
+        if (!why) pickHalf(view, pick, { fund: r.f.rec.id }, onPick);
       },
       cells: (
         <>

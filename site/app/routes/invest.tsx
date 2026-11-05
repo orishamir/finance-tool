@@ -8,7 +8,7 @@ import type { Route } from "./+types/invest";
 import { brands, invest as c, site } from "../copy";
 import { OtherAssumptions, PlanChanges, PlanKnobs } from "../components/invest/knobs";
 import { IndexChips, PlanBlock } from "../components/invest/chips";
-import { AccountColumn, FundColumn, PairResult, pickOfHeadline, pickOfOpen, allFunds, type Pick } from "../components/invest/pair";
+import { AccountColumn, FundColumn, PairResult, pickOfHeadline, pickOfOpen, allFunds, type Moved, type Pick } from "../components/invest/pair";
 import { NoFundAccountColumn, NoFundCall, NoFundColumn } from "../components/invest/no-fund";
 import { LabelSheetHost } from "../components/kit";
 import { IndexHeader } from "../components/invest/sections";
@@ -228,7 +228,10 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
   const shownView = picked?.view ?? view;
   const shownBundle = picked?.bundle ?? bundle;
   const shown: Pick | null = pick && picked ? { house: picked.id, fund: pick.fund } : pick;
-  const onPick = (p: Pick) => {
+  // a tap that changed the other half too: the row tapped says so, with the way back, until the next pick (2026-11-05)
+  const [moved, setMoved] = useState<Moved | null>(null);
+  const onPick = (p: Pick, m?: Moved) => {
+    setMoved(m ?? null);
     // a pick on the group's account (another fund, from the fund list) stays on that group of that house
     const next: Pick = picked && own?.group && p.house === picked.id ? { house: own.house, fund: p.fund, group: own.group } : p;
     const q = new URLSearchParams(search);
@@ -238,6 +241,7 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
     else q.delete("group");
     navigate(`${pathname}?${q.toString()}`, { replace: true, preventScrollReset: true });
   };
+  const movedNow = moved && shown && moved.at.house === (own?.house ?? shown.house) && moved.at.fund === shown.fund ? moved : null;
   // an index with no fund to price (a custom one): the account the person picked in the list, else the one that charges least
   const [genericHouse, setGenericHouse] = useState<string | null>(null);
 
@@ -292,11 +296,11 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
               <>
                 <PairResult view={shownView} bundle={shownBundle} plan={livePlan} settled={plan} pick={shown} chosen={picks} onPick={onPick} />
                 <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_2.5rem_minmax(0,32.5rem)] xl:grid-cols-[minmax(0,5fr)_2.5rem_minmax(0,7fr)] items-start">
-                  <AccountColumn view={shownView} bundle={shownBundle} years={plan.years} pick={shown} onPick={onPick} group={own?.group ? { house: own.house, key: own.group, name: groupNameOf(wb.snapshots.find((x) => x.id === own.house), own.group) } : null} />
+                  <AccountColumn view={shownView} bundle={shownBundle} years={plan.years} pick={shown} onPick={onPick} moved={movedNow} group={own?.group ? { house: own.house, key: own.group, name: groupNameOf(wb.snapshots.find((x) => x.id === own.house), own.group) } : null} />
                   <span aria-hidden="true" className="hidden lg:grid place-items-center size-9 mt-10 rounded-full border border-input bg-popover text-xl text-muted-foreground justify-self-center">
                     +
                   </span>
-                  <FundColumn view={shownView} bundle={shownBundle} plan={plan} today={data.today} pick={shown} onPick={onPick} filter={labelFilter} onFilter={setLabelFilter} />
+                  <FundColumn view={shownView} bundle={shownBundle} plan={plan} today={data.today} pick={shown} onPick={onPick} moved={movedNow} filter={labelFilter} onFilter={setLabelFilter} />
                 </div>
               </>
             ) : (
