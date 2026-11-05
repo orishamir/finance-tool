@@ -7,7 +7,7 @@ import { join } from "node:path";
 import type { RuleRecord } from "@finance-tool/schema";
 import { wikisourcePageTitle } from "./sources";
 import { documents as documentsCopy } from "../copy";
-import { mostlyHebrew } from "./source-label";
+import { isHebrewTitle } from "./source-label";
 import { ruleTitle } from "./rule-title";
 import type { Strength } from "./value";
 import * as dataServer from "./data.server";
@@ -185,7 +185,9 @@ export function groupDocuments(rules: Record<string, RuleRecord>, table: TableDo
   for (const [key, { doc, entries }] of groups) {
     const hosts = entries.map((e) => hostOf(e.url));
     const pub = (e: Entry): PublisherRow | undefined => publishers[hostOf(e.url)];
-    const titleHe = doc?.title_he ?? mostCommon(entries.filter((e) => mostlyHebrew(e.title_he ?? e.title)).map((e) => e.title_he ?? e.title));
+    // a title is Hebrew when its Hebrew letters outnumber its Latin ones, whatever it opens with: "data.gov.il, בנק ישראל: רשימת תאגידים
+    // בנקאיים" is a Hebrew title (#190: the notes' stricter test, a Hebrew first word, turned it into "מאגר נתונים")
+    const titleHe = doc?.title_he ?? mostCommon(entries.filter((e) => isHebrewTitle(e.title_he ?? e.title)).map((e) => e.title_he ?? e.title));
     const url0 = doc?.official_url ?? mostCommon(entries.map((e) => e.url))!;
     const kind0 = doc?.kind ?? mostCommon(entries.map((e) => e.kind).filter((x): x is string => !!x));
     // never an English working title: the Wikisource page's own name, then the kind's word (QA 2026-10-24, F4)
