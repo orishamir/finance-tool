@@ -3,7 +3,7 @@
 // the cheapest kind of fund at it; the fund column says there is no fund yet. Once a fund is added the page is the pair page.
 import { useMemo, useState } from "react";
 import { invest as c } from "../../copy";
-import type { HouseRow, InvestView, OptionId } from "../../lib/invest";
+import { firstCount, placesOf, type HouseRow, type InvestView, type OptionId } from "../../lib/invest";
 import type { WorkbenchBundle } from "../../lib/providers";
 import { isGroupProvider } from "../../lib/group-pick";
 import { fmt } from "../../lib/format";
@@ -73,6 +73,9 @@ export function NoFundAccountColumn({ view, bundle, years, chosen, onPick }: { v
   const local = rows.filter((h) => !h.provider.foreign && !h.provider.custom);
   const standingCount = local.filter((h) => h.standing).length;
   const kinds = view.options.filter((o) => o.exists).map((o) => o.id);
+  // equal costs share a place, and a first place shared by two crowns neither (2026-11-05); the tie threshold is for what is left, not for costs
+  const places = placesOf(ok.map((h) => h.generic.costN!), 0);
+  const crown = firstCount(places) === 1;
   const pickRows: PickRow[] = ok.map((h, i) => {
     const g = h.generic;
     const from = h.provider.custom ? c.pair.sourceEntered : c.pair.sourceList(h.provider.short);
@@ -86,12 +89,12 @@ export function NoFundAccountColumn({ view, bundle, years, chosen, onPick }: { v
       onSelect: () => onPick(h.provider.id),
       cells: (
         <>
-          <span className="text-sm text-muted-foreground tabular-nums text-center">{i + 1}</span>
+          <span className="text-sm text-muted-foreground tabular-nums text-center">{places[i]}</span>
           <span className={cx("flex flex-col min-w-0 leading-tight font-semibold [overflow-wrap:anywhere]", h.provider.custom && "text-entered")}>
             {h.provider.short}
             {/* the kind of fund and the cheapest mark change with the plan: the line holds its longest case, so a row keeps its height */}
             <LongestCase cases={kinds.map((k) => <SubLine key={k} kind={k} cheapest standing={h.standing} />)}>
-              <SubLine kind={g.option ?? null} cheapest={i === 0} standing={h.standing} />
+              <SubLine kind={g.option ?? null} cheapest={crown && i === 0} standing={h.standing} />
             </LongestCase>
           </span>
           <span className="flex items-center min-w-0 @max-2xl:row-start-2 @max-2xl:col-start-3 @max-2xl:col-end-[-1]">

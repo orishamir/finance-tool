@@ -3,7 +3,7 @@
 // numbers come from the engine's provider workbench (F-63) and from the fund runs of F-65, over the bundle the other
 // workbench pages use. No fee, rate or rule figure is written here: tariffs are snapshots, fund fees are fund records,
 // exchange rates are the ECB's (D26). Nothing is chosen for the person (D27): an index is always an argument.
-import { STANDING_CONVERSION_BAND, STANDING_ORDER_BAND, beforeTax, buildTariff, costByWho, gapToIndex, sumFees, trackingBeyondFees, providerWorkbench, relativeGap, type ComparedProvider, type FeeLine, type LayeredRun, type NotComparableProvider, type ProviderRow, type TariffBuild } from "@finance-tool/engine";
+import { STANDING_CONVERSION_BAND, STANDING_ORDER_BAND, beforeTax, buildTariff, costByWho, gapToIndex, sumFees, trackingBeyondFees, providerWorkbench, relativeGap, isTie, tieThreshold, type ComparedProvider, type FeeLine, type LayeredRun, type NotComparableProvider, type ProviderRow, type TariffBuild } from "@finance-tool/engine";
 import type { ExposureRecord, FeesSnapshot, FundRecord } from "@finance-tool/schema";
 import { invest as copy } from "../copy";
 import { customFundGap, isCustomBrokerId, isCustomFund } from "./custom-entries";
@@ -1095,3 +1095,22 @@ export function kindMoney(a: InvestArgs & { unhedged: { fundId: string; provider
   const taxShare = leftGap + taxGap > 0 ? taxGap / (leftGap + taxGap) : null;
   return { unhedged: u0, hedged: h0, worth: { low: Math.min(...steps), high: Math.max(...steps) }, taxShare };
 }
+
+/** P-01 as the page reads it: the share of the larger value below which two pairs are a tie (F-80). */
+export const tieShareOf = (bundle: Pick<WorkbenchBundle, "p01">): number => tieThreshold([bundle.p01]);
+
+/**
+ * The place of each value in a ranked list, best first (F-80, P-01; 2026-11-05): every value within the tie threshold of the first
+ * shares the first place, and equal figures (in whole shekels) share a place; any other value has its own place by its order. With a
+ * threshold of zero only equal figures share. A first place shared by two or more is a tie, and no row is crowned.
+ */
+export function placesOf(values: readonly number[], theta: number): number[] {
+  const top = values[0];
+  return values.map((v, i) => {
+    if (top === undefined || i === 0 || isTie(top, v, theta)) return 1;
+    const first = values.findIndex((x) => Math.round(x) === Math.round(v));
+    return first + 1;
+  });
+}
+/** How many share the first place. */
+export const firstCount = (places: readonly number[]) => places.filter((p) => p === 1).length;

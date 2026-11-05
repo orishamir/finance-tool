@@ -5,10 +5,10 @@
 // the next one beside it (one shape, so a pick never resizes the block).
 import { mayaFundHref } from "../../lib/sources";
 import { useMemo, useState, type ReactNode } from "react";
-import type { FeeLine } from "@finance-tool/engine";
+import { isTie, type FeeLine } from "@finance-tool/engine";
 import { brands, groupPrices, invest as c } from "../../copy";
 import { isCustomFund } from "../../lib/custom-entries";
-import { brokeragePagePath, doubtOf, gapOf, indexSeenBy, inputMap, hasKinds, kindOf, opensOn, pairCosts, pairValue, type FundWay, type InvestView, type Kind, type PairCosts, type Reason, type WayPrice } from "../../lib/invest";
+import { brokeragePagePath, doubtOf, firstCount, placesOf, tieShareOf, gapOf, indexSeenBy, inputMap, hasKinds, kindOf, opensOn, pairCosts, pairValue, type FundWay, type InvestView, type Kind, type PairCosts, type Reason, type WayPrice } from "../../lib/invest";
 import type { WorkbenchBundle, WorkbenchInputs } from "../../lib/providers";
 import { brokerLabels, fundLabels, optionLabels, type Label } from "../../lib/labels";
 import { computed, ownBy, type SiteValue } from "../../lib/value";
@@ -186,6 +186,23 @@ function runnerUp(view: InvestView, best: Pick): Pick | null {
   return top ? { house: top.house, fund: top.fund } : null;
 }
 
+/** What a priced pair leaves (its ranked figure), or null. */
+const valueOfPair = (view: InvestView, p: Pick): number | null => {
+  const at = allFunds(view).find((f) => f.rec.id === p.fund)?.byHouse[p.house];
+  return priced(at) ? at.valueN : null;
+};
+/**
+ * The best pair is crowned only when the next one is outside the site's tie threshold (P-01, F-80; 2026-11-05: a pair 43 ₪ ahead,
+ * 0.05%, took the star). Within it the two share the top, and no star is drawn.
+ */
+export function crowned(view: InvestView, best: Pick | null, theta: number): boolean {
+  if (!best) return false;
+  const next = runnerUp(view, best);
+  const a = valueOfPair(view, best);
+  const b = next ? valueOfPair(view, next) : null;
+  return a !== null && (b === null || !isTie(a, b, theta));
+}
+
 export function PairResult({ view, bundle, plan, settled, pick, chosen, onPick }: { view: InvestView; bundle: WorkbenchBundle; plan: WorkbenchInputs; settled?: WorkbenchInputs; pick: Pick; /** The person picked this pair (it is in the address); else it is the page's own, and is never called theirs (2026-11-05). */ chosen: boolean; onPick: (p: Pick) => void }) {
   const best = bestFor(view, pick);
   const legendPick = useChartPick();
@@ -207,6 +224,8 @@ export function PairResult({ view, bundle, plan, settled, pick, chosen, onPick }
   const lines = legendLines(!!view.index.israeli, [...pc.account, ...(pcOther?.account ?? [])].map((l) => lineOf(l.line)));
   // a gap names its two inputs by whose they are, as the figure's sheet lists them
   const gap = (a: SiteValue, aName: string, b: SiteValue, bName: string, about: string) => nis((a.value as number) - (b.value as number), "F-65", about, bundle.today, { [aName]: a, [bName]: b });
+  // the two pairs within the site's tie threshold share the top: no star, and the card says why (P-01, F-80)
+  const tied = !!pcOther && isTie(pc.left.value as number, pcOther.left.value as number, tieShareOf(bundle));
   const otherRole = onBest ? c.pair.next : c.pair.cheapest;
   // the first pair's name: the person's pick, or, before any pick, the page's own pair, which is the cheapest when there is one
   const mineRole = chosen ? c.pair.yours : onBest ? c.pair.cheapest : c.pair.openTop;
@@ -233,7 +252,7 @@ export function PairResult({ view, bundle, plan, settled, pick, chosen, onPick }
       <MixedName>{nameOf(p)}</MixedName> · <MixedName>{fundOf(p)}</MixedName>
     </span>
   );
-  const otherTitle = onBest ? c.pair.next : c.pair.cheapestStar;
+  const otherTitle = onBest ? c.pair.next : tied ? c.pair.cheapest : c.pair.cheapestStar;
   const moreIfOther = pcOther ? gap(pcOther.left, c.pair.input(otherRole, c.pair.colLeft), pc.left, c.pair.input(mineRole, c.pair.colLeft), c.pair.moreIfCheapest) : null;
   return (
     <Card pad="roomy" className="flex flex-col gap-5">
@@ -256,10 +275,10 @@ export function PairResult({ view, bundle, plan, settled, pick, chosen, onPick }
               {chosen ? (
                 <>
                   {c.pair.yours}
-                  {onBest && <span className="text-primary font-medium"> · {c.pair.cheapestTag}</span>}
+                  {onBest && <span className="text-primary font-medium"> · {tied ? c.pair.tieWithNext : c.pair.cheapestTag}</span>}
                 </>
               ) : onBest ? (
-                <span className="text-primary font-medium">{c.pair.cheapestStar}</span>
+                <span className="text-primary font-medium">{tied ? c.pair.tieTop : c.pair.cheapestStar}</span>
               ) : (
                 c.pair.openTop
               )}
@@ -282,7 +301,8 @@ export function PairResult({ view, bundle, plan, settled, pick, chosen, onPick }
               </span>
               {/* the button on a line of its own: beside the figure, another digit moved it from under the finger */}
               <span className="flex flex-col items-start gap-1 text-sm">
-                <span>
+                {/* two lines held for the tie's words, so a tie that comes or goes with a slider moves nothing */}
+                <span className="min-h-[2lh]">
                   {onBest ? (
                     <>
                       <Num animate value={gap(pcOther.left, c.pair.input(otherRole, c.pair.colLeft), pc.left, c.pair.input(mineRole, c.pair.colLeft), chosen ? c.pair.vsYours : c.pair.vsCheapest)} /> {chosen ? c.pair.vsYours : c.pair.vsCheapest}
@@ -292,6 +312,7 @@ export function PairResult({ view, bundle, plan, settled, pick, chosen, onPick }
                       <Num animate value={moreIfOther!} display={plus} /> {c.pair.moreIfCheapest}
                     </>
                   )}
+                  {tied && <span className="block text-xs text-muted-foreground">{c.pair.tieWhy}</span>}
                 </span>
                 <Button variant="quiet" onClick={() => onPick(other)}>
                   {c.pair.pickCheapest}
@@ -416,6 +437,8 @@ export function AccountColumn({ view, bundle, years, pick, onPick, group = null 
   const house = providerName(view, baseHouse);
   if (!fund || !house) return null;
   const best = bestFor(view, pick);
+  const theta = tieShareOf(bundle);
+  const crown = crowned(view, best, theta);
   // the groups each house offers that change this fund's figure and end after a printed number of months (lib/group-pick)
   const choiceOf = (id: string): GroupChoice | undefined => {
     const can = pickableGroups(bundle.snapshots.find((s) => s.id === id), fund.option);
@@ -431,6 +454,11 @@ export function AccountColumn({ view, bundle, years, pick, onPick, group = null 
   // every house keeps a row: what cannot be priced is grey, "no data" first and "not possible there" last (founder, 2026-10-31)
   const missing = rows.filter((r) => !priced(r.at)).sort((a, b) => Number(!!noWay(a)) - Number(!!noWay(b)) || a.p.short.localeCompare(b.p.short, "he"));
   const scale = barScale(ok.map((r) => r.at.accountCost));
+  // the places: within the tie threshold of the first, a row shares the first place; equal figures share a place (P-01, F-80)
+  const ranked = ok.filter((r) => !r.at.open);
+  const places = placesOf(ranked.map((r) => r.at.valueN), theta);
+  const placeOf = new Map(ranked.map((r, i) => [r.p.id, places[i]!]));
+  const sharedTop = firstCount(places) > 1;
   const lines = legendLines(!!view.index.israeli, ok.flatMap((r) => r.at.lines.map((l) => lineOf(l.line))));
   const snapshot = bundle.snapshots.find((s) => s.id === baseHouse);
   const at = fund.byHouse[pick.house];
@@ -438,20 +466,23 @@ export function AccountColumn({ view, bundle, years, pick, onPick, group = null 
     const parts: CostPart[] = [...r.at.lines.map((l) => ({ id: l.line, legendId: lineOf(l.line), name: c.pair.lines[lineOf(l.line)] ?? c.pair.lines.other, value: l.cost, className: lineClass[lineOf(l.line)] ?? "bg-chart-cost-other", source: r.p.custom ? c.pair.sourceEntered : c.pair.sourceList(r.p.short) })), { id: "remainder", name: c.pair.remainder, about: c.pair.remainderAbout, value: r.at.interaction, className: "bg-chart-cost-other", source: c.pair.sourceComputed }];
     const isYours = r.p.id === view.yourBroker;
     // shown on the row whether or not it is picked, so a pick never adds or removes a line (founder, 2026-10-27)
-    const isBest = best?.house === r.p.id && best.fund === pick.fund;
+    const isBest = crown && best?.house === r.p.id && best.fund === pick.fund;
+    const place = placeOf.get(r.p.id);
+    const tiedTop = sharedTop && place === 1;
     return {
       key: r.p.id,
       selected: r.p.id === baseHouse,
       onSelect: () => onPick(repick(view, pick, { house: r.p.id })),
       cells: (
         <>
-          <span className="text-sm text-muted-foreground tabular-nums text-center">{r.at.open ? "—" : i + 1}</span>
+          <span className="text-sm text-muted-foreground tabular-nums text-center">{r.at.open ? "—" : place}</span>
           <span className={cx("flex flex-col min-w-0 leading-tight font-semibold [overflow-wrap:anywhere]", (isYours || r.p.custom) && "text-entered")}>
             {r.p.short}
             {/* one line reserved on every row, so a re-sort never changes a row's height (2026-10-31) */}
             <span className="flex flex-wrap gap-x-2 min-h-5 text-xs font-normal text-muted-foreground">
               {isYours && <span>{c.pair.yoursTag}</span>}
               {isBest && <span className="font-medium text-primary">{c.pair.cheapestTag}</span>}
+              {tiedTop && <span className="font-medium text-primary">{c.pair.tieTag}</span>}
               {r.at.standing && <span>{c.pair.standingTag}</span>}
             </span>
           </span>

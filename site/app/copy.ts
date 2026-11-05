@@ -3627,6 +3627,10 @@ export const invest = {
     vsCheapest: "לעומת הזוג הזול ביותר",
     /** Before any pick, on an index with no ranked pair: the pair shown is the one that leaves the most, on an open rule. */
     openTop: "הזוג שמשאיר הכי הרבה, בלי דירוג",
+    /** The top two pairs within the site's tie threshold (P-01): neither is crowned (2026-11-05). */
+    tieTop: "אחד משני הזוגות הזולים ביותר לתוכנית שלכם",
+    tieWithNext: "שקולה לזוג הבא בתור",
+    tieWhy: "ההפרש קטן מסף התיקו של האתר, ולכן שני הזוגות שקולים.",
     /** An input of a computed figure, named by whose it is: "הבחירה שלכם: נשאר". */
     input: (who: string, what: string) => `${who}: ${what}`,
     moreIfCheapest: "יותר אם עוברים לזוג הזול",
@@ -3681,6 +3685,8 @@ export const invest = {
     colDiff: "לעומת הבחירה",
     chosen: "הבחירה",
     cheapestTag: "★ הזול",
+    /** A row within the site's tie threshold of the first (P-01): it shares the first place, and no row is starred (2026-11-05). */
+    tieTag: "בתיקו על המקום הראשון",
     whichPrice: "המחיר בכל שורה הוא של לקוח רגיל, והדירוג לפיו. מחיר לקבוצות כתוב בשורה של הבנק או בית ההשקעות ולא נכנס לחישוב.",
     yoursTag: "החשבון שלכם",
     standingTag: ownTermsCopy.provider.standingTag,
