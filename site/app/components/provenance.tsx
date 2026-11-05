@@ -1042,7 +1042,7 @@ export function ValueSheet({ value, exact, display, data, headId, descId }: { va
           <Row label={copy.sourced.rule}>
             <span className="flex flex-wrap gap-2">
               {value.rule_ids.map((id) => (
-                <RuleRef key={id} id={id} />
+                <RuleRef key={id} id={id} titled />
               ))}
             </span>
           </Row>
@@ -1090,7 +1090,7 @@ export function ValueSheet({ value, exact, display, data, headId, descId }: { va
             <Row label={copy.sourced.rule}>
               <span className="flex flex-wrap gap-2">
                 {value.rule_ids.map((id) => (
-                  <RuleRef key={id} id={id} />
+                  <RuleRef key={id} id={id} titled />
                 ))}
               </span>
             </Row>
@@ -1131,7 +1131,7 @@ export function ValueSheet({ value, exact, display, data, headId, descId }: { va
                 {value.rulesUsed.map((r) => (
                   <div key={r.id} className="flex flex-col gap-0.5 min-w-0">
                     <span className="inline-flex items-center gap-1.5">
-                      <RuleRef id={r.id} />
+                      <RuleRef id={r.id} titled />
                       <StrengthLabel strength={r.strength} />
                     </span>
                     {ruleOf(data, r.id) && <FirstSourceLine rule={ruleOf(data, r.id)!} />}
@@ -1310,7 +1310,7 @@ export function RuleCard({ id, data, headId, inline }: { id: string; data: Prove
           <p className="text-xs text-muted-foreground flex flex-wrap items-center gap-x-2 gap-y-1">
             <span>{ruleCardMore.derivedFrom}</span>
             {derived.map((d) => (
-              <RuleRef key={d} id={d} />
+              <RuleRef key={d} id={d} titled />
             ))}
           </p>
           <p className="text-xs text-muted-foreground">{ruleCardMore.derivedLine}</p>
@@ -1321,7 +1321,7 @@ export function RuleCard({ id, data, headId, inline }: { id: string; data: Prove
         <p className="text-xs text-muted-foreground flex flex-wrap items-center gap-x-2 gap-y-1">
           <span>{ruleCardMore.examples}</span>
           {examples.map((d) => (
-            <RuleRef key={d} id={d} />
+            <RuleRef key={d} id={d} titled />
           ))}
         </p>
       )}
