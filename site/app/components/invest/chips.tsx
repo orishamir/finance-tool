@@ -6,7 +6,7 @@ import { fxLabel, nisPer, type FxSnapshot } from "../../lib/fx";
 import { fmt } from "../../lib/format";
 import type { WorkbenchBundle } from "../../lib/providers";
 import { Num } from "../provenance";
-import { Button, Card, ChipList, Sentence, Tag, type ChipItem } from "../kit";
+import { Button, Card, ChipList, LongestCase, Sentence, Tag, type ChipItem } from "../kit";
 
 /** The index name as a pill: the pills sit under the heading "המדד", so a leading "מדד" is dropped. */
 export const pillName = (name: string): string => name.replace(/^מדד\s+/, "");
@@ -82,6 +82,26 @@ function CustomPanel({ bundle, customs, onCancel, onSave, onKnown }: { bundle: P
 /** `dollar`: an index priced in shekels reads no exchange rate, so it shows none (founder, 2026-10-31); the line keeps its height either way. */
 export function PlanBlock({ knobs, onOpen, fx, today, example, dollar, inflation }: { knobs: ReactNode; onOpen: () => void; fx: FxSnapshot | undefined; today: string; example: boolean; dollar: boolean; /** The inflation the page runs on, in percent, said on its button; blue ink once entered. */ inflation?: { pct: number; entered: boolean } }) {
   const usd = fx ? nisPer(fx, "USD", today) : null;
+  // held at the words' longest case, the site's example included: on a phone, entering a first number dropped "לדוגמה של האתר" and
+  // the line under the sliders lost a line (#190)
+  const line = (ex: boolean) => (
+    <Sentence size="sm" tone="muted">
+      {ex && <>{c.plan.siteExample} · </>}
+      {c.plan.knobs.retBefore} · {c.plan.todayShekels}
+      {dollar &&
+        (usd ? (
+          <>
+            {" · "}
+            {c.plan.dollar} <Num value={usd} exact /> · {fxLabel(fx!)}
+          </>
+        ) : (
+          <>
+            {" · "}
+            <Tag tone="caution">{c.plan.dollarMissing}</Tag>
+          </>
+        ))}
+    </Sentence>
+  );
   return (
     <section className="flex flex-col gap-2" aria-label={c.plan.heading}>
       {knobs}
@@ -89,22 +109,9 @@ export function PlanBlock({ knobs, onOpen, fx, today, example, dollar, inflation
         <Button variant="secondary" className="!h-9 px-3 text-sm min-w-40 tabular-nums" onClick={onOpen}>
           {inflation ? <span className={inflation.entered ? "text-entered" : undefined}>{c.plan.knobs.othersAt(fmt.pct(inflation.pct))}</span> : c.plan.knobs.others}
         </Button>
-        <Sentence size="sm" tone="muted">
-          {example && <>{c.plan.siteExample} · </>}
-          {c.plan.knobs.retBefore} · {c.plan.todayShekels}
-          {dollar &&
-            (usd ? (
-              <>
-                {" · "}
-                {c.plan.dollar} <Num value={usd} exact /> · {fxLabel(fx!)}
-              </>
-            ) : (
-              <>
-                {" · "}
-                <Tag tone="caution">{c.plan.dollarMissing}</Tag>
-              </>
-            ))}
-        </Sentence>
+        <LongestCase className="min-w-0" cases={[line(true)]}>
+          {line(example)}
+        </LongestCase>
       </div>
     </section>
   );

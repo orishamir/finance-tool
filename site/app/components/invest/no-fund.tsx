@@ -167,8 +167,8 @@ export function NoFundAccountColumn({ view, bundle, years, monthly = 1, chosen, 
         <h3 className="font-semibold">{c.pair.accounts}</h3>
         <span className="text-sm text-muted-foreground">{n.accountsCond}</span>
         <span className="text-sm text-muted-foreground">{n.accountsHint}</span>
-        <LongestCase cases={[<span key="s" className="text-xs">{c.pair.standingNote(Math.max(standingCount, 1), local.length)}</span>, <span key="n" className="text-xs">{c.pair.noMonthly}</span>]}>
-          <span className="text-xs text-muted-foreground">{monthly === 0 ? c.pair.noMonthly : standingCount > 0 && c.pair.standingNote(standingCount, local.length)}</span>
+        <LongestCase className="text-xs text-muted-foreground" cases={[<span key="s">{c.pair.standingNote(Math.max(standingCount, 1), local.length)}</span>, <span key="n">{c.pair.noMonthly}</span>]}>
+          <span>{monthly === 0 ? c.pair.noMonthly : standingCount > 0 && c.pair.standingNote(standingCount, local.length)}</span>
         </LongestCase>
         <span className="text-xs text-muted-foreground">
           {c.pair.whichPrice}
