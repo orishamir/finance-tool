@@ -18,13 +18,12 @@ was live then). The whole screen, never a crop of the spot, so the reviewer has 
 else. Each case has a key for the grader: the problem in one neutral sentence, where it is, and whether it is
 **general** (any reader would trip on it, or a published usability finding says so) or **taste** (his preference).
 
-**What he says counts; silence does not** (founder, 2026-11-06: "when i complain about some design choice it correct,
-but not every time that i comply it means that i like it. if i say i like it then i did. but silence or complicitness
-doesnt mean", then "it depends. silence isnt consent, but saying "its fine" doesnt mean its not fine"). A complaint is a
-flag. "I like it" or "it's fine" said of a thing means it, and the reviewer should not flag that very thing. Silence
-says nothing either way. Going along with something, or picking one option of several, depends on what he said with
-it: read his words, and do not take the pick alone as approval. So a reviewer's finding on something he never
-commented on is never scored wrong for that reason; it goes to the noise sample, where he says yes or no.
+**Three signals, and nothing else** (founder, 2026-11-06: "a complaint is a real signal, i like it is a real signal,
+its fine is pretty real, and thats it"). A complaint is a flag. "I like it" said of a thing is an approval, and the
+reviewer should not flag that very thing; "it's fine" is nearly as strong. Nothing else counts: not silence ("silence
+isnt consent"), and not going along with something or picking one option of several, because he often goes along
+"because i know i will see it live on the site and decide it there". So a reviewer's finding on something he never
+complained about is never scored wrong for that reason; it goes to the noise sample, where he says yes or no.
 
 About a third of the cases are **held out**, by page and by date. The instruction set is never tuned on them, and the
 held-out score is the only one reported as the result.
