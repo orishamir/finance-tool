@@ -43,9 +43,27 @@ held-out score is the only one reported as the result.
 
 ## The bar
 
-To be set by the founder once the baseline is known. A proposal: at least 70% catch rate on held-out general problems
-at 10 findings, noise under 30%, and over 20 live flags a miss rate under 30% before large features are judged by the
-reviewer alone.
+Set by Claude, not the founder (2026-11-05: "i cant set the bar ... the only thing i can help is sometimes guide you and
+spot a bit of your weaknesses"), and fixed here before the baseline is known:
+
+- **Adopted** when, on held-out general problems, the catch rate at 10 findings is at least 70%, steadiness leaves no
+  more than one in five catches at one run of three, and noise is under 30%.
+- **Trusted alone** (large features judged by the reviewer without the founder looking first) when, over the next 20
+  problems he flags after adoption, it had already caught at least 70% on that screen.
+- **Stepped back** whenever the live miss rate over the last 10 flags rises above 40%: the misses become training cases
+  and the founder looks first again until it recovers.
+
+The founder's part is what only a human can give: the short noise sample (would this bother anyone, yes or no), and
+the problems he keeps flagging, each of which is a new test.
+
+## Rationale is not a defence
+
+The reviewer never sees why the site is the way it is. When it flags something a recorded decision explains, the
+decision does not dismiss the finding: the finding goes to the founder with the decision named beside it, as evidence
+that the decision may be wrong for readers. How often a finding met a decision, and what he chose, is logged in
+`lessons.md`. The instruction set itself may hold nothing of the project's conventions or rules (an independence check
+scans it for the site's terms and rules before every run); it is built only from how people behave and what people
+flagged.
 
 ## The grader
 
