@@ -122,6 +122,12 @@ The evidence behind them is `research/2026-10-28-founder-patterns.md`.
 **Work order (founder, 2026-10-31).** Finish the indices page and the guides
 before anything else; the workbench, holdings and idle-cash pages wait. This
 overrides the Roadmap issue's ranking, which counts what unblocks the most.
+*(2026-11-05)* Before that comes the user lab (`research/user-lab/`): a
+reviewer that runs with no project context and flags what people flag,
+measured against every problem I flagged (its metric and bar are in
+`metric.md` there), so that Claude can be trusted with large features. "as
+far as i care you can drop other work." The lessons behind it are items 21
+to 25 of `research/2026-10-28-founder-patterns.md`.
 
 ## Fixed constraints
 
