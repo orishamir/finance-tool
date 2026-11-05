@@ -34,6 +34,29 @@ held-out score is the only one reported as the result.
 5. **Against the usual.** The same cases are run with the old fresh-reader brief, and with Claude itself holding the
    full project context. This puts a number on the misses he called "like usual".
 
+## Planted problems, a second check (added 2026-11-05, before any result)
+
+The founder: "you could also test the reviewer themselves because you could inject things the reviewers are supposed to
+catch and see that they catch them." Real flags are few and arrive slowly; planted ones can be made on any page at
+any time. A **variant** is the live page with changes Claude chose, served at the same address so the reviewer cannot
+tell (`variants/`). A **planted problem** is a variant carrying one realistic mistake of a kind people are known to
+trip on (`planted.md`: each kind traced to a finding in `behaviour-guide.md` or to something the founder flagged),
+with a key for the grader and a matched **clean control**, the same page and state with nothing planted.
+
+- **Planted catch rate:** the share of planted problems named among the first 10 findings, by kind, graded blind as
+  above. Reported beside the headline, never in place of it: Claude chose what to plant, so a high score here shows
+  the reviewer sees what Claude expects, not yet what people see.
+- **False alarms:** on clean controls, the share of serious findings about something that is not there.
+- **No tuning to the plant.** An instruction may not be changed to catch one planted instance; the kinds are general,
+  each planted on several pages and devices, and the instances used to tune are kept apart from those used to score,
+  as with the real cases.
+
+## Trying a change on readers before building it
+
+A variant can also be a proposed change: new words, a moved block, other colours, or a branch's build behind the
+same address. The reviewer and the persona readers use it as if it were the site, so a change is judged on the real
+page, with everything around it, before it is built or pushed.
+
 ## After it is tuned
 
 - **Live misses.** From the day it is adopted, every new thing the founder flags is a fresh case: was it in the

@@ -20,8 +20,9 @@ time. (but no overfitting yeah?)"
    would make, never as a description of the element that failed.
 5. **Keep the change only if it generalises.**
    - **Not built from this case:** it must catch at least one other case, held out or from another page, of the same
-     reason, or a fresh instance made on purpose on another screen; a change that catches only the case it came from is
-     memorising, and is dropped.
+     reason, or a fresh instance made on purpose on another screen (a planted problem, `planted.md`, placed on a
+     page and device the flag did not come from); a change that catches only the case it came from is memorising, and
+     is dropped. A flag whose reason is new also becomes a planted kind, so later versions are tested on it.
    - **No new noise:** on the held-out set, noise must not rise and the catch rate must not fall.
    - **A negative check:** on a screen where the reason does not apply, the instruction must stay silent.
    - **No project words:** the independence check finds none of the site's terms or rules in it.
