@@ -17,6 +17,7 @@ import { IndexHeader } from "./sections";
 import { AccountColumn, allFunds, bestFor, crowned, FundColumn, GapCell, PairResult, pickOfHeadline, tieCount } from "./pair";
 import { tieShareOf } from "../../lib/invest";
 import { Foot } from "./foot";
+import { Terms } from "./custom-entries";
 import { DollarSection } from "./dollar";
 import { hasKinds, kindOf } from "../../lib/invest";
 import { PlanBlock } from "./chips";
@@ -298,5 +299,13 @@ describe("the tie set of F-80 in the tiles (#190)", () => {
     const out = html(createElement(PairResult, { view: sp, bundle, plan: base, pick: head, chosen: false, onPick: () => undefined }));
     expect(out).not.toContain("grid-cols-[minmax(0,1fr)_auto]");
     expect(out).toContain("grid-cols-[minmax(0,1fr)_7rem]");
+  });
+});
+
+describe("a typed entry's line (#190)", () => {
+  it("with nothing typed, the line says what is not known, with no entered tag before its own negation", () => {
+    const out = shown(html(createElement(Terms, { terms: { shown: [], empty: [invest.customEntries.fields.fx] }, editing: { kind: "fund", id: "x" } })));
+    expect(out).toContain(invest.customEntries.unknownLine(invest.customEntries.fields.fx));
+    expect(out.replace(invest.customEntries.unknownLine(invest.customEntries.fields.fx), "")).not.toContain("הזנתם");
   });
 });

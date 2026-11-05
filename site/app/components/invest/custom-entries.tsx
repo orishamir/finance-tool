@@ -130,11 +130,12 @@ export function AddEntryButton({ kind, primary = false }: { kind: "broker" | "fu
   );
 }
 
-/** What is left empty is not known, never zero (D56): an account's fields and a fund's fees alike (#190). */
-function Terms({ terms, editing }: { terms: { shown: EntryTerm[]; empty: string[] }; editing: Editing }) {
+/** What is left empty is not known, never zero (D56): an account's fields and a fund's fees alike (#190). The entered tag stands before
+ *  what was typed, and only when something was: alone, it stood before its own "not entered" (#190). */
+export function Terms({ terms, editing }: { terms: { shown: EntryTerm[]; empty: string[] }; editing: Editing }) {
   return (
     <span className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs leading-snug text-muted-foreground">
-      <StateTag state="entered" />
+      {terms.shown.length > 0 && <StateTag state="entered" />}
       {terms.shown.map((t) => (
         <span key={t.id}>
           {t.word}:
