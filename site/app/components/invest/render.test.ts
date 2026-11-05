@@ -299,12 +299,14 @@ describe("the tie set of F-80 in the tiles (#190)", () => {
     expect(out).toContain(invest.pair.vsYours);
   });
   it("the account list stars the one house all the tied pairs are at: its own funds tie with one another, no other house does", () => {
-    const out = shown(html(createElement(AccountColumn, { view: sp, bundle, years: 10, pick: head, onPick: () => undefined })));
+    // the shown row's own markup: a row's other states, laid out unseen beside it, carry every tag they can
+    const rowOf = (out: string, key: string) => { const a = out.indexOf(`data-pick-key="${key}"`); const rest = out.slice(a + 1); const b = rest.search(/data-pick-key=|data-case-of=/); return shown(b < 0 ? rest : rest.slice(0, b)); };
+    const out = rowOf(html(createElement(AccountColumn, { view: sp, bundle, years: 10, pick: head, onPick: () => undefined })), "psagot");
     expect(head.house).toBe("psagot");
     expect(out).toContain(invest.pair.cheapestTag);
     // and not with a fund outside the set, nor when another house is in it (the tiles' R1 case keeps no star there)
     const far = allFunds(sp).find((f) => f.rec.id !== head.fund && "valueN" in (f.byHouse.psagot ?? {}) && !["5139100", "1159250"].includes(f.rec.id))!;
-    const farOut = shown(html(createElement(AccountColumn, { view: sp, bundle, years: 10, pick: { house: "psagot", fund: far.rec.id }, onPick: () => undefined })));
+    const farOut = rowOf(html(createElement(AccountColumn, { view: sp, bundle, years: 10, pick: { house: "psagot", fund: far.rec.id }, onPick: () => undefined })), "psagot");
     expect(farOut).not.toContain(invest.pair.cheapestTag);
   });
   it("a cost bar's fund name is never cut: on a phone it has the bar's whole width, and it wraps, held at the index's longest name", () => {
@@ -313,6 +315,14 @@ describe("the tie set of F-80 in the tiles (#190)", () => {
     expect(out).not.toContain("truncate text-xs");
     const longest = allFunds(sp).map((f) => f.name).sort((a, b) => b.length - a.length)[0]!;
     expect(out.replace(/<[^>]+>/g, "").replace(/&amp;/g, "&").split(longest).length - 1).toBeGreaterThanOrEqual(2);
+  });
+  it("a pick of another fund moves nothing below the lists: each account row carries the grey states it takes with the other funds, and a fund priced nowhere holds no room in the fold", () => {
+    const out = html(createElement(AccountColumn, { view: sp, bundle, years: 10, pick: head, onPick: () => undefined }));
+    const abroad = allFunds(sp).find((f) => f.option === "abroad" && f.best && !("valueN" in (f.byHouse.psagot ?? {})))!;
+    expect(abroad).toBeDefined();
+    expect(out).toMatch(/data-case-of="psagot" data-case="grey\|/);
+    const funds = html(createElement(FundColumn, { view: sp, bundle, plan: base, today: t, pick: head, onPick: () => undefined, filter: null, onFilter: () => undefined }));
+    expect(funds).toMatch(/data-pick-key="us-voo"[^>]*data-cannot=""/);
   });
   it("why no pair is first is a line under both tiles, not inside one: held there, it left a hole in the tile when there was no tie", () => {
     const out = html(createElement(PairResult, { view: sp, bundle, plan: base, pick: head, chosen: false, onPick: () => undefined }));

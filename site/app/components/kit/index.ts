@@ -2,7 +2,7 @@
 // "components/kit", not from a neighbouring feature. One file per component or small family; the gallery at /kit shows each in its states.
 export { cx } from "./cx";
 export { useHeldHeight } from "./held-height";
-export { LongestCase, useUnseen } from "./longest-case";
+export { LongestCase, Unseen, useUnseen } from "./longest-case";
 export { Button, LinkButton } from "./button";
 export { StepTag, Tag } from "./tag";
 export { Callout } from "./callout";

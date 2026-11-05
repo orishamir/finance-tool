@@ -7,7 +7,7 @@ import { describe, expect, it } from "vitest";
 import { ProvenanceProvider } from "../provenance";
 import { Disclosure, Sentence, Stat, StatRow } from "./index";
 import { isoNumbers } from "./stairs-chart";
-import { figureFit } from "./pick-list";
+import { figureFit, PickList, type PickRow } from "./pick-list";
 import { KitGallery } from "./gallery";
 
 const today = "2026-10-25";
@@ -78,5 +78,21 @@ describe("figureFit", () => {
     expect(figureFit(45_073_491, "tile")).toBe("max-md:text-xl");
     expect(figureFit(1_860_753_604, "tile")).toBe("max-md:text-lg");
     expect(figureFit(100_000_000_000, "tile")).toBe("max-md:text-base");
+  });
+});
+
+describe("PickList holds its height (#190)", () => {
+  const row = (key: string, extra: Partial<PickRow> = {}): PickRow => ({ key, selected: false, onSelect: () => {}, cells: createElement("span", null, key), ...extra });
+  const folded = (out: string) => (out.match(/data-folded=""/g) ?? []).length;
+  it("the phone's fold shows the same number of rows whichever is chosen: a chosen row further down takes the last place", () => {
+    const keys = ["a", "b", "c", "d", "e", "f", "g", "h"];
+    const outs = keys.map((sel) => renderToString(createElement(PickList, { label: "x", columns: "1fr", phoneLimit: 3, more: () => "more", rows: keys.map((k) => row(k, { selected: k === sel })) })));
+    expect(new Set(outs.map(folded))).toEqual(new Set([5]));
+  });
+  it("a row's other states are laid out unseen, out of the flow, never as a row to choose", () => {
+    const out = renderToString(createElement(PickList, { label: "x", columns: "1fr", states: [{ a: "one" }, { a: "two" }], rows: [row("a", { caseKey: "one", cases: [{ key: "two", cells: createElement("span", null, "LONG-STATE") }] })] }));
+    expect(out).toContain('data-case-of="a"');
+    expect(out).toMatch(/aria-hidden="true" data-case-of="a" data-case="two" class="[^"]*absolute[^"]*invisible/);
+    expect((out.match(/role="radio"/g) ?? []).length).toBe(1);
   });
 });

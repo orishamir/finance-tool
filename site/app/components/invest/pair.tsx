@@ -211,7 +211,8 @@ function CostBar({ who, fund, funds, sub, pc, scale, you, entered, today, highli
           </span>
         </LongestCase>
         <span className={cx("truncate font-semibold leading-tight max-md:row-start-2 max-md:col-start-1", (you || entered) && "text-entered")}>{who}</span>
-        <LongestCase className="text-xs text-muted-foreground leading-tight [overflow-wrap:anywhere] max-md:row-start-3 max-md:col-span-2" cases={funds.map((f) => <span key={f}><MixedName>{f}</MixedName></span>)}>
+        {/* two lines on every index, so another index moves nothing below the bars (the longest collected names take two) */}
+        <LongestCase className="min-h-[2lh] text-xs text-muted-foreground leading-tight [overflow-wrap:anywhere] max-md:row-start-3 max-md:col-span-2" cases={funds.map((f) => <span key={f}><MixedName>{f}</MixedName></span>)}>
           <span>
             <MixedName>{fund}</MixedName>
           </span>
@@ -615,52 +616,119 @@ export function AccountColumn({ view, bundle, years, monthly = 1, pick, onPick, 
   const lines = legendLines(!!view.index.israeli, ok.flatMap((r) => r.at.lines.map((l) => lineOf(l.line))));
   const snapshot = bundle.snapshots.find((s) => s.id === baseHouse);
   const at = fund.byHouse[pick.house];
-  const pickRows: PickRow[] = ok.map((r, i) => {
-    const parts: CostPart[] = [...r.at.lines.map((l) => ({ id: l.line, legendId: lineOf(l.line), name: c.pair.lines[lineOf(l.line)] ?? c.pair.lines.other, value: l.cost, className: lineClass[lineOf(l.line)] ?? "bg-chart-cost-other", source: r.p.custom ? c.pair.sourceEntered : c.pair.sourceList(r.p.short) })), { id: "remainder", name: c.pair.remainder, about: c.pair.remainderAbout, value: r.at.interaction, className: "bg-chart-cost-other", source: c.pair.sourceComputed }];
-    const isYours = r.p.id === view.yourBroker;
+  type Prov = (typeof providers)[number];
+  // a house that sells a fund at a standing-order price keeps the tag's room whichever fund and plan (a monthly 0 and back moves nothing)
+  const standingSomewhere = (id: string) => allFunds(view).some((f) => { const a = f.byHouse[id]; return priced(a) && a.standing; });
+  /** A priced row's cells; `unseen`: one of the row's other states, laid out to hold its height, with every tag it can carry. */
+  const pricedCells = (p: Prov, wp: WayPrice, unseen = false) => {
+    const parts: CostPart[] = [...wp.lines.map((l) => ({ id: l.line, legendId: lineOf(l.line), name: c.pair.lines[lineOf(l.line)] ?? c.pair.lines.other, value: l.cost, className: lineClass[lineOf(l.line)] ?? "bg-chart-cost-other", source: p.custom ? c.pair.sourceEntered : c.pair.sourceList(p.short) })), { id: "remainder", name: c.pair.remainder, about: c.pair.remainderAbout, value: wp.interaction, className: "bg-chart-cost-other", source: c.pair.sourceComputed }];
+    const isYours = p.id === view.yourBroker;
     // shown on the row whether or not it is picked, so a pick never adds or removes a line (founder, 2026-10-27)
-    const place = placeOf.get(r.p.id);
-    const tiedTop = sharedTop && place === 1;
-    const isBest = crownHere && crownHouse === r.p.id && !tiedTop;
-    return {
-      key: r.p.id,
-      selected: r.p.id === baseHouse,
-      onSelect: () => pickHalf(view, pick, { house: r.p.id }, onPick),
-      cells: (
-        <>
-          <span className="text-sm text-muted-foreground tabular-nums text-center">{r.at.open ? "—" : place}</span>
-          <span className={cx("flex flex-col min-w-0 leading-tight font-semibold [overflow-wrap:anywhere]", (isYours || r.p.custom) && "text-entered")}>
-            {r.p.short}
-            {/* one line reserved on every row, so a re-sort never changes a row's height (2026-10-31) */}
-            <span className="flex flex-wrap gap-x-2 min-h-5 text-xs font-normal text-muted-foreground">
-              {isYours && <span>{c.pair.yoursTag}</span>}
-              {isBest && <span className="font-medium text-primary">{c.pair.cheapestTag}</span>}
-              {/* on a phone the two equal places say it alone: the word beside a standing-order price wrapped the row to a second line (#190) */}
-              {tiedTop && <span className="font-medium text-primary max-md:hidden">{c.pair.tieTag}</span>}
-              {/* the tap on this account changed the fund too: said on the row tapped, with the way back (a 44 px target in the line's height) */}
-              {r.p.id === baseHouse && moved?.half === "fund" && moved.back && <AlsoChanged what={c.pair.movedFund} back={c.pair.moveBack} onBack={backFrom(moved, r.p.id)} />}
-              {r.at.standing && monthly > 0 && <span>{c.pair.standingTag}</span>}
+    const place = placeOf.get(p.id);
+    const tiedTop = !unseen && sharedTop && place === 1;
+    const isBest = unseen || (crownHere && crownHouse === p.id && !tiedTop);
+    return (
+      <>
+        <span className="text-sm text-muted-foreground tabular-nums text-center">{wp.open ? "—" : place}</span>
+        <span className={cx("flex flex-col min-w-0 leading-tight font-semibold [overflow-wrap:anywhere]", (isYours || p.custom) && "text-entered")}>
+          {p.short}
+          {/* one line reserved on every row, so a re-sort never changes a row's height (2026-10-31) */}
+          <span className="flex flex-wrap gap-x-2 min-h-5 text-xs font-normal text-muted-foreground">
+            {isYours && <span>{c.pair.yoursTag}</span>}
+            {isBest && <span className="font-medium text-primary">{c.pair.cheapestTag}</span>}
+            {/* on a phone the two equal places say it alone: the word beside a standing-order price wrapped the row to a second line (#190) */}
+            {tiedTop && <span className="font-medium text-primary max-md:hidden">{c.pair.tieTag}</span>}
+            {/* the tap on this account changed the fund too: said on the row tapped, with the way back (a 44 px target in the line's height) */}
+            {/* unseen, it is held too: the row a tap turns from grey to priced is the one that carries it */}
+            {unseen ? <AlsoChanged what={c.pair.movedFund} back={c.pair.moveBack} onBack={() => undefined} /> : p.id === baseHouse && moved?.half === "fund" && moved.back && <AlsoChanged what={c.pair.movedFund} back={c.pair.moveBack} onBack={backFrom(moved, p.id)} />}
+            {(unseen ? standingSomewhere(p.id) : wp.standing && monthly > 0) && <span>{c.pair.standingTag}</span>}
+          </span>
+        </span>
+        {/* a narrow list (a phone, or this panel beside the funds on a computer) gives the bar a line of its own under the name, so it is wide enough to compare (2026-11-04) */}
+        <span className="flex items-center gap-2 min-w-0 @max-2xl:row-start-2 @max-2xl:col-start-3 @max-2xl:col-end-[-1]">
+          <CostStack size="sm" parts={parts} scale={scale} highlight={legendPick.active} label={`${p.short}: ${fmt.nisWhole(wp.accountCost)}`} />
+          {/* one width on every row, for the longest amount: a longer figure would shorten its own bar, and the bars share one scale */}
+          <span className="shrink-0 text-xs text-muted-foreground whitespace-nowrap" style={{ width: costWidth }}>
+            <Num animate value={nis(wp.accountCost, "F-63", `${p.short}: ${c.pair.colChargesShort}`, bundle.today)} />
+          </span>
+        </span>
+        <span className={cx("col-end-[-1] text-end font-semibold", figureFit(wp.valueN))}>
+          <Num animate value={wp.value} />
+        </span>
+        <GroupLine id={p.id} house={p.short} snapshots={bundle.snapshots} open={openGroups.includes(p.id)} onOpen={onGroup} choice={choiceOf(p.id)} />
+        {p.custom && <span className="col-start-2 col-end-[-1]"><BrokerTerms id={p.id} /></span>}
+      </>
+    );
+  };
+  /** A grey row's cells for a fund with no price at the house: the reason the house's record gives for it. */
+  const greyCells = (p: Prov, f: FundWay) => {
+    const a = f.byHouse[p.id];
+    const na = a && "availability" in a && a.availability ? a.availability : null;
+    const other = otherWay(view, p.id);
+    return (
+      <>
+        <span className="text-sm tabular-nums text-center">—</span>
+        <span className={cx("flex flex-col min-w-0 leading-tight font-semibold [overflow-wrap:anywhere]", p.custom && "text-entered")}>
+          {p.short}
+          <span className="flex flex-wrap gap-x-2 min-h-5 text-xs font-normal">{p.id === view.yourBroker && <span>{c.pair.yoursTag}</span>}</span>
+        </span>
+        <span className="flex flex-wrap items-center gap-x-2 gap-y-0.5 min-w-0 text-xs @max-2xl:row-start-2 @max-2xl:col-start-3 @max-2xl:col-end-[-1]">
+          <Tag tone={na ? undefined : "caution"}>{na ? c.pair.notPossible : c.pair.noData}</Tag>
+          {na && !p.custom && (
+            <a href={na.source.url} target="_blank" rel="noopener noreferrer" title={na.note ?? na.source.title} className="text-link hover:underline">
+              {c.pair.notPossibleSource} ↗
+            </a>
+          )}
+        </span>
+        <span className="col-end-[-1] text-end font-semibold">—</span>
+        {/* the reason takes the row's width, like the group line: in the charges column it stood one word to a line (2026-10-31) */}
+        <span className="col-start-2 col-end-[-1] flex flex-col gap-0.5 text-xs leading-snug">
+          {na && p.custom && <span>{c.customEntries.notSold}</span>}
+          {/* the reason in words on the row, never only in a link's title (nothing depends on hover) */}
+          {!(na && p.custom) && <span>{whyNoPrice(bundle, p.id, f)}</span>}
+          {other && (
+            <span>
+              {c.pair.elsewhere} <MixedName>{other.fund.name}</MixedName>, {c.pair.elsewhereLeft} <Num value={other.at.value} />
+              {other.at.open && ` (${c.pair.elsewhereOpen})`}
             </span>
-          </span>
-          {/* a narrow list (a phone, or this panel beside the funds on a computer) gives the bar a line of its own under the name, so it is wide enough to compare (2026-11-04) */}
-          <span className="flex items-center gap-2 min-w-0 @max-2xl:row-start-2 @max-2xl:col-start-3 @max-2xl:col-end-[-1]">
-            <CostStack size="sm" parts={parts} scale={scale} highlight={legendPick.active} label={`${r.p.short}: ${fmt.nisWhole(r.at.accountCost)}`} />
-            {/* one width on every row, for the longest amount: a longer figure would shorten its own bar, and the bars share one scale */}
-            <span className="shrink-0 text-xs text-muted-foreground whitespace-nowrap" style={{ width: costWidth }}>
-              <Num animate value={nis(r.at.accountCost, "F-63", `${r.p.short}: ${c.pair.colChargesShort}`, bundle.today)} />
-            </span>
-          </span>
-          <span className={cx("col-end-[-1] text-end font-semibold", figureFit(r.at.valueN))}>
-            <Num animate value={r.at.value} />
-          </span>
-          <GroupLine id={r.p.id} house={r.p.short} snapshots={bundle.snapshots} open={openGroups.includes(r.p.id)} onOpen={onGroup} choice={choiceOf(r.p.id)} />
-          {r.p.custom && <span className="col-start-2 col-end-[-1]"><BrokerTerms id={r.p.id} /></span>}
-        </>
-      ),
-    };
-  });
+          )}
+        </span>
+        <GroupLine id={p.id} house={p.short} snapshots={bundle.snapshots} open={openGroups.includes(p.id)} onOpen={onGroup} choice={choiceOf(p.id)} />
+        {p.custom && <span className="col-start-2 col-end-[-1]"><BrokerTerms id={p.id} /></span>}
+      </>
+    );
+  };
+  // the state a house's row takes with a fund: priced, or grey with the reason its record gives (the list holds its tallest state over the
+  // index's funds, so a pick of another fund moves nothing below it; #190: picking a fund abroad grew the list by 377 px on a phone)
+  const stateOf = (p: Prov, f: FundWay) => {
+    const a = f.byHouse[p.id];
+    return priced(a) ? "priced" : `grey|${a && "availability" in a && a.availability ? "na" : ""}|${whyNoPrice(bundle, p.id, f)}`;
+  };
+  // over the funds that can be picked (a fund priced nowhere for its own reason has no row to pick: its state never comes)
+  const pickable = allFunds(view).filter((f) => f === fund || Object.keys(f.byHouse).length > 0);
+  const casesOf = (p: Prov): { key: string; cells: ReactNode }[] => {
+    const now = stateOf(p, fund);
+    const out: { key: string; cells: ReactNode }[] = [];
+    const seen = new Set<string>([now]);
+    for (const f of pickable) {
+      const k = stateOf(p, f);
+      if (seen.has(k)) continue;
+      seen.add(k);
+      const way = k === "priced" ? (f.byHouse[p.id] as WayPrice) : null;
+      out.push({ key: k, cells: way ? pricedCells(p, way, true) : greyCells(p, f) });
+    }
+    return out;
+  };
+  const states = pickable.map((f) => Object.fromEntries(providers.map((p) => [p.id, stateOf(p, f)])));
+  const pickRows: PickRow[] = ok.map((r) => ({
+    key: r.p.id,
+    selected: r.p.id === baseHouse,
+    onSelect: () => pickHalf(view, pick, { house: r.p.id }, onPick),
+    cells: pricedCells(r.p, r.at),
+    caseKey: "priced",
+    cases: casesOf(r.p),
+  }));
   const greyRows: PickRow[] = missing.map((r) => {
-    const na = noWay(r);
     const other = otherWay(view, r.p.id);
     return {
       key: r.p.id,
@@ -670,38 +738,9 @@ export function AccountColumn({ view, bundle, years, monthly = 1, pick, onPick, 
       onSelect: () => {
         if (other) pickHalf(view, pick, { house: r.p.id }, onPick);
       },
-      cells: (
-        <>
-          <span className="text-sm tabular-nums text-center">—</span>
-          <span className={cx("flex flex-col min-w-0 leading-tight font-semibold [overflow-wrap:anywhere]", r.p.custom && "text-entered")}>
-            {r.p.short}
-            <span className="flex flex-wrap gap-x-2 min-h-5 text-xs font-normal">{r.p.id === view.yourBroker && <span>{c.pair.yoursTag}</span>}</span>
-          </span>
-          <span className="flex flex-wrap items-center gap-x-2 gap-y-0.5 min-w-0 text-xs @max-2xl:row-start-2 @max-2xl:col-start-3 @max-2xl:col-end-[-1]">
-            <Tag tone={na ? undefined : "caution"}>{na ? c.pair.notPossible : c.pair.noData}</Tag>
-            {na && !r.p.custom && (
-              <a href={na.source.url} target="_blank" rel="noopener noreferrer" title={na.note ?? na.source.title} className="text-link hover:underline">
-                {c.pair.notPossibleSource} ↗
-              </a>
-            )}
-          </span>
-          <span className="col-end-[-1] text-end font-semibold">—</span>
-          {/* the reason takes the row's width, like the group line: in the charges column it stood one word to a line (2026-10-31) */}
-          <span className="col-start-2 col-end-[-1] flex flex-col gap-0.5 text-xs leading-snug">
-            {na && r.p.custom && <span>{c.customEntries.notSold}</span>}
-            {/* the reason in words on the row, never only in a link's title (nothing depends on hover) */}
-            {!(na && r.p.custom) && <span>{whyNoPrice(bundle, r.p.id, fund)}</span>}
-            {other && (
-              <span>
-                {c.pair.elsewhere} <MixedName>{other.fund.name}</MixedName>, {c.pair.elsewhereLeft} <Num value={other.at.value} />
-                {other.at.open && ` (${c.pair.elsewhereOpen})`}
-              </span>
-            )}
-          </span>
-          <GroupLine id={r.p.id} house={r.p.short} snapshots={bundle.snapshots} open={openGroups.includes(r.p.id)} onOpen={onGroup} choice={choiceOf(r.p.id)} />
-          {r.p.custom && <span className="col-start-2 col-end-[-1]"><BrokerTerms id={r.p.id} /></span>}
-        </>
-      ),
+      cells: greyCells(r.p, fund),
+      caseKey: stateOf(r.p, fund),
+      cases: casesOf(r.p),
     };
   });
   return (
@@ -764,6 +803,7 @@ export function AccountColumn({ view, bundle, years, monthly = 1, pick, onPick, 
           </>
         }
         rows={[...pickRows, ...greyRows]}
+        states={states}
       />
       </div>
       <div className="px-5 py-3 flex flex-col gap-3">
@@ -918,6 +958,35 @@ export function FundColumn({ view, bundle, plan, today, pick, chosen = true, onP
   // the block is held at its longest case over every account on the index: a house with more reasons grew the column, and the held
   // height kept it grown after the pick went back (#190)
   const whyCases = view.providers.map((p) => <Fragment key={p.id}>{whyBlock(p.short, whysAt(p.id, funds.map((f) => ({ f }))))}</Fragment>);
+  // what a row's last cell can say at any account, laid out unseen in it: the row keeps one height whichever account is picked (#190: a
+  // pick sorted taller rows into a phone's folded list, and every section below moved)
+  const longestHouse = view.providers.map((p) => p.short).sort((a, b) => b.length - a.length)[0] ?? "";
+  const sampleGap = nis(LONGEST_AMOUNT, "F-65", c.pair.colDiff, today);
+  const rightCases = (f: FundWay) => [
+    <span key="c" className="text-sm">{c.pair.chosen}</span>,
+    <span key="m" className="text-sm">{c.pair.marked}</span>,
+    <AlsoChanged key="a" stack className="text-xs" what={c.pair.movedHouse(longestHouse)} back={c.pair.moveBackTo(longestHouse)} onBack={() => undefined} />,
+    <span key="d" className="font-semibold"><Num value={sampleGap} display={plus} /></span>,
+    ...(kinds && range
+      ? [
+          <span key="x" className="flex flex-col items-end gap-0.5 text-sm">
+            <span className="block font-semibold">
+              <span className="block whitespace-nowrap">{c.kinds.between} <Num value={sampleGap} display={plus} /></span>
+              <span className="block whitespace-nowrap">{c.kinds.and}<Num value={sampleGap} display={plus} /></span>
+            </span>
+            <span className="text-xs text-muted-foreground text-end">{c.kinds.crossWhy(`${Math.abs(range.lo)}%`, `${range.hi}%`)}</span>
+          </span>,
+        ]
+      : []),
+    ...(Object.values(f.byHouse).some((a) => !priced(a))
+      ? [
+          <span key="n" className="flex flex-col items-end text-xs">
+            {c.pair.noPriceHere}
+            <span className="text-end">{c.pair.pickMoves(longestHouse)}</span>
+          </span>,
+        ]
+      : []),
+  ];
   const pickRows: PickRow[] = shown.map((r, i) => {
     const at = r.at;
     const isSel = r.f.rec.id === pick.fund;
@@ -939,9 +1008,10 @@ export function FundColumn({ view, bundle, plan, today, pick, chosen = true, onP
       )
     ) : x && range ? (
       <span className="flex flex-col items-end gap-0.5 text-sm">
-        <span className="block font-semibold min-h-[2lh]">
-          {c.kinds.between} <Num animate value={nis(x.atLo, "F-94", c.pair.colDiff, today)} display={plus} /> {c.kinds.and}
-          <Num animate value={nis(x.atHi, "F-94", c.pair.colDiff, today)} display={plus} />
+        {/* a line per figure, never wrapped: a plan typed past the sliders' ends gave an eight-digit figure a third line (#190) */}
+        <span className="block font-semibold">
+          <span className="block whitespace-nowrap">{c.kinds.between} <Num animate value={nis(x.atLo, "F-94", c.pair.colDiff, today)} display={plus} /></span>
+          <span className="block whitespace-nowrap">{c.kinds.and}<Num animate value={nis(x.atHi, "F-94", c.pair.colDiff, today)} display={plus} /></span>
         </span>
         <span className="text-xs text-muted-foreground text-end">{c.kinds.crossWhy(`${Math.abs(range.lo)}%`, `${range.hi}%`)}</span>
       </span>
@@ -962,6 +1032,8 @@ export function FundColumn({ view, bundle, plan, today, pick, chosen = true, onP
     return {
       key: r.f.rec.id,
       ...(mineTyped ? { keep: true } : {}),
+      // a fund priced at no house sorts last at every account and cannot be picked: the fold never holds room for it
+      ...(why || (!r.f.best && !isSel) ? { canShow: false } : {}),
       ...(heading ? { heading } : {}),
       selected: isSel,
       muted: !priced(at),
@@ -998,7 +1070,9 @@ export function FundColumn({ view, bundle, plan, today, pick, chosen = true, onP
           <span className="self-center max-md:row-start-2 max-md:col-start-2">
             <GapCell rec={r.f.rec} today={today} />
           </span>
-          <span className="text-end self-center max-md:row-start-1 max-md:col-start-3">{right}</span>
+          <LongestCase className="text-end self-center max-md:row-start-1 max-md:col-start-3 *:flex *:flex-col *:items-end" cases={rightCases(r.f)}>
+            {right}
+          </LongestCase>
         </>
       ),
     };

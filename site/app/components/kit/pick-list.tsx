@@ -3,6 +3,7 @@
 import { Fragment, useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { useFlip } from "./chart-glide";
 import { cx } from "./cx";
+import { Unseen } from "./longest-case";
 
 export interface PickRow {
   key: string;
@@ -16,12 +17,24 @@ export interface PickRow {
   heading?: ReactNode;
   /** Never folded on a phone (the person's own row, D44). */
   keep?: boolean;
+  /**
+   * The cells the row takes in the list's other states (`states`), by key: a house priced or not, with each reason it can give. Laid out
+   * unseen and out of the flow, to be measured; `caseKey` is the one the row shows now.
+   */
+  cases?: { key: string; cells: ReactNode }[];
+  caseKey?: string;
+  /** On a phone, false when the row can never stand among the fold's shown rows (it sorts last at every choice and cannot be chosen). */
+  canShow?: boolean;
 }
 
 /**
  * `columns`: the grid template after the radio (for example `"minmax(0,1fr) auto"`); `phoneColumns` the template below `md`, where
  * a cell may move to a second line (`max-md:row-start-2`). `head`: the column names, on the same grid. `phoneLimit`: on a phone, the
- * rows after the first N fold behind a button (`more` words it), the chosen row always shown; nothing is filtered out.
+ * rows after the first N fold behind a button (`more` words it), the chosen row always shown; nothing is filtered out. The fold shows
+ * the same number of rows whichever is chosen (a chosen row further down takes the last place), and it holds the height of the tallest
+ * rows that can stand in it: a pick that sorts other rows into the fold moves nothing below the list (#190).
+ * `states`: the list's other states (another fund picked in a linked list), each the case key of every row; the list holds the height of
+ * its tallest state, so a pick that turns rows grey with their reasons moves nothing below it (#190: up to 433 px on a phone).
  */
 /**
  * A figure that must fit a fixed width, a size down as its digits grow, so a plan typed past the sliders' ends never cuts its leading
@@ -61,7 +74,7 @@ export function holdOnPick(key: string, el: HTMLElement) {
   pending = holdOf(key, el);
 }
 
-export function PickList({ label, columns, phoneColumns, head, rows, phoneLimit, more }: { label: string; columns: string; phoneColumns?: string; head?: ReactNode; rows: PickRow[]; phoneLimit?: number; more?: (hidden: number) => string }) {
+export function PickList({ label, columns, phoneColumns, head, rows, phoneLimit, more, states }: { label: string; columns: string; phoneColumns?: string; head?: ReactNode; rows: PickRow[]; phoneLimit?: number; more?: (hidden: number) => string; states?: Record<string, string>[] }) {
   const [open, setOpen] = useState(false);
   // a pick re-prices what is above the list (founder, 2026-10-27: "the whole page jumps up and down"): keep the tapped row where it
   // was on the screen, wherever the list now puts it
@@ -104,13 +117,73 @@ export function PickList({ label, columns, phoneColumns, head, rows, phoneLimit,
     r.onSelect();
   };
   const grid = { "--pick-cols": columns, "--pick-cols-phone": phoneColumns ?? columns } as CSSProperties;
+  const cellsClass = "grid gap-x-3 gap-y-1 items-center";
+  const rowClass = "text-start px-4 py-2.5 border-b border-border last:border-b-0 min-h-target cursor-pointer hover:bg-muted/60 focus-visible:outline-2 focus-visible:outline-ring";
+  const radio = (r: PickRow) => <span aria-hidden="true" className={cx("size-4 rounded-full border-[1.5px] self-start mt-1", r.selected ? "border-[5px] border-primary" : "border-input")} />;
   const gridClass = "grid-cols-[1.25rem_var(--pick-cols-phone)] md:grid-cols-[1.25rem_var(--pick-cols)]";
   const folds = !open && phoneLimit !== undefined && rows.length > phoneLimit + 1;
-  // a row that opens a group stays, so a group's heading is never hidden behind the fold
-  const folded = (i: number, r: PickRow) => folds && i >= phoneLimit! && !r.selected && !r.heading && !r.keep;
-  const hidden = rows.filter((r, i) => folded(i, r)).length;
+  // the rows the fold shows: the first N, the chosen one among them (further down, it takes the last place, so the count never changes);
+  // a row that opens a group stays, so a group's heading is never hidden behind the fold, and the person's own rows stay
+  const shownInFold = new Set<number>();
+  if (folds) {
+    const sel = rows.findIndex((r) => r.selected);
+    const counted = (r: PickRow) => !r.keep && !(r.heading && !r.selected);
+    let left = phoneLimit!;
+    rows.forEach((r, i) => {
+      if (r.keep || r.selected) {
+        shownInFold.add(i);
+        if (counted(r)) left--;
+        return;
+      }
+      const reserve = sel > i && counted(rows[sel]!) ? 1 : 0;
+      if (left - reserve > 0) {
+        shownInFold.add(i);
+        left--;
+      } else if (r.heading) shownInFold.add(i);
+    });
+  }
+  const folded = (i: number) => folds && !shownInFold.has(i);
+  const hidden = rows.filter((_, i) => folded(i)).length;
+  // the folded rows and the rows' other states are laid out unseen, out of the flow, and measured (a row's height depends on its words at
+  // this width): the list holds the height of its tallest state, and the fold the height of its tallest rows
+  useLayoutEffect(() => {
+    const list = root.current;
+    if (!list) return;
+    const fit = () => {
+      list.style.minHeight = "";
+      const h = (el: Element) => el.getBoundingClientRect().height;
+      const rowEls = [...list.querySelectorAll<HTMLElement>(":scope > [data-pick-key]")];
+      const inFlow = rowEls.filter((el) => el.dataset.folded === undefined || window.matchMedia("(min-width: 48rem)").matches);
+      const now = inFlow.reduce((a, el) => a + h(el), 0);
+      let most = now;
+      if (folds && !window.matchMedia("(min-width: 48rem)").matches) {
+        const free = rowEls.filter((el) => el.dataset.keep === undefined);
+        const shown = free.filter((el) => el.dataset.folded === undefined);
+        const can = free.filter((el) => el.dataset.cannot === undefined || el.dataset.folded === undefined);
+        const tallest = can.map(h).sort((a, b) => b - a).slice(0, shown.length).reduce((a, x) => a + x, 0);
+        most = Math.max(most, now - shown.reduce((a, el) => a + h(el), 0) + tallest);
+      }
+      if (states?.length) {
+        const caseH = new Map<string, number>();
+        for (const el of list.querySelectorAll<HTMLElement>(":scope > [data-case-of]")) caseH.set(`${el.dataset.caseOf}\u0000${el.dataset.case}`, h(el));
+        for (const st of states) {
+          let t = 0;
+          for (const el of inFlow) {
+            const k = el.dataset.pickKey!;
+            const want = st[k];
+            t += want === undefined || want === el.dataset.caseKey ? h(el) : caseH.get(`${k}\u0000${want}`) ?? h(el);
+          }
+          most = Math.max(most, t);
+        }
+      }
+      if (most - now > 0.5) list.style.minHeight = `${h(list) + most - now}px`;
+    };
+    fit();
+    window.addEventListener("resize", fit);
+    return () => window.removeEventListener("resize", fit);
+  });
   return (
-    <div ref={root} role="radiogroup" aria-label={label} className="flex flex-col [overflow-anchor:none]">
+    <div ref={root} role="radiogroup" aria-label={label} className="relative flex flex-col [overflow-anchor:none]">
       {head && (
         <div className={cx("grid gap-x-3 items-end px-4 pb-1.5 text-xs text-muted-foreground border-b border-border", gridClass)} style={grid}>
           <span />
@@ -120,12 +193,25 @@ export function PickList({ label, columns, phoneColumns, head, rows, phoneLimit,
       {rows.map((r, i) => (
         // a div, not a button: a row holds controls of its own (a fund's number to Maya, a figure's sheet), and a click on one is not a pick
         <Fragment key={r.key}>
-        {r.heading && <div className={cx("px-4 py-2 bg-popover border-b border-border text-sm font-semibold", folded(i, r) && "max-md:hidden")}>{r.heading}</div>}
+        {r.heading && <div className={cx("px-4 py-2 bg-popover border-b border-border text-sm font-semibold", folded(i) && "max-md:hidden")}>{r.heading}</div>}
+        {/* the row's other states, unseen and out of the flow: measured, never shown; before the row, so the last row is the list's last child */}
+        {r.cases?.map((x) => (
+          <div key={x.key} aria-hidden="true" data-case-of={r.key} data-case={x.key} className={cx(rowClass, cellsClass, gridClass, "absolute inset-x-0 top-0 invisible pointer-events-none")} style={grid}>
+            <Unseen>
+              {radio(r)}
+              {x.cells}
+            </Unseen>
+          </div>
+        ))}
         <div
           role="radio"
           aria-checked={r.selected}
           data-pick-key={r.key}
           data-flip={r.key}
+          {...(folded(i) ? { "data-folded": "" } : {})}
+          {...(r.keep ? { "data-keep": "" } : {})}
+          {...(r.canShow === false ? { "data-cannot": "" } : {})}
+          {...(r.caseKey !== undefined ? { "data-case-key": r.caseKey } : {})}
           tabIndex={r.selected ? 0 : -1}
           onClick={(e) => {
             if (!inControl(e.target, e.currentTarget)) choose(r, e.currentTarget);
@@ -143,15 +229,17 @@ export function PickList({ label, columns, phoneColumns, head, rows, phoneLimit,
             }
           }}
           className={cx(
-            "grid gap-x-3 gap-y-1 items-center text-start px-4 py-2.5 border-b border-border last:border-b-0 min-h-target cursor-pointer hover:bg-muted/60 focus-visible:outline-2 focus-visible:outline-ring",
+            rowClass,
+            cellsClass,
             gridClass,
-            folded(i, r) && "max-md:hidden",
+            // a folded row is laid out unseen and out of the flow, so its height can be read (the fold holds its tallest rows)
+            folded(i) && "max-md:absolute max-md:inset-x-0 max-md:top-0 max-md:invisible",
             r.selected && "bg-primary/10 shadow-[inset_-3px_0_0_var(--primary)] hover:bg-primary/10",
             r.muted && !r.selected && "text-muted-foreground",
           )}
           style={grid}
         >
-          <span aria-hidden="true" className={cx("size-4 rounded-full border-[1.5px] self-start mt-1", r.selected ? "border-[5px] border-primary" : "border-input")} />
+          {radio(r)}
           {r.cells}
         </div>
         </Fragment>

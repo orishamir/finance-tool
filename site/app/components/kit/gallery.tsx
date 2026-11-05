@@ -1229,6 +1229,19 @@ function Lists({ today }: { today: string }) {
           />
         </State>
       </Demo>
+      <Demo name="PickList (states)" use={g.uses.PickList}>
+        <State label="states and cases: the second row turns long in the other state, and the list holds that state's height, so nothing below it moves when it comes" wide>
+          <PickList
+            label={p.name}
+            columns="minmax(0,1fr) auto"
+            states={[{ a: "short", b: "short" }, { a: "short", b: "long" }]}
+            rows={[
+              { key: "a", selected: true, onSelect: () => {}, caseKey: "short", cells: <><span>{p.a}</span><span className="tabular-nums">78,943</span></> },
+              { key: "b", selected: false, onSelect: () => {}, caseKey: "short", cells: <><span>{p.b}</span><span className="tabular-nums">76,322</span></>, cases: [{ key: "long", cells: <><span className="flex flex-col"><span>{p.b}</span><span className="text-xs">{p.c}</span><span className="text-xs">{p.c}</span></span><span>—</span></> }] },
+            ]}
+          />
+        </State>
+      </Demo>
       <Demo name="LabelFilter" use={g.uses.LabelFilter}>
         <State label="three labels with counts, the first on" wide>
           <LabelFilter lead={p.figure} allLabel={p.link} value={labels[0]!.id} onChange={() => {}} options={labels.map((l, i) => ({ label: l, count: 5 - i }))} />
