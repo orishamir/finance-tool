@@ -3707,6 +3707,9 @@ export const invest = {
     noPriceHere: "אין מחיר כאן",
     noPriceWhy: (house: string) => `למה חלק מהקרנות בלי מחיר ב${house}:`,
     notPossibleSource: "המקור",
+    /** A house whose own documents say this kind of fund cannot be bought there (2026-11-05: said only in a link's title before). */
+    notPossibleAny: "לפי המסמכים של החברה, אי אפשר לקנות שם קרן על המדד הזה.",
+    notPossibleWhy: (kind: string) => `לפי המסמכים של החברה, אי אפשר לקנות שם ${kind}.`,
     /** On an account row with no price for the fund: picking it picks another fund too, said before the tap (2026-11-05). */
     elsewhere: "בחירה בחשבון הזה בוחרת גם את הקרן",
     elsewhereLeft: "ונשארים",

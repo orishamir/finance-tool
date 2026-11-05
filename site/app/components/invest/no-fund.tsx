@@ -132,7 +132,7 @@ export function NoFundAccountColumn({ view, bundle, years, chosen, onPick }: { v
           </span>
           <span className="col-end-[-1] text-end font-semibold">—</span>
           <span className="col-start-2 col-end-[-1] text-xs leading-snug">
-            {na && h.provider.custom ? c.customEntries.notSold : !na && (snap?.missing_reason_he ?? (h.reason ? reasonText(h.reason, optionClass["il-etf"]) : c.funds.cannot))}
+            {na && h.provider.custom ? c.customEntries.notSold : na ? c.pair.notPossibleAny : (snap?.missing_reason_he ?? (h.reason ? reasonText(h.reason, optionClass["il-etf"]) : c.funds.cannot))}
           </span>
           {h.provider.custom && <span className="col-start-2 col-end-[-1]"><BrokerTerms id={h.provider.id} /></span>}
         </>

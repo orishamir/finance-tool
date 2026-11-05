@@ -73,6 +73,21 @@ function otherWay(view: InvestView, house: string): { fund: FundWay; at: WayPric
   return ways.sort((a, b) => Number(a.at.open) - Number(b.at.open) || b.at.valueN - a.at.valueN)[0] ?? null;
 }
 
+/**
+ * Why a house gives a fund no price, from the house's record first (2026-11-05: the page said Psagot's price list has no line for
+ * foreign securities; it has two, and the record says the price in Europe is not final): a doubt the record words, a price list not
+ * collected, a kind the house does not sell, and only then the engine's reason.
+ */
+export function whyNoPrice(bundle: { snapshots: WorkbenchBundle["snapshots"] }, houseId: string, fund: FundWay): string {
+  const snap = bundle.snapshots.find((s) => s.id === houseId);
+  const at = fund.byHouse[houseId];
+  const doubt = doubtOf(snap, fund.option);
+  if (doubt) return doubt;
+  if (snap?.missing && snap.missing_reason_he) return snap.missing_reason_he;
+  if (at && "availability" in at && at.availability) return c.pair.notPossibleWhy(c.stairs.kinds[fund.option] ?? fund.option);
+  return at && "reason" in at ? reasonText(at.reason, optionClass[fund.option]) : c.funds.cannot;
+}
+
 /** The other half when one half changes: keep it when it still prices, else the one that leaves the most with the new half. */
 export function repick(view: InvestView, cur: Pick, change: Partial<Pick>): Pick {
   const funds = allFunds(view);
@@ -564,7 +579,8 @@ export function AccountColumn({ view, bundle, years, pick, onPick, moved = null,
           {/* the reason takes the row's width, like the group line: in the charges column it stood one word to a line (2026-10-31) */}
           <span className="col-start-2 col-end-[-1] flex flex-col gap-0.5 text-xs leading-snug">
             {na && r.p.custom && <span>{c.customEntries.notSold}</span>}
-            {!na && <span>{doubtOf(bundle.snapshots.find((s) => s.id === r.p.id), fund.option) ?? bundle.snapshots.find((s) => s.id === r.p.id)?.missing_reason_he ?? (r.at && "reason" in r.at ? reasonText(r.at.reason, optionClass[fund.option]) : c.funds.cannot)}</span>}
+            {/* the reason in words on the row, never only in a link's title (nothing depends on hover) */}
+            {!(na && r.p.custom) && <span>{whyNoPrice(bundle, r.p.id, fund)}</span>}
             {other && (
               <span>
                 {c.pair.elsewhere} <MixedName>{other.fund.name}</MixedName>, {c.pair.elsewhereLeft} <Num value={other.at.value} />
@@ -768,7 +784,7 @@ export function FundColumn({ view, bundle, plan, today, pick, onPick, moved = nu
   const names = view.index.exposure?.other_currencies === true ? c.kinds.nameMany(c.currencies[cur] ?? cur) : c.kinds.name;
   const kindCount = { unhedged: shown.filter((r) => kindOf(r.f.rec) === "unhedged").length, hedged: shown.filter((r) => kindOf(r.f.rec) === "hedged").length };
   const diff = (n: number, name: string, value: SiteValue, sel: SiteValue) => nis(n, "F-65", c.pair.colDiff, today, { [c.pair.input(name, c.pair.colLeft)]: value, [c.pair.input(`${c.pair.chosen}, ${fund.name}`, c.pair.colLeft)]: sel });
-  const houseWhys = [...new Set(shown.flatMap((r) => (r.at && !priced(r.at) && "reason" in r.at ? [reasonText(r.at.reason, optionClass[r.f.option])] : [])))];
+  const houseWhys = [...new Set(shown.flatMap((r) => (r.at && !priced(r.at) && "reason" in r.at ? [whyNoPrice(bundle, pick.house, r.f)] : [])))];
   const pickRows: PickRow[] = shown.map((r, i) => {
     const at = r.at;
     const isSel = r.f.rec.id === pick.fund;
