@@ -42,7 +42,7 @@ The reader has already chosen an index and wants to hold it in a regular securit
 
 ### 3.1 Two decisions of very different size
 
-Take a reader who has already chosen the S&P 500, or one who has already chosen the TA-90 (two separate readers; the page never sets one index against another, D27). Each makes two choices: the account and the fund. The page's own numbers (default plan: 10,000 ₪, 500 ₪ a month, 10 years) show how unequal they are:
+Take a reader who has already chosen the S&P 500, or one who has already chosen the TA-90 (two separate readers; the page never sets one index against another, D27) *(amended 2026-11-05: D27 forbids ranking, defaulting to or suggesting an index, not a fact shown for each index in a fixed order with no star; whether a page shows one is settled by the question test of ground rule 1, and on this page it fails, because one return entered for every index leaves only costs and tax to differ)*. Each makes two choices: the account and the fund. The page's own numbers (default plan: 10,000 ₪, 500 ₪ a month, 10 years) show how unequal they are:
 
 | | S&P 500 | TA-125 |
 |---|---|---|

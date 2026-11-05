@@ -61,3 +61,18 @@ The page's height, as an estimate: the plan-number chart (765 px) and the stairs
 
 Open for the founder: 2A or 2B, and one colour vocabulary for the whole page (the fund kinds in 2A against the fee kinds
 in the account rows).
+
+## The lists' rows: shared labels and number marks (drawn 2026-11-05)
+
+Two of the founder's suggestions drawn on the live page, the change applied in the browser (`draw45.mjs`, then `compose45.mjs`):
+`rows-item4-shared-labels.png` and `rows-item5-marks-in-head.png`, today on the right. Heights are to the sixth row, because
+the list's card holds its tallest height on the page.
+
+- **A label every row shares goes once, in the group head.** On S&P 500 "חשיפה לדולר" is on all 19 rows of the group
+  "בלי נטרול מט״ח" and on no other row, so it is the group: it leaves the rows and the filter (and "מנוטרלת מט״ח" likewise),
+  and the filter is one line shorter (1,082 to 1,048 px). On ת"א-125 "צוברת" is on all six rows; a list with no groups gets one
+  head for it, which adds a line (779 to 822 px). Adopted, it would amend the rule of 27 October that a label shows on every row it is true of.
+- **The column head carries the number mark.** Every figure in both lists is computed, so the head word gets the dotted
+  underline, one line says what it means, and the cells stay plain and still open their calculation. The lists get calmer and
+  one line taller (1,082 to 1,110 px); no reading changes. The cost under each account's bar had no column head; it gets one
+  ("עלות ב־10 שנים") either way.

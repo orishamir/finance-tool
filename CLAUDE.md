@@ -74,6 +74,12 @@ The evidence behind them is `research/2026-10-28-founder-patterns.md`.
    screen without it. This holds for a choice I delegated too. Text and label
    changes need no mockup, and neither does anything else short of a major
    graphic visualization. Technical settings stay Claude's to set.
+   *(2026-11-05)* A drawing shows the whole page with the new piece in
+   place, the page's height before and after, and what the piece replaces;
+   a section that replaces nothing starts folded. Every chart's drawing
+   opens with the choice the reader makes differently after seeing it; a
+   chart whose answer is the same for every option on its page does not go
+   on that page.
 2. **Fair and general comparisons.** Name the holding; change one thing at
    a time; show differences rather than two absolutes; use a range or a
    count over every collected institution, never one bank and never my own
@@ -91,7 +97,9 @@ The evidence behind them is `research/2026-10-28-founder-patterns.md`.
    only time. A bar inside a table row, beside its Hebrew text, may grow
    from the right with the row. Each line or category has its own clearly
    different hue, with a direct label or a legend; blue and violet stay
-   reserved for entered and computed numbers.
+   reserved for entered and computed numbers. *(2026-11-05)* Within a page
+   a colour means one thing: each page's spec carries its colour table, and
+   inside a chart the hues differ among that chart's own meanings.
 7. **One flaw means a sweep.** A flaw I report is fixed in the shared piece,
    and every other place of the same kind is fixed with it.
 8. **Both screen sizes, PC judged first.** Mockups are judged on PC; every
@@ -100,6 +108,11 @@ The evidence behind them is `research/2026-10-28-founder-patterns.md`.
 9. **Full words.** Full terms, headers on every table, no process language
    on the site (Claude, audit ids, test names); builders' Hebrew goes
    through the Hebrew editor.
+10. **A reversal carries its cleanup** (2026-11-05). When a layout or a
+    decision changes, the same change removes what the old one left behind
+    (wording, tiles, notes, tokens, tests). A redesign is chosen from two or
+    three whole-page options, and the choice settles for a few days before
+    the next one.
 
 **Work order (founder, 2026-10-31).** Finish the indices page and the guides
 before anything else; the workbench, holdings and idle-cash pages wait. This

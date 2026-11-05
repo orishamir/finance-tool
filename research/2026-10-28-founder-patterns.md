@@ -101,6 +101,10 @@ A checklist to meet before the founder sees anything:
 14. **Sweep.** For each flaw, list every place of its class and fix it in the shared piece.
 15. **Data checked first.** Confirm the data the design depends on exists (which tariffs have the line), or say how it absorbs the gap.
 16. **Ask once.** One product question per round, with a recommendation; record each reversal inline with its date.
+17. **The whole page** (2026-11-05). The drawing shows the page with the piece in place, its height before and after, and what it replaces; a piece that replaces nothing starts folded.
+18. **The question test** (2026-11-05). The drawing opens with the choice the reader makes differently after seeing it; a chart whose answer is the same for every option on its page does not go there.
+19. **A colour table per page** (2026-11-05). One meaning per colour on the page.
+20. **Cleanup with every reversal** (2026-11-05). List what the old layout left behind and remove it in the same change.
 
 ## 6. What could change in how work is done (proposals, not decided)
 
