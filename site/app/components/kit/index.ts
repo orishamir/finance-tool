@@ -50,3 +50,4 @@ export { GroupPriceFold, GroupPriceRows, groupBlocks, groupLineWho, type GroupBl
 export { ClaimCheck, ClaimList } from "./claim-check";
 export { DocLink, atPdfPage } from "./doc-link";
 export { MixedName } from "./name";
+export { AlsoChanged } from "./also-changed";

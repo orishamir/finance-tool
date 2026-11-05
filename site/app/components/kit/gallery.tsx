@@ -2,7 +2,7 @@
 // in one place; not in the menu, not in the search, noindex. Every number on it is a labelled example.
 import { useState, type ReactNode } from "react";
 import { Link } from "react-router";
-import { brands, groupPrices as groupWordsDemo, kit as copy, trackBrowser } from "../../copy";
+import { brands, groupPrices as groupWordsDemo, invest as investWords, kit as copy, trackBrowser } from "../../copy";
 import type { SiteValue } from "../../lib/value";
 import { computed, entered } from "../../lib/value";
 import { CalendarCheck, CalendarDays, Lock, Zap } from "lucide-react";
@@ -13,6 +13,7 @@ import { allLabels, label } from "../../lib/labels";
 import { fmt } from "../../lib/format";
 import { PileStory, PileYears } from "./pile-story";
 import { MixedName } from "./name";
+import { AlsoChanged } from "./also-changed";
 import { AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, Button, Callout, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, LabelFilter, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, CompareTable, TableCols, CoverageFold, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, SortHead, ExposureCell, FeeKey, FeeNum, HelpMark, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, GainBars, GapNote, HeadlineFigure, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, ParameterLine, PercentField, PlanChips, KnobStrip, ChangeChart, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, RangeField, RankBadge, Section, SegmentedControl, SelectField, Sentence, TileChoice, ShareRings, SourceLine, Stat, StatRow, StatTile, StepButtons, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, ClaimList, DocLink, atPdfPage, GroupPriceFold, GroupPriceRows, PeriodStrip, type CostPart, type GroupEntry } from "./index";
 import type { AdvertisingEntry } from "@finance-tool/schema";
 
@@ -379,6 +380,12 @@ function Words({ today }: { today: string }) {
         <Grid>
           <State label="a Hebrew name that starts with Latin letters"><div>הקרן <MixedName>MTF סל (4D) S&P 500</MixedName>, בחשבון</div></State>
           <State label="a Latin name keeps its own direction"><div>הקרן <MixedName>iShares Core S&P 500 UCITS ETF</MixedName>, בחשבון</div></State>
+        </Grid>
+      </Demo>
+      <Demo name="AlsoChanged" use={g.uses.AlsoChanged}>
+        <Grid>
+          <State label="in a line of a row (the account list)"><div className="text-xs"><AlsoChanged what={investWords.pair.movedFund} back={investWords.pair.moveBack} onBack={() => undefined} /></div></State>
+          <State label="stacked at the end of a narrow cell (the fund list)"><div className="text-xs"><AlsoChanged stack what={investWords.pair.movedHouse("IBKR")} back={investWords.pair.moveBackTo("IBI")} onBack={() => undefined} /></div></State>
         </Grid>
       </Demo>
       <Demo name="RulesLine, RulesChip" use={g.uses.RulesLine}>

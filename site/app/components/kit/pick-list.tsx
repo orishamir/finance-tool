@@ -1,6 +1,6 @@
 // A list to choose one row from (founder, 2026-10-27, the index page's two linked lists): every row is a radio, the chosen one is
 // tinted with a bar at its start; the rows' cells are the caller's, on a grid the caller names, and a head row can name the columns.
-import { Fragment, useLayoutEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
+import { Fragment, useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { useFlip } from "./chart-glide";
 import { cx } from "./cx";
 
@@ -45,26 +45,50 @@ const inControl = (target: EventTarget, row: HTMLElement) => {
 
 // A pick made outside the list (a name in a "not priced" line under it) that brings a row into the list: that row takes the place on the
 // screen of what was tapped. One pending hold for the page; the list that has the row takes it.
-let pending: { key: string; top: number } | null = null;
+let pending: Hold | null = null;
 
-/** Call before a pick made outside the list: the list row `key` will appear where `el` is now. */
+/**
+ * A tapped row is held where it was for a moment, over every render in it, not only the first: a pick renders more than once (a note
+ * on the row before the address changes, the sorted lists after it), and the first render used the hold up while the rows moved on the
+ * next (#190: a row that moved the other half landed 1,400 px off screen). The person's own scroll ends the hold.
+ */
+const HOLD_MS = 1200;
+interface Hold { key: string; top: number; until: number }
+const holdOf = (key: string, el: HTMLElement): Hold => ({ key, top: el.getBoundingClientRect().top, until: performance.now() + HOLD_MS });
+
+/** Call before a pick made outside the list (or by a control inside a row): the list row `key` will appear where `el` is now. */
 export function holdOnPick(key: string, el: HTMLElement) {
-  pending = { key, top: el.getBoundingClientRect().top };
+  pending = holdOf(key, el);
 }
 
 export function PickList({ label, columns, phoneColumns, head, rows, phoneLimit, more }: { label: string; columns: string; phoneColumns?: string; head?: ReactNode; rows: PickRow[]; phoneLimit?: number; more?: (hidden: number) => string }) {
   const [open, setOpen] = useState(false);
   // a pick re-prices what is above the list (founder, 2026-10-27: "the whole page jumps up and down"): keep the tapped row where it
   // was on the screen, wherever the list now puts it
-  const anchor = useRef<{ key: string; top: number } | null>(null);
+  const anchor = useRef<Hold | null>(null);
   // when the order changes the rows slide to their new places, and the tapped row is the one that stands still
   const root = useFlip<HTMLDivElement>(rows.map((r) => r.key).join(), () => anchor.current?.key ?? pending?.key);
+  // the person's own scroll ends a hold: a render after it must not take the page back (a key is not watched: Enter on a row starts one)
+  useEffect(() => {
+    const end = () => {
+      anchor.current = null;
+      pending = null;
+    };
+    const opts = { passive: true } as const;
+    window.addEventListener("wheel", end, opts);
+    window.addEventListener("touchmove", end, opts);
+    return () => {
+      window.removeEventListener("wheel", end);
+      window.removeEventListener("touchmove", end);
+    };
+  }, []);
   useLayoutEffect(() => {
+    const now = performance.now();
+    if (anchor.current && now > anchor.current.until) anchor.current = null;
+    if (pending && now > pending.until) pending = null;
     const outside = pending && rows.some((r) => r.key === pending!.key) ? pending : null;
     const a = anchor.current ?? outside;
     if (!a || !root.current) return;
-    anchor.current = null;
-    if (a === outside) pending = null;
     const list = root.current;
     const hold = () => {
       const el = [...list.querySelectorAll<HTMLElement>("[data-pick-key]")].find((x) => x.dataset.pickKey === a.key);
@@ -76,7 +100,7 @@ export function PickList({ label, columns, phoneColumns, head, rows, phoneLimit,
     requestAnimationFrame(hold);
   });
   const choose = (r: PickRow, el: HTMLElement) => {
-    anchor.current = { key: r.key, top: el.getBoundingClientRect().top };
+    anchor.current = holdOf(r.key, el);
     r.onSelect();
   };
   const grid = { "--pick-cols": columns, "--pick-cols-phone": phoneColumns ?? columns } as CSSProperties;
