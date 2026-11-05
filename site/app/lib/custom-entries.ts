@@ -332,6 +332,22 @@ export function brokerTerms(b: CustomBroker): { shown: EntryTerm[]; empty: strin
   return { shown, empty };
 }
 
+/**
+ * The lines of an account typed from scratch that the person left empty (2026-11-05, the founder's rule that silence is not zero): each is a
+ * price not known, so the account is listed without a price and never ranked until it is filled. The conversion counts only for an account
+ * that sells abroad. An account built on a house has none: what is left empty there is the house's price list.
+ */
+export function unknownLines(b: CustomBroker): string[] {
+  if (b.base) return [];
+  const w = c.fields;
+  return [
+    ...(b.tradePct === null && b.tradeMin === null ? [w.trade] : []),
+    ...(b.custodyPct === null && b.custodyMin === null ? [w.custody] : []),
+    ...(b.sells.abroad && b.fxPct === null ? [w.fx] : []),
+    ...(b.monthlyFee === null ? [w.monthly] : []),
+  ];
+}
+
 export function fundTerms(f: CustomFund): { shown: EntryTerm[]; empty: string[] } {
   const w = c.fields;
   const foreign = isForeignKind(f.kind);
@@ -364,13 +380,16 @@ export function snapshotOfBroker(b: CustomBroker, house?: FeesSnapshot): FeesSna
     const { provider, tariff, snapshot, missing, missing_reason, missing_reason_he, lines, averages, minimums, notice_rule_ids } = house;
     return { id: b.id, provider: { ...provider, name_he: b.name, part_of: undefined }, tariff, snapshot, missing, missing_reason, ...(missing_reason_he ? { missing_reason_he } : {}), lines, averages, minimums, notice_rule_ids, availability: [...(house.availability ?? []), ...shut] };
   }
+  // a line left empty is not known: the account has no price, and its row says so (2026-11-05)
+  const unknown = unknownLines(b).length > 0;
   return {
     id: b.id,
     provider: { name_he: b.name, class: "broker", regulator: "ISA", tase_member: false, protection_rule_ids: [] },
     tariff: { url: "local", title: c.tariffTitle, published: null, format: "html" },
     snapshot: b.added,
-    missing: false,
-    missing_reason: null,
+    missing: unknown,
+    missing_reason: unknown ? "entered-incomplete" : null,
+    ...(unknown ? { missing_reason_he: c.incomplete } : {}),
     lines: [],
     averages: [],
     minimums: { account_opening: null },
@@ -380,7 +399,8 @@ export function snapshotOfBroker(b: CustomBroker, house?: FeesSnapshot): FeesSna
 }
 
 /**
- * The tariff the engine runs (F-63, level "entered"; docs/method.md, D44). An empty fee is zero. Custody is typed as a percent a year with a
+ * The tariff the engine runs (F-63, level "entered"; docs/method.md, D44). An account with an empty line has none (`unknownLines`); a typed
+ * minimum with no percent is a percent of zero. Custody is typed as a percent a year with a
  * minimum a month, so it is charged monthly at a twelfth of the year's percent, with the minimum as typed (F-14).
  */
 export function tariffOfBroker(b: CustomBroker): EnteredTariff {
@@ -477,7 +497,8 @@ export function withCustomEntries(bundle: WorkbenchBundle, brokers: readonly Cus
     snapshots: [...bundle.snapshots, ...brokers.map((b) => snapshotOfBroker(b, houseOf(b)))],
     funds: [...bundle.funds, ...funds.map((f) => recordOfFund(f, currencyOf(f)))],
     entered: {
-      tariffs: Object.fromEntries(brokers.filter((b) => !houseOf(b)).map((b) => [b.id, tariffOfBroker(b)])),
+      // an account with a line left empty has no tariff to run: its snapshot is marked missing, and the engine lists it without a price
+      tariffs: Object.fromEntries(brokers.filter((b) => !houseOf(b) && unknownLines(b).length === 0).map((b) => [b.id, tariffOfBroker(b)])),
       layered: Object.fromEntries(onHouse.map((b) => [b.id, layeredOf(b)])),
       inputs: Object.fromEntries([...brokers.map((b) => [b.id, { ...(houseOf(b) ? groupInputs(b) : {}), ...inputsOf(brokerTerms(b), b.name) }] as const), ...funds.map((f) => [f.id, inputsOf(fundTerms(f), f.name)] as const)]),
       exposures,

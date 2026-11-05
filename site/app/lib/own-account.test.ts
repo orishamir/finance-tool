@@ -527,12 +527,16 @@ describe("an entry saved before this change", () => {
     monthlyFee: null,
     sells: { israeli: true, abroad: true },
   };
-  it("loads unchanged, with no base, and is read as it always was", () => {
+  it("loads unchanged, with no base; a line left empty is a price not known (2026-11-05), so it has no tariff until it is filled", () => {
     const loaded = validCustomBrokers([JSON.parse(JSON.stringify(old))]);
     expect(loaded).toEqual([old]);
     expect("base" in loaded[0]!).toBe(false);
     const b = withCustomEntries(bundle, loaded, []);
-    expect(b.entered!.tariffs[old.id]).toEqual({ buy: { rate: 0.0005, min: 1 }, sell: { rate: 0.0005, min: 1 }, custody: { rate: 0.0002 / 12, everyMonths: 1 }, fx: 0.002, monthlyFee: 0 });
+    expect(b.entered!.tariffs[old.id]).toBeUndefined();
+    expect(b.snapshots.find((s) => s.id === old.id)!.missing).toBe(true);
+    const filled = { ...old, monthlyFee: entered(0, "nis_per_month", t, "דמי ניהול חשבון") };
+    const b2 = withCustomEntries(bundle, validCustomBrokers([JSON.parse(JSON.stringify(filled))]), []);
+    expect(b2.entered!.tariffs[old.id]).toEqual({ buy: { rate: 0.0005, min: 1 }, sell: { rate: 0.0005, min: 1 }, custody: { rate: 0.0002 / 12, everyMonths: 1 }, fx: 0.002, monthlyFee: 0 });
     expect(b.entered!.layered).toEqual({});
     expect(b.snapshots.find((s) => s.id === old.id)!.lines).toEqual([]);
   });

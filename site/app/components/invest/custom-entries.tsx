@@ -3,7 +3,7 @@
 import { useEffect, useId, useMemo, useRef, useState, type ReactNode } from "react";
 import { invest as root } from "../../copy";
 import type { FundRecord } from "@finance-tool/schema";
-import { brokerDraftOf, brokerErrors, brokerFromDraft, brokerTerms, customFundGap, DOMICILES, fundDraftOf, fundErrors, fundFromDraft, fundTerms, isForeignKind, NAME_MAX, newBrokerId, newFundId, PAYOUTS, PER_YEAR, recordOfFund, TRACKINGS, type BrokerDraft, type CustomBroker, type CustomFund, type EntryError, type EntryTerm, type FundDomicile, type FundDraft, type FundPayout, type FundTracking, type PerYear } from "../../lib/custom-entries";
+import { brokerDraftOf, brokerErrors, brokerFromDraft, brokerTerms, customFundGap, unknownLines, DOMICILES, fundDraftOf, fundErrors, fundFromDraft, fundTerms, isForeignKind, NAME_MAX, newBrokerId, newFundId, PAYOUTS, PER_YEAR, recordOfFund, TRACKINGS, type BrokerDraft, type CustomBroker, type CustomFund, type EntryError, type EntryTerm, type FundDomicile, type FundDraft, type FundPayout, type FundTracking, type PerYear } from "../../lib/custom-entries";
 import { fundLabels, optionLabels, type Label } from "../../lib/labels";
 import { optionsOf, type IndexRef, type OptionId } from "../../lib/invest";
 import { isoToday } from "../../lib/state";
@@ -13,6 +13,7 @@ import { Actions, EditButton, nisCheck, useDraft, isInvalid, EditorsContext, use
 import { OwnAccountPanel, OwnTerms } from "./own-account";
 import { Button, CheckField, ChoiceChips, FieldGroup, flushPendingFields, LabelRow, LongestCase, NumberField, percentCheck, SelectField, TextField, TileChoice, type Tile } from "../kit";
 import { optionClass, reasonText } from "./parts";
+import { isGroupProvider } from "../../lib/group-pick";
 
 const c = root.customEntries;
 
@@ -73,6 +74,8 @@ export function CustomEntriesHost({ index, brokers, funds, writable, onSaveBroke
           <BrokerPanel
             key={editing.id ?? "new"}
             headId={headId}
+            houses={world ? world.view.houses.filter((h) => !h.provider.custom && !isGroupProvider(h.provider)).map((h) => ({ id: h.provider.id, name: h.provider.short })) : []}
+            onHouse={(houseId) => setEditing({ kind: "own", houseId, from: "list" })}
             broker={brokers.find((b) => b.id === editing.id) ?? null}
             others={brokers}
             writable={writable}
@@ -127,7 +130,7 @@ export function AddEntryButton({ kind, primary = false }: { kind: "broker" | "fu
   );
 }
 
-function Terms({ terms, editing }: { terms: { shown: EntryTerm[]; empty: string[] }; editing: Editing }) {
+function Terms({ terms, editing, unknown = false }: { terms: { shown: EntryTerm[]; empty: string[] }; editing: Editing; /** An account: what is empty is not known, not zero (2026-11-05). */ unknown?: boolean }) {
   return (
     <span className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs leading-snug text-muted-foreground">
       <StateTag state="entered" />
@@ -143,7 +146,7 @@ function Terms({ terms, editing }: { terms: { shown: EntryTerm[]; empty: string[
           ))}
         </span>
       ))}
-      {terms.empty.length > 0 && <span>{terms.shown.length === 0 ? c.allEmpty : c.emptyLine(c.listWords(terms.empty))}</span>}
+      {terms.empty.length > 0 && <span>{unknown ? c.unknownLine(c.listWords(terms.empty)) : terms.shown.length === 0 ? c.allEmpty : c.emptyLine(c.listWords(terms.empty))}</span>}
       <EditButton editing={editing} />
     </span>
   );
@@ -154,7 +157,7 @@ export function BrokerTerms({ id }: { id: string }) {
   const e = useEditors();
   const b = e?.brokers.find((x) => x.id === id);
   if (b?.base) return <OwnTerms b={b} />;
-  return b ? <Terms terms={brokerTerms(b)} editing={{ kind: "broker", id }} /> : null;
+  return b ? <Terms terms={{ shown: brokerTerms(b).shown, empty: unknownLines(b) }} editing={{ kind: "broker", id }} unknown /> : null;
 }
 
 /** The same line on a fund's row. */
@@ -168,13 +171,19 @@ export function FundTerms({ id }: { id: string }) {
 
 const pctCheck = percentCheck();
 
-function BrokerPanel({ headId, broker, others, writable, onSave, onCancel, onRemove }: { headId: string; broker: CustomBroker | null; others: readonly CustomBroker[]; writable: boolean; onSave: (b: CustomBroker) => void; onCancel: () => void; onRemove: (id: string) => void }) {
+/** The choice a new account starts from: a collected house's price list, or a house the site has not collected (2026-11-05). */
+const NOT_LISTED = "not-listed";
+
+function BrokerPanel({ headId, broker, houses, onHouse, others, writable, onSave, onCancel, onRemove }: { headId: string; broker: CustomBroker | null; /** The collected houses a new account can start from. */ houses: { id: string; name: string }[]; onHouse: (houseId: string) => void; others: readonly CustomBroker[]; writable: boolean; onSave: (b: CustomBroker) => void; onCancel: () => void; onRemove: (id: string) => void }) {
   const { draft, now, set } = useDraft<BrokerDraft>(() => brokerDraftOf(broker));
+  // a new account starts from a house's price list, as the account card's does; only a house not in the list is typed from scratch
+  const [basis, setBasis] = useState<string | null>(broker || houses.length === 0 ? NOT_LISTED : null);
   const [errors, setErrors] = useState<EntryError[]>([]);
   const form = useRef<HTMLDivElement>(null);
   const w = c.fields;
-  const field = (k: "tradeMin" | "custodyMin" | "monthlyFee", label: string, unit: string) => <NumberField label={label} unit={unit} value={draft[k]} isEntered={draft[k] !== null} validate={nisCheck} onCommit={(n) => set(k, n)} onReset={() => set(k, null)} placeholder="0" optional />;
-  const percent = (k: "tradePct" | "custodyPct" | "fxPct", label: string, unit: string) => <NumberField label={label} unit={unit} value={draft[k]} isEntered={draft[k] !== null} validate={pctCheck} onCommit={(n) => set(k, n)} onReset={() => set(k, null)} placeholder="0" optional />;
+  // no "0" in an empty field: an empty field is a price not known, not a price of zero
+  const field = (k: "tradeMin" | "custodyMin" | "monthlyFee", label: string, unit: string) => <NumberField label={label} unit={unit} value={draft[k]} isEntered={draft[k] !== null} validate={nisCheck} onCommit={(n) => set(k, n)} onReset={() => set(k, null)} optional />;
+  const percent = (k: "tradePct" | "custodyPct" | "fxPct", label: string, unit: string) => <NumberField label={label} unit={unit} value={draft[k]} isEntered={draft[k] !== null} validate={pctCheck} onCommit={(n) => set(k, n)} onReset={() => set(k, null)} optional />;
   const save = () => {
     flushPendingFields();
     const d = now.current;
@@ -189,8 +198,19 @@ function BrokerPanel({ headId, broker, others, writable, onSave, onCancel, onRem
         <h2 id={headId} className="text-lg font-semibold">
           {broker ? c.brokerEdit(broker.name) : c.brokerTitle}
         </h2>
-        <p className="text-sm text-muted-foreground">{c.brokerSub}</p>
+        <p className="text-sm text-muted-foreground">{basis === NOT_LISTED ? c.brokerSub : c.brokerStart}</p>
       </div>
+      {!broker && houses.length > 0 && (
+        <SelectField
+          label={c.basis}
+          none={c.basisNone}
+          options={[...houses, { id: NOT_LISTED, name: c.basisNotListed }]}
+          value={basis}
+          onChange={(id) => (id && id !== NOT_LISTED ? onHouse(id) : setBasis(id))}
+        />
+      )}
+      {basis === NOT_LISTED && (
+        <>
       <TextField label={w.brokerName} value={draft.name} onChange={(v) => set("name", v)} maxLength={NAME_MAX} error={errors.includes("name-empty") ? c.errors["name-empty"] : errors.includes("name-taken") ? c.errors["name-taken"] : null} />
       <FieldGroup title={w.trade}>
         <div className="field-row grid gap-3 grid-cols-[minmax(0,1fr)] sm:grid-cols-2">
@@ -216,7 +236,9 @@ function BrokerPanel({ headId, broker, others, writable, onSave, onCancel, onRem
           <CheckField label={w.sellsAbroad} checked={draft.sellsAbroad} onChange={(v) => set("sellsAbroad", v)} />
         </div>
       </FieldGroup>
-      <Actions entry={!!broker} name={broker?.name ?? ""} writable={writable} onSave={save} onCancel={onCancel} onRemove={() => broker && onRemove(broker.id)} />
+        </>
+      )}
+      {basis === NOT_LISTED ? <Actions entry={!!broker} name={broker?.name ?? ""} writable={writable} onSave={save} onCancel={onCancel} onRemove={() => broker && onRemove(broker.id)} /> : <Button variant="quiet" className="self-start -ms-2" onClick={onCancel}>{c.cancel}</Button>}
     </div>
   );
 }

@@ -7,7 +7,7 @@ import { beforeEach, describe, expect, it } from "vitest";
 import { AccountColumn, allFunds, FundColumn, pickOfHeadline, PairResult } from "../components/invest/pair";
 import { LabelSheetHost } from "../components/kit";
 import { ProvenanceProvider } from "../components/provenance";
-import { brokerDraftOf, brokerErrors, brokerFromDraft, fundDraftOf, fundErrors, fundFromDraft, tariffOfBroker, validCustomBrokers, validCustomFunds, withCustomEntries, type CustomBroker, type CustomFund } from "./custom-entries";
+import { brokerDraftOf, brokerErrors, brokerFromDraft, fundDraftOf, fundErrors, fundFromDraft, tariffOfBroker, unknownLines, validCustomBrokers, validCustomFunds, withCustomEntries, type CustomBroker, type CustomFund } from "./custom-entries";
 import { fundLabels } from "./labels";
 import { buildInvest, cheapestWay, indexById, indexSeenBy, optionOfFund, pairCosts, refOfCustom, type WayPrice } from "./invest";
 import { buildWorkbenchBundle } from "./providers.server";
@@ -31,9 +31,13 @@ const plan: WorkbenchInputs = {
 };
 
 // the terms of tests/golden/expected_custom_entries.py
-const cheap = brokerFromDraft({ ...brokerDraftOf(null), name: "הצעה זולה", tradePct: 0.05, tradeMin: 1, custodyPct: 0.02, fxPct: 0.2 }, "custom-broker-cheap", t);
+// every line typed, a fee not charged as 0 (2026-11-05: a line left empty is a price not known, and the account is not ranked); the golden
+// script's figures are for the same zeros
+const cheap = brokerFromDraft({ ...brokerDraftOf(null), name: "הצעה זולה", tradePct: 0.05, tradeMin: 1, custodyPct: 0.02, fxPct: 0.2, monthlyFee: 0 }, "custom-broker-cheap", t);
 const dear = brokerFromDraft({ ...brokerDraftOf(null), name: "הצעה יקרה", tradePct: 0.5, tradeMin: 30, custodyPct: 0.4, custodyMin: 10, fxPct: 1, monthlyFee: 20 }, "custom-broker-dear", t);
-const zeros = brokerFromDraft({ ...brokerDraftOf(null), name: "הצעה ריקה" }, "custom-broker-zeros", t);
+const zeros = brokerFromDraft({ ...brokerDraftOf(null), name: "הצעה ריקה", tradePct: 0, custodyPct: 0, fxPct: 0, monthlyFee: 0 }, "custom-broker-zeros", t);
+/** Only the commission it was offered, the rest left empty (the review of 2026-11-05: it took the star with every blank as zero). */
+const partial = brokerFromDraft({ ...brokerDraftOf(null), name: "רק עמלה", tradePct: 0.08 }, "custom-broker-partial", t);
 /** A fund draft that says it accumulates and is unhedged, as the golden script prices it (since 2026-11-05 a payout not said has no price). */
 const said = (kind: Parameters<typeof fundDraftOf>[1]) => ({ ...fundDraftOf(null, kind), payout: "accumulating" as const, hedged: false });
 const fund = fundFromDraft({ ...said("il-tracking"), name: "קרן שלי", fixed: 0.2, variable: 0.05, trustee: 0.02 }, "custom-fund-mine", "index-ta125", t);
@@ -85,8 +89,18 @@ describe("a broker the person types ranks with the others (D44)", () => {
     expect(typed).toEqual(expect.arrayContaining(["pct_of_trade:0.05", "nis_per_trade:1", "pct_per_year:0.02", "pct_per_year:0.2", "pct_per_year:0.05"]));
   });
 
-  it("charges a line that was left empty nothing, and keeps the row's figures in the entered state", () => {
-    expect(cheap.monthlyFee).toBeNull();
+  it("an account with a line left empty has no price, is never ranked, and its row says why (silence is not zero)", () => {
+    expect(unknownLines(partial)).toHaveLength(3);
+    const b2 = withCustomEntries(bundle, [partial], [fund]);
+    const v2 = buildInvest({ bundle: b2, index: ta125, plan });
+    const at = v2.options.flatMap((o) => o.funds).find((f) => f.rec.id === v2.headline!.fund.rec.id)!.byHouse[partial.id];
+    expect(at && "valueN" in at).toBe(false);
+    expect(v2.headline!.providerId).not.toBe(partial.id);
+    expect(b2.snapshots.find((s) => s.id === partial.id)!.missing_reason_he).toBeTruthy();
+  });
+
+  it("charges a fee typed as zero nothing, and keeps the row's figures in the entered state", () => {
+    expect(cheap.monthlyFee!.value).toBe(0);
     expect(cheap.tradePct!.state).toBe("entered");
     const tariff = tariffOfBroker(cheap);
     expect(tariff.monthlyFee).toBe(0);
