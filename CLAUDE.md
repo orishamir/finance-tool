@@ -208,7 +208,10 @@ to 25 of `research/2026-10-28-founder-patterns.md`.
   line must be signed in). Their reports are combined with the rules
   afterwards, and I decide. A recorded decision never dismisses what a
   reader trips on: the finding comes to me with the decision named beside
-  it (*2026-11-05*, "we need non-bias and human like"). Subagents load
+  it (*2026-11-05*, "we need non-bias and human like"). Nor does a
+  published study: what a real person tells you bothers them outranks any
+  study, which is a starting guess and never proof (*2026-11-05*, "you
+  shouldnt take a study as if its a god"). Subagents load
   CLAUDE.md, so they are never the fresh readers; reviewers of code keep
   the rules. The reviewer's instruction set, its benchmark of what I
   flagged and its metric are in `research/user-lab/`.

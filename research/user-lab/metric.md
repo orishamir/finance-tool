@@ -94,8 +94,10 @@ The founder, 2026-11-05: "i just dont want you to fall into some trap caused by 
 research on how people behave (`behaviour-guide.md`, `evidence/`) is where the lab's guesses about people start; it
 never settles what people on this site do.
 
-- **Real people outrank studies.** When a study and what real readers did or flagged disagree, the readers win, and the
-  study is marked as not fitting this audience.
+- **Real people outrank studies.** The founder: "you shouldnt take a study as if its a god. a real human who tells you
+  something he dislikes about the site is more important." What a real person says bothers them about the site is
+  never argued away with a study, just as it is never argued away with a recorded decision. When a study and what real
+  readers did or flagged disagree, the readers win, and the study is marked as not fitting this audience.
 - **Measured before used.** Nothing taken from a study enters the reviewer's instructions until a run with it and a run
   without it, on the held-out cases, show more real problems caught and no more noise.
 - **The instructions stay short.** The instruction set has its size limit (`learning-loop.md` step 6); research adds
