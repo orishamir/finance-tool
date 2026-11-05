@@ -22,6 +22,13 @@ export function isHebrewTitle(text: string): boolean {
  */
 export const mostlyHebrew = (text: string | null | undefined): boolean => !!text && /^[^A-Za-z֐-׿]*[֐-׿]/.test(text) && isHebrewTitle(text);
 
+/**
+ * A document's title written in Hebrew: `mostlyHebrew` once a leading web host is set aside. "data.gov.il, בנק ישראל: רשימת תאגידים
+ * בנקאיים" is a Hebrew title that names its site first; "Tax Authority, מדריך להגשת…" and "Reit 1, investor relations page, "שאלות ותשובות""
+ * are English working titles that quote a Hebrew name, never shown (#190).
+ */
+export const hebrewDocTitle = (text: string | null | undefined): boolean => !!text && mostlyHebrew(text.replace(/^[a-z0-9-]+(?:\.[a-z0-9-]+)+\s*,\s*/i, ""));
+
 /** The host of a web address without "www.", or null when it is not one. */
 export function hostOf(url: string): string | null {
   if (!/^https?:\/\//.test(url)) return null;
