@@ -1,0 +1,16 @@
+import { createRequire } from "module";
+import fs from "fs";
+const require = createRequire("/home/ori/.npm/_npx/e41f203b7505f1fb/node_modules/playwright/");
+const { chromium } = require("playwright");
+const OVR = fs.readFileSync(new URL("./probe.mjs", import.meta.url), "utf8").match(/const OVR = `([\s\S]*?)`;/)[1];
+const b = await chromium.launch({ executablePath: "/home/ori/.cache/ms-playwright/chromium-1243/chrome-linux64/chrome" });
+const p = await b.newPage({ viewport: { width: 1440, height: 900 }, deviceScaleFactor: 1 });
+p.setDefaultTimeout(8000);
+await p.goto("https://orishamir.github.io/finance-tool/indices/sp500", { waitUntil: "networkidle" });
+await p.waitForSelector("[role=radiogroup]");
+await p.addStyleTag({ content: OVR });
+await p.waitForTimeout(500);
+const r = await p.evaluate(() => { const el = document.querySelector('[class*="fill-chart-kind-unhedged"]'); const g = el.closest(".grid"); const b = g.getBoundingClientRect(); return { x: b.x, y: b.y + scrollY, w: b.width, h: b.height }; });
+console.log(r);
+await p.screenshot({ path: "dollar-C.png", fullPage: true, clip: { x: r.x - 10, y: r.y - 10, width: r.w + 20, height: r.h + 20 } });
+await b.close();

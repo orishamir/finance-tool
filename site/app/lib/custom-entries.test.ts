@@ -8,7 +8,8 @@ import { AccountColumn, allFunds, FundColumn, pickOfHeadline, PairResult } from 
 import { LabelSheetHost } from "../components/kit";
 import { ProvenanceProvider } from "../components/provenance";
 import { brokerDraftOf, brokerErrors, brokerFromDraft, fundDraftOf, fundErrors, fundFromDraft, tariffOfBroker, validCustomBrokers, validCustomFunds, withCustomEntries, type CustomBroker, type CustomFund } from "./custom-entries";
-import { buildInvest, cheapestWay, indexById, optionOfFund, pairCosts, refOfCustom, type WayPrice } from "./invest";
+import { fundLabels } from "./labels";
+import { buildInvest, cheapestWay, indexById, indexSeenBy, optionOfFund, pairCosts, refOfCustom, type WayPrice } from "./invest";
 import { buildWorkbenchBundle } from "./providers.server";
 import type { WorkbenchInputs } from "./providers";
 import { applyImport, buildStateFile, ensureLoaded, exportCounts, flush, getSnapshot, isEmptyState, readImport, removeCustomBroker, removeCustomFund, removeCustomIndex, resetStore, saveCustomBroker, saveCustomFund, saveCustomIndex, STATE_KEY, stateFileText, type StateV3 } from "./state";
@@ -33,8 +34,10 @@ const plan: WorkbenchInputs = {
 const cheap = brokerFromDraft({ ...brokerDraftOf(null), name: "הצעה זולה", tradePct: 0.05, tradeMin: 1, custodyPct: 0.02, fxPct: 0.2 }, "custom-broker-cheap", t);
 const dear = brokerFromDraft({ ...brokerDraftOf(null), name: "הצעה יקרה", tradePct: 0.5, tradeMin: 30, custodyPct: 0.4, custodyMin: 10, fxPct: 1, monthlyFee: 20 }, "custom-broker-dear", t);
 const zeros = brokerFromDraft({ ...brokerDraftOf(null), name: "הצעה ריקה" }, "custom-broker-zeros", t);
-const fund = fundFromDraft({ ...fundDraftOf(null, "il-tracking"), name: "קרן שלי", fixed: 0.2, variable: 0.05, trustee: 0.02 }, "custom-fund-mine", "index-ta125", t);
-const abroad = fundFromDraft({ ...fundDraftOf(null, "abroad"), name: "קרן בחו״ל שלי", fixed: 0.1 }, "custom-fund-abroad", "index-sp500", t);
+/** A fund draft that says it accumulates and is unhedged, as the golden script prices it (since 2026-11-05 a payout not said has no price). */
+const said = (kind: Parameters<typeof fundDraftOf>[1]) => ({ ...fundDraftOf(null, kind), payout: "accumulating" as const, hedged: false });
+const fund = fundFromDraft({ ...said("il-tracking"), name: "קרן שלי", fixed: 0.2, variable: 0.05, trustee: 0.02 }, "custom-fund-mine", "index-ta125", t);
+const abroad = fundFromDraft({ ...said("abroad"), name: "קרן בחו״ל שלי", fixed: 0.1 }, "custom-fund-abroad", "index-sp500", t);
 
 /** Printed by the script. */
 const EXPECTED = { cheapIl: 153279.0, dearIl: 132143.22, cheapAbroad: 150677.85, oneZeroIl: 144506.01, zerosIl: 154017.67 };
@@ -145,7 +148,7 @@ describe("a fund the person types is priced at the collected houses under its ki
   it("each kind falls in its own option and tariff class", () => {
     const kinds = ["il-tracking", "il-etf", "tase-foreign", "abroad"] as const;
     for (const kind of kinds) {
-      const f = fundFromDraft({ ...fundDraftOf(null, kind), name: kind, fixed: 0.1 }, `custom-fund-${kind}`, "index-sp500", t);
+      const f = fundFromDraft({ ...said(kind), name: kind, fixed: 0.1 }, `custom-fund-${kind}`, "index-sp500", t);
       const rec = withCustomEntries(bundle, [], [f]).funds.at(-1)!;
       expect(optionOfFund(rec, undefined)).toBe(kind);
       expect(rec.distribution_policy).toBe("accumulating");
@@ -160,7 +163,7 @@ describe("a fund the person types is priced at the collected houses under its ki
   });
 
   it("a hedged fund has no price, with the reason, as a collected fund with no report", () => {
-    const hedged = fundFromDraft({ ...fundDraftOf(null, "il-tracking"), name: "מנוטרלת", fixed: 0.1, hedged: true }, "custom-fund-hedged", "index-sp500", t);
+    const hedged = fundFromDraft({ ...said("il-tracking"), name: "מנוטרלת", fixed: 0.1, hedged: true }, "custom-fund-hedged", "index-sp500", t);
     const v = buildInvest({ bundle: withCustomEntries(bundle, [], [hedged]), index: sp, plan });
     const f = allFunds(v).find((x) => x.rec.id === hedged.id)!;
     expect(f.reason).toEqual({ code: "no-hedge-entered" });
@@ -170,7 +173,7 @@ describe("a fund the person types is priced at the collected houses under its ki
   it("belongs to the index it was added on, a custom index too", () => {
     expect(allFunds(view).some((f) => f.rec.id === abroad.id)).toBe(false);
     const custom = { id: "custom-nikkei", name: "ניקיי", israeli: false, added: t };
-    const onCustom = fundFromDraft({ ...fundDraftOf(null, "il-tracking"), name: "על ניקיי", fixed: 0.3 }, "custom-fund-nikkei", custom.id, t);
+    const onCustom = fundFromDraft({ ...said("il-tracking"), name: "על ניקיי", fixed: 0.3 }, "custom-fund-nikkei", custom.id, t);
     const v = buildInvest({ bundle: withCustomEntries(bundle, [], [onCustom], [custom]), index: refOfCustom(custom), plan });
     const f = allFunds(v).find((x) => x.rec.id === onCustom.id)!;
     expect(f.best?.valueN).toBeGreaterThan(0);
@@ -178,11 +181,99 @@ describe("a fund the person types is priced at the collected houses under its ki
     expect(v.fundCount).toBe(1);
   });
 
+  it("on an index the person added, the currency is named by no one: חשיפה למט״ח, never the dollar (founder, 2026-11-05)", () => {
+    const custom = { id: "custom-nikkei", name: "ניקיי", israeli: false, added: t };
+    const onCustom = fundFromDraft({ ...said("il-tracking"), name: "על ניקיי", fixed: 0.3 }, "custom-fund-nikkei", custom.id, t);
+    const rec = withCustomEntries(bundle, [], [onCustom], [custom]).funds.at(-1)!;
+    const labels = fundLabels(rec, refOfCustom(custom), onCustom.kind);
+    expect(labels.map((l) => l.id)).toContain("currency-foreign");
+    expect(labels.map((l) => l.id)).not.toContain("currency");
+    expect(labels.map((l) => l.text).join(" ")).not.toContain("דולר");
+    const hedgedRec = withCustomEntries(bundle, [], [{ ...onCustom, hedged: true }], [custom]).funds.at(-1)!;
+    expect(fundLabels(hedgedRec, refOfCustom(custom), onCustom.kind).map((l) => l.explain).join(" ")).not.toContain("דולר");
+  });
+
+  it("on an index the person added, \"המדד בשקלים\" is the fund's own answer: no currency label, and it is priced, at home or abroad (2026-11-05)", () => {
+    const custom = { id: "custom-ta-tech", name: "טכנולוגיה ישראלית", added: t };
+    const index = refOfCustom(custom);
+    expect(index.israeli).toBe(false);
+    for (const kind of ["il-tracking", "abroad"] as const) {
+      const f = fundFromDraft({ ...said(kind), name: kind, fixed: 0.2, shekelIndex: true }, `custom-fund-${kind}`, custom.id, t);
+      expect(f.shekelIndex).toBe(true);
+      const b = withCustomEntries(bundle, [], [f], [custom]);
+      expect(b.entered!.shekelFunds).toEqual([f.id]);
+      const rec = b.funds.at(-1)!;
+      const ids = fundLabels(rec, indexSeenBy(index, rec, b), kind).map((l) => l.id);
+      expect(ids).not.toContain("currency-foreign");
+      expect(ids).not.toContain("tax-currency");
+      const way = allFunds(buildInvest({ bundle: b, index, plan })).find((x) => x.rec.id === f.id)!;
+      expect(way.best?.valueN).toBeGreaterThan(0);
+    }
+    // the same fund, said to move with a foreign currency, keeps the foreign-currency label
+    const foreignFund = fundFromDraft({ ...said("il-tracking"), name: "זר", fixed: 0.2 }, "custom-fund-zar", custom.id, t);
+    const b2 = withCustomEntries(bundle, [], [foreignFund], [custom]);
+    expect(fundLabels(b2.funds.at(-1)!, indexSeenBy(index, b2.funds.at(-1)!, b2), "il-tracking").map((l) => l.id)).toContain("currency-foreign");
+  });
+
+  it("a hedge and \"המדד בשקלים\" never stand together", () => {
+    const f = fundFromDraft({ ...said("il-tracking"), name: "שניהם", fixed: 0.2, hedged: true, shekelIndex: true }, "custom-fund-both", "custom-x", t);
+    expect(f.shekelIndex).toBeUndefined();
+    expect(validCustomFunds([JSON.parse(JSON.stringify({ ...f, shekelIndex: true }))])[0]!.shekelIndex).toBeUndefined();
+  });
+
   it("its number is the one typed, never the site's id, and links nowhere", () => {
     expect(mine.number).toBe("");
-    const numbered = fundFromDraft({ ...fundDraftOf(null, "il-etf"), name: "עם מספר", number: "1234567", fixed: 0.1 }, "custom-fund-numbered", "index-ta125", t);
+    const numbered = fundFromDraft({ ...said("il-etf"), name: "עם מספר", number: "1234567", fixed: 0.1 }, "custom-fund-numbered", "index-ta125", t);
     const v = buildInvest({ bundle: withCustomEntries(bundle, [], [numbered]), index: ta125, plan });
     expect(allFunds(v).find((f) => f.rec.id === numbered.id)!.number).toBe("1234567");
+  });
+});
+
+describe("what the person says the fund does (2026-11-05): nothing is filled in for them", () => {
+  const priceOf = (f: CustomFund) => allFunds(buildInvest({ bundle: withCustomEntries(bundle, [], [f]), index: sp, plan })).find((x) => x.rec.id === f.id)!;
+  const ids = (f: CustomFund) => fundLabels(withCustomEntries(bundle, [], [f]).funds.at(-1)!, sp, f.kind).map((l) => l.id);
+  const abroadDraft = { ...said("abroad"), name: "חו״ל", fixed: 0.07 };
+
+  it("a payout not said is no price, with its reason, and no payout label", () => {
+    const f = fundFromDraft({ ...abroadDraft, payout: null }, "custom-fund-silent", "index-sp500", t);
+    expect(priceOf(f).reason).toEqual({ code: "payout-unknown" });
+    expect(ids(f)).not.toContain("pays-accumulating");
+    expect(ids(f)).not.toContain("tax-on-sale-open");
+  });
+
+  it("a fund saved before the question was asked reads as not said, not as accumulating", () => {
+    const { payout: _p, yield: _y, perYear: _n, domicile: _d, tracking: _t, ...old } = abroad;
+    const [back] = validCustomFunds([JSON.parse(JSON.stringify(old))]);
+    expect(back!.payout).toBeNull();
+    expect(back!.tracking).toBeNull();
+  });
+
+  it("a distributing foreign fund needs its country, then its yield, and is priced with both", () => {
+    const noCountry = fundFromDraft({ ...abroadDraft, payout: "distributing", yield: 1.2, perYear: 4 }, "custom-fund-dist", "index-sp500", t);
+    expect(priceOf(noCountry).reason).toEqual({ code: "domicile-unknown" });
+    const noYield = fundFromDraft({ ...abroadDraft, payout: "distributing", domicile: "IE" }, "custom-fund-dist", "index-sp500", t);
+    expect(priceOf(noYield).reason).toEqual({ code: "need-yield" });
+    const full = fundFromDraft({ ...abroadDraft, payout: "distributing", domicile: "IE", yield: 1.2, perYear: 4 }, "custom-fund-dist", "index-sp500", t);
+    expect(priceOf(full).reason).toBeUndefined();
+    expect(priceOf(full).best?.valueN).toBeGreaterThan(0);
+    expect(ids(full)).toEqual(expect.arrayContaining(["pays-distributing", "tax-distribution", "tax-fund-dividend"]));
+  });
+
+  it("the country and the way it follows its index are its labels", () => {
+    const f = fundFromDraft({ ...abroadDraft, domicile: "US", tracking: "swap" }, "custom-fund-us", "index-sp500", t);
+    expect(ids(f)).toEqual(expect.arrayContaining(["follow-swap", "pays-accumulating", "ask-estate", "ask-w8"]));
+    expect(ids(fundFromDraft({ ...abroadDraft, domicile: "IE" }, "custom-fund-ie", "index-sp500", t))).toContain("tax-fund-dividend");
+  });
+
+  it("all of it is kept through a save and a reload", () => {
+    const f = fundFromDraft({ ...abroadDraft, payout: "distributing", domicile: "IE", yield: 1.2, perYear: 4, tracking: "physical" }, "custom-fund-kept", "index-sp500", t);
+    const [back] = validCustomFunds([JSON.parse(JSON.stringify(f))]);
+    expect(back).toEqual(f);
+  });
+
+  it("on a foreign index the hedge must be chosen; on an Israeli one it is never asked", () => {
+    expect(fundErrors({ ...fundDraftOf(null, "abroad"), name: "א" }, [], null)).toEqual(["hedged-none"]);
+    expect(fundErrors({ ...fundDraftOf(null, "il-tracking", true), name: "א" }, [], null)).toEqual([]);
   });
 });
 
@@ -215,7 +306,7 @@ describe("what the panel checks", () => {
   });
   it("a draft opens as it was saved; a foreign fund keeps one charge", () => {
     expect(brokerDraftOf(dear)).toMatchObject({ tradePct: 0.5, tradeMin: 30, custodyPct: 0.4, custodyMin: 10, fxPct: 1, monthlyFee: 20, sellsIsraeli: true, sellsAbroad: true });
-    const f = fundFromDraft({ ...fundDraftOf(null, "abroad"), name: "ח", fixed: 0.1, variable: 5, trustee: 5 }, "custom-fund-x", "index-sp500", t);
+    const f = fundFromDraft({ ...said("abroad"), name: "ח", fixed: 0.1, variable: 5, trustee: 5 }, "custom-fund-x", "index-sp500", t);
     expect(f.variable).toBeNull();
     expect(f.trustee).toBeNull();
   });

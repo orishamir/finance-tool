@@ -1,0 +1,253 @@
+
+=== Account fee bar + legend (card)
+steps: orange-500, gold-200, rose-300, magenta-400, neutral-500
+hexes: #dd6301,#fdc010,#ffa6c4,#cf64bb,#7d7a74  surface #171614  pairs all  exit 1
+
+Palette (dark, surface #171614, categorical): 5 slots
+  [FAIL] Lightness band         outside band: [["#fdc010",0.84],["#ffa6c4",0.821]]
+  [FAIL] Chroma floor           below floor (reads gray): [["#7d7a74",0.01]]
+  [PASS] CVD separation         worst all-pairs #7d7a74↔#cf64bb ΔE 10.6 (deutan) · tritan 3.6
+  [PASS] Normal-vision floor    worst all-pairs #7d7a74↔#dd6301 ΔE 17.7 (normal)
+  [PASS] Contrast vs surface    all 5 >= 3:1
+
+  → FAILED — fix the marked checks  (CVD in the 6–8 floor band is legal ONLY with secondary encoding: direct labels, gaps, or texture)
+  scope: categorical palettes only. For a lone status/text color check text contrast with this script's apca() or contrast(); for a sequential ramp, lightness monotonicity.
+
+
+
+=== Account fee bar on picked-row tint
+steps: orange-500, gold-200, rose-300, magenta-400, neutral-500
+hexes: #dd6301,#fdc010,#ffa6c4,#cf64bb,#7d7a74  surface #222927  pairs all  exit 1
+
+Palette (dark, surface #222927, categorical): 5 slots
+  [FAIL] Lightness band         outside band: [["#fdc010",0.84],["#ffa6c4",0.821]]
+  [FAIL] Chroma floor           below floor (reads gray): [["#7d7a74",0.01]]
+  [PASS] CVD separation         worst all-pairs #7d7a74↔#cf64bb ΔE 10.6 (deutan) · tritan 3.6
+  [PASS] Normal-vision floor    worst all-pairs #7d7a74↔#dd6301 ΔE 17.7 (normal)
+  [PASS] Contrast vs surface    all 5 >= 3:1
+
+  → FAILED — fix the marked checks  (CVD in the 6–8 floor band is legal ONLY with secondary encoding: direct labels, gaps, or texture)
+  scope: categorical palettes only. For a lone status/text color check text contrast with this script's apca() or contrast(); for a sequential ramp, lightness monotonicity.
+
+
+
+=== Own-price sheet bars + legend (popover)
+steps: orange-500, gold-200, rose-300, magenta-400, neutral-500
+hexes: #dd6301,#fdc010,#ffa6c4,#cf64bb,#7d7a74  surface #201e1b  pairs all  exit 1
+
+Palette (dark, surface #201e1b, categorical): 5 slots
+  [FAIL] Lightness band         outside band: [["#fdc010",0.84],["#ffa6c4",0.821]]
+  [FAIL] Chroma floor           below floor (reads gray): [["#7d7a74",0.01]]
+  [PASS] CVD separation         worst all-pairs #7d7a74↔#cf64bb ΔE 10.6 (deutan) · tritan 3.6
+  [PASS] Normal-vision floor    worst all-pairs #7d7a74↔#dd6301 ΔE 17.7 (normal)
+  [PASS] Contrast vs surface    all 5 >= 3:1
+
+  → FAILED — fix the marked checks  (CVD in the 6–8 floor band is legal ONLY with secondary encoding: direct labels, gaps, or texture)
+  scope: categorical palettes only. For a lone status/text color check text contrast with this script's apca() or contrast(); for a sequential ramp, lightness monotonicity.
+
+
+
+=== Israeli index (no fx): fee bar
+steps: orange-500, gold-200, rose-300, neutral-500
+hexes: #dd6301,#fdc010,#ffa6c4,#7d7a74  surface #171614  pairs all  exit 1
+
+Palette (dark, surface #171614, categorical): 4 slots
+  [FAIL] Lightness band         outside band: [["#fdc010",0.84],["#ffa6c4",0.821]]
+  [FAIL] Chroma floor           below floor (reads gray): [["#7d7a74",0.01]]
+  [PASS] CVD separation         worst all-pairs #7d7a74↔#dd6301 ΔE 10.9 (protan) · tritan 3.6
+  [PASS] Normal-vision floor    worst all-pairs #7d7a74↔#dd6301 ΔE 17.7 (normal)
+  [PASS] Contrast vs surface    all 4 >= 3:1
+
+  → FAILED — fix the marked checks  (CVD in the 6–8 floor band is legal ONLY with secondary encoding: direct labels, gaps, or texture)
+  scope: categorical palettes only. For a lone status/text color check text contrast with this script's apca() or contrast(); for a sequential ramp, lightness monotonicity.
+
+
+
+=== Dot plot kinds + legend
+steps: lime-300, olive-500, brown-600, magenta-400
+hexes: #ade02a,#939300,#a04f27,#cf64bb  surface #171614  pairs all  exit 1
+
+Palette (dark, surface #171614, categorical): 4 slots
+  [FAIL] Lightness band         outside band: [["#ade02a",0.841]]
+  [PASS] Chroma floor           all 4 >= 0.1
+  [PASS] CVD separation         worst all-pairs #a04f27↔#939300 ΔE 12.4 (deutan) · tritan 12.2
+  [PASS] Normal-vision floor    worst all-pairs #a04f27↔#939300 ΔE 18.5 (normal)
+  [PASS] Contrast vs surface    all 4 >= 3:1
+
+  → FAILED — fix the marked checks  (CVD in the 6–8 floor band is legal ONLY with secondary encoding: direct labels, gaps, or texture)
+  scope: categorical palettes only. For a lone status/text color check text contrast with this script's apca() or contrast(); for a sequential ramp, lightness monotonicity.
+
+
+
+=== Dot plot + white ring/outline
+steps: lime-300, olive-500, brown-600, magenta-400, neutral-100
+hexes: #ade02a,#939300,#a04f27,#cf64bb,#f2f0ec  surface #171614  pairs all  exit 1
+
+Palette (dark, surface #171614, categorical): 5 slots
+  [FAIL] Lightness band         outside band: [["#ade02a",0.841],["#f2f0ec",0.956]]
+  [FAIL] Chroma floor           below floor (reads gray): [["#f2f0ec",0.006]]
+  [PASS] CVD separation         worst all-pairs #a04f27↔#939300 ΔE 12.4 (deutan) · tritan 12.2
+  [PASS] Normal-vision floor    worst all-pairs #a04f27↔#939300 ΔE 18.5 (normal)
+  [PASS] Contrast vs surface    all 5 >= 3:1
+
+  → FAILED — fix the marked checks  (CVD in the 6–8 floor band is legal ONLY with secondary encoding: direct labels, gaps, or texture)
+  scope: categorical palettes only. For a lone status/text color check text contrast with this script's apca() or contrast(); for a sequential ramp, lightness monotonicity.
+
+
+
+=== Result card strips as designer fed (no magenta)
+steps: lime-300, olive-500, brown-600, neutral-700, neutral-100
+hexes: #ade02a,#939300,#a04f27,#4a4742,#f2f0ec  surface #171614  pairs all  exit 1
+
+Palette (dark, surface #171614, categorical): 5 slots
+  [FAIL] Lightness band         outside band: [["#ade02a",0.841],["#4a4742",0.399],["#f2f0ec",0.956]]
+  [FAIL] Chroma floor           below floor (reads gray): [["#4a4742",0.009],["#f2f0ec",0.006]]
+  [PASS] CVD separation         worst all-pairs #4a4742↔#a04f27 ΔE 9.8 (protan) · tritan 12.2
+  [PASS] Normal-vision floor    worst all-pairs #4a4742↔#a04f27 ΔE 16.6 (normal)
+  [WARN] Contrast vs surface    below 3:1 — relief required (visible labels or table view): [["#4a4742",1.96]]
+
+  → FAILED — fix the marked checks  (CVD in the 6–8 floor band is legal ONLY with secondary encoding: direct labels, gaps, or texture)
+  scope: categorical palettes only. For a lone status/text color check text contrast with this script's apca() or contrast(); for a sequential ramp, lightness monotonicity.
+
+
+
+=== Result card strips WITH abroad ticks (magenta)
+steps: lime-300, olive-500, brown-600, magenta-400, neutral-700, neutral-100
+hexes: #ade02a,#939300,#a04f27,#cf64bb,#4a4742,#f2f0ec  surface #171614  pairs all  exit 1
+
+Palette (dark, surface #171614, categorical): 6 slots
+  [FAIL] Lightness band         outside band: [["#ade02a",0.841],["#4a4742",0.399],["#f2f0ec",0.956]]
+  [FAIL] Chroma floor           below floor (reads gray): [["#4a4742",0.009],["#f2f0ec",0.006]]
+  [PASS] CVD separation         worst all-pairs #4a4742↔#a04f27 ΔE 9.8 (protan) · tritan 12.2
+  [PASS] Normal-vision floor    worst all-pairs #4a4742↔#a04f27 ΔE 16.6 (normal)
+  [WARN] Contrast vs surface    below 3:1 — relief required (visible labels or table view): [["#4a4742",1.96]]
+
+  → FAILED — fix the marked checks  (CVD in the 6–8 floor band is legal ONLY with secondary encoding: direct labels, gaps, or texture)
+  scope: categorical palettes only. For a lone status/text color check text contrast with this script's apca() or contrast(); for a sequential ramp, lightness monotonicity.
+
+
+
+=== Fund chips text: neutral fg, caution amber-300, open red-500 (on card)
+steps: neutral-100, amber-300, red-500
+hexes: #f2f0ec,#f4b76e,#ed4b43  surface #171614  pairs all  exit 1
+
+Palette (dark, surface #171614, categorical): 3 slots
+  [FAIL] Lightness band         outside band: [["#f2f0ec",0.956],["#f4b76e",0.821]]
+  [FAIL] Chroma floor           below floor (reads gray): [["#f2f0ec",0.006]]
+  [PASS] CVD separation         worst all-pairs #f4b76e↔#f2f0ec ΔE 16.5 (deutan) · tritan 17.1
+  [PASS] Normal-vision floor    worst all-pairs #f4b76e↔#f2f0ec ΔE 17.4 (normal)
+  [PASS] Contrast vs surface    all 3 >= 3:1
+
+  → FAILED — fix the marked checks  (CVD in the 6–8 floor band is legal ONLY with secondary encoding: direct labels, gaps, or texture)
+  scope: categorical palettes only. For a lone status/text color check text contrast with this script's apca() or contrast(); for a sequential ramp, lightness monotonicity.
+
+
+
+=== Account-row chips + fund chips incl. muted-fg words
+steps: neutral-100, neutral-300, amber-300, red-500
+hexes: #f2f0ec,#c7c4be,#f4b76e,#ed4b43  surface #171614  pairs all  exit 1
+
+Palette (dark, surface #171614, categorical): 4 slots
+  [FAIL] Lightness band         outside band: [["#f2f0ec",0.956],["#c7c4be",0.821],["#f4b76e",0.821]]
+  [FAIL] Chroma floor           below floor (reads gray): [["#f2f0ec",0.006],["#c7c4be",0.009]]
+  [PASS] CVD separation         worst all-pairs #f4b76e↔#c7c4be ΔE 10.2 (protan) · tritan 9.7
+  [FAIL] Normal-vision floor    worst all-pairs #f4b76e↔#c7c4be ΔE 10.6 (normal) — below 15, hard to tell apart even with full color vision
+  [PASS] Contrast vs surface    all 4 >= 3:1
+
+  → FAILED — fix the marked checks  (CVD in the 6–8 floor band is legal ONLY with secondary encoding: direct labels, gaps, or texture)
+  scope: categorical palettes only. For a lone status/text color check text contrast with this script's apca() or contrast(); for a sequential ramp, lightness monotonicity.
+
+
+
+=== Period strip as ordinal
+steps: neutral-200, neutral-300, neutral-400
+hexes: #e0ddd9,#c7c4be,#a19e98  surface #201e1b  pairs ordinal  exit 0
+
+Palette (dark, surface #201e1b, ordinal ramp): 3 slots
+  [PASS] Lightness monotone     steps read light→dark
+  [PASS] Adjacent ΔL            all gaps >= 0.06
+  [PASS] Light-end contrast     #a19e98 at 6.22:1 vs surface
+  [PASS] Single hue             hue spread 9°
+
+  → ALL CHECKS PASS  (ordinal: one hue, monotone L, visible step gaps, light end clears surface)
+
+
+=== Period strip as categorical adjacent
+steps: neutral-200, neutral-300, neutral-400
+hexes: #e0ddd9,#c7c4be,#a19e98  surface #201e1b  pairs adjacent  exit 1
+
+Palette (dark, surface #201e1b, categorical): 3 slots
+  [FAIL] Lightness band         outside band: [["#e0ddd9",0.899],["#c7c4be",0.821],["#a19e98",0.7]]
+  [FAIL] Chroma floor           below floor (reads gray): [["#e0ddd9",0.006],["#c7c4be",0.009],["#a19e98",0.009]]
+  [WARN] CVD separation         worst adjacent #c7c4be↔#e0ddd9 ΔE 7.8 (deutan) · tritan 7.8
+  [FAIL] Normal-vision floor    worst adjacent #c7c4be↔#e0ddd9 ΔE 7.8 (normal) — below 15, hard to tell apart even with full color vision
+  [PASS] Contrast vs surface    all 3 >= 3:1
+
+  → FAILED — fix the marked checks  (CVD in the 6–8 floor band is legal ONLY with secondary encoding: direct labels, gaps, or texture)
+  scope: categorical palettes only. For a lone status/text color check text contrast with this script's apca() or contrast(); for a sequential ramp, lightness monotonicity.
+
+
+
+=== Dollar section: unhedged solid vs dollar dim/bright (neighbouring charts)
+steps: neutral-300, neutral-100
+hexes: #c7c4be,#f2f0ec  surface #171614  pairs all  exit 1
+
+Palette (dark, surface #171614, categorical): 2 slots
+  [FAIL] Lightness band         outside band: [["#c7c4be",0.821],["#f2f0ec",0.956]]
+  [FAIL] Chroma floor           below floor (reads gray): [["#c7c4be",0.009],["#f2f0ec",0.006]]
+  [PASS] CVD separation         worst all-pairs #f2f0ec↔#c7c4be ΔE 13.4 (deutan) · tritan 13.4
+  [FAIL] Normal-vision floor    worst all-pairs #f2f0ec↔#c7c4be ΔE 13.5 (normal) — below 15, hard to tell apart even with full color vision
+  [PASS] Contrast vs surface    all 2 >= 3:1
+
+  → FAILED — fix the marked checks  (CVD in the 6–8 floor band is legal ONLY with secondary encoding: direct labels, gaps, or texture)
+  scope: categorical palettes only. For a lone status/text color check text contrast with this script's apca() or contrast(); for a sequential ramp, lightness monotonicity.
+
+
+
+=== Kit gallery cost stack line 1109 (trade,custody,fixed,fund,tax)
+steps: orange-500, gold-200, rose-300, green-300, rose-600
+hexes: #dd6301,#fdc010,#ffa6c4,#92d8a0,#c12e71  surface #171614  pairs all  exit 1
+
+Palette (dark, surface #171614, categorical): 5 slots
+  [FAIL] Lightness band         outside band: [["#fdc010",0.84],["#ffa6c4",0.821],["#92d8a0",0.821]]
+  [PASS] Chroma floor           all 5 >= 0.1
+  [FAIL] CVD separation         worst all-pairs #92d8a0↔#ffa6c4 ΔE 4.2 (deutan) · tritan 3.6
+  [PASS] Normal-vision floor    worst all-pairs #92d8a0↔#fdc010 ΔE 15.9 (normal)
+  [PASS] Contrast vs surface    all 5 >= 3:1
+
+  → FAILED — fix the marked checks  (CVD in the 6–8 floor band is legal ONLY with secondary encoding: direct labels, gaps, or texture)
+  scope: categorical palettes only. For a lone status/text color check text contrast with this script's apca() or contrast(); for a sequential ramp, lightness monotonicity.
+
+
+
+=== Kit gallery cost stack lines 1119-1121 (trade,custody,fixed)
+steps: orange-500, gold-200, rose-300
+hexes: #dd6301,#fdc010,#ffa6c4  surface #171614  pairs all  exit 1
+
+Palette (dark, surface #171614, categorical): 3 slots
+  [FAIL] Lightness band         outside band: [["#fdc010",0.84],["#ffa6c4",0.821]]
+  [PASS] Chroma floor           all 3 >= 0.1
+  [PASS] CVD separation         worst all-pairs #ffa6c4↔#fdc010 ΔE 16.8 (deutan) · tritan 3.6
+  [PASS] Normal-vision floor    worst all-pairs #ffa6c4↔#fdc010 ΔE 19.9 (normal)
+  [PASS] Contrast vs surface    all 3 >= 3:1
+
+  → FAILED — fix the marked checks  (CVD in the 6–8 floor band is legal ONLY with secondary encoding: direct labels, gaps, or texture)
+  scope: categorical palettes only. For a lone status/text color check text contrast with this script's apca() or contrast(); for a sequential ramp, lightness monotonicity.
+
+
+
+=== Kit gallery fee stack 1318-1321 (trade,custody,fixed,other)
+steps: orange-500, gold-200, rose-300, neutral-500
+hexes: #dd6301,#fdc010,#ffa6c4,#7d7a74  surface #171614  pairs all  exit 1
+
+Palette (dark, surface #171614, categorical): 4 slots
+  [FAIL] Lightness band         outside band: [["#fdc010",0.84],["#ffa6c4",0.821]]
+  [FAIL] Chroma floor           below floor (reads gray): [["#7d7a74",0.01]]
+  [PASS] CVD separation         worst all-pairs #7d7a74↔#dd6301 ΔE 10.9 (protan) · tritan 3.6
+  [PASS] Normal-vision floor    worst all-pairs #7d7a74↔#dd6301 ΔE 17.7 (normal)
+  [PASS] Contrast vs surface    all 4 >= 3:1
+
+  → FAILED — fix the marked checks  (CVD in the 6–8 floor band is legal ONLY with secondary encoding: direct labels, gaps, or texture)
+  scope: categorical palettes only. For a lone status/text color check text contrast with this script's apca() or contrast(); for a sequential ramp, lightness monotonicity.
+
+

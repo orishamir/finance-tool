@@ -1,0 +1,51 @@
+{
+  "summary": {
+    "sp500-cheapest": {
+      "sessions": 2,
+      "right": 2,
+      "partly": 0,
+      "wrong": 0,
+      "gaveUp": 0,
+      "confidentWrong": 0,
+      "agreement": null,
+      "case": null
+    }
+  },
+  "tasks": {
+    "sp500-cheapest": {
+      "case": null,
+      "rows": [
+        {
+          "session": "careful-retiree-pc",
+          "steps": 4,
+          "seconds": 43,
+          "usd": 0.1739722,
+          "confidence": "fairly sure",
+          "timedOut": false,
+          "error": null,
+          "fields": {
+            "where": "right",
+            "amount_after_10_years": "right"
+          },
+          "grade": "right",
+          "confidentWrong": false
+        },
+        {
+          "session": "first-job-phone",
+          "steps": 5,
+          "seconds": 42,
+          "usd": 0.1496748,
+          "confidence": "fairly sure",
+          "timedOut": false,
+          "error": null,
+          "fields": {
+            "where": "right",
+            "amount_after_10_years": "right"
+          },
+          "grade": "right",
+          "confidentWrong": false
+        }
+      ]
+    }
+  }
+}

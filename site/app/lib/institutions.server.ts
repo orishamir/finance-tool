@@ -15,9 +15,11 @@ import type {
   TariffCardData,
   TariffLineRow,
 } from "../components/decoder/institutions/types";
+import { distributionRuleIds } from "../components/decoder/institutions/types";
 import { loadChecklistRows, loadRules, loadProducts, pointedRecords, root, today } from "./data.server";
 import { topicName } from "../copy";
 import { loadCatalog, loadDepositTerms, seenValue, seenWhere } from "./instruments.server";
+import { isFxToFx } from "./invest";
 import { shortName } from "./providers";
 import { ownBy, type SiteValue } from "./value";
 import { fileRank } from "./rule-shelves";
@@ -191,8 +193,11 @@ function productRow(d: DepositTerms, t: string): ProductRowData {
 
 // ---------------------------------------------------------------- the tariff
 
-const tasePapers = ["tase_shares_bonds", "etf_units"];
-const custodyPapers = [...tasePapers, "foreign_securities"];
+/** A distribution fee, by the price list's own words ("עמלת הפצה"): the fund manager pays it to the distributor (MF-24), not a charge of the account. */
+const isDistributionFee = (l: FeeLine) => l.base === "distribution_handling" && /עמלת הפצ/.test(l.names.tariff.join(" "));
+/** The records the account's card cites beside the snapshot's own: those over its distribution fees. */
+const cardRuleIds = (s: FeesSnapshot) => (s.lines.some((l) => l.level === "list" && isDistributionFee(l)) ? distributionRuleIds(s.provider.class === "bank" ? "bank" : "broker") : []);
+
 
 function lineRow(l: FeeLine, t: string, snapshot: string, owner: string, tariffUrl: string): TariffLineRow {
   const src = l.rate.source as { url?: string; title?: string; page?: number };
@@ -204,6 +209,9 @@ function lineRow(l: FeeLine, t: string, snapshot: string, owner: string, tariffU
     base: l.base as LineBase,
     classes: l.applies_to,
     channel: l.channel === "direct" || l.channel === "branch" ? l.channel : null,
+    band: l.band ?? null,
+    fxToFx: isFxToFx(l),
+    distribution: isDistributionFee(l),
     rate: site(l.rate, t, snapshot, owner),
     period: l.period,
     min: l.min ? site(l.min, t, snapshot, owner) : null,
@@ -226,18 +234,8 @@ function availabilityRows(s: FeesSnapshot): AvailabilityRow[] {
 function tariffCard(s: FeesSnapshot, rules: Record<string, RuleRecord>, t: string): TariffCardData {
   const from = { source: { url: s.tariff.url, title: s.tariff.title, publisher: s.provider.name_he, strength: "institution" as const } };
   const stale = isStale(s.snapshot, t);
-  const lines: TariffLineRow[] = [];
-  for (const l of s.lines) {
-    if (l.level !== "list") continue;
-    const covers = (papers: string[]) => l.applies_to.some((a) => papers.includes(a));
-    const row = () => lineRow(l, t, s.snapshot, s.provider.name_he, s.tariff.url);
-    if (l.base === "trade" && covers(tasePapers)) lines.push(row());
-    else if (l.base === "custody" && covers(custodyPapers)) lines.push(row());
-    else if (l.base === "fx") lines.push(row());
-    // a fixed fee for the account (a handling fee each month) is a cost under another name (D56): the card shows it
-    else if (l.base === "fixed_period") lines.push(row());
-  }
-  const bases = [...new Set(s.lines.map((l) => l.base as string))];
+  // every line of the price list (founder, 2026-11-05: "show all lines"), in its own order; the card groups them by kind
+  const lines: TariffLineRow[] = s.lines.filter((l) => l.level === "list").map((l) => lineRow(l, t, s.snapshot, s.provider.name_he, s.tariff.url));
   const min = s.minimums.account_opening;
   return {
     missing: s.missing,
@@ -248,8 +246,6 @@ function tariffCard(s: FeesSnapshot, rules: Record<string, RuleRecord>, t: strin
     published: s.tariff.published ? dateValue(s.tariff.published, from, s.snapshot, t, s.snapshot, s.provider.name_he) : null,
     snapshot: dateValue(s.snapshot, from, s.snapshot, t, s.snapshot, s.provider.name_he),
     stale,
-    lineCount: s.lines.length,
-    bases,
     lines,
     minimum: min ? site(min, t, s.snapshot, s.provider.name_he) : null,
     regulator: s.provider.regulator,
@@ -271,7 +267,7 @@ export function brokeragePart(id: string): { kind: InstitutionKind; tariff: Tari
   if (!snap) return null;
   const allRules = loadRules();
   const cited = new Set<string>(["BRK-20", "BRK-21", "BRK-16"]);
-  for (const r of [...snap.provider.protection_rule_ids, ...snap.notice_rule_ids]) cited.add(r);
+  for (const r of [...snap.provider.protection_rule_ids, ...snap.notice_rule_ids, ...cardRuleIds(snap)]) cited.add(r);
   for (const l of snap.lines) for (const r of l.rate.rule_ids ?? []) cited.add(r);
   const rules = Object.fromEntries([...cited].filter((r) => allRules[r]).map((r) => [r, allRules[r]!]));
   return { kind: "broker", tariff: tariffCard(snap, allRules, today()), rules };
@@ -303,7 +299,7 @@ export function buildInstitution(id: string): InstitutionPageData | null {
     for (const r of d.break.rule_ids) cited.add(r);
   }
   if (snap) {
-    for (const r of [...snap.provider.protection_rule_ids, ...snap.notice_rule_ids]) cited.add(r);
+    for (const r of [...snap.provider.protection_rule_ids, ...snap.notice_rule_ids, ...cardRuleIds(snap)]) cited.add(r);
     for (const l of snap.lines) for (const r of l.rate.rule_ids ?? []) cited.add(r);
   }
   const rules = Object.fromEntries([...cited].filter((r) => allRules[r]).map((r) => [r, allRules[r]!]));

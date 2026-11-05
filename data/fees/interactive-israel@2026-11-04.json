@@ -1,7 +1,7 @@
 {
   "id": "interactive-israel",
   "provider": {
-    "name_he": "אינטראקטיב ישראל (מותג של MEXEM LTD)",
+    "name_he": "אינטראקטיב ישראל",
     "class": "foreign_broker",
     "regulator": "foreign",
     "regulator_foreign": {

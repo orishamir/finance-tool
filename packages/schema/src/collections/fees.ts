@@ -4,6 +4,7 @@
 // averages, bands and minimums arrive with R4.
 import { z } from "zod";
 import { feeBase, instrumentClass, isoDate, source, valueObject } from "../value.ts";
+import { companyName } from "../scope.ts";
 
 const ruleIds = z.array(z.string().min(1));
 
@@ -180,7 +181,7 @@ export const advertisingEntry = z.strictObject({
 export const feesSnapshot = z.strictObject({
   id: z.string().regex(/^[a-z0-9-]+$/),
   provider: z.strictObject({
-    name_he: z.string().min(1),
+    name_he: companyName,
     class: z.enum(["bank", "broker", "foreign_broker", "provident-manager", "fund-manager", "insurer"]),
     regulator: z.enum(["BoI", "ISA", "CMA", "foreign"]),
     /** S1 (2026-10-25): required when `regulator` is `foreign`. */

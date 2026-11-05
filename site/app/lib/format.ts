@@ -4,6 +4,11 @@ import { numbers, values as valuesCopy } from "../copy";
 const he = "he-IL";
 const currency = new Intl.NumberFormat(he, { style: "currency", currency: "ILS", minimumFractionDigits: 2, maximumFractionDigits: 2 });
 const currencyWhole = new Intl.NumberFormat(he, { style: "currency", currency: "ILS", maximumFractionDigits: 0 });
+const dollars = new Intl.NumberFormat(he, { style: "currency", currency: "USD", minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const euros = new Intl.NumberFormat(he, { style: "currency", currency: "EUR", minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const pounds = new Intl.NumberFormat(he, { style: "currency", currency: "GBP", minimumFractionDigits: 2, maximumFractionDigits: 2 });
+// a price per share is a fraction of a cent (0.0035 $): up to four decimals
+const dollarsFine = new Intl.NumberFormat(he, { style: "currency", currency: "USD", minimumFractionDigits: 2, maximumFractionDigits: 4 });
 const percent = new Intl.NumberFormat(he, { style: "percent", maximumFractionDigits: 2 });
 const percent3 = new Intl.NumberFormat(he, { style: "percent", maximumFractionDigits: 3 });
 const plain = new Intl.NumberFormat(he, { maximumFractionDigits: 2 });
@@ -38,6 +43,13 @@ export const fmt = {
   /** `1,234.50 ₪` (two decimals, method §13). */
   nis: (v: number) => withMinus(plainMarks(currency.format(v))),
   nisWhole: (v: number) => withMinus(plainMarks(currencyWhole.format(v))),
+  /** `7.00 $`: a bound or a fee a foreign or bank price list prints in dollars (2026-11-04: until then a bare "2"). */
+  usd: (v: number) => withMinus(plainMarks(dollars.format(v))),
+  /** `25.00 €` and `5.00 £`: a bound a price list prints in euros or pounds, for trades abroad (2026-11-05: until then a bare "25"). */
+  eur: (v: number) => withMinus(plainMarks(euros.format(v))),
+  gbp: (v: number) => withMinus(plainMarks(pounds.format(v))),
+  /** `0.0035 $`: a price per share. */
+  usdFine: (v: number) => withMinus(plainMarks(dollarsFine.format(v))),
   /** Data stores percent numbers (`1.05` is 1.05%). */
   pct: (v: number) => {
     // a figure that really has a third decimal (a 0.015% trustee fee, a 1.115% sum) keeps it; everything else rounds to two
@@ -116,6 +128,15 @@ export function formatValue(value: number | string | boolean | null, unit: strin
     case "nis_per_trade":
     case "nis_per_transfer":
       return state ? nisShown(value, state, parameter) : fmt.nis(value);
+    case "usd":
+    case "usd_per_trade":
+      return fmt.usd(value);
+    case "usd_per_share":
+      return fmt.usdFine(value);
+    case "eur":
+      return fmt.eur(value);
+    case "gbp_per_trade":
+      return fmt.gbp(value);
     case "nis_millions":
       return `${fmt.number(value)} ${numbers.nisMillions}`;
     case "nis_per_usd":

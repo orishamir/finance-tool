@@ -2129,23 +2129,43 @@ export const r4catalogue = {
   /** copy.md 8.4: the page's "נכון ליום" is after the day the record was read (flow 33, point 11); no string in copy.md */
   asOfAfterRead: "התאריך מאוחר מיום הקריאה",
   card: {
-    title: "התעריפון",
     tariffFrom: "תעריפון מ־",
     collectedAt: ", נאסף ב־",
     noPublishedDate: "ללא תאריך פרסום",
-    link: "לתעריפון",
-    linesBefore: "",
-    linesMid: "שורות עמלה נאספו:",
     notice: "הודעה על שינוי בעמלות",
     /** the index page with this house picked (issue 172) */
     compare: "להשוואה מול שאר הבנקים ובתי ההשקעות",
     stale: { before: "התעריפון נאסף ב־", after: "; מאז ייתכן שהשתנה." },
-    minimum: "מינימום לפתיחת חשבון:",
+    minimum: "מינימום לפתיחת חשבון",
     minimumNone: "לא נמצא בתעריפון",
-    tradeBounds: { min: "מינימום לפעולה", max: "מקסימום" },
-    /** a custody or account fee's own bounds (2026-11-04): "per trade" was wrong of them */
+    /** the fees as a table (2026-11-04, founder: the account "should have a standard way"): the heads carry the words */
+    cols: { covers: "על מה נגבה", price: "המחיר", where: "איפה זה כתוב" },
+    /** the short link in the table's column: the page of the price list, or of another document named in the row */
+    page: (n: number) => `עמוד ${n}`,
+    inTariff: "בתעריפון",
+    otherDoc: "במסמך אחר",
+    /** a fee charged on each transfer of securities out, after its amount; a price per share, after its amount */
+    perTransfer: "להעברה",
+    perShare: "למניה",
+    /** what a fee on the account itself is charged on, in the row of the price list's table */
+    onAccount: {
+      fixed_period: "בלי קשר לסכום שבחשבון",
+      transfer_out: "כשמעבירים את ניירות הערך לחשבון שלכם בגוף פיננסי אחר",
+    },
+    /** a distribution fee (MF-24): the fund manager pays it to the house the units are held through, under a distribution agreement (MF-26 says what applies without one) */
+    distribution: {
+      name: "עמלת הפצה",
+      who: (to: string) => `מנהל הקרן משלם אותה ${to} על יחידות הקרן שמחזיקים דרכו, כשיש ביניהם הסכם הפצה.`,
+      toBank: "לבנק",
+      toBroker: "לבית ההשקעות",
+    },
     bounds: { min: "מינימום", max: "מקסימום" },
-    protection: "מפוקח:",
+    /** a bound charged on each trade, after its amount */
+    perTrade: "לפעולה",
+    /** a percentage fee whose documents print no bound: the site charges none, and says so rather than leave the cell blank */
+    noBound: { min: "ללא מינימום", max: "ללא מקסימום" },
+    factsTitle: "פתיחת חשבון ופיקוח",
+    regulator: "הגוף המפקח",
     tase: "חבר בורסה",
     protectionDisclosure: "מה מגן על הכסף",
     channel: { direct: "ערוצים ישירים", branch: "סניף" },
@@ -2159,6 +2179,8 @@ export const r4catalogue = {
     /** a conversion spread the binding documents do not limit is never shown as zero (D56) */
     spreadNotLimited: "מרווח ההמרה: המסמכים לא קובעים לו תקרה",
     spreadUpTo: "מרווח ההמרה: עד",
+    /** a conversion line between two foreign currencies, beside the shekel one (the price lists' own words, "המרה בין שני מטבעות זרים") */
+    fxToFx: "בין שני מטבעות זרים",
     linesTitle: "העמלות",
     canBuy: {
       title: "מה אפשר לקנות כאן",
@@ -3281,16 +3303,10 @@ export const invest = {
     heading: "מדד אחר",
     field: "שם המדד",
     placeholder: "למשל ניקיי 225",
-    go: "המשך",
+    go: "הוספה",
     matched: (name: string) => `האתר מכיר את ״${name}״ ובחר אותו.`,
-    question: "החברות במדד ישראליות?",
-    questionWhy: "זו השאלה היחידה שמשנה את הדרכים: על מדד ישראלי יש רק קרנות ישראליות שמחזיקות את המניות; על מדד זר יש גם קרנות חוץ.",
-    yes: "כן",
-    no: "לא",
-    save: "שמירה במכשיר",
     cancel: "ביטול",
     savedNote: "מדד שהוספתם, שמור במכשיר הזה",
-    change: "שינוי התשובה",
     nameTaken: "יש כבר מדד בשם הזה.",
     missing: "המדד הזה לא שמור במכשיר הזה. בחרו מדד מהרשימה או הוסיפו אותו שוב.",
   },
@@ -3432,9 +3448,31 @@ export const invest = {
       hedged: "נטרול מט״ח",
       hedgedNo: "בלי נטרול",
       hedgedYes: "עם נטרול",
+      yield: "תשואת החלוקה",
+      perYear: "תשלומים בשנה",
     },
+    /** The panel of the person's own fund (2026-11-05): its three parts, the questions about the fund, and the preview of its row. */
+    fundParts: { fund: "הקרן", fees: "דמי ניהול", traits: "מה הקרן עושה" },
+    traitsSub: "כל תשובה מוסיפה לשורה של הקרן את התוויות שמופיעות בה.",
+    ask: {
+      payout: "מה הקרן עושה עם הדיבידנדים?",
+      tracking: "איך הקרן עוקבת אחרי המדד?",
+      domicile: "באיזו מדינה הקרן רשומה?",
+      hedged: "האם הקרן מנטרלת את שער המטבע?",
+      /** On an index the person added, which may be in shekels (2026-11-05). */
+      currency: "האם ערך הקרן זז עם שער של מטבע זר?",
+    },
+    unknown: "לא ידוע",
+    domicileNames: { IE: "אירלנד", US: "ארצות הברית", other: "מדינה אחרת, או לא ידוע" } as Record<string, string>,
+    noLabel: "בלי תווית",
+    noPrice: "הקרן תופיע בלי מחיר",
+    shekelIndex: "המדד בשקלים",
+    shekelIndexNote: "בלי חשיפה למט״ח",
+    perYearNames: { "1": "פעם בשנה", "2": "פעמיים", "4": "4 פעמים", "12": "כל חודש" } as Record<string, string>,
+    preview: "כך תיראה השורה של הקרן",
+    previewPriced: "מה שהזנתם מספיק כדי לחשב את הקרן.",
+    previewNone: "בלי תוויות",
     kinds: { "il-tracking": "קרן מחקה ישראלית", "il-etf": "קרן סל ישראלית", "tase-foreign": "קרן חוץ בבורסה בתל אביב", abroad: "קרן שנקנית בחו״ל" } as Record<string, string>,
-    hedgedNote: "בקרן עם נטרול מט״ח רוב העלות היא הפער מהמדד, והאתר לא יודע אותו לקרן שהזנתם. הקרן תופיע ברשימה בלי מחיר.",
     enteredWord: "הזנתם",
     yearlyWord: "שנתיים",
     minWord: "מינימום",
@@ -3449,6 +3487,7 @@ export const invest = {
       "name-empty": "הזינו שם.",
       "name-taken": "השם הזה כבר תפוס.",
       "sells-none": "סמנו לפחות סוג אחד.",
+      "hedged-none": "בחרו מה קורה לקרן כששער המטבע זז.",
       negative: "הסכום לא יכול להיות שלילי.",
     } as Record<string, string>,
     save: "שמירה במכשיר",
@@ -3577,6 +3616,7 @@ export const invest = {
     paidInNote: (months: number) => `הסכום ההתחלתי ועוד הפקדה חודשית, ${months} חודשים`,
     left: (years: number) => `נשאר לכם בעוד ${years} שנים`,
     steadyDollar: "אם הדולר לא זז מול השקל",
+    steadyIndexCurrency: "אם שער המטבע של המדד לא זז מול השקל",
     leftNote: "אחרי דמי ניהול ומס, בכסף של היום",
     cheapest: "הזוג הזול ביותר",
     cheapestStar: "★ הזוג הזול ביותר לתוכנית שלכם",
@@ -3700,16 +3740,7 @@ export const invest = {
     israelTitle: "קרנות ישראליות",
   },
 
-  /** What the site found in the houses' advertising against their binding documents (D57); the details stand on each house's page. */
-  advertising: {
-    title: "מה כתוב בפרסום, מול התעריפון",
-    lead: (n: number) => `ההשוואה כאן היא לפי התעריפונים והתקנונים, המסמכים שמחייבים את הבנקים ובתי ההשקעות, ולא לפי הפרסום. אצל ${n === 1 ? "אחד" : n} מהם, מה שכתוב בפרסום על עמלה לא תואם את מה שכתוב במסמכים.`,
-    example: { before: "למשל, בפרסום של ", ad: " כתוב ", tariff: ", ובתעריפון כתוב " },
-    negotiate: "הרבה פעמים אפשר לקבל מחיר טוב יותר במשא ומתן עם הבנק או עם בית ההשקעות.",
-    addOwn: "קיבלתם מחיר כזה? אפשר להוסיף אותו כחשבון משלכם, וההשוואה תחשב אותו כמו כל חשבון אחר.",
-    housesLead: "מה כתוב בפרסום ומה במסמכים, בעמוד של כל אחד:",
-    count: (n: number) => (n === 1 ? "טענה אחת" : `${n} טענות`),
-  },
+
   foot: {
     returnUsed: "התשואה שבחישוב",
     example: "תשואה לדוגמה, לא תחזית: הסדר של הדרכים לפי עלויות, לא לפי מה שהמדד יעשה.",
@@ -3858,15 +3889,19 @@ export const invest = {
     noBroker: "אין חשבון ניירות ערך שאפשר לחשב לו את הקרן הזו.",
     noHedgeRecord: "אי אפשר לחשב: בדוח השנתי של הקרן עוד אין שנה מלאה, ובקרן מנוטרלת רוב העלות היא הפער מהמדד.",
     noHedgeEntered: "אי אפשר לחשב: בקרן מנוטרלת רוב העלות היא הפער מהמדד, והאתר לא יודע אותו לקרן שהזנתם.",
+    payoutUnknown: "אי אפשר לחשב: לא צוין אם הקרן צוברת או מחלקת, והמס תלוי בזה.",
+    domicileUnknown: "אי אפשר לחשב: הקרן מחלקת, והמס שמנוכה בחו״ל מכל חלוקה תלוי במדינה שבה היא רשומה. האתר יודע אותו לאירלנד ולארצות הברית בלבד.",
   },
 
   /** The word for an option inside a sentence ("ב…"). */
   optionIn: { "il-tracking": "קרן מחקה ישראלית", "il-etf": "קרן סל ישראלית", "tase-foreign": "קרן חוץ בבורסה בתל אביב", abroad: "דרך בחו״ל" } as Record<string, string>,
 
+  /** The currency of an index the person added, which the site does not know, where a label names "שער ה…" (2026-11-05). */
+  indexCurrency: "מטבע של המדד",
   currencies: { USD: "דולר", EUR: "אירו", GBP: "פאונד", JPY: "ין", CHF: "פרנק שוויצרי", CAD: "דולר קנדי", AUD: "דולר אוסטרלי", CNY: "יואן", HKD: "דולר הונג קונג", NIS: "שקל", ILS: "שקל" } as Record<string, string>,
 
   labelFamilies: { held: "איפה הקרן מוחזקת", trade: "איך היא נסחרת", follow: "איך היא עוקבת אחרי המדד", currency: "מטבע", payout: "חלוקה", tax: "מס", asks: "מה היא דורשת מכם, וסיכון", availability: "זמינות" },
-  labelsSheet: { rules: "מקורות", close: "סגירה", forPlan: "" },
+  labelsSheet: { rules: "מקורות", doc: "מסמך הקרן", close: "סגירה", forPlan: "" },
   labels: {
     "held-il": { text: "קרן ישראלית", explain: "הקרן רשומה בישראל ומפוקחת כאן. על מדד זר היא מקבלת את החשיפה בעסקאות, ועל מדד ישראלי היא מחזיקה את המניות." },
     "held-tase-foreign": { text: "קרן חוץ בת״א", explain: "קרן מחוץ לישראל שנסחרת גם בבורסה בתל אביב, בשקלים. קרן חוץ לא מתמחה בישראל, ולכן היא רק על מדדים זרים." },
@@ -3880,13 +3915,15 @@ export const invest = {
     currency: { text: (ccy: string) => `חשיפה ל${ccy}`, explain: (ccy: string) => `ערך הקרן עולה ויורד גם עם שער ה${ccy} מול השקל, כי המדד מחושב בו.` },
     hedged: { text: "מנוטרלת מט״ח", explain: (ccy: string) => `הקרן מנטרלת את שער ה${ccy} מול השקל, ולכן שינוי בשער לא משנה את ערכה. הנטרול עולה כסף: הוא נראה בפער של הקרן מהמדד שלה, והחישוב באתר כולל אותו.` },
     "hedged-many": { text: (ccy: string) => `מנוטרלת ${ccy}`, explain: (ccy: string) => `הקרן מנטרלת את שער ה${ccy} מול השקל, ורק אותו. המדד מחושב ב${ccy} מתוך מניות בכמה מטבעות, ולכן המטבעות האחרים שבמדד עדיין משנים את ערכה, מול ה${ccy}. הנטרול עולה כסף: הוא נראה בפער של הקרן מהמדד שלה, והחישוב באתר כולל אותו.` },
+    "currency-foreign": { text: "חשיפה למט״ח", explain: "את המדד הזה הוספתם, והאתר לא יודע באיזה מטבע הוא מחושב. ערך הקרן עולה ויורד גם עם שער המטבע הזה מול השקל. בדיקת השער באתר זהה לכל מטבע, ולכן היא לא תלויה בשאלה איזה מטבע זה." },
     "currency-many": { text: (ccy: string) => `חשיפה ל${ccy} ולמטבעות נוספים`, explain: (ccy: string) => `ערך הקרן עולה ויורד עם שער ה${ccy} מול השקל, ועם המטבעות האחרים שבמדד, כי המדד מחושב ב${ccy} מתוך מניות בכמה מטבעות.` },
     "tax-currency": { text: "מס גם על שינויי המטבע", explain: "בקרן ישראלית המס נמדד על הרווח הריאלי ביחידות השקליות, ולכן גם עליית המטבע שבתוך הרווח ממוסה." },
     "tax-fund-dividend": { text: "מס דיבידנד בתוך הקרן", explain: "קרן אירית משלמת מס אמריקני על דיבידנדים מחברות אמריקניות. המס הזה הוא עלות של הקרן ואינו מזוכה בישראל." },
     "tax-distribution": { text: "מס על כל חלוקה", explain: "קרן שמחלקת משלמת לכם דיבידנד, וממנו משלמים מס בכל חלוקה, לפני המכירה." },
     "pays-accumulating": { text: "צוברת", explain: "הקרן לא מחלקת תשלומים: הכנסות כמו דיבידנד וריבית מושקעות בה מחדש." },
     "pays-distributing": { text: "מחלקת דיבידנד", explain: "הקרן מחלקת תשלומים לבעלי היחידות, פעם בשנה או יותר, לפי שיקול דעת המנהל." },
-    "tax-on-sale-open": { text: "מס רק במכירה", explain: "לא נמצא כלל שממסה יחיד על רווחים שקרן זרה צברה ולא חילקה, ורשות המסים לא אישרה זאת. זו שאלה פתוחה, ולכן הדרך מוצגת בלי דירוג." },
+    "tax-on-sale-open": { text: "מס בצבירה: לא ידוע", explain: "לא ידוע אם משלמים מס על מה שהקרן צוברת לפני שמוכרים. לא נמצא חוק שמחייב מס כזה, אבל גם אין אישור רשמי שאין. האתר מחשב כאילו המס משולם רק במכירה, ולכן לא מדרג את הקרן." },
+    "tax-on-sale-ruling": { text: "אין מס בצבירה", explain: "הקרן מדווחת בנספח לתשקיף הישראלי שלה שקיבלה החלטת מיסוי מרשות המסים: יחיד משלם מס רק כשהוא מוכר יחידות או כשהקרן מחלקת רווחים, ולא על מה שהקרן צוברת. ההחלטה עצמה לא פורסמה, ולכן המקור הוא מסמך הקרן. לפי ההחלטה הזאת הקרן מדורגת." },
     "ask-self-report": { text: "דיווח עצמי למס", explain: "ברוקר זר לא מנכה מס בישראל במכירה, ולכן מדווחים על הרווח ומשלמים מקדמה פעמיים בשנה, ומגישים דוח שנתי. בבנק או אצל חבר בורסה בישראל המס מנוכה במכירה, וגם קרן זרה לא מחייבת דיווח." },
     "ask-tax-service": { text: "ניכוי מס בשירות נוסף", explain: "החברה מציעה שירות שמנכה מס ישראלי בחשבון, למי שמצטרף אליו. מי שלא מצטרף מדווח על הרווח בעצמו, משלם מקדמה פעמיים בשנה ומגיש דוח שנתי." },
     "ask-estate": { text: "מס עיזבון אמריקאי", explain: "מי שאינו אמריקאי ומחזיק נכסים אמריקניים מעל סף הנקוב בדולרים עלול להיות חייב בדוח מס ירושה אמריקני. קרן שמאוגדת בארצות הברית היא נכס אמריקני." },
@@ -3957,6 +3994,7 @@ export const kit = {
       StairsChart: "מדרגות: מה שנשאר בסוף על הציר האנכי, סדר הצעדים משמאל לימין. הראשונה אפורה עם סימן שבר כי הציר לא מתחיל באפס; כל מדרגה צפה בגוון של מה ששונה, ואדומה כשהיא מפסידה. שנלקחה: מלאה; מוצעת: בהירה ומוקפת; על כלל פתוח: חלולה. מתחתיה טבלה באותן עמודות (מחשב) או רשימת צעדים (טלפון).",
       DiffRow: "שורה של שינוי אחד: מה משתנה, מה נשאר בסוף, וסרגל מקו האמצע: ימינה וירוק לעוד כסף, שמאלה ואדום לפחות. יחידה אחת לכל השורות; סרגל ארוך נחתך בסימן והמספר אומר את הגודל המלא. לחיצה על השורה לוקחת אותה.",
       PlanChips: "שורת המספרים שהעמוד רץ עליהם: תווית וערך, כחול כשהוזן, תג כשהערך של האתר, ולחיצה פותחת את השדות. fixed: ערך שאי אפשר לשנות כאן.",
+      TileChoice: "תשובות לשאלה אחת, כל אחת אריח שמראה מה היא מביאה (התוויות שהיא מוסיפה, או שורה קצרה). אפשר שלא תהיה בחירה עדיין. מה שבתוך אריח לא לחיץ בפני עצמו.",
       ChoiceChips: "ארבע אפשרויות ומעלה או תוויות ארוכות, אחת נבחרת. עם wrap יורד שורה, בלעדיו גולל הצידה בטלפון. ״אחר״ הוא תמיד הגלולה המקווקוות עם הפלוס (other), שפותחת שדה מתחת לשורה.",
       LongestCase: "גוש שתוכנו משתנה לפי בחירה: תמיד בגובה המקרה הארוך ביותר, בכל רוחב מסך, כדי ששום דבר מתחתיו לא יזוז.",
       InputSlot: "מספר שהקוראים קובעים, בתוך משפט: רווח ברוחב קבוע, עם קו כמו בטופס ועיפרון שפותח את השדה, כדי שהמשפט לא יקפוץ כשהמספר משתנה.",

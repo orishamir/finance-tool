@@ -9,10 +9,10 @@ import { CalendarCheck, CalendarDays, Lock, Zap } from "lucide-react";
 import { IconAlert, IconExternal, IconLock } from "../icons";
 import { IdRef, LeadTail, MarkHead, Num, RulesLine, StaleSaid } from "../provenance";
 import { IconDrillIn } from "../icons";
-import { label } from "../../lib/labels";
+import { allLabels, label } from "../../lib/labels";
 import { fmt } from "../../lib/format";
 import { PileStory, PileYears } from "./pile-story";
-import { AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, Button, Callout, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, LabelFilter, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, CompareTable, TableCols, CoverageFold, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, SortHead, ExposureCell, FeeKey, FeeNum, HelpMark, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, GainBars, GapNote, HeadlineFigure, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, ParameterLine, PercentField, PlanChips, KnobStrip, ChangeChart, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, RangeField, RankBadge, Section, SegmentedControl, SelectField, Sentence, ShareRings, SourceLine, Stat, StatRow, StatTile, StepButtons, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, ClaimList, DocLink, atPdfPage, GroupPriceFold, GroupPriceRows, PeriodStrip, type CostPart, type GroupEntry } from "./index";
+import { AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, Button, Callout, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, LabelFilter, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, CompareTable, TableCols, CoverageFold, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, SortHead, ExposureCell, FeeKey, FeeNum, HelpMark, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, GainBars, GapNote, HeadlineFigure, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, ParameterLine, PercentField, PlanChips, KnobStrip, ChangeChart, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, RangeField, RankBadge, Section, SegmentedControl, SelectField, Sentence, TileChoice, ShareRings, SourceLine, Stat, StatRow, StatTile, StepButtons, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, ClaimList, DocLink, atPdfPage, GroupPriceFold, GroupPriceRows, PeriodStrip, type CostPart, type GroupEntry } from "./index";
 import type { AdvertisingEntry } from "@finance-tool/schema";
 
 const g = copy.gallery;
@@ -76,6 +76,11 @@ function Basics() {
             </Button>
             <Button disabled>{g.states.disabled}</Button>
             <LinkButton to="/kit">{g.sample.sentenceLink}</LinkButton>
+          </div>
+        </State>
+        <State label="LinkButton, long words in a narrow place: the button grows">
+          <div className="max-w-64">
+            <LinkButton to="/kit">{g.sample.longTag}</LinkButton>
           </div>
         </State>
       </Demo>
@@ -252,12 +257,39 @@ function Choices() {
   const [seg, setSeg] = useState<"a" | "b" | "c">("a");
   const [chip, setChip] = useState<string | null>("0");
   const [own, setOwn] = useState<string | null>(null);
+  const [tile, setTile] = useState<"a" | "b" | "c">("a");
   const labels = Object.fromEntries(g.sample.chip.map((c, i) => [String(i), c]));
   return (
     <>
       <Demo name="SegmentedControl" use={g.uses.SegmentedControl}>
         <State label={g.states.interactive}>
           <SegmentedControl label={g.sample.title} options={g.sample.option.map((o, i) => ({ value: (["a", "b", "c"] as const)[i]!, label: o }))} value={seg} onChange={setSeg} />
+        </State>
+      </Demo>
+      <Demo name="TileChoice" use={g.uses.TileChoice}>
+        <State label={`labels as the body, ${g.states.interactive}`} wide>
+          <TileChoice
+            label={g.sample.title}
+            value={tile}
+            onChange={setTile}
+            columns={3}
+            tiles={[
+              { value: "a", body: <LabelRow labels={[label("follow-physical")]} still /> },
+              { value: "b", body: <LabelRow labels={[label("follow-swap")]} still /> },
+              { value: "c", title: g.sample.option[2], body: <span className="text-xs text-muted-foreground">{g.sample.otherField}</span> },
+            ]}
+          />
+        </State>
+        <State label="titled, nothing chosen yet">
+          <TileChoice
+            label={g.sample.title}
+            value={null}
+            onChange={() => {}}
+            tiles={[
+              { value: "a", title: g.sample.option[0], body: <LabelRow labels={[label("tax-fund-dividend")]} still /> },
+              { value: "b", title: g.sample.option[1], body: <LabelRow labels={[label("ask-estate"), label("ask-w8")]} still /> },
+            ]}
+          />
         </State>
       </Demo>
       <Demo name="ChoiceChips" use={g.uses.ChoiceChips}>
@@ -1191,6 +1223,14 @@ function Lists({ today }: { today: string }) {
       <Demo name="LabelChip, LabelRow, LabelSheetHost, LabelIcon" use={g.uses.LabelChip}>
         <State label="a row of three labels; a tap opens the page's one sheet" wide>
           <LabelRow labels={labels} />
+        </State>
+        <State label="still: drawn only, inside a control of its own (a TileChoice tile)" wide>
+          <LabelRow labels={labels} still />
+        </State>
+        <State label="every label, in its family's colour (allLabels): each icon says what its label is about, and labels about different things never share one" wide>
+          <span data-testid="all-labels">
+            <LabelRow labels={allLabels()} />
+          </span>
         </State>
         <State label="LabelIcon alone, size 18 (the sheet's heading)">
           <span className="inline-flex gap-2">

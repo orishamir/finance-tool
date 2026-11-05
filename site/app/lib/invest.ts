@@ -6,7 +6,7 @@
 import { STANDING_CONVERSION_BAND, STANDING_ORDER_BAND, beforeTax, buildTariff, costByWho, gapToIndex, sumFees, trackingBeyondFees, providerWorkbench, relativeGap, type ComparedProvider, type FeeLine, type LayeredRun, type NotComparableProvider, type ProviderRow, type TariffBuild } from "@finance-tool/engine";
 import type { ExposureRecord, FeesSnapshot, FundRecord } from "@finance-tool/schema";
 import { invest as copy } from "../copy";
-import { isCustomBrokerId, isCustomFund } from "./custom-entries";
+import { customFundGap, isCustomBrokerId, isCustomFund } from "./custom-entries";
 import { aliasRows } from "./search-aliases";
 import { fxRunInput } from "./fx";
 import { instrumentClassOf, fundRun, ruleContext, shortName, subjectOf, type FundAssumptions, type NotComparable, type WorkbenchBundle, type WorkbenchInputs } from "./providers";
@@ -54,7 +54,8 @@ export function venueOfFund(rec: FundRecord): Venue | null {
 export interface CustomIndex {
   id: string;
   name: string;
-  israeli: boolean;
+  /** Asked before 2026-11-05 ("החברות במדד ישראליות?") and read only to carry the answer to the index's funds (state.ts, shekelFromIndex). */
+  israeli?: boolean;
   /** "לידיעתכם בלבד": shown in the header, never used (spec §1, 10.8). */
   currency?: string;
   region?: string;
@@ -77,7 +78,12 @@ export function knownIndices(bundle: Pick<WorkbenchBundle, "exposures">): IndexR
 
 export const refOfExposure = (e: ExposureRecord): IndexRef => ({ id: e.id, name: e.names.he[0] ?? e.names.en[0] ?? e.id, israeli: e.constituents_israeli === true, exposure: e, custom: null, oneLine: e.one_line_he ?? null });
 
-export const refOfCustom = (c: CustomIndex): IndexRef => ({ id: c.id, name: c.name, israeli: c.israeli, exposure: null, custom: c, oneLine: null });
+/** An index the person added asks nothing of its currency (founder, 2026-11-05): every kind of fund is offered on it, and each fund says. */
+export const refOfCustom = (c: CustomIndex): IndexRef => ({ id: c.id, name: c.name, israeli: false, exposure: null, custom: c, oneLine: null });
+
+/** The index as one fund sees it: a fund the person said is on a shekel index reads it as Israeli (no currency, no hedge, no currency tax). */
+export const indexSeenBy = (index: IndexRef, rec: Pick<FundRecord, "id">, bundle: Pick<WorkbenchBundle, "entered">): IndexRef =>
+  index.custom && bundle.entered?.shekelFunds.includes(rec.id) ? { ...index, israeli: true } : index;
 
 /** The index page's address (founder, 2026-10-26: /indices, with no redirect from /invest): `/indices/<x>` for the exposure `index-<x>`, a custom index at `/indices?custom=<id>`. */
 export const INDICES_PATH = "/indices";
@@ -131,7 +137,7 @@ export const customIdOf = (name: string): string => `custom-${norm(name).replace
 
 // ---------------------------------------------------------------- reasons and cells
 
-export type Reason = NotComparable | { code: "fund-type" } | { code: "need-yield" } | { code: "us-fund-open" } | { code: "need-rate"; currency: string } | { code: "no-fund-rate" } | { code: "no-hedge-record" } | { code: "no-hedge-entered" };
+export type Reason = NotComparable | { code: "fund-type" } | { code: "need-yield" } | { code: "us-fund-open" } | { code: "need-rate"; currency: string } | { code: "no-fund-rate" } | { code: "no-hedge-record" } | { code: "no-hedge-entered" } | { code: "payout-unknown" } | { code: "domicile-unknown" };
 
 export interface Availability {
   source: { url: string; title: string; checked: string };
@@ -319,6 +325,8 @@ export interface InvestView {
 
 /** A conversion between two foreign currencies is not the conversion a shekel investor pays: the shekel-to-currency line is read (2026-10-25). */
 const FX_TO_FX = /מט["״]ח ל?מט["״]ח|בין שני מטבעות זרים/;
+/** The line is a conversion between two foreign currencies, by the price list's own words: the ranking leaves it out, a house's page names it. */
+export const isFxToFx = (l: Pick<FeesSnapshot["lines"][number], "base" | "names">) => l.base === "fx" && FX_TO_FX.test(l.names.tariff.join(" "));
 
 const scopedCache = new WeakMap<FeesSnapshot, FeesSnapshot>();
 /**
@@ -328,7 +336,7 @@ const scopedCache = new WeakMap<FeesSnapshot, FeesSnapshot>();
 export function scoped(s: FeesSnapshot): FeesSnapshot {
   let out = scopedCache.get(s);
   if (!out) {
-    out = { ...s, lines: s.lines.filter((l) => !(l.base === "fx" && FX_TO_FX.test(l.names.tariff.join(" "))) && !(s.id === "interactive-brokers" && /Tiered/.test(l.band ?? ""))) };
+    out = { ...s, lines: s.lines.filter((l) => !isFxToFx(l) && !(s.id === "interactive-brokers" && /Tiered/.test(l.band ?? ""))) };
     scopedCache.set(s, out);
   }
   return out;
@@ -348,7 +356,8 @@ export function providersOfInvest(bundle: Pick<WorkbenchBundle, "snapshots">): r
 
 export const providerInfo = (s: FeesSnapshot): ProviderInfo => {
   const custom = isCustomBrokerId(s.id);
-  return { id: s.id, name: s.provider.name_he, short: custom ? s.provider.name_he : shortName(s.id, s.provider.name_he), providerClass: s.provider.class, foreign: s.provider.class === "foreign_broker", taxService: s.provider.israeli_tax_service === true, hasPage: !custom && (s.provider.class === "bank" || s.provider.class === "broker"), custom };
+  return { id: s.id, name: s.provider.name_he, short: custom ? s.provider.name_he : shortName(s.id, s.provider.name_he), providerClass: s.provider.class, foreign: s.provider.class === "foreign_broker", taxService: s.provider.israeli_tax_service === true, // every bank and broker on this page has a company page, a foreign one too (2026-11-05)
+    hasPage: !custom && (s.provider.class === "bank" || s.provider.class === "broker" || s.provider.class === "foreign_broker"), custom };
 };
 
 interface Cand {
@@ -600,13 +609,17 @@ function wayPrice(ctx: Ctx, p: Extract<Priced, { kind: "ok" }>, providerId: stri
 // ---------------------------------------------------------------- funds
 
 function fundSpec(ctx: Ctx, rec: FundRecord): { spec: Spec; mismatch: boolean } | { reason: Reason } {
-  const exposure = ctx.bundle.exposures.find((e) => e.id === rec.exposure_id) ?? ctx.bundle.entered?.exposures[rec.exposure_id];
+  const entered = ctx.bundle.entered?.exposures[rec.exposure_id];
+  const exposure = ctx.bundle.exposures.find((e) => e.id === rec.exposure_id) ?? (entered && ctx.bundle.entered!.shekelFunds.includes(rec.id) ? { ...entered, currency: "ILS" } : entered);
   const subject = subjectOf(ctx.bundle, rec.id);
   if (!subject) return { reason: { code: "fund-type" } };
+  // a fund the person typed: what they left unsaid is named, never filled in (2026-11-05)
+  const gap = isCustomFund(rec) ? customFundGap(rec) : null;
+  if (gap) return { reason: { code: gap } };
   // a hedged fund's cost is mostly beyond its fees (F-92): with no full year in its report and no published figure it is not priced
   if (rec.hedged === true && !rec.tracking_record && typeof rec.fees.tracking_difference_12m?.value !== "number") return { reason: { code: isCustomFund(rec) ? "no-hedge-entered" : "no-hedge-record" } };
   const run = fundRun(subject, exposure, ctx.plan.grossReturn, ctx.assumptions, ctx.bundle.fx);
-  if ("kind" in run) return { reason: run.kind === "need-rate" ? { code: "need-rate", currency: run.currency } : run.kind === "need-yield" ? { code: rec.domicile === "US" ? "us-fund-open" : "need-yield" } : { code: "fund-type" } };
+  if ("kind" in run) return { reason: run.kind === "need-rate" ? { code: "need-rate", currency: run.currency } : run.kind === "need-yield" ? { code: rec.domicile === "US" && !isCustomFund(rec) ? "us-fund-open" : "need-yield" } : { code: "fund-type" } };
   // as the engine flags it (E4): a fund in a foreign currency other than its index's; a shekel fund on a dollar index is the usual case, not a mismatch
   const mismatch = !!exposure && !["NIS", "ILS"].includes(rec.currency) && rec.currency !== exposure.currency;
   return { spec: { fund: run.fund, market: run.market, ...(run.currency ? { currency: run.currency } : {}), cls: subject.instrumentClass }, mismatch };

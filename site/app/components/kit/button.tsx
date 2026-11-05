@@ -22,11 +22,15 @@ export function Button({ variant = "secondary", className, children, type = "but
   );
 }
 
-/** A link that looks like a button. Use for navigation; use `Button` for an action. */
+/**
+ * A link that looks like a button. Use for navigation; use `Button` for an action. Its words often carry a name (a house, a product),
+ * so they may wrap on a phone: the height is a minimum, one line keeps the field's height and two lines grow the button rather than
+ * spill out of it, balanced so no word stands alone on the second (2026-11-04, a house's page at 390 px).
+ */
 export function LinkButton({ to, children, className, variant = "secondary", onClick }: { to: string; children: ReactNode; className?: string; variant?: "primary" | "secondary"; onClick?: () => void }) {
   const styles = variant === "primary" ? "bg-primary text-primary-foreground" : "bg-secondary text-secondary-foreground hover:bg-accent";
   return (
-    <Link to={to} onClick={onClick} className={cx("inline-flex items-center justify-center gap-2 font-medium h-field lg:h-10 px-5 rounded-md", styles, className)}>
+    <Link to={to} onClick={onClick} className={cx("inline-flex items-center justify-center gap-2 font-medium min-h-field lg:min-h-10 py-1.5 px-5 rounded-md text-center text-balance", styles, className)}>
       {children}
     </Link>
   );
