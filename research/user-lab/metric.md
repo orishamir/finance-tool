@@ -88,6 +88,23 @@ that the decision may be wrong for readers. How often a finding met a decision, 
 scans it for the site's terms and rules before every run); it is built only from how people behave and what people
 flagged.
 
+## Studies are a starting point, not the judge
+
+The founder, 2026-11-05: "i just dont want you to fall into some trap caused by huge amounts of study data." Published
+research on how people behave (`behaviour-guide.md`, `evidence/`) is where the lab's guesses about people start; it
+never settles what people on this site do.
+
+- **Real people outrank studies.** When a study and what real readers did or flagged disagree, the readers win, and the
+  study is marked as not fitting this audience.
+- **Measured before used.** Nothing taken from a study enters the reviewer's instructions until a run with it and a run
+  without it, on the held-out cases, show more real problems caught and no more noise.
+- **The instructions stay short.** The instruction set has its size limit (`learning-loop.md` step 6); research adds
+  candidates, not length. The reviewer is never handed the guide or the studies, only its few instructions.
+- **Fit before weight.** Each finding is weighed by who was measured (country, age, lab or field), how large the effect
+  was and whether it held up when repeated. A single lab study of students is a weak guess about Israelis on a phone.
+- **No "a study says" in a finding.** A reviewer's finding stands on what the screen shows a person, never on a citation;
+  and Claude never offers a study to the founder as proof that readers will trip, only what readers were measured doing.
+
 ## The grader
 
 The grader's judgement is itself checked: two graders on every case, disagreements settled by a third, and a sample of
