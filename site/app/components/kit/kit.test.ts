@@ -6,6 +6,7 @@ import { MemoryRouter } from "react-router";
 import { describe, expect, it } from "vitest";
 import { ProvenanceProvider } from "../provenance";
 import { Disclosure, Sentence, Stat, StatRow } from "./index";
+import { isoNumbers } from "./stairs-chart";
 import { KitGallery } from "./gallery";
 
 const today = "2026-10-25";
@@ -49,5 +50,15 @@ describe("Sentence and Stat", () => {
     expect(out).toContain("<dl");
     expect(out).toContain("<dt");
     expect(out).toContain("sm:grid-cols-3");
+  });
+});
+
+describe("the stairs chart's text", () => {
+  it("isolates a number among Hebrew words, and leaves a number inside a Latin name to the name", () => {
+    expect(isoNumbers("נשארים 79,176 ₪")).toBe("נשארים ⁦79,176 ₪⁩");
+    expect(isoNumbers("+2,345 ₪ יותר")).toBe("⁦+2,345 ₪⁩ יותר");
+    // isolated alone, the 4 and the 500 stepped out of the name: "S&P 500 (4D)" read "(D4) 500 S&P" (2026-11-05)
+    expect(isoNumbers("ילין לפידות מחקה (4D) S&P 500")).toBe("ילין לפידות מחקה (4D) S&P 500");
+    expect(isoNumbers("הראל מחקה (4D) NASDAQ 100")).toBe("הראל מחקה (4D) NASDAQ 100");
   });
 });

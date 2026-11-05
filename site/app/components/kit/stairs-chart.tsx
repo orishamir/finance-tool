@@ -39,13 +39,17 @@ const FILL: Record<StairHue | "loss", string> = { start: "fill-chart-stairs-star
 const STROKE: Record<StairHue | "loss", string> = { start: "stroke-chart-stairs-start", account: "stroke-chart-stairs-account", kind: "stroke-chart-stairs-kind", fund: "stroke-chart-stairs-fund", loss: "stroke-loss" };
 export const STAIR_SWATCH: Record<StairHue | "loss", string> = { start: "bg-chart-stairs-start", account: "bg-chart-stairs-account", kind: "bg-chart-stairs-kind", fund: "bg-chart-stairs-fund", loss: "bg-loss" };
 
-/** Isolates every number in a text so it keeps its sign and order inside right-to-left words. */
-const iso = (s: string) => s.replace(/[−+]?\d[\d,.]*%?(?: ₪)?/g, (m) => `⁦${m}⁩`);
+/**
+ * Isolates every number that stands among Hebrew words, so it keeps its sign and order there ("+2,345 ₪"). A number inside a Latin
+ * name ("S&P 500", "(4D)", "NASDAQ 100") is left to the name: isolated alone, it stepped out of the name's order, and
+ * "S&P 500 (4D)" read "(D4) 500 S&P" (2026-11-05).
+ */
+export const isoNumbers = (s: string) => s.replace(/(?<![A-Za-z&][ ]?)(?<![\d,.])[−+]?\d[\d,.]*%?(?: ₪)?(?![A-Za-z])/g, (m) => `\u2066${m}\u2069`);
 
 function Txt({ x, y, a = "right", size = 13, className = "fill-chart-text", weight = 400, children }: { x: number; y: number; a?: "right" | "left" | "mid"; size?: number; className?: string; weight?: number; children: string }) {
   return (
     <text x={x} y={y} direction="rtl" textAnchor={a === "right" ? "start" : a === "left" ? "end" : "middle"} fontSize={size} fontWeight={weight} className={cx("stroke-card", className)} strokeWidth={4} style={{ paintOrder: "stroke" }}>
-      {iso(children)}
+      {isoNumbers(children)}
     </text>
   );
 }
