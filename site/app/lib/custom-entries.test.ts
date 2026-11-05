@@ -4,7 +4,8 @@ import { createElement } from "react";
 import { renderToString } from "react-dom/server";
 import { MemoryRouter } from "react-router";
 import { beforeEach, describe, expect, it } from "vitest";
-import { AccountColumn, allFunds, FundColumn, pickOfHeadline, PairResult } from "../components/invest/pair";
+import { AccountColumn, allFunds, FundColumn, pickOfHeadline, PairResult, whyNoPrice } from "../components/invest/pair";
+import { invest } from "../copy";
 import { LabelSheetHost } from "../components/kit";
 import { ProvenanceProvider } from "../components/provenance";
 import { brokerDraftOf, brokerErrors, brokerFromDraft, fundDraftOf, fundErrors, fundFromDraft, tariffOfBroker, unknownLines, validCustomBrokers, validCustomFunds, withCustomEntries, type CustomBroker, type CustomFund } from "./custom-entries";
@@ -33,9 +34,10 @@ const plan: WorkbenchInputs = {
 // the terms of tests/golden/expected_custom_entries.py
 // every line typed, a fee not charged as 0 (2026-11-05: a line left empty is a price not known, and the account is not ranked); the golden
 // script's figures are for the same zeros
-const cheap = brokerFromDraft({ ...brokerDraftOf(null), name: "הצעה זולה", tradePct: 0.05, tradeMin: 1, custodyPct: 0.02, fxPct: 0.2, monthlyFee: 0 }, "custom-broker-cheap", t);
+// a minimum not charged is typed as 0 too (#190: a blank minimum was charged as none); a minimum of 0 is no minimum, as in the golden script
+const cheap = brokerFromDraft({ ...brokerDraftOf(null), name: "הצעה זולה", tradePct: 0.05, tradeMin: 1, custodyPct: 0.02, custodyMin: 0, fxPct: 0.2, monthlyFee: 0 }, "custom-broker-cheap", t);
 const dear = brokerFromDraft({ ...brokerDraftOf(null), name: "הצעה יקרה", tradePct: 0.5, tradeMin: 30, custodyPct: 0.4, custodyMin: 10, fxPct: 1, monthlyFee: 20 }, "custom-broker-dear", t);
-const zeros = brokerFromDraft({ ...brokerDraftOf(null), name: "הצעה ריקה", tradePct: 0, custodyPct: 0, fxPct: 0, monthlyFee: 0 }, "custom-broker-zeros", t);
+const zeros = brokerFromDraft({ ...brokerDraftOf(null), name: "הצעה ריקה", tradePct: 0, tradeMin: 0, custodyPct: 0, custodyMin: 0, fxPct: 0, monthlyFee: 0 }, "custom-broker-zeros", t);
 /** Only the commission it was offered, the rest left empty (the review of 2026-11-05: it took the star with every blank as zero). */
 const partial = brokerFromDraft({ ...brokerDraftOf(null), name: "רק עמלה", tradePct: 0.08 }, "custom-broker-partial", t);
 /** A fund draft that says it accumulates and is unhedged, as the golden script prices it (since 2026-11-05 a payout not said has no price). */
@@ -90,13 +92,54 @@ describe("a broker the person types ranks with the others (D44)", () => {
   });
 
   it("an account with a line left empty has no price, is never ranked, and its row says why (silence is not zero)", () => {
-    expect(unknownLines(partial)).toHaveLength(3);
+    expect(unknownLines(partial)).toHaveLength(5);
     const b2 = withCustomEntries(bundle, [partial], [fund]);
     const v2 = buildInvest({ bundle: b2, index: ta125, plan });
     const at = v2.options.flatMap((o) => o.funds).find((f) => f.rec.id === v2.headline!.fund.rec.id)!.byHouse[partial.id];
     expect(at && "valueN" in at).toBe(false);
     expect(v2.headline!.providerId).not.toBe(partial.id);
     expect(b2.snapshots.find((s) => s.id === partial.id)!.missing_reason_he).toBeTruthy();
+  });
+
+  it("a minimum left empty is a price not known too: the account is not ranked, and the dialog's own words hold (#190)", () => {
+    // the review's case: commission, custody and conversion typed, both minimums left empty; it was ranked first
+    const noMins = brokerFromDraft({ ...brokerDraftOf(null), name: "הבנק שלי", tradePct: 0.08, custodyPct: 0.1, fxPct: 0.2, monthlyFee: 0 }, "custom-broker-nomins", t);
+    expect(unknownLines(noMins)).toHaveLength(2);
+    const b2 = withCustomEntries(bundle, [noMins], []);
+    expect(b2.entered!.tariffs[noMins.id]).toBeUndefined();
+    const v2 = buildInvest({ bundle: b2, index: sp, plan });
+    for (const f of allFunds(v2)) expect(priced(f.byHouse[noMins.id])).toBe(false);
+    expect(v2.headline!.providerId).not.toBe(noMins.id);
+    // the review's other case: a minimum typed and its percent left empty
+    const minOnly = brokerFromDraft({ ...brokerDraftOf(null), name: "רק מינימום", tradeMin: 5, custodyPct: 0.1, custodyMin: 0, fxPct: 0.2, monthlyFee: 0 }, "custom-broker-minonly", t);
+    expect(withCustomEntries(bundle, [minOnly], []).entered!.tariffs[minOnly.id]).toBeUndefined();
+  });
+
+  it("a conversion left empty leaves only the funds bought abroad without a price there; an Israeli index ranks the account (#190)", () => {
+    const noFx = brokerFromDraft({ ...brokerDraftOf(null), name: "בלי המרה", tradePct: 0.05, tradeMin: 1, custodyPct: 0.02, custodyMin: 0, monthlyFee: 0 }, "custom-broker-nofx", t);
+    expect(unknownLines(noFx)).toEqual([invest.customEntries.fields.fx]);
+    const b2 = withCustomEntries(bundle, [noFx], [fund]);
+    const onTa = buildInvest({ bundle: b2, index: ta125, plan });
+    const mineTa = allFunds(onTa).find((f) => f.rec.id === fund.id)!.byHouse[noFx.id];
+    expect(priced(mineTa) && mineTa.valueN).toBeCloseTo(EXPECTED.cheapIl, 1);
+    const onSp = buildInvest({ bundle: b2, index: sp, plan });
+    const israeliOnSp = allFunds(onSp).filter((f) => f.option === "il-etf" || f.option === "il-tracking");
+    const abroadOnSp = allFunds(onSp).filter((f) => f.option === "abroad");
+    expect(israeliOnSp.some((f) => priced(f.byHouse[noFx.id]))).toBe(true);
+    expect(abroadOnSp.length).toBeGreaterThan(0);
+    for (const f of abroadOnSp) expect(priced(f.byHouse[noFx.id])).toBe(false);
+    expect(whyNoPrice(b2, noFx.id, abroadOnSp[0]!)).toBe(invest.customEntries.fxUnknown);
+  });
+
+  it("a fund typed with a fee left empty has no price, with the reason; a fee typed as 0 is priced (#190)", () => {
+    const blank = fundFromDraft({ ...said("il-tracking"), name: "בלי שכר נאמן", fixed: 0.2, variable: 0.05 }, "custom-fund-blank", "index-ta125", t);
+    const v2 = buildInvest({ bundle: withCustomEntries(bundle, [], [blank]), index: ta125, plan });
+    const f = allFunds(v2).find((x) => x.rec.id === blank.id)!;
+    expect(f.reason).toEqual({ code: "fee-unknown" });
+    expect(Object.values(f.byHouse).some(priced)).toBe(false);
+    const typed = fundFromDraft({ ...said("il-tracking"), name: "שכר נאמן 0", fixed: 0.2, variable: 0.05, trustee: 0 }, "custom-fund-zero", "index-ta125", t);
+    const v3 = buildInvest({ bundle: withCustomEntries(bundle, [], [typed]), index: ta125, plan });
+    expect(allFunds(v3).find((x) => x.rec.id === typed.id)!.best?.valueN).toBeGreaterThan(0);
   });
 
   it("charges a fee typed as zero nothing, and keeps the row's figures in the entered state", () => {
@@ -162,7 +205,7 @@ describe("a fund the person types is priced at the collected houses under its ki
   it("each kind falls in its own option and tariff class", () => {
     const kinds = ["il-tracking", "il-etf", "tase-foreign", "abroad"] as const;
     for (const kind of kinds) {
-      const f = fundFromDraft({ ...said(kind), name: kind, fixed: 0.1 }, `custom-fund-${kind}`, "index-sp500", t);
+      const f = fundFromDraft({ ...said(kind), name: kind, fixed: 0.1, variable: 0, trustee: 0 }, `custom-fund-${kind}`, "index-sp500", t);
       const rec = withCustomEntries(bundle, [], [f]).funds.at(-1)!;
       expect(optionOfFund(rec, undefined)).toBe(kind);
       expect(rec.distribution_policy).toBe("accumulating");
@@ -177,7 +220,7 @@ describe("a fund the person types is priced at the collected houses under its ki
   });
 
   it("a hedged fund has no price, with the reason, as a collected fund with no report", () => {
-    const hedged = fundFromDraft({ ...said("il-tracking"), name: "מנוטרלת", fixed: 0.1, hedged: true }, "custom-fund-hedged", "index-sp500", t);
+    const hedged = fundFromDraft({ ...said("il-tracking"), name: "מנוטרלת", fixed: 0.1, variable: 0, trustee: 0, hedged: true }, "custom-fund-hedged", "index-sp500", t);
     const v = buildInvest({ bundle: withCustomEntries(bundle, [], [hedged]), index: sp, plan });
     const f = allFunds(v).find((x) => x.rec.id === hedged.id)!;
     expect(f.reason).toEqual({ code: "no-hedge-entered" });
@@ -187,7 +230,7 @@ describe("a fund the person types is priced at the collected houses under its ki
   it("belongs to the index it was added on, a custom index too", () => {
     expect(allFunds(view).some((f) => f.rec.id === abroad.id)).toBe(false);
     const custom = { id: "custom-nikkei", name: "ניקיי", israeli: false, added: t };
-    const onCustom = fundFromDraft({ ...said("il-tracking"), name: "על ניקיי", fixed: 0.3 }, "custom-fund-nikkei", custom.id, t);
+    const onCustom = fundFromDraft({ ...said("il-tracking"), name: "על ניקיי", fixed: 0.3, variable: 0, trustee: 0 }, "custom-fund-nikkei", custom.id, t);
     const v = buildInvest({ bundle: withCustomEntries(bundle, [], [onCustom], [custom]), index: refOfCustom(custom), plan });
     const f = allFunds(v).find((x) => x.rec.id === onCustom.id)!;
     expect(f.best?.valueN).toBeGreaterThan(0);
@@ -212,7 +255,7 @@ describe("a fund the person types is priced at the collected houses under its ki
     const index = refOfCustom(custom);
     expect(index.israeli).toBe(false);
     for (const kind of ["il-tracking", "abroad"] as const) {
-      const f = fundFromDraft({ ...said(kind), name: kind, fixed: 0.2, shekelIndex: true }, `custom-fund-${kind}`, custom.id, t);
+      const f = fundFromDraft({ ...said(kind), name: kind, fixed: 0.2, variable: 0, trustee: 0, shekelIndex: true }, `custom-fund-${kind}`, custom.id, t);
       expect(f.shekelIndex).toBe(true);
       const b = withCustomEntries(bundle, [], [f], [custom]);
       expect(b.entered!.shekelFunds).toEqual([f.id]);

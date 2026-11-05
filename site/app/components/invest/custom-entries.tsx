@@ -130,7 +130,8 @@ export function AddEntryButton({ kind, primary = false }: { kind: "broker" | "fu
   );
 }
 
-function Terms({ terms, editing, unknown = false }: { terms: { shown: EntryTerm[]; empty: string[] }; editing: Editing; /** An account: what is empty is not known, not zero (2026-11-05). */ unknown?: boolean }) {
+/** What is left empty is not known, never zero (D56): an account's fields and a fund's fees alike (#190). */
+function Terms({ terms, editing }: { terms: { shown: EntryTerm[]; empty: string[] }; editing: Editing }) {
   return (
     <span className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs leading-snug text-muted-foreground">
       <StateTag state="entered" />
@@ -146,7 +147,7 @@ function Terms({ terms, editing, unknown = false }: { terms: { shown: EntryTerm[
           ))}
         </span>
       ))}
-      {terms.empty.length > 0 && <span>{unknown ? c.unknownLine(c.listWords(terms.empty)) : terms.shown.length === 0 ? c.allEmpty : c.emptyLine(c.listWords(terms.empty))}</span>}
+      {terms.empty.length > 0 && <span>{c.unknownLine(c.listWords(terms.empty))}</span>}
       <EditButton editing={editing} />
     </span>
   );
@@ -157,7 +158,7 @@ export function BrokerTerms({ id }: { id: string }) {
   const e = useEditors();
   const b = e?.brokers.find((x) => x.id === id);
   if (b?.base) return <OwnTerms b={b} />;
-  return b ? <Terms terms={{ shown: brokerTerms(b).shown, empty: unknownLines(b) }} editing={{ kind: "broker", id }} unknown /> : null;
+  return b ? <Terms terms={{ shown: brokerTerms(b).shown, empty: unknownLines(b) }} editing={{ kind: "broker", id }} /> : null;
 }
 
 /** The same line on a fund's row. */
@@ -250,7 +251,8 @@ function FundPanel({ headId, index, fund, others, writable, onSave, onCancel, on
   const form = useRef<HTMLDivElement>(null);
   const w = c.fields;
   const foreign = isForeignKind(draft.kind);
-  const percent = (k: "fixed" | "variable" | "trustee", label: string) => <NumberField label={label} unit="pct_per_year" value={draft[k]} isEntered={draft[k] !== null} validate={pctCheck} onCommit={(n) => set(k, n)} onReset={() => set(k, null)} placeholder="0" optional />;
+  // no "0" in an empty field: an empty fee is not known, not a fee of zero (#190)
+  const percent = (k: "fixed" | "variable" | "trustee", label: string) => <NumberField label={label} unit="pct_per_year" value={draft[k]} isEntered={draft[k] !== null} validate={pctCheck} onCommit={(n) => set(k, n)} onReset={() => set(k, null)} optional />;
   const save = () => {
     flushPendingFields();
     const d = now.current;
@@ -416,7 +418,7 @@ function FundPreview({ draft, index }: { draft: FundDraft; index: IndexRef }) {
     for (const payout of [...PAYOUTS, null]) for (const domicile of [...DOMICILES, null]) for (const cur of currencies) for (const tracking of TRACKINGS) variants.push({ ...draft, payout, domicile, ...cur, tracking, yield: 1, perYear: 4 });
     const size = (ls: Label[]) => ls.reduce((n, l) => n + l.text.length + 4, 0);
     const rows = variants.map((v) => rowLabels(v, index)).sort((a, b) => size(b) - size(a));
-    const lines = [c.previewPriced, ...(["payout-unknown", "need-yield", "domicile-unknown", "no-hedge-entered"] as const).map((code) => reasonText({ code }, cls))].sort((a, b) => b.length - a.length);
+    const lines = [c.previewPriced, ...(["fee-unknown", "payout-unknown", "need-yield", "domicile-unknown", "no-hedge-entered"] as const).map((code) => reasonText({ code }, cls))].sort((a, b) => b.length - a.length);
     return { row: rows[0]!, line: lines[0]! };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [draft.kind, index, cls]);

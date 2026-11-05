@@ -137,7 +137,7 @@ export const customIdOf = (name: string): string => `custom-${norm(name).replace
 
 // ---------------------------------------------------------------- reasons and cells
 
-export type Reason = NotComparable | { code: "fund-type" } | { code: "need-yield" } | { code: "us-fund-open" } | { code: "need-rate"; currency: string } | { code: "no-fund-rate" } | { code: "no-hedge-record" } | { code: "no-hedge-entered" } | { code: "payout-unknown" } | { code: "domicile-unknown" };
+export type Reason = NotComparable | { code: "fund-type" } | { code: "need-yield" } | { code: "us-fund-open" } | { code: "need-rate"; currency: string } | { code: "no-fund-rate" } | { code: "no-hedge-record" } | { code: "no-hedge-entered" } | { code: "payout-unknown" } | { code: "fee-unknown" } | { code: "domicile-unknown" };
 
 export interface Availability {
   source: { url: string; title: string; checked: string };
@@ -516,7 +516,10 @@ function rowVenue(row: ComparedProvider, s: FeesSnapshot, cand: Cand): Venue | n
  * cheapest one that computes wins. `fundVenue` limits the readings to the exchange the fund trades on.
  */
 function priceMany(ctx: Ctx, spec: Spec, option: OptionId, snaps: FeesSnapshot[], fundVenue: Venue | null): Map<string, Priced> {
-  const per = snaps.map((s) => ({ s, cands: candidates(scoped(s), option).filter((c) => fundVenue === null || c.venue === null || c.venue === fundVenue) }));
+  // an account the person typed with a price left empty for this kind of fund (its conversion, for a fund bought abroad) has no price for
+  // it: never run, so the empty field is never charged as zero (D56, #190)
+  const typedOpen = (s: FeesSnapshot) => isCustomBrokerId(s.id) && doubtOf(s, option) !== null;
+  const per = snaps.map((s) => ({ s, cands: typedOpen(s) ? [] : candidates(scoped(s), option).filter((c) => fundVenue === null || c.venue === null || c.venue === fundVenue) }));
   const results = new Map<string, { row: ProviderRow; cand: Cand }[]>();
   const slots = Math.max(0, ...per.map((p) => p.cands.length));
   for (let k = 0; k < slots; k++) {
@@ -526,6 +529,10 @@ function priceMany(ctx: Ctx, spec: Spec, option: OptionId, snaps: FeesSnapshot[]
   }
   const out = new Map<string, Priced>();
   for (const { s } of per) {
+    if (typedOpen(s)) {
+      out.set(s.id, { kind: "fail", reason: { code: "data-missing", recorded: "entered-incomplete" } });
+      continue;
+    }
     const got = results.get(s.id) ?? [];
     let best: { row: ComparedProvider; venue: Venue | null } | null = null;
     // the exchange of a reading set aside because the fund trades on another: the house's lines abroad name only that one

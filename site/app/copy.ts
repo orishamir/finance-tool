@@ -3430,7 +3430,7 @@ export const invest = {
     edit: "עריכה",
     brokerTitle: "חשבון בתנאים שקיבלתם",
     brokerEdit: (name: string) => `התנאים של ״${name}״`,
-    brokerSub: "החשבון נשמר רק במכשיר הזה ומושווה כמו כל חשבון אחר בעמוד הזה. שדה ריק הוא מחיר לא ידוע, והחשבון לא ידורג עד שתמלאו אותו. עמלה שלא גובים מכם: כתבו 0.",
+    brokerSub: "החשבון נשמר רק במכשיר הזה ומושווה כמו כל חשבון אחר בעמוד הזה. שדה ריק הוא מחיר לא ידוע, והחשבון לא ידורג עד שתמלאו אותו. עמלה או מינימום שלא גובים מכם: כתבו 0.",
     /** A new account starts from a house's price list, as the account card's does (2026-11-05). */
     brokerStart: "בחרו את הבנק או בית ההשקעות. מתחילים מהתעריפון שלו ומשנים רק את המחירים שקיבלתם.",
     basis: "על בסיס",
@@ -3439,9 +3439,13 @@ export const invest = {
     /** The row of an account typed with a line left empty: not ranked (the founder's rule that silence is not zero). */
     incomplete: "חסרים מחירים, ולכן החשבון לא מדורג. השלימו אותם בעריכה.",
     unknownLine: (list: string) => `לא הזנתם, ולכן לא ידוע: ${list}.`,
+    /** An account typed with the conversion left empty: only a fund bought abroad converts, so only it has no price there (#190). */
+    fxUnknown: "לא הזנתם את המחיר של המרת מטבע, ולכן לקרן שנקנית בחו״ל אין מחיר בחשבון הזה. השלימו אותו בעריכה.",
+    /** A fee of a typed fund left empty, where its figure would stand. */
+    notTyped: "לא הוזן",
     fundTitle: (index: string) => `קרן על ${index}`,
     fundEdit: (name: string) => `הפרטים של ״${name}״`,
-    fundSub: "הקרן נשמרת רק במכשיר הזה, ברשימה של המדד הזה, ומתומחרת כמו כל קרן מהסוג שלה. שדה ריק נחשב אפס.",
+    fundSub: "הקרן נשמרת רק במכשיר הזה, ברשימה של המדד הזה, ומתומחרת כמו כל קרן מהסוג שלה. שדה ריק הוא דמי ניהול לא ידועים, והקרן לא תתומחר עד שתמלאו אותו. דמי ניהול שהקרן לא גובה: כתבו 0.",
     fields: {
       brokerName: "שם הבנק או בית ההשקעות",
       fundName: "שם הקרן",
@@ -3449,6 +3453,8 @@ export const invest = {
       kind: "סוג הקרן",
       trade: "עמלת קנייה ומכירה",
       tradeMin: "מינימום לפעולה",
+      /** A minimum left empty, named with its line in the row's list of what is not known. */
+      minOf: (min: string, line: string) => `${min} ב${line}`,
       custody: "דמי ניהול פיקדון ניירות ערך",
       custodyMin: "מינימום לחודש",
       percent: "אחוז",
@@ -3496,8 +3502,6 @@ export const invest = {
     minWord: "מינימום",
     minWordAlone: "מינימום בלבד:",
     listWords: (xs: string[]) => (xs.length < 2 ? (xs[0] ?? "") : `${xs.slice(0, -1).join(", ")} ו${xs[xs.length - 1]}`),
-    emptyLine: (list: string) => `לא הזנתם, ולכן נחשב אפס: ${list}.`,
-    allEmpty: "לא הזנתם אף עמלה, ולכן הכול נחשב אפס.",
     notSold: "לפי מה שהזנתם, אין בחשבון הזה קרנות מהסוג הזה.",
     notSoldSource: "מה שהזנתם",
     tariffTitle: "התנאים שהזנתם",
@@ -3951,6 +3955,8 @@ export const invest = {
     noHedgeRecord: "אי אפשר לחשב: בדוח השנתי של הקרן עוד אין שנה מלאה, ובקרן מנוטרלת רוב העלות היא הפער מהמדד.",
     noHedgeEntered: "אי אפשר לחשב: בקרן מנוטרלת רוב העלות היא הפער מהמדד, והאתר לא יודע אותו לקרן שהזנתם.",
     payoutUnknown: "אי אפשר לחשב: לא צוין אם הקרן צוברת או מחלקת, והמס תלוי בזה.",
+    /** A fund the person typed with a fee left empty (D56, #190). */
+    feeUnknown: "אי אפשר לחשב: חלק מדמי הניהול של הקרן לא הוזנו. השלימו אותם בעריכה.",
     domicileUnknown: "אי אפשר לחשב: הקרן מחלקת, והמס שמנוכה בחו״ל מכל חלוקה תלוי במדינה שבה היא רשומה. האתר יודע אותו לאירלנד ולארצות הברית בלבד.",
   },
 
