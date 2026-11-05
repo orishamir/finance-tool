@@ -1,0 +1,8 @@
+{"1-every-pair": {"X": "recommended", "Y": "today's colours (D59 drawing)"},
+ "2-result-card": {"X": "today's colours (D59 drawing)", "Y": "recommended"},
+ "3-accounts-top": {"X": "recommended", "Y": "today"},
+ "4-accounts-lower": {"X": "today", "Y": "recommended"},
+ "5-funds": {"X": "recommended", "Y": "today"},
+ "6-hedging": {"X": "today", "Y": "recommended"},
+ "7-own-price": {"X": "recommended", "Y": "today"},
+ "8-chip-row": {"X": "today", "Y": "recommended"}}

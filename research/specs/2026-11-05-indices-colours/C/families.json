@@ -1,0 +1,402 @@
+{
+ "families": [
+  {
+   "family": "teal",
+   "step": "teal-300",
+   "hex": "#83d5d0",
+   "he": "פעולה, קישור, הבחירה שלכם, ★ הזול"
+  },
+  {
+   "family": "magenta",
+   "step": "magenta-400",
+   "hex": "#cf64bb",
+   "he": "קרן שנקנית בישראל"
+  },
+  {
+   "family": "orange",
+   "step": "orange-500",
+   "hex": "#dd6301",
+   "he": "נקנית בחו״ל, והמרת המטבע שמשלמים כדי לקנות בחו״ל"
+  },
+  {
+   "family": "gold",
+   "step": "gold-200",
+   "hex": "#fdc010",
+   "he": "דמי משמרת ודמי ניהול חשבון"
+  },
+  {
+   "family": "rose",
+   "step": "rose-600",
+   "hex": "#c12e71",
+   "he": "עמלות קנייה ומכירה"
+  },
+  {
+   "family": "blue",
+   "step": "blue-300",
+   "hex": "#a5c5fe",
+   "he": "מספר שהזנתם"
+  },
+  {
+   "family": "violet",
+   "step": "violet-400",
+   "hex": "#bc8bfe",
+   "he": "מספר מחושב"
+  },
+  {
+   "family": "amber",
+   "step": "amber-400",
+   "hex": "#e29522",
+   "he": "דורש תשומת לב"
+  },
+  {
+   "family": "red",
+   "step": "red-400",
+   "hex": "#ff796d",
+   "he": "חסום בכלל פתוח (וגם שגיאה בשדה)"
+  },
+  {
+   "family": "green",
+   "step": "green-400",
+   "hex": "#62bf79",
+   "he": "נבדק (לא מצויר בעמוד)"
+  },
+  {
+   "family": "neutral",
+   "step": "neutral-400",
+   "hex": "#a19e98",
+   "he": "בלי צבע: דיו, מבנה, העמלות זו על זו, נטרול מט״ח (מלא/חלול), תוויות אחרות"
+  }
+ ],
+ "pairs": [
+  {
+   "a": "teal",
+   "b": "magenta",
+   "normal": 28.9,
+   "cvd": 16.1
+  },
+  {
+   "a": "teal",
+   "b": "orange",
+   "normal": 30.2,
+   "cvd": 22.5
+  },
+  {
+   "a": "teal",
+   "b": "gold",
+   "normal": 20.8,
+   "cvd": 17.6
+  },
+  {
+   "a": "teal",
+   "b": "rose",
+   "normal": 38.1,
+   "cvd": 25.8
+  },
+  {
+   "a": "teal",
+   "b": "blue",
+   "normal": 9.8,
+   "cvd": 6.9
+  },
+  {
+   "a": "teal",
+   "b": "violet",
+   "normal": 22.9,
+   "cvd": 15.3
+  },
+  {
+   "a": "teal",
+   "b": "amber",
+   "normal": 22.1,
+   "cvd": 18.1
+  },
+  {
+   "a": "teal",
+   "b": "red",
+   "normal": 26,
+   "cvd": 13.1
+  },
+  {
+   "a": "teal",
+   "b": "green",
+   "normal": 12.8,
+   "cvd": 11.7
+  },
+  {
+   "a": "teal",
+   "b": "neutral",
+   "normal": 14.6,
+   "cvd": 11.9
+  },
+  {
+   "a": "magenta",
+   "b": "orange",
+   "normal": 20.6,
+   "cvd": 19.6
+  },
+  {
+   "a": "magenta",
+   "b": "gold",
+   "normal": 33.2,
+   "cvd": 30
+  },
+  {
+   "a": "magenta",
+   "b": "rose",
+   "normal": 13.3,
+   "cvd": 12.3
+  },
+  {
+   "a": "magenta",
+   "b": "blue",
+   "normal": 23.2,
+   "cvd": 15.5
+  },
+  {
+   "a": "magenta",
+   "b": "violet",
+   "normal": 11.9,
+   "cvd": 9.9
+  },
+  {
+   "a": "magenta",
+   "b": "amber",
+   "normal": 24.7,
+   "cvd": 22
+  },
+  {
+   "a": "magenta",
+   "b": "red",
+   "normal": 16.4,
+   "cvd": 15.8
+  },
+  {
+   "a": "magenta",
+   "b": "green",
+   "normal": 31.3,
+   "cvd": 13.9
+  },
+  {
+   "a": "magenta",
+   "b": "neutral",
+   "normal": 17.8,
+   "cvd": 8.1
+  },
+  {
+   "a": "orange",
+   "b": "gold",
+   "normal": 22.8,
+   "cvd": 20
+  },
+  {
+   "a": "orange",
+   "b": "rose",
+   "normal": 17.9,
+   "cvd": 15.9
+  },
+  {
+   "a": "orange",
+   "b": "blue",
+   "normal": 31,
+   "cvd": 27.4
+  },
+  {
+   "a": "orange",
+   "b": "violet",
+   "normal": 28.7,
+   "cvd": 28
+  },
+  {
+   "a": "orange",
+   "b": "amber",
+   "normal": 11.3,
+   "cvd": 8.7
+  },
+  {
+   "a": "orange",
+   "b": "red",
+   "normal": 11,
+   "cvd": 10.1
+  },
+  {
+   "a": "orange",
+   "b": "green",
+   "normal": 25.8,
+   "cvd": 10.8
+  },
+  {
+   "a": "orange",
+   "b": "neutral",
+   "normal": 17.7,
+   "cvd": 13.5
+  },
+  {
+   "a": "gold",
+   "b": "rose",
+   "normal": 38.2,
+   "cvd": 33.4
+  },
+  {
+   "a": "gold",
+   "b": "blue",
+   "normal": 25.9,
+   "cvd": 24.9
+  },
+  {
+   "a": "gold",
+   "b": "violet",
+   "normal": 33.8,
+   "cvd": 32.5
+  },
+  {
+   "a": "gold",
+   "b": "amber",
+   "normal": 11.9,
+   "cvd": 11.3
+  },
+  {
+   "a": "gold",
+   "b": "red",
+   "normal": 19.6,
+   "cvd": 13.7
+  },
+  {
+   "a": "gold",
+   "b": "green",
+   "normal": 20,
+   "cvd": 9.7
+  },
+  {
+   "a": "gold",
+   "b": "neutral",
+   "normal": 21.3,
+   "cvd": 19.1
+  },
+  {
+   "a": "rose",
+   "b": "blue",
+   "normal": 34.7,
+   "cvd": 27.2
+  },
+  {
+   "a": "rose",
+   "b": "violet",
+   "normal": 24.7,
+   "cvd": 21.8
+  },
+  {
+   "a": "rose",
+   "b": "amber",
+   "normal": 27.1,
+   "cvd": 22.7
+  },
+  {
+   "a": "rose",
+   "b": "red",
+   "normal": 20.3,
+   "cvd": 20
+  },
+  {
+   "a": "rose",
+   "b": "green",
+   "normal": 36.3,
+   "cvd": 17.8
+  },
+  {
+   "a": "rose",
+   "b": "neutral",
+   "normal": 24.2,
+   "cvd": 14.1
+  },
+  {
+   "a": "blue",
+   "b": "violet",
+   "normal": 14.6,
+   "cvd": 10.6
+  },
+  {
+   "a": "blue",
+   "b": "amber",
+   "normal": 25.2,
+   "cvd": 24.3
+  },
+  {
+   "a": "blue",
+   "b": "red",
+   "normal": 24.5,
+   "cvd": 19
+  },
+  {
+   "a": "blue",
+   "b": "green",
+   "normal": 20.8,
+   "cvd": 17
+  },
+  {
+   "a": "blue",
+   "b": "neutral",
+   "normal": 15.5,
+   "cvd": 14.9
+  },
+  {
+   "a": "violet",
+   "b": "amber",
+   "normal": 28.4,
+   "cvd": 28.1
+  },
+  {
+   "a": "violet",
+   "b": "red",
+   "normal": 22.5,
+   "cvd": 21
+  },
+  {
+   "a": "violet",
+   "b": "green",
+   "normal": 29.3,
+   "cvd": 19.8
+  },
+  {
+   "a": "violet",
+   "b": "neutral",
+   "normal": 17.7,
+   "cvd": 15
+  },
+  {
+   "a": "amber",
+   "b": "red",
+   "normal": 11.7,
+   "cvd": 5.6
+  },
+  {
+   "a": "amber",
+   "b": "green",
+   "normal": 18.2,
+   "cvd": 8.5
+  },
+  {
+   "a": "amber",
+   "b": "neutral",
+   "normal": 14.3,
+   "cvd": 13.4
+  },
+  {
+   "a": "red",
+   "b": "green",
+   "normal": 26.4,
+   "cvd": 3.1
+  },
+  {
+   "a": "red",
+   "b": "neutral",
+   "normal": 16.4,
+   "cvd": 6.3
+  },
+  {
+   "a": "green",
+   "b": "neutral",
+   "normal": 13.5,
+   "cvd": 5.9
+  }
+ ]
+}
