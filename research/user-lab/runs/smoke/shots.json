@@ -1,0 +1,24 @@
+{
+  "personas": ["first-job-phone", "careful-retiree-pc"],
+  "tasks": [
+    {
+      "key": "sp500-cheapest-shots",
+      "text": "You want to start putting 500 ₪ a month into the S&P 500, with nothing put in at the start. A friend sent you these screenshots of a website, already set to 500 ₪ a month and nothing at the start. From them, find where it is cheapest to do this, and how much you would have after ten years.",
+      "shots": ["shots-input/sp500-pc-1.png", "shots-input/sp500-pc-2.png", "shots-input/sp500-pc-3.png"],
+      "answerFields": {
+        "where": { "type": "string", "description": "Where you would do it: the bank or company, as the page names it" },
+        "amount_after_10_years": { "type": ["number", "null"], "description": "How much you would have after ten years, in shekels; null if you did not find it" }
+      },
+      "answerKey": {
+        "right": "Psagot (פסגות); about 72,100 ₪ after ten years",
+        "partly": "Psagot with another amount, or about 72,100 ₪ with another account",
+        "fields": {
+          "where": { "match": ["פסגות", "psagot"] },
+          "amount_after_10_years": { "value": 72104, "tolerance": 0.02 }
+        }
+      }
+    },
+    { "case": "custom-index-no-fund", "chosen": "ב" }
+  ],
+  "parallel": 2
+}
