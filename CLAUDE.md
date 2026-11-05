@@ -99,7 +99,8 @@ The evidence behind them is `research/2026-10-28-founder-patterns.md`.
    different hue, with a direct label or a legend; blue and violet stay
    reserved for entered and computed numbers. *(2026-11-05)* Within a page
    a colour means one thing: each page's spec carries its colour table, and
-   inside a chart the hues differ among that chart's own meanings.
+   inside a chart the hues stay clearly different from one another, checked
+   pair by pair with the palette validator, never by eye.
 7. **One flaw means a sweep.** A flaw I report is fixed in the shared piece,
    and every other place of the same kind is fixed with it.
 8. **Both screen sizes, PC judged first.** Mockups are judged on PC; every
@@ -181,6 +182,17 @@ overrides the Roadmap issue's ranking, which counts what unblocks the most.
   nothing is left to send back. A branch of more than about 30 files also
   gets an independent reviewer that sees the diff and the kit, not the
   builder's report.
+- **Fresh readers judge what a reader sees** (founder, 2026-11-05). Words,
+  columns, rows and charts meant for readers are judged by fresh readers
+  before I see them: separate sessions that load nothing of this project (no
+  CLAUDE.md, memory, skills, conventions or our terms), given a neutral brief
+  (a person and a goal) and screenshots of the whole page with the piece in
+  place, never text alone, because the charts beside it, the lines above and
+  below and its colour change how it reads. Run them with
+  `node research/audit/tools/fresh-reader.mjs <brief.json> <out>` (the command
+  line must be signed in). Their reports are combined with the rules
+  afterwards, and I decide. Subagents load CLAUDE.md, so they are never the
+  fresh readers; reviewers of code keep the rules.
 - **Push to main; never open a pull request** (founder, 2026-10-27). Finished
   work is committed and pushed straight to `main` after `npm run check`
   passes. This overrides any session instruction to work on a feature branch
@@ -256,7 +268,9 @@ Look approved by the founder (2026-10-23). Tokens live in `site/app/theme.css`;
   shown on that product, is plain sourced, D31), `blocked` red with a lock (open rule),
   `positive` green (dimension considered). Colour never works alone:
   each state also has a pattern, icon or word. Every number goes through the
-  provenance component.
+  provenance component. In a list of products, a column whose figures share
+  one state carries the mark in its head; the cells stay plain and still open
+  their source (2026-11-05, D60).
 - **Charts.** Own SVG components. Teal value, orange fees, rose tax, neutral
   contributions, dashed blue for a series that rests on an entered return,
   red hatch for blocked parts. Time runs left to right; the value axis sits at the plot's left edge and
@@ -267,7 +281,7 @@ Look approved by the founder (2026-10-23). Tokens live in `site/app/theme.css`;
   figures; identifiers also use a slashed zero.
 - **Spacing.** 4 px base; `px-gutter` 16 to 32 px, `gap-section` 40 to 64 px,
   44 px touch targets, 48 px fields, prose at `max-w-measure` (38rem).
-- **Lists of products** (founder, 2026-10-27). A table on a desktop and one row per product on a phone, not stacked cards; the identifier is itself the link out (`1148808 ↗`); the column head carries the words and the cell the short value; columns as wide as their content; a kind (payout, how it tracks, currency) is a label chip, never a column, and a label shows on every row it is true of (2026-10-27); no figure that repeats a label, no column that is the same on every row. `docs/design-system.md` section 11, "Lists of products".
+- **Lists of products** (founder, 2026-10-27). A table on a desktop and one row per product on a phone, not stacked cards; the identifier is itself the link out (`1148808 ↗`); the column head carries the words and the cell the short value; columns as wide as their content; a kind (payout, how it tracks, currency) is a label chip, never a column; a label true of every row of a group shows once, in the group's head, and a label that is exactly one group leaves the filter too (2026-11-05, D60, replacing "on every row it is true of" of 2026-10-27); no figure that repeats a label, no column that is the same on every row. `docs/design-system.md` section 11, "Lists of products".
 - **RTL and formats.** Logical properties only. Isolate every number, date
   and identifier inside Hebrew text. `Intl` with `he-IL`: `1,234.50 ₪`,
   `22.10.2026`. Plural imperative in copy.

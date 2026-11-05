@@ -21,7 +21,7 @@ The reader has already chosen an index and wants to hold it in a regular securit
 - Two or three words for one fact, with an icon, a tone and an explanation in the labels sheet. It is computed from a record, never typed per row (`labels.ts` header).
 - It states a sourced fact or an open rule, and never praises.
 - It never compares with other companies and never rests on a threshold the site chooses (D36).
-- **Changed 2026-10-27 (founder: "its ok to duplicate the labels even if all the rows are the same. if in the future i find it annoying we'll remove the duplication"):** a label shows on every row it is true of, even when it is true of every row. Today `fundLabels` and the "what holds for every way sits in the index header" comment in `labels.ts` follow the old rule, and so does "nothing that repeats a label or is the same on every row" in `docs/design-system.md` section 11 and CLAUDE.md. All three are amended when this is built.
+- **Changed 2026-10-27 (founder: "its ok to duplicate the labels even if all the rows are the same. if in the future i find it annoying we'll remove the duplication"):** a label shows on every row it is true of, even when it is true of every row. Today `fundLabels` and the "what holds for every way sits in the index header" comment in `labels.ts` follow the old rule, and so does "nothing that repeats a label or is the same on every row" in `docs/design-system.md` section 11 and CLAUDE.md. All three are amended when this is built. *(Reversed 2026-11-05, D60: a label every row of a group shares shows once, in the group's head.)*
 
 ### 2.2 The decisions
 

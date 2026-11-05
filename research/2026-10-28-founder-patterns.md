@@ -13,7 +13,7 @@ memory, and this day's session on the indices page. Two readers gathered the evi
 | A company's figure: warning or plain | 3 rounds (audit item 8, D30, D31) | Context decides: plain on the company's own product, amber only when it stands for the market |
 | The indices page's shape | 4 redesigns in 4 days (25 to 28 Oct), 6 mockup rounds on the 27th | The account is the decision, the fund mostly a tie; two linked lists; plain sliders on top, the change chart at the bottom |
 | Where company-specific facts may appear | 4 review rounds (rules-scope) | General rules in guides; a company's term only on its own page; a company page compares nothing (D35) |
-| Labels on every row or only where they differ | Reversed on 27 Oct | On every row it is true of, revisit if it annoys him |
+| Labels on every row or only where they differ | Reversed on 27 Oct, again on 5 Nov | On every row it is true of, revisit if it annoys him; since 5 Nov a label every row of a group shares shows once, in the group's head (D60) |
 | The rules and questions pages | 3 shapes in one day | /rules is the whole set with filters; the questions have their own page |
 | Chart and legend colours | 3 rounds (ramp, warm hues, distinct) | Clearly different hues per identity; blue and violet reserved |
 | Home screen | 3 versions | "מה המטרה שלכם?", the answer on the first screen |

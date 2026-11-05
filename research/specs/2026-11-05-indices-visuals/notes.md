@@ -71,7 +71,7 @@ the list's card holds its tallest height on the page.
 - **A label every row shares goes once, in the group head.** On S&P 500 "חשיפה לדולר" is on all 19 rows of the group
   "בלי נטרול מט״ח" and on no other row, so it is the group: it leaves the rows and the filter (and "מנוטרלת מט״ח" likewise),
   and the filter is one line shorter (1,082 to 1,048 px). On ת"א-125 "צוברת" is on all six rows; a list with no groups gets one
-  head for it, which adds a line (779 to 822 px). Adopted, it would amend the rule of 27 October that a label shows on every row it is true of.
+  head for it, which adds a line (779 to 822 px). Adopted 2026-11-05 with item 5 (product decision D60); it amends the rule of 27 October that a label shows on every row it is true of.
 - **The column head carries the number mark.** Every figure in both lists is computed, so the head word gets the dotted
   underline, one line says what it means, and the cells stay plain and still open their calculation. The lists get calmer and
   one line taller (1,082 to 1,110 px); no reading changes. The cost under each account's bar had no column head; it gets one
