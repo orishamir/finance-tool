@@ -13,3 +13,5 @@ research/knowledge/2026-10-25-scope/tools/work/
 
 # Founder-flag benchmark raw extracts: his own words and screenshots, never committed (2026-11-05)
 research/user-lab/bench/raw/
+# 246 MB of rebuilt screens; rebuilt by bench/tools, checked by bench/shots.sha256
+research/user-lab/bench/shots/
