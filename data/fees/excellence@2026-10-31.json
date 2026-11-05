@@ -1,7 +1,7 @@
 {
   "id": "excellence",
   "provider": {
-    "name_he": "אקסלנס טרייד (קבוצת הפניקס)",
+    "name_he": "אקסלנס טרייד",
     "class": "broker",
     "regulator": "ISA",
     "tase_member": true,

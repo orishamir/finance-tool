@@ -7,10 +7,13 @@ import { z } from "zod";
 export const ruleScope = z.enum(["general", "institution", "unsettled"]);
 export type RuleScope = z.infer<typeof ruleScope>;
 
+/** A company's name as the site shows it: no note in brackets beside it (founder, 2026-11-05: "remove the ()"); a note goes in the text. */
+export const companyName = z.string().min(1).regex(/^[^()]*$/, "a company's name carries no note in brackets");
+
 /** A company a scope names: its id in `data/sources/institutions.json` and the Hebrew name the site shows. */
 export const scopeInstitution = z.strictObject({
   id: z.string().regex(/^[a-z0-9-]+$/),
-  name_he: z.string().min(1),
+  name_he: companyName,
 });
 export type ScopeInstitution = z.infer<typeof scopeInstitution>;
 
