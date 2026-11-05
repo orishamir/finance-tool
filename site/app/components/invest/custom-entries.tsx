@@ -11,7 +11,7 @@ import { Num, StateTag } from "../provenance";
 import { Sheet } from "../Sheet";
 import { Actions, EditButton, nisCheck, useDraft, isInvalid, EditorsContext, useEditors, type Editing, type Editors, type PanelWorld } from "./editors";
 import { OwnAccountPanel, OwnTerms } from "./own-account";
-import { Button, Card, CheckField, ChoiceChips, FieldGroup, flushPendingFields, LabelRow, LongestCase, NumberField, percentCheck, SelectField, TextField, TileChoice, type Tile } from "../kit";
+import { Button, CheckField, ChoiceChips, FieldGroup, flushPendingFields, LabelRow, LongestCase, NumberField, percentCheck, SelectField, TextField, TileChoice, type Tile } from "../kit";
 import { optionClass, reasonText } from "./parts";
 
 const c = root.customEntries;
@@ -45,7 +45,7 @@ export function CustomEntriesHost({ index, brokers, funds, writable, onSaveBroke
   return (
     <EditorsContext.Provider value={api}>
       {children}
-      <Sheet open={!!editing} onClose={close} pc="center" height={100} labelledBy={headId} className={own ? "sheet-wide" : undefined}>
+      <Sheet open={!!editing} onClose={close} pc="center" height={100} labelledBy={headId} className={own || editing?.kind === "fund" ? "sheet-wide" : undefined}>
         {own && world && (
           <OwnAccountPanel
             key={own.broker?.id ?? `${own.houseId}:${own.from}`}
@@ -245,27 +245,35 @@ function FundPanel({ headId, index, fund, others, writable, onSave, onCancel, on
         </h2>
         <p className="text-sm text-muted-foreground">{c.fundSub}</p>
       </div>
-      <FieldGroup title={c.fundParts.fund}>
-        <TextField label={w.fundName} value={draft.name} onChange={(v) => set("name", v)} maxLength={NAME_MAX} error={errors.includes("name-empty") ? c.errors["name-empty"] : errors.includes("name-taken") ? c.errors["name-taken"] : null} />
-        <TextField label={w.number} value={draft.number} onChange={(v) => set("number", v)} maxLength={20} dir="ltr" />
-        <SelectField className="max-w-none" label={w.kind} value={draft.kind} options={kinds.map((k: OptionId) => ({ id: k, name: c.kinds[k]! }))} onChange={(k) => k && set("kind", k as OptionId)} />
-      </FieldGroup>
-      <FieldGroup title={c.fundParts.fees}>
-        {foreign ? (
-          <div className="field-row grid gap-3 grid-cols-[minmax(0,1fr)] sm:grid-cols-2">{percent("fixed", w.yearly)}</div>
-        ) : (
-          <div className="field-row grid gap-3 grid-cols-[minmax(0,1fr)] sm:grid-cols-3">
-            {percent("fixed", w.fixed)}
-            {percent("variable", w.variable)}
-            {percent("trustee", w.trustee)}
-          </div>
-        )}
-      </FieldGroup>
+      {/* on a computer the panel is wide (2026-11-05, founder: "the screen is tiny"): the fund and its fees side by side */}
+      <div className="@container">
+        <div className="grid gap-5 @xl:grid-cols-2 @xl:gap-8">
+          <FieldGroup title={c.fundParts.fund}>
+            <TextField label={w.fundName} value={draft.name} onChange={(v) => set("name", v)} maxLength={NAME_MAX} error={errors.includes("name-empty") ? c.errors["name-empty"] : errors.includes("name-taken") ? c.errors["name-taken"] : null} />
+            <TextField label={w.number} value={draft.number} onChange={(v) => set("number", v)} maxLength={20} dir="ltr" />
+            <SelectField className="max-w-none" label={w.kind} value={draft.kind} options={kinds.map((k: OptionId) => ({ id: k, name: c.kinds[k]! }))} onChange={(k) => k && set("kind", k as OptionId)} />
+          </FieldGroup>
+          <FieldGroup title={c.fundParts.fees} className="@xl:border-t-0 @xl:pt-0">
+            {foreign ? (
+              percent("fixed", w.yearly)
+            ) : (
+              <>
+                {percent("fixed", w.fixed)}
+                {percent("variable", w.variable)}
+                {percent("trustee", w.trustee)}
+              </>
+            )}
+          </FieldGroup>
+        </div>
+      </div>
       <FieldGroup title={c.fundParts.traits}>
         <FundTraits draft={draft} set={set} index={index} hedgedError={errors.includes("hedged-none")} />
       </FieldGroup>
-      <FundPreview draft={draft} index={index} />
-      <Actions entry={!!fund} name={fund?.name ?? ""} writable={writable} onSave={save} onCancel={onCancel} onRemove={() => fund && onRemove(fund.id)} />
+      {/* on a computer the row and the buttons stay in view while the questions scroll, so each answer shows at once */}
+      <div className="flex flex-col gap-3 border-t border-border pt-3 lg:sticky lg:bottom-[-20px] lg:-mx-5 lg:px-5 lg:pb-5 lg:-mb-5 lg:bg-popover">
+        <FundPreview draft={draft} index={index} />
+        <Actions entry={!!fund} name={fund?.name ?? ""} writable={writable} onSave={save} onCancel={onCancel} onRemove={() => fund && onRemove(fund.id)} />
+      </div>
     </div>
   );
 }
@@ -280,8 +288,11 @@ function draftRecord(d: FundDraft, index: IndexRef): FundRecord {
 
 /** Everything the fund's row shows: where it is held, then the fund's own labels (as `fundLabels` on the page). */
 function rowLabels(d: FundDraft, index: IndexRef): Label[] {
-  return [...optionLabels(d.kind), ...fundLabels(draftRecord(d, index), index, d.kind)];
+  const all = [...optionLabels(d.kind), ...fundLabels(draftRecord(d, index), index, d.kind)];
+  // a hedge not chosen yet says nothing of the currency (founder, 2026-11-05: "who said it's חשיפה לדולר?")
+  return d.hedged === null ? all.filter((l) => !HEDGE_LABELS.has(l.id)) : all;
 }
+const HEDGE_LABELS = new Set<string>(["currency", "currency-many", "hedged", "hedged-many", "tax-currency"]);
 
 /**
  * The tiles of one question: each answer with the labels it adds to the row, the labels every answer shares left out (the row below shows
@@ -366,9 +377,9 @@ function FundPreview({ draft, index }: { draft: FundDraft; index: IndexRef }) {
   const cls = optionClass[draft.kind];
   const gap = customFundGap(draftRecord(draft, index));
   const body = (labels: Label[], line: string) => (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-1.5">
       {labels.length > 0 ? <LabelRow labels={labels} still /> : <span className="text-xs text-muted-foreground">{c.previewNone}</span>}
-      <p className="text-sm text-muted-foreground">{line}</p>
+      <p className="text-xs text-muted-foreground">{line}</p>
     </div>
   );
   // the longest row any answer can give, and the longest line; only the kind and the index change what can be shown
@@ -382,9 +393,9 @@ function FundPreview({ draft, index }: { draft: FundDraft; index: IndexRef }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [draft.kind, index, cls]);
   return (
-    <Card pad="tight" className="flex flex-col gap-2">
+    <div className="flex flex-col gap-1.5">
       <p className="text-sm font-medium">{c.preview}</p>
-      <LongestCase cases={[body(longest.row, longest.line)]}>{body(rowLabels(draft, index), gap ? reasonText({ code: gap }, cls) : c.previewPriced)}</LongestCase>
-    </Card>
+      <LongestCase cases={[body(longest.row, longest.line)]}>{body(rowLabels(draft, index), gap ? reasonText({ code: gap }, cls) : draft.hedged === null ? c.errors["hedged-none"]! : c.previewPriced)}</LongestCase>
+    </div>
   );
 }

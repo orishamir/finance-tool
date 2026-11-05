@@ -94,7 +94,7 @@ export function TileChoice<T extends string>({ label, labelledBy, tiles, value, 
   const chosen = tiles.some((t) => t.value === value);
   return (
     <div className="@container">
-      <div ref={ref} role="radiogroup" aria-label={label} aria-labelledby={labelledBy} onKeyDown={onKey} className={cx("grid gap-2 grid-cols-[minmax(0,1fr)]", columns === 3 ? "@md:grid-cols-2 @3xl:grid-cols-3" : "@md:grid-cols-2", className)}>
+      <div ref={ref} role="radiogroup" aria-label={label} aria-labelledby={labelledBy} onKeyDown={onKey} className={cx("grid gap-2 grid-cols-[minmax(0,1fr)]", columns === 3 ? "@md:grid-cols-2 @xl:grid-cols-3" : "@md:grid-cols-2", className)}>
         {tiles.map((t, i) => {
           const on = value === t.value;
           return (
