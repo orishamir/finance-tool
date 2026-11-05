@@ -66,6 +66,10 @@ export function reasonText(r: Reason, cls: string): string {
       return c.reasons.noHedgeRecord;
     case "no-hedge-entered":
       return c.reasons.noHedgeEntered;
+    case "payout-unknown":
+      return c.reasons.payoutUnknown;
+    case "domicile-unknown":
+      return c.reasons.domicileUnknown;
     default:
       return reasonSentence(r, cls, r4workbench.providers.behaviour.channelOptions.direct);
   }

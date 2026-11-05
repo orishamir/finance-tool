@@ -5,7 +5,7 @@ import { customIdOf, customIndexPath, indexPath, indexSuggestions, matchKnownInd
 import { fxLabel, nisPer, type FxSnapshot } from "../../lib/fx";
 import type { WorkbenchBundle } from "../../lib/providers";
 import { Num } from "../provenance";
-import { Button, Card, ChipList, SegmentedControl, Sentence, Tag, type ChipItem } from "../kit";
+import { Button, Card, ChipList, Sentence, Tag, type ChipItem } from "../kit";
 
 /** The index name as a pill: the pills sit under the heading "המדד", so a leading "מדד" is dropped. */
 export const pillName = (name: string): string => name.replace(/^מדד\s+/, "");
@@ -36,8 +36,6 @@ export function IndexChips({ known, customs, selectedId, bundle, onRemove, onRen
 function CustomPanel({ bundle, customs, onCancel, onSave, onKnown }: { bundle: Pick<WorkbenchBundle, "exposures">; customs: CustomIndex[]; onCancel: () => void; onSave: (c: CustomIndex) => void; onKnown: (id: string) => void }) {
   const id = useId();
   const [name, setName] = useState("");
-  const [step, setStep] = useState<"name" | "question">("name");
-  const [israeli, setIsraeli] = useState<"yes" | "no" | null>(null);
   const [note, setNote] = useState<string | null>(null);
   const names = useMemo(() => [...new Set(indexSuggestions(bundle).map((x) => pillName(x.name)))], [bundle]);
   const go = () => {
@@ -49,13 +47,8 @@ function CustomPanel({ bundle, customs, onCancel, onSave, onKnown }: { bundle: P
       return;
     }
     if (customs.some((x) => x.id === customIdOf(typed))) return setNote(c.custom.nameTaken);
-    setStep("question");
-  };
-  const save = () => {
-    if (!israeli) return;
-    const added = new Date().toISOString().slice(0, 10);
-    const idx: CustomIndex = { id: customIdOf(name.trim()), name: name.trim(), israeli: israeli === "yes", added };
-    onSave(idx);
+    // only the name (founder, 2026-11-05): whether the index is in shekels is asked of each fund added on it
+    onSave({ id: customIdOf(typed), name: typed, added: new Date().toISOString().slice(0, 10) });
   };
   return (
     <Card pad="tight" className="flex flex-col gap-3 max-w-measure" role="group" aria-label={c.custom.heading}>
@@ -63,34 +56,20 @@ function CustomPanel({ bundle, customs, onCancel, onSave, onKnown }: { bundle: P
         {c.custom.field}
       </label>
       <div className="flex flex-wrap gap-2">
-        <input id={`${id}-n`} list={`${id}-l`} value={name} disabled={step === "question"} onChange={(e) => { setName(e.target.value); setNote(null); }} onKeyDown={(e) => e.key === "Enter" && go()} placeholder={c.custom.placeholder} className="h-field flex-1 min-w-48 rounded-md bg-card border border-input px-3" />
+        <input id={`${id}-n`} list={`${id}-l`} value={name} onChange={(e) => { setName(e.target.value); setNote(null); }} onKeyDown={(e) => e.key === "Enter" && go()} placeholder={c.custom.placeholder} className="h-field flex-1 min-w-48 rounded-md bg-card border border-input px-3" />
         <datalist id={`${id}-l`}>
           {names.map((n) => (
             <option key={n} value={n} />
           ))}
         </datalist>
-        {step === "name" && (
-          <Button variant="primary" onClick={go} disabled={!name.trim()}>
-            {c.custom.go}
-          </Button>
-        )}
+        <Button variant="primary" onClick={go} disabled={!name.trim()}>
+          {c.custom.go}
+        </Button>
+        <Button variant="quiet" onClick={onCancel}>
+          {c.custom.cancel}
+        </Button>
       </div>
       {note && <p className="text-sm text-muted-foreground">{note}</p>}
-      {step === "question" && (
-        <div className="flex flex-col gap-3">
-          <p className="font-medium">{c.custom.question}</p>
-          <p className="text-sm text-muted-foreground">{c.custom.questionWhy}</p>
-          <SegmentedControl<"yes" | "no"> label={c.custom.question} value={israeli} onChange={setIsraeli} options={[{ value: "yes", label: c.custom.yes }, { value: "no", label: c.custom.no }]} className="max-w-60" />
-          <div className="flex gap-2">
-            <Button variant="primary" onClick={save} disabled={!israeli}>
-              {c.custom.save}
-            </Button>
-            <Button variant="quiet" onClick={onCancel}>
-              {c.custom.cancel}
-            </Button>
-          </div>
-        </div>
-      )}
     </Card>
   );
 }

@@ -1,0 +1,23 @@
+orange-500 #dd6301 vs caution icon amber-400 #e29522: normal 11.3, CVD 8.7
+orange-500 #dd6301 vs blocked icon red-400 #ff796d: normal 11, CVD 10.1
+gold-200 #fdc010 vs caution icon amber-400 #e29522: normal 11.9, CVD 11.3
+gold-200 #fdc010 vs caution words amber-200 #fdd5a7: normal 11.4, CVD 11
+red-500 #ed4b43 vs blocked icon red-400 #ff796d: normal 9.7, CVD 8.9
+magenta-400 #cf64bb vs computed violet-400 #bc8bfe: normal 11.9, CVD 9.9
+teal-300 #83d5d0 = link/action #83d5d0: SAME STEP
+teal-300 #83d5d0 vs entered blue-300 #a5c5fe: normal 9.8, CVD 6.9
+teal-300 #83d5d0 vs caution words amber-200 #fdd5a7: normal 15.5, CVD 7.6
+teal-300 #83d5d0 vs blocked words red-200 #fed0c9: normal 15.3, CVD 3.3
+teal-300 #83d5d0 vs positive green-400 #62bf79: normal 12.8, CVD 11.7
+green-300 #92d8a0 vs link/action teal-300 #83d5d0: normal 6.9, CVD 6.8
+green-300 #92d8a0 vs caution words amber-200 #fdd5a7: normal 13.9, CVD 3
+green-300 #92d8a0 vs blocked words red-200 #fed0c9: normal 15.9, CVD 5.4
+green-300 #92d8a0 vs positive green-400 #62bf79: normal 9.6, CVD 8.7
+teal-200 #b6e8e4 vs link/action teal-300 #83d5d0: normal 8.1, CVD 6.6
+teal-200 #b6e8e4 vs entered blue-300 #a5c5fe: normal 11.5, CVD 11.1
+teal-200 #b6e8e4 vs caution words amber-200 #fdd5a7: normal 11, CVD 8
+teal-200 #b6e8e4 vs blocked words red-200 #fed0c9: normal 10.3, CVD 4.3
+rose-400 #f974a7 vs blocked icon red-400 #ff796d: normal 8.4, CVD 8
+rose-400 #f974a7 vs positive green-400 #62bf79: normal 29.6, CVD 5.2
+teal-500 #0ba19b vs blocked icon red-400 #ff796d: normal 28.6, CVD 6.3
+teal-500 #0ba19b vs positive green-400 #62bf79: normal 12.5, CVD 11.9

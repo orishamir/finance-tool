@@ -1,0 +1,110 @@
+##### sp500
+12	bg 0.63 0.200 25	[bg-loss]	עכשיו: MTF סל (S&P 500 (4D, יר	I
+6	bg 0.64 0.200 27	[bg-chart-cost-fixed ; text-[11px] text-background border-e border-card]	כמה זה עולה לכם ב־10 שנים, בכל / כל החשבונות	SPAN
+4	color 0.90 0.054 27	[text-xs bg-blocked-subtle text-blocked-foreground border-blocked/40 ; ]	כל הקרנות על מדד S&P 500	מס בצבירה: לא ידוע
+1	bg 0.24 0.090 27	[text-xs bg-blocked-subtle text-blocked-foreground border-blocked/40]	כל הקרנות על מדד S&P 500	מס בצבירה: לא ידוע
+1	border 0.73 0.166 27 a0.40	[text-xs bg-blocked-subtle text-blocked-foreground border-blocked/40]	כל הקרנות על מדד S&P 500	מס בצבירה: לא ידוע
+1	borderS 0.73 0.166 27 a0.40	[text-xs bg-blocked-subtle text-blocked-foreground border-blocked/40]	כל הקרנות על מדד S&P 500	מס בצבירה: לא ידוע
+3	stroke 0.90 0.054 27	[]	כל הקרנות על מדד S&P 500	svg
+3	color 0.73 0.166 27	[text-blocked ; ]	מנקודת ההתחלה ועד הכי הרבה	svg
+3	stroke 0.73 0.166 27	[text-blocked ; ]	מנקודת ההתחלה ועד הכי הרבה	svg
+20	bg 0.64 0.174 48	[text-[11px] text-background border-e border-card ; bg-chart-cost-trade ; text-[11px] text-background bg-chart-cost-trade]	כמה זה עולה לכם ב־10 שנים, בכל / כל החשבונות / מה הכי משנה את מה שיישאר לכם	356
+1	stroke 0.64 0.174 48	[stroke-chart-lever-1]	מה הכי משנה את מה שיישאר לכם	path
+2	fill 0.64 0.174 48	[fill-chart-lever-1 text-xs ; fill-chart-lever-1 stroke-card]	מה הכי משנה את מה שיישאר לכם	הפקדה חודשית
+49	color 0.90 0.074 70	[text-xs bg-caution-subtle text-caution-foreground border-caution/40 ;  ; text-xs bg-caution-subtle text-caution-foreground]	כמה זה עולה לכם ב־10 שנים, בכל / כל החשבונות / כל הקרנות על מדד S&P 500	לא בפיקוח רשות ני״ע
+10	bg 0.24 0.054 70	[text-xs bg-caution-subtle text-caution-foreground border-caution/40 ; text-xs bg-caution-subtle text-caution-foreground]	כמה זה עולה לכם ב־10 שנים, בכל / כל החשבונות / כל הקרנות על מדד S&P 500	לא בפיקוח רשות ני״ע
+8	border 0.73 0.149 70 a0.40	[text-xs bg-caution-subtle text-caution-foreground border-caution/40]	כמה זה עולה לכם ב־10 שנים, בכל / כל הקרנות על מדד S&P 500	לא בפיקוח רשות ני״ע
+8	borderS 0.73 0.149 70 a0.40	[text-xs bg-caution-subtle text-caution-foreground border-caution/40]	כמה זה עולה לכם ב־10 שנים, בכל / כל הקרנות על מדד S&P 500	לא בפיקוח רשות ני״ע
+39	stroke 0.90 0.074 70	[]	כמה זה עולה לכם ב־10 שנים, בכל / כל הקרנות על מדד S&P 500	svg
+23	bg 0.84 0.170 85	[text-[11px] text-background border-e border-card ; bg-chart-cost-custody ; bg-chart-kind-hedged]	כמה זה עולה לכם ב־10 שנים, בכל / כל החשבונות / כל הקרנות על מדד S&P 500	699
+90	color 0.84 0.170 85	[text-xs text-label-currency bg-label-currency/12 border-label-currency/40 ; ]	כל הקרנות על מדד S&P 500	חשיפה לדולר19
+22	bg 0.84 0.170 85 a0.12	[text-xs text-label-currency bg-label-currency/12 border-label-currency/40]	כל הקרנות על מדד S&P 500	חשיפה לדולר19
+22	border 0.84 0.170 85 a0.40	[text-xs text-label-currency bg-label-currency/12 border-label-currency/40]	כל הקרנות על מדד S&P 500	חשיפה לדולר19
+22	borderS 0.84 0.170 85 a0.40	[text-xs text-label-currency bg-label-currency/12 border-label-currency/40]	כל הקרנות על מדד S&P 500	חשיפה לדולר19
+67	stroke 0.84 0.170 85	[ ; stroke-chart-lever-2]	כל הקרנות על מדד S&P 500 / מה הכי משנה את מה שיישאר לכם	svg
+6	fill 0.84 0.170 85	[fill-chart-lever-2 text-xs ; fill-chart-lever-2 stroke-card ; fill-chart-kind-hedged]	מה הכי משנה את מה שיישאר לכם / מה הקרנות עשו באותן שנים	שנים
+3	bg 0.82 0.105 150	[text-[11px] text-background border-e border-card ; bg-chart-cost-fund]	כמה זה עולה לכם ב־10 שנים, בכל	SPAN
+122	color 0.82 0.105 150	[text-xs text-label-payout bg-label-payout/12 border-label-payout/40 ; ]	כל הקרנות על מדד S&P 500	צוברת16
+22	bg 0.82 0.105 150 a0.12	[text-xs text-label-payout bg-label-payout/12 border-label-payout/40]	כל הקרנות על מדד S&P 500	צוברת16
+22	border 0.82 0.105 150 a0.40	[text-xs text-label-payout bg-label-payout/12 border-label-payout/40]	כל הקרנות על מדד S&P 500	צוברת16
+22	borderS 0.82 0.105 150 a0.40	[text-xs text-label-payout bg-label-payout/12 border-label-payout/40]	כל הקרנות על מדד S&P 500	צוברת16
+98	stroke 0.82 0.105 150	[]	כל הקרנות על מדד S&P 500	svg
+11	bg 0.74 0.170 150	[bg-gain]	עכשיו: MTF סל (S&P 500 (4D, יר	I
+250	color 0.82 0.081 190	[text-xs text-link ; text-primary ; text-link]	מדד S&P 500 / כמה זה עולה לכם ב־10 שנים, בכל / כל החשבונות	חזרה לערך ההתחלתי
+2	bg 0.82 0.081 190 a0.10	[text-start border-b border-border last:border-b-0]	כל החשבונות / כל הקרנות על מדד S&P 500	1פסגות★ הזול1,057 ₪86,492
+2	border 0.82 0.081 190	[border-[1.5px] border-[5px] border-primary]	כל החשבונות / כל הקרנות על מדד S&P 500	SPAN
+2	borderS 0.82 0.081 190	[border-[1.5px] border-[5px] border-primary]	כל החשבונות / כל הקרנות על מדד S&P 500	SPAN
+110	stroke 0.82 0.081 190	[ ; stroke-chart-lever-3 ; stroke-chart-stairs-account]	כל החשבונות / כל הקרנות על מדד S&P 500 / מה הכי משנה את מה שיישאר לכם	svg
+77	color 0.90 0.052 190	[text-xs text-label-trade bg-label-trade/12 border-label-trade/40 ; ]	כל הקרנות על מדד S&P 500	קרן מחקה5
+15	bg 0.90 0.052 190 a0.12	[text-xs text-label-trade bg-label-trade/12 border-label-trade/40]	כל הקרנות על מדד S&P 500	קרן מחקה5
+15	border 0.90 0.052 190 a0.40	[text-xs text-label-trade bg-label-trade/12 border-label-trade/40]	כל הקרנות על מדד S&P 500	קרן מחקה5
+15	borderS 0.90 0.052 190 a0.40	[text-xs text-label-trade bg-label-trade/12 border-label-trade/40]	כל הקרנות על מדד S&P 500	קרן מחקה5
+60	stroke 0.90 0.052 190	[]	כל הקרנות על מדד S&P 500	svg
+6	bg 0.82 0.081 190	[bg-chart-kind-unhedged ; bg-chart-lever-3 ; bg-chart-stairs-account]	כל הקרנות על מדד S&P 500 / מה הכי משנה את מה שיישאר לכם / מה הקרנות עשו באותן שנים	SPAN
+9	fill 0.82 0.081 190	[fill-chart-lever-3 text-xs ; fill-chart-lever-3 stroke-card ; fill-chart-kind-unhedged]	מה הכי משנה את מה שיישאר לכם / מה הקרנות עשו באותן שנים / מנקודת ההתחלה ועד הכי הרבה	סכום היום
+1	bg 0.82 0.088 262 a0.10	[border-entered bg-entered/10]	מדד S&P 500	הבחירה שלכם · ★ הזול86,49
+1	border 0.82 0.088 262	[border-entered bg-entered/10]	מדד S&P 500	הבחירה שלכם · ★ הזול86,49
+1	borderS 0.82 0.088 262	[border-entered bg-entered/10]	מדד S&P 500	הבחירה שלכם · ★ הזול86,49
+2	color 0.82 0.088 262	[text-entered ; ]	כמה זה עולה לכם ב־10 שנים, בכל	פסגותהבחירה שלכם
+182	deco 0.73 0.168 302	[num num-computed]	מדד S&P 500 / כמה זה עולה לכם ב־10 שנים, בכל / כל החשבונות	3.16 ₪
+6	bg 0.66 0.170 335	[bg-chart-cost-fx ; bg-chart-lever-4 ; bg-chart-stairs-kind]	כמה זה עולה לכם ב־10 שנים, בכל / כל החשבונות / מה הכי משנה את מה שיישאר לכם	SPAN
+117	color 0.66 0.170 335	[text-xs text-label-follow bg-label-follow/14 border-label-follow/45 ; ]	כל הקרנות על מדד S&P 500	עסקת החלף5
+22	bg 0.66 0.170 335 a0.14	[text-xs text-label-follow bg-label-follow/14 border-label-follow/45]	כל הקרנות על מדד S&P 500	עסקת החלף5
+22	border 0.66 0.170 335 a0.45	[text-xs text-label-follow bg-label-follow/14 border-label-follow/45]	כל הקרנות על מדד S&P 500	עסקת החלף5
+22	borderS 0.66 0.170 335 a0.45	[text-xs text-label-follow bg-label-follow/14 border-label-follow/45]	כל הקרנות על מדד S&P 500	עסקת החלף5
+94	stroke 0.66 0.170 335	[ ; stroke-chart-lever-4 ; stroke-chart-stairs-kind]	כל הקרנות על מדד S&P 500 / מה הכי משנה את מה שיישאר לכם / מנקודת ההתחלה ועד הכי הרבה	svg
+3	fill 0.66 0.170 335	[fill-chart-lever-4 text-xs ; fill-chart-lever-4 stroke-card ; fill-chart-stairs-kind]	מה הכי משנה את מה שיישאר לכם / מנקודת ההתחלה ועד הכי הרבה	תשואה בשנה
+3	bg 0.55 0.190 358	[text-[11px] text-background bg-chart-tax ; bg-chart-tax]	כמה זה עולה לכם ב־10 שנים, בכל	5,703
+136	color 0.73 0.171 358	[text-xs text-label-tax bg-label-tax/12 border-label-tax/40 ; ]	כל הקרנות על מדד S&P 500	מס גם על שינויי המטבע
+23	bg 0.73 0.171 358 a0.12	[text-xs text-label-tax bg-label-tax/12 border-label-tax/40]	כל הקרנות על מדד S&P 500	מס גם על שינויי המטבע
+23	border 0.73 0.171 358 a0.40	[text-xs text-label-tax bg-label-tax/12 border-label-tax/40]	כל הקרנות על מדד S&P 500	מס גם על שינויי המטבע
+23	borderS 0.73 0.171 358 a0.40	[text-xs text-label-tax bg-label-tax/12 border-label-tax/40]	כל הקרנות על מדד S&P 500	מס גם על שינויי המטבע
+113	stroke 0.73 0.171 358	[]	כל הקרנות על מדד S&P 500	svg
+##### ta125
+9	bg 0.63 0.200 25	[bg-loss]	עכשיו: הראל סל (4A) ת"א 125, י	I
+6	bg 0.64 0.200 27	[bg-chart-cost-fixed ; text-[11px] text-background border-e border-card]	כמה זה עולה לכם ב־10 שנים, בכל / כל החשבונות	SPAN
+3	color 0.73 0.166 27	[text-blocked ; ]	מנקודת ההתחלה ועד הכי הרבה	svg
+3	stroke 0.73 0.166 27	[text-blocked ; ]	מנקודת ההתחלה ועד הכי הרבה	svg
+20	bg 0.64 0.174 48	[text-[11px] text-background border-e border-card ; bg-chart-cost-trade ; text-[11px] text-background bg-chart-cost-trade]	כמה זה עולה לכם ב־10 שנים, בכל / כל החשבונות / מה הכי משנה את מה שיישאר לכם	354
+1	stroke 0.64 0.174 48	[stroke-chart-lever-1]	מה הכי משנה את מה שיישאר לכם	path
+2	fill 0.64 0.174 48	[fill-chart-lever-1 text-xs ; fill-chart-lever-1 stroke-card]	מה הכי משנה את מה שיישאר לכם	הפקדה חודשית
+25	color 0.90 0.074 70	[text-xs bg-caution-subtle text-caution-foreground border-caution/40 ;  ; text-xs bg-caution-subtle text-caution-foreground]	כמה זה עולה לכם ב־10 שנים, בכל / כל החשבונות	לא בפיקוח רשות ני״ע
+6	bg 0.24 0.054 70	[text-xs bg-caution-subtle text-caution-foreground border-caution/40 ; text-xs bg-caution-subtle text-caution-foreground]	כמה זה עולה לכם ב־10 שנים, בכל / כל החשבונות	לא בפיקוח רשות ני״ע
+4	border 0.73 0.149 70 a0.40	[text-xs bg-caution-subtle text-caution-foreground border-caution/40]	כמה זה עולה לכם ב־10 שנים, בכל	לא בפיקוח רשות ני״ע
+4	borderS 0.73 0.149 70 a0.40	[text-xs bg-caution-subtle text-caution-foreground border-caution/40]	כמה זה עולה לכם ב־10 שנים, בכל	לא בפיקוח רשות ני״ע
+19	stroke 0.90 0.074 70	[]	כמה זה עולה לכם ב־10 שנים, בכל	svg
+21	bg 0.84 0.170 85	[text-[11px] text-background border-e border-card ; bg-chart-cost-custody ; bg-chart-lever-2]	כמה זה עולה לכם ב־10 שנים, בכל / כל החשבונות / מה הכי משנה את מה שיישאר לכם	693
+1	stroke 0.84 0.170 85	[stroke-chart-lever-2]	מה הכי משנה את מה שיישאר לכם	path
+2	fill 0.84 0.170 85	[fill-chart-lever-2 text-xs ; fill-chart-lever-2 stroke-card]	מה הכי משנה את מה שיישאר לכם	שנים
+3	bg 0.82 0.105 150	[text-[11px] text-background border-e border-card ; bg-chart-cost-fund]	כמה זה עולה לכם ב־10 שנים, בכל	719
+30	color 0.82 0.105 150	[text-xs text-label-payout bg-label-payout/12 border-label-payout/40 ; ]	כל הקרנות על מדד ת"א-125	צוברת
+6	bg 0.82 0.105 150 a0.12	[text-xs text-label-payout bg-label-payout/12 border-label-payout/40]	כל הקרנות על מדד ת"א-125	צוברת
+6	border 0.82 0.105 150 a0.40	[text-xs text-label-payout bg-label-payout/12 border-label-payout/40]	כל הקרנות על מדד ת"א-125	צוברת
+6	borderS 0.82 0.105 150 a0.40	[text-xs text-label-payout bg-label-payout/12 border-label-payout/40]	כל הקרנות על מדד ת"א-125	צוברת
+24	stroke 0.82 0.105 150	[]	כל הקרנות על מדד ת"א-125	svg
+9	bg 0.74 0.170 150	[bg-gain]	עכשיו: הראל סל (4A) ת"א 125, י	I
+161	color 0.82 0.081 190	[text-xs text-link ; text-primary ; text-link]	מדד ת"א-125 / כמה זה עולה לכם ב־10 שנים, בכל / כל החשבונות	חזרה לערך ההתחלתי
+2	bg 0.82 0.081 190 a0.10	[text-start border-b border-border last:border-b-0]	כל החשבונות / כל הקרנות על מדד ת"א-125	1פסגות★ הזול1,049 ₪86,045
+2	border 0.82 0.081 190	[border-[1.5px] border-[5px] border-primary]	כל החשבונות / כל הקרנות על מדד ת"א-125	SPAN
+2	borderS 0.82 0.081 190	[border-[1.5px] border-[5px] border-primary]	כל החשבונות / כל הקרנות על מדד ת"א-125	SPAN
+54	stroke 0.82 0.081 190	[ ; stroke-chart-lever-3 ; stroke-chart-stairs-account]	כל החשבונות / כל הקרנות על מדד ת"א-125 / מה הכי משנה את מה שיישאר לכם	svg
+36	color 0.90 0.052 190	[text-xs text-label-trade bg-label-trade/12 border-label-trade/40 ; ]	כל הקרנות על מדד ת"א-125	קרן מחקה1
+8	bg 0.90 0.052 190 a0.12	[text-xs text-label-trade bg-label-trade/12 border-label-trade/40]	כל הקרנות על מדד ת"א-125	קרן מחקה1
+8	border 0.90 0.052 190 a0.40	[text-xs text-label-trade bg-label-trade/12 border-label-trade/40]	כל הקרנות על מדד ת"א-125	קרן מחקה1
+8	borderS 0.90 0.052 190 a0.40	[text-xs text-label-trade bg-label-trade/12 border-label-trade/40]	כל הקרנות על מדד ת"א-125	קרן מחקה1
+26	stroke 0.90 0.052 190	[]	כל הקרנות על מדד ת"א-125	svg
+5	fill 0.82 0.081 190	[fill-chart-lever-3 text-xs ; fill-chart-lever-3 stroke-card ; fill-primary]	מה הכי משנה את מה שיישאר לכם / מנקודת ההתחלה ועד הכי הרבה	סכום היום
+4	bg 0.82 0.081 190	[bg-chart-lever-3 ; bg-chart-stairs-account]	מה הכי משנה את מה שיישאר לכם / מנקודת ההתחלה ועד הכי הרבה / עכשיו: הראל סל (4A) ת"א 125, י	SPAN
+1	bg 0.82 0.088 262 a0.10	[border-entered bg-entered/10]	מדד ת"א-125	הבחירה שלכם · ★ הזול86,04
+1	border 0.82 0.088 262	[border-entered bg-entered/10]	מדד ת"א-125	הבחירה שלכם · ★ הזול86,04
+1	borderS 0.82 0.088 262	[border-entered bg-entered/10]	מדד ת"א-125	הבחירה שלכם · ★ הזול86,04
+2	color 0.82 0.088 262	[text-entered ; ]	כמה זה עולה לכם ב־10 שנים, בכל	פסגותהבחירה שלכם
+113	deco 0.73 0.168 302	[num num-computed]	מדד ת"א-125 / כמה זה עולה לכם ב־10 שנים, בכל / כל החשבונות	70,000 ₪
+46	color 0.66 0.170 335	[text-xs text-label-follow bg-label-follow/14 border-label-follow/45 ; ]	כל הקרנות על מדד ת"א-125	מחזיקה את המניות5
+8	bg 0.66 0.170 335 a0.14	[text-xs text-label-follow bg-label-follow/14 border-label-follow/45]	כל הקרנות על מדד ת"א-125	מחזיקה את המניות5
+8	border 0.66 0.170 335 a0.45	[text-xs text-label-follow bg-label-follow/14 border-label-follow/45]	כל הקרנות על מדד ת"א-125	מחזיקה את המניות5
+8	borderS 0.66 0.170 335 a0.45	[text-xs text-label-follow bg-label-follow/14 border-label-follow/45]	כל הקרנות על מדד ת"א-125	מחזיקה את המניות5
+38	stroke 0.66 0.170 335	[ ; stroke-chart-lever-4 ; stroke-chart-stairs-kind]	כל הקרנות על מדד ת"א-125 / מה הכי משנה את מה שיישאר לכם / מנקודת ההתחלה ועד הכי הרבה	svg
+3	fill 0.66 0.170 335	[fill-chart-lever-4 text-xs ; fill-chart-lever-4 stroke-card ; fill-chart-stairs-kind]	מה הכי משנה את מה שיישאר לכם / מנקודת ההתחלה ועד הכי הרבה	תשואה בשנה
+4	bg 0.66 0.170 335	[bg-chart-lever-4 ; bg-chart-stairs-kind]	מה הכי משנה את מה שיישאר לכם / מנקודת ההתחלה ועד הכי הרבה / עכשיו: הראל סל (4A) ת"א 125, י	SPAN
+3	bg 0.55 0.190 358	[text-[11px] text-background bg-chart-tax ; bg-chart-tax]	כמה זה עולה לכם ב־10 שנים, בכל	5,555

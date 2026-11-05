@@ -1,0 +1,90 @@
+{
+  "summary": {
+    "custom-index-no-fund": {
+      "sessions": 2,
+      "right": 0,
+      "partly": 0,
+      "wrong": 0,
+      "gaveUp": 0,
+      "confidentWrong": 0,
+      "agreement": 0,
+      "case": "custom-index-no-fund"
+    },
+    "sp500-cheapest-shots": {
+      "sessions": 2,
+      "right": 2,
+      "partly": 0,
+      "wrong": 0,
+      "gaveUp": 0,
+      "confidentWrong": 0,
+      "agreement": null,
+      "case": null
+    }
+  },
+  "tasks": {
+    "custom-index-no-fund": {
+      "case": "custom-index-no-fund",
+      "rows": [
+        {
+          "session": "careful-retiree-pc",
+          "steps": 3,
+          "seconds": 23,
+          "usd": 0.135251,
+          "confidence": "unsure",
+          "timedOut": false,
+          "error": null,
+          "grade": "n/a",
+          "agrees": "no",
+          "confidentWrong": false
+        },
+        {
+          "session": "first-job-phone",
+          "steps": 3,
+          "seconds": 20,
+          "usd": 0.13184980000000002,
+          "confidence": "fairly sure",
+          "timedOut": false,
+          "error": null,
+          "grade": "n/a",
+          "agrees": "no",
+          "confidentWrong": false
+        }
+      ]
+    },
+    "sp500-cheapest-shots": {
+      "case": null,
+      "rows": [
+        {
+          "session": "careful-retiree-pc",
+          "steps": 3,
+          "seconds": 33,
+          "usd": 0.1078076,
+          "confidence": "fairly sure",
+          "timedOut": false,
+          "error": null,
+          "fields": {
+            "where": "right",
+            "amount_after_10_years": "right"
+          },
+          "grade": "right",
+          "confidentWrong": false
+        },
+        {
+          "session": "first-job-phone",
+          "steps": 3,
+          "seconds": 27,
+          "usd": 0.1013744,
+          "confidence": "fairly sure",
+          "timedOut": false,
+          "error": null,
+          "fields": {
+            "where": "right",
+            "amount_after_10_years": "right"
+          },
+          "grade": "right",
+          "confidentWrong": false
+        }
+      ]
+    }
+  }
+}

@@ -1,5 +1,5 @@
 // Choosing one of a few options (design-spec 1.3): a segmented control, or a row of chips.
-import { useRef, type KeyboardEvent } from "react";
+import { useRef, type KeyboardEvent, type ReactNode } from "react";
 import { Plus } from "lucide-react";
 import { IconCheck } from "../icons";
 import { cx } from "./cx";
@@ -64,5 +64,66 @@ export function OtherChip({ label, expanded, onClick }: { label: string; expande
     <button type="button" aria-expanded={expanded} onClick={onClick} className="sec-chip-add gap-1.5 shrink-0">
       <Plus size={16} strokeWidth={1.75} aria-hidden /> {label}
     </button>
+  );
+}
+
+export interface Tile<T extends string> {
+  value: T;
+  /** The choice in words; left out when the body already names it (a label that is the answer itself). */
+  title?: ReactNode;
+  /** What the choice brings: the labels it adds, or a short muted line. */
+  body: ReactNode;
+}
+
+/**
+ * Two to five answers to one question, each a tile that shows what the answer brings (2026-11-05, the own fund's panel: each answer shows the
+ * labels it adds to the fund's row). A radio group: arrow keys move between tiles; `value` may be null (nothing chosen yet). The tiles of a
+ * row share one height, so a longer body never moves the row below. What is inside a tile is never a control of its own.
+ */
+export function TileChoice<T extends string>({ label, labelledBy, tiles, value, onChange, columns = 2, className }: { label?: string; labelledBy?: string; tiles: Tile<T>[]; value: T | null; onChange: (v: T) => void; /** Tiles a row where the space holding them is wide (a container query: a narrow panel on a computer is one a row, as a phone). */ columns?: 2 | 3; className?: string }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const onKey = (e: KeyboardEvent<HTMLDivElement>) => {
+    if (!["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Home", "End"].includes(e.key)) return;
+    e.preventDefault();
+    const i = Math.max(0, tiles.findIndex((t) => t.value === value));
+    // right to left: the left arrow goes on, as in SegmentedControl
+    const next = e.key === "Home" ? 0 : e.key === "End" ? tiles.length - 1 : e.key === "ArrowLeft" || e.key === "ArrowDown" ? (i + 1) % tiles.length : (i - 1 + tiles.length) % tiles.length;
+    onChange(tiles[next]!.value);
+    ref.current?.querySelectorAll<HTMLElement>("[role=radio]")[next]?.focus();
+  };
+  const chosen = tiles.some((t) => t.value === value);
+  return (
+    <div className="@container">
+      <div ref={ref} role="radiogroup" aria-label={label} aria-labelledby={labelledBy} onKeyDown={onKey} className={cx("grid gap-2 grid-cols-[minmax(0,1fr)]", columns === 3 ? "@md:grid-cols-2 @xl:grid-cols-3" : "@md:grid-cols-2", className)}>
+        {tiles.map((t, i) => {
+          const on = value === t.value;
+          return (
+            <div
+              key={t.value}
+              role="radio"
+              aria-checked={on}
+              tabIndex={on || (!chosen && i === 0) ? 0 : -1}
+              onClick={() => onChange(t.value)}
+              onKeyDown={(e) => {
+                if (e.key === " " || e.key === "Enter") {
+                  e.preventDefault();
+                  onChange(t.value);
+                }
+              }}
+              className={cx(
+                "flex items-start gap-2.5 min-h-target rounded-md border px-3 py-2.5 cursor-pointer text-start transition-colors duration-[var(--duration-fast)] focus-visible:outline-2 focus-visible:outline-ring",
+                on ? "border-primary bg-primary/10" : "border-border bg-card hover:bg-accent/60",
+              )}
+            >
+              <span aria-hidden="true" className={cx("size-4 shrink-0 rounded-full mt-0.5 transition-[border-width] duration-[var(--duration-fast)]", on ? "border-[5px] border-primary" : "border-[1.5px] border-input")} />
+              <span className="flex flex-col gap-1.5 min-w-0">
+                {t.title && <span className={cx("text-sm", on && "font-medium")}>{t.title}</span>}
+                {t.body}
+              </span>
+            </div>
+          );
+        })}
+      </div>
+    </div>
   );
 }

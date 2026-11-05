@@ -55,7 +55,7 @@ export function BankProductRow({ p, known, wrapperName }: { p: ProductRowData; k
           <p className="flex flex-wrap items-center gap-1.5 text-sm text-muted-foreground">
             <span>{copy.alsoCalled}</span>
             {p.alsoCalled.map((n) => (
-              <Tag key={n}>
+              <Tag key={n} wrap>
                 <bdi>{n}</bdi>
               </Tag>
             ))}

@@ -1,7 +1,7 @@
 {
   "id": "pepper",
   "provider": {
-    "name_he": "פפר (בנק לאומי)",
+    "name_he": "פפר",
     "class": "bank",
     "regulator": "BoI",
     "tase_member": true,

@@ -1,7 +1,7 @@
 {
   "id": "interactive-brokers",
   "provider": {
-    "name_he": "Interactive Brokers (לקוח ישיר)",
+    "name_he": "Interactive Brokers",
     "class": "foreign_broker",
     "regulator": "foreign",
     "regulator_foreign": {

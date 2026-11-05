@@ -327,9 +327,9 @@ export function CheckField({ label, checked, onChange }: { label: ReactNode; che
 }
 
 /** Fields that belong together under one heading, with a line between groups. */
-export function FieldGroup({ title, children, note }: { title: ReactNode; children: ReactNode; note?: ReactNode }) {
+export function FieldGroup({ title, children, note, className }: { title: ReactNode; children: ReactNode; note?: ReactNode; /** For a group set beside another, where the line above it would stand alone (the own fund's panel on a computer). */ className?: string }) {
   return (
-    <fieldset className="flex flex-col gap-3 min-w-0 border-t border-border pt-3 first:border-t-0 first:pt-0">
+    <fieldset className={cx("flex flex-col gap-3 min-w-0 border-t border-border pt-3 first:border-t-0 first:pt-0", className)}>
       <legend className="font-medium mb-1">{title}</legend>
       {children}
       {note}

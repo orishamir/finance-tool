@@ -1,0 +1,61 @@
+{
+ "task": "Someone told you the sentence about money quoted above. A friend sent you screenshots of a web page that should help you check whether it is true. The first screenshots show the page before anything is typed; then the page after the sentence you heard was typed into its search field; then the page with one of its buttons pressed; then one part of the results opened.\nUse the page to settle it, as yourself, then answer in plain English, quoting the Hebrew you react to:\n1. Your answer: is what you heard true, false or partly true, what exactly is the case, and how sure you are.\n2. Which parts of the page you actually used to settle it (name them by their heading or position).\n3. Going down the page block by block, in each set of screenshots: did you use it, skim it, skip it, or did it confuse you, and why.\n4. Inside the results: which lines, labels, numbers and links you looked at, and which you ignored.\n5. What you did not understand.\n6. What you wanted to know and could not find.\n7. If half of the page had to go, what goes first.\nAnswer as yourself, not as an expert reviewer; do not judge how the page is built, only whether it helped you settle what you heard.",
+ "readers": [
+  {
+   "key": "new-phone",
+   "who": "You are 24, salaried, on your phone. You know what a percentage is; you know no finance words beyond everyday Hebrew and have never read a law or a fund's terms. You heard: \"קרן השתלמות פטורה ממס אחרי 6 שנים\"",
+   "shots": [
+    "research/audit/2026-11-05-rules-relevance/empty-phone-00.png",
+    "research/audit/2026-11-05-rules-relevance/empty-phone-01.png",
+    "research/audit/2026-11-05-rules-relevance/empty-phone-02.png",
+    "research/audit/2026-11-05-rules-relevance/empty-phone-03.png",
+    "research/audit/2026-11-05-rules-relevance/empty-phone-04.png",
+    "research/audit/2026-11-05-rules-relevance/claim1-phone-00.png",
+    "research/audit/2026-11-05-rules-relevance/claim1-phone-01.png",
+    "research/audit/2026-11-05-rules-relevance/claim1-phone-02.png",
+    "research/audit/2026-11-05-rules-relevance/claim1-phone-03.png",
+    "research/audit/2026-11-05-rules-relevance/claim1-phone-04.png",
+    "research/audit/2026-11-05-rules-relevance/claim1-phone-05.png",
+    "research/audit/2026-11-05-rules-relevance/claim1-phone-06.png",
+    "research/audit/2026-11-05-rules-relevance/filter-phone-00.png",
+    "research/audit/2026-11-05-rules-relevance/filter-phone-01.png",
+    "research/audit/2026-11-05-rules-relevance/card-phone-00.png"
+   ]
+  },
+  {
+   "key": "pension-pc",
+   "who": "You are 35, on a computer. You know \"דמי ניהול\" from your pension statements; you have never bought or sold anything on the stock exchange. You heard: \"על רווח בבורסה משלמים 25% מס\"",
+   "shots": [
+    "research/audit/2026-11-05-rules-relevance/empty-pc-00.png",
+    "research/audit/2026-11-05-rules-relevance/empty-pc-01.png",
+    "research/audit/2026-11-05-rules-relevance/empty-pc-02.png",
+    "research/audit/2026-11-05-rules-relevance/empty-pc-03.png",
+    "research/audit/2026-11-05-rules-relevance/empty-pc-04.png",
+    "research/audit/2026-11-05-rules-relevance/claim2-pc-00.png",
+    "research/audit/2026-11-05-rules-relevance/claim2-pc-01.png",
+    "research/audit/2026-11-05-rules-relevance/claim2-pc-02.png",
+    "research/audit/2026-11-05-rules-relevance/filter-pc-00.png",
+    "research/audit/2026-11-05-rules-relevance/filter-pc-01.png",
+    "research/audit/2026-11-05-rules-relevance/card-pc-00.png"
+   ]
+  },
+  {
+   "key": "careful-pc",
+   "who": "You are 61 and careful, on a computer. You read every word, distrust jargon, and keep asking \"so what does this mean for my money?\". You heard: \"מעבר מסלול בקרן השתלמות לא עולה כלום\"",
+   "shots": [
+    "research/audit/2026-11-05-rules-relevance/empty-pc-00.png",
+    "research/audit/2026-11-05-rules-relevance/empty-pc-01.png",
+    "research/audit/2026-11-05-rules-relevance/empty-pc-02.png",
+    "research/audit/2026-11-05-rules-relevance/empty-pc-03.png",
+    "research/audit/2026-11-05-rules-relevance/empty-pc-04.png",
+    "research/audit/2026-11-05-rules-relevance/claim3-pc-00.png",
+    "research/audit/2026-11-05-rules-relevance/claim3-pc-01.png",
+    "research/audit/2026-11-05-rules-relevance/claim3-pc-02.png",
+    "research/audit/2026-11-05-rules-relevance/claim3-pc-03.png",
+    "research/audit/2026-11-05-rules-relevance/filter-pc-00.png",
+    "research/audit/2026-11-05-rules-relevance/filter-pc-01.png",
+    "research/audit/2026-11-05-rules-relevance/card-pc-00.png"
+   ]
+  }
+ ]
+}
