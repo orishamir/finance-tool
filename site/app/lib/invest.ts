@@ -6,7 +6,7 @@
 import { STANDING_CONVERSION_BAND, STANDING_ORDER_BAND, beforeTax, buildTariff, costByWho, gapToIndex, sumFees, trackingBeyondFees, providerWorkbench, relativeGap, type ComparedProvider, type FeeLine, type LayeredRun, type NotComparableProvider, type ProviderRow, type TariffBuild } from "@finance-tool/engine";
 import type { ExposureRecord, FeesSnapshot, FundRecord } from "@finance-tool/schema";
 import { invest as copy } from "../copy";
-import { isCustomBrokerId, isCustomFund } from "./custom-entries";
+import { customFundGap, isCustomBrokerId, isCustomFund } from "./custom-entries";
 import { aliasRows } from "./search-aliases";
 import { fxRunInput } from "./fx";
 import { instrumentClassOf, fundRun, ruleContext, shortName, subjectOf, type FundAssumptions, type NotComparable, type WorkbenchBundle, type WorkbenchInputs } from "./providers";
@@ -131,7 +131,7 @@ export const customIdOf = (name: string): string => `custom-${norm(name).replace
 
 // ---------------------------------------------------------------- reasons and cells
 
-export type Reason = NotComparable | { code: "fund-type" } | { code: "need-yield" } | { code: "us-fund-open" } | { code: "need-rate"; currency: string } | { code: "no-fund-rate" } | { code: "no-hedge-record" } | { code: "no-hedge-entered" };
+export type Reason = NotComparable | { code: "fund-type" } | { code: "need-yield" } | { code: "us-fund-open" } | { code: "need-rate"; currency: string } | { code: "no-fund-rate" } | { code: "no-hedge-record" } | { code: "no-hedge-entered" } | { code: "payout-unknown" } | { code: "domicile-unknown" };
 
 export interface Availability {
   source: { url: string; title: string; checked: string };
@@ -605,10 +605,13 @@ function fundSpec(ctx: Ctx, rec: FundRecord): { spec: Spec; mismatch: boolean } 
   const exposure = ctx.bundle.exposures.find((e) => e.id === rec.exposure_id) ?? ctx.bundle.entered?.exposures[rec.exposure_id];
   const subject = subjectOf(ctx.bundle, rec.id);
   if (!subject) return { reason: { code: "fund-type" } };
+  // a fund the person typed: what they left unsaid is named, never filled in (2026-11-05)
+  const gap = isCustomFund(rec) ? customFundGap(rec) : null;
+  if (gap) return { reason: { code: gap } };
   // a hedged fund's cost is mostly beyond its fees (F-92): with no full year in its report and no published figure it is not priced
   if (rec.hedged === true && !rec.tracking_record && typeof rec.fees.tracking_difference_12m?.value !== "number") return { reason: { code: isCustomFund(rec) ? "no-hedge-entered" : "no-hedge-record" } };
   const run = fundRun(subject, exposure, ctx.plan.grossReturn, ctx.assumptions, ctx.bundle.fx);
-  if ("kind" in run) return { reason: run.kind === "need-rate" ? { code: "need-rate", currency: run.currency } : run.kind === "need-yield" ? { code: rec.domicile === "US" ? "us-fund-open" : "need-yield" } : { code: "fund-type" } };
+  if ("kind" in run) return { reason: run.kind === "need-rate" ? { code: "need-rate", currency: run.currency } : run.kind === "need-yield" ? { code: rec.domicile === "US" && !isCustomFund(rec) ? "us-fund-open" : "need-yield" } : { code: "fund-type" } };
   // as the engine flags it (E4): a fund in a foreign currency other than its index's; a shekel fund on a dollar index is the usual case, not a mismatch
   const mismatch = !!exposure && !["NIS", "ILS"].includes(rec.currency) && rec.currency !== exposure.currency;
   return { spec: { fund: run.fund, market: run.market, ...(run.currency ? { currency: run.currency } : {}), cls: subject.instrumentClass }, mismatch };

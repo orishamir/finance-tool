@@ -59,8 +59,26 @@ export interface CustomFund {
   variable: ValueObject | null;
   trustee: ValueObject | null;
   hedged: boolean;
+  /** What it does with dividends and interest, as the person said; null: not said, and the fund is listed without a price. */
+  payout: FundPayout | null;
+  /** A distributing fund's yield, percent a year, and the payments a year; null: not typed. */
+  yield: ValueObject | null;
+  perYear: PerYear | null;
+  /** Where a foreign fund is registered; null: another country or not known (an Israeli fund is Israeli). */
+  domicile: FundDomicile | null;
+  /** How it follows its index; null: not said. A label only: no calculation reads it. */
+  tracking: FundTracking | null;
   added: string;
 }
+
+export type FundPayout = "accumulating" | "distributing";
+export type FundDomicile = "IE" | "US";
+export type FundTracking = "physical" | "swap" | "futures" | "mixed";
+export type PerYear = 1 | 2 | 4 | 12;
+export const PAYOUTS: readonly FundPayout[] = ["accumulating", "distributing"];
+export const DOMICILES: readonly FundDomicile[] = ["IE", "US"];
+export const TRACKINGS: readonly FundTracking[] = ["physical", "swap", "futures", "mixed"];
+export const PER_YEAR: readonly PerYear[] = [1, 2, 4, 12];
 
 const BROKER_ID = /^custom-broker-[a-z0-9-]+$/;
 const FUND_ID = /^custom-fund-[a-z0-9-]+$/;
@@ -157,7 +175,14 @@ export function validCustomFunds(list: unknown[]): CustomFund[] {
     const trustee = figure(f.trustee, "pct_per_year", 100);
     if (fixed === undefined || variable === undefined || trustee === undefined) continue;
     const foreign = isForeignKind(kind);
-    out.push({ id: f.id, name: f.name, number: typeof f.number === "string" && f.number ? f.number : null, indexId: f.indexId, kind, fixed, variable: foreign ? null : variable, trustee: foreign ? null : trustee, hedged: f.hedged, added: f.added });
+    // a fund saved before these were asked has none of them: each reads as not said (2026-11-05)
+    const payout = PAYOUTS.includes(f.payout as FundPayout) ? (f.payout as FundPayout) : null;
+    const yieldPct = payout === "distributing" ? figure(f.yield, "pct_per_year", 100) : null;
+    if (yieldPct === undefined) continue;
+    const perYear = payout === "distributing" && PER_YEAR.includes(f.perYear as PerYear) ? (f.perYear as PerYear) : null;
+    const domicile = foreign && DOMICILES.includes(f.domicile as FundDomicile) ? (f.domicile as FundDomicile) : null;
+    const tracking = TRACKINGS.includes(f.tracking as FundTracking) ? (f.tracking as FundTracking) : null;
+    out.push({ id: f.id, name: f.name, number: typeof f.number === "string" && f.number ? f.number : null, indexId: f.indexId, kind, fixed, variable: foreign ? null : variable, trustee: foreign ? null : trustee, hedged: f.hedged, payout, yield: yieldPct, perYear, domicile, tracking, added: f.added });
   }
   return out;
 }
@@ -187,7 +212,13 @@ export interface FundDraft {
   fixed: number | null;
   variable: number | null;
   trustee: number | null;
-  hedged: boolean;
+  /** Null: not chosen yet, on a foreign index; saving asks for it. On an Israeli index it is false and never asked. */
+  hedged: boolean | null;
+  payout: FundPayout | null;
+  yield: number | null;
+  perYear: PerYear | null;
+  domicile: FundDomicile | null;
+  tracking: FundTracking | null;
 }
 
 const num = (v: ValueObject | null | undefined): number | null => (v && typeof v.value === "number" ? v.value : null);
@@ -198,10 +229,13 @@ export const brokerDraftOf = (b: CustomBroker | null): BrokerDraft =>
     ? { name: b.name, tradePct: num(b.tradePct), tradeMin: num(b.tradeMin), custodyPct: num(b.custodyPct), custodyMin: num(b.custodyMin), fxPct: num(b.fxPct), monthlyFee: num(b.monthlyFee), sellsIsraeli: b.sells.israeli, sellsAbroad: b.sells.abroad, ...(b.base ? { base: b.base, untilYears: b.untilYears ?? null } : {}) }
     : { name: "", tradePct: null, tradeMin: null, custodyPct: null, custodyMin: null, fxPct: null, monthlyFee: null, sellsIsraeli: true, sellsAbroad: true };
 
-export const fundDraftOf = (f: CustomFund | null, kind: OptionId): FundDraft =>
-  f ? { name: f.name, number: f.number ?? "", kind: f.kind, fixed: num(f.fixed), variable: num(f.variable), trustee: num(f.trustee), hedged: f.hedged } : { name: "", number: "", kind, fixed: null, variable: null, trustee: null, hedged: false };
+/** `israeliIndex`: a fund on an Israeli index has no currency to neutralise, so it starts and stays unhedged. */
+export const fundDraftOf = (f: CustomFund | null, kind: OptionId, israeliIndex = false): FundDraft =>
+  f
+    ? { name: f.name, number: f.number ?? "", kind: f.kind, fixed: num(f.fixed), variable: num(f.variable), trustee: num(f.trustee), hedged: f.hedged, payout: f.payout, yield: num(f.yield), perYear: f.perYear, domicile: f.domicile, tracking: f.tracking }
+    : { name: "", number: "", kind, fixed: null, variable: null, trustee: null, hedged: israeliIndex ? false : null, payout: null, yield: null, perYear: null, domicile: null, tracking: null };
 
-export type EntryError = "name-empty" | "name-taken" | "sells-none";
+export type EntryError = "name-empty" | "name-taken" | "sells-none" | "hedged-none";
 
 /** A name is required and not taken by another entry of the same list; a broker sells something. A typed number is checked by its own field. */
 export function brokerErrors(d: BrokerDraft, others: readonly { id: string; name: string }[], id: string | null): EntryError[] {
@@ -214,9 +248,12 @@ export function brokerErrors(d: BrokerDraft, others: readonly { id: string; name
 }
 
 export function fundErrors(d: FundDraft, others: readonly { id: string; name: string }[], id: string | null): EntryError[] {
+  const out: EntryError[] = [];
   const name = norm(d.name);
-  if (!name) return ["name-empty"];
-  return others.some((x) => x.id !== id && norm(x.name) === name) ? ["name-taken"] : [];
+  if (!name) out.push("name-empty");
+  else if (others.some((x) => x.id !== id && norm(x.name) === name)) out.push("name-taken");
+  if (d.hedged === null) out.push("hedged-none");
+  return out;
 }
 
 const vo = (v: number | null, unit: ValueObject["unit"], today: string, about: string): ValueObject | null => (v === null ? null : entered(v, unit, today, about));
@@ -250,7 +287,12 @@ export function fundFromDraft(d: FundDraft, id: string, indexId: string, today: 
     fixed: vo(d.fixed, "pct_per_year", today, foreign ? w.yearly : w.fixed),
     variable: foreign ? null : vo(d.variable, "pct_per_year", today, w.variable),
     trustee: foreign ? null : vo(d.trustee, "pct_per_year", today, w.trustee),
-    hedged: d.hedged,
+    hedged: d.hedged === true,
+    payout: d.payout,
+    yield: d.payout === "distributing" ? vo(d.yield, "pct_per_year", today, w.yield) : null,
+    perYear: d.payout === "distributing" ? d.perYear : null,
+    domicile: foreign ? d.domicile : null,
+    tracking: d.tracking,
     added: today,
   };
 }
@@ -294,6 +336,8 @@ export function fundTerms(f: CustomFund): { shown: EntryTerm[]; empty: string[] 
     if (v === null) empty.push(word);
     else shown.push({ id, word, figures: [{ before: null, value: asSite(v) }] });
   }
+  // a yield left empty is not zero: the fund then has no price, and its row says why
+  if (f.payout === "distributing" && f.yield) shown.push({ id: "yield", word: w.yield, figures: [{ before: null, value: asSite(f.yield) }] });
   return { shown, empty };
 }
 
@@ -349,9 +393,9 @@ const isIls = (code: string) => code === "ILS" || code === "NIS";
 const UNKNOWN_DOMICILE = "unknown";
 
 /**
- * A fund as the record of its kind. It accumulates: the page prices a distributing fund only with a yield, and no yield is typed. A foreign
- * fund is in its index's currency, in dollars where the index is in shekels or is a custom one (as the page's generic fund abroad). An empty
- * fee is zero, as a figure in the entered state.
+ * A fund as the record of its kind, with what the person said of it and nothing more (2026-11-05: it used to be taken as accumulating): a
+ * payout not said is null, and the page lists the fund without a price. A foreign fund is in its index's currency, in dollars where the index
+ * is in shekels or is a custom one (as the page's generic fund abroad). An empty fee is zero, as a figure in the entered state.
  */
 export function recordOfFund(f: CustomFund, currencyOfIndex: string | null): FundRecord {
   const foreign = isForeignKind(f.kind);
@@ -362,20 +406,35 @@ export function recordOfFund(f: CustomFund, currencyOfIndex: string | null): Fun
     names: { en: [], he: [f.name], tase: [] },
     identifiers: { isin: null, tase_number: f.number, cusip: null, ticker: {} },
     manager: "",
-    domicile: foreign ? UNKNOWN_DOMICILE : "IL",
+    domicile: foreign ? (f.domicile ?? UNKNOWN_DOMICILE) : "IL",
     // instrumentClassOf reads the two Israeli kinds from these words
     legal_form: foreign ? c.kinds[f.kind]! : copy.typeTags[f.kind]!,
     exposure_id: f.indexId,
     currency: foreign ? (currencyOfIndex && !isIls(currencyOfIndex) ? currencyOfIndex : "USD") : "NIS",
     trading_currency_on_tase: f.kind === "abroad" ? null : "NIS",
-    distribution_policy: "accumulating",
+    distribution_policy: f.payout,
     tax_status: { il_fund_tax_track: foreign ? null : "exempt", tase_foreign_fund_90pct_test: null },
     fees: { fixed_management: zero(f.fixed, foreign ? w.yearly : w.fixed), variable_management: foreign ? null : zero(f.variable, w.variable), trustee: foreign ? null : zero(f.trustee, w.trustee), tracking_difference_12m: null, median_spread: null, fund_level_withholding_drag: null },
     dimensions: {},
     prospectus: { url: "local", date: null },
     ...(f.hedged ? { hedged: true } : {}),
+    ...(f.payout === "distributing" && f.yield && f.perYear ? { distribution: { yield: f.yield, per_year: f.perYear } } : {}),
+    ...(f.tracking ? { replication: { method: f.tracking, source: { url: "local", checked: f.added } } } : {}),
     snapshot: f.added,
   };
+}
+
+/** Why a fund the person typed has no price, from what they said of it; null: nothing they left out stops it. The page and the panel's preview both read it. */
+export type CustomFundGap = "payout-unknown" | "need-yield" | "domicile-unknown" | "no-hedge-entered";
+export function customFundGap(rec: FundRecord): CustomFundGap | null {
+  if (rec.distribution_policy === null) return "payout-unknown";
+  if (rec.hedged === true) return "no-hedge-entered";
+  if (rec.distribution_policy === "distributing") {
+    // the foreign tax withheld on a distribution is known for a fund registered in Ireland or the United States only (F-20)
+    if (rec.domicile !== "IL" && rec.domicile !== "IE" && rec.domicile !== "US") return "domicile-unknown";
+    if (!rec.distribution) return "need-yield";
+  }
+  return null;
 }
 
 /** The figures a run on an entry rests on, for its provenance sheet: only what was typed. */

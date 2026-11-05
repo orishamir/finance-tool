@@ -83,8 +83,15 @@ const chipShape = "inline-flex items-center gap-1 text-xs font-medium rounded-fu
 
 /** A label: an icon and two or three words; colour never alone (the icon and the words carry it; the open tone also has the lock). Its tap area
  *  reaches 44 px high, beyond the drawn chip, so a row of chips keeps its height (2026-11-03). */
-export function LabelChip({ label }: { label: Label }) {
+export function LabelChip({ label, still = false }: { label: Label; /** Drawn only, not a button: inside a control of its own (a tile of TileChoice), where a tap is the control's. */ still?: boolean }) {
   const open = useContext(OpenCtx);
+  if (still)
+    return (
+      <span className={cx(chipShape, chipClass(label))} data-label={label.id}>
+        <LabelIcon name={label.icon} />
+        {label.text}
+      </span>
+    );
   return (
     <button type="button" onClick={(e) => open(label, e.currentTarget)} className={cx(chipShape, "relative before:absolute before:inset-x-0 before:-inset-y-[11px] hover:brightness-110", chipClass(label))} data-label={label.id}>
       <LabelIcon name={label.icon} />
@@ -121,12 +128,12 @@ export function LabelFilter({ options, value, onChange, lead, allLabel }: { opti
   );
 }
 
-export function LabelRow({ labels, className }: { labels: Label[]; className?: string }) {
+export function LabelRow({ labels, className, still }: { labels: Label[]; className?: string; /** See LabelChip. */ still?: boolean }) {
   if (labels.length === 0) return null;
   return (
     <span className={cx("flex flex-wrap gap-1.5", className)}>
       {labels.map((l) => (
-        <LabelChip key={l.id} label={l} />
+        <LabelChip key={l.id} label={l} still={still} />
       ))}
     </span>
   );
