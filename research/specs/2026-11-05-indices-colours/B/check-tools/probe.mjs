@@ -1,0 +1,15 @@
+import { createRequire } from "module";
+const require = createRequire("/home/ori/.npm/_npx/e41f203b7505f1fb/node_modules/playwright/");
+const { chromium } = require("playwright");
+const b = await chromium.launch({ executablePath: "/home/ori/.cache/ms-playwright/chromium-1243/chrome-linux64/chrome" });
+const page = await (await b.newContext({ viewport: { width: 1440, height: 900 }, deviceScaleFactor: 1 })).newPage();
+page.setDefaultTimeout(8000);
+await page.goto("https://orishamir.github.io/finance-tool/indices/sp500", { waitUntil: "networkidle" });
+await page.waitForSelector("[role=radiogroup]");
+const btns = page.locator("button:visible", { hasText: "קיבלתם מחיר אחר" });
+console.log("sheet buttons", await btns.count());
+await btns.nth(0).scrollIntoViewIfNeeded(); await btns.nth(0).click();
+await page.locator("dialog[open]").first().waitFor();
+console.log(await page.evaluate(() => [...document.querySelectorAll("dialog[open] select")].map((s) => s.name + ":" + [...s.options].map((o) => o.value + "=" + o.text).join(" | "))));
+console.log(await page.evaluate(() => [...document.querySelectorAll("dialog[open] h2,dialog[open] h3, dialog[open] label")].map((s) => s.textContent.trim().slice(0,60)).join("\n")));
+await b.close();

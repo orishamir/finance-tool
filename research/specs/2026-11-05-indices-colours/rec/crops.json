@@ -1,0 +1,18 @@
+{
+ "today": {
+  "accTop": "/home/ori/dev/finance-tool/research/specs/2026-11-05-indices-colours/rec/crops/today-acc-top.png",
+  "accFixed": "/home/ori/dev/finance-tool/research/specs/2026-11-05-indices-colours/rec/crops/today-acc-fixed.png",
+  "funds": "/home/ori/dev/finance-tool/research/specs/2026-11-05-indices-colours/rec/crops/today-funds.png",
+  "dollar": "/home/ori/dev/finance-tool/research/specs/2026-11-05-indices-colours/rec/crops/today-dollar.png",
+  "blocked": "/home/ori/dev/finance-tool/research/specs/2026-11-05-indices-colours/rec/crops/today-blocked.png",
+  "sheet": "/home/ori/dev/finance-tool/research/specs/2026-11-05-indices-colours/rec/crops/today-sheet.png"
+ },
+ "rec": {
+  "accTop": "/home/ori/dev/finance-tool/research/specs/2026-11-05-indices-colours/rec/crops/rec-acc-top.png",
+  "accFixed": "/home/ori/dev/finance-tool/research/specs/2026-11-05-indices-colours/rec/crops/rec-acc-fixed.png",
+  "funds": "/home/ori/dev/finance-tool/research/specs/2026-11-05-indices-colours/rec/crops/rec-funds.png",
+  "dollar": "/home/ori/dev/finance-tool/research/specs/2026-11-05-indices-colours/rec/crops/rec-dollar.png",
+  "blocked": "/home/ori/dev/finance-tool/research/specs/2026-11-05-indices-colours/rec/crops/rec-blocked.png",
+  "sheet": "/home/ori/dev/finance-tool/research/specs/2026-11-05-indices-colours/rec/crops/rec-sheet.png"
+ }
+}

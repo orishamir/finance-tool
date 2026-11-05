@@ -1,0 +1,26 @@
+{
+  "personas": ["first-job-phone", "careful-retiree-pc"],
+  "tasks": [
+    {
+      "key": "sp500-cheapest",
+      "text": "You want to start putting 500 ₪ a month into the S&P 500, with nothing put in at the start. A friend sent you this website. Find where it is cheapest to do this, and how much you would have after ten years.",
+      "start": "https://orishamir.github.io/finance-tool/indices/sp500",
+      "minutes": 12,
+      "actions": 35,
+      "answerFields": {
+        "where": { "type": "string", "description": "Where you would do it: the bank or company, as the page names it" },
+        "fund": { "type": "string", "description": "Which fund, if the page told you; empty if you do not know" },
+        "amount_after_10_years": { "type": ["number", "null"], "description": "How much you would have after ten years, in shekels; null if you did not find it" }
+      },
+      "answerKey": {
+        "right": "Psagot (פסגות), with the Yelin Lapidot S&P 500 (4D) tracking fund; about 72,100 ₪ after ten years, with nothing put in at the start and the page's 7% a year (checked on the live site 2026-11-05)",
+        "partly": "Psagot with another amount (129,913 ₪ is the page's default, which has 10,000 ₪ put in at the start), or about 72,100 ₪ with another account",
+        "fields": {
+          "where": { "match": ["פסגות", "psagot"] },
+          "amount_after_10_years": { "value": 72104, "tolerance": 0.02 }
+        }
+      }
+    }
+  ],
+  "parallel": 2
+}

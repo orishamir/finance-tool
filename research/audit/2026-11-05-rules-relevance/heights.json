@@ -1,0 +1,4426 @@
+{
+ "captured": "2026-11-05T20:57:45.657Z",
+ "url": "https://orishamir.github.io/finance-tool/rules",
+ "viewport": "1440x900",
+ "note": "Heights in CSS px at 1440 px wide; depth is nesting among the listed elements; top is from the top of the page.",
+ "claims": {
+  "claim1": "קרן השתלמות פטורה ממס אחרי 6 שנים",
+  "claim2": "על רווח בבורסה משלמים 25% מס",
+  "claim3": "מעבר מסלול בקרן השתלמות לא עולה כלום"
+ },
+ "states": {
+  "empty": {
+   "pageHeight": 5839,
+   "elements": [
+    {
+     "depth": 0,
+     "tag": "div",
+     "top": 65,
+     "height": 5555,
+     "width": 1361,
+     "text": "חוקים וכללים אמרו לכם משהו על הכסף, או שאתם קוראים תנאים של בנק או של חברה אחרת? כתבו את ז"
+    },
+    {
+     "depth": 1,
+     "tag": "header",
+     "top": 97,
+     "height": 235,
+     "width": 1361,
+     "text": "חוקים וכללים אמרו לכם משהו על הכסף, או שאתם קוראים תנאים של בנק או של חברה אחרת? כתבו את ז"
+    },
+    {
+     "depth": 2,
+     "tag": "h1",
+     "top": 97,
+     "height": 39,
+     "width": 1361,
+     "text": "חוקים וכללים"
+    },
+    {
+     "depth": 2,
+     "tag": "p",
+     "top": 144,
+     "height": 58,
+     "width": 608,
+     "text": "אמרו לכם משהו על הכסף, או שאתם קוראים תנאים של בנק או של חברה אחרת? כתבו את זה כאן, ותראו "
+    },
+    {
+     "depth": 2,
+     "tag": "input",
+     "id": "_R_6d2r5_",
+     "top": 217,
+     "height": 62,
+     "width": 1307,
+     "text": "כתבו מה אמרו לכם, או מה קראתם בתנאים"
+    },
+    {
+     "depth": 2,
+     "tag": "p",
+     "top": 288,
+     "height": 44,
+     "width": 1361,
+     "text": "למשל: מותר לבנק לשנות עמלה בלי להודיע אפשר למשוך קרן השתלמות אחרי 3 שנים אם הברוקר פושט רג"
+    },
+    {
+     "depth": 1,
+     "tag": "div",
+     "top": 352,
+     "height": 417,
+     "width": 1361,
+     "text": "לפי השאלה הכול 501 מה המדינה לוקחת 175 מה הבנק או בית ההשקעות לוקחים 72 מה אפשר לעשות עם ה"
+    },
+    {
+     "depth": 2,
+     "tag": "p",
+     "top": 352,
+     "height": 22,
+     "width": 1361,
+     "text": "לפי השאלה"
+    },
+    {
+     "depth": 2,
+     "tag": "ul",
+     "top": 378,
+     "height": 44,
+     "width": 1361,
+     "text": "הכול 501 מה המדינה לוקחת 175 מה הבנק או בית ההשקעות לוקחים 72 מה אפשר לעשות עם הכסף 145 מי"
+    },
+    {
+     "depth": 2,
+     "tag": "p",
+     "top": 432,
+     "height": 22,
+     "width": 1361,
+     "text": "לפי מוצר"
+    },
+    {
+     "depth": 2,
+     "tag": "ul",
+     "top": 458,
+     "height": 148,
+     "width": 1361,
+     "text": "כל המוצרים חשבון ניירות ערך 74 קרן כספית 67 קרן כספית מתחדשת 67 קרן חדשה מקיפה 62 קרן חדשה"
+    },
+    {
+     "depth": 2,
+     "tag": "ul",
+     "top": 616,
+     "height": 44,
+     "width": 1361,
+     "text": "עומד להשתנות 231"
+    },
+    {
+     "depth": 2,
+     "tag": "details",
+     "top": 670,
+     "height": 44,
+     "width": 1361,
+     "text": "לפי מספר"
+    },
+    {
+     "depth": 3,
+     "tag": "summary",
+     "top": 670,
+     "height": 44,
+     "width": 1361,
+     "text": "לפי מספר"
+    },
+    {
+     "depth": 3,
+     "tag": "ul",
+     "top": 714,
+     "height": 108,
+     "width": 1361,
+     "text": ""
+    },
+    {
+     "depth": 2,
+     "tag": "div",
+     "id": "rules-status",
+     "top": 724,
+     "height": 44,
+     "width": 1361,
+     "text": "מוצגים 501 מתוך 501"
+    },
+    {
+     "depth": 3,
+     "tag": "p",
+     "role": "status",
+     "top": 735,
+     "height": 22,
+     "width": 137,
+     "text": "מוצגים 501 מתוך 501"
+    },
+    {
+     "depth": 1,
+     "tag": "div",
+     "top": 788,
+     "height": 4672,
+     "width": 1361,
+     "text": "מה המדינה לוקחת · 175 מס בהפקדה, בדרך ובמשיכה; פטורים; מה חייב בדיווח עובר ושב ופיקדונות ·"
+    },
+    {
+     "depth": 2,
+     "tag": "section",
+     "top": 788,
+     "height": 1260,
+     "width": 1017,
+     "text": "מה המדינה לוקחת · 175 מס בהפקדה, בדרך ובמשיכה; פטורים; מה חייב בדיווח עובר ושב ופיקדונות ·"
+    },
+    {
+     "depth": 3,
+     "tag": "h2",
+     "id": "shelf-state",
+     "top": 788,
+     "height": 34,
+     "width": 1017,
+     "text": "מה המדינה לוקחת · 175"
+    },
+    {
+     "depth": 3,
+     "tag": "p",
+     "top": 826,
+     "height": 22,
+     "width": 608,
+     "text": "מס בהפקדה, בדרך ובמשיכה; פטורים; מה חייב בדיווח"
+    },
+    {
+     "depth": 3,
+     "tag": "details",
+     "id": "state-bank-current-account-deposits",
+     "top": 860,
+     "height": 48,
+     "width": 1017,
+     "text": "עובר ושב ופיקדונות · 5"
+    },
+    {
+     "depth": 4,
+     "tag": "summary",
+     "top": 860,
+     "height": 48,
+     "width": 1017,
+     "text": "עובר ושב ופיקדונות · 5"
+    },
+    {
+     "depth": 5,
+     "tag": "h3",
+     "top": 870,
+     "height": 29,
+     "width": 177,
+     "text": "עובר ושב ופיקדונות · 5"
+    },
+    {
+     "depth": 3,
+     "tag": "details",
+     "id": "state-mutual-funds-and-money-market-funds",
+     "top": 920,
+     "height": 48,
+     "width": 1017,
+     "text": "קרנות נאמנות וקרנות כספיות · 3"
+    },
+    {
+     "depth": 4,
+     "tag": "summary",
+     "top": 920,
+     "height": 48,
+     "width": 1017,
+     "text": "קרנות נאמנות וקרנות כספיות · 3"
+    },
+    {
+     "depth": 5,
+     "tag": "h3",
+     "top": 930,
+     "height": 29,
+     "width": 248,
+     "text": "קרנות נאמנות וקרנות כספיות · 3"
+    },
+    {
+     "depth": 3,
+     "tag": "details",
+     "id": "state-keren-hishtalmut",
+     "top": 980,
+     "height": 48,
+     "width": 1017,
+     "text": "קרן השתלמות · 1"
+    },
+    {
+     "depth": 4,
+     "tag": "summary",
+     "top": 980,
+     "height": 48,
+     "width": 1017,
+     "text": "קרן השתלמות · 1"
+    },
+    {
+     "depth": 5,
+     "tag": "h3",
+     "top": 990,
+     "height": 29,
+     "width": 133,
+     "text": "קרן השתלמות · 1"
+    },
+    {
+     "depth": 3,
+     "tag": "details",
+     "id": "state-pension-and-gemel-lekitzba",
+     "top": 1040,
+     "height": 48,
+     "width": 1017,
+     "text": "פנסיה וקופת גמל לקצבה · 2"
+    },
+    {
+     "depth": 4,
+     "tag": "summary",
+     "top": 1040,
+     "height": 48,
+     "width": 1017,
+     "text": "פנסיה וקופת גמל לקצבה · 2"
+    },
+    {
+     "depth": 5,
+     "tag": "h3",
+     "top": 1050,
+     "height": 29,
+     "width": 216,
+     "text": "פנסיה וקופת גמל לקצבה · 2"
+    },
+    {
+     "depth": 3,
+     "tag": "details",
+     "id": "state-brokerage-account",
+     "top": 1100,
+     "height": 48,
+     "width": 1017,
+     "text": "חשבון ניירות ערך · 3"
+    },
+    {
+     "depth": 4,
+     "tag": "summary",
+     "top": 1100,
+     "height": 48,
+     "width": 1017,
+     "text": "חשבון ניירות ערך · 3"
+    },
+    {
+     "depth": 5,
+     "tag": "h3",
+     "top": 1110,
+     "height": 29,
+     "width": 158,
+     "text": "חשבון ניירות ערך · 3"
+    },
+    {
+     "depth": 3,
+     "tag": "details",
+     "id": "state-etfs-and-index-funds",
+     "top": 1160,
+     "height": 48,
+     "width": 1017,
+     "text": "קרנות סל וקרנות מחקות · 3"
+    },
+    {
+     "depth": 4,
+     "tag": "summary",
+     "top": 1160,
+     "height": 48,
+     "width": 1017,
+     "text": "קרנות סל וקרנות מחקות · 3"
+    },
+    {
+     "depth": 5,
+     "tag": "h3",
+     "top": 1170,
+     "height": 29,
+     "width": 210,
+     "text": "קרנות סל וקרנות מחקות · 3"
+    },
+    {
+     "depth": 3,
+     "tag": "details",
+     "id": "state-government-bonds-and-makam",
+     "top": 1220,
+     "height": 48,
+     "width": 1017,
+     "text": "אג״ח ממשלתיות ומק״מ · 10"
+    },
+    {
+     "depth": 4,
+     "tag": "summary",
+     "top": 1220,
+     "height": 48,
+     "width": 1017,
+     "text": "אג״ח ממשלתיות ומק״מ · 10"
+    },
+    {
+     "depth": 5,
+     "tag": "h3",
+     "top": 1230,
+     "height": 29,
+     "width": 215,
+     "text": "אג״ח ממשלתיות ומק״מ · 10"
+    },
+    {
+     "depth": 3,
+     "tag": "details",
+     "id": "state-child-savings",
+     "top": 1280,
+     "height": 48,
+     "width": 1017,
+     "text": "חיסכון לכל ילד · 2"
+    },
+    {
+     "depth": 4,
+     "tag": "summary",
+     "top": 1280,
+     "height": 48,
+     "width": 1017,
+     "text": "חיסכון לכל ילד · 2"
+    },
+    {
+     "depth": 5,
+     "tag": "h3",
+     "top": 1290,
+     "height": 29,
+     "width": 141,
+     "text": "חיסכון לכל ילד · 2"
+    },
+    {
+     "depth": 3,
+     "tag": "details",
+     "id": "state-tax-securities-israeli",
+     "top": 1340,
+     "height": 48,
+     "width": 1017,
+     "text": "מניות, קרנות ואג״ח בבורסה בישראל · 28"
+    },
+    {
+     "depth": 4,
+     "tag": "summary",
+     "top": 1340,
+     "height": 48,
+     "width": 1017,
+     "text": "מניות, קרנות ואג״ח בבורסה בישראל · 28"
+    },
+    {
+     "depth": 5,
+     "tag": "h3",
+     "top": 1350,
+     "height": 29,
+     "width": 309,
+     "text": "מניות, קרנות ואג״ח בבורסה בישראל · 28"
+    },
+    {
+     "depth": 3,
+     "tag": "details",
+     "id": "state-tax-interest-deposits-bonds",
+     "top": 1400,
+     "height": 48,
+     "width": 1017,
+     "text": "ריבית: פיקדונות, מק״מ ואג״ח ממשלתיות · 18"
+    },
+    {
+     "depth": 4,
+     "tag": "summary",
+     "top": 1400,
+     "height": 48,
+     "width": 1017,
+     "text": "ריבית: פיקדונות, מק״מ ואג״ח ממשלתיות · 18"
+    },
+    {
+     "depth": 5,
+     "tag": "h3",
+     "top": 1410,
+     "height": 29,
+     "width": 346,
+     "text": "ריבית: פיקדונות, מק״מ ואג״ח ממשלתיות · 18"
+    },
+    {
+     "depth": 3,
+     "tag": "details",
+     "id": "state-tax-securities-foreign",
+     "top": 1460,
+     "height": 48,
+     "width": 1017,
+     "text": "קרנות וניירות ערך מחו״ל · 21"
+    },
+    {
+     "depth": 4,
+     "tag": "summary",
+     "top": 1460,
+     "height": 48,
+     "width": 1017,
+     "text": "קרנות וניירות ערך מחו״ל · 21"
+    },
+    {
+     "depth": 5,
+     "tag": "h3",
+     "top": 1470,
+     "height": 29,
+     "width": 221,
+     "text": "קרנות וניירות ערך מחו״ל · 21"
+    },
+    {
+     "depth": 3,
+     "tag": "details",
+     "id": "state-tax-hishtalmut",
+     "top": 1520,
+     "height": 48,
+     "width": 1017,
+     "text": "המס על קרן השתלמות · 15"
+    },
+    {
+     "depth": 4,
+     "tag": "summary",
+     "top": 1520,
+     "height": 48,
+     "width": 1017,
+     "text": "המס על קרן השתלמות · 15"
+    },
+    {
+     "depth": 5,
+     "tag": "h3",
+     "top": 1530,
+     "height": 29,
+     "width": 208,
+     "text": "המס על קרן השתלמות · 15"
+    },
+    {
+     "depth": 3,
+     "tag": "details",
+     "id": "state-tax-gemel-lehashkaa-ira-child",
+     "top": 1580,
+     "height": 48,
+     "width": 1017,
+     "text": "המס על קופת גמל להשקעה, ניהול אישי וחיסכון לכל ילד · 19"
+    },
+    {
+     "depth": 4,
+     "tag": "summary",
+     "top": 1580,
+     "height": 48,
+     "width": 1017,
+     "text": "המס על קופת גמל להשקעה, ניהול אישי וחיסכון לכל ילד · 19"
+    },
+    {
+     "depth": 5,
+     "tag": "h3",
+     "top": 1590,
+     "height": 29,
+     "width": 471,
+     "text": "המס על קופת גמל להשקעה, ניהול אישי וחיסכון לכל ילד · 19"
+    },
+    {
+     "depth": 3,
+     "tag": "details",
+     "id": "state-tax-pension-gemel-lekitzba",
+     "top": 1640,
+     "height": 48,
+     "width": 1017,
+     "text": "המס על פנסיה וקופת גמל לקצבה · 18"
+    },
+    {
+     "depth": 4,
+     "tag": "summary",
+     "top": 1640,
+     "height": 48,
+     "width": 1017,
+     "text": "המס על פנסיה וקופת גמל לקצבה · 18"
+    },
+    {
+     "depth": 5,
+     "tag": "h3",
+     "top": 1650,
+     "height": 29,
+     "width": 292,
+     "text": "המס על פנסיה וקופת גמל לקצבה · 18"
+    },
+    {
+     "depth": 3,
+     "tag": "details",
+     "id": "state-tax-general",
+     "top": 1700,
+     "height": 48,
+     "width": 1017,
+     "text": "מדרגות המס, מס יסף וביטוח לאומי · 14"
+    },
+    {
+     "depth": 4,
+     "tag": "summary",
+     "top": 1700,
+     "height": 48,
+     "width": 1017,
+     "text": "מדרגות המס, מס יסף וביטוח לאומי · 14"
+    },
+    {
+     "depth": 5,
+     "tag": "h3",
+     "top": 1710,
+     "height": 29,
+     "width": 303,
+     "text": "מדרגות המס, מס יסף וביטוח לאומי · 14"
+    },
+    {
+     "depth": 3,
+     "tag": "details",
+     "id": "state-switching-and-transfers",
+     "top": 1760,
+     "height": 48,
+     "width": 1017,
+     "text": "מעבר בין גופים והעברת כספים · 1"
+    },
+    {
+     "depth": 4,
+     "tag": "summary",
+     "top": 1760,
+     "height": 48,
+     "width": 1017,
+     "text": "מעבר בין גופים והעברת כספים · 1"
+    },
+    {
+     "depth": 5,
+     "tag": "h3",
+     "top": 1770,
+     "height": 29,
+     "width": 261,
+     "text": "מעבר בין גופים והעברת כספים · 1"
+    },
+    {
+     "depth": 3,
+     "tag": "details",
+     "id": "state-tracks-catalogue-and-decoder",
+     "top": 1820,
+     "height": 48,
+     "width": 1017,
+     "text": "מסלולים והקטלוג · 3"
+    },
+    {
+     "depth": 4,
+     "tag": "summary",
+     "top": 1820,
+     "height": 48,
+     "width": 1017,
+     "text": "מסלולים והקטלוג · 3"
+    },
+    {
+     "depth": 5,
+     "tag": "h3",
+     "top": 1830,
+     "height": 29,
+     "width": 159,
+     "text": "מסלולים והקטלוג · 3"
+    },
+    {
+     "depth": 3,
+     "tag": "details",
+     "id": "state-tax-insurance-and-amendment-190",
+     "top": 1880,
+     "height": 48,
+     "width": 1017,
+     "text": "פוליסות חיסכון ותיקון 190 (עוד לא באתר) · 3"
+    },
+    {
+     "depth": 4,
+     "tag": "summary",
+     "top": 1880,
+     "height": 48,
+     "width": 1017,
+     "text": "פוליסות חיסכון ותיקון 190 (עוד לא באתר) · 3"
+    },
+    {
+     "depth": 5,
+     "tag": "h3",
+     "top": 1890,
+     "height": 29,
+     "width": 355,
+     "text": "פוליסות חיסכון ותיקון 190 (עוד לא באתר) · 3"
+    },
+    {
+     "depth": 3,
+     "tag": "details",
+     "id": "state-tax-tier2-other",
+     "top": 1940,
+     "height": 48,
+     "width": 1017,
+     "text": "מט״ח, אג״ח קונצרניות, ריט, זהב ותיקים מנוהלים (עוד לא באתר) · 5"
+    },
+    {
+     "depth": 4,
+     "tag": "summary",
+     "top": 1940,
+     "height": 48,
+     "width": 1017,
+     "text": "מט״ח, אג״ח קונצרניות, ריט, זהב ותיקים מנוהלים (עוד לא באתר) · 5"
+    },
+    {
+     "depth": 5,
+     "tag": "h3",
+     "top": 1950,
+     "height": 29,
+     "width": 515,
+     "text": "מט״ח, אג״ח קונצרניות, ריט, זהב ותיקים מנוהלים (עוד לא באתר) · 5"
+    },
+    {
+     "depth": 3,
+     "tag": "details",
+     "id": "state-savings-policies-and-executive-insurance",
+     "top": 2000,
+     "height": 48,
+     "width": 1017,
+     "text": "פוליסות חיסכון וביטוח מנהלים · 1"
+    },
+    {
+     "depth": 4,
+     "tag": "summary",
+     "top": 2000,
+     "height": 48,
+     "width": 1017,
+     "text": "פוליסות חיסכון וביטוח מנהלים · 1"
+    },
+    {
+     "depth": 5,
+     "tag": "h3",
+     "top": 2010,
+     "height": 29,
+     "width": 260,
+     "text": "פוליסות חיסכון וביטוח מנהלים · 1"
+    },
+    {
+     "depth": 2,
+     "tag": "section",
+     "top": 2076,
+     "height": 960,
+     "width": 1017,
+     "text": "מה הבנק או בית ההשקעות לוקחים · 72 דמי ניהול ותקרות, עמלות, הנחות שנגמרות, מינימום עובר וש"
+    },
+    {
+     "depth": 3,
+     "tag": "h2",
+     "id": "shelf-costs",
+     "top": 2076,
+     "height": 34,
+     "width": 1017,
+     "text": "מה הבנק או בית ההשקעות לוקחים · 72"
+    },
+    {
+     "depth": 3,
+     "tag": "p",
+     "top": 2114,
+     "height": 22,
+     "width": 608,
+     "text": "דמי ניהול ותקרות, עמלות, הנחות שנגמרות, מינימום"
+    },
+    {
+     "depth": 3,
+     "tag": "details",
+     "id": "costs-bank-current-account-deposits",
+     "top": 2148,
+     "height": 48,
+     "width": 1017,
+     "text": "עובר ושב ופיקדונות · 5"
+    },
+    {
+     "depth": 4,
+     "tag": "summary",
+     "top": 2148,
+     "height": 48,
+     "width": 1017,
+     "text": "עובר ושב ופיקדונות · 5"
+    },
+    {
+     "depth": 5,
+     "tag": "h3",
+     "top": 2158,
+     "height": 29,
+     "width": 177,
+     "text": "עובר ושב ופיקדונות · 5"
+    },
+    {
+     "depth": 3,
+     "tag": "details",
+     "id": "costs-mutual-funds-and-money-market-funds",
+     "top": 2208,
+     "height": 48,
+     "width": 1017,
+     "text": "קרנות נאמנות וקרנות כספיות · 11"
+    },
+    {
+     "depth": 4,
+     "tag": "summary",
+     "top": 2208,
+     "height": 48,
+     "width": 1017,
+     "text": "קרנות נאמנות וקרנות כספיות · 11"
+    },
+    {
+     "depth": 5,
+     "tag": "h3",
+     "top": 2218,
+     "height": 29,
+     "width": 257,
+     "text": "קרנות נאמנות וקרנות כספיות · 11"
+    },
+    {
+     "depth": 3,
+     "tag": "details",
+     "id": "costs-kupat-gemel-lehashkaa",
+     "top": 2268,
+     "height": 48,
+     "width": 1017,
+     "text": "קופת גמל להשקעה · 2"
+    },
+    {
+     "depth": 4,
+     "tag": "summary",
+     "top": 2268,
+     "height": 48,
+     "width": 1017,
+     "text": "קופת גמל להשקעה · 2"
+    },
+    {
+     "depth": 5,
+     "tag": "h3",
+     "top": 2278,
+     "height": 29,
+     "width": 175,
+     "text": "קופת גמל להשקעה · 2"
+    },
+    {
+     "depth": 3,
+     "tag": "details",
+     "id": "costs-keren-hishtalmut",
+     "top": 2328,
+     "height": 48,
+     "width": 1017,
+     "text": "קרן השתלמות · 1"
+    },
+    {
+     "depth": 4,
+     "tag": "summary",
+     "top": 2328,
+     "height": 48,
+     "width": 1017,
+     "text": "קרן השתלמות · 1"
+    },
+    {
+     "depth": 5,
+     "tag": "h3",
+     "top": 2338,
+     "height": 29,
+     "width": 133,
+     "text": "קרן השתלמות · 1"
+    },
+    {
+     "depth": 3,
+     "tag": "details",
+     "id": "costs-pension-and-gemel-lekitzba",
+     "top": 2388,
+     "height": 48,
+     "width": 1017,
+     "text": "פנסיה וקופת גמל לקצבה · 4"
+    },
+    {
+     "depth": 4,
+     "tag": "summary",
+     "top": 2388,
+     "height": 48,
+     "width": 1017,
+     "text": "פנסיה וקופת גמל לקצבה · 4"
+    },
+    {
+     "depth": 5,
+     "tag": "h3",
+     "top": 2398,
+     "height": 29,
+     "width": 216,
+     "text": "פנסיה וקופת גמל לקצבה · 4"
+    },
+    {
+     "depth": 3,
+     "tag": "details",
+     "id": "costs-brokerage-account",
+     "top": 2448,
+     "height": 48,
+     "width": 1017,
+     "text": "חשבון ניירות ערך · 9"
+    },
+    {
+     "depth": 4,
+     "tag": "summary",
+     "top": 2448,
+     "height": 48,
+     "width": 1017,
+     "text": "חשבון ניירות ערך · 9"
+    },
+    {
+     "depth": 5,
+     "tag": "h3",
+     "top": 2458,
+     "height": 29,
+     "width": 158,
+     "text": "חשבון ניירות ערך · 9"
+    },
+    {
+     "depth": 3,
+     "tag": "details",
+     "id": "costs-etfs-and-index-funds",
+     "top": 2508,
+     "height": 48,
+     "width": 1017,
+     "text": "קרנות סל וקרנות מחקות · 9"
+    },
+    {
+     "depth": 4,
+     "tag": "summary",
+     "top": 2508,
+     "height": 48,
+     "width": 1017,
+     "text": "קרנות סל וקרנות מחקות · 9"
+    },
+    {
+     "depth": 5,
+     "tag": "h3",
+     "top": 2518,
+     "height": 29,
+     "width": 210,
+     "text": "קרנות סל וקרנות מחקות · 9"
+    },
+    {
+     "depth": 3,
+     "tag": "details",
+     "id": "costs-government-bonds-and-makam",
+     "top": 2568,
+     "height": 48,
+     "width": 1017,
+     "text": "אג״ח ממשלתיות ומק״מ · 4"
+    },
+    {
+     "depth": 4,
+     "tag": "summary",
+     "top": 2568,
+     "height": 48,
+     "width": 1017,
+     "text": "אג״ח ממשלתיות ומק״מ · 4"
+    },
+    {
+     "depth": 5,
+     "tag": "h3",
+     "top": 2578,
+     "height": 29,
+     "width": 205,
+     "text": "אג״ח ממשלתיות ומק״מ · 4"
+    },
+    {
+     "depth": 3,
+     "tag": "details",
+     "id": "costs-child-savings",
+     "top": 2628,
+     "height": 48,
+     "width": 1017,
+     "text": "חיסכון לכל ילד · 1"
+    },
+    {
+     "depth": 4,
+     "tag": "summary",
+     "top": 2628,
+     "height": 48,
+     "width": 1017,
+     "text": "חיסכון לכל ילד · 1"
+    },
+    {
+     "depth": 5,
+     "tag": "h3",
+     "top": 2638,
+     "height": 29,
+     "width": 141,
+     "text": "חיסכון לכל ילד · 1"
+    },
+    {
+     "depth": 3,
+     "tag": "details",
+     "id": "costs-ira-self-directed",
+     "top": 2688,
+     "height": 48,
+     "width": 1017,
+     "text": "ניהול אישי · 5"
+    },
+    {
+     "depth": 4,
+     "tag": "summary",
+     "top": 2688,
+     "height": 48,
+     "width": 1017,
+     "text": "ניהול אישי · 5"
+    },
+    {
+     "depth": 5,
+     "tag": "h3",
+     "top": 2698,
+     "height": 29,
+     "width": 109,
+     "text": "ניהול אישי · 5"
+    },
+    {
+     "depth": 3,
+     "tag": "details",
+     "id": "costs-switching-and-transfers",
+     "top": 2748,
+     "height": 48,
+     "width": 1017,
+     "text": "מעבר בין גופים והעברת כספים · 2"
+    },
+    {
+     "depth": 4,
+     "tag": "summary",
+     "top": 2748,
+     "height": 48,
+     "width": 1017,
+     "text": "מעבר בין גופים והעברת כספים · 2"
+    },
+    {
+     "depth": 5,
+     "tag": "h3",
+     "top": 2758,
+     "height": 29,
+     "width": 261,
+     "text": "מעבר בין גופים והעברת כספים · 2"
+    },
+    {
+     "depth": 3,
+     "tag": "details",
+     "id": "costs-provident-family-common",
+     "top": 2808,
+     "height": 48,
+     "width": 1017,
+     "text": "חוקים וכללים משותפים לכל קופות הגמל · 12"
+    },
+    {
+     "depth": 4,
+     "tag": "summary",
+     "top": 2808,
+     "height": 48,
+     "width": 1017,
+     "text": "חוקים וכללים משותפים לכל קופות הגמל · 12"
+    },
+    {
+     "depth": 5,
+     "tag": "h3",
+     "top": 2818,
+     "height": 29,
+     "width": 349,
+     "text": "חוקים וכללים משותפים לכל קופות הגמל · 12"
+    },
+    {
+     "depth": 3,
+     "tag": "details",
+     "id": "costs-tracks-catalogue-and-decoder",
+     "top": 2868,
+     "height": 48,
+     "width": 1017,
+     "text": "מסלולים והקטלוג · 5"
+    },
+    {
+     "depth": 4,
+     "tag": "summary",
+     "top": 2868,
+     "height": 48,
+     "width": 1017,
+     "text": "מסלולים והקטלוג · 5"
+    },
+    {
+     "depth": 5,
+     "tag": "h3",
+     "top": 2878,
+     "height": 29,
+     "width": 159,
+     "text": "מסלולים והקטלוג · 5"
+    },
+    {
+     "depth": 3,
+     "tag": "details",
+     "id": "costs-savings-policies-and-executive-insurance",
+     "top": 2928,
+     "height": 48,
+     "width": 1017,
+     "text": "פוליסות חיסכון וביטוח מנהלים · 1"
+    },
+    {
+     "depth": 4,
+     "tag": "summary",
+     "top": 2928,
+     "height": 48,
+     "width": 1017,
+     "text": "פוליסות חיסכון וביטוח מנהלים · 1"
+    },
+    {
+     "depth": 5,
+     "tag": "h3",
+     "top": 2938,
+     "height": 29,
+     "width": 260,
+     "text": "פוליסות חיסכון וביטוח מנהלים · 1"
+    },
+    {
+     "depth": 3,
+     "tag": "details",
+     "id": "costs-corporate-bonds",
+     "top": 2988,
+     "height": 48,
+     "width": 1017,
+     "text": "אג״ח קונצרניות · 1"
+    },
+    {
+     "depth": 4,
+     "tag": "summary",
+     "top": 2988,
+     "height": 48,
+     "width": 1017,
+     "text": "אג״ח קונצרניות · 1"
+    },
+    {
+     "depth": 5,
+     "tag": "h3",
+     "top": 2998,
+     "height": 29,
+     "width": 142,
+     "text": "אג״ח קונצרניות · 1"
+    },
+    {
+     "depth": 2,
+     "tag": "section",
+     "top": 3064,
+     "height": 840,
+     "width": 1017,
+     "text": "מה אפשר לעשות עם הכסף · 145 מתי אפשר למשוך, איך עוברים, מי רשאי להצטרף, תקרות הפקדה עובר ו"
+    },
+    {
+     "depth": 3,
+     "tag": "h2",
+     "id": "shelf-access",
+     "top": 3064,
+     "height": 34,
+     "width": 1017,
+     "text": "מה אפשר לעשות עם הכסף · 145"
+    },
+    {
+     "depth": 3,
+     "tag": "p",
+     "top": 3102,
+     "height": 22,
+     "width": 608,
+     "text": "מתי אפשר למשוך, איך עוברים, מי רשאי להצטרף, תקרות הפקדה"
+    },
+    {
+     "depth": 3,
+     "tag": "details",
+     "id": "access-bank-current-account-deposits",
+     "top": 3136,
+     "height": 48,
+     "width": 1017,
+     "text": "עובר ושב ופיקדונות · 7"
+    },
+    {
+     "depth": 4,
+     "tag": "summary",
+     "top": 3136,
+     "height": 48,
+     "width": 1017,
+     "text": "עובר ושב ופיקדונות · 7"
+    },
+    {
+     "depth": 5,
+     "tag": "h3",
+     "top": 3146,
+     "height": 29,
+     "width": 177,
+     "text": "עובר ושב ופיקדונות · 7"
+    },
+    {
+     "depth": 3,
+     "tag": "details",
+     "id": "access-mutual-funds-and-money-market-funds",
+     "top": 3196,
+     "height": 48,
+     "width": 1017,
+     "text": "קרנות נאמנות וקרנות כספיות · 11"
+    },
+    {
+     "depth": 4,
+     "tag": "summary",
+     "top": 3196,
+     "height": 48,
+     "width": 1017,
+     "text": "קרנות נאמנות וקרנות כספיות · 11"
+    },
+    {
+     "depth": 5,
+     "tag": "h3",
+     "top": 3206,
+     "height": 29,
+     "width": 257,
+     "text": "קרנות נאמנות וקרנות כספיות · 11"
+    },
+    {
+     "depth": 3,
+     "tag": "details",
+     "id": "access-kupat-gemel-lehashkaa",
+     "top": 3256,
+     "height": 48,
+     "width": 1017,
+     "text": "קופת גמל להשקעה · 11"
+    },
+    {
+     "depth": 4,
+     "tag": "summary",
+     "top": 3256,
+     "height": 48,
+     "width": 1017,
+     "text": "קופת גמל להשקעה · 11"
+    },
+    {
+     "depth": 5,
+     "tag": "h3",
+     "top": 3266,
+     "height": 29,
+     "width": 184,
+     "text": "קופת גמל להשקעה · 11"
+    },
+    {
+     "depth": 3,
+     "tag": "details",
+     "id": "access-keren-hishtalmut",
+     "top": 3316,
+     "height": 48,
+     "width": 1017,
+     "text": "קרן השתלמות · 15"
+    },
+    {
+     "depth": 4,
+     "tag": "summary",
+     "top": 3316,
+     "height": 48,
+     "width": 1017,
+     "text": "קרן השתלמות · 15"
+    },
+    {
+     "depth": 5,
+     "tag": "h3",
+     "top": 3326,
+     "height": 29,
+     "width": 142,
+     "text": "קרן השתלמות · 15"
+    },
+    {
+     "depth": 3,
+     "tag": "details",
+     "id": "access-pension-and-gemel-lekitzba",
+     "top": 3376,
+     "height": 48,
+     "width": 1017,
+     "text": "פנסיה וקופת גמל לקצבה · 15"
+    },
+    {
+     "depth": 4,
+     "tag": "summary",
+     "top": 3376,
+     "height": 48,
+     "width": 1017,
+     "text": "פנסיה וקופת גמל לקצבה · 15"
+    },
+    {
+     "depth": 5,
+     "tag": "h3",
+     "top": 3386,
+     "height": 29,
+     "width": 226,
+     "text": "פנסיה וקופת גמל לקצבה · 15"
+    },
+    {
+     "depth": 3,
+     "tag": "details",
+     "id": "access-brokerage-account",
+     "top": 3436,
+     "height": 48,
+     "width": 1017,
+     "text": "חשבון ניירות ערך · 1"
+    },
+    {
+     "depth": 4,
+     "tag": "summary",
+     "top": 3436,
+     "height": 48,
+     "width": 1017,
+     "text": "חשבון ניירות ערך · 1"
+    },
+    {
+     "depth": 5,
+     "tag": "h3",
+     "top": 3446,
+     "height": 29,
+     "width": 158,
+     "text": "חשבון ניירות ערך · 1"
+    },
+    {
+     "depth": 3,
+     "tag": "details",
+     "id": "access-etfs-and-index-funds",
+     "top": 3496,
+     "height": 48,
+     "width": 1017,
+     "text": "קרנות סל וקרנות מחקות · 8"
+    },
+    {
+     "depth": 4,
+     "tag": "summary",
+     "top": 3496,
+     "height": 48,
+     "width": 1017,
+     "text": "קרנות סל וקרנות מחקות · 8"
+    },
+    {
+     "depth": 5,
+     "tag": "h3",
+     "top": 3506,
+     "height": 29,
+     "width": 210,
+     "text": "קרנות סל וקרנות מחקות · 8"
+    },
+    {
+     "depth": 3,
+     "tag": "details",
+     "id": "access-government-bonds-and-makam",
+     "top": 3556,
+     "height": 48,
+     "width": 1017,
+     "text": "אג״ח ממשלתיות ומק״מ · 8"
+    },
+    {
+     "depth": 4,
+     "tag": "summary",
+     "top": 3556,
+     "height": 48,
+     "width": 1017,
+     "text": "אג״ח ממשלתיות ומק״מ · 8"
+    },
+    {
+     "depth": 5,
+     "tag": "h3",
+     "top": 3566,
+     "height": 29,
+     "width": 205,
+     "text": "אג״ח ממשלתיות ומק״מ · 8"
+    },
+    {
+     "depth": 3,
+     "tag": "details",
+     "id": "access-child-savings",
+     "top": 3616,
+     "height": 48,
+     "width": 1017,
+     "text": "חיסכון לכל ילד · 11"
+    },
+    {
+     "depth": 4,
+     "tag": "summary",
+     "top": 3616,
+     "height": 48,
+     "width": 1017,
+     "text": "חיסכון לכל ילד · 11"
+    },
+    {
+     "depth": 5,
+     "tag": "h3",
+     "top": 3626,
+     "height": 29,
+     "width": 150,
+     "text": "חיסכון לכל ילד · 11"
+    },
+    {
+     "depth": 3,
+     "tag": "details",
+     "id": "access-ira-self-directed",
+     "top": 3676,
+     "height": 48,
+     "width": 1017,
+     "text": "ניהול אישי · 10"
+    },
+    {
+     "depth": 4,
+     "tag": "summary",
+     "top": 3676,
+     "height": 48,
+     "width": 1017,
+     "text": "ניהול אישי · 10"
+    },
+    {
+     "depth": 5,
+     "tag": "h3",
+     "top": 3686,
+     "height": 29,
+     "width": 118,
+     "text": "ניהול אישי · 10"
+    },
+    {
+     "depth": 3,
+     "tag": "details",
+     "id": "access-switching-and-transfers",
+     "top": 3736,
+     "height": 48,
+     "width": 1017,
+     "text": "מעבר בין גופים והעברת כספים · 38"
+    },
+    {
+     "depth": 4,
+     "tag": "summary",
+     "top": 3736,
+     "height": 48,
+     "width": 1017,
+     "text": "מעבר בין גופים והעברת כספים · 38"
+    },
+    {
+     "depth": 5,
+     "tag": "h3",
+     "top": 3746,
+     "height": 29,
+     "width": 270,
+     "text": "מעבר בין גופים והעברת כספים · 38"
+    },
+    {
+     "depth": 3,
+     "tag": "details",
+     "id": "access-provident-family-common",
+     "top": 3796,
+     "height": 48,
+     "width": 1017,
+     "text": "חוקים וכללים משותפים לכל קופות הגמל · 8"
+    },
+    {
+     "depth": 4,
+     "tag": "summary",
+     "top": 3796,
+     "height": 48,
+     "width": 1017,
+     "text": "חוקים וכללים משותפים לכל קופות הגמל · 8"
+    },
+    {
+     "depth": 5,
+     "tag": "h3",
+     "top": 3806,
+     "height": 29,
+     "width": 340,
+     "text": "חוקים וכללים משותפים לכל קופות הגמל · 8"
+    },
+    {
+     "depth": 3,
+     "tag": "details",
+     "id": "access-tracks-catalogue-and-decoder",
+     "top": 3856,
+     "height": 48,
+     "width": 1017,
+     "text": "מסלולים והקטלוג · 2"
+    },
+    {
+     "depth": 4,
+     "tag": "summary",
+     "top": 3856,
+     "height": 48,
+     "width": 1017,
+     "text": "מסלולים והקטלוג · 2"
+    },
+    {
+     "depth": 5,
+     "tag": "h3",
+     "top": 3866,
+     "height": 29,
+     "width": 159,
+     "text": "מסלולים והקטלוג · 2"
+    },
+    {
+     "depth": 2,
+     "tag": "section",
+     "top": 3932,
+     "height": 960,
+     "width": 1017,
+     "text": "מי מפקח ומה מוגן · 76 מי מפקח, מה קורה אם החברה קורסת, מה מבוטח עובר ושב ופיקדונות · 1 קרנ"
+    },
+    {
+     "depth": 3,
+     "tag": "h2",
+     "id": "shelf-protection",
+     "top": 3932,
+     "height": 34,
+     "width": 1017,
+     "text": "מי מפקח ומה מוגן · 76"
+    },
+    {
+     "depth": 3,
+     "tag": "p",
+     "top": 3970,
+     "height": 22,
+     "width": 608,
+     "text": "מי מפקח, מה קורה אם החברה קורסת, מה מבוטח"
+    },
+    {
+     "depth": 3,
+     "tag": "details",
+     "id": "protection-bank-current-account-deposits",
+     "top": 4004,
+     "height": 48,
+     "width": 1017,
+     "text": "עובר ושב ופיקדונות · 1"
+    },
+    {
+     "depth": 4,
+     "tag": "summary",
+     "top": 4004,
+     "height": 48,
+     "width": 1017,
+     "text": "עובר ושב ופיקדונות · 1"
+    },
+    {
+     "depth": 5,
+     "tag": "h3",
+     "top": 4014,
+     "height": 29,
+     "width": 177,
+     "text": "עובר ושב ופיקדונות · 1"
+    },
+    {
+     "depth": 3,
+     "tag": "details",
+     "id": "protection-mutual-funds-and-money-market-funds",
+     "top": 4064,
+     "height": 48,
+     "width": 1017,
+     "text": "קרנות נאמנות וקרנות כספיות · 11"
+    },
+    {
+     "depth": 4,
+     "tag": "summary",
+     "top": 4064,
+     "height": 48,
+     "width": 1017,
+     "text": "קרנות נאמנות וקרנות כספיות · 11"
+    },
+    {
+     "depth": 5,
+     "tag": "h3",
+     "top": 4074,
+     "height": 29,
+     "width": 257,
+     "text": "קרנות נאמנות וקרנות כספיות · 11"
+    },
+    {
+     "depth": 3,
+     "tag": "details",
+     "id": "protection-kupat-gemel-lehashkaa",
+     "top": 4124,
+     "height": 48,
+     "width": 1017,
+     "text": "קופת גמל להשקעה · 1"
+    },
+    {
+     "depth": 4,
+     "tag": "summary",
+     "top": 4124,
+     "height": 48,
+     "width": 1017,
+     "text": "קופת גמל להשקעה · 1"
+    },
+    {
+     "depth": 5,
+     "tag": "h3",
+     "top": 4134,
+     "height": 29,
+     "width": 175,
+     "text": "קופת גמל להשקעה · 1"
+    },
+    {
+     "depth": 3,
+     "tag": "details",
+     "id": "protection-keren-hishtalmut",
+     "top": 4184,
+     "height": 48,
+     "width": 1017,
+     "text": "קרן השתלמות · 1"
+    },
+    {
+     "depth": 4,
+     "tag": "summary",
+     "top": 4184,
+     "height": 48,
+     "width": 1017,
+     "text": "קרן השתלמות · 1"
+    },
+    {
+     "depth": 5,
+     "tag": "h3",
+     "top": 4194,
+     "height": 29,
+     "width": 133,
+     "text": "קרן השתלמות · 1"
+    },
+    {
+     "depth": 3,
+     "tag": "details",
+     "id": "protection-pension-and-gemel-lekitzba",
+     "top": 4244,
+     "height": 48,
+     "width": 1017,
+     "text": "פנסיה וקופת גמל לקצבה · 10"
+    },
+    {
+     "depth": 4,
+     "tag": "summary",
+     "top": 4244,
+     "height": 48,
+     "width": 1017,
+     "text": "פנסיה וקופת גמל לקצבה · 10"
+    },
+    {
+     "depth": 5,
+     "tag": "h3",
+     "top": 4254,
+     "height": 29,
+     "width": 226,
+     "text": "פנסיה וקופת גמל לקצבה · 10"
+    },
+    {
+     "depth": 3,
+     "tag": "details",
+     "id": "protection-brokerage-account",
+     "top": 4304,
+     "height": 48,
+     "width": 1017,
+     "text": "חשבון ניירות ערך · 8"
+    },
+    {
+     "depth": 4,
+     "tag": "summary",
+     "top": 4304,
+     "height": 48,
+     "width": 1017,
+     "text": "חשבון ניירות ערך · 8"
+    },
+    {
+     "depth": 5,
+     "tag": "h3",
+     "top": 4314,
+     "height": 29,
+     "width": 158,
+     "text": "חשבון ניירות ערך · 8"
+    },
+    {
+     "depth": 3,
+     "tag": "details",
+     "id": "protection-etfs-and-index-funds",
+     "top": 4364,
+     "height": 48,
+     "width": 1017,
+     "text": "קרנות סל וקרנות מחקות · 7"
+    },
+    {
+     "depth": 4,
+     "tag": "summary",
+     "top": 4364,
+     "height": 48,
+     "width": 1017,
+     "text": "קרנות סל וקרנות מחקות · 7"
+    },
+    {
+     "depth": 5,
+     "tag": "h3",
+     "top": 4374,
+     "height": 29,
+     "width": 210,
+     "text": "קרנות סל וקרנות מחקות · 7"
+    },
+    {
+     "depth": 3,
+     "tag": "details",
+     "id": "protection-government-bonds-and-makam",
+     "top": 4424,
+     "height": 48,
+     "width": 1017,
+     "text": "אג״ח ממשלתיות ומק״מ · 2"
+    },
+    {
+     "depth": 4,
+     "tag": "summary",
+     "top": 4424,
+     "height": 48,
+     "width": 1017,
+     "text": "אג״ח ממשלתיות ומק״מ · 2"
+    },
+    {
+     "depth": 5,
+     "tag": "h3",
+     "top": 4434,
+     "height": 29,
+     "width": 205,
+     "text": "אג״ח ממשלתיות ומק״מ · 2"
+    },
+    {
+     "depth": 3,
+     "tag": "details",
+     "id": "protection-child-savings",
+     "top": 4484,
+     "height": 48,
+     "width": 1017,
+     "text": "חיסכון לכל ילד · 4"
+    },
+    {
+     "depth": 4,
+     "tag": "summary",
+     "top": 4484,
+     "height": 48,
+     "width": 1017,
+     "text": "חיסכון לכל ילד · 4"
+    },
+    {
+     "depth": 5,
+     "tag": "h3",
+     "top": 4494,
+     "height": 29,
+     "width": 141,
+     "text": "חיסכון לכל ילד · 4"
+    },
+    {
+     "depth": 3,
+     "tag": "details",
+     "id": "protection-ira-self-directed",
+     "top": 4544,
+     "height": 48,
+     "width": 1017,
+     "text": "ניהול אישי · 4"
+    },
+    {
+     "depth": 4,
+     "tag": "summary",
+     "top": 4544,
+     "height": 48,
+     "width": 1017,
+     "text": "ניהול אישי · 4"
+    },
+    {
+     "depth": 5,
+     "tag": "h3",
+     "top": 4554,
+     "height": 29,
+     "width": 109,
+     "text": "ניהול אישי · 4"
+    },
+    {
+     "depth": 3,
+     "tag": "details",
+     "id": "protection-switching-and-transfers",
+     "top": 4604,
+     "height": 48,
+     "width": 1017,
+     "text": "מעבר בין גופים והעברת כספים · 1"
+    },
+    {
+     "depth": 4,
+     "tag": "summary",
+     "top": 4604,
+     "height": 48,
+     "width": 1017,
+     "text": "מעבר בין גופים והעברת כספים · 1"
+    },
+    {
+     "depth": 5,
+     "tag": "h3",
+     "top": 4614,
+     "height": 29,
+     "width": 261,
+     "text": "מעבר בין גופים והעברת כספים · 1"
+    },
+    {
+     "depth": 3,
+     "tag": "details",
+     "id": "protection-provident-family-common",
+     "top": 4664,
+     "height": 48,
+     "width": 1017,
+     "text": "חוקים וכללים משותפים לכל קופות הגמל · 3"
+    },
+    {
+     "depth": 4,
+     "tag": "summary",
+     "top": 4664,
+     "height": 48,
+     "width": 1017,
+     "text": "חוקים וכללים משותפים לכל קופות הגמל · 3"
+    },
+    {
+     "depth": 5,
+     "tag": "h3",
+     "top": 4674,
+     "height": 29,
+     "width": 340,
+     "text": "חוקים וכללים משותפים לכל קופות הגמל · 3"
+    },
+    {
+     "depth": 3,
+     "tag": "details",
+     "id": "protection-regulators-and-protection",
+     "top": 4724,
+     "height": 48,
+     "width": 1017,
+     "text": "מי מפקח ומה מוגן · 17"
+    },
+    {
+     "depth": 4,
+     "tag": "summary",
+     "top": 4724,
+     "height": 48,
+     "width": 1017,
+     "text": "מי מפקח ומה מוגן · 17"
+    },
+    {
+     "depth": 5,
+     "tag": "h3",
+     "top": 4734,
+     "height": 29,
+     "width": 174,
+     "text": "מי מפקח ומה מוגן · 17"
+    },
+    {
+     "depth": 3,
+     "tag": "details",
+     "id": "protection-tracks-catalogue-and-decoder",
+     "top": 4784,
+     "height": 48,
+     "width": 1017,
+     "text": "מסלולים והקטלוג · 4"
+    },
+    {
+     "depth": 4,
+     "tag": "summary",
+     "top": 4784,
+     "height": 48,
+     "width": 1017,
+     "text": "מסלולים והקטלוג · 4"
+    },
+    {
+     "depth": 5,
+     "tag": "h3",
+     "top": 4794,
+     "height": 29,
+     "width": 159,
+     "text": "מסלולים והקטלוג · 4"
+    },
+    {
+     "depth": 3,
+     "tag": "details",
+     "id": "protection-corporate-bonds",
+     "top": 4844,
+     "height": 48,
+     "width": 1017,
+     "text": "אג״ח קונצרניות · 2"
+    },
+    {
+     "depth": 4,
+     "tag": "summary",
+     "top": 4844,
+     "height": 48,
+     "width": 1017,
+     "text": "אג״ח קונצרניות · 2"
+    },
+    {
+     "depth": 5,
+     "tag": "h3",
+     "top": 4854,
+     "height": 29,
+     "width": 142,
+     "text": "אג״ח קונצרניות · 2"
+    },
+    {
+     "depth": 2,
+     "tag": "section",
+     "top": 4920,
+     "height": 540,
+     "width": 1017,
+     "text": "איך המוצר בנוי · 33 מטבע, חלוקה, מדדים, מה כתוב בדוח ואיך קוראים לדברים עובר ושב ופיקדונות"
+    },
+    {
+     "depth": 3,
+     "tag": "h2",
+     "id": "shelf-structure",
+     "top": 4920,
+     "height": 34,
+     "width": 1017,
+     "text": "איך המוצר בנוי · 33"
+    },
+    {
+     "depth": 3,
+     "tag": "p",
+     "top": 4958,
+     "height": 22,
+     "width": 608,
+     "text": "מטבע, חלוקה, מדדים, מה כתוב בדוח ואיך קוראים לדברים"
+    },
+    {
+     "depth": 3,
+     "tag": "details",
+     "id": "structure-bank-current-account-deposits",
+     "top": 4992,
+     "height": 48,
+     "width": 1017,
+     "text": "עובר ושב ופיקדונות · 5"
+    },
+    {
+     "depth": 4,
+     "tag": "summary",
+     "top": 4992,
+     "height": 48,
+     "width": 1017,
+     "text": "עובר ושב ופיקדונות · 5"
+    },
+    {
+     "depth": 5,
+     "tag": "h3",
+     "top": 5002,
+     "height": 29,
+     "width": 177,
+     "text": "עובר ושב ופיקדונות · 5"
+    },
+    {
+     "depth": 3,
+     "tag": "details",
+     "id": "structure-mutual-funds-and-money-market-funds",
+     "top": 5052,
+     "height": 48,
+     "width": 1017,
+     "text": "קרנות נאמנות וקרנות כספיות · 2"
+    },
+    {
+     "depth": 4,
+     "tag": "summary",
+     "top": 5052,
+     "height": 48,
+     "width": 1017,
+     "text": "קרנות נאמנות וקרנות כספיות · 2"
+    },
+    {
+     "depth": 5,
+     "tag": "h3",
+     "top": 5062,
+     "height": 29,
+     "width": 248,
+     "text": "קרנות נאמנות וקרנות כספיות · 2"
+    },
+    {
+     "depth": 3,
+     "tag": "details",
+     "id": "structure-brokerage-account",
+     "top": 5112,
+     "height": 48,
+     "width": 1017,
+     "text": "חשבון ניירות ערך · 1"
+    },
+    {
+     "depth": 4,
+     "tag": "summary",
+     "top": 5112,
+     "height": 48,
+     "width": 1017,
+     "text": "חשבון ניירות ערך · 1"
+    },
+    {
+     "depth": 5,
+     "tag": "h3",
+     "top": 5122,
+     "height": 29,
+     "width": 158,
+     "text": "חשבון ניירות ערך · 1"
+    },
+    {
+     "depth": 3,
+     "tag": "details",
+     "id": "structure-etfs-and-index-funds",
+     "top": 5172,
+     "height": 48,
+     "width": 1017,
+     "text": "קרנות סל וקרנות מחקות · 12"
+    },
+    {
+     "depth": 4,
+     "tag": "summary",
+     "top": 5172,
+     "height": 48,
+     "width": 1017,
+     "text": "קרנות סל וקרנות מחקות · 12"
+    },
+    {
+     "depth": 5,
+     "tag": "h3",
+     "top": 5182,
+     "height": 29,
+     "width": 219,
+     "text": "קרנות סל וקרנות מחקות · 12"
+    },
+    {
+     "depth": 3,
+     "tag": "details",
+     "id": "structure-child-savings",
+     "top": 5232,
+     "height": 48,
+     "width": 1017,
+     "text": "חיסכון לכל ילד · 3"
+    },
+    {
+     "depth": 4,
+     "tag": "summary",
+     "top": 5232,
+     "height": 48,
+     "width": 1017,
+     "text": "חיסכון לכל ילד · 3"
+    },
+    {
+     "depth": 5,
+     "tag": "h3",
+     "top": 5242,
+     "height": 29,
+     "width": 141,
+     "text": "חיסכון לכל ילד · 3"
+    },
+    {
+     "depth": 3,
+     "tag": "details",
+     "id": "structure-ira-self-directed",
+     "top": 5292,
+     "height": 48,
+     "width": 1017,
+     "text": "ניהול אישי · 1"
+    },
+    {
+     "depth": 4,
+     "tag": "summary",
+     "top": 5292,
+     "height": 48,
+     "width": 1017,
+     "text": "ניהול אישי · 1"
+    },
+    {
+     "depth": 5,
+     "tag": "h3",
+     "top": 5302,
+     "height": 29,
+     "width": 109,
+     "text": "ניהול אישי · 1"
+    },
+    {
+     "depth": 3,
+     "tag": "details",
+     "id": "structure-provident-family-common",
+     "top": 5352,
+     "height": 48,
+     "width": 1017,
+     "text": "חוקים וכללים משותפים לכל קופות הגמל · 7"
+    },
+    {
+     "depth": 4,
+     "tag": "summary",
+     "top": 5352,
+     "height": 48,
+     "width": 1017,
+     "text": "חוקים וכללים משותפים לכל קופות הגמל · 7"
+    },
+    {
+     "depth": 5,
+     "tag": "h3",
+     "top": 5362,
+     "height": 29,
+     "width": 340,
+     "text": "חוקים וכללים משותפים לכל קופות הגמל · 7"
+    },
+    {
+     "depth": 3,
+     "tag": "details",
+     "id": "structure-tracks-catalogue-and-decoder",
+     "top": 5412,
+     "height": 48,
+     "width": 1017,
+     "text": "מסלולים והקטלוג · 2"
+    },
+    {
+     "depth": 4,
+     "tag": "summary",
+     "top": 5412,
+     "height": 48,
+     "width": 1017,
+     "text": "מסלולים והקטלוג · 2"
+    },
+    {
+     "depth": 5,
+     "tag": "h3",
+     "top": 5422,
+     "height": 29,
+     "width": 159,
+     "text": "מסלולים והקטלוג · 2"
+    },
+    {
+     "depth": 2,
+     "tag": "aside",
+     "top": 788,
+     "height": 609,
+     "width": 320,
+     "text": "הידעת? כשיתרת הזכות בעובר ושב של אדם פרטי עולה על 15,000.00 ₪ לפחות רבעון ברציפות, הבנק חי"
+    },
+    {
+     "depth": 3,
+     "tag": "h2",
+     "top": 805,
+     "height": 29,
+     "width": 286,
+     "text": "הידעת?"
+    },
+    {
+     "depth": 3,
+     "tag": "ul",
+     "top": 846,
+     "height": 482,
+     "width": 286,
+     "text": "כשיתרת הזכות בעובר ושב של אדם פרטי עולה על 15,000.00 ₪ לפחות רבעון ברציפות, הבנק חייב לשלו"
+    },
+    {
+     "depth": 4,
+     "tag": "p",
+     "top": 858,
+     "height": 113,
+     "width": 262,
+     "text": "כשיתרת הזכות בעובר ושב של אדם פרטי עולה על 15,000.00 ₪ לפחות רבעון ברציפות, הבנק חייב לשלו"
+    },
+    {
+     "depth": 4,
+     "tag": "p",
+     "top": 1001,
+     "height": 20,
+     "width": 262,
+     "text": "הכנסת"
+    },
+    {
+     "depth": 4,
+     "tag": "p",
+     "top": 1104,
+     "height": 113,
+     "width": 262,
+     "text": "מניות של חברות אמריקניות הן נכס אמריקני גם למי שאינו אמריקני: מעל 60,000.00 $ דולר בנכסים "
+    },
+    {
+     "depth": 4,
+     "tag": "p",
+     "top": 1247,
+     "height": 20,
+     "width": 262,
+     "text": "רשות המס האמריקאית (IRS)"
+    },
+    {
+     "depth": 1,
+     "tag": "footer",
+     "top": 5480,
+     "height": 140,
+     "width": 608,
+     "text": "123 ממקור לחצו על מספר כדי לראות מאיפה הוא. הכול נכתב מנוסח החוק או ממסמך של הרשות כשאפשר;"
+    },
+    {
+     "depth": 2,
+     "tag": "p",
+     "top": 5493,
+     "height": 22,
+     "width": 608,
+     "text": "123 ממקור לחצו על מספר כדי לראות מאיפה הוא."
+    },
+    {
+     "depth": 2,
+     "tag": "p",
+     "top": 5524,
+     "height": 44,
+     "width": 608,
+     "text": "הכול נכתב מנוסח החוק או ממסמך של הרשות כשאפשר; מה שנלקח ממסמך של חברה מסומן לידו. התאריך ה"
+    },
+    {
+     "depth": 2,
+     "tag": "p",
+     "top": 5576,
+     "height": 44,
+     "width": 608,
+     "text": "כאן רק חוקים וכללים שלא תלויים בחברה מסוימת. מה שכתוב רק במסמכים של חברה מסוימת מופיע בעמו"
+    }
+   ]
+  },
+  "claim1": {
+   "pageHeight": 4420,
+   "elements": [
+    {
+     "depth": 0,
+     "tag": "div",
+     "top": 65,
+     "height": 4135,
+     "width": 1361,
+     "text": "חוקים וכללים אמרו לכם משהו על הכסף, או שאתם קוראים תנאים של בנק או של חברה אחרת? כתבו את ז"
+    },
+    {
+     "depth": 1,
+     "tag": "header",
+     "top": 97,
+     "height": 183,
+     "width": 1361,
+     "text": "חוקים וכללים אמרו לכם משהו על הכסף, או שאתם קוראים תנאים של בנק או של חברה אחרת? כתבו את ז"
+    },
+    {
+     "depth": 2,
+     "tag": "h1",
+     "top": 97,
+     "height": 39,
+     "width": 1361,
+     "text": "חוקים וכללים"
+    },
+    {
+     "depth": 2,
+     "tag": "p",
+     "top": 144,
+     "height": 58,
+     "width": 608,
+     "text": "אמרו לכם משהו על הכסף, או שאתם קוראים תנאים של בנק או של חברה אחרת? כתבו את זה כאן, ותראו "
+    },
+    {
+     "depth": 2,
+     "tag": "input",
+     "id": "_R_6d2r5_",
+     "top": 217,
+     "height": 62,
+     "width": 1255,
+     "text": "כתבו מה אמרו לכם, או מה קראתם בתנאים"
+    },
+    {
+     "depth": 1,
+     "tag": "div",
+     "top": 300,
+     "height": 98,
+     "width": 1361,
+     "text": "סינון התוצאות נמצאו 26 חוקים וכללים · 1 אצל חברות"
+    },
+    {
+     "depth": 2,
+     "tag": "details",
+     "top": 300,
+     "height": 44,
+     "width": 1361,
+     "text": "סינון התוצאות"
+    },
+    {
+     "depth": 3,
+     "tag": "summary",
+     "top": 300,
+     "height": 44,
+     "width": 1361,
+     "text": "סינון התוצאות"
+    },
+    {
+     "depth": 3,
+     "tag": "ul",
+     "top": 370,
+     "height": 44,
+     "width": 1361,
+     "text": ""
+    },
+    {
+     "depth": 3,
+     "tag": "ul",
+     "top": 450,
+     "height": 148,
+     "width": 1361,
+     "text": ""
+    },
+    {
+     "depth": 3,
+     "tag": "ul",
+     "top": 608,
+     "height": 44,
+     "width": 1361,
+     "text": ""
+    },
+    {
+     "depth": 3,
+     "tag": "details",
+     "top": 662,
+     "height": 44,
+     "width": 1361,
+     "text": ""
+    },
+    {
+     "depth": 4,
+     "tag": "summary",
+     "top": 662,
+     "height": 44,
+     "width": 1361,
+     "text": ""
+    },
+    {
+     "depth": 4,
+     "tag": "ul",
+     "top": 706,
+     "height": 108,
+     "width": 1361,
+     "text": ""
+    },
+    {
+     "depth": 2,
+     "tag": "div",
+     "id": "rules-status",
+     "top": 354,
+     "height": 44,
+     "width": 1361,
+     "text": "נמצאו 26 חוקים וכללים · 1 אצל חברות"
+    },
+    {
+     "depth": 3,
+     "tag": "p",
+     "role": "status",
+     "top": 364,
+     "height": 22,
+     "width": 232,
+     "text": "נמצאו 26 חוקים וכללים · 1 אצל חברות"
+    },
+    {
+     "depth": 1,
+     "tag": "div",
+     "top": 418,
+     "height": 3623,
+     "width": 1361,
+     "text": "מה כתוב בחוק ובכללים · 26 TXH-09 · מתי אפשר למשוך מקרן השתלמות בלי מס חל על כולם סכומים שנ"
+    },
+    {
+     "depth": 2,
+     "tag": "section",
+     "top": 418,
+     "height": 3432,
+     "width": 1361,
+     "text": "מה כתוב בחוק ובכללים · 26 TXH-09 · מתי אפשר למשוך מקרן השתלמות בלי מס חל על כולם סכומים שנ"
+    },
+    {
+     "depth": 3,
+     "tag": "h2",
+     "top": 418,
+     "height": 29,
+     "width": 1361,
+     "text": "מה כתוב בחוק ובכללים · 26"
+    },
+    {
+     "depth": 3,
+     "tag": "ul",
+     "top": 457,
+     "height": 3339,
+     "width": 1361,
+     "text": "TXH-09 · מתי אפשר למשוך מקרן השתלמות בלי מס חל על כולם סכומים שנמשכים מהחשבון פטורים ממס א"
+    },
+    {
+     "depth": 4,
+     "tag": "li",
+     "id": "TXH-09",
+     "top": 457,
+     "height": 836,
+     "width": 675,
+     "text": "TXH-09 · מתי אפשר למשוך מקרן השתלמות בלי מס חל על כולם סכומים שנמשכים מהחשבון פטורים ממס א"
+    },
+    {
+     "depth": 5,
+     "tag": "header",
+     "top": 482,
+     "height": 52,
+     "width": 625,
+     "text": "TXH-09 · מתי אפשר למשוך מקרן השתלמות בלי מס חל על כולם"
+    },
+    {
+     "depth": 6,
+     "tag": "h2",
+     "top": 482,
+     "height": 25,
+     "width": 625,
+     "text": "TXH-09 · מתי אפשר למשוך מקרן השתלמות בלי מס"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 546,
+     "height": 112,
+     "width": 625,
+     "text": "סכומים שנמשכים מהחשבון פטורים ממס אם עברו שנות ההמתנה למשיכה פטורה ממועד התשלום הראשון של "
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 728,
+     "height": 22,
+     "width": 625,
+     "text": "״ייסגר החשבון לתשלומים נוספים״"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 755,
+     "height": 20,
+     "width": 625,
+     "text": "נבדק 25.10.2026"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 844,
+     "height": 20,
+     "width": 625,
+     "text": "נבדק 25.10.2026"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 907,
+     "height": 20,
+     "width": 625,
+     "text": "נבדק 25.10.2026"
+    },
+    {
+     "depth": 4,
+     "tag": "li",
+     "id": "TXH-10",
+     "top": 457,
+     "height": 1090,
+     "width": 675,
+     "text": "TXH-10 · משיכה פטורה בתקופה מקוצרת: גיל פרישה או השתלמות חל על כולם התקופה מתקצרת לשנות הה"
+    },
+    {
+     "depth": 5,
+     "tag": "header",
+     "top": 482,
+     "height": 52,
+     "width": 625,
+     "text": "TXH-10 · משיכה פטורה בתקופה מקוצרת: גיל פרישה או השתלמות חל על כולם"
+    },
+    {
+     "depth": 6,
+     "tag": "h2",
+     "top": 482,
+     "height": 25,
+     "width": 625,
+     "text": "TXH-10 · משיכה פטורה בתקופה מקוצרת: גיל פרישה או השתלמות"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 546,
+     "height": 157,
+     "width": 625,
+     "text": "התקופה מתקצרת לשנות ההמתנה המקוצרות ממועד התשלום הראשון למי שהגיע לגיל הפרישה, ולסכומים שש"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 773,
+     "height": 22,
+     "width": 625,
+     "text": "״שינוי גיל הפרישה לנשים״"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 799,
+     "height": 20,
+     "width": 625,
+     "text": "נבדק 26.10.2026"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 889,
+     "height": 20,
+     "width": 625,
+     "text": "נבדק 25.10.2026"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 979,
+     "height": 20,
+     "width": 625,
+     "text": "נבדק 25.10.2026"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 1069,
+     "height": 20,
+     "width": 625,
+     "text": "נבדק 25.10.2026"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 1132,
+     "height": 20,
+     "width": 625,
+     "text": "נבדק 25.10.2026"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 1194,
+     "height": 22,
+     "width": 625,
+     "text": "״(בחוק זה – גיל הפרישה)״"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 1221,
+     "height": 20,
+     "width": 625,
+     "text": "נבדק 26.10.2026"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 1446,
+     "height": 20,
+     "width": 625,
+     "text": "לא משתנה מעצמו"
+    },
+    {
+     "depth": 4,
+     "tag": "li",
+     "id": "TXH-19",
+     "top": 1559,
+     "height": 1217,
+     "width": 675,
+     "text": "TXH-19 · העברה לקרן השתלמות אחרת שומרת על הוותק חל על כולם מותר להעביר כסף מקרן השתלמות אח"
+    },
+    {
+     "depth": 5,
+     "tag": "header",
+     "top": 1584,
+     "height": 52,
+     "width": 625,
+     "text": "TXH-19 · העברה לקרן השתלמות אחרת שומרת על הוותק חל על כולם"
+    },
+    {
+     "depth": 6,
+     "tag": "h2",
+     "top": 1584,
+     "height": 25,
+     "width": 625,
+     "text": "TXH-19 · העברה לקרן השתלמות אחרת שומרת על הוותק"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 1648,
+     "height": 157,
+     "width": 625,
+     "text": "מותר להעביר כסף מקרן השתלמות אחת לאחרת. ההעברה נעשית לחשבון על שם העמית בקרן המקבלת, ולפי "
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 1875,
+     "height": 20,
+     "width": 625,
+     "text": "נבדק 25.10.2026"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 1965,
+     "height": 20,
+     "width": 625,
+     "text": "נבדק 25.10.2026"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 2082,
+     "height": 22,
+     "width": 625,
+     "text": "״לא ניתן להעביר חלק מן הכספים שנצברו לזכותו של עמית מקופה מעבירה שהיא קרן השתלמות״"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 2108,
+     "height": 20,
+     "width": 625,
+     "text": "נבדק 25.10.2026"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 2225,
+     "height": 20,
+     "width": 625,
+     "text": "נבדק 25.10.2026"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 2315,
+     "height": 20,
+     "width": 625,
+     "text": "נבדק 25.10.2026"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 2405,
+     "height": 22,
+     "width": 625,
+     "text": "״רק במעבר בין מסלולים, אך לא בין חברות מנהלות״"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 2431,
+     "height": 20,
+     "width": 625,
+     "text": "נבדק 25.10.2026"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 2521,
+     "height": 22,
+     "width": 625,
+     "text": "״ויראו לעניין דיני המס, את כל מועדי התשלום לקופה המעבירה כמועדי התשלום לקופה המקבלת״"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 2548,
+     "height": 20,
+     "width": 625,
+     "text": "נבדק 25.10.2026"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 2675,
+     "height": 20,
+     "width": 625,
+     "text": "לא משתנה מעצמו"
+    },
+    {
+     "depth": 4,
+     "tag": "li",
+     "id": "SW-20",
+     "top": 1559,
+     "height": 885,
+     "width": 675,
+     "text": "SW-20 · ניוד קרן השתלמות: בשלמותה, עם ההיסטוריה והוותק חל על כולם קרן השתלמות עוברת רק בשל"
+    },
+    {
+     "depth": 5,
+     "tag": "header",
+     "top": 1584,
+     "height": 52,
+     "width": 625,
+     "text": "SW-20 · ניוד קרן השתלמות: בשלמותה, עם ההיסטוריה והוותק חל על כולם"
+    },
+    {
+     "depth": 6,
+     "tag": "h2",
+     "top": 1584,
+     "height": 25,
+     "width": 625,
+     "text": "SW-20 · ניוד קרן השתלמות: בשלמותה, עם ההיסטוריה והוותק"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 1648,
+     "height": 90,
+     "width": 625,
+     "text": "קרן השתלמות עוברת רק בשלמותה, ורק לקרן השתלמות אחרת או, אם הכסף כבר ניתן למשיכה בלי מס, לק"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 1749,
+     "height": 24,
+     "width": 625,
+     "text": "נגזר מ־ PF-18 KH-14 KH-17 TXH-19"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 1777,
+     "height": 20,
+     "width": 625,
+     "text": "זו מסקנה משילוב של כמה חוקים וכללים, לא משפט אחד שנמצא במקור."
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 1808,
+     "height": 24,
+     "width": 625,
+     "text": "לדוגמה: הראל ועוד אחת"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 1902,
+     "height": 22,
+     "width": 625,
+     "text": "״לא ניתן להעביר חלק מן הכספים שנצברו לזכותו של עמית מקופה מעבירה שהיא קרן השתלמות״"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 1929,
+     "height": 20,
+     "width": 625,
+     "text": "נבדק 26.10.2026"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 2046,
+     "height": 22,
+     "width": 625,
+     "text": "״ובלבד שהעמית היה זכאי למשוך את הכספים בפטור ממס״"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 2072,
+     "height": 20,
+     "width": 625,
+     "text": "נבדק 26.10.2026"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 2189,
+     "height": 22,
+     "width": 625,
+     "text": "״מקרן השתלמות לקרן השתלמות אחרת״"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 2215,
+     "height": 20,
+     "width": 625,
+     "text": "נבדק 26.10.2026"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 2343,
+     "height": 20,
+     "width": 625,
+     "text": "לא משתנה מעצמו"
+    },
+    {
+     "depth": 4,
+     "tag": "li",
+     "id": "KH-17",
+     "top": 2788,
+     "height": 966,
+     "width": 675,
+     "text": "KH-17 · העברה מקרן השתלמות: כל היתרה, לקרן השתלמות אחרת חל על כולם עמית רשאי להעביר כסף בי"
+    },
+    {
+     "depth": 5,
+     "tag": "header",
+     "top": 2813,
+     "height": 52,
+     "width": 625,
+     "text": "KH-17 · העברה מקרן השתלמות: כל היתרה, לקרן השתלמות אחרת חל על כולם"
+    },
+    {
+     "depth": 6,
+     "tag": "h2",
+     "top": 2813,
+     "height": 25,
+     "width": 625,
+     "text": "KH-17 · העברה מקרן השתלמות: כל היתרה, לקרן השתלמות אחרת"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 2877,
+     "height": 112,
+     "width": 625,
+     "text": "עמית רשאי להעביר כסף בין קופות גמל ובין מסלולים. מקרן השתלמות מעבירים לקרן השתלמות אחרת, ו"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 3059,
+     "height": 20,
+     "width": 625,
+     "text": "נבדק 25.10.2026"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 3149,
+     "height": 20,
+     "width": 625,
+     "text": "נבדק 25.10.2026"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 3239,
+     "height": 22,
+     "width": 625,
+     "text": "״בתוך עשרה ימי עסקים״"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 3265,
+     "height": 20,
+     "width": 625,
+     "text": "נבדק 25.10.2026"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 3383,
+     "height": 22,
+     "width": 625,
+     "text": "״לא ניתן להעביר חלק מן הכספים שנצברו לזכותו של עמית מקופה מעבירה שהיא קרן השתלמות״"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 3409,
+     "height": 20,
+     "width": 625,
+     "text": "נבדק 25.10.2026"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 3499,
+     "height": 22,
+     "width": 625,
+     "text": "״רשאים עמיתים להעביר כספים מקופת גמל אחת לקופת גמל אחרת״"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 3525,
+     "height": 20,
+     "width": 625,
+     "text": "נבדק 25.10.2026"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 3653,
+     "height": 20,
+     "width": 625,
+     "text": "לא משתנה מעצמו"
+    },
+    {
+     "depth": 4,
+     "tag": "li",
+     "id": "PF-18",
+     "top": 2788,
+     "height": 1008,
+     "width": 675,
+     "text": "PF-18 · אפשר להעביר קרן השתלמות לחברה אחרת והשנים נשמרות: את כל היתרה, לא חלק ממנה חל על כ"
+    },
+    {
+     "depth": 5,
+     "tag": "header",
+     "top": 2813,
+     "height": 77,
+     "width": 625,
+     "text": "PF-18 · אפשר להעביר קרן השתלמות לחברה אחרת והשנים נשמרות: את כל היתרה, לא חלק ממנה חל על כ"
+    },
+    {
+     "depth": 6,
+     "tag": "h2",
+     "top": 2813,
+     "height": 50,
+     "width": 625,
+     "text": "PF-18 · אפשר להעביר קרן השתלמות לחברה אחרת והשנים נשמרות: את כל היתרה, לא חלק ממנה"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 2902,
+     "height": 112,
+     "width": 625,
+     "text": "אפשר להעביר קרן השתלמות לקרן השתלמות אחרת, גם בחברה מנהלת אחרת, והוותק נשמר. התנאי הוא שעו"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 3111,
+     "height": 22,
+     "width": 625,
+     "text": "״לא ניתן להעביר חלק מן הכספים שנצברו לזכותו של עמית מקופה מעבירה שהיא קרן השתלמות״"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 3138,
+     "height": 20,
+     "width": 625,
+     "text": "נבדק 25.10.2026"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 3255,
+     "height": 22,
+     "width": 625,
+     "text": "״או את חלקה״"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 3281,
+     "height": 20,
+     "width": 625,
+     "text": "נבדק 25.10.2026"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 3398,
+     "height": 22,
+     "width": 625,
+     "text": "״מקרן השתלמות לקרן השתלמות אחרת״"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 3425,
+     "height": 20,
+     "width": 625,
+     "text": "נבדק 26.10.2026"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 3542,
+     "height": 22,
+     "width": 625,
+     "text": "״כמועדי התשלום לקופה המקבלת״"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 3568,
+     "height": 20,
+     "width": 625,
+     "text": "נבדק 26.10.2026"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 3696,
+     "height": 20,
+     "width": 625,
+     "text": "לא משתנה מעצמו"
+    },
+    {
+     "depth": 2,
+     "tag": "section",
+     "top": 3878,
+     "height": 163,
+     "width": 1361,
+     "text": "מה כתוב אצל החברות במסמכי החברות שהאתר קרא אין כרגע נושא שמתאים למה שכתבתם. מה שהאתר כבר ק"
+    },
+    {
+     "depth": 3,
+     "tag": "h2",
+     "top": 3878,
+     "height": 29,
+     "width": 1361,
+     "text": "מה כתוב אצל החברות"
+    },
+    {
+     "depth": 3,
+     "tag": "p",
+     "top": 3917,
+     "height": 22,
+     "width": 1361,
+     "text": "במסמכי החברות שהאתר קרא אין כרגע נושא שמתאים למה שכתבתם."
+    },
+    {
+     "depth": 3,
+     "tag": "h3",
+     "top": 3955,
+     "height": 27,
+     "width": 1361,
+     "text": "מה שהאתר כבר קרא בתנאים של חברות"
+    },
+    {
+     "depth": 3,
+     "tag": "details",
+     "top": 3993,
+     "height": 48,
+     "width": 1361,
+     "text": "KH-13 · אלטשולר שחם והראל: משיכה להשתלמות לפי התקנון"
+    },
+    {
+     "depth": 4,
+     "tag": "summary",
+     "top": 3993,
+     "height": 48,
+     "width": 1361,
+     "text": "KH-13 · אלטשולר שחם והראל: משיכה להשתלמות לפי התקנון"
+    },
+    {
+     "depth": 4,
+     "tag": "header",
+     "top": 4041,
+     "height": 52,
+     "width": 1361,
+     "text": ""
+    },
+    {
+     "depth": 5,
+     "tag": "h2",
+     "top": 4041,
+     "height": 25,
+     "width": 1361,
+     "text": ""
+    },
+    {
+     "depth": 1,
+     "tag": "footer",
+     "top": 4061,
+     "height": 140,
+     "width": 608,
+     "text": "123 ממקור לחצו על מספר כדי לראות מאיפה הוא. הכול נכתב מנוסח החוק או ממסמך של הרשות כשאפשר;"
+    },
+    {
+     "depth": 2,
+     "tag": "p",
+     "top": 4074,
+     "height": 22,
+     "width": 608,
+     "text": "123 ממקור לחצו על מספר כדי לראות מאיפה הוא."
+    },
+    {
+     "depth": 2,
+     "tag": "p",
+     "top": 4104,
+     "height": 44,
+     "width": 608,
+     "text": "הכול נכתב מנוסח החוק או ממסמך של הרשות כשאפשר; מה שנלקח ממסמך של חברה מסומן לידו. התאריך ה"
+    },
+    {
+     "depth": 2,
+     "tag": "p",
+     "top": 4156,
+     "height": 44,
+     "width": 608,
+     "text": "כאן רק חוקים וכללים שלא תלויים בחברה מסוימת. מה שכתוב רק במסמכים של חברה מסוימת מופיע בעמו"
+    }
+   ]
+  },
+  "claim2": {
+   "pageHeight": 3404,
+   "elements": [
+    {
+     "depth": 0,
+     "tag": "div",
+     "top": 65,
+     "height": 3120,
+     "width": 1361,
+     "text": "חוקים וכללים אמרו לכם משהו על הכסף, או שאתם קוראים תנאים של בנק או של חברה אחרת? כתבו את ז"
+    },
+    {
+     "depth": 1,
+     "tag": "header",
+     "top": 97,
+     "height": 183,
+     "width": 1361,
+     "text": "חוקים וכללים אמרו לכם משהו על הכסף, או שאתם קוראים תנאים של בנק או של חברה אחרת? כתבו את ז"
+    },
+    {
+     "depth": 2,
+     "tag": "h1",
+     "top": 97,
+     "height": 39,
+     "width": 1361,
+     "text": "חוקים וכללים"
+    },
+    {
+     "depth": 2,
+     "tag": "p",
+     "top": 144,
+     "height": 58,
+     "width": 608,
+     "text": "אמרו לכם משהו על הכסף, או שאתם קוראים תנאים של בנק או של חברה אחרת? כתבו את זה כאן, ותראו "
+    },
+    {
+     "depth": 2,
+     "tag": "input",
+     "id": "_R_6d2r5_",
+     "top": 217,
+     "height": 62,
+     "width": 1255,
+     "text": "כתבו מה אמרו לכם, או מה קראתם בתנאים"
+    },
+    {
+     "depth": 1,
+     "tag": "div",
+     "top": 300,
+     "height": 98,
+     "width": 1361,
+     "text": "סינון התוצאות נמצאו 7 חוקים וכללים · 1 אצל חברות"
+    },
+    {
+     "depth": 2,
+     "tag": "details",
+     "top": 300,
+     "height": 44,
+     "width": 1361,
+     "text": "סינון התוצאות"
+    },
+    {
+     "depth": 3,
+     "tag": "summary",
+     "top": 300,
+     "height": 44,
+     "width": 1361,
+     "text": "סינון התוצאות"
+    },
+    {
+     "depth": 3,
+     "tag": "ul",
+     "top": 370,
+     "height": 44,
+     "width": 1361,
+     "text": ""
+    },
+    {
+     "depth": 3,
+     "tag": "ul",
+     "top": 450,
+     "height": 148,
+     "width": 1361,
+     "text": ""
+    },
+    {
+     "depth": 3,
+     "tag": "ul",
+     "top": 608,
+     "height": 44,
+     "width": 1361,
+     "text": ""
+    },
+    {
+     "depth": 3,
+     "tag": "details",
+     "top": 662,
+     "height": 44,
+     "width": 1361,
+     "text": ""
+    },
+    {
+     "depth": 4,
+     "tag": "summary",
+     "top": 662,
+     "height": 44,
+     "width": 1361,
+     "text": ""
+    },
+    {
+     "depth": 4,
+     "tag": "ul",
+     "top": 706,
+     "height": 108,
+     "width": 1361,
+     "text": ""
+    },
+    {
+     "depth": 2,
+     "tag": "div",
+     "id": "rules-status",
+     "top": 354,
+     "height": 44,
+     "width": 1361,
+     "text": "נמצאו 7 חוקים וכללים · 1 אצל חברות"
+    },
+    {
+     "depth": 3,
+     "tag": "p",
+     "role": "status",
+     "top": 364,
+     "height": 22,
+     "width": 223,
+     "text": "נמצאו 7 חוקים וכללים · 1 אצל חברות"
+    },
+    {
+     "depth": 1,
+     "tag": "div",
+     "top": 418,
+     "height": 2607,
+     "width": 1361,
+     "text": "מה כתוב בחוק ובכללים · 7 TXS-01 · מס על רווח הון ממניות שנסחרות בישראל חל על כולם יחיד משל"
+    },
+    {
+     "depth": 2,
+     "tag": "section",
+     "top": 418,
+     "height": 2417,
+     "width": 1361,
+     "text": "מה כתוב בחוק ובכללים · 7 TXS-01 · מס על רווח הון ממניות שנסחרות בישראל חל על כולם יחיד משל"
+    },
+    {
+     "depth": 3,
+     "tag": "h2",
+     "top": 418,
+     "height": 29,
+     "width": 1361,
+     "text": "מה כתוב בחוק ובכללים · 7"
+    },
+    {
+     "depth": 3,
+     "tag": "ul",
+     "top": 457,
+     "height": 2324,
+     "width": 1361,
+     "text": "TXS-01 · מס על רווח הון ממניות שנסחרות בישראל חל על כולם יחיד משלם מס על רווח הון ריאלי ממ"
+    },
+    {
+     "depth": 4,
+     "tag": "li",
+     "id": "TXS-01",
+     "top": 457,
+     "height": 844,
+     "width": 675,
+     "text": "TXS-01 · מס על רווח הון ממניות שנסחרות בישראל חל על כולם יחיד משלם מס על רווח הון ריאלי ממ"
+    },
+    {
+     "depth": 5,
+     "tag": "header",
+     "top": 482,
+     "height": 52,
+     "width": 625,
+     "text": "TXS-01 · מס על רווח הון ממניות שנסחרות בישראל חל על כולם"
+    },
+    {
+     "depth": 6,
+     "tag": "h2",
+     "top": 482,
+     "height": 25,
+     "width": 625,
+     "text": "TXS-01 · מס על רווח הון ממניות שנסחרות בישראל"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 546,
+     "height": 90,
+     "width": 625,
+     "text": "יחיד משלם מס על רווח הון ריאלי ממניות שנסחרות בבורסה בישראל לפי מדרגות המס שלו, אבל לא יות"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 706,
+     "height": 22,
+     "width": 625,
+     "text": "״בשיעור שלא יעלה על 25%״"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 732,
+     "height": 20,
+     "width": 625,
+     "text": "נבדק 25.10.2026"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 795,
+     "height": 22,
+     "width": 625,
+     "text": "״רווחי הון מניירות ערך סחירים בבורסה שנמכרו בשנת המס חייבים במס בשיעור של עד 25%״"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 821,
+     "height": 20,
+     "width": 625,
+     "text": "נבדק 25.10.2026"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 884,
+     "height": 20,
+     "width": 625,
+     "text": "נבדק 25.10.2026"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 947,
+     "height": 22,
+     "width": 625,
+     "text": "״בעל מניות מהותי״"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 973,
+     "height": 20,
+     "width": 625,
+     "text": "נבדק 25.10.2026"
+    },
+    {
+     "depth": 4,
+     "tag": "li",
+     "id": "TXS-09",
+     "top": 457,
+     "height": 928,
+     "width": 675,
+     "text": "TXS-09 · קרן פטורה: מה החוסך משלם במכירה או בפדיון חל על כולם הרווח הריאלי של יחיד ממכירה "
+    },
+    {
+     "depth": 5,
+     "tag": "header",
+     "top": 482,
+     "height": 52,
+     "width": 625,
+     "text": "TXS-09 · קרן פטורה: מה החוסך משלם במכירה או בפדיון חל על כולם"
+    },
+    {
+     "depth": 6,
+     "tag": "h2",
+     "top": 482,
+     "height": 25,
+     "width": 625,
+     "text": "TXS-09 · קרן פטורה: מה החוסך משלם במכירה או בפדיון"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 546,
+     "height": 134,
+     "width": 625,
+     "text": "הרווח הריאלי של יחיד ממכירה או מפדיון של יחידה בקרן פטורה ממוסה לכל היותר בשיעור המס על הר"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 751,
+     "height": 20,
+     "width": 625,
+     "text": "נבדק 25.10.2026"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 840,
+     "height": 22,
+     "width": 625,
+     "text": "״במכירת יחידה בקרן נאמנות פטורה״"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 867,
+     "height": 20,
+     "width": 625,
+     "text": "נבדק 25.10.2026"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 984,
+     "height": 45,
+     "width": 625,
+     "text": "״בעל יחידה בקרן נאמנות פטורה, רווח הון ריאלי בשל מכירה או פדיון של יחידה, ינכה ממנו מס בשי"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 1033,
+     "height": 20,
+     "width": 625,
+     "text": "נבדק 25.10.2026"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 1284,
+     "height": 20,
+     "width": 625,
+     "text": "לא משתנה מעצמו"
+    },
+    {
+     "depth": 4,
+     "tag": "li",
+     "id": "TXS-07",
+     "top": 1397,
+     "height": 521,
+     "width": 675,
+     "text": "TXS-07 · שני מסלולי מס לקרן נאמנות ישראלית, לפי התשקיף חל על כולם לפקודה יש שני סוגים של ק"
+    },
+    {
+     "depth": 5,
+     "tag": "header",
+     "top": 1422,
+     "height": 52,
+     "width": 625,
+     "text": "TXS-07 · שני מסלולי מס לקרן נאמנות ישראלית, לפי התשקיף חל על כולם"
+    },
+    {
+     "depth": 6,
+     "tag": "h2",
+     "top": 1422,
+     "height": 25,
+     "width": 625,
+     "text": "TXS-07 · שני מסלולי מס לקרן נאמנות ישראלית, לפי התשקיף"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 1486,
+     "height": 134,
+     "width": 625,
+     "text": "לפקודה יש שני סוגים של קרן נאמנות. קרן חייבת היא קרן שהסכם הקרן או התשקיף שלה קובעים שהיא "
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 1664,
+     "height": 22,
+     "width": 625,
+     "text": "״בקביעה שאינה ניתנת לשינוי״"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 1690,
+     "height": 20,
+     "width": 625,
+     "text": "נבדק 26.10.2026"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 1818,
+     "height": 20,
+     "width": 625,
+     "text": "לא משתנה מעצמו"
+    },
+    {
+     "depth": 4,
+     "tag": "li",
+     "id": "TXF-05",
+     "top": 1397,
+     "height": 711,
+     "width": 675,
+     "text": "TXF-05 · קרן חוץ בבורסה: ניכוי במקור ישראלי כבכל נייר סחיר חל על כולם מאחר שקרן חוץ היא יח"
+    },
+    {
+     "depth": 5,
+     "tag": "header",
+     "top": 1422,
+     "height": 52,
+     "width": 625,
+     "text": "TXF-05 · קרן חוץ בבורסה: ניכוי במקור ישראלי כבכל נייר סחיר חל על כולם"
+    },
+    {
+     "depth": 6,
+     "tag": "h2",
+     "top": 1422,
+     "height": 25,
+     "width": 625,
+     "text": "TXF-05 · קרן חוץ בבורסה: ניכוי במקור ישראלי כבכל נייר סחיר"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 1486,
+     "height": 112,
+     "width": 625,
+     "text": "מאחר שקרן חוץ היא יחידה לפי חוק השקעות משותפות בנאמנות, חלות עליה הוראות הניכוי במקור שחלו"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 1696,
+     "height": 22,
+     "width": 625,
+     "text": "״ינכה מס בשיעור של 25% מרווח ההון הריאלי״"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 1722,
+     "height": 20,
+     "width": 625,
+     "text": "נבדק 25.10.2026"
+    },
+    {
+     "depth": 4,
+     "tag": "li",
+     "id": "TXS-19",
+     "top": 2120,
+     "height": 661,
+     "width": 675,
+     "text": "TXS-19 · קיזוז בבנק לעומת קיזוז בין מוסדות חל על כולם בחישוב הרווח לניכוי במקור, הבנק או ח"
+    },
+    {
+     "depth": 5,
+     "tag": "header",
+     "top": 2145,
+     "height": 52,
+     "width": 625,
+     "text": "TXS-19 · קיזוז בבנק לעומת קיזוז בין מוסדות חל על כולם"
+    },
+    {
+     "depth": 6,
+     "tag": "h2",
+     "top": 2145,
+     "height": 25,
+     "width": 625,
+     "text": "TXS-19 · קיזוז בבנק לעומת קיזוז בין מוסדות"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 2209,
+     "height": 157,
+     "width": 625,
+     "text": "בחישוב הרווח לניכוי במקור, הבנק או חבר הבורסה מקזז הפסדי הון מניירות ערך רק אם ההפסד נוצר "
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 2463,
+     "height": 22,
+     "width": 625,
+     "text": "״הרווח נוצר באותה שנת מס שבה נוצר ההפסד״"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 2490,
+     "height": 20,
+     "width": 625,
+     "text": "נבדק 25.10.2026"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 2552,
+     "height": 20,
+     "width": 625,
+     "text": "נבדק 25.10.2026"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 2680,
+     "height": 20,
+     "width": 625,
+     "text": "לא משתנה מעצמו"
+    },
+    {
+     "depth": 4,
+     "tag": "li",
+     "id": "TXF-22",
+     "top": 2120,
+     "height": 615,
+     "width": 675,
+     "text": "TXF-22 · מכירה אצל ברוקר זר בלי ניכוי: מקדמות חצי-שנתיות ודוח חל על כולם כשלא נוכה מס במקו"
+    },
+    {
+     "depth": 5,
+     "tag": "header",
+     "top": 2145,
+     "height": 52,
+     "width": 625,
+     "text": "TXF-22 · מכירה אצל ברוקר זר בלי ניכוי: מקדמות חצי-שנתיות ודוח חל על כולם"
+    },
+    {
+     "depth": 6,
+     "tag": "h2",
+     "top": 2145,
+     "height": 25,
+     "width": 625,
+     "text": "TXF-22 · מכירה אצל ברוקר זר בלי ניכוי: מקדמות חצי-שנתיות ודוח"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 2209,
+     "height": 112,
+     "width": 625,
+     "text": "כשלא נוכה מס במקור במכירת נייר ערך הרשום למסחר בבורסה, בישראל או בחו\"ל, והמוכר חייב בהגשת "
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 2391,
+     "height": 22,
+     "width": 625,
+     "text": "״ביום 31 ביולי וביום 31 בינואר של כל שנת מס״"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 2418,
+     "height": 20,
+     "width": 625,
+     "text": "נבדק 26.10.2026"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 2480,
+     "height": 22,
+     "width": 625,
+     "text": "״דיווח ותשלום מקדמות בגין עסקאות בניירות״"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 2507,
+     "height": 20,
+     "width": 625,
+     "text": "נבדק 25.10.2026"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 2634,
+     "height": 20,
+     "width": 625,
+     "text": "לא משתנה מעצמו"
+    },
+    {
+     "depth": 2,
+     "tag": "section",
+     "top": 2862,
+     "height": 163,
+     "width": 1361,
+     "text": "מה כתוב אצל החברות במסמכי החברות שהאתר קרא אין כרגע נושא שמתאים למה שכתבתם. מה שהאתר כבר ק"
+    },
+    {
+     "depth": 3,
+     "tag": "h2",
+     "top": 2862,
+     "height": 29,
+     "width": 1361,
+     "text": "מה כתוב אצל החברות"
+    },
+    {
+     "depth": 3,
+     "tag": "p",
+     "top": 2901,
+     "height": 22,
+     "width": 1361,
+     "text": "במסמכי החברות שהאתר קרא אין כרגע נושא שמתאים למה שכתבתם."
+    },
+    {
+     "depth": 3,
+     "tag": "h3",
+     "top": 2940,
+     "height": 27,
+     "width": 1361,
+     "text": "מה שהאתר כבר קרא בתנאים של חברות"
+    },
+    {
+     "depth": 3,
+     "tag": "details",
+     "top": 2977,
+     "height": 48,
+     "width": 1361,
+     "text": "BANK-34 · תשעה בנקים: הפריים כעוגן, וכל בנק מגדיר אותו"
+    },
+    {
+     "depth": 4,
+     "tag": "summary",
+     "top": 2977,
+     "height": 48,
+     "width": 1361,
+     "text": "BANK-34 · תשעה בנקים: הפריים כעוגן, וכל בנק מגדיר אותו"
+    },
+    {
+     "depth": 4,
+     "tag": "header",
+     "top": 3025,
+     "height": 52,
+     "width": 1361,
+     "text": ""
+    },
+    {
+     "depth": 5,
+     "tag": "h2",
+     "top": 3025,
+     "height": 25,
+     "width": 1361,
+     "text": ""
+    },
+    {
+     "depth": 1,
+     "tag": "footer",
+     "top": 3045,
+     "height": 140,
+     "width": 608,
+     "text": "123 ממקור לחצו על מספר כדי לראות מאיפה הוא. הכול נכתב מנוסח החוק או ממסמך של הרשות כשאפשר;"
+    },
+    {
+     "depth": 2,
+     "tag": "p",
+     "top": 3058,
+     "height": 22,
+     "width": 608,
+     "text": "123 ממקור לחצו על מספר כדי לראות מאיפה הוא."
+    },
+    {
+     "depth": 2,
+     "tag": "p",
+     "top": 3088,
+     "height": 44,
+     "width": 608,
+     "text": "הכול נכתב מנוסח החוק או ממסמך של הרשות כשאפשר; מה שנלקח ממסמך של חברה מסומן לידו. התאריך ה"
+    },
+    {
+     "depth": 2,
+     "tag": "p",
+     "top": 3141,
+     "height": 44,
+     "width": 608,
+     "text": "כאן רק חוקים וכללים שלא תלויים בחברה מסוימת. מה שכתוב רק במסמכים של חברה מסוימת מופיע בעמו"
+    }
+   ]
+  },
+  "claim3": {
+   "pageHeight": 4684,
+   "elements": [
+    {
+     "depth": 0,
+     "tag": "div",
+     "top": 65,
+     "height": 4399,
+     "width": 1361,
+     "text": "חוקים וכללים אמרו לכם משהו על הכסף, או שאתם קוראים תנאים של בנק או של חברה אחרת? כתבו את ז"
+    },
+    {
+     "depth": 1,
+     "tag": "header",
+     "top": 97,
+     "height": 183,
+     "width": 1361,
+     "text": "חוקים וכללים אמרו לכם משהו על הכסף, או שאתם קוראים תנאים של בנק או של חברה אחרת? כתבו את ז"
+    },
+    {
+     "depth": 2,
+     "tag": "h1",
+     "top": 97,
+     "height": 39,
+     "width": 1361,
+     "text": "חוקים וכללים"
+    },
+    {
+     "depth": 2,
+     "tag": "p",
+     "top": 144,
+     "height": 58,
+     "width": 608,
+     "text": "אמרו לכם משהו על הכסף, או שאתם קוראים תנאים של בנק או של חברה אחרת? כתבו את זה כאן, ותראו "
+    },
+    {
+     "depth": 2,
+     "tag": "input",
+     "id": "_R_6d2r5_",
+     "top": 217,
+     "height": 62,
+     "width": 1255,
+     "text": "כתבו מה אמרו לכם, או מה קראתם בתנאים"
+    },
+    {
+     "depth": 1,
+     "tag": "div",
+     "top": 300,
+     "height": 98,
+     "width": 1361,
+     "text": "סינון התוצאות נמצאו 5 חוקים וכללים"
+    },
+    {
+     "depth": 2,
+     "tag": "details",
+     "top": 300,
+     "height": 44,
+     "width": 1361,
+     "text": "סינון התוצאות"
+    },
+    {
+     "depth": 3,
+     "tag": "summary",
+     "top": 300,
+     "height": 44,
+     "width": 1361,
+     "text": "סינון התוצאות"
+    },
+    {
+     "depth": 3,
+     "tag": "ul",
+     "top": 370,
+     "height": 44,
+     "width": 1361,
+     "text": ""
+    },
+    {
+     "depth": 3,
+     "tag": "ul",
+     "top": 450,
+     "height": 148,
+     "width": 1361,
+     "text": ""
+    },
+    {
+     "depth": 3,
+     "tag": "ul",
+     "top": 608,
+     "height": 44,
+     "width": 1361,
+     "text": ""
+    },
+    {
+     "depth": 3,
+     "tag": "details",
+     "top": 662,
+     "height": 44,
+     "width": 1361,
+     "text": ""
+    },
+    {
+     "depth": 4,
+     "tag": "summary",
+     "top": 662,
+     "height": 44,
+     "width": 1361,
+     "text": ""
+    },
+    {
+     "depth": 4,
+     "tag": "ul",
+     "top": 706,
+     "height": 108,
+     "width": 1361,
+     "text": ""
+    },
+    {
+     "depth": 2,
+     "tag": "div",
+     "id": "rules-status",
+     "top": 354,
+     "height": 44,
+     "width": 1361,
+     "text": "נמצאו 5 חוקים וכללים"
+    },
+    {
+     "depth": 3,
+     "tag": "p",
+     "role": "status",
+     "top": 364,
+     "height": 22,
+     "width": 132,
+     "text": "נמצאו 5 חוקים וכללים"
+    },
+    {
+     "depth": 1,
+     "tag": "div",
+     "top": 418,
+     "height": 3887,
+     "width": 1361,
+     "text": "מה כתוב בחוק ובכללים · 5 KH-18 · מעבר בין מסלולים בתוך הקרן: מתי ואיך הכסף עובר חל על כולם"
+    },
+    {
+     "depth": 2,
+     "tag": "section",
+     "top": 418,
+     "height": 3798,
+     "width": 1361,
+     "text": "מה כתוב בחוק ובכללים · 5 KH-18 · מעבר בין מסלולים בתוך הקרן: מתי ואיך הכסף עובר חל על כולם"
+    },
+    {
+     "depth": 3,
+     "tag": "h2",
+     "top": 418,
+     "height": 29,
+     "width": 1361,
+     "text": "מה כתוב בחוק ובכללים · 5"
+    },
+    {
+     "depth": 3,
+     "tag": "ul",
+     "top": 457,
+     "height": 3759,
+     "width": 1361,
+     "text": "KH-18 · מעבר בין מסלולים בתוך הקרן: מתי ואיך הכסף עובר חל על כולם עמית רשאי להעביר כסף ממס"
+    },
+    {
+     "depth": 4,
+     "tag": "li",
+     "id": "KH-18",
+     "top": 457,
+     "height": 903,
+     "width": 675,
+     "text": "KH-18 · מעבר בין מסלולים בתוך הקרן: מתי ואיך הכסף עובר חל על כולם עמית רשאי להעביר כסף ממס"
+    },
+    {
+     "depth": 5,
+     "tag": "header",
+     "top": 482,
+     "height": 52,
+     "width": 625,
+     "text": "KH-18 · מעבר בין מסלולים בתוך הקרן: מתי ואיך הכסף עובר חל על כולם"
+    },
+    {
+     "depth": 6,
+     "tag": "h2",
+     "top": 482,
+     "height": 25,
+     "width": 625,
+     "text": "KH-18 · מעבר בין מסלולים בתוך הקרן: מתי ואיך הכסף עובר"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 546,
+     "height": 112,
+     "width": 625,
+     "text": "עמית רשאי להעביר כסף ממסלול השקעה למסלול אחר באותה קרן, או לפצל בין מסלולים. לפי כללי מס ה"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 670,
+     "height": 24,
+     "width": 625,
+     "text": "נגזר מ־ TXH-17 PF-01"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 697,
+     "height": 20,
+     "width": 625,
+     "text": "זו מסקנה משילוב של כמה חוקים וכללים, לא משפט אחד שנמצא במקור."
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 787,
+     "height": 45,
+     "width": 625,
+     "text": "״העברת כספים ממסלול למסלול תיעשה בתוך שלושה ימי עסקים, אלא אם כן נקבעה בתקנון הקופה תקופה "
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 836,
+     "height": 20,
+     "width": 625,
+     "text": "נבדק 25.10.2026"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 926,
+     "height": 22,
+     "width": 625,
+     "text": "״רשאית הקופה לדחות את מועד התשלום ליום העסקים הרביעי באותו חודש״"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 952,
+     "height": 20,
+     "width": 625,
+     "text": "נבדק 25.10.2026"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 1042,
+     "height": 20,
+     "width": 625,
+     "text": "נבדק 25.10.2026"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 1132,
+     "height": 20,
+     "width": 625,
+     "text": "נבדק 25.10.2026"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 1260,
+     "height": 20,
+     "width": 625,
+     "text": "לא משתנה מעצמו"
+    },
+    {
+     "depth": 4,
+     "tag": "li",
+     "id": "TXH-17",
+     "top": 457,
+     "height": 594,
+     "width": 675,
+     "text": "TXH-17 · מעבר מסלול בתוך הקרן אינו אירוע מס חל על כולם שינוי הרכב הנכסים בקרן השתלמות, כלו"
+    },
+    {
+     "depth": 5,
+     "tag": "header",
+     "top": 482,
+     "height": 52,
+     "width": 625,
+     "text": "TXH-17 · מעבר מסלול בתוך הקרן אינו אירוע מס חל על כולם"
+    },
+    {
+     "depth": 6,
+     "tag": "h2",
+     "top": 482,
+     "height": 25,
+     "width": 625,
+     "text": "TXH-17 · מעבר מסלול בתוך הקרן אינו אירוע מס"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 546,
+     "height": 90,
+     "width": 625,
+     "text": "שינוי הרכב הנכסים בקרן השתלמות, כלומר מעבר בין מסלולים, לא יוצר מס רווחי הון; המס נדחה, בנ"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 706,
+     "height": 22,
+     "width": 625,
+     "text": "״פטור ממס רווחי הון בעת שינוי הרכב הנכסים (דחיית מס)״"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 732,
+     "height": 20,
+     "width": 625,
+     "text": "נבדק 25.10.2026"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 822,
+     "height": 20,
+     "width": 625,
+     "text": "נבדק 25.10.2026"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 950,
+     "height": 20,
+     "width": 625,
+     "text": "לא משתנה מעצמו"
+    },
+    {
+     "depth": 4,
+     "tag": "li",
+     "id": "TXS-21",
+     "top": 1372,
+     "height": 642,
+     "width": 675,
+     "text": "TXS-21 · מעבר בין קרנות או ניירות ערך הוא מכירה חל על כולם מכירה לפי הפקודה כוללת חליפין, "
+    },
+    {
+     "depth": 5,
+     "tag": "header",
+     "top": 1397,
+     "height": 52,
+     "width": 625,
+     "text": "TXS-21 · מעבר בין קרנות או ניירות ערך הוא מכירה חל על כולם"
+    },
+    {
+     "depth": 6,
+     "tag": "h2",
+     "top": 1397,
+     "height": 25,
+     "width": 625,
+     "text": "TXS-21 · מעבר בין קרנות או ניירות ערך הוא מכירה"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 1461,
+     "height": 112,
+     "width": 625,
+     "text": "מכירה לפי הפקודה כוללת חליפין, ויתור, הסבה, העברה, הענקה, מתנה ופדיון, וכל אירוע אחר שבו נ"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 1616,
+     "height": 22,
+     "width": 625,
+     "text": "״לרבות חליפין, ויתור, הסבה, העברה, הענקה, מתנה, פדיון״"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 1643,
+     "height": 20,
+     "width": 625,
+     "text": "נבדק 25.10.2026"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 1733,
+     "height": 22,
+     "width": 625,
+     "text": "״מקרים שבהם יראו יחידה בקרן נאמנות פטורה כנמכרת וכנרכשת מחדש״"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 1759,
+     "height": 20,
+     "width": 625,
+     "text": "נבדק 25.10.2026"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 1913,
+     "height": 20,
+     "width": 625,
+     "text": "לא משתנה מעצמו"
+    },
+    {
+     "depth": 4,
+     "tag": "li",
+     "id": "IRA-02",
+     "top": 1372,
+     "height": 1664,
+     "width": 675,
+     "text": "IRA-02 · קרן פנסיה עצמה לא מנוהלת אישית, אבל הכסף בה יכול לעבור לקופה לקצבה בניהול אישי חל"
+    },
+    {
+     "depth": 5,
+     "tag": "header",
+     "top": 1397,
+     "height": 77,
+     "width": 625,
+     "text": "IRA-02 · קרן פנסיה עצמה לא מנוהלת אישית, אבל הכסף בה יכול לעבור לקופה לקצבה בניהול אישי חל"
+    },
+    {
+     "depth": 6,
+     "tag": "h2",
+     "top": 1397,
+     "height": 50,
+     "width": 625,
+     "text": "IRA-02 · קרן פנסיה עצמה לא מנוהלת אישית, אבל הכסף בה יכול לעבור לקופה לקצבה בניהול אישי"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 1486,
+     "height": 246,
+     "width": 625,
+     "text": "קרן פנסיה עצמה לא יכולה להיות בניהול אישי: התקנות מגדירות קופה בניהול אישי ״למעט קרן פנסיה"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 1830,
+     "height": 22,
+     "width": 625,
+     "text": "״למעט קרן פנסיה״"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 1856,
+     "height": 20,
+     "width": 625,
+     "text": "נבדק 02.11.2026"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 1973,
+     "height": 22,
+     "width": 625,
+     "text": "״למעט קופת גמל משלמת לקצבה״"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 2000,
+     "height": 20,
+     "width": 625,
+     "text": "נבדק 02.11.2026"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 2117,
+     "height": 22,
+     "width": 625,
+     "text": "״לקופת גמל לקצבה ניתן להעביר כספים רק מקופת גמל שהיא אחת מאלה״"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 2143,
+     "height": 20,
+     "width": 625,
+     "text": "נבדק 02.11.2026"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 2260,
+     "height": 22,
+     "width": 625,
+     "text": "״ניתן להעביר כספים מקופת גמל אחת לקופת גמל אחרת שאינה קופת גמל לקצבה״"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 2287,
+     "height": 20,
+     "width": 625,
+     "text": "נבדק 02.11.2026"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 2404,
+     "height": 22,
+     "width": 625,
+     "text": "״למעט קרן ותיקה״"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 2430,
+     "height": 20,
+     "width": 625,
+     "text": "נבדק 02.11.2026"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 2520,
+     "height": 22,
+     "width": 625,
+     "text": "״תיעשה במזומנים״"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 2546,
+     "height": 20,
+     "width": 625,
+     "text": "נבדק 02.11.2026"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 2663,
+     "height": 22,
+     "width": 625,
+     "text": "״הכספים שניתן״"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 2690,
+     "height": 20,
+     "width": 625,
+     "text": "נבדק 02.11.2026"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 2780,
+     "height": 22,
+     "width": 625,
+     "text": "״חברה מנהלת תקבע את נוסח תקנון קרן הפנסיה המקיפה שבניהולה בהתאם לנוסח התקנון המצורף״"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 2806,
+     "height": 20,
+     "width": 625,
+     "text": "נבדק 25.10.2026"
+    },
+    {
+     "depth": 4,
+     "tag": "li",
+     "id": "TXS-12",
+     "top": 3048,
+     "height": 1167,
+     "width": 675,
+     "text": "TXS-12 · קרנות כספיות: מה החוסך משלם ועל איזה בסיס חל על כולם לא נמצא כלל מס מיוחד לקרנות "
+    },
+    {
+     "depth": 5,
+     "tag": "header",
+     "top": 3073,
+     "height": 52,
+     "width": 625,
+     "text": "TXS-12 · קרנות כספיות: מה החוסך משלם ועל איזה בסיס חל על כולם"
+    },
+    {
+     "depth": 6,
+     "tag": "h2",
+     "top": 3073,
+     "height": 25,
+     "width": 625,
+     "text": "TXS-12 · קרנות כספיות: מה החוסך משלם ועל איזה בסיס"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 3137,
+     "height": 202,
+     "width": 625,
+     "text": "לא נמצא כלל מס מיוחד לקרנות כספיות: הפקודה מכירה רק קרן פטורה וקרן חייבת, וקרן כספית ממוסה"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 3382,
+     "height": 20,
+     "width": 625,
+     "text": "נבדק 25.10.2026"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 3472,
+     "height": 20,
+     "width": 625,
+     "text": "נבדק 25.10.2026"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 3562,
+     "height": 20,
+     "width": 625,
+     "text": "נבדק 25.10.2026"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 3651,
+     "height": 20,
+     "width": 625,
+     "text": "נבדק 25.10.2026"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 3769,
+     "height": 20,
+     "width": 625,
+     "text": "נבדק 25.10.2026"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 3831,
+     "height": 20,
+     "width": 625,
+     "text": "נבדק 25.10.2026 · מקור משני"
+    },
+    {
+     "depth": 5,
+     "tag": "p",
+     "top": 4115,
+     "height": 20,
+     "width": 625,
+     "text": "לא משתנה מעצמו"
+    },
+    {
+     "depth": 2,
+     "tag": "section",
+     "top": 4243,
+     "height": 61,
+     "width": 1361,
+     "text": "מה כתוב אצל החברות במסמכי החברות שהאתר קרא אין כרגע נושא שמתאים למה שכתבתם."
+    },
+    {
+     "depth": 3,
+     "tag": "h2",
+     "top": 4243,
+     "height": 29,
+     "width": 1361,
+     "text": "מה כתוב אצל החברות"
+    },
+    {
+     "depth": 3,
+     "tag": "p",
+     "top": 4282,
+     "height": 22,
+     "width": 1361,
+     "text": "במסמכי החברות שהאתר קרא אין כרגע נושא שמתאים למה שכתבתם."
+    },
+    {
+     "depth": 1,
+     "tag": "footer",
+     "top": 4325,
+     "height": 140,
+     "width": 608,
+     "text": "123 ממקור לחצו על מספר כדי לראות מאיפה הוא. הכול נכתב מנוסח החוק או ממסמך של הרשות כשאפשר;"
+    },
+    {
+     "depth": 2,
+     "tag": "p",
+     "top": 4338,
+     "height": 22,
+     "width": 608,
+     "text": "123 ממקור לחצו על מספר כדי לראות מאיפה הוא."
+    },
+    {
+     "depth": 2,
+     "tag": "p",
+     "top": 4368,
+     "height": 44,
+     "width": 608,
+     "text": "הכול נכתב מנוסח החוק או ממסמך של הרשות כשאפשר; מה שנלקח ממסמך של חברה מסומן לידו. התאריך ה"
+    },
+    {
+     "depth": 2,
+     "tag": "p",
+     "top": 4420,
+     "height": 44,
+     "width": 608,
+     "text": "כאן רק חוקים וכללים שלא תלויים בחברה מסוימת. מה שכתוב רק במסמכים של חברה מסוימת מופיע בעמו"
+    }
+   ]
+  }
+ }
+}

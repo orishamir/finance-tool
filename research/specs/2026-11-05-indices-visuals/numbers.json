@@ -1,0 +1,5498 @@
+{
+ "sp500": {
+  "index": "מדד S&P 500",
+  "plan": "10,000 ₪ now, 500 ₪ a month, 10 years, 7% a year, inflation 2%",
+  "accounts": [
+   {
+    "id": "interactive-israel",
+    "name": "אינטראקטיב ישראל",
+    "foreign": true
+   },
+   {
+    "id": "altshuler-trade",
+    "name": "אלטשולר טרייד",
+    "foreign": false
+   },
+   {
+    "id": "excellence",
+    "name": "אקסלנס",
+    "foreign": false
+   },
+   {
+    "id": "discount",
+    "name": "דיסקונט",
+    "foreign": false
+   },
+   {
+    "id": "hapoalim",
+    "name": "הפועלים",
+    "foreign": false
+   },
+   {
+    "id": "yahav",
+    "name": "יהב",
+    "foreign": false
+   },
+   {
+    "id": "jerusalem",
+    "name": "ירושלים",
+    "foreign": false
+   },
+   {
+    "id": "leumi",
+    "name": "לאומי",
+    "foreign": false
+   },
+   {
+    "id": "mizrahi-tefahot",
+    "name": "מזרחי טפחות",
+    "foreign": false
+   },
+   {
+    "id": "massad",
+    "name": "מסד",
+    "foreign": false
+   },
+   {
+    "id": "mercantile",
+    "name": "מרכנתיל",
+    "foreign": false
+   },
+   {
+    "id": "fibi",
+    "name": "הבינלאומי",
+    "foreign": false
+   },
+   {
+    "id": "one-zero",
+    "name": "וואן זירו",
+    "foreign": false
+   },
+   {
+    "id": "meitav-trade",
+    "name": "מיטב טרייד",
+    "foreign": false
+   },
+   {
+    "id": "psagot",
+    "name": "פסגות",
+    "foreign": false
+   },
+   {
+    "id": "ibi",
+    "name": "אי.בי.אי",
+    "foreign": false
+   },
+   {
+    "id": "interactive-brokers",
+    "name": "Interactive Brokers",
+    "foreign": true
+   }
+  ],
+  "funds": [
+   {
+    "id": "5139282",
+    "kind": "il-tracking",
+    "hedged": false,
+    "name": "ילין לפידות מחקה (4D) S&P 500"
+   },
+   {
+    "id": "5139100",
+    "kind": "il-tracking",
+    "hedged": false,
+    "name": "אלטשולר שחם מחקה (4D) S&P 500"
+   },
+   {
+    "id": "5124482",
+    "kind": "il-tracking",
+    "hedged": false,
+    "name": "קסם S&P 500 (4D) KTF"
+   },
+   {
+    "id": "5129275",
+    "kind": "il-tracking",
+    "hedged": false,
+    "name": "הראל מחקה (4D) S&P 500"
+   },
+   {
+    "id": "5127527",
+    "kind": "il-tracking",
+    "hedged": true,
+    "name": "הראל מחקה (4A) S&P 500 - מנוטרלת מט\"ח"
+   },
+   {
+    "id": "1218916",
+    "kind": "il-etf",
+    "hedged": false,
+    "name": "ATF סל (4D) S&P 500"
+   },
+   {
+    "id": "1201656",
+    "kind": "il-etf",
+    "hedged": false,
+    "name": "ילין לפידות סל (4D) S&P 500"
+   },
+   {
+    "id": "1165810",
+    "kind": "il-etf",
+    "hedged": false,
+    "name": "מור סל (4D)י S&P 500"
+   },
+   {
+    "id": "1150333",
+    "kind": "il-etf",
+    "hedged": false,
+    "name": "MTF סל (S&P 500 (4D"
+   },
+   {
+    "id": "1149020",
+    "kind": "il-etf",
+    "hedged": false,
+    "name": "הראל סל (4D) S&P 500"
+   },
+   {
+    "id": "1146471",
+    "kind": "il-etf",
+    "hedged": false,
+    "name": "קסם S&P 500 (4D) ETF"
+   },
+   {
+    "id": "1144385",
+    "kind": "il-etf",
+    "hedged": false,
+    "name": "תכלית סל (4D) S&P 500"
+   },
+   {
+    "id": "1148162",
+    "kind": "il-etf",
+    "hedged": false,
+    "name": "אי.בי.אי. סל (4D) S&P 500"
+   },
+   {
+    "id": "1159250",
+    "kind": "tase-foreign",
+    "hedged": false,
+    "name": "iShares Core S&P 500 UCITS ETF USD (Accumulating)"
+   },
+   {
+    "id": "ie00b5bmr087",
+    "kind": "abroad",
+    "hedged": false,
+    "name": "iShares Core S&P 500 UCITS ETF USD (Accumulating)"
+   },
+   {
+    "id": "ie00bfmxxd54",
+    "kind": "abroad",
+    "hedged": false,
+    "name": "Vanguard S&P 500 UCITS ETF (USD) Accumulating"
+   },
+   {
+    "id": "ie0031442068",
+    "kind": "abroad",
+    "hedged": false,
+    "name": "iShares Core S&P 500 UCITS ETF USD (Dist)"
+   },
+   {
+    "id": "ie00b3xxrp09",
+    "kind": "abroad",
+    "hedged": false,
+    "name": "Vanguard S&P 500 UCITS ETF (USD) Distributing"
+   },
+   {
+    "id": "us-ivv",
+    "kind": "abroad",
+    "hedged": false,
+    "name": "iShares Core S&P 500 ETF"
+   },
+   {
+    "id": "us-voo",
+    "kind": "abroad",
+    "hedged": false,
+    "name": "Vanguard S&P 500 ETF"
+   }
+  ],
+  "cells": {
+   "interactive-israel|5139282": null,
+   "interactive-israel|5139100": null,
+   "interactive-israel|5124482": null,
+   "interactive-israel|5129275": null,
+   "interactive-israel|5127527": null,
+   "interactive-israel|1218916": null,
+   "interactive-israel|1201656": null,
+   "interactive-israel|1165810": null,
+   "interactive-israel|1150333": null,
+   "interactive-israel|1149020": null,
+   "interactive-israel|1146471": null,
+   "interactive-israel|1144385": null,
+   "interactive-israel|1148162": null,
+   "interactive-israel|1159250": null,
+   "interactive-israel|ie00b5bmr087": {
+    "v": 84184,
+    "open": false
+   },
+   "interactive-israel|ie00bfmxxd54": {
+    "v": 84184,
+    "open": true
+   },
+   "interactive-israel|ie0031442068": {
+    "v": 83651,
+    "open": false
+   },
+   "interactive-israel|ie00b3xxrp09": {
+    "v": 83648,
+    "open": false
+   },
+   "interactive-israel|us-ivv": null,
+   "interactive-israel|us-voo": null,
+   "altshuler-trade|5139282": {
+    "v": 66183,
+    "open": false
+   },
+   "altshuler-trade|5139100": {
+    "v": 66147,
+    "open": false
+   },
+   "altshuler-trade|5124482": {
+    "v": 65812,
+    "open": false
+   },
+   "altshuler-trade|5129275": {
+    "v": 65812,
+    "open": false
+   },
+   "altshuler-trade|5127527": {
+    "v": 58318,
+    "open": false
+   },
+   "altshuler-trade|1218916": {
+    "v": 65522,
+    "open": false
+   },
+   "altshuler-trade|1201656": {
+    "v": 65132,
+    "open": false
+   },
+   "altshuler-trade|1165810": {
+    "v": 64788,
+    "open": false
+   },
+   "altshuler-trade|1150333": {
+    "v": 64241,
+    "open": false
+   },
+   "altshuler-trade|1149020": {
+    "v": 63140,
+    "open": false
+   },
+   "altshuler-trade|1146471": {
+    "v": 63067,
+    "open": false
+   },
+   "altshuler-trade|1144385": {
+    "v": 62737,
+    "open": false
+   },
+   "altshuler-trade|1148162": {
+    "v": 62458,
+    "open": false
+   },
+   "altshuler-trade|1159250": {
+    "v": 66006,
+    "open": false
+   },
+   "altshuler-trade|ie00b5bmr087": null,
+   "altshuler-trade|ie00bfmxxd54": null,
+   "altshuler-trade|ie0031442068": null,
+   "altshuler-trade|ie00b3xxrp09": null,
+   "altshuler-trade|us-ivv": null,
+   "altshuler-trade|us-voo": null,
+   "excellence|5139282": {
+    "v": 63678,
+    "open": false
+   },
+   "excellence|5139100": {
+    "v": 63646,
+    "open": false
+   },
+   "excellence|5124482": {
+    "v": 63345,
+    "open": false
+   },
+   "excellence|5129275": {
+    "v": 63345,
+    "open": false
+   },
+   "excellence|5127527": {
+    "v": 56593,
+    "open": false
+   },
+   "excellence|1218916": {
+    "v": 63084,
+    "open": false
+   },
+   "excellence|1201656": {
+    "v": 62734,
+    "open": false
+   },
+   "excellence|1165810": {
+    "v": 62423,
+    "open": false
+   },
+   "excellence|1150333": {
+    "v": 61931,
+    "open": false
+   },
+   "excellence|1149020": {
+    "v": 60940,
+    "open": false
+   },
+   "excellence|1146471": {
+    "v": 60874,
+    "open": false
+   },
+   "excellence|1144385": {
+    "v": 60577,
+    "open": false
+   },
+   "excellence|1148162": {
+    "v": 60326,
+    "open": false
+   },
+   "excellence|1159250": {
+    "v": 63519,
+    "open": false
+   },
+   "excellence|ie00b5bmr087": {
+    "v": 63168,
+    "open": false
+   },
+   "excellence|ie00bfmxxd54": {
+    "v": 63168,
+    "open": true
+   },
+   "excellence|ie0031442068": {
+    "v": 62928,
+    "open": false
+   },
+   "excellence|ie00b3xxrp09": {
+    "v": 62925,
+    "open": false
+   },
+   "excellence|us-ivv": null,
+   "excellence|us-voo": null,
+   "discount|5139282": {
+    "v": 79901,
+    "open": false
+   },
+   "discount|5139100": {
+    "v": 79862,
+    "open": false
+   },
+   "discount|5124482": {
+    "v": 79491,
+    "open": false
+   },
+   "discount|5129275": {
+    "v": 79491,
+    "open": false
+   },
+   "discount|5127527": {
+    "v": 71209,
+    "open": false
+   },
+   "discount|1218916": {
+    "v": 79168,
+    "open": false
+   },
+   "discount|1201656": {
+    "v": 78737,
+    "open": false
+   },
+   "discount|1165810": {
+    "v": 78354,
+    "open": false
+   },
+   "discount|1150333": {
+    "v": 77749,
+    "open": false
+   },
+   "discount|1149020": {
+    "v": 76529,
+    "open": false
+   },
+   "discount|1146471": {
+    "v": 76449,
+    "open": false
+   },
+   "discount|1144385": {
+    "v": 76084,
+    "open": false
+   },
+   "discount|1148162": {
+    "v": 75775,
+    "open": false
+   },
+   "discount|1159250": {
+    "v": 79705,
+    "open": false
+   },
+   "discount|ie00b5bmr087": {
+    "v": 68439,
+    "open": false
+   },
+   "discount|ie00bfmxxd54": {
+    "v": 68439,
+    "open": true
+   },
+   "discount|ie0031442068": {
+    "v": 67012,
+    "open": false
+   },
+   "discount|ie00b3xxrp09": {
+    "v": 67010,
+    "open": false
+   },
+   "discount|us-ivv": null,
+   "discount|us-voo": null,
+   "hapoalim|5139282": {
+    "v": 81471,
+    "open": false
+   },
+   "hapoalim|5139100": {
+    "v": 81431,
+    "open": false
+   },
+   "hapoalim|5124482": {
+    "v": 81052,
+    "open": false
+   },
+   "hapoalim|5129275": {
+    "v": 81052,
+    "open": false
+   },
+   "hapoalim|5127527": {
+    "v": 72595,
+    "open": false
+   },
+   "hapoalim|1218916": {
+    "v": 80723,
+    "open": false
+   },
+   "hapoalim|1201656": {
+    "v": 80282,
+    "open": false
+   },
+   "hapoalim|1165810": {
+    "v": 79891,
+    "open": false
+   },
+   "hapoalim|1150333": {
+    "v": 79273,
+    "open": false
+   },
+   "hapoalim|1149020": {
+    "v": 78028,
+    "open": false
+   },
+   "hapoalim|1146471": {
+    "v": 77945,
+    "open": false
+   },
+   "hapoalim|1144385": {
+    "v": 77572,
+    "open": false
+   },
+   "hapoalim|1148162": {
+    "v": 77258,
+    "open": false
+   },
+   "hapoalim|1159250": {
+    "v": 81271,
+    "open": false
+   },
+   "hapoalim|ie00b5bmr087": {
+    "v": 68511,
+    "open": false
+   },
+   "hapoalim|ie00bfmxxd54": {
+    "v": 68511,
+    "open": true
+   },
+   "hapoalim|ie0031442068": {
+    "v": 67083,
+    "open": false
+   },
+   "hapoalim|ie00b3xxrp09": {
+    "v": 67081,
+    "open": false
+   },
+   "hapoalim|us-ivv": null,
+   "hapoalim|us-voo": null,
+   "yahav|5139282": {
+    "v": 81471,
+    "open": false
+   },
+   "yahav|5139100": {
+    "v": 81431,
+    "open": false
+   },
+   "yahav|5124482": {
+    "v": 81052,
+    "open": false
+   },
+   "yahav|5129275": {
+    "v": 81052,
+    "open": false
+   },
+   "yahav|5127527": {
+    "v": 72595,
+    "open": false
+   },
+   "yahav|1218916": {
+    "v": 80723,
+    "open": false
+   },
+   "yahav|1201656": {
+    "v": 80282,
+    "open": false
+   },
+   "yahav|1165810": {
+    "v": 79891,
+    "open": false
+   },
+   "yahav|1150333": {
+    "v": 79273,
+    "open": false
+   },
+   "yahav|1149020": {
+    "v": 78028,
+    "open": false
+   },
+   "yahav|1146471": {
+    "v": 77945,
+    "open": false
+   },
+   "yahav|1144385": {
+    "v": 77572,
+    "open": false
+   },
+   "yahav|1148162": {
+    "v": 77258,
+    "open": false
+   },
+   "yahav|1159250": {
+    "v": 81271,
+    "open": false
+   },
+   "yahav|ie00b5bmr087": {
+    "v": 68932,
+    "open": false
+   },
+   "yahav|ie00bfmxxd54": {
+    "v": 68932,
+    "open": true
+   },
+   "yahav|ie0031442068": {
+    "v": 67502,
+    "open": false
+   },
+   "yahav|ie00b3xxrp09": {
+    "v": 67500,
+    "open": false
+   },
+   "yahav|us-ivv": null,
+   "yahav|us-voo": null,
+   "jerusalem|5139282": {
+    "v": 81371,
+    "open": false
+   },
+   "jerusalem|5139100": {
+    "v": 81331,
+    "open": false
+   },
+   "jerusalem|5124482": {
+    "v": 80952,
+    "open": false
+   },
+   "jerusalem|5129275": {
+    "v": 80952,
+    "open": false
+   },
+   "jerusalem|5127527": {
+    "v": 72509,
+    "open": false
+   },
+   "jerusalem|1218916": {
+    "v": 80623,
+    "open": false
+   },
+   "jerusalem|1201656": {
+    "v": 80183,
+    "open": false
+   },
+   "jerusalem|1165810": {
+    "v": 79793,
+    "open": false
+   },
+   "jerusalem|1150333": {
+    "v": 79176,
+    "open": false
+   },
+   "jerusalem|1149020": {
+    "v": 77933,
+    "open": false
+   },
+   "jerusalem|1146471": {
+    "v": 77850,
+    "open": false
+   },
+   "jerusalem|1144385": {
+    "v": 77478,
+    "open": false
+   },
+   "jerusalem|1148162": {
+    "v": 77164,
+    "open": false
+   },
+   "jerusalem|1159250": {
+    "v": 81171,
+    "open": false
+   },
+   "jerusalem|ie00b5bmr087": {
+    "v": 59135,
+    "open": false
+   },
+   "jerusalem|ie00bfmxxd54": {
+    "v": 59135,
+    "open": true
+   },
+   "jerusalem|ie0031442068": {
+    "v": 58993,
+    "open": false
+   },
+   "jerusalem|ie00b3xxrp09": {
+    "v": 58991,
+    "open": false
+   },
+   "jerusalem|us-ivv": null,
+   "jerusalem|us-voo": null,
+   "leumi|5139282": {
+    "v": 83396,
+    "open": false
+   },
+   "leumi|5139100": {
+    "v": 83355,
+    "open": false
+   },
+   "leumi|5124482": {
+    "v": 82968,
+    "open": false
+   },
+   "leumi|5129275": {
+    "v": 82968,
+    "open": false
+   },
+   "leumi|5127527": {
+    "v": 74331,
+    "open": false
+   },
+   "leumi|1218916": {
+    "v": 82632,
+    "open": false
+   },
+   "leumi|1201656": {
+    "v": 82181,
+    "open": false
+   },
+   "leumi|1165810": {
+    "v": 81783,
+    "open": false
+   },
+   "leumi|1150333": {
+    "v": 81151,
+    "open": false
+   },
+   "leumi|1149020": {
+    "v": 79879,
+    "open": false
+   },
+   "leumi|1146471": {
+    "v": 79795,
+    "open": false
+   },
+   "leumi|1144385": {
+    "v": 79414,
+    "open": false
+   },
+   "leumi|1148162": {
+    "v": 79093,
+    "open": false
+   },
+   "leumi|1159250": {
+    "v": 80503,
+    "open": false
+   },
+   "leumi|ie00b5bmr087": {
+    "v": 71513,
+    "open": false
+   },
+   "leumi|ie00bfmxxd54": {
+    "v": 71513,
+    "open": true
+   },
+   "leumi|ie0031442068": {
+    "v": 70717,
+    "open": false
+   },
+   "leumi|ie00b3xxrp09": {
+    "v": 70708,
+    "open": false
+   },
+   "leumi|us-ivv": null,
+   "leumi|us-voo": null,
+   "mizrahi-tefahot|5139282": {
+    "v": 77695,
+    "open": false
+   },
+   "mizrahi-tefahot|5139100": {
+    "v": 77657,
+    "open": false
+   },
+   "mizrahi-tefahot|5124482": {
+    "v": 77294,
+    "open": false
+   },
+   "mizrahi-tefahot|5129275": {
+    "v": 77294,
+    "open": false
+   },
+   "mizrahi-tefahot|5127527": {
+    "v": 69210,
+    "open": false
+   },
+   "mizrahi-tefahot|1218916": {
+    "v": 76980,
+    "open": false
+   },
+   "mizrahi-tefahot|1201656": {
+    "v": 76558,
+    "open": false
+   },
+   "mizrahi-tefahot|1165810": {
+    "v": 76185,
+    "open": false
+   },
+   "mizrahi-tefahot|1150333": {
+    "v": 75593,
+    "open": false
+   },
+   "mizrahi-tefahot|1149020": {
+    "v": 74403,
+    "open": false
+   },
+   "mizrahi-tefahot|1146471": {
+    "v": 74324,
+    "open": false
+   },
+   "mizrahi-tefahot|1144385": {
+    "v": 73967,
+    "open": false
+   },
+   "mizrahi-tefahot|1148162": {
+    "v": 73667,
+    "open": false
+   },
+   "mizrahi-tefahot|1159250": {
+    "v": 77504,
+    "open": false
+   },
+   "mizrahi-tefahot|ie00b5bmr087": {
+    "v": 69201,
+    "open": false
+   },
+   "mizrahi-tefahot|ie00bfmxxd54": {
+    "v": 69201,
+    "open": true
+   },
+   "mizrahi-tefahot|ie0031442068": {
+    "v": 67757,
+    "open": false
+   },
+   "mizrahi-tefahot|ie00b3xxrp09": {
+    "v": 67755,
+    "open": false
+   },
+   "mizrahi-tefahot|us-ivv": null,
+   "mizrahi-tefahot|us-voo": null,
+   "massad|5139282": {
+    "v": 82282,
+    "open": false
+   },
+   "massad|5139100": {
+    "v": 82241,
+    "open": false
+   },
+   "massad|5124482": {
+    "v": 81860,
+    "open": false
+   },
+   "massad|5129275": {
+    "v": 81860,
+    "open": false
+   },
+   "massad|5127527": {
+    "v": 73353,
+    "open": false
+   },
+   "massad|1218916": {
+    "v": 81529,
+    "open": false
+   },
+   "massad|1201656": {
+    "v": 81086,
+    "open": false
+   },
+   "massad|1165810": {
+    "v": 80693,
+    "open": false
+   },
+   "massad|1150333": {
+    "v": 80071,
+    "open": false
+   },
+   "massad|1149020": {
+    "v": 78818,
+    "open": false
+   },
+   "massad|1146471": {
+    "v": 78736,
+    "open": false
+   },
+   "massad|1144385": {
+    "v": 78361,
+    "open": false
+   },
+   "massad|1148162": {
+    "v": 78044,
+    "open": false
+   },
+   "massad|1159250": {
+    "v": 78529,
+    "open": false
+   },
+   "massad|ie00b5bmr087": {
+    "v": 76904,
+    "open": false
+   },
+   "massad|ie00bfmxxd54": {
+    "v": 76904,
+    "open": true
+   },
+   "massad|ie0031442068": {
+    "v": 76100,
+    "open": false
+   },
+   "massad|ie00b3xxrp09": {
+    "v": 76091,
+    "open": false
+   },
+   "massad|us-ivv": null,
+   "massad|us-voo": null,
+   "mercantile|5139282": {
+    "v": 79901,
+    "open": false
+   },
+   "mercantile|5139100": {
+    "v": 79862,
+    "open": false
+   },
+   "mercantile|5124482": {
+    "v": 79491,
+    "open": false
+   },
+   "mercantile|5129275": {
+    "v": 79491,
+    "open": false
+   },
+   "mercantile|5127527": {
+    "v": 71209,
+    "open": false
+   },
+   "mercantile|1218916": {
+    "v": 79168,
+    "open": false
+   },
+   "mercantile|1201656": {
+    "v": 78737,
+    "open": false
+   },
+   "mercantile|1165810": {
+    "v": 78354,
+    "open": false
+   },
+   "mercantile|1150333": {
+    "v": 77749,
+    "open": false
+   },
+   "mercantile|1149020": {
+    "v": 76529,
+    "open": false
+   },
+   "mercantile|1146471": {
+    "v": 76449,
+    "open": false
+   },
+   "mercantile|1144385": {
+    "v": 76084,
+    "open": false
+   },
+   "mercantile|1148162": {
+    "v": 75775,
+    "open": false
+   },
+   "mercantile|1159250": {
+    "v": 79705,
+    "open": false
+   },
+   "mercantile|ie00b5bmr087": {
+    "v": 68322,
+    "open": false
+   },
+   "mercantile|ie00bfmxxd54": {
+    "v": 68322,
+    "open": true
+   },
+   "mercantile|ie0031442068": {
+    "v": 66895,
+    "open": false
+   },
+   "mercantile|ie00b3xxrp09": {
+    "v": 66893,
+    "open": false
+   },
+   "mercantile|us-ivv": null,
+   "mercantile|us-voo": null,
+   "fibi|5139282": {
+    "v": 82371,
+    "open": false
+   },
+   "fibi|5139100": {
+    "v": 82330,
+    "open": false
+   },
+   "fibi|5124482": {
+    "v": 81948,
+    "open": false
+   },
+   "fibi|5129275": {
+    "v": 81948,
+    "open": false
+   },
+   "fibi|5127527": {
+    "v": 73430,
+    "open": false
+   },
+   "fibi|1218916": {
+    "v": 81617,
+    "open": false
+   },
+   "fibi|1201656": {
+    "v": 81173,
+    "open": false
+   },
+   "fibi|1165810": {
+    "v": 80780,
+    "open": false
+   },
+   "fibi|1150333": {
+    "v": 80157,
+    "open": false
+   },
+   "fibi|1149020": {
+    "v": 78903,
+    "open": false
+   },
+   "fibi|1146471": {
+    "v": 78820,
+    "open": false
+   },
+   "fibi|1144385": {
+    "v": 78444,
+    "open": false
+   },
+   "fibi|1148162": {
+    "v": 78127,
+    "open": false
+   },
+   "fibi|1159250": {
+    "v": 78106,
+    "open": false
+   },
+   "fibi|ie00b5bmr087": {
+    "v": 77379,
+    "open": false
+   },
+   "fibi|ie00bfmxxd54": {
+    "v": 77379,
+    "open": true
+   },
+   "fibi|ie0031442068": {
+    "v": 76468,
+    "open": false
+   },
+   "fibi|ie00b3xxrp09": {
+    "v": 76457,
+    "open": false
+   },
+   "fibi|us-ivv": null,
+   "fibi|us-voo": null,
+   "one-zero|5139282": {
+    "v": 83141,
+    "open": false
+   },
+   "one-zero|5139100": {
+    "v": 83100,
+    "open": false
+   },
+   "one-zero|5124482": {
+    "v": 82709,
+    "open": false
+   },
+   "one-zero|5129275": {
+    "v": 82709,
+    "open": false
+   },
+   "one-zero|5127527": {
+    "v": 74004,
+    "open": false
+   },
+   "one-zero|1218916": null,
+   "one-zero|1201656": null,
+   "one-zero|1165810": null,
+   "one-zero|1150333": null,
+   "one-zero|1149020": null,
+   "one-zero|1146471": null,
+   "one-zero|1144385": null,
+   "one-zero|1148162": null,
+   "one-zero|1159250": null,
+   "one-zero|ie00b5bmr087": null,
+   "one-zero|ie00bfmxxd54": null,
+   "one-zero|ie0031442068": null,
+   "one-zero|ie00b3xxrp09": null,
+   "one-zero|us-ivv": null,
+   "one-zero|us-voo": null,
+   "meitav-trade|5139282": {
+    "v": 63507,
+    "open": false
+   },
+   "meitav-trade|5139100": {
+    "v": 63473,
+    "open": false
+   },
+   "meitav-trade|5124482": {
+    "v": 63151,
+    "open": false
+   },
+   "meitav-trade|5129275": {
+    "v": 63151,
+    "open": false
+   },
+   "meitav-trade|5127527": {
+    "v": 55936,
+    "open": false
+   },
+   "meitav-trade|1218916": {
+    "v": 62871,
+    "open": false
+   },
+   "meitav-trade|1201656": {
+    "v": 62496,
+    "open": false
+   },
+   "meitav-trade|1165810": {
+    "v": 62165,
+    "open": false
+   },
+   "meitav-trade|1150333": {
+    "v": 61638,
+    "open": false
+   },
+   "meitav-trade|1149020": {
+    "v": 60579,
+    "open": false
+   },
+   "meitav-trade|1146471": {
+    "v": 60509,
+    "open": false
+   },
+   "meitav-trade|1144385": {
+    "v": 60191,
+    "open": false
+   },
+   "meitav-trade|1148162": {
+    "v": 59923,
+    "open": false
+   },
+   "meitav-trade|1159250": {
+    "v": 63337,
+    "open": false
+   },
+   "meitav-trade|ie00b5bmr087": {
+    "v": 51730,
+    "open": false
+   },
+   "meitav-trade|ie00bfmxxd54": {
+    "v": 51730,
+    "open": true
+   },
+   "meitav-trade|ie0031442068": {
+    "v": 51018,
+    "open": false
+   },
+   "meitav-trade|ie00b3xxrp09": {
+    "v": 50936,
+    "open": false
+   },
+   "meitav-trade|us-ivv": null,
+   "meitav-trade|us-voo": null,
+   "psagot|5139282": {
+    "v": 86492,
+    "open": false
+   },
+   "psagot|5139100": {
+    "v": 86449,
+    "open": false
+   },
+   "psagot|5124482": {
+    "v": 86045,
+    "open": false
+   },
+   "psagot|5129275": {
+    "v": 86045,
+    "open": false
+   },
+   "psagot|5127527": {
+    "v": 77032,
+    "open": false
+   },
+   "psagot|1218916": {
+    "v": 85694,
+    "open": false
+   },
+   "psagot|1201656": {
+    "v": 85224,
+    "open": false
+   },
+   "psagot|1165810": {
+    "v": 84808,
+    "open": false
+   },
+   "psagot|1150333": {
+    "v": 84148,
+    "open": false
+   },
+   "psagot|1149020": {
+    "v": 82821,
+    "open": false
+   },
+   "psagot|1146471": {
+    "v": 82733,
+    "open": false
+   },
+   "psagot|1144385": {
+    "v": 82335,
+    "open": false
+   },
+   "psagot|1148162": {
+    "v": 82000,
+    "open": false
+   },
+   "psagot|1159250": {
+    "v": 86279,
+    "open": false
+   },
+   "psagot|ie00b5bmr087": null,
+   "psagot|ie00bfmxxd54": null,
+   "psagot|ie0031442068": null,
+   "psagot|ie00b3xxrp09": null,
+   "psagot|us-ivv": null,
+   "psagot|us-voo": null,
+   "ibi|5139282": {
+    "v": 78616,
+    "open": false
+   },
+   "ibi|5139100": {
+    "v": 78577,
+    "open": false
+   },
+   "ibi|5124482": {
+    "v": 78204,
+    "open": false
+   },
+   "ibi|5129275": {
+    "v": 78204,
+    "open": false
+   },
+   "ibi|5127527": {
+    "v": 69879,
+    "open": false
+   },
+   "ibi|1218916": {
+    "v": 78006,
+    "open": false
+   },
+   "ibi|1201656": {
+    "v": 77572,
+    "open": false
+   },
+   "ibi|1165810": {
+    "v": 77188,
+    "open": false
+   },
+   "ibi|1150333": {
+    "v": 76579,
+    "open": false
+   },
+   "ibi|1149020": {
+    "v": 75353,
+    "open": false
+   },
+   "ibi|1146471": {
+    "v": 75272,
+    "open": false
+   },
+   "ibi|1144385": {
+    "v": 74904,
+    "open": false
+   },
+   "ibi|1148162": {
+    "v": 74594,
+    "open": false
+   },
+   "ibi|1159250": {
+    "v": 78546,
+    "open": false
+   },
+   "ibi|ie00b5bmr087": null,
+   "ibi|ie00bfmxxd54": null,
+   "ibi|ie0031442068": null,
+   "ibi|ie00b3xxrp09": null,
+   "ibi|us-ivv": null,
+   "ibi|us-voo": null,
+   "interactive-brokers|5139282": null,
+   "interactive-brokers|5139100": null,
+   "interactive-brokers|5124482": null,
+   "interactive-brokers|5129275": null,
+   "interactive-brokers|5127527": null,
+   "interactive-brokers|1218916": null,
+   "interactive-brokers|1201656": null,
+   "interactive-brokers|1165810": null,
+   "interactive-brokers|1150333": null,
+   "interactive-brokers|1149020": null,
+   "interactive-brokers|1146471": null,
+   "interactive-brokers|1144385": null,
+   "interactive-brokers|1148162": null,
+   "interactive-brokers|1159250": null,
+   "interactive-brokers|ie00b5bmr087": {
+    "v": 82848,
+    "open": false
+   },
+   "interactive-brokers|ie00bfmxxd54": {
+    "v": 82848,
+    "open": true
+   },
+   "interactive-brokers|ie0031442068": {
+    "v": 82113,
+    "open": false
+   },
+   "interactive-brokers|ie00b3xxrp09": {
+    "v": 82110,
+    "open": false
+   },
+   "interactive-brokers|us-ivv": null,
+   "interactive-brokers|us-voo": null
+  },
+  "top": {
+   "v": 86492.14943761664,
+   "pos": {
+    "a": "psagot",
+    "f": "5139282"
+   }
+  },
+  "start": {
+   "a": "jerusalem",
+   "f": "1150333"
+  },
+  "costs": {
+   "top": {
+    "pos": {
+     "a": "psagot",
+     "f": "5139282"
+    },
+    "left": 86492,
+    "base": 93368,
+    "account": 1057,
+    "fund": 116,
+    "tax": 5703,
+    "paidIn": 70000,
+    "lines": [
+     {
+      "cost": 699
+     },
+     {
+      "cost": 356
+     }
+    ]
+   },
+   "start": {
+    "pos": {
+     "a": "jerusalem",
+     "f": "1150333"
+    },
+    "left": 79176,
+    "base": 93368,
+    "account": 6432,
+    "fund": 3280,
+    "tax": 4481,
+    "paidIn": 70000,
+    "lines": [
+     {
+      "cost": 3134
+     },
+     {
+      "cost": 3187
+     }
+    ]
+   }
+  },
+  "perPair": [
+   {
+    "a": "interactive-israel",
+    "f": "ie00b5bmr087",
+    "left": 84184,
+    "account": 1298,
+    "fund": 404,
+    "tax": 7483
+   },
+   {
+    "a": "interactive-israel",
+    "f": "ie0031442068",
+    "left": 83651,
+    "account": 1658,
+    "fund": 400,
+    "tax": 7660
+   },
+   {
+    "a": "interactive-israel",
+    "f": "ie00b3xxrp09",
+    "left": 83648,
+    "account": 1658,
+    "fund": 400,
+    "tax": 7662
+   },
+   {
+    "a": "altshuler-trade",
+    "f": "5139282",
+    "left": 66183,
+    "account": 23790,
+    "fund": 116,
+    "tax": 3280
+   },
+   {
+    "a": "altshuler-trade",
+    "f": "5139100",
+    "left": 66147,
+    "account": 23777,
+    "fund": 173,
+    "tax": 3271
+   },
+   {
+    "a": "altshuler-trade",
+    "f": "5124482",
+    "left": 65812,
+    "account": 23657,
+    "fund": 719,
+    "tax": 3179
+   },
+   {
+    "a": "altshuler-trade",
+    "f": "5129275",
+    "left": 65812,
+    "account": 23657,
+    "fund": 719,
+    "tax": 3179
+   },
+   {
+    "a": "altshuler-trade",
+    "f": "1218916",
+    "left": 65522,
+    "account": 23554,
+    "fund": 1193,
+    "tax": 3099
+   },
+   {
+    "a": "altshuler-trade",
+    "f": "1201656",
+    "left": 65132,
+    "account": 23415,
+    "fund": 1828,
+    "tax": 2993
+   },
+   {
+    "a": "altshuler-trade",
+    "f": "1165810",
+    "left": 64788,
+    "account": 23291,
+    "fund": 2390,
+    "tax": 2899
+   },
+   {
+    "a": "altshuler-trade",
+    "f": "1150333",
+    "left": 64241,
+    "account": 23096,
+    "fund": 3280,
+    "tax": 2751
+   },
+   {
+    "a": "altshuler-trade",
+    "f": "1149020",
+    "left": 63140,
+    "account": 22702,
+    "fund": 5071,
+    "tax": 2455
+   },
+   {
+    "a": "altshuler-trade",
+    "f": "1146471",
+    "left": 63067,
+    "account": 22676,
+    "fund": 5190,
+    "tax": 2436
+   },
+   {
+    "a": "altshuler-trade",
+    "f": "1144385",
+    "left": 62737,
+    "account": 22557,
+    "fund": 5726,
+    "tax": 2348
+   },
+   {
+    "a": "altshuler-trade",
+    "f": "1148162",
+    "left": 62458,
+    "account": 22457,
+    "fund": 6179,
+    "tax": 2273
+   },
+   {
+    "a": "altshuler-trade",
+    "f": "1159250",
+    "left": 66006,
+    "account": 23727,
+    "fund": 404,
+    "tax": 3232
+   },
+   {
+    "a": "excellence",
+    "f": "5139282",
+    "left": 63678,
+    "account": 26827,
+    "fund": 116,
+    "tax": 2747
+   },
+   {
+    "a": "excellence",
+    "f": "5139100",
+    "left": 63646,
+    "account": 26809,
+    "fund": 173,
+    "tax": 2739
+   },
+   {
+    "a": "excellence",
+    "f": "5124482",
+    "left": 63345,
+    "account": 26646,
+    "fund": 719,
+    "tax": 2658
+   },
+   {
+    "a": "excellence",
+    "f": "5129275",
+    "left": 63345,
+    "account": 26646,
+    "fund": 719,
+    "tax": 2658
+   },
+   {
+    "a": "excellence",
+    "f": "1218916",
+    "left": 63084,
+    "account": 26503,
+    "fund": 1193,
+    "tax": 2588
+   },
+   {
+    "a": "excellence",
+    "f": "1201656",
+    "left": 62734,
+    "account": 26313,
+    "fund": 1828,
+    "tax": 2494
+   },
+   {
+    "a": "excellence",
+    "f": "1165810",
+    "left": 62423,
+    "account": 26144,
+    "fund": 2390,
+    "tax": 2411
+   },
+   {
+    "a": "excellence",
+    "f": "1150333",
+    "left": 61931,
+    "account": 25877,
+    "fund": 3280,
+    "tax": 2280
+   },
+   {
+    "a": "excellence",
+    "f": "1149020",
+    "left": 60940,
+    "account": 25340,
+    "fund": 5071,
+    "tax": 2017
+   },
+   {
+    "a": "excellence",
+    "f": "1146471",
+    "left": 60874,
+    "account": 25304,
+    "fund": 5190,
+    "tax": 2000
+   },
+   {
+    "a": "excellence",
+    "f": "1144385",
+    "left": 60577,
+    "account": 25143,
+    "fund": 5726,
+    "tax": 1922
+   },
+   {
+    "a": "excellence",
+    "f": "1148162",
+    "left": 60326,
+    "account": 25007,
+    "fund": 6179,
+    "tax": 1856
+   },
+   {
+    "a": "excellence",
+    "f": "1159250",
+    "left": 63519,
+    "account": 26740,
+    "fund": 404,
+    "tax": 2705
+   },
+   {
+    "a": "excellence",
+    "f": "ie00b5bmr087",
+    "left": 63168,
+    "account": 25927,
+    "fund": 404,
+    "tax": 3869
+   },
+   {
+    "a": "excellence",
+    "f": "ie0031442068",
+    "left": 62928,
+    "account": 25792,
+    "fund": 400,
+    "tax": 4248
+   },
+   {
+    "a": "excellence",
+    "f": "ie00b3xxrp09",
+    "left": 62925,
+    "account": 25791,
+    "fund": 400,
+    "tax": 4252
+   },
+   {
+    "a": "discount",
+    "f": "5139282",
+    "left": 79901,
+    "account": 8324,
+    "fund": 116,
+    "tax": 5026
+   },
+   {
+    "a": "discount",
+    "f": "5139100",
+    "left": 79862,
+    "account": 8319,
+    "fund": 173,
+    "tax": 5014
+   },
+   {
+    "a": "discount",
+    "f": "5124482",
+    "left": 79491,
+    "account": 8266,
+    "fund": 719,
+    "tax": 4892
+   },
+   {
+    "a": "discount",
+    "f": "5129275",
+    "left": 79491,
+    "account": 8266,
+    "fund": 719,
+    "tax": 4892
+   },
+   {
+    "a": "discount",
+    "f": "1218916",
+    "left": 79168,
+    "account": 8219,
+    "fund": 1193,
+    "tax": 4787
+   },
+   {
+    "a": "discount",
+    "f": "1201656",
+    "left": 78737,
+    "account": 8157,
+    "fund": 1828,
+    "tax": 4646
+   },
+   {
+    "a": "discount",
+    "f": "1165810",
+    "left": 78354,
+    "account": 8103,
+    "fund": 2390,
+    "tax": 4521
+   },
+   {
+    "a": "discount",
+    "f": "1150333",
+    "left": 77749,
+    "account": 8016,
+    "fund": 3280,
+    "tax": 4323
+   },
+   {
+    "a": "discount",
+    "f": "1149020",
+    "left": 76529,
+    "account": 7841,
+    "fund": 5071,
+    "tax": 3926
+   },
+   {
+    "a": "discount",
+    "f": "1146471",
+    "left": 76449,
+    "account": 7830,
+    "fund": 5190,
+    "tax": 3899
+   },
+   {
+    "a": "discount",
+    "f": "1144385",
+    "left": 76084,
+    "account": 7778,
+    "fund": 5726,
+    "tax": 3780
+   },
+   {
+    "a": "discount",
+    "f": "1148162",
+    "left": 75775,
+    "account": 7734,
+    "fund": 6179,
+    "tax": 3680
+   },
+   {
+    "a": "discount",
+    "f": "1159250",
+    "left": 79705,
+    "account": 8296,
+    "fund": 404,
+    "tax": 4962
+   },
+   {
+    "a": "discount",
+    "f": "ie00b5bmr087",
+    "left": 68439,
+    "account": 18731,
+    "fund": 404,
+    "tax": 5793
+   },
+   {
+    "a": "discount",
+    "f": "ie0031442068",
+    "left": 67012,
+    "account": 19951,
+    "fund": 400,
+    "tax": 6005
+   },
+   {
+    "a": "discount",
+    "f": "ie00b3xxrp09",
+    "left": 67010,
+    "account": 19950,
+    "fund": 400,
+    "tax": 6008
+   },
+   {
+    "a": "hapoalim",
+    "f": "5139282",
+    "left": 81471,
+    "account": 6576,
+    "fund": 116,
+    "tax": 5205
+   },
+   {
+    "a": "hapoalim",
+    "f": "5139100",
+    "left": 81431,
+    "account": 6572,
+    "fund": 173,
+    "tax": 5191
+   },
+   {
+    "a": "hapoalim",
+    "f": "5124482",
+    "left": 81052,
+    "account": 6530,
+    "fund": 719,
+    "tax": 5067
+   },
+   {
+    "a": "hapoalim",
+    "f": "5129275",
+    "left": 81052,
+    "account": 6530,
+    "fund": 719,
+    "tax": 5067
+   },
+   {
+    "a": "hapoalim",
+    "f": "1218916",
+    "left": 80723,
+    "account": 6494,
+    "fund": 1193,
+    "tax": 4958
+   },
+   {
+    "a": "hapoalim",
+    "f": "1201656",
+    "left": 80282,
+    "account": 6445,
+    "fund": 1828,
+    "tax": 4813
+   },
+   {
+    "a": "hapoalim",
+    "f": "1165810",
+    "left": 79891,
+    "account": 6402,
+    "fund": 2390,
+    "tax": 4685
+   },
+   {
+    "a": "hapoalim",
+    "f": "1150333",
+    "left": 79273,
+    "account": 6333,
+    "fund": 3280,
+    "tax": 4482
+   },
+   {
+    "a": "hapoalim",
+    "f": "1149020",
+    "left": 78028,
+    "account": 6196,
+    "fund": 5071,
+    "tax": 4073
+   },
+   {
+    "a": "hapoalim",
+    "f": "1146471",
+    "left": 77945,
+    "account": 6187,
+    "fund": 5190,
+    "tax": 4046
+   },
+   {
+    "a": "hapoalim",
+    "f": "1144385",
+    "left": 77572,
+    "account": 6146,
+    "fund": 5726,
+    "tax": 3923
+   },
+   {
+    "a": "hapoalim",
+    "f": "1148162",
+    "left": 77258,
+    "account": 6111,
+    "fund": 6179,
+    "tax": 3820
+   },
+   {
+    "a": "hapoalim",
+    "f": "1159250",
+    "left": 81271,
+    "account": 6554,
+    "fund": 404,
+    "tax": 5139
+   },
+   {
+    "a": "hapoalim",
+    "f": "ie00b5bmr087",
+    "left": 68511,
+    "account": 18548,
+    "fund": 404,
+    "tax": 5905
+   },
+   {
+    "a": "hapoalim",
+    "f": "ie0031442068",
+    "left": 67083,
+    "account": 19775,
+    "fund": 400,
+    "tax": 6110
+   },
+   {
+    "a": "hapoalim",
+    "f": "ie00b3xxrp09",
+    "left": 67081,
+    "account": 19774,
+    "fund": 400,
+    "tax": 6113
+   },
+   {
+    "a": "yahav",
+    "f": "5139282",
+    "left": 81471,
+    "account": 6576,
+    "fund": 116,
+    "tax": 5205
+   },
+   {
+    "a": "yahav",
+    "f": "5139100",
+    "left": 81431,
+    "account": 6572,
+    "fund": 173,
+    "tax": 5191
+   },
+   {
+    "a": "yahav",
+    "f": "5124482",
+    "left": 81052,
+    "account": 6530,
+    "fund": 719,
+    "tax": 5067
+   },
+   {
+    "a": "yahav",
+    "f": "5129275",
+    "left": 81052,
+    "account": 6530,
+    "fund": 719,
+    "tax": 5067
+   },
+   {
+    "a": "yahav",
+    "f": "1218916",
+    "left": 80723,
+    "account": 6494,
+    "fund": 1193,
+    "tax": 4958
+   },
+   {
+    "a": "yahav",
+    "f": "1201656",
+    "left": 80282,
+    "account": 6445,
+    "fund": 1828,
+    "tax": 4813
+   },
+   {
+    "a": "yahav",
+    "f": "1165810",
+    "left": 79891,
+    "account": 6402,
+    "fund": 2390,
+    "tax": 4685
+   },
+   {
+    "a": "yahav",
+    "f": "1150333",
+    "left": 79273,
+    "account": 6333,
+    "fund": 3280,
+    "tax": 4482
+   },
+   {
+    "a": "yahav",
+    "f": "1149020",
+    "left": 78028,
+    "account": 6196,
+    "fund": 5071,
+    "tax": 4073
+   },
+   {
+    "a": "yahav",
+    "f": "1146471",
+    "left": 77945,
+    "account": 6187,
+    "fund": 5190,
+    "tax": 4046
+   },
+   {
+    "a": "yahav",
+    "f": "1144385",
+    "left": 77572,
+    "account": 6146,
+    "fund": 5726,
+    "tax": 3923
+   },
+   {
+    "a": "yahav",
+    "f": "1148162",
+    "left": 77258,
+    "account": 6111,
+    "fund": 6179,
+    "tax": 3820
+   },
+   {
+    "a": "yahav",
+    "f": "1159250",
+    "left": 81271,
+    "account": 6554,
+    "fund": 404,
+    "tax": 5139
+   },
+   {
+    "a": "yahav",
+    "f": "ie00b5bmr087",
+    "left": 68932,
+    "account": 18077,
+    "fund": 404,
+    "tax": 5956
+   },
+   {
+    "a": "yahav",
+    "f": "ie0031442068",
+    "left": 67502,
+    "account": 19307,
+    "fund": 400,
+    "tax": 6159
+   },
+   {
+    "a": "yahav",
+    "f": "ie00b3xxrp09",
+    "left": 67500,
+    "account": 19306,
+    "fund": 400,
+    "tax": 6161
+   },
+   {
+    "a": "jerusalem",
+    "f": "5139282",
+    "left": 81371,
+    "account": 6678,
+    "fund": 116,
+    "tax": 5203
+   },
+   {
+    "a": "jerusalem",
+    "f": "5139100",
+    "left": 81331,
+    "account": 6674,
+    "fund": 173,
+    "tax": 5190
+   },
+   {
+    "a": "jerusalem",
+    "f": "5124482",
+    "left": 80952,
+    "account": 6631,
+    "fund": 719,
+    "tax": 5065
+   },
+   {
+    "a": "jerusalem",
+    "f": "5129275",
+    "left": 80952,
+    "account": 6631,
+    "fund": 719,
+    "tax": 5065
+   },
+   {
+    "a": "jerusalem",
+    "f": "1218916",
+    "left": 80623,
+    "account": 6594,
+    "fund": 1193,
+    "tax": 4957
+   },
+   {
+    "a": "jerusalem",
+    "f": "1201656",
+    "left": 80183,
+    "account": 6545,
+    "fund": 1828,
+    "tax": 4812
+   },
+   {
+    "a": "jerusalem",
+    "f": "1165810",
+    "left": 79793,
+    "account": 6501,
+    "fund": 2390,
+    "tax": 4684
+   },
+   {
+    "a": "jerusalem",
+    "f": "1150333",
+    "left": 79176,
+    "account": 6432,
+    "fund": 3280,
+    "tax": 4481
+   },
+   {
+    "a": "jerusalem",
+    "f": "1149020",
+    "left": 77933,
+    "account": 6292,
+    "fund": 5071,
+    "tax": 4072
+   },
+   {
+    "a": "jerusalem",
+    "f": "1146471",
+    "left": 77850,
+    "account": 6283,
+    "fund": 5190,
+    "tax": 4045
+   },
+   {
+    "a": "jerusalem",
+    "f": "1144385",
+    "left": 77478,
+    "account": 6241,
+    "fund": 5726,
+    "tax": 3922
+   },
+   {
+    "a": "jerusalem",
+    "f": "1148162",
+    "left": 77164,
+    "account": 6206,
+    "fund": 6179,
+    "tax": 3819
+   },
+   {
+    "a": "jerusalem",
+    "f": "1159250",
+    "left": 81171,
+    "account": 6656,
+    "fund": 404,
+    "tax": 5137
+   },
+   {
+    "a": "jerusalem",
+    "f": "ie00b5bmr087",
+    "left": 59135,
+    "account": 28589,
+    "fund": 404,
+    "tax": 5240
+   },
+   {
+    "a": "jerusalem",
+    "f": "ie0031442068",
+    "left": 58993,
+    "account": 28495,
+    "fund": 400,
+    "tax": 5481
+   },
+   {
+    "a": "jerusalem",
+    "f": "ie00b3xxrp09",
+    "left": 58991,
+    "account": 28493,
+    "fund": 400,
+    "tax": 5483
+   },
+   {
+    "a": "leumi",
+    "f": "5139282",
+    "left": 83396,
+    "account": 4541,
+    "fund": 116,
+    "tax": 5316
+   },
+   {
+    "a": "leumi",
+    "f": "5139100",
+    "left": 83355,
+    "account": 4537,
+    "fund": 173,
+    "tax": 5302
+   },
+   {
+    "a": "leumi",
+    "f": "5124482",
+    "left": 82968,
+    "account": 4506,
+    "fund": 719,
+    "tax": 5175
+   },
+   {
+    "a": "leumi",
+    "f": "5129275",
+    "left": 82968,
+    "account": 4506,
+    "fund": 719,
+    "tax": 5175
+   },
+   {
+    "a": "leumi",
+    "f": "1218916",
+    "left": 82632,
+    "account": 4479,
+    "fund": 1193,
+    "tax": 5064
+   },
+   {
+    "a": "leumi",
+    "f": "1201656",
+    "left": 82181,
+    "account": 4443,
+    "fund": 1828,
+    "tax": 4916
+   },
+   {
+    "a": "leumi",
+    "f": "1165810",
+    "left": 81783,
+    "account": 4411,
+    "fund": 2390,
+    "tax": 4785
+   },
+   {
+    "a": "leumi",
+    "f": "1150333",
+    "left": 81151,
+    "account": 4360,
+    "fund": 3280,
+    "tax": 4578
+   },
+   {
+    "a": "leumi",
+    "f": "1149020",
+    "left": 79879,
+    "account": 4257,
+    "fund": 5071,
+    "tax": 4160
+   },
+   {
+    "a": "leumi",
+    "f": "1146471",
+    "left": 79795,
+    "account": 4251,
+    "fund": 5190,
+    "tax": 4132
+   },
+   {
+    "a": "leumi",
+    "f": "1144385",
+    "left": 79414,
+    "account": 4220,
+    "fund": 5726,
+    "tax": 4007
+   },
+   {
+    "a": "leumi",
+    "f": "1148162",
+    "left": 79093,
+    "account": 4194,
+    "fund": 6179,
+    "tax": 3902
+   },
+   {
+    "a": "leumi",
+    "f": "1159250",
+    "left": 80503,
+    "account": 7366,
+    "fund": 404,
+    "tax": 5095
+   },
+   {
+    "a": "leumi",
+    "f": "ie00b5bmr087",
+    "left": 71513,
+    "account": 15351,
+    "fund": 404,
+    "tax": 6101
+   },
+   {
+    "a": "leumi",
+    "f": "ie0031442068",
+    "left": 70717,
+    "account": 15939,
+    "fund": 400,
+    "tax": 6313
+   },
+   {
+    "a": "leumi",
+    "f": "ie00b3xxrp09",
+    "left": 70708,
+    "account": 15945,
+    "fund": 400,
+    "tax": 6315
+   },
+   {
+    "a": "mizrahi-tefahot",
+    "f": "5139282",
+    "left": 77695,
+    "account": 10608,
+    "fund": 116,
+    "tax": 4949
+   },
+   {
+    "a": "mizrahi-tefahot",
+    "f": "5139100",
+    "left": 77657,
+    "account": 10601,
+    "fund": 173,
+    "tax": 4936
+   },
+   {
+    "a": "mizrahi-tefahot",
+    "f": "5124482",
+    "left": 77294,
+    "account": 10537,
+    "fund": 719,
+    "tax": 4817
+   },
+   {
+    "a": "mizrahi-tefahot",
+    "f": "5129275",
+    "left": 77294,
+    "account": 10537,
+    "fund": 719,
+    "tax": 4817
+   },
+   {
+    "a": "mizrahi-tefahot",
+    "f": "1218916",
+    "left": 76980,
+    "account": 10481,
+    "fund": 1193,
+    "tax": 4714
+   },
+   {
+    "a": "mizrahi-tefahot",
+    "f": "1201656",
+    "left": 76558,
+    "account": 10407,
+    "fund": 1828,
+    "tax": 4576
+   },
+   {
+    "a": "mizrahi-tefahot",
+    "f": "1165810",
+    "left": 76185,
+    "account": 10341,
+    "fund": 2390,
+    "tax": 4453
+   },
+   {
+    "a": "mizrahi-tefahot",
+    "f": "1150333",
+    "left": 75593,
+    "account": 10236,
+    "fund": 3280,
+    "tax": 4259
+   },
+   {
+    "a": "mizrahi-tefahot",
+    "f": "1149020",
+    "left": 74403,
+    "account": 10025,
+    "fund": 5071,
+    "tax": 3869
+   },
+   {
+    "a": "mizrahi-tefahot",
+    "f": "1146471",
+    "left": 74324,
+    "account": 10011,
+    "fund": 5190,
+    "tax": 3843
+   },
+   {
+    "a": "mizrahi-tefahot",
+    "f": "1144385",
+    "left": 73967,
+    "account": 9948,
+    "fund": 5726,
+    "tax": 3726
+   },
+   {
+    "a": "mizrahi-tefahot",
+    "f": "1148162",
+    "left": 73667,
+    "account": 9895,
+    "fund": 6179,
+    "tax": 3627
+   },
+   {
+    "a": "mizrahi-tefahot",
+    "f": "1159250",
+    "left": 77504,
+    "account": 10574,
+    "fund": 404,
+    "tax": 4886
+   },
+   {
+    "a": "mizrahi-tefahot",
+    "f": "ie00b5bmr087",
+    "left": 69201,
+    "account": 17832,
+    "fund": 404,
+    "tax": 5931
+   },
+   {
+    "a": "mizrahi-tefahot",
+    "f": "ie0031442068",
+    "left": 67757,
+    "account": 19076,
+    "fund": 400,
+    "tax": 6135
+   },
+   {
+    "a": "mizrahi-tefahot",
+    "f": "ie00b3xxrp09",
+    "left": 67755,
+    "account": 19075,
+    "fund": 400,
+    "tax": 6138
+   },
+   {
+    "a": "massad",
+    "f": "5139282",
+    "left": 82282,
+    "account": 5800,
+    "fund": 116,
+    "tax": 5170
+   },
+   {
+    "a": "massad",
+    "f": "5139100",
+    "left": 82241,
+    "account": 5796,
+    "fund": 173,
+    "tax": 5157
+   },
+   {
+    "a": "massad",
+    "f": "5124482",
+    "left": 81860,
+    "account": 5756,
+    "fund": 719,
+    "tax": 5032
+   },
+   {
+    "a": "massad",
+    "f": "5129275",
+    "left": 81860,
+    "account": 5756,
+    "fund": 719,
+    "tax": 5032
+   },
+   {
+    "a": "massad",
+    "f": "1218916",
+    "left": 81529,
+    "account": 5721,
+    "fund": 1193,
+    "tax": 4924
+   },
+   {
+    "a": "massad",
+    "f": "1201656",
+    "left": 81086,
+    "account": 5675,
+    "fund": 1828,
+    "tax": 4779
+   },
+   {
+    "a": "massad",
+    "f": "1165810",
+    "left": 80693,
+    "account": 5634,
+    "fund": 2390,
+    "tax": 4651
+   },
+   {
+    "a": "massad",
+    "f": "1150333",
+    "left": 80071,
+    "account": 5569,
+    "fund": 3280,
+    "tax": 4448
+   },
+   {
+    "a": "massad",
+    "f": "1149020",
+    "left": 78818,
+    "account": 5439,
+    "fund": 5071,
+    "tax": 4039
+   },
+   {
+    "a": "massad",
+    "f": "1146471",
+    "left": 78736,
+    "account": 5430,
+    "fund": 5190,
+    "tax": 4012
+   },
+   {
+    "a": "massad",
+    "f": "1144385",
+    "left": 78361,
+    "account": 5391,
+    "fund": 5726,
+    "tax": 3890
+   },
+   {
+    "a": "massad",
+    "f": "1148162",
+    "left": 78044,
+    "account": 5358,
+    "fund": 6179,
+    "tax": 3787
+   },
+   {
+    "a": "massad",
+    "f": "1159250",
+    "left": 78529,
+    "account": 9530,
+    "fund": 404,
+    "tax": 4905
+   },
+   {
+    "a": "massad",
+    "f": "ie00b5bmr087",
+    "left": 76904,
+    "account": 9515,
+    "fund": 404,
+    "tax": 6545
+   },
+   {
+    "a": "massad",
+    "f": "ie0031442068",
+    "left": 76100,
+    "account": 10113,
+    "fund": 400,
+    "tax": 6756
+   },
+   {
+    "a": "massad",
+    "f": "ie00b3xxrp09",
+    "left": 76091,
+    "account": 10120,
+    "fund": 400,
+    "tax": 6758
+   },
+   {
+    "a": "mercantile",
+    "f": "5139282",
+    "left": 79901,
+    "account": 8324,
+    "fund": 116,
+    "tax": 5026
+   },
+   {
+    "a": "mercantile",
+    "f": "5139100",
+    "left": 79862,
+    "account": 8319,
+    "fund": 173,
+    "tax": 5014
+   },
+   {
+    "a": "mercantile",
+    "f": "5124482",
+    "left": 79491,
+    "account": 8266,
+    "fund": 719,
+    "tax": 4892
+   },
+   {
+    "a": "mercantile",
+    "f": "5129275",
+    "left": 79491,
+    "account": 8266,
+    "fund": 719,
+    "tax": 4892
+   },
+   {
+    "a": "mercantile",
+    "f": "1218916",
+    "left": 79168,
+    "account": 8219,
+    "fund": 1193,
+    "tax": 4787
+   },
+   {
+    "a": "mercantile",
+    "f": "1201656",
+    "left": 78737,
+    "account": 8157,
+    "fund": 1828,
+    "tax": 4646
+   },
+   {
+    "a": "mercantile",
+    "f": "1165810",
+    "left": 78354,
+    "account": 8103,
+    "fund": 2390,
+    "tax": 4521
+   },
+   {
+    "a": "mercantile",
+    "f": "1150333",
+    "left": 77749,
+    "account": 8016,
+    "fund": 3280,
+    "tax": 4323
+   },
+   {
+    "a": "mercantile",
+    "f": "1149020",
+    "left": 76529,
+    "account": 7841,
+    "fund": 5071,
+    "tax": 3926
+   },
+   {
+    "a": "mercantile",
+    "f": "1146471",
+    "left": 76449,
+    "account": 7830,
+    "fund": 5190,
+    "tax": 3899
+   },
+   {
+    "a": "mercantile",
+    "f": "1144385",
+    "left": 76084,
+    "account": 7778,
+    "fund": 5726,
+    "tax": 3780
+   },
+   {
+    "a": "mercantile",
+    "f": "1148162",
+    "left": 75775,
+    "account": 7734,
+    "fund": 6179,
+    "tax": 3680
+   },
+   {
+    "a": "mercantile",
+    "f": "1159250",
+    "left": 79705,
+    "account": 8296,
+    "fund": 404,
+    "tax": 4962
+   },
+   {
+    "a": "mercantile",
+    "f": "ie00b5bmr087",
+    "left": 68322,
+    "account": 18858,
+    "fund": 404,
+    "tax": 5784
+   },
+   {
+    "a": "mercantile",
+    "f": "ie0031442068",
+    "left": 66895,
+    "account": 20077,
+    "fund": 400,
+    "tax": 5996
+   },
+   {
+    "a": "mercantile",
+    "f": "ie00b3xxrp09",
+    "left": 66893,
+    "account": 20076,
+    "fund": 400,
+    "tax": 5999
+   },
+   {
+    "a": "fibi",
+    "f": "5139282",
+    "left": 82371,
+    "account": 5711,
+    "fund": 116,
+    "tax": 5170
+   },
+   {
+    "a": "fibi",
+    "f": "5139100",
+    "left": 82330,
+    "account": 5707,
+    "fund": 173,
+    "tax": 5157
+   },
+   {
+    "a": "fibi",
+    "f": "5124482",
+    "left": 81948,
+    "account": 5668,
+    "fund": 719,
+    "tax": 5033
+   },
+   {
+    "a": "fibi",
+    "f": "5129275",
+    "left": 81948,
+    "account": 5668,
+    "fund": 719,
+    "tax": 5033
+   },
+   {
+    "a": "fibi",
+    "f": "1218916",
+    "left": 81617,
+    "account": 5633,
+    "fund": 1193,
+    "tax": 4924
+   },
+   {
+    "a": "fibi",
+    "f": "1201656",
+    "left": 81173,
+    "account": 5588,
+    "fund": 1828,
+    "tax": 4780
+   },
+   {
+    "a": "fibi",
+    "f": "1165810",
+    "left": 80780,
+    "account": 5547,
+    "fund": 2390,
+    "tax": 4651
+   },
+   {
+    "a": "fibi",
+    "f": "1150333",
+    "left": 80157,
+    "account": 5483,
+    "fund": 3280,
+    "tax": 4448
+   },
+   {
+    "a": "fibi",
+    "f": "1149020",
+    "left": 78903,
+    "account": 5354,
+    "fund": 5071,
+    "tax": 4039
+   },
+   {
+    "a": "fibi",
+    "f": "1146471",
+    "left": 78820,
+    "account": 5346,
+    "fund": 5190,
+    "tax": 4012
+   },
+   {
+    "a": "fibi",
+    "f": "1144385",
+    "left": 78444,
+    "account": 5307,
+    "fund": 5726,
+    "tax": 3890
+   },
+   {
+    "a": "fibi",
+    "f": "1148162",
+    "left": 78127,
+    "account": 5275,
+    "fund": 6179,
+    "tax": 3787
+   },
+   {
+    "a": "fibi",
+    "f": "1159250",
+    "left": 78106,
+    "account": 9982,
+    "fund": 404,
+    "tax": 4877
+   },
+   {
+    "a": "fibi",
+    "f": "ie00b5bmr087",
+    "left": 77379,
+    "account": 9045,
+    "fund": 404,
+    "tax": 6541
+   },
+   {
+    "a": "fibi",
+    "f": "ie0031442068",
+    "left": 76468,
+    "account": 9754,
+    "fund": 400,
+    "tax": 6746
+   },
+   {
+    "a": "fibi",
+    "f": "ie00b3xxrp09",
+    "left": 76457,
+    "account": 9763,
+    "fund": 400,
+    "tax": 6748
+   },
+   {
+    "a": "one-zero",
+    "f": "5139282",
+    "left": 83141,
+    "account": 4544,
+    "fund": 116,
+    "tax": 5567
+   },
+   {
+    "a": "one-zero",
+    "f": "5139100",
+    "left": 83100,
+    "account": 4541,
+    "fund": 173,
+    "tax": 5553
+   },
+   {
+    "a": "one-zero",
+    "f": "5124482",
+    "left": 82709,
+    "account": 4517,
+    "fund": 719,
+    "tax": 5422
+   },
+   {
+    "a": "one-zero",
+    "f": "5129275",
+    "left": 82709,
+    "account": 4517,
+    "fund": 719,
+    "tax": 5422
+   },
+   {
+    "a": "meitav-trade",
+    "f": "5139282",
+    "left": 63507,
+    "account": 26817,
+    "fund": 116,
+    "tax": 2929
+   },
+   {
+    "a": "meitav-trade",
+    "f": "5139100",
+    "left": 63473,
+    "account": 26802,
+    "fund": 173,
+    "tax": 2920
+   },
+   {
+    "a": "meitav-trade",
+    "f": "5124482",
+    "left": 63151,
+    "account": 26664,
+    "fund": 719,
+    "tax": 2834
+   },
+   {
+    "a": "meitav-trade",
+    "f": "5129275",
+    "left": 63151,
+    "account": 26664,
+    "fund": 719,
+    "tax": 2834
+   },
+   {
+    "a": "meitav-trade",
+    "f": "1218916",
+    "left": 62871,
+    "account": 26543,
+    "fund": 1193,
+    "tax": 2761
+   },
+   {
+    "a": "meitav-trade",
+    "f": "1201656",
+    "left": 62496,
+    "account": 26382,
+    "fund": 1828,
+    "tax": 2662
+   },
+   {
+    "a": "meitav-trade",
+    "f": "1165810",
+    "left": 62165,
+    "account": 26239,
+    "fund": 2390,
+    "tax": 2575
+   },
+   {
+    "a": "meitav-trade",
+    "f": "1150333",
+    "left": 61638,
+    "account": 26012,
+    "fund": 3280,
+    "tax": 2438
+   },
+   {
+    "a": "meitav-trade",
+    "f": "1149020",
+    "left": 60579,
+    "account": 25554,
+    "fund": 5071,
+    "tax": 2163
+   },
+   {
+    "a": "meitav-trade",
+    "f": "1146471",
+    "left": 60509,
+    "account": 25524,
+    "fund": 5190,
+    "tax": 2145
+   },
+   {
+    "a": "meitav-trade",
+    "f": "1144385",
+    "left": 60191,
+    "account": 25387,
+    "fund": 5726,
+    "tax": 2064
+   },
+   {
+    "a": "meitav-trade",
+    "f": "1148162",
+    "left": 59923,
+    "account": 25271,
+    "fund": 6179,
+    "tax": 1995
+   },
+   {
+    "a": "meitav-trade",
+    "f": "1159250",
+    "left": 63337,
+    "account": 26744,
+    "fund": 404,
+    "tax": 2884
+   },
+   {
+    "a": "meitav-trade",
+    "f": "ie00b5bmr087",
+    "left": 51730,
+    "account": 38089,
+    "fund": 404,
+    "tax": 3145
+   },
+   {
+    "a": "meitav-trade",
+    "f": "ie0031442068",
+    "left": 51018,
+    "account": 38454,
+    "fund": 400,
+    "tax": 3496
+   },
+   {
+    "a": "meitav-trade",
+    "f": "ie00b3xxrp09",
+    "left": 50936,
+    "account": 38533,
+    "fund": 400,
+    "tax": 3499
+   },
+   {
+    "a": "psagot",
+    "f": "5139282",
+    "left": 86492,
+    "account": 1057,
+    "fund": 116,
+    "tax": 5703
+   },
+   {
+    "a": "psagot",
+    "f": "5139100",
+    "left": 86449,
+    "account": 1056,
+    "fund": 173,
+    "tax": 5689
+   },
+   {
+    "a": "psagot",
+    "f": "5124482",
+    "left": 86045,
+    "account": 1049,
+    "fund": 719,
+    "tax": 5555
+   },
+   {
+    "a": "psagot",
+    "f": "5129275",
+    "left": 86045,
+    "account": 1049,
+    "fund": 719,
+    "tax": 5555
+   },
+   {
+    "a": "psagot",
+    "f": "1218916",
+    "left": 85694,
+    "account": 1043,
+    "fund": 1193,
+    "tax": 5438
+   },
+   {
+    "a": "psagot",
+    "f": "1201656",
+    "left": 85224,
+    "account": 1035,
+    "fund": 1828,
+    "tax": 5282
+   },
+   {
+    "a": "psagot",
+    "f": "1165810",
+    "left": 84808,
+    "account": 1027,
+    "fund": 2390,
+    "tax": 5143
+   },
+   {
+    "a": "psagot",
+    "f": "1150333",
+    "left": 84148,
+    "account": 1016,
+    "fund": 3280,
+    "tax": 4924
+   },
+   {
+    "a": "psagot",
+    "f": "1149020",
+    "left": 82821,
+    "account": 993,
+    "fund": 5071,
+    "tax": 4483
+   },
+   {
+    "a": "psagot",
+    "f": "1146471",
+    "left": 82733,
+    "account": 991,
+    "fund": 5190,
+    "tax": 4454
+   },
+   {
+    "a": "psagot",
+    "f": "1144385",
+    "left": 82335,
+    "account": 984,
+    "fund": 5726,
+    "tax": 4322
+   },
+   {
+    "a": "psagot",
+    "f": "1148162",
+    "left": 82000,
+    "account": 978,
+    "fund": 6179,
+    "tax": 4210
+   },
+   {
+    "a": "psagot",
+    "f": "1159250",
+    "left": 86279,
+    "account": 1053,
+    "fund": 404,
+    "tax": 5632
+   },
+   {
+    "a": "ibi",
+    "f": "5139282",
+    "left": 78616,
+    "account": 9934,
+    "fund": 116,
+    "tax": 4702
+   },
+   {
+    "a": "ibi",
+    "f": "5139100",
+    "left": 78577,
+    "account": 9928,
+    "fund": 173,
+    "tax": 4690
+   },
+   {
+    "a": "ibi",
+    "f": "5124482",
+    "left": 78204,
+    "account": 9872,
+    "fund": 719,
+    "tax": 4573
+   },
+   {
+    "a": "ibi",
+    "f": "5129275",
+    "left": 78204,
+    "account": 9872,
+    "fund": 719,
+    "tax": 4573
+   },
+   {
+    "a": "ibi",
+    "f": "1218916",
+    "left": 78006,
+    "account": 9687,
+    "fund": 1193,
+    "tax": 4481
+   },
+   {
+    "a": "ibi",
+    "f": "1201656",
+    "left": 77572,
+    "account": 9622,
+    "fund": 1828,
+    "tax": 4346
+   },
+   {
+    "a": "ibi",
+    "f": "1165810",
+    "left": 77188,
+    "account": 9565,
+    "fund": 2390,
+    "tax": 4225
+   },
+   {
+    "a": "ibi",
+    "f": "1150333",
+    "left": 76579,
+    "account": 9474,
+    "fund": 3280,
+    "tax": 4035
+   },
+   {
+    "a": "ibi",
+    "f": "1149020",
+    "left": 75353,
+    "account": 9291,
+    "fund": 5071,
+    "tax": 3653
+   },
+   {
+    "a": "ibi",
+    "f": "1146471",
+    "left": 75272,
+    "account": 9278,
+    "fund": 5190,
+    "tax": 3628
+   },
+   {
+    "a": "ibi",
+    "f": "1144385",
+    "left": 74904,
+    "account": 9224,
+    "fund": 5726,
+    "tax": 3514
+   },
+   {
+    "a": "ibi",
+    "f": "1148162",
+    "left": 74594,
+    "account": 9177,
+    "fund": 6179,
+    "tax": 3417
+   },
+   {
+    "a": "ibi",
+    "f": "1159250",
+    "left": 78546,
+    "account": 9768,
+    "fund": 404,
+    "tax": 4651
+   },
+   {
+    "a": "interactive-brokers",
+    "f": "ie00b5bmr087",
+    "left": 82848,
+    "account": 2749,
+    "fund": 404,
+    "tax": 7367
+   },
+   {
+    "a": "interactive-brokers",
+    "f": "ie0031442068",
+    "left": 82113,
+    "account": 3326,
+    "fund": 400,
+    "tax": 7529
+   },
+   {
+    "a": "interactive-brokers",
+    "f": "ie00b3xxrp09",
+    "left": 82110,
+    "account": 3326,
+    "fund": 400,
+    "tax": 7531
+   }
+  ]
+ },
+ "ta125": {
+  "index": "מדד ת\"א-125",
+  "plan": "10,000 ₪ now, 500 ₪ a month, 10 years, 7% a year, inflation 2%",
+  "accounts": [
+   {
+    "id": "interactive-israel",
+    "name": "אינטראקטיב ישראל",
+    "foreign": true
+   },
+   {
+    "id": "altshuler-trade",
+    "name": "אלטשולר טרייד",
+    "foreign": false
+   },
+   {
+    "id": "excellence",
+    "name": "אקסלנס",
+    "foreign": false
+   },
+   {
+    "id": "discount",
+    "name": "דיסקונט",
+    "foreign": false
+   },
+   {
+    "id": "hapoalim",
+    "name": "הפועלים",
+    "foreign": false
+   },
+   {
+    "id": "yahav",
+    "name": "יהב",
+    "foreign": false
+   },
+   {
+    "id": "jerusalem",
+    "name": "ירושלים",
+    "foreign": false
+   },
+   {
+    "id": "leumi",
+    "name": "לאומי",
+    "foreign": false
+   },
+   {
+    "id": "mizrahi-tefahot",
+    "name": "מזרחי טפחות",
+    "foreign": false
+   },
+   {
+    "id": "massad",
+    "name": "מסד",
+    "foreign": false
+   },
+   {
+    "id": "mercantile",
+    "name": "מרכנתיל",
+    "foreign": false
+   },
+   {
+    "id": "fibi",
+    "name": "הבינלאומי",
+    "foreign": false
+   },
+   {
+    "id": "one-zero",
+    "name": "וואן זירו",
+    "foreign": false
+   },
+   {
+    "id": "meitav-trade",
+    "name": "מיטב טרייד",
+    "foreign": false
+   },
+   {
+    "id": "psagot",
+    "name": "פסגות",
+    "foreign": false
+   },
+   {
+    "id": "ibi",
+    "name": "אי.בי.אי",
+    "foreign": false
+   },
+   {
+    "id": "interactive-brokers",
+    "name": "Interactive Brokers",
+    "foreign": true
+   }
+  ],
+  "funds": [
+   {
+    "id": "5112628",
+    "kind": "il-tracking",
+    "hedged": false,
+    "name": "אי.בי.אי. מחקה (4A) ת\"א 125"
+   },
+   {
+    "id": "1143718",
+    "kind": "il-etf",
+    "hedged": false,
+    "name": "תכלית סל (40) ת\"א 125"
+   },
+   {
+    "id": "1150283",
+    "kind": "il-etf",
+    "hedged": false,
+    "name": "MTF סל (4A) ת\"א 125"
+   },
+   {
+    "id": "1148899",
+    "kind": "il-etf",
+    "hedged": false,
+    "name": "הראל סל (4A) ת\"א 125"
+   },
+   {
+    "id": "1146356",
+    "kind": "il-etf",
+    "hedged": false,
+    "name": "קסם 4A) ETF) ת\"א 125"
+   },
+   {
+    "id": "1148808",
+    "kind": "il-etf",
+    "hedged": false,
+    "name": "אי.בי.אי. סל (4A) ת\"א 125"
+   }
+  ],
+  "cells": {
+   "interactive-israel|5112628": null,
+   "interactive-israel|1143718": null,
+   "interactive-israel|1150283": null,
+   "interactive-israel|1148899": null,
+   "interactive-israel|1146356": null,
+   "interactive-israel|1148808": null,
+   "altshuler-trade|5112628": {
+    "v": 65812,
+    "open": false
+   },
+   "altshuler-trade|1143718": {
+    "v": 64960,
+    "open": false
+   },
+   "altshuler-trade|1150283": {
+    "v": 64960,
+    "open": false
+   },
+   "altshuler-trade|1148899": {
+    "v": 64891,
+    "open": false
+   },
+   "altshuler-trade|1146356": {
+    "v": 64856,
+    "open": false
+   },
+   "altshuler-trade|1148808": {
+    "v": 64377,
+    "open": false
+   },
+   "excellence|5112628": {
+    "v": 63345,
+    "open": false
+   },
+   "excellence|1143718": {
+    "v": 62578,
+    "open": false
+   },
+   "excellence|1150283": {
+    "v": 62578,
+    "open": false
+   },
+   "excellence|1148899": {
+    "v": 62516,
+    "open": false
+   },
+   "excellence|1146356": {
+    "v": 62485,
+    "open": false
+   },
+   "excellence|1148808": {
+    "v": 62054,
+    "open": false
+   },
+   "discount|5112628": {
+    "v": 79491,
+    "open": false
+   },
+   "discount|1143718": {
+    "v": 78545,
+    "open": false
+   },
+   "discount|1150283": {
+    "v": 78545,
+    "open": false
+   },
+   "discount|1148899": {
+    "v": 78469,
+    "open": false
+   },
+   "discount|1146356": {
+    "v": 78431,
+    "open": false
+   },
+   "discount|1148808": {
+    "v": 77899,
+    "open": false
+   },
+   "hapoalim|5112628": {
+    "v": 81052,
+    "open": false
+   },
+   "hapoalim|1143718": {
+    "v": 80086,
+    "open": false
+   },
+   "hapoalim|1150283": {
+    "v": 80086,
+    "open": false
+   },
+   "hapoalim|1148899": {
+    "v": 80008,
+    "open": false
+   },
+   "hapoalim|1146356": {
+    "v": 79969,
+    "open": false
+   },
+   "hapoalim|1148808": {
+    "v": 79427,
+    "open": false
+   },
+   "yahav|5112628": {
+    "v": 81052,
+    "open": false
+   },
+   "yahav|1143718": {
+    "v": 80086,
+    "open": false
+   },
+   "yahav|1150283": {
+    "v": 80086,
+    "open": false
+   },
+   "yahav|1148899": {
+    "v": 80008,
+    "open": false
+   },
+   "yahav|1146356": {
+    "v": 79969,
+    "open": false
+   },
+   "yahav|1148808": {
+    "v": 79427,
+    "open": false
+   },
+   "jerusalem|5112628": {
+    "v": 80952,
+    "open": false
+   },
+   "jerusalem|1143718": {
+    "v": 79988,
+    "open": false
+   },
+   "jerusalem|1150283": {
+    "v": 79988,
+    "open": false
+   },
+   "jerusalem|1148899": {
+    "v": 79910,
+    "open": false
+   },
+   "jerusalem|1146356": {
+    "v": 79871,
+    "open": false
+   },
+   "jerusalem|1148808": {
+    "v": 79329,
+    "open": false
+   },
+   "leumi|5112628": {
+    "v": 82968,
+    "open": false
+   },
+   "leumi|1143718": {
+    "v": 81982,
+    "open": false
+   },
+   "leumi|1150283": {
+    "v": 81982,
+    "open": false
+   },
+   "leumi|1148899": {
+    "v": 81902,
+    "open": false
+   },
+   "leumi|1146356": {
+    "v": 81862,
+    "open": false
+   },
+   "leumi|1148808": {
+    "v": 81308,
+    "open": false
+   },
+   "mizrahi-tefahot|5112628": {
+    "v": 77294,
+    "open": false
+   },
+   "mizrahi-tefahot|1143718": {
+    "v": 76371,
+    "open": false
+   },
+   "mizrahi-tefahot|1150283": {
+    "v": 76371,
+    "open": false
+   },
+   "mizrahi-tefahot|1148899": {
+    "v": 76296,
+    "open": false
+   },
+   "mizrahi-tefahot|1146356": {
+    "v": 76259,
+    "open": false
+   },
+   "mizrahi-tefahot|1148808": {
+    "v": 75740,
+    "open": false
+   },
+   "massad|5112628": {
+    "v": 81860,
+    "open": false
+   },
+   "massad|1143718": {
+    "v": 80889,
+    "open": false
+   },
+   "massad|1150283": {
+    "v": 80889,
+    "open": false
+   },
+   "massad|1148899": {
+    "v": 80810,
+    "open": false
+   },
+   "massad|1146356": {
+    "v": 80771,
+    "open": false
+   },
+   "massad|1148808": {
+    "v": 80226,
+    "open": false
+   },
+   "mercantile|5112628": {
+    "v": 79491,
+    "open": false
+   },
+   "mercantile|1143718": {
+    "v": 78545,
+    "open": false
+   },
+   "mercantile|1150283": {
+    "v": 78545,
+    "open": false
+   },
+   "mercantile|1148899": {
+    "v": 78469,
+    "open": false
+   },
+   "mercantile|1146356": {
+    "v": 78431,
+    "open": false
+   },
+   "mercantile|1148808": {
+    "v": 77899,
+    "open": false
+   },
+   "fibi|5112628": {
+    "v": 81948,
+    "open": false
+   },
+   "fibi|1143718": {
+    "v": 80976,
+    "open": false
+   },
+   "fibi|1150283": {
+    "v": 80976,
+    "open": false
+   },
+   "fibi|1148899": {
+    "v": 80897,
+    "open": false
+   },
+   "fibi|1146356": {
+    "v": 80858,
+    "open": false
+   },
+   "fibi|1148808": {
+    "v": 80312,
+    "open": false
+   },
+   "one-zero|5112628": {
+    "v": 82709,
+    "open": false
+   },
+   "one-zero|1143718": null,
+   "one-zero|1150283": null,
+   "one-zero|1148899": null,
+   "one-zero|1146356": null,
+   "one-zero|1148808": null,
+   "meitav-trade|5112628": {
+    "v": 63151,
+    "open": false
+   },
+   "meitav-trade|1143718": {
+    "v": 62330,
+    "open": false
+   },
+   "meitav-trade|1150283": {
+    "v": 62330,
+    "open": false
+   },
+   "meitav-trade|1148899": {
+    "v": 62264,
+    "open": false
+   },
+   "meitav-trade|1146356": {
+    "v": 62231,
+    "open": false
+   },
+   "meitav-trade|1148808": {
+    "v": 61769,
+    "open": false
+   },
+   "psagot|5112628": {
+    "v": 86045,
+    "open": false
+   },
+   "psagot|1143718": {
+    "v": 85015,
+    "open": false
+   },
+   "psagot|1150283": {
+    "v": 85015,
+    "open": false
+   },
+   "psagot|1148899": {
+    "v": 84932,
+    "open": false
+   },
+   "psagot|1146356": {
+    "v": 84891,
+    "open": false
+   },
+   "psagot|1148808": {
+    "v": 84312,
+    "open": false
+   },
+   "ibi|5112628": {
+    "v": 78204,
+    "open": false
+   },
+   "ibi|1143718": {
+    "v": 77380,
+    "open": false
+   },
+   "ibi|1150283": {
+    "v": 77380,
+    "open": false
+   },
+   "ibi|1148899": {
+    "v": 77303,
+    "open": false
+   },
+   "ibi|1146356": {
+    "v": 77265,
+    "open": false
+   },
+   "ibi|1148808": {
+    "v": 76731,
+    "open": false
+   },
+   "interactive-brokers|5112628": null,
+   "interactive-brokers|1143718": null,
+   "interactive-brokers|1150283": null,
+   "interactive-brokers|1148899": null,
+   "interactive-brokers|1146356": null,
+   "interactive-brokers|1148808": null
+  },
+  "top": {
+   "v": 86044.9291838351,
+   "pos": {
+    "a": "psagot",
+    "f": "5112628"
+   }
+  },
+  "start": {
+   "a": "jerusalem",
+   "f": "1148899"
+  },
+  "costs": {
+   "top": {
+    "pos": {
+     "a": "psagot",
+     "f": "5112628"
+    },
+    "left": 86045,
+    "base": 93368,
+    "account": 1049,
+    "fund": 719,
+    "tax": 5555,
+    "paidIn": 70000,
+    "lines": [
+     {
+      "cost": 693
+     },
+     {
+      "cost": 354
+     }
+    ]
+   },
+   "start": {
+    "pos": {
+     "a": "jerusalem",
+     "f": "1148899"
+    },
+    "left": 79910,
+    "base": 93368,
+    "account": 6514,
+    "fund": 2221,
+    "tax": 4722,
+    "paidIn": 70000,
+    "lines": [
+     {
+      "cost": 3168
+     },
+     {
+      "cost": 3234
+     }
+    ]
+   }
+  },
+  "perPair": [
+   {
+    "a": "altshuler-trade",
+    "f": "5112628",
+    "left": 65812,
+    "account": 23657,
+    "fund": 719,
+    "tax": 3179
+   },
+   {
+    "a": "altshuler-trade",
+    "f": "1143718",
+    "left": 64960,
+    "account": 23353,
+    "fund": 2109,
+    "tax": 2946
+   },
+   {
+    "a": "altshuler-trade",
+    "f": "1150283",
+    "left": 64960,
+    "account": 23353,
+    "fund": 2109,
+    "tax": 2946
+   },
+   {
+    "a": "altshuler-trade",
+    "f": "1148899",
+    "left": 64891,
+    "account": 23328,
+    "fund": 2221,
+    "tax": 2927
+   },
+   {
+    "a": "altshuler-trade",
+    "f": "1146356",
+    "left": 64856,
+    "account": 23316,
+    "fund": 2278,
+    "tax": 2918
+   },
+   {
+    "a": "altshuler-trade",
+    "f": "1148808",
+    "left": 64377,
+    "account": 23145,
+    "fund": 3058,
+    "tax": 2788
+   },
+   {
+    "a": "excellence",
+    "f": "5112628",
+    "left": 63345,
+    "account": 26646,
+    "fund": 719,
+    "tax": 2658
+   },
+   {
+    "a": "excellence",
+    "f": "1143718",
+    "left": 62578,
+    "account": 26229,
+    "fund": 2109,
+    "tax": 2452
+   },
+   {
+    "a": "excellence",
+    "f": "1150283",
+    "left": 62578,
+    "account": 26229,
+    "fund": 2109,
+    "tax": 2452
+   },
+   {
+    "a": "excellence",
+    "f": "1148899",
+    "left": 62516,
+    "account": 26195,
+    "fund": 2221,
+    "tax": 2436
+   },
+   {
+    "a": "excellence",
+    "f": "1146356",
+    "left": 62485,
+    "account": 26178,
+    "fund": 2278,
+    "tax": 2427
+   },
+   {
+    "a": "excellence",
+    "f": "1148808",
+    "left": 62054,
+    "account": 25944,
+    "fund": 3058,
+    "tax": 2312
+   },
+   {
+    "a": "discount",
+    "f": "5112628",
+    "left": 79491,
+    "account": 8266,
+    "fund": 719,
+    "tax": 4892
+   },
+   {
+    "a": "discount",
+    "f": "1143718",
+    "left": 78545,
+    "account": 8130,
+    "fund": 2109,
+    "tax": 4583
+   },
+   {
+    "a": "discount",
+    "f": "1150283",
+    "left": 78545,
+    "account": 8130,
+    "fund": 2109,
+    "tax": 4583
+   },
+   {
+    "a": "discount",
+    "f": "1148899",
+    "left": 78469,
+    "account": 8119,
+    "fund": 2221,
+    "tax": 4559
+   },
+   {
+    "a": "discount",
+    "f": "1146356",
+    "left": 78431,
+    "account": 8114,
+    "fund": 2278,
+    "tax": 4546
+   },
+   {
+    "a": "discount",
+    "f": "1148808",
+    "left": 77899,
+    "account": 8037,
+    "fund": 3058,
+    "tax": 4373
+   },
+   {
+    "a": "hapoalim",
+    "f": "5112628",
+    "left": 81052,
+    "account": 6530,
+    "fund": 719,
+    "tax": 5067
+   },
+   {
+    "a": "hapoalim",
+    "f": "1143718",
+    "left": 80086,
+    "account": 6423,
+    "fund": 2109,
+    "tax": 4749
+   },
+   {
+    "a": "hapoalim",
+    "f": "1150283",
+    "left": 80086,
+    "account": 6423,
+    "fund": 2109,
+    "tax": 4749
+   },
+   {
+    "a": "hapoalim",
+    "f": "1148899",
+    "left": 80008,
+    "account": 6415,
+    "fund": 2221,
+    "tax": 4723
+   },
+   {
+    "a": "hapoalim",
+    "f": "1146356",
+    "left": 79969,
+    "account": 6410,
+    "fund": 2278,
+    "tax": 4711
+   },
+   {
+    "a": "hapoalim",
+    "f": "1148808",
+    "left": 79427,
+    "account": 6350,
+    "fund": 3058,
+    "tax": 4532
+   },
+   {
+    "a": "yahav",
+    "f": "5112628",
+    "left": 81052,
+    "account": 6530,
+    "fund": 719,
+    "tax": 5067
+   },
+   {
+    "a": "yahav",
+    "f": "1143718",
+    "left": 80086,
+    "account": 6423,
+    "fund": 2109,
+    "tax": 4749
+   },
+   {
+    "a": "yahav",
+    "f": "1150283",
+    "left": 80086,
+    "account": 6423,
+    "fund": 2109,
+    "tax": 4749
+   },
+   {
+    "a": "yahav",
+    "f": "1148899",
+    "left": 80008,
+    "account": 6415,
+    "fund": 2221,
+    "tax": 4723
+   },
+   {
+    "a": "yahav",
+    "f": "1146356",
+    "left": 79969,
+    "account": 6410,
+    "fund": 2278,
+    "tax": 4711
+   },
+   {
+    "a": "yahav",
+    "f": "1148808",
+    "left": 79427,
+    "account": 6350,
+    "fund": 3058,
+    "tax": 4532
+   },
+   {
+    "a": "jerusalem",
+    "f": "5112628",
+    "left": 80952,
+    "account": 6631,
+    "fund": 719,
+    "tax": 5065
+   },
+   {
+    "a": "jerusalem",
+    "f": "1143718",
+    "left": 79988,
+    "account": 6523,
+    "fund": 2109,
+    "tax": 4748
+   },
+   {
+    "a": "jerusalem",
+    "f": "1150283",
+    "left": 79988,
+    "account": 6523,
+    "fund": 2109,
+    "tax": 4748
+   },
+   {
+    "a": "jerusalem",
+    "f": "1148899",
+    "left": 79910,
+    "account": 6514,
+    "fund": 2221,
+    "tax": 4722
+   },
+   {
+    "a": "jerusalem",
+    "f": "1146356",
+    "left": 79871,
+    "account": 6510,
+    "fund": 2278,
+    "tax": 4709
+   },
+   {
+    "a": "jerusalem",
+    "f": "1148808",
+    "left": 79329,
+    "account": 6449,
+    "fund": 3058,
+    "tax": 4531
+   },
+   {
+    "a": "leumi",
+    "f": "5112628",
+    "left": 82968,
+    "account": 4506,
+    "fund": 719,
+    "tax": 5175
+   },
+   {
+    "a": "leumi",
+    "f": "1143718",
+    "left": 81982,
+    "account": 4427,
+    "fund": 2109,
+    "tax": 4851
+   },
+   {
+    "a": "leumi",
+    "f": "1150283",
+    "left": 81982,
+    "account": 4427,
+    "fund": 2109,
+    "tax": 4851
+   },
+   {
+    "a": "leumi",
+    "f": "1148899",
+    "left": 81902,
+    "account": 4420,
+    "fund": 2221,
+    "tax": 4824
+   },
+   {
+    "a": "leumi",
+    "f": "1146356",
+    "left": 81862,
+    "account": 4417,
+    "fund": 2278,
+    "tax": 4811
+   },
+   {
+    "a": "leumi",
+    "f": "1148808",
+    "left": 81308,
+    "account": 4372,
+    "fund": 3058,
+    "tax": 4629
+   },
+   {
+    "a": "mizrahi-tefahot",
+    "f": "5112628",
+    "left": 77294,
+    "account": 10537,
+    "fund": 719,
+    "tax": 4817
+   },
+   {
+    "a": "mizrahi-tefahot",
+    "f": "1143718",
+    "left": 76371,
+    "account": 10374,
+    "fund": 2109,
+    "tax": 4514
+   },
+   {
+    "a": "mizrahi-tefahot",
+    "f": "1150283",
+    "left": 76371,
+    "account": 10374,
+    "fund": 2109,
+    "tax": 4514
+   },
+   {
+    "a": "mizrahi-tefahot",
+    "f": "1148899",
+    "left": 76296,
+    "account": 10360,
+    "fund": 2221,
+    "tax": 4490
+   },
+   {
+    "a": "mizrahi-tefahot",
+    "f": "1146356",
+    "left": 76259,
+    "account": 10354,
+    "fund": 2278,
+    "tax": 4478
+   },
+   {
+    "a": "mizrahi-tefahot",
+    "f": "1148808",
+    "left": 75740,
+    "account": 10262,
+    "fund": 3058,
+    "tax": 4307
+   },
+   {
+    "a": "massad",
+    "f": "5112628",
+    "left": 81860,
+    "account": 5756,
+    "fund": 719,
+    "tax": 5032
+   },
+   {
+    "a": "massad",
+    "f": "1143718",
+    "left": 80889,
+    "account": 5655,
+    "fund": 2109,
+    "tax": 4715
+   },
+   {
+    "a": "massad",
+    "f": "1150283",
+    "left": 80889,
+    "account": 5655,
+    "fund": 2109,
+    "tax": 4715
+   },
+   {
+    "a": "massad",
+    "f": "1148899",
+    "left": 80810,
+    "account": 5646,
+    "fund": 2221,
+    "tax": 4690
+   },
+   {
+    "a": "massad",
+    "f": "1146356",
+    "left": 80771,
+    "account": 5642,
+    "fund": 2278,
+    "tax": 4677
+   },
+   {
+    "a": "massad",
+    "f": "1148808",
+    "left": 80226,
+    "account": 5585,
+    "fund": 3058,
+    "tax": 4499
+   },
+   {
+    "a": "mercantile",
+    "f": "5112628",
+    "left": 79491,
+    "account": 8266,
+    "fund": 719,
+    "tax": 4892
+   },
+   {
+    "a": "mercantile",
+    "f": "1143718",
+    "left": 78545,
+    "account": 8130,
+    "fund": 2109,
+    "tax": 4583
+   },
+   {
+    "a": "mercantile",
+    "f": "1150283",
+    "left": 78545,
+    "account": 8130,
+    "fund": 2109,
+    "tax": 4583
+   },
+   {
+    "a": "mercantile",
+    "f": "1148899",
+    "left": 78469,
+    "account": 8119,
+    "fund": 2221,
+    "tax": 4559
+   },
+   {
+    "a": "mercantile",
+    "f": "1146356",
+    "left": 78431,
+    "account": 8114,
+    "fund": 2278,
+    "tax": 4546
+   },
+   {
+    "a": "mercantile",
+    "f": "1148808",
+    "left": 77899,
+    "account": 8037,
+    "fund": 3058,
+    "tax": 4373
+   },
+   {
+    "a": "fibi",
+    "f": "5112628",
+    "left": 81948,
+    "account": 5668,
+    "fund": 719,
+    "tax": 5033
+   },
+   {
+    "a": "fibi",
+    "f": "1143718",
+    "left": 80976,
+    "account": 5567,
+    "fund": 2109,
+    "tax": 4715
+   },
+   {
+    "a": "fibi",
+    "f": "1150283",
+    "left": 80976,
+    "account": 5567,
+    "fund": 2109,
+    "tax": 4715
+   },
+   {
+    "a": "fibi",
+    "f": "1148899",
+    "left": 80897,
+    "account": 5559,
+    "fund": 2221,
+    "tax": 4690
+   },
+   {
+    "a": "fibi",
+    "f": "1146356",
+    "left": 80858,
+    "account": 5555,
+    "fund": 2278,
+    "tax": 4677
+   },
+   {
+    "a": "fibi",
+    "f": "1148808",
+    "left": 80312,
+    "account": 5499,
+    "fund": 3058,
+    "tax": 4499
+   },
+   {
+    "a": "one-zero",
+    "f": "5112628",
+    "left": 82709,
+    "account": 4517,
+    "fund": 719,
+    "tax": 5422
+   },
+   {
+    "a": "meitav-trade",
+    "f": "5112628",
+    "left": 63151,
+    "account": 26664,
+    "fund": 719,
+    "tax": 2834
+   },
+   {
+    "a": "meitav-trade",
+    "f": "1143718",
+    "left": 62330,
+    "account": 26310,
+    "fund": 2109,
+    "tax": 2618
+   },
+   {
+    "a": "meitav-trade",
+    "f": "1150283",
+    "left": 62330,
+    "account": 26310,
+    "fund": 2109,
+    "tax": 2618
+   },
+   {
+    "a": "meitav-trade",
+    "f": "1148899",
+    "left": 62264,
+    "account": 26282,
+    "fund": 2221,
+    "tax": 2601
+   },
+   {
+    "a": "meitav-trade",
+    "f": "1146356",
+    "left": 62231,
+    "account": 26267,
+    "fund": 2278,
+    "tax": 2592
+   },
+   {
+    "a": "meitav-trade",
+    "f": "1148808",
+    "left": 61769,
+    "account": 26068,
+    "fund": 3058,
+    "tax": 2472
+   },
+   {
+    "a": "psagot",
+    "f": "5112628",
+    "left": 86045,
+    "account": 1049,
+    "fund": 719,
+    "tax": 5555
+   },
+   {
+    "a": "psagot",
+    "f": "1143718",
+    "left": 85015,
+    "account": 1031,
+    "fund": 2109,
+    "tax": 5212
+   },
+   {
+    "a": "psagot",
+    "f": "1150283",
+    "left": 85015,
+    "account": 1031,
+    "fund": 2109,
+    "tax": 5212
+   },
+   {
+    "a": "psagot",
+    "f": "1148899",
+    "left": 84932,
+    "account": 1030,
+    "fund": 2221,
+    "tax": 5185
+   },
+   {
+    "a": "psagot",
+    "f": "1146356",
+    "left": 84891,
+    "account": 1029,
+    "fund": 2278,
+    "tax": 5171
+   },
+   {
+    "a": "psagot",
+    "f": "1148808",
+    "left": 84312,
+    "account": 1019,
+    "fund": 3058,
+    "tax": 4979
+   },
+   {
+    "a": "ibi",
+    "f": "5112628",
+    "left": 78204,
+    "account": 9872,
+    "fund": 719,
+    "tax": 4573
+   },
+   {
+    "a": "ibi",
+    "f": "1143718",
+    "left": 77380,
+    "account": 9593,
+    "fund": 2109,
+    "tax": 4285
+   },
+   {
+    "a": "ibi",
+    "f": "1150283",
+    "left": 77380,
+    "account": 9593,
+    "fund": 2109,
+    "tax": 4285
+   },
+   {
+    "a": "ibi",
+    "f": "1148899",
+    "left": 77303,
+    "account": 9582,
+    "fund": 2221,
+    "tax": 4261
+   },
+   {
+    "a": "ibi",
+    "f": "1146356",
+    "left": 77265,
+    "account": 9576,
+    "fund": 2278,
+    "tax": 4249
+   },
+   {
+    "a": "ibi",
+    "f": "1148808",
+    "left": 76731,
+    "account": 9496,
+    "fund": 3058,
+    "tax": 4083
+   }
+  ]
+ },
+ "robustSp500": {
+  "amounts": [
+   {
+    "amount": 0,
+    "monthly": 500,
+    "years": 10,
+    "top": {
+     "a": "פסגות",
+     "f": "ילין לפידות מחקה (4D) S&P 500",
+     "v": 72104
+    },
+    "second": {
+     "a": "אינטראקטיב ישראל",
+     "f": "iShares Core S&P 500 UCITS ETF USD (Accumulating)",
+     "v": 70173,
+     "gap": 1931,
+     "gapPct": 2.68
+    }
+   },
+   {
+    "amount": 1000,
+    "monthly": 500,
+    "years": 10,
+    "top": {
+     "a": "פסגות",
+     "f": "ילין לפידות מחקה (4D) S&P 500",
+     "v": 73541
+    },
+    "second": {
+     "a": "אינטראקטיב ישראל",
+     "f": "iShares Core S&P 500 UCITS ETF USD (Accumulating)",
+     "v": 71553,
+     "gap": 1988,
+     "gapPct": 2.7
+    }
+   },
+   {
+    "amount": 5000,
+    "monthly": 500,
+    "years": 10,
+    "top": {
+     "a": "פסגות",
+     "f": "ילין לפידות מחקה (4D) S&P 500",
+     "v": 79298
+    },
+    "second": {
+     "a": "אינטראקטיב ישראל",
+     "f": "iShares Core S&P 500 UCITS ETF USD (Accumulating)",
+     "v": 77171,
+     "gap": 2127,
+     "gapPct": 2.68
+    }
+   },
+   {
+    "amount": 10000,
+    "monthly": 500,
+    "years": 10,
+    "top": {
+     "a": "פסגות",
+     "f": "ילין לפידות מחקה (4D) S&P 500",
+     "v": 86492
+    },
+    "second": {
+     "a": "אינטראקטיב ישראל",
+     "f": "iShares Core S&P 500 UCITS ETF USD (Accumulating)",
+     "v": 84184,
+     "gap": 2308,
+     "gapPct": 2.67
+    }
+   },
+   {
+    "amount": 25000,
+    "monthly": 500,
+    "years": 10,
+    "top": {
+     "a": "פסגות",
+     "f": "ילין לפידות מחקה (4D) S&P 500",
+     "v": 108075
+    },
+    "second": {
+     "a": "אינטראקטיב ישראל",
+     "f": "iShares Core S&P 500 UCITS ETF USD (Accumulating)",
+     "v": 105221,
+     "gap": 2854,
+     "gapPct": 2.64
+    }
+   },
+   {
+    "amount": 50000,
+    "monthly": 500,
+    "years": 10,
+    "top": {
+     "a": "פסגות",
+     "f": "ילין לפידות מחקה (4D) S&P 500",
+     "v": 144047
+    },
+    "second": {
+     "a": "וואן זירו",
+     "f": "ילין לפידות מחקה (4D) S&P 500",
+     "v": 141090,
+     "gap": 2956,
+     "gapPct": 2.05
+    }
+   },
+   {
+    "amount": 100000,
+    "monthly": 500,
+    "years": 10,
+    "top": {
+     "a": "פסגות",
+     "f": "ילין לפידות מחקה (4D) S&P 500",
+     "v": 215989
+    },
+    "second": {
+     "a": "וואן זירו",
+     "f": "ילין לפידות מחקה (4D) S&P 500",
+     "v": 213527,
+     "gap": 2463,
+     "gapPct": 1.14
+    }
+   },
+   {
+    "amount": 200000,
+    "monthly": 500,
+    "years": 10,
+    "top": {
+     "a": "פסגות",
+     "f": "ילין לפידות מחקה (4D) S&P 500",
+     "v": 359875
+    },
+    "second": {
+     "a": "וואן זירו",
+     "f": "ילין לפידות מחקה (4D) S&P 500",
+     "v": 358400,
+     "gap": 1475,
+     "gapPct": 0.41
+    }
+   },
+   {
+    "amount": 300000,
+    "monthly": 500,
+    "years": 10,
+    "top": {
+     "a": "פסגות",
+     "f": "ילין לפידות מחקה (4D) S&P 500",
+     "v": 503761
+    },
+    "second": {
+     "a": "וואן זירו",
+     "f": "ילין לפידות מחקה (4D) S&P 500",
+     "v": 503273,
+     "gap": 488,
+     "gapPct": 0.1
+    }
+   },
+   {
+    "amount": 400000,
+    "monthly": 500,
+    "years": 10,
+    "top": {
+     "a": "וואן זירו",
+     "f": "ילין לפידות מחקה (4D) S&P 500",
+     "v": 648146
+    },
+    "second": {
+     "a": "פסגות",
+     "f": "ילין לפידות מחקה (4D) S&P 500",
+     "v": 647647,
+     "gap": 499,
+     "gapPct": 0.08
+    }
+   },
+   {
+    "amount": 500000,
+    "monthly": 500,
+    "years": 10,
+    "top": {
+     "a": "וואן זירו",
+     "f": "ילין לפידות מחקה (4D) S&P 500",
+     "v": 793019
+    },
+    "second": {
+     "a": "פסגות",
+     "f": "ילין לפידות מחקה (4D) S&P 500",
+     "v": 791533,
+     "gap": 1486,
+     "gapPct": 0.19
+    }
+   },
+   {
+    "amount": 750000,
+    "monthly": 500,
+    "years": 10,
+    "top": {
+     "a": "וואן זירו",
+     "f": "ילין לפידות מחקה (4D) S&P 500",
+     "v": 1155201
+    },
+    "second": {
+     "a": "פסגות",
+     "f": "ילין לפידות מחקה (4D) S&P 500",
+     "v": 1151248,
+     "gap": 3953,
+     "gapPct": 0.34
+    }
+   },
+   {
+    "amount": 1000000,
+    "monthly": 500,
+    "years": 10,
+    "top": {
+     "a": "וואן זירו",
+     "f": "ילין לפידות מחקה (4D) S&P 500",
+     "v": 1515849
+    },
+    "second": {
+     "a": "פסגות",
+     "f": "ילין לפידות מחקה (4D) S&P 500",
+     "v": 1509670,
+     "gap": 6179,
+     "gapPct": 0.41
+    }
+   }
+  ],
+  "monthlies": [
+   {
+    "amount": 10000,
+    "monthly": 0,
+    "years": 10,
+    "top": {
+     "a": "וואן זירו",
+     "f": "ילין לפידות מחקה (4D) S&P 500",
+     "v": 14487
+    },
+    "second": {
+     "a": "פסגות",
+     "f": "ילין לפידות מחקה (4D) S&P 500",
+     "v": 14389,
+     "gap": 99,
+     "gapPct": 0.68
+    }
+   },
+   {
+    "amount": 10000,
+    "monthly": 100,
+    "years": 10,
+    "top": {
+     "a": "פסגות",
+     "f": "ילין לפידות מחקה (4D) S&P 500",
+     "v": 28598
+    },
+    "second": {
+     "a": "אינטראקטיב ישראל",
+     "f": "iShares Core S&P 500 UCITS ETF USD (Accumulating)",
+     "v": 27218,
+     "gap": 1380,
+     "gapPct": 4.83
+    }
+   },
+   {
+    "amount": 10000,
+    "monthly": 250,
+    "years": 10,
+    "top": {
+     "a": "פסגות",
+     "f": "ילין לפידות מחקה (4D) S&P 500",
+     "v": 50308
+    },
+    "second": {
+     "a": "אינטראקטיב ישראל",
+     "f": "iShares Core S&P 500 UCITS ETF USD (Accumulating)",
+     "v": 48580,
+     "gap": 1728,
+     "gapPct": 3.44
+    }
+   },
+   {
+    "amount": 10000,
+    "monthly": 500,
+    "years": 10,
+    "top": {
+     "a": "פסגות",
+     "f": "ילין לפידות מחקה (4D) S&P 500",
+     "v": 86492
+    },
+    "second": {
+     "a": "אינטראקטיב ישראל",
+     "f": "iShares Core S&P 500 UCITS ETF USD (Accumulating)",
+     "v": 84184,
+     "gap": 2308,
+     "gapPct": 2.67
+    }
+   },
+   {
+    "amount": 10000,
+    "monthly": 1000,
+    "years": 10,
+    "top": {
+     "a": "פסגות",
+     "f": "ילין לפידות מחקה (4D) S&P 500",
+     "v": 158860
+    },
+    "second": {
+     "a": "וואן זירו",
+     "f": "ילין לפידות מחקה (4D) S&P 500",
+     "v": 155770,
+     "gap": 3090,
+     "gapPct": 1.94
+    }
+   },
+   {
+    "amount": 10000,
+    "monthly": 2000,
+    "years": 10,
+    "top": {
+     "a": "פסגות",
+     "f": "ילין לפידות מחקה (4D) S&P 500",
+     "v": 303595
+    },
+    "second": {
+     "a": "וואן זירו",
+     "f": "ילין לפידות מחקה (4D) S&P 500",
+     "v": 301027,
+     "gap": 2567,
+     "gapPct": 0.85
+    }
+   },
+   {
+    "amount": 10000,
+    "monthly": 3000,
+    "years": 10,
+    "top": {
+     "a": "פסגות",
+     "f": "ילין לפידות מחקה (4D) S&P 500",
+     "v": 448290
+    },
+    "second": {
+     "a": "וואן זירו",
+     "f": "ילין לפידות מחקה (4D) S&P 500",
+     "v": 446285,
+     "gap": 2005,
+     "gapPct": 0.45
+    }
+   },
+   {
+    "amount": 10000,
+    "monthly": 5000,
+    "years": 10,
+    "top": {
+     "a": "פסגות",
+     "f": "ילין לפידות מחקה (4D) S&P 500",
+     "v": 737558
+    },
+    "second": {
+     "a": "וואן זירו",
+     "f": "ילין לפידות מחקה (4D) S&P 500",
+     "v": 736800,
+     "gap": 758,
+     "gapPct": 0.1
+    }
+   },
+   {
+    "amount": 10000,
+    "monthly": 10000,
+    "years": 10,
+    "top": {
+     "a": "וואן זירו",
+     "f": "ילין לפידות מחקה (4D) S&P 500",
+     "v": 1462717
+    },
+    "second": {
+     "a": "פסגות",
+     "f": "ילין לפידות מחקה (4D) S&P 500",
+     "v": 1460727,
+     "gap": 1990,
+     "gapPct": 0.14
+    }
+   }
+  ],
+  "years": [
+   {
+    "amount": 10000,
+    "monthly": 500,
+    "years": 1,
+    "top": {
+     "a": "פסגות",
+     "f": "ילין לפידות מחקה (4D) S&P 500",
+     "v": 16436
+    },
+    "second": {
+     "a": "אינטראקטיב ישראל",
+     "f": "iShares Core S&P 500 UCITS ETF USD (Accumulating)",
+     "v": 16268,
+     "gap": 168,
+     "gapPct": 1.02
+    }
+   },
+   {
+    "amount": 10000,
+    "monthly": 500,
+    "years": 2,
+    "top": {
+     "a": "פסגות",
+     "f": "ילין לפידות מחקה (4D) S&P 500",
+     "v": 23118
+    },
+    "second": {
+     "a": "אינטראקטיב ישראל",
+     "f": "iShares Core S&P 500 UCITS ETF USD (Accumulating)",
+     "v": 22797,
+     "gap": 321,
+     "gapPct": 1.39
+    }
+   },
+   {
+    "amount": 10000,
+    "monthly": 500,
+    "years": 3,
+    "top": {
+     "a": "פסגות",
+     "f": "ילין לפידות מחקה (4D) S&P 500",
+     "v": 30046
+    },
+    "second": {
+     "a": "אינטראקטיב ישראל",
+     "f": "iShares Core S&P 500 UCITS ETF USD (Accumulating)",
+     "v": 29549,
+     "gap": 497,
+     "gapPct": 1.65
+    }
+   },
+   {
+    "amount": 10000,
+    "monthly": 500,
+    "years": 5,
+    "top": {
+     "a": "פסגות",
+     "f": "ילין לפידות מחקה (4D) S&P 500",
+     "v": 44687
+    },
+    "second": {
+     "a": "אינטראקטיב ישראל",
+     "f": "iShares Core S&P 500 UCITS ETF USD (Accumulating)",
+     "v": 43772,
+     "gap": 915,
+     "gapPct": 2.05
+    }
+   },
+   {
+    "amount": 10000,
+    "monthly": 500,
+    "years": 7,
+    "top": {
+     "a": "פסגות",
+     "f": "ילין לפידות מחקה (4D) S&P 500",
+     "v": 60461
+    },
+    "second": {
+     "a": "אינטראקטיב ישראל",
+     "f": "iShares Core S&P 500 UCITS ETF USD (Accumulating)",
+     "v": 59046,
+     "gap": 1416,
+     "gapPct": 2.34
+    }
+   },
+   {
+    "amount": 10000,
+    "monthly": 500,
+    "years": 10,
+    "top": {
+     "a": "פסגות",
+     "f": "ילין לפידות מחקה (4D) S&P 500",
+     "v": 86492
+    },
+    "second": {
+     "a": "אינטראקטיב ישראל",
+     "f": "iShares Core S&P 500 UCITS ETF USD (Accumulating)",
+     "v": 84184,
+     "gap": 2308,
+     "gapPct": 2.67
+    }
+   },
+   {
+    "amount": 10000,
+    "monthly": 500,
+    "years": 15,
+    "top": {
+     "a": "פסגות",
+     "f": "ילין לפידות מחקה (4D) S&P 500",
+     "v": 137276
+    },
+    "second": {
+     "a": "אינטראקטיב ישראל",
+     "f": "iShares Core S&P 500 UCITS ETF USD (Accumulating)",
+     "v": 133160,
+     "gap": 4116,
+     "gapPct": 3
+    }
+   },
+   {
+    "amount": 10000,
+    "monthly": 500,
+    "years": 20,
+    "top": {
+     "a": "פסגות",
+     "f": "ילין לפידות מחקה (4D) S&P 500",
+     "v": 199398
+    },
+    "second": {
+     "a": "אינטראקטיב ישראל",
+     "f": "iShares Core S&P 500 UCITS ETF USD (Accumulating)",
+     "v": 193181,
+     "gap": 6217,
+     "gapPct": 3.12
+    }
+   },
+   {
+    "amount": 10000,
+    "monthly": 500,
+    "years": 30,
+    "top": {
+     "a": "פסגות",
+     "f": "ילין לפידות מחקה (4D) S&P 500",
+     "v": 370325
+    },
+    "second": {
+     "a": "וואן זירו",
+     "f": "ילין לפידות מחקה (4D) S&P 500",
+     "v": 362000,
+     "gap": 8325,
+     "gapPct": 2.25
+    }
+   },
+   {
+    "amount": 10000,
+    "monthly": 500,
+    "years": 40,
+    "top": {
+     "a": "פסגות",
+     "f": "ילין לפידות מחקה (4D) S&P 500",
+     "v": 624132
+    },
+    "second": {
+     "a": "וואן זירו",
+     "f": "ילין לפידות מחקה (4D) S&P 500",
+     "v": 616174,
+     "gap": 7959,
+     "gapPct": 1.28
+    }
+   }
+  ]
+ },
+ "robustTa125": {
+  "amounts": [
+   {
+    "amount": 0,
+    "monthly": 500,
+    "years": 10,
+    "top": {
+     "a": "פסגות",
+     "f": "אי.בי.אי. מחקה (4A) ת\"א 125",
+     "v": 71780
+    },
+    "second": {
+     "a": "לאומי",
+     "f": "אי.בי.אי. מחקה (4A) ת\"א 125",
+     "v": 69448,
+     "gap": 2333,
+     "gapPct": 3.25
+    }
+   },
+   {
+    "amount": 1000,
+    "monthly": 500,
+    "years": 10,
+    "top": {
+     "a": "פסגות",
+     "f": "אי.בי.אי. מחקה (4A) ת\"א 125",
+     "v": 73205
+    },
+    "second": {
+     "a": "לאומי",
+     "f": "אי.בי.אי. מחקה (4A) ת\"א 125",
+     "v": 70771,
+     "gap": 2434,
+     "gapPct": 3.33
+    }
+   },
+   {
+    "amount": 5000,
+    "monthly": 500,
+    "years": 10,
+    "top": {
+     "a": "פסגות",
+     "f": "אי.בי.אי. מחקה (4A) ת\"א 125",
+     "v": 78913
+    },
+    "second": {
+     "a": "לאומי",
+     "f": "אי.בי.אי. מחקה (4A) ת\"א 125",
+     "v": 76200,
+     "gap": 2713,
+     "gapPct": 3.44
+    }
+   },
+   {
+    "amount": 10000,
+    "monthly": 500,
+    "years": 10,
+    "top": {
+     "a": "פסגות",
+     "f": "אי.בי.אי. מחקה (4A) ת\"א 125",
+     "v": 86045
+    },
+    "second": {
+     "a": "לאומי",
+     "f": "אי.בי.אי. מחקה (4A) ת\"א 125",
+     "v": 82968,
+     "gap": 3077,
+     "gapPct": 3.58
+    }
+   },
+   {
+    "amount": 25000,
+    "monthly": 500,
+    "years": 10,
+    "top": {
+     "a": "פסגות",
+     "f": "אי.בי.אי. מחקה (4A) ת\"א 125",
+     "v": 107442
+    },
+    "second": {
+     "a": "וואן זירו",
+     "f": "אי.בי.אי. מחקה (4A) ת\"א 125",
+     "v": 104253,
+     "gap": 3189,
+     "gapPct": 2.97
+    }
+   },
+   {
+    "amount": 50000,
+    "monthly": 500,
+    "years": 10,
+    "top": {
+     "a": "פסגות",
+     "f": "אי.בי.אי. מחקה (4A) ת\"א 125",
+     "v": 143104
+    },
+    "second": {
+     "a": "וואן זירו",
+     "f": "אי.בי.אי. מחקה (4A) ת\"א 125",
+     "v": 140160,
+     "gap": 2944,
+     "gapPct": 2.06
+    }
+   },
+   {
+    "amount": 100000,
+    "monthly": 500,
+    "years": 10,
+    "top": {
+     "a": "פסגות",
+     "f": "אי.בי.אי. מחקה (4A) ת\"א 125",
+     "v": 214428
+    },
+    "second": {
+     "a": "וואן זירו",
+     "f": "אי.בי.אי. מחקה (4A) ת\"א 125",
+     "v": 211973,
+     "gap": 2454,
+     "gapPct": 1.14
+    }
+   },
+   {
+    "amount": 200000,
+    "monthly": 500,
+    "years": 10,
+    "top": {
+     "a": "פסגות",
+     "f": "אי.בי.אי. מחקה (4A) ת\"א 125",
+     "v": 357076
+    },
+    "second": {
+     "a": "וואן זירו",
+     "f": "אי.בי.אי. מחקה (4A) ת\"א 125",
+     "v": 355600,
+     "gap": 1475,
+     "gapPct": 0.41
+    }
+   },
+   {
+    "amount": 300000,
+    "monthly": 500,
+    "years": 10,
+    "top": {
+     "a": "פסגות",
+     "f": "אי.בי.אי. מחקה (4A) ת\"א 125",
+     "v": 499723
+    },
+    "second": {
+     "a": "וואן זירו",
+     "f": "אי.בי.אי. מחקה (4A) ת\"א 125",
+     "v": 499227,
+     "gap": 496,
+     "gapPct": 0.1
+    }
+   },
+   {
+    "amount": 400000,
+    "monthly": 500,
+    "years": 10,
+    "top": {
+     "a": "וואן זירו",
+     "f": "אי.בי.אי. מחקה (4A) ת\"א 125",
+     "v": 642855
+    },
+    "second": {
+     "a": "פסגות",
+     "f": "אי.בי.אי. מחקה (4A) ת\"א 125",
+     "v": 642371,
+     "gap": 483,
+     "gapPct": 0.08
+    }
+   },
+   {
+    "amount": 500000,
+    "monthly": 500,
+    "years": 10,
+    "top": {
+     "a": "וואן זירו",
+     "f": "אי.בי.אי. מחקה (4A) ת\"א 125",
+     "v": 786482
+    },
+    "second": {
+     "a": "פסגות",
+     "f": "אי.בי.אי. מחקה (4A) ת\"א 125",
+     "v": 785019,
+     "gap": 1463,
+     "gapPct": 0.19
+    }
+   },
+   {
+    "amount": 750000,
+    "monthly": 500,
+    "years": 10,
+    "top": {
+     "a": "וואן זירו",
+     "f": "אי.בי.אי. מחקה (4A) ת\"א 125",
+     "v": 1145549
+    },
+    "second": {
+     "a": "פסגות",
+     "f": "אי.בי.אי. מחקה (4A) ת\"א 125",
+     "v": 1141638,
+     "gap": 3911,
+     "gapPct": 0.34
+    }
+   },
+   {
+    "amount": 1000000,
+    "monthly": 500,
+    "years": 10,
+    "top": {
+     "a": "וואן זירו",
+     "f": "אי.בי.אי. מחקה (4A) ת\"א 125",
+     "v": 1503885
+    },
+    "second": {
+     "a": "פסגות",
+     "f": "אי.בי.אי. מחקה (4A) ת\"א 125",
+     "v": 1497812,
+     "gap": 6074,
+     "gapPct": 0.4
+    }
+   }
+  ],
+  "monthlies": [
+   {
+    "amount": 10000,
+    "monthly": 0,
+    "years": 10,
+    "top": {
+     "a": "וואן זירו",
+     "f": "אי.בי.אי. מחקה (4A) ת\"א 125",
+     "v": 14363
+    },
+    "second": {
+     "a": "פסגות",
+     "f": "אי.בי.אי. מחקה (4A) ת\"א 125",
+     "v": 14265,
+     "gap": 98,
+     "gapPct": 0.68
+    }
+   },
+   {
+    "amount": 10000,
+    "monthly": 100,
+    "years": 10,
+    "top": {
+     "a": "פסגות",
+     "f": "אי.בי.אי. מחקה (4A) ת\"א 125",
+     "v": 28411
+    },
+    "second": {
+     "a": "לאומי",
+     "f": "אי.בי.אי. מחקה (4A) ת\"א 125",
+     "v": 26898,
+     "gap": 1513,
+     "gapPct": 5.32
+    }
+   },
+   {
+    "amount": 10000,
+    "monthly": 250,
+    "years": 10,
+    "top": {
+     "a": "פסגות",
+     "f": "אי.בי.אי. מחקה (4A) ת\"א 125",
+     "v": 50023
+    },
+    "second": {
+     "a": "לאומי",
+     "f": "אי.בי.אי. מחקה (4A) ת\"א 125",
+     "v": 47924,
+     "gap": 2099,
+     "gapPct": 4.2
+    }
+   },
+   {
+    "amount": 10000,
+    "monthly": 500,
+    "years": 10,
+    "top": {
+     "a": "פסגות",
+     "f": "אי.בי.אי. מחקה (4A) ת\"א 125",
+     "v": 86045
+    },
+    "second": {
+     "a": "לאומי",
+     "f": "אי.בי.אי. מחקה (4A) ת\"א 125",
+     "v": 82968,
+     "gap": 3077,
+     "gapPct": 3.58
+    }
+   },
+   {
+    "amount": 10000,
+    "monthly": 1000,
+    "years": 10,
+    "top": {
+     "a": "פסגות",
+     "f": "אי.בי.אי. מחקה (4A) ת\"א 125",
+     "v": 158088
+    },
+    "second": {
+     "a": "וואן זירו",
+     "f": "אי.בי.אי. מחקה (4A) ת\"א 125",
+     "v": 155012,
+     "gap": 3076,
+     "gapPct": 1.95
+    }
+   },
+   {
+    "amount": 10000,
+    "monthly": 2000,
+    "years": 10,
+    "top": {
+     "a": "פסגות",
+     "f": "אי.בי.אי. מחקה (4A) ת\"א 125",
+     "v": 302174
+    },
+    "second": {
+     "a": "וואן זירו",
+     "f": "אי.בי.אי. מחקה (4A) ת\"א 125",
+     "v": 299617,
+     "gap": 2556,
+     "gapPct": 0.85
+    }
+   },
+   {
+    "amount": 10000,
+    "monthly": 3000,
+    "years": 10,
+    "top": {
+     "a": "פסגות",
+     "f": "אי.בי.אי. מחקה (4A) ת\"א 125",
+     "v": 446220
+    },
+    "second": {
+     "a": "וואן זירו",
+     "f": "אי.בי.אי. מחקה (4A) ת\"א 125",
+     "v": 444223,
+     "gap": 1997,
+     "gapPct": 0.45
+    }
+   },
+   {
+    "amount": 10000,
+    "monthly": 5000,
+    "years": 10,
+    "top": {
+     "a": "פסגות",
+     "f": "אי.בי.אי. מחקה (4A) ת\"א 125",
+     "v": 734190
+    },
+    "second": {
+     "a": "וואן זירו",
+     "f": "אי.בי.אי. מחקה (4A) ת\"א 125",
+     "v": 733433,
+     "gap": 756,
+     "gapPct": 0.1
+    }
+   },
+   {
+    "amount": 10000,
+    "monthly": 10000,
+    "years": 10,
+    "top": {
+     "a": "וואן זירו",
+     "f": "אי.בי.אי. מחקה (4A) ת\"א 125",
+     "v": 1456092
+    },
+    "second": {
+     "a": "פסגות",
+     "f": "אי.בי.אי. מחקה (4A) ת\"א 125",
+     "v": 1454115,
+     "gap": 1977,
+     "gapPct": 0.14
+    }
+   }
+  ],
+  "years": [
+   {
+    "amount": 10000,
+    "monthly": 500,
+    "years": 1,
+    "top": {
+     "a": "פסגות",
+     "f": "אי.בי.אי. מחקה (4A) ת\"א 125",
+     "v": 16425
+    },
+    "second": {
+     "a": "לאומי",
+     "f": "אי.בי.אי. מחקה (4A) ת\"א 125",
+     "v": 16250,
+     "gap": 175,
+     "gapPct": 1.07
+    }
+   },
+   {
+    "amount": 10000,
+    "monthly": 500,
+    "years": 2,
+    "top": {
+     "a": "פסגות",
+     "f": "אי.בי.אי. מחקה (4A) ת\"א 125",
+     "v": 23091
+    },
+    "second": {
+     "a": "לאומי",
+     "f": "אי.בי.אי. מחקה (4A) ת\"א 125",
+     "v": 22762,
+     "gap": 329,
+     "gapPct": 1.42
+    }
+   },
+   {
+    "amount": 10000,
+    "monthly": 500,
+    "years": 3,
+    "top": {
+     "a": "פסגות",
+     "f": "אי.בי.אי. מחקה (4A) ת\"א 125",
+     "v": 29995
+    },
+    "second": {
+     "a": "לאומי",
+     "f": "אי.בי.אי. מחקה (4A) ת\"א 125",
+     "v": 29477,
+     "gap": 519,
+     "gapPct": 1.73
+    }
+   },
+   {
+    "amount": 10000,
+    "monthly": 500,
+    "years": 5,
+    "top": {
+     "a": "פסגות",
+     "f": "אי.בי.אי. מחקה (4A) ת\"א 125",
+     "v": 44569
+    },
+    "second": {
+     "a": "לאומי",
+     "f": "אי.בי.אי. מחקה (4A) ת\"א 125",
+     "v": 43551,
+     "gap": 1017,
+     "gapPct": 2.28
+    }
+   },
+   {
+    "amount": 10000,
+    "monthly": 500,
+    "years": 7,
+    "top": {
+     "a": "פסגות",
+     "f": "אי.בי.אי. מחקה (4A) ת\"א 125",
+     "v": 60241
+    },
+    "second": {
+     "a": "לאומי",
+     "f": "אי.בי.אי. מחקה (4A) ת\"א 125",
+     "v": 58551,
+     "gap": 1690,
+     "gapPct": 2.81
+    }
+   },
+   {
+    "amount": 10000,
+    "monthly": 500,
+    "years": 10,
+    "top": {
+     "a": "פסגות",
+     "f": "אי.בי.אי. מחקה (4A) ת\"א 125",
+     "v": 86045
+    },
+    "second": {
+     "a": "לאומי",
+     "f": "אי.בי.אי. מחקה (4A) ת\"א 125",
+     "v": 82968,
+     "gap": 3077,
+     "gapPct": 3.58
+    }
+   },
+   {
+    "amount": 10000,
+    "monthly": 500,
+    "years": 15,
+    "top": {
+     "a": "פסגות",
+     "f": "אי.בי.אי. מחקה (4A) ת\"א 125",
+     "v": 136190
+    },
+    "second": {
+     "a": "וואן זירו",
+     "f": "אי.בי.אי. מחקה (4A) ת\"א 125",
+     "v": 131328,
+     "gap": 4862,
+     "gapPct": 3.57
+    }
+   },
+   {
+    "amount": 10000,
+    "monthly": 500,
+    "years": 20,
+    "top": {
+     "a": "פסגות",
+     "f": "אי.בי.אי. מחקה (4A) ת\"א 125",
+     "v": 197226
+    },
+    "second": {
+     "a": "וואן זירו",
+     "f": "אי.בי.אי. מחקה (4A) ת\"א 125",
+     "v": 190977,
+     "gap": 6249,
+     "gapPct": 3.17
+    }
+   },
+   {
+    "amount": 10000,
+    "monthly": 500,
+    "years": 30,
+    "top": {
+     "a": "פסגות",
+     "f": "אי.בי.אי. מחקה (4A) ת\"א 125",
+     "v": 363814
+    },
+    "second": {
+     "a": "וואן זירו",
+     "f": "אי.בי.אי. מחקה (4A) ת\"א 125",
+     "v": 355610,
+     "gap": 8204,
+     "gapPct": 2.26
+    }
+   },
+   {
+    "amount": 10000,
+    "monthly": 500,
+    "years": 40,
+    "top": {
+     "a": "פסגות",
+     "f": "אי.בי.אי. מחקה (4A) ת\"א 125",
+     "v": 609263
+    },
+    "second": {
+     "a": "וואן זירו",
+     "f": "אי.בי.אי. מחקה (4A) ת\"א 125",
+     "v": 601434,
+     "gap": 7828,
+     "gapPct": 1.28
+    }
+   }
+  ]
+ }
+}

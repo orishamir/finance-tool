@@ -1,0 +1,83 @@
+{
+  "task": "custom-index-no-fund",
+  "persona": "careful-retiree-pc",
+  "repeat": 1,
+  "mode": "case",
+  "device": "pc",
+  "startedAt": "2026-11-05T21:24:36.904Z",
+  "structured": {
+    "answer": "I'd choose א. Even with no fund, it shows a simple list of what each account costs over 10 years, and Leumi, a bank I know, comes to 4,547 ₪ against 1,058 ₪ at the cheapest. ב only invites me to add a fund I wouldn't know how to pick, and that feels like the site wants something from me.",
+    "choice": "א: the same structure as every index; with no fund the result card and list rank accounts by what the account itself charges, and the fund column says there is no fund yet",
+    "confidence": "unsure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Top of every page: 'ניקיי 225', 'מדד S&P 500', 'קרן חוץ'",
+        "why": "Words I don't know; I'd normally feel the page isn't for me and leave"
+      },
+      {
+        "where": "Option א result card, '70,000 ₪'",
+        "why": "Big first number; not clear whether that's my money, a total, or a cost"
+      },
+      {
+        "where": "Option ב top box, 'הוספת קרן שלא ברשימה'",
+        "why": "Asks me to add a fund; I don't know which, so it feels like it wants something from me"
+      }
+    ],
+    "used": [
+      "Option א list 'כמה החשבון עולה לכם ב־10 שנים' with bank names and amounts (פסגות 1,058, לאומי 4,547, מזרחי 5,809)",
+      "Option א 'עוד לא נבחרה קרן' / 'אין עדיין קרנות ברשימה'",
+      "Option ב box with 'הוספת קרן שלא ברשימה' and its short list of three",
+      "Current Nikkei screen list of banks with 'עלות החשבון'"
+    ],
+    "skimmed": [
+      "Explanatory paragraphs under section headings in the mockups",
+      "Current S&P 500 screen with the coloured bars and fund cards"
+    ],
+    "skipped": [
+      "Colour legend (דמי משמרת, המרת מטבע...)",
+      "Sliders",
+      "Fund tags like צוברת, מחקה, מנוטרלת מט\"ח",
+      "'מה לא הוצע' at the bottom",
+      "'בחו\"ל' section"
+    ],
+    "unsure_meaning": [
+      "ניקיי 225",
+      "מדד (as a stock index)",
+      "S&P 500",
+      "קרן חוץ",
+      "קרן מחקה",
+      "דמי משמרת",
+      "צוברת",
+      "Interactive Brokers",
+      "70,000 ₪ (what it represents)",
+      "dotted underlines under numbers"
+    ],
+    "not_found": [
+      "A plain sentence comparing this to a bank deposit",
+      "Whether my money is safe"
+    ],
+    "would_change": [
+      "Make the mockup and grey text larger and darker",
+      "Explain the big 70,000 ₪ in a short sentence",
+      "Avoid close colours in the bars",
+      "Open with something about safe saving / bank costs, not index names in English"
+    ]
+  },
+  "steps": 3,
+  "reads": 3,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 23010,
+    "turns": 6,
+    "usd": 0.135251,
+    "input": 6,
+    "cacheWrite": 11511,
+    "cacheRead": 4195,
+    "output": 2115,
+    "model": "claude-opus-5-5"
+  }
+}

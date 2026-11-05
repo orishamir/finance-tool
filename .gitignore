@@ -10,3 +10,6 @@ coverage/
 .claude/settings.local.json
 .claude/worktrees/
 research/knowledge/2026-10-25-scope/tools/work/
+
+# Founder-flag benchmark raw extracts: his own words and screenshots, never committed (2026-11-05)
+research/user-lab/bench/raw/
