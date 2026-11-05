@@ -3630,6 +3630,9 @@ export const invest = {
     /** The top two pairs within the site's tie threshold (P-01): neither is crowned (2026-11-05). */
     tieTop: "אחד משני הזוגות הזולים ביותר לתוכנית שלכם",
     tieWithNext: "שקולה לזוג הבא בתור",
+    firstPair: "הזוג הראשון",
+    vsFirst: "לעומת הזוג הראשון",
+    gapLeadFirst: "העלות בזוג הראשון, לעומת הזוג הבא בתור:",
     tieWhy: "ההפרש קטן מסף התיקו של האתר, ולכן שני הזוגות שקולים.",
     /** An input of a computed figure, named by whose it is: "הבחירה שלכם: נשאר". */
     input: (who: string, what: string) => `${who}: ${what}`,

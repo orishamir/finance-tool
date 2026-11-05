@@ -228,7 +228,9 @@ export function PairResult({ view, bundle, plan, settled, pick, chosen, onPick }
   const tied = !!pcOther && isTie(pc.left.value as number, pcOther.left.value as number, tieShareOf(bundle));
   const otherRole = onBest ? c.pair.next : c.pair.cheapest;
   // the first pair's name: the person's pick, or, before any pick, the page's own pair, which is the cheapest when there is one
-  const mineRole = chosen ? c.pair.yours : onBest ? c.pair.cheapest : c.pair.openTop;
+  // within the tie threshold the first pair is not "the cheapest": it is the first of two
+  const mineRole = chosen ? c.pair.yours : onBest ? (tied ? c.pair.firstPair : c.pair.cheapest) : c.pair.openTop;
+  const vsMine = chosen ? c.pair.vsYours : tied ? c.pair.vsFirst : c.pair.vsCheapest;
   const parts = partsOf(pc, "");
   const scale = Math.max(totalOf(parts), pcOther ? totalOf(partsOf(pcOther, "")) : 0);
   const sumAccount = (x: PairCosts) => x.account.reduce((a, l) => a + (l.cost.value as number), 0) + x.interaction;
@@ -305,7 +307,7 @@ export function PairResult({ view, bundle, plan, settled, pick, chosen, onPick }
                 <span className="min-h-[2lh]">
                   {onBest ? (
                     <>
-                      <Num animate value={gap(pcOther.left, c.pair.input(otherRole, c.pair.colLeft), pc.left, c.pair.input(mineRole, c.pair.colLeft), chosen ? c.pair.vsYours : c.pair.vsCheapest)} /> {chosen ? c.pair.vsYours : c.pair.vsCheapest}
+                      <Num animate value={gap(pcOther.left, c.pair.input(otherRole, c.pair.colLeft), pc.left, c.pair.input(mineRole, c.pair.colLeft), vsMine)} /> {vsMine}
                     </>
                   ) : (
                     <>
@@ -331,7 +333,7 @@ export function PairResult({ view, bundle, plan, settled, pick, chosen, onPick }
         {pcOther && (
           // three columns of one width: in a sentence, a number with another digit pushed everything after it (nothing moves when a number changes)
           <div className="flex flex-col gap-2 mt-1">
-            <p className="text-sm text-muted-foreground">{chosen ? c.pair.gapLead : c.pair.gapLeadCheapest}</p>
+            <p className="text-sm text-muted-foreground">{chosen ? c.pair.gapLead : tied ? c.pair.gapLeadFirst : c.pair.gapLeadCheapest}</p>
             <StatRow cols={3}>
               <Stat label={c.pair.gapPart.account}>{gapNum(gapParts![0]!, c.pair.gapPart.account, nis(sumAccount(pc), "F-91", c.pair.gapPart.account, bundle.today), nis(sumAccount(pcOther), "F-91", c.pair.gapPart.account, bundle.today))}</Stat>
               <Stat label={c.pair.gapPart.fund}>{gapNum(gapParts![1]!, c.pair.gapPart.fund, pc.fund, pcOther.fund)}</Stat>
