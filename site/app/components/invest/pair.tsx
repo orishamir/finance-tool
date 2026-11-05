@@ -4,7 +4,7 @@
 // is left, and what it costs, split by who takes it: the person's pair and the cheapest one above each other, or, on the cheapest pair,
 // the next one beside it (one shape, so a pick never resizes the block).
 import { mayaFundHref } from "../../lib/sources";
-import { Fragment, useMemo, useState, type ReactNode } from "react";
+import { Fragment, useMemo, useState, type MouseEvent, type ReactNode } from "react";
 import { isTie, type FeeLine } from "@finance-tool/engine";
 import { brands, groupPrices, invest as c } from "../../copy";
 import { isCustomFund } from "../../lib/custom-entries";
@@ -15,7 +15,7 @@ import { computed, ownBy, type SiteValue } from "../../lib/value";
 import { fmt } from "../../lib/format";
 import { IconLock } from "../icons";
 import { Num } from "../provenance";
-import { MixedName, Button, figureFit, Card, ChartLegend, CostStack, FeeWordsNote, LabelChip, LabelFilter, LabelRow, LongestCase, PickList, ProductIdLink, Sentence, Stat, StatRow, Swatch, Tag, cx, GroupPriceFold, useChartPick, type ChartPick, useHeldHeight, type CostPart, type GroupChoice, type PickRow } from "../kit";
+import { AlsoChanged, holdOnPick, MixedName, Button, figureFit, Card, ChartLegend, CostStack, FeeWordsNote, LabelChip, LabelFilter, LabelRow, LongestCase, PickList, ProductIdLink, Sentence, Stat, StatRow, Swatch, Tag, cx, GroupPriceFold, useChartPick, type ChartPick, useHeldHeight, type CostPart, type GroupChoice, type PickRow } from "../kit";
 import { groupNameOf, isGroupPrice, isGroupProvider, pickableGroups } from "../../lib/group-pick";
 import { optionClass, OptionTag, reasonText } from "./parts";
 import { ProviderLink, providerName } from "./sections";
@@ -107,13 +107,22 @@ export function repick(view: InvestView, cur: Pick, change: Partial<Pick>): Pick
 /** A pick that changed the other half too (a fund with no price at the account, an account with no price for the fund): the row tapped
  * says so, with the way back (2026-11-05: the account moved to another house with nothing near the row to say it). */
 export interface Moved {
-  /** The pair before the tap, to go back to. */
+  /** The pair before the tap, whose house the way back names. */
   prev: Pick;
   /** The pair the tap made. */
   at: Pick;
   /** The half that changed without being tapped. */
   half: "house" | "fund";
+  /** Set by the page: puts back what was there before the tap, the page's own pair or a group included (#190: the way back made the page's
+   *  pair the person's pick, and dropped a group). */
+  back?: () => void;
 }
+/** The way back from a row of a list: the row stays where it is on the screen while the lists sort again. */
+const backFrom = (moved: Moved, key: string) => (e: MouseEvent<HTMLButtonElement>) => {
+  const row = e.currentTarget.closest<HTMLElement>("[data-pick-key]");
+  if (row) holdOnPick(key, row);
+  moved.back?.();
+};
 export type OnPick = (p: Pick, moved?: Moved) => void;
 /** Pick one half; when the other half has to change with it, say which. */
 export function pickHalf(view: InvestView, cur: Pick, change: Partial<Pick>, onPick: OnPick) {
@@ -182,18 +191,24 @@ function CostLegend({ lines, pick }: { lines: string[]; pick: ChartPick<string> 
   );
 }
 
+/** Every role a cost bar can name, laid out unseen under its own: a longer role took a second line on a phone (#190). */
+const BAR_ROLES = [c.pair.yours, c.pair.cheapest, c.pair.next, c.pair.tieRole, c.pair.openTop];
+
 function CostBar({ who, fund, sub, pc, scale, you, entered, today, highlight }: { who: string; /** The fund's name: two bars of one house differ by the fund, and say so (2026-11-05). */ fund: string; sub: string; pc: PairCosts; scale: number; highlight: string | null; you?: boolean; /** The person typed this account (D44). */ entered?: boolean; today: string }) {
   const parts = partsOf(pc, entered ? c.pair.sourceEntered : c.pair.sourceList(who));
   // shown as the rounded base less the rounded value left: two bars then differ by exactly what the two "left" figures differ by
   const total = Math.round(pc.base) - Math.round(pc.left.value as number);
   return (
-    <div className="grid grid-cols-[minmax(0,1fr)_auto] md:grid-cols-[15rem_minmax(0,1fr)_6rem] items-center gap-x-3 gap-y-1.5">
+    // the figure's column has one width for every plan, so a long figure never narrows the three lines beside it (#190)
+    <div className="grid grid-cols-[minmax(0,1fr)_7rem] md:grid-cols-[15rem_minmax(0,1fr)_6rem] items-center gap-x-3 gap-y-1.5">
       {/* three lines on every bar, whichever pair: whose pair it is, the account, the fund */}
       <span className="flex flex-col min-w-0 leading-tight">
-        <span className="text-xs text-muted-foreground">
-          {sub}
-          {entered && ` · ${c.customEntries.enteredWord}`}
-        </span>
+        <LongestCase className="text-xs text-muted-foreground" cases={BAR_ROLES.map((r) => <span key={r}>{r} · {c.customEntries.enteredWord}</span>)}>
+          <span>
+            {sub}
+            {entered && ` · ${c.customEntries.enteredWord}`}
+          </span>
+        </LongestCase>
         <span className={cx("truncate font-semibold", (you || entered) && "text-entered")}>{who}</span>
         <span className="truncate text-xs text-muted-foreground">
           <MixedName>{fund}</MixedName>
@@ -202,20 +217,25 @@ function CostBar({ who, fund, sub, pc, scale, you, entered, today, highlight }: 
       <div className="min-w-0 max-md:col-span-2 max-md:row-start-2">
         <CostStack parts={parts} scale={scale} highlight={highlight} label={`${who}: ${fmt.nisWhole(total)}`} />
       </div>
-      <span className="text-end font-semibold">
+      <span className={cx("text-end font-semibold", figureFit(total))}>
         <Num value={nis(total, "F-91", who, today, { [c.pair.input(who, c.pair.colLeft)]: pc.left })} />
       </span>
     </div>
   );
 }
 
+/** Every ranked pair of the same kind (hedged or not) as `best`, at every house, what it leaves, most first. */
+function pairsOfKind(view: InvestView, best: Pick): { house: string; fund: string; v: number }[] {
+  const bestRec = allFunds(view).find((f) => f.rec.id === best.fund)?.rec;
+  return allFunds(view)
+    .filter((f) => !bestRec || opensOn(f.rec) === opensOn(bestRec))
+    .flatMap((f) => Object.entries(f.byHouse).flatMap(([house, at]) => (priced(at) && !at.open && !isGroupPrice(at) ? [{ house, fund: f.rec.id, v: at.valueN }] : [])))
+    .sort((a, b) => b.v - a.v);
+}
+
 /** The pair beside the best one when the person is on it: the next that leaves the most, over every ranked fund at every house of the same kind (hedged or not) as the best one. */
 function runnerUp(view: InvestView, best: Pick): Pick | null {
-  const bestRec = allFunds(view).find((f) => f.rec.id === best.fund)?.rec;
-  const pairs = allFunds(view)
-    .filter((f) => !bestRec || opensOn(f.rec) === opensOn(bestRec))
-    .flatMap((f) => Object.entries(f.byHouse).flatMap(([house, at]) => (priced(at) && !at.open && !isGroupPrice(at) && !(house === best.house && f.rec.id === best.fund) ? [{ house, fund: f.rec.id, v: at.valueN }] : [])));
-  const top = pairs.sort((a, b) => b.v - a.v)[0];
+  const top = pairsOfKind(view, best).find((x) => !(x.house === best.house && x.fund === best.fund));
   return top ? { house: top.house, fund: top.fund } : null;
 }
 
@@ -225,16 +245,26 @@ const valueOfPair = (view: InvestView, p: Pick): number | null => {
   return priced(at) ? at.valueN : null;
 };
 /**
- * The best pair is crowned only when the next one is outside the site's tie threshold (P-01, F-80; 2026-11-05: a pair 43 ₪ ahead,
- * 0.05%, took the star). Within it the two share the top, and no star is drawn.
+ * The tie set of F-80: every ranked pair of the best one's kind within the site's tie threshold of it (P-01), the best included; 0 when it
+ * has no price (#190: the words said "one of the two" when three pairs were within it).
+ */
+export function tieCount(view: InvestView, best: Pick | null, theta: number): number {
+  const a = best ? valueOfPair(view, best) : null;
+  if (!best || a === null) return 0;
+  const pairs = pairsOfKind(view, best);
+  const inSet = pairs.filter((x) => x.v >= a || isTie(a, x.v, theta)).length;
+  return pairs.some((x) => x.house === best.house && x.fund === best.fund) ? inSet : inSet + 1;
+}
+/**
+ * The best pair is crowned only when it is alone in its tie set (P-01, F-80; 2026-11-05: a pair 43 ₪ ahead, 0.05%, took the star).
+ * Within the threshold the pairs share the top, and no star is drawn: in the tiles and in the account list alike (#190).
  */
 export function crowned(view: InvestView, best: Pick | null, theta: number): boolean {
-  if (!best) return false;
-  const next = runnerUp(view, best);
-  const a = valueOfPair(view, best);
-  const b = next ? valueOfPair(view, next) : null;
-  return a !== null && (b === null || !isTie(a, b, theta));
+  return tieCount(view, best, theta) === 1;
 }
+
+/** The longest figure a tile's gap line can hold, for its unseen longest case. */
+const LONGEST_GAP = `\u2066\u2212${fmt.nisWhole(9_999_999)}\u2069`;
 
 export function PairResult({ view, bundle, plan, settled, pick, chosen, onPick }: { view: InvestView; bundle: WorkbenchBundle; plan: WorkbenchInputs; settled?: WorkbenchInputs; pick: Pick; /** The person picked this pair (it is in the address); else it is the page's own, and is never called theirs (2026-11-05). */ chosen: boolean; onPick: OnPick }) {
   const best = bestFor(view, pick);
@@ -251,20 +281,27 @@ export function PairResult({ view, bundle, plan, settled, pick, chosen, onPick }
     const rec = allFunds(view).find((f) => f.rec.id === fund)!.rec;
     return kindOf(rec) === "unhedged" && !indexSeenBy(view.index, rec, bundle).israeli;
   };
-  // the line is held on an Israeli index too, empty, so the tiles keep one height from index to index (nothing moves, #190)
-  const steady = (fund: string) => <span className="text-xs text-muted-foreground min-h-[1lh] max-md:min-h-[2lh]">{!view.index.israeli && onSteadyDollar(fund) ? (view.index.custom ? c.pair.steadyIndexCurrency : c.pair.steadyDollar) : ""}</span>;
+  // held at its longest case on every index, empty on an Israeli one, so the tiles keep one height from index to index (nothing moves, #190)
+  const steady = (fund: string) => (
+    <LongestCase className="text-xs text-muted-foreground" cases={[<span key="d">{c.pair.steadyDollar}</span>, <span key="i">{c.pair.steadyIndexCurrency}</span>]}>
+      <span>{!view.index.israeli && onSteadyDollar(fund) ? (view.index.custom ? c.pair.steadyIndexCurrency : c.pair.steadyDollar) : ""}</span>
+    </LongestCase>
+  );
   const years = plan.years;
   const months = 12 * plan.years;
   const lines = legendLines(!!view.index.israeli, [...pc.account, ...(pcOther?.account ?? [])].map((l) => lineOf(l.line)));
-  // a gap names its two inputs by whose they are, as the figure's sheet lists them
-  const gap = (a: SiteValue, aName: string, b: SiteValue, bName: string, about: string) => nis((a.value as number) - (b.value as number), "F-65", about, bundle.today, { [aName]: a, [bName]: b });
-  // the two pairs within the site's tie threshold share the top: no star, and the card says why (P-01, F-80)
-  const tied = !!pcOther && isTie(pc.left.value as number, pcOther.left.value as number, tieShareOf(bundle));
-  const otherRole = onBest ? c.pair.next : c.pair.cheapest;
-  // the first pair's name: the person's pick, or, before any pick, the page's own pair, which is the cheapest when there is one
-  // within the tie threshold the first pair is not "the cheapest": it is the first of two
-  const mineRole = chosen ? c.pair.yours : onBest ? (tied ? c.pair.firstPair : c.pair.cheapest) : c.pair.openTop;
-  const vsMine = chosen ? c.pair.vsYours : tied ? c.pair.vsFirst : c.pair.vsCheapest;
+  // the tie set of F-80: every ranked pair within the site's tie threshold of the best one (P-01); crowned when it is alone, in the tiles
+  // as in the account list (#190: with the person's own pick far from the best, the tile crowned a best pair that was in a tie)
+  const theta = tieShareOf(bundle);
+  const n = tieCount(view, best, theta);
+  const crown = n === 1;
+  // the person's pick within the threshold of the best pair: in the tie set too
+  const tied = !!pcOther && isTie(pc.left.value as number, pcOther.left.value as number, theta);
+  // under a tie no pair is first: the pairs are named by what they are and by where they stand, never by an order the page does not show
+  const tie = onBest && n > 1;
+  const mineRole = chosen ? c.pair.yours : onBest ? (tie ? c.pair.tieRole : c.pair.cheapest) : c.pair.openTop;
+  const otherRole = onBest ? (tie ? c.pair.tieRole : c.pair.next) : crown ? c.pair.cheapest : c.pair.tieRole;
+  const vsMine = chosen ? c.pair.vsYours : tie ? c.pair.vsRight : c.pair.vsCheapest;
   const parts = partsOf(pc, "");
   const scale = Math.max(totalOf(parts), pcOther ? totalOf(partsOf(pcOther, "")) : 0);
   const sumAccount = (x: PairCosts) => x.account.reduce((a, l) => a + (l.cost.value as number), 0) + x.interaction;
@@ -272,24 +309,48 @@ export function PairResult({ view, bundle, plan, settled, pick, chosen, onPick }
   const shownLeft = (x: PairCosts) => Math.round(x.left.value as number);
   const gapParts = pcOther ? wholeParts([sumAccount(pc) - sumAccount(pcOther), (pc.fund.value as number) - (pcOther.fund.value as number), (pc.tax.value as number) - (pcOther.tax.value as number)], shownLeft(pcOther) - shownLeft(pc)) : null;
   const leftGap = pcOther ? (pc.left.value as number) - (pcOther.left.value as number) : 0;
-  const gapNum = (n: number, about: string, a: SiteValue, b: SiteValue) =>
-    n === 0 ? (
+  const nameOf = (p: Pick) => providerName(view, p.house)?.short ?? p.house;
+  const fundOf = (p: Pick) => allFunds(view).find((f) => f.rec.id === p.fund)?.name ?? p.fund;
+  // a figure's sheet names its two inputs by whose they are; two pairs of one role are told apart by their account and fund
+  const mineKey = mineRole === otherRole ? `${mineRole}, ${nameOf(pick)} · ${fundOf(pick)}` : mineRole;
+  const otherKey = other && mineRole === otherRole ? `${otherRole}, ${nameOf(other)} · ${fundOf(other)}` : otherRole;
+  const gap = (a: SiteValue, aName: string, b: SiteValue, bName: string, about: string) => nis((a.value as number) - (b.value as number), "F-65", about, bundle.today, { [aName]: a, [bName]: b });
+  const gapNum = (amount: number, about: string, a: SiteValue, b: SiteValue) =>
+    amount === 0 ? (
       c.pair.gapNone
     ) : (
       <>
-        <Num value={nis(Math.abs(n), "F-91", about, bundle.today, { [c.pair.input(mineRole, about)]: a, [c.pair.input(otherRole, about)]: b })} /> {n > 0 ? c.pair.gapMore : c.pair.gapLess}
+        <Num value={nis(Math.abs(amount), "F-91", about, bundle.today, { [c.pair.input(mineKey, about)]: a, [c.pair.input(otherKey, about)]: b })} /> {amount > 0 ? c.pair.gapMore : c.pair.gapLess}
       </>
     );
-  const nameOf = (p: Pick) => providerName(view, p.house)?.short ?? p.house;
-  const fundOf = (p: Pick) => allFunds(view).find((f) => f.rec.id === p.fund)?.name ?? p.fund;
   // each tile names its pair on one line of its own: the account and the fund (2026-11-05: the tiles named neither)
   const pairLine = (p: Pick) => (
     <span className="text-sm text-muted-foreground md:truncate max-md:line-clamp-2 max-md:min-h-[2lh]">
       <MixedName>{nameOf(p)}</MixedName> · <MixedName>{fundOf(p)}</MixedName>
     </span>
   );
-  const otherTitle = onBest ? c.pair.next : tied ? c.pair.cheapest : c.pair.cheapestStar;
-  const moreIfOther = pcOther ? gap(pcOther.left, c.pair.input(otherRole, c.pair.colLeft), pc.left, c.pair.input(mineRole, c.pair.colLeft), c.pair.moreIfCheapest) : null;
+  // every title a tile can carry, laid out unseen: a tie that comes or goes with a slider, a pick, another index move nothing (#190)
+  const TIE_MOST = 10;
+  const mineTitles = [
+    <span key="y1">{c.pair.yours}<span className="font-medium"> · {c.pair.tiedWith}</span></span>,
+    <span key="y2">{c.pair.yours}<span className="font-medium"> · {c.pair.cheapestTag}</span></span>,
+    <span key="t2" className="font-medium">{c.pair.tieTop(2)}</span>,
+    <span key="tn" className="font-medium">{c.pair.tieTop(TIE_MOST)}</span>,
+    <span key="st" className="font-medium">{c.pair.cheapestStar}</span>,
+    <span key="op">{c.pair.openTop}</span>,
+  ];
+  const otherTitles = [c.pair.next, c.pair.tieOther, c.pair.cheapestStar, c.pair.tieTop(2), c.pair.tieTop(TIE_MOST)].map((x) => <span key={x}>{x}</span>);
+  const otherTitle = onBest ? (tie ? c.pair.tieOther : c.pair.next) : crown ? c.pair.cheapestStar : c.pair.tieTop(n);
+  const mineTag = onBest ? (tie ? c.pair.tiedWith : c.pair.cheapestTag) : tied ? c.pair.tiedWith : null;
+  const moreIfOther = pcOther ? gap(pcOther.left, c.pair.input(otherKey, c.pair.colLeft), pc.left, c.pair.input(mineKey, c.pair.colLeft), c.pair.moreIfCheapest) : null;
+  // the gap line and, under a tie, why there is no order: held at their longest case together
+  const whyTie = tie ? c.pair.tieWhy(n) : tied ? c.pair.tieWhy(2) : null;
+  const gapCases = [c.pair.vsYours, c.pair.vsRight, c.pair.vsCheapest, c.pair.moreIfCheapest].map((vs) => (
+    <span key={vs} className="block">
+      {LONGEST_GAP} {vs}
+      <span className="block text-xs">{c.pair.tieWhy(TIE_MOST)}</span>
+    </span>
+  ));
   return (
     <Card pad="roomy" className="flex flex-col gap-5">
       <div className="flex flex-col gap-4 md:flex-row md:flex-wrap md:items-stretch md:gap-x-6">
@@ -299,7 +360,9 @@ export function PairResult({ view, bundle, plan, settled, pick, chosen, onPick }
           <span className="text-2xl md:text-3xl font-bold leading-tight">
             <Num animate value={pc.paidIn} />
           </span>
-          <span className="text-xs text-muted-foreground">{plan.monthly === 0 ? c.pair.paidInOnce : c.pair.paidInNote(months)}</span>
+          <LongestCase className="text-xs text-muted-foreground" cases={[<span key="o">{c.pair.paidInOnce}</span>, <span key="m">{c.pair.paidInNote(12 * LONGEST_YEARS)}</span>]}>
+            <span>{plan.monthly === 0 ? c.pair.paidInOnce : c.pair.paidInNote(months)}</span>
+          </LongestCase>
         </div>
         <span aria-hidden="true" className="hidden md:inline text-2xl text-muted-foreground self-center">
           ←
@@ -307,49 +370,57 @@ export function PairResult({ view, bundle, plan, settled, pick, chosen, onPick }
         <div className="grid grid-cols-2 gap-3 md:contents">
           {/* the person's colour only on the person's pick (blue is for what they entered or chose) */}
           <div className={cx("md:flex-1 md:min-w-64 min-w-0 rounded-lg border p-3 flex flex-col gap-0.5", chosen ? "border-entered bg-entered/10" : "border-primary")}>
-            <span className="text-sm text-muted-foreground max-md:min-h-[2lh]">
-              {chosen ? (
-                <>
-                  {c.pair.yours}
-                  {onBest && <span className="text-primary font-medium"> · {tied ? c.pair.tieWithNext : c.pair.cheapestTag}</span>}
-                </>
-              ) : onBest ? (
-                <span className="text-primary font-medium">{tied ? c.pair.tieTop : c.pair.cheapestStar}</span>
-              ) : (
-                c.pair.openTop
-              )}
-            </span>
+            <LongestCase className="text-sm text-muted-foreground" cases={mineTitles}>
+              <span>
+                {chosen ? (
+                  <>
+                    {c.pair.yours}
+                    {mineTag && <span className="text-primary font-medium"> · {mineTag}</span>}
+                  </>
+                ) : onBest ? (
+                  <span className="text-primary font-medium">{tie ? c.pair.tieTop(n) : c.pair.cheapestStar}</span>
+                ) : (
+                  c.pair.openTop
+                )}
+              </span>
+            </LongestCase>
             {pairLine(pick)}
             <span className={cx("text-2xl md:text-3xl font-bold leading-tight max-md:min-h-[1.875rem]", figureFit(pc.left.value as number, "tile"))}>
               <Num animate value={pc.left} />
             </span>
-            <span className="text-xs text-muted-foreground">
-              {c.pair.left(years)}, {c.pair.leftNote}
-            </span>
+            <LongestCase className="text-xs text-muted-foreground" cases={[1, 2, LONGEST_YEARS].map((y) => <span key={y}>{c.pair.left(y)}, {c.pair.leftNote}</span>)}>
+              <span>
+                {c.pair.left(years)}, {c.pair.leftNote}
+              </span>
+            </LongestCase>
             {steady(pick.fund)}
           </div>
           {pcOther && other && (
             <div className="md:flex-1 md:min-w-64 min-w-0 rounded-lg border border-border p-3 flex flex-col gap-1">
-              <span className="text-sm text-muted-foreground max-md:min-h-[2lh]">{otherTitle}</span>
+              <LongestCase className="text-sm text-muted-foreground" cases={otherTitles}>
+                <span>{otherTitle}</span>
+              </LongestCase>
               {pairLine(other)}
               <span className={cx("text-2xl md:text-3xl font-bold leading-tight max-md:min-h-[1.875rem]", figureFit(pcOther.left.value as number, "tile"), !onBest && "text-primary")}>
                 <Num animate value={pcOther.left} />
               </span>
               {/* the button on a line of its own: beside the figure, another digit moved it from under the finger */}
               <span className="flex flex-col items-start gap-1 text-sm">
-                {/* two lines held for the tie's words, so a tie that comes or goes with a slider moves nothing */}
-                <span className="min-h-[2lh]">
-                  {onBest ? (
-                    <>
-                      <Num animate value={gap(pcOther.left, c.pair.input(otherRole, c.pair.colLeft), pc.left, c.pair.input(mineRole, c.pair.colLeft), vsMine)} /> {vsMine}
-                    </>
-                  ) : (
-                    <>
-                      <Num animate value={moreIfOther!} display={plus} /> {c.pair.moreIfCheapest}
-                    </>
-                  )}
-                  {tied && <span className="block text-xs text-muted-foreground">{c.pair.tieWhy}</span>}
-                </span>
+                {/* the gap and, under a tie, why: held at their longest case, so a tie that comes or goes with a slider moves nothing (#190) */}
+                <LongestCase className="self-stretch" cases={gapCases}>
+                  <span className="block">
+                    {onBest ? (
+                      <>
+                        <Num animate value={gap(pcOther.left, c.pair.input(otherKey, c.pair.colLeft), pc.left, c.pair.input(mineKey, c.pair.colLeft), vsMine)} /> {vsMine}
+                      </>
+                    ) : (
+                      <>
+                        <Num animate value={moreIfOther!} display={plus} /> {c.pair.moreIfCheapest}
+                      </>
+                    )}
+                    {whyTie && <span className="block text-xs text-muted-foreground">{whyTie}</span>}
+                  </span>
+                </LongestCase>
                 <Button variant="quiet" onClick={() => onPick(other)}>
                   {c.pair.pickCheapest}
                 </Button>
@@ -360,19 +431,26 @@ export function PairResult({ view, bundle, plan, settled, pick, chosen, onPick }
         </div>
       </div>
       <div className="flex flex-col gap-2">
-        <h3 className="font-semibold">{c.pair.costTitleBoth(years)}</h3>
+        <LongestCase cases={[1, 2, LONGEST_YEARS].map((y) => <span key={y} className="block font-semibold">{c.pair.costTitleBoth(y)}</span>)}>
+          <h3 className="font-semibold">{c.pair.costTitleBoth(years)}</h3>
+        </LongestCase>
         <CostBar who={nameOf(pick)} fund={fundOf(pick)} sub={mineRole} pc={pc} scale={scale} you={chosen} entered={providerName(view, pick.house)?.custom} today={bundle.today} highlight={legendPick.active} />
-        {pcOther && other && <CostBar highlight={legendPick.active} who={nameOf(other)} fund={fundOf(other)} sub={onBest ? c.pair.next : c.pair.cheapest} pc={pcOther} scale={scale} entered={providerName(view, other.house)?.custom} today={bundle.today} />}
-        <CostLegend lines={lines} pick={legendPick} />
+        {pcOther && other && <CostBar highlight={legendPick.active} who={nameOf(other)} fund={fundOf(other)} sub={otherRole} pc={pcOther} scale={scale} entered={providerName(view, other.house)?.custom} today={bundle.today} />}
+        {/* held at the legend of a foreign index, which names the conversion too: an Israeli index's legend took a line less on a phone */}
+        <LongestCase cases={[<CostLegend key="l" lines={legendLines(false, ["other"])} pick={legendPick} />]}>
+          <CostLegend lines={lines} pick={legendPick} />
+        </LongestCase>
         {pcOther && (
           // three columns of one width: in a sentence, a number with another digit pushed everything after it (nothing moves when a number changes)
           <div className="flex flex-col gap-2 mt-1">
-            <p className="text-sm text-muted-foreground">{chosen ? c.pair.gapLead : tied ? c.pair.gapLeadFirst : c.pair.gapLeadCheapest}</p>
+            <LongestCase className="text-sm text-muted-foreground" cases={[c.pair.gapLead, c.pair.gapLeadTie, c.pair.gapLeadCheapest].map((x) => <p key={x}>{x}</p>)}>
+              <p>{chosen ? c.pair.gapLead : tie ? c.pair.gapLeadTie : c.pair.gapLeadCheapest}</p>
+            </LongestCase>
             <StatRow cols={3}>
               <Stat label={c.pair.gapPart.account}>{gapNum(gapParts![0]!, c.pair.gapPart.account, nis(sumAccount(pc), "F-91", c.pair.gapPart.account, bundle.today), nis(sumAccount(pcOther), "F-91", c.pair.gapPart.account, bundle.today))}</Stat>
               <Stat label={c.pair.gapPart.fund}>{gapNum(gapParts![1]!, c.pair.gapPart.fund, pc.fund, pcOther.fund)}</Stat>
               {/* more tax with more left: the gain explains it; with a different tax treatment the signs part, and nothing is said. The line keeps its room either way */}
-              <Stat label={c.pair.gapPart.tax} note={<span className="block min-h-[1lh]">{gapParts![2]! !== 0 && Math.sign(gapParts![2]!) === Math.sign(leftGap) && (gapParts![2]! > 0 ? c.pair.taxBecauseMore : c.pair.taxBecauseLess)}</span>}>
+              <Stat label={c.pair.gapPart.tax} note={<LongestCase cases={[<span key="m">{c.pair.taxBecauseMore}</span>, <span key="l">{c.pair.taxBecauseLess}</span>]}><span>{gapParts![2]! !== 0 && Math.sign(gapParts![2]!) === Math.sign(leftGap) && (gapParts![2]! > 0 ? c.pair.taxBecauseMore : c.pair.taxBecauseLess)}</span></LongestCase>}>
                 {gapNum(gapParts![2]!, c.pair.gapPart.tax, pc.tax, pcOther.tax)}
               </Stat>
             </StatRow>
@@ -468,7 +546,8 @@ export function AccountColumn({ view, bundle, years, monthly = 1, pick, onPick, 
           {pickedOf(h.id) && <span className="block text-sm text-muted-foreground">{groupPrices.pickedLine(pickedOf(h.id)!)}</span>}
         </span>
       )),
-      funds: allFunds(view).map((f) => <span key={f.rec.id} className="text-sm flex items-center gap-1.5 max-md:flex-col max-md:items-start md:flex-wrap">{c.pair.accountsCond} <Tag><MixedName>{f.name}</MixedName></Tag></span>),
+      // laid out as the shown line is, a wrapping tag included: a nowrap case held one line where the shown name took two (#190)
+      funds: allFunds(view).map((f) => <span key={f.rec.id} className="text-sm flex items-center gap-1.5 max-md:flex-col max-md:items-start md:flex-wrap">{c.pair.accountsCond} <Tag wrap><MixedName>{f.name}</MixedName></Tag></span>),
     };
   }, [heldKey, bundle.snapshots]); // eslint-disable-line react-hooks/exhaustive-deps
   const fund = allFunds(view).find((f) => f.rec.id === pick.fund);
@@ -529,14 +608,7 @@ export function AccountColumn({ view, bundle, years, monthly = 1, pick, onPick, 
               {/* on a phone the two equal places say it alone: the word beside a standing-order price wrapped the row to a second line (#190) */}
               {tiedTop && <span className="font-medium text-primary max-md:hidden">{c.pair.tieTag}</span>}
               {/* the tap on this account changed the fund too: said on the row tapped, with the way back (a 44 px target in the line's height) */}
-              {r.p.id === baseHouse && moved?.half === "fund" && (
-                <span className="text-foreground">
-                  {c.pair.movedFund}{" "}
-                  <button type="button" onClick={() => onPick(moved.prev)} className="text-link underline underline-offset-[3px] hover:no-underline min-h-target -my-3 px-1">
-                    {c.pair.moveBack}
-                  </button>
-                </span>
-              )}
+              {r.p.id === baseHouse && moved?.half === "fund" && moved.back && <AlsoChanged what={c.pair.movedFund} back={c.pair.moveBack} onBack={backFrom(moved, r.p.id)} />}
               {r.at.standing && monthly > 0 && <span>{c.pair.standingTag}</span>}
             </span>
           </span>
@@ -683,6 +755,8 @@ export function AccountColumn({ view, bundle, years, monthly = 1, pick, onPick, 
 // ---------------------------------------------------------------- the fund column
 
 const FILTER_FAMILIES = new Set<Label["family"]>(["trade", "follow", "currency", "payout", "held"]);
+/** The fund rests on an open rule at some house: its row keeps room for the tag at every house. */
+const openSomewhere = (f: FundWay) => Object.values(f.byHouse).some((x) => priced(x) && x.open);
 
 const mayaHrefOf = (f: FundWay) => {
   // Maya's page of the fund exists for a fund listed in Israel
@@ -747,7 +821,7 @@ function FundKind({ fund }: { fund: FundWay }) {
   );
 }
 
-export function FundColumn({ view, bundle, plan, today, pick, onPick, moved = null, filter, onFilter }: { view: InvestView; bundle: WorkbenchBundle; plan: WorkbenchInputs; today: string; pick: Pick; onPick: OnPick; /** The tap before changed the account too. */ moved?: Moved | null; filter: string | null; onFilter: (id: string | null) => void }) {
+export function FundColumn({ view, bundle, plan, today, pick, chosen = true, onPick, moved = null, filter, onFilter }: { view: InvestView; bundle: WorkbenchBundle; plan: WorkbenchInputs; today: string; pick: Pick; /** The person picked this pair; else it is the page's own, and the list never calls its fund their choice (#190). */ chosen?: boolean; onPick: OnPick; /** The tap before changed the account too. */ moved?: Moved | null; filter: string | null; onFilter: (id: string | null) => void }) {
   const funds = allFunds(view);
   // a row added or removed starts the held height over, so a removed row leaves no hole (D44)
   const heldKey = `${view.index.id}:${funds.length}`;
@@ -798,7 +872,8 @@ export function FundColumn({ view, bundle, plan, today, pick, onPick, moved = nu
   const cur = view.index.exposure?.currency ?? "USD";
   const names = view.index.exposure?.other_currencies === true ? c.kinds.nameMany(c.currencies[cur] ?? cur) : c.kinds.name;
   const kindCount = { unhedged: shown.filter((r) => kindOf(r.f.rec) === "unhedged").length, hedged: shown.filter((r) => kindOf(r.f.rec) === "hedged").length };
-  const diff = (n: number, name: string, value: SiteValue, sel: SiteValue) => nis(n, "F-65", c.pair.colDiff, today, { [c.pair.input(name, c.pair.colLeft)]: value, [c.pair.input(`${c.pair.chosen}, ${fund.name}`, c.pair.colLeft)]: sel });
+  const colDiff = chosen ? c.pair.colDiff : c.pair.colDiffMarked;
+  const diff = (n: number, name: string, value: SiteValue, sel: SiteValue) => nis(n, "F-65", colDiff, today, { [c.pair.input(name, c.pair.colLeft)]: value, [c.pair.input(`${chosen ? c.pair.chosen : c.pair.marked}, ${fund.name}`, c.pair.colLeft)]: sel });
   const whysAt = (houseId: string, list: { f: FundWay }[]) => [...new Set(list.flatMap(({ f }) => { const a = f.byHouse[houseId]; return a && !priced(a) && "reason" in a ? [whyNoPrice(bundle, houseId, f)] : []; }))];
   const houseWhys = whysAt(pick.house, shown);
   const whyBlock = (houseShort: string, lines: string[]) =>
@@ -826,16 +901,11 @@ export function FundColumn({ view, bundle, plan, today, pick, onPick, moved = nu
     const x = cross.get(r.f.rec.id);
     const shortOf = (id: string) => providerName(view, id)?.short ?? id;
     const right = isSel ? (
-      moved?.half === "house" ? (
+      moved?.half === "house" && moved.back ? (
         // the tap on this fund moved the account: said on the row tapped, with the way back
-        <span className="flex flex-col items-end text-xs">
-          <span className="text-foreground">{c.pair.movedHouse(shortOf(pick.house))}</span>
-          <button type="button" onClick={() => onPick(moved.prev)} className="text-link underline underline-offset-[3px] hover:no-underline min-h-target -my-2.5 px-1">
-            {c.pair.moveBackTo(shortOf(moved.prev.house))}
-          </button>
-        </span>
+        <AlsoChanged stack className="text-xs" what={c.pair.movedHouse(shortOf(pick.house))} back={c.pair.moveBackTo(shortOf(moved.prev.house))} onBack={backFrom(moved, r.f.rec.id)} />
       ) : (
-        <span className="text-sm text-muted-foreground">{c.pair.chosen}</span>
+        <span className="text-sm text-muted-foreground">{chosen ? c.pair.chosen : c.pair.marked}</span>
       )
     ) : x && range ? (
       <span className="flex flex-col items-end gap-0.5 text-sm">
@@ -883,8 +953,10 @@ export function FundColumn({ view, bundle, plan, today, pick, onPick, moved = nu
               {r.labels.map((l) => (
                 <LabelChip key={l.id} label={l} />
               ))}
-              {priced(at) && at.open && (
-                <Tag tone="blocked" icon={<IconLock size={14} />}>
+              {/* held on every row of a fund that rests on an open rule at some house, unseen where it does not here: a pick that moved
+                  the tag in or out grew the row and moved every section below (#190) */}
+              {openSomewhere(r.f) && (
+                <Tag tone="blocked" icon={<IconLock size={14} />} className={priced(at) && at.open ? undefined : "invisible"}>
                   {c.options.open}
                 </Tag>
               )}
@@ -933,7 +1005,10 @@ export function FundColumn({ view, bundle, plan, today, pick, onPick, moved = nu
           <>
             <span>{c.pair.colFund}</span>
             <span className="max-md:hidden">{c.kinds.colGap}</span>
-            <span className="text-end">{c.pair.colDiff}</span>
+            {/* one height for both heads: before a pick the selected row is the page's own, never "the choice" */}
+            <LongestCase className="text-end" cases={[<span key="c">{c.pair.colDiff}</span>, <span key="m">{c.pair.colDiffMarked}</span>]}>
+              <span>{colDiff}</span>
+            </LongestCase>
           </>
         }
         rows={pickRows}

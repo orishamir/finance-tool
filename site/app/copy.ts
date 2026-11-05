@@ -3544,10 +3544,14 @@ export const invest = {
       retStep: "תשואה",
       most: "הכי משפיע",
       others: "אינפלציה",
-      /** The button with the value it opens on (#190): the 2% was never on the page. */
-      othersAt: (pct: string) => `אינפלציה ${pct} בשנה`,
+      /** After the inflation's figure, which stands beside the button (#190: the 2% was never on the page). */
+      perYear: "בשנה",
+      /** The button beside it, which opens the assumptions. */
+      change: "שינוי",
       /** What the yearly return is (A-01, a gross return: docs/method.md), on the line under the sliders (#190). */
-      retBefore: "התשואה לפני אינפלציה, דמי ניהול, עמלות ומס",
+      retBefore: "התשואה בשנה היא לפני אינפלציה, דמי ניהול, עמלות ומס",
+      /** What the page's results are, beside it: "before inflation" stood one dot from "in today's money" (#190). */
+      leftAfter: "מה שנשאר מחושב אחריהם, בכסף של היום",
       changes: {
         title: "מה הכי משנה את מה שיישאר לכם",
         lead: "בכל קו משתנה מספר אחד, והשאר נשארים כמו בתוכנית שלכם. גררו את הקו האנכי בגרף, או בחרו שינוי:",
@@ -3573,7 +3577,6 @@ export const invest = {
     dollar: "שער הדולר",
     dollarSource: "מחושב משערי הייחוס של הבנק המרכזי האירופי",
     dollarMissing: "אין שער דולר בשערי הייחוס; הדרך בחו״ל לא מחושבת.",
-    todayShekels: "בכסף של היום",
   },
 
   header: {
@@ -3653,15 +3656,21 @@ export const invest = {
     vsYours: "לעומת הבחירה שלכם",
     /** Before any pick, the next pair is set against the cheapest one, never against "your choice" (2026-11-05). */
     vsCheapest: "לעומת הזוג הזול ביותר",
-    /** Before any pick, on an index with no ranked pair: the pair shown is the one that leaves the most, on an open rule. */
-    openTop: "הזוג שמשאיר הכי הרבה, בלי דירוג",
-    /** The top two pairs within the site's tie threshold (P-01): neither is crowned (2026-11-05). */
-    tieTop: "אחד משני הזוגות הזולים ביותר לתוכנית שלכם",
-    tieWithNext: "שקולה לזוג הבא בתור",
-    firstPair: "הזוג הראשון",
-    vsFirst: "לעומת הזוג הראשון",
-    gapLeadFirst: "העלות בזוג הראשון, לעומת הזוג הבא בתור:",
-    tieWhy: "ההפרש קטן מכדי לקבוע איזה זוג זול יותר, ולכן שני הזוגות שקולים.",
+    /** Before any pick, on an index with no ranked pair: the pair shown is the one that leaves the most, on an open rule, and says why it is not ranked (#190). */
+    openTop: "הזוג שמשאיר הכי הרבה, בלי דירוג כי כלל המס פתוח",
+    /** Every pair within the site's tie threshold of the top (P-01, F-80): none is crowned, and the count is said (2026-11-05, #190). */
+    tieTop: (n: number) => (n === 2 ? "אחד משני הזוגות הזולים ביותר לתוכנית שלכם" : `אחד מ־${n} הזוגות הזולים ביותר לתוכנית שלכם`),
+    /** The next pair, itself within the threshold: no order is shown between them. */
+    tieOther: "עוד אחד מהזוגות הזולים ביותר",
+    /** On the person's pick, within the threshold of the top. */
+    tiedWith: "בין הזוגות הזולים ביותר",
+    /** A cost bar's role under a tie: neither pair is first. */
+    tieRole: "אחד מהזוגות הזולים ביותר",
+    /** Under a tie the two tiles are told apart by where they stand: the first tile is the right one, on a computer and on a phone. */
+    vsRight: "לעומת הזוג שמימין",
+    /** Under a tie the two cost bars are told apart by where they stand. */
+    gapLeadTie: "העלות בזוג העליון, לעומת הזוג שמתחתיו:",
+    tieWhy: (n: number) => (n === 2 ? "ההפרש קטן מכדי לקבוע איזה זוג זול יותר, ולכן שני הזוגות שקולים." : `ההפרשים בין ${n} הזוגות הזולים ביותר קטנים מכדי לקבוע איזה מהם זול יותר, ולכן הם שקולים.`),
     /** An input of a computed figure, named by whose it is: "הבחירה שלכם: נשאר". */
     input: (who: string, what: string) => `${who}: ${what}`,
     moreIfCheapest: "יותר אם עוברים לזוג הזול",
@@ -3719,6 +3728,9 @@ export const invest = {
     colYield: "תשואת חלוקה",
     colDiff: "לעומת הבחירה",
     chosen: "הבחירה",
+    /** Before any pick: the selected fund is the page's own, marked in the list, never "the choice" (#190). */
+    colDiffMarked: "לעומת הקרן המסומנת",
+    marked: "המסומנת",
     cheapestTag: "★ הזול",
     /** A row within the site's tie threshold of the first (P-01): it shares the first place, and no row is starred (2026-11-05). */
     tieTag: "תיקו",

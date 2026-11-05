@@ -155,6 +155,26 @@ patterns["a name in a plain bdi"] = {
   },
 };
 
+// 2026-11-05 (issue 190): a text action is the kit's Button `quiet`, and a choice that changed something else, with the way back, is the
+// kit's AlsoChanged; never a <button> styled by hand as an underlined link. Today's leftovers, other pages' (the stairs' link leaves the
+// indices page with #191).
+patterns["a button styled by hand as a link"] = {
+  count: (s) => (s.match(/<button\b[^>]*className="[^"]*\btext-link\b[^"]*\bunderline\b/g) ?? []).length,
+  kit: "Button variant=quiet, or AlsoChanged for a change with its way back",
+  allowed: {
+    "components/compare/reasons.tsx": 1,
+    "components/compare/why.tsx": 5,
+    "components/holdings/add-sheet.tsx": 1,
+    "components/invest/stairs.tsx": 1,
+    "components/revisit/revisit.tsx": 2,
+    "components/search.tsx": 2,
+    "root.tsx": 1,
+    "routes/companies.tsx": 1,
+    "routes/goal-compare.tsx": 1,
+    "routes/not-found.tsx": 1,
+  },
+};
+
 for (const [name, p] of Object.entries(patterns)) {
   describe(`ratchet: ${name}`, () => {
     const now: Record<string, number> = {};

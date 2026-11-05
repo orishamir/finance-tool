@@ -231,7 +231,20 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
   // a tap that changed the other half too: the row tapped says so, with the way back, until the next pick (2026-11-05)
   const [moved, setMoved] = useState<Moved | null>(null);
   const onPick = (p: Pick, m?: Moved) => {
-    setMoved(m ?? null);
+    // the way back puts back the address as it was before the tap: no pick (the page's own pair, never made the person's), or the pick
+    // with its group (#190: it wrote the pair back as a pick, and a group's held account in place of its house)
+    const before = search;
+    setMoved(
+      m
+        ? {
+            ...m,
+            back: () => {
+              setMoved(null);
+              navigate(`${pathname}${before}`, { replace: true, preventScrollReset: true });
+            },
+          }
+        : null,
+    );
     // a pick on the group's account (another fund, from the fund list) stays on that group of that house
     const next: Pick = picked && own?.group && p.house === picked.id ? { house: own.house, fund: p.fund, group: own.group } : p;
     const q = new URLSearchParams(search);
@@ -271,7 +284,7 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
       today={data.today}
       example={Object.keys(released.state.entered).length === 0}
       dollar={!index?.israeli}
-      inflation={{ pct: fi.values.inflation.value as number, entered: released.state.entered["A-02"] !== undefined }}
+      inflation={fi.values.inflation}
     />
   );
 
@@ -301,7 +314,7 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
                   <span aria-hidden="true" className="hidden lg:grid place-items-center size-9 mt-10 rounded-full border border-input bg-popover text-xl text-muted-foreground justify-self-center">
                     +
                   </span>
-                  <FundColumn view={shownView} bundle={shownBundle} plan={plan} today={data.today} pick={shown} onPick={onPick} moved={movedNow} filter={labelFilter} onFilter={setLabelFilter} />
+                  <FundColumn view={shownView} bundle={shownBundle} plan={plan} today={data.today} pick={shown} chosen={picks} onPick={onPick} moved={movedNow} filter={labelFilter} onFilter={setLabelFilter} />
                 </div>
               </>
             ) : (
