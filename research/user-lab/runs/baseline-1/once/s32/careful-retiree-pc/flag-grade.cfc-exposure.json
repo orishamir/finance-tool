@@ -1,0 +1,36 @@
+{
+  "case": "cfc-exposure",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The fund table spells out the stock percentage and the currency ceiling of each fund, which the label 'חשיפה לדולר' already covers; the extra figures clutter.\",\"where\":\"the exposure figures in each version\",\"kind\":\"taste\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 3,
+        "why": "Finding 3 says the stock figure 'מניות עד 120%' is repeated needlessly and clutters the reading, which is a clear part of the person's complaint that the extra stock-percentage figures are unnecessary clutter, even though the reader blames repetition across rows rather than overlap with the label."
+      }
+    ],
+    "liked": [],
+    "usd": 0.020147400000000003
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 3,
+        "why": "Finding 3 says the stock figure 'מניות עד 120%' repeats in every row and adds needless reading, which is a clear part of the person's complaint that the extra exposure figures clutter the table; finding 2 is about the same number but complains that it is scary, not that it clutters."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0181394
+  },
+  "third": null,
+  "ranks": {
+    "k": 3
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0382868
+}

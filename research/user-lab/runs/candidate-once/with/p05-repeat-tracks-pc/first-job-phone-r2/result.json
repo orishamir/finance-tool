@@ -1,0 +1,134 @@
+{
+  "task": "p05-repeat-tracks-pc",
+  "persona": "first-job-phone",
+  "repeat": 2,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T16:12:00.972Z",
+  "structured": {
+    "answer": "I'd go with Harel, the \"מניות\" track (קופה 8522). Harel is a name I know, it's at the top of the page, its fee is about the lowest on the page at 0.55% and it shows 24.04% for 3 years, where the S&P tracks show around 13%.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Screen 1, row of track buttons under 'במה הכסף מושקע'",
+        "why": "There are 20 buttons and I didn't know which to press. I left it on 'הכול 143'."
+      },
+      {
+        "where": "Screens 2–8, the table",
+        "why": "Every company has the same tracks with the same layout. After Harel and Mor it all blurred, so I stopped around Phoenix, about halfway down."
+      },
+      {
+        "where": "Return column, 'פחות מ־3 שנים'",
+        "why": "Lots of tracks show no number at all, just this, including Altshuler S&P 500, which has the lowest fee. I couldn't compare them, so I left them out."
+      },
+      {
+        "where": "Harel S&P 500 vs Harel מניות",
+        "why": "I came here for the S&P because my friends talk about it. But on the same screen the מניות track had 24% next to 13.7%, so I switched."
+      }
+    ],
+    "used": [
+      "Heading 'כל המסלולים בכל החברות' and the selected 'קופת גמל להשקעה 143' button",
+      "Harel group header: 'דמי ניהול מהחיסכון: מ־0.54% עד 0.61%'",
+      "Harel מניות row: 0.55% מהחיסכון, 3 שנים 24.04%, 5 שנים 14.64%, 7.3 מיליארד ₪",
+      "Harel עוקב מדד S&P 500 row: 0.56%, 13.7% / 11.92%, 2.3 מיליארד ₪",
+      "Glanced at the Mor, Analyst, Meitav, Altshuler and Phoenix S&P and מניות rows to compare fee and 3-year number"
+    ],
+    "skimmed": [
+      "The intro text under the heading (2025 fees, September 2026 data, רשות שוק ההון)",
+      "The column headers",
+      "The ring charts and the מניות/מט\"ח percentages next to them",
+      "Group header lines for each company",
+      "Rows with בטוח, אג\"ח, כספי, הלכה"
+    ],
+    "skipped": [
+      "'מה זה קופת גמל להשקעה' link",
+      "Search box",
+      "The '123 מקור / 123 מחושב' line",
+      "'?' icons in the headers",
+      "The קופה numbers (8211, 8522…)",
+      "Screens 9–16, everything after Phoenix",
+      "'לפי חברה' tab and the top menu"
+    ],
+    "unsure_meaning": [
+      "מט\"ח: next to a yellow dot with a %. I guessed it means dollars/foreign stuff, not sure",
+      "Whether 24.04% is per year or total for 3 years. I took it as what you get",
+      "מהחיסכון vs מההפקדות: two fees? The second was always 0%, so I ignored it",
+      "'פחות מ־3 שנים': I guess the track is new",
+      "'עוד לא דווח' with the orange ! mark",
+      "Teal vs yellow in the ring. The legend dots are next to it, but I didn't really get what a full yellow ring means",
+      "Why the S&P tracks show 99% מט\"ח and the מניות track only 25%"
+    ],
+    "not_found": [
+      "Any recommendation or 'best for beginners' pick",
+      "Fees in shekels, like how much 0.55% is on 30,000 ₪",
+      "What to actually do first to open one",
+      "An explanation of which track is for someone like me"
+    ],
+    "findings": [
+      {
+        "what": "143 rows that all look the same. Every company repeats the same tracks, and every row repeats 'מניות / מט\"ח', 'מהחיסכון / מההפקדות', '3 שנים / 5 שנים', so I kept rereading the same labels to find what was different. I'd have closed it on the bus around screen 5.",
+        "where": "Main table, screens 2–8"
+      },
+      {
+        "what": "Lots of tracks have no return, just 'פחות מ־3 שנים', including the cheapest S&P (Altshuler 0.54%). I can't compare them, so I skipped them.",
+        "where": "Return column"
+      },
+      {
+        "what": "Fees are only in percents (0.55%, 0.56%…). The differences look like nothing, and there's no shekel amount for my money.",
+        "where": "דמי ניהול column"
+      },
+      {
+        "what": "No recommendation and no 'start here', just a list. Too many options that look alike.",
+        "where": "Whole page"
+      },
+      {
+        "what": "The ring chart with two colours and percentages that don't add up to 100 (94% and 25%) confused me.",
+        "where": "חשיפה column"
+      },
+      {
+        "what": "20 filter buttons with words like 'עוקב מדדים - גמיש' and 'אג\"ח ממשלתי' that mean nothing to me.",
+        "where": "Screen 1 filters"
+      },
+      {
+        "what": "The second fee line, 'מההפקדות 0%', repeats on almost every row for nothing.",
+        "where": "Fee column"
+      },
+      {
+        "what": "The orange '!' and 'עוד לא דווח' look like a warning, so I kept away from those rows.",
+        "where": "New tracks (Mor הלכה, Meitav אג\"ח ממשלתי, Altshuler משולב סחיר)"
+      }
+    ]
+  },
+  "steps": 8,
+  "reads": 8,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 38215,
+    "turns": 10,
+    "usd": 0.1961504,
+    "input": 8,
+    "cacheWrite": 15129,
+    "cacheRead": 34432,
+    "output": 3410,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "p05-repeat-tracks-pc",
+    "screenshots": 17,
+    "changes": [
+      {
+        "id": "repeat-shown",
+        "type": "style",
+        "shots": 17,
+        "applied": 17,
+        "most": 143
+      }
+    ],
+    "neverShown": [],
+    "errors": []
+  }
+}

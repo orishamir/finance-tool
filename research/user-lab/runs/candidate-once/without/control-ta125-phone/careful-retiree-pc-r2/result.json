@@ -1,0 +1,130 @@
+{
+  "task": "control-ta125-phone",
+  "persona": "careful-retiree-pc",
+  "repeat": 2,
+  "mode": "shots",
+  "device": "phone",
+  "startedAt": "2026-11-06T16:06:52.134Z",
+  "structured": {
+    "answer": "The page puts the Pasgot account with the IBI 125 index fund at the top, as \"הזול\": 70,000 ₪ put in over 10 years becomes about 86,045 ₪ in today's money. But I don't know Pasgot, so I won't buy until I ask my son or the bank. Leumi was the best bank, at 82,968 ₪.",
+    "confidence": "unsure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "screen 1 top",
+        "why": "Opened with English letters (MSCI, S&P 500, נאסד\"ק) and felt not for me; nearly left"
+      },
+      {
+        "where": "screen 3 coloured bar and legend",
+        "why": "Couldn't tell what the colours meant or read the bar"
+      },
+      {
+        "where": "screen 7 fund section",
+        "why": "Minus signs (-0.04%, -1,030 ₪) scared me; stopped there"
+      },
+      {
+        "where": "screen 4 list",
+        "why": "Didn't know if the small number under each sum (1,049, 4,506...) is a cost or something else"
+      }
+    ],
+    "used": [
+      "headline and 'ת\"א-125' chip",
+      "סכום היום 10,000 and הפקדה חודשית 500 boxes, 7% return",
+      "הפקדתם 70,000 ₪",
+      "הבחירה שלכם · הזול 86,045 ₪ נשאר לכם בעוד 10 שנים",
+      "account list: פסגות 86,045, לאומי 82,968, הפועלים 81,052",
+      "fund name אי.בי.אי. מחקה (4A) ת\"א 125"
+    ],
+    "skimmed": [
+      "coloured cost bar and legend on screen 3",
+      "'העלות אצלכם, לעומת הזוג השני' section",
+      "rows 8–15 in the account list",
+      "Interactive Brokers / אינטראקטיב 'אין נתון' rows"
+    ],
+    "skipped": [
+      "screens 8–13",
+      "the expand arrows on each bank row",
+      "התעריפון and 'קיבלתם מחיר אחר' links",
+      "'אינפלציה' button"
+    ],
+    "unsure_meaning": [
+      "דמי משמרת",
+      "העמלות זו על זו",
+      "נאמן 0.025%",
+      "קרן מחקה",
+      "תכלית סל",
+      "מחזיקה את המניות",
+      "4A",
+      "לא בחישוב",
+      "מחיר להוראת קבע",
+      "הפס נחתך",
+      "-0.04% בשנה · שנה אחת",
+      "-1,030 ₪",
+      "the small numbers under each sum",
+      "dotted purple underlines",
+      "MSCI, S&P"
+    ],
+    "not_found": [
+      "Anything about deposits or something as safe as a deposit",
+      "A plain sentence saying whether the fund can lose money",
+      "Whether my own bank's adviser would charge me"
+    ],
+    "findings": [
+      {
+        "what": "Opens with English index names; an older reader feels it is not for them",
+        "where": "screen 1"
+      },
+      {
+        "what": "Minus signs next to the chosen fund look like a loss and frighten",
+        "where": "screen 7 (-0.04%, -1,030 ₪)"
+      },
+      {
+        "what": "Dark background with grey text is hard to read even enlarged",
+        "where": "all screens"
+      },
+      {
+        "what": "The cheapest choice is a company I don't know, not a big bank",
+        "where": "screen 2 and 4, פסגות"
+      },
+      {
+        "what": "Sliders for the amounts",
+        "where": "screens 1–2"
+      },
+      {
+        "what": "Coloured bar with close colours and jargon legend",
+        "where": "screen 3"
+      },
+      {
+        "what": "Long list of busy rows with many numbers",
+        "where": "screens 4–6"
+      },
+      {
+        "what": "Starting amount 10,000 and 500 a month were already filled in, not mine",
+        "where": "screen 1"
+      }
+    ]
+  },
+  "steps": 7,
+  "reads": 7,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 32536,
+    "turns": 9,
+    "usd": 0.1704632,
+    "input": 10,
+    "cacheWrite": 13153,
+    "cacheRead": 37096,
+    "output": 2889,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "control-ta125-phone",
+    "screenshots": 14,
+    "changes": [],
+    "neverShown": [],
+    "errors": []
+  }
+}

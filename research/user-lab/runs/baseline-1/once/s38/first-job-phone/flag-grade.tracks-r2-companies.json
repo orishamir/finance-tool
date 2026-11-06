@@ -1,0 +1,36 @@
+{
+  "case": "tracks-r2-companies",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"Rows repeat their group's heading: each company row repeats the track kind in its name and again in a label, and under a heading 'עוקב מדד S&P 500' every row says it again.\",\"where\":\"the rows under each group heading\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 1,
+        "why": "Finding 1 says every row repeats the same words, such as the track kind 'מניות', which is the redundant per-row repetition the person described."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0167394
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 1,
+        "why": "Finding 1 complains that every row in the lists repeats the same words, such as the track kind, so the reader has to re-read each one to find the number that differs, which is the redundant repetition the person named."
+      }
+    ],
+    "liked": [],
+    "usd": 0.017011400000000003
+  },
+  "third": null,
+  "ranks": {
+    "k": 1
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.033750800000000004
+}

@@ -1,0 +1,130 @@
+{
+  "task": "p05-repeat-tracks-pc",
+  "persona": "first-job-phone",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T16:03:51.991Z",
+  "structured": {
+    "answer": "Meitav's \"עוקב מדדי מניות\" track: the biggest returns I saw from a name I know (25.86% over 3 years, 17.25% over 5), and the fee is 0.65%, about the same as everyone else.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Return column on many rows",
+        "why": "\"פחות מ־3 שנים\" instead of a number, so I couldn't compare those rows and just skipped them"
+      },
+      {
+        "where": "Fee column",
+        "why": "Two fees, \"מהחיסכון\" and \"מההפקדות\", and I don't know the difference. Some say \"עוד לא דווח\" with an orange warning icon"
+      },
+      {
+        "where": "Middle of the table (around screens 6–12)",
+        "why": "Too many rows that look alike across 12 companies. I got bored and jumped to the end"
+      },
+      {
+        "where": "Choosing between the S&P tracks and the share tracks",
+        "why": "Friends say S&P, but the S&P tracks show only about 13% while some share tracks show 25%+"
+      }
+    ],
+    "used": [
+      "Heading \"כל המסלולים בכל החברות\"",
+      "The selected \"קופת גמל להשקעה 143\" button",
+      "Track names and company names",
+      "3-year and 5-year return numbers",
+      "The \"מהחיסכון\" fee percentage",
+      "Size figures like \"1.7 מיליארד\""
+    ],
+    "skimmed": [
+      "The row for each company with the fee range",
+      "The מניות / מט\"ח percentages and the rings",
+      "Most rows from Mor, Phoenix, Yalin Lapidot, Migdal, Clal, Menora and Infinity"
+    ],
+    "skipped": [
+      "Filter buttons for investment type",
+      "The \"מה זה קופת גמל להשקעה\" link",
+      "The search box",
+      "The ⓘ icons",
+      "The small line under the table about past returns",
+      "The footer",
+      "Screens 14–15"
+    ],
+    "unsure_meaning": [
+      "חשיפה למניות ולמט\"ח (I guessed it's how much is in shares and how much is in dollars)",
+      "מהחיסכון vs מההפקדות",
+      "עוד לא דווח",
+      "גמיש",
+      "the number in the קופה column (8211 and so on)",
+      "the yellow/green rings",
+      "הלכה / הלכה יהודית tags",
+      "חדש tag"
+    ],
+    "not_found": [
+      "What to do first / how to open the fund",
+      "Fees in shekels",
+      "A recommendation or a \"best for beginners\" pick",
+      "How much 30,000 ₪ would grow to"
+    ],
+    "findings": [
+      {
+        "what": "143 tracks in one long table with no recommendation. Too many look alike to choose from",
+        "where": "The whole table"
+      },
+      {
+        "what": "Fees only as tiny percents (0.5–0.7%), never in shekels, so they all look like nothing",
+        "where": "Management fee column"
+      },
+      {
+        "what": "Many rows have no return, only \"פחות מ־3 שנים\", so you can't compare them",
+        "where": "Return column"
+      },
+      {
+        "what": "Orange \"עוד לא דווח\" warnings make a company look suspicious",
+        "where": "Migdal, Clal, Menora and new-track rows"
+      },
+      {
+        "what": "S&P tracks show much lower returns than \"מניות\" tracks, which is confusing when everyone says to buy the S&P",
+        "where": "Comparing the S&P rows with the מניות / מדדי מניות rows"
+      },
+      {
+        "what": "Unclear what מניות/מט\"ח percentages and the rings mean",
+        "where": "Middle column"
+      },
+      {
+        "what": "No button or next step for actually opening the fund",
+        "where": "Whole page"
+      }
+    ]
+  },
+  "steps": 14,
+  "reads": 14,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 49738,
+    "turns": 16,
+    "usd": 0.3243294,
+    "input": 16,
+    "cacheWrite": 26903,
+    "cacheRead": 112407,
+    "output": 4328,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "p05-repeat-tracks-pc",
+    "screenshots": 17,
+    "changes": [
+      {
+        "id": "repeat-shown",
+        "type": "style",
+        "shots": 17,
+        "applied": 17,
+        "most": 143
+      }
+    ],
+    "neverShown": [],
+    "errors": []
+  }
+}

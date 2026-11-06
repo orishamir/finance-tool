@@ -1,0 +1,43 @@
+{
+  "case": "live-02-indices-cost-bar-legend",
+  "stamp": "{\"keys\":[{\"id\":\"legend-every-row\",\"problem\":\"Every row of the list repeats the same colour key under its bar (which colour is which kind of cost), so the same names are read again on every row instead of once for the whole list.\",\"where\":\"the small bar in each row of the list of accounts, and the line of coloured squares with names under it\",\"kind\":\"general\"},{\"id\":\"amounts-off-bar\",\"problem\":\"The amount each coloured part of a row's bar stands for is written apart from the bar, in a line under it, not on the part itself, so the eye goes back and forth between colour and number.\",\"where\":\"the small bar in each row of the list of accounts, and the amounts in the line under it\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "legend-every-row",
+        "rank": 3,
+        "why": "Finding 3 says the same chips repeat on every row of the list, so the reader re-reads them each time, which is the person's complaint about the colour key repeating on every row."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0168274
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "legend-every-row",
+        "rank": 3,
+        "why": "Finding 3 says the same chips repeat on every row of the list and have to be re-read each time, which is the person's complaint about the colour key repeated on every row."
+      },
+      {
+        "id": "amounts-off-bar",
+        "rank": 0,
+        "why": "No finding says the row bars' amounts are written in a line below the bar instead of on each part; finding 4 is about a legend in a different chart, set apart from its tick marks."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0172354
+  },
+  "third": null,
+  "ranks": {
+    "legend-every-row": 3,
+    "amounts-off-bar": 0
+  },
+  "agreed": {
+    "legend-every-row": true,
+    "amounts-off-bar": true
+  },
+  "against": {},
+  "usd": 0.034062800000000004
+}

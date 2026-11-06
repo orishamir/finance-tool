@@ -1,0 +1,119 @@
+{
+  "task": "s21",
+  "persona": "careful-retiree-pc",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T16:26:03.356Z",
+  "structured": {
+    "answer": "I didn't decide anything. Harel's fees look small (0.54%–0.61% of the savings, 0% of deposits), and the \"כספי (שקלי)\" fund shows 4.25% (3 yrs) / 3.08% (5 yrs), but nothing on the page says any of this is as safe as my bank deposit, so I'll ask my son or the bank before moving anything.",
+    "confidence": "unsure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Top of page, product buttons",
+        "why": "The selected button is 'קופת גמל להשקעה'. I don't know what that is or whether it's like a deposit."
+      },
+      {
+        "where": "Returns column",
+        "why": "Many rows show 'פחות מ־3 שנים' / 'פחות מ־5 שנים' instead of a number, including 'אג\"ח סחיר', which is the one I'd trust. I couldn't tell how it has done."
+      },
+      {
+        "where": "Coloured circles with מניות / מט\"ח percentages",
+        "why": "I couldn't match the small blue and yellow dots to the circle. Gave up on them."
+      },
+      {
+        "where": "Row 'כספי (שקלי)'",
+        "why": "I wasn't sure whether 4.25% is per year or for the whole 3 years."
+      }
+    ],
+    "used": [
+      "Title 'הראל'",
+      "Fee column 'דמי ניהול ממוצע 2025' – 0.54%–0.61% מההיסכון, 0% מההפקדה",
+      "Returns column 'תשואה שנתית ממוצעת לפני דמי ניהול'",
+      "Row 'כספי (שקלי)' 4.25% / 3.08%",
+      "Row 'אג\"ח סחיר'",
+      "Note 'התשואה היא תשואת עבר... היא לא אומרת מה יקרה בהמשך'"
+    ],
+    "skimmed": [
+      "Lines under the title about where the data comes from",
+      "Product buttons (קרן השתלמות, קרן חדשה מקיפה etc.)",
+      "Investment-track buttons",
+      "Rows with מניות and S&P 500",
+      "Footnote about the legal fee ceiling and direct expenses"
+    ],
+    "skipped": [
+      "Coloured donut charts",
+      "Green fund numbers (15283 etc.)",
+      "Folded sections קרנות מחקות, מרכזות לפיצויים, קרנות סל",
+      "'מה כתוב במסמכים של הראל' folds",
+      "Search box 'לא מצאתם שם?'",
+      "Footer links"
+    ],
+    "unsure_meaning": [
+      "קופת גמל להשקעה",
+      "עוקב מדד",
+      "S&P 500",
+      "מט\"ח",
+      "גמיש",
+      "PF-10",
+      "123 ממקור / 123 מחושב / 123 הזנה",
+      "פחות מ־3 שנים",
+      "כסף מנוהל",
+      "whether 4.25% is per year or total",
+      "מההיסכון vs מההפקדה"
+    ],
+    "not_found": [
+      "Any statement of which track is safe like a deposit or guaranteed",
+      "A comparison with bank deposit interest",
+      "The amount of the 'הוצאות ישירות' charged on top of the fee",
+      "A plain sentence explaining what the circles mean"
+    ],
+    "findings": [
+      {
+        "what": "Nothing tells me which option is safe or guaranteed like a deposit. The page is full of 'מניות' and English letters.",
+        "where": "Product and track buttons, and the table"
+      },
+      {
+        "what": "Small grey text on a dark background is hard to read even enlarged",
+        "where": "Lines under the title, column headings, footnotes under the table"
+      },
+      {
+        "what": "The same words repeat on every row (מההיסכון, מההפקדה, מניות, מט\"ח, שנים), so I had to reread each row to find the one number that differs",
+        "where": "Every table row"
+      },
+      {
+        "what": "The percentages are written next to the circle, not on it. The blue and yellow dots are small and alike, so I couldn't match them.",
+        "where": "Exposure column with the donut charts"
+      },
+      {
+        "what": "Many rows show 'פחות מ־3 שנים' instead of a return, including the bond track I'd trust",
+        "where": "Returns column, e.g. אג\"ח סחיר"
+      },
+      {
+        "what": "It mentions extra 'הוצאות ישירות' on top of the fee but doesn't say how much",
+        "where": "Footnote at the bottom of the table"
+      },
+      {
+        "what": "Too many numbers on one screen made me anxious",
+        "where": "The whole table"
+      }
+    ]
+  },
+  "steps": 2,
+  "reads": 2,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 37426,
+    "turns": 4,
+    "usd": 0.1344202,
+    "input": 6,
+    "cacheWrite": 7489,
+    "cacheRead": 15321,
+    "output": 3571,
+    "model": "claude-opus-5-5"
+  }
+}

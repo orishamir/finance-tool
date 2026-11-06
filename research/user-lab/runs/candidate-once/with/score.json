@@ -1,0 +1,301 @@
+{
+  "summary": {
+    "control-ta125-phone": {
+      "sessions": 4,
+      "right": 0,
+      "partly": 0,
+      "wrong": 0,
+      "gaveUp": 0,
+      "confidentWrong": 0,
+      "agreement": null,
+      "case": null
+    },
+    "control-tracks-pc": {
+      "sessions": 4,
+      "right": 0,
+      "partly": 0,
+      "wrong": 0,
+      "gaveUp": 1,
+      "confidentWrong": 0,
+      "agreement": null,
+      "case": null
+    },
+    "p04-far-legend-ta125-phone": {
+      "sessions": 4,
+      "right": 0,
+      "partly": 0,
+      "wrong": 0,
+      "gaveUp": 0,
+      "confidentWrong": 0,
+      "agreement": null,
+      "case": null
+    },
+    "p05-repeat-ta125-phone": {
+      "sessions": 4,
+      "right": 0,
+      "partly": 0,
+      "wrong": 0,
+      "gaveUp": 0,
+      "confidentWrong": 0,
+      "agreement": null,
+      "case": null
+    },
+    "p05-repeat-tracks-pc": {
+      "sessions": 4,
+      "right": 0,
+      "partly": 0,
+      "wrong": 0,
+      "gaveUp": 0,
+      "confidentWrong": 0,
+      "agreement": null,
+      "case": null
+    }
+  },
+  "tasks": {
+    "control-ta125-phone": {
+      "case": null,
+      "rows": [
+        {
+          "session": "careful-retiree-pc-r1",
+          "steps": 8,
+          "seconds": 48,
+          "usd": 0.21477079999999998,
+          "confidence": "unsure",
+          "timedOut": false,
+          "error": null,
+          "grade": "no key",
+          "confidentWrong": false
+        },
+        {
+          "session": "careful-retiree-pc-r2",
+          "steps": 8,
+          "seconds": 50,
+          "usd": 0.22638780000000003,
+          "confidence": "unsure",
+          "timedOut": false,
+          "error": null,
+          "grade": "no key",
+          "confidentWrong": false
+        },
+        {
+          "session": "first-job-phone-r1",
+          "steps": 10,
+          "seconds": 36,
+          "usd": 0.224128,
+          "confidence": "fairly sure",
+          "timedOut": false,
+          "error": null,
+          "grade": "no key",
+          "confidentWrong": false
+        },
+        {
+          "session": "first-job-phone-r2",
+          "steps": 11,
+          "seconds": 35,
+          "usd": 0.2371572,
+          "confidence": "fairly sure",
+          "timedOut": false,
+          "error": null,
+          "grade": "no key",
+          "confidentWrong": false
+        }
+      ]
+    },
+    "control-tracks-pc": {
+      "case": null,
+      "rows": [
+        {
+          "session": "careful-retiree-pc-r1",
+          "steps": 5,
+          "seconds": 29,
+          "usd": 0.137806,
+          "confidence": "unsure",
+          "timedOut": false,
+          "error": null,
+          "grade": "no key",
+          "confidentWrong": false
+        },
+        {
+          "session": "careful-retiree-pc-r2",
+          "steps": 6,
+          "seconds": 40,
+          "usd": 0.171439,
+          "confidence": "unsure",
+          "timedOut": false,
+          "error": null,
+          "grade": "gave up",
+          "confidentWrong": false
+        },
+        {
+          "session": "first-job-phone-r1",
+          "steps": 7,
+          "seconds": 36,
+          "usd": 0.18187640000000002,
+          "confidence": "fairly sure",
+          "timedOut": false,
+          "error": null,
+          "grade": "no key",
+          "confidentWrong": false
+        },
+        {
+          "session": "first-job-phone-r2",
+          "steps": 8,
+          "seconds": 41,
+          "usd": 0.2049774,
+          "confidence": "fairly sure",
+          "timedOut": false,
+          "error": null,
+          "grade": "no key",
+          "confidentWrong": false
+        }
+      ]
+    },
+    "p04-far-legend-ta125-phone": {
+      "case": null,
+      "rows": [
+        {
+          "session": "careful-retiree-pc-r1",
+          "steps": 7,
+          "seconds": 40,
+          "usd": 0.20874340000000002,
+          "confidence": "unsure",
+          "timedOut": false,
+          "error": null,
+          "grade": "no key",
+          "confidentWrong": false
+        },
+        {
+          "session": "careful-retiree-pc-r2",
+          "steps": 8,
+          "seconds": 50,
+          "usd": 0.2259832,
+          "confidence": "unsure",
+          "timedOut": false,
+          "error": null,
+          "grade": "no key",
+          "confidentWrong": false
+        },
+        {
+          "session": "first-job-phone-r1",
+          "steps": 10,
+          "seconds": 35,
+          "usd": 0.2444402,
+          "confidence": "fairly sure",
+          "timedOut": false,
+          "error": null,
+          "grade": "no key",
+          "confidentWrong": false
+        },
+        {
+          "session": "first-job-phone-r2",
+          "steps": 10,
+          "seconds": 43,
+          "usd": 0.2590168,
+          "confidence": "fairly sure",
+          "timedOut": false,
+          "error": null,
+          "grade": "no key",
+          "confidentWrong": false
+        }
+      ]
+    },
+    "p05-repeat-ta125-phone": {
+      "case": null,
+      "rows": [
+        {
+          "session": "careful-retiree-pc-r1",
+          "steps": 6,
+          "seconds": 37,
+          "usd": 0.1650184,
+          "confidence": "fairly sure",
+          "timedOut": false,
+          "error": null,
+          "grade": "no key",
+          "confidentWrong": false
+        },
+        {
+          "session": "careful-retiree-pc-r2",
+          "steps": 6,
+          "seconds": 33,
+          "usd": 0.1563824,
+          "confidence": "unsure",
+          "timedOut": false,
+          "error": null,
+          "grade": "no key",
+          "confidentWrong": false
+        },
+        {
+          "session": "first-job-phone-r1",
+          "steps": 13,
+          "seconds": 49,
+          "usd": 0.30205879999999996,
+          "confidence": "fairly sure",
+          "timedOut": false,
+          "error": null,
+          "grade": "no key",
+          "confidentWrong": false
+        },
+        {
+          "session": "first-job-phone-r2",
+          "steps": 11,
+          "seconds": 42,
+          "usd": 0.2526774,
+          "confidence": "fairly sure",
+          "timedOut": false,
+          "error": null,
+          "grade": "no key",
+          "confidentWrong": false
+        }
+      ]
+    },
+    "p05-repeat-tracks-pc": {
+      "case": null,
+      "rows": [
+        {
+          "session": "careful-retiree-pc-r1",
+          "steps": 6,
+          "seconds": 43,
+          "usd": 0.1819486,
+          "confidence": "unsure",
+          "timedOut": false,
+          "error": null,
+          "grade": "no key",
+          "confidentWrong": false
+        },
+        {
+          "session": "careful-retiree-pc-r2",
+          "steps": 6,
+          "seconds": 36,
+          "usd": 0.158439,
+          "confidence": "unsure",
+          "timedOut": false,
+          "error": null,
+          "grade": "no key",
+          "confidentWrong": false
+        },
+        {
+          "session": "first-job-phone-r1",
+          "steps": 8,
+          "seconds": 40,
+          "usd": 0.2098982,
+          "confidence": "fairly sure",
+          "timedOut": false,
+          "error": null,
+          "grade": "no key",
+          "confidentWrong": false
+        },
+        {
+          "session": "first-job-phone-r2",
+          "steps": 8,
+          "seconds": 38,
+          "usd": 0.1961504,
+          "confidence": "fairly sure",
+          "timedOut": false,
+          "error": null,
+          "grade": "no key",
+          "confidentWrong": false
+        }
+      ]
+    }
+  }
+}

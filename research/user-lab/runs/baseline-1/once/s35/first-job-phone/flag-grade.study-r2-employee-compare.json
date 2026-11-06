@@ -1,0 +1,36 @@
+{
+  "case": "study-r2-employee-compare",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"For a salaried employee the comparison with a securities account is beside the point: the account gets no employer money, so it is not a real choice.\",\"where\":\"the comparison in both options\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings say the securities-account comparison is beside the point for a salaried employee; finding 3 mentions employer money only to say the tax figure overshadows it."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0145114
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings say that comparing with a securities account is pointless for a salaried employee. Finding 3 mentions the employer's 900 ₪, but it is about the tax figure being scary, not about whether the comparison makes sense."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0148834
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0293948
+}

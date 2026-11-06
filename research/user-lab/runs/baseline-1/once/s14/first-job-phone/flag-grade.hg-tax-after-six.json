@@ -1,0 +1,36 @@
+{
+  "case": "hg-tax-after-six",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"With a high salary entered, the graphic says tax is due even after 6 years and shows a large income-tax figure, without making clear which money it is on.\",\"where\":\"the graphic and its sentences\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the findings says that with a high salary tax is still due after 6 years, or that the chart doesn't say which money the tax applies to; finding 1 actually assumes the tax goes away at 6 years, and findings 4 and 5 are about small text and an unexplained final amount."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0195554
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the findings says that tax is still shown after 6 years at a high salary, or that it's unclear which money the tax applies to; finding 1 is about the 5-year default and assumes the tax goes away at 6 years, and finding 4 only says the ceiling details are hidden in small print."
+      }
+    ],
+    "liked": [],
+    "usd": 0.018939400000000002
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0384948
+}

@@ -1,0 +1,92 @@
+{
+  "task": "indices-lists",
+  "persona": "self-directed-investor",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T16:15:55.183Z",
+  "structured": {
+    "answer": "Per the page: hold the Yelin Lapidot S&P 500 (4D) index fund (5139282) at Pasgot, 86,492 ₪ after 10 years in today's money from 70,000 ₪ deposited. The broker choice matters far more (up to 22,985 ₪) than the fund choice (up to 4,492 ₪). I'd verify before moving.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Fund list, column מול המדד",
+        "why": "+0.37% a year vs the index for a 0.02%-fee fund, based on 'שנה אחת' only. Unclear what it's measured against."
+      },
+      {
+        "where": "iShares row 'עוד לא נאסף'",
+        "why": "Data missing, so I'm not sure its -213 ₪ ranking is fair."
+      }
+    ],
+    "used": [
+      "Top box: הפקדתם 70,000 ₪ and 86,492 ₪ Pasgot · Yelin, after fees and tax, in today's money",
+      "Range bars: account spread up to 22,985 ₪, fund spread up to 4,492 ₪",
+      "Account list cost breakdown (custody fee 699, commissions 356, FX 2, total 1,057 ₪), Leumi 4,541 ₪",
+      "Fund list: Yelin fees 0%/0%/0.02% trustee, Altshuler -43, iShares -213"
+    ],
+    "skimmed": [
+      "Chart legend (fund type colours)",
+      "Leumi 'לא בחשבון' note on discounts for young people"
+    ],
+    "skipped": [
+      "כל החשבונות explanatory paragraph",
+      "Filter chips (סננו לפי תווית)",
+      "The + button between the panels"
+    ],
+    "unsure_meaning": [
+      "מול המדד +0.37% בשנה · שנה אחת",
+      "נאמן 0.02%",
+      "בכסף של היום: real vs nominal",
+      "★ הזה next to Pasgot",
+      "עוד לא נאסף"
+    ],
+    "not_found": [
+      "Who runs the site and whether brokers or funds pay them",
+      "An option for US-listed ETFs at my current broker to compare with what I pay today",
+      "Assumed return and method behind the projection"
+    ],
+    "findings": [
+      {
+        "what": "No visible owner or disclosure, while the winning broker (Pasgot) is in the hero box with a star",
+        "where": "Top box and account list"
+      },
+      {
+        "what": "Fund 'beats' the index by 0.37%/year on one year of data. Looks off or luck-based",
+        "where": "Fund list, מול המדד column"
+      },
+      {
+        "what": "Same tag chips repeated on every fund row; I have to re-read them each time to find the difference",
+        "where": "Fund list"
+      },
+      {
+        "what": "Cost bar colours and their amounts are in separate places, so I match back and forth",
+        "where": "Account list cost bars"
+      },
+      {
+        "what": "iShares ETF ranked with incomplete data ('עוד לא נאסף')",
+        "where": "Fund list, row 3"
+      },
+      {
+        "what": "Return assumption behind 86,492 not shown on screen",
+        "where": "Top box"
+      }
+    ]
+  },
+  "steps": 1,
+  "reads": 1,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 35978,
+    "turns": 3,
+    "usd": 0.1102624,
+    "input": 4,
+    "cacheWrite": 5059,
+    "cacheRead": 5872,
+    "output": 3430,
+    "model": "claude-opus-5-5"
+  }
+}

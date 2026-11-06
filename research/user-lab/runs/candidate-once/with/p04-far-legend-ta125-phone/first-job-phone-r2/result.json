@@ -1,0 +1,130 @@
+{
+  "task": "p04-far-legend-ta125-phone",
+  "persona": "first-job-phone",
+  "repeat": 2,
+  "mode": "shots",
+  "device": "phone",
+  "startedAt": "2026-11-06T16:08:52.034Z",
+  "structured": {
+    "answer": "I'd open an account at פסגות ניירות ערך and buy אי.בי.אי. מחקה (4A) ת\"א 125 (5112628). With the page's example of 10,000 now plus 500 a month, that's about 86,045 ₪ after 10 years from 70,000 put in. I didn't change the amounts to my own 30,000.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "chosen fund row, '−0.04% בשנה · שנה אחת'",
+        "why": "a minus on the fund I'm choosing; I don't know what it is measured against and it looked like a loss"
+      },
+      {
+        "where": "fund list, '−1,030 ₪' next to every other fund",
+        "why": "at first I read the minus as losing money, not as 'less than your choice'"
+      },
+      {
+        "where": "coloured bars in the account list",
+        "why": "the colour key only appears after all 15 accounts, so I was guessing what the red was"
+      },
+      {
+        "where": "amount fields at top (10,000 / 500)",
+        "why": "they aren't my numbers, and the task gave no amount, so I used the page's example"
+      }
+    ],
+    "used": [
+      "heading 'איפה ואיך הכי זול להשקיע במדד'",
+      "index chip ת\"א-125 (already selected)",
+      "card 'הבחירה שלכם · הזול' 86,045 ₪ vs 85,015 ₪",
+      "'הפקדתם 70,000 ₪'",
+      "account list ranking (פסגות 1st, לאומי 82,968)",
+      "fund card אי.בי.אי. מחקה (4A) ת\"א 125, fees 0.1%",
+      "fund list with −1,030 etc. for the קרנות סל",
+      "step chart: 79,910 → +5,022 פסגות → +1,113 אי.בי.אי. מחקה"
+    ],
+    "skimmed": [
+      "cost breakdown 'העלות אצלכם, לעומת הזוג השני' (18, 1,390, 342)",
+      "'כמה זה עולה לכם' coloured bar",
+      "chart 'מה הכי משנה' with 12 שנים / 600 ₪ lines",
+      "red-heavy rows אקסלנס / מיטב טרייד"
+    ],
+    "skipped": [
+      "small text under 'כל החשבונות' about how prices were calculated",
+      "'לא בחישוב' folds on each bank",
+      "אינטראקטיב ישראל / Interactive Brokers 'אין נתון' rows",
+      "'מול המדד' explanation paragraph",
+      "inflation button",
+      "screens 11-13"
+    ],
+    "unsure_meaning": [
+      "נאמן 0.025%",
+      "דמי משמרת",
+      "העמלות זו על זו",
+      "הפס נחתך: הסכום ארוך מהשטח",
+      "−0.04% בשנה · שנה אחת",
+      "מחזיקה את המניות / כמה דרכים יחד tags",
+      "קרן מחקה vs קרן סל",
+      "purple dotted underlines under the numbers"
+    ],
+    "not_found": [
+      "what the result would be with my own 30,000 start",
+      "a plain statement of what the first step is (how to actually open the Psagot account)"
+    ],
+    "findings": [
+      {
+        "what": "Chosen/recommended fund shows a minus percentage (−0.04%) with no plain explanation; it reads like a loss",
+        "where": "fund list, selected row"
+      },
+      {
+        "what": "Every other fund shows a '−1,030 ₪'-style figure; the minus reads like losing money rather than 'less than your pick'",
+        "where": "fund list rows"
+      },
+      {
+        "what": "Colour key for the stacked bars only comes after all 15 accounts, so I guessed the colours while scrolling; red looked scary",
+        "where": "account list / legend at bottom"
+      },
+      {
+        "what": "The same 'לא בחישוב מחיר אחר לצעירים, לחיילים…' text repeats on almost every bank, so I kept re-reading it; it also hints I might get a cheaper price as a young person, and the page didn't work that out",
+        "where": "account list"
+      },
+      {
+        "what": "Page defaults to 10,000 + 500, so the big number that sticks isn't my situation",
+        "where": "top input fields"
+      },
+      {
+        "what": "Fund manager name אי.בי.אי. is not one I know, so I hesitated even though it's cheapest",
+        "where": "fund card"
+      },
+      {
+        "what": "Jargon in the fee lines (נאמן, דמי משמרת) with no plain explanation",
+        "where": "fund card and legend"
+      }
+    ]
+  },
+  "steps": 10,
+  "reads": 10,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 42929,
+    "turns": 12,
+    "usd": 0.2590168,
+    "input": 10,
+    "cacheWrite": 21203,
+    "cacheRead": 52964,
+    "output": 3938,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "p04-far-legend-ta125-phone",
+    "screenshots": 14,
+    "changes": [
+      {
+        "id": "far-legend",
+        "type": "move",
+        "shots": 14,
+        "applied": 14,
+        "most": 1
+      }
+    ],
+    "neverShown": [],
+    "errors": []
+  }
+}

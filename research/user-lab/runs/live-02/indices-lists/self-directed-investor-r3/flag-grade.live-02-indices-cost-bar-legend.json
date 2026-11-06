@@ -1,0 +1,48 @@
+{
+  "case": "live-02-indices-cost-bar-legend",
+  "stamp": "{\"keys\":[{\"id\":\"legend-every-row\",\"problem\":\"Every row of the list repeats the same colour key under its bar (which colour is which kind of cost), so the same names are read again on every row instead of once for the whole list.\",\"where\":\"the small bar in each row of the list of accounts, and the line of coloured squares with names under it\",\"kind\":\"general\"},{\"id\":\"amounts-off-bar\",\"problem\":\"The amount each coloured part of a row's bar stands for is written apart from the bar, in a line under it, not on the part itself, so the eye goes back and forth between colour and number.\",\"where\":\"the small bar in each row of the list of accounts, and the amounts in the line under it\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "legend-every-row",
+        "rank": 0,
+        "why": "None of the reader's findings mention the colour key being repeated under every row's bar."
+      },
+      {
+        "id": "amounts-off-bar",
+        "rank": 0,
+        "why": "Finding 2 asks for a breakdown of one account's value, and finding 5 is about tick labels in another section, but no finding says the amounts sit apart from the bar segments."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0157594
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "legend-every-row",
+        "rank": 0,
+        "why": "None of the reader's findings mention the colour key being repeated under each row's bar."
+      },
+      {
+        "id": "amounts-off-bar",
+        "rank": 0,
+        "why": "None of the findings say the amounts are written under the bar instead of on each coloured part; finding 2 is about a value looking wrong, not where the numbers are placed."
+      }
+    ],
+    "liked": [],
+    "usd": 0.015679400000000003
+  },
+  "third": null,
+  "ranks": {
+    "legend-every-row": 0,
+    "amounts-off-bar": 0
+  },
+  "agreed": {
+    "legend-every-row": true,
+    "amounts-off-bar": true
+  },
+  "against": {},
+  "usd": 0.0314388
+}
