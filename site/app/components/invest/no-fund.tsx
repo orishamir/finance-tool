@@ -10,7 +10,7 @@ import { fmt } from "../../lib/format";
 import { IconCopy, IconExternal } from "../icons";
 import { Num } from "../provenance";
 import { Button, Card, ChartLegend, CostStack, LongestCase, PickList, Swatch, Tag, cx, useChartPick, useHeldHeight, type CostPart, type PickRow } from "../kit";
-import { barScale, GroupLine, HouseLine, legendLines, lineClass, lineOf, LONGEST_AMOUNT, LONGEST_YEARS, nis, partName, AbroadNotes, OwnBankField } from "./pair";
+import { barScale, GroupLine, HouseLine, legendLines, lineClass, lineOf, LONGEST_AMOUNT, LONGEST_YEARS, nis, partName, legendName, AbroadNotes, OwnBankField } from "./pair";
 import { optionClass, reasonText } from "./parts";
 import { ProviderLink, providerName } from "./sections";
 import { AddEntryButton, BrokerTerms, FundTerms } from "./custom-entries";
@@ -199,7 +199,7 @@ export function NoFundAccountColumn({ view, bundle, years, monthly = 1, chosen, 
         <ChartLegend
           pick={legendPick}
           items={[
-            ...lines.map((l) => ({ id: l, swatch: <Swatch shape="box" className={lineClass[l] ?? "bg-chart-cost-other"} />, label: c.pair.lines[l] ?? c.pair.lines.other })),
+            ...lines.map((l) => ({ id: l, swatch: <Swatch shape="box" className={lineClass[l] ?? "bg-chart-cost-other"} />, label: legendName(l) })),
             { id: "remainder", swatch: <Swatch shape="box" className="bg-chart-cost-other" />, label: c.pair.remainder },
             ...(ok.some((h) => h.generic.costN! > scale) ? [{ id: "broken", label: c.pair.broken }] : []),
           ]}

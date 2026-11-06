@@ -1,0 +1,57 @@
+{
+ "task": "A friend sent you screenshots of a Hebrew web page about investing in a stock index, here the S&P 500, through a securities account and a fund. Your goal: decide which account and which fund to use for investing in this index.\nThe screenshots come in sets, in reading order. After the number, each file name starts with its set letter.\nSet A: the whole page as it first opens, top to bottom (each screenshot overlaps the one before a little).\nSet B: the account list after your friend chose \"לאומי\" in the box \"הבנק שבו כבר יש לכם חשבון עו״ש\".\nSet C: the same, after tapping \"מה לא נכנס למחיר של קרן שנקנית בחו״ל\".\n\nAnswer in plain English, as yourself, quoting the Hebrew you react to:\n1. Your decision: which account and which fund would you use, and how sure are you? Which parts of the page did you use to decide?\n2. For each line below, find it on the screenshots and say in your own words what it tells you: what it means for your money or your choice. Then say whether anything in it is unclear or could be read two ways, quoting the exact Hebrew words you trip on. If you do not know what a line means, say so plainly rather than guessing.\n a. The box \"הבנק שבו כבר יש לכם חשבון עו״ש\" with \"אף אחד מהם\" in it (set A): what is it for, and would you change it? Why?\n b. The line under that box in set A, starting \"חשבון ניירות ערך בבנק צריך חשבון עו״ש באותו בנק\".\n c. The line under the box in set B, starting \"השורה של לאומי לא סופרת את העו״ש\". What changed in the list between set A and set B, if anything?\n d. The folded line \"מה לא נכנס למחיר של קרן שנקנית בחו״ל\" (set A) and, in set C, the first point under it, starting \"בקרן שנקנית בחו״ל יש גם פער בשער ההמרה\".\n e. In set C, the second point, starting \"קרן שנקנית בחו״ל יכולה לעלות יותר מהמספר שבשורה\".\n3. Anything else on the account list or around it that confused you, bothered you, or that you expected and did not find.",
+ "readers": [
+  {
+   "key": "has-account-pc",
+   "who": "You are 41, on a computer. You already have a current account and a securities account at your bank and pay their fees; you know words like \"דמי ניהול\" and \"עמלת קנייה\" from your statements, but you have never compared accounts or funds.",
+   "shots": [
+    "research/audit/2026-11-06-indices-pricing/readers/shots/A-open-pc-00.png",
+    "research/audit/2026-11-06-indices-pricing/readers/shots/A-open-pc-01.png",
+    "research/audit/2026-11-06-indices-pricing/readers/shots/A-open-pc-02.png",
+    "research/audit/2026-11-06-indices-pricing/readers/shots/A-open-pc-03.png",
+    "research/audit/2026-11-06-indices-pricing/readers/shots/A-open-pc-04.png",
+    "research/audit/2026-11-06-indices-pricing/readers/shots/A-open-pc-05.png",
+    "research/audit/2026-11-06-indices-pricing/readers/shots/A-open-pc-06.png",
+    "research/audit/2026-11-06-indices-pricing/readers/shots/B-leumi-pc.png",
+    "research/audit/2026-11-06-indices-pricing/readers/shots/C-fold-open-pc.png"
+   ]
+  },
+  {
+   "key": "student-phone",
+   "who": "You are 23, a student, on your phone. You have about 10,000 ₪ saved and could put in 500 ₪ a month. Your salary goes into a current account at a bank. You read quickly and know no finance words beyond everyday Hebrew.",
+   "shots": [
+    "research/audit/2026-11-06-indices-pricing/readers/shots/A-open-phone-00.png",
+    "research/audit/2026-11-06-indices-pricing/readers/shots/A-open-phone-01.png",
+    "research/audit/2026-11-06-indices-pricing/readers/shots/A-open-phone-02.png",
+    "research/audit/2026-11-06-indices-pricing/readers/shots/A-open-phone-03.png",
+    "research/audit/2026-11-06-indices-pricing/readers/shots/A-open-phone-04.png",
+    "research/audit/2026-11-06-indices-pricing/readers/shots/A-open-phone-05.png",
+    "research/audit/2026-11-06-indices-pricing/readers/shots/A-open-phone-06.png",
+    "research/audit/2026-11-06-indices-pricing/readers/shots/A-open-phone-07.png",
+    "research/audit/2026-11-06-indices-pricing/readers/shots/A-open-phone-08.png",
+    "research/audit/2026-11-06-indices-pricing/readers/shots/A-open-phone-09.png",
+    "research/audit/2026-11-06-indices-pricing/readers/shots/A-open-phone-10.png",
+    "research/audit/2026-11-06-indices-pricing/readers/shots/A-open-phone-11.png",
+    "research/audit/2026-11-06-indices-pricing/readers/shots/A-open-phone-12.png",
+    "research/audit/2026-11-06-indices-pricing/readers/shots/A-open-phone-13.png",
+    "research/audit/2026-11-06-indices-pricing/readers/shots/B-leumi-phone.png",
+    "research/audit/2026-11-06-indices-pricing/readers/shots/C-fold-open-phone.png"
+   ]
+  },
+  {
+   "key": "new-pc",
+   "who": "You are 33, on a computer. You have savings in a bank deposit and want to start investing in the S&P 500. You have never opened a securities account and do not know which bank or investment house to choose.",
+   "shots": [
+    "research/audit/2026-11-06-indices-pricing/readers/shots/A-open-pc-00.png",
+    "research/audit/2026-11-06-indices-pricing/readers/shots/A-open-pc-01.png",
+    "research/audit/2026-11-06-indices-pricing/readers/shots/A-open-pc-02.png",
+    "research/audit/2026-11-06-indices-pricing/readers/shots/A-open-pc-03.png",
+    "research/audit/2026-11-06-indices-pricing/readers/shots/A-open-pc-04.png",
+    "research/audit/2026-11-06-indices-pricing/readers/shots/A-open-pc-05.png",
+    "research/audit/2026-11-06-indices-pricing/readers/shots/A-open-pc-06.png",
+    "research/audit/2026-11-06-indices-pricing/readers/shots/B-leumi-pc.png",
+    "research/audit/2026-11-06-indices-pricing/readers/shots/C-fold-open-pc.png"
+   ]
+  }
+ ]
+}

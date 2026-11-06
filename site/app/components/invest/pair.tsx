@@ -34,6 +34,8 @@ export interface Pick {
 export const lineClass: Record<string, string> = { trade: "bg-chart-cost-trade", custody: "bg-chart-cost-custody", fixed: "bg-chart-cost-fixed", fx: "bg-chart-cost-fx" };
 /** A bank's current account (F-102, D64) is a fee for keeping an account too: it takes the account fee's colour and legend item, and its own name in its part. */
 export const lineOf = (line: FeeLine) => (line === "account" ? "fixed" : line in lineClass ? line : "other");
+/** A legend item's name: the account fee's item stands for a bank's current account too, which shares its colour. */
+export const legendName = (l: string) => (l === "fixed" ? c.pair.legendAccount : (c.pair.lines[l] ?? c.pair.lines.other));
 /** A part's name: the line's own where it has one (the current account), else its legend item's. */
 export const partName = (line: FeeLine) => c.pair.lines[line] ?? c.pair.lines[lineOf(line)] ?? c.pair.lines.other;
 /** A legend names every account line whichever row or pair is shown, in one order, so its items keep their places from one pick to the next.
@@ -186,7 +188,7 @@ function CostLegend({ lines, pick }: { lines: string[]; pick: ChartPick<string> 
       pick={pick}
       items={[
         groupHead(c.pair.who.account),
-        ...lines.map((l) => ({ id: l, swatch: <Swatch shape="box" className={lineClass[l] ?? "bg-chart-cost-other"} />, label: c.pair.lines[l] ?? c.pair.lines.other })),
+        ...lines.map((l) => ({ id: l, swatch: <Swatch shape="box" className={lineClass[l] ?? "bg-chart-cost-other"} />, label: legendName(l) })),
         { id: "remainder", swatch: <Swatch shape="box" className="bg-chart-cost-other" />, label: c.pair.remainder },
         groupHead(c.pair.who.fund),
         { id: "fund", swatch: <Swatch shape="box" className="bg-chart-cost-fund" />, label: c.pair.fundLine },
@@ -718,7 +720,7 @@ export function AccountColumn({ view, bundle, years, monthly = 1, pick, onPick, 
   // the lines any fund of the index has at any house, for the legend's held height
   const allLines = allFunds(view).flatMap((f) => Object.values(f.byHouse).flatMap((a) => (priced(a) ? a.lines.map((l) => lineOf(l.line)) : [])));
   const legendItems = (ls: string[], broken: boolean) => [
-    ...ls.map((l) => ({ id: l, swatch: <Swatch shape="box" className={lineClass[l] ?? "bg-chart-cost-other"} />, label: c.pair.lines[l] ?? c.pair.lines.other })),
+    ...ls.map((l) => ({ id: l, swatch: <Swatch shape="box" className={lineClass[l] ?? "bg-chart-cost-other"} />, label: legendName(l) })),
     { id: "remainder", swatch: <Swatch shape="box" className="bg-chart-cost-other" />, label: c.pair.remainder },
     ...(broken ? [{ id: "broken", label: c.pair.broken }] : []),
   ];

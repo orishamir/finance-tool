@@ -30,6 +30,8 @@ const LINE_CLASS: Record<string, string> = { trade: "bg-chart-cost-trade", custo
 const lineClass = (l: string) => LINE_CLASS[l] ?? "bg-chart-cost-other";
 /** A bank's current account (F-102, D64) is shown as the account's fee, as on the index page's lists (pair.tsx `lineOf`). */
 const lineOf = (l: FeeLine): string => (l === "account" ? "fixed" : l);
+/** The account fee's name, which covers the current account too where the account has one (pair.tsx `legendName`). */
+const fixedName = (line: string, current: boolean): string | undefined => (line === "fixed" && current ? pairWords.legendAccount : pairWords.lines[line]);
 const FEE_OF_LINE: Record<string, FeeType> = { trade: "trade", custody: "custody", fixed: "fixed", fx: "conversion" };
 
 const plus = (n: number) => (n > 0 ? `⁦+${fmt.nisWhole(n)}⁩` : undefined);
@@ -175,7 +177,7 @@ function ListCell({ layer }: { layer: FeeLayers }) {
 /** The bars' parts for one account: its fee types in their colours, each with where its price comes from. */
 function costParts(pc: PairCosts, lines: readonly string[], source: (line: string) => ReactNode): CostPart[] {
   const n = (v: SiteValue) => (typeof v.value === "number" ? v.value : 0);
-  const parts: CostPart[] = lines.map((line) => ({ id: line, legendId: line, name: pairWords.lines[line] ?? pairWords.lines.other, value: pc.account.filter((l) => lineOf(l.line) === line).reduce((a, l) => a + n(l.cost), 0), className: lineClass(line), inside: true as const, source: source(line) }));
+  const parts: CostPart[] = lines.map((line) => ({ id: line, legendId: line, name: fixedName(line, pc.account.some((l) => l.line === "account")) ?? pairWords.lines.other, value: pc.account.filter((l) => lineOf(l.line) === line).reduce((a, l) => a + n(l.cost), 0), className: lineClass(line), inside: true as const, source: source(line) }));
   return [...parts, { id: "remainder", legendId: "remainder", name: pairWords.remainder, about: pairWords.remainderAbout, value: pc.interaction, className: "bg-chart-cost-other", inside: true as const, source: p.costs.computed }];
 }
 const total = (parts: CostPart[]) => parts.reduce((a, x) => a + x.value, 0);
@@ -255,6 +257,7 @@ export function OwnAccountPanel({ headId, world, houseId, from, broker, others, 
   };
 
   // the bars: the house's price list against the account, one scale, every fee type in both so a part that falls to zero shrinks in its place
+  const withCurrentAccount = !!result && [...result.yours.account, ...(result.list?.account ?? [])].some((l) => l.line === "account");
   const lineIds = result && result.list ? [...new Set([...result.yours.account, ...result.list.account].map((l) => lineOf(l.line)))] : [];
   const layerOf = (line: string) => layers?.find((l) => l.fee === FEE_OF_LINE[line]);
   const sourceYours = (line: string): ReactNode => {
@@ -371,7 +374,7 @@ export function OwnAccountPanel({ headId, world, houseId, from, broker, others, 
           <>
             <Bar who={p.costs.list} parts={listParts} scale={scale} label={barLabels.list} today={today} highlight={legend.active} />
             <Bar who={p.costs.yours} parts={yoursParts} scale={scale} label={barLabels.yours} today={today} highlight={legend.active} />
-            <ChartLegend pick={legend} items={legendLines.map((l) => ({ id: l, swatch: <Swatch shape="box" className={l === "remainder" ? "bg-chart-cost-other" : lineClass(l)} />, label: pairWords.lines[l] ?? pairWords.lines.other ?? l }))} />
+            <ChartLegend pick={legend} items={legendLines.map((l) => ({ id: l, swatch: <Swatch shape="box" className={l === "remainder" ? "bg-chart-cost-other" : lineClass(l)} />, label: fixedName(l, withCurrentAccount) ?? pairWords.lines.other ?? l }))} />
           </>
         ) : (
           <p className="text-sm text-muted-foreground min-h-[7rem]">{p.computing}</p>

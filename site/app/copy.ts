@@ -3694,6 +3694,8 @@ export const invest = {
     taxBecauseLess: "כי נשאר לכם פחות רווח",
     who: { account: "החשבון:", fund: "הקרן:", state: "המדינה:" },
     lines: { trade: "עמלות קנייה ומכירה", custody: "דמי משמרת", fixed: "דמי ניהול חשבון", fx: "המרת מטבע", other: "עמלות אחרות", account: "דמי ניהול חשבון עו״ש" } as Record<string, string>,
+    /** The legend's item for the account's own fee and a bank's current account (D64), which share its colour (readers, 2026-11-06: "דמי ניהול חשבון" alone read as either). */
+    legendAccount: "דמי ניהול חשבון ניירות ערך ועו״ש",
     lineAbout: (line: string) => `מה החשבון גובה: ${line}`,
     /** Where a part of a cost bar's price comes from, said in the box that opens on pointing at it or tapping it (2026-11-04). */
     sourceList: (house: string) => `מהתעריפון של ${house}`,
@@ -3743,14 +3745,14 @@ export const invest = {
     /** D64 (2026-11-06): the bank where the person already has a current account; that bank's row leaves the current account out. */
     ownBank: {
       label: "הבנק שבו כבר יש לכם חשבון עו״ש",
-      none: "אף אחד מהם",
+      none: "לא באחד מהבנקים האלה",
       counted: "חשבון ניירות ערך בבנק צריך חשבון עו״ש באותו בנק, ולכן השורה של כל בנק סופרת גם את דמי ניהול העו״ש שלו. בית השקעות לא דורש עו״ש אצלו.",
       left: (bank: string) => `השורה של ${bank} לא סופרת את העו״ש, כי משלמים עליו בכל מקרה. השורות של שאר הבנקים סופרות אותו.`,
     },
     /** D65 and D66 (2026-11-06): said once, for an index with funds bought abroad; `capped`: the houses whose price lists print a limit on the spread. */
     abroadTitle: "מה לא נכנס למחיר של קרן שנקנית בחו״ל",
-    abroadSpread: (capped: string[]) => `בקרן שנקנית בחו״ל יש גם פער בשער ההמרה. רוב הבנקים ובתי ההשקעות לא מגבילים אותו בתעריפון, ולכן הוא לא נכנס למחיר. תקרה לפער כתובה רק אצל ${andList(capped.map((x, i) => (i > 0 && i === capped.length - 1 && /^[A-Za-z]/.test(x) ? `־${x}` : x)))}.`,
-    abroadOthers: "קרן שנקנית בחו״ל יכולה לעלות יותר מהמספר שבשורה: ברוקר, גוף משמרת, בורסה או רשות בחו״ל גובים עמלות מהבנק או מבית ההשקעות, ורוב הבנקים ובתי ההשקעות מעבירים אותן ללקוח בלי תקרה. העמלות האלה לא נכנסות למחיר.",
+    abroadSpread: (capped: string[]) => `מעבר לעמלת המרת המטבע, הבנק או בית ההשקעות ממירים את השקלים לדולרים בשער שהם קובעים, שיכול להיות גרוע משער השוק. בתעריפון של רוב הבנקים ובתי ההשקעות אין תקרה לפער הזה, ולכן הוא לא נכנס לחישוב. תקרה לפער כתובה רק אצל ${andList(capped.map((x, i) => (i > 0 && i === capped.length - 1 && /^[A-Za-z]/.test(x) ? `־${x}` : x)))}.`,
+    abroadOthers: "גם גופים בחו״ל גובים עמלות מהבנק או מבית ההשקעות: ברוקר, הגוף ששומר את ניירות הערך, הבורסה או רשויות. רוב הבנקים ובתי ההשקעות מעבירים אותן ללקוח בלי תקרה, והן לא נכנסות לחישוב, ולכן קרן שנקנית בחו״ל יכולה לעלות יותר ממה שמחושב כאן.",
     yoursTag: "החשבון שלכם",
     standingTag: ownTermsCopy.provider.standingTag,
     standingNote: ownTermsCopy.provider.standingNote,
