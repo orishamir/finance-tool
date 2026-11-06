@@ -236,16 +236,16 @@ Exercises PEN-22 vs PEN-21 caps, F-53 zero insurance (PEN-35), F-49 blocked for 
   - Independent check, 2026-10-22 (steps in [workings.md](workings.md), section S30): Gross deposit as S27 (300 × I_m + 27.65). Gross balance at 60: 307,835.20 nominal, 169,946.85 real; balance fees 17,195.57; no deposit fee, no insurance. Employer line: 933,375.45 nominal, 515,289.41 real. Exit blocked (G-03), listed. Subject to Q1, Q18.
 
 ### S31 Child savings, provident route, doubled
-Exercises F-54 (CS-03, CS-04, CS-13 cohort, CS-18 fees), F-50 blocked.
+Exercises F-54 (CS-03, CS-04, CS-13 cohort, CS-18 fees) and F-50 (up to 25% of the real gain, TXK-23).
 - Child born 2026-01-01; doubling on from birth; increased-risk track r_g 6%; π = 2%; horizon to age 21.
-- Expected: _(founder)_: gross balance at 18 and 21, grants, fees from 21, the flag "exit tax blocked (G-17)".
+- Expected: _(founder)_: gross balance at 18 and 21, grants, fees from 21, the tax if withdrawn (F-50).
   - Independent check, 2026-10-22 (steps in [workings.md](workings.md), section S31): Gross balance at 18 = 52,470.43 (boy) / 52,490.19 (girl), real 36,737.67 / 36,751.50; at 21 = 63,375.24 / 63,398.77, real 41,813.45 / 41,828.98. Tax if withdrawn at 21: 6,009.76 / 6,015.64 (25% of the real gain, no label, TXK-23); at 18: 4,058.57 / 4,063.51. Grants: 308.81 at 3, 376.44 at 13 (boy) or 369.06 at 12 (girl), 882.12 at 21. Fees 0 until 21, then up to 1.05% of the balance (CS-18; see S54). Subject to Q10 (sex).
 
 ### S32 Child savings, bank route
 Exercises CS-10 tracks, F-21 as a savings plan (derived label), CS-23 stale data flag.
 - As S31 at a bank: fixed unlinked 3% to 18, entered (A-26); no exit stations.
 - Expected: _(founder)_ with "derived" and "rates data stale" flags.
-  - Independent check, 2026-10-22 (steps in [workings.md](workings.md), section S32): At 18 (boy): 39,701.73 nominal, 27,797.54 real; interest 9,210.54; tax if withdrawn 1,381.58. At 21: 44,265.27 nominal, 29,205.15 real; interest 12,891.96; tax if withdrawn 1,933.79 (15% of the nominal gain, label "secondary source", TXK-29); net 42,331.47. Flag "rates data stale". Filled in: 3% after 18.
+  - Independent check, 2026-10-22 (steps in [workings.md](workings.md), section S32): At 18 (boy): 39,701.73 nominal, 27,797.54 real; interest 9,210.54; tax if withdrawn 1,381.58. At 21: 44,265.27 nominal, 29,205.15 real; interest 12,891.96; tax if withdrawn 1,933.79 (15% of the nominal gain, label "reading", TXK-29); net 42,331.47. Flag "rates data stale". Filled in: 3% after 18.
 
 ### S33 IRA hishtalmut with brokerage inside
 Exercises F-51, two fee layers (PF-06 manager fee + IRA-21 bank tariff), F-46.

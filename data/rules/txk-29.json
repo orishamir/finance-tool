@@ -1,8 +1,8 @@
 {
   "id": "TXK-29",
-  "title": "Child savings, bank track: the existing tax rules apply (Ministry of Finance); by them 15% on unlinked tracks, up to 25% of the real interest on the linked one (reading)",
+  "title": "Child savings, bank track: the existing tax rules apply (Ministry of Finance); by them 15% on unlinked tracks, up to 25% of the real interest on the linked one (the site's reading)",
   "title_he": "חיסכון לכל ילד במסלול הבנק: חלים כללי המס הרגילים לריבית",
-  "text_he": "משרד האוצר כתב לבנקים, בתשובות למכרז של התוכנית, שמדיניות המס הקיימת חלה על כל מסלולי החיסכון, ושום סעיף בפקודה או בחוק הביטוח הלאומי לא פוטר את הריבית ולא קובע לה שיעור משלו. לכן חלים הכללים הרגילים לריבית של יחיד מפיקדון: במסלול הלא צמוד ובמסלול הפריים שיעור קבוע על כל הריבית, ובמסלול הצמוד למדד שיעור מרבי על הריבית שמעל ההצמדה, וההצמדה עצמה פטורה; הבנק מנכה במקור. השיעורים האלה הם קריאה של הכללים, כי שום טקסט רשמי לא נוקב בהם לחיסכון לכל ילד. האתר מצטט אותם ממדריך עיתונאי שנותן את אותם שיעורים, ולכן הם מסומנים 'מקור משני'. בעל החשבון הוא הילד וההורה מנהל אותו בנאמנות; לא נבדק אם פרק הנאמנויות בפקודה חל עליו, וחוזר הביטוח הלאומי נוקב בשיעור אחד לשני המסלולים, ששונה מהשיעור הרגיל במסלולים הלא צמודים.",
+  "text_he": "משרד האוצר כתב לבנקים, בתשובות למכרז של התוכנית, שמדיניות המס הקיימת חלה על כל מסלולי החיסכון, ושום סעיף בפקודה או בחוק הביטוח הלאומי לא פוטר את הריבית ולא קובע לה שיעור משלו. לכן חלים הכללים הרגילים לריבית של יחיד מפיקדון: במסלול הלא צמוד ובמסלול הפריים שיעור קבוע על כל הריבית, ובמסלול הצמוד למדד שיעור מרבי על הריבית שמעל ההצמדה, וההצמדה עצמה פטורה; הבנק מנכה במקור. השיעורים לקוחים מפקודת מס הכנסה, אבל שהם חלים על חיסכון לכל ילד זו קריאה של האתר: שום טקסט רשמי לא נוקב בהם לחיסכון לכל ילד, ולכן הם מסומנים 'קריאה של האתר'. בעל החשבון הוא הילד וההורה מנהל אותו בנאמנות; לא נבדק אם פרק הנאמנויות בפקודה חל עליו, וגם במסלול הקופה זה לא נבדק. חוזר הביטוח הלאומי נוקב בשיעור אחד לשני המסלולים, ששונה מהשיעור הרגיל במסלולים הלא צמודים.",
   "figure_names_he": {
     "bank_linked_rate": "שיעור המס על הרווח הריאלי, פיקדון בנקאי צמוד",
     "bank_unlinked_rate": "שיעור המס על הרווח הנומינלי, פיקדון בנקאי לא צמוד"
@@ -18,33 +18,34 @@
       "value": 25,
       "unit": "pct",
       "source": {
-        "url": "https://www.tashkif.co.il/news/hisachon-lekol-yeled-gil-18-21-meshicha-mas",
-        "title": "תשקיף, \"חיסכון לכל ילד בגיל 18 ובגיל 21: משיכה, מס ומענק ההתמדה\", 25.9.2026",
-        "publisher": "tashkif.co.il",
-        "strength": "secondary"
+        "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=204",
+        "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים, p.204, s.125ג(ב) \"יחיד חייב במס על הכנסה מריבית בשיעור שלא יעלה על 25%\"; the linkage on a fully linked asset exempt by s.9(13) (p.41)",
+        "publisher": "Tax Authority (gov.il)",
+        "strength": "primary"
       },
-      "checked": "2026-10-25",
+      "checked": "2026-11-07",
       "effective_from": null,
       "effective_to": null,
       "tax_year": 2026,
       "update_rule": "fixed in law",
       "rule_ids": [
         "TXK-29",
-        "TXI-02"
+        "TXI-02",
+        "TXI-05"
       ],
       "state": "sourced",
-      "notes": "Child savings, bank track, CPI-linked deposit: 25% of the REAL gain, withheld at source. Cited from a dated press guide (Tashkif, 25.9.2026), hence the secondary-source label: the rate is a reading of the general deposit-interest rules (TXI-02, TXI-05), which the Ministry of Finance says apply; no official text gives it for child savings (TXK OQ1). Moved here from TXK-23 on 2026-11-07."
+      "notes": "Child savings, bank track, CPI-linked deposit: up to 25% of the REAL interest, withheld by the bank at 25% (TXI-08); lower brackets apply first where the young adult has room, through a return (TXI-02). The site's reading, labelled so: the Ministry of Finance says the existing tax rules apply to every track (TXK-29), and by the general deposit-interest rules s.125ג(ב) caps the rate on interest at 25% and s.9(13) exempts the linkage (TXI-02, TXI-05); no official text names child savings (TXK OQ1), and National Insurance's circular says 25% for both routes (TXK-20). Re-cited 2026-11-07 to the Ordinance in the Tax Authority's text (the file byte-identical to the one read on 2026-10-31); a dated press guide (Tashkif, \"חיסכון לכל ילד בגיל 18 ובגיל 21: משיכה, מס ומענק ההתמדה\", 25.9.2026, https://www.tashkif.co.il/news/hisachon-lekol-yeled-gil-18-21-meshicha-mas) gives the same rate and is kept only as a lead, never cited (founder, 2026-11-07). Moved here from TXK-23 on 2026-11-07."
     },
     "bank_unlinked_rate": {
       "value": 15,
       "unit": "pct",
       "source": {
-        "url": "https://www.tashkif.co.il/news/hisachon-lekol-yeled-gil-18-21-meshicha-mas",
-        "title": "תשקיף, \"חיסכון לכל ילד בגיל 18 ובגיל 21: משיכה, מס ומענק ההתמדה\", 25.9.2026",
-        "publisher": "tashkif.co.il",
-        "strength": "secondary"
+        "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=204",
+        "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים, p.204, s.125ג(ג)(1) \"תחויב הכנסתו של היחיד מריבית במס בשיעור של 15%\", on interest from an asset that is not CPI-linked",
+        "publisher": "Tax Authority (gov.il)",
+        "strength": "primary"
       },
-      "checked": "2026-10-25",
+      "checked": "2026-11-07",
       "effective_from": null,
       "effective_to": null,
       "tax_year": 2026,
@@ -54,11 +55,11 @@
         "TXI-03"
       ],
       "state": "sourced",
-      "notes": "Child savings, bank track, unlinked shekel or prime deposit: 15% of the NOMINAL gain, withheld at source. Cited from a dated press guide (Tashkif, 25.9.2026), hence the secondary-source label: the rate is a reading of the general deposit-interest rules (TXI-03, TXI-04), which the Ministry of Finance says apply; no official text gives it for child savings, and National Insurance's circular says 25% for both routes (TXK-20, TXK OQ1). Moved here from TXK-23 on 2026-11-07."
+      "notes": "Child savings, bank track, unlinked shekel or prime deposit: 15% of the NOMINAL interest, a fixed rate, withheld by the bank (TXI-08). The site's reading, labelled so: the Ministry of Finance says the existing tax rules apply to every track (TXK-29), and by the general deposit-interest rules s.125ג(ג)(1) sets 15% on interest from an asset that is not CPI-linked (TXI-03, TXI-04); no official text names child savings, and National Insurance's circular says 25% for both routes (TXK-20, TXK OQ1). Re-cited 2026-11-07 to the Ordinance in the Tax Authority's text (the file byte-identical to the one read on 2026-10-31); a dated press guide (Tashkif, \"חיסכון לכל ילד בגיל 18 ובגיל 21: משיכה, מס ומענק ההתמדה\", 25.9.2026, https://www.tashkif.co.il/news/hisachon-lekol-yeled-gil-18-21-meshicha-mas) gives the same rate and is kept only as a lead, never cited (founder, 2026-11-07). Moved here from TXK-23 on 2026-11-07."
     }
   },
   "il_finance_file": "tax-gemel-lehashkaa-ira-child.md",
-  "checked": "2026-11-06",
+  "checked": "2026-11-07",
   "scope": "general",
   "sources": [
     {
@@ -141,7 +142,8 @@
       "locator": "p.204, s.125ג(ב), (ג)(1)",
       "locator_he": "עמוד 204, סעיף 125ג(ב), (ג)(1)",
       "page": 204,
-      "checked": "2026-11-06"
+      "checked": "2026-11-07",
+      "quote": "יחיד חייב במס על הכנסה מריבית בשיעור שלא יעלה על 25%"
     },
     {
       "url": "https://www.btl.gov.il/benefits/HozrimGimlaot/Hozrim/11.16%d7%97%d7%95%d7%96%d7%a8%20%d7%aa%d7%95%d7%9b%d7%a0%d7%99%d7%aa%20%d7%97%d7%99%d7%a1%d7%9b%d7%95%d7%9f%20%d7%9c%d7%9b%d7%9c%20%d7%99%d7%9c%d7%93_.pdf#page=11",

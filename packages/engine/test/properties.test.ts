@@ -124,13 +124,12 @@ describe("figure resolver (D10, method §13)", () => {
     book.rate("TXS-09", "rate");
     book.rate("TXF-04", "threshold_pct");
     expect(book.used().map((u) => u.id)).toEqual(["CS-30", "TXK-23", "TXK-29", "TXS-09", "TXF-04"]);
-    // TXK-23's rate reads the Ordinance since 2026-11-07, so it carries no label; TXK-29 is a primary rule whose bank-route rates
-    // are cited from a press guide, so the figure's own secondary source labels it. TXS-09 reads the Tax Authority's consolidated
-    // ordinance since the source check of 2026-10-25, so it carries no label; TXF-04 rests only on a re-hosted copy of a Tax
-    // Authority letter, so its figure carries the mirror label
+    // TXK-23's and TXK-29's rates read the Ordinance since 2026-11-07, so their sources imply no label (the bank route's reading
+    // label is the ledger's own, not the source's). TXS-09 reads the Tax Authority's consolidated ordinance since the source
+    // check of 2026-10-25, so it carries no label; TXF-04 rests only on a re-hosted copy of a Tax Authority letter, so its
+    // figure carries the mirror label
     expect(book.labels()).toEqual([
       { code: "institution-source", ruleId: "CS-30" },
-      { code: "secondary-source", ruleId: "TXK-29" },
       { code: "mirror-source", ruleId: "TXF-04" },
     ]);
   });

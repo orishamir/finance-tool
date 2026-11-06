@@ -617,8 +617,8 @@ describe("Part B: provident-family wrappers", () => {
     g.value("net at 21", r.nominal, 42_331.47);
     g.done();
     expect(flagCodes(r)).toContain("CS-23");
-    // workings S32: 15% of the nominal gain, label "secondary source", TXK-29
-    expect(labelOf(r, "TXK-29")).toBe("secondary-source");
+    // workings S32: 15% of the nominal gain, label "reading", TXK-29 (the Ordinance's rate; applying it to child savings is the site's reading)
+    expect(labelOf(r, "TXK-29")).toBe("reading");
   });
 
   it("S33 IRA hishtalmut with brokerage inside", () => {

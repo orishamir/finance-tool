@@ -1718,10 +1718,10 @@ def s32_fill():
         f'| 0 | Filled-in inputs | — | {filled("3% kept after 18 (same rate)")} |\n'
         f'| 1 | Deposits and grants as the provident child-savings example (boy; grant at 13 = month 156; 582 at 21) | {L("CS-03", "CS-04", "CS-13")} | — |\n'
         f'| 2 | Bank track: fixed unlinked 3%, compounded annually-effective | {L("CS-23")} (public rate data stale) | — |\n'
-        f'| 3 | Tax at withdrawal on an unlinked bank deposit: 15% of the nominal gain, withheld (a reading of the general deposit rules, cited from a secondary source) | {L("TXK-29", "TXK-20")} | — |\n'
+        f'| 3 | Tax at withdrawal on an unlinked bank deposit: 15% of the nominal gain, withheld (the rate the Ordinance sets on unlinked interest, s.125ג(ג)(1); applying it to child savings is the site reading, labelled) | {L("TXK-29", "TXK-20")} | — |\n'
     )
     section('S32', 'Child savings, bank route', 'computed', body,
-            f'At 18 (boy): {f2(b18)} nominal, {f2(b18 / path.I(216))} real; interest {f2(int18)}; tax if withdrawn {f2(0.15 * int18)}. At 21: {f2(B)} nominal, {f2(B / path.I(252))} real; interest {f2(int21)}; tax if withdrawn {f2(0.15 * int21)} (15% of the nominal gain, label "secondary source", TXK-29); net {f2(B - 0.15 * int21)}. Flag "rates data stale". Filled in: 3% after 18.')
+            f'At 18 (boy): {f2(b18)} nominal, {f2(b18 / path.I(216))} real; interest {f2(int18)}; tax if withdrawn {f2(0.15 * int18)}. At 21: {f2(B)} nominal, {f2(B / path.I(252))} real; interest {f2(int21)}; tax if withdrawn {f2(0.15 * int21)} (15% of the nominal gain, label "reading", TXK-29); net {f2(B - 0.15 * int21)}. Flag "rates data stale". Filled in: 3% after 18.')
 
 
 def s41_fill():

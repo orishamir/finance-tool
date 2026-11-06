@@ -221,8 +221,9 @@ export function runProvident(input: ProvidentInput, ctx: RunContext): ProvidentR
 
   // F-52: what the employer pays above the benefited limit is the employee's salary when paid (TXH-03):
   // income tax at the brackets (TXG-02) and National Insurance and health (TXG-35: National Insurance's circular 1473 puts the
-  // excess in that base, TXH-26). It is charged in the month the deposit is paid, on top of that month's salary: the rule base's
-  // inference (TXH-26), which moves the figure only where the two together cross a band edge; the run does not show the month.
+  // excess in that base as imputed value, "זקיפת שווי", TXH-26), so it is added on top of the salary and charged at the rates
+  // of the sum. Only the month is the rule base's inference (TXH-26, from TXH-03's "when paid"); with the same salary every
+  // month it changes nothing, and the run does not show it.
   const employerExcessByYear = new Map<number, number>();
   const employerExcessTodayByYear = new Map<number, number>();
   let employerPaidToday = 0;
