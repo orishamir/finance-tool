@@ -4,6 +4,7 @@
   "gov.il": { "publisher": "gov.il", "publisher_he": "אתר הממשלה (gov.il)", "kind": "official_pdf", "mirror": null },
   "data.gov.il": { "publisher": "data.gov.il", "publisher_he": "מאגר המידע הממשלתי (data.gov.il)", "kind": "dataset", "mirror": null },
   "hly.gov.il": { "publisher": "Child Savings site (hly.gov.il)", "publisher_he": "אתר חיסכון לכל ילד (hly.gov.il)", "kind": "regulator_page", "mirror": null },
+  "mr.gov.il": { "publisher": "Government procurement site (mr.gov.il)", "publisher_he": "אתר הרכש הממשלתי (mr.gov.il)", "kind": "official_pdf", "mirror": null },
   "boi.org.il": { "publisher": "Bank of Israel", "publisher_he": "בנק ישראל", "kind": "regulator_page", "mirror": null },
   "edge.boi.org.il": { "publisher": "Bank of Israel (data)", "publisher_he": "בנק ישראל (מאגר הנתונים)", "kind": "dataset", "mirror": null },
   "btl.gov.il": { "publisher": "National Insurance Institute", "publisher_he": "המוסד לביטוח לאומי", "kind": "regulator_page", "mirror": null },

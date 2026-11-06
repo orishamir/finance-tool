@@ -1,0 +1,25 @@
+{
+  "id": "typvl-brybyt-vbdybydnd",
+  "he": "טיפול בריבית ובדיבידנד",
+  "en": null,
+  "meaning": "כך קוראת אלטשולר שחם טרייד בתעריפון שלה (״טיפול בתשלומי ריבית/דיבידנד״) לעמלה שהיא גובה על תשלום ריבית או דיבידנד שנכנס לחשבון ניירות הערך",
+  "where": [
+    "tariff"
+  ],
+  "wrapper_ids": [
+    "brokerage-account"
+  ],
+  "variants": [
+    "טיפול בתשלומי ריבית/דיבידנד"
+  ],
+  "rule_ids": [
+    "BRK-48"
+  ],
+  "source": {
+    "url": "https://www.as-invest.co.il/media/oqdfpafo/תעריפון-מלא-אלטשולר-שחם-טרייד.pdf",
+    "title": "אלטשולר שחם טרייד: תעריפון מלא (בלי תאריך על המסמך), עמ' 2",
+    "publisher": "אלטשולר שחם טרייד",
+    "strength": "institution",
+    "checked": "2026-10-31"
+  }
+}

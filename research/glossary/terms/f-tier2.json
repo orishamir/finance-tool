@@ -35,7 +35,8 @@
     "where": [
       "tier2-page"
     ],
-    "notes": "Term spelling per INS Terms table (Comptroller 2024 p. 336; Clal 1418). Variants: 'פוליסה משתתפת ברווחים' is the withholding-regulations term (TXA-04); 'תכנית חיסכון בפוליסת ביטוח חיים' is the Ordinance s.3(ה5) wording (TXA-03). Product names seen: 'חיסכון פיננסי לעתיד' (Clal 1418), 'הפניקס אינווסט' (Phoenix), 'תכנית פרט-מסלול לחיים' (Phoenix 5552, with life cover). Statement marker: 'הפוליסה אינה מוכרת כקופת ביטוח' (Clal 1418 title). The 'אין תקרת הפקדה' fact is primary (Comptroller); the legal basis for it is not cited (INS-02). Bituach-Net cannot tell savings-policy tracks from executive-insurance tracks (INS-23). The CMA term 'חוזי השקעה' was seen only in a search extract and is not used (INS OQ15)."
+    "notes": "Term spelling per INS Terms table (Comptroller 2024 p. 336; Clal 1418). Variants: 'פוליסה משתתפת ברווחים' is the withholding-regulations term (TXA-04); 'תכנית חיסכון בפוליסת ביטוח חיים' is the Ordinance s.3(ה5) wording (TXA-03). Product names seen: 'חיסכון פיננסי לעתיד' (Clal 1418), 'הפניקס אינווסט' (Phoenix), 'תכנית פרט-מסלול לחיים' (Phoenix 5552, with life cover). Statement marker: 'הפוליסה אינה מוכרת כקופת ביטוח' (Clal 1418 title). The 'אין תקרת הפקדה' fact is primary (Comptroller); the legal basis for it is not cited (INS-02). Bituach-Net cannot tell savings-policy tracks from executive-insurance tracks (INS-23). The CMA term 'חוזי השקעה' was seen only in a search extract and is not used (INS OQ15).",
+    "id": "pvlyst-chyskvn"
   },
   {
     "term_he": "ביטוח חיים משתתף ברווחים",
@@ -66,7 +67,8 @@
     "where": [
       "tier2-page"
     ],
-    "notes": "The Fees Regulations define it 'כהגדרתו בתקנות חוזי ביטוח, למעט קופת ביטוח' (reg. 8); the referenced definition itself was not read (INS OQ1). The withholding regulations define 'פוליסה משתתפת ברווחים' separately, as a savings plan in a life policy approved by the insurance supervisor as profit-sharing (TXA-04). The INS Terms table calls this the legal category of savings policies and 'modern' executive policies; which executive-policy cohorts are profit-sharing is not set out, hence 'חלק'. 'תיק משתתף ברווחים' is the insurer's portfolio behind these policies (CMA reports), not the policy."
+    "notes": "The Fees Regulations define it 'כהגדרתו בתקנות חוזי ביטוח, למעט קופת ביטוח' (reg. 8); the referenced definition itself was not read (INS OQ1). The withholding regulations define 'פוליסה משתתפת ברווחים' separately, as a savings plan in a life policy approved by the insurance supervisor as profit-sharing (TXA-04). The INS Terms table calls this the legal category of savings policies and 'modern' executive policies; which executive-policy cohorts are profit-sharing is not set out, hence 'חלק'. 'תיק משתתף ברווחים' is the insurer's portfolio behind these policies (CMA reports), not the policy.",
+    "id": "bytvch-chyym-mshttp-brvvchym"
   },
   {
     "term_he": "מסלולי האירוח",
@@ -96,7 +98,8 @@
     "where": [
       "tier2-page"
     ],
-    "notes": "Term as in the CMA 2026 plan ('בקשר למסלולי האירוח'); 'הוסטינג' is the ISA report's word; 'מנוהל באמצעות' appears in Bituach-Net track names (INS-09). Meaning source is the ISA report p. 19 (NIS 21.4 bn of savings policies managed through hosting by portfolio managers), a primary document on a third-party host. Brand names seen in track names: BlackRock, Apollo, אקסלנס אינווסט (Phoenix), fidelity (Harel), State Street (Clal), מגדל שוקי הון (INS-09). In mutual funds 'hosting' has a related meaning: a portfolio manager running a fund under a fund manager's licence (MGD-13)."
+    "notes": "Term as in the CMA 2026 plan ('בקשר למסלולי האירוח'); 'הוסטינג' is the ISA report's word; 'מנוהל באמצעות' appears in Bituach-Net track names (INS-09). Meaning source is the ISA report p. 19 (NIS 21.4 bn of savings policies managed through hosting by portfolio managers), a primary document on a third-party host. Brand names seen in track names: BlackRock, Apollo, אקסלנס אינווסט (Phoenix), fidelity (Harel), State Street (Clal), מגדל שוקי הון (INS-09). In mutual funds 'hosting' has a related meaning: a portfolio manager running a fund under a fund manager's licence (MGD-13).",
+    "id": "mslvly-hayrvch"
   },
   {
     "term_he": "קרן י'",
@@ -127,7 +130,8 @@
     "where": [
       "tier2-page"
     ],
-    "notes": "Seen as Bituach-Net track names such as 'כלל-קרן י'', 'מגדל-קרן י'', 'הפניקס -קרן י'' (INS-16, CAT leads in INS 'Found for other files'). il-finance does not map each letter to an issue period; in INS-16 the קרן י' tracks are given as examples among the 1990-91 and 1992-2003 cohort tracks, which carry much higher average fees than 2004+ tracks. Shown on statements of older policies per the INS Terms table."
+    "notes": "Seen as Bituach-Net track names such as 'כלל-קרן י'', 'מגדל-קרן י'', 'הפניקס -קרן י'' (INS-16, CAT leads in INS 'Found for other files'). il-finance does not map each letter to an issue period; in INS-16 the קרן י' tracks are given as examples among the 1990-91 and 1992-2003 cohort tracks, which carry much higher average fees than 2004+ tracks. Shown on statements of older policies per the INS Terms table.",
+    "id": "krn-y"
   },
   {
     "term_he": "ביטוח מנהלים",
@@ -165,7 +169,8 @@
     "where": [
       "tier2-page"
     ],
-    "notes": "Market name only: not defined in the law texts read (INS-13, TXA-12); the law calls it 'קופת ביטוח' (separate entry). Term spelling per INS Terms table (Harel 1286; Harel 2016 letter); Harel's terms are titled 'תנאים כלליים לביטוח חיים (מנהלים)', the source of the one variant. Older policy types seen in insurer letters and statements: 'פוליסה הפרשית', 'עדיף', 'מניב' (Phoenix legacy), 'פוליסות קלאסיות (מעורב, גמלא וחיסכון)' (INS-15, INS-16). Fee cap 4% of deposits and 1.05% of balance applies only to policies issued from 1.1.2013 (INS-15). Mandatory-pension fit needs death and disability cover in it or elsewhere (INS-18). Only a 2009 Harel plan and a 2016 Harel letter were read for current terms (INS graduation item 5)."
+    "notes": "Market name only: not defined in the law texts read (INS-13, TXA-12); the law calls it 'קופת ביטוח' (separate entry). Term spelling per INS Terms table (Harel 1286; Harel 2016 letter); Harel's terms are titled 'תנאים כלליים לביטוח חיים (מנהלים)', the source of the one variant. Older policy types seen in insurer letters and statements: 'פוליסה הפרשית', 'עדיף', 'מניב' (Phoenix legacy), 'פוליסות קלאסיות (מעורב, גמלא וחיסכון)' (INS-15, INS-16). Fee cap 4% of deposits and 1.05% of balance applies only to policies issued from 1.1.2013 (INS-15). Mandatory-pension fit needs death and disability cover in it or elsewhere (INS-18). Only a 2009 Harel plan and a 2016 Harel letter were read for current terms (INS graduation item 5).",
+    "id": "bytvch-mnhlym"
   },
   {
     "term_he": "קופת ביטוח",
@@ -197,7 +202,8 @@
     "where": [
       "tier2-page"
     ],
-    "notes": "Law text: 'תכנית ביטוח שאושרה לפי הוראות סעיף 13(ב) כקופת גמל לתגמולים, לפיצויים או לקצבה' (Provident Funds Law s.1). Only listed parts of the Provident Funds Law apply to it (INS-14). It is never an 'old fund', so the recognized annuity and commutation are open to it (TXA-13). The fund-level income exemption excludes insurance funds (TXA-14). Statement marker 'הפוליסה אינה מוכרת כקופת ביטוח' identifies a savings policy, not executive insurance (Clal 1418)."
+    "notes": "Law text: 'תכנית ביטוח שאושרה לפי הוראות סעיף 13(ב) כקופת גמל לתגמולים, לפיצויים או לקצבה' (Provident Funds Law s.1). Only listed parts of the Provident Funds Law apply to it (INS-14). It is never an 'old fund', so the recognized annuity and commutation are open to it (TXA-13). The fund-level income exemption excludes insurance funds (TXA-14). Statement marker 'הפוליסה אינה מוכרת כקופת ביטוח' identifies a savings policy, not executive insurance (Clal 1418).",
+    "id": "kvpt-bytvch"
   },
   {
     "term_he": "תיקון 190",
@@ -234,7 +240,8 @@
     "where": [
       "tier2-page"
     ],
-    "notes": "Official name of a 2012 amendment to the Income Tax Ordinance (s.9A), used in the market for deposits of 'exempt payments' (TXA Terms). In force 1.1.2012 (circular s.1). Commutation is taxed at 15% of the nominal relative profit (TXA-19). Fund conditions (age 60, three annuity payslips, age-based ceilings, the 38,412 NIS benefited layer) rest on fund documents only (TXA-22 to TXA-24). Method G-24 and G-11 name TXA OQ9 and OQ14. Held by provident funds for annuity and, per Meitav, an IRA (TXA-25)."
+    "notes": "Official name of a 2012 amendment to the Income Tax Ordinance (s.9A), used in the market for deposits of 'exempt payments' (TXA Terms). In force 1.1.2012 (circular s.1). Commutation is taxed at 15% of the nominal relative profit (TXA-19). Fund conditions (age 60, three annuity payslips, age-based ceilings, the 38,412 NIS benefited layer) rest on fund documents only (TXA-22 to TXA-24). Method G-24 and G-11 name TXA OQ9 and OQ14. Held by provident funds for annuity and, per Meitav, an IRA (TXA-25).",
+    "id": "tykvn-190"
   },
   {
     "term_he": "תשלומים פטורים",
@@ -260,7 +267,8 @@
     "where": [
       "tier2-page"
     ],
-    "notes": "s.9A(a): employer amounts above the deposit rate, employee amounts above the maximum rate, severance taxed as work income, money moved to a new account, self-paid amounts with no matching employer payment and no s.45A credit or s.47 deduction, and self-paid amounts to a kupat gemel lehashkaa (TXA-17). Funds treat the first slice of each year's self-deposits (38,412 NIS, 2025-2026) as benefited, a fund practice (TXA-23)."
+    "notes": "s.9A(a): employer amounts above the deposit rate, employee amounts above the maximum rate, severance taxed as work income, money moved to a new account, self-paid amounts with no matching employer payment and no s.45A credit or s.47 deduction, and self-paid amounts to a kupat gemel lehashkaa (TXA-17). Funds treat the first slice of each year's self-deposits (38,412 NIS, 2025-2026) as benefited, a fund practice (TXA-23).",
+    "id": "tshlvmym-ptvrym-f"
   },
   {
     "term_he": "קצבה מוכרת",
@@ -276,8 +284,8 @@
       "TXA OQ14: National Insurance and health contributions"
     ],
     "rule_ids": [
-      "TXA-18",
-      "TXA-13"
+      "TXA-13",
+      "TXA-18"
     ],
     "source": {
       "title": "פקודת מס הכנסה (Wikisource consolidated text)",
@@ -288,7 +296,8 @@
     "where": [
       "tier2-page"
     ],
-    "notes": "s.9A(b1): exempt from 60, or on early retirement for 75% disability. Circular 2/2013: the exemption is in addition to the qualifying-annuity exemption (TXA-18). Not available in an 'old fund'; an insurance fund is never one (TXA-13)."
+    "notes": "s.9A(b1): exempt from 60, or on early retirement for 75% disability. Circular 2/2013: the exemption is in addition to the qualifying-annuity exemption (TXA-18). Not available in an 'old fund'; an insurance fund is never one (TXA-13).",
+    "id": "ktzbh-mvkrt-f"
   },
   {
     "term_he": "היוון קצבה מוכרת",
@@ -318,7 +327,8 @@
     "where": [
       "tier2-page"
     ],
-    "notes": "s.9A(e)(3): 15% on the relative profit component, nominal. Lawful only if the remaining annuity, counting all annuities, is at least the minimum annuity (5,306 NIS/month in 2026) (TXA-20). Name also used as the title of fund forms ('היוון קצבה מוכרת – תיקון 190', Analyst, Altshuler Shaham)."
+    "notes": "s.9A(e)(3): 15% on the relative profit component, nominal. Lawful only if the remaining annuity, counting all annuities, is at least the minimum annuity (5,306 NIS/month in 2026) (TXA-20). Name also used as the title of fund forms ('היוון קצבה מוכרת – תיקון 190', Analyst, Altshuler Shaham).",
+    "id": "hyvvn-ktzbh-mvkrt"
   },
   {
     "term_he": "פיקדון במטבע חוץ",
@@ -360,7 +370,8 @@
     "where": [
       "tier2-page"
     ],
-    "notes": "Spelling from the title of the exemption order quoted in the withholding regulations ('צו מס הכנסה (פטור ממס על הכנסה מריבית על פיקדון במטבע חוץ), התשס\"ג–2002'). Banking (Customer Service) Law Amendment 38 writes 'פיקדון כספי במטבע חוץ' (FXD-04); the Ordinance s.1 writes 'פקדון במטבע חוץ' (TX2-01). 'פמ\"ח' is used by Hapoalim and Leumi; its expansion is not stated in any source read. 'פקדונות מטבע' is the name used by a non-bank provider (Altshuler Shaham Financial Services) whose regulator is open (FXD-13, FXD OQ8). No deposit insurance in Israel (FXD-16). Olim (20 years) and returning residents (5 years) have an interest exemption under conditions (TX2-03)."
+    "notes": "Spelling from the title of the exemption order quoted in the withholding regulations ('צו מס הכנסה (פטור ממס על הכנסה מריבית על פיקדון במטבע חוץ), התשס\"ג–2002'). Banking (Customer Service) Law Amendment 38 writes 'פיקדון כספי במטבע חוץ' (FXD-04); the Ordinance s.1 writes 'פקדון במטבע חוץ' (TX2-01). 'פמ\"ח' is used by Hapoalim and Leumi; its expansion is not stated in any source read. 'פקדונות מטבע' is the name used by a non-bank provider (Altshuler Shaham Financial Services) whose regulator is open (FXD-13, FXD OQ8). No deposit insurance in Israel (FXD-16). Olim (20 years) and returning residents (5 years) have an interest exemption under conditions (TX2-03).",
+    "id": "pykdvn-bmtba-chvtz"
   },
   {
     "term_he": "חשבון מטבע חוץ",
@@ -387,12 +398,14 @@
       "title": "כללי הבנקאות (שירות ללקוח) (עמלות), התשס\"ח-2008, First Schedule part 5, consolidated to 9.4.2025 (BoI copy)",
       "url": "https://boi.org.il/media/jbwnaivp/159a.pdf",
       "checked": "2026-10-22",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "Bank of Israel"
     },
     "where": [
       "tier2-page"
     ],
-    "notes": "BoI fee rules part 5 have no fee line for holding an FX account (FXD-05). Exemption of the exchange-rate gain on the balance is a derived reading, not a stated rule (TX2-04)."
+    "notes": "BoI fee rules part 5 have no fee line for holding an FX account (FXD-05). Exemption of the exchange-rate gain on the balance is a derived reading, not a stated rule (TX2-04).",
+    "id": "chshbvn-mtba-chvtz"
   },
   {
     "term_he": "עמלת חליפין",
@@ -414,12 +427,14 @@
       "title": "כללי הבנקאות (שירות ללקוח) (עמלות), התשס\"ח-2008, First Schedule part 5, consolidated to 9.4.2025 (BoI copy)",
       "url": "https://boi.org.il/media/jbwnaivp/159a.pdf",
       "checked": "2026-10-22",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "Bank of Israel"
     },
     "where": [
       "tier2-page"
     ],
-    "notes": "Fee rules part 5(1): a percentage with a minimum and maximum, per the bank's own schedule, at most two conversion fees. Leumi example (01/10/2026): shekel to FX 0.200%, FX to FX 0.300% (FXD-06); levels belong in data/ as dated snapshots. Also met when buying foreign securities (tier 1, brokerage)."
+    "notes": "Fee rules part 5(1): a percentage with a minimum and maximum, per the bank's own schedule, at most two conversion fees. Leumi example (01/10/2026): shekel to FX 0.200%, FX to FX 0.300% (FXD-06); levels belong in data/ as dated snapshots. Also met when buying foreign securities (tier 1, brokerage).",
+    "id": "amlt-chlypyn-f"
   },
   {
     "term_he": "צמוד דולר",
@@ -437,8 +452,8 @@
       "TX2 OQ5: how a 'higher of dollar linkage or fixed rate' payout is taxed"
     ],
     "rule_ids": [
-      "FXD-09",
       "FXD-02",
+      "FXD-09",
       "FXD-10",
       "TX2-01"
     ],
@@ -446,12 +461,14 @@
       "title": "כללי הבנקאות (שירות ללקוח) (גילוי נאות ומסירת מסמכים), התשנ\"ב-1992, נוסח משולב (בנק ישראל), ס' 1, 2(ד) ו-7(א)(5)",
       "url": "https://www.boi.org.il/media/rvzi1ngd/151.pdf",
       "checked": "2026-10-26",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "Bank of Israel"
     },
     "where": [
       "tier2-page"
     ],
-    "notes": "Seen in product names: Yahav 'חיסכון מישר חד פעמי - צמוד דולר' ('החיסכון ללא הבטחת קרן'); Discount 'פיקדונות מסוג צמודי מט\"ח' (linkage base: representative rate plus 0.2%); Leumi 'ברירה צמוד דולר-שקל' pays the higher of dollar linkage and a fixed rate (FXD-09). Term is institution-strength only; no primary source names this product."
+    "notes": "Seen in product names: Yahav 'חיסכון מישר חד פעמי - צמוד דולר' ('החיסכון ללא הבטחת קרן'); Discount 'פיקדונות מסוג צמודי מט\"ח' (linkage base: representative rate plus 0.2%); Leumi 'ברירה צמוד דולר-שקל' pays the higher of dollar linkage and a fixed rate (FXD-09). Term is institution-strength only; no primary source names this product.",
+    "id": "tzmvd-dvlr"
   },
   {
     "term_he": "פיקדון מובנה",
@@ -484,7 +501,8 @@
     "where": [
       "tier2-page"
     ],
-    "notes": "FIBI and Massad: principal 'ככלל מובטחת (במטבע הבסיס)', and joining requires investment advice (FXD-11). The guarantee is the issuing bank's own promise; no deposit insurance (FXD-16). Taxed as a deposit, so securities losses cannot be offset against it (TX2-05, Mizrahi page). Example product names: 'פיקדון פלוס' (Discount, 2024 issue, cannot be broken), 'פיקדון מובנה S&P500 לשנתיים' (Mizrahi). The return is conditional, so any projection would need person-entered scenarios (D9)."
+    "notes": "FIBI and Massad: principal 'ככלל מובטחת (במטבע הבסיס)', and joining requires investment advice (FXD-11). The guarantee is the issuing bank's own promise; no deposit insurance (FXD-16). Taxed as a deposit, so securities losses cannot be offset against it (TX2-05, Mizrahi page). Example product names: 'פיקדון פלוס' (Discount, 2024 issue, cannot be broken), 'פיקדון מובנה S&P500 לשנתיים' (Mizrahi). The return is conditional, so any projection would need person-entered scenarios (D9).",
+    "id": "pykdvn-mvbnh"
   },
   {
     "term_he": "מוצר מובנה",
@@ -509,7 +527,8 @@
     "where": [
       "tier2-page"
     ],
-    "notes": "Investment Advice Law s.1. Excluded: an investment that unconditionally guarantees principal (with CPI or FX linkage if set) and fixed or variable interest, or the higher of such options. Structured products count as 'נכסים פיננסיים'. Discount states its structured USD deposit 'אינו מהווה נכס פיננסי' under this law (FXD-12)."
+    "notes": "Investment Advice Law s.1. Excluded: an investment that unconditionally guarantees principal (with CPI or FX linkage if set) and fixed or variable interest, or the higher of such options. Structured products count as 'נכסים פיננסיים'. Discount states its structured USD deposit 'אינו מהווה נכס פיננסי' under this law (FXD-12).",
+    "id": "mvtzr-mvbnh"
   },
   {
     "term_he": "מענק",
@@ -539,7 +558,8 @@
     "where": [
       "tier2-page"
     ],
-    "notes": "'מענק מותנה' is Mizrahi's wording (TX2 Terms). In Discount's 2024 example the grant was all-or-nothing on one observation date (FXD-12). 'הבנק אינו מתחייב למתן תשואה מינימלית כלשהי' (FIBI, Massad)."
+    "notes": "'מענק מותנה' is Mizrahi's wording (TX2 Terms). In Discount's 2024 example the grant was all-or-nothing on one observation date (FXD-12). 'הבנק אינו מתחייב למתן תשואה מינימלית כלשהי' (FIBI, Massad).",
+    "id": "mank-f"
   },
   {
     "term_he": "אגרת בונדס",
@@ -567,7 +587,8 @@
     "where": [
       "tier2-page"
     ],
-    "notes": "Not on the D2 tier-2 list itself; fx-and-structured-deposits.md graduation status says to keep it as a note on the tier-2 page. Hebrew term only seen in Leumi's value-date table ('הפקדת פדיון סופי של אגרת בונדס'). English series names: Savings Bonds, Jubilee, Maccabee, Sabra, Mazel Tov. Direct obligations of the State (FXD-15). Tax for a resident is missing in il-finance."
+    "notes": "Not on the D2 tier-2 list itself; fx-and-structured-deposits.md graduation status says to keep it as a note on the tier-2 page. Hebrew term only seen in Leumi's value-date table ('הפקדת פדיון סופי של אגרת בונדס'). English series names: Savings Bonds, Jubilee, Maccabee, Sabra, Mazel Tov. Direct obligations of the State (FXD-15). Tax for a resident is missing in il-finance.",
+    "id": "agrt-bvnds"
   },
   {
     "term_he": "ארנק מט\"ח דיגיטלי",
@@ -594,7 +615,8 @@
     "where": [
       "tier2-page"
     ],
-    "notes": "Scope is an open founder decision (coverage.md F7); D2 does not mention payment wallets. Product seen: LAYA (operator לאיה גלובל בע\"מ, which states an ISA payment-services licence). No tax rule for wallet balances in il-finance."
+    "notes": "Scope is an open founder decision (coverage.md F7); D2 does not mention payment wallets. Product seen: LAYA (operator לאיה גלובל בע\"מ, which states an ISA payment-services licence). No tax rule for wallet balances in il-finance.",
+    "id": "arnk-mtch-dygytly"
   },
   {
     "term_he": "אג\"ח קונצרניות",
@@ -635,7 +657,8 @@
     "where": [
       "tier2-page"
     ],
-    "notes": "Spelling per CORP Terms table (TASE report 2025 pp. 31, 33, 34). The legal term is 'תעודות התחייבות' (separate entry). Unlinked, CPI-linked and FX-linked series exist (CORP-16). Bond funds and ETFs on Tel-Bond indices ('מדדי תל בונד') are tier 1 (CORP-22)."
+    "notes": "Spelling per CORP Terms table (TASE report 2025 pp. 31, 33, 34). The legal term is 'תעודות התחייבות' (separate entry). Unlinked, CPI-linked and FX-linked series exist (CORP-16). Bond funds and ETFs on Tel-Bond indices ('מדדי תל בונד') are tier 1 (CORP-22).",
+    "id": "agch-kvntzrnyvt"
   },
   {
     "term_he": "תעודות התחייבות",
@@ -665,7 +688,8 @@
     "where": [
       "tier2-page"
     ],
-    "notes": "Securities Law s.35א. Excludes certificates issued by the State or under a special law, and commercial paper. Includes bonds convertible into shares; TASE lists those as 'תעודות התחייבות ניתנות להמרה' (CORP-16), the variant given, which is a sub-type rather than a synonym."
+    "notes": "Securities Law s.35א. Excludes certificates issued by the State or under a special law, and commercial paper. Includes bonds convertible into shares; TASE lists those as 'תעודות התחייבות ניתנות להמרה' (CORP-16), the variant given, which is a sub-type rather than a synonym.",
+    "id": "tavdvt-htchyybvt"
   },
   {
     "term_he": "ניירות ערך מסחריים",
@@ -696,7 +720,8 @@
     "where": [
       "tier2-page"
     ],
-    "notes": "Securities Law s.1. The trustee duty does not apply to commercial paper (CORP-02). Not to be confused with makam (government short-term bills, tier 1)."
+    "notes": "Securities Law s.1. The trustee duty does not apply to commercial paper (CORP-02). Not to be confused with makam (government short-term bills, tier 1).",
+    "id": "nyyrvt-ark-mschryym"
   },
   {
     "term_he": "נאמן למחזיקים",
@@ -728,7 +753,8 @@
     "where": [
       "tier2-page"
     ],
-    "notes": "Securities Law s.35ב(א): 'נאמן למחזיקים בתעודות ההתחייבות'. Must apply to open insolvency proceedings 45 days after a missed payment unless holders of three-quarters of the unpaid amount object (CORP-08). The issuer pays the trustee (CORP-05)."
+    "notes": "Securities Law s.35ב(א): 'נאמן למחזיקים בתעודות ההתחייבות'. Must apply to open insolvency proceedings 45 days after a missed payment unless holders of three-quarters of the unpaid amount object (CORP-08). The issuer pays the trustee (CORP-05).",
+    "id": "namn-lmchzykym"
   },
   {
     "term_he": "חברת דירוג",
@@ -758,7 +784,8 @@
     "where": [
       "tier2-page"
     ],
-    "notes": "Registration is required by the 2014 law (CORP-13). The 'relative to other Israeli issuers' part is from Midroog's own scale document (institution, CORP-14). Agencies seen: Midroog (scale Aaa.il ... C.il) and S&P Maalot (ilAAA ...); registration of each not confirmed. Variant follows the law's title 'חברות דירוג האשראי'."
+    "notes": "Registration is required by the 2014 law (CORP-13). The 'relative to other Israeli issuers' part is from Midroog's own scale document (institution, CORP-14). Agencies seen: Midroog (scale Aaa.il ... C.il) and S&P Maalot (ilAAA ...); registration of each not confirmed. Variant follows the law's title 'חברות דירוג האשראי'.",
+    "id": "chbrt-dyrvg"
   },
   {
     "term_he": "הסדר חוב",
@@ -790,7 +817,8 @@
     "where": [
       "tier2-page"
     ],
-    "notes": "Spelling per CORP Terms table (Meitar, secondary; Midroog p. 13, institution); whether Midroog's text uses exactly this string was not shown verbatim. 'הסדר חוב מהותי' is defined in the Insolvency Law 2018, which il-finance has not read (CORP-10 via Meitar, CORP OQ12). A waiver or swap in a settlement is a 'sale' for tax, giving a capital loss (TX2-08, derived)."
+    "notes": "Spelling per CORP Terms table (Meitar, secondary; Midroog p. 13, institution); whether Midroog's text uses exactly this string was not shown verbatim. 'הסדר חוב מהותי' is defined in the Insolvency Law 2018, which il-finance has not read (CORP-10 via Meitar, CORP OQ12). A waiver or swap in a settlement is a 'sale' for tax, giving a capital loss (TX2-08, derived).",
+    "id": "hsdr-chvb"
   },
   {
     "term_he": "איגרות חוב מובנות",
@@ -853,7 +881,8 @@
     "where": [
       "tier2-page"
     ],
-    "notes": "Law s.1: 'ביצוע עסקאות, לפי שיקול דעת, לחשבונם של אחרים'; needs an ISA licence. Assets stay in the client's own account at a bank or TASE member (90% at banks, REG-09), so 'בבנק' simplifies. The manager's fee may not depend on profit or number of trades (MGD-08). ISA averages of direct fees by portfolio size exist (MGD-11). Minimums on own pages NIS 300,000 to 400,000 (MGD-16). Taxed as the securities held; each sale is a tax event (TX2-15). Licensed company names are in MGD-23."
+    "notes": "Law s.1: 'ביצוע עסקאות, לפי שיקול דעת, לחשבונם של אחרים'; needs an ISA licence. Assets stay in the client's own account at a bank or TASE member (90% at banks, REG-09), so 'בבנק' simplifies. The manager's fee may not depend on profit or number of trades (MGD-08). ISA averages of direct fees by portfolio size exist (MGD-11). Minimums on own pages NIS 300,000 to 400,000 (MGD-16). Taxed as the securities held; each sale is a tax event (TX2-15). Licensed company names are in MGD-23.",
+    "id": "nyhvl-tyky-hshkavt"
   },
   {
     "term_he": "תיק השקעות דיגיטלי",
@@ -882,12 +911,14 @@
       "title": "רשות ניירות ערך, הוראה לבעלי רישיון בקשר למתן שירותים תוך שימוש באמצעים טכנולוגיים, ס' 11 עד 18",
       "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-6283705a39f5d/horaa7822.pdf",
       "checked": "2026-10-26",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "Israel Securities Authority"
     },
     "where": [
       "tier2-page"
     ],
-    "notes": "il-finance has no Hebrew word for 'robo'. Variant from Phoenix's page ('ניהול תיק השקעות דיגיטלי בהתאמה אישית'). Offerings confirmed on own pages: Meitav Manager ('מיטב מנג'ר', from NIS 25,000, only Meitav funds, no direct fee), Phoenix digital portfolio (from NIS 50,000), Altshuler Shaham digital joining (algorithm sets risk level). Meitav Manager is run by licensed managers and is not described as algorithmic (MGD-19). The algorithm rules are secondary only (MGD-21). Under D11 the site does not adopt a robo risk score."
+    "notes": "il-finance has no Hebrew word for 'robo'. Variant from Phoenix's page ('ניהול תיק השקעות דיגיטלי בהתאמה אישית'). Offerings confirmed on own pages: Meitav Manager ('מיטב מנג'ר', from NIS 25,000, only Meitav funds, no direct fee), Phoenix digital portfolio (from NIS 50,000), Altshuler Shaham digital joining (algorithm sets risk level). Meitav Manager is run by licensed managers and is not described as algorithmic (MGD-19). The algorithm rules are secondary only (MGD-21). Under D11 the site does not adopt a robo risk score.",
+    "id": "tyk-hshkavt-dygytly"
   },
   {
     "term_he": "שיווק השקעות",
@@ -913,7 +944,8 @@
     "where": [
       "tier2-page"
     ],
-    "notes": "A licensed portfolio manager may also do investment advice or investment marketing, but only one (s.2(ג), MGD-01); every large group read chose marketing. s.16א lets a marketer prefer affiliated assets if it made the required disclosures, and affiliation is not treated as a conflict of interest (MGD-12). Related term, not itself a tier-2 product; no blocking question of its own."
+    "notes": "A licensed portfolio manager may also do investment advice or investment marketing, but only one (s.2(ג), MGD-01); every large group read chose marketing. s.16א lets a marketer prefer affiliated assets if it made the required disclosures, and affiliation is not treated as a conflict of interest (MGD-12). Related term, not itself a tier-2 product; no blocking question of its own.",
+    "id": "shyvvk-hshkavt"
   },
   {
     "term_he": "קרן להשקעות במקרקעין",
@@ -952,7 +984,8 @@
     "where": [
       "tier2-page"
     ],
-    "notes": "Income Tax Ordinance s.64A2 and s.64A3 conditions: TASE listing, at least 95% of assets in permitted classes, NIS 200 m minimum, borrowing limits, holder spread, at least 90% of taxable income distributed by 30 April (RG-01 to RG-07). Names per press (Calcalist, Jan 2025, secondary): ריט 1, סלע נדל\"ן, מניבים, מגוריט, ריט אזורים (shares); רנט איט, אבו פמילי ריט (bonds only). Variants: 'קרן REIT' is Megureit's wording. No Israeli REIT-only fund found (RG-13)."
+    "notes": "Income Tax Ordinance s.64A2 and s.64A3 conditions: TASE listing, at least 95% of assets in permitted classes, NIS 200 m minimum, borrowing limits, holder spread, at least 90% of taxable income distributed by 30 April (RG-01 to RG-07). Names per press (Calcalist, Jan 2025, secondary): ריט 1, סלע נדל\"ן, מניבים, מגוריט, ריט אזורים (shares); רנט איט, אבו פמילי ריט (bonds only). Variants: 'קרן REIT' is Megureit's wording. No Israeli REIT-only fund found (RG-13).",
+    "id": "krn-lhshkavt-bmkrkayn"
   },
   {
     "term_he": "השקעה בזהב דרך קרנות סל",
@@ -990,7 +1023,8 @@
     "where": [
       "tier2-page"
     ],
-    "notes": "No official Hebrew name for a gold fund in il-finance; term is from a Meitav marketing article (institution). Variant from a Tradingil article title (secondary). The ISA reports such funds under the category 'סחורות', which may also hold oil-futures funds (RG-14, RG-15). Fund names and fees come only from secondary pages (RG-16). Meitav says no Israeli ETF holds physical gold and Israeli products use futures; no fund document confirms this (RG-17). A fund named 'זהב וכרייה' holds mining shares and is not a gold-price fund (RG-23). Physical gold is out of scope (D2)."
+    "notes": "No official Hebrew name for a gold fund in il-finance; term is from a Meitav marketing article (institution). Variant from a Tradingil article title (secondary). The ISA reports such funds under the category 'סחורות', which may also hold oil-futures funds (RG-14, RG-15). Fund names and fees come only from secondary pages (RG-16). Meitav says no Israeli ETF holds physical gold and Israeli products use futures; no fund document confirms this (RG-17). A fund named 'זהב וכרייה' holds mining shares and is not a gold-price fund (RG-23). Physical gold is out of scope (D2).",
+    "id": "hshkah-bzhb-drk-krnvt-sl"
   },
   {
     "term_he": "מנוטרלת מט\"ח",
@@ -1004,8 +1038,8 @@
       "RG OQ10: cost of currency hedging inside hedged gold funds"
     ],
     "rule_ids": [
-      "RG-19",
-      "MF-43"
+      "MF-43",
+      "RG-19"
     ],
     "source": {
       "title": "Funder, fund page 5142096 (קסם KTF LBMA GOLD PRICE PM USD מנוטרלת מט\"ח)",
@@ -1016,7 +1050,8 @@
     "where": [
       "tier2-page"
     ],
-    "notes": "Quoted fund policy: full neutralisation, FX exposure never above 10% of assets (Funder pages, secondary). The exposure code in the fund name shows the same: letter A up to 10% FX, D up to 120% (MF-43). The same term appears in tier-1 ETF names."
+    "notes": "Quoted fund policy: full neutralisation, FX exposure never above 10% of assets (Funder pages, secondary). The exposure code in the fund name shows the same: letter A up to 10% FX, D up to 120% (MF-43). The same term appears in tier-1 ETF names.",
+    "id": "mnvtrlt-mtch"
   },
   {
     "term_he": "LBMA Gold Price AM / PM",
@@ -1042,7 +1077,8 @@
     "where": [
       "tier2-page"
     ],
-    "notes": "English benchmark name as it appears inside Israeli gold fund names; il-finance gives no Hebrew name for it. Administered by ICE Benchmark Administration; auctions 10:30 and 15:00 London time. A fund on the AM price and one on the PM price track different daily fixes (RG-18)."
+    "notes": "English benchmark name as it appears inside Israeli gold fund names; il-finance gives no Hebrew name for it. Administered by ICE Benchmark Administration; auctions 10:30 and 15:00 London time. A fund on the AM price and one on the PM price track different daily fixes (RG-18).",
+    "id": "lbma-gold-price-am-pm"
   },
   {
     "term_he": "ETC",
@@ -1071,6 +1107,7 @@
     "where": [
       "tier2-page"
     ],
-    "notes": "il-finance has no Hebrew name for an ETC (exchange-traded commodity); only the English term is used. Example: iShares Physical Gold ETC, a limited-recourse debt security of an Irish issuer (RG-20). Israel's foreign-fund route admits only UCITS or 1940 Act funds, and neither this ETC nor US gold trusts (IAU, GLD) describe themselves as such, so they are reached through a broker abroad (RG-21, RG-22)."
+    "notes": "il-finance has no Hebrew name for an ETC (exchange-traded commodity); only the English term is used. Example: iShares Physical Gold ETC, a limited-recourse debt security of an Irish issuer (RG-20). Israel's foreign-fund route admits only UCITS or 1940 Act funds, and neither this ETC nor US gold trusts (IAU, GLD) describe themselves as such, so they are reached through a broker abroad (RG-21, RG-22).",
+    "id": "etc"
   }
 ]

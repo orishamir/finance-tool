@@ -2,7 +2,7 @@
   "id": "SW-52",
   "title": "The supervised price to move securities out of a bank: what tariffs and the press say",
   "title_he": "המחיר המפוקח להעברת ניירות מבנק: מה כתוב בתעריפונים",
-  "text_he": "שלושה מקורות נוקבים במחיר המפוקח להעברת ניירות ערך מבנק לחשבון של אותו לקוח בגוף אחר, וחולקים על היחידה: תעריפון דיסקונט נוקב בסכום להעברה, מאמר של מיטב טרייד נוקב באותו סכום לכל נייר ישראלי, וכלכליסט מדווח על תקרה של בנק ישראל להעברה מבנק לבית השקעות. הצו שקובע את המחיר לא נמצא, ולכן אין כאן עדיין כלל שחל על כל הבנקים.",
+  "text_he": "שלושה מקורות נוקבים במחיר המפוקח להעברת ניירות ערך מבנק לחשבון של אותו לקוח בגוף אחר, וחולקים על היחידה: תעריפון דיסקונט נוקב בסכום להעברה, מאמר של מיטב טרייד נוקב באותו סכום לכל נייר ישראלי, וכלכליסט מדווח על תקרה של בנק ישראל להעברה מבנק לבית השקעות. הסכום עצמו, עד 5 ₪ בעד השירות, נקבע בידי בנק ישראל; אם הוא להעברה או לכל נייר, הדף של בנק ישראל לא אומר.",
   "figure_names_he": {
     "discount_supervised_transfer_nis": "המחיר המפוקח להעברה בתעריפון דיסקונט"
   },
@@ -32,7 +32,7 @@
         "SW-52"
       ],
       "state": "sourced",
-      "notes": "Discount's tariff line for the supervised same-client transfer: NIS 5 per transfer. Meitav Trade's article gives NIS 5 per Israeli security; the order that sets the supervised price was not found (SW OQ10)."
+      "notes": "Discount's tariff line for the supervised same-client transfer: NIS 5 per transfer. Meitav Trade's article gives NIS 5 per Israeli security. The amount, at most NIS 5 for the service plus the third party's cost, is the Bank of Israel's (SW-33; SW OQ10 closed 2026-10-26); its page says neither per transfer nor per security, so the unit stays these companies'."
     }
   },
   "il_finance_file": "switching-and-transfers.md",
@@ -48,7 +48,7 @@
       "name_he": "מיטב טרייד"
     }
   ],
-  "scope_settle": "the Bank of Israel price-supervision order under s.7 of the Banking (Customer Service) Law that sets the amount (open question 10)",
+  "scope_settle": "a Bank of Israel text saying whether the NIS 5 is per transfer or per security",
   "sources": [
     {
       "url": "https://www.discountbank.co.il/media/bjudw31y/part4_securities07022025.pdf",

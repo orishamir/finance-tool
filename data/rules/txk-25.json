@@ -1,7 +1,7 @@
 {
   "id": "TXK-25",
-  "title": "Child savings: the annuity route, stated by NII but without a clear statutory basis",
-  "title_he": "חיסכון לכל ילד: מסלול הקצבה לפי הביטוח הלאומי",
+  "title": "Child savings: the annuity route, stated by NII and the Minister of Finance but without a clear statutory basis",
+  "title_he": "חיסכון לכל ילד: מסלול הקצבה לפי הביטוח הלאומי ושר האוצר",
   "strength": "primary",
   "dimensions": [
     "age-or-use-exemption",
@@ -9,13 +9,39 @@
   ],
   "likely_to_change": "yes",
   "recheck_date": "2027-01-01",
-  "text_he": "הביטוח הלאומי אומר שאם החיסכון נשאר בקופת הגמל עד הפרישה, הילד יוכל לקבל אותו כקצבה בלי מס רווחי הון. זו תשובה בשאלות הנפוצות באתר הביטוח הלאומי, לא הוראה מחייבת. הפטור על 'קצבה מוכרת' נשען על 'תשלומים פטורים' ששילם יחיד בעד עצמו; הפקדות הביטוח הלאומי וההורים אינן כאלה, ולכן הבסיס בחוק לא ברור (שאלה פתוחה 1).",
+  "text_he": "הביטוח הלאומי אומר שאם החיסכון נשאר בקופת הגמל עד הפרישה, הילד יוכל לקבל אותו כקצבה בלי מס רווחי הון, ושר האוצר כתב כך לוועדת הכספים כשהציג את התקנות. אלה הצהרות כוונה, לא הוראה מחייבת. הפטור על 'קצבה מוכרת' נשען על 'תשלומים פטורים' ששילם יחיד בעד עצמו; הפקדות הביטוח הלאומי וההורים אינן כאלה, והתקנות אוסרות להפקיד בחשבון כל סכום אחר, גם אחרי גיל 21. לכן הבסיס בחוק לא ברור (שאלה פתוחה 1).",
   "il_finance_file": "tax-gemel-lehashkaa-ira-child.md",
-  "checked": "2026-10-26",
+  "checked": "2026-11-06",
   "scope": "general",
   "sources": [
     {
-      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/8OfazOM9J2n~VjyzV5AWsITYS27PjZHrqw3iJWE0YJI=#page=7",
+      "title": "תקנות הביטוח הלאומי (חיסכון ארוך טווח לילד), התשע\"ז-2016, קובץ התקנות 7727",
+      "title_he": "תקנות הביטוח הלאומי (חיסכון ארוך טווח לילד), התשע״ז-2016 (קובץ התקנות 7727)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.7, reg. 2",
+      "locator_he": "עמוד 7, תקנה 2",
+      "page": 7,
+      "quote": "לא יהיה ניתן להפקיד סכומים נוספים על אלה שיופקדו על ידי המוסד",
+      "checked": "2026-11-06"
+    },
+    {
+      "url": "https://mr.gov.il/ilgstorefront/he/p/attachment/005056BF19AF1EDA95B333678AA98121/%D7%9E%D7%A1%D7%9E%D7%9B%D7%99%20%D7%94%D7%9C%D7%99%D7%9A#page=24",
+      "title": "משרד האוצר, אגף החשב הכללי: מכרז 1226/2016, הודעה מס' 1 (מעודכנת), 3.11.2016",
+      "title_he": "משרד האוצר, אגף החשב הכללי: מכרז 1226/2016 לבחירת בנקים וקופות גמל בתוכנית חיסכון לכל ילד, הודעה מס' 1 (מעודכנת), 3.11.2016",
+      "publisher": "Government procurement site (mr.gov.il)",
+      "publisher_he": "משרד האוצר, אגף החשב הכללי",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.24",
+      "locator_he": "עמוד 24",
+      "checked": "2026-11-06"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=49",
       "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
       "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
       "publisher": "gov.il",
@@ -39,6 +65,25 @@
       "quote": "הילד יוכל לבחור לקבל את כספי החיסכון לאחר הפרישה כקצבה",
       "checked": "2026-10-25",
       "qualifier": "(regulator statement)"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/20/Committees/20_cs_bg_348625.pdf#page=2",
+      "title": "שר האוצר ליושב ראש ועדת הכספים: תקנות הביטוח הלאומי (חיסכון ארוך טווח לילד), התשע\"ו-2016, 10.8.2016",
+      "title_he": "שר האוצר ליושב ראש ועדת הכספים: תקנות הביטוח הלאומי (חיסכון ארוך טווח לילד), התשע״ו-2016, 10.8.2016",
+      "publisher": "The Knesset",
+      "publisher_he": "שר האוצר (חומר רקע לוועדת הכספים של הכנסת)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.2",
+      "locator_he": "עמוד 2",
+      "page": 2,
+      "quote": "וליהנות מפטור ממס רווחי הון אם הכספים יהפכו לקצבתיים",
+      "checked": "2026-11-06",
+      "qualifier": "(the Minister's explanation; not a provision)"
     }
+  ],
+  "derived_from": [
+    "TXK-09",
+    "TXK-23"
   ]
 }

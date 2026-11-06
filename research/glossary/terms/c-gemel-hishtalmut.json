@@ -18,17 +18,19 @@
       "title": "ספר החוקים 2554 (7.6.2016): חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 15), התשע\"ו-2016",
       "url": "https://fs.knesset.gov.il//20/law/20_lsr_343169.pdf",
       "checked": "2026-10-22",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "Knesset"
     },
     "where": [
-      "guide:kupat-gemel-lehashkaa",
-      "decoder",
-      "app",
       "ad",
+      "app",
+      "gemel-net",
       "statement",
-      "gemel-net"
+      "guide:kupat-gemel-lehashkaa",
+      "decoder"
     ],
-    "notes": "A lump sum is taxed at any age; the tax-free route is moving the money to an annuity fund from early retirement age and taking it as an annuity (KGL-09, TXK-09, TXK-10, TXK-12). Brand names seen in apps: חיסכון פלוס (Altshuler), כלל גמל לעתיד (Clal), מיטב קידס (Meitav, in a child's name). Not the same as the child-savings classification 'קופת גמל להשקעה - חסכון לילד'."
+    "notes": "A lump sum is taxed at any age; the tax-free route is moving the money to an annuity fund from early retirement age and taking it as an annuity (KGL-09, TXK-09, TXK-10, TXK-12). Brand names seen in apps: חיסכון פלוס (Altshuler), כלל גמל לעתיד (Clal), מיטב קידס (Meitav, in a child's name). Not the same as the child-savings classification 'קופת גמל להשקעה - חסכון לילד'.",
+    "id": "kvpt-gml-lhshkah"
   },
   {
     "term_he": "גמל להשקעה",
@@ -48,13 +50,14 @@
       "strength": "primary"
     },
     "where": [
-      "guide:kupat-gemel-lehashkaa",
-      "decoder",
-      "app",
       "ad",
-      "gemel-net"
+      "app",
+      "gemel-net",
+      "guide:kupat-gemel-lehashkaa",
+      "decoder"
     ],
-    "notes": "Short form per the KGL Terms table (Gemel-Net fund names such as 'מיטב גמל להשקעה כללי'; Harel 2026 table)."
+    "notes": "Short form per the KGL Terms table (Gemel-Net fund names such as 'מיטב גמל להשקעה כללי'; Harel 2026 table).",
+    "id": "gml-lhshkah"
   },
   {
     "term_he": "קרן השתלמות",
@@ -65,7 +68,7 @@
     "variants_he": [
       "קרנות השתלמות"
     ],
-    "explain_he": "חיסכון שהמעסיק ואתם מפקידים אליו מהשכר, או עצמאים בעצמם; אחרי תקופה שקבע החוק אפשר למשוך בפטור ממס",
+    "explain_he": "חיסכון דרך מקום העבודה, או בעצמכם כעצמאים, שאחרי תקופה שקבע החוק אפשר למשוך בלי מס",
     "rule_ids": [
       "KH-01",
       "KH-02",
@@ -80,14 +83,15 @@
       "strength": "primary"
     },
     "where": [
-      "guide:keren-hishtalmut",
-      "decoder",
-      "app",
       "ad",
+      "app",
+      "gemel-net",
       "statement",
-      "gemel-net"
+      "guide:keren-hishtalmut",
+      "decoder"
     ],
-    "notes": "Money can be withdrawn earlier, but then it is taxed (KH-10, TXH-13). Gains on deposits above the ceiling stay taxable after the period (TXH-11). A salaried employee gets one only if the employer pays in under a personal contract, collective agreement or extension order (KH-02, KH-03). 'קרנות השתלמות' is the Gemel-Net classification value."
+    "notes": "Money can be withdrawn earlier, but then it is taxed (KH-10, TXH-13). Gains on deposits above the ceiling stay taxable after the period (TXH-11). A salaried employee gets one only if the employer pays in under a personal contract, collective agreement or extension order (KH-02, KH-03). 'קרנות השתלמות' is the Gemel-Net classification value.",
+    "id": "krn-hshtlmvt"
   },
   {
     "term_he": "קרן השתלמות לעצמאים",
@@ -98,9 +102,9 @@
     "variants_he": [],
     "explain_he": "קרן השתלמות שעצמאים מפקידים אליה מהכנסות העסק, ומקבלים הקלה במס על חלק מההפקדה",
     "rule_ids": [
+      "KH-08",
       "TXH-05",
-      "TXH-08",
-      "KH-08"
+      "TXH-08"
     ],
     "source": {
       "title": "Tax Authority, דע זכויותיך וחובותיך 2025",
@@ -109,10 +113,11 @@
       "strength": "primary"
     },
     "where": [
-      "guide:keren-hishtalmut",
-      "app"
+      "app",
+      "guide:keren-hishtalmut"
     ],
-    "notes": "Deduction up to a share of 'הכנסה קובעת'; gains are exempt up to a higher fixed annual amount (TXH-05, TXH-08). Not every fund accepts self-employed members (KH-09)."
+    "notes": "Deduction up to a share of 'הכנסה קובעת'; gains are exempt up to a higher fixed annual amount (TXH-05, TXH-08). Not every fund accepts self-employed members (KH-09).",
+    "id": "krn-hshtlmvt-latzmaym"
   },
   {
     "term_he": "קופת גמל בניהול אישי",
@@ -138,15 +143,18 @@
       "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005 (Nevo mirror)",
       "url": "https://www.nevo.co.il/law_html/law00/70391.htm",
       "checked": "2026-10-22",
-      "strength": "primary-mirror"
+      "strength": "primary-mirror",
+      "publisher": "Nevo legal database"
     },
     "where": [
-      "guide:ira-self-directed",
-      "decoder",
       "app",
-      "gemel-net"
+      "gemel-net",
+      "guide:ira-hishtalmut",
+      "guide:ira-provident",
+      "decoder"
     ],
-    "notes": "Conflict between files: IRA-01 and IRA-03 say the law's definition lists tagmulim, annuity and study funds but not the investment provident fund (and Gemel-Net has none), while TXK-16 says an IRA is a fund of the type it was approved as '(investment, study fund, and so on)'. Pension funds cannot be IRA (IRA-02). Tax follows the underlying wrapper (TXK-17). The investment risk is the member's (IRA-26). 'IRA' is the app and fund-name label (Latin letters)."
+    "notes": "Conflict between files: IRA-01 and IRA-03 say the law's definition lists tagmulim, annuity and study funds but not the investment provident fund (and Gemel-Net has none), while TXK-16 says an IRA is a fund of the type it was approved as '(investment, study fund, and so on)'. Pension funds cannot be IRA (IRA-02). Tax follows the underlying wrapper (TXK-17). The investment risk is the member's (IRA-26). 'IRA' is the app and fund-name label (Latin letters).",
+    "id": "kvpt-gml-bnyhvl-ayshy"
   },
   {
     "term_he": "חיסכון לכל ילד",
@@ -168,16 +176,19 @@
       "title": "National Insurance, תכנית חיסכון לכל ילד (programme page)",
       "url": "https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/default.aspx",
       "checked": "2026-10-22",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "National Insurance Institute"
     },
     "where": [
-      "guide:child-savings",
-      "decoder",
       "app",
+      "provider-site",
       "statement",
-      "nii-site"
+      "guide:child-savings-bank",
+      "guide:child-savings-provident",
+      "decoder"
     ],
-    "notes": "The legal name in National Insurance Law s.74ב is 'חיסכון ארוך טווח לילד'; NII's programme name is 'תכנית חיסכון לכל ילד'. The money sits in a child-savings provident fund or a bank, by the parent's choice (CS-06). Not the same as a regular gemel lehashkaa opened in a child's name, such as 'מיטב קידס' (KGL-21)."
+    "notes": "The legal name in National Insurance Law s.74ב is 'חיסכון ארוך טווח לילד'; NII's programme name is 'תכנית חיסכון לכל ילד'. The money sits in a child-savings provident fund or a bank, by the parent's choice (CS-06). Not the same as a regular gemel lehashkaa opened in a child's name, such as 'מיטב קידס' (KGL-21).",
+    "id": "chyskvn-lkl-yld"
   },
   {
     "term_he": "קופת גמל להשקעה - חסכון לילד",
@@ -191,8 +202,8 @@
     "explain_he": "הסיווג הרשמי של קופות הגמל שמנהלות את כספי החיסכון לכל ילד",
     "rule_ids": [
       "CS-08",
-      "TXK-22",
-      "KGL-21"
+      "KGL-21",
+      "TXK-22"
     ],
     "source": {
       "title": "CMA Gemel-Net dataset, resource 2024-today, report period 202609",
@@ -201,12 +212,14 @@
       "strength": "primary"
     },
     "where": [
-      "guide:child-savings",
-      "decoder",
+      "bylaws",
       "gemel-net",
-      "bylaws"
+      "guide:child-savings-bank",
+      "guide:child-savings-provident",
+      "decoder"
     ],
-    "notes": "Gemel-Net spells it 'חסכון' (no yod); NII and the Harel bylaw spell 'חיסכון'. The variant is the bylaw and fund-name form (Harel bylaw title; Meitav, Analyst fund names)."
+    "notes": "Gemel-Net spells it 'חסכון' (no yod); NII and the Harel bylaw spell 'חיסכון'. The variant is the bylaw and fund-name form (Harel bylaw title; Meitav, Analyst fund names).",
+    "id": "kvpt-gml-lhshkah-chskvn-lyld"
   },
   {
     "term_he": "קופת גמל לילדים",
@@ -228,12 +241,13 @@
       "strength": "institution"
     },
     "where": [
-      "decoder",
-      "app",
       "ad",
-      "guide:kupat-gemel-lehashkaa"
+      "app",
+      "guide:kupat-gemel-lehashkaa",
+      "decoder"
     ],
-    "notes": "Brand wording, institution only. Gemel-Net lists the government programme separately as 'קופת גמל להשקעה - חסכון לילד' (KGL-21). Meitav's page gives inconsistent multi-child totals; the per-person ceiling rule applies (KGL-21)."
+    "notes": "Brand wording, institution only. Gemel-Net lists the government programme separately as 'קופת גמל להשקעה - חסכון לילד' (KGL-21). Meitav's page gives inconsistent multi-child totals; the per-person ceiling rule applies (KGL-21).",
+    "id": "kvpt-gml-lyldym"
   },
   {
     "term_he": "קופת גמל לקצבה",
@@ -256,11 +270,12 @@
       "strength": "primary-mirror"
     },
     "where": [
-      "guide:kupat-gemel-lehashkaa",
+      "ad",
       "statement",
-      "ad"
+      "guide:kupat-gemel-lehashkaa"
     ],
-    "notes": "The brief's 'קופה לקצבה' is not written that way in the rule base. After the transfer the money is for an annuity only; whether it can later be capitalised is open (TXK-10, TXK open question 4). Pension funds are also annuity funds; product rules are in pension-and-gemel-lekitzba.md. The 'לקיצבה' spelling is from the TXP Terms table."
+    "notes": "The brief's 'קופה לקצבה' is not written that way in the rule base. After the transfer the money is for an annuity only; whether it can later be capitalised is open (TXK-10, TXK open question 4). Pension funds are also annuity funds; product rules are in pension-and-gemel-lekitzba.md. The 'לקיצבה' spelling is from the TXP Terms table.",
+    "id": "kvpt-gml-lktzbh-c"
   },
   {
     "term_he": "עמית",
@@ -278,17 +293,20 @@
       "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005 (Nevo mirror)",
       "url": "https://www.nevo.co.il/law_html/law00/70391.htm",
       "checked": "2026-10-22",
-      "strength": "primary-mirror"
+      "strength": "primary-mirror",
+      "publisher": "Nevo legal database"
     },
     "where": [
-      "guide:kupat-gemel-lehashkaa",
-      "guide:keren-hishtalmut",
-      "guide:ira-self-directed",
-      "statement",
+      "bylaws",
       "form",
-      "bylaws"
+      "statement",
+      "guide:ira-hishtalmut",
+      "guide:ira-provident",
+      "guide:keren-hishtalmut",
+      "guide:kupat-gemel-lehashkaa"
     ],
-    "notes": ""
+    "notes": "",
+    "id": "amyt-c"
   },
   {
     "term_he": "עמית-שכיר",
@@ -308,15 +326,17 @@
       "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005 (Nevo mirror)",
       "url": "https://www.nevo.co.il/law_html/law00/70391.htm",
       "checked": "2026-10-22",
-      "strength": "primary-mirror"
+      "strength": "primary-mirror",
+      "publisher": "Nevo legal database"
     },
     "where": [
-      "guide:keren-hishtalmut",
-      "form",
       "bylaws",
-      "statement"
+      "form",
+      "statement",
+      "guide:keren-hishtalmut"
     ],
-    "notes": "The law writes it with a hyphen; bylaws write it without (KH Terms). Some funds stop accepting deposits when the employer stops paying (KH-09)."
+    "notes": "The law writes it with a hyphen; bylaws write it without (KH Terms). Some funds stop accepting deposits when the employer stops paying (KH-09).",
+    "id": "amyt-shkyr-efd8"
   },
   {
     "term_he": "עמית-עצמאי",
@@ -330,24 +350,27 @@
     ],
     "explain_he": "מעמד בקופה שבו מפקידים בעצמכם ולא דרך מעסיק; בקרן השתלמות זה המעמד של עצמאים",
     "rule_ids": [
+      "KGL-01",
       "KH-02",
-      "KH-08",
-      "KGL-01"
+      "KH-08"
     ],
     "source": {
       "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005 (Nevo mirror)",
       "url": "https://www.nevo.co.il/law_html/law00/70391.htm",
       "checked": "2026-10-22",
-      "strength": "primary-mirror"
+      "strength": "primary-mirror",
+      "publisher": "Nevo legal database"
     },
     "where": [
-      "guide:keren-hishtalmut",
-      "guide:kupat-gemel-lehashkaa",
-      "guide:ira-self-directed",
+      "bylaws",
       "form",
-      "bylaws"
+      "guide:ira-hishtalmut",
+      "guide:ira-provident",
+      "guide:keren-hishtalmut",
+      "guide:kupat-gemel-lehashkaa"
     ],
-    "notes": "The law defines it as an individual member who pays into a fund for themselves. In the gemel lehashkaa definition it means any self-paying member, not only the self-employed (KGL-01; TXK Terms 'not self-employed here'), while the KH Terms table translates it 'self-employed member'. 'מעמד עצמאי' is Meitav's IRA form wording (IRA Terms)."
+    "notes": "The law defines it as an individual member who pays into a fund for themselves. In the gemel lehashkaa definition it means any self-paying member, not only the self-employed (KGL-01; TXK Terms 'not self-employed here'), while the KH Terms table translates it 'self-employed member'. 'מעמד עצמאי' is Meitav's IRA form wording (IRA Terms).",
+    "id": "amyt-atzmay-51e9"
   },
   {
     "term_he": "חברה מנהלת",
@@ -368,15 +391,18 @@
       "strength": "primary"
     },
     "where": [
-      "guide:kupat-gemel-lehashkaa",
-      "guide:keren-hishtalmut",
-      "guide:ira-self-directed",
-      "guide:child-savings",
-      "statement",
       "bylaws",
-      "gemel-net"
+      "gemel-net",
+      "statement",
+      "guide:child-savings-bank",
+      "guide:child-savings-provident",
+      "guide:ira-hishtalmut",
+      "guide:ira-provident",
+      "guide:keren-hishtalmut",
+      "guide:kupat-gemel-lehashkaa"
     ],
-    "notes": "In an IRA the member or their portfolio manager decides the investments, not the company (IRA-05, IRA-26). The list of licensed managers is in Gemel-Net (KH-24)."
+    "notes": "In an IRA the member or their portfolio manager decides the investments, not the company (IRA-05, IRA-26). The list of licensed managers is in Gemel-Net (KH-24).",
+    "id": "chbrh-mnhlt-c"
   },
   {
     "term_he": "הוראת מינוי מוטבים",
@@ -390,9 +416,9 @@
     ],
     "explain_he": "הוראה שנותנים לקופה מי יקבלו את הכסף שבה אחרי הפטירה; בקופת גמל, בלי הוראה כזו הכסף עובר ליורשים על פי דין או על פי צוואה",
     "rule_ids": [
+      "CS-17",
       "KGL-17",
-      "KH-26",
-      "CS-17"
+      "KH-26"
     ],
     "source": {
       "title": "רשות שוק ההון, חוזר גופים מוסדיים 2016-9-19: הצטרפות לקרן פנסיה או לקופת גמל, ס' 12",
@@ -401,13 +427,15 @@
       "strength": "primary"
     },
     "where": [
-      "guide:kupat-gemel-lehashkaa",
-      "guide:keren-hishtalmut",
-      "guide:child-savings",
+      "bylaws",
       "form",
-      "bylaws"
+      "guide:child-savings-bank",
+      "guide:child-savings-provident",
+      "guide:keren-hishtalmut",
+      "guide:kupat-gemel-lehashkaa"
     ],
-    "notes": "Without one, heirs receive the money under a probate or inheritance order (KGL-17, KH-26). In child savings, beneficiaries can be named only from 18 (CS-17). Heirs withdraw a study fund tax-free (TXH-14)."
+    "notes": "Without one, heirs receive the money under a probate or inheritance order (KGL-17, KH-26). In child savings, beneficiaries can be named only from 18 (CS-17). Heirs withdraw a study fund tax-free (TXH-14).",
+    "id": "hvrat-mynvy-mvtbym"
   },
   {
     "term_he": "מתנה בלתי חוזרת",
@@ -418,8 +446,8 @@
     "variants_he": [],
     "explain_he": "הנוסח של מיטב לפתיחת קופת גמל להשקעה על שם אדם אחר: לפי מיטב זו מתנה שאי אפשר לחזור ממנה, ורק אותו אדם מנהל ומושך את הכסף, אלא אם הוא קטין",
     "rule_ids": [
-      "KGL-26",
-      "KGL-21"
+      "KGL-21",
+      "KGL-26"
     ],
     "source": {
       "title": "מיטב: קופת גמל להשקעה",
@@ -428,10 +456,11 @@
       "strength": "institution"
     },
     "where": [
-      "guide:kupat-gemel-lehashkaa",
-      "ad"
+      "ad",
+      "guide:kupat-gemel-lehashkaa"
     ],
-    "notes": "Meitav's own wording ('כמוה כמתן מתנה בלתי חוזרת'), named as Meitav's (KGL-26, scope institution; 2026-10-25 scope pass). For a minor, withdrawals are paid to the parent who is the guardian in the bylaws read (KGL-27, unsettled). Each child has a separate deposit ceiling (KGL-21)."
+    "notes": "Meitav's own wording ('כמוה כמתן מתנה בלתי חוזרת'), named as Meitav's (KGL-26, scope institution; 2026-10-25 scope pass). For a minor, withdrawals are paid to the parent who is the guardian in the bylaws read (KGL-27, unsettled). Each child has a separate deposit ceiling (KGL-21).",
+    "id": "mtnh-blty-chvzrt"
   },
   {
     "term_he": "תקרת הפקדה",
@@ -457,16 +486,18 @@
       "title": "ספר החוקים 2554 (7.6.2016): חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 15), התשע\"ו-2016",
       "url": "https://fs.knesset.gov.il//20/law/20_lsr_343169.pdf",
       "checked": "2026-10-22",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "Knesset"
     },
     "where": [
-      "guide:kupat-gemel-lehashkaa",
-      "guide:keren-hishtalmut",
       "ad",
       "app",
-      "institution-table"
+      "provider-site",
+      "guide:keren-hishtalmut",
+      "guide:kupat-gemel-lehashkaa"
     ],
-    "notes": "Gemel lehashkaa: one ceiling per person across all accounts and managers, CPI-linked each 1 January; the law sets the limit without naming it, the name is institution wording (KGL-02, KGL-24). Study fund: deposits above are accepted; employer money above is taxed as salary and gains on it are taxable (KH-07, TXH-03, TXH-11); 'תקרת הפקדה מוטבת' is Harel's table wording for this. IRA has its own cap based on 'הסכום הקובע' (IRA-07, IRA-08)."
+    "notes": "Gemel lehashkaa: one ceiling per person across all accounts and managers, CPI-linked each 1 January; the law sets the limit without naming it, the name is institution wording (KGL-02, KGL-24). Study fund: deposits above are accepted; employer money above is taxed as salary and gains on it are taxable (KH-07, TXH-03, TXH-11); 'תקרת הפקדה מוטבת' is Harel's table wording for this. IRA has its own cap based on 'הסכום הקובע' (IRA-07, IRA-08).",
+    "id": "tkrt-hpkdh"
   },
   {
     "term_he": "הפקדה מוטבת",
@@ -477,7 +508,7 @@
     "variants_he": [
       "תשלומי ההפקדה המוטבת"
     ],
-    "explain_he": "החלק מההפקדות לקרן השתלמות, עד התקרה, שהרווחים עליו פטורים ממס במשיכה אחרי התקופה",
+    "explain_he": "החלק מההפקדות לקרן השתלמות, עד הגבול שבחוק, שהרווח ממנו פטור ממס כשמושכים",
     "rule_ids": [
       "TXH-08",
       "TXH-09",
@@ -490,11 +521,12 @@
       "strength": "primary"
     },
     "where": [
+      "statement",
       "guide:keren-hishtalmut",
-      "tax-authority-table",
-      "statement"
+      "tax-authority-table"
     ],
-    "notes": "Defined in Ordinance s.9(16A)(c) and 9(16B). Whether statements use this wording was not verified (TXH Terms). The variant is the Income Tax Rules wording (TXH-16)."
+    "notes": "Defined in Ordinance s.9(16A)(c) and 9(16B). Whether statements use this wording was not verified (TXH Terms). The variant is the Income Tax Rules wording (TXH-16).",
+    "id": "hpkdh-mvtbt"
   },
   {
     "term_he": "הפקדה שאינה מוטבת",
@@ -518,10 +550,11 @@
       "strength": "primary"
     },
     "where": [
-      "guide:keren-hishtalmut",
-      "statement"
+      "statement",
+      "guide:keren-hishtalmut"
     ],
-    "notes": "Rate and base (real or nominal) are not settled in official sources; Mor and Clal state 25% of the real gain (TXH open question 1, institution)."
+    "notes": "Rate and base (real or nominal) are not settled in official sources; Mor and Clal state 25% of the real gain (TXH open question 1, institution).",
+    "id": "hpkdh-shaynh-mvtbt"
   },
   {
     "term_he": "משכורת קובעת",
@@ -544,11 +577,12 @@
       "strength": "primary-mirror"
     },
     "where": [
+      "payslip",
       "guide:keren-hishtalmut",
-      "tax-authority-table",
-      "payslip"
+      "tax-authority-table"
     ],
-    "notes": "This entry is the study-fund meaning (Ordinance s.3(ה)); pension uses the same words with other ceilings (TXP). The cap has stayed unchanged since 2004, and cutting it is under discussion, not law (TXH-02, TXH-22). 'שכר קובע' is Altshuler's wording (KH Terms); 'תקרת שכר' in tables refers to this cap. Payslip wording not verified (KH open question 5)."
+    "notes": "This entry is the study-fund meaning (Ordinance s.3(ה)); pension uses the same words with other ceilings (TXP). The cap has stayed unchanged since 2004, and cutting it is under discussion, not law (TXH-02, TXH-22). 'שכר קובע' is Altshuler's wording (KH Terms); 'תקרת שכר' in tables refers to this cap. Payslip wording not verified (KH open question 5).",
+    "id": "mshkvrt-kvbat"
   },
   {
     "term_he": "הפקדות המעסיק",
@@ -559,7 +593,7 @@
     "variants_he": [
       "הפרשות המעביד"
     ],
-    "explain_he": "הכסף שהמעסיק מוסיף לקרן ההשתלמות שלכם כאחוז מהשכר; עד התקרה אין עליו מס בזמן ההפקדה",
+    "explain_he": "הכסף שהמעסיק מוסיף לקרן ההשתלמות שלכם כאחוז מהשכר; עד הגבול שבחוק אין עליו מס בזמן ההפקדה",
     "rule_ids": [
       "KH-04",
       "TXH-01",
@@ -572,11 +606,12 @@
       "strength": "primary"
     },
     "where": [
-      "guide:keren-hishtalmut",
       "payslip",
-      "statement"
+      "statement",
+      "guide:keren-hishtalmut"
     ],
-    "notes": "The brief's 'הפקדת מעסיק' is not written that way in the rule base; the forms found are 'הפקדות המעסיק' (Ministry of Finance) and 'הפרשות המעביד' (Altshuler Q&A). The rate is set by agreement (KH-03, KH-04). Payslip wording not verified (KH open question 5)."
+    "notes": "The brief's 'הפקדת מעסיק' is not written that way in the rule base; the forms found are 'הפקדות המעסיק' (Ministry of Finance) and 'הפרשות המעביד' (Altshuler Q&A). The rate is set by agreement (KH-03, KH-04). Payslip wording not verified (KH open question 5).",
+    "id": "hpkdvt-hmasyk"
   },
   {
     "term_he": "הפרשות העובד",
@@ -599,11 +634,12 @@
       "strength": "primary"
     },
     "where": [
-      "guide:keren-hishtalmut",
       "payslip",
-      "statement"
+      "statement",
+      "guide:keren-hishtalmut"
     ],
-    "notes": "The brief's 'הפקדת עובד' is not written that way in the rule base; only Altshuler's 'הפרשות העובד' was found (institution). No deduction at deposit, but gains on it are exempt up to the benefited limit (TXH-04, TXH-08). The 'at least one third of the employer's share' minimum is institution-only (KH-05). Payslip wording not verified (KH open question 5)."
+    "notes": "The brief's 'הפקדת עובד' is not written that way in the rule base; only Altshuler's 'הפרשות העובד' was found (institution). No deduction at deposit, but gains on it are exempt up to the benefited limit (TXH-04, TXH-08). The 'at least one third of the employer's share' minimum is institution-only (KH-05). Payslip wording not verified (KH open question 5).",
+    "id": "hprshvt-havbd"
   },
   {
     "term_he": "שווי מס",
@@ -624,11 +660,12 @@
       "strength": "primary"
     },
     "where": [
-      "guide:keren-hishtalmut",
       "payslip",
-      "institution-table"
+      "provider-site",
+      "guide:keren-hishtalmut"
     ],
-    "notes": "Study-fund meaning only; on a payslip the same label can cover other benefits. Payslip wording for study funds was not sourced (KH open question 5)."
+    "notes": "Study-fund meaning only; on a payslip the same label can cover other benefits. Payslip wording for study funds was not sourced (KH open question 5).",
+    "id": "shvvy-ms"
   },
   {
     "term_he": "הכנסה קובעת",
@@ -652,7 +689,8 @@
       "guide:keren-hishtalmut",
       "tax-authority-table"
     ],
-    "notes": "The ceiling is reduced for someone who is also an employee with an employer-funded study fund; its statutory basis was not located (TXH-06, TXH open question 7)."
+    "notes": "The ceiling is reduced for someone who is also an employee with an employer-funded study fund; its statutory basis was not located (TXH-06, TXH open question 7).",
+    "id": "hknsh-kvbat"
   },
   {
     "term_he": "סכום החיסכון הבסיסי",
@@ -672,14 +710,17 @@
       "title": "National Insurance, סכום החיסכון",
       "url": "https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/sum.aspx",
       "checked": "2026-10-22",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "National Insurance Institute"
     },
     "where": [
-      "guide:child-savings",
-      "nii-site",
-      "statement"
+      "provider-site",
+      "statement",
+      "guide:child-savings-bank",
+      "guide:child-savings-provident"
     ],
-    "notes": "The parent cannot opt out (CS-03). The yearly update was skipped once by law, on 1 January 2025 (CS-03). 'הפקדת בסיס' is NII's report wording."
+    "notes": "The parent cannot opt out (CS-03). The yearly update was skipped once by law, on 1 January 2025 (CS-03). 'הפקדת בסיס' is NII's report wording.",
+    "id": "skvm-hchyskvn-hbsysy"
   },
   {
     "term_he": "סכום החיסכון הנוסף",
@@ -702,13 +743,16 @@
       "title": "National Insurance, הכפלת סכום החיסכון",
       "url": "https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/HisahonKupot.aspx",
       "checked": "2026-10-22",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "National Insurance Institute"
     },
     "where": [
-      "guide:child-savings",
-      "nii-site"
+      "provider-site",
+      "guide:child-savings-bank",
+      "guide:child-savings-provident"
     ],
-    "notes": "The brief's 'הפקדת הורים' is not the official wording. Only the parent who receives the child allowance can turn it on or off, only through NII, from the following month (CS-04, CS-21). No other money can be added (CS-04). The law allows 'all or part' of the allowance, but NII's pages give only the fixed amount (CS-04)."
+    "notes": "The brief's 'הפקדת הורים' is not the official wording. Only the parent who receives the child allowance can turn it on or off, only through NII, from the following month (CS-04, CS-21). No other money can be added (CS-04). The law allows 'all or part' of the allowance, but NII's pages give only the fixed amount (CS-04).",
+    "id": "skvm-hchyskvn-hnvsp"
   },
   {
     "term_he": "מענק",
@@ -731,14 +775,17 @@
       "title": "National Insurance, משיכת החיסכון",
       "url": "https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/MeshihaHisahon.aspx",
       "checked": "2026-10-22",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "National Insurance Institute"
     },
     "where": [
-      "guide:child-savings",
-      "nii-site",
-      "statement"
+      "provider-site",
+      "statement",
+      "guide:child-savings-bank",
+      "guide:child-savings-provident"
     ],
-    "notes": "Which grants a child gets depends on birth year (CS-13). The legal source of the age-18 grant for children born up to 2016 was not found (CS open question 5). 'מענק המשיכה הראשון/השני' is the Yahav bank agreement's wording (CS Terms); 'מענק ההתמדה' appears only in a press article title (TXK-23, secondary). Grants are not income for tax (TXK-19)."
+    "notes": "Which grants a child gets depends on birth year (CS-13). The legal source of the age-18 grant for children born up to 2016 was not found (CS open question 5). 'מענק המשיכה הראשון/השני' is the Yahav bank agreement's wording (CS Terms); 'מענק ההתמדה' appears only in a press article title (TXK-23, secondary). Grants are not income for tax (TXK-19).",
+    "id": "mank-c"
   },
   {
     "term_he": "גיל הפדיון",
@@ -756,13 +803,16 @@
       "title": "National Insurance, משיכת החיסכון",
       "url": "https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/MeshihaHisahon.aspx",
       "checked": "2026-10-22",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "National Insurance Institute"
     },
     "where": [
-      "guide:child-savings",
-      "bylaws"
+      "bylaws",
+      "guide:child-savings-bank",
+      "guide:child-savings-provident"
     ],
-    "notes": "Before it, money can be withdrawn only for a medical need approved by an NII doctor (CS-15)."
+    "notes": "Before it, money can be withdrawn only for a medical need approved by an NII doctor (CS-15).",
+    "id": "gyl-hpdyvn"
   },
   {
     "term_he": "הגוף החוסך",
@@ -782,13 +832,16 @@
       "title": "National Insurance, שינוי הגוף החוסך או המסלול",
       "url": "https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/mavar.aspx",
       "checked": "2026-10-22",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "National Insurance Institute"
     },
     "where": [
-      "guide:child-savings",
-      "nii-site"
+      "provider-site",
+      "guide:child-savings-bank",
+      "guide:child-savings-provident"
     ],
-    "notes": "A provident fund can be changed to another listed fund at any time; a bank cannot be changed to another bank (CS-11, CS-12). Conflict: the law (from January 2025) allows a one-time move of future deposits from a bank to a provident fund (CS-12), while NII's hly.gov.il page says bank money cannot move to a provident fund (CS-25)."
+    "notes": "A provident fund can be changed to another listed fund at any time; a bank cannot be changed to another bank (CS-11, CS-12). Conflict: the law (from January 2025) allows a one-time move of future deposits from a bank to a provident fund (CS-12), while NII's hly.gov.il page says bank money cannot move to a provident fund (CS-25).",
+    "id": "hgvp-hchvsk"
   },
   {
     "term_he": "מסלול השקעה",
@@ -799,9 +852,9 @@
     "variants_he": [],
     "explain_he": "חלק נפרד בקופה עם מדיניות השקעה משלו, כמו מסלול מניות; הכסף מושקע לפי המסלול שנבחר",
     "rule_ids": [
+      "CS-08",
       "KGL-12",
-      "KH-20",
-      "CS-08"
+      "KH-20"
     ],
     "source": {
       "title": "CMA circular 2020-9-18 \"מסלולי השקעה בקופות גמל - תיקון\" (16 Nov 2020)",
@@ -810,14 +863,16 @@
       "strength": "primary"
     },
     "where": [
-      "guide:kupat-gemel-lehashkaa",
-      "guide:keren-hishtalmut",
-      "guide:child-savings",
       "app",
+      "gemel-net",
       "statement",
-      "gemel-net"
+      "guide:child-savings-bank",
+      "guide:child-savings-provident",
+      "guide:keren-hishtalmut",
+      "guide:kupat-gemel-lehashkaa"
     ],
-    "notes": "Each track counts as a separate fund for fee caps (KGL-14, KH-22)."
+    "notes": "Each track counts as a separate fund for fee caps (KGL-14, KH-22).",
+    "id": "mslvl-hshkah-c"
   },
   {
     "term_he": "מסלול ברירת מחדל",
@@ -831,10 +886,10 @@
     ],
     "explain_he": "המסלול שהכסף נכנס אליו כשלא בוחרים מסלול בעצמכם",
     "rule_ids": [
-      "KGL-11",
-      "KH-19",
       "CS-07",
-      "CS-09"
+      "CS-09",
+      "KGL-11",
+      "KH-19"
     ],
     "source": {
       "title": "CMA circular 2020-9-18 \"מסלולי השקעה בקופות גמל - תיקון\" (16 Nov 2020)",
@@ -843,14 +898,16 @@
       "strength": "primary"
     },
     "where": [
-      "guide:kupat-gemel-lehashkaa",
-      "guide:keren-hishtalmut",
-      "guide:child-savings",
+      "app",
       "bylaws",
       "form",
-      "app"
+      "guide:child-savings-bank",
+      "guide:child-savings-provident",
+      "guide:keren-hishtalmut",
+      "guide:kupat-gemel-lehashkaa"
     ],
-    "notes": "Gemel lehashkaa and study funds: the general track in every bylaws read (KGL-11, KH-19); the CMA age-based default does not apply to them (KGL-11). Child savings: the increased-risk track unless an older sibling's choice points elsewhere (CS-07)."
+    "notes": "Gemel lehashkaa and study funds: the general track in every bylaws read (KGL-11, KH-19); the CMA age-based default does not apply to them (KGL-11). Child savings: the increased-risk track unless an older sibling's choice points elsewhere (CS-07).",
+    "id": "mslvl-bryrt-mchdl"
   },
   {
     "term_he": "מסלול כללי",
@@ -875,13 +932,14 @@
       "strength": "primary"
     },
     "where": [
-      "guide:kupat-gemel-lehashkaa",
-      "guide:keren-hishtalmut",
       "app",
       "gemel-net",
+      "guide:keren-hishtalmut",
+      "guide:kupat-gemel-lehashkaa",
       "decoder"
     ],
-    "notes": "2026-10-25 scope pass: 'usually the default' rested on the bylaws read; the study-fund default is the general or the flexible index-tracking track (circular 2022-9-30 s.7(ג), KH-19), and a kupat gemel lehashkaa's bylaws must set a default (s.7(ב), KGL-11); the managers whose bylaws were read chose 'כללי' (KH-31, KGL-29). The bylaws state no equity range for it (KH-19). IRA funds also appear under 'כללי' in Gemel-Net (KH-20)."
+    "notes": "2026-10-25 scope pass: 'usually the default' rested on the bylaws read; the study-fund default is the general or the flexible index-tracking track (circular 2022-9-30 s.7(ג), KH-19), and a kupat gemel lehashkaa's bylaws must set a default (s.7(ב), KGL-11); the managers whose bylaws were read chose 'כללי' (KH-31, KGL-29). The bylaws state no equity range for it (KH-19). IRA funds also appear under 'כללי' in Gemel-Net (KH-20).",
+    "id": "mslvl-klly-c"
   },
   {
     "term_he": "חוסכים המעדיפים סיכון מוגבר",
@@ -905,16 +963,19 @@
       "title": "National Insurance, פתיחת תכנית לילד שנולד",
       "url": "https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/nolad.aspx",
       "checked": "2026-10-22",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "National Insurance Institute"
     },
     "where": [
-      "guide:child-savings",
       "app",
-      "statement",
       "gemel-net",
+      "statement",
+      "guide:child-savings-bank",
+      "guide:child-savings-provident",
       "decoder"
     ],
-    "notes": "Default unless an older sibling's parents chose a provident fund at another risk level (CS-07). At Harel it holds 75% to 120% equity exposure (CS-09, Harel only). Gemel-Net's SUB_SPECIALIZATION labels it 'סיכון גבוה' rather than 'מוגבר' (CS Terms)."
+    "notes": "Default unless an older sibling's parents chose a provident fund at another risk level (CS-07). At Harel it holds 75% to 120% equity exposure (CS-09, Harel only). Gemel-Net's SUB_SPECIALIZATION labels it 'סיכון גבוה' rather than 'מוגבר' (CS Terms).",
+    "id": "chvskym-hmadypym-sykvn-mvgbr"
   },
   {
     "term_he": "חוסכים המעדיפים סיכון בינוני",
@@ -937,13 +998,15 @@
       "strength": "primary"
     },
     "where": [
-      "guide:child-savings",
       "app",
-      "statement",
       "gemel-net",
+      "statement",
+      "guide:child-savings-bank",
+      "guide:child-savings-provident",
       "decoder"
     ],
-    "notes": "Track policies at managers other than Harel were not read; Harel describes it only as investment-committee discretion (CS-09, CS open question 7)."
+    "notes": "Track policies at managers other than Harel were not read; Harel describes it only as investment-committee discretion (CS-09, CS open question 7).",
+    "id": "chvskym-hmadypym-sykvn-bynvny"
   },
   {
     "term_he": "חוסכים המעדיפים סיכון מועט",
@@ -967,13 +1030,15 @@
       "strength": "primary"
     },
     "where": [
-      "guide:child-savings",
       "app",
-      "statement",
       "gemel-net",
+      "statement",
+      "guide:child-savings-bank",
+      "guide:child-savings-provident",
       "decoder"
     ],
-    "notes": "It was the default for first children until November 2022, so many older plans are in it (CS-07)."
+    "notes": "It was the default for first children until November 2022, so many older plans are in it (CS-07).",
+    "id": "chvskym-hmadypym-sykvn-mvat"
   },
   {
     "term_he": "תחנת יציאה",
@@ -993,14 +1058,16 @@
       "title": "National Insurance, שאלות ותשובות – חיסכון לכל ילד",
       "url": "https://www.btl.gov.il/About/faq/SaveMoneyFAQ/Pages/default.aspx",
       "checked": "2026-10-22",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "National Insurance Institute"
     },
     "where": [
-      "guide:child-savings",
-      "nii-site",
-      "bank"
+      "provider-site",
+      "guide:child-savings-bank",
+      "guide:child-savings-provident"
     ],
-    "notes": "Only in the bank plan type with exit stations; without them the bank track is fixed until 18 (CS-12)."
+    "notes": "Only in the bank plan type with exit stations; without them the bank track is fixed until 18 (CS-12).",
+    "id": "tchnt-ytzyah-c"
   },
   {
     "term_he": "ריבית קבועה לא צמודה",
@@ -1021,11 +1088,12 @@
       "strength": "primary"
     },
     "where": [
-      "guide:child-savings",
-      "bank",
-      "nii-site"
+      "provider-site",
+      "guide:child-savings-bank",
+      "guide:child-savings-provident"
     ],
-    "notes": "Covered here only as a child-savings bank track; general deposit terms are in the bank and interest-tax files."
+    "notes": "Covered here only as a child-savings bank track; general deposit terms are in the bank and interest-tax files.",
+    "id": "rybyt-kbvah-la-tzmvdh"
   },
   {
     "term_he": "ריבית קבועה צמודה",
@@ -1046,11 +1114,12 @@
       "strength": "primary"
     },
     "where": [
-      "guide:child-savings",
-      "bank",
-      "nii-site"
+      "provider-site",
+      "guide:child-savings-bank",
+      "guide:child-savings-provident"
     ],
-    "notes": "'Linked' meaning per tax-interest-deposits-bonds.md Terms ('צמוד למדד'). Covered here only as a child-savings bank track."
+    "notes": "'Linked' meaning per tax-interest-deposits-bonds.md Terms ('צמוד למדד'). Covered here only as a child-savings bank track.",
+    "id": "rybyt-kbvah-tzmvdh"
   },
   {
     "term_he": "ריבית משתנה (פריים)",
@@ -1074,11 +1143,12 @@
       "strength": "primary"
     },
     "where": [
-      "guide:child-savings",
-      "bank",
-      "nii-site"
+      "provider-site",
+      "guide:child-savings-bank",
+      "guide:child-savings-provident"
     ],
-    "notes": "'Prime = the bank's base rate' comes from bank-current-account-deposits.md Terms, not from the child-savings files. The variant is the Ministry of Finance dataset field wording (CS Terms)."
+    "notes": "'Prime = the bank's base rate' comes from bank-current-account-deposits.md Terms, not from the child-savings files. The variant is the Ministry of Finance dataset field wording (CS Terms).",
+    "id": "rybyt-mshtnh-pryym"
   },
   {
     "term_he": "משיכה",
@@ -1091,10 +1161,10 @@
     ],
     "explain_he": "הוצאת כסף מהקופה אל חשבון הבנק שלכם, כולו או חלקו; לעיתים יש עליה מס",
     "rule_ids": [
+      "CS-14",
       "KGL-08",
       "KH-10",
       "KH-16",
-      "CS-14",
       "TXK-05"
     ],
     "source": {
@@ -1104,15 +1174,18 @@
       "strength": "primary-mirror"
     },
     "where": [
-      "guide:kupat-gemel-lehashkaa",
-      "guide:keren-hishtalmut",
-      "guide:ira-self-directed",
-      "guide:child-savings",
-      "form",
       "app",
-      "statement"
+      "form",
+      "statement",
+      "guide:child-savings-bank",
+      "guide:child-savings-provident",
+      "guide:ira-hishtalmut",
+      "guide:ira-provident",
+      "guide:keren-hishtalmut",
+      "guide:kupat-gemel-lehashkaa"
     ],
-    "notes": "Gemel lehashkaa: any time, paid within a few business days (KGL-08). Study fund: allowed any time, tax-free only after the period (KH-10). Child savings: only from redemption age, with a parent's signature for the first years (CS-14). IRA: follows the underlying product (IRA-25)."
+    "notes": "Gemel lehashkaa: any time, paid within a few business days (KGL-08). Study fund: allowed any time, tax-free only after the period (KH-10). Child savings: only from redemption age, with a parent's signature for the first years (CS-14). IRA: follows the underlying product (IRA-25).",
+    "id": "mshykh"
   },
   {
     "term_he": "משיכה חלקית",
@@ -1123,11 +1196,11 @@
     "variants_he": [],
     "explain_he": "משיכה של חלק מהכסף בלבד, כשהיתרה נשארת בקופה",
     "rule_ids": [
+      "CS-13",
       "KGL-08",
-      "TXK-13",
       "KH-13",
       "KH-15",
-      "CS-13"
+      "TXK-13"
     ],
     "source": {
       "title": "פקודת מס הכנסה, consolidated text (Wikisource rendered PDF)",
@@ -1136,13 +1209,15 @@
       "strength": "primary-mirror"
     },
     "where": [
-      "guide:kupat-gemel-lehashkaa",
-      "guide:keren-hishtalmut",
-      "guide:child-savings",
+      "app",
       "form",
-      "app"
+      "guide:child-savings-bank",
+      "guide:child-savings-provident",
+      "guide:keren-hishtalmut",
+      "guide:kupat-gemel-lehashkaa"
     ],
-    "notes": "Source wording is 'משיכה מלאה או חלקית' (bylaws cl. 36.2.1). Gemel lehashkaa: the amount is treated as coming proportionally from principal and gains, not principal first (TXK-13). Study fund: after a withdrawal, new deposits count as a new account with a new clock, except a study withdrawal of up to one third (KH-15, TXH-09, TXH-10). Child savings: any withdrawal before 21, even partial, forfeits the age-21 grant (CS-13)."
+    "notes": "Source wording is 'משיכה מלאה או חלקית' (bylaws cl. 36.2.1). Gemel lehashkaa: the amount is treated as coming proportionally from principal and gains, not principal first (TXK-13). Study fund: after a withdrawal, new deposits count as a new account with a new clock, except a study withdrawal of up to one third (KH-15, TXH-09, TXH-10). Child savings: any withdrawal before 21, even partial, forfeits the age-21 grant (CS-13).",
+    "id": "mshykh-chlkyt"
   },
   {
     "term_he": "מועד התשלום הראשון",
@@ -1153,8 +1228,8 @@
     "variants_he": [],
     "explain_he": "התאריך שממנו סופרים את הוותק של קרן השתלמות; נקבע לפי סוף החודש של ההפקדה הראשונה",
     "rule_ids": [
-      "TXH-09",
-      "KH-11"
+      "KH-11",
+      "TXH-09"
     ],
     "source": {
       "title": "פקודת מס הכנסה, consolidated text (Wikisource)",
@@ -1163,11 +1238,12 @@
       "strength": "primary-mirror"
     },
     "where": [
-      "guide:keren-hishtalmut",
       "bylaws",
-      "form"
+      "form",
+      "guide:keren-hishtalmut"
     ],
-    "notes": "Exact rule: the earlier of the end of the month in which the first payment was paid and the end of the month for which it was paid, but not before the start of that tax year (TXH-09, KH-11). This is the official anchor for the lock-up; no official name for the lock-up period itself was found."
+    "notes": "Exact rule: the earlier of the end of the month in which the first payment was paid and the end of the month for which it was paid, but not before the start of that tax year (TXH-09, KH-11). This is the official anchor for the lock-up; no official name for the lock-up period itself was found.",
+    "id": "mvad-htshlvm-hrashvn"
   },
   {
     "term_he": "ותק",
@@ -1181,11 +1257,11 @@
     ],
     "explain_he": "הזמן שעבר ממועד התשלום הראשון לקרן; לפיו נקבע מתי אפשר למשוך בפטור ממס",
     "rule_ids": [
+      "IRA-23",
       "KH-11",
       "KH-14",
       "TXH-09",
-      "TXH-10",
-      "IRA-23"
+      "TXH-10"
     ],
     "source": {
       "title": "Tax Authority, דע זכויותיך וחובותיך 2025",
@@ -1194,13 +1270,15 @@
       "strength": "primary"
     },
     "where": [
-      "guide:keren-hishtalmut",
-      "guide:ira-self-directed",
-      "form",
+      "app",
       "bylaws",
-      "app"
+      "form",
+      "guide:ira-hishtalmut",
+      "guide:ira-provident",
+      "guide:keren-hishtalmut"
     ],
-    "notes": "The brief's 'תקופת הוותק' was not found; the law speaks of six years (three in some cases) from the first payment date, and the manager wording is 'ותק'. Seniority can carry across accounts under conditions (KH-14, TXH-19) and is kept on a move into an IRA (IRA-23, Meitav)."
+    "notes": "The brief's 'תקופת הוותק' was not found; the law speaks of six years (three in some cases) from the first payment date, and the manager wording is 'ותק'. Seniority can carry across accounts under conditions (KH-14, TXH-19) and is kept on a move into an IRA (IRA-23, Meitav).",
+    "id": "vtk"
   },
   {
     "term_he": "קרן נזילה",
@@ -1224,11 +1302,12 @@
       "strength": "primary"
     },
     "where": [
-      "guide:keren-hishtalmut",
+      "app",
       "form",
-      "app"
+      "guide:keren-hishtalmut"
     ],
-    "notes": "The brief's 'כספים נזילים' was not found; the form uses 'קרן נזילה' and 'נזילות' (institution). Gains on deposits above the ceiling are still taxed (TXH-11)."
+    "notes": "The brief's 'כספים נזילים' was not found; the form uses 'קרן נזילה' and 'נזילות' (institution). Gains on deposits above the ceiling are still taxed (TXH-11).",
+    "id": "krn-nzylh"
   },
   {
     "term_he": "משיכת כספים כדין",
@@ -1250,10 +1329,11 @@
       "strength": "primary"
     },
     "where": [
-      "guide:keren-hishtalmut",
-      "form"
+      "form",
+      "guide:keren-hishtalmut"
     ],
-    "notes": "'כדין' refers to the tax rules, not to permission; gains on deposits above the ceiling are taxed even then (TXH-11)."
+    "notes": "'כדין' refers to the tax rules, not to permission; gains on deposits above the ceiling are taxed even then (TXH-11).",
+    "id": "mshykt-kspym-kdyn"
   },
   {
     "term_he": "משיכת כספים שלא כדין",
@@ -1275,10 +1355,11 @@
       "strength": "primary"
     },
     "where": [
-      "guide:keren-hishtalmut",
-      "form"
+      "form",
+      "guide:keren-hishtalmut"
     ],
-    "notes": "Not forbidden despite the word (KH-10). The fund withholds at the maximum rate on the taxable part (TXH-15)."
+    "notes": "Not forbidden despite the word (KH-10). The fund withholds at the maximum rate on the taxable part (TXH-15).",
+    "id": "mshykt-kspym-shla-kdyn"
   },
   {
     "term_he": "משיכה לצורך השתלמות",
@@ -1291,8 +1372,8 @@
     ],
     "explain_he": "משיכה מקרן השתלמות לתשלום על לימודים מקצועיים; פטורה ממס כבר אחרי תקופה קצרה יותר",
     "rule_ids": [
-      "TXH-10",
-      "KH-13"
+      "KH-13",
+      "TXH-10"
     ],
     "source": {
       "title": "Tax Authority, דע זכויותיך וחובותיך 2025",
@@ -1301,11 +1382,12 @@
       "strength": "primary"
     },
     "where": [
-      "guide:keren-hishtalmut",
+      "bylaws",
       "form",
-      "bylaws"
+      "guide:keren-hishtalmut"
     ],
-    "notes": "The noun phrase is the rule base's label; the official wording is 'סכומים ששימשו ... לצורך השתלמותו' (Ordinance) and 'ששימשו לצורך השתלמות' (Tax Authority guide p.39). Bylaws limit how often and how much and require documents; Altshuler and Harel differ (KH-13)."
+    "notes": "The noun phrase is the rule base's label; the official wording is 'סכומים ששימשו ... לצורך השתלמותו' (Ordinance) and 'ששימשו לצורך השתלמות' (Tax Authority guide p.39). Bylaws limit how often and how much and require documents; Altshuler and Harel differ (KH-13).",
+    "id": "mshykh-ltzvrk-hshtlmvt"
   },
   {
     "term_he": "גיל הפרישה",
@@ -1325,14 +1407,16 @@
       "title": "פקודת מס הכנסה, s.1 definitions (Nevo mirror)",
       "url": "https://www.nevo.co.il/law_html/law01/255_001b.htm",
       "checked": "2026-10-22",
-      "strength": "primary-mirror"
+      "strength": "primary-mirror",
+      "publisher": "Nevo legal database"
     },
     "where": [
-      "guide:keren-hishtalmut",
+      "bylaws",
       "form",
-      "bylaws"
+      "guide:keren-hishtalmut"
     ],
-    "notes": "Which age in the Retirement Age Law applies is an inference in KH-12 (s.3, different for men and women) and open in TXH (open question 5). Not the early retirement age."
+    "notes": "Which age in the Retirement Age Law applies is an inference in KH-12 (s.3, different for men and women) and open in TXH (open question 5). Not the early retirement age.",
+    "id": "gyl-hpryshh"
   },
   {
     "term_he": "גיל הפרישה המוקדמת",
@@ -1344,8 +1428,8 @@
     "explain_he": "גיל שקבוע בחוק גיל פרישה, שממנו אפשר להעביר כסף מגמל להשקעה לקופה שמשלמת קצבה",
     "rule_ids": [
       "KGL-09",
-      "TXK-10",
-      "KH-12"
+      "KH-12",
+      "TXK-10"
     ],
     "source": {
       "title": "חוק גיל פרישה, התשס\"ד-2004 (Wikisource mirror)",
@@ -1354,10 +1438,11 @@
       "strength": "primary-mirror"
     },
     "where": [
-      "guide:kupat-gemel-lehashkaa",
-      "form"
+      "form",
+      "guide:kupat-gemel-lehashkaa"
     ],
-    "notes": "Same age for men and women (KGL-09). Not the age used for the study fund's shorter period (KH-12). The recognized-annuity exemption is worded by an age in the Ordinance, not by this term (TXK-09)."
+    "notes": "Same age for men and women (KGL-09). Not the age used for the study fund's shorter period (KH-12). The recognized-annuity exemption is worded by an age in the Ordinance, not by this term (TXK-09).",
+    "id": "gyl-hpryshh-hmvkdmt"
   },
   {
     "term_he": "הלוואות לעמיתים",
@@ -1368,10 +1453,10 @@
     "variants_he": [],
     "explain_he": "הלוואה שקופה רשאית לתת לחוסכים בה, לפי הוראות הממונה; מה שלא הוחזר יורד מהסכום כשמושכים",
     "rule_ids": [
-      "KGL-18",
+      "IRA-13",
       "KGL-10",
-      "KH-21",
-      "IRA-13"
+      "KGL-18",
+      "KH-21"
     ],
     "source": {
       "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (כללי השקעה החלים על גופים מוסדיים), התשע\"ב-2012, תקנה 16 (Wikisource mirror)",
@@ -1380,12 +1465,13 @@
       "strength": "primary-mirror"
     },
     "where": [
-      "guide:kupat-gemel-lehashkaa",
-      "guide:keren-hishtalmut",
       "bylaws",
-      "form"
+      "form",
+      "guide:keren-hishtalmut",
+      "guide:kupat-gemel-lehashkaa"
     ],
-    "notes": "The brief's 'הלוואה כנגד היתרה' is not in the rule base; bylaws and forms also say just 'הלוואה' and 'פירעון הלוואה' (KH Terms), left out of variants to avoid matching bank loans. Loans are optional in the bylaws; no study-fund loan terms were found (KH-21, KH open question 4). IRA funds may not lend to members (IRA-13). An unpaid loan blocks a transfer (KGL-10)."
+    "notes": "The brief's 'הלוואה כנגד היתרה' is not in the rule base; bylaws and forms also say just 'הלוואה' and 'פירעון הלוואה' (KH Terms), left out of variants to avoid matching bank loans. Loans are optional in the bylaws; no study-fund loan terms were found (KH-21, KH open question 4). IRA funds may not lend to members (IRA-13). An unpaid loan blocks a transfer (KGL-10).",
+    "id": "hlvvavt-lamytym"
   },
   {
     "term_he": "העברת כספים בין קופות גמל",
@@ -1399,13 +1485,13 @@
     ],
     "explain_he": "העברת הכסף שצברתם מקופה אחת לקופה אחרת, בלי למשוך אותו בדרך",
     "rule_ids": [
-      "KGL-10",
-      "KH-17",
-      "TXK-04",
-      "TXH-19",
       "CS-11",
       "IRA-23",
-      "SW-20"
+      "KGL-10",
+      "KH-17",
+      "SW-20",
+      "TXH-19",
+      "TXK-04"
     ],
     "source": {
       "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008 (Wikisource mirror)",
@@ -1414,15 +1500,18 @@
       "strength": "primary-mirror"
     },
     "where": [
-      "guide:kupat-gemel-lehashkaa",
-      "guide:keren-hishtalmut",
-      "guide:ira-self-directed",
-      "guide:child-savings",
-      "app",
       "ad",
-      "form"
+      "app",
+      "form",
+      "guide:child-savings-bank",
+      "guide:child-savings-provident",
+      "guide:ira-hishtalmut",
+      "guide:ira-provident",
+      "guide:keren-hishtalmut",
+      "guide:kupat-gemel-lehashkaa"
     ],
-    "notes": "Gemel lehashkaa: only to another gemel lehashkaa, or to an annuity fund from early retirement age; not taxed (KGL-09, KGL-10, TXK-04). Study fund: whole balance only, to another study fund; history kept, tax neutrality inferred, Phoenix says 'ניוד בין גופים אינו אירוע מס' (KH-17, TXH-19, SW-20). Child savings: provident to provident only (CS-11). IRA: from a regular fund in cash only (IRA-23)."
+    "notes": "Gemel lehashkaa: only to another gemel lehashkaa, or to an annuity fund from early retirement age; not taxed (KGL-09, KGL-10, TXK-04). Study fund: whole balance only, to another study fund; history kept, tax neutrality inferred, Phoenix says 'ניוד בין גופים אינו אירוע מס' (KH-17, TXH-19, SW-20). Child savings: provident to provident only (CS-11). IRA: from a regular fund in cash only (IRA-23).",
+    "id": "habrt-kspym-byn-kvpvt-gml-c"
   },
   {
     "term_he": "העברת כספים בין מסלולי השקעה",
@@ -1435,11 +1524,11 @@
     ],
     "explain_he": "הזזת הכסף, כולו או חלקו, ממסלול השקעה אחד לאחר באותה קופה, בלי לשלם מס",
     "rule_ids": [
+      "CS-11",
       "KGL-13",
       "KH-18",
-      "TXK-04",
       "TXH-17",
-      "CS-11"
+      "TXK-04"
     ],
     "source": {
       "title": "Ministry of Finance, Chief Economist, על הטבת המס בקרן השתלמות – ניתוח מדיניות (October 2025)",
@@ -1448,13 +1537,15 @@
       "strength": "primary"
     },
     "where": [
-      "guide:kupat-gemel-lehashkaa",
-      "guide:keren-hishtalmut",
-      "guide:child-savings",
       "app",
-      "form"
+      "form",
+      "guide:child-savings-bank",
+      "guide:child-savings-provident",
+      "guide:keren-hishtalmut",
+      "guide:kupat-gemel-lehashkaa"
     ],
-    "notes": "The brief's 'החלפת מסלול' is not used in these files. Study fund: not a tax event (TXH-17, primary). Gemel lehashkaa: not a withdrawal, an inference from the law plus a manager statement (TXK-04). Child savings: the whole balance only, no split between tracks (CS-08); tax treatment of child-savings moves is unconfirmed (TXK-22)."
+    "notes": "The brief's 'החלפת מסלול' is not used in these files. Study fund: not a tax event (TXH-17, primary). Gemel lehashkaa: not a withdrawal, an inference from the law plus a manager statement (TXK-04). Child savings: the whole balance only, no split between tracks (CS-08); tax treatment of child-savings moves is unconfirmed (TXK-22).",
+    "id": "habrt-kspym-byn-mslvly-hshkah-c"
   },
   {
     "term_he": "ללא אירוע מס",
@@ -1467,9 +1558,9 @@
     ],
     "explain_he": "ביטוי שאומר שפעולה, כמו מעבר בין מסלולים, לא מחייבת לשלם מס באותו רגע",
     "rule_ids": [
-      "TXK-04",
+      "SW-20",
       "TXH-17",
-      "SW-20"
+      "TXK-04"
     ],
     "source": {
       "title": "Ministry of Finance, Chief Economist, על הטבת המס בקרן השתלמות – ניתוח מדיניות (October 2025)",
@@ -1478,12 +1569,13 @@
       "strength": "primary"
     },
     "where": [
-      "guide:kupat-gemel-lehashkaa",
-      "guide:keren-hishtalmut",
       "ad",
-      "app"
+      "app",
+      "guide:keren-hishtalmut",
+      "guide:kupat-gemel-lehashkaa"
     ],
-    "notes": "Manager wording (Harel flyer; Phoenix FAQ for 'אינו אירוע מס'). For gemel lehashkaa the 'no tax event' conclusion is an inference (TXK-04)."
+    "notes": "Manager wording (Harel flyer; Phoenix FAQ for 'אינו אירוע מס'). For gemel lehashkaa the 'no tax event' conclusion is an inference (TXK-04).",
+    "id": "lla-ayrva-ms"
   },
   {
     "term_he": "דמי ניהול",
@@ -1498,11 +1590,11 @@
     ],
     "explain_he": "תשלום שהחברה המנהלת גובה מהכסף שבקופה, כאחוז מהיתרה בכל שנה, ולפעמים גם מכל הפקדה",
     "rule_ids": [
-      "KGL-14",
-      "KH-22",
       "CS-18",
       "IRA-16",
-      "IRA-17"
+      "IRA-17",
+      "KGL-14",
+      "KH-22"
     ],
     "source": {
       "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012 (Wikisource mirror)",
@@ -1511,15 +1603,18 @@
       "strength": "primary-mirror"
     },
     "where": [
-      "guide:kupat-gemel-lehashkaa",
-      "guide:keren-hishtalmut",
-      "guide:ira-self-directed",
-      "guide:child-savings",
-      "statement",
+      "ad",
       "app",
-      "ad"
+      "statement",
+      "guide:child-savings-bank",
+      "guide:child-savings-provident",
+      "guide:ira-hishtalmut",
+      "guide:ira-provident",
+      "guide:keren-hishtalmut",
+      "guide:kupat-gemel-lehashkaa"
     ],
-    "notes": "Gemel lehashkaa: capped on the balance and on deposits (KGL-14). Study fund: balance only; a deposit fee is not authorised (inference, KH-22). Child savings: NII pays until 21 (CS-18). IRA: brokerage and custody are charged on top (IRA-16). The fee actually paid is set per member. The last variant is Meitav's IRA form wording."
+    "notes": "Gemel lehashkaa: capped on the balance and on deposits (KGL-14). Study fund: balance only; a deposit fee is not authorised (inference, KH-22). Child savings: NII pays until 21 (CS-18). IRA: brokerage and custody are charged on top (IRA-16). The fee actually paid is set per member. The last variant is Meitav's IRA form wording.",
+    "id": "dmy-nyhvl-c"
   },
   {
     "term_he": "יתרה צבורה",
@@ -1543,13 +1638,14 @@
       "strength": "primary-mirror"
     },
     "where": [
-      "guide:kupat-gemel-lehashkaa",
-      "guide:keren-hishtalmut",
-      "statement",
+      "app",
       "form",
-      "app"
+      "statement",
+      "guide:keren-hishtalmut",
+      "guide:kupat-gemel-lehashkaa"
     ],
-    "notes": "'צבירה' is the column name on Altshuler's track-switch form and Meitav's wording (KH Terms, KGL-15)."
+    "notes": "'צבירה' is the column name on Altshuler's track-switch form and Meitav's wording (KH Terms, KGL-15).",
+    "id": "ytrh-tzbvrh-c"
   },
   {
     "term_he": "הוצאות ישירות",
@@ -1562,24 +1658,27 @@
     ],
     "explain_he": "עלויות של קנייה ומכירה של השקעות, שהקופה מורידה מהכסף שלכם בנוסף לדמי הניהול",
     "rule_ids": [
+      "IRA-16",
       "KGL-08",
-      "KH-22",
-      "IRA-16"
+      "KH-22"
     ],
     "source": {
       "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005 (Nevo mirror)",
       "url": "https://www.nevo.co.il/law_html/law00/70391.htm",
       "checked": "2026-10-22",
-      "strength": "primary-mirror"
+      "strength": "primary-mirror",
+      "publisher": "Nevo legal database"
     },
     "where": [
-      "guide:kupat-gemel-lehashkaa",
-      "guide:keren-hishtalmut",
-      "guide:ira-self-directed",
+      "bylaws",
       "statement",
-      "bylaws"
+      "guide:ira-hishtalmut",
+      "guide:ira-provident",
+      "guide:keren-hishtalmut",
+      "guide:kupat-gemel-lehashkaa"
     ],
-    "notes": "Allowed by law s.32(א) on top of management fees; their cap is in provident-family-common.md. The variant is Meitav's IRA form wording."
+    "notes": "Allowed by law s.32(א) on top of management fees; their cap is in provident-family-common.md. The variant is Meitav's IRA form wording.",
+    "id": "hvtzavt-yshyrvt"
   },
   {
     "term_he": "ביטוח חיים קבוצתי",
@@ -1599,11 +1698,12 @@
       "strength": "primary-mirror"
     },
     "where": [
-      "guide:keren-hishtalmut",
+      "bylaws",
       "statement",
-      "bylaws"
+      "guide:keren-hishtalmut"
     ],
-    "notes": "Whether the cover is opt-in or opt-out was not clear (KH-25)."
+    "notes": "Whether the cover is opt-in or opt-out was not clear (KH-25).",
+    "id": "bytvch-chyym-kbvtzty"
   },
   {
     "term_he": "ניהול עצמי",
@@ -1620,13 +1720,16 @@
       "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי), תש\"ע-2009 (Nevo mirror)",
       "url": "https://www.nevo.co.il/law_html/law01/500_217.htm",
       "checked": "2026-10-22",
-      "strength": "primary-mirror"
+      "strength": "primary-mirror",
+      "publisher": "Nevo legal database"
     },
     "where": [
-      "guide:ira-self-directed",
-      "form"
+      "form",
+      "guide:ira-hishtalmut",
+      "guide:ira-provident"
     ],
-    "notes": "Meitav's wording; the regulations speak of the member's instructions (IRA-05)."
+    "notes": "Meitav's wording; the regulations speak of the member's instructions (IRA-05).",
+    "id": "nyhvl-atzmy"
   },
   {
     "term_he": "מנהל תיקים",
@@ -1651,10 +1754,12 @@
       "strength": "primary-mirror"
     },
     "where": [
-      "guide:ira-self-directed",
-      "form"
+      "form",
+      "guide:ira-hishtalmut",
+      "guide:ira-provident"
     ],
-    "notes": "Paid out of the management fee the managing company collects (IRA-06, IRA-16). 'מנהל תיק' is Meitav's form wording."
+    "notes": "Paid out of the management fee the managing company collects (IRA-06, IRA-16). 'מנהל תיק' is Meitav's form wording.",
+    "id": "mnhl-tykym"
   },
   {
     "term_he": "הסכום הקובע",
@@ -1676,9 +1781,11 @@
       "strength": "primary-mirror"
     },
     "where": [
-      "guide:ira-self-directed"
+      "guide:ira-hishtalmut",
+      "guide:ira-provident"
     ],
-    "notes": "The cap is four times this amount across all the member's IRA accounts; 2026 figures come from institutions only (IRA-08). Not related to 'משכורת קובעת' or 'הכנסה קובעת'. A 2025 draft would change the entry tests (IRA-27)."
+    "notes": "The cap is four times this amount across all the member's IRA accounts; 2026 figures come from institutions only (IRA-08). Not related to 'משכורת קובעת' or 'הכנסה קובעת'. A 2025 draft would change the entry tests (IRA-27).",
+    "id": "hskvm-hkvba"
   },
   {
     "term_he": "הליך תחרותי",
@@ -1697,13 +1804,16 @@
       "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי), תש\"ע-2009 (Nevo mirror)",
       "url": "https://www.nevo.co.il/law_html/law01/500_217.htm",
       "checked": "2026-10-22",
-      "strength": "primary-mirror"
+      "strength": "primary-mirror",
+      "publisher": "Nevo legal database"
     },
     "where": [
-      "guide:ira-self-directed",
-      "manager-site"
+      "provider-site",
+      "guide:ira-hishtalmut",
+      "guide:ira-provident"
     ],
-    "notes": ""
+    "notes": "",
+    "id": "hlyk-tchrvty"
   },
   {
     "term_he": "עמלות ברוקראז'",
@@ -1724,10 +1834,12 @@
       "strength": "primary-mirror"
     },
     "where": [
-      "guide:ira-self-directed",
-      "manager-site"
+      "provider-site",
+      "guide:ira-hishtalmut",
+      "guide:ira-provident"
     ],
-    "notes": "Meitav wording. Rates depend on the broker chosen (IRA-21)."
+    "notes": "Meitav wording. Rates depend on the broker chosen (IRA-21).",
+    "id": "amlvt-brvkraz"
   },
   {
     "term_he": "דמי משמרת",
@@ -1750,11 +1862,13 @@
       "strength": "primary-mirror"
     },
     "where": [
-      "guide:ira-self-directed",
-      "manager-site",
-      "statement"
+      "provider-site",
+      "statement",
+      "guide:ira-hishtalmut",
+      "guide:ira-provident"
     ],
-    "notes": "In an IRA they may not exceed what the same manager's regular funds pay (IRA-16). Meitav Trade charges none in IRA accounts (IRA-22)."
+    "notes": "In an IRA they may not exceed what the same manager's regular funds pay (IRA-16). Meitav Trade charges none in IRA accounts (IRA-22).",
+    "id": "dmy-mshmrt"
   },
   {
     "term_he": "תשלומים פטורים",
@@ -1776,11 +1890,12 @@
       "strength": "primary-mirror"
     },
     "where": [
-      "guide:kupat-gemel-lehashkaa",
+      "law",
       "statement",
-      "law"
+      "guide:kupat-gemel-lehashkaa"
     ],
-    "notes": "Despite the name, these deposits come from income already taxed (TXK-01); the name matters because an annuity built from them is a recognized annuity (TXK-08, TXK-09). NII deposits into child savings are not paid by the child 'for himself', so that route is unclear (TXK-25)."
+    "notes": "Despite the name, these deposits come from income already taxed (TXK-01); the name matters because an annuity built from them is a recognized annuity (TXK-08, TXK-09). NII deposits into child savings are not paid by the child 'for himself', so that route is unclear (TXK-25).",
+    "id": "tshlvmym-ptvrym-c"
   },
   {
     "term_he": "קצבה מוכרת",
@@ -1803,11 +1918,12 @@
       "strength": "primary-mirror"
     },
     "where": [
-      "guide:kupat-gemel-lehashkaa",
+      "law",
       "statement",
-      "law"
+      "guide:kupat-gemel-lehashkaa"
     ],
-    "notes": "Must be paid by an annuity fund that is not a veteran fund (TXK-08). No ceiling or income test in the statute (TXK-09). A later exemption age is a press report only (TXK-21). Not the same as 'קצבה מזכה'."
+    "notes": "Must be paid by an annuity fund that is not a veteran fund (TXK-08). No ceiling or income test in the statute (TXK-09). A later exemption age is a press report only (TXK-21). Not the same as 'קצבה מזכה'.",
+    "id": "ktzbh-mvkrt-c"
   },
   {
     "term_he": "קצבה",
@@ -1829,12 +1945,14 @@
       "strength": "primary-mirror"
     },
     "where": [
-      "guide:kupat-gemel-lehashkaa",
-      "guide:child-savings",
+      "ad",
       "statement",
-      "ad"
+      "guide:child-savings-bank",
+      "guide:child-savings-provident",
+      "guide:kupat-gemel-lehashkaa"
     ],
-    "notes": "'Monthly' rests on pension-and-gemel-lekitzba.md Terms ('מקדם המרה': balance divided by the factor gives the monthly pension, Mor bylaws); these six files say only 'annuity'."
+    "notes": "'Monthly' rests on pension-and-gemel-lekitzba.md Terms ('מקדם המרה': balance divided by the factor gives the monthly pension, Mor bylaws); these six files say only 'annuity'.",
+    "id": "ktzbh"
   },
   {
     "term_he": "היוון",
@@ -1856,11 +1974,12 @@
       "strength": "primary-mirror"
     },
     "where": [
-      "guide:kupat-gemel-lehashkaa",
+      "law",
       "statement",
-      "law"
+      "guide:kupat-gemel-lehashkaa"
     ],
-    "notes": "Whether money moved from a gemel lehashkaa to an annuity fund may be capitalised is open (TXK-10, TXK open question 4). The variant is the TXP Terms wording."
+    "notes": "Whether money moved from a gemel lehashkaa to an annuity fund may be capitalised is open (TXK-10, TXK open question 4). The variant is the TXP Terms wording.",
+    "id": "hyvvn"
   },
   {
     "term_he": "הכנסה מריבית",
@@ -1871,9 +1990,9 @@
     "variants_he": [],
     "explain_he": "הגדרת החוק לרווח שמושכים מגמל להשקעה, או מהפקדות מעל התקרה בקרן השתלמות; ממוסה כמו ריבית",
     "rule_ids": [
+      "TXH-11",
       "TXK-05",
-      "TXK-06",
-      "TXH-11"
+      "TXK-06"
     ],
     "source": {
       "title": "פקודת מס הכנסה, consolidated text (Wikisource rendered PDF)",
@@ -1882,12 +2001,13 @@
       "strength": "primary-mirror"
     },
     "where": [
-      "guide:kupat-gemel-lehashkaa",
-      "guide:keren-hishtalmut",
       "law",
-      "tax-form"
+      "tax-form",
+      "guide:keren-hishtalmut",
+      "guide:kupat-gemel-lehashkaa"
     ],
-    "notes": "Managers and NII call this tax 'מס רווחי הון' (TXK Terms). Whether 25% on the real gain or 15% on the nominal gain is the legal rate is open; managers apply 25% on the real gain (TXK-06, TXK-07). Before the study-fund period, gains are taxed at marginal rates instead (TXH-13)."
+    "notes": "Managers and NII call this tax 'מס רווחי הון' (TXK Terms). Whether 25% on the real gain or 15% on the nominal gain is the legal rate is open; managers apply 25% on the real gain (TXK-06, TXK-07). Before the study-fund period, gains are taxed at marginal rates instead (TXH-13).",
+    "id": "hknsh-mrybyt"
   },
   {
     "term_he": "ריבית רעיונית",
@@ -1910,9 +2030,9 @@
     "variants_he": [],
     "explain_he": "החלק מהרווח ששווה לעליית מדד המחירים לצרכן, כלומר לאינפלציה",
     "rule_ids": [
+      "TXH-11",
       "TXK-05",
-      "TXK-07",
-      "TXH-11"
+      "TXK-07"
     ],
     "source": {
       "title": "פקודת מס הכנסה, consolidated text (Wikisource rendered PDF)",
@@ -1921,12 +2041,13 @@
       "strength": "primary-mirror"
     },
     "where": [
-      "guide:kupat-gemel-lehashkaa",
-      "guide:keren-hishtalmut",
+      "law",
       "statement",
-      "law"
+      "guide:keren-hishtalmut",
+      "guide:kupat-gemel-lehashkaa"
     ],
-    "notes": "Which provision exempts this part on a gemel lehashkaa or above-ceiling study-fund withdrawal was not found; the Tax Authority guide says the s.9(13) linkage exemption does not apply to a provident-fund account (TXK-07, TXK open question 2, TXH open question 1). Managers tax only the real gain (institution)."
+    "notes": "Which provision exempts this part on a gemel lehashkaa or above-ceiling study-fund withdrawal was not found; the Tax Authority guide says the s.9(13) linkage exemption does not apply to a provident-fund account (TXK-07, TXK open question 2, TXH open question 1). Managers tax only the real gain (institution).",
+    "id": "hprshy-htzmdh-c"
   },
   {
     "term_he": "מס רווחי הון",
@@ -1937,25 +2058,28 @@
     "variants_he": [],
     "explain_he": "מס על הרווח כשמושכים כסף מהקופה; בגמל להשקעה החוק מסווג אותו כמס על ריבית",
     "rule_ids": [
+      "TXH-17",
       "TXK-05",
       "TXK-07",
-      "TXK-20",
-      "TXH-17"
+      "TXK-20"
     ],
     "source": {
       "title": "National Insurance FAQ, tax on withdrawal",
       "url": "https://www.btl.gov.il/About/faq/SaveMoneyFAQ/Pages/tax.aspx",
       "checked": "2026-10-22",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "National Insurance Institute"
     },
     "where": [
-      "guide:kupat-gemel-lehashkaa",
-      "guide:child-savings",
-      "guide:keren-hishtalmut",
       "ad",
-      "nii-site"
+      "provider-site",
+      "guide:child-savings-bank",
+      "guide:child-savings-provident",
+      "guide:keren-hishtalmut",
+      "guide:kupat-gemel-lehashkaa"
     ],
-    "notes": "Scoped to these products. In law, gains withdrawn from a gemel lehashkaa are interest income (TXK-05); capital-gains tax on securities held directly is a different rule (tax-securities files). The child-savings rate has no official source; a press guide gives 25% of the real gain for the provident route (TXK-20, TXK-23)."
+    "notes": "Scoped to these products. In law, gains withdrawn from a gemel lehashkaa are interest income (TXK-05); capital-gains tax on securities held directly is a different rule (tax-securities files). The child-savings rate has no official source; a press guide gives 25% of the real gain for the provident route (TXK-20, TXK-23).",
+    "id": "ms-rvvchy-hvn-c"
   },
   {
     "term_he": "הרווח הריאלי",
@@ -1964,7 +2088,7 @@
       "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf"
     },
     "variants_he": [],
-    "explain_he": "הרווח פחות החלק שנובע מהאינפלציה; במשיכה מקופת גמל להשקעה החלק הזה הוא הפרשי הצמדה, הפטורים ממס בתנאים שבחוק",
+    "explain_he": "הרווח פחות החלק שנובע מהאינפלציה",
     "rule_ids": [
       "TXK-07"
     ],
@@ -1975,11 +2099,12 @@
       "strength": "primary"
     },
     "where": [
-      "guide:kupat-gemel-lehashkaa",
+      "ad",
       "guide:keren-hishtalmut",
-      "ad"
+      "guide:kupat-gemel-lehashkaa"
     ],
-    "notes": "Institution strength only; the legal basis for excluding inflation was not found (TXK-07, TXK open question 2). For above-ceiling study-fund gains, Mor and Clal state the same (TXH open question 1, institution)."
+    "notes": "Institution strength only; the legal basis for excluding inflation was not found (TXK-07, TXK open question 2). For above-ceiling study-fund gains, Mor and Clal state the same (TXH open question 1, institution).",
+    "id": "hrvvch-hryaly"
   },
   {
     "term_he": "ניכוי מס במקור",
@@ -1990,8 +2115,8 @@
     "variants_he": [],
     "explain_he": "מס שהקופה מורידה מהסכום ומעבירה לרשות המסים כבר בזמן המשיכה, לפני שהכסף מגיע אליכם",
     "rule_ids": [
-      "TXK-07",
-      "TXH-15"
+      "TXH-15",
+      "TXK-07"
     ],
     "source": {
       "title": "Tax Authority, לוח עזר לחישוב מס הכנסה ממשכורת ושכר עבודה לחודש ינואר 2026 ואילך (מעודכן לאפריל 2026)",
@@ -2000,12 +2125,13 @@
       "strength": "primary"
     },
     "where": [
-      "guide:kupat-gemel-lehashkaa",
-      "guide:keren-hishtalmut",
+      "form",
       "statement",
-      "form"
+      "guide:keren-hishtalmut",
+      "guide:kupat-gemel-lehashkaa"
     ],
-    "notes": "Withholding is not always the final tax; a return can recover the difference (TXH-15). The withholding regulation for gemel lehashkaa withdrawals was not found (TXK open question 3)."
+    "notes": "Withholding is not always the final tax; a return can recover the difference (TXH-15). The withholding regulation for gemel lehashkaa withdrawals was not found (TXK open question 3).",
+    "id": "nykvy-ms-bmkvr-c"
   },
   {
     "term_he": "חיסכון לכל ילד בבנק",
@@ -2017,7 +2143,7 @@
       "מסלול הבנק בחיסכון לכל ילד",
       "חיסכון לכל ילד במסלול בנק"
     ],
-    "explain_he": "חיסכון לכל ילד שההורה בחר לנהל בבנק: הריבית נקבעת ביום הפתיחה לכל התקופה, היתרה לא יורדת מהסכומים שהביטוח הלאומי הפקיד, ומסלול משתנה רק בתחנת יציאה",
+    "explain_he": "חיסכון לכל ילד שההורה בחר לנהל בבנק: הריבית ידועה מראש לפי המסלול שנבחר, בסוף התקופה הילד מקבל לפחות את הסכומים שהופקדו, ומסלול משתנה רק בתחנת יציאה",
     "rule_ids": [
       "CS-05",
       "CS-10",
@@ -2029,15 +2155,17 @@
       "title": "National Insurance, שאלות ותשובות – חיסכון לכל ילד",
       "url": "https://www.btl.gov.il/About/faq/SaveMoneyFAQ/Pages/default.aspx",
       "checked": "2026-10-22",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "National Insurance Institute"
     },
     "where": [
-      "guide:child-savings-bank",
       "app",
-      "nii-site",
-      "law"
+      "law",
+      "provider-site",
+      "guide:child-savings-bank"
     ],
-    "notes": "The site's name for the bank route of חיסכון לכל ילד (wrapper child-savings-bank); NII and the law speak of saving 'בבנק' versus 'בקופת גמל להשקעה' (law 74ב). Three tracks per bank, fixed unlinked, prime-variable and CPI-linked, each with or without an exit station every five years; the rate is set on the opening day for 18 minus the child's age (CS-10, Yahav agreement). Nine banks, the 2016 tender winners (CS-22). Bank money cannot move to another bank; since January 2025 a parent may once redirect future deposits to a provident fund while the balance stays in the bank (CS-12). NII pays the bank's operating costs until 21 (CS-25). Tax on the gains is an open question (TXK-20). Added 2026-10-23 for the guide card lede."
+    "notes": "The site's name for the bank route of חיסכון לכל ילד (wrapper child-savings-bank); NII and the law speak of saving 'בבנק' versus 'בקופת גמל להשקעה' (law 74ב). Three tracks per bank, fixed unlinked, prime-variable and CPI-linked, each with or without an exit station every five years; the rate is set on the opening day for 18 minus the child's age (CS-10, Yahav agreement). Nine banks, the 2016 tender winners (CS-22). Bank money cannot move to another bank; since January 2025 a parent may once redirect future deposits to a provident fund while the balance stays in the bank (CS-12). NII pays the bank's operating costs until 21 (CS-25). Tax on the gains is an open question (TXK-20). Added 2026-10-23 for the guide card lede.",
+    "id": "chyskvn-lkl-yld-bbnk"
   },
   {
     "term_he": "קרן השתלמות בניהול אישי",
@@ -2064,14 +2192,99 @@
       "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס\"ה-2005 (Nevo mirror)",
       "url": "https://www.nevo.co.il/law_html/law00/70391.htm",
       "checked": "2026-10-22",
-      "strength": "primary-mirror"
+      "strength": "primary-mirror",
+      "publisher": "Nevo legal database"
     },
     "where": [
-      "guide:ira-hishtalmut",
       "app",
       "gemel-net",
-      "law"
+      "law",
+      "guide:ira-hishtalmut"
     ],
-    "notes": "The site's name for the study-fund kind of קופת גמל בניהול אישי (wrapper ira-hishtalmut); in law it is a study fund approved for one member who gives the investment instructions (IRA-01, s.1 definition and s.57). Study-fund money enters from the first shekel up to four times 'הסכום הקובע' across all study-fund accounts (IRA-07). Only tradable securities, deposits, structured products, foreign currency and fund units, in Israel or an approved foreign country, with issuer and derivative limits and no borrowing (IRA-11 to IRA-13). The managing company's fee is per the written agreement; brokerage, custody and fund costs come on top from a closed list (IRA-16, IRA-17). Withdrawal and tax follow the study fund's rules (IRA-25, TXK-17); the investment risk is the member's (IRA-26). Gemel-Net 202609 lists it under 'קרנות השתלמות'; Meitav's joining annex is titled 'קרן השתלמות בניהול אישי'. Added 2026-10-23 for the guide card lede."
+    "notes": "The site's name for the study-fund kind of קופת גמל בניהול אישי (wrapper ira-hishtalmut); in law it is a study fund approved for one member who gives the investment instructions (IRA-01, s.1 definition and s.57). Study-fund money enters from the first shekel up to four times 'הסכום הקובע' across all study-fund accounts (IRA-07). Only tradable securities, deposits, structured products, foreign currency and fund units, in Israel or an approved foreign country, with issuer and derivative limits and no borrowing (IRA-11 to IRA-13). The managing company's fee is per the written agreement; brokerage, custody and fund costs come on top from a closed list (IRA-16, IRA-17). Withdrawal and tax follow the study fund's rules (IRA-25, TXK-17); the investment risk is the member's (IRA-26). Gemel-Net 202609 lists it under 'קרנות השתלמות'; Meitav's joining annex is titled 'קרן השתלמות בניהול אישי'. Added 2026-10-23 for the guide card lede.",
+    "id": "krn-hshtlmvt-bnyhvl-ayshy"
+  },
+  {
+    "term_he": "דוח שנתי מפורט",
+    "variants_he": [
+      "הדוח השנתי המפורט",
+      "הדוח המפורט",
+      "דוח שנתי מפורט לעמית"
+    ],
+    "explain_he": "הדוח השנתי המלא לעמית, שהקופה מציגה רק באזור האישי באתר שלה; יש בו גם מספר הקופה, קוד המסלול ופירוט דמי הניהול",
+    "rule_ids": [
+      "PF-33",
+      "PF-36",
+      "PF-38"
+    ],
+    "source": {
+      "title": "רשות שוק ההון, ביטוח וחיסכון: חוזר גופים מוסדיים 2020-9-22, דוח שנתי ודוח רבעוני לעמיתים ולמבוטחים בגוף מוסדי – תיקון, פרק 2",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/r_2020-9-22/he/2020-9-22.pdf#page=92",
+      "checked": "2026-10-25",
+      "strength": "primary",
+      "publisher": "רשות שוק ההון, ביטוח וחיסכון"
+    },
+    "where": [
+      "guide:keren-hishtalmut",
+      "guide:kupat-gemel-lehashkaa",
+      "guide:ira-hishtalmut",
+      "guide:ira-provident",
+      "guide:provident-for-annuity",
+      "guide:pension-comprehensive",
+      "guide:pension-general",
+      "statement"
+    ],
+    "notes": "Added 2026-11-06 for #205 from the rule records named in rule_ids; the explanation says only what those records say."
+  },
+  {
+    "term_he": "שכבות המס בקרן השתלמות",
+    "variants_he": [
+      "פירוט סכומים בהתאם לרפורמה במיסוי רווחי הון בקרן השתלמות"
+    ],
+    "explain_he": "טבלה בדוח השנתי המפורט של קרן השתלמות שמחלקת את היתרה לפי תקופות ההפקדה ולפי תקרת ההפקדה המוטבת, ולכל חלק שיעור המס שלו",
+    "rule_ids": [
+      "PF-36"
+    ],
+    "source": {
+      "title": "רשות שוק ההון, ביטוח וחיסכון: חוזר גופים מוסדיים 2020-9-22, דוח שנתי ודוח רבעוני לעמיתים ולמבוטחים בגוף מוסדי – תיקון, פרק 2, חלק ב.8",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/r_2020-9-22/he/2020-9-22.pdf#page=97",
+      "checked": "2026-10-25",
+      "strength": "primary",
+      "publisher": "רשות שוק ההון, ביטוח וחיסכון"
+    },
+    "where": [
+      "guide:keren-hishtalmut",
+      "guide:ira-hishtalmut",
+      "statement"
+    ],
+    "notes": "Added 2026-11-06 for #205 from the rule records named in rule_ids; the explanation says only what those records say. The site's own name for table ב.8 of the detailed report; the rates in each layer are the tax files' (TXH), not this row's. 2026-11-06 fix pass (check item 9): the link goes to p.97, where table ב.8 is (library 9f11b17b8c8dd40e), not p.92, where the template starts."
+  },
+  {
+    "term_he": "ממוצע דמי ניהול בקופה",
+    "variants_he": [
+      "לידיעתך, ממוצע דמי ניהול בקופה",
+      "ממוצע דמי הניהול"
+    ],
+    "explain_he": "דמי הניהול הממוצעים שהקופה גבתה בפועל מכל העמיתים בה, מהחיסכון ומההפקדה, שהדוח השנתי מציג לצד מה שנגבה מכם",
+    "rule_ids": [
+      "CAT-37",
+      "PF-35"
+    ],
+    "source": {
+      "title": "רשות שוק ההון, ביטוח וחיסכון: חוזר גופים מוסדיים 2020-9-22, דוח שנתי ודוח רבעוני לעמיתים ולמבוטחים בגוף מוסדי – תיקון, פרק 1, ג.5",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/r_2020-9-22/he/2020-9-22.pdf#page=39",
+      "checked": "2026-10-25",
+      "strength": "primary",
+      "publisher": "רשות שוק ההון, ביטוח וחיסכון"
+    },
+    "where": [
+      "guide:keren-hishtalmut",
+      "guide:kupat-gemel-lehashkaa",
+      "guide:provident-for-annuity",
+      "guide:pension-comprehensive",
+      "guide:pension-general",
+      "statement"
+    ],
+    "notes": "Added 2026-11-06 for #205 from the rule records named in rule_ids; the explanation says only what those records say. 2026-11-06 fix pass (check item 9): the link goes to p.39, where the note 'לידיעתך, ממוצע דמי ניהול בקופה' (ג.5) is (library 9f11b17b8c8dd40e), not p.37."
   }
 ]

@@ -4,7 +4,7 @@ import json, pathlib, re, sys
 DIR = pathlib.Path(__file__).parent / "terms"
 PARTS = [
     ("a-cash-bonds.json", "מזומן, פיקדונות, קרנות כספיות ואג״ח ממשלתיות"),
-    ("b-securities.json", "ניירות ערך, קרנות סל וחשבון השקעות"),
+    ("b-securities.json", "ניירות ערך, קרנות סל וחשבון ניירות ערך"),
     ("c-gemel-hishtalmut.json", "קופת גמל להשקעה, קרן השתלמות, ניהול אישי וחיסכון לכל ילד"),
     ("d-pension-tracks.json", "פנסיה, מסלולים ומי מפקח"),
     ("e-tax-dimensions.json", "מס"),
@@ -46,7 +46,8 @@ for r in merged:
         problems.append(f"duplicate term: {k} ({seen[k]} / {r['group']})")
     seen[k] = r["group"]
 
-(pathlib.Path(__file__).parent / "merged.json")  # read by gen_glossary.py; not committed.write_text(json.dumps(merged, ensure_ascii=False, indent=1))
+# merged.json is read by gen_glossary.py; it is not committed.
+(pathlib.Path(__file__).parent / "merged.json").write_text(json.dumps(merged, ensure_ascii=False, indent=1))
 print(f"{len(merged)} entries, {len(problems)} problems")
 for p in problems:
     print(" -", p)

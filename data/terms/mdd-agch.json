@@ -1,0 +1,24 @@
+{
+  "id": "mdd-agch",
+  "he": "מדד אג\"ח",
+  "en": null,
+  "meaning": "מספר שמודד את השינוי בשווי של קבוצת איגרות חוב, של ממשלות או של חברות; קרן מחקה ומסלול עוקב מדד יכולים לעקוב אחריו",
+  "where": [
+    "app"
+  ],
+  "wrapper_ids": [],
+  "variants": [
+    "מדדי אג\"ח",
+    "מדד איגרות חוב"
+  ],
+  "rule_ids": [
+    "ETF-83"
+  ],
+  "source": {
+    "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-64186b589b352/080217.pdf#page=30",
+    "title": "רשות ניירות ערך, מדריך למשקיע: קרנות נאמנות, המדריך המלא, עמ' 11 ו־30 (ההגדרה הכללית של מדד, שהאתר מחיל כאן על איגרות חוב)",
+    "publisher": "Israel Securities Authority",
+    "strength": "primary",
+    "checked": "2026-11-06"
+  }
+}

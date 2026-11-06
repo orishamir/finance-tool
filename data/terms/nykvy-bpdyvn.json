@@ -1,0 +1,24 @@
+{
+  "id": "nykvy-bpdyvn",
+  "he": "ניכוי בפדיון",
+  "en": null,
+  "meaning": "סכום שמנכים ממחיר הפדיון של יחידות בקרן נאמנות לפני התשלום למחזיק; מותר רק כשהסכם הקרן קובע אותו ואת הגובה המרבי שלו",
+  "where": [
+    "prospectus"
+  ],
+  "wrapper_ids": [
+    "money-market-fund-daily",
+    "money-market-fund-renewable"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "MF-22"
+  ],
+  "source": {
+    "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf#page=36",
+    "title": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994 (באתר רשות ניירות ערך), סעיפים 5(א)(7) ו־46(ב)",
+    "publisher": "Israel Securities Authority",
+    "strength": "primary",
+    "checked": "2026-10-25"
+  }
+}

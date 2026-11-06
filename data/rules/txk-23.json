@@ -1,8 +1,8 @@
 {
   "id": "TXK-23",
-  "title": "Child savings, provident track: the kupat gemel lehashkaa lump-sum rule appears to apply (inference)",
-  "title_he": "חיסכון לכל ילד במסלול הקופה: היסק לכלל המס במשיכה",
-  "text_he": "זהו היסק ולא נוסח חוק: כספי מסלול הקופה בחיסכון לכל ילד יושבים בקופת גמל להשקעה, והפקודה ממסה רווחים שכל יחיד מושך מקופה כזו, בלי תנאי מי הפקיד. לכן משיכת רווחים של ילד תיחשב ריבית, בשיעור שחל על קופת גמל להשקעה, ועל הרווח הריאלי, כי הפקודה פוטרת את חלק ההצמדה. שום טקסט רשמי לא אומר זאת על חיסכון לכל ילד, והגיל במשיכה לא משנה את הסיווג; מדריך עיתונאי מתוארך נותן את אותם שיעורים. האתר מחשב לפי זה רק עם הסימון 'מקור משני'.",
+  "title": "Child savings, provident track: taxed as a lump sum from a kupat gemel lehashkaa, up to 25% of the real gain, withheld by the managing company",
+  "title_he": "חיסכון לכל ילד במסלול הקופה: מס כמו במשיכה מקופת גמל להשקעה",
+  "text_he": "החוק מחזיק את כספי מסלול הקופה בקופת גמל להשקעה, ורשות שוק ההון קובעת שחלים על הקופה הזאת כל הכללים של קופת גמל להשקעה. משרד האוצר, בתשובות שאישר הממונה על שוק ההון, כתב שחלות עליה כל הוראות הדין של קופת גמל להשקעה ושמשיכה ממנה חייבת במס. לכן חל הכלל של הפקודה על משיכה מקופת גמל להשקעה: הרווחים נחשבים ריבית, חלק ההצמדה פטור, המס הוא בשיעור מרבי על הרווח הריאלי, והוא מנוכה במקור. רשות המסים לא כתבה זאת על חיסכון לכל ילד, והגיל במשיכה לא משנה את הסיווג. שתי הנחות עומדות בבסיס הקריאה הזאת: חוק הביטוח הלאומי קובע שהסכומים שנחסכו אינם הכנסה, אבל לא אומר זאת על הרווחים עליהם; והרווחים נחשבים הכנסה של הילד, אף שהחוק מחזיק את הכסף בחשבון נאמנות לטובתו, ואם דיני הנאמנות בפקודה חלים עליו לא נבדק. השיעורים שהאתר מחשב לפיהם עדיין מצוטטים ממדריך עיתונאי שנותן את אותם שיעורים, ולכן הם מסומנים 'מקור משני'.",
   "figure_names_he": {
     "provident_rate": "שיעור המס על הרווח הריאלי, מסלול קופת גמל",
     "bank_linked_rate": "שיעור המס על הרווח הריאלי, פיקדון בנקאי צמוד",
@@ -35,7 +35,7 @@
         "TXK-07"
       ],
       "state": "sourced",
-      "notes": "Child savings, provident track: 25% of the REAL gain, withheld at source. INFERENCE labelled by il-finance: the official texts (s.3(ה4)(3), s.125C) do not name child savings; BTL says only 'בעת משיכה תחויב במס רווחי הון' (TXK-20). Computes only as 'secondary source'."
+      "notes": "Child savings, provident track: up to 25% of the REAL gain, withheld by the managing company. Since 2026-11-06 the rule rests on the law and the regulator: the CMA circular and the Ministry of Finance's tender answers make the fund a kupat gemel lehashkaa for every purpose, so TXK-07 applies. This figure still cites the press guide, which gives the same rate; re-sourcing it to s.125C(b) (TXK-07) is pending, and with it the 'secondary source' label."
     },
     "bank_linked_rate": {
       "value": 25,
@@ -56,7 +56,7 @@
         "TXI-02"
       ],
       "state": "sourced",
-      "notes": "Child savings, bank track, CPI-linked deposit: 25% of the REAL gain, withheld at source. Same secondary source and same inference caveat as provident_rate."
+      "notes": "Child savings, bank track, CPI-linked deposit: 25% of the REAL gain, withheld at source. Same secondary source. A reading of the general deposit-interest rules (TXK-29), which the Ministry of Finance says apply; no official text gives the rate for child savings (TXK OQ1)."
     },
     "bank_unlinked_rate": {
       "value": 15,
@@ -77,15 +77,82 @@
         "TXI-03"
       ],
       "state": "sourced",
-      "notes": "Child savings, bank track, unlinked shekel deposit: 15% of the NOMINAL gain, withheld at source. Same secondary source and same inference caveat as provident_rate."
+      "notes": "Child savings, bank track, unlinked shekel deposit: 15% of the NOMINAL gain, withheld at source. Same secondary source. A reading of the general deposit-interest rules (TXK-29), which the Ministry of Finance says apply; no official text gives the rate for child savings (TXK OQ1)."
     }
   },
   "il_finance_file": "tax-gemel-lehashkaa-ira-child.md",
-  "checked": "2026-10-26",
+  "checked": "2026-11-06",
   "scope": "general",
   "sources": [
     {
-      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "url": "https://www.btl.gov.il/Laws1/00_0001_000000.pdf#page=50",
+      "title": "חוק הביטוח הלאומי [נוסח משולב], התשנ\"ה-1995, נוסח המוסד לביטוח לאומי",
+      "title_he": "חוק הביטוח הלאומי [נוסח משולב], התשנ\"ה-1995, נוסח המוסד לביטוח לאומי",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "המוסד לביטוח לאומי",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "locator": "pp.50-51, s.74ב(א)(2א), (ב), (ד)(1א), (ו)",
+      "locator_he": "עמודים 50 עד 51, סעיף 74ב(א)(2א), (ב), (ד)(1א), (ו)",
+      "page": 50,
+      "quote": "בקופת גמל להשקעה",
+      "checked": "2026-11-06"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-304/he/Provident%20fund%20for%20long-term%20child%20savings.pdf#page=3",
+      "title": "רשות שוק ההון, ביטוח וחיסכון: חוזר גופים מוסדיים 2022-9-29, קופת גמל להשקעה לחיסכון ארוך טווח לילד – תיקון, 28.9.2022",
+      "title_he": "רשות שוק ההון, ביטוח וחיסכון: חוזר גופים מוסדיים 2022-9-29, קופת גמל להשקעה לחיסכון ארוך טווח לילד – תיקון, 28.9.2022",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "p.3",
+      "locator_he": "עמוד 3",
+      "page": 3,
+      "quote": "ויחולו עליה כל ההוראות החלות על קופת גמל להשקעה בהתאם להוראות הדין",
+      "checked": "2026-11-06"
+    },
+    {
+      "url": "https://mr.gov.il/ilgstorefront/he/p/attachment/005056BF19AF1EDA95B333678AA98121/%D7%9E%D7%A1%D7%9E%D7%9B%D7%99%20%D7%94%D7%9C%D7%99%D7%9A#page=24",
+      "title": "משרד האוצר, אגף החשב הכללי: מכרז 1226/2016 לבחירת בנקים וקופות גמל בתוכנית חיסכון לכל ילד, הודעה מס' 1 (מעודכנת), 3.11.2016",
+      "title_he": "משרד האוצר, אגף החשב הכללי: מכרז 1226/2016 לבחירת בנקים וקופות גמל בתוכנית חיסכון לכל ילד, הודעה מס' 1 (מעודכנת), 3.11.2016",
+      "publisher": "Government procurement site (mr.gov.il)",
+      "publisher_he": "משרד האוצר, אגף החשב הכללי",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.24",
+      "locator_he": "עמוד 24",
+      "quote": "על קופת חסכון לכל ילד חלות כל הוראות הדין לעניין קופת גמל להשקעה",
+      "checked": "2026-11-06"
+    },
+    {
+      "url": "https://mr.gov.il/ilgstorefront/he/p/attachment/005056BF19AF1EDA95B333678AA98121/%D7%9E%D7%A1%D7%9E%D7%9B%D7%99%20%D7%94%D7%9C%D7%99%D7%9A#page=21",
+      "title": "משרד האוצר, אגף החשב הכללי: מכרז 1226/2016, הודעה מס' 1 (מעודכנת), 3.11.2016",
+      "title_he": "משרד האוצר, אגף החשב הכללי: מכרז 1226/2016 לבחירת בנקים וקופות גמל בתוכנית חיסכון לכל ילד, הודעה מס' 1 (מעודכנת), 3.11.2016",
+      "publisher": "Government procurement site (mr.gov.il)",
+      "publisher_he": "משרד האוצר, אגף החשב הכללי",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.21",
+      "locator_he": "עמוד 21",
+      "quote": "קופת חיסכון לילד הינה קופת גמל להשקעה לכל דבר ועניין וחלות עליה כל ההוראות הרגולטוריות החלות על קופת גמל להשקעה (ובנוסף להן ההוראות הייחודיות לחיסכון לכל ילד) לרבות לעניין תקרת ההפקדות השנתית",
+      "checked": "2026-11-06"
+    },
+    {
+      "url": "https://mr.gov.il/ilgstorefront/he/p/attachment/005056BF19AF1EDA95B333678AA98121/%D7%9E%D7%A1%D7%9E%D7%9B%D7%99%20%D7%94%D7%9C%D7%99%D7%9A#page=23",
+      "title": "משרד האוצר, אגף החשב הכללי: מכרז 1226/2016, הודעה מס' 1 (מעודכנת), 3.11.2016",
+      "title_he": "משרד האוצר, אגף החשב הכללי: מכרז 1226/2016 לבחירת בנקים וקופות גמל בתוכנית חיסכון לכל ילד, הודעה מס' 1 (מעודכנת), 3.11.2016",
+      "publisher": "Government procurement site (mr.gov.il)",
+      "publisher_he": "משרד האוצר, אגף החשב הכללי",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.23",
+      "locator_he": "עמוד 23",
+      "quote": "כן. משיכה חייבת במס הון",
+      "checked": "2026-11-06"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=21",
       "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
       "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
       "publisher": "gov.il",
@@ -98,7 +165,7 @@
       "checked": "2026-10-25"
     },
     {
-      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=204",
       "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
       "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
       "publisher": "gov.il",
@@ -108,19 +175,6 @@
       "locator": "p.204, s.125ג(ב)",
       "locator_he": "עמוד 204, סעיף 125ג(ב)",
       "page": 204,
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.btl.gov.il/Laws1/00_0001_000000.pdf",
-      "title": "חוק הביטוח הלאומי [נוסח משולב], התשנ\"ה-1995, נוסח המוסד לביטוח לאומי",
-      "title_he": "חוק הביטוח הלאומי [נוסח משולב], התשנ\"ה-1995, נוסח המוסד לביטוח לאומי",
-      "publisher": "National Insurance Institute",
-      "publisher_he": "המוסד לביטוח לאומי",
-      "kind": "regulator_page",
-      "strength": "primary",
-      "locator": "pp.50-51, s.74ב(א)(2א), (ד)(1א)",
-      "locator_he": "עמודים 50 עד 51, סעיף 74ב(א)(2א), (ד)(1א)",
-      "page": 50,
       "checked": "2026-10-25"
     },
     {
@@ -144,13 +198,17 @@
       "publisher_he": "המוסד לביטוח לאומי",
       "kind": "regulator_page",
       "strength": "primary",
-      "checked": "2026-10-25"
+      "quote": "בעת משיכה תחויב במס רווחי הון",
+      "checked": "2026-11-06"
     }
   ],
   "derived_from": [
     "TXK-05",
     "TXK-06",
+    "TXK-07",
+    "TXK-19",
     "TXK-20",
-    "TXK-22"
+    "TXK-22",
+    "TXK-26"
   ]
 }

@@ -1,0 +1,30 @@
+{
+  "id": "s-p-500",
+  "he": "S&P 500",
+  "en": null,
+  "meaning": "מדד של חמש מאות חברות גדולות בארצות הברית, במשקל לפי שווי השוק הסחיר שלהן; מחושב בדולרים",
+  "where": [
+    "app",
+    "fund-name"
+  ],
+  "wrapper_ids": [],
+  "exposure_ids": [
+    "index-sp500"
+  ],
+  "variants": [
+    "מדד S&P 500"
+  ],
+  "rule_ids": [
+    "ETF-37",
+    "ETF-38",
+    "ETF-39",
+    "ETF-40"
+  ],
+  "source": {
+    "url": "https://www.spglobal.com/spdji/en/documents/methodologies/methodology-sp-us-indices.pdf",
+    "title": "S&P Dow Jones Indices, \"S&P U.S. Indices Methodology\", July 2026",
+    "publisher": "S&P Dow Jones Indices",
+    "strength": "institution",
+    "checked": "2026-10-25"
+  }
+}

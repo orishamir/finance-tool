@@ -1,0 +1,30 @@
+{
+  "id": "nasdaq-100",
+  "he": "NASDAQ-100",
+  "en": null,
+  "meaning": "מדד של מאה מהחברות הגדולות שנסחרות בבורסת נאסד\"ק, בלי חברות פיננסיות, במשקל לפי שווי השוק עם תקרה לכל חברה",
+  "where": [
+    "app",
+    "fund-name"
+  ],
+  "wrapper_ids": [],
+  "exposure_ids": [
+    "index-nasdaq100"
+  ],
+  "variants": [
+    "NASDAQ 100",
+    "נאסד\"ק 100",
+    "מדד נאסד\"ק 100"
+  ],
+  "rule_ids": [
+    "ETF-46",
+    "ETF-47"
+  ],
+  "source": {
+    "url": "https://indexes.nasdaqomx.com/docs/Methodology_NDX.pdf",
+    "title": "Nasdaq, \"Nasdaq-100 Index Methodology\"",
+    "publisher": "Nasdaq",
+    "strength": "institution",
+    "checked": "2026-10-25"
+  }
+}
