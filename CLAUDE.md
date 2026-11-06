@@ -281,7 +281,10 @@ catches about half or more with noise under 30%.
   options, or sources, add to it where sensible unless I say otherwise.
 - **Big jobs have a budget.** Read the weekly meter (`get_usage`) before and
   after each job; mention it only for a big job or near a limit. Subagents
-  run one at a time, and small work stays in the main conversation. A job
+  may run several at once (founder, 2026-11-07), each in its own worktree
+  and owning its own files; about four at most that run tests, browsers or
+  builds, because more slows my PC. Small work stays in the main
+  conversation. A job
   likely to use more than 5% of the week gets a one-line estimate and my yes
   first (a one-topic conversation costs about 1 to 2%, one subagent's job
   about 1 to 3%). Above 90% of the week, do only what I directly ask for,
