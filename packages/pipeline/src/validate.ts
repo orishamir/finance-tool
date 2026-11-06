@@ -169,6 +169,7 @@ export function validateData(ctx: ValidationContext): Problem[] {
     }
   }
   checkStaleUnknowns(files, ctx.dataDir, ruleRecords, warn);
+  checkUnofficialSources(files, ctx.dataDir, report);
   checkInstrumentsMap(files, ctx.dataDir, ruleDimensions, report);
   checkHoldingParameter(files, ctx.dataDir, report);
   checkPinnedRules(files, ctx.dataDir, ruleRecords, report);
@@ -535,6 +536,49 @@ export function staleUnknowns(record: unknown, rules: Map<string, RuleLike>): st
   };
   walk(record, "");
   return out;
+}
+
+/**
+ * CLAUDE.md "General sources first" (founder, 2026-11-07): cite only official publications. A source whose strength
+ * is `secondary` or `primary-mirror`, or whose host data/sources/publishers.json calls an `article`, fails, unless it is
+ * a leftover named in unofficial-leftovers.json (`<file> <url>`). The list only shrinks: a leftover that is gone fails
+ * too, so it is struck when its source is replaced. A blog, forum, press article or copy is a lead, recorded in notes.
+ */
+export function unofficialSources(record: unknown, articleHosts: Set<string>): string[] {
+  const out: string[] = [];
+  const walk = (node: unknown) => {
+    if (Array.isArray(node)) return node.forEach(walk);
+    if (!node || typeof node !== "object") return;
+    const v = node as { url?: unknown; strength?: unknown };
+    if (typeof v.url === "string" && typeof v.strength === "string" && (v.strength === "secondary" || v.strength === "primary-mirror" || articleHosts.has(hostOf(v.url)))) out.push(v.url);
+    Object.values(node).forEach(walk);
+  };
+  walk(record);
+  return [...new Set(out)];
+}
+
+function checkUnofficialSources(files: string[], dataDir: string, report: (file: string, message: string) => void): void {
+  const pubPath = join(dataDir, "sources", "publishers.json");
+  const pubs = existsSync(pubPath) ? (parseJson(readFileSync(pubPath, "utf8")).value as Record<string, { kind?: string }>) : {};
+  const articleHosts = new Set(Object.entries(pubs).filter(([, p]) => p.kind === "article").map(([h]) => h));
+  const leftovers = new Set<string>(JSON.parse(readFileSync(new URL("./unofficial-leftovers.json", import.meta.url), "utf8")) as string[]);
+  const seen = new Set<string>();
+  for (const f of files) {
+    if (!f.endsWith(".json")) continue;
+    const rel = relative(dataDir, f).split(/[\\/]/).join("/");
+    if (rel.startsWith("sources/")) continue;
+    for (const url of unofficialSources(parseJson(readFileSync(f, "utf8")).value, articleHosts)) {
+      const key = `${rel} ${url}`;
+      seen.add(key);
+      if (!leftovers.has(key)) report(f, `cites ${url}, which is not an official publication: cite the official text, and keep this one as a lead in notes`);
+    }
+  }
+  // a leftover whose file is scanned here and no longer cites it is struck; a fixture directory without the file is left alone
+  const scanned = new Set(files.map((f) => relative(dataDir, f).split(/[\\/]/).join("/")));
+  for (const key of leftovers) {
+    const file = key.slice(0, key.indexOf(" "));
+    if (scanned.has(file) && !seen.has(key)) report(join(dataDir, file), `unofficial-leftovers.json still lists "${key}", which is gone: strike it (the list only shrinks)`);
+  }
 }
 
 function checkStaleUnknowns(files: string[], dataDir: string, rules: Map<string, RuleLike>, warn: (category: string, id: string) => void): void {

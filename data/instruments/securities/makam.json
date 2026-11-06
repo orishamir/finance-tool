@@ -117,7 +117,7 @@
   },
   "lawful_exit": {
     "kind": "trading_day",
-    "text": "Any trading day: makam is listed on TASE after each auction and can be sold at the market price of the day (GOV-04, GOV-17, GOV-22). Held to the redemption date, the Bank of Israel pays the face value (GOV-03). The settlement cycle for a secondary sale on TASE was not readable (GOV open question 7), so no payout-days figure is recorded."
+    "text": "Any trading day: makam is listed on TASE after each auction and can be sold at the market price of the day (GOV-04, GOV-17, GOV-22). Held to the redemption date, the Bank of Israel pays the face value (GOV-03). A sale on TASE settles on the next business day (GOV-24); no payout-days figure is recorded."
   },
   "switch_is_tax_event": {
     "value": true,
@@ -149,7 +149,7 @@
       "GOV-24",
       "BANK-15"
     ],
-    "text": "whoever holds a securities account (held_in): a purchase on TASE on any trading day, with a minimum order of 10,000 face value in continuous trading (GOV-24), or a bid in the monthly issue auction through the account (GOV-22). Only TASE clearing-house members bid directly (GOV-05); the minimum and fee for an individual's auction order are open (GOV open question 2). A bank through which makam can be bought must show it next to deposits and money-market funds under \"מוצרי שוק הכסף\" and explain how to buy it (BANK-15)"
+    "text": "whoever holds a securities account (held_in): a purchase on TASE on any trading day, with a minimum order of 10,000 face value in continuous trading and of one trading unit in the pre-opening and pre-close phases, whose size for makam is not stated (GOV-24, GOV open question 7), or a bid in the monthly issue auction through the account (GOV-22). Only TASE clearing-house members bid directly (GOV-05); the minimum and fee for an individual's auction order are open (GOV open question 2). A bank through which makam can be bought must show it next to deposits and money-market funds under \"מוצרי שוק הכסף\" and explain how to buy it (BANK-15)"
   },
   "protection": {
     "rule_ids": [
@@ -187,5 +187,5 @@
     "TXI-OQ3",
     "TXI-OQ9"
   ],
-  "checked": "2026-10-26"
+  "checked": "2026-11-07"
 }
