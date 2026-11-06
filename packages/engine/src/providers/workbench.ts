@@ -561,7 +561,9 @@ export function buildTariff(input: Omit<WorkbenchInput, "fund"> & { fund?: Workb
     // a stretch of an account built on a bank (F-101) whose group's annex prints its own price keeps it; every other stretch, the ordinary minimum
     const own = level === "entered" ? entered?.currentAccount : undefined;
     out.tariff.currentAccount = own ?? m.value;
-    if (own === undefined) {
+    // a stretch that charges the price list's minimum rests on the price list, whether the minimum came from the record or was copied into
+    // the stretch (the site's account built on a bank copies it into every stretch, own-account `enteredOf`; lens review S4)
+    if (own === undefined || own === m.value) {
       out.lineSources.push({ lineId: CURRENT_ACCOUNT_LINE, level: "list", url: m.source.url, publisher: m.source.publisher, strength: m.source.strength });
       out.strengths.push(m.source.strength);
     } else if (entered?.currentAccountSource) {

@@ -265,14 +265,21 @@ describe("flags and records of F-102 and F-103 (finance review 2)", () => {
 
   it("keeps the current account's sources for every stretch: the group's exemption and the ordinary minimum after it", () => {
     const exemptSource = { url: "https://example.org/annex.pdf", title: "נספח", page: 34 };
-    const row = compared(
-      israeli({ snapshot: leumi, level: "entered", currentAccount: true, entered: { currentAccount: 0, currentAccountSource: exemptSource, until: { months: 48, then: {} } } }),
-    );
-    const sources = row.lineSources.filter((x) => x.lineId === "current-account");
-    expect(sources.map((x) => [x.level, x.url])).toEqual([
+    const listUrl = leumi.current_account.monthly_minimum.source.url;
+    const sourcesOf = (entered: WorkbenchInput["providers"][number]["entered"]) =>
+      compared(israeli({ snapshot: leumi, level: "entered", currentAccount: true, entered })).lineSources.filter((x) => x.lineId === "current-account").map((x) => [x.level, x.url]);
+    // the shape the site builds (own-account enteredOf copies the list's minimum into every stretch; lens review S4)
+    expect(sourcesOf({ currentAccount: 0, currentAccountSource: exemptSource, until: { months: 48, then: { currentAccount: 5.5 } } })).toEqual([
       ["entered", exemptSource.url],
-      ["list", leumi.current_account.monthly_minimum.source.url],
+      ["list", listUrl],
     ]);
+    // a stretch with nothing of its own
+    expect(sourcesOf({ currentAccount: 0, currentAccountSource: exemptSource, until: { months: 48, then: {} } })).toEqual([
+      ["entered", exemptSource.url],
+      ["list", listUrl],
+    ]);
+    // an account built on a bank with no group: the list's minimum, copied, rests on the price list
+    expect(sourcesOf({ currentAccount: 5.5 })).toEqual([["list", listUrl]]);
   });
 
   it("the sensitivity run: the current account changes in every stretch that charges, and the charge per dividend moves with custody", () => {

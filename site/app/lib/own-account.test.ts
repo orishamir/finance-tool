@@ -379,6 +379,18 @@ describe("the tariff built in layers (F-101)", () => {
 });
 
 describe("a price for a time through the page's own run (F-101)", () => {
+  it("keeps both sources of a group's current account in the shape the site builds: the annex's exemption, then the price list (lens review S4)", () => {
+    const discount = house("discount");
+    const b = accountAt(discount, point("סטודנטים לתואר ראשון", startingPointsOf(discount)), {}, "custom-broker-discount");
+    const row = providerWorkbench(workbenchInput([{ snapshot: discount, level: "entered", layered: layeredOf(b), currentAccount: true }]), ruleContext(bundle)).rows[0] as ComparedProvider;
+    const sources = row.lineSources.filter((x) => x.lineId === "current-account").map((x) => [x.level, x.url]);
+    expect(sources).toEqual([
+      ["entered", b.base!.group!.currentAccount!.source!.url],
+      ["list", discount.current_account!.monthly_minimum.source.url],
+    ]);
+    // the plan runs past the exemption's 48 months: the ordinary minimum is paid for the rest
+    expect(row.run.fees.account).toBeCloseTo(5.9 * (12 * planRun.years - 48), 6);
+  });
   it("an account on the price list alone is the house's row, to the shekel, at a house with a standing-order price and at one without", () => {
     for (const [snap, expected] of [[mercantile, EXPECTED.merc_list_alone], [leumi, EXPECTED.leumi_list_alone]] as const) {
       const b = accountAt(snap, startingPointsOf(snap)[0]!);
