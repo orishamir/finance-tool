@@ -1805,7 +1805,8 @@
   },
   {
     "id": "TXH OQ10",
-    "status": "open"
+    "status": "closed",
+    "closed_on": "2026-11-06"
   },
   {
     "id": "TXH OQ11",
@@ -1824,6 +1825,10 @@
     "id": "TXH OQ14",
     "status": "closed",
     "closed_on": "2026-10-31"
+  },
+  {
+    "id": "TXH OQ15",
+    "status": "open"
   },
   {
     "id": "TXA OQ1",
