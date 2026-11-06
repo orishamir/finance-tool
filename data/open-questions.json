@@ -2110,11 +2110,11 @@
   },
   {
     "id": "TXF OQ8",
-    "status": "open"
+    "status": "narrowed"
   },
   {
     "id": "TXF OQ9",
-    "status": "open"
+    "status": "narrowed"
   },
   {
     "id": "TXF OQ10",
@@ -2285,6 +2285,10 @@
   },
   {
     "id": "TXS OQ23",
+    "status": "open"
+  },
+  {
+    "id": "TXS OQ24",
     "status": "open"
   },
   {
