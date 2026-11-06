@@ -1,0 +1,23 @@
+{
+  "id": "styt-tkn-5-shnym-avkbvt",
+  "he": "סטית תקן – 5 שנים עוקבות",
+  "en": null,
+  "meaning": "כמה התשואות של המסלול התפזרו סביב הממוצע שלהן בחמש השנים האחרונות; פיזור גדול יותר פירושו תנודות וסיכון גדולים יותר",
+  "where": [
+    "gemel-net",
+    "pensia-net"
+  ],
+  "wrapper_ids": [],
+  "variants": [],
+  "rule_ids": [
+    "CAT-07",
+    "CAT-46"
+  ],
+  "source": {
+    "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-64186b589b352/080217.pdf#page=19",
+    "title": "רשות ניירות ערך, מדריך למשקיע: קרנות נאמנות, המדריך המלא, עמ' 19",
+    "publisher": "Israel Securities Authority",
+    "strength": "primary",
+    "checked": "2026-11-06"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "id": "msci-world",
+  "he": "MSCI World",
+  "en": null,
+  "meaning": "מדד של מניות חברות גדולות ובינוניות במדינות שחברת המדד מגדירה כשווקים מפותחים, ובהן ישראל וארצות הברית, במשקל לפי שווי השוק הסחיר",
+  "where": [
+    "app",
+    "fund-name"
+  ],
+  "wrapper_ids": [],
+  "exposure_ids": [
+    "index-msci-world"
+  ],
+  "variants": [
+    "MSCI WORLD INDEX",
+    "מדד MSCI World",
+    "MSCI עולמי"
+  ],
+  "rule_ids": [
+    "ETF-48",
+    "ETF-49"
+  ],
+  "source": {
+    "url": "https://www.msci.com/documents/10199/178e6643-6ae6-47b9-82be-e1fc565ededb",
+    "title": "MSCI, \"MSCI World Index (USD)\" factsheet, 30 September 2026",
+    "publisher": "MSCI",
+    "strength": "institution",
+    "checked": "2026-10-25"
+  }
+}

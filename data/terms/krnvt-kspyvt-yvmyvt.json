@@ -10,7 +10,9 @@
     "money-market-fund-daily",
     "money-market-fund-renewable"
   ],
-  "variants": [],
+  "variants": [
+    "קרן כספית יומית"
+  ],
   "rule_ids": [
     "BANK-15",
     "MF-34",
