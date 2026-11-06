@@ -146,8 +146,12 @@ catches about half or more with noise under 30%.
   law, regulation or regulator (gov.il and the like) whenever one exists,
   from its official publication (Reshumot, the Knesset, gov.il, the
   regulator's or exchange's own site), never a copy such as Nevo, Wikisource
-  or a mirror: a copy only helps find the official text (founder, 2026-11-06);
-  cite a company's document only for that company's own terms, which appear
+  or a mirror: a copy only helps find the official text (founder, 2026-11-06).
+  Unofficial sources are welcome as leads: finance blogs, forums, the press
+  and search results often name the section, circular or ruling to look up
+  next, so an open question's search starts there too (founder, 2026-11-07);
+  a lead is recorded as a lead, with what it pointed to, and a rule is
+  settled only by the official text it led to. Cite a company's document only for that company's own terms, which appear
   named or on that company's page, never as a fact about a product. A
   statement about the whole market comes from law or from a count over every
   collected institution (D30).
