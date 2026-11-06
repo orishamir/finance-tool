@@ -431,7 +431,8 @@ describe("open questions (data-schema 3.15, 2026-10-26)", () => {
     // plus ETF OQ30 to OQ32 (hedged funds) and TXF OQ23 (a fund's legal form), opened by the research of 2026-10-31
     // plus IRA OQ16 (which personal funds are approved as annuity funds) and REG OQ22 (holders' money in a manager's insolvency), opened 2026-11-02
     // plus TXF OQ26 (whether a bank's holding commission on foreign fund units reduces the gain), opened 2026-11-06
-    expect(items.length).toBe(530);
+    // plus BRK OQ22 and OQ23 (the clearing house's own share; its lien and client sub-accounts) and ETF OQ34 to OQ36 (ETF market makers), opened 2026-11-06
+    expect(items.length).toBe(535);
     expect(items.find((q) => q.id === "TXP OQ3")).toMatchObject({ file: "tax-pension-gemel-lekitzba.md", closedOn: "2026-10-26" });
     // a closure of the open-question hunt (main, 2026-10-26), struck with its bold title inside the strike
     expect(items.find((q) => q.id === "BRK OQ11")).toMatchObject({ file: "brokerage-account.md", closedOn: "2026-10-26" });

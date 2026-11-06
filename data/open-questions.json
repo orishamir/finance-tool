@@ -272,6 +272,14 @@
     "status": "narrowed"
   },
   {
+    "id": "BRK OQ22",
+    "status": "open"
+  },
+  {
+    "id": "BRK OQ23",
+    "status": "open"
+  },
+  {
     "id": "CS OQ1",
     "status": "closed",
     "closed_on": "2026-10-22"
@@ -555,6 +563,18 @@
   },
   {
     "id": "ETF OQ33",
+    "status": "open"
+  },
+  {
+    "id": "ETF OQ34",
+    "status": "open"
+  },
+  {
+    "id": "ETF OQ35",
+    "status": "open"
+  },
+  {
+    "id": "ETF OQ36",
     "status": "open"
   },
   {
@@ -1278,7 +1298,8 @@
   },
   {
     "id": "REG OQ11",
-    "status": "open"
+    "status": "closed",
+    "closed_on": "2026-11-06"
   },
   {
     "id": "REG OQ12",
