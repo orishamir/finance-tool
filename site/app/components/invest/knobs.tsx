@@ -159,7 +159,13 @@ export function PlanChanges({ plan: resting, share, bundle, view, pick }: { plan
         rows={rows.map(({ l, n, to, after, diff }) => ({
           id: l.id,
           swatch: LINE[n]!.bg,
-          cells: [labelOf[l.id], <Num key="p" value={planValue[l.id]} display={show(l.id, planValue[l.id].value as number)} />, <Num key="t" value={to} display={show(l.id, to.value as number)} />, after ? <Num key="a" value={after} /> : null, diff ? <span key="d" className="font-semibold whitespace-nowrap">{diffText(diff)}</span> : null],
+          cells: [labelOf[l.id], <Num key="p" value={planValue[l.id]} display={show(l.id, planValue[l.id].value as number)} />, <Num key="t" value={to} display={show(l.id, to.value as number)} />, after ? <Num key="a" value={after} /> : null, diff ? (
+              // on a phone the word goes under the figure, on every row, so the column holds a nine-digit figure at the sliders' far ends with the
+              // largest share (independent check 2, should-fix 8: "7,369,509 ₪ יותר" was cut at 390 px)
+              <span key="d" className="font-semibold">
+                <Num value={diff} display={fmt.nisWhole(Math.abs(diff.value as number))} /> <span className="whitespace-nowrap max-md:block">{(diff.value as number) >= 0 ? ch.more : ch.less}</span>
+              </span>
+            ) : null],
         }))}
       />
       <p className="text-sm text-muted-foreground">{ch.foot}</p>

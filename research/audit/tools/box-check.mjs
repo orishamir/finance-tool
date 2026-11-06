@@ -53,6 +53,20 @@ const cuts = () => {
       break;
     }
   }
+  // a table cell's whole text, the words beside a figure too (independent check 2: "7,369,509 ₪ יותר" had its word cut while the figure fit)
+  for (const td of document.querySelectorAll("td, th")) {
+    if (!td.checkVisibility({ contentVisibilityAuto: true, visibilityProperty: true }) || !td.textContent.trim()) continue;
+    const range = document.createRange();
+    range.selectNodeContents(td);
+    const r = range.getBoundingClientRect();
+    for (let a = td.parentElement; a && a !== document.body; a = a.parentElement) {
+      const cs = getComputedStyle(a);
+      if (cs.overflowX === "visible" && cs.overflowY === "visible") continue;
+      const b = a.getBoundingClientRect();
+      if (r.left < b.left - 1 || r.right > b.right + 1) out.push(`cell text "${td.textContent.trim().slice(0, 40)}" (${Math.round(r.left)}..${Math.round(r.right)} in ${Math.round(b.left)}..${Math.round(b.right)})`);
+      break;
+    }
+  }
   for (const svg of document.querySelectorAll("svg")) {
     if (!svg.checkVisibility({ contentVisibilityAuto: true, visibilityProperty: true })) continue;
     const w = svg.width.baseVal.value;
