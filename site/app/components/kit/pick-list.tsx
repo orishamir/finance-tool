@@ -88,7 +88,10 @@ export function PickList({ label, columns, phoneColumns, head, rows, phoneLimit,
   // was on the screen, wherever the list now puts it
   const anchor = useRef<Hold | null>(null);
   // when the order changes the rows slide to their new places, and the tapped row is the one that stands still
-  const root = useFlip<HTMLDivElement>(rows.map((r) => r.key).join(), () => anchor.current?.key ?? pending?.key);
+  // only a hold still running: a stale one made the row picked seconds before jump to its new place while the others slid (2026-11-06,
+  // a bank marked as the person's own re-sorted the account list)
+  const live = (h: Hold | null) => (h && performance.now() <= h.until ? h.key : undefined);
+  const root = useFlip<HTMLDivElement>(rows.map((r) => r.key).join(), () => live(anchor.current) ?? live(pending));
   // the person's own scroll ends a hold: a render after it must not take the page back (a key is not watched: Enter on a row starts one)
   useEffect(() => {
     const end = () => {

@@ -376,6 +376,24 @@ describe("the account card's notes on prices abroad and its own-bank list (D64, 
     expect(out).toContain(invest.pair.abroadOthers);
   });
 
+  it("names the current account in the legend only where a bar shown counts one", () => {
+    // the list of the S&P 500 has banks, whose rows count it; the pair result of two investment houses has none (pair.tsx `CostLegend`)
+    expect(card(sp, null)).toContain(invest.pair.legendAccount);
+    const view = buildInvest({ bundle, index: sp, plan: { ...plan, currentAccounts: { own: null } } });
+    const result = (pick: { house: string; fund: string }) => shown(html(createElement(PairResult, { view, bundle, plan: { ...plan, currentAccounts: { own: null } }, pick, chosen: true, onPick: () => undefined })));
+    const fund = pickOfHeadline(view)!.fund;
+    const houses = view.providers.filter((p) => !p.custom && !bundle.snapshots.find((s) => s.id === p.id)?.current_account).map((p) => p.id);
+    const atHouse = houses.find((h) => view.options.some((o) => o.funds.some((f) => f.rec.id === fund && "valueN" in (f.byHouse[h] ?? {}))));
+    expect(atHouse).toBeDefined();
+    // the page's pair sits beside the cheapest, which may be a bank; the legend names the current account only when one of the two bars has it
+    const out = result({ house: atHouse!, fund });
+    const bankShown = [atHouse!, view.headline?.providerId].some((h) => !!bundle.snapshots.find((s) => s.id === h)?.current_account);
+    // on the default plan the page opens on a house's pair beside a house's (2026-11-06: the legend promised a current account there)
+    expect(bankShown).toBe(false);
+    expect(out.includes(invest.pair.legendAccount)).toBe(bankShown);
+    expect(out).toContain(invest.pair.legendSecurities);
+  });
+
   it("says neither on an index whose funds are all bought in Tel Aviv, if it has none bought abroad", () => {
     const view = buildInvest({ bundle, index: ta, plan });
     const out = card(ta, null);
@@ -383,11 +401,13 @@ describe("the account card's notes on prices abroad and its own-bank list (D64, 
     expect(out.includes(invest.pair.abroadOthers)).toBe(abroad);
   });
 
-  it("offers every bank with a current account, and says which row leaves it out", () => {
+  it("offers every bank whose current account costs something, and says which row leaves it out", () => {
     expect(card(sp, null)).toContain(invest.pair.ownBank.counted);
     expect(card(sp, "leumi")).toContain(invest.pair.ownBank.left("לאומי"));
     const raw = html(createElement(AccountColumn, { view: buildInvest({ bundle, index: sp, plan }), bundle, years: 20, pick: pickOfHeadline(buildInvest({ bundle, index: sp, plan }))!, onPick: () => undefined, ownBank: { value: null, onChange: () => undefined } }));
-    for (const id of ["discount", "fibi", "hapoalim", "jerusalem", "leumi", "massad", "mercantile", "mizrahi-tefahot", "one-zero", "yahav"]) expect(raw).toContain(`value="${id}"`);
+    for (const id of ["discount", "fibi", "hapoalim", "jerusalem", "leumi", "massad", "mercantile", "mizrahi-tefahot", "yahav"]) expect(raw).toContain(`value="${id}"`);
+    // One Zero's price list prints its current account free: marking it would change no figure (ground rule 4)
+    expect(raw).not.toContain(`value="one-zero"`);
     expect(raw).not.toContain(`value="psagot"`);
     expect(raw).not.toContain(`value="pepper"`);
   });

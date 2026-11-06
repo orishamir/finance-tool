@@ -41,7 +41,7 @@ describe("what a ranked price rests on", () => {
     expect(found.sort()).toEqual([...LEFTOVERS].sort());
   });
   const groups = { state: "no_mention", entries: [] };
-  const base = { provider: { class: "bank" }, current_account: { monthly_minimum: { value: 5.3, unit: "nis_per_month" } }, price_for_he: "לקוח רגיל", left_out: [], groups, lines: [{ base: "trade", applies_to: ["etf_units"] }] };
+  const base = { provider: { class: "bank" }, current_account: { monthly_minimum: { value: 5.3, unit: "nis_per_month", source: { quote: "5.30 בפיקוח" } } }, price_for_he: "לקוח רגיל", left_out: [], groups, lines: [{ base: "trade", applies_to: ["etf_units"] }] };
   const entry = (quote: string, available: boolean | "unknown" = true) => ({ applies_to: ["etf_units"], available, source: { quote } });
   it("asks a bank for its current account's monthly cost, and no other house (D64)", () => {
     const named = { ...base, availability: [entry("מניות, אגרות חוב וקרנות סל")] };
@@ -50,6 +50,9 @@ describe("what a ranked price rests on", () => {
     expect(checkPricePremises({ ...named, provider: { class: "broker" } })[0]).toMatch(/^current_account: only a bank's own record/);
     expect(checkPricePremises({ ...noAccount, provider: { class: "bank", part_of: "leumi" } })).toEqual([]);
     expect(checkPricePremises({ ...named, current_account: { monthly_minimum: { value: 5.3, unit: "nis" } } })[0]).toMatch(/nis_per_month/);
+    // a counted minimum quotes its price list; a free account may not
+    expect(checkPricePremises({ ...named, current_account: { monthly_minimum: { value: 5.3, unit: "nis_per_month", source: {} } } })[0]).toMatch(/source\.quote/);
+    expect(checkPricePremises({ ...named, current_account: { monthly_minimum: { value: 0, unit: "nis_per_month", source: {} } } })).toEqual([]);
   });
   it("passes a price whose document names the holding", () => {
     expect(checkPricePremises({ ...base, availability: [entry("מניות, אגרות חוב וקרנות סל")] })).toEqual([]);

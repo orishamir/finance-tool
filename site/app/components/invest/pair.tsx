@@ -8,7 +8,7 @@ import { Fragment, useMemo, useRef, useState, type MouseEvent, type ReactNode } 
 import { isTie, type FeeLine } from "@finance-tool/engine";
 import { brands, groupPrices, invest as c } from "../../copy";
 import { isCustomFund } from "../../lib/custom-entries";
-import { brokeragePagePath, doubtOf, firstCount, placesOf, tieShareOf, gapOf, indexSeenBy, inputMap, hasKinds, kindOf, opensOn, pairCosts, pairValue, type FundWay, type InvestView, type Kind, type PairCosts, type Reason, type WayPrice } from "../../lib/invest";
+import { brokeragePagePath, chargesCurrentAccount, doubtOf, firstCount, placesOf, tieShareOf, gapOf, indexSeenBy, inputMap, hasKinds, kindOf, opensOn, pairCosts, pairValue, type FundWay, type InvestView, type Kind, type PairCosts, type Reason, type WayPrice } from "../../lib/invest";
 import type { WorkbenchBundle, WorkbenchInputs } from "../../lib/providers";
 import { brokerLabels, fundLabels, optionLabels, type Label } from "../../lib/labels";
 import { computed, ownBy, type SiteValue } from "../../lib/value";
@@ -34,8 +34,11 @@ export interface Pick {
 export const lineClass: Record<string, string> = { trade: "bg-chart-cost-trade", custody: "bg-chart-cost-custody", fixed: "bg-chart-cost-fixed", fx: "bg-chart-cost-fx" };
 /** A bank's current account (F-102, D64) is a fee for keeping an account too: it takes the account fee's colour and legend item, and its own name in its part. */
 export const lineOf = (line: FeeLine) => (line === "account" ? "fixed" : line in lineClass ? line : "other");
-/** A legend item's name: the account fee's item stands for a bank's current account too, which shares its colour. */
-export const legendName = (l: string) => (l === "fixed" ? c.pair.legendAccount : (c.pair.lines[l] ?? c.pair.lines.other));
+/** A legend item's name: the account fee's item stands for a bank's current account too, which shares its colour, where a bar shown has
+ *  one (`current`); else it names the securities account's fee alone (a legend item names only what is drawn). */
+export const legendName = (l: string, current = true) => (l === "fixed" ? (current ? c.pair.legendAccount : c.pair.legendSecurities) : (c.pair.lines[l] ?? c.pair.lines.other));
+/** Whether any of these account lines is a bank's current account (F-102). */
+export const hasCurrent = (lines: readonly { line: FeeLine }[]) => lines.some((l) => l.line === "account");
 /** A part's name: the line's own where it has one (the current account), else its legend item's. */
 export const partName = (line: FeeLine) => c.pair.lines[line] ?? c.pair.lines[lineOf(line)] ?? c.pair.lines.other;
 /** A legend names every account line whichever row or pair is shown, in one order, so its items keep their places from one pick to the next.
@@ -181,14 +184,14 @@ export function wholeParts(xs: number[], target = Math.round(xs.reduce((a, x) =>
 }
 const totalOf = (parts: CostPart[]) => parts.reduce((a, p) => a + p.value, 0);
 
-function CostLegend({ lines, pick }: { lines: string[]; pick: ChartPick<string> }) {
+function CostLegend({ lines, pick, current = true }: { lines: string[]; pick: ChartPick<string>; /** A bar shown counts a bank's current account. */ current?: boolean }) {
   const groupHead = (text: string) => ({ id: `g-${text}`, label: <span className="text-foreground font-medium">{text}</span> });
   return (
     <ChartLegend
       pick={pick}
       items={[
         groupHead(c.pair.who.account),
-        ...lines.map((l) => ({ id: l, swatch: <Swatch shape="box" className={lineClass[l] ?? "bg-chart-cost-other"} />, label: legendName(l) })),
+        ...lines.map((l) => ({ id: l, swatch: <Swatch shape="box" className={lineClass[l] ?? "bg-chart-cost-other"} />, label: legendName(l, current) })),
         { id: "remainder", swatch: <Swatch shape="box" className="bg-chart-cost-other" />, label: c.pair.remainder },
         groupHead(c.pair.who.fund),
         { id: "fund", swatch: <Swatch shape="box" className="bg-chart-cost-fund" />, label: c.pair.fundLine },
@@ -525,7 +528,7 @@ export function PairResult({ view, bundle, plan, settled, pick, chosen, onPick }
         {pcOther && other && <CostBar highlight={legendPick.active} who={nameOf(other)} fund={fundOf(other)} funds={fundNames} sub={otherRole} pc={pcOther} scale={scale} entered={providerName(view, other.house)?.custom} today={bundle.today} />}
         {/* held at the legend of a foreign index, which names the conversion too: an Israeli index's legend took a line less on a phone */}
         <LongestCase cases={[<CostLegend key="l" lines={legendLines(false, ["other"])} pick={legendPick} />]}>
-          <CostLegend lines={lines} pick={legendPick} />
+          <CostLegend lines={lines} pick={legendPick} current={hasCurrent([...pc.account, ...(pcOther?.account ?? [])])} />
         </LongestCase>
         {pcOther && (
           // three columns of one width: in a sentence, a number with another digit pushed everything after it (nothing moves when a number changes)
@@ -609,11 +612,11 @@ export const LONGEST_YEARS = 40;
 
 /**
  * The bank where the person already has a current account (D64): that bank's row leaves its current account out, every other bank's row
- * counts it (F-102). The banks are those whose record prices a current account; the line under the list says which way the rows count it,
+ * counts it (F-102). The banks are those whose current account costs something a month; the line under the list says which way the rows count it,
  * held at its longest case so a pick moves nothing below it.
  */
 export function OwnBankField({ view, bundle, value, onChange }: { view: InvestView; bundle: WorkbenchBundle; value: string | null; onChange: (id: string | null) => void }) {
-  const banks = view.providers.filter((p) => bundle.snapshots.some((s) => s.id === p.id && s.current_account)).sort((a, b) => a.short.localeCompare(b.short, "he"));
+  const banks = view.providers.filter((p) => bundle.snapshots.some((s) => s.id === p.id && chargesCurrentAccount(s))).sort((a, b) => a.short.localeCompare(b.short, "he"));
   if (banks.length === 0) return null;
   const marked = banks.find((b) => b.id === value) ?? null;
   return (
@@ -719,8 +722,8 @@ export function AccountColumn({ view, bundle, years, monthly = 1, pick, onPick, 
   const lines = legendLines(!!view.index.israeli, ok.flatMap((r) => r.at.lines.map((l) => lineOf(l.line))));
   // the lines any fund of the index has at any house, for the legend's held height
   const allLines = allFunds(view).flatMap((f) => Object.values(f.byHouse).flatMap((a) => (priced(a) ? a.lines.map((l) => lineOf(l.line)) : [])));
-  const legendItems = (ls: string[], broken: boolean) => [
-    ...ls.map((l) => ({ id: l, swatch: <Swatch shape="box" className={lineClass[l] ?? "bg-chart-cost-other"} />, label: legendName(l) })),
+  const legendItems = (ls: string[], broken: boolean, current = true) => [
+    ...ls.map((l) => ({ id: l, swatch: <Swatch shape="box" className={lineClass[l] ?? "bg-chart-cost-other"} />, label: legendName(l, current) })),
     { id: "remainder", swatch: <Swatch shape="box" className="bg-chart-cost-other" />, label: c.pair.remainder },
     ...(broken ? [{ id: "broken", label: c.pair.broken }] : []),
   ];
@@ -953,7 +956,7 @@ export function AccountColumn({ view, bundle, years, monthly = 1, pick, onPick, 
         <AddEntryButton kind="broker" />
         {/* held at every item a fund of the index or a plan can bring (a line only some funds have, a broken bar), so a pick moves nothing (#190: 24 px) */}
         <LongestCase cases={[<ChartLegend key="l" pick={legendPick} items={legendItems(legendLines(!!view.index.israeli, allLines), true)} />]}>
-          <ChartLegend pick={legendPick} items={legendItems(lines, ok.some((r) => r.at.accountCost > scale))} />
+          <ChartLegend pick={legendPick} items={legendItems(lines, ok.some((r) => r.at.accountCost > scale), ok.some((r) => hasCurrent(r.at.lines)))} />
         </LongestCase>
       </div>
     </Card>

@@ -3,7 +3,7 @@
 // brokerage account inside an IRA hishtalmut (F-51).
 import { buyWithCash, corporateEventFee, currentAccountFee, custodyFee, fixedFee, fxFee, navBought, tradeCommission, type Commission, type Custody } from "../formulas/fees.ts";
 import { distributionTax } from "../formulas/holding-tax.ts";
-import { annualToMonthly, closesTaxYear, contributions, cpiPath, fxPath, taxYearOf, type Goal } from "../formulas/time.ts";
+import { annualToMonthly, closesTaxYear, contributions, cpiPath, fxPath, monthOfDate, taxYearOf, type Goal } from "../formulas/time.ts";
 import { RecordInputError, ruleBook } from "../resolver.ts";
 import type { Outcome, RunContext, RunResult } from "../result.ts";
 import { exitTax, Tally, unlessBlocked, yearlySurtax, type Profile } from "./common.ts";
@@ -328,10 +328,18 @@ export function runSecurities(input: SecuritiesInput, ctx: RunContext): RunResul
   // applies as published (F-14; BRK-17 binds banks only, and MF-26 does not bind an investment marketer).
   const mmfFree = isMmf && input.memberKind !== "non-bank";
   if (mmfFree) book.cite("BANK-18");
-  // F-102: from 1.7.2027 the Governor's order caps managing a payment account (a current account included) by the month's actions, NIS 5
-  // for 0 to 2 and NIS 10 for 3 to 100 (BANK-35). How the amended rules count an action is open, so the run keeps the price list's minimum,
-  // the most a bank may charge an account with three or more actions (every recorded minimum is under NIS 10): a reading of an open rule.
-  if (tariff.currentAccount !== undefined) book.label("reading", "BANK-35");
+  // F-102 with BANK-35: from the order's start the Governor caps managing a payment account (a current account included) by the month's
+  // actions, lower for 0 to 2 actions than the minimum a bank's row counts. How the amended rules count an action is not in the rule base,
+  // so the run keeps the price list's minimum for the whole plan and flags the month the cap starts, where the plan reaches it and a
+  // counted minimum is above the lower cap: the figure may be too high from then on (method F-102).
+  if (tariff.currentAccount !== undefined) {
+    const lowCap = book.amount("BANK-35", "account_fee_up_to_2_actions");
+    const from = ctx.rules.find((r) => r.id === "BANK-35")?.figures?.account_fee_up_to_2_actions as { effective_from?: string | null } | undefined;
+    const capMonth = from?.effective_from ? monthOfDate(ctx.runDate, from.effective_from) : 1;
+    let above = false;
+    for (let m = Math.max(1, capMonth); m <= T && !above; m++) above = (tariffAt(m).currentAccount ?? 0) > lowCap;
+    if (above) tally.flag("BANK-35", Math.max(1, capMonth));
+  }
   const custodyLineAt = (m: number) => (mmfFree ? undefined : tariffAt(m).custody);
 
   let exitYearFees = 0;

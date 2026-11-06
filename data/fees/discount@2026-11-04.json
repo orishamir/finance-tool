@@ -1549,6 +1549,17 @@
             }
           }
         ],
+        "current_account": {
+          "price_he": "פטור מעמלת מינימום פעולות, מפעולה על ידי פקיד ומפעולה בערוץ ישיר",
+          "exempt": true,
+          "for_months": 12,
+          "source": {
+            "url": "https://www.discountbank.co.il/media/fnibqzdx/tarifon_single-united_11026.pdf",
+            "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה - חיילים משוחררים",
+            "page": 34,
+            "quote": "עמלת מינימום פעולות פטור"
+          }
+        },
         "who_short_he": "חיילים משוחררים",
         "cheaper_he": "פטור מעמלת קנייה ומכירה בארץ, ומדמי ניהול כשהפיקדון מתחת ל־150,000 ₪",
         "ends_short_he": "שנה מההצטרפות לקבוצה"

@@ -263,7 +263,7 @@
           "BRK-16"
         ],
         "state": "sourced",
-        "notes": "'0 אחוז'. 4(ב)(4) 'עמלת קסטודיאן': '0 אחוז', 'בנוסף יגבו הוצאות צד ג', לרבות הוצאות ברוקר והוצאות קסטודיאן, כפי חלק 11 לתעריפון'. Re-read 2026-11-04 (D56): the bank's own fee is a binding, unconditional 0 for every customer, but note (3) and 4(ב)(4) add third-party costs per part 11, and part 11 (PDF page 17, checked against the page image) prints an unnumbered row 'הוצאות קסטודיאן בחו\"ל, לרבות בגין אירועי חברה | בהתאם להוצאה הממשית | בעלות מרבית של עד 5,000 דולר ארה\"ב לחודש, ובעלות מרבית של עד 50 דולר ארה\"ב ללקוח לכל אירוע חברה', plus (20) up to 2 USD per symbol on a transfer out and (19) foreign exchanges' trading data up to 10 USD per client per month. The monthly 5,000 USD ceiling does not say per client; a dividend is presumably a corporate event, so a distributing US ETF may carry up to 50 USD per distribution. No engine field holds a per-event cost, so this is not priced; the value stays the bank's printed 0. 2026-11-04: the 0 is the bank's fee only; foreign custodian costs are passed on with printed ceilings (see the rate's notes), so a held foreign ETF is not free of custody-type costs."
+        "notes": "'0 אחוז'. 4(ב)(4) 'עמלת קסטודיאן': '0 אחוז', 'בנוסף יגבו הוצאות צד ג', לרבות הוצאות ברוקר והוצאות קסטודיאן, כפי חלק 11 לתעריפון'. Re-read 2026-11-04 (D56): the bank's own fee is a binding, unconditional 0 for every customer, but note (3) and 4(ב)(4) add third-party costs per part 11, and part 11 (PDF page 17, checked against the page image) prints an unnumbered row 'הוצאות קסטודיאן בחו\"ל, לרבות בגין אירועי חברה | בהתאם להוצאה הממשית | בעלות מרבית של עד 5,000 דולר ארה\"ב לחודש, ובעלות מרבית של עד 50 דולר ארה\"ב ללקוח לכל אירוע חברה', plus (20) up to 2 USD per symbol on a transfer out and (19) foreign exchanges' trading data up to 10 USD per client per month. The monthly 5,000 USD ceiling does not say per client, so it is not priced. The 50 USD per corporate event is priced in its own line, one-zero-custodian-corporate-event (F-103, D67), on each dividend of a fund bought abroad; this line stays the bank's printed 0. 2026-11-04: the 0 is the bank's fee only; foreign custodian costs are passed on with printed ceilings (see the rate's notes), so a held foreign ETF is not free of custody-type costs."
       },
       "min": null,
       "max": null,
@@ -292,7 +292,9 @@
           "url": "https://www.onezerobank.com/warehouse/userUploadFiles/Image/01-%20%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F%20%D7%94%D7%A2%D7%9E%D7%9C%D7%95%D7%AA%20%D7%94%D7%9E%D7%9C%D7%90%20-%20%D7%9E%D7%94%D7%93%D7%95%D7%A8%D7%94%20%D7%9E%D7%99%D7%95%D7%9D%2026.7.26_announcement.pdf",
           "title": "ONE ZERO - תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (שאינם תאגידים), תאריך פרסום: 24/6/2026, בתוקף מיום 26.7.2026, חלק 11 הוצאות צד ג', הוצאות קסטודיאן בחו\"ל (עמ' 17)",
           "publisher": "One Zero Digital Bank Ltd.",
-          "strength": "institution"
+          "strength": "institution",
+          "page": 17,
+          "quote": "בעלות מרבית של עד 50 דולר ארה\"ב ללקוח לכל אירוע חברה"
         },
         "checked": "2026-11-04",
         "effective_from": "2026-07-26",
@@ -300,7 +302,8 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-16"
+          "BRK-16",
+          "BRK-38"
         ],
         "state": "sourced",
         "notes": "Part 11 (PDF page 17, read in the founder's Chrome with pdf.js on 2026-11-04 and checked against the page image): 'הוצאות קסטודיאן בחו\"ל, לרבות בגין אירועי חברה | בהתאם להוצאה הממשית | בעלות מרבית של עד 5,000 דולר ארה\"ב לחודש, ובעלות מרבית של עד 50 דולר ארה\"ב ללקוח לכל אירוע חברה'. Priced at its ceiling, 50 USD per corporate event (D56), charged on each dividend of a fund bought abroad that pays dividends (D67, issue #179): the price list does not define 'אירוע חברה', and that a dividend is one is the site's reading, decided by the founder. The 5,000 USD a month is a ceiling the price list does not tie to one customer, so it is not priced."

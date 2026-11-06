@@ -1,7 +1,7 @@
 // "השקעה במדד" (D28, spec research/specs/2026-10-25-invest-page/spec.md): for an index the person chooses (or adds), the options
 // for owning it, the cheapest broker for each, and the cheapest complete way for the plan. `/indices` chooses nothing (D27);
 // `/indices/<x>` opens the known index `index-<x>` (pre-rendered); a custom index lives on the device and opens at `/indices?custom=<id>`.
-import { useCallback, useEffect, useId, useMemo, useState } from "react";
+import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
 import { useLoaderData, useLocation, useNavigate, useParams } from "react-router";
 import type { RuleRecord } from "@finance-tool/schema";
 import type { Route } from "./+types/invest";
@@ -26,7 +26,7 @@ import { feeInputs } from "../lib/fees";
 import { useSettled } from "../lib/settled";
 import { useInputs } from "../lib/inputs";
 import { withCustomEntries } from "../lib/custom-entries";
-import { buildInvest, hasKinds, exposureIdOfSlug, indexById, INDICES_PATH, knownIndices, refOfCustom, type CustomIndex, type IndexRef } from "../lib/invest";
+import { buildInvest, chargesCurrentAccount, hasKinds, exposureIdOfSlug, indexById, INDICES_PATH, knownIndices, refOfCustom, type CustomIndex, type IndexRef } from "../lib/invest";
 import { loadWorkbenchBundle, type WorkbenchBundle, type WorkbenchInputs } from "../lib/providers";
 import { useInvestState } from "../lib/state";
 import { recordsById } from "../lib/scope";
@@ -123,8 +123,8 @@ function Page({ wb, compare, failed, data }: { wb: WorkbenchBundle | null; compa
   return <Body wb={wb} compare={compare} data={data} search={search} />;
 }
 
-/** The bank the person marked as theirs (D64), while a bank with a current account in the data has that id; else none. */
-const ownBankOf = (wb: WorkbenchBundle, id: string | null): string | null => (id && wb.snapshots.some((s) => s.id === id && s.current_account) ? id : null);
+/** The bank the person marked as theirs (D64), while a bank whose current account costs something has that id; else none. */
+const ownBankOf = (wb: WorkbenchBundle, id: string | null): string | null => (id && wb.snapshots.some((s) => s.id === id && chargesCurrentAccount(s)) ? id : null);
 
 function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: CompareBundle; data: Data; search: string }) {
   const navigate = useNavigate();
@@ -134,6 +134,8 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
   // The numbers the person entered on this device, each one not entered taking the site's example (P-05); never the saved goal
   // (founder, 2026-10-28: only the goal page speaks of a goal).
   const fi = useMemo(() => feeInputs(compare, null, released.state), [compare, released.state]);
+  const ownBank = ownBankOf(wb, invest.bank);
+  const currentAccounts = useMemo(() => ({ own: ownBank }), [ownBank]);
   const livePlan: WorkbenchInputs = useMemo(
     () => ({
       // the whole amount today: what stays available is the comparison's question, not this page's (founder, 2026-10-28)
@@ -148,14 +150,24 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
       fromGoal: fi.fromGoal,
       returnFromParameter: fi.returnFromParameter,
       // a bank's row counts its current account, except at the bank the person marked as theirs (D64)
-      currentAccounts: { own: ownBankOf(wb, invest.bank) },
+      currentAccounts,
     }),
-    [fi, wb, invest.bank],
+    [fi, currentAccounts],
   );
   // The result and the knobs' step figures price one or two pairs (a few ms) and follow a slider live; the two lists price every
-  // account and fund (about 200 ms) and wait until the slider rests (founder, 2026-10-28: "sliding the sliders is very laggy").
-  const plan = useSettled(livePlan, 250);
-  // the list shows the mark at once; the rows follow when the plan settles
+  // account and fund (about 200 ms) and wait until the slider rests (founder, 2026-10-28: "sliding the sliders is very laggy"). A bank
+  // marked as the person's own is one pick, not a slide: the lists take it at once, with the plan as it last settled, so their rows
+  // re-sort right after the pick rather than a moment later, when the hand may be on the list (2026-11-06 check: 0.6 to 1 s).
+  const settledPlan = useSettled(livePlan, 250);
+  const merged = useRef<WorkbenchInputs | null>(null);
+  const plan = useMemo(() => {
+    const next = settledPlan.currentAccounts === currentAccounts ? settledPlan : { ...settledPlan, currentAccounts };
+    // the plan that settles after the pick is the one the lists already took: kept, so they are not priced twice
+    const prev = merged.current;
+    const same = prev && (Object.keys(next) as (keyof WorkbenchInputs)[]).every((k) => prev[k] === next[k]) && Object.keys(prev).length === Object.keys(next).length;
+    merged.current = same ? prev : next;
+    return merged.current!;
+  }, [settledPlan, currentAccounts]);
   const ownBankControl = useMemo(() => ({ value: ownBankOf(wb, invest.bank), onChange: invest.setBank }), [wb, invest.bank, invest.setBank]);
 
   const customs: CustomIndex[] = invest.customIndices;

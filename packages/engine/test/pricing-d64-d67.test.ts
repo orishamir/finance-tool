@@ -75,6 +75,22 @@ describe("F-102 the current account at a bank (D64)", () => {
   });
 });
 
+describe("F-102 with BANK-35: the payment-account cap from 1.7.2027 is flagged, not applied", () => {
+  // the run date is 2026-10-23, so month 1 starts that day and 1.7.2027 falls in month 9
+  it("flags the month the cap starts where a counted minimum is above the cap for two actions a month, and keeps the figure", () => {
+    const counted = compared(israeli({ snapshot: leumi, level: "list", currentAccount: true }));
+    expect(counted.run.flags).toContainEqual({ code: "BANK-35", month: 9 });
+    expect(counted.run.fees.account).toBeCloseTo(120 * 5.5, 6);
+  });
+  it("does not flag a minimum at or under the cap, an account not counted, or a plan that ends before the cap", () => {
+    const yahavLike = { ...leumi, current_account: { monthly_minimum: vo(4, "nis_per_month") } };
+    expect(compared(israeli({ snapshot: yahavLike, level: "list", currentAccount: true })).run.flags.map((f) => f.code)).not.toContain("BANK-35");
+    expect(compared(israeli({ snapshot: leumi, level: "list" })).run.flags.map((f) => f.code)).not.toContain("BANK-35");
+    const short = { ...israeli({ snapshot: leumi, level: "list", currentAccount: true }), goal: { amountNow: 10_000, monthly: 500, months: 6 } };
+    expect(compared(short).run.flags.map((f) => f.code)).not.toContain("BANK-35");
+  });
+});
+
 describe("F-103 a charge for each corporate event abroad (D67)", () => {
   it("is the amount at the month's rate, never more than is held", () => {
     expect(corporateEventFee(50, 3.7, 10_000)).toBeCloseTo(185, 9);
@@ -116,6 +132,16 @@ describe("F-103 a charge for each corporate event abroad (D67)", () => {
     expect(acc.linesUsed).not.toContain("one-zero-test-corporate-event");
     const tlv = compared(israeli({ snapshot: oneZeroEvents, level: "list" }));
     const tlvPlain = compared(israeli({ snapshot: oneZero, level: "list" }));
+    expect(tlv.horizonCost.value).toBe(tlvPlain.horizonCost.value);
+  });
+
+  it("leaves a foreign fund listed in Tel Aviv at its price, though it is quoted in dollars and pays dividends (D67)", () => {
+    // the one case where the run has a currency: only the line's own class keeps F-103 off
+    const listed = (snapshot: unknown): WorkbenchInput => ({ ...abroad({ yield: 0.015, perYear: 4 }), instrumentClass: "tase_foreign_fund_units", providers: [{ snapshot, level: "list" }] as WorkbenchInput["providers"] });
+    const tlv = compared(listed(oneZeroEvents));
+    const tlvPlain = compared(listed(oneZero));
+    expect(tlv.linesUsed).not.toContain("one-zero-test-corporate-event");
+    expect(tlv.run.fees.custody).toBe(tlvPlain.run.fees.custody);
     expect(tlv.horizonCost.value).toBe(tlvPlain.horizonCost.value);
   });
 });

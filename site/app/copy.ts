@@ -681,6 +681,7 @@ export const flags: Record<string, string> = {
   "CS-18": "דמי הניהול אחרי גיל עשרים ואחת חושבו לפי התקרה שבתקנות, ולכן הם ״עד״: בקופה שלכם השיעור יכול להיות נמוך יותר.", // 2026-10-26: the child-savings fee after 21 runs on CS-18's cap unless the person enters a rate (F-54)
   "TXK-06": "מגיל שישים מדרגות המס המופחתות חלות קודם גם על הרווח במשיכה, וכסף שנוכה במקור ביותר חוזר רק דרך דוח שנתי או בקשת החזר מס. החישוב הזה הוא בלי בקשת החזר, והאתר השאיר בו את השיעור המלא, בלי ההקלה.", // 2026-10-26: F-44 applies the brackets (F-42); the flag marks only a run with the refund not claimed (A-14 off), finance review 2026-10-26. 2026-11-06: the manager withholds 25% of the gains (TXK-26, Tax Authority file 856), so the flat rate is what is withheld and the sentence calling it an upper bound (from reg. 3(א)'s 20%) is gone
   "TXK-26": "החברה המנהלת מנכה במקור מהרווח את השיעור המרבי, בלי להתחשב בגיל, והמס הסופי נקבע מול הניכוי בדוח השנתי: על חלק הרווח שהמדרגה שלו נמוכה מהשיעור הזה מקבלים החזר. המספר כאן הוא המס הסופי, אחרי ההתחשבנות בדוח.", // 2026-10-26 (finance review): the kupat gemel lehashkaa exit from 60 settles against the manager's withholding (TXK-26), not G-21 (a bank's or TASE member's withholding). 2026-11-06: that withholding is 25% of the gains (Tax Authority file 856), the maximum rate of TXK-06, so no part is above it and the "pay more" clause is gone
+  "BANK-35": "מיולי 2027 הסכום כאן יכול להיות גבוה מדי. צו של נגיד בנק ישראל קובע אז תקרה לדמי הניהול של חשבון עו״ש לפי מספר הפעולות בחודש, ובחשבון עם עד שתי פעולות בחודש התקרה נמוכה מדמי הניהול שנספרו כאן. עוד לא ידוע איך הכללים החדשים סופרים פעולה, ולכן החישוב משאיר את דמי הניהול של היום לכל התקופה.", // 2026-11-06 (finance review of D64): F-102 keeps the price list's minimum; the engine flags the month the cap starts where a counted minimum is above the cap for 0 to 2 actions
   "TXP-11": "הפקדת המעסיק לפיצויים עוברת את תקרת הפיצויים, שנבדקת כל חודש: החלק שמעל התקרה הוא הכנסת עבודה כבר במועד ההפקדה, והאתר עוד לא מחשב את המס עליו.", // 2026-10-26: TXP OQ5 closed (circular 4/2019 s.2.1.1, TXP-11); the engine flag was "TXP-OQ5"
 };
 
@@ -3696,6 +3697,8 @@ export const invest = {
     lines: { trade: "עמלות קנייה ומכירה", custody: "דמי משמרת", fixed: "דמי ניהול חשבון", fx: "המרת מטבע", other: "עמלות אחרות", account: "דמי ניהול חשבון עו״ש" } as Record<string, string>,
     /** The legend's item for the account's own fee and a bank's current account (D64), which share its colour (readers, 2026-11-06: "דמי ניהול חשבון" alone read as either). */
     legendAccount: "דמי ניהול חשבון ניירות ערך ועו״ש",
+    /** The same item where no bar shown counts a current account (an investment house, a bank marked as the person's own): a legend names only what is drawn. */
+    legendSecurities: "דמי ניהול חשבון ניירות ערך",
     lineAbout: (line: string) => `מה החשבון גובה: ${line}`,
     /** Where a part of a cost bar's price comes from, said in the box that opens on pointing at it or tapping it (2026-11-04). */
     sourceList: (house: string) => `מהתעריפון של ${house}`,
@@ -3751,7 +3754,7 @@ export const invest = {
     },
     /** D65 and D66 (2026-11-06): said once, for an index with funds bought abroad; `capped`: the houses whose price lists print a limit on the spread, which their figures count at the limit (F-13). */
     abroadTitle: "מה לא נכנס למחיר של קרן שנקנית בחו״ל",
-    abroadSpread: (capped: string[]) => `מעבר לעמלת המרת המטבע, הבנק או בית ההשקעות ממירים את השקלים לדולרים בשער שהם קובעים, שיכול להיות גרוע משער השוק. בתעריפון של רוב הבנקים ובתי ההשקעות אין תקרה לפער הזה, ולכן הוא לא נכנס לחישוב. תקרה לפער כתובה רק אצל ${andList(capped.map((x, i) => (i > 0 && i === capped.length - 1 && /^[A-Za-z]/.test(x) ? `־${x}` : x)))}, ואצלם הפער נכנס לחישוב לפי התקרה.`,
+    abroadSpread: (capped: string[]) => `מעבר לעמלת המרת המטבע, הבנק או בית ההשקעות ממירים את השקלים לדולרים בשער שהם קובעים, שיכול להיות גרוע משער השוק. בתעריפון של רוב הבנקים ובתי ההשקעות אין תקרה לפער הזה, ולכן הוא לא נכנס לחישוב. תקרה לפער כתובה רק אצל ${andList(capped.map((x, i) => (i > 0 && i === capped.length - 1 && /^[A-Za-z]/.test(x) ? `־${x}` : x)))}. אצלם החישוב סופר את הפער בגובה התקרה.`,
     abroadOthers: "גם גופים בחו״ל גובים עמלות מהבנק או מבית ההשקעות: ברוקר, הגוף ששומר את ניירות הערך, הבורסה או רשויות. רוב הבנקים ובתי ההשקעות מעבירים אותן ללקוח בלי תקרה, והן לא נכנסות לחישוב, ולכן קרן שנקנית בחו״ל יכולה לעלות יותר ממה שמחושב כאן.",
     yoursTag: "החשבון שלכם",
     standingTag: ownTermsCopy.provider.standingTag,

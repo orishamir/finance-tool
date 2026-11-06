@@ -241,7 +241,7 @@ const NAMES_CLASS: Record<string, RegExp> = {
 };
 interface PremiseSnapshot {
   provider: { class: string; part_of?: string };
-  current_account?: { monthly_minimum: { value: unknown; unit: string } };
+  current_account?: { monthly_minimum: { value: unknown; unit: string; source?: { quote?: string } } };
   missing?: boolean;
   price_for_he?: string;
   left_out?: unknown[];
@@ -457,6 +457,8 @@ export function checkPricePremises(snap: PremiseSnapshot): string[] {
   if (snap.provider.class === "bank" && !snap.provider.part_of && !ca) out.push("current_account: a bank's record says what its current account costs a month, from its price list (D64)");
   if ((snap.provider.class !== "bank" || snap.provider.part_of) && ca) out.push("current_account: only a bank's own record carries a current account (D64)");
   if (ca && (ca.monthly_minimum.unit !== "nis_per_month" || typeof ca.monthly_minimum.value !== "number")) out.push("current_account.monthly_minimum: a number in nis_per_month (F-102)");
+  // a minimum a row counts carries the price list's own words (data-schema "current_account"); a free account read only in a browser may not
+  if (ca && typeof ca.monthly_minimum.value === "number" && ca.monthly_minimum.value > 0 && !ca.monthly_minimum.source?.quote) out.push("current_account.monthly_minimum: a minimum the row counts quotes its price list (source.quote)");
   const g = snap.groups;
   if (!g) out.push("groups: a bank's or broker's record says its group prices, or that it has none, or that they could not be read");
   else {

@@ -427,6 +427,15 @@ function genericSpec(ctx: Ctx, option: OptionId): Spec | null {
 const houseOfSnap = (ctx: Ctx, s: FeesSnapshot): string => ctx.bundle.entered?.bases?.[s.id] ?? s.id;
 
 /**
+ * A bank whose current account costs something a month (F-102, D64): the banks the person can mark as theirs. A bank whose price list
+ * prints its current account free (One Zero) is left out, since marking it would change no figure.
+ */
+export const chargesCurrentAccount = (s: Pick<FeesSnapshot, "current_account">): boolean => {
+  const v = s.current_account?.monthly_minimum.value;
+  return typeof v === "number" && v > 0;
+};
+
+/**
  * The row counts a current account (F-102, D64): only on the indices page, at a bank whose record prices one, unless it is the bank the
  * person marked as theirs. An account built on a bank (F-101) is an account at that bank, so it reads the bank's record and mark.
  */
