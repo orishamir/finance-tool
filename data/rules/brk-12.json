@@ -1,76 +1,84 @@
 {
   "id": "BRK-12",
   "title": "The TASE clearing house: central counterparty, risk fund, member failure",
-  "title_he": "מסלקת הבורסה: צד נגדי מרכזי וקרן סיכונים, לפי הבורסה",
-  "text_he": "לפי הבורסה, מסלקת הבורסה משמשת צד נגדי מרכזי לעסקאות בבורסה: היא ערבה לסליקה אם צד אחד נכשל, ומנהלת קרן סיכונים שחברי המסלקה מפקידים בה ביטחונות. בין חבריה בנק ישראל וחברים משמורנים, שאינם משתתפים בקרן הסיכונים ורשאים רק להחזיק ניירות ערך ולטפל בהם. המקורות מתארים הגנה על סליקת העסקאות בין החברים, ולא אומרים מה קורה ללקוח שחבר הבורסה שלו קרס. מכללי המסלקה נקרא רק מועד הסליקה, ולכן זה תיאור של הבורסה ולא כלל שאומת.",
+  "title_he": "מסלקת הבורסה: צד נגדי מרכזי, קרן סיכונים וכשל של חבר",
+  "text_he": "לפי חוקי העזר של מסלקת הבורסה, המסלקה עומדת בין חבריה בעסקאות בבורסה: חבר שמכר ומסר את ניירות הערך מקבל את התמורה, וחבר ששילם מקבל את ניירות הערך או את שוויים, גם אם הצד השני לא עמד בחיובו; הערבות הזאת לא חלה על ריבית ודיבידנד. כל החברים חוץ מבנק ישראל ומחברים משמורנים משתתפים בקרן סיכונים, והבטוחות שהם מפקידים בה באות מכספם שלהם. כשחבר נכשל, המסלקה מממשת קודם את הבטוחות שלו, אחר כך משלמת סכום מכספה, ורק אחר כך גובה מהחברים האחרים, כל אחד עד חלקו בקרן. כל זה מגן על הסליקה בין המסלקה לחבריה, לא על החשבון של הלקוח.",
   "figure_names_he": {
-    "clearing_members": "מספר חברי המסלקה"
+    "risk_fund_minimum": "הגודל המזערי של קרן הסיכונים"
   },
-  "strength": "institution",
+  "strength": "primary",
   "dimensions": [
     "protection"
   ],
-  "likely_to_change": "no",
+  "likely_to_change": "yes",
+  "recheck_date": "2027-05-01",
   "figures": {
-    "clearing_members": {
-      "value": 21,
-      "unit": "count",
+    "risk_fund_minimum": {
+      "value": 400,
+      "unit": "nis_millions",
       "source": {
-        "url": "https://content.tase.co.il/media/kvjpsnmx/tase_ltd_periodic_report_for_2025.pdf?guid=b4232a8e-909e-473e-84c6-3ece08e3158a",
-        "title": "דוח תקופתי לשנת 2025 של הבורסה לניירות ערך בתל אביב, p.22, סעיף 1.7.3.1",
-        "publisher": "הבורסה לניירות ערך בתל אביב",
+        "url": "https://content.tase.co.il/media/r1phfszz/274625.pdf",
+        "title": "חוקי העזר של מסלקת הבורסה, חלק א', p.20, ch.ג s.1.1ב: \"בכל מקרה לא יפחת סכום קרן הסיכונים מארבע מאות מיליון ש\"ח\"",
+        "publisher": "מסלקת הבורסה לניירות ערך בתל אביב",
         "strength": "primary"
       },
-      "checked": "2026-10-25",
+      "checked": "2026-11-06",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
-      "update_rule": "market",
+      "update_rule": "provider-set",
       "rule_ids": [
         "BRK-12"
       ],
       "state": "sourced",
-      "notes": "21 clearing members per the 2025 periodic report, 1.7.3.1; includes 4 custodial members. Changes as members join or leave."
+      "notes": "The floor of the risk fund; its size is the largest periodic debit balance of a member or related members plus expected loss and realisation cost, less the clearing house's own share, plus NIS 200 m, updated quarterly."
     }
   },
   "il_finance_file": "brokerage-account.md",
-  "checked": "2026-10-26",
-  "scope": "unsettled",
-  "scope_institutions": [
-    {
-      "id": "tase",
-      "name_he": "הבורסה לניירות ערך בתל אביב"
-    }
-  ],
-  "scope_settle": "the TASE Clearing House rules (תקנון מסלקת הבורסה) on the central-counterparty guarantee, the risk fund and custodial members, or a current Securities Authority or Bank of Israel text describing them",
+  "checked": "2026-11-06",
+  "scope": "general",
   "sources": [
     {
-      "url": "https://content.tase.co.il/media/kvjpsnmx/tase_ltd_periodic_report_for_2025.pdf?guid=b4232a8e-909e-473e-84c6-3ece08e3158a",
-      "title": "TASE periodic report 2025, 1.7.3.1, 1.7.3.3, 1.31.3",
-      "title_he": "דוח תקופתי לשנת 2025 של הבורסה לניירות ערך בתל אביב בע״מ",
-      "publisher": "Tel Aviv Stock Exchange",
-      "publisher_he": "הבורסה לניירות ערך בתל אביב",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "pp.22 to 24, 76",
-      "locator_he": "עמודים 22 עד 24, 76",
-      "page": 22,
-      "checked": "2026-10-25",
-      "qualifier": "(TASE's own report)"
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/IsaFile_8276.pdf#page=93",
+      "title": "חוק ניירות ערך, התשכ\"ח-1968 (נוסח רשות ניירות ערך, 2012)",
+      "title_he": "חוק ניירות ערך, התשכ\"ח-1968 (נוסח רשות ניירות ערך, 2012)",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "רשות ניירות ערך",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "locator": "pp.93-94, s.50א(ב)-(ג); p.96, ss.50ב-50ג",
+      "locator_he": "עמודים 93 עד 94, סעיף 50א(ב)-(ג); עמוד 96, סעיפים 50ב-50ג",
+      "page": 93,
+      "checked": "2026-11-06",
+      "qualifier": "(text before the 2017 amendments; the amended s.50א and ss.50א3-50א4 are in REG-15)"
     },
     {
-      "url": "https://content.tase.co.il/media/uqtbtwm3/1150_foreign_bank_372262_eng.pdf",
-      "title": "TASE, How to become TASE Foreign Bank Member, January 2026",
-      "title_he": "How to become TASE Foreign Bank Member (ינואר 2026)",
+      "url": "https://content.tase.co.il/media/r1phfszz/274625.pdf#page=20",
+      "title": "חוקי העזר של מסלקת הבורסה לניירות ערך בתל-אביב בע\"מ, חלק א' - כללי",
+      "title_he": "חוקי העזר של מסלקת הבורסה לניירות ערך בתל-אביב בע\"מ, חלק א' - כללי",
       "publisher": "Tel Aviv Stock Exchange",
       "publisher_he": "הבורסה לניירות ערך בתל אביב",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "p.4",
-      "locator_he": "עמוד 4",
-      "page": 4,
-      "checked": "2026-10-25",
-      "qualifier": "(TASE's explanatory brochure)"
+      "kind": "exchange_rules",
+      "strength": "primary",
+      "locator": "pp.20-22 (ch.ג ss.1-4), p.24 (ch.ג'1 s.2.2), p.15 (ch.ב s.2ב), pp.31-37 (ch.ג'2)",
+      "page": 20,
+      "checked": "2026-11-06",
+      "qualifier": "(clearing-house rules made under Securities Law s.50ב, ISA-supervised)"
+    },
+    {
+      "url": "https://content.tase.co.il/media/t3coscsb/274627.pdf#page=44",
+      "title": "חוקי העזר של מסלקת הבורסה, חלק ב'",
+      "title_he": "חוקי העזר של מסלקת הבורסה, חלק ב'",
+      "publisher": "Tel Aviv Stock Exchange",
+      "publisher_he": "הבורסה לניירות ערך בתל אביב",
+      "kind": "exchange_rules",
+      "strength": "primary",
+      "locator": "pp.44-45 (ch.ז ss.1, 4-5)",
+      "page": 44,
+      "checked": "2026-11-06"
     }
+  ],
+  "derived_from": [
+    "REG-15"
   ]
 }

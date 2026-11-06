@@ -1,0 +1,72 @@
+{
+  "id": "BRK-58",
+  "title": "When a clearing member fails: what its clients' securities and cash have under the clearing-house rules, and what they lack",
+  "title_he": "כשחבר מסלקה נכשל: מה חוקי העזר של המסלקה נותנים לניירות הערך ולכסף של לקוחותיו, ומה לא",
+  "text_he": "לפי חוקי העזר של מסלקת הבורסה, ניירות הערך של לקוחות רשומים במסלקה על שם החבר, שמחזיק בהם כנאמן עבורם, בחשבון משנה ללקוחות שנפרד מחשבון הנוסטרו של החבר; אם חסרים ניירות ערך בחשבון הלקוחות והם נמצאים בנוסטרו, המסלקה רשאית להעביר אותם לחשבון הלקוחות. הכסף לא מופרד במסלקה: הסליקה הכספית של כל חשבונות החבר נעשית במאוחד. קרן הסיכונים מבטיחה את החובות של החברים כלפי המסלקה, והלקוח לא מקבל ממנה דבר ולא שום פיצוי. חוקי העזר לא אומרים מי מעביר את חשבונות הלקוחות לחבר אחר ומי נושא בחוסר, ואין בישראל הסדר שמפצה על חוסר כזה.",
+  "figure_names_he": {
+    "extra_client_subaccount_equity": "הון עצמי נוסף לכל חשבון משנה נוסף של לקוחות"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "protection"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-05-01",
+  "figures": {
+    "extra_client_subaccount_equity": {
+      "value": 5.74,
+      "unit": "nis_millions",
+      "source": {
+        "url": "https://content.tase.co.il/media/r1phfszz/274625.pdf",
+        "title": "חוקי העזר של מסלקת הבורסה, חלק א', p.15, ch.ב s.2, extra-equity table item (2): \"עבור כל חשבון משנה לקוחות נוסף (מלבד חשבון משנה הלקוחות הראשון)\"",
+        "publisher": "מסלקת הבורסה לניירות ערך בתל אביב",
+        "strength": "primary"
+      },
+      "checked": "2026-11-06",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "cpi-linked 1 jan",
+      "rule_ids": [
+        "BRK-58"
+      ],
+      "state": "sourced",
+      "notes": "Page updated to 1.1.26; the chapter's money amounts are CPI-linked and updated every 1 January (ch.ב s.1ה)."
+    }
+  },
+  "il_finance_file": "brokerage-account.md",
+  "checked": "2026-11-06",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://content.tase.co.il/media/t3coscsb/274627.pdf#page=5",
+      "title": "חוקי העזר של מסלקת הבורסה, חלק ב'",
+      "title_he": "חוקי העזר של מסלקת הבורסה, חלק ב'",
+      "publisher": "Tel Aviv Stock Exchange",
+      "publisher_he": "הבורסה לניירות ערך בתל אביב",
+      "kind": "exchange_rules",
+      "strength": "primary",
+      "locator": "p.5 (ch.א ss.2, 5), p.6 (ch.ב s.1), p.14 (ch.ד ss.1-7)",
+      "page": 5,
+      "checked": "2026-11-06",
+      "qualifier": "(clearing-house rules made under Securities Law s.50ב, ISA-supervised)"
+    },
+    {
+      "url": "https://content.tase.co.il/media/r1phfszz/274625.pdf#page=14",
+      "title": "חוקי העזר של מסלקת הבורסה, חלק א' - כללי",
+      "title_he": "חוקי העזר של מסלקת הבורסה, חלק א' - כללי",
+      "publisher": "Tel Aviv Stock Exchange",
+      "publisher_he": "הבורסה לניירות ערך בתל אביב",
+      "kind": "exchange_rules",
+      "strength": "primary",
+      "locator": "p.14 (ch.ב s.1ה), p.15 (ch.ב s.2), p.19 (ch.ב s.8), p.24 (ch.ג'1 s.2.2), p.36 (ch.ג'2 ss.6-7)",
+      "page": 14,
+      "checked": "2026-11-06"
+    }
+  ],
+  "derived_from": [
+    "BRK-12",
+    "BRK-07",
+    "BRK-08"
+  ]
+}
