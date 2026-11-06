@@ -70,12 +70,19 @@ The evidence behind them is `research/2026-10-28-founder-patterns.md`.
    own legend or labels. Blue and violet are reserved for entered and
    computed numbers; red, amber and green are status colours, never a
    series. Each page's spec carries its colour table.
-7. **One flaw means a sweep.** A flaw I report is fixed in the shared piece,
-   and every other place of the same kind is fixed with it. Before the fix
-   the reviewer learns from it: the screen I saw becomes a test case, the
-   reviewer runs on it first, and a miss becomes one general instruction
-   about what bothers a person, kept only if it catches other cases it was
-   not built from and adds no noise (`research/user-lab/learning-loop.md`).
+7. **One flaw means a sweep and a lesson.** A flaw I report is fixed in the
+   shared piece, and every other place of the same kind is fixed with it.
+   Every criticism of mine is learned three ways. The reviewer: before the
+   fix, the screen I saw becomes a test case, the reviewer runs on it first,
+   and a miss becomes one general instruction about what bothers a person,
+   kept only if it catches other cases it was not built from and adds no
+   noise (`research/user-lab/learning-loop.md`). The builders: the reason
+   goes, as one general rule, into the doc they build from
+   (`docs/design-system.md`, `docs/copy.md`), because notes kept anywhere
+   else never reach them. The checks: where the rule can be named, a guard
+   or a script enforces it. A criticism that repeats a rule already written
+   is told to me as a repeat and gets its check, since the writing did not
+   reach the work.
 8. **Both screen sizes, PC judged first.** Mockups are judged on PC; every
    screen is also checked at 390 px before it goes live, with 44 px touch
    targets and nothing that depends on hover.
