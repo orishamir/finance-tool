@@ -101,8 +101,9 @@ The main line is the guides: knowledge first (D68). A strong, sourced rule
 base and research come first, the guide pages are their readable face; the
 site explains every kind of holding and every financial term before any goal
 feature starts; the goal
-comparison, workbench, holdings and idle-cash pages wait. The indices page's
-work already built lands. This overrides the Roadmap issue's ranking, which
+comparison, workbench, holdings and idle-cash pages wait, and so does the
+indices page (founder, 2026-11-06: "its less important"; its branches
+indices-pc-fixes and indices-pricing are kept as they are). This overrides the Roadmap issue's ranking, which
 counts what unblocks the most.
 
 The user lab (`research/user-lab/`) is a habit beside it, at most about 5% of
