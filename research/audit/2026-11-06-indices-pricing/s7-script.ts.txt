@@ -1,0 +1,47 @@
+// one-off evidence for lens review S7 (not committed): what the conversion spread (D65, F-13) changes outside the indices page
+import { it } from "vitest";
+import { writeFileSync } from "node:fs";
+import { buildTariff, type WorkbenchInput } from "@finance-tool/engine";
+import { buildCompareBundle } from "./compare.server";
+import { readIndex } from "./compare-index";
+import { knownIndices, scoped } from "./invest";
+import { fxRunInput } from "./fx";
+import { buildWorkbenchBundle } from "./providers.server";
+import type { WorkbenchInputs } from "./providers";
+import { entered } from "./value";
+
+const wb = buildWorkbenchBundle();
+const t = wb.today;
+const plan = (amountNow: number, monthly: number): WorkbenchInputs => ({
+  amountNow, monthly, years: 20, grossReturn: 0.07, inflation: 0.02, age: null, income: null,
+  values: { amount: entered(amountNow, "nis", t), monthly: entered(monthly, "nis_per_month", t), years: entered(20, "years", t), returnV: entered(7, "pct_per_year", t), inflation: entered(2, "pct_per_year", t) },
+  fromGoal: false, returnFromParameter: false,
+});
+it("evidence", () => {
+  const out: Record<string, unknown> = {};
+  // every house's list tariff for each class and channel: where the engine now carries a spread (the fee page adds it to the conversion line)
+  const spreads: string[] = [];
+  for (const snap of wb.snapshots) for (const cls of ["foreign_securities", "tase_foreign_fund_units", "etf_units", "mutual_fund_units"]) for (const channel of ["direct", "branch"]) {
+    try {
+      const sc = scoped(snap);
+      const b = buildTariff({ instrumentClass: cls, wrapper: "brokerage-account", channel, ...(wb.fx ? { fx: fxRunInput(wb.fx) } : {}) } as WorkbenchInput, { snapshot: sc, level: "list" }, sc);
+      if (b.tariff.fxSpread) spreads.push(`${snap.id} ${cls} ${channel}: fx ${JSON.stringify(b.tariff.fx)} + spread ${b.tariff.fxSpread}`);
+    } catch (e) { spreads.push(`${snap.id} ${cls} ${channel}: refused ${(e as Error).message.slice(0, 80)}`); }
+  }
+  out.engineSpreads = spreads;
+  // the comparison's and the fee page's wrappers: which tariff carries a spread
+  const cb = buildCompareBundle();
+  out.compareWrappers = cb.wrappers.filter((w) => w.terms?.tariff).map((w) => `${w.id}: fx ${JSON.stringify((w.terms!.tariff as { fx?: unknown }).fx)} spread ${(w.terms!.tariff as { fxSpread?: number }).fxSpread ?? 0}`);
+  // the goal comparison's securities account over the indices (compare-index readIndex): the way it runs on, for each index and the range
+  const ways: string[] = [];
+  for (const [a, m] of [[6000, 400], [100000, 0]] as const) {
+    const p = plan(a, m);
+    for (const k of [undefined, ...knownIndices(wb).map((x) => x.id)]) {
+      const r = readIndex(wb, p, k);
+      const w = !r ? null : r.kind === "chosen" ? r.way : r.low;
+      ways.push(`${a}+${m} ${k ?? "range"}: ${w ? `${w.providerId} ${w.fundRecordId} ${Math.round(w.valueN)}` : "none"}`);
+    }
+  }
+  out.goalComparisonWays = ways;
+  writeFileSync(process.env.OUT!, JSON.stringify(out, null, 1));
+});
