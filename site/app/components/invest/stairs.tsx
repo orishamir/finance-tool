@@ -8,12 +8,12 @@ import { fmt } from "../../lib/format";
 import { fundLabels } from "../../lib/labels";
 import { pairCosts, type FundWay, type InvestView, type ProviderInfo, type WayPrice } from "../../lib/invest";
 import type { WorkbenchBundle, WorkbenchInputs } from "../../lib/providers";
-import { LANES, byGain, chainOf, gridOf, middleStart, openTopOf, rowsAt, unitOf, yScale, type Lane, type Pos, type Row, type Stair, type Taken } from "../../lib/stairs";
+import { LANES, byGain, chainOf, gridOf, laneCases, middleStart, openTopOf, rowsAt, unitOf, yScale, type Lane, type Pos, type Row, type Stair, type Taken } from "../../lib/stairs";
 import { computed, type SiteValue } from "../../lib/value";
 import { IconLock } from "../icons";
 import { LeadTail, Num } from "../provenance";
-import { MixedName, Card, useHeldHeight, DiffFigure, DiffHead, DiffRow, GreyLine, LabelRow, STAIRS_SLOTS, STAIR_SWATCH, StairsChart, StairsSteps, StairsTable, cx, type StairColumn, type StairHue, type StairStep } from "../kit";
-import { allFunds, wholeParts } from "./pair";
+import { MixedName, Card, HoldTallest, LongestCase, useHeldHeight, DiffFigure, DiffHead, DiffRow, GreyLine, LabelRow, STAIRS_SLOTS, STAIR_SWATCH, StairsChart, StairsSteps, StairsTable, cx, type StairColumn, type StairHue, type StairStep } from "../kit";
+import { allFunds, LONGEST_AMOUNT, LONGEST_LEFT, wholeParts } from "./pair";
 import { ProviderLink, providerName } from "./sections";
 
 /** A signed whole-shekel figure isolated for a Hebrew line: "+4,875 ₪", "−1,524 ₪", "0 ₪". */
@@ -219,8 +219,9 @@ export const StairsSection = memo(function StairsSection({ view, bundle, plan, s
     return fw ? fundLabels(fw.rec, view.index, fw.option).filter((l) => l.id === "hedged" || l.id === "hedged-many") : [];
   };
   const titleOf = (r: Row) => (r.lane === "account" ? house(r.to.a).short : r.lane === "kind" ? t.kinds[r.kind!] ?? r.kind! : nameOfFund(r.to.f));
-  const laneBlock = (lane: Lane) => {
-    const mine = rows.filter((r) => r.lane === lane);
+  // `list`: the rows of a case laid out unseen (laneCases), with a turn on its second row, so the hold counts the turn's thicker line
+  const laneBlock = (lane: Lane, list: readonly Row[] = rows, unseen = false) => {
+    const mine = list.filter((r) => r.lane === lane);
     const priced = mine.filter((r) => r.d != null).sort(byGain);
     const grey = mine.filter((r) => r.d == null);
     return (
@@ -254,7 +255,7 @@ export const StairsSection = memo(function StairsSection({ view, bundle, plan, s
               d={d}
               unit={unit}
               open={r.open}
-              turn={i > 0 && priced[i - 1]!.d! >= 0 && d < 0}
+              turn={unseen ? i === 1 : i > 0 && priced[i - 1]!.d! >= 0 && d < 0}
               label={`${t.lanes[r.lane].word}: ${titleOf(r)}`}
               onTake={() => take(r)}
               diff={<DiffFigure d={d} words={{ more: t.more, fewer: t.fewer, same: t.same }} figure={<Num value={diffValue} />} />}
@@ -273,9 +274,16 @@ export const StairsSection = memo(function StairsSection({ view, bundle, plan, s
       </div>
     );
   };
+  const holdId = `${view.index.id}|${g.accounts.join(",")}|${g.funds.length}`;
+  const heldLane = (lane: Lane) => (
+    <HoldTallest id={`${holdId}|${lane}`} cases={() => laneCases(g)[lane].map((list) => laneBlock(lane, list, true))}>
+      {laneBlock(lane)}
+    </HoldTallest>
+  );
 
   // ---------------------------------------------------------------- what is true where the climb stopped
   const openTop = openTopOf(g);
+  const longestFundName = [...new Set(allFunds(view).map((f) => f.name))].sort((a, b) => b.length - a.length)[0] ?? "";
   const openNote =
     openTop && openTop.v > ceiling.v ? (
       <>
@@ -300,6 +308,39 @@ export const StairsSection = memo(function StairsSection({ view, bundle, plan, s
         {openNote}
       </>
     );
+
+  // the lines whose names and figures change with a pick or a plan, laid out unseen at their longest: every fund's name with the longest
+  // account's, and the longest amount (#190, fourth pass: 40 years at 12% put a long fund abroad in the status line, and the phone's
+  // step card grew 38 px; a pick changed the heading's words and moved the card's inside 29 px)
+  const longestHouse = view.providers.map((p) => p.short).sort((a, b) => b.length - a.length)[0] ?? "";
+  const fundNames = [...new Set(allFunds(view).map((f) => f.name))];
+  const sample = <Num value={computed(LONGEST_AMOUNT, "nis", "F-91", {}, { today, about: t.about.ceilingGap })} />;
+  const sampleLeft = <Num value={computed(LONGEST_LEFT, "nis", "F-91", {}, { today, about: t.about.left })} />;
+  const statusCases = [
+    ...fundNames.map((n) => (
+      <span key={`n${n}`}>
+        {t.statusNone} {sample}
+        {t.statusTogether} <span className="underline">{t.jump} {n}, {longestHouse}</span>
+        {openTop && <> {t.openNote} {sampleLeft}: {longestFundName}, {longestHouse}.</>}
+      </span>
+    )),
+    <span key="top">
+      {t.statusTop}
+      {openTop && <> {t.openNote} {sampleLeft}: {longestFundName}, {longestHouse}.</>}
+    </span>,
+  ];
+  const ceilingCases = fundNames.map((n) => (
+    <span key={n}>
+      {t.ceilingLine} {sampleLeft}, {n}, {longestHouse}.
+    </span>
+  ));
+  const hereCases = [t.hereExample, t.here].flatMap((lead) =>
+    fundNames.map((n) => (
+      <span key={lead + n} className="block text-lg font-semibold">
+        {lead} <MixedName>{n}</MixedName>, {longestHouse}. {t.hereLeft} {sampleLeft}.
+      </span>
+    )),
+  );
 
   return (
     <section aria-labelledby="invest-stairs-h" className="flex flex-col gap-4">
@@ -330,11 +371,15 @@ export const StairsSection = memo(function StairsSection({ view, bundle, plan, s
         </div>
         <div className="lg:hidden">
           <StairsSteps steps={steps} onGo={goTo} />
-          <p className="mt-2 text-sm">
-            {t.ceilingLine} <Num value={ceilingPrice.value} />, {nameOfPos(ceiling.pos)}.
-          </p>
+          <LongestCase className="mt-2 text-sm" cases={ceilingCases}>
+            <p>
+              {t.ceilingLine} <Num value={ceilingPrice.value} />, {nameOfPos(ceiling.pos)}.
+            </p>
+          </LongestCase>
         </div>
-        <p className="mt-1 min-h-[50px] text-sm max-md:min-h-[96px]">{status}</p>
+        <LongestCase className="mt-1 text-sm" cases={statusCases}>
+          <p>{status}</p>
+        </LongestCase>
         <div className="flex flex-wrap gap-x-[18px] gap-y-1 border-t border-border pt-1.5 text-xs text-muted-foreground">
           <span className="inline-flex items-center gap-1.5">
             <i className={cx("inline-block size-3 rounded-[2px]", STAIR_SWATCH.start)} />
@@ -356,17 +401,23 @@ export const StairsSection = memo(function StairsSection({ view, bundle, plan, s
         </div>
       </Card>
       <Card ref={heldRows} pad="roomy" className="flex flex-col gap-2">
-        <h3 className="text-lg font-semibold">
-          {atExample ? t.hereExample : t.here} <MixedName>{here.fundName}</MixedName>, <ProviderLink short p={here.house} />. {t.hereLeft} <Num value={here.left} />.
-        </h3>
-        {/* one sentence in both states, so a pick moves nothing below it */}
-        <p className="text-sm text-muted-foreground max-md:min-h-[2lh]">{example ? t.startExample : t.startPicked}</p>
+        <LongestCase cases={hereCases}>
+          <h3 className="text-lg font-semibold">
+            {atExample ? t.hereExample : t.here} <MixedName>{here.fundName}</MixedName>, <ProviderLink short p={here.house} />. {t.hereLeft} <Num value={here.left} />.
+          </h3>
+        </LongestCase>
+        {/* the longer of the two sentences, so a pick moves nothing below it */}
+        <LongestCase className="text-sm text-muted-foreground" cases={[<p key="e">{t.startExample}</p>, <p key="p">{t.startPicked}</p>]}>
+          <p>{example ? t.startExample : t.startPicked}</p>
+        </LongestCase>
         <p className="text-sm text-muted-foreground">{t.rowsHint}</p>
         <div className="grid items-start gap-x-9 gap-y-3 lg:grid-cols-2">
-          <div>{laneBlock("account")}</div>
+          {/* each lane held at its longest list on this index: on a phone they stand one under another, and a lane that grew moved the
+              lanes and everything below it (#190) */}
+          <div>{heldLane("account")}</div>
           <div className="flex flex-col gap-[22px]">
-            {laneBlock("kind")}
-            {laneBlock("fund")}
+            {heldLane("kind")}
+            {heldLane("fund")}
           </div>
         </div>
       </Card>

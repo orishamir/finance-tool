@@ -4,7 +4,7 @@ import { Fragment, useEffect, useLayoutEffect, useRef, useState, type CSSPropert
 import { useFlip } from "./chart-glide";
 import { cx } from "./cx";
 import { Unseen } from "./longest-case";
-import { heldRowsHeight, marksKey, type RowCases } from "./pick-list-hold";
+import { foldShown, heldFoldHeight, heldRowsHeight, marksKey, type FoldOrder, type RowCases } from "./pick-list-hold";
 
 export interface PickRow {
   key: string;
@@ -27,16 +27,16 @@ export interface PickRow {
    */
   cases?: { key: string; cells: ReactNode; marks?: string[] }[];
   caseKey?: string;
-  /** On a phone, false when the row can never stand among the fold's shown rows (it sorts last at every choice and cannot be chosen). */
-  canShow?: boolean;
 }
 
 /**
  * `columns`: the grid template after the radio (for example `"minmax(0,1fr) auto"`); `phoneColumns` the template below `md`, where
  * a cell may move to a second line (`max-md:row-start-2`). `head`: the column names, on the same grid. `phoneLimit`: on a phone, the
  * rows after the first N fold behind a button (`more` words it), the chosen row always shown; nothing is filtered out. The fold shows
- * the same number of rows whichever is chosen (a chosen row further down takes the last place), and it holds the height of the tallest
- * rows that can stand in it: a pick that sorts other rows into the fold moves nothing below the list (#190).
+ * the same rows whichever is chosen (a chosen row further down takes the last place, and a group's heading row is always shown), and it
+ * holds the height of the tallest rows that can stand in it: a pick that sorts other rows into the fold moves nothing below the list
+ * (#190). `orders`: every order the rows can take (one per state of the page), so the fold holds the tallest rows of any of them, whichever
+ * the page opened in; without it, the tallest N rows of the list.
  * `states`: the list's states (each fund that can be picked in a linked list), each the case key of every row; the list holds the height
  * of its tallest state, measured from the rows' cases whichever state is on the screen, so a pick that turns rows grey with their reasons
  * moves nothing below it (#190: up to 433 px on a phone), and opening the page on another state holds the same height.
@@ -79,7 +79,7 @@ export function holdOnPick(key: string, el: HTMLElement) {
   pending = holdOf(key, el);
 }
 
-export function PickList({ label, columns, phoneColumns, head, rows, phoneLimit, more, states }: { label: string; columns: string; phoneColumns?: string; head?: ReactNode; rows: PickRow[]; phoneLimit?: number; more?: (hidden: number) => string; states?: Record<string, string>[] }) {
+export function PickList({ label, columns, phoneColumns, head, rows, phoneLimit, more, states, orders }: { label: string; columns: string; phoneColumns?: string; head?: ReactNode; rows: PickRow[]; phoneLimit?: number; more?: (hidden: number) => string; states?: Record<string, string>[]; orders?: FoldOrder[] }) {
   const [open, setOpen] = useState(false);
   // a pick re-prices what is above the list (founder, 2026-10-27: "the whole page jumps up and down"): keep the tapped row where it
   // was on the screen, wherever the list now puts it
@@ -129,24 +129,7 @@ export function PickList({ label, columns, phoneColumns, head, rows, phoneLimit,
   const folds = !open && phoneLimit !== undefined && rows.length > phoneLimit + 1;
   // the rows the fold shows: the first N, the chosen one among them (further down, it takes the last place, so the count never changes);
   // a row that opens a group stays, so a group's heading is never hidden behind the fold, and the person's own rows stay
-  const shownInFold = new Set<number>();
-  if (folds) {
-    const sel = rows.findIndex((r) => r.selected);
-    const counted = (r: PickRow) => !r.keep && !(r.heading && !r.selected);
-    let left = phoneLimit!;
-    rows.forEach((r, i) => {
-      if (r.keep || r.selected) {
-        shownInFold.add(i);
-        if (counted(r)) left--;
-        return;
-      }
-      const reserve = sel > i && counted(rows[sel]!) ? 1 : 0;
-      if (left - reserve > 0) {
-        shownInFold.add(i);
-        left--;
-      } else if (r.heading) shownInFold.add(i);
-    });
-  }
+  const shownInFold = folds ? foldShown(rows.map((r) => ({ heading: !!r.heading, keep: !!r.keep, selected: r.selected })), phoneLimit!) : new Set<number>();
   const folded = (i: number) => folds && !shownInFold.has(i);
   const hidden = rows.filter((_, i) => folded(i)).length;
   // the folded rows and the rows' other states are laid out unseen, out of the flow, and measured (a row's height depends on its words at
@@ -162,11 +145,14 @@ export function PickList({ label, columns, phoneColumns, head, rows, phoneLimit,
       const now = inFlow.reduce((a, el) => a + h(el), 0);
       let most = now;
       if (folds && !window.matchMedia("(min-width: 48rem)").matches) {
-        const free = rowEls.filter((el) => el.dataset.keep === undefined);
-        const shown = free.filter((el) => el.dataset.folded === undefined);
-        const can = free.filter((el) => el.dataset.cannot === undefined || el.dataset.folded === undefined);
-        const tallest = can.map(h).sort((a, b) => b - a).slice(0, shown.length).reduce((a, x) => a + x, 0);
-        most = Math.max(most, now - shown.reduce((a, el) => a + h(el), 0) + tallest);
+        // a row's height in its tallest case, folded rows included (laid out unseen): the fold holds the tallest rows it can show
+        const byKey = new Map(rowEls.map((el) => [el.dataset.pickKey!, h(el)]));
+        for (const el of list.querySelectorAll<HTMLElement>(":scope > [data-case-of]")) byKey.set(el.dataset.caseOf!, Math.max(byKey.get(el.dataset.caseOf!) ?? 0, h(el)));
+        const height = (k: string) => byKey.get(k) ?? 0;
+        // without the orders, the tallest N of the list's other rows, beside the person's own (always shown)
+        const free = rows.filter((r) => !r.keep).map((r) => r.key).sort((a, b) => height(b) - height(a));
+        const keepNow = rows.filter((r) => r.keep).reduce((a, r) => a + height(r.key), 0);
+        most = Math.max(most, orders?.length ? heldFoldHeight(orders, phoneLimit!, height) : heldFoldHeight([{ keys: free, headings: new Set(), choosable: new Set() }], phoneLimit!, height) + keepNow);
       }
       if (states?.length) {
         // every state from the rows' cases, the one on the screen included (its real rows lack the marks a tap can bring)
@@ -215,7 +201,6 @@ export function PickList({ label, columns, phoneColumns, head, rows, phoneLimit,
           data-flip={r.key}
           {...(folded(i) ? { "data-folded": "" } : {})}
           {...(r.keep ? { "data-keep": "" } : {})}
-          {...(r.canShow === false ? { "data-cannot": "" } : {})}
           {...(r.caseKey !== undefined ? { "data-case-key": r.caseKey } : {})}
           tabIndex={r.selected ? 0 : -1}
           onClick={(e) => {

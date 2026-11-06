@@ -594,6 +594,15 @@ function unavailable(s: FeesSnapshot, option: OptionId): Availability | null {
   return null;
 }
 
+/**
+ * A price the person left empty in an account they typed (its conversion): carried as an open entry, so that kind of fund has no price
+ * there, but it is a price not known, never a doubt about whether the account sells it (#190, fourth pass: the stairs listed it under
+ * "יש ספק אם נמכרת שם" while its own row said the conversion was not typed). Such an entry is the person's, with no document behind it.
+ */
+export function leftEmpty(s: FeesSnapshot | undefined, option: OptionId): boolean {
+  return (s?.availability ?? []).some((a) => a.available === "unknown" && a.source.url === "local" && a.applies_to.some((c) => AVAILABILITY_CLASSES[option].includes(c)));
+}
+
 /** Why the documents leave this kind of holding open at the house: said on its grey row (2026-10-31). */
 export function doubtOf(s: FeesSnapshot | undefined, option: OptionId): string | null {
   for (const a of s?.availability ?? []) if (a.available === "unknown" && a.applies_to.some((c) => AVAILABILITY_CLASSES[option].includes(c))) return a.reason_he ?? null;

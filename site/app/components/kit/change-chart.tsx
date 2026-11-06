@@ -5,7 +5,7 @@ import { useState, type PointerEvent, type ReactNode } from "react";
 import { tickFade, ticksOn, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn } from "./chart-glide";
 import { pickDim, useChartPick } from "./chart-interact";
 import { cx } from "./cx";
-import { TableCols } from "./table-cols";
+import { PHONE_GONE, TableCols } from "./table-cols";
 import { ChoiceChips } from "./choice";
 import { useWidth } from "./marker";
 
@@ -31,8 +31,8 @@ const TOP = 12;
 const BOTTOM = 22;
 const LEFT = 64;
 const RIGHT = 104;
-/** A column left out on a phone stays in the table at width 0 (hiding the cell would move the next cell into its column). */
-const GONE = "max-md:invisible max-md:!p-0 overflow-hidden";
+/** A column left out on a phone leaves the grid with its <col> (TableCols), so its cells go too. */
+const GONE = PHONE_GONE;
 
 export function ChangeChart({
   lines,

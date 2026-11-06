@@ -16,7 +16,7 @@ import { Foot } from "../components/invest/foot";
 import { DollarSection } from "../components/invest/dollar";
 import { StairsSection } from "../components/invest/stairs";
 import { CustomEntriesHost } from "../components/invest/custom-entries";
-import { Callout } from "../components/kit";
+import { Callout, useSwapGlide } from "../components/kit";
 import { Sheet } from "../components/Sheet";
 import { PageShell } from "../components/shell";
 import { RulesLine } from "../components/provenance";
@@ -260,6 +260,9 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
 
   const rules = ["ETF-31", "ETF-24", "ETF-51", "ETF-75", "TXS-09", "TXF-22"].filter((id) => wb.rules.some((r) => r.id === id));
 
+  // another index replaces what lies below the pills, and on a phone it may move it (D62): it dims on the tap and fades in where it lands
+  const swap = useSwapGlide<HTMLDivElement>(index?.id ?? customId ?? "");
+  const go = (p: string) => swap.begin(() => navigate(p));
   const chips = (
     <IndexChips
       known={known}
@@ -268,11 +271,11 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
       bundle={wb}
       onRemove={(id) => {
         invest.remove(id);
-        if (index?.id === id) navigate(INDICES_PATH);
+        if (index?.id === id) go(INDICES_PATH);
       }}
       onRename={invest.rename}
       onSave={(x) => invest.add(x)}
-      onGo={(p) => navigate(p)}
+      onGo={go}
     />
   );
 
@@ -297,6 +300,7 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
           <Head />
           {chips}
         </div>
+        <div ref={swap.ref} className="flex flex-col gap-5 lg:gap-6">
         {customId && !exposureId && !index && <Callout tone="caution">{c.custom.missing}</Callout>}
         {!index || !view ? (
           <p className="text-muted-foreground">{c.chips.none}</p>
@@ -342,6 +346,7 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
             <RulesLine ids={rules} />
           </>
         )}
+        </div>
       </div>
       <Sheet open={panelOpen} onClose={() => setPanelOpen(false)} pc="center" height={78} labelledBy={`${headId}-as`}>
         <h2 id={`${headId}-as`} className="text-lg font-semibold mb-3">

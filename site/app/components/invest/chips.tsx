@@ -28,6 +28,7 @@ export function IndexChips({ known, customs, selectedId, bundle, onRemove, onRen
         onRename={onRename}
         onDelete={onRemove}
         add={{ label: c.chips.other, onClick: () => setAdding((v) => !v), expanded: adding }}
+        onFollow={onGo}
       />
       {adding && bundle && <CustomPanel bundle={bundle} customs={customs} onCancel={() => setAdding(false)} onSave={(x) => { setAdding(false); onSave(x); onGo(customIndexPath(x.id)); }} onKnown={(k) => { setAdding(false); onGo(indexPath(k)); }} />}
     </div>

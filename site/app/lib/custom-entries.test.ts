@@ -15,6 +15,7 @@ import { buildInvest, cheapestWay, indexById, indexSeenBy, optionOfFund, pairCos
 import { buildWorkbenchBundle } from "./providers.server";
 import type { WorkbenchInputs } from "./providers";
 import { applyImport, buildStateFile, ensureLoaded, exportCounts, flush, getSnapshot, isEmptyState, readImport, removeCustomBroker, removeCustomFund, removeCustomIndex, resetStore, saveCustomBroker, saveCustomFund, saveCustomIndex, STATE_KEY, stateFileText, type StateV3 } from "./state";
+import { gridOf } from "./stairs";
 import { entered, type SiteValue } from "./value";
 
 const bundle = buildWorkbenchBundle();
@@ -130,6 +131,8 @@ describe("a broker the person types ranks with the others (D44)", () => {
     expect(abroadOnSp.length).toBeGreaterThan(0);
     for (const f of abroadOnSp) expect(priced(f.byHouse[noFx.id])).toBe(false);
     expect(whyNoPrice(b2, noFx.id, abroadOnSp[0]!)).toBe(invest.customEntries.fxUnknown);
+    // the stairs say the same: a price not typed, never a doubt whether the account sells it (#190, fourth pass)
+    expect(gridOf(onSp, b2.snapshots).why(noFx.id, abroadOnSp[0]!.rec.id)).toBe("n");
   });
 
   it("a fund typed with a fee left empty has no price, with the reason; a fee typed as 0 is priced (#190)", () => {

@@ -92,7 +92,8 @@ describe("the index page's sections render", () => {
     const out = shown(html(createElement(PairResult, { view, bundle, plan: { ...plan, returnFromParameter: true }, pick, chosen: false, onPick: () => undefined })));
     expect(out).not.toContain("הבחירה שלכם");
     const fund = view.options.flatMap((o) => o.funds).find((f) => f.rec.id === pick.fund)!;
-    expect(out).toContain(fund.name);
+    // an index's name keeps its number on the line ("S&P\u00a0500")
+    expect(out.replace(/\u00a0/g, " ")).toContain(fund.name);
   });
   it("neither list leaves a row out: every account and every fund is listed, priced or with its reason", () => {
     const pick = pickOfHeadline(view)!;
@@ -275,6 +276,12 @@ describe("the tie set of F-80 in the tiles (#190)", () => {
     expect(tieCount(sp, head, theta)).toBe(3);
     expect(crowned(sp, head, theta)).toBe(false);
   });
+  it("the tied pair in neither tile is named under them, with its number where another fund has its name (#190, fourth pass)", () => {
+    const out = shown(html(createElement(PairResult, { view: sp, bundle, plan: base, pick: head, chosen: false, onPick: () => undefined }))).replace(/\u00a0/g, " ");
+    const line = out.slice(out.indexOf(invest.pair.tieWhy(3)));
+    expect(line).toContain(`${invest.pair.tieThird} פסגות ${invest.pair.tieWith} iShares Core S&P 500 UCITS ETF USD (Accumulating)`);
+    expect(line).toContain("1159250");
+  });
   it("before any pick, the tile says how many pairs share the top, and no pair is called first or next", () => {
     const out = shown(html(createElement(PairResult, { view: sp, bundle, plan: base, pick: head, chosen: false, onPick: () => undefined })));
     expect(out).toContain(invest.pair.tieTop(3));
@@ -314,15 +321,18 @@ describe("the tie set of F-80 in the tiles (#190)", () => {
     expect(out).toContain("[overflow-wrap:anywhere] max-md:row-start-3 max-md:col-span-2");
     expect(out).not.toContain("truncate text-xs");
     const longest = allFunds(sp).map((f) => f.name).sort((a, b) => b.length - a.length)[0]!;
-    expect(out.replace(/<[^>]+>/g, "").replace(/&amp;/g, "&").split(longest).length - 1).toBeGreaterThanOrEqual(2);
+    expect(out.replace(/<[^>]+>/g, "").replace(/&amp;/g, "&").replace(/\u00a0/g, " ").split(longest).length - 1).toBeGreaterThanOrEqual(2);
   });
-  it("a pick of another fund moves nothing below the lists: each account row carries the grey states it takes with the other funds, and a fund priced nowhere holds no room in the fold", () => {
+  it("a pick of another fund moves nothing below the lists: each account row carries the grey states it takes with the other funds; the fold holds the rows of every account's order (pick-list-hold)", () => {
     const out = html(createElement(AccountColumn, { view: sp, bundle, years: 10, pick: head, onPick: () => undefined }));
     const abroad = allFunds(sp).find((f) => f.option === "abroad" && f.best && !("valueN" in (f.byHouse.psagot ?? {})))!;
     expect(abroad).toBeDefined();
     expect(out).toMatch(/data-case-of="psagot" data-case="grey\|/);
     const funds = html(createElement(FundColumn, { view: sp, bundle, plan: base, today: t, pick: head, onPick: () => undefined, filter: null, onFilter: () => undefined }));
-    expect(funds).toMatch(/data-pick-key="us-voo"[^>]*data-cannot=""/);
+    // no row is marked as one the fold never shows: the fold reads every account's order instead (#190, fourth pass: a row so marked stood
+    // in the fold the page opened with, and the first pick after a link moved what lies below by 233 px)
+    expect(funds).toContain('data-pick-key="us-voo"');
+    expect(funds).not.toContain("data-cannot");
   });
   it("why no pair is first is a line under both tiles, not inside one: held there, it left a hole in the tile when there was no tie", () => {
     const out = html(createElement(PairResult, { view: sp, bundle, plan: base, pick: head, chosen: false, onPick: () => undefined }));

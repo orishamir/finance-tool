@@ -49,6 +49,8 @@ export interface ChipListProps {
   /** Needed only when a pill can be renamed or deleted. */
   words?: ChipListWords;
   onSelect?: (id: string) => void;
+  /** A pill link the page follows itself, to answer the tap before the next page is laid out (useSwapGlide, D62); a plain link without it. */
+  onFollow?: (href: string) => void;
   /** `name` is trimmed and may be empty; the page decides what an empty name means. */
   onRename?: (id: string, name: string) => void;
   onDelete?: (id: string) => void;
@@ -109,7 +111,7 @@ export function dropOrder(order: string[], id: string, x: number, y: number, rec
 
 const ic = { strokeWidth: 1.75, "aria-hidden": true } as const;
 
-export function ChipList({ heading, headingHidden, headingId, note, items, value, words, onSelect, onRename, onDelete, canRemove, onMove, renameInitial, renamePlaceholder, add, footer }: ChipListProps) {
+export function ChipList({ heading, headingHidden, headingId, note, items, value, words, onSelect, onFollow, onRename, onDelete, canRemove, onMove, renameInitial, renamePlaceholder, add, footer }: ChipListProps) {
   const [drag, setDragState] = useState<Drag | null>(null);
   /** The drag as the pointer handlers last left it (they can run before React renders the previous move). */
   const live = useRef<Drag | null>(null);
@@ -230,7 +232,18 @@ export function ChipList({ heading, headingHidden, headingId, note, items, value
               {renaming === i.id ? (
                 <RenameInput initial={renameInitial ? renameInitial(i.id) : i.label} placeholder={renamePlaceholder ? renamePlaceholder(i.id) : i.label} label={words?.renameField ?? ""} onDone={(name) => finishRename(i, name)} />
               ) : i.href ? (
-                <Link to={i.href} data-chip-face aria-current={on ? "page" : undefined} className={faceClass(i, false)}>
+                <Link
+                  to={i.href}
+                  data-chip-face
+                  aria-current={on ? "page" : undefined}
+                  className={faceClass(i, false)}
+                  onClick={(e) => {
+                    // a plain tap on another pill: the page follows it itself; a new tab, or the pill already shown, stays the browser's
+                    if (!onFollow || on || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+                    e.preventDefault();
+                    onFollow(i.href!);
+                  }}
+                >
                   {inside(i)}
                 </Link>
               ) : (

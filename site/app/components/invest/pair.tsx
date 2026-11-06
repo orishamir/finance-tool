@@ -15,7 +15,7 @@ import { computed, ownBy, type SiteValue } from "../../lib/value";
 import { fmt } from "../../lib/format";
 import { IconLock } from "../icons";
 import { Num } from "../provenance";
-import { AlsoChanged, holdOnPick, MixedName, Button, figureFit, Card, ChartLegend, CostStack, FeeWordsNote, LabelChip, LabelFilter, LabelRow, LongestCase, PickList, ProductIdLink, Sentence, Stat, StatRow, Swatch, Tag, cx, GroupPriceFold, useChartPick, type ChartPick, useHeldHeight, type CostPart, type GroupChoice, type PickRow } from "../kit";
+import { AlsoChanged, ClampedText, holdOnPick, MixedName, NameLine, Button, figureFit, Card, ChartLegend, CostStack, FeeWordsNote, LabelChip, LabelFilter, LabelRow, LongestCase, PickList, ProductIdLink, Sentence, Stat, StatRow, Swatch, Tag, cx, GroupPriceFold, useChartPick, type ChartPick, useHeldHeight, type CostPart, type FoldOrder, type GroupChoice, type PickRow } from "../kit";
 import { groupNameOf, isGroupPrice, isGroupProvider, pickableGroups } from "../../lib/group-pick";
 import { optionClass, OptionTag, reasonText } from "./parts";
 import { ProviderLink, providerName } from "./sections";
@@ -347,10 +347,27 @@ export function PairResult({ view, bundle, plan, settled, pick, chosen, onPick }
         <Num value={nis(Math.abs(amount), "F-91", about, bundle.today, { [c.pair.input(mineKey, about)]: a, [c.pair.input(otherKey, about)]: b })} /> {amount > 0 ? c.pair.gapMore : c.pair.gapLess}
       </>
     );
-  // each tile names its pair on one line of its own: the account and the fund (2026-11-05: the tiles named neither)
+  // each tile names its pair (2026-11-05: the tiles named neither): the account on a line, the fund under it in its own direction, so a
+  // cut falls at the end of its name and the brand and the index always show (#190: "...re S&P 500 UCITS ETF" lost "iShares Co")
+  // The fund's number closes it, always (#190, fourth pass: readers could not tell iShares' "(Accumulating)" abroad from the same name on
+  // the exchange here, nor from its "(Dist)", once a phone's lines cut the name): beside the name on a computer, on a line of its own on a phone.
+  const numberOf = (p: Pick) => allFunds(view).find((f) => f.rec.id === p.fund)?.number ?? null;
   const pairLine = (p: Pick) => (
-    <span className="text-sm text-muted-foreground md:truncate max-md:line-clamp-2 max-md:min-h-[2lh]">
-      <MixedName>{nameOf(p)}</MixedName> · <MixedName>{fundOf(p)}</MixedName>
+    <span className="flex flex-col text-sm text-muted-foreground">
+      <span className="truncate">
+        <MixedName>{nameOf(p)}</MixedName>
+      </span>
+      <span className="flex max-md:flex-col md:items-baseline md:gap-2 min-w-0">
+        <NameLine className="md:truncate md:flex-initial min-w-0 max-md:line-clamp-2 max-md:min-h-[2lh]">{fundOf(p)}</NameLine>
+        {/* a line held on a phone even for a fund typed without a number, so a pick of one moves nothing */}
+        <span className="shrink-0 max-md:min-h-[1lh]">
+          {numberOf(p) && (
+            <bdi dir="ltr" className="num-id">
+              {numberOf(p)}
+            </bdi>
+          )}
+        </span>
+      </span>
     </span>
   );
   // every title a tile can carry, laid out unseen: a tie that comes or goes with a slider, a pick, another index move nothing (#190)
@@ -367,8 +384,41 @@ export function PairResult({ view, bundle, plan, settled, pick, chosen, onPick }
   const otherTitle = onBest ? (tie ? c.pair.tieOther : c.pair.next) : crown ? c.pair.cheapestStar : c.pair.tieTop(n);
   const mineTag = onBest ? (tie ? c.pair.tiedWith : c.pair.cheapestTag) : tied ? c.pair.tiedWith : null;
   const moreIfOther = pcOther ? gap(pcOther.left, c.pair.input(otherKey, c.pair.colLeft), pc.left, c.pair.input(mineKey, c.pair.colLeft), c.pair.moreIfCheapest) : null;
-  // why there is no order, counted as the title counts (#190: "one of 3" stood above "the two pairs are equal")
-  const whyTie = tie || tied ? c.pair.tieWhy(Math.max(n, 2)) : null;
+  // why there is no order, counted as the title counts (#190: "one of 3" stood above "the two pairs are equal"); the pairs of the tie in
+  // neither tile are named after it, one and a count, so "3" points at a pair the reader can find (#190, fourth pass)
+  // a fund named as another of the index is (iShares on the exchange here and abroad) is told apart by its number
+  const twin = (id: string) => { const f = allFunds(view).find((x) => x.rec.id === id); return f && allFunds(view).some((x) => x !== f && x.name === f.name) ? f.number : null; };
+  const pairName = (p: { house: string; fund: string }) => (
+    <Fragment key={`${p.house}|${p.fund}`}>
+      <MixedName>{nameOf(p)}</MixedName> {c.pair.tieWith} <MixedName>{fundOf(p)}</MixedName>
+      {twin(p.fund) && <> {`\u2066${twin(p.fund)}\u2069`}</>}
+    </Fragment>
+  );
+  const rest = tie || tied ? tieSet(view, best, theta).filter((x) => !(x.house === pick.house && x.fund === pick.fund) && !(other && x.house === other.house && x.fund === other.fund)) : [];
+  const restLine = (names: ReactNode[], more: number) =>
+    names.length === 0 ? null : (
+      <>
+        {" "}
+        {names.length === 1 && more === 0 ? c.pair.tieThird : c.pair.tieRest}{" "}
+        {names.map((x, i) => (
+          <Fragment key={i}>
+            {i > 0 && "; "}
+            {x}
+          </Fragment>
+        ))}
+        {more > 0 && <> {c.pair.tieMore(more)}</>}.
+      </>
+    );
+  const whyTie = tie || tied ? <>{c.pair.tieWhy(Math.max(n, 2))}{restLine(rest.slice(0, 1).map(pairName), Math.max(0, rest.length - 1))}</> : null;
+  const longestPairNames = (() => {
+    const houses = view.providers.map((p) => p.short).sort((a, b) => b.length - a.length);
+    const funds = [...new Set(allFunds(view).map((f) => f.name))].sort((a, b) => b.length - a.length);
+    return [0].map((i) => (
+      <Fragment key={i}>
+        <MixedName>{houses[0] ?? ""}</MixedName> {c.pair.tieWith} <MixedName>{funds[i] ?? funds[0] ?? ""}</MixedName> {`\u2066${"0".repeat(12)}\u2069`}
+      </Fragment>
+    ));
+  })();
   const gapCases = [c.pair.vsYours, c.pair.vsRight, c.pair.vsCheapest, c.pair.moreIfCheapest].map((vs) => (
     <span key={vs} className="block">
       {LONGEST_GAP} {vs}
@@ -458,7 +508,7 @@ export function PairResult({ view, bundle, plan, settled, pick, chosen, onPick }
         </div>
         {/* under a tie, why no pair is first: a line of the block's width under both tiles, held whether or not there is a tie (#190: held
             inside the narrow tile it left a 127 px hole on a phone when there was none) */}
-        <LongestCase className="text-xs text-muted-foreground md:basis-full" cases={[<p key="t">{c.pair.tieWhy(TIE_MOST)}</p>]}>
+        <LongestCase className="text-xs text-muted-foreground md:basis-full" cases={[<p key="t">{c.pair.tieWhy(TIE_MOST)}{restLine(longestPairNames, TIE_MOST - 3)}</p>]}>
           <p>{whyTie}</p>
         </LongestCase>
       </div>
@@ -562,7 +612,10 @@ export function AccountColumn({ view, bundle, years, monthly = 1, pick, onPick, 
   // that names a group opens its house's fold, so the picked radio is in view
   const [openGroups, setOpenGroups] = useState<string[]>(() => (group ? [group.house] : []));
   const onGroup = (id: string, open: boolean) => setOpenGroups((xs) => (open ? (xs.includes(id) ? xs : [...xs, id]) : xs.filter((x) => x !== id)));
-  const held = useHeldHeight<HTMLDivElement>(`${heldKey}:${openGroups.join()}`);
+  // a grey row's long reason opens at the person's tap, as a house's group prices do: the held height starts over with it
+  const [openWhys, setOpenWhys] = useState<string[]>([]);
+  const onWhy = (id: string, open: boolean) => setOpenWhys((xs) => (open ? (xs.includes(id) ? xs : [...xs, id]) : xs.filter((x) => x !== id)));
+  const held = useHeldHeight<HTMLDivElement>(`${heldKey}:${openGroups.join()}:${openWhys.join()}`);
   // the rows' cases, laid out unseen, hold heights a plan does not change: kept over a slider's moves, so they are not laid out again on
   // every key (#190: the cases of every state cost about 8 ms a key)
   const casesKept = useRef<{ key: string; byRow: Map<string, NonNullable<PickRow["cases"]>> } | null>(null);
@@ -631,6 +684,8 @@ export function AccountColumn({ view, bundle, years, monthly = 1, pick, onPick, 
   ];
   const snapshot = bundle.snapshots.find((s) => s.id === baseHouse);
   const at = fund.byHouse[pick.house];
+  // the way back names the account it goes back to: held at the longest name a row can carry
+  const longestShort = providers.map((p) => p.short).sort((a, b) => b.length - a.length)[0] ?? "";
   type Prov = (typeof providers)[number];
   // a house that sells a fund at a standing-order price keeps the tag's room whichever fund and plan (a monthly 0 and back moves nothing)
   const standingSomewhere = (id: string) => allFunds(view).some((f) => { const a = f.byHouse[id]; return priced(a) && a.standing; });
@@ -658,7 +713,7 @@ export function AccountColumn({ view, bundle, years, monthly = 1, pick, onPick, 
             {tiedTop && <span className="font-medium text-primary max-md:hidden">{c.pair.tieTag}</span>}
             {/* the tap on this account changed the fund too: said on the row tapped, with the way back (a 44 px target in the line's height) */}
             {/* unseen, it is held too, on one row at a time: the row a tap turns from grey to priced is the one that carries it */}
-            {unseen ? unseen.back && <AlsoChanged what={c.pair.movedFund} back={c.pair.moveBack} onBack={() => undefined} /> : p.id === baseHouse && moved?.half === "fund" && moved.back && <AlsoChanged what={c.pair.movedFund} back={c.pair.moveBack} onBack={backFrom(moved, p.id)} />}
+            {unseen ? unseen.back && <AlsoChanged what={c.pair.movedFund} back={c.pair.moveBackTo(longestShort)} onBack={() => undefined} /> : p.id === baseHouse && moved?.half === "fund" && moved.back && <AlsoChanged what={c.pair.movedFund} back={c.pair.moveBackTo(providerName(view, moved.prev.house)?.short ?? moved.prev.house)} onBack={backFrom(moved, p.id)} />}
             {(unseen ? standingSomewhere(p.id) : wp.standing && monthly > 0) && <span>{c.pair.standingTag}</span>}
           </span>
         </span>
@@ -679,7 +734,7 @@ export function AccountColumn({ view, bundle, years, monthly = 1, pick, onPick, 
     );
   };
   /** A grey row's cells for a fund with no price at the house: the reason the house's record gives for it. */
-  const greyCells = (p: Prov, f: FundWay) => {
+  const greyCells = (p: Prov, f: FundWay, unseen = false) => {
     const a = f.byHouse[p.id];
     const na = a && "availability" in a && a.availability ? a.availability : null;
     const other = otherWay(view, p.id);
@@ -703,7 +758,12 @@ export function AccountColumn({ view, bundle, years, monthly = 1, pick, onPick, 
         <span className="col-start-2 col-end-[-1] flex flex-col gap-0.5 text-xs leading-snug">
           {na && p.custom && <span>{c.customEntries.notSold}</span>}
           {/* the reason in words on the row, never only in a link's title (nothing depends on hover) */}
-          {!(na && p.custom) && <span>{whyNoPrice(bundle, p.id, f)}</span>}
+          {/* two lines of it, the rest at a tap: a record's nine-line reason made the list's tallest state about 450 px taller on a phone (#190) */}
+          {!(na && p.custom) && (
+            <ClampedText open={!unseen && openWhys.includes(p.id)} onOpenChange={(o) => onWhy(p.id, o)} more={c.pair.reasonMore} less={c.pair.reasonLess}>
+              {whyNoPrice(bundle, p.id, f)}
+            </ClampedText>
+          )}
           {/* the fund it names and its figure change with the plan: held at every fund the house prices, at the sliders' ends (#190: 18 px) */}
           {other && (
             <LongestCase cases={waysOf(view, p.id).map((w) => <span key={w.fund.rec.id}>{c.pair.elsewhere} <MixedName>{w.fund.name}</MixedName>, {c.pair.elsewhereLeft} {fmt.nisWhole(LONGEST_LEFT)}{w.at.open && ` (${c.pair.elsewhereOpen})`}</span>)}>
@@ -740,7 +800,7 @@ export function AccountColumn({ view, bundle, years, monthly = 1, pick, onPick, 
       if (seen.has(k)) continue;
       seen.add(k);
       if (k !== "priced") {
-        out.push({ key: k, cells: greyCells(p, f) });
+        out.push({ key: k, cells: greyCells(p, f, true) });
         continue;
       }
       const ways = pickable.flatMap((x) => { const a = x.byHouse[p.id]; return priced(a) ? [a] : []; });
@@ -755,7 +815,7 @@ export function AccountColumn({ view, bundle, years, monthly = 1, pick, onPick, 
     return out;
   };
   const states = pickable.map((f) => Object.fromEntries(providers.map((p) => [p.id, stateOf(p, f)])));
-  const casesKey = [view.index.id, fund.rec.id, view.yourBroker ?? "", openGroups.join(), group?.key ?? "", ...providers.map((p) => p.id).sort(), ...pickable.map((f) => f.rec.id).sort()].join("|");
+  const casesKey = [view.index.id, fund.rec.id, view.yourBroker ?? "", openGroups.join(), openWhys.join(), group?.key ?? "", ...providers.map((p) => p.id).sort(), ...pickable.map((f) => f.rec.id).sort()].join("|");
   if (casesKept.current?.key !== casesKey) casesKept.current = { key: casesKey, byRow: new Map(providers.map((p) => [p.id, casesOf(p)])) };
   const casesFor = (p: Prov) => casesKept.current!.byRow.get(p.id) ?? casesOf(p);
   const pickRows: PickRow[] = ok.map((r) => ({
@@ -962,17 +1022,33 @@ export function FundColumn({ view, bundle, plan, today, pick, chosen = true, onP
   const house = providerName(view, pick.house);
   if (!fund || !house) return null;
   const selAt = fund.byHouse[pick.house];
-  const rows = funds.map((f) => ({ f, at: f.byHouse[pick.house], labels: labelsOf(view, f, bundle) }));
+  const labelsBy = new Map(funds.map((f) => [f.rec.id, labelsOf(view, f, bundle)]));
+  const rowsAt = (houseId: string) => funds.map((f) => ({ f, at: f.byHouse[houseId], labels: labelsBy.get(f.rec.id)! }));
+  const rows = rowsAt(pick.house);
   // the labels that split the list: some funds have them, some do not
   const counts = new Map<string, { label: Label; count: number }>();
   for (const r of rows) for (const l of r.labels) counts.set(l.id, { label: l, count: (counts.get(l.id)?.count ?? 0) + 1 });
   // only what the fund is (its type, how it tracks, its currency, what it pays out, where it is held); the tax and paperwork labels are read, not filtered on
   const options = [...counts.values()].filter((x) => x.count > 0 && x.count < rows.length && FILTER_FAMILIES.has(x.label.family));
   const active = filter && counts.has(filter) ? filter : null;
-  const shown = rows.filter((r) => !active || r.labels.some((l) => l.id === active) || r.f.rec.id === pick.fund);
   const order = (r: (typeof rows)[number]) => (priced(r.at) ? (r.at.open ? 1 : 0) : 2);
   const kindRank = (r: (typeof rows)[number]) => (kinds && kindOf(r.f.rec) === "hedged" ? 1 : 0);
-  shown.sort((a, b) => kindRank(a) - kindRank(b) || order(a) - order(b) || (priced(b.at) ? b.at.valueN : 0) - (priced(a.at) ? a.at.valueN : 0));
+  // the list at an account: the filter's rows (the pick always among them), by kind, then priced first, then what each leaves
+  const sortedAt = (list: typeof rows) =>
+    list.filter((r) => !active || r.labels.some((l) => l.id === active) || r.f.rec.id === pick.fund).sort((a, b) => kindRank(a) - kindRank(b) || order(a) - order(b) || (priced(b.at) ? b.at.valueN : 0) - (priced(a.at) ? a.at.valueN : 0));
+  const shown = sortedAt(rows);
+  // every order the list takes, one per account a pick can bring, so a phone's fold holds the tallest rows of any (#190: it held the rows of
+  // the order the page opened in, and the first pick after a link moved what lies below by 233 px)
+  const opensGroup = (list: typeof rows, i: number) => kinds && (i === 0 || kindOf(list[i - 1]!.f.rec) !== kindOf(list[i]!.f.rec));
+  const orders: FoldOrder[] = view.providers.map((p) => {
+    const list = sortedAt(rowsAt(p.id));
+    return {
+      keys: list.map((r) => r.f.rec.id),
+      headings: new Set(list.filter((_, i) => opensGroup(list, i)).map((r) => r.f.rec.id)),
+      choosable: new Set(list.filter((r) => priced(r.at)).map((r) => r.f.rec.id)),
+      keep: new Set(list.filter((r) => isCustomFund(r.f.rec)).map((r) => r.f.rec.id)),
+    };
+  });
   const cur = view.index.exposure?.currency ?? "USD";
   const names = view.index.exposure?.other_currencies === true ? c.kinds.nameMany(c.currencies[cur] ?? cur) : c.kinds.name;
   const kindCount = { unhedged: shown.filter((r) => kindOf(r.f.rec) === "unhedged").length, hedged: shown.filter((r) => kindOf(r.f.rec) === "hedged").length };
@@ -1025,7 +1101,7 @@ export function FundColumn({ view, bundle, plan, today, pick, chosen = true, onP
     const at = r.at;
     const isSel = r.f.rec.id === pick.fund;
     const k = kindOf(r.f.rec);
-    const heading = kinds && (i === 0 || kindOf(shown[i - 1]!.f.rec) !== k) ? (
+    const heading = opensGroup(shown, i) ? (
       <span className="flex items-center gap-1.5">
         <Swatch shape="box" className={k === "hedged" ? "bg-chart-kind-hedged" : "bg-chart-kind-unhedged"} />
         {names[k]} · {c.kinds.groupCount(kindCount[k])}
@@ -1066,8 +1142,6 @@ export function FundColumn({ view, bundle, plan, today, pick, chosen = true, onP
     return {
       key: r.f.rec.id,
       ...(mineTyped ? { keep: true } : {}),
-      // a fund priced at no house sorts last at every account and cannot be picked: the fold never holds room for it
-      ...(why || (!r.f.best && !isSel) ? { canShow: false } : {}),
       ...(heading ? { heading } : {}),
       selected: isSel,
       muted: !priced(at),
@@ -1077,7 +1151,9 @@ export function FundColumn({ view, bundle, plan, today, pick, chosen = true, onP
       cells: (
         <>
           <span className="flex flex-col gap-1.5 min-w-0">
-            <span className={cx("leading-snug", mineTyped ? "[overflow-wrap:anywhere]" : "md:whitespace-nowrap")}>
+            {/* the name wraps inside its own column and the identifier moves to the next line whole: a long name run unwrapped across the
+                columns, under the note a pick brings to the row's end (#190: 19 px over "החשבון עבר ל…" at 1440) */}
+            <span className={cx("leading-snug", mineTyped && "[overflow-wrap:anywhere]")}>
               <span className={cx("font-semibold", mineTyped && "text-entered")}>
                 <MixedName>{r.f.name}</MixedName>
               </span>{" "}
@@ -1150,6 +1226,7 @@ export function FundColumn({ view, bundle, plan, today, pick, chosen = true, onP
           </>
         }
         rows={pickRows}
+        orders={orders}
       />
       <div className="px-5 py-3 flex flex-col gap-1.5 text-sm text-muted-foreground">
         <AddEntryButton kind="fund" />

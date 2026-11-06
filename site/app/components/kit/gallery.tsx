@@ -12,9 +12,9 @@ import { IconDrillIn } from "../icons";
 import { allLabels, label } from "../../lib/labels";
 import { fmt } from "../../lib/format";
 import { PileStory, PileYears } from "./pile-story";
-import { MixedName } from "./name";
+import { MixedName, NameLine } from "./name";
 import { AlsoChanged } from "./also-changed";
-import { AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, Button, Callout, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, LabelFilter, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, CompareTable, TableCols, CoverageFold, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, SortHead, ExposureCell, FeeKey, FeeNum, HelpMark, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, GainBars, GapNote, HeadlineFigure, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, ParameterLine, PercentField, PlanChips, KnobStrip, ChangeChart, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, RangeField, RankBadge, Section, SegmentedControl, SelectField, Sentence, TileChoice, ShareRings, SourceLine, Stat, StatRow, StatTile, StepButtons, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, ClaimList, DocLink, atPdfPage, GroupPriceFold, GroupPriceRows, PeriodStrip, type CostPart, type GroupEntry } from "./index";
+import { ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, Button, Callout, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, LabelFilter, PickList, FixedTable, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, CompareTable, TableCols, CoverageFold, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, SortHead, ExposureCell, FeeKey, FeeNum, HelpMark, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FieldState, FoldGroup, GainBars, GapNote, HeadlineFigure, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, ParameterLine, PercentField, PlanChips, KnobStrip, ChangeChart, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, RangeField, RankBadge, Section, SegmentedControl, SelectField, Sentence, TileChoice, ShareRings, SourceLine, Stat, StatRow, StatTile, StepButtons, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, ClaimList, DocLink, atPdfPage, GroupPriceFold, GroupPriceRows, PeriodStrip, type CostPart, type GroupEntry } from "./index";
 import type { AdvertisingEntry } from "@finance-tool/schema";
 
 const g = copy.gallery;
@@ -380,11 +380,15 @@ function Words({ today }: { today: string }) {
         <Grid>
           <State label="a Hebrew name that starts with Latin letters"><div>הקרן <MixedName>MTF סל (4D) S&P 500</MixedName>, בחשבון</div></State>
           <State label="a Latin name keeps its own direction"><div>הקרן <MixedName>iShares Core S&P 500 UCITS ETF</MixedName>, בחשבון</div></State>
+          <State label="NameLine: a name on a line of its own, cut at its end in reading order (the brand always shows)"><div className="w-48 text-sm"><NameLine className="truncate">iShares Core S&P 500 UCITS ETF USD (Accumulating)</NameLine><NameLine className="line-clamp-2">ילין לפידות מחקה (4D) S&P 500</NameLine></div></State>
         </Grid>
+      </Demo>
+      <Demo name="ClampedText" use={g.uses.ClampedText}>
+        <ClampedDemo />
       </Demo>
       <Demo name="AlsoChanged" use={g.uses.AlsoChanged}>
         <Grid>
-          <State label="in a line of a row (the account list)"><div className="text-xs"><AlsoChanged what={investWords.pair.movedFund} back={investWords.pair.moveBack} onBack={() => undefined} /></div></State>
+          <State label="in a line of a row (the account list)"><div className="text-xs"><AlsoChanged what={investWords.pair.movedFund} back={investWords.pair.moveBackTo("פסגות")} onBack={() => undefined} /></div></State>
           <State label="stacked at the end of a narrow cell (the fund list)"><div className="text-xs"><AlsoChanged stack what={investWords.pair.movedHouse("IBKR")} back={investWords.pair.moveBackTo("IBI")} onBack={() => undefined} /></div></State>
         </Grid>
       </Demo>
@@ -422,6 +426,17 @@ function Words({ today }: { today: string }) {
             <LongestCase cases={[<Sentence key="long" size="sm">{g.uses.LongestCase}</Sentence>]}>
               <Sentence size="sm">{g.sample.sentenceBefore}</Sentence>
             </LongestCase>
+          </State>
+        </Grid>
+      </Demo>
+      <Demo name="HoldTallest" use={g.uses.HoldTallest}>
+        <Grid>
+          <State label="three cases measured once; the block holds the tallest">
+            <div className="w-64 border border-dashed border-border">
+              <HoldTallest id="demo" cases={() => [1, 2, 3].map((n) => <Sentence key={n} size="sm">{Array.from({ length: n }, () => g.sample.sentenceBefore).join(" ")}</Sentence>)}>
+                <Sentence size="sm">{g.sample.sentenceBefore}</Sentence>
+              </HoldTallest>
+            </div>
           </State>
         </Grid>
       </Demo>
@@ -531,6 +546,19 @@ function Words({ today }: { today: string }) {
         </State>
       </Demo>
     </>
+  );
+}
+
+function ClampedDemo() {
+  const [open, setOpen] = useState(false);
+  return (
+    <State label="a long reason on a grey row: two lines, the rest at a tap">
+      <div className="w-64 text-xs">
+        <ClampedText open={open} onOpenChange={setOpen} more={investWords.pair.reasonMore} less={investWords.pair.reasonLess}>
+          {investWords.pair.notPossibleAny} {investWords.pair.notPossibleAny} {investWords.pair.notPossibleAny}
+        </ClampedText>
+      </div>
+    </State>
   );
 }
 
@@ -1195,6 +1223,9 @@ function Lists({ today }: { today: string }) {
         <State label="useFlip: rows slide to their new places">
           <FlipDemo />
         </State>
+        <State label="useSwapGlide: a switch that replaces what lies below it dims on the tap and fades in where the new content lands (D62)">
+          <SwapGlideDemo />
+        </State>
       </Demo>
       <Demo name="useYearZoom, ZoomBar, ZoomBrush, ChartTip" use={g.uses.YearZoom}>
         <State label="a longer range: pointing at or tapping a year reads it; on a computer a drag zooms, ctrl with the wheel too, and a double click returns" wide>
@@ -1310,6 +1341,25 @@ function LegendPickDemo() {
       <div className="flex h-7 gap-px">
         <span className={cx("flex-[2] rounded-s-sm bg-chart-value", dim("a"))} />
         <span className={cx("flex-1 rounded-e-sm bg-chart-fee", dim("b"))} />
+      </div>
+    </div>
+  );
+}
+
+function SwapGlideDemo() {
+  const [n, setN] = useState(2);
+  const swap = useSwapGlide<HTMLDivElement>(String(n));
+  return (
+    <div className="flex flex-col gap-2 items-start">
+      <Button variant="quiet" onClick={() => swap.begin(() => setN((x) => (x === 2 ? 5 : 2)))}>
+        switch
+      </Button>
+      <div ref={swap.ref} className="flex flex-col gap-1 w-40">
+        {Array.from({ length: n }, (_, i) => (
+          <span key={i} className="bg-card border border-border rounded-sm px-2 tabular-nums">
+            {i + 1}
+          </span>
+        ))}
       </div>
     </div>
   );

@@ -3670,6 +3670,11 @@ export const invest = {
     vsRight: "לעומת הזוג שמימין",
     /** Under a tie the two cost bars are told apart by where they stand. */
     gapLeadTie: "העלות בזוג העליון, לעומת הזוג שמתחתיו:",
+    /** The pairs of the tie that are in neither tile, named under them, so the count points at pairs the reader can find (#190). */
+    tieThird: "הזוג השלישי:",
+    tieRest: "הזוגות האחרים:",
+    tieWith: "עם",
+    tieMore: (n: number) => (n === 1 ? "ועוד זוג אחד" : `ועוד ${n} זוגות`),
     tieWhy: (n: number) => (n === 2 ? "ההפרש קטן מכדי לקבוע איזה זוג זול יותר, ולכן שני הזוגות שקולים." : `ההפרשים בין ${n} הזוגות הזולים ביותר קטנים מכדי לקבוע איזה מהם זול יותר, ולכן הם שקולים.`),
     /** An input of a computed figure, named by whose it is: "הבחירה שלכם: נשאר". */
     input: (who: string, what: string) => `${who}: ${what}`,
@@ -3728,9 +3733,9 @@ export const invest = {
     colYield: "תשואת חלוקה",
     colDiff: "לעומת הבחירה",
     chosen: "הבחירה",
-    /** Before any pick: the selected fund is the page's own, marked in the list, never "the choice" (#190). */
-    colDiffMarked: "לעומת הקרן המסומנת",
-    marked: "המסומנת",
+    /** Before any pick: the selected fund is the page's own, never "the choice"; said as the site's, so nobody asks who marked it (#190). */
+    colDiffMarked: "לעומת הקרן שהאתר בחר",
+    marked: "בחירת האתר",
     cheapestTag: "★ הזול",
     /** A row within the site's tie threshold of the first (P-01): it shares the first place, and no row is starred (2026-11-05). */
     tieTag: "תיקו",
@@ -3745,6 +3750,9 @@ export const invest = {
     noPriceHere: "אין מחיר כאן",
     noPriceWhy: (house: string) => `למה חלק מהקרנות בלי מחיר ב${house}:`,
     notPossibleSource: "המקור",
+    /** A grey row's long reason shows two lines; the rest opens at a tap (#190: on a phone the reasons kept about 450 px of blank under the list). */
+    reasonMore: "ההסבר המלא",
+    reasonLess: "הסבר מקוצר",
     /** A house whose own documents say this kind of fund cannot be bought there (2026-11-05: said only in a link's title before). */
     notPossibleAny: "לפי המסמכים של החברה, אי אפשר לקנות שם קרן על המדד הזה.",
     notPossibleWhy: (kind: string) => `לפי המסמכים של החברה, אי אפשר לקנות שם ${kind}.`,
@@ -3753,11 +3761,11 @@ export const invest = {
     elsewhereLeft: "ונשארים",
     /** On a fund row with no price at the account: picking it moves the account, said before the tap. */
     pickMoves: (house: string) => `בחירה בה מעבירה את החשבון ${toName(house)}`,
-    /** On the row tapped, after the tap changed the other half too, with the way back. */
+    /** On the row tapped, after the tap changed the other half too, with the way back: it puts back both the account and the fund (#190:
+     * readers asked whether "חזרה לקודמת" brought back the fund alone). */
     movedHouse: (house: string) => `החשבון עבר ${toName(house)}`,
-    moveBackTo: (house: string) => `חזרה ${toName(house)}`,
+    moveBackTo: (house: string) => `חזרה ${toName(house)} ולקרן הקודמת`,
     movedFund: "גם הקרן הוחלפה.",
-    moveBack: "חזרה לקודמת",
     elsewhereOpen: "מוצג בלי דירוג, כי כלל המס עוד פתוח",
     noData: "אין נתון",
     fundsNotPriced: (n: number, house: string) => (n === 1 ? `קרן אחת לא מחושבת ב${house}:` : `${n} קרנות לא מחושבות ב${house}:`),
@@ -3939,7 +3947,8 @@ export const invest = {
     togetherFunds: (count: number, n: number) => `${count} הקרנות שיש להן ${n} שנים`,
     inputFund: (name: string, year: number) => `${name}, ${year}`,
     planLead: "בתוכנית שלכם:",
-    planPoint: (h: number) => `הפרש של נקודת אחוז אחת בכל שנה, בין שהוא בא מהדולר ובין שהוא בא מהפער, שווה בסוף ${h} השנים`,
+    /** "בסוף השנה", "בסוף השנתיים", "בסוף 10 השנים": never "1 השנים" (#190). */
+    planPoint: (h: number) => `הפרש של נקודת אחוז אחת בכל שנה, בין שהוא בא מהדולר ובין שהוא בא מהפער, שווה בסוף ${h === 1 ? "השנה" : h === 2 ? "השנתיים" : `${h} השנים`}`,
     planReal: ", בכסף של היום ואחרי מס.",
     planSteady: "אם שער הדולר לא ישתנה והפער יישאר כמו בדוחות,",
     pairName: (fund: string, house: string) => `${fund} ב${house}`,
@@ -4056,7 +4065,8 @@ export const kit = {
       AskField: "השדה הגדול שהעמוד נפתח בו: נכנס בו משפט שלם, ו־× מרוקן אותו.",
       DidYouKnow: "״הידעת?״: עובדות קצרות מהחוקים והכללים, כל אחת עם המקור שלה והדרך לפירוט המלא. כל הכרטיסים באותו גובה.",
       RulesLine: "החוקים והכללים שמאחורי עובדה: שבב אחד עם המספר שלהם, השורה האחרונה בבלוק, ולעולם לא עמודה בטבלה. שבב שפותח רשימה של השמות המלאים, וכלל אחד נפתח ישר בכרטיס. בלי חוקים וכללים אין שבב. גר ב־provenance.tsx, לא ב־kit.",
-      MixedName: "שם של קרן או חברה בתוך שורה בעברית. שם שיש בו עברית נפרש מימין לשמאל גם כשהוא מתחיל באותיות לטיניות; שם בלי עברית שומר על הכיוון שלו.",
+      MixedName: "שם של קרן או חברה בתוך שורה בעברית. שם שיש בו עברית נפרש מימין לשמאל גם כשהוא מתחיל באותיות לטיניות; שם בלי עברית שומר על הכיוון שלו. שם בשורה משלו שעלולה להיחתך (NameLine) נחתך בסוף השם לפי סדר הקריאה, כך שתחילתו, שם המותג, תמיד נראית.",
+      ClampedText: "טקסט ארוך בשורה של רשימה ששורותיה שומרות על הגובה: שתי השורות הראשונות, והשאר נפתח בלחיצה ונסגר בלחיצה. הקישור מופיע רק כשהטקסט נחתך.",
       AlsoChanged: "בחירה ששינתה גם משהו אחר: המשפט נאמר בשורה שנלחצה, ולידו הדרך חזרה למה שהיה לפני הלחיצה. הקישור בגודל מגע מלא ולא מגדיל את השורה.",
       IdRef: "שבב לכל מזהה שהאתר מציג: חוק, נוסחה, פרמטר או שאלה פתוחה. לא כותבים מזהה כטקסט חשוף. גר ב־provenance.tsx, לא ב־kit.",
       Button: "Button לפעולה, LinkButton למעבר לעמוד. כפתור primary אחד בכל מסך.",
@@ -4078,6 +4088,7 @@ export const kit = {
       TileChoice: "תשובות לשאלה אחת, כל אחת אריח שמראה מה היא מביאה (התוויות שהיא מוסיפה, או שורה קצרה). אפשר שלא תהיה בחירה עדיין. מה שבתוך אריח לא לחיץ בפני עצמו.",
       ChoiceChips: "ארבע אפשרויות ומעלה או תוויות ארוכות, אחת נבחרת. עם wrap יורד שורה, בלעדיו גולל הצידה בטלפון. ״אחר״ הוא תמיד הגלולה המקווקוות עם הפלוס (other), שפותחת שדה מתחת לשורה.",
       LongestCase: "גוש שתוכנו משתנה לפי בחירה: תמיד בגובה המקרה הארוך ביותר, בכל רוחב מסך, כדי ששום דבר מתחתיו לא יזוז.",
+      HoldTallest: "כמו LongestCase, כשהמקרים רבים מכדי להישאר בעמוד: הם נפרשים פעם אחת בלי שייראו, נמדדים ויורדים, והגוש נשאר בגובה הארוך שבהם עד שמשתנים המדד או רוחב המסך.",
       InputSlot: "מספר שהקוראים קובעים, בתוך משפט: רווח ברוחב קבוע, עם קו כמו בטופס ועיפרון שפותח את השדה, כדי שהמשפט לא יקפוץ כשהמספר משתנה.",
       Sentence: "טקסט שיש בו מספרים או קישורים. רצוף בלבד: אין לו מאפיין פריסה, ולכן מספר לא יכול ליפול לשורה משלו. הקטעים כילדים, או מחרוזת עם מקומות {name}.",
       Stat: "מספר עם שמו מעליו והערה מתחתיו; שניים עד ארבעה זה לצד זה. tone מוסיף את הצבע של העמודה או הקו שהוא נקרא על שמם.",
