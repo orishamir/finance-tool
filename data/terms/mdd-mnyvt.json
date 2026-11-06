@@ -1,0 +1,32 @@
+{
+  "id": "mdd-mnyvt",
+  "he": "מדד מניות",
+  "en": null,
+  "meaning": "מספר שמודד את השינוי במחירים של קבוצת מניות, כשלכל מניה משקל משלו; קרן מחקה מנסה להשיג שינוי דומה ככל האפשר",
+  "where": [
+    "app"
+  ],
+  "wrapper_ids": [],
+  "exposure_ids": [
+    "index-msci-acwi",
+    "index-msci-world",
+    "index-nasdaq100",
+    "index-sp500",
+    "index-ta125",
+    "index-ta35",
+    "index-ta90"
+  ],
+  "variants": [
+    "מדדי מניות"
+  ],
+  "rule_ids": [
+    "ETF-83"
+  ],
+  "source": {
+    "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-64186b589b352/080217.pdf#page=30",
+    "title": "רשות ניירות ערך, מדריך למשקיע: קרנות נאמנות, המדריך המלא, עמ' 11 ו־30",
+    "publisher": "Israel Securities Authority",
+    "strength": "primary",
+    "checked": "2026-11-06"
+  }
+}

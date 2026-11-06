@@ -1,0 +1,24 @@
+{
+  "id": "mdd-agch",
+  "he": "מדד אג\"ח",
+  "en": null,
+  "meaning": "מספר שמודד את השינוי במחירים של קבוצת איגרות חוב, של המדינה או של חברות; קרן מחקה ומסלול עוקב מדד יכולים לעקוב אחריו",
+  "where": [
+    "app"
+  ],
+  "wrapper_ids": [],
+  "variants": [
+    "מדדי אג\"ח",
+    "מדד איגרות חוב"
+  ],
+  "rule_ids": [
+    "ETF-83"
+  ],
+  "source": {
+    "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf#page=10",
+    "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (17.4.2024), עמ' 10 ו־11",
+    "publisher": "רשות שוק ההון, ביטוח וחיסכון",
+    "strength": "primary",
+    "checked": "2026-11-06"
+  }
+}

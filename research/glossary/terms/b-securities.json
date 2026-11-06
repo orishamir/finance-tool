@@ -1778,22 +1778,6 @@
     "id": "mkdmt-ms-b"
   },
   {
-    "term_he": "מדד",
-    "term_source": null,
-    "variants_he": [],
-    "explain_he": null,
-    "rule_ids": [],
-    "source": null,
-    "where": [
-      "guide:etfs-and-index-funds",
-      "guide:index-sp500",
-      "guide:index-ta125",
-      "app",
-      "ad"
-    ],
-    "notes": "missing in il-finance: market-index sense. The rule base uses 'מדד' for what a tracking fund follows (ETF-01, 'נכס מעקב' ETF-10) but never says what a market index is or how one is built. The tax sense of 'מדד' is a separate entry. term_source is null because no source defines this sense."
-  },
-  {
     "term_he": "ת\"א-125",
     "term_source": {
       "title": "רשות ניירות ערך, ISA investor guide on mutual funds (2017)",
@@ -2070,5 +2054,55 @@
       "tariff"
     ],
     "notes": "Added 2026-11-06 for #205 from the rule records named in rule_ids; the explanation says only what those records say. The site's own name for the fee base distribution_handling. Only companies' tariffs name this fee (BRK-48: Altshuler Shaham Trade, Psagot); no general rule defines it, so the row names the company."
+  },
+  {
+    "term_he": "מדד מניות",
+    "variants_he": [
+      "מדדי מניות"
+    ],
+    "explain_he": "מספר שמודד את השינוי במחירים של קבוצת מניות, כשלכל מניה משקל משלו; קרן מחקה מנסה להשיג שינוי דומה ככל האפשר",
+    "rule_ids": [
+      "ETF-83"
+    ],
+    "source": {
+      "title": "רשות ניירות ערך, מדריך למשקיע: קרנות נאמנות, המדריך המלא, עמ' 11 ו־30",
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-64186b589b352/080217.pdf#page=30",
+      "checked": "2026-11-06",
+      "strength": "primary",
+      "publisher": "Israel Securities Authority"
+    },
+    "where": [
+      "exposure:index-sp500",
+      "exposure:index-ta125",
+      "exposure:index-ta35",
+      "exposure:index-ta90",
+      "exposure:index-nasdaq100",
+      "exposure:index-msci-world",
+      "exposure:index-msci-acwi",
+      "app"
+    ],
+    "notes": "Researched 2026-11-06 (the terms the rule base could not explain); the explanation says only what the rules named in rule_ids say. The market sense of 'מדד'; the tax sense (the CPI) keeps its own rows."
+  },
+  {
+    "term_he": "מדד אג\"ח",
+    "variants_he": [
+      "מדדי אג\"ח",
+      "מדד איגרות חוב"
+    ],
+    "explain_he": "מספר שמודד את השינוי במחירים של קבוצת איגרות חוב, של המדינה או של חברות; קרן מחקה ומסלול עוקב מדד יכולים לעקוב אחריו",
+    "rule_ids": [
+      "ETF-83"
+    ],
+    "source": {
+      "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (17.4.2024), עמ' 10 ו־11",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf#page=10",
+      "checked": "2026-11-06",
+      "strength": "primary",
+      "publisher": "רשות שוק ההון, ביטוח וחיסכון"
+    },
+    "where": [
+      "app"
+    ],
+    "notes": "Researched 2026-11-06 (the terms the rule base could not explain); the explanation says only what the rules named in rule_ids say. The general definition of an index (the ISA guide) applied to the bond indices the CMA list names (ETF-83)."
   }
 ]

@@ -1,0 +1,32 @@
+{
+  "id": "avkb-mdd-s-p-500",
+  "he": "עוקב מדד S&P 500",
+  "en": null,
+  "meaning": "מסלול השקעה שבו הכסף עוקב אחרי מדד S&P 500, חוץ מחלק שמוחזק במזומן ובדומיו לצורך הפקדות ומשיכות; ייתכן בו סיכון מטבע",
+  "where": [
+    "gemel-net",
+    "pensia-net"
+  ],
+  "wrapper_ids": [],
+  "exposure_ids": [
+    "index-sp500"
+  ],
+  "variants": [
+    "עוקב מדד s&p 500",
+    "עוקב מדד S&P500",
+    "עוקב מדד s&p500",
+    "מחקה מדד S&P500"
+  ],
+  "rule_ids": [
+    "CAT-10",
+    "CAT-23",
+    "CAT-45"
+  ],
+  "source": {
+    "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf#page=14",
+    "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (17.4.2024), עמ' 14",
+    "publisher": "רשות שוק ההון, ביטוח וחיסכון",
+    "strength": "primary",
+    "checked": "2026-11-06"
+  }
+}

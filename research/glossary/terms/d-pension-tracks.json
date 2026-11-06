@@ -3106,23 +3106,25 @@
       "עוקב מדד s&p500",
       "מחקה מדד S&P500"
     ],
-    "explain_he": null,
+    "explain_he": "מסלול השקעה שבו הכסף עוקב אחרי מדד S&P 500, חוץ מחלק שמוחזק במזומן ובדומיו לצורך הפקדות ומשיכות; ייתכן בו סיכון מטבע",
     "rule_ids": [
-      "CAT-10",
+      "CAT-45",
       "CAT-23",
-      "CAT-26"
+      "CAT-10"
     ],
     "source": {
-      "title": "Gemel-Net 2024+ data, distinct SPECIALIZATION values (CMA via data.gov.il)",
-      "url": "https://data.gov.il/api/3/action/datastore_search_sql?sql=SELECT%20DISTINCT%20%22SPECIALIZATION%22%20FROM%20%22a30dcbea-a1d2-482c-ae29-8f781f5025fb%22",
-      "checked": "2026-10-22",
-      "strength": "primary"
+      "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (17.4.2024), עמ' 14",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf#page=14",
+      "checked": "2026-11-06",
+      "strength": "primary",
+      "publisher": "רשות שוק ההון, ביטוח וחיסכון"
     },
     "where": [
-      "decoder:track",
-      "app"
+      "exposure:index-sp500",
+      "gemel-net",
+      "pensia-net"
     ],
-    "notes": "missing in il-finance: these five files do not describe the index, and the regulatory policy for this track name was not obtained (CAT-23). The index name also cannot be written without Latin letters or digits. Spellings: CMA SUB_SPECIALIZATION 'עוקב מדד s&p 500', Meitav 'עוקב מדד S&P 500' / 'S&P500', Harel 's&p500'; old Meitav name 'מחקה מדד S&P500'."
+    "notes": "Researched 2026-11-06 (the terms the rule base could not explain); the explanation says only what the rules named in rule_ids say."
   },
   {
     "term_he": "עוקב מדדים גמיש",
@@ -3867,20 +3869,23 @@
       "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=76ad9eed-d076-46d6-96e2-a4eb8e045444&limit=100"
     },
     "variants_he": [],
-    "explain_he": null,
+    "explain_he": "כמה התשואות של המסלול התפזרו סביב הממוצע שלהן בחמש השנים האחרונות; פיזור גדול יותר פירושו תנודות וסיכון גדולים יותר",
     "rule_ids": [
-      "CAT-07"
+      "CAT-07",
+      "CAT-46"
     ],
     "source": {
-      "title": "Gemel-Net field dictionary \"פירוט שינויים פורמט חדש גמל\" (CMA via data.gov.il)",
-      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=76ad9eed-d076-46d6-96e2-a4eb8e045444&limit=100",
-      "checked": "2026-10-22",
-      "strength": "primary"
+      "title": "רשות ניירות ערך, מדריך למשקיע: קרנות נאמנות, המדריך המלא, עמ' 19",
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-64186b589b352/080217.pdf#page=19",
+      "checked": "2026-11-06",
+      "strength": "primary",
+      "publisher": "Israel Securities Authority"
     },
     "where": [
-      "decoder:track"
+      "gemel-net",
+      "pensia-net"
     ],
-    "notes": "missing in il-finance: the CMA dictionary names the field and its 5-year window, but the rule base does not explain the measure or whether it is annualised (CAT-07, CAT OQ3). Spelling 'סטית' is as recorded from the CMA dictionary."
+    "notes": "Researched 2026-11-06 (the terms the rule base could not explain); the explanation says only what the rules named in rule_ids say. The ISA guide explains the measure; the CMA field's own computation (monthly or daily, annualised or not) is CAT open question 3."
   },
   {
     "term_he": "אלפא שנתית",
@@ -3911,20 +3916,23 @@
       "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=76ad9eed-d076-46d6-96e2-a4eb8e045444&limit=100"
     },
     "variants_he": [],
-    "explain_he": null,
+    "explain_he": "מדד שנתי שמראה עד כמה התשואה של המסלול בחמש השנים האחרונות פיצתה על הסיכון שבו, ביחס לריבית בלי סיכון",
     "rule_ids": [
-      "CAT-07"
+      "CAT-07",
+      "CAT-46"
     ],
     "source": {
-      "title": "Gemel-Net field dictionary \"פירוט שינויים פורמט חדש גמל\" (CMA via data.gov.il)",
-      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=76ad9eed-d076-46d6-96e2-a4eb8e045444&limit=100",
-      "checked": "2026-10-22",
-      "strength": "primary"
+      "title": "רשות ניירות ערך, מדריך למשקיע: קרנות נאמנות, המדריך המלא, עמ' 20",
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-64186b589b352/080217.pdf#page=20",
+      "checked": "2026-11-06",
+      "strength": "primary",
+      "publisher": "Israel Securities Authority"
     },
     "where": [
-      "decoder:track"
+      "gemel-net",
+      "pensia-net"
     ],
-    "notes": "missing in il-finance: the CMA text calls it an annual measure of returns against a risk-free interest index over 60 months, but the index and the measure are not explained (CAT-07, CAT OQ3)."
+    "notes": "Researched 2026-11-06 (the terms the rule base could not explain); the explanation says only what the rules named in rule_ids say. Which risk-free index the CMA uses is CAT open question 3."
   },
   {
     "term_he": "יחס נזילות",
