@@ -1,0 +1,29 @@
+{
+  "id": "amlt-ytzyrh-vpdyvn",
+  "he": "עמלת יצירה ופדיון",
+  "en": null,
+  "meaning": "עמלה שמוסיפים למחיר היחידה כשקרן מחקה יוצרת יחידות ישירות, או מנכים ממחיר הפדיון כשהיא פודה ישירות; לא חלה בקנייה ובמכירה בבורסה",
+  "where": [
+    "prospectus"
+  ],
+  "wrapper_ids": [
+    "brokerage-account"
+  ],
+  "exposure_ids": [
+    "index-sp500"
+  ],
+  "variants": [
+    "עמלת יצירה",
+    "עמלת פדיון"
+  ],
+  "rule_ids": [
+    "ETF-05"
+  ],
+  "source": {
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/MOnw27H4IBa9ZTkifP5j5xzxBdxgaU9CgjQ1742zkV4=#page=4",
+    "title": "תקנות השקעות משותפות בנאמנות (קרנות מחקות), התשע\"ח-2018 (קובץ התקנות 8038), תקנה 6",
+    "publisher": "משרד המשפטים, רשומות",
+    "strength": "primary",
+    "checked": "2026-10-25"
+  }
+}

@@ -2203,5 +2203,88 @@
     ],
     "notes": "The site's name for the study-fund kind of קופת גמל בניהול אישי (wrapper ira-hishtalmut); in law it is a study fund approved for one member who gives the investment instructions (IRA-01, s.1 definition and s.57). Study-fund money enters from the first shekel up to four times 'הסכום הקובע' across all study-fund accounts (IRA-07). Only tradable securities, deposits, structured products, foreign currency and fund units, in Israel or an approved foreign country, with issuer and derivative limits and no borrowing (IRA-11 to IRA-13). The managing company's fee is per the written agreement; brokerage, custody and fund costs come on top from a closed list (IRA-16, IRA-17). Withdrawal and tax follow the study fund's rules (IRA-25, TXK-17); the investment risk is the member's (IRA-26). Gemel-Net 202609 lists it under 'קרנות השתלמות'; Meitav's joining annex is titled 'קרן השתלמות בניהול אישי'. Added 2026-10-23 for the guide card lede.",
     "id": "krn-hshtlmvt-bnyhvl-ayshy"
+  },
+  {
+    "term_he": "דוח שנתי מפורט",
+    "variants_he": [
+      "הדוח השנתי המפורט",
+      "הדוח המפורט",
+      "דוח שנתי מפורט לעמית"
+    ],
+    "explain_he": "הדוח השנתי המלא לעמית, שהקופה מציגה רק באזור האישי באתר שלה; יש בו גם מספר הקופה, קוד המסלול ופירוט דמי הניהול",
+    "rule_ids": [
+      "PF-33",
+      "PF-36",
+      "PF-38"
+    ],
+    "source": {
+      "title": "רשות שוק ההון, ביטוח וחיסכון: חוזר גופים מוסדיים 2020-9-22, דוח שנתי ודוח רבעוני לעמיתים ולמבוטחים בגוף מוסדי – תיקון, פרק 2",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/r_2020-9-22/he/2020-9-22.pdf#page=92",
+      "checked": "2026-10-25",
+      "strength": "primary",
+      "publisher": "רשות שוק ההון, ביטוח וחיסכון"
+    },
+    "where": [
+      "guide:keren-hishtalmut",
+      "guide:kupat-gemel-lehashkaa",
+      "guide:ira-hishtalmut",
+      "guide:ira-provident",
+      "guide:provident-for-annuity",
+      "guide:pension-comprehensive",
+      "guide:pension-general",
+      "statement"
+    ],
+    "notes": "Added 2026-11-06 for #205 from the rule records named in rule_ids; the explanation says only what those records say."
+  },
+  {
+    "term_he": "שכבות המס בקרן השתלמות",
+    "variants_he": [
+      "פירוט סכומים בהתאם לרפורמה במיסוי רווחי הון בקרן השתלמות"
+    ],
+    "explain_he": "טבלה בדוח השנתי המפורט של קרן השתלמות שמחלקת את היתרה לפי תקופות ההפקדה ולפי תקרת ההפקדה המוטבת, ולכל חלק שיעור המס שלו",
+    "rule_ids": [
+      "PF-36"
+    ],
+    "source": {
+      "title": "רשות שוק ההון, ביטוח וחיסכון: חוזר גופים מוסדיים 2020-9-22, דוח שנתי ודוח רבעוני לעמיתים ולמבוטחים בגוף מוסדי – תיקון, פרק 2, חלק ב.8",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/r_2020-9-22/he/2020-9-22.pdf#page=92",
+      "checked": "2026-10-25",
+      "strength": "primary",
+      "publisher": "רשות שוק ההון, ביטוח וחיסכון"
+    },
+    "where": [
+      "guide:keren-hishtalmut",
+      "guide:ira-hishtalmut",
+      "statement"
+    ],
+    "notes": "Added 2026-11-06 for #205 from the rule records named in rule_ids; the explanation says only what those records say. The site's own name for table ב.8 of the detailed report; the rates in each layer are the tax files' (TXH), not this row's."
+  },
+  {
+    "term_he": "ממוצע דמי ניהול בקופה",
+    "variants_he": [
+      "לידיעתך, ממוצע דמי ניהול בקופה",
+      "ממוצע דמי הניהול"
+    ],
+    "explain_he": "דמי הניהול הממוצעים שהקופה גבתה בפועל מכל העמיתים בה, מהחיסכון ומההפקדה, שהדוח השנתי מציג לצד מה שנגבה מכם",
+    "rule_ids": [
+      "CAT-37",
+      "PF-35"
+    ],
+    "source": {
+      "title": "רשות שוק ההון, ביטוח וחיסכון: חוזר גופים מוסדיים 2020-9-22, דוח שנתי ודוח רבעוני לעמיתים ולמבוטחים בגוף מוסדי – תיקון, פרק 1, ג.5",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/r_2020-9-22/he/2020-9-22.pdf#page=37",
+      "checked": "2026-10-25",
+      "strength": "primary",
+      "publisher": "רשות שוק ההון, ביטוח וחיסכון"
+    },
+    "where": [
+      "guide:keren-hishtalmut",
+      "guide:kupat-gemel-lehashkaa",
+      "guide:provident-for-annuity",
+      "guide:pension-comprehensive",
+      "guide:pension-general",
+      "statement"
+    ],
+    "notes": "Added 2026-11-06 for #205 from the rule records named in rule_ids; the explanation says only what those records say."
   }
 ]

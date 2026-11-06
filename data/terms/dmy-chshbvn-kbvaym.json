@@ -1,0 +1,27 @@
+{
+  "id": "dmy-chshbvn-kbvaym",
+  "he": "דמי חשבון קבועים",
+  "en": null,
+  "meaning": "עמלה על החשבון עצמו שנגבית מדי תקופה, למשל כל חודש או כל רבעון, ולא על פעולה מסוימת",
+  "where": [
+    "tariff"
+  ],
+  "wrapper_ids": [
+    "brokerage-account",
+    "current-account",
+    "government-bond",
+    "makam"
+  ],
+  "variants": [],
+  "rule_ids": [
+    "BRK-48",
+    "BRK-55"
+  ],
+  "source": {
+    "url": "https://www.boi.org.il/media/n2dlnqyf/415.pdf",
+    "title": "בנק ישראל, הוראת ניהול בנקאי תקין 415: נהלים בנושא עמלות, סעיף 2(ז)",
+    "publisher": "Bank of Israel",
+    "strength": "primary",
+    "checked": "2026-10-31"
+  }
+}

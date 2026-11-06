@@ -1,0 +1,31 @@
+{
+  "id": "mmvtza-dmy-nyhvl-bkvph",
+  "he": "ממוצע דמי ניהול בקופה",
+  "en": null,
+  "meaning": "דמי הניהול הממוצעים שהקופה גבתה בפועל מכל העמיתים בה, מהחיסכון ומההפקדה, שהדוח השנתי מציג לצד מה שנגבה מכם",
+  "where": [
+    "statement"
+  ],
+  "wrapper_ids": [
+    "keren-hishtalmut",
+    "kupat-gemel-lehashkaa",
+    "pension-comprehensive",
+    "pension-general",
+    "provident-for-annuity"
+  ],
+  "variants": [
+    "לידיעתך, ממוצע דמי ניהול בקופה",
+    "ממוצע דמי הניהול"
+  ],
+  "rule_ids": [
+    "CAT-37",
+    "PF-35"
+  ],
+  "source": {
+    "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/r_2020-9-22/he/2020-9-22.pdf#page=37",
+    "title": "רשות שוק ההון, ביטוח וחיסכון: חוזר גופים מוסדיים 2020-9-22, דוח שנתי ודוח רבעוני לעמיתים ולמבוטחים בגוף מוסדי – תיקון, פרק 1, ג.5",
+    "publisher": "רשות שוק ההון, ביטוח וחיסכון",
+    "strength": "primary",
+    "checked": "2026-10-25"
+  }
+}

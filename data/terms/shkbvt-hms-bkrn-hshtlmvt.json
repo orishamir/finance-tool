@@ -1,0 +1,26 @@
+{
+  "id": "shkbvt-hms-bkrn-hshtlmvt",
+  "he": "שכבות המס בקרן השתלמות",
+  "en": null,
+  "meaning": "טבלה בדוח השנתי המפורט של קרן השתלמות שמחלקת את היתרה לפי תקופות ההפקדה ולפי תקרת ההפקדה המוטבת, ולכל חלק שיעור המס שלו",
+  "where": [
+    "statement"
+  ],
+  "wrapper_ids": [
+    "ira-hishtalmut",
+    "keren-hishtalmut"
+  ],
+  "variants": [
+    "פירוט סכומים בהתאם לרפורמה במיסוי רווחי הון בקרן השתלמות"
+  ],
+  "rule_ids": [
+    "PF-36"
+  ],
+  "source": {
+    "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/r_2020-9-22/he/2020-9-22.pdf#page=92",
+    "title": "רשות שוק ההון, ביטוח וחיסכון: חוזר גופים מוסדיים 2020-9-22, דוח שנתי ודוח רבעוני לעמיתים ולמבוטחים בגוף מוסדי – תיקון, פרק 2, חלק ב.8",
+    "publisher": "רשות שוק ההון, ביטוח וחיסכון",
+    "strength": "primary",
+    "checked": "2026-10-25"
+  }
+}
