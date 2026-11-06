@@ -1,0 +1,114 @@
+{
+  "task": "control-harel-pc",
+  "persona": "first-job-phone",
+  "repeat": 2,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T00:23:34.050Z",
+  "structured": {
+    "answer": "I'd pick Harel's \"עוקב מדד S&P 500\" track (13414): it's the S&P thing everyone talks about, it shows 13.7% over 3 years and 11.92% over 5, and it holds 2.3 billion, while the fees are about the same as every other track.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Table, most rows",
+        "why": "Most tracks show 'פחות מ־3 שנים' instead of a return, so there was nothing to compare them by"
+      },
+      {
+        "where": "Fee column",
+        "why": "Two fees per row, 'מהחיסכון' and 'מההפקדה'; not sure which one I pay or what it is in shekels"
+      },
+      {
+        "where": "After the table",
+        "why": "No 'how to join' or first step; only folds and a search box"
+      }
+    ],
+    "used": [
+      "Heading 'הראל'",
+      "Product button 'קופת גמל להשקעה 16'",
+      "Line '16 מסלולים · דמי ניהול מהחיסכון: מ־0.54% עד 0.61%'",
+      "Track names column",
+      "S&P 500 row: 13.7% 3 שנים, 11.92% 5 שנים, 2.3 מיליארד ₪, 0.56%",
+      "מניות 99% / מט\"ח 99% on the S&P row"
+    ],
+    "skimmed": [
+      "Other table rows (אשראי ואג\"ח, מניות סחיר, כללי, כספי שקלי, קיימות)",
+      "Ring charts",
+      "Line about return being before fees and tax"
+    ],
+    "skipped": [
+      "Grey intro text about data sources and 2025/2026 dates",
+      "'123 מקור / 123 מחושב' line",
+      "Links 'מה זה קופת גמל להשקעה' and 'כל המסלולים של קופת גמל להשקעה בכל החברות'",
+      "Legal fee cap note and PF-10 note",
+      "'מה כתוב במסמכים של הראל' folds",
+      "Search box 'לא מצאתם שם?'",
+      "Footer"
+    ],
+    "unsure_meaning": [
+      "מט\"ח (guessed: dollars)",
+      "חשיפה",
+      "מהחיסכון vs מההפקדה",
+      "הלכה יהודית tag",
+      "PF-10",
+      "123 מקור / 123 מחושב",
+      "dotted underlines on percentages",
+      "פחות מ־3 שנים"
+    ],
+    "not_found": [
+      "Fee in shekels on my amount",
+      "Whether I can add a few hundred a month",
+      "How to open the fund / first step",
+      "A recommended track"
+    ],
+    "findings": [
+      {
+        "what": "Most tracks show no return, just 'פחות מ־3 שנים', so I end up picking by the one familiar name",
+        "where": "Return column in the table"
+      },
+      {
+        "what": "Fees only as small percents, all nearly the same; I can't feel how much it costs",
+        "where": "Fee column"
+      },
+      {
+        "what": "Two fee types (מהחיסכון / מההפקדה) with no plain explanation next to them",
+        "where": "Fee column header"
+      },
+      {
+        "what": "No next step or how to sign up on the page",
+        "where": "Below the table"
+      },
+      {
+        "what": "Jargon like מט\"ח and חשיפה in the charts",
+        "where": "Exposure column"
+      },
+      {
+        "what": "Unexplained tag 'הלכה יהודית' and code 'PF-10'",
+        "where": "Bottom of the table"
+      }
+    ]
+  },
+  "steps": 4,
+  "reads": 4,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 31326,
+    "turns": 6,
+    "usd": 0.12236520000000001,
+    "input": 10,
+    "cacheWrite": 7720,
+    "cacheRead": 32526,
+    "output": 2703,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "control-harel-pc",
+    "screenshots": 6,
+    "changes": [],
+    "neverShown": [],
+    "errors": []
+  }
+}

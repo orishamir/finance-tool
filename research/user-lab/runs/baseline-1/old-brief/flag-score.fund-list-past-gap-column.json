@@ -1,0 +1,63 @@
+{
+  "case": "fund-list-past-gap-column",
+  "sessions": 2,
+  "perKey": {
+    "k": {
+      "kind": "taste",
+      "caught": 1,
+      "caughtIn10": 0,
+      "of": 2,
+      "byPersona": {
+        "careful-retiree-pc": {
+          "caught": 0,
+          "of": 1,
+          "ranks": [
+            0
+          ]
+        },
+        "first-job-phone": {
+          "caught": 1,
+          "of": 1,
+          "ranks": [
+            23
+          ]
+        }
+      },
+      "graderAgreement": 0.5
+    }
+  },
+  "againstLiked": {},
+  "usd": 0.386376,
+  "rows": [
+    {
+      "task": "s29",
+      "session": "careful-retiree-pc",
+      "persona": "careful-retiree-pc",
+      "mode": "free text",
+      "raised": [
+        25,
+        27
+      ],
+      "ranks": {
+        "k": 0
+      },
+      "against": {},
+      "usd": 0.1420904
+    },
+    {
+      "task": "s29",
+      "session": "first-job-phone",
+      "persona": "first-job-phone",
+      "mode": "free text",
+      "raised": [
+        24,
+        22
+      ],
+      "ranks": {
+        "k": 23
+      },
+      "against": {},
+      "usd": 0.2442856
+    }
+  ]
+}

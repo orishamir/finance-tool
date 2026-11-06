@@ -1,0 +1,70 @@
+{
+  "case": "study-r1-grey-years",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"In the graph of the years everything is grey, so nothing stands out.\",\"where\":\"the year graph\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "The page doesn't say whether reaching retirement at 67 changes the withdrawal rules",
+      "Everything rests on an assumed 7% yearly return, and a bad year would hurt more at their age",
+      "The subtitle says you can drag the years, but nothing in the pictures moved",
+      "The +1,721 ₪ card was misleading at first and had to be read twice",
+      "The fund names and codes in the warning text went past them (not understood)",
+      "Steps chart ב was confusing: why only +527, and why +60,365 when the table says 54,000; nothing explains it, and the numbers don't add up",
+      "\"Every shekel becomes 3.70 ₪\" felt like a sales line",
+      "Didn't understand why the tax in the fund (13,974) is so much bigger than in the securities account (594)",
+      "The legal ceiling (\"עד תקרה בחוק\") is never explained or given in shekels",
+      "Didn't understand the company name \"פייר פיננשיאל טכנולוג'יז בע\"מ\"",
+      "Couldn't find what happens if the market falls in the year they need the money",
+      "Couldn't find whether they can stop or move the money when changing jobs",
+      "Couldn't find how to check what their own employer pays",
+      "Would drop the big column chart ג because its useful numbers repeat elsewhere",
+      "Would drop the year 1–12 bar strips inside א"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The report never says the year graph is all grey or that nothing in it stands out; it only drops chart ג and the bar strips for other reasons (repeated numbers, low value)."
+      }
+    ],
+    "liked": [],
+    "usd": 0.052771200000000004
+  },
+  "b": {
+    "raised": [
+      "At 61, six years reaches 67, and the page doesn't say whether retirement changes the rules (or whether they can withdraw tax-free at retirement)",
+      "Everything assumes a 7% yearly return; a bad year, or a market fall when the money is needed, hurts more at their age",
+      "The subtitle says you can drag the years, but nothing moved",
+      "The '+1,721' card was confusing and had to be read twice; they first misread what it meant",
+      "The fund names and codes went past them and weren't understood",
+      "In block ב ('steps') the numbers are confusing: why only +527, why +60,365 when the table says 54,000, and they don't add up",
+      "The '3.70 ₪ per shekel' line felt a little like a sales line",
+      "They didn't understand why the tax in the fund (13,974) is so much bigger than in the securities account (594)",
+      "The legal ceiling ('עד תקרה בחוק') isn't explained or given in shekels",
+      "They didn't understand the company name 'פייר פיננשיאל טכנולוג'יז בע\"מ'",
+      "No information on whether they can stop or move the money when changing jobs",
+      "No guidance on how to check what their own employer pays",
+      "Would drop block ב first because it confused them",
+      "Would drop the big column chart ג next because its useful numbers appear elsewhere",
+      "Would drop the year 1–12 bar strips inside א"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The report never complains that the year graph is all grey or that nothing stands out; it only skims or drops chart ג because its numbers are repeated elsewhere, and its only mention of grey is a neutral note about the coins."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0540312
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1068024
+}

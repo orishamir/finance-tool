@@ -1,0 +1,900 @@
+{
+ "s01": {
+  "cases": [
+   "current-account-chart-unrelated",
+   "current-account-one-bank",
+   "current-account-future-shekels"
+  ],
+  "url": "https://orishamir.github.io/finance-tool/guide/current-account",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "shots": [
+   "screen-01.png",
+   "screen-02.png",
+   "screen-03.png",
+   "screen-04.png"
+  ],
+  "states": [
+   "as the page opens"
+  ],
+  "general": [
+   "current-account-chart-unrelated",
+   "current-account-one-bank",
+   "current-account-future-shekels"
+  ],
+  "needs_outside_knowledge": [
+   "current-account-future-shekels"
+  ]
+ },
+ "s02": {
+  "cases": [
+   "mmf-guide-leumi"
+  ],
+  "url": "https://orishamir.github.io/finance-tool/guide/money-market-fund-daily",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "shots": [
+   "screen-01.png",
+   "screen-02.png",
+   "screen-03.png",
+   "screen-04.png",
+   "screen-05.png"
+  ],
+  "states": [
+   "as the page opens"
+  ],
+  "general": [
+   "mmf-guide-leumi"
+  ],
+  "needs_outside_knowledge": []
+ },
+ "s03": {
+  "cases": [
+   "play-panel-broke-phone"
+  ],
+  "url": "https://orishamir.github.io/finance-tool/guide/current-account",
+  "device": "phone",
+  "surface": "live",
+  "reader_note": null,
+  "shots": [
+   "screen-01.png",
+   "screen-02.png",
+   "screen-03.png",
+   "screen-04.png",
+   "screen-05.png",
+   "screen-06.png",
+   "screen-07.png",
+   "screen-08.png"
+  ],
+  "states": [
+   "the panel '\u05e9\u05d7\u05e7\u05d5 \u05e2\u05dd \u05d4\u05de\u05e1\u05e4\u05e8\u05d9\u05dd \u05e9\u05dc\u05db\u05dd' opened"
+  ],
+  "general": [
+   "play-panel-broke-phone"
+  ],
+  "needs_outside_knowledge": []
+ },
+ "s04": {
+  "cases": [
+   "home-door-guide"
+  ],
+  "url": "https://orishamir.github.io/finance-tool/",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "shots": [
+   "screen-01.png",
+   "screen-02.png",
+   "screen-03.png",
+   "screen-04.png"
+  ],
+  "states": [
+   "after pressing the home link '\u05dc\u05d4\u05d1\u05d9\u05df \u05e1\u05d5\u05d2 \u05e9\u05dc \u05d7\u05d9\u05e1\u05db\u05d5\u05df' (it opens this page)",
+   "as the page opens"
+  ],
+  "general": [
+   "home-door-guide"
+  ],
+  "needs_outside_knowledge": []
+ },
+ "s05": {
+  "cases": [
+   "makam-duplicates"
+  ],
+  "url": "https://orishamir.github.io/finance-tool/guide",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "shots": [
+   "screen-01.png",
+   "screen-02.png",
+   "screen-03.png"
+  ],
+  "states": [
+   "as the page opens"
+  ],
+  "general": [
+   "makam-duplicates"
+  ],
+  "needs_outside_knowledge": [
+   "makam-duplicates"
+  ]
+ },
+ "s06": {
+  "cases": [
+   "makam-under-products"
+  ],
+  "url": "https://orishamir.github.io/finance-tool/guide",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "shots": [
+   "screen-01.png",
+   "screen-02.png",
+   "screen-03.png"
+  ],
+  "states": [
+   "as the page opens"
+  ],
+  "general": [
+   "makam-under-products"
+  ],
+  "needs_outside_knowledge": [
+   "makam-under-products"
+  ]
+ },
+ "s07": {
+  "cases": [
+   "rules-toggle-empty"
+  ],
+  "url": "https://orishamir.github.io/finance-tool/guide/bank-deposit",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "shots": [
+   "screen-01.png",
+   "screen-02.png",
+   "screen-03.png",
+   "screen-04.png"
+  ],
+  "states": [
+   "as the page opens"
+  ],
+  "general": [
+   "rules-toggle-empty"
+  ],
+  "needs_outside_knowledge": []
+ },
+ "s08": {
+  "cases": [
+   "general-track-exposure"
+  ],
+  "url": "https://orishamir.github.io/finance-tool/guide",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "shots": [
+   "screen-01.png",
+   "screen-02.png"
+  ],
+  "states": [
+   "as the page opens"
+  ],
+  "general": [
+   "general-track-exposure"
+  ],
+  "needs_outside_knowledge": [
+   "general-track-exposure"
+  ]
+ },
+ "s09": {
+  "cases": [
+   "bank-deposit-inert-fields"
+  ],
+  "url": "https://orishamir.github.io/finance-tool/guide/bank-deposit",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "shots": [
+   "screen-01.png",
+   "screen-02.png",
+   "screen-03.png",
+   "screen-04.png"
+  ],
+  "states": [
+   "as the page opens"
+  ],
+  "general": [
+   "bank-deposit-inert-fields"
+  ],
+  "needs_outside_knowledge": []
+ },
+ "s10": {
+  "cases": [
+   "guides-useless-sections",
+   "guides-template-current-account"
+  ],
+  "url": "https://orishamir.github.io/finance-tool/guide",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "shots": [
+   "screen-01.png",
+   "screen-02.png"
+  ],
+  "states": [
+   "as the page opens"
+  ],
+  "general": [
+   "guides-useless-sections",
+   "guides-template-current-account"
+  ],
+  "needs_outside_knowledge": []
+ },
+ "s11": {
+  "cases": [
+   "hishtalmut-pf18"
+  ],
+  "url": "https://orishamir.github.io/finance-tool/guide/keren-hishtalmut",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "shots": [
+   "screen-01.png",
+   "screen-02.png",
+   "screen-03.png",
+   "screen-04.png"
+  ],
+  "states": [
+   "as the page opens"
+  ],
+  "general": [
+   "hishtalmut-pf18"
+  ],
+  "needs_outside_knowledge": []
+ },
+ "s12": {
+  "cases": [
+   "hishtalmut-7-5"
+  ],
+  "url": "https://orishamir.github.io/finance-tool/guide/keren-hishtalmut",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "shots": [
+   "screen-01.png",
+   "screen-02.png",
+   "screen-03.png",
+   "screen-04.png",
+   "screen-05.png"
+  ],
+  "states": [
+   "as the page opens"
+  ],
+  "general": [
+   "hishtalmut-7-5"
+  ],
+  "needs_outside_knowledge": []
+ },
+ "s13": {
+  "cases": [
+   "hishtalmut-play-pointless"
+  ],
+  "url": "https://orishamir.github.io/finance-tool/guide/keren-hishtalmut",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "shots": [
+   "screen-01.png",
+   "screen-02.png",
+   "screen-03.png",
+   "screen-04.png",
+   "screen-05.png"
+  ],
+  "states": [
+   "as the page opens"
+  ],
+  "general": [
+   "hishtalmut-play-pointless"
+  ],
+  "needs_outside_knowledge": []
+ },
+ "s14": {
+  "cases": [
+   "hg-tax-after-six",
+   "hg-huge-profit",
+   "hg-not-entered",
+   "hg-within-ceiling",
+   "hg-fund-withholds"
+  ],
+  "url": "https://orishamir.github.io/finance-tool/guide/keren-hishtalmut",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "shots": [
+   "screen-01.png",
+   "screen-02.png",
+   "screen-03.png",
+   "screen-04.png",
+   "screen-05.png"
+  ],
+  "states": [
+   "after entering a monthly salary of 30,000"
+  ],
+  "general": [
+   "hg-tax-after-six",
+   "hg-huge-profit",
+   "hg-not-entered",
+   "hg-within-ceiling",
+   "hg-fund-withholds"
+  ],
+  "needs_outside_knowledge": []
+ },
+ "s15": {
+  "cases": [
+   "tracks-warnings"
+  ],
+  "url": "https://orishamir.github.io/finance-tool/tracks/kupat-gemel-lehashkaa",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "shots": [
+   "screen-01.png",
+   "screen-02.png",
+   "screen-03.png",
+   "screen-04.png",
+   "screen-05.png",
+   "screen-06.png",
+   "screen-07.png",
+   "screen-08.png"
+  ],
+  "states": [
+   "as the page opens"
+  ],
+  "general": [
+   "tracks-warnings"
+  ],
+  "needs_outside_knowledge": []
+ },
+ "s16": {
+  "cases": [
+   "tracks-assets-column"
+  ],
+  "url": "https://orishamir.github.io/finance-tool/tracks/kupat-gemel-lehashkaa",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "shots": [
+   "screen-01.png",
+   "screen-02.png",
+   "screen-03.png",
+   "screen-04.png",
+   "screen-05.png",
+   "screen-06.png",
+   "screen-07.png",
+   "screen-08.png"
+  ],
+  "states": [
+   "as the page opens"
+  ],
+  "general": [
+   "tracks-assets-column"
+  ],
+  "needs_outside_knowledge": []
+ },
+ "s17": {
+  "cases": [
+   "tracks-exposure-100"
+  ],
+  "url": "https://orishamir.github.io/finance-tool/tracks/kupat-gemel-lehashkaa",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "shots": [
+   "screen-01.png",
+   "screen-02.png",
+   "screen-03.png",
+   "screen-04.png",
+   "screen-05.png",
+   "screen-06.png",
+   "screen-07.png",
+   "screen-08.png"
+  ],
+  "states": [
+   "as the page opens"
+  ],
+  "general": [
+   "tracks-exposure-100"
+  ],
+  "needs_outside_knowledge": []
+ },
+ "s18": {
+  "cases": [
+   "tracks-sort-does-nothing"
+  ],
+  "url": "https://orishamir.github.io/finance-tool/tracks/kupat-gemel-lehashkaa?kind=%D7%A2%D7%95%D7%A7%D7%91+%D7%9E%D7%93%D7%93%D7%99+%D7%9E%D7%A0%D7%99%D7%95%D7%AA&sort=fee&order=reverse",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "shots": [
+   "screen-01.png",
+   "screen-02.png"
+  ],
+  "states": [
+   "a kind chosen and the list sorted by management fee"
+  ],
+  "general": [
+   "tracks-sort-does-nothing"
+  ],
+  "needs_outside_knowledge": []
+ },
+ "s19": {
+  "cases": [
+   "tracks-stale-annuity"
+  ],
+  "url": "https://orishamir.github.io/finance-tool/tracks/provident-for-annuity",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "shots": [
+   "screen-01.png",
+   "screen-02.png",
+   "screen-03.png",
+   "screen-04.png",
+   "screen-05.png",
+   "screen-06.png",
+   "screen-07.png",
+   "screen-08.png",
+   "screen-09.png",
+   "screen-10.png"
+  ],
+  "states": [
+   "as the page opens"
+  ],
+  "general": [
+   "tracks-stale-annuity"
+  ],
+  "needs_outside_knowledge": []
+ },
+ "s20": {
+  "cases": [
+   "company-kind-filter-always-one"
+  ],
+  "url": "https://orishamir.github.io/finance-tool/companies/harel",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "shots": [
+   "screen-01.png",
+   "screen-02.png"
+  ],
+  "states": [
+   "as the page opens"
+  ],
+  "general": [
+   "company-kind-filter-always-one"
+  ],
+  "needs_outside_knowledge": []
+ },
+ "s21": {
+  "cases": [
+   "company-missing-fund-kinds"
+  ],
+  "url": "https://orishamir.github.io/finance-tool/companies/harel",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "shots": [
+   "screen-01.png",
+   "screen-02.png"
+  ],
+  "states": [
+   "as the page opens"
+  ],
+  "general": [
+   "company-missing-fund-kinds"
+  ],
+  "needs_outside_knowledge": [
+   "company-missing-fund-kinds"
+  ]
+ },
+ "s22": {
+  "cases": [
+   "tracks-tracker-subtitle"
+  ],
+  "url": "https://orishamir.github.io/finance-tool/tracks/keren-hishtalmut?sort=fee&order=reverse&kind=%D7%A2%D7%95%D7%A7%D7%91+%D7%9E%D7%93%D7%93+S%26P+500",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "shots": [
+   "screen-01.png",
+   "screen-02.png"
+  ],
+  "states": [
+   "as the page opens"
+  ],
+  "general": [
+   "tracks-tracker-subtitle"
+  ],
+  "needs_outside_knowledge": []
+ },
+ "s23": {
+  "cases": [
+   "tracks-chevron-not-link"
+  ],
+  "url": "https://orishamir.github.io/finance-tool/tracks/keren-hishtalmut?sort=fee&order=reverse&kind=%D7%A2%D7%95%D7%A7%D7%91+%D7%9E%D7%93%D7%93+S%26P+500",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "shots": [
+   "screen-01.png",
+   "screen-02.png"
+  ],
+  "states": [
+   "as the page opens"
+  ],
+  "general": [
+   "tracks-chevron-not-link"
+  ],
+  "needs_outside_knowledge": []
+ },
+ "s24": {
+  "cases": [
+   "companies-fee-column-unclear"
+  ],
+  "url": "https://orishamir.github.io/finance-tool/companies/harel",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "shots": [
+   "screen-01.png",
+   "screen-02.png",
+   "screen-03.png",
+   "screen-04.png",
+   "screen-05.png",
+   "screen-06.png",
+   "screen-07.png"
+  ],
+  "states": [
+   "as the page opens"
+  ],
+  "general": [
+   "companies-fee-column-unclear"
+  ],
+  "needs_outside_knowledge": []
+ },
+ "s25": {
+  "cases": [
+   "companies-help-icon-wrap"
+  ],
+  "url": "https://orishamir.github.io/finance-tool/companies/harel",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "shots": [
+   "screen-01.png",
+   "screen-02.png",
+   "screen-03.png",
+   "screen-04.png",
+   "screen-05.png",
+   "screen-06.png",
+   "screen-07.png"
+  ],
+  "states": [
+   "as the page opens"
+  ],
+  "general": [
+   "companies-help-icon-wrap"
+  ],
+  "needs_outside_knowledge": []
+ },
+ "s26": {
+  "cases": [
+   "company-brokerage-card"
+  ],
+  "url": "https://orishamir.github.io/finance-tool/companies/psagot?product=brokerage",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "shots": [
+   "screen-01.png",
+   "screen-02.png"
+  ],
+  "states": [
+   "as the page opens"
+  ],
+  "general": [],
+  "needs_outside_knowledge": []
+ },
+ "s27": {
+  "cases": [
+   "label-warning-text",
+   "label-tax-on-sale",
+   "label-icons"
+  ],
+  "url": "https://orishamir.github.io/finance-tool/indices/sp500",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "shots": [
+   "screen-01.png",
+   "screen-02.png",
+   "screen-03.png",
+   "screen-04.png",
+   "screen-05.png",
+   "screen-06.png"
+  ],
+  "states": [
+   "after pressing the label '\u05de\u05e1 \u05e8\u05e7 \u05d1\u05de\u05db\u05d9\u05e8\u05d4' on a foreign fund"
+  ],
+  "general": [
+   "label-warning-text",
+   "label-tax-on-sale"
+  ],
+  "needs_outside_knowledge": [
+   "label-tax-on-sale"
+  ]
+ },
+ "s28": {
+  "cases": [
+   "account-card-parens"
+  ],
+  "url": "https://orishamir.github.io/finance-tool/indices/sp500",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "shots": [
+   "screen-01.png",
+   "screen-02.png",
+   "screen-03.png",
+   "screen-04.png",
+   "screen-05.png",
+   "screen-06.png"
+  ],
+  "states": [
+   "after choosing the account '\u05d0\u05d9\u05e0\u05d8\u05e8\u05d0\u05e7\u05d8\u05d9\u05d1 \u05d9\u05e9\u05e8\u05d0\u05dc'"
+  ],
+  "general": [],
+  "needs_outside_knowledge": []
+ },
+ "s29": {
+  "cases": [
+   "fund-list-past-gap-column"
+  ],
+  "url": "https://orishamir.github.io/finance-tool/indices/ta125",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "shots": [
+   "screen-01.png",
+   "screen-02.png",
+   "screen-03.png",
+   "screen-04.png"
+  ],
+  "states": [
+   "as the page opens"
+  ],
+  "general": [],
+  "needs_outside_knowledge": []
+ },
+ "s30": {
+  "cases": [
+   "custom-fund-labels",
+   "custom-fund-form-small"
+  ],
+  "url": "https://orishamir.github.io/finance-tool/indices/sp500",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "shots": [
+   "screen-01.png",
+   "screen-02.png",
+   "screen-03.png",
+   "screen-04.png",
+   "screen-05.png",
+   "screen-06.png"
+  ],
+  "states": [
+   "after adding a fund not in the list: name 'iShares S&P 500 Swap UCITS ETF USD (Acc)', kind '\u05e7\u05e8\u05df \u05e9\u05e0\u05e7\u05e0\u05d9\u05ea \u05d1\u05d7\u05d5\u05f4\u05dc', yearly fee 0.05%"
+  ],
+  "general": [
+   "custom-fund-labels",
+   "custom-fund-form-small"
+  ],
+  "needs_outside_knowledge": []
+ },
+ "s31": {
+  "cases": [
+   "custom-index-change-answer"
+  ],
+  "url": "https://orishamir.github.io/finance-tool/indices",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "shots": [
+   "screen-01.png",
+   "screen-02.png",
+   "screen-03.png"
+  ],
+  "states": [
+   "after adding an index named 'test' (not Israeli) and saving it"
+  ],
+  "general": [
+   "custom-index-change-answer"
+  ],
+  "needs_outside_knowledge": []
+ },
+ "s32": {
+  "cases": [
+   "cfc-exposure"
+  ],
+  "url": null,
+  "device": "pc",
+  "surface": "drawing",
+  "reader_note": "Drawings made by the site's designers, shown as options to choose from; any mark that one option is recommended is theirs.",
+  "shots": [
+   "screen-01.png",
+   "screen-02.png",
+   "screen-03.png"
+  ],
+  "states": [
+   "a drawing"
+  ],
+  "general": [],
+  "needs_outside_knowledge": []
+ },
+ "s33": {
+  "cases": [
+   "cfc-index-column"
+  ],
+  "url": null,
+  "device": "pc",
+  "surface": "drawing",
+  "reader_note": "Drawings made by the site's designers, shown as options to choose from; any mark that one option is recommended is theirs.",
+  "shots": [
+   "screen-01.png",
+   "screen-02.png"
+  ],
+  "states": [
+   "a drawing"
+  ],
+  "general": [],
+  "needs_outside_knowledge": []
+ },
+ "s34": {
+  "cases": [
+   "study-r1-coins",
+   "study-r1-grey-years",
+   "study-r1-decoder-table"
+  ],
+  "url": null,
+  "device": "pc",
+  "surface": "drawing",
+  "reader_note": "Drawings made by the site's designers, shown as options to choose from; any mark that one option is recommended is theirs.",
+  "shots": [
+   "screen-01.png",
+   "screen-02.png",
+   "screen-03.png"
+  ],
+  "states": [
+   "a drawing"
+  ],
+  "general": [
+   "study-r1-coins",
+   "study-r1-grey-years",
+   "study-r1-decoder-table"
+  ],
+  "needs_outside_knowledge": []
+ },
+ "s35": {
+  "cases": [
+   "study-r2-employee-compare",
+   "study-r2-per-shekel-sentence"
+  ],
+  "url": null,
+  "device": "pc",
+  "surface": "drawing",
+  "reader_note": "Drawings made by the site's designers, shown as options to choose from; any mark that one option is recommended is theirs.",
+  "shots": [
+   "screen-01.png",
+   "screen-02.png",
+   "screen-03.png"
+  ],
+  "states": [
+   "a drawing"
+  ],
+  "general": [
+   "study-r2-employee-compare"
+  ],
+  "needs_outside_knowledge": [
+   "study-r2-employee-compare"
+  ]
+ },
+ "s36": {
+  "cases": [
+   "study-r3-six-year-compare"
+  ],
+  "url": null,
+  "device": "pc",
+  "surface": "drawing",
+  "reader_note": "Drawings made by the site's designers, shown as options to choose from; any mark that one option is recommended is theirs.",
+  "shots": [
+   "screen-01.png",
+   "screen-02.png"
+  ],
+  "states": [
+   "a drawing"
+  ],
+  "general": [],
+  "needs_outside_knowledge": []
+ },
+ "s37": {
+  "cases": [
+   "tracks-r1-returns"
+  ],
+  "url": null,
+  "device": "pc",
+  "surface": "drawing",
+  "reader_note": "Drawings made by the site's designers, shown as options to choose from; any mark that one option is recommended is theirs.",
+  "shots": [
+   "screen-01.png",
+   "screen-02.png",
+   "screen-03.png",
+   "screen-04.png",
+   "screen-05.png"
+  ],
+  "states": [
+   "a drawing"
+  ],
+  "general": [
+   "tracks-r1-returns"
+  ],
+  "needs_outside_knowledge": []
+ },
+ "s38": {
+  "cases": [
+   "tracks-r2-companies"
+  ],
+  "url": null,
+  "device": "pc",
+  "surface": "drawing",
+  "reader_note": "Drawings made by the site's designers, shown as options to choose from; any mark that one option is recommended is theirs.",
+  "shots": [
+   "screen-01.png",
+   "screen-02.png",
+   "screen-03.png",
+   "screen-04.png",
+   "screen-05.png"
+  ],
+  "states": [
+   "a drawing"
+  ],
+  "general": [
+   "tracks-r2-companies"
+  ],
+  "needs_outside_knowledge": []
+ },
+ "s39": {
+  "cases": [
+   "tracks-r2-sort-buttons"
+  ],
+  "url": null,
+  "device": "pc",
+  "surface": "drawing",
+  "reader_note": "Drawings made by the site's designers, shown as options to choose from; any mark that one option is recommended is theirs.",
+  "shots": [
+   "screen-01.png",
+   "screen-02.png",
+   "screen-03.png",
+   "screen-04.png",
+   "screen-05.png"
+  ],
+  "states": [
+   "a drawing"
+  ],
+  "general": [],
+  "needs_outside_knowledge": []
+ }
+}

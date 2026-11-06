@@ -1,0 +1,138 @@
+{
+  "task": "control-sp500-pc",
+  "persona": "careful-retiree-pc",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T03:09:40.816Z",
+  "structured": {
+    "answer": "The page puts a star and the word \"הזול\" (the cheapest) on a פסגות account with the fund \"ילין לפידות מחקה S&P 500 (4D)\", and it says I'd end up with 86,492 ₪ \"בכסף של היום\" (in today's money) after 10 years (10,000 ₪ now plus 500 ₪ a month). I wouldn't act on it myself, though. I don't know פסגות as a bank. My own bank, לאומי, came second at 83,396 ₪. I'd ask you or the bank before putting money in.",
+    "confidence": "unsure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Screen 1, the title and the buttons",
+        "why": "It opens with 'להשקיע במדד' (invest in an index) and English letters, S&P 500 and MSCI. To me מדד is the price index on the news. Without the task I would have closed the page right there."
+      },
+      {
+        "where": "Screen 1, the inputs",
+        "why": "The amounts were already filled in: 10,000, 500, 10 years, 7%. I didn't know whether that 7% is a promise or a guess, or whether I should change the numbers. There are sliders under the boxes and I didn't touch them."
+      },
+      {
+        "where": "Screen 2, the list of funds",
+        "why": "There are dozens of funds with coloured labels, like 'צוברת' (accumulating), 'עסקת החלף' (swap), 'חשיפה לדולר' (exposure to the dollar) and 'נאמן' (trustee). I didn't know which one to look at. I just went with the one that had a circle already marked next to it."
+      },
+      {
+        "where": "Screen 2, the two columns",
+        "why": "The funds are on the left and the accounts (banks) are on the right. It took me a while to understand that I have to choose both a fund and a place to hold it."
+      },
+      {
+        "where": "Screens 3–4",
+        "why": "Rows of numbers with a minus sign, like −447, −1,268 and −4,492 ₪. I didn't understand whether that's a loss or just less money compared with the first one. It frightened me."
+      },
+      {
+        "where": "Screen 6",
+        "why": "There's a chart with many lines, and below it '−21.8% ב־2022' (in 2022). That's exactly what I was afraid of, and I stopped there."
+      }
+    ],
+    "used": [
+      "The star 'הזול' and 'הבחירה שלכם' (your choice): 86,492 ₪, 'נשאר לכם בעוד 10 שנים, אחרי דמי ניהול ומס, בכסף של היום' (what's left after management fees and tax, in today's money)",
+      "The fund name 'ילין לפידות מחקה S&P 500 (4D)' with 'דמי ניהול 0%' (0% management fee)",
+      "The list of accounts: פסגות 86,492, לאומי 83,396, הבינלאומי 82,371, מזרחי טפחות 77,695",
+      "'הפקדתם 70,000 ₪' (you deposited 70,000 ₪)"
+    ],
+    "skimmed": [
+      "The coloured bars in the list of accounts",
+      "The labels on each fund",
+      "The paragraph 'למה חלק מהקרנות בלי מחיר בפסגות' (why some funds have no price at פסגות)",
+      "The table of what changes how much you're left with (years, monthly deposit)"
+    ],
+    "skipped": [
+      "The funds in English: iShares, Vanguard, us-ivv, us-voo",
+      "Interactive Brokers and אינטראקטיב ישראל",
+      "The fold-out arrows next to 'לא בחישוב' (not in the calculation)",
+      "Screens 7–10, which I didn't reach",
+      "The chart lines on screen 6"
+    ],
+    "unsure_meaning": [
+      "S&P 500, MSCI, 4D, 4A, UCITS, ETF",
+      "מדד (I know it as the price index, not as something you invest in)",
+      "צוברת, מחלקת דיבידנד (accumulating, pays a dividend)",
+      "עסקת החלף (swap)",
+      "נאמן 0.02% (a trustee fee)",
+      "דמי משמרת (custody fee)",
+      "מנוטרל מט\"ח (currency-neutralised)",
+      "Minus numbers like −43 ₪ and −4,492 ₪: a loss, or the difference from the cheapest?",
+      "+0.37% next to 'מול המדד' (compared with the index)",
+      "'בכסף של היום' (in today's money): is the money really worth more than that?",
+      "Dotted underlines under the numbers",
+      "The colours of the bars: orange, yellow and red that look alike"
+    ],
+    "not_found": [
+      "Anything about deposits or safe savings",
+      "A clear sentence saying whether you can lose the money",
+      "Whether the 7% is guaranteed"
+    ],
+    "findings": [
+      {
+        "what": "The page opens with English letters and investment words. Nothing on the first screen says whether this is safe, and someone like me would close the page.",
+        "where": "Screen 1"
+      },
+      {
+        "what": "Lots of minus numbers, and some in red, in the fund list and the account list. It isn't explained whether they're a loss or a difference.",
+        "where": "Screens 2–4"
+      },
+      {
+        "what": "A long list of funds with many coloured labels that mean nothing to me. It's crowded and it made me anxious.",
+        "where": "Screens 2–4, left column"
+      },
+      {
+        "what": "The 'הזול' (cheapest) recommendation is a company I don't know, not my bank. Nothing says why I should trust it.",
+        "where": "Screen 1 and screen 2, right column"
+      },
+      {
+        "what": "The return is filled in ahead of time (7%). It isn't clear that this is a guess.",
+        "where": "Screen 1"
+      },
+      {
+        "what": "Small, pale-grey text on black, like 'לא בחישוב' and the explanations under each bank. It's hard to read even with glasses.",
+        "where": "Screens 2–5, right column"
+      },
+      {
+        "what": "'−21.8% ב־2022' in large letters with no reassuring explanation",
+        "where": "Screen 6"
+      },
+      {
+        "what": "A chart with many lines in similar colours that I can't read",
+        "where": "Screen 6"
+      },
+      {
+        "what": "Sliders for choosing the amounts",
+        "where": "Screen 1"
+      }
+    ]
+  },
+  "steps": 6,
+  "reads": 6,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 36628,
+    "turns": 8,
+    "usd": 0.16341440000000002,
+    "input": 10,
+    "cacheWrite": 11491,
+    "cacheRead": 37732,
+    "output": 3195,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "control-sp500-pc",
+    "screenshots": 11,
+    "changes": [],
+    "neverShown": [],
+    "errors": []
+  }
+}

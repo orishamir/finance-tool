@@ -13,7 +13,7 @@ memory, and this day's session on the indices page. Two readers gathered the evi
 | A company's figure: warning or plain | 3 rounds (audit item 8, D30, D31) | Context decides: plain on the company's own product, amber only when it stands for the market |
 | The indices page's shape | 4 redesigns in 4 days (25 to 28 Oct), 6 mockup rounds on the 27th | The account is the decision, the fund mostly a tie; two linked lists; plain sliders on top, the change chart at the bottom |
 | Where company-specific facts may appear | 4 review rounds (rules-scope) | General rules in guides; a company's term only on its own page; a company page compares nothing (D35) |
-| Labels on every row or only where they differ | Reversed on 27 Oct | On every row it is true of, revisit if it annoys him |
+| Labels on every row or only where they differ | Reversed on 27 Oct, again on 5 Nov | On every row it is true of, revisit if it annoys him; since 5 Nov a label every row of a group shares shows once, in the group's head (D60) |
 | The rules and questions pages | 3 shapes in one day | /rules is the whole set with filters; the questions have their own page |
 | Chart and legend colours | 3 rounds (ramp, warm hues, distinct) | Clearly different hues per identity; blue and violet reserved |
 | Home screen | 3 versions | "מה המטרה שלכם?", the answer on the first screen |
@@ -40,7 +40,7 @@ without a picture, are the ones that come back.
    change (D17, invest spec:159).
 7. **Nothing moves.** Five reports before it became a rule today (CLAUDE.md, design-system 2.5a).
 8. **One flaw means a sweep of its class**, fixed in the kit piece, not on the page (memory sweep-same-flaw).
-9. **Distinct colours with a meaning and a legend.** Every label with an icon and its own colour; a colour means one thing.
+9. **Distinct colours with a meaning and a legend.** Every label with an icon and its own colour; a colour means one thing within its chart or panel (item 19).
 10. **Differences, not two absolutes.** Stacked bars one above the other, "10x easier"; "in the fund table use differences".
 11. **Full words.** "דמי ניהול קבועים", not "קבועים"; column headers on every table; the plural imperative; nothing that reads
     translated.
@@ -101,6 +101,15 @@ A checklist to meet before the founder sees anything:
 14. **Sweep.** For each flaw, list every place of its class and fix it in the shared piece.
 15. **Data checked first.** Confirm the data the design depends on exists (which tariffs have the line), or say how it absorbs the gap.
 16. **Ask once.** One product question per round, with a recommendation; record each reversal inline with its date.
+17. **The whole page** (2026-11-05). The drawing shows the page with the piece in place, its height before and after, and what it replaces; a piece that replaces nothing starts folded.
+18. **The question test** (2026-11-05). The drawing opens with the choice the reader makes differently after seeing it; a chart whose answer is the same for every option on its page does not go there.
+19. **A colour table per page** (2026-11-05). One meaning per colour within each chart and panel; a distant section may reuse a hue with another meaning, because distinct hues inside a chart come first ("i'd rather have two conflicting colors on opposite sites of the pages than a graph with all its lines the same color", the same evening).
+20. **Cleanup with every reversal** (2026-11-05). List what the old layout left behind and remove it in the same change.
+21. **Claude's curse of knowledge** (2026-11-05). Claude knows what every element means, so it cannot tell the essential from the incidental ("you cant להבחין בין עיקר לטפל"), nor words a reader would misread ("לפי הדוחות", "פיגור"). Before polish, a decision audit: the reader's decisions ranked by money, every element tied to one, fresh readers' use (`research/audit/2026-11-05-indices-relevance/audit.md`, section 5).
+22. **Fresh means fresh** (2026-11-05). Subagents load the project's rules, so they are not unbiased readers; readers are separate sessions with nothing of the project, shown whole pages, never text alone ("the graphs they are near, the words above them, below them, even the color they have").
+23. **Rationale is not a defence** (2026-11-05). Claude does not object to what an old document explains; a person never sees that document. A recorded decision never dismisses what a reader trips on: the finding goes to the founder with the decision named.
+24. **The validator is not the eye** (2026-11-05). A rose and a magenta 18 apart by the palette check read as "one pink family" to three readers; hues are checked by readers' eyes too. Distinct hues inside a chart come before one meaning per colour across the page.
+25. **Measured, not claimed** (2026-11-05). The goal is a context-free reviewer that flags what people flag, so Claude can be trusted with large features. Its score comes only from what people flagged (`research/user-lab/metric.md`); Claude owns the metric and the bar; the founder's yes/no and his flags are the human signal Claude cannot produce. Claude's own method decisions are not reported to him unless he asks.
 
 ## 6. What could change in how work is done (proposals, not decided)
 

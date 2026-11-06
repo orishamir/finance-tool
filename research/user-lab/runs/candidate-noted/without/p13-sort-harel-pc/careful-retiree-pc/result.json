@@ -1,0 +1,126 @@
+{
+  "task": "p13-sort-harel-pc",
+  "persona": "careful-retiree-pc",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T02:59:20.144Z",
+  "structured": {
+    "answer": "I'd pick Harel's \"כספי (שקלי)\" track: 0% shares, 0% dollars, and about 4.25% a year over 3 years. It's the closest thing to my deposit. But before I put money in, I'd ask my son or the bank what it really is and whether it beats my deposit after the 0.57% fee.",
+    "confidence": "unsure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "First row, אג\"ח סחיר",
+        "why": "Bonds sound safe, but where the return should be it only says 'פחות מ־3 שנים', so I had no number to compare it with"
+      },
+      {
+        "where": "כספי (שקלי) row",
+        "why": "Not sure what 'כספי' means here, or whether 4.25% is per year or for all 3 years"
+      },
+      {
+        "where": "Fee column",
+        "why": "Can't tell whether 0.57% a year is a lot compared with my deposit, which I think costs nothing"
+      }
+    ],
+    "used": [
+      "Harel name in the title",
+      "אג\"ח סחיר row: 0% shares, 0% dollars",
+      "כספי (שקלי) row: 0% shares and dollars, 4.25% over 3 years / 3.08% over 5 years",
+      "Management fee 0.57% / 0%",
+      "Line saying the legal ceiling is 1.05%",
+      "Sentence saying past return doesn't say what will happen"
+    ],
+    "skimmed": [
+      "Product tabs at the top",
+      "Rows of share tracks (מניות, כללי, מניות סחיר)",
+      "Size of the money managed in each track"
+    ],
+    "skipped": [
+      "S&P 500 track",
+      "עוקב מדדי… tracks",
+      "The ring charts",
+      "Folded headings 'מה כתוב במסמכים של הראל'",
+      "Search box and footer links",
+      "Question-mark icons"
+    ],
+    "unsure_meaning": [
+      "סחיר",
+      "כספי (שקלי)",
+      "מט\"ח",
+      "עוקב מדד / מדדי",
+      "S&P 500",
+      "פחות מ־3 שנים",
+      "PF-10",
+      "Whether 4.25% is per year or for the whole period",
+      "The dotted underlines under the numbers"
+    ],
+    "not_found": [
+      "A plain sentence saying which track is safe like a deposit",
+      "A comparison with bank deposit interest",
+      "Whether money can be taken out at any time",
+      "What the return would be after the fee"
+    ],
+    "findings": [
+      {
+        "what": "Black background with grey and small text, hard to read even enlarged",
+        "where": "Whole page, especially the fee-ceiling note and footer"
+      },
+      {
+        "what": "Busy table with many numbers and percentages; makes me anxious",
+        "where": "Track table, screens 1-2"
+      },
+      {
+        "what": "The safest-sounding tracks show no return, only 'פחות מ־3 שנים'",
+        "where": "אג\"ח סחיר and others"
+      },
+      {
+        "what": "English letters and the word מדד in a sense I don't know",
+        "where": "S&P 500 and עוקב מדד rows"
+      },
+      {
+        "what": "Unknown site name 'מקור'; I'm not sure whether this is Harel's own page",
+        "where": "Top left logo and footer"
+      },
+      {
+        "what": "Nothing tells me in words which track is like a deposit",
+        "where": "Above the table"
+      },
+      {
+        "what": "Ring charts that mean nothing to me",
+        "where": "Exposure column"
+      }
+    ]
+  },
+  "steps": 4,
+  "reads": 4,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 32056,
+    "turns": 6,
+    "usd": 0.12954380000000001,
+    "input": 8,
+    "cacheWrite": 8232,
+    "cacheRead": 21179,
+    "output": 2971,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "p13-sort-harel-pc",
+    "screenshots": 6,
+    "changes": [
+      {
+        "id": "sort-shown",
+        "type": "style",
+        "shots": 6,
+        "applied": 6,
+        "most": 1
+      }
+    ],
+    "neverShown": [],
+    "errors": []
+  }
+}

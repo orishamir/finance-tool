@@ -1,0 +1,57 @@
+{
+  "case": "tracks-exposure-100",
+  "sessions": 2,
+  "perKey": {
+    "k": {
+      "kind": "general",
+      "caught": 1,
+      "caughtIn10": 1,
+      "of": 2,
+      "byPersona": {
+        "careful-retiree-pc": {
+          "caught": 0,
+          "of": 1,
+          "ranks": [
+            0
+          ]
+        },
+        "first-job-phone": {
+          "caught": 1,
+          "of": 1,
+          "ranks": [
+            5
+          ]
+        }
+      },
+      "graderAgreement": 1
+    }
+  },
+  "againstLiked": {},
+  "usd": 0.0612896,
+  "rows": [
+    {
+      "task": "s17",
+      "session": "careful-retiree-pc",
+      "persona": "careful-retiree-pc",
+      "mode": "findings",
+      "raised": null,
+      "ranks": {
+        "k": 0
+      },
+      "against": {},
+      "usd": 0.031314800000000004
+    },
+    {
+      "task": "s17",
+      "session": "first-job-phone",
+      "persona": "first-job-phone",
+      "mode": "findings",
+      "raised": null,
+      "ranks": {
+        "k": 5
+      },
+      "against": {},
+      "usd": 0.0299748
+    }
+  ]
+}

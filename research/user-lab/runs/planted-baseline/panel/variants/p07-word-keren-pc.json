@@ -1,0 +1,37 @@
+{
+  "id": "p07-word-keren-pc",
+  "about": "For the lab only; never reaches a session. Planted problem, kind p07 (A word a person would not know or would misread): see research/user-lab/planted.md.",
+  "purpose": "plant",
+  "pages": [
+    "/finance-tool/guide/keren-hishtalmut"
+  ],
+  "device": "pc",
+  "instance": {
+    "kind": "p07",
+    "mode": "page",
+    "url": "https://orishamir.github.io/finance-tool/guide/keren-hishtalmut",
+    "device": "pc",
+    "steps": [],
+    "task": "keren",
+    "control": "planted/control-keren-pc",
+    "split": "tune"
+  },
+  "plants": [
+    {
+      "id": "p07",
+      "kind": "general",
+      "problem": "A column of the study fund chart is labelled \"ריאלית, נטו\", words a lay reader does not know.",
+      "where": "the labels under the columns of the study fund chart (the return column)",
+      "counts": "A finding that \"ריאלית\" or \"נטו\" under the return column is unclear.",
+      "notCounts": "Not understanding the chart in general."
+    }
+  ],
+  "changes": [
+    {
+      "id": "word",
+      "type": "text",
+      "text": "אחרי דמי ניהול",
+      "set": "ריאלית, נטו"
+    }
+  ]
+}

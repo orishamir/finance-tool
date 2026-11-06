@@ -1,0 +1,81 @@
+{
+  "case": "tracks-stale-annuity",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The page says its data is updated monthly, yet the figures are as of September, in November.\",\"where\":\"the data date at the top\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Unsure whether this product (vs. a comprehensive pension fund) is the right account for a salary pension",
+      "The '123 source / calculated / entered' legend is confusing",
+      "The orange warning that the authority's data hasn't been updated since September 2026 is worrying",
+      "Many investment-filter buttons are unclear, and the age-group buttons don't say they refer to age",
+      "The table is very long, so finding the S&P tracks means scrolling through all 15 companies with no single side-by-side list",
+      "Doesn't understand what the equity/FX exposure rings mean",
+      "Doesn't understand what 'תגמולים ואישית לפיצויים' actually is",
+      "Doesn't understand the difference between the fee on savings and the fee on deposits",
+      "Unclear whether the 'personal management' and IRA rows are meant for them",
+      "Exposure above 100% makes no sense",
+      "A negative fee (−0.21%) is puzzling",
+      "Unclear whether 'מבטיח תשואה' really guarantees a return, and why one has a 2% fee",
+      "Many rows say 'less than 3 years' or 'not yet reported', and it's unclear whether 'new' is bad",
+      "Wants to know what a 0.1% fee difference means in shekels over time",
+      "Wants returns after fees, not before",
+      "Can't find how to switch tracks or companies, or what switching costs",
+      "Unsure whether a 24-year-old should simply pick 'עד 50' instead of S&P",
+      "Would drop the 'קופה' ID numbers",
+      "Would drop the money column",
+      "Would drop the company header rows"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 3,
+        "why": "The reader notices the warning that the data hasn't been updated since September 2026 and is worried by it, which is the stale-data problem the person named."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0670712
+  },
+  "b": {
+    "raised": [
+      "Unsure whether this product is even the right kind of account for a salary pension (vs. קרן פנסיה מקיפה)",
+      "The '123 מקור / מחושב / הזנתה' legend is confusing; can't tell what the three styles mean",
+      "Orange warning that the authority's data hasn't been updated since September 2026 made them nervous; unclear if it matters",
+      "Several investment filter buttons are confusing (עוקב מדדים גמיש, משולב סחיר, מבטיח תשואה, הלכה יהודית, age bands not labelled as age)",
+      "The big table is too long; had to scroll through all 15 companies to find S&P rows, too much to take in",
+      "Teal/yellow exposure rings (מניות, מט\"ח) not understood — what ~100% means for them",
+      "Doesn't understand what 'תגמולים ואישית לפיצויים' is",
+      "Doesn't understand the difference between fees 'מהחיסכון' and 'מההפקדה' or which costs more",
+      "Doesn't understand 'בניהול אישי' / IRA rows or whether they suit them",
+      "Exposure above 100% (101%, 103%) makes no sense",
+      "Negative fee (−0.21%) not understood",
+      "Unclear whether 'מבטיח תשואה' really guarantees a return, and why one has a 2% fee",
+      "Many rows say 'פחות מ־3 שנים' / 'עוד לא דווח'; unclear whether 'חדש' is bad",
+      "Wants to know what a 0.1% fee difference means in shekels over 40 years",
+      "Wants returns after fees; only before-fee returns shown",
+      "Wants a single side-by-side list of all S&P tracks across companies",
+      "Can't find how to switch tracks/companies or whether switching costs anything",
+      "Unclear whether a 24-year-old should just pick 'עד 50' instead of S&P",
+      "Would drop the 'קופה' ID numbers",
+      "Would drop the money-managed column",
+      "Would drop the company header rows"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 3,
+        "why": "The reader noticed that the data hasn't been updated since September 2026 and was uneasy about it, which is the same stale-data problem the person named, even though the reader doesn't mention the 'updated monthly' claim."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0628632
+  },
+  "third": null,
+  "ranks": {
+    "k": 3
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1299344
+}

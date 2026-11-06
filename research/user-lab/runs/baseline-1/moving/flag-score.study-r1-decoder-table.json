@@ -1,0 +1,57 @@
+{
+  "case": "study-r1-decoder-table",
+  "sessions": 2,
+  "perKey": {
+    "k": {
+      "kind": "general",
+      "caught": 1,
+      "caughtIn10": 1,
+      "of": 2,
+      "byPersona": {
+        "careful-retiree-pc": {
+          "caught": 0,
+          "of": 1,
+          "ranks": [
+            0
+          ]
+        },
+        "first-job-phone": {
+          "caught": 1,
+          "of": 1,
+          "ranks": [
+            4
+          ]
+        }
+      },
+      "graderAgreement": 1
+    }
+  },
+  "againstLiked": {},
+  "usd": 0.0723696,
+  "rows": [
+    {
+      "task": "s34",
+      "session": "careful-retiree-pc",
+      "persona": "careful-retiree-pc",
+      "mode": "findings",
+      "raised": null,
+      "ranks": {
+        "k": 0
+      },
+      "against": {},
+      "usd": 0.0310068
+    },
+    {
+      "task": "s34",
+      "session": "first-job-phone",
+      "persona": "first-job-phone",
+      "mode": "findings",
+      "raised": null,
+      "ranks": {
+        "k": 4
+      },
+      "against": {},
+      "usd": 0.0413628
+    }
+  ]
+}

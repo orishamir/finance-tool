@@ -1,0 +1,10 @@
+import { execFileSync } from "child_process";
+import { pal, hex } from "./ok.mjs";
+const V = "/tmp/claude-1000/bundled-skills/2.1.317/517ab0877f5e9fb238369786541b5caa/dataviz/scripts/validate_palette.js";
+const H = (k) => hex(pal[k]);
+const CARD = H("neutral-950"), POP = H("neutral-900");
+const blend = (fg, bg, a) => "#" + [0, 2, 4].map((i) => Math.round(a * parseInt(fg.slice(1 + i, 3 + i), 16) + (1 - a) * parseInt(bg.slice(1 + i, 3 + i), 16)).toString(16).padStart(2, "0")).join("");
+const SEL = blend(H("teal-300"), CARD, 0.1);
+const run = (cols, surface, pairs) => { try { return execFileSync("node", [V, cols.join(","), "--mode", "dark", "--surface", surface, ...(pairs === "all" ? ["--pairs", "all"] : [])], { encoding: "utf8" }); } catch (e) { return e.stdout; } };
+const pick = (out, name) => (out.split("\n").find((l) => l.includes(name)) || "").trim();
+export { run, pick, H, CARD, POP, SEL, blend };

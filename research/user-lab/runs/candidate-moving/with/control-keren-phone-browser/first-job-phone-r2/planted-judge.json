@@ -1,0 +1,35 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "Self-employed users get no result for withdrawing before 6 years, so half of the reader's question goes unanswered.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "With no fund figure showing, the lone 25,725 next to an empty dashed box could be mistaken for the answer, which could lead the reader to a wrong conclusion.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "The input fields move around when switching to self-employed. This is a minor layout annoyance, and it shows the switch does change something.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "The page scrolls slightly by itself when the year slider moves. This is a minor annoyance, and the reader doesn't tie it to the tax line or to crossing 6 years.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "The bar labels are cut off and wrap onto several lines on a phone, which makes them hard to read. This is a display annoyance, not a blocker.",
+      "serious": false,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.028178800000000004
+}

@@ -1,0 +1,46 @@
+{
+  "case": "hg-tax-after-six",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"With a high salary entered, the graphic says tax is due even after 6 years and shows a large income-tax figure, without making clear which money it is on.\",\"where\":\"the graphic and its sentences\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 1,
+        "why": "Finding 1 also complains that a large income-tax figure dominates the graphic even though the point is that waiting 6 years should avoid it, which is a clear part of the person's complaint, though it doesn't raise which money the tax is charged on."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0203874
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 1 also mentions a big tax figure, but its complaint is that the default withdrawal is set at 5 years, while the person's complaint is that tax still shows after 6 years with a high salary and it's unclear which money it applies to; finding 6 only points to a possible cause (the cap note), so no finding states the person's problem."
+      }
+    ],
+    "liked": [],
+    "usd": 0.022915400000000002
+  },
+  "third": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 1 complains that the default 5-year view lets a large tax figure dominate, but the person's problem is that tax still shows after 6 years with no clear indication of which money it applies to, and no finding says that."
+      }
+    ],
+    "liked": [],
+    "usd": 0.020667400000000002
+  },
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": false
+  },
+  "against": {},
+  "usd": 0.0639702
+}

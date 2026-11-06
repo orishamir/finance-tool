@@ -1,0 +1,87 @@
+{
+  "case": "guides-template-current-account",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The current-account guide carries template sections that do not fit it (who offers it, money in and out, tax and the like), padding the page.\",\"where\":\"the sections 'who', 'in and out', 'tax' of the guide\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Doesn't know which 'place' (study fund, investment provident fund or securities account) to use for the S&P 500; the page doesn't compare them",
+      "The second line of 'two parts of every saving' is a list of terms the reader mostly doesn't know",
+      "Retirement cards 'קרן חדשה כללית' and 'תגמולים ואישית לפיצויים' are confusing; the 'in plain language' line just repeats the title",
+      "The two self-managed cards seem to be for experts only, so they were skipped",
+      "Most cards under 'what the money is invested in' are jargon",
+      "The grey 'יומית'/'מתחדשת' buttons on the money-market card are unexplained",
+      "Can't tell MSCI World from MSCI AC World; the cards are walls of text",
+      "Unknown terms: מק\"מ, אג\"ח, קרן נאמנות, ברוקר, תגמולים, פיצויים, תקרה שנתית",
+      "'Exposure to the dollar or neutralized from it' isn't explained: is it good or bad?",
+      "'A fund that tracks it': who runs it and where do you buy it?",
+      "'Weighted by market value' and 'value of public holdings' aren't understood",
+      "Unclear whether the 'general track' is the default the reader is in now",
+      "Unclear which of the two kinds of study fund the reader has",
+      "The study fund's lock-in period isn't given ('a period set by law')",
+      "No fees are shown for any option",
+      "No returns or risk information (S&P 500 vs money-market fund, possible losses)",
+      "No practical tax and withdrawal comparison between investment provident fund and securities account for the S&P 500",
+      "No priority order of steps or how much money each step needs",
+      "No minimum amounts, and no word on whether small monthly deposits are possible",
+      "Would drop the 'for children' section",
+      "Would drop the Tel Aviv index cards and one of the MSCI cards",
+      "Would drop the general pension fund and the תגמולים/פיצויים cards",
+      "Would drop the T-bill (מק\"מ) and government bond cards",
+      "Would drop 'what the site doesn't cover yet'"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader stays on the guide's overview page and never says the current-account guide has template sections like 'who', 'in and out' or 'tax' that don't fit it or pad the page."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0645072
+  },
+  "b": {
+    "raised": [
+      "The page doesn't compare the places (study fund, investment provident fund, securities account) for holding an S&P 500 investment, so the reader doesn't know which to use",
+      "The second line of the 'two parts of every saving' box is a list of terms the reader mostly doesn't know",
+      "The retirement cards 'קרן חדשה כללית' and 'תגמולים ואישית לפיצויים' were confusing, and the 'in plain language' line just repeats the title instead of explaining",
+      "The self-managed ('בניהול אישי') cards seem meant for experts, so the reader skipped them and would drop them",
+      "Most cards in 'what the money is invested in' read as jargon",
+      "The grey 'יומית'/'מתחדשת' buttons on the money-market fund card are unexplained",
+      "Can't tell MSCI World from MSCI AC World, and those cards are walls of text",
+      "Unknown terms: מק\"מ, אג\"ח, קרן נאמנות, ברוקר, תגמולים, פיצויים, תקרה שנתית",
+      "Unclear whether 'exposure to the dollar or neutralized from it' is good or bad",
+      "'A fund that tracks it' doesn't say who runs the fund or where to buy it",
+      "Phrases like 'weighted by market value' and 'value of public holdings' aren't understood",
+      "Unclear whether the 'general track' is the default the reader is already in",
+      "Can't tell which of the two study-fund types (regular or self-managed) the reader has",
+      "The study-fund lock period isn't given, only 'a period set by law'",
+      "No information on fees",
+      "No returns or risk information (S&P 500 vs money-market fund, possible losses)",
+      "No practical tax and withdrawal comparison between the investment provident fund and the securities account for the S&P 500",
+      "No order of priority (emergency money first, then the study fund, and so on) or how much each step needs",
+      "No minimum amounts and no word on small monthly deposits",
+      "Would drop the 'for children' section",
+      "Would drop the Tel Aviv index cards and one of the two MSCI cards",
+      "Would drop the T-bill (מק\"מ) and government bond cards",
+      "Would drop the 'what the site doesn't cover yet' section"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader only looked at the main guide page and never complains that the current-account guide has ill-fitting sections such as 'who offers it', 'money in and out' or 'tax'."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0671152
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1316224
+}

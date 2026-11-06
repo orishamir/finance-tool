@@ -1,0 +1,134 @@
+{
+  "task": "p14-dead-harel-pc",
+  "persona": "careful-retiree-pc",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T00:17:14.184Z",
+  "structured": {
+    "answer": "I'd pick \"כספי (שקלי)\", because it shows 0% shares and 0% foreign currency, it's in shekels like my deposit, and it shows 4.25% over 3 years for about the same fee as the others. Before I sign I'd ask my son or Harel what it really is.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Screen 1, track buttons",
+        "why": "Many buttons with English (S&P 500) and 'עוקב מדד', and I didn't know which ones are safe"
+      },
+      {
+        "where": "Table, 'אג\"ח סחיר' row",
+        "why": "I wanted bonds, but where the return should be it only says 'פחות מ־3 שנים', so I couldn't compare"
+      },
+      {
+        "where": "Table, return column",
+        "why": "Not sure if 4.25% is per year or for all 3 years, or what 'לפני דמי ניהול' means"
+      }
+    ],
+    "used": [
+      "Harel name and the fee line at the top",
+      "Track names in the right column",
+      "מניות 0% / מט\"ח 0% figures",
+      "Fee 0.57% מההיסכון",
+      "Return 4.25% 3 שנים for כספי (שקלי)",
+      "Note that past return doesn't say what will happen"
+    ],
+    "skimmed": [
+      "Product buttons row",
+      "Track filter buttons",
+      "Rows for shares, S&P 500 and index trackers",
+      "Fund size column (מיליון ₪)",
+      "Small notes under the table"
+    ],
+    "skipped": [
+      "Ring charts",
+      "'מה כתוב במסמכים של הראל' folded sections",
+      "Search box 'לא מצאתם שם?'",
+      "Footer links"
+    ],
+    "unsure_meaning": [
+      "עוקב מדד",
+      "S&P 500",
+      "סחיר",
+      "מט\"ח as a share",
+      "חשיפה",
+      "פחות מ־3 שנים",
+      "קופה number (13254 etc.)",
+      "3 שנים / 5 שנים percentages",
+      "לפני דמי ניהול",
+      "123 מקורו / 123 מחושב",
+      "PF-10",
+      "Dotted underlines under the numbers",
+      "Blue vs yellow dots"
+    ],
+    "not_found": [
+      "Comparison with a bank deposit",
+      "Whether my money is guaranteed",
+      "A plain sentence on which track is safest",
+      "A plain fee in shekels"
+    ],
+    "findings": [
+      {
+        "what": "Dark black background with grey text, hard to read with reading glasses",
+        "where": "Whole page"
+      },
+      {
+        "what": "Small pale notes about the legal fee cap and other costs not counted, too small to read",
+        "where": "Under the table"
+      },
+      {
+        "what": "The safe-sounding 'אג\"ח סחיר' shows no return, only 'פחות מ־3 שנים'",
+        "where": "Table, אג\"ח סחיר row"
+      },
+      {
+        "what": "Busy table with two numbers per cell and coloured rings, made me anxious",
+        "where": "Screens 2-3"
+      },
+      {
+        "what": "English and jargon on track names (S&P 500, עוקב מדד)",
+        "where": "Track buttons and table"
+      },
+      {
+        "what": "No comparison to a bank deposit or statement of what is guaranteed",
+        "where": "Whole page"
+      },
+      {
+        "what": "Unclear if percentages are per year or total",
+        "where": "Return column"
+      },
+      {
+        "what": "Unknown site, not sure who is behind it",
+        "where": "Header 'מקור'"
+      }
+    ]
+  },
+  "steps": 4,
+  "reads": 4,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 36561,
+    "turns": 6,
+    "usd": 0.13587660000000001,
+    "input": 8,
+    "cacheWrite": 8172,
+    "cacheRead": 21243,
+    "output": 3311,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "p14-dead-harel-pc",
+    "screenshots": 6,
+    "changes": [
+      {
+        "id": "dead",
+        "type": "insert",
+        "shots": 6,
+        "applied": 6,
+        "most": 1
+      }
+    ],
+    "neverShown": [],
+    "errors": []
+  }
+}

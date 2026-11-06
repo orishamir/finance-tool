@@ -1,0 +1,41 @@
+{
+  "id": "p01-no-reference-sp500-pc",
+  "about": "For the lab only; never reaches a session. Planted problem, kind p01 (A result with nothing to compare it to): see research/user-lab/planted.md.",
+  "purpose": "plant",
+  "pages": [
+    "/finance-tool/indices/sp500"
+  ],
+  "device": "pc",
+  "instance": {
+    "kind": "p01",
+    "mode": "page",
+    "url": "https://orishamir.github.io/finance-tool/indices/sp500",
+    "device": "pc",
+    "steps": [],
+    "task": "sp500",
+    "control": "planted/control-sp500-pc",
+    "split": "score"
+  },
+  "plants": [
+    {
+      "id": "p01",
+      "kind": "general",
+      "problem": "The headline amount of money left at the end stands alone: the page no longer shows how much was put in, so a reader cannot tell whether the result is a good one.",
+      "where": "the result at the top of the results (the amount left, with the next option beside it)",
+      "counts": "A finding that the main result has no reference point: what was paid in, or what it is compared with, is missing, so the reader cannot judge the figure (\"is that a lot?\", \"how much did I put in?\").",
+      "notCounts": "Doubting the return assumption, or the result's size, without saying that the amount put in is missing."
+    }
+  ],
+  "changes": [
+    {
+      "id": "no-reference",
+      "type": "hide",
+      "selector": ".md\\:w-72.md\\:shrink-0"
+    },
+    {
+      "id": "no-reference-arrow",
+      "type": "hide",
+      "selector": ".md\\:w-72.md\\:shrink-0 + span[aria-hidden=\"true\"]"
+    }
+  ]
+}

@@ -1,0 +1,74 @@
+{
+  "case": "tracks-chevron-not-link",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The '<' at the end of each row does not look like a link to the track's own page.\",\"where\":\"the arrow at the end of each row\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Menora Mivtachim's row is cut between the screenshots, so its 0.49% was only partly seen",
+      "The fee is a 2025 average, and it's unclear whether the reader would actually pay 0.48%",
+      "Doesn't know what 0.48% versus 0.7% means in shekels",
+      "The '123 ממקור / מחושב / הזנתה' line is confusing",
+      "Sorting from most to least expensive feels backwards; had to scroll to the bottom for the cheapest",
+      "Only half understood the note that fees may be charged only from savings",
+      "Ayalon shows '40% מניות' despite tracking the S&P 500, which lowers trust",
+      "Doesn't understand 'מהחיסכון' vs 'מההפקדות' or why every row says 'אין'",
+      "Doesn't understand the exposure rings or how a value can be 101%",
+      "Doesn't understand the 'קופה' column and its numbers",
+      "Doesn't understand 'PF-06'",
+      "Doesn't understand why returns are shown before fees, or whether that matters",
+      "Couldn't find whether the fee can be negotiated lower",
+      "Couldn't find how to join Clal's track or whether the employer has to agree",
+      "Most companies don't show the actual name of their S&P track",
+      "Would drop the returns column",
+      "Would drop the 'כסף מנוהל' column",
+      "Would drop the other investment filters"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader only says they ignored the arrows on the left and never says they fail to look like links to the track's page."
+      }
+    ],
+    "liked": [],
+    "usd": 0.045319200000000004
+  },
+  "b": {
+    "raised": [
+      "Menora's 0.49% row is cut off between the screenshots, so the near-tie with Clal couldn't be fully checked",
+      "The fee is a 2025 average; unclear if the reader would actually pay it or could negotiate it",
+      "No way to see what 0.48% versus 0.7% means in shekels per year",
+      "Table sorted from most expensive to cheapest feels backwards; had to scroll to the bottom for the cheapest",
+      "The '123 ממקור / מחושב / הזנתה' line is confusing",
+      "Didn't understand 'מהחיסכון' versus 'מההפקדות', or what 'אין מההפקדות' means",
+      "Ayalon shows '40% מניות' even though it supposedly follows the S&P 500, which lowered trust",
+      "Didn't understand the 'חשיפה למניות ולמט\"ח' rings or how exposure can be 101%",
+      "Didn't understand the 'קופה' column and its numbers",
+      "Didn't understand 'PF-06'",
+      "Unclear why returns are shown 'לפני דמי ניהול' and whether that matters",
+      "No information on how to join Clal's track or whether the employer must agree",
+      "Most companies don't show the actual name of their S&P track",
+      "Would remove the returns column",
+      "Would remove the 'כסף מנוהל' column",
+      "Would remove the other investment filters"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader only mentions ignoring the arrows on the left and never says they fail to look like links to the track's own page."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0537912
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0991104
+}

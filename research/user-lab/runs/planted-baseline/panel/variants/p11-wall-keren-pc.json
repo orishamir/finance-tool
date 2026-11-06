@@ -1,0 +1,41 @@
+{
+  "id": "p11-wall-keren-pc",
+  "about": "For the lab only; never reaches a session. Planted problem, kind p11 (A wall of text before the answer): see research/user-lab/planted.md.",
+  "purpose": "plant",
+  "pages": [
+    "/finance-tool/guide/keren-hishtalmut"
+  ],
+  "device": "pc",
+  "instance": {
+    "kind": "p11",
+    "mode": "page",
+    "url": "https://orishamir.github.io/finance-tool/guide/keren-hishtalmut",
+    "device": "pc",
+    "steps": [],
+    "task": "keren",
+    "control": "planted/control-keren-pc",
+    "split": "score"
+  },
+  "plants": [
+    {
+      "id": "p11",
+      "kind": "general",
+      "problem": "Three dense paragraphs of rules come between the section heading and the calculator that answers \"how much is left, and when\".",
+      "where": "at the top of the section \"what happens to the money in the fund\", before the calculator",
+      "counts": "A finding that a long block of rules comes before the calculator or its answer, or that the section starts with text the reader must get through.",
+      "notCounts": "Wanting the whole guide shorter, without the position before the calculator."
+    }
+  ],
+  "changes": [
+    {
+      "id": "wall",
+      "type": "insert",
+      "at": {
+        "text": "כמה כסף נשאר לכם, ומתי?",
+        "closest": "div.bg-card"
+      },
+      "position": "beforebegin",
+      "html": "<div class=\"flex flex-col gap-3 max-w-measure\"><p>הפטור לא חל על כל סכום. לשכירים הוא חל על הפקדות של עד 7.5% מהשכר מהמעסיק ועד 2.5% מהשכר שלכם, ורק על שכר של עד 15,712 ₪ בחודש: גם מי שמרוויח יותר מחשב את האחוזים לפי 15,712 ₪. לעצמאים הוא חל על הפקדות של עד 20,566 ₪ בשנה. אפשר להפקיד גם יותר, אבל על הרווח מהכסף שמעל הגבול הפטור לא חל.</p><p>אם ההפקדות עוברות לקרן אחרת, והכסף הישן נשאר במקומו בלי שנמשך ממנו כסף בפטור ממס, השנים של הישן נספרות גם לחדש: שני החשבונות נחשבים חשבון אחד. התנאי: העובד והמעסיק הודיעו לשתי הקרנות שכל ההפקדות עוברות לקרן החדשה. מהחשבון הישן מושכים רק אחרי שמשכו את כל הכסף מהחדש. אותו כלל חל במעבר משכיר לעצמאי ולהפך.</p><p>כל הסכומים בכסף של היום: כמה הם שווים במחירים של היום. השכר וההפקדות עולים כל שנה ב־2%, כמו המחירים. הפטור עוצר לאורך כל השנים באותו שכר של 15,712 ₪ בחודש.</p></div>"
+    }
+  ]
+}

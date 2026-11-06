@@ -1,0 +1,113 @@
+{
+  "task": "control-keren-pc",
+  "persona": "first-job-phone",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-05T23:29:40.760Z",
+  "structured": {
+    "answer": "After 6 years I can take it out with no tax. With a salary of about 12,000 I'd put in 18,000 ₪ of my own over 5 years, and I think I'd end up with something like 50–66 thousand. If I take it out early, the fund sends a huge chunk to tax (29,768 ₪, \"47%\"), so I just wait the 6 years.",
+    "confidence": "unsure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Calculator, chart under 'מושכים את הכסף אחרי 5 שנים'",
+        "why": "It opens on 5 years, the year with tax, but the 6-year rule is what I care about. The big bars have no shekel figures on them except '18,000 ₪', so I couldn't see what I'd actually get at 6 years."
+      },
+      {
+        "where": "Paragraph under the bar chart",
+        "why": "'נכנסים קודם 50,719 ₪' and then '29,768 ₪ למס' and then '15,794 ₪ חוזרים'. I couldn't tell how much is left in my hands. Then a separate '66,601 ₪ עד 66,280 ₪' further down, and I'm not sure which number is my final amount."
+      },
+      {
+        "where": "Monthly salary field (12,000)",
+        "why": "I only know my take-home, 9,500, not the gross, so I left 12,000 where it was."
+      }
+    ],
+    "used": [
+      "Heading 'קרן השתלמות' and the line 'אחרי 6 שנים... אפשר למשוך את הכסף בלי מס'",
+      "Calculator defaults: 12,000 ₪, 7.5%, 2.5%, 7%, 0.54%",
+      "'18,000 ₪' on the הפקדתם bar",
+      "'משיכה אחרי 5 שנים: ... 50,719 ₪ ... 29,768 ₪ למס הכנסה'",
+      "'נשאר בידיים ... 66,601 ₪ עד 66,280 ₪'",
+      "Card 'אחרי 6 שנים אין מס'",
+      "Orange box '47%'"
+    ],
+    "skimmed": [
+      "שווה לדעת",
+      "מי מציע ומי מצטרף",
+      "משיכה ומעבר cards (saw 'עד 4 ימי עסקים')",
+      "כמה זה עולה table",
+      "Small-print lines under the calculator about inflation 2% and 15,712"
+    ],
+    "skipped": [
+      "Track buttons at top of calculator (S&P 500 etc.)",
+      "עצמאיים tab",
+      "הצגת החברות fold and company links",
+      "סיכונים ומה מוגן, מונחים",
+      "Screens 8–9, stopped after the tax part",
+      "חוקים וכללים tags, KH-19 style tags"
+    ],
+    "unsure_meaning": [
+      "Which one is my final amount: 50,719, 66,601 or 66,280",
+      "'15,794 ₪ מהם חוזרים', back to whom, and when?",
+      "Hatched pink bit on the bars and the red 'לפני 6 שנים: מס'. I guessed it means the tax",
+      "'מחושב את האחוזים לפי 15,712 ₪', a limit I didn't get",
+      "'אחרי דמי ניהול' under the return bar",
+      "'מסלול כללי', 'אג\"ח ממשלתית צמודה'",
+      "'עד 25% מהחלק שמעל האינפלציה'"
+    ],
+    "not_found": [
+      "One clear shekel figure for what I get after 6 years, written on the bar",
+      "A simple date / 'you can withdraw on year X' line for my own case"
+    ],
+    "findings": [
+      {
+        "what": "The calculator opens on 5 years, the bad tax year, instead of 6. So the first scary number is almost 30k going to tax.",
+        "where": "Calculator chart / paragraph under bar chart"
+      },
+      {
+        "what": "Only the 'הפקדתם' bar has a shekel figure. 'נשאר בידיים' has no number on it.",
+        "where": "Waterfall bar chart"
+      },
+      {
+        "what": "Too many shekel figures in one paragraph (50,719 / 29,768 / 15,794). I can't tell what I end up with.",
+        "where": "Text under bar chart"
+      },
+      {
+        "what": "The 66,601–66,280 range sits at the far left end of a long fees line. Easy to miss or misread.",
+        "where": "Last paragraph in calculator section"
+      },
+      {
+        "what": "Salary field wants gross. I only know my net.",
+        "where": "משכורת ברוטו בחודש"
+      },
+      {
+        "what": "Orange '47%' warning is scary and I don't know if it hits me.",
+        "where": "מיסוי section"
+      }
+    ]
+  },
+  "steps": 7,
+  "reads": 7,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 36388,
+    "turns": 9,
+    "usd": 0.18407419999999997,
+    "input": 14,
+    "cacheWrite": 13722,
+    "cacheRead": 62711,
+    "output": 3085,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "control-keren-pc",
+    "screenshots": 10,
+    "changes": [],
+    "neverShown": [],
+    "errors": []
+  }
+}

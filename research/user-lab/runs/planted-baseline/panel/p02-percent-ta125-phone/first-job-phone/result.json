@@ -1,0 +1,121 @@
+{
+  "task": "p02-percent-ta125-phone",
+  "persona": "first-job-phone",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "phone",
+  "startedAt": "2026-11-05T23:03:50.708Z",
+  "structured": {
+    "answer": "Open a securities account at Pesagot and buy the IBI ת\"א-125 tracker (אי.בי.אי. מחקה ת\"א 125 (4A)). The page says that ends at about 86,045 ₪ after 10 years, but that's for its example amounts (10,000 ₪ now + 500 ₪ a month, 70,000 ₪ put in, 7% a year), not my 30,000.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Amount fields on the first screen (10,000 / 500)",
+        "why": "They aren't my amounts, and I couldn't change them, so the 86,045 is not really my number"
+      },
+      {
+        "where": "Pesagot vs Leumi in the account list",
+        "why": "I trust Leumi more, but it ends about 3,000 ₪ lower"
+      },
+      {
+        "where": "Fund list, every row has a minus (−0.04% … −0.54%, −1,030 ₪)",
+        "why": "Looked like losses, and it scared me until I saw the picked one had the smallest minus"
+      }
+    ],
+    "used": [
+      "Heading 'איפה ואיך הכי זול להשקיע במדד'",
+      "ת\"א-125 chip already selected",
+      "Result box: הפקדתם 70,000 ₪, פסגות הזול 86,045 ₪",
+      "Account ranking list with 'נשאר' figures and costs",
+      "Fund card: אי.בי.אי. מחקה ת\"א 125 (4A), דמי ניהול 0.1%",
+      "Line 'הכי הרבה בכל המחירונים: 86,045 ₪, אי.בי.אי. מחקה ת\"א 125 (4A), פסגות'"
+    ],
+    "skimmed": [
+      "Cost breakdown bar and legend",
+      "'העלות אצלכם לעומת הזוג השני' block",
+      "List of all funds on ת\"א-125",
+      "'What changes it most' chart and table",
+      "Steps/waterfall chart"
+    ],
+    "skipped": [
+      "Grey explanation text above the account list",
+      "'לא בחישוב' notes and their folds",
+      "Note under the fund list (מול המדד...)",
+      "Inflation button",
+      "Screens 12-13"
+    ],
+    "unsure_meaning": [
+      "דמי משמרת",
+      "נאמן 0.025%",
+      "העמלות זו על זו",
+      "(4A)",
+      "קרן מחקה vs קרן סל",
+      "קבועים / משתנים",
+      "−0.04% בשנה · שנה אחת",
+      "נשען על כלל מס פתוח: מוצג ולא מדורג",
+      "בכסף של היום"
+    ],
+    "not_found": [
+      "Result for my own 30,000 ₪",
+      "How to actually open the account / first step to take"
+    ],
+    "findings": [
+      {
+        "what": "Every fund shows a minus figure, which reads like a loss and is scary",
+        "where": "List of funds on ת\"א-125"
+      },
+      {
+        "what": "The default amounts (10,000/500) are easy to take as your own result",
+        "where": "Calculator on the first screen"
+      },
+      {
+        "what": "No clear 'what to do next' (how to open the account and buy)",
+        "where": "After the result box"
+      },
+      {
+        "what": "Several colour legends with jargon (דמי משמרת, העמלות זו על זו)",
+        "where": "Cost bar legend"
+      },
+      {
+        "what": "Fee for נאמן shown as a tiny percent with no explanation",
+        "where": "Fund card"
+      },
+      {
+        "what": "Lots of 'לא בחישוב' notes clutter the account list",
+        "where": "Account ranking"
+      }
+    ]
+  },
+  "steps": 11,
+  "reads": 11,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 39563,
+    "turns": 13,
+    "usd": 0.25103359999999997,
+    "input": 10,
+    "cacheWrite": 20606,
+    "cacheRead": 55028,
+    "output": 3757,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "p02-percent-ta125-phone",
+    "screenshots": 14,
+    "changes": [
+      {
+        "id": "percent",
+        "type": "text",
+        "shots": 14,
+        "applied": 14,
+        "most": 2
+      }
+    ],
+    "neverShown": [],
+    "errors": []
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "case": "label-icons",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The icons on the fund labels are weak and do not help tell the labels apart.\",\"where\":\"the labels on fund rows\",\"kind\":\"taste\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 6 complains that the funds look alike and that the tags use jargon, but no finding says the label icons are weak or fail to tell the labels apart."
+      }
+    ],
+    "liked": [],
+    "usd": 0.015563400000000002
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 6 is about the fund list itself: too many funds that look alike and tags full of jargon. It never says the icons on the labels are weak or fail to tell the labels apart, so it only touches the same area for a different reason."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0187234
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.034286800000000006
+}

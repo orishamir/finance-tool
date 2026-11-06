@@ -1,0 +1,99 @@
+{
+  "task": "control-keren-phone-browser",
+  "persona": "careful-retiree-pc",
+  "repeat": 1,
+  "mode": "browser",
+  "device": "phone",
+  "startedAt": "2026-11-06T00:24:17.892Z",
+  "structured": {
+    "answer": "With the page's own numbers (500 ₪ a month, 7% a year), after 8 years about 68,853 ₪ is \"נשאר בידיים\"; for 4 years the calculator gives no figure for self-employed people, it only says that taking money out before 6 years is taxed like business income.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "4-year result",
+        "why": "Only number shown was 25,725 under 'אותו כסף בחשבון ניירות ערך', not for the fund itself; orange note says no calculation for self-employed before 6 years"
+      },
+      {
+        "where": "8-year chart",
+        "why": "Two big numbers side by side (68,853 and 55,471); had to work out which one was mine"
+      }
+    ],
+    "used": [
+      "intro line about 6 years tax-free",
+      "tab 'מה קורה לכסף בקרן'",
+      "toggle 'עצמאים'",
+      "year buttons under the chart (4 and 8)",
+      "column 'נשאר בידיים' 68,853",
+      "orange note about withdrawal before 6 years"
+    ],
+    "skimmed": [
+      "deposit/refund/return breakdown columns",
+      "line 'אם תפקידו עוד 13,205 ₪ בשנה'",
+      "line about 7% return and 2% inflation"
+    ],
+    "skipped": [
+      "everything below the calculator",
+      "שווה לדעת",
+      "מי מציע ומי מצטרף",
+      "the first-screen legend about 123 numbers"
+    ],
+    "unsure_meaning": [
+      "במסלול מדד",
+      "הכנסה חייבת",
+      "החזר המס",
+      "אותו כסף בחשבון ניירות ערך",
+      "purple dotted underlines on numbers",
+      "123 מקור / 123 מחושב"
+    ],
+    "not_found": [
+      "an amount after 4 years for a self-employed person",
+      "what the 'מסלול מדד' is"
+    ],
+    "findings": [
+      {
+        "what": "No result for withdrawal before 6 years for self-employed; the only number shown at year 4 is for a different product, easy to mistake as the answer",
+        "where": "calculator, years 1-5 for עצמאים"
+      },
+      {
+        "what": "Two large numbers side by side (fund vs securities account) with no clear sentence saying which is better",
+        "where": "result chart"
+      },
+      {
+        "what": "7% return pre-filled as if certain",
+        "where": "תשואה בשנה field"
+      },
+      {
+        "what": "Dark background and small grey helper text hard to read",
+        "where": "'גררו את הסמן...' line and labels"
+      },
+      {
+        "what": "'מסלול מדד' unexplained for someone who knows מדד only as the price index",
+        "where": "sentence under the chart"
+      }
+    ]
+  },
+  "steps": 6,
+  "reads": 5,
+  "commands": 6,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 41940,
+    "turns": 13,
+    "usd": 0.1802896,
+    "input": 16,
+    "cacheWrite": 13068,
+    "cacheRead": 77208,
+    "output": 3012,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "control-keren-phone-browser",
+    "screenshots": 6,
+    "changes": [],
+    "neverShown": [],
+    "errors": []
+  }
+}

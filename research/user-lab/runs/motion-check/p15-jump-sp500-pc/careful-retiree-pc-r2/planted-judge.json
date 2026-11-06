@@ -1,0 +1,6 @@
+{
+  "named": false,
+  "position": 0,
+  "why": "None of the findings say the result cards move, shift or jump, or that a line keeps appearing and disappearing when the inputs change. Finding 4 is about the slider and the box showing different values. Finding 5 is about a scary red minus amount. Neither describes the layout jumping.",
+  "usd": 0.018196
+}

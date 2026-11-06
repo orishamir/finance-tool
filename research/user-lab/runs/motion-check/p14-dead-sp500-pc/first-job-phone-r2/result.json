@@ -1,0 +1,109 @@
+{
+  "task": "p14-dead-sp500-pc",
+  "persona": "first-job-phone",
+  "repeat": 2,
+  "mode": "browser",
+  "device": "pc",
+  "startedAt": "2026-11-06T00:19:41.946Z",
+  "structured": {
+    "answer": "I'd open an account at פסגות and buy the ילין לפידות מחקה S&P 500 fund. 750 ₪ a month for 15 years means I put in 135,000 ₪ and end up with about 179,889 ₪ \"בכסף של היום\", after fees and tax. That assumes 7% a year and 2% inflation, both just numbers the site picked (\"פרמטר של האתר\").",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "\"אינפלציה\" button next to the sliders",
+        "why": "I tapped it twice and nothing changed on the screen. No number, no popup. I only found the 2% by accident, when I tapped the big 179,889 ₪ figure."
+      },
+      {
+        "where": "Monthly deposit slider",
+        "why": "I typed 750 but the slider says 800. I wasn't sure which one the result uses. The popup later showed 750, so that was fine."
+      }
+    ],
+    "used": [
+      "Heading \"איפה ואיך הכי זול להשקיע במדד, לאורך זמן\"",
+      "Fields סכום היום / הפקדה חודשית / שנים",
+      "Result card: הפקדתם 135,000 ₪ → הבחירה שלכם · הזול 179,889 ₪, \"נשאר לכם בעוד 15 שנים, אחרי דמי ניהול ומס, בכסף של היום\"",
+      "Popup on 179,889: תשואה 7%, אינפלציה 2% \"פרמטר של האתר\"",
+      "Card names: פסגות ניירות ערך בע\"מ, ילין לפידות מחקה S&P 500 (4D)"
+    ],
+    "skimmed": [
+      "Cost bar chart \"כמה זה עולה לכם ב־15 שנים\" (15,364 pink, which I guessed is tax)",
+      "The second option, 179,766 ₪ (−122 ₪)",
+      "Fund line with 0% / 0.02% fees"
+    ],
+    "skipped": [
+      "Filter chips (צוברת, עסקת החלף, מנוטרלת מט״ח...)",
+      "\"כל החשבונות\" explanation text",
+      "Tax law links (TXS-06 etc.) in the popup",
+      "Rest of the page below the first fund card",
+      "Index description text"
+    ],
+    "unsure_meaning": [
+      "דמי משמרת",
+      "נאמן 0.02%",
+      "צוברת / מחלקת דיבידנד",
+      "עסקת החלף",
+      "מנוטרלת מט״ח",
+      "(4D) in the fund name",
+      "F-65, TXS-06 codes",
+      "Colours in the cost bar: I guessed the big pink one is tax"
+    ],
+    "not_found": [
+      "Any inflation number near the \"אינפלציה\" button itself",
+      "A clear first step for actually opening the account"
+    ],
+    "findings": [
+      {
+        "what": "The \"אינפלציה\" button does nothing visible when you tap it. The 2% assumption only shows up inside a popup on the result number.",
+        "where": "Row under the sliders"
+      },
+      {
+        "what": "\"בכסף של היום\" is written, but nowhere near it does it say what inflation was assumed.",
+        "where": "Result card"
+      },
+      {
+        "what": "The slider jumps to 800 when you type 750, so you can't tell which value counts.",
+        "where": "הפקדה חודשית"
+      },
+      {
+        "what": "Lots of fee colours in the bar chart that I can't match without reading the legend.",
+        "where": "כמה זה עולה לכם ב־15 שנים"
+      },
+      {
+        "what": "Too many filter chips full of words I don't know.",
+        "where": "כל הקרנות על מדד S&P 500"
+      }
+    ]
+  },
+  "steps": 9,
+  "reads": 5,
+  "commands": 9,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 52478,
+    "turns": 16,
+    "usd": 0.24298220000000004,
+    "input": 24,
+    "cacheWrite": 17883,
+    "cacheRead": 161211,
+    "output": 3379,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "p14-dead-sp500-pc",
+    "screenshots": 9,
+    "changes": [
+      {
+        "id": "dead-shown",
+        "type": "style",
+        "shots": 9,
+        "applied": 9,
+        "most": 1
+      }
+    ],
+    "neverShown": [],
+    "errors": []
+  }
+}

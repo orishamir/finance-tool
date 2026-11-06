@@ -1,0 +1,28 @@
+{
+ "personas": [
+  "self-directed-investor",
+  "student-small-amounts"
+ ],
+ "tasks": [
+  {
+   "key": "justetf-fund",
+   "text": "Someone mentioned this S&P 500 fund to you. You opened its page to understand what it is and decide whether it is worth looking into further.",
+   "start": "https://www.justetf.com/en/etf-profile.html?isin=IE00B5BMR087",
+   "device": "pc",
+   "minutes": 12,
+   "actions": 40,
+   "findings": true
+  },
+  {
+   "key": "gemelnet",
+   "text": "You have savings in a provident fund (\u05e7\u05d5\u05e4\u05ea \u05d2\u05de\u05dc). You opened this site to compare how your fund has done against other funds.",
+   "start": "https://gemelnet.cma.gov.il/",
+   "device": "pc",
+   "minutes": 12,
+   "actions": 40,
+   "findings": true
+  }
+ ],
+ "parallel": 2,
+ "repeat": 2
+}

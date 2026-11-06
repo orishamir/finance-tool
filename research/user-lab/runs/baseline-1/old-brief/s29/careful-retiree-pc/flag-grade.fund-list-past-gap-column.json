@@ -1,0 +1,92 @@
+{
+  "case": "fund-list-past-gap-column",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The fund list's column 'מול המדד' (each fund's past gap to its index) is not useful for choosing a fund, and the table does not show the information that matters for the choice.\",\"where\":\"the columns of the fund list\",\"kind\":\"taste\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "The chosen fund has only one year of history behind its -0.04% gap, against three years for Tachlit",
+      "Unsure whether Psagot allows an automatic monthly purchase",
+      "Only Leumi is marked 'standing-order price', so Psagot's price may assume buying by hand",
+      "Confused by the line 'no foreign fund operating in Israel': should foreign funds worry them?",
+      "Inflation button is half-confusing: is the 7% before or after inflation?",
+      "The line chart's 'years: 18,905 ₪ more' says nothing about where to invest",
+      "Step chart starts from Harel at Bank Jerusalem, a choice they never made, and they got lost",
+      "The last 'Now: Harel Sal… Jerusalem' tables repeat the account list",
+      "Orange and yellow bars in the account list can't be told apart without going back to the legend",
+      "Doesn't understand '4A' and the '(40)' in fund names",
+      "Doesn't understand tracking fund vs ETF, or why a tracking fund is cheaper",
+      "Fee terms 'variable' and 'trustee' unexplained: do they pay all of them?",
+      "'עמלות זו על זו' has no explanation",
+      "Unclear why tax is the biggest cost and whether anything can be done about it",
+      "'Open tax rule: shown but not ranked' is unexplained",
+      "Can't understand the 'cut-off bar' note",
+      "Unclear whether the fund can really be bought at One Zero, given the 'doubtful whether sold there' note",
+      "Unclear whether 'foreign funds waiting for unit price' affects them",
+      "No guidance on how to actually open a Psagot account or set up monthly buying",
+      "No information on whether money is safe at Psagot compared with a bank",
+      "No hint of what price is reasonable to negotiate with their current bank",
+      "Age discount is marked 'not in calculation', and how much it would change is not shown",
+      "No information on exit fees when withdrawing early",
+      "Worry whether a one-year-old fund might close or merge",
+      "Would drop the other index buttons and the funds filter with its tags"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader actually found the 'מול המדד' explanation and column helpful and never says the column is useless or that the table is missing the information that matters; their worry about one year of history is about how reliable the figure is, not about whether the column is useful."
+      }
+    ],
+    "liked": [],
+    "usd": 0.06906319999999999
+  },
+  "b": {
+    "raised": [
+      "Worried that the chosen fund has only one year of history next to its gap to the index",
+      "Doesn't know whether Psagot allows an automatic monthly purchase",
+      "Only Leumi's price says it is for a standing order, so it's unclear whether Psagot's price assumes buying by hand",
+      "Confused by the line 'אין קרן חוץ שמתחזקת בישראל': should they worry about foreign funds?",
+      "Inflation button is confusing: is the 7% before or after inflation?",
+      "Coloured cost bar is confusing",
+      "Fund card uses words they didn't know",
+      "Line chart ('years: 18,905 ₪ more') says nothing about where to invest",
+      "Step chart is confusing because it starts from Harel at Bank Jerusalem, which they never chose",
+      "Final 'עכשיו' tables repeat what was already shown",
+      "Can't tell the orange and yellow bars apart in the accounts list without going back to the legend",
+      "Don't understand '4A' and '(40)' in the fund names",
+      "Don't understand the difference between a tracking fund and an ETF, or why the tracking fund is cheaper",
+      "Don't understand the fee line (fixed, variable, trustee) or whether all of it is paid",
+      "'עמלות זו על זו' is never explained",
+      "Unclear why tax is the biggest cost and whether anything can be done about it",
+      "Don't understand the 'open tax rule' note under the step chart",
+      "Don't understand the cut-off bar note in the accounts list",
+      "Contradiction about whether the fund can be bought at One Zero",
+      "Unclear whether the note about foreign funds waiting for a unit price affects them",
+      "No information on how to actually open a Psagot account and set up monthly buying",
+      "No information on whether money is safe at Psagot compared with a bank",
+      "No guidance on what price is reasonable to negotiate at their current bank",
+      "Age discount is marked 'not in the calculation', so its effect is unknown",
+      "No information on exit fees if they withdraw money partway through",
+      "No information on whether a fund with one year of history might close or merge",
+      "Would drop the other index buttons and the funds filter with its tags"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader found the 'מול המדד' column and its explanation helpful and never says the column is useless for choosing or that the table lacks the information that matters; their worry about one year of history is a different issue."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0730272
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1420904
+}

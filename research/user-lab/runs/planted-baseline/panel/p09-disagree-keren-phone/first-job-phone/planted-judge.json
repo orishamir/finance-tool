@@ -1,0 +1,6 @@
+{
+  "named": false,
+  "position": 0,
+  "why": "No finding says the heading's year (5) and the sentence's year (6) disagree. Finding 1 complains that the calculator opens on 5 years instead of 6, which is about the default setting. Finding 2 says the \"after 6 years\" text clashes with the tax figure and the \"tax exempt\" claim, not with the heading. That is confusion about the tax rule, not the 5-versus-6 mismatch.",
+  "usd": 0.025264
+}

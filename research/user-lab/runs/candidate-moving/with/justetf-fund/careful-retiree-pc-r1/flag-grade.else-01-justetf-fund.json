@@ -1,0 +1,126 @@
+{
+  "case": "else-01-justetf-fund",
+  "stamp": "{\"keys\":[{\"id\":\"j-tabs\",\"kind\":\"general\",\"where\":\"the row of section names under the fund's header (Overview, Chart, Basics, Holdings, Performance and more)\",\"problem\":\"The row of section names looks like tabs that switch what is shown, but each one scrolls the page down to a section of the same long page; the jump is unexpected, and afterwards the row is no longer where it was, so going back means finding it again.\"},{\"id\":\"j-light\",\"kind\":\"taste\",\"where\":\"the whole page\",\"problem\":\"The page is light, white; he prefers a dark page.\"},{\"id\":\"j-dated\",\"kind\":\"general\",\"where\":\"the whole page\",\"problem\":\"The page does not look very modern or polished (minor).\"},{\"id\":\"j-performance\",\"kind\":\"general\",\"where\":\"the performance section\",\"problem\":\"The performance section is plain and basic.\"}],\"liked\":[{\"id\":\"j-facts-top\",\"what\":\"The most important facts about the fund (yearly cost, distribution policy, fund size) are at the top centre.\"},{\"id\":\"j-chart\",\"what\":\"The price chart: the time ranges right under it, green above 0% and red below, and the chosen range highlighted.\"},{\"id\":\"j-depth\",\"what\":\"More advanced information further down, in the basics section; the page is detailed.\"},{\"id\":\"j-holdings\",\"what\":\"The holdings section: easy to reach and easy to understand.\"},{\"id\":\"j-help\",\"what\":\"A ? mark beside terms such as the yearly cost, distribution policy and replication, explaining them.\"}]}",
+  "a": {
+    "problems": [
+      {
+        "id": "j-tabs",
+        "rank": 0,
+        "why": "None of the findings mentions the row of section names behaving like tabs but scrolling the page."
+      },
+      {
+        "id": "j-light",
+        "rank": 0,
+        "why": "No finding mentions the light or white colour scheme, or a wish for a dark page."
+      },
+      {
+        "id": "j-dated",
+        "rank": 0,
+        "why": "No finding says the page looks old-fashioned or unpolished."
+      },
+      {
+        "id": "j-performance",
+        "rank": 0,
+        "why": "Finding 4 is about the red negative return being off-putting, not about the performance section being plain or basic."
+      }
+    ],
+    "liked": [
+      {
+        "id": "j-facts-top",
+        "against": 0,
+        "why": "Finding 1 objects to unfamiliar jargon, not to the key facts being placed at the top centre."
+      },
+      {
+        "id": "j-chart",
+        "against": 0,
+        "why": "No finding complains about the chart, its time ranges, its colours or the range highlighting; finding 4 is about the performance figures."
+      },
+      {
+        "id": "j-depth",
+        "against": 0,
+        "why": "Finding 1 mentions the Basics table's jargon, which is a different aspect from the page's depth and detail."
+      },
+      {
+        "id": "j-holdings",
+        "against": 0,
+        "why": "Finding 7 only says the small grey date text is hard to read, not that the holdings section is hard to reach or understand."
+      },
+      {
+        "id": "j-help",
+        "against": 0,
+        "why": "No finding complains about the ? help marks; finding 1 is about unknown terms in general."
+      }
+    ]
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "j-tabs",
+        "rank": 0,
+        "why": "None of the reader's findings mentions the row of section names acting like tabs but scrolling the page, or losing that row after the jump."
+      },
+      {
+        "id": "j-light",
+        "rank": 0,
+        "why": "None of the findings objects to the light, white page or asks for a dark one."
+      },
+      {
+        "id": "j-dated",
+        "rank": 0,
+        "why": "None of the findings says the page looks old-fashioned or unpolished."
+      },
+      {
+        "id": "j-performance",
+        "rank": 0,
+        "why": "Finding 4 is about a red negative return being off-putting, not about the performance section being plain and basic."
+      }
+    ],
+    "liked": [
+      {
+        "id": "j-facts-top",
+        "against": 0,
+        "why": "Finding 1 objects to the English jargon, not to having the key facts placed at the top centre."
+      },
+      {
+        "id": "j-chart",
+        "against": 0,
+        "why": "No finding complains about the price chart, its time ranges, its colours or the highlighted range; finding 4 is about the returns figure in the performance section."
+      },
+      {
+        "id": "j-depth",
+        "against": 0,
+        "why": "Finding 1 mentions unfamiliar terms in the Basics table, which is a different aspect from how detailed the page is, and no finding complains that it has too much depth."
+      },
+      {
+        "id": "j-holdings",
+        "against": 0,
+        "why": "Finding 7 only notes that the small grey date text is pale, not that the holdings are hard to reach or hard to understand."
+      },
+      {
+        "id": "j-help",
+        "against": 0,
+        "why": "No finding complains about the ? help marks that explain terms."
+      }
+    ]
+  },
+  "third": null,
+  "ranks": {
+    "j-tabs": 0,
+    "j-light": 0,
+    "j-dated": 0,
+    "j-performance": 0
+  },
+  "agreed": {
+    "j-tabs": true,
+    "j-light": true,
+    "j-dated": true,
+    "j-performance": true
+  },
+  "against": {
+    "j-facts-top": 0,
+    "j-chart": 0,
+    "j-depth": 0,
+    "j-holdings": 0,
+    "j-help": 0
+  }
+}

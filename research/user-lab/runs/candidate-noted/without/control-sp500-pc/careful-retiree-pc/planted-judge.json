@@ -1,0 +1,53 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "The page opens with English letters and investment jargon, so a non-expert feels at once that it isn't meant for her and may give up.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "Red minus amounts and red bars in the account list don't say what they are measured against, so the reader can't tell a real loss from 'less than the top option'.",
+      "serious": true,
+      "names_listed": 6
+    },
+    {
+      "n": 3,
+      "summary": "Small grey text on a dark background, under the numbers and in the legends, stays hard to read even when enlarged.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "Too many numbers and coloured labels on one screen make the reader anxious.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "The top choice is an unfamiliar provider (פסגות) and the page doesn't clearly explain why the big banks rank lower.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 6,
+      "summary": "The 7% return is filled in by default, and nothing says that returns can also go down.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 7,
+      "summary": "Legend colours on screens 2 and 5 are too close together to tell the series apart.",
+      "serious": true,
+      "names_listed": 3
+    },
+    {
+      "n": 8,
+      "summary": "Nothing shows who runs the site, so the reader has no reason to trust it.",
+      "serious": false,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.042126800000000006
+}

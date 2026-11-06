@@ -1,0 +1,117 @@
+{
+  "case": "tracks-r1-returns",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The lists show the tracks but give no sense of the different companies.\",\"where\":\"all three lists\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Choosing between companies felt random: fees and returns are nearly the same, so nothing sets the companies apart",
+      "The first intro bullet (\"משותף לשלוש...\") meant nothing to them",
+      "Product chips are confusing: unclear how קופת גמל להשקעה, קרן השתלמות etc. differ, and the 'מה זה' link doesn't explain enough on the spot",
+      "Didn't understand the difference between the מניות, עוקב מדדי מניות and S&P 500 groups",
+      "The orange 'ציור בלבד' note looked like a designer's note",
+      "Option B's mixed list is confusing: you have to read every tag",
+      "The bottom note on past returns made them unsure whether to trust the returns",
+      "'עוד לא דווח' put them off",
+      "The 'קופה' number column means nothing to them",
+      "The rings and the מניות/מט\"ח percentages: didn't know what to do with them, and didn't get why מט\"ח matters",
+      "Didn't understand why there are two fees (מהחיסכון vs מההפקדות)",
+      "Didn't understand how stocks can be 101%",
+      "'פחות מ־3 שנים' is unclear: is the track new, or is the return low?",
+      "Didn't understand the clock icons and dotted underlines",
+      "Wanted the fee in shekels per year and couldn't find it",
+      "Wanted to know about withdrawing money and tax",
+      "Wanted returns after fees",
+      "Wanted the minimum deposit and a way or link to open an account",
+      "Wanted a plain-words risk comparison between S&P, מניות and כללי",
+      "Option C shows returns only for the S&P group, so other groups can't be compared",
+      "Would drop most of the 'במה הכסף מושקע' chips",
+      "Would drop the top tabs row and 'לפי חברה / לפי מוצר'"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 1,
+        "why": "The reader says nothing told the companies apart, so picking one felt random, which is a clear part of the person's complaint that the lists give no sense of the different companies (a borderline match, since the reader blames the near-identical numbers)."
+      }
+    ],
+    "liked": [],
+    "usd": 0.06426319999999999
+  },
+  "b": {
+    "raised": [
+      "Choosing between companies felt random because fees and returns are almost identical",
+      "The first intro bullet (\"משותף לשלוש...\") meant nothing to the reader",
+      "Product chips were confusing; unclear how the products differ, and the \"מה זה\" link doesn't explain enough right there",
+      "Didn't understand the difference between the \"מניות\", \"עוקב מדדי מניות\" and S&P 500 groups",
+      "Option B's mixed list was confusing; had to read every tag",
+      "The bottom note made the reader unsure whether the returns can be trusted",
+      "The \"קופה\" number column is meaningless",
+      "The stocks/foreign-currency rings: didn't know what to do with that information",
+      "Didn't understand why the מט\"ח percentage matters",
+      "Unclear why there are two fees (מהחיסכון vs מההפקדות)",
+      "Didn't understand how stocks can be 101%",
+      "\"פחות מ־3 שנים\" in the return column is ambiguous",
+      "Clock icons and dotted underlines not understood",
+      "Missing: what the fee costs in shekels",
+      "Missing: withdrawal rules and tax",
+      "Missing: returns after fees",
+      "Missing: minimum deposit and how to open an account",
+      "Missing: a plain-words risk comparison between S&P, stocks and general",
+      "Option C shows returns only for the S&P group, so other groups can't be compared",
+      "Would drop most of the \"במה הכסף מושקע\" chips",
+      "Would drop the top tabs row and the \"לפי חברה / לפי מוצר\" toggle"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader's closest point (item 1) says the company choice felt random because the numbers are nearly the same, which is not the same as saying the lists give no sense of what makes each company different."
+      }
+    ],
+    "liked": [],
+    "usd": 0.061671199999999995
+  },
+  "third": {
+    "raised": [
+      "Choosing between companies felt random because fees and returns were nearly identical",
+      "The first intro bullet ('משותף לשלוש...') meant nothing to them",
+      "Product chips were confusing: no idea how the products differ, and the 'מה זה' link didn't explain enough on the spot",
+      "Didn't understand the difference between the 'מניות', 'עוקב מדדי מניות' and S&P 500 groups",
+      "Option B's mixed list was confusing: they had to read every tag",
+      "The bottom note on past returns made them unsure whether to trust the returns",
+      "The stock/foreign-currency rings: didn't know what to do with that information",
+      "Didn't understand why the 'מט\"ח' percentage matters",
+      "Didn't understand why there are two fees (savings vs deposits)",
+      "Didn't understand how stocks can be '101%'",
+      "'פחות מ־3 שנים' was unclear: a new track or a low return?",
+      "Clock icons and dotted underlines were unexplained",
+      "No fee cost in shekels (e.g. per year on ₪50,000)",
+      "No information on withdrawing money or on tax",
+      "No returns after fees",
+      "No minimum deposit or way to open an account (no button or link)",
+      "No plain-words comparison of risk between S&P, stocks and general tracks",
+      "Option C shows returns only for the S&P group, so other groups can't be compared",
+      "Would drop most of the 'במה הכסף מושקע' chips",
+      "The 'קופה' number column is meaningless; would drop it",
+      "Would drop the top tabs row and 'לפי חברה / לפי מוצר'",
+      "'עוד לא דווח' put them off"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The report's closest point (item 1) says the company choice felt random because the numbers look alike; it never says the lists give no sense of what the companies themselves are like."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0606752
+  },
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": false
+  },
+  "against": {},
+  "usd": 0.1866096
+}

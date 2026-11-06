@@ -1,0 +1,36 @@
+{
+  "case": "current-account-chart-unrelated",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The current-account guide shows a growth chart of money invested at a 10% yearly return, which has nothing to do with a current account.\",\"where\":\"the chart 'מה קורה לכסף לאורך הזמן' in the guide\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 5,
+        "why": "Finding 5 objects to a return-growth chart appearing in the current-account calculator, which is the person's complaint that an investment chart doesn't belong with a current account, even though the stated rate is different."
+      }
+    ],
+    "liked": [],
+    "usd": 0.015547400000000001
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 5,
+        "why": "Finding 5 also objects that the current-account calculator shows a chart of investment returns, which doesn't fit a current account; the return rate it gives (5%) differs from the person's (10%), but the complaint is the same."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0154954
+  },
+  "third": null,
+  "ranks": {
+    "k": 5
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.031042800000000002
+}

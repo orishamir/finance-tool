@@ -1,0 +1,84 @@
+{
+  "case": "hg-not-entered",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The text says 'לא הזנתם אחוזים, אז החישוב לוקח את התקרה' although the percentage fields are filled in with default values.\",\"where\":\"the sentence under the graphic\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Unclear whether 'at retirement age 3 years suffice' applies to someone joining at 61",
+      "Tax rate for someone over 60 is never stated",
+      "Salary above the 15,712 limit: unclear whether deposits and the tax exemption cover the full salary",
+      "The '123 ממקור / מחושב / הזנתה' row at the top was confusing",
+      "The menu bar cuts across the middle of the page",
+      "Couldn't judge the default return (7) and management fee (0.54) values",
+      "The S&P500 line meant nothing to the reader",
+      "The '47% tax at source… assumes annual report' note worried them: do they have to file, and what is the final tax?",
+      "Unclear whether the 'up to 2%' fee or the calculator's 0.54% applies",
+      "The tax cards run off the screen with small arrows",
+      "The chief economist line worried them that the benefit may be cut",
+      "The 'ותק' / seniority-restart part on withdrawal was too complicated",
+      "Didn't understand the dark brown and dark grey blocks in the big chart",
+      "Colour layers in the small 1–12 bars are too small to read",
+      "The 'חוקים וכללים · N' tags are everywhere and it's unclear what clicking them does",
+      "No direct comparison of joining vs not joining (is the employer's 2,250 lost?)",
+      "No result shown for 6 years; the chart starts at the worst case of 5",
+      "Missing what a 750 monthly deposit does to take-home pay",
+      "Missing what happens if they stop working before 6 years",
+      "Would drop the company cards and 'הצגת החברות'",
+      "Would drop most of the terms table",
+      "Would drop the securities-account comparison and the 'כדאי להכיר גם' buttons"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The report never mentions the sentence under the graphic that says no percentages were entered even though the fields hold default values; its points about the defaults and the salary limit are different complaints."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0630752
+  },
+  "b": {
+    "raised": [
+      "Unclear whether 'at retirement age 3 years is enough' applies to someone joining at 61",
+      "Tax rate for people over 60 is never stated",
+      "Salary is above the 15,712 limit: unclear how much is tax-free, and whether the 750/2,250 deposits are real",
+      "The '123 ממקור / מחושב / הזנתה' row at the top is confusing",
+      "The menu bar cuts across the page in the middle of reading",
+      "The 47% withholding note is worrying: does the user have to file a tax report themselves?",
+      "Unclear whether the 2% max fee or the 0.54% in the calculator applies",
+      "The tax cards run half off the screen with little arrows",
+      "The chief economist line is worrying: might the benefit be cut?",
+      "The part about seniority (ותק) on withdrawal is too complicated",
+      "Dark brown and dark grey blocks in the big chart not understood",
+      "Colour layers in the small 1–12 bars are too small to read",
+      "The 'חוקים וכללים · N' tags are everywhere and it's unclear what clicking them does",
+      "'47%... is not the final tax', but the final tax is never given",
+      "No plain comparison of joining against not joining (is the employer's 2,250 lost?)",
+      "No 6-year result shown; the chart starts at the worst case of 5 years",
+      "No information on how the 750 deposit affects take-home pay",
+      "No information on what happens if the user stops working before 6 years",
+      "Would drop the company cards and 'הצגת החברות'",
+      "Would drop most of the terms table",
+      "Would drop the 'הכי קרוב לזה' securities account section and the 'כדאי להכיר גם' buttons",
+      "Would drop the S&P500 / 19-tracks lines"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The report never says the sentence under the graphic claims no percentages were entered while the fields hold default values. The reader actually left the default values in place without noticing any contradiction."
+      }
+    ],
+    "liked": [],
+    "usd": 0.061855200000000006
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1249304
+}

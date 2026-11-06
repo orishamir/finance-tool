@@ -1,0 +1,75 @@
+{
+  "case": "custom-index-change-answer",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"Beside the added index the link 'שינוי התשובה' does not say which answer it changes.\",\"where\":\"the line 'מדד שהוספתם, שמור במכשיר הזה · שינוי התשובה'\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Unsure about the 'how': the page has no fund or fund fee for 'test', so the reader doesn't know which fund to buy or whether the ranking would change",
+      "The youth price at לאומי, הפועלים and others is marked 'לא בחישוב', so the reader can't tell whether one of those is cheaper for a 24-year-old",
+      "The 'זר' badge and 'קרן חוץ' are confusing",
+      "'מאיה' means nothing to the reader",
+      "Unclear what happens on pressing 'בקשו שנאסוף'",
+      "The paragraph above the list is too dense; the reader gave up halfway",
+      "The advertising-claims block made the reader worried about the #1 pick, פסגות",
+      "The small print saying the order changes in 4 places at 0% or 10% return made the reader less sure of the ranking",
+      "The small print about overseas funds waiting for a unit price suggests something is missing from the numbers",
+      "Doesn't understand the labels 'קרן מחקה', 'קרן סל', 'בחו\"ל' and 'מחיר להוראת קבע', or which fund type to buy",
+      "Doesn't understand 'דמי משמרת' or 'העמלות זו על זו'",
+      "Unclear whether 1,058 ₪ is a total or per year, and which amount it is measured against",
+      "Unclear why פסגות shows 'קרן מחקה', and whether that's the only fund type available there",
+      "Wanted the final amount they would end up with and couldn't get it",
+      "Wanted to know how to actually open the account, step by step",
+      "Would drop the advertising block, the small print, the inflation and dollar line, the dense paragraph, and rows 11–17"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader only says they ignored the 'מדד שהוספתם … שינוי התשואה' line and never complains that the link doesn't say which answer it changes."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0547992
+  },
+  "b": {
+    "raised": [
+      "The total cost is incomplete: the site has no fund data for 'test' and no fund fee, so the reader doesn't know which fund to buy or whether the order would change",
+      "Youth prices are marked 'לא בחישוב', so a 24-year-old can't tell if לאומי or הפועלים would be cheaper",
+      "The 'זר' badge and the term 'קרן חוץ' are confusing",
+      "'מאיה' means nothing to the reader",
+      "It is unclear what happens after pressing 'בקשו שנאסוף'",
+      "The paragraph above the list ('קנייה חודשית מחושבת כהוראת קבע…') is too dense",
+      "The פסגות advertising-claim example made the reader worry about the #1 pick",
+      "The note that the order changes at 0% or 10% return made the reader less sure of the ranking",
+      "The note about foreign funds waiting for a unit price suggests something is still missing from the numbers",
+      "The labels 'קרן מחקה', 'קרן סל', 'בחו\"ל' and 'מחיר להוראת קבע' are not understood",
+      "'דמי משמרת' and 'העמלות זו על זו' are not understood",
+      "It is unclear whether 1,058 ₪ is the total or per year, and which amount it is measured against",
+      "It is unclear why פסגות shows 'קרן מחקה' next to the star, and whether that is the only fund type available there",
+      "The final amount the reader would end up with is missing",
+      "There are no instructions or steps for actually opening the account",
+      "Would drop the 'מה כתוב בפרסום, מול התעריפון' block and its claims",
+      "Would drop the small print at the bottom",
+      "Would drop the inflation/dollar-rate line and the dense paragraph",
+      "Would drop rows 11–17 of the list"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader only says they ignored the 'מדד שהוספתם… שינוי התשואה' line and never complains that the link fails to say which answer it changes."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0557632
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1105624
+}

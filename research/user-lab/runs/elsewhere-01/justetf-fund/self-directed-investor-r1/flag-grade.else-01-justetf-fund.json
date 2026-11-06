@@ -1,0 +1,126 @@
+{
+  "case": "else-01-justetf-fund",
+  "stamp": "{\"keys\":[{\"id\":\"j-tabs\",\"kind\":\"general\",\"where\":\"the row of section names under the fund's header (Overview, Chart, Basics, Holdings, Performance and more)\",\"problem\":\"The row of section names looks like tabs that switch what is shown, but each one scrolls the page down to a section of the same long page; the jump is unexpected, and afterwards the row is no longer where it was, so going back means finding it again.\"},{\"id\":\"j-light\",\"kind\":\"taste\",\"where\":\"the whole page\",\"problem\":\"The page is light, white; he prefers a dark page.\"},{\"id\":\"j-dated\",\"kind\":\"general\",\"where\":\"the whole page\",\"problem\":\"The page does not look very modern or polished (minor).\"},{\"id\":\"j-performance\",\"kind\":\"general\",\"where\":\"the performance section\",\"problem\":\"The performance section is plain and basic.\"}],\"liked\":[{\"id\":\"j-facts-top\",\"what\":\"The most important facts about the fund (yearly cost, distribution policy, fund size) are at the top centre.\"},{\"id\":\"j-chart\",\"what\":\"The price chart: the time ranges right under it, green above 0% and red below, and the chosen range highlighted.\"},{\"id\":\"j-depth\",\"what\":\"More advanced information further down, in the basics section; the page is detailed.\"},{\"id\":\"j-holdings\",\"what\":\"The holdings section: easy to reach and easy to understand.\"},{\"id\":\"j-help\",\"what\":\"A ? mark beside terms such as the yearly cost, distribution policy and replication, explaining them.\"}]}",
+  "a": {
+    "problems": [
+      {
+        "id": "j-tabs",
+        "rank": 0,
+        "why": "None of the findings mentions the section-name row scrolling the page instead of switching tabs."
+      },
+      {
+        "id": "j-light",
+        "rank": 0,
+        "why": "No finding objects to the page being light or white."
+      },
+      {
+        "id": "j-dated",
+        "rank": 0,
+        "why": "No finding says the page looks old-fashioned or unpolished."
+      },
+      {
+        "id": "j-performance",
+        "rank": 0,
+        "why": "Findings 3–5 are about the default currency, the currency dropdowns and charts that never load, not about the section being plain or basic."
+      }
+    ],
+    "liked": [
+      {
+        "id": "j-facts-top",
+        "against": 0,
+        "why": "Finding 1 complains about missing cost data in the Basics/FAQ area, not about the key facts placed at the top centre."
+      },
+      {
+        "id": "j-chart",
+        "against": 0,
+        "why": "No finding complains about the price chart, its time ranges or its colours."
+      },
+      {
+        "id": "j-depth",
+        "against": 0,
+        "why": "Findings 1 and 2 point out specific gaps (tracking difference, Israeli tax status), which is a different aspect from the page's overall depth."
+      },
+      {
+        "id": "j-holdings",
+        "against": 0,
+        "why": "No finding is about the holdings section."
+      },
+      {
+        "id": "j-help",
+        "against": 0,
+        "why": "No finding is about the ? help marks."
+      }
+    ]
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "j-tabs",
+        "rank": 0,
+        "why": "None of the findings mentions the section-name row scrolling the page instead of acting like tabs."
+      },
+      {
+        "id": "j-light",
+        "rank": 0,
+        "why": "No finding mentions the light colour scheme or a wish for a dark page."
+      },
+      {
+        "id": "j-dated",
+        "rank": 0,
+        "why": "No finding says the page looks old-fashioned or unpolished."
+      },
+      {
+        "id": "j-performance",
+        "rank": 0,
+        "why": "Findings 3–5 concern the performance section, but they are about the default currency, the currency dropdowns and charts that never load, not about it being plain or basic."
+      }
+    ],
+    "liked": [
+      {
+        "id": "j-facts-top",
+        "against": 0,
+        "why": "Finding 1 complains that TER is the only cost in the Basics/FAQ area, not about how the key facts are placed at the top."
+      },
+      {
+        "id": "j-chart",
+        "against": 0,
+        "why": "No finding complains about the price chart, its time ranges or its colouring."
+      },
+      {
+        "id": "j-depth",
+        "against": 0,
+        "why": "Findings 1 and 2 point out specific missing items (tracking difference, Israel tax status), not the depth of the Basics section as a whole."
+      },
+      {
+        "id": "j-holdings",
+        "against": 0,
+        "why": "No finding mentions the holdings section."
+      },
+      {
+        "id": "j-help",
+        "against": 0,
+        "why": "No finding complains about the ? help marks beside terms."
+      }
+    ]
+  },
+  "third": null,
+  "ranks": {
+    "j-tabs": 0,
+    "j-light": 0,
+    "j-dated": 0,
+    "j-performance": 0
+  },
+  "agreed": {
+    "j-tabs": true,
+    "j-light": true,
+    "j-dated": true,
+    "j-performance": true
+  },
+  "against": {
+    "j-facts-top": 0,
+    "j-chart": 0,
+    "j-depth": 0,
+    "j-holdings": 0,
+    "j-help": 0
+  }
+}

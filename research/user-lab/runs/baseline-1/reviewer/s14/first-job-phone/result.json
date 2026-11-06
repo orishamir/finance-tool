@@ -1,0 +1,95 @@
+{
+  "task": "s14",
+  "persona": "first-job-phone",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T02:19:01.068Z",
+  "structured": {
+    "answer": "Joining is worth it: I put in 750 ₪ a month, the employer puts in 2,250 ₪, and after 5 years about 136,457 ₪ would be left in my hands. But taking it out before 6 years costs about 64,761 ₪ in tax, so better to wait 6 years.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Chart set to 5 years with 'לפני 6 שנים: מס'",
+        "why": "Not clear if 136,457 is after the tax or the tax still comes off it; didn't drag the marker to 6 years to see"
+      },
+      {
+        "where": "Note 'ורק על שכר של עד 15,712 ₪'",
+        "why": "I earn 30,000; don't know if the 7.5% from the employer really covers my whole salary"
+      }
+    ],
+    "used": [
+      "Heading קרן השתלמות",
+      "Salary field 30,000 and the 2.5% / 7.5% fields",
+      "Line '750 ₪ בחודש מכם, 2,250 ₪ מהמעסיק'",
+      "Bar chart numbers 45,000 / +135,000 / +21,218 / −64,761 / 136,457 'נשאר בידיים'",
+      "Top chart labels 'לפני 6 שנים: מס' and 'מ־6 שנים: פטור עד תקרה'",
+      "Card 'כשעוברות 6 שנים'"
+    ],
+    "skimmed": [
+      "מה זה text",
+      "למה משתמשים בזה",
+      "כסף נכנס ויוצא cards",
+      "כמה זה עולה table (only saw 'עד 2% בשנה')",
+      "מיסוי cards"
+    ],
+    "skipped": [
+      "Grey notes under the chart (track, 47% tax, etc.)",
+      "שווה לדעת list",
+      "מי מציע ומי מפקח",
+      "All חוקים וכללים tags",
+      "Screens 4 and 5"
+    ],
+    "unsure_meaning": [
+      "תקרה / 'פטור עד תקרה'",
+      "15,712 ₪ limit",
+      "'מנכה 47% מס'",
+      "Hatched red/pink tops on the bars (guessed = tax)",
+      "Teal piece of the bar (guessed = return)",
+      "0.54% דמי ניהול — sounds small"
+    ],
+    "not_found": [
+      "Clear number for what I'd have after 6 years with no tax",
+      "Which company or track my own fund is"
+    ],
+    "findings": [
+      {
+        "what": "Default view is 5 years, before tax-free, so the big red −64,761 tax scares you off without showing the 6-year number",
+        "where": "Chart, 'מושכים את הכסף אחרי 5 שנים'"
+      },
+      {
+        "what": "Unclear if 136,457 is net after tax",
+        "where": "Waterfall chart last bar 'נשאר בידיים'"
+      },
+      {
+        "what": "Salary cap 15,712 ₪ mentioned in small text; unclear how it affects a 30,000 salary while chart shows 750/2,250",
+        "where": "Line under chart and notes"
+      },
+      {
+        "what": "Too many 'חוקים וכללים' tags and cards, page feels endless",
+        "where": "Whole page, especially כמה זה עולה / מיסוי"
+      },
+      {
+        "what": "Fee only shown as percent, not in shekels",
+        "where": "דמי ניהול field and כמה זה עולה table"
+      }
+    ]
+  },
+  "steps": 3,
+  "reads": 3,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 30788,
+    "turns": 5,
+    "usd": 0.155051,
+    "input": 8,
+    "cacheWrite": 11699,
+    "cacheRead": 27135,
+    "output": 2800,
+    "model": "claude-opus-5-5"
+  }
+}

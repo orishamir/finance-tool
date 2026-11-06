@@ -1,0 +1,80 @@
+{
+  "case": "account-card-parens",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The chosen account's name carries a parenthesis '(מותג של MEXEM LTD)' that clutters it.\",\"where\":\"the chosen account's card\",\"kind\":\"taste\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Psagot shows 'אין נתון' (no data) in the account list but is still called the cheapest, which is confusing",
+      "Psagot's ad says no management fees, but the fee list shows custody and quarterly fees, so the real cost is unclear",
+      "The page shows 10 years, not the 30 the reader plans, and they don't know if the winner would stay the same",
+      "The 'אינטראקטיב · שער הדולר 3.16' line names Interactive, though the reader never chose it",
+      "The cost legend (החשבון / הקרן / המדינה) has too many cost types and is confusing",
+      "The fund list is a wall of codes and tags",
+      "The currency-hedging (נטרול מט\"ח) section is unclear and feels like a topic for experts",
+      "The single grey tall bar in 'מתחילים מבחירה אחת' says nothing",
+      "The three alternative tables repeat the account ranking",
+      "The 'מול המדד' column with plus and minus percentages isn't understood",
+      "Most Israeli funds show 'אין מחיר כאן' (no price here) with no explanation",
+      "Terms like צוברת vs מחלקת דיבידנד, קרן מחקה vs קרן סל, and (4D)/(4A) aren't understood",
+      "Terms like W-8BEN, US estate tax, custody fees and tax on currency change aren't understood",
+      "The reader doesn't understand why tax is the biggest cost or why it differs between options",
+      "The page doesn't say what to do next: how to open an account or set up an automatic monthly deposit",
+      "There is no plain explanation of terms on hover",
+      "There is no simple yes or no on whether the advertised Psagot price is real",
+      "There is no minimum deposit amount shown",
+      "The reader would drop the graph in 'מה הכי משנה' because the table is enough"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The report never complains about the '(מותג של MEXEM LTD)' parenthesis cluttering the account name; its only remark on that area is confusion about why Interactive is named at all, which is a different problem."
+      }
+    ],
+    "liked": [],
+    "usd": 0.058419200000000004
+  },
+  "b": {
+    "raised": [
+      "Psagot shows 'אין נתון' in the account list yet is called the cheapest — contradictory",
+      "Psagot's ad claims no management fees but the fee list shows custody/quarterly fees — unsure of the real cost",
+      "Wants a 30-year horizon and doesn't know if the winner stays the same",
+      "The 'אינטראקטיב · שער הדולר 3.16' line is unclear — didn't choose Interactive",
+      "The cost legend (החשבון / הקרן / המדינה) has too many cost types and is confusing",
+      "Fund list is a wall of codes and tags",
+      "Hedging section (נטרול מט\"ח) with charts and table is confusing / unknown term",
+      "Single grey tall bar in 'מתחילים מבחירה אחת' says nothing",
+      "The three alternative tables just repeat the account ranking",
+      "Doesn't understand the 'מול המדד' column with +/- percentages",
+      "Doesn't know why most Israeli funds show 'אין מחיר כאן'",
+      "Doesn't understand צוברת vs מחלקת דיבידנד, קרן מחקה vs קרן סל, and (4D)/(4A)",
+      "Doesn't understand W-8BEN, מס עיזבון אמריקאי, דמי משמרת, מס גם על שינוי המטבע",
+      "Doesn't understand why tax is the biggest cost and differs between options",
+      "No guidance on next steps (how to open a Psagot account, automatic monthly deposit)",
+      "No hover or plain-language explanation for terms",
+      "No clear yes/no on whether the advertised Psagot price is real",
+      "No minimum-amount information",
+      "Would drop the hedging section",
+      "Would drop the long fund list with tags",
+      "Would drop the graph in 'מה הכי משנה' (the table is enough)"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader never mentions the '(מותג של MEXEM LTD)' parenthesis cluttering the account name; their Interactive complaint is about why that account appears at all, not about the clutter in its name."
+      }
+    ],
+    "liked": [],
+    "usd": 0.06300320000000001
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.12142240000000001
+}

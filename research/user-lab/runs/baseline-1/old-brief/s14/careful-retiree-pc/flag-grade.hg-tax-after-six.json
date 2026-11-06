@@ -1,0 +1,87 @@
+{
+  "case": "hg-tax-after-six",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"With a high salary entered, the graphic says tax is due even after 6 years and shows a large income-tax figure, without making clear which money it is on.\",\"where\":\"the graphic and its sentences\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Unclear whether 'retirement age: 3 years is enough' applies to someone joining at 61 (3 years from joining, or only after retiring)",
+      "The page never says the tax rate for people over 60; it only gives the 'under 60, at least 31%' rate",
+      "Salary is over the 15,712 limit: unclear whether deposits on the full salary are tax-free, and why the striped tax part is still in the chart at year 12 after the exemption",
+      "The '123 ממקור / מחושב / הזנתה' row at the top is confusing",
+      "The menu bar cuts across the page in the middle of reading",
+      "Can't judge the default return (7) and management fee (0.54) in the calculator",
+      "The S&P500 line under the chart means little to the reader",
+      "The '47% tax at source, assumes you file an annual report' note is worrying: do I have to file a report myself? What is the final tax?",
+      "The 2% maximum fee in the fees table clashes with the 0.54% in the calculator; unclear which one applies",
+      "The three tax cards run half off the screen behind small arrows, which is annoying",
+      "The chief economist line is worrying: will the benefit be cut?",
+      "The part about seniority (ותק) restarting when withdrawing is too complicated to understand",
+      "The dark brown and dark grey blocks in the big chart are not understood",
+      "The colour layers in the small 1–12 bars are too small to read",
+      "The 'חוקים וכללים · N' tags are everywhere and it's unclear what clicking one does",
+      "Why the tax is 64,761 when the under-60 rate doesn't apply",
+      "No plain comparison of joining against not joining: is the 2,250 paid as salary instead, or lost?",
+      "No 6-year result in numbers; the chart starts at the 5-year worst case",
+      "No figure for how 750 a month affects take-home pay after tax",
+      "Nothing on what happens if you stop working before 6 years",
+      "Would drop the company cards and 'הצגת החברות'",
+      "Would drop most of the terms table",
+      "Would drop 'הכי קרוב לזה' and the 'כדאי להכיר גם' buttons",
+      "Would drop the S&P500 / 19-tracks lines"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 3,
+        "why": "The reader asks why the striped tax part is still in the chart at year 12 after the exemption, ties it to the salary being over the 15,712 limit, and is unsure which part of the deposit is taxed — this is the person's complaint that tax still shows after 6 years with a high salary."
+      }
+    ],
+    "liked": [],
+    "usd": 0.06942319999999999
+  },
+  "b": {
+    "raised": [
+      "Unclear whether 'the 3 years at retirement age' rule helps someone joining at 61 (3 years from joining, or only after retiring)",
+      "The tax rate for someone over 60 is never given (only 'under 60 at least 31%')",
+      "Salary is above the 15,712 limit: unclear whether the deposits are real or tax-free, and the striped tax part is still there in year 12 after the exemption",
+      "The '123 ממקור / מחושב / הזנתה' row at the top is confusing",
+      "The menu bar cuts across the page in the middle of reading",
+      "The S&P500 line means nothing to the reader",
+      "The '47% tax at source, assumes an annual report' note is worrying: does the reader have to file, and what is the final tax?",
+      "Unclear whether the 2% maximum fee or the calculator's 0.54% applies",
+      "The tax cards half run off the screen with little arrows",
+      "The chief economist line is worrying: will the benefit be cut?",
+      "The seniority ('ותק') / one-third-of-balance withdrawal text is too complicated",
+      "The dark brown and dark grey blocks in the big chart are not understood",
+      "The colour layers in the small 1–12 bars are too small to read",
+      "The green 'חוקים וכללים · N' tags appear everywhere and it is unclear what clicking them does",
+      "Why the tax is 64,761 when the under-60 rate doesn't apply",
+      "Missing: a plain comparison of joining against not joining (is the 2,250 lost or paid as salary?)",
+      "Missing: the 6-year result in numbers; the chart starts at the 5-year worst case",
+      "Missing: what 750 a month does to take-home pay after tax",
+      "Missing: what happens if the reader stops working before 6 years",
+      "Would drop the company cards and 'הצגת החברות'",
+      "Would drop most of the terms table",
+      "Would drop 'הכי קרוב לזה' and the 'כדאי להכיר גם' buttons",
+      "Would drop the S&P500 / 19-tracks lines"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 3,
+        "why": "Item 3 notes that with the reader's high salary, above the limit, the striped tax part still shows in year 12 after the exemption, and it is unclear which money is taxed. That is the person's complaint."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0678632
+  },
+  "third": null,
+  "ranks": {
+    "k": 3
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.13728639999999998
+}

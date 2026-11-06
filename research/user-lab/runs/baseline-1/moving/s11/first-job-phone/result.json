@@ -1,0 +1,110 @@
+{
+  "task": "s11",
+  "persona": "first-job-phone",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T03:19:15.058Z",
+  "structured": {
+    "answer": "I'm keeping the keren hishtalmut and not touching it: my employer puts in up to 7.5% and I put in 2.5%, and after 6 years I can take everything out tax free. If I take it out earlier I pay tax, and the page warns that's expensive. Still, the page's own example confused me, because it showed the keren only about 415 ₪ ahead of a regular account after 10 years.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Calculator result, 17,370 ₪ vs 16,955 ₪, 'ההפרש: 415.84 ₪ יותר'",
+        "why": "I thought the keren was a big deal, but the example shows almost no gain. It also shows higher costs (2,402 ₪) and even tax (2,922 ₪) on something I understood to be tax free. I couldn't tell whether the employer's 7.5% is in there."
+      },
+      {
+        "where": "'ההפרש תלוי גם במי שבוחרים' list",
+        "why": "The '‎-342.02 ₪' made me think the keren could even lose money compared with the other option."
+      },
+      {
+        "where": "End of the page",
+        "why": "Nothing told me what to actually do first, like check my company or my track."
+      }
+    ],
+    "used": [
+      "Title 'קרן השתלמות' and the subtitle",
+      "'מה זה' paragraph: 7.5% from the employer, 2.5% from me, 6 years and then tax free, taxed before that",
+      "Calculator big numbers 17,370 / 16,955 and 'ההפרש 415.84 ₪ יותר'",
+      "Costs/tax mini table",
+      "'כסף נכנס ויוצא' cards: 'כשעוברות 6 שנים', 'עד 4 ימי עסקים'",
+      "'כמה זה עולה': 'עד 2% בשנה'",
+      "Orange warning 'משיכה לפני הזמן אפשרית, אבל יקרה'"
+    ],
+    "skimmed": [
+      "The text below the calculator about 300 ₪ מוטבת and 200 ₪ without the exemption",
+      "'ההפרש תלוי גם במי שבוחרים' bullets",
+      "'מיסוי' three cards",
+      "'סיכונים ומה לא מוגן'",
+      "'מונחים' table"
+    ],
+    "skipped": [
+      "'הצגת החוקים והכללים' links",
+      "'שחקו עם המספרים שלכם' fold",
+      "'שווה לדעת' rows with codes",
+      "'מי מציע ומי מפקח' and the companies list",
+      "'מה האתר לקח בחשבון'",
+      "Grey notes, the line saying the data is correct as of 01.11.2026, the footer",
+      "The slider and the salary field (left as they were)"
+    ],
+    "unsure_meaning": [
+      "הפקדה מוטבת",
+      "הרווח הריאלי",
+      "ותק",
+      "תקרה",
+      "קופת גמל להשקעה",
+      "47% in the warning box",
+      "‎-342.02 ₪ (whether a minus means losing money)",
+      "Whether 17,370 ₪ is the total or only the profit",
+      "Codes like TXH-09, KH-22, PF-06"
+    ],
+    "not_found": [
+      "A clear first step for someone whose employer already opened a keren for them",
+      "How to find out which company and track I'm in",
+      "An example that includes the employer's 7.5%, in shekels"
+    ],
+    "findings": [
+      {
+        "what": "The example shows the keren only 415 ₪ ahead after 10 years, with higher costs and tax. It makes the keren look not worth it, which goes against the opening paragraph. The employer's money doesn't seem to be in the example.",
+        "where": "Calculator result under 'מה מייחד קרן השתלמות'"
+      },
+      {
+        "what": "The big number 17,370 ₪ reads like the final amount. That it's only the profit is said in small grey text below it.",
+        "where": "Calculator bars"
+      },
+      {
+        "what": "A minus sign in the range '‎-342.02 ₪ לבין 2,106 ₪' is scary and unexplained.",
+        "where": "'ההפרש תלוי גם במי שבוחרים'"
+      },
+      {
+        "what": "Tax of 2,922 ₪ is shown on a product the page calls tax free. The 300/200 split that explains it sits in dense text.",
+        "where": "Costs/tax table under the calculator"
+      },
+      {
+        "what": "No 'what to do now' step for a salaried person who already has a keren through work",
+        "where": "Whole page"
+      },
+      {
+        "what": "Jargon like 'הפקדה מוטבת' and 'הרווח הריאלי' is used before it's explained; the explanations are only in the glossary at the bottom.",
+        "where": "Below the calculator and in 'מיסוי'"
+      }
+    ]
+  },
+  "steps": 4,
+  "reads": 4,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 43454,
+    "turns": 6,
+    "usd": 0.2081128,
+    "input": 10,
+    "cacheWrite": 14855,
+    "cacheRead": 42964,
+    "output": 4032,
+    "model": "claude-opus-5-5"
+  }
+}

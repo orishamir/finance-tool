@@ -1,0 +1,38 @@
+{
+  "id": "p07-word-sp500-phone",
+  "about": "For the lab only; never reaches a session. Planted problem, kind p07 (A word a person would not know or would misread): see research/user-lab/planted.md.",
+  "purpose": "plant",
+  "pages": [
+    "/finance-tool/indices/sp500"
+  ],
+  "device": "phone",
+  "instance": {
+    "kind": "p07",
+    "mode": "page",
+    "url": "https://orishamir.github.io/finance-tool/indices/sp500",
+    "device": "phone",
+    "steps": [],
+    "task": "sp500",
+    "control": "planted/control-sp500-phone",
+    "split": "score"
+  },
+  "plants": [
+    {
+      "id": "p07",
+      "kind": "general",
+      "problem": "The line under the main result uses \"נטו, בערכים ריאליים\" where it said after fees and tax in today's money; a lay reader does not know what is deducted or what \"ריאליים\" means.",
+      "where": "the line under the main result",
+      "counts": "A finding that \"נטו\" or \"ריאליים\" is unclear, or that the reader cannot tell what was taken off the amount.",
+      "notCounts": "Doubting the figure itself."
+    }
+  ],
+  "changes": [
+    {
+      "id": "word",
+      "type": "text",
+      "selector": "div.border-entered",
+      "find": "אחרי דמי ניהול ומס, בכסף של היום",
+      "replace": "נטו, בערכים ריאליים"
+    }
+  ]
+}

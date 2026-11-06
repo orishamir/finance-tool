@@ -1,0 +1,22 @@
+{
+  "id": "control-keren-phone-browser",
+  "about": "For the lab only; never reaches a session. A clean control: the same page, device, state and task as the planted instances listed in `instance.for`, with nothing changed. A serious finding here about something that is not on the live page is a false alarm.",
+  "purpose": "control",
+  "pages": [
+    "/finance-tool/guide/keren-hishtalmut"
+  ],
+  "device": "phone",
+  "instance": {
+    "kind": "control",
+    "mode": "browser",
+    "url": "https://orishamir.github.io/finance-tool/guide/keren-hishtalmut",
+    "device": "phone",
+    "steps": [],
+    "task": "keren-browser",
+    "for": [
+      "p14-dead-keren-phone",
+      "p15-jump-keren-phone"
+    ]
+  },
+  "changes": []
+}

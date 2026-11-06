@@ -1,0 +1,128 @@
+{
+  "task": "p14-dead-harel-pc",
+  "persona": "first-job-phone",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T00:17:14.217Z",
+  "structured": {
+    "answer": "I'd take Harel's \"מניות\" track (8522): it shows the biggest return, 24.04% over 3 years versus 13.7% for the S&P 500 one, and the fee is the same, about 0.55%.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Return column on screen 2",
+        "why": "Not sure if 24.04% is per year or total for 3 years; the header 'תשואה שנתית ממוצעת' I barely read"
+      },
+      {
+        "where": "Rows with 'פחות מ־3 שנים'",
+        "why": "No number, so I couldn't compare most tracks"
+      },
+      {
+        "where": "Choosing between מניות and עוקב מדד S&P 500",
+        "why": "I came for the S&P but the מניות row had a bigger number right above it"
+      }
+    ],
+    "used": [
+      "Heading הראל and the selected קופת גמל להשקעה 16 button",
+      "Fee range line 0.54% עד 0.61%",
+      "Track names in right column",
+      "Big green return percentages 24.04% / 13.7%",
+      "Fee 0.55% / 0.56% ההחיסכון",
+      "Track number 8522",
+      "כסף מנוהל 7.3 מיליארד ₪"
+    ],
+    "skimmed": [
+      "Filter buttons row (במה הכסף מושקע)",
+      "Donut charts with מניות/מט\"ח percentages",
+      "הלכה row",
+      "כסף מנוהל column"
+    ],
+    "skipped": [
+      "Small text under heading about 2025 fees and חברות",
+      "123 מקור / 123 מחושב",
+      "Grey notes under the table (התקרה בחוק, PF-10)",
+      "Text about past return not predicting future",
+      "מה כתוב במסמכים של הראל folds",
+      "לא מצאתם שם? search box",
+      "Footer",
+      "Bond and כספי tracks"
+    ],
+    "unsure_meaning": [
+      "מט\"ח",
+      "ההפקדות 0%",
+      "תשואה שנתית ממוצעת — per year or total?",
+      "פחות מ־3 שנים",
+      "Two numbers per track (3 שנים / 5 שנים)",
+      "Yellow vs teal dot in donut",
+      "מיליארד vs מיליון in כסף מנוהל"
+    ],
+    "not_found": [
+      "A clear recommendation of which track to pick",
+      "Fees in shekels",
+      "How to actually open the fund / a button to start",
+      "What the fee means for 30,000 ₪"
+    ],
+    "findings": [
+      {
+        "what": "Most tracks show 'פחות מ־3 שנים' instead of a return, so they can't be compared",
+        "where": "Return column, screen 2"
+      },
+      {
+        "what": "Unclear if return is per year or total; I read 24% as the main number",
+        "where": "תשואה שנתית ממוצעת column"
+      },
+      {
+        "what": "Fees only in percent, nothing in shekels for my amount",
+        "where": "דמי ניהול column"
+      },
+      {
+        "what": "No button or next step to actually open the fund",
+        "where": "Whole page"
+      },
+      {
+        "what": "Too many similar tracks (16) and filter buttons",
+        "where": "Screen 1 filter rows"
+      },
+      {
+        "what": "First row at top of screen 2 cut off, missed what it was",
+        "where": "Top of screen 2"
+      },
+      {
+        "what": "Two percentages in the donut (מניות and מט\"ח) with no explanation I noticed",
+        "where": "חשיפה column"
+      }
+    ]
+  },
+  "steps": 4,
+  "reads": 4,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 31936,
+    "turns": 6,
+    "usd": 0.1307894,
+    "input": 8,
+    "cacheWrite": 8350,
+    "cacheRead": 22187,
+    "output": 2976,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "p14-dead-harel-pc",
+    "screenshots": 6,
+    "changes": [
+      {
+        "id": "dead",
+        "type": "insert",
+        "shots": 6,
+        "applied": 6,
+        "most": 1
+      }
+    ],
+    "neverShown": [],
+    "errors": []
+  }
+}

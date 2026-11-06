@@ -1,0 +1,35 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "The tax tooltip says '84% מהפסד', which reads like a loss. That can make people misread the tax figure and get scared off.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "The slider shows 800 after the reader typed 750. It looks like the slider snapped to a step, and the reader didn't say the result was wrong.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "The inflation assumption is behind a button and isn't shown next to the result. This is about visibility, not about the button doing nothing.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "The cheapest fund is from a company the reader didn't know, which made them hesitate. That's about trust and personal preference, not a fault in the page.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "There are lots of jargon tags under the funds. This is a minor clarity annoyance.",
+      "serious": false,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.025106800000000006
+}

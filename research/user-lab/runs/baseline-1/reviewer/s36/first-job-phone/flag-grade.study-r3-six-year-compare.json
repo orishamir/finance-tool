@@ -1,0 +1,36 @@
+{
+  "case": "study-r3-six-year-compare",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"A comparison with waiting until year 6 is always present, though it is not always relevant.\",\"where\":\"the year-6 comparison\",\"kind\":\"taste\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "No finding says the year-6 comparison is always shown even when it doesn't apply; finding 7 says the dashed bar is confusing (is it real?), and finding 1 says the pre-year-6 tax looks alarming, but neither is about the comparison being irrelevant."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0167754
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "No finding says the year-6 comparison is shown even when it doesn't apply; finding 7 asks whether the dashed bar is real and finding 1 is about the scary tax display, so neither raises the relevance problem."
+      }
+    ],
+    "liked": [],
+    "usd": 0.015875399999999998
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.032650799999999994
+}

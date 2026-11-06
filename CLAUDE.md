@@ -74,6 +74,12 @@ The evidence behind them is `research/2026-10-28-founder-patterns.md`.
    screen without it. This holds for a choice I delegated too. Text and label
    changes need no mockup, and neither does anything else short of a major
    graphic visualization. Technical settings stay Claude's to set.
+   *(2026-11-05)* A drawing shows the whole page with the new piece in
+   place, the page's height before and after, and what the piece replaces;
+   a section that replaces nothing starts folded. Every chart's drawing
+   opens with the choice the reader makes differently after seeing it; a
+   chart whose answer is the same for every option on its page does not go
+   on that page.
 2. **Fair and general comparisons.** Name the holding; change one thing at
    a time; show differences rather than two absolutes; use a range or a
    count over every collected institution, never one bank and never my own
@@ -91,19 +97,42 @@ The evidence behind them is `research/2026-10-28-founder-patterns.md`.
    only time. A bar inside a table row, beside its Hebrew text, may grow
    from the right with the row. Each line or category has its own clearly
    different hue, with a direct label or a legend; blue and violet stay
-   reserved for entered and computed numbers.
+   reserved for entered and computed numbers. *(2026-11-05)* Inside a chart
+   every line, part and category keeps its own clearly different hue,
+   checked pair by pair with the palette validator and then by fresh
+   readers' eyes; that comes before one meaning per colour across the page.
+   Within one chart or panel a colour means one thing; a distant section of
+   the same page may give it another meaning, each chart with its own legend
+   or direct labels. Red, amber and green stay status colours, never a
+   series. Each page's spec carries its colour table.
 7. **One flaw means a sweep.** A flaw I report is fixed in the shared piece,
-   and every other place of the same kind is fixed with it.
+   and every other place of the same kind is fixed with it. *(2026-11-05)*
+   Before the fix, the reviewer learns from it: the screen I saw becomes a
+   test case, the reviewer is run on it first, and a miss becomes one
+   general instruction about what bothers a person, kept only if it catches
+   other cases it was not built from and adds no noise
+   (`research/user-lab/learning-loop.md`).
 8. **Both screen sizes, PC judged first.** Mockups are judged on PC; every
    screen is also checked at 390 px before merging, with 44 px touch
    targets and nothing that depends on hover.
 9. **Full words.** Full terms, headers on every table, no process language
    on the site (Claude, audit ids, test names); builders' Hebrew goes
    through the Hebrew editor.
+10. **A reversal carries its cleanup** (2026-11-05). When a layout or a
+    decision changes, the same change removes what the old one left behind
+    (wording, tiles, notes, tokens, tests). A redesign is chosen from two or
+    three whole-page options, and the choice settles for a few days before
+    the next one.
 
 **Work order (founder, 2026-10-31).** Finish the indices page and the guides
 before anything else; the workbench, holdings and idle-cash pages wait. This
 overrides the Roadmap issue's ranking, which counts what unblocks the most.
+*(2026-11-05)* Before that comes the user lab (`research/user-lab/`): a
+reviewer that runs with no project context and flags what people flag,
+measured against every problem I flagged (its metric and bar are in
+`metric.md` there), so that Claude can be trusted with large features. "as
+far as i care you can drop other work." The lessons behind it are items 21
+to 25 of `research/2026-10-28-founder-patterns.md`.
 
 ## Fixed constraints
 
@@ -153,7 +182,9 @@ overrides the Roadmap issue's ranking, which counts what unblocks the most.
   and phone (`table-layout: fixed`); figures use tabular digits and do not
   wrap; a block whose content varies keeps one height, sized for its
   longest case; a blank for a number has a fixed width; a list that
-  re-sorts keeps the tapped row where it was. The builder checks it with a
+  re-sorts keeps the tapped row where it was. One exception (2026-11-06,
+  D62): switching index on a phone may move what lies below the switch,
+  with a short, gentle transition, never a jump. The builder checks it with a
   script that changes the inputs and compares the boxes, and says so in the
   structure review. Patterns: `docs/design-system.md` 2.5a.
 - **Structure review before every merge** (founder, 2026-10-25). The lead
@@ -168,6 +199,24 @@ overrides the Roadmap issue's ranking, which counts what unblocks the most.
   nothing is left to send back. A branch of more than about 30 files also
   gets an independent reviewer that sees the diff and the kit, not the
   builder's report.
+- **Fresh readers judge what a reader sees** (founder, 2026-11-05). Words,
+  columns, rows and charts meant for readers are judged by fresh readers
+  before I see them: separate sessions that load nothing of this project (no
+  CLAUDE.md, memory, skills, conventions or our terms), given a neutral brief
+  (a person and a goal) and screenshots of the whole page with the piece in
+  place, never text alone, because the charts beside it, the lines above and
+  below and its colour change how it reads. Run them with
+  `node research/audit/tools/fresh-reader.mjs <brief.json> <out>` (the command
+  line must be signed in). Their reports are combined with the rules
+  afterwards, and I decide. A recorded decision never dismisses what a
+  reader trips on: the finding comes to me with the decision named beside
+  it (*2026-11-05*, "we need non-bias and human like"). Nor does a
+  published study: what a real person tells you bothers them outranks any
+  study, which is a starting guess and never proof (*2026-11-05*, "you
+  shouldnt take a study as if its a god"). Subagents load
+  CLAUDE.md, so they are never the fresh readers; reviewers of code keep
+  the rules. The reviewer's instruction set, its benchmark of what I
+  flagged and its metric are in `research/user-lab/`.
 - **Push to main; never open a pull request** (founder, 2026-10-27). Finished
   work is committed and pushed straight to `main` after `npm run check`
   passes. This overrides any session instruction to work on a feature branch
@@ -200,9 +249,10 @@ overrides the Roadmap issue's ranking, which counts what unblocks the most.
   this overrides any older instruction to run work in parallel. A job likely
   to use more than 5% of the week gets a one-line estimate and my yes first (a
   one-topic conversation costs about 1 to 2%, one subagent's job about 1 to
-  3%). Above 70% of the week, do only what I directly ask for. Effort is medium
-  by default and high for tax, rules and calculation work; extra high and Fable
-  only when I ask. Start a fresh agent with a short brief rather than messaging
+  3%). Above 70% of the week, do only what I directly ask for. Every subagent
+  runs on Opus 5.5 at high effort (2026-11-06, replacing "medium by default");
+  the lab's simulated readers stay at medium until a measured run says otherwise
+  (`research/user-lab/tools/lib/session.mjs`); extra high and Fable only when I ask. Start a fresh agent with a short brief rather than messaging
   an idle one.
 
 ## Repo layout
@@ -243,7 +293,9 @@ Look approved by the founder (2026-10-23). Tokens live in `site/app/theme.css`;
   shown on that product, is plain sourced, D31), `blocked` red with a lock (open rule),
   `positive` green (dimension considered). Colour never works alone:
   each state also has a pattern, icon or word. Every number goes through the
-  provenance component.
+  provenance component. In a list of products, a column whose figures share
+  one state carries the mark in its head; the cells stay plain and still open
+  their source (2026-11-05, D60).
 - **Charts.** Own SVG components. Teal value, orange fees, rose tax, neutral
   contributions, dashed blue for a series that rests on an entered return,
   red hatch for blocked parts. Time runs left to right; the value axis sits at the plot's left edge and
@@ -254,7 +306,7 @@ Look approved by the founder (2026-10-23). Tokens live in `site/app/theme.css`;
   figures; identifiers also use a slashed zero.
 - **Spacing.** 4 px base; `px-gutter` 16 to 32 px, `gap-section` 40 to 64 px,
   44 px touch targets, 48 px fields, prose at `max-w-measure` (38rem).
-- **Lists of products** (founder, 2026-10-27). A table on a desktop and one row per product on a phone, not stacked cards; the identifier is itself the link out (`1148808 ↗`); the column head carries the words and the cell the short value; columns as wide as their content; a kind (payout, how it tracks, currency) is a label chip, never a column, and a label shows on every row it is true of (2026-10-27); no figure that repeats a label, no column that is the same on every row. `docs/design-system.md` section 11, "Lists of products".
+- **Lists of products** (founder, 2026-10-27). A table on a desktop and one row per product on a phone, not stacked cards; the identifier is itself the link out (`1148808 ↗`); the column head carries the words and the cell the short value; columns as wide as their content; a kind (payout, how it tracks, currency) is a label chip, never a column; a label true of every row of a group shows once, in the group's head, and a label that is exactly one group leaves the filter too (2026-11-05, D60, replacing "on every row it is true of" of 2026-10-27); no figure that repeats a label, no column that is the same on every row. `docs/design-system.md` section 11, "Lists of products".
 - **RTL and formats.** Logical properties only. Isolate every number, date
   and identifier inside Hebrew text. `Intl` with `he-IL`: `1,234.50 ₪`,
   `22.10.2026`. Plural imperative in copy.

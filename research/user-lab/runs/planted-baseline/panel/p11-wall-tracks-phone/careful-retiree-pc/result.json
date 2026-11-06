@@ -1,0 +1,127 @@
+{
+  "task": "p11-wall-tracks-phone",
+  "persona": "careful-retiree-pc",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "phone",
+  "startedAt": "2026-11-05T23:20:03.134Z",
+  "structured": {
+    "answer": "I'd lean to Harel's \"כספי (שקלי)\" track: it's the only one I saw with 0% shares and 0% foreign currency, with 4.25% a year over 3 years and 0.57% fee, and I know Harel. But I only saw Harel's list, so I'll ask my son or the bank before signing.",
+    "confidence": "unsure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "screens 3-6, Harel track list",
+        "why": "Card after card of shares percentages and returns, no sentence saying which track is safe or like a deposit; I lost track and got tired still inside the first company"
+      },
+      {
+        "where": "screen 4, עוקב מדד S&P 500",
+        "why": "English letters, 99% shares – felt this page is for gamblers and almost left"
+      },
+      {
+        "where": "returns shown as 'פחות מ־3 שנים'",
+        "why": "Did not know if that means no history, or a bad result"
+      }
+    ],
+    "used": [
+      "Intro text on screen 1 (tax only on profit, no lock, supervised by רשות שוק ההון)",
+      "Company header 'הראל' with 19.1 מיליארד ש\"ח",
+      "Track card 'כספי (שקלי)': מניות 0%, מט\"ח 0%, 4.25% 3 שנים, 3.08% 5 שנים, 0.57% מהחיסכון, 0% מההפקדות"
+    ],
+    "skimmed": [
+      "Harel share tracks (מניות סחיר, כללי, מניות, S&P 500, עוקב מדדי מניות)",
+      "אשראי ואג\"ח עם מניות tracks",
+      "Filter/sort boxes on screen 2"
+    ],
+    "skipped": [
+      "Product chips (קרן חדשה מקיפה etc.)",
+      "'מה זה קופת גמל להשקעה' link",
+      "'מה אומרים המספרים' links",
+      "Search box",
+      "Screens 7-40 including all other companies"
+    ],
+    "unsure_meaning": [
+      "מט\"ח",
+      "סחיר",
+      "עוקב מדדי / S&P 500",
+      "קיימות",
+      "קופה 15283 and arrow icon",
+      "123 ממקור / 123 מחושב",
+      "coloured ring charts (teal vs yellow)",
+      "פחות מ־3 שנים",
+      "dotted underlines under percentages",
+      "whether 4.25% is per year or total"
+    ],
+    "not_found": [
+      "A plain sentence saying which track is safest / closest to a bank deposit",
+      "Comparison to bank deposit interest",
+      "What the fee means in shekels on my amount",
+      "Other companies' cash/safe tracks without scrolling through everything"
+    ],
+    "findings": [
+      {
+        "what": "No guidance on which track is low-risk; safe tracks are buried among share tracks with similar-looking cards",
+        "where": "Harel track list, screens 2-6"
+      },
+      {
+        "what": "Page is very long (12 companies, 143 tracks); I only reached the first company",
+        "where": "whole page"
+      },
+      {
+        "what": "Opens straight into dark busy cards full of percentages and English 'S&P 500'",
+        "where": "screens 3-4"
+      },
+      {
+        "what": "Jargon unexplained: מט\"ח, סחיר, עוקב מדדי, קיימות",
+        "where": "track cards"
+      },
+      {
+        "what": "Ring charts in teal/yellow on black are unreadable and not explained in words",
+        "where": "each track card"
+      },
+      {
+        "what": "Small pale grey helper text hard to read",
+        "where": "screen 1, 'הקישו על מספר כדי לראות מאיפה הוא' and '123 ממקור'"
+      },
+      {
+        "what": "'פחות מ־3 שנים' in place of a return is confusing",
+        "where": "many track cards"
+      },
+      {
+        "what": "Dark theme with white text tiring for older eyes",
+        "where": "whole page"
+      }
+    ]
+  },
+  "steps": 6,
+  "reads": 6,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 34783,
+    "turns": 8,
+    "usd": 0.165878,
+    "input": 8,
+    "cacheWrite": 12100,
+    "cacheRead": 27430,
+    "output": 3178,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "p11-wall-tracks-phone",
+    "screenshots": 41,
+    "changes": [
+      {
+        "id": "wall",
+        "type": "insert",
+        "shots": 41,
+        "applied": 41,
+        "most": 1
+      }
+    ],
+    "neverShown": [],
+    "errors": []
+  }
+}

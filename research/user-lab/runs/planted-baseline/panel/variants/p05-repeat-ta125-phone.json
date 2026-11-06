@@ -1,0 +1,41 @@
+{
+  "id": "p05-repeat-ta125-phone",
+  "about": "For the lab only; never reaches a session. Planted problem, kind p05 (A label or column that only repeats what is already shown): see research/user-lab/planted.md.",
+  "purpose": "plant",
+  "pages": [
+    "/finance-tool/indices/ta125"
+  ],
+  "device": "phone",
+  "instance": {
+    "kind": "p05",
+    "mode": "page",
+    "url": "https://orishamir.github.io/finance-tool/indices/ta125",
+    "device": "phone",
+    "steps": [],
+    "task": "ta125",
+    "control": "planted/control-ta125-phone",
+    "split": "score"
+  },
+  "plants": [
+    {
+      "id": "p05",
+      "kind": "general",
+      "problem": "Every fund in the list of funds on the TA-125 index carries a tag naming the TA-125 index, which is what the whole list is.",
+      "where": "the list of all funds on the index, first tag of each row",
+      "counts": "A finding that the index tag is on every fund and repeats the list's own heading.",
+      "notCounts": "Not understanding the other tags."
+    }
+  ],
+  "changes": [
+    {
+      "id": "repeat",
+      "type": "insert",
+      "at": {
+        "selector": "div[role=radio] span.gap-1\\.5.max-md\\:overflow-x-auto",
+        "all": true
+      },
+      "position": "afterbegin",
+      "html": "<span class=\"inline-flex items-center gap-1 text-xs font-medium rounded-full border px-2 py-0.5 min-h-6 whitespace-nowrap bg-muted text-foreground border-border\">מדד ת\"א-125</span>"
+    }
+  ]
+}

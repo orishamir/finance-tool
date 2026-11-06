@@ -1,0 +1,87 @@
+{
+  "case": "company-brokerage-card",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The securities-account card on a company's page does not look like the site's other product cards.\",\"where\":\"the securities-account card\",\"kind\":\"taste\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "The quarterly holding fee (0.03%) took effort to understand as 0.12% a year, and its long name was unclear",
+      "Unclear whether the S&P 500 or foreign securities can be bought here, since they are marked 'לא ידוע'",
+      "The ad contradicts the binding document, which makes the reader trust the ads less",
+      "'No publication date' on the price list made the reader uneasy",
+      "Two currency-conversion lines with different prices (1.5 agorot per dollar vs 0.5%), so it is unclear which applies",
+      "The long text under foreign securities was only half understood, and the 0.48%–1.5% range seems large",
+      "Doesn't know what 'מרווח' means, and 'no ceiling' sounds bad",
+      "Unsure whether 'דמי ניהול' and 'דמי משמרת' are the same thing, i.e. whether the ad is simply wrong",
+      "The first ad-vs-document comparison was cut off between screens",
+      "Doesn't know what money-market ('כספיות') and active ('אקטיביות') funds are, or whether the exemption matters",
+      "Unfamiliar jargon: מק\"מ, קרן כספית, חבר בורסה, דמי משמרת",
+      "No total yearly cost for someone like the reader; had to work it out alone",
+      "Page doesn't point out that the ₪2 minimum means about 0.4% on small monthly buys",
+      "No information on whether the fund itself charges fees on top",
+      "Can't tell whether a ₪10,000 minimum is normal compared with other places",
+      "No 'open account' button or explanation of how to open the account",
+      "No information on withdrawal or exit fees",
+      "Would drop the 'מה כתוב במסמכים של פסגות' section and 'חשבון ניירות ערך · 2' at the bottom",
+      "Would drop the fee-change notice",
+      "Would drop the small source links and dates",
+      "Would drop the '11 שורות עמלה נאספו' line",
+      "Would drop the search box",
+      "The minimum to open an account should be placed higher up"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The report mentions the 'חשבון ניירות ערך · 2' block only to say it looked like legal material and could be dropped; it never says the card looks different from the site's other product cards."
+      }
+    ],
+    "liked": [],
+    "usd": 0.06517120000000001
+  },
+  "b": {
+    "raised": [
+      "The quarterly holding fee (0.03% per quarter) took effort to turn into a yearly figure (0.12%)",
+      "Foreign securities are marked 'unknown', so it's unclear whether the S&P 500 can be bought here",
+      "The ad contradicts the contract, which lowers trust in the ads",
+      "'No publication date' on the fee schedule made the reader uneasy",
+      "The holding-fee name ('דמי ניהול פיקדון ניירות ערך') is long and unclear",
+      "Two currency-conversion lines with different prices; unclear which one applies",
+      "The 0.48%–1.5% range for foreign securities is large and unclear",
+      "Only half understood the long text under 'unknown foreign securities'",
+      "Didn't know what 'מרווח' (spread) means; 'no ceiling' sounds bad",
+      "Unclear whether 'דמי ניהול' and 'דמי משמרת' are the same thing",
+      "The first ad-vs-document comparison was cut off between screens",
+      "Doesn't understand 'money-market' and 'active' funds in the buy/sell exemption",
+      "Unknown terms: מק\"מ, קרן כספית, חבר בורסה, דמי משמרת",
+      "No straight answer on how to buy the S&P 500 here",
+      "No total yearly cost for a typical investor",
+      "The page doesn't point out that the ₪2 minimum makes small monthly purchases expensive",
+      "No information on whether the fund itself charges fees",
+      "No way to tell whether the ₪10,000 minimum is normal",
+      "No 'open account' button or explanation of how to open one",
+      "No information on withdrawal or exit fees",
+      "Would cut the 'מה כתוב במסמכים של פסגות' and 'חשבון ניירות ערך · 2' sections at the bottom",
+      "Would cut the fee-change notice",
+      "Would cut the small source links and dates, the '11 rows' line and the search box",
+      "The minimum to open the account should be placed higher up"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The report never says the securities-account card looks different from the site's other product cards; it only says it would cut the bottom 'חשבון ניירות ערך · 2' section because it looks like legal material, which is a different complaint."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0617712
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1269424
+}

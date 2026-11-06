@@ -1,0 +1,38 @@
+{
+  "id": "p03-colours-sp500-pc",
+  "about": "For the lab only; never reaches a session. Planted problem, kind p03 (Two parts of a chart in colours a person would call the same): see research/user-lab/planted.md.",
+  "purpose": "plant",
+  "pages": [
+    "/finance-tool/indices/sp500"
+  ],
+  "device": "pc",
+  "instance": {
+    "kind": "p03",
+    "mode": "page",
+    "url": "https://orishamir.github.io/finance-tool/indices/sp500",
+    "device": "pc",
+    "steps": [],
+    "task": "sp500",
+    "control": "planted/control-sp500-pc",
+    "split": "score"
+  },
+  "plants": [
+    {
+      "id": "p03",
+      "kind": "general",
+      "problem": "In the section on currency-hedged funds, the hedged and unhedged funds are drawn in two shades of the same teal, so a reader cannot tell which bars belong to which.",
+      "where": "the yearly chart in the section comparing funds with and without currency hedging",
+      "counts": "A finding that the two kinds of fund in that chart look the same colour or too alike.",
+      "notCounts": "Finding the hedging section hard in general."
+    }
+  ],
+  "changes": [
+    {
+      "id": "look-alike",
+      "type": "chart-colours",
+      "tokens": {
+        "--chart-kind-hedged": "var(--palette-teal-400)"
+      }
+    }
+  ]
+}

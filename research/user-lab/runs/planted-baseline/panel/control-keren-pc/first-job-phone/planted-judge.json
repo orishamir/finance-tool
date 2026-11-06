@@ -1,0 +1,41 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "Calculator defaults to 5 years (bad tax year), showing a scary ~30k tax figure first",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "Only the 'הפקדתם' bar has a shekel figure; 'נשאר בידיים' has no number",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "Paragraph under bar chart has too many shekel figures; reader can't tell what they end up with",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "Result range 66,601–66,280 tucked at far left of a long fees line, easy to miss or misread",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "Salary field requires gross; reader only knows net",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 6,
+      "summary": "Orange 47% tax warning is alarming and reader can't tell if it applies to them",
+      "serious": true,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.034466800000000006
+}

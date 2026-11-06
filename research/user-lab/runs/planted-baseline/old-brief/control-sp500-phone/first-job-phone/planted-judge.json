@@ -1,0 +1,65 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "The 'אינפלציה' button and the dollar-rate/European Central Bank line near the sliders make no sense to the reader.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "The cost comparison line 'המס 14 ₪ יותר, כי נשאר לכם יותר רווח' is confusing: higher tax appears next to 'more', as if paying more were good.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "'מחיר אחר לצעירים' is marked 'לא בחישוב' for several banks. The page doesn't say whether a young person's price would beat Psagot, which could change the 24-year-old reader's choice.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "The fund cards and fund list use unexplained jargon and tags (נאמן, קרן מחקה, כמה דרכים יחד, עסקת החלף, קרן חוץ בת\"א, 4D vs 4A, MTF, סל, דמי משמרת, the small % per year).",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "Currency hedging (נטרול מט\"ח) is never explained in plain terms. The wide hedged range (+2,212 to −23,766 ₪) scared the reader without them understanding what it does.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 6,
+      "summary": "On the phone, the hedging year table prints numbers on top of each other (e.g. '‎−21‎−18.2%'), so it can't be read.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 7,
+      "summary": "The step chart starts from 'MTF סל S&P 500 (4D), ירושלים' marked 'עכשיו', which the reader never chose. This was confusing at first.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 8,
+      "summary": "'בכסף של היום' in the main result is not understood. The reader doesn't know if they'll actually see 86,492 ₪ in the account or more in actual shekels.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 9,
+      "summary": "There's no guidance on how to actually act: how to open a Psagot account, whether it is a bank or safe, and how to set up automatic monthly buying.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 10,
+      "summary": "The page doesn't say whether the 7% default return is realistic or historical for the S&P 500, or whether the winner changes when starting from 0 ₪.",
+      "serious": false,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.0782108
+}

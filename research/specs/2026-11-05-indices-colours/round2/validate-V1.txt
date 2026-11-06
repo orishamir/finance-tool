@@ -1,0 +1,180 @@
+
+=== 1 Every pair: kinds teal-300, gold-200, magenta-400, orange-500; pick ring and path neutral-100; open-rule lock red-400 above the fund's own dot; best = a star glyph in the text colour; hollow = hedged in its kind's colour
+#83d5d0,#fdc010,#cf64bb,#dd6301,#f2f0ec,#ff796d on #171614 (--pairs all)
+
+Palette (dark, surface #171614, categorical): 6 slots
+  [FAIL] Lightness band         outside band: [["#83d5d0",0.819],["#fdc010",0.84],["#f2f0ec",0.956],["#ff796d",0.731]]
+  [FAIL] Chroma floor           below floor (reads gray): [["#83d5d0",0.081],["#f2f0ec",0.006]]
+  [PASS] CVD separation         worst all-pairs #ff796d↔#dd6301 ΔE 10.1 (deutan) · tritan 6.1
+  [FAIL] Normal-vision floor    worst all-pairs #ff796d↔#dd6301 ΔE 11.0 (normal) — below 15, hard to tell apart even with full color vision
+  [PASS] Contrast vs surface    all 6 >= 3:1
+
+  → FAILED — fix the marked checks  (CVD in the 6–8 floor band is legal ONLY with secondary encoding: direct labels, gaps, or texture)
+  scope: categorical palettes only. For a lone status/text color check text contrast with this script's apca() or contrast(); for a sequential ramp, lightness monotonicity.
+
+exit 1
+
+=== 1 Every pair, the kinds alone (the founder's condition)
+#83d5d0,#fdc010,#cf64bb,#dd6301 on #171614 (--pairs all)
+
+Palette (dark, surface #171614, categorical): 4 slots
+  [FAIL] Lightness band         outside band: [["#83d5d0",0.819],["#fdc010",0.84]]
+  [FAIL] Chroma floor           below floor (reads gray): [["#83d5d0",0.081]]
+  [PASS] CVD separation         worst all-pairs #cf64bb↔#83d5d0 ΔE 16.1 (deutan) · tritan 8.4
+  [PASS] Normal-vision floor    worst all-pairs #dd6301↔#cf64bb ΔE 20.6 (normal)
+  [PASS] Contrast vs surface    all 4 >= 3:1
+
+  → FAILED — fix the marked checks  (CVD in the 6–8 floor band is legal ONLY with secondary encoding: direct labels, gaps, or texture)
+  scope: categorical palettes only. For a lone status/text color check text contrast with this script's apca() or contrast(); for a sequential ramp, lightness monotonicity.
+
+exit 1
+
+=== 2 Result card strips: account ticks neutral-100, fund ticks teal-400, band neutral-700
+#f2f0ec,#48bdb6,#4a4742 on #171614 (--pairs all)
+
+Palette (dark, surface #171614, categorical): 3 slots
+  [FAIL] Lightness band         outside band: [["#f2f0ec",0.956],["#48bdb6",0.731],["#4a4742",0.399]]
+  [FAIL] Chroma floor           below floor (reads gray): [["#f2f0ec",0.006],["#4a4742",0.009]]
+  [PASS] CVD separation         worst all-pairs #48bdb6↔#f2f0ec ΔE 18.6 (protan) · tritan 25.8
+  [PASS] Normal-vision floor    worst all-pairs #48bdb6↔#f2f0ec ΔE 24.8 (normal)
+  [WARN] Contrast vs surface    below 3:1 — relief required (visible labels or table view): [["#4a4742",1.96]]
+
+  → FAILED — fix the marked checks  (CVD in the 6–8 floor band is legal ONLY with secondary encoding: direct labels, gaps, or texture)
+  scope: categorical palettes only. For a lone status/text color check text contrast with this script's apca() or contrast(); for a sequential ramp, lightness monotonicity.
+
+exit 1
+
+=== 3-4 Account fee bar, its legend and the names under it: trade, custody, fixed, currency, the rest
+#dd6301,#fdc010,#cf64bb,#e0ddd9,#7d7a74 on #171614 (--pairs all)
+
+Palette (dark, surface #171614, categorical): 5 slots
+  [FAIL] Lightness band         outside band: [["#fdc010",0.84],["#e0ddd9",0.899]]
+  [FAIL] Chroma floor           below floor (reads gray): [["#e0ddd9",0.006],["#7d7a74",0.01]]
+  [PASS] CVD separation         worst all-pairs #7d7a74↔#cf64bb ΔE 10.6 (deutan) · tritan 8.4
+  [PASS] Normal-vision floor    worst all-pairs #e0ddd9↔#fdc010 ΔE 17.4 (normal)
+  [PASS] Contrast vs surface    all 5 >= 3:1
+
+  → FAILED — fix the marked checks  (CVD in the 6–8 floor band is legal ONLY with secondary encoding: direct labels, gaps, or texture)
+  scope: categorical palettes only. For a lone status/text color check text contrast with this script's apca() or contrast(); for a sequential ramp, lightness monotonicity.
+
+exit 1
+
+=== 3-4 Same, on the picked row's tint
+#dd6301,#fdc010,#cf64bb,#e0ddd9,#7d7a74 on #222927 (--pairs all)
+
+Palette (dark, surface #222927, categorical): 5 slots
+  [FAIL] Lightness band         outside band: [["#fdc010",0.84],["#e0ddd9",0.899]]
+  [FAIL] Chroma floor           below floor (reads gray): [["#e0ddd9",0.006],["#7d7a74",0.01]]
+  [PASS] CVD separation         worst all-pairs #7d7a74↔#cf64bb ΔE 10.6 (deutan) · tritan 8.4
+  [PASS] Normal-vision floor    worst all-pairs #e0ddd9↔#fdc010 ΔE 17.4 (normal)
+  [PASS] Contrast vs surface    all 5 >= 3:1
+
+  → FAILED — fix the marked checks  (CVD in the 6–8 floor band is legal ONLY with secondary encoding: direct labels, gaps, or texture)
+  scope: categorical palettes only. For a lone status/text color check text contrast with this script's apca() or contrast(); for a sequential ramp, lightness monotonicity.
+
+exit 1
+
+=== 5, 8 Fund chips: what the fund is, how it tracks, currency, payout, known tax, caution words, open-rule words
+#a19e98,#cf64bb,#fdc010,#dd6301,#f2f0ec,#fdd5a7,#ff796d on #171614 (--pairs all)
+
+Palette (dark, surface #171614, categorical): 7 slots
+  [FAIL] Lightness band         outside band: [["#a19e98",0.7],["#fdc010",0.84],["#f2f0ec",0.956],["#fdd5a7",0.896],["#ff796d",0.731]]
+  [FAIL] Chroma floor           below floor (reads gray): [["#a19e98",0.009],["#f2f0ec",0.006],["#fdd5a7",0.075]]
+  [WARN] CVD separation         worst all-pairs #ff796d↔#a19e98 ΔE 6.3 (protan) · tritan 6.1
+  [FAIL] Normal-vision floor    worst all-pairs #fdd5a7↔#f2f0ec ΔE 9.1 (normal) — below 15, hard to tell apart even with full color vision
+  [PASS] Contrast vs surface    all 7 >= 3:1
+
+  → FAILED — fix the marked checks  (CVD in the 6–8 floor band is legal ONLY with secondary encoding: direct labels, gaps, or texture)
+  scope: categorical palettes only. For a lone status/text color check text contrast with this script's apca() or contrast(); for a sequential ramp, lightness monotonicity.
+
+exit 1
+
+=== 5, 8 Same, on the picked fund row's tint
+#a19e98,#cf64bb,#fdc010,#dd6301,#f2f0ec,#fdd5a7,#ff796d on #222927 (--pairs all)
+
+Palette (dark, surface #222927, categorical): 7 slots
+  [FAIL] Lightness band         outside band: [["#a19e98",0.7],["#fdc010",0.84],["#f2f0ec",0.956],["#fdd5a7",0.896],["#ff796d",0.731]]
+  [FAIL] Chroma floor           below floor (reads gray): [["#a19e98",0.009],["#f2f0ec",0.006],["#fdd5a7",0.075]]
+  [WARN] CVD separation         worst all-pairs #ff796d↔#a19e98 ΔE 6.3 (protan) · tritan 6.1
+  [FAIL] Normal-vision floor    worst all-pairs #fdd5a7↔#f2f0ec ΔE 9.1 (normal) — below 15, hard to tell apart even with full color vision
+  [PASS] Contrast vs surface    all 7 >= 3:1
+
+  → FAILED — fix the marked checks  (CVD in the 6–8 floor band is legal ONLY with secondary encoding: direct labels, gaps, or texture)
+  scope: categorical palettes only. For a lone status/text color check text contrast with this script's apca() or contrast(); for a sequential ramp, lightness monotonicity.
+
+exit 1
+
+=== 6 Hedging: fund bars teal-400 and gold-200 (hedged also hollow) and the dollar bars beside them (bright, dim)
+#48bdb6,#fdc010,#f2f0ec,#817e7a on #171614 (--pairs all)
+
+Palette (dark, surface #171614, categorical): 4 slots
+  [FAIL] Lightness band         outside band: [["#48bdb6",0.731],["#fdc010",0.84],["#f2f0ec",0.956]]
+  [FAIL] Chroma floor           below floor (reads gray): [["#f2f0ec",0.006],["#817e7a",0.007]]
+  [PASS] CVD separation         worst all-pairs #817e7a↔#48bdb6 ΔE 13.6 (deutan) · tritan 16.3
+  [PASS] Normal-vision floor    worst all-pairs #817e7a↔#48bdb6 ΔE 17.4 (normal)
+  [PASS] Contrast vs surface    all 4 >= 3:1
+
+  → FAILED — fix the marked checks  (CVD in the 6–8 floor band is legal ONLY with secondary encoding: direct labels, gaps, or texture)
+  scope: categorical palettes only. For a lone status/text color check text contrast with this script's apca() or contrast(); for a sequential ramp, lightness monotonicity.
+
+exit 1
+
+=== 6 Hedging: the two fund series alone
+#48bdb6,#fdc010 on #171614 (--pairs all)
+
+Palette (dark, surface #171614, categorical): 2 slots
+  [FAIL] Lightness band         outside band: [["#48bdb6",0.731],["#fdc010",0.84]]
+  [PASS] Chroma floor           all 2 >= 0.1
+  [PASS] CVD separation         worst all-pairs #fdc010↔#48bdb6 ΔE 17.5 (protan) · tritan 24.1
+  [PASS] Normal-vision floor    worst all-pairs #fdc010↔#48bdb6 ΔE 24.6 (normal)
+  [PASS] Contrast vs surface    all 2 >= 3:1
+
+  → FAILED — fix the marked checks  (CVD in the 6–8 floor band is legal ONLY with secondary encoding: direct labels, gaps, or texture)
+  scope: categorical palettes only. For a lone status/text color check text contrast with this script's apca() or contrast(); for a sequential ramp, lightness monotonicity.
+
+exit 1
+
+=== 7 Own-price sheet: fee bars, names and legend (all five kinds) with the period strip (group teal-400, price list neutral-50)
+#dd6301,#fdc010,#cf64bb,#e0ddd9,#7d7a74,#48bdb6,#f9f7f5 on #201e1b (--pairs all)
+
+Palette (dark, surface #201e1b, categorical): 7 slots
+  [FAIL] Lightness band         outside band: [["#fdc010",0.84],["#e0ddd9",0.899],["#48bdb6",0.731],["#f9f7f5",0.977]]
+  [FAIL] Chroma floor           below floor (reads gray): [["#e0ddd9",0.006],["#7d7a74",0.01],["#f9f7f5",0.003]]
+  [WARN] CVD separation         worst all-pairs #48bdb6↔#cf64bb ΔE 7.6 (deutan) · tritan 7.8
+  [FAIL] Normal-vision floor    worst all-pairs #f9f7f5↔#e0ddd9 ΔE 7.8 (normal) — below 15, hard to tell apart even with full color vision
+  [PASS] Contrast vs surface    all 7 >= 3:1
+
+  → FAILED — fix the marked checks  (CVD in the 6–8 floor band is legal ONLY with secondary encoding: direct labels, gaps, or texture)
+  scope: categorical palettes only. For a lone status/text color check text contrast with this script's apca() or contrast(); for a sequential ramp, lightness monotonicity.
+
+exit 1
+
+=== 7 Own-price sheet as photographed (Leumi: trade, custody, the rest) with the period strip
+#dd6301,#fdc010,#7d7a74,#48bdb6,#f9f7f5 on #201e1b (--pairs all)
+
+Palette (dark, surface #201e1b, categorical): 5 slots
+  [FAIL] Lightness band         outside band: [["#fdc010",0.84],["#48bdb6",0.731],["#f9f7f5",0.977]]
+  [FAIL] Chroma floor           below floor (reads gray): [["#7d7a74",0.01],["#f9f7f5",0.003]]
+  [PASS] CVD separation         worst all-pairs #7d7a74↔#dd6301 ΔE 10.9 (protan) · tritan 18.1
+  [PASS] Normal-vision floor    worst all-pairs #7d7a74↔#dd6301 ΔE 17.7 (normal)
+  [PASS] Contrast vs surface    all 5 >= 3:1
+
+  → FAILED — fix the marked checks  (CVD in the 6–8 floor band is legal ONLY with secondary encoding: direct labels, gaps, or texture)
+  scope: categorical palettes only. For a lone status/text color check text contrast with this script's apca() or contrast(); for a sequential ramp, lightness monotonicity.
+
+exit 1
+
+=== Neighbours: the account list's fee parts and the fund list's chips, side by side (about 120 px apart)
+#dd6301,#fdc010,#cf64bb,#e0ddd9,#7d7a74,#a19e98,#f2f0ec,#fdd5a7,#ff796d on #171614 (--pairs all)
+
+Palette (dark, surface #171614, categorical): 9 slots
+  [FAIL] Lightness band         outside band: [["#fdc010",0.84],["#e0ddd9",0.899],["#a19e98",0.7],["#f2f0ec",0.956],["#fdd5a7",0.896],["#ff796d",0.731]]
+  [FAIL] Chroma floor           below floor (reads gray): [["#e0ddd9",0.006],["#7d7a74",0.01],["#a19e98",0.009],["#f2f0ec",0.006],["#fdd5a7",0.075]]
+  [FAIL] CVD separation         worst all-pairs #f2f0ec↔#e0ddd9 ΔE 5.7 (deutan) · tritan 5.4
+  [FAIL] Normal-vision floor    worst all-pairs #f2f0ec↔#e0ddd9 ΔE 5.7 (normal) — below 15, hard to tell apart even with full color vision
+  [PASS] Contrast vs surface    all 9 >= 3:1
+
+  → FAILED — fix the marked checks  (CVD in the 6–8 floor band is legal ONLY with secondary encoding: direct labels, gaps, or texture)
+  scope: categorical palettes only. For a lone status/text color check text contrast with this script's apca() or contrast(); for a sequential ramp, lightness monotonicity.
+
+exit 1

@@ -1,0 +1,53 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "Low-contrast small text makes chart axis labels and notes unreadable",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "Calculator shows two different cost figures for the same 10,000 ₪",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "No direct answer on how much to keep in the current account; section seems to start mid-sentence",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "Fee sentence mixes two dates and several amounts, hard to follow",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "English tags and unexplained orange icons",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 6,
+      "summary": "No-deposit-insurance statement alarms without guidance",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 7,
+      "summary": "Unexplained terms (daily money fund, makam) offered as alternatives",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 8,
+      "summary": "A line seems lost between screens in the 'worth knowing' section",
+      "serious": false,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.0389308
+}

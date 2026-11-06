@@ -1,0 +1,101 @@
+{
+  "task": "control-sp500-pc-browser",
+  "persona": "first-job-phone",
+  "repeat": 2,
+  "mode": "browser",
+  "device": "pc",
+  "startedAt": "2026-11-06T02:05:23.291Z",
+  "structured": {
+    "answer": "I'd open an account at Pesagot (פסגות ניירות ערך), buy the ילין לפידות מחקה (4D) S&P 500 fund and put in 750 ₪ a month. After 15 years the page says about 179,889 ₪ in today's money, with 135,000 ₪ put in, assuming 7% a year return and 2% a year inflation.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "הפקדה חודשית slider",
+        "why": "After I typed 750 in the field the slider showed 800, so for a moment I wasn't sure which value was being used"
+      },
+      {
+        "where": "Inflation",
+        "why": "The inflation rate isn't shown next to the result. I had to tap the grey 'אינפלציה' button to see 2%"
+      }
+    ],
+    "used": [
+      "Heading 'איפה ואיך הכי זול להשקיע במדד, לאורך זמן'",
+      "Fields סכום היום / הפקדה חודשית / שנים",
+      "Result card 'הבחירה שלכם · ★ הזול' 179,889 ₪ 'בכסף של היום'",
+      "הפקדתם 135,000 ₪",
+      "The אינפלציה popup: 'אינפלציה בשנה 2%'",
+      "The cost bar 'כמה זה עולה לכם ב־15 שנים' 18,299 ₪",
+      "Account box פסגות ניירות ערך 2,604 ₪ and fund name ילין לפידות מחקה (4D) S&P 500"
+    ],
+    "skimmed": [
+      "The cost bar legend colours",
+      "'העלות אצלכם, לעומת הזוג השני' row",
+      "The 'הזוג הבא בתור' card"
+    ],
+    "skipped": [
+      "The fund type tags (צוברת, עסקת החלף, etc.)",
+      "'כל החשבונות' explanation text",
+      "The rest of the page below the account/fund boxes",
+      "תשואה בשנה (left at 7)",
+      "Exchange rate note 3.17 ₪"
+    ],
+    "unsure_meaning": [
+      "דמי משמרת",
+      "נאמן 0.02%",
+      "עסקת החלף",
+      "צוברת",
+      "מנוטרלת מט״ח",
+      "אם הדולר לא זז מול השקל",
+      "Whether the big pink 15,364 bar is really tax (I guessed from the legend colour)"
+    ],
+    "not_found": [
+      "The inflation assumption shown on the main screen next to the result, without opening a button"
+    ],
+    "findings": [
+      {
+        "what": "After I typed 750, the slider showed 800, so I couldn't tell which number was being used",
+        "where": "הפקדה חודשית slider"
+      },
+      {
+        "what": "The 2% inflation assumption is hidden behind a button and not shown next to the 'בכסף של היום' result",
+        "where": "אינפלציה button under the inputs"
+      },
+      {
+        "what": "Part of the screen jumped sideways when I edited the first field",
+        "where": "Inputs row / סכום היום"
+      },
+      {
+        "what": "The cost breakdown relies on a colour legend. Tax is the biggest part, and I had to guess which colour was which",
+        "where": "כמה זה עולה לכם ב־15 שנים bar"
+      },
+      {
+        "what": "Lots of jargon tags on the fund I couldn't understand",
+        "where": "Fund box tag list"
+      }
+    ]
+  },
+  "steps": 7,
+  "reads": 4,
+  "commands": 7,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 50437,
+    "turns": 13,
+    "usd": 0.18988699999999997,
+    "input": 18,
+    "cacheWrite": 13089,
+    "cacheRead": 99015,
+    "output": 3265,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "control-sp500-pc-browser",
+    "screenshots": 7,
+    "changes": [],
+    "neverShown": [],
+    "errors": []
+  }
+}

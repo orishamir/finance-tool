@@ -1,0 +1,78 @@
+{
+  "case": "custom-fund-form-small",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The form for adding a fund is cramped in a narrow panel and hard to move around in.\",\"where\":\"the add-a-fund form\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Own added fund gets no price or rank in the main fund list (\"אין מחיר כאן\", \"עוד לא נאסף\")",
+      "The only number for own fund seems to be for Jerusalem, not Psagot, and has an 'open tax rule, shown not ranked' lock, so the reader doesn't trust it",
+      "Interactive Brokers shows \"אין נתון\" (no data), so the reader can't see the cost of buying the fund through a foreign broker",
+      "Fund list is very long, with repetitive near-identical Israeli funds, and the reader's own row gave nothing to compare",
+      "Unclear whether the 'לא בחישוב' young-person deals apply to a 24-year-old",
+      "Explanation of why some funds have no price at Psagot doesn't help the reader decide",
+      "The ads-vs-price-list section isn't relevant (would drop it)",
+      "Currency-hedging section with charts and table is confusing; the reader doesn't know what נטרול מט״ח is",
+      "Staircase chart starts from MTF at Jerusalem, which the reader never chose; unclear why",
+      "Fund name says Swap but lacks the 'עסקת החלף' tag Israeli swap funds get",
+      "Doesn't understand '4D'/'4A' in fund names",
+      "Doesn't understand jargon: צוברת, עסקת החלף, נאמן, משמרת",
+      "Doesn't understand W-8BEN, US estate tax, dividend distribution",
+      "'מס רק במכירה' shown in red is confusing (is red bad?)",
+      "'יש ספק אם נמכרת שם' leaves it unclear whether the fund can be bought at One Zero/IB",
+      "No explanation of why own fund came out about 20,000 ₪ lower (fees or tax?)",
+      "Wants one plain sentence comparing own fund with the cheapest, with the reason",
+      "Would drop the 'מה הכי משנה' chart",
+      "The spot where own fund gets a number is buried at the bottom and should move up"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The report never says the add-a-fund form is cramped, narrow or hard to move around in; it only says the reader added a fund and entered 0.05%."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0599472
+  },
+  "b": {
+    "raised": [
+      "Own fund gets no price or rank in the main fund list (\"אין מחיר כאן\", \"עוד לא נאסף\")",
+      "The only number for own fund (59,196 ₪) seems to be for בנק ירושלים, not פסגות, and the lock note (\"open tax rule\") makes it seem untrustworthy",
+      "No data for buying own fund through a foreign broker like Interactive Brokers (\"אין נתון\")",
+      "Fund list is very long with nearly identical rows; own row gives nothing to compare",
+      "Unsure whether the \"לא בחישוב\" deals for young people apply to them at 24",
+      "The explanation of why some funds have no price in פסגות doesn't help them decide",
+      "The ads-versus-price-list section isn't relevant to their question and would be dropped",
+      "The \"מה הכי משנה\" chart wasn't useful and would be cut to one line",
+      "The currency-hedging section (נטרול מט״ח) is confusing, with charts and tables they gave up on",
+      "The staircase chart starts from MTF סל at ירושלים, which they never chose, and they don't know why",
+      "Own fund's name says Swap but it lacks the עסקת החלף tag, which is unclear",
+      "Doesn't understand 4D/4A in fund names",
+      "Doesn't understand the terms צוברת, עסקת החלף, נאמן, משמרת",
+      "Doesn't understand W-8BEN, US estate tax, dividend distribution",
+      "Red \"מס רק במכירה\" tag is confusing (is red bad?)",
+      "\"יש ספק אם נמכרת שם\": unclear whether the fund can be bought at וואן זירו or IB",
+      "No explanation of why own fund came out 20,000 ₪ lower (fees or tax?)",
+      "Missing one plain sentence comparing own fund to the cheapest, with the reason",
+      "The spot where own fund gets a number is buried and should move up with its own clear line"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The report never says the add-a-fund form is cramped, narrow or hard to move around in; it only mentions the edit link on the fund's row in passing."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0613632
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1213104
+}

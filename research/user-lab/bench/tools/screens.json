@@ -1,0 +1,1429 @@
+[
+ {
+  "case": "home-header-wrap",
+  "sha": "281630b",
+  "screens": [
+   {
+    "name": "home",
+    "path": "/",
+    "steps": [],
+    "widths": [
+     1440,
+     1140,
+     390
+    ]
+   }
+  ]
+ },
+ {
+  "case": "changelog-page",
+  "sha": "281630b",
+  "screens": [
+   {
+    "name": "changes",
+    "path": "/changes",
+    "steps": []
+   }
+  ]
+ },
+ {
+  "case": "rules-site-pick-badge",
+  "sha": "80a1b1b",
+  "screens": [
+   {
+    "name": "rules",
+    "path": "/rules",
+    "steps": []
+   }
+  ]
+ },
+ {
+  "case": "rules-split-shelves",
+  "sha": "d601047",
+  "screens": [
+   {
+    "name": "rules",
+    "path": "/rules",
+    "steps": []
+   },
+   {
+    "name": "rules-access",
+    "path": "/rules/access",
+    "steps": []
+   }
+  ]
+ },
+ {
+  "case": "compare-recommends-gemel",
+  "sha": "7d87328",
+  "screens": [
+   {
+    "name": "compare",
+    "path": "/goal/compare",
+    "steps": [],
+    "storage": {
+     "mekor.v2.state": "{\"version\":3,\"goals\":[{\"id\":\"g0\",\"name\":\"\",\"preset\":\"lump-sum\",\"horizonYears\":{\"value\":8,\"entered\":true},\"amountNow\":{\"value\":60000,\"entered\":true},\"monthly\":{\"value\":0,\"entered\":true},\"available\":{\"value\":null,\"entered\":false},\"availableFrom\":null,\"anytime\":{\"value\":false,\"entered\":false},\"profile\":{\"age\":null,\"employment\":null,\"salary\":null,\"pension\":{\"employer\":null,\"employee\":null},\"hishtalmut\":{\"employer\":null,\"employee\":null,\"yearly\":null},\"hasPension\":null,\"hasHishtalmut\":null},\"assumptions\":{\"return\":7,\"inflation\":null,\"insurance\":null,\"acceptedFall\":null},\"exposures\":{},\"order\":0}],\"inputs\":{},\"holdings\":[],\"uncatalogued\":[],\"imports\":[],\"savedComparisons\":[],\"currentId\":\"g0\"}"
+    }
+   }
+  ]
+ },
+ {
+  "case": "fee-legend-one-colour",
+  "sha": "4c85652",
+  "screens": [
+   {
+    "name": "fees",
+    "path": "/fees?wrapper=brokerage-account&from=compare",
+    "steps": [],
+    "storage": {
+     "mekor.v2.state": "{\"version\":3,\"goals\":[{\"id\":\"g0\",\"name\":\"\",\"preset\":\"lump-sum\",\"horizonYears\":{\"value\":8,\"entered\":true},\"amountNow\":{\"value\":60000,\"entered\":true},\"monthly\":{\"value\":0,\"entered\":true},\"available\":{\"value\":null,\"entered\":false},\"availableFrom\":null,\"anytime\":{\"value\":false,\"entered\":false},\"profile\":{\"age\":null,\"employment\":null,\"salary\":null,\"pension\":{\"employer\":null,\"employee\":null},\"hishtalmut\":{\"employer\":null,\"employee\":null,\"yearly\":null},\"hasPension\":null,\"hasHishtalmut\":null},\"assumptions\":{\"return\":7,\"inflation\":null,\"insurance\":null,\"acceptedFall\":null},\"exposures\":{},\"order\":0}],\"inputs\":{},\"holdings\":[],\"uncatalogued\":[],\"imports\":[],\"savedComparisons\":[],\"currentId\":\"g0\"}"
+    }
+   }
+  ]
+ },
+ {
+  "case": "home-question-misaligned",
+  "sha": "2686f53",
+  "screens": [
+   {
+    "name": "home",
+    "path": "/",
+    "steps": []
+   }
+  ]
+ },
+ {
+  "case": "goals-arrows-sideways",
+  "sha": "fc97500",
+  "screens": [
+   {
+    "name": "compare",
+    "path": "/goal/compare",
+    "steps": [],
+    "storage": {
+     "mekor.v2.state": "{\"version\":3,\"goals\":[{\"id\":\"g0\",\"name\":\"דירה\",\"preset\":\"lump-sum\",\"horizonYears\":{\"value\":8,\"entered\":true},\"amountNow\":{\"value\":60000,\"entered\":true},\"monthly\":{\"value\":0,\"entered\":true},\"available\":{\"value\":null,\"entered\":false},\"availableFrom\":null,\"anytime\":{\"value\":false,\"entered\":false},\"profile\":{\"age\":null,\"employment\":null,\"salary\":null,\"pension\":{\"employer\":null,\"employee\":null},\"hishtalmut\":{\"employer\":null,\"employee\":null,\"yearly\":null},\"hasPension\":null,\"hasHishtalmut\":null},\"assumptions\":{\"return\":null,\"inflation\":null,\"insurance\":null,\"acceptedFall\":null},\"exposures\":{},\"order\":0},{\"id\":\"g1\",\"name\":\"הון לטווח ארוך\",\"preset\":\"lump-sum\",\"horizonYears\":{\"value\":15,\"entered\":true},\"amountNow\":{\"value\":20000,\"entered\":true},\"monthly\":{\"value\":500,\"entered\":true},\"available\":{\"value\":null,\"entered\":false},\"availableFrom\":null,\"anytime\":{\"value\":false,\"entered\":false},\"profile\":{\"age\":null,\"employment\":null,\"salary\":null,\"pension\":{\"employer\":null,\"employee\":null},\"hishtalmut\":{\"employer\":null,\"employee\":null,\"yearly\":null},\"hasPension\":null,\"hasHishtalmut\":null},\"assumptions\":{\"return\":null,\"inflation\":null,\"insurance\":null,\"acceptedFall\":null},\"exposures\":{},\"order\":1},{\"id\":\"g2\",\"name\":\"\",\"preset\":\"lump-sum\",\"horizonYears\":{\"value\":3,\"entered\":true},\"amountNow\":{\"value\":10000,\"entered\":true},\"monthly\":{\"value\":0,\"entered\":true},\"available\":{\"value\":null,\"entered\":false},\"availableFrom\":null,\"anytime\":{\"value\":false,\"entered\":false},\"profile\":{\"age\":null,\"employment\":null,\"salary\":null,\"pension\":{\"employer\":null,\"employee\":null},\"hishtalmut\":{\"employer\":null,\"employee\":null,\"yearly\":null},\"hasPension\":null,\"hasHishtalmut\":null},\"assumptions\":{\"return\":null,\"inflation\":null,\"insurance\":null,\"acceptedFall\":null},\"exposures\":{},\"order\":2}],\"inputs\":{},\"holdings\":[],\"uncatalogued\":[],\"imports\":[],\"savedComparisons\":[],\"currentId\":\"g0\"}"
+    }
+   }
+  ]
+ },
+ {
+  "case": "goals-no-delete-rename",
+  "sha": "fc97500",
+  "screens": [
+   {
+    "name": "compare",
+    "path": "/goal/compare",
+    "steps": [],
+    "storage": {
+     "mekor.v2.state": "{\"version\":3,\"goals\":[{\"id\":\"g0\",\"name\":\"דירה\",\"preset\":\"lump-sum\",\"horizonYears\":{\"value\":8,\"entered\":true},\"amountNow\":{\"value\":60000,\"entered\":true},\"monthly\":{\"value\":0,\"entered\":true},\"available\":{\"value\":null,\"entered\":false},\"availableFrom\":null,\"anytime\":{\"value\":false,\"entered\":false},\"profile\":{\"age\":null,\"employment\":null,\"salary\":null,\"pension\":{\"employer\":null,\"employee\":null},\"hishtalmut\":{\"employer\":null,\"employee\":null,\"yearly\":null},\"hasPension\":null,\"hasHishtalmut\":null},\"assumptions\":{\"return\":null,\"inflation\":null,\"insurance\":null,\"acceptedFall\":null},\"exposures\":{},\"order\":0},{\"id\":\"g1\",\"name\":\"הון לטווח ארוך\",\"preset\":\"lump-sum\",\"horizonYears\":{\"value\":15,\"entered\":true},\"amountNow\":{\"value\":20000,\"entered\":true},\"monthly\":{\"value\":500,\"entered\":true},\"available\":{\"value\":null,\"entered\":false},\"availableFrom\":null,\"anytime\":{\"value\":false,\"entered\":false},\"profile\":{\"age\":null,\"employment\":null,\"salary\":null,\"pension\":{\"employer\":null,\"employee\":null},\"hishtalmut\":{\"employer\":null,\"employee\":null,\"yearly\":null},\"hasPension\":null,\"hasHishtalmut\":null},\"assumptions\":{\"return\":null,\"inflation\":null,\"insurance\":null,\"acceptedFall\":null},\"exposures\":{},\"order\":1},{\"id\":\"g2\",\"name\":\"\",\"preset\":\"lump-sum\",\"horizonYears\":{\"value\":3,\"entered\":true},\"amountNow\":{\"value\":10000,\"entered\":true},\"monthly\":{\"value\":0,\"entered\":true},\"available\":{\"value\":null,\"entered\":false},\"availableFrom\":null,\"anytime\":{\"value\":false,\"entered\":false},\"profile\":{\"age\":null,\"employment\":null,\"salary\":null,\"pension\":{\"employer\":null,\"employee\":null},\"hishtalmut\":{\"employer\":null,\"employee\":null,\"yearly\":null},\"hasPension\":null,\"hasHishtalmut\":null},\"assumptions\":{\"return\":null,\"inflation\":null,\"insurance\":null,\"acceptedFall\":null},\"exposures\":{},\"order\":2}],\"inputs\":{},\"holdings\":[],\"uncatalogued\":[],\"imports\":[],\"savedComparisons\":[],\"currentId\":\"g0\"}"
+    }
+   }
+  ]
+ },
+ {
+  "case": "question-card-chips-do-nothing",
+  "sha": "ae1b7ac",
+  "screens": [
+   {
+    "name": "start",
+    "path": "/",
+    "steps": []
+   },
+   {
+    "name": "after-limudim",
+    "path": "/",
+    "steps": [
+     {
+      "click": "לימודים"
+     }
+    ],
+    "state": "after pressing the purpose 'לימודים'"
+   },
+   {
+    "name": "after-prisha",
+    "path": "/",
+    "steps": [
+     {
+      "click": "פרישה"
+     }
+    ],
+    "state": "after pressing the purpose 'פרישה'"
+   },
+   {
+    "name": "after-karit",
+    "path": "/",
+    "steps": [
+     {
+      "click": "כרית ביטחון"
+     }
+    ],
+    "state": "after pressing the purpose 'כרית ביטחון'"
+   }
+  ]
+ },
+ {
+  "case": "question-card-field-vanishes",
+  "sha": "ae1b7ac",
+  "screens": [
+   {
+    "name": "start",
+    "path": "/",
+    "steps": []
+   },
+   {
+    "name": "after-karit",
+    "path": "/",
+    "steps": [
+     {
+      "click": "כרית ביטחון"
+     }
+    ],
+    "state": "after pressing the purpose 'כרית ביטחון'"
+   }
+  ]
+ },
+ {
+  "case": "goals-in-rows",
+  "sha": "e5c1388",
+  "screens": [
+   {
+    "name": "home",
+    "path": "/",
+    "steps": [],
+    "storage": {
+     "mekor.v2.state": "{\"version\":3,\"goals\":[{\"id\":\"g0\",\"name\":\"דירה\",\"preset\":\"lump-sum\",\"horizonYears\":{\"value\":8,\"entered\":true},\"amountNow\":{\"value\":60000,\"entered\":true},\"monthly\":{\"value\":0,\"entered\":true},\"available\":{\"value\":null,\"entered\":false},\"availableFrom\":null,\"anytime\":{\"value\":false,\"entered\":false},\"profile\":{\"age\":null,\"employment\":null,\"salary\":null,\"pension\":{\"employer\":null,\"employee\":null},\"hishtalmut\":{\"employer\":null,\"employee\":null,\"yearly\":null},\"hasPension\":null,\"hasHishtalmut\":null},\"assumptions\":{\"return\":null,\"inflation\":null,\"insurance\":null,\"acceptedFall\":null},\"exposures\":{},\"order\":0},{\"id\":\"g1\",\"name\":\"הון לטווח ארוך\",\"preset\":\"lump-sum\",\"horizonYears\":{\"value\":15,\"entered\":true},\"amountNow\":{\"value\":20000,\"entered\":true},\"monthly\":{\"value\":500,\"entered\":true},\"available\":{\"value\":null,\"entered\":false},\"availableFrom\":null,\"anytime\":{\"value\":false,\"entered\":false},\"profile\":{\"age\":null,\"employment\":null,\"salary\":null,\"pension\":{\"employer\":null,\"employee\":null},\"hishtalmut\":{\"employer\":null,\"employee\":null,\"yearly\":null},\"hasPension\":null,\"hasHishtalmut\":null},\"assumptions\":{\"return\":null,\"inflation\":null,\"insurance\":null,\"acceptedFall\":null},\"exposures\":{},\"order\":1},{\"id\":\"g2\",\"name\":\"\",\"preset\":\"lump-sum\",\"horizonYears\":{\"value\":3,\"entered\":true},\"amountNow\":{\"value\":10000,\"entered\":true},\"monthly\":{\"value\":0,\"entered\":true},\"available\":{\"value\":null,\"entered\":false},\"availableFrom\":null,\"anytime\":{\"value\":false,\"entered\":false},\"profile\":{\"age\":null,\"employment\":null,\"salary\":null,\"pension\":{\"employer\":null,\"employee\":null},\"hishtalmut\":{\"employer\":null,\"employee\":null,\"yearly\":null},\"hasPension\":null,\"hasHishtalmut\":null},\"assumptions\":{\"return\":null,\"inflation\":null,\"insurance\":null,\"acceptedFall\":null},\"exposures\":{},\"order\":2}],\"inputs\":{},\"holdings\":[],\"uncatalogued\":[],\"imports\":[],\"savedComparisons\":[],\"currentId\":\"g0\"}"
+    }
+   }
+  ]
+ },
+ {
+  "case": "sp500-route-missing",
+  "sha": "49ed5d3",
+  "screens": [
+   {
+    "name": "invest",
+    "path": "/invest",
+    "steps": []
+   }
+  ]
+ },
+ {
+  "case": "current-account-chart-unrelated",
+  "sha": "d3ca8e3",
+  "screens": [
+   {
+    "name": "guide",
+    "path": "/guide/current-account",
+    "steps": []
+   }
+  ]
+ },
+ {
+  "case": "current-account-one-bank",
+  "sha": "308b50b",
+  "screens": [
+   {
+    "name": "guide",
+    "path": "/guide/current-account",
+    "steps": [
+     {
+      "click": "שחקו עם המספרים שלכם"
+     }
+    ],
+    "state": "the panel 'שחקו עם המספרים שלכם' opened"
+   }
+  ]
+ },
+ {
+  "case": "fees-track-saving-layout",
+  "sha": "7ca0b8d",
+  "screens": [
+   {
+    "name": "fees",
+    "path": "/fees?track=8675",
+    "steps": []
+   }
+  ]
+ },
+ {
+  "case": "fees-call-script-open",
+  "sha": "7ca0b8d",
+  "screens": [
+   {
+    "name": "fees",
+    "path": "/fees?track=8675",
+    "steps": []
+   }
+  ]
+ },
+ {
+  "case": "invest-choice-line",
+  "sha": "7062455",
+  "screens": [
+   {
+    "name": "invest",
+    "path": "/invest",
+    "steps": []
+   }
+  ]
+ },
+ {
+  "case": "invest-no-inputs",
+  "sha": "7062455",
+  "screens": [
+   {
+    "name": "invest",
+    "path": "/invest",
+    "steps": []
+   }
+  ]
+ },
+ {
+  "case": "header-search-clipped",
+  "sha": "7062455",
+  "screens": [
+   {
+    "name": "invest",
+    "path": "/invest",
+    "steps": [],
+    "widths": [
+     1440,
+     1000,
+     390
+    ]
+   }
+  ]
+ },
+ {
+  "case": "own-fee-warning",
+  "sha": "6ae3f53",
+  "screens": [
+   {
+    "name": "ta35",
+    "path": "/invest/index-ta35",
+    "steps": []
+   }
+  ]
+ },
+ {
+  "case": "fee-parts-unlabelled",
+  "sha": "6ae3f53",
+  "screens": [
+   {
+    "name": "ta35",
+    "path": "/invest/index-ta35",
+    "steps": []
+   }
+  ]
+ },
+ {
+  "case": "kit-rangefield-shift",
+  "sha": "2e3df21",
+  "screens": [
+   {
+    "name": "kit",
+    "path": "/kit",
+    "steps": []
+   },
+   {
+    "name": "kit-entered",
+    "path": "/kit",
+    "steps": [
+     {
+      "fillSel": [
+       "input[inputmode=numeric]",
+       "11"
+      ]
+     },
+     {
+      "press": "Tab"
+     }
+    ],
+    "state": "after typing 11 into the first slider's field"
+   }
+  ]
+ },
+ {
+  "case": "idle-cash-leumi",
+  "sha": "1d311b7",
+  "screens": [
+   {
+    "name": "idle-cash",
+    "path": "/idle-cash",
+    "steps": [
+     {
+      "fill": [
+       "כמה יש בעו״ש",
+       "20000"
+      ]
+     },
+     {
+      "fill": [
+       "כמה חייב להישאר זמין מיד",
+       "5000"
+      ]
+     },
+     {
+      "press": "Tab"
+     }
+    ],
+    "state": "after entering 20,000 in the current account and 5,000 to keep at hand"
+   },
+   {
+    "name": "idle-cash-source",
+    "path": "/idle-cash",
+    "steps": [
+     {
+      "fill": [
+       "כמה יש בעו״ש",
+       "20000"
+      ]
+     },
+     {
+      "fill": [
+       "כמה חייב להישאר זמין מיד",
+       "5000"
+      ]
+     },
+     {
+      "press": "Tab"
+     },
+     {
+      "eval": "[...document.querySelectorAll('main button')].find(b => b.textContent.trim().endsWith('1.8%')).click()"
+     }
+    ],
+    "state": "the same, after pressing the deposit rate 1.8% to see its source"
+   }
+  ]
+ },
+ {
+  "case": "mmf-guide-leumi",
+  "sha": "20c1559",
+  "screens": [
+   {
+    "name": "guide",
+    "path": "/guide/money-market-fund-daily",
+    "steps": []
+   }
+  ]
+ },
+ {
+  "case": "play-panel-broke-phone",
+  "sha": "d9fae3c",
+  "screens": [
+   {
+    "name": "guide",
+    "path": "/guide/current-account",
+    "steps": [
+     {
+      "click": "שחקו עם המספרים שלכם"
+     }
+    ],
+    "widths": [
+     390,
+     1440
+    ],
+    "state": "the panel 'שחקו עם המספרים שלכם' opened"
+   }
+  ]
+ },
+ {
+  "case": "idle-cash-other-chip",
+  "sha": "d9fae3c",
+  "screens": [
+   {
+    "name": "idle-cash",
+    "path": "/idle-cash",
+    "steps": [
+     {
+      "fill": [
+       "כמה יש בעו״ש",
+       "20000"
+      ]
+     },
+     {
+      "fill": [
+       "כמה חייב להישאר זמין מיד",
+       "5000"
+      ]
+     },
+     {
+      "press": "Tab"
+     }
+    ],
+    "state": "after entering 20,000 in the current account and 5,000 to keep at hand"
+   }
+  ]
+ },
+ {
+  "case": "home-question-heading",
+  "sha": "119d140",
+  "screens": [
+   {
+    "name": "home",
+    "path": "/",
+    "steps": []
+   }
+  ]
+ },
+ {
+  "case": "home-door-guide",
+  "sha": "1a4092f",
+  "screens": [
+   {
+    "name": "home",
+    "path": "/",
+    "steps": []
+   },
+   {
+    "name": "after-door",
+    "path": "/",
+    "steps": [
+     {
+      "goto": "/guide"
+     }
+    ],
+    "state": "after pressing the home link 'להבין סוג של חיסכון' (it opens this page)"
+   }
+  ]
+ },
+ {
+  "case": "makam-duplicates",
+  "sha": "405b60b",
+  "screens": [
+   {
+    "name": "guide",
+    "path": "/guide",
+    "steps": []
+   }
+  ]
+ },
+ {
+  "case": "makam-under-products",
+  "sha": "405b60b",
+  "screens": [
+   {
+    "name": "guide",
+    "path": "/guide",
+    "steps": []
+   }
+  ]
+ },
+ {
+  "case": "indices-anytime-toggle",
+  "sha": "ccfcabd",
+  "screens": [
+   {
+    "name": "indices",
+    "path": "/indices",
+    "steps": [
+     {
+      "click": "כל ההנחות"
+     }
+    ],
+    "state": "the panel 'כל ההנחות' opened"
+   },
+   {
+    "name": "indices-anytime",
+    "path": "/indices",
+    "steps": [
+     {
+      "click": "כל ההנחות"
+     },
+     {
+      "click": "חייב להיות ניתן למשיכה בכל רגע"
+     }
+    ],
+    "state": "the panel 'כל ההנחות' opened and 'חייב להיות ניתן למשיכה בכל רגע' set"
+   }
+  ]
+ },
+ {
+  "case": "indices-table-widths-shift",
+  "sha": "70c1fa6",
+  "screens": [
+   {
+    "name": "indices",
+    "path": "/indices/sp500",
+    "steps": []
+   },
+   {
+    "name": "indices-changed",
+    "path": "/indices/sp500",
+    "steps": [
+     {
+      "fill": [
+       "סכום היום",
+       "250000"
+      ]
+     },
+     {
+      "press": "Tab"
+     }
+    ],
+    "state": "after changing 'סכום היום' to 250,000"
+   }
+  ]
+ },
+ {
+  "case": "indices-pension-field",
+  "sha": "70c1fa6",
+  "screens": [
+   {
+    "name": "indices",
+    "path": "/indices/sp500",
+    "steps": [
+     {
+      "click": "אינפלציה ועוד"
+     }
+    ],
+    "state": "the panel 'אינפלציה ועוד' opened"
+   }
+  ]
+ },
+ {
+  "case": "indices-beats-index",
+  "sha": "3e1057f",
+  "screens": [
+   {
+    "name": "sp500",
+    "path": "/indices/sp500",
+    "steps": []
+   }
+  ]
+ },
+ {
+  "case": "indices-dollar-minus3",
+  "sha": "3e1057f",
+  "screens": [
+   {
+    "name": "sp500",
+    "path": "/indices/sp500",
+    "steps": []
+   }
+  ]
+ },
+ {
+  "case": "rules-toggle-empty",
+  "sha": "4d6c306",
+  "screens": [
+   {
+    "name": "guide",
+    "path": "/guide/bank-deposit",
+    "steps": []
+   }
+  ]
+ },
+ {
+  "case": "questions-page",
+  "sha": "4d6c306",
+  "screens": [
+   {
+    "name": "questions",
+    "path": "/questions",
+    "steps": []
+   }
+  ]
+ },
+ {
+  "case": "general-track-exposure",
+  "sha": "4d6c306",
+  "screens": [
+   {
+    "name": "guide",
+    "path": "/guide",
+    "steps": []
+   }
+  ]
+ },
+ {
+  "case": "hedged-visual-misleading",
+  "sha": "4d6c306",
+  "screens": [
+   {
+    "name": "sp500",
+    "path": "/indices/sp500",
+    "steps": []
+   }
+  ]
+ },
+ {
+  "case": "indices-usd-notice",
+  "sha": "4d6c306",
+  "screens": [
+   {
+    "name": "sp500",
+    "path": "/indices/sp500",
+    "steps": []
+   }
+  ]
+ },
+ {
+  "case": "indices-rate-for-ta-funds",
+  "sha": "4d6c306",
+  "screens": [
+   {
+    "name": "sp500",
+    "path": "/indices/sp500",
+    "steps": []
+   }
+  ]
+ },
+ {
+  "case": "indices-long-kind-labels",
+  "sha": "4d6c306",
+  "screens": [
+   {
+    "name": "sp500",
+    "path": "/indices/sp500",
+    "steps": []
+   }
+  ]
+ },
+ {
+  "case": "indices-loose-spacing",
+  "sha": "4d6c306",
+  "screens": [
+   {
+    "name": "sp500",
+    "path": "/indices/sp500",
+    "steps": []
+   }
+  ]
+ },
+ {
+  "case": "indices-13-unpriced",
+  "sha": "4d6c306",
+  "screens": [
+   {
+    "name": "sp500",
+    "path": "/indices/sp500",
+    "steps": []
+   }
+  ]
+ },
+ {
+  "case": "self-report-label",
+  "sha": "4d6c306",
+  "screens": [
+   {
+    "name": "sp500",
+    "path": "/indices/sp500",
+    "steps": []
+   }
+  ]
+ },
+ {
+  "case": "bank-deposit-inert-fields",
+  "sha": "4d6c306",
+  "screens": [
+   {
+    "name": "guide",
+    "path": "/guide/bank-deposit",
+    "steps": []
+   }
+  ]
+ },
+ {
+  "case": "guides-useless-sections",
+  "sha": "4d6c306",
+  "screens": [
+   {
+    "name": "guide",
+    "path": "/guide",
+    "steps": []
+   }
+  ]
+ },
+ {
+  "case": "guides-template-current-account",
+  "sha": "4d6c306",
+  "screens": [
+   {
+    "name": "guide",
+    "path": "/guide/current-account",
+    "steps": []
+   }
+  ]
+ },
+ {
+  "case": "current-account-future-shekels",
+  "sha": "4d6c306",
+  "screens": [
+   {
+    "name": "guide",
+    "path": "/guide/current-account",
+    "steps": [
+     {
+      "click": "שחקו עם המספרים שלכם"
+     },
+     {
+      "click": "בשקלים של העתיד"
+     }
+    ],
+    "state": "the panel opened and 'בשקלים של העתיד' chosen"
+   }
+  ]
+ },
+ {
+  "case": "pepper-ranked",
+  "sha": "376ecd1",
+  "screens": [
+   {
+    "name": "sp500",
+    "path": "/indices/sp500",
+    "steps": []
+   }
+  ]
+ },
+ {
+  "case": "leumi-brand-name",
+  "sha": "376ecd1",
+  "screens": [
+   {
+    "name": "sp500",
+    "path": "/indices/sp500",
+    "steps": []
+   }
+  ]
+ },
+ {
+  "case": "grey-row-no-alternative",
+  "sha": "dcba217",
+  "screens": [
+   {
+    "name": "sp500",
+    "path": "/indices/sp500",
+    "steps": []
+   }
+  ]
+ },
+ {
+  "case": "indices-layout-jumps",
+  "sha": "95eb4c9",
+  "screens": [
+   {
+    "name": "sp500",
+    "path": "/indices/sp500",
+    "steps": []
+   },
+   {
+    "name": "sp500-changed",
+    "path": "/indices/sp500",
+    "steps": [
+     {
+      "fill": [
+       "שנים",
+       "8"
+      ]
+     },
+     {
+      "press": "Tab"
+     }
+    ],
+    "state": "after changing the years from 10 to 8"
+   }
+  ]
+ },
+ {
+  "case": "zero-cheaper-less-left",
+  "sha": "913ef87",
+  "screens": [
+   {
+    "name": "ta90",
+    "path": "/indices/ta90",
+    "steps": []
+   }
+  ]
+ },
+ {
+  "case": "fund-no-full-year",
+  "sha": "22ae724",
+  "screens": [
+   {
+    "name": "sp500",
+    "path": "/indices/sp500",
+    "steps": []
+   }
+  ]
+ },
+ {
+  "case": "ishares-acc-missing",
+  "sha": "22ae724",
+  "screens": [
+   {
+    "name": "sp500",
+    "path": "/indices/sp500",
+    "steps": []
+   }
+  ]
+ },
+ {
+  "case": "hishtalmut-pf18",
+  "sha": "d00f97f",
+  "screens": [
+   {
+    "name": "guide",
+    "path": "/guide/keren-hishtalmut",
+    "steps": []
+   }
+  ]
+ },
+ {
+  "case": "hishtalmut-7-5",
+  "sha": "9c3bf0f",
+  "screens": [
+   {
+    "name": "guide",
+    "path": "/guide/keren-hishtalmut",
+    "steps": []
+   }
+  ]
+ },
+ {
+  "case": "hishtalmut-play-pointless",
+  "sha": "cf2e647",
+  "screens": [
+   {
+    "name": "guide",
+    "path": "/guide/keren-hishtalmut",
+    "steps": []
+   }
+  ]
+ },
+ {
+  "case": "hg-tax-after-six",
+  "sha": "a7e9a0f",
+  "screens": [
+   {
+    "name": "guide",
+    "path": "/guide/keren-hishtalmut",
+    "steps": [
+     {
+      "fill": [
+       "משכורת ברוטו בחודש",
+       "30000"
+      ]
+     },
+     {
+      "press": "Tab"
+     }
+    ],
+    "state": "after entering a monthly salary of 30,000"
+   }
+  ]
+ },
+ {
+  "case": "hg-huge-profit",
+  "sha": "17cb353",
+  "screens": [
+   {
+    "name": "guide",
+    "path": "/guide/keren-hishtalmut",
+    "steps": []
+   }
+  ]
+ },
+ {
+  "case": "hg-not-entered",
+  "sha": "17cb353",
+  "screens": [
+   {
+    "name": "guide",
+    "path": "/guide/keren-hishtalmut",
+    "steps": []
+   }
+  ]
+ },
+ {
+  "case": "hg-within-ceiling",
+  "sha": "17cb353",
+  "screens": [
+   {
+    "name": "guide",
+    "path": "/guide/keren-hishtalmut",
+    "steps": []
+   }
+  ]
+ },
+ {
+  "case": "hg-fund-withholds",
+  "sha": "e5054c1",
+  "screens": [
+   {
+    "name": "guide",
+    "path": "/guide/keren-hishtalmut",
+    "steps": []
+   }
+  ]
+ },
+ {
+  "case": "brokerage-vs-indices",
+  "sha": "4c6fc73",
+  "screens": [
+   {
+    "name": "brokerage",
+    "path": "/brokerage-account",
+    "steps": []
+   }
+  ]
+ },
+ {
+  "case": "tracks-warnings",
+  "sha": "f057655",
+  "screens": [
+   {
+    "name": "tracks",
+    "path": "/tracks/kupat-gemel-lehashkaa",
+    "steps": []
+   }
+  ]
+ },
+ {
+  "case": "tracks-assets-column",
+  "sha": "988087c",
+  "screens": [
+   {
+    "name": "tracks",
+    "path": "/tracks/kupat-gemel-lehashkaa",
+    "steps": []
+   }
+  ]
+ },
+ {
+  "case": "tracks-exposure-100",
+  "sha": "243698a",
+  "screens": [
+   {
+    "name": "tracks",
+    "path": "/tracks/kupat-gemel-lehashkaa",
+    "steps": []
+   }
+  ]
+ },
+ {
+  "case": "tracks-sort-does-nothing",
+  "sha": "7eb4d8c",
+  "screens": [
+   {
+    "name": "tracks",
+    "path": "/tracks/kupat-gemel-lehashkaa?kind=%D7%A2%D7%95%D7%A7%D7%91+%D7%9E%D7%93%D7%93%D7%99+%D7%9E%D7%A0%D7%99%D7%95%D7%AA&sort=fee&order=reverse",
+    "steps": [],
+    "state": "a kind chosen and the list sorted by management fee"
+   }
+  ]
+ },
+ {
+  "case": "tracks-stale-annuity",
+  "sha": "429f174",
+  "screens": [
+   {
+    "name": "tracks",
+    "path": "/tracks/provident-for-annuity",
+    "steps": []
+   }
+  ]
+ },
+ {
+  "case": "company-kind-filter-always-one",
+  "sha": "452051f",
+  "screens": [
+   {
+    "name": "company",
+    "path": "/companies/harel",
+    "steps": []
+   }
+  ]
+ },
+ {
+  "case": "company-missing-fund-kinds",
+  "sha": "452051f",
+  "screens": [
+   {
+    "name": "company",
+    "path": "/companies/harel",
+    "steps": []
+   }
+  ]
+ },
+ {
+  "case": "tracks-tracker-subtitle",
+  "sha": "452051f",
+  "screens": [
+   {
+    "name": "tracks",
+    "path": "/tracks/keren-hishtalmut?sort=fee&order=reverse&kind=%D7%A2%D7%95%D7%A7%D7%91+%D7%9E%D7%93%D7%93+S%26P+500",
+    "steps": []
+   }
+  ]
+ },
+ {
+  "case": "tracks-chevron-not-link",
+  "sha": "452051f",
+  "screens": [
+   {
+    "name": "tracks",
+    "path": "/tracks/keren-hishtalmut?sort=fee&order=reverse&kind=%D7%A2%D7%95%D7%A7%D7%91+%D7%9E%D7%93%D7%93+S%26P+500",
+    "steps": []
+   }
+  ]
+ },
+ {
+  "case": "companies-fee-column-unclear",
+  "sha": "e5c11ad",
+  "screens": [
+   {
+    "name": "company",
+    "path": "/companies/harel",
+    "steps": []
+   }
+  ]
+ },
+ {
+  "case": "companies-help-icon-wrap",
+  "sha": "688ccc4",
+  "screens": [
+   {
+    "name": "company",
+    "path": "/companies/harel",
+    "steps": []
+   }
+  ]
+ },
+ {
+  "case": "indices-missing-brokers",
+  "sha": "cb17ff4",
+  "screens": [
+   {
+    "name": "sp500",
+    "path": "/indices/sp500",
+    "steps": []
+   }
+  ]
+ },
+ {
+  "case": "psagot-custody",
+  "sha": "e92c67e",
+  "screens": [
+   {
+    "name": "sp500",
+    "path": "/indices/sp500",
+    "steps": []
+   }
+  ]
+ },
+ {
+  "case": "altshuler-note",
+  "sha": "e92c67e",
+  "screens": [
+   {
+    "name": "sp500",
+    "path": "/indices/sp500",
+    "steps": []
+   }
+  ]
+ },
+ {
+  "case": "groups-row",
+  "sha": "e92c67e",
+  "screens": [
+   {
+    "name": "sp500",
+    "path": "/indices/sp500",
+    "steps": []
+   }
+  ]
+ },
+ {
+  "case": "fee-breakdown-broke",
+  "sha": "893267f",
+  "screens": [
+   {
+    "name": "sp500",
+    "path": "/indices/sp500",
+    "steps": []
+   }
+  ]
+ },
+ {
+  "case": "own-terms-line-every-row",
+  "sha": "a71654e",
+  "screens": [
+   {
+    "name": "sp500",
+    "path": "/indices/sp500",
+    "steps": []
+   }
+  ]
+ },
+ {
+  "case": "open-rule-label",
+  "sha": "d62bcc7",
+  "screens": [
+   {
+    "name": "sp500",
+    "path": "/indices/sp500",
+    "steps": []
+   }
+  ]
+ },
+ {
+  "case": "rows-together-legend",
+  "sha": "d62bcc7",
+  "screens": [
+   {
+    "name": "sp500",
+    "path": "/indices/sp500",
+    "steps": []
+   }
+  ]
+ },
+ {
+  "case": "group-link-label",
+  "sha": "d62bcc7",
+  "screens": [
+   {
+    "name": "sp500",
+    "path": "/indices/sp500",
+    "steps": [
+     {
+      "clickSel": "[role=radio]:has-text('מרכנתיל') summary"
+     }
+    ],
+    "state": "after opening the group prices under Mercantile"
+   }
+  ]
+ },
+ {
+  "case": "foreign-funds-missing",
+  "sha": "483e5af",
+  "screens": [
+   {
+    "name": "sp500",
+    "path": "/indices/sp500",
+    "steps": []
+   }
+  ]
+ },
+ {
+  "case": "company-brokerage-card",
+  "sha": "ae430a3",
+  "screens": [
+   {
+    "name": "company",
+    "path": "/companies/psagot?product=brokerage",
+    "steps": []
+   }
+  ]
+ },
+ {
+  "case": "label-warning-text",
+  "sha": "dcbb775",
+  "screens": [
+   {
+    "name": "sp500",
+    "path": "/indices/sp500",
+    "steps": [
+     {
+      "click": "מס רק במכירה"
+     }
+    ],
+    "state": "after pressing the label 'מס רק במכירה' on a foreign fund"
+   }
+  ]
+ },
+ {
+  "case": "label-tax-on-sale",
+  "sha": "21a0d5f",
+  "screens": [
+   {
+    "name": "sp500",
+    "path": "/indices/sp500",
+    "steps": []
+   }
+  ]
+ },
+ {
+  "case": "label-icons",
+  "sha": "e7d1da8",
+  "screens": [
+   {
+    "name": "sp500",
+    "path": "/indices/sp500",
+    "steps": []
+   }
+  ]
+ },
+ {
+  "case": "account-card-parens",
+  "sha": "46dc748",
+  "screens": [
+   {
+    "name": "sp500",
+    "path": "/indices/sp500",
+    "steps": [
+     {
+      "click": "אינטראקטיב ישראל"
+     }
+    ],
+    "state": "after choosing the account 'אינטראקטיב ישראל'"
+   }
+  ]
+ },
+ {
+  "case": "fund-list-past-gap-column",
+  "sha": "63eaf79",
+  "screens": [
+   {
+    "name": "ta125",
+    "path": "/indices/ta125",
+    "steps": []
+   }
+  ]
+ },
+ {
+  "case": "custom-fund-labels",
+  "sha": "d9510b4",
+  "screens": [
+   {
+    "name": "sp500",
+    "path": "/indices/sp500",
+    "steps": [
+     {
+      "clickSel": "button:has-text('הוספת קרן שלא ברשימה')"
+     },
+     {
+      "fill": [
+       "שם הקרן",
+       "iShares S&P 500 Swap UCITS ETF USD (Acc)"
+      ]
+     },
+     {
+      "fill": [
+       "מספר נייר (לא חובה)",
+       "IE00B5BMR087"
+      ]
+     },
+     {
+      "select": [
+       "סוג הקרן",
+       "abroad"
+      ]
+     },
+     {
+      "fill": [
+       "דמי ניהול שנתיים",
+       "0.05"
+      ]
+     },
+     {
+      "click": "שמירה במכשיר"
+     }
+    ],
+    "state": "after adding a fund not in the list: name 'iShares S&P 500 Swap UCITS ETF USD (Acc)', kind 'קרן שנקנית בחו״ל', yearly fee 0.05%"
+   }
+  ]
+ },
+ {
+  "case": "custom-fund-form-small",
+  "sha": "38a2102",
+  "screens": [
+   {
+    "name": "sp500",
+    "path": "/indices/sp500",
+    "steps": [
+     {
+      "clickSel": "button:has-text('הוספת קרן שלא ברשימה')"
+     },
+     {
+      "fill": [
+       "שם הקרן",
+       "iShares S&P 500 Swap UCITS ETF USD (Acc)"
+      ]
+     },
+     {
+      "fill": [
+       "מספר נייר (לא חובה)",
+       "IE00B5BMR087"
+      ]
+     },
+     {
+      "select": [
+       "סוג הקרן",
+       "abroad"
+      ]
+     }
+    ],
+    "state": "the form 'הוספת קרן שלא ברשימה' opened and the kind 'קרן שנקנית בחו״ל' chosen"
+   }
+  ]
+ },
+ {
+  "case": "custom-index-ui",
+  "sha": "483e5af",
+  "screens": [
+   {
+    "name": "custom",
+    "path": "/indices",
+    "steps": [
+     {
+      "click": "אחר"
+     },
+     {
+      "fill": [
+       "שם המדד",
+       "test"
+      ]
+     },
+     {
+      "clickOpt": "המשך"
+     },
+     {
+      "clickOpt": "לא"
+     },
+     {
+      "click": "שמירה במכשיר"
+     }
+    ],
+    "state": "after adding an index named 'test' (not Israeli) and saving it"
+   },
+   {
+    "name": "sp500",
+    "path": "/indices/sp500",
+    "steps": [],
+    "state": "a built-in index, for comparison"
+   }
+  ]
+ },
+ {
+  "case": "custom-index-change-answer",
+  "sha": "c32f57f",
+  "screens": [
+   {
+    "name": "custom",
+    "path": "/indices",
+    "steps": [
+     {
+      "click": "אחר"
+     },
+     {
+      "fill": [
+       "שם המדד",
+       "test"
+      ]
+     },
+     {
+      "clickOpt": "המשך"
+     },
+     {
+      "clickOpt": "לא"
+     },
+     {
+      "click": "שמירה במכשיר"
+     }
+    ],
+    "state": "after adding an index named 'test' (not Israeli) and saving it"
+   }
+  ]
+ }
+]

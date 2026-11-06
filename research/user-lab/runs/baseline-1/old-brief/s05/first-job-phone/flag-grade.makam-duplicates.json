@@ -1,0 +1,85 @@
+{
+  "case": "makam-duplicates",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The guide list still offers makam as separate guide pages (one per way of holding it), though they describe one thing.\",\"where\":\"the makam entries in the guide list\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "The small grey line 'בכל עמוד של מוצר יש שורה…' meant little to the reader",
+      "Didn't understand 'קרן כספית מתחדשת' or 'מק\"מ' in the short-term cards",
+      "On the קופת גמל להשקעה card, couldn't see the tax benefit, since you pay tax on the profit when you withdraw",
+      "Can't tell 'קרן חדשה מקיפה' from 'כללית'; 'תגמולים ואישית לפיצויים' means nothing",
+      "The 'בניהול אישי' cards seem to be for people who already know what they're doing",
+      "The investment section is a wall of index names; unclear why ת\"א-35/90/125 matter",
+      "Repeated description endings ('הכסף מושקע בשקלים דרך קרן…') got skipped",
+      "מק\"מ appears twice, once in each section, and the reader didn't get why",
+      "Bond terms not understood: אג\"ח, צמודה/לא צמודה, קופון, פדיון, השווי הנקוב",
+      "Didn't understand 'חשיפה לדולר או מנוטרלת ממנו' or whether to want it",
+      "'מסלול' is never explained on the page",
+      "Didn't understand 'שווי השוק הסחיר' or 'במשקל לפי שווי השוק'",
+      "No fee information",
+      "No numbers on return or risk",
+      "Doesn't say how long the legal period for קרן השתלמות lasts",
+      "Can't tell which is better for S&P 500: קופת גמל להשקעה or חשבון ניירות ערך",
+      "No way to check what you already have through work, or whether you can pick S&P 500 in your pension",
+      "No order of steps or guidance on how much to put where",
+      "Would drop most investment cards (TA indices, MSCI, Nasdaq, government bonds)",
+      "Would drop the 'לבחירה עצמית' cards except חשבון ניירות ערך",
+      "Would drop the 'לילדים' section",
+      "Would drop מק\"מ and קרן כספית מתחדשת from the short-term cards",
+      "Would drop the 'מה האתר עוד לא מכסה' section"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 8,
+        "why": "The reader points out that מק\"מ appears twice, once in each section, and asks why; that is the duplicated makam entries the person flagged."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0716632
+  },
+  "b": {
+    "raised": [
+      "The small grey line under the 'two parts' block ('בכל עמוד של מוצר יש שורה…') meant little to the reader",
+      "'קרן כספית מתחדשת' and 'מק\"מ' in the short-term cards were confusing",
+      "The 'קופת גמל להשקעה' card says you pay tax on profit, so the tax benefit is unclear",
+      "Can't tell 'מקיפה' from 'כללית' pension funds; 'תגמולים ואישית לפיצויים' means nothing",
+      "The two 'בניהול אישי' cards seem to be only for experts",
+      "The investment section is a wall of index names; unclear why TA-35, TA-90 or TA-125 matter",
+      "'מק\"מ' appears twice, once in each section, and the reader didn't get why",
+      "Bond terms not understood: אג\"ח, צמודה/לא צמודה, קופון, פדיון, השווי הנקוב",
+      "Unclear whether dollar exposure or hedging is desirable",
+      "'מסלול' is never defined on the page",
+      "'שווי השוק הסחיר' and 'במשקל לפי שווי השוק' not understood",
+      "No fee information for any product",
+      "No return or risk figures",
+      "How long the legal period for קרן השתלמות lasts isn't stated",
+      "No guidance on which container is better for S&P 500 (קופת גמל להשקעה or חשבון ניירות ערך)",
+      "No way to check what you already have through work, or whether you can pick S&P 500 inside your pension",
+      "No order of steps or guidance on how much to put where",
+      "Would drop most of the investment cards (TA indexes, MSCI, Nasdaq, government bonds)",
+      "Would drop the 'לבחירה עצמית' cards except 'חשבון ניירות ערך'",
+      "Would drop 'לילדים'",
+      "Would drop 'מק\"מ' and 'קרן כספית מתחדשת' from the short-term cards",
+      "Would drop 'מה האתר עוד לא מכסה'"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 7,
+        "why": "The reader notices that makam shows up twice, once in each section, and is confused about why, which is the duplicate-entries problem the person named."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0604152
+  },
+  "third": null,
+  "ranks": {
+    "k": 7
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.13207839999999998
+}

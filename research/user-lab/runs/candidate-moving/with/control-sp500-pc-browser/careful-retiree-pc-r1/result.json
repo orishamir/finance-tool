@@ -1,0 +1,111 @@
+{
+  "task": "control-sp500-pc-browser",
+  "persona": "careful-retiree-pc",
+  "repeat": 1,
+  "mode": "browser",
+  "device": "pc",
+  "startedAt": "2026-11-06T02:05:31.504Z",
+  "structured": {
+    "answer": "The page shows about 179,889 ₪ in today's money after 15 years of 750 ₪ a month (135,000 ₪ put in), assuming 2% inflation a year, 7% return and the dollar staying put. The cheapest place it shows is an account at פסגות ניירות ערך holding \"ילין לפידות מחקה S&P 500 (4D)\". I would ask my son before doing it.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Result card wording",
+        "why": "'הזוג' / 'הזוג הבא בתור' — pair of what? Took a while to work out it means account plus fund"
+      },
+      {
+        "where": "Inflation",
+        "why": "Not shown on the main screen; I had to press the 'אינפלציה' button to see it was 2%"
+      }
+    ],
+    "used": [
+      "Input boxes סכום היום / הפקדה חודשית / שנים",
+      "אינפלציה popup showing 2%",
+      "Result card 179,889 ₪ 'בכסף של היום' and 135,000 ₪ הפקדתם",
+      "Account card פסגות ניירות ערך בע\"מ",
+      "Fund card ילין לפידות מחקה S&P 500 (4D)"
+    ],
+    "skimmed": [
+      "Index description at top",
+      "הזוג הבא בתור card",
+      "Line 'שער הדולר 3.17 ₪ ... הבנק המרכזי האירופי'"
+    ],
+    "skipped": [
+      "Coloured stacked bar chart of costs",
+      "Row of fee buttons (עמלות קנייה ומכירה, דמי משמרת, המרת מטבע...)",
+      "Fund fee details (נאמן 0.02%)",
+      "Everything further down the page"
+    ],
+    "unsure_meaning": [
+      "S&P 500",
+      "4D",
+      "קרן מחקה",
+      "דמי משמרת",
+      "נאמן",
+      "הזוג",
+      "−122 ₪",
+      "אם הדולר לא זז מול השקל",
+      "תשואה בשנה 7 — whose guess?"
+    ],
+    "not_found": [
+      "Any comparison with a bank deposit",
+      "Any big bank as a place to hold it",
+      "Inflation figure on the main screen without opening a button",
+      "Any warning that the fund can fall"
+    ],
+    "findings": [
+      {
+        "what": "Dark background with grey small text is hard to read even enlarged",
+        "where": "Whole page, especially the lines under the big numbers"
+      },
+      {
+        "what": "Inflation assumption (2%) is hidden behind a button",
+        "where": "אינפלציה button next to 'בכסף של היום'"
+      },
+      {
+        "what": "Part of the screen jumped sideways when I typed the first number",
+        "where": "Input row after filling סכום היום"
+      },
+      {
+        "what": "Stacked bar with close colours and tiny numbers inside, too much at once",
+        "where": "כמה זה עולה לכם ב־15 שנים chart"
+      },
+      {
+        "what": "Red-ish minus sign makes the second option look like a loss",
+        "where": "−122 ₪ on הזוג הבא בתור"
+      },
+      {
+        "what": "Recommended place is a company I don't know rather than my bank",
+        "where": "Account card פסגות ניירות ערך"
+      },
+      {
+        "what": "English letters and jargon right in the main title and fund name",
+        "where": "S&P 500 (4D), קרן מחקה"
+      }
+    ]
+  },
+  "steps": 7,
+  "reads": 4,
+  "commands": 7,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 52975,
+    "turns": 13,
+    "usd": 0.187811,
+    "input": 18,
+    "cacheWrite": 12940,
+    "cacheRead": 96895,
+    "output": 3242,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "control-sp500-pc-browser",
+    "screenshots": 7,
+    "changes": [],
+    "neverShown": [],
+    "errors": []
+  }
+}

@@ -1,0 +1,90 @@
+{
+  "case": "hishtalmut-7-5",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The guide's 7.5% does not say whether it is deposited to the study fund itself or to a pension fund.\",\"where\":\"the opening explanation of the guide\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "The '123 מקור / חושב / הזנתה' legend line is confusing; the reader doesn't know what the symbols mean",
+      "The page never says what retirement age is, so the reader can't tell if the 3-year rule applies to them at 61",
+      "The 'כדאי להכיר גם' / 'במה אפשר להשקיע בתוכו' buttons don't help the reader choose a track",
+      "The explanation of the two compared funds, with long names and numbers, is too full of jargon",
+      "Employment type and salary can't be changed; the reader doesn't know if their salary would change the result",
+      "The comparison gap of only 415.84 ₪ looks small, because the employer's money is left out",
+      "The key paragraphs about 300/200 ₪ and the employer's 7.5% are in small print",
+      "The reader didn't understand the remark about a 'pair finance' company",
+      "The phrase 'שנת הדרכים' is confusing",
+      "The 'שחקו עם המספרים שלכם' section couldn't be opened",
+      "The codes TXH-09 / KH-15 / PF-18 mean nothing to the reader",
+      "The reader doesn't understand why particular company names appear (Harel, Altshuler Shaham, Meitav, the fees table)",
+      "The orange box's 47% withholding that 'isn't the final tax' is confusing; no actual figure is given",
+      "The chief economist's recommendation to cut the benefit makes the reader worry whether it will last",
+      "The reader doesn't know whether the 'חוקים וכללים · X' tags can be clicked or what they show",
+      "The reader didn't understand the small empty square under the yellow bar",
+      "The glossary's 'איפה מופיע' column is ignored and would be dropped, along with the 'הצגת מונחים' buttons",
+      "The reader can't put a shekel figure on 'real profit' and the 25% tax on it",
+      "No guidance on which investment track suits someone aged 61",
+      "The page doesn't show the total after 6 years with the employer's money included",
+      "The page doesn't say what happens to the fund if the reader leaves their job or retires, or whether money can stay in tax-free",
+      "The page doesn't say what a normal management fee is or whether 0.54% is good or can be negotiated",
+      "The reader would drop the 123 legend line",
+      "The reader would drop the codes and the 'חוקים וכללים' tags",
+      "The reader would drop all the self-employed content as irrelevant to a salaried worker",
+      "The employer's 7.5% sentence should be moved to the top of the page"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader quoted the 7.5% sentence and assumed the employer's money goes into the fund, but never said it was unclear whether it goes to the study fund or a pension fund."
+      }
+    ],
+    "liked": [],
+    "usd": 0.07106319999999999
+  },
+  "b": {
+    "raised": [
+      "The '123 מקור / חושב / הזנתה' symbols line at the top is confusing",
+      "'מה זה' doesn't say what retirement age is, so the reader can't tell if the 3-year rule applies at 61",
+      "The investment-track buttons (S&P 500, bonds) don't help the reader choose",
+      "The explanation of the two compared funds with long names and numbers is too much jargon",
+      "Employment type and salary can't be changed; unclear whether salary changes the result",
+      "The comparison leaves out the employer's money, so the 415.84 ₪ difference looks surprisingly small",
+      "The most important part (300/200/7.5% sentences) is in small print",
+      "Didn't understand the 'pair finance' company remark in the 14 banks / 19 tracks paragraph",
+      "'שנת הדרכים' in the 7% return assumption is not understood",
+      "The 'שחקו עם המספרים שלכם' section couldn't be opened",
+      "Codes TXH-09, KH-15, PF-18 mean nothing",
+      "Unclear why particular company names (Harel, Altshuler Shaham, Meitav) appear",
+      "Orange box: 47% withheld but 'not the final tax' is confusing; no personal figure",
+      "Chief economist's recommendation to cut the benefit is worrying: will it last 6 years?",
+      "The 'חוקים וכללים · X' tags are unclear: does clicking show a law?",
+      "The small empty square under the yellow bar is not understood",
+      "'רווח ריאלי' and the 25% tax on it can't be turned into a shekel figure",
+      "No guidance on which investment track suits a 61-year-old",
+      "No figure for the total after 6 years including employer money",
+      "Doesn't say what happens to the fund on leaving the job or retiring, or if money can stay tax-free",
+      "No guidance on what a normal management fee is or whether 0.54% is good or negotiable",
+      "Would drop the glossary 'איפה מופיע' column and the 'הצגת מונחים' buttons",
+      "Would drop all the self-employed content",
+      "The employer 7.5% sentence should be moved to the top"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader takes the 7.5% to be paid into the study fund and never asks whether it goes to the study fund or a pension fund; their 7.5% complaints are about small print, placement and the employer money being left out of the comparison."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0668352
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.13789839999999998
+}

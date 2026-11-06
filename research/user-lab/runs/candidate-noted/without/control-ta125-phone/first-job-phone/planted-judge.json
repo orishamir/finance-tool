@@ -1,0 +1,41 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "Every fund in the list shows a large minus percentage and nothing says what it is measured against, so it looks as if every fund loses money. That could mislead a reader about the funds. It matches problem 6: the differences column refers to a baseline the page never names.",
+      "serious": true,
+      "names_listed": 6
+    },
+    {
+      "n": 2,
+      "summary": "The result is worked out from the page's 10,000/500 example, and nothing pushes the reader to enter their own amount first. The reader can still type their own figures, so this is a design wish rather than a real obstacle.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "Red minus shekel amounts next to each fund (for example -1,030 ₪) look like losses. That could lead to a wrong judgment of the funds. This is about the funds' money amounts, not the cost-comparison line in problem 8 or the column heading in problem 6, so it matches none of the problems.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "The cost bar has too many colours and its legend is far from it. This matches problem 4, the legend sitting away from the bars. The reader did find the legend on the next screen, though, so it is an annoyance and does not block understanding of a main figure.",
+      "serious": false,
+      "names_listed": 4
+    },
+    {
+      "n": 5,
+      "summary": "The long list of banks marked 'לא בחישוב' is too much to read on a phone. This is a minor annoyance.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 6,
+      "summary": "Terms like דמי משמרת and נאמן are not explained. That is a wish for more explanation and does not stop the reader using the page.",
+      "serious": false,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.041778800000000005
+}

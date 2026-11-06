@@ -1,0 +1,93 @@
+{
+  "case": "tracks-warnings",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"Almost every row of the tracks table carries a date warning mark; the repeated warnings clutter the table though one note at the top would do.\",\"where\":\"the warning marks in the table rows\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Unsure whether the 0.52% vs 0.56% fee gap matters, or whether they would actually get that fee",
+      "Didn't understand why they should care about 'רשות שוק ההון' in the intro",
+      "The '123 מקור / מחושב / הזנתה' legend is confusing and meaningless",
+      "The orange warning that the data hasn't been updated since September 2026 worried them, and they didn't know if it mattered",
+      "Not sure what a קופת גמל להשקעה actually is",
+      "Investment-type chip labels (אג\"ח, גמיש, הלכה איסלאמית, כספי) meant almost nothing",
+      "The table is very long; they had to scroll pages to find the S&P rows",
+      "The 'קופה' numbers are meaningless",
+      "Didn't understand the 'מההפקדה' fee line versus 'מהחיסכון'",
+      "Ignored the clock icons, dotted underlines and arrows without understanding them",
+      "Ignored the grey company summary lines",
+      "Didn't understand what מט\"ח / חשיפה mean or whether 99% is good",
+      "Didn't understand the ring charts",
+      "Confused how stock exposure can be 101%",
+      "'פחות מ־3 שנים' in the returns was misleading at first",
+      "Unsure whether tracks with 'עוד לא דווח' fees can be trusted",
+      "Don't know how much lower the real return is after fees and tax",
+      "Inconsistent names for the S&P track (S&P 500 / s&p500 / S&P500)",
+      "No shekel-cost example showing the fee difference",
+      "Unclear whether the average fee is what they'd personally pay, or if it can be negotiated",
+      "No info on minimum deposit or monthly deposits",
+      "No button or link to open a fund with the company",
+      "No info on withdrawal rules or tax",
+      "No beginner summary or side-by-side view of the S&P rows",
+      "Would drop all rows outside the chosen investment type",
+      "Would drop the rings and the exposure column",
+      "Would drop the קופה number column",
+      "Would drop the 123 legend line",
+      "Would drop the grey company summary lines",
+      "Would drop the unneeded other product buttons"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The report says it ignored the clock icons and worries about the single top warning, but it never says that warning marks repeated on almost every row clutter the table."
+      }
+    ],
+    "liked": [],
+    "usd": 0.05869920000000001
+  },
+  "b": {
+    "raised": [
+      "Unsure whether the 0.52% vs 0.56% fee gap matters or whether they would actually get that fee",
+      "Didn't understand why the intro mentions רשות שוק ההון or why it matters",
+      "The '123 מקור / מחושב / הזנתה' line is confusing and should go",
+      "Orange warning that the data hasn't been updated since September 2026 was worrying, and its effect was unclear",
+      "Investment-type chip labels (אג\"ח, גמיש, הלכה איסלאמית, כספי) meant almost nothing",
+      "The table is very long (pages and pages), and the user wants only the chosen type's rows shown",
+      "The קופה number column is meaningless and could be dropped",
+      "The exposure column, the dots and the ring charts weren't understood and could be dropped",
+      "Unclear how the מההפקדה fee differs from the מהחיסכון fee, and which one is actually paid",
+      "The grey company summary lines were ignored and could be dropped",
+      "Didn't understand what מט\"ח / חשיפה / '99% מט\"ח' means or whether it's good",
+      "Confused by stocks being shown as 101%",
+      "'פחות מ־3 שנים' in the returns was confusing at first",
+      "Unsure whether tracks whose fee says 'עוד לא דווח' can be trusted",
+      "'לפני דמי הניהול ולפני מס' leaves it unclear how much lower the real return is",
+      "Inconsistent S&P track names leave it unclear whether they are the same thing",
+      "Wanted the fee difference shown in shekels and couldn't find it",
+      "Unclear whether the average fee is what they would pay or whether it can be negotiated",
+      "Couldn't find the minimum deposit or whether monthly deposits are possible",
+      "No button or link to actually open a fund with the company",
+      "Couldn't find withdrawal rules or tax information",
+      "Wanted a simple beginner summary, or the S&P rows side by side",
+      "Other product buttons (קרן השתלמות, חיסכון לכל ילד) are unneeded and could be dropped"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader only says they ignored the clock icons and never complains that warning marks repeated on every row clutter the table, or that one note at the top would do."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0625512
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.12125040000000001
+}

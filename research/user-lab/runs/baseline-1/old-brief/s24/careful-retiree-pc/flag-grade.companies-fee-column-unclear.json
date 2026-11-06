@@ -1,0 +1,87 @@
+{
+  "case": "companies-fee-column-unclear",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The column 'דמי ניהול לפי …' in the company's tracks table is not explained.\",\"where\":\"the fee column head\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "The pension's '1.47% מההפקדות' looks big, and nothing says what it means in shekels",
+      "The fees are shown as 'ממוצע 2025' (Harel's 2025 average), not what I pay; unclear whether my own deal differs",
+      "The '123 מקבוץ · 123 מחושב' line is confusing",
+      "Product names are unclear: 'תגמולים ואישית לפיצויים', 'מרכזית לפיצויים', and which of 'מקיפה' or 'כללית' is mine",
+      "Not sure whether 'קרן השתלמות' is relevant at my age",
+      "The 'PF-06'/'PF-10' codes in the footnotes mean nothing",
+      "Index-tracking and exchange-traded funds show three fees (קבוע/משתנה/נאמן) with no total",
+      "Jargon labels such as 'צוברת', 'מס גם על שינויי המטבע' and 'כמה דרכים יחד'",
+      "The closed 'מה כתוב במסמכים' sections give no hint of what's inside",
+      "'אין' in the fee column first looked like 'no information'",
+      "'עוד לא דווח' with its warning mark was confusing",
+      "Unclear what the arrows at the end of each row and the sort arrows open",
+      "Dotted underlines under numbers suggest clicking, but it's unclear why",
+      "Unclear which is worse, the fee on deposits or the fee on savings, and why the pension charges both",
+      "'4A', '4D' and 'מנוטרלת מט\"ח' not understood",
+      "Direct costs ('הוצאות ישירות') come out of the fund but aren't shown; how much are they?",
+      "No returns after fees",
+      "No way to tell which product and track I'm in, or how to switch and what switching costs",
+      "No sign of the best fee I could ask for, only the average",
+      "No comparison with other companies; nothing points to the 'השוואה למטרה' link",
+      "No information on what each product pays out at retirement",
+      "Would drop the coloured rings",
+      "Would drop the 'חיסכון לכל ילד' and 'מרכזית לפיצויים' sections"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 2,
+        "why": "The column head reads 'דמי ניהול לפי …'. The reader's confusion over what the 'ממוצע 2025' basis means (Harel's average versus what they actually pay) is a clear part of that head not being explained."
+      }
+    ],
+    "liked": [],
+    "usd": 0.08091519999999999
+  },
+  "b": {
+    "raised": [
+      "The pension fee of 1.47% of deposits looks big and is never explained in shekels",
+      "The fees shown are the 2025 average, not what I pay, and it's unclear whether my own deal differs",
+      "The line '123 מקבוץ · 123 מחושב' is confusing",
+      "Product names 'תגמולים ואישית לפיצויים' and 'מרכזית לפיצויים' are not understood",
+      "Unclear whether 'קרן חדשה מקיפה' or 'כללית' is mine, or what the difference is",
+      "The PF-06 / PF-10 codes in the footnotes mean nothing",
+      "Index and exchange-traded fund fees (קבוע/משתנה/נאמן) are three fees with no total",
+      "Labels like 'צוברת', 'מס גם על שינויי המטבע' and 'כמה דרכים יחד' are jargon",
+      "The closed 'מה כתוב במסמכים' sections give no hint of what's inside",
+      "'אין' in the fee column at first looked like missing information",
+      "'עוד לא דווח' with the warning mark is confusing",
+      "Unclear what the row arrows and sort arrows open",
+      "Unclear which is worse, the fee on deposits or on savings, and why the pension charges both",
+      "'4A' and '4D' are not understood",
+      "'מנוטרלת מט\"ח' is not understood",
+      "Direct costs come out of the fund but their amount isn't shown",
+      "No returns after fees",
+      "No way to tell which product or track I'm in, or how to switch and what it costs",
+      "No best fee I could ask for, only the average",
+      "No comparison with other companies, and nothing points to the compare-by-goal link",
+      "No information on what happens to the money at retirement (monthly pension or lump sum)",
+      "Would drop the index-fund and exchange-traded-fund sections",
+      "Would drop the 'חיסכון לכל ילד' and 'מרכזית לפיצויים' sections",
+      "Would drop the rings"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 2,
+        "why": "The fee column's basis, 'ממוצע 2025', isn't explained: the reader can't tell whether this average is what they actually pay, which is a clear part of the fee column head going unexplained."
+      }
+    ],
+    "liked": [],
+    "usd": 0.07255120000000001
+  },
+  "third": null,
+  "ranks": {
+    "k": 2
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1534664
+}

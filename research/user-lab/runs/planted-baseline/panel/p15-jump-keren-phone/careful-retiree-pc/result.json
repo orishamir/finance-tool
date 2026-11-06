@@ -1,0 +1,117 @@
+{
+  "task": "p15-jump-keren-phone",
+  "persona": "careful-retiree-pc",
+  "repeat": 1,
+  "mode": "browser",
+  "device": "phone",
+  "startedAt": "2026-11-05T23:24:52.901Z",
+  "structured": {
+    "answer": "After 8 years (500 ₪ a month, the page's default) the calculator says about 68,853 ₪ stays in my hands, from 48,000 I put in. For 4 years it gives no figure for self-employed people (\"לעצמאים עוד אין כאן חישוב למשיכה לפני 6 שנים\"), only that you pay tax, so I'd ask the bank or my son.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Calculator at year 4",
+        "why": "A number (25,725) appeared over an empty dashed box whose label was half hidden by the round 'back to top' button. I nearly took it for the fund's amount."
+      },
+      {
+        "where": "Calculator, before 6 years",
+        "why": "The bars for years 1-5 are empty for self-employed people, so there is no answer for 4 years"
+      }
+    ],
+    "used": [
+      "Intro: after 6 years you can withdraw tax-free",
+      "'לעצמאים... 20,566 ₪ בשנה'",
+      "Calculator 'כמה כסף נשאר לכם, ומתי?' with the עצמאים switch",
+      "Year buttons 4 and 8",
+      "'נשאר בידיים 68,853' and 'הפקדתם 48,000'",
+      "Orange note that there is no calculation for self-employed people before 6 years"
+    ],
+    "skimmed": [
+      "Breakdown bars 'החזר המס הוסיף', 'התשואה הוסיפה אחרי דמי ניהול', 'המס לקח'",
+      "Line 'אם תפקידו עוד 13,205 ₪ בשנה'"
+    ],
+    "skipped": [
+      "חוקים וכללים · 10 fold",
+      "'כדאי להכיר גם' and 'במה אפשר להשקיע' chips (S&P 500, אג\"ח, מזומן שקלי)",
+      "Sections שווה לדעת and מי מציע ומי מצטרף",
+      "Everything below the calculator"
+    ],
+    "unsure_meaning": [
+      "במסלול מדד",
+      "S&P 500",
+      "דמי ניהול 0.54%",
+      "תשואה בשנה 7% (is it promised?)",
+      "הכנסה חייבת",
+      "אותו כסף בחשבון ניירות ערך",
+      "25,725 shown at year 4",
+      "Dotted purple underlines under the numbers",
+      "The words 'מקור' and 'מונח' at the top"
+    ],
+    "not_found": [
+      "Amount after 4 years for self-employed people",
+      "A plain sentence on how much tax you lose if you withdraw early"
+    ],
+    "findings": [
+      {
+        "what": "There is no figure for withdrawing before 6 years for self-employed people, so the question about 4 years can't be answered",
+        "where": "Calculator, years 1-5"
+      },
+      {
+        "what": "At year 4 a number (25,725) still appears over an empty dashed box, which is easy to mistake for the fund's amount",
+        "where": "Calculator result, right column"
+      },
+      {
+        "what": "The round 'back to top' button covers the label of the comparison column",
+        "where": "Bottom right of the calculator"
+      },
+      {
+        "what": "Small grey hint text is hard to read on the dark background",
+        "where": "'גררו את הסמן...' under the years"
+      },
+      {
+        "what": "Dark green and dark brown segments in the bars are hard to tell apart",
+        "where": "Breakdown bars"
+      },
+      {
+        "what": "'מסלול מדד' is unexplained jargon, and to me מדד means the price index",
+        "where": "Sentence above the results"
+      },
+      {
+        "what": "The whole page has a dark background, which tires older eyes",
+        "where": "Whole page"
+      }
+    ]
+  },
+  "steps": 7,
+  "reads": 7,
+  "commands": 7,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 57802,
+    "turns": 16,
+    "usd": 0.2572902,
+    "input": 30,
+    "cacheWrite": 17264,
+    "cacheRead": 194491,
+    "output": 4008,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "p15-jump-keren-phone",
+    "screenshots": 7,
+    "changes": [
+      {
+        "id": "jump-shown",
+        "type": "style",
+        "shots": 7,
+        "applied": 7,
+        "most": 1
+      }
+    ],
+    "neverShown": [],
+    "errors": []
+  }
+}

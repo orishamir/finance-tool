@@ -1,0 +1,128 @@
+{
+  "task": "s28",
+  "persona": "first-job-phone",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T03:26:08.758Z",
+  "structured": {
+    "answer": "I'm leaning towards the S&P 500 fund the page marks with a star as \"הזול ביותר לתוכנית שלכם\". That's \"ילין לפידות מחקה S&P 500 (4D)\" through פסגות, which comes to 86,492 ₪ after 10 years. The page's own pick, iShares through \"אינטראקטיב ישראל\", comes to 84,184 ₪, and the big banks like לאומי or הפועלים come to only about 68–71k because they take around 15k in fees. But that's for the page's numbers (10,000 now plus 500 a month), not my 30,000, so I wouldn't put money in today.",
+    "confidence": "unsure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Top of the page, the inputs סכום היום / הפקדה חודשית",
+        "why": "It's set to 10,000 ₪ and 500 a month, not my 30,000 ₪. So every big number I saw is for someone else's plan."
+      },
+      {
+        "where": "Middle summary box: 70,000 → 84,184",
+        "why": "I put in 70,000 at 7% for 10 years, so I expected something like 70% more, and only 84k comes out. I didn't get why it's so low. Maybe that's the 'בכסף של היום' line, but I'm not sure."
+      },
+      {
+        "where": "Right-hand list of accounts, the פסגות row",
+        "why": "Up top, פסגות is the starred cheapest (86,492), but in the account list it says 'אין נתון' with a long grey paragraph. I didn't know which one to believe."
+      },
+      {
+        "where": "Right-hand column: 'אינטראקטיב ישראל (מותג של MEXEM LTD)'",
+        "why": "That's the page's default pick and I've never heard of it, so it made me hesitate."
+      },
+      {
+        "where": "Long fund list in the left column",
+        "why": "About 20 funds with lots of coloured tags (צוברת, מחלקת דיבידנד, מנוטרלת מט\"ח, נאמן...). They looked alike, so I stopped reading them."
+      }
+    ],
+    "used": [
+      "Main heading 'איפה ואיך הכי זול להשקיע במדד, לאורך זמן'",
+      "S&P 500 button (already selected)",
+      "Inputs: 10,000 today, 500 a month, 10 years, 7%",
+      "הפקדתם 70,000 ₪ → הבחירה שלכם 84,184 ₪",
+      "★ הזול ביותר לתוכנית שלכם 86,492 ₪, +2,308 ₪",
+      "'מה החשבון גובה ב־10 שנים: 1,298 ₪'",
+      "Right-hand account list with 'נשאר' figures: לאומי 71,513, מזרחי 69,201, הפועלים 68,511, דיסקונט 68,439",
+      "The 'פחות כסף' table near the bottom: big banks 12k–16k less",
+      "Line 'לעבור אל ילין לפידות מחקה S&P 500 (4D), פסגות'"
+    ],
+    "skimmed": [
+      "The bar chart 'כמה זה עולה לכם ב־10 שנים' (pink/orange/green bars)",
+      "Left fund list with the tags",
+      "Section 'מה הכי משנה את מה שיישאר לכם' and its line chart",
+      "Section 'מתחילים מבחירה אחת, ורואים מה משפר אותה ובכמה'"
+    ],
+    "skipped": [
+      "Section 'עם נטרול מט\"ח או בלי: מה קרה בפועל' with its charts and the yearly table",
+      "'מה כתוב בפרסום, מול התעריפון'",
+      "Grey paragraphs under each account",
+      "Small text at the bottom, sources, 'חוקים וכללים'",
+      "Footnotes under the fund list ('למה חלק מהקרנות בלי מחיר...')"
+    ],
+    "unsure_meaning": [
+      "צוברת / מחלקת דיבידנד",
+      "מנוטרלת מט\"ח / נטרול מט\"ח",
+      "אין נאמן / אין משתנים / אין שכר נאמן",
+      "(4D) / (4A) after the fund names",
+      "IE00B5BMR087 and the other codes",
+      "W-8BEN",
+      "מס עיזבון אמריקאי",
+      "'נשען על כלל מס פתוח'",
+      "'אין נתון' next to פסגות",
+      "Whether 84,184 is before or after inflation ('בכסף של היום')",
+      "Minus numbers like −533 ₪ next to the funds: is that a loss?",
+      "Colours in the bars: I guessed pink = tax, orange = account fees, but I only glanced at the legend"
+    ],
+    "not_found": [
+      "A way to see my own 30,000 ₪ without dragging the slider",
+      "A clear 'first step': how to actually open the account or buy the fund",
+      "Why 7% over 10 years gives so little"
+    ],
+    "findings": [
+      {
+        "what": "The page's default pick is a broker I've never heard of (אינטראקטיב ישראל / MEXEM LTD). That's what you see first, and it puts me off.",
+        "where": "First screen, middle box and right-hand column"
+      },
+      {
+        "what": "פסגות is starred as cheapest up top, but further down in the account list it says 'אין נתון'. It looks like the page contradicts itself.",
+        "where": "First screen 'הזול ביותר' box vs. the פסגות row in the account list"
+      },
+      {
+        "what": "Too many options that look the same, each with 5–6 coloured tags full of terms I don't know. I'd rather do nothing than choose from those.",
+        "where": "Left fund list, screens 1–3"
+      },
+      {
+        "what": "84,184 from 70,000 over 10 years at 7% looks wrong to me and nothing near it explains it",
+        "where": "Summary box, first screen"
+      },
+      {
+        "what": "Minus numbers like −533 ₪ and −2.44% in the fund list look like losses and scare me off",
+        "where": "Left fund list"
+      },
+      {
+        "what": "Halfway down, a nav bar (מקור / מדריך / השקעה במדד...) suddenly covers the middle of the list",
+        "where": "Screen 2"
+      },
+      {
+        "what": "The page is very long, with a whole section on currency hedging I don't care about. By then I'd have closed it on the bus.",
+        "where": "Screens 4–5"
+      },
+      {
+        "what": "There's no clear button for what to do now, like open an account or buy",
+        "where": "The whole page"
+      }
+    ]
+  },
+  "steps": 6,
+  "reads": 6,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 43254,
+    "turns": 8,
+    "usd": 0.2452954,
+    "input": 10,
+    "cacheWrite": 19869,
+    "cacheRead": 46517,
+    "output": 3850,
+    "model": "claude-opus-5-5"
+  }
+}

@@ -1,0 +1,331 @@
+{
+  "case": "else-02-gemelnet",
+  "sessions": 4,
+  "perKey": {
+    "g-old": {
+      "kind": "general",
+      "caught": 3,
+      "of": 4,
+      "byPersona": {
+        "self-directed-investor": {
+          "caught": 1,
+          "of": 2,
+          "ranks": [
+            6,
+            0
+          ]
+        },
+        "student-small-amounts": {
+          "caught": 2,
+          "of": 2,
+          "ranks": [
+            4,
+            4
+          ]
+        }
+      },
+      "graderAgreement": 1
+    },
+    "g-slow": {
+      "kind": "general",
+      "caught": 0,
+      "of": 4,
+      "byPersona": {
+        "self-directed-investor": {
+          "caught": 0,
+          "of": 2,
+          "ranks": [
+            0,
+            0
+          ]
+        },
+        "student-small-amounts": {
+          "caught": 0,
+          "of": 2,
+          "ranks": [
+            0,
+            0
+          ]
+        }
+      },
+      "graderAgreement": 1
+    },
+    "g-small-text": {
+      "kind": "general",
+      "caught": 0,
+      "of": 4,
+      "byPersona": {
+        "self-directed-investor": {
+          "caught": 0,
+          "of": 2,
+          "ranks": [
+            0,
+            0
+          ]
+        },
+        "student-small-amounts": {
+          "caught": 0,
+          "of": 2,
+          "ranks": [
+            0,
+            0
+          ]
+        }
+      },
+      "graderAgreement": 1
+    },
+    "g-where-begin": {
+      "kind": "general",
+      "caught": 0,
+      "of": 4,
+      "byPersona": {
+        "self-directed-investor": {
+          "caught": 0,
+          "of": 2,
+          "ranks": [
+            0,
+            0
+          ]
+        },
+        "student-small-amounts": {
+          "caught": 0,
+          "of": 2,
+          "ranks": [
+            0,
+            0
+          ]
+        }
+      },
+      "graderAgreement": 1
+    },
+    "g-filter-below": {
+      "kind": "general",
+      "caught": 0,
+      "of": 4,
+      "byPersona": {
+        "self-directed-investor": {
+          "caught": 0,
+          "of": 2,
+          "ranks": [
+            0,
+            0
+          ]
+        },
+        "student-small-amounts": {
+          "caught": 0,
+          "of": 2,
+          "ranks": [
+            0,
+            0
+          ]
+        }
+      },
+      "graderAgreement": 1
+    },
+    "g-arrow": {
+      "kind": "general",
+      "caught": 3,
+      "of": 4,
+      "byPersona": {
+        "self-directed-investor": {
+          "caught": 1,
+          "of": 2,
+          "ranks": [
+            0,
+            8
+          ]
+        },
+        "student-small-amounts": {
+          "caught": 2,
+          "of": 2,
+          "ranks": [
+            2,
+            2
+          ]
+        }
+      },
+      "graderAgreement": 1
+    },
+    "g-list-size": {
+      "kind": "general",
+      "caught": 0,
+      "of": 4,
+      "byPersona": {
+        "self-directed-investor": {
+          "caught": 0,
+          "of": 2,
+          "ranks": [
+            0,
+            0
+          ]
+        },
+        "student-small-amounts": {
+          "caught": 0,
+          "of": 2,
+          "ranks": [
+            0,
+            0
+          ]
+        }
+      },
+      "graderAgreement": 0.75
+    },
+    "g-hidden-dblclick": {
+      "kind": "general",
+      "caught": 0,
+      "of": 4,
+      "byPersona": {
+        "self-directed-investor": {
+          "caught": 0,
+          "of": 2,
+          "ranks": [
+            0,
+            0
+          ]
+        },
+        "student-small-amounts": {
+          "caught": 0,
+          "of": 2,
+          "ranks": [
+            0,
+            0
+          ]
+        }
+      },
+      "graderAgreement": 1
+    },
+    "g-size-importance": {
+      "kind": "general",
+      "caught": 0,
+      "of": 4,
+      "byPersona": {
+        "self-directed-investor": {
+          "caught": 0,
+          "of": 2,
+          "ranks": [
+            0,
+            0
+          ]
+        },
+        "student-small-amounts": {
+          "caught": 0,
+          "of": 2,
+          "ranks": [
+            0,
+            0
+          ]
+        }
+      },
+      "graderAgreement": 1
+    },
+    "g-start-button": {
+      "kind": "general",
+      "caught": 0,
+      "of": 4,
+      "byPersona": {
+        "self-directed-investor": {
+          "caught": 0,
+          "of": 2,
+          "ranks": [
+            0,
+            0
+          ]
+        },
+        "student-small-amounts": {
+          "caught": 0,
+          "of": 2,
+          "ranks": [
+            0,
+            0
+          ]
+        }
+      },
+      "graderAgreement": 1
+    }
+  },
+  "againstLiked": {
+    "g-export": 0
+  },
+  "rows": [
+    {
+      "task": "gemelnet",
+      "session": "self-directed-investor-r1",
+      "persona": "self-directed-investor",
+      "ranks": {
+        "g-old": 6,
+        "g-slow": 0,
+        "g-small-text": 0,
+        "g-where-begin": 0,
+        "g-filter-below": 0,
+        "g-arrow": 0,
+        "g-list-size": 0,
+        "g-hidden-dblclick": 0,
+        "g-size-importance": 0,
+        "g-start-button": 0
+      },
+      "against": {
+        "g-export": 0
+      }
+    },
+    {
+      "task": "gemelnet",
+      "session": "self-directed-investor-r2",
+      "persona": "self-directed-investor",
+      "ranks": {
+        "g-old": 0,
+        "g-slow": 0,
+        "g-small-text": 0,
+        "g-where-begin": 0,
+        "g-filter-below": 0,
+        "g-arrow": 8,
+        "g-list-size": 0,
+        "g-hidden-dblclick": 0,
+        "g-size-importance": 0,
+        "g-start-button": 0
+      },
+      "against": {
+        "g-export": 0
+      }
+    },
+    {
+      "task": "gemelnet",
+      "session": "student-small-amounts-r1",
+      "persona": "student-small-amounts",
+      "ranks": {
+        "g-old": 4,
+        "g-slow": 0,
+        "g-small-text": 0,
+        "g-where-begin": 0,
+        "g-filter-below": 0,
+        "g-arrow": 2,
+        "g-list-size": 0,
+        "g-hidden-dblclick": 0,
+        "g-size-importance": 0,
+        "g-start-button": 0
+      },
+      "against": {
+        "g-export": 0
+      }
+    },
+    {
+      "task": "gemelnet",
+      "session": "student-small-amounts-r2",
+      "persona": "student-small-amounts",
+      "ranks": {
+        "g-old": 4,
+        "g-slow": 0,
+        "g-small-text": 0,
+        "g-where-begin": 0,
+        "g-filter-below": 0,
+        "g-arrow": 2,
+        "g-list-size": 0,
+        "g-hidden-dblclick": 0,
+        "g-size-importance": 0,
+        "g-start-button": 0
+      },
+      "against": {
+        "g-export": 0
+      }
+    }
+  ]
+}

@@ -1,0 +1,132 @@
+{
+  "task": "p09-disagree-keren-phone",
+  "persona": "careful-retiree-pc",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "phone",
+  "startedAt": "2026-11-05T23:15:23.813Z",
+  "structured": {
+    "answer": "You can take the money out without tax after 6 years, and since I'm past retirement age the page says 3 years is enough. On the page's example (300 ₪ a month from me, 900 ₪ from the employer, for 5 years) about 66,000 ₪ is left, but the red minus 13,974 scared me and the calculator doesn't show my case, so I'll ask my son or the employer.",
+    "confidence": "unsure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "calculator chart, 'לפני 6 שנים: מס'",
+        "why": "Only the 6-year rule is shown; I'm past retirement age, where the text says 3 years is enough, so I don't know if the tax minus applies to me"
+      },
+      {
+        "where": "top of screen 3, salary field",
+        "why": "The salary box is hidden behind the sticky header; I only saw a faint '12,000'"
+      },
+      {
+        "where": "top of screen 2",
+        "why": "The sentence about deposit limits was cut off under the top bar"
+      },
+      {
+        "where": "example result row",
+        "why": "'66,5…' was covered by the round scroll-up button; red '−13,974' made me back away"
+      }
+    ],
+    "used": [
+      "Intro: 'אחרי 6 שנים מההפקדה הראשונה אפשר למשוך... בלי מס'",
+      "'למי שהגיע לגיל הפרישה מספיקות 3 שנים'",
+      "Example: 300 ₪ me, 900 ₪ employer",
+      "'נשאר בידיים 66,601 ₪ עד 66,280 ₪'"
+    ],
+    "skimmed": [
+      "bar chart years 1-12",
+      "paragraph about 50,719 / 29,768 / 15,794 tax refund",
+      "assumptions paragraph (7% return, 2% inflation)",
+      "שווה לדעת section",
+      "מי מציע ומי מצטרף section"
+    ],
+    "skipped": [
+      "investment track chips (S&P 500, מסלול כללי, אג\"ח)",
+      "חוקים וכללים links",
+      "הצגת החברות fold",
+      "משיכה ומעבר and everything after screen 6"
+    ],
+    "unsure_meaning": [
+      "מסלול השקעה",
+      "S&P 500 / מדד",
+      "מסלול כללי",
+      "תשואה 7%",
+      "דמי ניהול 0.54%",
+      "חשבון ניירות ערך",
+      "KH-19, KH-15, PF-18",
+      "חוקים וכללים · 10",
+      "hatched pink box in the chart",
+      "ריאלי-style 'כסף של היום' sentence"
+    ],
+    "not_found": [
+      "A calculation for someone past retirement age (3-year rule)",
+      "A simple sentence saying 'you will have about X and can withdraw on date Y'",
+      "A safe/deposit-like option in the example"
+    ],
+    "findings": [
+      {
+        "what": "Red '−13,974' in the main example is the number that sticks and scares; the example defaults to withdrawing before the tax-free date",
+        "where": "screen 3, result bars"
+      },
+      {
+        "what": "Calculator ignores the retirement-age 3-year rule stated in the intro",
+        "where": "screen 3 chart labels 'לפני 6 שנים: מס' / 'מ־6 שנים: פטור ממס'"
+      },
+      {
+        "what": "Sticky header covers content: salary field and the deposit-limit sentence are hidden",
+        "where": "top of screens 2 and 3"
+      },
+      {
+        "what": "Round scroll-up button covers numbers ('66,5…', '₪ 321')",
+        "where": "screens 3 and 4, bottom right"
+      },
+      {
+        "what": "Example uses 'מסלול מדד' and S&P500 — English letters and shares, frightening for a cautious saver",
+        "where": "screens 2-4"
+      },
+      {
+        "what": "Too many numbers in one paragraph (50,719, 29,768, 15,794, 0.54%, 11, 0.48%, 0.7%)",
+        "where": "screen 4"
+      },
+      {
+        "what": "Pale grey text and close dark colours in the chart are hard to read",
+        "where": "screen 1 subtitle, screen 3-4 chart"
+      },
+      {
+        "what": "Unexplained codes KH-19, PF-18",
+        "where": "screen 5"
+      }
+    ]
+  },
+  "steps": 6,
+  "reads": 6,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 35836,
+    "turns": 8,
+    "usd": 0.16805179999999997,
+    "input": 8,
+    "cacheWrite": 11554,
+    "cacheRead": 27439,
+    "output": 3505,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "p09-disagree-keren-phone",
+    "screenshots": 14,
+    "changes": [
+      {
+        "id": "disagree",
+        "type": "text",
+        "shots": 14,
+        "applied": 14,
+        "most": 3
+      }
+    ],
+    "neverShown": [],
+    "errors": []
+  }
+}

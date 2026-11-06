@@ -1,0 +1,113 @@
+{
+  "task": "p15-jump-keren-phone",
+  "persona": "careful-retiree-pc",
+  "repeat": 2,
+  "mode": "browser",
+  "device": "phone",
+  "startedAt": "2026-11-06T02:02:01.202Z",
+  "structured": {
+    "answer": "After 8 years, putting in the 500 ₪ a month the calculator suggested, I'd put in 48,000 and have about 68,853 ₪ with no tax. For 4 years the page gives no figure for self-employed people (\"לעצמאים עוד אין כאן חישוב למשיכה לפני 6 שנים\"), so I don't know. I'll ask my son or the bank, because the 7% is the site's own assumption on an \"S&P500\" track, not a safe deposit.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Calculator result at year 4",
+        "why": "The only number shown, 25,725, sits over 'אותו כסף בחשבון ניירות ערך', not the fund. I almost took it as the 4-year answer before reading the orange note that there's no calculation for self-employed before 6 years."
+      },
+      {
+        "where": "Monthly deposit field",
+        "why": "The task gave no amount and I couldn't work out 20,566 a year as a monthly figure, so I left the 500 ₪ that was filled in."
+      }
+    ],
+    "used": [
+      "Opening paragraph: tax-free after 6 years, 3 years after retirement age",
+      "Paragraph on the self-employed limit of 20,566 ₪ a year",
+      "Calculator: עצמאים button, year numbers 4 and 8 under the bars",
+      "Result columns הפקדתם 48,000 / המס לקח 0 / נשאר בידיים 68,853",
+      "Orange note: no calculation for self-employed before 6 years",
+      "Sentence: התשואה 7% ... הנחות של האתר, לא תחזית"
+    ],
+    "skimmed": [
+      "Paragraph about salaried employees' 7.5% and 2.5%",
+      "Tags 'במה אפשר להשקיע' (I noticed אג\"ח ממשלתית)",
+      "Notes under the result about inflation and the S&P 500 comparison"
+    ],
+    "skipped": [
+      "Top tabs שווה לדעת and מי מציע ומי מצטרף",
+      "'חוקים וכללים · 10' fold",
+      "Everything below the notes under the calculator"
+    ],
+    "unsure_meaning": [
+      "מסלול מדד",
+      "S&P500 / מחקה",
+      "אותו כסף בחשבון ניירות ערך",
+      "החזר המס הוסיף",
+      "התשואה הוסיפה אחרי דמי ניהול",
+      "בכסף של היום",
+      "123 ממקור / 123 מחושב (dotted underlines)",
+      "the three bar colours (grey, yellow, teal)"
+    ],
+    "not_found": [
+      "A fund figure for withdrawing after 4 years as self-employed",
+      "What happens for someone past retirement age (the 3-year rule) in the calculator",
+      "A safe track such as government bonds in the calculator"
+    ],
+    "findings": [
+      {
+        "what": "At 4 years the fund shows no figure. The only number on screen (25,725) belongs to a different account, which is easy to take as the answer.",
+        "where": "Calculator result for years 1–5"
+      },
+      {
+        "what": "The result is worked out on a share-index (S&P500) track at an assumed 7%. This only shows up in small notes below the chart, not next to the big number.",
+        "where": "Notes under the result"
+      },
+      {
+        "what": "The text says 3 years is enough for people past retirement age, but the calculator ignores age and treats everything before 6 years as taxed or not calculated",
+        "where": "Opening paragraph vs calculator"
+      },
+      {
+        "what": "The stacked bars use close colours (yellow, dark yellow, teal, dark teal) that are hard to tell apart",
+        "where": "Bar chart"
+      },
+      {
+        "what": "Dark background with grey text is tiring to read",
+        "where": "Whole page"
+      },
+      {
+        "what": "The 500 ₪ monthly default has nothing to do with the 20,566 ₪ yearly limit mentioned above it",
+        "where": "הפקדה חודשית field"
+      }
+    ]
+  },
+  "steps": 8,
+  "reads": 8,
+  "commands": 8,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 69768,
+    "turns": 18,
+    "usd": 0.3064392,
+    "input": 34,
+    "cacheWrite": 20212,
+    "cacheRead": 246236,
+    "output": 4768,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "p15-jump-keren-phone",
+    "screenshots": 8,
+    "changes": [
+      {
+        "id": "jump-shown",
+        "type": "style",
+        "shots": 8,
+        "applied": 8,
+        "most": 1
+      }
+    ],
+    "neverShown": [],
+    "errors": []
+  }
+}

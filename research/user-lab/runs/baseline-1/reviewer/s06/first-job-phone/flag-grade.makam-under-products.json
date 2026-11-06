@@ -1,0 +1,36 @@
+{
+  "case": "makam-under-products",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"Makam is listed under 'מוצרים' (products) though it is something bought inside an account, not a product of its own.\",\"where\":\"the group the makam entry sits in\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 6 is about מק\"מ appearing twice in different sections, not about it being wrongly grouped under 'מוצרים' when it's really bought inside an account, so none of the findings states this problem."
+      }
+    ],
+    "liked": [],
+    "usd": 0.015463400000000002
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 6 is about makam and where it sits, but it complains that the entry shows up twice, not that makam is wrongly put under 'מוצרים' when it is really something bought inside an account. Finding 4 is about accounts versus products, but it doesn't mention makam."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0171234
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0325868
+}

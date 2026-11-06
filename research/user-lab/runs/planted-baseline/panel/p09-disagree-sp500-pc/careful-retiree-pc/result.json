@@ -1,0 +1,133 @@
+{
+  "task": "p09-disagree-sp500-pc",
+  "persona": "careful-retiree-pc",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-05T23:15:27.762Z",
+  "structured": {
+    "answer": "The page's cheapest choice is an account at Psagot (פסגות) with the fund \"ילין לפידות מחקה S&P 500 (4D)\" no. 5139282: about 86,942 ₪ after 10 years from 10,000 ₪ now plus 500 ₪ a month, assuming 7% a year. But the list shows 86,492 for the same thing, so I'd ask my son before doing anything.",
+    "confidence": "unsure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Screen 1 top box vs screen 2 account list",
+        "why": "The first box says 86,942 ₪ for Psagot and the list says 86,492 ₪. Same digits, swapped, so I don't know which is right."
+      },
+      {
+        "where": "Screen 2–3 fund list",
+        "why": "Lots of red minus numbers (-447, -1,268, -4,492). I didn't know if they meant losses, and they made me want to back away."
+      },
+      {
+        "where": "Screen 1 inputs",
+        "why": "The 7% return was already filled in. Nothing says whether that's sure, and 70,000 growing only to 86,942 doesn't match my idea of 7% a year."
+      },
+      {
+        "where": "Screen 6 chart",
+        "why": "Four crossing coloured lines. I couldn't read it and stopped soon after."
+      }
+    ],
+    "used": [
+      "Title 'איפה ואיך הכי זול להשקיע במדד'",
+      "Default inputs: 10,000 today, 500 monthly, 10 years, 7%",
+      "Box 'הבחירה שלכם · ★ הזול' 86,942 ₪",
+      "Account list on the right: פסגות 86,492, לאומי 83,396, הפועלים 81,471, דיסקונט 79,901",
+      "Selected fund card 'ילין לפידות מחקה S&P 500 (4D) 5139282'",
+      "Table on screen 6: 600 a month gives 100,966"
+    ],
+    "skimmed": [
+      "Fund list with coloured tags (screens 2–4)",
+      "The 'נטרול מט\"ח' explanation box on screen 6",
+      "The text 'למה חלק מהקרנות בלי מחיר בפסגות'"
+    ],
+    "skipped": [
+      "The English-named funds (iShares, Vanguard, us-ivv, us-voo)",
+      "Interactive Brokers / אינטראקטיב ישראל",
+      "The line chart on screen 6",
+      "Screens 7–10",
+      "The sliders and the 'אחר' / other index buttons",
+      "Fold-out arrows under each bank"
+    ],
+    "unsure_meaning": [
+      "S&P 500, MSCI World, ETF, 4D, 4A",
+      "מדד (I know it as the price index)",
+      "קרן מחקה, קרן סל, צוברת, מחלקת דיבידנד",
+      "נאמן, דמי משמרת, עמלות זו על זו",
+      "מנוטרל מט\"ח, חשיפה לדולר, W-8BEN",
+      "'+0.37% בשנה · שנה אחת' and 'מול המדד'",
+      "Red minus amounts like '-447 ₪' next to funds",
+      "Small grey numbers under each bank (1,057 / 4,541) — I think it's what the bank takes",
+      "Thin coloured bars under each bank"
+    ],
+    "not_found": [
+      "A plain sentence saying this can lose money and how safe it is compared with a deposit",
+      "Any comparison with a bank deposit or government bonds",
+      "An explanation of why 7% was chosen"
+    ],
+    "findings": [
+      {
+        "what": "The same Psagot result shows two different amounts: 86,942 in the top box and 86,492 in the list",
+        "where": "Screen 1 box vs screen 2 right-hand list"
+      },
+      {
+        "what": "The 7% return is filled in already, with no clear warning that it isn't guaranteed",
+        "where": "Screen 1 inputs"
+      },
+      {
+        "what": "Red minus amounts on almost every fund are frightening and not explained where you see them",
+        "where": "Fund list, screens 2–4"
+      },
+      {
+        "what": "Dark background with small grey text is hard to read even enlarged",
+        "where": "All screens, especially the notes under each bank"
+      },
+      {
+        "what": "Too many funds with English names and many coloured tags, a very busy screen",
+        "where": "Screens 3–5"
+      },
+      {
+        "what": "The thin colour bars use oranges and yellows that are too close to tell apart",
+        "where": "Account list, right side"
+      },
+      {
+        "what": "Jargon everywhere with no Hebrew explanation (קרן מחקה, צוברת, נאמן, מנוטרל מט\"ח)",
+        "where": "Fund cards"
+      },
+      {
+        "what": "The chart with four crossing lines doesn't say in words what it shows",
+        "where": "Screen 6"
+      }
+    ]
+  },
+  "steps": 6,
+  "reads": 6,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 42895,
+    "turns": 8,
+    "usd": 0.1806508,
+    "input": 10,
+    "cacheWrite": 11696,
+    "cacheRead": 37514,
+    "output": 3977,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "p09-disagree-sp500-pc",
+    "screenshots": 11,
+    "changes": [
+      {
+        "id": "disagree",
+        "type": "number",
+        "shots": 11,
+        "applied": 11,
+        "most": 2
+      }
+    ],
+    "neverShown": [],
+    "errors": []
+  }
+}

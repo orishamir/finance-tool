@@ -1,0 +1,69 @@
+{
+  "case": "tracks-tracker-subtitle",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"Only some rows (Altshuler, Analyst) carry an extra line 'עוקב …' under the company name; the inconsistency adds noise.\",\"where\":\"the company cells of the table\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "The fee is a 2025 average, not a promise of what the reader would be charged",
+      "The table is sorted from most to least expensive, which the reader would have misread without the note",
+      "The '123 ממקור / מחושב / הזנתה' legend is confusing, and its meaning for the user is unclear",
+      "It is unclear whether the separate 'עוקב מדדי מניות' button is the same thing as the S&P track",
+      "The 'PF-06' tag means nothing to the reader",
+      "The turquoise/yellow rings and the מניות/מט\"ח percentages are not understood (for example, is 101% foreign currency risky?)",
+      "Ayalon's ring is not closed, which seems odd for an S&P tracker",
+      "Only the Altshuler and Analyst rows show a track name under the company, leaving the reader unsure whether all rows are the same thing",
+      "No yearly cost in shekels for the user's balance; the reader had to work it out",
+      "Cannot find whether the fee can be negotiated, or what a new customer would actually pay",
+      "Cannot find how to move an existing keren, or whether that costs anything or creates a tax problem",
+      "Unclear whether 0.48% covers all costs or whether there are extra costs, such as the index fund's own fees",
+      "Would drop the 'כסף מנוהל' column and the line under each company name",
+      "Would hide the 'קופה' numbers behind the arrow",
+      "Would drop the less relevant product buttons and the search box"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 8,
+        "why": "The reader asks why only the Altshuler and Analyst rows show an extra track-name line under the company and the others don't, which is the same inconsistency the person named."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0581912
+  },
+  "b": {
+    "raised": [
+      "The fee shown is a 2025 average of what was charged, not a promise of what a new customer would pay",
+      "The table runs from most expensive to cheapest, which goes against expectation; without the note the reader would have read it the wrong way round",
+      "The '123 ממקור / מחושב / הזנתה' legend is confusing and its meaning for the user is unclear",
+      "Unclear whether the 'עוקב מדדי מניות' button is the same thing as the S&P 500 button",
+      "The 'PF-06' tag in the footnote means nothing to the reader",
+      "The rings and the מניות/מט\"ח percentages aren't understood (Ayalon's unclosed ring looks odd; is 101% מט\"ח risky?)",
+      "Only Altshuler and Analyst show a track name under the company, while the other rows don't, which makes the reader wonder if the tracks are all the same",
+      "No yearly cost in shekels; the reader had to work it out themselves",
+      "Can't tell whether fees can be negotiated or what a new customer would actually pay",
+      "No information on how to move an existing keren, or on the cost or tax of doing so",
+      "Unclear whether 0.48% includes all costs or whether more costs come on top",
+      "The 'כסף מנוהל' column and the line under each company name are unnecessary and would be dropped",
+      "The 'קופה' fund numbers are clutter and should be hidden behind the arrow",
+      "The less relevant product buttons and the search box could be dropped"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 7,
+        "why": "The reader asks why only the Altshuler and Analyst rows carry the extra track-name line under the company and the others don't, which is the same inconsistency the person named."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0594152
+  },
+  "third": null,
+  "ranks": {
+    "k": 7
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1176064
+}

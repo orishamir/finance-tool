@@ -1,0 +1,93 @@
+# p07-word-tracks-pc: first-job-phone (old brief)
+
+pc; 58 s, $0.34
+
+# Choosing a kupat gemel lehashkaa from the screenshots
+
+## 1. My answer
+
+I'd open the **Harel "עוקב מדד S&P 500" track, fund number 13414.**
+
+My reasons, in the order I thought of them:
+- I came in wanting "the S&P 500", and the page has a filter button for exactly that: "עוקב מדד S&P 500 12". So I only had to compare the S&P rows.
+- Harel's S&P track costs **"0.56% מהחיסכון"** and **"0% מההפקדות"**. That's close to the cheapest S&P option I found.
+- It's big (**"2.3 מיליארד ₪"**), it has a full track record (**"13.7% 3 שנים"**, **"11.92% 5 שנים"**), and Harel is first on the page, so I guess it's the biggest company.
+
+I also looked at these:
+- **Menorah Mivtachim's** S&P track (13874) is a bit cheaper at "0.52%". But it charges "0.01% מההפקדות", and the 5-year box says "פחות מ־5 שנים". I didn't want something that new.
+- **Mor's** S&P track (7958) costs "0.71%". That's noticeably more for what I think is the same thing.
+- One row, **13250**, has the best 5-year number ("12.33%") and costs "0.58%". The company heading had scrolled off my screenshot, though, so I don't know whose it is. Same problem with **14865** at "0.54%".
+
+**How sure am I?** About 6 out of 10. I'm sure the S&P idea is right for me. I'm much less sure Harel beats Menorah or whoever owns 13250. The fee differences are tiny, and I don't know if they matter.
+
+## 2. Parts I actually used
+
+- **The title and the line under it**: "כל המסלולים בכל החברות" and "דמי הניהול הם הממוצע שנגבה בפועל ב־2025…"
+- **The product buttons**: "קופת גמל להשקעה 143" was already selected, which told me I was in the right place.
+- **The "במה הכסף מושקע" buttons**, mainly "עוקב מדד S&P 500 12".
+- **The sentence under the buttons**: "החברות מסודרות מהגדולה לקטנה לפי הכסף המנוהל; בתוך כל חברה לפי דמי הניהול מהחיסכון, מהזול ליקר." This explained the order of everything.
+- **The big table**, but only the S&P rows.
+- **The two notes at the very bottom**: "עוד לא דווח…" and "התשואה היא תשואת עבר… היא לא אומרת מה יקרה בהמשך, ולכן אין מיון לפיה."
+
+## 3. Block by block
+
+| Block | What I did | Why |
+|---|---|---|
+| Top menu (מקור, מדריך, חברות ומסלולים, השקעה במדד, חוקים וכללים) | Skimmed | "השקעה במדד" looked interesting, but I stayed on this page. |
+| "לפי חברה / לפי מוצר" tabs | Skipped | I didn't see what difference it would make. |
+| Title and explanation | Used | It told me the fees are from 2025 and the data is from September 2026. |
+| "123 מקור · 123 מחושב · לחצו על מספר…" | Confused | I didn't get what these two 123s mean, so I ignored them. |
+| Product buttons | Used | They confirmed I'm looking at kupat gemel lehashkaa. "מה זה קופת גמל להשקעה" would have helped earlier, but I already knew roughly what I wanted. |
+| Search box (שם המסלול או חברה) | Skipped | I had no company in mind. |
+| "במה הכסף מושקע" buttons | Used the S&P one | Most of the others meant nothing to me: "גמיש", "משולב סחיר", "כספי (שקלי)", "אג"ח ממשלתי סחיר". |
+| Summary "143 מסלולים של 12 חברות · 0.5% עד 0.73%" | Skimmed | Useful: it showed me fees are all in a narrow range, so no track is a disaster. |
+| Company header rows (e.g. "הראל 16 מסלולים · כסף מנוהל 19.1 מיליארד ₪") | Used | This is how I knew whose rows I was reading. When a header scrolled away, I was lost. |
+| Table rows that aren't S&P (כללי, מניות, אשראי ואג"ח…) | Mostly skipped | I stopped at "מניות". Harel's "24.04%" for 3 years is much higher than the S&P's "13.7%", and that almost pulled me away. |
+| Rows marked "חדש" with "עוד לא דווח" (the Infinity area and the last screens) | Skipped | There's no fee data, so I can't compare. |
+| Bottom notes | Used | The return note convinced me not to chase "מניות 24%". |
+| "חוקים וכללים · 7" and the footer | Skipped | |
+
+## 4. Table columns
+
+- **"דמי ניהול, ממוצע 2025"**: I looked at this the most, mainly the top number, "…% מההיסכון". I glanced at "מההפקדות" only to check it's 0%. The little ▲ next to "מההיסכון" told me the list is sorted by it.
+- **"תשואה שנתית ממוצעת, ברוטו"**: I looked at it, mostly the 5-year number. I noticed many rows say "פחות מ־3 שנים" / "פחות מ־5 שנים" instead of a number.
+- **"כסף מנוהל"**: I used it as a "how popular or safe is this" sign. "2.3 מיליארד" felt better than "120 מיליון".
+- **"קופה"** (the number with the icon): I only used it to tell rows apart. I didn't click it.
+- **"חשיפה למניות ולמט"ח"**, with the teal and yellow ring and two percentages: mostly ignored. I saw the S&P rows are always a full yellow-and-teal circle ("99% מניות / 99% מט"ח"), so I used the full circle as a quick way to spot S&P-like rows. I don't know what the yellow "מט"ח" part means for me.
+- **Dotted underlines and "?" icons**: ignored. I couldn't click them in screenshots anyway.
+- **Grey tags** ("חדש", "הלכה יהודית", "עוקב מדדי אג"ח"): I noticed "חדש" and avoided those rows. I ignored the rest.
+
+## 5. What I didn't understand
+
+- **"מההיסכון" vs "מההפקדות"**: I think one is a fee on my whole balance and the other on each deposit, but I'm guessing.
+- **"חשיפה… למט"ח"**: is "99% מט"ח" a good or bad thing for me?
+- **"ברוטו"**: before what exactly? The bottom note says before fees and tax. Does that mean I'd actually get about 0.5% less?
+- **"101%" stocks**: how can it be more than 100%?
+- **"עוקב מדד S&P 500" vs "עוקב מדדי מניות" vs "מניות"**: which one is "the S&P 500"?
+- **Why the "same" S&P track gives different returns at different companies**: 11.47% vs 11.92% vs 12.33% over 5 years.
+- **"גמיש", "משולב סחיר", "כספי (שקלי)", "הלכה יהודית"**
+- **"123 מקור / 123 מחושב"**
+
+## 6. What I wanted and couldn't find
+
+- **Which company some rows belong to.** In my screenshots the headers had scrolled away for 14865 and 13250, which are the two most interesting S&P rows.
+- **A single list of just the S&P tracks from all companies, side by side.** I assume the "עוקב מדד S&P 500" button does this, but in screenshots I had to hunt through 15 pages.
+- **The practical stuff**: minimum deposit, how to open one, whether I can take money out and what tax I pay, and whether I can move between companies or tracks later.
+- **Whether I can ask a company for a lower fee than what's shown.**
+- **Whether a 0.04% fee difference is even worth caring about.** In shekels over 30 years, what does it mean?
+- **Is the S&P track or "מניות" better for someone who's 24?**
+
+## 7. If half the page had to go
+
+Cut first:
+1. The new tracks full of "עוד לא דווח" (the last 2–3 screens).
+2. The "חשיפה למניות ולמט"ח" column with the rings.
+3. The tracks I'd never pick: אג"ח, כספי, הלכה, אשראי.
+4. The "123 מקור / מחושב" line.
+
+Keep:
+- the S&P filter
+- the management fee column
+- the "כסף מנוהל" number
+- the company header rows
+- the note that past returns don't predict the future

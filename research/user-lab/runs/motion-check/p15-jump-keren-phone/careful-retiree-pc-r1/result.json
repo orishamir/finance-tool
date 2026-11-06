@@ -1,0 +1,112 @@
+{
+  "task": "p15-jump-keren-phone",
+  "persona": "careful-retiree-pc",
+  "repeat": 1,
+  "mode": "browser",
+  "device": "phone",
+  "startedAt": "2026-11-06T00:20:57.043Z",
+  "structured": {
+    "answer": "If I put in 500 ₪ a month, after 8 years the calculator says about 68,853 ₪ \"נשאר בידיים\" (I would have paid in 48,000). For 4 years it gives no number at all. It says \"לעצמאים עוד אין כאן חישוב למשיכה לפני 6 שנים\", only that you pay tax.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "First screen",
+        "why": "There was no calculator on it. I had to guess that the 'מה קורה לכסף בקרן' tab was where it was"
+      },
+      {
+        "where": "Calculator, years 1-5",
+        "why": "I wanted 4 years and the bars were empty. The orange sentence explains that there is no calculation for the self-employed before 6 years, so I got no number for 4 years"
+      },
+      {
+        "where": "Choosing the year",
+        "why": "The year is set with a slider, which I avoid. I pressed the number 8 under the chart instead, and that worked"
+      }
+    ],
+    "used": [
+      "'עצמאים' button",
+      "'הפקדה חודשית' 500 ₪ (left as it was)",
+      "Orange note about withdrawing before 6 years",
+      "Number 8 under the chart",
+      "'נשאר בידיים 68,853' and 'הפקדתם 48,000'"
+    ],
+    "skimmed": [
+      "The opening explanation 'מה זה' (only that you can take it out without tax after 6 years)",
+      "The coloured bars for years 6-12"
+    ],
+    "skipped": [
+      "'אותו כסף בחשבון ניירות ערך 55,471'",
+      "'אם תפקידו עוד 13,205 ₪ בשנה'",
+      "The sentence about return and inflation at the bottom",
+      "The 'שווה לדעת' and 'מי מציע ומי מצטרף' tabs"
+    ],
+    "unsure_meaning": [
+      "מסלול מדד",
+      "החזר המס הוסיף +9,581",
+      "הכנסה חייבת",
+      "חשבון ניירות ערך",
+      "תשואה 7% (I don't know if that is realistic, I left it)",
+      "Underlines that are dotted or dashed under numbers"
+    ],
+    "not_found": [
+      "An amount for withdrawing after 4 years for the self-employed"
+    ],
+    "findings": [
+      {
+        "what": "For the self-employed there is no result at all for fewer than 6 years. The bars are just empty, and only a small orange sentence explains why",
+        "where": "Calculator, years 1-5"
+      },
+      {
+        "what": "The page is dark with light text. It is hard on the eyes, and the grey text under the chart is pale",
+        "where": "The whole page"
+      },
+      {
+        "what": "There are many numbers with plus signs and bars in close colours (two greens, two yellows), and it's hard to tell what each one is",
+        "where": "Chart for the chosen year"
+      },
+      {
+        "what": "The year is chosen with a slider. You can tap the number, but the page doesn't say so clearly",
+        "where": "Under the chart"
+      },
+      {
+        "what": "The calculator isn't on the first screen, so you have to guess which tab has it",
+        "where": "Top of the page"
+      },
+      {
+        "what": "'S&P 500' and 'מסלול מדד' show up with no explanation",
+        "where": "Upper part of the calculator"
+      }
+    ]
+  },
+  "steps": 5,
+  "reads": 5,
+  "commands": 5,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 40674,
+    "turns": 12,
+    "usd": 0.1700528,
+    "input": 22,
+    "cacheWrite": 12386,
+    "cacheRead": 116584,
+    "output": 2378,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "p15-jump-keren-phone",
+    "screenshots": 5,
+    "changes": [
+      {
+        "id": "jump-shown",
+        "type": "style",
+        "shots": 5,
+        "applied": 5,
+        "most": 1
+      }
+    ],
+    "neverShown": [],
+    "errors": []
+  }
+}

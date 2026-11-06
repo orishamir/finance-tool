@@ -1,0 +1,85 @@
+{
+  "case": "guides-template-current-account",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The current-account guide carries template sections that do not fit it (who offers it, money in and out, tax and the like), padding the page.\",\"where\":\"the sections 'who', 'in and out', 'tax' of the guide\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "The page gives no fees, returns or tax amounts, so the reader can't choose between options",
+      "The guide's intro line doesn't say what to do",
+      "Unclear which line 'every product page has a line...' refers to",
+      "'Where to start' is written for employees and has nothing for someone near retirement",
+      "The annual ceiling on tax-benefit savings isn't stated",
+      "The waiting period set by law isn't stated",
+      "The difference between comprehensive and general pension funds is unclear",
+      "'Provident payments and personal severance' (תגמולים ואישית לפיצויים) means nothing to the reader",
+      "The footer gives a data date, but no numbers appear anywhere",
+      "The 'plain language' lines mostly repeat the product name",
+      "The daily/renewing buttons under the money market fund are confusing (are they fund types, are they clickable?)",
+      "Too many index cards, all looking alike",
+      "'Exposed to the dollar or neutralised from it' isn't understood",
+      "'A fund that tracks it' on the index cards isn't understood",
+      "'A cap per single share' isn't understood",
+      "Unclear who the managing company's investment committee is and whether the reader pays them",
+      "The abbreviations אג\"ח and מק\"מ are used before they're explained",
+      "Nothing on what changes at 60, or the age for tax-free withdrawal",
+      "No information on whether deposits or bonds are insured or guaranteed",
+      "No simple starting point based on amount and time horizon",
+      "Would drop the 'for children' section",
+      "Would drop most of the index cards",
+      "Would drop the self-directed section"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The report never discusses a current-account guide or template sections (who offers it, money in and out, tax) that pad a page; it covers a general guide overview instead."
+      }
+    ],
+    "liked": [],
+    "usd": 0.055871199999999996
+  },
+  "b": {
+    "raised": [
+      "The page gives no fees, returns or tax amounts, so the reader can't choose between options",
+      "The sentence 'every product page has a line...' is unclear: which line?",
+      "'Where to start' is written for employees, with nothing for someone near retirement",
+      "'Up to an annual ceiling' doesn't say what the ceiling is",
+      "'After a period set by law' doesn't say how long the period is",
+      "The difference between comprehensive and general pension funds isn't explained",
+      "'Provident payments and personal severance' means nothing to the reader",
+      "The footer says 'data correct as of' but no data or numbers appear anywhere",
+      "The 'in plain language' lines mostly just repeat the product name",
+      "The 'daily' and 'renewing' buttons are confusing: are they fund types, and can you click them?",
+      "There are too many index cards, they look alike, and most should be dropped",
+      "'Exposed to the dollar or neutralised from it' isn't understood",
+      "'A fund that tracks it' on the index cards isn't understood",
+      "'A cap per single share' isn't understood",
+      "'The managing company's investment committee' is unclear: who are they, and does the saver pay them?",
+      "The abbreviations אג\"ח and מק\"מ appear in subtitles before they are explained",
+      "No figure for how much each option could fall in a bad year",
+      "Nothing on withdrawal age or tax-free withdrawal for someone aged 60 or over",
+      "No information on whether deposits or bonds are insured or guaranteed",
+      "No simple starting point based on how much money and how many years",
+      "Would drop the 'for children' section",
+      "Would drop the 'self-directed' section"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The report never mentions the current-account guide or any template sections ('who offers it', 'money in and out', 'tax') padding it; its cuts are aimed at other sections of the overview page."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0552992
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1111704
+}

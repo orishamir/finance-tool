@@ -1,0 +1,78 @@
+{
+  "case": "current-account-chart-unrelated",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The current-account guide shows a growth chart of money invested at a 10% yearly return, which has nothing to do with a current account.\",\"where\":\"the chart 'מה קורה לכסף לאורך הזמן' in the guide\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "No side-by-side figures for the alternatives, so it's unclear which product to pick",
+      "The '123 מקמן / חושב / הזנה' row is confusing and 'מקמן' isn't explained",
+      "Basic and extended packages are described but no prices are given",
+      "The calculator assumes a 5% yearly return, which makes no sense for a current account that often pays nothing; it should start at 0%",
+      "Codes like BANK-20, BANK-23, BANK-15, TXI OQ11 and BANK OQ9 mean nothing to the reader",
+      "The costs section doesn't say how much the fees are (the ceiling column points to the bank's price list and the rules column is empty)",
+      "The red box leaves it unclear whether the low-income tax exemption applies, which is worrying",
+      "The risks section is frightening: no deposit insurance, and the 250,000 ₪ protection is only a proposal",
+      "Age-based exemptions are relevant at 61 but the site doesn't calculate them",
+      "Deposits show 62,681 instead of 70,000, and nothing next to the number says it's in today's money",
+      "The tax and fee lines on the graph are too thin to see",
+      "The age field doesn't say what changes at the marked ages",
+      "'הטבה בנקאית' is not understood",
+      "No information on what interest banks actually pay on a current account today",
+      "No guidance on how much to keep in the current account and how much to move",
+      "Unclear whether a money-market fund is safe, since it isn't insured either",
+      "Would drop the terms table, the 'what the site took into account' section, the codes, 'who offers it' and the extra calculator toggles"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 4,
+        "why": "The reader objects that the 'מה קורה לכסף לאורך הזמן' chart assumes an investment-style return that a current account doesn't earn, which is the person's complaint, even though the reader gives the figure as 5% rather than 10%."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0641192
+  },
+  "b": {
+    "raised": [
+      "The page never compares the alternatives side by side, so the reader can't tell which product to pick",
+      "The '123 מקמן / חושב / הזנה' row is confusing, and 'מקמן' isn't explained",
+      "The basic and extended packages are described without prices",
+      "Codes like BANK-20, BANK-23, BANK-15, TXI OQ11 and BANK OQ9 mean nothing to the reader",
+      "The costs section gives no actual fee amount and just points to the bank's price list",
+      "The red box says it's unknown whether the low-income tax exemption applies, which worries the reader without helping",
+      "The risks section is frightening: no deposit insurance, government help only at its discretion, and the 250k protection is only a proposal",
+      "The site doesn't calculate age-based exemptions, which is exactly the 61-year-old reader's situation",
+      "Deposits show 62,681 instead of 70,000, and nothing next to the number says it's in today's money",
+      "The calculator assumes a 5% yearly return for a current account that often pays nothing, so the reader lost trust; it should start at 0%",
+      "The pink tax line and orange fees line on the graph are too thin to see",
+      "The age field doesn't say what changes at those ages",
+      "The rules column in the costs table is empty",
+      "'הטבה בנקאית' isn't explained",
+      "No figures for the interest banks actually pay on a current account",
+      "No guidance on how much to keep in the current account and how much to move",
+      "No information on whether a money-market fund is safe",
+      "Would drop the terms table at the bottom",
+      "Would drop 'מה האתר לקח בחשבון' (except the age line)",
+      "Would drop 'מי מציע ומי מפקח'",
+      "Would drop the future-shekels toggle and the inflation and age fields"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 10,
+        "why": "The reader objects that the 'מה קורה לכסף לאורך הזמן' chart shows money growing at an investment return (5%) that a current account doesn't pay, which is the same complaint as the person's, even though the rate differs."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0658112
+  },
+  "third": null,
+  "ranks": {
+    "k": 4
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1299304
+}

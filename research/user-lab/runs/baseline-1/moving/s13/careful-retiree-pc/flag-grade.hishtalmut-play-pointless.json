@@ -1,0 +1,36 @@
+{
+  "case": "hishtalmut-play-pointless",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The 'שחקו עם המספרים' panel repeats what the graphic above already lets the reader do.\",\"where\":\"the 'שחקו עם המספרים' panel\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings say the panel repeats the graphic above it; finding 2 is about the calculator looking busy and its colours being too close, which is a different complaint."
+      }
+    ],
+    "liked": [],
+    "usd": 0.014603400000000002
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings says the 'שחקו עם המספרים' panel repeats what the graphic above it already does; finding 2 is about the calculator being busy and its colours being hard to tell apart, which is a different complaint."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0149114
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0295148
+}

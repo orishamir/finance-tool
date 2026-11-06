@@ -1,0 +1,97 @@
+{
+  "task": "home-first",
+  "persona": "careful-retiree-pc",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-05T23:26:50.223Z",
+  "structured": {
+    "answer": "I didn't decide anything and won't move money because of this site; the first screen only offers a 'פיקדון' button and a promise to explain 'כמה זה עולה', so I'd ask my son or the bank.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Search box 'הדביקו שם של מוצר, מסלול או מונח'",
+        "why": "I don't know the name of my bank's savings plan, so I had nothing to paste"
+      },
+      {
+        "where": "Top right, 'אתר אישי'",
+        "why": "Not clear whose site this is; I don't know the name 'מקור', so I hesitated to trust it"
+      },
+      {
+        "where": "Empty black right half of the screen",
+        "why": "I start reading from the right and found nothing there under the title; I had to go looking on the left"
+      }
+    ],
+    "used": [
+      "Title 'מקור' and 'להבין חיסכון והשקעה בישראל, עם מקור לכל מספר.'",
+      "'אתר אישי, לא מסחרי, בלי קישורי שיווק'",
+      "Box 'להבין סוג של חיסכון – מה זה, כמה זה עולה ואיך זה ממוסה'",
+      "Button 'פיקדון'"
+    ],
+    "skimmed": [
+      "Search box 'מה ראיתם באפליקציה, בפרסומת או בדוח?'",
+      "Card 'מה חברה מציעה לי'",
+      "Other buttons: קרן השתלמות, קופת גמל להשקעה, חשבון ניירות ערך, חיסכון לכל ילד"
+    ],
+    "skipped": [
+      "'מה האתר עוד לא מכסה'",
+      "Line about laws, rules and documents",
+      "Footer links and small text",
+      "Top menu (מדריך, חברות ומסלולים, השקעה במדד, חוקים וכללים)"
+    ],
+    "unsure_meaning": [
+      "קרן כספית",
+      "מסלול / מסלולים",
+      "מונח",
+      "השקעה במדד (מדד to me is the price index)",
+      "פרמטרים",
+      "העברה למכשיר אחר",
+      "הכול נשמר במכשיר שלכם",
+      "מקור (the site's name)"
+    ],
+    "not_found": [
+      "Any direct answer: is there something as safe as a deposit that gives more",
+      "Anything about how much the bank takes from me (fees) on the first screen",
+      "Who is behind the site, a name or an official body"
+    ],
+    "findings": [
+      {
+        "what": "Grey, small text on a black background is hard to read even when enlarged",
+        "where": "Line under the title, the line about laws, the footer"
+      },
+      {
+        "what": "The right side, where I start reading, is empty; all the useful content is pushed to the left",
+        "where": "Main area of the first screen"
+      },
+      {
+        "what": "Nothing at all on the first screen speaks to someone with deposits at the bank; 'פיקדון' is the last, smallest-looking button",
+        "where": "Savings-type buttons box"
+      },
+      {
+        "what": "'אתר אישי' with no name, so I don't know who to trust",
+        "where": "Top right, under the title"
+      },
+      {
+        "what": "Terms like 'קרן כספית', 'מסלול', 'פרמטרים' with no explanation",
+        "where": "Buttons, search box, footer"
+      }
+    ]
+  },
+  "steps": 1,
+  "reads": 1,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 29062,
+    "turns": 3,
+    "usd": 0.0841276,
+    "input": 4,
+    "cacheWrite": 3959,
+    "cacheRead": 7398,
+    "output": 2548,
+    "model": "claude-opus-5-5"
+  }
+}

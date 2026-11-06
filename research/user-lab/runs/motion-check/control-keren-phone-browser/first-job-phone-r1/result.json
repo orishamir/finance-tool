@@ -1,0 +1,92 @@
+{
+  "task": "control-keren-phone-browser",
+  "persona": "first-job-phone",
+  "repeat": 1,
+  "mode": "browser",
+  "device": "phone",
+  "startedAt": "2026-11-06T00:24:05.882Z",
+  "structured": {
+    "answer": "After 8 years, putting in 500 ₪ a month, it shows about 68,853 ₪ \"נשאר בידיים\" on 48,000 ₪ I put in myself. For 4 years it gives me no number at all, because for self-employed people it only says \"לעצמאים עוד אין כאן חישוב למשיכה לפני 6 שנים\".",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Year picker under the chart",
+        "why": "I tapped \"8\" and it went to 7. I had to tap the 8 column a second time."
+      },
+      {
+        "where": "Chart at 4 years",
+        "why": "The only number on screen was 25,725, and at first I thought that was my answer. It's actually the \"אותו כסף בחשבון ניירות ערך\" column, not the fund. The fund's bar was just an empty dashed box with an orange note next to it."
+      }
+    ],
+    "used": [
+      "The \"מה קורה לכסף בקרן\" tab",
+      "The שכירים/עצמאים toggle",
+      "The default fields (500 ₪ a month, 7%, 0.54)",
+      "The year picker 1–12",
+      "The orange note about withdrawing before 6 years",
+      "The column numbers 48,000 / +9,581 / 0 / 68,853 / 55,471 and their labels"
+    ],
+    "skimmed": [
+      "The opening paragraph under \"מה זה\" (I only took from it that you can withdraw after 6 years)",
+      "The text under the chart about 7% and 2% inflation"
+    ],
+    "skipped": [
+      "\"הכנסה חייבת בחודש\" (I left it at 12,000)",
+      "\"אם תפקידו עוד 13,205 ₪ בשנה\"",
+      "The paragraph about the comparison fund",
+      "The \"שווה לדעת\" and \"מי מציע ומי מצטרף\" tabs"
+    ],
+    "unsure_meaning": [
+      "הכנסה חייבת",
+      "החזר המס הוסיף",
+      "The 55,471 in the \"אותו כסף בחשבון ניירות ערך\" column: is it after tax? Is it a real option for me?",
+      "\"המס לקח 0\"",
+      "Whether 68,853 is in today's money or not (it said something about prices, but I didn't really read it)"
+    ],
+    "not_found": [
+      "Any number for withdrawing after 4 years as a self-employed person, even a rough one with tax"
+    ],
+    "findings": [
+      {
+        "what": "For self-employed people there's no calculation before 6 years. The 4-year bar is an empty box, so the only number you see is the comparison one (25,725), and it's easy to take that as the fund's number",
+        "where": "Chart and number area under the slider, years 1–5"
+      },
+      {
+        "what": "Tapping \"8\" moved the picker to 7",
+        "where": "The year numbers under the chart"
+      },
+      {
+        "what": "The \"נשאר בידיים\" number at 8 years isn't printed in the list under the columns where you'd expect it. It's only written above the column, and the white column gets lost next to the others",
+        "where": "Results columns"
+      },
+      {
+        "what": "\"הכנסה חייבת בחודש\" isn't clear. Do I need to change it? Does it affect anything?",
+        "where": "The calculator's first field in self-employed mode"
+      }
+    ]
+  },
+  "steps": 9,
+  "reads": 6,
+  "commands": 9,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 55746,
+    "turns": 17,
+    "usd": 0.2319366,
+    "input": 32,
+    "cacheWrite": 16523,
+    "cacheRead": 208323,
+    "output": 2898,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "control-keren-phone-browser",
+    "screenshots": 9,
+    "changes": [],
+    "neverShown": [],
+    "errors": []
+  }
+}

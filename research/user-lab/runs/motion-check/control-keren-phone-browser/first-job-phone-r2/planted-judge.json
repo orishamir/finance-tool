@@ -1,0 +1,35 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "For self-employed with withdrawal before 6 years, the calculator shows only an orange note and no number, so the reader's question goes unanswered.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "In the year-4 breakdown, a large number (25,725) sits on an empty dashed box even though there is no result. It can be misread as the payout.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "The securities-account comparison column is drawn as an empty dashed box, so it looks like missing data rather than a real amount.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "Switching to self-employed empties year bars 1–5 in the bar chart, with no explanation next to the chart.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "Small breakdown labels ('החזר המס הוסיף', 'המס לקח') don't make clear whether the tax refund goes into the fund or to the person.",
+      "serious": false,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.0308028
+}

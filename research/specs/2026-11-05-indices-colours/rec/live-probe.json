@@ -1,0 +1,46 @@
+{
+ "today": {
+  "trade": "oklch(0.64 0.174 48)",
+  "custody": "oklch(0.84 0.17 85)",
+  "fixed": "oklch(0.64 0.2 27)",
+  "rest": "oklch(0.58 0.01 80)",
+  "unhedgedBar": "oklch(0.82 0.081 190)",
+  "hedgedBar": "oklch(0.84 0.17 85) / none",
+  "chipTracking": "oklch(0.9 0.007 80)",
+  "chipDollar": "oklch(0.84 0.17 85)",
+  "chipPayout": "oklch(0.82 0.105 150)",
+  "rowBarHeight": "-",
+  "blockedRow": [
+   "oklch(0.9 0.007 80)",
+   "oklch(0.66 0.17 335)",
+   "oklch(0.82 0.105 150)",
+   "oklch(0.84 0.17 85)",
+   "oklch(0.73 0.171 358)",
+   "oklch(0.895 0.054 27)",
+   "oklch(0.895 0.054 27)"
+  ],
+  "period": "oklch(0.64 0.109 190) | - | oklch(0.84 0.17 85)"
+ },
+ "rec": {
+  "trade": "oklch(0.64 0.174 48)",
+  "custody": "oklch(0.64 0.174 48)",
+  "fixed": "oklch(0.64 0.174 48)",
+  "rest": "oklch(0.64 0.174 48)",
+  "unhedgedBar": "oklch(0.55 0.095 190)",
+  "hedgedBar": "oklch(0.2 0.005 80) / oklch(0.55 0.095 190)",
+  "chipTracking": "oklch(0.7 0.009 80)",
+  "chipDollar": "oklch(0.7 0.009 80)",
+  "chipPayout": "oklch(0.7 0.009 80)",
+  "rowBarHeight": 18,
+  "blockedRow": [
+   "oklch(0.7 0.009 80)",
+   "oklch(0.7 0.009 80)",
+   "oklch(0.7 0.009 80)",
+   "oklch(0.7 0.009 80)",
+   "oklch(0.7 0.009 80)",
+   "oklch(0.73 0.166 27)",
+   "oklch(0.73 0.166 27)"
+  ],
+  "period": "oklch(0.978 0.004 80) | - | oklch(0.58 0.01 80)"
+ }
+}

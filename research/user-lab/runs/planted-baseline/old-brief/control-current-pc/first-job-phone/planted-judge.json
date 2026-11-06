@@ -1,0 +1,65 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "The '123 מקור / 123 מחושב' legend, the differently underlined numbers, the orange ⓘ icons, the BANK-xx tags and the 'חוקים וכללים · N' chips are never explained.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "It's unclear what 'במה אפשר להשקיע: מזומן שקלי' means and whether it is a button.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "The 2% / 3.25% rates are flagged as the site's own assumption, not a promise, which made the reader trust the numbers less.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "The second 'שחקו עם המספרים שלכם' box seems to repeat the calculator above it.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "Jargon in 'שווה לדעת' and 'סיכונים' (מק״ם, נגיד, ערבות, הצעת חוק, יתרת זכות) isn't explained, and the risks section is alarming without enough context.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 6,
+      "summary": "The chart's yellow 'בקרן כספית' line is hard to see, and the shaded area is barely noticeable.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 7,
+      "summary": "No price is given for the expanded plan (המסלול המורחב), so the reader can't compare it with the basic plan's cap.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 8,
+      "summary": "The meaning of 'בכסף של היום' behind the main calculator figure isn't explained clearly.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 9,
+      "summary": "The section on how much to keep in the current account gives no rule or amount, so the reader had to guess 'one month of spending'.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 10,
+      "summary": "The page recommends a קרן כספית יומית but doesn't say what it is, whether it's risky, how to move money into it, what it costs, or how fast money can be taken out.",
+      "serious": true,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.06557879999999999
+}

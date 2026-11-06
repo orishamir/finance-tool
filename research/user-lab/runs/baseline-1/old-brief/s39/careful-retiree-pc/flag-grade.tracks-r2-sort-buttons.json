@@ -1,0 +1,93 @@
+{
+  "case": "tracks-r2-sort-buttons",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"Sorting uses separate sort buttons instead of clickable column heads.\",\"where\":\"the sort buttons above the table\",\"kind\":\"taste\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "The 'מומלץ' (recommended) badge on Option 3 made the reader slightly suspicious",
+      "Option 1 only compares companies within one investment type at a time",
+      "Option 2 forces scrolling through long per-company lists; far too long",
+      "Didn't know what the 'משותף לשלוש, ומה שהנתונים מראים' block was",
+      "'כמו ג'' confusing because options are numbered 1-3, not lettered",
+      "'לפי חברה / לפי מוצר' confusing — seems the same as Option 2",
+      "Didn't understand investment types like 'גמיש', 'קיימות', 'הלכה יהודי', 'אג\"ח ממשלתי סחיר'",
+      "Gave up on the 'חשיפה בסוף ספטמבר 2026' column",
+      "'2 מסלולים' in a grid cell — unclear which track the number belongs to",
+      "Didn't understand what the 'קופה' number is or whether it's needed",
+      "Unclear difference between fee 'מההפקדה' and 'מההיסכון' and whether deposit fee is paid",
+      "Didn't understand 'חשיפה', 'מט\"ח' and the rings; is 99% stocks risky at 61",
+      "Unsure what 'פחות מ־3 שנים' means",
+      "Unsure what 'עוד לא דווח' for Ayalon means — hiding fees?",
+      "Confused why returns are shown before fees; must subtract fee themselves?",
+      "Unclear whether dotted underlines under numbers are clickable",
+      "Wanted fees shown in shekels, not just percentages",
+      "Wanted returns after fees and last 1-year return",
+      "Wanted to know whether the fee is negotiable",
+      "Wanted tax and withdrawal rules at their age",
+      "Wanted to know how to move money, how long, and cost",
+      "Wanted guidance on a safer low-stock option for a 61-year-old",
+      "Wanted information on service and company reliability",
+      "Wanted information on service and company reliability (dup placeholder removed)"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader mentions the 'מיון לפי' sort control only approvingly (it sorts by fee on savings) and never complains about separate sort buttons or asks to sort by clicking column heads."
+      }
+    ],
+    "liked": [],
+    "usd": 0.07361119999999999
+  },
+  "b": {
+    "raised": [
+      "The 'recommended' badge on Option 3 made them slightly suspicious",
+      "Option 1 only compares companies within one investment type at a time",
+      "Option 2 is too long, with too much scrolling through each company's tracks",
+      "Didn't know what the 'common to all three' block was",
+      "'Like C' in the explanations is confusing because options are numbered, not lettered",
+      "'By company / by product' toggle is confusing and seems to duplicate Option 2",
+      "Investment-type buttons are confusing (flexible, sustainability, halacha, tradable gov bonds)",
+      "Gave up on the exposure column",
+      "'2 tracks' in a grid cell: unclear which track the number belongs to",
+      "Didn't understand what the 'קופה' ID number is or whether it's needed",
+      "Unclear difference between the fee on deposits and the fee on savings",
+      "Didn't understand the exposure, foreign currency and ring indicators, or whether 99% stocks is risky",
+      "Unsure what 'less than 3 years' means",
+      "'Not yet reported' for Ayalon is worrying: are fees being hidden?",
+      "Returns shown before fees: unclear what was actually earned",
+      "Unclear whether the dotted underlines are clickable",
+      "Wanted fees shown in shekels",
+      "Wanted returns after fees and 1-year returns",
+      "Wanted to know if fees are negotiable",
+      "Wanted tax and withdrawal rules for their age",
+      "Wanted to know how to move money, how long it takes, and what it costs",
+      "Wanted a safer low-stock option for a 61-year-old",
+      "Wanted service and reliability info per company",
+      "Would drop the site menu and by-company/by-product toggle",
+      "Would drop the קופה number column",
+      "Would drop the rings and the exposure column in favor of plain words",
+      "Would drop the product buttons",
+      "Would drop the search box",
+      "Would drop most of the investment-type buttons"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The report only says the list is sorted by fee on savings and calls that good; it never complains about separate sort buttons versus clickable column heads."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0599552
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.13356639999999997
+}

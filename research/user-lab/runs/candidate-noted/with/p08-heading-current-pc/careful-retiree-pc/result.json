@@ -1,0 +1,134 @@
+{
+  "task": "p08-heading-current-pc",
+  "persona": "careful-retiree-pc",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T03:06:32.024Z",
+  "structured": {
+    "answer": "The current account seems to cost up to 10 ₪ a month (basic track), and under the new rule 5–10 ₪ by number of actions; keep in it what you need for spending, since above 15,000 ₪ for a quarter the bank must suggest alternatives — but I'm not sure which rule applies now, so I'll ask my son or the bank before changing anything.",
+    "confidence": "unsure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Screen 1, paragraph on the new fee rule",
+        "why": "Two dates (01.10.2026 and 01.07.2027) and three prices; could not tell which rule applies to me today"
+      },
+      {
+        "where": "Screen 2–3, calculator and chart",
+        "why": "Top says 1,797 ₪ less, below says 'המחיר של להשאיר 2,576 ₪' — two different numbers for the same thing"
+      },
+      {
+        "where": "Screen 3, suggested alternative",
+        "why": "The alternative offered is 'קרן כספית יומית', which I don't know, so the page gave me no safe option I recognise"
+      },
+      {
+        "where": "Screen 4, 'סיכונים ומה לא מוגן'",
+        "why": "Reading that there is no deposit insurance in Israel frightened me and I nearly stopped"
+      }
+    ],
+    "used": [
+      "Fee paragraph in 'מה זה': basic track up to 10.00 ₪, new rule 5.00/10.00/1.00 ₪",
+      "Line about balance over 15,000.00 ₪ for a quarter and the bank's notice",
+      "Calculator headline: 10,000 ₪ after 10 years worth 8,203 ₪, 1,797 ₪ less",
+      "Line 'רוב הבנקים משלמים בעו\"ש 0%'",
+      "Risk section on deposit insurance"
+    ],
+    "skimmed": [
+      "Chart and three figures under it (8,203 / 10,779 / 2,576)",
+      "Small grey explanation about 2% and 3.25%",
+      "'שווה לדעת' lines (4 of 8 banks pay up to 3% on 10,000 ₪)",
+      "Glossary table 'מונחים'"
+    ],
+    "skipped": [
+      "Sliders and input boxes in the calculator",
+      "Fold 'חלק מהבנקים כן משלמים ריבית, בתנאים ועל סכום קטן בלבד'",
+      "Fold 'שחקו עם המספרים שלכם'",
+      "Link 'לעמוד של קרן כספית יומית'",
+      "'חוקים וכללים' chips and BANK-xx labels",
+      "'הצגת כל המונחים' links",
+      "Top menu (השקעה במדד, חברות ומסלולים)"
+    ],
+    "unsure_meaning": [
+      "BANK-17, BANK-35, BANK-15, BANK-20",
+      "123 מקור / 123 מחושב / מונח הקישו להסבר",
+      "small orange circle icons next to 5.00 ₪ and 1.00 ₪",
+      "קרן כספית / קרן כספית יומית",
+      "מק\"מ",
+      "מזומן שקלי",
+      "המחיר של להשאיר 2,576 ₪ vs 1,797 ₪ פחות",
+      "dotted underlines under numbers",
+      "הנחה של האתר"
+    ],
+    "not_found": [
+      "A clear statement of exactly what my account costs me today",
+      "A safe option I know (פיקדון) as the alternative for extra money",
+      "A simple recommended amount to keep in the current account"
+    ],
+    "findings": [
+      {
+        "what": "Says there is no deposit insurance and no law returns money if a bank collapses — frightening, with no plain guidance after it",
+        "where": "Screen 4, 'סיכונים ומה לא מוגן'"
+      },
+      {
+        "what": "Two different loss figures (1,797 ₪ and 2,576 ₪) for leaving money in the account",
+        "where": "Screens 2–3, calculator and chart"
+      },
+      {
+        "what": "Old and new fee rules with several dates; unclear which applies now",
+        "where": "Screen 1, fees paragraph"
+      },
+      {
+        "what": "The only alternative offered is a 'קרן כספית יומית', unfamiliar and feels like a fund",
+        "where": "Screen 3, below the chart"
+      },
+      {
+        "what": "Dark background with grey, small text is hard to read even enlarged",
+        "where": "All screens, especially small notes under the chart"
+      },
+      {
+        "what": "English codes like BANK-17 and unexplained orange circle marks",
+        "where": "Screen 1"
+      },
+      {
+        "what": "Calculator uses a slider",
+        "where": "Screen 2"
+      },
+      {
+        "what": "Unclear '123 מקור / 123 מחושב' legend at the top",
+        "where": "Screen 1, under the title"
+      }
+    ]
+  },
+  "steps": 5,
+  "reads": 5,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 41090,
+    "turns": 7,
+    "usd": 0.165026,
+    "input": 12,
+    "cacheWrite": 10494,
+    "cacheRead": 43630,
+    "output": 3615,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "p08-heading-current-pc",
+    "screenshots": 6,
+    "changes": [
+      {
+        "id": "heading",
+        "type": "text",
+        "shots": 6,
+        "applied": 6,
+        "most": 3
+      }
+    ],
+    "neverShown": [],
+    "errors": []
+  }
+}

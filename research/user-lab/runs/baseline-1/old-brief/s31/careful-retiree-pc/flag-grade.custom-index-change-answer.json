@@ -1,0 +1,85 @@
+{
+  "case": "custom-index-change-answer",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"Beside the added index the link 'שינוי התשובה' does not say which answer it changes.\",\"where\":\"the line 'מדד שהוספתם, שמור במכשיר הזה · שינוי התשובה'\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "The fund's own fee isn't counted, so the ₪1,058 total is incomplete and the order could change",
+      "Pesagot's advert (full exemption from management fees) disagrees with its price list",
+      "Foreign funds priced per share are waiting for a unit price, so Interactive Brokers' total may be incomplete",
+      "'Saved on this device' is worrying: is the index lost on another computer?",
+      "Doesn't know what return to expect, so left the 7% alone",
+      "Confused why the European Central Bank's exchange rate is used and not the Bank of Israel's",
+      "'בקשו שנאסוף' sounds like having to wait for someone",
+      "Unclear whether the Hapoalim age discount applies or what 'סגור למצטרפים' means",
+      "The ranking changes at 0% or 10% returns, which lowers confidence",
+      "Doesn't know what the grey colour 'העמלות זו על' means",
+      "Doesn't like the slanted cut marks on the bars and would rather see the number",
+      "Doesn't understand the difference between 'דמי משמרת' and 'דמי ניהול חשבון'",
+      "Doesn't understand what 'מחיר להוראת קבע' means",
+      "Unclear whether ₪1,058 is fees paid or money lost from the final amount, including lost growth",
+      "Can't find the final total after all fees",
+      "Can't find fund costs for the index",
+      "Can't find information on whether money is protected if a firm fails",
+      "Can't find tax information for funds abroad",
+      "Can't find whether the cheap firms offer phone or branch service",
+      "Would drop ranks 13–17 as too expensive to matter",
+      "Would drop the other ready-made index buttons",
+      "Would drop the 'לא בחישוב' discount lines that don't apply"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader quotes the same line, but only worries that the index is stored on this device; they never say the 'שינוי התשובה' link fails to say which answer it changes."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0600872
+  },
+  "b": {
+    "raised": [
+      "The fund's own fee isn't counted (no fund collected for test), so the ranking is incomplete",
+      "Pesagot's advert (full fee exemption) contradicts its price list (custody/quarterly fees)",
+      "Foreign funds priced per unit await an uncollected unit price, so the Interactive Brokers total may be incomplete",
+      "Pencil and bin icons on the index buttons risk deleting the index by accident",
+      "'מדד שהוספתם, שמור במכשיר הזה' worries them that the index is lost on another computer",
+      "Doesn't know what return to expect; the 7% is only an example",
+      "Confused why the European Central Bank's dollar rate is used instead of the Bank of Israel's",
+      "'בקשו שנאסוף' sounds like having to wait for someone",
+      "Unclear whether the Hapoalim age discount applies or what 'סגור למצטרפים' means",
+      "Ranking changes at other returns (0% or 10%), which lowers confidence",
+      "Grey colour labelled 'העמלות זו על' is not understood",
+      "Slanted cut marks on bars are unclear; would rather see the number",
+      "Doesn't understand the difference between 'דמי משמרת' and 'דמי ניהול חשבון'",
+      "Doesn't understand what 'מחיר להוראת קבע' means",
+      "Unclear whether ₪1,058 is fees paid or money lost from the final amount including lost growth",
+      "Can't find the final total after all fees",
+      "Can't find the fund costs for their index",
+      "Can't find information on safety if a firm gets into trouble",
+      "Can't find tax information for funds abroad",
+      "Can't find whether the cheap firms offer phone or branch service",
+      "Would drop ranks 13–17 as too expensive to matter",
+      "Would drop the other ready-made index buttons",
+      "Would drop the 'לא בחישוב' discount lines that don't apply"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader quotes the 'saved on this device' part of that line and worries about losing the index, but never mentions the 'שינוי התשובה' link or that it doesn't say which answer it changes."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0596072
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1196944
+}

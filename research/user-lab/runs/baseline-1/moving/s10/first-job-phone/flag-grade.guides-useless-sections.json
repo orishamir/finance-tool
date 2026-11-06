@@ -1,0 +1,36 @@
+{
+  "case": "guides-useless-sections",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The guide home has sections that say nothing useful ('שני חלקים בכל חיסכון', 'מאיפה להתחיל').\",\"where\":\"the sections above or below the list of guides\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 2 says 'מאיפה להתחיל' leaves out one reader's situation, which is a gap in what it covers, not the person's complaint that these sections are empty filler with nothing useful in them, and no other finding says this about these sections."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0191954
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "No finding says these sections are empty or useless: finding 2 only says 'מאיפה להתחיל' leaves out one situation, which means the rest of it is useful, and finding 1 is about missing numbers across the whole page."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0192634
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0384588
+}

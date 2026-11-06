@@ -1,0 +1,6 @@
+{
+  "named": false,
+  "position": 0,
+  "why": "No finding says that the same 'securities account' label is repeated on every row of the account list. Finding 7 complains about too many tags, but it is about the fund list and is vague. Findings 5 and 6 are about the account list, but they cover the cost-bar colours and the ranking order.",
+  "usd": 0.021744
+}

@@ -1,0 +1,47 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "Minus signs on the fund returns and shekel differences in the fund list look like losses and put the reader off the funds.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "The final amount uses the default 10,000 plus 500 a month, so the number the reader remembers is not for their own money.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "The account list is very long and its numbers are nearly the same; the reader almost gave up.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "In the comparison box, 'less' and 'more' do not say whether the difference is good or bad.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "IBI shows up both as an account and as the recommended fund, which is confusing.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 6,
+      "summary": "Jargon such as custody fees (דמי משמרת), trustee (נאמן) and fixed/variable (קבועים/משתנים) is not explained in plain words.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 7,
+      "summary": "The page gives no clear first step telling the reader to open the account.",
+      "serious": false,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.0323908
+}

@@ -1,0 +1,737 @@
+[
+ {
+  "name": "Account rows: fee bar per row + its legend (stays)",
+  "status": "stays",
+  "meanings": [
+   [
+    "trade: buy and sell fee",
+    "orange-500"
+   ],
+   [
+    "custody fee",
+    "gold-200"
+   ],
+   [
+    "fixed account fee",
+    "red-500"
+   ],
+   [
+    "currency conversion fee",
+    "magenta-400"
+   ],
+   [
+    "rest of the account cost (remainder)",
+    "neutral-500"
+   ]
+  ],
+  "pairs": "all",
+  "surface": "#171614",
+  "hexes": [
+   "#dd6301",
+   "#fdc010",
+   "#ed4b43",
+   "#cf64bb",
+   "#7d7a74"
+  ],
+  "lines": [
+   "[FAIL] Lightness band         outside band: [[\"#fdc010\",0.84]]",
+   "[FAIL] Chroma floor           below floor (reads gray): [[\"#7d7a74\",0.01]]",
+   "[FAIL] CVD separation         worst all-pairs #ed4b43↔#dd6301 ΔE 3.0 (deutan) · tritan 4.2",
+   "[FAIL] Normal-vision floor    worst all-pairs #ed4b43↔#dd6301 ΔE 7.2 (normal) — below 15, hard to tell apart even with full color vision",
+   "[PASS] Contrast vs surface    all 5 >= 3:1"
+  ],
+  "weak": [
+   "orange-500 #dd6301 / red-500 #ed4b43: normal 7.2, CVD 3 (deutan)",
+   "red-500 #ed4b43 / neutral-500 #7d7a74: normal 20.4, CVD 6.9 (protan)"
+  ],
+  "cmd": "validate_palette.js \"#dd6301,#fdc010,#ed4b43,#cf64bb,#7d7a74\" --mode dark --surface \"#171614\" --pairs all"
+ },
+ {
+  "name": "Account rows: fee bar, chromatic parts only",
+  "status": "stays",
+  "meanings": [
+   [
+    "trade",
+    "orange-500"
+   ],
+   [
+    "custody",
+    "gold-200"
+   ],
+   [
+    "fixed",
+    "red-500"
+   ],
+   [
+    "fx",
+    "magenta-400"
+   ]
+  ],
+  "pairs": "all",
+  "surface": "#171614",
+  "hexes": [
+   "#dd6301",
+   "#fdc010",
+   "#ed4b43",
+   "#cf64bb"
+  ],
+  "lines": [
+   "[FAIL] Lightness band         outside band: [[\"#fdc010\",0.84]]",
+   "[PASS] Chroma floor           all 4 >= 0.1",
+   "[FAIL] CVD separation         worst all-pairs #ed4b43↔#dd6301 ΔE 3.0 (deutan) · tritan 4.2",
+   "[FAIL] Normal-vision floor    worst all-pairs #ed4b43↔#dd6301 ΔE 7.2 (normal) — below 15, hard to tell apart even with full color vision",
+   "[PASS] Contrast vs surface    all 4 >= 3:1"
+  ],
+  "weak": [
+   "orange-500 #dd6301 / red-500 #ed4b43: normal 7.2, CVD 3 (deutan)"
+  ],
+  "cmd": "validate_palette.js \"#dd6301,#fdc010,#ed4b43,#cf64bb\" --mode dark --surface \"#171614\" --pairs all"
+ },
+ {
+  "name": "Account rows: fee bar in legend order (adjacent)",
+  "status": "stays",
+  "meanings": [
+   [
+    "trade",
+    "orange-500"
+   ],
+   [
+    "custody",
+    "gold-200"
+   ],
+   [
+    "fixed",
+    "red-500"
+   ],
+   [
+    "fx",
+    "magenta-400"
+   ],
+   [
+    "remainder",
+    "neutral-500"
+   ]
+  ],
+  "pairs": "adjacent",
+  "surface": "#171614",
+  "hexes": [
+   "#dd6301",
+   "#fdc010",
+   "#ed4b43",
+   "#cf64bb",
+   "#7d7a74"
+  ],
+  "lines": [
+   "[FAIL] Lightness band         outside band: [[\"#fdc010\",0.84]]",
+   "[FAIL] Chroma floor           below floor (reads gray): [[\"#7d7a74\",0.01]]",
+   "[PASS] CVD separation         worst adjacent #7d7a74↔#cf64bb ΔE 10.6 (deutan) · tritan 12.0",
+   "[PASS] Normal-vision floor    worst adjacent #cf64bb↔#ed4b43 ΔE 16.6 (normal)",
+   "[PASS] Contrast vs surface    all 5 >= 3:1"
+  ],
+  "weak": [
+   "orange-500 #dd6301 / red-500 #ed4b43: normal 7.2, CVD 3 (deutan)",
+   "red-500 #ed4b43 / neutral-500 #7d7a74: normal 20.4, CVD 6.9 (protan)"
+  ],
+  "cmd": "validate_palette.js \"#dd6301,#fdc010,#ed4b43,#cf64bb,#7d7a74\" --mode dark --surface \"#171614\""
+ },
+ {
+  "name": "Account rows: fee bar on the selected row's teal tint",
+  "status": "stays",
+  "meanings": [
+   [
+    "trade",
+    "orange-500"
+   ],
+   [
+    "custody",
+    "gold-200"
+   ],
+   [
+    "fixed",
+    "red-500"
+   ],
+   [
+    "fx",
+    "magenta-400"
+   ]
+  ],
+  "pairs": "all",
+  "surface": "#222927",
+  "hexes": [
+   "#dd6301",
+   "#fdc010",
+   "#ed4b43",
+   "#cf64bb"
+  ],
+  "lines": [
+   "[FAIL] Lightness band         outside band: [[\"#fdc010\",0.84]]",
+   "[PASS] Chroma floor           all 4 >= 0.1",
+   "[FAIL] CVD separation         worst all-pairs #ed4b43↔#dd6301 ΔE 3.0 (deutan) · tritan 4.2",
+   "[FAIL] Normal-vision floor    worst all-pairs #ed4b43↔#dd6301 ΔE 7.2 (normal) — below 15, hard to tell apart even with full color vision",
+   "[PASS] Contrast vs surface    all 4 >= 3:1"
+  ],
+  "weak": [
+   "orange-500 #dd6301 / red-500 #ed4b43: normal 7.2, CVD 3 (deutan)"
+  ],
+  "cmd": "validate_palette.js \"#dd6301,#fdc010,#ed4b43,#cf64bb\" --mode dark --surface \"#222927\" --pairs all"
+ },
+ {
+  "name": "Own-account sheet: list vs yours cost bars + legend (popover)",
+  "status": "stays",
+  "meanings": [
+   [
+    "trade",
+    "orange-500"
+   ],
+   [
+    "custody",
+    "gold-200"
+   ],
+   [
+    "fixed",
+    "red-500"
+   ],
+   [
+    "fx",
+    "magenta-400"
+   ],
+   [
+    "remainder",
+    "neutral-500"
+   ]
+  ],
+  "pairs": "all",
+  "surface": "#201e1b",
+  "hexes": [
+   "#dd6301",
+   "#fdc010",
+   "#ed4b43",
+   "#cf64bb",
+   "#7d7a74"
+  ],
+  "lines": [
+   "[FAIL] Lightness band         outside band: [[\"#fdc010\",0.84]]",
+   "[FAIL] Chroma floor           below floor (reads gray): [[\"#7d7a74\",0.01]]",
+   "[FAIL] CVD separation         worst all-pairs #ed4b43↔#dd6301 ΔE 3.0 (deutan) · tritan 4.2",
+   "[FAIL] Normal-vision floor    worst all-pairs #ed4b43↔#dd6301 ΔE 7.2 (normal) — below 15, hard to tell apart even with full color vision",
+   "[PASS] Contrast vs surface    all 5 >= 3:1"
+  ],
+  "weak": [
+   "orange-500 #dd6301 / red-500 #ed4b43: normal 7.2, CVD 3 (deutan)",
+   "red-500 #ed4b43 / neutral-500 #7d7a74: normal 20.4, CVD 6.9 (protan)"
+  ],
+  "cmd": "validate_palette.js \"#dd6301,#fdc010,#ed4b43,#cf64bb,#7d7a74\" --mode dark --surface \"#201e1b\" --pairs all"
+ },
+ {
+  "name": "Own-account sheet: period strip (first / middle / after)",
+  "status": "stays",
+  "meanings": [
+   [
+    "the group's prices from the start",
+    "teal-500"
+   ],
+   [
+    "only some still hold",
+    "teal-200"
+   ],
+   [
+    "the price list after",
+    "gold-200"
+   ]
+  ],
+  "pairs": "all",
+  "surface": "#201e1b",
+  "hexes": [
+   "#0ba19b",
+   "#b6e8e4",
+   "#fdc010"
+  ],
+  "lines": [
+   "[FAIL] Lightness band         outside band: [[\"#b6e8e4\",0.895],[\"#fdc010\",0.84]]",
+   "[FAIL] Chroma floor           below floor (reads gray): [[\"#b6e8e4\",0.052]]",
+   "[PASS] CVD separation         worst all-pairs #fdc010↔#b6e8e4 ΔE 18.8 (deutan) · tritan 17.9",
+   "[PASS] Normal-vision floor    worst all-pairs #fdc010↔#b6e8e4 ΔE 19.8 (normal)",
+   "[PASS] Contrast vs surface    all 3 >= 3:1"
+  ],
+  "weak": [],
+  "cmd": "validate_palette.js \"#0ba19b,#b6e8e4,#fdc010\" --mode dark --surface \"#201e1b\" --pairs all"
+ },
+ {
+  "name": "Fund list group heads + dollar section fund bars (unhedged / hedged)",
+  "status": "stays",
+  "meanings": [
+   [
+    "keeps the index's currency (unhedged)",
+    "teal-300"
+   ],
+   [
+    "neutralises the currency (hedged)",
+    "gold-200"
+   ]
+  ],
+  "pairs": "all",
+  "surface": "#171614",
+  "hexes": [
+   "#83d5d0",
+   "#fdc010"
+  ],
+  "lines": [
+   "[FAIL] Lightness band         outside band: [[\"#83d5d0\",0.819],[\"#fdc010\",0.84]]",
+   "[FAIL] Chroma floor           below floor (reads gray): [[\"#83d5d0\",0.081]]",
+   "[PASS] CVD separation         worst all-pairs #fdc010↔#83d5d0 ΔE 17.6 (protan) · tritan 20.5",
+   "[PASS] Normal-vision floor    worst all-pairs #fdc010↔#83d5d0 ΔE 20.8 (normal)",
+   "[PASS] Contrast vs surface    all 2 >= 3:1"
+  ],
+  "weak": [],
+  "cmd": "validate_palette.js \"#83d5d0,#fdc010\" --mode dark --surface \"#171614\" --pairs all"
+ },
+ {
+  "name": "Fund label chips (icon and words), one row and the filter row",
+  "status": "stays",
+  "meanings": [
+   [
+    "held: where it is held",
+    "neutral-200"
+   ],
+   [
+    "trade: how it trades",
+    "teal-200"
+   ],
+   [
+    "follow: how it tracks",
+    "magenta-400"
+   ],
+   [
+    "currency: exposure / hedged",
+    "gold-200"
+   ],
+   [
+    "tax",
+    "rose-400"
+   ],
+   [
+    "payout: accumulating / distributing",
+    "green-300"
+   ],
+   [
+    "asks something of you (caution)",
+    "amber-200"
+   ],
+   [
+    "open tax rule (blocked)",
+    "red-200"
+   ]
+  ],
+  "pairs": "all",
+  "surface": "#171614",
+  "hexes": [
+   "#e0ddd9",
+   "#b6e8e4",
+   "#cf64bb",
+   "#fdc010",
+   "#f974a7",
+   "#92d8a0",
+   "#fdd5a7",
+   "#fed0c9"
+  ],
+  "lines": [
+   "[FAIL] Lightness band         outside band: [[\"#e0ddd9\",0.899],[\"#b6e8e4\",0.895],[\"#fdc010\",0.84],[\"#f974a7\",0.73],[\"#92d8a0\",0.821],[\"#fdd5a7\",0.896],[\"#fed0c9\",0.895]]",
+   "[FAIL] Chroma floor           below floor (reads gray): [[\"#e0ddd9\",0.006],[\"#b6e8e4\",0.052],[\"#fdd5a7\",0.075],[\"#fed0c9\",0.053]]",
+   "[FAIL] CVD separation         worst all-pairs #b6e8e4↔#e0ddd9 ΔE 1.9 (protan) · tritan 0.8",
+   "[FAIL] Normal-vision floor    worst all-pairs #fed0c9↔#e0ddd9 ΔE 4.9 (normal) — below 15, hard to tell apart even with full color vision",
+   "[PASS] Contrast vs surface    all 8 >= 3:1"
+  ],
+  "weak": [
+   "neutral-200 #e0ddd9 / teal-200 #b6e8e4: normal 5.5, CVD 1.9 (protan)",
+   "neutral-200 #e0ddd9 / green-300 #92d8a0: normal 13, CVD 7.8 (protan)",
+   "neutral-200 #e0ddd9 / amber-200 #fdd5a7: normal 6.8, CVD 6.5 (protan)",
+   "neutral-200 #e0ddd9 / red-200 #fed0c9: normal 4.9, CVD 2.3 (deutan)",
+   "teal-200 #b6e8e4 / green-300 #92d8a0: normal 10.5, CVD 9.3 (deutan)",
+   "teal-200 #b6e8e4 / amber-200 #fdd5a7: normal 11, CVD 8 (protan)",
+   "teal-200 #b6e8e4 / red-200 #fed0c9: normal 10.3, CVD 4.3 (deutan)",
+   "magenta-400 #cf64bb / rose-400 #f974a7: normal 9.8, CVD 8.1 (protan)",
+   "gold-200 #fdc010 / amber-200 #fdd5a7: normal 11.4, CVD 11 (deutan)",
+   "green-300 #92d8a0 / amber-200 #fdd5a7: normal 13.9, CVD 3 (protan)",
+   "green-300 #92d8a0 / red-200 #fed0c9: normal 15.9, CVD 5.4 (protan)",
+   "amber-200 #fdd5a7 / red-200 #fed0c9: normal 5, CVD 4.4 (deutan)"
+  ],
+  "cmd": "validate_palette.js \"#e0ddd9,#b6e8e4,#cf64bb,#fdc010,#f974a7,#92d8a0,#fdd5a7,#fed0c9\" --mode dark --surface \"#171614\" --pairs all"
+ },
+ {
+  "name": "Fund label chips: the six family hues only",
+  "status": "stays",
+  "meanings": [
+   [
+    "held",
+    "neutral-200"
+   ],
+   [
+    "trade",
+    "teal-200"
+   ],
+   [
+    "follow",
+    "magenta-400"
+   ],
+   [
+    "currency",
+    "gold-200"
+   ],
+   [
+    "tax",
+    "rose-400"
+   ],
+   [
+    "payout",
+    "green-300"
+   ]
+  ],
+  "pairs": "all",
+  "surface": "#171614",
+  "hexes": [
+   "#e0ddd9",
+   "#b6e8e4",
+   "#cf64bb",
+   "#fdc010",
+   "#f974a7",
+   "#92d8a0"
+  ],
+  "lines": [
+   "[FAIL] Lightness band         outside band: [[\"#e0ddd9\",0.899],[\"#b6e8e4\",0.895],[\"#fdc010\",0.84],[\"#f974a7\",0.73],[\"#92d8a0\",0.821]]",
+   "[FAIL] Chroma floor           below floor (reads gray): [[\"#e0ddd9\",0.006],[\"#b6e8e4\",0.052]]",
+   "[FAIL] CVD separation         worst all-pairs #b6e8e4↔#e0ddd9 ΔE 1.9 (protan) · tritan 7.2",
+   "[FAIL] Normal-vision floor    worst all-pairs #b6e8e4↔#e0ddd9 ΔE 5.5 (normal) — below 15, hard to tell apart even with full color vision",
+   "[PASS] Contrast vs surface    all 6 >= 3:1"
+  ],
+  "weak": [
+   "neutral-200 #e0ddd9 / teal-200 #b6e8e4: normal 5.5, CVD 1.9 (protan)",
+   "neutral-200 #e0ddd9 / green-300 #92d8a0: normal 13, CVD 7.8 (protan)",
+   "teal-200 #b6e8e4 / green-300 #92d8a0: normal 10.5, CVD 9.3 (deutan)",
+   "magenta-400 #cf64bb / rose-400 #f974a7: normal 9.8, CVD 8.1 (protan)"
+  ],
+  "cmd": "validate_palette.js \"#e0ddd9,#b6e8e4,#cf64bb,#fdc010,#f974a7,#92d8a0\" --mode dark --surface \"#171614\" --pairs all"
+ },
+ {
+  "name": "NEW result card strips (mockup: account, fund)",
+  "status": "new",
+  "meanings": [
+   [
+    "the account strip: same fund at every account",
+    "teal-300"
+   ],
+   [
+    "the fund strip: every fund at that account",
+    "gold-200"
+   ]
+  ],
+  "pairs": "all",
+  "surface": "#171614",
+  "hexes": [
+   "#83d5d0",
+   "#fdc010"
+  ],
+  "lines": [
+   "[FAIL] Lightness band         outside band: [[\"#83d5d0\",0.819],[\"#fdc010\",0.84]]",
+   "[FAIL] Chroma floor           below floor (reads gray): [[\"#83d5d0\",0.081]]",
+   "[PASS] CVD separation         worst all-pairs #fdc010↔#83d5d0 ΔE 17.6 (protan) · tritan 20.5",
+   "[PASS] Normal-vision floor    worst all-pairs #fdc010↔#83d5d0 ΔE 20.8 (normal)",
+   "[PASS] Contrast vs surface    all 2 >= 3:1"
+  ],
+  "weak": [],
+  "cmd": "validate_palette.js \"#83d5d0,#fdc010\" --mode dark --surface \"#171614\" --pairs all"
+ },
+ {
+  "name": "NEW all-pairs dot plot by kind of fund (mockup k1..k4)",
+  "status": "new",
+  "meanings": [
+   [
+    "Israeli tracking fund",
+    "teal-300"
+   ],
+   [
+    "Israeli ETF",
+    "gold-200"
+   ],
+   [
+    "foreign fund on TASE",
+    "green-300"
+   ],
+   [
+    "fund bought abroad",
+    "magenta-400"
+   ]
+  ],
+  "pairs": "all",
+  "surface": "#171614",
+  "hexes": [
+   "#83d5d0",
+   "#fdc010",
+   "#92d8a0",
+   "#cf64bb"
+  ],
+  "lines": [
+   "[FAIL] Lightness band         outside band: [[\"#83d5d0\",0.819],[\"#fdc010\",0.84],[\"#92d8a0\",0.821]]",
+   "[FAIL] Chroma floor           below floor (reads gray): [[\"#83d5d0\",0.081]]",
+   "[WARN] CVD separation         worst all-pairs #92d8a0↔#83d5d0 ΔE 6.8 (deutan) · tritan 3.2",
+   "[FAIL] Normal-vision floor    worst all-pairs #92d8a0↔#83d5d0 ΔE 6.9 (normal) — below 15, hard to tell apart even with full color vision",
+   "[PASS] Contrast vs surface    all 4 >= 3:1"
+  ],
+  "weak": [
+   "teal-300 #83d5d0 / green-300 #92d8a0: normal 6.9, CVD 6.8 (deutan)"
+  ],
+  "cmd": "validate_palette.js \"#83d5d0,#fdc010,#92d8a0,#cf64bb\" --mode dark --surface \"#171614\" --pairs all"
+ },
+ {
+  "name": "NEW dot plot + its ring/best outline (foreground)",
+  "status": "new",
+  "meanings": [
+   [
+    "Israeli tracking fund",
+    "teal-300"
+   ],
+   [
+    "Israeli ETF",
+    "gold-200"
+   ],
+   [
+    "foreign fund on TASE",
+    "green-300"
+   ],
+   [
+    "fund bought abroad",
+    "magenta-400"
+   ],
+   [
+    "ring / best outline / path",
+    "neutral-100"
+   ]
+  ],
+  "pairs": "all",
+  "surface": "#171614",
+  "hexes": [
+   "#83d5d0",
+   "#fdc010",
+   "#92d8a0",
+   "#cf64bb",
+   "#f2f0ec"
+  ],
+  "lines": [
+   "[FAIL] Lightness band         outside band: [[\"#83d5d0\",0.819],[\"#fdc010\",0.84],[\"#92d8a0\",0.821],[\"#f2f0ec\",0.956]]",
+   "[FAIL] Chroma floor           below floor (reads gray): [[\"#83d5d0\",0.081],[\"#f2f0ec\",0.006]]",
+   "[WARN] CVD separation         worst all-pairs #92d8a0↔#83d5d0 ΔE 6.8 (deutan) · tritan 3.2",
+   "[FAIL] Normal-vision floor    worst all-pairs #92d8a0↔#83d5d0 ΔE 6.9 (normal) — below 15, hard to tell apart even with full color vision",
+   "[PASS] Contrast vs surface    all 5 >= 3:1"
+  ],
+  "weak": [
+   "teal-300 #83d5d0 / green-300 #92d8a0: normal 6.9, CVD 6.8 (deutan)"
+  ],
+  "cmd": "validate_palette.js \"#83d5d0,#fdc010,#92d8a0,#cf64bb,#f2f0ec\" --mode dark --surface \"#171614\" --pairs all"
+ },
+ {
+  "name": "LEAVES hero cost bars (two bars + legend)",
+  "status": "leaves",
+  "meanings": [
+   [
+    "trade",
+    "orange-500"
+   ],
+   [
+    "custody",
+    "gold-200"
+   ],
+   [
+    "fixed",
+    "red-500"
+   ],
+   [
+    "fx",
+    "magenta-400"
+   ],
+   [
+    "remainder",
+    "neutral-500"
+   ],
+   [
+    "fund's own fees",
+    "green-300"
+   ],
+   [
+    "tax",
+    "rose-600"
+   ]
+  ],
+  "pairs": "all",
+  "surface": "#171614",
+  "hexes": [
+   "#dd6301",
+   "#fdc010",
+   "#ed4b43",
+   "#cf64bb",
+   "#7d7a74",
+   "#92d8a0",
+   "#c12e71"
+  ],
+  "lines": [
+   "[FAIL] Lightness band         outside band: [[\"#fdc010\",0.84],[\"#92d8a0\",0.821]]",
+   "[FAIL] Chroma floor           below floor (reads gray): [[\"#7d7a74\",0.01]]",
+   "[FAIL] CVD separation         worst all-pairs #c12e71↔#7d7a74 ΔE 2.2 (deutan) · tritan 4.2",
+   "[FAIL] Normal-vision floor    worst all-pairs #ed4b43↔#dd6301 ΔE 7.2 (normal) — below 15, hard to tell apart even with full color vision",
+   "[PASS] Contrast vs surface    all 7 >= 3:1"
+  ],
+  "weak": [
+   "orange-500 #dd6301 / red-500 #ed4b43: normal 7.2, CVD 3 (deutan)",
+   "red-500 #ed4b43 / neutral-500 #7d7a74: normal 20.4, CVD 6.9 (protan)",
+   "red-500 #ed4b43 / rose-600 #c12e71: normal 13.3, CVD 13.3 (protan)",
+   "magenta-400 #cf64bb / rose-600 #c12e71: normal 13.3, CVD 12.3 (deutan)",
+   "neutral-500 #7d7a74 / rose-600 #c12e71: normal 19.2, CVD 2.2 (deutan)"
+  ],
+  "cmd": "validate_palette.js \"#dd6301,#fdc010,#ed4b43,#cf64bb,#7d7a74,#92d8a0,#c12e71\" --mode dark --surface \"#171614\" --pairs all"
+ },
+ {
+  "name": "LEAVES plan-number change chart (levers)",
+  "status": "leaves",
+  "meanings": [
+   [
+    "monthly deposit",
+    "orange-500"
+   ],
+   [
+    "years",
+    "gold-200"
+   ],
+   [
+    "amount today",
+    "teal-300"
+   ],
+   [
+    "return a year",
+    "magenta-400"
+   ]
+  ],
+  "pairs": "all",
+  "surface": "#171614",
+  "hexes": [
+   "#dd6301",
+   "#fdc010",
+   "#83d5d0",
+   "#cf64bb"
+  ],
+  "lines": [
+   "[FAIL] Lightness band         outside band: [[\"#fdc010\",0.84],[\"#83d5d0\",0.819]]",
+   "[FAIL] Chroma floor           below floor (reads gray): [[\"#83d5d0\",0.081]]",
+   "[PASS] CVD separation         worst all-pairs #cf64bb↔#83d5d0 ΔE 16.1 (deutan) · tritan 8.4",
+   "[PASS] Normal-vision floor    worst all-pairs #cf64bb↔#dd6301 ΔE 20.6 (normal)",
+   "[PASS] Contrast vs surface    all 4 >= 3:1"
+  ],
+  "weak": [],
+  "cmd": "validate_palette.js \"#dd6301,#fdc010,#83d5d0,#cf64bb\" --mode dark --surface \"#171614\" --pairs all"
+ },
+ {
+  "name": "LEAVES stairs",
+  "status": "leaves",
+  "meanings": [
+   [
+    "start",
+    "neutral-600"
+   ],
+   [
+    "account",
+    "teal-300"
+   ],
+   [
+    "kind of fund",
+    "magenta-400"
+   ],
+   [
+    "fund",
+    "gold-200"
+   ],
+   [
+    "more money",
+    "gain"
+   ],
+   [
+    "less money",
+    "loss"
+   ]
+  ],
+  "pairs": "all",
+  "surface": "#171614",
+  "hexes": [
+   "#66635d",
+   "#83d5d0",
+   "#cf64bb",
+   "#fdc010",
+   "#47c86e",
+   "#e94646"
+  ],
+  "lines": [
+   "[FAIL] Lightness band         outside band: [[\"#83d5d0\",0.819],[\"#fdc010\",0.84],[\"#47c86e\",0.741]]",
+   "[FAIL] Chroma floor           below floor (reads gray): [[\"#66635d\",0.01],[\"#83d5d0\",0.081]]",
+   "[FAIL] CVD separation         worst all-pairs #e94646↔#66635d ΔE 5.5 (protan) · tritan 8.1",
+   "[FAIL] Normal-vision floor    worst all-pairs #47c86e↔#83d5d0 ΔE 14.5 (normal) — below 15, hard to tell apart even with full color vision",
+   "[PASS] Contrast vs surface    all 6 >= 3:1"
+  ],
+  "weak": [
+   "neutral-600 #66635d / loss #e94646: normal 23.4, CVD 5.5 (protan)",
+   "teal-300 #83d5d0 / gain #47c86e: normal 14.5, CVD 12.1 (deutan)",
+   "gold-200 #fdc010 / gain #47c86e: normal 20.8, CVD 6.9 (protan)"
+  ],
+  "cmd": "validate_palette.js \"#66635d,#83d5d0,#cf64bb,#fdc010,#47c86e,#e94646\" --mode dark --surface \"#171614\" --pairs all"
+ },
+ {
+  "name": "Status and ink hues on the page (never series)",
+  "status": "stays",
+  "meanings": [
+   [
+    "link/action teal",
+    "teal-300"
+   ],
+   [
+    "entered blue",
+    "blue-300"
+   ],
+   [
+    "computed violet",
+    "violet-400"
+   ],
+   [
+    "caution amber",
+    "amber-400"
+   ],
+   [
+    "blocked red",
+    "red-400"
+   ],
+   [
+    "positive green",
+    "green-400"
+   ]
+  ],
+  "pairs": "all",
+  "surface": "#171614",
+  "hexes": [
+   "#83d5d0",
+   "#a5c5fe",
+   "#bc8bfe",
+   "#e29522",
+   "#ff796d",
+   "#62bf79"
+  ],
+  "lines": [
+   "[FAIL] Lightness band         outside band: [[\"#83d5d0\",0.819],[\"#a5c5fe\",0.82],[\"#bc8bfe\",0.73],[\"#e29522\",0.73],[\"#ff796d\",0.731],[\"#62bf79\",0.729]]",
+   "[FAIL] Chroma floor           below floor (reads gray): [[\"#83d5d0\",0.081],[\"#a5c5fe\",0.088]]",
+   "[FAIL] CVD separation         worst all-pairs #62bf79↔#ff796d ΔE 3.1 (deutan) · tritan 4.1",
+   "[FAIL] Normal-vision floor    worst all-pairs #a5c5fe↔#83d5d0 ΔE 9.8 (normal) — below 15, hard to tell apart even with full color vision",
+   "[PASS] Contrast vs surface    all 6 >= 3:1"
+  ],
+  "weak": [
+   "teal-300 #83d5d0 / blue-300 #a5c5fe: normal 9.8, CVD 6.9 (deutan)",
+   "teal-300 #83d5d0 / green-400 #62bf79: normal 12.8, CVD 11.7 (deutan)",
+   "blue-300 #a5c5fe / violet-400 #bc8bfe: normal 14.6, CVD 10.6 (deutan)",
+   "amber-400 #e29522 / red-400 #ff796d: normal 11.7, CVD 5.6 (deutan)",
+   "red-400 #ff796d / green-400 #62bf79: normal 26.4, CVD 3.1 (deutan)"
+  ],
+  "cmd": "validate_palette.js \"#83d5d0,#a5c5fe,#bc8bfe,#e29522,#ff796d,#62bf79\" --mode dark --surface \"#171614\" --pairs all"
+ }
+]

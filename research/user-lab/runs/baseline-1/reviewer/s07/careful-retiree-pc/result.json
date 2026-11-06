@@ -1,0 +1,116 @@
+{
+  "task": "s07",
+  "persona": "careful-retiree-pc",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T02:16:09.155Z",
+  "structured": {
+    "answer": "I understand it better now. You lock the money away for a set time and the bank pays fixed interest, minus 15% tax. Taking it out early can cost the interest and even some of what I put in, so next time I'll ask the clerk for a deposit with \"תחנות יציאה\" and what the penalty is. I'll also ask you about the \"no deposit insurance\" part and why 70,000 shows as 68,270.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Calculator box, screen 1",
+        "why": "Big number 68,270 ₪ next to 'ההפקדות שלכם 70,000 ₪': looks like I end up with less than I put in. I didn't understand the 'בכסף של היום' / 'בשקלים של העתיד' buttons."
+      },
+      {
+        "where": "Red box on screen 3",
+        "why": "It says the site doesn't calculate the early-break penalty, so I never found out how much breaking a deposit costs."
+      },
+      {
+        "where": "'אין ביטוח פיקדונות' on screens 2–3",
+        "why": "Frightened me. I thought a deposit was completely safe."
+      }
+    ],
+    "used": [
+      "Heading פיקדון and the 'מה זה' text",
+      "Big number 68,270 and 'ההפקדות שלכם 70,000'",
+      "'למה משתמשים בזה': 'ריבית בלי תנודות', 'תחנות יציאה'",
+      "'שווה לדעת': 15% tax, breaking needs bank consent and costs, no deposit insurance",
+      "'מי מציע ומי מפקח': supervised by Bank of Israel",
+      "'כמה זה עולה': דמי יציאה לפי התעריפון",
+      "Red box about the early-break penalty",
+      "'סיכונים ומה לא מוגן'",
+      "Glossary rows קנס שבירה and תחנת יציאה",
+      "Footer 'אתר אישי, לא מסחרי'"
+    ],
+    "skimmed": [
+      "Calculator inputs on the right (sliders, boxes, age)",
+      "Tax section numbers 69,840 / 10,920 (פטור למעוט הכנסה)",
+      "The term tables on screens 3–4"
+    ],
+    "skipped": [
+      "Graph",
+      "'הצגה כטבלה' fold",
+      "'הצגת החוקים והכללים' links",
+      "'הצגת כל הבדיקות'",
+      "Text about קרנות כספיות ומק\"מ",
+      "Paragraph on securities losses",
+      "Small grey text under the calculator",
+      "Expandable glossary links at the bottom"
+    ],
+    "unsure_meaning": [
+      "בכסף של היום / בשקלים של העתיד",
+      "מחושב badge",
+      "123 מקור / 123 מחושב / 123 הזנה",
+      "TXI-03, BANK-06, BANK-23, TXI-17, TXI OQ14, TXI-04",
+      "קרנות כספיות, מק\"מ, מוצרי שוק הכסף",
+      "ריבית ריאלית",
+      "ריבית הפריים",
+      "חשבון במערכת סגורה",
+      "פטור למעוט הכנסה amounts"
+    ],
+    "not_found": [
+      "How much the early-break penalty actually is",
+      "Actual interest rates at my bank compared to others",
+      "Whether my bank takes too much from me"
+    ],
+    "findings": [
+      {
+        "what": "The first big number (68,270) is smaller than the 70,000 deposited, with no plain sentence saying why. It looks like losing money on a deposit.",
+        "where": "Calculator box, screen 1"
+      },
+      {
+        "what": "'אין ביטוח פיקדונות' is alarming and not explained near the top",
+        "where": "שווה לדעת and סיכונים sections"
+      },
+      {
+        "what": "The cost of breaking a deposit is never given. The site says it doesn't calculate it.",
+        "where": "Red box, screen 3; כמה זה עולה"
+      },
+      {
+        "what": "Dark background with grey small text is hard to read even enlarged",
+        "where": "Whole page, especially notes under the calculator and footnotes"
+      },
+      {
+        "what": "English codes like TXI-03 and BANK-23 mean nothing",
+        "where": "שווה לדעת, מיסוי"
+      },
+      {
+        "what": "Busy calculator with sliders and many numbers made me anxious",
+        "where": "Screen 1"
+      },
+      {
+        "what": "I found out only at the very bottom that it's a private site, not a bank. I don't know who is behind it.",
+        "where": "Footer"
+      }
+    ]
+  },
+  "steps": 4,
+  "reads": 4,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 42857,
+    "turns": 6,
+    "usd": 0.2084658,
+    "input": 10,
+    "cacheWrite": 15313,
+    "cacheRead": 42409,
+    "output": 3872,
+    "model": "claude-opus-5-5"
+  }
+}

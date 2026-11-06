@@ -1,0 +1,36 @@
+{
+  "case": "study-r1-grey-years",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"In the graph of the years everything is grey, so nothing stands out.\",\"where\":\"the year graph\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 3 is about the same year bar strip, but it says the strip doesn't look tappable as a year picker; no finding says the bars are all grey with nothing standing out."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0165234
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 3 is about the same bar strip, but it says the strip doesn't look tappable as a year picker; no finding says the year graph is all grey with nothing standing out."
+      }
+    ],
+    "liked": [],
+    "usd": 0.015075400000000001
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0315988
+}
