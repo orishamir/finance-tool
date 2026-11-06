@@ -57,6 +57,8 @@ export const numbers = {
   unknown: "לא ידוע",
   /** The unit of the regulator's amounts (data-schema 2, `nis_millions`): `25,706.14 מיליון ₪`. */
   nisMillions: "מיליון ₪",
+  /** A shekel figure of a billion or more, in its short form on a phone (lens review S2, 2026-11-07): `2.3 מיליארד ₪`. */
+  billion: "מיליארד",
   agorotPerDollar: "אגורות לדולר", // the tariff's own words, Psagot part 5
   parameter: "פרמטר של האתר",
   provisional: "ערך זמני שהאתר קבע",

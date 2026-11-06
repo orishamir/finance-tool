@@ -9,6 +9,7 @@ import { Disclosure, Sentence, Stat, StatRow } from "./index";
 import { isoNumbers } from "./stairs-chart";
 import { figureFit, PickList, type PickRow } from "./pick-list";
 import { KitGallery } from "./gallery";
+import { shortBillions } from "../../lib/format";
 
 const today = "2026-10-25";
 const data = { rules: {}, terms: {}, dimensions: {}, today };
@@ -69,9 +70,17 @@ describe("figureFit", () => {
     expect(figureFit(86_492)).toBe("");
     expect(figureFit(99_999_999)).toBe("");
     expect(figureFit(999_999_999)).toBe("max-md:text-sm");
-    expect(figureFit(1_860_753_604)).toBe("text-sm max-md:text-xs");
-    expect(figureFit(-1_000_000_000)).toBe("text-sm max-md:text-xs");
-    expect(figureFit(2_000_000_000_000)).toBe("text-xs");
+    expect(figureFit(1_860_753_604)).toBe("text-sm");
+    expect(figureFit(-1_000_000_000)).toBe("text-sm");
+    expect(figureFit(2_000_000_000_000)).toBe("text-xs max-md:text-sm");
+  });
+  it("writes a billion shekels or more in a short form for a phone, the sign and the words around it kept (lens review S2)", () => {
+    expect(shortBillions("999,999,999 ₪")).toBeNull();
+    expect(shortBillions("2,296,540,223 ₪")).toBe("2.3 מיליארד ₪");
+    expect(shortBillions("\u2066+2,205,553,903 ₪\u2069")).toBe("\u2066+2.21 מיליארד ₪\u2069");
+    expect(shortBillions("\u200e\u221212,345,678,901 ₪")).toBe("\u200e\u221212.3 מיליארד ₪");
+    expect(shortBillions("1,250,000,000,000 ₪")).toBe("1,250 מיליארד ₪");
+    expect(shortBillions("2,296,540,223.40 ₪")).toBe("2.3 מיליארד ₪");
   });
   it("steps a phone tile's figure down past seven digits, nine and eleven", () => {
     expect(figureFit(9_999_999, "tile")).toBe("");

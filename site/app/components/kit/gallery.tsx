@@ -418,6 +418,9 @@ function Words({ today }: { today: string }) {
           <State label="Tpl">
             <Tpl t="{a} · {b}" vars={{ a: <Num value={s.sourced} display="8" />, b: <Num value={s.comp} /> }} />
           </State>
+          <State label="a shekel figure of a billion or more: its short form on a phone, so a fixed column never cuts it (figureFit)">
+            <Tpl t="{a} · {b}" vars={{ a: <Num value={{ ...s.comp, value: 2_345_678_901 }} />, b: <Num value={{ ...s.comp, value: 1_234_567_890_123 }} /> }} />
+          </State>
         </Grid>
       </Demo>
       <Demo name="LongestCase" use={g.uses.LongestCase}>

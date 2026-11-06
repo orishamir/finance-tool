@@ -6,7 +6,7 @@ import { Link } from "react-router";
 import { companyTermRule, type CompanyTermRef, type RuleRecord } from "@finance-tool/schema";
 import { buttons, computedInputs, flags as flagCopy, formulaNames, numbers, provenance as copy, rule as ruleCopy, ruleCardMore, scopeWords, sourceBlock as sourceCopy, strength as strengthCopy, updateRules } from "../copy";
 import { ruleTitle } from "../lib/rule-title";
-import { fmt, formatValue } from "../lib/format";
+import { fmt, formatValue, shortBillions } from "../lib/format";
 import { hasHebrew, hostOf, isHebrewTitle, mostlyHebrew, sourceLabel } from "../lib/source-label";
 import { isExperience } from "../lib/rule-shelves";
 import { citationText, mayHaveChanged, moreSourcesLabel, pickSources, sourceHref, sourceLabel2, shownTitle, type RuleSource, type SourcedRule } from "../lib/sources";
@@ -234,6 +234,8 @@ export function Num({ value, size = "inline", display, animate, className, prefi
   // a formatter gets the moving value, so a signed figure counts like any other
   const written = typeof display === "function" ? (frame !== null ? display(frame) : undefined) : display;
   const text = written ?? (frame !== null && typeof value.value === "number" ? formatValue(frame, value.unit, roundState, param) : formatValue(value.value, value.unit, roundState, param));
+  // a billion shekels or more reads in its short form on a phone, so no column cuts it (lens review S2); its sheet and label keep the digits
+  const short = typeof value.value === "number" && !keepDecimals && /^nis/.test(value.unit) ? shortBillions(text) : null;
   const strength = strengthOf(value);
   const weak = isWeak(value) && (strength === "institution" || strength === "secondary") ? numbers.weak[strength] : null;
   const fromDate = startsAfter(value, today);
@@ -258,7 +260,14 @@ export function Num({ value, size = "inline", display, animate, className, prefi
       {value.stale && !staleSaid && <IconClock size={14} className={cx("text-caution me-1", mark)} aria-hidden="true" />}
       {((showMark && fromDate) || markWeak) && <IconAlert size={14} className={cx("text-caution me-1", mark)} aria-hidden="true" />}
       {fromDate && size === "figure" && <span className="text-xs text-caution-foreground font-normal me-1 no-underline select-none">{numbers.startsOn}<bdi dir="ltr">{fmt.date(fromDate)}</bdi></span>}
-      <bdi dir={textDir(text)} className={oneLine ? "whitespace-nowrap" : undefined}>{text}</bdi>
+      {short ? (
+        <>
+          <bdi dir={textDir(text)} className="whitespace-nowrap max-md:hidden">{text}</bdi>
+          <bdi dir={textDir(short)} className="whitespace-nowrap md:hidden">{short}</bdi>
+        </>
+      ) : (
+        <bdi dir={textDir(text)} className={oneLine ? "whitespace-nowrap" : undefined}>{text}</bdi>
+      )}
     </button>
   );
   return prefix ? <span className="whitespace-nowrap">{prefix}{button}</span> : button;
