@@ -63,8 +63,9 @@ The evidence behind them is `research/2026-10-28-founder-patterns.md`.
    text, may grow from the right with the row. Inside a chart every line,
    part and category has its own clearly different hue, with a direct label
    or a legend, checked pair by pair with the palette validator and then by
-   fresh readers' eyes; that comes before one meaning per colour across the
-   page. Within one chart or panel a colour means one thing; a distant
+   fresh readers' eyes. That is the requirement; one meaning per colour
+   across the page is a bonus, never worth a round of drawings of its own.
+   Within one chart or panel a colour means one thing; a distant
    section of the same page may give it another meaning, each chart with its
    own legend or labels. Blue and violet are reserved for entered and
    computed numbers; red, amber and green are status colours, never a
