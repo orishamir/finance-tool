@@ -1596,7 +1596,8 @@
   },
   {
     "id": "SW OQ8",
-    "status": "narrowed",
+    "status": "closed",
+    "closed_on": "2026-11-07",
     "title_he": "האם מעבר בין קרנות פנסיה וקופות גמל לקצבה פטור ממס",
     "blocks_he": "המס במעבר בקרן פנסיה ובקופת גמל לקצבה"
   },
@@ -2082,10 +2083,15 @@
   },
   {
     "id": "TXP OQ15",
-    "status": "open"
+    "status": "closed",
+    "closed_on": "2026-11-07"
   },
   {
     "id": "TXP OQ16",
+    "status": "open"
+  },
+  {
+    "id": "TXP OQ17",
     "status": "open"
   },
   {

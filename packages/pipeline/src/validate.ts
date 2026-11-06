@@ -1,7 +1,7 @@
 // The validator: docs/data-schema.md §4 and docs/architecture.md 3.2. A problem fails the run; a warning (rule sources, dates) is printed in
 // one line per category and does not.
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
-import { basename, join, relative } from "node:path";
+import { join, relative } from "node:path";
 import type { z } from "zod";
 import {
   catalogEntry,
@@ -789,9 +789,7 @@ function checkOpenQuestions(files: string[], ctx: ValidationContext, report: (fi
     // a dimension still marked open while the record's own value for it is known (child savings, 2026-11-07)
     const known = (rec as { switch_is_tax_event?: { value?: unknown } } | undefined)?.switch_is_tax_event?.value;
     const sw = marks["switching-tax-event"];
-    // leftovers whose value covers a track switch only while a move to another fund is still open (SW OQ8); the list only shrinks
-    const trackOnly = new Set(["pension-comprehensive", "pension-general", "provident-for-annuity"]);
-    if (known !== undefined && known !== null && typeof sw === "string" && sw.startsWith("blocked:") && !trackOnly.has(basename(f, ".json")))
+    if (known !== undefined && known !== null && typeof sw === "string" && sw.startsWith("blocked:"))
       report(f, `dimensions.switching-tax-event is ${sw} but switch_is_tax_event is known (${String(known)}); mark it covered`);
   }
 }
