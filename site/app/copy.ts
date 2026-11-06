@@ -3748,6 +3748,7 @@ export const invest = {
       left: (bank: string) => `השורה של ${bank} לא סופרת את העו״ש, כי משלמים עליו בכל מקרה. השורות של שאר הבנקים סופרות אותו.`,
     },
     /** D65 and D66 (2026-11-06): said once, for an index with funds bought abroad; `capped`: the houses whose price lists print a limit on the spread. */
+    abroadTitle: "מה לא נכנס למחיר של קרן שנקנית בחו״ל",
     abroadSpread: (capped: string[]) => `בקרן שנקנית בחו״ל יש גם פער בשער ההמרה. רוב הבנקים ובתי ההשקעות לא מגבילים אותו בתעריפון, ולכן הוא לא נכנס למחיר. תקרה לפער כתובה רק אצל ${andList(capped.map((x, i) => (i > 0 && i === capped.length - 1 && /^[A-Za-z]/.test(x) ? `־${x}` : x)))}.`,
     abroadOthers: "קרן שנקנית בחו״ל יכולה לעלות יותר מהמספר שבשורה: ברוקר, גוף משמרת, בורסה או רשות בחו״ל גובים עמלות מהבנק או מבית ההשקעות, ורוב הבנקים ובתי ההשקעות מעבירים אותן ללקוח בלי תקרה. העמלות האלה לא נכנסות למחיר.",
     yoursTag: "החשבון שלכם",

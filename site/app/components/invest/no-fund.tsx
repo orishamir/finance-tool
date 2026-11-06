@@ -55,7 +55,8 @@ export function NoFundAccountColumn({ view, bundle, years, monthly = 1, chosen, 
   const heldKey = `${view.index.id}:${rows.length}`;
   const [openGroups, setOpenGroups] = useState<string[]>([]);
   const onGroup = (id: string, open: boolean) => setOpenGroups((xs) => (open ? (xs.includes(id) ? xs : [...xs, id]) : xs.filter((x) => x !== id)));
-  const held = useHeldHeight<HTMLDivElement>(`${heldKey}:${openGroups.join()}`);
+  const [abroadOpen, setAbroadOpen] = useState(false);
+  const held = useHeldHeight<HTMLDivElement>(`${heldKey}:${openGroups.join()}:${abroadOpen}`);
   // every house the header can name, laid out unseen, so a long one moves nothing above the list (issue 160)
   const longest = useMemo(
     () => ({
@@ -174,7 +175,7 @@ export function NoFundAccountColumn({ view, bundle, years, monthly = 1, chosen, 
           {c.pair.whichPrice}
           {saved.length > 0 && <> {c.pair.collectedSpan(`\u2066${fmt.date(saved[0]!)}\u2069`, `\u2066${fmt.date(saved.at(-1)!)}\u2069`)}</>}
         </span>
-        <AbroadNotes view={view} bundle={bundle} />
+        <AbroadNotes view={view} bundle={bundle} open={abroadOpen} onOpenChange={setAbroadOpen} />
         {ownBank && <OwnBankField view={view} bundle={bundle} value={ownBank.value} onChange={ownBank.onChange} />}
       </div>
       <div className="@container">

@@ -15,7 +15,7 @@ import { computed, ownBy, type SiteValue } from "../../lib/value";
 import { fmt } from "../../lib/format";
 import { IconLock } from "../icons";
 import { Num } from "../provenance";
-import { AlsoChanged, ClampedText, holdOnPick, MixedName, NameLine, Button, figureFit, Card, ChartLegend, CostStack, FeeWordsNote, LabelChip, LabelFilter, LabelRow, LongestCase, PickList, ProductIdLink, SelectField, Sentence, Stat, StatRow, Swatch, Tag, cx, GroupPriceFold, useChartPick, type ChartPick, useHeldHeight, type CostPart, type FoldOrder, type GroupChoice, type PickRow } from "../kit";
+import { AlsoChanged, ClampedText, holdOnPick, MixedName, NameLine, Button, figureFit, Card, ChartLegend, CostStack, Disclosure, FeeWordsNote, LabelChip, LabelFilter, LabelRow, LongestCase, NoteList, PickList, ProductIdLink, SelectField, Sentence, Stat, StatRow, Swatch, Tag, cx, GroupPriceFold, useChartPick, type ChartPick, useHeldHeight, type CostPart, type FoldOrder, type GroupChoice, type PickRow } from "../kit";
 import { groupNameOf, isGroupPrice, isGroupProvider, pickableGroups } from "../../lib/group-pick";
 import { optionClass, OptionTag, reasonText } from "./parts";
 import { ProviderLink, providerName } from "./sections";
@@ -626,17 +626,17 @@ export function OwnBankField({ view, bundle, value, onChange }: { view: InvestVi
 
 /**
  * What a price for a fund bought abroad leaves out, said once on the page (D65, D66): a spread the price list does not limit, naming the
- * houses whose lists limit it, and what others abroad charge the house. Only on an index with funds bought abroad.
+ * houses whose lists limit it, and what others abroad charge the house. Only on an index with funds bought abroad, folded, so the list
+ * stays near its heading on a phone; `open` is kept by the list, whose held height starts over when it opens or closes.
  */
-export function AbroadNotes({ view, bundle }: { view: InvestView; bundle: WorkbenchBundle }) {
+export function AbroadNotes({ view, bundle, open, onOpenChange }: { view: InvestView; bundle: WorkbenchBundle; open: boolean; onOpenChange: (open: boolean) => void }) {
   if (!view.options.some((o) => o.id === "abroad" && o.exists)) return null;
   const limits = (id: string) => bundle.snapshots.some((s) => s.id === id && s.lines.some((l) => l.base === "fx" && typeof l.spread?.value === "number"));
   const capped = view.providers.filter((p) => !p.custom && limits(p.id)).map((p) => p.short).sort((a, b) => a.localeCompare(b, "he"));
   return (
-    <span className="text-xs text-muted-foreground flex flex-col gap-1">
-      {capped.length > 0 && <span>{c.pair.abroadSpread(capped)}</span>}
-      <span>{c.pair.abroadOthers}</span>
-    </span>
+    <Disclosure label={c.pair.abroadTitle} open={open} onOpenChange={onOpenChange} labelClassName="text-sm text-link">
+      <NoteList className="text-xs pb-1" items={[...(capped.length > 0 ? [c.pair.abroadSpread(capped)] : []), c.pair.abroadOthers]} />
+    </Disclosure>
   );
 }
 
@@ -653,7 +653,9 @@ export function AccountColumn({ view, bundle, years, monthly = 1, pick, onPick, 
   // a grey row's long reason opens at the person's tap, as a house's group prices do: the held height starts over with it
   const [openWhys, setOpenWhys] = useState<string[]>([]);
   const onWhy = (id: string, open: boolean) => setOpenWhys((xs) => (open ? (xs.includes(id) ? xs : [...xs, id]) : xs.filter((x) => x !== id)));
-  const held = useHeldHeight<HTMLDivElement>(`${heldKey}:${openGroups.join()}:${openWhys.join()}`);
+  // the note on what a price abroad leaves out opens at a tap too
+  const [abroadOpen, setAbroadOpen] = useState(false);
+  const held = useHeldHeight<HTMLDivElement>(`${heldKey}:${openGroups.join()}:${openWhys.join()}:${abroadOpen}`);
   // the rows' cases, laid out unseen, hold heights a plan does not change: kept over a slider's moves, so they are not laid out again on
   // every key (#190: the cases of every state cost about 8 ms a key)
   const casesKept = useRef<{ key: string; byRow: Map<string, NonNullable<PickRow["cases"]>> } | null>(null);
@@ -923,7 +925,7 @@ export function AccountColumn({ view, bundle, years, monthly = 1, pick, onPick, 
           {c.pair.whichPrice}
           {saved.length > 0 && <> {c.pair.collectedSpan(`\u2066${fmt.date(saved[0]!)}\u2069`, `\u2066${fmt.date(saved.at(-1)!)}\u2069`)}</>}
         </span>
-        <AbroadNotes view={view} bundle={bundle} />
+        <AbroadNotes view={view} bundle={bundle} open={abroadOpen} onOpenChange={setAbroadOpen} />
         {ownBank && <OwnBankField view={view} bundle={bundle} value={ownBank.value} onChange={ownBank.onChange} />}
       </div>
       <div className="@container">
