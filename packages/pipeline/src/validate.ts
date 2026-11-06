@@ -221,6 +221,30 @@ export function checkFundNames(record: Pick<FundRecord, "names">): string[] {
   return out;
 }
 
+/**
+ * A document's title that quotes a fund's name broken by the right-to-left copy: a bracket that does not close in order ("MTF מחקה (Nasdaq
+ * 100 (4D" for "MTF מחקה (4D) Nasdaq 100"), or a class mark glued to a Hebrew letter ("(4D)י"). Rule records' titles, their figures' too,
+ * and the rule base's source lines (lens review S3: the fund records were checked, the titles that quote them were not).
+ */
+export function checkTitleBrackets(title: string): string[] {
+  let depth = 0;
+  for (const ch of title) {
+    if (ch === "(") depth++;
+    else if (ch === ")" && --depth < 0) break;
+  }
+  const out: string[] = [];
+  if (depth !== 0) out.push(`"${title.slice(0, 80)}" has a bracket that does not close in order; copy the name from the document`);
+  if (/\(\d[A-Z]\)[\u05d0-\u05ea]|[\u05d0-\u05ea]\(\d[A-Z]\)/.test(title)) out.push(`"${title.slice(0, 80)}" has a class mark glued to a Hebrew letter; copy the name from the document`);
+  return out;
+}
+
+/** Every `title` and `title_he` in a record, with where it is. */
+function titlesOf(o: unknown, at = ""): [string, string][] {
+  if (Array.isArray(o)) return o.flatMap((x, i) => titlesOf(x, `${at}[${i}]`));
+  if (!o || typeof o !== "object") return [];
+  return Object.entries(o).flatMap(([k, v]) => ((k === "title" || k === "title_he") && typeof v === "string" ? [[`${at}.${k}`, v] as [string, string]] : titlesOf(v, `${at}.${k}`)));
+}
+
 /** The words of a reading note, not of a document's name (2026-11-03: a 1,321-character note stood as a bank's tariff name on its page). */
 const READING_NOTE = /https?:\/\/|Chrome|curl|founder|pdf\.js|script|סקריפט|מטא-נתוני|אינו נושא תאריך|אינו מודפס/;
 /** A tariff's title is the document's name, which the site shows as the source; the notes on how it was read go in `tariff.notes`. */
@@ -585,6 +609,9 @@ function checkRuleSources(rule: RuleLike, ctx: ValidationContext, all: Map<strin
     else warn("rules with neither sources nor sources_missing_reason (extraction not run)", rule.id);
   }
   const block = ctx.ruleBase.blocks?.get(rule.id);
+  for (const [at, title] of titlesOf({ sources: rule.sources, figures: rule.figures })) for (const m of checkTitleBrackets(title)) out.push(`${at.slice(1)}: ${m}`);
+  // the rule base is its owners' to fix: a broken name in its source line is said, and the record's title is held to the document
+  if (block) for (const m of block.body.matchAll(/^- Source: (.*)$/gm)) for (const link of m[1]!.matchAll(/\[([^\]]+)\]\(/g)) if (checkTitleBrackets(link[1]!).length) warn("rule base source line quotes a broken fund name", rule.id);
   sources.forEach((s, i) => {
     const at = `sources[${i}]`;
     const host = hostOf(s.url);
