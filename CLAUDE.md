@@ -278,7 +278,10 @@ catches about half or more with noise under 30%.
   run one at a time, and small work stays in the main conversation. A job
   likely to use more than 5% of the week gets a one-line estimate and my yes
   first (a one-topic conversation costs about 1 to 2%, one subagent's job
-  about 1 to 3%). Above 90% of the week, do only what I directly ask for.
+  about 1 to 3%). Above 90% of the week, do only what I directly ask for,
+  except in the last hours before the weekly reset: what is left of the
+  week is lost at the reset, so it goes on ready work then, several jobs at
+  once, not after (founder, 2026-11-06).
   Every subagent runs on Opus 5.5 at high effort; the lab's simulated readers
   stay at medium until a measured run says otherwise
   (`research/user-lab/tools/lib/session.mjs`); extra high and Fable only when
