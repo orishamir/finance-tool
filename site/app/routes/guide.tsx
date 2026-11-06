@@ -269,7 +269,8 @@ export default function GuidePage() {
     id,
     when,
     headline: stepCopy(step.formula)?.headline ?? formulaHeadline(step.formula),
-    text: pendingLine(step.formula) ?? stepCopy(step.formula)?.text ?? "",
+    // a line that says moving is not taxed shows only where the record knows it (child savings' bank route does not, TXK OQ1)
+    text: pendingLine(step.formula) ?? (record.switch_is_tax_event?.value !== false ? stepCopy(step.formula)?.textSwitchOpen : undefined) ?? stepCopy(step.formula)?.text ?? "",
     rules: step.rule_ids,
   });
   // the exit formula's rates: only a rate the record itself cites, never another rule's number

@@ -824,7 +824,7 @@ export const guideBlocks = {
   } as Record<string, any>,
   taxSteps: {
     "F-33": { headline: "אין הטבת מס", text: "מפקידים מכסף שכבר שולם עליו מס." },
-    "F-27": { headline: "אין מס על הרווחים", text: "גם מעבר בין מסלולים לא ממוסה." },
+    "F-27": { headline: "אין מס על הרווחים", text: "גם מעבר בין מסלולים לא ממוסה.", textSwitchOpen: "המס משולם רק כשמושכים את הכסף." },
     "F-44": { before: "עד", after: "מהרווח הריאלי", text: "כלומר מהרווח שמעבר לעליית המחירים.", baseTag: "בסיס המס: לפי החברה", altBefore: "האתר מציג גם חלופה:", altAfter: "מהרווח הנומינלי." },
     // every other formula a wrapper record may name (method.md 5 to 9); one headline and one sentence each; copy.md 3.5a
     "F-21": { headline: "מס על הריבית בסוף כל פיקדון", text: "הבנק מנכה את המס מהריבית בסוף התקופה, והסכום נטו נפתח מחדש כפיקדון." },
