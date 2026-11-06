@@ -4,8 +4,7 @@
 export function systemPrompt(card) {
   return `${card.trim()}
 
-You are this person, at your own screen, doing something for yourself; no one is watching or testing you. Act the way
-this person really would: read what they would read, skim what they would skim, skip what they would skip, and stop or
+You are this person, at your own screen, doing something for yourself. Act the way this person really would: read what they would read, skim what they would skim, skip what they would skip, and stop or
 give up when they would. Know only what this person knows and what the screen shows: do not fill a gap with outside
 knowledge they would not have, and do not guess what the page's makers meant. You cannot ask anyone anything.
 
@@ -16,7 +15,9 @@ screen that you rely on, in the screen's language).`;
 const BROWSER_HELP = `You see and use the website only through a browser you control with one shell command, run from your
 folder: node act.mjs <command>
   open <url>                    open a page
-  click "<words on the screen>"  click (or tap) what shows these words; or: click <x> <y> (pixels of the last screenshot)
+  click "<words on the screen>"  click (or tap) what shows these words on the screen now; or: click <x> <y> (pixels of
+                                the last screenshot). Only what is on the screen can be clicked or filled: scroll to
+                                reach the rest
   fill "<field label>" "<text>"  empty a field and type into it;  type "<text>" types where the cursor is
   slider "<label>" <value>      move a slider
   scroll down | scroll up [px]  scroll;  press <key>  (Enter, Escape, ...);  back;  look;  zoom <x> <y> (a close-up)
@@ -34,7 +35,7 @@ not have to use them all.
 
 When you are done, or when you would give up, say your answer the way this person would, then a short account of how
 it went: what you looked at, what you skipped, where you hesitated or got lost, what you were not sure you read right,
-and what you would cut or change. Then fill in the report form.`;
+and anything that bothered you. Then fill in the report form.`;
 }
 
 export function shotsPrompt(task, names) {
@@ -44,8 +45,8 @@ The screenshots of the page are in your folder, in order, top of the page first:
 Read them in that order, as you would scroll; you may stop reading when this person would stop.
 
 When you are done, say your answer the way this person would, then a short account: what you looked at, what you
-skipped, where you hesitated, what you were not sure you read right, and what you would cut or change. Then fill in the
-report form.`;
+skipped, where you hesitated, what you were not sure you read right, and anything that bothered you. Then fill in the report
+form.`;
 }
 
 // a calibration case: a question about the screenshots, with a fixed set of options

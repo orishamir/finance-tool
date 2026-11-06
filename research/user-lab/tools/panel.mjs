@@ -33,7 +33,7 @@ import http from "node:http";
 import { basename, dirname, extname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { browserPrompt, casePrompt, reportSchema, shotsPrompt, systemPrompt } from "./lib/prompts.mjs";
-import { CHROME, PLAYWRIGHT, closeAct, costOf, installAct, runSession, sessionDir } from "./lib/session.mjs";
+import { CHROME, PLAYWRIGHT, READER_EFFORT, closeAct, costOf, installAct, runSession, sessionDir } from "./lib/session.mjs";
 import { capture, fitsDevice, labBrowser, loadVariant, summarise } from "./lib/variant.mjs";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
@@ -245,7 +245,7 @@ async function one({ t, p, r }) {
     bash: t.mode === "browser",
     schema,
     model: t.model || run.model,
-    effort: t.effort || run.effort,
+    effort: t.effort || run.effort || READER_EFFORT,
     timeoutMs: (minutes + 4) * 60000,
     transcriptPath: join(out, "transcript.jsonl"),
     env,

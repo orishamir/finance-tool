@@ -86,6 +86,21 @@ changing (up to 4 seconds) before each screenshot, as a person would look; witho
 caught a figure mid-update (72,394 ₪ at the top while the list already said 72,104 ₪). It opens only http and https
 addresses. Usable by hand too: copy it to an empty folder and run the commands there.
 
+**What a person sees that still screenshots do not (2026-11-06).** Two things changed after the founder's flag on a
+site whose section tabs jump the page (`elsewhere/`, `lessons.md`):
+- A session can click or fill only what is on the screen and not covered, as a person can; open shadow roots and
+  frames on the screen count. Before, a click by words reached anything on the page and scrolled to it: "Save" in a
+  pop-up was sent to a link 6,700 px down, and a session never had to look for a control again after it moved.
+- After each command the tool says what a person would have seen move on the screen ("moved:" lines): the page
+  scrolling by itself (not the session's own scrolling), the control used changing place (or leaving the screen),
+  and what was above or below it moving down, up or sideways; also a move that happened after the last screenshot.
+  Positions are screen positions in screenshot pixels, sampled over the whole screen; content animating on its own is
+  left out; it waits (up to 2 s) for transitions to end.
+Reviewed independently, fixed in two rounds and verified (no false alarms found). Known misses: a recalculation that
+lands later than the wait (for example 500 ms after typing stops), a single row shifting on a packed screen, a
+transition longer than about 2.4 s, a strip of about 20 px at the very bottom, and a page whose content scrolls inside
+its own box (the scroll command cannot scroll it). A flicker that comes and goes before the screenshot is not seen.
+
 Why not reconnect over CDP for each command: Playwright closes a browser context it created when its connection ends
 (tested: the phone context was gone on reconnect), so the phone's size and touch would not survive between commands.
 

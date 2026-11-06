@@ -1,0 +1,9 @@
+{
+  "id": "moving",
+  "written": "2026-11-06",
+  "built_from": ["elsewhere: justETF section tabs that jump the page (the founder, 2026-11-06)"],
+  "reason": "A person keeps a sense of where things are; when the page moves without their doing, they lose their place and have to find it again.",
+  "tested_on_not_built_from": ["planted p15 (2 instances, browser mode)"],
+  "negative_check": ["planted clean controls in browser mode (sp500 pc, study fund phone)", "held-out benchmark noise, with and without"],
+  "status": "under test"
+}

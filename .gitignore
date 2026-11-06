@@ -21,3 +21,5 @@ research/user-lab/elsewhere/**/*.png
 research/user-lab/runs/elsewhere-*/**/*.png
 # the planted baseline's screens (96 MB): a variant of the live page, captured again by planted.mjs check
 research/user-lab/runs/planted-baseline/**/*.png
+# the baseline's neutral copies of the benchmark screens (rebuilt from bench/shots by the map)
+research/user-lab/runs/baseline-*/screens/

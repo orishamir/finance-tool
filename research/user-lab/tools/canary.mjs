@@ -6,7 +6,7 @@
 import { mkdirSync, rmSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { closeAct, costOf, installAct, runSession, sessionDir } from "./lib/session.mjs";
+import { READER_EFFORT, closeAct, costOf, installAct, runSession, sessionDir } from "./lib/session.mjs";
 import { systemPrompt } from "./lib/prompts.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
@@ -58,7 +58,7 @@ Do not try anything else.`;
 async function probe(key, prompt) {
   const dir = sessionDir();
   const env = installAct(dir, { device: "pc", maxActions: 20, lockDevice: true });
-  const r = await runSession({ dir, env, prompt, system: systemPrompt("You are a 30-year-old person who lives in a city."), bash: true, transcriptPath: join(out, `${key}.jsonl`), timeoutMs: 6 * 60 * 1000 });
+  const r = await runSession({ dir, env, prompt, system: systemPrompt("You are a 30-year-old person who lives in a city."), bash: true, effort: READER_EFFORT, transcriptPath: join(out, `${key}.jsonl`), timeoutMs: 6 * 60 * 1000 });
   // close the browser the session may have started, then its folder
   closeAct(dir, env);
   rmSync(dir, { recursive: true, force: true });

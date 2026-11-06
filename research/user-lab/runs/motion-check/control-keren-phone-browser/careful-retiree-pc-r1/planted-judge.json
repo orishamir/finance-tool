@@ -1,0 +1,35 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "No result for self-employed withdrawal before 6 years; the only number shown at year 4 is for a different product and could be mistaken for the answer.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "Fund and securities-account numbers shown side by side with no sentence saying which is better.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "7% annual return pre-filled as if certain.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "Dark background and small grey helper text hard to read.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "'מסלול מדד' not explained for readers who know מדד only as the price index.",
+      "serious": false,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.0272948
+}

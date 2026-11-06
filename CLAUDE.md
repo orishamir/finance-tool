@@ -247,9 +247,10 @@ to 25 of `research/2026-10-28-founder-patterns.md`.
   this overrides any older instruction to run work in parallel. A job likely
   to use more than 5% of the week gets a one-line estimate and my yes first (a
   one-topic conversation costs about 1 to 2%, one subagent's job about 1 to
-  3%). Above 70% of the week, do only what I directly ask for. Effort is medium
-  by default and high for tax, rules and calculation work; extra high and Fable
-  only when I ask. Start a fresh agent with a short brief rather than messaging
+  3%). Above 70% of the week, do only what I directly ask for. Every subagent
+  runs on Opus 5.5 at high effort (2026-11-06, replacing "medium by default");
+  the lab's simulated readers stay at medium until a measured run says otherwise
+  (`research/user-lab/tools/lib/session.mjs`); extra high and Fable only when I ask. Start a fresh agent with a short brief rather than messaging
   an idle one.
 
 ## Repo layout

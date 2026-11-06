@@ -14,7 +14,7 @@
 // ({ text, cost, variant }), and <out>/variants/<id>.json for the grader, the same layout score.mjs reads.
 import { copyFileSync, cpSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
-import { costOf, runSession, sessionDir } from "./lib/session.mjs";
+import { READER_EFFORT, costOf, runSession, sessionDir } from "./lib/session.mjs";
 import { capture, loadVariant, summarise } from "./lib/variant.mjs";
 
 const args = process.argv.slice(2);
@@ -93,7 +93,7 @@ async function one({ t, p }) {
     rmSync(dir, { recursive: true, force: true });
     return console.log(`${t.key} / ${p}: prepared (dry run)`);
   }
-  const res = await runSession({ dir, prompt, model: run.model, effort: run.effort, timeoutMs: 12 * 60000, transcriptPath: join(out, "transcript.jsonl") });
+  const res = await runSession({ dir, prompt, model: run.model, effort: run.effort || READER_EFFORT, timeoutMs: 12 * 60000, transcriptPath: join(out, "transcript.jsonl") });
   rmSync(dir, { recursive: true, force: true });
   const text = String(res.result?.result ?? "").trim();
   const result = { task: t.key, persona: p, mode: "old-brief", device, text, exitCode: res.code, timedOut: res.timedOut, cost: costOf(res), ...(s.summary ? { variant: s.summary } : {}), ...(res.code !== 0 && !text ? { stderr: res.stderr.slice(0, 500) } : {}) };

@@ -1,0 +1,6 @@
+{
+  "named": false,
+  "position": 0,
+  "why": "None of the findings say the result cards move, shift or jump when inputs change, or that a note line appears and disappears. Finding 1 is about the slider and the field showing different values, not about the layout moving.",
+  "usd": 0.015608
+}
