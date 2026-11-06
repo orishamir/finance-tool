@@ -97,9 +97,10 @@ The evidence behind them is `research/2026-10-28-founder-patterns.md`.
 
 ## Work order
 
-The main line is the guides: knowledge first (D68). The site explains every
-kind of holding and every financial term, and the rule base, data and method
-behind each guide are complete, before any goal feature starts; the goal
+The main line is the guides: knowledge first (D68). A strong, sourced rule
+base and research come first, the guide pages are their readable face; the
+site explains every kind of holding and every financial term before any goal
+feature starts; the goal
 comparison, workbench, holdings and idle-cash pages wait. The indices page's
 work already built lands. This overrides the Roadmap issue's ranking, which
 counts what unblocks the most.
