@@ -8,7 +8,120 @@ This file lists what is still missing, in the order of `docs/product.md`. Each g
 open question (OQ) or rule where the detail is. "Out of scope for the knowledge base" marks
 things product.md asks for that are data, method or design work rather than rules.
 
+*2026-11-06:* the file now opens with a living table of the six things a reader needs for each kind of holding (what it is, tax, cost, getting the money out, what protects it if the company fails, moving it), graded from the rule files. The numbered sections after it are the gaps per `docs/product.md` section, as before.
+
 **Do not research (founder, 2026-11-03).** Forty-three managing companies closed to one profession, employer or municipality are left out of the data and of this rule base. Do not collect, read or cite anything of theirs, and do not count their eligibility as a gap. The list, by legal id, is `EXCLUDED_COMPANIES` in `packages/pipeline/src/adapters/cma.ts`.
+
+---
+
+## The six things, kind by kind (living table)
+
+*Graded 2026-11-06 from the rule base as it is on `main` at 177f169d (after the protection, tier-1 tax, pension-factors, open-questions and glossary branches), and `data/open-questions.json` for each question's status. Started from section 1 of `research/specs/2026-11-06-guides-coverage/map.md`; every cell was graded again from the rule files, not copied from the map.*
+
+For every kind of holding the guides cover, how well this rule base answers the six questions of the Guides goal: what it is, how it is taxed, what it costs, when the money can come out, what protects it if the company fails, and how to move it. Each cell names the rules that answer it and the open questions that leave part of it open.
+
+**Grades.**
+- **L**: answered from the law, a regulator or the exchange, read in its official publication (the gazette on fs.knesset.gov.il, gov.il, the Bank of Israel's, the Securities Authority's or the exchange's own site, National Insurance's site, a foreign regulator's own site).
+- **C**: answered only from a copy of the law or of a regulator's report (Wikisource, Nevo, olaw.org.il, prisha.co.il, capitax.co.il, a press host of a regulator's report), or only from companies' own documents.
+- **O**: open: not recorded, or only inferred in a rule that says it must not compute.
+- **–**: does not apply: the holding sits in a securities account and moves with it, or the money follows the product that holds it.
+- **!** after a grade: an open question in that cell can change a reader's result (a figure, a date, or which choice is better). A cell without it may still list open questions; those change wording or detail, not a result.
+
+**How a cell is graded.** The grade is for the general answer. A company's own figure or term (its fee, its break penalty, its tariff) is that company's by design and does not lower a cell whose general rule is L; the cell names such rules as "(companies)" or "(one bank)". A rule that cites both an official text and a copy counts as official for what it read officially; where a cell's key rule rests partly on a copy, the cell says so. "Derived" means the answer follows from texts read officially but no text says it in one place.
+
+**Kinds.** The map's 28 kinds, with its one row for index funds and ETFs split into three (Israeli fund, foreign fund traded on TASE, foreign-domiciled ETF bought abroad), because their tax and protection differ: 30 kinds, 180 cells. Left out, as in the map's section 1: the 43 closed managing companies and every track closed to joiners (CLAUDE.md, D51); the kinds out by scope (crypto, peer-to-peer lending, derivatives, leveraged FX and CFD platforms, leveraged and inverse ETFs, private equity, physical real estate, collectibles); and what the rule base names without researching (old pension funds closed to joiners, savings-and-credit cooperatives and gemach deposits, hedge funds in trust and private investment trust funds, real-estate crowdfunding, insurance-plan IRAs, payment wallets).
+
+**Keeping it current.** When a rule or an open question named in a cell changes, re-grade the cell, its row's count, the totals and the ranking below in the same commit. A new kind gets a row with all six cells.
+
+### Cash and bank
+
+| Kind | What it is | Tax | Cost | Getting the money out | If the company fails | Moving it | Count |
+|---|---|---|---|---|---|---|---|
+| Current account | **L** BANK-01, BANK-09, BANK-17 | **L!** TXI-03, TXI-08<br>Open: TXI OQ11 (whether the low-income deduction reaches it) | **L** BANK-16, BANK-17; BANK-35 (the 2026 caps, read from a copy on olaw.org.il) | **L** BANK-20, BANK-45 | **L** REG-04, REG-06, BANK-23 (no deposit insurance; a discretionary state guarantee)<br>Open: BANK OQ8, REG OQ13 (any basis beyond s.8יא) | **L** SW-26 to SW-31<br>Open: SW OQ9 | L 6, C 0, O 0; 1 with ! |
+| Bank deposit | **L!** BANK-02, BANK-14, BANK-26, BANK-27, BANK-41<br>Open: BANK OQ17 (whether the published rate of a CPI-linked type is real or nominal) | **L!** TXI-03 to TXI-05, TXI-07, TXI-25<br>Open: TXI OQ14 (breaking early) | **L** BANK-06 (the break price is each bank's term, shown in its directive-447 table), BANK-16; BANK-33 (two banks) | **L** BANK-05, BANK-06, BANK-27, BANK-40, BANK-41 | **L** REG-04, REG-06 | **L!** SW-32, BANK-21<br>Open: BANK OQ6, SW OQ13 (the Competition Authority's deposit directives) | L 6, C 0, O 0; 3 with ! |
+| Savings plan | **L** BANK-28 | **L!** TXI-07<br>Open: TXI OQ14 | **L** BANK-28 (break terms are each bank's, s.7(ב)(5)); BPN-10 (one bank) | **L!** BANK-28, BANK-42<br>Open: BANK OQ12 (each instalment's lock and the break price: each bank's terms, read for one bank) | **L** REG-04, REG-06 | **L** SW-32 (a plan is a deposit, BANK-28) | L 6, C 0, O 0; 2 with ! |
+| Foreign-currency deposit | **L** FXD-01, FXD-02; FXD-07, FXD-08 (banks' terms)<br>Open: FXD OQ1, FXD OQ12 | **L!** TX2-01, TX2-03, TX2-19, TXI-04; TX2-02 (the 25% withheld is banks' practice)<br>Open: TX2 OQ2 (legal basis of the 25%) | **L!** FXD-05; FXD-06 (one bank)<br>Open: FXD OQ2 (conversion spread or fee), FXD OQ3 | **C!** FXD-07 (banks' terms: no exit points)<br>Open: FXD OQ4 (break penalty) | **L** FXD-16, REG-04, REG-06 | **L** SW-29, FXD-04 | L 5, C 1, O 0; 3 with ! |
+| Structured deposit | **L!** FXD-10; FXD-11, FXD-12 (banks' terms)<br>Open: FXD OQ6 (inside or outside the law's "structured product"), FXD OQ7 | **L!** TX2-05, TX2-18 (derived from the partial-linkage regulations)<br>Open: TX2 OQ5 | **O** none (FXD-11 and FXD-12 name no cost) | **C** FXD-11, FXD-12 | **L** FXD-16, REG-04 (the guarantee is the bank's own promise) | **L** SW-29 | L 4, C 1, O 1; 2 with ! |
+
+### The state's debt
+
+| Kind | What it is | Tax | Cost | Getting the money out | If the company fails | Moving it | Count |
+|---|---|---|---|---|---|---|---|
+| Makam | **L** GOV-01, GOV-03, GOV-04, GOV-22 | **L!** TXI-01, TXI-11 (15% by law), TXI-12<br>Open: TXI OQ3 (the split on a sale before redemption) | **L** GOV-21, BANK-18, BRK-17, BRK-52 | **L** GOV-17, GOV-22, GOV-24<br>Open: GOV OQ7 | **L** GOV-02 | **–** moves with the securities account | L 5, C 0, O 0, – 1; 1 with ! |
+| Government bond | **L!** GOV-08, GOV-11 to GOV-15<br>Open: GOV OQ6 (a deflation floor per series), GOV OQ4 | **L!** TXI-12, TXI-14, TXI-15, TXI-16<br>Open: TXI OQ5 (accrued interest bought between coupons) | **L** GOV-21 | **L** GOV-16, GOV-17, GOV-24 | **L** GOV-02 | **–** moves with the securities account | L 5, C 0, O 0, – 1; 2 with ! |
+| Israel Bonds (sold through the Bonds organisation) | **C!** FXD-15 (the issuer's prospectus)<br>Open: GOV OQ11, FXD OQ10 (whether a resident can buy) | **O** none<br>Open: FXD OQ10 | **O** none | **C** FXD-15 (held to maturity; repurchase only on listed events) | **C** FXD-15, FXD-16 (direct obligations of the State, as the prospectus says) | **C** FXD-15 (transfer only to listed people) | L 0, C 4, O 2; 1 with ! |
+
+### Securities account and what it holds
+
+| Kind | What it is | Tax | Cost | Getting the money out | If the company fails | Moving it | Count |
+|---|---|---|---|---|---|---|---|
+| Securities account (Israeli bank or broker, or a broker abroad) | **L** BRK-01 to BRK-04, BRK-06, BRK-32 | **L!** TXS-05, BRK-27, BRK-45, TXF-22, TXF-29, TXG-20<br>Open: TXG OQ4 (an annual return with a broker abroad) | **L** BRK-15, BRK-16, BRK-24, BRK-33, BRK-53, BRK-61; tariffs BRK-30, BRK-38, BRK-40, BRK-42<br>Open: BRK OQ14 | **L** BRK-29, MF-67 | **L!** REG-16, REG-34, REG-35, BRK-07, BRK-08, BRK-10, BRK-58 (derived; no text says it in one place); abroad BRK-14, BRK-35, REG-27<br>Open: REG OQ9, REG OQ10, REG OQ21, REG OQ23 (foreign securities held through an Israeli bank), BRK OQ5, BRK OQ22, BRK OQ23, REG OQ14 | **L!** SW-33, SW-35, SW-36, BRK-18; SW-34, SW-37, SW-55 (unsettled)<br>Open: TXS OQ17 and SW OQ11 (tax on moving your own securities), SW OQ12 (to or from a broker abroad) | L 6, C 0, O 0; 3 with ! |
+| Money-market fund | **L** MF-07, MF-29 to MF-35<br>Open: MF OQ1 (the directive's final text) | **L** TXS-12, TXS-24; TXS-26 (named funds) | **L** MF-16, MF-17, MF-20, MF-24, BRK-17 | **L!** MF-09 to MF-11, MF-14, MF-34, MF-67<br>Open: MF OQ3 (cut-off hours, Friday orders) | **L!** REG-10, MF-02, REG-34, MF-29 to MF-31<br>Open: REG OQ22 (redeeming while the manager or trustee fails) | **–** a switch is a sale (TXS-21); the units move with the securities account | L 5, C 0, O 0, – 1; 2 with ! |
+| Israeli index fund or ETF | **L** ETF-01, ETF-04, ETF-11, ETF-51, ETF-52, ETF-83 | **L** TXS-07 to TXS-10, TXS-13, TXS-14, TXS-24; TXS-15 (copy)<br>Open: TXS OQ8, ETF OQ23 | **L!** ETF-05, ETF-14, ETF-17, ETF-75, MF-16; ETF-13 (copy, olaw.org.il)<br>Open: ETF OQ8 (variable fee), ETF OQ22 (swap cost as a number), ETF OQ30 | **L** ETF-04, ETF-21, ETF-67, ETF-82, MF-67 | **L!** MF-02, REG-10, REG-34, ETF-51, ETF-52<br>Open: ETF OQ21 (the credit-risk directive), REG OQ22 | **–** moves with the securities account | L 5, C 0, O 0, – 1; 2 with ! |
+| Foreign fund traded on TASE | **L** ETF-22 to ETF-24, ETF-26, ETF-32, ETF-43, ETF-71 | **C!** TXF-04, TXF-06, TXF-07 (only capitax.co.il's copy of the Tax Authority's 2019 letter), TXF-05<br>Open: TXF OQ10, TXF OQ9 | **C** ETF-27 (BlackRock)<br>Open: ETF OQ5 | **L** ETF-26, ETF-67 | **L** ETF-24, REG-35, REG-36 | **–** moves with the securities account | L 3, C 2, O 0, – 1; 1 with ! |
+| Foreign-domiciled ETF (bought at a broker abroad) | **L** ETF-28, ETF-29 | **L!** TXF-01 to TXF-03, TXF-08, TXF-12, TXF-14, TXF-22, TXF-27, TXF-28; TXF-11 (by implication)<br>Open: TXF OQ1 (accumulating funds), TXF OQ11, TXF OQ23, TXF OQ24 | **C** ETF-30, ETF-63 (each fund's own); brokers BRK-40, BRK-42 | **L** ETF-29 | **L!** REG-36, BRK-35, REG-27<br>Open: REG OQ24 (a US fund's custody), REG OQ14 | **–** moves with the securities account | L 4, C 1, O 0, – 1; 2 with ! |
+| Active mutual fund | **L** MF-01, MF-05, MF-06 | **L** TXS-07 to TXS-11, TXS-22 | **L!** MF-16, MF-17, MF-20 to MF-22, MF-24, MF-26, MF-27; MF-28 (companies)<br>Open: MF OQ7 (loads), MF OQ5 | **L!** MF-09 to MF-14, MF-67<br>Open: MF OQ3 | **L!** REG-10, MF-02, REG-34<br>Open: REG OQ22 | **–** moves with the securities account | L 5, C 0, O 0, – 1; 3 with ! |
+| Bond fund that ends on a set date | **L!** MF-59, MF-60; MF-62 to MF-66 (companies)<br>Open: MF OQ19, MF OQ20, MF OQ22 | **L!** TXS-33 to TXS-37 (derived)<br>Open: TXS OQ21, TXS OQ22, TXS OQ23 | **L** MF-16, MF-20, MF-24; MF-62 to MF-64 (companies) | **L!** MF-60<br>Open: MF OQ18 (no real wind-up seen), MF OQ20 | **L!** REG-10, MF-02<br>Open: REG OQ22 | **–** moves with the securities account | L 5, C 0, O 0, – 1; 4 with ! |
+| Corporate bond | **L** CORP-01, CORP-02, CORP-16 | **L!** TX2-06 to TX2-08, TXS-03<br>Open: TX2 OQ6 (a default's timing), TX2 OQ14 | **L** CORP-23, GOV-21 | **L** CORP-07, CORP-18, CORP-19 | **L!** CORP-04 to CORP-09, CORP-24, REG-33<br>Open: CORP OQ12, CORP OQ9, CORP OQ1, CORP OQ2 | **–** moves with the securities account | L 5, C 0, O 0, – 1; 2 with ! |
+| REIT (real-estate fund on the exchange) | **L** RG-01 to RG-08<br>Open: RG OQ4 (no official list) | **L!** TX2-09 to TX2-12, TX2-20<br>Open: TX2 OQ7, TX2 OQ8 (National Insurance on payouts) | **C** RG-10 (press), RG-11<br>Open: RG OQ5 | **L** RG-02 | **L** RG-04, RG-05, REG-33 | **–** moves with the securities account | L 4, C 1, O 0, – 1; 1 with ! |
+| Gold through a fund | **C!** RG-16, RG-17, RG-18, RG-20, RG-21; ETF-01 (a fund may track a commodity)<br>Open: RG OQ8 (how each fund holds gold), ETF OQ37 | **L!** TX2-13, TX2-14<br>Open: TX2 OQ9, TX2 OQ10 | **C** RG-14 (the regulator's figures through a copy), RG-16<br>Open: RG OQ9, RG OQ10 | **L** ETF-04, MF-09 | **L!** MF-02, ETF-51; RG-20, RG-21 (issuers)<br>Open: RG OQ8, RG OQ11 | **–** moves with the securities account | L 3, C 2, O 0, – 1; 3 with ! |
+| Single shares | **O** none (no rule says what a share is; scope undecided) | **L** TXS-01, TXS-16 to TXS-21, TXF-01, TXF-08 | **L** BRK-15, BRK-16, BRK-24, BRK-33 | **L** BRK-29 | **L** REG-33 (shareholders are paid last); custody: the securities account row | **–** moves with the securities account | L 4, C 0, O 1, – 1 |
+| Structured notes and bonds | **O** none (FXD-10's definition may reach them; not applied)<br>Open: REG OQ25, TX2 OQ16 | **O** none<br>Open: TX2 OQ16 | **O** none | **O** none | **O** none<br>Open: REG OQ25 | **–** moves with the securities account | L 0, C 0, O 5, – 1 |
+| Managed and robo portfolio | **L** MGD-01 to MGD-07, MGD-21, MGD-22 | **L!** TX2-15 to TX2-17<br>Open: TX2 OQ11 (fees in a year with no gain), TX2 OQ13 | **L!** MGD-08, MGD-09, TX2-17; MGD-10, MGD-11 (the regulator's averages through a copy)<br>Open: MGD OQ13 (termination fees) | **L** MGD-05 | **L** MGD-14, MGD-15; REG-09 (copy)<br>Open: MGD OQ16 | **L!** MGD-05, BRK-18, SW-33<br>Open: MGD OQ13 | L 6, C 0, O 0; 3 with ! |
+
+### Provident family (regulated by the Capital Market Authority)
+
+| Kind | What it is | Tax | Cost | Getting the money out | If the company fails | Moving it | Count |
+|---|---|---|---|---|---|---|---|
+| Provident fund for investing | **L** KGL-01, KGL-02, KGL-06, KGL-24 | **L!** TXK-01 to TXK-07, TXK-13, TXK-26, TXK-27<br>Open: TXK OQ3 (the withholding rate: reg. 3 says 20%, managers withhold 25%), TXK OQ10 (a loss at exit) | **L** PF-02, PF-03, PF-10, KGL-14, KGL-16 | **L!** KGL-08, KGL-09, KGL-28<br>Open: TXK OQ4 (taking the annuity money as a lump sum) | **L** REG-18, REG-19, PF-29 | **L** KGL-10, SW-21, TXK-04<br>Open: SW OQ2, SW OQ17 | L 6, C 0, O 0; 2 with ! |
+| Study fund | **L** KH-01, KH-02, KH-04, KH-05 | **L!** TXH-01 to TXH-19<br>Open: TXH OQ10 (order of withdrawal), TXH OQ4 (National Insurance), TXH OQ9 | **L** KH-22, KH-23, PF-06 | **L** KH-10 to KH-12, KH-14 to KH-16<br>Open: KH OQ4 (loans) | **L** REG-18, REG-19 | **L** KH-17, SW-20, TXH-19<br>Open: TXH OQ11 | L 6, C 0, O 0; 1 with ! |
+| Self-managed fund (IRA, study or provident) | **L** IRA-01 to IRA-05, IRA-07, IRA-11 (the regulations read on Nevo and Wikisource)<br>Open: IRA OQ1, IRA OQ2 | **L!** TXK-16 to TXK-18<br>Open: TXK OQ8 (active trading as business income) | **L** IRA-16 to IRA-18; IRA-21, IRA-22 (one manager)<br>Open: IRA OQ6, IRA OQ7 | **L** IRA-25 | **L!** REG-18, REG-19, REG-34, REG-35<br>Open: IRA OQ11 (in whose name the securities sit at the broker) | **L** IRA-23, SW-24 | L 6, C 0, O 0; 2 with ! |
+| Child savings (bank or provident route) | **L** CS-01 to CS-08, CS-10, CS-13<br>Open: CS OQ4 | **O** TXK-19 (deposits are not income), TXK-20; TXK-23, TXK-29 (inferences that must not compute)<br>Open: TXK OQ1 | **L!** CS-18; CS-30 (companies)<br>Open: CS OQ8 (the fee after 21) | **L** CS-14 to CS-17 | **L** CS-05, REG-23 | **L** CS-11, CS-12, SW-25 | L 5, C 0, O 1; 1 with ! |
+| Pension fund (comprehensive and general) | **L** PEN-01, PEN-05, PEN-08, PEN-10, PEN-34; PEN-11 to PEN-15 (the standard bylaw, from a copy)<br>Open: PEN OQ24 | **L!** TXP-01 to TXP-23<br>Open: TXP OQ15 (whether the taxable annuity is personal-exertion income) | **L** PF-04, PF-05, PEN-15, PEN-21, PEN-23 | **L!** PEN-26 to PEN-31 (these also quote the standard bylaw from a copy), PEN-48 to PEN-51<br>Open: PEN OQ24, PEN OQ29, PEN OQ30, PEN OQ22 | **L** REG-18, REG-19, REG-21, PEN-18, PEN-19 | **L!** SW-12, SW-22, PF-28<br>Open: SW OQ7 (qualifying period after a transfer), SW OQ8 | L 6, C 0, O 0; 3 with ! |
+| Provident fund for annuity | **L** PEN-34, PEN-35 | **L!** TXP-14, TXP-24<br>Open: TXP OQ9 | **L** PEN-22 | **O!** none<br>Open: PEN OQ19 (who pays the annuity, on what factors) | **L** REG-18, REG-19 | **L** SW-23 | L 5, C 0, O 1; 2 with ! |
+
+### Insurance
+
+| Kind | What it is | Tax | Cost | Getting the money out | If the company fails | Moving it | Count |
+|---|---|---|---|---|---|---|---|
+| Savings policy | **C!** INS-01 (an insurer's terms; the law's definition not opened)<br>Open: INS OQ1 | **L!** TXA-03 to TXA-05, TXA-28<br>Open: TXA OQ1 (15% for a policy that is not profit-sharing), TXA OQ2, TXA OQ4 | **L!** INS-25, INS-26; INS-03 (insurers)<br>Open: INS OQ16 (deposit fees), INS OQ3 | **C!** INS-07 (insurers' terms)<br>Open: INS OQ14 | **L** INS-21, REG-22<br>Open: REG OQ27 | **L** TXA-08, INS-12 (no transfer route: withdraw and buy anew, a tax event) | L 4, C 2, O 0; 4 with ! |
+| Executive insurance | **L** INS-13, INS-14, TXA-12<br>Open: INS OQ9 | **L!** TXA-12 to TXA-16<br>Open: TXA OQ6 (growth inside the policy), TXA OQ7, TXA OQ8 | **L!** INS-15<br>Open: INS OQ8, INS OQ9 | **L!** INS-20, PEN-28 to PEN-30; INS-17 (an insurer's example)<br>Open: INS OQ10 (guaranteed annuity factors) | **L** INS-21, REG-22 | **L** INS-20, PF-17, PF-19 | L 6, C 0, O 0; 3 with ! |
+| Amendment 190 deposits | **L** TXA-17, TXA-23, TXA-24; TXA-25 | **L!** TXA-18, TXA-19, TXA-30<br>Open: TXA OQ14 (National Insurance on the annuity), TXA OQ13, TXA OQ5 | **–** follows the product that holds it | **L** TXA-20 to TXA-22, TXA-27, TXA-30 | **–** follows the product that holds it | **–** follows the product that holds it | L 3, C 0, O 0, – 3; 1 with ! |
+
+### Counts
+
+| Grade | Cells | Of which with ! |
+|---|---|---|
+| L, answered from the law, a regulator or the exchange | 139 | 53 |
+| C, only a copy or companies' documents | 14 | 6 |
+| O, open | 11 | 1 |
+| –, does not apply | 16 | |
+| **All** | **180** | **60** |
+
+By question (L / C / O / –, then cells with !): what it is 25 / 3 / 2 / 0, 7 with !; tax 26 / 1 / 3 / 0, 23 with !; cost 22 / 4 / 3 / 1, 7 with !; getting the money out 24 / 4 / 2 / 0, 10 with !; if the company fails 27 / 1 / 1 / 1, 9 with !; moving it 15 / 1 / 0 / 14, 4 with !. Tax is the question most often answered with an open part that changes a result; nearly all of those questions sit in the tax-specialist's files.
+
+Every applicable cell is L in 18 of the 30 kinds, but none of them is free of a !: the closest, with one each, are the current account, makam, study fund and Amendment 190 deposits. Kinds with cells not L: structured notes and bonds (5 O), Israel Bonds (4 C, 2 O), structured deposit (1 C, 1 O), foreign fund traded on TASE (2 C), gold through a fund (2 C), savings policy (2 C), foreign-currency deposit (1 C), foreign-domiciled ETF (1 C), REIT (1 C), single shares (1 O), child savings (1 O), provident fund for annuity (1 O).
+
+### The cells most worth answering next
+
+Ranked by how many readers hold the kind, how much the answer moves their result, and whether the open question says where the answer probably is. Owner: tax = the tax-specialist's file; domain = the domain-specialist's.
+
+| # | Cell | Grade | Why it changes a result | Open questions | Owner |
+|---|---|---|---|---|---|
+| 1 | Foreign fund traded on TASE · tax, and foreign-domiciled ETF · tax | C!, L! | The usual way to hold a world or S&P 500 index: whether tax waits until the sale on an accumulating fund, which index measures the gain, and whether a loss offsets distributions all rest on the Tax Authority's 2019 letter read only in a copy, or on an implication | TXF OQ10, TXF OQ1, TXF OQ9 | tax |
+| 2 | Provident fund for investing · tax | L! | What is withheld at a lump-sum exit (reg. 3 says 20%, the managers withhold 25%) and whether a loss at exit offsets other income | TXK OQ3, TXK OQ10 | tax |
+| 3 | Child savings · tax | O | Every child has one: the exit tax is only an inference (25% of the real gain on the provident route, 15% on an unlinked bank track), and National Insurance's own circular says 25% on both | TXK OQ1 | tax |
+| 4 | Securities account · moving it | L! | Whether moving your own securities to another account is a sale for tax, keeps the cost and the losses, and can be done with a broker abroad; for a non-bank broker's fee for the move no cap was found and only companies state one | TXS OQ17, SW OQ11, SW OQ12 | tax, domain |
+| 5 | Securities account · if the company fails | L! | Foreign securities held through an Israeli bank (the clearing-house trustee rule leaves them out), who moves a failed member's accounts and who bears a shortfall, and whether the clearing house's lien reaches client holdings | REG OQ23, REG OQ9, REG OQ10, BRK OQ23, REG OQ21 | domain |
+| 6 | Bank deposit and savings plan · tax | L! | Tax when a deposit or a plan is broken early, the most common exit before term | TXI OQ14 | tax |
+| 7 | Study fund · tax | L! | Which money comes out first when benefited and non-benefited money are mixed, and National Insurance on the employer's money | TXH OQ10, TXH OQ4 | tax |
+| 8 | Provident fund for annuity · getting the money out (with the provident fund for investing's annuity route) | O!, L! | Who pays the annuity and on what conversion factors, and whether money moved there at 60 can still be taken as a lump sum | PEN OQ19, TXK OQ4 | domain, tax |
+| 9 | Pension fund · getting the money out | L! | The standard bylaw behind the pension rules is read only in a copy; the rate behind the statement's expected pension; whether a lower pensioner fee changes the factor | PEN OQ24, PEN OQ29, PEN OQ30 | domain |
+| 10 | Savings policy · what it is and getting the money out | C!, C! | Its legal definition was never opened, and withdrawal terms come only from insurers' documents; with the tax question of a policy that is not profit-sharing | INS OQ1, INS OQ14, TXA OQ1 | domain, tax |
+
+Next after these: money-market and other mutual funds · getting the money out (MF OQ3, cut-off hours and Friday orders); bank deposit · what it is (BANK OQ17, whether published CPI-linked rates are real or nominal); government bond · tax (TXI OQ5, accrued interest); pension fund · tax (TXP OQ15); self-managed fund · tax (TXK OQ8, active trading as business income); Israel Bonds · what it is (GOV OQ11, FXD OQ10, whether a resident can buy at all); foreign-currency deposit · out and tax (FXD OQ4, TX2 OQ2); executive insurance · tax (TXA OQ6).
+
+Not a reader's result but a source check, cheap to fix: rules that rest only on a copy, among them BANK-35 (the 2026 current-account fee caps), ETF-13 (fee layers) and TXS-15 (foreign tax inside an exempt fund), all from olaw.org.il, and MGD-10, MGD-11 and RG-14 (the regulators' reports through a press host). By source link, 33 rules rest only on a copy or on a copy and companies' documents, and 119 more cite a copy beside an official text.
 
 ---
 
