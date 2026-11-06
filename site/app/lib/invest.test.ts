@@ -314,7 +314,7 @@ describe("a bank's current account on the indices page (D64, F-102)", () => {
     const minimumOf = (v: typeof before, id: string) => (best(v, id).cost("x").computed_from!.inputs as Record<string, { value: unknown; source: { url: string }; state: string }>)["דמי ניהול חשבון עו״ש בחודש"];
     for (const id of banks) {
       const rec = bundle.snapshots.find((s) => s.id === id)!.current_account!.monthly_minimum;
-      const m = minimumOf(counted, id);
+      const m = minimumOf(counted, id)!;
       expect(m.value).toBe(rec.value);
       expect(m.source.url).toBe(rec.source.url);
       expect(m.state).toBe("sourced");
