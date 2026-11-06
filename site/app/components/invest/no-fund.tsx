@@ -10,7 +10,7 @@ import { fmt } from "../../lib/format";
 import { IconCopy, IconExternal } from "../icons";
 import { Num } from "../provenance";
 import { Button, Card, ChartLegend, CostStack, LongestCase, PickList, Swatch, Tag, cx, useChartPick, useHeldHeight, type CostPart, type PickRow } from "../kit";
-import { barScale, GroupLine, HouseLine, legendLines, lineClass, lineOf, LONGEST_AMOUNT, LONGEST_YEARS, nis, partName, OwnBankField } from "./pair";
+import { barScale, GroupLine, HouseLine, legendLines, lineClass, lineOf, LONGEST_AMOUNT, LONGEST_YEARS, nis, partName, AbroadNotes, OwnBankField } from "./pair";
 import { optionClass, reasonText } from "./parts";
 import { ProviderLink, providerName } from "./sections";
 import { AddEntryButton, BrokerTerms, FundTerms } from "./custom-entries";
@@ -174,6 +174,7 @@ export function NoFundAccountColumn({ view, bundle, years, monthly = 1, chosen, 
           {c.pair.whichPrice}
           {saved.length > 0 && <> {c.pair.collectedSpan(`\u2066${fmt.date(saved[0]!)}\u2069`, `\u2066${fmt.date(saved.at(-1)!)}\u2069`)}</>}
         </span>
+        <AbroadNotes view={view} bundle={bundle} />
         {ownBank && <OwnBankField view={view} bundle={bundle} value={ownBank.value} onChange={ownBank.onChange} />}
       </div>
       <div className="@container">

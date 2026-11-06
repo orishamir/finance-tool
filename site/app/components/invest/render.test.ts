@@ -361,3 +361,34 @@ describe("a typed entry's line (#190)", () => {
     expect(out.replace(invest.customEntries.unknownLine(invest.customEntries.fields.fx), "")).not.toContain("הזנתם");
   });
 });
+
+describe("the account card's notes on prices abroad and its own-bank list (D64, D65, D66)", () => {
+  const sp = indexById(bundle, "index-sp500")!;
+  const ta = indexById(bundle, "index-ta125")!;
+  const card = (index: typeof sp, own: string | null) => {
+    const view = buildInvest({ bundle, index, plan: { ...plan, currentAccounts: { own } } });
+    return shown(html(createElement(AccountColumn, { view, bundle, years: 20, pick: pickOfHeadline(view)!, onPick: () => undefined, ownBank: { value: own, onChange: () => undefined } })));
+  };
+
+  it("names the houses whose price lists limit the spread, from their records, on an index with funds bought abroad", () => {
+    const out = card(sp, null);
+    expect(out).toContain(invest.pair.abroadSpread(["אי.בי.אי", "אלטשולר טרייד", "מיטב טרייד"]));
+    expect(out).toContain(invest.pair.abroadOthers);
+  });
+
+  it("says neither on an index whose funds are all bought in Tel Aviv, if it has none bought abroad", () => {
+    const view = buildInvest({ bundle, index: ta, plan });
+    const out = card(ta, null);
+    const abroad = view.options.some((o) => o.id === "abroad" && o.exists);
+    expect(out.includes(invest.pair.abroadOthers)).toBe(abroad);
+  });
+
+  it("offers every bank with a current account, and says which row leaves it out", () => {
+    expect(card(sp, null)).toContain(invest.pair.ownBank.counted);
+    expect(card(sp, "leumi")).toContain(invest.pair.ownBank.left("לאומי"));
+    const raw = html(createElement(AccountColumn, { view: buildInvest({ bundle, index: sp, plan }), bundle, years: 20, pick: pickOfHeadline(buildInvest({ bundle, index: sp, plan }))!, onPick: () => undefined, ownBank: { value: null, onChange: () => undefined } }));
+    for (const id of ["discount", "fibi", "hapoalim", "jerusalem", "leumi", "massad", "mercantile", "mizrahi-tefahot", "one-zero", "yahav"]) expect(raw).toContain(`value="${id}"`);
+    expect(raw).not.toContain(`value="psagot"`);
+    expect(raw).not.toContain(`value="pepper"`);
+  });
+});

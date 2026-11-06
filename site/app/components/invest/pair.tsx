@@ -624,6 +624,22 @@ export function OwnBankField({ view, bundle, value, onChange }: { view: InvestVi
   );
 }
 
+/**
+ * What a price for a fund bought abroad leaves out, said once on the page (D65, D66): a spread the price list does not limit, naming the
+ * houses whose lists limit it, and what others abroad charge the house. Only on an index with funds bought abroad.
+ */
+export function AbroadNotes({ view, bundle }: { view: InvestView; bundle: WorkbenchBundle }) {
+  if (!view.options.some((o) => o.id === "abroad" && o.exists)) return null;
+  const limits = (id: string) => bundle.snapshots.some((s) => s.id === id && s.lines.some((l) => l.base === "fx" && typeof l.spread?.value === "number"));
+  const capped = view.providers.filter((p) => !p.custom && limits(p.id)).map((p) => p.short).sort((a, b) => a.localeCompare(b, "he"));
+  return (
+    <span className="text-xs text-muted-foreground flex flex-col gap-1">
+      {capped.length > 0 && <span>{c.pair.abroadSpread(capped)}</span>}
+      <span>{c.pair.abroadOthers}</span>
+    </span>
+  );
+}
+
 export function AccountColumn({ view, bundle, years, monthly = 1, pick, onPick, moved = null, group = null, ownBank }: { view: InvestView; bundle: WorkbenchBundle; years: number; /** The plan's monthly deposit: at 0 no purchase runs on a standing order, and the list says so. */ monthly?: number; pick: Pick; onPick: OnPick; /** The tap before changed the fund too. */ moved?: Moved | null; /** The house's group picked in its fold: `pick.house` is then the held account priced at it, and this its house. */ group?: { house: string; key: string; name: string } | null; /** The bank where the person already has a current account, and its setter (D64). */ ownBank?: { value: string | null; onChange: (id: string | null) => void } }) {
   const legendPick = useChartPick();
   // a row added or removed starts the held height over, so a removed row leaves no hole (D44)
@@ -907,6 +923,7 @@ export function AccountColumn({ view, bundle, years, monthly = 1, pick, onPick, 
           {c.pair.whichPrice}
           {saved.length > 0 && <> {c.pair.collectedSpan(`\u2066${fmt.date(saved[0]!)}\u2069`, `\u2066${fmt.date(saved.at(-1)!)}\u2069`)}</>}
         </span>
+        <AbroadNotes view={view} bundle={bundle} />
         {ownBank && <OwnBankField view={view} bundle={bundle} value={ownBank.value} onChange={ownBank.onChange} />}
       </div>
       <div className="@container">
