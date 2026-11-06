@@ -2,7 +2,7 @@
 
 Each site parameter (`docs/method.md` §2.3, stored in `data/parameters/`) is a judgement, not a rule. This file records the current value of each and why it was chosen, so the page can show it under "site parameter". There are ten, P-01 to P-10, one file each.
 
-The founder set P-01 and approved P-10 himself. He asked Claude to choose the others ("do whatever you think fits") and signed them off as his. Each file records who chose it in `chosen_by` and the sign-off in `signed_off_by` and `signed_off_on`. Any value can be changed at any time.
+The founder set P-01 and approved P-10 himself. He asked Claude to choose the others ("do whatever you think fits") and signed them off as his. Each of those files records who chose it in `chosen_by`, and every file records the sign-off in `signed_off_by` and `signed_off_on`. Any value can be changed at any time.
 
 **Reader text.** Each number in every parameter file carries its own short Hebrew line (`rationale_he` on the value object), and the file has a general line; what the reader text may and may not say is in `docs/data-schema.md` section 3.2. Who chose a value, test scenarios, audit ids and earlier values stay in this file, never on the page, and `site/app/lib/parameter-text.test.ts` fails if they appear there.
 
@@ -136,11 +136,11 @@ P-08, `data/parameters/exposure-holding-wrapper.json`. Chosen by Claude at the f
 - makam: the makam product; no sourced yield exists, so the person enters one;
 - the CPI-linked government bond: the government-bond product, series GOV-11 (the series P-05's government-bond entry names);
 - the unlinked government bond: the same product, but **not evaluated**: the engine does not run a fixed-rate unlinked series (its yearly coupon is GOV-13);
-- the S&P 500: a brokerage account, through fund 1148162;
+- the S&P 500: a brokerage account, through the fund P-05's brokerage entry names (5139282; the file's `fund` field still says 1148162, which the page does not read);
 - the TA-125: a brokerage account, through collected fund 1143718 (Tachlit Sal TA 125), on Leumi's tariff;
 - the general track: a kupat gemel lehashkaa at the manager's list fees (Meitav), with the return entered (D9).
 
-For a fund-held exposure the page takes the terms of the fund collected for that exposure (`exposure_id` in `data/funds/`); with none collected the row is not evaluated.
+For a fund-held exposure the page takes the terms of a fund collected for that exposure (`exposure_id` in `data/funds/`): the one P-05's entry for the wrapper names when it is collected for the exposure, otherwise the first collected; with none collected the row is not evaluated.
 
 **Why:** each default is the plain way to hold the exposure that the site already has collected terms for, taken from the wrapper the exposure record lists first among those it can run. The alternative, ranking every wrapper for every exposure, is wrapper mode's job and is offered by the link "באיזה מוצר להחזיק את זה". A row that cannot run says why instead of borrowing another instrument's terms. The person can change the wrapper on any row, among the wrappers the exposure record allows; the choice is then theirs, entered.
 
