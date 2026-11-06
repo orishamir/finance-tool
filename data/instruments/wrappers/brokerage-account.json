@@ -238,7 +238,7 @@
     "blocked_by": [],
     "labels": [
       "secondary source: an accumulating foreign-domiciled fund is taxed only at sale (TXF-11; TXF OQ1)",
-      "institution source: tax when securities move between accounts without a sale (SW-36; SW OQ11)"
+      "institution source: tax when securities move between one's own accounts without a sale (SW-55, TXS-40; TXS OQ17)"
     ]
   },
   "lawful_exit": {
@@ -265,7 +265,7 @@
       "SW-36"
     ],
     "state": "sourced",
-    "notes": "Selling one fund or security to buy another is a sale: tax on any real gain is withheld even if the money never leaves the account (TXS-21). Moving securities in kind to your own account at another member is described by institutions as not a tax event, with the cost basis carried over; no Tax Authority source was read (SW-36, SW OQ11)."
+    "notes": "Selling one fund or security to buy another is a sale: tax on any real gain is withheld even if the money never leaves the account (TXS-21). Moving securities in kind to one's own account at another member: no official text says whether it is a sale, and the cost and purchase day are the holder's (TXS-38); at the later sale the institution that pays the proceeds withholds from the cost it holds, and a missing cost is declared on form 747 or 746 or recovered through the return (TXS-39); banks and brokers describe the move as no tax event (TXS-40, SW-55; TXS OQ17). A move to another owner is a sale (SW-36)."
   },
   "transfer_routes": [],
   "eligibility": {
@@ -374,7 +374,8 @@
     "TXS-OQ12",
     "REG-OQ21",
     "REG-OQ23",
-    "BRK-OQ23"
+    "BRK-OQ23",
+    "TXS-OQ17"
   ],
   "checked": "2026-11-07"
 }
