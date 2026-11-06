@@ -80,13 +80,13 @@ describe("holdingPlan reads the employer deposit (B4)", () => {
     expect(m.total.value as number).toBeGreaterThan(0);
     // 450 above the limit: 5,400 a year in the 20% band (TXG-02) = 1,080 a year, 10,800 over 10 years
     expect(m.run.detail.employerDepositTax).toBeCloseTo(10_800, 2);
-    // National Insurance and health, 12.17% × 450 × 120 months (TXG-35, a reading)
+    // National Insurance and health, 12.17% × 450 × 120 months (TXG-35, sourced to National Insurance's circular 1473, TXH-26)
     expect(m.run.detail.employerSocial).toBeCloseTo(6_571.8, 2);
     // benefited: own 300 (2.5% of 12,000) + employer 900 (the limit); in excess: own 150 above its share + employer 450 = 600
     expect(m.run.detail.benefitedMonthly).toBeCloseTo(1_200, 9);
     expect(m.run.detail.excessMonthly).toBeCloseTo(600, 9);
-    // the label travels to the page value (the fee page marks an inference like a secondary-source label)
-    expect(m.run.labels).toContainEqual({ code: "reading", ruleId: "TXG-35" });
+    // sourced since 2026-11-07, so the fee page no longer marks the total as a reading
+    expect(m.run.labels.some((l) => l.ruleId === "TXG-35")).toBe(false);
   });
 });
 

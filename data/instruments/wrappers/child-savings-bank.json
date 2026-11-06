@@ -59,13 +59,13 @@
     "formula": "F-50",
     "rule_ids": [
       "TXK-20",
-      "TXK-23",
+      "TXK-29",
       "TXI-02",
       "TXI-03"
     ],
     "blocked_by": [],
     "labels": [
-      "secondary source: 25% of the real gain on a CPI-linked track, 15% of the nominal gain on an unlinked or prime track, withheld by the bank (TXK-23; the official texts give no rate for child savings, TXK OQ1; method G-17)"
+      "the site's reading: up to 25% of the real gain on a CPI-linked track (s.125ג(ב), the linkage exempt by s.9(13)), 15% of the nominal gain on an unlinked or prime track (s.125ג(ג)(1)), withheld by the bank (TXK-29, TXI-02, TXI-03, TXI-05: the general deposit-interest rules, which the Ministry of Finance says apply; no official text names child savings, TXK OQ1; whether the Ordinance's trust chapter, s.75ג, reaches the child's statutory trust account is open; method G-17)"
     ]
   },
   "lawful_exit": {
