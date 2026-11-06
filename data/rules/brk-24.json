@@ -18,6 +18,20 @@
   "scope": "general",
   "sources": [
     {
+      "url": "https://content.tase.co.il/media/q2mhob4u/274690.pdf#page=35",
+      "title": "the same rules",
+      "publisher": "Tel Aviv Stock Exchange",
+      "publisher_he": "הבורסה לניירות ערך בתל אביב",
+      "kind": "exchange_rules",
+      "strength": "primary",
+      "locator": "p.35, s.29ב",
+      "locator_he": "עמוד 35, סעיף 29ב",
+      "page": 35,
+      "quote": "טרם כניסתו לתוקף של השינוי",
+      "checked": "2026-11-06",
+      "qualifier": "(exchange rules, ISA-approved)"
+    },
+    {
       "url": "https://content.tase.co.il/media/q2mhob4u/274690.pdf",
       "title": "מדריך לחברי הבורסה: החלק הראשון לתקנון (מעודכן עד 1.1.2026)",
       "title_he": "מדריך לחברי הבורסה: החלק הראשון לתקנון (מעודכן עד 1.1.2026)",
