@@ -61,6 +61,9 @@ const inControl = (target: EventTarget, row: HTMLElement) => {
   return !!hit && hit !== row && row.contains(hit);
 };
 
+/** The tallest height each list has held, by its label, `holdKey` and the window's width. */
+const keptHeights = new Map<string, number>();
+
 // A pick made outside the list (a name in a "not priced" line under it) that brings a row into the list: that row takes the place on the
 // screen of what was tapped. One pending hold for the page; the list that has the row takes it.
 let pending: Hold | null = null;
@@ -79,7 +82,7 @@ export function holdOnPick(key: string, el: HTMLElement) {
   pending = holdOf(key, el);
 }
 
-export function PickList({ label, columns, phoneColumns, head, rows, phoneLimit, more, states, orders }: { label: string; columns: string; phoneColumns?: string; head?: ReactNode; rows: PickRow[]; phoneLimit?: number; more?: (hidden: number) => string; states?: Record<string, string>[]; orders?: FoldOrder[] }) {
+export function PickList({ label, columns, phoneColumns, head, rows, phoneLimit, more, states, orders, holdKey }: { label: string; columns: string; phoneColumns?: string; head?: ReactNode; rows: PickRow[]; phoneLimit?: number; more?: (hidden: number) => string; states?: Record<string, string>[]; orders?: FoldOrder[]; /** What the list's hold lasts for (an index): the list also keeps the tallest it has held for it at this width, because `orders` and the rows' cases are those of the plan on the screen, and another plan sorts other rows into the fold or words a row longer (#190: 14 px at the sliders' ends). */ holdKey?: string }) {
   const [open, setOpen] = useState(false);
   // a pick re-prices what is above the list (founder, 2026-10-27: "the whole page jumps up and down"): keep the tapped row where it
   // was on the screen, wherever the list now puts it
@@ -167,7 +170,15 @@ export function PickList({ label, columns, phoneColumns, head, rows, phoneLimit,
         const rowCases: RowCases[] = inFlow.map((el) => ({ key: el.dataset.pickKey!, real: h(el), cases: byRow.get(el.dataset.pickKey!) ?? new Map() }));
         most = Math.max(most, heldRowsHeight(rowCases, states, now));
       }
-      if (most - now > 0.5) list.style.minHeight = `${h(list) + most - now}px`;
+      let held = most - now > 0.5 ? h(list) + most - now : 0;
+      if (holdKey !== undefined) {
+        // kept outside the component: a plan with nothing to invest unmounts the lists for a moment, and a held height kept in the
+        // component started over and shrank (#190: 14 px at the sliders' start)
+        const k = `${label}|${holdKey}|${window.innerWidth}`;
+        held = Math.max(held, h(list), keptHeights.get(k) ?? 0);
+        keptHeights.set(k, held);
+      }
+      if (held > 0) list.style.minHeight = `${held}px`;
     };
     fit();
     window.addEventListener("resize", fit);

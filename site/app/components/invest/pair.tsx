@@ -889,6 +889,7 @@ export function AccountColumn({ view, bundle, years, monthly = 1, pick, onPick, 
       <div className="@container">
       <PickList
         label={c.pair.listLabelAccounts}
+        holdKey={view.index.id}
         columns="1.5rem 9.5rem minmax(0,1fr) 7.5rem"
         phoneColumns="1.25rem minmax(0,1fr) 6.5rem"
         head={
@@ -1227,6 +1228,7 @@ export function FundColumn({ view, bundle, plan, today, pick, chosen = true, onP
         }
         rows={pickRows}
         orders={orders}
+        holdKey={view.index.id}
       />
       <div className="px-5 py-3 flex flex-col gap-1.5 text-sm text-muted-foreground">
         <AddEntryButton kind="fund" />

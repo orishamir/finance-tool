@@ -2,7 +2,7 @@
 // single change leaves more at the end and by how much, taken one step at a time. Appended after the page's other sections and reading
 // the same view: the start is the person's pick; every figure is the engine's (`buildInvest` for the rows, `pairCosts` for the stairs shown
 // only), every difference a computation of F-91. The selection logic is `lib/stairs.ts`; the chart and the rows are the kit's.
-import { memo, useMemo, useState } from "react";
+import { memo, useMemo, useState, type ReactNode } from "react";
 import { invest as c } from "../../copy";
 import { fmt } from "../../lib/format";
 import { fundLabels } from "../../lib/labels";
@@ -34,6 +34,15 @@ interface Level {
   tax: SiteValue;
   /** The three costs less the stair before's, in whole shekels that add up to minus the difference in what is left (F-91); null for the start. */
   dParts: [number, number, number] | null;
+}
+
+/** The status line's jump to the top pair: one element for the line and its unseen cases, which must wrap as it does. */
+function JumpLink({ children, onClick }: { children: ReactNode; onClick?: () => void }) {
+  return (
+    <button type="button" className="text-link underline underline-offset-[3px] hover:no-underline" onClick={onClick} tabIndex={onClick ? undefined : -1}>
+      {children}
+    </button>
+  );
 }
 
 export const StairsSection = memo(function StairsSection({ view, bundle, plan, startHouse, startFund, example }: { view: InvestView; bundle: WorkbenchBundle; plan: WorkbenchInputs; startHouse: string | null; startFund: string | null; /** Nothing is picked: the start is the page's example, never called "now" (2026-11-05). */ example: boolean }) {
@@ -302,9 +311,9 @@ export const StairsSection = memo(function StairsSection({ view, bundle, plan, s
       <>
         {t.statusNone} <Num value={delta(gap, ceilingPrice.value, `${t.about.left}: ${nameOfPos(ceiling.pos)}`, end.left, `${t.about.left}: ${end.fundName}, ${end.house.name}`, t.about.ceilingGap)} />
         {t.statusTogether}{" "}
-        <button type="button" className="text-link underline underline-offset-[3px] hover:no-underline" onClick={() => jump(ceiling.pos)}>
+        <JumpLink onClick={() => jump(ceiling.pos)}>
           {t.jump} {nameOfPos(ceiling.pos)}
-        </button>
+        </JumpLink>
         {openNote}
       </>
     );
@@ -320,7 +329,11 @@ export const StairsSection = memo(function StairsSection({ view, bundle, plan, s
     ...fundNames.map((n) => (
       <span key={`n${n}`}>
         {t.statusNone} {sample}
-        {t.statusTogether} <span className="underline">{t.jump} {n}, {longestHouse}</span>
+        {t.statusTogether}{" "}
+        {/* the same button as the line's own: a button wraps as one box, and a span in its place held a line too few (#190) */}
+        <JumpLink>
+          {t.jump} {n}, {longestHouse}
+        </JumpLink>
         {openTop && <> {t.openNote} {sampleLeft}: {longestFundName}, {longestHouse}.</>}
       </span>
     )),

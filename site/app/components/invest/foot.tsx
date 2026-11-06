@@ -21,9 +21,9 @@ export function Foot({ view }: { view: InvestView }) {
         {o && o.holds && <p>{c.foot.holds}</p>}
         {o && !o.holds && (
           <Disclosure plain label={c.foot.flipsSummary(new Set(flips.map((f) => words(f))).size)}>
-            {/* opened, held at its longest list (every order on the index changing): a slider changes which orders change, and the lines
+            {/* opened, held at its longest list (every order on the index changing, at 0% and at 10%): a slider changes which orders change, and the lines
                 under it moved 112 px on a phone (#190) */}
-            <LongestCase cases={[<p key="all" className="mt-1">{`${c.foot.flips} ${everyWhat.map((w) => `${w} (${c.foot.flipsAt(10)})`).join("; ")}.`}</p>]}>
+            <LongestCase cases={[<p key="all" className="mt-1">{`${c.foot.flips} ${everyWhat.flatMap((w) => [0, 10].map((at) => `${w} (${c.foot.flipsAt(at)})`)).join("; ")}.`}</p>]}>
               <p className="mt-1">{`${c.foot.flips} ${[...new Set(flips.map((f) => `${words(f)} (${c.foot.flipsAt(f.at)})`))].join("; ")}.`}</p>
             </LongestCase>
           </Disclosure>
