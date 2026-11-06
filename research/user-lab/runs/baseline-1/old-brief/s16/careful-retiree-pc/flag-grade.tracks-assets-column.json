@@ -1,0 +1,93 @@
+{
+  "case": "tracks-assets-column",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The column 'נכסים בסוף ספטמבר' does not say it means the money pooled in the track; it reads as the fund's own assets.\",\"where\":\"that column's head\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "The page doesn't say which track suits someone their age (61)",
+      "Not sure who 'רשות שוק ההון' is",
+      "The '123 מקור 123 מחושב 123 הזנתה' line is confusing: 123 of what?",
+      "The orange 'not updated since September' warning worried them, and seems overdone for one-month-old data",
+      "Didn't understand the track types 'עוקב מדדים - גמיש' and 'הלכה איסלאמית'",
+      "The main table is too long; they scrolled 7 screens hunting for כללי in each company",
+      "The past-returns note ('לפני דמי הניהול ולפני מס') is at the bottom but should be at the top",
+      "Don't know what's inside 'חוקים וכללים · 7'",
+      "Dotted underlines under numbers aren't recognisable as clickable",
+      "The sort arrows next to column titles went unnoticed",
+      "'פחות מ־3 שנים' is unclear; a plain 'track is too new' would be better",
+      "'מניות 101%' makes no sense: how can it be more than 100%?",
+      "Unclear whether 'מט\"ח 99%' is a risk for them",
+      "Same company has two tracks with the same name (e.g. two מניות at Harel); which one would they be in?",
+      "Unclear whether the fees shown are what they'd pay or can be negotiated",
+      "No cost in shekels (e.g. on 100,000 ₪ this costs X a year)",
+      "No returns after fees; they had to subtract the fee themselves",
+      "No tax information on withdrawal or the age-60 annuity option",
+      "No plain-language risk measure, such as the worst-year drop",
+      "No information on how to withdraw money, how fast, or the penalty",
+      "No minimum deposit or how-to-open information",
+      "No information on moving between companies without tax",
+      "Would drop the round coloured charts",
+      "Would drop the מההפקדה line, since it's almost always 0%",
+      "Would drop or move the קופה number column",
+      "Would hide Ayalon and new tracks that have no data",
+      "Would hide the other product buttons once a product is chosen"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader used the assets column and read it correctly as money in the track ('6.7 מיליארד ₪ in the track'), so they never raised the problem of it looking like the fund's own assets."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0628112
+  },
+  "b": {
+    "raised": [
+      "The page doesn't say which track suits someone of the reader's age",
+      "The '123 מקור / מחושב / הזנתה' line is confusing (123 of what?)",
+      "The orange 'data not updated since September' warning worried them and seems excessive for one-month-old data",
+      "Didn't understand the track types 'עוקב מדדים - גמיש' and 'הלכה איסלאמית'",
+      "The main table is very long; had to scroll 7 screens hunting for each company's general track",
+      "The 'before fees and before tax' past-returns note should be at the top, not the bottom",
+      "Doesn't know what is in 'חוקים וכללים · 7'",
+      "Didn't realise the dotted underlines under numbers were clickable",
+      "Didn't notice the small arrows by column titles were for sorting",
+      "'פחות מ־3 שנים' in the returns column is unclear; 'track is too new' would be plainer",
+      "'מניות 101%' makes no sense: how can more than 100% be in shares?",
+      "Unclear whether 'מט\"ח 99%' on an S&P track is a risk",
+      "Same company has two tracks with the same name (e.g. two מניות at Harel); unclear which one they'd be in",
+      "Unclear whether the listed fees are what they'd pay or can be negotiated",
+      "No translation of fees into shekels (e.g. cost per 100,000 ₪)",
+      "No returns after fees; had to subtract fees themselves",
+      "No tax information on withdrawal or the age-60 annuity option",
+      "No plain-language risk measure such as the worst-year drop",
+      "No information on how to withdraw money, how fast, or penalties",
+      "No minimum deposit or how to open an account",
+      "No information on moving between companies without tax",
+      "Would drop the round coloured charts; the numbers are enough",
+      "Would drop the מההפקדה line since it's almost always 0%",
+      "Would drop or move the קופה number column",
+      "Would hide Ayalon's and new tracks that have no reported data",
+      "Would hide the other product buttons once one is chosen"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader read the assets column correctly as money in the track (\"6.7 מיליארד ₪ in the track\") and never said the heading was misleading or looked like the fund's own assets."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0601912
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1230024
+}

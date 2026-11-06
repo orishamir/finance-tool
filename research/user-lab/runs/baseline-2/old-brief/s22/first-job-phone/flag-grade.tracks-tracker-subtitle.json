@@ -1,0 +1,105 @@
+{
+  "case": "tracks-tracker-subtitle",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"Only some rows (Altshuler, Analyst) carry an extra line 'עוקב …' under the company name; the inconsistency adds noise.\",\"where\":\"the company cells of the table\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "The list is sorted from most expensive to cheapest, so the answer is at the very bottom and Mor at first looked like the top pick",
+      "Ayalon shows 'עוד לא דווח' instead of a fee, so it's unclear whether it is cheaper",
+      "The page says 12 companies, but the reader counted only 11",
+      "Unclear whether 0.48% is what the reader would pay or only a 2025 average",
+      "The '123 מקור · 123 מחושב · 123 הזנה' line is confusing",
+      "Doesn't understand some investment filter labels (הלכה יהודית, אג\"ח, כספי)",
+      "'אין ההפקדות' under each fee was confusing until the note was read",
+      "Doesn't know what מט\"ח means, and exposure of 101% / 40% / 54% doesn't make sense for an S&P 500 tracker",
+      "Unclear what the 'קופה' number is and whether it's needed to sign up (would remove it)",
+      "Doesn't really understand the difference between fees from deposits and fees from savings",
+      "Returns are shown 'before fees', so it's unclear what you actually get",
+      "No way to see how to join the chosen track (no link or phone)",
+      "No plain-shekel comparison of 0.48% vs 0.7%",
+      "Would remove the ring chart and the stock/foreign-currency exposure column",
+      "Would remove the fund-size column and the fund size under each company name",
+      "Would remove the other investment-filter buttons and the other product buttons",
+      "Would remove the returns column, since the page says not to rank by it"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader does say only some rows have a track-name line, but only as a neutral note among things glanced at and ignored, and never says the inconsistency bothered them or added noise."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0599232
+  },
+  "b": {
+    "raised": [
+      "The list is sorted most expensive to cheapest, so the answer is at the very bottom and Mor at first looked like the top pick",
+      "Ayalon shows 'not reported yet' instead of a fee, so it's unclear whether it is cheaper",
+      "The page says 12 tracks from 12 companies, but the reader counted only 11",
+      "Unclear whether 0.48% is what the reader would actually pay or just a 2025 average",
+      "The '123 מקור · מחושב · הזנה' line is confusing: no idea what it means or why to click a number",
+      "Doesn't know what the other investment filters (הלכה יהודית, אג\"ח, כספי) mean",
+      "'אין ההפקדות' under each fee was confusing until the reader found the note",
+      "Track name ('עוקב S&P 500…') appears under only some company names",
+      "Doesn't understand 'מט\"ח' or why exposure is 101% or 40–54% for an S&P 500 tracker",
+      "Unclear what the 'קופה' number is and whether it's needed to sign up",
+      "Doesn't understand the difference between the fee on deposits and the fee on savings",
+      "Returns are shown 'before fees', so it's unclear what the reader actually gets",
+      "No way shown to join Clal's track (no link or phone number)",
+      "No plain-shekel comparison of 0.48% vs 0.7%",
+      "Would remove the ring chart and the stock/foreign-currency exposure column",
+      "Would remove the fund-size column and the fund size under each company name",
+      "Would remove the other investment-filter buttons and the other product buttons",
+      "Would remove the returns column because the page says not to rank by it"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 8,
+        "why": "The reader points out that only some rows have a track name under the company, which is the inconsistency the person named, and then says they ignored those lines."
+      }
+    ],
+    "liked": [],
+    "usd": 0.06264320000000001
+  },
+  "third": {
+    "raised": [
+      "The list is sorted from most expensive to cheapest, so the answer is at the very bottom and at first the reader mistook Mor (0.7%) for the top pick",
+      "Ayalon shows 'עוד לא דווח' instead of a fee, so the reader can't tell whether it is cheaper or when it will be reported",
+      "The page says 12 companies but the reader counted only 11",
+      "It's unclear whether 0.48% is the fee the reader would pay or just a 2025 average, and whether it depends on the employer",
+      "The '123 מקור · 123 מחושב · 123 הזנה' line is confusing and seems pointless",
+      "The other 'במה הכסף מושקע' options (הלכה יהודית, אג\"ח, כספי) aren't understood and aren't needed",
+      "'אין ההפקדות' under each fee was confusing until the reader found the note",
+      "'מט\"ח' isn't understood, and the exposure figures (101%, 40%, 54%) don't make sense for an S&P 500 tracker",
+      "Unclear what the 'קופה' number is and whether it's needed to sign up",
+      "The difference between 'מההפקדות' and 'מהחיסכון' fees is still unclear",
+      "Returns are 'לפני דמי ניהול', so it's unclear what the reader actually gets after fees",
+      "No way to join Clal's track (no link or phone number)",
+      "No plain-shekel comparison of what 0.48% vs 0.7% means",
+      "Would remove the ring chart and the exposure column",
+      "Would remove the 'קופה' numbers",
+      "Would remove the fund-size column and the fund size under each company name",
+      "Would remove the extra investment-type and product buttons",
+      "Would remove the returns column, since the page says not to rank by it"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader only notes in passing that some rows have a track-name line ('Only some rows have one') while listing what they glanced at, and never says the inconsistency bothered them or added noise, so it is description rather than a raised problem."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0588032
+  },
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": false
+  },
+  "against": {},
+  "usd": 0.18136960000000002
+}

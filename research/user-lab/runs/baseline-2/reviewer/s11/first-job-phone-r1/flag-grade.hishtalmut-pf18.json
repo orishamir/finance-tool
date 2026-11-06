@@ -1,0 +1,36 @@
+{
+  "case": "hishtalmut-pf18",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The 'שווה לדעת' note 'קרן השתלמות: אין העברה חלקית, ואיחוד רק כשנזיל' reads as if a study fund could not be moved between companies without tax.\",\"where\":\"the 'שווה לדעת' block\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 4 mentions the same 'שווה לדעת' block, but its complaint is about opaque codes like TXH-09, not about the note wrongly suggesting a study fund can't be moved between companies without tax."
+      }
+    ],
+    "liked": [],
+    "usd": 0.014287399999999999
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 4 points at the same 'שווה לדעת' block, but it is about the meaningless codes, not about the note wrongly suggesting a study fund can't be moved without tax."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0142474
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0285348
+}

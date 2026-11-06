@@ -1,0 +1,36 @@
+{
+  "case": "current-account-future-shekels",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"With 'בשקלים של העתיד' chosen, the figures ignore inflation, so they are wrong.\",\"where\":\"the chart and figures of the panel\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 6 mentions the inflation and 'today's shekels' toggle but only says it isn't explained, not that the 'future shekels' figures ignore inflation and are wrong, and finding 1 is about the assumed 5% return rather than inflation."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0168034
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 6 only says the inflation and today's-shekels toggle isn't explained, and finding 1 is about the 5% return assumption; neither says the future-shekels figures ignore inflation and are wrong."
+      }
+    ],
+    "liked": [],
+    "usd": 0.016219400000000002
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.033022800000000005
+}

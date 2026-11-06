@@ -1,0 +1,81 @@
+# p13-sort-tracks-pc: careful-retiree-pc
+
+shots mode, pc; 6 steps, 37 s, $0.17
+
+## Answer
+
+If I have to pick one, I'd go with Harel, the "כספי (שקלי)" track: Harel is a name I know, it says 0% מניות and 0% מט"ח, and it shows 4.25% (3 שנים). But I'm not sure that beats my bank deposit once the 0.57% fee "מהחיסכון" comes out, so before I sign anything I'll ask you and the bank.
+
+Confidence: unsure; gave up: false
+
+## Stuck
+
+- Screen 1, the row of buttons under "במה הכסף מושקע": Most of the buttons are words I don't know (S&P 500, עוקב מדד, גמיש, כספי (שקלי)). Only "אג"ח ממשלתי" looked safe to me, and it said only 1 or 3 tracks. I didn't press any of them and just scrolled the long list.
+- Screen 5, the Meitav row "אג"ח ממשלות": That's the one I was actually looking for, government bonds. But instead of a fee it says "עוד לא דווח" with a little orange warning sign, and there's no return, only "פחות מ־3 שנים". It looks new and small (5 מיליון), so I backed away from it.
+- The "תשואה שנתית ממוצעת" column: I wasn't sure whether "4.25% 3 שנים" means 4.25% each year or 4.25% over all three years. And the big numbers like 26.39% on the shares tracks felt like gambling.
+- Screen 6, after six long dark screens: I got tired and stopped there. Every row looks the same, there's a circle with two colours in each one, and it's all numbers.
+
+## Used
+
+- The heading "כל המסלולים בכל החברות" and the highlighted button "קופת גמל להשקעה"
+- Company names in the group rows: הראל, מור, אנליסט, מיטב
+- Track names I could understand: "כספי (שקלי)", "אג"ח ממשלות", "אשראי ואג"ח"
+- The "מניות 0%" and "מט"ח 0%" numbers next to each row
+- The "דמי ניהול ... מהחיסכון" column: 0.57% for Harel כספי, 0.58% for Meitav כספי
+- The return column, 3 שנים and 5 שנים: Harel כספי 4.25% / 3.08%, Meitav כספי 4.41% / 3.13%
+
+## Skimmed
+
+- The sentence at the top about fees "שנגבו בפועל ב־2025" and data from רשות שוק ההון
+- The "כסף מנוהל" column (millions and billions)
+- The rows of the מור and אנליסט companies
+- The fund numbers in turquoise (8521, 15286 and so on)
+
+## Skipped
+
+- All the "עוקב מדד S&P 500" and "עוקב מדדי מניות" rows
+- The coloured circles in every row
+- The link "מה זה קופת גמל להשקעה"
+- The "?" signs and the arrows at the ends of the rows
+- Top menu: מדריך, השקעה במדד, חוקים וכללים
+- The search box
+- Screens 7 to 15, which I never reached
+
+## What would bother this person, most first
+
+- The whole page: Black background with grey writing. Even with the screen enlarged it's hard to read, and the small grey words in the column headings are hard to make out
+- Screens 2 to 6: Long screens full of percentages and coloured circles with no sentence explaining what's safe and what isn't. That made me anxious
+- מיטב, אג"ח ממשלות (screen 5): The government bond track, the one that looks safe, has no fee and no return shown, only "עוד לא דווח" and a warning sign
+- The "במה הכסף מושקע" buttons and the track names: Track names in English letters and professional terms with no explanation next to them
+- Return column: "פחות מ־3 שנים" written instead of a return, underlined like a link. You can't tell what it means
+- Top of the page: Nothing compares a track to a bank deposit or says whether the money is guaranteed
+- Column heading: I don't know whether "תשואה שנתית ממוצעת 3 שנים" means per year or for the whole three years
+- Exposure column: The circle chart in two colours that are close to each other (turquoise and yellow) means nothing to me
+
+## Not sure what it meant
+
+- S&P 500
+- עוקב מדד / עוקב מדדי אג"ח (to me מדד is the price index on the news)
+- גמיש
+- כספי (שקלי): I guessed it means money kept in shekels, safe
+- מט"ח and its percentages; 99% מט"ח sounded like dollars
+- "מניות 101%": how can it be more than 100?
+- "פחות מ־3 שנים" written where a number should be
+- "עוד לא דווח" with the orange sign
+- "מ־0.5% עד 0.73%": is that taken every year?
+- "תשואה שנתית ממוצעת, לפני דמי ניהול": so after the fee I get less?
+- "123 מקומות" and "123 מחושב" at the top
+- מסלול, the word they use for a track
+- Tag "חדש"
+
+## Looked for and did not find
+
+- Any comparison to a bank deposit, or a sentence saying which track is as safe as a deposit
+- The names of the big banks (Leumi, Hapoalim and so on)
+- A plain sentence saying what each track means
+- What the fee comes to in shekels on an amount like mine
+- Whether I can take the money out whenever I want
+
+## What it said along the way
+
+

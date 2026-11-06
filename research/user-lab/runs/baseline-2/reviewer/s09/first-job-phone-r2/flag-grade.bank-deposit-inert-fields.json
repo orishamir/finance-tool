@@ -1,0 +1,36 @@
+{
+  "case": "bank-deposit-inert-fields",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The bank-deposit guide asks for age, linkage and term, but those fields do not change its graph.\",\"where\":\"the input fields beside the graph\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings say that the age, linkage or term inputs fail to change the graph; findings 1 and 5 are about the calculator, but they complain about a confusing result and an unexplained toggle."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0155474
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings say that the age, linkage or term inputs fail to change the graph; findings 1 and 5 are about the calculator, but they cover a confusing result and an unexplained toggle."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0154274
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0309748
+}

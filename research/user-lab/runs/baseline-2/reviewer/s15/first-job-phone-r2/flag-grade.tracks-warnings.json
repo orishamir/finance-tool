@@ -1,0 +1,36 @@
+{
+  "case": "tracks-warnings",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"Almost every row of the tracks table carries a date warning mark; the repeated warnings clutter the table though one note at the top would do.\",\"where\":\"the warning marks in the table rows\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 6 is about the same warning icons, but it says they look scary on new tracks, not that repeating them on almost every row clutters the table when one note would do."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0168834
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 6 is about the same warning icons, but it says they look scary on new tracks; no finding says the marks repeat on almost every row and clutter the table when one note would do."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0175434
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0344268
+}

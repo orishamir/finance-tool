@@ -1,0 +1,129 @@
+{
+  "task": "p02-percent-keren-phone",
+  "persona": "first-job-phone",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "phone",
+  "startedAt": "2026-11-05T23:02:45.658Z",
+  "structured": {
+    "answer": "You can take it out tax-free 6 years after the first deposit; on the page's example (300 ₪ from me, 900 from the employer a month) after 5 years you'd be left with roughly 66,500 ₪, though at 5 years tax eats around 14,000, so I'd wait for 6.",
+    "confidence": "unsure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Calculator result bars (screen 3)",
+        "why": "The big final number '66,5…' is covered by the round scroll-up button, so I never saw the full amount"
+      },
+      {
+        "where": "Text under the bars (screen 4)",
+        "why": "'50,719 ₪ נכנסים קודם', '29,768 ₪ למס הכנסה', '15,794 ₪ מהם חוזרים' clash with the 66,5… bar; couldn't tell which is what I actually get"
+      },
+      {
+        "where": "Calculator default 'אחרי 5 שנים'",
+        "why": "Example is set to the year that still has tax; I wanted to see 6 years and couldn't"
+      },
+      {
+        "where": "Screen 2 top",
+        "why": "'15,712 ₪' and '20,566 ₪ בשנה' seemed like some cap, didn't understand what it is"
+      },
+      {
+        "where": "Calculator top between screen 2 and 3",
+        "why": "Didn't see where my salary goes; jumped straight to percentages"
+      }
+    ],
+    "used": [
+      "Heading קרן השתלמות and the line 'אחרי 6 שנים מההפקדה הראשונה אפשר למשוך... בלי מס'",
+      "Chart labels 'לפני 6 שנים: מס' / 'מ־6 שנים: פטור ממס'",
+      "'קרן השתלמות במסלול מדד. 300 ₪ בחודש מכם, 900 ₪ מהמעסיק'",
+      "Result bars +54,000, +8,487, −13,974, 66,5… and labels נשאר בידיים / המס לקח"
+    ],
+    "skimmed": [
+      "Inputs 2.5% / 7.5% / 7% / 0.54%",
+      "Text 'משיכה אחרי 5 שנים...' under the bars",
+      "שווה לדעת",
+      "מי מציע ומי מצטרף",
+      "משיכה ומעבר",
+      "כמה זה עולה (לא גובים)"
+    ],
+    "skipped": [
+      "Grey assumptions about inflation and 2% salary rise",
+      "Fund name 'מיטב השתלמות עוקב מדד S&P500 (13245)' paragraph",
+      "All חוקים וכללים pills",
+      "KH-19 / KH-15 / PF-18 tags",
+      "הצגת החברות dropdown",
+      "Screens 9–13"
+    ],
+    "unsure_meaning": [
+      "15,712 ₪ / 20,566 ₪ בשנה",
+      "50,719 ₪ נכנסים קודם vs 66,5…",
+      "15,794 ₪ מהם חוזרים",
+      "Whether +54,000 is employer money or mine",
+      "Bar colours: guessed yellow = deposits, teal = return, pink stripes = tax",
+      "מסלול כללי",
+      "אג\"ח ממשלתית צמודה",
+      "קופת גמל להשקעה"
+    ],
+    "not_found": [
+      "A plain sentence 'after 6 years you'd have X ₪'",
+      "The result for 6+ years",
+      "A place to enter my salary"
+    ],
+    "findings": [
+      {
+        "what": "Scroll-up button covers the main result number (66,5…)",
+        "where": "Screen 3, bottom right of the result bars"
+      },
+      {
+        "what": "Example defaults to 5 years — the one year that still has tax — instead of showing the tax-free 6",
+        "where": "Calculator 'מושכים את הכסף אחרי 5 שנים'"
+      },
+      {
+        "what": "Several conflicting shekel figures (50,719 / 29,768 / 15,794 / 66,5…) with no clear 'this is what you get'",
+        "where": "Screen 4 text under bars"
+      },
+      {
+        "what": "Unexplained 15,712 ₪ and 20,566 ₪ figures early on",
+        "where": "Screen 2 top"
+      },
+      {
+        "what": "Bar colours not labelled next to the bars",
+        "where": "Yearly chart screen 3"
+      },
+      {
+        "what": "Too many 'חוקים וכללים' pills and code tags cluttering the reading",
+        "where": "Throughout"
+      }
+    ]
+  },
+  "steps": 8,
+  "reads": 8,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 41186,
+    "turns": 10,
+    "usd": 0.2157288,
+    "input": 12,
+    "cacheWrite": 15985,
+    "cacheRead": 61204,
+    "output": 3778,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "p02-percent-keren-phone",
+    "screenshots": 14,
+    "changes": [
+      {
+        "id": "pct-shown",
+        "type": "style",
+        "shots": 14,
+        "applied": 14,
+        "most": 1
+      }
+    ],
+    "neverShown": [],
+    "errors": []
+  }
+}

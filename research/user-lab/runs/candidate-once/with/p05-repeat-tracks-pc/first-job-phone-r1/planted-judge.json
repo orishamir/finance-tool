@@ -1,0 +1,6 @@
+{
+  "named": false,
+  "position": 0,
+  "why": "Finding 2 complains that labels repeat on every row, but the labels it names are asset types, deduction sources and time periods. It never mentions the company name repeated under each track's name, or that the group heading already shows it. No other finding mentions it either.",
+  "usd": 0.021008
+}

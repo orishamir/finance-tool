@@ -1,0 +1,65 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "The chosen Harel 'כללי' card was cut between screenshots, so its fee and share percentage can't be seen. The reader had to guess about 0.54–0.55%.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "The '123 ממקור · 123 מחושב' legend and the dotted purple underlines are confusing; the reader doesn't see why it matters.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "The 'מיון' (sort) box is cut off, so the reader can't tell how the list is sorted.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "The explanations ('מה זה קופת גמל להשקעה', 'מה אומרים המספרים') are only links and can't be reached from the screenshots.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "About 40 screens of nearly identical cards wore the reader out; they stopped reading each card around screen 25. There is no short side-by-side list of the 'כללי' tracks.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 6,
+      "summary": "Tracks marked 'חדש' / 'עוד לא דווח' with the orange warning sign (and 0 million ₪) don't say whether something is wrong or the track is just new.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 7,
+      "summary": "The round up-arrow button covers numbers the reader wanted to read (e.g. '0.5…' on screen 32).",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 8,
+      "summary": "The share and foreign-currency percentages add up to nearly 200%, and '101% מניות' appears; it isn't clear how these figures relate.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 9,
+      "summary": "Track names ('סחיר', 'משולב סחיר', 'גמיש', 'עוקב מדדים', 'אשראי ואג\"ח') aren't explained, so the reader can't tell, e.g., 'משולב סחיר' from 'כללי'.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 10,
+      "summary": "It's unclear whether returns are before or after fees. There are no shekel figures (fee cost, a bad year's loss) and no worst-year or age-suitability risk information.",
+      "serious": true,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.0812988
+}

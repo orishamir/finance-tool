@@ -1,0 +1,36 @@
+{
+  "case": "companies-help-icon-wrap",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The help mark '?' in a column head drops onto its own line under the head's text and looks out of place.\",\"where\":\"the column heads with a '?' mark\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "No finding says the '?' help mark drops onto its own line under the column head; finding 2 only says the headings are small and pale, which is a different problem."
+      }
+    ],
+    "liked": [],
+    "usd": 0.014763400000000001
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings mention the '?' help mark dropping onto its own line; finding 2 is about the same column heads, but it complains that they are small and pale, not about this layout."
+      }
+    ],
+    "liked": [],
+    "usd": 0.015011400000000001
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.029774800000000004
+}

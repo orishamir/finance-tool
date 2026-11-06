@@ -1,0 +1,80 @@
+{
+  "case": "companies-fee-column-unclear",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The column 'דמי ניהול לפי …' in the company's tracks table is not explained.\",\"where\":\"the fee column head\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Can't tell which product or track their own money is in now",
+      "Nothing on the page says 'קרן חדשה מקיפה' means pension",
+      "Can't tell whether 0.16% of savings plus 1.47% of deposits costs more or less than a flat 0.5%, or which of 'מההפקדה' and 'מהחיסכון' costs more",
+      "'123 מקור / 123 מחושב' was confusing and its purpose unclear",
+      "Product names (קרן חדשה מקיפה/כללית, תגמולים ואישית לפיצויים, מרכזית לפיצויים) meant nothing, including the difference between מקיפה and כללית",
+      "The same S&P 500 index shows different returns in different products",
+      "Worried that extra costs not shown mean the displayed fee isn't the full cost",
+      "Terms on the קרנות סל/מחקות cards (4A/4D, צוברת, חשיפה לדולר, נאמן, משתנים/קבועים, the tax line) not understood",
+      "No return column for קרנות סל/מחקות, so they can't be compared",
+      "Unclear whether savings can even be moved into a קרן סל/מחקה",
+      "Titles in the 'מה כתוב במסמכים של הראל' list don't say what's inside",
+      "The ring and dot percentages (99% מניות and 99% מט\"ח) don't add up to 100, so they gave up on them",
+      "'עוד לא דווח' unclear beyond the footnote",
+      "No way to see what the fee means in shekels for a typical deposit",
+      "Couldn't find whether a lower fee can be negotiated",
+      "Couldn't find how to switch tracks or whether that costs anything or triggers tax",
+      "No one-line note on whether S&P 500 is risky for a young person",
+      "No comparison of Harel's fees against other companies",
+      "Would drop irrelevant sections: מרכזית לפיצויים, חיסכון לכל ילד, the age 50/60 rows, תגמולים, the documents list and the rings",
+      "Would drop the קופה number column and the tracks with less than 3 years of history"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 3,
+        "why": "The reader can't work out what the fee column's two figures (from savings vs from deposits) mean in cost terms, which is a clear part of the person's complaint that the fee column isn't explained."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0755832
+  },
+  "b": {
+    "raised": [
+      "Can't tell which product (and track) their own money is in now",
+      "Nothing says what 'קרן חדשה מקיפה' is (pension?) or how it differs from 'כללית'",
+      "Can't compare a deposit fee plus a savings fee (0.16% + 1.47%) with a flat savings fee (0.5%); unclear whether מההפקדה or מהחיסכון costs more",
+      "'123 מקור / 123 מחושב' is confusing; unclear why the source of a number matters",
+      "Product names like תגמולים ואישית לפיצויים and מרכזית לפיצויים mean nothing to them",
+      "The same S&P 500 index shows different returns in different products, with no explanation",
+      "Extra costs not shown on the page are worrying, because the fee shown isn't the full cost",
+      "Terms on the קרנות סל/מחקות cards (4A/4D, צוברת, חשיפה לדולר, נאמן, משתנים/קבועים) aren't understood",
+      "The קרנות סל/מחקות cards have no return column to compare with other tracks",
+      "Unclear whether savings can even be moved into a קרן סל/מחקה",
+      "Titles in the documents list don't say what's inside",
+      "Allocation rings/percentages don't add up (99% מניות and 99% מט\"ח), so they're unclear",
+      "'עוד לא דווח' isn't clear beyond the footnote",
+      "No sense of what the fee means in shekels, e.g. on a ₪1,000 monthly deposit",
+      "Doesn't know whether a lower fee than the average can be negotiated",
+      "No information on how to switch tracks or whether it costs anything or triggers tax",
+      "No short explanation of whether S&P 500 is risky for a young person",
+      "No comparison of Harel's fees with other companies",
+      "Would drop irrelevant sections and rows (מרכזית לפיצויים, חיסכון לכל ילד, גילאי 50/60 rows, תגמולים)",
+      "Would drop the קופה number column and the 'פחות מ־3 שנים' tracks"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 3,
+        "why": "This is a borderline match: the reader doesn't understand what the fee column's 'מההפקדה' vs 'מהחיסכון' split means for their cost, which is a clear part of the column going unexplained."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0770672
+  },
+  "third": null,
+  "ranks": {
+    "k": 3
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.15265040000000002
+}

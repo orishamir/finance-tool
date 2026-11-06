@@ -1,0 +1,36 @@
+{
+  "case": "hg-not-entered",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The text says 'לא הזנתם אחוזים, אז החישוב לוקח את התקרה' although the percentage fields are filled in with default values.\",\"where\":\"the sentence under the graphic\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings mention that the sentence under the chart says no percentages were entered when the fields are already filled with default values. Finding 2 is about the default withdrawal period, which is a different issue."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0168434
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings mention the sentence saying no percentages were entered while the fields already show default values; finding 2 is about the default withdrawal period, which is a different issue."
+      }
+    ],
+    "liked": [],
+    "usd": 0.016611400000000002
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.03345480000000001
+}

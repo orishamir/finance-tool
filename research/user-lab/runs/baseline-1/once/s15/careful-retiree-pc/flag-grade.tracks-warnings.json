@@ -1,0 +1,36 @@
+{
+  "case": "tracks-warnings",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"Almost every row of the tracks table carries a date warning mark; the repeated warnings clutter the table though one note at the top would do.\",\"where\":\"the warning marks in the table rows\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "No finding names the repeated date warnings in the rows: finding 2 is about repeated labels and the colour key, and finding 7 is about the top warning being worrying, not about clutter in the rows."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0219194
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the findings mentions the date warning marks repeated across the table rows: finding 2 complains about other repeated labels and the colour key, and finding 7 is about the single orange warning at the top worrying the reader, not about clutter from repeated row warnings."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0184514
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0403708
+}

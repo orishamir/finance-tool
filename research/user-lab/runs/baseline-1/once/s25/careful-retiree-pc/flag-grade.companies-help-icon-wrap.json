@@ -1,0 +1,36 @@
+{
+  "case": "companies-help-icon-wrap",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The help mark '?' in a column head drops onto its own line under the head's text and looks out of place.\",\"where\":\"the column heads with a '?' mark\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings mention the '?' help mark wrapping onto its own line in column heads; finding 3 touches the column headers only for pale text contrast."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0155514
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings mentions the '?' help mark in the column heads or where it is placed; finding 3 is about the colour of the header text, not the layout."
+      }
+    ],
+    "liked": [],
+    "usd": 0.014775400000000001
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0303268
+}

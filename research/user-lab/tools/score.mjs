@@ -86,6 +86,7 @@ for (const taskKey of readdirSync(runDir, { withFileTypes: true }).filter((d) =>
     const row = { session: sess.name, steps: r.steps ?? null, seconds: r.cost ? Math.round(r.cost.ms / 1000) : null, usd: r.cost?.usd ?? null, confidence: s?.confidence ?? null, timedOut: !!r.timedOut, error: r.error || null };
     const whole = s ? `${s.answer} ${JSON.stringify(s.answer_fields || {})}` : "";
     if (r.error) row.grade = "not run";
+    else if (!s && r.text) row.grade = "no key (free text)";
     else if (!s || s.gave_up) row.grade = "gave up";
     else if (t.answerKey?.fields) {
       const fields = Object.entries(t.answerKey.fields).map(([k, key]) => [k, gradeField(key, s.answer_fields?.[k], whole)]);
@@ -147,3 +148,160 @@ for (const [k, { rows }] of Object.entries(tasks))
 writeFileSync(join(runDir, "score.md"), lines.join("\n") + "\n");
 writeFileSync(join(runDir, "score.json"), JSON.stringify({ summary, tasks }, null, 2));
 console.log(lines.slice(4, 6 + Object.keys(tasks).length).join("\n"));
+
+// ---------------------------------------------------------------- planted problems (metric.md, "Planted problems")
+// When the run's variants (the copies in <run>/variants/) are planted instances or clean controls, a blind grader (a
+// separate session with no tools, shown only the key and the findings, never the screens, the variant or the session's
+// other answers) judges each session; its verdict is cached in the session's planted-judge.json.
+//  - An instance is caught when the grader says one of the first 10 findings names its planted problem. A plant whose
+//    change never reached a screenshot (result.json variant.neverShown) is "not on screen" and left out of the count.
+//  - On a control, each finding is judged serious or not, and whether it names a problem planted on another copy of the
+//    page (the plants of the instances the control stands for), which is absent here. Both are reported: "serious" is
+//    the first-look rule; "names an absent plant" is metric.md's false alarm (a claim the screen contradicts needs the
+//    screens, which the grader does not see, so that half is not judged).
+// A free-text answer (tools/old-brief.mjs) has no list: the grader reads it whole and gives the position of the problem
+// among the distinct problems it raises, so "first 10" applies the same way.
+const vdir = join(runDir, "variants");
+const vjson = existsSync(vdir) ? Object.fromEntries(readdirSync(vdir).filter((f) => f.endsWith(".json")).map((f) => { const v = JSON.parse(readFileSync(join(vdir, f), "utf8")); return [v.id, v]; })) : {};
+const plantedLib = join(LAB, "variants", "planted");
+const libVariant = (id) => { const f = join(plantedLib, id, "variant.json"); return existsSync(f) ? JSON.parse(readFileSync(f, "utf8")) : null; };
+const isPlanted = Object.values(vjson).some((v) => v.purpose === "plant" || v.purpose === "control");
+
+const findingsText = (r) => {
+  const f = r.structured?.findings;
+  if (f) return { list: true, text: f.slice(0, 10).map((x, i) => `${i + 1}. [${x.where}] ${x.what}`).join("\n") || "(no findings)" };
+  if (r.text) return { list: false, text: r.text };
+  return null;
+};
+
+async function plantedJudge(sessionPath, kind, payload) {
+  const cache = join(sessionPath, "planted-judge.json");
+  if (existsSync(cache)) return JSON.parse(readFileSync(cache, "utf8"));
+  if (!JUDGE) return null;
+  const { list, text } = payload.findings;
+  const reader = list
+    ? `The reader's findings, most bothersome first:\n${text}`
+    : `The reader's report (free text, not a list):\n<<<\n${text}\n>>>`;
+  let prompt, schema;
+  if (kind === "instance") {
+    const k = payload.plant;
+    prompt = `A reader was shown a web page and said what bothered them. One specific problem is on that page. Decide whether the reader named that problem.
+
+The problem: ${k.problem}
+Where it is: ${k.where}
+Counts as named: ${k.counts || "a finding that states this problem"}
+Does not count: ${k.notCounts || "a finding about something else nearby"}
+
+${reader}
+
+${list ? `"position" is the number of the finding that names it (0 if none).` : `"position" is where it comes among the distinct problems the report raises, in the order raised, 1 for the first (0 if not named).`} Judge only from what the reader wrote; a vague complaint that could be about many things is not naming it.`;
+    schema = { type: "object", properties: { named: { type: "boolean" }, position: { type: "integer" }, why: { type: "string" } }, required: ["named", "position", "why"] };
+  } else {
+    prompt = `A reader was shown a web page and said what bothered them. ${list ? "For each finding" : "List the distinct problems the report raises (at most 10, in the order raised) and for each"}, judge two things.
+
+- serious: would it really get in the way of a person using the page for their goal (lead them to a wrong decision, make them give up, or leave them unable to understand a main figure or the answer)? A minor annoyance, a wish for more, or a matter of taste is not serious.
+- names_listed: the number of the problem below that it names, or 0. None of these problems is on this page.
+
+${payload.listed.map((p, i) => `${i + 1}. ${p.problem} (${p.where})`).join("\n")}
+
+${reader}
+
+Judge only from what the reader wrote.`;
+    schema = {
+      type: "object",
+      properties: { findings: { type: "array", maxItems: 10, items: { type: "object", properties: { n: { type: "integer" }, summary: { type: "string" }, serious: { type: "boolean" }, names_listed: { type: "integer" } }, required: ["n", "summary", "serious", "names_listed"] } } },
+      required: ["findings"],
+    };
+  }
+  const dir = sessionDir();
+  const r = await runSession({ dir, prompt, system: "You are a careful grader. Answer only from what you are given.", noTools: true, schema, model: judgeModel, timeoutMs: 4 * 60000 });
+  rmSync(dir, { recursive: true, force: true });
+  const out = r.result?.structured_output ?? null;
+  if (!out) return null;
+  const saved = { ...out, usd: r.result?.total_cost_usd ?? null };
+  writeFileSync(cache, JSON.stringify(saved, null, 2));
+  return saved;
+}
+
+if (isPlanted) {
+  const prows = [];
+  const queue = [];
+  for (const t of run.tasks) {
+    const vid = (t.variant || run.variant || "").split("/").pop();
+    const v = vjson[vid];
+    if (!v || !existsSync(join(runDir, t.key))) continue;
+    for (const sess of readdirSync(join(runDir, t.key), { withFileTypes: true }).filter((d) => d.isDirectory() && !d.name.startsWith("_"))) {
+      const p = join(runDir, t.key, sess.name);
+      if (!existsSync(join(p, "result.json"))) continue;
+      queue.push({ t, v, sess: sess.name, p, r: JSON.parse(readFileSync(join(p, "result.json"), "utf8")) });
+    }
+  }
+  const limit = 4;
+  let qi = 0;
+  await Promise.all(Array.from({ length: limit }, async () => {
+    while (qi < queue.length) {
+      const { t, v, sess, p, r } = queue[qi++];
+      const f = findingsText(r);
+      const row = { task: t.key, session: sess, purpose: v.purpose, kind: v.instance?.kind, split: v.instance?.split ?? null, device: v.instance?.device, mode: v.instance?.mode, usd: r.cost?.usd ?? null };
+      if (r.error || !f) { row.status = r.error ? "not run" : "no findings"; prows.push(row); continue; }
+      if (v.purpose === "plant") {
+        const never = r.variant?.neverShown || [];
+        if (never.length) row.status = "not on screen";
+        const j = await plantedJudge(p, "instance", { plant: v.plants[0], findings: f });
+        if (j) { row.named = j.named; row.position = j.position; row.why = j.why; row.judgeUsd = j.usd; }
+        if (!row.status) row.status = !j ? "ungraded (run with --judge)" : j.named && j.position >= 1 && j.position <= 10 ? "caught" : "missed";
+      } else {
+        const listed = (v.instance.for || []).map((id) => libVariant(id)).filter(Boolean).map((x) => ({ ...x.plants[0], kind: x.instance.kind, id: x.id }));
+        const j = await plantedJudge(p, "control", { listed, findings: f });
+        if (!j) row.status = "ungraded (run with --judge)";
+        else {
+          row.status = "graded";
+          row.findings = j.findings.length;
+          row.serious = j.findings.filter((x) => x.serious).length;
+          row.namesAbsent = j.findings.filter((x) => x.names_listed > 0).map((x) => listed[x.names_listed - 1]?.kind ?? "?");
+          row.judgeUsd = j.usd;
+        }
+      }
+      prows.push(row);
+    }
+  }));
+  prows.sort((a, b) => (a.task + a.session).localeCompare(b.task + b.session));
+  const inst = prows.filter((r) => r.purpose === "plant");
+  const ctl = prows.filter((r) => r.purpose === "control" && r.status === "graded");
+  const scored = (rs) => rs.filter((r) => r.status === "caught" || r.status === "missed");
+  const rate = (rs) => { const s = scored(rs); return s.length ? `${s.filter((r) => r.status === "caught").length} of ${s.length} (${pct(s.filter((r) => r.status === "caught").length, s.length)})` : "-"; };
+  // the same problem named on its clean control: how often a reader "finds" it without the plant (the base rate)
+  const baseFor = (kind) => {
+    const relevant = ctl.filter((r) => { const v = vjson[(run.tasks.find((t) => t.key === r.task)?.variant || "").split("/").pop()]; return (v?.instance?.for || []).some((id) => libVariant(id)?.instance.kind === kind); });
+    return relevant.length ? `${relevant.filter((r) => r.namesAbsent.includes(kind)).length} of ${relevant.length}` : "-";
+  };
+  const kinds = [...new Set(inst.map((r) => r.kind))].sort();
+  const sum = (xs) => xs.filter((x) => x != null).reduce((a, b) => a + b, 0);
+  const pl = [`# Planted problems: ${runDir.split("/").slice(-2).join("/")}`, "", `Graded ${new Date().toISOString().slice(0, 16).replace("T", " ")} by a blind grader (key and findings only).`, ""];
+  pl.push(`**Caught (named among the first 10 findings):** ${rate(inst)}; score split ${rate(inst.filter((r) => r.split === "score"))}, tune split ${rate(inst.filter((r) => r.split === "tune"))}.`, "");
+  const notOn = inst.filter((r) => r.status === "not on screen").length;
+  const other = inst.filter((r) => !["caught", "missed", "not on screen"].includes(r.status)).length;
+  if (notOn || other) pl.push(`Left out: ${notOn} sessions whose plant never reached a screenshot, ${other} not run, without findings or ungraded.`, "");
+  pl.push("| Kind | Caught | PC | Phone | Named on the clean control (absent there) |", "|---|---|---|---|---|");
+  for (const k of kinds) { const rs = inst.filter((r) => r.kind === k); pl.push(`| ${k} | ${rate(rs)} | ${rate(rs.filter((r) => r.device === "pc"))} | ${rate(rs.filter((r) => r.device === "phone"))} | ${baseFor(k)} |`); }
+  const personas = [...new Set(inst.map((r) => r.session))].sort();
+  pl.push("", "| Persona | Caught |", "|---|---|", ...personas.map((p) => `| ${p} | ${rate(inst.filter((r) => r.session === p))} |`));
+  const nf = sum(ctl.map((r) => r.findings));
+  const ns = sum(ctl.map((r) => r.serious));
+  const na = sum(ctl.map((r) => r.namesAbsent.length));
+  pl.push(
+    "",
+    `**Clean controls:** ${ctl.length} sessions, ${nf} findings. Serious: ${ns} (${pct(ns, nf)} of findings; ${ctl.filter((r) => r.serious > 0).length} of ${ctl.length} sessions with at least one). Naming a planted problem that is absent there (metric.md's false alarm): ${na} (${pct(na, nf)}; ${ctl.filter((r) => r.namesAbsent.length).length} of ${ctl.length} sessions).`,
+    "",
+    `**Cost:** sessions $${sum(prows.map((r) => r.usd)).toFixed(2)}, grader $${sum(prows.map((r) => r.judgeUsd)).toFixed(2)}.`,
+    "",
+    "## Each session",
+    "",
+    "| Task | Session | Kind | Split | Device | Result | Position | Serious / findings | Names absent plant | Grader's reason |",
+    "|---|---|---|---|---|---|---|---|---|---|",
+    ...prows.map((r) => `| ${r.task} | ${r.session} | ${r.kind ?? "control"} | ${r.split ?? ""} | ${r.device ?? ""} | ${r.status} | ${r.position || ""} | ${r.findings != null ? `${r.serious} / ${r.findings}` : ""} | ${r.namesAbsent?.join(", ") || ""} | ${(r.why || "").replace(/\|/g, "/").replace(/\n/g, " ")} |`),
+  );
+  writeFileSync(join(runDir, "planted.md"), pl.join("\n") + "\n");
+  writeFileSync(join(runDir, "planted.json"), JSON.stringify(prows, null, 2));
+  console.log(pl.slice(4, 6).join("\n"));
+}

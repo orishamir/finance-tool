@@ -1,0 +1,80 @@
+{
+  "case": "tracks-chevron-not-link",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The '<' at the end of each row does not look like a link to the track's own page.\",\"where\":\"the arrow at the end of each row\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Unsure 0.48% is the fee they'd actually pay, since it's a 2025 average",
+      "The '123 ממקור / מחושב / הזנה' line is confusing (what מחושב and הזנה mean)",
+      "Had to scroll to the very bottom to find the cheapest tracks (sorted most expensive first)",
+      "Doesn't understand the 'PF-06' tag",
+      "Two different 'כסף מנוהל' figures in each row are confusing",
+      "Doesn't know why only some company names have an extra track-name line",
+      "The green and yellow rings in the exposure column mean nothing",
+      "Exposure of 101% for Analyst makes no sense",
+      "98% exposure for Infinity raises doubt that it tracks the index",
+      "Ayalon's 40% stocks / 54% FX doesn't look like an S&P 500 fund",
+      "Not clear whether the dotted underlines under numbers are clickable",
+      "Doesn't understand why a fund's fee would be 'עוד לא דווח'",
+      "Can't find whether the fee is fixed or can be negotiated lower",
+      "No way to see the fee difference in shekels for an amount they type in",
+      "No info on how to move an existing fund or whether tax benefits/seniority are kept",
+      "Can't tell whether all 12 tracks follow the S&P 500 closely",
+      "No return after fees shown",
+      "Menora's row was split across screenshots, so its 5-year return couldn't be seen",
+      "Would drop the 'קופה' numbers and the 'X מסלולים' lines",
+      "Would hide the 13 other investment-type buttons behind one menu",
+      "Would drop the company-wide 'כסף מנוהל' under each name"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader only says they ignored the arrows and didn't click them, and never says the arrows fail to look like a link to the track's page, so the person's problem isn't stated."
+      }
+    ],
+    "liked": [],
+    "usd": 0.057243199999999994
+  },
+  "b": {
+    "raised": [
+      "Not sure the 0.48% shown is what they would actually pay, since it is a 2025 average (fixed or negotiable?)",
+      "The '123 ממקור / מחושב / הזנה' line and highlighted blue 123 were confusing",
+      "Had to scroll to the very bottom of the table to find the cheapest tracks (wants cheapest at top)",
+      "Two different 'כסף מנוהל' figures per row were confusing",
+      "Did not know why only some rows have an extra track-name line under the company name",
+      "Coloured rings in the exposure column mean nothing",
+      "Exposure of 101% for Analyst doesn't make sense",
+      "98% exposure for Infinity raises doubt whether it really tracks the index",
+      "Ayalon's 40% stocks / 54% FX doesn't look like an S&P 500 fund",
+      "Dotted underlines under numbers: unclear whether they are clickable",
+      "Did not understand the 'PF-06' tag",
+      "Did not understand why a fund's fee would be 'עוד לא דווח'",
+      "No way to see the fee difference in shekels for an amount they type in",
+      "No information on how to move an existing keren hishtalmut or whether tax benefit/seniority is lost",
+      "Unclear whether all 12 tracks really follow the same S&P 500",
+      "Return after fees is not shown",
+      "Menora's row was split across screenshots so its 5-year return couldn't be seen",
+      "Would drop the 'קופה' numbers and 'X מסלולים' lines",
+      "Would hide the 13 other investment-type buttons behind one menu"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader only says they ignored the arrows and didn't click them, and never says the arrow fails to look like a link to the track's page. The worry about whether something is clickable is about the dotted underlines, which are a different element."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0609832
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1182264
+}

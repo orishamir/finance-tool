@@ -1,0 +1,63 @@
+{
+  "case": "current-account-one-bank",
+  "sessions": 2,
+  "perKey": {
+    "k": {
+      "kind": "general",
+      "caught": 2,
+      "caughtIn10": 2,
+      "of": 2,
+      "byPersona": {
+        "careful-retiree-pc": {
+          "caught": 1,
+          "of": 1,
+          "ranks": [
+            4
+          ]
+        },
+        "first-job-phone": {
+          "caught": 1,
+          "of": 1,
+          "ranks": [
+            3
+          ]
+        }
+      },
+      "graderAgreement": 1
+    }
+  },
+  "againstLiked": {},
+  "usd": 0.2974504,
+  "rows": [
+    {
+      "task": "s01",
+      "session": "careful-retiree-pc",
+      "persona": "careful-retiree-pc",
+      "mode": "free text",
+      "raised": [
+        20,
+        17
+      ],
+      "ranks": {
+        "k": 4
+      },
+      "against": {},
+      "usd": 0.162388
+    },
+    {
+      "task": "s01",
+      "session": "first-job-phone",
+      "persona": "first-job-phone",
+      "mode": "free text",
+      "raised": [
+        21,
+        30
+      ],
+      "ranks": {
+        "k": 3
+      },
+      "against": {},
+      "usd": 0.13506240000000003
+    }
+  ]
+}

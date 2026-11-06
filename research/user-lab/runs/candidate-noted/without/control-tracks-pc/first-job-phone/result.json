@@ -1,0 +1,122 @@
+{
+  "task": "control-tracks-pc",
+  "persona": "first-job-phone",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T03:00:17.272Z",
+  "structured": {
+    "answer": "I'd pick Harel's \"מניות\" track (8522), because it showed 24.04% over 3 years with the lowest fee I saw (0.55%), and Harel is a name I know.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Return column, many rows",
+        "why": "Lots of tracks show 'פחות מ־3 שנים' instead of a number, so I couldn't compare them and just skipped them"
+      },
+      {
+        "where": "After Mor/Analyst/Meitav groups (~screen 7)",
+        "why": "Same rows repeating across companies, 143 tracks, got bored and stopped scrolling"
+      },
+      {
+        "where": "Analyst 'עוקב מדדים - גמיש' 26.39% and Meitav 'עוקב מדדי מניות' 25.86%",
+        "why": "Slightly higher than Harel; hesitated but stuck with Harel since cheaper fee and a name I trust"
+      },
+      {
+        "where": "'עוד לא דווח' with orange ! in fee column",
+        "why": "Looked like a warning, avoided those rows"
+      }
+    ],
+    "used": [
+      "Heading 'כל המסלולים בכל החברות'",
+      "Selected button 'קופת גמל להשקעה 143'",
+      "Harel group row 'מניות' 8522: 0.55% מההיסכון, 0% מההפקדות, 24.04% 3 שנים, 14.64% 5 שנים, 7.3 מיליארד ₪",
+      "Comparison with Harel כללי 13.5% and S&P 500 13.7%",
+      "Glanced at Analyst 26.39% and Meitav 25.86% rows"
+    ],
+    "skimmed": [
+      "Mor group rows",
+      "Analyst group rows",
+      "Meitav group rows",
+      "Exposure column (מניות/מט\"ח percents)",
+      "Managed money column"
+    ],
+    "skipped": [
+      "Subtitle about fee dates and רשות שוק ההון",
+      "'מה זה קופת גמל להשקעה' link",
+      "Search box and track-type filter buttons",
+      "Donut charts",
+      "? help icons",
+      "Row expand arrows",
+      "Screens 8-15 / remaining companies"
+    ],
+    "unsure_meaning": [
+      "מט\"ח",
+      "תשואה שנתית ממוצעת, לפני דמי ניהול — is 24.04% per year or total?",
+      "מההיסכון vs מההפקדות",
+      "עוד לא דווח with orange !",
+      "123 מקור / 123 מחושב",
+      "dotted underlines on numbers",
+      "tags like 'הלכה יהודית', 'חדש'"
+    ],
+    "not_found": [
+      "A recommendation or 'best for beginners' pick",
+      "Fee shown in shekels for my amount",
+      "What the first step is to actually open the fund",
+      "Explanation of what each track type means in plain words"
+    ],
+    "findings": [
+      {
+        "what": "143 tracks in one long table with no recommendation or starting point; overwhelming",
+        "where": "Whole table"
+      },
+      {
+        "what": "Many rows show 'פחות מ־3 שנים' instead of a return, so they can't be compared",
+        "where": "Return column"
+      },
+      {
+        "what": "Fees only as small percents, no shekel amount, so I can't tell if 0.55% vs 0.73% matters",
+        "where": "דמי ניהול column"
+      },
+      {
+        "what": "Same track names repeat under every company, hard to tell what differs",
+        "where": "Track name column"
+      },
+      {
+        "what": "Not clear whether the return is per year or total and what 'לפני דמי ניהול' changes",
+        "where": "Return column header"
+      },
+      {
+        "what": "Exposure percents (מניות 25% / מט\"ח) confusing for a track called 'מניות'",
+        "where": "Exposure column"
+      },
+      {
+        "what": "No next step or how to open the fund",
+        "where": "Whole page"
+      }
+    ]
+  },
+  "steps": 7,
+  "reads": 7,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 39245,
+    "turns": 9,
+    "usd": 0.1850978,
+    "input": 10,
+    "cacheWrite": 13368,
+    "cacheRead": 43969,
+    "output": 3466,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "control-tracks-pc",
+    "screenshots": 16,
+    "changes": [],
+    "neverShown": [],
+    "errors": []
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "case": "home-door-guide",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The home link 'להבין סוג של חיסכון' promises help with one kind of saving but opens only the general list of guides.\",\"where\":\"the link on the home page and where it leads\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "No finding says the 'understand one kind of saving' link only opens the general guide list; findings 2 and 3 cover the home-page layout and repetitive squares, not a link that breaks its promise."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0140874
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings say the 'להבין סוג של חיסכון' link promises one kind of saving but opens the general guide list; they cover contrast, layout, repetition, jargon and trust instead."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0143954
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0284828
+}

@@ -1,0 +1,80 @@
+{
+  "case": "company-missing-fund-kinds",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"A company's page lists its provident and study funds but not its index-tracking funds or money-market funds.\",\"where\":\"the product choices at the top of the company page\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Unsure which product their money is in; the page opened on a preselected 'קופת גמל להשקעה' they didn't choose",
+      "The fee shown is an average ('ממוצע'), so their own fee may be different",
+      "The '123 ממקור / מחושב / הזנה' labels are confusing, and it's unclear why there are three kinds",
+      "Too many 'במה הכסף מושקע' filter buttons, which repeat what the table shows",
+      "'PF-10' is a confusing code",
+      "The extra direct costs are mentioned but their size isn't shown",
+      "Folded sections (קרנות מחקות, מרכזית לפיצויים, קרנות סל) are closed and it's unclear if they're relevant; would remove",
+      "The 'מה כתוב במסמכים של הראל' rows are all closed and don't say what's inside",
+      "Conflicting dates (September 2026 vs 03.11.2026); unclear which one counts",
+      "Most tracks show 'פחות מ־3 שנים', so there's no return information for them",
+      "The 'קופה' fund-code column means nothing to them; would remove",
+      "'מט״ח' isn't understood, and it can exceed the shares figure / add up to more than 100%",
+      "The rings in the table add nothing; would remove",
+      "Unclear whether the 3-year return is a yearly average or a total",
+      "Unclear what 'סחיר' means and how 'מניות סחיר' differs from 'מניות'",
+      "No cost in shekels for the percentage fee",
+      "No returns shown after fees and tax",
+      "No comparison with other companies",
+      "Nothing aimed at someone close to retirement (safer tracks, drawing a pension)",
+      "The 'לא מצאתם שם?' search box isn't needed; would remove"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader never says index-tracking or money-market funds are missing from the product choices; they only mention folded sections for קרנות מחקות and קרנות סל, which they skipped for a different reason."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0583392
+  },
+  "b": {
+    "raised": [
+      "The page opened on 'קופת גמל להשקעה' without the reader choosing it, and they're unsure their money is in that product",
+      "The fee shown is an average, so the reader's own fee may be different",
+      "The '123 ממקור / מחושב / הזנה' labels are confusing",
+      "Too many 'במה הכסף מושקע' filter buttons, and they repeat what the table shows",
+      "The 'PF-10' note is confusing and looks like a code meant for someone else",
+      "The direct costs on top of the fee are mentioned, but their size isn't shown",
+      "The folded sections (קרנות מחקות, מרכזית לפיצויים, קרנות סל) are closed and it's unclear whether they apply",
+      "'מה כתוב במסמכים של הראל' is all folded and doesn't say what's inside",
+      "Two dates conflict: September 2026 at the top and 03.11.2026 in the footer",
+      "Most tracks show 'פחות מ־3 שנים', so their performance can't be learned",
+      "The 'קופה' fund-code column is unclear and could be dropped",
+      "'מט״ח' isn't understood, and the shares and מט״ח percentages can add up to more than 100%",
+      "The rings in the table add nothing and could be dropped",
+      "Unclear whether 'תשואה שנתית ממוצעת' is a per-year average or a total; 24% a year seems too high",
+      "Unclear what 'סחיר' means and how 'מניות סחיר' differs from 'מניות'",
+      "No shekel figure for what the percentage fee costs",
+      "No returns after fees and tax",
+      "No comparison of Harel with other companies",
+      "No guidance for someone close to retirement",
+      "The 'לא מצאתם שם?' search box isn't needed and could be removed"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader skips the folded index-tracking and ETF sections because they're closed, but never says that index-tracking or money-market funds are missing from the product choices at the top."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0645752
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.12291440000000001
+}

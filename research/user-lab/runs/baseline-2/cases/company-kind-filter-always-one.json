@@ -1,0 +1,13 @@
+{
+ "id": "company-kind-filter-always-one",
+ "task": "s20",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "On a company's page, the filter 'במה הכסף מושקע' is useless: each of its choices holds a single track.",
+   "where": "the filter chips above the tracks list",
+   "kind": "general"
+  }
+ ],
+ "liked": []
+}

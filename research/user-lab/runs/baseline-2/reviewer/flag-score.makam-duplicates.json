@@ -1,0 +1,109 @@
+{
+  "case": "makam-duplicates",
+  "sessions": 6,
+  "perKey": {
+    "k": {
+      "kind": "general",
+      "caught": 1,
+      "caughtIn10": 1,
+      "of": 6,
+      "byPersona": {
+        "careful-retiree-pc": {
+          "caught": 0,
+          "of": 3,
+          "ranks": [
+            0,
+            0,
+            0
+          ]
+        },
+        "first-job-phone": {
+          "caught": 1,
+          "of": 3,
+          "ranks": [
+            0,
+            0,
+            5
+          ]
+        }
+      },
+      "graderAgreement": 1
+    }
+  },
+  "againstLiked": {},
+  "usd": 0.1853648,
+  "rows": [
+    {
+      "task": "s05",
+      "session": "careful-retiree-pc-r1",
+      "persona": "careful-retiree-pc",
+      "mode": "findings",
+      "raised": null,
+      "ranks": {
+        "k": 0
+      },
+      "against": {},
+      "usd": 0.0284788
+    },
+    {
+      "task": "s05",
+      "session": "careful-retiree-pc-r2",
+      "persona": "careful-retiree-pc",
+      "mode": "findings",
+      "raised": null,
+      "ranks": {
+        "k": 0
+      },
+      "against": {},
+      "usd": 0.0288828
+    },
+    {
+      "task": "s05",
+      "session": "careful-retiree-pc-r3",
+      "persona": "careful-retiree-pc",
+      "mode": "findings",
+      "raised": null,
+      "ranks": {
+        "k": 0
+      },
+      "against": {},
+      "usd": 0.028634800000000002
+    },
+    {
+      "task": "s05",
+      "session": "first-job-phone-r1",
+      "persona": "first-job-phone",
+      "mode": "findings",
+      "raised": null,
+      "ranks": {
+        "k": 0
+      },
+      "against": {},
+      "usd": 0.0330268
+    },
+    {
+      "task": "s05",
+      "session": "first-job-phone-r2",
+      "persona": "first-job-phone",
+      "mode": "findings",
+      "raised": null,
+      "ranks": {
+        "k": 0
+      },
+      "against": {},
+      "usd": 0.0372988
+    },
+    {
+      "task": "s05",
+      "session": "first-job-phone-r3",
+      "persona": "first-job-phone",
+      "mode": "findings",
+      "raised": null,
+      "ranks": {
+        "k": 5
+      },
+      "against": {},
+      "usd": 0.0290428
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "case": "makam-duplicates",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The guide list still offers makam as separate guide pages (one per way of holding it), though they describe one thing.\",\"where\":\"the makam entries in the guide list\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 5,
+        "why": "Finding 5 complains that מק\"מ shows up twice in different sections and that this is confusing, which is the same duplicate-makam-entries problem the person named."
+      }
+    ],
+    "liked": [],
+    "usd": 0.015643400000000002
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 5,
+        "why": "Finding 5 complains that מק\"מ shows up twice in different sections of the guide list, which is the same duplicate-entry problem the person named."
+      }
+    ],
+    "liked": [],
+    "usd": 0.014971400000000001
+  },
+  "third": null,
+  "ranks": {
+    "k": 5
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.030614800000000005
+}

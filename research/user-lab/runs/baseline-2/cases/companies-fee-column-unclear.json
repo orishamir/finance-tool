@@ -1,0 +1,13 @@
+{
+ "id": "companies-fee-column-unclear",
+ "task": "s24",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "The column 'דמי ניהול לפי …' in the company's tracks table is not explained.",
+   "where": "the fee column head",
+   "kind": "general"
+  }
+ ],
+ "liked": []
+}

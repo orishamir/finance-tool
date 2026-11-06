@@ -1,0 +1,127 @@
+{
+ "id": "once",
+ "written": "2026-11-06",
+ "built_from": [
+  "live-02-indices-cost-bar-legend (the founder, 2026-11-06: the same colour key under every row's bar, and the amounts written apart from the bar)"
+ ],
+ "reason": "A person scanning a list wants to read only what differs between the items. Words, marks or a colour key that are the same on every item make them read the same thing again on each one; a number written away from the coloured part it belongs to makes them look back and forth to match the two.",
+ "for": "every session (behaviour), still screens and browser alike",
+ "tested_on_not_built_from": [
+  "held-out benchmark cases of the same reason: tracks-warnings, tracks-r2-companies, study-r1-decoder-table, study-r1-coins",
+  "planted p04 (legend far from the bars) on TA-125, phone, score split",
+  "planted p05 (a label repeated on every row) on tracks, pc, and TA-125, phone, score split"
+ ],
+ "negative_check": [
+  "planted clean controls control-tracks-pc and control-ta125-phone",
+  "held-out benchmark, with against without"
+ ],
+ "status": "candidate: generalises to the founder's held-out flags of the same reason and to a planted kind on another page and device; not in a version. It is loud (a quarter of all findings), so it waits for the founder's noise sample on its findings, and for a negative check on a screen where nothing repeats",
+ "result": {
+  "date": "2026-11-06",
+  "own_case": {
+   "run": "runs/live-02 (without, v1) and runs/live-02/once (with); three personas, three runs each",
+   "legend_every_row": {
+    "without": "0 of 9",
+    "with": "3 of 9 (ranks 2, 3, 3)"
+   },
+   "amounts_off_bar": {
+    "without": "0 of 9",
+    "with": "8 of 9 (ranks 2 to 8)"
+   },
+   "note": "built from this case, so not evidence that it generalises; it shows the wording reaches the problem"
+  },
+  "same_reason_held_out": {
+   "run": "runs/baseline-1/reviewer (without) and runs/baseline-1/once (with, run-once.json: run-reviewer.json plus the behaviour file); first-job-phone and careful-retiree-pc, one run each",
+   "caught_in_first_10": {
+    "without": "0 of 8",
+    "with": "5 of 8"
+   },
+   "by_case_with": {
+    "tracks-warnings": "1 of 2 (rank 2)",
+    "tracks-r2-companies": "2 of 2 (ranks 1, 1)",
+    "study-r1-decoder-table": "2 of 2 (ranks 1, 3)",
+    "study-r1-coins": "0 of 2"
+   }
+  },
+  "planted": {
+   "run": "runs/candidate-once/without and runs/candidate-once/with (identical but for behaviour; v1's browser instruction in both); first-job-phone and careful-retiree-pc, repeat 2, captured pages, graded by score.mjs --judge",
+   "p04_far_legend_ta125_phone": {
+    "without": "1 of 4",
+    "with": "4 of 4 (ranks 2, 2, 3, 4)"
+   },
+   "p05_repeat": {
+    "without": "0 of 8",
+    "with": "1 of 8",
+    "note": "7 of the 8 with sessions did report repetition, but of the live page's own louder repeats (the same note on every account row, the same unit words on every track row), not the planted line; the plant is quieter than what the page already repeats"
+   },
+   "controls": {
+    "findings": {
+     "without": 56,
+     "with": 60
+    },
+    "serious_by_grader": {
+     "without": "24 (43%)",
+     "with": "18 (30%)"
+    },
+    "names_absent_plant": {
+     "without": 5,
+     "with": 5
+    },
+    "note": "with the instruction every control session reported repetition or matching, each a real repeat on the live page; the grader judges a repeat a minor annoyance, not serious, which is most of the fall in the serious share"
+   }
+  },
+  "held_out": {
+   "graded_with": "grade-flag.mjs on the 52 case files of runs/baseline-2/cases (keys identical to the without arm), two blind graders at high effort, a third on a split",
+   "headline_general_no_outside_36": {
+    "first_10_single": {
+     "without": "13 of 72 (18%; 11 to 28%)",
+     "with": "17 of 72 (24%; 15 to 35%)"
+    },
+    "first_10_pooled": {
+     "without": "8 of 36 (22%; 12 to 38%)",
+     "with": "12 of 36 (33%; 20 to 50%)"
+    }
+   },
+   "outside_knowledge_7": {
+    "without": "2 of 14",
+    "with": "3 of 14"
+   },
+   "taste_9": {
+    "without": "1 of 18",
+    "with": "2 of 18"
+   },
+   "gained": [
+    "cfc-exposure (first-job-phone, 1)",
+    "rules-toggle-empty (first-job-phone, 4)",
+    "hg-tax-after-six (careful-retiree-pc, 1)",
+    "tracks-r2-companies (both, 1 and 1)",
+    "makam-under-products (first-job-phone, 3)",
+    "makam-duplicates (careful-retiree-pc, 7)",
+    "study-r1-decoder-table (both, 1 and 3)",
+    "tracks-warnings (first-job-phone, 2)"
+   ],
+   "lost": [
+    "companies-fee-column-unclear (careful-retiree-pc, was 3)",
+    "company-missing-fund-kinds (first-job-phone, was 6)",
+    "hg-within-ceiling (first-job-phone, was 3)",
+    "tracks-stale-annuity (first-job-phone, was 6)"
+   ],
+   "findings_per_session": {
+    "without": "6.97 (544 in 78)",
+    "with": "7.41 (578 in 78)"
+   },
+   "findings_about_repetition_or_matching": {
+    "without": "26 of 544 (5%), in 24 of 78 sessions",
+    "with": "139 of 578 (24%), in all 78 sessions",
+    "how": "a word search over the findings (repeat, every row, re-read, back and forth, legend, colour key, twice, duplicate); read through, nearly all quote words that do repeat on the screen; a few stretch it (chips that differ from fund to fund called the same, one point said in five places)"
+   }
+  },
+  "cost_usd": {
+   "reader_sessions": 23.8,
+   "graders": "about 4, not recorded by the tools",
+   "total": "about 28"
+  },
+  "verdict": "Generalises: on the founder's held-out flags of the same reason 5 of 8 against 0 of 8, the headline held-out catch rate up 13 to 17 of 72, and the planted far legend on another page and device 4 of 4 against 1 of 4. Not yet kept: it makes every session spend one to three of its first ten findings on repetition (a quarter of all findings), which pushed out four earlier catches, and whether those findings bother people is the founder's call (metric.md, noise). The negative check is not met either: every screen tested repeats something, so the instruction never had a place to stay silent. Next: put a sample of its findings into the founder's next noise sample; run it on a screen with no repeated text."
+ },
+ "independence": "checked by reading and a word search: no term, page, element, figure or rule of the site in the instruction"
+}

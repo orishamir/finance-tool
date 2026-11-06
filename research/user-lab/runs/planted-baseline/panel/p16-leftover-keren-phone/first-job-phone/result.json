@@ -1,0 +1,117 @@
+{
+  "task": "p16-leftover-keren-phone",
+  "persona": "first-job-phone",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "phone",
+  "startedAt": "2026-11-05T23:26:12.568Z",
+  "structured": {
+    "answer": "After 6 years from the first deposit I can take it out with no tax; the page's example says about 66,000 ₪ in hand after 5 years (with 300 ₪/month from me and 900 ₪ from the employer), so after 6 it'd be a bit more.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Calculator chart, default 'אחרי 5 שנים'",
+        "why": "Page says 6 years is tax-free but the example is set to 5 years with tax, so the number I took away isn't the scenario I'd actually do"
+      },
+      {
+        "where": "Text under chart: 29,768 ₪ למס הכנסה ... 15,794 ₪ מהם חוזרים",
+        "why": "Couldn't tell how much tax I'd really lose; sounded like a third goes to tax"
+      },
+      {
+        "where": "Big result number '66,5…'",
+        "why": "Cut off under the round scroll-up button"
+      }
+    ],
+    "used": [
+      "Intro line 'אחרי 6 שנים מההפקדה הראשונה אפשר למשוך... בלי מס'",
+      "Calculator heading 'כמה כסף נשאר לכם, ומתי?'",
+      "Chart labels 'לפני 6 שנים: מס' / 'מ־6 שנים: פטור ממס'",
+      "'קרן השתלמות במסלול מדד. 300 ₪ בחודש מכם, 900 ₪ מהמעסיק'",
+      "'נשאר בידיים 66,601 ₪ עד 66,280 ₪'"
+    ],
+    "skimmed": [
+      "Paragraph with 15,712 ₪ / 20,566 ₪ ceilings",
+      "Input boxes 7.5 / 2.5 / 0.54 / 7",
+      "Bar chart colours",
+      "שווה לדעת headings",
+      "מי מציע section with הראל, אלטשולר שחם"
+    ],
+    "skipped": [
+      "Buttons קופת גמל להשקעה, קרן השתלמות בניהול אישי, track buttons",
+      "Assumptions text about 7% return, 2% inflation, מחירים של היום",
+      "חוקים וכללים links",
+      "Screens 7-13"
+    ],
+    "unsure_meaning": [
+      "−13,974 in red",
+      "15,794 ₪ מהם חוזרים",
+      "כל הסכומים בכסף של היום",
+      "מסלול מדד",
+      "KH-19 / KH-15 / PF-18",
+      "חוקים וכללים · 10",
+      "Teal vs yellow vs grey bar colours"
+    ],
+    "not_found": [
+      "A field for my own monthly salary near the chart",
+      "The amount after exactly 6 years shown as text"
+    ],
+    "findings": [
+      {
+        "what": "Default example withdraws at 5 years (taxed) though the page says 6 years is tax-free; the first result shown is the worse scenario",
+        "where": "Calculator, 'מושכים את הכסף אחרי 5 שנים'"
+      },
+      {
+        "what": "Red minus −13,974 is the scariest big number on screen and isn't explained next to it",
+        "where": "Waterfall chart below bar chart"
+      },
+      {
+        "what": "Final 'נשאר בידיים' number hidden under the floating scroll-up button",
+        "where": "Screen 3 top-right of waterfall"
+      },
+      {
+        "what": "Tax paragraph (29,768 to tax, 15,794 comes back) is confusing",
+        "where": "Text under the chart"
+      },
+      {
+        "what": "No obvious place to enter my own salary near the result; example uses 300/900 ₪",
+        "where": "Calculator"
+      },
+      {
+        "what": "Code tags like KH-19 mean nothing",
+        "where": "שווה לדעת"
+      }
+    ]
+  },
+  "steps": 6,
+  "reads": 6,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 38242,
+    "turns": 8,
+    "usd": 0.16668899999999998,
+    "input": 10,
+    "cacheWrite": 11722,
+    "cacheRead": 38465,
+    "output": 3259,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "p16-leftover-keren-phone",
+    "screenshots": 14,
+    "changes": [
+      {
+        "id": "leftover",
+        "type": "text",
+        "shots": 14,
+        "applied": 14,
+        "most": 1
+      }
+    ],
+    "neverShown": [],
+    "errors": []
+  }
+}

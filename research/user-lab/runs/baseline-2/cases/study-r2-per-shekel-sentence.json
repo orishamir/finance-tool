@@ -1,0 +1,13 @@
+{
+ "id": "study-r2-per-shekel-sentence",
+ "task": "s35",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "The sentence 'כל שקל שהפקדתם נהיה 4.57 ₪ בקרן ו־1.11 ₪ בחשבון ניירות ערך' does not help.",
+   "where": "the per-shekel sentence",
+   "kind": "taste"
+  }
+ ],
+ "liked": []
+}

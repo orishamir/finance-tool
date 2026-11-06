@@ -1,0 +1,14 @@
+{
+ "id": "idx-r2-no-column-heads",
+ "task": "t53",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "The account table has no column heads, so its figures are hard to read.",
+   "where": "the account table",
+   "kind": "general",
+   "outside": false
+  }
+ ],
+ "liked": []
+}

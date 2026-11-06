@@ -1,17 +1,84 @@
 {
   "id": "TXK-20",
-  "title": "Child savings: gains are taxed on withdrawal; no official rate found (Q4)",
-  "title_he": "חיסכון לכל ילד: מס במשיכה, בלי שיעור רשמי",
-  "text_he": "הביטוח הלאומי עונה לשאלה אם משלמים מס במשיכה: 'בעת משיכה תחויב במס רווחי הון', בלי שיעור, בלי בסיס ובלי פרטי ניכוי. תקנות חיסכון לכל ילד לא מזכירות מס, ואף סעיף בפקודת מס הכנסה לא מזכיר חיסכון לכל ילד. לכן השיעור לא ממוקר, לא למסלול הקופה ולא למסלול הבנק; זו שאלה פתוחה. למסלול הקופה יש היסק בכלל נפרד.",
+  "title": "Child savings: gains are taxed on withdrawal; no Tax Authority rate found (Q4)",
+  "title_he": "חיסכון לכל ילד: מס במשיכה, בלי שיעור של רשות המסים",
+  "text_he": "בחוזר שלו על התוכנית הביטוח הלאומי כותב שמשיכה של כספי החיסכון, חלקם או כולם, חייבת במס רווחי הון בשיעור קבוע מהרווחים, בלי להבחין בין מסלול הקופה למסלול הבנק ובלי לומר על איזה רווח. משרד האוצר כתב עוד לפני תחילת התוכנית, בתשובות למכרז שבחר את הבנקים והקופות, שחלה על החיסכון מדיניות המס הקיימת ושמשיכה מקופת החיסכון חייבת במס רווחי הון. אף אחד מהגופים האלה אינו רשות המסים, ואף סעיף בפקודת מס הכנסה לא מזכיר חיסכון לכל ילד; השיעור והבסיס של כל מסלול באים מהכללים הרגילים של הפקודה.",
   "strength": "primary",
   "dimensions": [
     "tax-at-exit"
   ],
   "likely_to_change": "no",
+  "figure_names_he": {
+    "nii_circular_rate": "שיעור המס לפי חוזר הביטוח הלאומי"
+  },
+  "figures": {
+    "nii_circular_rate": {
+      "value": 25,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.btl.gov.il/benefits/HozrimGimlaot/Hozrim/11.16%d7%97%d7%95%d7%96%d7%a8%20%d7%aa%d7%95%d7%9b%d7%a0%d7%99%d7%aa%20%d7%97%d7%99%d7%a1%d7%9b%d7%95%d7%9f%20%d7%9c%d7%9b%d7%9c%20%d7%99%d7%9c%d7%93_.pdf#page=11",
+        "title": "ביטוח לאומי, חוזר 1356: תוכנית חיסכון לכל ילד, 30.11.2016, p.11, s.6 \"תחויב במס רווחי הון בשיעור של 25% מהרווחים\"",
+        "publisher": "National Insurance Institute",
+        "strength": "primary"
+      },
+      "checked": "2026-11-06",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXK-20"
+      ],
+      "state": "sourced",
+      "notes": "National Insurance's statement in its circular to its own staff, for both routes, with no base named; not a tax authority's. No Tax Authority figure exists (TXK OQ1). The site's computation uses TXK-23's rates, not this one."
+    }
+  },
   "il_finance_file": "tax-gemel-lehashkaa-ira-child.md",
-  "checked": "2026-10-22",
+  "checked": "2026-11-06",
   "scope": "general",
   "sources": [
+    {
+      "url": "https://www.btl.gov.il/benefits/HozrimGimlaot/Hozrim/11.16%d7%97%d7%95%d7%96%d7%a8%20%d7%aa%d7%95%d7%9b%d7%a0%d7%99%d7%aa%20%d7%97%d7%99%d7%a1%d7%9b%d7%95%d7%9f%20%d7%9c%d7%9b%d7%9c%20%d7%99%d7%9c%d7%93_.pdf#page=11",
+      "title": "ביטוח לאומי, חוזר 1356: תוכנית חיסכון לכל ילד, 30.11.2016",
+      "title_he": "ביטוח לאומי, חוזר 1356: תוכנית חיסכון לכל ילד, 30.11.2016",
+      "publisher": "National Insurance Institute",
+      "publisher_he": "המוסד לביטוח לאומי",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "p.11, s.6",
+      "locator_he": "עמוד 11, סעיף 6",
+      "page": 11,
+      "quote": "תחויב במס רווחי הון בשיעור של 25% מהרווחים",
+      "checked": "2026-11-06",
+      "qualifier": "(National Insurance's statement; not a tax authority)"
+    },
+    {
+      "url": "https://mr.gov.il/ilgstorefront/he/p/attachment/005056BF19AF1EDA95B333678AA98121/%D7%9E%D7%A1%D7%9E%D7%9B%D7%99%20%D7%94%D7%9C%D7%99%D7%9A#page=7",
+      "title": "משרד האוצר, אגף החשב הכללי: מכרז 1226/2016 לבחירת בנקים וקופות גמל בתוכנית חיסכון לכל ילד, הודעה מס' 1 (מעודכנת), 3.11.2016",
+      "title_he": "משרד האוצר, אגף החשב הכללי: מכרז 1226/2016 לבחירת בנקים וקופות גמל בתוכנית חיסכון לכל ילד, הודעה מס' 1 (מעודכנת), 3.11.2016",
+      "publisher": "Government procurement site (mr.gov.il)",
+      "publisher_he": "משרד האוצר, אגף החשב הכללי",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.7",
+      "locator_he": "עמוד 7",
+      "quote": "מדיניות המס הקיימת תחול על כל המכשירים המפורטים במכרז זה",
+      "checked": "2026-11-06",
+      "qualifier": "(the Ministry of Finance; not a tax authority)"
+    },
+    {
+      "url": "https://mr.gov.il/ilgstorefront/he/p/attachment/005056BF19AF1EDA95B333678AA98121/%D7%9E%D7%A1%D7%9E%D7%9B%D7%99%20%D7%94%D7%9C%D7%99%D7%9A#page=21",
+      "title": "משרד האוצר, אגף החשב הכללי: מכרז 1226/2016, הודעה מס' 1 (מעודכנת), 3.11.2016",
+      "title_he": "משרד האוצר, אגף החשב הכללי: מכרז 1226/2016 לבחירת בנקים וקופות גמל בתוכנית חיסכון לכל ילד, הודעה מס' 1 (מעודכנת), 3.11.2016",
+      "publisher": "Government procurement site (mr.gov.il)",
+      "publisher_he": "משרד האוצר, אגף החשב הכללי",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.21",
+      "locator_he": "עמוד 21",
+      "quote": "משיכת כספים מקופת חיסכון לכל ילד תמוסה במס רווחי הון",
+      "checked": "2026-11-06"
+    },
     {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/8OfazOM9J2n~VjyzV5AWsITYS27PjZHrqw3iJWE0YJI=#page=7",
       "title": "תקנות הביטוח הלאומי (חיסכון ארוך טווח לילד), התשע\"ז-2016, קובץ התקנות 7727",
@@ -34,7 +101,7 @@
       "kind": "regulator_page",
       "strength": "primary",
       "quote": "בעת משיכה תחויב במס רווחי הון",
-      "checked": "2026-10-25"
+      "checked": "2026-11-06"
     }
   ]
 }

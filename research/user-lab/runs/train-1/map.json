@@ -1,0 +1,1798 @@
+{
+ "t01": {
+  "group": "home-header-wrap",
+  "cases": [
+   "home-header-wrap"
+  ],
+  "url": "https://orishamir.github.io/finance-tool/",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "shots": [
+   "screen-01.png",
+   "screen-02.png"
+  ],
+  "source": [
+   "home-1140-01.png",
+   "home-1140-02.png"
+  ]
+ },
+ "t02": {
+  "group": "changelog-page",
+  "cases": [
+   "changelog-page"
+  ],
+  "url": "https://orishamir.github.io/finance-tool/changes",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "shots": [
+   "screen-01.png",
+   "screen-02.png",
+   "screen-03.png"
+  ],
+  "source": [
+   "changes-1440-01.png",
+   "changes-1440-02.png",
+   "changes-1440-03.png"
+  ]
+ },
+ "t03": {
+  "group": "rules-site-pick-badge",
+  "cases": [
+   "rules-site-pick-badge"
+  ],
+  "url": "https://orishamir.github.io/finance-tool/rules",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "shots": [
+   "screen-01.png",
+   "screen-02.png",
+   "screen-03.png",
+   "screen-04.png",
+   "screen-05.png"
+  ],
+  "source": [
+   "rules-1440-01.png",
+   "rules-1440-02.png",
+   "rules-1440-03.png",
+   "rules-1440-04.png",
+   "rules-1440-05.png"
+  ]
+ },
+ "t04": {
+  "group": "rules-split-shelves",
+  "cases": [
+   "rules-split-shelves"
+  ],
+  "url": "https://orishamir.github.io/finance-tool/rules",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "shots": [
+   "screen-01.png",
+   "screen-02.png",
+   "screen-03.png",
+   "screen-04.png",
+   "screen-05.png",
+   "screen-06.png",
+   "screen-07.png",
+   "screen-08.png",
+   "screen-09.png",
+   "screen-10.png",
+   "screen-11.png",
+   "screen-12.png",
+   "screen-13.png",
+   "screen-14.png"
+  ],
+  "source": [
+   "rules-1440-01.png",
+   "rules-1440-02.png",
+   "rules-1440-03.png",
+   "rules-1440-04.png",
+   "rules-1440-05.png",
+   "rules-1440-06.png",
+   "rules-1440-07.png",
+   "rules-1440-08.png",
+   "rules-1440-09.png",
+   "rules-access-1440-01.png",
+   "rules-access-1440-02.png",
+   "rules-access-1440-03.png",
+   "rules-access-1440-04.png",
+   "rules-access-1440-05.png"
+  ]
+ },
+ "t05": {
+  "group": "compare-recommends-gemel",
+  "cases": [
+   "compare-recommends-gemel"
+  ],
+  "url": "https://orishamir.github.io/finance-tool/goal/compare",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "shots": [
+   "screen-01.png",
+   "screen-02.png",
+   "screen-03.png",
+   "screen-04.png",
+   "screen-05.png",
+   "screen-06.png"
+  ],
+  "source": [
+   "compare-1440-01.png",
+   "compare-1440-02.png",
+   "compare-1440-03.png",
+   "compare-1440-04.png",
+   "compare-1440-05.png",
+   "compare-1440-06.png"
+  ]
+ },
+ "t06": {
+  "group": "fee-legend-one-colour",
+  "cases": [
+   "fee-legend-one-colour"
+  ],
+  "url": "https://orishamir.github.io/finance-tool/fees?wrapper=brokerage-account&from=compare",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "shots": [
+   "screen-01.png",
+   "screen-02.png",
+   "screen-03.png",
+   "screen-04.png",
+   "screen-05.png"
+  ],
+  "source": [
+   "fees-1440-01.png",
+   "fees-1440-02.png",
+   "fees-1440-03.png",
+   "fees-1440-04.png",
+   "fees-1440-05.png"
+  ]
+ },
+ "t07": {
+  "group": "home-question-misaligned",
+  "cases": [
+   "home-question-misaligned"
+  ],
+  "url": "https://orishamir.github.io/finance-tool/",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "shots": [
+   "screen-01.png",
+   "screen-02.png"
+  ],
+  "source": [
+   "home-1440-01.png",
+   "home-1440-02.png"
+  ]
+ },
+ "t08": {
+  "group": "goals-board",
+  "cases": [
+   "goals-arrows-sideways",
+   "goals-no-delete-rename"
+  ],
+  "url": "https://orishamir.github.io/finance-tool/goal/compare",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "shots": [
+   "screen-01.png",
+   "screen-02.png",
+   "screen-03.png",
+   "screen-04.png",
+   "screen-05.png"
+  ],
+  "source": [
+   "compare-1440-01.png",
+   "compare-1440-02.png",
+   "compare-1440-03.png",
+   "compare-1440-04.png",
+   "compare-1440-05.png"
+  ]
+ },
+ "t09": {
+  "group": "question-card-chips-do-nothing",
+  "cases": [
+   "question-card-chips-do-nothing"
+  ],
+  "url": "https://orishamir.github.io/finance-tool/",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "shots": [
+   "screen-01.png",
+   "screen-02.png",
+   "screen-03.png",
+   "screen-04.png",
+   "screen-05.png",
+   "screen-06.png",
+   "screen-07.png",
+   "screen-08.png"
+  ],
+  "source": [
+   "start-1440-01.png",
+   "start-1440-02.png",
+   "after-limudim-1440-01.png",
+   "after-limudim-1440-02.png",
+   "after-prisha-1440-01.png",
+   "after-prisha-1440-02.png",
+   "after-karit-1440-01.png",
+   "after-karit-1440-02.png"
+  ]
+ },
+ "t10": {
+  "group": "question-card-field-vanishes",
+  "cases": [
+   "question-card-field-vanishes"
+  ],
+  "url": "https://orishamir.github.io/finance-tool/",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "shots": [
+   "screen-01.png",
+   "screen-02.png",
+   "screen-03.png",
+   "screen-04.png"
+  ],
+  "source": [
+   "start-1440-01.png",
+   "start-1440-02.png",
+   "after-karit-1440-01.png",
+   "after-karit-1440-02.png"
+  ]
+ },
+ "t11": {
+  "group": "goals-in-rows",
+  "cases": [
+   "goals-in-rows"
+  ],
+  "url": "https://orishamir.github.io/finance-tool/",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "shots": [
+   "screen-01.png",
+   "screen-02.png"
+  ],
+  "source": [
+   "home-1440-01.png",
+   "home-1440-02.png"
+  ]
+ },
+ "t12": {
+  "group": "sp500-route-missing",
+  "cases": [
+   "sp500-route-missing"
+  ],
+  "url": "https://orishamir.github.io/finance-tool/invest",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "shots": [
+   "screen-01.png"
+  ],
+  "source": [
+   "invest-1440-01.png"
+  ]
+ },
+ "t13": {
+  "group": "fees-track-saving-layout",
+  "cases": [
+   "fees-track-saving-layout"
+  ],
+  "url": "https://orishamir.github.io/finance-tool/fees?track=8675",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "shots": [
+   "screen-01.png",
+   "screen-02.png",
+   "screen-03.png",
+   "screen-04.png"
+  ],
+  "source": [
+   "fees-1440-01.png",
+   "fees-1440-02.png",
+   "fees-1440-03.png",
+   "fees-1440-04.png"
+  ]
+ },
+ "t14": {
+  "group": "fees-call-script-open",
+  "cases": [
+   "fees-call-script-open"
+  ],
+  "url": "https://orishamir.github.io/finance-tool/fees?track=8675",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "shots": [
+   "screen-01.png",
+   "screen-02.png",
+   "screen-03.png",
+   "screen-04.png"
+  ],
+  "source": [
+   "fees-1440-01.png",
+   "fees-1440-02.png",
+   "fees-1440-03.png",
+   "fees-1440-04.png"
+  ]
+ },
+ "t15": {
+  "group": "invest-choice-line",
+  "cases": [
+   "invest-choice-line"
+  ],
+  "url": "https://orishamir.github.io/finance-tool/invest",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "shots": [
+   "screen-01.png"
+  ],
+  "source": [
+   "invest-1440-01.png"
+  ]
+ },
+ "t16": {
+  "group": "invest-no-inputs",
+  "cases": [
+   "invest-no-inputs"
+  ],
+  "url": "https://orishamir.github.io/finance-tool/invest",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "shots": [
+   "screen-01.png"
+  ],
+  "source": [
+   "invest-1440-01.png"
+  ]
+ },
+ "t17": {
+  "group": "header-search-clipped",
+  "cases": [
+   "header-search-clipped"
+  ],
+  "url": "https://orishamir.github.io/finance-tool/invest",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "shots": [
+   "screen-01.png"
+  ],
+  "source": [
+   "invest-1440-01.png"
+  ]
+ },
+ "t18": {
+  "group": "own-fee-warning",
+  "cases": [
+   "own-fee-warning"
+  ],
+  "url": "https://orishamir.github.io/finance-tool/invest/index-ta35",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "shots": [
+   "screen-01.png",
+   "screen-02.png",
+   "screen-03.png",
+   "screen-04.png",
+   "screen-05.png"
+  ],
+  "source": [
+   "ta35-1440-01.png",
+   "ta35-1440-02.png",
+   "ta35-1440-03.png",
+   "ta35-1440-04.png",
+   "ta35-1440-05.png"
+  ]
+ },
+ "t19": {
+  "group": "fee-parts-unlabelled",
+  "cases": [
+   "fee-parts-unlabelled"
+  ],
+  "url": "https://orishamir.github.io/finance-tool/invest/index-ta35",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "shots": [
+   "screen-01.png",
+   "screen-02.png",
+   "screen-03.png",
+   "screen-04.png",
+   "screen-05.png"
+  ],
+  "source": [
+   "ta35-1440-01.png",
+   "ta35-1440-02.png",
+   "ta35-1440-03.png",
+   "ta35-1440-04.png",
+   "ta35-1440-05.png"
+  ]
+ },
+ "t20": {
+  "group": "kit-rangefield-shift",
+  "cases": [
+   "kit-rangefield-shift"
+  ],
+  "url": "https://orishamir.github.io/finance-tool/kit",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "shots": [
+   "screen-01.png",
+   "screen-02.png",
+   "screen-03.png",
+   "screen-04.png",
+   "screen-05.png",
+   "screen-06.png",
+   "screen-07.png",
+   "screen-08.png",
+   "screen-09.png",
+   "screen-10.png",
+   "screen-11.png",
+   "screen-12.png",
+   "screen-13.png",
+   "screen-14.png",
+   "screen-15.png",
+   "screen-16.png",
+   "screen-17.png",
+   "screen-18.png",
+   "screen-19.png",
+   "screen-20.png"
+  ],
+  "source": [
+   "kit-1440-01.png",
+   "kit-1440-02.png",
+   "kit-1440-03.png",
+   "kit-1440-04.png",
+   "kit-1440-05.png",
+   "kit-1440-06.png",
+   "kit-1440-07.png",
+   "kit-1440-08.png",
+   "kit-1440-09.png",
+   "kit-1440-10.png",
+   "kit-entered-1440-01.png",
+   "kit-entered-1440-02.png",
+   "kit-entered-1440-03.png",
+   "kit-entered-1440-04.png",
+   "kit-entered-1440-05.png",
+   "kit-entered-1440-06.png",
+   "kit-entered-1440-07.png",
+   "kit-entered-1440-08.png",
+   "kit-entered-1440-09.png",
+   "kit-entered-1440-10.png"
+  ]
+ },
+ "t21": {
+  "group": "leumi-cited",
+  "cases": [
+   "idle-cash-leumi"
+  ],
+  "url": "https://orishamir.github.io/finance-tool/idle-cash",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "shots": [
+   "screen-01.png",
+   "screen-02.png",
+   "screen-03.png",
+   "screen-04.png"
+  ],
+  "source": [
+   "idle-cash-1440-01.png",
+   "idle-cash-1440-02.png",
+   "idle-cash-source-1440-01.png",
+   "idle-cash-source-1440-02.png"
+  ]
+ },
+ "t22": {
+  "group": "idle-cash-other-chip",
+  "cases": [
+   "idle-cash-other-chip"
+  ],
+  "url": "https://orishamir.github.io/finance-tool/idle-cash",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "shots": [
+   "screen-01.png",
+   "screen-02.png"
+  ],
+  "source": [
+   "idle-cash-1440-01.png",
+   "idle-cash-1440-02.png"
+  ]
+ },
+ "t23": {
+  "group": "home-question-heading",
+  "cases": [
+   "home-question-heading"
+  ],
+  "url": "https://orishamir.github.io/finance-tool/",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "shots": [
+   "screen-01.png",
+   "screen-02.png"
+  ],
+  "source": [
+   "home-1440-01.png",
+   "home-1440-02.png"
+  ]
+ },
+ "t24": {
+  "group": "indices-anytime-toggle",
+  "cases": [
+   "indices-anytime-toggle"
+  ],
+  "url": "https://orishamir.github.io/finance-tool/indices",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "shots": [
+   "screen-01.png",
+   "screen-02.png"
+  ],
+  "source": [
+   "indices-1440-01.png",
+   "indices-anytime-1440-01.png"
+  ]
+ },
+ "t25": {
+  "group": "indices-table-widths-shift",
+  "cases": [
+   "indices-table-widths-shift"
+  ],
+  "url": "https://orishamir.github.io/finance-tool/indices/sp500",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "shots": [
+   "screen-01.png",
+   "screen-02.png",
+   "screen-03.png",
+   "screen-04.png",
+   "screen-05.png",
+   "screen-06.png",
+   "screen-07.png",
+   "screen-08.png",
+   "screen-09.png",
+   "screen-10.png",
+   "screen-11.png",
+   "screen-12.png"
+  ],
+  "source": [
+   "indices-1440-01.png",
+   "indices-1440-02.png",
+   "indices-1440-03.png",
+   "indices-1440-04.png",
+   "indices-1440-05.png",
+   "indices-1440-06.png",
+   "indices-changed-1440-01.png",
+   "indices-changed-1440-02.png",
+   "indices-changed-1440-03.png",
+   "indices-changed-1440-04.png",
+   "indices-changed-1440-05.png",
+   "indices-changed-1440-06.png"
+  ]
+ },
+ "t26": {
+  "group": "indices-pension-field",
+  "cases": [
+   "indices-pension-field"
+  ],
+  "url": "https://orishamir.github.io/finance-tool/indices/sp500",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "shots": [
+   "screen-01.png",
+   "screen-02.png",
+   "screen-03.png",
+   "screen-04.png",
+   "screen-05.png",
+   "screen-06.png"
+  ],
+  "source": [
+   "indices-1440-01.png",
+   "indices-1440-02.png",
+   "indices-1440-03.png",
+   "indices-1440-04.png",
+   "indices-1440-05.png",
+   "indices-1440-06.png"
+  ]
+ },
+ "t27": {
+  "group": "hedging",
+  "cases": [
+   "indices-beats-index",
+   "indices-dollar-minus3",
+   "hedged-visual-misleading"
+  ],
+  "url": "https://orishamir.github.io/finance-tool/indices/sp500",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "shots": [
+   "screen-01.png",
+   "screen-02.png",
+   "screen-03.png",
+   "screen-04.png",
+   "screen-05.png",
+   "screen-06.png",
+   "screen-07.png"
+  ],
+  "source": [
+   "sp500-1440-01.png",
+   "sp500-1440-02.png",
+   "sp500-1440-03.png",
+   "sp500-1440-04.png",
+   "sp500-1440-05.png",
+   "sp500-1440-06.png",
+   "sp500-1440-07.png"
+  ]
+ },
+ "t28": {
+  "group": "questions-page",
+  "cases": [
+   "questions-page"
+  ],
+  "url": "https://orishamir.github.io/finance-tool/questions",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "shots": [
+   "screen-01.png",
+   "screen-02.png",
+   "screen-03.png",
+   "screen-04.png",
+   "screen-05.png"
+  ],
+  "source": [
+   "questions-1440-01.png",
+   "questions-1440-02.png",
+   "questions-1440-03.png",
+   "questions-1440-04.png",
+   "questions-1440-05.png"
+  ]
+ },
+ "t29": {
+  "group": "indices-noise",
+  "cases": [
+   "indices-usd-notice",
+   "indices-rate-for-ta-funds",
+   "indices-long-kind-labels",
+   "indices-loose-spacing"
+  ],
+  "url": "https://orishamir.github.io/finance-tool/indices/sp500",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "shots": [
+   "screen-01.png",
+   "screen-02.png",
+   "screen-03.png",
+   "screen-04.png",
+   "screen-05.png",
+   "screen-06.png",
+   "screen-07.png"
+  ],
+  "source": [
+   "sp500-1440-01.png",
+   "sp500-1440-02.png",
+   "sp500-1440-03.png",
+   "sp500-1440-04.png",
+   "sp500-1440-05.png",
+   "sp500-1440-06.png",
+   "sp500-1440-07.png"
+  ]
+ },
+ "t30": {
+  "group": "indices-13-unpriced",
+  "cases": [
+   "indices-13-unpriced"
+  ],
+  "url": "https://orishamir.github.io/finance-tool/indices/sp500",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "shots": [
+   "screen-01.png",
+   "screen-02.png",
+   "screen-03.png",
+   "screen-04.png",
+   "screen-05.png",
+   "screen-06.png",
+   "screen-07.png"
+  ],
+  "source": [
+   "sp500-1440-01.png",
+   "sp500-1440-02.png",
+   "sp500-1440-03.png",
+   "sp500-1440-04.png",
+   "sp500-1440-05.png",
+   "sp500-1440-06.png",
+   "sp500-1440-07.png"
+  ]
+ },
+ "t31": {
+  "group": "self-report-label",
+  "cases": [
+   "self-report-label"
+  ],
+  "url": "https://orishamir.github.io/finance-tool/indices/sp500",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "shots": [
+   "screen-01.png",
+   "screen-02.png",
+   "screen-03.png",
+   "screen-04.png",
+   "screen-05.png",
+   "screen-06.png",
+   "screen-07.png"
+  ],
+  "source": [
+   "sp500-1440-01.png",
+   "sp500-1440-02.png",
+   "sp500-1440-03.png",
+   "sp500-1440-04.png",
+   "sp500-1440-05.png",
+   "sp500-1440-06.png",
+   "sp500-1440-07.png"
+  ]
+ },
+ "t32": {
+  "group": "pepper-ranked",
+  "cases": [
+   "pepper-ranked"
+  ],
+  "url": "https://orishamir.github.io/finance-tool/indices/sp500",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "shots": [
+   "screen-01.png",
+   "screen-02.png",
+   "screen-03.png",
+   "screen-04.png",
+   "screen-05.png",
+   "screen-06.png",
+   "screen-07.png"
+  ],
+  "source": [
+   "sp500-1440-01.png",
+   "sp500-1440-02.png",
+   "sp500-1440-03.png",
+   "sp500-1440-04.png",
+   "sp500-1440-05.png",
+   "sp500-1440-06.png",
+   "sp500-1440-07.png"
+  ]
+ },
+ "t33": {
+  "group": "leumi-brand-name",
+  "cases": [
+   "leumi-brand-name"
+  ],
+  "url": "https://orishamir.github.io/finance-tool/indices/sp500",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "shots": [
+   "screen-01.png",
+   "screen-02.png",
+   "screen-03.png",
+   "screen-04.png",
+   "screen-05.png",
+   "screen-06.png",
+   "screen-07.png"
+  ],
+  "source": [
+   "sp500-1440-01.png",
+   "sp500-1440-02.png",
+   "sp500-1440-03.png",
+   "sp500-1440-04.png",
+   "sp500-1440-05.png",
+   "sp500-1440-06.png",
+   "sp500-1440-07.png"
+  ]
+ },
+ "t34": {
+  "group": "grey-row-no-alternative",
+  "cases": [
+   "grey-row-no-alternative"
+  ],
+  "url": "https://orishamir.github.io/finance-tool/indices/sp500",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "shots": [
+   "screen-01.png",
+   "screen-02.png",
+   "screen-03.png",
+   "screen-04.png",
+   "screen-05.png",
+   "screen-06.png",
+   "screen-07.png"
+  ],
+  "source": [
+   "sp500-1440-01.png",
+   "sp500-1440-02.png",
+   "sp500-1440-03.png",
+   "sp500-1440-04.png",
+   "sp500-1440-05.png",
+   "sp500-1440-06.png",
+   "sp500-1440-07.png"
+  ]
+ },
+ "t35": {
+  "group": "indices-layout-jumps",
+  "cases": [
+   "indices-layout-jumps"
+  ],
+  "url": "https://orishamir.github.io/finance-tool/indices/sp500",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "shots": [
+   "screen-01.png",
+   "screen-02.png",
+   "screen-03.png",
+   "screen-04.png",
+   "screen-05.png",
+   "screen-06.png",
+   "screen-07.png",
+   "screen-08.png",
+   "screen-09.png",
+   "screen-10.png",
+   "screen-11.png",
+   "screen-12.png",
+   "screen-13.png",
+   "screen-14.png",
+   "screen-15.png",
+   "screen-16.png"
+  ],
+  "source": [
+   "sp500-1440-01.png",
+   "sp500-1440-02.png",
+   "sp500-1440-03.png",
+   "sp500-1440-04.png",
+   "sp500-1440-05.png",
+   "sp500-1440-06.png",
+   "sp500-1440-07.png",
+   "sp500-1440-08.png",
+   "sp500-changed-1440-01.png",
+   "sp500-changed-1440-02.png",
+   "sp500-changed-1440-03.png",
+   "sp500-changed-1440-04.png",
+   "sp500-changed-1440-05.png",
+   "sp500-changed-1440-06.png",
+   "sp500-changed-1440-07.png",
+   "sp500-changed-1440-08.png"
+  ]
+ },
+ "t36": {
+  "group": "zero-cheaper-less-left",
+  "cases": [
+   "zero-cheaper-less-left"
+  ],
+  "url": "https://orishamir.github.io/finance-tool/indices/ta90",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "shots": [
+   "screen-01.png",
+   "screen-02.png",
+   "screen-03.png",
+   "screen-04.png",
+   "screen-05.png",
+   "screen-06.png"
+  ],
+  "source": [
+   "ta90-1440-01.png",
+   "ta90-1440-02.png",
+   "ta90-1440-03.png",
+   "ta90-1440-04.png",
+   "ta90-1440-05.png",
+   "ta90-1440-06.png"
+  ]
+ },
+ "t37": {
+  "group": "fund-no-full-year",
+  "cases": [
+   "fund-no-full-year"
+  ],
+  "url": "https://orishamir.github.io/finance-tool/indices/sp500",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "shots": [
+   "screen-01.png",
+   "screen-02.png",
+   "screen-03.png",
+   "screen-04.png",
+   "screen-05.png",
+   "screen-06.png",
+   "screen-07.png",
+   "screen-08.png"
+  ],
+  "source": [
+   "sp500-1440-01.png",
+   "sp500-1440-02.png",
+   "sp500-1440-03.png",
+   "sp500-1440-04.png",
+   "sp500-1440-05.png",
+   "sp500-1440-06.png",
+   "sp500-1440-07.png",
+   "sp500-1440-08.png"
+  ]
+ },
+ "t38": {
+  "group": "ishares-acc-missing",
+  "cases": [
+   "ishares-acc-missing"
+  ],
+  "url": "https://orishamir.github.io/finance-tool/indices/sp500",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "shots": [
+   "screen-01.png",
+   "screen-02.png",
+   "screen-03.png",
+   "screen-04.png",
+   "screen-05.png",
+   "screen-06.png",
+   "screen-07.png",
+   "screen-08.png"
+  ],
+  "source": [
+   "sp500-1440-01.png",
+   "sp500-1440-02.png",
+   "sp500-1440-03.png",
+   "sp500-1440-04.png",
+   "sp500-1440-05.png",
+   "sp500-1440-06.png",
+   "sp500-1440-07.png",
+   "sp500-1440-08.png"
+  ]
+ },
+ "t39": {
+  "group": "brokerage-vs-indices",
+  "cases": [
+   "brokerage-vs-indices"
+  ],
+  "url": "https://orishamir.github.io/finance-tool/brokerage-account",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "shots": [
+   "screen-01.png"
+  ],
+  "source": [
+   "brokerage-1440-01.png"
+  ]
+ },
+ "t40": {
+  "group": "indices-missing-brokers",
+  "cases": [
+   "indices-missing-brokers"
+  ],
+  "url": "https://orishamir.github.io/finance-tool/indices/sp500",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "shots": [
+   "screen-01.png",
+   "screen-02.png",
+   "screen-03.png",
+   "screen-04.png",
+   "screen-05.png",
+   "screen-06.png",
+   "screen-07.png",
+   "screen-08.png",
+   "screen-09.png",
+   "screen-10.png"
+  ],
+  "source": [
+   "sp500-1440-01.png",
+   "sp500-1440-02.png",
+   "sp500-1440-03.png",
+   "sp500-1440-04.png",
+   "sp500-1440-05.png",
+   "sp500-1440-06.png",
+   "sp500-1440-07.png",
+   "sp500-1440-08.png",
+   "sp500-1440-09.png",
+   "sp500-1440-10.png"
+  ]
+ },
+ "t41": {
+  "group": "psagot-custody",
+  "cases": [
+   "psagot-custody"
+  ],
+  "url": "https://orishamir.github.io/finance-tool/indices/sp500",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "shots": [
+   "screen-01.png",
+   "screen-02.png",
+   "screen-03.png",
+   "screen-04.png",
+   "screen-05.png",
+   "screen-06.png",
+   "screen-07.png",
+   "screen-08.png",
+   "screen-09.png",
+   "screen-10.png"
+  ],
+  "source": [
+   "sp500-1440-01.png",
+   "sp500-1440-02.png",
+   "sp500-1440-03.png",
+   "sp500-1440-04.png",
+   "sp500-1440-05.png",
+   "sp500-1440-06.png",
+   "sp500-1440-07.png",
+   "sp500-1440-08.png",
+   "sp500-1440-09.png",
+   "sp500-1440-10.png"
+  ]
+ },
+ "t42": {
+  "group": "altshuler-note",
+  "cases": [
+   "altshuler-note"
+  ],
+  "url": "https://orishamir.github.io/finance-tool/indices/sp500",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "shots": [
+   "screen-01.png",
+   "screen-02.png",
+   "screen-03.png",
+   "screen-04.png",
+   "screen-05.png",
+   "screen-06.png",
+   "screen-07.png",
+   "screen-08.png",
+   "screen-09.png",
+   "screen-10.png"
+  ],
+  "source": [
+   "sp500-1440-01.png",
+   "sp500-1440-02.png",
+   "sp500-1440-03.png",
+   "sp500-1440-04.png",
+   "sp500-1440-05.png",
+   "sp500-1440-06.png",
+   "sp500-1440-07.png",
+   "sp500-1440-08.png",
+   "sp500-1440-09.png",
+   "sp500-1440-10.png"
+  ]
+ },
+ "t43": {
+  "group": "groups-row",
+  "cases": [
+   "groups-row"
+  ],
+  "url": "https://orishamir.github.io/finance-tool/indices/sp500",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "shots": [
+   "screen-01.png",
+   "screen-02.png",
+   "screen-03.png",
+   "screen-04.png",
+   "screen-05.png",
+   "screen-06.png",
+   "screen-07.png",
+   "screen-08.png",
+   "screen-09.png",
+   "screen-10.png"
+  ],
+  "source": [
+   "sp500-1440-01.png",
+   "sp500-1440-02.png",
+   "sp500-1440-03.png",
+   "sp500-1440-04.png",
+   "sp500-1440-05.png",
+   "sp500-1440-06.png",
+   "sp500-1440-07.png",
+   "sp500-1440-08.png",
+   "sp500-1440-09.png",
+   "sp500-1440-10.png"
+  ]
+ },
+ "t44": {
+  "group": "fee-breakdown-broke",
+  "cases": [
+   "fee-breakdown-broke"
+  ],
+  "url": "https://orishamir.github.io/finance-tool/indices/sp500",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "shots": [
+   "screen-01.png",
+   "screen-02.png",
+   "screen-03.png",
+   "screen-04.png",
+   "screen-05.png",
+   "screen-06.png",
+   "screen-07.png",
+   "screen-08.png",
+   "screen-09.png",
+   "screen-10.png",
+   "screen-11.png"
+  ],
+  "source": [
+   "sp500-1440-01.png",
+   "sp500-1440-02.png",
+   "sp500-1440-03.png",
+   "sp500-1440-04.png",
+   "sp500-1440-05.png",
+   "sp500-1440-06.png",
+   "sp500-1440-07.png",
+   "sp500-1440-08.png",
+   "sp500-1440-09.png",
+   "sp500-1440-10.png",
+   "sp500-1440-11.png"
+  ]
+ },
+ "t45": {
+  "group": "own-terms-line-every-row",
+  "cases": [
+   "own-terms-line-every-row"
+  ],
+  "url": "https://orishamir.github.io/finance-tool/indices/sp500",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "shots": [
+   "screen-01.png",
+   "screen-02.png",
+   "screen-03.png",
+   "screen-04.png",
+   "screen-05.png",
+   "screen-06.png",
+   "screen-07.png",
+   "screen-08.png",
+   "screen-09.png",
+   "screen-10.png",
+   "screen-11.png"
+  ],
+  "source": [
+   "sp500-1440-01.png",
+   "sp500-1440-02.png",
+   "sp500-1440-03.png",
+   "sp500-1440-04.png",
+   "sp500-1440-05.png",
+   "sp500-1440-06.png",
+   "sp500-1440-07.png",
+   "sp500-1440-08.png",
+   "sp500-1440-09.png",
+   "sp500-1440-10.png",
+   "sp500-1440-11.png"
+  ]
+ },
+ "t46": {
+  "group": "open-rule-label",
+  "cases": [
+   "open-rule-label"
+  ],
+  "url": "https://orishamir.github.io/finance-tool/indices/sp500",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "shots": [
+   "screen-01.png",
+   "screen-02.png",
+   "screen-03.png",
+   "screen-04.png",
+   "screen-05.png",
+   "screen-06.png",
+   "screen-07.png",
+   "screen-08.png",
+   "screen-09.png",
+   "screen-10.png",
+   "screen-11.png"
+  ],
+  "source": [
+   "sp500-1440-01.png",
+   "sp500-1440-02.png",
+   "sp500-1440-03.png",
+   "sp500-1440-04.png",
+   "sp500-1440-05.png",
+   "sp500-1440-06.png",
+   "sp500-1440-07.png",
+   "sp500-1440-08.png",
+   "sp500-1440-09.png",
+   "sp500-1440-10.png",
+   "sp500-1440-11.png"
+  ]
+ },
+ "t47": {
+  "group": "rows-together-legend",
+  "cases": [
+   "rows-together-legend"
+  ],
+  "url": "https://orishamir.github.io/finance-tool/indices/sp500",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "shots": [
+   "screen-01.png",
+   "screen-02.png",
+   "screen-03.png",
+   "screen-04.png",
+   "screen-05.png",
+   "screen-06.png",
+   "screen-07.png",
+   "screen-08.png",
+   "screen-09.png",
+   "screen-10.png",
+   "screen-11.png"
+  ],
+  "source": [
+   "sp500-1440-01.png",
+   "sp500-1440-02.png",
+   "sp500-1440-03.png",
+   "sp500-1440-04.png",
+   "sp500-1440-05.png",
+   "sp500-1440-06.png",
+   "sp500-1440-07.png",
+   "sp500-1440-08.png",
+   "sp500-1440-09.png",
+   "sp500-1440-10.png",
+   "sp500-1440-11.png"
+  ]
+ },
+ "t48": {
+  "group": "group-link-label",
+  "cases": [
+   "group-link-label"
+  ],
+  "url": "https://orishamir.github.io/finance-tool/indices/sp500",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "shots": [
+   "screen-01.png",
+   "screen-02.png",
+   "screen-03.png",
+   "screen-04.png",
+   "screen-05.png",
+   "screen-06.png",
+   "screen-07.png",
+   "screen-08.png",
+   "screen-09.png",
+   "screen-10.png",
+   "screen-11.png",
+   "screen-12.png"
+  ],
+  "source": [
+   "sp500-1440-01.png",
+   "sp500-1440-02.png",
+   "sp500-1440-03.png",
+   "sp500-1440-04.png",
+   "sp500-1440-05.png",
+   "sp500-1440-06.png",
+   "sp500-1440-07.png",
+   "sp500-1440-08.png",
+   "sp500-1440-09.png",
+   "sp500-1440-10.png",
+   "sp500-1440-11.png",
+   "sp500-1440-12.png"
+  ]
+ },
+ "t49": {
+  "group": "foreign-funds-missing",
+  "cases": [
+   "foreign-funds-missing"
+  ],
+  "url": "https://orishamir.github.io/finance-tool/indices/sp500",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "shots": [
+   "screen-01.png",
+   "screen-02.png",
+   "screen-03.png",
+   "screen-04.png",
+   "screen-05.png",
+   "screen-06.png",
+   "screen-07.png",
+   "screen-08.png",
+   "screen-09.png",
+   "screen-10.png",
+   "screen-11.png"
+  ],
+  "source": [
+   "sp500-1440-01.png",
+   "sp500-1440-02.png",
+   "sp500-1440-03.png",
+   "sp500-1440-04.png",
+   "sp500-1440-05.png",
+   "sp500-1440-06.png",
+   "sp500-1440-07.png",
+   "sp500-1440-08.png",
+   "sp500-1440-09.png",
+   "sp500-1440-10.png",
+   "sp500-1440-11.png"
+  ]
+ },
+ "t50": {
+  "group": "custom-index",
+  "cases": [
+   "custom-index-ui"
+  ],
+  "url": "https://orishamir.github.io/finance-tool/indices",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "shots": [
+   "screen-01.png",
+   "screen-02.png",
+   "screen-03.png",
+   "screen-04.png",
+   "screen-05.png",
+   "screen-06.png",
+   "screen-07.png",
+   "screen-08.png",
+   "screen-09.png",
+   "screen-10.png",
+   "screen-11.png",
+   "screen-12.png",
+   "screen-13.png",
+   "screen-14.png",
+   "screen-15.png",
+   "screen-16.png"
+  ],
+  "source": [
+   "custom-1440-01.png",
+   "custom-1440-02.png",
+   "custom-1440-03.png",
+   "custom-1440-04.png",
+   "custom-1440-05.png",
+   "sp500-1440-01.png",
+   "sp500-1440-02.png",
+   "sp500-1440-03.png",
+   "sp500-1440-04.png",
+   "sp500-1440-05.png",
+   "sp500-1440-06.png",
+   "sp500-1440-07.png",
+   "sp500-1440-08.png",
+   "sp500-1440-09.png",
+   "sp500-1440-10.png",
+   "sp500-1440-11.png"
+  ]
+ },
+ "t51": {
+  "group": "idx-r1-layout",
+  "cases": [
+   "idx-r1-layout"
+  ],
+  "url": null,
+  "device": "pc",
+  "surface": "drawing",
+  "reader_note": "Drawings made by the site's designers, shown as options to choose from; any mark that one option is recommended is theirs.",
+  "shots": [
+   "screen-01.png",
+   "screen-02.png",
+   "screen-03.png",
+   "screen-04.png",
+   "screen-05.png",
+   "screen-06.png",
+   "screen-07.png",
+   "screen-08.png",
+   "screen-09.png",
+   "screen-10.png",
+   "screen-11.png"
+  ],
+  "source": [
+   "01-option-A-01.png",
+   "01-option-A-02.png",
+   "01-option-A-03.png",
+   "01-option-A-04.png",
+   "02-option-B-01.png",
+   "02-option-B-02.png",
+   "02-option-B-03.png",
+   "02-option-B-04.png",
+   "03-option-C-01.png",
+   "03-option-C-02.png",
+   "03-option-C-03.png"
+  ]
+ },
+ "t52": {
+  "group": "idx-r2-c-variants",
+  "cases": [
+   "idx-r2-c-variants"
+  ],
+  "url": null,
+  "device": "pc",
+  "surface": "drawing",
+  "reader_note": "Drawings made by the site's designers, shown as options to choose from; any mark that one option is recommended is theirs.",
+  "shots": [
+   "screen-01.png",
+   "screen-02.png",
+   "screen-03.png",
+   "screen-04.png",
+   "screen-05.png",
+   "screen-06.png",
+   "screen-07.png",
+   "screen-08.png",
+   "screen-09.png",
+   "screen-10.png",
+   "screen-11.png"
+  ],
+  "source": [
+   "01-option-C1-01.png",
+   "01-option-C1-02.png",
+   "01-option-C1-03.png",
+   "02-option-C2-01.png",
+   "02-option-C2-02.png",
+   "03-option-C3-01.png",
+   "03-option-C3-02.png",
+   "03-option-C3-03.png",
+   "04-option-C4-01.png",
+   "04-option-C4-02.png",
+   "04-option-C4-03.png"
+  ]
+ },
+ "t53": {
+  "group": "idx-r2-no-column-heads",
+  "cases": [
+   "idx-r2-no-column-heads"
+  ],
+  "url": null,
+  "device": "pc",
+  "surface": "drawing",
+  "reader_note": "Drawings made by the site's designers, shown as options to choose from; any mark that one option is recommended is theirs.",
+  "shots": [
+   "screen-01.png",
+   "screen-02.png",
+   "screen-03.png",
+   "screen-04.png",
+   "screen-05.png",
+   "screen-06.png",
+   "screen-07.png",
+   "screen-08.png",
+   "screen-09.png",
+   "screen-10.png",
+   "screen-11.png"
+  ],
+  "source": [
+   "01-option-C1-01.png",
+   "01-option-C1-02.png",
+   "01-option-C1-03.png",
+   "02-option-C2-01.png",
+   "02-option-C2-02.png",
+   "03-option-C3-01.png",
+   "03-option-C3-02.png",
+   "03-option-C3-03.png",
+   "04-option-C4-01.png",
+   "04-option-C4-02.png",
+   "04-option-C4-03.png"
+  ]
+ },
+ "t54": {
+  "group": "idx-r3-pricing",
+  "cases": [
+   "idx-r3-pricing"
+  ],
+  "url": null,
+  "device": "pc",
+  "surface": "drawing",
+  "reader_note": "Drawings made by the site's designers, shown as options to choose from; any mark that one option is recommended is theirs.",
+  "shots": [
+   "screen-01.png",
+   "screen-02.png",
+   "screen-03.png",
+   "screen-04.png",
+   "screen-05.png",
+   "screen-06.png",
+   "screen-07.png"
+  ],
+  "source": [
+   "01-option-E1-01.png",
+   "01-option-E1-02.png",
+   "01-option-E1-03.png",
+   "02-option-E2-01.png",
+   "02-option-E2-02.png",
+   "03-option-E3-01.png",
+   "03-option-E3-02.png"
+  ]
+ },
+ "t55": {
+  "group": "idx-r6-costs",
+  "cases": [
+   "idx-r6-costs"
+  ],
+  "url": null,
+  "device": "pc",
+  "surface": "drawing",
+  "reader_note": "Drawings made by the site's designers, shown as options to choose from; any mark that one option is recommended is theirs.",
+  "shots": [
+   "screen-01.png",
+   "screen-02.png",
+   "screen-03.png",
+   "screen-04.png",
+   "screen-05.png",
+   "screen-06.png"
+  ],
+  "source": [
+   "01-option-H1-01.png",
+   "01-option-H1-02.png",
+   "01-option-H1-03.png",
+   "02-option-H3-01.png",
+   "02-option-H3-02.png",
+   "02-option-H3-03.png"
+  ]
+ },
+ "t56": {
+  "group": "idx-r6-fund-number-wraps",
+  "cases": [
+   "idx-r6-fund-number-wraps"
+  ],
+  "url": null,
+  "device": "pc",
+  "surface": "drawing",
+  "reader_note": "Drawings made by the site's designers, shown as options to choose from; any mark that one option is recommended is theirs.",
+  "shots": [
+   "screen-01.png",
+   "screen-02.png",
+   "screen-03.png",
+   "screen-04.png",
+   "screen-05.png",
+   "screen-06.png"
+  ],
+  "source": [
+   "01-option-H1-01.png",
+   "01-option-H1-02.png",
+   "01-option-H1-03.png",
+   "02-option-H3-01.png",
+   "02-option-H3-02.png",
+   "02-option-H3-03.png"
+  ]
+ },
+ "t57": {
+  "group": "idx-r6-fee-lines-one-colour",
+  "cases": [
+   "idx-r6-fee-lines-one-colour"
+  ],
+  "url": null,
+  "device": "pc",
+  "surface": "drawing",
+  "reader_note": "Drawings made by the site's designers, shown as options to choose from; any mark that one option is recommended is theirs.",
+  "shots": [
+   "screen-01.png",
+   "screen-02.png",
+   "screen-03.png",
+   "screen-04.png",
+   "screen-05.png",
+   "screen-06.png"
+  ],
+  "source": [
+   "01-option-H1-01.png",
+   "01-option-H1-02.png",
+   "01-option-H1-03.png",
+   "02-option-H3-01.png",
+   "02-option-H3-02.png",
+   "02-option-H3-03.png"
+  ]
+ },
+ "t58": {
+  "group": "hedging-r1-steady-dollar",
+  "cases": [
+   "hedging-r1-steady-dollar"
+  ],
+  "url": null,
+  "device": "pc",
+  "surface": "drawing",
+  "reader_note": "Drawings made by the site's designers, shown as options to choose from; any mark that one option is recommended is theirs.",
+  "shots": [
+   "screen-01.png",
+   "screen-02.png",
+   "screen-03.png",
+   "screen-04.png",
+   "screen-05.png",
+   "screen-06.png"
+  ],
+  "source": [
+   "01-option-A1-01.png",
+   "01-option-A1-02.png",
+   "02-option-A2-01.png",
+   "02-option-A2-02.png",
+   "03-option-B-01.png",
+   "04-option-C-01.png"
+  ]
+ },
+ "t59": {
+  "group": "hedged-what-happened",
+  "cases": [
+   "hedged-what-happened"
+  ],
+  "url": null,
+  "device": "pc",
+  "surface": "drawing",
+  "reader_note": "Drawings made by the site's designers, shown as options to choose from; any mark that one option is recommended is theirs.",
+  "shots": [
+   "screen-01.png",
+   "screen-02.png",
+   "screen-03.png",
+   "screen-04.png",
+   "screen-05.png",
+   "screen-06.png"
+  ],
+  "source": [
+   "01-options-01.png",
+   "01-options-02.png",
+   "01-options-03.png",
+   "01-options-04.png",
+   "01-options-05.png",
+   "01-options-06.png"
+  ]
+ },
+ "t60": {
+  "group": "hedged-step-table",
+  "cases": [
+   "hedged-step-table"
+  ],
+  "url": null,
+  "device": "pc",
+  "surface": "drawing",
+  "reader_note": "Drawings made by the site's designers, shown as options to choose from; any mark that one option is recommended is theirs.",
+  "shots": [
+   "screen-01.png",
+   "screen-02.png",
+   "screen-03.png"
+  ],
+  "source": [
+   "01-option-a-01.png",
+   "01-option-a-02.png",
+   "01-option-a-03.png"
+  ]
+ },
+ "t61": {
+  "group": "indices-r1-what-matters",
+  "cases": [
+   "indices-r1-what-matters"
+  ],
+  "url": null,
+  "device": "pc",
+  "surface": "drawing",
+  "reader_note": "Drawings made by the site's designers, shown as options to choose from; any mark that one option is recommended is theirs.",
+  "shots": [
+   "screen-01.png",
+   "screen-02.png",
+   "screen-03.png",
+   "screen-04.png",
+   "screen-05.png",
+   "screen-06.png",
+   "screen-07.png",
+   "screen-08.png"
+  ],
+  "source": [
+   "01-options-01.png",
+   "01-options-02.png",
+   "01-options-03.png",
+   "01-options-04.png",
+   "01-options-05.png",
+   "01-options-06.png",
+   "01-options-07.png",
+   "01-options-08.png"
+  ]
+ },
+ "t62": {
+  "group": "indices-r2-gap-bars",
+  "cases": [
+   "indices-r2-gap-bars"
+  ],
+  "url": null,
+  "device": "pc",
+  "surface": "drawing",
+  "reader_note": "Drawings made by the site's designers, shown as options to choose from; any mark that one option is recommended is theirs.",
+  "shots": [
+   "screen-01.png",
+   "screen-02.png",
+   "screen-03.png",
+   "screen-04.png",
+   "screen-05.png",
+   "screen-06.png"
+  ],
+  "source": [
+   "01-options-01.png",
+   "01-options-02.png",
+   "01-options-03.png",
+   "01-options-04.png",
+   "01-options-05.png",
+   "01-options-06.png"
+  ]
+ },
+ "t63": {
+  "group": "stairs-two-sided-bars",
+  "cases": [
+   "stairs-two-sided-bars"
+  ],
+  "url": null,
+  "device": "pc",
+  "surface": "drawing",
+  "reader_note": "Drawings made by the site's designers, shown as options to choose from; any mark that one option is recommended is theirs.",
+  "shots": [
+   "screen-01.png",
+   "screen-02.png",
+   "screen-03.png"
+  ],
+  "source": [
+   "01-stairs-01.png",
+   "01-stairs-02.png",
+   "01-stairs-03.png"
+  ]
+ },
+ "t64": {
+  "group": "stairs-gain-loss-same",
+  "cases": [
+   "stairs-gain-loss-same"
+  ],
+  "url": null,
+  "device": "pc",
+  "surface": "drawing",
+  "reader_note": "Drawings made by the site's designers, shown as options to choose from; any mark that one option is recommended is theirs.",
+  "shots": [
+   "screen-01.png",
+   "screen-02.png",
+   "screen-03.png"
+  ],
+  "source": [
+   "01-stairs-01.png",
+   "01-stairs-02.png",
+   "01-stairs-03.png"
+  ]
+ },
+ "t65": {
+  "group": "rules-display-column",
+  "cases": [
+   "rules-display-column"
+  ],
+  "url": null,
+  "device": "pc",
+  "surface": "drawing",
+  "reader_note": "Drawings made by the site's designers, shown as options to choose from; any mark that one option is recommended is theirs.",
+  "shots": [
+   "screen-01.png",
+   "screen-02.png",
+   "screen-03.png",
+   "screen-04.png",
+   "screen-05.png"
+  ],
+  "source": [
+   "01-options-01.png",
+   "01-options-02.png",
+   "01-options-03.png",
+   "01-options-04.png",
+   "01-options-05.png"
+  ]
+ }
+}

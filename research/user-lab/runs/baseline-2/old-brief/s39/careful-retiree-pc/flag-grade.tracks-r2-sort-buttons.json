@@ -1,0 +1,82 @@
+{
+  "case": "tracks-r2-sort-buttons",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"Sorting uses separate sort buttons instead of clickable column heads.\",\"where\":\"the sort buttons above the table\",\"kind\":\"taste\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "The link \"משותף לשלוש, ומה שהנתונים מראים\" is unclear: the reader didn't know what it would open.",
+      "The bar \"מקור · מדריכים · חוקים וכללים…\" appears three times, so the reader kept thinking they had scrolled back to the top.",
+      "The \"לפי חברה / לפי מוצר\" toggle is unclear: the reader didn't know what clicking it would change.",
+      "Some \"במה הכסף מושקע\" buttons read as jargon (עוקב מדדים - גמיש, אג\"ח ממשלתי סחיר, מט\"ח).",
+      "Option 2 is too long, and comparing companies means scrolling back and forth.",
+      "The \"קופה\" numbers mean nothing to the reader, and \"מתוך ההפקדות\" is almost always 0%.",
+      "The coloured rings and the exposure dots (\"מניות\" / \"מט\"ח\" percentages) are unclear.",
+      "The clock icons and dotted underlines are unclear: the reader couldn't tell whether they were clickable.",
+      "The reader didn't understand what \"חשיפה מט\"ח 99%\" means for their money.",
+      "\"פחות מ־3 שנים\" is not explained, so the reader had to guess.",
+      "The difference between \"עוד לא דווח\", \"חדש\" and \"—\" in the grid is unclear.",
+      "Returns are shown before fees, so the reader had to subtract the fee themselves.",
+      "\"ממוצע 2025\" is unclear: an average of what, and what fee will the reader actually pay?",
+      "Return after fees is missing.",
+      "A shekel example of the fee difference over time is missing.",
+      "How much a track lost in a bad year is missing.",
+      "Whether the fee can be negotiated down is missing.",
+      "How to move money between companies, and the cost or tax effect of moving, is missing.",
+      "What happens at 60 and over (monthly pension, tax rules) is missing.",
+      "There is no information about customer service.",
+      "The reader would drop half of the \"במה הכסף מושקע\" buttons (types with few tracks)."
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader only noticed the \"מיון לפי\" control and said they didn't need it; they never complained about sort buttons being used instead of clickable column headings."
+      }
+    ],
+    "liked": [],
+    "usd": 0.06000319999999999
+  },
+  "b": {
+    "raised": [
+      "The \"משותף לשלוש\" link is unclear; the reader didn't know what it would open",
+      "The navigation bar appears three times, which is confusing and feels like scrolling back to the top",
+      "Unclear what the \"לפי חברה / לפי מוצר\" toggle changes",
+      "Some investment-type buttons are jargon (עוקב מדדים - גמיש, אג\"ח ממשלתי סחיר, מט\"ח)",
+      "Option 2's grouped list is very long, and comparing companies means scrolling back and forth",
+      "The \"קופה\" number column means nothing to the reader",
+      "The \"מתוך ההפקדות\" fee column is almost always 0% and not useful",
+      "The rings and the exposure dots and percentages (מניות/מט\"ח) are not understood",
+      "Unclear whether the clock icons and dotted underlines are clickable",
+      "\"פחות מ־3 שנים\" is not explained",
+      "The difference between \"עוד לא דווח\", \"חדש\" and \"—\" in the grid is unclear",
+      "Returns are shown before fees, so the reader has to subtract fees themselves",
+      "Unclear what \"ממוצע 2025\" averages, or whether the fee can be lower",
+      "No return after fees is shown",
+      "No example in shekels of how much the fee difference costs",
+      "No figure for how much a track lost in a bad year",
+      "No information on whether fees can be negotiated",
+      "No information on moving money between companies, its costs or its tax effects",
+      "No information on payouts and tax rules at age 60 and over",
+      "No information about customer service",
+      "Too many investment-type buttons; would drop the ones with fewer than three tracks"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader only says they noticed \"מיון לפי\" and didn't need it, and never complains about separate sort buttons versus clickable column headers."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0560112
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.11601439999999999
+}

@@ -1,0 +1,14 @@
+{
+ "id": "fee-breakdown-broke",
+ "task": "t44",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "The account list's fee breakdown is broken: the rows show a teal line of text where the breakdown of what each account charges should be.",
+   "where": "the account rows",
+   "kind": "general",
+   "outside": false
+  }
+ ],
+ "liked": []
+}

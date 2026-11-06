@@ -1,0 +1,36 @@
+{
+  "case": "study-r1-coins",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The coins add nothing a simple bar would not show better.\",\"where\":\"the coin drawing\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 2 is the only one that mentions the coin-tower, and it objects to the scary pink tax line, not to coins being worse than a simple bar, so no finding names this problem."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0138834
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 2 is about the coin-tower area, but it complains that the pink tax line looks scary, not that the coins add nothing a simple bar wouldn't show better; no other finding is about the coin drawing."
+      }
+    ],
+    "liked": [],
+    "usd": 0.014159399999999999
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0280428
+}

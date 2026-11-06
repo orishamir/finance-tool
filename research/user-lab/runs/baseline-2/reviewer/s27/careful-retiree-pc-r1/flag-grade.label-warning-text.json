@@ -1,0 +1,36 @@
+{
+  "case": "label-warning-text",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The explanation that opens from the label 'מס רק במכירה' ('לא נמצא כלל שממסה יחיד על רווחים שקרן זרה צוברת … זו שאלה פתוחה') is hard to understand and reads as a warning.\",\"where\":\"the box that opens from the label\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 1,
+        "why": "Finding 1 says the text in the 'מס רק במכירה' box can't be understood, which is a clear part of the person's complaint that the explanation is hard to follow."
+      }
+    ],
+    "liked": [],
+    "usd": 0.014963400000000002
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 1,
+        "why": "Finding 1 says the text in the 'מס רק במכירה' box can't be understood, which matches the person's complaint that the explanation is hard to follow."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0139354
+  },
+  "third": null,
+  "ranks": {
+    "k": 1
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.028898800000000002
+}

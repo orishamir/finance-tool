@@ -1,0 +1,77 @@
+{
+  "case": "hg-tax-after-six",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"With a high salary entered, the graphic says tax is due even after 6 years and shows a large income-tax figure, without making clear which money it is on.\",\"where\":\"the graphic and its sentences\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Not sure what to actually do next (tell HR, pick a company, which is cheapest)",
+      "Doesn't understand what the ₪15,712 ceiling means for a 30,000 salary",
+      "The '123 מקור · מחושב · הזנתם' line under the title is confusing",
+      "The 'at least 31%' for early withdrawal under 60 was scary",
+      "Doesn't know the terms on the 'כדאי להכיר גם' buttons",
+      "Doesn't know what the right return/management-fee numbers are in the calculator boxes",
+      "The small years chart has no numbers, so it teaches little",
+      "The company cards ('תלוי בחברה: הראל, אלטשולר שחם') aren't understood, and it's unclear whether to pick one",
+      "The tax section is important but confusing",
+      "The chief economist's recommendation to cut the benefit was worrying",
+      "Big chart colours aren't explained and the bars have no labels",
+      "Unclear whether part of the money is taxed even after 6 years because of the ceiling; the chart doesn't show how much",
+      "Unclear whether −64,761 is a sure loss or only for withdrawal at 5 years, and what the final tax is, since 47% isn't final",
+      "Jargon not understood (רווח ריאלי, הפקדה מוטבת, מסלול כללי, אג\"ח צמודה)",
+      "Can't easily find what you get after the full 6 years; it only shows after clicking 6",
+      "Missing how much less take-home pay there will be each month",
+      "Unclear whether every employer gives 7.5%",
+      "Unclear whether the employer's money above the ceiling is taxed on the payslip every month",
+      "Would remove many sections: terms table, rule tags, source line, 'כדאי להכיר גם', closest alternative, risks, company cards, most of the chart notes"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 12,
+        "why": "The reader says the page states that some money above the ceiling is taxed even after 6 years, but the chart doesn't make clear how much or which money. That is the person's complaint in other words."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0750792
+  },
+  "b": {
+    "raised": [
+      "Unsure what to actually do next after deciding to join (HR? pick a company? which one?)",
+      "Doesn't understand what the ₪15,712 'תקרה' means for a 30,000 salary",
+      "The '123 מקור / מחושב / הזנתם' line at the top is confusing",
+      "The 'at least 31% under age 60' early-withdrawal bullet scared them",
+      "Doesn't know the terms on the 'כדאי להכיר גם' buttons",
+      "Small 1–12 year chart has no numbers, so they learned little from it",
+      "Company cards and names under 'מי מציע ומי מפקח' / 'תלוי בחברה' not understood; unclear whether to pick one",
+      "Tax section ('מיסוי') is important but confusing",
+      "Chief economist's recommendation to cut the benefit worried them",
+      "Big chart colours aren't explained and there are no labels under the bars",
+      "With salary above the ceiling, part is taxed even after 6 years, but the chart doesn't show how much",
+      "Unclear whether −64,761 is a certain loss or only for early withdrawal; 47% withheld vs 'not the final tax' leaves the final tax unknown",
+      "Jargon not understood: 'רווח ריאלי', 'הפקדה מוטבת', 'מסלול כללי', 'אג\"ח ממשלתית צמודה'",
+      "No clear figure for what they get after the full 6 years (only shown when clicking 6)",
+      "Can't find how much less take-home pay they'll get each month",
+      "Can't find whether every employer gives 7.5% or only some",
+      "Can't find what happens to employer money above the ceiling and whether it's taxed monthly on the payslip",
+      "Would remove the terms table, rules tags/codes, source line, 'כדאי להכיר גם', closest-alternative, risks section, company cards and most chart notes"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 11,
+        "why": "Raised item 11 says that with a salary above the ceiling the screen shows tax due even after 6 years, but the chart doesn't make clear how much or on which money. The person would recognise this as their complaint."
+      }
+    ],
+    "liked": [],
+    "usd": 0.07024720000000001
+  },
+  "third": null,
+  "ranks": {
+    "k": 11
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.14532640000000002
+}

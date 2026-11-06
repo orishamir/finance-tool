@@ -1,0 +1,36 @@
+{
+  "case": "label-icons",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The icons on the fund labels are weak and do not help tell the labels apart.\",\"where\":\"the labels on fund rows\",\"kind\":\"taste\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 3 is about the same labels repeating on every fund, so the reader had to reread them to spot what differs; it never says the icons are weak or fail to set one label type apart from another."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0186194
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 3 is about the same fund labels, but it complains that the same labels repeat on every fund so the reader must reread them to spot differences between funds; it never says the icons are weak or fail to tell the labels apart."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0232874
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0419068
+}

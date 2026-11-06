@@ -1,0 +1,13 @@
+{
+ "id": "hg-not-entered",
+ "task": "s14",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "The text says 'לא הזנתם אחוזים, אז החישוב לוקח את התקרה' although the percentage fields are filled in with default values.",
+   "where": "the sentence under the graphic",
+   "kind": "general"
+  }
+ ],
+ "liked": []
+}

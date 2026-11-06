@@ -1,0 +1,82 @@
+{
+  "case": "account-card-parens",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The chosen account's name carries a parenthesis '(מותג של MEXEM LTD)' that clutters it.\",\"where\":\"the chosen account's card\",\"kind\":\"taste\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Interactive Israel's red-orange 'not regulated by the ISA' badge is scary",
+      "The cheapest pair's Psagot card says 'no data' and 'it's unclear whether that's what they wrote', so the winner is uncertain",
+      "The 'if the dollar doesn't move against the shekel' caveat is unsettling: what if it does move?",
+      "Most of the cost gap is tax, and nothing explains why",
+      "The left fund list is confusing, with many coloured badges and mostly 'no price here'; gave up partway",
+      "The grey 'no data' cards have long fee text that makes Psagot look shaky",
+      "Got lost in the currency-hedging section",
+      "Doesn't understand (4D), (4A), צוברת or חלוקת דיבידנד, or which is better",
+      "Doesn't understand 'כמה דרכים יותר', 'חשיפה לדולר', 'נשען על כלל מס פתוח' or 'צריך טופס W-8BEN'",
+      "Unclear whether 'ניכוי מס בשירות נוסף' means filing tax yourself",
+      "Doesn't understand 'דמי משמרת', 'העמלות זו על זו' or 'מחיר לא בחישוב'",
+      "Unclear what the dotted underlines mean or whether they are links",
+      "Can't find whether money is safe if an unregulated broker goes bust",
+      "Can't find whether a fixed monthly deposit can buy automatically",
+      "Can't find what happens to the account on death, or about US estate tax",
+      "Can't find how tax is charged on withdrawal",
+      "Can't tell whether 7% is a sensible return or an optimistic one",
+      "Missing one plain recommendation with a phone number or link to open the account",
+      "Would drop the 'מה כתוב בפרסום, מול התעריפון' claims section",
+      "Would drop the 'מה הכי משנה' chart",
+      "Would drop the grey single-bar chart under 'מתחילים מבחירה אחת'"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The report never mentions the '(מותג של MEXEM LTD)' parenthesis or any clutter in the chosen account's name."
+      }
+    ],
+    "liked": [],
+    "usd": 0.072492
+  },
+  "b": {
+    "raised": [
+      "Interactive Israel's 'לא בפיקוח רשות ני״ע' badge scares the reader, so they're unsure which cheap account to pick",
+      "Psagot (the cheapest pair) shows 'אין נתון' and 'יש ספק אם נכתב שם', so its data seems uncertain",
+      "The line 'אם הדולר לא זז מול השקל' worries the reader: what if the dollar moves?",
+      "Most of the cost gap is tax, and nothing explains why",
+      "The fund list is confusing because of too many coloured badges and mostly 'אין מחיר כאן'; the reader gave up",
+      "The long text in the grey 'אין נתון' cards made Psagot look shaky",
+      "The reader got lost in the currency-hedging section",
+      "Doesn't understand (4D), (4A), צוברת or חלוקת דיבידנד, or which is better",
+      "Doesn't understand 'כמה דרכים יותר', 'חשיפה לדולר', 'נשען על כלל מס פתוח' or 'צריך טופס W-8BEN'",
+      "Unclear what 'ניכוי מס בשירות נוסף' means and whether they must file tax themselves",
+      "Doesn't understand 'דמי משמרת', 'העמלות זו על זו' or 'מחיר לא בחישוב'",
+      "Unclear what the dotted underlines mean and whether they are links",
+      "Missing: is the money safe if an unsupervised broker goes bust?",
+      "Missing: can a fixed monthly deposit buy automatically?",
+      "Missing: what happens to the account on death, and is there US estate tax?",
+      "Missing: exactly how tax is charged on withdrawal",
+      "Missing: whether 7% is a sensible return to assume",
+      "Missing: one plain recommendation with a phone number or a link to open the account",
+      "Would drop the 'מה כתוב בפרסום, מול התעריפון' section and its claims list",
+      "Would drop the 'מה הכי משנה' chart",
+      "Would drop the grey single-bar chart under 'מתחילים מבחירה אחת'"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The report never mentions the '(מותג של MEXEM LTD)' parenthesis or any clutter in the chosen account's name."
+      }
+    ],
+    "liked": [],
+    "usd": 0.072784
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.14527600000000002
+}

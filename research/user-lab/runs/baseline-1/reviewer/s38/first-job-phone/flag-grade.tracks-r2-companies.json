@@ -1,0 +1,36 @@
+{
+  "case": "tracks-r2-companies",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"Rows repeat their group's heading: each company row repeats the track kind in its name and again in a label, and under a heading 'עוקב מדד S&P 500' every row says it again.\",\"where\":\"the rows under each group heading\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings mention rows repeating the group heading's track kind or index name. Finding 6 is about the filter block repeating, and finding 2 is about percentages looking alike, which are different problems."
+      }
+    ],
+    "liked": [],
+    "usd": 0.016035400000000002
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings says that rows repeat their group heading's track kind. The nearest ones are about near-identical percentages (2) and a filter block that appears three times (6), which are different problems."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0160754
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0321108
+}

@@ -1,0 +1,13 @@
+{
+ "id": "account-card-parens",
+ "task": "s28",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "The chosen account's name carries a parenthesis '(מותג של MEXEM LTD)' that clutters it.",
+   "where": "the chosen account's card",
+   "kind": "taste"
+  }
+ ],
+ "liked": []
+}

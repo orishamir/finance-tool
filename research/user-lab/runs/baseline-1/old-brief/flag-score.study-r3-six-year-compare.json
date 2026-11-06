@@ -1,0 +1,63 @@
+{
+  "case": "study-r3-six-year-compare",
+  "sessions": 2,
+  "perKey": {
+    "k": {
+      "kind": "taste",
+      "caught": 1,
+      "caughtIn10": 1,
+      "of": 2,
+      "byPersona": {
+        "careful-retiree-pc": {
+          "caught": 1,
+          "of": 1,
+          "ranks": [
+            6
+          ]
+        },
+        "first-job-phone": {
+          "caught": 0,
+          "of": 1,
+          "ranks": [
+            0
+          ]
+        }
+      },
+      "graderAgreement": 1
+    }
+  },
+  "againstLiked": {},
+  "usd": 0.2280008,
+  "rows": [
+    {
+      "task": "s36",
+      "session": "careful-retiree-pc",
+      "persona": "careful-retiree-pc",
+      "mode": "free text",
+      "raised": [
+        17,
+        20
+      ],
+      "ranks": {
+        "k": 6
+      },
+      "against": {},
+      "usd": 0.11170639999999998
+    },
+    {
+      "task": "s36",
+      "session": "first-job-phone",
+      "persona": "first-job-phone",
+      "mode": "free text",
+      "raised": [
+        18,
+        20
+      ],
+      "ranks": {
+        "k": 0
+      },
+      "against": {},
+      "usd": 0.1162944
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "case": "study-r1-grey-years",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"In the graph of the years everything is grey, so nothing stands out.\",\"where\":\"the year graph\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "No finding says the year graph is all grey with nothing standing out: finding 1 is about small grey text being hard to read across the page, and finding 6 is about the year bars' numbers changing without explanation."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0181754
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "No finding says the year graph is all grey with nothing standing out: finding 1 is about small grey text being hard to read across the page, and finding 6 is about the bar numbers changing with no explanation, not about the graph's colouring."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0179554
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.036130800000000005
+}

@@ -1,0 +1,114 @@
+{
+  "task": "s20",
+  "persona": "first-job-phone",
+  "repeat": 2,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T12:29:57.876Z",
+  "structured": {
+    "answer": "Harel has a bunch of products, but the page only showed me the קופת גמל להשקעה tracks (16). Fees are all about 0.55%, so I'd go with the \"מניות\" track at 24.04% a year, or the S&P 500 one at 13.7%.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Product buttons at top (קופת גמל להשקעה already selected)",
+        "why": "Wanted everything Harel offers, but the table only shows one product. Didn't tap the other buttons, so I never saw השתלמות/pension tracks"
+      },
+      {
+        "where": "Return column",
+        "why": "Most rows show 'פחות מ־3 שנים' instead of a number, so I couldn't compare them"
+      },
+      {
+        "where": "Ring charts in exposure column",
+        "why": "Didn't know what yellow vs teal meant or what מט\"ח is"
+      }
+    ],
+    "used": [
+      "Heading הראל and 'כל המוצרים של הראל' buttons with counts",
+      "Track names in table",
+      "Fee column 0.54%-0.61% מההיסכון, 0% מההפקדה",
+      "Return column 3/5 years: מניות 24.04%/14.64%, S&P 500 13.7%/11.92%, כספי 4.25%/3.08%, הלכה 11.42%/5.73%",
+      "Managed money 2.3 מיליארד for S&P, 7.3 מיליארד for מניות"
+    ],
+    "skimmed": [
+      "Track filter chips row",
+      "Exposure column numbers",
+      "Fold headings קרנות מחקות, מרכזיות לפיצויים, קרנות סל",
+      "'מה כתוב במסמכים של הראל' list"
+    ],
+    "skipped": [
+      "Intro grey text under heading (2025, ספטמבר 2026, רשות שוק ההון)",
+      "'כולל את החברות...' line and 123 numbers",
+      "Note under table about ceiling and direct expenses",
+      "Paragraph about returns being before fees",
+      "All folds",
+      "Search box 'לא מצאתם שם?'",
+      "Footer"
+    ],
+    "unsure_meaning": [
+      "מט\"ח",
+      "חשיפה למניות ולמט\"ח",
+      "מההיסכון vs מההפקדה",
+      "אג\"ח",
+      "גמיש",
+      "קיימות",
+      "התקרה בחוק",
+      "PF-10",
+      "yellow vs teal ring colours",
+      "'לפני דמי ניהול' — whether the fee comes off these returns",
+      "whether 24.04% is per year or total"
+    ],
+    "not_found": [
+      "Tracks and fees for the other Harel products (השתלמות, pension) without tapping",
+      "Any shekel figure for what the fee costs me",
+      "A clear recommendation of which track to choose",
+      "Return numbers for most tracks"
+    ],
+    "findings": [
+      {
+        "what": "Page says 'all of Harel's products' but the table only lists one product, so seeing the rest takes extra taps",
+        "where": "Product buttons and table, screen 1"
+      },
+      {
+        "what": "Most tracks show 'פחות מ־3 שנים' with no return figure",
+        "where": "Return column, screen 2"
+      },
+      {
+        "what": "Fees only as percents that all look the same; no shekel amount",
+        "where": "Fee column"
+      },
+      {
+        "what": "Ring chart colours unexplained; מט\"ח jargon",
+        "where": "Exposure column"
+      },
+      {
+        "what": "Big 24.04% return stands out and pulls me to that track, but I don't know the risk",
+        "where": "מניות row"
+      },
+      {
+        "what": "Lots of folded sections at the bottom look like documents; not inviting",
+        "where": "Screens 3-4"
+      },
+      {
+        "what": "Desktop-wide table would be hard on my phone",
+        "where": "Whole table"
+      }
+    ]
+  },
+  "steps": 4,
+  "reads": 4,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 37660,
+    "turns": 6,
+    "usd": 0.1317972,
+    "input": 6,
+    "cacheWrite": 7686,
+    "cacheRead": 14526,
+    "output": 3369,
+    "model": "claude-opus-5-5"
+  }
+}

@@ -1,0 +1,88 @@
+{
+  "case": "tracks-r2-companies",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"Rows repeat their group's heading: each company row repeats the track kind in its name and again in a label, and under a heading 'עוקב מדד S&P 500' every row says it again.\",\"where\":\"the rows under each group heading\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Option 2 makes you scroll through all 16 Harel tracks before reaching Mor, which is too much reading",
+      "The page doesn't say what's sensible for someone aged 61",
+      "In options 1 and 3 the list only shows S&P 500 returns; general-track returns appear only in option 2",
+      "Doesn't know what the 'מקור' tab means",
+      "Confused why there are both 'לפי חברה / לפי מוצר' tabs and a separate 'קיבוץ לפי' control",
+      "Too many investment-kind chips (23), with unclear differences between them (e.g. מניות vs עוקב מדדי מניות)",
+      "Coloured table was confusing at first: assumed orange meant good",
+      "Doesn't know what the 'קופה' number is for",
+      "'ההפקדות 0%' is zero almost everywhere, so it isn't useful",
+      "The second grey line under each company name just repeats the track's name",
+      "Doesn't understand what foreign-currency exposure (מט\"ח 97%) means for their money",
+      "Can't tell whether a full circle is good or bad",
+      "Confused by two fees, ההחיסכון vs ההפקדות: which one is actually paid?",
+      "Returns are shown before fees; wants returns after fees shown directly",
+      "Unclear whether 'פחות מ־3 שנים' means a new track or a missing number",
+      "Unsure what 'עוד לא דווח' and the 'חדש' tag mean",
+      "Unclear whether the underlined numbers are links, and to what",
+      "Wants to know how much each track dropped in a bad year",
+      "Wants a real-money example of yearly fees and what's left after 5 years",
+      "Wants tax information on withdrawal after age 60",
+      "Wants to know whether the fee can be negotiated",
+      "Wants information on transferring money in, minimums and quick access",
+      "Would drop the top tabs and the chips for other products",
+      "Would drop the full product explanation that repeats above every section"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 10,
+        "why": "The reader complains that each row's second line just repeats the track's name, which is the same within-row repetition of the track kind the person flagged."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0732032
+  },
+  "b": {
+    "raised": [
+      "Option 2 makes you scroll through all 16 Harel tracks before reaching Mor; too much reading to compare companies",
+      "The page doesn't say which track makes sense for someone aged 61",
+      "In options 1 and 3 the list only shows S&P 500 rows, so returns for the general tracks are hard to find",
+      "Doesn't know what the 'מקור' tab means",
+      "'לפי חברה / לפי מוצר' seems to duplicate 'קיבוץ לפי' further down; confusing",
+      "Too many investment-type chips (23), and the differences between similar ones are unclear",
+      "Coloured table confusing at first: assumed orange meant good",
+      "Doesn't know what the 'קופה' number is for",
+      "The second grey line under each company name just repeats the track's name",
+      "Doesn't understand what the foreign-currency (מט\"ח) exposure means for their money",
+      "Can't tell whether a full circle is good or bad",
+      "Confused by two fees, 'ההחיסכון' and 'ההפקדות': which one is actually paid?",
+      "Returns shown before fees; wants returns after fees shown directly",
+      "Unclear whether 'פחות מ־3 שנים' means a new track or missing data",
+      "Unclear what 'עוד לא דווח' and the 'חדש' tag mean",
+      "Unclear whether the underlined numbers are links, and to what",
+      "Wants to know how much each track dropped in a bad year",
+      "Wants a real-money example of fees and outcome (e.g. 100,000 ₪)",
+      "Wants tax information on withdrawal after age 60",
+      "Wants to know if the fee can be negotiated below the average",
+      "Wants info on transferring money in, minimums and access to funds",
+      "Would drop the product chips for other products",
+      "Would drop clutter like the circles, the מט\"ח line and 'ההפקדות 0%'",
+      "The full product explanation is repeated above every section"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 9,
+        "why": "The reader complains that the second line under each company name just repeats the track's name, which is a clear part of the person's complaint that rows say the track kind twice."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0644952
+  },
+  "third": null,
+  "ranks": {
+    "k": 9
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1376984
+}

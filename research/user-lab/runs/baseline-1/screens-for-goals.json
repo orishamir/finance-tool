@@ -1,0 +1,603 @@
+{
+ "s01": {
+  "url": "https://orishamir.github.io/finance-tool/guide/current-account",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "states": [
+   "as the page opens"
+  ],
+  "shots": [
+   "research/user-lab/runs/baseline-1/screens/s01/screen-01.png",
+   "research/user-lab/runs/baseline-1/screens/s01/screen-02.png",
+   "research/user-lab/runs/baseline-1/screens/s01/screen-03.png",
+   "research/user-lab/runs/baseline-1/screens/s01/screen-04.png"
+  ]
+ },
+ "s02": {
+  "url": "https://orishamir.github.io/finance-tool/guide/money-market-fund-daily",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "states": [
+   "as the page opens"
+  ],
+  "shots": [
+   "research/user-lab/runs/baseline-1/screens/s02/screen-01.png",
+   "research/user-lab/runs/baseline-1/screens/s02/screen-02.png",
+   "research/user-lab/runs/baseline-1/screens/s02/screen-03.png",
+   "research/user-lab/runs/baseline-1/screens/s02/screen-04.png",
+   "research/user-lab/runs/baseline-1/screens/s02/screen-05.png"
+  ]
+ },
+ "s03": {
+  "url": "https://orishamir.github.io/finance-tool/guide/current-account",
+  "device": "phone",
+  "surface": "live",
+  "reader_note": null,
+  "states": [
+   "the panel 'שחקו עם המספרים שלכם' opened"
+  ],
+  "shots": [
+   "research/user-lab/runs/baseline-1/screens/s03/screen-01.png",
+   "research/user-lab/runs/baseline-1/screens/s03/screen-02.png",
+   "research/user-lab/runs/baseline-1/screens/s03/screen-03.png",
+   "research/user-lab/runs/baseline-1/screens/s03/screen-04.png",
+   "research/user-lab/runs/baseline-1/screens/s03/screen-05.png",
+   "research/user-lab/runs/baseline-1/screens/s03/screen-06.png",
+   "research/user-lab/runs/baseline-1/screens/s03/screen-07.png",
+   "research/user-lab/runs/baseline-1/screens/s03/screen-08.png"
+  ]
+ },
+ "s04": {
+  "url": "https://orishamir.github.io/finance-tool/",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "states": [
+   "after pressing the home link 'להבין סוג של חיסכון' (it opens this page)",
+   "as the page opens"
+  ],
+  "shots": [
+   "research/user-lab/runs/baseline-1/screens/s04/screen-01.png",
+   "research/user-lab/runs/baseline-1/screens/s04/screen-02.png",
+   "research/user-lab/runs/baseline-1/screens/s04/screen-03.png",
+   "research/user-lab/runs/baseline-1/screens/s04/screen-04.png"
+  ]
+ },
+ "s05": {
+  "url": "https://orishamir.github.io/finance-tool/guide",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "states": [
+   "as the page opens"
+  ],
+  "shots": [
+   "research/user-lab/runs/baseline-1/screens/s05/screen-01.png",
+   "research/user-lab/runs/baseline-1/screens/s05/screen-02.png",
+   "research/user-lab/runs/baseline-1/screens/s05/screen-03.png"
+  ]
+ },
+ "s06": {
+  "url": "https://orishamir.github.io/finance-tool/guide",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "states": [
+   "as the page opens"
+  ],
+  "shots": [
+   "research/user-lab/runs/baseline-1/screens/s06/screen-01.png",
+   "research/user-lab/runs/baseline-1/screens/s06/screen-02.png",
+   "research/user-lab/runs/baseline-1/screens/s06/screen-03.png"
+  ]
+ },
+ "s07": {
+  "url": "https://orishamir.github.io/finance-tool/guide/bank-deposit",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "states": [
+   "as the page opens"
+  ],
+  "shots": [
+   "research/user-lab/runs/baseline-1/screens/s07/screen-01.png",
+   "research/user-lab/runs/baseline-1/screens/s07/screen-02.png",
+   "research/user-lab/runs/baseline-1/screens/s07/screen-03.png",
+   "research/user-lab/runs/baseline-1/screens/s07/screen-04.png"
+  ]
+ },
+ "s08": {
+  "url": "https://orishamir.github.io/finance-tool/guide",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "states": [
+   "as the page opens"
+  ],
+  "shots": [
+   "research/user-lab/runs/baseline-1/screens/s08/screen-01.png",
+   "research/user-lab/runs/baseline-1/screens/s08/screen-02.png"
+  ]
+ },
+ "s09": {
+  "url": "https://orishamir.github.io/finance-tool/guide/bank-deposit",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "states": [
+   "as the page opens"
+  ],
+  "shots": [
+   "research/user-lab/runs/baseline-1/screens/s09/screen-01.png",
+   "research/user-lab/runs/baseline-1/screens/s09/screen-02.png",
+   "research/user-lab/runs/baseline-1/screens/s09/screen-03.png",
+   "research/user-lab/runs/baseline-1/screens/s09/screen-04.png"
+  ]
+ },
+ "s10": {
+  "url": "https://orishamir.github.io/finance-tool/guide",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "states": [
+   "as the page opens"
+  ],
+  "shots": [
+   "research/user-lab/runs/baseline-1/screens/s10/screen-01.png",
+   "research/user-lab/runs/baseline-1/screens/s10/screen-02.png"
+  ]
+ },
+ "s11": {
+  "url": "https://orishamir.github.io/finance-tool/guide/keren-hishtalmut",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "states": [
+   "as the page opens"
+  ],
+  "shots": [
+   "research/user-lab/runs/baseline-1/screens/s11/screen-01.png",
+   "research/user-lab/runs/baseline-1/screens/s11/screen-02.png",
+   "research/user-lab/runs/baseline-1/screens/s11/screen-03.png",
+   "research/user-lab/runs/baseline-1/screens/s11/screen-04.png"
+  ]
+ },
+ "s12": {
+  "url": "https://orishamir.github.io/finance-tool/guide/keren-hishtalmut",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "states": [
+   "as the page opens"
+  ],
+  "shots": [
+   "research/user-lab/runs/baseline-1/screens/s12/screen-01.png",
+   "research/user-lab/runs/baseline-1/screens/s12/screen-02.png",
+   "research/user-lab/runs/baseline-1/screens/s12/screen-03.png",
+   "research/user-lab/runs/baseline-1/screens/s12/screen-04.png",
+   "research/user-lab/runs/baseline-1/screens/s12/screen-05.png"
+  ]
+ },
+ "s13": {
+  "url": "https://orishamir.github.io/finance-tool/guide/keren-hishtalmut",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "states": [
+   "as the page opens"
+  ],
+  "shots": [
+   "research/user-lab/runs/baseline-1/screens/s13/screen-01.png",
+   "research/user-lab/runs/baseline-1/screens/s13/screen-02.png",
+   "research/user-lab/runs/baseline-1/screens/s13/screen-03.png",
+   "research/user-lab/runs/baseline-1/screens/s13/screen-04.png",
+   "research/user-lab/runs/baseline-1/screens/s13/screen-05.png"
+  ]
+ },
+ "s14": {
+  "url": "https://orishamir.github.io/finance-tool/guide/keren-hishtalmut",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "states": [
+   "after entering a monthly salary of 30,000"
+  ],
+  "shots": [
+   "research/user-lab/runs/baseline-1/screens/s14/screen-01.png",
+   "research/user-lab/runs/baseline-1/screens/s14/screen-02.png",
+   "research/user-lab/runs/baseline-1/screens/s14/screen-03.png",
+   "research/user-lab/runs/baseline-1/screens/s14/screen-04.png",
+   "research/user-lab/runs/baseline-1/screens/s14/screen-05.png"
+  ]
+ },
+ "s15": {
+  "url": "https://orishamir.github.io/finance-tool/tracks/kupat-gemel-lehashkaa",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "states": [
+   "as the page opens"
+  ],
+  "shots": [
+   "research/user-lab/runs/baseline-1/screens/s15/screen-01.png",
+   "research/user-lab/runs/baseline-1/screens/s15/screen-02.png",
+   "research/user-lab/runs/baseline-1/screens/s15/screen-03.png",
+   "research/user-lab/runs/baseline-1/screens/s15/screen-04.png",
+   "research/user-lab/runs/baseline-1/screens/s15/screen-05.png",
+   "research/user-lab/runs/baseline-1/screens/s15/screen-06.png",
+   "research/user-lab/runs/baseline-1/screens/s15/screen-07.png",
+   "research/user-lab/runs/baseline-1/screens/s15/screen-08.png"
+  ]
+ },
+ "s16": {
+  "url": "https://orishamir.github.io/finance-tool/tracks/kupat-gemel-lehashkaa",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "states": [
+   "as the page opens"
+  ],
+  "shots": [
+   "research/user-lab/runs/baseline-1/screens/s16/screen-01.png",
+   "research/user-lab/runs/baseline-1/screens/s16/screen-02.png",
+   "research/user-lab/runs/baseline-1/screens/s16/screen-03.png",
+   "research/user-lab/runs/baseline-1/screens/s16/screen-04.png",
+   "research/user-lab/runs/baseline-1/screens/s16/screen-05.png",
+   "research/user-lab/runs/baseline-1/screens/s16/screen-06.png",
+   "research/user-lab/runs/baseline-1/screens/s16/screen-07.png",
+   "research/user-lab/runs/baseline-1/screens/s16/screen-08.png"
+  ]
+ },
+ "s17": {
+  "url": "https://orishamir.github.io/finance-tool/tracks/kupat-gemel-lehashkaa",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "states": [
+   "as the page opens"
+  ],
+  "shots": [
+   "research/user-lab/runs/baseline-1/screens/s17/screen-01.png",
+   "research/user-lab/runs/baseline-1/screens/s17/screen-02.png",
+   "research/user-lab/runs/baseline-1/screens/s17/screen-03.png",
+   "research/user-lab/runs/baseline-1/screens/s17/screen-04.png",
+   "research/user-lab/runs/baseline-1/screens/s17/screen-05.png",
+   "research/user-lab/runs/baseline-1/screens/s17/screen-06.png",
+   "research/user-lab/runs/baseline-1/screens/s17/screen-07.png",
+   "research/user-lab/runs/baseline-1/screens/s17/screen-08.png"
+  ]
+ },
+ "s18": {
+  "url": "https://orishamir.github.io/finance-tool/tracks/kupat-gemel-lehashkaa?kind=%D7%A2%D7%95%D7%A7%D7%91+%D7%9E%D7%93%D7%93%D7%99+%D7%9E%D7%A0%D7%99%D7%95%D7%AA&sort=fee&order=reverse",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "states": [
+   "a kind chosen and the list sorted by management fee"
+  ],
+  "shots": [
+   "research/user-lab/runs/baseline-1/screens/s18/screen-01.png",
+   "research/user-lab/runs/baseline-1/screens/s18/screen-02.png"
+  ]
+ },
+ "s19": {
+  "url": "https://orishamir.github.io/finance-tool/tracks/provident-for-annuity",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "states": [
+   "as the page opens"
+  ],
+  "shots": [
+   "research/user-lab/runs/baseline-1/screens/s19/screen-01.png",
+   "research/user-lab/runs/baseline-1/screens/s19/screen-02.png",
+   "research/user-lab/runs/baseline-1/screens/s19/screen-03.png",
+   "research/user-lab/runs/baseline-1/screens/s19/screen-04.png",
+   "research/user-lab/runs/baseline-1/screens/s19/screen-05.png",
+   "research/user-lab/runs/baseline-1/screens/s19/screen-06.png",
+   "research/user-lab/runs/baseline-1/screens/s19/screen-07.png",
+   "research/user-lab/runs/baseline-1/screens/s19/screen-08.png",
+   "research/user-lab/runs/baseline-1/screens/s19/screen-09.png",
+   "research/user-lab/runs/baseline-1/screens/s19/screen-10.png"
+  ]
+ },
+ "s20": {
+  "url": "https://orishamir.github.io/finance-tool/companies/harel",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "states": [
+   "as the page opens"
+  ],
+  "shots": [
+   "research/user-lab/runs/baseline-1/screens/s20/screen-01.png",
+   "research/user-lab/runs/baseline-1/screens/s20/screen-02.png"
+  ]
+ },
+ "s21": {
+  "url": "https://orishamir.github.io/finance-tool/companies/harel",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "states": [
+   "as the page opens"
+  ],
+  "shots": [
+   "research/user-lab/runs/baseline-1/screens/s21/screen-01.png",
+   "research/user-lab/runs/baseline-1/screens/s21/screen-02.png"
+  ]
+ },
+ "s22": {
+  "url": "https://orishamir.github.io/finance-tool/tracks/keren-hishtalmut?sort=fee&order=reverse&kind=%D7%A2%D7%95%D7%A7%D7%91+%D7%9E%D7%93%D7%93+S%26P+500",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "states": [
+   "as the page opens"
+  ],
+  "shots": [
+   "research/user-lab/runs/baseline-1/screens/s22/screen-01.png",
+   "research/user-lab/runs/baseline-1/screens/s22/screen-02.png"
+  ]
+ },
+ "s23": {
+  "url": "https://orishamir.github.io/finance-tool/tracks/keren-hishtalmut?sort=fee&order=reverse&kind=%D7%A2%D7%95%D7%A7%D7%91+%D7%9E%D7%93%D7%93+S%26P+500",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "states": [
+   "as the page opens"
+  ],
+  "shots": [
+   "research/user-lab/runs/baseline-1/screens/s23/screen-01.png",
+   "research/user-lab/runs/baseline-1/screens/s23/screen-02.png"
+  ]
+ },
+ "s24": {
+  "url": "https://orishamir.github.io/finance-tool/companies/harel",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "states": [
+   "as the page opens"
+  ],
+  "shots": [
+   "research/user-lab/runs/baseline-1/screens/s24/screen-01.png",
+   "research/user-lab/runs/baseline-1/screens/s24/screen-02.png",
+   "research/user-lab/runs/baseline-1/screens/s24/screen-03.png",
+   "research/user-lab/runs/baseline-1/screens/s24/screen-04.png",
+   "research/user-lab/runs/baseline-1/screens/s24/screen-05.png",
+   "research/user-lab/runs/baseline-1/screens/s24/screen-06.png",
+   "research/user-lab/runs/baseline-1/screens/s24/screen-07.png"
+  ]
+ },
+ "s25": {
+  "url": "https://orishamir.github.io/finance-tool/companies/harel",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "states": [
+   "as the page opens"
+  ],
+  "shots": [
+   "research/user-lab/runs/baseline-1/screens/s25/screen-01.png",
+   "research/user-lab/runs/baseline-1/screens/s25/screen-02.png",
+   "research/user-lab/runs/baseline-1/screens/s25/screen-03.png",
+   "research/user-lab/runs/baseline-1/screens/s25/screen-04.png",
+   "research/user-lab/runs/baseline-1/screens/s25/screen-05.png",
+   "research/user-lab/runs/baseline-1/screens/s25/screen-06.png",
+   "research/user-lab/runs/baseline-1/screens/s25/screen-07.png"
+  ]
+ },
+ "s26": {
+  "url": "https://orishamir.github.io/finance-tool/companies/psagot?product=brokerage",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "states": [
+   "as the page opens"
+  ],
+  "shots": [
+   "research/user-lab/runs/baseline-1/screens/s26/screen-01.png",
+   "research/user-lab/runs/baseline-1/screens/s26/screen-02.png"
+  ]
+ },
+ "s27": {
+  "url": "https://orishamir.github.io/finance-tool/indices/sp500",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "states": [
+   "after pressing the label 'מס רק במכירה' on a foreign fund"
+  ],
+  "shots": [
+   "research/user-lab/runs/baseline-1/screens/s27/screen-01.png",
+   "research/user-lab/runs/baseline-1/screens/s27/screen-02.png",
+   "research/user-lab/runs/baseline-1/screens/s27/screen-03.png",
+   "research/user-lab/runs/baseline-1/screens/s27/screen-04.png",
+   "research/user-lab/runs/baseline-1/screens/s27/screen-05.png",
+   "research/user-lab/runs/baseline-1/screens/s27/screen-06.png"
+  ]
+ },
+ "s28": {
+  "url": "https://orishamir.github.io/finance-tool/indices/sp500",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "states": [
+   "after choosing the account 'אינטראקטיב ישראל'"
+  ],
+  "shots": [
+   "research/user-lab/runs/baseline-1/screens/s28/screen-01.png",
+   "research/user-lab/runs/baseline-1/screens/s28/screen-02.png",
+   "research/user-lab/runs/baseline-1/screens/s28/screen-03.png",
+   "research/user-lab/runs/baseline-1/screens/s28/screen-04.png",
+   "research/user-lab/runs/baseline-1/screens/s28/screen-05.png",
+   "research/user-lab/runs/baseline-1/screens/s28/screen-06.png"
+  ]
+ },
+ "s29": {
+  "url": "https://orishamir.github.io/finance-tool/indices/ta125",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "states": [
+   "as the page opens"
+  ],
+  "shots": [
+   "research/user-lab/runs/baseline-1/screens/s29/screen-01.png",
+   "research/user-lab/runs/baseline-1/screens/s29/screen-02.png",
+   "research/user-lab/runs/baseline-1/screens/s29/screen-03.png",
+   "research/user-lab/runs/baseline-1/screens/s29/screen-04.png"
+  ]
+ },
+ "s30": {
+  "url": "https://orishamir.github.io/finance-tool/indices/sp500",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "states": [
+   "after adding a fund not in the list: name 'iShares S&P 500 Swap UCITS ETF USD (Acc)', kind 'קרן שנקנית בחו״ל', yearly fee 0.05%"
+  ],
+  "shots": [
+   "research/user-lab/runs/baseline-1/screens/s30/screen-01.png",
+   "research/user-lab/runs/baseline-1/screens/s30/screen-02.png",
+   "research/user-lab/runs/baseline-1/screens/s30/screen-03.png",
+   "research/user-lab/runs/baseline-1/screens/s30/screen-04.png",
+   "research/user-lab/runs/baseline-1/screens/s30/screen-05.png",
+   "research/user-lab/runs/baseline-1/screens/s30/screen-06.png"
+  ]
+ },
+ "s31": {
+  "url": "https://orishamir.github.io/finance-tool/indices",
+  "device": "pc",
+  "surface": "live",
+  "reader_note": null,
+  "states": [
+   "after adding an index named 'test' (not Israeli) and saving it"
+  ],
+  "shots": [
+   "research/user-lab/runs/baseline-1/screens/s31/screen-01.png",
+   "research/user-lab/runs/baseline-1/screens/s31/screen-02.png",
+   "research/user-lab/runs/baseline-1/screens/s31/screen-03.png"
+  ]
+ },
+ "s32": {
+  "url": null,
+  "device": "pc",
+  "surface": "drawing",
+  "reader_note": "Drawings made by the site's designers, shown as options to choose from; any mark that one option is recommended is theirs.",
+  "states": [
+   "a drawing"
+  ],
+  "shots": [
+   "research/user-lab/runs/baseline-1/screens/s32/screen-01.png",
+   "research/user-lab/runs/baseline-1/screens/s32/screen-02.png",
+   "research/user-lab/runs/baseline-1/screens/s32/screen-03.png"
+  ]
+ },
+ "s33": {
+  "url": null,
+  "device": "pc",
+  "surface": "drawing",
+  "reader_note": "Drawings made by the site's designers, shown as options to choose from; any mark that one option is recommended is theirs.",
+  "states": [
+   "a drawing"
+  ],
+  "shots": [
+   "research/user-lab/runs/baseline-1/screens/s33/screen-01.png",
+   "research/user-lab/runs/baseline-1/screens/s33/screen-02.png"
+  ]
+ },
+ "s34": {
+  "url": null,
+  "device": "pc",
+  "surface": "drawing",
+  "reader_note": "Drawings made by the site's designers, shown as options to choose from; any mark that one option is recommended is theirs.",
+  "states": [
+   "a drawing"
+  ],
+  "shots": [
+   "research/user-lab/runs/baseline-1/screens/s34/screen-01.png",
+   "research/user-lab/runs/baseline-1/screens/s34/screen-02.png",
+   "research/user-lab/runs/baseline-1/screens/s34/screen-03.png"
+  ]
+ },
+ "s35": {
+  "url": null,
+  "device": "pc",
+  "surface": "drawing",
+  "reader_note": "Drawings made by the site's designers, shown as options to choose from; any mark that one option is recommended is theirs.",
+  "states": [
+   "a drawing"
+  ],
+  "shots": [
+   "research/user-lab/runs/baseline-1/screens/s35/screen-01.png",
+   "research/user-lab/runs/baseline-1/screens/s35/screen-02.png",
+   "research/user-lab/runs/baseline-1/screens/s35/screen-03.png"
+  ]
+ },
+ "s36": {
+  "url": null,
+  "device": "pc",
+  "surface": "drawing",
+  "reader_note": "Drawings made by the site's designers, shown as options to choose from; any mark that one option is recommended is theirs.",
+  "states": [
+   "a drawing"
+  ],
+  "shots": [
+   "research/user-lab/runs/baseline-1/screens/s36/screen-01.png",
+   "research/user-lab/runs/baseline-1/screens/s36/screen-02.png"
+  ]
+ },
+ "s37": {
+  "url": null,
+  "device": "pc",
+  "surface": "drawing",
+  "reader_note": "Drawings made by the site's designers, shown as options to choose from; any mark that one option is recommended is theirs.",
+  "states": [
+   "a drawing"
+  ],
+  "shots": [
+   "research/user-lab/runs/baseline-1/screens/s37/screen-01.png",
+   "research/user-lab/runs/baseline-1/screens/s37/screen-02.png",
+   "research/user-lab/runs/baseline-1/screens/s37/screen-03.png",
+   "research/user-lab/runs/baseline-1/screens/s37/screen-04.png",
+   "research/user-lab/runs/baseline-1/screens/s37/screen-05.png"
+  ]
+ },
+ "s38": {
+  "url": null,
+  "device": "pc",
+  "surface": "drawing",
+  "reader_note": "Drawings made by the site's designers, shown as options to choose from; any mark that one option is recommended is theirs.",
+  "states": [
+   "a drawing"
+  ],
+  "shots": [
+   "research/user-lab/runs/baseline-1/screens/s38/screen-01.png",
+   "research/user-lab/runs/baseline-1/screens/s38/screen-02.png",
+   "research/user-lab/runs/baseline-1/screens/s38/screen-03.png",
+   "research/user-lab/runs/baseline-1/screens/s38/screen-04.png",
+   "research/user-lab/runs/baseline-1/screens/s38/screen-05.png"
+  ]
+ },
+ "s39": {
+  "url": null,
+  "device": "pc",
+  "surface": "drawing",
+  "reader_note": "Drawings made by the site's designers, shown as options to choose from; any mark that one option is recommended is theirs.",
+  "states": [
+   "a drawing"
+  ],
+  "shots": [
+   "research/user-lab/runs/baseline-1/screens/s39/screen-01.png",
+   "research/user-lab/runs/baseline-1/screens/s39/screen-02.png",
+   "research/user-lab/runs/baseline-1/screens/s39/screen-03.png",
+   "research/user-lab/runs/baseline-1/screens/s39/screen-04.png",
+   "research/user-lab/runs/baseline-1/screens/s39/screen-05.png"
+  ]
+ }
+}

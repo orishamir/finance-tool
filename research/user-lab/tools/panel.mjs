@@ -1,7 +1,9 @@
 // The panel runner: simulated users (persona cards) on tasks, each in its own isolated session (lib/session.mjs).
 //
-//   node research/user-lab/tools/panel.mjs <run.json> <out-folder> [--dry]
+//   node research/user-lab/tools/panel.mjs <run.json> <out-folder> [--dry] [--variant <id>]
 // --dry prepares every session (its prompt, and the files it would get, in given/) without starting any.
+// --variant shows every session a variant of the site (research/user-lab/variants/<id>/, see lib/variant.mjs) at the
+// same addresses; a task's own "variant" wins over it, and the run file's "variant" comes last.
 //
 // run.json (paths are read relative to run.json's folder, then research/user-lab/, then the repository root):
 // {
@@ -12,6 +14,8 @@
 //       "answerFields": { "account": { "type": "string", "description": "..." } },              // optional
 //       "answerKey": { "right": "...", "partly": "...", "fields": { ... } } },                   // optional, see score.mjs
 //     { "key": "colours", "text": "...", "shots": ["path/a.png", "git:<commit>:path/b.png"] },  // shots mode
+//     { "key": "seen", "text": "...", "page": "https://...", "steps": [["fill", "label", "500"]] }, // shots mode, the
+//                                                    // page captured screen by screen at run time (with the variant)
 //     { "case": "idx-r1-layout", "chosen": "C" }      // a calibration case (only its question, options and shots
 //                                                    // reach the session; "chosen" is for score.mjs)
 //   ],
@@ -19,6 +23,8 @@
 // up to ten things that would bother this person, most bothersome first).
 //   "cases": "calibration/cases.jsonl",   // where { "case": id } tasks are looked up (this is the default)
 //   "behaviour": "path/to/notes.md",       // optional: appended to every persona card (how real people behave)
+//   "behaviourBrowser": "path/to/notes.md", // optional: appended only in browser mode, for what only a session that
+//                                          // uses the page can perceive (movement); still screens never get it
 //   "parallel": 2, "repeat": 1, "model": "optional", "effort": "optional", "minutes": 12, "actions": 40
 // }
 // Each session is saved in <out>/<task>/<persona>[-rN]/: prompt.md, transcript.jsonl, report.md, result.json and, in
@@ -29,16 +35,20 @@ import http from "node:http";
 import { basename, dirname, extname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { browserPrompt, casePrompt, reportSchema, shotsPrompt, systemPrompt } from "./lib/prompts.mjs";
-import { CHROME, PLAYWRIGHT, closeAct, costOf, installAct, runSession, sessionDir } from "./lib/session.mjs";
+import { CHROME, PLAYWRIGHT, READER_EFFORT, closeAct, costOf, installAct, runSession, sessionDir } from "./lib/session.mjs";
+import { capture, fitsDevice, labBrowser, loadVariant, summarise } from "./lib/variant.mjs";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const LAB = resolve(HERE, "..");
 const REPO = resolve(LAB, "..", "..");
 
 const DRY = process.argv.includes("--dry");
-const [runPath, outArg] = process.argv.slice(2).filter((a) => a !== "--dry");
-if (!runPath || !outArg) {
-  console.error("usage: node panel.mjs <run.json> <out-folder>");
+const argv = process.argv.slice(2).filter((a) => a !== "--dry");
+const vi = argv.indexOf("--variant");
+const VARIANT = vi >= 0 ? argv.splice(vi, 2)[1] : null;
+const [runPath, outArg] = argv;
+if (!runPath || !outArg || (vi >= 0 && !VARIANT)) {
+  console.error("usage: node panel.mjs <run.json> <out-folder> [--dry] [--variant <id>]");
   process.exit(2);
 }
 const RUN_DIR = dirname(resolve(runPath));
@@ -155,7 +165,20 @@ function task(t) {
 
 const personas = run.personas.map(persona);
 const tasks = run.tasks.map(task);
+// the variant of each task, read once; a copy of each goes into <out>/variants/ for whoever grades the run (it never
+// reaches a session: the variants folder is outside every session's reach, and nothing a session is told names it)
+const variants = {};
+for (const t of tasks) {
+  const id = t.variant || VARIANT || run.variant || null;
+  if (!id) continue;
+  if (t.mode === "case" || (t.mode === "shots" && !t.page)) throw new Error(`task ${t.key}: a variant changes a live page; give the task "start" (browser) or "page" (captured screens), not ready-made shots`);
+  variants[id] = variants[id] || loadVariant(id);
+  t.variantObj = variants[id];
+  mkdirSync(join(OUT, "variants"), { recursive: true });
+  copyFileSync(join(variants[id].dir, "variant.json"), join(OUT, "variants", `${variants[id].id}.json`));
+}
 const behaviour = run.behaviour ? readFileSync(find(run.behaviour), "utf8") : "";
+const behaviourBrowser = run.behaviourBrowser ? readFileSync(find(run.behaviourBrowser), "utf8") : "";
 const repeat = run.repeat || 1;
 
 const jobs = [];
@@ -166,23 +189,37 @@ async function one({ t, p, r }) {
   const key = `${p.key}${repeat > 1 ? `-r${r}` : ""}`;
   const out = join(OUT, t.key, key);
   mkdirSync(out, { recursive: true });
+  // a session that already answered is kept, so a run that stopped part way can be started again with the same command
+  if (!DRY && existsSync(join(out, "result.json")) && JSON.parse(readFileSync(join(out, "result.json"), "utf8")).structured) return console.log(`${t.key} / ${key}: kept`);
   const dir = sessionDir();
   const device = t.device || p.device || "pc";
   const minutes = t.minutes || run.minutes || 12;
   const actions = t.actions || run.actions || 40;
-  const card = behaviour ? `${p.card.trim()}\n\n${behaviour.trim()}` : p.card;
+  const notes = [behaviour, t.mode === "browser" ? behaviourBrowser : ""].map((x) => x.trim()).filter(Boolean).join("\n");
+  const card = notes ? `${p.card.trim()}\n\n${notes}` : p.card;
   const system = systemPrompt(card);
   let prompt, schema;
   const env = {};
+  const variant = t.variantObj || null;
+  const vlog = variant ? join(out, "variant.jsonl") : null;
+  if (vlog && existsSync(vlog)) writeFileSync(vlog, "");
   try {
+    if (variant && !fitsDevice(variant, device)) throw new Error(`variant ${variant.id} is for ${variant.device}, this session is on a ${device}`);
     if (t.mode === "browser") {
       Object.assign(env, installAct(dir, { device, maxActions: actions, deadline: Date.now() + minutes * 60000, lockDevice: true }));
+      // the lab's own browser, with the variant in it, started before the session; the session's act.mjs finds it
+      if (variant && !DRY) await labBrowser(dir, { device, variant, log: vlog });
       prompt = browserPrompt(t.text, { url: t.start, device, minutes, actions });
       schema = reportSchema({ answerFields: t.answerFields, findings: t.findings });
     } else if (t.mode === "case") {
       const names = await placeShots(t.shots, dir);
       prompt = casePrompt(t.case, names);
       schema = reportSchema({ options: t.case.options?.length ? [...t.case.options, "none of them"] : null, findings: t.findings });
+    } else if (t.page) {
+      // the shots step: the page as it is now (or its variant), captured screen by screen on this persona's device
+      const { names } = await capture({ url: t.page, device, steps: t.steps || [], variant, out: dir, prefix: "screen", log: vlog });
+      prompt = shotsPrompt(t.text, names);
+      schema = reportSchema({ answerFields: t.answerFields, findings: t.findings });
     } else {
       const names = await placeShots(t.shots, dir);
       prompt = shotsPrompt(t.text, names);
@@ -201,7 +238,7 @@ async function one({ t, p, r }) {
     // everything but the session: the prompt, and the files the session would be given, in given/
     cpSync(dir, join(out, "given"), { recursive: true });
     rmSync(dir, { recursive: true, force: true });
-    console.log(`${t.key} / ${key}: prepared (dry run) in ${out}`);
+    console.log(`${t.key} / ${key}: prepared (dry run) in ${out}${variant ? `; variant ${variant.id}${vlog && existsSync(vlog) ? `, never shown: ${summarise(vlog, variant).neverShown.join(", ") || "none"}` : ""}` : ""}`);
     return;
   }
   const startedAt = new Date().toISOString();
@@ -212,7 +249,7 @@ async function one({ t, p, r }) {
     bash: t.mode === "browser",
     schema,
     model: t.model || run.model,
-    effort: t.effort || run.effort,
+    effort: t.effort || run.effort || READER_EFFORT,
     timeoutMs: (minutes + 4) * 60000,
     transcriptPath: join(out, "transcript.jsonl"),
     env,
@@ -244,6 +281,7 @@ async function one({ t, p, r }) {
     timedOut: res.timedOut,
     exitCode: res.code,
     cost: costOf(res),
+    ...(variant ? { variant: summarise(vlog, variant) } : {}),
     ...(res.code !== 0 && !structured ? { stderr: res.stderr.slice(0, 500) } : {}),
   };
   writeFileSync(join(out, "result.json"), JSON.stringify(result, null, 2));
@@ -254,11 +292,11 @@ async function one({ t, p, r }) {
     `# ${t.key}: ${p.key}${repeat > 1 ? ` (run ${r})` : ""}\n\n${t.mode} mode, ${device}; ${result.steps} steps, ${Math.round(res.ms / 1000)} s, ${result.cost.usd != null ? `$${result.cost.usd.toFixed(2)}` : "cost unknown"}${res.timedOut ? "; stopped at the time limit" : ""}\n\n` +
       `## Answer\n\n${s.answer ?? "(none)"}${s.choice ? `\n\nChoice: ${s.choice}` : ""}${s.answer_fields ? `\n\n\`\`\`json\n${JSON.stringify(s.answer_fields, null, 2)}\n\`\`\`` : ""}\n\nConfidence: ${s.confidence ?? "?"}; gave up: ${s.gave_up ?? "?"}\n\n` +
       `## Stuck\n\n${list(s.stuck)}\n\n## Used\n\n${list(s.used)}\n\n## Skimmed\n\n${list(s.skimmed)}\n\n## Skipped\n\n${list(s.skipped)}\n\n` +
-      `${s.findings ? `## What would bother this person, most first\n\n${list(s.findings.map((f) => ({ where: f.where, why: f.what })))}\n\n` : ""}## Not sure what it meant\n\n${list(s.unsure_meaning)}\n\n## Looked for and did not find\n\n${list(s.not_found)}\n\n## Would change\n\n${list(s.would_change)}\n\n` +
+      `${s.findings ? `## What would bother this person, most first\n\n${list(s.findings.map((f) => ({ where: f.where, why: f.what })))}\n\n` : ""}## Not sure what it meant\n\n${list(s.unsure_meaning)}\n\n## Looked for and did not find\n\n${list(s.not_found)}\n\n` +
       `## What it said along the way\n\n${said.replace(/[\w.+-]+@[\w-]+\.[a-z][\w.]*/gi, "<email>")}\n`,
   );
   rmSync(dir, { recursive: true, force: true });
-  console.log(`${t.key} / ${key}: ${structured ? `answered (${s.confidence}${s.gave_up ? ", gave up" : ""})` : "no answer"}, ${result.steps} steps, ${Math.round(res.ms / 1000)} s, $${result.cost.usd?.toFixed(2) ?? "?"}`);
+  console.log(`${t.key} / ${key}: ${structured ? `answered (${s.confidence}${s.gave_up ? ", gave up" : ""})` : "no answer"}, ${result.steps} steps, ${Math.round(res.ms / 1000)} s, $${result.cost.usd?.toFixed(2) ?? "?"}${variant ? `; variant ${variant.id}${result.variant.neverShown.length ? `, NEVER SHOWN: ${result.variant.neverShown.join(", ")}` : ", every change shown"}` : ""}`);
 }
 
 // ---------------------------------------------------------------- run them, a few at a time

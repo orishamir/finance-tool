@@ -1,0 +1,6 @@
+{
+  "named": false,
+  "position": 0,
+  "why": "Finding 1 complains about labels repeated on every row, but the labels it names are exposure, fee-base and period labels, not the company name. \"Every company repeats the same tracks\" is about the same tracks appearing under each company. No finding says the company name is repeated under each track even though the group heading already shows it.",
+  "usd": 0.023336
+}

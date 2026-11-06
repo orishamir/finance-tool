@@ -1,0 +1,36 @@
+{
+  "case": "hishtalmut-play-pointless",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The 'שחקו עם המספרים' panel repeats what the graphic above already lets the reader do.\",\"where\":\"the 'שחקו עם המספרים' panel\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings says the 'שחקו עם המספרים' panel repeats what the graphic above already does; finding 3 mentions a busy chart with a slider, but it complains about clutter and colours, not about duplication."
+      }
+    ],
+    "liked": [],
+    "usd": 0.015323400000000001
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "No finding says the 'שחקו עם המספרים' panel repeats what the graphic above already does; finding 3 only calls the chart and slider busy, not redundant."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0148754
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0301988
+}

@@ -1,0 +1,71 @@
+# s01: first-job-phone (old brief)
+
+pc; 52 s, $0.22
+
+I'm answering as the 24-year-old: I keep my savings in my bank current account (עו"ש) and want to know what that costs me. I read all seven screenshots. There are a few gaps between them: the start of "למה משתמשים בזה", part of "כסף נכנס ויוצא", and the end of "מיסוי" with a red box. I can only tell you about what I could see.
+
+## 1. What I would do, and how sure I am
+
+I'd keep enough in the current account for normal monthly spending plus a bit extra. I'd move the rest into what the page calls **"קרן כספית"** (a money-market fund, something I'd never heard of). Three lines pushed me there:
+- **"כסף שיושב בעו"ש בלי ריבית לא גדל"** (money sitting in the current account without interest doesn't grow). Until now I'd assumed it was just safe.
+- **"מול קרן כספית יומית העו"ש עדיף רק כשצריך את הכסף באותו יום"** (compared with a money-market fund, the current account is only better if you need the money that same day). I read this as: for anything else, the fund is better.
+- **"אם יתרת הזכות נשארת מעל ₪15,000.00 רבעון שלם, הבנק חייב לשלוח לכם הודעה"** (if your positive balance stays above ₪15,000 for a whole quarter, the bank must send you a notice). So I now know the bank is supposed to tell me about other options.
+
+How sure: about **5 out of 10**. I'm fairly sure that leaving a big pile in the current account is a bit of a waste. I'm not sure what to actually do next. I don't know where you buy a קרן כספית, whether my bank sells one, or what it costs. I also don't know whether I should skip it and go straight to the S&P 500 thing everyone talks about. This page never mentions the S&P 500.
+
+## 2. The parts I actually used
+
+- The top paragraph under **"מה זה"**, especially the ₪15,000 line and "לא כל בנק משלם" (not every bank pays interest).
+- The first lines of **"למה משתמשים בזה"**, where it compares the account with a money-market fund.
+- **"שווה לדעת"** (worth knowing): three short lines, and the most useful block for me.
+- The first card under **"מיסוי"** (tax): "מס על הריבית כשהיא נזקפת" (tax on the interest when it's credited) and "15% מהריבית" (15% of the interest).
+- **"סיכונים ומה לא מוגן"** (risks and what isn't protected): the first paragraph.
+
+## 3. Block by block
+
+- **Title and grey line under it**: Used. "כסף שיושב בו לא תמיד מקבל ריבית" (money sitting in it doesn't always earn interest) is the first thing that worried me.
+- **The small "123 מקמר / 123 מחושב / 123 הזנת" line**: Skipped. I didn't understand it and it didn't look important.
+- **"מה זה" text**: Used. The third paragraph, about "המסלול הבסיסי… המורחב" (the basic and extended fee plans) with "1 פעולה בפקיד" (1 transaction with a teller) and "10 ו־50" (10 and 50), confused me. Those are counts of transactions, but how much does each plan cost?
+- **Calculator ("ההנחות של הגרף" on the right, "מה קורה לכסף לאורך הזמן" on the left)**: Confused me, and I spent the most time here. The page is about my current account, which earns nothing, yet the example uses **"תשואה בשנה 5%"** (5% return a year) and gets ₪74,044. Is that what happens if I leave the money in the current account, or somewhere else? I couldn't tell. I didn't touch the inputs.
+- **"הצגה כטבלה" (show as table)**: Skipped.
+- **"למה משתמשים בזה"**: Used the part I could see. I didn't understand the "מזומן שקלי" (shekel cash) button next to it.
+- **"שווה לדעת"**: Used, but I ignored the BANK-20 / BANK-23 / BANK-15 tags.
+- **"מי מציע ומי מפקח"** (who offers it and who supervises): Skimmed. It's good to know Bank of Israel is in charge, but it didn't change my decision.
+- **"כסף נכנס ויוצא"** (money in and out): Skipped. The cards about "משיכה" (withdrawal) and moving between banks weren't my question.
+- **"כמה זה עולה"** (how much it costs): Used it, then got disappointed. This was the section I came for, and it only says **"לפי התעריפון של הגורם המציע"** (according to the provider's price list). No actual number.
+- **"מיסוי"**: Used the first two cards. The third one ("ריבית צמודה… 25%", linked interest, 25%) went over my head.
+- **Red box at the top of screenshot 5** ("שאלה פתוחה: TXI OQ11", open question with a code): Confused me. I thought something was broken.
+- **"סיכונים ומה לא מוגן"**: Used it, and it scared me a bit: **"אין בישראל ביטוח פיקדונות"** (Israel has no deposit insurance). I thought money in the bank was 100% safe.
+- **"מה האתר לקח בחשבון"** (what the site took into account), with the padlocks and "חסום" (blocked): Skipped. It's codes, and it says the site can't calculate those things anyway.
+- **"מונחים"** (terms): Skimmed, using the "מה זה" (what it is) column for "יתרת זכות" (positive balance). Then I realised the table repeats itself on the last screenshot.
+
+## 4. Lists, tables and the chart
+
+- **Chart**: I looked at the big green area and the "10" at the end of the bottom axis. I noticed a thin pink line on top and a lighter line underneath, but nothing told me what they were, so I ignored them. I also ignored the "אלף ₪" (thousand ₪) numbers on the side.
+- **Rows under the chart**: I read "נשאר לכם 74,044" (you're left with ₪74,044) and "ההפקדות שלכם 62,681" (your deposits, ₪62,681). That puzzled me: ₪10,000 plus ₪500 a month for 10 years is ₪70,000 by my maths, not ₪62,681. I glanced at "מס 2,005" (tax ₪2,005) and "דמי ניהול 0" (management fees ₪0).
+- **Buttons "בכסף של היום / בשקלים של העתיד"** (in today's money / in future shekels): I saw them but didn't understand the difference, so I didn't click.
+- **"כמה זה עולה" table**: I read the "סוג" (type) and "על מה נגבה" (what it's charged for) columns. I ignored "חוקים וכללים" (laws and rules), which was empty anyway. The "תקרה" (cap) column had the useless "לפי התעריפון" answer.
+- **"מונחים" table**: I read "מונח" (term) and "מה זה" (what it is). I ignored the "איפה מופיע" (where it appears) column with the little grey labels "אפליקציה" (app), "דוח שנתי" (annual report) and "תעריפון" (price list).
+- **Tags** BANK-xx and TXI OQxx: I ignored all of them.
+
+## 5. What I didn't understand
+
+- Why a current-account page shows money growing at 5%.
+- "בכסף של היום" vs "בשקלים של העתיד", and why my deposits come to ₪62,681.
+- "מקמר" (in "123 מקמר") and "מנת הקישו להסבר" (part of the line under the title).
+- "מק"ם" (one of the alternatives listed in "שווה לדעת").
+- "הצמדה: לא צמוד" (linkage: not linked) and "ריבית צמודה למדד" (interest linked to the index).
+- "יחידות בקרן נפדות רק ביום מסחר" (units in the fund are only redeemed on a trading day). I think it means I can't get my money instantly, but how long would it actually take?
+- What "שאלה פתוחה" (open question) and all the codes mean.
+
+## 6. What I wanted and couldn't find
+
+- **A real number**: how much my bank actually charges me per month, or what a typical bank charges.
+- **How much I'm losing**: for example, "₪30,000 in the current account loses about X a year to inflation." The calculator could do this, but it shows something else.
+- **How much to keep in the account**: one month of salary? Three?
+- **How to actually open a קרן כספית or a פיקדון** (deposit), roughly what each pays, and how quickly I can get the money back.
+- **Where the S&P 500 fits** compared with these options.
+
+## 7. If half the page had to go
+
+First to go: the "מה האתר לקח בחשבון" padlock section, the red "שאלה פתוחה" box, the "מי מציע ומי מפקח" block, the "כסף נכנס ויוצא" cards, and the second copy of the "מונחים" table. After that, I'd drop the small "123 מקמר / מחושב / הזנת" line and the BANK tags. I'd keep "שווה לדעת", the first paragraphs of "מה זה", "סיכונים", and the tax cards. I'd keep the calculator only if it showed what happens to my money in the current account itself.

@@ -1,0 +1,36 @@
+{
+  "case": "study-r1-decoder-table",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"A table exists only to decode the graph instead of the names and numbers being written on the graph, adding mental overhead.\",\"where\":\"the table under the graph\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "No finding objects to the table under the graph existing only to decode it: finding 1 mentions that table only because of a confusing minus number, and finding 5 complains about a legend in a different option (ג), not this table."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0200994
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the findings says the table under the graph only exists to decode it, or that the names and numbers should be written on the graph itself; finding 1 is about a minus sign in the table, and finding 5 is about a legend in a different option."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0183034
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0384028
+}

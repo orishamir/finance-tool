@@ -1,0 +1,104 @@
+{
+  "task": "s14",
+  "persona": "first-job-phone",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T03:20:31.858Z",
+  "structured": {
+    "answer": "Joining makes sense: on 30,000 I put 750 a month and the employer 2,250, and after 5 years the page says 136,457 ₪ left in my hands; but there's a scary −64,761 tax at 5 years, so I'd wait the 6 years.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Big bar chart, screen 2",
+        "why": "The final 136,457 looks almost the same as the employer's +135,000; for a moment I thought they were the same number"
+      },
+      {
+        "where": "−64,761 ₪ tax bar",
+        "why": "Huge minus scared me; only the small pink 'לפני 6 שנים: מס' hinted it's because it's 5 years, and the page didn't show me the 6-year result"
+      },
+      {
+        "where": "Sticky menu bar, screen 1",
+        "why": "Tab bar sat across the middle of the content covering text"
+      }
+    ],
+    "used": [
+      "Salary field 30,000",
+      "'מושכים את הכסף אחרי 5 שנים'",
+      "'750 ₪ בחודש מכם, 2,250 ₪ מהמעסיק'",
+      "Big chart numbers 136,457 / −64,761 / +21,218 / +135,000 / 45,000",
+      "'לפני 6 שנים: מס' label",
+      "'כשעוברות 6 שנים' card"
+    ],
+    "skimmed": [
+      "מה זה section",
+      "כסף נכנס ויוצא cards",
+      "כמה זה עולה table",
+      "small year bar chart"
+    ],
+    "skipped": [
+      "למה משתמשים בזה",
+      "grey notes under the chart",
+      "'בין 19 המסלולים' line",
+      "שווה לדעת",
+      "מי מציע ומי מפקח",
+      "מיסוי",
+      "screens 4 and 5"
+    ],
+    "unsure_meaning": [
+      "דמי ניהול 0.54%",
+      "מסלול מדד / S&P500 (13245)",
+      "פטור עד תקרה / 15,712 ₪",
+      "striped pink/blue tops on bars (guessed tax)",
+      "חוקים וכללים · 14 chips",
+      "תשואה הוסיפה אחרי דמי ניהול"
+    ],
+    "not_found": [
+      "Result for pulling out at 6 years (tax-free) shown as a number",
+      "Fees in shekels"
+    ],
+    "findings": [
+      {
+        "what": "Default shows withdrawal at 5 years, so a big −64,761 tax dominates the result, though the point is waiting 6 years",
+        "where": "Screen 2, big chart"
+      },
+      {
+        "what": "Final 136,457 and employer +135,000 look nearly identical, easy to confuse",
+        "where": "Screen 2, top of big chart"
+      },
+      {
+        "what": "Striped colored tops on bars not explained near them",
+        "where": "Screen 2, small yearly chart"
+      },
+      {
+        "what": "Fee only in percent (0.54%), no shekel figure",
+        "where": "Screen 2, input fields and notes"
+      },
+      {
+        "what": "Sticky tab bar overlaps content mid-screen",
+        "where": "Screen 1"
+      },
+      {
+        "what": "Lots of small grey notes I'd never read hold key info (tax rate, cap)",
+        "where": "Screen 2 under chart"
+      }
+    ]
+  },
+  "steps": 3,
+  "reads": 3,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 34838,
+    "turns": 5,
+    "usd": 0.16135,
+    "input": 8,
+    "cacheWrite": 11729,
+    "cacheRead": 27430,
+    "output": 3100,
+    "model": "claude-opus-5-5"
+  }
+}

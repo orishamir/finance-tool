@@ -1,0 +1,36 @@
+{
+  "case": "guides-useless-sections",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The guide home has sections that say nothing useful ('שני חלקים בכל חיסכון', 'מאיפה להתחיל').\",\"where\":\"the sections above or below the list of guides\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Findings 3 and 5 concern the 'שני חלקים' section, but they complain about hard-to-read contrast and unexplained jargon, not that the sections say nothing useful."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0167194
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 5 complains that the 'שני חלקים' section uses jargon without explaining it, and finding 3 is about readability; neither says these sections are empty or tell you nothing useful, which is the person's complaint."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0166074
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.033326800000000004
+}

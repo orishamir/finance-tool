@@ -1,0 +1,36 @@
+{
+  "case": "hg-huge-profit",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The graphic shows a very large profit figure with nothing explaining where it comes from.\",\"where\":\"the profit part of the graphic\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 1,
+        "why": "Finding 1 makes the same complaint: a large figure in the bar chart with no text next to it explaining it. The reader saw it as a minus rather than a profit, so this match is a judgement call."
+      }
+    ],
+    "liked": [],
+    "usd": 0.020847400000000002
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 1,
+        "why": "Finding 1 makes the same complaint: a large figure in the big bar chart (−64,761 ₪) has no explanation next to it, even though the reader calls it a minus where the person called it a profit."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0189754
+  },
+  "third": null,
+  "ranks": {
+    "k": 1
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.039822800000000005
+}

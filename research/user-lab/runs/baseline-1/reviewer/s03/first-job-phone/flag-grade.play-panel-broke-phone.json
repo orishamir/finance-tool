@@ -1,0 +1,36 @@
+{
+  "case": "play-panel-broke-phone",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"On a phone, the fields in the 'שחקו עם המספרים' panel break out of line: they have different widths, sit at odd places and look oversized.\",\"where\":\"the fields of the 'שחקו עם המספרים שלכם' panel on a phone\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 3 is about the calculator's default value, not its fields being misaligned, different widths, or oversized on a phone, so no finding names this layout problem."
+      }
+    ],
+    "liked": [],
+    "usd": 0.013135399999999998
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings mention the layout of the calculator fields on a phone; finding 3 is about the calculator's default value, not the fields' widths or alignment."
+      }
+    ],
+    "liked": [],
+    "usd": 0.013175399999999999
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.026310799999999995
+}

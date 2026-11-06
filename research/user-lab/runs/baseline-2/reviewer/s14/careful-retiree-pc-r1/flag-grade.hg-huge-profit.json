@@ -1,0 +1,46 @@
+{
+  "case": "hg-huge-profit",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The graphic shows a very large profit figure with nothing explaining where it comes from.\",\"where\":\"the profit part of the graphic\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 1 complains about an unexplained red minus figure (−64,761), which looks like a deduction segment rather than the large profit figure, and no other finding says the profit amount comes without an explanation of its source."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0246114
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 1,
+        "why": "Finding 1 points to a large figure in the result chart that comes with no plain explanation, which is the person's complaint, though the reader reads it as a minus number rather than a profit."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0179314
+  },
+  "third": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 1 objects to an unexplained negative red number (−64,761), which looks like a different figure from the large profit the person named, and no other finding says the profit amount comes with no explanation of where it comes from."
+      }
+    ],
+    "liked": [],
+    "usd": 0.022071399999999998
+  },
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": false
+  },
+  "against": {},
+  "usd": 0.0646142
+}

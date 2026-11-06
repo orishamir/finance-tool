@@ -1,0 +1,91 @@
+{
+  "case": "general-track-exposure",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"In the guide list, 'general track' is listed among the exposures (kinds of investment), which does not make sense: it is a mix, not one kind.\",\"where\":\"the exposures group of the guide list\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "The page doesn't say whether to buy the S&P 500 in an investment savings fund or a securities account",
+      "No numbers to compare: no fees, tax amounts, lock-up periods or past returns",
+      "Top-menu items ('questions everyone asks', 'investing in an index') pull the reader away from the page",
+      "The 'two parts' section uses מק\"מ and אג\"ח before explaining them",
+      "The small grey line saying product pages list what you can invest in is easy to miss",
+      "Card titles in the everyday-money section are cut off",
+      "Can't tell how the comprehensive new pension fund differs from the general new pension fund",
+      "The 'contributions and personal severance' card is incomprehensible",
+      "The self-selection section doesn't say which option suits someone like the reader",
+      "The index cards read almost the same as each other",
+      "Only the retirement cards have a 'plain language' line; the reader wanted one on every card",
+      "The 'daily' and 'renewing' chips on the money market card are unclear, including whether they are buttons",
+      "Every index card ends with the same repeated phrase about dollar exposure",
+      "'Deposits above the maximum amount' is unclear: what maximum, and does it apply to the reader?",
+      "'Dollar exposure or hedged': no guidance on which is better",
+      "Unexplained difference between the S&P 500 card ('in dollars') and the MSCI World card ('in shekels')",
+      "Jargon: 'weighted by market value', 'public holdings with a cap per share'",
+      "'After a period set by law' doesn't say how long",
+      "No information on risk or how much money can be lost",
+      "Doesn't say what the reader already has through work and what they'd have to open themselves",
+      "No order of steps after the three 'where to start' lines",
+      "No information on how to actually open a product or who to contact",
+      "Would drop the 'for children' section",
+      "Would drop the Tel Aviv index cards and most of the MSCI/Nasdaq cards as near-duplicates",
+      "Would drop the 'what the site doesn't cover yet' section",
+      "Would drop the everyday and short-term money section",
+      "Would drop the 'contributions and personal severance' and general new pension fund cards"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader mentions reading the 'general track' card only because their pension might be in one, and never objects to it being listed as an exposure."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0637432
+  },
+  "b": {
+    "raised": [
+      "The page doesn't say whether to buy the S&P 500 through an investment savings fund or a securities account",
+      "No numbers to compare options: fees, tax amounts, lock-up periods, past returns",
+      "Top menu items ('questions everyone asks', 'investing in an index') tempted the reader to click away",
+      "The 'two parts' section uses מק\"מ and אג\"ח before explaining them",
+      "The small grey line saying each product page lists what you can invest in is easy to miss",
+      "Couldn't tell how קרן חדשה מקיפה differs from קרן חדשה כללית",
+      "'תגמולים ואישית לפיצויים' meant nothing to the reader",
+      "In the self-selection section, couldn't tell which option suits someone like them",
+      "The index cards all read almost the same and repeat the dollar-exposure line",
+      "Not every card has a plain-language line",
+      "The grey chips 'יומית'/'מתחדשת' on the money market fund card were unclear (buttons or not?)",
+      "'Deposits above the maximum amount' was unclear: what maximum, and does it apply to me?",
+      "'Dollar exposure or hedged': which is better?",
+      "Unclear why the S&P 500 is invested in dollars but MSCI World in shekels, and whether that matters",
+      "Jargon such as 'weighted by market value' and 'public holdings with a cap per share'",
+      "'After a period set by law' doesn't say how long",
+      "Finding where the S&P 500 can be bought means clicking into every product page",
+      "No risk information: which options can lose money, and how much",
+      "Doesn't explain what the reader already has through work versus what they must open themselves",
+      "No order of steps after the three 'where to start' lines",
+      "No guidance on how to actually open a product or whom to contact",
+      "Would drop the 'for children' section",
+      "Would drop the 'what the site doesn't cover yet' section",
+      "Would drop the current account / deposit / savings plan section"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader only mentions reading the 'מסלול כללי' (general track) card because their pension might be in one, and never objects to it being listed among the kinds of investment."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0661632
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1299064
+}

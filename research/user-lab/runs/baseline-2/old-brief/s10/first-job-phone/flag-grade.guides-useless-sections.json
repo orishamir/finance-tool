@@ -1,0 +1,89 @@
+{
+  "case": "guides-useless-sections",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The guide home has sections that say nothing useful ('שני חלקים בכל חיסכון', 'מאיפה להתחיל').\",\"where\":\"the sections above or below the list of guides\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "The page gives no amounts, fees, returns or time periods, so nothing can be compared",
+      "Tops and titles of the 'כסף שוטף וקצר' cards were cut off",
+      "'קרן חדשה כללית' was confusing: unclear what 'the maximum amount' is",
+      "'תגמולים ואישית לפיצויים' was confusing: why is severance in a savings fund",
+      "Tops of the 'לבחירה עצמית' cards were cut off",
+      "The 'בשפה פשוטה' line didn't help because it only reworded the title",
+      "The grey 'יומית'/'מתחדשת' buttons on the קרן כספית card were confusing",
+      "The difference between MSCI World and MSCI AC World was hard to spot",
+      "Didn't understand מק\"מ or why anyone would want it",
+      "Didn't understand אג\"ח, קרן נאמנות or 'a fund that tracks it'",
+      "Didn't understand dollar exposure vs hedging on the S&P 500 card",
+      "Didn't understand the pension terms קצבה, תגמולים, פיצויים",
+      "Didn't understand who a מנהל תיקים or בית השקעות is",
+      "'תקרה שנתית' is vague: how much is it",
+      "'תקופה שקבע החוק' is vague: how many years is the money locked",
+      "Unclear whether paying tax on withdrawal is better or worse than buying the S&P 500 directly",
+      "No guidance on how much to put where, or in what order",
+      "No information on risk, e.g. whether the S&P 500 is risky for someone young",
+      "No comparison of the S&P 500 inside a קופת גמל vs buying it through a broker",
+      "No way explained to check what they already have through work",
+      "Would cut the Tel Aviv indexes",
+      "Would cut 'לילדים'",
+      "Would cut 'מה האתר עוד לא מכסה'",
+      "Would cut 'קרן חדשה כללית' and 'תגמולים ואישית לפיצויים'",
+      "Would cut Nasdaq 100 and MSCI AC World",
+      "Would cut 'לבחירה עצמית'",
+      "The subtitle about the same layout for easy comparison did nothing for them"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader praises both 'שני חלקים בכל חיסכון' (most useful part) and 'מאיפה להתחיל' (their to-do list) and would keep them, so no raised problem says these sections are useless."
+      }
+    ],
+    "liked": [],
+    "usd": 0.07021920000000001
+  },
+  "b": {
+    "raised": [
+      "Page gives no amounts, fees, returns or time periods, so nothing can be compared",
+      "Tops and titles of the 'כסף שוטף וקצר' cards were cut off",
+      "'קרן חדשה כללית': didn't understand 'deposits above the maximum amount' or what that maximum is",
+      "'תגמולים ואישית לפיצויים' was confusing: why severance in a savings fund",
+      "Tops of the 'לבחירה עצמית' cards were cut off; it seemed meant for experts",
+      "Skimmed מק\"מ, government bonds and מסלול כללי without understanding them",
+      "The 'בשפה פשוטה' line only reworded the title and didn't help",
+      "The grey 'יומית'/'מתחדשת' buttons on the קרן כספית card were confusing",
+      "The MSCI World vs MSCI AC World difference was only visible in the wording of country counts",
+      "Didn't understand investment terms: אג\"ח, קרן נאמנות, 'a fund that tracks it'",
+      "Didn't understand the dollar exposure vs neutralized wording on the S&P 500",
+      "Didn't understand pension terms: קצבה, תגמולים, פיצויים",
+      "Didn't know who a מנהל תיקים or a בית השקעות is",
+      "Vague amounts and times: how much the yearly ceiling is, how long the legal period is",
+      "Unclear whether paying tax on withdrawal beats buying the S&P 500 directly",
+      "Wanted guidance on how much to put where and in what order",
+      "Wanted fees, risk and returns information",
+      "Wanted S&P 500 inside קופת גמל compared with buying through a broker",
+      "Wanted to know how to check what they already have through work",
+      "Would cut the Tel Aviv indexes (ת\"א-35/90/125)",
+      "Would cut 'לילדים' and 'מה האתר עוד לא מכסה'",
+      "Would cut Nasdaq 100 and MSCI AC World"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader praised both 'שני חלקים בכל חיסכון' (the most useful part) and 'מאיפה להתחיל' (their trusted to-do list) and never calls them useless."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0716192
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1418384
+}

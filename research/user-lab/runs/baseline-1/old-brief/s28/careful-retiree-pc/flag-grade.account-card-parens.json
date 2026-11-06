@@ -1,0 +1,87 @@
+{
+  "case": "account-card-parens",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The chosen account's name carries a parenthesis '(מותג של MEXEM LTD)' that clutters it.\",\"where\":\"the chosen account's card\",\"kind\":\"taste\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "The fund code appears as '(4D)' in one place and '(D4)' in another, so it is unclear whether they are the same fund",
+      "Psagot is one of the firms whose advertised fees don't match their documents ('3 טענות')",
+      "The default pick, Interactive Israel, is labelled 'לא בפיקוח רשות ני\"ע', which scared the reader off",
+      "The exchange-rate strip mentions the European central bank, which seems irrelevant and confusing",
+      "Unclear what the inflation button does and whether the 7% is before or after inflation",
+      "'אם הדולר לא זז מול השקל' worried the reader: what happens if the dollar does move?",
+      "Didn't understand why the tax differs between firms for the same index",
+      "The long fund list is confusing: many coloured labels, plus 'אין מחיר כאן' and 'עוד לא נאסף'",
+      "Psagot shows 'אין נתון' for the standing-order price even though it is supposed to be the cheapest",
+      "The explanation of why some funds have no price at Interactive Israel, and of 'מול המדד', was only half understood",
+      "The currency-hedging section is too much to take in",
+      "The waterfall chart is one grey column in a big empty space and says nothing",
+      "'נשען על כלל מס פתוח: מוצג ולא מדורג' lost the reader",
+      "The grey 'העמלות זו על זו' segment is not understood",
+      "The small coloured strips and small numbers in the account list are unclear",
+      "Jargon not understood: 4D/4A, דמי משמרת, מחלקת דיבידנד, צובר, W-8BEN, קרן מחקה vs קרן סל",
+      "Couldn't find the management fee of the recommended Yelin Lapidot fund",
+      "Unclear whether the final amounts include the tax paid when selling at the end",
+      "No information on what happens if the money is needed after 5 years",
+      "No information on what happens if the brokerage firm collapses",
+      "No way to open the account: no phone number or link for Psagot",
+      "Would drop the bottom tables ('חשבון אחר, אותה קרן' and the rest)",
+      "Would drop the line chart in 'מה הכי משנה'"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The report never mentions the '(מותג של MEXEM LTD)' parenthesis or any clutter in the chosen account's name."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0656272
+  },
+  "b": {
+    "raised": [
+      "The Yelin Lapidot fund has only one year of history",
+      "The fund code is written '(D4)' in one place and '(4D)' in another, so it's unclear whether it is the same fund",
+      "Psagot is among the firms whose advertised fees don't match their documents (3 claims)",
+      "The 'לא בפיקוח רשות ני\"ע' label on Interactive Israel is scary",
+      "The strip about the exchange rate from the European Central Bank is confusing",
+      "Unclear what the inflation button does, and whether the 7% is before or after inflation",
+      "'אם הדולר לא זז מול השקל' is worrying: what if the dollar does move?",
+      "Doesn't understand why the tax differs between firms for the same index",
+      "The long fund list has too many labels, plus 'אין מחיר כאן' / 'עוד לא נאסף'",
+      "Psagot shows 'אין נתון' for the standing-order price even though it is the cheapest",
+      "The explanation of why some funds have no price, and of 'מול המדד', was only half understood",
+      "The currency-hedging section is too much",
+      "The waterfall chart is one grey column in empty space and tells nothing",
+      "'נשען על כלל מס פתוח: מוצג ולא מדורג' is unclear",
+      "Doesn't know what 'העמלות זו על זו' means",
+      "The small coloured strips and small numbers in the account list are unclear",
+      "Jargon not understood: דמי משמרת, מחלקת דיבידנד, צובר, W-8BEN, קרן מחקה vs קרן סל, 4A",
+      "Couldn't find the management fee of the Yelin Lapidot fund",
+      "Unclear whether the final amount is after the tax paid on selling at the end",
+      "No information on what happens if the money is needed after 5 years",
+      "No information on what happens if the brokerage firm collapses",
+      "No phone number or link for opening an account with Psagot",
+      "Would drop the bottom tables ('חשבון אחר, אותה קרן' etc.)",
+      "Would drop the line chart in 'מה הכי משנה'"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The report never mentions the '(מותג של MEXEM LTD)' parenthesis or any clutter in the chosen account's name."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0675592
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.13318639999999998
+}

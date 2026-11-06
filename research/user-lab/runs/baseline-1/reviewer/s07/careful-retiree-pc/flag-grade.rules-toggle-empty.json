@@ -1,0 +1,36 @@
+{
+  "case": "rules-toggle-empty",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"A 'הצגת/הסתרת החוקים והכללים' button is repeated on sections across the site, and on some sections pressing it changes nothing because there are no rules there.\",\"where\":\"the show/hide rules buttons on the page's sections\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings mentions the repeated show/hide rules buttons or that pressing them sometimes does nothing."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0133394
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings mention the repeated show/hide rules button, or that it does nothing on some sections."
+      }
+    ],
+    "liked": [],
+    "usd": 0.014079399999999999
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0274188
+}

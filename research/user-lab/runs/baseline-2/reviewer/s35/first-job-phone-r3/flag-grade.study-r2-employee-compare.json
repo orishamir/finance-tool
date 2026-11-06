@@ -1,0 +1,36 @@
+{
+  "case": "study-r2-employee-compare",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"For a salaried employee the comparison with a securities account is beside the point: the account gets no employer money, so it is not a real choice.\",\"where\":\"the comparison in both options\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings say the securities-account comparison is pointless because there is no employer contribution; they cover chart layout, labels, assumptions and next steps instead."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0139074
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "No finding says the securities-account comparison doesn't matter because there is no employer money; the findings cover layout, scary visuals, hidden assumptions, how the fee is shown and the missing next step."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0140674
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0279748
+}

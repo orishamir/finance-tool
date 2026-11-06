@@ -1,0 +1,36 @@
+{
+  "case": "companies-help-icon-wrap",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The help mark '?' in a column head drops onto its own line under the head's text and looks out of place.\",\"where\":\"the column heads with a '?' mark\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings mention the '?' help mark dropping onto its own line in the column heads; they cover content, fees, and length instead."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0142434
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings mentions the '?' help mark in the column heads wrapping onto its own line; they cover content, length, fees and jargon instead."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0138834
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0281268
+}

@@ -1,0 +1,89 @@
+{
+  "case": "tracks-exposure-100",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The column of exposure to stocks and foreign currency is not explained, and shows figures above 100% with nothing saying how that can be.\",\"where\":\"the exposure column\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Unsure whether the 0.52% vs 0.56% fee difference even matters",
+      "Unsure they'd actually get the listed fee, since the header calls it a 2025 average",
+      "Doesn't understand Menora's 0.01% מההפקדה charge",
+      "The '123 מקור / מחושב / הזנתה' legend is confusing",
+      "Warning says data not updated since September, but the footer says it's correct for 03.11.2026",
+      "Doesn't know what the other product types are",
+      "Most category button labels are unfamiliar words",
+      "Sorting by company makes them jump between companies to find the S&P rows",
+      "Ilon block is all unreported, new, or 0 million, so they would avoid it or drop it",
+      "S&P 500 is spelled several different ways in track names, so they must read carefully",
+      "The קופה number means nothing to them",
+      "Donut circles and turquoise/yellow dots are unexplained",
+      "Unclear whether מהחיסכון and מההפקדה are two separate fees, and whether 0.52% is a lot",
+      "Doesn't know what מט\"ח means or why one S&P track shows 99% and another 0%",
+      "Stocks exposure of 101%: how can it be more than 100%?",
+      "Unclear difference between the S&P 500, stock-index, stocks and tradable-stocks tracks",
+      "Jargon terms (אג\"ח, גמיש, סחיר, כספי, שריעה) not understood",
+      "Before-tax returns: doesn't know how much tax or when",
+      "No single list of only the S&P 500 tracks, cheapest first",
+      "Return after fees isn't shown",
+      "Missing minimum deposit, withdrawal rules and tax information",
+      "No link or phone number to open an account",
+      "No comparison with buying an S&P 500 fund directly",
+      "Unclear whether the company matters if they all track the same index"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 15,
+        "why": "The reader asks how stocks can show 101%, more than 100%, and also says they don't understand the מט\"ח exposure figures, which matches the person's complaint that the exposure column is unexplained and shows values above 100%."
+      }
+    ],
+    "liked": [],
+    "usd": 0.07139519999999999
+  },
+  "b": {
+    "raised": [
+      "Unsure whether the 0.52% vs 0.56% fee difference even matters",
+      "Fee shown is a 2025 average, so unclear if they'd actually get that fee",
+      "Doesn't understand Menora's small 0.01% מההפקדה fee",
+      "The 123 מקור/מחושב/הזנתה legend is confusing",
+      "Orange 'not updated since September' warning conflicts with the footer's 03.11.2026 date",
+      "Doesn't know what the other product buttons are",
+      "Most category button terms are unknown words",
+      "Sorting by company means jumping between companies and scrolling past ~130 rows to find S&P tracks",
+      "Eilon block has nothing reported and 0 assets; would avoid it and remove it",
+      "S&P 500 is spelled differently across rows, so names had to be read carefully",
+      "The קופה numbers mean nothing to them",
+      "The donut circles and turquoise/yellow dots are unexplained",
+      "Unclear whether מהחיסכון and מההפקדה are two separate fees, and whether 0.52% is a lot",
+      "Doesn't understand מט\"ח, or why one S&P track shows 99% and another 0%",
+      "מניות 101%: how can it be more than 100%?",
+      "Unclear how S&P 500, stock-index, מניות and מניות סחיר tracks differ",
+      "Track terms like אג\"ח, גמיש, סחיר, כספי, שריעה are not understood",
+      "'Before tax': unclear how much tax they'd pay, and when",
+      "No single list of only the S&P 500 tracks, cheapest first",
+      "No return shown after fees",
+      "No info on minimum deposit, withdrawals, or tax rules",
+      "No link or phone number for opening an account",
+      "No comparison with buying an S&P 500 fund directly",
+      "Unclear whether the choice of company matters when they all track the same index",
+      "Would remove the מההפקדה line when it shows 0%"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 14,
+        "why": "Item 14 says the reader doesn't understand the מט\"ח exposure figure, which is the 'column is not explained' part of k, and item 15 then raises the over-100% stock figure directly."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0704872
+  },
+  "third": null,
+  "ranks": {
+    "k": 14
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1418824
+}

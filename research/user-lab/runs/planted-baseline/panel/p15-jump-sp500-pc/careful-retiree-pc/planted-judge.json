@@ -1,0 +1,6 @@
+{
+  "named": false,
+  "position": 0,
+  "why": "None of the findings say that the result cards move, shift or jump, or that a note appears, disappears and pushes content when the inputs change. Finding 5 is only about a mismatch between the typed value and the slider.",
+  "usd": 0.01792
+}

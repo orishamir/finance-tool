@@ -1,0 +1,109 @@
+{
+  "case": "current-account-chart-unrelated",
+  "sessions": 6,
+  "perKey": {
+    "k": {
+      "kind": "general",
+      "caught": 6,
+      "caughtIn10": 6,
+      "of": 6,
+      "byPersona": {
+        "careful-retiree-pc": {
+          "caught": 3,
+          "of": 3,
+          "ranks": [
+            3,
+            2,
+            2
+          ]
+        },
+        "first-job-phone": {
+          "caught": 3,
+          "of": 3,
+          "ranks": [
+            1,
+            1,
+            1
+          ]
+        }
+      },
+      "graderAgreement": 1
+    }
+  },
+  "againstLiked": {},
+  "usd": 0.2256808,
+  "rows": [
+    {
+      "task": "s01",
+      "session": "careful-retiree-pc-r1",
+      "persona": "careful-retiree-pc",
+      "mode": "findings",
+      "raised": null,
+      "ranks": {
+        "k": 3
+      },
+      "against": {},
+      "usd": 0.0352108
+    },
+    {
+      "task": "s01",
+      "session": "careful-retiree-pc-r2",
+      "persona": "careful-retiree-pc",
+      "mode": "findings",
+      "raised": null,
+      "ranks": {
+        "k": 2
+      },
+      "against": {},
+      "usd": 0.0327668
+    },
+    {
+      "task": "s01",
+      "session": "careful-retiree-pc-r3",
+      "persona": "careful-retiree-pc",
+      "mode": "findings",
+      "raised": null,
+      "ranks": {
+        "k": 2
+      },
+      "against": {},
+      "usd": 0.0339308
+    },
+    {
+      "task": "s01",
+      "session": "first-job-phone-r1",
+      "persona": "first-job-phone",
+      "mode": "findings",
+      "raised": null,
+      "ranks": {
+        "k": 1
+      },
+      "against": {},
+      "usd": 0.038474799999999997
+    },
+    {
+      "task": "s01",
+      "session": "first-job-phone-r2",
+      "persona": "first-job-phone",
+      "mode": "findings",
+      "raised": null,
+      "ranks": {
+        "k": 1
+      },
+      "against": {},
+      "usd": 0.0436588
+    },
+    {
+      "task": "s01",
+      "session": "first-job-phone-r3",
+      "persona": "first-job-phone",
+      "mode": "findings",
+      "raised": null,
+      "ranks": {
+        "k": 1
+      },
+      "against": {},
+      "usd": 0.0416388
+    }
+  ]
+}

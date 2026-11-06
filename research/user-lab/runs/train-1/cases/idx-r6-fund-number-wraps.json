@@ -1,0 +1,14 @@
+{
+ "id": "idx-r6-fund-number-wraps",
+ "task": "t56",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "The fund's number and link wrap onto a line below the fund's name instead of sitting beside it.",
+   "where": "the fund name in the fund slot",
+   "kind": "general",
+   "outside": false
+  }
+ ],
+ "liked": []
+}

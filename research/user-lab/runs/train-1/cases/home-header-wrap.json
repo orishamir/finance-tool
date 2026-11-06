@@ -1,0 +1,14 @@
+{
+ "id": "home-header-wrap",
+ "task": "t01",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "On a computer, the names in the top navigation break onto two lines each, so the header looks cramped and uneven.",
+   "where": "top navigation bar",
+   "kind": "general",
+   "outside": false
+  }
+ ],
+ "liked": []
+}

@@ -1,0 +1,73 @@
+{
+  "case": "study-r3-six-year-compare",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"A comparison with waiting until year 6 is always present, though it is not always relevant.\",\"where\":\"the year-6 comparison\",\"kind\":\"taste\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Option A's tall bars force looking back and forth between bars and labels",
+      "The 'מה היה' block with the old chart means nothing; its wording is noise",
+      "Fund names, track numbers, Pepper and 0.54% in the example paragraph are unusable",
+      "'עד תקרה בחוק' is confusing; the limit isn't stated",
+      "The '19 המסלולים' line about choosing between accounts is irrelevant",
+      "Dark olive bars inside the return/tax parts are unexplained (why yellow turns brown)",
+      "No colour legend; colour meanings had to be guessed",
+      "Unclear why the year-5 tax is so large and what it is charged on",
+      "Terms 'מסלול', 'מחקה', '(4D)' and the long bracketed numbers aren't understood",
+      "'אחרי דמי ניהול' doesn't say how much the fees took",
+      "Missing comparison of the keren against the same money in one's own S&P 500 account",
+      "Unclear whether the employer would pay the 900 as salary instead",
+      "Unclear whether the money must be withdrawn after year 6",
+      "Unclear what happens when changing jobs before year 6",
+      "No info on how to check whether you have one or how to open one",
+      "Would drop one of the two chart options (A)"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader relied on the year-6 comparison and found it helpful, and never complained that it is always shown when it isn't relevant."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0450632
+  },
+  "b": {
+    "raised": [
+      "Option A (marked recommended) is hard to read: they had to look back and forth between the tall bars and the labels under them",
+      "Unsure whether their job offers a keren or at what percentages (the note says the real percentages are in the work contract)",
+      "The 'מה היה:' block with the old chart means nothing to them and its wording is noise",
+      "Fund names, track numbers, Pepper and the 0.54% in the example paragraph are useless to them",
+      "'עד תקרה בחוק' is confusing: what is the limit?",
+      "The '19 המסלולים' management-fee line is irrelevant at their stage (skipped it, would drop it)",
+      "Dark olive bars inside the return and tax bars are confusing (why the yellow turns brown)",
+      "Nothing explains what each colour means; they had to guess by matching colours to labels",
+      "Unclear why the year-5 tax is so large and what it is charged on",
+      "Jargon not understood: מסלול, מחקה, (4D), and the long numbers in brackets",
+      "'אחרי דמי ניהול' doesn't say how much was taken in fees",
+      "Missing comparison of the keren against the same money in their own S&P 500 account",
+      "Missing: would the employer pay the 900 as salary instead if they don't join?",
+      "Missing: after year 6, must the money be withdrawn or can it keep growing?",
+      "Missing: what happens if they change jobs before year 6?",
+      "Missing: how to find out whether they have one and how to open one",
+      "Would drop one of the two chart options (A)"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader never says the year-6 comparison is irrelevant or out of place; they used it and found it the strongest push to wait."
+      }
+    ],
+    "liked": [],
+    "usd": 0.049691200000000005
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0947544
+}

@@ -1,0 +1,36 @@
+{
+  "case": "hishtalmut-play-pointless",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The 'שחקו עם המספרים' panel repeats what the graphic above already lets the reader do.\",\"where\":\"the 'שחקו עם המספרים' panel\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings says the 'שחקו עם המספרים' panel repeats what the graphic already does; finding 3 is about the input boxes being cut off and being unclear, which is a different issue."
+      }
+    ],
+    "liked": [],
+    "usd": 0.014339399999999999
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings says the 'שחקו עם המספרים' panel repeats what the graphic above already does; finding 3 is about a chart being cut off, not about duplication."
+      }
+    ],
+    "liked": [],
+    "usd": 0.012839399999999999
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.027178799999999996
+}

@@ -1,0 +1,36 @@
+{
+  "case": "tracks-sort-does-nothing",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"Sorting by management fee does nothing visible: under each company heading there is one track, so the order does not change.\",\"where\":\"the sorted table\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 1,
+        "why": "Finding 1 describes the same visible result: the table isn't in fee order, so the cheapest can't be read off it, which the person would recognise as their sort-by-fee complaint, even though the reader doesn't mention the company-heading grouping."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0206314
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 1,
+        "why": "Finding 1 points to the same visible failure: the table is not shown in fee order (it stays ordered by money managed), so sorting by fee doesn't help. It doesn't mention the per-company grouping that causes this, which makes the match borderline but still recognisable."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0238114
+  },
+  "third": null,
+  "ranks": {
+    "k": 1
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.044442800000000005
+}

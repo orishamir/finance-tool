@@ -1,0 +1,6 @@
+{
+  "named": false,
+  "position": 0,
+  "why": "Finding 6 complains that track names repeat across companies and that the reader lost track of which company they were on. That is the opposite of the target problem, where the company name is repeated under every track even though the group heading already shows it. No finding mentions the company name being repeated on each row.",
+  "usd": 0.02138
+}

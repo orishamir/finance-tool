@@ -1,0 +1,77 @@
+{
+  "case": "current-account-one-bank",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The current-account guide's interest example and chart are one bank's (Leumi) terms and one person's case, shown as if general, though most people's idle money earns nothing and slowly loses value.\",\"where\":\"the interest lines and the expanded chart\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Can't tell which product to pick: the page names alternatives but never compares what each would give",
+      "The '123 מקמן / חושב / הזנה' row is confusing, and 'מקמן' is unknown",
+      "The basic and extended packages are described with no prices",
+      "The calculator assumes a 5% return for an account that often pays nothing; it should start at 0%, showing money shrinking",
+      "Codes like BANK-20/23/15, TXI OQ11 and BANK OQ9 mean nothing",
+      "The costs section doesn't say what fees are in shekels (just 'the bank's price list'), and the rules column is empty",
+      "The red box is worrying and unclear: does the low-income tax exemption apply?",
+      "The risks are frightening: no deposit insurance, government help is discretionary, and the 250k protection is only a proposal",
+      "The site doesn't calculate age exemptions, which is exactly the reader's situation",
+      "Deposits show 62,681, not 70,000, with no label saying it's in today's money",
+      "The pink tax line and orange fees line are too thin to see",
+      "The age field doesn't say what changes at those ages",
+      "'הטבה בנקאית' is unclear",
+      "Wanted the actual interest rates banks pay on current accounts",
+      "Wanted guidance on how much to keep in the account and how much to move",
+      "Unsure whether a money-market fund is safe without deposit insurance",
+      "Would drop the terms table",
+      "Would drop 'מה האתר לקח בחשבון' (except the age line)",
+      "Would drop 'מי מציע ומי מפקח'",
+      "Would drop the future-shekels toggle and the inflation/age fields"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 4,
+        "why": "The reader objects that the chart shows money earning 5% as if that were normal, when the page itself says many current accounts pay nothing, so idle money really shrinks; that is the heart of the person's complaint, even though Leumi isn't named."
+      }
+    ],
+    "liked": [],
+    "usd": 0.083508
+  },
+  "b": {
+    "raised": [
+      "The page names alternatives but never shows side by side what each would give",
+      "The '123 מקמן / חושב / הזנה' row is confusing; doesn't know what מקמן means",
+      "The basic/extended package description gives no prices",
+      "Codes like BANK-20, BANK-23, BANK-15, TXI OQ11, BANK OQ9 mean nothing",
+      "'כמה זה עולה' doesn't say how much the fee is (just points to bank price list); rules column empty",
+      "Red box: unclear whether the low-income tax exemption applies and the site doesn't apply it, which is worrying",
+      "Risks section is frightening: no deposit insurance, government help discretionary, 250k protection only a proposal",
+      "Site doesn't calculate age/use exemptions, which matter at 61",
+      "Deposits shown as 62,681 instead of 70,000 with no note that it's in today's money",
+      "Calculator assumes a 5% return for an account that often pays nothing; should start at 0% and show money shrinking",
+      "Pink tax line and orange fees line on the graph are too thin to see",
+      "Age field says it marks ages where rules change but doesn't say what changes",
+      "Doesn't understand 'הטבה בנקאית' or whether to ask the bank for it",
+      "Couldn't find what interest banks actually pay on current accounts today",
+      "Couldn't find guidance on how much to keep in the current account vs move",
+      "Couldn't find whether a money-market fund is safe",
+      "Would drop the terms table, 'מה האתר לקח בחשבון', 'מי מציע ומי מפקח', and the future-shekels/inflation/age controls"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 10,
+        "why": "The reader objects that the chart's default 5% return is shown as if it were typical, when the page itself says many current accounts pay nothing, and asks for a 0% start showing the money shrinking. That is the core of the person's complaint, even though the reader never mentions Leumi."
+      }
+    ],
+    "liked": [],
+    "usd": 0.07888
+  },
+  "third": null,
+  "ranks": {
+    "k": 4
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.162388
+}

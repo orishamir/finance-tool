@@ -1,0 +1,85 @@
+{
+  "case": "study-r2-employee-compare",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"For a salaried employee the comparison with a securities account is beside the point: the account gets no employer money, so it is not a real choice.\",\"where\":\"the comparison in both options\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Option א is hard to follow: thin lines run from labels to slices, and the hatched two-colour top slice makes it unclear which part is tax and which is profit",
+      "Age 61: unsure they will keep working the 6 years needed",
+      "The figures are only an example; the employer's real percentages may differ",
+      "Did not understand 'לגרור' or what the 'כדורים' were in the subtitle",
+      "Small picture of the old version has text too small to read",
+      "Fund names and code numbers like (13245) and (4D) mean nothing",
+      "The line under each chart about the 'רצועה' (strip) is confusing",
+      "Third screenshot is completely black",
+      "The green-blue colour for profit after fees was not taken in",
+      "Dashed lines between bars in ב are unclear or ignored",
+      "Securities-account bars in ב are too small to read, and their numbers have no ₪ sign",
+      "Terms like 'מסלול', 'עוקב מדד S&P500' and 'מחקה' not understood",
+      "Unclear whether the 0.54% management fee is per year and whose money it comes from",
+      "Unclear what 'במונחי היום' / 'הכול בכסף של היום' means for the real amount",
+      "Doesn't understand why the tax is 13,974 in the keren but only 594 in the other account",
+      "Doesn't understand why the first column is called 'חשבון ניירות ערך' rather than 'saving it myself'",
+      "Can't find whether withdrawal at retirement age is tax-free before 6 years have passed",
+      "Can't find what happens if they leave the job or retire after 3–4 years",
+      "No place to enter their own salary and employer percentages",
+      "Can't find whether 7% a year is guaranteed or what happens in a bad year",
+      "Can't find whether early emergency withdrawal is possible and what it costs",
+      "Would drop the '19 המסלולים' footnotes",
+      "Would drop option א at year 5"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader only asks about the column's name (item 16) and never says the securities-account comparison is beside the point because it gets no employer money and so isn't a real choice."
+      }
+    ],
+    "liked": [],
+    "usd": 0.055247199999999996
+  },
+  "b": {
+    "raised": [
+      "In option א the thin lines from labels to slices are hard to follow, and the two-colour hatched top slice makes it unclear which part is tax and which is profit",
+      "At 61, unsure they will keep working long enough to reach 6 years",
+      "Figures are only an example; the employer's real percentages may differ",
+      "Didn't understand what 'לגרור' or the 'כדורים' in the subtitle mean",
+      "Small picture of the old version has text too small to read",
+      "Fund names and code numbers like (13245) and (4D) in the example paragraph mean nothing",
+      "The 'רצועה' sentence under each chart is confusing; unclear what strip is meant",
+      "Third screenshot is completely black",
+      "Didn't take in the green-blue colour for profit after fees",
+      "In ב the securities-account bars are too small to read, and their numbers have no ₪ sign",
+      "Didn't understand terms like 'מסלול', 'עוקב מדד S&P500', 'מחקה'",
+      "Unclear whether the 0.54% management fee is yearly and whether it comes out of their money",
+      "Unclear what 'במונחי היום' / 'הכול בכסף של היום' means for the real amount",
+      "Didn't understand why tax is 13,974 in the keren but only 594 in the other account",
+      "Questioned why the first column is called 'חשבון ניירות ערך' and not just saving it yourself",
+      "Couldn't find whether money can be withdrawn tax-free at retirement age before 6 years",
+      "Couldn't find what happens if they leave the job or retire after 3–4 years",
+      "No place to enter their own salary and the employer's real percentages",
+      "Couldn't find whether 7% a year is guaranteed or what happens in a bad year",
+      "Couldn't find whether early withdrawal for an emergency is possible or what it would cost",
+      "Would drop the '19 המסלולים' footnotes",
+      "Would drop option א at year 5 (keeping the year-6 version)"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader only asks about the label 'חשבון ניירות ערך' and accepts the comparison as meaningful, so they never say the comparison is beside the point because the account gets no employer money."
+      }
+    ],
+    "liked": [],
+    "usd": 0.056219200000000004
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1114664
+}

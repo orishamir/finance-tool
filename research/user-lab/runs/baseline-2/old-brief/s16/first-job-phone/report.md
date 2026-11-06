@@ -1,0 +1,63 @@
+# s16: first-job-phone (old brief)
+
+pc; 54 s, $0.33
+
+## 1. What I'd do
+
+I'd open a kupat gemel lehashkaa in an **S&P 500 track**, because that's the one thing I already knew I wanted. On this page the cheapest one I found is **מנורה מבטחים – "עוקב מדד S&P500"** (קופה 13874). It shows "0.52% מהחיסכון" and "0.01% מההפקדות". Over 3 years it returned "13.79%", and it holds "674 מיליון ₪". My second choice is **אלטשולר שחם – "עוקב מדד S&P 500"** at "0.54%" with "0% מההפקדות". But its returns only say "פחות מ־3 שנים", so it has no track record yet.
+
+**How sure am I?** I'm fairly sure about choosing an S&P 500 track. I'm only somewhat sure about which company. All the S&P 500 tracks I saw returned about the same (13.3%–13.8% over 3 years), so the fee seems to be the only real difference. Even that difference is small: 0.52% versus 0.59% for כלל. I also don't know whether the fee I'd actually pay is the one shown here.
+
+## 2. Parts I actually used
+
+- The intro under "כל המסלולים בכל החברות". It told me the fee shown is the 2025 average.
+- The product buttons, with "קופת גמל להשקעה 143" highlighted. This confirmed I was in the right product.
+- The chip "עוקב מדד s&p 500 12" under "במה הכסף מושקע". I'd click it, but the list I scrolled was still showing "הכל 143".
+- In the table: track name, the fee column, the 3-year and 5-year returns, and the company grey bars ("מנורה מבטחים · 12 מסלולים…").
+- The note at the bottom: "התשואה היא תשואת עבר… היא לא אומרת מה יקרה בהמשך, ולכן אין מיון לפיה".
+
+## 3. Block by block
+
+- **Top menu** ("מדריך", "חוקים וכללים", "שאלות שכול שואלים"…): skipped. I was already where I needed to be.
+- **"לפי חברה / לפי מוצר" tabs**: skimmed.
+- **Intro paragraph**: read it. It was useful.
+- **"123 מקור / 123 מחושב / 123 הזנתה"**: confused me. I had no idea why I should care which number is "calculated" or "entered".
+- **Orange box "נתוני הרשות לא עודכנו מאז ספטמבר 2026"**: read it. It was fine, a bit worrying but OK.
+- **Product buttons**: used them to check that I was in the right product.
+- **"143 מסלולים של 12 חברות. מה זה קופת גמל להשקעה"**: skimmed. I almost clicked the explanation link.
+- **"קיבוץ לפי"** (חברה / במה הכסף מושקע): I'd switch to "במה הכסף מושקע" so all the S&P tracks sit together.
+- **"חיפוש"**: skipped. I could have typed "S&P", though.
+- **The chips under "במה הכסף מושקע"**: used the S&P one. The rest ("הלכה איסלאמית", "אג"ח ממשלתי סחיר", "גמיש") meant nothing to me.
+- **The long table**: used it, but scrolled through it a lot. It's very long.
+- **Company grey bars**: used them. But when I scrolled into the middle of a company, its name was gone. The first group in particular (0.54%–0.61%, S&P at 0.56%, קופה 13414) never showed me a name, so I don't know which company that is.
+- **"עוד לא דווח: השדה ריק…"**: read it. It explained the orange marks.
+- **Bottom note about past returns**: read it. It helped.
+- **Footer**: skipped.
+
+## 4. In the table
+
+- **Looked at:** "המסלול" (the names), "דמי ניהול, ממוצע 2025" (mostly the "מהחיסכון" number), and "תשואה שנתית ממוצעת" (the 3-year number first, then 5-year). I also looked at the "חדש" tag and the orange "עוד לא דווח" marks.
+- **Glanced at:** "נכסים בסוף ספטמבר 2026". A bigger number felt safer, but I didn't really use it.
+- **Glanced at, not really understood:** the rings with the turquoise "מניות" and yellow "מט"ח" lines. On S&P tracks they're mostly "99% / 99%". Then I saw איילון's S&P 500 track at "34% מניות / 82% מט"ח" and it confused me.
+- **Ignored:** "קופה" (just numbers), the small sort arrows, the dotted underlines (I didn't know they were clickable), and the ">" arrows on the left.
+
+## 5. What I didn't understand
+
+- "מהחיסכון" versus "מההפקדות": two different fees? Do I pay both?
+- What "גמיש", "כללי" and "משולב סחיר" are.
+- "מט"ח" in the ring, and why it matters to me.
+- "123 מקור / מחושב / הזנתה".
+- "לפני דמי ניהול": so what did people actually get after fees?
+- Why an S&P 500 track would be only 34% in stocks (איילון).
+
+## 6. What I wanted and couldn't find
+
+- A single short list of only the S&P 500 tracks, from cheapest to most expensive, with company names always visible.
+- Whether I can negotiate the fee, or whether the 2025 average is what I'd pay.
+- Minimum deposit, how to open an account, and how long it takes.
+- What happens if I want my money out (taxes, waiting time).
+- Plain words for "if you just want S&P 500, look here".
+
+## 7. If half the page had to go
+
+First I'd remove "123 מקור/מחושב/הזנתה". Next the "קופה" number column, then the stocks/foreign-currency rings, then all the chips I don't understand ("הלכה איסלאמית", "גמיש", "אג"ח ממשלתי סחיר"…). After that, the tracks marked "עוד לא דווח" with "0 מיליון ₪" (like the איילון rows). I'd keep the name, the fee, the returns, and the company name.

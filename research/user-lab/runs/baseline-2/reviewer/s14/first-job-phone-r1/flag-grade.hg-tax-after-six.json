@@ -1,0 +1,36 @@
+{
+  "case": "hg-tax-after-six",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"With a high salary entered, the graphic says tax is due even after 6 years and shows a large income-tax figure, without making clear which money it is on.\",\"where\":\"the graphic and its sentences\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 5,
+        "why": "Finding 5 says it's unclear whether deposits from a high salary are all tax-free because of the ceiling, which matches the person's confusion about which money the large tax applies to; finding 2 only says the bar isn't labelled as tax."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0215114
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 5,
+        "why": "Finding 5 raises the same confusion: with a high (30,000) salary, it's unclear which deposits are tax-free and which are taxed. That matches the person's complaint that the tax figure doesn't make clear which money it applies to. Findings 1 and 2 only cover the year-5 default and the missing 'tax' label on the bar."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0237914
+  },
+  "third": null,
+  "ranks": {
+    "k": 5
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.045302800000000004
+}

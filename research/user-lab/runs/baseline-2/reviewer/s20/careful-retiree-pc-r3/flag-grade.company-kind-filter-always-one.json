@@ -1,0 +1,36 @@
+{
+  "case": "company-kind-filter-always-one",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"On a company's page, the filter 'במה הכסף מושקע' is useless: each of its choices holds a single track.\",\"where\":\"the filter chips above the tracks list\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 6 is about the filter buttons, but it complains about English letters and jargon, not about each filter choice holding only one track, so no finding names this problem."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0139434
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 6 touches the filter buttons but complains about English letters and jargon, not that each filter choice holds only one track, so no finding names this problem."
+      }
+    ],
+    "liked": [],
+    "usd": 0.013843399999999999
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0277868
+}

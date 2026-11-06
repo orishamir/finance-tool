@@ -430,7 +430,17 @@ describe("open questions (data-schema 3.15, 2026-10-26)", () => {
     // the audit's 493, SW OQ17, opened by the scope settling on 2026-10-26, and CAT OQ24 to OQ26 (empty deposit fees, 2026-10-27)
     // plus ETF OQ30 to OQ32 (hedged funds) and TXF OQ23 (a fund's legal form), opened by the research of 2026-10-31
     // plus IRA OQ16 (which personal funds are approved as annuity funds) and REG OQ22 (holders' money in a manager's insolvency), opened 2026-11-02
-    expect(items.length).toBe(529);
+    // plus TXF OQ26 (whether a bank's holding commission on foreign fund units reduces the gain), opened 2026-11-06
+    // plus BRK OQ22 and OQ23 (the clearing house's own share; its lien and client sub-accounts) and ETF OQ34 to OQ36 (ETF market makers), opened 2026-11-06
+    // plus REG OQ23 to OQ25 (foreign securities at a failing bank; custody inside a US fund; structured notes), opened 2026-11-06
+    // plus REG OQ26 to OQ28 (Insolvency Law amendments and other priorities; Insurance Supervision Law current wording; the clearing-house board's exclusions), opened 2026-11-06
+    // plus PEN OQ24 to OQ30 (pension factors: tables, editions, fee adjustment) and PF OQ17 (the yearly report's insurance percent row), opened 2026-11-06
+    // plus ETF OQ37 (what counts as a commodity for a fund), opened 2026-11-06
+    // plus TXS OQ24 (the US tax on dividends inside an exempt Israeli fund holding US shares), opened 2026-11-06
+    // plus TXH OQ15 (how a study-fund withdrawal splits between deposits and gains), opened 2026-11-06
+    // plus INS OQ17 (savings-policy withdrawal: partial floors, the two-year condition on one deposit, surrender charges, when the 30 days start), opened 2026-11-06
+    // plus PEN OQ31 (where the bylaws' exception for money moved in only to start a pension came from), opened 2026-11-06
+    expect(items.length).toBe(554);
     expect(items.find((q) => q.id === "TXP OQ3")).toMatchObject({ file: "tax-pension-gemel-lekitzba.md", closedOn: "2026-10-26" });
     // a closure of the open-question hunt (main, 2026-10-26), struck with its bold title inside the strike
     expect(items.find((q) => q.id === "BRK OQ11")).toMatchObject({ file: "brokerage-account.md", closedOn: "2026-10-26" });

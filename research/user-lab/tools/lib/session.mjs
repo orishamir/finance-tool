@@ -49,7 +49,15 @@ export function isolationFlags({ bash = false, noTools = false } = {}) {
  * Run one session. Streams its events to `transcriptPath` (one JSON per line) and resolves with
  * { result, init, events, code, timedOut, ms }.
  */
-export function runSession({ dir, prompt, system, bash = false, noTools = false, schema, model, effort, timeoutMs = 15 * 60 * 1000, transcriptPath, env = {} }) {
+// Every session runs on Opus 5.5. Graders and other checking sessions run at high effort. The simulated readers run at
+// medium, the effort every reader result up to 2026-11-06 was measured at (the command line's default then): their
+// effort is part of the instrument, and a reader that thinks harder than a person who skims is not obviously better.
+// It changes only after a run of the same cases at both efforts shows one catches more of the founder's flags without
+// more noise (2026-11-06; the founder left the choice to Claude).
+export const DEFAULT_MODEL = "claude-opus-5-5";
+export const DEFAULT_EFFORT = "high";
+export const READER_EFFORT = "medium";
+export function runSession({ dir, prompt, system, bash = false, noTools = false, schema, model = DEFAULT_MODEL, effort = DEFAULT_EFFORT, timeoutMs = 15 * 60 * 1000, transcriptPath, env = {} }) {
   const args = ["-p", prompt, ...isolationFlags({ bash, noTools }), "--output-format", "stream-json", "--verbose"];
   if (system) args.push("--system-prompt", system);
   if (schema) args.push("--json-schema", JSON.stringify(schema));
@@ -126,9 +134,18 @@ export function costOf(r) {
 // its environment); returns that environment
 export const PLAYWRIGHT = "/home/ori/.npm/_npx/e41f203b7505f1fb/node_modules/playwright/";
 export const CHROME = "/home/ori/.cache/ms-playwright/chromium-1243/chrome-linux64/chrome";
+// The lab's own lines of act.mjs (between "// lab:begin" and "// lab:end": variants, and the shots step's commands) are
+// cut out of the session's copy, so nothing it can read says the page could be changed.
+export function sessionAct() {
+  const src = readFileSync(new URL("../act.mjs", import.meta.url), "utf8")
+    .replace(/^[ \t]*\/\/ lab:begin\n[\s\S]*?^[ \t]*\/\/ lab:end\n/gm, "")
+    .replace(PLAYWRIGHT, "")
+    .replace(CHROME, "");
+  if (/labTools|ACT_LAB|ACT_VARIANT|x-lab|variant|hook|plant|grader|founder|\blab\b/i.test(src)) throw new Error("act.mjs: a lab line is outside the lab:begin/lab:end markers");
+  return src;
+}
 export function installAct(dir, config = {}) {
-  const src = readFileSync(new URL("../act.mjs", import.meta.url), "utf8").replace(PLAYWRIGHT, "").replace(CHROME, "");
-  writeFileSync(join(dir, "act.mjs"), src);
+  writeFileSync(join(dir, "act.mjs"), sessionAct());
   writeFileSync(join(dir, "act-config.json"), JSON.stringify(config));
   return { ACT_PLAYWRIGHT: PLAYWRIGHT, ACT_CHROME: CHROME };
 }

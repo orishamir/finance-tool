@@ -1,0 +1,36 @@
+{
+  "case": "makam-duplicates",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The guide list still offers makam as separate guide pages (one per way of holding it), though they describe one thing.\",\"where\":\"the makam entries in the guide list\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "No finding mentions makam showing up as several separate guide pages; finding 8 only says the makam explanation text is confusing, which is a different problem."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0143034
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 8 says the makam explanation is confusing, but no finding mentions makam showing up as several separate guide pages that describe the same thing."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0141754
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0284788
+}

@@ -1,0 +1,112 @@
+{
+  "task": "s21",
+  "persona": "careful-retiree-pc",
+  "repeat": 2,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T12:31:57.174Z",
+  "structured": {
+    "answer": "I didn't decide anything. Harel's page is all about \"קופת גמל להשקעה\" tracks with shares, nothing like a deposit. The fee is about half a percent a year, but I don't know if that's more than the bank takes, so I'll ask my son or the bank before I move anything.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Screen 2, the big table",
+        "why": "Many percentages in rows; I couldn't tell whether 24.04% '3 שנים' means every year or all three years together"
+      },
+      {
+        "where": "אג\"ח סחיר row",
+        "why": "This looked like the safe bonds, but it had no return, only 'פחות מ־3 שנים', so I couldn't judge it"
+      },
+      {
+        "where": "Product buttons at the top",
+        "why": "There was no deposit or fixed-interest choice; I didn't know which one is meant for someone like me"
+      }
+    ],
+    "used": [
+      "Title הראל and the line about the fees being the 2025 average",
+      "Fee column: 0.54%–0.61% מהחיסכון, 0% מההפקדות",
+      "Return column: מניות 24.04% for 3 years, כספי (שקלי) 4.25%",
+      "Exposure column: מניות 94%",
+      "The sentence that past returns don't say what will happen next"
+    ],
+    "skimmed": [
+      "Tracks row with S&P 500 and the other names",
+      "Donut circles in the exposure column",
+      "Fund-size column (7.3 מיליארד etc.)",
+      "Closed headings on the last screen"
+    ],
+    "skipped": [
+      "קרנות מחקות / מרכזות לפיצויים / קרנות סל folds",
+      "'מה כתוב במסמכים של הראל' folds",
+      "Other product buttons (קרן השתלמות, חיסכון לכל ילד)",
+      "Search box 'לא מצאתם שם?'",
+      "Footer links"
+    ],
+    "unsure_meaning": [
+      "מט\"ח",
+      "S&P 500",
+      "עוקב מדדים - גמיש",
+      "סחיר",
+      "קיימות",
+      "קופה numbers like 15283",
+      "PF-10",
+      "תשואה שנתית ממוצעת – per year or total",
+      "כספי (שקלי)",
+      "מרכזות לפיצויים",
+      "פחות מ־3 שנים"
+    ],
+    "not_found": [
+      "Any deposit or fixed, guaranteed interest option",
+      "A comparison with what my bank charges on deposits",
+      "A plain sentence telling me which track is the safe one",
+      "Returns for the bond track"
+    ],
+    "findings": [
+      {
+        "what": "Nothing about deposits or safe saving; the page opens with investment tracks, shares and English letters",
+        "where": "Screen 1, product and track buttons"
+      },
+      {
+        "what": "Table full of percentages in many columns is overwhelming and hard to follow along a line",
+        "where": "Screen 2 table"
+      },
+      {
+        "what": "Small grey text with the legal ceiling and the extra trading costs was hard to read",
+        "where": "Screen 3, under the table"
+      },
+      {
+        "what": "White on black background tires my eyes",
+        "where": "Whole page"
+      },
+      {
+        "what": "Unclear whether 24.04% for '3 שנים' is per year or total",
+        "where": "Return column"
+      },
+      {
+        "what": "Safe-looking tracks show 'פחות מ־3 שנים' instead of a number",
+        "where": "אג\"ח סחיר rows"
+      },
+      {
+        "what": "Yellow and green circles are close in colour and I can't tell what they show",
+        "where": "Exposure column"
+      }
+    ]
+  },
+  "steps": 4,
+  "reads": 4,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 37988,
+    "turns": 6,
+    "usd": 0.13347399999999998,
+    "input": 10,
+    "cacheWrite": 7870,
+    "cacheRead": 31470,
+    "output": 3209,
+    "model": "claude-opus-5-5"
+  }
+}

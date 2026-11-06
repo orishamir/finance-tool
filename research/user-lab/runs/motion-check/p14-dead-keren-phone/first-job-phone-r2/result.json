@@ -1,0 +1,98 @@
+{
+  "task": "p14-dead-keren-phone",
+  "persona": "first-job-phone",
+  "repeat": 2,
+  "mode": "browser",
+  "device": "phone",
+  "startedAt": "2026-11-06T00:17:51.251Z",
+  "structured": {
+    "answer": "I never got my own numbers: the \"עצמאים\" button wouldn't switch, so all the calculator showed was the employee example (₪300 a month from me + ₪900 from an employer). That gives \"52,334\" kept after 4 years (with \"המסלקח −10,661\" tax) and \"137,649\" after 8 years (tax 0). Most of that is employer money I won't have as self-employed, so I can't use those figures.",
+    "confidence": "unsure",
+    "gave_up": true,
+    "stuck": [
+      {
+        "where": "Calculator toggle שכירים / עצמאים",
+        "why": "I tapped 'עצמאים' 4 times, by name and by position, and after scrolling so the top bar wasn't over it. It stayed on 'שכירים' with the checkmark. Without it I can't get a self-employed calculation."
+      },
+      {
+        "where": "Fields under the toggle",
+        "why": "They ask for 'הפקדת המעסיק, מהשכר' and 'משכורת ברוטו'. As self-employed I don't know what to put there, and with the toggle stuck I couldn't see what fields self-employed people would get."
+      }
+    ],
+    "used": [
+      "Calculator toggle 'שכירים / עצמאים'",
+      "Year chart 1-12, tapped 4 and 8",
+      "Bar chart labels 'הפקדתם', 'המעסיק הוסיף', 'התשואה הוסיפה', 'המס לקח', 'נשאר בידיים' with the numbers on top",
+      "Line 'קרן השתלמות במסלול מדד. 300 ₪ בחודש מכם, 900 ₪ מהמעסיק'",
+      "Labels 'לפני 6 שנים: מס' / 'מ־6 שנים: פטור ממס'"
+    ],
+    "skimmed": [
+      "Top heading and subheading, 'מה זה' paragraph (6 years tax free)",
+      "'במה אפשר להשקיע' chips"
+    ],
+    "skipped": [
+      "Rest of the page below the bar chart",
+      "Tabs 'שווה לדעת', 'מי מציע ומי מצטרף'",
+      "Input fields (salary, %, return, fees). I left them as they were"
+    ],
+    "unsure_meaning": [
+      "אג\"ח ממשלתית צמודה / לא צמודה",
+      "מזומן שקלי",
+      "Whether the 52,334 at 4 years is after tax (there's a −10,661 and a pink striped box)",
+      "Dotted underlines on the numbers, and '123 מחושב' vs '123 ממקור' at the top"
+    ],
+    "not_found": [
+      "A working self-employed version of the calculator",
+      "A field for just my own monthly amount, with no salary %"
+    ],
+    "findings": [
+      {
+        "what": "The 'עצמאים' button does nothing when tapped. It stays on שכירים, so a self-employed person can't use the calculator at all",
+        "where": "Calculator toggle at the top of 'כמה כסף נשאר לכם, ומתי?'"
+      },
+      {
+        "what": "The big result number mostly comes from the employer's money (+86,400 of 137,649), so for me it's misleading. I'd have walked away thinking I'd get that much",
+        "where": "Bar chart, 'נשאר בידיים'"
+      },
+      {
+        "what": "The sticky tab bar at the top covers the toggle when you scroll down, so I wasn't sure if I was hitting the button",
+        "where": "Sticky chips 'מה זה / מה קורה לכסף בקרן' over the calculator"
+      },
+      {
+        "what": "The tax shows as a minus number with a hatched pink box. Scary, and it wasn't obvious whether it's already taken off the final number",
+        "where": "'המס לקח' column at 4 years"
+      }
+    ]
+  },
+  "steps": 10,
+  "reads": 6,
+  "commands": 10,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 52017,
+    "turns": 18,
+    "usd": 0.2508966000000001,
+    "input": 34,
+    "cacheWrite": 17661,
+    "cacheRead": 233763,
+    "output": 3136,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "p14-dead-keren-phone",
+    "screenshots": 10,
+    "changes": [
+      {
+        "id": "dead-shown",
+        "type": "style",
+        "shots": 10,
+        "applied": 10,
+        "most": 1
+      }
+    ],
+    "neverShown": [],
+    "errors": []
+  }
+}

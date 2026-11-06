@@ -1,0 +1,111 @@
+{
+  "task": "s14",
+  "persona": "first-job-phone",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T12:22:03.360Z",
+  "structured": {
+    "answer": "Join it: I put 750 ₪ a month, the employer puts 2,250 ₪, and after 5 years I'd have about 136,457 ₪ even after a big minus, so it's obviously worth it. Just don't take it out before 6 years.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Calculator box, between screen 2 and 3",
+        "why": "Never saw the salary field where my 30,000 was entered; only saw the result."
+      },
+      {
+        "where": "Waterfall chart, −64,761 ₪ bar",
+        "why": "Pink hatched minus bar with no label on it; guessed it was tax from the 'לפני 6 שנים: מס' text above the bar chart."
+      },
+      {
+        "where": "Final bar 136,457 ₪",
+        "why": "Less than 45,000 + 135,000, which felt like losing money; not sure I read the chart right."
+      }
+    ],
+    "used": [
+      "Heading קרן השתלמות and subtitle",
+      "'מושכים את הכסף אחרי 5 שנים' chart title",
+      "'750 ₪ בחודש מכם, 2,250 ₪ מהמעסיק' line",
+      "Bar numbers 45,000 / +135,000 / +21,218 / −64,761 / 136,457",
+      "'לפני 6 שנים: מס' / 'מ־6 שנים: פטור עד התקרה' labels",
+      "'בין 19 המסלולים... 135,908 עד 137,668' line",
+      "Company names הראל, אלטשולר שחם"
+    ],
+    "skimmed": [
+      "מה זה section bullets",
+      "למה משתמשים בזה",
+      "שווה לדעת list",
+      "מי מציע ומי מפקח",
+      "כמה זה עולה table",
+      "מיסוי cards"
+    ],
+    "skipped": [
+      "Grey assumption notes under the chart (47%, 2% inflation, 15,712 ceiling)",
+      "Orange warning box beyond first line",
+      "חוקים וכללים tags",
+      "סיכונים ומה לא מוגן",
+      "Screens 8–9",
+      "Track/fee input fields",
+      "Year slider (left at 5)"
+    ],
+    "unsure_meaning": [
+      "−64,761 ₪ pink hatched bar (guessed tax)",
+      "teal +21,218 ₪ segment (guessed profit)",
+      "תקרה",
+      "מסלול מדד",
+      "הפקדה מוטבת",
+      "משכורת קובעת",
+      "הרווח הריאלי",
+      "15,712 ₪ ceiling and whether it affects my 30,000 salary",
+      "the 123 מקור/מחושב/הזנתי markers"
+    ],
+    "not_found": [
+      "The salary input field showing my 30,000",
+      "A plain label saying what the minus bar is",
+      "A clear 'what to do first' step"
+    ],
+    "findings": [
+      {
+        "what": "Default view is withdrawing at year 5, the worst case with a big tax hit, so the first result shown is a loss-looking scenario",
+        "where": "Waterfall chart 'מושכים את הכסף אחרי 5 שנים'"
+      },
+      {
+        "what": "Minus bar −64,761 ₪ has no word saying it is tax; pink hatching unexplained next to it",
+        "where": "Waterfall chart, fourth bar"
+      },
+      {
+        "what": "Final 136,457 ₪ is less than 45,000+135,000 deposited, confusing without reading fine print",
+        "where": "Waterfall chart, last bar"
+      },
+      {
+        "what": "Salary input sits off-screen between scrolls; result can't be tied to what I entered",
+        "where": "Calculator box top"
+      },
+      {
+        "what": "Ceiling of 15,712 ₪ in grey small print; unclear whether my 30,000 salary deposits are all tax-free",
+        "where": "Assumptions under chart / מיסוי"
+      },
+      {
+        "what": "Many jargon words (הפקדה מוטבת, משכורת קובעת, ריאלי) in the tax section",
+        "where": "מיסוי"
+      }
+    ]
+  },
+  "steps": 7,
+  "reads": 7,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 40455,
+    "turns": 9,
+    "usd": 0.19138200000000002,
+    "input": 8,
+    "cacheWrite": 14023,
+    "cacheRead": 31430,
+    "output": 3644,
+    "model": "claude-opus-5-5"
+  }
+}

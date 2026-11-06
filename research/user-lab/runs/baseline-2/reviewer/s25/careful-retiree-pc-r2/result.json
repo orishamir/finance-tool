@@ -1,0 +1,127 @@
+{
+  "task": "s25",
+  "persona": "careful-retiree-pc",
+  "repeat": 2,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T12:37:09.898Z",
+  "structured": {
+    "answer": "I saw that Harel has lots of tracks (105, in 7 kinds). Most charge about half a percent a year from the savings and nothing from deposits, but I couldn't tell which one is as safe as my deposits, so I'm not moving anything until I ask my son or the bank.",
+    "confidence": "unsure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Return column, 'פחות מ־3 שנים'",
+        "why": "I couldn't tell whether it means there is no return, or a small one"
+      },
+      {
+        "where": "Fee header 'מהחיסכון' / 'מההפקדות'",
+        "why": "Two fees per row. I wasn't sure which one I actually pay"
+      },
+      {
+        "where": "Track names with S&P 500, עוקב מדד, מט\"ח",
+        "why": "English letters and words I don't know; I couldn't tell which track is safe"
+      },
+      {
+        "where": "After screen 6",
+        "why": "Tired of so many numbers on a black screen, so I stopped"
+      }
+    ],
+    "used": [
+      "Heading 'הראל' and the sentence about דמי הניהול",
+      "Product buttons with counts (כל המוצרים 105, קופת גמל להשקעה 16, etc.)",
+      "Group lines: 'דמי ניהול מהחיסכון: מ־0.41% עד 0.67%'",
+      "Row 'כספי (שקלי)' 4.25% 3 שנים / 3.08% 5 שנים, 0.57%",
+      "חיסכון לכל ילד at 0.01%",
+      "קרן חדשה מקיפה 0.16% מהחיסכון, 1.47% מההפקדות"
+    ],
+    "skimmed": [
+      "The many rows of share-heavy tracks",
+      "קרן השתלמות list",
+      "תגמולים ואישית לפיצויים list",
+      "כסף מנוהל column (millions/billions)"
+    ],
+    "skipped": [
+      "The ring charts",
+      "The ⓘ and ? icons",
+      "'123 מקור 123 מחושב' line",
+      "Screens 7–13",
+      "Top menu (מדריך, השוואה למטרה, השקעה במדד)",
+      "Sorting arrows"
+    ],
+    "unsure_meaning": [
+      "S&P 500",
+      "עוקב מדד / עוקב מדדי אג\"ח",
+      "חשיפה למניות ולמט\"ח",
+      "מט\"ח",
+      "פחות מ־3 שנים",
+      "לפני דמי ניהול",
+      "עוד לא דווח",
+      "גמיש",
+      "קיימות",
+      "Turquoise vs yellow dots",
+      "קופה number column",
+      "כסף מנוהל"
+    ],
+    "not_found": [
+      "Any mention of פיקדון or comparison to bank deposits",
+      "A plain sentence saying which track is safe",
+      "An explanation of what I would pay in shekels",
+      "Who 'מקור' is: is it official?"
+    ],
+    "findings": [
+      {
+        "what": "Black background with pale grey small text, hard to read even enlarged",
+        "where": "Whole page, especially column headers and the line under the title"
+      },
+      {
+        "what": "Too many numbers per row (two fees, two exposures, two returns, amount); it made me anxious",
+        "where": "All table rows"
+      },
+      {
+        "what": "Nothing says which track is safe or compares it to a deposit",
+        "where": "Whole table"
+      },
+      {
+        "what": "'פחות מ־3 שנים' in place of a return is confusing",
+        "where": "Return column, many rows"
+      },
+      {
+        "what": "Track names in English letters and jargon (S&P 500, עוקב מדד, מט\"ח)",
+        "where": "Track names column"
+      },
+      {
+        "what": "Ring charts in close colours I can't tell apart",
+        "where": "Exposure column"
+      },
+      {
+        "what": "Big return numbers like 21.47% catch the eye and feel like gambling",
+        "where": "Share tracks, screens 5–6"
+      },
+      {
+        "what": "Two kinds of fee per row, with no explanation of which one I pay",
+        "where": "Fee column"
+      },
+      {
+        "what": "I don't know the site name 'מקור'; I'm not sure it's official",
+        "where": "Top bar"
+      }
+    ]
+  },
+  "steps": 6,
+  "reads": 6,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 36943,
+    "turns": 8,
+    "usd": 0.1620024,
+    "input": 8,
+    "cacheWrite": 11386,
+    "cacheRead": 27512,
+    "output": 3269,
+    "model": "claude-opus-5-5"
+  }
+}

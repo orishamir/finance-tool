@@ -1,0 +1,36 @@
+{
+  "case": "study-r1-coins",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The coins add nothing a simple bar would not show better.\",\"where\":\"the coin drawing\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings mention the coin drawing or say it adds nothing over a simple bar; finding 4 is about Option C's stacked bars, which is a different visual."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0145274
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings mention the coin drawing or say it adds nothing over a simple bar; finding 4 criticises the Option C stacked bars for having too many colours, which is a different element and a different complaint."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0152354
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0297628
+}

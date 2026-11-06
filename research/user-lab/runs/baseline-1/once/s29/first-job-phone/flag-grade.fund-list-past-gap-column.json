@@ -1,0 +1,36 @@
+{
+  "case": "fund-list-past-gap-column",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The fund list's column 'מול המדד' (each fund's past gap to its index) is not useful for choosing a fund, and the table does not show the information that matters for the choice.\",\"where\":\"the columns of the fund list\",\"kind\":\"taste\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 5 is about the same 'מול המדד' column, but it says the minus sign looks like losing money, not that the column is useless for choosing; finding 3 is about tags repeated on every row, not about missing decision information, so no finding states the person's problem."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0207234
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 5 is about the same 'מול המדד' column, but it says the minus sign looks like a loss, not that the column is useless for choosing a fund or that the table leaves out the information that matters, so no finding names this problem."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0183034
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0390268
+}

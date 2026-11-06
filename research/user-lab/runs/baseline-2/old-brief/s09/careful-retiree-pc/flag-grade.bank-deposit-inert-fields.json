@@ -1,0 +1,150 @@
+{
+  "case": "bank-deposit-inert-fields",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The bank-deposit guide asks for age, linkage and term, but those fields do not change its graph.\",\"where\":\"the input fields beside the graph\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Calculator shows you put in 70,000 but are left with 68,270 in today's money after tax, and the page never says plainly that you lose buying power",
+      "No deposit insurance in Israel is alarming, and the page doesn't say how likely a collapse is or what to do",
+      "Key line at the top (123 מקור/מחושב/הזנתה) is confusing; 'הזנתה' is meaningless",
+      "Terms like 'השבירה ותחנות היציאה' and 'סוגי פיקדון מקובלים' needed the glossary",
+      "Did not understand 'העוגן' (the anchor) in the bank-rate line",
+      "Optional age field is puzzling: why would age matter for a deposit?",
+      "Example product terms (Leumi, 12 months) were cut off at the bottom of the screen",
+      "Jargon in 'למה משתמשים בזה': קרנות כספיות, מק\"מ, מוצרי שוק הכסף, and the 'מזומן שקלי' button",
+      "'שווה לדעת' is only titles with codes and nothing behind them",
+      "Only saw the end of 'מי מציע ומי מפקח'",
+      "'כסף נכנס ויוצא' only says something obvious",
+      "'כמה זה עולה' gives no actual cost, just 'per the bank's price list'",
+      "Site doesn't calculate breaking a deposit early, which is exactly what the reader fears",
+      "Risks section jumped, so only its first and last lines were seen",
+      "Glossary is very long and seemed to appear twice",
+      "Chart's teal area is a straight line that tells little",
+      "Thin pinkish line on the chart is unexplained",
+      "The promised dotted line for an entered rate wasn't visible",
+      "Purple dotted underlines are unexplained",
+      "'חוקים וכללים' column in the cost table is empty",
+      "Glossary 'איפה מופיע' column is useless",
+      "Grey code tags (TXI-03, BANK-06...) are noise and should go",
+      "Did not understand the prime rate or how it moves",
+      "Unclear how to actually open a closed-system account",
+      "Unclear what 'real' interest (25% of real interest) means in shekels",
+      "Unclear whether the rule on offsetting securities losses applies",
+      "No rate given for an indexed deposit",
+      "No example in shekels of the real penalty for breaking early",
+      "No information on how risky one's bank is or whether to split money between banks",
+      "No lump-sum example without monthly deposits",
+      "No side-by-side comparison of current bank rates",
+      "No comparison with leaving money as-is or with a money-market fund",
+      "'מה האתר לקח בחשבון' looks like it's for checkers and could be dropped",
+      "Repeated 'הצגת החוקים והכללים' links should be removed"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader only asks why age matters for a deposit at all; they never say that age, linkage or term fail to change the graph, so the person's problem isn't named."
+      }
+    ],
+    "liked": [],
+    "usd": 0.086372
+  },
+  "b": {
+    "raised": [
+      "Calculator shows 70,000 paid in but only 68,270 left in today's money after tax, and the page never says plainly that you lose buying power",
+      "No deposit insurance in Israel is worrying, and the page doesn't say how likely a collapse is or what to do",
+      "Key line at the top (123 מקור/מחושב/הזנתה) is confusing, and 'הזנתה' is meaningless",
+      "'השבירה ותחנות היציאה' and 'סוגי פיקדון מקובלים' are jargon that needed the glossary",
+      "Didn't understand 'העוגן' (the anchor) in the bank-rate line",
+      "Optional age field is puzzling: why does age matter for a deposit?",
+      "Example product terms (Leumi, 12 months) are cut off at the bottom of the screen",
+      "'קרנות כספיות ומק\"מ', 'מוצרי שוק הכסף' and the 'מזומן שקלי' button are jargon",
+      "'שווה לדעת' is only titles with codes and nothing behind them",
+      "'כסף נכנס ויוצא' only says something obvious (would drop)",
+      "'כמה זה עולה' doesn't say what it costs: the exit fee is only 'per the price list'",
+      "Site doesn't calculate breaking a deposit early, which is exactly what the reader fears",
+      "Risks section jumped, and only its last line was visible",
+      "Glossary is very long and seemed to appear twice",
+      "Chart's straight teal climb says little",
+      "Thin pinkish line on the chart is unexplained",
+      "Promised dotted line for an entered rate wasn't visible",
+      "Purple dotted underlines are unexplained",
+      "'חוקים וכללים' column in the cost table is empty",
+      "Doesn't understand the prime rate or how it moves",
+      "Doesn't know how to actually open a closed-system account",
+      "Doesn't understand 'real interest' in the indexed-deposit tax line",
+      "Doesn't know whether the rule on offsetting securities losses applies to them",
+      "No rate shown for the indexed deposit",
+      "No shekel example of the early-breaking penalty",
+      "No information on how risky one's bank is, or whether to split money between banks",
+      "No lump-sum example without monthly deposits",
+      "No side-by-side comparison of current bank rates",
+      "No comparison with leaving money idle or with a money-market fund",
+      "Glossary's 'איפה מופיע' column is useless",
+      "Code tags (TXI-03 etc.) are noise and should go",
+      "'מה האתר לקח בחשבון' seems meant for checkers and should go",
+      "Repeated 'הצגת החוקים והכללים' links should go"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 6,
+        "why": "The reader's puzzlement over why the calculator asks for age at all is a clear part of the person's complaint: age is requested even though it does nothing for the graph."
+      }
+    ],
+    "liked": [],
+    "usd": 0.08672
+  },
+  "third": {
+    "raised": [
+      "Calculator shows you pay in 70,000 but get back less in buying power after tax, and the page never says so plainly",
+      "No deposit insurance in Israel, and the page doesn't say how likely a collapse is or what to do about it",
+      "Key line at the top (123 מקור/מחושב/הזנתה) is confusing; 'הזנתה' means nothing",
+      "Terms in 'מה זה' ('השבירה ותחנות היציאה', 'סוגי פיקדון מקובלים') needed the glossary",
+      "Didn't understand 'העוגן' (anchor) or the prime rate",
+      "Optional age field is puzzling: why would age matter for a deposit?",
+      "Example product terms (Leumi, 12 months) were cut off at the bottom of the screen",
+      "Jargon in 'למה משתמשים בזה' (קרנות כספיות, מק\"מ, מוצרי שוק הכסף) and the meaningless 'מזומן שקלי' button",
+      "'שווה לדעת' is only titles with codes and gives no actual information",
+      "'כמה זה עולה' doesn't say what it costs; the exit fee only refers to the bank's price list",
+      "The site doesn't calculate breaking a deposit early (or give a penalty example), which is what the reader fears most",
+      "The page jumped in the risks section, so the reader only saw its last line",
+      "Glossary is very long and seemed to appear twice",
+      "Chart's teal area is a plain straight climb that says little",
+      "Thin pinkish line on the chart is unexplained",
+      "The promised dotted line for an entered rate wasn't visible",
+      "Purple dotted underlines have no clear meaning",
+      "'חוקים וכללים' column in the cost table is empty",
+      "Unclear how to open a closed-system account in practice",
+      "Unclear what 'real interest' (25% tax on indexed deposits) means in shekels",
+      "Unclear whether 'losses on securities not offset against interest' applies to them",
+      "No rate shown for indexed deposits",
+      "No information on how risky their bank is or whether to split money between banks",
+      "No lump-sum example; the calculator assumes 500 a month",
+      "No side-by-side current rates from several banks",
+      "No comparison with leaving the money idle or with a money-market fund",
+      "Code tags (TXI-03, BANK-06, etc.) are useless and should go",
+      "'מה האתר לקח בחשבון' looks like it's for checkers and could be dropped",
+      "'כסף נכנס ויוצא' says only one obvious thing and could be dropped",
+      "Repeated 'הצגת החוקים והכללים' links could be dropped",
+      "Glossary's 'איפה מופיע' column is useless"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader only asks why age would matter for a deposit (item 6); they never say the age, linkage or term fields fail to change the graph, so it's the same field for a different reason."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0926992
+  },
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": false
+  },
+  "against": {},
+  "usd": 0.2657912
+}

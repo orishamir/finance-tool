@@ -1,0 +1,87 @@
+{
+  "case": "current-account-future-shekels",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"With 'בשקלים של העתיד' chosen, the figures ignore inflation, so they are wrong.\",\"where\":\"the chart and figures of the panel\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Doesn't know where to buy a קרן כספית, whether their bank sells one, or what it costs",
+      "Page never mentions the S&P 500 or how it compares",
+      "Didn't understand the small '123 מקמר / מחושב / הזנת' line",
+      "Fee-plan paragraph gives transaction counts but not what each plan costs",
+      "Calculator shows 5% growth on a current-account page; unclear which scenario ₪74,044 describes",
+      "Didn't understand the 'מזומן שקלי' button",
+      "'כמה זה עולה' gives no actual fee number, only 'לפי התעריפון'",
+      "Third tax card (linked interest, 25%) went over their head",
+      "Red 'שאלה פתוחה: TXI OQ11' box looked like something was broken",
+      "Worried by 'אין בישראל ביטוח פיקדונות'; thought bank money was fully safe",
+      "'מה האתר לקח בחשבון' padlock/'חסום' section is just codes; would drop it",
+      "The 'מונחים' table appears twice",
+      "Chart's pink line and lighter line aren't labelled",
+      "Deposits shown as ₪62,681 don't match their own sum of ₪70,000",
+      "Didn't understand the difference between 'בכסף של היום' and 'בשקלים של העתיד'",
+      "BANK-xx / TXI OQxx tags are meaningless; would drop them",
+      "Didn't understand 'מנת הקישו להסבר' under the title",
+      "Didn't understand 'מק\"ם'",
+      "Didn't understand 'הצמדה: לא צמוד' / 'ריבית צמודה למדד'",
+      "Unclear how long fund redemption 'only on a trading day' takes",
+      "Wanted to see how much money sitting in the current account loses to inflation",
+      "Wanted guidance on how much to keep in the current account",
+      "Would drop the 'מי מציע ומי מפקח' block and the 'כסף נכנס ויוצא' cards"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader never chose 'בשקלים של העתיד' and never said the figures ignore inflation there. They only said they didn't understand the toggle (15) and that the deposits total didn't match their own sum (14), and neither of those states the person's problem."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0668072
+  },
+  "b": {
+    "raised": [
+      "Doesn't know where to buy a money-market fund, whether their bank sells one, or what it costs",
+      "Page never says where the S&P 500 fits",
+      "Didn't understand the small '123 מקמר / מחושב / הזנת' line",
+      "Fee-plan paragraph gives transaction counts but not what each plan costs",
+      "Calculator confusing: a current-account page shows 5% growth to ₪74,044, unclear what it represents",
+      "Didn't understand the 'מזומן שקלי' button",
+      "'כמה זה עולה' gives no actual number, only 'לפי התעריפון'",
+      "Third tax card (linked interest, 25%) not understood",
+      "Red 'שאלה פתוחה' box with code looked like something was broken",
+      "Worried by 'no deposit insurance in Israel'",
+      "'מה האתר לקח בחשבון' padlock section is just codes and isn't useful",
+      "'מונחים' table appears twice",
+      "Chart lines (pink and lighter line) are unlabeled",
+      "Deposits shown as ₪62,681 instead of the expected ₪70,000",
+      "Didn't understand the difference between 'בכסף של היום' and 'בשקלים של העתיד'",
+      "Didn't understand 'מנת הקישו להסבר' under the title",
+      "Didn't understand 'מק\"ם'",
+      "Didn't understand 'הצמדה: לא צמוד' / 'ריבית צמודה למדד'",
+      "Unclear how long fund redemption 'only on a trading day' takes",
+      "Didn't understand 'שאלה פתוחה' and the codes",
+      "Wanted to know how much is lost to inflation by keeping money in the account; the calculator doesn't show it",
+      "Wanted guidance on how much to keep in the current account",
+      "Wanted to know how to open a money-market fund or deposit, what each pays, and how quickly money comes back",
+      "Would drop 'מי מציע ומי מפקח' and 'כסף נכנס ויוצא' cards"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader never clicked the today/future toggle and never says that the future-shekels figures ignore inflation; the confusion about the toggle, the ₪62,681 total and the missing inflation-loss figure are different complaints."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0651472
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1319544
+}

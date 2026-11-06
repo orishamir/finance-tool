@@ -1,0 +1,155 @@
+{
+ "run": "research/user-lab/runs/baseline-2/old-brief",
+ "sessions": "all",
+ "kinds": {
+  "headline": {
+   "cases": 36,
+   "pairs": 72,
+   "single10": [
+    17,
+    72
+   ],
+   "singleAny": [
+    25,
+    72
+   ],
+   "pooled10": [
+    11,
+    36
+   ],
+   "pooledAny": [
+    15,
+    36
+   ],
+   "byPersona": {
+    "careful-retiree-pc": {
+     "in10": 7,
+     "of": 36
+    },
+    "first-job-phone": {
+     "in10": 10,
+     "of": 36
+    }
+   },
+   "steadiness": null,
+   "ranks": [
+    3,
+    4,
+    4,
+    4,
+    5,
+    5,
+    5,
+    5,
+    5,
+    6,
+    6,
+    6,
+    7,
+    8,
+    8,
+    8,
+    10,
+    11,
+    12,
+    12,
+    12,
+    12,
+    14,
+    15,
+    15
+   ],
+   "caughtCases": [
+    "bank-deposit-inert-fields",
+    "companies-fee-column-unclear",
+    "current-account-chart-unrelated",
+    "current-account-one-bank",
+    "custom-index-change-answer",
+    "hishtalmut-pf18",
+    "study-r1-coins",
+    "study-r1-decoder-table",
+    "tracks-sort-does-nothing",
+    "tracks-stale-annuity",
+    "tracks-tracker-subtitle"
+   ]
+  },
+  "outside": {
+   "cases": 7,
+   "pairs": 14,
+   "single10": [
+    2,
+    14
+   ],
+   "singleAny": [
+    3,
+    14
+   ],
+   "pooled10": [
+    1,
+    7
+   ],
+   "pooledAny": [
+    2,
+    7
+   ],
+   "byPersona": {
+    "careful-retiree-pc": {
+     "in10": 1,
+     "of": 7
+    },
+    "first-job-phone": {
+     "in10": 1,
+     "of": 7
+    }
+   },
+   "steadiness": null,
+   "ranks": [
+    3,
+    10,
+    13
+   ],
+   "caughtCases": [
+    "makam-duplicates"
+   ]
+  },
+  "taste": {
+   "cases": 9,
+   "pairs": 18,
+   "single10": [
+    1,
+    18
+   ],
+   "singleAny": [
+    2,
+    18
+   ],
+   "pooled10": [
+    1,
+    9
+   ],
+   "pooledAny": [
+    1,
+    9
+   ],
+   "byPersona": {
+    "careful-retiree-pc": {
+     "in10": 1,
+     "of": 9
+    },
+    "first-job-phone": {
+     "in10": 0,
+     "of": 9
+    }
+   },
+   "steadiness": null,
+   "ranks": [
+    1,
+    21
+   ],
+   "caughtCases": [
+    "cfc-exposure"
+   ]
+  }
+ },
+ "findingsPerSession": null
+}

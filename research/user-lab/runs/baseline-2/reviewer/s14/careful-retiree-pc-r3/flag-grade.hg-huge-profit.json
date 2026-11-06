@@ -1,0 +1,36 @@
+{
+  "case": "hg-huge-profit",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The graphic shows a very large profit figure with nothing explaining where it comes from.\",\"where\":\"the profit part of the graphic\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 1 does complain about a big figure shown without explanation, but it is a red negative −64,761 ₪ bar, not the large profit figure the person meant, and no other finding mentions the profit number."
+      }
+    ],
+    "liked": [],
+    "usd": 0.015495400000000001
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 1 does complain about a chart figure with no explanation nearby, but it is a negative −64,761 ₪ bar, not the very large profit figure, and no other finding mentions the profit figure."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0155434
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.031038800000000002
+}

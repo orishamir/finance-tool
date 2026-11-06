@@ -1,0 +1,94 @@
+# s17: careful-retiree-pc (old brief)
+
+pc; 68 s, $0.36
+
+# Looking at the kupat gemel lehashkaa page as a 61-year-old saver
+
+## 1. What I would do, and how sure I am
+
+I would not open anything yet. I would write down a short list and phone two or three companies.
+
+I'm 61 and I don't want my savings in something that can drop by a third. So I set aside the tracks that are almost all shares (**"מניות"**, **"עוקב מדד S&P 500"**) and looked at the **"כללי"** (general) tracks. They have about half in shares (**"מניות 49%–53%"**) and they have 5 years of history.
+
+My list, from what I could read:
+- **Infinity "כללי"** (fund number 9638): fee **0.56%**, 5 years **8.06%**, 3 years **12.65%**, assets 174 million ₪.
+- **"כללי"** (fund number 8211): fee **0.55%**, 5 years **8.26%**, 3 years **13.5%**, assets **6.7 billion ₪**. This looked like the best mix of a low fee and a big, established fund. But I could not see which company it belongs to, because the company name had scrolled away. That annoyed me.
+- **Menora "כללי"** (8675): **0.59%**, 5 years **7.78%**, 1.6 billion ₪.
+- **Meitav "כללי"** (7978): **0.61%**, 5 years **8.02%**, 3.9 billion ₪.
+
+How sure am I? About 40%. The page helped me narrow things down, but it doesn't tell me what I would actually pay or what this means for my money in shekels.
+
+## 2. Which parts of the page I actually used
+
+- The top paragraph under **"כל המסלולים בכל החברות"** (all the tracks at all the companies). I mostly used it to learn the dates.
+- The product buttons, to make sure **"קופת גמל להשקעה 143"** was the one selected.
+- The table, which is most of the page. I mainly used the fee column, the return column and the assets column.
+- The grey company header bars, such as **"מור · 15 מסלולים · נכסים 14.4 מיליארד ₪ · דמי ניהול מהחיסכון: מ־0.67% עד 0.73%"**. These were very useful for a quick feel of each company.
+- The note at the very bottom, which says the returns are before management fees and before tax, and don't say what will happen in the future.
+
+## 3. Going down the page block by block
+
+- **Top menu** (**"מדריך, חוקים וכללים, שאלות שכולם שואלים, השוואה למטרה, השקעה במדד"**): skipped it. I came to compare tracks.
+- **"לפי מוצר / לפי חברה" tabs**: skimmed them. I left it on the default, by product.
+- **Intro paragraph**: read every word. **"דמי הניהול הם הממוצע שנגבה בפועל ב־2025"** (the fee is what was actually charged on average in 2025) worried me. Other numbers are as of September 2026. So the fee is from last year and everything else is from this year? Why?
+- **Legend line, "123 מקור · 123 מחושב · 123 הזנתה · לחצו על מספר כדי לראות מאיפה הוא"** (source, calculated, "hazanta", click a number to see where it comes from): confused me. I don't know the word **"הזנתה"**. I couldn't match the dotted lines, solid lines and blue box to anything in the table.
+- **Orange warning, "נתוני הרשות לא עודכנו מאז ספטמבר 2026"** (the regulator's data hasn't been updated since September 2026): I read it and it made me uneasy. Is something wrong? At the very bottom it says **"נתונים נכון ל־03.11.2026"** (data correct to 3.11.2026). So which date is right?
+- **Product buttons** (**"תגמולים ואישית לפיצויים", "קרן השתלמות"**, and so on): I only checked that the right one was selected.
+- **"143 מסלולים של 12 חברות"** (143 tracks from 12 companies): useful. Now I know how big the job is. I didn't click **"מה זו קופת גמל להשקעה"**, because I already know roughly what it is.
+- **"קיבוץ לפי: חברה / במה הכסף מושקע"** (group by company, or by what the money is invested in): I left it on company. In hindsight, **"במה הכסף מושקע"** might have put all the **"כללי"** tracks side by side, which is what I really wanted.
+- **Search box**: skipped it.
+- **Filter buttons** (**"כללי 12", "מניות 12", "הלכה יהודית 9", "קיימי 2"**, and so on): skimmed them. I didn't know I could press **"כללי 12"** to see only the general tracks. I don't know what **"קיימי"** is. **"אג"ח ממשלתי סחיר"** (traded government bonds) and **"אג"ח ממשלות"** (government bonds) look like the same thing to me.
+- **The table**: I used it, but it is very long. Fifteen screens of scrolling is tiring. Half the time I'd lost track of which company I was looking at.
+- **The new Ayalon tracks**, all marked **"חדש"** (new) and **"עוד לא דווח"** (not reported yet): skipped them. They have nothing to show me, and some have **"0 מיליון ₪"** in them.
+- **The bottom note about returns**: read it, and it was useful. It's honest. But by the time I got there I had already been comparing returns for ten minutes. Then it tells me returns aren't fees and aren't a forecast. I wish I had read that first.
+- **Footer**: skipped it. I noticed **"אישי, לא מסחרי, בלי קישורי שיווק"** (personal, not commercial, no marketing links) and that made me trust the page a bit more.
+
+## 4. In the table: what I looked at and what I ignored
+
+**What I looked at:**
+- **"המסלול"** (track name): always.
+- **"דמי ניהול, ממוצע 2025" → "מהחיסכון"** (management fee, 2025 average, taken from savings): this was my main number. I liked that it is sorted from cheapest (the small ▲).
+- **"תשואה שנתית ממוצעת, לפני דמי ניהול"** (average yearly return, before management fees): I looked at the 5-year line more than the 3-year line, because 5 years means more to me. **"פחות מ־3 שנים" / "פחות מ־5 שנים"** (less than 3 years / less than 5 years) told me a track is too young, so I crossed those off.
+- **"נכסים בסוף ספטמבר 2026"** (assets at the end of September 2026): I glanced at it. A big number, like billions, makes me feel safer.
+- **The grey company bars**: yes, they were helpful.
+
+**What I ignored:**
+- **"קופה"** (the fund number, like 15286): ignored it. It means nothing to me, though I suppose I would need it when I call.
+- **"מההפקדות"** (fee taken from deposits): almost always **0%**, so after a while I stopped looking. When it said **"עוד לא דווח"** with the orange circle I didn't click; I just felt less sure about that company.
+- **The donut circles** (turquoise and yellow): ignored them. The numbers next to them were enough. A circle doesn't help me.
+- **"חשיפה למניות ולמט"ח"** (share of the money in shares and in foreign currency): I looked at the **"מניות"** (shares) number, because it tells me the risk. I didn't understand the **"מט"ח"** (foreign currency) number at all.
+- **The little arrows (‹) on the left of each row**: didn't press them.
+- **The tags under names** (**"הלכה יהודית"**, **"אג"ח סחיר"**, **"חדש"**): I noticed **"חדש"**. The others I skipped.
+
+## 5. What I did not understand
+
+- **"הזנתה"** in the legend at the top.
+- **"מט"ח"** (foreign currency). What does 99% foreign currency mean for me? Is that good or dangerous?
+- **"מניות 101%"**: how can more than 100% of my money be in shares?
+- Why the fee is from **"2025"** but the assets are from **"ספטמבר 2026"**.
+- Why the S&P 500 track is **"0.54%"** at one company and **"0.71%"** at another, when it's the same index.
+- **"קיימי"** in the filter buttons.
+- Why one company's tracks all have a fee but **"עוד לא דווח"** (not reported yet) under deposits.
+- The returns are **"לפני דמי ניהול"** (before management fees). So what did people actually get? I have to subtract the fee myself.
+
+## 6. What I wanted to know and could not find
+
+- **What this means for my money.** If I put in, say, 300,000 ₪, how many shekels a year does 0.55% versus 0.73% cost me?
+- **Is the fee fixed, or can I bargain?** I've heard you can negotiate. Is the **"ממוצע"** (average) what I would pay, or what other people paid?
+- **How much could I lose?** What was the worst year for each track, for example 2022? At my age that matters more than the average.
+- **The return after fees.**
+- **Taking money out**: what happens at 60 and above, the tax, and the option to turn it into a monthly pension.
+- **Which company a row belongs to** once I'd scrolled. The company name disappears while the column titles stay on screen.
+- **How to actually open one.** There's no phone number and no "what to do next".
+- A simple sentence like "for someone near retirement, look at these tracks". I know the page doesn't want to give advice, but I felt alone with 143 rows.
+
+## 7. If half the page had to go, what goes first
+
+1. **The donut circles.** The numbers already say the same thing.
+2. **The "מההפקדות" line**, since it's almost always 0%. Just mark the exceptions.
+3. **The empty new tracks** (all the **"חדש" / "עוד לא דווח"** rows, like Ayalon's), at least hide them by default.
+4. **The "קופה" number column.** Keep it inside the row's detail page.
+5. **The legend line with "מקור / מחושב / הזנתה".**
+6. **The second row of filter buttons** (**"אג"ח ממשלות 3", "הלכה איסלאמית 1"**, and so on).
+
+What must stay: the fee, the 5-year return, the assets, the company bars, the warning about dates and the bottom note about returns. I'd also move that bottom note to the top.

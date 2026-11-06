@@ -1,0 +1,35 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "At 4 years for self-employed, the fund shows no number, only empty boxes and a note. The only big number belongs to a different account, so it can be mistaken for the answer.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "The bar labels sit below the bars, a scroll away from the numbers, and the main white bar has no label next to its number.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "The 'החזר המס הוסיף' label isn't explained, so it's unclear why money would come back.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "The first field is labelled 'הכנסה חייבת', which the reader doesn't understand. This could lead to entering the wrong number.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "The line about 13,205 ₪ a year below the chart appears without context.",
+      "serious": false,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.0231548
+}

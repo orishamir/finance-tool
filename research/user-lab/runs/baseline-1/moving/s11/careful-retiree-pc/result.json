@@ -1,0 +1,117 @@
+{
+  "task": "s11",
+  "persona": "careful-retiree-pc",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T03:19:34.990Z",
+  "structured": {
+    "answer": "A keren hishtalmut is savings from the salary: the employer adds up to 7.5% and I add 2.5%. After 6 years from the first payment (3 years for someone at retirement age) I can take it out without tax, and earlier is possible but costly. It sounds worth having because of the employer's part, but I'll check with my son or the bank about the fees and where the money is invested.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Box 'מה מייחד קרן השתלמות' on screen 1",
+        "why": "It opens with 'S&P 500' and fund names in English, a salary input, a slider. Felt like it is not for me and I almost left."
+      },
+      {
+        "where": "Top of screen 2, numbers and table",
+        "why": "Many numbers (17,370, 16,955, 2,402.23...) and a minus sign '342.02-', which made me anxious, so I backed away from that box."
+      },
+      {
+        "where": "'כמה זה עולה' table",
+        "why": "'עד 2% בשנה' with no sentence saying whether that's a lot; can't tell if the bank/company is taking too much."
+      }
+    ],
+    "used": [
+      "Title and subtitle 'חיסכון שהמעסיק ואתם מפקידים אליו מהשכר... אפשר למשוך בפטור ממס'",
+      "'מה זה' paragraph: 7.5% employer, 2.5% me, 6 years after first payment",
+      "'הנעילה היא 6 שנים... למי שהגיע לגיל פרישה... רק 3 שנים'",
+      "Card 'מתי הכסף פנוי: כשעוברות 6 שנים'",
+      "'כמה זה עולה' row 'דמי ניהול מחיסכון עד 2% בשנה', 'דמי יציאה אין'",
+      "Orange warning 'משיכה לפני הזמן אפשרית, אבל יקרה'"
+    ],
+    "skimmed": [
+      "'למה משתמשים בזה' paragraph",
+      "'מיסוי' three cards",
+      "'סיכונים ומה לא מוגן'",
+      "'מונחים' glossary table on screen 4"
+    ],
+    "skipped": [
+      "S&P 500 comparison calculator, slider and bar chart",
+      "Table of עלויות/מס numbers",
+      "'שווה לדעת' with codes TXH-09, KH-15, PF-18",
+      "'מי מציע ומי מפקח' and 'הצגת החברות'",
+      "'שחקו עם המספרים שלכם' fold",
+      "All 'הצגת החוקים והכללים' links",
+      "Chips 'כדאי להכיר גם' and 'במה אפשר להשקיע בתוכו'",
+      "'מה האתר לקח בחשבון'"
+    ],
+    "unsure_meaning": [
+      "S&P 500",
+      "מדד (as an investment)",
+      "מסלול השקעה",
+      "קרן מחקה",
+      "שכר נאמן",
+      "הרווח הריאלי",
+      "ותק",
+      "נעילה",
+      "פייר פיננשיאל טכנולוג'יז",
+      "PF-06, KH-22, TXH-09 codes",
+      "342.02- (minus)",
+      "123 ממקור / מחושב / הזנתה",
+      "דמי ניהול עד 2% — is that a lot?"
+    ],
+    "not_found": [
+      "A plain sentence on whether it's as safe as a bank deposit",
+      "A clear statement of what my money is invested in by default",
+      "Whether my bank offers it / who to call"
+    ],
+    "findings": [
+      {
+        "what": "The section explaining what's special opens with S&P 500, English fund names and a calculator; it scares off someone who just wants the basics",
+        "where": "'מה מייחד קרן השתלמות', screen 1"
+      },
+      {
+        "what": "Dense numbers with a negative value '342.02-' and cost/tax table; anxiety-inducing, no simple bottom line",
+        "where": "Top of screen 2"
+      },
+      {
+        "what": "Dark background with light/grey text is hard to read; grey helper lines too pale",
+        "where": "Whole page, e.g. 'ההכנסה: דוגמה של האתר', 'גררו את הסמן'"
+      },
+      {
+        "what": "Footer says 'אתר אישי, לא מסחרי': unknown source, I'm unsure whether to trust it",
+        "where": "Footer, screen 4"
+      },
+      {
+        "what": "Fee 'עד 2% בשנה' given without saying if it's high or normal",
+        "where": "'כמה זה עולה' table"
+      },
+      {
+        "what": "Slider for years; I avoid sliders",
+        "where": "'אחרי כמה שנים מושכים את הכסף?' screen 1"
+      },
+      {
+        "what": "Codes like PF-06, KH-22 mean nothing",
+        "where": "Fees table and 'שווה לדעת'"
+      }
+    ]
+  },
+  "steps": 4,
+  "reads": 4,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 37210,
+    "turns": 6,
+    "usd": 0.1899222,
+    "input": 10,
+    "cacheWrite": 14472,
+    "cacheRead": 41331,
+    "output": 3292,
+    "model": "claude-opus-5-5"
+  }
+}

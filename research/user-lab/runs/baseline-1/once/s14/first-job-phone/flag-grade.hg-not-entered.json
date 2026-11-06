@@ -1,0 +1,36 @@
+{
+  "case": "hg-not-entered",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The text says 'לא הזנתם אחוזים, אז החישוב לוקח את התקרה' although the percentage fields are filled in with default values.\",\"where\":\"the sentence under the graphic\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings mention the sentence wrongly saying no percentages were entered when the fields already have default values; finding 4 only says the grey assumption text is small and easy to skip."
+      }
+    ],
+    "liked": [],
+    "usd": 0.015011400000000001
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "No finding points out that the sentence wrongly says no percentages were entered when the fields have default values; finding 4 only says the grey assumption text is small and easy to skip."
+      }
+    ],
+    "liked": [],
+    "usd": 0.015127400000000001
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0301388
+}

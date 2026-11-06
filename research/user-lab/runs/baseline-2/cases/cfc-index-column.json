@@ -1,0 +1,13 @@
+{
+ "id": "cfc-index-column",
+ "task": "s33",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "Text under the index name in the index column is unnecessary, and the column is wider than its content.",
+   "where": "the index column",
+   "kind": "taste"
+  }
+ ],
+ "liked": []
+}

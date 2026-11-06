@@ -1,0 +1,14 @@
+{
+ "id": "indices-dollar-minus3",
+ "task": "t27",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "The dollar scenario shows the dollar falling 3% every year for 12 years as a case to plan on, which is detached from reality.",
+   "where": "the dollar scenario in the hedging part",
+   "kind": "general",
+   "outside": true
+  }
+ ],
+ "liked": []
+}

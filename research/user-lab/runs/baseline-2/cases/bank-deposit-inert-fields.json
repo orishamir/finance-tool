@@ -1,0 +1,13 @@
+{
+ "id": "bank-deposit-inert-fields",
+ "task": "s09",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "The bank-deposit guide asks for age, linkage and term, but those fields do not change its graph.",
+   "where": "the input fields beside the graph",
+   "kind": "general"
+  }
+ ],
+ "liked": []
+}

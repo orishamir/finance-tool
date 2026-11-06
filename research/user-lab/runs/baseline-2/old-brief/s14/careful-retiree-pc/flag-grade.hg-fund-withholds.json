@@ -1,0 +1,85 @@
+{
+  "case": "hg-fund-withholds",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The sentence 'הקרן מנכה קודם … מס במקור, ו… מהם חוזרים רק אם מגישים דוח שנתי' is jargon; the reader does not understand what the fund deducts.\",\"where\":\"the early-withdrawal sentence of the graphic\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Page never asks age; unclear whether the 3-year retirement-age rule or the 6-year rule applies to a 61-year-old",
+      "Unclear whether 136,457 includes tax on employer money above the 15,712 ceiling, and how much less the monthly take-home pay will be",
+      "The line of coloured '123's (ממקור / מחושב / הזנתי) is confusing; unclear what to do with it",
+      "'מתחת לגיל 60 זה לפחות 31%' leaves the early-withdrawal tax rate for over-60s unstated",
+      "'המחיר, לעומת קופת גמל להשקעה' not understood",
+      "The S&P 500 / אג\"ח investment buttons are too technical (would drop first, along with the securities-account link)",
+      "Calculator input boxes cut off; the salary of 30,000 was never shown",
+      "Didn't know what to change the 7% yield and 0.54% fee defaults to",
+      "Orange box's 47% tax at source plus refund through a tax return sounds like burdensome paperwork",
+      "The three מיסוי cards repeat the intro (would drop)",
+      "Chief economist line about cutting the benefit was worrying (would drop)",
+      "Small bar chart has no numbers on the bars; wanted year-6/12 totals as figures",
+      "Why tax still seems to be paid after year 6 (striped tops on bars 6–12)",
+      "Unknown dark-brown lower part in the second green bar",
+      "Pink bar has light and dark stripes for no clear reason",
+      "No legend visible for the big chart",
+      "Why the 'מיטב השתלמות עוקב מדד S&P500' (13245) fund, and what 13245 means",
+      "'הרווח הריאלי' still fuzzy",
+      "Why the word 'עמית' in עמית-עצמאי / עמית-שכיר",
+      "No info on what happens if you stop working before 6 years",
+      "No comparison with putting the 750 into a pension",
+      "Glossary table could go; explain terms where they appear",
+      "'שווה לדעת' codes like TXH-09 could go"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The report never says it doesn't understand what the fund deducts in the graphic's early-withdrawal sentence. It restates the orange box's 47% at-source tax and refund clearly and only complains about the paperwork."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0673872
+  },
+  "b": {
+    "raised": [
+      "Age not asked: unclear whether the 3-year rule or the 6-year rule applies to a 61-year-old",
+      "Salary ceiling: unclear whether 136,457 already includes tax on employer money above 15,712, or how much less the monthly payslip will be",
+      "The coloured '123 ממקור / מחושב / הזנתי' line is confusing",
+      "Early-withdrawal rate is given only for under-60s; the rate for someone over 60 is not stated",
+      "'המחיר, לעומת קופת גמל להשקעה' went over the reader's head",
+      "The S&P 500 / אג\"ח investment buttons are too technical (first in the list of things to drop)",
+      "Calculator input boxes are cut off, so the 30,000 salary never appears on screen",
+      "Doesn't know what to change the 7% yield and 0.54% fee inputs to",
+      "The three מיסוי cards repeat the intro",
+      "The 47% tax at source with a refund through a tax return sounds like paperwork",
+      "The chief economist's recommendation to cut the benefit is worrying",
+      "The small bar chart has no numbers on the bars",
+      "Unclear why tax still seems to apply after 6 years (striped tops on bars 6–12)",
+      "Big chart: unexplained dark-brown block and light/dark stripes, with no legend",
+      "Unclear why the fund 'מיטב השתלמות עוקב מדד S&P500' (13245) was chosen and what 13245 means",
+      "'הרווח הריאלי' is still fuzzy even after the glossary",
+      "The word 'עמית' in עמית-עצמאי / עמית-שכיר is unclear",
+      "Can't find what happens if they stop working before 6 years",
+      "Can't find the total for year 6 or year 12 as a number",
+      "Can't find whether this is better than putting the money into a pension",
+      "Would drop the מונחים glossary table",
+      "Would drop the שווה לדעת codes such as TXH-09"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader explains the tax-at-source and refund sentence correctly and only says it sounds like paperwork, so the report never says the reader failed to understand what the fund deducts."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0662072
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1335944
+}

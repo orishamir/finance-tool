@@ -1,0 +1,36 @@
+{
+  "case": "current-account-future-shekels",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"With 'בשקלים של העתיד' chosen, the figures ignore inflation, so they are wrong.\",\"where\":\"the chart and figures of the panel\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "No finding says the 'בשקלים של העתיד' figures ignore inflation; finding 1 questions the 5% growth against the no-interest statement, which is a different complaint."
+      }
+    ],
+    "liked": [],
+    "usd": 0.015119400000000002
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 1 does criticise the figures, but it says the עו\"ש money is shown growing at 5% when it earns no interest; no finding says the 'בשקלים של העתיד' view leaves out inflation."
+      }
+    ],
+    "liked": [],
+    "usd": 0.015511400000000002
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.030630800000000003
+}

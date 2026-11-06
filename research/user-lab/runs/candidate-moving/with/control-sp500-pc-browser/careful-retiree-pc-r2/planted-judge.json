@@ -1,0 +1,41 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "The 2% inflation figure is hidden behind a button. The main screen only says 'in today's money'. This is about how visible the figure is, not a button that does nothing.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "Small grey text on a dark background is hard to read even when enlarged, especially the explanations under the numbers.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "The cost chart uses colours that look alike, so the reader had to check the small legend to identify the pink part.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "The fund list is crowded with English letters, coloured labels and red minus amounts, and it made the reader anxious.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "The input layout jumped sideways after typing in the first box. Listed problem 2 is the result cards jumping up and down because of a note.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 6,
+      "summary": "Nothing near the result says the 7% growth isn't guaranteed or that the money could fall, which could lead to a wrong decision.",
+      "serious": true,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.025714800000000003
+}

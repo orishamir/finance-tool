@@ -1,0 +1,36 @@
+{
+  "case": "current-account-future-shekels",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"With 'בשקלים של העתיד' chosen, the figures ignore inflation, so they are wrong.\",\"where\":\"the chart and figures of the panel\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "No finding says the 'בשקלים של העתיד' figures leave out inflation; finding 1 takes issue with the assumed 5% growth on the current account, which is a different flaw in the same calculator."
+      }
+    ],
+    "liked": [],
+    "usd": 0.015799399999999998
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "No finding mentions the 'בשקלים של העתיד' mode or inflation being left out; finding 1 is about the assumed 5% growth on the current account, which is a different flaw."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0154194
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.031218799999999998
+}

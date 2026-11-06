@@ -1,0 +1,13 @@
+{
+ "id": "tracks-assets-column",
+ "task": "s16",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "The column 'נכסים בסוף ספטמבר' does not say it means the money pooled in the track; it reads as the fund's own assets.",
+   "where": "that column's head",
+   "kind": "general"
+  }
+ ],
+ "liked": []
+}

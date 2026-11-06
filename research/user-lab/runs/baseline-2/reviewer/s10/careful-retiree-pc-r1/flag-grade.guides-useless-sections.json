@@ -1,0 +1,36 @@
+{
+  "case": "guides-useless-sections",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The guide home has sections that say nothing useful ('שני חלקים בכל חיסכון', 'מאיפה להתחיל').\",\"where\":\"the sections above or below the list of guides\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 5 says 'מאיפה להתחיל' leaves out retirees and finding 7 says a line uses jargon without explaining it, but neither one says these sections give no useful information, which is the person's complaint."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0187954
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the findings says these sections are empty or say nothing useful: finding 5 says 'מאיפה להתחיל' only suits salaried workers, finding 7 objects to jargon and finding 1 is about missing rates across the whole page, so each has a different reason."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0216634
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0404588
+}

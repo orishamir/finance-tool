@@ -1,0 +1,81 @@
+{
+  "case": "general-track-exposure",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"In the guide list, 'general track' is listed among the exposures (kinds of investment), which does not make sense: it is a mix, not one kind.\",\"where\":\"the exposures group of the guide list\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "The page gives no numbers, fees, risk information or guidance for someone their age",
+      "Unclear what the 'השוואה למטרה' menu item does",
+      "The small grey line under 'שני חלקים בכל חיסכון' is hard to read",
+      "'מאיפה להתחיל' speaks to salaried workers; nothing for someone near retirement",
+      "Couldn't see the names of the three cards under 'כסף שוטף וקצר', only the ends of their text",
+      "The period set by law for tax-free withdrawal is not stated",
+      "The 'בשפה פשוטה' line for the comprehensive pension fund isn't plain language, just the same words reordered",
+      "The 'קרן חדשה כללית' description (deposits above the maximum) is confusing",
+      "Most of the 'לבחירה עצמית' card texts couldn't be seen",
+      "The seven index cards sound alike and say nothing about risk or suitability",
+      "The 'יומית' / 'מתחדשת' buttons on the money-market fund are not understood",
+      "Grey subtitles on the black background are too faint",
+      "The general track description doesn't say how much is in shares",
+      "The 'exposure to the dollar or hedged' phrase is unclear",
+      "'Weighted by market value' is not understood",
+      "The difference between MSCI World and MSCI AC World, and between TA-35 and TA-90, is unclear",
+      "'אישית לפיצויים' is unclear: is it severance pay, and can they touch it",
+      "Can't find when money can be withdrawn and what withdrawal costs",
+      "Can't find anything about tax on withdrawals after 60",
+      "Can't find how to tell which products they already have",
+      "Would drop the 'לבחירה עצמית' and 'לילדים' sections as not relevant"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader mentions the general track among the exposure rows, but only complains that its definition doesn't say how much is in shares (item 13). They never object to it being listed as an exposure when it is really a mix."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0702352
+  },
+  "b": {
+    "raised": [
+      "The page gives no numbers, fees, risk information or age-specific guidance",
+      "Unclear what the 'השוואה למטרה' menu item does",
+      "Grey subtitle text on the black background is too faint to read",
+      "'מאיפה להתחיל' speaks to salaried workers, with nothing for someone near retirement",
+      "The names of the three cards under 'כסף שוטף וקצר' could not be seen",
+      "The legal period before a tax-free withdrawal is not stated",
+      "The 'בשפה פשוטה' line for the pension fund only repeats the name and is not plain language",
+      "The 'קרן חדשה כללית' description was confusing",
+      "Most of the texts in 'לבחירה עצמית' could not be seen",
+      "The seven index cards are too many and too alike, and nothing says which is riskier or which suits an older saver",
+      "The 'יומית'/'מתחדשת' buttons on the money-market fund card were not understood",
+      "The general track's description was unclear: how much of the money is in shares?",
+      "The phrase about dollar exposure or hedging was not understood",
+      "'Weighted by market value' was not understood",
+      "The difference between MSCI World and AC World, and between TA-35 and TA-90, was unclear",
+      "'אישית לפיצויים' was unclear: is it severance pay, and can it be touched?",
+      "No information on tax when withdrawing after 60",
+      "No way to find out which of these products the reader already has",
+      "Would drop the 'לבחירה עצמית' section",
+      "Would drop the 'לילדים' section"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader was confused about how much of the general track is in shares, but never objected that it is a mix wrongly listed among the single kinds of investment."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0709872
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1412224
+}

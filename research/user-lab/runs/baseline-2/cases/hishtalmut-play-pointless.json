@@ -1,0 +1,13 @@
+{
+ "id": "hishtalmut-play-pointless",
+ "task": "s13",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "The 'שחקו עם המספרים' panel repeats what the graphic above already lets the reader do.",
+   "where": "the 'שחקו עם המספרים' panel",
+   "kind": "general"
+  }
+ ],
+ "liked": []
+}

@@ -1,0 +1,14 @@
+{
+ "id": "brokerage-vs-indices",
+ "task": "t39",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "The securities-account page covers the same choice as the index page, so the site has two pages for one question.",
+   "where": "the whole page and the menu",
+   "kind": "taste",
+   "outside": false
+  }
+ ],
+ "liked": []
+}

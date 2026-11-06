@@ -1,0 +1,14 @@
+{
+ "id": "hedged-what-happened",
+ "task": "t59",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "The text does not explain how the hedged fund fell about 21% in 2022 while the unhedged ones fell about 7–8%.",
+   "where": "the yearly figures and their text in option A",
+   "kind": "general",
+   "outside": false
+  }
+ ],
+ "liked": []
+}

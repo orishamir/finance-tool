@@ -1,0 +1,105 @@
+{
+  "task": "p15-jump-keren-phone",
+  "persona": "first-job-phone",
+  "repeat": 2,
+  "mode": "browser",
+  "device": "phone",
+  "startedAt": "2026-11-06T00:20:46.634Z",
+  "structured": {
+    "answer": "After 8 years at 500 ₪ a month the calculator shows about 68,853 ₪ \"נשאר בידיים\" (48,000 deposited, no tax). For 4 years it has no number for self-employed people: it says there's no calculation yet for taking the money out before 6 years, only that you'd pay tax.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Result at year 4",
+        "why": "The only number shown was 25,725, sitting over an empty dashed box. The label under it ('אותו כסף בחשבון ניירות...') was half hidden behind the up-arrow button, so at first I almost took it as the fund's value"
+      },
+      {
+        "where": "Year slider 1-5 for self-employed",
+        "why": "Empty dotted bars with no number; I had to read the orange note to work out that there's nothing to calculate there"
+      }
+    ],
+    "used": [
+      "Heading and intro line 'אחרי 6 שנים... בלי מס'",
+      "Tab 'מה קורה לכסף בקרן'",
+      "Toggle 'עצמאים'",
+      "Year slider/chart (4 and 8)",
+      "Orange note 'לעצמאים עוד אין כאן חישוב למשיכה לפני 6 שנים'",
+      "Breakdown bars: 48,000 / +9,581 / +11,272 / 0 / 68,853 / 55,471"
+    ],
+    "skimmed": [
+      "Input fields (income 12,000, 500 a month, 7%, 0.54%) – left at the defaults",
+      "Line 'קרן השתלמות במסלול מדד, 500 ₪ בחודש מכם'"
+    ],
+    "skipped": [
+      "'מה זה' paragraphs after the first lines",
+      "'שווה לדעת' and 'מי מציע ומי מצטרף' sections",
+      "Line about depositing another 13,205 ₪ a year",
+      "Small grey hint under the chart"
+    ],
+    "unsure_meaning": [
+      "הכנסה חייבת בחודש",
+      "מסלול מדד",
+      "החזר המס הוסיף",
+      "אותו כסף בחשבון ניירות ערך",
+      "25,725 at year 4 – fund or the other account?",
+      "Teal vs yellow chunks in the year bars"
+    ],
+    "not_found": [
+      "Any amount for taking the money out after 4 years as a self-employed person"
+    ],
+    "findings": [
+      {
+        "what": "For self-employed people there's no fund amount before year 6, so the 4-year question gets no number, only a note about tax",
+        "where": "Calculator chart, years 1-5"
+      },
+      {
+        "what": "At year 4 the only big number shown (25,725) belongs to the comparison bar, which makes it easy to read as the fund's value",
+        "where": "Result bars below the chart"
+      },
+      {
+        "what": "The floating up-arrow button covers the label of the comparison bar",
+        "where": "Bottom right of the result area"
+      },
+      {
+        "what": "Unclear where the 'החזר המס' (tax refund) of +9,581 comes from",
+        "where": "8-year breakdown"
+      },
+      {
+        "what": "The chart's colours aren't explained next to the year bars",
+        "where": "Year bar chart"
+      }
+    ]
+  },
+  "steps": 6,
+  "reads": 6,
+  "commands": 6,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 47882,
+    "turns": 14,
+    "usd": 0.21267100000000003,
+    "input": 16,
+    "cacheWrite": 15291,
+    "cacheRead": 86595,
+    "output": 3648,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "p15-jump-keren-phone",
+    "screenshots": 6,
+    "changes": [
+      {
+        "id": "jump-shown",
+        "type": "style",
+        "shots": 6,
+        "applied": 6,
+        "most": 1
+      }
+    ],
+    "neverShown": [],
+    "errors": []
+  }
+}

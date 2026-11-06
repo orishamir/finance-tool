@@ -1,0 +1,36 @@
+{
+  "case": "tracks-stale-annuity",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The page says its data is updated monthly, yet the figures are as of September, in November.\",\"where\":\"the data date at the top\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings mention the data date or that September figures don't fit a monthly update in November."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0134714
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings mention the data date or the figures being out of date despite the monthly-update claim."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0139594
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.027430799999999998
+}

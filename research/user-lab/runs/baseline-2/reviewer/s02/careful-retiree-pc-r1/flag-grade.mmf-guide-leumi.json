@@ -1,0 +1,36 @@
+{
+  "case": "mmf-guide-leumi",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The money-market-fund guide compares with one named bank (Leumi) and cites that bank's deposit rate, in a page about a general product.\",\"where\":\"the comparison lines and their source\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings mention the comparison being tied to one named bank (Leumi) or its deposit rate; finding 5 is about the comparison but only about bars that look alike and similar colours."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0158594
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "No finding objects to comparing with a named bank (Leumi) or citing its deposit rate. Finding 5 only says the comparison bars are hard to tell apart."
+      }
+    ],
+    "liked": [],
+    "usd": 0.015983400000000002
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.031842800000000004
+}

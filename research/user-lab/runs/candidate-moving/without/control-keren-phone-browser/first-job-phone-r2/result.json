@@ -1,0 +1,96 @@
+{
+  "task": "control-keren-phone-browser",
+  "persona": "first-job-phone",
+  "repeat": 2,
+  "mode": "browser",
+  "device": "phone",
+  "startedAt": "2026-11-06T02:03:47.800Z",
+  "structured": {
+    "answer": "If I put in 500 ₪ a month, the calculator says I'd have about 63,700 ₪ \"נשאר בידיים\" after 8 years (I'd have paid in 48,000). For 4 years it gives me no number: it says there's no calculation for self-employed people who take the money out before 6 years.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Chart at year 4",
+        "why": "There's a big 25,725 at the top right, so at first I thought that was my money. Then I read the label under the dashed box, 'אותו כסף בחשבון ניירות ערך', and saw it's the other option, not the fund."
+      },
+      {
+        "where": "Year 8 bars",
+        "why": "Reading from the right, the first big number is 55,471 (the securities account). The fund's number, 63,726, is the next one along. Easy to mix them up."
+      }
+    ],
+    "used": [
+      "Heading 'כמה כסף נשאר לכם, ומתי?'",
+      "Toggle עצמאים",
+      "Field הכנסה חייבת בחודש (set to 9,500)",
+      "Field הפקדה חודשית (left at 500)",
+      "Year slider (4, then 8)",
+      "Orange note 'לעצמאים עוד אין כאן חישוב למשיכה לפני 6 שנים'",
+      "Bars labelled הפקדתם 48,000 and נשאר בידיים 63,726"
+    ],
+    "skimmed": [
+      "Intro text 'מה זה' about 6 years and tax",
+      "Paragraph about 7.5%/2.5% and 15,712 ₪ / 20,566 ₪",
+      "Line 'אם תפקידו עוד 13,783 ₪ בשנה'",
+      "Lines about 7% return and 2% inflation"
+    ],
+    "skipped": [
+      "חוקים וכללים · 10",
+      "כדאי להכיר גם / במה אפשר להשקיע chips",
+      "Everything below the calculator",
+      "Fields תשואה בשנה and דמי ניהול בשנה (left as they were)"
+    ],
+    "unsure_meaning": [
+      "הכנסה חייבת בחודש: I just put my salary",
+      "החזר המס הוסיף +5,309",
+      "המס לקח 0",
+      "חשבון ניירות ערך",
+      "מסלול מדד",
+      "dotted purple underline under the numbers"
+    ],
+    "not_found": [
+      "Any number for taking the money out after 4 years as a self-employed person"
+    ],
+    "findings": [
+      {
+        "what": "At 4 years there's no number for the fund, only an orange note. The only big number on the screen is 25,725, and it belongs to the other option, so it's easy to grab it by mistake.",
+        "where": "Calculator result, years 1–5, עצמאים"
+      },
+      {
+        "what": "The rightmost bar, which is the first thing I read, is the comparison account (55,471). The fund's own total sits next to it.",
+        "where": "Result bars at year 8"
+      },
+      {
+        "what": "Labels under the bars get cut off at the bottom of the screen, e.g. 'אחרי דמי...' and 'ניירות...'",
+        "where": "Result bar labels"
+      },
+      {
+        "what": "The chart shows empty dashed boxes for years 1–5 and doesn't say why next to them",
+        "where": "Year chart, years 1–5"
+      }
+    ]
+  },
+  "steps": 10,
+  "reads": 6,
+  "commands": 10,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 54857,
+    "turns": 18,
+    "usd": 0.24526420000000004,
+    "input": 32,
+    "cacheWrite": 17171,
+    "cacheRead": 208441,
+    "output": 3304,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "control-keren-phone-browser",
+    "screenshots": 10,
+    "changes": [],
+    "neverShown": [],
+    "errors": []
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "case": "guides-useless-sections",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The guide home has sections that say nothing useful ('שני חלקים בכל חיסכון', 'מאיפה להתחיל').\",\"where\":\"the sections above or below the list of guides\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "No finding says these sections are empty of useful content: finding 4 is about hard-to-read grey subtitles, and finding 7 says 'Where to start' fits employees rather than retirees, which is a different complaint from saying it has nothing useful in it."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0194194
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 7,
+        "why": "Finding 7 says the 'מאיפה להתחיל' section gives nothing useful (no option for a retiree), which matches part of the person's complaint that this section is not useful, though the reader blames the wrong audience rather than empty content, so this is a borderline match."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0219194
+  },
+  "third": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 7,
+        "why": "Finding 7 says the 'מאיפה להתחיל' section offers nothing useful for the reader, which covers a clear part of the person's complaint that this section says nothing useful; this is a borderline match, because the reader's reason is that it targets the wrong audience, while finding 4 only touches 'שני חלקים בכל חיסכון' for being hard to read."
+      }
+    ],
+    "liked": [],
+    "usd": 0.023699399999999995
+  },
+  "ranks": {
+    "k": 7
+  },
+  "agreed": {
+    "k": false
+  },
+  "against": {},
+  "usd": 0.06503819999999999
+}

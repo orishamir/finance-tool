@@ -1,0 +1,74 @@
+# s32: first-job-phone (old brief)
+
+pc; 28 s, $0.17
+
+## The three screens
+
+The three screenshots don't continue each other. They're three versions of the same "קרנות סל" table, so I read them as Option 1 (screen-01), Option 2 (screen-02) and Option 3 (screen-03).
+
+**1. My answer**
+
+I'd pick **Option 3**. I'm only about 60% sure. I came to find the S&P 500 fund and what it costs. All three versions show that the same way: "S&P 500 (4D) סל אי.בי.אי" with "קבועים 0.8%, משתנים 0.3%, נאמן 0.015%". What made me choose was the last column.
+
+- In Option 3 the header actually says what it's about: "חשיפה מרבית למט״ח". It gives one number per fund.
+- Option 1 adds "מניות עד 120%". I didn't get how a fund can be more than 100% in stocks, so it just worried me.
+- Option 2 tucks the same numbers into "פרופיל 4D: מניות עד 120%, מט״ח עד 120%". The word "פרופיל" means nothing to me.
+
+As for what I'd actually do: I'd probably click "בדף הקרן במאיה" on the S&P 500 row, or ask a friend. 0.8% looks expensive next to the 0.1% on the TA-90 fund, and I'm not sure if that's a problem.
+
+**2. Parts I actually used**
+
+- The "שם הקרן" column, to find S&P 500.
+- "במה הכסף מושקע", to confirm "עוקבת אחרי מדד S&P 500".
+- "דמי ניהול לפי הדוח של הקרן", to see the cost.
+- A glance at the last column.
+
+**3. Block by block**
+
+- **Title "קרנות סל · 4 קרנות":** I skimmed it. Fine, it told me there are 4 funds.
+- **Line under the title, "רק הקרנות שהאתר אסף עליהן דוח, לא כל הקרנות של החברה":** I skimmed it. Good to know there may be more funds, but I didn't act on it.
+- **"שם הקרן":** I used it. The "(4A)" and "(4D)" in the names confused me.
+- **Tags under the names** ("מחזיקה את המניות", "עסקת החלף", "חשיפה לדולר", "מס גם על שינויי המטבע"):
+  - "מחזיקה את המניות" I sort of understood, and it sounds good.
+  - "עסקת החלף" I don't know.
+  - "מס גם על שינויי המטבע" scared me a little. More tax? How much?
+  - In Option 2 the tags sit in one row, which was a bit easier to read.
+- **"מספר נייר":** I skipped it. It's just a number to me.
+- **"בדף הקרן במאיה":** I noticed it and would click it if confused. I don't know what מאיה is.
+- **"במה הכסף מושקע":** I used it. It's clear, but it mostly repeats the fund name.
+- **"דמי ניהול":** I used it, and it confused me (see 5).
+- **Last column ("חשיפה מרבית" or "חשיפה מרבית למט״ח"):** It confused me. I only looked because the numbers jumped from 10% to 120%.
+- **Footnotes:**
+  - "כל הקרנות כאן לא מחלקות: הדיבידנד והריבית מושקעים בקרן מחדש" I half understood: the money stays in. I skimmed it.
+  - "החשיפה המרבית היא התקרה שהקרן מצהירה עליה בשם שלה (למשל 4A)" (Options 1 and 3) helped a little. Now I know 4A is about this. I still don't know what it means for me.
+
+**4. Table details I looked at and ignored**
+
+- I looked at the big percentages in the fee column: 0.8% versus 0.35% and 0.1%.
+- I looked at the green "עוקבת אחרי…" links and the "מט״ח עד 120%" number.
+- I ignored the paper numbers, the little icons on the tags, and the "<" arrows. I didn't know they were clickable.
+- I also ignored the underlines on the percentages. I didn't realise they might open an explanation.
+
+**5. What I didn't understand**
+
+- "קבועים / משתנים / נאמן": Do I add them up? Is 1.115% what I actually pay a year?
+- What "משתנים" changes with.
+- "מט״ח", "4A/4D", "עסקת החלף", "פרופיל".
+- "120%" exposure: how can it be over 100%?
+- "מס גם על שינויי המטבע": how much extra tax?
+
+**6. What I wanted and couldn't find**
+
+- One total cost per fund, ideally as shekels a year on, say, ₪10,000.
+- Whether 0.8% is a lot compared with other companies' S&P 500 funds.
+- Why the S&P fund costs eight times the TA-90 one.
+- How to actually buy it.
+- Plain words for what the tags mean for my money.
+
+**7. If half had to go**
+
+1. "מספר נייר" goes first.
+2. Then "במה הכסף מושקע", since it repeats the name. I'd keep it only as a short line.
+3. Then the "מניות עד 120%" numbers.
+
+I'd keep the name, the fees (preferably with a total), and a plain explanation of the tax tag.

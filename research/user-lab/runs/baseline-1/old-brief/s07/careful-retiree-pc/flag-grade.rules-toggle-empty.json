@@ -1,0 +1,97 @@
+{
+  "case": "rules-toggle-empty",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"A 'הצגת/הסתרת החוקים והכללים' button is repeated on sections across the site, and on some sections pressing it changes nothing because there are no rules there.\",\"where\":\"the show/hide rules buttons on the page's sections\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "The page doesn't calculate what breaking a deposit early costs",
+      "Worried that Israel has no deposit insurance",
+      "No comparison with a money market fund or מק\"מ",
+      "The '123 מקור / מחושב / הדגמה' strip is confusing and they don't know what to do with it",
+      "The 'הצגת החוקים והכללים' links are unwanted: they want the bottom line, not the law (skipped, would drop)",
+      "Automatic renewal makes them nervous",
+      "The paragraph on 8 deposit types doesn't say which one suits them",
+      "Doesn't understand 'העוגן' (the anchor) or why it links to three banks",
+      "'פרמטר של האתר' is jargon",
+      "TXI/BANK codes look like a filing system and mean nothing",
+      "The 'מזומן שקלי' chip means nothing to them",
+      "'חשבון במערכת סגורה' isn't explained",
+      "The 'כסף נכנס ויוצא' section is thin",
+      "'כמה זה עולה' disappoints: exit fees just say 'go ask the bank'",
+      "Had to look up the term 'פטור למעוט הכנסה'",
+      "'מה האתר לקח בחשבון' is collapsed and sounds technical",
+      "The terms table is too long",
+      "Chart: tax and deposit lines too thin to tell apart; the chart adds nothing",
+      "Couldn't press the today's money / future shekels buttons, so no future-shekel figure",
+      "Cost table has only one row and an empty laws-and-rules column",
+      "The 'איפה מופיע' column in the terms table doesn't help",
+      "Doesn't understand how a prime-linked deposit is taxed",
+      "Unclear who the 'open question' about tax on a broken deposit is for",
+      "The example uses 500 ₪ a month for 10 years, but the terms say 12 months",
+      "No side-by-side current bank rates",
+      "No information on whether a price-linked deposit protects against inflation",
+      "No information on how safe the banks are or whether to split money between them",
+      "Doesn't say how to stop automatic renewal",
+      "No actual shekel cost for exit fees",
+      "Would drop the paragraph about losses from selling securities"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader skips the rules links and would drop them because they want the bottom line, but never says pressing one does nothing on sections with no rules; the empty laws column in the cost table is a different part of the screen."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0811832
+  },
+  "b": {
+    "raised": [
+      "The page doesn't calculate what breaking the deposit early costs",
+      "The page names a money market fund and מק\"מ but doesn't compare them with a deposit",
+      "The '123 מקור / מחושב / הדגמה' strip is confusing and they don't know what to do with it",
+      "Skipped all the 'הצגת החוקים והכללים' links because they want the bottom line, not the law",
+      "The automatic renewal at the end of the period makes them nervous",
+      "The paragraph on the 8 deposit types doesn't say which type suits them",
+      "Didn't understand 'העוגן' (the anchor) or why it links to three banks",
+      "'פרמטר של האתר' is jargon they don't understand",
+      "The 'מזומן שקלי' chip means nothing to them",
+      "The codes TXI-03, BANK-06 and so on look like a filing system and mean nothing",
+      "'חשבון במערכת סגורה' is new to them and unclear",
+      "The 'כסף נכנס ויוצא' section is thin",
+      "'כמה זה עולה' disappoints: exit fees just say 'see the provider's price list', with no amount",
+      "Had to look up 'פטור למעוט הכנסה'",
+      "'מה האתר לקח בחשבון' is collapsed and sounds technical",
+      "The 'מונחים' table is long",
+      "In the chart the tax and deposit lines are too thin to tell apart, and the chart adds nothing beyond the numbers",
+      "Couldn't press the today's money / future shekels buttons, so they never saw the future-shekel figure",
+      "The 'כמה זה עולה' table has only one row and its laws-and-rules column is empty",
+      "The 'איפה מופיע' column in the terms table doesn't help",
+      "Doesn't understand what a prime-linked deposit being taxed like a non-linked one means for them",
+      "The 'open question' about tax on a deposit broken early is unclear: an open question for whom?",
+      "The example uses 500 ₪ a month over 10 years, but the terms say 12 months",
+      "No side-by-side view of what different banks pay today for different periods",
+      "No information on whether a price-linked deposit protects against inflation, or what it pays",
+      "No guidance on how safe the big banks are, or on splitting money between banks, given there's no deposit insurance",
+      "Couldn't find whether or how automatic renewal can be stopped"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader only says they skipped the rules links and would drop them, and notes one table's rules column is empty; they never say pressing a rules button does nothing on sections that have no rules."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0871632
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1683464
+}

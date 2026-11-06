@@ -1,0 +1,36 @@
+{
+  "case": "hg-tax-after-six",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"With a high salary entered, the graphic says tax is due even after 6 years and shows a large income-tax figure, without making clear which money it is on.\",\"where\":\"the graphic and its sentences\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 3,
+        "why": "Finding 3 says the high salary is over the 15,712 ₪ ceiling and it's unclear what that means for the deposits, which is the person's confusion about which money the remaining tax is charged on; finding 1 only says a bar has no label, at the 5-year point, not tax after 6 years."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0230394
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 3,
+        "why": "Finding 3 makes the same point: with a high salary, deposits are made on the full salary while there is a ceiling, and it is unclear what that means, so it is unclear which money is taxed; finding 1 is about an unlabelled bar in the 5-year early-withdrawal view, which is a different scenario."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0295474
+  },
+  "third": null,
+  "ranks": {
+    "k": 3
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0525868
+}

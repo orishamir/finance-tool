@@ -1,0 +1,109 @@
+{
+  "task": "s10",
+  "persona": "first-job-phone",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T16:21:14.094Z",
+  "structured": {
+    "answer": "Worth looking into: a חשבון ניירות ערך to buy an S&P 500 fund, the קרן השתלמות I already have, and maybe a קרן כספית for money I need on hand. But the page never tells me which to pick or what anything costs.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "מאיפה להתחיל",
+        "why": "Three links (קרן השתלמות, קרן חדשה מקיפה, קרן כספית), but none of them is about putting a lump sum somewhere to grow, so I wasn't sure where I'm supposed to start"
+      },
+      {
+        "where": "לבחירה עצמית heading at the bottom of screen 1",
+        "why": "The heading is cut off from its cards, which only show up on the next screen, so at first I didn't know what the חשבון ניירות ערך cards belonged to"
+      },
+      {
+        "where": "Index cards (MSCI, נאסד\"ק, ת\"א)",
+        "why": "They all look alike and nothing says which one is better, so I just went with the S&P 500 because I'd heard of it"
+      }
+    ],
+    "used": [
+      "מדריך heading and subtitle",
+      "שני חלקים בכל חיסכון, first lines",
+      "מאיפה להתחיל links",
+      "קרן השתלמות card",
+      "חשבון ניירות ערך card",
+      "מדד S&P 500 card",
+      "קרן כספית card title"
+    ],
+    "skimmed": [
+      "כסף שוטף וקצר cards (עו\"ש, פיקדון, תכנית חיסכון)",
+      "קופת גמל להשקעה",
+      "קרן השתלמות / קופת גמל בניהול אישי",
+      "מזומן שקלי, אגרות חוב ממשלתיות, מסלול כללי",
+      "MSCI, נאסד\"ק, ת\"א index cards"
+    ],
+    "skipped": [
+      "פרישה section",
+      "לילדים section",
+      "מק\"מ card",
+      "מה האתר עוד לא מכסה",
+      "footer links and the date line"
+    ],
+    "unsure_meaning": [
+      "מק\"מ",
+      "אג\"ח",
+      "חשיפה לדולר או מנוטרלת ממנו",
+      "יומית / מתחדשת tags on קרן כספית",
+      "מסלול כללי",
+      "קרן חדשה מקיפה vs קרן חדשה כללית",
+      "תגמולים ואישית לפיצויים",
+      "קופת גמל להשקעה (sounds like something for old people)"
+    ],
+    "not_found": [
+      "Fees in shekels or any fee at all",
+      "Past returns or any number",
+      "Which option suits someone with 30,000 ₪ and a few hundred a month",
+      "What to do first / how to open a ניירות ערך account",
+      "Names of banks or investment houses"
+    ],
+    "findings": [
+      {
+        "what": "There isn't a single number on the page: no fees, no returns, no example amount, so I can't compare anything or tell if something is cheap",
+        "where": "Whole page"
+      },
+      {
+        "what": "Nothing tells you what to actually do first with savings you already have; מאיפה להתחיל only points at a pension and a קרן השתלמות",
+        "where": "מאיפה להתחיל"
+      },
+      {
+        "what": "Every index card repeats the same 'הכסף מושקע בשקלים דרך קרן שעוקבת אחריו', so I had to reread it on each card to find what's different",
+        "where": "במה הכסף מושקע index cards"
+      },
+      {
+        "what": "A lot of jargon with no explanation (מק\"מ, אג\"ח, מנוטרלת, מתחדשת)",
+        "where": "במה הכסף מושקע section"
+      },
+      {
+        "what": "The לבחירה עצמית heading is separated from its cards",
+        "where": "Bottom of screen 1 / top of screen 2"
+      },
+      {
+        "what": "Lots of look-alike cards (index cards especially), and with this many similar options it feels easier to do nothing",
+        "where": "Index card grid"
+      }
+    ]
+  },
+  "steps": 2,
+  "reads": 2,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 33529,
+    "turns": 4,
+    "usd": 0.1230542,
+    "input": 6,
+    "cacheWrite": 6866,
+    "cacheRead": 16511,
+    "output": 3240,
+    "model": "claude-opus-5-5"
+  }
+}

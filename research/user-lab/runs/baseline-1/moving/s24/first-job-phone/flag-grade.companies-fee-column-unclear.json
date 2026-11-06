@@ -1,0 +1,36 @@
+{
+  "case": "companies-fee-column-unclear",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The column 'דמי ניהול לפי …' in the company's tracks table is not explained.\",\"where\":\"the fee column head\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 5,
+        "why": "Finding 5 says the fee column's two figures (from savings / from deposit) are unclear in meaning, which is a clear part of the person's complaint that the 'דמי ניהול לפי …' fee column isn't explained."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0200874
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 5,
+        "why": "Finding 5 says the fee basis (מהחיסכון vs מההפקדה) is unclear, which is the same unexplained 'דמי ניהול לפי …' fee column the person flagged; finding 4 only objects to percentages instead of shekels."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0182674
+  },
+  "third": null,
+  "ranks": {
+    "k": 5
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.038354799999999994
+}

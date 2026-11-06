@@ -1,0 +1,110 @@
+{
+  "task": "gemelnet",
+  "persona": "student-small-amounts",
+  "repeat": 2,
+  "mode": "browser",
+  "device": "pc",
+  "startedAt": "2026-11-05T23:56:11.075Z",
+  "structured": {
+    "answer": "I gave up: I never found my own fund, so I can't say if it beat the others. All I took away is that the average provident-fund return in the last 12 months was 10.56%, and the stock/index-tracking ones were around 17–19%.",
+    "confidence": "unsure",
+    "gave_up": true,
+    "stuck": [
+      {
+        "where": "Fund selection box (קופות גמל נבחרות)",
+        "why": "Not clear I had to highlight a category, then press the small '<' arrow, then 'הצג דוח'. The first time I pressed the button with nothing chosen and got totals for all funds in millions of ₪."
+      },
+      {
+        "where": "סינון ברשימה search field",
+        "why": "I typed 'מיטב' and pressed Enter; the list didn't visibly change."
+      },
+      {
+        "where": "Results table",
+        "why": "Huge table (page ~5255px) with many columns. I don't know my fund's exact name, so I couldn't find my row."
+      }
+    ],
+    "used": [
+      "Link 'איזו תשואה השיגה הקופה שלי בשנה החולפת ?'",
+      "Box 'התשואה הממוצעת בענף קופות גמל ב-12 חודשים האחרונים עמדה על 10.56%'",
+      "'הצג דוח' button",
+      "Category 'קופת גמל להשקעה' and the '<' arrow",
+      "Column 'מצטברת לתקופת הדו\"ח' in the results table (e.g. מיטב עוקב מדדי מניות 19.08%)"
+    ],
+    "skimmed": [
+      "Total assets by fund type table (millions ₪)",
+      "Stacked bar chart and cumulative return line chart",
+      "Fund names in the big table (אלטשולר, אנליסט, מיטב, הפניקס)"
+    ],
+    "skipped": [
+      "Red footnotes with *, **, ***",
+      "מדד אלפא / מדדי סיכון / הסברים links",
+      "מקורות המידע והנחות המערכת",
+      "Columns שארפ, צבירה נטו, יתרת נכסים, מדד נזילות, שיעור דמי ניהול",
+      "Date range dropdowns",
+      "Rest of the table below the first screen"
+    ],
+    "unsure_meaning": [
+      "תגמולים ואישית לפיצויים",
+      "מרכזית לפיצויים",
+      "מדד אלפא",
+      "שארפ ריבית חסרת סיכון",
+      "צבירה נטו (red negative numbers)",
+      "מדד נזילות",
+      "אשראי ואג\"ח",
+      "כספי (שקלי)",
+      "*** next to some fund names",
+      "13.65% in the totals table – whose return is that?"
+    ],
+    "not_found": [
+      "A simple 'type your fund name' search that works",
+      "My own fund next to the average",
+      "Any plain-language verdict like 'above/below average'"
+    ],
+    "findings": [
+      {
+        "what": "No obvious way to find your own fund; the filter box seemed to do nothing",
+        "where": "סינון ברשימה field"
+      },
+      {
+        "what": "Choose-then-arrow-then-button selection is confusing; with nothing chosen the report shows industry totals, not funds",
+        "where": "קופות גמל נבחרות panel"
+      },
+      {
+        "what": "Results are a giant multi-column table, unusable on a phone",
+        "where": "סיכום פעילות לפי קופה table"
+      },
+      {
+        "what": "Looks old and like a government form; I'd swipe away in seconds",
+        "where": "Home page and header"
+      },
+      {
+        "what": "The most useful number (10.56% average) is in a small box below the charts",
+        "where": "First report, under the totals table"
+      },
+      {
+        "what": "Jargon column headers with no plain explanation",
+        "where": "Table headers (שארפ, צבירה נטו, מדד נזילות)"
+      },
+      {
+        "what": "Red footnotes and *** markers add noise",
+        "where": "Above the results table"
+      }
+    ]
+  },
+  "steps": 11,
+  "reads": 9,
+  "commands": 11,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 78550,
+    "turns": 22,
+    "usd": 0.3903966,
+    "input": 34,
+    "cacheWrite": 29226,
+    "cacheRead": 268463,
+    "output": 5138,
+    "model": "claude-opus-5-5"
+  }
+}

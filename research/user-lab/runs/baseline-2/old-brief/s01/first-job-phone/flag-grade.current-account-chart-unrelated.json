@@ -1,0 +1,90 @@
+{
+  "case": "current-account-chart-unrelated",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The current-account guide shows a growth chart of money invested at a 10% yearly return, which has nothing to do with a current account.\",\"where\":\"the chart 'מה קורה לכסף לאורך הזמן' in the guide\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Page doesn't say where or how to get a money-market fund (קרן כספית), or what it costs",
+      "Page never mentions the S&P 500 or how it compares",
+      "The '123 מקמר / מחושב / הזנת' line isn't understood",
+      "Basic/extended fee-plan paragraph is confusing and gives no plan prices",
+      "Calculator on a current-account page shows growth at a 5% yearly return, and it's unclear what that represents",
+      "'מזומן שקלי' button isn't understood",
+      "BANK-xx tags are meaningless (ignored, would drop)",
+      "'כמה זה עולה' gives no actual cost, only 'according to the price list'",
+      "Third tax card (linked interest, 25%) isn't understood",
+      "Red 'שאלה פתוחה' box with a code looks broken",
+      "'No deposit insurance in Israel' is worrying",
+      "'מה האתר לקח בחשבון' padlock section is just codes and not useful",
+      "'מונחים' table is repeated",
+      "Chart lines (pink and lighter) aren't labelled",
+      "Deposits of ₪62,681 don't match the expected ₪70,000",
+      "'בכסף של היום' vs 'בשקלים של העתיד' buttons aren't understood",
+      "'חוקים וכללים' column is empty",
+      "'מנת הקישו להסבר' text isn't understood",
+      "'מק\"ם' isn't explained",
+      "'הצמדה: לא צמוד' isn't understood",
+      "Unclear how long redeeming fund units 'only on a trading day' takes",
+      "No figure for how much money in the current account loses to inflation",
+      "No guidance on how much to keep in the account",
+      "Would drop the 'מי מציע ומי מפקח' and 'כסף נכנס ויוצא' blocks"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 5,
+        "why": "The reader complains that a current-account page shows money growing at a yearly return (5% rather than 10%), which is the same complaint about an irrelevant growth chart."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0682152
+  },
+  "b": {
+    "raised": [
+      "Doesn't know where to buy a money-market fund (קרן כספית), whether their bank sells one, or what it costs",
+      "The page never mentions the S&P 500 or how it compares",
+      "The small '123 מקמר / מחושב / הזנת' line is not understood",
+      "The fee-plan paragraph gives transaction counts but not what each plan costs",
+      "The calculator shows money growing at a 5% yearly return on a current-account page, so it's unclear whether that applies to the current account",
+      "The 'מזומן שקלי' button is not understood",
+      "'כמה זה עולה' gives no actual number, only 'לפי התעריפון'",
+      "The third tax card (ריבית צמודה, 25%) is not understood",
+      "The red 'שאלה פתוחה: TXI OQ11' box is confusing and looks broken",
+      "Worried to learn that Israel has no deposit insurance",
+      "The chart's pink line and lighter line are unlabelled",
+      "Deposits shown as ₪62,681 don't match the reader's own ₪70,000 calculation",
+      "The difference between 'בכסף של היום' and 'בשקלים של העתיד' is not understood",
+      "The 'חוקים וכללים' column is empty",
+      "'מנת הקישו להסבר' is not understood",
+      "'מק\"ם' is not understood",
+      "'הצמדה: לא צמוד' and 'ריבית צמודה למדד' are not understood",
+      "Unclear how long fund redemption on a trading day takes",
+      "The meaning of 'שאלה פתוחה' and the codes is unclear",
+      "Wanted to see how much money is lost to inflation in the current account; the calculator shows something else",
+      "No guidance on how much to keep in the current account",
+      "No guidance on how to open a fund or deposit, what each pays, or how fast money can be withdrawn",
+      "Would drop the padlock section 'מה האתר לקח בחשבון'",
+      "Would drop the 'מי מציע ומי מפקח' block and the 'כסף נכנס ויוצא' cards",
+      "Would drop the repeated copy of the 'מונחים' table",
+      "Would drop the BANK tags"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 5,
+        "why": "The reader asks why a current-account page shows money growing at a yearly return (they saw 5%, not 10%) and can't tell how that relates to the current account, which is the same mismatch the person named."
+      }
+    ],
+    "liked": [],
+    "usd": 0.07208719999999999
+  },
+  "third": null,
+  "ranks": {
+    "k": 5
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1403024
+}

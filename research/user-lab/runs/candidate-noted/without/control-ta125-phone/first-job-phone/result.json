@@ -1,0 +1,115 @@
+{
+  "task": "control-ta125-phone",
+  "persona": "first-job-phone",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "phone",
+  "startedAt": "2026-11-06T03:00:38.838Z",
+  "structured": {
+    "answer": "I'd open an account at פסגות and buy the fund the page already had picked, \"אי.בי.אי. מחקה (4A) ת\"א 125\". The page said I'd end up with about 86,045 ₪ after 10 years. That's with its default 10,000 ₪ now and 500 ₪ a month, not my own numbers.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Amount fields at the top (screen 1)",
+        "why": "The task gave no amounts, so I left 10,000 and 500. I didn't want to fight the sliders, so the 86,045 isn't for my 30,000."
+      },
+      {
+        "where": "Fund list, the -0.04% under the chosen fund and the -0.37% to -0.54% under the others (screens 7-8)",
+        "why": "The minus signs scared me. Is it losing money every year? I went with the one the page had already picked because its minus was the smallest."
+      },
+      {
+        "where": "Account cards, '-1,030 ₪ לעומת הבחירה שלכם' (screen 2)",
+        "why": "Took me a second to see this was the other option ending up with less, not me losing 1,030."
+      }
+    ],
+    "used": [
+      "Big heading 'איפה ואיך הכי זול להשקיע במדד, לאורך זמן'",
+      "The ת\"א-125 button, already selected",
+      "Big number 86,045 ₪ with 'הבחירה שלכם · הזול', 'נשאר לכם בעוד 10 שנים'",
+      "70,000 ₪ 'הפקדתם'",
+      "Account list ranking with פסגות at #1 and 86,045",
+      "Fund card 'אי.בי.אי. מחקה (4A) ת\"א 125', דמי ניהול 0.1%",
+      "Fund list, where the chosen fund had the smallest minus"
+    ],
+    "skimmed": [
+      "The cost bar and its colour legend",
+      "'העלות אצלכם, לעומת הזוג השני': 18 ₪ more, 1,390 ₪ less, tax 342 ₪ more",
+      "Other banks in the list (לאומי, וואן זירו, הבינלאומי, etc.) and their 'לא בחישוב' notes",
+      "The sensitivity chart with the lines 'שנים', 'הפקדה חודשית', and so on",
+      "The small text explaining 'מול המדד'"
+    ],
+    "skipped": [
+      "The grey notes about the price for a regular customer",
+      "The 'אין נתון' rows for אינטראקטיב",
+      "Screens 10-13",
+      "The expand arrows on each bank",
+      "The 'אינפלציה' button"
+    ],
+    "unsure_meaning": [
+      "דמי משמרת",
+      "נאמן 0.025%",
+      "4A in the fund names",
+      "-0.04% 'בשנה · שנה אחת': is that a loss?",
+      "'מחזיקה את המניות'",
+      "'כמה דרכים יחד'",
+      "'קרן מחקה' vs 'קרן סל': which is better?",
+      "Grey colour 'העמלות זו על זו'",
+      "'בכסף של היום'"
+    ],
+    "not_found": [
+      "What I'd get with 30,000 ₪, without moving the sliders myself",
+      "A plain 'what to do first' step, like how to open the account at פסגות",
+      "Whether the minus percentages mean the funds lose money"
+    ],
+    "findings": [
+      {
+        "what": "Every fund shows a minus percent in big letters. It looks like they all lose money, and nothing next to it says what it means.",
+        "where": "Fund list, screens 7-8"
+      },
+      {
+        "what": "The result uses the page's 10,000/500 example. Nothing pushes me to put in my own amount before showing a big number.",
+        "where": "Top calculator, screens 1-2"
+      },
+      {
+        "what": "Red minus shekel amounts (-1,030 ₪) next to each fund look like losses",
+        "where": "Screens 2, 7, 8"
+      },
+      {
+        "what": "Too many colours in the cost bar and the legend sits far from it",
+        "where": "Screens 2-3"
+      },
+      {
+        "what": "Long list of banks with 'לא בחישוב' notes, too much to read on the phone",
+        "where": "Screens 4-6"
+      },
+      {
+        "what": "Words like דמי משמרת and נאמן with no explanation",
+        "where": "Screens 3 and 7"
+      }
+    ]
+  },
+  "steps": 9,
+  "reads": 9,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 30225,
+    "turns": 11,
+    "usd": 0.19759960000000001,
+    "input": 12,
+    "cacheWrite": 16904,
+    "cacheRead": 55798,
+    "output": 2558,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "control-ta125-phone",
+    "screenshots": 14,
+    "changes": [],
+    "neverShown": [],
+    "errors": []
+  }
+}

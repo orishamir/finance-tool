@@ -1,0 +1,97 @@
+{
+  "case": "makam-under-products",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"Makam is listed under 'מוצרים' (products) though it is something bought inside an account, not a product of its own.\",\"where\":\"the group the makam entry sits in\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "The page is only a catalogue of names and doesn't say what to do",
+      "The קרן השתלמות card doesn't say how long the legal waiting period is",
+      "Nothing says which options suit a 61-year-old",
+      "No information on what each option costs",
+      "No information on what each option would earn",
+      "Unclear what the 'מקור' menu item means",
+      "'מאיפה להתחיל' has nothing for someone near retirement or with a lump sum; reader felt left out",
+      "First row of cards under 'כסף שוטף וקצר' was cut off and unreadable",
+      "The 'פרישה' section was the most confusing",
+      "'בניהול אישי' options sound like too much responsibility and a likely portfolio-manager fee",
+      "'במה הכסף מושקע' and the bond tracks were only half understood",
+      "Index cards are a wall of names and numbers; can't tell which is for them",
+      "מק\"מ appears twice on the page with slightly different wording; unclear if it's the same thing",
+      "'מה האתר עוד לא מכסה' didn't help",
+      "Not every card has a 'בשפה פשוטה' line",
+      "Difference between קרן חדשה מקיפה and כללית unclear; which maximum amount?",
+      "'תגמולים ואישית לפיצויים' unclear and alarming about whether to move money now",
+      "'קופון' in bond cards not explained",
+      "'צמודה למדד המחירים לצרכן' not explained plainly",
+      "'שווי השוק הצף' is jargon",
+      "Risk level of the 'מסלול כללי' unclear",
+      "Difference between קרן כספית מתחדשת and a regular קרן כספית unclear",
+      "Can't tell which is better: מזומן שקלי, קרן כספית or פיקדון",
+      "No simple risk scale for each option",
+      "No word on whether money is guaranteed if a bank or company collapses",
+      "Unclear what happens to the money on death",
+      "No side-by-side comparison of the relevant options",
+      "Would drop the 'לילדים' section",
+      "Some descriptions (MSCI, Nasdaq) were cut off, and the last screenshots repeat the same part of the page"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader points out that מק\"מ appears twice and asks why, but never says it is wrongly grouped as a product when it is really something bought inside an account."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0710672
+  },
+  "b": {
+    "raised": [
+      "The page doesn't say which options suit a 61-year-old, what they cost, or what they earn",
+      "Unclear what the top-menu item 'מקור' means",
+      "'מאיפה להתחיל' has nothing for someone near retirement or with a lump sum, so the reader felt left out",
+      "The first row of cards under 'כסף שוטף וקצר' was cut off",
+      "The 'פרישה' section was the most confusing",
+      "The 'בניהול אישי' options sound like a lot of responsibility and probably carry a portfolio-manager fee",
+      "The 'במה הכסף מושקע' section and the bond tracks were only half understood",
+      "The index cards are a wall of names and numbers; the reader can't tell which is for them",
+      "מק\"מ appears twice on the page with slightly different wording, and the reader asks why",
+      "'מה האתר עוד לא מכסה' didn't help",
+      "Not every card has a 'בשפה פשוטה' line",
+      "The difference between קרן חדשה מקיפה and כללית is unclear, including which maximum is meant",
+      "'תגמולים ואישית לפיצויים' is unclear and its line about transferring money for a pension is alarming",
+      "'קופון' in the bond cards is not explained",
+      "'צמודה למדד המחירים לצרכן' is not explained plainly",
+      "'שווי השוק הצף' is jargon",
+      "The risk level of מסלול כללי is unclear",
+      "The difference between קרן כספית מתחדשת and a regular קרן כספית is unclear",
+      "Unclear how מזומן שקלי, קרן כספית and פיקדון differ, and which is better",
+      "No information on management fees",
+      "No example of returns",
+      "No simple risk scale",
+      "The waiting period for קרן השתלמות is not stated",
+      "Nothing on whether the money is guaranteed if a bank or company collapses",
+      "Little on what happens to the money on death",
+      "No side-by-side comparison of the relevant options",
+      "Would drop the 'לילדים' section as not relevant",
+      "The MSCI and Nasdaq descriptions were cut off, and the last two screenshots repeat"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The report only notes that מק\"מ appears twice and asks why it is in both places, which is a complaint about repetition; it never says makam is wrongly grouped under products when it is really bought inside an account."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0710952
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1421624
+}

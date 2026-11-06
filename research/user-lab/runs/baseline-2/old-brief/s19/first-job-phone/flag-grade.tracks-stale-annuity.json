@@ -1,0 +1,89 @@
+{
+  "case": "tracks-stale-annuity",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The page says its data is updated monthly, yet the figures are as of September, in November.\",\"where\":\"the data date at the top\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Unsure whether the 0.47% vs 0.56% fee difference matters",
+      "Unsure whether they may move money to any company, and how to switch",
+      "Nothing helps choose between the S&P 500 and 'לבני 50 ומטה' tracks",
+      "The '123 מקור / מחושב / הזנה' line is confusing",
+      "Orange box saying data not updated since September 2026 caused worry",
+      "Didn't know what the other product buttons were",
+      "Some filter chips (הלכה, מבטיח תשואה) confusing or irrelevant",
+      "Table is very long (about 17 screens) to scroll through",
+      "Company header names cut off between screens (including the cheapest S&P track's company)",
+      "The 'PF-06' tag meant nothing",
+      "The 'קופה' number with arrow icon is unexplained",
+      "Didn't notice the sort arrows until late",
+      "Unclear difference between 'מהחיסכון' and 'מההפקדות' fees",
+      "Exposure above 100% (מניות 101%, מט\"ח 103%) is puzzling",
+      "Negative deposit fee (-0.21%) is puzzling",
+      "'בניהול אישי' and 'IRA' not understood",
+      "Jargon terms (גמיש, אג\"ח, משולב סחיר, מבטיח תשואה, product name) not understood",
+      "Unclear why some names start with 'גמל' and others with 'תגמולים ופיצויים'",
+      "Unclear whether 'פחות מ־3 שנים' (a new track) is bad",
+      "No translation of fee differences into shekels over time",
+      "Can't see which track they're in now or the default for their age",
+      "Can't see the S&P tracks side by side without scrolling 182 rows",
+      "Would drop irrelevant tracks and new tracks with nothing reported",
+      "Would drop the donut charts",
+      "Would drop the unused product buttons"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 5,
+        "why": "The reader worried that the data hadn't been updated since September, two months ago, which is the stale data date the person flagged, though the reader doesn't mention the 'updated monthly' claim."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0739352
+  },
+  "b": {
+    "raised": [
+      "Company names cut off between screenshots, so the cheapest S&P track's company is unknown",
+      "Unsure whether a fee gap like 0.47% vs 0.56% matters",
+      "Unsure whether they can move money to any company",
+      "Nothing says whether to choose the S&P track or the 'for ages 50 and under' track",
+      "The '123 source / calculated / entered' line is confusing",
+      "The orange box saying data hasn't been updated since September 2026 was slightly worrying",
+      "Filter chips like Jewish law, Islamic law and guaranteed return are confusing or irrelevant",
+      "The table is very long (about 17 screens) and had to be skimmed",
+      "The 'PF-06' tag in the footnotes meant nothing",
+      "Didn't notice the table could be sorted until later",
+      "The 'fund' number column (קופה) with the arrow icon is unexplained",
+      "Unclear whether the fee from savings or the fee from deposits costs more",
+      "Exposure above 100% (stocks 101%, foreign currency 103%) makes no sense",
+      "A negative deposit fee (-0.21%) is confusing",
+      "'Personally managed' and 'IRA' are not understood",
+      "Terms like flexible, bonds, tradable mix, guaranteed return and the product's own name are not understood",
+      "Unclear why some names start with 'provident fund' and others with 'rewards and severance'",
+      "Unclear whether 'less than 3 years' means a track is bad or just new",
+      "No translation of fee differences into shekels over about 40 years",
+      "Can't find which track they are in now, or the default for their age",
+      "Can't see S&P tracks side by side without scrolling through 182 rows",
+      "Would drop irrelevant tracks and new tracks with nothing reported",
+      "Would drop the donut charts",
+      "Would drop the buttons for products they don't use"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 6,
+        "why": "The reader notices the warning that the data hasn't been updated since September 2026 when it is two months later, and is worried by it; that is the person's stale-data complaint, even though the reader doesn't mention the 'updated monthly' claim."
+      }
+    ],
+    "liked": [],
+    "usd": 0.07552320000000001
+  },
+  "third": null,
+  "ranks": {
+    "k": 5
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.14945840000000002
+}

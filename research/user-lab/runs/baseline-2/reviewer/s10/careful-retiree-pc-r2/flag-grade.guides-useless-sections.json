@@ -1,0 +1,36 @@
+{
+  "case": "guides-useless-sections",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The guide home has sections that say nothing useful ('שני חלקים בכל חיסכון', 'מאיפה להתחיל').\",\"where\":\"the sections above or below the list of guides\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 5 is about the 'מאיפה להתחיל' section, but its complaint is that it targets salaried workers instead of retirees; finding 4 is about readability, and no finding says these sections are empty or say nothing useful."
+      }
+    ],
+    "liked": [],
+    "usd": 0.021467399999999998
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 5 is about the 'מאיפה להתחיל' section, but it complains that it targets salaried workers rather than retirees, not that the sections say nothing useful, and no other finding says the sections are empty filler."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0199354
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0414028
+}

@@ -1,0 +1,6 @@
+{
+  "named": true,
+  "position": 6,
+  "why": "In section 3 the reader says the line under the '143 מסלולים' summary contains 'TODO: מיון לפי תשואה', which 'looked like a mistake and confused me'. Sections 6 and 7 bring it up again ('the sorting line says TODO'; cut 'the TODO line'). So they saw the visible developer note on the line about sorting. Problems raised before it: the 'under 5 years' figure, the rows (such as 14865) whose company they couldn't tell, the unclear 0.01% deposit fee, the confusing '123 מקור/מחושב' legend, and the filter defaulting to 'הכל'. That makes the TODO note about sixth.",
+  "usd": 0.046056
+}

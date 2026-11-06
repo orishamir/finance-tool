@@ -1,0 +1,91 @@
+{
+  "case": "mmf-guide-leumi",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The money-market-fund guide compares with one named bank (Leumi) and cites that bank's deposit rate, in a page about a general product.\",\"where\":\"the comparison lines and their source\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "The fee is never given as an actual number",
+      "Unclear whether the 3.25% rate is before or after the fee",
+      "Doesn't know which fund to pick or how to buy one",
+      "'No guaranteed return' and 'no state guarantee' made the reader nervous",
+      "The '123 מקורו / חושב / הזנתי' legend was confusing",
+      "The cut-off hour and settlement paragraph in מה זה was too technical",
+      "Codes like MF-11 and 'MF OQ3 שאלה פתוחה' were confusing (can I trade on Friday?)",
+      "The management-fee paragraph was cut off before the number appeared",
+      "The deposit comparison in למה משתמשים בזה was long",
+      "The 'שחקו עם המספרים שלכם' calculator was collapsed; reader wanted it open",
+      "Didn't fully understand 'אין דמי משמרת' (no custody fee)",
+      "The cost table only says 'אין תקרה בחוק' and never says how much you pay",
+      "The tax summary cards were partly cut off",
+      "The chart's bar lengths and colours (and the deposit bar starting halfway) weren't understood",
+      "Didn't understand the 'לפי ריבית בנק ישראל' tags or why the return is tied to that rate",
+      "Unsure what 'עליית המדד' / 'הרווח הריאלי' mean",
+      "Terms like נאמן, מפיץ and סלקה weren't understood",
+      "Securities-account custody fee looks contradictory between the glossary and the cost table",
+      "No worked example of what you'd actually end up with after fee and tax",
+      "No guidance on choosing among the 73 funds",
+      "No information on whether these funds have ever lost money, or by how much",
+      "No one-sentence answer to 'can I get my money tomorrow?'",
+      "Would cut the rule codes and links, the 123 legend, מה האתר לקח בחשבון, the rules/where-it-appears columns, most of the glossary, the מי מציע paragraph, the technical cut-off paragraph and the loss-offset tax part"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The report never mentions Leumi, a single named bank, or a rate sourced from one bank; its comments on the comparison are about bar lengths, tags and alternatives, not about singling out one bank."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0658552
+  },
+  "b": {
+    "raised": [
+      "The actual fee is never given as a number",
+      "Unclear whether the 3.25% is before or after the fee",
+      "No guidance on which fund to pick or how to buy one",
+      "'No guaranteed return' and 'no state guarantee' made the reader nervous",
+      "The '123 מקורו / חושב / הזנתי' legend is confusing",
+      "The cut-off hour and settlement paragraph in מה זה is too technical",
+      "Codes like MF-11 and 'MF OQ3 שאלה פתוחה' are confusing (can I trade on Friday?)",
+      "The management-fee paragraph is cut off before the number appears",
+      "The deposit comparison in למה משתמשים בזה is long",
+      "The 'שחקו עם המספרים שלכם' section is closed by default",
+      "'אין דמי משמרת' is not fully understood",
+      "The cost table only says 'no legal cap' and never gives an actual cost",
+      "The tax cards at the top are partly cut off",
+      "The chart's bar lengths and colours (teal vs mustard, deposit bar starting halfway) are unclear",
+      "The 'לפי ריבית בנק ישראל' tags and why the return is tied to the BoI rate are not understood",
+      "'עליית המדד' / 'הרווח הריאלי' are not clearly understood",
+      "Terms like נאמן, מפיץ, סלקה are not understood",
+      "Securities-account fee: the glossary and the cost table seem to contradict each other",
+      "No worked example of the final amount after fee and tax",
+      "No guidance on choosing among the 73 funds",
+      "No history or scale of past losses; 'value can go down' is scary",
+      "No one-sentence answer to 'can I get my money tomorrow?'",
+      "Would cut the codes and 'הצגת החוקים והכללים' links",
+      "Would cut 'מה האתר לקח בחשבון'",
+      "Would cut the 'חוקים וכללים' and 'איפה מופיע' columns",
+      "Would trim the glossary to a few terms",
+      "Would cut the 'מי מציע ומי מפקח' paragraph",
+      "Would cut the loss-offset part of מיסוי"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The report never mentions Leumi, a named bank, or a bank-specific deposit rate being used as the comparison source; it even quotes the general 'some banks pay up to 3%' line approvingly."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0662472
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1321024
+}

@@ -1,0 +1,36 @@
+{
+  "case": "tracks-sort-does-nothing",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"Sorting by management fee does nothing visible: under each company heading there is one track, so the order does not change.\",\"where\":\"the sorted table\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 1,
+        "why": "Finding 1 says the fee-sort arrow shows but the list stays in company order, so the cheapest isn't on top, which is the same complaint that sorting by fee doesn't visibly reorder anything."
+      }
+    ],
+    "liked": [],
+    "usd": 0.015847399999999998
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 1,
+        "why": "Finding 1 says the same thing: choosing to sort by fee doesn't actually put the list in fee order, so the cheapest track isn't on top, even though it gives a different reason (company size rather than one track per company)."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0170714
+  },
+  "third": null,
+  "ranks": {
+    "k": 1
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0329188
+}

@@ -1,0 +1,217 @@
+{
+ "id": "moving",
+ "written": "2026-11-06",
+ "built_from": [
+  "elsewhere: justETF section tabs that jump the page (the founder, 2026-11-06)"
+ ],
+ "reason": "A person keeps a sense of where things are; when the page moves without their doing, they lose their place and have to find it again.",
+ "tested_on_not_built_from": [
+  "planted p15 (2 instances, browser mode)"
+ ],
+ "negative_check": [
+  "planted clean controls in browser mode (sp500 pc, study fund phone)",
+  "held-out benchmark noise, with and without"
+ ],
+ "status": "in v1, the default reviewer since 2026-11-06 (browser sessions only)",
+ "result": {
+  "date": "2026-11-06",
+  "runs": "runs/candidate-moving/without and runs/candidate-moving/with (identical but for behaviour); personas first-job-phone and careful-retiree-pc, repeat 2, reader effort medium, graders high",
+  "p15_caught_in_first_10": {
+   "without": "0 of 8",
+   "with": "6 of 8",
+   "by_instance_with": {
+    "p15-jump-sp500-pc (pc, tune split)": "4 of 4",
+    "p15-jump-keren-phone (phone, score split)": "2 of 4"
+   },
+   "note": "every p15 session in both arms received the plant as a moved: line (sp500: 42 px up after the years; keren: the year control moving 69 px), so the gap is the instruction, not delivery; one-sided Fisher p about 0.004"
+  },
+  "justetf_tabs": {
+   "without": "0 of 4",
+   "with": "0 of 4",
+   "note": "not a test of the instruction: one session per arm got HTTP 429 and saw no page; in the with arm none of the three loaded sessions clicked a section name, in the without arm two did, were told the page scrolled 3,389 and 1,230 px, and did not report it. Other justETF keys 0 of 4 in both; j-help (liked) complained of in 2 of 4 in both"
+  },
+  "controls": {
+   "false_alarms": {
+    "without": 0,
+    "with": 0,
+    "rule": "a finding about movement the session was never told of in a moved: line, or about something not on the screen"
+   },
+   "movement_findings": {
+    "without": "0 in 8 sessions",
+    "with": "10 in 8 sessions, every one matching a moved: line that session received",
+    "detail": [
+     "S&P 500 pc, 4 of 4 sessions: part of the screen jumped sideways on the first change of an input (115 px; the real defect of issue #200)",
+     "study fund phone, 4 of 4 sessions: the fields reshuffle when switching to self-employed (288 px up; real on the live page)",
+     "study fund phone, 1: a link at the top scrolled the page 2,784 px by itself (an in-page jump, real)",
+     "study fund phone, 1: the page scrolled 140 px when the year slider was moved; possibly the tool: act.mjs focuses an ARIA slider with el.focus() and no preventScroll, which can scroll the page itself"
+    ]
+   },
+   "findings_total": {
+    "without": 44,
+    "with": 44
+   },
+   "serious_by_grader": {
+    "without": "17 of 44",
+    "with": "17 of 44"
+   },
+   "names_absent_plant": {
+    "without": 0,
+    "with": 0
+   }
+  },
+  "cost_usd": {
+   "reader_sessions": {
+    "without": 4.7,
+    "with": 4.82
+   },
+   "planted_graders": {
+    "without": 0.37,
+    "with": 0.38
+   },
+   "justetf_flag_graders": "not recorded by grade-flag.mjs; about 0.5 estimated (32 grader calls)",
+   "total": "about 10.8"
+  },
+  "verdict": "Keep as a candidate that generalises: with the instruction p15 is caught 6 of 8 against 0 of 8 without, and the clean controls gain no false alarms (their new movement findings are all real and grounded, among them issue #200, missed 0 of 4 without). The justETF tabs were not exercised in the with arm, so that part is unanswered. It enters a version only after the held-out benchmark shows no rise in noise and no fall in catch rate. Cost to watch: movement findings take a place among the first 10 (44 findings in both arms, so another finding gave way)."
+ },
+ "held_out": {
+  "date": "2026-11-06",
+  "runs": "runs/baseline-1/reviewer (without) and runs/baseline-1/moving (with, run-moving.json: run-reviewer.json plus the behaviour file); 39 held-out screens, still screenshots only, personas first-job-phone and careful-retiree-pc, one run each, reader effort medium; graded with grade-flag.mjs on the same 52 case files (keys rebuilt from the reviewer arm's grading stamps), two blind graders at high effort, a third on a split",
+  "headline_general_no_outside_36": {
+   "first_10_single": {
+    "without": "13 of 72 (18%; 11 to 28%)",
+    "with": "14 of 72 (19%; 12 to 30%)"
+   },
+   "by_persona_with": {
+    "first-job-phone": "6 of 36 (was 8)",
+    "careful-retiree-pc": "8 of 36 (was 5)"
+   },
+   "first_10_pooled": {
+    "without": "8 of 36 (22%; 12 to 38%)",
+    "with": "10 of 36 (28%; 16 to 44%)"
+   },
+   "ranks_of_hits": {
+    "without": [
+     1,
+     1,
+     1,
+     1,
+     2,
+     3,
+     3,
+     3,
+     3,
+     3,
+     5,
+     6,
+     7
+    ],
+    "with": [
+     1,
+     1,
+     1,
+     1,
+     2,
+     3,
+     3,
+     4,
+     4,
+     5,
+     5,
+     5,
+     5,
+     7
+    ]
+   },
+   "paired_single_mcnemar_exact": {
+    "lost": 3,
+    "gained": 4,
+    "p_two_sided": 1.0
+   },
+   "lost": [
+    "guides-useless-sections (first-job-phone, was rank 3)",
+    "hg-within-ceiling (first-job-phone, was 3)",
+    "tracks-stale-annuity (first-job-phone, was 6)"
+   ],
+   "gained": [
+    "hg-tax-after-six (careful-retiree-pc, rank 7, settled by a third grader)",
+    "study-r1-decoder-table (first-job-phone, 4)",
+    "study-r1-grey-years (careful-retiree-pc, 3)",
+    "tracks-tracker-subtitle (careful-retiree-pc, 3)"
+   ]
+  },
+  "general_outside_knowledge_7": {
+   "first_10_single": {
+    "without": "2 of 14 (14%; 4 to 40%)",
+    "with": "2 of 14 (14%; 4 to 40%)"
+   },
+   "first_10_pooled": {
+    "without": "2 of 7",
+    "with": "2 of 7"
+   },
+   "lost": [
+    "company-missing-fund-kinds (first-job-phone)"
+   ],
+   "gained": [
+    "makam-under-products (first-job-phone, 6)"
+   ]
+  },
+  "taste_9": {
+   "first_10_single": {
+    "without": "1 of 18 (6%; 1 to 26%)",
+    "with": "0 of 18 (0%; 0 to 18%)"
+   },
+   "first_10_pooled": {
+    "without": "1 of 9",
+    "with": "0 of 9"
+   },
+   "lost": [
+    "cfc-exposure (careful-retiree-pc)"
+   ],
+   "gained": []
+  },
+  "findings_per_session": {
+   "without": "6.97 (544 in 78)",
+   "with": "6.92 (540 in 78)"
+  },
+  "grader_agreement_with": "102 of 104 pairs (kappa 0.93); 2 splits, both hg-tax-after-six, settled by a third grader",
+  "movement_claims_on_still_screens": {
+   "moved_jumped_shifted": {
+    "without": 0,
+    "with": 0,
+    "note": "five findings in the with arm use 'jump', 'move' or 'pushed' figuratively (eye jumps, numbers jump out, a box moves on to another topic, an explanation pushed aside in the layout); none says the screen moved"
+   },
+   "appeared_in_time": {
+    "without": 0,
+    "with": 3,
+    "detail": [
+     "s03 first-job-phone, rank 1: 'The sticky bar with tabs appeared on top of the text while I was scrolling and covered what I was reading' (no scrolling was seen; the bar is drawn mid-picture because the slice is taller than a phone screen)",
+     "s27 careful-retiree-pc, rank 4: 'A popup appeared over the list and covered what I was reading' (the popup is open in the picture by design; the reviewer arm described the same box as covering, with no event)",
+     "s28 first-job-phone, rank 6: 'a nav bar ... suddenly covers the middle of the list'"
+    ],
+    "note": "the instruction itself counts something appearing as the page moving; the first is a clear claim of an event on a still screen, the other two are event wording over something the picture does show"
+   }
+  },
+  "cost_usd": {
+   "readers": 13.18,
+   "graders": 3.29,
+   "total": 16.47
+  },
+  "verdict": "Not passed. The catch rate holds: 14 of 72 against 13 of 72 on the headline single run (allowed fall: 2), pooled 10 against 8 of 36, McNemar p = 1.00 (3 lost, 4 gained). But the instruction did not stay silent on still screens: one finding claims a bar appeared while the reader was scrolling (s03, rank 1), and two more use appearance wording ('appeared', 'suddenly') for overlays the pictures show. No finding claims a move, jump or shift. Noise needs the founder's sample and is not judged here."
+ },
+ "decision": {
+  "date": "2026-11-06",
+  "what": "attached only in browser mode (panel.mjs \"behaviourBrowser\"); still screens never get it",
+  "why": "movement can be perceived only by a session that uses the page; on still screens the instruction has nothing true to report and produced the one false claim (s03, a header the capture drew mid-page, called a bar that appeared while scrolling). In browser mode it caught the planted jump 6 of 8 against 0 of 8, was silent where nothing moved, and its 10 findings on clean pages were all real moves (among them #199 and #200). The held-out catch rate held (14 against 13 of 72), so the instruction costs nothing measurable there.",
+  "open": null,
+  "noise": {
+   "sample": "runs/noise-1/answers.json",
+   "items": [
+    "n02",
+    "n03",
+    "n07"
+   ],
+   "result": "none of its three findings was called 'would not bother anyone': n07 (a tab that scrolls the page by itself) a real problem; n02 (fields that change places when a choice changes the form) and n03 (a sideways jump while typing) can't tell",
+   "his_note_n02": "the aggressive redrawing is abrupt for the eye, but the whole page does need to change; a subtle redraw or animation would make it less abrupt; not that big deal"
+  }
+ }
+}

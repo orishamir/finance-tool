@@ -1,0 +1,75 @@
+{
+  "case": "study-r1-coins",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The coins add nothing a simple bar would not show better.\",\"where\":\"the coin drawing\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "The drag hint ('all drawings are live, you can drag the years') meant nothing to them",
+      "The left card (+1,721 ₪ your money alone, yet 394 ₪ less after 5 years) was confusing and seemed pointless",
+      "Only understood half of the grey small print; the rest was names and codes",
+      "Gave up counting the coins in the coin towers",
+      "The step 'same money moves to the fund +527 ₪' was confusing, especially with the fund's higher fees",
+      "Couldn't tell whether the striped coins on top are part of the 66,513 or taken out of it",
+      "Didn't understand the fund names and ID codes (Meitav S&P500 13245, 5139282, 4D, Fair Financial)",
+      "'Up to the legal ceiling' wasn't explained: what is the ceiling in shekels?",
+      "The '19 tracks' range was unclear: do I have to pick a track, and which one?",
+      "Unsure about the salaried/self-employed switch",
+      "Couldn't find what happens if the money is needed before 6 years",
+      "Couldn't find what happens on leaving the job or retiring at 64 (does the 6-year clock keep running?)",
+      "Couldn't find what happens if the market falls instead of rising 7%",
+      "Couldn't find whether age changes anything",
+      "Couldn't find how to check whether the employer offers this",
+      "Would drop the coin towers and the 'same drawing one year later' repeat",
+      "Would drop the coloured legend line",
+      "Would drop option ב because option ג shows the same thing"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 4,
+        "why": "The reader gave up counting the coins and relied on the table and the bar chart in option ג instead, which matches the person's point that the coin drawing adds nothing a simpler chart wouldn't show better."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0531552
+  },
+  "b": {
+    "raised": [
+      "The drag-the-years hint in the subtitle meant nothing to someone just looking at pictures",
+      "The left card (+1,721 ₪ / 394 ₪ less after 5 years) was confusing and seemed pointless",
+      "The grey small print about assumptions was only half understood: fund names and ID codes",
+      "Gave up trying to count the coins in the coin towers",
+      "The step 'same money moves to the fund +527 ₪' was confusing, given the fund's higher fees",
+      "In the coins, could not tell whether the striped tax coins are inside the 66,513 or taken out of it",
+      "Did not understand 'up to the legal ceiling': what the ceiling is in shekels",
+      "Unclear whether one must pick one of the 19 tracks, and which one",
+      "Unsure about the salaried/self-employed switch and left it alone",
+      "Could not find what happens if the money is needed before 6 years",
+      "Could not find what happens on leaving the job or retiring at 64",
+      "Could not find what happens if the market falls instead of rising 7%",
+      "Could not find whether age changes anything",
+      "Could not find how to check whether the employer offers this",
+      "Would drop the coin towers and the 'same drawing one year later' repeat first",
+      "Would drop the small print with fund codes, the colour legend line and the drag hints",
+      "Would drop option ב because option ג already shows the same thing"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 4,
+        "why": "The reader gave up counting the coins, would drop the coin towers first, and preferred the bar chart (option ג). That is the person's point that the coin drawing does a worse job than a simple bar."
+      }
+    ],
+    "liked": [],
+    "usd": 0.051679199999999995
+  },
+  "third": null,
+  "ranks": {
+    "k": 4
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1048344
+}

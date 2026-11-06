@@ -1,0 +1,36 @@
+{
+  "case": "tracks-stale-annuity",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The page says its data is updated monthly, yet the figures are as of September, in November.\",\"where\":\"the data date at the top\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 6,
+        "why": "Finding 6 says the data isn't up to date, which is the core of the person's complaint about September figures shown in November on a page that claims monthly updates, even though the reader focuses on the banner putting them off."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0173794
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 6,
+        "why": "Finding 6 is about the screen-1 banner warning that the data isn't up to date, which is the same staleness problem the person raised about the September figures shown in November."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0166194
+  },
+  "third": null,
+  "ranks": {
+    "k": 6
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.033998799999999996
+}

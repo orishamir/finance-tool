@@ -1,0 +1,93 @@
+{
+  "case": "play-panel-broke-phone",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"On a phone, the fields in the 'שחקו עם המספרים' panel break out of line: they have different widths, sit at odd places and look oversized.\",\"where\":\"the fields of the 'שחקו עם המספרים שלכם' panel on a phone\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "The fund's return is only the site's assumption, so they won't move savings on a guess",
+      "Not told whether the money market fund is safer or riskier than the bank (no deposit insurance)",
+      "Government guarantee is only discretionary, which frightened them a little",
+      "The last top tab is cut off at the edge of the screen",
+      "The 123 source/calculated/entered legend and the different underline styles are confusing",
+      "The basic-plan paragraph in 'מה זה' reads like fee talk, not savings talk",
+      "Text goes under the floating tab bar; dates and BANK-17 can't be read, so it's unclear what is changing",
+      "The button 'במה אפשר להשקיע בתוכו: מזומן שקלי' meant nothing",
+      "The first chart is confusing; they didn't see that the brown area adds the fund's gain on top of the loss",
+      "Two different loss figures (1,797 vs 2,576), with no explanation of the difference",
+      "The second calculator (500 a month, 0% vs 3.25%) doesn't fit their situation and tells a different story",
+      "'כמה זה עולה' gives no actual numbers",
+      "Part of the tax timeline around 'כשמושכים' disappeared",
+      "Unknown whether the low-income tax exemption applies, which is unhelpful",
+      "The age-exemption section is locked or blocked, which annoyed them",
+      "The glossary labels (אפליקציה, חוק, דוח שנתי) meant nothing",
+      "The vertical axis doesn't start at zero, so the gap looks bigger",
+      "The second chart's lines are too close to see the gap",
+      "'בכסף של היום' and the assumed 2% inflation were hard to understand",
+      "Unclear what a daily money market fund is, who holds the money and whether it can go down",
+      "Codes like BANK-35, BANK-17, BANK-15 and TXI OQ11 not understood",
+      "Unclear what 'redeemed only on a trading day' means for withdrawals",
+      "'ריבית על יתרת זכות' took a while to understand",
+      "Couldn't find their own bank's interest rate; never saw the table",
+      "Didn't find how to actually buy a fund or what it costs",
+      "Wanted 3- or 5-year results without having to use the slider",
+      "Would drop the paragraph about losses on selling securities as irrelevant"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader never mentions how the calculator's input fields look or line up on a phone; they only say they didn't touch the inputs."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0757832
+  },
+  "b": {
+    "raised": [
+      "The fund's return is only the site's assumption, and nothing says whether the fund is safer or riskier than the bank",
+      "No deposit insurance, and the government guarantee is only discretionary, which frightened the reader a little",
+      "The last top tab is cut off at the edge of the screen",
+      "The 123 ממקור/מחושב/הזנתם legend and the mix of underlined, dotted and highlighted numbers were confusing",
+      "The basic-plan paragraph felt like fee talk rather than savings talk",
+      "Text went under the floating tab bar, so the dates and BANK-17 could not be read and the reader couldn't tell what is changing",
+      "The 'מזומן שקלי' button meant nothing to the reader",
+      "The first chart's brown area was confusing: it wasn't clear that it adds the fund's gain on top of the loss",
+      "Two different loss figures (1,797 vs 2,576), and the difference isn't explained",
+      "The second calculator (500 a month, 0% vs 3.25%) doesn't fit the reader's situation and tells a different story",
+      "'כמה זה עולה' gives no actual numbers",
+      "Part of the tax timeline disappeared around 'כשמושכים'",
+      "The red box saying the low-income exemption is 'unknown' is unhelpful",
+      "The age-exemption section is locked and not calculated, which annoyed the reader",
+      "The glossary labels (אפליקציה, חוק, דוח שנתי) meant nothing to the reader",
+      "The vertical axis doesn't start at zero, so the gap looks bigger than it is",
+      "On the second chart the lines are too close together to see the gap",
+      "'בכסף של היום' and the 2% inflation assumption were understood only on a second reading",
+      "It isn't explained what a daily money market fund is, who holds the money, or whether it can go down",
+      "The codes BANK-35, BANK-17, BANK-15, TXI OQ11 and TXI-17 aren't understood",
+      "It's unclear whether redemption only on trading days means no money on a Friday",
+      "'ריבית על יתרת זכות' took a while to understand",
+      "Couldn't find whether the reader's own bank pays interest, and the table was never seen",
+      "Couldn't find how to buy a fund or what it costs",
+      "Wanted results for 3 or 5 years without having to work the slider",
+      "Would drop the paragraph about losses on selling securities"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader says they never touched the calculator inputs, and none of the raised problems mentions the panel's fields being misaligned, uneven in width or oversized on a phone."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0743672
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1501504
+}

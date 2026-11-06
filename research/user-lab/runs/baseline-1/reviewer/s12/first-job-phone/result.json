@@ -1,0 +1,120 @@
+{
+  "task": "s12",
+  "persona": "first-job-phone",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T02:18:01.632Z",
+  "structured": {
+    "answer": "Keep it: a keren hishtalmut is a savings pot from salary where the employer puts in up to 7.5% and I put in 2.5%; after 6 years (3 for studies) I can take it out tax-free, earlier is possible but taxed and \"יקרה\". Worth having mainly because the employer money is free, though the page's own example only shows ₪415 more than a regular account after 10 years, which confused me.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Comparison bars 17,370 ₪ vs 16,955 ₪, 'ההפרש: ₪415.84 יותר'",
+        "why": "Difference looks tiny, made me doubt it's worth it; not sure if employer money is included"
+      },
+      {
+        "where": "Paragraph with ₪300 הפקדה מוטבת, ₪200, 7.5%, ₪15,712, ₪900",
+        "why": "Too many numbers, lost track of what's mine vs employer's"
+      },
+      {
+        "where": "Range '₪−342.02 לבין ₪2,106'",
+        "why": "A minus sign — read it as possibly losing money with the keren"
+      },
+      {
+        "where": "Calculator with 10,000 ₪ and 500 ₪ example",
+        "why": "Not my situation, no money of mine goes into it as a lump; left it as is"
+      }
+    ],
+    "used": [
+      "Heading 'קרן השתלמות' and subtitle",
+      "'מה זה' section: 6 years tax-free, 3 for studies, early withdrawal taxed, 7.5%/2.5%",
+      "Bars 17,370 ₪ / 16,955 ₪ and 'ההפרש ₪415.84 יותר'",
+      "Card 'כשעוברות 6 שנים'",
+      "Card 'עד 4 ימי עסקים'",
+      "'כמה זה עולה' — 'עד 2% בשנה'",
+      "Orange box first line 'משיכה לפני הזמן אפשרית, אבל יקרה'"
+    ],
+    "skimmed": [
+      "Calculator inputs (שכיר, 12,000)",
+      "Costs/tax table under the bars",
+      "Paragraphs under the bars about הפקדה מוטבת and employer ₪900",
+      "'שווה לדעת' list",
+      "Card 'מעבר בין מסלולים: בלי מס'",
+      "'מיסוי' card headings"
+    ],
+    "skipped": [
+      "'מי מציע ומי מפקח' and company cards",
+      "Most of 'מיסוי' body text",
+      "'סיכונים ומה לא מוגן'",
+      "'מונחים' glossary table",
+      "All 'חוקים וכללים' chips and 'שחקו עם המספרים שלכם' fold",
+      "Small grey notes and footer"
+    ],
+    "unsure_meaning": [
+      "הפקדה מוטבת",
+      "הרווח הריאלי",
+      "ותק",
+      "משכורת קובעת",
+      "נאמנות",
+      "קופת גמל להשקעה",
+      "חשבון ניירות ערך",
+      "הרווח נטו — is 17,370 what I'd have or just the profit?",
+      "₪−342.02 — does keren lose money?",
+      "אג\"ח ממשלתית צמודה / לא צמודה",
+      "מסלול כללי"
+    ],
+    "not_found": [
+      "A clear 'what to do first' step (check which company/track I'm in)",
+      "A comparison that clearly includes the employer's money",
+      "Which company or track is good for someone like me"
+    ],
+    "findings": [
+      {
+        "what": "Headline comparison shows only ₪415 advantage, making the keren look barely worth it; whether employer money is excluded is hidden in a dense paragraph",
+        "where": "Bars under 'מה מייחד קרן השתלמות'"
+      },
+      {
+        "what": "Minus sign in range '₪−342.02' scares and isn't explained up front",
+        "where": "'ההפרש תלוי גם במי שבוחרים' bullets"
+      },
+      {
+        "what": "Paragraph packed with 300, 200, 7.5%, 15,712, 900 — impossible to follow on a phone",
+        "where": "Below the comparison table"
+      },
+      {
+        "what": "Calculator example uses a 10,000 ₪ lump sum, which doesn't fit how a salaried keren works for me",
+        "where": "Calculator box, screen 1"
+      },
+      {
+        "what": "No concrete next step for someone already enrolled by HR",
+        "where": "Whole page"
+      },
+      {
+        "what": "From 'מיסוי' onward it's walls of text; would close here",
+        "where": "Screens 3–4"
+      },
+      {
+        "what": "Jargon like הפקדה מוטבת, ותק, הרווח הריאלי used before being explained (glossary only at the end)",
+        "where": "Throughout"
+      }
+    ]
+  },
+  "steps": 5,
+  "reads": 5,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 46373,
+    "turns": 7,
+    "usd": 0.22401400000000002,
+    "input": 8,
+    "cacheWrite": 16316,
+    "cacheRead": 27270,
+    "output": 4400,
+    "model": "claude-opus-5-5"
+  }
+}

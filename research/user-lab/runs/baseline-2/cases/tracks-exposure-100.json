@@ -1,0 +1,13 @@
+{
+ "id": "tracks-exposure-100",
+ "task": "s17",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "The column of exposure to stocks and foreign currency is not explained, and shows figures above 100% with nothing saying how that can be.",
+   "where": "the exposure column",
+   "kind": "general"
+  }
+ ],
+ "liked": []
+}

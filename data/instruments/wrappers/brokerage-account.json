@@ -178,7 +178,7 @@
         "SW-34"
       ],
       "state": "sourced",
-      "notes": "Banks only: moving the portfolio to the same client's account at another financial body on closing the account costs at most NIS 10 for the transfer and third-party costs; while the account stays open the per-transfer price is supervised and set outside the rules (not found, BRK OQ12; Discount lists NIS 5 per transfer, institution). Non-bank members have no cap found and charge per security (SW-34)."
+      "notes": "Banks only: moving the portfolio to the same client's account at another financial body on closing the account costs at most NIS 10 for the transfer and third-party costs; while the account stays open the price is supervised: at most NIS 5 for the service plus what the bank paid a third party, per the Bank of Israel's fees page (SW-33; BRK OQ12 closed 2026-11-06); the page names no unit, and Discount prints per transfer (SW-52, institution). Non-bank members have no cap found and charge per security (SW-34)."
     }
   },
   "ceiling": null,
@@ -361,7 +361,6 @@
   "open_questions": [
     "BRK-OQ5",
     "BRK-OQ9",
-    "BRK-OQ12",
     "BRK-OQ17",
     "REG-OQ9",
     "REG-OQ10",

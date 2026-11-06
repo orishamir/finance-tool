@@ -1,0 +1,36 @@
+{
+  "case": "study-r2-per-shekel-sentence",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The sentence 'כל שקל שהפקדתם נהיה 4.57 ₪ בקרן ו־1.11 ₪ בחשבון ניירות ערך' does not help.\",\"where\":\"the per-shekel sentence\",\"kind\":\"taste\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings mention the per-shekel sentence (4.57 ₪ / 1.11 ₪). Finding 2 is about the example paragraph's English letters and fund codes, which is a different problem."
+      }
+    ],
+    "liked": [],
+    "usd": 0.015619400000000002
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings talks about the per-shekel sentence (4.57 ₪ in the fund vs 1.11 ₪ in the securities account) or says it doesn't help."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0143714
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0299908
+}

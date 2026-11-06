@@ -1,0 +1,118 @@
+{
+  "task": "s13",
+  "persona": "first-job-phone",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T12:20:40.468Z",
+  "structured": {
+    "answer": "It's worth having: the employer puts in about three times what I do, and after 6 years from the first deposit I can take everything out tax-free. Before that it's possible but tax eats a big chunk, so I'll leave it alone and ask HR who runs mine.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Bar chart 'מושכים את הכסף אחרי 5 שנים'",
+        "why": "Striped pink part on the 'המס לקח' bar has no label next to it; I guessed it's the tax"
+      },
+      {
+        "where": "The calculator box between screens 2 and 3",
+        "why": "Didn't see what inputs it used; not sure the 300/900 ₪ are like my real deposits"
+      },
+      {
+        "where": "Tax section with 15,712.00 ₪ and 20,566.00 ₪",
+        "why": "Couldn't tell what these numbers mean for me; got heavy and I skimmed past"
+      },
+      {
+        "where": "Fees line 'בין 19 המסלולים... 66,280 ₪ עד 67,028 ₪'",
+        "why": "Don't know which track I'm in so it didn't help"
+      }
+    ],
+    "used": [
+      "Heading 'קרן השתלמות' and subtitle",
+      "'אחרי 6 שנים מההפקדה הראשונה אפשר למשוך... בלי מס'",
+      "'הפקדת המעסיק מגיעה רק לכאן'",
+      "Chart labels 'לפני 6 שנים: מס' / 'מ־6 שנים: פטור ממס'",
+      "Waterfall chart: 18,000 ₪, +54,000 ₪, +8,487 ₪, −13,974 ₪, 66,513 ₪",
+      "Card 'מתי הכסף פנוי: כשעוברות 6 שנים'",
+      "Fee table 'עד 2% בשנה'",
+      "Start of orange box 'משיכה לפני הזמן אפשרית, אבל יקרה'"
+    ],
+    "skimmed": [
+      "למה משתמשים בזה section beyond first line",
+      "Notes about 7% return and 2% inflation",
+      "כמה זה עולה table",
+      "מיסוי cards",
+      "Orange warning box past first line"
+    ],
+    "skipped": [
+      "'שחקו עם המספרים שלכם' fold",
+      "Chip buttons (S&P 500, מסלול כללי, אג\"ח...)",
+      "שווה לדעת",
+      "מי מציע ומי מפקח and company names",
+      "סיכונים ומה לא מוגן",
+      "מונחים glossary and everything below",
+      "All 'חוקים וכללים' tags",
+      "Screen 9"
+    ],
+    "unsure_meaning": [
+      "מס רווחי הון",
+      "רווח ריאלי",
+      "הפקדה מוטבת",
+      "משכורת קובעת",
+      "ותק",
+      "תקרה",
+      "קופת גמל להשקעה",
+      "Striped pink area on the chart",
+      "15,712.00 ₪ / 20,566.00 ₪",
+      "'עד 2%' – whether that's a lot",
+      "−13,974 ₪ with the ₪ at the end"
+    ],
+    "not_found": [
+      "How to find out which company runs my fund and which track I'm in",
+      "What my own employer actually deposits",
+      "A clear 'first thing to do' step"
+    ],
+    "findings": [
+      {
+        "what": "No label next to the striped pink part on the tax bar; I had to guess it's what tax takes",
+        "where": "Waterfall chart, screen 3"
+      },
+      {
+        "what": "The example uses 300/900 ₪, but nothing tells me how to get my own numbers or who to ask",
+        "where": "Chart caption, screen 3"
+      },
+      {
+        "what": "Tax section is full of terms and odd numbers (15,712.00 ₪, 20,566.00 ₪, 'רווח ריאלי'); this is where I'd close the page",
+        "where": "מיסוי, screen 7"
+      },
+      {
+        "what": "Fee shown only as 'עד 2%' sounds like nothing; no shekel amount right there",
+        "where": "כמה זה עולה, screen 6"
+      },
+      {
+        "what": "The ₪ after the minus sign makes '−13,974 ₪' look odd",
+        "where": "Chart, screen 3"
+      },
+      {
+        "what": "Too many small 'חוקים וכללים' tags cluttering the page",
+        "where": "Throughout"
+      }
+    ]
+  },
+  "steps": 8,
+  "reads": 8,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 43472,
+    "turns": 10,
+    "usd": 0.21201779999999998,
+    "input": 12,
+    "cacheWrite": 15277,
+    "cacheRead": 55869,
+    "output": 3929,
+    "model": "claude-opus-5-5"
+  }
+}

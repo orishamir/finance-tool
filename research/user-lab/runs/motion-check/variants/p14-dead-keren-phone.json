@@ -1,0 +1,39 @@
+{
+  "id": "p14-dead-keren-phone",
+  "about": "For the lab only; never reaches a session. Planted problem, kind p14 (A control that changes nothing visible): see research/user-lab/planted.md.",
+  "purpose": "plant",
+  "pages": [
+    "/finance-tool/guide/keren-hishtalmut"
+  ],
+  "device": "phone",
+  "instance": {
+    "kind": "p14",
+    "mode": "browser",
+    "url": "https://orishamir.github.io/finance-tool/guide/keren-hishtalmut",
+    "device": "phone",
+    "steps": [],
+    "task": "keren-browser",
+    "control": "planted/control-keren-phone-browser",
+    "split": "score"
+  },
+  "plants": [
+    {
+      "id": "p14",
+      "kind": "general",
+      "problem": "The switch to self-employed does nothing: the calculator stays on salaried employees.",
+      "where": "the employee / self-employed switch at the top of the study fund calculator",
+      "counts": "A finding that choosing self-employed did not change anything, or that the switch does not respond.",
+      "notCounts": "Not finding the switch."
+    }
+  ],
+  "changes": [
+    {
+      "id": "dead-shown",
+      "type": "style",
+      "selector": "[data-pl=\"dead\"]",
+      "set": {
+        "--pl": "1"
+      }
+    }
+  ]
+}

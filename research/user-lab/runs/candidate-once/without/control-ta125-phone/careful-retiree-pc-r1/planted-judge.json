@@ -1,0 +1,47 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "Unexplained minus signs ('−0.04%', '−1,030 ₪') next to the recommended fund look like losing money.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "English index names on a dark background make the page feel not meant for the reader.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "The 86,045 ₪ result assumes an unchosen 7% return without clearly saying it could be lower.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "Long list of banks with many numbers and coloured bars is tiring.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "Cost bar colours (orange/yellow, red/pink) are too close to tell apart.",
+      "serious": false,
+      "names_listed": 3
+    },
+    {
+      "n": 6,
+      "summary": "Jargon such as קרן מחקה, נאמן, דמי משמרת, הזוג.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 7,
+      "summary": "Unclear who 'מקור' is, so the reader doubts the advice.",
+      "serious": false,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.053312
+}

@@ -1,0 +1,36 @@
+{
+  "case": "guides-template-current-account",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The current-account guide carries template sections that do not fit it (who offers it, money in and out, tax and the like), padding the page.\",\"where\":\"the sections 'who', 'in and out', 'tax' of the guide\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings mention the current-account guide carrying irrelevant template sections (who, in and out, tax) that pad the page; they focus on missing numbers, jargon, card layout and choice overload."
+      }
+    ],
+    "liked": [],
+    "usd": 0.014515400000000001
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings mention the current-account guide or template sections that don't fit it and pad the page; their points are about missing numbers, missing starting points, look-alike cards, jargon and layout."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0143834
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.028898800000000002
+}

@@ -1,0 +1,106 @@
+{
+  "task": "s21",
+  "persona": "first-job-phone",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T03:23:26.887Z",
+  "structured": {
+    "answer": "I'd lean to Harel's \"מניות\" track in קופת גמל להשקעה (24.04% over 3 years, fee 0.55%) over their S&P 500 one (13.7%, 0.56%), but I'm not sure that product is even for someone my age, and the page didn't tell me what to do first, so I wouldn't move the money today.",
+    "confidence": "unsure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Product tabs, 'קופת גמל להשקעה' preselected",
+        "why": "I think that's a pension thing for older people, so I wasn't sure I was looking at the right product"
+      },
+      {
+        "where": "Return column",
+        "why": "most rows say 'פחות מ־3 שנים' with no number, so I could only compare a few tracks"
+      },
+      {
+        "where": "מניות vs עוקב מדד S&P 500 rows",
+        "why": "I came for the S&P, but מניות shows a much bigger number, so I went back and forth"
+      }
+    ],
+    "used": [
+      "Heading 'הראל'",
+      "Product tabs, 'קופת גמל להשקעה 16' selected",
+      "Fee column 0.54%–0.61% 'מהחיסכון', 0% 'מההפקדה'",
+      "Return column: מניות 24.04%/14.64%, S&P 500 13.7%/11.92%, כללי 13.5%, הלכה 11.42%",
+      "Track names"
+    ],
+    "skimmed": [
+      "Intro lines under the heading",
+      "Fund size column (מיליון ₪)",
+      "Coloured rings with מניות/מט\"ח percents",
+      "Folds קרנות מחקות / מרכזות לפיציויים / קרנות סל"
+    ],
+    "skipped": [
+      "'התקרה בחוק' line and footnote under the table",
+      "Paragraph about returns being before fees",
+      "'מה כתוב במסמכים של הראל' section",
+      "Search box 'לא מצאתם שם?'",
+      "Footer",
+      "Other product tabs (קרן השתלמות etc.)"
+    ],
+    "unsure_meaning": [
+      "מט\"ח",
+      "קופת גמל להשקעה",
+      "אשראי ואג\"ח",
+      "מרכזות לפיציויים",
+      "'פחות מ־3 שנים' in place of a return",
+      "whether 24.04% is per year or in total",
+      "מההפקדה vs מהחיסכון",
+      "the ring colours (I guessed teal = shares, yellow = foreign currency)"
+    ],
+    "not_found": [
+      "What to do first / how to join",
+      "Fee in shekels for my amount",
+      "Whether this product suits a 26-year-old",
+      "Clear recommendation of one track"
+    ],
+    "findings": [
+      {
+        "what": "Most tracks show no return, just 'פחות מ־3 שנים', so I can't compare them",
+        "where": "Return column in the table"
+      },
+      {
+        "what": "Preselected product 'קופת גמל להשקעה' with no explanation for someone like me of what it is",
+        "where": "Product tabs at top"
+      },
+      {
+        "what": "16 nearly identical rows with fees all around 0.55%, nothing stands out",
+        "where": "Main table"
+      },
+      {
+        "what": "Fees only in percent, no idea what that means in shekels",
+        "where": "Fee column"
+      },
+      {
+        "what": "No next step or button to actually start",
+        "where": "Whole page"
+      },
+      {
+        "what": "Small grey legal-looking lines I didn't read",
+        "where": "Under the table"
+      }
+    ]
+  },
+  "steps": 2,
+  "reads": 2,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 34639,
+    "turns": 4,
+    "usd": 0.12401140000000001,
+    "input": 6,
+    "cacheWrite": 7446,
+    "cacheRead": 15897,
+    "output": 3062,
+    "model": "claude-opus-5-5"
+  }
+}

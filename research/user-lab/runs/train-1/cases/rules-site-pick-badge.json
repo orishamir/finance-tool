@@ -1,0 +1,14 @@
+{
+ "id": "rules-site-pick-badge",
+ "task": "t03",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "Beside the heading of the common-questions block sits a tag 'בחירה של האתר' that nothing explains: chosen how, and for what.",
+   "where": "the heading 'השאלות שכולם שואלים' on the rules page",
+   "kind": "general",
+   "outside": false
+  }
+ ],
+ "liked": []
+}

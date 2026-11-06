@@ -1,0 +1,14 @@
+{
+ "id": "leumi-brand-name",
+ "task": "t33",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "The account is named 'לאומי' though the investing service has its own name (Leumi Trade).",
+   "where": "the Leumi row in the account ranking",
+   "kind": "taste",
+   "outside": true
+  }
+ ],
+ "liked": []
+}

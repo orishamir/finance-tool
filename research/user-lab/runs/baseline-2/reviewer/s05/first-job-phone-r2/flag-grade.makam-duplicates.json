@@ -1,0 +1,36 @@
+{
+  "case": "makam-duplicates",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The guide list still offers makam as separate guide pages (one per way of holding it), though they describe one thing.\",\"where\":\"the makam entries in the guide list\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the findings says that makam (מק\"מ) is split into several guide pages for one product: finding 5 complains about near-identical cards but names other examples, and finding 4 only calls makam jargon."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0183234
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "No finding says makam shows up as several guide pages for what is really one thing. Finding 4 only calls the word מק\"מ jargon, and finding 5's near-identical cards are other products (gemel vs hishtalmut, pension types, indexes), not makam repeated."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0189754
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0372988
+}

@@ -1,0 +1,119 @@
+{
+  "task": "s37",
+  "persona": "careful-retiree-pc",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T16:32:00.426Z",
+  "structured": {
+    "answer": "I'd pick option B, the single list. It's the only one where each row has a Hebrew label like \"אשראי ואג\"ח\" or \"כספי (שקלי)\" and I could see tracks with almost no shares. A and C open with English \"s&p 500\" and only shares, and I'd ask my son or the bank before doing anything.",
+    "confidence": "unsure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Top of the page, option A",
+        "why": "It opens with 'עוקב מדד s&p 500' in English letters and rows of 'מניות 99%'. It felt like it wasn't for me and I nearly left."
+      },
+      {
+        "where": "Option A, small orange note at the end",
+        "why": "The bond tracks ('אשראי ואג\"ח') are hidden in a small orange footnote, after two screens of shares."
+      },
+      {
+        "where": "Option C, return column",
+        "why": "The first number I saw was '13.79% 3 שנים' and it pulled me in, but then the pale note says it's past returns that don't tell what will happen. I didn't know whether to trust it."
+      },
+      {
+        "where": "Rings with coloured dots",
+        "why": "Couldn't tell what the ring shows. Had to match turquoise and yellow dots to the numbers written next to them."
+      }
+    ],
+    "used": [
+      "Option B labels under the names: 'אשראי ואג\"ח', 'כספי (שקלי)', 'מניות חו\"ל'",
+      "The 'מניות' percent in each row (0%, 5%, 25%)",
+      "The 'דמי ניהול' column (0.50%-0.73% מהחיסכון)",
+      "Section headings א/ב/ג and the 'מומלץ' tag",
+      "The pale footnote in C saying the return is past and before fees"
+    ],
+    "skimmed": [
+      "The three intro bullets at the top (small grey)",
+      "Group headings inside A ('מניות', 'עוקב מדדי מניות')",
+      "The lower part of option C (fund sizes in מיליון/מיליארד)"
+    ],
+    "skipped": [
+      "The filter buttons 'במה הכסף מושקע' and 'מוצר'",
+      "The tabs 'מקור', 'מדריכים', 'חוקים וכללים', 'שאלות'",
+      "The search box",
+      "The arrows at the end of each row",
+      "The link 'מה זה קופת גמל להשקעה'"
+    ],
+    "unsure_meaning": [
+      "s&p 500 / S&P500",
+      "עוקב מדד, עוקב מדדים - גמיש",
+      "מט\"ח",
+      "מההפקדות vs מהחיסכון",
+      "The number in the 'קופה' column (13874 etc.)",
+      "The turquoise/yellow rings",
+      "The small clock icons next to the percents",
+      "The dotted underline under numbers",
+      "'חדש' and 'עוד לא דווח'",
+      "'פחות מ־3 שנים'",
+      "מיליון / מיליארד ₪ in option C (what fund size means for me)"
+    ],
+    "not_found": [
+      "Anything comparing these to a bank deposit",
+      "Whether any track is guaranteed or can lose money",
+      "A plain sentence saying which track is safe like a deposit",
+      "Whether my bank's fees are too high"
+    ],
+    "findings": [
+      {
+        "what": "Opens with English 's&p 500' and all-share tracks. A cautious saver feels it's not for her and leaves.",
+        "where": "Options A and C, first rows"
+      },
+      {
+        "what": "Bond and money-market tracks are buried in a small orange footnote",
+        "where": "End of option A"
+      },
+      {
+        "what": "Every row repeats 'מניות', 'מט\"ח', 'מהחיסכון', 'מההפקדות', dots and clock icons. You re-read them each time to find what's different.",
+        "where": "All tables, every row"
+      },
+      {
+        "what": "Ring colours are matched to numbers written beside them; turquoise and yellow on black are hard to tell apart",
+        "where": "Exposure column in all options"
+      },
+      {
+        "what": "Dark background with small pale grey text. The explanations and the note on past returns are hard to read.",
+        "where": "Intro bullets, section descriptions, bottom of C"
+      },
+      {
+        "what": "A big past-return number ('13.79%') is the first big figure you see and it sticks, though the note says it predicts nothing",
+        "where": "Option C"
+      },
+      {
+        "what": "Many rows of filter buttons full of unknown terms make the screen busy and worrying",
+        "where": "Top of each option"
+      },
+      {
+        "what": "No comparison with deposits and no word on risk or guarantees",
+        "where": "Whole page"
+      }
+    ]
+  },
+  "steps": 5,
+  "reads": 5,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 43227,
+    "turns": 7,
+    "usd": 0.21125680000000002,
+    "input": 8,
+    "cacheWrite": 16095,
+    "cacheRead": 30324,
+    "output": 3820,
+    "model": "claude-opus-5-5"
+  }
+}

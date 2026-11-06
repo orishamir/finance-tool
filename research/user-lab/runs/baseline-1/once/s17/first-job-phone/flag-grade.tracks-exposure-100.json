@@ -1,0 +1,36 @@
+{
+  "case": "tracks-exposure-100",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The column of exposure to stocks and foreign currency is not explained, and shows figures above 100% with nothing saying how that can be.\",\"where\":\"the exposure column\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 8,
+        "why": "Finding 8 says the stock/foreign-currency exposure chart is barely explained and the reader can't tell what the foreign-currency share means, which is a clear part of the person's 'exposure column not explained' complaint, though it leaves out the over-100% figures."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0183074
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 8,
+        "why": "Finding 8 says the stocks/foreign-currency donut column is barely explained and the reader can't tell what the foreign-currency share means, which is the same complaint about an unexplained exposure column, though it doesn't mention the figures above 100%."
+      }
+    ],
+    "liked": [],
+    "usd": 0.017763400000000002
+  },
+  "third": null,
+  "ranks": {
+    "k": 8
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0360708
+}

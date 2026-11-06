@@ -1,0 +1,14 @@
+{
+ "id": "fund-no-full-year",
+ "task": "t37",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "A fund that has existed for many years (IE0031442068) is marked as having no full year of history.",
+   "where": "that fund's row in the fund list",
+   "kind": "general",
+   "outside": true
+  }
+ ],
+ "liked": []
+}

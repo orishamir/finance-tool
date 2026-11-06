@@ -1,0 +1,36 @@
+{
+  "case": "mmf-guide-leumi",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The money-market-fund guide compares with one named bank (Leumi) and cites that bank's deposit rate, in a page about a general product.\",\"where\":\"the comparison lines and their source\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "No finding objects to comparing with one named bank (Leumi) or quoting its rate: finding 3 touches the deposit comparison only to say where the risk warning should go, and finding 4 is about confusing code labels such as BANK-18."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0159434
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings objects to the page naming one bank (Leumi) or citing its deposit rate. Findings 2 and 3 mention the comparison, but only for grey text that is hard to read and for where the risk warning sits."
+      }
+    ],
+    "liked": [],
+    "usd": 0.015491400000000002
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0314348
+}

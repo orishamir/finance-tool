@@ -1,0 +1,14 @@
+{
+ "id": "ishares-acc-missing",
+ "task": "t38",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "iShares' accumulating S&P 500 funds are missing from the fund list.",
+   "where": "the fund list",
+   "kind": "general",
+   "outside": true
+  }
+ ],
+ "liked": []
+}

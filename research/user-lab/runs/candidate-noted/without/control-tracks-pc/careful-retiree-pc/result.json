@@ -1,0 +1,130 @@
+{
+  "task": "control-tracks-pc",
+  "persona": "careful-retiree-pc",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T03:00:39.520Z",
+  "structured": {
+    "answer": "I didn't pick anything. Some of my money might go into a fund at הראל, because I know the name and it's the first and biggest company on the list, but I won't sign anything until my son or the bank explains it to me.",
+    "confidence": "guessing",
+    "gave_up": true,
+    "stuck": [
+      {
+        "where": "Screen 1, row of track buttons",
+        "why": "I looked for something like a deposit or interest. The only safe-sounding word was 'אג\"ח ממשלתי', but the table didn't show me which companies have it."
+      },
+      {
+        "where": "The table's return column",
+        "why": "'פחות מ־3 שנים' instead of a number on many lines, so I couldn't compare the safe-sounding tracks."
+      },
+      {
+        "where": "Screens 3–6",
+        "why": "Company names I don't know (מור, אנליסט, מיטב) and the same crowded table over and over. I got tired and stopped after screen 6."
+      }
+    ],
+    "used": [
+      "Title 'כל המסלולים בכל החברות'",
+      "Track buttons 'אג\"ח ממשלתי 3', 'כספי (שקלי) 10'",
+      "הראל header: 'כסף מנוהל 19.1 מיליארד ₪', fees 0.54%–0.61%",
+      "הראל 'מניות' 24.04% (put me off)",
+      "הראל 'כספי (שקלי)' 4.25% for 3 years"
+    ],
+    "skimmed": [
+      "Rows of מור, אנליסט, מיטב",
+      "The fee columns",
+      "The money-managed amounts"
+    ],
+    "skipped": [
+      "Screens 7–15",
+      "Colored circle charts",
+      "'מה זה קופת גמל להשקעה' link",
+      "Search box",
+      "Question-mark help icons"
+    ],
+    "unsure_meaning": [
+      "קופה numbers (8211, 15288…)",
+      "חשיפה למניות ולמט\"ח",
+      "דמי ניהול מההפקדות vs מהחיסכון",
+      "עוקב מדד",
+      "S&P 500",
+      "כספי (שקלי)",
+      "סחיר",
+      "גמיש",
+      "אשראי ואג\"ח",
+      "פחות מ־3 שנים",
+      "לפני דמי ניהול",
+      "עוד לא דווח",
+      "101% מניות",
+      "whether 4.25% '3 שנים' is per year or total"
+    ],
+    "not_found": [
+      "Any comparison with a bank deposit",
+      "A plain sentence saying which track is safe",
+      "Which companies have the 'אג\"ח ממשלתי' track",
+      "My bank's name",
+      "Who runs the site 'מקור'"
+    ],
+    "findings": [
+      {
+        "what": "Nothing tells a cautious saver which track is the safe one or how it compares to a deposit",
+        "where": "Whole page, first screen"
+      },
+      {
+        "what": "Many safe-sounding tracks show 'פחות מ־3 שנים' instead of a return, so they can't be compared",
+        "where": "Return column, screens 2–6"
+      },
+      {
+        "what": "A big percentage for stocks (24.04%) is the first number you see, which is frightening and misleading",
+        "where": "Screen 2, הראל מניות"
+      },
+      {
+        "what": "The dark background, thin text and dense table of numbers are tiring to read",
+        "where": "All screens"
+      },
+      {
+        "what": "The colored circles for exposure are too close in color and too small to tell apart",
+        "where": "Exposure column"
+      },
+      {
+        "what": "Jargon and English letters with no plain explanation",
+        "where": "Track names and column headers"
+      },
+      {
+        "what": "The site name 'מקור' is unknown, and nothing shows it is official",
+        "where": "Top bar"
+      },
+      {
+        "what": "The return column doesn't say whether '3 שנים' is per year or total",
+        "where": "Return column header"
+      },
+      {
+        "what": "Long list, with 15 screens to scroll",
+        "where": "Whole page"
+      }
+    ]
+  },
+  "steps": 6,
+  "reads": 6,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 37157,
+    "turns": 8,
+    "usd": 0.1622702,
+    "input": 10,
+    "cacheWrite": 11439,
+    "cacheRead": 37291,
+    "output": 3163,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "control-tracks-pc",
+    "screenshots": 16,
+    "changes": [],
+    "neverShown": [],
+    "errors": []
+  }
+}

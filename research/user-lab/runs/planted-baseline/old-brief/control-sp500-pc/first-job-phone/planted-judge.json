@@ -1,0 +1,65 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "Many banks say 'מחיר אחר לצעירים' but are marked 'לא בחישוב', so the cheapest account for a 24-year-old may not be the one ranked first",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "The index description is confusing: the reader doesn't know what to do with 'הכסף מושקע בדולרים' or 'אפשר להחזיק אותו גם דרך קרן חוץ'",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "It's unclear whether the 'אינפלציה' button changes the result, and whether 86,492 ₪ is what the reader would actually see or a smaller 'today's money' figure",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "The fee line on the selected fund card ('0% קבועים 0% משתנים 0.02% נאמן') isn't understood",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "Foreign funds ('אין מחיר כאן', W-8BEN, UCITS) and the many coloured tags confuse the reader or put them off, as do the 'אין נתון' brokers",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 6,
+      "summary": "The hedged fund's wide range ('בין +2,212 ל־−23,766 ₪') is confusing and feels risky",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 7,
+      "summary": "The step chart starts at 'עכשיו 79,176 ₪' (ירושלים + MTF) although the reader owns nothing yet",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 8,
+      "summary": "The bottom 'עכשיו: …' tables feel like the same lists repeated in a different order",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 9,
+      "summary": "The colours of the bars in the account list (orange, yellow, red) aren't explained well enough for the reader to match them to the legend",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 10,
+      "summary": "Practical information is missing: how to open the account and set up monthly buying, whether 7% is realistic, what happens if the dollar falls, whether פסגות is safe, and what happens when taking money out",
+      "serious": false,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.0785428
+}

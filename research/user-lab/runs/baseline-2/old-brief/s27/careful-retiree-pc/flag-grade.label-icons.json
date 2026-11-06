@@ -1,0 +1,83 @@
+{
+  "case": "label-icons",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The icons on the fund labels are weak and do not help tell the labels apart.\",\"where\":\"the labels on fund rows\",\"kind\":\"taste\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "The 'מס רק במכירה' popup stayed open on every screen, covering numbers such as the yearly-return box, the % input and the hedging tables",
+      "Ylin Lapidot has only one year of history, and the page doesn't say whether its 0% fee is a launch offer that could go up",
+      "The cost breakdown bar has too many colours",
+      "The coloured tags in the fund list were confusing",
+      "The Psagot pricing note about standing orders ('3 of the 15 banks') was hard to follow",
+      "The foreign funds have no price and need forms; the reader would drop them",
+      "The year-by-year hedging table was too much (and partly hidden); the reader would drop it",
+      "The coloured four-factor line chart and the dollar-since-2002 chart were ignored; the reader would drop them",
+      "The '+0.37%' figures were unclear: plus relative to what?",
+      "'4D' and '4A' were not explained",
+      "The difference between a tracker fund and an ETF, and why ETFs cost more, was unclear",
+      "'Tax on the currency change too' was unclear: is tax owed on a gain that came only from the dollar?",
+      "'עמלות זו על זו' (fees on fees) in the colour legend was not understood",
+      "'עוד לא נאסף' (not collected yet) was unclear: collected by whom?",
+      "The page doesn't explain exactly how tax is worked out at the end (25% on profit? anything for age?)",
+      "There is no ready answer for a 5-year horizon",
+      "There is no information on how safe the money is if the broker or fund manager fails",
+      "There is no guidance on how to start (opening an account, setting up a standing order)",
+      "There is nothing to tell the top two funds apart beyond the 43 ₪ (size, age, stability)",
+      "The reader would drop the per-broker list of advert claims",
+      "The reader would drop the 'not in the calculation' discounts for young people and soldiers"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader says the coloured tags in the fund list confused them, but the details they give are about what the text means (4D, +0.37%), not about the icons on the labels being weak or not helping to tell the labels apart."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0716792
+  },
+  "b": {
+    "raised": [
+      "The 'מס רק במכירה' popup stays open on every screen and hides numbers (yearly-return box, % input, hedging tables, the explanation under the fund list)",
+      "Ylin Lapidot has only one year of history, and the page doesn't say whether its 0% fee could go up",
+      "The cost breakdown bar has too many colours",
+      "The coloured tags in the fund list are confusing",
+      "The Psagot pricing note about standing orders ('3 מתוך 15 הבנקים') is hard to follow",
+      "The 'not in the calculation' discounts for young people, soldiers and students don't apply to them and could go",
+      "The foreign funds (no price, estate tax, W-8BEN) aren't useful and could go",
+      "The broker advert-claims list could go",
+      "The coloured line chart of the four factors isn't useful and could go",
+      "The year-by-year hedging table is too much and partly hidden",
+      "The dollar bar chart since 2002 isn't useful and could go",
+      "Unclear what the '+0.37%' figures mean (plus relative to what)",
+      "Unclear what '4D' and '4A' mean",
+      "Unclear how a tracker fund differs from an ETF, and why ETFs cost more",
+      "Unclear whether tax applies to profit that comes only from the currency change",
+      "Unclear what 'עמלות זו על זו' (fees on fees) means in the legend",
+      "Unclear what 'עוד לא נאסף' (not collected yet) means",
+      "No explanation of exactly how tax is calculated at the end, or whether age matters",
+      "No ready answer for a shorter period such as 5 years",
+      "No information on how safe the money is if the broker or fund manager fails",
+      "No guidance on how to start (opening an account, setting up a standing order)",
+      "No way to tell the top two funds apart beyond the 43 ₪ (size, age, stability)"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader says the coloured tags in the fund list confused them, but the details they give are about what tags mean (4D, +0.37%); they never say the icons are weak or fail to tell the labels apart."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0742072
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1458864
+}

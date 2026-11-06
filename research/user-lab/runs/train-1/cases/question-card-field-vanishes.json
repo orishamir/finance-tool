@@ -1,0 +1,14 @@
+{
+ "id": "question-card-field-vanishes",
+ "task": "t10",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "Pressing 'כרית ביטחון' removes the 'how many years' field above the buttons, so everything below jumps up under the pointer.",
+   "where": "the question card, between the two states",
+   "kind": "general",
+   "outside": false
+  }
+ ],
+ "liked": []
+}

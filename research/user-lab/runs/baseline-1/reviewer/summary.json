@@ -1,0 +1,139 @@
+{
+ "run": "research/user-lab/runs/baseline-1/reviewer",
+ "sessions": "all",
+ "kinds": {
+  "headline": {
+   "cases": 36,
+   "pairs": 72,
+   "single10": [
+    13,
+    72
+   ],
+   "singleAny": [
+    13,
+    72
+   ],
+   "pooled10": [
+    8,
+    36
+   ],
+   "pooledAny": [
+    8,
+    36
+   ],
+   "byPersona": {
+    "careful-retiree-pc": {
+     "in10": 5,
+     "of": 36
+    },
+    "first-job-phone": {
+     "in10": 8,
+     "of": 36
+    }
+   },
+   "steadiness": null,
+   "ranks": [
+    1,
+    1,
+    1,
+    1,
+    2,
+    3,
+    3,
+    3,
+    3,
+    3,
+    5,
+    6,
+    7
+   ],
+   "caughtCases": [
+    "companies-fee-column-unclear",
+    "current-account-chart-unrelated",
+    "current-account-one-bank",
+    "guides-useless-sections",
+    "hg-within-ceiling",
+    "tracks-exposure-100",
+    "tracks-sort-does-nothing",
+    "tracks-stale-annuity"
+   ]
+  },
+  "outside": {
+   "cases": 7,
+   "pairs": 14,
+   "single10": [
+    2,
+    14
+   ],
+   "singleAny": [
+    2,
+    14
+   ],
+   "pooled10": [
+    2,
+    7
+   ],
+   "pooledAny": [
+    2,
+    7
+   ],
+   "byPersona": {
+    "careful-retiree-pc": {
+     "in10": 0,
+     "of": 7
+    },
+    "first-job-phone": {
+     "in10": 2,
+     "of": 7
+    }
+   },
+   "steadiness": null,
+   "ranks": [
+    5,
+    6
+   ],
+   "caughtCases": [
+    "company-missing-fund-kinds",
+    "makam-duplicates"
+   ]
+  },
+  "taste": {
+   "cases": 9,
+   "pairs": 18,
+   "single10": [
+    1,
+    18
+   ],
+   "singleAny": [
+    1,
+    18
+   ],
+   "pooled10": [
+    1,
+    9
+   ],
+   "pooledAny": [
+    1,
+    9
+   ],
+   "byPersona": {
+    "careful-retiree-pc": {
+     "in10": 1,
+     "of": 9
+    },
+    "first-job-phone": {
+     "in10": 0,
+     "of": 9
+    }
+   },
+   "steadiness": null,
+   "ranks": [
+    5
+   ],
+   "caughtCases": [
+    "cfc-exposure"
+   ]
+  }
+ },
+ "findingsPerSession": 6.97
+}

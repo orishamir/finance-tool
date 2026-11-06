@@ -1,0 +1,84 @@
+{
+  "case": "companies-help-icon-wrap",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The help mark '?' in a column head drops onto its own line under the head's text and looks out of place.\",\"where\":\"the column heads with a '?' mark\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "The page doesn't help decide how much share risk suits someone aged 61",
+      "Fees are averages, possibly not what the reader actually pays",
+      "Returns are before fees and tax, so actual earnings can't be told",
+      "The \"123 מקור / 123 מחושב\" line is confusing (calculated by whom?)",
+      "Product buttons never say \"פנסיה\"; unclear that קרן חדשה מקיפה/כללית are pension",
+      "Direct expenses are charged on top of the fees but not shown, which is worrying",
+      "Index funds/ETFs: fees split into fixed/variable/trustee jargon and no returns at all",
+      "The coloured tags (צוברת, מחזיקה את המניות, etc.) mean little",
+      "A third date in the footer (several different dates on the page)",
+      "Can't tell whether the fee from savings or from deposits matters more",
+      "The rings and coloured dots add nothing beyond the percentages",
+      "Didn't know the dotted-underlined numbers were clickable or what they'd show",
+      "\"מט\"ח\" exposure unclear (good or bad?)",
+      "Unclear why the same shares track returns differ between the study fund and pension",
+      "\"עוד לא דווח ההפקדה\" on one row is not understood",
+      "The PF-06/PF-10 codes are not understood",
+      "No returns longer than 5 years and no worst-year/drawdown figure",
+      "No projection in shekels (e.g. what 500,000 ₪ would become)",
+      "No info on how to switch track or whether switching costs anything",
+      "Child savings and central severance sections are irrelevant and could go",
+      "Fund numbers could be shown only on demand"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The report never mentions the '?' help mark or its layout in the column heads; the only remark about the headers is that the reader didn't use the sort arrows."
+      }
+    ],
+    "liked": [],
+    "usd": 0.06261520000000001
+  },
+  "b": {
+    "raised": [
+      "The page doesn't help a 61-year-old choose how much share risk to take or which track suits them",
+      "Fees shown are averages and may not be what the reader actually pays",
+      "Returns are before fees and tax, so the reader can't tell what they actually earned",
+      "The '123 מקור / 123 מחושב' legend is confusing: calculated by whom?",
+      "The product buttons never say 'pension', so the reader didn't know which products were pension funds",
+      "Direct expenses aren't shown, so the fee shown isn't the full cost, which worries the reader",
+      "Index fund and ETF fees are split into fixed/variable/trustee, which is confusing",
+      "Index funds and ETFs show no returns",
+      "The coloured tags (צוברת, מחזיקה את המניות, מס גם על שינויי המטבע) are jargon and mean little",
+      "The page gives several different dates (2025 fees, Sept 2026 data, footer 03.11.2026)",
+      "The reader can't tell whether fees from savings or fees from deposits cost more in shekels",
+      "Many tracks show 'less than 3 years' with no returns",
+      "The rings and coloured dots add nothing beyond the percentages",
+      "The dotted underlines on numbers don't look clickable, and it's unclear what clicking gives",
+      "It's unclear whether foreign-currency (מט\"ח) exposure is good or bad",
+      "The same shares track has different returns in the study fund and the pension fund, with no explanation",
+      "'עוד לא דווח ההפקדה' on one row isn't understood",
+      "The codes PF-06 and PF-10 are unexplained",
+      "There are no returns longer than 5 years and no worst-year or drawdown figures",
+      "Money isn't shown as shekel outcomes (e.g. what 500,000 ₪ would become)",
+      "No information on how to switch tracks or whether switching costs anything",
+      "Would drop sections that don't apply (חיסכון לכל ילד, מרכזית לפיצויים)",
+      "Would hide the fund numbers and show them only on demand"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The report never mentions the '?' help mark in column heads or it dropping onto its own line; its header comments are only about sort arrows, which it says it didn't use."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0615352
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.12415040000000001
+}

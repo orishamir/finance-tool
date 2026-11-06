@@ -1,0 +1,80 @@
+{
+  "case": "play-panel-broke-phone",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"On a phone, the fields in the 'שחקו עם המספרים' panel break out of line: they have different widths, sit at odd places and look oversized.\",\"where\":\"the fields of the 'שחקו עם המספרים שלכם' panel on a phone\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Doesn't know what a 'קרן כספית יומית' is, whether it's safe, or how to get one",
+      "Unsure about the alternative because the 3.25% is only the site's assumption, not a promise",
+      "Can't judge the option of banks paying interest on up to 10,000 ₪ (4 of 8 banks, 3% at Discount)",
+      "Didn't understand the '123 מקור/מחושב/הזנתם' legend or the different underlines",
+      "The fee-plan jargon in 'מה זה' (basic/extended plan, צו, BANK-17/35 codes) is irrelevant and lost their interest",
+      "'מזומן שקלי' under 'במה אפשר להשקיע' meant nothing to them",
+      "Second calculator is confusing: an unexpected 500 ₪ a month, and 62,681 ₪ shown against 70,000 ₪ looked like a loss",
+      "BANK-xx/TXI-xx tags and 'מק\"מ' were not understood",
+      "'כמה זה עולה' gives no actual number, only 'according to the price list'",
+      "Tax details (15%/25%, interest linked to the index, capital gains) meant nothing to them",
+      "Red exemption box alarmed them (looked like something was wrong) and they didn't understand it",
+      "'מה האתר לקח בחשבון' with lock icons and 'חסום' felt like the site's internal notes and wasn't understood",
+      "Didn't understand the y-axis note 'הציר האנכי לא מתחיל באפס'; the chart was less clear than the numbers",
+      "Not sure what 'בכסף של היום' means",
+      "Couldn't find whether their own bank pays interest on a current account",
+      "Wanted a simple rule for how much to keep in the current account",
+      "Couldn't find what their account actually costs per month in shekels",
+      "Worried by 'no deposit insurance', and nothing reassured them",
+      "Would drop the glossary and the 'מי מציע ומי מפקח' section"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader complains about what the second calculator shows (500 ₪ a month, the totals) but never mentions field widths, alignment or oversized inputs on a phone layout."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0647232
+  },
+  "b": {
+    "raised": [
+      "Doesn't know what a 'קרן כספית יומית' is or how to get one; not explained on the page",
+      "The 3.25% return is only the site's assumption, not a promise, so the alternative feels uncertain",
+      "Can't judge the '4 of 8 banks pay interest, up to 3% at Discount' option against their own bank",
+      "The '123 מקור / מחושב / הזנתם' legend and differently underlined numbers aren't understood",
+      "'מה זה' turns into fee-plan jargon (basic/extended plan, צו, BANK-17/35, fees) that doesn't apply to savings",
+      "Unsure about the 15,000 ₪ bank notice: never got one, maybe missed it",
+      "'במה אפשר להשקיע: מזומן שקלי' is meaningless to them",
+      "Second calculator is confusing: unexpected 500 ₪/month and 62,681 vs 70,000 made them think they'd lose money",
+      "BANK-20/23/15 tags and 'מק\"מ' in 'שווה לדעת' aren't understood",
+      "'כמה זה עולה' gives no actual number, just 'according to the provider's price list'",
+      "Tax details (15%/25%, צמודה למדד) mean nothing to them",
+      "Red exemption box is alarming (looks like something's wrong) and confusing",
+      "'מה האתר לקח בחשבון' with lock icons/'חסום' feels like internal site notes and isn't understood",
+      "Didn't understand the note that the vertical axis doesn't start at zero",
+      "Second chart: teal ending below grey, didn't understand why it matters",
+      "Not fully sure what 'בכסף של היום' means",
+      "Can't find whether their own bank pays interest on a current account",
+      "No simple rule for how much to keep in the current account",
+      "Can't find what the account actually costs per month in shekels",
+      "'No deposit insurance' line worried them and nothing reassured them",
+      "Would drop the tax section, the site-assumptions block, glossary, fee-plan details, supervisor/BANK tags, and second calculator"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The report never mentions a phone view or the input fields in the 'play with your numbers' panel being misaligned, uneven in width or oversized; its complaints about the second calculator are about confusing content, not layout."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0669032
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.13162639999999998
+}

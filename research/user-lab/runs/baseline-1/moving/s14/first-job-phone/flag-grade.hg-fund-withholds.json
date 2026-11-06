@@ -1,0 +1,36 @@
+{
+  "case": "hg-fund-withholds",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The sentence 'הקרן מנכה קודם … מס במקור, ו… מהם חוזרים רק אם מגישים דוח שנתי' is jargon; the reader does not understand what the fund deducts.\",\"where\":\"the early-withdrawal sentence of the graphic\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings says the early-withdrawal tax sentence is jargon or hard to understand. Finding 1 is about the default 5-year scenario letting the tax dominate the chart, and finding 6 is about small grey notes going unread, not about wording being unclear."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0158114
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings says the early-withdrawal sentence about tax deducted at source is jargon or hard to understand. Finding 1 is about the default 5-year withdrawal making the tax figure dominate, and finding 6 is about small grey notes being easy to skip, not about confusing wording."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0160794
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0318908
+}

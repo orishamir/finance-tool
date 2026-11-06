@@ -1,0 +1,94 @@
+{
+  "case": "tracks-exposure-100",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The column of exposure to stocks and foreign currency is not explained, and shows figures above 100% with nothing saying how that can be.\",\"where\":\"the exposure column\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "3-year returns are nearly identical, so it's unclear what separates the tracks",
+      "The fee is a 2025 average, so it's unclear whether that's the fee they'd pay",
+      "Some of the cheapest rows show no company name on screen",
+      "The 'השוואה למטרה' menu item made them wonder if they were on the wrong page",
+      "Didn't understand the intro's mention of 'מתוני רשות שוק ההון'",
+      "The '123 מקור / מחושב / הזנה' legend is confusing",
+      "The orange 'not updated since September 2026' warning made them worry the numbers are wrong",
+      "The other product buttons mean nothing to them",
+      "Not sure what a קופת גמל להשקעה even is",
+      "The search box is useless without knowing any names",
+      "Investment chip terms (הלכה איסלאמית, אג\"ח ממשלתי סחיר, גמיש, כספי, סחיר) are confusing",
+      "The table is very long",
+      "Returns are 'לפני דמי ניהול', so they don't know how much less they'd actually get",
+      "The 'חדש' tag put them off",
+      "The 'קופה' number column is meaningless to them",
+      "Didn't know the exposure column's 'מט\"ח' or why it matters, and didn't get how shares can be 101%",
+      "Don't know whether a big or small 'נכסים' figure is good",
+      "Didn't realise the purple dotted underlines and '>' arrows were clickable",
+      "Difference between 'מהחיסכון' and 'מההפקדות' fees unclear",
+      "'עוד לא דווח' unclear, and the footnote didn't help",
+      "Don't understand why S&P 500 tracks differ (e.g. איילון shows 34% shares)",
+      "Wanted to see earnings after fees in shekels",
+      "Wanted a recommendation, or a sense of what 'good' looks like",
+      "Wanted to know how to open one (minimum deposit, withdrawals, tax)",
+      "Unclear why some tracks are under 3 years old, and whether new tracks are risky",
+      "Would drop the 'קיבוץ לפי' switch",
+      "Would drop the 'מההפקדות' line when it's 0%"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 16,
+        "why": "The reader says they don't know what 'מט\"ח' means or why the exposure column matters, and doesn't get how shares can be 101%, which matches the person's problem: the column is unexplained and shows figures above 100%."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0623552
+  },
+  "b": {
+    "raised": [
+      "3-year returns are nearly identical, so the reader can't tell what separates the tracks",
+      "Fee is a 2025 average, so it's unclear whether the reader would pay the same fee",
+      "Two of the cheapest rows (13414, 13250) showed no company name on screen",
+      "'השוואה למטרה' in the top menu made the reader wonder if they were on the wrong page",
+      "The intro wording about 'מתוני רשות שוק ההון' went past them",
+      "The '123 מקור / מחושב / הזנה' legend is confusing",
+      "Orange warning that the data hasn't been updated since September 2026 made them worry the numbers are wrong",
+      "Other product buttons mean nothing to the reader",
+      "The reader doesn't know what קופת גמל להשקעה is",
+      "Investment-type chip terms (הלכה איסלאמית, אג\"ח ממשלתי סחיר, גמיש, כספי, סחיר) are confusing",
+      "The table is very long",
+      "'לפני דמי ניהול': the reader doesn't know how much less they'd actually get",
+      "The 'חדש' tag put the reader off",
+      "The 'קופה' number column is meaningless to the reader",
+      "Exposure column: the reader doesn't know what מט\"ח is or why it matters, and can't see how shares can be 101%",
+      "Assets column: the reader can't tell whether big or small is good",
+      "Purple dotted underlines and '>' arrows weren't recognisable as clickable",
+      "Other jargon not understood (חשיפה, משולב, הלכה, כללי)",
+      "Difference between 'מהחיסכון' and 'מההפקדות' is unclear",
+      "'עוד לא דווח' is unclear, and the footnote didn't help",
+      "Unclear why two S&P 500 tracks differ (e.g. איילון at 34% shares)",
+      "Wants to see after-fee earnings or fee cost in shekels",
+      "No recommendation or sense of what 'good' looks like",
+      "No information on how to open a track (minimum deposit, monthly deposits, withdrawals, tax)",
+      "Unclear why some tracks have under 3 years of history and whether new ones are risky",
+      "Would drop the 'קיבוץ לפי' switch",
+      "Would drop the 'מההפקדות' line when it shows 0%"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 15,
+        "why": "The reader says they don't understand the exposure column (what מט\"ח is or why it matters) and didn't get how shares could be 101%, which matches the person's complaint."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0645912
+  },
+  "third": null,
+  "ranks": {
+    "k": 15
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.12694640000000001
+}

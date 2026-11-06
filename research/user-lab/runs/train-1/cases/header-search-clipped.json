@@ -1,0 +1,14 @@
+{
+ "id": "header-search-clipped",
+ "task": "t17",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "The search box in the header is cut off: its placeholder text is clipped at the edge.",
+   "where": "the search box at the end of the top bar",
+   "kind": "general",
+   "outside": false
+  }
+ ],
+ "liked": []
+}

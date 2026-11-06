@@ -1,0 +1,121 @@
+{
+  "task": "s11",
+  "persona": "first-job-phone",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T16:21:32.339Z",
+  "structured": {
+    "answer": "It's savings that come off my salary. My employer puts in up to 7.5% and I put in up to 2.5%. After 6 years from the first deposit I can take all of it out with no tax, and before that I can but it's taxed and costs a lot. I'm keeping it because the boss's money is basically free and the page says it's \"כמעט תמיד הצעד הראשון\", but the example that's supposed to show it's better only beat an ordinary account by about 415 ₪, and that confused me.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Screen 2, the two bars 17,370 ₪ vs 16,955 ₪",
+        "why": "The hishtalmut only wins by 415.84 ₪ after 10 years. I expected a much bigger gap. If it's only 415, why is it such a big deal?"
+      },
+      {
+        "where": "Screen 2, the עלויות / מס table",
+        "why": "Costs say 2,402.23 ₪ for the keren and 466.12 ₪ for the securities account. Written in shekels, that looks like a lot of fees and it scared me. I didn't get why the keren still comes out ahead."
+      },
+      {
+        "where": "Screen 2, paragraph about the employer's money",
+        "why": "It says the employer's money 'מחוץ להשוואה'. Does that mean the free 7.5% isn't even in those bars? Then the real gap is bigger? I'm not sure I got that right."
+      },
+      {
+        "where": "Screen 2, 'ההפרש נע בין 342.02- ₪ לבין 2,106 ₪'",
+        "why": "There's a minus there. So with some funds I'd actually lose? That made me nervous about which company to pick."
+      }
+    ],
+    "used": [
+      "Heading 'קרן השתלמות' and the subheading",
+      "'מה זה' block: 7.5% from the employer, 2.5% from me, 6 years then tax-free, 'לפני כן משיכה אפשרית, אבל ממוסה'",
+      "'למה משתמשים בזה' first line: 'כמעט תמיד הצעד הראשון'",
+      "The 10-year bars 17,370 ₪ / 16,955 ₪ and 'קרן ההשתלמות משאירה 415.84 ₪ יותר'",
+      "The costs/tax table in ₪",
+      "Card 'מתי הכסף פנוי: כשעוברות 6 שנים'",
+      "Fees row 'עד 2% בשנה'",
+      "Orange warning box: 'משיכה לפני הזמן אפשרית, אבל יקרה'"
+    ],
+    "skimmed": [
+      "The fund names in the comparison (מיטב, ילין לפידות)",
+      "Bullets under 'ההפרש תלוי גם במי שבוחרים'",
+      "'שווה לדעת' list",
+      "'מי מציע ומי מפקח'",
+      "'מיסוי' three cards",
+      "'מונחים' table on the last screen"
+    ],
+    "skipped": [
+      "The year slider: left it at 10",
+      "'שינוי הסכומים' and 'שחקו עם המספרים שלכם' folds",
+      "'הצגת החוקים והכללים' links",
+      "Grey small print about assumptions (7%, 2% inflation)",
+      "'סיכונים ומה לא מוגן'",
+      "'מה האתר לקח בחשבון'",
+      "Codes like TXH-09, KH-15, PF-18",
+      "Footer"
+    ],
+    "unsure_meaning": [
+      "הפקדה מוטבת",
+      "הרווח הריאלי",
+      "ותק",
+      "משכורת קובעת",
+      "the minus in '342.02-'",
+      "the codes TXH-09 / KH-22 / PF-06",
+      "whether 'מחוץ להשוואה' means the employer money isn't in the bars",
+      "25% / 47%: tax on what exactly?",
+      "which colour is which bar: teal = keren, yellow = securities? I guessed from the labels above them"
+    ],
+    "not_found": [
+      "A plain 'yes, worth it' with the employer's money counted in shekels",
+      "Which company runs MY keren and how I check it",
+      "What I should actually do first (open an app? call HR?)"
+    ],
+    "findings": [
+      {
+        "what": "The main comparison shows only a 415 ₪ advantage. It makes the keren look barely worth it, while the free employer money is apparently left out of the comparison. That's the one thing that matters to me",
+        "where": "Screen 2, bars and 'ההפרש'"
+      },
+      {
+        "what": "Fees in shekels are 5x higher for the keren (2,402 vs 466). It looks bad and nothing nearby explains it",
+        "where": "Screen 2, עלויות table"
+      },
+      {
+        "what": "A negative number in the range (342.02-) with no explanation of when you lose",
+        "where": "Screen 2, 'ההפרש תלוי גם במי שבוחרים'"
+      },
+      {
+        "what": "Lots of dotted-underline terms and codes (TXH-09, PF-06) on every row that I'd have to decode again and again",
+        "where": "'שווה לדעת', 'כמה זה עולה' table"
+      },
+      {
+        "what": "The fee is only written as 'עד 2% בשנה', a small percent, with no shekel figure next to it",
+        "where": "Screen 3, כמה זה עולה"
+      },
+      {
+        "what": "The bar colours are only explained by the labels above each bar. OK, but I had to look back and forth",
+        "where": "Screen 1–2 bar chart"
+      },
+      {
+        "what": "The 47% in the warning is scary but it's not clear on what",
+        "where": "Screen 3, orange warning box"
+      }
+    ]
+  },
+  "steps": 4,
+  "reads": 4,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 32609,
+    "turns": 6,
+    "usd": 0.18556040000000001,
+    "input": 10,
+    "cacheWrite": 14843,
+    "cacheRead": 43182,
+    "output": 2907,
+    "model": "claude-opus-5-5"
+  }
+}

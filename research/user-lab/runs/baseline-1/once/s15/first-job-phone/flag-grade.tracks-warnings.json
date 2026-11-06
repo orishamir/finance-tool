@@ -1,0 +1,36 @@
+{
+  "case": "tracks-warnings",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"Almost every row of the tracks table carries a date warning mark; the repeated warnings clutter the table though one note at the top would do.\",\"where\":\"the warning marks in the table rows\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 2,
+        "why": "Finding 2 complains that the clock icons (the date marks) repeat on every row and clutter the scan, which matches the person's complaint about repeated date warnings."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0175994
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 2,
+        "why": "Finding 2 complains that clock icons, which are the date warning marks, are repeated on every row and clutter the table, so the reader has to reread them; that matches the person's complaint about repeated warnings."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0177594
+  },
+  "third": null,
+  "ranks": {
+    "k": 2
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0353588
+}

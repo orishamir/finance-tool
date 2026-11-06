@@ -1,0 +1,106 @@
+{
+  "case": "cfc-exposure",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The fund table spells out the stock percentage and the currency ceiling of each fund, which the label 'חשיפה לדולר' already covers; the extra figures clutter.\",\"where\":\"the exposure figures in each version\",\"kind\":\"taste\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "'מניות עד 120%' in the first version is frightening; sounds like borrowing and risk",
+      "'פרופיל 4A' in the second version means nothing",
+      "The second version drops the bottom line explaining the ceiling",
+      "'Only funds the site collected a report on' worries the reader: missing funds, maybe cheaper ones, and which ones they are",
+      "Fund-name codes '(4A)'/'(4D)' mean nothing",
+      "'עסקת החלף' tag is confusing and sounds untrustworthy; would drop it",
+      "Doesn't know what 'מאיה' is or where the Maya link goes; would drop or rename it",
+      "'MSCI AC World' is unclear",
+      "Coloured text and '<' look clickable but it's unclear what opens",
+      "The explanation that the exposure is a ceiling is found only at the very bottom",
+      "Underlines under numbers are ambiguous (links?)",
+      "'משתנים' fees: variable how, can they rise, by how much?",
+      "'נאמן': who is it, and why pay separately?",
+      "No total yearly cost (e.g. per 100,000 shekels)",
+      "No date for the report the fees come from",
+      "No tax amount for 'מס גם על שינויי המטבע'",
+      "Unclear whether bank buying fees come on top",
+      "No past returns or tracking accuracy",
+      "Would drop the stock-exposure line 'מניות עד 120%' because it only scares"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader objects to the stock figure because it is frightening, not because it repeats the 'חשיפה לדולר' label, and wants the currency ceiling kept, so the redundancy and clutter complaint is not named."
+      }
+    ],
+    "liked": [],
+    "usd": 0.071316
+  },
+  "b": {
+    "raised": [
+      "The 'מניות עד 120%' stock figure frightens: it sounds like borrowing and risk, and the reader would drop that line",
+      "'פרופיל 4A' in the second version means nothing",
+      "The second version drops the bottom line explaining what the ceiling is",
+      "The 'only funds the site collected a report on' note is worrying because other, maybe cheaper, funds are hidden",
+      "The '(4A)'/'(4D)' codes in fund names mean nothing",
+      "'מס גם על שינויי המטבע' doesn't say how much tax",
+      "The 'עסקת החלף' tag is confusing and sounds untrustworthy; would drop it",
+      "Unclear what 'מאיה' is or where the Maya link goes; would drop or rename it",
+      "'MSCI AC World' is not understandable",
+      "Coloured text and '<' look clickable but it's unclear what would open",
+      "The explanation that exposure is a ceiling is found only at the very bottom",
+      "Unclear whether the underlines under the numbers are links",
+      "'משתנים' fee: variable how, and can it rise?",
+      "'נאמן' fee: who is that, and why pay separately?",
+      "No total yearly cost in shekels",
+      "No date for the report the fees come from",
+      "Unclear whether the bank's buying fees come on top",
+      "No past returns or tracking accuracy"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 1,
+        "why": "The reader objects to the stock percentage figure and would drop it as unneeded, which matches the stock-percentage part of the person's complaint, though their reason is fear rather than clutter, and they want to keep the currency ceiling."
+      }
+    ],
+    "liked": [],
+    "usd": 0.066124
+  },
+  "third": {
+    "raised": [
+      "The 'מניות עד 120%' stock figure in the first version is frightening (more than all the money in stocks, sounds like borrowing and risk), and the reader would drop it because it adds nothing they need",
+      "'פרופיל 4A' and the (4A)/(4D) codes mean nothing to the reader",
+      "The second version drops the bottom line that explains what the ceiling is",
+      "The note that only some of the company's funds are shown is worrying: there may be other, cheaper funds the reader can't see",
+      "'עסקת החלף' tags are confusing and sound untrustworthy",
+      "'מס גם על שינויי המטבע' doesn't say how much tax",
+      "Unclear what 'מאיה' is or where the Maya link goes",
+      "'MSCI AC World' is not understandable",
+      "Coloured text and '<' look clickable, but it's unclear what would open",
+      "The explanation of the exposure ceiling is found only at the very end",
+      "Underlines under numbers are unclear (are they links?)",
+      "'משתנים' fees: variable how, and up to how much?",
+      "'נאמן': who is that, and why is it paid separately?",
+      "No total yearly cost in shekels",
+      "No date for the report the fees come from",
+      "Unclear whether the bank's buying fees come on top",
+      "No past returns or tracking accuracy"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 1,
+        "why": "The reader objects to the stock percentage in the exposure figures, prefers the version that shows only the currency exposure, and says nothing they need is missing without it, which covers a clear part of the person's complaint that the extra figures aren't needed."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0533152
+  },
+  "ranks": {
+    "k": 1
+  },
+  "agreed": {
+    "k": false
+  },
+  "against": {},
+  "usd": 0.1907552
+}

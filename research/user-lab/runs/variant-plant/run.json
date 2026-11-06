@@ -1,0 +1,10 @@
+{
+  "personas": ["careful-retiree-pc"],
+  "tasks": [
+    { "key": "sp500-look", "text": "A friend sent you this page about putting money into the S&P 500 every month. Look it over as you normally would and decide whether you would trust it to choose where to do it.",
+      "page": "https://orishamir.github.io/finance-tool/indices/sp500", "findings": true },
+    { "key": "sp500-browse", "text": "You want to put 500 ₪ a month into the S&P 500. Use this website to see where it would cost you least.",
+      "start": "https://orishamir.github.io/finance-tool/indices/sp500", "minutes": 6, "actions": 12, "findings": true }
+  ],
+  "parallel": 2
+}

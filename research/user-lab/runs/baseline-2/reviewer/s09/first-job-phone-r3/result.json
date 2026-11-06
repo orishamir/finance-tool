@@ -1,0 +1,112 @@
+{
+  "task": "s09",
+  "persona": "first-job-phone",
+  "repeat": 3,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T12:15:43.454Z",
+  "structured": {
+    "answer": "A deposit means you lock money in the bank for a set time and get interest (the example says 1.8%, minus 15% tax). You give up access, because breaking it early costs a fine the site doesn't calculate. Their own example showed 70,000 ₪ in and 68,270 ₪ left, so I'm not doing it today.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Example box / results under graph",
+        "why": "'ההפקדות שלכם 70,000 ₪' vs 'נשאר לכם 68,270 ₪' looks like you lose money; only the small 'בכסף של היום' toggle and 2% inflation vs 1.8% hint why"
+      },
+      {
+        "where": "כמה זה עולה",
+        "why": "Exit fee only says 'לפי התעריפון של הגורם המציע', no shekel amount"
+      },
+      {
+        "where": "Red box in מיסוי",
+        "why": "Says early break has a קנס but 'האתר לא מחשב אותה', so I can't tell what locking away really costs"
+      }
+    ],
+    "used": [
+      "Title פיקדון and first lines of מה זה",
+      "Big figure 68,270 ₪ and example line (10,000, 500, 1.8%, 10 שנים)",
+      "Results rows נשאר לכם / מס / ההפקדות שלכם",
+      "Interest and inflation fields 1.8 / 2",
+      "שווה לדעת lines: מס 15%, שבירת פיקדון, אין ביטוח פיקדונות",
+      "כסף נכנס ויוצא: בסוף התקופה שנקבעה בהסכם",
+      "כמה זה עולה: דמי יציאה",
+      "מיסוי cards and red box about breaking a deposit early",
+      "סיכונים: אין בישראל ביטוח פיקדונות"
+    ],
+    "skimmed": [
+      "למה משתמשים בזה",
+      "מי מציע ומי מפקח (bottom part only)",
+      "מיסוי paragraph on פטור and ניירות ערך",
+      "מונחים table headings"
+    ],
+    "skipped": [
+      "הצגה כטבלה fold",
+      "הצגת החוקים והכללים links",
+      "הצגת כל הבדיקות",
+      "כמה העמלות האלה עולות לאורך זמן",
+      "Grey notes under the fields (date 25.10.2026 etc.)",
+      "גיל field",
+      "Screens 7–8"
+    ],
+    "unsure_meaning": [
+      "TXI-03 / BANK-06 / BANK-23 / TXI OQ14 / TXI-17 codes",
+      "מק\"מ",
+      "מוצרי שוק הכסף",
+      "חשבון במערכת סגורה",
+      "הבטחת קרן",
+      "ריבית הריאלית",
+      "פטור למעוט הכנסה",
+      "בכסף של היום vs בשקלים של העתיד toggle",
+      "מזומן שקלי chip",
+      "123 מקור / מחושב / הזנתה badges"
+    ],
+    "not_found": [
+      "Actual exit/early-break fee in shekels",
+      "Comparison of current rates across banks",
+      "A clear 'what to do first' step"
+    ],
+    "findings": [
+      {
+        "what": "First big result shows less money left (68,270 ₪) than deposited (70,000 ₪) with no clear explanation next to it; reads like a deposit loses money",
+        "where": "Example box at top and results under the graph"
+      },
+      {
+        "what": "Cost of breaking the deposit early is not given in shekels; the site says it does not calculate it",
+        "where": "Red box in מיסוי and כמה זה עולה table"
+      },
+      {
+        "what": "Unexplained codes like TXI-03, BANK-06 look like noise",
+        "where": "שווה לדעת and מיסוי"
+      },
+      {
+        "what": "Jargon in the main text (מק\"מ, מוצרי שוק הכסף, חשבון במערכת סגורה)",
+        "where": "למה משתמשים בזה and מי מציע"
+      },
+      {
+        "what": "No deposit insurance warning is scary and comes without guidance",
+        "where": "סיכונים ומה לא מוגן"
+      },
+      {
+        "what": "Example uses only Leumi's terms, so I can't tell if other banks pay more",
+        "where": "תנאי המוצר בדוגמה"
+      }
+    ]
+  },
+  "steps": 6,
+  "reads": 6,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 38575,
+    "turns": 8,
+    "usd": 0.1699022,
+    "input": 10,
+    "cacheWrite": 11488,
+    "cacheRead": 34691,
+    "output": 3551,
+    "model": "claude-opus-5-5"
+  }
+}

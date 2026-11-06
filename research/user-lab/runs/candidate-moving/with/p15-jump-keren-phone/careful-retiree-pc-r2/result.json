@@ -1,0 +1,109 @@
+{
+  "task": "p15-jump-keren-phone",
+  "persona": "careful-retiree-pc",
+  "repeat": 2,
+  "mode": "browser",
+  "device": "phone",
+  "startedAt": "2026-11-06T02:02:31.184Z",
+  "structured": {
+    "answer": "With 500 ₪ a month at the page's assumed 7% a year, after 8 years about 68,853 ₪ would be left in my hands with no tax. After 4 years the page shows 25,725 ₪, but it says that for the self-employed it doesn't yet calculate withdrawals before 6 years and that tax would be taken, so that's a rough figure before tax.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Calculator after pressing עצמאים",
+        "why": "The fields rearranged; 'תשואה בשנה' jumped from the right box to the left and the form got shorter"
+      },
+      {
+        "where": "Year 4 result",
+        "why": "Only a number 25,725 over an empty dashed bar plus orange text that there is no calculation for self-employed before 6 years; unclear whether 25,725 is before or after tax"
+      }
+    ],
+    "used": [
+      "Opening text about 6 years tax-free",
+      "Line 'לעצמאים... עד 20,566 ₪ בשנה'",
+      "Calculator 'כמה כסף נשאר לכם, ומתי?' with עצמאים button",
+      "Year buttons under the bar chart (4 and 8)",
+      "Big number above year 4 and orange note",
+      "Breakdown at 8 years: הפקדתם 48,000, המס לקח 0, נשאר בידיים 68,853, אותו כסף בחשבון 55,471"
+    ],
+    "skimmed": [
+      "Paragraph on salaried employees' 7.5%/2.5% limits",
+      "Small bar chart with years 1-12"
+    ],
+    "skipped": [
+      "חוקים וכללים · 10",
+      "כדאי להכיר גם / במה אפשר להשקיע chips (S&P 500 etc.)",
+      "Rest of page below the calculator (שווה לדעת, מי מציע ומי מצטרף)"
+    ],
+    "unsure_meaning": [
+      "מסלול מדד",
+      "החזר המס +9,581",
+      "התשואה הוסיפה +11,272",
+      "אותו כסף בחשבון 55,471",
+      "dotted underlines under numbers",
+      "הכנסה חייבת בחודש"
+    ],
+    "not_found": [
+      "An after-tax amount for withdrawing after 4 years as self-employed",
+      "Any statement that 7% is not guaranteed"
+    ],
+    "findings": [
+      {
+        "what": "For self-employed, no calculation before 6 years; a bare number 25,725 sits over an empty dashed bar, so you can't tell what you actually keep",
+        "where": "Calculator result at year 4"
+      },
+      {
+        "what": "Fields jump around when switching שכירים/עצמאים (return field moves from right to left)",
+        "where": "Calculator form"
+      },
+      {
+        "what": "Dark background with grey text is tiring to read",
+        "where": "Whole page"
+      },
+      {
+        "what": "Teal vs dark teal and yellow vs dark yellow bars are hard to tell apart",
+        "where": "Breakdown chart at 8 years"
+      },
+      {
+        "what": "'מסלול מדד' and 'החזר המס' are not explained in place",
+        "where": "Sentence under chart and breakdown bars"
+      },
+      {
+        "what": "Calculator is far down the page, after a lot of text",
+        "where": "Page layout"
+      }
+    ]
+  },
+  "steps": 8,
+  "reads": 7,
+  "commands": 8,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 57248,
+    "turns": 17,
+    "usd": 0.2822858,
+    "input": 32,
+    "cacheWrite": 20594,
+    "cacheRead": 212929,
+    "output": 3741,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "p15-jump-keren-phone",
+    "screenshots": 8,
+    "changes": [
+      {
+        "id": "jump-shown",
+        "type": "style",
+        "shots": 8,
+        "applied": 8,
+        "most": 1
+      }
+    ],
+    "neverShown": [],
+    "errors": []
+  }
+}

@@ -1,0 +1,83 @@
+{
+  "case": "tracks-r2-companies",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"Rows repeat their group's heading: each company row repeats the track kind in its name and again in a label, and under a heading 'עוקב מדד S&P 500' every row says it again.\",\"where\":\"the rows under each group heading\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "The 'משווק לשלוש, ומה שהנתונים מראים' link is unclear",
+      "Doesn't know what a קופת גמל להשקעה is; the page itself doesn't explain it (withdrawal, tax)",
+      "Investment-type chips like 'הלכה יהודית', 'אג\"ח ממשלתי סחיר', 'כספי (שקלי)' mean nothing",
+      "Two fee types in the sort menu ('מהחיסכון' vs 'מההפקדות') cause worry and confusion",
+      "Option 2 (grouping by company) is confusing: Harel alone is 16 rows and the S&P line is mixed in; useless for comparing",
+      "Option 3 matrix is a confusing wall of coloured percentages; '2 מסלולים' cells and '—' vs 'חדש' don't help",
+      "Option 3's list duplicates option 1's list, so seeing it twice is pointless",
+      "Unsure whether the small 'מההפקדות' fees (0.01%, 0.05%) are bad",
+      "'פחות מ־3 שנים' in place of a return looks like missing data",
+      "'עוד לא דווח' / 'חדש' for אילון made the reader skip that fund",
+      "Doesn't understand 'מט\"ח' next to 'מניות' in the exposure column, or why the percentages add up to more than 100%",
+      "Doesn't understand what the clock icons and rings mean",
+      "Doesn't know what the 'קופה' number is for",
+      "'לפני דמי ניהול' in the return heading: unclear what you actually get",
+      "Footer says the list isn't sorted by returns, so why show returns so big?",
+      "Can't find what the fee difference means in shekels per year",
+      "Can't find how to open a fund or whether there's a minimum amount",
+      "Can't find whether this beats buying the S&P 500 at a bank or broker",
+      "Can't find why returns differ between funds that follow the same index",
+      "Would drop the repeated tab and menu bars and the explainer paragraphs between options",
+      "Would drop the rings, dots and clock icons in the table",
+      "Would drop the option 3 colour matrix",
+      "Would drop option 2's grouping by company"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader never complains that rows repeat the group heading or the track kind; the repetitions they mention (tab and menu bars, option 3's list) are different."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0648832
+  },
+  "b": {
+    "raised": [
+      "The \"משווק לשלוש, ומה שהנתונים מראים\" link is unclear; the reader doesn't know what it means",
+      "Doesn't know what a קופת גמל להשקעה is (withdrawal, tax), and the page itself doesn't explain it",
+      "The investment-type chips other than S&P (הלכה יהודית, אג\"ח ממשלתי סחיר, כספי) meant nothing",
+      "Seeing two fee types (מהחיסכון / מההפקדות) caused worry: are there two fees? The difference isn't explained",
+      "Option 2 (grouped by company) is confusing: Harel alone is 16 rows, S&P is mixed in with other tracks, and it doesn't help compare companies",
+      "Option 3 matrix is confusing: a wall of brown/orange percentages, and \"2 מסלולים\" and \"—\" vs \"חדש\" in cells don't help",
+      "Option 3's list repeats option 1's list, so seeing it twice is pointless",
+      "Unsure whether a deposit fee of 0.01% or 0.05% is bad",
+      "\"פחות מ־3 שנים\" in place of a return looks like missing data",
+      "\"עוד לא דווח\" and \"חדש\" for אילון made the reader skip that fund",
+      "Doesn't understand מט\"ח next to מניות, or why 99% מניות / 99% מט\"ח adds up to more than 100%",
+      "Doesn't know what the clock icons, rings and dots mean (would remove them)",
+      "Doesn't know what the קופה number is for",
+      "\"לפני דמי ניהול\" in the return heading is unclear: what does the reader actually get?",
+      "Footer says the list isn't sorted by return, yet returns are shown big, which seems contradictory",
+      "Missing: what 0.52% vs 0.71% means in shekels per year",
+      "Missing: how to open a fund and whether there's a minimum amount",
+      "Missing: whether this beats buying the S&P 500 at a bank or broker",
+      "Missing: why returns differ between funds tracking the same index",
+      "Repeated tab/menu bars and explainer paragraphs between options should go"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The report never says that rows repeat the group heading or the track kind; it treats the S&P group as one list and never mentions redundant labels inside the rows."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0584352
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1233184
+}

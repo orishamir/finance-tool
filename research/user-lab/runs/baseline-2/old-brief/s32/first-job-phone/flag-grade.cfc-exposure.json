@@ -1,0 +1,83 @@
+{
+  "case": "cfc-exposure",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The fund table spells out the stock percentage and the currency ceiling of each fund, which the label 'חשיפה לדולר' already covers; the extra figures clutter.\",\"where\":\"the exposure figures in each version\",\"kind\":\"taste\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Option 1's \"מניות עד 120%\" is worrying: how can a fund hold more than 100% in stocks?",
+      "In Option 2, the word \"פרופיל\" means nothing to the reader",
+      "0.8% for the S&P fund looks expensive next to 0.1%, and the reader can't tell if that's a problem",
+      "\"(4A)\" and \"(4D)\" in the fund names are confusing",
+      "The reader doesn't know what the \"עסקת החלף\" tag means",
+      "The \"מס גם על שינויי המטבע\" tag is scary: more tax, but how much?",
+      "The reader doesn't know what מאיה is",
+      "\"במה הכסף מושקע\" mostly repeats the fund name",
+      "The fee column is confusing",
+      "The last exposure column is confusing, with numbers jumping from 10% to 120%",
+      "Even after the footnote, the reader doesn't know what 4A means for them",
+      "The arrows and underlined percentages don't look clickable",
+      "Unclear whether to add up קבועים, משתנים and נאמן to get the yearly cost",
+      "Unclear what \"משתנים\" changes with",
+      "The reader doesn't understand the term \"מט״ח\"",
+      "No single total cost per fund, for example in shekels a year on ₪10,000",
+      "No comparison of the 0.8% with other companies' S&P 500 funds",
+      "No explanation of why the S&P fund costs eight times as much as the TA-90 fund",
+      "No information on how to actually buy the fund",
+      "No plain-language explanation of what the tags mean for the reader's money",
+      "Would drop the \"מספר נייר\" column first",
+      "Would drop the \"מניות עד 120%\" figures"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 22,
+        "why": "The reader says they would remove the \"מניות עד 120%\" exposure figures as unnecessary, which is a clear part of the person's complaint that these extra figures clutter the table, though the reader never says they repeat the tag."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0533992
+  },
+  "b": {
+    "raised": [
+      "Option 1's added 'מניות עד 120%' worried them: how can a fund be over 100% in stocks?",
+      "In Option 2, the word 'פרופיל' means nothing to them",
+      "0.8% looks expensive next to TA-90's 0.1%, and they can't tell whether that's a problem",
+      "The '(4A)'/'(4D)' in fund names confused them",
+      "They don't know what 'עסקת החלף' means",
+      "The 'מס גם על שינויי המטבע' tag scared them: how much extra tax?",
+      "They don't know what מאיה is",
+      "'במה הכסף מושקע' mostly repeats the fund name",
+      "The last exposure column confused them, with numbers jumping from 10% to 120%",
+      "The 4A footnote still doesn't say what it means for them",
+      "They didn't realise the arrows and underlined percentages were clickable",
+      "They don't know whether to add up קבועים/משתנים/נאמן into a yearly cost",
+      "They don't know what 'משתנים' changes with",
+      "They don't understand 'מט״ח'",
+      "They wanted one total cost per fund, in shekels a year",
+      "They couldn't compare 0.8% with other companies' S&P 500 funds",
+      "There's no explanation of why the S&P fund costs eight times the TA-90 fund",
+      "They couldn't find how to actually buy the fund",
+      "They wanted plain words for what the tags mean for their money",
+      "They would drop the 'מספר נייר' column first",
+      "They would drop the 'מניות עד 120%' numbers"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 21,
+        "why": "The reader prefers the version with one exposure number per fund and says they would drop the extra 'מניות עד 120%' figures, which matches the person's point that the extra stock and currency figures clutter the table."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0605072
+  },
+  "third": null,
+  "ranks": {
+    "k": 21
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.11390639999999999
+}

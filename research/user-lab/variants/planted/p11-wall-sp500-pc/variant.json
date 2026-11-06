@@ -1,0 +1,41 @@
+{
+  "id": "p11-wall-sp500-pc",
+  "about": "For the lab only; never reaches a session. Planted problem, kind p11 (A wall of text before the answer): see research/user-lab/planted.md.",
+  "purpose": "plant",
+  "pages": [
+    "/finance-tool/indices/sp500"
+  ],
+  "device": "pc",
+  "instance": {
+    "kind": "p11",
+    "mode": "page",
+    "url": "https://orishamir.github.io/finance-tool/indices/sp500",
+    "device": "pc",
+    "steps": [],
+    "task": "sp500",
+    "control": "planted/control-sp500-pc",
+    "split": "tune"
+  },
+  "plants": [
+    {
+      "id": "p11",
+      "kind": "general",
+      "problem": "Two long paragraphs of method notes sit between the inputs and the result, pushing the answer below the first screen.",
+      "where": "between the inputs and the result",
+      "counts": "A finding that a block of text must be read (or scrolled past) before the result, or that the result is pushed down by explanations.",
+      "notCounts": "Wanting fewer words anywhere on the page, without the position before the answer."
+    }
+  ],
+  "changes": [
+    {
+      "id": "wall",
+      "type": "insert",
+      "at": {
+        "text": "לדוגמה של האתר",
+        "closest": "div"
+      },
+      "position": "afterend",
+      "html": "<div class=\"flex flex-col gap-3 max-w-measure text-muted-foreground\"><p>החישוב לפי התעריפון של כל בנק ובית השקעות ולפי הדוח של כל קרן. קנייה חודשית מחושבת כהוראת קבע: 3 מתוך 15 הבנקים ובתי ההשקעות שברשימה מפרסמים לה מחיר נמוך יותר, והוא שנכלל בחישוב. סכום חד־פעמי ומכירה מחושבים במחיר הרגיל. המחיר בכל שורה הוא של לקוח רגיל, והדירוג לפיו. מחיר לקבוצות כתוב בשורה של הבנק או בית ההשקעות ולא נכנס לחישוב.</p><p>התשואה שבחישוב היא תשואה לדוגמה, לא תחזית: הסדר של הדרכים לפי עלויות, לא לפי מה שהמדד יעשה. הערכים הם בכסף של היום. קרנות בחו״ל שהתעריפון שלהן נקבע לפי מספר המניות מחכות למחיר היחידה של הקרן, שעוד לא נאסף. שער הדולר מחושב משערי הייחוס של הבנק המרכזי האירופי. האתר לא ממליץ על מדד.</p></div>"
+    }
+  ]
+}

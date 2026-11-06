@@ -1,0 +1,36 @@
+{
+  "case": "study-r1-coins",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The coins add nothing a simple bar would not show better.\",\"where\":\"the coin drawing\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 4 says only that the coins lack a legend next to them; it never says the coin drawing adds nothing a simple bar couldn't show better."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0140194
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 4 says the coin stripes aren't explained, which is a labeling complaint; no finding says the coin drawing adds nothing over a simple bar."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0141394
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.028158799999999998
+}

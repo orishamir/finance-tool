@@ -1,0 +1,6 @@
+{
+  "named": true,
+  "position": 4,
+  "why": "Finding 4 says the page shifts up when picking a year. That is the page moving while the years change, which matches what counts as naming it. Finding 3 is about moving fields too, but it's caused by the employee/self-employed toggle, not by changing the years.",
+  "usd": 0.020352000000000002
+}

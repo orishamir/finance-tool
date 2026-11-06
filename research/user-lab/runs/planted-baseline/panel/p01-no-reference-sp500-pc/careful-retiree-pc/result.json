@@ -1,0 +1,143 @@
+{
+  "task": "p01-no-reference-sp500-pc",
+  "persona": "careful-retiree-pc",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-05T23:01:42.735Z",
+  "structured": {
+    "answer": "The page says to open the account at Psagot and buy the Yelin Lapidot S&P 500 fund, ending with about 86,492 ₪ after ten years. But I don't know those companies, so I'd ask my son or my bank first. Leumi was close behind at 83,396 ₪.",
+    "confidence": "unsure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "screen 1, second box",
+        "why": "Red-looking '‎−43 ₪ לעומת הבחירה שלכם' made me think something loses money"
+      },
+      {
+        "where": "screen 3 fund list",
+        "why": "Many minus numbers (−447, −1,268, −3,671 ₪) and coloured labels; I couldn't tell what they mean"
+      },
+      {
+        "where": "screen 4",
+        "why": "Funds switched to English names and codes (iShares, Vanguard, IE00...); I stopped here"
+      },
+      {
+        "where": "right column bank list",
+        "why": "Wanted my own big bank; had to look down the list to find Leumi and Hapoalim"
+      }
+    ],
+    "used": [
+      "Title 'איפה ואיך הכי זול להשקיע במדד'",
+      "Prefilled boxes: 10,000 ₪, 500 ₪ monthly, 10 years, 7%",
+      "Big number 86,492 ₪ marked 'הזול'",
+      "Account name 'פסגות ניירות ערך' and fund 'ילין לפידות מחקה S&P 500'",
+      "Bank list: Leumi 83,396 ₪, Hapoalim 81,471 ₪"
+    ],
+    "skimmed": [
+      "Coloured cost bar legend on screen 2",
+      "Fund list with coloured tags on screens 2-3",
+      "Notes 'לא בחישוב' under banks",
+      "Second box 86,449 ₪"
+    ],
+    "skipped": [
+      "Screens 5-10",
+      "Sliders",
+      "Fold arrows next to banks",
+      "'קיבלתם מחיר אחר? הזינו אותו' link",
+      "English-named funds on screen 4"
+    ],
+    "unsure_meaning": [
+      "S&P 500",
+      "ETF / UCITS / Accumulating / Distributing",
+      "(4D)",
+      "מדד (as a stock index)",
+      "קרן מחקה",
+      "צוברת",
+      "מחלקת דיבידנד",
+      "דמי משמרת",
+      "נאמן",
+      "חשיפה לדולר",
+      "the small numbers under bank names like 1,057 ₪",
+      "the minus numbers like −447 ₪ in the fund list",
+      "orange/yellow/red bar colours"
+    ],
+    "not_found": [
+      "A plain sentence saying what the risk is or whether this is as safe as a deposit",
+      "A recommendation that names my own bank simply",
+      "Explanation of the minus numbers"
+    ],
+    "findings": [
+      {
+        "what": "Dark background with small grey text; hard to read even enlarged",
+        "where": "whole page, esp. notes under numbers"
+      },
+      {
+        "what": "Opens with English index buttons; feels like it's not for someone like me",
+        "where": "screen 1 top"
+      },
+      {
+        "what": "Minus numbers that look like losses frighten and are unexplained",
+        "where": "screen 1 second box, fund list screens 2-4"
+      },
+      {
+        "what": "Too many coloured tags per fund, with jargon I don't know",
+        "where": "fund list screens 2-4"
+      },
+      {
+        "what": "Fund names in English with codes",
+        "where": "screen 4"
+      },
+      {
+        "what": "Stacked bars in orange/yellow/red too close to tell apart",
+        "where": "bank list right column"
+      },
+      {
+        "what": "Chosen 'cheapest' is a company I don't recognise; no word about safety",
+        "where": "screen 1 result box"
+      },
+      {
+        "what": "Small dotted-underlined numbers whose meaning isn't stated",
+        "where": "under each bank, e.g. 1,057 ₪"
+      }
+    ]
+  },
+  "steps": 4,
+  "reads": 4,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 37432,
+    "turns": 6,
+    "usd": 0.1327712,
+    "input": 8,
+    "cacheWrite": 7802,
+    "cacheRead": 23716,
+    "output": 3279,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "p01-no-reference-sp500-pc",
+    "screenshots": 11,
+    "changes": [
+      {
+        "id": "no-reference",
+        "type": "hide",
+        "shots": 11,
+        "applied": 11,
+        "most": 1
+      },
+      {
+        "id": "no-reference-arrow",
+        "type": "hide",
+        "shots": 11,
+        "applied": 11,
+        "most": 1
+      }
+    ],
+    "neverShown": [],
+    "errors": []
+  }
+}

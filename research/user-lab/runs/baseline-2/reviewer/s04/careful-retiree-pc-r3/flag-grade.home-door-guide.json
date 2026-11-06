@@ -1,0 +1,36 @@
+{
+  "case": "home-door-guide",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The home link 'להבין סוג של חיסכון' promises help with one kind of saving but opens only the general list of guides.\",\"where\":\"the link on the home page and where it leads\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings mentions the home link 'להבין סוג של חיסכון' opening a general list of guides. Finding 3 is about a different link ('מאיפה להתחיל') on the guide page, and it points somewhere unexpected for another reason."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0156754
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the findings mention the home link 'להבין סוג של חיסכון' leading to the general guide list; finding 3 is about a different link ('מאיפה להתחיל') on the guide page."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0152754
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0309508
+}

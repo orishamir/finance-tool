@@ -1,0 +1,128 @@
+{
+  "task": "s09",
+  "persona": "careful-retiree-pc",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T02:17:15.062Z",
+  "structured": {
+    "answer": "I'm not changing anything. I'll keep my deposits at the bank and ask my son, then the clerk, whether a deposit really isn't insured and what breaking it early costs. The page didn't calculate that cost, and its example showed less money at the end (68,270) than was put in (70,000), which scared me.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Screen 1, example box: 68,270 ₪ 'נשאר לכם' vs 70,000 ₪ 'ההפקדות שלכם'",
+        "why": "Looks like the deposit loses money; I guessed it was 'בכסף של היום' with inflation 2% over interest 1.8%, but no plain sentence said so"
+      },
+      {
+        "where": "Screen 2 'אין ביטוח פיקדונות' and screen 3 'סיכונים ומה לא מוגן'",
+        "why": "I believed deposits are safe; this says no law returns the money if a bank fails, and the proposed 250,000 ₪ guarantee is only for small banks"
+      },
+      {
+        "where": "Screen 3, red box about 'שבירת פיקדון לפני הזמן'",
+        "why": "What I came to learn (the price of locking money away) isn't calculated; it just says it depends on the bank"
+      },
+      {
+        "where": "Screen 2 'כמה זה עולה'",
+        "why": "Only 'לפי התעריפון של הגורם המציע', no number, so I can't tell if the bank takes too much"
+      }
+    ],
+    "used": [
+      "Title and opening definition 'כסף שמפקידים בבנק לתקופה מוסכמת'",
+      "Fixed vs variable interest, automatic renewal, 'לא צמוד' paragraph",
+      "Example result 68,270 / 986.20 tax / 70,000 deposits",
+      "'שווה לדעת': 15% tax, breaking a deposit, no deposit insurance",
+      "'מי מציע ומי מפקח' – Bank of Israel supervises",
+      "Tax cards: bank deducts 15% at end of deposit",
+      "Red box on early breaking",
+      "'סיכונים ומה לא מוגן'",
+      "Glossary entries 'קנס שבירה', 'שבירת פיקדון', 'תחנת יציאה', 'ריבית הפריים'"
+    ],
+    "skimmed": [
+      "Calculator inputs on the right (500, 10 years, 1.8, 2, age)",
+      "'למה משתמשים בזה' paragraph about קרן כספית",
+      "Income-exemption paragraph (69,840 / 10,920)",
+      "Rest of glossary table on screen 4"
+    ],
+    "skipped": [
+      "Sliders",
+      "Chart axes and colours",
+      "'הצגה כטבלה' and all 'הצג…' folds",
+      "'הצגת החוקים והכללים' links",
+      "Paragraph on securities losses (TXI-17)",
+      "'מה האתר לקח בחשבון'",
+      "Footer links"
+    ],
+    "unsure_meaning": [
+      "בכסף של היום / בשקלים של העתיד",
+      "מחושב (purple tag)",
+      "123 מחקמן / 123 מחושב / 123 הזנתה",
+      "TXI-03, BANK-06, BANK-23, TXI OQ14, TXI-04, TXI-17",
+      "קרן כספית, מק\"מ, מוצרי שוק הכסף, מזומן שקלי",
+      "ריבית הריאלית",
+      "צמוד למדד / הבטחת קרן",
+      "חשבון במערכת סגורה",
+      "ריבית הפריים"
+    ],
+    "not_found": [
+      "The actual cost or penalty of breaking a deposit early",
+      "A number for what the bank charges",
+      "A plain sentence explaining why the end amount is less than what was deposited",
+      "Actual current interest rates at my bank"
+    ],
+    "findings": [
+      {
+        "what": "Headline example shows 68,270 ₪ left against 70,000 ₪ deposited, with no plain explanation; it makes a deposit look like it loses money",
+        "where": "Screen 1, 'מה קורה לכסף לאורך הזמן' box"
+      },
+      {
+        "what": "'אין ביטוח פיקדונות' is frightening and there's no guidance on what to do with a large sum at one bank",
+        "where": "Screen 2 'שווה לדעת' and screen 3 'סיכונים ומה לא מוגן'"
+      },
+      {
+        "what": "Early-withdrawal penalty, the core of the question, isn't calculated or estimated",
+        "where": "Screen 3 red box"
+      },
+      {
+        "what": "Costs section gives no figures, only 'לפי התעריפון'",
+        "where": "Screen 2 'כמה זה עולה'"
+      },
+      {
+        "what": "Dark background with small pale grey text; the dated notes and footnotes are hard to read",
+        "where": "Screen 1 right column notes; screen 3 note under red box"
+      },
+      {
+        "what": "English code tags (TXI-03, BANK-23…) mean nothing to me",
+        "where": "Screens 2–3"
+      },
+      {
+        "what": "Chart legend colours 'נשאר לכם' and 'מס' are hard to tell apart",
+        "where": "Screen 1 chart"
+      },
+      {
+        "what": "Calculator uses sliders and has many numbers at once",
+        "where": "Screen 1 right column"
+      },
+      {
+        "what": "Unknown site name 'מקור'; I wouldn't act on it without asking the bank",
+        "where": "Header and footer"
+      }
+    ]
+  },
+  "steps": 4,
+  "reads": 4,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 39320,
+    "turns": 6,
+    "usd": 0.1879346,
+    "input": 8,
+    "cacheWrite": 13376,
+    "cacheRead": 26773,
+    "output": 3777,
+    "model": "claude-opus-5-5"
+  }
+}

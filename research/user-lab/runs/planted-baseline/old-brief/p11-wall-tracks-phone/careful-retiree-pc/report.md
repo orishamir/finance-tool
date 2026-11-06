@@ -1,0 +1,88 @@
+# p11-wall-tracks-phone: careful-retiree-pc (old brief)
+
+phone; 81 s, $0.82
+
+# What I'd do after reading my friend's page about investment savings funds (kupat gemel lehashkaa)
+
+## 1. My answer
+
+**I'd open it with Harel (הראל), in the track called "כללי" (general).**
+
+- **Cost:** The fee is 0.55% a year (`0.55% מהחיסכון`). On 100,000 ₪ that's about 550 ₪ a year. The most expensive company on the page charges up to 0.73%, which would be about 730 ₪. The page says the fees are what people were actually charged in 2025.
+- **Size:** Harel is at the top, and the page says companies are listed biggest first. It manages `19.1 מיליארד ₪`, and this one track holds `6.7 מיליארד ₪`. A big company feels safer to me.
+- **Mix:** Its circle says `מניות 49%`, so about half is in shares. That's middle-of-the-road, which suits my age.
+- **Past results:** `3 שנים 13.5%` and `5 שנים 8.26%`. That's roughly the same as the other companies' general tracks: Meitav 13.22 / 8.02, Phoenix 13.24 / 7.66, Clal 13.62 / 7.96. Harel just charges a bit less.
+
+**How sure am I?** About 60%. I'm sure about the company and the fee. I'm not sure that half in shares is right for me at 61. My fallback is Harel's `אשראי ואג"ח עם מניות (עד 25% מניות)` ("credit and bonds with shares, up to 25% shares"): fee 0.58%, 8.6% over 3 years, 4.73% over 5 years. It earns less, but there's less to lose. Before choosing between the two, I'd want to talk to someone.
+
+## 2. Parts of the page I actually used
+
+- **The intro paragraphs under `כל המסלולים בכל החברות` ("all tracks at all companies").** These are the only plain-language part. They taught me three things:
+  - No tax until I take money out, and then only on the profit.
+  - I can switch tracks without paying tax.
+  - `מגיל 60 אפשר להעביר גם את הכסף לקופת גמל לקצבה` (from 60 the money can also go into a pension-style fund). I'm 61, so that caught my eye.
+- **The summary line:** `143 מסלולים של 12 חברות · דמי ניהול מהחיסכון: מ־0.5% עד 0.73%`. It told me the whole range in one go.
+- **The line explaining the order** ("companies sorted biggest to smallest; inside each company, cheapest fee first").
+- **The grey company header bars** (Harel, Mor, Analyst, Meitav, and so on), each with its fee range. These were the most useful thing on the page.
+- **Inside the cards:** only the ones titled `כללי` (general), plus a few with `עד 25% מניות` (up to 25% shares).
+
+## 3. Block by block
+
+- **Top tabs `לפי חברה` / `לפי מוצר` ("by company" / "by product"):** Skimmed. I left it on "by product".
+- **Intro paragraphs:** Read every word and used them.
+- **`123 ממקור` / `123 מחושב` / `הקישו על מספר כדי לראות מאיפה הוא`** ("from the source", "calculated", "tap a number to see where it comes from"): Confused me. Two underline styles, and I couldn't tell which kind of number I can trust more.
+- **Product buttons:** `תגמולים ואישית לפיצויים 182`, `קרן חדשה מקיפה 139`, `חיסכון לכל ילד 41`… Confused me. None of them clearly said "kupat gemel lehashkaa". I only guessed I was in the right place because "143" matched `הכול (143)`.
+- **`מה זה קופת גמל להשקעה`** ("what is an investment savings fund"): Skipped. The intro had already explained it.
+- **Search box, `במה הכסף מושקע` ("what the money is invested in"), and `מיון` ("sort") set to fee:** Looked at them but didn't touch them. Sorting by fee was already what I wanted.
+- **`מה אומרים המספרים`** ("what the numbers mean") links: Skipped. They looked like more jargon.
+- **Company header bars:** Used all twelve.
+- **The track cards (screens 2–40):** Skimmed most of them. I stopped properly only at `כללי` and the "up to 25%" tracks. I scrolled quickly past:
+  - S&P 500 and `עוקב מדדים` (index trackers)
+  - `גמיש` (flexible)
+  - `הלכה` (Jewish law) and `שריעה` (Islamic law)
+  - `כספי (שקלי)` (cash, in shekels)
+- **Cards marked `חדש` ("new") or `עוד לא דווח` ("not reported yet"), and all of Ayalon (`דמי ניהול עוד לא דווחו`, "fees not reported yet"):** Skipped. No numbers means no decision.
+
+## 4. What I looked at inside each card
+
+- **Looked at:**
+  - `מהחיסכון` (fee taken from my savings): the number I compared most.
+  - `ההפקדה` (fee on deposits): checked it was 0%. A few were 0.01%–0.16%.
+  - `תשואה שנתית ממוצעת – 3 שנים / 5 שנים` (average yearly return over 3 and 5 years).
+  - `מניות` with the green dot (shares).
+  - `כסף מנוהל` (money managed), to see if a track is big or tiny. Some are `0 מיליון ₪`, which worried me.
+- **Ignored:**
+  - The **circle charts**. Two colours in rings, too small on my phone. I read the numbers next to them instead.
+  - `מט"ח` with the yellow dot.
+  - `קופה 15283` and its little arrow.
+  - The **purple dotted underlines**.
+  - The `<` arrows on each card.
+
+## 5. What I didn't understand
+
+- **`מט"ח`.** Foreign currency? Is a high number good or bad for me?
+- **`מניות 101%`** (Meitav, Migdal). How can more than 100% of my money be in shares?
+- **`פחות מ־3 שנים`** ("less than 3 years"). I think it means the track is too new to have results, but I'm not sure.
+- **Is `תשואה שנתית ממוצעת` before or after the fee comes off?**
+- **Why the same track shows 3-year returns so much higher than 5-year** (e.g. 24.04% vs 14.64%). Was there a bad year in between?
+- **`קופה` numbers.** What are they for?
+- **Track names:** `עוקב מדדים גמיש`, `אשראי ואג"ח` vs `אג"ח סחיר`, `משולב סחיר`. They mean nothing to me.
+
+## 6. What I wanted and couldn't find
+
+- **The worst year.** How much could I lose in a bad year? That's my main question at 61.
+- **Which track suits someone my age.** There's no age-based track and no advice.
+- **The actual yearly deposit ceiling in shekels.** The page only says `עד תקרה שנתית` ("up to a yearly ceiling").
+- **More on moving the money to a pension fund from 60.** It's one sentence. What does it mean for me?
+- **A side-by-side table:** one line per company for the same track (e.g. all the `כללי` tracks), so I don't have to scroll 40 screens and remember numbers.
+- **Service and practical steps:** how easy it is to take money out, how long it takes, and how to actually join.
+
+## 7. If half the page had to go
+
+1. The `חדש` and `עוד לא דווח` cards, and the Ayalon section.
+2. The niche tracks: `הלכה`, `שריעה`, `גמיש`, the separate S&P 500 and index-tracker cards.
+3. The circle charts and the `מט"ח` line.
+4. The `קופה` numbers and the `123 ממקור / 123 מחושב` explanation.
+5. The other product buttons (`קרן חדשה`, `חיסכון לכל ילד`).
+
+What I'd keep: the intro, the company header bars, and for each company just the general track and the cautious "up to 25% shares" track, each with fee, 3- and 5-year returns, share percentage and size.

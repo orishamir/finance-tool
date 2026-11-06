@@ -13,3 +13,19 @@ research/knowledge/2026-10-25-scope/tools/work/
 
 # Founder-flag benchmark raw extracts: his own words and screenshots, never committed (2026-11-05)
 research/user-lab/bench/raw/
+# 246 MB of rebuilt screens; rebuilt by bench/tools, checked by bench/shots.sha256
+research/user-lab/bench/shots/
+research/user-lab/bench/shots-vp/
+research/user-lab/runs/train-*/screens/
+research/user-lab/runs/train-*/**/*.png
+research/user-lab/runs/*/browser/variants/
+
+# other sites the founder reacted to: their screens stay out of the public repository
+research/user-lab/elsewhere/**/*.png
+research/user-lab/runs/elsewhere-*/**/*.png
+# the planted baseline's screens (96 MB): a variant of the live page, captured again by planted.mjs check
+research/user-lab/runs/planted-baseline/**/*.png
+# the baseline's neutral copies of the benchmark screens (rebuilt from bench/shots by the map)
+research/user-lab/runs/baseline-*/screens/
+research/user-lab/runs/candidate-*/**/*.png
+research/user-lab/runs/baseline-*/**/*.png

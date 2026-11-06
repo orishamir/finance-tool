@@ -1,0 +1,47 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "16 tracks with almost identical fees and no recommendation, so the reader couldn't choose without a familiar name. This blocks the decision. It is not the alphabetical-sort problem or the filter-chip problem.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "Most rows in the returns column show 'less than 3 years' instead of a return, so a main figure can't be compared.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "Fees are shown only as percentages, with no amount in shekels. This is a wish for more information, not a blocker.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "There's no link or button to open an account or contact Harel. This is a missing extra; the comparison itself still works.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "A table row is cut off between screens, so one track's name and numbers never appear together. It affects one row only, and the cause is the screen split.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 6,
+      "summary": "Jargon in the exposure column headers (exposure to stocks and foreign currency) and unexplained ring charts leave the reader unable to understand a main column.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 7,
+      "summary": "A long list of folded document sections whose titles don't say why to open them. This is a minor annoyance in secondary content.",
+      "serious": false,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.029234800000000005
+}

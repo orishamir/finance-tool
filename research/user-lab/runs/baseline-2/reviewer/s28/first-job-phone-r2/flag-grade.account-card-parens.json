@@ -1,0 +1,36 @@
+{
+  "case": "account-card-parens",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The chosen account's name carries a parenthesis '(מותג של MEXEM LTD)' that clutters it.\",\"where\":\"the chosen account's card\",\"kind\":\"taste\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 2 points at the same card and the same MEXEM name, but its complaint is that the company is unknown and hard to trust, not that the parenthesis clutters the name."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0160074
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 2 quotes the same name with its parenthesis, but its complaint is that the company is unfamiliar and hard to trust, not that the parenthetical clutters the name."
+      }
+    ],
+    "liked": [],
+    "usd": 0.016767400000000002
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.03277480000000001
+}

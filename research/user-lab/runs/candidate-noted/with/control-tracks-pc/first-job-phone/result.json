@@ -1,0 +1,125 @@
+{
+  "task": "control-tracks-pc",
+  "persona": "first-job-phone",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T03:10:21.631Z",
+  "structured": {
+    "answer": "I'd go with Harel, the \"מניות\" track (קופה 8522). Harel is a big name I know, it was first on the list, its fee is the cheapest I saw (0.55%), and it shows the biggest 3-year number I came across, 24.04%. I'm only fairly sure, and I'd want someone to check it before I put money in.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Top filter row 'במה הכסף מושקע'",
+        "why": "There were 16 buttons and 143 tracks. I didn't know whether to tap 'עוקב מדד S&P 500' because my friends talk about the S&P, or just scroll."
+      },
+      {
+        "where": "The table on screens 2–5",
+        "why": "Every company has the same names over and over (כללי, מניות, S&P 500, משולב סחיר). After a few screens it all looked the same and I stopped at screen 5."
+      },
+      {
+        "where": "The 'תשואה שנתית ממוצעת' column",
+        "why": "Lots of rows say 'פחות מ־3 שנים' instead of a number, so I couldn't compare those, including Harel's 'עוקב מדדי מניות'."
+      },
+      {
+        "where": "Choosing between Harel מניות and Harel S&P 500",
+        "why": "The S&P one is what my friends mean, but מניות shows 24.04% against 13.7%, so I took the bigger number."
+      }
+    ],
+    "used": [
+      "Heading 'כל המסלולים בכל החברות'",
+      "Selected tab 'קופת גמל להשקעה 143'",
+      "Harel company row: 'דמי ניהול מהחיסכון מ־0.54% עד 0.61%'",
+      "Harel מניות row: 0.55%, 3 שנים 24.04%, 5 שנים 14.64%, 7.3 מיליארד",
+      "Harel S&P 500 row: 0.56%, 13.7% / 11.92%",
+      "Glanced at the מור, אנליסט and מיטב rows to compare fees and returns"
+    ],
+    "skimmed": [
+      "The 'חשיפה למניות ולמט\"ח' column with the circles",
+      "The 'כסף מנוהל' column",
+      "The second line of the heading text about 2025 and ספטמבר 2026",
+      "The מור, אנליסט and מיטב sections"
+    ],
+    "skipped": [
+      "'מה זה קופת גמל להשקעה' link",
+      "The search box",
+      "The '?' icons in the column headers",
+      "Screens 6–15",
+      "The 'מדריך' and 'חוקים וכללים' menu items",
+      "'123 מקומן / 123 מחושב' line"
+    ],
+    "unsure_meaning": [
+      "'מט\"ח' with a %: is it dollars? Why is it 99% next to מניות 99%?",
+      "The yellow and teal circles: I guessed teal is מניות and yellow is מט\"ח",
+      "'מההפקדות 0%' compared with 'מהחיסכון 0.55%': two kinds of fee?",
+      "'לפני דמי ניהול': so the real return is lower?",
+      "Does 24.04% for '3 שנים' mean a year or all three years together?",
+      "'מניות 101%': how can it be more than 100?",
+      "The 'חדש' tag and 'עוד לא דווח' with an orange mark"
+    ],
+    "not_found": [
+      "A recommended or 'best for beginners' option",
+      "What any of this costs in shekels on my 30,000",
+      "Clear 'how to open / first step' button",
+      "Which track suits a 26-year-old"
+    ],
+    "findings": [
+      {
+        "what": "Too many look-alike options (143 tracks, same track names at every company). I can't tell them apart, and I almost closed it to do nothing.",
+        "where": "Main table, screens 2–5"
+      },
+      {
+        "what": "Fees only as small percents (0.55%, 0.73%). No shekel amount, so they all feel like nothing.",
+        "where": "'דמי ניהול, ממוצע 2025' column"
+      },
+      {
+        "what": "Many rows say 'פחות מ־3 שנים' instead of a return, so I can't compare them.",
+        "where": "Return column"
+      },
+      {
+        "what": "I didn't get what the circles and the מט\"ח percent mean. I guessed at the colours.",
+        "where": "'חשיפה למניות ולמט\"ח' column"
+      },
+      {
+        "what": "Two fees (מהחיסכון / מההפקדות) and I didn't know which one counts.",
+        "where": "Fee column"
+      },
+      {
+        "what": "Returns are 'לפני דמי ניהול', so the number I'm judging by isn't what I'd get.",
+        "where": "Return column header"
+      },
+      {
+        "what": "Nothing tells me what to do next or how to actually open the fund.",
+        "where": "Whole page"
+      },
+      {
+        "what": "'עוד לא דווח' with an orange warning icon put me off that row.",
+        "where": "Harel/מור הלכה row, screen 4"
+      }
+    ]
+  },
+  "steps": 5,
+  "reads": 5,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 34902,
+    "turns": 7,
+    "usd": 0.1291498,
+    "input": 6,
+    "cacheWrite": 9602,
+    "cacheRead": 18749,
+    "output": 2428,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "control-tracks-pc",
+    "screenshots": 16,
+    "changes": [],
+    "neverShown": [],
+    "errors": []
+  }
+}

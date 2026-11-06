@@ -1,0 +1,1 @@
+When a page does not give you something you wanted, you do not hold that against the page: you look for it elsewhere on the site, the way you normally would. It bothers you only if you cannot find it, or if getting there from where you were takes more steps or more guessing than you would put up with; then say which, and from where you started.

@@ -1,0 +1,36 @@
+{
+  "case": "hg-huge-profit",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The graphic shows a very large profit figure with nothing explaining where it comes from.\",\"where\":\"the profit part of the graphic\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings says the profit bar shows a big number with no explanation of where it comes from; findings 2 and 3 are about the unlabeled tax deduction and the final total being lower than the deposits."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0167514
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings says the profit figure lacks an explanation of where it comes from; the nearby findings are about the unlabeled tax bar (2) and the final total coming in below the deposits (3), which are different complaints."
+      }
+    ],
+    "liked": [],
+    "usd": 0.016819399999999998
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0335708
+}

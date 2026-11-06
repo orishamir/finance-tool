@@ -1,0 +1,13 @@
+{
+ "id": "makam-under-products",
+ "task": "s06",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "Makam is listed under 'מוצרים' (products) though it is something bought inside an account, not a product of its own.",
+   "where": "the group the makam entry sits in",
+   "kind": "general"
+  }
+ ],
+ "liked": []
+}

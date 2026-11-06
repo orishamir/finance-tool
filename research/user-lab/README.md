@@ -1,30 +1,44 @@
 # The user lab
 
-Started 2026-11-05. The founder: "my goal is for you/subagent/non-bias reviewer to be knowledgeable and smart enough to
-be able to think more or less like a human who uses the site would ... train them, keep notes, improve them, whatever
-is needed."
+The founder: "my goal is for you/subagent/non-bias reviewer to be knowledgeable and smart enough to be able to think
+more or less like a human who uses the site would ... train them, keep notes, improve them, whatever is needed."
 
 The lab runs **simulated users**: separate `claude -p` sessions that know nothing of this project (no CLAUDE.md, memory,
 skills, plugins or our terms), each given a persona card and a goal, and either a set of screenshots or a real browser
 on the live site. What they did, answered and stumbled on is saved, scored against an answer key or against what the
 founder decided on the same screens, and the cards and instructions are improved from the misses.
 
+**Its place.** CLAUDE.md's work order sets it: a habit beside the main line, at most about 5% of a week; every problem
+the founder flags goes through it first (`learning-loop.md`); and it is a check for movement and dead controls beside
+the fresh readers, not a first pass on every site change. Two bars decide what the reviewer is used for, and they are
+different uses: the bar in `metric.md` ("The bar") decides whether it is adopted as the judge of what bothers people;
+the bar in CLAUDE.md (a later held-out score catching about half or more, with noise under 30%) decides whether it
+becomes a first pass on every site change.
+
 | Folder or file | What it is |
 |---|---|
 | `tools/` | The tools below, and `isolation.md`: how a session is kept blind to the project, and the proof |
 | `personas/` | Persona cards, one Markdown file each (the whole file is the card; `phone` in the name means a phone) |
+| (outside the repository) | Cards built from true facts about the real people who will use the site live in `~/finance-tool-private/people/`, and runs that use them write to `~/finance-tool-private/runs/`. Never copy either into this folder, an issue or a commit. |
 | `behaviour-guide.md` | Evidence on how real people read and act on pages; its section 5 is written to go into a card |
+| `evidence/` | The research on people and on model stand-ins behind the behaviour guide and the metric |
 | `calibration/` | What the founder decided when shown screens (`cases.jsonl`, its own README) |
 | `bench/`, `metric.md`, `learning-loop.md` | The benchmark of problems he flagged, how a reviewer is measured, and how each new flag teaches it |
+| `live/` | Each problem he flags on the live site, kept the moment he flags it (its own README) |
+| `elsewhere/` | His reactions to other sites, a set of their own (its own README) |
+| `lessons.md` | Every flag, what the reviewer did with it, and the human reason behind each miss |
+| `versions/` | The reviewer's instruction set, version by version, with scores, and the candidates under test |
+| `planted.md` | The library of planted problems: the kinds, why each bothers a person, and where each is planted |
 | `predictions.md` | Sealed guesses of his choices before each decision |
-| `runs/` | Outputs of panel runs; `runs/smoke/` and `runs/canary/` are the first ones |
+| `variants/` | Versions of the site with changes the lab chooses, shown to sessions at the live addresses (below) |
+| `runs/` | Outputs of panel runs, one folder each |
 
 ## The tools
 
 All are run from the repository root with Node 22. The command line must be signed in (`claude auth status`). Running
 `claude -p` and the browser worked inside the sandbox on 2026-11-05; nothing had to be switched off.
 
-### Panel: `tools/panel.mjs <run.json> <out-folder> [--dry]`
+### Panel: `tools/panel.mjs <run.json> <out-folder> [--dry] [--variant <id>]`
 
 Runs every persona on every task, a few sessions at a time (`parallel`, default 2). A run file:
 
@@ -50,20 +64,28 @@ Runs every persona on every task, a few sessions at a time (`parallel`, default 
   only read them. A shot can be a path, `git:<commit>:<path>`, or an HTML drawing with its CSS, JS and JSON (rendered at
   1440 px and cut into screen-high slices). `rebuild:` shots are not built by the panel: build and screenshot them first
   (`calibration/extract.mjs` lists them) and pass the pictures as `shots`.
+- **Captured page** (a task with `page` and no `shots`): shots mode on the page as it is at run time, captured screen by
+  screen on the persona's device (`screen-1.png`, ... top first), after the act.mjs commands in `steps`, for example
+  `"steps": [["fill", "סכום היום", "0"]]`. This is the shots step of `tools/shots.mjs`, run per session.
 - **Calibration case** (`{ "case": id }`): only the case's question, options and shots reach the session, never its
   verdict, quote or source. Read "Before showing a drawing to a reader" in `calibration/README.md` first: several drawings
   carry a "מומלץ" tag, which `note` can tell the reader to ignore (or mask the picture).
 - `behaviour` is a file appended to every persona card (for example section 5 of `behaviour-guide.md`, copied into a
-  file of its own); none was used in the smoke runs.
+  file of its own); `behaviourBrowser` is appended only in browser mode (the reviewer's versions use it,
+  `versions/README.md`).
 - `findings: true` adds to the report form up to ten things that would bother this person, most bothersome first (the
   shape `metric.md` scores). `note` adds one line after the prompt.
 - `--dry` prepares every session (its prompt, and the files it would get, in `given/`) without starting any: free, and
   the way to check what a reader will be shown.
+- `--variant <id>` (or `"variant"` on a task, which wins, or on the run file, which comes last) shows the sessions a
+  variant of the site instead of the live one (see Variants). It works on browser tasks and captured-page tasks; a task
+  with ready-made pictures or a calibration case is refused.
 
 Each session's folder, `<out>/<task>/<persona>/`, holds `prompt.md` (exactly what it was told, and the report form),
 `transcript.jsonl` (every event, with image bytes and the account email left out), `report.md` (its answer, report form
 and think-aloud), `result.json` (the report form, steps, time, tokens, cost) and, in browser mode, `actions.jsonl` and
-`shots/` (every command with its screenshot). The answer key stays in the run file and never reaches a session.
+`shots/` (every command with its screenshot). The answer key stays in the run file and never reaches a session. The
+panel keeps a session that already answered, so a stopped run restarts with the same command.
 
 ### Browser: `tools/act.mjs`
 
@@ -78,6 +100,21 @@ changing (up to 4 seconds) before each screenshot, as a person would look; witho
 caught a figure mid-update (72,394 ₪ at the top while the list already said 72,104 ₪). It opens only http and https
 addresses. Usable by hand too: copy it to an empty folder and run the commands there.
 
+**What a person sees that still screenshots do not:**
+- A session can click or fill only what is on the screen and not covered, as a person can; open shadow roots and
+  frames on the screen count. A click by words never reaches a control off the screen, so a session has to look for a
+  control again after it moves.
+- After each command the tool says what a person would have seen move on the screen ("moved:" lines): the page
+  scrolling by itself (not the session's own scrolling), the control used changing place (or leaving the screen),
+  and what was above or below it moving down, up or sideways; also a move that happened after the last screenshot.
+  Positions are screen positions in screenshot pixels, sampled over the whole screen; content animating on its own is
+  left out; it waits (up to 2 s) for transitions to end.
+
+Reviewed independently and verified (no false alarms found). Known misses: a recalculation that lands later than the
+wait (for example 500 ms after typing stops), a single row shifting on a packed screen, a transition longer than about
+2.4 s, a strip of about 20 px at the very bottom, and a page whose content scrolls inside its own box (the scroll
+command cannot scroll it). A flicker that comes and goes before the screenshot is not seen.
+
 Why not reconnect over CDP for each command: Playwright closes a browser context it created when its connection ends
 (tested: the phone context was gone on reconnect), so the phone's size and touch would not survive between commands.
 
@@ -89,23 +126,161 @@ agreement with the founder's verdict. Grading is by rule where the key allows (`
 `tolerance` for numbers; a case's or task's `chosen` for agreement). Otherwise `--judge` asks a separate isolated session
 with no tools to grade against the key or the verdict; its grade is kept in the session's `judge.json`.
 
+**Planted runs:** when the run's variants are planted instances or clean controls (`tools/planted.mjs run` writes such
+a run), `--judge` also writes `planted.md` and `planted.json`. A blind grader (no tools; only the plant's key and the
+session's findings) says whether one of the first 10 findings names the planted problem; a plant that never reached a
+screenshot is left out. On a control it judges each finding serious or not, and whether it names a problem planted on
+another copy of that page (absent there: metric.md's false alarm). Cached in `planted-judge.json`.
+
+### Flagged problems: `tools/grade-flag.mjs` and `tools/flag-summary.mjs`
+
+`grade-flag.mjs <run-folder> <case.json>` grades a panel run against flagged problems (a live case, a benchmark case, or
+a page of another site the founder reacted to): whether the reader named each problem among its first 10 findings, and
+at what rank, by two blind graders and a third when they disagree (metric.md, "The grader"). `flag-summary.mjs
+<run-folder>` scores the graded run the way `metric.md` reads it, with 95% intervals. Each file's header gives its
+options.
+
+### Planted library: `tools/planted.mjs list | check | run`
+
+Lists the library of planted problems (`variants/planted/`, `planted.md`), checks that every plant reaches the screen,
+and writes a panel run file for it.
+
+### Old brief: `tools/old-brief.mjs <run.json> <out-folder> [--dry] [--parallel n]`
+
+The fresh-reader brief, older than the lab and still the one CLAUDE.md's fresh readers run
+(`research/audit/tools/fresh-reader.mjs`: a one-line "who", the goal, seven numbered questions, free text back, the
+default system prompt), run on a panel run file's captured-page tasks with the
+panel's isolation, for metric.md's "against the usual". Browser tasks are skipped (the old brief only ever had
+screenshots). Writes the layout `score.mjs` reads; the grader reads the free text whole.
+
 ### Canary: `tools/canary.mjs [out-folder]`
 
 The isolation proof (see `tools/isolation.md`): one session set up exactly like a browser-mode user is asked what it can
 see and five questions only our context could answer; another is asked to read outside its folder eleven ways. Passes
 only when nothing of the project shows and every attempt is refused. Run it after every Claude Code update.
 
-## The smoke runs (2026-11-05)
+### Shots step: `tools/shots.mjs <url> <out-folder> [--device pc|phone] [--variant <id>] [--steps steps.json]`
 
-`runs/smoke/`. Personas `first-job-phone` and `careful-retiree-pc`, as written by the persona step, with no behaviour
-file added.
+A page as a person sees it scrolling down, one screenshot per screen, top first (`page-1.png`, ...), through the same
+browser a session drives, so the screens match what a browser-mode session would see. `--steps` is a JSON list of
+act.mjs commands run first. With `--variant`, `variant-log.json` beside the pictures says on how many screenshots each
+change showed; a change that never showed makes the command exit with 3.
+
+## Variants
+
+The founder: "it could also be beneficial if you were able to feed reviewers a custom-made arbitrary version of the
+site which you determine the changes. that way you can test updates on reviewers, and also you could test the reviewer
+themselves because you could inject things the reviewers are supposed to catch and see that they catch them."
+
+A variant is the live site with changes the lab chooses. The session opens the same address, sees the same title and
+the same list of what it can click, and has no way to learn that anything was changed. Three uses:
+
+- **Test an update before building it**: the new wording, a moved block, a new colour, put on the live page; or a whole
+  branch's build, put at the live address. The reviewer and the persona readers use it as if it were the site, so a
+  change is judged on the real page, with everything around it, before it is built or pushed. Run the same personas and
+  task on the variant and on `control`, and compare.
+- **Test the reviewer**: plant problems a reader should trip on (the variant's `plants`, each a neutral sentence for the
+  grader) and see whether they come up among the first ten findings. This is the "fresh instance made on purpose on
+  another screen" that `learning-loop.md` step 5 asks for, and a way to grow the benchmark without waiting for a flag.
+  `planted.md` is the library.
+- **Prove the machinery changes nothing**: `control` has no change but runs every piece of it; its screenshots are the
+  live page's, pixel for pixel.
+
+### The folder
+
+`variants/<id>/variant.json`, and optionally `patch.css` (added to every page of the variant) and `patch.js` (run once
+the page is ready, given `variant.locate(spec)` and `variant.onPass(fn)`, where `fn` runs after every re-render):
+
+```json
+{
+  "id": "plant-fees-look-alike",
+  "about": "for the lab only; never reaches a session",
+  "purpose": "plant | update | control | test",
+  "pages": ["/finance-tool/indices/**"],
+  "device": "both | pc | phone",
+  "build": "http://127.0.0.1:4173/finance-tool/",
+  "plants": [{ "id": "same-colour", "problem": "a neutral sentence for the grader", "where": "...", "kind": "general" }],
+  "changes": [ ... ]
+}
+```
+
+`pages` are path patterns (`*` within one part of the address, `**` across parts); a change may carry its own `pages`
+and `device` too. A variant for one device is refused on a session on the other. `build` is optional (below).
+
+### The changes
+
+| `type` | Fields | What it does |
+|---|---|---|
+| `text` | `find` (words, or `{ "regex", "flags" }`), `replace` (`$1` works with a regex); optional `selector` to limit it | Replaces words in the page's text, and in `placeholder`, `aria-label`, `title` and `alt`. The words must sit in one piece of text (a figure and its ₪ may be separate pieces) |
+| `text` | `selector` and/or `text`, `set` | The whole text of the element found becomes `set` |
+| `number` | `find` (a number), `replace` (a number) | Finds the number however it is written (`70000` matches `70,000`) and writes the new one the same way. It follows the figure: if a slider moves it away and back, the change comes back |
+| `style` | `css` (a stylesheet), or `selector` and `set` (`{ property: value }`) | Restyles |
+| `hide` | `selector`, or `text` (the element holding these words, with `closest` or `up` to widen it); `keepSpace` | Hides it (`keepSpace`: leaves its space empty) |
+| `insert` | `at` (`{ selector, text, closest, up, nth }`), `position` (`beforebegin`, `afterbegin`, `beforeend`, `afterend`), `html` | Adds HTML; the site's own classes work |
+| `move` | `what`, `to` (both found like `at`), `position` | Moves an element |
+| `colour` | `tokens` (`{ "--css-variable": "value" }`), or `map` (`{ "from colour": "to colour" }`) with optional `scope`, `props`, `tolerance` | Recolours. A token reaches everything painted with it; a `map` compares what each element is painted with, in pixels, and repaints the matches |
+| `chart-colours` | as `colour`; `map` is limited to charts (`svg`) unless `scope` says otherwise | Recolours a chart's series |
+| `data` | `url` (part of the address, or `/regex/`), and `set` (`{ "json.path[0].field": value }`) or `file` (a file in the variant's folder) | Changes a data file the page loads, before the page reads it |
+
+Elements are found by `selector` or by the words they show (`text`); found by words, the anchor is looked up after the
+variant's own text changes, so anchor on words the variant does not change.
+
+`build` points the whole site at another build: `node research/user-lab/tools/serve-build.mjs <build/client folder>`
+serves it as GitHub Pages does, at `http://127.0.0.1:4173/finance-tool/`; every request to the live address is answered
+from there, and the address bar still shows the live one. For a branch: build it in a worktree (`npm run build -w site`)
+and serve its `site/build/client`.
+
+### How it stays hidden
+
+- The changes are made inside the browser act.mjs and the shots step drive: a script added to every page before the
+  site's own (Playwright `addInitScript`), which waits for the site to take over its pre-rendered page (changing text
+  before that would make React draw the page again) and then keeps the changes in place with a MutationObserver as the
+  site re-renders: after a slider, a typed figure, a click to another page. Its own edits are dropped from what it
+  observes, so it never loops. Styles go into a stylesheet adopted by the document, so no element is added for them.
+  Data files and whole builds go through network routes.
+- The lab's lines in act.mjs sit between `// lab:begin` and `// lab:end`; the copy a session gets has them cut out
+  (`lib/session.mjs`, `sessionAct()`, which refuses to install a copy that still says "variant"), and is otherwise the
+  same file as before variants existed. With a variant, the panel starts the lab's own act.mjs driver in the session's
+  folder before the session; the session's act.mjs finds it running and uses it. The variant's folder and log are
+  outside the session's folder, the pictures are named `screen-N.png`, and the prompt does not change.
+- The lab's own commands (`__status`, `__has`, `__slices`) answer only a request carrying a key the session never has;
+  from a session's act.mjs they answer "Unknown command", as any made-up command does.
+- Each session's `variant.jsonl` (in its output folder) records, at every screenshot, how many places each change shows
+  on; `result.json` sums it up under `variant`, and the panel prints `NEVER SHOWN` for a change that showed nowhere, so a
+  miss is never blamed on the reviewer when the change did not reach the screen.
+
+### The test: `node research/user-lab/tools/variant-test.mjs [out-folder]`
+
+Free (no session), about three minutes, on a computer and on a phone; `runs/variant-test/report.md` is the last run
+(23 of 23 passed).
+
+| Check | Result |
+|---|---|
+| `control` against no variant, every screen-high slice of the S&P 500 page | 0 differing pixels on all 10 slices (computer) and all 19 (phone) |
+| `selftest` (all eleven changes, every kind) shows after opening, through act.mjs | All shown; 288,878 pixels differ from the live first screen on a computer |
+| After moving the years slider to 20 | Still shown; the reworded line follows the slider ("... 20 שנים") |
+| After typing 750 into the monthly field | Still shown |
+| Back to 500 a month and 10 years | The changed number (70,000 shown as 71,234) is back |
+| After clicking to the Nasdaq 100 page (no reload) | Still shown |
+| A session's act.mjs asking for `__status`, `__has`, `__slices` | "Unknown command" each time |
+| The whole site from this checkout's build, at the live address | 26 requests answered by the local build; address unchanged |
+| The example planted variant | All three changes on every screenshot, both devices |
+
+No page error was logged with any variant on. Cost: a `map` recolouring makes the page slower to answer (15 slider steps
+took 1.2 s instead of 0.45 s with the eleven-change selftest), unnoticeable at act.mjs's pace; prefer `tokens`.
+
+## The first runs
+
+### Smoke runs (`runs/smoke/`, 2026-11-05)
+
+Personas `first-job-phone` and `careful-retiree-pc`, as written by the persona step, with no behaviour file added.
 
 | Run | Task | Result |
 |---|---|---|
 | `browser/` | On the live S&P 500 page, where is it cheapest to put 500 ₪ a month, with nothing at the start, and how much after ten years | Both right (Psagot with the Yelin Lapidot fund, 72,104 ₪), both "fairly sure", in 4 and 5 actions |
 | `shots/` | The same from three settled screenshots | Both right |
 | `shots/` | Calibration case `custom-index-no-fund` | Both chose א; the founder chose ב. **Confounded:** the drawing carries a "מומלץ" tag on א and the run had no note to ignore it |
-| `shots-judged-check.md` | The judge path, on a copy with words-only keys | Graded as expected (below) |
+| `shots-judged-check.md` | The judge path, on a copy with words-only keys | Graded as expected |
 
 What they reported along the way is the kind of thing the lab is for: both had to notice the starting sum of 10,000 ₪
 and set it to 0 themselves; both said the top result card gives an amount without naming the account; the 61-year-old
@@ -115,6 +290,16 @@ that 72,104 ₪ was right for 60,000 ₪ put in at 7% ("72k felt low").
 They are not yet human: both finished in under a minute, scrolled straight to the answer and were right. A careful
 61-year-old on a computer would take longer. Making them slower, more distracted and more often wrong where people are
 is the behaviour file's and the calibration's job, measured by `metric.md`.
+
+### The first planted run (`runs/variant-plant/`, 2026-11-05)
+
+`plant-fees-look-alike` (two costs drawn in the same colour in the cost bars and legend; the line under the amount put
+in rewritten as "קרן + DCA חודשי, 120 תקופות"; a note under the main result, "* הסכום אינו כולל דמי ניהול",
+contradicting the line above it), shown to `careful-retiree-pc` once from captured screens and once in the browser,
+with findings asked for. Every change showed on every screenshot. Both sessions tripped on "DCA" (the browser session
+among its findings, the screens session among words it did not understand); neither flagged the shared colour or the
+contradicting note. Neither said anything that suggests it noticed a change. One run each: an illustration of the
+method, not a measurement. Planted runs are now graded by `score.mjs --judge` (above; `runs/planted-baseline/`).
 
 ## Measured cost (2026-11-05)
 
@@ -131,15 +316,15 @@ billed. Model: the plan's default, Opus 5.5, effort default.
 A browser session grows with its actions: each screenshot stays in the conversation and is read again, from the cache,
 on every later turn (about 1,500 to 1,700 tokens a screenshot, by the usual rule of width x height / 750 after the
 image is scaled to 1,568 px on its long side). At the 35-action budget a session should come to roughly $0.6 to $1 and
-five minutes: an estimate from the measured growth per turn, not a measurement. The `actions` and `minutes` budgets are enforced by act.mjs, which answers "Your
-time is up" or "You have used all your actions" and lets the session give its answer; the panel stops a session hard
-four minutes after its time.
+five minutes: an estimate from the measured growth per turn, not a measurement. The `actions` and `minutes` budgets are
+enforced by act.mjs, which answers "Your time is up" or "You have used all your actions" and lets the session give its
+answer; the panel stops a session hard four minutes after its time.
 
-## What does not work yet
+## Known limits
 
 - **The account email reaches every session** (Claude Code adds it from the sign-in; `tools/isolation.md`). It names no
   project, and no smoke session mentioned it; it is removed from everything saved.
 - **No hover.** act.mjs has no hover command, by design (the site's ground rules say nothing depends on hover).
 - **`rebuild:` calibration shots** need building first; the panel refuses them with that message.
-- **Behaviour is not calibrated.** The sessions are much faster and surer than people; see above.
-- **The judge** is one more model session; it was checked on four answers only.
+- **Behaviour is not calibrated.** The sessions are much faster and surer than people (the smoke runs, above).
+- **The judge** of `score.mjs --judge` is one more model session; it was checked on four answers only.

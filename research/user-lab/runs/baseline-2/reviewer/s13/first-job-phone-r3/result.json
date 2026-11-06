@@ -1,0 +1,104 @@
+{
+  "task": "s13",
+  "persona": "first-job-phone",
+  "repeat": 3,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T12:21:04.469Z",
+  "structured": {
+    "answer": "It's a savings account your employer pays into, and after 6 years from the first deposit you can take it out tax free. You can take it out earlier but you pay tax. Definitely worth having, the employer's money only comes this way (in the example I put in 18,000 and the employer added 54,000).",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Small text at the top of screen 4",
+        "why": "Saw '47%' with 'מס במקור' and didn't get whether that's how much tax you pay"
+      },
+      {
+        "where": "List of taxes for early withdrawal, screen 1",
+        "why": "'לפחות 31%', not sure what it's on"
+      },
+      {
+        "where": "Orange warning box in מיסוי",
+        "why": "Too long and full of tax words, read only the first line"
+      }
+    ],
+    "used": [
+      "Heading קרן השתלמות and the line 'אחרי 6 שנים מההפקדה הראשונה אפשר למשוך את הכסף בלי מס'",
+      "Section למה משתמשים בזה: 'הפקדת המעסיק מגיעה רק לכאן'",
+      "Track button 'מדד S&P 500'",
+      "Bar chart: 18,000 ₪ / +54,000 ₪ / +8,487 ₪ / −13,974 ₪ / 66,513 ₪",
+      "Line under the chart about 19 tracks, 66,280 ₪ at 0.7% up to 67,028 ₪ at 0.19%",
+      "Card 'מתי הכסף פנוי — כשעוברות 6 שנים' and 'עד 4 ימי עסקים'",
+      "Fees table: 'עד 2% בשנה', 'דמי יציאה — אין'",
+      "First line of the orange warning 'משיכה לפני הזמן אפשרית, אבל יקרה'"
+    ],
+    "skimmed": [
+      "שווה לדעת",
+      "מי מציע ומי מפקח",
+      "מיסוי cards",
+      "Terms table at the bottom"
+    ],
+    "skipped": [
+      "Small notes under the chart (7%, 2% inflation, 47%)",
+      "Fold שחקו עם המספרים שלכם",
+      "Most of סיכונים ומה לא מוגן",
+      "Line about the 7.5% / 15,712 ₪ / 20,566 ₪ ceiling",
+      "Folds הצגת כל המונחים / הצגת המונחים הכלליים",
+      "Footer"
+    ],
+    "unsure_meaning": [
+      "47% מס במקור",
+      "לפחות 31% — on what",
+      "Red hatched bit in the chart (guessed: tax)",
+      "בנאמנות",
+      "ותק",
+      "הרווח הריאלי",
+      "אג\"ח ממשלתית צמודה",
+      "הפקדה מוטבת",
+      "Whether 900 ₪ from the employer against 300 from me is like mine"
+    ],
+    "not_found": [
+      "Which company and track I'm in now (no way to check it from the page)",
+      "Clear what to do first / which track the page recommends"
+    ],
+    "findings": [
+      {
+        "what": "Two different tax numbers, 31% and 47%, in different places. Not clear how much I'd actually pay if I take it out early",
+        "where": "מה זה list + small notes under the chart + orange box"
+      },
+      {
+        "what": "The chart example has the employer putting in 3x what I put in. Makes it look amazing, and I don't know if that's how it is for me",
+        "where": "Bar chart in מה מייחד"
+      },
+      {
+        "what": "The fee 'עד 2%' sounds like nothing, and I only got what it means in shekels from a small line under the chart",
+        "where": "כמה זה עולה"
+      },
+      {
+        "what": "The tax and warning part is long and hard. I'd have left there",
+        "where": "מיסוי, orange box"
+      },
+      {
+        "what": "Words with no explanation where they appear (נאמנות, ותק, ריאלי)",
+        "where": "סיכונים, מיסוי"
+      }
+    ]
+  },
+  "steps": 9,
+  "reads": 9,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 58889,
+    "turns": 11,
+    "usd": 0.2634894,
+    "input": 16,
+    "cacheWrite": 18521,
+    "cacheRead": 79487,
+    "output": 4968,
+    "model": "claude-opus-5-5"
+  }
+}

@@ -1,0 +1,92 @@
+{
+  "case": "current-account-chart-unrelated",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The current-account guide shows a growth chart of money invested at a 10% yearly return, which has nothing to do with a current account.\",\"where\":\"the chart 'מה קורה לכסף לאורך הזמן' in the guide\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Where to move the money is unclear: deposits and money-market funds are named but not explained or compared, and nothing on the S&P 500",
+      "Actual account cost in shekels is unknown; the cost table only says 'according to the provider's price list'",
+      "The '123 מקומת / מחושב / הזנה' colour key under the title is confusing",
+      "The basic/extended track line doesn't say what either track costs",
+      "The calculator/chart starts at a 5% return a current account doesn't pay, so the big ₪74,044 makes it look like the account grows",
+      "'גיל (לא חובה)' and 'הצמדה: לא צמוד' meant nothing to the reader",
+      "The money-market fund paragraph is confusing ('units redeemed only on a trading day')",
+      "שווה לדעת repeats content and has unexplained codes (BANK-20 etc.) and the term מק\"ם",
+      "מי מציע ומי מפקח didn't help the reader and could be dropped",
+      "כסף נכנס ויוצא wasn't what the reader was looking for; would shrink it",
+      "Didn't understand the tax line on CPI-linked interest (25% of real interest)",
+      "The red low-income box doesn't apply and its code 'TXI OQ11' meant nothing",
+      "Worry about having no deposit insurance, and that current accounts are excluded from the proposed ₪250,000 protection",
+      "The 'מה האתר לקח בחשבון' block reads like the site's internal notes; would drop it",
+      "The pink tax line on the chart is too thin to see",
+      "Confused why deposits show ₪62,681 rather than ₪70,000",
+      "Confused by 'מס ₪2,005' in the year-10 rows when the account pays no interest",
+      "The 'חוקים וכללים' column is empty and 'הצגת החוקים והכללים' is unclear",
+      "Didn't understand 'בשקלים של העתיד'",
+      "Couldn't find how much interest banks pay today on a positive balance",
+      "Couldn't find how much to keep in the current account; 'expenses of the month' is vague",
+      "Couldn't find what exactly to say to the bank",
+      "The 'איפה מופיע' column and most of the glossary could be dropped"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 5,
+        "why": "The reader complains that the current-account guide's chart assumes a growth return (5%) that a current account doesn't earn, so it misleadingly shows the money growing; this is the same problem as the person's, despite the different percentage."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0674912
+  },
+  "b": {
+    "raised": [
+      "The page names deposits and money-market funds as alternatives but never explains or compares them",
+      "Nothing about the S&P 500 or longer-term investing",
+      "No actual shekel cost of the account; the cost table only says 'לפי התעריפון של הגורם המציע'",
+      "The '123 מקומת / מחושב / הזנה' colour key under the title is confusing",
+      "The basic/extended track line doesn't say which track the user is on or what each costs",
+      "The calculator/chart assumes a 5% return for a current account that pays nothing, so ₪74,044 makes the account look like it grows",
+      "'גיל (לא חובה)' and 'הצמדה: לא צמוד' fields meant nothing to the reader",
+      "The money-market fund paragraph is confusing ('יחידות בקרן נפדות רק ביום מסחר')",
+      "שווה לדעת repeats the ₪15,000 point",
+      "Codes like BANK-20/23/15 and TXI OQ11 are meaningless to the user",
+      "Didn't know what 'מק\"ם' means",
+      "מי מציע ומי מפקח didn't change anything for the reader (would drop it)",
+      "Didn't understand 'ריבית צמודה למדד: 25% מהריבית הריאלית' in the tax section",
+      "Unclear whether the tax carousel had more cards",
+      "Red 'מעוטי הכנסה' box seemed irrelevant (would drop it)",
+      "Worried that Israel has no deposit insurance and current accounts are excluded from the proposed ₪250,000 protection",
+      "'מה האתר לקח בחשבון' block felt like the site's internal notes (lock icons, 'חסום: שאלה פתוחה')",
+      "The pink tax line in the chart is a barely visible sliver",
+      "Confused why deposits show ₪62,681 rather than the ₪70,000 actually deposited",
+      "'מס ₪2,005' in the year-10 rows is confusing: tax on what, if the account pays no interest?",
+      "The 'חוקים וכללים' column in the cost table is empty",
+      "Didn't understand 'בשקלים של העתיד'",
+      "Didn't understand terms like 'ניירות ערך', 'פירעון', 'יום מסחר', 'קיזוז הפסדים'",
+      "Unclear what 'הצגת החוקים והכללים' refers to",
+      "Wanted to know how much interest banks pay on a positive balance today",
+      "'Expenses of the month' is vague: unclear how much to keep in the account, or what about an emergency fund",
+      "Wanted guidance on what exactly to say to the bank",
+      "'איפה מופיע' column and most of the terms table could go",
+      "כסף נכנס ויוצא should shrink to one line"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 6,
+        "why": "The reader objects that the guide's growth chart assumes an investment-style return (5%) for a current account that pays nothing, which makes the account look like it grows. That is the person's complaint that the chart doesn't fit a current account, even though the percentage they each quote is different."
+      }
+    ],
+    "liked": [],
+    "usd": 0.06891520000000001
+  },
+  "third": null,
+  "ranks": {
+    "k": 5
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1364064
+}

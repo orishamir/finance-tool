@@ -1,0 +1,14 @@
+{
+ "id": "sp500-route-missing",
+ "task": "t12",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "For someone who wants to put a sum and a monthly amount into the S&P 500, the site does not lay out the choices: which broker, then a foreign ETF or an Israeli fund, an ETF or a mutual fund, and which fund house.",
+   "where": "the index page as a whole",
+   "kind": "general",
+   "outside": false
+  }
+ ],
+ "liked": []
+}

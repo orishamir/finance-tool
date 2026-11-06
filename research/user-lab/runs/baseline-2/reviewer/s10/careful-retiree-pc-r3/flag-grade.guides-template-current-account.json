@@ -1,0 +1,36 @@
+{
+  "case": "guides-template-current-account",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The current-account guide carries template sections that do not fit it (who offers it, money in and out, tax and the like), padding the page.\",\"where\":\"the sections 'who', 'in and out', 'tax' of the guide\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings says the guide has template sections ('who', 'in and out', 'tax') that don't fit a current account and pad the page; finding 3 is about English names and index names, not sections that don't belong."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0155914
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings say the guide has template sections that don't fit it ('who', 'in and out', 'tax') and pad the page; finding 3's complaint about English names taking up space is a different issue."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0152194
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0308108
+}

@@ -1,0 +1,14 @@
+{
+ "id": "idx-r2-c-variants",
+ "task": "t52",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "The accounts are compared while each is priced with a different fund, so the comparison is not like for like.",
+   "where": "the account list in all four variants",
+   "kind": "general",
+   "outside": false
+  }
+ ],
+ "liked": []
+}

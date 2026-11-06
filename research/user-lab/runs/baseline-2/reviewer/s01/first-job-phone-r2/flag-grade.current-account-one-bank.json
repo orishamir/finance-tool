@@ -1,0 +1,36 @@
+{
+  "case": "current-account-one-bank",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The current-account guide's interest example and chart are one bank's (Leumi) terms and one person's case, shown as if general, though most people's idle money earns nothing and slowly loses value.\",\"where\":\"the interest lines and the expanded chart\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 1,
+        "why": "Finding 1 makes the same complaint: the interest example and chart suggest a current account grows, when such accounts usually pay no interest, so the example is misleading as a general case."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0159554
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 1,
+        "why": "Finding 1 says the calculator's 5% interest makes the current account look like it grows, even though such accounts often pay nothing, which is the core of the person's complaint that a specific interest case is shown as general."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0165434
+  },
+  "third": null,
+  "ranks": {
+    "k": 1
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0324988
+}

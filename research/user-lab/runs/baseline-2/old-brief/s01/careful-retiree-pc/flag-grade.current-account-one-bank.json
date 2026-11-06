@@ -1,0 +1,83 @@
+{
+  "case": "current-account-one-bank",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The current-account guide's interest example and chart are one bank's (Leumi) terms and one person's case, shown as if general, though most people's idle money earns nothing and slowly loses value.\",\"where\":\"the interest lines and the expanded chart\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "The page never says what the current account actually costs in shekels; the cost table only says it depends on the bank's price list",
+      "No real interest rates are given, so nothing can be compared",
+      "The coloured-number key ('מקמר / חושב / הזנתם') and the word 'מקמר' are confusing",
+      "The basic vs. extended fee package sentence is unclear, including what each costs",
+      "The calculator uses a 5% return although the current account pays nothing or almost nothing",
+      "Unclear whether figures are 'בכסף של היום' or 'בשקלים של העתיד'",
+      "Nothing suggests entering 0% to see what really happens to money left in the account",
+      "The BANK-20/BANK-23/BANK-15 tags mean nothing to the reader",
+      "Parts of the 'כסף נכנס ויוצא' section and other blocks were cut off between screenshots",
+      "The dark red 'שאלה פתוחה: TXI OQ11' strip looks like a warning but is unclear",
+      "Worried that Israel has no deposit insurance and the 250,000 ₪ protection is only a proposal",
+      "The 'מה האתר לקח בחשבון' section reads like internal notes (padlocks, 'חסום'); would drop it",
+      "The terms table appears twice",
+      "Chart colours (green area, pink line, pale line) are unlabelled",
+      "The 62,681 'your deposits' figure doesn't match the reader's count of 70,000",
+      "The 'חוקים וכללים' column in the cost table is empty",
+      "Unclear whether the 'מזומן שקלי' chip is clickable or just a label",
+      "Couldn't find how much is lost each year by leaving money at 0% while prices rise",
+      "Couldn't find how much to keep in the current account for everyday needs",
+      "Couldn't find whether a money market fund is protected if the fund company or bank fails",
+      "Couldn't find what to say to the bank when asking",
+      "Would drop the 'כסף נכנס ויוצא' cards about moving shares",
+      "The BANK OQ9 code is not understood"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 5,
+        "why": "The reader asks why the calculator and chart show a 5% return for an account that usually pays nothing, which is a clear part of the person's complaint that the interest example and chart don't fit most people's idle money, which earns nothing."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0667232
+  },
+  "b": {
+    "raised": [
+      "The page never says what the account actually costs in shekels; the cost table only points to the bank's price list",
+      "No real interest rates are given, so nothing can be compared",
+      "The coloured-number key ('מקמר / חושב / הזנתם') is confusing, and 'מקמר' isn't understood",
+      "The basic vs. extended fee packages and what they cost aren't understood",
+      "The calculator/chart uses a 5% return for an account that pays nothing or almost nothing; nothing suggests trying 0%",
+      "Unclear whether 'בכסף של היום' or 'בשקלים של העתיד' is the figure being shown",
+      "The BANK-20/23/15 tags are meaningless",
+      "'כסף נכנס ויוצא' is partly cut off and not relevant (would drop it)",
+      "The dark red 'שאלה פתוחה: TXI OQ11' strip looks like a warning but it's unclear about what",
+      "Worried that Israel has no deposit insurance and the 250,000 ₪ protection is only a proposal",
+      "'מה האתר לקח בחשבון' is full of padlocks and 'חסום' and reads like internal notes",
+      "The terms table appears twice",
+      "The chart's colours (green area, pink and pale lines) aren't explained",
+      "The 62,681 ₪ deposits figure doesn't match 10,000 + 500×120 = 70,000",
+      "The 'חוקים וכללים' column is empty",
+      "Unclear whether the 'מזומן שקלי' chip is clickable or just a label",
+      "Can't find how much is lost each year by leaving money at 0% while prices rise",
+      "No guidance on how much to keep in the current account",
+      "Can't find whether a money market fund is protected if the fund or bank fails",
+      "No guidance on what to ask or say to the bank"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 5,
+        "why": "The reader objects that the example and chart show money growing at 5% when a current account usually pays nothing, which is a clear part of the person's complaint that the example misrepresents most people's idle money, even though the reader doesn't mention Leumi."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0656952
+  },
+  "third": null,
+  "ranks": {
+    "k": 5
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1324184
+}

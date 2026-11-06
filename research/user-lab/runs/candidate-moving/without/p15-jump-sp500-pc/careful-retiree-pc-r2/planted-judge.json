@@ -1,0 +1,6 @@
+{
+  "named": false,
+  "position": 0,
+  "why": "None of the findings mention the result cards moving, shifting or jumping, or a note above the results appearing and disappearing when inputs change. Finding 3 is about the slider and box values not matching, and finding 4 is about a red minus sign on the second card. Neither is about the layout jumping.",
+  "usd": 0.02076
+}

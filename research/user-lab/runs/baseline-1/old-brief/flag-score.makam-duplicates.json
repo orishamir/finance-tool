@@ -1,0 +1,63 @@
+{
+  "case": "makam-duplicates",
+  "sessions": 2,
+  "perKey": {
+    "k": {
+      "kind": "general",
+      "caught": 2,
+      "caughtIn10": 1,
+      "of": 2,
+      "byPersona": {
+        "careful-retiree-pc": {
+          "caught": 1,
+          "of": 1,
+          "ranks": [
+            16
+          ]
+        },
+        "first-job-phone": {
+          "caught": 1,
+          "of": 1,
+          "ranks": [
+            7
+          ]
+        }
+      },
+      "graderAgreement": 1
+    }
+  },
+  "againstLiked": {},
+  "usd": 0.2646648,
+  "rows": [
+    {
+      "task": "s05",
+      "session": "careful-retiree-pc",
+      "persona": "careful-retiree-pc",
+      "mode": "free text",
+      "raised": [
+        29,
+        25
+      ],
+      "ranks": {
+        "k": 16
+      },
+      "against": {},
+      "usd": 0.1325864
+    },
+    {
+      "task": "s05",
+      "session": "first-job-phone",
+      "persona": "first-job-phone",
+      "mode": "free text",
+      "raised": [
+        23,
+        22
+      ],
+      "ranks": {
+        "k": 7
+      },
+      "against": {},
+      "usd": 0.13207839999999998
+    }
+  ]
+}

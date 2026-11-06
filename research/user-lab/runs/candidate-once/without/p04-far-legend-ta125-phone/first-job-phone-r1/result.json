@@ -1,0 +1,128 @@
+{
+  "task": "p04-far-legend-ta125-phone",
+  "persona": "first-job-phone",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "phone",
+  "startedAt": "2026-11-06T16:01:34.197Z",
+  "structured": {
+    "answer": "I'd open the account at פסגות and buy אי.בי.אי. מחקה (4A) ת\"א 125 (5112628), the one the page marked \"★ הזול\". With the page's example of 10,000 ₪ now plus 500 ₪ a month, it says I'd end up with about 86,045 ₪ after 10 years. If פסגות feels weird, I'd go with לאומי, the second one at 82,968 ₪.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Account list, row 1 פסגות",
+        "why": "Never heard of פסגות. The big bank I trust, לאומי, was second, so I hesitated about which to pick."
+      },
+      {
+        "where": "Input boxes at top (סכום היום 10,000, הפקדה 500)",
+        "why": "These are the page's example amounts, not my 30,000. I didn't redo it, so the final number isn't really mine."
+      },
+      {
+        "where": "Fund list with minus numbers",
+        "why": "Not sure if -0.04% and -1,030 ₪ are losses or something else"
+      }
+    ],
+    "used": [
+      "Heading איפה ואיך הכי זול להשקיע במדד",
+      "ת\"א-125 button already selected",
+      "Result card 'הבחירה שלכם · הזול' 86,045 ₪ and 'הפקדתם 70,000 ₪'",
+      "Account list: פסגות 86,045 / 1,049 ₪, לאומי 82,968 / 4,506 ₪",
+      "Fund box אי.בי.אי. מחקה (4A) ת\"א 125, דמי ניהול 0.1%",
+      "Fund list: chosen fund -0.04% vs others with minus shekel numbers"
+    ],
+    "skimmed": [
+      "Cost bar 'כמה זה עולה לכם ב־10 שנים' 7,323 ₪",
+      "Rest of the 15 accounts list (names and big numbers)",
+      "Lines about החשבון 18 ₪ יותר / הקרן 1,390 ₪ פחות / המס 342 ₪",
+      "The what-if chart on screen 9"
+    ],
+    "skipped": [
+      "'לא בחישוב' notes on each account",
+      "Explanation text under 'כל החשבונות'",
+      "Colour legend",
+      "Paragraph 'מול המדד...' under the fund list",
+      "Screens 10-13",
+      "אינפלציה button"
+    ],
+    "unsure_meaning": [
+      "דמי משמרת",
+      "נאמן 0.025%",
+      "משתנים 0%",
+      "-0.04% בשנה · שנה אחת",
+      "-1,030 ₪ לעומת הבחירה",
+      "תכלית / MTF / קסם — whether סל and מחקה are the same",
+      "מחזיקה את המניות / כמה דרכים יחד tags",
+      "העמלות זו על זו",
+      "הפס נחתך: הסכום ארוך מהשטח",
+      "7% תשואה בשנה — whether that is real or just an example",
+      "בכסף של היום"
+    ],
+    "not_found": [
+      "My own 30,000 ₪ result — the page shows its 10,000 default",
+      "Plain explanation of what פסגות is (bank or not)",
+      "A clear 'first step: do this' instruction"
+    ],
+    "findings": [
+      {
+        "what": "The cheapest account is a name I don't know (פסגות), and nothing says why I should trust it over the banks",
+        "where": "Account list, row 1"
+      },
+      {
+        "what": "The result is built on the 10,000/500 defaults, not on my amount, and the 7% return is preset; easy to take 86,045 as 'my' number",
+        "where": "Top inputs and result card"
+      },
+      {
+        "what": "Minus signs everywhere in the fund list (-0.04%, -1,030 ₪) look like losses and scare me",
+        "where": "Fund list under כל הקרנות על מדד ת\"א-125"
+      },
+      {
+        "what": "Colour bars only make sense with a legend that's far below the list",
+        "where": "Account list bars vs legend on screens 6-7"
+      },
+      {
+        "what": "15 accounts that all look similar; I'd give up without the star",
+        "where": "Account list"
+      },
+      {
+        "what": "Lots of jargon with no plain explanation (דמי משמרת, נאמן, משתנים)",
+        "where": "Fund box and legend"
+      },
+      {
+        "what": "A broken-looking line 'הפס נחתך: הסכום ארוך מהשטח'",
+        "where": "Legend, screen 7"
+      }
+    ]
+  },
+  "steps": 9,
+  "reads": 9,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 41875,
+    "turns": 11,
+    "usd": 0.24298140000000001,
+    "input": 12,
+    "cacheWrite": 19401,
+    "cacheRead": 60827,
+    "output": 3778,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "p04-far-legend-ta125-phone",
+    "screenshots": 14,
+    "changes": [
+      {
+        "id": "far-legend",
+        "type": "move",
+        "shots": 14,
+        "applied": 14,
+        "most": 1
+      }
+    ],
+    "neverShown": [],
+    "errors": []
+  }
+}

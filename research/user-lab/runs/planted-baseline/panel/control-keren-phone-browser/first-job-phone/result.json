@@ -1,0 +1,98 @@
+{
+  "task": "control-keren-phone-browser",
+  "persona": "first-job-phone",
+  "repeat": 1,
+  "mode": "browser",
+  "device": "phone",
+  "startedAt": "2026-11-05T22:52:32.635Z",
+  "structured": {
+    "answer": "After 8 years, putting in 500 a month, I'd have about 68,853 ₪ according to the calculator. For 4 years it gives no number: it says there's no calculation for self-employed people who take the money out before 6 years, just that you pay tax.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Calculator at year 4",
+        "why": "Years 1-5 are empty dashed boxes and the only number on screen is 25,725, which is under 'אותו כסף בחשבון ניירות ערך', not the fund. I nearly took that as my answer."
+      },
+      {
+        "where": "Bar chart at year 8",
+        "why": "The labels are under the bars, a scroll below the numbers, so at first I didn't know which number was mine."
+      }
+    ],
+    "used": [
+      "Tab 'מה קורה לכסף בקרן'",
+      "Toggle 'עצמאים'",
+      "Default monthly deposit 500",
+      "Year picker 1-12 (set to 4, then 8)",
+      "Orange note 'לעצמאים עוד אין כאן חישוב למשיכה לפני 6 שנים'",
+      "Bars: הפקדתם 48,000, נשאר בידיים 68,853, אותו כסף בחשבון ניירות ערך 25,725 / 55,471"
+    ],
+    "skimmed": [
+      "Intro paragraph 'מה זה'",
+      "Bar labels החזר המס הוסיף / התשואה הוסיפה / המס לקח"
+    ],
+    "skipped": [
+      "Grey text under the chart (7%, 2% inflation, ילין לפידות)",
+      "'אם תפקידו עוד 13,205 ₪ בשנה' line",
+      "Income, return and fee fields (left at defaults)",
+      "Tabs שווה לדעת, מי מציע ומי מצטרף"
+    ],
+    "unsure_meaning": [
+      "הכנסה חייבת",
+      "החזר המס הוסיף +9,581",
+      "מסלול מדד",
+      "אחרי החזר המס",
+      "חשבון ניירות ערך",
+      "13,205 ₪ בשנה"
+    ],
+    "not_found": [
+      "Any amount for the fund itself when withdrawing after 4 years as self-employed",
+      "A clear statement of how much tax is lost if you withdraw early"
+    ],
+    "findings": [
+      {
+        "what": "At 4 years there's no number for the fund, only empty boxes and a note. The one big number shown belongs to a different account, so it's easy to read it as the answer.",
+        "where": "Calculator, years 1-5 for עצמאים"
+      },
+      {
+        "what": "The labels for the bars are below them, a scroll away from the numbers, and the main white bar has no word next to its number.",
+        "where": "Bar chart under 'מושכים את הכסף אחרי'"
+      },
+      {
+        "what": "'החזר המס הוסיף' isn't explained. I don't know why I'd get money back.",
+        "where": "Second bar label"
+      },
+      {
+        "what": "'הכנסה חייבת' as the first field label means nothing to me",
+        "where": "Calculator first field"
+      },
+      {
+        "what": "The line about 13,205 ₪ a year shows up without context",
+        "where": "Below the chart"
+      }
+    ]
+  },
+  "steps": 8,
+  "reads": 6,
+  "commands": 8,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 47707,
+    "turns": 16,
+    "usd": 0.2210282,
+    "input": 20,
+    "cacheWrite": 16025,
+    "cacheRead": 111341,
+    "output": 3524,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "control-keren-phone-browser",
+    "screenshots": 8,
+    "changes": [],
+    "neverShown": [],
+    "errors": []
+  }
+}

@@ -1,0 +1,134 @@
+{
+  "task": "p10-fold-keren-phone",
+  "persona": "careful-retiree-pc",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "phone",
+  "startedAt": "2026-11-05T23:17:33.540Z",
+  "structured": {
+    "answer": "I can take the money out without tax about 3 years after the first deposit, because I'm at retirement age (6 years for others). But I didn't find how much money I'd have, so I'll ask my son or the employer.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "screen 2, box 'כמה כסף נשאר לכם, ומתי?'",
+        "why": "The heading asks exactly my question, but there is no sum in it, only a link 'הציגו את החישוב'"
+      },
+      {
+        "where": "screen 2, top",
+        "why": "The first lines with the deposit percentages were hidden behind the bar with the buttons; I only saw pale bits like 7.5%"
+      },
+      {
+        "where": "screen 2, 15,712 ₪ / 20,566 ₪",
+        "why": "Big numbers, but they seem to be limits for self-employed people, not what I would have"
+      }
+    ],
+    "used": [
+      "Subtitle: saving through work, after a set time you can take it out without tax",
+      "'אחרי 6 שנים מההפקדה הראשונה אפשר למשוך'",
+      "'למי שהגיע לגיל הפרישה מספיקות 3 שנים'",
+      "Employer deposits each month in addition to salary, I deposit part of my salary",
+      "'עד 4 ימי עסקים' to get the money",
+      "Management fee 'עד 2% בשנה', exit fee 'לא גובים', actually paid 0.34% to 0.74%",
+      "Familiar names הראל, אלטשולר שחם, הפניקס"
+    ],
+    "skimmed": [
+      "שווה לדעת section",
+      "מי מציע ומי מצטרף",
+      "משיכה ומעבר between funds",
+      "הוצאות ישירות"
+    ],
+    "skipped": [
+      "Investment buttons: מדד S&P 500, מזומן שקלי, מסלול כללי, אג\"ח buttons",
+      "Tags KH-19, KH-15, PF-18 and 'חוקים וכללים' buttons",
+      "'הציגו את החישוב' link",
+      "'כל החברות', 'כל המסלולים' links",
+      "'כמה העמלות האלה עולות לאורך זמן'",
+      "Screens 7-11"
+    ],
+    "unsure_meaning": [
+      "מס רווחי הון",
+      "מסלול שעוקב אחרי מדדים",
+      "S&P 500",
+      "KH-19, KH-15, PF-18",
+      "123 with dotted underline / 'מונח הקישו להסבר'",
+      "131 המסלולים",
+      "15,712 ₪ and 20,566 ₪ - limits of what?"
+    ],
+    "not_found": [
+      "How much money I would have, in shekels",
+      "What percentage of my salary the employer and I deposit (hidden behind the bar)"
+    ],
+    "findings": [
+      {
+        "what": "The section that asks 'how much money will you have' gives no sum, only a link to open a calculation",
+        "where": "screen 2, box 'כמה כסף נשאר לכם, ומתי?'"
+      },
+      {
+        "what": "The sticky bar with section buttons covers the text, so the deposit percentages couldn't be read",
+        "where": "top of screen 2 and other screens"
+      },
+      {
+        "what": "Grey, pale text on a black background, hard to read even enlarged",
+        "where": "subtitle, 'הקישו על מספר', small labels throughout"
+      },
+      {
+        "what": "English letters and codes (S&P 500, KH-19, PF-18) make it feel like not for me",
+        "where": "screens 2-3"
+      },
+      {
+        "what": "Too many percentages and fee boxes, tiring",
+        "where": "screens 5-6, כמה זה עולה"
+      },
+      {
+        "what": "Big numbers for self-employed people show up before anything for employees, confusing",
+        "where": "screen 2, 15,712 ₪ / 20,566 ₪"
+      }
+    ]
+  },
+  "steps": 6,
+  "reads": 6,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 32047,
+    "turns": 8,
+    "usd": 0.1640602,
+    "input": 8,
+    "cacheWrite": 11939,
+    "cacheRead": 26881,
+    "output": 3157,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "p10-fold-keren-phone",
+    "screenshots": 12,
+    "changes": [
+      {
+        "id": "fold-shown",
+        "type": "style",
+        "shots": 12,
+        "applied": 12,
+        "most": 1
+      },
+      {
+        "id": "fold-hide",
+        "type": "style",
+        "shots": 12,
+        "applied": 12,
+        "most": 1
+      },
+      {
+        "id": "fold-line",
+        "type": "insert",
+        "shots": 12,
+        "applied": 12,
+        "most": 1
+      }
+    ],
+    "neverShown": [],
+    "errors": []
+  }
+}

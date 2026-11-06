@@ -1,0 +1,129 @@
+{
+  "task": "p13-sort-harel-pc",
+  "persona": "first-job-phone",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T02:58:36.196Z",
+  "structured": {
+    "answer": "I'd pick Harel's \"מניות\" track: it had the biggest return on the page (24.04% over 3 years, 14.64% over 5), the fee is about the same as the others (0.55%), and it's a big fund (7.3 מיליארד ₪). The \"S&P 500\" track would be my fallback.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Table, 'מניות' row vs 'עוקב מדד S&P 500' row",
+        "why": "Everyone says to buy the S&P, but 'מניות' shows a much bigger number (24.04% vs 13.7%), so I didn't know which one to trust"
+      },
+      {
+        "where": "Rows showing 'פחות מ־3 שנים' instead of a return",
+        "why": "No number, so I couldn't compare those tracks and just ignored them"
+      },
+      {
+        "where": "Between screen 2 and screen 3",
+        "why": "The end of the table was cut off, so I may have missed a row or two"
+      },
+      {
+        "where": "After choosing",
+        "why": "Couldn't find any button or step for actually opening the fund"
+      }
+    ],
+    "used": [
+      "Heading 'הראל' and the highlighted 'קופת גמל להשקעה 16' button",
+      "Line 'דמי ניהול ההחיסכון: מ־0.54% עד 0.61%'",
+      "Track names in the table",
+      "Fee 'מהחיסכון' column (0.55%, 0.56%)",
+      "Return column: 24.04% / 14.64% for מניות, 13.7% / 11.92% for S&P 500, 13.5% for כללי",
+      "Money managed: 7.3 מיליארד ₪, 2.3 מיליארד ₪"
+    ],
+    "skimmed": [
+      "Bond/cash rows at the top of the table (אג\"ח סחיר, אשראי ואג\"ח, כספי)",
+      "The מניות/מט\"ח percentages and the ring charts",
+      "Line under the first heading about 2025 and ספטמבר 2026"
+    ],
+    "skipped": [
+      "Note at the bottom of the table about the legal fee limit, 'PF-10'",
+      "Grey text under the table about returns",
+      "'מה כתוב במסמכים של הראל' fold sections",
+      "'מה זה קופת גמל להשקעה' link",
+      "Search box 'לא מצאתם שם?'",
+      "Footer",
+      "Other product buttons (קרן השתלמות, פנסיה etc.)"
+    ],
+    "unsure_meaning": [
+      "מט\"ח percentage next to מניות in each row (guessed: money abroad)",
+      "ההפקדות 0%",
+      "קופה number (8522, 15286...)",
+      "סחיר (מניות סחיר vs מניות)",
+      "אג\"ח סחיר",
+      "123 מקורו / 123 מחושב",
+      "The yellow/teal ring charts"
+    ],
+    "not_found": [
+      "What the fee costs in shekels on my 30,000",
+      "A button or steps to open the fund",
+      "A recommended track for someone like me",
+      "Returns for most tracks (they say פחות מ־3 שנים)"
+    ],
+    "findings": [
+      {
+        "what": "Fees only shown as small percents; no shekel amount, so 0.55% feels like nothing",
+        "where": "דמי ניהול column"
+      },
+      {
+        "what": "Many tracks show 'פחות מ־3 שנים' instead of a return, so I can't compare them",
+        "where": "Return column, most rows"
+      },
+      {
+        "what": "No call to action or first step for opening the fund",
+        "where": "Whole page"
+      },
+      {
+        "what": "The bigger return on 'מניות' pulls me away from the S&P track my friends talk about, and nothing explains the difference",
+        "where": "Rows 'מניות' and 'עוקב מדד S&P 500'"
+      },
+      {
+        "what": "Two percents per row (מניות / מט\"ח) with rings, not explained in plain words",
+        "where": "חשיפה column"
+      },
+      {
+        "what": "Similar-looking tracks (מניות, מניות סחיר, עוקב מדד מניות, S&P) with no explanation of how they differ",
+        "where": "Table"
+      },
+      {
+        "what": "Table rows cut off between screens; couldn't see the full list",
+        "where": "Between screen 2 and 3"
+      }
+    ]
+  },
+  "steps": 4,
+  "reads": 4,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 34181,
+    "turns": 6,
+    "usd": 0.13411620000000002,
+    "input": 8,
+    "cacheWrite": 8165,
+    "cacheRead": 23921,
+    "output": 3199,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "p13-sort-harel-pc",
+    "screenshots": 6,
+    "changes": [
+      {
+        "id": "sort-shown",
+        "type": "style",
+        "shots": 6,
+        "applied": 6,
+        "most": 1
+      }
+    ],
+    "neverShown": [],
+    "errors": []
+  }
+}

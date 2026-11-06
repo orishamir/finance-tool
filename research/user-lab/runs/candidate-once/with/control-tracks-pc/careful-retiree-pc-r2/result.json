@@ -1,0 +1,125 @@
+{
+  "task": "control-tracks-pc",
+  "persona": "careful-retiree-pc",
+  "repeat": 2,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T16:15:14.597Z",
+  "structured": {
+    "answer": "I'm not choosing today. If I had to, I'd lean towards הראל because it's a big name I know and its fees were the lowest I saw, but I didn't find a track I'm sure is as safe as my deposits, so I'll ask my son or the bank first.",
+    "confidence": "unsure",
+    "gave_up": true,
+    "stuck": [
+      {
+        "where": "Filter buttons at the top",
+        "why": "Full of names I don't know (S&P 500, עוקב מדדים, כספי (שקלי), גמיש). Only \"אג\"ח ממשלתי\" sounded safe, and I never found its row on the screens I read."
+      },
+      {
+        "where": "Bond rows such as \"אג\"ח סחיר\"",
+        "why": "Instead of returns they say \"פחות מ־3 שנים\", so there was nothing to judge them by."
+      },
+      {
+        "where": "The circle pictures next to מניות/מט\"ח",
+        "why": "I couldn't tell what they show or what מט\"ח 99% means."
+      },
+      {
+        "where": "Screen 6",
+        "why": "Tired after six screens of numbers on a black background, so I stopped."
+      }
+    ],
+    "used": [
+      "The title \"כל המסלולים בכל החברות\" and the \"קופת גמל להשקעה\" button",
+      "The fees line \"מ־0.5% עד 0.73%\"",
+      "The company headings with their fee ranges: הראל, מור, אנליסט, מיטב",
+      "The track names and the 3-year and 5-year returns in rows from הראל, מור, אנליסט and מיטב"
+    ],
+    "skimmed": [
+      "Money-managed column (מיליון/מיליארד)",
+      "Fund numbers (קופה column)",
+      "Rows of מור, אנליסט and מיטב"
+    ],
+    "skipped": [
+      "\"מה זה קופת גמל להשקעה\" link",
+      "מדריך and השקעה במדד menu items",
+      "Question-mark icons and sort arrows",
+      "Arrow links at the end of each row",
+      "Screens 7–15"
+    ],
+    "unsure_meaning": [
+      "מט\"ח",
+      "חשיפה",
+      "עוקב מדד / S&P 500",
+      "סחיר",
+      "גמיש",
+      "כספי (שקלי)",
+      "דמי ניהול מההחיסכון vs מההפקדה",
+      "עוד לא דווח",
+      "101% מניות",
+      "The turquoise/yellow circles",
+      "פחות מ־3 שנים"
+    ],
+    "not_found": [
+      "A plain sentence saying which track is safe, like a deposit",
+      "The government bond (אג\"ח ממשלתי) track rows",
+      "A comparison with bank deposits",
+      "Who runs this site"
+    ],
+    "findings": [
+      {
+        "what": "No sentence says which tracks are low-risk; safe-sounding options are hidden behind unfamiliar names and English letters",
+        "where": "Filter buttons and track names"
+      },
+      {
+        "what": "Dark background with small grey text, especially the column headings, is hard to read even enlarged",
+        "where": "Whole page, table header"
+      },
+      {
+        "what": "Every row repeats the same labels (מניות/מט\"ח, מההחיסכון/מההפקדה, 3 שנים/5 שנים), making me re-read them on each row",
+        "where": "Table rows"
+      },
+      {
+        "what": "Circle charts use two close colours whose numbers sit beside them, so I had to look back and forth",
+        "where": "Exposure column"
+      },
+      {
+        "what": "Many rows show \"פחות מ־3 שנים\" instead of returns, so the safer bond tracks have nothing to compare",
+        "where": "Returns column"
+      },
+      {
+        "what": "Large share returns (24%, 26%) stand out and draw the eye, but the risk behind them isn't explained",
+        "where": "Returns column, stock tracks"
+      },
+      {
+        "what": "Unclear marks like \"עוד לא דווח\" with an orange icon and \"101%\" shares",
+        "where": "הלכה row (מור), מניות row (מיטב)"
+      },
+      {
+        "what": "I don't know the site \"מקור\" or who is behind it",
+        "where": "Page header"
+      }
+    ]
+  },
+  "steps": 6,
+  "reads": 6,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 40481,
+    "turns": 8,
+    "usd": 0.171439,
+    "input": 8,
+    "cacheWrite": 11411,
+    "cacheRead": 27995,
+    "output": 3726,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "control-tracks-pc",
+    "screenshots": 16,
+    "changes": [],
+    "neverShown": [],
+    "errors": []
+  }
+}

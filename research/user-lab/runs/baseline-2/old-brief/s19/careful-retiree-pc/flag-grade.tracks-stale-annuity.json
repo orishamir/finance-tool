@@ -1,0 +1,100 @@
+{
+  "case": "tracks-stale-annuity",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The page says its data is updated monthly, yet the figures are as of September, in November.\",\"where\":\"the data date at the top\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Fee shown is a 2025 average, not what the reader would actually be charged",
+      "Guaranteed-return (ביטוחן מבטיח תשואה) tracks show only 'לא דווח' and nothing says whether one can join",
+      "The '123 מקור / מחושב / הזנה' colour legend is confusing and its relevance unclear",
+      "Orange box says the authority's data hasn't been updated since September 2026, which worries the reader, and it clashes with 'נתונים נכון ל־03.11.2026' at the bottom",
+      "Filter labels like אשראי ואג\"ח, אג\"ח ממשלות and the הלכה filters are meaningless jargon",
+      "Table is very long (18 screens) to hunt through",
+      "Ayalon block is all 'עוד לא דווח' / 'חדש' and useless",
+      "Footnotes are only half helpful, and 'PF-06' is unexplained",
+      "The turquoise 'קופה' number column has no clear purpose",
+      "Ring charts repeat the numbers next to them",
+      "Dotted purple underlines on the numbers give no hint what clicking does",
+      "Share/foreign-currency exposure above 100% isn't explained and may be dangerous",
+      "A negative 'from deposits' fee with a warning sign is unexplained",
+      "The page never shows in money whether the fee from savings or from deposits hurts more",
+      "'פחות מ־3 שנים' in the return column looks like an error",
+      "Unclear difference between 'לא דווח' and 'עוד לא דווח'",
+      "'אין' in the fee column is unexplained",
+      "'כללי' is both a filter showing all tracks and a tag on single tracks",
+      "The first company's name (and another company's) was never seen because the screen jumped",
+      "No cost in shekels for the fee differences",
+      "No return after fees (everything is before fees and tax)",
+      "No information on what happens at 67 when withdrawing",
+      "No guidance on how to move money or what moving costs",
+      "No plain explanation of what the 60-plus tracks contain or whether they get safer with age",
+      "No worst-year or loss information per track",
+      "No information on service or company reliability",
+      "No single list of only the 60-plus tracks across companies in fee order",
+      "Would drop the 'בניהול אישי / IRA' rows as irrelevant",
+      "Would drop tiny tracks with 0–2 million ₪",
+      "Would drop the other product buttons from this page"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 4,
+        "why": "The reader is worried that the data hasn't been updated since September and that the dates disagree; that is the same stale-data problem the person named at the top of the page."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0833552
+  },
+  "b": {
+    "raised": [
+      "The fee shown is a 2025 average, not the fee the reader would actually pay",
+      "Guaranteed-return tracks show only 'לא דווח' and give no information on who can join",
+      "The '123 מקור / מחושב / הזנה' colour legend is confusing and its point is unclear",
+      "Orange box says the data hasn't been updated since September 2026, which is worrying, and it conflicts with the 03.11.2026 'data as of' date at the bottom",
+      "Filter terms (אשראי ואג\"ח, אג\"ח ממשלות, הלכה) mean little to the reader",
+      "The table is very long (18 screens)",
+      "Ayalon block is all 'עוד לא דווח' / new, so it is useless",
+      "Footnote code 'PF-06' is unexplained",
+      "The 'קופה' number column (turquoise number with arrow) has no clear purpose",
+      "Ring charts repeat the numbers next to them",
+      "The dotted purple underlines don't show what clicking them would do",
+      "Shares/foreign-currency exposure above 100% is unexplained (borrowing? dangerous?)",
+      "A negative deposit fee (-0.21%) with a warning sign is confusing",
+      "The page never says in money terms whether the savings fee or the deposits fee hurts more",
+      "'פחות מ־3 שנים' in the return column looks like an error",
+      "The difference between 'לא דווח' and 'עוד לא דווח' is unclear",
+      "'אין' in the fee column is unclear",
+      "'כללי' is used both as a filter showing all tracks and as a tag on single tracks",
+      "The first company's name (and another company's) was never visible because the screen jumped",
+      "No shekel figure for the yearly cost of the fee difference",
+      "No returns after fees and tax",
+      "Nothing on what happens at 67 when withdrawing",
+      "No guidance on how to move money or what it costs",
+      "No plain explanation of the 60-plus tracks or whether they get safer with age",
+      "No worst-year or downside loss figures",
+      "No information on service or company reliability",
+      "No single list of 60-plus tracks across companies in fee order",
+      "IRA / self-managed rows are irrelevant and should go",
+      "Other product buttons on this page could go",
+      "Tiny tracks (0–2 million ₪) could go"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 4,
+        "why": "The reader notices that the data hasn't been updated since September even though the page is dated November, and is worried by it; this is the staleness the person named."
+      }
+    ],
+    "liked": [],
+    "usd": 0.08343120000000001
+  },
+  "third": null,
+  "ranks": {
+    "k": 4
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1667864
+}

@@ -1,0 +1,13 @@
+{
+ "id": "current-account-chart-unrelated",
+ "task": "s01",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "The current-account guide shows a growth chart of money invested at a 10% yearly return, which has nothing to do with a current account.",
+   "where": "the chart 'מה קורה לכסף לאורך הזמן' in the guide",
+   "kind": "general"
+  }
+ ],
+ "liked": []
+}

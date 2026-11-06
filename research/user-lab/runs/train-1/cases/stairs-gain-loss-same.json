@@ -1,0 +1,14 @@
+{
+ "id": "stairs-gain-loss-same",
+ "task": "t64",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "A gain and a loss are drawn as the same colour of bar.",
+   "where": "the bars of the rows",
+   "kind": "general",
+   "outside": false
+  }
+ ],
+ "liked": []
+}

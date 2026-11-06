@@ -1,0 +1,39 @@
+{
+  "id": "p14-dead-sp500-pc",
+  "about": "For the lab only; never reaches a session. Planted problem, kind p14 (A control that changes nothing visible): see research/user-lab/planted.md.",
+  "purpose": "plant",
+  "pages": [
+    "/finance-tool/indices/sp500"
+  ],
+  "device": "pc",
+  "instance": {
+    "kind": "p14",
+    "mode": "browser",
+    "url": "https://orishamir.github.io/finance-tool/indices/sp500",
+    "device": "pc",
+    "steps": [],
+    "task": "sp500-browser",
+    "control": "planted/control-sp500-pc-browser",
+    "split": "tune"
+  },
+  "plants": [
+    {
+      "id": "p14",
+      "kind": "general",
+      "problem": "The inflation button does nothing when pressed.",
+      "where": "the inflation button under the inputs",
+      "counts": "A finding that pressing the inflation button changed nothing or did not respond.",
+      "notCounts": "Not finding where inflation is set, without having pressed the button."
+    }
+  ],
+  "changes": [
+    {
+      "id": "dead-shown",
+      "type": "style",
+      "selector": "[data-pl=\"dead\"]",
+      "set": {
+        "--pl": "1"
+      }
+    }
+  ]
+}

@@ -1,0 +1,126 @@
+{
+ "pool_size": 544,
+ "seed": 20261106,
+ "v0": [
+  {
+   "screen": "s04",
+   "persona": "first-job-phone",
+   "rank": 2,
+   "what": "The guide is a long wall of more than 25 similar cards with no beginner's starting point, which is overwhelming",
+   "where": "מדריך page",
+   "url": "https://orishamir.github.io/finance-tool/",
+   "device": "pc",
+   "surface": "live"
+  },
+  {
+   "screen": "s07",
+   "persona": "first-job-phone",
+   "rank": 6,
+   "what": "The tax paragraph with 69,840 / 10,920 figures is dense and hard to follow",
+   "where": "מיסוי",
+   "url": "https://orishamir.github.io/finance-tool/guide/bank-deposit",
+   "device": "pc",
+   "surface": "live"
+  },
+  {
+   "screen": "s11",
+   "persona": "careful-retiree-pc",
+   "rank": 4,
+   "what": "Too many numbers on one screen (17,370; 16,955; 415.84; 2,402.23; 2,922.17; 23,692...)",
+   "where": "Screen 2 top",
+   "url": "https://orishamir.github.io/finance-tool/guide/keren-hishtalmut",
+   "device": "pc",
+   "surface": "live"
+  },
+  {
+   "screen": "s18",
+   "persona": "first-job-phone",
+   "rank": 3,
+   "what": "Fees only in percent, nothing in shekels, so 0.56 vs 0.67 says nothing to me",
+   "where": "Fee column",
+   "url": "https://orishamir.github.io/finance-tool/tracks/kupat-gemel-lehashkaa?kind=%D7%A2%D7%95%D7%A7%D7%91+%D7%9E%D7%93%D7%93%D7%99+%D7%9E%D7%A0%D7%99%D7%95%D7%AA&sort=fee&order=reverse",
+   "device": "pc",
+   "surface": "live"
+  },
+  {
+   "screen": "s01",
+   "persona": "first-job-phone",
+   "rank": 1,
+   "what": "The first big number (74,044 ₪) assumes 5% a year on a current account, so it looks like my עו\"ש grows nicely. That's the opposite of the point.",
+   "where": "Calculator, screen 1",
+   "url": "https://orishamir.github.io/finance-tool/guide/current-account",
+   "device": "pc",
+   "surface": "live"
+  },
+  {
+   "screen": "s25",
+   "persona": "careful-retiree-pc",
+   "rank": 2,
+   "what": "Second fee '1.47% מההפקדות' looks big and isn't explained in words I understand",
+   "where": "קרן חדשה מקיפה table, screens 3–4",
+   "url": "https://orishamir.github.io/finance-tool/companies/harel",
+   "device": "pc",
+   "surface": "live"
+  },
+  {
+   "screen": "s30",
+   "persona": "first-job-phone",
+   "rank": 3,
+   "what": "The red tag 'מס רווח במכירה' on foreign funds scares me off without saying how much",
+   "where": "Foreign fund rows",
+   "url": "https://orishamir.github.io/finance-tool/indices/sp500",
+   "device": "pc",
+   "surface": "live"
+  },
+  {
+   "screen": "s21",
+   "persona": "first-job-phone",
+   "rank": 5,
+   "what": "16 tracks that look almost the same, with no recommendation. It makes me want to do nothing.",
+   "where": "Main table",
+   "url": "https://orishamir.github.io/finance-tool/companies/harel",
+   "device": "pc",
+   "surface": "live"
+  },
+  {
+   "screen": "s01",
+   "persona": "first-job-phone",
+   "rank": 5,
+   "what": "Codes like TXI OQ11, BANK-20 mean nothing to me",
+   "where": "שווה לדעת, מה האתר לקח בחשבון",
+   "url": "https://orishamir.github.io/finance-tool/guide/current-account",
+   "device": "pc",
+   "surface": "live"
+  },
+  {
+   "screen": "s02",
+   "persona": "first-job-phone",
+   "rank": 5,
+   "what": "Codes like MF-16 and BANK-18 everywhere mean nothing to me and clutter the screen",
+   "where": "cost table, שווה לדעת",
+   "url": "https://orishamir.github.io/finance-tool/guide/money-market-fund-daily",
+   "device": "pc",
+   "surface": "live"
+  },
+  {
+   "screen": "s09",
+   "persona": "first-job-phone",
+   "rank": 2,
+   "what": "The cost of breaking a deposit is never given in shekels, only 'לפי התעריפון' and 'שאלה פתוחה'",
+   "where": "כמה זה עולה table and red box in מיסוי",
+   "url": "https://orishamir.github.io/finance-tool/guide/bank-deposit",
+   "device": "pc",
+   "surface": "live"
+  },
+  {
+   "screen": "s17",
+   "persona": "careful-retiree-pc",
+   "rank": 5,
+   "what": "Turquoise and yellow circles that look almost the same",
+   "where": "Exposure column",
+   "url": "https://orishamir.github.io/finance-tool/tracks/kupat-gemel-lehashkaa",
+   "device": "pc",
+   "surface": "live"
+  }
+ ]
+}
