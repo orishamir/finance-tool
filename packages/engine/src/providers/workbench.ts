@@ -483,6 +483,13 @@ export function buildTariff(input: Omit<WorkbenchInput, "fund"> & { fund?: Workb
           if (typeof r.rate.value !== "number") throw new Unusable("line-without-value", `${r.line.id} rate has no value`);
           c.perCurrencyUnit = r.rate.value;
         } else c.rate = pct(r.rate, "pct_of_trade", `${r.line.id} rate`);
+        // F-13 (D56, D65): a spread the price list limits ("עד 0.7%") is priced at its ceiling, on top of the conversion fee; a spread with no
+        // ceiling (value null) is not priced. Only the list line carries it: an average row is what customers paid, spread and all.
+        const spread = r.rate === r.line.rate ? r.line.spread : null;
+        if (spread && typeof spread.value === "number") {
+          if (c.perCurrencyUnit !== undefined || hasBound(r.min) || hasBound(r.max)) throw new RecordInputError(`${r.line.id}: a priced spread beside a fee with bounds or a price per dollar is not modelled`);
+          c.rate += pct(spread, "pct_of_trade", `${r.line.id} spread`);
+        }
         if (hasBound(r.min) || hasBound(r.max)) {
           // The FX bounds are in USD where the bank sets them so: they stay in the trade currency (F-13, 2026-10-24).
           const bounds = [r.min, r.max].filter(hasBound);
@@ -502,7 +509,7 @@ export function buildTariff(input: Omit<WorkbenchInput, "fund"> & { fund?: Workb
           if (hasBound(r.max)) c.max = bound(r.max, `${r.line.id} max`);
         }
         out.tariff.fx = hasBound(r.min) || hasBound(r.max) || c.perCurrencyUnit ? c : c.rate;
-        used(r.line, r.rate, r.min, r.max);
+        used(r.line, r.rate, r.min, r.max, spread && typeof spread.value === "number" ? spread : null);
         // F-13 (2026-10-31): the conversion of a monthly purchase on a recurring plan, where the tariff prints a price for one; a list price only, never over an average.
         if (r.rate === r.line.rate && r.line.level === "list") {
           const plan = standingLines(snapshot, "fx").filter((l) => applicable(l) && (l.channel === null || l.channel === input.channel));

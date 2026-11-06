@@ -142,3 +142,26 @@ describe("a conversion priced per dollar, on the line for the fund's currency (F
     expect(() => buildTariff(workbench({ currency: { code: "EUR", startRate: fx.EUR }, providers: [] }), { snapshot, level: "list", band: EUROPE }, snapshot)).toThrow(/per dollar/);
   });
 });
+
+describe("a spread the price list limits (F-13, D56, D65)", () => {
+  // the three houses whose price lists print a ceiling on the spread; the line's fee and spread are as each record holds them
+  const fxLine = (name: string) => (read(name).lines as { id: string; base: string; level: string }[]).find((l) => l.base === "fx" && l.level === "list")!;
+  // only the record's conversion lines: the trade lines need a band the test does not name
+  const fxOnly = (name: string) => { const r = read(name); return { ...r, lines: r.lines.filter((l: { base: string }) => l.base === "fx") }; };
+  const buildOf = (name: string) => buildTariff(workbench({ providers: [], channel: "direct" }), { snapshot: fxOnly(name), level: "list" }, fxOnly(name));
+  const tariffOf = (name: string) => buildOf(name).tariff;
+  it("is priced at its ceiling, on top of the conversion fee", () => {
+    expect(tariffOf("altshuler-trade@2026-11-05").fx).toBeCloseTo(0.007, 10); // no fee, "עד 0.7%"
+    expect(tariffOf("meitav-trade@2026-11-04").fx).toBeCloseTo(0.0093, 10); // 0.13% and "עד 0.8%"
+    expect(tariffOf("ibi@2026-11-04").fx).toBeCloseTo(0.007, 10); // "וללא עמלה", "עד 0.7%"
+  });
+  it("a spread with no ceiling is not priced: the fee alone", () => {
+    expect(tariffOf("leumi@2026-11-04").fx).toBeCloseTo(0.0016, 10);
+    expect(fxLine("leumi@2026-11-04")).toMatchObject({ spread: { value: null } });
+  });
+  it("is listed among the values the row rests on", () => {
+    const build = buildOf("meitav-trade@2026-11-04");
+    expect(build.linesUsed).toContain("meitav-trade-fx-conversion");
+    expect(build.strengths.filter((s) => s === "institution").length).toBeGreaterThanOrEqual(2);
+  });
+});
