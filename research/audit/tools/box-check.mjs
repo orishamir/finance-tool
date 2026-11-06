@@ -266,7 +266,7 @@ for (const path of paths.split(",")) {
     for (let i = 0; i < selects; i++) {
       const s = page.locator("select:visible").nth(i);
       const values = await s.evaluate((e) => [...e.options].map((o) => o.value));
-      for (const v of values.slice(0, 8)) {
+      for (const v of values) {
         await onScreen(s);
         const y0 = (await s.boundingBox())?.y;
         await s.selectOption(v).catch(() => {});
