@@ -1,0 +1,65 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "The grey line with the inflation button refers to the European Central Bank reference rate, which seems irrelevant to an Israeli investing shekels in a US index and confuses the reader.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "The account list marks Hapoalim's cheaper price for older customers as 'לא בחישוב' (not included in the calculation). The reader is 61 and eligible, so they can't tell what Hapoalim would really cost them.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "The foreign funds (iShares, Vanguard and others) show 'אין מחיר כאן' (no price here) and 'עוד לא נאסף' (not collected yet). Their warnings about US estate tax and form W-8BEN frighten the reader, who gave up on that part.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "The step section starts 'now' from MTF at Jerusalem Bank, which the reader doesn't hold, with no explanation. Its table has two columns both headed 'פסגות', so the reader couldn't follow it.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "The small print says the ranking changes in 6 places at a 0% or 10% return. This worries the reader: would the choice change if the market does badly?",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 6,
+      "summary": "In the fee colour legend, the small colours can't be matched to the cost bars.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 7,
+      "summary": "In the 'what if' chart, the pink line for the yearly return and the light blue line for today's amount look almost the same colour.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 8,
+      "summary": "The bars in the waterfall chart start at 50,000, so the reader didn't trust their heights.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 9,
+      "summary": "Terms are not explained: (4D)/(4A), עסקת החלף, צוברת, the 0.02% trustee fee, and 'tax also on the currency change'. It is also unclear whether the 7% is before or after inflation, given that results are in today's money.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 10,
+      "summary": "Information the reader wanted is missing: whether Psagot is safe, how to open the account and set up monthly buys, the fee on each purchase, a bad-case figure, early withdrawal, and what happens to the money on death.",
+      "serious": false,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.0894828
+}

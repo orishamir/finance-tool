@@ -1,0 +1,32 @@
+{
+  "case": "live-01-home-first-screen",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"On a wide screen, about half of the opening screen is empty, so the whole site looks unfinished.\",\"where\":\"the whole first screen of the home page\",\"kind\":\"general\"}],\"liked\":[]}",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 2,
+        "why": "Finding 2 says the right side of the first screen is empty and all the content is pushed to the left, which is the same large empty area of the opening screen that the person described."
+      }
+    ],
+    "liked": []
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 2,
+        "why": "Finding 2 says a large part of the first screen (the right side) is empty and the content is squeezed to one side, which is the same empty-half-of-the-screen problem the person described."
+      }
+    ],
+    "liked": []
+  },
+  "third": null,
+  "ranks": {
+    "k": 2
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {}
+}

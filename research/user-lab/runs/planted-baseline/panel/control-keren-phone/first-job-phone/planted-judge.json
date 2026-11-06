@@ -1,0 +1,41 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "Calculator defaults to taxed 5-year case showing a scary red -13,974",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "Tax-free total at 6 years never given in shekels; bars unlabeled",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "Final total 66,5… cut off and hidden by scroll-up button",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "Salary input easy to miss; example amounts not tied to user's salary",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "Paragraph with five shekel figures is confusing",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 6,
+      "summary": "Too many unhelpful tags and chips",
+      "serious": false,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.0352948
+}

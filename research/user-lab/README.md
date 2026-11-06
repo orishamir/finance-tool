@@ -97,6 +97,21 @@ agreement with the founder's verdict. Grading is by rule where the key allows (`
 `tolerance` for numbers; a case's or task's `chosen` for agreement). Otherwise `--judge` asks a separate isolated session
 with no tools to grade against the key or the verdict; its grade is kept in the session's `judge.json`.
 
+**Planted runs** (2026-11-06): when the run's variants are planted instances or clean controls (`tools/planted.mjs run`
+writes such a run), `--judge` also writes `planted.md` and `planted.json`. A blind grader (no tools; only the plant's
+key and the session's findings) says whether one of the first 10 findings names the planted problem; a plant that never
+reached a screenshot is left out. On a control it judges each finding serious or not, and whether it names a problem
+planted on another copy of that page (absent there: metric.md's false alarm). Cached in `planted-judge.json`.
+
+### Old brief: `tools/old-brief.mjs <run.json> <out-folder> [--dry] [--parallel n]`
+
+The fresh-reader brief used before the lab (`research/audit/tools/fresh-reader.mjs`: a one-line "who", the goal, seven
+numbered questions, free text back, the default system prompt), run on a panel run file's captured-page tasks with the
+panel's isolation, for metric.md's "against the usual". Browser tasks are skipped (the old brief only ever had
+screenshots). Writes the layout `score.mjs` reads; the grader reads the free text whole.
+
+The panel keeps a session that already answered, so a stopped run restarts with the same command.
+
 ### Canary: `tools/canary.mjs [out-folder]`
 
 The isolation proof (see `tools/isolation.md`): one session set up exactly like a browser-mode user is asked what it can
@@ -220,8 +235,7 @@ session among its findings, the screens session among words it did not understan
 or the contradicting note. Neither said anything that suggests it noticed a change. One run each: an illustration of
 the method, not a measurement.
 
-**Not done:** `score.mjs` does not read a variant's `plants` yet; grading a planted run is by hand or with `--judge` and
-the plants written as the task's `answerKey`.
+Since 2026-11-06 `score.mjs --judge` grades a planted run itself (below, and `runs/planted-baseline/`).
 
 ## The smoke runs (2026-11-05)
 

@@ -1,0 +1,53 @@
+{
+  "id": "p10-fold-current-pc",
+  "about": "For the lab only; never reaches a session. Planted problem, kind p10 (The answer hidden in a fold): see research/user-lab/planted.md.",
+  "purpose": "plant",
+  "pages": [
+    "/finance-tool/guide/current-account"
+  ],
+  "device": "pc",
+  "instance": {
+    "kind": "p10",
+    "mode": "page",
+    "url": "https://orishamir.github.io/finance-tool/guide/current-account",
+    "device": "pc",
+    "steps": [],
+    "task": "current",
+    "control": "planted/control-current-pc",
+    "split": "score"
+  },
+  "plants": [
+    {
+      "id": "p10",
+      "kind": "general",
+      "problem": "What the current account costs (the fees and the legal cap on the basic plan) is folded behind a \"fees and prices\" line in the first section.",
+      "where": "the first section of the current-account guide",
+      "counts": "A finding that the cost of the account is hidden behind something to open, or that the guide does not show what the account costs without a click.",
+      "notCounts": "Wanting each bank's prices (the page never had them)."
+    }
+  ],
+  "changes": [
+    {
+      "id": "fold",
+      "type": "hide",
+      "text": "העלות היא עמלות החשבון",
+      "closest": "p"
+    },
+    {
+      "id": "fold-2",
+      "type": "hide",
+      "text": "הכללים האלה עומדים להשתנות",
+      "closest": "p"
+    },
+    {
+      "id": "fold-line",
+      "type": "insert",
+      "at": {
+        "text": "העלות היא עמלות החשבון",
+        "closest": "p"
+      },
+      "position": "beforebegin",
+      "html": "<details class=\"max-w-measure\"><summary class=\"cursor-pointer text-link min-h-target flex items-center\">עמלות ומחירים</summary><p class=\"max-w-measure\">העלות היא עמלות החשבון. כל בנק חייב להציע שני מסלולים ולתת לכל לקוח להצטרף אליהם: המסלול הבסיסי כולל עד 1 פעולה בפקיד ועד 10 פעולות בערוץ ישיר בחודש, והמסלול המורחב עד 10 ו־50. פעולות מעבר למסלול מחויבות לפי התעריפון המלא. המחיר של המסלול הבסיסי מוגבל בצו: עד 10.00 ₪ בחודש.</p></details>"
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+{
+  "named": false,
+  "position": 0,
+  "why": "Finding 2 comes closest: it says the final amount only appears at the bottom of screen 3 inside a list and should be up top. But that is about where the result sits and how prominent it is. It never says the result is folded away or needs a click or tap to see, so it doesn't meet the rule. No other finding mentions a hidden or collapsed result.",
+  "usd": 0.026852
+}

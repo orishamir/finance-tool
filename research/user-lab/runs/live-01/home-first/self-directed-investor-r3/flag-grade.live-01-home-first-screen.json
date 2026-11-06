@@ -1,0 +1,32 @@
+{
+  "case": "live-01-home-first-screen",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"On a wide screen, about half of the opening screen is empty, so the whole site looks unfinished.\",\"where\":\"the whole first screen of the home page\",\"kind\":\"general\"}],\"liked\":[]}",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 5,
+        "why": "Finding 5 complains that a big empty right half of the screen wastes space, which is the same empty-first-screen problem the person named."
+      }
+    ],
+    "liked": []
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 5,
+        "why": "Finding 5 points out the big empty right half of the screen below the hero, which is the same empty-space problem the person named."
+      }
+    ],
+    "liked": []
+  },
+  "third": null,
+  "ranks": {
+    "k": 5
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {}
+}

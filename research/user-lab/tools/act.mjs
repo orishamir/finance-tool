@@ -58,6 +58,10 @@ async function serve() {
   );
   // only web pages: a session may not open files or the browser's own pages
   await context.route(/^(?!https?:|data:|blob:|about:blank)/, (route) => route.abort());
+  // lab:begin
+  const labTools = process.env.ACT_LAB ? await import(new URL("./lib/variant.mjs", import.meta.url)) : null;
+  const hook = labTools && process.env.ACT_VARIANT ? await labTools.attach(context, { variant: labTools.loadVariant(process.env.ACT_VARIANT), device: cfg.device, log: process.env.ACT_VARIANT_LOG }) : null;
+  // lab:end
   for (const sig of ["SIGTERM", "SIGINT", "SIGHUP"]) process.on(sig, () => browser.close().finally(() => process.exit(0)));
   let pages = [await context.newPage()];
   context.on("page", (p) => {
@@ -253,6 +257,9 @@ async function serve() {
     mkdirSync(join(HERE, "shots"), { recursive: true });
     const file = `shots/${String(n).padStart(3, "0")}-${label}.png`;
     await p.screenshot({ path: join(HERE, file), ...(clip ? { clip, scale: "device" } : {}) });
+    // lab:begin
+    if (hook) await hook.record(p, file);
+    // lab:end
     return file;
   }
 
@@ -260,6 +267,9 @@ async function serve() {
     const [cmd, ...a] = argv;
     let p = page();
     let note = "";
+    // lab:begin
+    if (labTools && cmd.startsWith("__")) return labTools.labCommand(p, cmd, a, { settle, phone, hook });
+    // lab:end
     if (cmd === "open") {
       const url = a[0];
       if (!/^https?:\/\//.test(url || "")) return "Only web addresses (http or https) can be opened.";
@@ -367,6 +377,10 @@ async function serve() {
     req.on("end", () => {
       lastIdle = Date.now();
       const argv = JSON.parse(body || "[]");
+      // lab:begin
+      // the lab's own commands answer only the lab (a session's command line cannot send this header)
+      if (labTools && /^__(?!quit)/.test(String(argv[0])) && req.headers["x-lab"] !== process.env.ACT_LAB) argv[0] = "?";
+      // lab:end
       if (argv[0] === "__quit") {
         res.end("bye");
         browser.close().finally(() => process.exit(0));

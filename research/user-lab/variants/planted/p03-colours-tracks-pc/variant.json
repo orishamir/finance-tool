@@ -1,0 +1,38 @@
+{
+  "id": "p03-colours-tracks-pc",
+  "about": "For the lab only; never reaches a session. Planted problem, kind p03 (Two parts of a chart in colours a person would call the same): see research/user-lab/planted.md.",
+  "purpose": "plant",
+  "pages": [
+    "/finance-tool/tracks/kupat-gemel-lehashkaa"
+  ],
+  "device": "pc",
+  "instance": {
+    "kind": "p03",
+    "mode": "page",
+    "url": "https://orishamir.github.io/finance-tool/tracks/kupat-gemel-lehashkaa",
+    "device": "pc",
+    "steps": [],
+    "task": "tracks",
+    "control": "planted/control-tracks-pc",
+    "split": "tune"
+  },
+  "plants": [
+    {
+      "id": "p03",
+      "kind": "general",
+      "problem": "The two rings in each row (share in shares and share in foreign currency) are two shades of the same teal, so the reader cannot tell which ring is which.",
+      "where": "the exposure column of the track table (the two rings and their labels)",
+      "counts": "A finding that the two rings, or the two little colour squares beside them, look the same colour or too alike.",
+      "notCounts": "Not understanding what the exposure means."
+    }
+  ],
+  "changes": [
+    {
+      "id": "look-alike",
+      "type": "chart-colours",
+      "tokens": {
+        "--chart-currency": "var(--palette-teal-200)"
+      }
+    }
+  ]
+}

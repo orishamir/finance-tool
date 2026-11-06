@@ -1,0 +1,17 @@
+{
+  "id": "plant-fees-look-alike",
+  "about": "A planted variant: three problems a reviewer on the S&P 500 page should find among its first ten findings. Used to test the reviewer, never to change the site.",
+  "purpose": "plant",
+  "pages": ["/finance-tool/indices/**"],
+  "device": "both",
+  "plants": [
+    { "id": "same-colour", "problem": "Two different costs are drawn in the same colour in the cost bars and their legend, so a reader cannot tell which part of a bar is which cost.", "where": "the cost bars and their legend", "kind": "general" },
+    { "id": "jargon", "problem": "The line under the amount put in uses finance shorthand a non-expert would not understand.", "where": "the 'amount put in' card at the top of the results", "kind": "general" },
+    { "id": "contradiction", "problem": "A note under the main result says management fees are not included, while the line just above says the amount is after management fees.", "where": "under the main result", "kind": "general" }
+  ],
+  "changes": [
+    { "id": "same-colour", "type": "chart-colours", "tokens": { "--chart-cost-trade": "var(--palette-gold-200)" } },
+    { "id": "jargon", "type": "text", "find": { "regex": "הסכום ההתחלתי ועוד הפקדה חודשית, (\\d+) חודשים", "flags": "g" }, "replace": "קרן + DCA חודשי, $1 תקופות" },
+    { "id": "contradiction", "type": "insert", "at": { "text": "נשאר לכם בעוד", "nth": 0 }, "position": "afterend", "html": "<span class=\"block text-xs text-muted-foreground\">* הסכום אינו כולל דמי ניהול</span>" }
+  ]
+}

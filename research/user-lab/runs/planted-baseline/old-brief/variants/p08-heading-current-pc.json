@@ -1,0 +1,37 @@
+{
+  "id": "p08-heading-current-pc",
+  "about": "For the lab only; never reaches a session. Planted problem, kind p08 (A heading that promises what its block does not give): see research/user-lab/planted.md.",
+  "purpose": "plant",
+  "pages": [
+    "/finance-tool/guide/current-account"
+  ],
+  "device": "pc",
+  "instance": {
+    "kind": "p08",
+    "mode": "page",
+    "url": "https://orishamir.github.io/finance-tool/guide/current-account",
+    "device": "pc",
+    "steps": [],
+    "task": "current",
+    "control": "planted/control-current-pc",
+    "split": "score"
+  },
+  "plants": [
+    {
+      "id": "p08",
+      "kind": "general",
+      "problem": "A section is headed as if it says how much interest the current account pays, but the block is about how much money to keep there.",
+      "where": "the second section of the current-account guide (and its line in the page's contents)",
+      "counts": "A finding that the section's heading promises interest figures (or an answer about interest) that the section does not give.",
+      "notCounts": "Wanting interest rates in general, without tying it to the heading."
+    }
+  ],
+  "changes": [
+    {
+      "id": "heading",
+      "type": "text",
+      "find": "כמה כסף להחזיק בעו״ש",
+      "replace": "כמה ריבית מקבלים בעו״ש"
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "id": "p09-disagree-keren-phone",
+  "about": "For the lab only; never reaches a session. Planted problem, kind p09 (Two figures for the same thing that disagree): see research/user-lab/planted.md.",
+  "purpose": "plant",
+  "pages": [
+    "/finance-tool/guide/keren-hishtalmut"
+  ],
+  "device": "phone",
+  "instance": {
+    "kind": "p09",
+    "mode": "page",
+    "url": "https://orishamir.github.io/finance-tool/guide/keren-hishtalmut",
+    "device": "phone",
+    "steps": [],
+    "task": "keren",
+    "control": "planted/control-keren-phone",
+    "split": "score"
+  },
+  "plants": [
+    {
+      "id": "p09",
+      "kind": "general",
+      "problem": "The chart is headed \"withdrawing after 5 years\" while the sentence under it explains a withdrawal after 6 years.",
+      "where": "the study fund calculator: its heading against the sentence under the chart",
+      "counts": "A finding that the year in the heading and the year in the sentence under the chart disagree.",
+      "notCounts": "Confusion about the 6-year rule in general."
+    }
+  ],
+  "changes": [
+    {
+      "id": "disagree",
+      "type": "text",
+      "selector": "p.text-sm > bdi",
+      "find": "5 שנים",
+      "replace": "6 שנים"
+    }
+  ]
+}

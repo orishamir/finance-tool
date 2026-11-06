@@ -1,0 +1,65 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "The page doesn't explain what 'retirement age' means or whether the 3-year rule applies to someone who is 61 now and reaches that age while the money is in the fund. The reader calls this their most important question.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "The calculator shows only the 5-year result. The reader never saw the amount at 6 or 7 years, so the ~80,000 ₪ figure for their chosen plan is their own guess.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "Labels such as '123 ממקור / מחושב / מונח', 'חוקים וכללים · 10' and codes like KH-19 are not explained, so they mean nothing to the reader.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "'Direct expenses… no overall cap was found' worried the reader. It isn't explained, and they wonder whether the fund can charge as much as it likes.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "The bar chart has no key for the grey, yellow and green colours inside the bars, so the reader had to guess what they mean.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 6,
+      "summary": "The 'left in your hands' result number is cut off by the arrow button.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 7,
+      "summary": "The 'you deposited' result column shows no visible number.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 8,
+      "summary": "The purple and grey underlining on numbers is not explained.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 9,
+      "summary": "The paragraph about withdrawing after 5 years gives three numbers (50,719, 29,768 and 15,794) without making clear which one you actually get if you don't file for a refund.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 10,
+      "summary": "When the employer stops paying in (for example, the reader retires before 6 years), the page's only answer is 'depends on the company'.",
+      "serious": false,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.0724508
+}

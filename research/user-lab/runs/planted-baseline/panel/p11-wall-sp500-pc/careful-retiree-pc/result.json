@@ -1,0 +1,135 @@
+{
+  "task": "p11-wall-sp500-pc",
+  "persona": "careful-retiree-pc",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-05T23:19:00.637Z",
+  "structured": {
+    "answer": "I haven't decided. I'll ask my son and my bank first. The page puts a Psagot account with the \"ילין לפידות מחקה S&P 500\" fund at the top and says I'd end up with 86,492 ₪, more than the banks (Leumi 83,396). But Psagot isn't a bank and I'm not sure.",
+    "confidence": "unsure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "screen 2, coloured cost bar",
+        "why": "I couldn't tell the colours apart or which colour meant which cost"
+      },
+      {
+        "where": "screens 3-4, fund list",
+        "why": "Many minus numbers in red and English fund names; it made me anxious and I didn't know what the minus meant"
+      },
+      {
+        "where": "screen 6, chart",
+        "why": "Several lines in colours that look alike; I stopped here"
+      },
+      {
+        "where": "screen 3, bank vs Psagot",
+        "why": "The top choice isn't a bank I know; I trust Leumi or Hapoalim more but they give less"
+      }
+    ],
+    "used": [
+      "Title 'איפה ואיך הכי זול להשקיע במדד'",
+      "S&P 500 button already selected",
+      "Input boxes 10,000 / 500 / 10 years / 7%",
+      "Big number 86,492 ₪ 'נשאר לכם בעוד 10 שנים'",
+      "Psagot account name and fund 'ילין לפידות מחקה S&P 500 (4D)'",
+      "Bank list on the right: Leumi 83,396, Hapoalim 81,471"
+    ],
+    "skimmed": [
+      "Long grey paragraph under the inputs on screen 1",
+      "Fund list with tags on screens 3-5",
+      "Bank list explanations 'לא בחישוב'",
+      "Table on screen 6"
+    ],
+    "skipped": [
+      "Screens 7-11, not reached",
+      "Chart on screen 6",
+      "Foreign funds and Interactive Brokers / Interactive Israel cards",
+      "Fold arrows under the banks"
+    ],
+    "unsure_meaning": [
+      "מדד (not the price index here?)",
+      "S&P, ETF, UCITS, iShares, Vanguard",
+      "IE00B5BMR087 and other codes",
+      "W-8BEN",
+      "דמי משמרת",
+      "נאמן",
+      "צוברת / מחלקת דיבידנד",
+      "מנוטרלת מט\"ח",
+      "בכסף של היום: is 86,492 really what I'll get?",
+      "Is 7% promised or just an example?",
+      "Minus numbers like -43 ₪ / -4,492 ₪: a loss?",
+      "עוד לא נאסף / אין מחיר כאן"
+    ],
+    "not_found": [
+      "A plain sentence saying where to put the money and how much I'll have",
+      "Whether this is as safe as a deposit",
+      "Who runs this site, and whether it's official"
+    ],
+    "findings": [
+      {
+        "what": "Dark background with small grey text is hard to read even enlarged",
+        "where": "whole page, especially explanation text on screens 1-2"
+      },
+      {
+        "what": "Minus amounts and red tags look like losses and frighten me away",
+        "where": "fund list, screens 3-5"
+      },
+      {
+        "what": "Too many English names and codes",
+        "where": "fund list, screens 4-5"
+      },
+      {
+        "what": "Cost bar colours are too close to tell apart and the numbers inside are tiny",
+        "where": "screen 2"
+      },
+      {
+        "what": "No simple summary sentence at the top saying the best choice and the final amount",
+        "where": "screen 1-2"
+      },
+      {
+        "what": "Chart with five similar-coloured lines; couldn't read it",
+        "where": "screen 6"
+      },
+      {
+        "what": "Unclear whether the 7% return is an example or a promise; 'לדוגמה' is in small grey text",
+        "where": "screen 1"
+      },
+      {
+        "what": "Top choice is a non-bank firm; nothing says whether it's safe or supervised",
+        "where": "screen 2"
+      }
+    ]
+  },
+  "steps": 6,
+  "reads": 6,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 44906,
+    "turns": 8,
+    "usd": 0.1889508,
+    "input": 10,
+    "cacheWrite": 12676,
+    "cacheRead": 37314,
+    "output": 4002,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "p11-wall-sp500-pc",
+    "screenshots": 12,
+    "changes": [
+      {
+        "id": "wall",
+        "type": "insert",
+        "shots": 12,
+        "applied": 12,
+        "most": 1
+      }
+    ],
+    "neverShown": [],
+    "errors": []
+  }
+}

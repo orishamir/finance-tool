@@ -1,0 +1,47 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "About 40 screens of near-identical cards with nothing to help choose one. On a phone this could make a reader give up.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "The company name appears only at the top of each group, so after scrolling the reader can't tell whose track a card belongs to.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "Fees are shown only as percentages. The reader wants the yearly amount in ₪ for their own balance, which is a wish for more.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "The S&P card shows 99% stocks and 99% foreign currency, which confused the reader. Both figures can be right at once, so this is a brief puzzle rather than a blocker.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "Many cards show 'less than 3 years' with no return figure. This reflects young tracks, not a page fault, so it doesn't block use.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 6,
+      "summary": "The cheapest fee is mentioned in the summary line, but there's no way to jump to that track. This is about navigation, not the alphabetical sort order.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 7,
+      "summary": "There's no button or next step to actually open the fund, which is a wish for more.",
+      "serious": false,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.0307708
+}

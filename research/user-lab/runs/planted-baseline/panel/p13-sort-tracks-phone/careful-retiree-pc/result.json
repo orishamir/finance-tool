@@ -1,0 +1,144 @@
+{
+  "task": "p13-sort-tracks-phone",
+  "persona": "careful-retiree-pc",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "phone",
+  "startedAt": "2026-11-05T23:23:56.057Z",
+  "structured": {
+    "answer": "If I have to pick, it's Harel, the \"כספי (שקלי)\" track. It shows \"מניות 0%\" and \"מט\"ח 0%\", 4.25% a year over 3 years and 3.08% over 5, and 0.57% to Harel, which I know is a big insurance company. Before I sign anything I'll ask you or the bank whether that is really better than my deposit once the fee comes off.",
+    "confidence": "unsure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Screen 1, the top",
+        "why": "A black page from \"מקור\", a name I don't know. Only the words \"מנתוני רשות שוק ההון\" made me trust it enough to go on."
+      },
+      {
+        "where": "Harel's list, the \"פחות מ־3 שנים\" lines",
+        "why": "Many tracks have no return number, only \"פחות מ־3 שנים\". I didn't know if that means the track is new, or something bad."
+      },
+      {
+        "where": "\"0.57% מהחיסכון\"",
+        "why": "I wasn't sure if that 0.57% comes off once or every year, or if the bank takes something on top. That is exactly what I wanted to know: is someone taking too much?"
+      },
+      {
+        "where": "\"כספי (שקלי)\": 4.25% next to 3 שנים, 3.08% next to 5 שנים",
+        "why": "Why is the 5-year number lower than the 3-year one? Is 4.25% each year, or for all three years together? The heading \"תשואה שנתית ממוצעת\" says yearly, but I'm not sure I read it right."
+      },
+      {
+        "where": "Screens 3–4, the big numbers",
+        "why": "24.04% and 14.64% next to \"מניות 94%\" stayed in my head. It looks like gambling, and it scared me more than it tempted me."
+      }
+    ],
+    "used": [
+      "The \"קופת גמל להשקעה\" button and the line \"מנתוני רשות שוק ההון\"",
+      "Harel's heading: \"דמי ניהול מהחיסכון: מ־0.54% עד 0.61%\" and 19.1 billion ₪",
+      "The \"כספי (שקלי)\" card: 0.57% מהחיסכון, 0% from deposits, מניות 0%, מט\"ח 0%, 4.25% over 3 years, 3.08% over 5 years",
+      "The \"אג\"ח סחיר\" and \"אשראי ואג\"ח\" cards, with 0% or 5% מניות",
+      "Mor's heading: 0.67% to 0.73%, which is more than Harel"
+    ],
+    "skimmed": [
+      "The filter boxes \"חיפוש\", \"במה הכסף מושקע\" and \"מיון\"",
+      "The share-heavy tracks on screens 3–6 (כללי, הלכה, מניות סחיר, משולב סחיר, קיימות)",
+      "The \"123 ממקור / 123 מחושב\" line"
+    ],
+    "skipped": [
+      "Screens 7 to 40. I was tired after six screens.",
+      "The link \"מה זה קופת גמל להשקעה\"",
+      "The links \"מה אומרים המספרים\"",
+      "The round coloured charts",
+      "The other products: קרן השתלמות, חיסכון לכל ילד and the rest",
+      "The other companies further down"
+    ],
+    "unsure_meaning": [
+      "\"עוקב מדדי אג\"ח\" and \"עוקב מדדי מניות\": to me מדד is the price index on the news",
+      "\"מט\"ח\" with a percent: does it mean dollars?",
+      "\"סחיר\"",
+      "\"גמיש\"",
+      "\"הלכה יהודית\"",
+      "\"פחות מ־3 שנים\"",
+      "\"קופה 15287\" with the arrow",
+      "\"123 ממקור\" and \"123 מחושב\"",
+      "The dotted purple lines under the numbers",
+      "\"ההפקדות 0%\" next to \"מהחיסכון\"",
+      "Why the 5-year return is lower than the 3-year one"
+    ],
+    "not_found": [
+      "Any comparison with a bank deposit or its interest",
+      "A plain sentence saying which track is safe, like a deposit",
+      "Whether my money is guaranteed",
+      "Whether I can take the money out at any time, and what it costs",
+      "What 0.57% means in shekels on my money"
+    ],
+    "findings": [
+      {
+        "what": "There is no plain sentence saying which track is safe and close to a deposit. I had to work it out myself from \"מניות 0%\".",
+        "where": "Every track card"
+      },
+      {
+        "what": "\"פחות מ־3 שנים\" appears where the return should be, and nothing explains it.",
+        "where": "Harel's cards, screens 2, 4, 5, 6"
+      },
+      {
+        "what": "A very dark page with many numbers on every card. It made me anxious and tired quickly.",
+        "where": "The whole page"
+      },
+      {
+        "what": "Big numbers like 24.04% show without saying they come with the risk of a big loss.",
+        "where": "Screen 4, the 94% מניות card"
+      },
+      {
+        "what": "I want the fee in shekels per year on an amount I type in, not only as a percent.",
+        "where": "\"מהחיסכון 0.57%\""
+      },
+      {
+        "what": "There are many words I don't know: עוקב מדדים, סחיר, מט\"ח, גמיש.",
+        "where": "The track names"
+      },
+      {
+        "what": "The round charts in close colours told me nothing.",
+        "where": "Next to מניות/מט\"ח"
+      },
+      {
+        "what": "A list this long, 40 screens, doesn't let a person like me reach the other companies.",
+        "where": "The whole page"
+      },
+      {
+        "what": "The name \"מקור\" is unknown and the page doesn't say who is behind it.",
+        "where": "Screen 1, the top"
+      }
+    ]
+  },
+  "steps": 6,
+  "reads": 6,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 32390,
+    "turns": 8,
+    "usd": 0.1579778,
+    "input": 8,
+    "cacheWrite": 11501,
+    "cacheRead": 28289,
+    "output": 3014,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "p13-sort-tracks-phone",
+    "screenshots": 41,
+    "changes": [
+      {
+        "id": "sort-shown",
+        "type": "style",
+        "shots": 41,
+        "applied": 41,
+        "most": 1
+      }
+    ],
+    "neverShown": [],
+    "errors": []
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "id": "p08-heading-keren-phone",
+  "about": "For the lab only; never reaches a session. Planted problem, kind p08 (A heading that promises what its block does not give): see research/user-lab/planted.md.",
+  "purpose": "plant",
+  "pages": [
+    "/finance-tool/guide/keren-hishtalmut"
+  ],
+  "device": "phone",
+  "instance": {
+    "kind": "p08",
+    "mode": "page",
+    "url": "https://orishamir.github.io/finance-tool/guide/keren-hishtalmut",
+    "device": "phone",
+    "steps": [],
+    "task": "keren",
+    "control": "planted/control-keren-phone",
+    "split": "tune"
+  },
+  "plants": [
+    {
+      "id": "p08",
+      "kind": "general",
+      "problem": "The calculator is headed \"when is it best to withdraw?\" but it shows the result for one chosen year and never says which year is best.",
+      "where": "the heading of the calculator card in the study fund guide",
+      "counts": "A finding that the heading promises an answer (the best time) that the calculator does not give.",
+      "notCounts": "Not understanding the calculator."
+    }
+  ],
+  "changes": [
+    {
+      "id": "heading",
+      "type": "text",
+      "find": "כמה כסף נשאר לכם, ומתי?",
+      "replace": "מתי הכי משתלם למשוך?"
+    }
+  ]
+}

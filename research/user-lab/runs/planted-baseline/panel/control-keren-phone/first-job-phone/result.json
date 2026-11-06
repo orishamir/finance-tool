@@ -1,0 +1,109 @@
+{
+  "task": "control-keren-phone",
+  "persona": "first-job-phone",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "phone",
+  "startedAt": "2026-11-05T23:30:04.759Z",
+  "structured": {
+    "answer": "You can take it out tax-free after 6 years from the first deposit. In the page's example (300 ₪ a month from you, 900 ₪ from the employer), taking it out after 5 years leaves about 66,500 ₪ after roughly 14,000 ₪ of tax. I never saw the 6-year figure or one for my own salary.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Calculator chart, default 5 שנים",
+        "why": "It opens on the taxed year, so the first figure is a red −13,974 and the page never shows the tax-free 6-year amount"
+      },
+      {
+        "where": "Total above the bars, 66,5…",
+        "why": "Cut off at the left edge, under the scroll-up button"
+      },
+      {
+        "where": "Calculator top",
+        "why": "Scrolled past the salary field, so I don't know which salary the 300/900 example is based on"
+      }
+    ],
+    "used": [
+      "Subtitle: אחרי תקופה שקבע החוק אפשר למשוך בלי מס",
+      "אחרי 6 שנים מההפקדה הראשונה אפשר למשוך",
+      "Calculator fields 2.5 / 7.5 / 7 / 0.54",
+      "Chart labels לפני 6 שנים: מס / מ־6 שנים: פטור ממס",
+      "Bars +54,000, +8,487, −13,974, נשאר בידיים 66,5…",
+      "Line: 300 ₪ בחודש מכם, 900 ₪ מהמעסיק"
+    ],
+    "skimmed": [
+      "Paragraph on the deposit ceiling (15,712 / 20,566)",
+      "שווה לדעת first lines",
+      "מי מציע ומי מצטרף"
+    ],
+    "skipped": [
+      "The number-heavy paragraph under the chart (50,719 / 29,768 / 15,794)",
+      "Assumptions on inflation and today's prices",
+      "The S&P track and 11-tracks paragraph",
+      "All חוקים וכללים tags",
+      "Chips: קופת גמל להשקעה, אג\"ח tracks",
+      "הצגת חברות, משיכה ומעבר"
+    ],
+    "unsure_meaning": [
+      "מסלול מדד",
+      "התשואה הוסיפה אחרי דמי ניהול",
+      "החזר ממס הכנסה (15,794)",
+      "Whether −13,974 is money lost or only tax",
+      "קופת גמל להשקעה",
+      "Grey vs yellow vs teal bar colours (I guessed: my deposits, employer, return)"
+    ],
+    "not_found": [
+      "The amount in hand at 6 years (tax-free)",
+      "A result for my own salary (9,500)"
+    ],
+    "findings": [
+      {
+        "what": "The calculator opens at 5 years, the taxed case, so the first big number is a scary red −13,974",
+        "where": "Screen 3, chart"
+      },
+      {
+        "what": "The page never gives the tax-free total at 6 years in shekels; the bars have no numbers",
+        "where": "Screen 3 bar chart"
+      },
+      {
+        "what": "The final total 66,5… is cut off and covered by the scroll-up button",
+        "where": "Screens 3-4"
+      },
+      {
+        "what": "Salary input is easy to scroll past; the example amounts aren't tied to my salary",
+        "where": "Screens 2-3"
+      },
+      {
+        "what": "The paragraph with five different shekel figures is confusing",
+        "where": "Screen 4"
+      },
+      {
+        "what": "Too many חוקים וכללים tags and chips that don't help",
+        "where": "Screens 2, 5, 6"
+      }
+    ]
+  },
+  "steps": 6,
+  "reads": 6,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 33788,
+    "turns": 8,
+    "usd": 0.16365760000000001,
+    "input": 10,
+    "cacheWrite": 11624,
+    "cacheRead": 36528,
+    "output": 3166,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "control-keren-phone",
+    "screenshots": 14,
+    "changes": [],
+    "neverShown": [],
+    "errors": []
+  }
+}

@@ -126,9 +126,18 @@ export function costOf(r) {
 // its environment); returns that environment
 export const PLAYWRIGHT = "/home/ori/.npm/_npx/e41f203b7505f1fb/node_modules/playwright/";
 export const CHROME = "/home/ori/.cache/ms-playwright/chromium-1243/chrome-linux64/chrome";
+// The lab's own lines of act.mjs (between "// lab:begin" and "// lab:end": variants, and the shots step's commands) are
+// cut out of the session's copy, so nothing it can read says the page could be changed.
+export function sessionAct() {
+  const src = readFileSync(new URL("../act.mjs", import.meta.url), "utf8")
+    .replace(/^[ \t]*\/\/ lab:begin\n[\s\S]*?^[ \t]*\/\/ lab:end\n/gm, "")
+    .replace(PLAYWRIGHT, "")
+    .replace(CHROME, "");
+  if (/labTools|ACT_LAB|ACT_VARIANT|x-lab|variant|hook/i.test(src)) throw new Error("act.mjs: a lab line is outside the lab:begin/lab:end markers");
+  return src;
+}
 export function installAct(dir, config = {}) {
-  const src = readFileSync(new URL("../act.mjs", import.meta.url), "utf8").replace(PLAYWRIGHT, "").replace(CHROME, "");
-  writeFileSync(join(dir, "act.mjs"), src);
+  writeFileSync(join(dir, "act.mjs"), sessionAct());
   writeFileSync(join(dir, "act-config.json"), JSON.stringify(config));
   return { ACT_PLAYWRIGHT: PLAYWRIGHT, ACT_CHROME: CHROME };
 }

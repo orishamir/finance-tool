@@ -1,0 +1,6 @@
+{
+  "named": false,
+  "position": 0,
+  "why": "None of the findings is about the order of the tracks. Finding 2 complains that there are too many rows and no suggested pick, but it never says the tracks are sorted alphabetically or that the cheapest isn't at the top. Finding 3 is about how the fee is shown, not about sorting by fee. The other findings are about layout, labels and clutter.",
+  "usd": 0.017952
+}

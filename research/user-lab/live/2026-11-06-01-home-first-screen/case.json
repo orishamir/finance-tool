@@ -11,11 +11,14 @@
   "shots": [
     "screen.png"
   ],
-  "his_words": "the first one is simple. the very first screen i see of the site isnt very appealing",
+  "his_words": [
+    "the first one is simple. the very first screen i see of the site isnt very appealing",
+    "(asked what puts him off most and what he would have wanted first; he had been shown the reviewer's words \"half the screen is empty, so the page feels unfinished\") i agree that the starting screen makes the site look unfinished. not sure what i would have wanted there"
+  ],
   "key": {
-    "problem": "The first screen of the site, taken as a whole, is not appealing: as a first impression it does not draw the person in.",
+    "problem": "On a wide screen, about half of the opening screen is empty, so the whole site looks unfinished.",
     "where": "the whole first screen of the home page",
-    "kind": "general or taste: not settled; see lesson"
+    "kind": "general"
   },
   "goal_given_to_reviewer": "You heard about this site and opened it for the first time, to see whether it can help you with your savings.",
   "split": "live (held out, never tuned on before scoring)",
@@ -23,31 +26,74 @@
     "how": "panel shots mode, the default reviewer instructions of 2026-11-06, goal only, 3 runs per persona; graded by tools/grade-flag.mjs (two blind graders, a third on disagreement)",
     "public_run": "runs/live-01",
     "private_run": "~/finance-tool-private/runs/live-01 (his own card; outside the repository)",
+    "first_grading": {
+      "key": "The first screen of the site, taken as a whole, is not appealing: as a first impression it does not draw the person in.",
+      "caught": "6 of 12 sessions",
+      "by_persona": {
+        "careful-retiree-pc": {
+          "caught": 0,
+          "of": 3,
+          "ranks": [
+            0,
+            0,
+            0
+          ]
+        },
+        "self-directed-investor": {
+          "caught": 0,
+          "of": 3,
+          "ranks": [
+            0,
+            0,
+            0
+          ]
+        },
+        "student-small-amounts": {
+          "caught": 3,
+          "of": 3,
+          "ranks": [
+            6,
+            5,
+            4
+          ]
+        },
+        "his own card": {
+          "caught": 3,
+          "of": 3,
+          "ranks": [
+            2,
+            4,
+            2
+          ]
+        }
+      },
+      "note": "Two runs named the empty half of a wide screen and were not counted, while the same words counted on other runs: the key is too vague to grade reliably until his own reason is known."
+    },
     "by_persona": {
       "careful-retiree-pc": {
-        "caught": 0,
+        "caught": 2,
         "of": 3,
         "ranks": [
-          0,
-          0,
+          2,
+          6,
           0
         ]
       },
       "self-directed-investor": {
-        "caught": 0,
-        "of": 3,
-        "ranks": [
-          0,
-          0,
-          0
-        ]
-      },
-      "student-small-amounts": {
         "caught": 3,
         "of": 3,
         "ranks": [
+          4,
+          4,
+          5
+        ]
+      },
+      "student-small-amounts": {
+        "caught": 2,
+        "of": 3,
+        "ranks": [
           6,
-          5,
+          0,
           4
         ]
       },
@@ -61,7 +107,9 @@
         ]
       }
     },
-    "caught": "6 of 12 sessions",
-    "note": "Two runs named the empty half of a wide screen and were not counted, while the same words counted on other runs: the key is too vague to grade reliably until his own reason is known."
-  }
+    "caught": "10 of 12 sessions, all within the first 10 findings",
+    "graded": "regraded 2026-11-06 with the key sharpened by his reason; the sessions themselves ran before he was asked. With the first key the same finding (the empty right half) counted in some sessions and not in others; with this key it counts wherever it appears, and the two graders agreed on all 12 sessions."
+  },
+  "key_before_his_reason": "The first screen of the site, taken as a whole, is not appealing: as a first impression it does not draw the person in.",
+  "key_note": "Sharpened 2026-11-06 with his reason. He agreed with a reviewer's sentence after seeing it (\"half the screen is empty, so the page feels unfinished\"), so the key is that sentence; the reason is his, the wording was suggested, and what would fix it he does not know."
 }

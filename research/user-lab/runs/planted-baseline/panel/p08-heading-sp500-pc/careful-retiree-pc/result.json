@@ -1,0 +1,128 @@
+{
+  "task": "p08-heading-sp500-pc",
+  "persona": "careful-retiree-pc",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-05T23:14:32.030Z",
+  "structured": {
+    "answer": "I'm not deciding anything alone. The page says if I put in 10,000 now and 500 a month for 10 years (70,000 in total), I'd have about 86,492 ₪ at פסגות in the ticked fund 'ילין לפידות מחקה S&P 500'. At לאומי it's about 83,396. I don't know פסגות, so I'll ask my son or the bank first.",
+    "confidence": "unsure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Screen 1, the title and the buttons with English letters",
+        "why": "It opens with 'השקעה במדד' and S&P / MSCI, not with deposits. I nearly left."
+      },
+      {
+        "where": "Screen 2, right column, the small numbers under each bank (1,057, 4,541 … 10,608)",
+        "why": "I wasn't sure if that's what the bank takes from me."
+      },
+      {
+        "where": "Screens 2-4, left column, the fund list",
+        "why": "It's full of red minus signs (−447, −1,268, −4,492), which scared me off every fund except the ticked one."
+      },
+      {
+        "where": "Screen 4",
+        "why": "Whole lines in English (iShares, Vanguard, UCITS, IE00…). I got tired and stopped."
+      }
+    ],
+    "used": [
+      "Title 'איפה ואיך הכי זול להשקיע במדד, לאורך זמן'",
+      "The filled-in boxes: 10,000 now, 500 a month, 10 years",
+      "'הפקדתם 70,000 ₪' and 'הבחירה שלכם · הזול 86,492 ₪ פסגות'",
+      "'אם הדולר לא זז מול השקל'",
+      "Right column bank list: לאומי 83,396, הבינלאומי 82,371, הפועלים 81,471, דיסקונט 79,901, מזרחי טפחות 77,695",
+      "The ticked fund name 'ילין לפידות מחקה S&P 500 (4D)'"
+    ],
+    "skimmed": [
+      "The 'כל הקרנות על מדד S&P 500' list and its coloured stickers",
+      "The 'כל החשבונות' explanation paragraph",
+      "The 'לא בחישוב' notes under the banks"
+    ],
+    "skipped": [
+      "The coloured breakdown bar at the top of screen 2 and its legend",
+      "The sliders",
+      "The English-named funds (iShares, Vanguard)",
+      "The fold arrows",
+      "Screens 5-10"
+    ],
+    "unsure_meaning": [
+      "מדד (I thought it was the price index)",
+      "S&P 500, MSCI, 4D, UCITS, ETF, IE00…",
+      "צוברת, מחלקת דיבידנד",
+      "נאמן 0.02%, דמי משמרת",
+      "קרן מחקה, קרן סל, מנוטרל מט\"ח, חשיפה לדולר",
+      "'−43' next to the second choice",
+      "The small numbers under each bank's total",
+      "'אם הדולר לא זז מול השקל': can I lose?"
+    ],
+    "not_found": [
+      "A plain sentence on whether I can lose money",
+      "A comparison with a regular deposit",
+      "Who פסגות is and whether it's safe",
+      "What exactly to do at my own bank"
+    ],
+    "findings": [
+      {
+        "what": "Black background, small grey and coloured writing that's hard to read even enlarged",
+        "where": "All screens"
+      },
+      {
+        "what": "Red minus signs on almost every fund, which scare you off without saying what they mean",
+        "where": "Fund list, screens 2-4"
+      },
+      {
+        "what": "It opens with English letters and words I don't know, with nothing about safety or deposits",
+        "where": "Screen 1"
+      },
+      {
+        "what": "Too many numbers and coloured stickers in one place",
+        "where": "Screens 2-3"
+      },
+      {
+        "what": "It doesn't say clearly whether the final amount is certain or could go down",
+        "where": "Screen 1, the 86,492 box"
+      },
+      {
+        "what": "Whole fund names in English",
+        "where": "Screen 4"
+      },
+      {
+        "what": "Doesn't explain who פסגות is, compared with the banks I know",
+        "where": "Screen 2, right column"
+      }
+    ]
+  },
+  "steps": 4,
+  "reads": 4,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 36549,
+    "turns": 6,
+    "usd": 0.133666,
+    "input": 8,
+    "cacheWrite": 7763,
+    "cacheRead": 23750,
+    "output": 3339,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "p08-heading-sp500-pc",
+    "screenshots": 11,
+    "changes": [
+      {
+        "id": "heading",
+        "type": "text",
+        "shots": 11,
+        "applied": 11,
+        "most": 1
+      }
+    ],
+    "neverShown": [],
+    "errors": []
+  }
+}

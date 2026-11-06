@@ -1,0 +1,53 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "143 look-alike rows with no shortlist; reader would close the page",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "Company name only in group header; after scrolling can't tell whose rows",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "Fees only as percents, no shekel amount",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "Many rows show 'less than 3 years' instead of a return figure",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "High 3-year returns shown with no risk indication",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 6,
+      "summary": "Second fee line almost always 0%, confusing",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 7,
+      "summary": "Jargon headers and unlabeled ring charts",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 8,
+      "summary": "No next step / how to open the fund",
+      "serious": false,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.041278800000000004
+}

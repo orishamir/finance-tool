@@ -1,0 +1,65 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "Several banks are marked 'מחיר אחר לצעירים' and 'לא בחישוב', so a 24-year-old can't tell whether another bank (for example לאומי) would be cheaper than the recommended פסגות.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "The 'אינפלציה' toggle next to 'בכסף של היום' is unclear: the reader can't tell whether it is on or off, or whether to press it, and can't find the result in actual shekels.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "The term 'הזוג' ('הזוג הבא בתור', 'בחרו את הזוג הזה') is unexplained. The reader only worked out later that it means an account and a fund together.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "The cost comparison against the other pair ('18 ₪ יותר / 1,390 ₪ פחות / 342 ₪ יותר') is confusing: more tax is presented as good. The reader gave up on it.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "The fund card's fee details ('0.1% קבועים, 0% משתנים, 0.025% נאמן') and terms like 'דמי משמרת' are jargon the reader didn't understand.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 6,
+      "summary": "The waterfall section starts from a fund the reader never chose (הראל סל, ירושלים), which confused them. It repeats the same answer.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 7,
+      "summary": "The fund-type tags ('קרן מחקה' / 'קרן סל' / 'מחזיקה את המניות' / 'כמה דרכים יחד') and the '(4A)'/'(40)' in fund names are unexplained.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 8,
+      "summary": "'−0.04% בשנה · שנה אחת' in the fund list doesn't say what the minus is measured against.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 9,
+      "summary": "The note 'יש ספק אם נמכרת שם: וואן זירו' contradicts וואן זירו being ranked number 3 in the account list, so the reader can't tell whether the fund can be bought there.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 10,
+      "summary": "Stray developer-looking text '// הפס נחתך: הסכום ארוך מהשטח' appears on the page.",
+      "serious": false,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.07849880000000001
+}

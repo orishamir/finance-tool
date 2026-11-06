@@ -15,3 +15,9 @@ research/knowledge/2026-10-25-scope/tools/work/
 research/user-lab/bench/raw/
 # 246 MB of rebuilt screens; rebuilt by bench/tools, checked by bench/shots.sha256
 research/user-lab/bench/shots/
+
+# other sites the founder reacted to: their screens stay out of the public repository
+research/user-lab/elsewhere/**/*.png
+research/user-lab/runs/elsewhere-*/**/*.png
+# the planted baseline's screens (96 MB): a variant of the live page, captured again by planted.mjs check
+research/user-lab/runs/planted-baseline/**/*.png

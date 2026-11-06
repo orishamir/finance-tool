@@ -1,0 +1,85 @@
+# p01-no-reference-ta125-phone: first-job-phone (old brief)
+
+phone; 53 s, $0.31
+
+## 1. My answer
+
+I'd open an account at **פסגות** ("Psagot", the account the page labels "הזול", "the cheap one") and buy **אי.בי.אי. מחקה (4A) ת"א 125** (number 5112628). I'd put in 10,000 ₪ now and 500 ₪ a month.
+
+The page says I'd end up with about **86,045 ₪** after 10 years, "אחרי דמי ניהול ומס, בכסף של היום" ("after management fees and tax, in today's money"). I'd put in 70,000 ₪ myself (10,000 + 500 × 120 months), so I'd gain about 16,000 ₪. That number assumes 7% a year, which I left as the page set it. Under the graph it says "תשואה לדוגמה, לא תחזית" ("an example return, not a forecast"), so I take 86,045 as a rough idea, not a promise.
+
+**How sure am I?** About 6 out of 10 on the choice, and less on the amount.
+
+- The account choice feels fairly safe. Psagot is first in the list, has the star, and comes out ahead in every comparison I saw.
+- I'm not sure about two things:
+  - I'm 24, and Leumi, Discount, Mercantile and Mizrahi all say "מחיר אחר לצעירים" ("a different price for young people"), marked "לא בחישוב" ("not in the calculation"). One of them might actually be cheaper for me.
+  - I'd never heard of Psagot, and I don't know if it's a bank or how I'd open an account there.
+
+## 2. What I actually used
+
+- **The top section:** the index buttons (I tapped "ת"א-125"), the boxes "סכום היום" ("amount today", 10,000), "הפקדה חודשית" ("monthly deposit", 500) and "תשואה בשנה" ("return per year", 7%).
+- **The two cards** "הבחירה שלכם · הזול" ("your choice · the cheap one", 86,045 ₪) and "הזוג הבא בתור" ("the next pair in line", 85,015 ₪).
+- **The ranked list of accounts**, the one with the columns "חשבון" ("account") and "נשאר" ("left").
+- **The fund card**, "קרן: אי.בי.אי. מחקה (4A) ת"א 125", and the fund list under "כל הקרנות על מדד ת"א-125" ("all the funds on the TA-125 index").
+- **The table of years / deposit / return** under the graph. It told me that time matters most.
+
+## 3. Block by block
+
+- **Heading "איפה ואיך הכי זול להשקיע במדד, לאורך זמן"** ("where and how to invest in an index most cheaply, over time"): **Used.** It's exactly my question.
+- **Index buttons:** **Used.** I found ת"א-125 easily. The line "קרנות ישראליות שמחזיקות את המניות; אין קרן חוץ" ("Israeli funds that hold the shares; no foreign fund") went over my head, so I skimmed it.
+- **Amount, deposit and return inputs:** **Used.** They were clear. The "אינפלציה" ("inflation") button next to "לדוגמה של האתר · בכסף של היום" ("the site's example · in today's money") **confused me**. I didn't know whether to press it, so I didn't.
+- **The two cards:** **Used.** They were the most useful thing on the page. "−1,030 ₪ לעומת הבחירה שלכם" ("−1,030 ₪ compared to your choice") was clear. But I didn't understand what the "next pair" actually is. Is it a different account, or a different fund?
+- **"כמה זה עולה לכם ב־10 שנים, בכל אחד מהזוגות"** ("how much it costs you over 10 years, in each pair"), the coloured bars: **Skimmed.** I saw 7,323 ₪ versus 8,353 ₪ and that the big pink part is tax. The fact that tax is the biggest cost surprised me.
+- **"העלות אצלכם, לעומת הזוג השני"** ("your cost, compared to the second pair": account 18 ₪ more, fund 1,390 ₪ less, tax 342 ₪ more): **Confused me.** Why is paying more tax a good thing? It says "כי נשאר לכם יותר רווח" ("because you're left with more profit"), and I sort of got it, but it was strange.
+- **The Psagot card** ("מה החשבון גובה ב־10 שנים: 1,049 ₪", "what the account charges in 10 years"): **Used.** It's short and clear.
+- **"כל החשבונות"** ("all the accounts"), the long list of 15: **Used** the top 5 or so, then skimmed down. The "לא בחישוב" notes were the most important part for me because of the young-people prices. "אין נתון" ("no data") for Interactive Brokers and אינטראקטיב ישראל: **Skipped.**
+- **The fund card and the fund list:** **Used** the top fund. The tags "קרן מחקה" ("index fund") / "קרן סל" ("ETF"), "מחזיקה את המניות" ("holds the shares") and "כמה דרכים יחד" ("several ways together") **confused me**. The paragraph explaining "מול המדד" ("versus the index") I only skimmed.
+- **"מה הכי משנה את מה שיישאר לכם"** ("what changes what you'll be left with the most"), the buttons "20% יותר" ("20% more") and so on, plus the graph: **Skimmed** the graph and **used** the table. "שנים 10 → 12, 18,905 ₪ יותר" ("years 10 → 12, 18,905 ₪ more") was a useful lesson.
+- **"מנקודת ההתחלה ועד הכי הרבה"** ("from the starting point up to the most"), the step chart: **Confused me.** It starts from "הראל סל (4A) ת"א 125, ירושלים" (the Harel ETF at the Jerusalem bank) at 79,910 ₪. I never chose that. It does end at Psagot plus the IBI fund, which matched my answer, so it only confirmed it.
+- **"עכשיו: הראל סל… ירושלים. נשארים בסוף 79,910 ₪"** ("now: Harel ETF… Jerusalem, you're left with 79,910 ₪ at the end"), the green/red tables: **Skimmed.** They repeat the same list again, compared against an account I don't have.
+- **Bottom notes** ("התשואה שבחישוב…", "the return in the calculation…", "האתר לא ממליץ על מדד", "the site doesn't recommend an index", "חוקים וכללים · 6", "laws and rules · 6"): I read the first line. I **skipped** the rest and the footer.
+
+## 4. Lists, tables and charts
+
+- **Account list:**
+  - **Looked at:** the rank number, the account name, the big "נשאר" number, the small number underneath (I guessed it's the cost), and the grey "לא בחישוב" tags.
+  - **Ignored:** the orange/yellow/red bars. I never figured out which colour is which until the key at the bottom ("עמלות קנייה ומכירה" = buy/sell commissions, "דמי משמרת" = custody fee), and by then I didn't care. I also ignored the little down arrows and the dotted underlines.
+- **Fund list:**
+  - **Looked at:** the name, the "−1,030 ₪" column ("לעומת הבחירה", "compared to the choice"), and "הבחירה" ("the choice") next to my fund.
+  - **Half-looked at:** "−0.04% בשנה · שנה אחת" ("per year · one year"). I didn't get it.
+  - **Ignored:** the coloured tags and the long numbers like 5112628. I'd only use that number when buying.
+- **Line graph:**
+  - **Looked at:** the line names on the right (שנים / הפקדה חודשית / תשואה בשנה / סכום היום: years / monthly deposit / return per year / amount today) and that the yellow "שנים" line is the steepest.
+  - **Ignored:** the axis, the dashed line marked "התוכנית שלכם" ("your plan"), and the dots.
+- **Step chart:** I looked at the 79,910 starting number and the green +5,022 and pink +1,113 steps. I ignored the key ("קרן אחרת", "another fund", and the lock icon "נשען על כלל מס פתוח", "relies on an open tax rule").
+- **Green/red tables:** I looked only at the "עוד / פחות" ("more / less") words and the amounts. I ignored the bars.
+
+## 5. What I didn't understand
+
+- "בכסף של היום" ("in today's money"): is 86,045 what I'll actually see in the app in 10 years?
+- What "הזוג" (a "pair") means.
+- The difference between "קרן מחקה" (index fund) and "קרן סל" (ETF), and what "(4A)" and "(40)" mean.
+- "−0.04% בשנה · שנה אחת" ("−0.04% per year · one year"): is the minus sign bad?
+- "דמי ניהול: 0.1% קבועים, 0% משתנים, 0.025% נאמן" ("management fees: 0.1% fixed, 0% variable, 0.025% trustee"): what's the difference between them?
+- "דמי משמרת" (custody fees).
+- Why the step chart starts from Harel at Jerusalem.
+- "נשען על כלל מס פתוח: מוצג ולא מדורג" ("relies on an open tax rule: shown but not ranked").
+- "3 מתוך 15… מפרסמים לה מחיר נמוך יותר" ("3 out of 15… publish a lower price for it", about standing orders): does that mean I need a standing order?
+
+## 6. What I wanted and couldn't find
+
+- **What I'd pay as a 24-year-old.** This is the main one. The young-people prices are listed but left out of the calculation.
+- **What Psagot is and how to open an account there.** Is it safe? Is it an app? Can I keep my regular bank account?
+- **Simple step-by-step instructions** for buying the fund every month.
+- **A clear line saying how much I put in in total** (70,000 ₪), so I can see how much is profit.
+- **Whether I can stop or take the money out early**, and what that costs.
+
+## 7. If half the page had to go, what goes first
+
+1. The step chart "מנקודת ההתחלה ועד הכי הרבה" and its key.
+2. The green/red tables starting at "עכשיו: הראל סל…" (they repeat the list against an account I don't have).
+3. The line graph (I'd keep the small table under it).
+4. The "אין נתון" ("no data") rows and the bottom notes and footer.
+5. The coloured bars inside the account list.
+
+I'd keep the inputs, the two cards, the top of the account list with the "לא בחישוב" notes, and the fund card.

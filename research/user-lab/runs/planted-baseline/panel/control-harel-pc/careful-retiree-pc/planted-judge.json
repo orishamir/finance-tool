@@ -1,0 +1,53 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "Low-contrast small grey text on dark background makes law-ceiling and trading-fee lines hard to read",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "Many tracks, including bond tracks, show 'less than 3 years' instead of a return, blocking comparison",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "No explicit low-risk labeling; reader inferred it from 0% shares",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "Highest return (13.7%) on all-shares S&P 500 track draws the eye",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "Two similar-coloured rings in shares/FX column with unclear meaning",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 6,
+      "summary": "Returns shown before management fees, so net return is unknown",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 7,
+      "summary": "Too many numbers per row; long RTL lines hard to follow",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 8,
+      "summary": "Repeated list of folds when scrolling; page ends without a conclusion",
+      "serious": false,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.036998800000000005
+}

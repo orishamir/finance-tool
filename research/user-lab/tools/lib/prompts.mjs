@@ -76,9 +76,9 @@ export function reportSchema({ answerFields = null, options = null, findings = f
     skipped: { ...list, description: "Parts you saw and skipped" },
     unsure_meaning: { ...list, description: "Words, numbers, colours or marks you were not sure you understood" },
     not_found: { ...list, description: "Things you looked for and did not find" },
-    would_change: { ...list, description: "What you would cut, move or change" },
   };
-  const required = ["answer", "confidence", "gave_up", "stuck", "used", "skimmed", "skipped", "unsure_meaning", "not_found", "would_change"];
+  // Problems only, never fixes (founder, 2026-11-05): a person asked for fixes turns into a designer and reads like one.
+  const required = ["answer", "confidence", "gave_up", "stuck", "used", "skimmed", "skipped", "unsure_meaning", "not_found"];
   if (answerFields) {
     props.answer_fields = { type: "object", properties: answerFields, required: Object.keys(answerFields), description: "The parts of your answer, one by one" };
     required.push("answer_fields");

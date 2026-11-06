@@ -1,0 +1,131 @@
+{
+  "task": "p16-leftover-keren-phone",
+  "persona": "careful-retiree-pc",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "phone",
+  "startedAt": "2026-11-05T23:26:39.751Z",
+  "structured": {
+    "answer": "I can take it out after 6 years, or after only 3 since I've reached retirement age, with no tax, and the money arrives within 4 business days. How much I'd have I'm not sure: in their example it's about 66,000 ₪ \"נשאר בידיים\", but that assumes 7% a year, which they say is not a forecast, so I'll ask my son or the bank.",
+    "confidence": "unsure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "screen 3, calculator and bar chart",
+        "why": "Coloured stacked bars I can't read, percentages instead of shekels, a '−13,974' in pink, and no plain sentence saying what it means"
+      },
+      {
+        "where": "screen 4, withdrawal after 5 years paragraph",
+        "why": "50,719 goes in, 29,768 to tax, 15,794 refund: too many numbers, and I didn't know who gives the refund"
+      },
+      {
+        "where": "screen 4, 'נשאר בידיים 66,601 עד 66,280'",
+        "why": "Not clear after how many years this is, or whether it's for me or their example"
+      },
+      {
+        "where": "screen 2 top",
+        "why": "The text started mid-sentence about 15,712 / 20,566 ₪, so I didn't know what those limits were"
+      }
+    ],
+    "used": [
+      "'אחרי 6 שנים מההפקדה הראשונה אפשר למשוך... למי שהגיע לגיל הפרישה מספיקות 3 שנים'",
+      "'+54,000' and 'נשאר בידיים 66,601 עד 66,280'",
+      "'הנחות של האתר, לא תחזית'",
+      "'בפיקוח רשות שוק ההון', 'הראל, אלטשולר שחם'",
+      "'עד 4 ימי עסקים'"
+    ],
+    "skimmed": [
+      "calculator input boxes (7.5, 2.5, 7, 0.54)",
+      "שווה לדעת section",
+      "paragraph on S&P500 track and 11 tracks",
+      "מי מציע section"
+    ],
+    "skipped": [
+      "Investment track buttons (S&P 500, אג\"ח צמודה, מזומן שקלי)",
+      "KH-19 / PF-18 tags and 'חוקים וכללים' badges",
+      "link to securities account",
+      "screens 7–13"
+    ],
+    "unsure_meaning": [
+      "123 ממקור / 123 מחושב / מונח",
+      "מדד / מסלול מדד / S&P 500",
+      "תשואה בשנה 7%",
+      "−13,974 in pink, striped bar",
+      "החזר ממס הכנסה",
+      "(13245)",
+      "צמודה / לא צמודה",
+      "מזומן שקלי",
+      "נבדק על ידי Claude"
+    ],
+    "not_found": [
+      "A simple sentence: after X years you'd have about Y ₪",
+      "A box to type my monthly amount in shekels",
+      "Whether the money is guaranteed / safe like a deposit"
+    ],
+    "findings": [
+      {
+        "what": "Red/pink minus number (−13,974) in the first example makes the whole thing feel risky",
+        "where": "screen 3, bottom chart"
+      },
+      {
+        "what": "Stacked colour bar chart with no plain-language sentence saying what it means; teal/yellow/grey hard to tell apart",
+        "where": "screen 3"
+      },
+      {
+        "what": "Dark background with grey text is hard to read; the instruction line about dragging is pale",
+        "where": "all screens, esp. screen 3"
+      },
+      {
+        "what": "Inputs are in percentages of salary, not shekels; I don't know my salary percentages",
+        "where": "screen 3 calculator"
+      },
+      {
+        "what": "Paragraph with four different big amounts (50,719, 29,768, 15,794, 66,601) is overwhelming",
+        "where": "screen 4"
+      },
+      {
+        "what": "English letters (S&P 500, KH-19, PF-18, Claude) feel not for me",
+        "where": "screens 2, 4, 5"
+      },
+      {
+        "what": "Unclear how many years the 'נשאר בידיים' amount refers to",
+        "where": "screen 4"
+      },
+      {
+        "what": "'123 ממקור / מחושב' legend at top means nothing",
+        "where": "screen 1"
+      }
+    ]
+  },
+  "steps": 6,
+  "reads": 6,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 46012,
+    "turns": 8,
+    "usd": 0.1840532,
+    "input": 10,
+    "cacheWrite": 12240,
+    "cacheRead": 37766,
+    "output": 3927,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "p16-leftover-keren-phone",
+    "screenshots": 14,
+    "changes": [
+      {
+        "id": "leftover",
+        "type": "text",
+        "shots": 14,
+        "applied": 14,
+        "most": 1
+      }
+    ],
+    "neverShown": [],
+    "errors": []
+  }
+}

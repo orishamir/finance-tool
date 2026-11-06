@@ -1,0 +1,65 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "The '123 מקורו / 123 מחושב' legend is confusing; the reader didn't know what source vs calculated meant for their money, so they ignored it.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "Scrolling through all 143 rows of the table was tiring.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "The teal and yellow exposure rings and the 'מט\"ח' figure weren't understood: the reader didn't know what the ring shows or whether 99% foreign currency means more risk.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "'מניות 101%' (Meitav) puzzled the reader: how can exposure be more than 100%?",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "The difference between the fee 'מהחיסכון' and 'מההפקדות' isn't explained; the reader had to guess.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 6,
+      "summary": "'עוד לא דווח' / 'השדה ריק בנתוני הרשות' is unclear: which authority is meant, and why is the field empty?",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 7,
+      "summary": "Jargon such as 'גמיש' and 'סחיר' in track names isn't explained.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 8,
+      "summary": "The reader wasn't sure whether the 3-year return (e.g. 13.5%) is per year or in total; per year sounded too good to be true.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 9,
+      "summary": "Nothing helps the reader choose a track for their age or time horizon (for example 'כללי' vs 'עד 25% מניות'), which is why they were only 6/10 sure.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 10,
+      "summary": "Missing information: the return after fees and tax, worst-year figures, rules at 60+ and the monthly pension option, withdrawal terms, switching costs, and whether the fee can be negotiated.",
+      "serious": false,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.0645308
+}
