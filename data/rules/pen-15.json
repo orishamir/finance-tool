@@ -43,18 +43,17 @@
       "checked": "2026-10-25"
     },
     {
-      "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz201634a.pdf",
-      "title": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018 (עותק באתר prisha.co.il)",
-      "publisher": "Prisha.co.il",
-      "publisher_he": "אתר פרישה (prisha.co.il)",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf",
+      "title": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018",
+      "title_he": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018",
+      "publisher": "gov.il",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
       "kind": "circular",
-      "strength": "primary-mirror",
-      "mirror_host": "other",
+      "strength": "primary",
       "locator": "pp.30-31, ss.38-40",
       "locator_he": "עמודים 30 עד 31, סעיפים 38-40",
       "page": 30,
-      "checked": "2026-10-25",
-      "qualifier": "(third-party host)"
+      "checked": "2026-10-25"
     }
   ]
 }

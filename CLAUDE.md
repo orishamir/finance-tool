@@ -70,7 +70,7 @@ The evidence behind them is `research/2026-10-28-founder-patterns.md`.
    section of the same page may give it another meaning, each chart with its
    own legend or labels. Blue and violet are reserved for entered and
    computed numbers; red, amber and green are status colours, never a
-   series. Each page's spec carries its colour table.
+   series, and green for more money, red for less is status (D71). Each page's spec carries its colour table.
 7. **One flaw means a sweep and a lesson.** A flaw I report is fixed in the
    shared piece, and every other place of the same kind is fixed with it.
    Every criticism of mine is learned three ways. The reviewer: before the
@@ -101,9 +101,11 @@ The main line is the guides: knowledge first (D68). A strong, sourced rule
 base and research come first, the guide pages are their readable face; the
 site explains every kind of holding and every financial term before any goal
 feature starts; the goal
-comparison, workbench, holdings and idle-cash pages wait, and so does the
-indices page (founder, 2026-11-06: "its less important"; its branches
-indices-pc-fixes and indices-pricing are kept as they are). This overrides the Roadmap issue's ranking, which
+comparison, workbench, holdings and idle-cash pages wait. The indices page
+work already started (round 4 of #190 and the pricing decisions D64 to D67,
+branch indices-pricing) is finished beside the guides (founder, 2026-11-06
+evening: "you can also finish the indices page work that we put off"); new
+indices features still wait. This overrides the Roadmap issue's ranking, which
 counts what unblocks the most.
 
 The user lab (`research/user-lab/`) is a habit beside it, at most about 5% of

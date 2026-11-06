@@ -132,3 +132,166 @@ describe("no field painted in the edge colour", () => {
     expect(hits).toEqual([]);
   });
 });
+
+// Colour inside a chart (ground rule 6; design-system section 12; founder, 2026-11-05: "i'd rather have two conflicting colors on
+// opposite sites of the pages than a graph with all its lines the same color", the fault he flagged on six days). The roles each
+// chart draws together, pair by pair, by the palette validator's own method (lib/palette-check.ts): under 15 ΔE to normal vision,
+// or under 6 to a colour-blind reader (the validator's floor, legal only with words on the marks), a pair fails. Today's pairs below
+// the line are listed by name; a new chart or a new role adds its roles to CHART_ROLES, and the list of leftovers only shrinks.
+// The step labels of how soon money is back (access-*) are left out: an order told by a word and an icon, not a chart's identities.
+import { cssVars, deltaE, resolveOklch } from "../../lib/palette-check";
+
+const CHART_ROLES: Record<string, string[]> = {
+  "the timeline (3.4)": ["chart-value", "chart-fee", "chart-tax-1", "chart-tax-2", "chart-contributions"],
+  "the fee-drag chart (7.3)": ["chart-fee-1", "chart-fee-2", "chart-fee-3", "chart-fee-4", "chart-fee-total"],
+  ChangeChart: ["chart-lever-1", "chart-lever-2", "chart-lever-3", "chart-lever-4"],
+  CostStack: ["chart-cost-trade", "chart-cost-custody", "chart-cost-fixed", "chart-cost-fx", "chart-cost-other", "chart-cost-fund", "chart-tax"],
+  PileStory: ["chart-pile-own", "chart-pile-extra", "chart-pile-gain", "chart-pile-tax", "chart-pile-salary-tax", "chart-pile-left"],
+  StairsChart: ["chart-stairs-start", "chart-stairs-account", "chart-stairs-kind", "chart-stairs-fund", "gain", "loss"],
+  "the comparison and exposure charts (6.5, 9.3)": ["chart-option-1", "chart-option-2", "chart-option-3", "chart-baseline"],
+  ShareRings: ["chart-stocks", "chart-currency"],
+  "the indices page's two kinds of fund": ["chart-kind-unhedged", "chart-kind-hedged"],
+  "a guide page's visual (10)": ["chart-value", "chart-alt"],
+  "the pension deposit bar (10)": ["chart-value", "chart-alt", "chart-fee-4"],
+  LabelChip: ["label-held", "label-trade", "label-follow", "label-currency", "label-tax", "label-payout"],
+};
+/** Today's pairs below the line (2026-11-06), as "chart: role / role". Issue 217 redraws the comparison chart. */
+const TOO_ALIKE = new Set([
+  "the timeline (3.4): chart-value / chart-tax-2",
+  "the timeline (3.4): chart-tax-1 / chart-contributions",
+  "CostStack: chart-cost-trade / chart-cost-fixed",
+  "CostStack: chart-cost-fixed / chart-tax",
+  "CostStack: chart-cost-fx / chart-tax",
+  "CostStack: chart-cost-other / chart-tax",
+  "PileStory: chart-pile-own / chart-pile-gain",
+  "PileStory: chart-pile-own / chart-pile-tax",
+  "PileStory: chart-pile-gain / chart-pile-tax",
+  "StairsChart: chart-stairs-start / loss",
+  "StairsChart: chart-stairs-account / gain",
+  "the comparison and exposure charts (6.5, 9.3): chart-option-1 / chart-baseline",
+  "the comparison and exposure charts (6.5, 9.3): chart-option-2 / chart-baseline",
+  "the pension deposit bar (10): chart-value / chart-fee-4",
+  "LabelChip: label-held / label-trade",
+  "LabelChip: label-held / label-payout",
+  "LabelChip: label-trade / label-payout",
+  "LabelChip: label-follow / label-tax",
+]);
+const tooAlike = (vars: Record<string, string>, charts: Record<string, string[]>): string[] =>
+  Object.entries(charts).flatMap(([chart, roles]) =>
+    roles.flatMap((a, i) =>
+      roles.slice(i + 1).flatMap((b) => {
+        const x = resolveOklch(vars, a);
+        const y = resolveOklch(vars, b);
+        if (!x || !y) return [`${chart}: ${!x ? a : b} is not an oklch role`];
+        const d = deltaE(x, y);
+        return d.normal < 15 || d.colourBlind < 6 ? [`${chart}: ${a} / ${b}`] : [];
+      }),
+    ),
+  );
+
+describe("ratchet: colours inside a chart", () => {
+  const vars = cssVars(readFileSync(join(root, "theme.css"), "utf8"));
+  const now = tooAlike(vars, CHART_ROLES);
+  it("no new pair of a chart's colours too alike to tell apart", () => {
+    expect(now.filter((p) => !TOO_ALIKE.has(p))).toEqual([]);
+  });
+  it("the list only shrinks: remove a pair once it is apart", () => {
+    expect([...TOO_ALIKE].filter((p) => !now.includes(p))).toEqual([]);
+  });
+  it("sees a planted pair: two oranges, and two colours a colour-blind reader cannot tell apart", () => {
+    const planted = { "palette-a": "oklch(0.64 0.174 48)", "palette-b": "oklch(0.64 0.2 27)", "role-a": "var(--palette-a)", "role-b": "var(--palette-b)" };
+    expect(tooAlike(planted, { planted: ["role-a", "role-b"] })).toEqual(["planted: role-a / role-b"]);
+    expect(deltaE([0.64, 0.174, 48], [0.64, 0.2, 27]).normal).toBeLessThan(15);
+  });
+});
+
+// Process words in what a reader sees (CLAUDE.md ground rule 9; copy.md 1, "Words that add something"; founder, 2026-10-25:
+// "this monstrous of a message, saying things about claude etc."): no decision id (D22), no Claude, no audit and no talk of the
+// researcher's reading in the reader's text of the copy, the guide and exposure prose, or a record's Hebrew fields. A decision id as a
+// key of a map, and English working notes (never shown), are not reader text. Today's leftovers are the rule records below.
+const PROCESS = /(?<![A-Za-z0-9-])D\d{1,3}(?![\d-])(?!["']?\s*:)|\bClaude\b|\baudit\b|קריאת החוקר|קריאה שלנו/g;
+const PROCESS_LEFT: Record<string, number> = {
+  "data/rules/etf-17.json": 1,
+  "data/rules/mf-18.json": 2,
+  "data/rules/mf-55.json": 1,
+  "data/rules/pf-01.json": 1,
+  "data/rules/txf-16.json": 1,
+  "data/rules/txf-20.json": 1,
+  "data/rules/txs-22.json": 1,
+};
+/** Source without comments: block and JSX comments, and `//` comments (a `//` after a colon or a quote, as in a URL, stays). */
+const uncommented = (src: string): string => src.replace(/\{\/\*[\s\S]*?\*\/\}/g, " ").replace(/\/\*[\s\S]*?\*\//g, " ").replace(/(^|[^:"'`\\\w])\/\/[^\n]*/g, "$1");
+/** Every string under a key ending in `_he`, the fields a record shows the reader. */
+const hebrewFields = (o: unknown, key = ""): string[] =>
+  typeof o === "string" ? (key.endsWith("_he") ? [o] : []) : Array.isArray(o) ? o.flatMap((v) => hebrewFields(v, key)) : o && typeof o === "object" ? Object.entries(o).flatMap(([k, v]) => hebrewFields(v, k)) : [];
+const repo = join(root, "../../");
+const readerSources = (): Record<string, string> => {
+  const out: Record<string, string> = {};
+  for (const f of [join(root, "copy.ts"), ...walk(join(root, "content")).filter((x) => /\.tsx?$/.test(x) && !/\.test\.tsx?$/.test(x))]) out[`site/app/${rel(f)}`] = uncommented(readFileSync(f, "utf8"));
+  for (const f of walk(join(repo, "data")).filter((x) => x.endsWith(".json"))) {
+    try {
+      const text = hebrewFields(JSON.parse(readFileSync(f, "utf8"))).join("\n");
+      if (text) out[relative(repo, f).split("\\").join("/")] = text;
+    } catch {
+      // a file that is not one JSON document is not a record
+    }
+  }
+  return out;
+};
+
+describe("ratchet: process words in what a reader sees", () => {
+  const now: Record<string, number> = {};
+  for (const [f, text] of Object.entries(readerSources())) {
+    const n = (text.match(PROCESS) ?? []).length;
+    if (n) now[f] = n;
+  }
+  it("none new: say it in the reader's words, or leave it out", () => {
+    expect(Object.entries(now).filter(([f, n]) => n > (PROCESS_LEFT[f] ?? 0)).map(([f, n]) => `${f}: ${n}`)).toEqual([]);
+  });
+  it("the list only shrinks", () => {
+    expect(Object.entries(PROCESS_LEFT).filter(([f, n]) => (now[f] ?? 0) < n).map(([f, n]) => `${f}: allowed ${n}, now ${now[f] ?? 0}`)).toEqual([]);
+  });
+  it("sees a planted id, a name and the researcher's reading, and skips a key and a comment", () => {
+    const planted = uncommented(`a: "כך החלטנו (D22).", b: "לפי Claude", c: "לפי קריאת החוקר", "D20": "x", // D31 in a comment`);
+    expect(planted.match(PROCESS)).toEqual(["D22", "Claude", "קריאת החוקר"]);
+  });
+});
+
+// Words the terminology table replaced (copy.md 10.3, founder, 2026-10-24 to 11-01: a coined or wrong name where the official or
+// everyday one exists). The table's "לא" column is read from the doc itself, so a row added there is checked at once. Left out are
+// the words its notes allow in another sense: "מחירון" (the person's own word), "תעריף", "פתוח" and "נעילה" (ordinary words outside
+// their one use), "מההפקדות", "מצבירה", "מהצבירה" (allowed in running text and in a quote of a statement), "טרם".
+const IN_ANOTHER_SENSE = new Set(["מחירון", "תעריף", "פתוח", "נעילה", "מההפקדות", "מצבירה", "מהצבירה", "טרם"]);
+const REPLACED_LEFT: Record<string, number> = {
+  "site/app/copy.ts": 3,
+  "site/app/content/guide/provident-for-annuity.tsx": 1,
+};
+const replacedWords = (md: string): string[] => {
+  const table = md.split("### 10.3")[1]?.split("### 10.4")[0] ?? "";
+  const rows = table.split("\n").filter((l) => l.startsWith("|") && !/^\|\s*-/.test(l)).slice(1);
+  return [...new Set(rows.flatMap((r) => [...(r.split("|")[3] ?? "").matchAll(/"([^"]+)"/g)].map((m) => m[1]!)))].filter((w) => !IN_ANOTHER_SENSE.has(w));
+};
+const HEB = "\\u0590-\\u05FF";
+const countWord = (text: string, w: string) => (text.match(new RegExp(`(?<![${HEB}])${w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}(?![${HEB}])`, "g")) ?? []).length;
+
+describe("ratchet: a word the terminology table replaced", () => {
+  const words = replacedWords(readFileSync(join(repo, "docs/copy.md"), "utf8"));
+  const now: Record<string, number> = {};
+  for (const [f, text] of Object.entries(readerSources()).filter(([f]) => f.startsWith("site/"))) {
+    const n = words.reduce((sum, w) => sum + countWord(text, w), 0);
+    if (n) now[f] = n;
+  }
+  it("reads the table", () => {
+    expect(words).toEqual(expect.arrayContaining(["דמי נאמן", "הוזן על ידך", "סוג העסקה", "דשבורד"]));
+  });
+  it("none new: use the table's word", () => {
+    expect(Object.entries(now).filter(([f, n]) => n > (REPLACED_LEFT[f] ?? 0)).map(([f, n]) => `${f}: ${n}`)).toEqual([]);
+  });
+  it("the list only shrinks", () => {
+    expect(Object.entries(REPLACED_LEFT).filter(([f, n]) => (now[f] ?? 0) < n).map(([f, n]) => `${f}: allowed ${n}, now ${now[f] ?? 0}`)).toEqual([]);
+  });
+  it("sees a planted word, and not the right one inside a longer word", () => {
+    expect(countWord("בחרו את סוג העסקה", "סוג העסקה")).toBe(1);
+    expect(countWord("בחרו את סוג ההעסקה", "סוג העסקה")).toBe(0);
+  });
+});

@@ -9,7 +9,9 @@
   "wrapper_ids": [
     "brokerage-account"
   ],
-  "variants": [],
+  "variants": [
+    "העברה החוצה"
+  ],
   "rule_ids": [
     "BRK-16",
     "BRK-18"

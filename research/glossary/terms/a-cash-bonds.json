@@ -18,15 +18,17 @@
       "title": "Banking Rules (Customer Service) (Fair Disclosure and Delivery of Documents) 1992, consolidated to 30.12.2014, BoI copy",
       "url": "https://boi.org.il/media/rvzi1ngd/151.pdf",
       "checked": "2026-10-22",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "Bank of Israel"
     },
     "where": [
-      "guide:current-account",
-      "statement",
       "app",
-      "law"
+      "law",
+      "statement",
+      "guide:current-account"
     ],
-    "notes": ""
+    "notes": "",
+    "id": "chshbvn-avbr-vshb"
   },
   {
     "term_he": "יתרת זכות בחשבון",
@@ -47,14 +49,16 @@
       "title": "BoI directive 447 \"פרסום שיעורי ריבית על פיקדונות ועל יתרות זכות בחשבון\" (5/24)",
       "url": "https://www.boi.org.il/media/orgfwntb/447.pdf",
       "checked": "2026-10-22",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "Bank of Israel"
     },
     "where": [
-      "guide:current-account",
+      "provider-site",
       "statement",
-      "bank-rate-table"
+      "guide:current-account"
     ],
-    "notes": "Directive 447's title uses the plural 'יתרות זכות בחשבון'."
+    "notes": "Directive 447's title uses the plural 'יתרות זכות בחשבון'.",
+    "id": "ytrt-zkvt-bchshbvn"
   },
   {
     "term_he": "ריבית על יתרת זכות",
@@ -74,14 +78,16 @@
       "title": "BoI directive 447 \"פרסום שיעורי ריבית על פיקדונות ועל יתרות זכות בחשבון\" (5/24)",
       "url": "https://www.boi.org.il/media/orgfwntb/447.pdf",
       "checked": "2026-10-22",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "Bank of Israel"
     },
     "where": [
-      "guide:current-account",
-      "bank-rate-table",
-      "ad"
+      "ad",
+      "provider-site",
+      "guide:current-account"
     ],
-    "notes": "Spelling from directive 447's required wording (s.4(a)). Example of conditions: Yahav pays it as a time-limited benefit tied to salary deposit, card spending and a balance cap (BANK-09, institution). Tax withheld like deposit interest (TXI-08)."
+    "notes": "Spelling from directive 447's required wording (s.4(a)). Example of conditions: Yahav pays it as a time-limited benefit tied to salary deposit, card spending and a balance cap (BANK-09, institution). Tax withheld like deposit interest (TXI-08).",
+    "id": "rybyt-al-ytrt-zkvt"
   },
   {
     "term_he": "לא מוצעת ריבית על יתרת זכות בחשבון",
@@ -98,13 +104,15 @@
       "title": "BoI directive 447 \"פרסום שיעורי ריבית על פיקדונות ועל יתרות זכות בחשבון\" (5/24)",
       "url": "https://www.boi.org.il/media/orgfwntb/447.pdf",
       "checked": "2026-10-22",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "Bank of Israel"
     },
     "where": [
-      "guide:current-account",
-      "bank-rate-table"
+      "provider-site",
+      "guide:current-account"
     ],
-    "notes": "A required display phrase rather than a concept; keep only if the guide shows how to read a bank's 447 table."
+    "notes": "A required display phrase rather than a concept; keep only if the guide shows how to read a bank's 447 table.",
+    "id": "la-mvtzat-rybyt-al-ytrt-zkvt-bchshbvn"
   },
   {
     "term_he": "מסלול בסיסי",
@@ -115,21 +123,23 @@
     "variants_he": [],
     "explain_he": "חבילת עמלות בעו\"ש עם מעט פעולות בחודש במחיר מפוקח; כל בנק חייב להציע אותה",
     "rule_ids": [
-      "BANK-17",
-      "BANK-16"
+      "BANK-16",
+      "BANK-17"
     ],
     "source": {
       "title": "Banking Rules (Customer Service) (Fees) 2008, consolidated to 9.4.2025, BoI copy",
       "url": "https://boi.org.il/media/jbwnaivp/159a.pdf",
       "checked": "2026-10-22",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "Bank of Israel"
     },
     "where": [
-      "guide:current-account",
+      "app",
       "tariff",
-      "app"
+      "guide:current-account"
     ],
-    "notes": "Banks use their own names, e.g. Leumi 'לאומי Digital', Hapoalim 'מסלול פועלים בסיסי (פ)' (BANK-17). Action counts and the controlled price are figures for data/. The price-control order itself was not read (BANK OQ9)."
+    "notes": "Banks use their own names, e.g. Leumi 'לאומי Digital', Hapoalim 'מסלול פועלים בסיסי (פ)' (BANK-17). Action counts and the controlled price are figures for data/. The price-control order itself was not read (BANK OQ9).",
+    "id": "mslvl-bsysy"
   },
   {
     "term_he": "מסלול מורחב",
@@ -146,14 +156,16 @@
       "title": "Banking Rules (Customer Service) (Fees) 2008, consolidated to 9.4.2025, BoI copy",
       "url": "https://boi.org.il/media/jbwnaivp/159a.pdf",
       "checked": "2026-10-22",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "Bank of Israel"
     },
     "where": [
-      "guide:current-account",
+      "app",
       "tariff",
-      "app"
+      "guide:current-account"
     ],
-    "notes": "Bank names differ, e.g. Leumi 'לאומי Digital Plus', Hapoalim 'מסלול פועלים מורחב' (BANK-17)."
+    "notes": "Bank names differ, e.g. Leumi 'לאומי Digital Plus', Hapoalim 'מסלול פועלים מורחב' (BANK-17).",
+    "id": "mslvl-mvrchb"
   },
   {
     "term_he": "מסלול מורחב פלוס",
@@ -170,13 +182,15 @@
       "title": "Banking Rules (Customer Service) (Fees) 2008, consolidated to 9.4.2025, BoI copy",
       "url": "https://boi.org.il/media/jbwnaivp/159a.pdf",
       "checked": "2026-10-22",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "Bank of Israel"
     },
     "where": [
-      "guide:current-account",
-      "tariff"
+      "tariff",
+      "guide:current-account"
     ],
-    "notes": "The rules define it; they do not say every bank must offer it (BANK-17)."
+    "notes": "The rules define it; they do not say every bank must offer it (BANK-17).",
+    "id": "mslvl-mvrchb-plvs"
   },
   {
     "term_he": "תעריפון מלא",
@@ -193,13 +207,15 @@
       "title": "Banking Rules (Customer Service) (Fees) 2008, consolidated to 9.4.2025, BoI copy",
       "url": "https://boi.org.il/media/jbwnaivp/159a.pdf",
       "checked": "2026-10-22",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "Bank of Israel"
     },
     "where": [
-      "guide:current-account",
-      "tariff"
+      "tariff",
+      "guide:current-account"
     ],
-    "notes": "Services can be added with the supervisor's approval. The tariff has no part for deposits or savings plans; a deposit break cost is a deposit term, not a tariff fee (BANK-16). Separate reduced tariffs ('תעריפון מצומצם') exist for some services."
+    "notes": "Services can be added with the supervisor's approval. The tariff has no part for deposits or savings plans; a deposit break cost is a deposit term, not a tariff fee (BANK-16). Separate reduced tariffs ('תעריפון מצומצם') exist for some services.",
+    "id": "tarypvn-mla"
   },
   {
     "term_he": "הטבה בנקאית",
@@ -210,22 +226,24 @@
     "variants_he": [],
     "explain_he": "הנחה בעמלה או ריבית טובה יותר לתקופה מוגבלת; הבנק חייב להודיע מראש לפני שהיא נגמרת",
     "rule_ids": [
-      "BANK-19",
-      "BANK-12"
+      "BANK-12",
+      "BANK-19"
     ],
     "source": {
       "title": "Banking (Customer Service) Law, Amendment 37, Sefer HaHukim 3152, 28.1.2024",
       "url": "https://fs.knesset.gov.il/25/law/25_lsr_4048300.pdf",
       "checked": "2026-10-22",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "Knesset"
     },
     "where": [
-      "guide:current-account",
+      "app",
       "guide:bank-deposit",
-      "notice",
-      "app"
+      "guide:current-account",
+      "notice"
     ],
-    "notes": "Legal definition covers benefits on an interest rate or a fee lasting more than three months; notice at least 21 days before the end (BANK-19). Stepped version: 'הטבה בנקאית מדורגת'."
+    "notes": "Legal definition covers benefits on an interest rate or a fee lasting more than three months; notice at least 21 days before the end (BANK-19). Stepped version: 'הטבה בנקאית מדורגת'.",
+    "id": "htbh-bnkayt"
   },
   {
     "term_he": "פיקדון",
@@ -245,16 +263,18 @@
       "title": "Banking Rules (Customer Service) (Fair Disclosure and Delivery of Documents) 1992, consolidated to 30.12.2014, BoI copy",
       "url": "https://boi.org.il/media/rvzi1ngd/151.pdf",
       "checked": "2026-10-22",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "Bank of Israel"
     },
     "where": [
-      "guide:bank-deposit",
-      "statement",
-      "app",
       "ad",
-      "bank-rate-table"
+      "app",
+      "provider-site",
+      "statement",
+      "guide:bank-deposit"
     ],
-    "notes": "Official spellings differ: the 1992 disclosure rules title the rate board 'שיעורי ריבית על פקדונות' (BANK-10); directives 447 and 447A write 'פיקדון'."
+    "notes": "Official spellings differ: the 1992 disclosure rules title the rate board 'שיעורי ריבית על פקדונות' (BANK-10); directives 447 and 447A write 'פיקדון'.",
+    "id": "pykdvn"
   },
   {
     "term_he": "פיקדון לזמן קצוב",
@@ -273,14 +293,16 @@
       "title": "Banking Rules (Customer Service) (Fair Disclosure and Delivery of Documents) 1992, consolidated to 30.12.2014, BoI copy",
       "url": "https://boi.org.il/media/rvzi1ngd/151.pdf",
       "checked": "2026-10-22",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "Bank of Israel"
     },
     "where": [
-      "guide:bank-deposit",
+      "law",
       "statement",
-      "law"
+      "guide:bank-deposit"
     ],
-    "notes": "Spelling taken from the ISA money-market directive (MF Terms); the BANK Terms table cites the 1992 disclosure rules for the same phrase, but those rules spell 'פקדון' in the board title, so their exact spelling here is unconfirmed. Bank of Jerusalem abbreviates it 'פז\"ק' (BANK-31, institution, 2018 document)."
+    "notes": "Spelling taken from the ISA money-market directive (MF Terms); the BANK Terms table cites the 1992 disclosure rules for the same phrase, but those rules spell 'פקדון' in the board title, so their exact spelling here is unconfirmed. Bank of Jerusalem abbreviates it 'פז\"ק' (BANK-31, institution, 2018 document).",
+    "id": "pykdvn-lzmn-ktzvb"
   },
   {
     "term_he": "סוגי הפיקדונות השקליים המקובלים",
@@ -300,13 +322,15 @@
       "title": "BoI directive 447 \"פרסום שיעורי ריבית על פיקדונות ועל יתרות זכות בחשבון\" (5/24)",
       "url": "https://www.boi.org.il/media/orgfwntb/447.pdf",
       "checked": "2026-10-22",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "Bank of Israel"
     },
     "where": [
-      "guide:bank-deposit",
-      "bank-rate-table"
+      "provider-site",
+      "guide:bank-deposit"
     ],
-    "notes": "Words from the 447 heading 'שיעורי ריבית על סוגי הפיקדונות השקליים המקובלים ועל יתרות זכות בחשבון'. A bank lists only the types it offers; its other deposits follow under 'סוגי פיקדונות נוספים' (BANK-13). The list may be updated by the supervisor (BANK-14)."
+    "notes": "Words from the 447 heading 'שיעורי ריבית על סוגי הפיקדונות השקליים המקובלים ועל יתרות זכות בחשבון'. A bank lists only the types it offers; its other deposits follow under 'סוגי פיקדונות נוספים' (BANK-13). The list may be updated by the supervisor (BANK-14).",
+    "id": "svgy-hpykdvnvt-hshklyym-hmkvblym"
   },
   {
     "term_he": "פיקדון יומי",
@@ -317,22 +341,25 @@
     "variants_he": [],
     "explain_he": "פיקדון לתקופה של יום אחד; בטבלת הבנק מופיע אם הוא מתחדש אוטומטית וכמה פעמים",
     "rule_ids": [
-      "BANK-14",
-      "BANK-05"
+      "BANK-05",
+      "BANK-14"
     ],
     "source": {
       "title": "BoI directive 447 \"פרסום שיעורי ריבית על פיקדונות ועל יתרות זכות בחשבון\" (5/24)",
       "url": "https://www.boi.org.il/media/orgfwntb/447.pdf",
       "checked": "2026-10-22",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "Bank of Israel"
     },
     "where": [
+      "app",
+      "provider-site",
       "guide:bank-deposit",
-      "guide:money-market-fund",
-      "bank-rate-table",
-      "app"
+      "guide:money-market-fund-daily",
+      "guide:money-market-fund-renewable"
     ],
-    "notes": "The rule base gives only the period ('daily period', 447 Annex A); renewal limits are per product (Yahav lists a limit in days, BANK-05). Related bank wording: 'פר\"י' (separate entry)."
+    "notes": "The rule base gives only the period ('daily period', 447 Annex A); renewal limits are per product (Yahav lists a limit in days, BANK-05). Related bank wording: 'פר\"י' (separate entry).",
+    "id": "pykdvn-yvmy"
   },
   {
     "term_he": "צמוד למדד המחירים לצרכן",
@@ -354,16 +381,18 @@
       "title": "BoI directive 447 \"פרסום שיעורי ריבית על פיקדונות ועל יתרות זכות בחשבון\" (5/24)",
       "url": "https://www.boi.org.il/media/orgfwntb/447.pdf",
       "checked": "2026-10-22",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "Bank of Israel"
     },
     "where": [
+      "provider-site",
+      "statement",
       "guide:bank-deposit",
-      "guide:savings-plan",
       "guide:government-bond",
-      "bank-rate-table",
-      "statement"
+      "guide:savings-plan"
     ],
-    "notes": "Covers the starting term 'פיקדון צמוד למדד': no official text in the rule base uses that exact phrase; directive 447 writes the linkage value 'צמוד למדד המחירים לצרכן'. Also seen: 'פיקדון שקלי צמוד למדד' (Bank of Jerusalem, BANK-31) and 'צמוד מדד' (Discount, BANK-26). Whether an index fall can cut the principal depends on the product ('הבטחת קרן', BANK-26). For tax only a fully linked asset counts as linked (TXI-04)."
+    "notes": "Covers the starting term 'פיקדון צמוד למדד': no official text in the rule base uses that exact phrase; directive 447 writes the linkage value 'צמוד למדד המחירים לצרכן'. Also seen: 'פיקדון שקלי צמוד למדד' (Bank of Jerusalem, BANK-31) and 'צמוד מדד' (Discount, BANK-26). Whether an index fall can cut the principal depends on the product ('הבטחת קרן', BANK-26). For tax only a fully linked asset counts as linked (TXI-04).",
+    "id": "tzmvd-lmdd-hmchyrym-ltzrkn"
   },
   {
     "term_he": "לא צמוד",
@@ -385,14 +414,16 @@
       "title": "BoI directive 447 \"פרסום שיעורי ריבית על פיקדונות ועל יתרות זכות בחשבון\" (5/24)",
       "url": "https://www.boi.org.il/media/orgfwntb/447.pdf",
       "checked": "2026-10-22",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "Bank of Israel"
     },
     "where": [
+      "provider-site",
       "guide:bank-deposit",
-      "guide:government-bond",
-      "bank-rate-table"
+      "guide:government-bond"
     ],
-    "notes": "Covers the 'לא צמודה' half of the starting term 'אג\"ח צמודה / לא צמודה' (see also 'אג\"ח בריבית קבועה'). 'אינו צמוד למדד' is the Income Tax Ordinance wording (s.125C(c)). For tax a partly linked asset ('צמוד בחלקו') counts as not linked (TXI-04). In 447 only deposits of a year or more show linkage; shorter types are unlinked in the template (BANK-14)."
+    "notes": "Covers the 'לא צמודה' half of the starting term 'אג\"ח צמודה / לא צמודה' (see also 'אג\"ח בריבית קבועה'). 'אינו צמוד למדד' is the Income Tax Ordinance wording (s.125C(c)). For tax a partly linked asset ('צמוד בחלקו') counts as not linked (TXI-04). In 447 only deposits of a year or more show linkage; shorter types are unlinked in the template (BANK-14).",
+    "id": "la-tzmvd"
   },
   {
     "term_he": "ריבית קבועה",
@@ -403,21 +434,23 @@
     "variants_he": [],
     "explain_he": "ריבית שידועה מראש ונקבעת ביום ההפקדה לכל תקופת הפיקדון",
     "rule_ids": [
-      "BANK-25",
-      "BANK-14"
+      "BANK-14",
+      "BANK-25"
     ],
     "source": {
       "title": "BoI directive 447 \"פרסום שיעורי ריבית על פיקדונות ועל יתרות זכות בחשבון\" (5/24)",
       "url": "https://www.boi.org.il/media/orgfwntb/447.pdf",
       "checked": "2026-10-22",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "Bank of Israel"
     },
     "where": [
-      "guide:bank-deposit",
-      "bank-rate-table",
-      "statement"
+      "provider-site",
+      "statement",
+      "guide:bank-deposit"
     ],
-    "notes": "Directive 447 writes the rate-type values as 'קבועה' / 'משתנה' in its rate-type column; the full phrase 'ריבית קבועה' is from Leumi's definitions (institution, BANK Terms)."
+    "notes": "Directive 447 writes the rate-type values as 'קבועה' / 'משתנה' in its rate-type column; the full phrase 'ריבית קבועה' is from Leumi's definitions (institution, BANK Terms).",
+    "id": "rybyt-kbvah"
   },
   {
     "term_he": "ריבית משתנה",
@@ -425,25 +458,30 @@
       "title": "BoI directive 447 \"פרסום שיעורי ריבית על פיקדונות ועל יתרות זכות בחשבון\" (5/24)",
       "url": "https://www.boi.org.il/media/orgfwntb/447.pdf"
     },
-    "variants_he": [],
-    "explain_he": "ריבית שיכולה לעלות או לרדת במהלך התקופה, כי היא נגזרת מריבית אחרת, לרוב ריבית הפריים",
+    "variants_he": [
+      "ריבית ניידת"
+    ],
+    "explain_he": "ריבית שיכולה לעלות או לרדת במהלך התקופה, כי היא נגזרת מריבית אחרת, בדרך כלל ריבית הפריים",
     "rule_ids": [
+      "BANK-13",
       "BANK-25",
-      "BANK-13"
+      "BANK-47"
     ],
     "source": {
-      "title": "BoI directive 447 \"פרסום שיעורי ריבית על פיקדונות ועל יתרות זכות בחשבון\" (5/24)",
-      "url": "https://www.boi.org.il/media/orgfwntb/447.pdf",
-      "checked": "2026-10-22",
-      "strength": "primary"
+      "title": "בנק ישראל: מערכת הבנקאות בישראל, סקירה שנתית 2023, עמוד 59",
+      "url": "https://boi.org.il/media/32gc3dpb/%D7%9E%D7%A2%D7%A8%D7%9B%D7%AA-%D7%94%D7%91%D7%A0%D7%A7%D7%90%D7%95%D7%AA-%D7%91%D7%99%D7%A9%D7%A8%D7%90%D7%9C-%D7%A1%D7%A7%D7%99%D7%A8%D7%94-%D7%A9%D7%A0%D7%AA%D7%99%D7%AA-%D7%9C%D7%A9%D7%A0%D7%AA-2023.pdf#page=59",
+      "checked": "2026-11-01",
+      "strength": "primary",
+      "publisher": "Bank of Israel"
     },
     "where": [
+      "provider-site",
+      "statement",
       "guide:bank-deposit",
-      "guide:savings-plan",
-      "bank-rate-table",
-      "statement"
+      "guide:savings-plan"
     ],
-    "notes": "Same wording note as 'ריבית קבועה'. 447 requires a variable rate to be shown as anchor and spread with the result (BANK-13)."
+    "notes": "Same wording note as 'ריבית קבועה'. 447 requires a variable rate to be shown as anchor and spread with the result (BANK-13).",
+    "id": "rybyt-mshtnh"
   },
   {
     "term_he": "ריבית עוגן",
@@ -452,22 +490,25 @@
       "url": "https://www.boi.org.il/media/orgfwntb/447.pdf"
     },
     "variants_he": [],
-    "explain_he": "הריבית שממנה נגזרת ריבית משתנה, לרוב ריבית הפריים; הבנק מוסיף לה או מוריד ממנה מרווח",
+    "explain_he": "הריבית שממנה נגזרת ריבית משתנה, בדרך כלל ריבית הפריים; הבנק מוסיף לה או מוריד ממנה מרווח",
     "rule_ids": [
       "BANK-13",
-      "BANK-25"
+      "BANK-25",
+      "BANK-47"
     ],
     "source": {
-      "title": "BoI directive 447 \"פרסום שיעורי ריבית על פיקדונות ועל יתרות זכות בחשבון\" (5/24)",
-      "url": "https://www.boi.org.il/media/orgfwntb/447.pdf",
-      "checked": "2026-10-22",
-      "strength": "primary"
+      "title": "בנק ישראל: מערכת הבנקאות בישראל, סקירה שנתית 2023, עמוד 59",
+      "url": "https://boi.org.il/media/32gc3dpb/%D7%9E%D7%A2%D7%A8%D7%9B%D7%AA-%D7%94%D7%91%D7%A0%D7%A7%D7%90%D7%95%D7%AA-%D7%91%D7%99%D7%A9%D7%A8%D7%90%D7%9C-%D7%A1%D7%A7%D7%99%D7%A8%D7%94-%D7%A9%D7%A0%D7%AA%D7%99%D7%AA-%D7%9C%D7%A9%D7%A0%D7%AA-2023.pdf#page=59",
+      "checked": "2026-11-01",
+      "strength": "primary",
+      "publisher": "Bank of Israel"
     },
     "where": [
-      "guide:bank-deposit",
-      "bank-rate-table"
+      "provider-site",
+      "guide:bank-deposit"
     ],
-    "notes": ""
+    "notes": "",
+    "id": "rybyt-avgn"
   },
   {
     "term_he": "מרווח",
@@ -478,22 +519,25 @@
     "variants_he": [
       "מרווח מ\"פריים\""
     ],
-    "explain_he": "התוספת או ההפחתה הקבועה מריבית העוגן בפיקדון בריבית משתנה, למשל פריים פחות מרווח",
+    "explain_he": "כמה נקודות אחוז מוסיפים לריבית העוגן או מורידים ממנה בפיקדון בריבית משתנה. בדרך כלל הוא נשאר קבוע לכל תקופת הפיקדון.",
     "rule_ids": [
       "BANK-13",
-      "BANK-25"
+      "BANK-25",
+      "BANK-47"
     ],
     "source": {
-      "title": "BoI directive 447 \"פרסום שיעורי ריבית על פיקדונות ועל יתרות זכות בחשבון\" (5/24)",
-      "url": "https://www.boi.org.il/media/orgfwntb/447.pdf",
-      "checked": "2026-10-22",
-      "strength": "primary"
+      "title": "בנק ישראל: מערכת הבנקאות בישראל, סקירה שנתית 2023, עמוד 59",
+      "url": "https://boi.org.il/media/32gc3dpb/%D7%9E%D7%A2%D7%A8%D7%9B%D7%AA-%D7%94%D7%91%D7%A0%D7%A7%D7%90%D7%95%D7%AA-%D7%91%D7%99%D7%A9%D7%A8%D7%90%D7%9C-%D7%A1%D7%A7%D7%99%D7%A8%D7%94-%D7%A9%D7%A0%D7%AA%D7%99%D7%AA-%D7%9C%D7%A9%D7%A0%D7%AA-2023.pdf#page=59",
+      "checked": "2026-11-01",
+      "strength": "primary",
+      "publisher": "Bank of Israel"
     },
     "where": [
-      "guide:bank-deposit",
-      "bank-rate-table"
+      "provider-site",
+      "guide:bank-deposit"
     ],
-    "notes": "'מרווח מ\"פריים\"' is Yahav's rate-board wording (institution)."
+    "notes": "'מרווח מ\"פריים\"' is Yahav's rate-board wording (institution).",
+    "id": "mrvvch"
   },
   {
     "term_he": "ריבית הפריים",
@@ -503,25 +547,30 @@
     },
     "variants_he": [
       "פריים",
-      "ריבית פריים"
+      "ריבית פריים",
+      "ריבית בסיסית",
+      "P"
     ],
-    "explain_he": "ריבית הבסיס שבתעריף הבנק ללקוחות מועדפים שהחשבון שלהם ביתרת חובה",
+    "explain_he": "ריבית הבסיס בתעריף של הבנק ללקוחות מועדפים שהחשבון שלהם ביתרת חובה. בנק ישראל כותב שהיא ריבית בנק ישראל בתוספת קבועה של 1.5 נקודות אחוז; הצו שמגדיר אותה לא כותב מספר.",
     "rule_ids": [
-      "BANK-25"
+      "BANK-25",
+      "BANK-46"
     ],
     "source": {
       "title": "צו הריבית (קביעת שיעור הריבית המכסימלי), התש\"ל-1970, נוסח משולב (בנק ישראל), ס' 1",
-      "url": "https://www.boi.org.il/media/nwjkv14l/184b.pdf",
-      "checked": "2026-10-26",
-      "strength": "primary"
+      "url": "https://www.boi.org.il/media/nwjkv14l/184b.pdf#page=2",
+      "checked": "2026-11-01",
+      "strength": "primary",
+      "publisher": "Bank of Israel"
     },
     "where": [
+      "ad",
+      "provider-site",
       "guide:bank-deposit",
-      "guide:savings-plan",
-      "bank-rate-table",
-      "ad"
+      "guide:savings-plan"
     ],
-    "notes": "No Bank of Israel definition of prime was read (BANK OQ14); spelling and meaning come only from bank pages. Banks define it themselves: Leumi as its customary base rate on current-account debit balances, Hapoalim as the BoI rate plus a fixed margin. Prime moves with every BoI rate decision (BANK-25)."
+    "notes": "No Bank of Israel definition of prime was read (BANK OQ14); spelling and meaning come only from bank pages. Banks define it themselves: Leumi as its customary base rate on current-account debit balances, Hapoalim as the BoI rate plus a fixed margin. Prime moves with every BoI rate decision (BANK-25).",
+    "id": "rybyt-hpryym"
   },
   {
     "term_he": "ריבית בנק ישראל",
@@ -535,6 +584,7 @@
     "explain_he": "הריבית שבנק ישראל קובע; לפיה זזות ריבית הפריים והתשואה בקרנות הכספיות היומיות",
     "rule_ids": [
       "BANK-25",
+      "BANK-46",
       "MF-34",
       "MF-41"
     ],
@@ -542,15 +592,18 @@
       "title": "ISA, פעילות קרנות נאמנות בישראל 2024",
       "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/fundsReport24.pdf",
       "checked": "2026-10-22",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "Israel Securities Authority"
     },
     "where": [
+      "provider-site",
       "guide:bank-deposit",
-      "guide:money-market-fund",
-      "bank-rate-table",
+      "guide:money-market-fund-daily",
+      "guide:money-market-fund-renewable",
       "notice"
     ],
-    "notes": "The rule base has no Bank of Israel text defining this rate; the term ('policy rate') and its link to prime come from bank pages (Hapoalim, Yahav; institution). The ISA source supports the link to daily money-market fund returns. For site figures take the rate from BoI EDGE (BANK-25)."
+    "notes": "The rule base has no Bank of Israel text defining this rate; the term ('policy rate') and its link to prime come from bank pages (Hapoalim, Yahav; institution). The ISA source supports the link to daily money-market fund returns. For site figures take the rate from BoI EDGE (BANK-25).",
+    "id": "rybyt-bnk-yshral"
   },
   {
     "term_he": "תחנת יציאה",
@@ -564,23 +617,25 @@
     ],
     "explain_he": "מועד קבוע במהלך הפיקדון שבו אפשר למשוך את הכסף בלי לשבור אותו ובלי לפגוע בתנאים",
     "rule_ids": [
+      "BANK-06",
       "BANK-14",
-      "BANK-27",
-      "BANK-06"
+      "BANK-27"
     ],
     "source": {
       "title": "BoI directive 447 \"פרסום שיעורי ריבית על פיקדונות ועל יתרות זכות בחשבון\" (5/24)",
       "url": "https://www.boi.org.il/media/orgfwntb/447.pdf",
       "checked": "2026-10-22",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "Bank of Israel"
     },
     "where": [
+      "app",
+      "provider-site",
       "guide:bank-deposit",
-      "guide:savings-plan",
-      "bank-rate-table",
-      "app"
+      "guide:savings-plan"
     ],
-    "notes": "The starting term 'נקודת יציאה' is bank wording (Leumi FAQ, as 'נקודות יציאה'); directive 447 and the 2005 withholding regulations (reg. 20(c), 'תחנת יציאה ראשונה') say 'תחנת יציאה'. Leumi product names show the frequency as 'זמין חודשי / זמין כל שבוע / זמין כל רבעון'."
+    "notes": "The starting term 'נקודת יציאה' is bank wording (Leumi FAQ, as 'נקודות יציאה'); directive 447 and the 2005 withholding regulations (reg. 20(c), 'תחנת יציאה ראשונה') say 'תחנת יציאה'. Leumi product names show the frequency as 'זמין חודשי / זמין כל שבוע / זמין כל רבעון'.",
+    "id": "tchnt-ytzyah-a"
   },
   {
     "term_he": "שבירת פיקדון",
@@ -598,15 +653,17 @@
       "title": "BoI directive 447 \"פרסום שיעורי ריבית על פיקדונות ועל יתרות זכות בחשבון\" (5/24)",
       "url": "https://www.boi.org.il/media/orgfwntb/447.pdf",
       "checked": "2026-10-22",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "Bank of Israel"
     },
     "where": [
+      "app",
+      "provider-site",
       "guide:bank-deposit",
-      "guide:savings-plan",
-      "bank-rate-table",
-      "app"
+      "guide:savings-plan"
     ],
-    "notes": "From the 447 column 'אפשרויות לשבירת פיקדון'. Whether a deposit can be broken, and at what cost, are product terms (BANK-06). No tax rule specific to a break was found (TXI OQ14)."
+    "notes": "From the 447 column 'אפשרויות לשבירת פיקדון'. Whether a deposit can be broken, and at what cost, are product terms (BANK-06). No tax rule specific to a break was found (TXI OQ14).",
+    "id": "shbyrt-pykdvn"
   },
   {
     "term_he": "קנס שבירה",
@@ -624,13 +681,15 @@
       "title": "BoI directive 447 \"פרסום שיעורי ריבית על פיקדונות ועל יתרות זכות בחשבון\" (5/24)",
       "url": "https://www.boi.org.il/media/orgfwntb/447.pdf",
       "checked": "2026-10-22",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "Bank of Israel"
     },
     "where": [
-      "guide:bank-deposit",
-      "bank-rate-table"
+      "provider-site",
+      "guide:bank-deposit"
     ],
-    "notes": "The loss of interest and principal is Discount's mechanism (institution); other banks' terms may differ. Not a tariff fee (BANK-16)."
+    "notes": "The loss of interest and principal is Discount's mechanism (institution); other banks' terms may differ. Not a tariff fee (BANK-16).",
+    "id": "kns-shbyrh"
   },
   {
     "term_he": "חידוש אוטומטי",
@@ -649,14 +708,17 @@
       "title": "BoI directive 447 \"פרסום שיעורי ריבית על פיקדונות ועל יתרות זכות בחשבון\" (5/24)",
       "url": "https://www.boi.org.il/media/orgfwntb/447.pdf",
       "checked": "2026-10-22",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "Bank of Israel"
     },
     "where": [
+      "provider-site",
       "guide:bank-deposit",
-      "guide:money-market-fund",
-      "bank-rate-table"
+      "guide:money-market-fund-daily",
+      "guide:money-market-fund-renewable"
     ],
-    "notes": "Same idea in renewable money-market funds (MF-35). Deposits for customers of other banks are not always auto-renewed (Mercantile, BANK-05, BANK-21)."
+    "notes": "Same idea in renewable money-market funds (MF-35). Deposits for customers of other banks are not always auto-renewed (Mercantile, BANK-05, BANK-21).",
+    "id": "chydvsh-avtvmty"
   },
   {
     "term_he": "ריבית מתואמת שנתית",
@@ -676,14 +738,16 @@
       "title": "Banking Rules (Customer Service) (Fair Disclosure and Delivery of Documents) 1992, consolidated to 30.12.2014, BoI copy",
       "url": "https://boi.org.il/media/rvzi1ngd/151.pdf",
       "checked": "2026-10-22",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "Bank of Israel"
     },
     "where": [
-      "guide:bank-deposit",
       "ad",
-      "bank-rate-table"
+      "provider-site",
+      "guide:bank-deposit"
     ],
-    "notes": "Required for unlinked shekel deposits and in deposit ads; formula in Schedule A of the 1992 rules (BANK-04)."
+    "notes": "Required for unlinked shekel deposits and in deposit ads; formula in Schedule A of the 1992 rules (BANK-04).",
+    "id": "rybyt-mtvamt-shntyt"
   },
   {
     "term_he": "שיעור הריבית המוצעת",
@@ -703,13 +767,15 @@
       "title": "BoI directive 447 \"פרסום שיעורי ריבית על פיקדונות ועל יתרות זכות בחשבון\" (5/24)",
       "url": "https://www.boi.org.il/media/orgfwntb/447.pdf",
       "checked": "2026-10-22",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "Bank of Israel"
     },
     "where": [
-      "guide:bank-deposit",
-      "bank-rate-table"
+      "provider-site",
+      "guide:bank-deposit"
     ],
-    "notes": "Nominal annual rate, before capital-gains tax per 447 (BANK-13). Whether 447 rates for CPI-linked types are real or nominal is open (BANK OQ17)."
+    "notes": "Nominal annual rate, before capital-gains tax per 447 (BANK-13). Whether 447 rates for CPI-linked types are real or nominal is open (BANK OQ17).",
+    "id": "shyavr-hrybyt-hmvtzat"
   },
   {
     "term_he": "פיקדון שכיח",
@@ -729,12 +795,14 @@
       "title": "Banking Rules (Customer Service) (Fair Disclosure and Delivery of Documents) 1992, consolidated to 30.12.2014, BoI copy",
       "url": "https://boi.org.il/media/rvzi1ngd/151.pdf",
       "checked": "2026-10-22",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "Bank of Israel"
     },
     "where": [
-      "bank-rate-table"
+      "provider-site"
     ],
-    "notes": "Rate-table column; keep only if the guide explains how to read a bank's rate table."
+    "notes": "Rate-table column; keep only if the guide explains how to read a bank's rate table.",
+    "id": "pykdvn-shkych"
   },
   {
     "term_he": "טווח סכום להפקדה",
@@ -753,12 +821,14 @@
       "title": "BoI directive 447 \"פרסום שיעורי ריבית על פיקדונות ועל יתרות זכות בחשבון\" (5/24)",
       "url": "https://www.boi.org.il/media/orgfwntb/447.pdf",
       "checked": "2026-10-22",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "Bank of Israel"
     },
     "where": [
-      "bank-rate-table"
+      "provider-site"
     ],
-    "notes": "Rate-table column; minimums are set per product, none in regulation (BANK-27)."
+    "notes": "Rate-table column; minimums are set per product, none in regulation (BANK-27).",
+    "id": "tvvch-skvm-lhpkdh"
   },
   {
     "term_he": "הבטחת קרן",
@@ -775,13 +845,15 @@
       "title": "בנק ישראל, תקן בנקאות פתוחה: שאלות ותשובות (עדכון 31.12.2023), שאלה 9.4",
       "url": "https://boi.org.il/media/0vsju2fr/%D7%A9%D7%90%D7%9C%D7%95%D7%AA-%D7%95%D7%AA%D7%A9%D7%95%D7%91%D7%95%D7%AA-31122023.pdf",
       "checked": "2026-10-26",
-      "strength": "secondary"
+      "strength": "secondary",
+      "publisher": "Bank of Israel"
     },
     "where": [
-      "guide:bank-deposit",
-      "ad"
+      "ad",
+      "guide:bank-deposit"
     ],
-    "notes": "Product wording from one bank (Yahav 'מעניק הבטחת קרן'), not a legal term; no general rule found on whether an index fall can cut principal (BANK-26). Bank of Jerusalem uses the idea for structured deposits (BANK-30)."
+    "notes": "Product wording from one bank (Yahav 'מעניק הבטחת קרן'), not a legal term; no general rule found on whether an index fall can cut principal (BANK-26). Bank of Jerusalem uses the idea for structured deposits (BANK-30).",
+    "id": "hbtcht-krn"
   },
   {
     "term_he": "חשבון במערכת סגורה",
@@ -803,14 +875,16 @@
       "title": "Banking (Customer Service) Law, Amendment 38, Sefer HaHukim 3413, 14.5.2025",
       "url": "https://fs.knesset.gov.il/25/law/25_lsr_6803031.pdf",
       "checked": "2026-10-22",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "Knesset"
     },
     "where": [
-      "guide:bank-deposit",
       "ad",
-      "law"
+      "law",
+      "guide:bank-deposit"
     ],
-    "notes": "Law and BoI say 'חשבון במערכת סגורה'; banks advertise it as 'פיקדון ללא חשבון עו\"ש' (Leumi) or 'פיקדון ללקוחות כל הבנקים' (Massad, FIBI, Mercantile). Shekel deposits only; banks 'with a small scope of activity' are exempt and that definition was not read (BANK OQ5). In force from 1 December 2025."
+    "notes": "Law and BoI say 'חשבון במערכת סגורה'; banks advertise it as 'פיקדון ללא חשבון עו\"ש' (Leumi) or 'פיקדון ללקוחות כל הבנקים' (Massad, FIBI, Mercantile). Shekel deposits only; banks 'with a small scope of activity' are exempt and that definition was not read (BANK OQ5). In force from 1 December 2025.",
+    "id": "chshbvn-bmarkt-sgvrh"
   },
   {
     "term_he": "ביטוח פיקדונות",
@@ -827,12 +901,14 @@
       "title": "Deposit-insurance bill P/6522/25, text tabled 02.02.2026",
       "url": "https://fs.knesset.gov.il/25/law/25_lst_11195962.pdf",
       "checked": "2026-10-22",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "Knesset"
     },
     "where": [
       "guide:bank-deposit"
     ],
-    "notes": "BANK-23 says no statute was found; the bill was at the preliminary stage on 2026-10-22, so this line may date. Even the bill would not cover current-account balances."
+    "notes": "BANK-23 says no statute was found; the bill was at the preliminary stage on 2026-10-22, so this line may date. Even the bill would not cover current-account balances.",
+    "id": "bytvch-pykdvnvt-a"
   },
   {
     "term_he": "פק\"מ",
@@ -855,11 +931,12 @@
       "strength": "institution"
     },
     "where": [
-      "guide:bank-deposit",
       "app",
-      "bank-rate-table"
+      "provider-site",
+      "guide:bank-deposit"
     ],
-    "notes": "One bank's definition (Bank of Jerusalem marketing page, institution); Leumi uses the abbreviation in product names such as 'פק\"מ קבוע 7-13 ימים'. The BANK Terms row still says the expansion was not found; BANK-30 later closed that. Easy to confuse with מק\"מ."
+    "notes": "One bank's definition (Bank of Jerusalem marketing page, institution); Leumi uses the abbreviation in product names such as 'פק\"מ קבוע 7-13 ימים'. The BANK Terms row still says the expansion was not found; BANK-30 later closed that. Easy to confuse with מק\"מ.",
+    "id": "pkm"
   },
   {
     "term_he": "פר\"י",
@@ -877,11 +954,12 @@
       "strength": "institution"
     },
     "where": [
-      "guide:bank-deposit",
       "app",
-      "bank-rate-table"
+      "provider-site",
+      "guide:bank-deposit"
     ],
-    "notes": "Terms table only, no rule. Meaning from Yahav's wording 'פיקדון בריבית יומית נושא ריבית משתנה'; Hapoalim's app shows 'הפקדה לפר\"י'. Bank abbreviation, not an official term."
+    "notes": "Terms table only, no rule. Meaning from Yahav's wording 'פיקדון בריבית יומית נושא ריבית משתנה'; Hapoalim's app shows 'הפקדה לפר\"י'. Bank abbreviation, not an official term.",
+    "id": "pry"
   },
   {
     "term_he": "מוצרי שוק הכסף",
@@ -893,22 +971,25 @@
     "explain_he": "הכותרת שתחתיה בנקים מציגים יחד פיקדונות, קרנות כספיות ומק\"מ, בלי להעדיף אף אחד מהם",
     "rule_ids": [
       "BANK-15",
-      "MF-39",
-      "GOV-20"
+      "GOV-20",
+      "MF-39"
     ],
     "source": {
       "title": "BoI directive 447A \"פרסום מידע מרוכז על קרנות כספיות ומק\"מ\" (04/25)",
       "url": "https://boi.org.il/media/gcmk52bw/447a.pdf",
       "checked": "2026-10-22",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "Bank of Israel"
     },
     "where": [
+      "app",
       "guide:bank-deposit",
-      "guide:money-market-fund",
       "guide:makam",
-      "app"
+      "guide:money-market-fund-daily",
+      "guide:money-market-fund-renewable"
     ],
-    "notes": "Applies only to banks through which funds can be ordered or makam bought (BANK-15)."
+    "notes": "Applies only to banks through which funds can be ordered or makam bought (BANK-15).",
+    "id": "mvtzry-shvk-hksp"
   },
   {
     "term_he": "תכנית חיסכון",
@@ -922,23 +1003,25 @@
     ],
     "explain_he": "חיסכון בבנק שאליו מפקידים סכומים מדי פעם, למשל כל חודש בהוראת קבע, לתקופה מוסכמת בריבית",
     "rule_ids": [
-      "BANK-28",
       "BANK-02",
+      "BANK-28",
       "TXI-07"
     ],
     "source": {
       "title": "Banking Rules (Customer Service) (Fair Disclosure and Delivery of Documents) 1992, consolidated to 30.12.2014, BoI copy",
       "url": "https://boi.org.il/media/rvzi1ngd/151.pdf",
       "checked": "2026-10-22",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "Bank of Israel"
     },
     "where": [
-      "guide:savings-plan",
-      "app",
       "ad",
-      "statement"
+      "app",
+      "statement",
+      "guide:savings-plan"
     ],
-    "notes": "Spelling differs: the Income Tax Ordinance (s.125D(a)) writes 'תכנית חיסכון'; banks (Massad, Leumi) and the heading of the 2025 Tax Authority guide write 'תוכנית/תוכניות חיסכון'. Whether each monthly instalment has its own lock-up and exit points is open (BANK OQ12)."
+    "notes": "Spelling differs: the Income Tax Ordinance (s.125D(a)) writes 'תכנית חיסכון'; banks (Massad, Leumi) and the heading of the 2025 Tax Authority guide write 'תוכנית/תוכניות חיסכון'. Whether each monthly instalment has its own lock-up and exit points is open (BANK OQ12).",
+    "id": "tknyt-chyskvn"
   },
   {
     "term_he": "פיקדון בהוראת קבע",
@@ -959,13 +1042,15 @@
       "title": "כללי הבנקאות (שירות ללקוח) (גילוי נאות ומסירת מסמכים), התשנ\"ב-1992, נוסח משולב (בנק ישראל), ס' 7(ב)(4)",
       "url": "https://www.boi.org.il/media/rvzi1ngd/151.pdf",
       "checked": "2026-10-26",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "Bank of Israel"
     },
     "where": [
-      "guide:savings-plan",
-      "app"
+      "app",
+      "guide:savings-plan"
     ],
-    "notes": "Bank wording only (Discount filter, FIBI 'הוראות קבע'); 'הו\"ק' = הוראת קבע per BANK-31, which is a rule, not the Terms table."
+    "notes": "Bank wording only (Discount filter, FIBI 'הוראות קבע'); 'הו\"ק' = הוראת קבע per BANK-31, which is a rule, not the Terms table.",
+    "id": "pykdvn-bhvrat-kba"
   },
   {
     "term_he": "קרן נאמנות",
@@ -984,16 +1069,19 @@
       "title": "ISA, מדריך למשקיע: קרנות נאמנות (updated January 2017)",
       "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-64186b589b352/080217.pdf",
       "checked": "2026-10-22",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "Israel Securities Authority"
     },
     "where": [
-      "guide:mutual-fund",
-      "guide:money-market-fund",
-      "app",
       "ad",
-      "statement"
+      "app",
+      "statement",
+      "guide:brokerage-account",
+      "guide:money-market-fund-daily",
+      "guide:money-market-fund-renewable"
     ],
-    "notes": "Legal name in the law: 'קרן להשקעות משותפות בנאמנות' (law s.1). The ISA guide is dated January 2017."
+    "notes": "Legal name in the law: 'קרן להשקעות משותפות בנאמנות' (law s.1). The ISA guide is dated January 2017.",
+    "id": "krn-namnvt"
   },
   {
     "term_he": "קרן מחקה",
@@ -1002,25 +1090,32 @@
       "url": "https://he.wikisource.org/wiki/חוק_השקעות_משותפות_בנאמנות"
     },
     "variants_he": [
-      "קרן מחקה פתוחה"
+      "קרנות מחקות"
     ],
-    "explain_he": "קרן נאמנות שמטרתה להשיג את תשואת מדד מסוים, בלי להתחייב לכך; לרוב דמי הניהול בה נמוכים מבקרן אקטיבית",
+    "explain_he": "קרן נאמנות שמטרתה תוצאות שנגזרות מהשינוי במדד או במחיר של סחורה. יחידות של קרן מחקה פתוחה קונים מהקרן ופודים לה במחיר של סוף היום; קרן סל היא קרן מחקה סגורה שיחידותיה נסחרות בבורסה, והסכם הקרן שלה קובע שהיא קרן סל.",
     "rule_ids": [
-      "MF-06",
-      "MF-25"
+      "ETF-01",
+      "MF-05",
+      "ETF-04"
     ],
     "source": {
-      "title": "ISA, מדריך למשקיע: קרנות נאמנות (updated January 2017)",
-      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-64186b589b352/080217.pdf",
-      "checked": "2026-10-22",
-      "strength": "primary"
+      "title": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994, סעיף 1 (נוסח משולב באתר רשות ניירות ערך)",
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf",
+      "checked": "2026-10-25",
+      "strength": "primary",
+      "publisher": "Israel Securities Authority"
     },
     "where": [
-      "guide:mutual-fund",
       "app",
-      "fund-name"
+      "fund-name",
+      "law",
+      "prospectus",
+      "guide:brokerage-account",
+      "exposure:index-sp500",
+      "exposure:index-ta125"
     ],
-    "notes": "The starting term 'קרן נאמנות מחקה' does not appear anywhere in the rule base; the law (s.1) says 'קרן מחקה', ISA reports 'קרן מחקה פתוחה'. The legal definition also covers commodities. ETFs ('קרן סל') are in etfs-and-index-funds.md."
+    "notes": "The starting term 'קרן נאמנות מחקה' does not appear anywhere in the rule base; the law (s.1) says 'קרן מחקה', ISA reports 'קרן מחקה פתוחה'. The legal definition also covers commodities. ETFs ('קרן סל') are in etfs-and-index-funds.md.",
+    "id": "krn-mchkh"
   },
   {
     "term_he": "קרן אקטיבית",
@@ -1031,7 +1126,7 @@
     "variants_he": [
       "קרן מסורתית"
     ],
-    "explain_he": "קרן נאמנות שבה מנהל הקרן בוחר במה להשקיע, כדי להשיג יותר מהמדד שאליו היא משווה את עצמה",
+    "explain_he": "קרן נאמנות שאינה מחקה, ומנהל הקרן בוחר בה במה להשקיע, כדי להשיג יותר מהמדד שאליו היא משווה את עצמה",
     "rule_ids": [
       "MF-06"
     ],
@@ -1039,13 +1134,15 @@
       "title": "ISA, מדריך למשקיע: קרנות נאמנות (updated January 2017)",
       "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-64186b589b352/080217.pdf",
       "checked": "2026-10-22",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "Israel Securities Authority"
     },
     "where": [
-      "guide:mutual-fund",
-      "app"
+      "app",
+      "guide:brokerage-account"
     ],
-    "notes": "'קרן מסורתית' is Meitav's wording (institution)."
+    "notes": "'קרן מסורתית' is Meitav's wording (institution).",
+    "id": "krn-aktybyt"
   },
   {
     "term_he": "קרן פתוחה",
@@ -1063,13 +1160,15 @@
       "title": "ISA, מדריך למשקיע: קרנות נאמנות (updated January 2017)",
       "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-64186b589b352/080217.pdf",
       "checked": "2026-10-22",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "Israel Securities Authority"
     },
     "where": [
-      "guide:mutual-fund",
-      "prospectus"
+      "prospectus",
+      "guide:brokerage-account"
     ],
-    "notes": "Which days funds can be ordered since TASE moved to Monday to Friday is open (MF-14)."
+    "notes": "Which days funds can be ordered since TASE moved to Monday to Friday is open (MF-14).",
+    "id": "krn-ptvchh"
   },
   {
     "term_he": "יחידה",
@@ -1078,25 +1177,35 @@
       "url": "https://he.wikisource.org/wiki/חוק_השקעות_משותפות_בנאמנות"
     },
     "variants_he": [
-      "יחידת השתתפות"
+      "יחידת השתתפות",
+      "יחידות השתתפות"
     ],
-    "explain_he": "חלק שווה בקרן נאמנות; כשמשקיעים בקרן מקבלים יחידות לפי הסכום ששילמתם",
+    "explain_he": "חלק שווה בקרן נאמנות: כל יחידה נותנת זכות שווה בקרן. בקרן פתוחה קונים בסכום כסף ומקבלים יחידות לפי מחיר היום, וביחידות של קרן סל סוחרים בבורסה.",
     "rule_ids": [
       "MF-01",
-      "MF-11"
+      "MF-11",
+      "ETF-06",
+      "ETF-20",
+      "TXS-07"
     ],
     "source": {
       "title": "ISA, מדריך למשקיע: קרנות נאמנות (updated January 2017)",
       "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-64186b589b352/080217.pdf",
       "checked": "2026-10-22",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "Israel Securities Authority"
     },
     "where": [
-      "guide:mutual-fund",
-      "guide:money-market-fund",
-      "statement"
+      "statement",
+      "app",
+      "guide:brokerage-account",
+      "guide:money-market-fund-daily",
+      "guide:money-market-fund-renewable",
+      "exposure:index-sp500",
+      "exposure:index-ta125"
     ],
-    "notes": "'יחידות השתתפות' is the Leumi tariff wording."
+    "notes": "'יחידות השתתפות' is the Leumi tariff wording.",
+    "id": "ychydh-a"
   },
   {
     "term_he": "מנהל קרן",
@@ -1114,15 +1223,18 @@
       "title": "ISA, מדריך למשקיע: קרנות נאמנות (updated January 2017)",
       "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-64186b589b352/080217.pdf",
       "checked": "2026-10-22",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "Israel Securities Authority"
     },
     "where": [
-      "guide:mutual-fund",
-      "guide:money-market-fund",
       "fund-name",
-      "prospectus"
+      "prospectus",
+      "guide:brokerage-account",
+      "guide:money-market-fund-daily",
+      "guide:money-market-fund-renewable"
     ],
-    "notes": "The name can start with an external investment manager's name instead (MF-47, MF-51)."
+    "notes": "The name can start with an external investment manager's name instead (MF-47, MF-51).",
+    "id": "mnhl-krn"
   },
   {
     "term_he": "נאמן",
@@ -1141,13 +1253,15 @@
       "title": "ISA, מדריך למשקיע: קרנות נאמנות (updated January 2017)",
       "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-64186b589b352/080217.pdf",
       "checked": "2026-10-22",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "Israel Securities Authority"
     },
     "where": [
-      "guide:mutual-fund",
-      "prospectus"
+      "prospectus",
+      "guide:brokerage-account"
     ],
-    "notes": ""
+    "notes": "",
+    "id": "namn-a"
   },
   {
     "term_he": "דמי ניהול",
@@ -1168,15 +1282,18 @@
       "title": "ISA, מדריך למשקיע: קרנות נאמנות (updated January 2017)",
       "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-64186b589b352/080217.pdf",
       "checked": "2026-10-22",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "Israel Securities Authority"
     },
     "where": [
-      "guide:mutual-fund",
-      "guide:money-market-fund",
       "app",
-      "statement"
+      "statement",
+      "guide:brokerage-account",
+      "guide:money-market-fund-daily",
+      "guide:money-market-fund-renewable"
     ],
-    "notes": "Fund management fee only. The MF Terms table pairs 'דמי ניהול' with the ISA report and 'שכר מנהל הקרן' with the law s.5(א)(12), but the law's own wording is not quoted in the rule base, so 'שכר מנהל הקרן' as the legal term is unconfirmed. Bank custody fees are separate (MF-27). Increases only on 1 January per the ISA (MF-17)."
+    "notes": "Fund management fee only. The MF Terms table pairs 'דמי ניהול' with the ISA report and 'שכר מנהל הקרן' with the law s.5(א)(12), but the law's own wording is not quoted in the rule base, so 'שכר מנהל הקרן' as the legal term is unconfirmed. Bank custody fees are separate (MF-27). Increases only on 1 January per the ISA (MF-17).",
+    "id": "dmy-nyhvl-a"
   },
   {
     "term_he": "שכר נאמן",
@@ -1187,19 +1304,24 @@
     "variants_he": [],
     "explain_he": "אחוז שנתי מהכסף בקרן שמשולם לנאמן; כמו דמי הניהול, הוא יורד ממחיר היחידה ולא נגבה בנפרד",
     "rule_ids": [
-      "MF-20"
+      "MF-20",
+      "ETF-13",
+      "MF-02",
+      "MF-03"
     ],
     "source": {
       "title": "ISA, מדריך למשקיע: קרנות נאמנות (updated January 2017)",
       "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-64186b589b352/080217.pdf",
       "checked": "2026-10-22",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "Israel Securities Authority"
     },
     "where": [
-      "guide:mutual-fund",
-      "prospectus"
+      "prospectus",
+      "guide:brokerage-account"
     ],
-    "notes": "The starting term 'דמי נאמן' does not appear anywhere in the rule base; the ISA guide writes 'שכר נאמן'. Only a 2017 range is sourced (MF OQ6)."
+    "notes": "The starting term 'דמי נאמן' does not appear anywhere in the rule base; the ISA guide writes 'שכר נאמן'. Only a 2017 range is sourced (MF OQ6).",
+    "id": "shkr-namn-a"
   },
   {
     "term_he": "הוספה",
@@ -1216,13 +1338,15 @@
       "title": "ISA, מדריך למשקיע: קרנות נאמנות (updated January 2017)",
       "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-64186b589b352/080217.pdf",
       "checked": "2026-10-22",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "Israel Securities Authority"
     },
     "where": [
-      "guide:mutual-fund",
-      "prospectus"
+      "prospectus",
+      "guide:brokerage-account"
     ],
-    "notes": "The ISA guide (2017) says the vast majority of funds charge none; the current share is unknown (MF OQ7). The exit counterpart is a deduction from the redemption price (MF-22)."
+    "notes": "The ISA guide (2017) says the vast majority of funds charge none; the current share is unknown (MF OQ7). The exit counterpart is a deduction from the redemption price (MF-22).",
+    "id": "hvsph"
   },
   {
     "term_he": "עמלת הפצה",
@@ -1241,14 +1365,17 @@
       "title": "ISA, מדריך למשקיע: קרנות נאמנות (updated January 2017)",
       "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-64186b589b352/080217.pdf",
       "checked": "2026-10-22",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "Israel Securities Authority"
     },
     "where": [
-      "guide:mutual-fund",
-      "guide:money-market-fund",
-      "tariff"
+      "tariff",
+      "guide:brokerage-account",
+      "guide:money-market-fund-daily",
+      "guide:money-market-fund-renewable"
     ],
-    "notes": "In a money-market fund under a distribution agreement the distributor may not charge the holder any fee for buying, holding or redeeming (MF-26). Not charged on tracking funds (MF-25)."
+    "notes": "In a money-market fund under a distribution agreement the distributor may not charge the holder any fee for buying, holding or redeeming (MF-26). Not charged on tracking funds (MF-25).",
+    "id": "amlt-hptzh"
   },
   {
     "term_he": "דמי ניהול פיקדון ניירות ערך",
@@ -1257,27 +1384,38 @@
       "url": "https://boi.org.il/media/jbwnaivp/159a.pdf"
     },
     "variants_he": [
-      "דמי משמרת"
+      "דמי משמרת",
+      "דמי משמורת",
+      "דמי ניהול/טיפול פקדון ני\"ע",
+      "דמי ניהול פקדון ני\"ע"
     ],
-    "explain_he": "עמלה שהבנק גובה על החזקת ניירות ערך בחשבון; אסור לגבות אותה על מק\"מ ועל קרן כספית",
+    "explain_he": "עמלה שהבנק או בית ההשקעות גובים מדי תקופה על החזקת ניירות ערך בחשבון, ולא דמי הניהול של הקרן. בנק לא רשאי לגבות אותה על מק״מ ועל קרן כספית.",
     "rule_ids": [
       "BANK-18",
-      "MF-27"
+      "MF-27",
+      "BRK-16",
+      "BRK-17",
+      "BRK-24",
+      "BRK-33",
+      "TXS-06"
     ],
     "source": {
       "title": "Banking Rules (Customer Service) (Fees) 2008, consolidated to 9.4.2025, BoI copy",
       "url": "https://boi.org.il/media/jbwnaivp/159a.pdf",
       "checked": "2026-10-22",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "Bank of Israel"
     },
     "where": [
-      "guide:makam",
-      "guide:money-market-fund",
-      "guide:mutual-fund",
+      "statement",
       "tariff",
-      "statement"
+      "guide:brokerage-account",
+      "guide:makam",
+      "guide:money-market-fund-daily",
+      "guide:money-market-fund-renewable"
     ],
-    "notes": "Buy, sell and redemption commissions still apply to makam (BANK-18). 'דמי משמרת' is the ISA guide and broker wording (MF Terms)."
+    "notes": "Buy, sell and redemption commissions still apply to makam (BANK-18). 'דמי משמרת' is the ISA guide and broker wording (MF Terms).",
+    "id": "dmy-nyhvl-pykdvn-nyyrvt-ark-a"
   },
   {
     "term_he": "תשקיף",
@@ -1298,13 +1436,15 @@
       "title": "ISA, מדריך למשקיע: קרנות נאמנות (updated January 2017)",
       "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-64186b589b352/080217.pdf",
       "checked": "2026-10-22",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "Israel Securities Authority"
     },
     "where": [
-      "guide:mutual-fund",
-      "prospectus"
+      "prospectus",
+      "guide:brokerage-account"
     ],
-    "notes": "'תשקיף עיקרי' is the manager's yearly prospectus for all its funds (MF-04)."
+    "notes": "'תשקיף עיקרי' is the manager's yearly prospectus for all its funds (MF-04).",
+    "id": "tshkyp"
   },
   {
     "term_he": "מגנ\"א",
@@ -1321,12 +1461,14 @@
       "title": "ISA, מדריך למשקיע: קרנות נאמנות (updated January 2017)",
       "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-64186b589b352/080217.pdf",
       "checked": "2026-10-22",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "Israel Securities Authority"
     },
     "where": [
-      "guide:mutual-fund"
+      "guide:brokerage-account"
     ],
-    "notes": ""
+    "notes": "",
+    "id": "mgna"
   },
   {
     "term_he": "מפיץ",
@@ -1343,14 +1485,17 @@
       "title": "ISA, מדריך למשקיע: קרנות נאמנות (updated January 2017)",
       "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-64186b589b352/080217.pdf",
       "checked": "2026-10-22",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "Israel Securities Authority"
     },
     "where": [
-      "guide:mutual-fund",
-      "guide:money-market-fund",
-      "tariff"
+      "tariff",
+      "guide:brokerage-account",
+      "guide:money-market-fund-daily",
+      "guide:money-market-fund-renewable"
     ],
-    "notes": ""
+    "notes": "",
+    "id": "mpytz"
   },
   {
     "term_he": "השעה היעודה",
@@ -1367,15 +1512,18 @@
       "title": "ISA, מדריך למשקיע: קרנות נאמנות (updated January 2017)",
       "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-64186b589b352/080217.pdf",
       "checked": "2026-10-22",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "Israel Securities Authority"
     },
     "where": [
-      "guide:mutual-fund",
-      "guide:money-market-fund",
+      "app",
       "prospectus",
-      "app"
+      "guide:brokerage-account",
+      "guide:money-market-fund-daily",
+      "guide:money-market-fund-renewable"
     ],
-    "notes": "Hours differ by fund and are set in each prospectus; current hours and Friday handling are open (MF OQ3, MF-14). The law says the next price-calculation day."
+    "notes": "Hours differ by fund and are set in each prospectus; current hours and Friday handling are open (MF OQ3, MF-14). The law says the next price-calculation day.",
+    "id": "hshah-hyavdh"
   },
   {
     "term_he": "פרופיל חשיפה",
@@ -1387,22 +1535,28 @@
     "explain_he": "צמד תווים בשם הקרן שמראה עד כמה היא רשאית להיות חשופה למניות ולמטבע חוץ",
     "rule_ids": [
       "MF-43",
-      "MF-54"
+      "MF-54",
+      "ETF-12"
     ],
     "source": {
       "title": "ISA, מדריך למשקיע: קרנות נאמנות (updated January 2017)",
       "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-64186b589b352/080217.pdf",
       "checked": "2026-10-22",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "Israel Securities Authority"
     },
     "where": [
-      "guide:mutual-fund",
-      "guide:money-market-fund",
-      "fund-name",
       "app",
-      "statement"
+      "fund-name",
+      "statement",
+      "guide:brokerage-account",
+      "guide:money-market-fund-daily",
+      "guide:money-market-fund-renewable",
+      "exposure:index-sp500",
+      "exposure:index-ta125"
     ],
-    "notes": "A ceiling the fund commits to, not what it holds now (MF-43). Decoding each character is decoder work (MF-43, MF-54)."
+    "notes": "A ceiling the fund commits to, not what it holds now (MF-43). Decoding each character is decoder work (MF-43, MF-54).",
+    "id": "prvpyl-chshyph-a"
   },
   {
     "term_he": "סימן קריאה",
@@ -1422,13 +1576,15 @@
       "title": "ISA, מדריך למשקיע: קרנות נאמנות (updated January 2017)",
       "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-64186b589b352/080217.pdf",
       "checked": "2026-10-22",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "Israel Securities Authority"
     },
     "where": [
-      "guide:mutual-fund",
-      "fund-name"
+      "fund-name",
+      "guide:brokerage-account"
     ],
-    "notes": "The ISA directive behind the mark was not read; meaning from the 2017 ISA guide and a fund manager's page (MF OQ9)."
+    "notes": "The ISA directive behind the mark was not read; meaning from the 2017 ISA guide and a fund manager's page (MF OQ9).",
+    "id": "symn-kryah"
   },
   {
     "term_he": "קרן כספית",
@@ -1448,15 +1604,18 @@
       "title": "ISA, הוראה למנהלי קרנות ונאמנים בדבר תנאים שיחולו לגבי קרן כספית (2024)",
       "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/MoneyMarketFundReg24.pdf",
       "checked": "2026-10-22",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "Israel Securities Authority"
     },
     "where": [
-      "guide:money-market-fund",
-      "app",
       "ad",
-      "statement"
+      "app",
+      "statement",
+      "guide:money-market-fund-daily",
+      "guide:money-market-fund-renewable"
     ],
-    "notes": "Two kinds since 3 October 2024: daily and renewable (fixed-date); separate entries. The ISA calls it relatively low risk, not risk-free (MF-41). Its tax is in tax-securities-israeli.md, not in these four files."
+    "notes": "Two kinds since 3 October 2024: daily and renewable (fixed-date); separate entries. The ISA calls it relatively low risk, not risk-free (MF-41). Its tax is in tax-securities-israeli.md, not in these four files.",
+    "id": "krn-kspyt"
   },
   {
     "term_he": "קרנות כספיות יומיות",
@@ -1464,24 +1623,29 @@
       "title": "BoI directive 447A \"פרסום מידע מרוכז על קרנות כספיות ומק\"מ\" (04/25)",
       "url": "https://boi.org.il/media/gcmk52bw/447a.pdf"
     },
-    "variants_he": [],
+    "variants_he": [
+      "קרן כספית יומית"
+    ],
     "explain_he": "קרן כספית שאפשר לקנות ולמכור בכל יום מסחר; התשואה שלה לא ידועה מראש ונעה עם ריבית בנק ישראל",
     "rule_ids": [
+      "BANK-15",
       "MF-34",
-      "MF-41",
-      "BANK-15"
+      "MF-41"
     ],
     "source": {
       "title": "ISA, פעילות קרנות נאמנות בישראל 2024",
       "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/fundsReport24.pdf",
       "checked": "2026-10-22",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "Israel Securities Authority"
     },
     "where": [
-      "guide:money-market-fund",
-      "app"
+      "app",
+      "guide:money-market-fund-daily",
+      "guide:money-market-fund-renewable"
     ],
-    "notes": "Written in the plural in 447A; a singular form is not attested in the rule base. MF-34 quotes the 447A draft and carries a review note to re-check against the final text."
+    "notes": "Written in the plural in 447A; a singular form is not attested in the rule base. MF-34 quotes the 447A draft and carries a review note to re-check against the final text.",
+    "id": "krnvt-kspyvt-yvmyvt"
   },
   {
     "term_he": "קרן כספית מתחדשת",
@@ -1506,15 +1670,18 @@
       "title": "ISA staff position, עמדת סגל בדבר הגשת תשקיף של קרן כספית מתחדשת (2025)",
       "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/MoneyMarketFund_Prospectus25.pdf",
       "checked": "2026-10-22",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "Israel Securities Authority"
     },
     "where": [
-      "guide:money-market-fund",
-      "app",
       "ad",
-      "fund-name"
+      "app",
+      "fund-name",
+      "guide:money-market-fund-daily",
+      "guide:money-market-fund-renewable"
     ],
-    "notes": "The law calls the structure 'קרן מועדים קבועים' (s.47 as replaced by Amendment 31); the ISA staff position and ads say 'מתחדשת'; 447A uses both. Series names carry the date, e.g. 'קרן כספית חודשית 1/MM/2025 מתחדשת' (MF-35)."
+    "notes": "The law calls the structure 'קרן מועדים קבועים' (s.47 as replaced by Amendment 31); the ISA staff position and ads say 'מתחדשת'; 447A uses both. Series names carry the date, e.g. 'קרן כספית חודשית 1/MM/2025 מתחדשת' (MF-35).",
+    "id": "krn-kspyt-mtchdsht"
   },
   {
     "term_he": "תשואה צפויה",
@@ -1527,21 +1694,24 @@
     ],
     "explain_he": "הערכה של מנהל הקרן לתשואה בקרן כספית מתחדשת, במונחים שנתיים, אחרי דמי ניהול ולפני מס; לא מובטחת",
     "rule_ids": [
+      "BANK-15",
       "MF-36",
-      "MF-37",
-      "BANK-15"
+      "MF-37"
     ],
     "source": {
       "title": "ISA, הוראה למנהלי קרנות ונאמנים בדבר תנאים שיחולו לגבי קרן כספית (2024)",
       "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/MoneyMarketFundReg24.pdf",
       "checked": "2026-10-22",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "Israel Securities Authority"
     },
     "where": [
-      "guide:money-market-fund",
-      "app"
+      "app",
+      "guide:money-market-fund-daily",
+      "guide:money-market-fund-renewable"
     ],
-    "notes": "Optional for the manager; also before bank commissions where a bank may charge them (MF-37). BoI 447A writes 'תשואה צפויה נטו'."
+    "notes": "Optional for the manager; also before bank commissions where a bank may charge them (MF-37). BoI 447A writes 'תשואה צפויה נטו'.",
+    "id": "tshvah-tzpvyh"
   },
   {
     "term_he": "קרן כספית ללא קונצרני",
@@ -1558,13 +1728,16 @@
       "title": "ISA, הוראה למנהלי קרנות ונאמנים בדבר תנאים שיחולו לגבי קרן כספית (2024)",
       "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/MoneyMarketFundReg24.pdf",
       "checked": "2026-10-22",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "Israel Securities Authority"
     },
     "where": [
-      "guide:money-market-fund",
-      "fund-name"
+      "fund-name",
+      "guide:money-market-fund-daily",
+      "guide:money-market-fund-renewable"
     ],
-    "notes": ""
+    "notes": "",
+    "id": "krn-kspyt-lla-kvntzrny"
   },
   {
     "term_he": "קרן כספית מט\"ח",
@@ -1585,13 +1758,16 @@
       "title": "BoI directive A447, draft text marked \"טיוטה\"",
       "url": "https://boi.org.il/media/npifkjqk/הוראה-a447.pdf",
       "checked": "2026-10-22",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "Bank of Israel"
     },
     "where": [
-      "guide:money-market-fund",
-      "app"
+      "app",
+      "guide:money-market-fund-daily",
+      "guide:money-market-fund-renewable"
     ],
-    "notes": "Spelling and definition read only in the 447A draft text (MF-32 review note); the final 447A shows shekel and FX funds (BANK-15). 'כספית מט\"חית עם קונצרני' is the ISA report category. The currency effect rests on the ISA report (MF-41, MF-42)."
+    "notes": "Spelling and definition read only in the 447A draft text (MF-32 review note); the final 447A shows shekel and FX funds (BANK-15). 'כספית מט\"חית עם קונצרני' is the ISA report category. The currency effect rests on the ISA report (MF-41, MF-42).",
+    "id": "krn-kspyt-mtch"
   },
   {
     "term_he": "מח\"מ",
@@ -1606,14 +1782,16 @@
       "title": "ISA, מדריך למשקיע: קרנות נאמנות (updated January 2017)",
       "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-64186b589b352/080217.pdf",
       "checked": "2026-10-22",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "Israel Securities Authority"
     },
     "where": [
-      "guide:mutual-fund",
-      "guide:government-bond",
-      "fund-name"
+      "fund-name",
+      "guide:brokerage-account",
+      "guide:government-bond"
     ],
-    "notes": "Terms table only (ISA guide p.30), no rule. The money-market directive uses the related 'משך חיים ממוצע' (MF-30)."
+    "notes": "Terms table only (ISA guide p.30), no rule. The money-market directive uses the related 'משך חיים ממוצע' (MF-30).",
+    "id": "mchm"
   },
   {
     "term_he": "מק\"מ",
@@ -1637,15 +1815,18 @@
       "title": "BoI, מק\"ם (consumer page, updated 25/02/2025)",
       "url": "https://www.boi.org.il/information/bank-paymnts/savingsandinvestmentproducts/makam/",
       "checked": "2026-10-22",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "Bank of Israel"
     },
     "where": [
-      "guide:makam",
-      "guide:money-market-fund",
       "app",
-      "statement"
+      "statement",
+      "guide:makam",
+      "guide:money-market-fund-daily",
+      "guide:money-market-fund-renewable"
     ],
-    "notes": "Official spellings disagree: the law is 'חוק מילווה קצר מועד' (Nevo); the 2008 fee rules write 'מלווה קצר מועד' (BANK-18); directive 447A and the BoI issue schedule write 'מק\"מ'; the BoI consumer page writes 'מק\"ם'. No interest and no linkage (GOV-03). Term: the BoI consumer page says up to a year, the older general conditions 14 days to 13 months (GOV OQ3)."
+    "notes": "Official spellings disagree: the law is 'חוק מילווה קצר מועד' (Nevo); the 2008 fee rules write 'מלווה קצר מועד' (BANK-18); directive 447A and the BoI issue schedule write 'מק\"מ'; the BoI consumer page writes 'מק\"ם'. No interest and no linkage (GOV-03). Term: the BoI consumer page says up to a year, the older general conditions 14 days to 13 months (GOV OQ3).",
+    "id": "mkm"
   },
   {
     "term_he": "דמי ניכיון",
@@ -1656,22 +1837,24 @@
     "variants_he": [],
     "explain_he": "ההפרש בין המחיר הנמוך שבו קונים מק\"מ לבין הסכום שמקבלים בפדיון; במס הוא נחשב ריבית",
     "rule_ids": [
+      "GOV-03",
       "TXI-01",
-      "TXI-11",
-      "GOV-03"
+      "TXI-11"
     ],
     "source": {
       "title": "Income Tax (Withholding from Interest, Dividend and Certain Profits) Regulations 2005, consolidated to 27.12.2017 (copy on btl.gov.il)",
       "url": "https://www.btl.gov.il/Laws1/02_0103_100269.pdf",
       "checked": "2026-10-22",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "National Insurance Institute"
     },
     "where": [
-      "guide:makam",
       "statement",
-      "tax-form"
+      "tax-form",
+      "guide:makam"
     ],
-    "notes": "Bank-screen wording for the same idea: 'מונפק בניכיון' (447A draft annex, GOV Terms)."
+    "notes": "Bank-screen wording for the same idea: 'מונפק בניכיון' (447A draft annex, GOV Terms).",
+    "id": "dmy-nykyvn-a"
   },
   {
     "term_he": "איגרות חוב ממשלתיות",
@@ -1682,7 +1865,7 @@
     "variants_he": [
       "אג\"ח ממשלתית"
     ],
-    "explain_he": "הלוואה שנותנים למדינה וניתן לקנות ולמכור בבורסה; המדינה מחזירה את הסכום במועד שנקבע, ולרוב משלמת גם ריבית",
+    "explain_he": "הלוואה שנותנים למדינה, וקונים ומוכרים אותה בבורסה; המדינה מחזירה את הסכום במועד שנקבע, ולרוב משלמת גם ריבית",
     "rule_ids": [
       "GOV-02",
       "GOV-08",
@@ -1695,11 +1878,12 @@
       "strength": "primary"
     },
     "where": [
-      "guide:government-bond",
       "app",
-      "statement"
+      "statement",
+      "guide:government-bond"
     ],
-    "notes": "The singular 'איגרת חוב ממשלתית' is not written as such in the rule base. Official titles spell it two ways: 'איגרות חוב' (2006 regulations, Debt Unit, Income Tax Ordinance s.88) and 'אגרות חוב' (2007 short-bond regulations). Non-tradable designated series exist but are not for individuals (GOV-18)."
+    "notes": "The singular 'איגרת חוב ממשלתית' is not written as such in the rule base. Official titles spell it two ways: 'איגרות חוב' (2006 regulations, Debt Unit, Income Tax Ordinance s.88) and 'אגרות חוב' (2007 short-bond regulations). Non-tradable designated series exist but are not for individuals (GOV-18).",
+    "id": "aygrvt-chvb-mmshltyvt"
   },
   {
     "term_he": "אג\"ח ממשלתית צמודה",
@@ -1721,14 +1905,16 @@
       "title": "תקנות מילווה המדינה (איגרות חוב מסוג \"אג\"ח ממשלתית צמודה\"), תשס\"ו-2006 (Nevo mirror)",
       "url": "https://www.nevo.co.il/law_html/law01/999_564.htm",
       "checked": "2026-10-22",
-      "strength": "primary-mirror"
+      "strength": "primary-mirror",
+      "publisher": "Nevo legal database"
     },
     "where": [
-      "guide:government-bond",
       "app",
-      "statement"
+      "statement",
+      "guide:government-bond"
     ],
-    "notes": "No floor in the regulation text: if the index falls below the base index, principal and coupon fall (GOV-12). Older name 'גליל' (separate entry). 'ממשלתית צמודה' is the MoF data wording, 'ממצ\"מ' the Debt Unit report's."
+    "notes": "No floor in the regulation text: if the index falls below the base index, principal and coupon fall (GOV-12). Older name 'גליל' (separate entry). 'ממשלתית צמודה' is the MoF data wording, 'ממצ\"מ' the Debt Unit report's.",
+    "id": "agch-mmshltyt-tzmvdh"
   },
   {
     "term_he": "אג\"ח בריבית קבועה",
@@ -1753,10 +1939,11 @@
       "strength": "primary"
     },
     "where": [
-      "guide:government-bond",
-      "app"
+      "app",
+      "guide:government-bond"
     ],
-    "notes": "Covers the fixed-rate kind of the starting term 'אג\"ח לא צמודה'. MoF data says 'ממשלתית', the Debt Unit report 'ממש\"ק'; 'ממשלתית שקלית' is only on Wikipedia (secondary). Regulations for this type not found, so face value and coupon frequency are unsourced (GOV OQ4). Older name 'שחר'."
+    "notes": "Covers the fixed-rate kind of the starting term 'אג\"ח לא צמודה'. MoF data says 'ממשלתית', the Debt Unit report 'ממש\"ק'; 'ממשלתית שקלית' is only on Wikipedia (secondary). Regulations for this type not found, so face value and coupon frequency are unsourced (GOV OQ4). Older name 'שחר'.",
+    "id": "agch-brybyt-kbvah"
   },
   {
     "term_he": "אג\"ח בריבית משתנה",
@@ -1779,10 +1966,11 @@
       "strength": "primary"
     },
     "where": [
-      "guide:government-bond",
-      "app"
+      "app",
+      "guide:government-bond"
     ],
-    "notes": "The glossary and the 1999 regulations describe the reference rate differently; which governs current series is open (GOV OQ5). Whether every series is unlinked is unconfirmed (TXI OQ8). Older name 'גילון'."
+    "notes": "The glossary and the 1999 regulations describe the reference rate differently; which governs current series is open (GOV OQ5). Whether every series is unlinked is unconfirmed (TXI OQ8). Older name 'גילון'.",
+    "id": "agch-brybyt-mshtnh"
   },
   {
     "term_he": "אג\"ח ממשלתית קצרה",
@@ -1804,11 +1992,12 @@
       "strength": "primary"
     },
     "where": [
+      "app",
       "guide:government-bond",
-      "guide:makam",
-      "app"
+      "guide:makam"
     ],
-    "notes": "Not the same as מק\"מ: issued by the Ministry of Finance under a different law, in units of NIS 1,000 face value; bank screens may not separate them (GOV-15, GOV OQ7)."
+    "notes": "Not the same as מק\"מ: issued by the Ministry of Finance under a different law, in units of NIS 1,000 face value; bank screens may not separate them (GOV-15, GOV OQ7).",
+    "id": "agch-mmshltyt-ktzrh"
   },
   {
     "term_he": "שחר",
@@ -1817,21 +2006,23 @@
       "url": "https://he.wikipedia.org/wiki/איגרות_חוב_ממשלתיות_בישראל"
     },
     "variants_he": [],
-    "explain_he": "שם ותיק לאיגרות חוב ממשלתיות בשקלים בריבית קבועה, שאינן צמודות למדד",
+    "explain_he": "סוג ישן ונפרד של איגרות חוב ממשלתיות בשקלים בריבית קבועה, לא צמודות למדד, עם תקנות משלו",
     "rule_ids": [
       "GOV-13"
     ],
     "source": {
-      "title": "Wikipedia, איגרות חוב ממשלתיות בישראל (last edited 21 Jul 2026)",
-      "url": "https://he.wikipedia.org/wiki/איגרות_חוב_ממשלתיות_בישראל",
-      "checked": "2026-10-22",
-      "strength": "secondary"
+      "title": "משרד האוצר, אגף החשב הכללי: מאפייני אג\"ח סחיר ולא סחיר ותקנותיו",
+      "url": "https://www.gov.il/he/pages/govermental-bonds",
+      "checked": "2026-10-26",
+      "strength": "primary",
+      "publisher": "משרד האוצר, אגף החשב הכללי"
     },
     "where": [
-      "guide:government-bond",
-      "ad"
+      "ad",
+      "guide:government-bond"
     ],
-    "notes": "Only a secondary source (Hebrew Wikipedia) maps 'שחר' to today's fixed-rate shekel bonds; BoI EDGE series codes (SHACHAR) are only codes (GOV-13, GOV OQ12)."
+    "notes": "Only a secondary source (Hebrew Wikipedia) maps 'שחר' to today's fixed-rate shekel bonds; BoI EDGE series codes (SHACHAR) are only codes (GOV-13, GOV OQ12).",
+    "id": "shchr"
   },
   {
     "term_he": "גליל",
@@ -1840,22 +2031,24 @@
       "url": "https://he.wikipedia.org/wiki/איגרות_חוב_ממשלתיות_בישראל"
     },
     "variants_he": [],
-    "explain_he": "שם ותיק לאיגרות חוב ממשלתיות צמודות למדד המחירים לצרכן",
+    "explain_he": "סוג ישן ונפרד של איגרות חוב ממשלתיות צמודות למדד המחירים לצרכן, עם תקנות משלו",
     "rule_ids": [
       "GOV-11",
       "GOV-19"
     ],
     "source": {
-      "title": "Wikipedia, איגרות חוב ממשלתיות בישראל (last edited 21 Jul 2026)",
-      "url": "https://he.wikipedia.org/wiki/איגרות_חוב_ממשלתיות_בישראל",
-      "checked": "2026-10-22",
-      "strength": "secondary"
+      "title": "משרד האוצר, אגף החשב הכללי: מאפייני אג\"ח סחיר ולא סחיר ותקנותיו",
+      "url": "https://www.gov.il/he/pages/govermental-bonds",
+      "checked": "2026-10-26",
+      "strength": "primary",
+      "publisher": "משרד האוצר, אגף החשב הכללי"
     },
     "where": [
-      "guide:government-bond",
-      "ad"
+      "ad",
+      "guide:government-bond"
     ],
-    "notes": "Only Hebrew Wikipedia maps 'גליל' to today's 'אג\"ח ממשלתית צמודה' (GOV OQ12); BoI EDGE codes (GALIL) sit on CPI-indexed bond series (GOV-19) but are codes, not definitions. The 1980 Galil regulations were seen only as a search result."
+    "notes": "Only Hebrew Wikipedia maps 'גליל' to today's 'אג\"ח ממשלתית צמודה' (GOV OQ12); BoI EDGE codes (GALIL) sit on CPI-indexed bond series (GOV-19) but are codes, not definitions. The 1980 Galil regulations were seen only as a search result.",
+    "id": "glyl"
   },
   {
     "term_he": "גילון חדש",
@@ -1866,7 +2059,7 @@
     "variants_he": [
       "גילון"
     ],
-    "explain_he": "סוג של איגרות חוב ממשלתיות בריבית משתנה, שהריבית בהן מתעדכנת לפי התשואה של מק\"מ",
+    "explain_he": "סוג ישן של איגרות חוב ממשלתיות בריבית משתנה, שכבר לא מונפק; הריבית בו מתעדכנת לפי התשואה של מק\"מ, בתוספת מרווח",
     "rule_ids": [
       "GOV-14"
     ],
@@ -1874,14 +2067,16 @@
       "title": "תקנות מילווה המדינה (סדרות מסוג \"גילון חדש\"), תשנ\"ט-1999 (Nevo mirror)",
       "url": "https://www.nevo.co.il/law_html/law01/221_031.htm",
       "checked": "2026-10-22",
-      "strength": "primary-mirror"
+      "strength": "primary-mirror",
+      "publisher": "Nevo legal database"
     },
     "where": [
-      "guide:government-bond",
       "ad",
-      "law"
+      "law",
+      "guide:government-bond"
     ],
-    "notes": "The 1999 regulations are primary (Nevo mirror). That 'גילון' is the former name of today's floating-rate series comes only from Wikipedia (GOV OQ12), and which regulation governs current series is open (GOV OQ5)."
+    "notes": "The 1999 regulations are primary (Nevo mirror). That 'גילון' is the former name of today's floating-rate series comes only from Wikipedia (GOV OQ12), and which regulation governs current series is open (GOV OQ5).",
+    "id": "gylvn-chdsh"
   },
   {
     "term_he": "אג\"ח סחיר",
@@ -1903,11 +2098,12 @@
       "strength": "primary"
     },
     "where": [
+      "app",
       "guide:government-bond",
-      "guide:makam",
-      "app"
+      "guide:makam"
     ],
-    "notes": "Opposite: 'אג\"ח לא סחיר'. Leaving before maturity means selling at the day's market price, unlike a deposit's exit terms (GOV proposed dimension market-price-exit). Trading unit and settlement on TASE are open (GOV OQ7)."
+    "notes": "Opposite: 'אג\"ח לא סחיר'. Leaving before maturity means selling at the day's market price, unlike a deposit's exit terms (GOV proposed dimension market-price-exit). Trading unit and settlement on TASE are open (GOV OQ7).",
+    "id": "agch-schyr-a"
   },
   {
     "term_he": "קופון",
@@ -1923,14 +2119,16 @@
       "title": "תקנות מילווה המדינה (איגרות חוב מסוג \"אג\"ח ממשלתית צמודה\"), תשס\"ו-2006 (Nevo mirror)",
       "url": "https://www.nevo.co.il/law_html/law01/999_564.htm",
       "checked": "2026-10-22",
-      "strength": "primary-mirror"
+      "strength": "primary-mirror",
+      "publisher": "Nevo legal database"
     },
     "where": [
-      "guide:government-bond",
+      "app",
       "statement",
-      "app"
+      "guide:government-bond"
     ],
-    "notes": "missing Hebrew spelling in il-finance: the word 'קופון' appears nowhere in the rule base; the files describe the coupon only in English and the 2006 regulations call it interest ('ריבית'). Spelling taken from the starting list, not from a source. Coupon frequency: CPI-linked yearly (GOV-11); floating-rate quarterly under the 1999 regulations (GOV-14); fixed-rate shekel unsourced (GOV OQ4)."
+    "notes": "missing Hebrew spelling in il-finance: the word 'קופון' appears nowhere in the rule base; the files describe the coupon only in English and the 2006 regulations call it interest ('ריבית'). Spelling taken from the starting list, not from a source. Coupon frequency: CPI-linked yearly (GOV-11); floating-rate quarterly under the 1999 regulations (GOV-14); fixed-rate shekel unsourced (GOV OQ4).",
+    "id": "kvpvn"
   },
   {
     "term_he": "פדיון",
@@ -1946,23 +2144,30 @@
       "GOV-03",
       "GOV-11",
       "MF-09",
-      "MF-11"
+      "MF-11",
+      "ETF-04",
+      "ETF-26",
+      "TXS-09",
+      "TXS-21"
     ],
     "source": {
       "title": "בנק ישראל, חטיבת השווקים, \"מכרז למכירת מילווה קצר מועד (לא צמוד ואינו נושא ריבית) – תנאים כלליים\"",
       "url": "https://www.boi.org.il/media/ytal5ozx/makam.pdf",
       "checked": "2026-10-22",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "Bank of Israel"
     },
     "where": [
-      "guide:makam",
-      "guide:government-bond",
-      "guide:mutual-fund",
-      "guide:money-market-fund",
+      "app",
       "statement",
-      "app"
+      "guide:brokerage-account",
+      "guide:government-bond",
+      "guide:makam",
+      "guide:money-market-fund-daily",
+      "guide:money-market-fund-renewable"
     ],
-    "notes": "Two senses in the rule base: repayment of a bond or makam at maturity (GOV; BoI 'מועד הפדיון'), and redemption of fund units (law s.42(ב), 46; ISA 'פדיונות'). The site may want two entries. Bank product names with 'פדיום' are deposits, unrelated (BANK-31)."
+    "notes": "Two senses in the rule base: repayment of a bond or makam at maturity (GOV; BoI 'מועד הפדיון'), and redemption of fund units (law s.42(ב), 46; ISA 'פדיונות'). The site may want two entries. Bank product names with 'פדיום' are deposits, unrelated (BANK-31).",
+    "id": "pdyvn-a"
   },
   {
     "term_he": "פדיון מוקדם",
@@ -1979,12 +2184,14 @@
       "title": "תקנות מילווה המדינה (איגרות חוב מסוג \"אג\"ח ממשלתית צמודה\"), תשס\"ו-2006 (Nevo mirror)",
       "url": "https://www.nevo.co.il/law_html/law01/999_564.htm",
       "checked": "2026-10-22",
-      "strength": "primary-mirror"
+      "strength": "primary-mirror",
+      "publisher": "Nevo legal database"
     },
     "where": [
       "guide:government-bond"
     ],
-    "notes": "A holder who wants out early sells on the market (GOV-17). The Debt Unit calls the process 'מכרזים הפוכים'; none were held in 2025 (GOV-16)."
+    "notes": "A holder who wants out early sells on the market (GOV-17). The Debt Unit calls the process 'מכרזים הפוכים'; none were held in 2025 (GOV-16).",
+    "id": "pdyvn-mvkdm"
   },
   {
     "term_he": "תשואה לפדיון",
@@ -1997,22 +2204,24 @@
     ],
     "explain_he": "שיעור הרווח לשנה אם קונים במחיר של היום ומחזיקים עד הפדיון; בבנק מוצג לפני עמלות ומס",
     "rule_ids": [
+      "BANK-15",
       "GOV-06",
-      "GOV-20",
-      "BANK-15"
+      "GOV-20"
     ],
     "source": {
       "title": "בנק ישראל, חטיבת השווקים, \"מכרז למכירת מילווה קצר מועד (לא צמוד ואינו נושא ריבית) – תנאים כלליים\"",
       "url": "https://www.boi.org.il/media/ytal5ozx/makam.pdf",
       "checked": "2026-10-22",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "Bank of Israel"
     },
     "where": [
-      "guide:makam",
+      "app",
       "guide:government-bond",
-      "app"
+      "guide:makam"
     ],
-    "notes": "For makam the BoI uses compound annual yield on a 365-day year (GOV-06); whether bank and TASE screens use the same formula is open (GOV OQ7)."
+    "notes": "For makam the BoI uses compound annual yield on a 365-day year (GOV-06); whether bank and TASE screens use the same formula is open (GOV OQ7).",
+    "id": "tshvah-lpdyvn"
   },
   {
     "term_he": "תשואה ברוטו",
@@ -2023,20 +2232,22 @@
     "variants_he": [],
     "explain_he": "תשואה לפני שמורידים ממנה עמלות קנייה ומכירה ומס",
     "rule_ids": [
-      "GOV-20",
-      "BANK-15"
+      "BANK-15",
+      "GOV-20"
     ],
     "source": {
       "title": "BoI directive 447A \"פרסום מידע מרוכז על קרנות כספיות ומק\"מ\" (04/25)",
       "url": "https://boi.org.il/media/gcmk52bw/447a.pdf",
       "checked": "2026-10-22",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "Bank of Israel"
     },
     "where": [
-      "guide:makam",
-      "app"
+      "app",
+      "guide:makam"
     ],
-    "notes": "Spelling from the 447A draft annex (GOV Terms); the final 447A says the makam yield is gross, without buy/sell fees and tax (BANK-15). In the same display the money-market fund expected yield is already net of fund fees (MF-37), so the two figures are not alike."
+    "notes": "Spelling from the 447A draft annex (GOV Terms); the final 447A says the makam yield is gross, without buy/sell fees and tax (BANK-15). In the same display the money-market fund expected yield is already net of fund fees (MF-37), so the two figures are not alike.",
+    "id": "tshvah-brvtv"
   },
   {
     "term_he": "שווי נקוב",
@@ -2058,14 +2269,16 @@
       "title": "בנק ישראל, חטיבת השווקים, \"מכרז למכירת מילווה קצר מועד (לא צמוד ואינו נושא ריבית) – תנאים כלליים\"",
       "url": "https://www.boi.org.il/media/ytal5ozx/makam.pdf",
       "checked": "2026-10-22",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "Bank of Israel"
     },
     "where": [
-      "guide:makam",
+      "statement",
       "guide:government-bond",
-      "statement"
+      "guide:makam"
     ],
-    "notes": "The GOV Terms row lists 'שווי נקוב / ערך נקוב (ע.נ.)' against the 2006 regulations and the BoI conditions without saying which source uses which wording; confirm before choosing the heading. For a CPI-linked bond the repayment is the face value adjusted by the index (GOV-11)."
+    "notes": "The GOV Terms row lists 'שווי נקוב / ערך נקוב (ע.נ.)' against the 2006 regulations and the BoI conditions without saying which source uses which wording; confirm before choosing the heading. For a CPI-linked bond the repayment is the face value adjusted by the index (GOV-11).",
+    "id": "shvvy-nkvb"
   },
   {
     "term_he": "מדד הבסיס",
@@ -2084,12 +2297,14 @@
       "title": "תקנות מילווה המדינה (איגרות חוב מסוג \"אג\"ח ממשלתית צמודה\"), תשס\"ו-2006 (Nevo mirror)",
       "url": "https://www.nevo.co.il/law_html/law01/999_564.htm",
       "checked": "2026-10-22",
-      "strength": "primary-mirror"
+      "strength": "primary-mirror",
+      "publisher": "Nevo legal database"
     },
     "where": [
       "guide:government-bond"
     ],
-    "notes": "The 2006 regulations use both 'מדד הבסיס' (definition) and 'המדד היסודי' (linkage clause, s.8). A linked deposit agreement must also state its linkage base (BANK-02)."
+    "notes": "The 2006 regulations use both 'מדד הבסיס' (definition) and 'המדד היסודי' (linkage clause, s.8). A linked deposit agreement must also state its linkage base (BANK-02).",
+    "id": "mdd-hbsys"
   },
   {
     "term_he": "מועד קובע לזכאות",
@@ -2107,12 +2322,14 @@
       "title": "תקנות מילווה המדינה (איגרות חוב מסוג \"אג\"ח ממשלתית צמודה\"), תשס\"ו-2006 (Nevo mirror)",
       "url": "https://www.nevo.co.il/law_html/law01/999_564.htm",
       "checked": "2026-10-22",
-      "strength": "primary-mirror"
+      "strength": "primary-mirror",
+      "publisher": "Nevo legal database"
     },
     "where": [
       "guide:government-bond"
     ],
-    "notes": "Buyers after the record date do not get that period's interest (GOV-11, GOV-21). Exact day per the Nevo summary only."
+    "notes": "Buyers after the record date do not get that period's interest (GOV-11, GOV-21). Exact day per the Nevo summary only.",
+    "id": "mvad-kvba-lzkavt"
   },
   {
     "term_he": "ריבית",
@@ -2131,17 +2348,19 @@
       "title": "Income Tax (Withholding from Interest, Dividend and Certain Profits) Regulations 2005, consolidated to 27.12.2017 (copy on btl.gov.il)",
       "url": "https://www.btl.gov.il/Laws1/02_0103_100269.pdf",
       "checked": "2026-10-22",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "National Insurance Institute"
     },
     "where": [
+      "statement",
+      "tax-form",
       "guide:bank-deposit",
       "guide:current-account",
       "guide:government-bond",
-      "guide:makam",
-      "statement",
-      "tax-form"
+      "guide:makam"
     ],
-    "notes": "The plain sense rests on the deposit and bond rules; the tax definition (Ordinance s.125C(a), withholding regulations reg. 1) also includes discount fees and non-exempt linkage differentials. Interest is quoted as an annual rate (BANK-04)."
+    "notes": "The plain sense rests on the deposit and bond rules; the tax definition (Ordinance s.125C(a), withholding regulations reg. 1) also includes discount fees and non-exempt linkage differentials. Interest is quoted as an annual rate (BANK-04).",
+    "id": "rybyt"
   },
   {
     "term_he": "הפרשי הצמדה",
@@ -2152,9 +2371,9 @@
     "variants_he": [],
     "explain_he": "הסכום שבו הכסף שלכם עלה או ירד בגלל שינוי במדד, בנכס צמוד; כשהנכס צמוד במלואו, התוספת פטורה ממס",
     "rule_ids": [
+      "BANK-08",
       "TXI-05",
-      "TXI-25",
-      "BANK-08"
+      "TXI-25"
     ],
     "source": {
       "title": "Israel Tax Authority, דע זכויותיך וחובותיך 2025",
@@ -2163,12 +2382,13 @@
       "strength": "primary"
     },
     "where": [
-      "guide:bank-deposit",
-      "guide:government-bond",
       "statement",
-      "tax-form"
+      "tax-form",
+      "guide:bank-deposit",
+      "guide:government-bond"
     ],
-    "notes": "Exemption conditions: not partial linkage, no interest or linkage expenses claimed, not business income (TXI-05). Negative linkage does not reduce the tax on the interest (TXI-25). Includes exchange-rate differences. The Tax Authority guide was read from page images; re-read wording before encoding (TXI OQ17)."
+    "notes": "Exemption conditions: not partial linkage, no interest or linkage expenses claimed, not business income (TXI-05). Negative linkage does not reduce the tax on the interest (TXI-25). Includes exchange-rate differences. The Tax Authority guide was read from page images; re-read wording before encoding (TXI OQ17).",
+    "id": "hprshy-htzmdh-a"
   },
   {
     "term_he": "מדד",
@@ -2179,8 +2399,8 @@
     "variants_he": [],
     "explain_he": "בדרך כלל מדד המחירים לצרכן; בנכס במטבע חוץ או צמוד אליו, שער המטבע משמש כמדד",
     "rule_ids": [
-      "TXI-04",
-      "BANK-14"
+      "BANK-14",
+      "TXI-04"
     ],
     "source": {
       "title": "Israel Tax Authority, דע זכויותיך וחובותיך 2025",
@@ -2189,11 +2409,12 @@
       "strength": "primary"
     },
     "where": [
+      "statement",
       "guide:bank-deposit",
-      "guide:government-bond",
-      "statement"
+      "guide:government-bond"
     ],
-    "notes": "This is the tax-law meaning (s.125C(a)). Under it prime is not an index, so a prime-based deposit counts as unlinked; that reading is the tax file's, not a published statement (TXI-04, TXI OQ2). The Tax Authority guide was read from page images; re-read wording before encoding (TXI OQ17)."
+    "notes": "This is the tax-law meaning (s.125C(a)). Under it prime is not an index, so a prime-based deposit counts as unlinked; that reading is the tax file's, not a published statement (TXI-04, TXI OQ2). The Tax Authority guide was read from page images; re-read wording before encoding (TXI OQ17).",
+    "id": "mdd-a"
   },
   {
     "term_he": "מס על הכנסה מריבית",
@@ -2216,14 +2437,15 @@
       "strength": "primary"
     },
     "where": [
+      "statement",
       "guide:bank-deposit",
-      "guide:savings-plan",
       "guide:current-account",
-      "guide:makam",
       "guide:government-bond",
-      "statement"
+      "guide:makam",
+      "guide:savings-plan"
     ],
-    "notes": "The starting term 'מס על ריבית' does not appear anywhere in the rule base; the Ordinance (s.125C(b)) says 'מס על הכנסה מריבית'. Rates are figures for data/. Money-market fund tax is a different rule (tax-securities-israeli.md). The Tax Authority guide was read from page images; re-read wording before encoding (TXI OQ17)."
+    "notes": "The starting term 'מס על ריבית' does not appear anywhere in the rule base; the Ordinance (s.125C(b)) says 'מס על הכנסה מריבית'. Rates are figures for data/. Money-market fund tax is a different rule (tax-securities-israeli.md). The Tax Authority guide was read from page images; re-read wording before encoding (TXI OQ17).",
+    "id": "ms-al-hknsh-mrybyt"
   },
   {
     "term_he": "ניכוי מס במקור",
@@ -2241,17 +2463,19 @@
       "title": "Income Tax (Withholding from Interest, Dividend and Certain Profits) Regulations 2005, consolidated to 27.12.2017 (copy on btl.gov.il)",
       "url": "https://www.btl.gov.il/Laws1/02_0103_100269.pdf",
       "checked": "2026-10-22",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "National Insurance Institute"
     },
     "where": [
+      "statement",
+      "tax-form",
       "guide:bank-deposit",
       "guide:current-account",
-      "guide:makam",
       "guide:government-bond",
-      "statement",
-      "tax-form"
+      "guide:makam"
     ],
-    "notes": "Banks withhold on deposit, savings-plan and current-account interest; other payers on bond coupons and the makam discount (TXI-08, TXI-09). Spelling as in the TXI Terms table; the regulations' title uses 'ניכוי'."
+    "notes": "Banks withhold on deposit, savings-plan and current-account interest; other payers on bond coupons and the makam discount (TXI-08, TXI-09). Spelling as in the TXI Terms table; the regulations' title uses 'ניכוי'.",
+    "id": "nykvy-ms-bmkvr-a"
   },
   {
     "term_he": "טופס 867",
@@ -2270,14 +2494,16 @@
       "title": "Income Tax (Withholding from Interest, Dividend and Certain Profits) Regulations 2005, consolidated to 27.12.2017 (copy on btl.gov.il)",
       "url": "https://www.btl.gov.il/Laws1/02_0103_100269.pdf",
       "checked": "2026-10-22",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "National Insurance Institute"
     },
     "where": [
-      "guide:bank-deposit",
+      "app",
       "tax-form",
-      "app"
+      "guide:bank-deposit"
     ],
-    "notes": "Given on request, by 20 March for the previous year (reg. 16). The term itself contains the form number."
+    "notes": "Given on request, by 20 March for the previous year (reg. 16). The term itself contains the form number.",
+    "id": "tvps-867-a"
   },
   {
     "term_he": "פטור למעוט הכנסה",
@@ -2298,11 +2524,12 @@
       "strength": "primary"
     },
     "where": [
+      "tax-form",
       "guide:bank-deposit",
-      "guide:savings-plan",
-      "tax-form"
+      "guide:savings-plan"
     ],
-    "notes": "Booklet line wording; the Ordinance (s.125D(b)) frames it as a deduction ('ניכוי') under an income ceiling ('התקרה המוטבת'). Bank deposits and savings plans only, not bonds or makam; whether current-account interest counts is open (TXI OQ11). Any age."
+    "notes": "Booklet line wording; the Ordinance (s.125D(b)) frames it as a deduction ('ניכוי') under an income ceiling ('התקרה המוטבת'). Bank deposits and savings plans only, not bonds or makam; whether current-account interest counts is open (TXI OQ11). Any age.",
+    "id": "ptvr-lmavt-hknsh"
   },
   {
     "term_he": "רווח הון ריאלי",
@@ -2323,10 +2550,62 @@
       "strength": "primary-mirror"
     },
     "where": [
+      "statement",
       "guide:government-bond",
-      "guide:makam",
-      "statement"
+      "guide:makam"
     ],
-    "notes": "Meaning per TXI Terms: gain minus the inflationary amount. General capital-gains rules are in tax-securities-israeli.md (not one of these four files)."
+    "notes": "Meaning per TXI Terms: gain minus the inflationary amount. General capital-gains rules are in tax-securities-israeli.md (not one of these four files).",
+    "id": "rvvch-hvn-ryaly-a"
+  },
+  {
+    "term_he": "פריים פחות",
+    "id": "pryym-pchvt",
+    "explain_he": "ריבית הפריים של הבנק פחות מספר נקודות האחוז של המרווח. בלוחות של חלק מהבנקים זה כתוב באות P: הכתיב P-2.7 הוא פריים פחות 2.7 נקודות אחוז.",
+    "variants_he": [
+      "פריים מינוס",
+      "פריים בניכוי",
+      "מרווח מהפריים",
+      "P-"
+    ],
+    "rule_ids": [
+      "BANK-47",
+      "BANK-34"
+    ],
+    "source": {
+      "title": "חוק הבנקאות (שירות ללקוח), נוסח משולב (בנק ישראל), עמוד 26, סעיף 9ז(ג)",
+      "url": "https://www.boi.org.il/media/nvadftgk/150.pdf#page=26",
+      "checked": "2026-11-01",
+      "strength": "primary",
+      "publisher": "Bank of Israel"
+    },
+    "where": [
+      "provider-site",
+      "guide:bank-deposit",
+      "guide:savings-plan"
+    ]
+  },
+  {
+    "term_he": "נקודת אחוז",
+    "id": "nqvdt-achvz",
+    "explain_he": "הפרש של אחוז אחד בין שתי ריביות, לא אחוז מהריבית עצמה.",
+    "variants_he": [
+      "נקודות אחוז",
+      "אחוז נקודות"
+    ],
+    "rule_ids": [
+      "BANK-47"
+    ],
+    "source": {
+      "title": "צו הריבית (קביעת שיעור הריבית המכסימלי), התש\"ל-1970, נוסח משולב (בנק ישראל), עמוד 2",
+      "url": "https://www.boi.org.il/media/nwjkv14l/184b.pdf#page=2",
+      "checked": "2026-11-01",
+      "strength": "primary",
+      "publisher": "Bank of Israel"
+    },
+    "where": [
+      "provider-site",
+      "guide:bank-deposit",
+      "guide:savings-plan"
+    ]
   }
 ]

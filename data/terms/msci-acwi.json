@@ -1,0 +1,31 @@
+{
+  "id": "msci-acwi",
+  "he": "MSCI ACWI",
+  "en": null,
+  "meaning": "מדד של מניות חברות גדולות ובינוניות בשווקים המפותחים ובשווקים המתעוררים, כפי שחברת המדד מגדירה אותם, במשקל לפי שווי השוק הסחיר",
+  "where": [
+    "app",
+    "fund-name"
+  ],
+  "wrapper_ids": [],
+  "exposure_ids": [
+    "index-msci-acwi"
+  ],
+  "variants": [
+    "MSCI AC World",
+    "MSCI All Country World",
+    "MSCI AC WORLD INDEX",
+    "מדד MSCI AC World"
+  ],
+  "rule_ids": [
+    "ETF-48",
+    "ETF-49"
+  ],
+  "source": {
+    "url": "https://www.msci.com/documents/10199/8d97d244-4685-4200-a24c-3e2942e3adeb",
+    "title": "MSCI, \"MSCI ACWI Index (USD)\" factsheet, 30 September 2026",
+    "publisher": "MSCI",
+    "strength": "institution",
+    "checked": "2026-10-25"
+  }
+}

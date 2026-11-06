@@ -19,9 +19,9 @@
   ],
   "variants": [],
   "rule_ids": [
+    "ETF-12",
     "MF-43",
-    "MF-54",
-    "ETF-12"
+    "MF-54"
   ],
   "source": {
     "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-64186b589b352/080217.pdf",

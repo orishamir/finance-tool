@@ -1,7 +1,7 @@
 [
   {
     "kind": "term",
-    "id": "",
+    "id": "shnt-hms",
     "term_he": "שנת המס",
     "term_source": {
       "title": "רשות המסים, דע זכויותיך וחובותיך 2025 (Tax Authority guide to the 2025 return), p.6 s.1",
@@ -21,15 +21,30 @@
       "strength": "primary"
     },
     "where": [
-      "guide:*:tax",
-      "tax-return",
-      "form-867"
+      "tax-form",
+      "guide:bank-deposit",
+      "guide:brokerage-account",
+      "guide:child-savings-bank",
+      "guide:child-savings-provident",
+      "guide:current-account",
+      "guide:government-bond",
+      "guide:ira-hishtalmut",
+      "guide:ira-provident",
+      "guide:keren-hishtalmut",
+      "guide:kupat-gemel-lehashkaa",
+      "guide:makam",
+      "guide:money-market-fund-daily",
+      "guide:money-market-fund-renewable",
+      "guide:pension-comprehensive",
+      "guide:pension-general",
+      "guide:provident-for-annuity",
+      "guide:savings-plan"
     ],
     "notes": "Variant 'שנת מס' appears in Ordinance text quoted in TXS and TXF (for example 'באותה שנת מס')."
   },
   {
     "kind": "term",
-    "id": "",
+    "id": "tvshb-yshral",
     "term_he": "תושב ישראל",
     "term_source": {
       "title": "פקודת מס הכנסה, נוסח משולב (Income Tax Ordinance, Hebrew Wikisource mirror), s.1, definition 'תושב ישראל' ('מרכז חייו')",
@@ -47,13 +62,29 @@
       "strength": "primary-mirror"
     },
     "where": [
-      "guide:*:tax"
+      "guide:bank-deposit",
+      "guide:brokerage-account",
+      "guide:child-savings-bank",
+      "guide:child-savings-provident",
+      "guide:current-account",
+      "guide:government-bond",
+      "guide:ira-hishtalmut",
+      "guide:ira-provident",
+      "guide:keren-hishtalmut",
+      "guide:kupat-gemel-lehashkaa",
+      "guide:makam",
+      "guide:money-market-fund-daily",
+      "guide:money-market-fund-renewable",
+      "guide:pension-comprehensive",
+      "guide:pension-general",
+      "guide:provident-for-annuity",
+      "guide:savings-plan"
     ],
     "notes": "Residence is decided by the centre-of-life test, with rebuttable presumptions based on days in Israel (TXG-01). Non-residents, olim and returning residents are not covered by the rule base. TXG-01 says the mirror was paraphrased by the fetch tool, so the exact wording must be re-read before encoding."
   },
   {
     "kind": "term",
-    "id": "",
+    "id": "hknsh-chyybt",
     "term_he": "הכנסה חייבת",
     "term_source": {
       "title": "פקודת מס הכנסה, נוסח משולב (Income Tax Ordinance, Hebrew Wikisource mirror), s.1 (per the TXG Terms table)",
@@ -72,14 +103,30 @@
       "strength": "primary-mirror"
     },
     "where": [
-      "guide:*:tax",
-      "tax-return"
+      "tax-form",
+      "guide:bank-deposit",
+      "guide:brokerage-account",
+      "guide:child-savings-bank",
+      "guide:child-savings-provident",
+      "guide:current-account",
+      "guide:government-bond",
+      "guide:ira-hishtalmut",
+      "guide:ira-provident",
+      "guide:keren-hishtalmut",
+      "guide:kupat-gemel-lehashkaa",
+      "guide:makam",
+      "guide:money-market-fund-daily",
+      "guide:money-market-fund-renewable",
+      "guide:pension-comprehensive",
+      "guide:pension-general",
+      "guide:provident-for-annuity",
+      "guide:savings-plan"
     ],
     "notes": "The meaning comes from the TXG Terms table (Ordinance s.1); no rule states the definition itself. For the surtax, taxable income excludes the inflationary amount and includes betterment (TXG-09)."
   },
   {
     "kind": "term",
-    "id": "",
+    "id": "hknsh-mygyah-ayshyt",
     "term_he": "הכנסה מיגיעה אישית",
     "term_source": {
       "title": "רשות המסים, דע זכויותיך וחובותיך 2025 (Tax Authority guide to the 2025 return), p.46 s.2 ('לשיעורי המס שנקבעו להכנסה מיגיעה אישית')",
@@ -99,13 +146,29 @@
       "strength": "primary"
     },
     "where": [
-      "guide:*:tax"
+      "guide:bank-deposit",
+      "guide:brokerage-account",
+      "guide:child-savings-bank",
+      "guide:child-savings-provident",
+      "guide:current-account",
+      "guide:government-bond",
+      "guide:ira-hishtalmut",
+      "guide:ira-provident",
+      "guide:keren-hishtalmut",
+      "guide:kupat-gemel-lehashkaa",
+      "guide:makam",
+      "guide:money-market-fund-daily",
+      "guide:money-market-fund-renewable",
+      "guide:pension-comprehensive",
+      "guide:pension-general",
+      "guide:provident-for-annuity",
+      "guide:savings-plan"
     ],
     "notes": "The meaning (work and business income, including a pension from a former employer) is from the TXG Terms table, citing Ordinance s.1 and booklet p.10."
   },
   {
     "kind": "term",
-    "id": "",
+    "id": "hknsh-shaynh-mygyah-ayshyt",
     "term_he": "הכנסה שאינה מיגיעה אישית",
     "term_source": {
       "title": "רשות המסים, לוח עזר לחישוב מס הכנסה ממשכורת ושכר עבודה לחודש ינואר 2026 ואילך, מעודכן לאפריל 2026 (deductions booklet), p.10 ('שיעורי המס החלים על הכנסה שאינה מיגיעה אישית')",
@@ -128,13 +191,29 @@
       "strength": "primary"
     },
     "where": [
-      "guide:*:tax"
+      "guide:bank-deposit",
+      "guide:brokerage-account",
+      "guide:child-savings-bank",
+      "guide:child-savings-provident",
+      "guide:current-account",
+      "guide:government-bond",
+      "guide:ira-hishtalmut",
+      "guide:ira-provident",
+      "guide:keren-hishtalmut",
+      "guide:kupat-gemel-lehashkaa",
+      "guide:makam",
+      "guide:money-market-fund-daily",
+      "guide:money-market-fund-renewable",
+      "guide:pension-comprehensive",
+      "guide:pension-general",
+      "guide:provident-for-annuity",
+      "guide:savings-plan"
     ],
     "notes": "'הכנסות שאינן מיגיעה אישית' is the guide's wording (p.8 s.9b). 'הכנסה פסיבית' comes from the founder's starting list and is the rule base's English gloss ('passive income'); no Hebrew source in the rule base uses it. Interest as an example rests on TXH-13 (study-fund gains are interest, not personal-effort income); dividends are implied by TXG-03, which says interest, dividends and capital gains have their own special rates and this schedule is the fall-back. From age 60 the lower brackets apply to all taxable income (TXG-04)."
   },
   {
     "kind": "term",
-    "id": "",
+    "id": "mdrgvt-ms",
     "term_he": "מדרגות מס",
     "term_source": {
       "title": "רשות המסים, לוח עזר לחישוב מס הכנסה ממשכורת ושכר עבודה לחודש ינואר 2026 ואילך, מעודכן לאפריל 2026 (deductions booklet), p.4 and p.10 (per the TXG Terms table)",
@@ -155,14 +234,30 @@
       "strength": "primary"
     },
     "where": [
-      "guide:*:tax",
+      "guide:bank-deposit",
+      "guide:brokerage-account",
+      "guide:child-savings-bank",
+      "guide:child-savings-provident",
+      "guide:current-account",
+      "guide:government-bond",
+      "guide:ira-hishtalmut",
+      "guide:ira-provident",
+      "guide:keren-hishtalmut",
+      "guide:kupat-gemel-lehashkaa",
+      "guide:makam",
+      "guide:money-market-fund-daily",
+      "guide:money-market-fund-renewable",
+      "guide:pension-comprehensive",
+      "guide:pension-general",
+      "guide:provident-for-annuity",
+      "guide:savings-plan",
       "comparison"
     ],
     "notes": "Variant 'מדרגות מס הכנסה' is from the title of Part C of SH 3511 ('ריווח מדרגות מס הכנסה'). The 2026 bands were widened retroactively by that law (TXG-02) and are frozen through 2027 (TXG-06)."
   },
   {
     "kind": "term",
-    "id": "",
+    "id": "shyavr-hms-hshvly",
     "term_he": "שיעור המס השולי",
     "term_source": {
       "title": "רשות המסים, דע זכויותיך וחובותיך 2025 (Tax Authority guide to the 2025 return), p.60, as quoted in TXP-01 ('לפי שיעור המס השולי של הכנסתך')",
@@ -171,9 +266,9 @@
     "variants_he": [],
     "explain_he": "שיעור המס של המדרגה הגבוהה ביותר שההכנסה מגיעה אליה; בו ממוסה כל שקל נוסף",
     "rule_ids": [
-      "TXP-01",
+      "TXG-02",
       "TXH-13",
-      "TXG-02"
+      "TXP-01"
     ],
     "source": {
       "title": "רשות המסים, דע זכויותיך וחובותיך 2025 (Tax Authority guide to the 2025 return)",
@@ -182,16 +277,30 @@
       "strength": "primary"
     },
     "where": [
-      "guide:*:tax",
-      "guide:pension-and-gemel-lekitzba:tax",
-      "guide:keren-hishtalmut:tax",
+      "guide:bank-deposit",
+      "guide:brokerage-account",
+      "guide:child-savings-bank",
+      "guide:child-savings-provident",
+      "guide:current-account",
+      "guide:government-bond",
+      "guide:ira-hishtalmut",
+      "guide:ira-provident",
+      "guide:keren-hishtalmut",
+      "guide:kupat-gemel-lehashkaa",
+      "guide:makam",
+      "guide:money-market-fund-daily",
+      "guide:money-market-fund-renewable",
+      "guide:pension-comprehensive",
+      "guide:pension-general",
+      "guide:provident-for-annuity",
+      "guide:savings-plan",
       "comparison"
     ],
     "notes": "No rule defines the term in one sentence. The meaning is combined from TXP-01 (a deduction is worth the marginal rate), TXH-13 ('ordinary marginal rates (s.121)', that is, the brackets) and TXG-02 (each band's rate applies to the income inside that band). Whether a capital-income type reaches the marginal rate at all depends on TXG-07."
   },
   {
     "kind": "term",
-    "id": "",
+    "id": "shyavr-ms-mrby",
     "term_he": "שיעור מס מרבי",
     "term_source": {
       "title": "רשות המסים, דע זכויותיך וחובותיך 2025 (Tax Authority guide to the 2025 return), p.38",
@@ -212,13 +321,29 @@
       "strength": "primary"
     },
     "where": [
-      "guide:*:tax"
+      "guide:bank-deposit",
+      "guide:brokerage-account",
+      "guide:child-savings-bank",
+      "guide:child-savings-provident",
+      "guide:current-account",
+      "guide:government-bond",
+      "guide:ira-hishtalmut",
+      "guide:ira-provident",
+      "guide:keren-hishtalmut",
+      "guide:kupat-gemel-lehashkaa",
+      "guide:makam",
+      "guide:money-market-fund-daily",
+      "guide:money-market-fund-renewable",
+      "guide:pension-comprehensive",
+      "guide:pension-general",
+      "guide:provident-for-annuity",
+      "guide:savings-plan"
     ],
     "notes": "Variant is the Ordinance's wording (s.91(b)(1), s.125C(b)). It applies to real capital gains and CPI-linked interest (TXG-07). Under 60 there is no benefit in practice, because brackets for passive income start above the ceiling (TXG-08)."
   },
   {
     "kind": "term",
-    "id": "",
+    "id": "shyavr-ms-kbva",
     "term_he": "שיעור מס קבוע",
     "term_source": {
       "title": "רשות המסים, דע זכויותיך וחובותיך 2025 (Tax Authority guide to the 2025 return), p.38",
@@ -237,13 +362,29 @@
       "strength": "primary"
     },
     "where": [
-      "guide:*:tax"
+      "guide:bank-deposit",
+      "guide:brokerage-account",
+      "guide:child-savings-bank",
+      "guide:child-savings-provident",
+      "guide:current-account",
+      "guide:government-bond",
+      "guide:ira-hishtalmut",
+      "guide:ira-provident",
+      "guide:keren-hishtalmut",
+      "guide:kupat-gemel-lehashkaa",
+      "guide:makam",
+      "guide:money-market-fund-daily",
+      "guide:money-market-fund-renewable",
+      "guide:pension-comprehensive",
+      "guide:pension-general",
+      "guide:provident-for-annuity",
+      "guide:savings-plan"
     ],
     "notes": "The rule base's example is interest on unlinked deposits (TXG-07, TXI-03). Whether the dividend rate is fixed or a maximum is open (TXG open question 10)."
   },
   {
     "kind": "term",
-    "id": "",
+    "id": "kshlb-hgbvh-byvtr-bsvlm-hknstv-hchyybt",
     "term_he": "כשלב הגבוה ביותר בסולם הכנסתו החייבת",
     "term_source": {
       "title": "פקודת מס הכנסה, נוסח משולב (Income Tax Ordinance, Hebrew Wikisource mirror), s.91(b)(1), s.125C(b)",
@@ -252,8 +393,8 @@
     "variants_he": [],
     "explain_he": "רווח הון וריבית נספרים מעל שאר ההכנסה, ולכן ממוסים במדרגות שמעליה",
     "rule_ids": [
-      "TXG-07",
-      "TXG-04"
+      "TXG-04",
+      "TXG-07"
     ],
     "source": {
       "title": "פקודת מס הכנסה, נוסח משולב (Income Tax Ordinance, Hebrew Wikisource mirror)",
@@ -262,13 +403,29 @@
       "strength": "primary-mirror"
     },
     "where": [
-      "guide:*:tax"
+      "guide:bank-deposit",
+      "guide:brokerage-account",
+      "guide:child-savings-bank",
+      "guide:child-savings-provident",
+      "guide:current-account",
+      "guide:government-bond",
+      "guide:ira-hishtalmut",
+      "guide:ira-provident",
+      "guide:keren-hishtalmut",
+      "guide:kupat-gemel-lehashkaa",
+      "guide:makam",
+      "guide:money-market-fund-daily",
+      "guide:money-market-fund-renewable",
+      "guide:pension-comprehensive",
+      "guide:pension-general",
+      "guide:provident-for-annuity",
+      "guide:savings-plan"
     ],
     "notes": "Law wording, met mainly on the age-60 explanation: the lower bands reach capital income only as far as other income has not used them (TXG-04). Source is the statute because the guide quote in TXG-07 does not carry this phrase."
   },
   {
     "kind": "term",
-    "id": "",
+    "id": "nkvdt-zykvy",
     "term_he": "נקודת זיכוי",
     "term_source": {
       "title": "רשות המסים, לוח עזר לחישוב מס הכנסה ממשכורת ושכר עבודה לחודש ינואר 2026 ואילך, מעודכן לאפריל 2026 (deductions booklet), p.12 ('נקודת זיכוי 33א')",
@@ -288,14 +445,30 @@
       "strength": "primary"
     },
     "where": [
-      "guide:*:tax",
-      "payslip"
+      "payslip",
+      "guide:bank-deposit",
+      "guide:brokerage-account",
+      "guide:child-savings-bank",
+      "guide:child-savings-provident",
+      "guide:current-account",
+      "guide:government-bond",
+      "guide:ira-hishtalmut",
+      "guide:ira-provident",
+      "guide:keren-hishtalmut",
+      "guide:kupat-gemel-lehashkaa",
+      "guide:makam",
+      "guide:money-market-fund-daily",
+      "guide:money-market-fund-renewable",
+      "guide:pension-comprehensive",
+      "guide:pension-general",
+      "guide:provident-for-annuity",
+      "guide:savings-plan"
     ],
     "notes": "Who gets how many points is outside the rule base (TXG-05). Whether credit points can reduce tax on interest, dividends or gains taxed at special rates is open (TXG open question 6). The value is frozen through 2027 (TXG-06)."
   },
   {
     "kind": "term",
-    "id": "",
+    "id": "ychyd-shmlav-lv-60-shnym",
     "term_he": "יחיד שמלאו לו 60 שנים",
     "term_source": {
       "title": "פקודת מס הכנסה, נוסח משולב (Income Tax Ordinance, Hebrew Wikisource mirror), s.121(b)(1) ('הכנסה חייבת בשנת המס של יחיד שמלאו לו 60 שנים')",
@@ -319,14 +492,30 @@
       "strength": "primary"
     },
     "where": [
-      "guide:*:tax",
+      "guide:bank-deposit",
+      "guide:brokerage-account",
+      "guide:child-savings-bank",
+      "guide:child-savings-provident",
+      "guide:current-account",
+      "guide:government-bond",
+      "guide:ira-hishtalmut",
+      "guide:ira-provident",
+      "guide:keren-hishtalmut",
+      "guide:kupat-gemel-lehashkaa",
+      "guide:makam",
+      "guide:money-market-fund-daily",
+      "guide:money-market-fund-renewable",
+      "guide:pension-comprehensive",
+      "guide:pension-general",
+      "guide:provident-for-annuity",
+      "guide:savings-plan",
       "comparison"
     ],
     "notes": "Starting term 'הקלות לבני שישים ומעלה' is not an official name: no source in the rule base names the relief; the law describes the person (s.121(b)(1)) and the guide says 'אם הינך בן 60 ומעלה' (p.46). The law writes the age in digits, TXG-04 quotes 'שישים' in words (source not stated). Kol Zchut's page 'הטבת מס מגיל 60' returned 403 and is not a source. 'Part of investment income': the relief reaches real capital gains and CPI-linked interest (maximum rates) but not unlinked interest at the fixed rate (TXG-07, TXG-08), and only as far as other income has not used the lower bands. Banks withhold at the standard rate; the difference comes back through a return or form 0135 (TXG-25); how banks treat 60+ at source is open (TXG open question 7). Dividends and unlinked-bond gains for 60+ are open (TXG open question 10)."
   },
   {
     "kind": "term",
-    "id": "",
+    "id": "ms-nvsp",
     "term_he": "מס נוסף",
     "term_source": {
       "title": "Sefer HaChukim 3342, 26.12.2024: Economic Efficiency Law (Freeze of Tax Updates and Surtax) 2024, p.150 s.1(2)(c), s.121B(a1) ('יהיה חייב במס נוסף')",
@@ -345,17 +534,34 @@
       "title": "Sefer HaChukim 3342, 26.12.2024: Economic Efficiency Law (Freeze of Tax Updates and Surtax) 2024",
       "url": "https://fs.knesset.gov.il/25/law/25_lsr_5396578.pdf",
       "checked": "2026-10-22",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "Knesset"
     },
     "where": [
-      "guide:*:tax",
+      "guide:bank-deposit",
+      "guide:brokerage-account",
+      "guide:child-savings-bank",
+      "guide:child-savings-provident",
+      "guide:current-account",
+      "guide:government-bond",
+      "guide:ira-hishtalmut",
+      "guide:ira-provident",
+      "guide:keren-hishtalmut",
+      "guide:kupat-gemel-lehashkaa",
+      "guide:makam",
+      "guide:money-market-fund-daily",
+      "guide:money-market-fund-renewable",
+      "guide:pension-comprehensive",
+      "guide:pension-general",
+      "guide:provident-for-annuity",
+      "guide:savings-plan",
       "comparison"
     ],
     "notes": "Official sources in the rule base disagree on where 'מס יסף' is used. The law says 'מס נוסף' (SH 3342, Ordinance s.121B) and TXG-09 quotes the booklet's p.11 heading as 'מס נוסף על הכנסות גבוהות'. The TXG Terms table says the booklet and the press use 'מס יסף', but no quote of it is recorded. The Hebrew title of SH 3342 (English: 'Freeze of Tax Updates and Surtax') was not recorded. Settled through the annual return, and anyone liable must file (TXG-11). Whether banks withhold it at source is open (TXG open question 12)."
   },
   {
     "kind": "term",
-    "id": "",
+    "id": "hknsh-chyybt-mmkvr-hvny",
     "term_he": "הכנסה חייבת ממקור הוני",
     "term_source": {
       "title": "Sefer HaChukim 3342, 26.12.2024: Economic Efficiency Law (Freeze of Tax Updates and Surtax) 2024, p.150 s.1(2)(e)(3), definition",
@@ -372,16 +578,33 @@
       "title": "Sefer HaChukim 3342, 26.12.2024: Economic Efficiency Law (Freeze of Tax Updates and Surtax) 2024",
       "url": "https://fs.knesset.gov.il/25/law/25_lsr_5396578.pdf",
       "checked": "2026-10-22",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "Knesset"
     },
     "where": [
-      "guide:*:tax"
+      "guide:bank-deposit",
+      "guide:brokerage-account",
+      "guide:child-savings-bank",
+      "guide:child-savings-provident",
+      "guide:current-account",
+      "guide:government-bond",
+      "guide:ira-hishtalmut",
+      "guide:ira-provident",
+      "guide:keren-hishtalmut",
+      "guide:kupat-gemel-lehashkaa",
+      "guide:makam",
+      "guide:money-market-fund-daily",
+      "guide:money-market-fund-renewable",
+      "guide:pension-comprehensive",
+      "guide:pension-general",
+      "guide:provident-for-annuity",
+      "guide:savings-plan"
     ],
     "notes": "Starting term 'הכנסה ממקור הוני' maps here. Variant is the wording of s.121B(a1) in the same law. Rent is also inside the definition, and any of these is outside it when it is business income (TXG-10). The term is used only for the extra surtax on capital income."
   },
   {
     "kind": "term",
-    "id": "",
+    "id": "rvvch-hvn-e",
     "term_he": "רווח הון",
     "term_source": {
       "title": "רשות המסים, דע זכויותיך וחובותיך 2025 (Tax Authority guide to the 2025 return), p.46 s.2",
@@ -401,15 +624,30 @@
       "strength": "primary"
     },
     "where": [
-      "guide:*:tax",
       "statement",
-      "form-867"
+      "tax-form",
+      "guide:bank-deposit",
+      "guide:child-savings-bank",
+      "guide:child-savings-provident",
+      "guide:current-account",
+      "guide:government-bond",
+      "guide:ira-hishtalmut",
+      "guide:ira-provident",
+      "guide:keren-hishtalmut",
+      "guide:kupat-gemel-lehashkaa",
+      "guide:makam",
+      "guide:money-market-fund-daily",
+      "guide:money-market-fund-renewable",
+      "guide:pension-comprehensive",
+      "guide:pension-general",
+      "guide:provident-for-annuity",
+      "guide:savings-plan"
     ],
     "notes": "Variant 'ריווח הון' is the spelling of the s.88 definition heading. The law measures cost as remaining original cost (after depreciation). Securities rules are in TXS and TXF."
   },
   {
     "kind": "term",
-    "id": "",
+    "id": "rvvch-hvn-ryaly-e",
     "term_he": "רווח הון ריאלי",
     "term_source": {
       "title": "פקודת מס הכנסה, נוסח משולב (Income Tax Ordinance, Hebrew Wikisource mirror), s.91(b)(1) ('יחיד יהיה חייב במס על רווח הון ריאלי')",
@@ -433,16 +671,29 @@
       "strength": "primary"
     },
     "where": [
-      "guide:*:tax",
+      "ad",
       "statement",
-      "form-867",
-      "ad"
+      "tax-form",
+      "guide:bank-deposit",
+      "guide:child-savings-bank",
+      "guide:child-savings-provident",
+      "guide:current-account",
+      "guide:ira-hishtalmut",
+      "guide:ira-provident",
+      "guide:keren-hishtalmut",
+      "guide:kupat-gemel-lehashkaa",
+      "guide:money-market-fund-daily",
+      "guide:money-market-fund-renewable",
+      "guide:pension-comprehensive",
+      "guide:pension-general",
+      "guide:provident-for-annuity",
+      "guide:savings-plan"
     ],
     "notes": "The Ordinance spells it two ways: 'ריווח הון ריאלי' in the s.88 definition and 'רווח הון ריאלי' in s.91(b)(1). 'רווח ההון הריאלי' is the guide's wording (p.46); 'הרווח הריאלי' is managers' ad wording (TXK Terms, Harel flyer). For unlinked bonds and loans the whole gain counts as real (TXS-03). For a foreign-currency security the exchange rate is the index (TXG-12)."
   },
   {
     "kind": "term",
-    "id": "",
+    "id": "hpsd-hvn",
     "term_he": "הפסד הון",
     "term_source": {
       "title": "פקודת מס הכנסה, נוסח משולב (Income Tax Ordinance, Hebrew Wikisource mirror), s.88",
@@ -460,15 +711,31 @@
       "strength": "primary-mirror"
     },
     "where": [
-      "guide:*:tax",
       "statement",
-      "form-867"
+      "tax-form",
+      "guide:bank-deposit",
+      "guide:brokerage-account",
+      "guide:child-savings-bank",
+      "guide:child-savings-provident",
+      "guide:current-account",
+      "guide:government-bond",
+      "guide:ira-hishtalmut",
+      "guide:ira-provident",
+      "guide:keren-hishtalmut",
+      "guide:kupat-gemel-lehashkaa",
+      "guide:makam",
+      "guide:money-market-fund-daily",
+      "guide:money-market-fund-renewable",
+      "guide:pension-comprehensive",
+      "guide:pension-general",
+      "guide:provident-for-annuity",
+      "guide:savings-plan"
     ],
     "notes": "Offsetting losses is in TXS and TXF. How a nominal gain smaller than the inflationary amount (a real loss) is treated is open (TXG open question 13)."
   },
   {
     "kind": "term",
-    "id": "",
+    "id": "skvm-aynpltzyvny-e",
     "term_he": "סכום אינפלציוני",
     "term_source": {
       "title": "פקודת מס הכנסה, נוסח משולב (Income Tax Ordinance, Hebrew Wikisource mirror), s.88",
@@ -487,14 +754,29 @@
       "strength": "primary"
     },
     "where": [
-      "guide:*:tax",
-      "statement"
+      "statement",
+      "guide:bank-deposit",
+      "guide:child-savings-bank",
+      "guide:child-savings-provident",
+      "guide:current-account",
+      "guide:government-bond",
+      "guide:ira-hishtalmut",
+      "guide:ira-provident",
+      "guide:keren-hishtalmut",
+      "guide:kupat-gemel-lehashkaa",
+      "guide:makam",
+      "guide:money-market-fund-daily",
+      "guide:money-market-fund-renewable",
+      "guide:pension-comprehensive",
+      "guide:pension-general",
+      "guide:provident-for-annuity",
+      "guide:savings-plan"
     ],
     "notes": "Only the part built up before 1994 is taxed (TXG-13), which matters only for old assets. For a foreign-currency security the exchange rate is the index (TXG-12)."
   },
   {
     "kind": "term",
-    "id": "",
+    "id": "mdd-e",
     "term_he": "מדד",
     "term_source": {
       "title": "פקודת מס הכנסה, נוסח משולב (Income Tax Ordinance, Hebrew Wikisource mirror), s.88 and s.125C(a), definition 'מדד'",
@@ -513,14 +795,27 @@
       "strength": "primary-mirror"
     },
     "where": [
-      "guide:*:tax",
-      "statement"
+      "statement",
+      "guide:child-savings-bank",
+      "guide:child-savings-provident",
+      "guide:current-account",
+      "guide:ira-hishtalmut",
+      "guide:ira-provident",
+      "guide:keren-hishtalmut",
+      "guide:kupat-gemel-lehashkaa",
+      "guide:makam",
+      "guide:money-market-fund-daily",
+      "guide:money-market-fund-renewable",
+      "guide:pension-comprehensive",
+      "guide:pension-general",
+      "guide:provident-for-annuity",
+      "guide:savings-plan"
     ],
     "notes": "The value that counts is the one last published before the day in question (TXG-12, TXG-14). The exchange-rate rule is for a security held by an individual that is denominated in or linked to a foreign currency (s.88); for interest the same applies to FX-linked assets (TX2, TXI)."
   },
   {
     "kind": "term",
-    "id": "",
+    "id": "mdd-hmchyrym-ltzrkn",
     "term_he": "מדד המחירים לצרכן",
     "term_source": {
       "title": "פקודת מס הכנסה, נוסח משולב (Income Tax Ordinance, Hebrew Wikisource mirror), s.88 ('מדד המחירים לצרכן כפי שפורסם לאחרונה לפני היום שבו מדובר')",
@@ -529,27 +824,43 @@
     "variants_he": [],
     "explain_he": "מדד רשמי שמפרסמת הלשכה המרכזית לסטטיסטיקה; לפיו מחשבים הצמדה ואת החלק האינפלציוני ברווח",
     "rule_ids": [
-      "TXG-14",
+      "BANK-26",
       "TXG-12",
-      "BANK-26"
+      "TXG-14"
     ],
     "source": {
       "title": "Bank of Israel, Directive 447 (concentrated publication of deposit rates), Annex A",
       "url": "https://www.boi.org.il/media/orgfwntb/447.pdf",
       "checked": "2026-10-22",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "Bank of Israel"
     },
     "where": [
-      "guide:*:tax",
-      "guide:bank-current-account-deposits",
+      "app",
       "statement",
-      "app"
+      "guide:bank-deposit",
+      "guide:brokerage-account",
+      "guide:child-savings-bank",
+      "guide:child-savings-provident",
+      "guide:current-account",
+      "guide:government-bond",
+      "guide:ira-hishtalmut",
+      "guide:ira-provident",
+      "guide:keren-hishtalmut",
+      "guide:kupat-gemel-lehashkaa",
+      "guide:makam",
+      "guide:money-market-fund-daily",
+      "guide:money-market-fund-renewable",
+      "guide:pension-comprehensive",
+      "guide:pension-general",
+      "guide:provident-for-annuity",
+      "guide:savings-plan"
     ],
     "notes": "The rule base says who publishes it (TXG-14, Ordinance mirror) and what it is used for (linkage, BANK-26; inflationary amount, TXG-12), but not what the index measures, so the explanation stops there. Source is BoI Directive 447 as the strongest source among the rules; the publisher fact rests on TXG-14 (primary-mirror). The same spelling is used in the law and in BoI Directive 447 ('צמוד למדד המחירים לצרכן')."
   },
   {
     "kind": "term",
-    "id": "",
+    "id": "ryaly",
     "term_he": "ריאלי",
     "term_source": {
       "title": "רשות המסים, דע זכויותיך וחובותיך 2025 (Tax Authority guide to the 2025 return), p.46 ('רווח ההון הריאלי')",
@@ -558,9 +869,9 @@
     "variants_he": [],
     "explain_he": "אחרי שמורידים את החלק שנבע מעליית מדד המחירים לצרכן, כלומר מהאינפלציה",
     "rule_ids": [
+      "BANK-26",
       "TXG-12",
-      "TXG-13",
-      "BANK-26"
+      "TXG-13"
     ],
     "source": {
       "title": "רשות המסים, דע זכויותיך וחובותיך 2025 (Tax Authority guide to the 2025 return)",
@@ -569,15 +880,30 @@
       "strength": "primary"
     },
     "where": [
-      "guide:*:tax",
-      "comparison",
-      "guide:bank-current-account-deposits"
+      "guide:bank-deposit",
+      "guide:brokerage-account",
+      "guide:child-savings-bank",
+      "guide:child-savings-provident",
+      "guide:current-account",
+      "guide:government-bond",
+      "guide:ira-hishtalmut",
+      "guide:ira-provident",
+      "guide:keren-hishtalmut",
+      "guide:kupat-gemel-lehashkaa",
+      "guide:makam",
+      "guide:money-market-fund-daily",
+      "guide:money-market-fund-renewable",
+      "guide:pension-comprehensive",
+      "guide:pension-general",
+      "guide:provident-for-annuity",
+      "guide:savings-plan",
+      "comparison"
     ],
     "notes": "The rule base defines 'real' only through 'real capital gain' (gain minus inflationary amount, TXG-12) and uses 'real rate' for CPI-linked deposits (BANK-26); the standalone adjective has no definition. For a foreign-currency security the index is the exchange rate (TXG-12), so there 'real' means after the currency change, not after inflation."
   },
   {
     "kind": "term",
-    "id": "",
+    "id": "nvmynly",
     "term_he": "נומינלי",
     "term_source": {
       "title": "Bank of Israel, Directive 447 (concentrated publication of deposit rates), Annex A, Annex A ('שיעור הריבית המוצעת (נומינלי שנתי)')",
@@ -589,9 +915,9 @@
     ],
     "explain_he": "הסכום כפי שהוא בשקלים, בלי להוריד את החלק שנבע מהאינפלציה",
     "rule_ids": [
+      "CAT-04",
       "TXI-03",
-      "TXS-03",
-      "CAT-04"
+      "TXS-03"
     ],
     "source": {
       "title": "פקודת מס הכנסה, נוסח משולב (Income Tax Ordinance, Hebrew Wikisource mirror)",
@@ -600,16 +926,31 @@
       "strength": "primary-mirror"
     },
     "where": [
-      "guide:*:tax",
-      "comparison",
-      "guide:bank-current-account-deposits",
-      "statement"
+      "statement",
+      "guide:bank-deposit",
+      "guide:brokerage-account",
+      "guide:child-savings-bank",
+      "guide:child-savings-provident",
+      "guide:current-account",
+      "guide:government-bond",
+      "guide:ira-hishtalmut",
+      "guide:ira-provident",
+      "guide:keren-hishtalmut",
+      "guide:kupat-gemel-lehashkaa",
+      "guide:makam",
+      "guide:money-market-fund-daily",
+      "guide:money-market-fund-renewable",
+      "guide:pension-comprehensive",
+      "guide:pension-general",
+      "guide:provident-for-annuity",
+      "guide:savings-plan",
+      "comparison"
     ],
     "notes": "No rule defines the word; the meaning rests on TXI-03 (15% on 'the whole nominal interest; there is no inflation deduction') and TXS-03 ('the whole nominal gain is taxed and there is no inflation relief'), both from the Ordinance via Wikisource. Variants: 'נומינליות' in the CMA dictionaries ('תשואות נומינליות ברוטו', CAT-04) and 'נומינלית' in a bank product page ('קרן מובטחת (נומינלית)', TX2 Terms). CAT-04: CMA yields are nominal and before management fees."
   },
   {
     "kind": "term",
-    "id": "",
+    "id": "hprshy-htzmdh-e",
     "term_he": "הפרשי הצמדה",
     "term_source": {
       "title": "פקודת מס הכנסה, נוסח משולב (Income Tax Ordinance, Hebrew Wikisource mirror), s.1 and s.2(4)",
@@ -618,8 +959,8 @@
     "variants_he": [],
     "explain_he": "סכום שנוסף לחוב או לפיקדון בגלל הצמדה למדד או לשער מטבע",
     "rule_ids": [
-      "TXI-05",
-      "TXG-28"
+      "TXG-28",
+      "TXI-05"
     ],
     "source": {
       "title": "פקודת מס הכנסה, נוסח משולב (Income Tax Ordinance, Hebrew Wikisource mirror)",
@@ -628,15 +969,27 @@
       "strength": "primary-mirror"
     },
     "where": [
-      "guide:*:tax",
       "statement",
-      "form-867"
+      "tax-form",
+      "guide:brokerage-account",
+      "guide:child-savings-bank",
+      "guide:child-savings-provident",
+      "guide:current-account",
+      "guide:ira-hishtalmut",
+      "guide:ira-provident",
+      "guide:makam",
+      "guide:money-market-fund-daily",
+      "guide:money-market-fund-renewable",
+      "guide:pension-comprehensive",
+      "guide:pension-general",
+      "guide:provident-for-annuity",
+      "guide:savings-plan"
     ],
     "notes": "On a fully linked asset an individual's linkage differentials are exempt, so only real interest is taxed; partial linkage is not exempt (TXI-05). Detail belongs to TXI."
   },
   {
     "kind": "term",
-    "id": "",
+    "id": "dmy-nykyvn-e",
     "term_he": "דמי ניכיון",
     "term_source": {
       "title": "פקודת מס הכנסה, נוסח משולב (Income Tax Ordinance, Hebrew Wikisource mirror), s.125C(a), as written in TXG-14",
@@ -657,15 +1010,32 @@
       "strength": "primary-mirror"
     },
     "where": [
-      "guide:*:tax",
-      "guide:government-bonds-and-makam:tax",
-      "statement"
+      "statement",
+      "guide:bank-deposit",
+      "guide:brokerage-account",
+      "guide:child-savings-bank",
+      "guide:child-savings-provident",
+      "guide:current-account",
+      "guide:government-bond",
+      "guide:ira-hishtalmut",
+      "guide:ira-provident",
+      "guide:keren-hishtalmut",
+      "guide:kupat-gemel-lehashkaa",
+      "guide:money-market-fund-daily",
+      "guide:money-market-fund-renewable",
+      "guide:pension-comprehensive",
+      "guide:pension-general",
+      "guide:provident-for-annuity",
+      "guide:savings-plan",
+      "exposure:government-bond-cpi",
+      "exposure:government-bond-unlinked",
+      "exposure:makam"
     ],
     "notes": "The rule base quotes the Ordinance with two spellings: 'דמי ניכיון' (TXG-14, s.125C(a)) and 'דמי נכיון' (TXG-28, s.2(4)). The mirror was paraphrased by the fetch tool, so the exact spelling should be re-read. Detail belongs to TXI."
   },
   {
     "kind": "term",
-    "id": "",
+    "id": "nykvy-ms-bmkvr-e",
     "term_he": "ניכוי מס במקור",
     "term_source": {
       "title": "רשות המסים, הנחיות למתן פטור מניכוי מס במקור במשיכת סכומים מקרן השתלמות – הוראת שעה, 05.08.2020, title",
@@ -685,15 +1055,24 @@
       "strength": "primary"
     },
     "where": [
-      "guide:*:tax",
       "statement",
-      "form-867"
+      "tax-form",
+      "guide:child-savings-bank",
+      "guide:child-savings-provident",
+      "guide:ira-hishtalmut",
+      "guide:ira-provident",
+      "guide:money-market-fund-daily",
+      "guide:money-market-fund-renewable",
+      "guide:pension-comprehensive",
+      "guide:pension-general",
+      "guide:provident-for-annuity",
+      "guide:savings-plan"
     ],
     "notes": "Tax Authority documents in the rule base use 'ניכוי מס במקור' (TXH and TXF source titles), as do bank statements (BRK Terms). The TXG Terms table gives 'ניכוי במקור' citing guide p.38, and Bank Hapoalim's deposit terms head a section 'ניכוי במקור' (TX2). Withholding is not always the final tax: a person may owe more or get money back (TXG-08, TXG-25). Capital-gains withholding on securities is in TXS and TXF."
   },
   {
     "kind": "term",
-    "id": "",
+    "id": "tvps-867-e",
     "term_he": "טופס 867",
     "term_source": {
       "title": "רשות המסים, דע זכויותיך וחובותיך 2025 (Tax Authority guide to the 2025 return), p.40 ('לפי הסכומים המופיעים בטופסי 867')",
@@ -714,16 +1093,29 @@
       "strength": "primary"
     },
     "where": [
-      "guide:*:tax",
-      "form-867",
       "statement",
-      "tax-return"
+      "tax-form",
+      "guide:child-savings-bank",
+      "guide:child-savings-provident",
+      "guide:current-account",
+      "guide:government-bond",
+      "guide:ira-hishtalmut",
+      "guide:ira-provident",
+      "guide:keren-hishtalmut",
+      "guide:kupat-gemel-lehashkaa",
+      "guide:makam",
+      "guide:money-market-fund-daily",
+      "guide:money-market-fund-renewable",
+      "guide:pension-comprehensive",
+      "guide:pension-general",
+      "guide:provident-for-annuity",
+      "guide:savings-plan"
     ],
     "notes": "'אישור שנתי' is the guide's description (p.38); 'טופס 0867' is the TXI Terms spelling. Per the regulations as read (fetch-tool paraphrase, re-read before encoding), it is given on request, no later than 20 March for the previous tax year."
   },
   {
     "kind": "term",
-    "id": "",
+    "id": "dvch-shnty",
     "term_he": "דוח שנתי",
     "term_source": {
       "title": "רשות המסים, דע זכויותיך וחובותיך 2025 (Tax Authority guide to the 2025 return), pp.3-8",
@@ -748,15 +1140,31 @@
       "strength": "primary"
     },
     "where": [
-      "guide:*:tax",
-      "comparison",
-      "tax-return"
+      "tax-form",
+      "guide:bank-deposit",
+      "guide:brokerage-account",
+      "guide:child-savings-bank",
+      "guide:child-savings-provident",
+      "guide:current-account",
+      "guide:government-bond",
+      "guide:ira-hishtalmut",
+      "guide:ira-provident",
+      "guide:keren-hishtalmut",
+      "guide:kupat-gemel-lehashkaa",
+      "guide:makam",
+      "guide:money-market-fund-daily",
+      "guide:money-market-fund-renewable",
+      "guide:pension-comprehensive",
+      "guide:pension-general",
+      "guide:provident-for-annuity",
+      "guide:savings-plan",
+      "comparison"
     ],
     "notes": "Official wording differs: the Tax Authority guide says 'דוח שנתי'; the Exemption Regulations (title) and the booklet's p.15 row ('פטור מהגשה דין וחשבון 134א') say 'דין וחשבון'; the booklet also writes 'דו\"ח'. Starting term 'חובת דיווח' is not an official term in the rule base; the guide says 'חייב בהגשת דוח שנתי' (TXG-20), and the checklist row for reporting-obligation covers it. Whether a saver whose only non-withheld income is foreign-broker gains must file is open (TXG open question 4)."
   },
   {
     "kind": "term",
-    "id": "",
+    "id": "ptvr-mhgsht-dvch",
     "term_he": "פטור מהגשת דוח",
     "term_source": {
       "title": "רשות המסים, דע זכויותיך וחובותיך 2025 (Tax Authority guide to the 2025 return), p.4 ('המקנים פטור מהגשת דוח')",
@@ -778,14 +1186,30 @@
       "strength": "primary"
     },
     "where": [
-      "guide:*:tax",
+      "guide:bank-deposit",
+      "guide:brokerage-account",
+      "guide:child-savings-bank",
+      "guide:child-savings-provident",
+      "guide:current-account",
+      "guide:government-bond",
+      "guide:ira-hishtalmut",
+      "guide:ira-provident",
+      "guide:keren-hishtalmut",
+      "guide:kupat-gemel-lehashkaa",
+      "guide:makam",
+      "guide:money-market-fund-daily",
+      "guide:money-market-fund-renewable",
+      "guide:pension-comprehensive",
+      "guide:pension-general",
+      "guide:provident-for-annuity",
+      "guide:savings-plan",
       "comparison"
     ],
     "notes": "Variants: Exemption Regulations title ('פטור מהגשת דין וחשבון') and booklet p.15 row ('פטור מהגשה דין וחשבון'). Overriding triggers (surtax, foreign assets above the threshold, transfers abroad) are in TXG-18. The 2026 ceilings are not yet published; the 2025 figures are expected to hold because of the freeze (TXG open question 5)."
   },
   {
     "kind": "term",
-    "id": "",
+    "id": "hchzr-ms",
     "term_he": "החזר מס",
     "term_source": {
       "title": "רשות המסים, דע זכויותיך וחובותיך 2025 (Tax Authority guide to the 2025 return), p.5",
@@ -806,14 +1230,30 @@
       "strength": "primary"
     },
     "where": [
-      "guide:*:tax",
-      "tax-return"
+      "tax-form",
+      "guide:bank-deposit",
+      "guide:brokerage-account",
+      "guide:child-savings-bank",
+      "guide:child-savings-provident",
+      "guide:current-account",
+      "guide:government-bond",
+      "guide:ira-hishtalmut",
+      "guide:ira-provident",
+      "guide:keren-hishtalmut",
+      "guide:kupat-gemel-lehashkaa",
+      "guide:makam",
+      "guide:money-market-fund-daily",
+      "guide:money-market-fund-renewable",
+      "guide:pension-comprehensive",
+      "guide:pension-general",
+      "guide:provident-for-annuity",
+      "guide:savings-plan"
     ],
     "notes": "A request can be filed up to six years after the end of the tax year (TXG-25). For deposit and savings-plan interest there is also an automatic refund route without a request (TXI-23), hence 'usually'. Examples in the rule base: a 60+ saver taxed at the full rate at source; losses at one bank and gains at another."
   },
   {
     "kind": "term",
-    "id": "",
+    "id": "tvps-0135",
     "term_he": "טופס 0135",
     "term_source": {
       "title": "רשות המסים, דע זכויותיך וחובותיך 2025 (Tax Authority guide to the 2025 return), p.7 s.4 ('טופס מקוצר - בקשה להחזר מס')",
@@ -833,14 +1273,30 @@
       "strength": "primary"
     },
     "where": [
-      "guide:*:tax",
-      "tax-return"
+      "tax-form",
+      "guide:bank-deposit",
+      "guide:brokerage-account",
+      "guide:child-savings-bank",
+      "guide:child-savings-provident",
+      "guide:current-account",
+      "guide:government-bond",
+      "guide:ira-hishtalmut",
+      "guide:ira-provident",
+      "guide:keren-hishtalmut",
+      "guide:kupat-gemel-lehashkaa",
+      "guide:makam",
+      "guide:money-market-fund-daily",
+      "guide:money-market-fund-renewable",
+      "guide:pension-comprehensive",
+      "guide:pension-general",
+      "guide:provident-for-annuity",
+      "guide:savings-plan"
     ],
     "notes": "Not usable by people with business income, foreign income, controlling shareholders, capital gains other than from traded securities, and others listed on guide p.7 (TXG-25). Foreign income is excluded, so a saver at a foreign broker cannot use it."
   },
   {
     "kind": "term",
-    "id": "",
+    "id": "mkdmt-ms-e",
     "term_he": "מקדמת מס",
     "term_source": {
       "title": "רשות המסים, דע זכויותיך וחובותיך 2025 (Tax Authority guide to the 2025 return), p.3 ('מקדמת מס')",
@@ -850,7 +1306,7 @@
       "מקדמה",
       "מקדמות"
     ],
-    "explain_he": "תשלום מס על החשבון כשהמס לא נוכה במקור, למשל על רווחים בחשבון השקעות בחו\"ל",
+    "explain_he": "תשלום מס על החשבון כשהמס לא נוכה במקור, למשל על רווחים בחשבון ניירות ערך בחו\"ל",
     "rule_ids": [
       "TXG-19",
       "TXG-20",
@@ -863,14 +1319,28 @@
       "strength": "primary"
     },
     "where": [
-      "guide:*:tax",
-      "guide:brokerage-account:tax"
+      "guide:bank-deposit",
+      "guide:child-savings-bank",
+      "guide:child-savings-provident",
+      "guide:current-account",
+      "guide:government-bond",
+      "guide:ira-hishtalmut",
+      "guide:ira-provident",
+      "guide:keren-hishtalmut",
+      "guide:kupat-gemel-lehashkaa",
+      "guide:makam",
+      "guide:money-market-fund-daily",
+      "guide:money-market-fund-renewable",
+      "guide:pension-comprehensive",
+      "guide:pension-general",
+      "guide:provident-for-annuity",
+      "guide:savings-plan"
     ],
     "notes": "Gains on traded securities not fully withheld: report and advance twice a year (TXG-20). Special-rate income: advance by 30 April of the following year (TXG-22). Late payment: TXG-23."
   },
   {
     "kind": "term",
-    "id": "",
+    "id": "mslvl-hdyvvch-hmkvtzr",
     "term_he": "מסלול הדיווח המקוצר",
     "term_source": {
       "title": "רשות המסים, דע זכויותיך וחובותיך 2025 (Tax Authority guide to the 2025 return), p.3 (מסלול \"הדיווח המקוצר\")",
@@ -891,14 +1361,13 @@
       "strength": "primary"
     },
     "where": [
-      "guide:brokerage-account:tax",
-      "guide:etfs-and-index-funds:tax"
+      "guide:brokerage-account"
     ],
     "notes": "Read from a rendered page image; form numbers were not legible. All other filing conditions must still hold (TXG-18). How it fits with the guide's statement that untaxed securities gains require a return (TXG-20) is open (TXG open question 4)."
   },
   {
     "kind": "term",
-    "id": "",
+    "id": "nksy-chvtz",
     "term_he": "נכסי חוץ",
     "term_source": {
       "title": "רשות המסים, דע זכויותיך וחובותיך 2025 (Tax Authority guide to the 2025 return), p.4 (per the TXG Terms table)",
@@ -918,14 +1387,13 @@
       "strength": "primary"
     },
     "where": [
-      "guide:brokerage-account:tax",
-      "guide:etfs-and-index-funds:tax"
+      "guide:brokerage-account"
     ],
     "notes": "The Hebrew is given only in the TXG Terms table, without a quote. Counted together with spouse and children under 18, tested on any day of the year; does not apply to those entitled to the s.14 exemption (TXG-18). A separate trigger is transferring a large sum abroad within twelve months (TXG-18)."
   },
   {
     "kind": "term",
-    "id": "",
+    "id": "kns-pygvr",
     "term_he": "קנס פיגור",
     "term_source": {
       "title": "רשות המסים, דע זכויותיך וחובותיך 2025 (Tax Authority guide to the 2025 return), p.119 ('קנס פיגור')",
@@ -943,13 +1411,13 @@
       "strength": "primary"
     },
     "where": [
-      "guide:brokerage-account:tax"
+      "guide:brokerage-account"
     ],
     "notes": "The assessing officer may reduce or cancel fines and interest on request in some cases (guide p.119, not detailed in the rule base)."
   },
   {
     "kind": "term",
-    "id": "",
+    "id": "hknsh-shaynh-mabvdh",
     "term_he": "הכנסה שאינה מעבודה",
     "term_source": {
       "title": "המוסד לביטוח לאומי, מי שיש לו הכנסה שאינה מעבודה: חובת תשלום ושיעורי דמי ביטוח, ('מי שיש לו הכנסה שאינה מעבודה')",
@@ -967,16 +1435,33 @@
       "title": "המוסד לביטוח לאומי, מי שיש לו הכנסה שאינה מעבודה: חובת תשלום ושיעורי דמי ביטוח",
       "url": "https://www.btl.gov.il/Insurance/National%20Insurance/type_list/income_not_from_work/Pages/HovtTaslom.aspx",
       "checked": "2026-10-22",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "National Insurance Institute"
     },
     "where": [
-      "guide:*:tax"
+      "guide:bank-deposit",
+      "guide:brokerage-account",
+      "guide:child-savings-bank",
+      "guide:child-savings-provident",
+      "guide:current-account",
+      "guide:government-bond",
+      "guide:ira-hishtalmut",
+      "guide:ira-provident",
+      "guide:keren-hishtalmut",
+      "guide:kupat-gemel-lehashkaa",
+      "guide:makam",
+      "guide:money-market-fund-daily",
+      "guide:money-market-fund-renewable",
+      "guide:pension-comprehensive",
+      "guide:pension-general",
+      "guide:provident-for-annuity",
+      "guide:savings-plan"
     ],
     "notes": "NII itself uses both forms: 'הכנסה שאינה מעבודה' (duty page) and 'הכנסה שלא מעבודה' (rates page title). Examples are s.2 Ordinance sources named in TXG-28. Being in this category does not mean contributions are due: special-rate interest and dividends, and s.122 rent, are exempt (TXG-27), and capital gains are outside the base (TXG-28)."
   },
   {
     "kind": "term",
-    "id": "",
+    "id": "dmy-bytvch-lavmy",
     "term_he": "דמי ביטוח לאומי",
     "term_source": {
       "title": "המוסד לביטוח לאומי, מי שיש לו הכנסה שאינה מעבודה: חובת תשלום ושיעורי דמי ביטוח, ('חייב לשלם דמי ביטוח לאומי ודמי ביטוח בריאות עבור עצמו')",
@@ -997,18 +1482,35 @@
       "title": "המוסד לביטוח לאומי, למי שאינם עובדים ולבעלי הכנסה שלא מעבודה - שיעורי וסכומי דמי ביטוח",
       "url": "https://www.btl.gov.il/Insurance/Rates/Pages/%D7%9E%D7%99%20%D7%A9%D7%90%D7%99%D7%A0%D7%9D%20%D7%A2%D7%95%D7%91%D7%93%D7%99%D7%9D%20%D7%95%D7%91%D7%A2%D7%9C%D7%99%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%D7%A9%D7%9C%D7%90%20%D7%9E%D7%A2%D7%91%D7%95%D7%93%D7%94.aspx",
       "checked": "2026-10-22",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "National Insurance Institute"
     },
     "where": [
-      "guide:*:tax",
       "payslip",
+      "guide:bank-deposit",
+      "guide:brokerage-account",
+      "guide:child-savings-bank",
+      "guide:child-savings-provident",
+      "guide:current-account",
+      "guide:government-bond",
+      "guide:ira-hishtalmut",
+      "guide:ira-provident",
+      "guide:keren-hishtalmut",
+      "guide:kupat-gemel-lehashkaa",
+      "guide:makam",
+      "guide:money-market-fund-daily",
+      "guide:money-market-fund-renewable",
+      "guide:pension-comprehensive",
+      "guide:pension-general",
+      "guide:provident-for-annuity",
+      "guide:savings-plan",
       "comparison"
     ],
     "notes": "Starting term 'ביטוח לאומי על הכנסות מהון' is not an official term; NII's category is 'הכנסה שאינה מעבודה'. Interest and dividends taxed at the special rates are exempt by statute (TXG-27, NI Law s.350(a)(6), mirror). Capital gains are outside the base by inference from two statutes, with no NII statement (TXG-28). Interest taxed at marginal rates, such as study-fund gains withdrawn early, may be charged (TXG-27, TXG-34), hence 'usually'. Whether an employee with passive income gets the small-income disregard is open (TXG open question 2)."
   },
   {
     "kind": "term",
-    "id": "",
+    "id": "dmy-bytvch-bryavt",
     "term_he": "דמי ביטוח בריאות",
     "term_source": {
       "title": "המוסד לביטוח לאומי, מי שיש לו הכנסה שאינה מעבודה: חובת תשלום ושיעורי דמי ביטוח, ('דמי ביטוח לאומי ודמי ביטוח בריאות')",
@@ -1026,7 +1528,8 @@
       "title": "המוסד לביטוח לאומי, מי שיש לו הכנסה שאינה מעבודה: חובת תשלום ושיעורי דמי ביטוח",
       "url": "https://www.btl.gov.il/Insurance/National%20Insurance/type_list/income_not_from_work/Pages/HovtTaslom.aspx",
       "checked": "2026-10-22",
-      "strength": "primary"
+      "strength": "primary",
+      "publisher": "National Insurance Institute"
     },
     "where": [
       "payslip"
@@ -1035,7 +1538,7 @@
   },
   {
     "kind": "term",
-    "id": "",
+    "id": "shkr-mmvtza-bmshk",
     "term_he": "שכר ממוצע במשק",
     "term_source": {
       "title": "רשות המסים, לוח עזר לחישוב מס הכנסה ממשכורת ושכר עבודה לחודש ינואר 2026 ואילך, מעודכן לאפריל 2026 (deductions booklet), p.12 ('שכר ממוצע במשק')",
@@ -1044,8 +1547,8 @@
     "variants_he": [],
     "explain_he": "השכר הממוצע במשק לאותה שנה; לפיו מתעדכנים ספים בביטוח לאומי וחלק מהתקרות בחיסכון הפנסיוני",
     "rule_ids": [
-      "TXG-29",
-      "TXG-06"
+      "TXG-06",
+      "TXG-29"
     ],
     "source": {
       "title": "רשות המסים, לוח עזר לחישוב מס הכנסה ממשכורת ושכר עבודה לחודש ינואר 2026 ואילך, מעודכן לאפריל 2026 (deductions booklet)",
@@ -1054,15 +1557,29 @@
       "strength": "primary"
     },
     "where": [
-      "guide:*:tax",
-      "guide:pension-and-gemel-lekitzba",
-      "guide:keren-hishtalmut"
+      "guide:bank-deposit",
+      "guide:brokerage-account",
+      "guide:child-savings-bank",
+      "guide:child-savings-provident",
+      "guide:current-account",
+      "guide:government-bond",
+      "guide:ira-hishtalmut",
+      "guide:ira-provident",
+      "guide:keren-hishtalmut",
+      "guide:kupat-gemel-lehashkaa",
+      "guide:makam",
+      "guide:money-market-fund-daily",
+      "guide:money-market-fund-renewable",
+      "guide:pension-comprehensive",
+      "guide:pension-general",
+      "guide:provident-for-annuity",
+      "guide:savings-plan"
     ],
     "notes": "Only part of the pension ceilings follow the average wage: the employee's s.45A/47 ceilings are CPI-linked and frozen (coverage.md F3; TXP). Who computes and publishes the average wage is not in the rule base."
   },
   {
     "kind": "term",
-    "id": "",
+    "id": "bal-mnyvt-mhvty",
     "term_he": "בעל מניות מהותי",
     "term_source": {
       "title": "פקודת מס הכנסה, נוסח משולב (Income Tax Ordinance, Hebrew Wikisource mirror), s.88 (per the TXG Terms table)",
@@ -1071,8 +1588,8 @@
     "variants_he": [],
     "explain_he": "מי שמחזיק חלק גדול מאמצעי השליטה בחברה; חלים עליו שיעורי מס אחרים",
     "rule_ids": [
-      "TXG-15",
-      "TXG-07"
+      "TXG-07",
+      "TXG-15"
     ],
     "source": {
       "title": "פקודת מס הכנסה, נוסח משולב (Income Tax Ordinance, Hebrew Wikisource mirror)",
@@ -1081,7 +1598,23 @@
       "strength": "primary-mirror"
     },
     "where": [
-      "guide:*:tax"
+      "guide:bank-deposit",
+      "guide:brokerage-account",
+      "guide:child-savings-bank",
+      "guide:child-savings-provident",
+      "guide:current-account",
+      "guide:government-bond",
+      "guide:ira-hishtalmut",
+      "guide:ira-provident",
+      "guide:keren-hishtalmut",
+      "guide:kupat-gemel-lehashkaa",
+      "guide:makam",
+      "guide:money-market-fund-daily",
+      "guide:money-market-fund-renewable",
+      "guide:pension-comprehensive",
+      "guide:pension-general",
+      "guide:provident-for-annuity",
+      "guide:savings-plan"
     ],
     "notes": "Outside the site's scope: the rule base covers individuals who are not substantial shareholders (TXG scope). Met only in exceptions, for example a higher withholding rate on dividends (TXG-15)."
   },

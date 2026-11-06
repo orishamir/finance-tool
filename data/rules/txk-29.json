@@ -1,8 +1,8 @@
 {
   "id": "TXK-29",
-  "title": "Child savings, bank track: the general rules for deposit interest would apply (inference)",
-  "title_he": "חיסכון לכל ילד במסלול הבנק: היסק לכלל המס על הריבית",
-  "text_he": "זהו היסק ולא נוסח חוק: במסלול הבנק הכסף צובר ריבית בבנק, ושום סעיף בפקודה או בחוק הביטוח הלאומי לא פוטר את הריבית הזאת ולא קובע לה שיעור משלה. לכן חלים עליה הכללים הרגילים לריבית של יחיד מפיקדון: במסלול הלא צמוד ובמסלול הפריים שיעור קבוע על כל הריבית, ובמסלול הצמוד למדד שיעור מרבי על הריבית שמעל ההצמדה, וההצמדה עצמה פטורה; הבנק מנכה במקור כשהוא משלם. שתי שאלות לא הוכרעו: החוק מחזיק את הכסף בחשבון נאמנות שההורה הוא הנאמן שלו, ולא נבדק אם פרק הנאמנויות בפקודה חל עליו; וחוזר הביטוח הלאומי נוקב בשיעור אחד לשני המסלולים, ששונה מהשיעור שבחוק במסלולים הלא צמודים.",
+  "title": "Child savings, bank track: the existing tax rules apply (Ministry of Finance); by them 15% on unlinked tracks, up to 25% of the real interest on the linked one (reading)",
+  "title_he": "חיסכון לכל ילד במסלול הבנק: חלים כללי המס הרגילים לריבית",
+  "text_he": "משרד האוצר כתב לבנקים, בתשובות למכרז של התוכנית, שמדיניות המס הקיימת חלה על כל מסלולי החיסכון, ושום סעיף בפקודה או בחוק הביטוח הלאומי לא פוטר את הריבית ולא קובע לה שיעור משלו. לכן חלים הכללים הרגילים לריבית של יחיד מפיקדון: במסלול הלא צמוד ובמסלול הפריים שיעור קבוע על כל הריבית, ובמסלול הצמוד למדד שיעור מרבי על הריבית שמעל ההצמדה, וההצמדה עצמה פטורה; הבנק מנכה במקור. השיעורים האלה הם קריאה של הכללים, כי שום טקסט רשמי לא נוקב בהם לחיסכון לכל ילד. בעל החשבון הוא הילד וההורה מנהל אותו בנאמנות; לא נבדק אם פרק הנאמנויות בפקודה חל עליו, וחוזר הביטוח הלאומי נוקב בשיעור אחד לשני המסלולים, ששונה מהשיעור הרגיל במסלולים הלא צמודים.",
   "strength": "primary",
   "dimensions": [
     "tax-at-exit",
@@ -13,6 +13,47 @@
   "checked": "2026-11-06",
   "scope": "general",
   "sources": [
+    {
+      "url": "https://mr.gov.il/ilgstorefront/he/p/attachment/005056BF19AF1EDA95B333678AA98121/%D7%9E%D7%A1%D7%9E%D7%9B%D7%99%20%D7%94%D7%9C%D7%99%D7%9A#page=7",
+      "title": "משרד האוצר, אגף החשב הכללי: מכרז 1226/2016 לבחירת בנקים וקופות גמל בתוכנית חיסכון לכל ילד, הודעה מס' 1 (מעודכנת), 3.11.2016",
+      "title_he": "משרד האוצר, אגף החשב הכללי: מכרז 1226/2016 לבחירת בנקים וקופות גמל בתוכנית חיסכון לכל ילד, הודעה מס' 1 (מעודכנת), 3.11.2016",
+      "publisher": "Government procurement site (mr.gov.il)",
+      "publisher_he": "משרד האוצר, אגף החשב הכללי",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.7",
+      "locator_he": "עמוד 7",
+      "quote": "מדיניות המס הקיימת תחול על כל המכשירים המפורטים במכרז זה",
+      "checked": "2026-11-06",
+      "qualifier": "(the Ministry of Finance; not a tax authority)"
+    },
+    {
+      "url": "https://mr.gov.il/ilgstorefront/he/p/attachment/005056BF19AF1EDA95B333678AA98121/%D7%9E%D7%A1%D7%9E%D7%9B%D7%99%20%D7%94%D7%9C%D7%99%D7%9A#page=25",
+      "title": "משרד האוצר, אגף החשב הכללי: מכרז 1226/2016, הודעה מס' 1 (מעודכנת), 3.11.2016",
+      "title_he": "משרד האוצר, אגף החשב הכללי: מכרז 1226/2016 לבחירת בנקים וקופות גמל בתוכנית חיסכון לכל ילד, הודעה מס' 1 (מעודכנת), 3.11.2016",
+      "publisher": "Government procurement site (mr.gov.il)",
+      "publisher_he": "משרד האוצר, אגף החשב הכללי",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.25",
+      "locator_he": "עמוד 25",
+      "quote": "בעל החשבון הוא הקטין",
+      "checked": "2026-11-06"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/8OfazOM9J2n~VjyzV5AWsITYS27PjZHrqw3iJWE0YJI=#page=7",
+      "title": "תקנות הביטוח הלאומי (חיסכון ארוך טווח לילד), התשע\"ז-2016, קובץ התקנות 7727",
+      "title_he": "תקנות הביטוח הלאומי (חיסכון ארוך טווח לילד), התשע״ז-2016 (קובץ התקנות 7727)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.7, reg. 1",
+      "locator_he": "עמוד 7, תקנה 1",
+      "page": 7,
+      "quote": "חשבון על שם הילד הזכאי המנוהל בנאמנות על ידי ההורה בבנק",
+      "checked": "2026-11-06"
+    },
     {
       "url": "https://www.btl.gov.il/Laws1/00_0001_000000.pdf#page=50",
       "title": "חוק הביטוח הלאומי [נוסח משולב], התשנ\"ה-1995, נוסח המוסד לביטוח לאומי",
@@ -67,6 +108,21 @@
       "page": 11,
       "checked": "2026-11-06",
       "qualifier": "(National Insurance's statement)"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/20/Committees/20_cs_bg_348625.pdf#page=2",
+      "title": "שר האוצר ליושב ראש ועדת הכספים: תקנות הביטוח הלאומי (חיסכון ארוך טווח לילד), התשע\"ו-2016, 10.8.2016",
+      "title_he": "שר האוצר ליושב ראש ועדת הכספים: תקנות הביטוח הלאומי (חיסכון ארוך טווח לילד), התשע״ו-2016, 10.8.2016",
+      "publisher": "The Knesset",
+      "publisher_he": "שר האוצר (חומר רקע לוועדת הכספים של הכנסת)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.2",
+      "locator_he": "עמוד 2",
+      "page": 2,
+      "quote": "העברת כספים בין בנקים לא נהנית מהטבה דומה, והיא מהווה אירוע מס",
+      "checked": "2026-11-06",
+      "qualifier": "(the Minister's explanation; not a provision)"
     }
   ],
   "derived_from": [

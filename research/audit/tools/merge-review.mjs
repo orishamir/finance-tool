@@ -56,6 +56,10 @@ const checks = [
   { group: "Stat grid (kit: StatRow, KeyValueList)", test: (t) => /<dl\b[^>]*className="[^"]*\bgrid\b/.test(t) },
   { group: "Literal colour (use a role token)", test: (t) => /(fill|stroke|color|background|bg-\[|text-\[|border-\[)[^"'`]*#[0-9a-fA-F]{3,8}\b/.test(t) || /\b(oklch|rgba?|hsla?)\(/.test(t) },
   { group: "Import of the old ui.tsx (import from components/kit)", test: (t) => /from\s+["'](\.\.?\/)+(components\/)?ui["']/.test(t) },
+  // From the criticism look-back (2026-11-06): rules a script cannot judge alone, so the lead looks at each new instance.
+  { group: "Chart legend added (design-system 12, rule 3: said once; a legend only for marks that carry no label of their own, one above a list and never one per row)", test: (t) => /<ChartLegend\b/.test(t) },
+  { group: "Caution mark added (design-system 3.2: only where there is a doubt, once per list, never on an explanation)", test: (t) => /<IconAlert\b|tone=["']caution["']|<StaleSaid\b/.test(t) },
+  { group: "A bare \"מס\" in new words (copy.md 1, the exact word: income tax or capital gains tax)", test: (t) => /(?<![\u0590-\u05FF])מס(?![\u0590-\u05FF])(?!\s+(הכנסה|רווחי הון|שבח|בולי|ירושה|על רווחי הון))/.test(t) },
 ];
 
 const lines = addedLines();

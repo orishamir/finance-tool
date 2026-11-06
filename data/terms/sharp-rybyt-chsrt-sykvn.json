@@ -1,0 +1,23 @@
+{
+  "id": "sharp-rybyt-chsrt-sykvn",
+  "he": "שארפ ריבית חסרת סיכון",
+  "en": null,
+  "meaning": "מדד שנתי שמראה עד כמה התשואה של המסלול בחמש השנים האחרונות פיצתה על הסיכון שבו, ביחס לריבית בלי סיכון",
+  "where": [
+    "gemel-net",
+    "pensia-net"
+  ],
+  "wrapper_ids": [],
+  "variants": [],
+  "rule_ids": [
+    "CAT-07",
+    "CAT-46"
+  ],
+  "source": {
+    "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-64186b589b352/080217.pdf#page=20",
+    "title": "רשות ניירות ערך, מדריך למשקיע: קרנות נאמנות, המדריך המלא, עמ' 20",
+    "publisher": "Israel Securities Authority",
+    "strength": "primary",
+    "checked": "2026-11-06"
+  }
+}

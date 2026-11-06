@@ -13,7 +13,8 @@
     "index-sp500"
   ],
   "variants": [
-    "מרווח ציטוט (BID-ASK SPREAD) חציוני"
+    "מרווח ציטוט (BID-ASK SPREAD) חציוני",
+    "מרווח קנייה ומכירה"
   ],
   "rule_ids": [
     "ETF-06",
