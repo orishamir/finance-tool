@@ -81,13 +81,13 @@ export function runChildSavings(input: ChildSavingsInput, ctx: RunContext): Chil
   book.cite("TXK-19");
   book.cite("TXK-20");
 
-  // F-50 (TXK-23, secondary): provident route and linked bank deposits 25% of the real gain; unlinked bank
-  // deposits 15% of the nominal gain.
+  // F-50: the provident route 25% of the real gain, from the law (TXK-23); the bank route a reading at secondary-source rates
+  // (TXK-29): linked deposits 25% of the real gain, unlinked deposits 15% of the nominal gain.
   const exitRate = provident
     ? book.rate("TXK-23", "provident_rate")
     : linked
-      ? book.rate("TXK-23", "bank_linked_rate")
-      : book.rate("TXK-23", "bank_unlinked_rate");
+      ? book.rate("TXK-29", "bank_linked_rate")
+      : book.rate("TXK-29", "bank_unlinked_rate");
   const taxOnReal = provident || linked;
   if (!provident) tally.flag("CS-23");
 

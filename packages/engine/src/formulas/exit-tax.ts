@@ -67,9 +67,9 @@ export function hishtalmutExitTax(excessRealGain: number, rate: number): number 
 }
 
 /**
- * F-50 Child savings. Gains are taxed on withdrawal (TXK-20) at the secondary-source rates (TXK-23):
- * provident route and CPI-linked bank deposit 25% of the real gain; unlinked bank deposit 15% of the
- * nominal gain.
+ * F-50 Child savings. Gains are taxed on withdrawal (TXK-20): the provident route 25% of the real gain, from the
+ * law (TXK-23); the bank route at secondary-source rates (TXK-29), a CPI-linked deposit 25% of the real gain and
+ * an unlinked deposit 15% of the nominal gain.
  */
 export function childSavingsExitTax(gain: number, rate: number): number {
   return rate * Math.max(0, gain);

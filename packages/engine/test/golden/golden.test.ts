@@ -594,7 +594,8 @@ describe("Part B: provident-family wrappers", () => {
       g.value("grant at 21", r.grants[2]!.amount, 882.12);
       g.done();
       expect(r.grants.map((x) => x.month)).toEqual([36, sex === "boy" ? 156 : 144, 252]);
-      expect(labelOf(r, "TXK-23")).toBe("secondary-source");
+      // workings S31: 25% of the real gain, no label (TXK-23 reads the Ordinance since 2026-11-07)
+      expect(labelOf(r, "TXK-23")).toBeUndefined();
     });
   }
 
@@ -616,6 +617,8 @@ describe("Part B: provident-family wrappers", () => {
     g.value("net at 21", r.nominal, 42_331.47);
     g.done();
     expect(flagCodes(r)).toContain("CS-23");
+    // workings S32: 15% of the nominal gain, label "secondary source", TXK-29
+    expect(labelOf(r, "TXK-29")).toBe("secondary-source");
   });
 
   it("S33 IRA hishtalmut with brokerage inside", () => {

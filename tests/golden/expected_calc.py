@@ -440,6 +440,12 @@ def year_table(snaps, extra_cols=None):
                   'Balance / I_m (real)'], rows)
 
 
+# A note the lead added after the independent check, printed after the section's expected line (kept here so a rerun keeps it).
+AFTER = {
+    'S40': "Note, 2026-10-23: the independent check above priced accrued interest on the bond (291,761.83) while the method does not model it (G-10, TXI OQ5), so the engine lists the bond as not ranked (B3, reason G-10) and the ETF ranks fourth; the engine's counts are ranked 5, listed, not ranked 8, not eligible 2, excluded 0, not evaluated 11. The numbers above are kept as the independent check produced them.",
+}
+
+
 def section(sid, title, status, body, expected):
     SECTIONS[:] = [x for x in SECTIONS if x[0] != sid]
     SECTIONS.append((sid, title, status, body))
@@ -1164,14 +1170,14 @@ def s31_s32():
         f'| 3 | Born 2026-01-01 (2017+ cohort): 291 at age 3, 291 at 13 (boy) or 12 (girl), 582 at 21 if nothing was withdrawn; each CPI-updated each 1 January | {L("CS-13")} | sex not given (Q10): both shown |\n'
         f'| 4 | Growth at r_g 6%; no management fees until 21 (NII pays); after 21 up to the legal cap of 1.05% of the balance (not reached here) | {L("CS-18")} | — |\n'
         f'| 5 | Deposits, addition and grants are not income: they are principal | {L("TXK-19")} | — |\n'
-        f'| 6 | Tax at withdrawal, provident route: 25% of the real gain, withheld (secondary source, TXK-23; no official rate) | {L("TXK-20", "TXK-23")} | see table |\n\n'
+        f'| 6 | Tax at withdrawal, provident route: 25% of the real gain, withheld; the fund is a kupat gemel lehashkaa, so the Ordinance\'s lump-sum rule applies (s.125ג(ב); no label since 2026-11-07, when TXK-23\'s rate was re-sourced from a press guide to the law) | {L("TXK-20", "TXK-23", "TXK-07")} | see table |\n\n'
         + table(['Case', 'Paid in by 18', 'Balance at 18', 'Real gain at 18', 'Tax if withdrawn at 18', 'Balance at 21', 'Real gain at 21', 'Tax if withdrawn at 21'],
                 [[lab, f2(r['paid18']), f2(r['b18']), f2(r['r18']), f2(r['t18']), f2(r['b21']), f2(r['r21']), f2(r['t21'])]
                  for lab, r in (('boy', bo), ('girl', gi))])
         + '\n\nGrants (nominal): ' + ', '.join(f'month {gm}: {f2(ga)}' for gm, ga in bo['grants'])
     )
     section('S31', 'Child savings, provident route, doubled', 'computed', body,
-            f'Gross balance at 18 = {f2(bo["b18"])} (boy) / {f2(gi["b18"])} (girl), real {f2(bo["b18"] / path.I(216))} / {f2(gi["b18"] / path.I(216))}; at 21 = {f2(bo["b21"])} / {f2(gi["b21"])}, real {f2(bo["b21"] / path.I(252))} / {f2(gi["b21"] / path.I(252))}. Tax if withdrawn at 21: {f2(bo["t21"])} / {f2(gi["t21"])} (25% of the real gain, label "secondary source", TXK-23); at 18: {f2(bo["t18"])} / {f2(gi["t18"])}. Grants: {f2(bo["grants"][0][1])} at 3, {f2(291 * path.I(156))} at 13 (boy) or {f2(291 * path.I(144))} at 12 (girl), {f2(bo["grants"][2][1])} at 21. Fees 0 until 21, then up to 1.05% of the balance (CS-18; see S54). Subject to Q10 (sex).')
+            f'Gross balance at 18 = {f2(bo["b18"])} (boy) / {f2(gi["b18"])} (girl), real {f2(bo["b18"] / path.I(216))} / {f2(gi["b18"] / path.I(216))}; at 21 = {f2(bo["b21"])} / {f2(gi["b21"])}, real {f2(bo["b21"] / path.I(252))} / {f2(gi["b21"] / path.I(252))}. Tax if withdrawn at 21: {f2(bo["t21"])} / {f2(gi["t21"])} (25% of the real gain, no label, TXK-23); at 18: {f2(bo["t18"])} / {f2(gi["t18"])}. Grants: {f2(bo["grants"][0][1])} at 3, {f2(291 * path.I(156))} at 13 (boy) or {f2(291 * path.I(144))} at 12 (girl), {f2(bo["grants"][2][1])} at 21. Fees 0 until 21, then up to 1.05% of the balance (CS-18; see S54). Subject to Q10 (sex).')
 
 
 
@@ -1712,10 +1718,10 @@ def s32_fill():
         f'| 0 | Filled-in inputs | — | {filled("3% kept after 18 (same rate)")} |\n'
         f'| 1 | Deposits and grants as the provident child-savings example (boy; grant at 13 = month 156; 582 at 21) | {L("CS-03", "CS-04", "CS-13")} | — |\n'
         f'| 2 | Bank track: fixed unlinked 3%, compounded annually-effective | {L("CS-23")} (public rate data stale) | — |\n'
-        f'| 3 | Tax at withdrawal on an unlinked bank deposit: 15% of the nominal gain, withheld (secondary source) | {L("TXK-23", "TXK-20")} | — |\n'
+        f'| 3 | Tax at withdrawal on an unlinked bank deposit: 15% of the nominal gain, withheld (a reading of the general deposit rules, cited from a secondary source) | {L("TXK-29", "TXK-20")} | — |\n'
     )
     section('S32', 'Child savings, bank route', 'computed', body,
-            f'At 18 (boy): {f2(b18)} nominal, {f2(b18 / path.I(216))} real; interest {f2(int18)}; tax if withdrawn {f2(0.15 * int18)}. At 21: {f2(B)} nominal, {f2(B / path.I(252))} real; interest {f2(int21)}; tax if withdrawn {f2(0.15 * int21)} (15% of the nominal gain, label "secondary source"); net {f2(B - 0.15 * int21)}. Flag "rates data stale". Filled in: 3% after 18.')
+            f'At 18 (boy): {f2(b18)} nominal, {f2(b18 / path.I(216))} real; interest {f2(int18)}; tax if withdrawn {f2(0.15 * int18)}. At 21: {f2(B)} nominal, {f2(B / path.I(252))} real; interest {f2(int21)}; tax if withdrawn {f2(0.15 * int21)} (15% of the nominal gain, label "secondary source", TXK-29); net {f2(B - 0.15 * int21)}. Flag "rates data stale". Filled in: 3% after 18.')
 
 
 def s41_fill():
@@ -2125,7 +2131,7 @@ def s54():
         f'| 2 | No fees until 21 (NII pays); after 21 the fee comes out of the savings, within the general cap: up to 1.05% a year of the balance and 4% of deposits (no deposits after 18) | {L("CS-18", "PF-02")} | — |\n'
         f'| 3 | (a) The site\'s figure is the cap, an upper bound ("עד"): 1.05%/12 of the month-end balance, months 253 to 300 | {L("CS-18")} | fees {f2(c["fees"])} |\n'
         f'| 4 | (b) A rate the person enters from their manager\'s bylaw replaces the cap; here 0.23%, the rate two companies state | {L("CS-30")} | fees {f2(e["fees"])} |\n'
-        f'| 5 | Tax at withdrawal: 25% of the real gain (secondary source) | {L("TXK-20", "TXK-23")} | (a) {f2(c["tax"])}, (b) {f2(e["tax"])} |\n\n'
+        f'| 5 | Tax at withdrawal: 25% of the real gain (TXK-23, from the law) | {L("TXK-20", "TXK-23")} | (a) {f2(c["tax"])}, (b) {f2(e["tax"])} |\n\n'
         + table(['Case', 'Balance at 25', 'Fees after 21', 'Real gain', 'Tax', 'Net', 'Net / I_300'],
                 [[lab, f2(r['B']), f2(r['fees']), f2(r['real_gain']), f2(r['tax']), f2(r['V']), f2(r['V'] / path.I(300))] for lab, r in (('(a) cap', c), ('(b) entered 0.23%', e))])
     )
@@ -2203,7 +2209,8 @@ def main():
          ['partial — some outputs computed, the rest blocked', ', '.join(groups['partial'])],
          ['blocked — missing inputs or an unclear rule', ', '.join(groups['blocked'])]]) + '\n\n## Scenario workings\n']
     for sid, title, status, body in order:
-        out.append(f'### {sid} {title}\n\nStatus: {status}.\n\n{body}\n\n**Expected (as written to scenarios.md):** {RESULTS[sid]["expected"]}\n')
+        after = f'\n{AFTER[sid]}\n' if sid in AFTER else ''
+        out.append(f'### {sid} {title}\n\nStatus: {status}.\n\n{body}\n\n**Expected (as written to scenarios.md):** {RESULTS[sid]["expected"]}\n{after}')
     rules_rows = [[f'[{i}](<{RULES[i]["url"]}>)', RULES[i]['title'], RULES[i]['checked'], RULES[i]['strength']]
                   for i in sorted(USED, key=lambda x: (x.split('-')[0], int(x.split('-')[1])))]
     out.append('## Rules cited\n\nStrength is the one recorded on the rule\'s first source.\n\n' + table(['Rule', 'Title', 'Checked', 'Strength'], rules_rows))

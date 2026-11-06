@@ -2,7 +2,7 @@
 // figure is a Num). Written 2026-10-23 from the rule base (CS, TXK, REG); each block ends with the rules it
 // rests on. NEW copy for the founder to review (docs/copy.md holds only labels).
 import type { GuideContent } from "./types";
-import { IdRef, Num, RuleRef, RulesLine, Term, VariesByCompany } from "../../components/provenance";
+import { Num, RuleRef, RulesLine, Term, VariesByCompany } from "../../components/provenance";
 import { Callout, Sentence } from "../../components/kit";
 import { OpenLossOffset } from "./open-tax";
 
@@ -49,9 +49,9 @@ export const content: GuideContent = {
     const niiRate = figure("TXK-20", "nii_circular_rate");
     return (
       <>
-        <Callout tone="caution" className="max-w-measure">
-          <span className="font-medium">שיעור המס <Term prefix="ב" id="משיכה">משיכה</Term> לא מופיע בשום טקסט של רשות המסים.</span> הביטוח הלאומי כותב בחוזר שלו שבמשיכה משלמים <Term id="מס רווחי הון">מס רווחי הון</Term>{niiRate ? <> בשיעור <Num value={niiRate} /> מהרווחים</> : null}, בלי לומר על איזה רווח. החוק מתייחס לקופת גמל להשקעה בלי להזכיר חיסכון לכל ילד. בחישוב משמש שיעור ממקור משני. שאלה פתוחה (<IdRef id="TXK OQ1" />).
-        </Callout>
+        <p className="max-w-measure">
+          <span className="font-medium"><Term prefix="ב" id="משיכה">משיכה</Term> משלמים מס כמו במשיכה מקופת גמל להשקעה.</span> החוק מחזיק את הכסף בקופת גמל להשקעה, ורשות שוק ההון, ביטוח וחיסכון ומשרד האוצר קובעים שחלים עליה כל הכללים של קופה כזאת. רשות המסים לא כתבה זאת על חיסכון לכל ילד. הביטוח הלאומי כותב בחוזר שלו שבמשיכה משלמים <Term id="מס רווחי הון">מס רווחי הון</Term>{niiRate ? <> בשיעור <Num value={niiRate} /> מהרווחים</> : null}, בלי לומר על איזה רווח.
+        </p>
         <Callout tone="blocked" className="max-w-measure">
           <span className="font-medium">הביטוח הלאומי מתאר גם מסלול <Term id="קצבה">קצבה</Term>:</span> להשאיר את הכסף בקופה עד הפרישה ולקבל אותו כקצבה בלי מס. הבסיס לכך בחוק לא נמצא, והאתר לא מחשב אותו.
         </Callout>

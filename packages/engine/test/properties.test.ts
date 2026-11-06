@@ -120,14 +120,17 @@ describe("figure resolver (D10, method §13)", () => {
     // Altshuler Shaham's own fee after 21, split from CS-18)
     book.rate("CS-30", "fee_after_21");
     book.rate("TXK-23", "provident_rate");
+    book.rate("TXK-29", "bank_linked_rate");
     book.rate("TXS-09", "rate");
     book.rate("TXF-04", "threshold_pct");
-    expect(book.used().map((u) => u.id)).toEqual(["CS-30", "TXK-23", "TXS-09", "TXF-04"]);
-    // TXS-09 reads the Tax Authority's consolidated ordinance since the source check of 2026-10-25, so it carries no label;
-    // TXF-04 rests only on a re-hosted copy of a Tax Authority letter, so its figure carries the mirror label
+    expect(book.used().map((u) => u.id)).toEqual(["CS-30", "TXK-23", "TXK-29", "TXS-09", "TXF-04"]);
+    // TXK-23's rate reads the Ordinance since 2026-11-07, so it carries no label; TXK-29 is a primary rule whose bank-route rates
+    // are cited from a press guide, so the figure's own secondary source labels it. TXS-09 reads the Tax Authority's consolidated
+    // ordinance since the source check of 2026-10-25, so it carries no label; TXF-04 rests only on a re-hosted copy of a Tax
+    // Authority letter, so its figure carries the mirror label
     expect(book.labels()).toEqual([
       { code: "institution-source", ruleId: "CS-30" },
-      { code: "secondary-source", ruleId: "TXK-23" },
+      { code: "secondary-source", ruleId: "TXK-29" },
       { code: "mirror-source", ruleId: "TXF-04" },
     ]);
   });

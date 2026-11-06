@@ -51,7 +51,7 @@ function exitRateLines(formula: string): ExitRate[][] {
     case "F-47":
       return [[r("TXH-11", "rate", "hishtalmutExcess")]];
     case "F-50":
-      return [[r("TXK-23", "provident_rate", "childProvident")], [r("TXK-23", "bank_linked_rate", "childBankLinked")], [r("TXK-23", "bank_unlinked_rate", "childBankUnlinked")]];
+      return [[r("TXK-23", "provident_rate", "childProvident")], [r("TXK-29", "bank_linked_rate", "childBankLinked")], [r("TXK-29", "bank_unlinked_rate", "childBankUnlinked")]];
     default:
       return [];
   }
@@ -278,7 +278,9 @@ export default function GuidePage() {
   const exitFormula = record.tax_at_exit.formula;
   const exitFigure = exitFormula === "F-44" ? figure("TXK-06", "rate") : exitFormula === "F-46" ? figure("TXH-09", "lock_years") : null;
   const altRate = exitFormula === "F-44" ? figure("TXK-06", "nominal_rate") : null;
-  const exitWeak = strengthOfRules(record.tax_at_exit.rule_ids);
+  // the step's mark: a cited rule's own strength, or a rate the step shows whose source is weaker than its rule (the child-savings bank
+  // route's rates are a reading cited from a secondary source inside a rule that rests on the Ministry of Finance, TXK-29)
+  const exitWeak = strengthOfRules(record.tax_at_exit.rule_ids) ?? (rateLines.some((c) => c.value.source.strength === "secondary") ? "secondary" : null);
   // audit A46: the study fund's deposit row depends on employment: an employee's own deposit has no deduction (TXH-04) and the
   // employer's within the limits is not income at deposit (TXH-01, TXH-03); the self-employed deduct up to a ceiling (TXH-05)
   const hd = copy.hishtalmutDeposit;

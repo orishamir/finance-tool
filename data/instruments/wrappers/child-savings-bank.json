@@ -59,13 +59,13 @@
     "formula": "F-50",
     "rule_ids": [
       "TXK-20",
-      "TXK-23",
+      "TXK-29",
       "TXI-02",
       "TXI-03"
     ],
     "blocked_by": [],
     "labels": [
-      "secondary source: 25% of the real gain on a CPI-linked track, 15% of the nominal gain on an unlinked or prime track, withheld by the bank (TXK-23; the official texts give no rate for child savings, TXK OQ1; method G-17)"
+      "secondary source: 25% of the real gain on a CPI-linked track, 15% of the nominal gain on an unlinked or prime track, withheld by the bank (TXK-29: a reading of the general deposit-interest rules, which the Ministry of Finance says apply; the official texts give no rate for child savings, TXK OQ1; method G-17)"
     ]
   },
   "lawful_exit": {
