@@ -19,12 +19,12 @@
       "value": 200000,
       "unit": "nis",
       "source": {
-        "url": "https://www.capitax.co.il/Attachments/arbitrage_committee-07-2026.pdf#page=14",
-        "title": "הצוות לצמצום הפערים במכשירי השקעה בחיסכון לטווח קצר ובינוני, דו\"ח מסכם, יולי 2026, p.14, s.5.1-5.2 (copy at capitax.co.il)",
-        "publisher": "Finance Ministry team (copy at Alex Shapira & Co.)",
-        "strength": "secondary"
+        "url": "https://www.gov.il/BlobFolder/news/press020726/he/%D7%93%D7%95%D7%97%20%D7%9E%D7%A1%D7%9B%D7%9D%20%D7%95%D7%A2%D7%93%D7%AA%20%D7%94%D7%90%D7%A8%D7%91%D7%99%D7%98%D7%A8%D7%90%D7%96%20-%D7%99%D7%95%D7%9C%D7%99%202026%20%D7%97%D7%AA%D7%95%D7%9D.pdf#page=14",
+        "title": "הצוות לצמצום הפערים במכשירי השקעה בחיסכון לטווח קצר ובינוני, דו\"ח מסכם, יולי 2026, p.14, s.5.1-5.2",
+        "publisher": "Finance Ministry team (gov.il)",
+        "strength": "primary"
       },
-      "checked": "2026-10-31",
+      "checked": "2026-11-06",
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
@@ -48,6 +48,9 @@
       "publisher_he": "אתר הממשלה (gov.il)",
       "kind": "official_pdf",
       "strength": "primary",
+      "locator": "pp.5, 10-14, 16-17",
+      "locator_he": "עמודים 5, 10-14, 16-17",
+      "page": 5,
       "checked": "2026-11-06",
       "qualifier": "(the gov.il copy, byte-identical to the Alex Shapira & Co. copy read on 2026-10-31)"
     },
