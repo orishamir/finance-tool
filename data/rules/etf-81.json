@@ -1,8 +1,8 @@
 {
   "id": "ETF-81",
   "title": "Invesco BulletShares: UCITS funds redeemed at net asset value, US funds paid as a cash distribution",
-  "title_he": "Invesco BulletShares: קרנות אירופיות נפדות, ואמריקניות משלמות חלוקה במזומן",
-  "text_he": "בקרנות UCITS של Invesco הקרן נפדית במועד הפירעון לפי שווי הנכסים הנקי, בלי תשואה קבועה מראש, והדירקטורים יכולים לקבוע מועד אחר. בקרנות האמריקניות, לפי רשימה מ־2022, הקרן משלמת בסוף חלוקה במזומן. הן אינן בבורסה בתל אביב.",
+  "title_he": "Invesco BulletShares: קרנות אירופיות נפדות, ואמריקאיות משלמות חלוקה במזומן",
+  "text_he": "בקרנות UCITS של Invesco הקרן נפדית במועד הפירעון לפי שווי הנכסים הנקי, בלי תשואה קבועה מראש, והדירקטורים יכולים לקבוע מועד אחר. בקרנות האמריקאיות, לפי רשימה מ־2022, הקרן משלמת בסוף חלוקה במזומן. הן אינן בבורסה בתל אביב.",
   "strength": "institution",
   "dimensions": [
     "fee-management-balance",
