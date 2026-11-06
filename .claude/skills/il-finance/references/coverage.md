@@ -328,6 +328,6 @@ The Maya export file was downloaded once through the browser, into your Download
 | The CMA's own copy of circular 2017-9-17 (gov.il) is the text read; deadlines verbatim; later CMA circulars cite 2016-9-11 | SW-41 | SW OQ1 (narrowed) |
 | Transfer information passes through the clearing house since 23.2.2020 (ממשק ניוד); the Commissioner may defer the ten-day deadline by up to twenty business days | SW-42 | PF OQ6 (channel) |
 | Directive 448 version 4 (11/25, circular 2833): disclosure sections 16א and 19א only; start by 1.3.2026 | SW-43 | SW OQ15 |
-| Clearing-house payment circular 2026-10-6: a saver's one-time all-institutions request capped at NIS 11 from 1.1.2027 | SW-44 | SW OQ5 (price), PF OQ6 (narrowed) |
+| Clearing-house payment circular 2026-10-6: a saver's one-time all-institutions request capped at NIS 11 before VAT, from the new operator's takeover day (not yet named; the circular starts 1.1.2027) | SW-44 | SW OQ5 (price), PF OQ6 (narrowed) |
 
 **Not done:** the ISA and CMA licensee registers (REG OQ3, task item 4); the clearing house's current (2022) price list and the operator's own price page (rendered no text); the CMA's regulation collector for amendments to the transfer circular (OQ1); the 2026-9-3 circular's deferred dates. One Zero's PDF was fetched inside the Chrome tab (the host returns 403 to curl) and its one-glyph-per-letter text layer re-joined by hand; the Maya counts came from the list page's own filter requests, one heading at a time.

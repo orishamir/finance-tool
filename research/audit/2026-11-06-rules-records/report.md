@@ -175,5 +175,30 @@ BANK-15, BANK-22, BRK-16, BRK-17, BRK-33, BRK-38, CORP-23, GOV-01 to 06, GOV-14,
 
 ## Left open
 
-- The 2022 clearing-house prices, which are in force until the new operator takes over: circular 2022-10-5 was not found.
+- What per-action clearing-house prices apply between 1.1.2027, when circular 2026-10-6 cancels circular 2022-10-5 (s.9), and the new operator's takeover day, when its own prices start (s.8(ב)). The circular does not say; the Authority will announce the takeover day (notes p.13). Circular 2022-10-5 was not found, so the prices in force until 31.12.2026 stay open too (PF open question 6).
 - Which banks are exempt from switching under s.5ב1(ה), and how directive 448 counts the "sixth business day" (SW open question 9).
+
+## Fix pass (after the independent check, `check.md`)
+
+Both must-fix items were confirmed against the library text before changing anything: circular 2026-10-6 (library `c6d0ae7207deeb99`) p.4 s.8(א), s.8(ב) and s.9, and p.13 explanatory notes; Kovetz HaTakanot 8302 (library `aeb61ff174800417`) file page 21 is printed 183, file page 22 is 184, file page 23 is 185.
+
+Fixed:
+
+1. **SW-44, the 2022 prices (must fix).** The branch said the 2022 circular applies until the new operator takes over. The circular does not say this: s.9 cancels circular 2022-10-5 as part of a circular that starts on 1.1.2027 (s.8(א)), only s.4 waits for the takeover day (s.8(ב)), and the notes on p.13 say the Authority will announce that day close to the start. Corrected in four places:
+   - `data/rules/sw-44.json` text_he: "...והחוזר לא קובע מתי זה יהיה. עד אותו יום חל החוזר הקודם, מ־2022; המחירים שלו לא נקראו." is now "...החוזר לא קובע מתי זה יהיה, ורשות שוק ההון תודיע על המועד סמוך לתחילת החוזר. החוזר מבטל את החוזר הקודם, מ־2022, ואינו אומר אילו מחירים חלים עד אותו יום. המחירון הסופי עשוי להשתנות לפי תוצאות המכרז."
+   - The notes of the six annex ג saver figures: "Until then circular 2022-10-5 applies (not read)" is replaced by what s.9 and the p.13 notes say (the checker counted five; `saver_one_time_all_institutions` had a shorter note without the sentence and got the same addition).
+   - `switching-and-transfers.md`, SW-44 conditions: the sentence now quotes p.13 on the announcement, says s.9 cancels the 2022 circular from 1.1.2027 and that nothing says what applies in between (marked as corrected 2026-11-06).
+   - `provident-family-common.md`, PF open question 6: the 2026-11-06 note now says the same and keeps the gap open.
+   - The record's p.4 source locator now names s.9; a p.13 source (explanatory notes) was added to the record and to the rule base Source line, with s.9's own quote.
+2. **SW-26, gazette pages (must fix).** Rule 2 is on printed pages 184-185 of 8302, not 183-184. Fixed in the record's locator and locator_he, the figure note, and in `switching-and-transfers.md` the SW-26 conditions, the Source line and the Sources table row. Open question 9's "ק"ת התש"ף p.183" stays: it cites where the rules begin, which is p.183.
+3. **SW-44, the price list may change (should fix).** One clause from the p.13 notes is now in the record's text_he (last sentence above) and in the rule base SW-44 entry, with the downward-only update for mandatory services.
+4. **Leftovers of the old start date (should fix).** `docs/glossary.md:565` now says "caps per action from the new operator's takeover day, not yet named"; `coverage.md:331` now says the cap is before VAT, from the new operator's takeover day (not yet named; the circular starts 1.1.2027). The glossary's stale "how consent is checked is not (SW OQ5)" was left for the lead, as before: it is wording about the card, not the date.
+5. **BANK-25 wording (should fix).** "ועוד מרווח או פחות מרווח שידוע מראש" is now "בתוספת מרווח או בניכוי מרווח שידוע מראש", as in BANK-33.
+
+Not fixed:
+
+- **SW-44 `effective_from` 2027-01-01 on the six annex ג figures** (should fix 2). The lead's call, as the checker says: leaving it empty changes what `startsAfter` in `provenance.tsx` shows on the site, and keeping it shows the figure as in force after 1.1.2027 even if the takeover has not happened. Unchanged.
+- **SW-26's 22.9.2021** (should fix 5). Directive 448 versions 1 and 2 in the library (`4256dee17d1e47d7`, `51f9db38d85d1ce8`) have no start line that says the section took effect; only the version table (circular 2670, 17.8.2021). No stronger source found cheaply; unchanged, as before the branch.
+- **Hebrew editor.** The new SW-44 sentences and the BANK-25 change have not been through the Hebrew editor; they go in the next batch.
+
+Checks: `npm run validate` passes (the open-questions warning on KH OQ12 and KGL OQ11 was there before this pass); `npm test` 1589 passed, 1 todo.

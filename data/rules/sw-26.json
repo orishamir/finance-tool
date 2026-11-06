@@ -33,7 +33,7 @@
         "SW-26"
       ],
       "state": "sourced",
-      "notes": "Section 5B1 of the Banking (Customer Service) Law (account switching \"באופן מקוון, נוח, אמין, מאובטח וללא עלות ללקוח\") in force from 22 September 2021 (circular h-2670 s.4). Process in directive 448; the account types are rule 2 of the Governor's rules (Kovetz HaTakanot 8302 pp.183-184, amended by 9480 s.2), read 2026-11-06. Which banks are exempt stays open (SW OQ9)."
+      "notes": "Section 5B1 of the Banking (Customer Service) Law (account switching \"באופן מקוון, נוח, אמין, מאובטח וללא עלות ללקוח\") in force from 22 September 2021 (circular h-2670 s.4). Process in directive 448; the account types are rule 2 of the Governor's rules (Kovetz HaTakanot 8302 pp.184-185, amended by 9480 s.2), read 2026-11-06. Which banks are exempt stays open (SW OQ9)."
     }
   },
   "il_finance_file": "switching-and-transfers.md",
@@ -130,8 +130,8 @@
       "kind": "regulation",
       "strength": "primary-mirror",
       "mirror_host": "other",
-      "locator": "gazette pp.183-184 (file pages 22-23), rule 2",
-      "locator_he": "עמודים 183 עד 184 ברשומות, כלל 2",
+      "locator": "gazette pp.184-185 (file pages 22-23), rule 2",
+      "locator_he": "עמודים 184 עד 185 ברשומות, כלל 2",
       "page": 22,
       "quote": "החשבון בבנק המקורי והחשבון בבנק הקולט הם חשבונות עובר ושב",
       "checked": "2026-11-06",

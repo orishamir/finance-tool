@@ -24,7 +24,7 @@
       "tax_year": null,
       "update_rule": "cpi-linked 1 jan",
       "state": "sourced",
-      "notes": "Maximum fee, payer 'חוסך / בעל רישיון'; annex tables state sums exclude VAT. An annex ג price: in force from the operator's takeover day (s.8(ב), p.4), not named; effective_from is the circular's start (s.8(א))."
+      "notes": "Maximum fee, payer 'חוסך / בעל רישיון'; annex tables state sums exclude VAT. An annex ג price: in force from the operator's takeover day (s.8(ב), p.4), not named; effective_from is the circular's start (s.8(א)). The Authority will announce the day close to the start (notes p.13). Section 9 cancels circular 2022-10-5 from 1.1.2027; the circular does not say what applies between 1.1.2027 and the takeover day. The final price list may change with the tender's results (notes p.13)."
     },
     "saver_continuous_all_institutions": {
       "value": 11,
@@ -41,7 +41,7 @@
       "tax_year": null,
       "update_rule": "cpi-linked 1 jan",
       "state": "sourced",
-      "notes": "Plus 1 NIS for each month information is delivered. Excluding VAT (annex ג note, p.10). An annex ג price: in force from the day the operator chosen in the tender takes responsibility for the system (s.8(ב), p.4), a day the circular does not name; effective_from is the circular's own start (s.8(א)), the earliest it can apply. Until then circular 2022-10-5 applies (not read)."
+      "notes": "Plus 1 NIS for each month information is delivered. Excluding VAT (annex ג note, p.10). An annex ג price: in force from the day the operator chosen in the tender takes responsibility for the system (s.8(ב), p.4), a day the circular does not name; effective_from is the circular's own start (s.8(א)), the earliest it can apply. The Authority will announce the day close to the start (notes p.13). Section 9 cancels circular 2022-10-5 from 1.1.2027; the circular does not say what applies between 1.1.2027 and the takeover day. The final price list may change with the tender's results (notes p.13)."
     },
     "saver_continuous_monthly_addition": {
       "value": 1,
@@ -58,7 +58,7 @@
       "tax_year": null,
       "update_rule": "cpi-linked 1 jan",
       "state": "sourced",
-      "notes": "'ותוספת של 1 עבור כל חודש בו יועבר המידע'. Excluding VAT (annex ג note, p.10). An annex ג price: in force from the day the operator chosen in the tender takes responsibility for the system (s.8(ב), p.4), a day the circular does not name; effective_from is the circular's own start (s.8(א)), the earliest it can apply. Until then circular 2022-10-5 applies (not read)."
+      "notes": "'ותוספת של 1 עבור כל חודש בו יועבר המידע'. Excluding VAT (annex ג note, p.10). An annex ג price: in force from the day the operator chosen in the tender takes responsibility for the system (s.8(ב), p.4), a day the circular does not name; effective_from is the circular's own start (s.8(א)), the earliest it can apply. The Authority will announce the day close to the start (notes p.13). Section 9 cancels circular 2022-10-5 from 1.1.2027; the circular does not say what applies between 1.1.2027 and the takeover day. The final price list may change with the tender's results (notes p.13)."
     },
     "saver_one_institution": {
       "value": 1,
@@ -75,7 +75,7 @@
       "tax_year": null,
       "update_rule": "cpi-linked 1 jan",
       "state": "sourced",
-      "notes": "One-time request from one institution, payer 'חוסך / בעל רישיון'. Excluding VAT (annex ג note, p.10). An annex ג price: in force from the day the operator chosen in the tender takes responsibility for the system (s.8(ב), p.4), a day the circular does not name; effective_from is the circular's own start (s.8(א)), the earliest it can apply. Until then circular 2022-10-5 applies (not read)."
+      "notes": "One-time request from one institution, payer 'חוסך / בעל רישיון'. Excluding VAT (annex ג note, p.10). An annex ג price: in force from the day the operator chosen in the tender takes responsibility for the system (s.8(ב), p.4), a day the circular does not name; effective_from is the circular's own start (s.8(א)), the earliest it can apply. The Authority will announce the day close to the start (notes p.13). Section 9 cancels circular 2022-10-5 from 1.1.2027; the circular does not say what applies between 1.1.2027 and the takeover day. The final price list may change with the tender's results (notes p.13)."
     },
     "saver_cancel_continuous": {
       "value": 0,
@@ -92,7 +92,7 @@
       "tax_year": null,
       "update_rule": "cpi-linked 1 jan",
       "state": "sourced",
-      "notes": "Saver's cancellation of a continuous request. Excluding VAT (annex ג note, p.10). An annex ג price: in force from the day the operator chosen in the tender takes responsibility for the system (s.8(ב), p.4), a day the circular does not name; effective_from is the circular's own start (s.8(א)), the earliest it can apply. Until then circular 2022-10-5 applies (not read)."
+      "notes": "Saver's cancellation of a continuous request. Excluding VAT (annex ג note, p.10). An annex ג price: in force from the day the operator chosen in the tender takes responsibility for the system (s.8(ב), p.4), a day the circular does not name; effective_from is the circular's own start (s.8(א)), the earliest it can apply. The Authority will announce the day close to the start (notes p.13). Section 9 cancels circular 2022-10-5 from 1.1.2027; the circular does not say what applies between 1.1.2027 and the takeover day. The final price list may change with the tender's results (notes p.13)."
     },
     "saver_cancel_power_of_attorney": {
       "value": 1,
@@ -109,7 +109,7 @@
       "tax_year": null,
       "update_rule": "cpi-linked 1 jan",
       "state": "sourced",
-      "notes": "Saver-initiated cancellation of an agent's power of attorney. Excluding VAT (annex ג note, p.10). An annex ג price: in force from the day the operator chosen in the tender takes responsibility for the system (s.8(ב), p.4), a day the circular does not name; effective_from is the circular's own start (s.8(א)), the earliest it can apply. Until then circular 2022-10-5 applies (not read)."
+      "notes": "Saver-initiated cancellation of an agent's power of attorney. Excluding VAT (annex ג note, p.10). An annex ג price: in force from the day the operator chosen in the tender takes responsibility for the system (s.8(ב), p.4), a day the circular does not name; effective_from is the circular's own start (s.8(א)), the earliest it can apply. The Authority will announce the day close to the start (notes p.13). Section 9 cancels circular 2022-10-5 from 1.1.2027; the circular does not say what applies between 1.1.2027 and the takeover day. The final price list may change with the tender's results (notes p.13)."
     },
     "non_institution_certificate_yearly": {
       "value": 4000,
@@ -174,7 +174,7 @@
     "institution_min_yearly": "דמי שימוש שנתיים לגוף מוסדי, מדרגה ראשונה",
     "institution_max_yearly": "דמי שימוש שנתיים לגוף מוסדי, מדרגה עליונה"
   },
-  "text_he": "חוזר של רשות שוק ההון קובע כמה המסלקה הפנסיונית רשאית לגבות על כל פעולה, ומי משלם. בקשת מידע חד־פעמית של חוסך על כל המוצרים שלו בכל הגופים המוסדיים: עד 11 שקלים לפני מע״מ. בקשה מתמשכת: עד אותו סכום, ועוד שקל לכל חודש שבו מועבר מידע. בקשה מגוף אחד: עד שקל. ביטול בקשה או עדכון פרטים: בלי תשלום. החוזר חל מ־1.1.2027, אבל המחירים האלה נכנסים לתוקף רק ביום שבו המפעיל שייבחר במכרז יקבל אחריות על המסלקה, והחוזר לא קובע מתי זה יהיה. עד אותו יום חל החוזר הקודם, מ־2022; המחירים שלו לא נקראו. המחירים צמודים למדד המחירים לצרכן ומתעדכנים פעם בשנה, והמפעיל רשאי לגבות פחות באישור הממונה על שוק ההון.",
+  "text_he": "חוזר של רשות שוק ההון קובע כמה המסלקה הפנסיונית רשאית לגבות על כל פעולה, ומי משלם. בקשת מידע חד־פעמית של חוסך על כל המוצרים שלו בכל הגופים המוסדיים: עד 11 שקלים לפני מע״מ. בקשה מתמשכת: עד אותו סכום, ועוד שקל לכל חודש שבו מועבר מידע. בקשה מגוף אחד: עד שקל. ביטול בקשה או עדכון פרטים: בלי תשלום. החוזר חל מ־1.1.2027, אבל המחירים האלה נכנסים לתוקף רק ביום שבו המפעיל שייבחר במכרז יקבל אחריות על המסלקה. החוזר לא קובע מתי זה יהיה, ורשות שוק ההון תודיע על המועד סמוך לתחילת החוזר. החוזר מבטל את החוזר הקודם, מ־2022, ואינו אומר אילו מחירים חלים עד אותו יום. המחירון הסופי עשוי להשתנות לפי תוצאות המכרז. המחירים צמודים למדד המחירים לצרכן ומתעדכנים פעם בשנה, והמפעיל רשאי לגבות פחות באישור הממונה על שוק ההון.",
   "il_finance_file": "switching-and-transfers.md",
   "checked": "2026-11-06",
   "scope": "general",
@@ -224,8 +224,8 @@
       "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
       "kind": "circular",
       "strength": "primary",
-      "locator": "p.4, s.8(א), (ב)",
-      "locator_he": "עמוד 4, סעיף 8(א), (ב)",
+      "locator": "p.4, s.8(א), (ב), s.9",
+      "locator_he": "עמוד 4, סעיף 8(א), (ב), סעיף 9",
       "page": 4,
       "quote": "תחילתו של חוזר זה ביום 1 בינואר 2027",
       "checked": "2026-11-06"
@@ -242,6 +242,20 @@
       "locator_he": "עמוד 10, הערה לנספח ג׳",
       "page": 10,
       "quote": "הסכומים בטבלה אינם כוללים מע\"מ",
+      "checked": "2026-11-06"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-539/he/protocol_payments_for_use_of_Central_Pension_clearing_house_system.pdf.pdf",
+      "title": "חוזר סוכנים ויועצים 2026-10-6 – תשלום עבור שימוש במערכת סליקה פנסיונית מרכזית – עדכון (21.10.2026)",
+      "title_he": "חוזר סוכנים ויועצים 2026-10-6: תשלום עבור שימוש במערכת סליקה פנסיונית מרכזית – עדכון",
+      "publisher": "gov.il",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "p.13, explanatory notes to s.4 and s.8",
+      "locator_he": "עמוד 13, דברי ההסבר לסעיפים 4 ו־8",
+      "page": 13,
+      "quote": "המחירון הסופי עשוי להשתנות בהתאם לתוצאות מכרז המסלקה הפנסיונית",
       "checked": "2026-11-06"
     }
   ]
