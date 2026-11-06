@@ -1,0 +1,138 @@
+
+== /indices/sp500 at 390 px: 4 sliders, 1 selects; page wider than the screen: false
+  select 1 = discount: page height +0, 0 moved, 0 blocks new
+    h -19 w 1 y 0 <span > 301x36 "השורה של דיסקונט לא סופרת את העו״ש, כי משלמים עליו בכל מקרה. השורות של"
+  select 1 = fibi: page height +0, 0 moved, 1 blocks new
+    h 20 w -25 y 0 <span > 276x55 "השורה של הבינלאומי לא סופרת את העו״ש, כי משלמים עליו בכל מקרה. השורות "
+  select 1 = hapoalim: page height +0, 0 moved, 1 blocks new
+    h -19 w 25 y 0 <span > 301x36 "השורה של הפועלים לא סופרת את העו״ש, כי משלמים עליו בכל מקרה. השורות של"
+  select 1 = leumi: page height +0, 52 moved (first: y 140 <div min-h-dvh flex flex-col> "מקור איפה ואיך הכי זול להשקיע במדד, לאורך זמן בוחרים חשבון ניירות ערך "), 15 blocks new
+    h 0 w 0 y 140 <bdi whitespace-nowrap> 56x17 "1,057 ₪"
+    h 0 w 0 y 140 <a text-link hover:underline> 70x17 "התעריפון ↗"
+    h 0 w 0 y 140 <span text-muted-foreground> 140x17 " · נאסף ב־⁦04.11.2026⁩"
+    h 0 w 0 y 140 <button inline-flex items-center justify-center gap-2 transition-col> 190x44 "קיבלתם מחיר אחר? הזינו אותו"
+    h 0 w 0 y 298 <span size-4 rounded-full border-[1.5px] self-start mt-1 border-in> 16x16 ""
+    h 0 w 0 y 298 <span text-sm text-muted-foreground tabular-nums text-center> 20x22 "3"
+    h 0 w 0 y 298 <span flex flex-wrap gap-x-2 min-h-5 text-xs font-normal text-mute> 129x20 ""
+    h 0 w 0 y 298 <span relative flex shrink-0 items-center justify-center text-[11p> 59x12 ""
+    h 0 w 0 y 298 <bdi whitespace-nowrap> 52x16 "4,544 ₪"
+    h 0 w 0 y 298 <bdi whitespace-nowrap> 75x20 "83,141 ₪"
+    h 0 w 0 y 298 <span inline-flex w-fit items-center gap-1 text-xs font-medium rou> 72x22 "לא בחישוב"
+    h 0 w 0 y 298 <svg lucide lucide-chevron-down text-muted-foreground shrink-0 tr> 20x20 ""
+    held: row leumi HELD
+  select 1 = mizrahi-tefahot: page height +0, 0 moved, 1 blocks new
+    h 20 w -25 y 0 <span > 276x55 "השורה של מזרחי טפחות לא סופרת את העו״ש, כי משלמים עליו בכל מקרה. השורו"
+    h 0 w 0 y -158 <span size-4 rounded-full border-[1.5px] self-start mt-1 border-in> 16x16 ""
+    h 0 w 0 y -158 <span text-sm text-muted-foreground tabular-nums text-center> 20x22 "2"
+    h 0 w 0 y -158 <span flex flex-wrap gap-x-2 min-h-5 text-xs font-normal text-mute> 129x20 ""
+    h 0 w 0 y -158 <bdi whitespace-nowrap> 75x20 "83,141 ₪"
+    h 0 w 0 y 140 <span size-4 rounded-full border-[1.5px] self-start mt-1 border-in> 16x16 ""
+    h 0 w 0 y 140 <span text-sm text-muted-foreground tabular-nums text-center> 20x22 "3"
+    h 0 w 0 y 140 <span > 98x20 "מחיר להוראת קבע"
+    h 0 w 0 y 140 <bdi whitespace-nowrap> 75x20 "82,723 ₪"
+  list 1 rows tapped: psagot HELD; one-zero HELD; leumi HELD; fibi HELD; massad HELD; yahav HELD; hapoalim HELD; jerusalem HELD; discount HELD; mercantile HELD; ibi HELD; mizrahi-tefahot HELD; altshuler-trade HELD; excellence HELD; meitav-trade HELD; interactive-israel (other list's pick changed) HELD; interactive-brokers HELD
+  list 2 rows tapped: ie00b5bmr087 HELD; ie0031442068 HELD; ie00b3xxrp09 HELD; ie00bfmxxd54 HELD; 5139282 (other list's pick changed) HELD; 5139100 HELD; 5124482 HELD; 5129275 HELD; 1159250 HELD; 5127527 HELD
+  list 3 rows tapped: 
+
+== /indices/sp500 at 1280 px: 4 sliders, 1 selects; page wider than the screen: false
+  slider 1 max: page height +0, 0 moved, 8 blocks new
+    h -22 w 0 y 0 <p text-sm text-muted-foreground> 1201x22 "התשואה בשנה היא לפני אינפלציה, דמי ניהול, עמלות ומס · מה שנשאר מחושב א"
+  select 1 = leumi: page height +0, 196 moved (first: y 132 <div min-h-dvh flex flex-col> "מקור מדריך חברות ומסלולים השקעה במדד חוקים וכללים חיפוש איפה ואיך הכי "), 12 blocks new
+    h 0 w 0 y 132 <div bg-card border border-border rounded-lg p-5 lg:p-6 flex flex> 1201x719 "הפקדתם 70,000 ₪ הסכום ההתחלתי ועוד הפקדה חודשית, 120 חודשים ← אחד מ־3 "
+    h 0 w 0 y 132 <span text-sm text-muted-foreground> 425x22 "חשבון ניירות ערך"
+    h 0 w 0 y 132 <a text-link hover:underline> 204x24 "פסגות ניירות ערך בע"מ"
+    h 0 w 0 y 132 <bdi whitespace-nowrap> 56x17 "1,057 ₪"
+    h 0 w 0 y 272 <span size-4 rounded-full border-[1.5px] self-start mt-1 border-in> 16x16 ""
+    h 0 w 0 y 272 <span text-sm text-muted-foreground tabular-nums text-center> 24x22 "3"
+    h 0 w 0 y 272 <span flex flex-wrap gap-x-2 min-h-5 text-xs font-normal text-mute> 152x20 ""
+    h 0 w 0 y 272 <span relative flex shrink-0 items-center justify-center text-[11p> 106x12 ""
+    h 0 w 0 y 272 <bdi whitespace-nowrap> 52x16 "4,544 ₪"
+    h 0 w 0 y 272 <bdi whitespace-nowrap> 75x20 "83,141 ₪"
+    h 0 w 0 y 272 <span inline-flex w-fit items-center gap-1 text-xs font-medium rou> 72x22 "לא בחישוב"
+    h 0 w 0 y 272 <svg lucide lucide-chevron-down text-muted-foreground shrink-0 tr> 20x20 ""
+    held: row leumi HELD
+  select 1 = mizrahi-tefahot: page height +0, 0 moved, 1 blocks new
+    h 0 w 0 y -140 <span size-4 rounded-full border-[1.5px] self-start mt-1 border-in> 16x16 ""
+    h 0 w 0 y -140 <span text-sm text-muted-foreground tabular-nums text-center> 24x22 "2"
+    h 0 w 0 y -140 <span flex flex-wrap gap-x-2 min-h-5 text-xs font-normal text-mute> 152x20 ""
+    h 0 w 9 y -140 <span relative flex shrink-0 items-center justify-center text-[11p> 115x12 ""
+    h 0 w 0 y -140 <bdi whitespace-nowrap> 52x16 "4,544 ₪"
+    h 0 w 0 y -140 <bdi whitespace-nowrap> 75x20 "83,141 ₪"
+    h 0 w 0 y -140 <span inline-flex w-fit items-center gap-1 text-xs font-medium rou> 72x22 "לא בחישוב"
+    h 0 w 0 y -140 <svg lucide lucide-chevron-down text-muted-foreground shrink-0 tr> 20x20 ""
+    h 0 w 0 y 133 <span size-4 rounded-full border-[1.5px] self-start mt-1 border-in> 16x16 ""
+    h 0 w 0 y 133 <span text-sm text-muted-foreground tabular-nums text-center> 24x22 "3"
+    h 0 w 0 y 133 <span > 98x20 "מחיר להוראת קבע"
+    h 0 w 6 y 133 <span relative flex shrink-0 items-center justify-center text-[11p> 86x12 ""
+  list 1 rows tapped: psagot HELD; one-zero HELD; leumi HELD; fibi HELD; massad HELD; yahav HELD; hapoalim HELD; jerusalem HELD; discount HELD; mercantile HELD; ibi HELD; mizrahi-tefahot HELD; altshuler-trade HELD; excellence HELD; meitav-trade HELD; interactive-israel (other list's pick changed) HELD; interactive-brokers HELD
+  list 2 rows tapped: ie00b5bmr087 HELD; ie0031442068 HELD; ie00b3xxrp09 HELD; ie00bfmxxd54 HELD; 5139282 (other list's pick changed) HELD; 5139100 HELD; 5124482 HELD; 5129275 HELD; 1218916 HELD; 1201656 HELD; 1165810 HELD; 1150333 HELD; 1149020 HELD; 1146471 HELD; 1144385 HELD; 1148162 HELD; 1159250 HELD; us-ivv HELD; us-voo HELD; 5127527 HELD
+  list 3 rows tapped: 
+
+== /indices/ta125 at 390 px: 4 sliders, 1 selects; page wider than the screen: false
+  select 1 = discount: page height +0, 0 moved, 0 blocks new
+    h -19 w 1 y 0 <span > 301x36 "השורה של דיסקונט לא סופרת את העו״ש, כי משלמים עליו בכל מקרה. השורות של"
+  select 1 = fibi: page height +0, 0 moved, 1 blocks new
+    h 20 w -25 y 0 <span > 276x55 "השורה של הבינלאומי לא סופרת את העו״ש, כי משלמים עליו בכל מקרה. השורות "
+  select 1 = hapoalim: page height +0, 0 moved, 1 blocks new
+    h -19 w 25 y 0 <span > 301x36 "השורה של הפועלים לא סופרת את העו״ש, כי משלמים עליו בכל מקרה. השורות של"
+  select 1 = leumi: page height +0, 48 moved (first: y 140 <div min-h-dvh flex flex-col> "מקור איפה ואיך הכי זול להשקיע במדד, לאורך זמן בוחרים חשבון ניירות ערך "), 15 blocks new
+    h 0 w 0 y 140 <span text-sm text-muted-foreground> 301x22 "חשבון ניירות ערך"
+    h 0 w 0 y 140 <a text-link hover:underline> 204x24 "פסגות ניירות ערך בע"מ"
+    h 0 w 0 y 140 <bdi whitespace-nowrap> 56x17 "1,049 ₪"
+    h 0 w 0 y 140 <a text-link hover:underline> 70x17 "התעריפון ↗"
+    h 0 w 0 y 140 <span text-muted-foreground> 140x17 " · נאסף ב־⁦04.11.2026⁩"
+    h 0 w 0 y 140 <button inline-flex items-center justify-center gap-2 transition-col> 190x44 "קיבלתם מחיר אחר? הזינו אותו"
+    h 0 w 0 y 298 <span size-4 rounded-full border-[1.5px] self-start mt-1 border-in> 16x16 ""
+    h 0 w 0 y 298 <span text-sm text-muted-foreground tabular-nums text-center> 20x22 "3"
+    h 0 w 0 y 298 <span flex flex-wrap gap-x-2 min-h-5 text-xs font-normal text-mute> 129x20 ""
+    h 0 w 0 y 298 <span relative flex shrink-0 items-center justify-center text-[11p> 59x12 ""
+    h 0 w 0 y 298 <bdi whitespace-nowrap> 52x16 "4,517 ₪"
+    h 0 w 0 y 298 <bdi whitespace-nowrap> 75x20 "82,709 ₪"
+    held: row leumi HELD
+  select 1 = mizrahi-tefahot: page height +0, 0 moved, 1 blocks new
+    h 20 w -25 y 0 <span > 276x55 "השורה של מזרחי טפחות לא סופרת את העו״ש, כי משלמים עליו בכל מקרה. השורו"
+    h 0 w 0 y -158 <span size-4 rounded-full border-[1.5px] self-start mt-1 border-in> 16x16 ""
+    h 0 w 0 y -158 <span text-sm text-muted-foreground tabular-nums text-center> 20x22 "2"
+    h 0 w 0 y -158 <span flex flex-wrap gap-x-2 min-h-5 text-xs font-normal text-mute> 129x20 ""
+    h 0 w 0 y -158 <bdi whitespace-nowrap> 75x20 "82,709 ₪"
+    h 0 w 0 y 140 <span size-4 rounded-full border-[1.5px] self-start mt-1 border-in> 16x16 ""
+    h 0 w 0 y 140 <span text-sm text-muted-foreground tabular-nums text-center> 20x22 "3"
+    h 0 w 0 y 140 <span > 98x20 "מחיר להוראת קבע"
+    h 0 w 0 y 140 <bdi whitespace-nowrap> 75x20 "82,297 ₪"
+  list 1 rows tapped: psagot HELD; one-zero HELD; leumi HELD; fibi HELD; massad HELD; yahav HELD; hapoalim HELD; jerusalem HELD; discount HELD; mercantile HELD; ibi HELD; mizrahi-tefahot HELD; altshuler-trade HELD; excellence HELD; meitav-trade HELD; interactive-israel HELD; interactive-brokers HELD
+  list 2 rows tapped: 5112628 HELD; 1143718 HELD; 1150283 HELD; 1148899 HELD; 1146356 HELD; 1148808 HELD
+  list 3 rows tapped: 
+
+== /indices/ta125 at 1280 px: 4 sliders, 1 selects; page wider than the screen: false
+  select 1 = leumi: page height +0, 237 moved (first: y 132 <div min-h-dvh flex flex-col> "מקור מדריך חברות ומסלולים השקעה במדד חוקים וכללים חיפוש איפה ואיך הכי "), 12 blocks new
+    h 0 w 0 y 132 <dt text-sm text-muted-foreground flex items-center gap-1.5> 373x22 "החשבון"
+    h 0 w 0 y 132 <bdi whitespace-nowrap> 44x21 "18 ₪"
+    h 0 w 0 y 132 <dt text-sm text-muted-foreground flex items-center gap-1.5> 373x22 "הקרן"
+    h 0 w 0 y 132 <bdi whitespace-nowrap> 72x21 "1,390 ₪"
+    h 0 w 0 y 132 <dt text-sm text-muted-foreground flex items-center gap-1.5> 373x22 "המס"
+    h 0 w 0 y 132 <bdi whitespace-nowrap> 56x21 "342 ₪"
+    h 0 w 0 y 132 <span > 125x16 "כי נשאר לכם יותר רווח"
+    h 0 w 0 y 132 <div bg-popover border-b border-border px-5 py-4 flex flex-col ga> 465x192 "חשבון ניירות ערך פסגות ניירות ערך בע"מ מה החשבון גובה ב־10 שנים: 1,049"
+    h 0 w 0 y 272 <span size-4 rounded-full border-[1.5px] self-start mt-1 border-in> 16x16 ""
+    h 0 w 0 y 272 <span text-sm text-muted-foreground tabular-nums text-center> 24x22 "3"
+    h 0 w 0 y 272 <span flex flex-wrap gap-x-2 min-h-5 text-xs font-normal text-mute> 152x20 ""
+    h 0 w 0 y 272 <span relative flex shrink-0 items-center justify-center text-[11p> 106x12 ""
+    held: row leumi HELD
+  select 1 = mizrahi-tefahot: page height +0, 0 moved, 1 blocks new
+    h 0 w 0 y -140 <span size-4 rounded-full border-[1.5px] self-start mt-1 border-in> 16x16 ""
+    h 0 w 0 y -140 <span text-sm text-muted-foreground tabular-nums text-center> 24x22 "2"
+    h 0 w 0 y -140 <span flex flex-wrap gap-x-2 min-h-5 text-xs font-normal text-mute> 152x20 ""
+    h 0 w 9 y -140 <span relative flex shrink-0 items-center justify-center text-[11p> 115x12 ""
+    h 0 w 0 y -140 <bdi whitespace-nowrap> 52x16 "4,517 ₪"
+    h 0 w 0 y -140 <bdi whitespace-nowrap> 75x20 "82,709 ₪"
+    h 0 w 0 y -140 <span inline-flex w-fit items-center gap-1 text-xs font-medium rou> 72x22 "לא בחישוב"
+    h 0 w 0 y -140 <svg lucide lucide-chevron-down text-muted-foreground shrink-0 tr> 20x20 ""
+    h 0 w 0 y 133 <span size-4 rounded-full border-[1.5px] self-start mt-1 border-in> 16x16 ""
+    h 0 w 0 y 133 <span text-sm text-muted-foreground tabular-nums text-center> 24x22 "3"
+    h 0 w 0 y 133 <span > 98x20 "מחיר להוראת קבע"
+    h 0 w 6 y 133 <span relative flex shrink-0 items-center justify-center text-[11p> 86x12 ""
+  list 1 rows tapped: psagot HELD; one-zero HELD; leumi HELD; fibi HELD; massad HELD; yahav HELD; hapoalim HELD; jerusalem HELD; discount HELD; mercantile HELD; ibi HELD; mizrahi-tefahot HELD; altshuler-trade HELD; excellence HELD; meitav-trade HELD; interactive-israel HELD; interactive-brokers HELD
+  list 2 rows tapped: 5112628 HELD; 1143718 HELD; 1150283 HELD; 1148899 HELD; 1146356 HELD; 1148808 HELD
+  list 3 rows tapped: 
+
+total boxes that changed on the screen: 157

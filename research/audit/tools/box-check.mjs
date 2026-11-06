@@ -13,6 +13,9 @@
 // `--plans` types whole plans into the slider rows' boxes, past the sliders' ends too, then text that fails the
 // box's check ("abc", "-5") and the start plan again; after each it also lists every figure cut by the box that holds it ("CUT") and
 // every chart label drawn outside its chart. `--switch` then presses every index chip on the page in turn (another index, same page).
+// After each select it also says where a list's row named by the option went ("held": the row of the bank just marked, lens review S1).
+// `--rows` then taps every visible row of every list (role=radiogroup) and says how far the tapped row moved on the screen ("HELD" when
+// under a pixel, "ROW MOVED" otherwise), and when the tap changed another list's pick.
 import { createRequire } from "node:module";
 
 const require = createRequire(process.env.PLAYWRIGHT_DIR ?? "/home/ori/.npm/_npx/e41f203b7505f1fb/node_modules/");
@@ -28,6 +31,7 @@ const seedGoal = flags.includes("--goal");
 const WHOLE = flags.includes("--whole");
 const typePlans = flags.includes("--plans");
 const switchIndex = flags.includes("--switch");
+const tapRows = flags.includes("--rows");
 // the plans a reader can make: the sliders' far ends, a large plan, a plan typed past the ends, then text the boxes refuse
 const PLANS = [
   ["500000", "10000", "40", "12"],
@@ -260,8 +264,41 @@ for (const path of paths.split(",")) {
       const values = await s.evaluate((e) => [...e.options].map((o) => o.value));
       for (const v of values.slice(0, 8)) {
         await onScreen(s);
+        const rowTop = (key) => page.evaluate((k) => { const e = k && [...document.querySelectorAll("[role=radiogroup] [data-pick-key]")].find((x) => x.dataset.pickKey === k); if (!e) return null; const r = e.getBoundingClientRect(); return { top: r.top, on: r.bottom > 0 && r.top < innerHeight }; }, key);
+        const was = await rowTop(v);
         await s.selectOption(v).catch(() => {});
         await after(`select ${i + 1} = ${v}`);
+        if (was?.on) {
+          const now = await rowTop(v);
+          const dy = Math.round((now?.top ?? NaN) - was.top);
+          if (Math.abs(dy) > TOL) total++;
+          console.log(`    held: row ${v} ${Math.abs(dy) > TOL ? `ROW MOVED ${dy}` : "HELD"}`);
+        }
+      }
+    }
+    if (tapRows) {
+      const lists = await page.locator("[role=radiogroup]").count();
+      const picks = () => page.evaluate(() => [...document.querySelectorAll("[role=radiogroup]")].map((g) => g.querySelector('[aria-checked="true"]')?.dataset.pickKey ?? ""));
+      for (let li = 0; li < lists; li++) {
+        const group = page.locator("[role=radiogroup]").nth(li);
+        const keys = await group.evaluate((g) => [...g.querySelectorAll(":scope > [data-pick-key]")].filter((e) => e.offsetParent).map((e) => e.dataset.pickKey));
+        const out = [];
+        for (const k of keys) {
+          const row = group.locator(`:scope > [data-pick-key="${k}"]`);
+          if (!(await row.isVisible())) continue;
+          await row.scrollIntoViewIfNeeded();
+          await page.waitForTimeout(150);
+          const p0 = await picks();
+          const y0 = (await row.boundingBox()).y;
+          await row.click({ position: { x: 8, y: 8 } });
+          await page.waitForTimeout(2000);
+          const p1 = await picks();
+          const dy = Math.round((await row.boundingBox()).y - y0);
+          const other = p0.some((x, j) => j !== li && x !== p1[j]);
+          if (Math.abs(dy) > TOL) total++;
+          out.push(`${k}${other ? " (other list's pick changed)" : ""} ${Math.abs(dy) > TOL ? `ROW MOVED ${dy}` : "HELD"}`);
+        }
+        console.log(`  list ${li + 1} rows tapped: ${out.join("; ")}`);
       }
     }
     await ctx.close();

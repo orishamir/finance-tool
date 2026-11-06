@@ -619,9 +619,23 @@ export function OwnBankField({ view, bundle, value, onChange }: { view: InvestVi
   const banks = view.providers.filter((p) => bundle.snapshots.some((s) => s.id === p.id && chargesCurrentAccount(s))).sort((a, b) => a.short.localeCompare(b.short, "he"));
   if (banks.length === 0) return null;
   const marked = banks.find((b) => b.id === value) ?? null;
+  // a row on the screen keeps its place while the list sorts again (CLAUDE.md, "a list that re-sorts keeps the tapped row where it was";
+  // lens review S1): the bank whose mark changes (marked now, or the one unmarked), else the account picked in its list. A row out of
+  // sight is not held: holding it would scroll the page, and the field just used would leave the screen (308 px on a phone).
+  const mark = (id: string | null) => {
+    const seen = (el: HTMLElement | null) => {
+      const r = el?.getBoundingClientRect();
+      return !!r && r.height > 0 && r.bottom > 0 && r.top < window.innerHeight;
+    };
+    const changed = (id ?? marked?.id) ? document.querySelector<HTMLElement>(`[role=radiogroup] [data-pick-key="${CSS.escape((id ?? marked?.id)!)}"]`) : null;
+    const picked = changed?.closest("[role=radiogroup]")?.querySelector<HTMLElement>('[data-pick-key][aria-checked="true"]') ?? null;
+    const row = [changed, picked].find(seen);
+    if (row?.dataset.pickKey) holdOnPick(row.dataset.pickKey, row);
+    onChange(id);
+  };
   return (
     <div className="flex flex-col gap-1 pt-2">
-      <SelectField label={c.pair.ownBank.label} none={c.pair.ownBank.none} options={banks.map((b) => ({ id: b.id, name: b.short }))} value={marked?.id ?? null} onChange={onChange} />
+      <SelectField label={c.pair.ownBank.label} none={c.pair.ownBank.none} options={banks.map((b) => ({ id: b.id, name: b.short }))} value={marked?.id ?? null} onChange={(id) => mark(id)} />
       <LongestCase className="text-xs text-muted-foreground max-w-measure" cases={[<span key="none">{c.pair.ownBank.counted}</span>, ...banks.map((b) => <span key={b.id}>{c.pair.ownBank.left(b.short)}</span>)]}>
         <span>{marked ? c.pair.ownBank.left(marked.short) : c.pair.ownBank.counted}</span>
       </LongestCase>
