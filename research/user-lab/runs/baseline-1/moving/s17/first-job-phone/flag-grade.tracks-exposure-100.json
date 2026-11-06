@@ -1,0 +1,36 @@
+{
+  "case": "tracks-exposure-100",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The column of exposure to stocks and foreign currency is not explained, and shows figures above 100% with nothing saying how that can be.\",\"where\":\"the exposure column\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 5,
+        "why": "Finding 5 says the terms מט\"ח (foreign currency) and '101% מניות' are left unexplained, which is the same complaint as the person's: an unexplained exposure column showing stock exposure above 100%."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0151034
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 5,
+        "why": "Finding 5 says terms like מט\"ח and '101% מניות' are unexplained, which covers the person's complaint that the exposure column lacks explanation and shows figures over 100%."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0148714
+  },
+  "third": null,
+  "ranks": {
+    "k": 5
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0299748
+}

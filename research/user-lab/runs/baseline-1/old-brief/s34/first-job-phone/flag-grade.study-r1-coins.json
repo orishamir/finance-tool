@@ -1,0 +1,70 @@
+{
+  "case": "study-r1-coins",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The coins add nothing a simple bar would not show better.\",\"where\":\"the coin drawing\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Title/subtitle \"שרטוט לבחירה\" told the reader nothing",
+      "Third card is confusing: it says 394 less, while B shows +527 on the reader's own money",
+      "The second copy of A for year 6 just repeats the same picture with bigger numbers (would drop it)",
+      "B's steps run left to right, so a Hebrew reader hits the result first and reads the steps backwards",
+      "C has too much going on and is hard to read (would drop it first)",
+      "Didn't understand \"דמי ניהול\" and \"מסלול מחקה\"",
+      "Didn't understand \"(4D)\" and the long numbers in brackets",
+      "Unclear why the +1,721 card is about 10 years when everything else is about 5–6",
+      "Unclear what \"ברוטו\" means if their salary isn't 12,000",
+      "Couldn't find how to tell whether their employer offers this and how much it puts in",
+      "Couldn't find what happens if they change jobs before year 6",
+      "Couldn't find whether they can withdraw in an emergency in year 3 and exactly how much tax they'd pay",
+      "Couldn't find how to open a fund or which fund to pick",
+      "No place to enter their own salary or numbers",
+      "Most of the grey fine print could go (keep only the orange warning)"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader says they didn't choose A for the coins and didn't count them, but never says the coins add nothing a simple bar wouldn't show better, so this doesn't amount to the complaint."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0549832
+  },
+  "b": {
+    "raised": [
+      "The subtitle \"שרטוט לבחירה\" tells the reader nothing",
+      "The third card is confusing: the fund is ₪394 less in the card but +527 in B",
+      "B's steps run left to right, so a Hebrew reader meets the result first and the steps backwards",
+      "C has too much going on to read",
+      "Doesn't understand \"דמי ניהול\" or \"מסלול מחקה\"",
+      "Doesn't understand \"(4D)\" or the long number codes in brackets",
+      "The +1,721 card covers 10 years when everything else covers 5 or 6",
+      "Unclear what \"ברוטו\" means if their salary isn't 12,000",
+      "Can't find whether their employer offers this or how much it puts in",
+      "Can't find what happens on changing jobs before year 6",
+      "Can't find whether they can withdraw in an emergency, or the exact tax",
+      "Can't find how to open a fund or which one to pick",
+      "Nowhere to enter their own salary or numbers",
+      "The second copy of A for year 6 repeats what the card already says and would be dropped",
+      "Most of the grey fine print would be dropped"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader says they didn't count the coins and didn't pick A for them, but they never say the coins add nothing a simple bar would show better, so none of the listed problems states this."
+      }
+    ],
+    "liked": [],
+    "usd": 0.056407200000000005
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1113904
+}

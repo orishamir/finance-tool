@@ -1,0 +1,59 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "Nothing points a cautious saver to the safe track or compares it with a bank deposit.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "Many safe-sounding tracks show 'פחות מ־3 שנים' instead of a return, so they can't be compared.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "The large stock return (24.04%) is the first number seen, and the reader finds it frightening and misleading.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "The dark background, thin text and dense table are tiring to read.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "The exposure circles are too close in color and too small to tell apart.",
+      "serious": true,
+      "names_listed": 1
+    },
+    {
+      "n": 6,
+      "summary": "Track names and column headers use jargon and English letters with no plain explanation.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 7,
+      "summary": "The site name 'מקור' is unknown, and nothing shows the site is official.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 8,
+      "summary": "The return column header doesn't say whether the 3-year figure is per year or total.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 9,
+      "summary": "The list is long, with 15 screens to scroll.",
+      "serious": false,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.034714800000000004
+}

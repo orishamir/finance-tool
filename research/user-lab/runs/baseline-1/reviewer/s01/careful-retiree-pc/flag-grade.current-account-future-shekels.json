@@ -1,0 +1,36 @@
+{
+  "case": "current-account-future-shekels",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"With 'בשקלים של העתיד' chosen, the figures ignore inflation, so they are wrong.\",\"where\":\"the chart and figures of the panel\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 3 says the graph figures are misleading because a current account is shown earning 5%, but it never says the 'future shekels' view leaves out inflation, so no finding names this problem."
+      }
+    ],
+    "liked": [],
+    "usd": 0.014651400000000002
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 3 says the graph's 5% return and 74,044 ₪ are misleading for a current account, but it never says the 'future shekels' option leaves out inflation, so none of the reader's findings names this problem."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0147594
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0294108
+}

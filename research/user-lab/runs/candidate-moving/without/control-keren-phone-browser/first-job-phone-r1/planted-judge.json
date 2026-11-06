@@ -1,0 +1,35 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "At 4 years, the only number on screen (25,725) belongs to the comparison account and could easily be taken as the fund's result.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "For self-employed users there's no number before 6 years, only an orange note, which is exactly when they'd want to know how much they lose.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "The calculator opens on salaried (שכירים) by default, and the self-employed (עצמאים) option is easy to miss.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "The 8-year breakdown chart has many columns and colours, and labels like 'החזר המס הוסיף' and 'המס לקח 0' aren't explained next to them.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "It's not clear whether 68,853 is in today's money; the line only says 'after the tax refund'.",
+      "serious": false,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.0245828
+}

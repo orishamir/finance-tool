@@ -1,0 +1,79 @@
+{
+  "case": "cfc-index-column",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"Text under the index name in the index column is unnecessary, and the column is wider than its content.\",\"where\":\"the index column\",\"kind\":\"taste\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Index names alone (option 1), like ת\"א-125 or MSCI AC World, mean almost nothing to the reader",
+      "Confused by the fees: three fees (fixed, variable, trustee), unclear whether to add them up, and what נאמן is",
+      "The note that only some of the company's funds are shown makes them wonder which are missing and whether one is cheaper",
+      "\"(4A)\" / \"(4D)\" in fund names is confusing",
+      "The \"צוברת\" tag is unclear",
+      "The \"עסקת החלף\" tag means nothing and sounds risky",
+      "The \"מס גם על שינויי המטבע\" tag is scary and not understood",
+      "Overall the tags are confusing",
+      "Security number column is just a long number and not useful (would cut first)",
+      "Doesn't know what Maya is; the link seems to take them off the site (would cut)",
+      "Underline under every percentage: unclear whether it's clickable",
+      "Small \"<\" arrows next to index names: unclear what they open",
+      "Unclear whether the fees are per year, per month or per purchase",
+      "Wants one total cost per fund, ideally in shekels",
+      "Wants to compare the cheapest S&P 500 fund across companies; only one company is shown",
+      "Wants to see how the fund actually performed and whether it tracks the index",
+      "Wants short explanations of the tags",
+      "Wants to know how to actually buy the fund",
+      "Would cut most of the tags"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader never calls the text under the index names unnecessary or the column too wide; they praise those lines and say never to cut them."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0478272
+  },
+  "b": {
+    "raised": [
+      "In option 1, the bare index names (e.g. TA-125, MSCI AC World) mean almost nothing to the reader",
+      "Confused by the fees",
+      "Subtitle saying only some funds are shown makes them wonder which funds are missing and whether one is cheaper",
+      "\"(4A)\" / \"(4D)\" in fund names is confusing",
+      "\"צוברת\" tag unclear",
+      "\"עסקת החלף\" tag means nothing and sounds risky",
+      "\"מס גם על שינויי המטבע\" tag is scary and not understood",
+      "Tags overall are confusing",
+      "Security number column is useless to them and would be cut first",
+      "Doesn't know what Maya is; the link seems to take them off the site",
+      "Underline under every percentage: unclear whether it's clickable",
+      "Small \"<\" arrows next to index names: unclear what they open",
+      "Three fees (fixed/variable/trustee): unclear whether you pay all three, what trustee means, and why variable changes",
+      "Unclear whether the fees are per year, per month or per purchase",
+      "Wants one total cost per fund, ideally in shekels",
+      "Wants to compare the S&P 500 option against other companies; only one company is shown",
+      "Wants to see fund performance and how closely it tracks the index",
+      "Wants a short explanation of the tags",
+      "Wants to know how to actually buy",
+      "Would cut most of the tags"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader praises the text under the index names as the best part of the page and says never to cut it, and never mentions the column being too wide, so nothing in the list matches this problem."
+      }
+    ],
+    "liked": [],
+    "usd": 0.046115199999999995
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0939424
+}

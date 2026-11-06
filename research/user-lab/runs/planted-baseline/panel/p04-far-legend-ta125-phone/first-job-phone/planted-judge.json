@@ -1,0 +1,6 @@
+{
+  "named": true,
+  "position": 5,
+  "why": "Finding 5 says the bar colours are explained only in a legend far down the page. That matches the problem: the colours have no key near the bars, and the legend is screens away.",
+  "usd": 0.016264
+}

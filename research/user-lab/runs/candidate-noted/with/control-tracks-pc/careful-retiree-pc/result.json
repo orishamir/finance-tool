@@ -1,0 +1,133 @@
+{
+  "task": "control-tracks-pc",
+  "persona": "careful-retiree-pc",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T03:10:27.680Z",
+  "structured": {
+    "answer": "If I have to choose, I'd go with Harel (הראל), the \"כספי (שקלי)\" track: it says 0% מניות and 0% מט\"ח, the fee is 0.57% with 0% on deposits, and it shows a steady 4.25% over 3 years and 3.08% over 5. It looks closest to a deposit, and Harel is a name I know. But I won't sign anything until I've asked you, or the bank, whether that's more than my deposits give and what \"כספי\" really means.",
+    "confidence": "unsure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Screen 1, the row of track buttons under 'במה הכסף מושקע'",
+        "why": "Too many buttons with words I don't know, like 'S&P 500', 'עוקב מדד', 'כספי (שקלי)' and 'גמיש'. Nothing says 'safe' or 'like a deposit', so I didn't know where to start and pressed nothing."
+      },
+      {
+        "where": "Return column on the safe-looking tracks (אג\"ח סחיר, עוקב מדדי אג\"ח)",
+        "why": "Instead of a number it says 'פחות מ־3 שנים', so I couldn't tell whether the bond tracks earn anything. That pushed me toward כספי (שקלי), the one with numbers."
+      },
+      {
+        "where": "The table as a whole, from screen 2 on",
+        "why": "A black page with rows and rows of percentages. I lost my place in the middle of lines, and by screen 6 I was tired and stopped."
+      },
+      {
+        "where": "Whether 4.25% is good",
+        "why": "The page never compares it to a bank deposit, so I can't tell whether it beats what I have."
+      }
+    ],
+    "used": [
+      "Title 'כל המסלולים בכל החברות' and the selected 'קופת גמל להשקעה' button",
+      "Company header rows: הראל, מור, אנליסט, מיטב",
+      "Columns 'דמי ניהול... מהחיסכון / מההפקדות' and 'חשיפה למניות ולמט\"ח'",
+      "הראל 'כספי (שקלי)' row: 0.57%, 0% מניות, 0% מט\"ח, 4.25% over 3 years, 3.08% over 5 years, 67 million",
+      "The same כספי (שקלי) at אנליסט (0.58%) and מיטב (0.58%), with almost the same returns"
+    ],
+    "skimmed": [
+      "The many מניות and S&P 500 rows with large returns (24%, 26%); to me those are gambling",
+      "'כסף מנוהל' column (millions/billions)",
+      "Line about 'מנתוני רשות שוק ההון'"
+    ],
+    "skipped": [
+      "Screens 7-15 (too tired)",
+      "'מה זה קופת גמל להשקעה' link",
+      "Tabs מדריך, השקעה במדד, חוקים וכללים",
+      "The ? icons in the column headers",
+      "The circle charts"
+    ],
+    "unsure_meaning": [
+      "כספי (שקלי)",
+      "S&P 500 / S&P500",
+      "עוקב מדד, עוקב מדדי אג\"ח, עוקב מדדים - גמיש",
+      "סחיר",
+      "מט\"ח percentage under the shares percentage",
+      "'123 מקורו', '123 מחושב' with dotted underlines",
+      "'פחות מ־3 שנים' in place of a return",
+      "Yellow/turquoise circles",
+      "'תשואה שנתית ממוצעת, לפני דמי ניהול': before fees, so what do I actually get?",
+      "Number with arrow icon in the קופה column (8211, 15288...)",
+      "'101%' מניות at מיטב",
+      "Orange '!' with 'עוד לא דווח'",
+      "Tag 'חדש'"
+    ],
+    "not_found": [
+      "Any bank name I know (my own bank)",
+      "A plain sentence saying which track is safe or as safe as a deposit",
+      "A comparison with bank deposit interest",
+      "Who guarantees the money",
+      "How much I'd pay in shekels, not percent"
+    ],
+    "findings": [
+      {
+        "what": "Nothing tells me which track is safe like a deposit. The track names (עוקב מדד, S&P 500, גמיש, כספי) mean nothing to me.",
+        "where": "Screen 1 track buttons, and the track names in the table"
+      },
+      {
+        "what": "For the bond tracks, which I'd trust, there is no return, only 'פחות מ־3 שנים'",
+        "where": "Return column, screens 2-6"
+      },
+      {
+        "what": "Dark page, small grey headers and dotted underlines; hard on my eyes even enlarged",
+        "where": "Column headers and the numbers above the table on screen 1"
+      },
+      {
+        "what": "Too many numbers per row (fees, two exposures, two returns, money) and very long lines; I lost my place",
+        "where": "Table, screens 2-6"
+      },
+      {
+        "what": "Returns are 'לפני דמי ניהול', so I don't know what I'd really get",
+        "where": "Return column header"
+      },
+      {
+        "what": "Nothing compares these returns or fees to a bank deposit",
+        "where": "Whole page"
+      },
+      {
+        "what": "Big returns like 24% and 26% catch the eye first and scared me; it feels like a page for gamblers",
+        "where": "מניות/עוקב מדד rows"
+      },
+      {
+        "what": "Circle charts in yellow and turquoise; I couldn't tell what they mean",
+        "where": "Exposure column"
+      },
+      {
+        "what": "Strange marks: '!' with 'עוד לא דווח', '101%', numbers with arrow icons",
+        "where": "Screens 4-5"
+      }
+    ]
+  },
+  "steps": 6,
+  "reads": 6,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 34128,
+    "turns": 8,
+    "usd": 0.1549232,
+    "input": 8,
+    "cacheWrite": 11382,
+    "cacheRead": 27876,
+    "output": 2913,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "control-tracks-pc",
+    "screenshots": 16,
+    "changes": [],
+    "neverShown": [],
+    "errors": []
+  }
+}

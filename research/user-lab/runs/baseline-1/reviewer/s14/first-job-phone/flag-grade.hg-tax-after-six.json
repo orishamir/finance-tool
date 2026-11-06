@@ -1,0 +1,36 @@
+{
+  "case": "hg-tax-after-six",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"With a high salary entered, the graphic says tax is due even after 6 years and shows a large income-tax figure, without making clear which money it is on.\",\"where\":\"the graphic and its sentences\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The person's complaint is that with a high salary the graphic still shows a large tax after 6 years without saying which money it is charged on. Finding 1 is about the 5-year default view, finding 2 asks whether the final bar is after tax, and finding 3 is about the salary cap without mentioning tax, so none of them states this problem."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0205594
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "No finding says that tax still shows after 6 years at a high salary without saying which money it applies to. Finding 1 is about the default 5-year view hiding the 6-year number, and finding 3 is about the salary cap and the deposit amounts, not about the tax figure."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0244874
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0450468
+}

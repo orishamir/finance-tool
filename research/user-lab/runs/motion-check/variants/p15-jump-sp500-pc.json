@@ -1,0 +1,39 @@
+{
+  "id": "p15-jump-sp500-pc",
+  "about": "For the lab only; never reaches a session. Planted problem, kind p15 (Layout that jumps when a number changes): see research/user-lab/planted.md.",
+  "purpose": "plant",
+  "pages": [
+    "/finance-tool/indices/sp500"
+  ],
+  "device": "pc",
+  "instance": {
+    "kind": "p15",
+    "mode": "browser",
+    "url": "https://orishamir.github.io/finance-tool/indices/sp500",
+    "device": "pc",
+    "steps": [],
+    "task": "sp500-browser",
+    "control": "planted/control-sp500-pc-browser",
+    "split": "tune"
+  },
+  "plants": [
+    {
+      "id": "p15",
+      "kind": "general",
+      "problem": "A one-line note above the result shows only while the two best options are within 50 ₪; changing the monthly sum or the years makes it appear and vanish, and the result cards jump up and down.",
+      "where": "above the result cards, as the inputs change",
+      "counts": "A finding that the results move, shift or jump when a number or slider is changed (or that a line appears and disappears and pushes things).",
+      "notCounts": "That the numbers change (they should)."
+    }
+  ],
+  "changes": [
+    {
+      "id": "jump-shown",
+      "type": "style",
+      "selector": "[data-pl=\"jump\"]",
+      "set": {
+        "--pl": "1"
+      }
+    }
+  ]
+}

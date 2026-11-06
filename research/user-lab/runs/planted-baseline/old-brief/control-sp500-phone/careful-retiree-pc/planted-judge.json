@@ -1,0 +1,65 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "The dollar-rate line cites European Central Bank rates, which confuses the reader. They also can't tell whether the inflation button is on or off.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "Fund terms are never explained: trustee (נאמן), 4D vs 4A, tracker fund vs ETF, and tags such as עסקת החלף and כמה דרכים יחד.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "The hedged fund's range (+2,212 to −23,766 ₪) confused and scared the reader, with no explanation of what it means.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "In the 2022–2025 yearly table the numbers are printed on top of each other, so the reader can't read them.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "The 'start from one choice' chart puts 'עכשיו' (now) on the MTF/Jerusalem bar. That isn't the reader's situation, because they have no account yet, so the starting point makes no sense to them.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 6,
+      "summary": "The colour key for the cost-bar segments is far from the bank list, so the reader ignored the coloured bars.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 7,
+      "summary": "It's unclear what '+0.37% בשנה · שנה אחת' is measured against, and what the purple dotted underlines under numbers do.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 8,
+      "summary": "The reader isn't sure what 'בכסף של היום' (today's money) means or how much would actually be in the account. They also don't know whether the default 7% return is realistic.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 9,
+      "summary": "'הזוג הבא בתור' (the next pair) doesn't say which bank and fund it is. The sentence about 25% of any difference going to tax was not understood.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 10,
+      "summary": "Information the reader wanted is missing: risk of a market fall near retirement, how to open the account, how safe the money is, fees for taking it out, a provident fund (קופת גמל להשקעה) as an alternative, and the final amount in future shekels.",
+      "serious": false,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.0898188
+}

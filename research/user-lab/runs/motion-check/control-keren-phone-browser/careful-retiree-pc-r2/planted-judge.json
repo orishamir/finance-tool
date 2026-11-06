@@ -1,0 +1,41 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "For self-employed users the calculator gives no amount for withdrawing before 6 years, so half of what the reader came for is missing. This means self-employed mode exists, so it is not the switch doing nothing.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "Numbers show at years 4 and 5 over empty dashed boxes, so they look like real answers when they may not be. This could mislead.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "The back-to-top button covers the label of the last result bar. This is a layout annoyance.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "The term 'מסלול מדד' is used without explanation, and the reader confused it with the price index.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "The pink 'before 6 years: tax' label and the grey labels have poor contrast on the dark background. The complaint is about readability, not about the line appearing or the chart jumping.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 6,
+      "summary": "The 7% yearly return is pre-filled with no context on whether it is realistic. This is a wish for more information.",
+      "serious": false,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.027110800000000004
+}

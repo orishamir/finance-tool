@@ -1,0 +1,102 @@
+{
+  "task": "p14-dead-keren-phone",
+  "persona": "first-job-phone",
+  "repeat": 1,
+  "mode": "browser",
+  "device": "phone",
+  "startedAt": "2026-11-05T22:51:30.912Z",
+  "structured": {
+    "answer": "I couldn't get my own numbers. The \"עצמאים\" button didn't work, so the calculator stayed on \"שכירים\" (300 ₪ a month from me plus 900 ₪ from an employer). For that case it shows about 52,334 ₪ in hand after 4 years (10,661 ₪ tax) and 137,649 ₪ after 8 years (no tax). Since I have no employer, my real amounts would be a lot lower.",
+    "confidence": "unsure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "calculator toggle שכירים/עצמאים",
+        "why": "Tapped 'עצמאים' three times (by text and by position) and 'שכירים' stayed selected; inputs kept employer fields"
+      },
+      {
+        "where": "scrolling to the chart",
+        "why": "Scrolled past the chart into a text block and had to scroll back up"
+      }
+    ],
+    "used": [
+      "heading קרן השתלמות and the line about 6 years tax-free",
+      "calculator heading 'כמה כסף נשאר לכם, ומתי?'",
+      "year bars 1–12 with 'לפני 6 שנים: מס' / 'מ־6 שנים: פטור ממס'",
+      "waterfall columns, especially 'נשאר בידיים' 52,334 and 137,649",
+      "'המס לקח' −10,661 and 0"
+    ],
+    "skimmed": [
+      "intro paragraph"
+    ],
+    "skipped": [
+      "paragraph under the chart about income tax refund, inflation, 2%, Meitav S&P500 track and 11 tracks",
+      "'חוקים וכללים · 14' button",
+      "tabs 'שווה לדעת' and 'מי מציע ומי מצטרף'",
+      "'123 ממקור / 123 מחושב' legend"
+    ],
+    "unsure_meaning": [
+      "'התשואה הוסיפה אחרי דמי ניהול'",
+      "dotted purple underlines on numbers",
+      "'123 מחושב' vs '123 ממקור'",
+      "whether 'נשאר בידיים' is in today's money"
+    ],
+    "not_found": [
+      "a working self-employed mode",
+      "a field for my own monthly deposit in shekels instead of salary and percent"
+    ],
+    "findings": [
+      {
+        "what": "'עצמאים' toggle does nothing when tapped; calculator stays on employee mode, so a self-employed person can't get their numbers",
+        "where": "top of calculator 'כמה כסף נשאר לכם, ומתי?'"
+      },
+      {
+        "what": "Results are dominated by 'המעסיק הוסיף', which is irrelevant and misleading for self-employed",
+        "where": "waterfall chart under the year bars"
+      },
+      {
+        "what": "Inputs ask for gross salary and percent of salary, not a plain monthly amount I deposit",
+        "where": "calculator fields"
+      },
+      {
+        "what": "Big jump in 'נשאר בידיים' between years (tax drops to 0 at 6) is easy to miss without reading the small labels above the bars",
+        "where": "year bar chart"
+      },
+      {
+        "what": "Dense paragraph under chart with many numbers; I didn't read it",
+        "where": "text after the waterfall"
+      }
+    ]
+  },
+  "steps": 10,
+  "reads": 8,
+  "commands": 10,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 61113,
+    "turns": 20,
+    "usd": 0.35679999999999995,
+    "input": 38,
+    "cacheWrite": 27148,
+    "cacheRead": 283520,
+    "output": 4138,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "p14-dead-keren-phone",
+    "screenshots": 10,
+    "changes": [
+      {
+        "id": "dead-shown",
+        "type": "style",
+        "shots": 10,
+        "applied": 10,
+        "most": 1
+      }
+    ],
+    "neverShown": [],
+    "errors": []
+  }
+}

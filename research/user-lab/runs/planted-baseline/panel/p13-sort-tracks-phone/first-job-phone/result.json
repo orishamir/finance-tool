@@ -1,0 +1,130 @@
+{
+  "task": "p13-sort-tracks-phone",
+  "persona": "first-job-phone",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "phone",
+  "startedAt": "2026-11-05T23:23:23.675Z",
+  "structured": {
+    "answer": "I'd go with Harel, the track that looks like their S&P 500 one: 0.56% fee, 13.7% a year over 3 years and 11.92% over 5. Harel is a big name I know, and for the S&P that's the lowest fee with the best 5-year number I saw. Fairly sure, but I never actually saw that card's title clearly (it was cut off between two screens). I only know it's the S&P because its numbers look like Mor's \"עוקב מדד S&P500\".",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Harel card with 13.7% / 11.92% / 2.3 billion (top of screen 5)",
+        "why": "The track name was cut off at the top. I'm guessing it's S&P because it has 99% מניות and 99% מט\"ח like Mor's S&P500 card."
+      },
+      {
+        "where": "Harel card with 24.04% over 3 years (screen 4)",
+        "why": "Biggest return on the page, but I never saw its name, so I don't know what I'd be picking. It tempted me."
+      },
+      {
+        "where": "The list in general",
+        "why": "143 tracks and every card looks the same. By the third company (Analyst, around screen 12) I was done and stopped. I never saw the other 9 companies."
+      },
+      {
+        "where": "\"פחות מ־3 שנים\" in place of a return",
+        "why": "Lots of cards just say that. I didn't know if they're new or bad, so I skipped them."
+      }
+    ],
+    "used": [
+      "Top tab \"קופת גמל להשקעה 143\"",
+      "Line \"דמי ניהול מהחיסכון: מ־0.5% עד 0.73%\"",
+      "Company headers: הראל, מור, אנליסט with their fee ranges",
+      "Card names: \"עוקב מדד S&P500\", \"מניות\"",
+      "Big numbers on each card: fee % מהחיסכון, 3-year and 5-year return, כסף מנוהל"
+    ],
+    "skimmed": [
+      "Bond and credit tracks (אג\"ח סחיר, אשראי ואג\"ח, כספי שקלי)",
+      "הלכה tracks",
+      "כללי tracks",
+      "The intro text about 2025 and September 2026",
+      "The ring charts next to each card"
+    ],
+    "skipped": [
+      "Screens 13–40 (the other 9 companies)",
+      "\"מה זה קופת גמל להשקעה\" link",
+      "Search box, the במה הכסף מושקע dropdown and sorting",
+      "\"מה אומרים המספרים\" links",
+      "\"123 ממקור / 123 מחושב\" line",
+      "Fund numbers (קופה 15287 etc.)"
+    ],
+    "unsure_meaning": [
+      "מט\"ח percent: 99% stocks AND 99% מט\"ח? Doesn't add up to 100 in my head",
+      "ההפקדות 0%: is that a fee or what?",
+      "\"פחות מ־3 שנים\" where a return should be",
+      "Dotted purple underlines on the numbers",
+      "Whether 13.7% \"תשואה שנתית ממוצעת\" means every year",
+      "\"גמיש\", \"סחיר\", \"עוקב מדדים - גמיש\"",
+      "Teal vs yellow in the ring (I guessed teal = stocks, yellow = מט\"ח from the dots)"
+    ],
+    "not_found": [
+      "A recommendation or a \"best for beginners\" pick",
+      "Fees in shekels for an amount like 30,000 ₪",
+      "What to actually do first: how to open one, or a button",
+      "A way to see only the S&P tracks side by side",
+      "Bank names (Leumi, Hapoalim): didn't see any in the part I read"
+    ],
+    "findings": [
+      {
+        "what": "Too many look-alike cards (143), no way to just compare the S&P tracks. I stopped after 3 companies.",
+        "where": "Whole list"
+      },
+      {
+        "what": "Track name scrolls off while the numbers are still on screen, so I lost which card was which",
+        "where": "Screens 4–5, Harel cards"
+      },
+      {
+        "what": "No fee in shekels. 0.56% vs 0.71% feels the same to me.",
+        "where": "Each card, \"מהחיסכון\""
+      },
+      {
+        "what": "\"פחות מ־3 שנים\" looks like a missing number and makes the card look broken",
+        "where": "Many cards"
+      },
+      {
+        "what": "Stocks % and מט\"ח % next to each other, both 99%, confusing",
+        "where": "Ring + legend on each card"
+      },
+      {
+        "what": "No 'what do I do now' or how-to-open step",
+        "where": "End of each card / page"
+      },
+      {
+        "what": "Small print up top about dates and data source. I didn't read it.",
+        "where": "Screen 1 intro"
+      }
+    ]
+  },
+  "steps": 12,
+  "reads": 12,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 36276,
+    "turns": 14,
+    "usd": 0.25963020000000003,
+    "input": 10,
+    "cacheWrite": 22589,
+    "cacheRead": 55691,
+    "output": 3387,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "p13-sort-tracks-phone",
+    "screenshots": 41,
+    "changes": [
+      {
+        "id": "sort-shown",
+        "type": "style",
+        "shots": 41,
+        "applied": 41,
+        "most": 1
+      }
+    ],
+    "neverShown": [],
+    "errors": []
+  }
+}

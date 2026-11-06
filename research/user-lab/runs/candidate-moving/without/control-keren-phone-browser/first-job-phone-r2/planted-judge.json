@@ -1,0 +1,29 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "In self-employed mode at 4 years, the fund shows only an orange note and no number. The only large figure (25,725) belongs to the other option, so the reader could take it as the fund's result.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "At year 8, the rightmost bar, which is read first in RTL, is the comparison account (55,471), not the fund's own total, so the reader could mistake which figure is the fund's.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "Bar labels are cut off at the bottom of the screen, e.g. 'אחרי דמי...' and 'ניירות...', but the parts that show are still enough to tell the bars apart.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "The chart shows empty dashed boxes for years 1–5 with no explanation next to them.",
+      "serious": false,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.0269668
+}

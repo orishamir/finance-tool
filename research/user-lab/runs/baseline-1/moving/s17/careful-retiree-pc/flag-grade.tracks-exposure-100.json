@@ -1,0 +1,36 @@
+{
+  "case": "tracks-exposure-100",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The column of exposure to stocks and foreign currency is not explained, and shows figures above 100% with nothing saying how that can be.\",\"where\":\"the exposure column\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings mention the stock and foreign-currency exposure column, missing explanations, or figures above 100%; finding 7 is only about two-colour rings being hard to tell apart, which is a different complaint."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0157634
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings mention the stock and foreign-currency exposure column, that it isn't explained, or that it shows figures above 100%. Finding 7 is about rings in the middle column whose two colours are hard to tell apart, which is a different complaint."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0155514
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.031314800000000004
+}

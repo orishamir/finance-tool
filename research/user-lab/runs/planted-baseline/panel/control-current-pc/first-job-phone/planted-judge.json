@@ -1,0 +1,41 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "The fee paragraph gives two dates and three fee levels, so it's unclear which fee applies now. Cost is a main figure, so this could lead to a wrong decision.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "The calculator shows two different loss figures (1,797 and 2,576) for the same example. This leaves the main figure impossible to understand.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "The key advice on how much to keep (15,000 ₪) is buried mid-paragraph. The reader still found it, so this is about placement, not a wrong heading.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "The reader wants a simple rule of thumb, such as keeping one month of expenses. This is a wish for more.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "Terms like מק\"מ and הטבה aren't explained where they appear. This is a minor annoyance.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 6,
+      "summary": "The 'no deposit insurance' line sounds alarming and gives no clear next step. It's unsettling but doesn't block the reader's goal.",
+      "serious": false,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.025746800000000004
+}

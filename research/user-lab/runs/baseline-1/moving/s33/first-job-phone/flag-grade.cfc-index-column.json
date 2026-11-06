@@ -1,0 +1,36 @@
+{
+  "case": "cfc-index-column",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"Text under the index name in the index column is unnecessary, and the column is wider than its content.\",\"where\":\"the index column\",\"kind\":\"taste\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "No finding says the text under the index name is unnecessary or that the index column is too wide; finding 3 is about the same column but argues the opposite (it wants more explanation), and finding 4 is about the row of labels under the fund names, not the index column's width."
+      }
+    ],
+    "liked": [],
+    "usd": 0.015419400000000002
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the findings says the text under the index name is unnecessary or that the column is too wide: finding 3 asks for more explanation in the index column, and finding 2 is about labels under the fund names being jargon, not about extra text."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0163914
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0318108
+}

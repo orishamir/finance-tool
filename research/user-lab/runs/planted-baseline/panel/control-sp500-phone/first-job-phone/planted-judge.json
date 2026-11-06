@@ -1,0 +1,47 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "Yearly hedged/unhedged table numbers overlap and are unreadable",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "Final amount looks suspiciously low with no explanation up front",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "'Next pair in line' doesn't name the bank/fund",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "Cost bar colours need separate legend, hard on phone",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "Minus shekel figures in fund list read like losses",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 6,
+      "summary": "Page too long; hedging section is a lecture",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 7,
+      "summary": "Too many unexplained terms on fund card and legends",
+      "serious": false,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.033626800000000005
+}

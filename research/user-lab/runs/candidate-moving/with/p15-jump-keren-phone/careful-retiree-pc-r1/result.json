@@ -1,0 +1,116 @@
+{
+  "task": "p15-jump-keren-phone",
+  "persona": "careful-retiree-pc",
+  "repeat": 1,
+  "mode": "browser",
+  "device": "phone",
+  "startedAt": "2026-11-06T02:01:34.813Z",
+  "structured": {
+    "answer": "After 8 years, putting in 500 ₪ a month, the calculator shows about 68,853 ₪ that I keep (I paid in 48,000). For 4 years it gives no number: it says there is no calculation yet for self-employed people who take the money out before 6 years, only that you pay tax then.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "heading 'מושכים את הכסף אחרי 5 שנים'",
+        "why": "Tapping the dashed '5 שנים' did nothing. I had to find the row of year numbers under the chart."
+      },
+      {
+        "where": "result at 4 years",
+        "why": "The only number left is 25,725 for 'אותו כסף בחשבון ניירות ערך'. I wasn't sure whether that was my answer, and decided it is not the fund."
+      },
+      {
+        "where": "the עצמאים switch",
+        "why": "After I pressed it the boxes moved around: 'תשואה בשנה' jumped to the other side."
+      }
+    ],
+    "used": [
+      "the top paragraph: after 6 years you can withdraw without tax",
+      "the self-employed limit of 20,566 ₪ a year",
+      "the עצמאים button",
+      "the year numbers 4 and 8 under the chart",
+      "'נשאר בידיים 68,853'",
+      "'הפקדתם 48,000'",
+      "the orange note 'לעצמאים עוד אין כאן חישוב למשיכה לפני 6 שנים'"
+    ],
+    "skimmed": [
+      "the bars for 'החזר המס הוסיף', 'התשואה הוסיפה', 'המס לקח'",
+      "the line 'התשואה 7% בשנה... 2%'"
+    ],
+    "skipped": [
+      "חוקים וכללים · 10",
+      "the 'במה אפשר להשקיע' buttons (S&P 500 and others)",
+      "'כדאי להכיר גם'",
+      "everything below the calculator"
+    ],
+    "unsure_meaning": [
+      "אותו כסף בחשבון ניירות ערך (55,471 / 25,725)",
+      "מסלול מדד",
+      "הכנסה חייבת",
+      "החזר המס הוסיף +9,581",
+      "S&P 500",
+      "the dotted purple underlines under the numbers",
+      "כל הסכומים בכסף של היום"
+    ],
+    "not_found": [
+      "any amount for withdrawing after 4 years as self-employed",
+      "how much tax you pay if you withdraw early"
+    ],
+    "findings": [
+      {
+        "what": "There is no result for withdrawing before 6 years for self-employed, and the task asks exactly that. At 4 years the only number on screen belongs to a different product, which is confusing.",
+        "where": "calculator result, year 4"
+      },
+      {
+        "what": "The page is dark with grey and thin text that's hard to read, and the dark teal and dark brown bars are hard to tell apart.",
+        "where": "whole page, result bars"
+      },
+      {
+        "what": "After switching to עצמאים the fields rearranged and jumped sideways.",
+        "where": "שכירים/עצמאים switch"
+      },
+      {
+        "what": "The dashed '5 שנים' in the heading looks clickable but did nothing.",
+        "where": "heading 'מושכים את הכסף אחרי'"
+      },
+      {
+        "what": "The chart shifted up after I tapped a year.",
+        "where": "year chart"
+      },
+      {
+        "what": "Many numbers side by side (48,000, +9,581, +11,272, 0, 68,853, 55,471); it is hard to know which is the answer without reading the labels below.",
+        "where": "result bars"
+      }
+    ]
+  },
+  "steps": 9,
+  "reads": 8,
+  "commands": 9,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 71113,
+    "turns": 19,
+    "usd": 0.3403798,
+    "input": 36,
+    "cacheWrite": 25912,
+    "cacheRead": 255999,
+    "output": 4087,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "p15-jump-keren-phone",
+    "screenshots": 9,
+    "changes": [
+      {
+        "id": "jump-shown",
+        "type": "style",
+        "shots": 9,
+        "applied": 9,
+        "most": 1
+      }
+    ],
+    "neverShown": [],
+    "errors": []
+  }
+}

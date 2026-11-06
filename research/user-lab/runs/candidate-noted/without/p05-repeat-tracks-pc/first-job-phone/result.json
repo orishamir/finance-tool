@@ -1,0 +1,132 @@
+{
+  "task": "p05-repeat-tracks-pc",
+  "persona": "first-job-phone",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T02:54:46.186Z",
+  "structured": {
+    "answer": "I'd go with Meitav's \"עוקב מדדי מניות\" track: the highest returns I saw (25.86% over 3 years, 17.25% over 5) from a name I know, and the fee (0.65%) looked about the same as everyone else's.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Table rows showing 'פחות מ־3 שנים' instead of a return",
+        "why": "No number to compare, didn't know if that's bad or just new"
+      },
+      {
+        "where": "Same track name at different companies (עוקב מדדי מניות: Meitav 25.86% vs Phoenix 9.34%)",
+        "why": "Made me unsure the tracks are really comparable"
+      },
+      {
+        "where": "S&P 500 tracks showing ~13% while 'מניות' tracks show 20%+",
+        "why": "I came for S&P and it looked worse, confusing"
+      },
+      {
+        "where": "Around screen 8 of 16",
+        "why": "Table just kept going, got bored and stopped scrolling"
+      }
+    ],
+    "used": [
+      "Heading 'כל המסלולים בכל החברות' and the lit-up 'קופת גמל להשקעה 143' button",
+      "Return column 'תשואה שנתית ממוצעת' 3/5 year numbers",
+      "Fee column 'דמי ניהול ... ההחסכון' first number",
+      "Company names on the group rows (הראל, מור, אנליסט, מיטב)"
+    ],
+    "skimmed": [
+      "Filter buttons row (במה הכסף מושקע)",
+      "אלטשולר שחם section",
+      "הפניקס section",
+      "Exposure column with circles"
+    ],
+    "skipped": [
+      "Grey intro text about 2025 / רשות שוק ההון",
+      "'מה זה קופת גמל להשקעה' link",
+      "Search box",
+      "'?' icons in headers",
+      "כסף מנוהל column",
+      "Screens 9-16"
+    ],
+    "unsure_meaning": [
+      "חשיפה למניות ולמט\"ח with two percentages",
+      "Yellow and green ring circles",
+      "ההפקדות 0% vs ההחסכון fee",
+      "פחות מ־3 שנים / פחות מ־5 שנים",
+      "עוד לא דווח with orange icon",
+      "לפני דמי ניהול",
+      "אג\"ח, מט\"ח",
+      "123 מקור / 123 מחושב"
+    ],
+    "not_found": [
+      "A recommended track or 'start here'",
+      "What to actually do first / how to open the fund",
+      "Fees in shekels for my amount",
+      "A simple explanation of which track is for someone like me"
+    ],
+    "findings": [
+      {
+        "what": "143 tracks with no recommendation; the same names repeat at every company and it's overwhelming",
+        "where": "Main table"
+      },
+      {
+        "what": "The same track name shows very different returns at different companies, so it's hard to trust the comparison",
+        "where": "עוקב מדדי מניות rows (מיטב vs הפניקס)"
+      },
+      {
+        "what": "Many rows have no return number, just 'פחות מ־3 שנים'",
+        "where": "Return column"
+      },
+      {
+        "what": "Exposure column with circles and two percentages means nothing to me; no explanation next to it",
+        "where": "חשיפה למניות ולמט\"ח column"
+      },
+      {
+        "what": "Two fee numbers per row; didn't know which one matters",
+        "where": "דמי ניהול column (ההחסכון / ההפקדות)"
+      },
+      {
+        "what": "Orange warning icons with 'עוד לא דווח' scared me off those rows",
+        "where": "New tracks, e.g. הלכה at מור, משולב סחיר at אלטשולר"
+      },
+      {
+        "what": "Fees only as small percents, never in shekels, so they all look like nothing",
+        "where": "Fee column"
+      },
+      {
+        "what": "No next step or button to actually open a fund",
+        "where": "Whole page"
+      }
+    ]
+  },
+  "steps": 8,
+  "reads": 8,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 38964,
+    "turns": 10,
+    "usd": 0.206745,
+    "input": 10,
+    "cacheWrite": 15807,
+    "cacheRead": 43545,
+    "output": 3577,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "p05-repeat-tracks-pc",
+    "screenshots": 17,
+    "changes": [
+      {
+        "id": "repeat-shown",
+        "type": "style",
+        "shots": 17,
+        "applied": 17,
+        "most": 143
+      }
+    ],
+    "neverShown": [],
+    "errors": []
+  }
+}

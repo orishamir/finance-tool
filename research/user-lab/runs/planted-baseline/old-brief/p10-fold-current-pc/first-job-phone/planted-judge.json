@@ -1,0 +1,6 @@
+{
+  "named": true,
+  "position": 4,
+  "why": "In the \"מה זה\" block the reader says they didn't click \"עמלות ומחירים\" even though \"that's literally my question, but nothing on the page told me that's where the fees are\". That names the cost being folded behind a line you have to open, with nothing pointing to it. It comes after three earlier problems: the missing fees for their own bank (section 1), the unclear \"123 מקור/מחושב\" line, and \"ריבית על יתרת זכות\" sounding technical. Because that last one is mild, the position could also be 3.",
+  "usd": 0.046716
+}

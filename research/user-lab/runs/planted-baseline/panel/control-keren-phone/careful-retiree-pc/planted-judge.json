@@ -1,0 +1,53 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "A red minus, a striped red tax block and 'almost 30,000 to tax' appear before any reassurance, which can scare the user away from the fund.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "There is no age input, so the 3-year rule for retirees is not applied. The default 5 years may show tax that does not apply to the user.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "The paragraph under the chart has too many numbers, and the reader can't tell which one is the answer.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "Pale grey text on a black background is hard to read even when enlarged.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "The example track uses English letters and jargon (S&P500, מסלול מדד).",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 6,
+      "summary": "The bar colours are hard to tell apart, and no sentence explains what the chart means.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 7,
+      "summary": "The amounts at the top of screen 2 have no visible context.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 8,
+      "summary": "Codes like KH-19 and PF-18 in 'שווה לדעת' mean nothing to an ordinary reader.",
+      "serious": false,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.032514799999999996
+}

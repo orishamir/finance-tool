@@ -1,0 +1,63 @@
+{
+  "case": "hg-tax-after-six",
+  "sessions": 2,
+  "perKey": {
+    "k": {
+      "kind": "general",
+      "caught": 2,
+      "caughtIn10": 2,
+      "of": 2,
+      "byPersona": {
+        "careful-retiree-pc": {
+          "caught": 1,
+          "of": 1,
+          "ranks": [
+            3
+          ]
+        },
+        "first-job-phone": {
+          "caught": 1,
+          "of": 1,
+          "ranks": [
+            9
+          ]
+        }
+      },
+      "graderAgreement": 1
+    }
+  },
+  "againstLiked": {},
+  "usd": 0.2789488,
+  "rows": [
+    {
+      "task": "s14",
+      "session": "careful-retiree-pc",
+      "persona": "careful-retiree-pc",
+      "mode": "free text",
+      "raised": [
+        24,
+        23
+      ],
+      "ranks": {
+        "k": 3
+      },
+      "against": {},
+      "usd": 0.13728639999999998
+    },
+    {
+      "task": "s14",
+      "session": "first-job-phone",
+      "persona": "first-job-phone",
+      "mode": "free text",
+      "raised": [
+        21,
+        20
+      ],
+      "ranks": {
+        "k": 9
+      },
+      "against": {},
+      "usd": 0.14166240000000002
+    }
+  ]
+}

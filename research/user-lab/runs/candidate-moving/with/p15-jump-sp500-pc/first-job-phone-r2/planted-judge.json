@@ -1,0 +1,6 @@
+{
+  "named": true,
+  "position": 2,
+  "why": "Finding 2 says the result cards area moved up about 42 px after the reader typed the years. That is the results shifting when an input changed, which is the layout jump caused by the note appearing and disappearing.",
+  "usd": 0.016236
+}

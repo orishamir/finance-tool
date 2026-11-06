@@ -1,0 +1,36 @@
+{
+  "case": "current-account-one-bank",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The current-account guide's interest example and chart are one bank's (Leumi) terms and one person's case, shown as if general, though most people's idle money earns nothing and slowly loses value.\",\"where\":\"the interest lines and the expanded chart\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 1,
+        "why": "Finding 1 says the chart shows the current account growing at 5% even though such accounts often pay no interest, which makes it misleading; this is a clear part of the person's complaint that a one-off example is shown as if it applied to everyone."
+      }
+    ],
+    "liked": [],
+    "usd": 0.016139399999999998
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 1,
+        "why": "Finding 1 says the chart shows the current account growing at 5% even though most current accounts pay no interest, so it calls the chart misleading, which is the same complaint the person made."
+      }
+    ],
+    "liked": [],
+    "usd": 0.015611400000000001
+  },
+  "third": null,
+  "ranks": {
+    "k": 1
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.031750799999999996
+}

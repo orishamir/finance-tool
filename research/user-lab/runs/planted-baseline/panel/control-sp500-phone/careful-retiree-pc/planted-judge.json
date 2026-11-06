@@ -1,0 +1,53 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "Opens with English letters and an index, no mention of risk/safety; reader feels it isn't for them",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "Cheapest option labelled 'הבחירה שלכם' though nothing was chosen; unclear if something was already picked",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "Minus sign in '−43 ₪' makes second option look like it loses money",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "7% return shown without saying it is only an example and could be lower or negative",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "Many numbers and bars with similar colours; legend hard to match",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 6,
+      "summary": "Long 'לא בחישוב' notes are hard to follow",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 7,
+      "summary": "White on black tires the eyes; grey lines pale",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 8,
+      "summary": "English fund names hard to read for non-English readers",
+      "serious": true,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.035222800000000005
+}

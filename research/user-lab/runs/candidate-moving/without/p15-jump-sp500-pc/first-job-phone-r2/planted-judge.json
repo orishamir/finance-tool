@@ -1,0 +1,6 @@
+{
+  "named": false,
+  "position": 0,
+  "why": "None of the five findings says the result cards move, shift or jump, or that a note appears and disappears when the inputs change. Finding 5 (slider shows 800, field says 750) is about the two inputs not matching, not about the layout moving. The others cover the hidden inflation assumption, the minus sign, where the total sits on the chart, and jargon.",
+  "usd": 0.016808
+}

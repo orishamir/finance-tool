@@ -1,0 +1,83 @@
+{
+  "case": "makam-under-products",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"Makam is listed under 'מוצרים' (products) though it is something bought inside an account, not a product of its own.\",\"where\":\"the group the makam entry sits in\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "The page explains what products are but not what they do for your money: returns, costs, risk or who they suit",
+      "The last line of 'two parts' points to product pages the reader hasn't seen",
+      "'Where to start' has too few lines, with nothing for someone close to retirement",
+      "Unclear how the renewing money-market fund differs from a regular one",
+      "The retirement cards don't help the reader tell which fund they are in",
+      "The do-it-yourself section (self-managed, foreign broker) is not for them",
+      "The 'what the money is invested in' cards are mostly confusing",
+      "The 'what the site doesn't cover yet' box doesn't say what is missing",
+      "Differences between the index cards are lost on the reader",
+      "מק\"מ appears twice, once as a place money is held and once as an investment, so which is it? Its explanation is also hard to follow",
+      "Inflation-linked vs non-linked government bonds, 'coupon' and the interest tied to מק\"מ are unclear; which is better now?",
+      "'Exposed to the dollar or hedged' is repeated but never explained",
+      "'A fund that tracks it' is unclear: what do I actually buy?",
+      "The general track gives no share range and leaves decisions to a committee, which worries the reader",
+      "Comprehensive vs general new pension fund and 'above the maximum amount' are unclear",
+      "The severance fund card leaves the reader unsure whether they have one",
+      "No mention of the tax benefit after age 60 for the investment savings fund",
+      "No information on whether money is protected if the bank or fund fails",
+      "No information on how fast, or at what cost, money can be withdrawn",
+      "No information on how much tax is paid on profit",
+      "Would drop the 'for children' section"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 10,
+        "why": "The reader asks whether מק\"מ is a place money is held or an investment, since it appears in both roles; this is the person's point that it shouldn't be listed as a product."
+      }
+    ],
+    "liked": [],
+    "usd": 0.07984720000000001
+  },
+  "b": {
+    "raised": [
+      "Screen-03 is just a blank thin black strip with no content",
+      "The page never says what products do for your money: returns, costs, risk or suitability, so confidence is low",
+      "The line about each product page showing what you can invest in refers to pages the reader hasn't seen",
+      "'Where to start' has too few lines and nothing like 'close to retirement'",
+      "Unclear how the renewing money-market fund differs from the regular one",
+      "Can't tell which of the three retirement products they are in",
+      "The do-it-yourself section (self-managed, foreign broker) is off-putting and not for them",
+      "Index/investment cards are confusing and the indices can't be told apart",
+      "'What the site doesn't cover yet' box doesn't say what is missing",
+      "Makam appears twice, as a place money is held and as an investment: which is it? Its explanation needed three readings",
+      "Linked vs unlinked government bonds, 'coupon' and the makam-linked interest are confusing; unclear which is better now",
+      "'Exposed to the dollar or hedged' is repeated and never explained",
+      "'A fund that tracks it' is unclear: what do you actually buy",
+      "The general track leaves decisions to a committee with no share range, which is worrying",
+      "Comprehensive vs general new pension fund and the 'maximum amount' are unclear",
+      "Still unsure whether they have a savings/personal severance fund",
+      "Nothing for people aged 60+, e.g. the investment fund's tax benefit after 60 isn't mentioned",
+      "No information on whether money is protected if the bank or fund fails",
+      "No information on how fast and at what cost money can be withdrawn",
+      "Tax rate on profit isn't stated",
+      "Would drop the children section",
+      "Would drop the remaining technical investment cards unless rewritten in plain language"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 10,
+        "why": "The reader asks why makam shows up both as a place money is held (a product) and as an investment, which is the same doubt about whether makam really belongs among the products."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0769272
+  },
+  "third": null,
+  "ranks": {
+    "k": 10
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1567744
+}

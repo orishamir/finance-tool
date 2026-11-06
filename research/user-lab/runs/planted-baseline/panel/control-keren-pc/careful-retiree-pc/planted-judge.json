@@ -1,0 +1,53 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "Result sentence says ~30,000 ₪ goes to tax before saying part returns; confusing main answer, wants one plain net figure",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "Key 'נשאר בידיים' bar has no amount label while 'הפקדתם' does",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "Calculator ignores the retirement-age 3-year rule stated at top of page",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "Small grey text on dark background hard to read",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "English letters (S&P 500, KH-19) near calculator",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 6,
+      "summary": "Second set of amounts (66,601/66,280) contradicts the first",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 7,
+      "summary": "Fees shown in three different formats",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 8,
+      "summary": "Pink/red tax marks are alarming without explanation",
+      "serious": false,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.0349668
+}

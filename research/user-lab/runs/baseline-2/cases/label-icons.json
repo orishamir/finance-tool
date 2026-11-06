@@ -1,0 +1,13 @@
+{
+ "id": "label-icons",
+ "task": "s27",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "The icons on the fund labels are weak and do not help tell the labels apart.",
+   "where": "the labels on fund rows",
+   "kind": "taste"
+  }
+ ],
+ "liked": []
+}

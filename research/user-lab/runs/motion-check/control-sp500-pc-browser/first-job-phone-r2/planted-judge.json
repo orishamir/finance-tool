@@ -1,0 +1,41 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "The 2% inflation guess sits behind a small button and popup, and the result says only 'in today's money' without giving the rate. The button opens a popup, so it does work and this is not listed problem 1. The guess is still easy to find, so it doesn't block the goal.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "The monthly-deposit slider shows 800 but the box shows 750. The reader can't tell which value the result uses and thinks the page changed their number. That breaks trust in the main result.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "The 7% return is filled in with no source and nothing saying it's a guess. More explanation would help, but this doesn't stop anyone comparing options.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "The 15-year cost bar uses many colours and a long legend. The reader only worked out by guessing from the colour that the biggest part is tax, not fees. That's a main figure that's hard to read and could make fees look bigger than they are.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "The top two options differ by 123 ₪, and the cost row (+2 / −166 / +41) doesn't explain why one wins. The reader can't follow the main answer. This is about explaining the result, not the note that appears and disappears, so it's not listed problem 2.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 6,
+      "summary": "The fund list filters use jargon tags (accumulating, swap-based, currency-hedged). This is a minor wording issue.",
+      "serious": false,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.0337828
+}

@@ -1,0 +1,85 @@
+{
+  "case": "study-r2-per-shekel-sentence",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The sentence 'כל שקל שהפקדתם נהיה 4.57 ₪ בקרן ו־1.11 ₪ בחשבון ניירות ערך' does not help.\",\"where\":\"the per-shekel sentence\",\"kind\":\"taste\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Option א: hard to follow the thin lines from labels to the coloured slices",
+      "Option א: the top slice is hatched in two colours, so it's unclear which part is tax and which is profit",
+      "Worried that at 61 they may not keep working for 6 more years",
+      "The figures are only an example, and the employer's real percentages may be different",
+      "Didn't understand 'לגרור' or what the 'כדורים' are in the subtitle",
+      "The small picture of the old version has text too small to read",
+      "Fund names and code numbers like (13245) and (4D) in the example paragraph mean nothing to them",
+      "The 'רצועה' line under each chart is confusing: which strip?",
+      "The third screenshot is completely black",
+      "The green-blue colour for profit after fees doesn't come across",
+      "In ב the securities-account bars are too small, and their numbers have no ₪ sign",
+      "Didn't understand terms like 'מסלול', 'עוקב מדד S&P500', 'מחקה'",
+      "Unclear whether 'דמי ניהול 0.54%' is yearly and whether it comes out of their money",
+      "Unclear what 'במונחי היום' / 'הכול בכסף של היום' means for the real amount",
+      "Doesn't understand why the tax is 13,974 in the keren but only 594 in the other account",
+      "Doesn't understand why the first column is called 'חשבון ניירות ערך'",
+      "Couldn't find whether they can withdraw tax-free at retirement age before 6 years pass",
+      "Couldn't find what happens if they leave the job or retire after 3–4 years",
+      "No place to enter their own salary and the employer's real percentages",
+      "Couldn't find whether 7% is guaranteed or what happens in a bad year",
+      "Couldn't find whether early emergency withdrawal is possible and what it costs",
+      "Would drop the '19 המסלולים' footnotes",
+      "Would drop option א at year 5 (keep only the year-6 version)"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader quotes the per-shekel sentence (the 3.70 ₪ version) with approval as something that helped convince them, and none of the raised problems says it doesn't help."
+      }
+    ],
+    "liked": [],
+    "usd": 0.057247200000000005
+  },
+  "b": {
+    "raised": [
+      "In option א, the thin lines from labels to coloured slices are hard to follow, and the two-colour hatched top slice makes it unclear which part is tax and which is profit",
+      "Worried that at 61 they may not keep working for 6 more years",
+      "The figures are only an example, and their employer's real percentages may be different",
+      "Did not understand 'לגרור' or 'כדורים' in the subtitle",
+      "The small picture of the old version has text too small to read",
+      "Fund names and code numbers like (13245) and (4D) mean nothing to them",
+      "Confused by the 'רצועה' (strip) sentence at the bottom of each chart",
+      "The third screenshot is completely black",
+      "Ignored the green-blue colour for profit after fees",
+      "In ב, the securities-account bars are too small and the numbers have no ₪ sign",
+      "Did not understand terms like 'מסלול', 'עוקב מדד S&P500' and 'מחקה'",
+      "Unclear whether the 0.54% management fee is per year and whether it comes out of their money",
+      "Unclear what 'במונחי היום' / 'בכסף של היום' means for the real amount",
+      "Did not understand why the tax is 13,974 in the keren but only 594 in the other account",
+      "Did not understand why the column is called 'חשבון ניירות ערך' and not just saving on their own",
+      "Could not find whether they can withdraw tax-free at retirement age before 6 years pass",
+      "Could not find what happens if they leave the job or retire after 3 or 4 years",
+      "No place to enter their own salary and their employer's real percentages",
+      "Could not find whether 7% a year is guaranteed or what happens in a bad year",
+      "Could not find whether they can take money out early in an emergency, and what it would cost",
+      "Would drop the '19 המסלולים' footnotes",
+      "Would drop option א at year 5 (keeping the year-6 version)"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader quotes the per-shekel sentence (in its 3.70 ₪ version) with approval and never says it fails to help, so nothing in the list names this problem."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0580992
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1153464
+}

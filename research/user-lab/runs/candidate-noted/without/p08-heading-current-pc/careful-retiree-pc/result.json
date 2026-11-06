@@ -1,0 +1,140 @@
+{
+  "task": "p08-heading-current-pc",
+  "persona": "careful-retiree-pc",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T02:56:31.065Z",
+  "structured": {
+    "answer": "The basic plan (המסלול הבסיסי) costs at most 10 ₪ a month, so I'll ask the bank which plan I'm on. Money sitting in the עו\"ש usually earns no interest and loses value, so I'd keep only what we need for the month, but I won't move anything before asking my son and the bank.",
+    "confidence": "unsure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Screen 1, paragraph about the new rule (צו) with 01.10.2026 / 01.07.2027 and 7.00/5.00/10.00/1.00 ₪",
+        "why": "Long line with many amounts and dates; I lost track of which charge applies to me and when"
+      },
+      {
+        "where": "Screen 2, top",
+        "why": "The page starts mid-sentence ('ולכן כסף שעשוי לצאת...'); I seem to have missed the start of the interest section"
+      },
+      {
+        "where": "Screen 3, three numbers under the chart",
+        "why": "'המחיר של להשאיר' 2,576 ₪ doesn't match the 1,797 ₪ 'פחות' on the screen before; I didn't know which one is right"
+      },
+      {
+        "where": "Screen 4, 'סיכונים ומה לא מוגן'",
+        "why": "'אין בישראל ביטוח פיקדונות' frightened me about our deposits, and I stopped reading carefully"
+      }
+    ],
+    "used": [
+      "Heading 'חשבון עובר ושב' and subtitle",
+      "Basic plan: up to 1 action at a clerk and 10 online for up to 10.00 ₪ a month",
+      "Balance over 15,000.00 ₪ for a quarter, the bank must send a notice",
+      "Box: 10,000 ₪ after 10 years is worth 8,203 ₪, 1,797 ₪ less",
+      "Most banks pay 0% on the עו\"ש (4 of 8)",
+      "4 of 8 banks pay interest up to 10,000 ₪, at most 3%",
+      "No deposit insurance in Israel"
+    ],
+    "skimmed": [
+      "New-rule paragraph with the 7/5/10/1 ₪ amounts",
+      "Three numbers under the chart (10,779 / 2,576)",
+      "Paragraph about the 2026 law and the 250,000 ₪ guarantee",
+      "Table of terms (מונחים) on screen 5",
+      "Footer"
+    ],
+    "skipped": [
+      "The chart itself",
+      "The years slider",
+      "Fold 'חלק מהבנקים כן משלמים ריבית...'",
+      "Fold 'שחקו עם המספרים שלכם'",
+      "Link 'לעמוד של קרן כספית יומית'",
+      "Labels BANK-17, BANK-35 etc. and 'חוקים וכללים' tags",
+      "Top menu (השקעה במדד, חברות ומסלולים)",
+      "'הצגת כל המונחים' links"
+    ],
+    "unsure_meaning": [
+      "קרן כספית יומית",
+      "מק\"מ",
+      "מזומן שקלי",
+      "BANK-17 / BANK-35 / BANK-15 / BANK-20",
+      "חוקים וכללים · 5",
+      "המחיר של להשאיר 2,576 ₪ vs 1,797 ₪ פחות",
+      "The small orange circle marks next to 5.00 ₪ and 10.00 ₪",
+      "Dotted underlines under numbers",
+      "הנחה של האתר 2% / 3.25%",
+      "123 מקורות / 123 מחושב"
+    ],
+    "not_found": [
+      "A clear sentence saying how much to keep in the עו\"ש",
+      "How to check which plan I'm on now",
+      "What to do with the money above that amount that is as safe as a deposit",
+      "Who runs the site (only 'אישי, לא מסחרי')"
+    ],
+    "findings": [
+      {
+        "what": "Two different 'cost' numbers for the same 10,000 ₪ over 10 years (1,797 ₪ and 2,576 ₪) without a clear explanation",
+        "where": "Screens 2–3, calculator box"
+      },
+      {
+        "what": "Frightening sentence that deposits have no insurance, with no advice next to it",
+        "where": "Screen 4, סיכונים ומה לא מוגן"
+      },
+      {
+        "what": "Dark background with grey text, hard to read for older eyes; the small grey line at the top can't be read",
+        "where": "All screens, especially the line '123 מקורות' on screen 1"
+      },
+      {
+        "what": "Long paragraph full of amounts and dates about the new rule; hard to follow",
+        "where": "Screen 1, second half"
+      },
+      {
+        "what": "The page doesn't say plainly how much money to keep in the עו\"ש",
+        "where": "Whole page"
+      },
+      {
+        "what": "Terms I don't know (קרן כספית יומית, מק\"מ, מזומן שקלי) given as the alternative without explanation",
+        "where": "Screens 2–4"
+      },
+      {
+        "what": "Unexplained technical labels like BANK-17",
+        "where": "Screens 1, 3, 4"
+      },
+      {
+        "what": "Unknown site, says only 'personal, non-commercial'; I'm not sure I can trust it",
+        "where": "Screen 5, footer"
+      }
+    ]
+  },
+  "steps": 5,
+  "reads": 5,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 42110,
+    "turns": 7,
+    "usd": 0.16941240000000002,
+    "input": 12,
+    "cacheWrite": 10380,
+    "cacheRead": 42922,
+    "output": 3887,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "p08-heading-current-pc",
+    "screenshots": 6,
+    "changes": [
+      {
+        "id": "heading",
+        "type": "text",
+        "shots": 6,
+        "applied": 6,
+        "most": 3
+      }
+    ],
+    "neverShown": [],
+    "errors": []
+  }
+}

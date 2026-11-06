@@ -1,0 +1,70 @@
+{
+  "case": "study-r1-grey-years",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"In the graph of the years everything is grey, so nothing stands out.\",\"where\":\"the year graph\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "The subtitle \"שרטוט לבחירה\" told the reader nothing",
+      "The third card is confusing: it says the fund is ₪394 less, but B shows +527 for the same money",
+      "B (מדרגות) runs left to right, which is backwards for a Hebrew reader who meets the end result first",
+      "C (all years in bars) has too much going on and is hard to read",
+      "Didn't understand \"דמי ניהול\" or \"מסלול מחקה\"",
+      "Didn't understand \"(4D)\" or the long numbers in brackets",
+      "Unclear why the +1,721 card is about 10 years when everything else is about 5–6 years",
+      "Unclear what \"ברוטו\" means for them if their salary isn't 12,000",
+      "Couldn't find how to tell whether their employer offers this and how much it puts in",
+      "Couldn't find what happens if they change jobs before year 6",
+      "Couldn't find whether they can withdraw in an emergency in year 3, and how much tax they'd pay",
+      "Couldn't find how to open a fund or which fund to pick",
+      "Nowhere to enter their own salary or numbers",
+      "The second copy of A for year 6 repeats the \"הקפיצה בשנה 6\" card and could go",
+      "Most of the grey fine print could go; only the orange warning is worth keeping"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader never says the year graph is all grey or that nothing in it stands out; their complaints about C are about clutter, and they simply ignored the bar heights in A's small year bars."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0487632
+  },
+  "b": {
+    "raised": [
+      "The subtitle \"שרטוט לבחירה\" told the reader nothing",
+      "The third card is confusing: it says the fund has ₪394 less, but B shows +527",
+      "The second copy of A for year 6 repeats the same picture and could be dropped",
+      "B's steps run left to right, so a Hebrew reader meets the result first and the steps backwards",
+      "C has too much going on and is the hardest to read; it would be dropped first",
+      "Didn't understand \"דמי ניהול\" or \"מסלול מחקה\"",
+      "Didn't understand \"(4D)\" or the long numbers in brackets",
+      "Unclear why +1,721 is 'after 10 years' when everything else is about 5 or 6 years",
+      "Unclear what \"ברוטו\" means if their salary isn't 12,000",
+      "Couldn't find how to tell whether the employer offers this and how much they put in",
+      "Couldn't find what happens when changing jobs before year 6",
+      "Couldn't find whether money can be withdrawn in an emergency in year 3, or the exact tax",
+      "Couldn't find how to open a fund or which one to pick",
+      "No place to type in their own salary",
+      "Most of the grey fine print could go"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The report never says the year graph is all grey or that nothing in it stands out; it only says the reader ignored the bar heights and that C was too busy, which are different complaints."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0543992
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1031624
+}

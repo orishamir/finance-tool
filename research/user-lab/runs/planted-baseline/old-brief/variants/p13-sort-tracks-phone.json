@@ -1,0 +1,39 @@
+{
+  "id": "p13-sort-tracks-phone",
+  "about": "For the lab only; never reaches a session. Planted problem, kind p13 (A list sorted by something the person does not care about): see research/user-lab/planted.md.",
+  "purpose": "plant",
+  "pages": [
+    "/finance-tool/tracks/kupat-gemel-lehashkaa"
+  ],
+  "device": "phone",
+  "instance": {
+    "kind": "p13",
+    "mode": "page",
+    "url": "https://orishamir.github.io/finance-tool/tracks/kupat-gemel-lehashkaa",
+    "device": "phone",
+    "steps": [],
+    "task": "tracks",
+    "control": "planted/control-tracks-phone",
+    "split": "tune"
+  },
+  "plants": [
+    {
+      "id": "p13",
+      "kind": "general",
+      "problem": "The track list opens sorted alphabetically by track name, so the cheapest track is not at the top.",
+      "where": "the track list",
+      "counts": "A finding that the order of the tracks does not help (alphabetical, not by fee or by what matters).",
+      "notCounts": "Wanting the companies in another order only."
+    }
+  ],
+  "changes": [
+    {
+      "id": "sort-shown",
+      "type": "style",
+      "selector": "[data-pl=\"sort\"]",
+      "set": {
+        "--pl": "1"
+      }
+    }
+  ]
+}

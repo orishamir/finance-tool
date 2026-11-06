@@ -1,0 +1,85 @@
+{
+  "case": "custom-fund-labels",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"A fund the reader added gets labels ('צוברת', 'חשיפה לדולר') that the reader never gave, and the reader cannot choose its labels.\",\"where\":\"the added fund's row in the fund list\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "The reader's own fund shows conflicting information: 'עוד לא נאסף' / 'אין מחיר כאן' in the list, but 59,196 ₪ and 'פחות 19,980 ₪' in the 'עכשיו' table, so they can't tell which to believe.",
+      "Scrolling past about 20 Israeli funds with all their coloured tags in the fund list is tiring.",
+      "The Interactive Brokers boxes are marked 'אין נתון' and show a number for a different iShares fund, not the reader's.",
+      "The 'מתחילים מבחירה אחת' waterfall chart starts from Jerusalem and an MTF fund the reader never chose, which is confusing.",
+      "In the cost-bar legend, two pinks look almost the same ('המרת מטבע' and 'מס'), so the reader can't be sure which is which.",
+      "The middle column of percentages in the fund list is unclear: the reader doesn't know what it compares against.",
+      "The red 'מס רק במכירה' tag with a lock on the reader's fund makes them nervous.",
+      "The reader doesn't understand the lock symbol or what an 'open tax rule' is, and whether the 20,000 ₪ loss is real or a guess.",
+      "The ISIN under the reader's fund matches the line below it, so the reader worries the page mixed up their fund with another.",
+      "'Swap' / 'עסקה חליפית' is never explained, and the reader can't tell if it's good or bad.",
+      "'4D' versus '4A' was unclear and took a lot of reading to work out.",
+      "The reader doesn't understand 'העמלות זו על זו' in the legend.",
+      "The reader wanted one simple line showing the final amount for their own fund bought through a foreign broker, and couldn't find it.",
+      "The reader couldn't find which Israeli account lets them buy a foreign fund, or what it charges.",
+      "The reader couldn't find what 'מס רק במכירה' means in shekels for them.",
+      "The reader couldn't find whether a fund bought abroad is riskier for someone their age (estate tax, how hard it is to sell).",
+      "The page never says in plain words whether a 0.05% fee is a lot or a little.",
+      "The reader would drop the whole 'עם נטרול מט״ח או בלי' section (too many percentages and charts).",
+      "The reader would drop the 'מה הכי משנה' line chart.",
+      "The reader would drop the 'מה כתוב בפרסום, מול התעריפון' box.",
+      "The reader would drop most of the coloured tags in the fund list."
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader is worried by the red 'מס רק במכירה' tag with the lock and by the repeated ISIN, but never says their added fund was given labels they didn't enter or that they can't choose its labels."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0751432
+  },
+  "b": {
+    "raised": [
+      "My own fund shows 'עוד לא נאסף' / 'אין מחיר כאן', so the page gives no straight answer about it",
+      "Conflicting messages: no price in the list, yet 59,196 ₪ and 'פחות 19,980 ₪' in the 'עכשיו' table",
+      "Cost bars are confusing: two nearly identical pinks in the legend (currency conversion vs tax)",
+      "Scrolling past about 20 Israeli funds with coloured tags is tiring",
+      "Interactive boxes show 'אין נתון' and a number for a different iShares fund, not mine",
+      "Hedging section has too many percentages and bar charts",
+      "Waterfall chart starts from Jerusalem and an MTF fund I never chose",
+      "Middle percentage column in the fund list doesn't say what it compares against",
+      "Red 'מס רק במכירה' tag with a lock on my fund makes me nervous",
+      "Lock / 'open tax rule' not understood; unclear if the 20,000 ₪ loss is real or a guess",
+      "My fund's code IE00B5BMR087 is the same as the line below it; the page may have mixed my fund up with another",
+      "'Swap' is never explained",
+      "'4D' vs '4A' only understood after a lot of reading",
+      "'העמלות זו על זו' in the legend not understood",
+      "No simple 10-year figure for my fund bought through a foreign broker",
+      "Can't find which Israeli account lets me buy a foreign fund, or what it charges",
+      "No shekel figure for what 'מס רק במכירה' means for me",
+      "No information on whether a foreign fund is riskier at my age (estate tax, ease of selling)",
+      "No plain statement of whether 0.05% is a lot or a little",
+      "Would drop the hedging section first",
+      "Would drop the 'מה הכי משנה' line chart",
+      "Would drop the advertising vs price list box",
+      "Would drop most of the coloured tags in the fund list",
+      "Would drop the 'מתחילים מבחירה אחת' waterfall chart"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader brings up tags like 'צוברת' only to say they ignored them, and is worried by the red tax tag and the duplicate code, but never says the page gave their added fund labels they didn't choose or that they can't set its labels."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0694512
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1445944
+}

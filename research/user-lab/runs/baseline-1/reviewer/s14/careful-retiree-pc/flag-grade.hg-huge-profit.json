@@ -1,0 +1,36 @@
+{
+  "case": "hg-huge-profit",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The graphic shows a very large profit figure with nothing explaining where it comes from.\",\"where\":\"the profit part of the graphic\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings says a large profit figure appears without explanation; finding 2 is about the red loss figure being off-putting, finding 3 is about the confusing default withdrawal option, and finding 7 is about the unexplained ceiling, not the profit."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0164914
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings says the large profit figure lacks an explanation of where it comes from; finding 2 is about a red loss figure, and findings 3 and 6 are about the default withdrawal view and crowded numbers."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0162034
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.032694799999999996
+}

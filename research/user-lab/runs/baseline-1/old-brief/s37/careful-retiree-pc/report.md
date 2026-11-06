@@ -1,0 +1,83 @@
+# s37: careful-retiree-pc (old brief)
+
+pc; 43 s, $0.21
+
+# Choosing a savings track: my answers on the three options
+
+## 1. My answer and how sure I am
+
+**I'd use option ג ("כמו א׳, ועוד תשואה עבר וגודל").** Option א is marked "מומלץ", but ג is the only one that answers my question: what did this do with people's money? It shows "תשואה שנתית ממוצעת" and "נכסים בסוף ספטמבר 2026". I liked the note at the bottom: "היא לא אומרת מה יקרה בהמשך, ולכן הרשימה לא ממוינת לפיה". That's honest, and it made me trust the page more.
+
+**What I'd do:** I'd write down two or three S&P 500 tracks, not choose one yet:
+- **הראל**: 0.56%, 13.70% over 3 years, 11.92% over 5 years, 2.3 מיליארד
+- **הפניקס**: 0.58%, 12.33% over 5 years, 3.4 מיליארד
+- **מגדל**: 0.57%, 12.07% over 5 years
+
+I'd skip the ones marked "פחות מ־5 שנים" or "חדש". I'd also skip the very small ones, like "2 מיליון ₪" and "30 מיליון ₪". I want a track that has been through bad years.
+
+**How sure I am:** I'm fairly sure about choosing option ג, maybe 75%. I'm not sure at all about which track. At 61, the bars show "מניות 99%". That means nearly all my money would be in shares, and nothing on the page tells me whether that's sensible at my age. So I'd call someone before acting.
+
+## 2. Parts I actually used
+
+- The bold group headers, like "עוקב מדד s&p 500 · 12 מסלולים · דמי ניהול מהחיסכון: מ־0.52% עד 0.71%". That one line told me the cheapest and the most expensive fee.
+- The **"דמי ניהול, ממוצע 2025"** column.
+- In ג, the **return** and **assets** columns.
+- The footnote under ג about past returns.
+- The line under the top heading: "מה שבאמת מבדיל בין המסלולים הוא במה הכסף מושקע". That shaped how I read everything else.
+
+## 3. Block by block
+
+- **Top heading "שלוש אפשרויות" and the three bullets:** I read every word. It's talk among the designers ("משותף לשלוש", "חושבים לסגורים"), not for me. The one useful part was the fee point: 0.50%–0.73%, so the fee hardly differs between tracks.
+- **The tabs "מקור / מדריכים / חוקים וכללים / שאלות / חברות ומסלולים / השקעה במדד":** I skipped them. "מדריכים" and "שאלות" might help me later, but I didn't go there.
+- **"לפי חברה / לפי מוצר":** I skipped it. "לפי מוצר" was already selected.
+- **Product buttons ("קופת גמל להשקעה 143" etc.):** I skimmed them, saw mine was already highlighted, and moved on. I did notice "מה זה קופת גמל להשקעה" and was glad it's there.
+- **"במה הכסף מושקע" buttons:** These confused me. There are 16 of them. What's the difference between "מניות" and "מניות סחיר", or "עוקב מדדים - גמיש" and "משולב סחיר"? What is "הלכה יהודית" compared with "הלכה איסלאמית"? I don't know which one is right for me.
+- **"מיון לפי" and "חיפוש בשם המסלול":** I noticed them but didn't use them. The list was already sorted by fee, which suited me.
+- **The table in א:** I used it, with only three groups shown. The fees were useful, but without returns I couldn't tell whether a fund is any good.
+- **The orange notes "ציור בלבד, כדי לקצר...":** These confused me at first. I thought rows were missing. Then I understood it's just a sketch.
+- **Option ב, one mixed list:** It confused me. Shares, bonds and "כספי (שקלי)" sit side by side, sorted by fee. A fund with "מניות 0%" sits right next to one with "99%". The small labels under each name helped a little, but comparing them makes no sense to me.
+- **Option ג:** I used it the most.
+
+## 4. Columns, colours and labels
+
+**What I looked at:**
+- **"מהחיסכון":** I understood that this is what they take from my savings every year.
+- **"מההפקדות":** Almost always 0%, so after a moment I ignored it.
+- **"3 שנים" / "5 שנים":** Yes, I looked at these.
+- **"מיליון ₪" / "מיליארד ₪":** Yes, I looked at these too.
+- **"מניות" percentage:** I looked at it, because it tells me how risky the track is.
+
+**What I half-understood or ignored:**
+- **"מט״ח":** I half-understood it. Does 99% mean my money is in dollars? Does that matter if the shekel goes up?
+- **The coloured rings:** I ignored them. They look nice, but the numbers next to them already say the same thing.
+- **The little clock icons:** I ignored them too. I don't know what they mean.
+- **"קופה" numbers (13874, etc.):** Ignored.
+- **The dotted underlines under the numbers:** I didn't know whether I should click them.
+- **The ">" arrows on the left:** I didn't try them. I don't know what's behind them.
+
+## 5. What I didn't understand
+
+- "101%" shares in "מיטב גמל להשקעה מניות". How can it be more than 100%?
+- "עוד לא דווח" and "חדש": is a new track risky?
+- Whether "תשואה שנתית ממוצעת" is before or after the fee. The note says "לפני דמי הניהול", so what do I actually get?
+- Why an "מניות" track has only 25% "מט״ח" while an S&P track has 99%.
+- Most of the category names (see the buttons above).
+
+## 6. What I wanted and couldn't find
+
+- **Is this sensible at my age?** Nothing about risk for someone close to retirement.
+- **What the fee means in shekels.** For example, on ₪200,000, how much is 0.56% compared with 0.71% each year?
+- **Returns after the fee**, and returns in a bad year, not just the average.
+- **Returns for the other groups.** In ג I only saw the S&P group, and I would want to compare it with "כללי" or bonds.
+- **Withdrawing and switching.** Can I take the money out, or move it later? What happens with tax after age 60?
+
+## 7. If half the page had to go
+
+The first things I'd cut:
+1. The top heading and the designers' bullets
+2. The row of tabs ("מקור, מדריכים…")
+3. "לפי חברה / לפי מוצר"
+4. The coloured rings and the "קופה" column
+5. Option ב as a whole
+
+I'd keep the group headers with the fee range, the fee, the shares percentage, returns, size, and the note about past returns.

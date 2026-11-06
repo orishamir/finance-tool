@@ -1,0 +1,39 @@
+{
+  "id": "p15-jump-keren-phone",
+  "about": "For the lab only; never reaches a session. Planted problem, kind p15 (Layout that jumps when a number changes): see research/user-lab/planted.md.",
+  "purpose": "plant",
+  "pages": [
+    "/finance-tool/guide/keren-hishtalmut"
+  ],
+  "device": "phone",
+  "instance": {
+    "kind": "p15",
+    "mode": "browser",
+    "url": "https://orishamir.github.io/finance-tool/guide/keren-hishtalmut",
+    "device": "phone",
+    "steps": [],
+    "task": "keren-browser",
+    "control": "planted/control-keren-phone-browser",
+    "split": "score"
+  },
+  "plants": [
+    {
+      "id": "p15",
+      "kind": "general",
+      "problem": "A line about tax before 6 years shows above the chart only for fewer than 6 years; moving the years past 6 makes the chart jump.",
+      "where": "between the calculator's heading and its chart, as the years change",
+      "counts": "A finding that the chart or the page moves or jumps while the years are changed (or that a line appears and disappears and pushes the chart).",
+      "notCounts": "That the figures change (they should)."
+    }
+  ],
+  "changes": [
+    {
+      "id": "jump-shown",
+      "type": "style",
+      "selector": "[data-pl=\"jump\"]",
+      "set": {
+        "--pl": "1"
+      }
+    }
+  ]
+}

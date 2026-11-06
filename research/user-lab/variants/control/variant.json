@@ -1,0 +1,7 @@
+{
+  "id": "control",
+  "about": "No change at all. Run it beside any variant: its screenshots must match the live site pixel for pixel (tools/variant-test.mjs checks this), and a session given it is the baseline the variant is compared with.",
+  "purpose": "control",
+  "device": "both",
+  "changes": []
+}

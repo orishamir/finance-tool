@@ -1,0 +1,104 @@
+{
+  "task": "p15-jump-keren-phone",
+  "persona": "first-job-phone",
+  "repeat": 2,
+  "mode": "browser",
+  "device": "phone",
+  "startedAt": "2026-11-06T02:01:14.813Z",
+  "structured": {
+    "answer": "At 500 ₪ a month, if I take it out after 8 years I'd have about 68,853 ₪ in hand, from 48,000 ₪ I put in. For 4 years the calculator gave me nothing for עצמאים (\"עוד אין כאן חישוב\"), only a 25,725 next to an empty box, which seems to be the same money in a regular securities account, not the fund.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Calculator after I picked year 4 (עצמאים)",
+        "why": "The bar was an empty dashed box, the orange text said there's no calculation for withdrawing before 6 years, and there was a lone number, 25,725, over it. At first I thought that was my amount after 4 years."
+      },
+      {
+        "where": "Calculator after switching to עצמאים",
+        "why": "The page moved around (fields jumped up and sideways), so for a second I wasn't sure what I was looking at."
+      }
+    ],
+    "used": [
+      "Heading קרן השתלמות and the line about 6 years",
+      "The line לעצמאים ... עד 20,566 ₪ בשנה",
+      "Calculator כמה כסף נשאר לכם, ומתי?, with the עצמאים button",
+      "Default fields: הפקדה חודשית 500, תשואה 7, דמי ניהול 0.54",
+      "Year buttons 4 and 8 under the chart",
+      "The bars at 8 years: הפקדתם 48,000, נשאר בידיים 68,853, אותו כסף בחשבון ניירות ערך 55,471",
+      "The orange text לעצמאים עוד אין כאן חישוב למשיכה לפני 6 שנים"
+    ],
+    "skimmed": [
+      "The מה זה text at the top",
+      "The paragraph on 7.5%/2.5% for employees",
+      "The small lines under the result chart (תפקידו עוד 13,205 ₪, התשואה 7%, אינפלציה 2%)"
+    ],
+    "skipped": [
+      "חוקים וכללים · 10",
+      "כדאי להכיר גם / במה אפשר להשקיע buttons",
+      "הכנסה חייבת בחודש field (left it at 12,000)",
+      "Everything below the calculator"
+    ],
+    "unsure_meaning": [
+      "הכנסה חייבת",
+      "החזר המס הוסיף +9,581: does a self-employed person really get that back?",
+      "The 0 above המס לקח",
+      "25,725 at year 4: whose number is it?",
+      "אותו כסף בחשבון ניירות ערך",
+      "The colours in the bars (yellow, green, grey): I didn't look at what they mean",
+      "מסלול מדד"
+    ],
+    "not_found": [
+      "Any amount for a self-employed person who takes the money out after 4 years"
+    ],
+    "findings": [
+      {
+        "what": "For עצמאים, withdrawing after 4 years gives no amount at all, but there's still a big number (25,725) next to the empty box, so it looks like that's the answer",
+        "where": "The result under the chart, year 4"
+      },
+      {
+        "what": "The withdrawal-year question is the thing you most want to know, and for self-employed it's simply missing",
+        "where": "The years 1-5 in the chart"
+      },
+      {
+        "what": "After switching to עצמאים the fields jump to other places",
+        "where": "Top of the calculator"
+      },
+      {
+        "what": "\"החזר המס הוסיף\" sits in the middle of the bars with no explanation of where the money comes from",
+        "where": "The result bars at 8 years"
+      }
+    ]
+  },
+  "steps": 8,
+  "reads": 6,
+  "commands": 8,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 50615,
+    "turns": 16,
+    "usd": 0.2739452,
+    "input": 28,
+    "cacheWrite": 22092,
+    "cacheRead": 168486,
+    "output": 3170,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "p15-jump-keren-phone",
+    "screenshots": 8,
+    "changes": [
+      {
+        "id": "jump-shown",
+        "type": "style",
+        "shots": 8,
+        "applied": 8,
+        "most": 1
+      }
+    ],
+    "neverShown": [],
+    "errors": []
+  }
+}

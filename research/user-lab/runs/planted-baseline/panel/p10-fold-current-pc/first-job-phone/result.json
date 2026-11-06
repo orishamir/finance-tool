@@ -1,0 +1,136 @@
+{
+  "task": "p10-fold-current-pc",
+  "persona": "first-job-phone",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-05T23:16:22.592Z",
+  "structured": {
+    "answer": "Keep only about a month's spending in the עו\"ש, and less than 15,000 ₪ for sure. The rest should go to a קרן כספית, because the עו\"ש pays 0% and 10,000 ₪ there is worth about 8,203 ₪ after 10 years. The page never told me what the account itself costs in fees.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "screen 2, headline vs chart label",
+        "why": "The headline says the loss is 1,797 ₪ but the chart says 'המחיר של להשאיר 2,576 ₪'. Two loss numbers for the same 10,000, and I didn't know which one is mine"
+      },
+      {
+        "where": "screen 1, 15,000 ₪ sentence",
+        "why": "Not clear if 15,000 is a limit I should stay under or only when the bank sends a letter"
+      },
+      {
+        "where": "whole page, looking for fees",
+        "why": "The question was what the account costs, but no shekel fee appears anywhere. 'מסלול בסיסי' and 'מסלול מורחב' have no price"
+      }
+    ],
+    "used": [
+      "heading 'חשבון עובר ושב'",
+      "section 'כמה כסף להחזיק בעו\"ש' and the 15,000.00 ₪ line",
+      "big line 'אחרי 10 שנים, 10,000 ₪ בעו\"ש שווים 8,203 ₪ ... 1,797 ₪ פחות'",
+      "'רוב הבנקים משלמים בעו\"ש 0%'",
+      "chart labels בקרן כספית / בעו\"ש / המחיר של להשאיר 2,576 ₪",
+      "the three numbers 8,203 / 10,779 / 2,576",
+      "'שווה לדעת' line about 3% at דיסקונט up to 10,000 ₪"
+    ],
+    "skimmed": [
+      "'מה זה' paragraph",
+      "'סיכונים ומה לא מוגן'",
+      "'מונחים' table",
+      "chart legend"
+    ],
+    "skipped": [
+      "small grey text under the three numbers (2%, 3.25%)",
+      "dropdown 'חלק מהבנקים כן משלמים ריבית...'",
+      "dropdown 'שחקו עם המספרים שלכם'",
+      "'חוקים וכללים' tags and BANK-xx badges",
+      "the amount field and years slider (left on 10,000)",
+      "footer",
+      "'הצגת כל המונחים' links"
+    ],
+    "unsure_meaning": [
+      "1,797 ₪ פחות vs המחיר של להשאיר 2,576 ₪",
+      "15,000.00 ₪: a limit or just a notice threshold",
+      "מק\"ם",
+      "יתרת זכות",
+      "הטבה",
+      "dotted underlines under numbers",
+      "yellow vs brown shading in the chart"
+    ],
+    "not_found": [
+      "What the current account costs me in shekels per month (fees)",
+      "Prices of מסלול בסיסי / מסלול מורחב",
+      "A clear recommended amount to keep for someone with my salary"
+    ],
+    "findings": [
+      {
+        "what": "A guide to the current account with no account fee in shekels anywhere; the cost question goes unanswered",
+        "where": "whole page; only the small 'עמלות ומחירים' link on screen 1 hints at it"
+      },
+      {
+        "what": "Two different loss figures for the same 10,000 ₪ (1,797 in the headline, 2,576 on the chart)",
+        "where": "screen 2"
+      },
+      {
+        "what": "15,000 ₪ shows up as the first big number but it's unclear if it's advice or just a notice rule; it reads like 'keep up to 15,000'",
+        "where": "screen 1 and 'שווה לדעת' on screen 3"
+      },
+      {
+        "what": "Calculator starts on 10,000 instead of letting me see my own amount easily",
+        "where": "screen 2 calculator"
+      },
+      {
+        "what": "'מסלול בסיסי' / 'מסלול מורחב' are named in the glossary but have no prices",
+        "where": "screen 5 glossary"
+      },
+      {
+        "what": "Long glossary table at the end is boring and repeats the definitions",
+        "where": "screens 4-5"
+      }
+    ]
+  },
+  "steps": 5,
+  "reads": 5,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 38510,
+    "turns": 7,
+    "usd": 0.1568172,
+    "input": 8,
+    "cacheWrite": 10009,
+    "cacheRead": 24566,
+    "output": 3590,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "p10-fold-current-pc",
+    "screenshots": 6,
+    "changes": [
+      {
+        "id": "fold",
+        "type": "hide",
+        "shots": 6,
+        "applied": 6,
+        "most": 1
+      },
+      {
+        "id": "fold-2",
+        "type": "hide",
+        "shots": 6,
+        "applied": 6,
+        "most": 1
+      },
+      {
+        "id": "fold-line",
+        "type": "insert",
+        "shots": 6,
+        "applied": 6,
+        "most": 1
+      }
+    ],
+    "neverShown": [],
+    "errors": []
+  }
+}

@@ -1,0 +1,113 @@
+{
+  "task": "s12",
+  "persona": "first-job-phone",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T03:19:46.104Z",
+  "structured": {
+    "answer": "It's savings the employer and I both pay into from my salary; after 6 years I can take it out tax-free (earlier is possible but taxed and \"יקרה\"), and it's worth having mainly because the employer adds up to 7.5% while I put in 2.5%.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Comparison bars 17,370 ₪ vs 16,955 ₪ and 'ההפרש 415.84 ₪'",
+        "why": "Thought these were the total after 10 years and the gain was only 415 ₪, so it seemed barely worth it; only later saw 'רווח נטו' and that the employer money is left out ('מחוץ להשוואה')"
+      },
+      {
+        "where": "Salary field preset to 12,000 ₪",
+        "why": "It asks for gross ('ברוטו'), which I don't know. I only know my take-home (~9,500), so I didn't touch it"
+      },
+      {
+        "where": "Range 'בין ‎−342.02 ₪ לבין 2,106 ₪'",
+        "why": "Minus sign made me think the fund can come out worse; unclear when"
+      }
+    ],
+    "used": [
+      "Heading קרן השתלמות and subtitle",
+      "מה זה: 6 שנים, 3 שנים, 'הכסף לא נעול, אבל המשיכה ממוסה'",
+      "7.5% employer / 2.5% me",
+      "Bars 17,370 / 16,955 and 'ההפרש 415.84'",
+      "Line 'הכסף של המעסיק... מחוץ להשוואה'",
+      "Cards: כשעוברות 6 שנים, עד 4 ימי עסקים, מעבר בלי מס",
+      "Cost table: עד 2% בשנה, דמי יציאה אין",
+      "מיסוי cards: אין מס על הרווחים",
+      "First line of orange warning: משיכה לפני הזמן אפשרית, אבל יקרה"
+    ],
+    "skimmed": [
+      "למה משתמשים בזה",
+      "Explanation text under the chart",
+      "שווה לדעת list",
+      "מי מציע ומי מפקח",
+      "סיכונים ומה לא מוגן"
+    ],
+    "skipped": [
+      "Two-fund comparison bullets (מיטב S&P500 / ילין לפידות)",
+      "Cost/tax table under the chart",
+      "Side menu",
+      "Chips כדאי להכיר גם / במה אפשר להשקיע",
+      "שינוי הסכומים and שחקו עם המספרים שלכם folds",
+      "Rest of the orange warning text",
+      "Grey note about the chief economist",
+      "מונחים glossary",
+      "Footer"
+    ],
+    "unsure_meaning": [
+      "הפקדה מוטבת",
+      "הרווח הריאלי",
+      "רווח נטו (is 17,370 the total or the profit?)",
+      "ותק",
+      "משכורת קובעת",
+      "ניכוי",
+      "מדרגות מס",
+      "‎−342.02 ₪"
+    ],
+    "not_found": [
+      "Which company runs my own fund or how to check",
+      "A plain shekel figure for how much the employer's 7.5% adds for me",
+      "What to actually do first"
+    ],
+    "findings": [
+      {
+        "what": "The main chart leaves out the employer's money and shows only a 415 ₪ gap, so the fund looks almost pointless",
+        "where": "מה מייחד – comparison bars"
+      },
+      {
+        "what": "Unclear whether the big shekel figures are the total or only the profit; 'רווח נטו' is a small grey line",
+        "where": "Under the bars"
+      },
+      {
+        "what": "Salary field preset to 12,000 gross; I only know my take-home",
+        "where": "Calculator, משכורת ברוטו בחודש"
+      },
+      {
+        "what": "Minus sign and very wide ranges (−342 to 2,106; 415 to 23,692) are scary and confusing",
+        "where": "ההפרש תלוי גם במי שבוחרים"
+      },
+      {
+        "what": "Lots of jargon (הפקדה מוטבת, ריאלי, ותק, משכורת קובעת)",
+        "where": "Throughout"
+      },
+      {
+        "what": "Long page with many 'חוקים וכללים' tags; got bored by the cost table",
+        "where": "Middle of the page"
+      }
+    ]
+  },
+  "steps": 5,
+  "reads": 5,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 38125,
+    "turns": 7,
+    "usd": 0.2086054,
+    "input": 8,
+    "cacheWrite": 16296,
+    "cacheRead": 27627,
+    "output": 3634,
+    "model": "claude-opus-5-5"
+  }
+}

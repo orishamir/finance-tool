@@ -1,0 +1,36 @@
+{
+  "case": "makam-under-products",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"Makam is listed under 'מוצרים' (products) though it is something bought inside an account, not a product of its own.\",\"where\":\"the group the makam entry sits in\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the findings says makam is in the wrong group. Finding 6 touches the makam card, but it complains that terms like מק\"מ aren't explained, not that the item is filed as a product."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0139634
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings says makam is in the wrong group under 'מוצרים'; finding 6 is about the makam card too, but its complaint is unexplained jargon, not where the entry is filed."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0140754
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.028038800000000003
+}

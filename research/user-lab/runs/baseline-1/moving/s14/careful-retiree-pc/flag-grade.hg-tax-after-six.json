@@ -1,0 +1,46 @@
+{
+  "case": "hg-tax-after-six",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"With a high salary entered, the graphic says tax is due even after 6 years and shows a large income-tax figure, without making clear which money it is on.\",\"where\":\"the graphic and its sentences\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 5,
+        "why": "Finding 5 says the big tax figure isn't explained where it appears (the explanation only comes later in the brown box), which is a clear part of the person's complaint that the large income-tax figure doesn't make clear which money it applies to; finding 1 is about the default 5-year setting and finding 7 about the salary threshold, not this."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0219954
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the findings names this problem: finding 1 is about the 5-year default showing tax before the exemption, finding 5 is about where the tax explanation sits on the page, and finding 7 points only to the cause (salary above the ceiling), not to tax still shown after 6 years with no clear statement of which money it applies to."
+      }
+    ],
+    "liked": [],
+    "usd": 0.026483399999999997
+  },
+  "third": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 7,
+        "why": "Finding 7 says the page never explains what a salary above the 15,712 ceiling means for the user, which is a clear part of the person's complaint that a high salary brings an unexplained income-tax charge; findings 1 and 5 are about the default 5-year tax figure, not the high-salary case after 6 years."
+      }
+    ],
+    "liked": [],
+    "usd": 0.027503400000000004
+  },
+  "ranks": {
+    "k": 7
+  },
+  "agreed": {
+    "k": false
+  },
+  "against": {},
+  "usd": 0.0759822
+}

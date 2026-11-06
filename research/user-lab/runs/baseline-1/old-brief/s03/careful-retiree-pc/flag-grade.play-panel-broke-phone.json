@@ -1,0 +1,84 @@
+{
+  "case": "play-panel-broke-phone",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"On a phone, the fields in the 'שחקו עם המספרים' panel break out of line: they have different widths, sit at odd places and look oversized.\",\"where\":\"the fields of the 'שחקו עם המספרים שלכם' panel on a phone\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "The fund's 3.25% and the 2% price rise are only assumptions, so the reader can't tell what the better option is",
+      "The '123 מקור / מחושב / הזנתם' legend was confusing and appears before anything has been explained",
+      "The 'מה זה' paragraph on basic/extended tracks, with its dates and BANK codes, lost the reader; they couldn't tell whether fees go up or down",
+      "'מזומן שקלי' in the bubble meant nothing to the reader",
+      "The 'חלק מהבנקים כן משלמים ריבית' box was collapsed, and the reader wanted it open",
+      "The second calculator assumes 500 ₪ monthly deposits that the reader doesn't make",
+      "The BANK-20/BANK-23 (and other) code tags meant nothing to the reader",
+      "'כמה זה עולה' gives no actual number, only 'לפי התעריפון'",
+      "Tax lines ('הפיקדון האחרון נחשב כאילו נפדה', '25% מהריבית הריאלית') were confusing",
+      "The red box about the low-income exemption being unknown worried the reader",
+      "No deposit insurance, and discretionary rather than guaranteed protection, frightened the reader",
+      "The age/use-based exemptions aren't calculated, and that is exactly the reader's situation at 61",
+      "In 'מונחים', a bar with 'מקור' and buttons sat on top of some of the text",
+      "The dotted purple underlines on numbers were unexplained",
+      "The reader didn't understand what a קרן כספית is or whether it's as safe as a bank account",
+      "The reader didn't understand what 'מנהל מורשה' means if a bank fails",
+      "The reader couldn't find whether their own bank pays interest, or Discount's conditions for the 3%",
+      "The reader couldn't find what happens to the part of the balance above 10,000 ₪",
+      "The reader couldn't find the fund's fees, its taxation, or how to buy one",
+      "The reader couldn't find the monthly account fees in shekels",
+      "The reader couldn't find whether a big bank is safer than a small one",
+      "The reader would cut the securities-loss paragraph as irrelevant",
+      "The reader would cut the 'מונחים' list and the footer links"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The report never mentions field widths, odd placement or oversized fields in the calculator panel on a phone; the only layout complaint is a bar covering text in 'מונחים'."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0657472
+  },
+  "b": {
+    "raised": [
+      "The fund's 3.25% return and the 2% inflation figure are only the site's assumptions, so the reader can't tell what the better option is",
+      "The '123 מקור / מחושב / הזנתם' legend was confusing, with coloured numbers shown before anything is explained",
+      "The paragraph about the basic and extended tracks, with its dates and BANK codes, lost the reader: too many codes, and unclear whether fees go up or down",
+      "'מזומן שקלי' in the bubble meant nothing to the reader",
+      "The 'חלק מהבנקים כן משלמים ריבית' box was collapsed although the reader wanted it",
+      "The second calculator assumes 500 ₪ monthly deposits the reader doesn't make, and repeats the same story",
+      "The BANK-20 and BANK-23 tags meant nothing",
+      "The 'כמה זה עולה' section gives no number, only 'לפי התעריפון', so the monthly fee in shekels is unknown",
+      "Tax terms were confusing ('הפיקדון האחרון נחשב כאילו נפדה', '25% מהריבית הריאלית')",
+      "The red box saying the low-income exemption is unknown worried the reader",
+      "No deposit insurance, and rescue being discretionary rather than a right, frightened the reader",
+      "The age and use-based exemption is not calculated or answered, though it fits the reader's situation at 61",
+      "In 'מונחים', a bar with 'מקור' and buttons sat on top of some of the text",
+      "The dotted purple underlines on numbers had no explained meaning",
+      "Unclear what a money-market fund is, whether it is safe or insured, and its fees, tax and how to buy one",
+      "Unclear what 'מנהל מורשה' would mean if a bank failed",
+      "The reader couldn't find whether their own bank pays interest, or Discount's exact conditions for 3%",
+      "Unclear what happens to the part of the balance above 10,000 ₪",
+      "Unclear whether a big bank is safer than a small one without deposit insurance",
+      "The reader would cut the securities-loss paragraph as irrelevant",
+      "The reader would cut the 'מונחים' list and the footer links"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The report never brings up how the calculator fields look on a phone, or that they have uneven widths, odd placement or oversized size; it only mentions typing a balance into the field."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0623472
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1280944
+}

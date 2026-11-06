@@ -1,0 +1,127 @@
+{
+  "task": "p08-heading-current-pc",
+  "persona": "first-job-phone",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T03:06:29.407Z",
+  "structured": {
+    "answer": "The account costs me up to 10 ₪ a month on the basic track (from July 2027 it's 5 ₪ for up to 3 actions or 10 ₪ for up to 100), and it pays 0%, so I'd keep about a month's spending in it, stay under the 15,000 ₪ the page mentions, and move the rest to the קרן כספית יומית it points to.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Calculator result vs numbers under the chart (screens 2-3)",
+        "why": "The sentence says 1,797 ₪ less, then below it 'המחיר להשאיר' says 2,576 ₪. I didn't know which one was the real cost and stuck with the first."
+      },
+      {
+        "where": "Fee paragraph, screen 1",
+        "why": "Old tracks, a new 7 ₪ card fee and the 2027 per-action prices all come one after another. I don't know my track or how many actions I do, so I couldn't land on one number."
+      },
+      {
+        "where": "Top of screen 2",
+        "why": "I came in partway through the 'כמה ריבית מקבלים בעו\"ש' section and missed its start."
+      },
+      {
+        "where": "Balance field in the calculator",
+        "why": "I wanted to put in my 30,000 but couldn't, so I left it at 10,000."
+      }
+    ],
+    "used": [
+      "Heading 'חשבון עובר ושב'",
+      "Fee paragraph: 'עד 10.00 ₪ בחודש', 7.00 ₪ debit card, 5/10/1 ₪ from 01.07.2027",
+      "Line about a balance over 15,000.00 ₪ for a quarter",
+      "Calculator sentence: 10,000 ₪ → 8,203 ₪, 1,797 ₪ פחות",
+      "'רוב הבנקים משלמים בעו\"ש 0%'",
+      "Numbers under the chart: 8,203 / 10,779 / 2,576",
+      "Line 'הכי קרוב לזה... קרן כספית יומית'",
+      "4 of 8 banks pay interest, only up to 10,000 ₪, at most 3%",
+      "No deposit insurance in Israel"
+    ],
+    "skimmed": [
+      "Chart and legend",
+      "Text about the 2% and 3.25% assumptions",
+      "סיכונים ומה לא מוגן section",
+      "שווה לדעת list"
+    ],
+    "skipped": [
+      "Fold 'חלק מהבנקים כן משלמים ריבית, בתנאים ועל סכום קטן בלבד'",
+      "Fold 'שחקו עם המספרים שלכם'",
+      "חוקים וכללים chips and BANK tags",
+      "מונחים glossary table",
+      "Screen 5",
+      "Link to the קרן כספית יומית page"
+    ],
+    "unsure_meaning": [
+      "Orange circle icons next to the new fees",
+      "BANK-17 / BANK-35 / BANK-15 tags",
+      "Dotted-underlined numbers",
+      "מק\"מ",
+      "הטבה",
+      "'הנחה של האתר' on 2% and 3.25%",
+      "Two different loss figures: 1,797 vs 2,576"
+    ],
+    "not_found": [
+      "What my own account costs based on my track and number of actions",
+      "A clear 'keep X ₪' recommendation, only the 15,000 ₪ notice line",
+      "Calculator result for my own 30,000 ₪"
+    ],
+    "findings": [
+      {
+        "what": "Two different 'cost' numbers (1,797 ₪ less vs 2,576 ₪ המחיר להשאיר) with no explanation of which one matters",
+        "where": "Calculator, screens 2-3"
+      },
+      {
+        "what": "Fees are a pile of current and future rules; I can't tell what I pay without knowing my track and number of actions",
+        "where": "First section, screen 1"
+      },
+      {
+        "what": "No direct answer to how much to keep in the account; I had to guess from the 15,000 ₪ notice line",
+        "where": "Screen 2, top"
+      },
+      {
+        "what": "Fund result is built on the site's own guesses (3.25%, 2%), so the 10,779 isn't solid",
+        "where": "Under the chart, screen 3"
+      },
+      {
+        "what": "Orange icons and BANK-xx tags next to the numbers mean nothing to me",
+        "where": "Screen 1 and on"
+      },
+      {
+        "what": "Calculator starts at 10,000 rather than my amount",
+        "where": "Screen 2"
+      }
+    ]
+  },
+  "steps": 4,
+  "reads": 4,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 38739,
+    "turns": 6,
+    "usd": 0.14380379999999998,
+    "input": 8,
+    "cacheWrite": 8441,
+    "cacheRead": 22619,
+    "output": 3586,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "p08-heading-current-pc",
+    "screenshots": 6,
+    "changes": [
+      {
+        "id": "heading",
+        "type": "text",
+        "shots": 6,
+        "applied": 6,
+        "most": 3
+      }
+    ],
+    "neverShown": [],
+    "errors": []
+  }
+}

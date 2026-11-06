@@ -1,0 +1,13 @@
+{
+ "id": "hg-within-ceiling",
+ "task": "s14",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "'כל ההפקדות ב־12 השנים בתוך התקרה של הפטור' is unclear, and seems not to make sense when the same sum is deposited every month.",
+   "where": "the sentence under the graphic",
+   "kind": "general"
+  }
+ ],
+ "liked": []
+}

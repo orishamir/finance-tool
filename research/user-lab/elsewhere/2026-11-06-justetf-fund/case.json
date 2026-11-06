@@ -1,0 +1,24 @@
+{
+  "id": "else-01-justetf-fund",
+  "date": "2026-11-06",
+  "url": "https://www.justetf.com/en/etf-profile.html?isin=IE00B5BMR087",
+  "device": "pc",
+  "goal_given_to_reviewer": "Someone mentioned this S&P 500 fund to you. You opened its page to understand what it is and decide whether it is worth looking into further.",
+  "keys": [
+    { "id": "j-tabs", "kind": "general", "where": "the row of section names under the fund's header (Overview, Chart, Basics, Holdings, Performance and more)",
+      "problem": "The row of section names looks like tabs that switch what is shown, but each one scrolls the page down to a section of the same long page; the jump is unexpected, and afterwards the row is no longer where it was, so going back means finding it again." },
+    { "id": "j-light", "kind": "taste", "where": "the whole page",
+      "problem": "The page is light, white; he prefers a dark page." },
+    { "id": "j-dated", "kind": "general", "where": "the whole page",
+      "problem": "The page does not look very modern or polished (minor)." },
+    { "id": "j-performance", "kind": "general", "where": "the performance section",
+      "problem": "The performance section is plain and basic." }
+  ],
+  "liked": [
+    { "id": "j-facts-top", "what": "The most important facts about the fund (yearly cost, distribution policy, fund size) are at the top centre." },
+    { "id": "j-chart", "what": "The price chart: the time ranges right under it, green above 0% and red below, and the chosen range highlighted." },
+    { "id": "j-depth", "what": "More advanced information further down, in the basics section; the page is detailed." },
+    { "id": "j-holdings", "what": "The holdings section: easy to reach and easy to understand." },
+    { "id": "j-help", "what": "A ? mark beside terms such as the yearly cost, distribution policy and replication, explaining them." }
+  ]
+}

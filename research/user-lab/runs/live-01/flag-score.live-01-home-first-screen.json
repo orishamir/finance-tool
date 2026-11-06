@@ -1,0 +1,125 @@
+{
+  "case": "live-01-home-first-screen",
+  "sessions": 9,
+  "perKey": {
+    "k": {
+      "kind": "general",
+      "caught": 7,
+      "of": 9,
+      "byPersona": {
+        "careful-retiree-pc": {
+          "caught": 2,
+          "of": 3,
+          "ranks": [
+            2,
+            6,
+            0
+          ]
+        },
+        "self-directed-investor": {
+          "caught": 3,
+          "of": 3,
+          "ranks": [
+            4,
+            4,
+            5
+          ]
+        },
+        "student-small-amounts": {
+          "caught": 2,
+          "of": 3,
+          "ranks": [
+            6,
+            0,
+            4
+          ]
+        }
+      },
+      "graderAgreement": 1
+    }
+  },
+  "againstLiked": {},
+  "rows": [
+    {
+      "task": "home-first",
+      "session": "careful-retiree-pc-r1",
+      "persona": "careful-retiree-pc",
+      "ranks": {
+        "k": 2
+      },
+      "against": {}
+    },
+    {
+      "task": "home-first",
+      "session": "careful-retiree-pc-r2",
+      "persona": "careful-retiree-pc",
+      "ranks": {
+        "k": 6
+      },
+      "against": {}
+    },
+    {
+      "task": "home-first",
+      "session": "careful-retiree-pc-r3",
+      "persona": "careful-retiree-pc",
+      "ranks": {
+        "k": 0
+      },
+      "against": {}
+    },
+    {
+      "task": "home-first",
+      "session": "self-directed-investor-r1",
+      "persona": "self-directed-investor",
+      "ranks": {
+        "k": 4
+      },
+      "against": {}
+    },
+    {
+      "task": "home-first",
+      "session": "self-directed-investor-r2",
+      "persona": "self-directed-investor",
+      "ranks": {
+        "k": 4
+      },
+      "against": {}
+    },
+    {
+      "task": "home-first",
+      "session": "self-directed-investor-r3",
+      "persona": "self-directed-investor",
+      "ranks": {
+        "k": 5
+      },
+      "against": {}
+    },
+    {
+      "task": "home-first",
+      "session": "student-small-amounts-r1",
+      "persona": "student-small-amounts",
+      "ranks": {
+        "k": 6
+      },
+      "against": {}
+    },
+    {
+      "task": "home-first",
+      "session": "student-small-amounts-r2",
+      "persona": "student-small-amounts",
+      "ranks": {
+        "k": 0
+      },
+      "against": {}
+    },
+    {
+      "task": "home-first",
+      "session": "student-small-amounts-r3",
+      "persona": "student-small-amounts",
+      "ranks": {
+        "k": 4
+      },
+      "against": {}
+    }
+  ]
+}

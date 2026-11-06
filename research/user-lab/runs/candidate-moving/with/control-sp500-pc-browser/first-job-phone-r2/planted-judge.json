@@ -1,0 +1,35 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "After typing 750 in the monthly deposit field, the slider showed 800, so the reader couldn't tell which value the calculation was using.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "The 2% inflation assumption is hidden behind a button and isn't shown next to the 'in today's money' result. The reader wants more transparency, but the button works.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "Part of the screen jumped sideways when the reader edited the first field (today's amount). It's an annoying layout shift, but it's sideways and in a different field, so it isn't the note that pushes the result cards up and down.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "The 15-year cost breakdown bar depends only on a colour legend. The reader had to guess which colour was tax, the biggest part, so they couldn't read a main figure reliably.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "The fund box has many jargon tags the reader didn't understand. They're secondary details.",
+      "serious": false,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.0242908
+}

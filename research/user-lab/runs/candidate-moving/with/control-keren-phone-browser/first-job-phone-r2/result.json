@@ -1,0 +1,96 @@
+{
+  "task": "control-keren-phone-browser",
+  "persona": "first-job-phone",
+  "repeat": 2,
+  "mode": "browser",
+  "device": "phone",
+  "startedAt": "2026-11-06T02:04:09.410Z",
+  "structured": {
+    "answer": "After 8 years, putting in 500 ₪ a month, I'd have about 68,853 ₪ in hand (I put in 48,000). For 4 years the calculator gave me no number: for self-employed it says \"עוד אין כאן חישוב למשיכה לפני 6 שנים\", only that I'd pay tax.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Calculator after choosing 4 years as עצמאים",
+        "why": "No result for me, just an orange note. The only number left was 25,725 next to an empty dashed box labelled 'אותו כסף בחשבון ניירות...', and I wasn't sure if that was my fund or something else"
+      },
+      {
+        "where": "After tapping עצמאים",
+        "why": "The fields moved around: 'תשואה בשנה' jumped to the left and 'דמי ניהול' dropped down a row, so I had to look again"
+      }
+    ],
+    "used": [
+      "Heading 'קרן השתלמות' and first paragraph (6 years to take it out without tax)",
+      "Line saying self-employed are exempt up to 20,566 ₪ a year",
+      "Calculator 'כמה כסף נשאר לכם, ומתי?' with the עצמאים toggle",
+      "Default monthly deposit 500 ₪ (left as is)",
+      "Year slider/chart: picked 4, then 8",
+      "Bars under 8 years: 48,000 הפקדתם, +9,581 החזר המס, +11,272 התשואה, 0 המס, 68,853 נשאר בידיים"
+    ],
+    "skimmed": [
+      "Paragraph about employees' 7.5%/2.5% and 15,712 ₪",
+      "Chips under 'כדאי להכיר גם' and 'במה אפשר להשקיע'"
+    ],
+    "skipped": [
+      "'חוקים וכללים · 10' fold",
+      "The legend line '123 ממקור 123 מחושב מונח'",
+      "Everything below the calculator",
+      "Tabs 'שווה לדעת' and 'מי מציע ומי מצטרף'"
+    ],
+    "unsure_meaning": [
+      "הכנסה חייבת בחודש",
+      "25,725 / 55,471 next to the dashed box 'אותו כסף בחשבון ניירות...'",
+      "החזר המס הוסיף — why do I get money back?",
+      "מסלול מדד",
+      "dotted underlines under the numbers"
+    ],
+    "not_found": [
+      "Any amount for taking the money out after 4 years as a self-employed person"
+    ],
+    "findings": [
+      {
+        "what": "No result at all for taking it out before 6 years if you're self-employed, which was exactly half of my question",
+        "where": "Calculator, years 1–5 for עצמאים"
+      },
+      {
+        "what": "With no fund number showing, the lone 25,725 next to an empty dashed box looks like it might be the answer",
+        "where": "Bar chart under 'מושכים את הכסף אחרי 4 שנים'"
+      },
+      {
+        "what": "Fields reshuffled positions when I switched to עצמאים",
+        "where": "Calculator inputs"
+      },
+      {
+        "what": "Page scrolled by itself a bit when I moved the slider",
+        "where": "Year slider"
+      },
+      {
+        "what": "Bar labels at the bottom get cut off and wrap into several lines, hard to read on the phone",
+        "where": "Under the result bars"
+      }
+    ]
+  },
+  "steps": 7,
+  "reads": 6,
+  "commands": 7,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 52033,
+    "turns": 15,
+    "usd": 0.216361,
+    "input": 28,
+    "cacheWrite": 15457,
+    "cacheRead": 175465,
+    "output": 2875,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "control-keren-phone-browser",
+    "screenshots": 7,
+    "changes": [],
+    "neverShown": [],
+    "errors": []
+  }
+}

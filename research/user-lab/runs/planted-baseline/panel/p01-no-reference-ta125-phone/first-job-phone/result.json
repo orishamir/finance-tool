@@ -1,0 +1,131 @@
+{
+  "task": "p01-no-reference-ta125-phone",
+  "persona": "first-job-phone",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "phone",
+  "startedAt": "2026-11-05T23:01:46.794Z",
+  "structured": {
+    "answer": "Open an account at Pesagot and buy the IBI מחקה (4A) ת\"א 125 fund (5112628) by monthly standing order. The page says about 86,045 ₪ after 10 years, but that is for its default 10,000 ₪ plus 500 ₪ a month, not my 30,000.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Amount fields at top (סכום היום 10,000)",
+        "why": "My amount is 30,000 but the page sat on 10,000 / 500 and I couldn't change it, so the big number isn't really mine"
+      },
+      {
+        "where": "Account list, first place פסגות",
+        "why": "Never heard of Pesagot; the big bank Leumi is second and almost as cheap, so I wavered"
+      },
+      {
+        "where": "Step chart 'מנקודת ההתחלה ועד הכי הרבה' and 'עכשיו: הראל סל... ירושלים 79,910'",
+        "why": "Starts from a different account and fund than the one picked at the top; thought my choice had changed"
+      },
+      {
+        "where": "Fund list with minus percents and minus shekels",
+        "why": "Everything has a minus, which looks scary; I just took the smallest minus, the one already selected"
+      }
+    ],
+    "used": [
+      "Heading 'איפה ואיך הכי זול להשקיע במדד'",
+      "ת\"א-125 button selected",
+      "סכום היום 10,000 / הפקדה חודשית 500 / תשואה 7%",
+      "Big card 'הבחירה שלכם ★ הזול 86,045 ₪'",
+      "Account list ranking (פסגות 86,045, לאומי 82,968)",
+      "Fund card אי.בי.אי. מחקה (4A) ת\"א 125, 5112628, דמי ניהול 0.1%",
+      "Fund list with −0.04% for the selected fund"
+    ],
+    "skimmed": [
+      "Cost bars 7,323 vs 8,353",
+      "Rest of account list below 6",
+      "What-if chart and table (years, monthly deposit)",
+      "Step chart and the 'חשבון אחר / סוג קרן אחר' tables"
+    ],
+    "skipped": [
+      "'לא בחישוב' discount notes",
+      "Paragraph 'מול המדד: ...'",
+      "Bottom notes about return being an example",
+      "חוקים וכללים, מסמכים, פרמטרים links",
+      "Rows אין נתון (אינטראקטיב, Interactive Brokers)"
+    ],
+    "unsure_meaning": [
+      "נאמן 0.025%",
+      "דמי משמרת",
+      "(4A)",
+      "מחזיקה את המניות",
+      "כמה דרכים יחד",
+      "מחיר להוראת קבע",
+      "−0.04% בשנה · שנה אחת (is minus bad?)",
+      "קרן מחקה vs קרן סל",
+      "Colours in cost bars (orange/yellow/red/green), guessed red = tax-ish/bad",
+      "בכסף של היום"
+    ],
+    "not_found": [
+      "The result for my own 30,000 ₪",
+      "Who Pesagot is / whether it's a safe, known company",
+      "A clear 'first step: do this' instruction"
+    ],
+    "findings": [
+      {
+        "what": "Default amount 10,000 ₪ drives the big headline number; easy to walk away with 86,045 as 'my' result",
+        "where": "Top inputs and main result card"
+      },
+      {
+        "what": "Lower step chart starts from a different account and fund (Harel / Jerusalem, 79,910) than the top choice, so it's confusing",
+        "where": "Screens 10–11, 'מנקודת ההתחלה' and 'עכשיו:'"
+      },
+      {
+        "what": "The cheapest account is a name a beginner may not know; no reassurance about who it is",
+        "where": "Account list #1 פסגות"
+      },
+      {
+        "what": "Funds are shown with minus percents and minus shekels, which reads like losses",
+        "where": "Fund list 'כל הקרנות על מדד ת\"א-125'"
+      },
+      {
+        "what": "Jargon with no explanation: נאמן, דמי משמרת, 4A, מחזיקה את המניות",
+        "where": "Fund card and legends"
+      },
+      {
+        "what": "Long account list with many lookalike numbers in the 80k range",
+        "where": "Screens 4–6"
+      },
+      {
+        "what": "Cost-bar colours are explained in a legend far from the bars",
+        "where": "Cost breakdown bars, screens 2–3"
+      }
+    ]
+  },
+  "steps": 13,
+  "reads": 13,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 43305,
+    "turns": 15,
+    "usd": 0.2922416,
+    "input": 14,
+    "cacheWrite": 24775,
+    "cacheRead": 85428,
+    "output": 3845,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "p01-no-reference-ta125-phone",
+    "screenshots": 14,
+    "changes": [
+      {
+        "id": "no-reference",
+        "type": "hide",
+        "shots": 14,
+        "applied": 14,
+        "most": 1
+      }
+    ],
+    "neverShown": [],
+    "errors": []
+  }
+}

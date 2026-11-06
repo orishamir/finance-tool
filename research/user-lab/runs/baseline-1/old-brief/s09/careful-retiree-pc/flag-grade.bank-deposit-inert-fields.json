@@ -1,0 +1,99 @@
+{
+  "case": "bank-deposit-inert-fields",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The bank-deposit guide asks for age, linkage and term, but those fields do not change its graph.\",\"where\":\"the input fields beside the graph\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "The page doesn't calculate or state the early-withdrawal penalty, the cost the reader most wanted to see",
+      "The page doesn't give the rate the reader would get today",
+      "There's no guidance on whether to split money between banks, given there's no deposit insurance",
+      "The '123 מקור / מחושב / הזנה' line is confusing, and 'הזנה' is unclear",
+      "'פיקדון צמוד למדד' and 'הבטחת קרן' weren't understood on first reading",
+      "The term 'עוגן' isn't understood",
+      "A 500 ₪ monthly deposit is confusing for what the reader understood to be a lump-sum product",
+      "A 12-month deposit is charted over 10 years, and renewal isn't explained",
+      "The age input: it isn't clear whether age changes anything, and nothing showed up on the chart",
+      "Codes like TXI-03 and BANK-06 mean nothing to the reader",
+      "The 'כמה זה עולה' section just sends you to the bank's price list for exit fees",
+      "Unsure whether the low-income tax exemption applies to them",
+      "'ריבית הפריים' isn't understood, and it's unclear how it affects them",
+      "The grey deposits line sits almost on top of the teal area and is hard to tell apart",
+      "The pink tax area doesn't show up on the chart",
+      "The purple 'מחושב' tag means nothing to the reader",
+      "The glossary's 'איפה מופיע' column seems useless",
+      "The page says there are 8 deposit types but never lists them",
+      "There's no side-by-side list of current bank rates for different terms",
+      "Unclear whether any deposit beats inflation now, or whether an index-linked deposit would do better",
+      "Unclear whether any bank is safer than another",
+      "The minimum amount for opening a deposit isn't given",
+      "Unclear whether automatic renewal keeps the same rate",
+      "There's no comparison in numbers between a deposit and a money market fund for someone aged 61",
+      "Would drop 'מה האתר לקח בחשבון'",
+      "Would drop the codes and the 'הצגת החוקים והכללים' links",
+      "Would drop the paragraph about securities losses",
+      "Would drop 'במה אפשר להשקיע בתוכו'",
+      "Would cut most of 'מי מציע ומי מפקח' and the 'כל החברות' link",
+      "Would shorten the glossary to the terms that appear in the text"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 9,
+        "why": "The reader asks whether their age changes anything and notes that nothing showed up on the chart, which is the age part of the complaint that the inputs don't affect the graph."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0749832
+  },
+  "b": {
+    "raised": [
+      "The page doesn't calculate or state the cost of breaking the deposit early; exit fees are just 'per the provider's price list', and the page itself calls it an open question",
+      "The page doesn't say whether splitting money between banks is sensible when there is no deposit insurance",
+      "The '123 מקור / מחושב / הזנה' line at the top is confusing",
+      "'פיקדון צמוד למדד' and 'הבטחת קרן' weren't understood on first reading",
+      "Doesn't know what 'עוגן' means",
+      "Puzzled why a fixed deposit example has a 500 ₪ monthly deposit",
+      "A 12-month deposit is shown over 10 years and renewal is never explained",
+      "Age box: it's unclear whether age changes anything, and entering an age showed nothing on the chart",
+      "Codes like TXI-03 / BANK-06 mean nothing",
+      "'כסף נכנס ויוצא' only says 'at the end of the agreed period'",
+      "Grey note about 'פיקדון צמוד פריים' is confusing; doesn't know what prime is or how it affects them",
+      "Chart: the grey deposits line sits almost on top of the teal area and is hard to tell apart",
+      "Chart: the pink tax area isn't visible",
+      "The purple 'מחושב' tag means nothing",
+      "The 'חוקים וכללים' column in the cost table is empty",
+      "The glossary's 'איפה מופיע' column seems useless",
+      "The page says there are '8 סוגי פיקדון מקובלים' but never lists them",
+      "No side-by-side list of current bank rates for different terms",
+      "Unclear whether any deposit beats inflation now, or whether an index-linked deposit would do better in the example",
+      "Unclear whether any bank is safer than another",
+      "Minimum deposit amount is missing",
+      "Unclear what rate applies on automatic renewal",
+      "No numeric comparison of a deposit against a money market fund for a 61-year-old",
+      "Would drop 'מה האתר לקח בחשבון'",
+      "Would drop all the codes and 'הצגת החוקים והכללים' links",
+      "Would drop the securities-losses paragraph",
+      "Would drop 'במה אפשר להשקיע בתוכו'",
+      "Would drop the 'כל החברות' link and most of 'מי מציע ומי מפקח'",
+      "The glossary should be cut down to terms that appear in the text"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 8,
+        "why": "The reader says the age box claims to mark ages where the rules change, yet nothing showed up on the chart, and asks whether age changes anything; that is a clear part of the person's complaint that the inputs don't change the graph."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0762272
+  },
+  "third": null,
+  "ranks": {
+    "k": 8
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1512104
+}

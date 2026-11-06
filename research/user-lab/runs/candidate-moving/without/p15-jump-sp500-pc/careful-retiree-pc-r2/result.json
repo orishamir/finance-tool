@@ -1,0 +1,109 @@
+{
+  "task": "p15-jump-sp500-pc",
+  "persona": "careful-retiree-pc",
+  "repeat": 2,
+  "mode": "browser",
+  "device": "pc",
+  "startedAt": "2026-11-06T02:03:07.674Z",
+  "structured": {
+    "answer": "The page says to hold it at Psagot (פסגות ניירות ערך), in the fund \"ילין לפידות קרן מחקה S&P 500 (4D)\". Putting in 750 ₪ a month for 15 years (135,000 ₪ in total) leaves about 179,889 ₪ in today's money after fees and tax. It counts inflation at 2% a year and the return at 7% a year.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Inflation",
+        "why": "The 2% only showed after pressing the 'אינפלציה' button; the main screen only said 'בכסף של היום'"
+      },
+      {
+        "where": "Monthly deposit slider",
+        "why": "The box said 750 but the slider showed 800, so I wasn't sure which one was used"
+      }
+    ],
+    "used": [
+      "Input boxes סכום היום / הפקדה חודשית / שנים",
+      "אינפלציה popup (2%)",
+      "Result card 179,889 ₪ 'נשאר לכם בעוד 15 שנים... בכסף של היום'",
+      "הפקדתם 135,000 ₪",
+      "Account card פסגות ניירות ערך and fund card ילין לפידות"
+    ],
+    "skimmed": [
+      "Cost bar chart 'כמה זה עולה לכם ב־15 שנים'",
+      "Second-best pair card with −122 ₪"
+    ],
+    "skipped": [
+      "Fund filter chips (קרן מחקה, צוברת, עסקת החלף...)",
+      "'כל החשבונות' text",
+      "Everything further down the page"
+    ],
+    "unsure_meaning": [
+      "קרן מחקה",
+      "דמי משמרת",
+      "צוברת",
+      "מנוטרלת מט״ח",
+      "עסקת החלף",
+      "4D",
+      "נאמן 0.02%",
+      "'אם הדולר לא זז מול השקל'"
+    ],
+    "not_found": [
+      "Plain statement of the inflation assumption on the main screen"
+    ],
+    "findings": [
+      {
+        "what": "Inflation rate is hidden behind a button; the main screen only says 'בכסף של היום' without the rate",
+        "where": "Under the input boxes"
+      },
+      {
+        "what": "Dark background with small grey text is hard to read",
+        "where": "Whole page, especially the lines under the results"
+      },
+      {
+        "what": "Slider shows 800 while the box shows 750",
+        "where": "הפקדה חודשית"
+      },
+      {
+        "what": "Red minus sign '−122 ₪' is alarming, though it's only a small difference",
+        "where": "Second pair card"
+      },
+      {
+        "what": "Many unexplained terms and English letters",
+        "where": "Fund card and filter chips"
+      },
+      {
+        "what": "Return of 7% is already filled in, with nothing saying it isn't guaranteed",
+        "where": "תשואה בשנה"
+      }
+    ]
+  },
+  "steps": 7,
+  "reads": 4,
+  "commands": 7,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 46923,
+    "turns": 13,
+    "usd": 0.17972559999999999,
+    "input": 18,
+    "cacheWrite": 13054,
+    "cacheRead": 96408,
+    "output": 2797,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "p15-jump-sp500-pc",
+    "screenshots": 7,
+    "changes": [
+      {
+        "id": "jump-shown",
+        "type": "style",
+        "shots": 7,
+        "applied": 7,
+        "most": 1
+      }
+    ],
+    "neverShown": [],
+    "errors": []
+  }
+}

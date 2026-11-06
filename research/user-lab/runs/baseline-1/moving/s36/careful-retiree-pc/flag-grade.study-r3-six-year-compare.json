@@ -1,0 +1,36 @@
+{
+  "case": "study-r3-six-year-compare",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"A comparison with waiting until year 6 is always present, though it is not always relevant.\",\"where\":\"the year-6 comparison\",\"kind\":\"taste\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings mention the year-6 comparison or say that it shows up when it isn't relevant; the closest one, finding 7, is about the year columns 1–12 not being explained, which is a different complaint."
+      }
+    ],
+    "liked": [],
+    "usd": 0.014547400000000002
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings mention the year-6 comparison or say it is always shown when it isn't relevant; they cover the tax box, small text, jargon, layout, colours, the recommendation label and the unexplained columns."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0142114
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0287588
+}

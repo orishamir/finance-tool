@@ -1,0 +1,41 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "Self-employed with years 1-5: empty bar and orange note, no figure, yet the year can still be selected",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "At year 4 the only number shown (25,725) is for the securities-account comparison and is easily mistaken for the fund amount",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "Input boxes swap places after switching to self-employed",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "Chart headings: dark background, grey text, pink tax label; hard to read and alarming",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "Bar colours (yellow, two greens) too close to tell apart",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 6,
+      "summary": "Unfamiliar terms under the chart (index track, S&P 500, unknown company)",
+      "serious": false,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.0327228
+}

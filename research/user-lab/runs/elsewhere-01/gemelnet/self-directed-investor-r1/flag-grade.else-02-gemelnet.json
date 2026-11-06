@@ -1,0 +1,154 @@
+{
+  "case": "else-02-gemelnet",
+  "stamp": "{\"keys\":[{\"id\":\"g-old\",\"kind\":\"general\",\"where\":\"the whole site, from the first page\",\"problem\":\"It looks very old, like a site from the 1990s.\"},{\"id\":\"g-slow\",\"kind\":\"general\",\"where\":\"loading\",\"problem\":\"It is slow to load (about two seconds).\"},{\"id\":\"g-small-text\",\"kind\":\"general\",\"where\":\"the whole site\",\"problem\":\"The text is very small.\"},{\"id\":\"g-where-begin\",\"kind\":\"general\",\"where\":\"the comparison screen\",\"problem\":\"It is not clear where to begin.\"},{\"id\":\"g-filter-below\",\"kind\":\"general\",\"where\":\"the list of funds and its filter\",\"problem\":\"The filter sits below the list it filters, not above it.\"},{\"id\":\"g-arrow\",\"kind\":\"general\",\"where\":\"choosing funds to compare\",\"problem\":\"Choosing funds means selecting one and pressing an arrow button, which feels outdated; and the arrow replaces the chosen set instead of adding to it, which is surprising.\"},{\"id\":\"g-list-size\",\"kind\":\"general\",\"where\":\"the list of funds\",\"problem\":\"Even after searching a company's name the list is very long, and the box showing it is tiny for that many funds.\"},{\"id\":\"g-hidden-dblclick\",\"kind\":\"general\",\"where\":\"the list of funds\",\"problem\":\"A double click adds a fund to the comparison, which can only be discovered by accident.\"},{\"id\":\"g-size-importance\",\"kind\":\"general\",\"where\":\"the screen as first loaded\",\"problem\":\"A graph takes much more space than the part to fill in; size reads as importance, so it is unclear whether the small controls at the top are the main thing to start with.\"},{\"id\":\"g-start-button\",\"kind\":\"general\",\"where\":\"the button that runs the comparison\",\"problem\":\"The button that starts the comparison is small and an odd colour (pink), easy to miss.\"}],\"liked\":[{\"id\":\"g-export\",\"what\":\"Results can be exported to Excel or XML.\"}]}",
+  "a": {
+    "problems": [
+      {
+        "id": "g-old",
+        "rank": 6,
+        "why": "Finding 6 calls the whole site's UI dated, which matches the complaint that the site looks like it's from the 1990s."
+      },
+      {
+        "id": "g-slow",
+        "rank": 0,
+        "why": "None of the findings mentions load time."
+      },
+      {
+        "id": "g-small-text",
+        "rank": 0,
+        "why": "None of the findings mentions text size."
+      },
+      {
+        "id": "g-where-begin",
+        "rank": 0,
+        "why": "None of the findings says it is unclear where to start on the comparison screen."
+      },
+      {
+        "id": "g-filter-below",
+        "rank": 0,
+        "why": "Finding 3 says the list filter does nothing visible, but it says nothing about the filter sitting below the list."
+      },
+      {
+        "id": "g-arrow",
+        "rank": 0,
+        "why": "Finding 6 is about modal pickers for setting filters, not the select-and-press-arrow way of choosing funds or the arrow replacing the chosen set."
+      },
+      {
+        "id": "g-list-size",
+        "rank": 0,
+        "why": "None of the findings mentions a long fund list in a tiny box."
+      },
+      {
+        "id": "g-hidden-dblclick",
+        "rank": 0,
+        "why": "None of the findings mentions double-clicking to add a fund."
+      },
+      {
+        "id": "g-size-importance",
+        "rank": 0,
+        "why": "None of the findings says the graph's large size makes it unclear what matters on the screen."
+      },
+      {
+        "id": "g-start-button",
+        "rank": 0,
+        "why": "None of the findings mentions the small pink button that runs the comparison."
+      }
+    ],
+    "liked": [
+      {
+        "id": "g-export",
+        "against": 0,
+        "why": "None of the findings complains about exporting to Excel or XML."
+      }
+    ]
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "g-old",
+        "rank": 6,
+        "why": "Finding 6 says the UI is dated across the whole site, which matches the complaint that the site looks very old."
+      },
+      {
+        "id": "g-slow",
+        "rank": 0,
+        "why": "None of the findings mention how long the site takes to load."
+      },
+      {
+        "id": "g-small-text",
+        "rank": 0,
+        "why": "None of the findings mention text size."
+      },
+      {
+        "id": "g-where-begin",
+        "rank": 0,
+        "why": "None of the findings say it is unclear where to begin on the comparison screen."
+      },
+      {
+        "id": "g-filter-below",
+        "rank": 0,
+        "why": "Finding 3 says the list filter does nothing visible, which is a different problem from the filter sitting below the list."
+      },
+      {
+        "id": "g-arrow",
+        "rank": 0,
+        "why": "Finding 6 is about multi-step modal pickers for setting filters, not about the arrow button that replaces the chosen funds instead of adding to them."
+      },
+      {
+        "id": "g-list-size",
+        "rank": 0,
+        "why": "None of the findings mention a long fund list shown in a tiny box."
+      },
+      {
+        "id": "g-hidden-dblclick",
+        "rank": 0,
+        "why": "None of the findings mention the hidden double-click that adds a fund."
+      },
+      {
+        "id": "g-size-importance",
+        "rank": 0,
+        "why": "None of the findings say the large graph makes the small controls at the top look less important."
+      },
+      {
+        "id": "g-start-button",
+        "rank": 0,
+        "why": "None of the findings mention the small pink button that starts the comparison."
+      }
+    ],
+    "liked": [
+      {
+        "id": "g-export",
+        "against": 0,
+        "why": "None of the findings complain about exporting to Excel or XML."
+      }
+    ]
+  },
+  "third": null,
+  "ranks": {
+    "g-old": 6,
+    "g-slow": 0,
+    "g-small-text": 0,
+    "g-where-begin": 0,
+    "g-filter-below": 0,
+    "g-arrow": 0,
+    "g-list-size": 0,
+    "g-hidden-dblclick": 0,
+    "g-size-importance": 0,
+    "g-start-button": 0
+  },
+  "agreed": {
+    "g-old": true,
+    "g-slow": true,
+    "g-small-text": true,
+    "g-where-begin": true,
+    "g-filter-below": true,
+    "g-arrow": true,
+    "g-list-size": true,
+    "g-hidden-dblclick": true,
+    "g-size-importance": true,
+    "g-start-button": true
+  },
+  "against": {
+    "g-export": 0
+  }
+}

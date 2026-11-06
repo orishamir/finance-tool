@@ -1,0 +1,36 @@
+{
+  "case": "tracks-r2-sort-buttons",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"Sorting uses separate sort buttons instead of clickable column heads.\",\"where\":\"the sort buttons above the table\",\"kind\":\"taste\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings mention the sort buttons or ask for clickable column headers; they cover layout length, colour, fees, wording, and missing data instead."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0129594
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings mention sort buttons or column headers that can't be clicked, so this problem isn't matched."
+      }
+    ],
+    "liked": [],
+    "usd": 0.012707399999999999
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.025666799999999997
+}

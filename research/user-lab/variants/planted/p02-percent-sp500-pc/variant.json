@@ -1,0 +1,38 @@
+{
+  "id": "p02-percent-sp500-pc",
+  "about": "For the lab only; never reaches a session. Planted problem, kind p02 (A percentage where the money that matters is in shekels): see research/user-lab/planted.md.",
+  "purpose": "plant",
+  "pages": [
+    "/finance-tool/indices/sp500"
+  ],
+  "device": "pc",
+  "instance": {
+    "kind": "p02",
+    "mode": "page",
+    "url": "https://orishamir.github.io/finance-tool/indices/sp500",
+    "device": "pc",
+    "steps": [],
+    "task": "sp500",
+    "control": "planted/control-sp500-pc",
+    "split": "score"
+  },
+  "plants": [
+    {
+      "id": "p02",
+      "kind": "general",
+      "problem": "The gap between the chosen option and the next one is shown as a tiny percentage, so the reader cannot see what it is worth in money.",
+      "where": "the next-option card beside the main result",
+      "counts": "A finding that the difference is given in percent (or that \"0.05%\" says nothing) where an amount in shekels was wanted.",
+      "notCounts": "General remarks that the two options are close, without the unit."
+    }
+  ],
+  "changes": [
+    {
+      "id": "percent",
+      "type": "text",
+      "selector": "span.flex-col.items-start",
+      "find": "‎−43 ₪",
+      "replace": "‎−0.05%"
+    }
+  ]
+}

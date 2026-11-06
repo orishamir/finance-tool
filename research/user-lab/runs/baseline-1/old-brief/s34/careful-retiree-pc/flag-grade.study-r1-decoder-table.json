@@ -1,0 +1,76 @@
+{
+  "case": "study-r1-decoder-table",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"A table exists only to decode the graph instead of the names and numbers being written on the graph, adding mental overhead.\",\"where\":\"the table under the graph\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Page doesn't say whether reaching retirement at 67 changes the rules",
+      "Everything assumes a 7% yearly return, which is risky at the reader's age",
+      "The whole advantage depends on the employer paying in",
+      "Subtitle says you can drag the years, but nothing moved",
+      "The +1,721 card was confusing and had to be read twice",
+      "Fund names and codes went past the reader",
+      "In ב, unclear why the same money moving to the fund is only +527",
+      "In ב, the employer's money shows +60,365 while the table says 54,000, with no explanation",
+      "The waterfall's top numbers don't add up",
+      "'Every shekel becomes 3.70' feels like a misleading sales line",
+      "Unclear why the tax in the fund is so much bigger than in the securities account",
+      "The legal ceiling ('עד תקרה בחוק') isn't explained or given in shekels",
+      "Company name and fund codes in brackets are not understood",
+      "Missing: whether you can withdraw at retirement before 6 years without tax",
+      "Missing: what happens if the market falls when the money is needed",
+      "Missing: whether you can stop or move the money when changing jobs",
+      "Missing: how to check what your own employer pays",
+      "Would drop ב 'מדרגות' first because it confused the reader",
+      "Would drop chart ג because its useful numbers appear elsewhere",
+      "Would drop the year 1–12 bar strips inside א"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader praised the table and never complained that the graph lacks its own labels, so the table is never called a decoding crutch; the complaint about ג repeating numbers is a different issue."
+      }
+    ],
+    "liked": [],
+    "usd": 0.051639199999999996
+  },
+  "b": {
+    "raised": [
+      "Page doesn't say whether reaching retirement at 67 changes the 6-year rules or allows early tax-free withdrawal",
+      "Everything assumes 7% a year; no word on a bad year or a market fall when the money is needed",
+      "Without the employer's money the fund is barely better, so the whole case depends on the employer",
+      "Subtitle says the years can be dragged, but nothing moved",
+      "The +1,721 card was confusing and first misread as the total gain",
+      "Fund names and codes in the warning text went over the reader's head",
+      "In ב (steps), unclear why 'same money moves to the fund' is only +527",
+      "In ב, employer +60,365 doesn't match the table's 54,000, and the waterfall numbers don't add up with no explanation",
+      "'Every shekel becomes ₪3.70' feels like a sales line",
+      "Doesn't understand why tax in the fund (13,974) is so much bigger than in the securities account (594)",
+      "'Up to a ceiling set by law' doesn't say what the ceiling is",
+      "Company name 'פייר פיננשיאל טכנולוג'יז' isn't understood",
+      "Can't find whether you can stop or move the money when changing jobs",
+      "Can't find how to check what your own employer pays",
+      "Column chart ג is redundant because its useful numbers appear elsewhere; would drop it",
+      "Would drop the year 1–12 bar strips inside א"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader praises the table under the graph and never says that labels should be written on the graph itself or that decoding through a table is a burden."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0550712
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1067104
+}

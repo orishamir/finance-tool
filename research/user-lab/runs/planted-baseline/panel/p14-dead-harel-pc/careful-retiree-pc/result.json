@@ -1,0 +1,141 @@
+{
+  "task": "p14-dead-harel-pc",
+  "persona": "careful-retiree-pc",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-05T23:24:05.543Z",
+  "structured": {
+    "answer": "If I have to choose, I'd take \"כספי (שקלי)\": it shows 0% מניות and 0% מט\"ח, it's in shekels, and it's the only safe-looking one with a number, 4.25%. \"אג\"ח סחיר\" also has no shares, but it only says \"פחות מ־3 שנים\". I'm not signing anything until you or the bank tell me what \"כספי\" means and whether 0.57% is a lot to pay.",
+    "confidence": "unsure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Screen 1, the two rows of track buttons",
+        "why": "Most of the names mean nothing to me (S&P 500, עוקב מדדים, גמיש, קיימות). I only looked for something with אג\"ח or something that sounds like plain money."
+      },
+      {
+        "where": "Screen 2, the table",
+        "why": "Too many numbers and coloured circles on a black background. I followed only the rows where shares showed 0%."
+      },
+      {
+        "where": "Screen 2, 'פחות מ־3 שנים' in the return column",
+        "why": "I didn't know whether that means the track is new or something bad. Because of it, the bond track had no number and I couldn't compare it."
+      },
+      {
+        "where": "Choosing between אג\"ח סחיר and כספי (שקלי)",
+        "why": "I trust bonds, but 'סחיר' sounds like trading. I don't know what 'כספי' means, but it had 0/0 and a number I could understand."
+      }
+    ],
+    "used": [
+      "Title 'הראל' and the highlighted button 'קופת גמל להשקעה 16'",
+      "The track names in the table",
+      "The 'מניות' and 'מט\"ח' percentages, looking for 0%",
+      "Row 'כספי (שקלי)': 0.57% מהחיסכון, 0% מההפקדות, 4.25% over 3 years, 3.08% over 5 years",
+      "Row 'אג\"ח סחיר': 0% shares, 0.57%, 'פחות מ־3 שנים'",
+      "The fees line '0.54% עד 0.61%'",
+      "The note 'התקרה בחוק: 1.05% מהחיסכון'"
+    ],
+    "skimmed": [
+      "The opening lines under 'הראל' about the average fee for 2025 and 'מנתוני רשות שוק ההון'",
+      "The rows for shares and S&P 500 with large numbers like 24.04%",
+      "Column 'כסף מנוהל' (millions and billions)",
+      "The pale note under the table saying returns are before fees and before tax"
+    ],
+    "skipped": [
+      "The 'מה כתוב במסמכים של הראל' folds, which I didn't open",
+      "The 'לא מצאתם שם?' search box",
+      "The links 'מה זה קופת גמל להשקעה' and 'כל המסלולים של קופת גמל להשקעה בכל החברות'",
+      "The small links at the bottom of the page",
+      "The 'הלכה' row and the tracks with 25% shares"
+    ],
+    "unsure_meaning": [
+      "S&P 500",
+      "עוקב מדדים / עוקב מדד",
+      "מט\"ח and 'חשיפה למניות ולמט\"ח'",
+      "סחיר",
+      "כספי (שקלי)",
+      "פחות מ־3 שנים",
+      "123 מקור / 123 מחושב",
+      "The underlined numbers with dotted lines",
+      "The coloured circles next to the percentages",
+      "The blue numbers like 15283, 13254",
+      "PF-10",
+      "'לפני דמי ניהול' – so how much do I get in the end?",
+      "ממוצע 2025"
+    ],
+    "not_found": [
+      "A plain sentence saying which track is the safest, like a deposit",
+      "A comparison with interest on a bank deposit",
+      "Whether you can lose money in כספי or אג\"ח",
+      "A clear number for the אג\"ח סחיר track",
+      "Whether 0.57% is a lot or a little compared with what the bank takes from me",
+      "How much I would get in shekels at the end"
+    ],
+    "findings": [
+      {
+        "what": "Black background with pale grey text; the small lines are hard to read even with glasses",
+        "where": "The whole page, especially the explanatory lines under the table"
+      },
+      {
+        "what": "The table is crowded with numbers, circles and colours, and it frightens me",
+        "where": "Screen 2"
+      },
+      {
+        "what": "English letters and terms with no explanation",
+        "where": "Track buttons and table rows (S&P 500, עוקב מדדים, מט\"ח)"
+      },
+      {
+        "what": "The return is shown 'לפני דמי ניהול ולפני מס' in small print, so the big number isn't what I would get",
+        "where": "Note under the table, screen 3"
+      },
+      {
+        "what": "'פחות מ־3 שנים' instead of a number, with no explanation",
+        "where": "Return column for אג\"ח סחיר and others"
+      },
+      {
+        "what": "Nothing says which track is the least risky. I had to work it out from the 0% figures myself",
+        "where": "Top of the table"
+      },
+      {
+        "what": "The page opens with lots of product types and buttons instead of a simple explanation",
+        "where": "Screen 1"
+      },
+      {
+        "what": "A row was cut off between the screens, and I couldn't tell which track it was",
+        "where": "Between screen 2 and screen 3"
+      }
+    ]
+  },
+  "steps": 4,
+  "reads": 4,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 32631,
+    "turns": 6,
+    "usd": 0.1263776,
+    "input": 10,
+    "cacheWrite": 7864,
+    "cacheRead": 31628,
+    "output": 2855,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "p14-dead-harel-pc",
+    "screenshots": 6,
+    "changes": [
+      {
+        "id": "dead",
+        "type": "insert",
+        "shots": 6,
+        "applied": 6,
+        "most": 1
+      }
+    ],
+    "neverShown": [],
+    "errors": []
+  }
+}

@@ -1,0 +1,13 @@
+{
+ "id": "general-track-exposure",
+ "task": "s08",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "In the guide list, 'general track' is listed among the exposures (kinds of investment), which does not make sense: it is a mix, not one kind.",
+   "where": "the exposures group of the guide list",
+   "kind": "general"
+  }
+ ],
+ "liked": []
+}

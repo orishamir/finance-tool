@@ -1,0 +1,54 @@
+{
+  "id": "p10-fold-keren-phone",
+  "about": "For the lab only; never reaches a session. Planted problem, kind p10 (The answer hidden in a fold): see research/user-lab/planted.md.",
+  "purpose": "plant",
+  "pages": [
+    "/finance-tool/guide/keren-hishtalmut"
+  ],
+  "device": "phone",
+  "instance": {
+    "kind": "p10",
+    "mode": "page",
+    "url": "https://orishamir.github.io/finance-tool/guide/keren-hishtalmut",
+    "device": "phone",
+    "steps": [],
+    "task": "keren",
+    "control": "planted/control-keren-phone",
+    "split": "tune"
+  },
+  "plants": [
+    {
+      "id": "p10",
+      "kind": "general",
+      "problem": "The study fund calculator is folded behind \"show the calculation\": the section promises how much is left and when, and shows nothing until opened.",
+      "where": "the card under \"what happens to the money in the fund\"",
+      "counts": "A finding that the calculation or its result is hidden behind a fold and has to be opened.",
+      "notCounts": "Only that the page is long."
+    }
+  ],
+  "changes": [
+    {
+      "id": "fold-shown",
+      "type": "style",
+      "selector": "[data-pl=\"fold\"]",
+      "set": {
+        "--pl": "1"
+      }
+    },
+    {
+      "id": "fold-hide",
+      "type": "style",
+      "css": "[data-pl=\"fold\"] > :not(:first-child):not(details){display:none !important}"
+    },
+    {
+      "id": "fold-line",
+      "type": "insert",
+      "at": {
+        "selector": "div.bg-card > p.text-lg",
+        "text": "כמה כסף נשאר לכם, ומתי?"
+      },
+      "position": "afterend",
+      "html": "<details class=\"flex flex-col gap-2\"><summary class=\"cursor-pointer text-link min-h-target flex items-center\">הציגו את החישוב</summary></details>"
+    }
+  ]
+}

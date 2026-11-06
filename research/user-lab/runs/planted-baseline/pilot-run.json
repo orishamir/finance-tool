@@ -1,0 +1,62 @@
+{
+  "personas": [
+    "first-job-phone",
+    "careful-retiree-pc"
+  ],
+  "tasks": [
+    {
+      "key": "p03-colours-sp500-pc",
+      "text": "You want to put money into an S&P 500 index fund every month for about ten years. This is a page you found. Use it to decide where to hold the money and which fund to buy, and say how much you would end up with.",
+      "variant": "planted/p03-colours-sp500-pc",
+      "device": "pc",
+      "findings": true,
+      "page": "https://orishamir.github.io/finance-tool/indices/sp500"
+    },
+    {
+      "key": "p10-fold-sp500-phone",
+      "text": "You want to put money into an S&P 500 index fund every month for about ten years. This is a page you found. Use it to decide where to hold the money and which fund to buy, and say how much you would end up with.",
+      "variant": "planted/p10-fold-sp500-phone",
+      "device": "phone",
+      "findings": true,
+      "page": "https://orishamir.github.io/finance-tool/indices/sp500"
+    },
+    {
+      "key": "p14-dead-keren-phone",
+      "text": "You are self-employed and are thinking of opening a study fund (keren hishtalmut) and paying into it yourself. This is a page you found. Use its calculator to see roughly how much you would have if you took the money out after 4 years, and after 8 years.",
+      "variant": "planted/p14-dead-keren-phone",
+      "device": "phone",
+      "findings": true,
+      "start": "https://orishamir.github.io/finance-tool/guide/keren-hishtalmut",
+      "minutes": 10,
+      "actions": 30
+    },
+    {
+      "key": "control-keren-phone-browser",
+      "text": "You are self-employed and are thinking of opening a study fund (keren hishtalmut) and paying into it yourself. This is a page you found. Use its calculator to see roughly how much you would have if you took the money out after 4 years, and after 8 years.",
+      "variant": "planted/control-keren-phone-browser",
+      "device": "phone",
+      "findings": true,
+      "start": "https://orishamir.github.io/finance-tool/guide/keren-hishtalmut",
+      "minutes": 10,
+      "actions": 30
+    },
+    {
+      "key": "control-sp500-pc",
+      "text": "You want to put money into an S&P 500 index fund every month for about ten years. This is a page you found. Use it to decide where to hold the money and which fund to buy, and say how much you would end up with.",
+      "variant": "planted/control-sp500-pc",
+      "device": "pc",
+      "findings": true,
+      "page": "https://orishamir.github.io/finance-tool/indices/sp500"
+    },
+    {
+      "key": "control-sp500-phone",
+      "text": "You want to put money into an S&P 500 index fund every month for about ten years. This is a page you found. Use it to decide where to hold the money and which fund to buy, and say how much you would end up with.",
+      "variant": "planted/control-sp500-phone",
+      "device": "phone",
+      "findings": true,
+      "page": "https://orishamir.github.io/finance-tool/indices/sp500"
+    }
+  ],
+  "parallel": 3,
+  "repeat": 1
+}

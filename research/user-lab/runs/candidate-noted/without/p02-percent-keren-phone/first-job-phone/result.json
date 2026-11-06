@@ -1,0 +1,121 @@
+{
+  "task": "p02-percent-keren-phone",
+  "persona": "first-job-phone",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "phone",
+  "startedAt": "2026-11-06T02:53:46.573Z",
+  "structured": {
+    "answer": "I can take it out tax-free 6 years after the first deposit (or before that for studies, or after 3 years if you're at retirement age). With 300 ₪ a month from me and 900 from the employer, the example says that after 5 years about 50k ₪ goes into your account before tax, and a big chunk of that goes to tax if you take it early. I never saw the number for 6 years, so roughly 50–65k is my guess.",
+    "confidence": "unsure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Calculator chart, screen 3",
+        "why": "It's set to 5 years by default, but 6 years is the tax-free point I actually care about. The page never shows the 6-year number in text."
+      },
+      {
+        "where": "Bars under the chart, screens 3-4",
+        "why": "+54,000, +8,487, −13,974, then '66,5…' cut off on the left under the arrow button. I couldn't tell what I actually end up with."
+      },
+      {
+        "where": "Text 'משיכה אחרי 5 שנים', screen 4",
+        "why": "50,719 goes in, 29,768 goes to tax, 15,794 comes back. Three numbers that don't match the bars above, and I lost track of what's mine."
+      }
+    ],
+    "used": [
+      "Heading and subtitle 'קרן השתלמות … אחרי תקופה שקבע החוק אפשר למשוך בלי מס'",
+      "'אחרי 6 שנים מההפקדה הראשונה אפשר למשוך … בלי מס'",
+      "Calculator heading 'כמה כסף נשאר לכם, ומתי?'",
+      "Chart labels 'מ־6 שנים: פטור ממס' / 'לפני 6 שנים: מס'",
+      "'300 ₪ בחודש מכם, 900 ₪ מהמעסיק'",
+      "Bars +54,000 / −13,974 / 66,5…",
+      "First line 'משיכה אחרי 5 שנים: לחשבון נכנסים קודם 50,719 ₪'",
+      "'עד 4 ימי עסקים' for withdrawal"
+    ],
+    "skimmed": [
+      "Ceiling text 15,712 ₪ / 20,566 ₪ on screen 2",
+      "Input fields 2.5% / 7.5% / 7% / 0.54%",
+      "Grey assumption paragraphs under the chart",
+      "שווה לדעת",
+      "מי מציע ומי מצטרף",
+      "משיכה ומעבר boxes"
+    ],
+    "skipped": [
+      "Chips 'כדאי להכיר גם' and 'במה אפשר להשקיע'",
+      "'חוקים וכללים' badges",
+      "Link to the securities account page",
+      "Company list fold 'הצגת החברות'",
+      "Rest of the page from 'כמה זה עולה' on (screens 8-13)"
+    ],
+    "unsure_meaning": [
+      "'66,5…' cut off: total? what's left?",
+      "−13,974 with the pink hatched box: tax?",
+      "'אם מבקשים החזר ממס הכנסה, 15,794 ₪ מהם חוזרים'",
+      "'כל הסכומים בכסף של היום'",
+      "מסלול מדד, KH-19 / PF-18 tags",
+      "אג\"ח ממשלתית צמודה"
+    ],
+    "not_found": [
+      "A plain number for what I'd have at 6 years",
+      "Calculator based on my own salary (I didn't find a salary field)"
+    ],
+    "findings": [
+      {
+        "what": "The calculator opens on 5 years, the year that gets taxed, so the first big number I see is for taking it out early, not at the tax-free point",
+        "where": "Calculator, screen 3"
+      },
+      {
+        "what": "The final total is cut off by the floating up-arrow button on the left ('66,5…')",
+        "where": "Bars under the chart, screen 3"
+      },
+      {
+        "what": "The numbers in the text (50,719 / 29,768 / 15,794) don't match the bars (54,000 / −13,974 / 66,5…), so I couldn't work out what's actually mine",
+        "where": "Screens 3-4"
+      },
+      {
+        "what": "The minus number in pink with the hatching looks scary and I'm not sure if it's tax or a loss",
+        "where": "Bars, screen 3"
+      },
+      {
+        "what": "Lots of grey assumption text right where I wanted one simple answer",
+        "where": "Under the calculator, screen 4"
+      },
+      {
+        "what": "The rules about moving money and starting a new account are long and lost me",
+        "where": "משיכה ומעבר, screen 7"
+      }
+    ]
+  },
+  "steps": 7,
+  "reads": 7,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 34407,
+    "turns": 9,
+    "usd": 0.1810448,
+    "input": 10,
+    "cacheWrite": 14278,
+    "cacheRead": 43704,
+    "output": 2902,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "p02-percent-keren-phone",
+    "screenshots": 14,
+    "changes": [
+      {
+        "id": "pct-shown",
+        "type": "style",
+        "shots": 14,
+        "applied": 14,
+        "most": 1
+      }
+    ],
+    "neverShown": [],
+    "errors": []
+  }
+}

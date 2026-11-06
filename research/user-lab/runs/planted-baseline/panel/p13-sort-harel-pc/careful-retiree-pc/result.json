@@ -1,0 +1,136 @@
+{
+  "task": "p13-sort-harel-pc",
+  "persona": "careful-retiree-pc",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-05T23:21:44.732Z",
+  "structured": {
+    "answer": "I'd lean to \"כספי (שקלי)\": 0% shares, 0% foreign currency, about 3–4% returns, the closest thing to my deposits. But I won't sign until my son or the bank tells me it's as safe as a deposit and whether 0.57% a year is too much.",
+    "confidence": "unsure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Table rows אג\"ח סחיר vs כספי (שקלי)",
+        "why": "Both show 0% מניות. אג\"ח sounds safe but 'סחיר' is unknown and it shows 'פחות מ־3 שנים' instead of a return."
+      },
+      {
+        "where": "Column 'חשיפה למניות ולמט\"ח' with coloured rings",
+        "why": "Couldn't read the rings or tell the colours apart; not sure what מט\"ח means exactly."
+      },
+      {
+        "where": "Fee column 'מהחיסכון / מההפקדות'",
+        "why": "Didn't know if these are two fees or what 0% means, or whether 0.57% is a lot compared to my bank."
+      },
+      {
+        "where": "Line under table 'התקרה בחוק: 1.05% ... 4%'",
+        "why": "Not sure if this is a warning or reassurance."
+      }
+    ],
+    "used": [
+      "Title הראל and the fee sentence at the top",
+      "Selected button קופת גמל להשקעה 16",
+      "Track names and 'חשיפה למניות' percentages",
+      "Row כספי (שקלי): 0.57%, 0% מניות, 4.25% 3 שנים, 3.08% 5 שנים",
+      "Row אג\"ח סחיר: 0% מניות, פחות מ־3 שנים",
+      "Sentence that past returns don't say what will happen"
+    ],
+    "skimmed": [
+      "The other product buttons (קרן השתלמות, חיסכון לכל ילד, etc.)",
+      "Shares and index rows (מניות, עוקב מדד S&P 500, עוקב מדדי מניות)",
+      "כסף מנוהל column",
+      "Line 'כולל את החברות...'"
+    ],
+    "skipped": [
+      "Folds under 'מה כתוב במסמכים של הראל'",
+      "Search box 'לא מצאתם שם?'",
+      "Footer links and small bottom line",
+      "'מה זה קופת גמל להשקעה' link"
+    ],
+    "unsure_meaning": [
+      "סחיר",
+      "מט\"ח",
+      "S&P 500",
+      "עוקב מדד / עוקב מדדי אג\"ח",
+      "פחות מ־3 שנים / פחות מ־5 שנים",
+      "0% מההפקדות",
+      "The coloured ring icons",
+      "PF-10",
+      "123 מקורו / 123 מחושב",
+      "Numbers like 15287 in the קופה column",
+      "התקרה בחוק 1.05% / 4%",
+      "לפני דמי ניהול"
+    ],
+    "not_found": [
+      "A plain statement of which track is safe like a deposit",
+      "A comparison with a bank deposit's interest",
+      "Whether the money can be lost in the כספי track",
+      "Whether 0.57% is high or low"
+    ],
+    "findings": [
+      {
+        "what": "Dark background with small pale grey text, hard to read even enlarged",
+        "where": "Whole page, especially the line under the table and the footer"
+      },
+      {
+        "what": "No plain-words description of each track (e.g. 'like a deposit, low risk'); only percentages and rings",
+        "where": "Track table"
+      },
+      {
+        "what": "Big share returns (24.04%, 13.5%) catch the eye and make the page feel like gambling",
+        "where": "Table rows מניות, כללי"
+      },
+      {
+        "what": "English letters and jargon in track names",
+        "where": "עוקב מדד S&P 500, סחיר, מט\"ח"
+      },
+      {
+        "what": "Many tracks show 'פחות מ־3 שנים' with no explanation",
+        "where": "Return column"
+      },
+      {
+        "what": "Coloured rings with close colours, meaning unclear",
+        "where": "Exposure column"
+      },
+      {
+        "what": "Two fee lines (מהחיסכון / מההפקדות) not explained, and the legal ceiling line is confusing",
+        "where": "Fee column and line under table"
+      },
+      {
+        "what": "Codes and dotted underlines that mean nothing to a reader",
+        "where": "קופה numbers, PF-10, '123 מקורו 123 מחושב'"
+      }
+    ]
+  },
+  "steps": 4,
+  "reads": 4,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 37700,
+    "turns": 6,
+    "usd": 0.140217,
+    "input": 8,
+    "cacheWrite": 8197,
+    "cacheRead": 23045,
+    "output": 3500,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "p13-sort-harel-pc",
+    "screenshots": 6,
+    "changes": [
+      {
+        "id": "sort-shown",
+        "type": "style",
+        "shots": 6,
+        "applied": 6,
+        "most": 1
+      }
+    ],
+    "neverShown": [],
+    "errors": []
+  }
+}

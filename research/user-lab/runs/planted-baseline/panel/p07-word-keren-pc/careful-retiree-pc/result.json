@@ -1,0 +1,126 @@
+{
+  "task": "p07-word-keren-pc",
+  "persona": "careful-retiree-pc",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-05T23:10:48.623Z",
+  "structured": {
+    "answer": "From what I read, at my age (past retirement) I could take the money out tax-free after 3 years rather than 6. But I didn't come away with a clear amount: the page's example used a salary of 12,000 and a shares track with \"S&P\", and showed almost 30,000 ₪ going to tax at 5 years. So I'll ask you and the employer's clerk which track is safe and what I'd really get.",
+    "confidence": "unsure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Screen 2–3 calculator chart",
+        "why": "Chart says 'לפני 6 שנים: מס' while the text above said 3 years is enough for retirement age; I couldn't tell if the numbers apply to me"
+      },
+      {
+        "where": "Screen 3 text under chart",
+        "why": "'הקרן מעבירה 29,768 ₪ למס הכנסה' then '15,794 ₪ מהם חוזרים' – back-and-forth tax numbers I couldn't follow; the big tax number scared me"
+      },
+      {
+        "where": "Screen 3 example track",
+        "why": "Example is 'מיטב השתלמות עוקב מדד S&P500' – shares, English letters; felt not for me"
+      }
+    ],
+    "used": [
+      "Opening text: 'אחרי 6 שנים... אפשר למשוך בלי מס', 'למי שהגיע לגיל הפרישה מספיקות 3 שנים'",
+      "7.5% employer / 2.5% employee",
+      "Calculator boxes: salary 12,000, return 7, fees 0.54",
+      "'הפקדתם 18,000 ₪' and the 'נשאר בידיים' column",
+      "'עד 4 ימי עסקים' to get the money",
+      "'מעבר בין מסלולים: בלי עמלה'",
+      "Fees table: 'עד 2% בשנה', actual 0.34%–0.74%, 'דמי יציאה: לא גובים'"
+    ],
+    "skimmed": [
+      "Who offers and who joins section",
+      "Long card about new deposits in another fund",
+      "Numbers 321 ₪, 66,601, 66,280 at bottom of screen 3",
+      "Paragraph about 15,712 / 20,566 ceilings"
+    ],
+    "skipped": [
+      "Grey line '123 מקור 123 מחושב' under the title",
+      "Track buttons at top of calculator (S&P 500, מזומן שקלי)",
+      "Screens 7–9 (taxation, risks, glossary) – too tired",
+      "'הצגת החברות' fold and company links",
+      "'כמה העמלות האלה עולות לאורך זמן' link"
+    ],
+    "unsure_meaning": [
+      "S&P 500 / S&P500",
+      "מדד (as in 'מסלול שעוקב אחרי מדדים')",
+      "ריאלית, נטו",
+      "מזומן שקלי",
+      "KH-19, KH-15, PF-18 codes",
+      "'123 מקור 123 מחושב'",
+      "Green/yellow/grey colours in the bar chart",
+      "'חוקים וכללים · 14' tags",
+      "Dotted-underlined numbers"
+    ],
+    "not_found": [
+      "A plain sentence: 'you will have about X ₪ after N years'",
+      "Whether the calculator takes my age (3-year rule) into account",
+      "A clearly marked safe/government-bond example amount"
+    ],
+    "findings": [
+      {
+        "what": "Calculator ignores the 3-year rule for retirement age; shows tax before 6 years, which contradicts what I just read for someone like me",
+        "where": "Screen 2–3 chart, 'לפני 6 שנים: מס'"
+      },
+      {
+        "what": "Big frightening tax figure (29,768 ₪) shown first, the refund explained after; confusing",
+        "where": "Screen 3 text under chart"
+      },
+      {
+        "what": "Example is a shares track with English letters; a safe track example would suit people like me",
+        "where": "Screen 3, 'מיטב השתלמות עוקב מדד S&P500'; screen 2 track buttons"
+      },
+      {
+        "what": "Black background with grey small text is hard on the eyes",
+        "where": "Whole page, especially grey lines and table headers"
+      },
+      {
+        "what": "Bar colours in the chart are not explained in words near it, and dark yellow vs yellow are hard to tell apart",
+        "where": "Screen 2–3 charts"
+      },
+      {
+        "what": "Mysterious codes like KH-19 and grey '123 מקור' line mean nothing",
+        "where": "Screen 1 and screen 4"
+      },
+      {
+        "what": "Too many numbers in one paragraph",
+        "where": "Screen 3 bottom paragraph (321, 66,601, 66,280, 0.48%, 0.7%)"
+      }
+    ]
+  },
+  "steps": 6,
+  "reads": 6,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 49633,
+    "turns": 8,
+    "usd": 0.1983596,
+    "input": 14,
+    "cacheWrite": 13370,
+    "cacheRead": 59218,
+    "output": 3975,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "p07-word-keren-pc",
+    "screenshots": 10,
+    "changes": [
+      {
+        "id": "word",
+        "type": "text",
+        "shots": 10,
+        "applied": 10,
+        "most": 1
+      }
+    ],
+    "neverShown": [],
+    "errors": []
+  }
+}

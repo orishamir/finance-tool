@@ -1,0 +1,81 @@
+# p03-colours-sp500-pc: first-job-phone (old brief)
+
+pc; 69 s, $0.30
+
+## 1. My answer
+
+I'd open a securities account (חשבון ניירות ערך) at **פסגות** and buy **"ילין לפידות מחקה S&P 500 (4D)"**, number 5139282. That's the pair the page marks as "הבחירה שלכם · ★ הזול", the cheapest one.
+
+To get a number I left the page's example settings as they were: "סכום היום" 10,000 ₪, "הפקדה חודשית" 500 ₪, "שנים" 10, and "תשואה בשנה" 7%. With those, I'd put in **70,000 ₪** and end up with about **86,500 ₪** ("86,492 ₪ … נשאר לכם בעוד 10 שנים, אחרי דמי ניהול ומס, בכסף של היום").
+
+How sure I am:
+- **The account: fairly sure.** פסגות comes out about 3,000 ₪ ahead of לאומי (83,396) and miles ahead of מיטב טרייד or אקסלנס (around 63,500).
+- **The fund: it hardly matters.** The next pair is only "−43 ₪" worse. I'd just take the one the page starred.
+- **The final amount: not very sure.** It assumes 7% a year, which I can't check. It's "בכסף של היום" and assumes "אם הדולר לא זז מול השקל". I also don't know the real amount I'll start with, or whether I'd get a young person's price.
+
+## 2. Parts I actually used
+
+- The **top calculator**: the four boxes and sliders under "איפה ואיך הכי זול להשקיע במדד, לאורך זמן", and the result box ("הפקדתם 70,000 ₪" → "86,492 ₪").
+- The **"כל החשבונות" list** on the right, ranking the brokers.
+- The **top of the fund list "כל הקרנות על מדד S&P 500"**, only the first few rows.
+- The **"מה הכי משנה את מה שיישאר לכם" table**.
+- A bit of the **"עכשיו: … נשארים בסוף 79,176 ₪"** tables, mostly as a warning about what to avoid.
+
+## 3. Block by block
+
+- **The menu and index buttons** (S&P 500, נאסד"ק 100, ת"א-35…). I saw S&P 500 was already selected and moved on. "האתר לא ממליץ על מדד" was fine.
+- **"מדד S&P 500" description.** Skimmed it. "הכסף מושקע בדולרים" made me a bit nervous about the dollar.
+- **The four inputs.** Used them. They were the clearest part of the page.
+- **The "אינפלציה" button and the line "שער הדולר 3.17 ₪ · מחושב משערי הייחוס של הבנק המרכזי האירופי".** This confused me. Is inflation on or off right now? Why is the European central bank involved in my shekels?
+- **The three result boxes (הפקדתם / הבחירה שלכם / הזוג הבא בתור).** Used them. I didn't understand the word "זוג" until I worked out that it means one account plus one fund.
+- **"כמה זה עולה לכם ב־10 שנים, בכל אחד מהזוגות" with the coloured bar.** I mostly skipped it. Most of the chart didn't show in my screenshots. I could only see the colour legend and "עלות אצלכם, לעומת הזוג השני: החשבון 1 ₪ יותר, הקרן 58 ₪ פחות, המס 14 ₪ יותר". Those are tiny amounts, so I stopped reading.
+- **פסגות card** ("מה החשבון גובה ב־10 שנים: 1,057 ₪"). Used it. I ignored "קיבלתם מחיר אחר? הזינו אותו" because I don't have a price yet.
+- **"כל החשבונות" list.** Used it: the top number in each row, the bank name, and the rank. I read the grey "לא בחישוב" notes because some say "מחיר אחר לצעירים", and I'm 24. That made me wonder whether לאומי or מזרחי would actually be cheaper for me. The page doesn't say.
+- **אינטראקטיב ישראל / Interactive Brokers ("אין נתון").** Skimmed and skipped them.
+- **The fund card for ילין לפידות at the top.** Used the name and the number. I didn't follow "דמי ניהול: 0% קבועים 0% משתנים 0.02% נאמן".
+- **The filter chips ("סנני לפי תווית").** Skipped them. I don't know what "עסקת החלף", "צוברת" or "מחלקת דיבידנד" mean, so I had nothing to filter by.
+- **The fund list.** I used the top two rows and skimmed the rest down to around −4,492 ₪. The foreign ones (iShares, Vanguard, "us-ivv", "אין מחיר כאן", "צריך טופס W-8BEN") I skipped completely. They looked like they're not for me.
+- **"עם נטרול מט"ח · קרן אחת" row, the explanation box "למה חלק מהקרנות בלי מחיר בפסגות", and the whole "עם נטרול מט"ח או בלי: מה קורה בפועל" section**, including both bar charts and the year-by-year table. This confused me, so I skimmed it. I read "השורה התחתונה: הנטרול לא מגן מירידה של השוק", took away "don't bother with the hedged one", and left it.
+- **"מה הכי משנה את מה שיישאר לכם".** Used it. "אם תגדילו כל מספר ב־20%, הכי ישנה מספר השנים: 19,116 ₪ יותר" was actually useful: staying in longer matters more than anything else.
+- **"מתחילים מבחירה אחת" waterfall (79,176 → +4,972 → +2,344 → 86,492).** This confused me. It says "עכשיו" next to ירושלים with an MTF fund, but I don't have anything yet. Why start there? Once I understood that it shows the account is worth more than the fund, it agreed with what I already knew.
+- **"עכשיו: MTF סל … ירושלים" tables.** I skimmed them. The big red bars were a clear warning: "אלטשולר טרייד … 14,935 ₪ פחות" and "קרן שנקנית בחו"ל … 20,100 ₪ פחות".
+- **The notes at the bottom.** I read one line that worried me: "בתשואה של 0% או של 10% הסדר משתנה ב־6 מקומות". So the ranking isn't fixed? The rest I skipped.
+
+## 4. Lists, tables and charts
+
+- **Account list.** I looked at the big number ("86,492 ₪"), the name, and the "לא בחישוב" notes. I ignored the small dotted number underneath ("1,057 ₪") until I realised it's the cost. I ignored the orange/yellow/red bars and the "#" column.
+- **Fund list.** I looked at the "לעומת הבחירה" column (−43, −447, −4,492) and the fund names. I ignored "מול המדד" ("+0.37% בשנה · שנה אחת"), because I don't know if plus is good or bad there. I ignored all the coloured tags and the numbers next to the little icon.
+- **Cost bar legend** (orange "עמלות קנייה ומכירה", yellow "דמי משמרת", red "דמי ניהול חשבון", pink "המרת מטבע", grey "העמלות זו על זו", green "דמי ניהול הקרן", magenta "מס"). I read it but never matched the colours to anything.
+- **"מה הכי משנה" chart.** I ignored the lines and looked only at the table underneath: the "ההפרש" column, with "שנים" yellow on top.
+- **Hedging charts.** I looked at the bars "−21.8" and "+30.1" without knowing which colour was which fund. I ignored the dollar chart from 2002 to 2024.
+- **Waterfall.** I looked at the three numbers on top (79,176, +4,972, +2,344) and the "נשאר בסוף" row. I ignored "עלות החשבון", "עלות הקרן" and "מס", plus the legend with the lock "נשען על כלל מס פתוח".
+- **Red/green bar tables.** I looked at "עוד"/"פחות" and the red bars. I ignored "נשאר בסוף".
+
+## 5. What I didn't understand
+
+- What "4D" and "4A" mean in the fund names.
+- What "נטרול מט"ח" means. I guess it has something to do with the dollar.
+- "עסקת החלף", "צוברת", "מחלקת דיבידנד", "מחזיקה את המניות", "נקנית בחו"ל" and "UCITS / Accumulating".
+- "נאמן" and why it has its own fee.
+- "דמי משמרת" and "עמלות זו על זו".
+- "מס גם על שינוי המטבע", which sounds bad, but almost every fund has it.
+- "סוג למצטרפים", "הייטק", "מחיר להוראת קבע".
+- Whether the "אינפלציה" button is on. What "בכסף של היום" means in shekels I'd actually see in ten years.
+- Why the waterfall starts at ירושלים/MTF and calls it "עכשיו".
+- What "מול המדד" with a plus or a minus is telling me.
+
+## 6. What I wanted and couldn't find
+
+- **Opening the account:** how to open one at פסגות, whether there's a minimum, and whether it's safe to keep my money there.
+- **The young-person discount:** I'm 24. Would "מחיר אחר לצעירים" at לאומי or another bank beat פסגות?
+- **The real future amount:** how many shekels I'd actually see in ten years, not "בכסף של היום".
+- **Where 7% comes from:** is it realistic? What happens in a bad decade?
+- **Tax:** when I actually pay the "מס", now or only when I sell?
+- **Monthly buying:** how buying every month actually works. Do I have to buy the fund myself each month, or can I set up an "הוראת קבע"?
+- **Bad years:** what happens if I stop depositing or need the money early.
+
+## 7. If half the page had to go
+
+First to go would be the whole **"עם נטרול מט"ח או בלי: מה קורה בפועל" section** with its two charts and the year table. Next, the **foreign funds with "אין מחיר כאן"** and the Interactive Brokers block. Then the **filter chips** and most of the coloured **tags** on each fund, the **cost-colour bar and legend**, and the **waterfall** with its "עכשיו" tables.
+
+I'd keep the **calculator at the top**, the **result box**, the **account list**, the **top few rows of the fund list**, and the **"מה הכי משנה" table**.

@@ -1,0 +1,36 @@
+{
+  "case": "tracks-r1-returns",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The lists show the tracks but give no sense of the different companies.\",\"where\":\"all three lists\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings say the lists fail to show which companies offer the tracks; they cover ordering, readability, too many numbers, repeated filters, rings, mixed lists and returns instead."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0145994
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings say the lists fail to show or tell apart the different companies; they cover share-first ordering, readability, crowded numbers, repeated filters, unexplained rings and returns."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0140114
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0286108
+}

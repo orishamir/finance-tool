@@ -1,0 +1,82 @@
+{
+  "case": "hg-within-ceiling",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"'כל ההפקדות ב־12 השנים בתוך התקרה של הפטור' is unclear, and seems not to make sense when the same sum is deposited every month.\",\"where\":\"the sentence under the graphic\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Doesn't know how much smaller the monthly paycheck will be",
+      "Doesn't know which company to pick or how to sign up",
+      "The '123 ממקור / מחושב / הזנתה / מונח' legend at the top is confusing",
+      "'מה זה' throws too many numbers and terms at you before showing what they mean for the reader",
+      "'חשבון ניירות ערך' alternative: the page doesn't say whether it's better or worse",
+      "Codes in 'שווה לדעת' (TXH-09 etc.) mean nothing",
+      "'תלוי בחברה' cards in 'מי מציע ומי מפקח' are confusing",
+      "Taxation cards are a sideways carousel, and the paragraph under them repeats the earlier numbers",
+      "The 47% early-withdrawal tax in the orange box is scary",
+      "Chief economist's recommendation causes worry that the benefit may go away",
+      "Unclear why bars after year 6 still have a striped pink top if they are tax-free",
+      "Can't see the year-6/year-12 numbers without clicking; the default shows year 5",
+      "Higher management fee producing more money seems backwards and reduces trust",
+      "Unclear how much tax is really paid (−64,761 vs 47% vs refund)",
+      "Unclear whether employer deposits above the ceiling are taxed in the reader's own paycheck",
+      "Many terms not understood (מסלול השקעה, מס רווחי הון, רווח ריאלי, etc.)",
+      "Missing: what happens to the fund if you leave the job",
+      "Missing: comparison with investing the 750 in the S&P 500 yourself",
+      "Would cut the glossary table, rule chips, and small-print notes under the chart"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader only skimmed the text under the chart and never raises the sentence about all 12 years of deposits being within the exemption ceiling; the striped-bar confusion is about the bars, not that sentence."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0577232
+  },
+  "b": {
+    "raised": [
+      "The '123 ממקור / מחושב / הזנתה / מונח' legend at the top is confusing and its purpose is unclear",
+      "'מה זה' throws too many numbers (7.5%, 2.5%, 15,712, 20,566) before the reader sees what they mean, so they start skimming",
+      "Unsure what to put in the return and management-fee calculator boxes, so left them alone",
+      "'הכי קרוב לזה: חשבון ניירות ערך' doesn't say whether that option is better or worse",
+      "Codes like TXH-09, KH-15, PF-18 mean nothing",
+      "'תלוי בחברה' cards in 'מי מציע ומי מפקח' are confusing: it's not clear how it depends on the company",
+      "The tax section repeats the 7.5%/15,712 numbers already given at the top",
+      "The 47% early-withdrawal tax figure is scary",
+      "Worried the benefit may go away because of the chief economist's recommendation",
+      "The dark brown/olive fill in the middle chart columns is unclear",
+      "Bars after year 6 still have a striped pink top even though that period is tax-free",
+      "Year-6 and year-12 results aren't visible without clicking, and the default shows the bad year (year 5)",
+      "A higher management fee giving more money seems backwards and lowers trust in the numbers",
+      "Unclear how much tax is really paid, given −64,761 vs 47% at source vs refund",
+      "Unclear whether the employer deposit above the ceiling is taxed from their paycheck",
+      "Jargon not understood (מסלול השקעה, מס רווחי הון, רווח ריאלי, משכורת קובעת, חברה מנהלת, נעילה, ניכוי)",
+      "Missing: how much smaller the net monthly paycheck gets",
+      "Missing: which company or plan to pick and how to sign up or tell the employer",
+      "Missing: what happens to the fund on leaving the job",
+      "Missing: a comparison with investing the 750 in the S&P 500 yourself",
+      "Would cut the glossary table",
+      "Would cut the 'חוקים וכללים' chips",
+      "Would cut the small-print notes under the chart"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The report never mentions the sentence saying that all 12 years of deposits stay within the exemption ceiling. The closest point is the striped pink tops on the post-year-6 bars, which is a different complaint about the same chart."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0650792
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1228024
+}

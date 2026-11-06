@@ -1,0 +1,183 @@
+{
+  "case": "else-01-justetf-fund",
+  "sessions": 4,
+  "perKey": {
+    "j-tabs": {
+      "kind": "general",
+      "caught": 0,
+      "of": 4,
+      "byPersona": {
+        "self-directed-investor": {
+          "caught": 0,
+          "of": 2,
+          "ranks": [
+            0,
+            0
+          ]
+        },
+        "student-small-amounts": {
+          "caught": 0,
+          "of": 2,
+          "ranks": [
+            0,
+            0
+          ]
+        }
+      },
+      "graderAgreement": 1
+    },
+    "j-light": {
+      "kind": "taste",
+      "caught": 0,
+      "of": 4,
+      "byPersona": {
+        "self-directed-investor": {
+          "caught": 0,
+          "of": 2,
+          "ranks": [
+            0,
+            0
+          ]
+        },
+        "student-small-amounts": {
+          "caught": 0,
+          "of": 2,
+          "ranks": [
+            0,
+            0
+          ]
+        }
+      },
+      "graderAgreement": 1
+    },
+    "j-dated": {
+      "kind": "general",
+      "caught": 0,
+      "of": 4,
+      "byPersona": {
+        "self-directed-investor": {
+          "caught": 0,
+          "of": 2,
+          "ranks": [
+            0,
+            0
+          ]
+        },
+        "student-small-amounts": {
+          "caught": 0,
+          "of": 2,
+          "ranks": [
+            0,
+            0
+          ]
+        }
+      },
+      "graderAgreement": 1
+    },
+    "j-performance": {
+      "kind": "general",
+      "caught": 0,
+      "of": 4,
+      "byPersona": {
+        "self-directed-investor": {
+          "caught": 0,
+          "of": 2,
+          "ranks": [
+            0,
+            0
+          ]
+        },
+        "student-small-amounts": {
+          "caught": 0,
+          "of": 2,
+          "ranks": [
+            0,
+            0
+          ]
+        }
+      },
+      "graderAgreement": 1
+    }
+  },
+  "againstLiked": {
+    "j-facts-top": 0,
+    "j-chart": 0,
+    "j-depth": 1,
+    "j-holdings": 0,
+    "j-help": 1
+  },
+  "rows": [
+    {
+      "task": "justetf-fund",
+      "session": "self-directed-investor-r1",
+      "persona": "self-directed-investor",
+      "ranks": {
+        "j-tabs": 0,
+        "j-light": 0,
+        "j-dated": 0,
+        "j-performance": 0
+      },
+      "against": {
+        "j-facts-top": 0,
+        "j-chart": 0,
+        "j-depth": 0,
+        "j-holdings": 0,
+        "j-help": 0
+      }
+    },
+    {
+      "task": "justetf-fund",
+      "session": "self-directed-investor-r2",
+      "persona": "self-directed-investor",
+      "ranks": {
+        "j-tabs": 0,
+        "j-light": 0,
+        "j-dated": 0,
+        "j-performance": 0
+      },
+      "against": {
+        "j-facts-top": 0,
+        "j-chart": 0,
+        "j-depth": 0,
+        "j-holdings": 0,
+        "j-help": 0
+      }
+    },
+    {
+      "task": "justetf-fund",
+      "session": "student-small-amounts-r1",
+      "persona": "student-small-amounts",
+      "ranks": {
+        "j-tabs": 0,
+        "j-light": 0,
+        "j-dated": 0,
+        "j-performance": 0
+      },
+      "against": {
+        "j-facts-top": 0,
+        "j-chart": 0,
+        "j-depth": 7,
+        "j-holdings": 0,
+        "j-help": 0
+      }
+    },
+    {
+      "task": "justetf-fund",
+      "session": "student-small-amounts-r2",
+      "persona": "student-small-amounts",
+      "ranks": {
+        "j-tabs": 0,
+        "j-light": 0,
+        "j-dated": 0,
+        "j-performance": 0
+      },
+      "against": {
+        "j-facts-top": 0,
+        "j-chart": 0,
+        "j-depth": 0,
+        "j-holdings": 0,
+        "j-help": 4
+      }
+    }
+  ]
+}

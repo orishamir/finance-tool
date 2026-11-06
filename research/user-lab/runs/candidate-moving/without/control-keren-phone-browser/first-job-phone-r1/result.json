@@ -1,0 +1,98 @@
+{
+  "task": "control-keren-phone-browser",
+  "persona": "first-job-phone",
+  "repeat": 1,
+  "mode": "browser",
+  "device": "phone",
+  "startedAt": "2026-11-06T02:03:11.584Z",
+  "structured": {
+    "answer": "With 500 ₪ a month, after 8 years I'd have about 68,853 ₪ (\"נשאר בידיים\"). For 4 years the calculator has no figure for self-employed people. It just says \"לעצמאים עוד אין כאן חישוב למשיכה לפני 6 שנים\" and that you pay tax if you take the money out early.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Result for 4 years",
+        "why": "The only big number was 25,725. At first I took it for my fund. It's actually the 'אותו כסף בחשבון ניירות ערך' column, and the fund itself showed an empty dashed bar and orange text"
+      },
+      {
+        "where": "Top of calculator",
+        "why": "It opens on שכירים with salary and employer % fields. I had to notice the עצמאים toggle myself"
+      }
+    ],
+    "used": [
+      "tab 'מה קורה לכסף בקרן'",
+      "toggle 'עצמאים'",
+      "default 'הפקדה חודשית' 500",
+      "year slider 4 and 8",
+      "orange note about withdrawing before 6 years",
+      "bar 'נשאר בידיים' 68,853"
+    ],
+    "skimmed": [
+      "intro paragraph 'מה זה'",
+      "line 'תפקידו עוד 13,205 ₪ בשנה'",
+      "line about 7% return and 2% inflation"
+    ],
+    "skipped": [
+      "rest of the guide below the calculator",
+      "tabs 'שווה לדעת' and 'מי מציע ומי מצטרף'",
+      "'הכנסה חייבת בחודש' field (left 12,000)",
+      "דמי ניהול field"
+    ],
+    "unsure_meaning": [
+      "הכנסה חייבת",
+      "החזר המס הוסיף +9,581",
+      "המס לקח 0",
+      "מסלול מדד",
+      "צבעים כהים בעמודות התשואה/המס",
+      "אותו כסף בחשבון ניירות ערך"
+    ],
+    "not_found": [
+      "Any shekel amount for taking the money out after 4 years as self-employed"
+    ],
+    "findings": [
+      {
+        "what": "For 4 years the only number on screen is 25,725, which belongs to the comparison account. You can easily take it as the fund's result",
+        "where": "result chart when slider is before year 6"
+      },
+      {
+        "what": "For self-employed there's no number before 6 years, only an orange note. That's exactly when I'd want to know how much I lose",
+        "where": "orange text under the slider"
+      },
+      {
+        "what": "Calculator opens on שכירים by default, and the עצמאים option is easy to miss",
+        "where": "top toggle"
+      },
+      {
+        "what": "The chart has many columns and colours, and 'החזר המס הוסיף' and 'המס לקח 0' aren't explained next to them",
+        "where": "8-year breakdown"
+      },
+      {
+        "what": "Not clear if 68,853 is in today's money or not; it says 'אחרי החזר המס'",
+        "where": "result line"
+      }
+    ]
+  },
+  "steps": 7,
+  "reads": 5,
+  "commands": 7,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 42106,
+    "turns": 14,
+    "usd": 0.18896400000000002,
+    "input": 26,
+    "cacheWrite": 13606,
+    "cacheRead": 149060,
+    "output": 2510,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "control-keren-phone-browser",
+    "screenshots": 7,
+    "changes": [],
+    "neverShown": [],
+    "errors": []
+  }
+}

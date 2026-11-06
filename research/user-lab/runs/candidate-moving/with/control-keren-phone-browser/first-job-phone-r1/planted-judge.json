@@ -1,0 +1,29 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "No result shown for year 4 for self-employed; the only number is for a securities account, easy to mistake for the answer.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "Switching to self-employed rearranged the calculator fields (return field moved next to deposit).",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "Clicking a top tab auto-scrolled the page far down.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "Bar chart uses three colours with no legend; reader had to guess what each means.",
+      "serious": true,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.025382800000000004
+}

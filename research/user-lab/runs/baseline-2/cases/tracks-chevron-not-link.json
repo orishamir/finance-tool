@@ -1,0 +1,13 @@
+{
+ "id": "tracks-chevron-not-link",
+ "task": "s23",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "The '<' at the end of each row does not look like a link to the track's own page.",
+   "where": "the arrow at the end of each row",
+   "kind": "general"
+  }
+ ],
+ "liked": []
+}

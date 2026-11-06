@@ -1,0 +1,128 @@
+{
+  "task": "p08-heading-sp500-pc",
+  "persona": "first-job-phone",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T03:06:49.273Z",
+  "structured": {
+    "answer": "Open an account at Pesagot (פסגות) and buy \"ילין לפידות מחקה S&P 500 (4D)\", the page's \"הזול\" (cheapest) pick; it says I'd be left with about 86,492 ₪ after 10 years. That's on the page's preset 10,000 ₪ now plus 500 ₪ a month, not my 30,000.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Input fields on screen 1 (סכום היום 10,000)",
+        "why": "I wanted to put in 30,000 but the screens only show the defaults, so the result isn't for my amount"
+      },
+      {
+        "where": "Screen 2, two lists side by side (accounts on the right, funds on the left)",
+        "why": "At first I didn't know which list I was choosing from"
+      },
+      {
+        "where": "Second box on screen 1, '₪ −43 לעומת הבחירה שלכם'",
+        "why": "I couldn't tell if the minus meant losing money or just the gap from the top pick"
+      }
+    ],
+    "used": [
+      "Heading 'איפה ואיך הכי זול להשקיע במדד, לאורך זמן'",
+      "S&P 500 chip already selected",
+      "Input fields 10,000 / 500 / 10 years / 7%",
+      "Big result box 86,492 ₪ 'הבחירה שלכם · ★ הזול'",
+      "Second pair 86,449 ₪ −43",
+      "Fund card ילין לפידות מחקה S&P 500 (4D), דמי ניהול 0.02%",
+      "Account list: פסגות first 86,492, לאומי 83,396",
+      "Red minus numbers in the fund list (−447, −1,268, −4,492)"
+    ],
+    "skimmed": [
+      "Cost breakdown bar and its legend at the top of screen 2",
+      "Rest of the account list (בינלאומי, מזרחי, אקסלנס etc.)",
+      "Rest of the fund list (קסם, הראל, תכלית, אי.בי.אי.)",
+      "Heading 'מה הכי משנה את מה שיישאר לכם'"
+    ],
+    "skipped": [
+      "The 'לא בחישוב' notes under each account",
+      "Pill labels on each fund (צוברת, חשיפה לדולר etc.)",
+      "Foreign ETFs with 'אין מחיר כאן'",
+      "Explanation paragraph 'למה חלק מהקרנות בלי מחיר בפסגות'",
+      "Small grey text about inflation / exchange rate",
+      "Screens 6–10"
+    ],
+    "unsure_meaning": [
+      "דמי משמרת",
+      "נאמן 0.02%",
+      "צוברת / מחלקת דיבידנד",
+      "4D / 4A",
+      "חשיפה לדולר / מנוטרל מט\"ח",
+      "מול המדד +0.37%",
+      "עוד לא נאסף",
+      "Minus numbers like −213 ₪: a loss or a difference?",
+      "Colours of the cost bar (orange/yellow/red)",
+      "Whether 86,492 is after tax"
+    ],
+    "not_found": [
+      "The result for my own amount (30,000 ₪) — the screens only show the 10,000 default",
+      "A clear 'what to do first' step, like how to open the account"
+    ],
+    "findings": [
+      {
+        "what": "The result is shown for preset amounts (10,000 + 500), not mine. The number I remember is not my number",
+        "where": "Screen 1, input fields and result box"
+      },
+      {
+        "what": "Minus signs before ₪ sums look like losses, but seem to mean the gap from the top pick",
+        "where": "Screen 1 '−43 ₪' and the left column of the fund list, screens 2–4"
+      },
+      {
+        "what": "Two separate lists (account and fund) side by side; it's not clear you have to pick from both",
+        "where": "Screen 2"
+      },
+      {
+        "what": "Lots of jargon on each fund (צוברת, חשיפה לדולר, 4D, נאמן) with no explanation where I'm looking",
+        "where": "Fund cards, screens 2–5"
+      },
+      {
+        "what": "Cost bar colours are only explained in a small legend, so I guessed",
+        "where": "Top of screen 2"
+      },
+      {
+        "what": "A wide range 'בין +2,212 ל־−23,766' looks scary with no explanation next to it",
+        "where": "Screen 5, הראל מחקה 4A מנוטרל מט\"ח"
+      },
+      {
+        "what": "Foreign funds say 'אין מחיר כאן' and just take up space in the list",
+        "where": "Screens 4–5"
+      }
+    ]
+  },
+  "steps": 5,
+  "reads": 5,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 41427,
+    "turns": 7,
+    "usd": 0.1582866,
+    "input": 8,
+    "cacheWrite": 9721,
+    "cacheRead": 25133,
+    "output": 3773,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "p08-heading-sp500-pc",
+    "screenshots": 11,
+    "changes": [
+      {
+        "id": "heading",
+        "type": "text",
+        "shots": 11,
+        "applied": 11,
+        "most": 1
+      }
+    ],
+    "neverShown": [],
+    "errors": []
+  }
+}

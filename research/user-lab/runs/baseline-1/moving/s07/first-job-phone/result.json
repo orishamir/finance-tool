@@ -1,0 +1,116 @@
+{
+  "task": "s07",
+  "persona": "first-job-phone",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T03:17:57.079Z",
+  "structured": {
+    "answer": "A deposit locks my money at the bank for a fixed time (like 12 months) at a set interest (1.8% in the example). If I break it early the bank can fine me and the site doesn't say how much. In the example, after 10 years in today's money I'd have 68,270 ₪ against 70,000 ₪ put in, so it doesn't really grow.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Calculator result: 68,270 ₪ big, next to ההפקדות שלכם 70,000 ₪",
+        "why": "Got less than I put in. At first I thought the bank takes money, then guessed it's because prices go up 2% and the interest is 1.8%, but I'm not sure"
+      },
+      {
+        "where": "Toggle בכסף של היום / בשקלים של העתיד",
+        "why": "Didn't know what it changes, didn't press it"
+      },
+      {
+        "where": "Red box about breaking a deposit",
+        "why": "Says there's a fine but the site doesn't calculate it, so I don't know how much I'd lose"
+      }
+    ],
+    "used": [
+      "Heading פיקדון and first paragraph of מה זה",
+      "Big number 68,270 ₪ and rows נשאר לכם / מס 986.20 / ההפקדות שלכם 70,000",
+      "Interest 1.8% and inflation 2% boxes",
+      "First lines of למה משתמשים בזה (תחנות יציאה)",
+      "שווה לדעת: מס 15%",
+      "Red warning on breaking a deposit (קנס)",
+      "סיכונים: אין ביטוח פיקדונות"
+    ],
+    "skimmed": [
+      "מי מציע ומי מפקח",
+      "כסף נכנס ויוצא",
+      "מיסוי cards",
+      "כמה זה עולה table",
+      "Chart"
+    ],
+    "skipped": [
+      "Small grey notes under the calculator",
+      "Income-tax exemption paragraph",
+      "מה האתר לקח בחשבון fold",
+      "מונחים glossary table",
+      "הצגה כטבלה fold",
+      "Footer"
+    ],
+    "unsure_meaning": [
+      "מק\"מ",
+      "צמוד למדד / לא צמוד",
+      "הבטחת קרן",
+      "ריבית ריאלית",
+      "פטור למעוט הכנסה",
+      "תיאום מס",
+      "מזומן שקלי",
+      "קרנות כספיות",
+      "ריבית הפריים",
+      "TXI-03 / BANK-06 / TXI OQ14 tags",
+      "בכסף של היום vs בשקלים של העתיד",
+      "Chart colours: guessed green = what's left"
+    ],
+    "not_found": [
+      "How much the fine for breaking a deposit actually is",
+      "Which bank pays the highest interest",
+      "A clear first step for what to do"
+    ],
+    "findings": [
+      {
+        "what": "The big result (68,270 ₪) is lower than the deposits (70,000 ₪) with no plain sentence saying why. Looks like I lose money",
+        "where": "Calculator card, top screen"
+      },
+      {
+        "what": "Says breaking early costs a fine but doesn't calculate it or give an example amount",
+        "where": "Red box in מיסוי section"
+      },
+      {
+        "what": "Lots of unexplained jargon in the main text (מק\"מ, צמוד למדד, הבטחת קרן, ריאלית)",
+        "where": "מה זה and למה משתמשים בזה"
+      },
+      {
+        "what": "Toggle בכסף של היום / בשקלים של העתיד isn't explained next to it",
+        "where": "Calculator"
+      },
+      {
+        "what": "Odd codes like TXI-03, BANK-23 mean nothing to me",
+        "where": "שווה לדעת and מיסוי"
+      },
+      {
+        "what": "Long glossary table at the end, I'd have closed the page there",
+        "where": "מונחים"
+      },
+      {
+        "what": "No ranking of which bank pays more, only links to three banks",
+        "where": "Below מה זה"
+      }
+    ]
+  },
+  "steps": 4,
+  "reads": 4,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 35285,
+    "turns": 6,
+    "usd": 0.18136639999999998,
+    "input": 6,
+    "cacheWrite": 13824,
+    "cacheRead": 15952,
+    "output": 3378,
+    "model": "claude-opus-5-5"
+  }
+}

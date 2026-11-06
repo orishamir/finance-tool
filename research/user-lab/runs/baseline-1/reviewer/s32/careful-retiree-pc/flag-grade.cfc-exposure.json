@@ -1,0 +1,36 @@
+{
+  "case": "cfc-exposure",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The fund table spells out the stock percentage and the currency ceiling of each fund, which the label 'חשיפה לדולר' already covers; the extra figures clutter.\",\"where\":\"the exposure figures in each version\",\"kind\":\"taste\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 5,
+        "why": "Finding 5 complains that the line listing the stock and currency ceilings is a long, cluttered mix of English and numbers, which is the clutter the person objects to. Finding 1 is about the 120% figure being frightening, which is a different reason."
+      }
+    ],
+    "liked": [],
+    "usd": 0.018571400000000002
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 5,
+        "why": "Finding 5 complains that the line 'מניות עד 120%, מט\"ח עד 10%' is long and cluttered, which matches the person's point that these spelled-out exposure figures clutter the table; finding 1 only says the 120% figure is frightening, not that it is extra."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0191674
+  },
+  "third": null,
+  "ranks": {
+    "k": 5
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0377388
+}

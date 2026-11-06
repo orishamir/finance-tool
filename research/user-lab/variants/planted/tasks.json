@@ -1,0 +1,11 @@
+{
+  "about": "For the lab only. The neutral goal each planted instance and its control is run with (tools/planted.mjs run). The same words for a plant and its control, so the only difference is the plant. They name no problem and no part of the page.",
+  "sp500": { "text": "You want to put money into an S&P 500 index fund every month for about ten years. This is a page you found. Use it to decide where to hold the money and which fund to buy, and say how much you would end up with." },
+  "ta125": { "text": "You want to put money into a fund that follows the 125 largest companies on the Tel Aviv stock exchange, every month for about ten years. This is a page you found. Use it to decide where to hold the money and which fund to buy, and say how much you would end up with." },
+  "tracks": { "text": "You want to open an investment savings fund (kupat gemel lehashkaa) and are choosing a company and a track. This is a page you found. Use it to choose one, and say why." },
+  "harel": { "text": "You are thinking of opening an investment savings fund (kupat gemel lehashkaa) with Harel. This is Harel's page on a site you found. Use it to choose one of its tracks, and say why." },
+  "keren": { "text": "Your new employer offers a study fund (keren hishtalmut). This is a page you found. Use it to understand roughly how much money you would have and when you could take it out." },
+  "current": { "text": "Your salary goes into a current account at your bank. This is a page you found. Use it to find out what the account costs you and how much money it makes sense to keep in it." },
+  "sp500-browser": { "text": "You want to put money into an S&P 500 index fund every month. This is a page you found. Put in your own plan, 750 ₪ a month for 15 years with nothing at the start, and check what the page assumes about inflation. Then say where you would hold the money and how much you would end up with.", "minutes": 10, "actions": 30 },
+  "keren-browser": { "text": "You are self-employed and are thinking of opening a study fund (keren hishtalmut) and paying into it yourself. This is a page you found. Use its calculator to see roughly how much you would have if you took the money out after 4 years, and after 8 years.", "minutes": 10, "actions": 30 }
+}

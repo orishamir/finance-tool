@@ -1,0 +1,81 @@
+{
+  "case": "home-door-guide",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The home link 'להבין סוג של חיסכון' promises help with one kind of saving but opens only the general list of guides.\",\"where\":\"the link on the home page and where it leads\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "The guide says 'a period set by law' but never says how long that is",
+      "The home link promised 'what it costs', but the guide page it leads to shows no cost",
+      "Top menu items 'השקעה במדד' and 'פרמטרים' mean nothing to the reader",
+      "'Everything stays on your device' was not fully understood",
+      "The 'what's your question?' form was confusing and asks for money figures before the reader understands anything",
+      "Unclear what pressing the 'קרן השתלמות' button in the form would do",
+      "'Enter from your annual statement' put the reader off",
+      "The search box about 'what you saw in the app' does not apply to the reader",
+      "The jargon 'מסלול' (track) and 'קופה' (fund) is not understood",
+      "'Cash, bonds, a stock index' in 'two parts of every saving' lost the reader",
+      "Can't tell 'קרן חדשה מקיפה' from 'קרן חדשה כללית', or which one they have",
+      "'Personally managed' sounds like it is meant for experts",
+      "'What the money is invested in' is a wall of English index names, and the dollar-hedging wording feels untrustworthy",
+      "Not every card has a 'in plain words' line",
+      "Bond terms (linked or not linked to the index, coupon, a fund that tracks it) are not understood",
+      "Unclear what the 'מה הכי מתאים' button would do with their numbers",
+      "Can't find whether it's still worth it at 61 or when they can withdraw",
+      "Can't find how to check whether they already have a fund and where it is",
+      "Can't find what happens to the money if they stop working",
+      "Would drop the investment, own-choice and children sections, and move the money form further down the home page"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 2,
+        "why": "The reader says the home link 'להבין סוג של חיסכון' promised cost details but led to a general guide page that doesn't give them. The person would recognise this as part of their own complaint: the link promises more than its destination delivers."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0600552
+  },
+  "b": {
+    "raised": [
+      "The card's 'תקופה שקבע החוק' (a period set by law) doesn't say how many years",
+      "The home link promised 'כמה זה עולה' (what it costs), but the guide page it opened shows no cost",
+      "The top-menu items 'השקעה במדד' and 'פרמטרים' mean nothing to the reader",
+      "The reader didn't fully understand 'הכול נשמר במכשיר שלכם' (everything stays on your device)",
+      "The 'מה השאלה שלכם?' form is confusing and asks for money figures before the reader understands anything",
+      "It's unclear what pressing the 'קרן השתלמות' button under 'יש לכם כבר…' would do",
+      "'הזינו מהדוח השנתי' (enter from your annual statement) in 'מה כבר יש לכם' put the reader off",
+      "The search box 'מה ראיתם באפליקציה…' doesn't apply; the reader saw nothing in an app",
+      "'מסלול' (track) is jargon",
+      "The terms 'מזומן, אג\"ח, מדד מניות' in 'שני חלקים בכל חיסכון' lost the reader",
+      "The reader can't tell 'קרן חדשה מקיפה' from 'קרן חדשה כללית' or which one they have",
+      "'בניהול אישי' (personally managed) seems meant for experts",
+      "'במה הכסף מושקע' is a wall of English index names and numbers, and the dollar-hedging language feels untrustworthy",
+      "Not every card has a 'בשפה פשוטה' (in plain words) line",
+      "'קופה', linked or unlinked bonds, 'קופון' and 'קרן שעוקבת אחריו' aren't understood",
+      "It's unclear what the 'מה הכי מתאים' button would do with the reader's numbers",
+      "The page doesn't say whether a קרן השתלמות is still worth it at 61 or when the money can be withdrawn",
+      "The page doesn't say how to find out whether the reader already has one and where it is",
+      "The page doesn't say what happens to the money if the reader stops working",
+      "The reader would drop the 'לבחירה עצמית' and 'לילדים' sections",
+      "The money form on the home page should move further down"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 2,
+        "why": "The reader says the home link 'להבין סוג של חיסכון' promised to explain what a saving costs, but the guide page it opened showed no cost; the person would recognise that as part of their complaint that the link promises focused help and lands on a general list, though the reader doesn't object to the list itself."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0707712
+  },
+  "third": null,
+  "ranks": {
+    "k": 2
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1308264
+}

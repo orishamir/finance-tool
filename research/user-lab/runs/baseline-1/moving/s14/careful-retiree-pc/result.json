@@ -1,0 +1,120 @@
+{
+  "task": "s14",
+  "persona": "careful-retiree-pc",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T03:20:52.887Z",
+  "structured": {
+    "answer": "I haven't decided. I'll ask my son and someone at work. On 30,000 the employer puts in 2,250 a month against my 750, which seems worth having if I leave it six years. But the example fund is shares (\"S&P500\", \"המדינה לא ערבה\", goes up and down), not a deposit, so I'd ask for a safer track.",
+    "confidence": "unsure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Calculator heading 'מושכים את הכסף אחרי 5 שנים'",
+        "why": "The text above says 6 years, but the chart opens at 5 years and shows a big red tax of −64,761. I didn't understand why until the brown warning box a screen later."
+      },
+      {
+        "where": "Bars at the bottom of the calculator",
+        "why": "+135,000 from the employer and then −64,761 in tax. I couldn't tell whether joining is good or bad."
+      },
+      {
+        "where": "Fund name 'מיטב השתלמות עוקב מדד S&P500'",
+        "why": "English letters and 'מדד' (I thought of the price index). It made me feel this is shares and the stock exchange, not saving."
+      },
+      {
+        "where": "The 15,712 ₪ ceiling",
+        "why": "My salary is 30,000. I couldn't tell whether the deposit above 15,712 is still worth it or only gets taxed."
+      }
+    ],
+    "used": [
+      "Title and opening lines: 'חיסכון שהמעסיק ואתם מפקידים'",
+      "6 years without tax",
+      "Input boxes: 30,000, 2.5%, 7.5%, fees 0.54",
+      "Bars: 45,000 הפקדתם, +135,000 המעסיק הוסיף, −64,761 המס, 136,457 נשאר בידיים",
+      "'קרן השתלמות במסלול מדד. 750 ₪ בחודש מכם, 2,250 ₪ מהמעסיק'",
+      "'הנחות של האתר, לא תחזית'",
+      "'בפיקוח רשות שוק ההון' and the company names",
+      "Fees table: up to 2%, no exit fees",
+      "Brown warning box about withdrawing early",
+      "'המדינה לא ערבה לשווי הקרן, והוא עולה ויורד'"
+    ],
+    "skimmed": [
+      "The striped yellow bar chart by year",
+      "Lines under the calculator about 19 tracks and the 47% tax at source",
+      "The tax cards under 'מיסוי'",
+      "'כסף נכנס ויוצא' cards"
+    ],
+    "skipped": [
+      "'מונחים' table",
+      "'שווה לדעת' list with the TXH-09 codes",
+      "The 'חוקים וכללים' tags",
+      "'הצגת החברות' / 'כל החברות'",
+      "Screen 5",
+      "The link to a securities account page"
+    ],
+    "unsure_meaning": [
+      "S&P500",
+      "מדד (stock index or price index?)",
+      "123 ממקור / 123 מחושב / 123 הזנתה",
+      "47% מס במקור",
+      "הרווח הריאלי",
+      "תשואה 7%",
+      "מסלול השקעה",
+      "הפקדה מוטבת",
+      "the striped red-blue colour in the bars",
+      "why 5 years and not 6"
+    ],
+    "not_found": [
+      "A safe track like a deposit, without shares",
+      "A clear sentence saying whether it's worth joining on a salary of 30,000",
+      "A plain explanation of what happens to the part of my salary above 15,712"
+    ],
+    "findings": [
+      {
+        "what": "The calculator opens at 5 years, before the tax exemption, so the first big number is a red tax of −64,761. It's frightening, and it contradicts the '6 years' in the text.",
+        "where": "Calculator, 'מושכים את הכסף אחרי 5 שנים'"
+      },
+      {
+        "what": "The example track is shares, 'עוקב מדד S&P500', with English letters. It isn't clear that there are safer tracks.",
+        "where": "Line under the calculator"
+      },
+      {
+        "what": "A dark background with grey text tires the eyes. Some lines are too small and pale.",
+        "where": "Whole page, especially the note under the fees table"
+      },
+      {
+        "what": "The menu bar sits across the middle of the text and hides part of it",
+        "where": "Screen 1, bottom"
+      },
+      {
+        "what": "The explanation of the big tax only comes a screen later, in the brown box",
+        "where": "Taxation section"
+      },
+      {
+        "what": "The busy, colourful striped bar chart and the instruction to drag a marker",
+        "where": "Calculator"
+      },
+      {
+        "what": "It doesn't say what my salary above 15,712 means for me",
+        "where": "Opening section and calculator"
+      }
+    ]
+  },
+  "steps": 4,
+  "reads": 4,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 53238,
+    "turns": 6,
+    "usd": 0.2295018,
+    "input": 10,
+    "cacheWrite": 16282,
+    "cacheRead": 42629,
+    "output": 4534,
+    "model": "claude-opus-5-5"
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "Unexplained minus sign (−0.04%) next to recommended fund in fund list; scares reader off",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "Page opens with English letters and jargon (מדד) rather than anything about safe saving; reader would leave",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "Dark background with grey text hard to read even when enlarged",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "'−1,030 ₪' in the box next to the chosen option; unclear whether it is a loss",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "Coloured cost bar uses colours too close to each other to tell which is which",
+      "serious": true,
+      "names_listed": 3
+    },
+    {
+      "n": 6,
+      "summary": "No statement anywhere that this is not safe like a deposit and could fall",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 7,
+      "summary": "Many numbers and lists cause anxiety",
+      "serious": false,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.0433988
+}

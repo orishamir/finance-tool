@@ -1,0 +1,94 @@
+{
+  "case": "general-track-exposure",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"In the guide list, 'general track' is listed among the exposures (kinds of investment), which does not make sense: it is a mix, not one kind.\",\"where\":\"the exposures group of the guide list\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "The page never compares costs or says which product suits someone like me for S&P 500 money",
+      "'מק\"מ' and 'אג\"ח' in the intro box meant nothing to me",
+      "'מאיפה להתחיל' doesn't say whether to do all three lines or pick one",
+      "Don't know whether I already have a קרן חדשה מקיפה through work, or how to check what I have",
+      "'פיקדון' and 'תכנית חיסכון' look almost the same",
+      "'תקרה שנתית' is mentioned but no amount is given",
+      "Can't tell why both קרן חדשה מקיפה and קרן חדשה כללית exist",
+      "'תגמולים ואישית לפיצויים' means nothing, even with the plain-language line",
+      "Unsure whether the בניהול אישי products are the way to hold the S&P 500",
+      "Can't tell MSCI World and MSCI AC World apart",
+      "Footer says data is as of a date, but the page shows no numbers",
+      "Grey pills 'יומית'/'מתחדשת' on the קרן כספית card are confusing (types, options or buttons?)",
+      "Didn't understand 'קרן נאמנות' and 'ברוקר'",
+      "Didn't understand 'חשיפה לדולר או מנוטרלת ממנו' on the index cards",
+      "Didn't understand 'המשיכה והמס הם של קרן השתלמות רגילה'",
+      "Didn't understand 'תקרה למניה אחת' on the ת\"א-125 card",
+      "No fee information for any option",
+      "No numbers on returns or risk",
+      "Can't find whether קרן השתלמות or קופת גמל להשקעה is worth it without employer contributions",
+      "Lock-up periods aren't stated ('אחרי תקופה שקבע החוק')",
+      "No practical info on where to open a product or with how much money",
+      "Would drop 'לילדים'",
+      "Would drop the Tel Aviv indexes, נאסד\"ק 100 and MSCI AC World",
+      "Would drop מק\"מ and איגרות חוב ממשלתיות",
+      "Would drop תגמולים ואישית לפיצויים and קרן חדשה כללית",
+      "Would drop פיקדון, תכנית חיסכון and חשבון עובר ושב",
+      "Would fold the two בניהול אישי cards into the regular cards"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader only says they skimmed 'מסלול כללי' among the exposure cards and never objects to a mixed general track being listed as a kind of investment."
+      }
+    ],
+    "liked": [],
+    "usd": 0.06498720000000001
+  },
+  "b": {
+    "raised": [
+      "Not sure which product to use for the S&P 500; the page never compares costs or says which suits me",
+      "\"מק\"מ\" and \"אג\"ח\" in the intro box meant nothing",
+      "\"מאיפה להתחיל\" doesn't say whether to do all three lines or pick one",
+      "Doesn't know whether they already have a קרן חדשה מקיפה through work",
+      "\"פיקדון\" and \"תכנית חיסכון\" look almost the same",
+      "\"תקרה שנתית\" is given with no amount",
+      "Can't tell why both קרן חדשה מקיפה and כללית exist",
+      "\"תגמולים ואישית לפיצויים\" means nothing, even with the plain-language line",
+      "Unsure whether the בניהול אישי products are how to get the S&P 500 inside them",
+      "Couldn't tell MSCI World and MSCI AC World apart",
+      "Footer has a data date, but no numbers appear anywhere",
+      "The grey pills \"יומית\"/\"מתחדשת\" are confusing (types, options or buttons?)",
+      "Didn't understand \"קרן נאמנות\" or \"ברוקר\"",
+      "Didn't understand \"חשיפה לדולר או מנוטרלת ממנו\" on the index cards",
+      "Didn't understand \"המשיכה והמס הם של קרן השתלמות רגילה\"",
+      "Didn't understand \"תקרה למניה אחת\" on the ת\"א-125 card",
+      "No fees shown for any option",
+      "No returns or risk numbers",
+      "Doesn't know whether a קרן השתלמות or קופת גמל להשקעה is worth it without employer deposits",
+      "Lock-up periods are never stated",
+      "No practical info on where to open one or with how much money",
+      "Would drop the \"לילדים\" section",
+      "Would drop the Tel Aviv indexes, Nasdaq 100 and MSCI AC World",
+      "Would drop מק\"מ and government bonds",
+      "Would drop תגמולים ואישית לפיצויים and קרן חדשה כללית",
+      "Would drop פיקדון, תכנית חיסכון and חשבון עובר ושב",
+      "Would fold the two בניהול אישי cards into the regular cards"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader only says they skimmed the \"מסלול כללי\" card and never objects to a mixed track being listed among the kinds of investment."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0662472
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.13123440000000003
+}

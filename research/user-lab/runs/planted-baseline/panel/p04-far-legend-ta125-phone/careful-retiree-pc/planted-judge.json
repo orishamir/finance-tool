@@ -1,0 +1,6 @@
+{
+  "named": true,
+  "position": 6,
+  "why": "Finding 6 says the colour bars use close orange/yellow colours and that their legend is \"far below the list\". That is the problem itself: the bars' colours aren't explained where the bars are, because the key sits far away. The reader is complaining about the legend's placement, not just that the bars are hard to read.",
+  "usd": 0.017528
+}

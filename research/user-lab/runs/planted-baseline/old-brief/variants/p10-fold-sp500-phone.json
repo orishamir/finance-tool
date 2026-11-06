@@ -1,0 +1,47 @@
+{
+  "id": "p10-fold-sp500-phone",
+  "about": "For the lab only; never reaches a session. Planted problem, kind p10 (The answer hidden in a fold): see research/user-lab/planted.md.",
+  "purpose": "plant",
+  "pages": [
+    "/finance-tool/indices/sp500"
+  ],
+  "device": "phone",
+  "instance": {
+    "kind": "p10",
+    "mode": "page",
+    "url": "https://orishamir.github.io/finance-tool/indices/sp500",
+    "device": "phone",
+    "steps": [],
+    "task": "sp500",
+    "control": "planted/control-sp500-phone",
+    "split": "score"
+  },
+  "plants": [
+    {
+      "id": "p10",
+      "kind": "general",
+      "problem": "The main result (how much will be left) is folded behind a \"show\" line; the first screens show the inputs and no answer.",
+      "where": "where the main result should be, under the inputs",
+      "counts": "A finding that the answer is not shown until something is opened, or that the reader has to click/tap to see the result.",
+      "notCounts": "Only that the page is long."
+    }
+  ],
+  "changes": [
+    {
+      "id": "fold",
+      "type": "hide",
+      "text": "הסכום ההתחלתי ועוד הפקדה חודשית",
+      "up": 2
+    },
+    {
+      "id": "fold-line",
+      "type": "insert",
+      "at": {
+        "text": "הסכום ההתחלתי ועוד הפקדה חודשית",
+        "up": 2
+      },
+      "position": "beforebegin",
+      "html": "<details class=\"rounded-lg border border-border p-3\"><summary class=\"cursor-pointer text-link min-h-target flex items-center\">הציגו כמה יישאר לכם</summary></details>"
+    }
+  ]
+}

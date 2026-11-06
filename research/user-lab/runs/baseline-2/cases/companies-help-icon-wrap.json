@@ -1,0 +1,13 @@
+{
+ "id": "companies-help-icon-wrap",
+ "task": "s25",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "The help mark '?' in a column head drops onto its own line under the head's text and looks out of place.",
+   "where": "the column heads with a '?' mark",
+   "kind": "general"
+  }
+ ],
+ "liked": []
+}

@@ -1,0 +1,13 @@
+{
+ "id": "company-missing-fund-kinds",
+ "task": "s21",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "A company's page lists its provident and study funds but not its index-tracking funds or money-market funds.",
+   "where": "the product choices at the top of the company page",
+   "kind": "general"
+  }
+ ],
+ "liked": []
+}

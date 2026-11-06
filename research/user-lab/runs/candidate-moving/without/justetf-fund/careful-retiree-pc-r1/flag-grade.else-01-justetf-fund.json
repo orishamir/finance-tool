@@ -1,0 +1,126 @@
+{
+  "case": "else-01-justetf-fund",
+  "stamp": "{\"keys\":[{\"id\":\"j-tabs\",\"kind\":\"general\",\"where\":\"the row of section names under the fund's header (Overview, Chart, Basics, Holdings, Performance and more)\",\"problem\":\"The row of section names looks like tabs that switch what is shown, but each one scrolls the page down to a section of the same long page; the jump is unexpected, and afterwards the row is no longer where it was, so going back means finding it again.\"},{\"id\":\"j-light\",\"kind\":\"taste\",\"where\":\"the whole page\",\"problem\":\"The page is light, white; he prefers a dark page.\"},{\"id\":\"j-dated\",\"kind\":\"general\",\"where\":\"the whole page\",\"problem\":\"The page does not look very modern or polished (minor).\"},{\"id\":\"j-performance\",\"kind\":\"general\",\"where\":\"the performance section\",\"problem\":\"The performance section is plain and basic.\"}],\"liked\":[{\"id\":\"j-facts-top\",\"what\":\"The most important facts about the fund (yearly cost, distribution policy, fund size) are at the top centre.\"},{\"id\":\"j-chart\",\"what\":\"The price chart: the time ranges right under it, green above 0% and red below, and the chosen range highlighted.\"},{\"id\":\"j-depth\",\"what\":\"More advanced information further down, in the basics section; the page is detailed.\"},{\"id\":\"j-holdings\",\"what\":\"The holdings section: easy to reach and easy to understand.\"},{\"id\":\"j-help\",\"what\":\"A ? mark beside terms such as the yearly cost, distribution policy and replication, explaining them.\"}]}",
+  "a": {
+    "problems": [
+      {
+        "id": "j-tabs",
+        "rank": 0,
+        "why": "None of the reader's findings mentions the row of section names or the unexpected scroll jumps they cause."
+      },
+      {
+        "id": "j-light",
+        "rank": 0,
+        "why": "No finding objects to the page being light or white, or asks for a dark page."
+      },
+      {
+        "id": "j-dated",
+        "rank": 0,
+        "why": "No finding says the page looks old-fashioned or unpolished."
+      },
+      {
+        "id": "j-performance",
+        "rank": 0,
+        "why": "Finding 4 is about unexplained minus figures in the risk table, not about the performance section being plain or basic."
+      }
+    ],
+    "liked": [
+      {
+        "id": "j-facts-top",
+        "against": 0,
+        "why": "Finding 2 complains that the top figures are in English and use abbreviations, but it does not object to the key facts being placed at the top centre, which is what the person liked."
+      },
+      {
+        "id": "j-chart",
+        "against": 0,
+        "why": "Finding 5 is about small, pale axis numbers, which is a different aspect from the time ranges, red and green colouring and highlighted range that the person liked."
+      },
+      {
+        "id": "j-depth",
+        "against": 0,
+        "why": "No finding complains about the advanced detail in the basics section."
+      },
+      {
+        "id": "j-holdings",
+        "against": 0,
+        "why": "No finding mentions the holdings section."
+      },
+      {
+        "id": "j-help",
+        "against": 0,
+        "why": "Finding 2 is a general complaint about English and abbreviations and never mentions the ? help marks, so it does not complain about that feature itself, though this is a close call."
+      }
+    ]
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "j-tabs",
+        "rank": 0,
+        "why": "None of the reader's findings mentions the row of section names or how it scrolls the page instead of switching what is shown."
+      },
+      {
+        "id": "j-light",
+        "rank": 0,
+        "why": "None of the reader's findings complains that the page is light or white, or asks for a dark page."
+      },
+      {
+        "id": "j-dated",
+        "rank": 0,
+        "why": "None of the reader's findings says the page looks old-fashioned or unpolished."
+      },
+      {
+        "id": "j-performance",
+        "rank": 0,
+        "why": "Finding 4 is about the risk overview table having no plain explanation, not about the performance section being plain and basic."
+      }
+    ],
+    "liked": [
+      {
+        "id": "j-facts-top",
+        "against": 0,
+        "why": "Finding 2 complains about the English and the abbreviations in the top figures, not about the key facts being placed at the top centre."
+      },
+      {
+        "id": "j-chart",
+        "against": 0,
+        "why": "Finding 5 complains that the axis numbers are small and pale, which is a different part of the chart from the time ranges, colours and highlighting the person liked."
+      },
+      {
+        "id": "j-depth",
+        "against": 0,
+        "why": "None of the reader's findings complains about the detailed information in the basics section."
+      },
+      {
+        "id": "j-holdings",
+        "against": 0,
+        "why": "None of the reader's findings mentions the holdings section."
+      },
+      {
+        "id": "j-help",
+        "against": 0,
+        "why": "Finding 2 says there is no plain explanation in general, but it does not mention the ? help marks beside terms."
+      }
+    ]
+  },
+  "third": null,
+  "ranks": {
+    "j-tabs": 0,
+    "j-light": 0,
+    "j-dated": 0,
+    "j-performance": 0
+  },
+  "agreed": {
+    "j-tabs": true,
+    "j-light": true,
+    "j-dated": true,
+    "j-performance": true
+  },
+  "against": {
+    "j-facts-top": 0,
+    "j-chart": 0,
+    "j-depth": 0,
+    "j-holdings": 0,
+    "j-help": 0
+  }
+}

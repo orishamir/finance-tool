@@ -1,0 +1,41 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "Self-employed users see an empty box for years 1-5; the only number shown is the securities account comparison, easily mistaken for their own result.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "Back-to-top arrow covers the label under the comparison bar.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "7% return assumption relies on an S&P500 share track, disclosed only further down.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "Year slider; clicking year numbers works but isn't stated.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "Self-employed limit given per year while field asks for a monthly amount.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 6,
+      "summary": "Small grey text on dark background hard to read.",
+      "serious": false,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.0377
+}

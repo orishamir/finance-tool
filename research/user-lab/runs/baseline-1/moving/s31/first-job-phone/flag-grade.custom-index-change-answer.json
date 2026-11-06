@@ -1,0 +1,36 @@
+{
+  "case": "custom-index-change-answer",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"Beside the added index the link 'שינוי התשובה' does not say which answer it changes.\",\"where\":\"the line 'מדד שהוספתם, שמור במכשיר הזה · שינוי התשובה'\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings mention that the 'שינוי התשובה' link doesn't say which answer it changes. Finding 1 is about the same custom-index area, but it complains that no fund is offered, which is a different problem."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0150594
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings mention that the 'שינוי התשובה' link doesn't say which answer it changes. Finding 1 is about the custom index having no fund, not about the link's label."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0135994
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.028658799999999998
+}

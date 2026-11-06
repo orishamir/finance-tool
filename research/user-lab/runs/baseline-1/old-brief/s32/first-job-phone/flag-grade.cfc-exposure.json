@@ -1,0 +1,74 @@
+{
+  "case": "cfc-exposure",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The fund table spells out the stock percentage and the currency ceiling of each fund, which the label 'חשיפה לדולר' already covers; the extra figures clutter.\",\"where\":\"the exposure figures in each version\",\"kind\":\"taste\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "'מניות עד 120%' in the exposure column (screen-01, also the screen-02 profile line) is scary and confusing: how can stocks be more than 100%?",
+      "Screen-02's profile line repeats the confusing numbers and leaves out the bottom note that explains them",
+      "The tags under the fund names are confusing",
+      "Doesn't know what מאיה is (the 'בדף הקרן במאיה' link)",
+      "The bottom note doesn't explain what 4A/4D in the fund names means",
+      "Unclear whether קבוע/משתנה/נאמן are separate charges that add up",
+      "Didn't realise the underlined numbers might be clickable",
+      "Unclear what 'משתנה' varies with",
+      "Doesn't know what 'עסקת החלף' is, and worries the S&P fund doesn't own the stocks",
+      "'מס גם על שינויי המטבע' sounds bad, but it's unclear how bad",
+      "No single total yearly cost per fund (e.g. how many ₪ per year on 10,000 ₪)",
+      "Can't tell whether 0.8% is expensive or normal for an S&P 500 fund",
+      "No past performance shown",
+      "No information on how to actually buy the fund",
+      "Would drop 'מספר נייר' and the Maya links first",
+      "Would drop the exposure column / profile line next",
+      "Would drop the second bottom note, which only exists to explain the exposure"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 16,
+        "why": "The reader would cut the exposure column/profile line as one of the least-needed parts, which is the person's point that these extra figures clutter the table, although the reader never says they repeat the 'חשיפה לדולר' label."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0539032
+  },
+  "b": {
+    "raised": [
+      "'מניות עד 120%' in screen-01 is scary and confusing: how can a fund be more than 100% stocks?",
+      "Screen-02's profile line repeats the confusing 120% figures and drops the bottom note that explains them",
+      "Doesn't know what מאיה is; unclear why the security number (מספר נייר) is there",
+      "The tags under the fund names are confusing",
+      "Still doesn't know what 4A / 4D in the names mean",
+      "Unclear whether קבוע / משתנה / נאמן are separate charges that add up",
+      "Didn't realise the underlined numbers might be clickable",
+      "Unclear what 'משתנה' varies with",
+      "Doesn't understand 'עסקת החלף' and is worried the S&P fund doesn't actually own the stocks",
+      "'מס גם על שינויי המטבע' sounds bad, but it's unclear how bad",
+      "No single total yearly cost per fund (e.g. ₪ per 10,000 ₪)",
+      "Can't tell whether 0.8% is expensive or normal for an S&P 500 fund",
+      "No past performance shown",
+      "No information on how to actually buy the fund",
+      "Would drop 'מספר נייר' and the Maya link",
+      "Would drop the exposure column / profile line",
+      "Would drop the second bottom note that explains the exposure"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 16,
+        "why": "The reader would remove the exposure column or profile line as expendable extra figures. They also note that the simpler version only needs to match the 'חשיפה לדולר' tag, which is close to the person's point that these figures are redundant clutter."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0531112
+  },
+  "third": null,
+  "ranks": {
+    "k": 16
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1070144
+}

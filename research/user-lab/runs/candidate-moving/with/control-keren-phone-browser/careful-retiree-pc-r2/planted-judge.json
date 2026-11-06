@@ -1,0 +1,41 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "For self-employed users before 6 years, no after-tax amount is given, yet 25,725 is shown and looks like the answer. This could lead to a wrong decision.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "The opening text says people at retirement age need only 3 years, but the calculator never asks for age. Results could mislead those users.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "In the year-8 breakdown, a row of six numbers appears above its labels, which are further down. Confusing but recoverable.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "The fields jump around when switching to self-employed. This is a layout annoyance, not a toggle that does nothing.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "Terms below the result, such as index track, securities account and tax refund, are not explained. Secondary content.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 6,
+      "summary": "Grey text on a dark background is harder to read. A matter of taste and readability, not a blocker.",
+      "serious": false,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.0261868
+}

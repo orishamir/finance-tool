@@ -1,0 +1,53 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "Too many look-alike tracks (143, same names across companies); reader almost gave up.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "Fees shown only as small percents with no shekel amount, so they seem negligible.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "Many rows show 'less than 3 years' instead of a return, preventing comparison.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "Reader didn't understand the exposure circles and FX percent; guessed at the colours.",
+      "serious": true,
+      "names_listed": 1
+    },
+    {
+      "n": 5,
+      "summary": "Two fee types (from savings / from deposits) and reader didn't know which matters.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 6,
+      "summary": "Returns are shown before management fees, so not what the reader would actually get.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 7,
+      "summary": "No guidance on next steps or how to open the fund.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 8,
+      "summary": "'Not yet reported' with orange warning icon put reader off one row.",
+      "serious": false,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.0446708
+}

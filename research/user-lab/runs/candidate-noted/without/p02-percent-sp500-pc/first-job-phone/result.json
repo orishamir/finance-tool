@@ -1,0 +1,126 @@
+{
+  "task": "p02-percent-sp500-pc",
+  "persona": "first-job-phone",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T02:52:46.746Z",
+  "structured": {
+    "answer": "I'd open an account at פסגות and buy the ילין לפידות מחקה S&P 500 (4D) fund (5139282). The page says that leaves about 86,492 ₪ after 10 years, but that's with its example of 10,000 now plus 500 a month, not my 30,000.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Amount boxes on screen 1",
+        "why": "The example is 10,000 today and 500 a month, but I have 30,000. I couldn't change it, so the 86,492 isn't really my number."
+      },
+      {
+        "where": "Fund list, minus amounts next to funds (screens 2-4)",
+        "why": "I wasn't sure if -447, -1,268 etc. mean I'd get that much less than with my pick, or that the fund loses money."
+      },
+      {
+        "where": "Second pair box on screen 1",
+        "why": "'-0.05% לעומת הבחירה שלכם' and 86,449 is almost the same as 86,492. I didn't know if it mattered."
+      }
+    ],
+    "used": [
+      "Heading 'איפה ואיך הכי זול להשקיע במדד'",
+      "S&P 500 chip already selected",
+      "Amount boxes: 10,000 / 500 / 10 years / 7%",
+      "'הפקדתם 70,000 ₪'",
+      "'הבחירה שלכם · הזול' 86,492 ₪",
+      "Account list on the right: פסגות first, then לאומי 83,396, the other banks lower",
+      "Fund marked 'הבחירה': ילין לפידות מחקה S&P 500 (4D) 5139282",
+      "Red minus amounts next to the other funds"
+    ],
+    "skimmed": [
+      "Coloured cost bar and its legend at top of screen 2",
+      "Coloured tags on each fund (צוברת, חשיפה לדולר, etc.)",
+      "'לא בחישוב' notes under each account",
+      "Foreign ETFs list (iShares, Vanguard) with 'אין מחיר כאן'",
+      "Rest of the account list down to ~63,000"
+    ],
+    "skipped": [
+      "Grey description lines under the heading",
+      "Inflation button and the dollar-rate line",
+      "Explanation text under 'כל החשבונות'",
+      "'קיבלתם מחיר אחר? הזינו אותו' link",
+      "'התעריפון' link",
+      "Screens 5-10"
+    ],
+    "unsure_meaning": [
+      "דמי משמרת",
+      "נאמן",
+      "4D",
+      "צוברת / מחלקת דיבידנד",
+      "חשיפה לדולר",
+      "נקוב בחו\"ל",
+      "+0.37% בשנה next to the fund",
+      "1,057 ₪ under פסגות (fee over 10 years?)",
+      "Minus shekel amounts next to the other funds",
+      "'-0.05% לעומת הבחירה שלכם'",
+      "סל in fund names"
+    ],
+    "not_found": [
+      "A way to see the result for my own 30,000 without fiddling",
+      "A plain 'first step' for opening the account"
+    ],
+    "findings": [
+      {
+        "what": "The result is for the page's example amounts (10,000 + 500 a month), not mine, so the 86,492 figure isn't my answer",
+        "where": "Screen 1, amount boxes and result card"
+      },
+      {
+        "what": "Red minus shekel amounts next to the other funds look like losses, and I'm not sure what they mean",
+        "where": "Fund list, screens 2-4"
+      },
+      {
+        "what": "So many coloured tags on every fund that I stopped reading them",
+        "where": "Fund list, screens 2-4"
+      },
+      {
+        "what": "Lots of funds with nearly identical names and different numbers. Without the 'הבחירה' mark I'd have given up",
+        "where": "Fund list"
+      },
+      {
+        "what": "Jargon I don't know: דמי משמרת, נאמן, 4D, צוברת, חשיפה לדולר",
+        "where": "Fund header and legend, screen 2"
+      },
+      {
+        "what": "The two top pairs (86,492 vs 86,449) are almost the same, and it's unclear if the difference matters",
+        "where": "Screen 1 result cards"
+      }
+    ]
+  },
+  "steps": 4,
+  "reads": 4,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 38036,
+    "turns": 6,
+    "usd": 0.14564660000000001,
+    "input": 8,
+    "cacheWrite": 8715,
+    "cacheRead": 24273,
+    "output": 3552,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "p02-percent-sp500-pc",
+    "screenshots": 11,
+    "changes": [
+      {
+        "id": "percent",
+        "type": "text",
+        "shots": 11,
+        "applied": 11,
+        "most": 2
+      }
+    ],
+    "neverShown": [],
+    "errors": []
+  }
+}

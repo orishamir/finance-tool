@@ -1,0 +1,36 @@
+{
+  "case": "custom-fund-labels",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"A fund the reader added gets labels ('צוברת', 'חשיפה לדולר') that the reader never gave, and the reader cannot choose its labels.\",\"where\":\"the added fund's row in the fund list\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 3 complains that a label on the added fund is unexplained and scary, and finding 8 says there are too many labels; neither says the labels were assigned without the user's input or that the user can't choose them."
+      }
+    ],
+    "liked": [],
+    "usd": 0.017687400000000002
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 3 complains that a label on the added fund isn't explained, and finding 8 says there are too many labels; neither says the site gave the added fund labels the reader didn't choose, or that the reader can't set them."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0176274
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.03531480000000001
+}

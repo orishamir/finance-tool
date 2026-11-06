@@ -1,0 +1,59 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "Track names (index-tracking, S&P 500, flexible, money-market) mean nothing to the reader, and nothing shows which track is safe like a deposit, so they can't pick a track.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "The bond tracks the reader would trust show no return, only 'less than 3 years', so the reader can't judge them.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "Dark page with small grey headers and dotted underlines is hard to read even when enlarged.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "Too many numbers per row and very long lines; the reader lost their place in the table.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "Returns are shown before management fees, so the reader doesn't know the real return. Fees appear in their own column.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 6,
+      "summary": "Nothing compares returns or fees to a bank deposit. This is a wish for more.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 7,
+      "summary": "Big returns (24%, 26%) catch the eye and make the page feel like it's for gamblers. This is an emotional reaction, not something that blocks use.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 8,
+      "summary": "The reader couldn't tell what the yellow and turquoise ring charts in the exposure column mean. This is a different issue from rings in two shades of teal.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 9,
+      "summary": "Unexplained marks on screens 4-5: '!' with 'not yet reported', '101%', and arrow icons.",
+      "serious": false,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.044258799999999994
+}

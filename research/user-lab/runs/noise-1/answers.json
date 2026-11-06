@@ -1,0 +1,132 @@
+{
+ "answered": "2026-11-06",
+ "by": "founder",
+ "question_shown": "Would this complaint bother you, or someone else using the site? (Real problem / Wouldn't bother anyone / Can't tell)",
+ "note_on_form": "the first form showed only Yes / No / Can't tell under each line without the question; he asked what they meant and answered the second form, which showed the question",
+ "answers": [
+  {
+   "id": "n01",
+   "source": "v0",
+   "answer": "No",
+   "note": "the thing is that percentage means the most - its exactly what matters. the problem with that is that once you know the percentages, perhaps you'd want something to get you into what that percentage actually means, in actual NIS numbers. So i think if the site shows 0.67% at first its good, because its technical and technical users can easily get to what they were looking for. then, somewhere else, the site could help you visualize and understand and להמחיש the meaning of these percentages in numbers"
+  },
+  {
+   "id": "n02",
+   "source": "moving-browser",
+   "answer": "Can't tell",
+   "note": "its kinda hard to tell, i think a simple animation which isnt abrupt and takes time would solve this. because the aggressive redrawing is abrupt for the eye, but at the end of the day the whole page does need to change, no? so in such cases im thinking a more subtle redraw or animation of things on the screen moving would just make it less abrupt. but its not that big deal."
+  },
+  {
+   "id": "n03",
+   "source": "moving-browser",
+   "answer": "Can't tell",
+   "note": null
+  },
+  {
+   "id": "n04",
+   "source": "v0",
+   "answer": "No",
+   "note": "i dont think thats the point of the company page. if the user is looking at a list of all their products, he'd skim through to what he wants. we have to think about the context of the page too. not a lot of people who know nothing about index is going to the indices page. so someone going to the harel page would benefit from a detailed table, and a good filtering mechanism. because he is looking for something about harel."
+  },
+  {
+   "id": "n05",
+   "source": "v0",
+   "answer": "Yes",
+   "note": null
+  },
+  {
+   "id": "n06",
+   "source": "v0",
+   "answer": "Can't tell",
+   "note": "im not sure i was able to reproduce this"
+  },
+  {
+   "id": "n07",
+   "source": "moving-browser",
+   "answer": "Yes",
+   "note": null
+  },
+  {
+   "id": "n08",
+   "source": "v0",
+   "answer": "Yes",
+   "note": "its technical detail that a user wants. probably there is a better way to convey their information, but its not that big deal"
+  },
+  {
+   "id": "n09",
+   "source": "v0",
+   "answer": "Can't tell",
+   "note": "its technical detail that a user wants. probably there is a better way to convey their information, but its not that big deal"
+  },
+  {
+   "id": "n10",
+   "source": "v0",
+   "answer": "Can't tell",
+   "note": null
+  },
+  {
+   "id": "n11",
+   "source": "v0",
+   "answer": "No",
+   "note": "i think in this case its good because you have a lot of options to learn about, and using your eyes you can easily say \"wait i heard somewhere about קרן השתלמות, i wonder what that is\""
+  },
+  {
+   "id": "n12",
+   "source": "v0",
+   "answer": "Yes",
+   "note": null
+  },
+  {
+   "id": "n13",
+   "source": "v0",
+   "answer": "Can't tell",
+   "note": null
+  },
+  {
+   "id": "n14",
+   "source": "v0",
+   "answer": "Can't tell",
+   "note": null
+  },
+  {
+   "id": "n15",
+   "source": "v0",
+   "answer": "Yes",
+   "note": "thats why ? is important at the top so someone who doesnt understand can find an explanation."
+  }
+ ],
+ "summary": {
+  "v0": {
+   "items": 12,
+   "yes": 4,
+   "no": 3,
+   "cant_tell": 5,
+   "noise_of_all": "3/12",
+   "noise_of_all_ci": [
+    9,
+    53
+   ],
+   "noise_of_decided": "3/7",
+   "noise_of_decided_ci": [
+    16,
+    75
+   ]
+  },
+  "moving-browser": {
+   "items": 3,
+   "yes": 1,
+   "no": 0,
+   "cant_tell": 2,
+   "noise_of_all": "0/3",
+   "noise_of_all_ci": [
+    0,
+    56
+   ],
+   "noise_of_decided": "0/1",
+   "noise_of_decided_ci": [
+    0,
+    79
+   ]
+  }
+ }
+}

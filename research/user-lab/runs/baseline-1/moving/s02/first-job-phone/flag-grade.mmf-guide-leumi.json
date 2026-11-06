@@ -1,0 +1,36 @@
+{
+  "case": "mmf-guide-leumi",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The money-market-fund guide compares with one named bank (Leumi) and cites that bank's deposit rate, in a page about a general product.\",\"where\":\"the comparison lines and their source\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings object to the page singling out Leumi and citing its deposit rate. Finding 6 is about the comparison box's green tag being ambiguous, finding 4 is about the missing insurance explanation, and finding 3 makes the opposite complaint, that no companies are named."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0159394
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings object to the page comparing against one named bank (Leumi) or quoting its deposit rate; finding 6 is about the ambiguous green tag in the comparison box, finding 3 actually asks for more company names, and finding 4 is about the missing insurance explanation."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0153674
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.031306799999999996
+}

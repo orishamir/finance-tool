@@ -1,0 +1,91 @@
+# control-ta125-phone: careful-retiree-pc (old brief)
+
+phone; 63 s, $0.32
+
+As myself, reading on my phone, here's what I made of it.
+
+## 1. My answer
+
+I'd open an account with **פסגות** and set up a monthly purchase of the fund **"אי.בי.אי. מחקה (4A) ת"א 125"**, number **5112628**. I've written that number down.
+
+The page says I'd put in **70,000 ₪** in total (10,000 ₪ now plus 500 ₪ a month for 120 months). After fees and tax I'd have about **86,045 ₪**, "בכסף של היום".
+
+How sure am I? About the *direction*, fairly sure: a cheap account with a cheap fund. About the *86,045*, not sure at all. That figure rests on the "7%" box, and the page itself says "תשואה לדוגמה, לא תחזית". So it's a guess about the market, not a promise. What I trust more is the *gap* between choices. A cheap place versus an expensive one is 15,000–20,000 ₪ over ten years, and that's real money.
+
+Two things stop me feeling fully sure:
+- The second-best fund is only 1,030 ₪ behind ("85,015 ₪ … ‎−1,030 ₪ לעומת הבחירה שלכם"). The top two are almost the same.
+- I've never heard of פסגות as a place to keep an account, and nothing on the page tells me if it's safe.
+
+## 2. The parts I actually used
+
+- **The top**: the title "איפה ואיך הכי זול להשקיע במדד, לאורך זמן", the index buttons (ת"א-125 was already picked), and my amounts (10,000 / 500 / 7%).
+- **The results box**: "הפקדתם 70,000 ₪" and the two cards, "הבחירה שלכם · הזול 86,045 ₪" and "הזוג הבא בתור 85,015 ₪".
+- **The list of accounts** (פסגות, לאומי, וואן זירו, הבינלאומי…), with the big number on each line.
+- **The fund card** with the name, the number 5112628, and "דמי ניהול: 0.1% קבועים".
+- **The list of funds** ("כל הקרנות על מדד ת"א-125"), to see that the others are close.
+- **The small print at the bottom**, especially "תשואה לדוגמה, לא תחזית" and "האתר לא ממליץ על מדד".
+
+## 3. Going down the page, block by block
+
+1. **Title and "המדד" buttons**: Used. Clear. I liked "הבחירה שלכם; האתר לא ממליץ על מדד". It feels honest.
+2. **The ת"א-125 explanation**: Read every word. "קרנות ישראליות שמחזיקות את המניות; אין קרן חוץ שמתחמחה בישראל" took me two reads. I think it means only Israeli funds count here.
+3. **סכום היום / הפקדה חודשית / תשואה בשנה, plus the sliders**: Used the boxes and ignored the sliders. They're fiddly on a phone.
+4. **The "אינפלציה" button, "לדוגמה של האתר · בכסף של היום"**: Confused me. Is 7% before inflation or after? I didn't press it, because I was afraid to change something I don't understand.
+5. **"הפקדתם 70,000 ₪" and the two cards**: Used. This was the heart of it for me.
+6. **"כמה זה עולה לכם ב־10 שנים, בכל אחד מהזוגות"**: Skimmed. I saw 7,323 ₪ in total costs and that the big pink piece, 5,555, is tax. The other coloured pieces are small. So fees are not the main cost, tax is. That's good to know.
+7. **The legend (החשבון: / הקרן: / המדינה:)**: Confused me. The headings sit in odd places, and I couldn't tell which colour belongs to whom. I gave up on it.
+8. **"העלות אצלכם, לעומת הזוג השני"** (18 ₪ more, 1,390 ₪ less, tax 342 ₪ more): Skimmed. "המס 342 ₪ יותר, כי נשאר לכם יותר רווח" made me smile. I pay more tax because I earn more. Fine.
+9. **The פסגות card**: Used "מה החשבון גובה ב־10 שנים: 1,049 ₪". I didn't press "התעריפון" or "קיבלתם מחיר אחר? הזינו אותו".
+10. **The list of all accounts**: Used the names and the big numbers. The "לא בחישוב" notes got careful reading. One under הפועלים caught my eye: "לנשים מגיל 60 וגברים מגיל 65 (סגור למצטרפים)". That's my age group, but it's closed to new people, so it's no use to me.
+11. **אינטראקטיב ישראל / Interactive Brokers, "אין נתון"**: Read, then skipped. Not for me.
+12. **The fund card (5112628)**: Used it, even though it says "0.1% קבועים" and "0% משתנים" and "0.025% נאמן", and I don't know what a נאמן charges for.
+13. **"כל הקרנות על מדד ת"א-125"**: Used the fund names and the shekel amounts on the left. I looked at the percentages but didn't trust them (see section 5).
+14. **The explanation under it, "מול המדד: כמה הקרן הקדימה (+) או פיגרה (−)…"**: Read it twice and half understood it.
+15. **"מה הכי משנה את מה שיישאר לכם", the chart with lines and the buttons 10%/20%/50%**: Skimmed the table under it. The lesson: staying 12 years instead of 10 adds 18,905 ₪, which is more than any fee. Useful, but it doesn't change which fund I buy.
+16. **"מתחילים מבחירה אחת, ורואים מה משפר אותה ובכמה" (the steps chart)**: Confused me. It suddenly starts from "הראל סל (4A) ת"א 125, ירושלים 79,910 ₪". I never chose ירושלים or הראל! I thought my choice was פסגות. It does end at "הכי הרבה בכל המחירונים: 86,045 ₪, אי.בי.אי. מחקה (4A) ת"א 125, פסגות", the same answer as the top, which reassured me.
+17. **"עכשיו: הראל סל… ירושלים" and its long tables**: Skimmed. The red bars showed אלטשולר טרייד, אקסלנס and מיטב טרייד losing 15,000–17,600 ₪. That I understood.
+18. **The small print at the bottom**: Read it all. "המספרים מהמנוע, על הנתונים של היום" and "נתונים נכון ל־05.11.2026" told me the numbers are fresh.
+19. **מסמכים / פרמטרים / מה האתר עוד לא מכסה / חוקים וכללים · 6**: Skipped. Maybe "מה האתר עוד לא מכסה" would have answered some of my questions, but I didn't want to go down another hole.
+
+## 4. In the lists, tables and charts
+
+- **Account list**: I looked at the bank names, the big white number (what's left), and "לא בחישוב". I ignored the coloured bar and the small number under the big one. Later I worked out that the small one is the account's cost, like 1,049 for פסגות. I also ignored the radio circles and the "v" arrows.
+- **Fund list**: I looked at the fund name, the number (5112628), and the left column "לעומת הבחירה" (−1,030 ₪, −1,113 ₪, −1,733 ₪). The words "קרן מחקה" / "קרן סל" I noticed but didn't understand. I ignored the pink and green tags ("מחזיקה את המניות", "כמה דרכים יחד"). The percentage with "בשנה · שנה אחת" I looked at and distrusted.
+- **The cost bar** (pink/green/orange/yellow): I looked only at pink = tax = 5,555. The rest is tiny, so I ignored it.
+- **The line chart**: I ignored the lines and colours. I only read the table under it, the "ההפרש" column.
+- **The steps chart**: I looked only at the numbers above the steps (79,910 → +5,022 → +1,113). The grey boxes and the dashed line meant nothing to me.
+- **The dotted purple lines under numbers**: I didn't know if I could press them. I didn't.
+
+## 5. What I didn't understand
+
+- Is "7%" before or after inflation, and what does the "אינפלציה" button do?
+- What's the difference between "קרן מחקה" and "קרן סל", and why is the מחקה one cheaper here?
+- "‎−0.04% בשנה · שנה אחת": is that only one year of history? Is the fund new? That worries me.
+- "4A" in every fund name.
+- "נאמן 0.025%": who is that and why do I pay them?
+- "העמלות זו על זו".
+- Why the steps chart starts from הראל and ירושלים when I never chose them.
+- "יש ספק אם נמכרת שם: וואן זירו". So can I buy it at וואן זירו or not?
+
+## 6. What I wanted to know and couldn't find
+
+- **Is פסגות safe?** If something happens to them, what happens to my money? This matters most at my age.
+- **Can I set up an automatic monthly purchase at פסגות?** For the banks it says "מחיר להוראת קבע", but for פסגות it says nothing.
+- **How do I actually open the account?** Can I do it on the phone? Do I need to go somewhere?
+- **What if I need the money at 66 or 68?** How fast can I get it out, and what happens if the market is down just then?
+- **What does "the bank I'm already in" cost?** I'd want to type in my own bank and see the gap from פסגות. (The list partly gives this, if I find my bank in it.)
+- **Did they count tax correctly** for someone my age? Is there any benefit for pensioners?
+- **A bad-years example.** What if the return is 0%? The page says "בתשואה של 0% או של 10% הסדר משתנה ב־2 מקומות", but I didn't open "פירוט".
+
+Also, the screenshots skip a bit in a few places. The beginning of the text above the account list is cut off, and line 12 in the list (I think מזרחי טפחות) is mostly missing. So I may have missed something there.
+
+## 7. If half the page had to go, what goes first
+
+1. The steps chart and everything under "מתחילים מבחירה אחת…". It confused me more than it helped, and it gives the same answer as the top.
+2. The line chart "מה הכי משנה…". Keep only one sentence: "every extra year is worth more than any fee".
+3. The colour legend and the cost bar.
+4. The percentages and tags in the fund list.
+
+What must stay: the boxes at the top, the "86,045 ₪" card next to "85,015 ₪", the account list with "לא בחישוב", the fund name with its number, and the line "תשואה לדוגמה, לא תחזית".
+
+**Bottom line for my money:** פסגות plus fund 5112628. Expect roughly 86,000 ₪ in today's money if the market behaves "like the example". It isn't promised. But going cheap rather than expensive saves me something like 15,000–20,000 ₪, and *that* part I believe. Before I put money in, I'd phone פסגות and ask about safety and a monthly standing order.

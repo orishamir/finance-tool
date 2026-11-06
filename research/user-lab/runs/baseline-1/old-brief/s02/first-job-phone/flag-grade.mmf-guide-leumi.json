@@ -1,0 +1,89 @@
+{
+  "case": "mmf-guide-leumi",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The money-market-fund guide compares with one named bank (Leumi) and cites that bank's deposit rate, in a page about a general product.\",\"where\":\"the comparison lines and their source\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Top menu bar meant nothing to the reader",
+      "The '123 מקור / חושב / הזנתה' line under the title was confusing and unexplained",
+      "The term 'נאמן' (trustee) went over their head",
+      "The buying/selling paragraph lost them: cut-off time, 'מפיץ', and codes like MF-11 / MF OQ3",
+      "The site's open question about trading on Friday made them nervous",
+      "The costs paragraph gives no actual management-fee number and points to an unclear 'number below' link",
+      "Didn't understand the loss-offset line ('הפסד בקרן ניתן לקיזוז')",
+      "The 'play with your numbers' calculator was collapsed/closed",
+      "Contradiction: 3.25% shown as before tax and costs in one place, after management fees in another",
+      "No information on when the money actually reaches the account after selling",
+      "Cost table disappointing: 'אין תקרה בחוק' on most rows was worrying and there's no column with actual percentages",
+      "Gave up on the tax paragraph about nominal vs real gain and the 2 of 73 funds",
+      "The possibility of redemptions being suspended for days is scary for money they might need",
+      "Didn't understand what the chart tabs (מיד / ביום מסחר / ...) would change",
+      "Rule codes like MF-16, BRK-17, BANK-18 in the 'חוקים וכללים' column mean nothing",
+      "Unclear who is the trustee and who is the fund manager",
+      "Didn't understand what 'פטורה' / 'חייבת' means for them",
+      "Unclear whether a securities account is needed or already exists",
+      "Missing a simple worked example of what you'd be left with after fees and tax",
+      "No guidance on how to choose between funds",
+      "No information on any minimum amount",
+      "No step-by-step for buying a fund in the bank app",
+      "Would drop the terms table, 'מה האתר לקח בחשבון', and 'מי מציע ומי מפקח' first"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The report never mentions that the comparison names a single bank (Leumi) or cites that bank's deposit rate; it only says it ignored source tags like 'ריבית שפורסמה', and that isn't a complaint about singling out one bank."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0636112
+  },
+  "b": {
+    "raised": [
+      "The '123 מקור / 123 חושב / 123 הזנתה' line under the title is confusing and meaningless",
+      "The term 'נאמן' (trustee) is not understood",
+      "The buying/selling paragraph is hard to follow: cut-off time, 'מפיץ', and codes like MF-11 / MF OQ3",
+      "The 'שאלה פתוחה' about Friday trading makes the reader nervous, since the site itself doesn't know",
+      "The costs paragraph gives no actual number for the management fee",
+      "The reference to a link 'in the card of the number below' is unclear: which number?",
+      "Doesn't understand 'הפסד בקרן ניתן לקיזוז' (offsetting a loss against tax)",
+      "The 'שחקו עם המספרים שלכם' calculator is collapsed, and the reader wanted to enter their own amount",
+      "Contradiction over whether 3.25% is before or after management fees/costs",
+      "The 'כסף נכנס ויוצא' section doesn't say when the money actually reaches the account",
+      "The cost table is disappointing: no actual percentages",
+      "Gave up on the real vs. nominal gain paragraph and the '2 of 73 funds' text",
+      "The possibility of suspending redemptions for several trading days feels scary for money that may be needed",
+      "Unclear what the chart tabs (מיד / ביום מסחר / ...) would change",
+      "'אין תקרה בחוק' (no legal cap) on most fee rows is worrying",
+      "Rule codes (MF-16, BRK-17, BANK-18, TXS-24) mean nothing",
+      "Unclear who is the trustee and who is the fund manager",
+      "Doesn't understand what a fund being 'פטורה' vs 'חייבת' means for them",
+      "Unclear whether they already have a securities account or need to open one",
+      "Couldn't find a worked example of what they'd end up with after fees and tax",
+      "Couldn't find guidance on how to choose between funds",
+      "Couldn't find whether there is a minimum amount",
+      "Couldn't find step-by-step instructions for buying through the bank app",
+      "Would drop the terms table and 'מה האתר לקח בחשבון'",
+      "Would drop 'מי מציע ומי מפקח'",
+      "Would drop the long paragraphs under the tax cards"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The report talks about the comparison bars and their source tags, but it never complains that they compare against one named bank (Leumi) or quote that bank's deposit rate on a page about a general product."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0678112
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1314224
+}

@@ -1,0 +1,115 @@
+{
+  "task": "gemelnet",
+  "persona": "student-small-amounts",
+  "repeat": 1,
+  "mode": "browser",
+  "device": "pc",
+  "startedAt": "2026-11-05T23:56:10.957Z",
+  "structured": {
+    "answer": "I gave up. I couldn't find my own fund anywhere, so I can't compare it. The only number I got was \"התשואה הממוצעת בענף קופות גמל\" = 10.56% for the last 12 months, and I don't know if mine did better or worse.",
+    "confidence": "unsure",
+    "gave_up": true,
+    "stuck": [
+      {
+        "where": "סינון ברשימה field",
+        "why": "I typed אלטשולר and pressed Enter, and the list didn't change at all. I got no message, no results and no sign it did anything."
+      },
+      {
+        "where": "The two list boxes with the < > arrows",
+        "why": "I didn't get that you have to choose from the left list and then push it into the empty box with an arrow. When I pressed < it just moved 'כל הקופות' over."
+      },
+      {
+        "where": "Report after הצג דוח",
+        "why": "I wanted my fund's return. What I got was total assets by fund type in millions of shekels, which is not what I asked for."
+      },
+      {
+        "where": "Landing page",
+        "why": "I clicked 'איזו תשואה השיגה הקופה שלי בשנה החולפת?' expecting an answer, and got a form instead."
+      }
+    ],
+    "used": [
+      "The link 'איזו תשואה השיגה הקופה שלי בשנה החולפת ?'",
+      "The הצג דוח button",
+      "The box 'התשואה הממוצעת בענף קופות גמל ב-12 חודשים האחרונים עמדה על 10.56%'",
+      "The 13.65% in the table",
+      "The סינון ברשימה field"
+    ],
+    "skimmed": [
+      "Table of total assets by fund type (millions ₪)",
+      "Stacked bar chart with percentages",
+      "Cumulative return line chart 01/2021–09/2026",
+      "Intro paragraph on the landing page"
+    ],
+    "skipped": [
+      "מקורות המידע והנחות המערכת",
+      "מה ניתן להפיק באמצעות המערכת",
+      "הסברים",
+      "מדדי סיכון",
+      "מדד אלפא",
+      "Tabs תחקור לפי פרמטרים and חיפוש מתקדם",
+      "Custom date range dropdowns",
+      "Excel / XML / גירסת הדפסה"
+    ],
+    "unsure_meaning": [
+      "מדד אלפא",
+      "תגמולים ואישית לפיצויים",
+      "מרכזית לפיצויים",
+      "מטרה אחרת",
+      "קופ\"ג להשקעה - חסכון לכל ילד",
+      "תשואה שנתית 13.65% vs average 10.56%: which one is 'the' number?",
+      "תחקור לפי פרמטרים",
+      "The colours in the line chart (I didn't read the legend)"
+    ],
+    "not_found": [
+      "A search box that actually finds my fund by name",
+      "My fund's return next to the average",
+      "A plain ranking of funds by return"
+    ],
+    "findings": [
+      {
+        "what": "The filter box doesn't visibly do anything: typing a fund company and pressing Enter changes nothing on screen",
+        "where": "סינון ברשימה"
+      },
+      {
+        "what": "You have to move funds between two list boxes with tiny < > arrows, which is an old and confusing way to pick things",
+        "where": "קופות גמל נבחרות section"
+      },
+      {
+        "what": "The default report shows industry totals in millions, not fund returns, so it doesn't answer the question in the link I clicked",
+        "where": "Report after הצג דוח"
+      },
+      {
+        "what": "The page looks like an old government form, and I'd swipe away on my phone in seconds",
+        "where": "Whole site"
+      },
+      {
+        "what": "There are two different return numbers (13.65% and 10.56%) with no clear explanation of which to use",
+        "where": "Report table and average box"
+      },
+      {
+        "what": "The fund-type names are jargon I don't know",
+        "where": "Category list"
+      },
+      {
+        "what": "The charts are small and dense, the bar labels overlap, and you can't read them",
+        "where": "Stacked bar chart"
+      }
+    ]
+  },
+  "steps": 9,
+  "reads": 7,
+  "commands": 9,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 56696,
+    "turns": 18,
+    "usd": 0.30537739999999997,
+    "input": 32,
+    "cacheWrite": 23167,
+    "cacheRead": 235867,
+    "output": 3637,
+    "model": "claude-opus-5-5"
+  }
+}

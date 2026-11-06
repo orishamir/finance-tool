@@ -1,0 +1,65 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "The page never says what retirement age is, so a 61-year-old can't tell whether the 3-year or the 6-year rule applies, or when they can withdraw without tax.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "The legend '123 מקור · 123 מחושב · מונח' and codes like KH-19 and PF-18 are confusing and look like part numbers.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "The 'חוקים וכללים · N' badges are unexplained ('ten what?') and make the reader nervous.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "The investment track buttons (general, index-linked bonds, S&P 500) aren't explained, so the reader can't tell which is safer at their age.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "The 12 small yearly bars have no shekel amounts and no colour key, so the gain from year 5 to year 6 can't be judged.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 6,
+      "summary": "The 'נשאר בידיים' bar in the big chart has no number, so the reader had to look for it in the text, and 'אחרי דמי ניהול' wasn't understood.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 7,
+      "summary": "Two tax figures seem to conflict: 47% in the warning box and 'at least 31%' in the list. The reader can't tell which one applies.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 8,
+      "summary": "'From age 60 the tax brackets start lower' doesn't say how much lower.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 9,
+      "summary": "The worked example covers only 5 years (taxed). There's no 6-year (tax-free) figure, though that's the option the reader would actually pick.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 10,
+      "summary": "Missing information: whether the employer's share is kept if the reader leaves or retires before 6 years, and whether and how to file for the tax refund.",
+      "serious": false,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.0709028
+}

@@ -1,0 +1,45 @@
+{
+  "id": "p04-far-legend-ta125-phone",
+  "about": "For the lab only; never reaches a session. Planted problem, kind p04 (A legend far from what it keys): see research/user-lab/planted.md.",
+  "purpose": "plant",
+  "pages": [
+    "/finance-tool/indices/ta125"
+  ],
+  "device": "phone",
+  "instance": {
+    "kind": "p04",
+    "mode": "page",
+    "url": "https://orishamir.github.io/finance-tool/indices/ta125",
+    "device": "phone",
+    "steps": [],
+    "task": "ta125",
+    "control": "planted/control-ta125-phone",
+    "split": "score"
+  },
+  "plants": [
+    {
+      "id": "p04",
+      "kind": "general",
+      "problem": "The coloured cost bars under the result carry no key nearby: their legend sits at the bottom of the account list, screens away.",
+      "where": "the cost bars under the result",
+      "counts": "A finding that the colours of the cost bars are not explained where the bars are (no legend, or the legend is far away / at the bottom).",
+      "notCounts": "Only that the bars are hard to read, with no word about what the colours mean."
+    }
+  ],
+  "changes": [
+    {
+      "id": "far-legend",
+      "type": "move",
+      "what": {
+        "text": "העמלות זו על זו",
+        "closest": "ul",
+        "nth": 0
+      },
+      "to": {
+        "text": "הוספת חשבון בתנאים שקיבלתם",
+        "closest": "button"
+      },
+      "position": "afterend"
+    }
+  ]
+}

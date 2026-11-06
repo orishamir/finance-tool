@@ -1,0 +1,83 @@
+{
+  "case": "company-missing-fund-kinds",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"A company's page lists its provident and study funds but not its index-tracking funds or money-market funds.\",\"where\":\"the product choices at the top of the company page\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Doesn't know which product (pension, study fund, investment fund) their own savings are in, so isn't sure the track or fee applies to them",
+      "Can't tell whether 0.56% is cheap: nothing compares Harel to other companies",
+      "Didn't know what the 'השוואה למטרה' menu item means",
+      "Unsure whether they'd personally pay the average fee shown in the intro",
+      "The '123 ממקור · 123 מחושב · 123 הזנתה' line is confusing and meaningless",
+      "Product tabs are confusing: can't tell which tab is theirs, and 'תגמולים ואישית לפיצויים' means nothing to them",
+      "Investment-category buttons like 'אג\"ח סחיר', 'כספי (שקלי)', 'הלכה' are not understood",
+      "The extra-costs note raises worry about hidden costs; the 'PF-10' tag is meaningless",
+      "Doesn't know the terms in the collapsed sections 'קרנות מחקות', 'מרכזית לפיצויים', 'קרנות סל'",
+      "The 'מה כתוב במסמכים של הראל' list looks like fine print and would be cut",
+      "Most table rows show 'פחות מ־3 שנים', so there's no return data for them",
+      "The 'קופה' numbers column is meaningless",
+      "Ring chart and 'מניות/מט\"ח' breakdown: doesn't understand why foreign currency matters",
+      "Unclear difference between 'מההיסכון' and 'מההפקדה'",
+      "Confusing category counts: the S&P 500 button says 1 but 'הכול' says 16",
+      "Unsure whether 24.04% is really per year; seems too good to be true",
+      "Returns are shown before fees and tax, and there's no after-fee figure for what they'd actually get",
+      "Can't see what 0.56% means in shekels for their savings",
+      "No simple explanation of which product suits someone like them (24, salaried)",
+      "Can't find how to actually switch tracks",
+      "Would cut the company legal names line, the repeated '0% מההפקדה' line, and the search box"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader never says index-tracking or money-market funds are missing from the product choices. They only say they don't understand the words in the collapsed sections 'קרנות מחקות' and 'קרנות סל', which is a different complaint."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0633152
+  },
+  "b": {
+    "raised": [
+      "Doesn't know which product (pension, study fund, provident) their own savings are in, or whether the track and fee are the same in other tabs",
+      "Can't tell whether a 0.56% fee is cheap because there's no comparison with other companies",
+      "Didn't know what the 'השוואה למטרה' menu item means",
+      "Unsure whether they personally would pay the average fee shown in the intro",
+      "The '123 ממקור · 123 מחושב · 123 הזנתה' line is confusing, with 123 repeated three times",
+      "Product tabs are confusing: no idea which tab is theirs, and 'תגמולים ואישית לפיצויים' means nothing to them",
+      "Investment-category buttons like 'אג\"ח סחיר', 'כספי (שקלי)' and 'הלכה' aren't understood",
+      "The extra-costs note raises worry about hidden costs, and the 'PF-10' tag means nothing",
+      "Doesn't know the terms in the collapsed sections 'קרנות מחקות', 'מרכזית לפיצויים' and 'קרנות סל'",
+      "The 'מה כתוב במסמכים של הראל' list looks like fine print; would drop it",
+      "Most rows show 'פחות מ־3 שנים', so there's no return data for them",
+      "The 'קופה' number column is meaningless",
+      "Ring chart and 'מט\"ח' lines not understood",
+      "Unclear what 'ההיסכון' vs 'ההפקדה' means",
+      "Confused why the S&P 500 button shows 1 while 'הכול' shows 16 (unclear categorisation)",
+      "Doubts whether 24.04% is really per year; sounds too good to be true",
+      "Returns are shown before fees and tax, so it's unclear what they actually end up with",
+      "Can't find which track their money is in now or what fee they personally pay",
+      "No explanation of what 0.56% means in shekels",
+      "No simple guidance on which product suits someone like them (24, salaried)",
+      "Can't find how to actually switch tracks",
+      "The repeated '0% מההפקדה' line, company legal names and bottom search box are unnecessary; would cut them"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader never says index-tracking or money-market funds are missing from the product choices; they only say they don't understand the collapsed 'קרנות מחקות' and 'קרנות סל' sections, which is a different problem."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0666272
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1299424
+}

@@ -1,0 +1,88 @@
+# s08: first-job-phone (old brief)
+
+pc; 40 s, $0.14
+
+I'm writing this as the 24-year-old salaried person.
+
+## 1. What I would do, and how sure I am
+
+1. **Check my payslip first.** The "מאיפה להתחיל" box says "שכירים שהמעסיק מפקיד להם: קרן השתלמות" and "הבסיס של כל חוסך שכיר: קרן חדשה מקיפה". I want to know whether my employer already pays into a קרן השתלמות and a pension for me. If it does, those two come first, because the card says "אחרי תקופה שקבע החוק אפשר למשוך בפטור ממס", and tax-free sounds good.
+2. **Keep my "just in case" money in a קרן כספית**, because the page says "כסף שצריך להישאר זמין: קרן כספית".
+3. **Do the S&P 500 inside something.** The top of the page explains that a product (where the money sits) is different from what's inside it. So the S&P 500 isn't something I buy on its own. I'd put it inside a קרן השתלמות, a "קופת גמל להשקעה" or a "חשבון ניירות ערך". I'd click those to find out which ones offer it.
+
+**How sure:** about 6/10 on the order of steps. I'm only 2–3/10 on which product to use for the S&P 500, because the page never compares costs or tells me which one suits someone like me.
+
+## 2. Parts I actually used
+
+- The intro box "שני חלקים בכל חיסכון". This was the most useful idea on the page, because it made the S&P 500 make sense to me as "what's inside" rather than "where it's held".
+- "מאיפה להתחיל", the three lines with green links. This is what I'd act on.
+- Under "איפה הכסף מוחזק", the cards for "קרן השתלמות", "קופת גמל להשקעה", "קרן חדשה מקיפה" and "חשבון ניירות ערך".
+- Under "במה הכסף מושקע", the cards for "מדד S&P 500", "קרן כספית" and "מזומן שקלי".
+
+## 3. Block by block
+
+- **Top menu** ("מקור", "מדריך", "שאלות שכולם שואלים", "חברות ומסלולים", "השוואה למטרה", "השקעה במדד"): skimmed. "השקעה במדד" and "השוואה למטרה" caught my eye and I'd probably click them next.
+- **"מדריך" title and the line under it**: read it. "לכל אחד אותו מבנה, כדי שיהיה קל להשוות" sounded promising.
+- **"שני חלקים בכל חיסכון"**: used it, and it was really helpful. But "מק"מ" and "אג"ח" in the second line meant nothing to me. The small grey line "בכל עמוד של מוצר יש שורה עם מה שאפשר להשקיע בתוכו" was useful, because it told me to click through.
+- **"מאיפה להתחיל"**: used it, and it's the best part. It still confused me a bit, though:
+  - It didn't say whether I should do all three lines or pick one.
+  - I don't know whether I already have a "קרן חדשה מקיפה" through work.
+- **"כסף שוטף וקצר"** ("חשבון עובר ושב", "פיקדון", "תכנית חיסכון"): skimmed. I already have a bank account. "פיקדון" vs "תכנית חיסכון" look almost the same to me.
+- **"חיסכון עם הטבת מס"**: used it and read both cards closely. "תקרה שנתית" confused me, since it gives no number.
+- **"פרישה"**: skimmed and got confused.
+  - "קרן חדשה מקיפה" vs "קרן חדשה כללית": I can't tell why both exist.
+  - "תגמולים ואישית לפיצויים" means nothing to me, even with the "בשפה פשוטה" line under it.
+- **"לילדים"**: skipped, since I have no kids.
+- **"לבחירה עצמית"**: "חשבון ניירות ערך" was useful ("מוכרים ומחזיקים מניות, קרנות ואגרות חוב"). For "קרן השתלמות בניהול אישי" and "קופת גמל בניהול אישי" I skimmed, but "שבה אתם... מחליטים במה להשקיע" sounds like the way to get the S&P 500 inside them. I'm not sure if that's true.
+- **"במה הכסף מושקע"**:
+  - Read "מדד S&P 500" and "קרן כספית".
+  - Skimmed "מזומן שקלי" and "מסלול כללי".
+  - Skipped "מק"מ" and "איגרות חוב ממשלתיות".
+  - Read "מדד MSCI World" and "מדד MSCI AC World" but couldn't tell them apart.
+  - Skipped "נאסד"ק 100" and the three Tel Aviv ones (ת"א-35, ת"א-90, ת"א-125).
+- **"מה האתר עוד לא מכסה"**: skipped.
+- **Footer**: ignored it, though I noticed "נתונים נכון ל־30.10.2026" and wondered which data it meant, since I saw no numbers anywhere.
+
+## 4. Labels and visual cues
+
+There are no tables or charts, only cards.
+
+- **Looked at:**
+  - The green link words in "מאיפה להתחיל".
+  - The bold card titles.
+  - The section subheadings ("חיסכון עם הטבת מס", "פרישה").
+  - The bold "בשפה פשוטה:" lines on the retirement cards. I liked these and wanted them on every card.
+- **Ignored:** the little arrows on the cards and the search icon.
+- **Confused by:** the two grey pills "יומית" and "מתחדשת" on the קרן כספית card. I don't know if they're types, options or buttons.
+
+## 5. What I didn't understand
+
+- "מק"מ", "אג"ח", "קרן נאמנות", "ברוקר"
+- "חשיפה לדולר או מנוטרלת ממנו": this appears on almost every index card.
+- "תקרה שנתית" with no amount given.
+- "המשיכה והמס הם של קרן השתלמות רגילה"
+- "קרן פנסיה כללית" vs "מקיפה"
+- "תגמולים ואישית לפיצויים"
+- "תקרה למניה אחת" on the ת"א-125 card.
+- "MSCI World" vs "MSCI AC World" ("שווקים מפותחים ומתפתחים")
+- "יומית" / "מתחדשת"
+
+## 6. What I wanted to know and couldn't find
+
+- **Fees:** how much each option costs me.
+- **Numbers:** roughly what each option has earned, how risky it is, and what the annual cap actually is.
+- **For my situation:** which product is best for S&P 500 money. I also want to know whether "קרן השתלמות" and "קופת גמל להשקעה" are worth it if my employer doesn't pay into them.
+- **How to check what I have:** how to find out what I already have through work.
+- **Lock-up times:** how long each product locks my money. The page says "אחרי תקופה שקבע החוק" but never says how long that is.
+- **Where to start practically:** where to actually open one, and with how much money.
+
+## 7. If half the page had to go, what goes first
+
+1. "לילדים"
+2. The Tel Aviv indexes (ת"א-35, ת"א-90, ת"א-125), "נאסד"ק 100" and "MSCI AC World"
+3. "מק"מ" and "איגרות חוב ממשלתיות"
+4. "תגמולים ואישית לפיצויים" and "קרן חדשה כללית"
+5. "פיקדון", "תכנית חיסכון" and "חשבון עובר ושב"
+6. The two "בניהול אישי" cards. Folding them into the regular קרן השתלמות and קופת גמל cards would be enough for me.
+
+**Keep no matter what:** "שני חלקים בכל חיסכון", "מאיפה להתחיל", the tax-benefit cards, "חשבון ניירות ערך", S&P 500 and קרן כספית.

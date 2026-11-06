@@ -1,0 +1,65 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "The calculator's main result (\"66,5...\") is cut off behind the round up-arrow button, so the reader can't read the full figure.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "The calculator shows only one result, for withdrawing early after 5 years. There is no figure for 6 years or later, which is the case the reader actually plans for.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "The \"123 ממקור, 123 מחושב\" labels are confusing and their meaning is not explained.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "The tax-ceiling part (15,712 / 20,566 ₪) is unclear, and it doesn't say whether it matters to someone who earns less.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "Terms such as \"דמי ניהול\", \"אג\"ח ממשלתית צמודה\" and \"מזומן שקלי\" are not explained, and it's unclear whether to change the \"תשואה בשנה 7\" input.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 6,
+      "summary": "The paragraph under the chart says 50,719 reaches the account and 15,794 comes back only if you ask for a tax refund. This doesn't match \"נשאר בידיים\" (66,5…), and the reader didn't know they would have to file for anything.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 7,
+      "summary": "The fine print gives a range across 11 tracks (66,601 to 66,280) that doesn't match the main result (66,513), which leaves the reader unsure which number is right.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 8,
+      "summary": "The cost section's line \"הוצאות ישירות... לא נמצאה תקרה כוללת\" isn't explained, and the reader can't tell whether it's bad.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 9,
+      "summary": "The top bar chart has no legend for its grey, yellow and teal parts, no numbers on the bars and no y-axis.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 10,
+      "summary": "The page doesn't help choose a track: which one to pick, and which one the fund's default is.",
+      "serious": false,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.0709188
+}

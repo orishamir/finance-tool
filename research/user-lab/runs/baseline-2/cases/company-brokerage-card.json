@@ -1,0 +1,13 @@
+{
+ "id": "company-brokerage-card",
+ "task": "s26",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "The securities-account card on a company's page does not look like the site's other product cards.",
+   "where": "the securities-account card",
+   "kind": "taste"
+  }
+ ],
+ "liked": []
+}

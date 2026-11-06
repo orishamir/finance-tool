@@ -1,0 +1,36 @@
+{
+  "case": "label-tax-on-sale",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The label 'מס רק במכירה' states something the site does not know: what happens to tax while a foreign fund accumulates is an open question.\",\"where\":\"the label on foreign accumulating funds\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings mention the 'מס רק במכירה' label or what the site claims about tax on foreign accumulating funds; finding 6 is about the assumed 7% return, which is a different claim."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0156474
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings mention the tax label 'מס רק במכירה' or say it claims more than the site knows; finding 6 is about the assumed 7% return, not tax."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0148314
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0304788
+}

@@ -1,0 +1,13 @@
+{
+ "id": "label-warning-text",
+ "task": "s27",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "The explanation that opens from the label 'מס רק במכירה' ('לא נמצא כלל שממסה יחיד על רווחים שקרן זרה צוברת … זו שאלה פתוחה') is hard to understand and reads as a warning.",
+   "where": "the box that opens from the label",
+   "kind": "general"
+  }
+ ],
+ "liked": []
+}

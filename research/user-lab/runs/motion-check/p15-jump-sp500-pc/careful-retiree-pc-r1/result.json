@@ -1,0 +1,120 @@
+{
+  "task": "p15-jump-sp500-pc",
+  "persona": "careful-retiree-pc",
+  "repeat": 1,
+  "mode": "browser",
+  "device": "pc",
+  "startedAt": "2026-11-06T00:22:29.397Z",
+  "structured": {
+    "answer": "If I put in 750 ₪ a month for 15 years and nothing at the start, the page shows about 179,889 ₪, on 135,000 ₪ I put in. It says this is \"בכסף של היום\", meaning it already takes off 2% a year for inflation, and it guesses the fund grows 7% a year. It says to keep the money in an account at \"פסגות ניירות ערך\" and buy the fund \"ילין לפידות מחקה S&P 500 (4D)\". These aren't my bank, so before I give anyone money I'll ask you or the bank.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Monthly deposit slider",
+        "why": "I typed 750 in the box, but the slider under it says 800. For a moment I didn't know which number it uses. The 135,000 ₪ (750 × 180) told me it used 750"
+      },
+      {
+        "where": "Inflation",
+        "why": "Nothing on the main screen gives the inflation number. I had to press the 'אינפלציה' button, and only in the small window did I see 2%"
+      }
+    ],
+    "used": [
+      "The boxes סכום היום, הפקדה חודשית, שנים",
+      "The 'הבחירה שלכם · הזול' box: 179,889 ₪, 'נשאר לכם בעוד 15 שנים, אחרי דמי ניהול ומס, בכסף של היום'",
+      "The הפקדתם box: 135,000 ₪",
+      "The אינפלציה window: 2%, 'בכמה המחירים עולים בשנה, בממוצע'",
+      "The account card: פסגות ניירות ערך בע\"מ",
+      "The fund card: ילין לפידות מחקה S&P 500 (4D)"
+    ],
+    "skimmed": [
+      "The coloured cost bars under 'כמה זה עולה לכם ב־15 שנים' (15,364 / 596 / 2,002)",
+      "The 'הזוג הבא בתור' box with −122 ₪",
+      "The 'העלות אצלכם, לעומת הזוג השני' line"
+    ],
+    "skipped": [
+      "The other indices (MSCI, נאסד\"ק, ת\"א)",
+      "The 'תשואה בשנה' box, which I left at 7",
+      "The 'התעריפון' link",
+      "Everything further down the page: 'כל החשבונות', 'כל הקרנות על מדד S&P 500'"
+    ],
+    "unsure_meaning": [
+      "S&P 500",
+      "מדד in the sense of the share market",
+      "קרן מחקה",
+      "דמי משמרת",
+      "נאמן 0.02%",
+      "(4D)",
+      "'אם הדולר לא זז מול השקל'",
+      "'הזוג' / 'בחרו את הזוג הזה'",
+      "The cost bar colours: pink and red look alike to me",
+      "'3.17 ₪ שער הדולר'"
+    ],
+    "not_found": [
+      "Any comparison with a bank deposit or with government bonds",
+      "Anything about how much the fund can fall"
+    ],
+    "findings": [
+      {
+        "what": "The inflation guess (2%) is hidden behind a button. On the main screen it only says 'בכסף של היום'",
+        "where": "The line next to the 'אינפלציה' button"
+      },
+      {
+        "what": "The slider shows 800 after I typed 750, which confused me",
+        "where": "הפקדה חודשית"
+      },
+      {
+        "what": "Dark screen with small grey writing that is hard to read, even with my glasses",
+        "where": "Under the big numbers and the labels on the cost bars"
+      },
+      {
+        "what": "English letters and words I don't know right on the first screen (S&P 500, MSCI, קרן מחקה)",
+        "where": "Top of the page"
+      },
+      {
+        "what": "It suggests companies that aren't a big bank, and I don't know Ilin Lapidot at all",
+        "where": "The account and fund cards"
+      },
+      {
+        "what": "A minus sign in the next box ('−122 ₪') scared me for a second, even though it's small",
+        "where": "הזוג הבא בתור"
+      },
+      {
+        "what": "A cost chart with many colours that look alike",
+        "where": "כמה זה עולה לכם ב־15 שנים"
+      }
+    ],
+    "skimmed_note": "n/a"
+  },
+  "steps": 7,
+  "reads": 4,
+  "commands": 7,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 57072,
+    "turns": 13,
+    "usd": 0.18606060000000002,
+    "input": 18,
+    "cacheWrite": 13436,
+    "cacheRead": 97603,
+    "output": 2949,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "p15-jump-sp500-pc",
+    "screenshots": 7,
+    "changes": [
+      {
+        "id": "jump-shown",
+        "type": "style",
+        "shots": 7,
+        "applied": 7,
+        "most": 1
+      }
+    ],
+    "neverShown": [],
+    "errors": []
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "id": "p16-leftover-keren-phone",
+  "about": "For the lab only; never reaches a session. Planted problem, kind p16 (The builders' own words left on the page): see research/user-lab/planted.md.",
+  "purpose": "plant",
+  "pages": [
+    "/finance-tool/guide/keren-hishtalmut"
+  ],
+  "device": "phone",
+  "instance": {
+    "kind": "p16",
+    "mode": "page",
+    "url": "https://orishamir.github.io/finance-tool/guide/keren-hishtalmut",
+    "device": "phone",
+    "steps": [],
+    "task": "keren",
+    "control": "planted/control-keren-phone",
+    "split": "tune"
+  },
+  "plants": [
+    {
+      "id": "p16",
+      "kind": "general",
+      "problem": "The introduction to the \"worth knowing\" facts says they were checked by Claude on a date, words about how the site was made.",
+      "where": "the line under \"שווה לדעת\"",
+      "counts": "A finding that the mention of Claude (an AI) or of a checking date is out of place, odd, or lowers trust.",
+      "notCounts": "Doubting the facts themselves."
+    }
+  ],
+  "changes": [
+    {
+      "id": "leftover",
+      "type": "text",
+      "find": "עובדות על המוצר הזה שרוב האנשים לא יודעים, כל אחת עם המקור שלה.",
+      "replace": "עובדות על המוצר הזה שרוב האנשים לא יודעים, כל אחת עם המקור שלה. נבדק על ידי Claude ב־05.11.2026."
+    }
+  ]
+}

@@ -1,0 +1,80 @@
+{
+  "case": "hishtalmut-7-5",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The guide's 7.5% does not say whether it is deposited to the study fund itself or to a pension fund.\",\"where\":\"the opening explanation of the guide\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "The '123 מקור / 123 חושב / 123 הזנתי' line is confusing and its meaning is unclear",
+      "Unclear what counts as 'לצורך השתלמות' for the 3-year rule",
+      "Did not understand 'אג\"ח ממשלתית צמודה'",
+      "Did not understand the example of ₪10,000 today plus ₪500 a month (has no ₪10,000)",
+      "The small ₪415.84 gap after 10 years at first made the fund look barely worth it",
+      "Confused why the example uses ₪500 a month when 2.5% of salary is ₪300",
+      "The 'ההפרש תלוי גם במי שבוחרים' bullets have too many numbers",
+      "'הפקדה אחרי משיכה הולכת לחשבון חדש' did not make sense until the risks section",
+      "The 'TXH-09 / KH-15' code tags mean nothing to the reader",
+      "The Treasury chief economist note was worrying (could the benefit be cancelled?)",
+      "Surprised and puzzled that the fund's costs (₪2,402) are much higher than the securities account's (₪466)",
+      "Did not understand terms such as הפקדה מוטבת, רווח ריאלי, ותק, מסלול השקעה, דמי ניהול מחיסכון",
+      "No way to tell whether one company (מיטב, הראל, אלטשולר שחם) is better than another",
+      "The page doesn't show the actual total including the employer's 7.5% after 6 years",
+      "Not clear whether an employee can opt out once it's offered",
+      "Not explained what happens to the 6-year clock on changing jobs",
+      "No help choosing between the S&P 500 and general tracks",
+      "No guidance on whether to withdraw or leave the money after 6 years",
+      "Would drop the terms table, the coded 'שווה לדעת' list, the provider cards, the difference bullets, the Treasury note, and the chips"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader repeats the 7.5% employer deposit but never questions whether it goes to the study fund or to a pension fund, so no raised problem matches this one."
+      }
+    ],
+    "liked": [],
+    "usd": 0.061763200000000004
+  },
+  "b": {
+    "raised": [
+      "The '123 מקור / 123 חושב / 123 הזנתי' line was confusing and ignored",
+      "Unclear what counts as 'השתלמות' for the 3-year rule",
+      "Did not understand 'אג\"ח ממשלתית צמודה' in the investment chips",
+      "The '₪10,000 היום ועוד ₪500 בכל חודש' example didn't fit the reader (no ₪10,000 to deposit)",
+      "The ₪415.84 gap after 10 years at first made the fund look barely worth it",
+      "Confusing why the example uses ₪500/month when 2.5% of salary is ₪300",
+      "'ההפרש תלוי גם במי שבוחרים' bullets have too many numbers",
+      "'הפקדה אחרי משיכה הולכת לחשבון חדש' only made sense after reading the risks section",
+      "Codes like 'TXH-09 / KH-15' mean nothing",
+      "'מתי מתחילים לספור את הימים' card felt like unneeded detail",
+      "Treasury chief economist note worried the reader that the benefit could be cancelled",
+      "Terms 'ותק' and 'הפקדה מוטבת' kept confusing them higher up the page",
+      "Surprised that the fund's costs (₪2,402) are much higher than the securities account's (₪466), with no explanation",
+      "Did not understand 'רווח ריאלי', 'מסלול השקעה', 'דמי ניהול מחיסכון'",
+      "Can't tell which company (מיטב, הראל, אלטשולר שחם) is better",
+      "Missing: the actual amount after 6 years including the employer's 7.5%",
+      "Missing: whether one can opt out once the employer offers it",
+      "Missing: what happens to the 6-year clock when changing jobs",
+      "Missing: guidance on which track to pick (S&P 500 vs כללי)",
+      "Missing: whether to withdraw or leave the money after 6 years",
+      "Would cut the מונחים table, codes list, provider cards, bullets, economist note and chips"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader quotes the 7.5% and assumes it goes into the study fund, so none of the raised items asks whether it is paid to the study fund or a pension fund."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0640432
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.12580639999999998
+}

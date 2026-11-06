@@ -1,0 +1,136 @@
+{
+  "task": "p06-method-sp500-pc",
+  "persona": "first-job-phone",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-05T23:09:22.410Z",
+  "structured": {
+    "answer": "Open an account at פסגות and buy ילין לפידות מחקה S&P 500 (4D) (5139282) every month. The page says about 86,492 ₪ in today's money after 10 years, but that's with its default 10,000 start + 500/month, not my 30,000.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Screen 1, result card",
+        "why": "The big 86,492 ₪ says 'הבחירה שלכם · הזול' but doesn't name the bank or the fund. I had to scroll to find out what I'd picked."
+      },
+      {
+        "where": "Screen 2, top summary",
+        "why": "'1 ₪ יותר', '58 ₪ פחות', '14 ₪ יותר'. More or less than what? I couldn't tell."
+      },
+      {
+        "where": "Screen 2, פסגות row",
+        "why": "It shows '0 ₪' and also '1,057 ₪'. Is the account free or does it cost 1,057?"
+      },
+      {
+        "where": "Screens 3–5, the two long lists",
+        "why": "Too many funds and banks that look alike, each with lots of coloured tags. I got lost and stopped scrolling."
+      }
+    ],
+    "used": [
+      "Heading 'איפה ואיך הכי זול להשקיע במדד, לאורך זמן'",
+      "S&P 500 chip already selected",
+      "Input boxes 10,000 / 500 / 10 שנים / 7%",
+      "'הפקדתם 70,000 ₪'",
+      "Big result '86,492 ₪ הבחירה שלכם · הזול'",
+      "'הזוג הבא בתור 86,449 ₪, −43 ₪'",
+      "Account card 'פסגות ניירות ערך בע\"מ', 1,057 ₪",
+      "Fund card 'ילין לפידות מחקה S&P 500 (4D) 5139282', דמי ניהול 0%",
+      "Red minus numbers on the other banks (לאומי −3,096 ... מיטב −22,985)"
+    ],
+    "skimmed": [
+      "Coloured cost bar and its legend at top of screen 2",
+      "Fund list with tags on screens 2–4",
+      "Bank list descriptions ('לא בחישוב מחיר אחר ל...')",
+      "Foreign ETFs (iShares, Vanguard) on screen 4–5",
+      "'מה הכי משנה את מה שיישאר לכם' heading"
+    ],
+    "skipped": [
+      "Inflation button and the grey line about exchange rate and date",
+      "Paragraph 'כל החשבונות' explaining how prices are calculated",
+      "Explanation 'למה חלק מהקרנות בלי מחיר בפסגות' and חוקים וכללים link",
+      "Interactive Brokers / אינטראקטיב ישראל notes",
+      "Screens 6–10"
+    ],
+    "unsure_meaning": [
+      "נאמן 0.02%",
+      "צוברת",
+      "מחלקת דיבידנד",
+      "מנוטרלת מט\"ח / עם נטרול מט\"ח",
+      "(4D) / (4A)",
+      "חשיפה לדולר",
+      "מס גם על שינוי המטבע",
+      "W-8BEN",
+      "לא בחישוב",
+      "אין שנה מלאה",
+      "1,057 ₪ under פסגות next to 0 ₪",
+      "'+0.37% בשנה · שנה אחת'"
+    ],
+    "not_found": [
+      "The result for my own 30,000 ₪ (only the default 10,000 was shown)",
+      "A plain 'first step: open account here' button next to the big result",
+      "The name of the chosen bank/fund on the first screen"
+    ],
+    "findings": [
+      {
+        "what": "The big result 86,492 ₪ doesn't say which bank and fund it's for. You have to scroll to find out.",
+        "where": "Screen 1, result card"
+      },
+      {
+        "what": "פסגות row shows both 0 ₪ and 1,057 ₪. Unclear if the account costs money.",
+        "where": "Screen 2, bank list"
+      },
+      {
+        "what": "Summary numbers '1 ₪ יותר / 58 ₪ פחות / 14 ₪ יותר' with no 'compared to what'",
+        "where": "Screen 2 top"
+      },
+      {
+        "what": "Every fund has 3–5 coloured tags full of jargon (צוברת, נטרול מט\"ח, מס גם על שינוי המטבע). Too much to read on a phone.",
+        "where": "Screens 2–5, fund list"
+      },
+      {
+        "what": "Lists are very long and look alike. Easy to get lost.",
+        "where": "Screens 3–5"
+      },
+      {
+        "what": "A range like 'בין +2,212 ל־−23,766' is scary and not explained next to it",
+        "where": "Screen 5, הראל מנוטרלת מט\"ח"
+      },
+      {
+        "what": "Default start amount is 10,000, so the first big number isn't about my money unless I edit it",
+        "where": "Screen 1, סכום היום"
+      }
+    ]
+  },
+  "steps": 5,
+  "reads": 5,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 39105,
+    "turns": 7,
+    "usd": 0.1568276,
+    "input": 10,
+    "cacheWrite": 9820,
+    "cacheRead": 35038,
+    "output": 3561,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "p06-method-sp500-pc",
+    "screenshots": 11,
+    "changes": [
+      {
+        "id": "method-shown",
+        "type": "style",
+        "shots": 11,
+        "applied": 11,
+        "most": 16
+      }
+    ],
+    "neverShown": [],
+    "errors": []
+  }
+}

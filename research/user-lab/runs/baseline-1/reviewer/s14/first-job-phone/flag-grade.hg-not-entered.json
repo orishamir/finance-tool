@@ -1,0 +1,36 @@
+{
+  "case": "hg-not-entered",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The text says 'לא הזנתם אחוזים, אז החישוב לוקח את התקרה' although the percentage fields are filled in with default values.\",\"where\":\"the sentence under the graphic\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 3 is about the same line, but it complains that the salary-cap effect is unclear; it never says the text wrongly claims no percentages were entered when the fields are filled in."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0155554
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 3 mentions the salary cap in the text under the chart, but it says it is unclear how the cap applies, not that the text wrongly claims no percentages were entered when the fields are filled with defaults."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0156314
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0311868
+}

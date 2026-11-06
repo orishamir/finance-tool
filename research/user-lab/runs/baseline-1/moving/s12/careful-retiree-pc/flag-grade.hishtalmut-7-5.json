@@ -1,0 +1,36 @@
+{
+  "case": "hishtalmut-7-5",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The guide's 7.5% does not say whether it is deposited to the study fund itself or to a pension fund.\",\"where\":\"the opening explanation of the guide\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings says the 7.5% figure is unclear about whether the money goes into the study fund or a pension fund; finding 7 is about whether it's worth it and guaranteed, and finding 2 is about the jump to S&P 500."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0148434
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings say the 7.5% figure is unclear about where it goes (the study fund or a pension fund); findings 2 and 7 are about the S&P 500 and whether the money is guaranteed, which are different issues."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0148354
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.029678799999999998
+}

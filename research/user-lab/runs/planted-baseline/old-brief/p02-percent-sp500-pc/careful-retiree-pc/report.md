@@ -1,0 +1,81 @@
+# p02-percent-sp500-pc: careful-retiree-pc (old brief)
+
+pc; 63 s, $0.28
+
+# How I used the page to pick a fund for my monthly S&P 500 savings
+
+## 1. My answer
+
+**What I'd do:** Open a securities account at **פסגות** (Psagot) and buy **"ילין לפידות מחקה S&P 500 (4D)"**, number **5139282**. The page marks this pair as **"הבחירה שלכם · ★ הזול"** (your choice, the cheapest). The fund fee is **"דמי ניהול: 0% קבועים, 0% משתנים, 0.02% נאמן"**. The page says Psagot costs **"1,057 ₪"** over 10 years in account fees.
+
+**How much I'd end up with:** The big number is **"86,492 ₪"**. I only put in **"70,000 ₪"**. Those figures come from the page's own example inputs: 10,000 ₪ now plus 500 ₪ a month for 10 years, growing 7% a year. I couldn't change them, because I only have pictures of the page.
+
+**How sure I am:**
+- **About the account and the fund: fairly sure.** The next-best pair only gives **"86,449 ₪"**, which is just 43 ₪ less. So among the cheap options it hardly matters. What matters is avoiding the expensive ones at the bottom: מיטב טרייד (Meitav Trade), אקסלנס (Excellence) and אלטשולר טרייד (Altshuler Trade) come out around **63,000–66,000 ₪**. That is about 20,000 ₪ of my money gone.
+- **About the final amount: not sure at all.** The page says itself **"תשואה לדוגמה, לא תחזית"** (an example return, not a forecast). It also assumes the dollar doesn't move: **"אם הדולר לא זז מול השקל"**. The currency section shows the dollar can move 12% in one year. So 86,492 ₪ is an illustration, not a promise.
+
+## 2. The parts I actually used
+
+- **The heading "איפה ואיך הכי זול להשקיע במדד, לאורך זמן"** (where and how to invest in an index most cheaply, over time) and the S&P 500 button, which was already selected.
+- **The four input boxes:** today's amount, monthly deposit, years, and yearly return.
+- **The result box** with the deposits (70,000), "your choice" (86,492) and "the next cheapest pair" (86,449).
+- **The "כל החשבונות" list** (all the accounts) on the right. I read the ranking and the "נשאר" (what's left) number, the account cost under it, and the grey **"לא בחשבון"** (not in the calculation) notes.
+- **The "כל הקרנות על מדד S&P 500" list** (all the S&P 500 funds), but only its first fund and the shekel figure on the far left.
+- **The "מה הכי משנה את מה שיישאר לכם" table** (what changes your end amount the most).
+- **The "השורה התחתונה" box** (the bottom line) at the end of the currency-hedging section.
+- **The small notes at the bottom:** "הערכים הם בכסף של היום" (the amounts are in today's money) and "האתר לא ממליץ על מדד" (the site doesn't recommend an index).
+
+## 3. Block by block
+
+1. **Top menu (מקור, מדריך, חברות ומסלולים, חוקים וכללים).** Skipped. I didn't click anywhere.
+2. **Title and index buttons.** Used. S&P 500 was already chosen. I noticed **"אפשר להחזיק אותו גם דרך קרן חוץ"** (you can also hold it through a foreign fund), but I didn't know what that means for me.
+3. **The four inputs.** Used, even though I couldn't change them. **"תשואה בשנה 7%"** worried me: who decided 7%?
+4. **The line under the inputs with the "אינפלציה" button** ("לדוגמה של האתר · בכסף של היום · שער הדולר 3.17 ₪ · מחושב משערי הייחוס של הבנק המרכזי האירופי"). Skimmed and confused. Why would the European Central Bank's rates set *my* dollar rate?
+5. **Result box (70,000 → 86,492 / 86,449).** Used. This is the heart of the page for me. But I had to stop and ask myself why 7% a year for 10 years only turns 70,000 into 86,000. I guessed it's because the amounts are "in today's money", after inflation. The page doesn't say that plainly next to the number.
+6. **The coloured cost bar ("כמה זה עולה לכם ב־10 שנים", how much it costs you over 10 years) and its legend.** Mostly cut off between my screenshots. Under it I read **"הקרן 58 ₪ פחות"** (the fund costs 58 ₪ less) and **"המס 14 ₪ יותר כי נשאר לכם יותר רווח"** (the tax is 14 ₪ more because you keep more profit). That last one is honest, and I appreciated it. I skimmed the rest.
+7. **Account list (פסגות, לאומי, דיסקונט, הבינלאומי, מזרחי, and so on).** Used. This is the clearest part of the page. I skimmed the "not in the calculation" notes to check none of them applied to me. I'm not a soldier or a student. The note at הפועלים (Hapoalim) for women over 60 and men over 65 does nearly fit me, but it isn't part of the figures shown.
+8. **Fund list with the coloured tags** (קרן מחקה, צוברת, עסקת החלף, חשיפה לדולר, מס גם על שינוי המטבע, and so on: index-tracking fund, accumulating, swap deal, dollar exposure, tax even on currency changes). I used the first fund and the shekel amounts on the left. **The tags confused me.** There are too many of them, all in different colours, and I don't know which ones are good and which are bad.
+9. **Foreign funds (iShares, Vanguard, us-ivv, us-voo).** Skipped. They all say **"אין מחיר כאן"** (no price here), and I saw **"צריך טופס W-8BEN"** (needs a W-8BEN form). That's not for me.
+10. **The currency-hedged fund ("עם נטרול מט"ח", currency-hedged), הראל מחקה 4A (Harel tracker 4A).** Skimmed. **"בין +2,212 ₪ ל־‎-23,766 ₪"** (between +2,212 ₪ and -23,766 ₪) scared me off it.
+11. **The note "למה חלק מהקרנות בלי מחיר בפסגות"** (why some funds have no price at Psagot). Skimmed. It explained "עוד לא נאסף" (not collected yet), which helped a little.
+12. **"Interactive Brokers – אין נתון"** (no data). Skipped. It's a foreign broker and I'm not going there.
+13. **The "what changes your end amount the most" chart and table.** I used the table and only glanced at the chart. The useful lesson: **"אם תגדילו כל מספר ב־20%, הכי ישנה מספר השנים: 19,116 ₪ יותר בסוף"** (if you raise each number by 20%, the number of years changes things most: 19,116 ₪ more at the end). Staying invested longer matters most.
+14. **The currency section ("עם נטרול מט"ח או בלי: מה קרה בפועל", with or without currency hedging: what actually happened).** Two charts and a table. Skimmed, but I read the bottom line: **"הנטרול לא מגן מירידה של השוק"** (hedging doesn't protect you from a market fall). That was enough to stay with the ordinary fund.
+15. **"מתחילים מבחירה אחת, ורואים מה משפר אותה ובכמה"** (start from one choice and see what improves it, and by how much). This is the waterfall chart and the tables below it. **This confused me.** It starts from **"עכשיו: S&P 500 (4D) של MTF, ירושלים. נשארים בסוף 79,176 ₪"** (now: MTF's S&P 500 (4D) at Jerusalem, 79,176 ₪ left at the end). That's not what I have, because I have nothing yet. I didn't understand why it treats me as if I'm already there. I did take the general idea: changing the account matters most (+4,972), and the fund less (+2,344).
+16. **The small notes at the bottom and the footer.** Read. These were important: **"תשואה לדוגמה, לא תחזית"**, **"הערכים הם בכסף של היום"**, **"האתר לא ממליץ על מדד"**. I'd want them at the top, next to the big number.
+
+## 4. Lists, tables and charts
+
+- **Account list:** I looked at the rank, the bank name, the big "נשאר" (left at the end) number and the small cost number under it. I also looked at the grey "לא בחשבון" notes. I ignored the orange, yellow and red bars because I don't know what each colour means. The legend is far down, under Interactive Brokers.
+- **Fund list:** I looked at the fund name and the shekel figure on the far left (−43, −447, and so on). I ignored the coloured tags, the "מול המדד" column (versus the index, +0.37% and so on) and the 7-digit numbers.
+- **The "what changes the most" chart and table:** I read the table's "ההפרש" column (the difference) and the "שנים" row (years). I saw four coloured lines (yellow for years, orange for the monthly deposit, pink for the return, turquoise for today's amount). The yellow line rising the steepest matched the table.
+- **The currency bar charts:** I only saw the big drop **"‎-21.8"** in 2022 for the hedged fund, against **"‎-7.8"** for the unhedged ones. I ignored the grey and white bars with the dollar history.
+- **The currency table:** I read the 2022 row only.
+- **The waterfall:** I read the three numbers on top (79,176 → +4,972 → +2,344) and the small table with "עלות החשבון", "עלות הקרן" and "מס" (account cost, fund cost, tax). I ignored the green and red bars on the long lists under it.
+
+## 5. What I didn't understand
+
+- **"(4D)" against "(4A)".** What do the letter and the number mean?
+- **"נאמן 0.02%".** Who is the trustee, and do I pay them?
+- **"עסקת החלף", "צוברת", "מחזיקה את המניות", "סס דיבידנד בתוך הקרן", "מס על כל חלוקה".** (Swap deal, accumulating, holds the shares itself, dividend tax inside the fund, tax on every payout.) Is each one good or bad for me?
+- **"מול המדד +0.37%"** (versus the index). Is plus good? It sounds as if the fund beat the index.
+- **Why 7% turns 70,000 into only 86,000.** I'm guessing it's inflation, but the page doesn't say it next to the number.
+- **The dotted underlines under the numbers.** Am I supposed to click them?
+- **"קיבלתם מחיר אחר? הזינו אותו"** (got a different price? enter it). A different price from whom?
+- **Why the waterfall starts from "ירושלים" (Jerusalem)** when I never chose it.
+
+## 6. What I wanted to know and couldn't find
+
+- **So what does this mean for my money if the market falls?** At 61, a fall like 2022 matters to me. There's no line saying "in a bad year you could lose X".
+- **What happens if I need the money in year 5?** Is there a penalty, or more tax?
+- **How the 25% tax is calculated when I sell.** It's only mentioned in passing.
+- **Is my money safe if Psagot runs into trouble?**
+- **How to actually open the account and set up the monthly purchase.**
+- **Whether a קופת גמל להשקעה (investment savings fund) or my pension fund would be better for someone my age.**
+- **A version of the result in ordinary shekels** (before inflation), so I can compare it with what my bank shows me.
+
+## 7. If half the page had to go
+
+First to go would be the foreign funds (iShares, Vanguard, the US ones) and Interactive Brokers, since they have no prices. Next would be the whole currency-hedging section with its charts and table, then the waterfall with its long green and red lists. After that, the coloured tags on the funds.
+
+What I'd keep: the inputs, the result box, the account list, the first few funds, the "what changes the most" table, and the bottom-line notes, moved up next to the big number.

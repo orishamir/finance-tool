@@ -1,0 +1,36 @@
+{
+  "case": "tracks-stale-annuity",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The page says its data is updated monthly, yet the figures are as of September, in November.\",\"where\":\"the data date at the top\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 5,
+        "why": "Finding 5 complains that the top of the page warns the data hasn't been updated, so the reader doubts it; that is the same stale-data problem the person raised, even though the reader doesn't mention the September-vs-November dates."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0165434
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 5,
+        "why": "Finding 5 complains that the data at the top hasn't been updated and so may not be trustworthy, which is the person's stale-data problem in other words."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0166714
+  },
+  "third": null,
+  "ranks": {
+    "k": 5
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0332148
+}

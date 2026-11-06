@@ -1,0 +1,20 @@
+{
+  "id": "selftest",
+  "about": "Exercises every kind of change on the S&P 500 page, for tools/variant-test.mjs. Never shown to a session.",
+  "purpose": "test",
+  "pages": ["/finance-tool/indices/**"],
+  "device": "both",
+  "changes": [
+    { "id": "title", "type": "text", "selector": "h1", "set": "כותרת אחרת לגמרי" },
+    { "id": "years-line", "type": "text", "find": { "regex": "נשאר לכם בעוד (\\d+) שנים", "flags": "g" }, "replace": "יהיה לכם אחרי $1 שנים" },
+    { "id": "paid-in", "type": "number", "find": 70000, "replace": 71234 },
+    { "id": "title-style", "type": "style", "selector": "h1", "set": { "text-decoration": "underline", "text-decoration-thickness": "3px" } },
+    { "id": "hide-note", "type": "hide", "text": "אפשר להחזיק אותו גם דרך קרן חוץ." },
+    { "id": "hide-search", "type": "hide", "selector": ":has(> #header-search)" },
+    { "id": "added-line", "type": "insert", "at": { "text": "הפקדתם" }, "position": "afterend", "html": "<div class=\"text-xs text-muted-foreground\">שורה שלא הייתה בדף</div>" },
+    { "id": "move-subtitle", "type": "move", "what": { "text": "בוחרים חשבון ניירות ערך וקרן" }, "to": { "text": "מדד של חמש מאות החברות הגדולות" }, "position": "afterend" },
+    { "id": "teal-to-red", "type": "colour", "map": { "oklch(0.82 0.081 190)": "oklch(0.64 0.2 27)" } },
+    { "id": "trade-token", "type": "chart-colours", "tokens": { "--chart-cost-trade": "oklch(0.55 0.19 358)" } },
+    { "id": "dollar", "type": "data", "url": "workbench-bundle.json", "set": { "fx.perEur.ILS": 4.0 } }
+  ]
+}

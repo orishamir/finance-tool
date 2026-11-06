@@ -1,0 +1,36 @@
+{
+  "case": "study-r3-six-year-compare",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"A comparison with waiting until year 6 is always present, though it is not always relevant.\",\"where\":\"the year-6 comparison\",\"kind\":\"taste\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 3 is about the same year-6 chart, but it complains about a confusing green box on a 0 ₪ tax column, not that the year-6 comparison is always shown when it isn't relevant."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0144474
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 3 is about the year-6 chart, but it complains about a confusing green box on a zero-tax column, not that the year-6 comparison is always shown even when it isn't relevant."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0146674
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.029114800000000003
+}

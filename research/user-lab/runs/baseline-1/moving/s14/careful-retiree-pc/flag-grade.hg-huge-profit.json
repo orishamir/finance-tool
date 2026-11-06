@@ -1,0 +1,36 @@
+{
+  "case": "hg-huge-profit",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The graphic shows a very large profit figure with nothing explaining where it comes from.\",\"where\":\"the profit part of the graphic\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings says the large profit figure comes with no explanation; findings 1 and 5 are about the tax figure and where its explanation appears, and finding 6 is about how busy the chart looks, not the unexplained profit."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0161954
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings says the large profit figure is unexplained; findings 1 and 5 are about the big tax figure and when it gets explained, and finding 6 is about the chart being busy, not about where the profit comes from."
+      }
+    ],
+    "liked": [],
+    "usd": 0.016351400000000002
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0325468
+}

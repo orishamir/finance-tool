@@ -1,0 +1,125 @@
+{
+  "task": "control-tracks-phone",
+  "persona": "careful-retiree-pc",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "phone",
+  "startedAt": "2026-11-05T23:33:28.602Z",
+  "structured": {
+    "answer": "If anything, Harel's 'כספי (שקלי)' track, because Harel is a big name I know and the track says 0% shares and 0% מט\"ח. But its 4.25% over 3 years doesn't look better than my bank deposit and there's a 0.57% fee, so I'll ask my son or the bank before signing anything.",
+    "confidence": "unsure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Screens 2 and 4, 'אשראי ואג\"ח' and 'אג\"ח סחיר'",
+        "why": "These looked safe (0–5% shares) but where the return should be they say 'פחות מ־3 שנים', not a number, so I couldn't compare them"
+      },
+      {
+        "where": "Screens 3–6",
+        "why": "Many cards full of percentages on a black background. I got anxious and tired and stopped after screen 6"
+      },
+      {
+        "where": "'0.57% מהחיסכון'",
+        "why": "Is this taken every year from all my money? At the bank I don't pay anything for a deposit"
+      }
+    ],
+    "used": [
+      "Heading 'כל המסלולים בכל החברות' and the selected 'קופת גמל להשקעה'",
+      "'מנתוני רשות שוק ההון'",
+      "Sentence saying companies are ordered by managed money, biggest first",
+      "Harel header: '19.1 מיליארד ₪', fees '0.54% עד 0.61%'",
+      "Track 'כספי (שקלי)': מניות 0%, מט\"ח 0%, 4.25% for 3 years, 3.08% for 5 years, 0.57% מהחיסכון",
+      "Track 'מניות' with 24.04%, which I avoided"
+    ],
+    "skimmed": [
+      "Other Harel tracks on screens 3–6 (משולב סחיר, עוקב מדדים, קיימות, הלכה)",
+      "'מה אומרים המספרים' links",
+      "The beginning of the מור section"
+    ],
+    "skipped": [
+      "Search box and 'מיון'",
+      "'מה זה קופת גמל להשקעה' link",
+      "The coloured ring charts",
+      "'עוקב מדד S&P 500' tracks",
+      "Screens 7–40 (all other companies)"
+    ],
+    "unsure_meaning": [
+      "מט\"ח",
+      "סחיר",
+      "עוקב מדד / עוקב מדדי אג\"ח",
+      "S&P 500",
+      "כספי (שקלי)",
+      "'0% ההפקדות'",
+      "'פחות מ־3 שנים' in place of a return",
+      "'123 ממקור · 123 מחושב'",
+      "Dotted purple underlines",
+      "Teal vs yellow in the circles",
+      "'קופה 15283' numbers with the arrow icon",
+      "'תשואה שנתית ממוצעת' — is 4.25% per year or in total?"
+    ],
+    "not_found": [
+      "A plain sentence saying which track is as safe as a bank deposit",
+      "A comparison with bank deposit interest",
+      "The fee in shekels on an amount like mine",
+      "Who runs this site (מקור)",
+      "A guarantee that the money can't go down"
+    ],
+    "findings": [
+      {
+        "what": "Black background with many numbers per card is tiring and frightening for older eyes",
+        "where": "Whole page"
+      },
+      {
+        "what": "The safest-looking tracks show 'פחות מ־3 שנים' instead of a return, so they can't be compared",
+        "where": "Harel 'אשראי ואג\"ח', 'אג\"ח סחיר', 'עוקב מדדי אג\"ח'"
+      },
+      {
+        "what": "No explanation of whether a track is like a deposit or how its risk compares",
+        "where": "Top of page / screen 1"
+      },
+      {
+        "what": "Fee shown only as a percentage, with no shekel amount and no 'per year'",
+        "where": "'0.57% מהחיסכון' on each card"
+      },
+      {
+        "what": "Jargon and English letters with no explanation (מט\"ח, סחיר, עוקב מדד, S&P 500)",
+        "where": "Track names, screens 2–6"
+      },
+      {
+        "what": "Big share-track returns like 24.04% stand out and could tempt or mislead",
+        "where": "Harel 'מניות', screen 3"
+      },
+      {
+        "what": "Unclear who the site 'מקור' is, so it's hard to trust",
+        "where": "Header"
+      },
+      {
+        "what": "Coloured rings with two close colours mean nothing without words",
+        "where": "Each card"
+      }
+    ]
+  },
+  "steps": 6,
+  "reads": 6,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 35678,
+    "turns": 8,
+    "usd": 0.1649128,
+    "input": 8,
+    "cacheWrite": 11363,
+    "cacheRead": 28184,
+    "output": 3417,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "control-tracks-phone",
+    "screenshots": 41,
+    "changes": [],
+    "neverShown": [],
+    "errors": []
+  }
+}

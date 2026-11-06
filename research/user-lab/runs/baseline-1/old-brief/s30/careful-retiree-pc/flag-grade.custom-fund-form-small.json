@@ -1,0 +1,82 @@
+{
+  "case": "custom-fund-form-small",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The form for adding a fund is cramped in a narrow panel and hard to move around in.\",\"where\":\"the add-a-fund form\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "The page says the user's own fund has no price in one place but shows 59,196 ₪ and 19,980 ₪ less in another, which contradicts itself",
+      "The coloured cost bars are confusing",
+      "Scrolling past about 20 Israeli funds, each with coloured tags, to find their own fund is tiring",
+      "The Interactive Brokers boxes show a figure for a different iShares fund, not the user's",
+      "The currency-hedging section has too many percentages and bar charts and isn't relevant to them",
+      "The waterfall chart is confusing because it starts from Jerusalem and an MTF fund they never chose",
+      "Two pinks in the cost-bar legend (currency conversion vs tax) look almost the same",
+      "Unclear what the middle column of percentages in the fund list is compared against",
+      "The red 'tax only when selling' tag with a lock on their fund makes them nervous",
+      "The lock symbol and the term 'open tax rule' aren't understood, and it's unclear whether the 20,000 ₪ loss is real",
+      "Their fund's ISIN code is the same as the next line's, which worries them that funds were mixed up",
+      "'Swap' is never explained, even though it is the main way their fund differs",
+      "The meaning of 4D vs 4A only became clear after a lot of reading",
+      "The legend term 'fees on top of fees' isn't understood",
+      "No simple line showing how much their own fund would leave after 10 years through a foreign broker",
+      "Can't find which Israeli account lets them buy a foreign fund, or what it charges",
+      "Can't find what 'tax only when selling' means in shekels for them",
+      "Can't find whether a fund bought abroad is riskier at their age (estate tax, how hard it is to sell)",
+      "Nothing says whether a 0.05% fee is a lot or a little",
+      "Would drop the 'what matters most' line chart",
+      "Would drop the 'what the ads say vs. the price list' box"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader never mentions the add-a-fund form or say it is cramped or hard to move around in, so nothing in the raised list matches."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0744072
+  },
+  "b": {
+    "raised": [
+      "The page can't price the reader's own fund: it shows 'not collected yet' / 'no price here'",
+      "Mixed messages: 'no price' in the list, but 59,196 ₪ and '19,980 less' in the 'Now' table, so the number seems unreliable",
+      "Cost bars are confusing: two almost identical pinks in the legend (currency conversion vs tax)",
+      "Scrolling past about 20 Israeli funds full of coloured tags is tiring",
+      "The Interactive boxes show a different iShares fund, not the reader's, and say 'no data'",
+      "Hedging section has too many percentages and bar charts",
+      "Waterfall chart starts from Jerusalem and an MTF fund the reader never chose",
+      "Unclear what the middle percentage column in the fund list compares against",
+      "The red 'tax only on sale' tag with a lock makes the reader nervous",
+      "Doesn't understand the lock symbol or what an 'open tax rule' is; is the 20,000 loss real?",
+      "The fund's ISIN code is the same as the next fund's; worried the page mixed up funds",
+      "'Swap' is never explained, and nothing says whether it's good or bad",
+      "4D vs 4A only made sense after a lot of reading",
+      "Doesn't understand 'fees on top of fees' in the legend",
+      "Can't find one simple figure for the reader's own fund bought through a foreign broker",
+      "Can't find which Israeli account lets you buy a foreign fund, or what it charges",
+      "Can't find what 'tax only on sale' means in shekels",
+      "Can't find whether a fund bought abroad is riskier at the reader's age (estate tax, how hard it is to sell)",
+      "No plain statement of whether a 0.05% fee is a lot or a little",
+      "Would drop the 'what changes the outcome most' line chart",
+      "Would drop the 'advertised vs price list' box"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The report never mentions a form for adding a fund, or any cramped narrow panel, so no raised item matches."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0641592
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1385664
+}

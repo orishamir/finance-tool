@@ -1,0 +1,36 @@
+{
+  "case": "cfc-index-column",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"Text under the index name in the index column is unnecessary, and the column is wider than its content.\",\"where\":\"the index column\",\"kind\":\"taste\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "No finding says the text under the index name is unnecessary or that the index column is too wide; finding 2 is about the index column but asks for more information, the opposite complaint, and findings 5 and 7 are about labels elsewhere."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0162994
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the findings says the text under the index name is unnecessary or that the index column is too wide; finding 2 is about the same column but complains there is too little information, which is the opposite point."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0161434
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.032442799999999994
+}

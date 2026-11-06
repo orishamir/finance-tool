@@ -1,0 +1,41 @@
+{
+  "id": "p05-repeat-sp500-pc",
+  "about": "For the lab only; never reaches a session. Planted problem, kind p05 (A label or column that only repeats what is already shown): see research/user-lab/planted.md.",
+  "purpose": "plant",
+  "pages": [
+    "/finance-tool/indices/sp500"
+  ],
+  "device": "pc",
+  "instance": {
+    "kind": "p05",
+    "mode": "page",
+    "url": "https://orishamir.github.io/finance-tool/indices/sp500",
+    "device": "pc",
+    "steps": [],
+    "task": "sp500",
+    "control": "planted/control-sp500-pc",
+    "split": "tune"
+  },
+  "plants": [
+    {
+      "id": "p05",
+      "kind": "general",
+      "problem": "Every row of the account list says \"חשבון ניירות ערך\" under the bank's name, the same words on every row of a list that is all of that kind.",
+      "where": "the list of all accounts, under each bank's name",
+      "counts": "A finding that the same words appear on every row of the account list and add nothing.",
+      "notCounts": "Remarks about the other small notes on some rows (the standing-order price)."
+    }
+  ],
+  "changes": [
+    {
+      "id": "repeat",
+      "type": "insert",
+      "at": {
+        "selector": "div[role=radio][data-pick-key] span.min-h-5",
+        "all": true
+      },
+      "position": "afterbegin",
+      "html": "<span>חשבון ניירות ערך</span>"
+    }
+  ]
+}

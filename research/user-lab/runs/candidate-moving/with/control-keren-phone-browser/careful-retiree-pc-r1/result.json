@@ -1,0 +1,102 @@
+{
+  "task": "control-keren-phone-browser",
+  "persona": "careful-retiree-pc",
+  "repeat": 1,
+  "mode": "browser",
+  "device": "phone",
+  "startedAt": "2026-11-06T02:04:21.515Z",
+  "structured": {
+    "answer": "After 8 years, putting in 500 ₪ a month, I'd have about 68,853 ₪ (48,000 of it my own money, no tax), if their assumed 7% a year holds. For 4 years the page gives self-employed people no number at all, only a note that you pay tax before 6 years.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Calculator, year 4 selected",
+        "why": "The fund bar was an empty dotted box, and the only number, 25,725, was under 'אותו כסף בחשבון ניירות ערך', which isn't the fund. It took me a moment to understand there is no figure for 4 years."
+      },
+      {
+        "where": "After clicking עצמאים",
+        "why": "The input boxes moved around (תשואה jumped from right to left), so I had to find them again."
+      }
+    ],
+    "used": [
+      "Calculator 'כמה כסף נשאר לכם, ומתי?' with עצמאים selected",
+      "Year buttons 4 and 8 under the bar chart",
+      "Orange note 'לעצמאים עוד אין כאן חישוב למשיכה לפני 6 שנים'",
+      "Bar 'נשאר בידיים 68,853', 'הפקדתם 48,000', 'המס לקח 0'",
+      "Sentence 'התשואה 7%... הנחות של האתר, לא תחזית' and 'כל הסכומים בכסף של היום'"
+    ],
+    "skimmed": [
+      "Opening section 'מה זה' (6 years, 3 years at retirement age, 20,566 ₪ a year for self-employed)",
+      "Bar colours in the small chart of years 6-12"
+    ],
+    "skipped": [
+      "'כדאי להכיר גם' and 'במה אפשר להשקיע' buttons",
+      "Paragraph about S&P 500 (4D) and ילין לפידות",
+      "Sections 'שווה לדעת' and 'מי מציע ומי מצטרף'",
+      "חוקים וכללים · 10"
+    ],
+    "unsure_meaning": [
+      "מסלול מדד",
+      "החזר המס הוסיף",
+      "אותו כסף בחשבון ניירות ערך",
+      "הכנסה חייבת בחודש",
+      "S&P 500 (4D)",
+      "Dotted purple underlines under numbers",
+      "Yellow / light green / dark green parts of the bars"
+    ],
+    "not_found": [
+      "Any amount for withdrawing after 4 years as self-employed",
+      "A plain sentence summing up the 8-year result"
+    ],
+    "findings": [
+      {
+        "what": "No result at all for self-employed people withdrawing before 6 years: an empty bar and an orange note, yet the year can still be selected",
+        "where": "Calculator, years 1-5"
+      },
+      {
+        "what": "The only number shown at year 4 (25,725) belongs to a different product, so it's easy to mistake it for the fund amount",
+        "where": "Results column 'אותו כסף בחשבון ניירות ערך'"
+      },
+      {
+        "what": "Input boxes swap places after switching to עצמאים",
+        "where": "Calculator inputs"
+      },
+      {
+        "what": "Dark background with grey text and pink 'מס' label, hard to read and alarming",
+        "where": "Chart headings"
+      },
+      {
+        "what": "Close colours in the bars (yellow, two greens) can't be told apart",
+        "where": "Bar chart"
+      },
+      {
+        "what": "Unfamiliar terms: מסלול מדד, S&P 500, a company name I don't know",
+        "where": "Under the chart"
+      }
+    ]
+  },
+  "steps": 9,
+  "reads": 8,
+  "commands": 9,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 69383,
+    "turns": 19,
+    "usd": 0.31048880000000006,
+    "input": 36,
+    "cacheWrite": 20567,
+    "cacheRead": 267744,
+    "output": 4613,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "control-keren-phone-browser",
+    "screenshots": 9,
+    "changes": [],
+    "neverShown": [],
+    "errors": []
+  }
+}

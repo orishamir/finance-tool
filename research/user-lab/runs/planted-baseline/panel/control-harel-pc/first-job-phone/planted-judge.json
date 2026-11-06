@@ -1,0 +1,47 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "Most rows show 'less than 3 years' instead of a return, so the reader can't compare tracks on returns.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "Fees appear only as percentages, and they are nearly the same across tracks. The reader wanted shekel amounts.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "The page gives no next step or instructions for opening the fund.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "The exposure rings use colours the reader had to guess, so a main column was unclear.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "Rows are cut off between screens, so the reader didn't see some tracks in full.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 6,
+      "summary": "The important notes under the table are in small grey text.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 7,
+      "summary": "Many tracks look alike and have jargon names, which makes it hard to tell them apart and choose one.",
+      "serious": true,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.027214800000000004
+}

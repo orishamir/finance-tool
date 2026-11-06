@@ -1,0 +1,96 @@
+{
+  "case": "rules-toggle-empty",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"A 'הצגת/הסתרת החוקים והכללים' button is repeated on sections across the site, and on some sections pressing it changes nothing because there are no rules there.\",\"where\":\"the show/hide rules buttons on the page's sections\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Calculator shows ending with less than deposited (68,270 vs 70,000) and the page doesn't help compare a deposit with alternatives like the S&P 500",
+      "Legend row '123 מקור / מחושב / הזנה' is confusing and looks technical",
+      "Sentence about a non-linked deposit returning principal plus interest took two reads",
+      "Mention of '8 סוגי פיקדון מקובלים' went over the reader's head",
+      "'איזו ריבית היא העוגן' is unclear: doesn't know what the anchor rate means",
+      "Doesn't see why the optional age field matters or what it does to the chart",
+      "Confusing that the example is a 12-month deposit but the chart runs 10 years (renewal? monthly additions?)",
+      "Doesn't understand why 'במה אפשר להשקיע בתוכו: מזומן שקלי' is there",
+      "Codes like TXI-03, BANK-06, BANK-23 mean nothing",
+      "Can open a deposit at another bank since 01.12.2025 but the page doesn't say how",
+      "'כמה זה עולה' gives no actual number for exit fees",
+      "'25% מהריבית הריאלית' for linked deposits is lost on the reader",
+      "Red box says the site doesn't calculate the early-breaking fine, so the main question goes unanswered",
+      "Small text about the prime rate is too technical",
+      "Scary that no law returns money if a bank collapses, and no indication of how likely that is",
+      "'הצגת החוקים והכללים' links sound legal and heavy; would cut them",
+      "In the chart, the grey deposits line is barely visible and the pink tax area can't be seen",
+      "Unclear difference between 'בכסף של היום' and 'בשקלים של העתיד'",
+      "'איפה מופיע' column in the terms table seems pointless",
+      "'עוד שאלה פתוחה' about tax on a broken deposit: open for whom?",
+      "Missing today's actual rates at each bank side by side (is 1.8% good?)",
+      "Missing a minimum amount to open a deposit",
+      "Missing how to actually open a deposit (app or branch)",
+      "Missing a plain answer on whether it's worth it when inflation exceeds interest",
+      "Terms table is too long; would cut it to a few words or hover tooltips",
+      "'מה האתר לקח בחשבון' feels unneeded; would cut it",
+      "Low-income, securities-loss and linked-deposit tax details are irrelevant; would cut them",
+      "'שווה לדעת' repeats other sections and adds codes",
+      "'כסף נכנס ויוצא' says almost nothing"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The report only says the rules links sound legal and heavy and should be cut, and never says the button repeats across sections or does nothing where there are no rules, so it touches the same element for a different reason."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0779112
+  },
+  "b": {
+    "raised": [
+      "Calculator shows ending with less than deposited (68,270 vs 70,000), which raises doubt about whether a deposit is worth it, and the page doesn't help compare it with S&P 500 or other options",
+      "Legend row '123 מקור / מחושב / הזנה' is confusing and looks technical",
+      "Line about a non-linked deposit returning principal plus interest took two reads",
+      "Sentence about '8 סוגי פיקדון מקובלים' went over the reader's head",
+      "Doesn't understand what 'העוגן' (anchor rate) means",
+      "Doesn't see why the optional age field matters or what it does to the chart",
+      "Confusing that the example is a 12-month deposit while the chart runs 10 years (renewal? monthly additions?)",
+      "Doesn't understand why 'במה אפשר להשקיע בתוכו: מזומן שקלי' is there",
+      "Codes like TXI-03, BANK-06, BANK-23 mean nothing",
+      "Can open a deposit at a bank without an account, but doesn't know how",
+      "'כמה זה עולה' gives no actual number for exit fees",
+      "'25% מהריבית הריאלית' for linked deposits is not understood",
+      "Red box says the site doesn't calculate the early-breaking fine, so the main question goes unanswered",
+      "Text about the prime rate is too technical",
+      "Scared that no law returns money if a bank collapses, and the page doesn't say how likely that is",
+      "'הצגת החוקים והכללים' links sound legal and heavy and get ignored (would cut them)",
+      "Grey deposits line barely visible and pink tax area not visible at all on the chart",
+      "Unsure what 'בכסף של היום' vs 'בשקלים של העתיד' means",
+      "Doesn't know why the 'איפה מופיע' column in the terms table is needed",
+      "'עוד שאלה פתוחה' about tax on a broken deposit: open for whom?",
+      "Missing today's actual rates at each bank side by side (is 1.8% good?)",
+      "Missing the minimum amount needed to open a deposit",
+      "Would cut the long 'מונחים' table down to a few words or hover",
+      "Would cut 'מה האתר לקח בחשבון'",
+      "Would cut tax details for low income, securities losses and linked deposits",
+      "Would cut 'שווה לדעת' because it repeats other sections and adds codes",
+      "Would cut 'כסף נכנס ויוצא' because it says almost nothing"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader only says the rules links sound legal and heavy and would cut them, but never mentions that they repeat on every section or that some do nothing when pressed because those sections have no rules."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0777632
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1556744
+}

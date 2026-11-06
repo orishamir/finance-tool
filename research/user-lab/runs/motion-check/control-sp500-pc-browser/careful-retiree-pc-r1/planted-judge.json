@@ -1,0 +1,47 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "Page opens with English index names and a dark screen, which feels scary to someone looking for safe saving. This is a matter of tone and taste, and it doesn't block use.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "The 2% inflation assumption only shows after opening a box. The reader did open it, so the button works. This is a wish for more visibility, not a blocker.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "The small grey caveat text under the result numbers is hard to read even when enlarged. It is secondary text, not the main figure.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "The cost bar uses similar colors and tiny numbers, and the large tax segment (15,364) has no plain explanation. The reader can't properly understand a main figure.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "The −122 ₪ minus sign made the reader pause, but they understood it is just the gap between two options. A minor stumble.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 6,
+      "summary": "Nothing says the 7% return isn't guaranteed or that the fund can lose value. This could lead to a wrong decision.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 7,
+      "summary": "Key terms (קרן מחקה, נאמן, דמי משמרת) are not explained where they appear. A novice can't understand the options being compared.",
+      "serious": true,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.0327228
+}

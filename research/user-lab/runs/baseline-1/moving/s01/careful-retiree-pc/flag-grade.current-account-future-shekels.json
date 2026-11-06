@@ -1,0 +1,36 @@
+{
+  "case": "current-account-future-shekels",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"With 'בשקלים של העתיד' chosen, the figures ignore inflation, so they are wrong.\",\"where\":\"the chart and figures of the panel\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings says the 'future shekels' figures ignore inflation; finding 5 questions the 5% return and the unexplained 74,044 number, which is a different complaint."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0147394
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the findings says the 'future shekels' figures ignore inflation; finding 5 is about the same chart but complains about a confusing 5% return and an unexplained big number, not about inflation making the figures wrong."
+      }
+    ],
+    "liked": [],
+    "usd": 0.014879400000000001
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0296188
+}

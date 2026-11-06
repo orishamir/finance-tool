@@ -18,6 +18,13 @@ was live then). The whole screen, never a crop of the spot, so the reviewer has 
 else. Each case has a key for the grader: the problem in one neutral sentence, where it is, and whether it is
 **general** (any reader would trip on it, or a published usability finding says so) or **taste** (his preference).
 
+**Three signals, and nothing else** (founder, 2026-11-06: "a complaint is a real signal, i like it is a real signal,
+its fine is pretty real, and thats it"). A complaint is a flag. "I like it" said of a thing is an approval, and the
+reviewer should not flag that very thing; "it's fine" is nearly as strong. Nothing else counts: not silence ("silence
+isnt consent"), and not going along with something or picking one option of several, because he often goes along
+"because i know i will see it live on the site and decide it there". So a reviewer's finding on something he never
+complained about is never scored wrong for that reason; it goes to the noise sample, where he says yes or no.
+
 About a third of the cases are **held out**, by page and by date. The instruction set is never tuned on them, and the
 held-out score is the only one reported as the result.
 
@@ -48,7 +55,9 @@ with a key for the grader and a matched **clean control**, the same page and sta
 - **Planted catch rate:** the share of planted problems named among the first 10 findings, by kind, graded blind as
   above. Reported beside the headline, never in place of it: Claude chose what to plant, so a high score here shows
   the reviewer sees what Claude expects, not yet what people see.
-- **False alarms:** on clean controls, the share of serious findings about something that is not there.
+- **False alarms:** on clean controls, the share of findings about something that is not there: the planted problem
+  named on a screen that does not carry it, or a claim about the screen that the screen contradicts. A finding about a
+  real problem of the live page is not a false alarm; no one having flagged it does not make the page fine.
 - **No tuning to the plant.** An instruction may not be changed to catch one planted instance; the kinds are general,
   each planted on several pages and devices, and the instances used to tune are kept apart from those used to score,
   as with the real cases.
@@ -58,6 +67,38 @@ with a key for the grader and a matched **clean control**, the same page and sta
 A variant can also be a proposed change: new words, a moved block, other colours, or a branch's build behind the
 same address. The reviewer and the persona readers use it as if it were the site, so a change is judged on the real
 page, with everything around it, before it is built or pushed.
+
+## How the numbers are read (added 2026-11-06, before any baseline)
+
+From the research on how well people and models find usability problems (`evidence/README.md`, list c). The bar does
+not move; these say how a score is taken and read.
+
+- **Goal, never the problem.** Every case gives the reviewer the person's goal on that screen (what they came to do),
+  and nothing that names or hints at the problem. Without a goal, a miss may only mean another task was walked.
+- **Two catch rates, with ranks.** The headline stays "among the first 10"; beside it, the catch rate over all
+  findings and the rank of each hit. A problem found at rank 14 is a ranking failure, one never found a seeing
+  failure; they need different fixes.
+- **Intervals.** Every rate carries its 95% interval (21 of 30 is anywhere from 52% to 83%). With about 40 held-out
+  general problems an interval is roughly 30 points wide, so adoption on the bar above is provisional: the live miss
+  rate over the next flags is what confirms or withdraws it.
+- **One run and three merged runs.** Each case is scored on a single run (with the steadiness rule) and on three runs
+  merged and re-ranked to 10; pooling is the one measured remedy for evaluators missing what others see.
+- **Sort before calling it noise.** A finding that matches no key is one of three: real but not in the key, a false
+  alarm (true, but this person would not notice or be affected), or a hallucination (not on the screen). Only the last
+  two are noise; the first goes to the founder's yes/no sample like any other. A few items appear in his sample twice,
+  to see how steady that judgement is.
+  *(2026-11-06, the founder)* "This page does not do X" is not a finding about that page: it is valid only as "the site
+  does not do X" or "the way to X from here is long or hidden". A reader who could not look elsewhere on the site (still
+  pictures) leaves it unchecked; it is neither a catch nor counted as noise until someone has looked.
+- **Graders.** The matching rule is written down (`tools/score.mjs`), and how often two graders agree is reported
+  with every score.
+- **Planted beside real.** The planted catch rate is reported next to the catch rate on his flags. A high planted score
+  beside a low real one is the sign of a reviewer reciting textbook rules, not seeing like a person.
+- **Never "sounds human".** No score rewards how human a report reads; that correlated 0.10 with being right.
+- **What people reach.** Scores are read against what people do at the same job: one expert alone finds roughly 4% to
+  35% of the problems users meet, two experts share a median of 13% to 27%, and only a pooled panel of three to five
+  reaches about 70%. A low first baseline is expected. When a real person or two can review a few held-out screens
+  blind, their score becomes this site's own ceiling.
 
 ## After it is tuned
 

@@ -1,0 +1,36 @@
+{
+  "case": "label-icons",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The icons on the fund labels are weak and do not help tell the labels apart.\",\"where\":\"the labels on fund rows\",\"kind\":\"taste\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings mention the icons on the fund labels or say they fail to tell the labels apart; findings 2 and 4 look at the fund list but complain about red minus amounts and English names."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0153474
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings mention the icons on the fund labels. The nearest ones are about English fund names (4) and red minus amounts (2), which are different problems in the same area of the screen."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0152554
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0306028
+}

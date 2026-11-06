@@ -1,0 +1,65 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "The '123 מקור · 123 מחושב' legend is confusing. The reader saw the different underline colours but couldn't tell which numbers are sourced facts and which the site calculated.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "The tags 'BANK-17', 'BANK-35' and 'חוקים וכללים · 5' meant nothing to the reader, so they ignored them.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "Small orange circles beside ₪5.00, ₪10.00 and ₪1.00 (the 2027 prices) are never explained, which made the reader worry that something is wrong with those figures.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "The reader never saw how the 'how much to keep' section begins, and part of 'שווה לדעת' is missing between the screenshots.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "Some terms are left unexplained: the 'מזומן שקלי' button, 'מוצרי שוק הכסף' and 'מק\"מ'.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 6,
+      "summary": "The statement 'רוב הבנקים משלמים בעו\"ש 0%: 4 מתוך 8' contradicts itself, because four out of eight is half, not most. This made the reader trust the numbers less.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 7,
+      "summary": "The page doesn't give the price of the extended package (המסלול המורחב) or say how to check which package you're on.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 8,
+      "summary": "The reader didn't understand the 2026 law or the private guarantee of up to ₪250,000, though they did get that their current-account balance isn't covered.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 9,
+      "summary": "There's no concrete answer to the main question of how much money to keep in the current account, such as one month's or three months' spending. The reader was left only about 50% sure.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 10,
+      "summary": "The reader wanted more detail. Banks aren't named apart from Discount (the full table is behind a link), and the page doesn't say whether the daily money fund is safe, how quickly you can withdraw, or what fee it charges.",
+      "serious": false,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.0609308
+}

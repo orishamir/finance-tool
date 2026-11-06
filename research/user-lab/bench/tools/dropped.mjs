@@ -1,0 +1,41 @@
+// Flags that are not benchmark cases, with the reason. make.mjs checks that every line of raw/flags.jsonl is either in
+// a case or here.
+const chat = "a drawing shown only in the chat; not kept in the repository, so the screen cannot be rebuilt";
+const draft = "wording proposed in the chat, not a screen";
+const motion = "motion or speed; a still picture cannot show it";
+export const dropped = {
+  "tr-1022-053": chat,
+  "tr-1024-111": "said of a sketch shown in the chat (a wish for a better word than 'כלל'); not kept",
+  "tr-1025-139": chat, "tr-1025-144": chat, "tr-1025-150": chat, "tr-1025-152": chat, "tr-1025-154": chat,
+  "tr-1025-156": chat, "tr-1025-157": chat, "tr-1025-158": chat, "tr-1025-162": chat, "tr-1025-169": chat,
+  "tr-1025-185": chat, "tr-1025-186": chat, "tr-1025-188": chat,
+  "tr-1028-227": chat, "tr-1028-228": chat + "; also about speed", "tr-1028-231": chat, "tr-1028-232": chat, "tr-1028-233": chat, "tr-1028-234": chat,
+  "tr-1104-495": "a 'who are you' picker proposed in the chat; the drawing kept for that day does not hold it",
+  "tr-1025-183": draft, "tr-1102-355": draft, "tr-1102-356": draft, "tr-1102-358": draft, "tr-1102-360": draft, "tr-1102-361": draft,
+  "tr-1102-363": draft, "tr-1102-383": draft, "tr-1102-384": draft, "tr-1102-388": draft, "tr-1102-390": draft,
+  "tr-1024-102": "no byline was ever in the site's text; he was answering a line proposed in the chat",
+  "tr-1025-180": "a link that does nothing when pressed; a picture cannot show it",
+  "tr-1025-196": "about where a link leads (a web page rather than the law's file); not visible on the screen",
+  "gh-19": "about where source links lead (long files rather than the page); not visible on the screen",
+  "tr-1103-429": "about where a source link leads; not visible on the screen",
+  "tr-1026-204": "the page where he saw the prime-rate notation could not be identified",
+  "tr-1026-218": motion, "tr-1031-319": motion, "tr-1103-445": motion, "gh-18": motion,
+  "gh-25": "the whole site's use of wide screens; no single screen", "tr-1103-458": "the whole site's use of wide screens; no single screen",
+  "gh-26": "a request to collect a kind of track the site does not hold; nothing on a screen",
+  "tr-1031-309": "an expectation about what pressing an account should do; interaction, not visible",
+  "tr-1102-353": "not a complaint: a pointer to which headings to work on",
+  "tr-1103-439": "a request to make two pages alike; no flaw named on either screen",
+  "tr-1104-474": "a question about whether one house is ever a good choice, not about the screen",
+  "tr-1104-501": "a negative figure with a fund he added; it did not appear with the page's default plan, and his own plan's figures are private",
+  "tr-1105-546": "he withdrew it in his next message", "tr-1105-547": "he withdrew it ('for this page it makes sense')",
+  "tr-1105-551": "the screen already gives the reason the question matters; his question was about the reasoning",
+  "tr-1105-567": "a principle about colour; the drawing it answered is not committed yet",
+  "tr-1103-417": "a choice between drawn options with no reason given",
+  "idx-r4-linked-lists": "a choice that approves a drawing; no problem named (stays in the calibration set)",
+  "idx-r5-slots": "a choice between drawings; no problem named (stays in the calibration set)",
+  "hedging-r2-page": "a choice of the recommended drawing; no problem named (stays in the calibration set)",
+  "custom-index-no-fund": "a choice between drawings; no problem named (stays in the calibration set)",
+  "indices-visuals-every-pair": "a choice between drawings; the one he did not like carries no reason (stays in the calibration set)",
+  "rows-shared-labels": "an approval, not a problem (stays in the calibration set)",
+  "cost-bars-dont-add-up": "the team's own finding, which he only quoted (stays in the calibration set)",
+};

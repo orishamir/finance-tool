@@ -1,0 +1,37 @@
+{
+  "id": "p09-disagree-ta125-phone",
+  "about": "For the lab only; never reaches a session. Planted problem, kind p09 (Two figures for the same thing that disagree): see research/user-lab/planted.md.",
+  "purpose": "plant",
+  "pages": [
+    "/finance-tool/indices/ta125"
+  ],
+  "device": "phone",
+  "instance": {
+    "kind": "p09",
+    "mode": "page",
+    "url": "https://orishamir.github.io/finance-tool/indices/ta125",
+    "device": "phone",
+    "steps": [],
+    "task": "ta125",
+    "control": "planted/control-ta125-phone",
+    "split": "tune"
+  },
+  "plants": [
+    {
+      "id": "p09",
+      "kind": "general",
+      "problem": "The line under the main result says \"in 15 years\" while the years field and the cost heading say 10 years.",
+      "where": "the line under the main result",
+      "counts": "A finding that the number of years under the result does not match the years entered or the other headings.",
+      "notCounts": "Wanting a longer or shorter horizon."
+    }
+  ],
+  "changes": [
+    {
+      "id": "disagree",
+      "type": "text",
+      "find": "נשאר לכם בעוד 10 שנים",
+      "replace": "נשאר לכם בעוד 15 שנים"
+    }
+  ]
+}

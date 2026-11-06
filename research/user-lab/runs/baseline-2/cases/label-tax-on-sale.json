@@ -1,0 +1,13 @@
+{
+ "id": "label-tax-on-sale",
+ "task": "s27",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "The label 'מס רק במכירה' states something the site does not know: what happens to tax while a foreign fund accumulates is an open question.",
+   "where": "the label on foreign accumulating funds",
+   "kind": "general"
+  }
+ ],
+ "liked": []
+}

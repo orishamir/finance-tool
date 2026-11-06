@@ -1,0 +1,79 @@
+{
+  "case": "home-door-guide",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The home link 'להבין סוג של חיסכון' promises help with one kind of saving but opens only the general list of guides.\",\"where\":\"the link on the home page and where it leads\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Not sure what to do next after finding the S&P card; doesn't know which 'where the money is held' option to pick",
+      "The top-menu 'השקעה במדד' link might have been the better way in, so the home box may have been the wrong choice",
+      "The 'מה השאלה שלכם?' form asks for numbers before the user understands anything",
+      "Unsure whether the search box understands English terms like 'S&P 500'",
+      "The 'שני חלקים בכל חיסכון' split (where it's held vs what it's invested in) confused them",
+      "The 'מאיפה להתחיל' links (קרן השתלמות, קרן חדשה מקיפה, קרן כספית) don't explain how they relate to S&P 500",
+      "Too many 'איפה הכסף מוחזק' cards, with names that sound alike",
+      "Most cards lack the 'בשפה פשוטה' plain-language line",
+      "Doesn't understand 'במשקל לפי שווי השוק הסחיר' on the S&P card",
+      "Unclear which fund 'invested in dollars through a fund that tracks it' means, whether to buy it yourself, and whether dollars are a risk",
+      "Doesn't understand 'חשיפה לדולר או מנוטרלת ממנו'",
+      "Jargon not understood: מק\"מ, אג\"ח, צמודה, ניהול אישי, מסלול",
+      "Doesn't understand how 'where it's held' connects to 'what it's invested in' (e.g. S&P inside קרן השתלמות or a securities account)",
+      "No plain answer to 'how do I actually invest in the S&P 500'",
+      "Nothing says whether it's risky or whether you can lose money",
+      "The home box promised cost and tax info ('כמה זה עולה ואיך זה ממוסה') but the guide page it led to shows none of that",
+      "Nothing about how much to start with or whether small monthly deposits work",
+      "Nothing on which option suits someone like them (24, salaried, no goal)",
+      "Would drop most 'איפה הכסף מוחזק' cards (children, retirement, קרן כספית מתחדשת, ניהול אישי), and מק\"מ appears twice",
+      "Would drop unneeded index cards (MSCI variants, ת\"א-90, government bonds) and 'מה האתר עוד לא מכסה'",
+      "Would drop the 'מה השאלה שלכם?' form from the home page first"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 16,
+        "why": "The reader says the home box 'להבין סוג של חיסכון' promised what-it-is, cost and tax info, but it led to a guide page that shows none of that, which matches the person's complaint that the link's promise doesn't match where it goes."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0612032
+  },
+  "b": {
+    "raised": [
+      "Unsure what to actually do next / which 'where the money is held' option to pick",
+      "Didn't want to fill in numbers in the 'מה השאלה שלכם?' form before understanding anything; it's first to go on the home page",
+      "Unsure whether the search box understands English like 'S&P 500'",
+      "Confused by the split between 'where the money is held' and 'what it's invested in' (thought S&P 500 is the saving)",
+      "'מאיפה להתחיל' items don't say how they relate to S&P 500",
+      "Too many 'איפה הכסף מוחזק' cards, and the names all sound alike",
+      "Most cards lack the 'בשפה פשוטה' plain-language line",
+      "Doesn't understand 'במשקל לפי שווי השוק הסחיר' in the S&P card",
+      "S&P card's 'invested in dollars through a fund' is unclear: which fund, buy it myself, is dollars a risk?",
+      "'חשיפה לדולר או מנוטרלת ממנו' is confusing",
+      "Unknown jargon: מק\"מ, אג\"ח, צמודה, ניהול אישי, מסלול",
+      "No plain answer to 'how do I actually invest in the S&P 500?'",
+      "No information on risk / whether you can lose money",
+      "Home box promised cost and tax info, but the guide page it leads to shows none of that",
+      "No guidance on how much to start with or monthly amounts",
+      "No guidance on which option suits someone like them (24, salaried, no goal)",
+      "Would drop most 'where held' cards (children, retirement, ניהול אישי); מק\"מ appears twice",
+      "Would drop unneeded index cards and 'מה האתר עוד לא מכסה'"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 14,
+        "why": "The reader says the home box promised 'what it costs and how it's taxed' but the guide page it opened shows none of that, which is the same mismatch between the link's promise and where it leads."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0691832
+  },
+  "third": null,
+  "ranks": {
+    "k": 14
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1303864
+}

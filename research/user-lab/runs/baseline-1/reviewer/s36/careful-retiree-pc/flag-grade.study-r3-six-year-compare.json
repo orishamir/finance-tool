@@ -1,0 +1,36 @@
+{
+  "case": "study-r3-six-year-compare",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"A comparison with waiting until year 6 is always present, though it is not always relevant.\",\"where\":\"the year-6 comparison\",\"kind\":\"taste\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings mention the year-6 comparison or say it shows up when it isn't relevant; finding 7 is about a different comparison, the securities account, and complains only that it's hard to see."
+      }
+    ],
+    "liked": [],
+    "usd": 0.014619400000000001
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the findings say the year-6 comparison is shown when it doesn't apply; finding 7 is about a different comparison (the securities account) and only says its line is too small."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0142994
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0289188
+}

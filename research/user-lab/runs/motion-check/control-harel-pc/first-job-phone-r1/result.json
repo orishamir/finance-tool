@@ -1,0 +1,122 @@
+{
+  "task": "control-harel-pc",
+  "persona": "first-job-phone",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T00:22:48.885Z",
+  "structured": {
+    "answer": "I'd pick Harel's \"עוקב מדד S&P 500\" track (קופה 13414): it's the S&P my friends talk about, it shows the highest returns on the page (13.7% over 3 years, 11.92% over 5), and the fee, 0.56%, is the same tiny number as everyone else's.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Bottom of screen 2 / top of screen 3",
+        "why": "The rows are cut off between screenshots: the 'הלכה יהודית' row shows only '5.73% 5 שנים' and I never saw its name or its other numbers."
+      },
+      {
+        "where": "Most rows showing 'פחות מ־3 שנים' instead of a return",
+        "why": "I couldn't compare those tracks at all, so I only compared the few that had numbers."
+      },
+      {
+        "where": "'עוקב מדד S&P 500' vs 'עוקב מדדי מניות'",
+        "why": "Both sound like shares and an index and both have 99% מניות. The second one shows no return, so I went with the S&P one I recognised."
+      },
+      {
+        "where": "After choosing",
+        "why": "There's no button or link to actually open the קופה with Harel, so I don't know what the first step is."
+      }
+    ],
+    "used": [
+      "Heading 'הראל' and the selected tab 'קופת גמל להשקעה 16'",
+      "Track names in the right column of the table",
+      "Returns column 'תשואה שנתית ממוצעת': 13.7% 3 שנים / 11.92% 5 שנים for עוקב מדד S&P 500",
+      "Fee column: '0.56% מההיסכון', '0% מההפקדות'",
+      "Fund size '2.3 מיליארד ₪'"
+    ],
+    "skimmed": [
+      "Intro text under the heading about fees from 2025 and the September 2026 data",
+      "'16 מסלולים · דמי ניהול ההיסכון: מ־0.54% עד 0.61%' line",
+      "The חשיפה למניות ולמט\"ח column and the ring charts",
+      "Other tracks' returns: כספי (שקלי) 4.25%, קיימות 1.78%, אשראי ואג\"ח עם מניות 8.6%"
+    ],
+    "skipped": [
+      "Line 'התקרה בחוק: 1.05% מההיסכון, 4% מההפקדות' and the line about extra direct costs below the table",
+      "Grey note about past returns ('התשואה היא תשואת עבר...')",
+      "All folds under 'מה כתוב במסמכים של הראל'",
+      "The 'לא מצאתם שם?' search box",
+      "Footer links",
+      "The '123 מקור / 123 מחושב' line",
+      "The ? tooltips in the column headers",
+      "The links 'מה זה קופת גמל להשקעה' and 'כל המסלולים של קופת גמל להשקעה בכל החברות'"
+    ],
+    "unsure_meaning": [
+      "מט\"ח (in 'חשיפה למניות ולמט\"ח'; e.g. 99% for S&P)",
+      "'פחות מ־3 שנים' (I guessed it means the track is too new to show returns)",
+      "Tags 'עוקב מדדי אג\"ח' and 'הלכה יהודית'",
+      "'123 מקור / 123 מחושב'",
+      "The yellow and teal ring charts",
+      "'מההיסכון' vs 'מההפקדות' (two different fees?)",
+      "Whether 13.7% is per year or the total over 3 years"
+    ],
+    "not_found": [
+      "A button or step to actually open the קופה with Harel",
+      "The fee in shekels on my amount",
+      "A recommendation for which track suits someone like me",
+      "Returns for most of the tracks"
+    ],
+    "findings": [
+      {
+        "what": "16 tracks with almost identical fees (0.54–0.61%) and no recommendation. Without a familiar name I couldn't have chosen.",
+        "where": "Main table, screens 1–2"
+      },
+      {
+        "what": "Most rows show 'פחות מ־3 שנים' instead of any return, so there's nothing to compare",
+        "where": "Returns column, screens 1–2"
+      },
+      {
+        "what": "Fees shown only as percentages. It doesn't say how much that is in shekels.",
+        "where": "דמי ניהול column"
+      },
+      {
+        "what": "No next step: no link or button to open the account or contact Harel",
+        "where": "Whole page"
+      },
+      {
+        "what": "Table rows cut off between screens, so one track (הלכה יהודית) never showed its name and numbers together",
+        "where": "Bottom of screen 2 / top of screen 3"
+      },
+      {
+        "what": "Jargon in the column headers (חשיפה למניות ולמט\"ח) and unexplained ring charts",
+        "where": "Table header and the חשיפה column"
+      },
+      {
+        "what": "A long list of folded document sections at the bottom whose titles don't tell me why to open them",
+        "where": "'מה כתוב במסמכים של הראל', screens 3–4"
+      }
+    ]
+  },
+  "steps": 4,
+  "reads": 4,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 35543,
+    "turns": 6,
+    "usd": 0.131957,
+    "input": 6,
+    "cacheWrite": 7629,
+    "cacheRead": 14605,
+    "output": 3399,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "control-harel-pc",
+    "screenshots": 6,
+    "changes": [],
+    "neverShown": [],
+    "errors": []
+  }
+}
