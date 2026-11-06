@@ -1886,7 +1886,7 @@
     {
       "what": "חשבון עובר ושב: עמלת מינימום חודשית עד 6.30 ₪ (מחיר פעולה על ידי פקיד), פעולה בערוץ ישיר 2.00 ₪, מסלול בסיסי 10 ₪ ומורחב 30 ₪ לחודש; מורים במסלול 10: 10 ₪",
       "page": 3,
-      "why": "The securities account rests on a current account. Part 1 s.1.2.1 note 4: the higher of the actions done or 'עמלת מינימום בסכום שאינו עולה על מחיר של פעולה אחת על ידי פקיד' (6.3). No bank's record prices the current account yet; a decision for all banks at once."
+      "why": "Only the monthly minimum is priced (`current_account`, F-102, D64): a bank's row counts it unless the person marks the bank as their own. The per-action fees and the tracks are not used: the row counts an account whose actions the minimum covers. Part 1 s.1.2.1 note 4: the higher of the actions done or 'עמלת מינימום בסכום שאינו עולה על מחיר של פעולה אחת על ידי פקיד' (6.3)."
     },
     {
       "what": "עמלות ממוצעות בפועל, מחצית ראשונה 2026: דמי ניהול ני\"ע ישראליים 0.33%-0.59% לשנה, זרים 0.28%-0.67%; קנייה ומכירה של מניות ואג\"ח 0.14%-0.40%",

@@ -26,6 +26,9 @@ export interface GroupCopy {
    * read like one that names funds: it keeps its own end (`for_months`) and the person's stay in the group. Absent: none.
    */
   adopted?: GroupFee[];
+  /** F-102: the group's own current-account price where its annex prints one (the record's `current_account` of the entry): exempt for
+   *  `forMonths` from joining. Read only where the bank's row counts its current account. A copy saved before it existed has none. */
+  currentAccount?: { exemptMonths: number };
 }
 
 /** The house an account is built on, by its provider id (so a newer price list is followed), and the group it started from, if any. */
@@ -59,7 +62,7 @@ export function priceEndsOf(prices: readonly Pick<GroupPrice, "value">[]): numbe
   return [...new Set(prices.flatMap((p) => (p.value?.for_months !== undefined ? [p.value.for_months] : [])))].sort((a, b) => a - b);
 }
 
-export const copyOfGroup = (s: Pick<FeesSnapshot, "snapshot">, e: GroupEntry): GroupCopy => ({ name: e.name_he, kind: e.kind, snapshot: s.snapshot, prices: e.prices.map((p) => structuredClone(p)) });
+export const copyOfGroup = (s: Pick<FeesSnapshot, "snapshot">, e: GroupEntry): GroupCopy => ({ name: e.name_he, kind: e.kind, snapshot: s.snapshot, prices: e.prices.map((p) => structuredClone(p)), ...(e.current_account ? { currentAccount: { exemptMonths: e.current_account.for_months } } : {}) });
 
 /** The price list first, then each group or offer of the house's latest record that states at least one price in numbers, in the record's order. */
 export function startingPointsOf(s: FeesSnapshot): StartingPoint[] {
@@ -210,7 +213,8 @@ export function groupCustody(c: Custody | undefined, v: GroupPriceValue, run: La
 
 /** One price of the group the run applies: the fee it is for, its numbers, which side it covers and the month it ends (Infinity: it does not). */
 interface Part {
-  fee: "trade" | "custody";
+  /** `account`: the group's own current-account price (F-102), exempt. */
+  fee: "trade" | "custody" | "account";
   value: GroupPriceValue;
   /** `buy` or `sell` where the words name only that side. */
   side: GroupPriceValue["side"];
@@ -234,6 +238,11 @@ export function partsOf(g: GroupCopy | null | undefined, list: SecuritiesTariff,
   };
   if (list.buy || list.sell) add("trade", values[`trade_${side}`]);
   if (list.custody) add("custody", values[`custody_${side}`]);
+  // F-102: only where the row counts the bank's current account (the list carries its minimum), for its own end and the stay
+  if (list.currentAccount !== undefined && g?.currentAccount) {
+    const months = g.currentAccount.exemptMonths;
+    out.push({ fee: "account", value: { exempt: true, for_months: months }, side: undefined, end: Math.min(months, stayMonths ?? Infinity) });
+  }
   return out;
 }
 
@@ -241,7 +250,8 @@ export function partsOf(g: GroupCopy | null | undefined, list: SecuritiesTariff,
 export function applyParts(list: SecuritiesTariff, parts: readonly Part[], run: LayeredRun): SecuritiesTariff {
   const out: SecuritiesTariff = { ...list };
   for (const part of parts) {
-    if (part.fee === "trade") {
+    if (part.fee === "account") out.currentAccount = 0;
+    else if (part.fee === "trade") {
       // a price that names a purchase alone or a sale alone leaves the other side the list's price
       if (part.side !== "sell") out.buy = groupTrade(list.buy, part.value, run);
       if (part.side !== "buy") out.sell = groupTrade(list.sell, part.value, run);
@@ -338,6 +348,7 @@ function enteredOf(t: SecuritiesTariff): Omit<EnteredTariff, "until"> {
   if (t.fx !== undefined) out.fx = t.fx;
   if (t.fxStanding !== undefined) out.fxStanding = t.fxStanding;
   if (t.monthlyFee !== undefined) out.monthlyFee = t.monthlyFee;
+  if (t.currentAccount !== undefined) out.currentAccount = t.currentAccount;
   if (t.cheaperOfStandingTrade) out.cheaperOfStandingTrade = true;
   if (t.cheaperOfStandingFx) out.cheaperOfStandingFx = true;
   return out;

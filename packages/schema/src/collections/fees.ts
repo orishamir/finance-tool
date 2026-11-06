@@ -125,6 +125,15 @@ export const groupEntry = z.strictObject({
   ends_he: z.string().min(1),
   ends_source: groupSource.optional(),
   prices: z.array(groupPrice).min(1),
+  /**
+   * F-102 (D64): the group's own price for the current account a bank's row counts, where the group's annex prints one: `exempt` from the
+   * monthly minimum for `for_months` from joining (the entry's printed end), then the bank's ordinary minimum. Absent: the annex was not read
+   * for it, or prints nothing, and the group pays the ordinary minimum. `inferred`: what was read rather than printed (a minimum bounded by
+   * the price of a teller action, which the annex makes free).
+   */
+  current_account: z
+    .strictObject({ price_he: z.string().min(1), exempt: z.literal(true), for_months: z.number().int().positive(), source: groupSource, inferred: z.string().min(1).optional() })
+    .optional(),
   /** What was inferred rather than read. */
   inferred: z.string().min(1).optional(),
   /**
@@ -222,9 +231,10 @@ export const feesSnapshot = z.strictObject({
   ),
   minimums: z.strictObject({ account_opening: feeValue.nullable() }),
   /**
-   * D64: what the current account a bank's securities account rests on costs an ordinary customer a month, the price list's monthly
-   * minimum (unit `nis_per_month`). Required of a bank's latest record by the data check, and absent from a house that needs no current
-   * account with it. F-102 counts it on the bank's row unless the person marks the bank as their own.
+   * D64: what a current account at the bank costs an ordinary customer a month, the price list's monthly minimum (unit `nis_per_month`).
+   * Required of a bank's latest record by the data check, and absent from an investment house. F-102 counts it on the bank's row unless the
+   * person marks the bank as their own. That a bank's securities account needs a current account there is D64's premise, not a rule of the
+   * rule base (F-102).
    */
   current_account: z.strictObject({ monthly_minimum: feeValue }).optional(),
   notice_rule_ids: ruleIds,

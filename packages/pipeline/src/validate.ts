@@ -263,6 +263,7 @@ interface GroupEntryLike {
   cheaper_he?: string;
   ends_short_he?: string;
   prices: { fee?: string; price_he: string; holdings_he: string; names_fund: boolean; value?: GroupValueLike; source?: { quote?: string } }[];
+  current_account?: { price_he: string; for_months: number; source: { quote: string } };
 }
 /** The structured numbers of a group price (schema `groupPriceValue`); the check below reads them against the price's words. */
 interface GroupValueLike {
@@ -450,8 +451,8 @@ export function checkPricePremises(snap: PremiseSnapshot): string[] {
   const out: string[] = [];
   if (!snap.price_for_he) out.push("price_for_he: a bank's or broker's record says who pays its prices");
   if (!snap.left_out) out.push("left_out: a bank's or broker's record lists what its documents hold that it does not use; empty means nothing was found");
-  // D64: a bank's securities account rests on a current account there, whose monthly minimum its row counts (F-102); a house that is
-  // not a bank needs none with it, and a house that is part of another is priced on that house's row
+  // D64: a bank's row counts the monthly minimum of a current account there (F-102); an investment house has none, and a house that is
+  // part of another is priced on that house's row
   const ca = snap.current_account;
   if (snap.provider.class === "bank" && !snap.provider.part_of && !ca) out.push("current_account: a bank's record says what its current account costs a month, from its price list (D64)");
   if ((snap.provider.class !== "bank" || snap.provider.part_of) && ca) out.push("current_account: only a bank's own record carries a current account (D64)");
@@ -464,6 +465,13 @@ export function checkPricePremises(snap: PremiseSnapshot): string[] {
       if (e.ends_printed && !e.ends_source) out.push(`groups: ${e.name_he} says its end is printed and does not say where`);
       // a price reaches a fund only where the row's own words name funds (D42): the same stretch as a ranked line; words after "למעט" take funds out
       for (const x of e.prices) if (x.names_fund !== /קרן|קרנות/.test(x.holdings_he.replace(/למעט[^)]*/g, ""))) out.push(`groups: ${e.name_he}: names_fund does not fit the words "${x.holdings_he}"`);
+      // F-102: a group's own current-account price is a bank's, held for the entry's printed end, and its quote says it is free
+      const gca = e.current_account;
+      if (gca) {
+        if (!ca) out.push(`groups: ${e.name_he}: current_account on a record that prices no current account (D64)`);
+        if (!e.ends_printed || !monthsIn(e.ends_he ?? "").includes(gca.for_months)) out.push(`groups: ${e.name_he}: current_account.for_months ${gca.for_months} is not the entry's printed end`);
+        if (!/פטור/.test(gca.source.quote) || !/פטור/.test(gca.price_he)) out.push(`groups: ${e.name_he}: current_account is exempt, and its words and quote say "פטור"`);
+      }
     }
     out.push(...checkGroupWords(snap));
     out.push(...checkGroupValues(snap));

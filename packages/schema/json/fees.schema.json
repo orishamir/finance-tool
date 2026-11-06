@@ -3170,6 +3170,68 @@
                   "additionalProperties": false
                 }
               },
+              "current_account": {
+                "type": "object",
+                "properties": {
+                  "price_he": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "exempt": {
+                    "type": "boolean",
+                    "const": true
+                  },
+                  "for_months": {
+                    "type": "integer",
+                    "exclusiveMinimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "source": {
+                    "type": "object",
+                    "properties": {
+                      "url": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "title": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "page": {
+                        "type": "integer",
+                        "exclusiveMinimum": 0,
+                        "maximum": 9007199254740991
+                      },
+                      "row": {
+                        "type": "integer",
+                        "exclusiveMinimum": 0,
+                        "maximum": 9007199254740991
+                      },
+                      "quote": {
+                        "type": "string",
+                        "minLength": 1
+                      }
+                    },
+                    "required": [
+                      "url",
+                      "title",
+                      "quote"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "inferred": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": [
+                  "price_he",
+                  "exempt",
+                  "for_months",
+                  "source"
+                ],
+                "additionalProperties": false
+              },
               "inferred": {
                 "type": "string",
                 "minLength": 1

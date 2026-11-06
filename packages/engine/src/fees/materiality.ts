@@ -40,8 +40,9 @@ export function feeLines(plan: RunPlan): FeeLine[] {
         if (typeof t.fx === "number" ? positive(t.fx) : configured(t.fx)) has.add("fx");
         if (positive(t.monthlyFee)) has.add("fixed");
       }
-      // F-102 and F-103 are read from the first tariff only; the custodian's charge per dividend counts with custody where a dividend is paid
-      if (positive(tariff.currentAccount)) has.add("account");
+      // F-102 is read from each stretch (F-101: a group exempt for a time); F-103 from the first tariff only, and the custodian's charge per
+      // dividend counts with custody where a dividend is paid
+      if (chain.some((t) => positive(t.currentAccount))) has.add("account");
       if (positive(tariff.perDividend) && fund.distribution) has.add("custody");
       if (positive(fund.halfSpread)) has.add("spread");
       const d = fund.drag;
@@ -165,11 +166,19 @@ function changeLine(plan: RunPlan, line: FeeLine, rate: number): RunPlan {
           if (rate === 0) delete tariff.monthlyFee;
           else tariff.monthlyFee = rate;
           return { run: "runSecurities", input: { ...input, tariff } };
-        case "account":
+        case "account": {
           if (tariff.currentAccount === undefined) return noLine(plan, line);
-          if (rate === 0) delete tariff.currentAccount;
-          else tariff.currentAccount = rate;
-          return { run: "runSecurities", input: { ...input, tariff } };
+          if (rate !== 0) {
+            tariff.currentAccount = rate;
+            return { run: "runSecurities", input: { ...input, tariff } };
+          }
+          // without the line: out of every stretch of a sequence (F-101), not only the first
+          const drop = (t: typeof tariff): typeof tariff => {
+            const { currentAccount: _, until, ...rest } = t;
+            return until ? { ...rest, until: { ...until, then: drop(until.then as typeof tariff) } } : rest;
+          };
+          return { run: "runSecurities", input: { ...input, tariff: drop(tariff) } };
+        }
         case "spread": {
           if (input.fund.halfSpread === undefined) return noLine(plan, line);
           const fund = { ...input.fund };

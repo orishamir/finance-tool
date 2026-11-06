@@ -1319,7 +1319,7 @@
     {
       "what": "חשבון עובר ושב: פעולה על ידי פקיד 4.00 ₪, פעולה בערוץ ישיר 1.20 ₪ (בפיקוח), ועמלת מינימום חודשית 'שאינו עולה על מחיר של פעולה אחת על ידי פקיד' (4.00 ₪); מסלול בסיסי 10.00 ₪ ומסלול מורחב 20.00 ₪ לחודש",
       "page": 3,
-      "why": "The securities account rests on a current account. Part 1 (PDF pp.3-6), notes (02) and (07): a customer whose fees in the month do not reach 4.00 NIS is charged the difference, and one with no action pays 4.00 NIS, so an ordinary customer pays at least 4 NIS a month (48 NIS a year). No bank's record prices the current account yet; a decision for all banks at once. Annex A exempts young customers, soldiers and students; the state-employee page advertises the same exemption."
+      "why": "Only the monthly minimum is priced (`current_account`, F-102, D64): a bank's row counts it unless the person marks the bank as their own. The per-action fees and the tracks are not used: the row counts an account whose actions the minimum covers. Part 1 (PDF pp.3-6), notes (02) and (07): a customer whose fees in the month do not reach 4.00 NIS is charged the difference, and one with no action pays 4.00 NIS, so an ordinary customer pays at least 4 NIS a month (48 NIS a year). Annex A exempts young customers, soldiers and students; the state-employee page advertises the same exemption."
     },
     {
       "what": "החזר עמלות מסחר בניירות ערך לצעירים 'במסגרת מתווה בנק ישראל': החזר רטרואקטיבי של עמלות קנייה ומכירה ששולמו ברבעון השלישי של 2026, עד 500 ₪ לחשבון, לחשבון שאחד מבעליו בן 18 עד 35 ותיקו עד 450,000 ₪ ביום 30.09.2026",

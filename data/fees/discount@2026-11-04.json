@@ -1263,7 +1263,7 @@
     {
       "what": "דיגיטל קלאסיק: פטור מעמלת פעולה בערוץ ישיר ומעמלת מינימום בעו\"ש",
       "page": 39,
-      "why": "Annex A, open to every resident private customer who joins the digital branch, with no threshold and no end date. It touches only the current account, which no record prices yet; no securities price."
+      "why": "Annex A, open to every resident private customer who joins the digital branch, with no threshold and no end date. It touches only the current account, and no securities price. Joining the digital branch is a choice of service, so it is an offer under D56: the row counts the ordinary minimum (`current_account`, F-102)."
     },
     {
       "what": "הוצאות צד ג' בחו\"ל: עמלת סוכן, Sec fee, הוצאות קסטודיאן בחו\"ל",
@@ -1283,7 +1283,7 @@
     {
       "what": "חשבון עו\"ש: פעולה ע\"י פקיד 5.90 ₪, בערוץ ישיר 1.85 ₪, עמלת מינימום חודשית עד מחיר פעולה אחת ע\"י פקיד; מסלול בסיסי 9 ₪, מורחב 25 ₪",
       "page": 1,
-      "why": "The securities account rests on a current account; no record prices the current account yet (a decision for all banks at once). Abridged tariff 01/10/2026, library 7a22f08024c4cf3d."
+      "why": "Only the monthly minimum is priced (`current_account`, F-102, D64): a bank's row counts it unless the person marks the bank as their own. The per-action fees and the tracks are not used: the row counts an account whose actions the minimum covers. Abridged tariff 01/10/2026, library 7a22f08024c4cf3d."
     },
     {
       "what": "מסלולי מקצוע: עובדי מדינה ורופאים 'פטור מדמי ניהול פיקדון ני\"ע בארץ ובחו\"ל'; הייטקיסטים ועורכי דין הנחות",
@@ -1643,6 +1643,17 @@
             }
           }
         ],
+        "current_account": {
+          "price_he": "פטור מעמלת מינימום פעולות, מפעולה על ידי פקיד ומפעולה בערוץ ישיר",
+          "exempt": true,
+          "for_months": 48,
+          "source": {
+            "url": "https://www.discountbank.co.il/media/fnibqzdx/tarifon_single-united_11026.pdf",
+            "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה - סטודנטים לתואר ראשון",
+            "page": 35,
+            "quote": "עמלת מינימום פעולות פטור"
+          }
+        },
         "who_short_he": "סטודנטים לתואר ראשון, עד גיל 32",
         "cheaper_he": "דמי ניהול 0.075% במקום 0.2%; קנייה ומכירה 0.25% במקום 0.4%",
         "ends_short_he": "4 שנים מההצטרפות"
@@ -1737,6 +1748,17 @@
             }
           }
         ],
+        "current_account": {
+          "price_he": "פטור מעמלת מינימום פעולות, מפעולה על ידי פקיד ומפעולה בערוץ ישיר",
+          "exempt": true,
+          "for_months": 24,
+          "source": {
+            "url": "https://www.discountbank.co.il/media/fnibqzdx/tarifon_single-united_11026.pdf",
+            "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה - סטודנטים לתואר שני ודוקטורנטים",
+            "page": 36,
+            "quote": "עמלת מינימום פעולות פטור"
+          }
+        },
         "who_short_he": "סטודנטים לתואר שני ודוקטורט, עד גיל 36",
         "cheaper_he": "דמי ניהול 0.06% במקום 0.2%; קנייה ומכירה 0.25% במקום 0.4%",
         "ends_short_he": "שנתיים מההצטרפות"

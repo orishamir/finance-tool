@@ -169,8 +169,18 @@ for (const path of paths.split(",")) {
       prev = await page.evaluate(snapshot);
     };
     const after = async (label) => {
-      await page.waitForTimeout(650); // the figures glide for 400 ms
-      const cur = await page.evaluate(snapshot);
+      // the figures glide for 400 ms, and a list may sort again later: it waits for the settled plan (250 ms) and then its own pricing, so
+      // a re-sort came at 600 to 1,000 ms (2026-11-06, the indices page's own-bank list, missed at a fixed 650 ms). The screen is read
+      // until two readings 400 ms apart agree, up to 4 s after the change, and the settled one is compared with the one before the change.
+      await page.waitForTimeout(650);
+      let cur = await page.evaluate(snapshot);
+      for (let waited = 650; waited < 4000; waited += 400) {
+        await page.waitForTimeout(400);
+        const next = await page.evaluate(snapshot);
+        const d = compare(cur, next);
+        cur = next;
+        if (!d.hits.length && !d.moved) break;
+      }
       const r = compare(prev, cur);
       prev = cur;
       if (r.wider) console.log(`  ${label}: PAGE WIDER THAN THE SCREEN`);

@@ -328,6 +328,10 @@ export function runSecurities(input: SecuritiesInput, ctx: RunContext): RunResul
   // applies as published (F-14; BRK-17 binds banks only, and MF-26 does not bind an investment marketer).
   const mmfFree = isMmf && input.memberKind !== "non-bank";
   if (mmfFree) book.cite("BANK-18");
+  // F-102: from 1.7.2027 the Governor's order caps managing a payment account (a current account included) by the month's actions, NIS 5
+  // for 0 to 2 and NIS 10 for 3 to 100 (BANK-35). How the amended rules count an action is open, so the run keeps the price list's minimum,
+  // the most a bank may charge an account with three or more actions (every recorded minimum is under NIS 10): a reading of an open rule.
+  if (tariff.currentAccount !== undefined) book.label("reading", "BANK-35");
   const custodyLineAt = (m: number) => (mmfFree ? undefined : tariffAt(m).custody);
 
   let exitYearFees = 0;
@@ -376,8 +380,9 @@ export function runSecurities(input: SecuritiesInput, ctx: RunContext): RunResul
     const manager = (wrapperFee / 12) * units * nav;
     const custody = custodyFee(custodyLineAt(m), m + offset, units * nav - manager);
     const fixed = fixedFee(tariffAt(m).monthlyFee, units * nav - manager - custody);
-    // F-102: the current account at a bank, after the account's own fees; it stays out of the exit year's fees (TXS-06)
-    const account = currentAccountFee(tariff.currentAccount, units * nav - manager - custody - fixed);
+    // F-102: the current account at a bank, after the account's own fees, at the price of the month's stretch (F-101: a group exempt for a
+    // time); it stays out of the exit year's fees (TXS-06)
+    const account = currentAccountFee(tariffAt(m).currentAccount, units * nav - manager - custody - fixed);
     if (custody + fixed + manager + account > 0) {
       lots = removeFifo(lots, (custody + fixed + manager + account) / nav);
       units = totalUnits(lots);

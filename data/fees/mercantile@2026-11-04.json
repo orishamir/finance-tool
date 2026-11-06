@@ -1272,7 +1272,7 @@
     {
       "what": "חשבון עו\"ש: פעולה ע\"י פקיד 6.40 ₪, בערוץ ישיר 2.00 ₪, עמלת מינימום חודשית עד מחיר פעולה אחת ע\"י פקיד; מסלול בסיסי 8.50 ₪, מורחב 26.50 ₪",
       "page": 2,
-      "why": "The securities account rests on a current account; no record prices the current account yet (a decision for all banks at once). Abridged tariff 01/10/2026, library 897991154e216138."
+      "why": "Only the monthly minimum is priced (`current_account`, F-102, D64): a bank's row counts it unless the person marks the bank as their own. The per-action fees and the tracks are not used: the row counts an account whose actions the minimum covers. Abridged tariff 01/10/2026, library 897991154e216138."
     },
     {
       "what": "ממוצעי העמלות שנגבו בפועל, 1-6/2026",
@@ -1535,6 +1535,18 @@
             }
           }
         ],
+        "current_account": {
+          "price_he": "פטור מפעולה על ידי פקיד ומפעולה בערוץ ישיר",
+          "exempt": true,
+          "for_months": 24,
+          "source": {
+            "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
+            "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה - פעולות בסיסיות, סעיפים 1 ו־1.1",
+            "page": 31,
+            "quote": "פעולה על ידי פקיד ... פטור"
+          },
+          "inferred": "The annex prints the teller action and the direct-channel action 'פטור' for this group and no minimum row; the ordinary minimum is 'עמלת מינימום בסכום שאינו עולה על מחיר של פעולה אחת ע\"י הפקיד', so with the teller action free it is nothing. The seniors' column of the same rows says '50% הנחה (בכפוף למינימום)', and this group's says no minimum."
+        },
         "who_short_he": "חיילים משוחררים",
         "cheaper_he": "דמי ניהול בארץ 0.1% במקום 0.2%, בחוץ לארץ 0.125% במקום 0.25%",
         "ends_short_he": "שנתיים מההצטרפות לקבוצה"
@@ -1622,6 +1634,18 @@
             }
           }
         ],
+        "current_account": {
+          "price_he": "פטור מפעולה על ידי פקיד ומפעולה בערוץ ישיר",
+          "exempt": true,
+          "for_months": 48,
+          "source": {
+            "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
+            "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה - פעולות בסיסיות, סעיפים 1 ו־1.1",
+            "page": 31,
+            "quote": "פעולה על ידי פקיד ... פטור"
+          },
+          "inferred": "The annex prints the teller action and the direct-channel action 'פטור' for this group and no minimum row; the ordinary minimum is 'עמלת מינימום בסכום שאינו עולה על מחיר של פעולה אחת ע\"י הפקיד', so with the teller action free it is nothing. The seniors' column of the same rows says '50% הנחה (בכפוף למינימום)', and this group's says no minimum."
+        },
         "who_short_he": "סטודנטים, עד גיל 36",
         "cheaper_he": "דמי ניהול 0.1% במקום 0.2%; קנייה ומכירה 0.25% במקום 0.4%",
         "ends_short_he": "4 שנים מההצטרפות"

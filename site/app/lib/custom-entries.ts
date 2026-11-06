@@ -134,7 +134,9 @@ function baseFrom(raw: unknown): BrokerBase | null | undefined {
     // the fees whose price the person chose to use (own-account.ts, `GroupCopy.adopted`): only fees of the group's own prices count; an older entry has none
     const wanted = Array.isArray(g.adopted) ? (g.adopted as unknown[]) : [];
     const adopted = kept.map((p) => p.fee).filter((f, i, all) => wanted.includes(f) && all.indexOf(f) === i);
-    group = { name: g.name, kind: g.kind as GroupCopy["kind"], snapshot: g.snapshot, prices: kept, ...(adopted.length ? { adopted } : {}) };
+    // the group's own current-account price (F-102): a whole number of months, or none
+    const ca = isObj(g.currentAccount) && Number.isInteger(g.currentAccount.exemptMonths) && (g.currentAccount.exemptMonths as number) > 0 ? { exemptMonths: g.currentAccount.exemptMonths as number } : null;
+    group = { name: g.name, kind: g.kind as GroupCopy["kind"], snapshot: g.snapshot, prices: kept, ...(adopted.length ? { adopted } : {}), ...(ca ? { currentAccount: ca } : {}) };
   }
   return { houseId: raw.houseId, houseName: raw.houseName, group };
 }

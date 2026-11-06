@@ -159,9 +159,9 @@ export function fixedFee(monthlyFee: number | undefined, marketValue: number): n
 }
 
 /**
- * F-102 The current account at a bank (D64). A bank's securities account rests on a current account there, whose price list charges a
- * monthly minimum. Paid out of what is held each month, as F-17 is, and never more than is held. It is not a fee for securities
- * transactions, so it does not come off the sale gain (TXS-06).
+ * F-102 The current account at a bank (D64): the monthly minimum of a current account at the bank, from its price list. Paid out of what is
+ * held each month, as F-17 is, and never more than is held. It is not a fee for securities transactions, so it does not come off the sale
+ * gain (TXS-06).
  */
 export function currentAccountFee(monthlyMinimum: number | undefined, marketValue: number): number {
   return Math.min(monthlyMinimum ?? 0, Math.max(0, marketValue));

@@ -31,6 +31,9 @@ export interface EnteredTariff {
   /** F-13: the conversion of a monthly purchase on a recurring plan. */
   fxStanding?: number | Commission;
   monthlyFee?: number;
+  /** F-102 with F-101: the current account's monthly price in this stretch where a group's annex prints its own (0 for an exempt group);
+   *  read only where the caller counts the bank's current account. Absent: the bank's ordinary minimum. */
+  currentAccount?: number;
   /** F-12, F-13: a monthly purchase may be placed the regular way, one flag for each side (see `SecuritiesTariff.cheaperOfStandingTrade`). */
   cheaperOfStandingTrade?: boolean;
   cheaperOfStandingFx?: boolean;
@@ -543,9 +546,13 @@ export function buildTariff(input: Omit<WorkbenchInput, "fund"> & { fund?: Workb
   if (p.currentAccount && snapshot.current_account) {
     const m = snapshot.current_account.monthly_minimum;
     if (m.unit !== "nis_per_month" || typeof m.value !== "number") throw new RecordInputError(`provider ${snapshot.id}: current_account.monthly_minimum must be a number in nis_per_month`);
-    out.tariff.currentAccount = m.value;
-    out.lineSources.push({ lineId: CURRENT_ACCOUNT_LINE, level: "list", url: m.source.url, publisher: m.source.publisher, strength: m.source.strength });
-    out.strengths.push(m.source.strength);
+    // a stretch of an account built on a bank (F-101) whose group's annex prints its own price keeps it; every other stretch, the ordinary minimum
+    const own = level === "entered" ? entered?.currentAccount : undefined;
+    out.tariff.currentAccount = own ?? m.value;
+    if (own === undefined) {
+      out.lineSources.push({ lineId: CURRENT_ACCOUNT_LINE, level: "list", url: m.source.url, publisher: m.source.publisher, strength: m.source.strength });
+      out.strengths.push(m.source.strength);
+    }
   }
 
   // F-101: a price for a time. The tariff after it is built the same way from its own lines, over the provider's list lines.

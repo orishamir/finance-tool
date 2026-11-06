@@ -1182,7 +1182,7 @@
     },
     {
       "what": "חשבון עובר ושב: עמלה חודשית קבועה בגובה פעולה אחת על ידי פקיד, 9.5 ₪ (בפיקוח); פעולה בערוץ ישיר ללא עמלה",
-      "why": "The securities account rests on a current account. Part 1 ('16/09/2026', library 77f184a3692d1322), items (2), (3) and track (ג): 'הבנק יגבה אך ורק עמלת מינימום בסכום קבוע בגובה עמלת פעולה אחת ע\"י פקיד, זאת ללא תלות בכמות הפעולות ובכלל זה גם אם לא בוצעו כלל', that is 9.5 NIS a month (114 NIS a year). No bank's record prices the current account yet; a decision for all banks at once."
+      "why": "Only the monthly minimum is priced (`current_account`, F-102, D64): a bank's row counts it unless the person marks the bank as their own. The per-action fees and the tracks are not used: the row counts an account whose actions the minimum covers. Part 1 ('16/09/2026', library 77f184a3692d1322), items (2), (3) and track (ג): 'הבנק יגבה אך ורק עמלת מינימום בסכום קבוע בגובה עמלת פעולה אחת ע\"י פקיד, זאת ללא תלות בכמות הפעולות ובכלל זה גם אם לא בוצעו כלל', that is 9.5 NIS a month (114 NIS a year)."
     },
     {
       "what": "עמלות ממוצעות בפועל, ינואר-יוני 2026: דמי ניהול ני\"ע ישראליים וזרים 0.08%-0.15% לשנה; קנייה ומכירה של מניות ואג\"ח 0.07%-0.38%, ני\"ע זרים 0.04%-0.19%",

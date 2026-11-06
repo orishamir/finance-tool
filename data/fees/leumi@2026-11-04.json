@@ -1539,7 +1539,7 @@
     {
       "what": "עו\"ש: עמלת מינימום עד 5.50 ש\"ח לחודש, 1.65 ש\"ח לפעולה בערוץ ישיר, או מסלול 10 או 25 ש\"ח לחודש",
       "page": 17,
-      "why": "The current account the securities deposit rests on. Part 1 (1)(א)(2) note 3: the bank may charge each month the higher of the actual action fees and 'עמלת מינימום בסכום שאינו עולה על מחיר של פעולה אחת על ידי פקיד' (5.50 NIS); tracks 'לאומי Digital' 10 NIS and 'Digital Plus' 25 NIS are optional. No other bank's record prices its current account, so not priced here (fair comparison)."
+      "why": "Only the monthly minimum is priced (`current_account`, F-102, D64): a bank's row counts it unless the person marks the bank as their own. The per-action fees and the tracks are not used: the row counts an account whose actions the minimum covers. Part 1 (1)(א)(2) note 3: the bank may charge each month the higher of the actual action fees and 'עמלת מינימום בסכום שאינו עולה על מחיר של פעולה אחת על ידי פקיד' (5.50 NIS); tracks 'לאומי Digital' 10 NIS and 'Digital Plus' 25 NIS are optional."
     },
     {
       "what": "גישה ישירה למחשב הבנק, ללקוח יחיד 50 ש\"ח לחודש (חלק 2(ב)(4))",
