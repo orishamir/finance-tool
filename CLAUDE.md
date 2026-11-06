@@ -10,8 +10,9 @@ text is corrected. Product decisions, each with its date and reason, are in
 
 ## What exists
 
-- **The site.** All five releases of `docs/roadmap.md` are built; switching
-  was removed to be built again (D38). Pages and visuals held for my review
+- **The site.** All five releases of the roadmap are built (its record is
+  `research/2026-10-23-release-1/roadmap.md`); switching was removed to be
+  built again (D38). Pages and visuals held for my review
   are off the site's links but still at their addresses (D32): the list is
   `site/app/lib/review.ts`, and issues #45 to #48 say what each needs.
 - **The product.** `docs/product.md` defines the site: who it is for, its
@@ -286,7 +287,7 @@ catches about half or more with noise under 30%.
 
 ## Repo layout
 
-- `docs/` — product docs (`product.md`, `discovery.md`, `method.md`, `roadmap.md`, `data-schema.md`, `data-inventory.md`, `parameters-rationale.md`)
+- `docs/` — product docs (`product.md`, `discovery.md`, `method.md`, `data-schema.md`, `data-inventory.md`, `parameters-rationale.md`)
 - `research/` — dated research reports and findings: records of their day, not rules, except the procedures this file names (the user lab's `learning-loop.md` and `metric.md`, the flag log, the process by size)
 - `.claude/skills/il-finance/references/` — the rule base: the latest research on every rule, sourced and kept current (closed questions struck); the only copy. Everyone reads it; only each file's owner (the tax-specialist for the tax files, the domain-specialist for the rest) or the lead edits it, and other agents put rule findings in their reports
 - `research/library/` — every document already read, searchable by page: look there before downloading, and file each new one with `library.mjs add`. The index is in git; the files and their text are not, because the repository is public. `library.mjs recheck` says which linked documents changed since they were read
@@ -298,9 +299,8 @@ catches about half or more with noise under 30%.
 - `site/app/components/kit/` — the shared component kit every page builds from; the gallery at `/kit` shows each piece in its states, `docs/design-system.md` section 11 says when to use which
 - `docs/architecture.md` — stack and design (React Router, pre-rendered, GitHub Pages)
 - `docs/design-system.md` — tokens, conventions and components
-- `research/2026-10-23-release-1/` — records of release 1 kept as they were (the user flows and screen briefs, the design review of the mockups); the live rules are in `docs/` and this file
+- `research/2026-10-23-release-1/` — records of release 1 kept as they were (the user flows and screen briefs, the design review of the mockups, the developer handoff of the screens, the roadmap of the five releases); the live rules are in `docs/` and this file
 - `docs/copy.md`, `docs/glossary.md` — the Hebrew voice, the word choices with their reasons and the style guide (section 10; the strings themselves are in `site/app/copy.ts`), and a sourced one-line explanation for every financial term
-- `docs/design-spec.md` — developer handoff for the release 1 screens
 
 ## Design system
 

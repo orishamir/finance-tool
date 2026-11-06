@@ -1,3 +1,5 @@
+A record of release 1, kept as it was; the live rules are in docs/ and CLAUDE.md.
+
 # Roadmap
 
 Written 2026-10-22 from `docs/product.md` (confirmed the same day, decisions D1 to D13, open to revision). Updated 2026-10-23 for D17, "no blind spots" (product.md appendix E).

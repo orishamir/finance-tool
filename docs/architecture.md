@@ -247,4 +247,4 @@ React, pre-rendered (React Router in framework mode, no server; option C), chose
 
 ## 7. Work by release
 
-All five releases of `docs/roadmap.md` are built. Release 1 computed F-01 to F-28, F-33, F-40 to F-46, F-50, F-51 and F-54 for the guide timelines (F-67); a formula in `docs/method.md` that is not implemented yet is in the engine registry's `pending` list with the release that was to bring it.
+All five releases of the roadmap (`research/2026-10-23-release-1/roadmap.md`, a record of its day) are built. Release 1 computed F-01 to F-28, F-33, F-40 to F-46, F-50, F-51 and F-54 for the guide timelines (F-67); a formula in `docs/method.md` that is not implemented yet is in the engine registry's `pending` list with the release that was to bring it.

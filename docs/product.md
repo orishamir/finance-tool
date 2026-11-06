@@ -291,6 +291,7 @@ Off the site, to be built again (D38). Changing providers is where people get hu
 - Show any number it cannot trace to a source, a defined computation, or the person's own entry. In particular it shows no expected equity return of its own, no "app reliability" or service-quality judgement (no sourced data exists; UX 10.1 item 7), and no fund-level fee it has not collected by hand.
 - Allocate money across goals automatically (D12).
 - Track offers for the person: there is no offer tracker (review item 26).
+- Keep several people's profiles on one device: there is no profile switching; export and import (3.9) cover the founder helping a friend (review item 27).
 - Cover mortgages, consumer credit, insurance other than savings policies, stock picking, trading, derivatives, physical real estate, or private-equity products.
 - Serve the general public. It is for a known group; no accessibility, legal or commercial work.
 
@@ -338,4 +339,4 @@ A number whose source is older than its cadence is shown with a stale flag; it i
 
 ## 7. Order of work
 
-The five releases of `docs/roadmap.md` are built. What comes next is in the GitHub issues, ranked on the pinned Roadmap issue, and the founder's work order is in `CLAUDE.md`.
+The five releases of the roadmap (`research/2026-10-23-release-1/roadmap.md`, a record of its day) are built. What comes next is in the GitHub issues, ranked on the pinned Roadmap issue, and the founder's work order is in `CLAUDE.md`.

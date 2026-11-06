@@ -1,3 +1,5 @@
+A record of release 1, kept as it was; the live rules are in docs/ and CLAUDE.md.
+
 # Design spec, release 1 screens
 
 Amended 2026-10-24 after the overnight user audit; see research/audit/2026-10-24-user-audit.md. Each amendment is dated; a replaced sentence is struck through or kept as "until 2026-10-24".
