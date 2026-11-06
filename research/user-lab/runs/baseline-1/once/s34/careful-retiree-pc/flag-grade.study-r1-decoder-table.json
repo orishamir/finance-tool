@@ -1,0 +1,36 @@
+{
+  "case": "study-r1-decoder-table",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"A table exists only to decode the graph instead of the names and numbers being written on the graph, adding mental overhead.\",\"where\":\"the table under the graph\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 3,
+        "why": "Finding 3 makes the same complaint: the numbers sit in a separate row instead of on the graph's boxes, so the reader has to match them back and forth, which is the decoding overhead the person described."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0193754
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 3,
+        "why": "Finding 3 says the numbers sit in a separate row away from the waterfall's boxes, so the reader has to match them back and forth; that is the person's complaint that values are decoded from a separate table instead of being written on the graph."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0189034
+  },
+  "third": null,
+  "ranks": {
+    "k": 3
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0382788
+}

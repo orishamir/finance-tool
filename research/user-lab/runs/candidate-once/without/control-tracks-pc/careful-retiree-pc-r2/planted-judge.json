@@ -1,0 +1,53 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "Dark background with small grey text is hard to read even when enlarged, especially column headings and the small print under the filters.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "The page opens with S&P 500 and index-tracking filters, so a cautious saver feels the page is not for her.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "Large share returns (24%, 26%) stand out first, with no warning that they can fall.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "Returns are shown before management fees, so the reader cannot tell what she would actually get.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "Many rows show 'less than 3 years' instead of a return figure.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 6,
+      "summary": "The coloured exposure circles are close in colour and not explained.",
+      "serious": true,
+      "names_listed": 1
+    },
+    {
+      "n": 7,
+      "summary": "Without the filters, the reader cannot tell which tracks in the list are government bonds.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 8,
+      "summary": "The site name 'מקור' is unfamiliar, with no bank or official name the reader recognises.",
+      "serious": false,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.0344988
+}

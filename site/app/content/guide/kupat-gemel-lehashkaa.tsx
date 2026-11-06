@@ -34,7 +34,7 @@ export const content: GuideContent = {
     const age = figure("TXK-10", "early_retirement_age");
     const sixty = figure("TXG-04", "age");
     const rate = figure("TXK-06", "rate");
-    const withheld = figure("TXK-26", "regulation_text_rate");
+    const withheld = figure("TXK-26", "withholding_on_gains");
     const proposedCap = figure("TXK-21", "proposed_cap");
     return (
       <>
@@ -54,7 +54,7 @@ export const content: GuideContent = {
           <span className="font-medium">מגיל {sixty ? <Num value={sixty} /> : null} המס על הרווח יכול להיות נמוך יותר.</span> {rate ? <Num value={rate} /> : "השיעור על הרווח"} הוא תקרה, לא שיעור קבוע. מגיל {sixty ? <Num value={sixty} /> : null} חלות על ההכנסה מדרגות המס הנמוכות, ואם המדרגה נמוכה מהתקרה, משלמים לפיה. הרווח נספר כחלק העליון של ההכנסה, ולכן זה עוזר רק כשהכנסות אחרות לא ממלאות את המדרגות הנמוכות. כשמזינים גיל, האתר מחשב את ההקלה לפי ההכנסה השנתית שבחישוב.
         </Callout>
         <Sentence measure>
-          החברה המנהלת מנכה במקור {withheld ? <Num value={withheld} /> : "לפי התקנות"} מהרווח, בכל גיל. זו מקדמה: המס הסופי נקבע בדוח השנתי, ושם מקבלים בחזרה את מה שנוכה יותר מדי או משלימים את מה שחסר, עד התקרה <RuleRef id="TXK-26" />.
+          החברה המנהלת מנכה במקור {withheld ? <Num value={withheld} /> : "מס"} מהרווח, בכל גיל, ולא מנכה כלום מהסכום שהופקד ומההצמדה עליו. זו מקדמה: המס הסופי נקבע בדוח השנתי, ושם מקבלים בחזרה את מה שנוכה יותר מדי <RuleRef id="TXK-26" />.
         </Sentence>
         <RulesLine ids={["TXK-06", "TXG-04", "TXG-07", "TXK-26"]} />
         <OpenLossOffset />

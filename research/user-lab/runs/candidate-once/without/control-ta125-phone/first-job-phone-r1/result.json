@@ -1,0 +1,113 @@
+{
+  "task": "control-ta125-phone",
+  "persona": "first-job-phone",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "phone",
+  "startedAt": "2026-11-06T16:05:50.237Z",
+  "structured": {
+    "answer": "Open an account at Psagot (פסגות) and buy the אי.בי.אי. מחקה (4A) ת\"א 125 fund. With the page's 10,000 ₪ now plus 500 ₪ a month for 10 years, it says I'd end up with about 86,045 ₪ after fees and tax, in today's money.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Amount fields on screen 1 (סכום היום 10,000, הפקדה חודשית 500)",
+        "why": "The task gave no amounts, so I wasn't sure whether to put in my 30,000. I left the defaults."
+      },
+      {
+        "where": "The fund list on screens 7-8",
+        "why": "Every fund has a minus percent (−0.04%, −0.37%...) and I couldn't tell if that means losing money."
+      },
+      {
+        "where": "The colour bar under 'כמה זה עולה לכם' on screen 2",
+        "why": "The colours were only explained further down, so I guessed the pink part was tax."
+      }
+    ],
+    "used": [
+      "Heading 'איפה ואיך הכי זול להשקיע במדד'",
+      "ת\"א-125 chip already selected",
+      "הפקדתם 70,000 ₪",
+      "Box 'הבחירה שלכם · הזול' 86,045 ₪",
+      "List of accounts with פסגות first, 1,049 ₪ cost",
+      "Fund box אי.בי.אי. מחקה (4A) ת\"א 125, דמי ניהול 0.1%",
+      "Other funds showing −1,030 ₪ and more",
+      "Bar chart 79,910 → +5,022 פסגות → +1,113 אי.בי.אי. מחקה"
+    ],
+    "skimmed": [
+      "The rows for other banks and their 'לא בחשבון' notes",
+      "Chart 'מה הכי משנה את מה שיישאר לכם': only the 12 שנים row",
+      "Fee breakdown 'העלות אצלכם, לעומת הזוג השני'"
+    ],
+    "skipped": [
+      "The 'איך החשבונות' explanation text above the account list",
+      "The 'מול המדד' explanation paragraph",
+      "Interactive Brokers / אינטראקטיב ישראל 'אין נתון' rows",
+      "Screens 11-13",
+      "Expand arrows on each bank row"
+    ],
+    "unsure_meaning": [
+      "דמי משמרת",
+      "נאמן 0.025%",
+      "(4A)",
+      "העמלות זו על זו",
+      "קבועים / משתנים",
+      "מחזיקה את המניות",
+      "−0.04% בשנה · שנה אחת",
+      "לא בחשבון",
+      "המס 342 ₪ יותר כי נשאר לכם יותר רווח"
+    ],
+    "not_found": [
+      "What to actually do first (how to open the account / buy)",
+      "Result for my own 30,000 ₪"
+    ],
+    "findings": [
+      {
+        "what": "Minus percent on every fund including the recommended one looks like the fund loses money",
+        "where": "Fund list, screens 7-8"
+      },
+      {
+        "what": "Ending with 86k from 70k deposited at 7% felt low; 'בכסף של היום' is easy to miss",
+        "where": "Screen 2 result box"
+      },
+      {
+        "what": "Colour bar meaning only explained after scrolling, small legend",
+        "where": "Screens 2-3 cost bar"
+      },
+      {
+        "what": "Lots of jargon (דמי משמרת, נאמן, 4A) with no plain explanation",
+        "where": "Screens 3, 7"
+      },
+      {
+        "what": "No clear next step / how to open the account",
+        "where": "Whole page"
+      },
+      {
+        "what": "Big gaps between houses (23k+ costs at Altshuler, Meitav) look scary without explanation",
+        "where": "Screen 6"
+      }
+    ]
+  },
+  "steps": 10,
+  "reads": 10,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 41557,
+    "turns": 12,
+    "usd": 0.23746899999999999,
+    "input": 14,
+    "cacheWrite": 18889,
+    "cacheRead": 77105,
+    "output": 3544,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "control-ta125-phone",
+    "screenshots": 14,
+    "changes": [],
+    "neverShown": [],
+    "errors": []
+  }
+}

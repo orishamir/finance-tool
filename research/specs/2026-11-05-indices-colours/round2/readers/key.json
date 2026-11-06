@@ -1,0 +1,42 @@
+{
+ "1-every-pair": {
+  "X": "V2",
+  "Y": "today",
+  "Z": "V1"
+ },
+ "2-result-card": {
+  "X": "today",
+  "Y": "V1",
+  "Z": "V2"
+ },
+ "3-accounts-top": {
+  "X": "V1 and V2 (same)",
+  "Y": "today"
+ },
+ "4-accounts-lower": {
+  "X": "today",
+  "Y": "V1 and V2 (same)"
+ },
+ "5-funds": {
+  "X": "V1 and V2 (same)",
+  "Y": "today"
+ },
+ "6-hedging": {
+  "X": "today",
+  "Y": "V1 and V2 (same)"
+ },
+ "7-own-price": {
+  "X": "V1",
+  "Y": "V2",
+  "Z": "today"
+ },
+ "8-chip-row": {
+  "X": "V1 and V2 (same)",
+  "Y": "today"
+ },
+ "9-card-to-lists": {
+  "X": "V2",
+  "Y": "V1",
+  "Z": "today"
+ }
+}

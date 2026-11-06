@@ -147,8 +147,9 @@ and writes a panel run file for it.
 
 ### Old brief: `tools/old-brief.mjs <run.json> <out-folder> [--dry] [--parallel n]`
 
-The fresh-reader brief used before the lab (`research/audit/tools/fresh-reader.mjs`: a one-line "who", the goal, seven
-numbered questions, free text back, the default system prompt), run on a panel run file's captured-page tasks with the
+The fresh-reader brief, older than the lab and still the one CLAUDE.md's fresh readers run
+(`research/audit/tools/fresh-reader.mjs`: a one-line "who", the goal, seven numbered questions, free text back, the
+default system prompt), run on a panel run file's captured-page tasks with the
 panel's isolation, for metric.md's "against the usual". Browser tasks are skipped (the old brief only ever had
 screenshots). Writes the layout `score.mjs` reads; the grader reads the free text whole.
 

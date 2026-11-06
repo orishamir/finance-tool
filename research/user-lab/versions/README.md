@@ -16,6 +16,10 @@ adopted as the judge; whether it becomes a first pass on every site change is CL
   30%.
 - Dropped: `candidates/noted.md` ("what you were unsure of bothered you"): readers reported more of what they did not
   understand, but caught no more planted problems (2 of 22 either way); `noted.json` has the numbers.
+- Under test: `candidates/once.md` ("you notice the reading a screen makes you do again and again"), from the
+  founder's flag of a key repeated under every row: on his held-out flags of the same reason 5 of 8 against 0 of 8,
+  the held-out headline 17 against 13 of 72; but a quarter of all findings become about repetition, so it waits for
+  his noise sample; `once.json` has the numbers.
 - `candidates/`: an instruction under test, each with a JSON file of what it was built from, its status and its test results or plan. It enters a version only
   after it catches cases it was not built from, stays silent where its reason does not apply, and adds no noise on the
   held-out benchmark.

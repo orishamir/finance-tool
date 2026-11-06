@@ -1,0 +1,36 @@
+{
+  "case": "tracks-r2-companies",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"Rows repeat their group's heading: each company row repeats the track kind in its name and again in a label, and under a heading 'עוקב מדד S&P 500' every row says it again.\",\"where\":\"the rows under each group heading\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 1,
+        "why": "Finding 1 complains that the same labels, such as the track-kind tags מניות/מט\"ח, repeat on every row, so you have to re-read each line to find what differs, which is the person's complaint about rows repeating their group's information."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0171434
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 1,
+        "why": "Finding 1 complains that the same labels repeat on every row of the lists, so you have to re-read each line, which is a clear part of the person's complaint about rows repeating what their group heading already says."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0159834
+  },
+  "third": null,
+  "ranks": {
+    "k": 1
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0331268
+}

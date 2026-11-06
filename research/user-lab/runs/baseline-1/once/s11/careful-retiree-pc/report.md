@@ -1,0 +1,78 @@
+# s11: careful-retiree-pc
+
+shots mode, pc; 4 steps, 45 s, $0.22
+
+## Answer
+
+From what I understood, a keren hishtalmut is savings where the employer puts in 7.5% of the salary and I put in 2.5%, and after 6 years you can take everything out without tax (it says 3 years for someone past retirement age), so with the employer's money it seems worth having. But it isn't a deposit: its value goes up and down and the state doesn't guarantee it, so before I choose a track I'll ask you or the bank.
+
+Confidence: fairly sure; gave up: false
+
+## Stuck
+
+- The box under 'מה מייחד קרן השתלמות': It suddenly compares with 'S&P 500' and 'חשבון ניירות ערך', with management fees and a slider; I didn't understand what it had to do with me
+- The table of costs and tax (2,402.23 / 2,922.17) and the paragraphs on 'הפקדה מוטבת': Too many numbers, I lost the thread
+- 'ההפרש נע בין −342.02 ₪ לבין 2,106 ₪': The minus frightened me; I didn't understand whether the keren can come out worse
+- 'רק 3 שנים' for someone past retirement age: It's in pale small print; I'm not sure I read it right, and it's important for me
+
+## Used
+
+- The opening: 'חיסכון שהמעסיק ואתם מפקידים... אפשר למשוך בפטור ממס'
+- 'מה זה': 7.5% from the employer, 2.5% from me, 6 years
+- The bar 'נעול: משיכה ממוסה' / 'אפשר למשוך בפטור'
+- 'שווה לדעת': 6 years
+- 'מי מציע ומי מפקח': רשות שוק ההון
+- 'כמה זה עולה': management fees up to 2%, no exit fees
+- The orange box: early withdrawal is expensive, 47%
+- 'סיכונים': אין ערבות של המדינה, השווי עולה ויורד
+
+## Skimmed
+
+- The comparison box with the bars 17,370 / 16,955
+- The paragraphs on the 'הפקדה מוטבת' limits
+- The three tax boxes
+- The 'מונחים' table
+
+## Skipped
+
+- The line '123 מקור 123 חושב 123 הזנה'
+- The S&P 500 / אג"ח buttons
+- The slider and 'שינוי הסכומים'
+- 'שחקו עם המספרים שלכם'
+- 'הצגת החוקים והכללים' links
+- 'הצגת החברות'
+- 'מה האתר לקח בחשבון'
+
+## What would bother this person, most first
+
+- The box under 'מה מייחד קרן השתלמות': The example is built on S&P 500 and a 'חשבון ניירות ערך', and not on simple savings; someone like me feels the page isn't for her
+- The list 'ההפרש תלוי גם במי שבוחרים': A negative number (−342.02) with no sentence explaining what it means for me
+- Bottom of the comparison box: The 3-year rule for someone past retirement age is hidden in small grey text
+- The whole page, especially the comments under the boxes: Dark background with pale grey text; the small lines are hard to read even enlarged
+- 'שווה לדעת' and 'כמה זה עולה': Every row carries codes like PF-06, KH-22 that mean nothing, and you have to skip them again on every row
+- 'מיסוי' versus 'מונחים': The word 'הריאלי' only gets explained at the very end, in the list of terms
+- The comparison table: Too many numbers with decimals (2,402.23, 415.84, 15,712.00)
+- Footer: You don't know who's behind the site; 'אתר אישי' is only in the footer
+
+## Not sure what it meant
+
+- S&P 500 / S&P500
+- מדד (in the sense of a stock index)
+- נזילה
+- הריאלי / הרווח הריאלי
+- דמי ניהול 0.54%, שכר נאמן 0.02%
+- הפקדה מוטבת
+- TXH-09, KH-15, PF-18, PF-06, KH-22
+- 123 מקור / חושב / הזנה
+- ותק
+- −342.02
+
+## Looked for and did not find
+
+- A clear comparison with a bank deposit
+- A simple sentence about which track is safe, like government bonds or a deposit
+- Who runs the site, apart from 'אתר אישי, לא מסחרי' at the very bottom
+
+## What it said along the way
+
+

@@ -47,14 +47,17 @@ export const content: GuideContent = {
     );
   },
   termIds: ["חיסכון לכל ילד", "סכום החיסכון הבסיסי", "סכום החיסכון הנוסף", "מענק", "ריבית קבועה לא צמודה", "ריבית משתנה (פריים)", "ריבית קבועה צמודה", "תחנת יציאה", "משיכה", "גיל הפדיון", "מס רווחי הון", "הגוף החוסך"],
-  afterTax: () => (
-    <>
-      <Callout tone="caution" className="max-w-measure">
-        <span className="font-medium">שיעור המס <Term prefix="ב" id="משיכה">משיכה</Term> מגיע ממקור משני.</span> הביטוח הלאומי אומר רק שבמשיכה משלמים <Term id="מס רווחי הון">מס רווחי הון</Term>, בלי שיעור ובלי להבחין בין מסלול צמוד למסלול לא צמוד. שאלה פתוחה (<IdRef id="TXK OQ1" />).
-      </Callout>
-      <RulesLine ids={["TXK-20", "TXK-23"]} />
-    </>
-  ),
+  afterTax: ({ figure }) => {
+    const niiRate = figure("TXK-20", "nii_circular_rate");
+    return (
+      <>
+        <Callout tone="caution" className="max-w-measure">
+          <span className="font-medium">שיעור המס <Term prefix="ב" id="משיכה">משיכה</Term> לא מופיע בשום טקסט של רשות המסים.</span> הביטוח הלאומי כותב בחוזר שלו שבמשיכה משלמים <Term id="מס רווחי הון">מס רווחי הון</Term>{niiRate ? <> בשיעור <Num value={niiRate} /> מהרווחים</> : null}, בלי להבחין בין המסלולים. לפי הכללים הרגילים לריבית מפיקדון, במסלולים שאינם צמודים למדד השיעור נמוך יותר, אבל זה היסק ולא נוסח רשמי. בחישוב משמשים שיעורים ממקור משני. שאלה פתוחה (<IdRef id="TXK OQ1" />).
+        </Callout>
+        <RulesLine ids={["TXK-20", "TXK-29", "TXK-23"]} />
+      </>
+    );
+  },
   risks: () => (
     <>
       <p className="max-w-measure">הכסף שייך לילד ומוחזק בנאמנות של ההורה, ואי אפשר להעביר, לשעבד או לעקל אותו. הבנק מבטיח שבסוף התקופה הילד יקבל לפחות את הסכומים שהופקדו.</p>

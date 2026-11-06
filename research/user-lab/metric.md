@@ -51,8 +51,8 @@ and nothing that names or hints at the problem. Without a goal, a miss may only 
    wrote them, says would not bother him or anyone. Sampled each round, about five minutes of his time.
 4. **Taste.** Catch rate on the taste problems, reported apart. It says how well the reviewer predicts him, which is
    a different question from how well it predicts people.
-5. **Against the usual.** The same cases are run with the old fresh-reader brief, and with Claude itself holding the
-   full project context. This puts a number on the misses he called "like usual".
+5. **Against the usual.** The same cases are run with the fresh-reader brief CLAUDE.md's fresh readers use
+   (`tools/old-brief.mjs`), and with Claude itself holding the full project context. This puts a number on the misses he called "like usual".
 
 ## How the numbers are read
 

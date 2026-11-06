@@ -55,7 +55,8 @@ The holdout is every case on a `/guide`, `/tracks` or `/companies` page, and eve
 
 The holdout is 52 of 123 cases (42 %), a little more than a third. The guide pages carry many flags.
 
-Tune instructions on `train` only. Score `holdout` once per change of instructions.
+Tune instructions on `train` only. Score `holdout` once per change of instructions, and again every couple of weeks
+(CLAUDE.md's work order).
 
 ## How the screens were obtained
 

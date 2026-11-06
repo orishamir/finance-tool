@@ -34,7 +34,9 @@ every site change is CLAUDE.md's.
 6. **Keep the instruction set small.** It has a size limit. A new instruction merges with one about the same reason, or
    replaces the weakest; every few rounds, an instruction that no longer adds a held-out catch is removed. Every
    version is kept with its scores in `versions/`.
-7. **Then fix the site**, in the shared piece and every place of the same kind (ground rule 7).
+7. **Then fix the site**, in the shared piece and every place of the same kind, and teach the builders and the checks
+   (ground rule 7): the reason goes, as one general rule, into the doc they build from (`docs/design-system.md`,
+   `docs/copy.md`), and a guard or a script enforces it where it can be named.
 
 A catch in step 2 needs no change to the instructions; it is the evidence that the reviewer already sees what a person
 sees.

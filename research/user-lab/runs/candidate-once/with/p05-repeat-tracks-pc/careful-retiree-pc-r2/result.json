@@ -1,0 +1,131 @@
+{
+  "task": "p05-repeat-tracks-pc",
+  "persona": "careful-retiree-pc",
+  "repeat": 2,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T16:12:14.838Z",
+  "structured": {
+    "answer": "If I must choose, Harel's \"כספי (שקלי)\" track: Harel is a name I know, it shows 0% shares and 0% foreign currency, and a 0.57% fee. But I'm not sure, and I'll go over it with my son or the bank before signing.",
+    "confidence": "unsure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Filter buttons, screen 1",
+        "why": "Saw 'אג\"ח ממשלתית 3' (safe government bonds) but couldn't find those tracks in the list itself"
+      },
+      {
+        "where": "Return column",
+        "why": "Many lines say 'פחות מ־3 שנים' instead of a number; didn't know what to make of it"
+      },
+      {
+        "where": "Fee column",
+        "why": "Two lines, 'מהחיסכון' and 'מההפקדות'; didn't understand the second or whether 0.57% is a lot"
+      },
+      {
+        "where": "Screen 6",
+        "why": "Tired after six screens of a dark table full of numbers; stopped"
+      }
+    ],
+    "used": [
+      "Product button 'קופת גמל להשקעה'",
+      "Company names הראל, מור, אנליסט, מיטב",
+      "Harel row 'כספי (שקלי)': מניות 0%, מט\"ח 0%, 0.57% מהחיסכון, 4.25% over 3 years",
+      "Fee range in company header rows"
+    ],
+    "skimmed": [
+      "Track rows for מור, אנליסט and מיטב",
+      "The 'כסף מנוהל' column",
+      "The track filter buttons"
+    ],
+    "skipped": [
+      "'מה זה קופת גמל להשקעה' link",
+      "Screens 7-16",
+      "Small '?' icons",
+      "Fund numbers (קופה)",
+      "The circle charts"
+    ],
+    "unsure_meaning": [
+      "S&P 500",
+      "עוקב מדדים",
+      "גמיש",
+      "מט\"ח",
+      "חשיפה למניות ולמט\"ח",
+      "פחות מ־3 שנים",
+      "0% מההפקדות",
+      "123 מקור / 123 מחושב",
+      "turquoise and yellow circles",
+      "חדש / עוד לא דווח"
+    ],
+    "not_found": [
+      "The government bond (אג\"ח ממשלתית) tracks in the list",
+      "A plain sentence saying which track is safe like a deposit",
+      "A comparison with bank deposit interest"
+    ],
+    "findings": [
+      {
+        "what": "Dark background with grey text; the table headings were hard to read even enlarged",
+        "where": "Whole page, table header"
+      },
+      {
+        "what": "Every row repeats the 'מניות / מט\"ח' labels and a two-colour circle, so I re-read them on every line to find what differs; the circle colours are far from the numbers",
+        "where": "Exposure column, all rows"
+      },
+      {
+        "what": "The page opens with shares and English letters (S&P 500); it felt not for me",
+        "where": "Screen 1 filter buttons"
+      },
+      {
+        "what": "Large return numbers (24%, 26%) catch the eye, but they belong to 100%-shares tracks",
+        "where": "מניות rows, screens 2, 4, 5"
+      },
+      {
+        "what": "'פחות מ־3 שנים' in place of a number, on many rows",
+        "where": "Return column"
+      },
+      {
+        "what": "No explanation of whether a fee of about 0.6% is high or low",
+        "where": "Fee column"
+      },
+      {
+        "what": "Safe government bond option appears as a filter but I couldn't find it in the long list",
+        "where": "Filter 'אג\"ח ממשלתית'"
+      },
+      {
+        "what": "Too many numbers per screen; it made me anxious and tired",
+        "where": "Screens 2-6"
+      }
+    ]
+  },
+  "steps": 6,
+  "reads": 6,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 35934,
+    "turns": 8,
+    "usd": 0.158439,
+    "input": 8,
+    "cacheWrite": 11398,
+    "cacheRead": 28015,
+    "output": 3081,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "p05-repeat-tracks-pc",
+    "screenshots": 17,
+    "changes": [
+      {
+        "id": "repeat-shown",
+        "type": "style",
+        "shots": 17,
+        "applied": 17,
+        "most": 143
+      }
+    ],
+    "neverShown": [],
+    "errors": []
+  }
+}

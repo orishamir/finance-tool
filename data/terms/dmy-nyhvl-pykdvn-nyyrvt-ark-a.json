@@ -21,11 +21,11 @@
   ],
   "rule_ids": [
     "BANK-18",
-    "MF-27",
     "BRK-16",
     "BRK-17",
     "BRK-24",
     "BRK-33",
+    "MF-27",
     "TXS-06"
   ],
   "source": {

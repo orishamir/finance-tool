@@ -1,0 +1,31 @@
+{
+  "id": "ETF-82",
+  "title": "TASE's duties for an ETF's statutory market maker: quotes at all times, a minimum quantity, a maximum spread, presence in the order book",
+  "title_he": "עושה השוק של קרן סל לפי כללי הבורסה: ציטוט לאורך המסחר, כמות מזערית ומרווח מרבי",
+  "text_he": "לפי הנחיות הבורסה והחלטות הדירקטוריון שלה, עושה השוק של קרן סל צריך להחזיק בספר הפקודות לאורך כל המסחר פקודות קנייה ומכירה בכמות מזערית, והפער בין מחיר המכירה למחיר הקנייה לא יעלה על מרווח מרבי. הכמות והמרווח נקבעים לפי מה שהקרן עוקבת אחריו: בקרנות על מדד אג״ח ממשלתי, על מדד אג״ח קונצרני בדירוג A- ומעלה, על מניות ת״א-125 ועל מדדי חו״ל, כולל סחורות, שיש להם נגזרים פעילים חופפים, הכמות גדולה יותר והמרווח צר יותר מאשר בשאר הקרנות, בקרנות ממונפות ובחסר ובקרנות מנוטרלות מטבע. הכמות, המרווח וחובת הנוכחות בספר הפקודות נקבעו בהחלטות הדירקטוריון של הבורסה, שאינן מקושרות כאן; ההנחיות המקושרות עוסקות במינוי עושה השוק ובפטורים. הבורסה מנטרת את עושה השוק ומעבירה את הממצאים לרשות ניירות ערך ולמנהל הקרן פעם בחודש, והוא פטור מציטוט במצבים כמו תקלה טכנית או עצירת מסחר. המרווח הוא תקרה, לא מחיר: מי שקונה ומוכר משלם אותו, ומחיר הקרן בבורסה יכול להיות שונה משווי היחידה.",
+  "strength": "primary",
+  "dimensions": [
+    "liquidity-lockup",
+    "fee-trade"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-05-01",
+  "il_finance_file": "etfs-and-index-funds.md",
+  "checked": "2026-11-06",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://content.tase.co.il/media/mwsduioc/274698.pdf#page=89",
+      "title": "מדריך המסחר בבורסה: הנחיות על פי החלק השלישי לתקנון",
+      "title_he": "מדריך המסחר בבורסה: הנחיות על פי החלק השלישי לתקנון",
+      "publisher": "Tel Aviv Stock Exchange",
+      "publisher_he": "הבורסה לניירות ערך בתל אביב",
+      "kind": "exchange_rules",
+      "strength": "primary",
+      "locator": "p.89, p.86, p.87 (ch.י\"ב s.3ז), p.90 (ch.י\"ב2)",
+      "page": 89,
+      "checked": "2026-11-06",
+      "qualifier": "(exchange rules, ISA-approved; the minimum quantity, maximum spread and presence rules are in TASE's board decisions, doc. 274701, which have no recorded web address: ETF open question 34)"
+    }
+  ]
+}

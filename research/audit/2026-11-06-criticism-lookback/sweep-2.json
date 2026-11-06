@@ -1,0 +1,343 @@
+{
+ "about": "Site sweep 2 of 3 of the criticism look-back (2026-11-06): the live site at 1440x900 and 390x844 with touch, against the rules of kind layout (R25 to R31) and controls (R32 to R40). Eyes on whole-page shots and screen-sized slices; the DOM measured clipped text, lone punctuation, card widths, control looks across pages and each slider's answer time; the press check (a live copy of jump-check.mjs) pressed up to 40 controls a page at 1280 and the movement script (box-check.mjs) moved the sliders on five pages at 390 and 1280. Scripts are in sweep/.",
+ "counts": {
+  "R25": 1,
+  "R27": 4,
+  "R28": 6,
+  "R29": 3,
+  "R31": 1,
+  "R32": 1,
+  "R33": 1,
+  "R35": 1,
+  "R38": 3,
+  "R39": 2,
+  "R40": 2
+ },
+ "breaks": [
+  {
+   "rule": "R25",
+   "page": "/indices/sp500",
+   "width": 1440,
+   "what": "I click the Interactive Israel row in the account list and the list reorders under my hand: the row I clicked flies about 1,900 px up and off the screen, and I am left looking at other accounts' 'no data' rows.",
+   "shot": "research/audit/2026-11-06-criticism-lookback/shots/r25-indices-abroad-row-flies-off-1440.png",
+   "held": false
+  },
+  {
+   "rule": "R27",
+   "page": "/guide/keren-hishtalmut",
+   "width": 1440,
+   "what": "Under the study fund's withdrawal chart the sentence ends with a full stop that sits alone on its own line after '66,280 ₪'.",
+   "shot": "research/audit/2026-11-06-criticism-lookback/shots/r27-keren-lone-full-stop-1440.png",
+   "held": false
+  },
+  {
+   "rule": "R27",
+   "page": "/guide/savings-plan",
+   "width": 1440,
+   "what": "A sentence's full stop drops alone onto the next line after the rule code chip ('TXI-17' then '.'); the same happens on the investment provident fund and personal provident fund guides on a computer, and on the current account, personal study fund and personal provident fund guides on a phone.",
+   "shot": "research/audit/2026-11-06-criticism-lookback/shots/r27-savings-plan-stop-after-code-1440.png",
+   "held": false
+  },
+  {
+   "rule": "R27",
+   "page": "/guide/makam",
+   "width": 1440,
+   "what": "'An open question (' ends one line and 'details ).' starts the next, so the bracket is split from what it holds; the same on the child savings in a bank guide on a computer and on the makam, government bond, savings plan and securities account guides on a phone.",
+   "shot": "research/audit/2026-11-06-criticism-lookback/shots/r27-makam-bracket-split-1440.png",
+   "held": false
+  },
+  {
+   "rule": "R27",
+   "page": "/goal",
+   "width": 1440,
+   "what": "The 'from which date' field shows '11.2026 Novemb': the month is cut off, and it is in English.",
+   "shot": "research/audit/2026-11-06-criticism-lookback/shots/r27-held-goal-date-clipped-1440.png",
+   "held": true
+  },
+  {
+   "rule": "R28",
+   "page": "/guide/keren-hishtalmut",
+   "width": 1440,
+   "what": "In the study fund calculator there is an empty band of about 70 px between the first and second row of fields, so the form looks loose; the same gaps on a phone.",
+   "shot": "research/audit/2026-11-06-criticism-lookback/shots/r28-keren-field-rows-gap-1440.png",
+   "held": false
+  },
+  {
+   "rule": "R28",
+   "page": "/companies/leumi",
+   "width": 1440,
+   "what": "The one-year deposit card spans the whole width but its facts stand in a narrow column on the right, so the left half of the card is empty.",
+   "shot": "research/audit/2026-11-06-criticism-lookback/shots/r28-leumi-fact-card-1440.png",
+   "held": false
+  },
+  {
+   "rule": "R28",
+   "page": "/companies/513173393/14865",
+   "width": 1440,
+   "what": "The track's fact card is as wide as the page while its labels and values fill only the right third; the rest of the card is empty.",
+   "shot": "research/audit/2026-11-06-criticism-lookback/shots/r28-track-fact-card-1440.png",
+   "held": false
+  },
+  {
+   "rule": "R28",
+   "page": "/parameters",
+   "width": 1440,
+   "what": "Cards stand in pairs stretched to the taller one's height, so the card on the allowed deviation is about 1,500 px tall for six lines of content and most of the page is empty card.",
+   "shot": "research/audit/2026-11-06-criticism-lookback/shots/r28-parameters-cards-1440.png",
+   "held": false
+  },
+  {
+   "rule": "R28",
+   "page": "/not-covered",
+   "width": 1440,
+   "what": "Each pair of cards is stretched to the taller one, so the short cards end in large empty blocks all down the page.",
+   "shot": "research/audit/2026-11-06-criticism-lookback/shots/r28-not-covered-cards-1440.png",
+   "held": false
+  },
+  {
+   "rule": "R28",
+   "page": "/idle-cash",
+   "width": 1440,
+   "what": "This page is a narrow column of about 770 px in the middle of the screen, unlike the other pages that run from the right edge; the holdings page is the same.",
+   "shot": "research/audit/2026-11-06-criticism-lookback/shots/r28-held-idle-cash-narrow-1440.png",
+   "held": true
+  },
+  {
+   "rule": "R29",
+   "page": "/indices/sp500, /tracks, /guide/keren-hishtalmut",
+   "width": 1440,
+   "what": "Picking one of several options looks three different ways: a white pill on the index page, a teal rounded box on the tracks, company and rules pages, and a full-width teal switch on the guides.",
+   "shot": "research/audit/2026-11-06-criticism-lookback/shots/r29-pick-one-chips-1440.png",
+   "held": false
+  },
+  {
+   "rule": "R29",
+   "page": "/companies/leumi, /companies/513173393, /companies/interactive-israel",
+   "width": 1440,
+   "what": "Three company pages, three layouts: a fund house gets product buttons over one table, a bank gets folded sections with a fact card, and a broker gets product buttons over a fee table and more boxes.",
+   "shot": "research/audit/2026-11-06-criticism-lookback/shots/r29-company-pages-three-ways-1440.png",
+   "held": false
+  },
+  {
+   "rule": "R29",
+   "page": "/tracks",
+   "width": 390,
+   "what": "On a phone the product filter is a set of buttons and the filter right under it, what the money is invested in, is a dropdown, so two filters of the same kind look different on one screen.",
+   "shot": "research/audit/2026-11-06-criticism-lookback/shots/r29-tracks-two-filter-looks-390.png",
+   "held": false
+  },
+  {
+   "rule": "R31",
+   "page": "/guide/bank-deposit",
+   "width": 1440,
+   "what": "In the guide calculator the chart takes two thirds of the width and the fields I am meant to change are squeezed into a narrow column beside it, so the chart reads as the main thing; the same calculator stands this way on the other guides that have one.",
+   "shot": "research/audit/2026-11-06-criticism-lookback/shots/r31-bank-deposit-chart-vs-inputs-1440.png",
+   "held": false
+  },
+  {
+   "rule": "R32",
+   "page": "/companies/interactive-israel",
+   "width": 1440,
+   "what": "The product filter has 'all products 0' and one product, so it filters nothing, and the count of 0 is wrong beside the one securities account.",
+   "shot": "research/audit/2026-11-06-criticism-lookback/shots/r32-interactive-one-product-filter-1440.png",
+   "held": false
+  },
+  {
+   "rule": "R33",
+   "page": "/goal",
+   "width": 1440,
+   "what": "The age field has + and − buttons beside it instead of being a plain field.",
+   "shot": "research/audit/2026-11-06-criticism-lookback/shots/r33-held-goal-age-buttons-1440.png",
+   "held": true
+  },
+  {
+   "rule": "R35",
+   "page": "/goal",
+   "width": 1440,
+   "what": "The goal page asks 'a little about you': age, employment type, gross salary, pension and study fund rates and whether I have them at work, before it compares anything.",
+   "shot": "research/audit/2026-11-06-criticism-lookback/shots/r35-held-goal-about-you-1440.png",
+   "held": true
+  },
+  {
+   "rule": "R38",
+   "page": "/indices/sp500",
+   "width": 390,
+   "what": "With the processor slowed four times, as on a modest phone, the four sliders take 82 to 136 ms to show a change, over 100 ms in 9 of 16 moves (measured in a test browser to the second painted frame, not on a real phone).",
+   "shot": "research/audit/2026-11-06-criticism-lookback/shots/r38-indices-sliders-390.png",
+   "held": false
+  },
+  {
+   "rule": "R38",
+   "page": "/guide/provident-for-annuity",
+   "width": 390,
+   "what": "With the processor slowed four times the years slider takes 100 to 153 ms to answer, over 100 ms in 3 of 4 moves (test browser, to the second painted frame).",
+   "shot": "research/audit/2026-11-06-criticism-lookback/shots/r38-provident-annuity-slider-390.png",
+   "held": false
+  },
+  {
+   "rule": "R38",
+   "page": "/goal/compare",
+   "width": 1440,
+   "what": "Even on a computer at full speed the comparison's sliders take 50 to 115 ms to answer, where every other page answers in about 33 ms (test browser, to the second painted frame).",
+   "shot": "research/audit/2026-11-06-criticism-lookback/shots/r38-held-goal-compare-sliders-1440.png",
+   "held": true
+  },
+  {
+   "rule": "R39",
+   "page": "/indices/sp500",
+   "width": 1440,
+   "what": "Between the account card and the fund card sits a round button with a plus; it looks like it adds something, but it does nothing when clicked.",
+   "shot": "research/audit/2026-11-06-criticism-lookback/shots/r39-indices-plus-circle-1440.png",
+   "held": false
+  },
+  {
+   "rule": "R39",
+   "page": "/fees?wrapper=keren-hishtalmut",
+   "width": 1440,
+   "what": "Beside the 'if they lower it to' field a small 'suggestion: the average' chip looks like a button that fills in the average, but it is only a label.",
+   "shot": "research/audit/2026-11-06-criticism-lookback/shots/r39-fees-suggestion-chip-1440.png",
+   "held": false
+  },
+  {
+   "rule": "R40",
+   "page": "/indices/sp500",
+   "width": 1440,
+   "what": "The form for an account on my own terms opens in a narrow 448 px box that has to be scrolled inside, with fields 131 px wide, while most of the screen sits dark behind it.",
+   "shot": "research/audit/2026-11-06-criticism-lookback/shots/r40-indices-own-account-form-1440.png",
+   "held": false
+  },
+  {
+   "rule": "R40",
+   "page": "/goal/compare",
+   "width": 1440,
+   "what": "The comparison's assumptions are a long form squeezed into a narrow panel of about 330 px under the chart, with return and inflation crammed side by side.",
+   "shot": "research/audit/2026-11-06-criticism-lookback/shots/r40-held-goal-compare-assumptions-1440.png",
+   "held": true
+  }
+ ],
+ "known": [
+  {
+   "rule": "R28",
+   "page": "/, /indices, the guide and exposure pages",
+   "issue": 198,
+   "what": "The home page's first screen is half empty at 1440; /indices before an index is picked is a row of buttons over an empty screen; the guide and exposure pages stand in a column on the right with the left part of the screen empty. Issue 198 asks for a sweep of every page's first screen and a shared fix (issue 25 asks the same in general)."
+  },
+  {
+   "rule": "R25",
+   "page": "/indices/sp500",
+   "issue": 200,
+   "what": "The first change of a field moves the line under the inputs 115 px sideways; the movement script confirmed it on the live site at 1280."
+  },
+  {
+   "rule": "R25",
+   "page": "/indices/sp500",
+   "issue": 161,
+   "what": "On a phone the account rows differ in height by kind of fund, so the fund list's place moves with the pick."
+  },
+  {
+   "rule": "R25",
+   "page": "/goal/compare",
+   "issue": 162,
+   "what": "Blocks change height at the ends of the sliders.",
+   "held": true
+  },
+  {
+   "rule": "R36",
+   "page": "every guide page",
+   "issue": 199,
+   "what": "The row of section names looks like tabs but jumps the page."
+  },
+  {
+   "rule": "R38",
+   "page": "/tracks",
+   "issue": 176,
+   "what": "Switching product is slow on a slow phone."
+  },
+  {
+   "rule": "R32",
+   "page": "/guide/bank-deposit",
+   "issue": 32,
+   "what": "The age field (and the deposit's period and linkage) do not change the graph."
+  },
+  {
+   "rule": "R29",
+   "page": "site-wide",
+   "issue": 74,
+   "what": "Look-alike links, page headers, sections and fields to move into the shared kit."
+  },
+  {
+   "rule": "R27",
+   "page": "/indices/sp500",
+   "issue": 193,
+   "what": "The two accounts that buy only abroad show stray dashes in the rank and figure places and 'no data'."
+  },
+  {
+   "rule": "R28",
+   "page": "/indices/sp500",
+   "issue": 191,
+   "what": "The stairs chart leaves the right quarter of its card empty; the stairs and their tables are to be removed."
+  },
+  {
+   "rule": "R27",
+   "page": "/indices/sp500",
+   "issue": 190,
+   "what": "Fund names with digits wrap and reverse in the stairs' table."
+  },
+  {
+   "rule": "R39",
+   "page": "/indices/sp500",
+   "issue": 175,
+   "what": "The form's close button is 36 px and the chart legend items under 44 px."
+  }
+ ],
+ "pages_checked": [
+  "/",
+  "/indices",
+  "/indices/sp500",
+  "/guide",
+  "/guide/current-account",
+  "/guide/bank-deposit",
+  "/guide/savings-plan",
+  "/guide/keren-hishtalmut",
+  "/guide/kupat-gemel-lehashkaa",
+  "/guide/pension-comprehensive",
+  "/guide/pension-general",
+  "/guide/provident-for-annuity",
+  "/guide/child-savings-provident",
+  "/guide/child-savings-bank",
+  "/guide/brokerage-account",
+  "/guide/ira-hishtalmut",
+  "/guide/ira-provident",
+  "/guide/mutual-funds",
+  "/guide/money-market-fund-daily",
+  "/guide/money-market-fund-renewable",
+  "/guide/makam",
+  "/guide/government-bond",
+  "/guide/limited-bond-fund",
+  "/exposure/index-sp500",
+  "/companies",
+  "/companies/513173393",
+  "/companies/513173393/14865",
+  "/companies/leumi",
+  "/companies/interactive-israel",
+  "/tracks",
+  "/fees?wrapper=keren-hishtalmut",
+  "/transfer",
+  "/rules",
+  "/rules/costs",
+  "/documents",
+  "/parameters",
+  "/not-covered",
+  "/goal (held)",
+  "/goal/compare (held)",
+  "/idle-cash (held)",
+  "/holdings (held)"
+ ],
+ "notes": [
+  "No break found under R26 (abrupt redraws), R30 (order on the page), R34 (entering one's own values), R36 (a control that does something else; the guide section row is issue 199) or R37 (missing delete, rename or drag: an account on one's own terms has edit and delete).",
+  "The press check found legend buttons on the index, deposit guide and fee pages that change no text; each highlights its part of the bars or chart, so they act visibly and are not breaks. Pressing an option already chosen also changes nothing, as expected.",
+  "Dropped as artefacts of the scripts: a group toggle on /tracks and the 'more exact' fold on /idle-cash moved after the press only because the script had scrolled them to mid-screen near the page's end; the fee page's headline grew a line in the movement script only in a 390 px window with a scroll bar, not with phone emulation.",
+  "Slider times are from a test browser on this machine, from the change to the second painted frame (about 33 ms is the floor), with the processor slowed four times on the phone runs; they are not a real phone.",
+  "The header showed a menu button instead of its links in some whole-page screenshots of very tall pages; a fresh load at 1440 shows the links on every page, so it is a screenshot artefact."
+ ]
+}

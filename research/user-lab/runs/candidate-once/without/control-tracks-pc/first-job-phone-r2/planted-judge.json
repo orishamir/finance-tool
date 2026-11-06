@@ -1,0 +1,41 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "143 tracks that look almost the same and no clear recommendation. This can overwhelm the reader and make them give up before choosing a track.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "It is unclear whether the return is per year or the total, and the 3-year and 5-year figures differ a lot. Without knowing this, the reader can't read the main figure and may choose wrongly. This is a different ambiguity from the 'ברוטו' heading in problem 3.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "Fees are shown only in percent, with no shekel amount, and they all look about the same. This is mostly a wish for more detail, since the fees can still be compared.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "The ring charts and the מט\"ח (foreign currency) percentages are not explained. This is a secondary column. The reader doesn't say the two rings look alike, so this is not problem 1.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "Many rows show 'פחות מ-3 שנים' (less than 3 years) instead of a number. That data simply doesn't exist yet for newer tracks, so this is a minor annoyance.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 6,
+      "summary": "Nothing on the page tells the reader what to do next. This is a wish for guidance, not something that blocks using the page.",
+      "serious": false,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.0291868
+}

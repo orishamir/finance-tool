@@ -1,0 +1,47 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "143 near-identical track rows, overwhelming, no recommendation",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "Unclear whether return figure is annual or cumulative",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "Fees shown only as percent, no shekel amount",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "Many rows show 'less than 3 years' instead of a number",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "Exposure percentages like 101% and FX 99% are confusing",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 6,
+      "summary": "'Not yet reported' with orange warning icon looks alarming",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 7,
+      "summary": "Too many category filter buttons with overlapping names",
+      "serious": false,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.0367228
+}

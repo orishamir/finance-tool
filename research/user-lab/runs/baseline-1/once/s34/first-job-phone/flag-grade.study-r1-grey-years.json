@@ -1,0 +1,36 @@
+{
+  "case": "study-r1-grey-years",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"In the graph of the years everything is grey, so nothing stands out.\",\"where\":\"the year graph\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings says the year graph is all grey with nothing standing out; the closest ones are about legends, labels and coin colours, not a lack of colour contrast."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0150274
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings says the year graph is all grey with nothing standing out; finding 3 covers the legend's position and an unlabelled line, not the lack of colour contrast."
+      }
+    ],
+    "liked": [],
+    "usd": 0.015339400000000001
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0303668
+}

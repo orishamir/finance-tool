@@ -1,0 +1,129 @@
+{
+  "task": "control-tracks-pc",
+  "persona": "careful-retiree-pc",
+  "repeat": 2,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T16:07:51.048Z",
+  "structured": {
+    "answer": "I'd lean to Harel's \"כספי (שקלי)\" track: 0% shares, 0% foreign currency, a name I know, about 4.25% a year over 3 years, and a 0.57% fee. But I'm not sure, and I won't sign anything before asking my son or the bank.",
+    "confidence": "unsure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "screen 1, filter buttons",
+        "why": "Opens with 'עוקב מדד S&P 500' and lots of buttons; I almost left because it felt like a page for shares"
+      },
+      {
+        "where": "screen 2, Harel table",
+        "why": "Many columns and coloured circles; I had to work out which column meant shares and which meant safe"
+      },
+      {
+        "where": "screen 1, 'אג\"ח ממשלתי 3' button",
+        "why": "I wanted the government bond tracks but didn't see where they are in the list"
+      },
+      {
+        "where": "screens 5-6",
+        "why": "Tired; the numbers were running together, so I stopped"
+      }
+    ],
+    "used": [
+      "Track name 'כספי (שקלי)'",
+      "Shares/foreign currency exposure '0%' and the empty circle",
+      "Company name Harel (and Meitav, Analyst for comparison)",
+      "Management fee '0.57%' from savings, '0%' from deposits",
+      "Return '4.25%' 3 years"
+    ],
+    "skimmed": [
+      "Rows for 'מניות', 'כללי', 'עוקב מדד' tracks",
+      "Mor's list",
+      "Managed amount column (millions/billions)",
+      "5-year return line"
+    ],
+    "skipped": [
+      "Screens 7-15",
+      "Link 'מה זה קופת גמל להשקעה'",
+      "Search box",
+      "Top menu 'מדריך', 'השקעה במדד', 'חוקים וכללים'",
+      "The (?) explanation marks",
+      "Tabs 'לפי חברה'/'לפי מוצר'"
+    ],
+    "unsure_meaning": [
+      "S&P 500",
+      "עוקב מדד",
+      "גמיש",
+      "סחיר",
+      "מט\"ח",
+      "123 מקור / 123 מחושב",
+      "לפני דמי ניהול",
+      "פחות מ־3 שנים",
+      "עוד לא דווח",
+      "the coloured circles (green/yellow)",
+      "fund numbers like 13254",
+      "הלכה יהודית"
+    ],
+    "not_found": [
+      "Where the 'אג\"ח ממשלתי' tracks are in the list",
+      "Whether anything is guaranteed like a deposit",
+      "A plain sentence saying which track is safe",
+      "Who runs this site"
+    ],
+    "findings": [
+      {
+        "what": "Dark background with small grey writing; hard to read even enlarged",
+        "where": "all screens, especially column headings and the small print under the filters"
+      },
+      {
+        "what": "Page opens with S&P 500 and index-tracking buttons; a cautious saver feels it is not for her",
+        "where": "screen 1 filter buttons"
+      },
+      {
+        "what": "Big share returns (24%, 26%) jump out first; no warning that they can fall",
+        "where": "screens 2, 5, 6 'מניות' and 'עוקב מדד' rows"
+      },
+      {
+        "what": "Returns shown before management fees, so I don't know what I'd actually get",
+        "where": "column heading 'תשואה שנתית ממוצעת, לפני דמי ניהול'"
+      },
+      {
+        "what": "Many rows show 'פחות מ־3 שנים' instead of a number",
+        "where": "return column, screens 2-6"
+      },
+      {
+        "what": "Coloured circles are close in colour and not explained",
+        "where": "exposure column"
+      },
+      {
+        "what": "Can't tell which tracks are government bonds without the filters",
+        "where": "screen 1 'אג\"ח ממשלתי 3' button vs. the list"
+      },
+      {
+        "what": "Unknown site name 'מקור', no bank or official name I recognise",
+        "where": "top bar"
+      }
+    ]
+  },
+  "steps": 6,
+  "reads": 6,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 36670,
+    "turns": 8,
+    "usd": 0.1668902,
+    "input": 10,
+    "cacheWrite": 11663,
+    "cacheRead": 37231,
+    "output": 3305,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "control-tracks-pc",
+    "screenshots": 16,
+    "changes": [],
+    "neverShown": [],
+    "errors": []
+  }
+}

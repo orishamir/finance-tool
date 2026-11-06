@@ -178,7 +178,7 @@
   },
   {
     "id": "BRK OQ2",
-    "status": "open"
+    "status": "narrowed"
   },
   {
     "id": "BRK OQ3",
@@ -227,7 +227,8 @@
   },
   {
     "id": "BRK OQ12",
-    "status": "narrowed",
+    "status": "closed",
+    "closed_on": "2026-11-06",
     "title_he": "המחיר המפוקח להעברת ניירות ערך לחשבון שלכם במוסד אחר"
   },
   {
@@ -236,7 +237,7 @@
   },
   {
     "id": "BRK OQ14",
-    "status": "open"
+    "status": "narrowed"
   },
   {
     "id": "BRK OQ15",
@@ -270,6 +271,14 @@
   {
     "id": "BRK OQ21",
     "status": "narrowed"
+  },
+  {
+    "id": "BRK OQ22",
+    "status": "open"
+  },
+  {
+    "id": "BRK OQ23",
+    "status": "open"
   },
   {
     "id": "CS OQ1",
@@ -445,7 +454,7 @@
   },
   {
     "id": "ETF OQ7",
-    "status": "open"
+    "status": "narrowed"
   },
   {
     "id": "ETF OQ8",
@@ -476,7 +485,8 @@
   },
   {
     "id": "ETF OQ14",
-    "status": "narrowed"
+    "status": "closed",
+    "closed_on": "2026-11-06"
   },
   {
     "id": "ETF OQ15",
@@ -555,6 +565,22 @@
   },
   {
     "id": "ETF OQ33",
+    "status": "open"
+  },
+  {
+    "id": "ETF OQ34",
+    "status": "open"
+  },
+  {
+    "id": "ETF OQ35",
+    "status": "open"
+  },
+  {
+    "id": "ETF OQ36",
+    "status": "open"
+  },
+  {
+    "id": "ETF OQ37",
     "status": "open"
   },
   {
@@ -745,7 +771,10 @@
   },
   {
     "id": "IRA OQ16",
-    "status": "open", "title_he": "אילו קופות בניהול אישי אושרו כקופת גמל לקצבה", "blocks_he": "מעבר של כסף מקרן פנסיה לקופה בניהול אישי" },
+    "status": "open",
+    "title_he": "אילו קופות בניהול אישי אושרו כקופת גמל לקצבה",
+    "blocks_he": "מעבר של כסף מקרן פנסיה לקופה בניהול אישי"
+  },
   {
     "id": "KH OQ1",
     "status": "closed",
@@ -800,7 +829,8 @@
   },
   {
     "id": "KH OQ12",
-    "status": "open"
+    "status": "closed",
+    "closed_on": "2026-11-03"
   },
   {
     "id": "KH OQ13",
@@ -865,7 +895,8 @@
   },
   {
     "id": "KGL OQ11",
-    "status": "open"
+    "status": "closed",
+    "closed_on": "2026-11-03"
   },
   {
     "id": "KGL OQ12",
@@ -962,7 +993,7 @@
   },
   {
     "id": "MF OQ3",
-    "status": "open",
+    "status": "narrowed",
     "title_he": "שעות ההוראה בקרנות לפי סוג, והאם קונים ופודים גם ביום שישי"
   },
   {
@@ -974,7 +1005,7 @@
   },
   {
     "id": "MF OQ5",
-    "status": "open",
+    "status": "narrowed",
     "title_he": "האם הכלל שמנהל קרן מעלה דמי ניהול רק בתחילת שנה מחייב"
   },
   {
@@ -1026,7 +1057,8 @@
   },
   {
     "id": "MF OQ17",
-    "status": "narrowed",
+    "status": "closed",
+    "closed_on": "2026-11-06",
     "title_he": "מה קובעים התיקונים האחרונים לחוק השקעות משותפות בנאמנות"
   },
   {
@@ -1157,6 +1189,34 @@
     "status": "open"
   },
   {
+    "id": "PEN OQ24",
+    "status": "open"
+  },
+  {
+    "id": "PEN OQ25",
+    "status": "open"
+  },
+  {
+    "id": "PEN OQ26",
+    "status": "open"
+  },
+  {
+    "id": "PEN OQ27",
+    "status": "open"
+  },
+  {
+    "id": "PEN OQ28",
+    "status": "open"
+  },
+  {
+    "id": "PEN OQ29",
+    "status": "open"
+  },
+  {
+    "id": "PEN OQ30",
+    "status": "open"
+  },
+  {
     "id": "PF OQ1",
     "status": "open"
   },
@@ -1228,6 +1288,10 @@
     "title_he": "האם טיוטת התיקון לחוזר הדוחות השנתיים אומצה"
   },
   {
+    "id": "PF OQ17",
+    "status": "open"
+  },
+  {
     "id": "REG OQ1",
     "status": "closed",
     "closed_on": "2026-10-22"
@@ -1273,7 +1337,8 @@
   },
   {
     "id": "REG OQ11",
-    "status": "open"
+    "status": "closed",
+    "closed_on": "2026-11-06"
   },
   {
     "id": "REG OQ12",
@@ -1323,7 +1388,34 @@
   },
   {
     "id": "REG OQ22",
-    "status": "open", "title_he": "מה קורה לכסף של בעלי היחידות בחדלות הפירעון של מנהל הקרן או של הנאמן", "blocks_he": "ההגנה בקרן נאמנות" },
+    "status": "open",
+    "title_he": "מה קורה לכסף של בעלי היחידות בחדלות הפירעון של מנהל הקרן או של הנאמן",
+    "blocks_he": "ההגנה בקרן נאמנות"
+  },
+  {
+    "id": "REG OQ23",
+    "status": "open"
+  },
+  {
+    "id": "REG OQ24",
+    "status": "open"
+  },
+  {
+    "id": "REG OQ25",
+    "status": "open"
+  },
+  {
+    "id": "REG OQ26",
+    "status": "open"
+  },
+  {
+    "id": "REG OQ27",
+    "status": "open"
+  },
+  {
+    "id": "REG OQ28",
+    "status": "open"
+  },
   {
     "id": "RG OQ1",
     "status": "closed",
@@ -2018,11 +2110,11 @@
   },
   {
     "id": "TXF OQ8",
-    "status": "open"
+    "status": "narrowed"
   },
   {
     "id": "TXF OQ9",
-    "status": "open"
+    "status": "narrowed"
   },
   {
     "id": "TXF OQ10",
@@ -2088,6 +2180,10 @@
   },
   {
     "id": "TXF OQ25",
+    "status": "open"
+  },
+  {
+    "id": "TXF OQ26",
     "status": "open"
   },
   {
@@ -2189,6 +2285,10 @@
   },
   {
     "id": "TXS OQ23",
+    "status": "open"
+  },
+  {
+    "id": "TXS OQ24",
     "status": "open"
   },
   {

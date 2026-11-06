@@ -1,0 +1,36 @@
+{
+  "case": "hg-within-ceiling",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"'כל ההפקדות ב־12 השנים בתוך התקרה של הפטור' is unclear, and seems not to make sense when the same sum is deposited every month.\",\"where\":\"the sentence under the graphic\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings mentions the sentence saying all deposits over 12 years stay within the exemption ceiling, or that it's unclear. Finding 3 is about the same area under the chart, but it complains about the S&P500 label instead."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0169074
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings mention the sentence about all 12 years of deposits being under the exemption ceiling, or say it is unclear. Finding 3 is about the same area under the chart, but it complains about the unexplained S&P500 label, which is a different problem."
+      }
+    ],
+    "liked": [],
+    "usd": 0.017135400000000002
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0340428
+}

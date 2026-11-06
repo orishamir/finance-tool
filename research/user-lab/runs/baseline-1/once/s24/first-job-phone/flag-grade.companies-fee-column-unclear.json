@@ -1,0 +1,36 @@
+{
+  "case": "companies-fee-column-unclear",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The column 'דמי ניהול לפי …' in the company's tracks table is not explained.\",\"where\":\"the fee column head\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 5,
+        "why": "Finding 5 says the fee column is unexplained, with two fee lines per row and no hint which one applies, which is the same complaint as the person's unexplained fee column."
+      }
+    ],
+    "liked": [],
+    "usd": 0.017475400000000002
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 5,
+        "why": "Finding 5 says the fee column's two lines per row come with no explanation of which one the user would pay, which is the person's complaint that the fee column isn't explained."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0166714
+  },
+  "third": null,
+  "ranks": {
+    "k": 5
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.034146800000000005
+}

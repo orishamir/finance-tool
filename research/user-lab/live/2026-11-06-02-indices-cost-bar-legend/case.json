@@ -1,0 +1,53 @@
+{
+  "id": "live-02-indices-cost-bar-legend",
+  "date": "2026-11-06",
+  "page": "/indices (S&P 500 chosen; the account list and the fund list)",
+  "device": "pc",
+  "viewport_px": [
+    1440,
+    1356
+  ],
+  "live_commit": "35b3e6ee",
+  "shots": [
+    "screen.png"
+  ],
+  "his_words": [
+    "and here - the legend is repeated on every broker? why? just put it somewhere central... and put the amounts on the bar itself"
+  ],
+  "keys": [
+    {
+      "id": "legend-every-row",
+      "problem": "Every row of the list repeats the same colour key under its bar (which colour is which kind of cost), so the same names are read again on every row instead of once for the whole list.",
+      "where": "the small bar in each row of the list of accounts, and the line of coloured squares with names under it",
+      "kind": "general"
+    },
+    {
+      "id": "amounts-off-bar",
+      "problem": "The amount each coloured part of a row's bar stands for is written apart from the bar, in a line under it, not on the part itself, so the eye goes back and forth between colour and number.",
+      "where": "the small bar in each row of the list of accounts, and the amounts in the line under it",
+      "kind": "general"
+    }
+  ],
+  "goal_given_to_reviewer": "You want to invest regularly in an S&P 500 fund for the long term at the lowest cost, and you are working out where to hold it and which fund to pick.",
+  "split": "live (held out, never tuned on before scoring)",
+  "issue": 204,
+  "key_note": "His words give the reason for the first problem (the same key on every row; he wants it once, in a central place) and the wish behind the second (the amounts on the bar itself). Kept as two keys, as bench/README.md splits a message that flags two problems.",
+  "reviewer_before_asking": {
+    "how": "panel shots mode, the default reviewer instructions of 2026-11-06 (v1; still screens get no instruction), goal only, personas self-directed-investor, careful-retiree-pc and student-small-amounts, 3 runs each, reader effort medium; graded by tools/grade-flag.mjs (two blind graders at high effort, a third on disagreement)",
+    "public_run": "runs/live-02",
+    "by_key": {
+      "legend-every-row": {
+        "caught": "0 of 9 sessions",
+        "in_first_10": 0,
+        "grader_agreement": "8 of 9"
+      },
+      "amounts-off-bar": {
+        "caught": "0 of 9 sessions",
+        "in_first_10": 0,
+        "grader_agreement": "9 of 9"
+      }
+    },
+    "caught": "0 of 9 sessions on either key: a miss",
+    "what_they_flagged_instead": "small grey text, jargon (דמי משמרת, נאמן, English names), the unlabelled tick marks of the spread chart above the lists, minus figures, missing return assumptions, prices not counted for students; about the same rows, the student twice named the size of the custody fee but never the key under every bar"
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "Minus signs on every fund's difference look like losses; the meaning is only explained in a small note at the bottom.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "The page opens with English letters and the word מדד (index), which tells someone looking for safe saving that it isn't for them.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "The same 'not in the calculation / different price for young people, soldiers...' note repeats on almost every bank row, so the reader has to reread each one to find what differs.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "The cost bars' colour key is on another screen, so the colours can't be matched, and orange and yellow look almost the same.",
+      "serious": true,
+      "names_listed": 4
+    },
+    {
+      "n": 5,
+      "summary": "Nothing says whether this is as safe as a deposit or how much it could drop, and it assumes 7% a year.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 6,
+      "summary": "Long rows of numbers make the screen busy and caused anxiety.",
+      "serious": false,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.0348588
+}

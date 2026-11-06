@@ -1,0 +1,53 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "Dark background with small grey text is hard to read even with glasses, including the column headings and the labels.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "Every row repeats the same labels, so the reader has to reread them all to find what differs. This is not the repeated company name.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "The ring colours in the exposure column look alike, so the reader cannot match each percentage to its ring.",
+      "serious": true,
+      "names_listed": 1
+    },
+    {
+      "n": 4,
+      "summary": "Too many numbers on each screen made the reader anxious.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "English letters on the first screen made the page feel not meant for them.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 6,
+      "summary": "Nothing explains which tracks are safe, so the reader guessed from the 0% share figure.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 7,
+      "summary": "Many returns are missing because the tracks are younger than 3 years.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 8,
+      "summary": "Rows are very long, with the name at the far right and the money column at the far left, so the reader loses their place.",
+      "serious": true,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.0312588
+}

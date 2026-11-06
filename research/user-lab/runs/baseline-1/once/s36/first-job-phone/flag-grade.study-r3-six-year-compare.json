@@ -1,0 +1,36 @@
+{
+  "case": "study-r3-six-year-compare",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"A comparison with waiting until year 6 is always present, though it is not always relevant.\",\"where\":\"the year-6 comparison\",\"kind\":\"taste\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 5 is about the same year-6 box, but it complains that the dashed box looks like a real bar, not that the comparison is always shown even when it doesn't matter."
+      }
+    ],
+    "liked": [],
+    "usd": 0.016247400000000002
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 5 is about the same year-6 box but complains that it looks like a real bar, and finding 6 is about the tax bar; neither says the year-6 comparison is shown when it doesn't apply."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0168074
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0330548
+}

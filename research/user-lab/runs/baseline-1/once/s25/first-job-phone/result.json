@@ -1,0 +1,118 @@
+{
+  "task": "s25",
+  "persona": "first-job-phone",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T16:27:09.287Z",
+  "structured": {
+    "answer": "Harel has tons (96 tracks in 7 products plus 5 index funds and 4 ETFs). I'd go S&P 500: in קופת גמל להשקעה or קרן השתלמות that track costs about 0.5–0.56% of savings and made ~13.7% a year over 3 years, and the הראל מחקה S&P 500 fund looks cheaper (0.1%) but shows no returns.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Main table, screens 3–5 (pension products)",
+        "why": "Endless rows of pension tracks with the same look; got bored and just thumbed past, would probably have closed the page on my phone here"
+      },
+      {
+        "where": "קרנות מחקות / קרנות סל tables",
+        "why": "Fees split into קבועים/משתנים/נאמן and no returns at all, so I couldn't compare them with the tracks above"
+      },
+      {
+        "where": "מניות track in קרן השתלמות (21.45%) vs S&P (13.71%)",
+        "why": "Higher number made me doubt whether S&P is the right pick"
+      }
+    ],
+    "used": [
+      "Heading הראל and 'כל המוצרים של הראל' with product buttons and counts",
+      "Row 'עוקב מדד S&P 500' in קופת גמל להשקעה: 0.56% מהחיסכון, 13.7% 3 שנים, 11.92% 5 שנים",
+      "Row 'עוקב מדד S&P 500' in קרן השתלמות: 0.5%, 13.71%",
+      "Row 'מניות' in קרן השתלמות: 21.45%",
+      "Group header lines 'דמי ניהול מהחיסכון: מ־0.54% עד 0.61%'",
+      "'הראל מחקה S&P 500 (4D)' fees: קבועים 0%, משתנים 0.1%",
+      "'הראל סל S&P 500 (4D)': קבועים 0.6%"
+    ],
+    "skimmed": [
+      "תגמולים ואישית לפיצויים section",
+      "חיסכון לכל ילד section",
+      "קרן חדשה מקיפה and קרן חדשה כללית sections",
+      "מרכזית לפיצויים section",
+      "Donut charts and מניות/מט\"ח percentages",
+      "כסף מנוהל column"
+    ],
+    "skipped": [
+      "Small notes PF-06 and PF-10 under the table",
+      "Paragraph 'התשואה היא תשואה עבר...'",
+      "'מה כתוב במסמכים של הראל' folds",
+      "'לא מצאתם שם?' search box",
+      "Footer",
+      "Line about the companies included and '123 מקור / 123 מחושב'"
+    ],
+    "unsure_meaning": [
+      "נאמן",
+      "צוברת",
+      "מנוטרלת מט\"ח",
+      "חשיפה לדולר",
+      "מס נגדי על שינויי המטבע",
+      "(4A) / (4D)",
+      "קבועים / משתנים",
+      "מהחיסכון vs מההפקדות",
+      "פחות מ־3 שנים (no number shown)",
+      "Whether 13.7% is per year or total over 3 years",
+      "Teal vs yellow dot colours in the rings (guessed stocks vs foreign currency)",
+      "Number next to the arrow icon (e.g. 13414) – guessed it's a code"
+    ],
+    "not_found": [
+      "Returns for the קרנות מחקות and קרנות סל",
+      "A clear recommendation of what to do first",
+      "Fee shown in shekels for an amount like 30,000 ₪",
+      "Which track my own savings are in"
+    ],
+    "findings": [
+      {
+        "what": "Every row repeats the same labels (מניות/מט\"ח, מהחיסכון/מההפקדות, 3 שנים/5 שנים), so I re-read the same words on 96 rows to find what differs",
+        "where": "Main products table, all sections"
+      },
+      {
+        "what": "Many tracks show only 'פחות מ־3 שנים' instead of a return, so half the rows can't be compared",
+        "where": "Return column, main table"
+      },
+      {
+        "what": "Index funds and ETFs show no returns at all and split fees into three unfamiliar parts",
+        "where": "קרנות מחקות and קרנות סל tables"
+      },
+      {
+        "what": "Very long page on a phone; the funds I care about are at the very bottom after pages of pension tracks",
+        "where": "Whole page order"
+      },
+      {
+        "what": "Fees only as small percents, nothing in shekels, so they feel like nothing",
+        "where": "דמי ניהול column"
+      },
+      {
+        "what": "Donut colours explained only by small dots next to words; had to match ring colours with the numbers beside them",
+        "where": "Exposure column rings"
+      },
+      {
+        "what": "Jargon in coloured tags (מנוטרלת מט\"ח, מס נגדי על שינויי המטבע, צוברת) not explained",
+        "where": "Fund name tags in קרנות מחקות/סל"
+      }
+    ]
+  },
+  "steps": 7,
+  "reads": 7,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 43069,
+    "turns": 9,
+    "usd": 0.267317,
+    "input": 10,
+    "cacheWrite": 22203,
+    "cacheRead": 50265,
+    "output": 3980,
+    "model": "claude-opus-5-5"
+  }
+}
