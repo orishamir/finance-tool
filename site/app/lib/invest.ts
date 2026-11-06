@@ -176,6 +176,8 @@ export interface WayPrice {
   open: boolean;
   /** What the account itself charges over the horizon, before the tax it saves (F-91 on F-63), real shekels: the same figure as the account's part of the cost bar. */
   accountCost: number;
+  /** The account's cost as a figure (F-63), with its inputs, rules and the run's notes about the cost (BANK-35); `about` says which figure it is, `whole` rounds it to the shekel. */
+  cost: (about: string, whole?: boolean) => SiteValue;
   /** The same, by the tariff's own lines (trade, custody, FX, fixed), largest first, and the remainder no single line explains. */
   lines: { line: FeeLine; cost: number }[];
   interaction: number;
@@ -643,14 +645,21 @@ const rulesOf = (row: ComparedProvider) => row.run.rules.map((u) => ({ id: u.id,
 /** The plan's inputs and, on a run of something the person typed, what they typed: its sheet lists them (D7, D44). */
 const inputsOfRun = (ctx: Ctx, ...ids: string[]): Record<string, SiteValue> => Object.assign({}, inputMap(ctx.plan), ...ids.map((id) => ctx.bundle.entered?.inputs[id] ?? {}));
 
+/**
+ * The run's flags that are about the account's cost, not about what is left: BANK-35 says the current account counted in the cost may be too high
+ * from the cap's start (F-102), so it sits on the cost, where a cost too high is a cost too high, and not on the value left, which it would lower.
+ */
+const COST_FLAGS: readonly string[] = ["BANK-35"];
+
 function costValue(ctx: Ctx, row: ComparedProvider, about: string): SiteValue {
-  return computed(row.horizonCostBeforeTax, "nis", "F-91", inputsOfRun(ctx, row.id), { today: ctx.bundle.today, rules: rulesOf(row), flags: row.flags, about });
+  const flags = [...row.flags, ...row.run.flags.map((f) => f.code).filter((c) => COST_FLAGS.includes(c) && !row.flags.includes(c))];
+  return computed(row.horizonCostBeforeTax, "nis", "F-91", inputsOfRun(ctx, row.id), { today: ctx.bundle.today, rules: rulesOf(row), flags, about });
 }
 
 function wayPrice(ctx: Ctx, p: Extract<Priced, { kind: "ok" }>, providerId: string, about: string, fundId: string): WayPrice {
   const row = p.row;
   const open = row.run.outcome.code === "listed-not-ranked";
-  const value = computed(row.real, "nis", "F-65", inputsOfRun(ctx, providerId, fundId), { today: ctx.bundle.today, rules: rulesOf(row), flags: row.run.flags.map((f) => f.code), about });
+  const value = computed(row.real, "nis", "F-65", inputsOfRun(ctx, providerId, fundId), { today: ctx.bundle.today, rules: rulesOf(row), flags: row.run.flags.map((f) => f.code).filter((c) => !COST_FLAGS.includes(c)), about });
   let split: Pick<WayPrice, "lines" | "interaction"> | undefined;
   // the lines of a way take a run each and the page shows the picked fund's only: read when shown
   const splitOf = () => {
@@ -665,6 +674,8 @@ function wayPrice(ctx: Ctx, p: Extract<Priced, { kind: "ok" }>, providerId: stri
     venue: p.venue,
     open,
     accountCost: row.horizonCostBeforeTax,
+    cost: (about: string, whole = true) =>
+      computed(whole ? Math.round(row.horizonCostBeforeTax) : row.horizonCostBeforeTax, "nis", "F-63", inputsOfRun(ctx, providerId, fundId), { today: ctx.bundle.today, rules: rulesOf(row), flags: row.run.flags.map((f) => f.code).filter((c) => COST_FLAGS.includes(c)), about }),
     get lines() {
       return splitOf().lines;
     },

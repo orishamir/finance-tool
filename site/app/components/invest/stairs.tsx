@@ -87,7 +87,7 @@ export const StairsSection = memo(function StairsSection({ view, bundle, plan, s
         fundName,
         house: house(stair.pos.a),
         left: p.value,
-        account: nis(p.accountCost, "F-63", `${t.table.accountCost}: ${fundName}, ${house(stair.pos.a).short}`),
+        account: p.cost(`${t.table.accountCost}: ${fundName}, ${house(stair.pos.a).short}`, false),
         fund: pc?.fund ?? nis(0, "F-91", t.table.fundCost),
         tax: pc?.tax ?? nis(0, "F-91", t.table.tax),
         dParts: null,

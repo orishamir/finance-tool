@@ -638,9 +638,12 @@ export function AbroadNotes({ view, bundle, open, onOpenChange }: { view: Invest
   if (!view.options.some((o) => o.id === "abroad" && o.exists)) return null;
   const limits = (id: string) => bundle.snapshots.some((s) => s.id === id && s.lines.some((l) => l.base === "fx" && typeof l.spread?.value === "number"));
   const capped = view.providers.filter((p) => !p.custom && limits(p.id)).map((p) => p.short).sort((a, b) => a.localeCompare(b, "he"));
+  // F-103 (D67): the houses whose price lists print a charge per corporate event abroad, which their figures count on each dividend
+  const charges = (id: string) => bundle.snapshots.some((s) => s.id === id && s.lines.some((l) => l.base === "corporate_event" && typeof l.rate.value === "number"));
+  const perDividend = view.providers.filter((p) => !p.custom && charges(p.id)).map((p) => p.short).sort((a, b) => a.localeCompare(b, "he"));
   return (
     <Disclosure label={c.pair.abroadTitle} open={open} onOpenChange={onOpenChange} labelClassName="text-sm text-link">
-      <NoteList className="text-xs pb-1" items={[...(capped.length > 0 ? [c.pair.abroadSpread(capped)] : []), c.pair.abroadOthers]} />
+      <NoteList className="text-xs pb-1" items={[...(capped.length > 0 ? [c.pair.abroadSpread(capped)] : []), c.pair.abroadOthers(perDividend)]} />
     </Disclosure>
   );
 }
@@ -767,7 +770,7 @@ export function AccountColumn({ view, bundle, years, monthly = 1, pick, onPick, 
           <CostStack size="sm" parts={parts} scale={scale} highlight={legendPick.active} label={`${p.short}: ${fmt.nisWhole(wp.accountCost)}`} />
           {/* one width on every row, for the longest amount: a longer figure would shorten its own bar, and the bars share one scale */}
           <span className="shrink-0 text-xs text-muted-foreground whitespace-nowrap" style={{ width: costWidth }}>
-            <Num animate value={nis(wp.accountCost, "F-63", `${p.short}: ${c.pair.colChargesShort}`, bundle.today)} />
+            <Num animate value={wp.cost(`${p.short}: ${c.pair.colChargesShort}`)} />
           </span>
         </span>
         <span className={cx("col-end-[-1] text-end font-semibold", figureFit(wp.valueN))}>
@@ -903,7 +906,7 @@ export function AccountColumn({ view, bundle, years, monthly = 1, pick, onPick, 
             charge={
               priced(at) && (
                 <>
-                  {c.pair.colCharges(years)}: <Num animate value={nis(at.accountCost, "F-63", c.pair.colCharges(years), bundle.today)} />
+                  {c.pair.colCharges(years)}: <Num animate value={at.cost(c.pair.colCharges(years))} />
                 </>
               )
             }

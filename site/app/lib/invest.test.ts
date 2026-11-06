@@ -333,3 +333,19 @@ describe("a bank's current account on the indices page (D64, F-102)", () => {
     expect(counted.headline!.providerId).toBe(before.headline!.providerId);
   });
 });
+
+describe("BANK-35 sits on the account's cost, not on what is left (independent check 2, must-fix 1)", () => {
+  it("a bank's row whose counted current account is above the cap from July 2027 carries the note on its cost figure only", () => {
+    const view = buildInvest({ bundle, index: sp, plan: plan({ currentAccounts: { own: null } }) });
+    const ways = view.options.flatMap((o) => o.funds).map((f) => f.byHouse.leumi).filter((x): x is Extract<typeof x, { valueN: number }> => !!x && "valueN" in x);
+    expect(ways.length).toBeGreaterThan(0);
+    for (const w of ways) {
+      expect(w.cost("עלות").flags).toContain("BANK-35");
+      expect(w.value.flags ?? []).not.toContain("BANK-35");
+    }
+    // the bank the person marks as their own counts no current account, and its cost has no such note
+    const own = buildInvest({ bundle, index: sp, plan: plan({ currentAccounts: { own: "leumi" } }) });
+    const mine = own.options.flatMap((o) => o.funds).map((f) => f.byHouse.leumi).filter((x): x is Extract<typeof x, { valueN: number }> => !!x && "valueN" in x);
+    for (const w of mine) expect(w.cost("עלות").flags ?? []).not.toContain("BANK-35");
+  });
+});

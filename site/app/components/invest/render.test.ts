@@ -373,7 +373,8 @@ describe("the account card's notes on prices abroad and its own-bank list (D64, 
   it("names the houses whose price lists limit the spread, from their records, on an index with funds bought abroad", () => {
     const out = card(sp, null);
     expect(out).toContain(invest.pair.abroadSpread(["אי.בי.אי", "אלטשולר טרייד", "מיטב טרייד"]));
-    expect(out).toContain(invest.pair.abroadOthers);
+    // F-103 (D67): One Zero prints a charge per dividend abroad, which its figures count; the note says so (independent check 2, should-fix 5)
+    expect(out).toContain(invest.pair.abroadOthers(["וואן זירו"]));
   });
 
   it("names the current account in the legend only where a bar shown counts one", () => {
@@ -398,7 +399,7 @@ describe("the account card's notes on prices abroad and its own-bank list (D64, 
     const view = buildInvest({ bundle, index: ta, plan });
     const out = card(ta, null);
     const abroad = view.options.some((o) => o.id === "abroad" && o.exists);
-    expect(out.includes(invest.pair.abroadOthers)).toBe(abroad);
+    expect(out.includes(invest.pair.abroadTitle)).toBe(abroad);
   });
 
   it("offers every bank whose current account costs something, and says which row leaves it out", () => {

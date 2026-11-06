@@ -389,7 +389,7 @@
           "BRK-23"
         ],
         "state": "sourced",
-        "notes": "'0.15 אחוז, מינימום 5 דולר ארה\"ב, מקסימום 3,000 דולר ארה\"ב', charged on execution. No channel split. The spread is not printed (BRK-23). Under annex ו' the ONE and ONE PLUS plans are exempt from this fee (see the plan line)."
+        "notes": "'0.15 אחוז, מינימום 5 דולר ארה\"ב, מקסימום 3,000 דולר ארה\"ב', charged on execution. No channel split. The spread is not printed, and no general rule limits a conversion spread or says how it is disclosed (FXD OQ2, open); the spreads some non-bank price lists print beside or instead of the conversion fee are BRK-48. Under annex ו' the ONE and ONE PLUS plans are exempt from this fee (see the plan line)."
       },
       "min": {
         "value": 5,
