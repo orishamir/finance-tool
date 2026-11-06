@@ -1,9 +1,11 @@
 # Benchmark: what the founder flagged, as screens a reviewer can be run on
 
-2026-11-06. Every problem the founder raised about the site from 24 October to 5 November, turned into a case. A
-case is the whole screen as it was live when he wrote, or the drawing he was shown, plus a key that only the
-grader sees. A reviewer that runs with no project context is measured by how many keyed problems it raises
-unprompted (`../metric.md`).
+Every problem the founder raised about the site from 24 October to 5 November 2026, turned into a case. A case is the
+whole screen as it was live when he wrote, or the drawing he was shown, plus a key that only the grader sees. A
+reviewer that runs with no project context is measured by how many keyed problems it raises unprompted
+(`../metric.md`). The benchmark sets no bar: `../metric.md`'s bar decides whether the reviewer is adopted as the judge,
+and CLAUDE.md's whether it becomes a first pass on every site change. Problems he flags later are kept in `../live/`
+(`../learning-loop.md`).
 
 `cases.jsonl` has 123 cases, one JSON object per line. They cover 121 of the 184 messages and issue comments in
 which he flagged something; the other 63 are listed below with the reason they were dropped. Messages about the
@@ -83,9 +85,7 @@ The raw extracts (`raw/`: flags, images, CI lists, page text) are ignored by git
 
 ## What counts as his verdict
 
-Three signals, and nothing else (founder, 2026-11-06): a complaint is a flag; "I like it" is an approval; "it's fine" is
-nearly as strong. Silence, going along with something, and choosing one of several options are not signals: he often
-goes along to judge the thing live on the site. So:
+Three signals, and nothing else (`../metric.md`, "The benchmark"): a complaint, "I like it" and "it's fine". So, here:
 
 - A finding that matches no flag is **not** scored wrong. It goes to the noise sample, where he says whether it would
   bother anyone.
