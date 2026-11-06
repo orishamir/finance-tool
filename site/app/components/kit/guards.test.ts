@@ -252,3 +252,33 @@ describe("the page frame", () => {
     expect(hits.map(rel)).toEqual([]);
   });
 });
+
+// 12. Hebrew addressed to one gender (copy.md 1 and 10.2; founder, 2026-10-31, on wording addressed to one reader): the site speaks in
+//     the plural or impersonally. A scan of the copy, the guide and exposure prose and the Hebrew fields of the records for the words
+//     that can only address one person ("אתה", "שלך", "לך", "עליך", "אליך", "ממך", "הזן"). Words that also have a third-person sense
+//     ("בחר": the site chose; "תוכל": she will be able) are left to the Hebrew editor.
+describe("Hebrew is never addressed to one gender", () => {
+  const ONE_READER = /(?<![֐-׿])(אתה|שלך|לך|עליך|אליך|ממך|הזן)(?![֐-׿])/g;
+  const uncommented = (src: string): string => src.replace(/\{\/\*[\s\S]*?\*\/\}/g, " ").replace(/\/\*[\s\S]*?\*\//g, " ").replace(/(^|[^:"'`\\\w])\/\/[^\n]*/g, "$1");
+  const hebrewFields = (o: unknown, key = ""): string[] =>
+    typeof o === "string" ? (key.endsWith("_he") ? [o] : []) : Array.isArray(o) ? o.flatMap((v) => hebrewFields(v, key)) : o && typeof o === "object" ? Object.entries(o).flatMap(([k, v]) => hebrewFields(v, k)) : [];
+  it("no source or record of what a reader sees uses one", () => {
+    const bad: string[] = [];
+    for (const f of files.filter((x) => rel(x) === "copy.ts" || (rel(x).startsWith("content/") && /\.tsx?$/.test(x)))) for (const m of uncommented(read(f)).matchAll(ONE_READER)) bad.push(`${rel(f)}: ${m[0]}`);
+    const data = join(root, "../../data");
+    for (const f of walk(data).filter((x) => x.endsWith(".json"))) {
+      let rec: unknown;
+      try {
+        rec = JSON.parse(read(f));
+      } catch {
+        continue;
+      }
+      for (const m of hebrewFields(rec).join("\n").matchAll(ONE_READER)) bad.push(`${relative(data, f)}: ${m[0]}`);
+    }
+    expect(bad).toEqual([]);
+  });
+  it("the scan sees the broken pattern and not a longer word", () => {
+    expect("הזן את הסכום שלך".match(ONE_READER)).toEqual(["הזן", "שלך"]);
+    expect("הזינו את הסכום שלכם; הולך ומשתלם".match(ONE_READER)).toBeNull();
+  });
+});
