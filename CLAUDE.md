@@ -132,7 +132,14 @@ reviewer that runs with no project context and flags what people flag,
 measured against every problem I flagged (its metric and bar are in
 `metric.md` there), so that Claude can be trusted with large features. "as
 far as i care you can drop other work." The lessons behind it are items 21
-to 25 of `research/2026-10-28-founder-patterns.md`.
+to 25 of `research/2026-10-28-founder-patterns.md`. *(2026-11-06)* After the
+lab's second score (the night of 6 November) it becomes a habit, not the main
+line: every problem I flag goes through the reviewer first (`learning-loop.md`),
+the held-out set is scored again every couple of weeks, and the lab takes about
+5% of a week at most; the main line goes back to the indices page and the
+guides. If that score catches about half or more of my general problems with
+noise under 30%, the reviewer is a first pass on every site change; if not, it
+is kept as a check for movement and dead controls beside the fresh readers.
 
 ## Fixed constraints
 
