@@ -95,34 +95,32 @@
       "checked": "2026-10-25"
     },
     {
-      "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz201634a.pdf",
-      "title": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018 (עותק באתר prisha.co.il)",
-      "publisher": "Prisha.co.il",
-      "publisher_he": "אתר פרישה (prisha.co.il)",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf",
+      "title": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018",
+      "title_he": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018",
+      "publisher": "gov.il",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
       "kind": "circular",
-      "strength": "primary-mirror",
-      "mirror_host": "other",
+      "strength": "primary",
       "locator": "p.9, s.1",
       "locator_he": "עמוד 9, סעיף 1",
       "page": 9,
       "quote": "קצבה המשולמת לפנסיונר או לכלל שאיריו של עמית יחד, שסכומה נמוך מ-5% מהשכר הממוצע במשק",
-      "checked": "2026-10-26",
-      "qualifier": "(third-party host)"
+      "checked": "2026-10-26"
     },
     {
-      "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz201634a.pdf",
-      "title": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018 (עותק באתר prisha.co.il)",
-      "publisher": "Prisha.co.il",
-      "publisher_he": "אתר פרישה (prisha.co.il)",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf",
+      "title": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018",
+      "title_he": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018",
+      "publisher": "gov.il",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
       "kind": "circular",
-      "strength": "primary-mirror",
-      "mirror_host": "other",
+      "strength": "primary",
       "locator": "p.36, s.52",
       "locator_he": "עמוד 36, סעיף 52",
       "page": 36,
       "quote": "עמית רשאי לדחות את מועד קבלת הקצבה",
-      "checked": "2026-10-26",
-      "qualifier": "(third-party host)"
+      "checked": "2026-10-26"
     }
   ]
 }

@@ -1166,7 +1166,7 @@
   },
   {
     "id": "PEN OQ19",
-    "status": "open",
+    "status": "narrowed",
     "title_he": "מי מקבל כסף מקופת גמל לקצבה לתשלום קצבה, ובאילו מקדמים",
     "blocks_he": "חישוב הקצבה מקופת גמל לקצבה"
   },
@@ -1190,7 +1190,8 @@
   },
   {
     "id": "PEN OQ24",
-    "status": "open"
+    "status": "closed",
+    "closed_on": "2026-11-06"
   },
   {
     "id": "PEN OQ25",
@@ -1210,10 +1211,14 @@
   },
   {
     "id": "PEN OQ29",
-    "status": "open"
+    "status": "narrowed"
   },
   {
     "id": "PEN OQ30",
+    "status": "narrowed"
+  },
+  {
+    "id": "PEN OQ31",
     "status": "open"
   },
   {
@@ -1537,7 +1542,7 @@
   },
   {
     "id": "INS OQ14",
-    "status": "open"
+    "status": "narrowed"
   },
   {
     "id": "INS OQ15",
@@ -1545,6 +1550,10 @@
   },
   {
     "id": "INS OQ16",
+    "status": "open"
+  },
+  {
+    "id": "INS OQ17",
     "status": "open"
   },
   {
@@ -1805,7 +1814,8 @@
   },
   {
     "id": "TXH OQ10",
-    "status": "open"
+    "status": "closed",
+    "closed_on": "2026-11-06"
   },
   {
     "id": "TXH OQ11",
@@ -1824,6 +1834,10 @@
     "id": "TXH OQ14",
     "status": "closed",
     "closed_on": "2026-10-31"
+  },
+  {
+    "id": "TXH OQ15",
+    "status": "open"
   },
   {
     "id": "TXA OQ1",

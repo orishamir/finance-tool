@@ -70,7 +70,7 @@ The evidence behind them is `research/2026-10-28-founder-patterns.md`.
    section of the same page may give it another meaning, each chart with its
    own legend or labels. Blue and violet are reserved for entered and
    computed numbers; red, amber and green are status colours, never a
-   series. Each page's spec carries its colour table.
+   series, and green for more money, red for less is status (D71). Each page's spec carries its colour table.
 7. **One flaw means a sweep and a lesson.** A flaw I report is fixed in the
    shared piece, and every other place of the same kind is fixed with it.
    Every criticism of mine is learned three ways. The reviewer: before the
