@@ -10,9 +10,19 @@ the dividend of a distribution month, taxed and reinvested with no commission an
 (F-102: `min(a_m, held after custody)`, `a_m` the price of the month's stretch, F-101). The sale at T pays its commission and the conversion.
 The sale gain is a loss in every case here (the dividends lower the price, the fees take units), so the exit tax is nil.
 
+With a return (lens review S8, 2026-11-07): the same two formulas on a growing fund, through the securities ledger of
+tests/golden/expected_calc.py (`Sec`: units, lots oldest first, the real gain against the CPI or the exchange rate, 25% at the sale), the current
+account taken out of the holding after custody each month and never deducted from the gain (TXS-06), the corporate-event charge after the
+dividend is taxed and reinvested, not deducted either.
+
 Run it and copy nothing by hand: `python3 tests/golden/expected_d64_d67.py`.
 """
 import json
+import os
+import sys
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from expected_calc import Path, Sec, contrib_schedule, mrate  # noqa: E402
 
 
 def commission(line, amount):
@@ -94,6 +104,40 @@ def run_dividends(amount_now, horizon, yield_a_year, per_year, per_event_usd, us
     return {"fx": fx_fees + exit_fx, "custody": events, "taxDuring": tax, "left": balance - exit_fx}
 
 
+def grown_account(a, amount_now=10_000.0, monthly=500.0, horizon=120, r=0.06, pi=0.02):
+    """F-102 on a fund growing at r with CPI at pi: 0.1% (min 5) a trade, 0.15% custody a quarter, a fund cost of 0.1%; deposits kept in today's money."""
+    path = Path(pi)
+    sec = Sec(path, delta=0.001, comm={"pct": 0.001, "min": 5.0}, custody={"pct": 0.0015, "min": 0.0})
+    sched = contrib_schedule(horizon, amount_now, monthly, path, True)
+    g = mrate(r)
+    for m in range(1, horizon + 1):
+        for cash, jm in sched.get(m, []):
+            sec.buy(cash, jm)
+        sec.grow(g)
+        sec.month_end(m)
+        if a:
+            sec.take(min(a, sec.value()), "account", (m - 1) // 12 + 1, False)
+    out = sec.liquidate(horizon)
+    return {"nominal": out["V"], "real": out["real_V"], "taxAtExit": out["tax"], "account": sec.fees["account"]}
+
+
+def grown_events(per_event_usd, usd=3.7, amount_now=50_000.0, horizon=60, r=0.06, pi=0.02):
+    """F-103 on an Irish fund bought abroad growing at r (in dollars, the dollar steady): 1.5% a year in four dividends, 0.2% conversion, 0.15% custody a quarter."""
+    path = Path(pi, 0.0)
+    sec = Sec(path, index="X", delta=0.0003, custody={"pct": 0.0015, "min": 0.0}, fx=0.002)
+    sec.buy(amount_now, 0)
+    g = mrate(r)
+    for m in range(1, horizon + 1):
+        sec.grow(g)
+        if m % 3 == 0:
+            sec.distribute(m, 0.015 / 4, 0.0)
+            if per_event_usd:
+                sec.take(min(per_event_usd * usd, sec.value()), "custody", (m - 1) // 12 + 1, False)
+        sec.month_end(m)
+    out = sec.liquidate(horizon)
+    return {"nominal": out["V"], "real": out["real_V"], "taxDuring": sec.tax_during, "taxAtExit": out["tax"], "custody": sec.fees["custody"]}
+
+
 # the rate of TXF-08 (25%) and an Irish fund's withholding of nothing (TXF-28), from data/rules
 ISRAELI_RATE = 0.25
 LIST = {"rate": 0.001, "min": 5.0}
@@ -109,5 +153,11 @@ cases = {
     "dividends_24": run_dividends(100_000, 24, 0.04, 4, 50, 3.7, 0.002, ISRAELI_RATE, 0.0),
     # F-103: never more than is held: 400 now, the same fund, for a year
     "dividends_run_out": run_dividends(400, 12, 0.04, 4, 50, 3.7, 0.0, ISRAELI_RATE, 0.0),
+    # with a return: 10,000 now and 500 a month for ten years at 6%, CPI 2%; the current account at 5.50 and without it
+    "grown_account": grown_account(5.5),
+    "grown_no_account": grown_account(0.0),
+    # with a return: 50,000 in an Irish fund paying 1.5% a year for five years at 6%; 50 dollars a dividend and none
+    "grown_events": grown_events(50),
+    "grown_no_events": grown_events(0),
 }
 print(json.dumps(cases, indent=2, sort_keys=True))

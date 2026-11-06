@@ -57,11 +57,12 @@ describe("F-102 the current account at a bank (D64)", () => {
     expect(counted.run.fees.account).toBeCloseTo(120 * 5.5, 6);
     expect(counted.byType.map((t) => t.line)).toContain("account");
     expect(without.byType.map((t) => t.line)).not.toContain("account");
-    // the shekels paid, less what inflation takes; more than none and less than they would have grown to at 6% a year
+    // the row's cost grows by exactly what the account takes from what is left in today's money (its figure on a growing fund is pinned by
+    // the golden run below, "grown_account"; lens review S8)
     const extra = counted.horizonCost.value as number;
     const base = without.horizonCost.value as number;
-    expect(extra - base).toBeGreaterThan(400);
-    expect(extra - base).toBeLessThan(120 * 5.5 * 1.4);
+    expect(extra - base).toBeCloseTo(without.run.real - counted.run.real, 6);
+    expect(extra - base).toBeGreaterThan(0);
     expect(counted.lineSources.some((s) => s.lineId === "current-account")).toBe(true);
   });
 
@@ -126,7 +127,8 @@ describe("F-103 a charge for each corporate event abroad (D67)", () => {
     expect(paying.run.fees.custody - plain.run.fees.custody).toBeCloseTo(20 * 50 * 3.7, 6);
     expect(paying.linesUsed).toContain("one-zero-test-corporate-event");
     expect(paying.byType.map((t) => t.line)).toContain("custody");
-    expect((paying.horizonCost.value as number) - (plain.horizonCost.value as number)).toBeGreaterThan(3_000);
+    // exactly what the charges take from what is left in today's money (pinned on a growing fund by the golden run "grown_events"; lens review S8)
+    expect((paying.horizonCost.value as number) - (plain.horizonCost.value as number)).toBeCloseTo(plain.run.real - paying.run.real, 6);
   });
 
   it("the record's own line is the one measured: 50 dollars for each event, on funds bought abroad", () => {
@@ -162,6 +164,10 @@ const EXPECTED = {
   account_runs_out: { account: 20.0, custody: 0.0, left: 0.0, trade: 0.0 },
   dividends_24: { custody: 1480.0, fx: 392.7085267985702, left: 96161.55487248652, taxDuring: 1965.7366007149062 },
   dividends_run_out: { custody: 398.3938375, fx: 0.0, left: 0.0, taxDuring: 1.6061625000000002 },
+  grown_account: { account: 660.0, nominal: 96300.1463367122, real: 78999.6613250505, taxAtExit: 4801.722402510033 },
+  grown_events: { custody: 5342.63488697252, nominal: 56536.10843436653, real: 51206.49527689073, taxAtExit: 2695.782983509735, taxDuring: 1031.0821939146194 },
+  grown_no_account: { account: 0.0, nominal: 97093.27437561426, real: 79650.30256334713, taxAtExit: 4867.686099144981 },
+  grown_no_events: { custody: 1705.6400918414527, nominal: 60489.36945767228, real: 54787.085584998495, taxAtExit: 2886.8986317136396, taxDuring: 1067.0253937075088 },
 };
 
 describe("golden figures of F-102 and F-103 (finance review 2, should-fix 10)", () => {
@@ -217,6 +223,38 @@ describe("golden figures of F-102 and F-103 (finance review 2, should-fix 10)", 
     expect(r.taxDuring).toBeCloseTo(e.taxDuring, 6);
     expect(r.nominal).toBeCloseTo(e.left, 6);
     expect(r.formulas).toContain("F-103");
+  });
+
+  it("on a growing fund: the current account's 5.50 a month for ten years, out of what is left and its tax (lens review S8)", () => {
+    const grown = (a?: number) =>
+      runSecurities({ goal: { amountNow: 10_000, monthly: 500, months: 120 }, market: { grossReturn: 0.06, inflation: 0.02 }, fund: { kind: "israeli-fund", drag: { management: 0.001 } }, tariff: { buy: LIST, sell: LIST, custody: CUSTODY, ...(a ? { currentAccount: a } : {}) }, profile: {} }, ctx);
+    for (const [r, e] of [[grown(5.5), EXPECTED.grown_account], [grown(), EXPECTED.grown_no_account]] as const) {
+      expect(r.fees.account).toBeCloseTo(e.account, 6);
+      expect(r.nominal).toBeCloseTo(e.nominal, 6);
+      expect(r.real).toBeCloseTo(e.real, 6);
+      expect(r.taxAtExit).toBeCloseTo(e.taxAtExit, 6);
+    }
+  });
+
+  it("on a growing fund: 50 dollars on each of twenty dividends, out of what is left and its tax (lens review S8)", () => {
+    const grown = (perDividend?: number) =>
+      runSecurities(
+        {
+          goal: { amountNow: 50_000, monthly: 0, months: 60 },
+          market: { grossReturn: 0.06, inflation: 0.02, returnIn: "instrument", fxChange: 0 },
+          fund: { kind: "foreign-fund", drag: { management: 0.0003 }, domicile: "ireland", distribution: { yield: 0.015, perYear: 4 } },
+          tariff: { currency: { code: "USD", startRate: 3.7 }, fx: 0.002, custody: CUSTODY, ...(perDividend ? { perDividend } : {}) },
+          profile: {},
+        },
+        ctx,
+      );
+    for (const [r, e] of [[grown(50), EXPECTED.grown_events], [grown(), EXPECTED.grown_no_events]] as const) {
+      expect(r.fees.custody).toBeCloseTo(e.custody, 6);
+      expect(r.nominal).toBeCloseTo(e.nominal, 6);
+      expect(r.real).toBeCloseTo(e.real, 6);
+      expect(r.taxDuring).toBeCloseTo(e.taxDuring, 6);
+      expect(r.taxAtExit).toBeCloseTo(e.taxAtExit, 6);
+    }
   });
 
   it("never more than is held: 400 held pays 185, 185 and what is left", () => {
