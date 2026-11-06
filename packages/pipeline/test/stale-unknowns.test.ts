@@ -18,7 +18,12 @@ describe("staleUnknowns", () => {
   });
 
   it("walks nested fields", () => {
+    const rec = { exit: { tax: { value: null, checked: "2026-10-01", rule_ids: ["CS-11"] } } };
+    expect(staleUnknowns(rec, rules)).toEqual(["exit.tax (CS-11)"]);
+  });
+
+  it("skips fee caps, where null means no cap", () => {
     const rec = { fee_caps: { trustee: { value: null, checked: "2026-10-01", rule_ids: ["CS-11"] } } };
-    expect(staleUnknowns(rec, rules)).toEqual(["fee_caps.trustee (CS-11)"]);
+    expect(staleUnknowns(rec, rules)).toEqual([]);
   });
 });

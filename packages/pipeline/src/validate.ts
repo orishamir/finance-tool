@@ -530,7 +530,8 @@ export function staleUnknowns(record: unknown, rules: Map<string, RuleLike>): st
       const newer = v.rule_ids.filter((id) => { const r = rules.get(id); return r !== undefined && latest(r) > v.checked!; });
       if (newer.length) out.push(`${path.slice(1)} (${newer.join(", ")})`);
     }
-    for (const [k, child] of Object.entries(node)) walk(child, `${path}.${k}`);
+    // a fee cap of null means "no cap" (the guide prints it so), not unknown
+    for (const [k, child] of Object.entries(node)) if (k !== "fee_caps") walk(child, `${path}.${k}`);
   };
   walk(record, "");
   return out;

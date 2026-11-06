@@ -37,7 +37,7 @@ Field rules:
 
 | Field | Required | Meaning |
 |---|---|---|
-| `value` | yes | number, string, boolean, or `null` when the value is unknown (then `notes` says why; the schema fails a `null` with empty notes) |
+| `value` | yes | number, string, boolean, or `null` when the value is unknown (then `notes` says why; the schema fails a `null` with empty notes). In a wrapper's `fee_caps`, `null` means the law sets no cap, and the guide writes so |
 | `unit` | yes | one of the units in section 2 |
 | `source.url` | yes | the page or file actually opened; a search snippet is not a source |
 | `source.title` | yes | document and section or page |
