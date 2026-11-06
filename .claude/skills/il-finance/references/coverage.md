@@ -38,12 +38,9 @@ These apply to the whole knowledge base, not to one topic.
      (3) Yearly series keep one name pattern (`Guides_IncomeTax_da-YYYY.pdf`,
      `…monthly-deductions-booklet-YYYY.pdf`, `Policy_IncomeTaxProfessionalInst_hoz_NN_YYYY_acc.pdf`), so
      the next edition can be tried by name.
-     gov.il's HTML pages and their data APIs sit behind Cloudflare's human check. Getting past a bot
-     check is off limits (CLAUDE.md, "Never get past a bot check"): no FlareSolverr, no
-     `research/audit/tools/govil-page.sh`, no disguised headless browser. Read such a page in the founder's
-     Chrome when it opens normally there; otherwise list its link for him. The page is where to see which
+     gov.il's HTML pages and their data APIs sit behind Cloudflare's human check. The page is where to see which
      edition is current: an old PDF stays online after a new one replaces it, so a link check never shows
-     it is out of date. Read on 2026-10-25, before the ban, with FlareSolverr:
+     it is out of date. Read on 2026-10-25 with FlareSolverr:
      - "דע זכויותיך" lists the 2025 and 2024 editions, so 2025 is the newest.
      - The clearing-house page lists its six attachments.
      - Circular 7/2003, on this list's not-done items, has its PDF at

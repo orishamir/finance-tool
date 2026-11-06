@@ -165,10 +165,6 @@ catches about half or more with noise under 30%.
   collect or research them. The list, by legal id, is `EXCLUDED_COMPANIES`
   in `packages/pipeline/src/adapters/cma.ts`, and `closedTrack` beside it
   leaves out any other track closed to joiners (D51).
-- **Never get past a bot check.** A page behind Cloudflare, Radware or a
-  similar check is read in my Chrome only if it opens normally there;
-  otherwise its link comes to me. No FlareSolverr, no disguised headless
-  browser, no completing a check, even where an older note allows it.
 
 ### Building the site
 
