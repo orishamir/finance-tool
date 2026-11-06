@@ -151,7 +151,12 @@ catches about half or more with noise under 30%.
   and search results often name the section, circular or ruling to look up
   next, so an open question's search starts there too (founder, 2026-11-07);
   a lead is recorded as a lead, with what it pointed to, and a rule is
-  settled only by the official text it led to. Cite a company's document only for that company's own terms, which appear
+  settled only by the official text it led to. Nothing unofficial is ever
+  cited (founder, 2026-11-07): the data check fails any new source that is
+  secondary, a copy, or on a host listed as an article, and the leftovers
+  still cited are listed by name in
+  `packages/pipeline/src/unofficial-leftovers.json`, a list that only
+  shrinks. Cite a company's document only for that company's own terms, which appear
   named or on that company's page, never as a fact about a product. A
   statement about the whole market comes from law or from a count over every
   collected institution (D30).
