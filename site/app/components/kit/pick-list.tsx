@@ -4,6 +4,7 @@ import { Fragment, useEffect, useLayoutEffect, useRef, useState, type CSSPropert
 import { useFlip } from "./chart-glide";
 import { cx } from "./cx";
 import { Unseen } from "./longest-case";
+import { heldRowsHeight, marksKey, type RowCases } from "./pick-list-hold";
 
 export interface PickRow {
   key: string;
@@ -18,10 +19,13 @@ export interface PickRow {
   /** Never folded on a phone (the person's own row, D44). */
   keep?: boolean;
   /**
-   * The cells the row takes in the list's other states (`states`), by key: a house priced or not, with each reason it can give. Laid out
-   * unseen and out of the flow, to be measured; `caseKey` is the one the row shows now.
+   * The cells the row takes in each of the list's states (`states`), by key, the one it shows now (`caseKey`) included: a house priced or
+   * not, with each reason it can give. Laid out unseen and out of the flow, to be measured; every state is measured from its cases, so
+   * the held height is the same whichever state the page opened in. A case's plain cells carry every tag that can stand on many rows at
+   * once; a tag that stands on one row at a time (the cheapest's star, the way back after a tap) is a mark, in a case of its own with
+   * `marks`, and counts on the one row where it adds the most (#190, third pass: a case with every tag at once held 122 px too many).
    */
-  cases?: { key: string; cells: ReactNode }[];
+  cases?: { key: string; cells: ReactNode; marks?: string[] }[];
   caseKey?: string;
   /** On a phone, false when the row can never stand among the fold's shown rows (it sorts last at every choice and cannot be chosen). */
   canShow?: boolean;
@@ -33,8 +37,9 @@ export interface PickRow {
  * rows after the first N fold behind a button (`more` words it), the chosen row always shown; nothing is filtered out. The fold shows
  * the same number of rows whichever is chosen (a chosen row further down takes the last place), and it holds the height of the tallest
  * rows that can stand in it: a pick that sorts other rows into the fold moves nothing below the list (#190).
- * `states`: the list's other states (another fund picked in a linked list), each the case key of every row; the list holds the height of
- * its tallest state, so a pick that turns rows grey with their reasons moves nothing below it (#190: up to 433 px on a phone).
+ * `states`: the list's states (each fund that can be picked in a linked list), each the case key of every row; the list holds the height
+ * of its tallest state, measured from the rows' cases whichever state is on the screen, so a pick that turns rows grey with their reasons
+ * moves nothing below it (#190: up to 433 px on a phone), and opening the page on another state holds the same height.
  */
 /**
  * A figure that must fit a fixed width, a size down as its digits grow, so a plan typed past the sliders' ends never cuts its leading
@@ -164,17 +169,17 @@ export function PickList({ label, columns, phoneColumns, head, rows, phoneLimit,
         most = Math.max(most, now - shown.reduce((a, el) => a + h(el), 0) + tallest);
       }
       if (states?.length) {
-        const caseH = new Map<string, number>();
-        for (const el of list.querySelectorAll<HTMLElement>(":scope > [data-case-of]")) caseH.set(`${el.dataset.caseOf}\u0000${el.dataset.case}`, h(el));
-        for (const st of states) {
-          let t = 0;
-          for (const el of inFlow) {
-            const k = el.dataset.pickKey!;
-            const want = st[k];
-            t += want === undefined || want === el.dataset.caseKey ? h(el) : caseH.get(`${k}\u0000${want}`) ?? h(el);
-          }
-          most = Math.max(most, t);
+        // every state from the rows' cases, the one on the screen included (its real rows lack the marks a tap can bring)
+        const byRow = new Map<string, Map<string, Map<string, number>>>();
+        for (const el of list.querySelectorAll<HTMLElement>(":scope > [data-case-of]")) {
+          const row = byRow.get(el.dataset.caseOf!) ?? new Map<string, Map<string, number>>();
+          byRow.set(el.dataset.caseOf!, row);
+          const v = row.get(el.dataset.case!) ?? new Map<string, number>();
+          row.set(el.dataset.case!, v);
+          v.set(el.dataset.marks ?? "", h(el));
         }
+        const rowCases: RowCases[] = inFlow.map((el) => ({ key: el.dataset.pickKey!, real: h(el), cases: byRow.get(el.dataset.pickKey!) ?? new Map() }));
+        most = Math.max(most, heldRowsHeight(rowCases, states, now));
       }
       if (most - now > 0.5) list.style.minHeight = `${h(list) + most - now}px`;
     };
@@ -194,9 +199,9 @@ export function PickList({ label, columns, phoneColumns, head, rows, phoneLimit,
         // a div, not a button: a row holds controls of its own (a fund's number to Maya, a figure's sheet), and a click on one is not a pick
         <Fragment key={r.key}>
         {r.heading && <div className={cx("px-4 py-2 bg-popover border-b border-border text-sm font-semibold", folded(i) && "max-md:hidden")}>{r.heading}</div>}
-        {/* the row's other states, unseen and out of the flow: measured, never shown; before the row, so the last row is the list's last child */}
+        {/* the row's states, unseen and out of the flow: measured, never shown; before the row, so the last row is the list's last child */}
         {r.cases?.map((x) => (
-          <div key={x.key} aria-hidden="true" data-case-of={r.key} data-case={x.key} className={cx(rowClass, cellsClass, gridClass, "absolute inset-x-0 top-0 invisible pointer-events-none")} style={grid}>
+          <div key={`${x.key}\u0001${marksKey(x.marks)}`} aria-hidden="true" data-case-of={r.key} data-case={x.key} {...(x.marks?.length ? { "data-marks": marksKey(x.marks) } : {})} className={cx(rowClass, cellsClass, gridClass, "absolute inset-x-0 top-0 invisible pointer-events-none")} style={grid}>
             <Unseen>
               {radio(r)}
               {x.cells}

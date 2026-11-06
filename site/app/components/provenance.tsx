@@ -222,7 +222,8 @@ export function Num({ value, size = "inline", display, animate, className, prefi
   const unseen = useUnseen();
   // a copy that only holds a block's size (LongestCase) is not on the page
   useEffect(() => (!unseen && states ? states.add(value.state) : undefined), [value.state, unseen, states]);
-  const shown = useAnimatedValue(typeof value.value === "number" ? value.value : null, animate ?? (counting && countsByItself(value.state, value.unit)));
+  // a copy laid out unseen holds a height only: it lands at once, and its frames cost nothing (#190: a list's cases counted on every key)
+  const shown = useAnimatedValue(typeof value.value === "number" ? value.value : null, !unseen && (animate ?? (counting && countsByItself(value.state, value.unit))));
   // display rounding (A13): a table cell keeps two decimals, everything else rounds computed and entered amounts
   const keepDecimals = size === "cell" || !!exact;
   const roundState = keepDecimals ? undefined : value.state;

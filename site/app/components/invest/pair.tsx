@@ -4,7 +4,7 @@
 // is left, and what it costs, split by who takes it: the person's pair and the cheapest one above each other, or, on the cheapest pair,
 // the next one beside it (one shape, so a pick never resizes the block).
 import { mayaFundHref } from "../../lib/sources";
-import { Fragment, useMemo, useState, type MouseEvent, type ReactNode } from "react";
+import { Fragment, useMemo, useRef, useState, type MouseEvent, type ReactNode } from "react";
 import { isTie, type FeeLine } from "@finance-tool/engine";
 import { brands, groupPrices, invest as c } from "../../copy";
 import { isCustomFund } from "../../lib/custom-entries";
@@ -67,10 +67,13 @@ export function bestFor(view: InvestView, pick: Pick): Pick | null {
   return top ? { house: top.house, fund: top.fund } : pickOfHeadline(view);
 }
 
+/** Every way a house prices on the index, a group's price aside. */
+const waysOf = (view: InvestView, house: string): { fund: FundWay; at: WayPrice }[] =>
+  allFunds(view).flatMap((f) => { const at = f.byHouse[house]; return priced(at) && !isGroupPrice(at) ? [{ fund: f, at }] : []; });
+
 /** A house's way that leaves the most: a ranked one first, else one on an open rule, which is shown and not ranked. Its row names it when the picked fund has no price there. */
 function otherWay(view: InvestView, house: string): { fund: FundWay; at: WayPrice } | null {
-  const ways = allFunds(view).flatMap((f) => { const at = f.byHouse[house]; return priced(at) && !isGroupPrice(at) ? [{ fund: f, at }] : []; });
-  return ways.sort((a, b) => Number(a.at.open) - Number(b.at.open) || b.at.valueN - a.at.valueN)[0] ?? null;
+  return waysOf(view, house).sort((a, b) => Number(a.at.open) - Number(b.at.open) || b.at.valueN - a.at.valueN)[0] ?? null;
 }
 
 /**
@@ -544,6 +547,8 @@ export function HouseLine({ house, snapshot, charge }: { house: NonNullable<Retu
 
 /** The largest amount the unseen longest case of a line holds: it stands in for a figure the sliders can change, and is never shown. */
 export const LONGEST_AMOUNT = 9_999_999;
+/** What a plan at the sliders' ends can leave (nine digits: 500,000 ₪ and 10,000 ₪ a month for 40 years at 12%), for a line's unseen case. */
+export const LONGEST_LEFT = 999_999_999;
 /** The most years a plan's sliders give, for a sentence's unseen longest case. */
 export const LONGEST_YEARS = 40;
 
@@ -558,6 +563,9 @@ export function AccountColumn({ view, bundle, years, monthly = 1, pick, onPick, 
   const [openGroups, setOpenGroups] = useState<string[]>(() => (group ? [group.house] : []));
   const onGroup = (id: string, open: boolean) => setOpenGroups((xs) => (open ? (xs.includes(id) ? xs : [...xs, id]) : xs.filter((x) => x !== id)));
   const held = useHeldHeight<HTMLDivElement>(`${heldKey}:${openGroups.join()}`);
+  // the rows' cases, laid out unseen, hold heights a plan does not change: kept over a slider's moves, so they are not laid out again on
+  // every key (#190: the cases of every state cost about 8 ms a key)
+  const casesKept = useRef<{ key: string; byRow: Map<string, NonNullable<PickRow["cases"]>> } | null>(null);
   // every house and every fund the header can name, laid out unseen, so a long one moves nothing above the list (issue 160)
   const longest = useMemo(() => {
     const houses = providers.map((p) => providerName(view, p.id)!);
@@ -614,19 +622,29 @@ export function AccountColumn({ view, bundle, years, monthly = 1, pick, onPick, 
   const placeOf = new Map(ranked.map((r, i) => [r.p.id, places[i]!]));
   const sharedTop = firstCount(places) > 1;
   const lines = legendLines(!!view.index.israeli, ok.flatMap((r) => r.at.lines.map((l) => lineOf(l.line))));
+  // the lines any fund of the index has at any house, for the legend's held height
+  const allLines = allFunds(view).flatMap((f) => Object.values(f.byHouse).flatMap((a) => (priced(a) ? a.lines.map((l) => lineOf(l.line)) : [])));
+  const legendItems = (ls: string[], broken: boolean) => [
+    ...ls.map((l) => ({ id: l, swatch: <Swatch shape="box" className={lineClass[l] ?? "bg-chart-cost-other"} />, label: c.pair.lines[l] ?? c.pair.lines.other })),
+    { id: "remainder", swatch: <Swatch shape="box" className="bg-chart-cost-other" />, label: c.pair.remainder },
+    ...(broken ? [{ id: "broken", label: c.pair.broken }] : []),
+  ];
   const snapshot = bundle.snapshots.find((s) => s.id === baseHouse);
   const at = fund.byHouse[pick.house];
   type Prov = (typeof providers)[number];
   // a house that sells a fund at a standing-order price keeps the tag's room whichever fund and plan (a monthly 0 and back moves nothing)
   const standingSomewhere = (id: string) => allFunds(view).some((f) => { const a = f.byHouse[id]; return priced(a) && a.standing; });
-  /** A priced row's cells; `unseen`: one of the row's other states, laid out to hold its height, with every tag it can carry. */
-  const pricedCells = (p: Prov, wp: WayPrice, unseen = false) => {
+  /**
+   * A priced row's cells; `unseen`: one of the row's cases, laid out to hold its height (PickList): every tag that can stand on many rows
+   * at once (the tie, on a computer), and the one-per-list marks it is laid out with: the cheapest's star, the way back after a tap.
+   */
+  const pricedCells = (p: Prov, wp: WayPrice, unseen?: { crown: boolean; back: boolean; tie: boolean }) => {
     const parts: CostPart[] = [...wp.lines.map((l) => ({ id: l.line, legendId: lineOf(l.line), name: c.pair.lines[lineOf(l.line)] ?? c.pair.lines.other, value: l.cost, className: lineClass[lineOf(l.line)] ?? "bg-chart-cost-other", source: p.custom ? c.pair.sourceEntered : c.pair.sourceList(p.short) })), { id: "remainder", name: c.pair.remainder, about: c.pair.remainderAbout, value: wp.interaction, className: "bg-chart-cost-other", source: c.pair.sourceComputed }];
     const isYours = p.id === view.yourBroker;
     // shown on the row whether or not it is picked, so a pick never adds or removes a line (founder, 2026-10-27)
     const place = placeOf.get(p.id);
-    const tiedTop = !unseen && sharedTop && place === 1;
-    const isBest = unseen || (crownHere && crownHouse === p.id && !tiedTop);
+    const tiedTop = unseen ? unseen.tie && !unseen.crown : sharedTop && place === 1;
+    const isBest = unseen ? unseen.crown : crownHere && crownHouse === p.id && !tiedTop;
     return (
       <>
         <span className="text-sm text-muted-foreground tabular-nums text-center">{wp.open ? "—" : place}</span>
@@ -639,8 +657,8 @@ export function AccountColumn({ view, bundle, years, monthly = 1, pick, onPick, 
             {/* on a phone the two equal places say it alone: the word beside a standing-order price wrapped the row to a second line (#190) */}
             {tiedTop && <span className="font-medium text-primary max-md:hidden">{c.pair.tieTag}</span>}
             {/* the tap on this account changed the fund too: said on the row tapped, with the way back (a 44 px target in the line's height) */}
-            {/* unseen, it is held too: the row a tap turns from grey to priced is the one that carries it */}
-            {unseen ? <AlsoChanged what={c.pair.movedFund} back={c.pair.moveBack} onBack={() => undefined} /> : p.id === baseHouse && moved?.half === "fund" && moved.back && <AlsoChanged what={c.pair.movedFund} back={c.pair.moveBack} onBack={backFrom(moved, p.id)} />}
+            {/* unseen, it is held too, on one row at a time: the row a tap turns from grey to priced is the one that carries it */}
+            {unseen ? unseen.back && <AlsoChanged what={c.pair.movedFund} back={c.pair.moveBack} onBack={() => undefined} /> : p.id === baseHouse && moved?.half === "fund" && moved.back && <AlsoChanged what={c.pair.movedFund} back={c.pair.moveBack} onBack={backFrom(moved, p.id)} />}
             {(unseen ? standingSomewhere(p.id) : wp.standing && monthly > 0) && <span>{c.pair.standingTag}</span>}
           </span>
         </span>
@@ -686,11 +704,14 @@ export function AccountColumn({ view, bundle, years, monthly = 1, pick, onPick, 
           {na && p.custom && <span>{c.customEntries.notSold}</span>}
           {/* the reason in words on the row, never only in a link's title (nothing depends on hover) */}
           {!(na && p.custom) && <span>{whyNoPrice(bundle, p.id, f)}</span>}
+          {/* the fund it names and its figure change with the plan: held at every fund the house prices, at the sliders' ends (#190: 18 px) */}
           {other && (
-            <span>
-              {c.pair.elsewhere} <MixedName>{other.fund.name}</MixedName>, {c.pair.elsewhereLeft} <Num value={other.at.value} />
-              {other.at.open && ` (${c.pair.elsewhereOpen})`}
-            </span>
+            <LongestCase cases={waysOf(view, p.id).map((w) => <span key={w.fund.rec.id}>{c.pair.elsewhere} <MixedName>{w.fund.name}</MixedName>, {c.pair.elsewhereLeft} {fmt.nisWhole(LONGEST_LEFT)}{w.at.open && ` (${c.pair.elsewhereOpen})`}</span>)}>
+              <span>
+                {c.pair.elsewhere} <MixedName>{other.fund.name}</MixedName>, {c.pair.elsewhereLeft} <Num value={other.at.value} />
+                {other.at.open && ` (${c.pair.elsewhereOpen})`}
+              </span>
+            </LongestCase>
           )}
         </span>
         <GroupLine id={p.id} house={p.short} snapshots={bundle.snapshots} open={openGroups.includes(p.id)} onOpen={onGroup} choice={choiceOf(p.id)} />
@@ -704,29 +725,46 @@ export function AccountColumn({ view, bundle, years, monthly = 1, pick, onPick, 
     const a = f.byHouse[p.id];
     return priced(a) ? "priced" : `grey|${a && "availability" in a && a.availability ? "na" : ""}|${whyNoPrice(bundle, p.id, f)}`;
   };
-  // over the funds that can be picked (a fund priced nowhere for its own reason has no row to pick: its state never comes)
-  const pickable = allFunds(view).filter((f) => f === fund || Object.keys(f.byHouse).length > 0);
-  const casesOf = (p: Prov): { key: string; cells: ReactNode }[] => {
-    const now = stateOf(p, fund);
-    const out: { key: string; cells: ReactNode }[] = [];
-    const seen = new Set<string>([now]);
+  // over the funds that can be picked (a fund priced nowhere for its own reason has no row to pick: its state never comes); the fund on
+  // the screen first, so a state's case is laid out with it where it can be
+  const pickable = [fund, ...allFunds(view).filter((f) => f !== fund && Object.keys(f.byHouse).length > 0)];
+  // a house's grey rows: a tap on one moves the fund too, and the row tapped carries the way back in the state it brings
+  const greySomewhere = (id: string) => pickable.some((f) => !priced(f.byHouse[id])) && otherWay(view, id) !== null;
+  // every state of the row, the one on the screen included, each measured the same way (PickList): a priced state plain, and with each
+  // mark that can come to it: the star where the house can rank (any plan can make it the cheapest), the way back where a tap can bring it
+  const casesOf = (p: Prov): NonNullable<PickRow["cases"]> => {
+    const out: NonNullable<PickRow["cases"]> = [];
+    const seen = new Set<string>();
     for (const f of pickable) {
       const k = stateOf(p, f);
       if (seen.has(k)) continue;
       seen.add(k);
-      const way = k === "priced" ? (f.byHouse[p.id] as WayPrice) : null;
-      out.push({ key: k, cells: way ? pricedCells(p, way, true) : greyCells(p, f) });
+      if (k !== "priced") {
+        out.push({ key: k, cells: greyCells(p, f) });
+        continue;
+      }
+      const ways = pickable.flatMap((x) => { const a = x.byHouse[p.id]; return priced(a) ? [a] : []; });
+      const way = ways[0]!;
+      const crown = ways.some((a) => !a.open && !isGroupPrice(a));
+      const back = greySomewhere(p.id);
+      for (const [cr, bk] of [[false, false], [true, false], [false, true], [true, true]] as const) {
+        if ((cr && !crown) || (bk && !back)) continue;
+        out.push({ key: k, cells: pricedCells(p, way, { crown: cr, back: bk, tie: crown }), marks: [...(cr ? ["crown"] : []), ...(bk ? ["back"] : [])] });
+      }
     }
     return out;
   };
   const states = pickable.map((f) => Object.fromEntries(providers.map((p) => [p.id, stateOf(p, f)])));
+  const casesKey = [view.index.id, fund.rec.id, view.yourBroker ?? "", openGroups.join(), group?.key ?? "", ...providers.map((p) => p.id).sort(), ...pickable.map((f) => f.rec.id).sort()].join("|");
+  if (casesKept.current?.key !== casesKey) casesKept.current = { key: casesKey, byRow: new Map(providers.map((p) => [p.id, casesOf(p)])) };
+  const casesFor = (p: Prov) => casesKept.current!.byRow.get(p.id) ?? casesOf(p);
   const pickRows: PickRow[] = ok.map((r) => ({
     key: r.p.id,
     selected: r.p.id === baseHouse,
     onSelect: () => pickHalf(view, pick, { house: r.p.id }, onPick),
     cells: pricedCells(r.p, r.at),
     caseKey: "priced",
-    cases: casesOf(r.p),
+    cases: casesFor(r.p),
   }));
   const greyRows: PickRow[] = missing.map((r) => {
     const other = otherWay(view, r.p.id);
@@ -740,7 +778,7 @@ export function AccountColumn({ view, bundle, years, monthly = 1, pick, onPick, 
       },
       cells: greyCells(r.p, fund),
       caseKey: stateOf(r.p, fund),
-      cases: casesOf(r.p),
+      cases: casesFor(r.p),
     };
   });
   return (
@@ -808,14 +846,10 @@ export function AccountColumn({ view, bundle, years, monthly = 1, pick, onPick, 
       </div>
       <div className="px-5 py-3 flex flex-col gap-3">
         <AddEntryButton kind="broker" />
-        <ChartLegend
-          pick={legendPick}
-          items={[
-            ...lines.map((l) => ({ id: l, swatch: <Swatch shape="box" className={lineClass[l] ?? "bg-chart-cost-other"} />, label: c.pair.lines[l] ?? c.pair.lines.other })),
-            { id: "remainder", swatch: <Swatch shape="box" className="bg-chart-cost-other" />, label: c.pair.remainder },
-            ...(ok.some((r) => r.at.accountCost > scale) ? [{ id: "broken", label: c.pair.broken }] : []),
-          ]}
-        />
+        {/* held at every item a fund of the index or a plan can bring (a line only some funds have, a broken bar), so a pick moves nothing (#190: 24 px) */}
+        <LongestCase cases={[<ChartLegend key="l" pick={legendPick} items={legendItems(legendLines(!!view.index.israeli, allLines), true)} />]}>
+          <ChartLegend pick={legendPick} items={legendItems(lines, ok.some((r) => r.at.accountCost > scale))} />
+        </LongestCase>
       </div>
     </Card>
   );
