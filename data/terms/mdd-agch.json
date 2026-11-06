@@ -2,7 +2,7 @@
   "id": "mdd-agch",
   "he": "מדד אג\"ח",
   "en": null,
-  "meaning": "מספר שמודד את השינוי במחירים של קבוצת איגרות חוב, של המדינה או של חברות; קרן מחקה ומסלול עוקב מדד יכולים לעקוב אחריו",
+  "meaning": "מספר שמודד את השינוי בשווי של קבוצת איגרות חוב, של ממשלות או של חברות; קרן מחקה ומסלול עוקב מדד יכולים לעקוב אחריו",
   "where": [
     "app"
   ],
@@ -15,9 +15,9 @@
     "ETF-83"
   ],
   "source": {
-    "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf#page=10",
-    "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (17.4.2024), עמ' 10 ו־11",
-    "publisher": "רשות שוק ההון, ביטוח וחיסכון",
+    "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-64186b589b352/080217.pdf#page=30",
+    "title": "רשות ניירות ערך, מדריך למשקיע: קרנות נאמנות, המדריך המלא, עמ' 11 ו־30 (ההגדרה הכללית של מדד, שהאתר מחיל כאן על איגרות חוב)",
+    "publisher": "Israel Securities Authority",
     "strength": "primary",
     "checked": "2026-11-06"
   }

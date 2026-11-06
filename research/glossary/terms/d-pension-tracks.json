@@ -3103,8 +3103,7 @@
     "variants_he": [
       "עוקב מדד s&p 500",
       "עוקב מדד S&P500",
-      "עוקב מדד s&p500",
-      "מחקה מדד S&P500"
+      "עוקב מדד s&p500"
     ],
     "explain_he": "מסלול השקעה שבו הכסף עוקב אחרי מדד S&P 500, חוץ מחלק שמוחזק במזומן ובדומיו לצורך הפקדות ומשיכות; ייתכן בו סיכון מטבע",
     "rule_ids": [
@@ -3124,7 +3123,7 @@
       "gemel-net",
       "pensia-net"
     ],
-    "notes": "Researched 2026-11-06 (the terms the rule base could not explain); the explanation says only what the rules named in rule_ids say."
+    "notes": "Researched 2026-11-06 (the terms the rule base could not explain); the explanation says only what the rules named in rule_ids say. 2026-11-06 fix pass (check item 10): the variant 'מחקה מדד S&P500' was dropped. It is Meitav's own track name before 30.6.2024, which the Meitav catalog records keep as their old names, and as a variant of this general term it would also match Israeli tracking funds named 'מחקה ... S&P 500', which are funds, not tracks."
   },
   {
     "term_he": "עוקב מדדים גמיש",

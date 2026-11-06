@@ -2247,7 +2247,7 @@
     ],
     "source": {
       "title": "רשות שוק ההון, ביטוח וחיסכון: חוזר גופים מוסדיים 2020-9-22, דוח שנתי ודוח רבעוני לעמיתים ולמבוטחים בגוף מוסדי – תיקון, פרק 2, חלק ב.8",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/r_2020-9-22/he/2020-9-22.pdf#page=92",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/r_2020-9-22/he/2020-9-22.pdf#page=97",
       "checked": "2026-10-25",
       "strength": "primary",
       "publisher": "רשות שוק ההון, ביטוח וחיסכון"
@@ -2257,7 +2257,7 @@
       "guide:ira-hishtalmut",
       "statement"
     ],
-    "notes": "Added 2026-11-06 for #205 from the rule records named in rule_ids; the explanation says only what those records say. The site's own name for table ב.8 of the detailed report; the rates in each layer are the tax files' (TXH), not this row's."
+    "notes": "Added 2026-11-06 for #205 from the rule records named in rule_ids; the explanation says only what those records say. The site's own name for table ב.8 of the detailed report; the rates in each layer are the tax files' (TXH), not this row's. 2026-11-06 fix pass (check item 9): the link goes to p.97, where table ב.8 is (library 9f11b17b8c8dd40e), not p.92, where the template starts."
   },
   {
     "term_he": "ממוצע דמי ניהול בקופה",
@@ -2272,7 +2272,7 @@
     ],
     "source": {
       "title": "רשות שוק ההון, ביטוח וחיסכון: חוזר גופים מוסדיים 2020-9-22, דוח שנתי ודוח רבעוני לעמיתים ולמבוטחים בגוף מוסדי – תיקון, פרק 1, ג.5",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/r_2020-9-22/he/2020-9-22.pdf#page=37",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/r_2020-9-22/he/2020-9-22.pdf#page=39",
       "checked": "2026-10-25",
       "strength": "primary",
       "publisher": "רשות שוק ההון, ביטוח וחיסכון"
@@ -2285,6 +2285,6 @@
       "guide:pension-general",
       "statement"
     ],
-    "notes": "Added 2026-11-06 for #205 from the rule records named in rule_ids; the explanation says only what those records say."
+    "notes": "Added 2026-11-06 for #205 from the rule records named in rule_ids; the explanation says only what those records say. 2026-11-06 fix pass (check item 9): the link goes to p.39, where the note 'לידיעתך, ממוצע דמי ניהול בקופה' (ג.5) is (library 9f11b17b8c8dd40e), not p.37."
   }
 ]

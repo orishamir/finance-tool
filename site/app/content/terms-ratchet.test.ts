@@ -8,6 +8,9 @@
 // תקופה, נכסים) and matched on every page. So it misses a one-word term and any term the rule base has no Terms row for.
 // To clear a leftover, add the term's row (research/glossary/terms, then the generator) or mark it on the page with <Term>, then
 // remove its line here. A phrase the vocabulary picks up that is not a financial term goes in NOT_A_TERM with its reason.
+// Because the vocabulary is the rule base's, a rule-base commit can turn this test red without touching the site: a new Terms row
+// whose phrase a guide page already uses, or a NOT_A_TERM phrase taken out of the Terms tables. The failure message names the
+// term, the rule-base file it came from, the page, and the fixes (`ratchetReport` below).
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { join, relative } from "node:path";
@@ -120,6 +123,27 @@ const unexplained = (pages: Record<string, string>, vocabulary: Iterable<string>
   return out;
 };
 
+/** What changed against today's leftovers, in words a rule-base author or a builder can act on; empty when nothing did. */
+const ratchetReport = (got: Record<string, readonly string[]>, want: Record<string, readonly string[]>, vocabulary: Map<string, string>): string => {
+  const lines: string[] = [];
+  for (const page of [...new Set([...Object.keys(got), ...Object.keys(want)])].sort()) {
+    const now = new Set(got[page] ?? []);
+    const before = new Set(want[page] ?? []);
+    for (const t of [...now].filter((x) => !before.has(x)).sort())
+      lines.push(
+        `- The page ${page} (site/app/content/${page}.tsx) names "${t}", a term from the Terms table of ` +
+          `.claude/skills/il-finance/references/${vocabulary.get(t) ?? "?"}, and it has no glossary row and no <Term> mark there. ` +
+          `If a rule-base change added this phrase, the page did not change; fix it one of these ways: add the term's row in ` +
+          `research/glossary/terms/ and regenerate (docs/glossary.md, "Where the rows come from"), or add it as a variant of the row ` +
+          `it belongs to; mark it on the page with <Term>; or, if it is not a financial term a reader needs explained, add it to ` +
+          `NOT_A_TERM in this file with the reason.`,
+      );
+    for (const t of [...before].filter((x) => !now.has(x)).sort())
+      lines.push(`- The page ${page} no longer names "${t}" without a row: remove it from NAMED_WITHOUT_ROW in this file (the list only shrinks).`);
+  }
+  return lines.length ? `The glossary ratchet changed:\n${lines.join("\n")}` : "";
+};
+
 /** Phrases the vocabulary holds that are not financial terms a reader needs explained, each with its reason. */
 const NOT_A_TERM: Record<string, string> = {
   "הודעה מראש": "everyday words: notice given in advance",
@@ -170,10 +194,27 @@ describe("no guide or exposure page names a rule-base term that has no row", () 
   });
   it("matches today's leftovers, so the list only shrinks", () => {
     const vocab = [...vocabulary.keys()].filter((v) => !(v in NOT_A_TERM));
-    expect(unexplained(pages, vocab, spelled)).toEqual(NAMED_WITHOUT_ROW);
+    const got = unexplained(pages, vocab, spelled);
+    expect(ratchetReport(got, NAMED_WITHOUT_ROW, vocabulary)).toBe("");
+    expect(got).toEqual(NAMED_WITHOUT_ROW);
   });
   it("each NOT_A_TERM phrase is still in the vocabulary and has no row", () => {
-    expect(Object.keys(NOT_A_TERM).filter((t) => !vocabulary.has(t) || spelled.has(t))).toEqual([]);
+    const stale = Object.keys(NOT_A_TERM).filter((t) => !vocabulary.has(t) || spelled.has(t));
+    const why = stale.map((t) =>
+      spelled.has(t)
+        ? `- "${t}" now has a glossary row: remove it from NOT_A_TERM in this file.`
+        : `- "${t}" is no longer in any Terms table of .claude/skills/il-finance/references (a rule-base change removed or reworded it): remove it from NOT_A_TERM in this file.`,
+    );
+    expect(stale, `NOT_A_TERM holds phrases it no longer needs:\n${why.join("\n")}`).toEqual([]);
+  });
+  it("the failure message names the term, its rule-base file, the page and the fixes", () => {
+    const msg = ratchetReport({ "guide/x": ["צו הרחבה"] }, { "guide/y": ["קרן פנסיה"] }, new Map([["צו הרחבה", "keren-hishtalmut.md"]]));
+    expect(msg).toContain('The page guide/x (site/app/content/guide/x.tsx) names "צו הרחבה"');
+    expect(msg).toContain(".claude/skills/il-finance/references/keren-hishtalmut.md");
+    expect(msg).toContain("NOT_A_TERM");
+    expect(msg).toContain("research/glossary/terms/");
+    expect(msg).toContain('The page guide/y no longer names "קרן פנסיה" without a row: remove it from NAMED_WITHOUT_ROW');
+    expect(ratchetReport({ p: ["a"] }, { p: ["a"] }, new Map())).toBe("");
   });
   it("the scanner sees a term with a prefix, and not one inside a <Term> or a longer row", () => {
     const rowsHere = new Set(["קרן פנסיה מקיפה"]);

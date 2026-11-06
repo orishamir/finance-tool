@@ -1990,7 +1990,7 @@
       "עמלת יצירה",
       "עמלת פדיון"
     ],
-    "explain_he": "עמלה שמוסיפים למחיר היחידה כשקרן מחקה יוצרת יחידות ישירות, או מנכים ממחיר הפדיון כשהיא פודה ישירות; לא חלה בקנייה ובמכירה בבורסה",
+    "explain_he": "עמלה שמוסיפים למחיר היחידה כשקרן סל יוצרת יחידות ישירות, או מנכים ממחיר הפדיון כשהיא פודה ישירות; לא חלה בקנייה ובמכירה בבורסה",
     "rule_ids": [
       "ETF-05"
     ],
@@ -2006,12 +2006,12 @@
       "exposure:index-sp500",
       "prospectus"
     ],
-    "notes": "Added 2026-11-06 for #205 from the rule records named in rule_ids; the explanation says only what those records say."
+    "notes": "Added 2026-11-06 for #205 from the rule records named in rule_ids; the explanation says only what those records say. 2026-11-06 fix pass (check item 2): 'קרן מחקה' became 'קרן סל', because regulation 6 of the 2018 tracking-fund regulations (library 3381464207847d9b, p.4) and ETF-05 cover units of an exchange-traded fund; an open tracking fund does not trade on the exchange (ETF-04)."
   },
   {
     "term_he": "דמי חשבון קבועים",
     "variants_he": [],
-    "explain_he": "עמלה על החשבון עצמו שנגבית מדי תקופה, למשל כל חודש או כל רבעון, ולא על פעולה מסוימת",
+    "explain_he": "עמלה תקופתית על שירות לתקופה שנקבעה מראש, למשל דמי ניהול רבעוניים; בנק שגבה אותה מראש והשירות הופסק לפני סוף התקופה מחזיר את החלק היחסי, לפי ימים",
     "rule_ids": [
       "BRK-48",
       "BRK-55"
@@ -2030,15 +2030,14 @@
       "guide:makam",
       "tariff"
     ],
-    "notes": "Added 2026-11-06 for #205 from the rule records named in rule_ids; the explanation says only what those records say. The site's own name for the fee base fixed_period (docs/data-schema.md). Directive 415 s.2(ז)(1) names a fee charged in advance for a set period, such as quarterly management fees; the non-bank tariffs' monthly account fee is BRK-48 (its own row: דמי טיפול)."
+    "notes": "Added 2026-11-06 for #205 from the rule records named in rule_ids; the explanation says only what those records say. The site's own name for the fee base fixed_period (docs/data-schema.md). Directive 415 s.2(ז)(1) names a fee charged in advance for a set period, such as quarterly management fees; the non-bank tariffs' monthly account fee is BRK-48 (its own row: דמי טיפול). 2026-11-06 fix pass (check item 5): the explanation was cut to what s.2(ז)(1) says (library f2301515371e486a, p.2); it no longer says the fee is on the account itself rather than on an action, which the directive does not say."
   },
   {
     "term_he": "טיפול בריבית ובדיבידנד",
     "variants_he": [
-      "טיפול בתשלומי ריבית/דיבידנד",
-      "דמי טיפול ריבית ופדיון"
+      "טיפול בתשלומי ריבית/דיבידנד"
     ],
-    "explain_he": "עמלה על כל תשלום ריבית או דיבידנד שנכנס לחשבון ניירות הערך; באלטשולר שחם טרייד, למשל, היא נקראת ״טיפול בתשלומי ריבית/דיבידנד״",
+    "explain_he": "כך קוראת אלטשולר שחם טרייד בתעריפון שלה (״טיפול בתשלומי ריבית/דיבידנד״) לעמלה שהיא גובה על תשלום ריבית או דיבידנד שנכנס לחשבון ניירות הערך",
     "rule_ids": [
       "BRK-48"
     ],
@@ -2053,14 +2052,14 @@
       "guide:brokerage-account",
       "tariff"
     ],
-    "notes": "Added 2026-11-06 for #205 from the rule records named in rule_ids; the explanation says only what those records say. The site's own name for the fee base distribution_handling. Only companies' tariffs name this fee (BRK-48: Altshuler Shaham Trade, Psagot); no general rule defines it, so the row names the company."
+    "notes": "Added 2026-11-06 for #205 from the rule records named in rule_ids; the explanation says only what those records say. The site's own name for the fee base distribution_handling. Only companies' tariffs name this fee (BRK-48: Altshuler Shaham Trade, Psagot); no general rule defines it, so the row names the company. 2026-11-06 fix pass (check item 6): the explanation now opens with the company, so no clause reads as a fact about the market (library 500b2b74e04bd53e, p.2, line 5); the variant 'דמי טיפול ריבית ופדיון' was dropped, because it is Psagot's line for foreign bonds' interest and redemption, a different fee."
   },
   {
     "term_he": "מדד מניות",
     "variants_he": [
       "מדדי מניות"
     ],
-    "explain_he": "מספר שמודד את השינוי במחירים של קבוצת מניות, כשלכל מניה משקל משלו; קרן מחקה מנסה להשיג שינוי דומה ככל האפשר",
+    "explain_he": "מספר שמודד את השינוי בשווי של קבוצת מניות, כשלכל מניה משקל משלו; קרן מחקה מנסה להשיג שינוי דומה ככל האפשר",
     "rule_ids": [
       "ETF-83"
     ],
@@ -2081,7 +2080,7 @@
       "exposure:index-msci-acwi",
       "app"
     ],
-    "notes": "Researched 2026-11-06 (the terms the rule base could not explain); the explanation says only what the rules named in rule_ids say. The market sense of 'מדד'; the tax sense (the CPI) keeps its own rows."
+    "notes": "Researched 2026-11-06 (the terms the rule base could not explain); the explanation says only what the rules named in rule_ids say. The market sense of 'מדד'; the tax sense (the CPI) keeps its own rows. 2026-11-06 fix pass (check item 8): 'השינוי במחירים' became 'השינוי בשווי', since the ISA definition speaks of changes in economic life, not prices, and TA-35, TA-90 and TA-125 are gross total-return indices (ETF-42, ETF-44, ETF-45)."
   },
   {
     "term_he": "מדד אג\"ח",
@@ -2089,20 +2088,20 @@
       "מדדי אג\"ח",
       "מדד איגרות חוב"
     ],
-    "explain_he": "מספר שמודד את השינוי במחירים של קבוצת איגרות חוב, של המדינה או של חברות; קרן מחקה ומסלול עוקב מדד יכולים לעקוב אחריו",
+    "explain_he": "מספר שמודד את השינוי בשווי של קבוצת איגרות חוב, של ממשלות או של חברות; קרן מחקה ומסלול עוקב מדד יכולים לעקוב אחריו",
     "rule_ids": [
       "ETF-83"
     ],
     "source": {
-      "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (17.4.2024), עמ' 10 ו־11",
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf#page=10",
+      "title": "רשות ניירות ערך, מדריך למשקיע: קרנות נאמנות, המדריך המלא, עמ' 11 ו־30 (ההגדרה הכללית של מדד, שהאתר מחיל כאן על איגרות חוב)",
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-64186b589b352/080217.pdf#page=30",
       "checked": "2026-11-06",
       "strength": "primary",
-      "publisher": "רשות שוק ההון, ביטוח וחיסכון"
+      "publisher": "Israel Securities Authority"
     },
     "where": [
       "app"
     ],
-    "notes": "Researched 2026-11-06 (the terms the rule base could not explain); the explanation says only what the rules named in rule_ids say. The general definition of an index (the ISA guide) applied to the bond indices the CMA list names (ETF-83)."
+    "notes": "Researched 2026-11-06 (the terms the rule base could not explain); the explanation says only what the rules named in rule_ids say. The general definition of an index (the ISA guide) applied to the bond indices the CMA list names (ETF-83). 2026-11-06 fix pass (check items 7 and 8): the source is now the ISA guide (pp.11, 30; library f4aa19056ef4fd8f), and its title says the definition is applied to bonds, an inference ETF-83 records ('that it measures the change in the prices of those bonds is the general definition applied to them'); 'state or companies' and 'a track can follow it' rest on the CMA list of tracks, pp.10 to 12 (ETF-83, CAT-45; library 3c4c0c0ea5b784c3). 'במחירים' became 'בשווי', as on the stock-index row; 'של המדינה' became 'של ממשלות', as the list writes 'מדדי אג\"ח ממשלות' (p.9), not only Israel's."
   }
 ]
