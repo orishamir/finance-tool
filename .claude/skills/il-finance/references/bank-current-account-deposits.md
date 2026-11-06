@@ -178,11 +178,11 @@ A competition-authority declaration of the five large banking groups as a "conce
 - Dimensions: fee-deposit, fee-change-over-time
 - Likely to change: yes: the caps take effect on 1.10.2026 and 1.7.2027 and can be changed by a new order.
 
-### BANK-18 No securities custody fee on makam or money-market funds at a bank
-- Rule: The full tariff item for securities custody management fees (דמי ניהול פיקדון ניירות ערך) carries the note that a custody fee may not be charged for makam (מלווה קצר מועד) or for a money-market fund as defined in the Joint Investment Trust regulations.
-- Conditions / exceptions: Buy, sell and redemption commissions in part 4 still apply to makam (a separate minimum and percentage line for makam is in the schedule). Relevant when the idle-cash comparison sets a bank deposit against a fund or makam bought at the same bank.
+### BANK-18 Makam and money-market funds at a bank: no custody fee, but buy, sell and redemption commissions on makam
+- Rule: The full tariff item for securities custody management fees (דמי ניהול פיקדון ניירות ערך) carries the note that a custody fee may not be charged for makam (מלווה קצר מועד) or for a money-market fund as defined in the Joint Investment Trust regulations. That ban in full, with delisted securities and its limit to banks, is BRK-17; this record keeps the bank side of it: what a bank may still charge on makam.
+- Conditions / exceptions: Buy, sell and redemption commissions in part 4 still apply to makam (item 4(א)(1), the buy, sell and redemption of securities traded on TASE, has a price line for shares and bonds and its own percentage, minimum and maximum line for "מילווה קצר מועד", p.15; note (4) on p.16 adds a reduced internet rate "לפעולה במלווה קצר מועד"). Relevant when the idle-cash comparison sets a bank deposit against a fund or makam bought at the same bank. **[2026-11-06]** Near-duplicate of BRK-17 noted by the rules-page fact review (2026-11-01); both re-read in the Fees Rules pp.15-17 on 2026-11-06. BRK-17 carries the ban; this record now leads with the commissions that remain.
 - Figures: none here.
-- Source: [כללי הבנקאות (שירות ללקוח) (עמלות), התשס"ח-2008, נוסח משולב (בנק ישראל)](https://www.boi.org.il/media/mi2driua/159a.pdf), pp.15 to 17, First Schedule part 4, item 4(a)(5) note 2, and item 4(a)(1) · checked 2026-10-25 · primary
+- Source: [כללי הבנקאות (שירות ללקוח) (עמלות), התשס"ח-2008, נוסח משולב (בנק ישראל)](https://www.boi.org.il/media/mi2driua/159a.pdf), pp.15 to 17, First Schedule part 4, item 4(a)(5) note 2, and item 4(a)(1) · checked 2026-11-06 · primary. Custody ban in full: BRK-17.
 - Scope: general
 - Dimensions: fee-custody, fee-trade
 - Likely to change: no

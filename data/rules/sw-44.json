@@ -1,7 +1,7 @@
 {
   "id": "SW-44",
-  "title": "What the clearing house may charge a saver: the CMA's payment circular 2026-10-6 caps a one-time all-institutions information request at NIS 11 (from 1.1.2027)",
-  "title_he": "כמה המסלקה הפנסיונית רשאית לגבות מחוסך: תקרה של אחד עשר שקלים לבקשת מידע מכל הגופים",
+  "title": "What the clearing house may charge a saver: the CMA's payment circular 2026-10-6 caps a one-time all-institutions information request at NIS 11 before VAT (from the new operator's takeover; the circular starts 1.1.2027)",
+  "title_he": "כמה המסלקה הפנסיונית תוכל לגבות מחוסך: עד 11 שקלים לפני מע״מ לבקשת מידע מכל הגופים",
   "strength": "primary",
   "dimensions": [
     "transfer-switch-process"
@@ -18,13 +18,13 @@
         "publisher": "Capital Market, Insurance and Savings Authority (gov.il)",
         "strength": "primary"
       },
-      "checked": "2026-10-25",
+      "checked": "2026-11-06",
       "effective_from": "2027-01-01",
       "effective_to": null,
       "tax_year": null,
       "update_rule": "cpi-linked 1 jan",
       "state": "sourced",
-      "notes": "Maximum fee, payer 'חוסך / בעל רישיון'; annex tables state sums exclude VAT."
+      "notes": "Maximum fee, payer 'חוסך / בעל רישיון'; annex tables state sums exclude VAT. An annex ג price: in force from the operator's takeover day (s.8(ב), p.4), not named; effective_from is the circular's start (s.8(א))."
     },
     "saver_continuous_all_institutions": {
       "value": 11,
@@ -35,13 +35,13 @@
         "publisher": "Capital Market, Insurance and Savings Authority (gov.il)",
         "strength": "primary"
       },
-      "checked": "2026-10-25",
+      "checked": "2026-11-06",
       "effective_from": "2027-01-01",
       "effective_to": null,
       "tax_year": null,
       "update_rule": "cpi-linked 1 jan",
       "state": "sourced",
-      "notes": "Plus 1 NIS for each month information is delivered."
+      "notes": "Plus 1 NIS for each month information is delivered. Excluding VAT (annex ג note, p.10). An annex ג price: in force from the day the operator chosen in the tender takes responsibility for the system (s.8(ב), p.4), a day the circular does not name; effective_from is the circular's own start (s.8(א)), the earliest it can apply. Until then circular 2022-10-5 applies (not read)."
     },
     "saver_continuous_monthly_addition": {
       "value": 1,
@@ -52,13 +52,13 @@
         "publisher": "Capital Market, Insurance and Savings Authority (gov.il)",
         "strength": "primary"
       },
-      "checked": "2026-10-25",
+      "checked": "2026-11-06",
       "effective_from": "2027-01-01",
       "effective_to": null,
       "tax_year": null,
       "update_rule": "cpi-linked 1 jan",
       "state": "sourced",
-      "notes": "'ותוספת של 1 עבור כל חודש בו יועבר המידע'."
+      "notes": "'ותוספת של 1 עבור כל חודש בו יועבר המידע'. Excluding VAT (annex ג note, p.10). An annex ג price: in force from the day the operator chosen in the tender takes responsibility for the system (s.8(ב), p.4), a day the circular does not name; effective_from is the circular's own start (s.8(א)), the earliest it can apply. Until then circular 2022-10-5 applies (not read)."
     },
     "saver_one_institution": {
       "value": 1,
@@ -69,13 +69,13 @@
         "publisher": "Capital Market, Insurance and Savings Authority (gov.il)",
         "strength": "primary"
       },
-      "checked": "2026-10-25",
+      "checked": "2026-11-06",
       "effective_from": "2027-01-01",
       "effective_to": null,
       "tax_year": null,
       "update_rule": "cpi-linked 1 jan",
       "state": "sourced",
-      "notes": "One-time request from one institution, payer 'חוסך / בעל רישיון'."
+      "notes": "One-time request from one institution, payer 'חוסך / בעל רישיון'. Excluding VAT (annex ג note, p.10). An annex ג price: in force from the day the operator chosen in the tender takes responsibility for the system (s.8(ב), p.4), a day the circular does not name; effective_from is the circular's own start (s.8(א)), the earliest it can apply. Until then circular 2022-10-5 applies (not read)."
     },
     "saver_cancel_continuous": {
       "value": 0,
@@ -86,13 +86,13 @@
         "publisher": "Capital Market, Insurance and Savings Authority (gov.il)",
         "strength": "primary"
       },
-      "checked": "2026-10-25",
+      "checked": "2026-11-06",
       "effective_from": "2027-01-01",
       "effective_to": null,
       "tax_year": null,
       "update_rule": "cpi-linked 1 jan",
       "state": "sourced",
-      "notes": "Saver's cancellation of a continuous request."
+      "notes": "Saver's cancellation of a continuous request. Excluding VAT (annex ג note, p.10). An annex ג price: in force from the day the operator chosen in the tender takes responsibility for the system (s.8(ב), p.4), a day the circular does not name; effective_from is the circular's own start (s.8(א)), the earliest it can apply. Until then circular 2022-10-5 applies (not read)."
     },
     "saver_cancel_power_of_attorney": {
       "value": 1,
@@ -103,13 +103,13 @@
         "publisher": "Capital Market, Insurance and Savings Authority (gov.il)",
         "strength": "primary"
       },
-      "checked": "2026-10-25",
+      "checked": "2026-11-06",
       "effective_from": "2027-01-01",
       "effective_to": null,
       "tax_year": null,
       "update_rule": "cpi-linked 1 jan",
       "state": "sourced",
-      "notes": "Saver-initiated cancellation of an agent's power of attorney."
+      "notes": "Saver-initiated cancellation of an agent's power of attorney. Excluding VAT (annex ג note, p.10). An annex ג price: in force from the day the operator chosen in the tender takes responsibility for the system (s.8(ב), p.4), a day the circular does not name; effective_from is the circular's own start (s.8(א)), the earliest it can apply. Until then circular 2022-10-5 applies (not read)."
     },
     "non_institution_certificate_yearly": {
       "value": 4000,
@@ -164,7 +164,7 @@
     }
   },
   "figure_names_he": {
-    "saver_one_time_all_institutions": "בקשת מידע חד פעמית מכל הגופים",
+    "saver_one_time_all_institutions": "בקשת מידע חד־פעמית מכל הגופים",
     "saver_continuous_all_institutions": "בקשת מידע מתמשכת מכל הגופים",
     "saver_continuous_monthly_addition": "תוספת חודשית לבקשה מתמשכת",
     "saver_one_institution": "בקשת מידע מגוף אחד",
@@ -174,9 +174,9 @@
     "institution_min_yearly": "דמי שימוש שנתיים לגוף מוסדי, מדרגה ראשונה",
     "institution_max_yearly": "דמי שימוש שנתיים לגוף מוסדי, מדרגה עליונה"
   },
-  "text_he": "חוזר התשלום החדש של רשות שוק ההון קובע מחירון מרבי לפעולות במסלקה הפנסיונית, עם ציון מי משלם. בקשת מידע חד פעמית של חוסך על כל המוצרים שלו מכל הגופים המוסדיים מוגבלת לאחד עשר שקלים, בקשה מתמשכת לאותו סכום בתוספת שקל לכל חודש שבו מועבר מידע, בקשה מגוף אחד לשקל, וביטול בקשה או עדכון פרטים ללא תשלום. גופים מוסדיים משלמים דמי שימוש שנתיים לפי היקף נכסיהם. המחירים צמודים למדד פעם בשנה, המפעיל רשאי לגבות פחות באישור הממונה, והחוזר נכנס לתוקף בתחילת אלפיים עשרים ושבע. המסלולים דרך הבנקים נשארים ללא עלות לחוסך.",
+  "text_he": "חוזר של רשות שוק ההון קובע כמה המסלקה הפנסיונית רשאית לגבות על כל פעולה, ומי משלם. בקשת מידע חד־פעמית של חוסך על כל המוצרים שלו בכל הגופים המוסדיים: עד 11 שקלים לפני מע״מ. בקשה מתמשכת: עד אותו סכום, ועוד שקל לכל חודש שבו מועבר מידע. בקשה מגוף אחד: עד שקל. ביטול בקשה או עדכון פרטים: בלי תשלום. החוזר חל מ־1.1.2027, אבל המחירים האלה נכנסים לתוקף רק ביום שבו המפעיל שייבחר במכרז יקבל אחריות על המסלקה, והחוזר לא קובע מתי זה יהיה. עד אותו יום חל החוזר הקודם, מ־2022; המחירים שלו לא נקראו. המחירים צמודים למדד המחירים לצרכן ומתעדכנים פעם בשנה, והמפעיל רשאי לגבות פחות באישור הממונה על שוק ההון.",
   "il_finance_file": "switching-and-transfers.md",
-  "checked": "2026-10-24",
+  "checked": "2026-11-06",
   "scope": "general",
   "sources": [
     {
@@ -224,11 +224,25 @@
       "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
       "kind": "circular",
       "strength": "primary",
-      "locator": "p.4, s.8",
-      "locator_he": "עמוד 4, סעיף 8",
+      "locator": "p.4, s.8(א), (ב)",
+      "locator_he": "עמוד 4, סעיף 8(א), (ב)",
       "page": 4,
       "quote": "תחילתו של חוזר זה ביום 1 בינואר 2027",
-      "checked": "2026-10-25"
+      "checked": "2026-11-06"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-539/he/protocol_payments_for_use_of_Central_Pension_clearing_house_system.pdf.pdf",
+      "title": "חוזר סוכנים ויועצים 2026-10-6 – תשלום עבור שימוש במערכת סליקה פנסיונית מרכזית – עדכון (21.10.2026)",
+      "title_he": "חוזר סוכנים ויועצים 2026-10-6: תשלום עבור שימוש במערכת סליקה פנסיונית מרכזית – עדכון",
+      "publisher": "gov.il",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "p.10, annex ג note",
+      "locator_he": "עמוד 10, הערה לנספח ג׳",
+      "page": 10,
+      "quote": "הסכומים בטבלה אינם כוללים מע\"מ",
+      "checked": "2026-11-06"
     }
   ]
 }

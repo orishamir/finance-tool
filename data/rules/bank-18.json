@@ -1,8 +1,8 @@
 {
   "id": "BANK-18",
-  "title": "No securities custody fee on makam or money-market funds at a bank",
-  "title_he": "אין דמי משמרת על מק״ם וקרן כספית בבנק",
-  "text_he": "בתעריפון המלא, לצד סעיף דמי ניהול פיקדון ניירות ערך, כתוב שאסור לגבות דמי ניהול כאלה על מק״ם או על קרן כספית. עמלות קנייה, מכירה ופדיון עדיין חלות על מק״ם, ויש לו שורה נפרדת בתעריפון. זה חשוב כשמשווים פיקדון בנקאי לקרן כספית או למק״ם שקונים באותו בנק.",
+  "title": "Makam and money-market funds at a bank: no custody fee, but buy, sell and redemption commissions on makam",
+  "title_he": "מק״מ וקרן כספית בבנק: בלי דמי ניהול פיקדון ניירות ערך; על מק״מ יש עמלות קנייה, מכירה ופדיון",
+  "text_he": "לפי כללי העמלות של בנק ישראל, בנק לא רשאי לגבות דמי ניהול פיקדון ניירות ערך (שנקראים גם דמי משמרת) על מק״מ ועל קרן כספית. עמלות קנייה, מכירה ופדיון של מק״מ מותרות, ויש להן שורה משלהן בתעריפון המלא שבנק ישראל קבע. ההבדל הזה חשוב כשמשווים פיקדון בנקאי לקרן כספית או למק״מ שקונים באותו בנק.",
   "strength": "primary",
   "dimensions": [
     "fee-custody",
@@ -10,7 +10,7 @@
   ],
   "likely_to_change": "no",
   "il_finance_file": "bank-current-account-deposits.md",
-  "checked": "2026-10-22",
+  "checked": "2026-11-06",
   "scope": "general",
   "sources": [
     {
@@ -21,10 +21,13 @@
       "publisher_he": "בנק ישראל",
       "kind": "regulation",
       "strength": "primary",
-      "locator": "pp.15 to 17, First Schedule part 4, item 4(a)(5)",
-      "locator_he": "עמודים 15 עד 17, התוספת הראשונה חלק 4, פרט 4(א)(5)",
+      "locator": "pp.15 to 17, First Schedule part 4, item 4(a)(5) note 2, and item 4(a)(1)",
+      "locator_he": "עמודים 15 עד 17, התוספת הראשונה חלק 4, פרט 4(א)(5) הערה 2, ופרט 4(א)(1)",
       "page": 15,
-      "checked": "2026-10-25"
+      "checked": "2026-11-06"
     }
+  ],
+  "derived_from": [
+    "BRK-17"
   ]
 }
