@@ -40,6 +40,34 @@
   "scope": "general",
   "sources": [
     {
+      "url": "https://www.gov.il/BlobFolder/service/report126/he/Service_Pages_Income_tax_annual-report-2026_856-2017-2025.pdf#page=14",
+      "title": "רשות המסים: מבנה קובץ 856 משנת המס 2017 עד 2025, 14.1.2026",
+      "title_he": "רשות המסים: מבנה קובץ 856 משנת המס 2017 עד 2025, 14.1.2026",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.14",
+      "locator_he": "עמוד 14",
+      "page": 14,
+      "quote": "קרן כולל הפרשי הצמדה על הקרן (פטור)",
+      "checked": "2026-11-06"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/service/report126/he/Service_Pages_Income_tax_annual-report-2026_856-2017-2025.pdf#page=14",
+      "title": "רשות המסים: מבנה קובץ 856 משנת המס 2017 עד 2025, 14.1.2026",
+      "title_he": "רשות המסים: מבנה קובץ 856 משנת המס 2017 עד 2025, 14.1.2026",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.2, item 7",
+      "locator_he": "עמוד 2, פרט 7",
+      "page": 2,
+      "quote": "לדוחות משנת 2018 ואילך",
+      "checked": "2026-11-06"
+    },
+    {
       "url": "https://www.btl.gov.il/Laws1/02_0103_100269.pdf",
       "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס\"ו-2005, נוסח משולב (המוסד לביטוח לאומי)",
       "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס״ו-2005",

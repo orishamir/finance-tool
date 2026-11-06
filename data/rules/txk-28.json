@@ -37,14 +37,13 @@
   },
   "il_finance_file": "tax-gemel-lehashkaa-ira-child.md",
   "checked": "2026-10-26",
-  "scope": "unsettled",
+  "scope": "institution",
   "scope_institutions": [
     {
       "id": "harel",
       "name_he": "הראל"
     }
   ],
-  "scope_settle": "an amendment of reg. 3 after ק\"ת 7907 in Reshumot, or a Tax Authority instruction to managing companies setting the rate for this payment, or every manager's documents",
   "sources": [
     {
       "url": "https://www.harel-group.co.il/long-term-savings/funding-saving/join/doclib/%d7%92%d7%9e%d7%9c%20%d7%9c%d7%94%d7%a9%d7%a7%d7%a2%d7%94.pdf",
