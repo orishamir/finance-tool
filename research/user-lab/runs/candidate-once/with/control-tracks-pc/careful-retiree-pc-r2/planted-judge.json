@@ -1,0 +1,53 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "Nothing on the page says which tracks are low-risk. The safe options are hidden behind unfamiliar names and English letters.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "Small grey text on a dark background, especially the column headings, is hard to read even when enlarged.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "Every row repeats the same labels (shares/foreign currency, savings/deposit, 3/5 years), so the reader has to re-read them.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "The ring charts use two similar colours, and the reader has to look back and forth to match them with the numbers beside them.",
+      "serious": false,
+      "names_listed": 1
+    },
+    {
+      "n": 5,
+      "summary": "Many rows show 'less than 3 years' instead of a return, so the safer bond tracks can't be compared.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 6,
+      "summary": "High stock returns (24%, 26%) draw the eye, but the risk behind them isn't explained.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 7,
+      "summary": "Some marks are unclear: 'not yet reported' with an orange icon, and a 101% share in stocks.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 8,
+      "summary": "The reader doesn't know the site 'מקור' or who runs it.",
+      "serious": false,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.0389948
+}

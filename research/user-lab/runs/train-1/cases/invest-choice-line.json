@@ -1,0 +1,14 @@
+{
+ "id": "invest-choice-line",
+ "task": "t15",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "The 'הבחירה שלכם' line stands apart from the index chips; he wanted it beside 'המדד', smaller, in the same add-rename-move pill style as the goal page.",
+   "where": "the index chips and the line under them",
+   "kind": "taste",
+   "outside": false
+  }
+ ],
+ "liked": []
+}

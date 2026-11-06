@@ -1,0 +1,14 @@
+{
+ "id": "question-card-chips-do-nothing",
+ "task": "t09",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "Of the purpose buttons in the question card ('בשביל מה'), only 'כרית ביטחון' changes anything; the others look like choices but change nothing on the page.",
+   "where": "the 'בשביל מה' buttons in the home question card",
+   "kind": "general",
+   "outside": false
+  }
+ ],
+ "liked": []
+}

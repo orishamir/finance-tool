@@ -1,0 +1,65 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "Page never states the monthly employee contribution; reader had to compute ~₪300 themselves.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "Unclear which amount actually reaches the bank and what 'בכסף של היום' (today's money) means for the real figure.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "The '123 ממקור / 123 מחושב' legend and rule/tag chips (KH-19, PF-18, חוקים וכללים) are unexplained.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "Figures 15,712 ₪ and 20,566 ₪ in 'מה זה' are unclear; reader doesn't know if they are a limit on them.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "Jargon not understood: אג\"ח tracks, מסלול השקעה, whether 0.54% management fee is high, מס רווחי הון, etc.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 6,
+      "summary": "Paragraph under the big chart loses the reader with inflation details and numbers like 321 ₪ / 66,601–66,280 ₪.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 7,
+      "summary": "Tax section has too many conditions; unclear why 47% is withheld and whether the pink striped tax area is lost or partly refunded.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 8,
+      "summary": "Top 1–12 year chart has no legend for the bar colours.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 9,
+      "summary": "Big chart shows a number only on the deposit bar; no figure on 'נשאר בידיים' and no written-out amount for 6 years.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 10,
+      "summary": "Missing info: the box about leaving the employer was cut off; also unclear what the money can be used for, which company and how to join, and whether 7% is realistic.",
+      "serious": false,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.0875428
+}

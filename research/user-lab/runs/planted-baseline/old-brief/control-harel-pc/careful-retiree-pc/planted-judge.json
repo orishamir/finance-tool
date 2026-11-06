@@ -1,0 +1,65 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "The legend '123 מקורו 123 מחושב' is confusing: the reader didn't know why there were two 123s or whether a calculated number is less reliable.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "The direct-costs note says there are costs on top of the fees but doesn't say how much, and the 'PF-10' tag next to it means nothing to the reader.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "The one relevant documents section ('קופת גמל להשקעה · 1') was closed, and the list was mostly about other products.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "The ring charts add nothing beyond the numbers next to them.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "Nothing shows that the dotted underlines (and the '?' icons) can be hovered for more information, so the reader never used them.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 6,
+      "summary": "The grey tag 'עוקב מדדי אג\"ח' appears under only one track, and the reader didn't know why.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 7,
+      "summary": "Terms are not explained: מט\"ח, index tracker vs. tradable, גמיש, קיימות, הלכה יהודית. The reader couldn't use the foreign-currency exposure figure in the table.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 8,
+      "summary": "The 'אשראי ואג\"ח' track holds 5% in shares even though its name says nothing about shares.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 9,
+      "summary": "The page says there are 16 tracks, but the reader saw only 14 because rows were cut off between screens, so some options were missed.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 10,
+      "summary": "Information the reader wanted is missing: the worst-year drop, tax on withdrawal, whether the fee is fixed or can be negotiated, how to join and withdraw, the minimum deposit, and an example in shekels.",
+      "serious": false,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.0604108
+}

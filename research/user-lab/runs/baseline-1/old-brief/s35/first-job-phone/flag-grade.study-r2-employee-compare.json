@@ -1,0 +1,75 @@
+{
+  "case": "study-r2-employee-compare",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"For a salaried employee the comparison with a securities account is beside the point: the account gets no employer money, so it is not a real choice.\",\"where\":\"the comparison in both options\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Unclear what happens if the money is needed before 5 years or if they change jobs",
+      "The intro mentions balls and a table the reader never saw, so it means nothing",
+      "The preview picture of the old version is too small to read and seems pointless",
+      "The example line loses them at fund names, codes and management-fee percentages",
+      "Year 6 is shown as a second copy of the chart instead of letting the reader pick any year",
+      "In option ב the two sides are hard to compare because the bar scales don't seem to match",
+      "The small print under the charts (routes/tariffs surveyed) is confusing",
+      "Unclear what the management fee takes off the teal profit",
+      "The striped tax segment looks like a mistake",
+      "The dotted underlines under numbers are unclear: are they clickable?",
+      "Doesn't understand 'מסלול' or the bracketed code numbers",
+      "Doesn't know who פייר פיננשיאל טכנולוג'יז is or whether they're needed",
+      "Doesn't understand 'עד תקרה בחוק' or whether it affects them",
+      "Unclear whether the named fund is the one they'll get or just an example",
+      "Unclear whether the employer's 7.5% is fixed; wants to enter their own salary",
+      "Unclear whether they or the employer choose the S&P track",
+      "Unclear whether the money is meant only for studies",
+      "Wants to know if there's any catch or reason not to join"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader treated the securities-account comparison as the deciding factor and never called it irrelevant or 'not a real choice' for salaried employees, so nothing on the list matches this problem."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0453632
+  },
+  "b": {
+    "raised": [
+      "Unsure what happens if the money is needed before 5 years or if they change jobs",
+      "Title/intro mentions balls and a table they never saw, so it meant nothing",
+      "Small preview picture of the old version is too tiny to read; would remove it",
+      "Example line loses them at fund names, codes and management-fee percentages; would remove them",
+      "Year-6 chart is a second copy; wants to pick any year themselves instead",
+      "Option ב's two sides are hard to compare; bars don't seem to share a scale; would remove the section",
+      "Small print under the charts (19 tracks / 14 rates) is confusing; would remove it",
+      "Doesn't know what the management fee takes off the teal profit",
+      "Striped pink/brown tax segment looks like a mistake",
+      "Unclear whether the dotted underlines under numbers are clickable",
+      "Doesn't know who 'פייר פיננשיאל טכנולוג'יז' is or whether they need them",
+      "Doesn't understand 'עד תקרה בחוק' or whether the ceiling affects them",
+      "Unclear whether the Yelin Lapidot fund is the one they'd get or only an example",
+      "Doesn't know whether the employer must give 7.5%; wants to enter their own salary",
+      "Doesn't know whether they or the employer chooses the S&P track",
+      "Unsure whether the money is meant only for studies",
+      "Wants to know whether there's a catch or a reason not to join"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader never says the securities-account comparison is beside the point; they found it decisive and praised the 3.70 vs 1.09 line."
+      }
+    ],
+    "liked": [],
+    "usd": 0.053131199999999996
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0984944
+}

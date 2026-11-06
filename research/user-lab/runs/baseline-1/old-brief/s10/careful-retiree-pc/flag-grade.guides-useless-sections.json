@@ -1,0 +1,81 @@
+{
+  "case": "guides-useless-sections",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The guide home has sections that say nothing useful ('שני חלקים בכל חיסכון', 'מאיפה להתחיל').\",\"where\":\"the sections above or below the list of guides\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "The page gives no fees, returns or tax amounts, so they can't choose",
+      "The guide's intro line doesn't say what to do",
+      "The sentence 'בכל עמוד של מוצר יש שורה...' is unclear: which line?",
+      "'מאיפה להתחיל' is written for working employees, with nothing for someone near retirement",
+      "Tax-benefit card doesn't say how big the annual ceiling is or how long the legal waiting period is",
+      "Retirement cards are confusing: comprehensive vs general pension, and 'תגמולים ואישית לפיצויים'",
+      "Footer says 'data correct as of' but no data or numbers appear anywhere",
+      "'בשפה פשוטה' lines mostly just repeat the product name",
+      "'יומית'/'מתחדשת' buttons are confusing: are they fund types, and can you click them?",
+      "Too many index cards, and they all look alike (would cut most of them)",
+      "Doesn't understand 'חשיפה לדולר או מנוטרלת ממנו'",
+      "Doesn't understand 'קרן שעוקבת אחריו'",
+      "Doesn't understand 'תקרה למניה אחת'",
+      "Doesn't understand who the 'ועדת ההשקעות' is or whether they pay it",
+      "Abbreviations אג\"ח and מק\"מ appear before they are explained",
+      "No figures for how much each option could fall in a bad year",
+      "Nothing on age-related rules: when you can withdraw, and whether it's tax-free",
+      "No information on whether deposits or bonds are insured or guaranteed",
+      "No simple starting point based on amount and time horizon",
+      "Would drop the 'לילדים' section",
+      "Would drop the 'לבחירה עצמית' section"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader praises 'שני חלקים בכל חיסכון' as useful, and only says 'מאיפה להתחיל' is aimed at employees, not that it says nothing useful, so no raised item matches the person's complaint."
+      }
+    ],
+    "liked": [],
+    "usd": 0.06118320000000001
+  },
+  "b": {
+    "raised": [
+      "Page gives no fees, returns or tax amounts, so the reader can't choose between options",
+      "Guide heading intro line doesn't tell the reader what to do",
+      "'בכל עמוד של מוצר יש שורה...' is unclear: which line?",
+      "'מאיפה להתחיל' is written for employees; nothing for someone near retirement",
+      "Tax-benefit card doesn't say the annual ceiling amount or the legal waiting period",
+      "Pension cards confusing: comprehensive vs general unclear, 'תגמולים ואישית לפיצויים' meaningless",
+      "Footer says 'data correct as of' but no numbers appear anywhere",
+      "'בשפה פשוטה' lines mostly just repeat the product name",
+      "'יומית'/'מתחדשת' buttons under money market fund are confusing (kinds? clickable?)",
+      "Too many index cards that all look alike",
+      "'חשיפה לדולר או מנוטרלת ממנו' not understood",
+      "'קרן שעוקבת אחריו' on index cards not understood",
+      "'תקרה למניה אחת' not understood",
+      "'ועדת ההשקעות של החברה המנהלת' unclear: who are they, do I pay them?",
+      "Abbreviations אג\"ח and מק\"מ used before being explained",
+      "No information on what changes near 60: withdrawal age and whether tax-free",
+      "No information on whether deposits or bonds are insured/guaranteed",
+      "No simple starting point by amount and time horizon",
+      "Would drop the 'לילדים' section",
+      "Would drop the 'לבחירה עצמית' section"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader found 'שני חלקים בכל חיסכון' useful and objected to 'מאיפה להתחיל' only because it targets employees rather than retirees, not because it says nothing useful."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0707112
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.13189440000000002
+}

@@ -1,0 +1,111 @@
+{
+  "task": "control-tracks-pc",
+  "persona": "first-job-phone",
+  "repeat": 2,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T16:07:08.284Z",
+  "structured": {
+    "answer": "I'd pick Harel's \"מניות\" track (קופה 8522), because it showed the biggest return I saw, \"24.04%\" over 3 years, at about the lowest fee, 0.55%, from a name I know.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Table, return column (screen 2)",
+        "why": "Not sure if 24.04% is per year or the total for 3 years, and the 5-year number (14.64%) is much lower"
+      },
+      {
+        "where": "Screens 4-5, long list of companies",
+        "why": "143 tracks that all look alike; I got bored and stopped after about 5 screens"
+      },
+      {
+        "where": "Choosing between מניות and S&P 500",
+        "why": "Friends talk about the S&P, but its number (13.7%) was lower, so I went with the bigger number"
+      }
+    ],
+    "used": [
+      "Heading 'כל המסלולים בכל החברות'",
+      "Selected button 'קופת גמל להשקעה 143'",
+      "Harel group row and the 'מניות' track row",
+      "Fee 'דמי ניהול 0.55% מההיסכון' and '0% מההפקדות'",
+      "Return '24.04%' 3 years",
+      "Managed money '7.3 מיליארד ₪'",
+      "Compared with the S&P 500 track at 13.7%"
+    ],
+    "skimmed": [
+      "Rows for מור, אנליסט, מיטב",
+      "Exposure column with the circles",
+      "Filter buttons for track type"
+    ],
+    "skipped": [
+      "Small text about 2025 and September 2026 at the top",
+      "'מה זה קופת גמל להשקעה' link",
+      "The ? icons",
+      "Search box",
+      "Screens 6-15"
+    ],
+    "unsure_meaning": [
+      "מט\"ח",
+      "קופה numbers like 8522",
+      "The coloured circles in the exposure column",
+      "מניות 101%",
+      "תשואה שנתית ממוצעת: per year or total",
+      "'פחות מ-3 שנים' in place of a number",
+      "'עוד לא דווח'"
+    ],
+    "not_found": [
+      "A button or a step for actually opening the fund",
+      "A recommendation of which track to pick",
+      "What the fee comes to in shekels on my 30,000"
+    ],
+    "findings": [
+      {
+        "what": "Too many tracks that look almost the same (143); no clear recommendation",
+        "where": "Whole table"
+      },
+      {
+        "what": "Unclear whether the return is per year or total, and the 3-year and 5-year numbers differ a lot",
+        "where": "Return column"
+      },
+      {
+        "what": "Fees only in percent, no shekel amount, and they all look about the same",
+        "where": "Fee column and the top summary"
+      },
+      {
+        "what": "Circle charts and מט\"ח percentages not explained",
+        "where": "Exposure column"
+      },
+      {
+        "what": "Many rows show 'פחות מ-3 שנים' with no number",
+        "where": "Return column"
+      },
+      {
+        "what": "Nothing tells me what to do next",
+        "where": "Whole page"
+      }
+    ]
+  },
+  "steps": 5,
+  "reads": 5,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 27912,
+    "turns": 7,
+    "usd": 0.1313206,
+    "input": 6,
+    "cacheWrite": 9526,
+    "cacheRead": 18443,
+    "output": 2570,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "control-tracks-pc",
+    "screenshots": 16,
+    "changes": [],
+    "neverShown": [],
+    "errors": []
+  }
+}

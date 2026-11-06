@@ -1,0 +1,36 @@
+{
+  "case": "tracks-r2-sort-buttons",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"Sorting uses separate sort buttons instead of clickable column heads.\",\"where\":\"the sort buttons above the table\",\"kind\":\"taste\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings mention sorting, the sort buttons or clickable column headers; they cover density, fees, returns, headings and unfamiliar companies instead."
+      }
+    ],
+    "liked": [],
+    "usd": 0.014791400000000001
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings mention sorting controls or say anything about sort buttons versus clickable column headers."
+      }
+    ],
+    "liked": [],
+    "usd": 0.013951400000000001
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.028742800000000002
+}

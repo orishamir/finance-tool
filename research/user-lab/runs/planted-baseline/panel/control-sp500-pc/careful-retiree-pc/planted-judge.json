@@ -1,0 +1,53 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "Grey, small text on a dark background is very hard to read even when enlarged, especially the lines under the big numbers and the bank notes.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "Many red minus amounts in the fund list make it look as if the money is being lost.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "English fund names and codes (iShares, Vanguard, UCITS ETF, IE00...) have no Hebrew explanation.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "The 7% return is filled in already, with nothing clearly saying it is only an assumption.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "Every fund carries too many coloured labels, and the reader cannot tell the colours apart or what they mean.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 6,
+      "summary": "The two-column screens are busy, with numbers on both sides at once.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 7,
+      "summary": "The pale lines under 86,492 ('בכסף של היום' and the dollar note) are confusing.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 8,
+      "summary": "Pesagot is less familiar than the big banks, and the page does not say why it can be trusted.",
+      "serious": false,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.0369188
+}

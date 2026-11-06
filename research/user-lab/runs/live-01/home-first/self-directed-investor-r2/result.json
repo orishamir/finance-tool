@@ -1,0 +1,84 @@
+{
+  "task": "home-first",
+  "persona": "self-directed-investor",
+  "repeat": 2,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-05T23:26:26.630Z",
+  "structured": {
+    "answer": "Nothing to compare yet: the first screen is a hub with a search box and category buttons and no number. I'd give \"חשבון ניירות ערך\" or \"חברות ומסלולים\" one click to look for a fee table, and leave if there isn't one.",
+    "confidence": "fairly sure",
+    "gave_up": true,
+    "stuck": [
+      {
+        "where": "card 'מה חברה מציעה לי'",
+        "why": "Can't tell if it's a fee comparison or just a product catalogue"
+      },
+      {
+        "where": "top nav 'השקעה במדד'",
+        "why": "Could be a beginner explainer or real data; there's no hint which"
+      }
+    ],
+    "used": [
+      "tagline 'עם מקור לכל מספר'",
+      "'אתר אישי, לא מסחרי, בלי קישורי שיווק'",
+      "chip 'חשבון ניירות ערך'",
+      "card 'מה חברה מציעה לי'",
+      "nav 'חברות ומסלולים'",
+      "footer 'נתונים נכון ל־05.11.2026'"
+    ],
+    "skimmed": [
+      "search box 'הדביקו שם של מוצר, מסלול או מונח'",
+      "top nav menu"
+    ],
+    "skipped": [
+      "chips פיקדון, חיסכון לכל ילד, קרן כספית",
+      "'מה האתר עוד לא מכסה'",
+      "'על מה האתר נשען: החוקים, הכללים והמסמכים'",
+      "footer links פרמטרים, מסמכים, העברה למכשיר אחר"
+    ],
+    "unsure_meaning": [
+      "'העברה למכשיר אחר' (moving my data to another device?)",
+      "'פרמטרים' in the footer"
+    ],
+    "not_found": [
+      "Any figure on the first screen",
+      "Broker fee / custody fee / FX conversion comparison",
+      "A named author or owner of the site"
+    ],
+    "findings": [
+      {
+        "what": "Promises 'a source for every number' but the first screen has no numbers at all",
+        "where": "hero / whole first screen"
+      },
+      {
+        "what": "Says it's personal and non-commercial but gives no name, so there's no way to check",
+        "where": "subtitle under 'מקור' and footer"
+      },
+      {
+        "what": "No hint that fees or FX costs are compared anywhere; I'd have to guess which link leads there",
+        "where": "category chips and 'מה חברה מציעה לי' card"
+      },
+      {
+        "what": "The right half of the screen is empty while the content is squeezed into the left column",
+        "where": "layout, desktop"
+      }
+    ]
+  },
+  "steps": 1,
+  "reads": 1,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 23591,
+    "turns": 3,
+    "usd": 0.0896168,
+    "input": 4,
+    "cacheWrite": 5479,
+    "cacheRead": 5744,
+    "output": 2231,
+    "model": "claude-opus-5-5"
+  }
+}

@@ -1,0 +1,124 @@
+{
+  "task": "s28",
+  "persona": "first-job-phone",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T02:24:33.571Z",
+  "structured": {
+    "answer": "I'd open an account at פסגות and buy the ילין לפידות S&P 500 fund. The page calls it \"הזוג הזול ביותר לתוכנית שלכם\": 86,492 ₪ after 10 years, compared with 84,184 for the אינטראקטיב option it had pre-selected for me. But I'm not sure that's right, and the page never showed it with my own 30,000.",
+    "confidence": "unsure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Top result boxes",
+        "why": "The page pre-selected אינטראקטיב ישראל (MEXEM LTD) as 'הבחירה שלכם', a name I don't know. I never chose it, so I didn't know which box was the recommendation."
+      },
+      {
+        "where": "Account list, פסגות row",
+        "why": "פסגות is named in the 'cheapest pair', but in the account list its row says 'אין נתון' and the 86,492 is labelled as coming from a 'קרן אחרת'. That left me unsure whether פסגות really is the cheapest."
+      },
+      {
+        "where": "Sliders",
+        "why": "They were set to 10,000 / 500 / 10 years / 7%, not my 30,000, so I never saw my own result."
+      },
+      {
+        "where": "84,184 vs 70,000 deposited",
+        "why": "At 7% for 10 years I expected about 70% more. 84k felt low, and I didn't understand the 'בכסף של היום' / after-tax explanation."
+      },
+      {
+        "where": "Left list of funds",
+        "why": "Dozens of near-identical funds with coloured tags. Too many to choose from, and I got bored there."
+      }
+    ],
+    "used": [
+      "Heading 'איפה ואיך הכי זול להשקיע במדד, לאורך זמן'",
+      "S&P 500 chip selected",
+      "Big numbers 70,000 / 84,184 / 86,492 and '+2,308 ₪ יותר'",
+      "'הזוג הזול ביותר לתוכנית שלכם' box naming פסגות",
+      "Fee bars 9,184 vs 6,876 ₪",
+      "Account list with bank totals (לאומי 71,513, הפועלים 68,511, etc.)",
+      "Line 'לעבור אל ילין לפידות מחקה S&P 500 (4D), פסגות'"
+    ],
+    "skimmed": [
+      "Account list on the right",
+      "Fund list on the left",
+      "מה הכי משנה chart and table",
+      "מתחילים מבחירה אחת section"
+    ],
+    "skipped": [
+      "מה כתוב בפרסום, מול התעריפון",
+      "עם נטרול מט\"ח או בלי (whole section and charts)",
+      "Notes under the fund list ('למה חלק מהקרנות בלי מחיר')",
+      "Footer disclaimers",
+      "חוקים וכללים links",
+      "The grey line about the dollar rate under the sliders"
+    ],
+    "unsure_meaning": [
+      "צוברת / מחלקת דיבידנד",
+      "מנוטרלת מט\"ח / נטרול מט\"ח",
+      "דמי משמרת",
+      "עלות ההמרה",
+      "מול המדד with +0.37% / −0.31% / −2.44%",
+      "4D / 4A",
+      "W-8BEN",
+      "UCITS, Accumulating/Distributing",
+      "עוד לא נאסף",
+      "אין נתון next to פסגות",
+      "נשען על כלל מס פתוח",
+      "Small grey shekel number under each account (I guessed: fees)",
+      "'בכסף של היום'"
+    ],
+    "not_found": [
+      "Result for my own 30,000 ₪ and a few hundred a month",
+      "A clear first step (how to open the account and buy)",
+      "A plain answer to whether פסגות itself is the cheapest account"
+    ],
+    "findings": [
+      {
+        "what": "An unknown broker is pre-selected as 'הבחירה שלכם', and its 84,184 is the first big number you see, even though I never chose it",
+        "where": "Top result box, screen 1"
+      },
+      {
+        "what": "The cheapest pair names פסגות, but פסגות's row in the account list shows 'אין נתון' with a figure for a 'קרן אחרת'. Confusing.",
+        "where": "Screen 1 top-left box vs screen 3 account list"
+      },
+      {
+        "what": "Too many near-identical funds covered in jargon tags; I'd give up there",
+        "where": "Fund list, screens 1–3"
+      },
+      {
+        "what": "Default amounts aren't mine, so I couldn't see my own result",
+        "where": "Sliders, screen 1"
+      },
+      {
+        "what": "84k from 70k at 7% over 10 years looks low, and the reason isn't clear",
+        "where": "Result boxes, screen 1"
+      },
+      {
+        "what": "Negative percentages on funds look scary and aren't explained up front",
+        "where": "Fund list 'מול המדד' column"
+      },
+      {
+        "what": "No 'what to do next' step",
+        "where": "Whole page"
+      }
+    ]
+  },
+  "steps": 6,
+  "reads": 6,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 49358,
+    "turns": 8,
+    "usd": 0.2548436,
+    "input": 10,
+    "cacheWrite": 19847,
+    "cacheRead": 46138,
+    "output": 4340,
+    "model": "claude-opus-5-5"
+  }
+}

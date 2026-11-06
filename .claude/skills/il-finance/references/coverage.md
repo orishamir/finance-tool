@@ -38,13 +38,9 @@ These apply to the whole knowledge base, not to one topic.
      (3) Yearly series keep one name pattern (`Guides_IncomeTax_da-YYYY.pdf`,
      `…monthly-deductions-booklet-YYYY.pdf`, `Policy_IncomeTaxProfessionalInst_hoz_NN_YYYY_acc.pdf`), so
      the next edition can be tried by name.
-     gov.il's HTML pages and their data APIs sit behind Cloudflare's human check. The founder allowed
-     FlareSolverr for gov.il pages only (2026-10-25). It runs in Docker on this machine (start it with
-     `docker start flaresolverr`), and `research/audit/tools/govil-page.sh URL` prints one page's HTML,
-     refusing any address outside gov.il. A page takes about 15 seconds. The script waits 6 seconds after
-     the check, because without the wait a page could come back as the bare frame. The page is where to
-     see which edition is current: an old PDF stays online after a new one replaces it, so a link check
-     never shows it is out of date. Read this way on the first day:
+     gov.il's HTML pages and their data APIs sit behind Cloudflare's human check. The page is where to see which
+     edition is current: an old PDF stays online after a new one replaces it, so a link check never shows
+     it is out of date. Read on 2026-10-25 with FlareSolverr:
      - "דע זכויותיך" lists the 2025 and 2024 editions, so 2025 is the newest.
      - The clearing-house page lists its six attachments.
      - Circular 7/2003, on this list's not-done items, has its PDF at
@@ -329,6 +325,6 @@ The Maya export file was downloaded once through the browser, into your Download
 | The CMA's own copy of circular 2017-9-17 (gov.il) is the text read; deadlines verbatim; later CMA circulars cite 2016-9-11 | SW-41 | SW OQ1 (narrowed) |
 | Transfer information passes through the clearing house since 23.2.2020 (ממשק ניוד); the Commissioner may defer the ten-day deadline by up to twenty business days | SW-42 | PF OQ6 (channel) |
 | Directive 448 version 4 (11/25, circular 2833): disclosure sections 16א and 19א only; start by 1.3.2026 | SW-43 | SW OQ15 |
-| Clearing-house payment circular 2026-10-6: a saver's one-time all-institutions request capped at NIS 11 from 1.1.2027 | SW-44 | SW OQ5 (price), PF OQ6 (narrowed) |
+| Clearing-house payment circular 2026-10-6: a saver's one-time all-institutions request capped at NIS 11 before VAT, from the new operator's takeover day (not yet named; the circular starts 1.1.2027) | SW-44 | SW OQ5 (price), PF OQ6 (narrowed) |
 
 **Not done:** the ISA and CMA licensee registers (REG OQ3, task item 4); the clearing house's current (2022) price list and the operator's own price page (rendered no text); the CMA's regulation collector for amendments to the transfer circular (OQ1); the 2026-9-3 circular's deferred dates. One Zero's PDF was fetched inside the Chrome tab (the host returns 403 to curl) and its one-glyph-per-letter text layer re-joined by hand; the Maya counts came from the list page's own filter requests, one heading at a time.

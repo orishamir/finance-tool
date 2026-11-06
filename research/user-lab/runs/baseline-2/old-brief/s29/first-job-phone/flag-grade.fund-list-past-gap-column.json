@@ -1,0 +1,89 @@
+{
+  "case": "fund-list-past-gap-column",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The fund list's column 'מול המדד' (each fund's past gap to its index) is not useful for choosing a fund, and the table does not show the information that matters for the choice.\",\"where\":\"the columns of the fund list\",\"kind\":\"taste\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Young-person discounts are marked 'לא בחישוב' and not shown, so the reader can't tell how much cheaper a bank like Leumi would be",
+      "Doesn't understand the difference between 'קרן מחקה' and 'קרן סל', or whether it changes how to buy",
+      "Doesn't know whether 7% a year is a sensible return to assume",
+      "Inflation button is confusing: on or off, and what clicking it changes",
+      "Top cost bar is confusing: a big pink 5,555 next to small numbers, only later understood as tax",
+      "Presenting higher tax as part of the good news feels odd",
+      "Doesn't understand 'נאמן' and 'משתנים' in the fund's fee line",
+      "Hard to match the legend colours to the bars, and 'העמלות זו על זו' means nothing",
+      "'מה הכי משנה' chart isn't about where to buy (would cut it)",
+      "Waterfall starts from הראל סל + ירושלים, a choice the reader never made",
+      "'עכשיו' tables repeat the ranking already shown",
+      "Can't tell which colour is which in the account-list bars",
+      "Unsure whether 'מול המדד −0.04%' is good or bad",
+      "'נשאר בסוף' numbers in the 'עכשיו' tables differ from the first list (86,045 vs 84,932)",
+      "Doesn't understand '(4A)' / '(40)' in the fund names",
+      "Doesn't understand the fund tags צוברת / מחזיקה את המניות / כמה דרכים יחד",
+      "Doesn't understand 'דמי משמרת'",
+      "Doesn't understand why tax is the biggest cost or whether it can be reduced",
+      "Doesn't understand the message 'הפס נחתך: הסכום ארוך מהשטח'",
+      "No guidance on how to actually open a Psagot account (online? minimum? leave my bank?)",
+      "Unclear whether a קרן מחקה can be bought as a fixed monthly amount, like on the exchange",
+      "Unsure whether Psagot is safe for someone who only knows banks",
+      "One Zero's rank is unclear and the note 'יש ספק אם נמכרת שם: וואן זירו' is worrying"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader is only unsure whether −0.04% is good (item 13), but never says the 'מול המדד' column is useless for choosing or that the fund table is missing the information that matters."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0817552
+  },
+  "b": {
+    "raised": [
+      "Young-person discounts are marked 'לא בחישוב', and the page doesn't say how much cheaper a bank like לאומי would be for a 24-year-old",
+      "Doesn't know what 'קרן מחקה' is compared with 'קרן סל', or whether it changes how to buy the fund",
+      "Doesn't know whether the default 7% yearly return is a sensible number",
+      "Inflation button is confusing: unclear whether it is on or off, or what clicking it changes",
+      "Top cost bar is confusing: a big pink 5,555 next to small numbers, and it took a while to see that pink is tax",
+      "Odd that paying 342 ₪ more tax is presented as the good news",
+      "Doesn't understand 'נאמן' or 'משתנים' in the fund's fee line",
+      "Account-list cards are missing the young-person price info, and the grey tags with arrows hide it (frustrating)",
+      "Fees legend: hard to match the colours to the bars, and 'העמלות זו על זו' means nothing to them",
+      "Waterfall starts from הראל סל + ירושלים, a pairing the user never chose",
+      "In the account list, it took a moment to see that the small number is the cost; didn't know which bar colour was which",
+      "Not sure whether 'מול המדד −0.04%' is good or bad (only roughly understood it as lagging the index)",
+      "'נשאר בסוף' numbers in the 'עכשיו' tables differ from the first list (86,045 vs 84,932), which is confusing",
+      "Doesn't understand the fund tags 'צוברת', 'מחזיקה את המניות', 'כמה דרכים יחד'",
+      "Doesn't understand '(4A)' / '(40)' in the fund names",
+      "Doesn't understand 'דמי משמרת' in the legend",
+      "Doesn't understand why tax is the biggest cost, or whether anything can be done about it",
+      "Doesn't understand the message 'הפס נחתך: הסכום ארוך מהשטח'",
+      "Missing: how to actually open a Psagot account (online, minimum, whether to leave their bank)",
+      "Missing: whether a קרן מחקה can be bought at a fixed amount every month, and whether it is bought like a stock",
+      "Missing: whether Psagot is safe for someone who only knows banks",
+      "One Zero / ranks 3 and 10 are unclear, and the 'יש ספק אם נמכרת שם: וואן זירו' note is worrying",
+      "Would cut the 'מה הכי משנה' chart and its table",
+      "Would cut the 'עכשיו' tables because they repeat the ranking",
+      "Would cut the coloured cost bars and legends and keep only the numbers",
+      "Would cut the per-fund tags"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader only wonders whether −0.04% is good, which is about not understanding the number, and never says the 'מול המדד' column is useless for choosing or that the table lacks the information that matters."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0821872
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1639424
+}

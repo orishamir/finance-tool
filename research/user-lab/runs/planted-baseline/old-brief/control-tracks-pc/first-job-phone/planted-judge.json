@@ -1,0 +1,65 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "The 'מההפקדות' fee (e.g. 0.01%) is unclear. The reader can't tell whether it is a separate fee from 'מהחיסכון' or whether both are paid.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "The difference between the 'לפי חברה' and 'לפי מוצר' tabs was not understood.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "'123 מקור 123 מחושב' in the intro is confusing: the same number appears twice, and 'מחושב' isn't explained.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "Category filter terms such as אג\"ח ממשלתי, משולב סחיר, גמיש and כספי (שקלי) are not explained.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "The table is very long (about 13 screens) and shows all 143 tracks. There is no quick S&P-500-only list across companies, so the reader had to hunt through it.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 6,
+      "summary": "The company header scrolls out of view, so on some screens the reader couldn't tell which company owns the cheaper S&P tracks (14865 at 0.54%, 13250). They may have missed a better choice than their backup.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 7,
+      "summary": "Exposure values above 100% (e.g. 101%) are confusing and not explained.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 8,
+      "summary": "'מניות' tracks show much higher 3-year returns (about 24%) than S&P 500 tracks (about 13.7%), with no guidance on which to choose. The reader almost changed their decision.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 9,
+      "summary": "The fee is shown as an average actually collected, so the reader can't tell what fee they personally would pay. It is also unclear what 'עוד לא דווח' implies about the fee.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 10,
+      "summary": "Practical information is missing: how to open the account, the minimum amount, monthly deposits, withdrawal terms and tax.",
+      "serious": false,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.0638468
+}

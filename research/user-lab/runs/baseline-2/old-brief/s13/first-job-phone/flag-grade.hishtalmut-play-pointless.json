@@ -1,0 +1,94 @@
+{
+  "case": "hishtalmut-play-pointless",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The 'שחקו עם המספרים' panel repeats what the graphic above already lets the reader do.\",\"where\":\"the 'שחקו עם המספרים' panel\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Unsure whether their own salary matches the 300/900 example",
+      "Worried by the chief economist's proposal to cut the tax benefit; unclear if it affects new joiners",
+      "Confused by the coloured '123 מקומ / מחושב / הזנתי' legend",
+      "Lost by 'גיל 60' and '31%' in the early-withdrawal bullets; why it matters at 24",
+      "Didn't understand tax only on profit above inflation / 'הרווח הריאלי'",
+      "Green 'חוקים וכללים · N' tags unclear, not clicked",
+      "'כדאי להכיר גם' terms (קרן חדשה מקיפה, תגמולים…) unknown",
+      "Four boxes at top of screen 3 were cut off and couldn't be seen",
+      "Top bar chart doesn't label its colours; had to guess from the big chart",
+      "Top bar chart has no numbers on the bars",
+      "Dark brown bars inside the big chart not understood",
+      "'47% מס במקור… ומקבלים בחזרה' confusing; unclear whether something must be filed",
+      "'שחקו עם המספרים שלכם' was closed, so couldn't get their own numbers",
+      "Codes like 'TXH-09', 'KH-15', 'PF-18' not understood",
+      "'הוצאות ישירות' in the fees table not understood",
+      "Unclear what happens if they earn less or more than the 15,712 ₪ ceiling",
+      "Orange warning box repeats what was already read",
+      "Missing: what happens to the fund and ותק when changing jobs before 6 years",
+      "Missing: whether money must be withdrawn after 6 years or can keep growing",
+      "Missing: which investment track to pick at 24 / whether S&P 500 is a good default",
+      "Missing: which company to choose or what to look for",
+      "Missing: whether they can ask the employer for it and how much",
+      "Would drop the self-employed (עצמאים) content",
+      "Would drop the 'מי מציע ומי מפקח' cards",
+      "Would drop the 'איפה מופיע' column in the glossary",
+      "Would drop the assumptions box",
+      "Would drop 'הכי קרוב לזה: חשבון ניירות ערך'",
+      "Would drop the 'כדאי להכיר גם' section",
+      "Would drop the legend and the green tags/codes"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader's only issue with the 'שחקו עם המספרים' panel is that it was closed; they say it's what they need and never say it repeats the graphic."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0727112
+  },
+  "b": {
+    "raised": [
+      "Unsure whether their own salary matches the 300/900 example",
+      "Worried by the chief economist's recommendation to cut the tax benefit",
+      "Confused by the coloured '123 מקומ / מחושב / הזנתי' legend",
+      "Didn't understand why 'גיל 60' and '31%' matter for someone aged 24",
+      "Didn't follow the tax-only-on-profit-above-inflation / 'הרווח הריאלי' idea",
+      "Didn't understand the green 'חוקים וכללים · N' tags and codes like TXH-09",
+      "Unknown terms in 'כדאי להכיר גם' (קרן חדשה מקיפה, תגמולים…)",
+      "Four boxes at top of screen 3 were cut off",
+      "Assumptions box: '47% מס במקור… ומקבלים בחזרה' scared them and wasn't clear",
+      "Unclear what happens with the 7.5%/2.5% if salary is lower or higher",
+      "Orange warning box repeats what was already read",
+      "Top bar chart has no colour legend; colours had to be guessed",
+      "Didn't understand the dark brown bars in the big chart",
+      "Didn't understand 'הוצאות ישירות' in the fees table",
+      "Couldn't get their own numbers because 'שחקו עם המספרים שלכם' was closed",
+      "No info on what happens when changing jobs before 6 years",
+      "Unclear whether money must be withdrawn after 6 years",
+      "No guidance on which track to choose at 24",
+      "No guidance on which company to choose",
+      "Unclear whether they can ask their employer for it and how much",
+      "Would drop the content about עצמאים",
+      "Would drop the 'מי מציע ומי מפקח' cards",
+      "Would drop the 'איפה מופיע' column in the glossary",
+      "Would drop 'הכי קרוב לזה: חשבון ניירות ערך'",
+      "Would drop the top-menu/breadcrumb-style extras (none specific beyond above)"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader never says the 'שחקו עם המספרים' panel repeats the graphic. They call it exactly what they need and only complain that it was closed, which is a different issue."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0710112
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1437224
+}

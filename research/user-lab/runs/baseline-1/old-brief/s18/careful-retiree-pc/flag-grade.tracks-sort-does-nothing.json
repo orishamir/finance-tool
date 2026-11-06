@@ -1,0 +1,74 @@
+{
+  "case": "tracks-sort-does-nothing",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"Sorting by management fee does nothing visible: under each company heading there is one track, so the order does not change.\",\"where\":\"the sorted table\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Fees are 2025 averages while the other numbers are from September 2026, so the dates don't match",
+      "The '123 מקור / מחושב / הזנתה' legend is confusing: what 'הזנתה' means and why the colours matter",
+      "The orange warning that the data hasn't been updated since September 2026 is worrying",
+      "Unclear what difference the 'קיבוץ לפי' toggle makes",
+      "Unclear whether the S&P 500 and flexible index tracks are also stock-index tracks, and whether a cheaper one is hiding there",
+      "The list is sorted by company size, not price, so the whole list has to be scanned",
+      "The grey company rows show 'מ־0.56% עד 0.56%' (the same number twice) and repeat the track row below",
+      "The meaning of מט\"ח in the rings is unclear: is 4% good or bad?",
+      "The returns column mostly says 'פחות מ־3 שנים', which isn't useful",
+      "The spelling 'ההיסכון' causes confusion",
+      "Unclear why a track managing 305 million shows 'פחות מ־3 שנים'",
+      "Unclear what the dotted underline under numbers means and whether they can be clicked",
+      "Unclear whether the reader will personally pay the average fee, or whether it can be negotiated or raised",
+      "No plain shekel example of the yearly cost",
+      "No way to sort by cheapest fee",
+      "No information on how to switch or join, or on costs and tax when moving money",
+      "Would drop the search box"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader never used the fee sort and says no fee sort exists. That differs from the person's problem, which is that the fee sort exists but changes nothing visible because each company heading has only one track; the reader's complaints about the company-size order and the repeated grey rows touch only the cause or the same area."
+      }
+    ],
+    "liked": [],
+    "usd": 0.05893520000000001
+  },
+  "b": {
+    "raised": [
+      "Fees are 2025 averages while other numbers are from September 2026: odd mix of dates",
+      "The '123 מקור / מחושב / הזנתה' legend is confusing ('הזנתה' unclear, colours unexplained)",
+      "Orange warning that the authority's data hasn't been updated since September 2026 is worrying",
+      "Unclear what the 'קיבוץ לפי: חברה / במה הכסף מושקע' toggle changes",
+      "Unsure whether the S&P 500 / flexible index tracks, which weren't in the list, are cheaper",
+      "List is sorted by company size, not price, so the whole list has to be scanned; there's no way to sort by cheapest fee",
+      "Grey company rows show 'מ־0.56% עד 0.56%', the same number twice, and repeat the row below",
+      "Coloured rings unclear: whether 4% מט\"ח is good or bad, and what מט\"ח means for my money",
+      "Return column is mostly 'פחות מ־3 שנים', so it's useless",
+      "Spelling 'ההיסכון' looks like a typo",
+      "Why הראל shows 'פחות מ־3 שנים' when it manages 305 million: is the track new?",
+      "Unclear what the dotted underline under numbers means and whether it can be clicked",
+      "Unclear whether I'd personally pay the 0.56% average, whether I can negotiate it, or whether it could go up",
+      "No plain shekel example of the annual fee",
+      "No information on how to switch or join, or on cost and tax when moving money",
+      "Would drop the search box",
+      "Grey company rows and rings would be the first to go (repetition/clutter)"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader complains that the list is ordered by company size and can't be sorted by fee, but never used the sort arrows, so they never say that sorting by fee leaves the order unchanged because each heading has only one track."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0666872
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.12562240000000002
+}

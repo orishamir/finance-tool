@@ -1,0 +1,117 @@
+{
+  "task": "s09",
+  "persona": "careful-retiree-pc",
+  "repeat": 3,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T12:16:22.030Z",
+  "structured": {
+    "answer": "I haven't decided anything. I'll ask my son and the bank. I understood that a deposit locks the money for a set time for interest, and that taking it out early costs a fine whose size the page doesn't give. But the example showing 70,000 in and 68,270 back, and the line \"אין בישראל ביטוח פיקדונות\", frightened me.",
+    "confidence": "unsure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Calculator, screens 1-2",
+        "why": "Big number 68,270 ₪ next to ההפקדות שלכם 70,000 ₪ looks like I lose money; 'בכסף של היום' / 'בשקלים של העתיד' not explained in words I understand"
+      },
+      {
+        "where": "Screen 1 under title",
+        "why": "'123 מקור 123 מחושב 123 הזנתה' – no idea what these are"
+      },
+      {
+        "where": "Screen 5 red box",
+        "why": "Says breaking early has a fine but 'האתר לא מחשב אותה' – so I still don't know what I give up"
+      }
+    ],
+    "used": [
+      "Title and line 'כסף שמפקידים בבנק לתקופה מוסכמת'",
+      "מה זה paragraph (קבועה/משתנה, money returns to עו\"ש or renews)",
+      "Calculator result 68,270 ₪ and 70,000 ₪",
+      "שווה לדעת list (15% tax, breaking, no insurance)",
+      "כסף נכנס ויוצא: משיכה בסוף התקופה",
+      "Tax cards",
+      "Red box about breaking early",
+      "סיכונים: אין ביטוח פיקדונות",
+      "'פיקדון לא צמוד לא מגן מעליית מחירים'"
+    ],
+    "skimmed": [
+      "Graph on screen 2",
+      "למה משתמשים בזה paragraph",
+      "כמה זה עולה table (דמי יציאה לפי התעריפון)",
+      "Paragraph on פטור ממס income thresholds",
+      "Start of glossary"
+    ],
+    "skipped": [
+      "Sliders and input boxes",
+      "הצגה כטבלה",
+      "הצגת החוקים והכללים links",
+      "הצגת כל הבדיקות",
+      "Screens 7-8",
+      "English codes TXI-03, BANK-06 etc.",
+      "Top menu (השקעה במדד, חברות ומסלולים)"
+    ],
+    "unsure_meaning": [
+      "123 מקור / מחושב / הזנתה",
+      "בכסף של היום / בשקלים של העתיד",
+      "קרנות כספיות ומק\"מ",
+      "מוצרי שוק הכסף",
+      "TXI-03, BANK-06, BANK-23, TXI OQ14",
+      "ריבית הריאלית",
+      "מזומן שקלי",
+      "חשבון במערכת סגורה",
+      "Which bank is the 'מקור' site"
+    ],
+    "not_found": [
+      "How big the fine is for breaking a deposit early",
+      "Plain comparison: is anything as safe as a deposit that pays more",
+      "Whether my bank is charging me too much",
+      "Who is behind the site 'מקור'"
+    ],
+    "findings": [
+      {
+        "what": "Example shows less money back (68,270) than deposited (70,000) with no plain sentence explaining why; frightening for a 'safe' product",
+        "where": "Calculator, screens 1-2"
+      },
+      {
+        "what": "'אין ביטוח פיקדונות... אין חוק שמחזיר לכם את הכסף' is alarming with no reassurance about big banks",
+        "where": "Screens 3 and 5"
+      },
+      {
+        "what": "Early-break fine not given, only 'תנאי של הבנק'",
+        "where": "Red box, screen 5"
+      },
+      {
+        "what": "Dark background with grey text is tiring and hard to read",
+        "where": "All screens"
+      },
+      {
+        "what": "Small grey explanatory text under the inputs",
+        "where": "Screen 2, right column"
+      },
+      {
+        "what": "English codes and unexplained '123 מקור' markers",
+        "where": "Screens 1, 3, 5"
+      },
+      {
+        "what": "Unknown site name 'מקור', not clearly official or a bank",
+        "where": "Header"
+      }
+    ]
+  },
+  "steps": 6,
+  "reads": 6,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 34193,
+    "turns": 8,
+    "usd": 0.1638506,
+    "input": 10,
+    "cacheWrite": 11815,
+    "cacheRead": 37353,
+    "output": 3091,
+    "model": "claude-opus-5-5"
+  }
+}

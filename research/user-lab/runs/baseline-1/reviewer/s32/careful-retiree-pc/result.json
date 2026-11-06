@@ -1,0 +1,123 @@
+{
+  "task": "s32",
+  "persona": "careful-retiree-pc",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T02:26:35.805Z",
+  "structured": {
+    "answer": "If I have to choose, the third one: it has fewer numbers in each row and leaves out the frightening \"מניות עד 120%\". But none of these is for me, and I would ask my son or the bank before doing anything.",
+    "confidence": "unsure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Title 'קרנות סל' and the fund names with S&P 500 and MSCI AC World",
+        "why": "Opens with funds and English letters, so I felt at once it was not for me and wanted to leave"
+      },
+      {
+        "where": "'חשיפה מרבית' column, 'מניות עד 120%'",
+        "why": "I don't understand how anything can be more than 100% of the money; it frightened me"
+      },
+      {
+        "where": "Second drawing, the line 'פרופיל 4A: מניות עד 120%, מט\"ח עד 10%'",
+        "why": "A long line mixing English letters and numbers; I lost my place in the middle"
+      },
+      {
+        "where": "Fees column, three numbers: קבוע, משתנה, נאמן",
+        "why": "Didn't know whether to add them or which one is the fee I pay"
+      },
+      {
+        "where": "'עוקבת אחרי מדד ת\"א-125'",
+        "why": "For me מדד is the price index; didn't understand what the fund follows"
+      }
+    ],
+    "used": [
+      "Title 'קרנות סל 4 קרנות'",
+      "Fund names in the right column",
+      "'עוקבת אחרי מדד ...' column",
+      "Fee numbers 0.35% קבוע, 0.1% משתנה, 0.008% נאמן",
+      "'חשיפה מרבית' column with 120% / 10%",
+      "Comparing how busy each of the three drawings is"
+    ],
+    "skimmed": [
+      "Top grey line 'רק הקרנות שהאתר אסף עליהן דוח...'",
+      "Bottom note about 'לא מחלקות' and dividend",
+      "Bottom note 'החשיפה המרבית היא התקרה...'",
+      "Fees rows of the third and fourth funds"
+    ],
+    "skipped": [
+      "'בדף הקרן במאיה' links",
+      "Small label tags: עסקת החלף, חשיפה לדולר, מס גם על שינויי המטבע, מחזיקה את המניות",
+      "Securities numbers (מספר נייר)",
+      "The arrows next to the index names"
+    ],
+    "unsure_meaning": [
+      "נאמן",
+      "משתנה (fee)",
+      "120%",
+      "מט\"ח עד 120%",
+      "4A / 4D",
+      "פרופיל 4A",
+      "עסקת החלף",
+      "S&P 500",
+      "MSCI AC World",
+      "מדד ת\"א-125 / ת\"א-90",
+      "מאיה",
+      "מספר נייר",
+      "לא מחלקות",
+      "חשיפה מרבית"
+    ],
+    "not_found": [
+      "Anything saying whether this is safe like a deposit",
+      "A comparison with deposit interest",
+      "A plain sentence saying what the total fee I would pay is",
+      "Who the company is, a bank name I know"
+    ],
+    "findings": [
+      {
+        "what": "'מניות עד 120%' looks like more than all my money and frightens me, with no plain explanation",
+        "where": "חשיפה מרבית column, drawings 1 and 2"
+      },
+      {
+        "what": "Page opens with funds and English letters (S&P, MSCI, 4A, 4D); I'd leave right away",
+        "where": "Top of every drawing, fund names"
+      },
+      {
+        "what": "Grey text on black background, hard to read even enlarged",
+        "where": "Column headings, top explanatory line, label tags"
+      },
+      {
+        "what": "Three fee numbers per fund with no total; I don't know which one I pay",
+        "where": "דמי ניהול column"
+      },
+      {
+        "what": "Long mixed line of English and numbers under the index name",
+        "where": "Drawing 2, 'פרופיל 4A: מניות עד 120%, מט\"ח עד 10%'"
+      },
+      {
+        "what": "Words I don't know with no explanation: נאמן, עסקת החלף, מאיה, לא מחלקות",
+        "where": "Fee rows, tags, links, bottom note"
+      },
+      {
+        "what": "The three drawings look almost the same; it's tiring to find the difference",
+        "where": "All three screens"
+      }
+    ]
+  },
+  "steps": 3,
+  "reads": 3,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 35521,
+    "turns": 5,
+    "usd": 0.19220059999999997,
+    "input": 6,
+    "cacheWrite": 15139,
+    "cacheRead": 16423,
+    "output": 3389,
+    "model": "claude-opus-5-5"
+  }
+}

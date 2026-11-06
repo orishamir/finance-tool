@@ -1,0 +1,70 @@
+{
+  "case": "study-r1-coins",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The coins add nothing a simple bar would not show better.\",\"where\":\"the coin drawing\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "The page doesn't say whether retiring at 67 changes the rules or allows tax-free withdrawal before 6 years",
+      "Everything rests on a fixed 7% a year return, which is risky at the reader's age",
+      "The subtitle says you can drag the years, but nothing in the pictures moved",
+      "The '+1,721 ₪' card was misread at first and had to be read twice",
+      "The fund names went past the reader",
+      "Option ב's steps confuse: +527 and +60,365 (vs 54,000 in the table) are unexplained and don't add up",
+      "'Every shekel becomes ₪3.70' feels like a misleading sales line",
+      "No explanation of why tax in the fund (13,974) is so much higher than in the securities account (594)",
+      "The legal ceiling ('עד תקרה בחוק') is never given",
+      "The company name and fund codes in brackets are unclear",
+      "Nothing on what happens if the market falls in the year the money is needed",
+      "Nothing on stopping or moving the money when changing jobs",
+      "Nothing on how to check what one's own employer pays",
+      "Would drop column chart ג because its useful numbers repeat elsewhere",
+      "Would drop the year 1–12 bar strips inside א"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader only says they looked at the coins without counting them and wanted to keep the coins (while dropping the bar strips), so they never say the coins add nothing a bar would show better."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0566752
+  },
+  "b": {
+    "raised": [
+      "Page doesn't say whether reaching retirement (67) changes the rules",
+      "Everything assumes a 7% yearly return, which is risky at age 61",
+      "Subtitle says you can drag the years, but nothing moved",
+      "The +1,721 card was confusing at first and had to be read twice",
+      "Fund names and codes went past the reader",
+      "Steps chart ב is confusing: +527 and +60,365 don't match the table and nothing explains them",
+      "The '3.70 ₪ per shekel' line feels like a misleading sales line",
+      "Doesn't understand why tax in the fund is much bigger than in the securities account",
+      "The legal ceiling ('עד תקרה בחוק') is not explained or given in shekels",
+      "Company name and fund codes in brackets not understood",
+      "No information on what happens if the market falls in the year the money is needed",
+      "No information on stopping or moving the money when changing jobs",
+      "No way to check what one's own employer pays",
+      "Column chart ג is redundant and would be dropped",
+      "Year 1–12 bar strips inside א would be dropped"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader only says they looked at the coins without counting them and wants to keep them, so they never say the coins add nothing that a bar would show better."
+      }
+    ],
+    "liked": [],
+    "usd": 0.050375199999999995
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.10705039999999999
+}

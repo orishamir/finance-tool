@@ -1,0 +1,36 @@
+{
+  "case": "general-track-exposure",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"In the guide list, 'general track' is listed among the exposures (kinds of investment), which does not make sense: it is a mix, not one kind.\",\"where\":\"the exposures group of the guide list\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings says the general track is wrongly grouped with the exposures; they talk about missing numbers, contrast, index cards, repeated text and so on."
+      }
+    ],
+    "liked": [],
+    "usd": 0.014867400000000001
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings say that 'general track' is wrongly listed as a kind of investment in the exposures group; findings 3 and 4 are about the index cards, not about how the group is sorted."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0150554
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0299228
+}

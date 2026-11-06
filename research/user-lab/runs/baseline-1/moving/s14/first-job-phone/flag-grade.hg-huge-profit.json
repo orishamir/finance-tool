@@ -1,0 +1,36 @@
+{
+  "case": "hg-huge-profit",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The graphic shows a very large profit figure with nothing explaining where it comes from.\",\"where\":\"the profit part of the graphic\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings says the big profit figure has no explanation of where it comes from; finding 2 is about two figures looking alike, and finding 6 is about notes being hard to read, not about a missing explanation."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0158154
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the findings says the big profit figure has nothing explaining where it comes from: finding 2 is about two numbers looking alike, and finding 6 is about notes on tax rate and cap being too small and grey to read."
+      }
+    ],
+    "liked": [],
+    "usd": 0.016403400000000002
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.032218800000000006
+}

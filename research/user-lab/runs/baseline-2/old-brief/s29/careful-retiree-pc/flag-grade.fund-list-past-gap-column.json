@@ -1,0 +1,94 @@
+{
+  "case": "fund-list-past-gap-column",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The fund list's column 'מול המדד' (each fund's past gap to its index) is not useful for choosing a fund, and the table does not show the information that matters for the choice.\",\"where\":\"the columns of the fund list\",\"kind\":\"taste\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Worried by the warning that at 0% or 10% return the order changes in 2 places",
+      "Page says nothing about whether Pesagot is safe or how hard it is to open an account there",
+      "Unsure whether own bank would give a better price if asked",
+      "Confused by the 'אינפלציה' button: unclear whether inflation is already included",
+      "'העלות אצלכם, לעומת הזוג השני' breakdown only half understood and had to be read twice",
+      "Line chart 'מה הכי משנה' doesn't help answer where to invest",
+      "Column chart repeats known information, and its +/- rows below were confusing",
+      "Did not understand the small-print sentence about foreign funds whose fee depends on number of shares",
+      "Had to scroll down to the colour key to understand the cost bar colours",
+      "Unclear why one fund's tracking figure shows '3 שנים' while others show 'שנה אחת'",
+      "Rank 10 missing from the visible account list (jumps from 9 to 11)",
+      "Line chart itself is less clear than the table below it",
+      "Did not understand '(4A)' and '(40)' in fund names",
+      "Unclear practical difference between 'קרן מחקה' and 'קרן סל' and whether monthly buying works the same",
+      "Did not understand the tag 'כמה דרכים יחד'",
+      "Did not understand 'העמלות זו על זו' in the colour key",
+      "Did not understand 'מחזיקה את המניות' or whether not holding shares is dangerous",
+      "Unclear whether dotted-underlined numbers are clickable",
+      "'הזוג הבא בתור' card doesn't say which pair it is",
+      "Unclear meaning of 'יש ספק אם נמכרת שם: וואן זירו, Interactive Brokers'",
+      "Wanted to see immediately which two places change in the order, not behind a 'פירוט' link",
+      "Page doesn't say how to actually start (opening the account, minimum amount, setting up monthly purchase)",
+      "Page doesn't say whether the ranking holds over a shorter period such as 5 years",
+      "No information on the cost of moving existing money to Pesagot",
+      "No explanation of why Meitav Trade and Excellence are so expensive",
+      "Nothing about risk or possible losses in a bad year",
+      "Would drop the tags and filters from the fund list, keeping only name, number, fee and 'לעומת הבחירה'",
+      "Would drop one of the two redundant account lists"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader actually used and understood the 'מול המדד' column and never says it is useless for choosing or that the table lacks key information; their trim suggestion is aimed at the tags and filters, not this column."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0833992
+  },
+  "b": {
+    "raised": [
+      "Worried that the ranking changes in 2 places at 0% or 10% return, and the page doesn't say which places (does Pesagot stay first?)",
+      "Nothing on whether Pesagot is safe or how hard it is to open an account and get started",
+      "Unsure whether their own bank would give a better price if asked",
+      "The 'אינפלציה' button is confusing: is inflation already included or not?",
+      "The 'העלות אצלכם, לעומת הזוג השני' breakdown was only half understood and had to be read twice",
+      "The 'מה הכי משנה' section and line chart don't help decide where to invest; would drop it first",
+      "The column chart repeats what's already known, and its rows with plus/minus signs are confusing; would drop it",
+      "Doesn't understand the small-print sentence about foreign funds whose fee schedule depends on the number of shares",
+      "Cost bar colours can only be read by scrolling down to the colour key",
+      "Fund list: unclear why one fund shows '3 שנים' and the others 'שנה אחת'",
+      "Fund list tags and the 'סננו לפי תווית' filter are not useful; would drop them",
+      "Account list skips rank 10 (jumps from 9 to 11)",
+      "The line chart itself is hard to read; the table below it is clearer",
+      "Doesn't understand '(4A)' and '(40)' in fund names, or whether one is riskier",
+      "Doesn't know the practical difference between 'קרן מחקה' and 'קרן סל', or whether the fund can be bought monthly like a share",
+      "Doesn't understand the tag 'כמה דרכים יחד'",
+      "Doesn't understand 'העמלות זו על זו' in the colour key",
+      "Doesn't understand 'מחזיקה את המניות', or whether not holding the shares is dangerous",
+      "Unclear whether the dotted-underlined numbers are clickable or hide an explanation",
+      "The 'הזוג הבא בתור' card doesn't say which pair is next",
+      "Unclear what 'יש ספק אם נמכרת שם' means for One Zero and Interactive Brokers",
+      "Page doesn't say whether the ranking holds over a shorter horizon such as 5 years",
+      "No information on the cost of moving existing money from the current bank to Pesagot",
+      "No explanation of why Meitav Trade and Excellence are so expensive, or whether a yearly lump sum would change that",
+      "Nothing about risk or possible losses in a bad year; everything assumes 7%",
+      "Two account lists are redundant; would drop one"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader says they used the 'מול המדד' column, and only asks why its period differs (1 vs 3 years). The fund-list cuts they suggest are about tags and filters, so no raised item says the column is useless for choosing or that the table lacks the deciding information."
+      }
+    ],
+    "liked": [],
+    "usd": 0.08933920000000001
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.17273840000000001
+}

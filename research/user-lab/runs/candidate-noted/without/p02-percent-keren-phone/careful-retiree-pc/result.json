@@ -1,0 +1,121 @@
+{
+  "task": "p02-percent-keren-phone",
+  "persona": "careful-retiree-pc",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "phone",
+  "startedAt": "2026-11-06T02:53:48.806Z",
+  "structured": {
+    "answer": "I understood that the money can be taken out tax-free after 6 years, and since I'm past retirement age, after 3 years. How much I'd have, I couldn't work out: the example wasn't mine (300 ₪ a month and 900 ₪ from the employer, invested in S&P 500), so I'll ask my son or the employer.",
+    "confidence": "unsure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Calculator result bars (screen 3-4)",
+        "why": "+54,000 then a red −13,974, and 50,719 with 29,768 going to tax; I couldn't tell what I'd actually get"
+      },
+      {
+        "where": "Example sentence 'קרן השתלמות במסלול מדד' and S&P500",
+        "why": "It's about shares and English letters, not my safe kind of saving, so I didn't trust the numbers for me"
+      },
+      {
+        "where": "Screen 6",
+        "why": "Tired after six screens of dark page and numbers; stopped there"
+      }
+    ],
+    "used": [
+      "Heading and subtitle 'חיסכון דרך מקום העבודה... אפשר למשוך בלי מס'",
+      "'אחרי 6 שנים מההפקדה הראשונה אפשר למשוך' and 'למי שהגיע לגיל הפרישה מספיקות 3 שנים'",
+      "'אפשר למשוך גם לפני 6 השנים, אבל אז משלמים מס'",
+      "Calculator boxes 2.5% / 7.5% / 7 / 0.54",
+      "'+54,000' and the sentence 'משיכה אחרי 5 שנים: ... 50,719 ₪ ... 29,768 ₪ למס הכנסה'",
+      "'עד 4 ימי עסקים'"
+    ],
+    "skimmed": [
+      "Grey explanation paragraphs under the calculator (inflation 2%, S&P500 track, 11 tracks, fees 0.48%-0.7%)",
+      "שווה לדעת section",
+      "מי מציע ומי מצטרף section"
+    ],
+    "skipped": [
+      "Investment track buttons (מסלול כללי, S&P 500, מזומן שקלי)",
+      "Bar chart by years",
+      "חוקים וכללים links and KH/PF tags",
+      "Company lists 'כל החברות'",
+      "Everything after screen 6"
+    ],
+    "unsure_meaning": [
+      "מסלול השקעה",
+      "S&P 500",
+      "מדד (as an investment)",
+      "אג\"ח ממשלתית צמודה / לא צמודה",
+      "מזומן שקלי",
+      "KH-19, KH-15, PF-18",
+      "חוקים וכללים · 10",
+      "dotted/dashed underlines on numbers",
+      "striped pink parts of the bars",
+      "−13,974"
+    ],
+    "not_found": [
+      "How much I would have with my own salary",
+      "A plain sentence saying the total amount I'd get",
+      "Whether there is a safe option like a deposit"
+    ],
+    "findings": [
+      {
+        "what": "Dark background with grey text; hard to read even enlarged",
+        "where": "Whole page, especially the grey notes under the calculator"
+      },
+      {
+        "what": "Red minus number −13,974 and pink stripes are frightening and not explained in plain words",
+        "where": "Calculator result bars, screen 3"
+      },
+      {
+        "what": "The example uses an S&P500 share track, so the numbers feel like gambling and not about me",
+        "where": "Screen 3-4 calculator example"
+      },
+      {
+        "what": "Too many numbers at once (50,719, 29,768, 15,794, 54,000, 8,487); I couldn't tell which is what I end up with",
+        "where": "Screen 4"
+      },
+      {
+        "what": "The calculator doesn't show my salary in a clear box on the screens I saw; I couldn't put in my own",
+        "where": "Calculator, screens 2-3"
+      },
+      {
+        "what": "Unfamiliar codes and tags like KH-19 and 'חוקים וכללים · 10'",
+        "where": "Screens 2, 5, 6"
+      }
+    ]
+  },
+  "steps": 6,
+  "reads": 6,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 35824,
+    "turns": 8,
+    "usd": 0.1686914,
+    "input": 8,
+    "cacheWrite": 11868,
+    "cacheRead": 26777,
+    "output": 3418,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "p02-percent-keren-phone",
+    "screenshots": 14,
+    "changes": [
+      {
+        "id": "pct-shown",
+        "type": "style",
+        "shots": 14,
+        "applied": 14,
+        "most": 1
+      }
+    ],
+    "neverShown": [],
+    "errors": []
+  }
+}

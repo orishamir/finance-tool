@@ -31,7 +31,7 @@
 
 /* Right to left throughout: use logical utilities (ms-, me-, ps-, pe-, inset-s-, inset-e-), never left/right.
    Tokens are in theme.css; how to use them is in docs/design-system.md. Component rules below follow
-   docs/design-spec.md; every colour is a role. */
+   it too; every colour is a role. */
 
 @layer base {
   *,

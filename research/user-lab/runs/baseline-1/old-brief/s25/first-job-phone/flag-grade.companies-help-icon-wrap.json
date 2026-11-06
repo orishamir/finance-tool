@@ -1,0 +1,91 @@
+{
+  "case": "companies-help-icon-wrap",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The help mark '?' in a column head drops onto its own line under the head's text and looks out of place.\",\"where\":\"the column heads with a '?' mark\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Doesn't know which pension type they have (מקיפה vs כללית) or what מקיפה means, so can't pick a row",
+      "Confused why the plain 'מניות' track beat the S&P 500 track; unsure whether to switch",
+      "Can't tell if the 0.5% fee is good because there's no comparison with other companies",
+      "Didn't understand the '123 מקור 123 מחושב' line",
+      "Product counts don't match: button says 105 but text says 96 tracks in 7 products",
+      "Doesn't know what קופת גמל להשקעה is",
+      "Doesn't understand the name 'תגמולים ואישית לפיצויים'",
+      "Note codes like 'PF-06' / 'PF-10' mean nothing to them",
+      "Confused by the index/ETF fund tables: fees קבועים/משתנים/נאמן, whether they're cheaper, how to buy one",
+      "Fund tags (צוברת, כמה דרכים יחד, מס גם על שינויי המטבע, 4A/4D) are unclear",
+      "Doesn't know why the yellow מט\"ח line matters to them",
+      "Can't tell what the dotted underlines do",
+      "Many rows show 'פחות מ־3 שנים', leaving nothing to compare",
+      "Doesn't understand מהחיסכון vs מההפקדה, or which one costs more",
+      "Doesn't understand אין vs 0% vs עוד לא דווח in the deposit fee line",
+      "Doesn't understand terms סחיר, משולב, גמיש, קיימות",
+      "Doesn't understand why the pension S&P track is only 73% stocks",
+      "Can't find which track they're in now",
+      "No returns after fees",
+      "No info on how to switch tracks",
+      "No figure for the direct expenses (הוצאות ישירות)",
+      "Would cut the 'מה כתוב במסמכים של הראל' sections",
+      "Would cut or move the index/ETF fund tables",
+      "Would cut unused products (מרכזית לפיצויים, תגמולים, חיסכון לכל ילד)",
+      "Would cut the קופה number column and the 123 מקור/מחושב line",
+      "Would cut the 'לא מצאתם שם?' search box"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The report never says anything about a '?' help mark in column heads wrapping onto its own line or looking out of place."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0613352
+  },
+  "b": {
+    "raised": [
+      "Doesn't know which pension type they have (קרן חדשה מקיפה vs כללית), so can't pick a row or tell what 'מקיפה' means",
+      "Confused that the plain 'מניות' track beat the S&P 500 track; unsure whether to switch",
+      "Can't tell if a 0.5% fee is good because the page shows only Harel, with no comparison to other companies",
+      "Didn't understand the '123 מקור 123 מחושב · לחצו על מספר' line",
+      "Numbers don't match: 'כל המוצרים 105' vs '96 מסלולים ב־7 מוצרים'",
+      "Doesn't know what קופת גמל להשקעה is",
+      "Doesn't understand the name 'תגמולים ואישית לפיצויים'",
+      "Codes 'PF-06' / 'PF-10' in the notes mean nothing to them",
+      "קרנות מחקות/סל tables are confusing: are they cheaper, how would you buy one, and what do the tags (צוברת, כמה דרכים יחד, 4A/4D, קבועים/משתנים/נאמן) mean",
+      "Doesn't understand why the yellow מט\"ח line matters",
+      "Can't tell what the dotted underlines do",
+      "Many rows say 'פחות מ־3 שנים', so there's nothing to compare",
+      "Doesn't understand מהחיסכון vs מההפקדה or which one costs more",
+      "Doesn't understand 'אין' vs '0%' vs 'עוד לא דווח' in the הפקדה line",
+      "Doesn't understand the terms סחיר, משולב, גמיש, קיימות",
+      "Confused why the pension S&P track is only 73% מניות",
+      "Can't find which track they're in right now",
+      "Returns after fees aren't shown",
+      "No information on how to switch tracks",
+      "The amount of the 'הוצאות ישירות' isn't given",
+      "Would cut the 'מה כתוב במסמכים של הראל' sections",
+      "Would cut the קרנות מחקות and קרנות סל tables, or move them somewhere separate",
+      "Would cut the products they'll never use (מרכזית לפיצויים, תגמולים, חיסכון לכל ילד)",
+      "Would cut the 'קופה' number column and the '123 מקור / מחושב' line",
+      "Would cut the 'לא מצאתם שם?' search box"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The report never mentions the '?' help mark in column heads or its wrapping onto a separate line."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0659952
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1273304
+}

@@ -1,0 +1,13 @@
+{
+ "id": "custom-index-change-answer",
+ "task": "s31",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "Beside the added index the link 'שינוי התשובה' does not say which answer it changes.",
+   "where": "the line 'מדד שהוספתם, שמור במכשיר הזה · שינוי התשובה'",
+   "kind": "general"
+  }
+ ],
+ "liked": []
+}

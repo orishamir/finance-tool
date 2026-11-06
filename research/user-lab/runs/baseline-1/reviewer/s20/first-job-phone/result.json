@@ -1,0 +1,114 @@
+{
+  "task": "s20",
+  "persona": "first-job-phone",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T02:21:20.895Z",
+  "structured": {
+    "answer": "Harel has loads of products (pension, השתלמות, גמל להשקעה, קרן חדשה, חיסכון לכל ילד, קרנות סל); I only saw the קופת גמל להשקעה table, where every track costs about 0.55% and the only ones with returns are like מניות 24.04%/3y and S&P 500 13.7%/3y. Most rows show no return at all, and I still don't know which product my money is actually in.",
+    "confidence": "unsure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Product buttons row (קופת גמל להשקעה selected)",
+        "why": "Wanted everything Harel offers, but the page shows just one product's table; I'd have to tap each button, and I don't know which product my savings are in"
+      },
+      {
+        "where": "Return column, 'פחות מ־3 שנים'",
+        "why": "Most rows have no number, only this text; unclear whether the track is new or the data is missing"
+      },
+      {
+        "where": "Return column, '24.04% 3 שנים'",
+        "why": "Not sure if that's per year or the total for 3 years"
+      },
+      {
+        "where": "Fee column",
+        "why": "All 0.54%–0.61%, so they look the same and fees don't help me choose"
+      }
+    ],
+    "used": [
+      "Heading הראל",
+      "Product buttons (קופת גמל להשקעה 16, קרן השתלמות 16, etc.)",
+      "Table: track names, דמי ניהול % from the החיסכון, 3/5-year returns",
+      "כסף מנוהל amounts",
+      "Fold headings קרנות מחקות 5, קרנות סל 4"
+    ],
+    "skimmed": [
+      "Grey intro line under the heading",
+      "במה הכסף מושקע filter buttons",
+      "Line '16 מסלולים · דמי ניהול מהחיסכון: מ־0.54% עד 0.61%'",
+      "מה כתוב במסמכים של הראל list headings"
+    ],
+    "skipped": [
+      "123 ממקור / מחושב / הזנה line",
+      "Grey text under the table (התקרה בחוק, הוצאות ישירות, PF-10)",
+      "Note that returns are before fees and tax",
+      "Folds קרנות מחקות, מרכזית לפיצויים, קרנות סל",
+      "Documents section folds",
+      "לא מצאתם שם search box",
+      "Footer"
+    ],
+    "unsure_meaning": [
+      "מט\"ח next to the coloured circles",
+      "The colours of the circles (guessed: share of money in shares vs other)",
+      "פחות מ־3 שנים",
+      "ההפקדה 0%",
+      "תשואה שנתית ממוצעת — per year or total?",
+      "מרכזית לפיצויים",
+      "The arrow icon next to the fund numbers (15283 etc.)"
+    ],
+    "not_found": [
+      "A single view of all Harel products with costs and returns together",
+      "Which product/track my own savings are in",
+      "Returns for most tracks",
+      "Fees in shekels"
+    ],
+    "findings": [
+      {
+        "what": "Only one product (קופת גמל להשקעה) is shown; to see 'everything Harel offers' you have to tap each product button separately",
+        "where": "Product buttons under כל המוצרים של הראל"
+      },
+      {
+        "what": "Most tracks show 'פחות מ־3 שנים' instead of any return number",
+        "where": "Return column in the table"
+      },
+      {
+        "what": "All fees look almost identical (0.54–0.61%), nothing to tell them apart, and only as a percent",
+        "where": "דמי ניהול column"
+      },
+      {
+        "what": "Unclear whether returns are per year or total",
+        "where": "Return column, e.g. 24.04% 3 שנים"
+      },
+      {
+        "what": "Coloured circles with מניות/מט\"ח percentages are not explained in plain words",
+        "where": "Middle column of the table"
+      },
+      {
+        "what": "Important notes (returns before fees, extra direct costs) are in small grey text I wouldn't read",
+        "where": "Below the table"
+      },
+      {
+        "what": "Default product is קופת גמל להשקעה, which sounds like something for older people, not for me",
+        "where": "Selected product button"
+      }
+    ]
+  },
+  "steps": 2,
+  "reads": 2,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 34401,
+    "turns": 4,
+    "usd": 0.1256732,
+    "input": 6,
+    "cacheWrite": 7482,
+    "cacheRead": 15666,
+    "output": 3133,
+    "model": "claude-opus-5-5"
+  }
+}

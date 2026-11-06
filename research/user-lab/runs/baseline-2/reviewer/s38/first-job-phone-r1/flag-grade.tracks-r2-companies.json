@@ -1,0 +1,36 @@
+{
+  "case": "tracks-r2-companies",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"Rows repeat their group's heading: each company row repeats the track kind in its name and again in a label, and under a heading 'עוקב מדד S&P 500' every row says it again.\",\"where\":\"the rows under each group heading\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings mention rows repeating their group heading's text. Finding 2 is about grouping by company burying rows and causing scrolling, and finding 1 is about whole tables being near-identical, not about labels repeated inside rows."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0156034
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings mention rows repeating the track kind or their group heading; finding 2 covers the same grouped rows but complains about scrolling and the S&P row getting buried, not about repeated labels."
+      }
+    ],
+    "liked": [],
+    "usd": 0.015403400000000001
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0310068
+}

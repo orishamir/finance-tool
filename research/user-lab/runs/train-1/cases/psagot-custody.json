@@ -1,0 +1,14 @@
+{
+ "id": "psagot-custody",
+ "task": "t41",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "Psagot is ranked first and presented as charging no custody fee, yet a 0.15% fee appears for it.",
+   "where": "Psagot's row and its fee breakdown",
+   "kind": "general",
+   "outside": false
+  }
+ ],
+ "liked": []
+}

@@ -1,0 +1,36 @@
+{
+  "case": "hg-huge-profit",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The graphic shows a very large profit figure with nothing explaining where it comes from.\",\"where\":\"the profit part of the graphic\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "No finding says the large profit figure is unexplained: finding 1 is about the tax minus, finding 3 is about the S&P500 wording and risk, and finding 4 is about where the labels sit, so none says the profit number lacks an explanation of where it comes from."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0201194
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings says the large profit figure lacks an explanation of where it comes from. Finding 1 is about the confusing tax minus, finding 3 about the unexplained S&P500 label, and finding 4 about where the numbers sit, so none of them names this problem."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0188234
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0389428
+}

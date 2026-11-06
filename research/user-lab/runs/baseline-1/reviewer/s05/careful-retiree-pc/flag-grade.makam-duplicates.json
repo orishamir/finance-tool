@@ -1,0 +1,36 @@
+{
+  "case": "makam-duplicates",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The guide list still offers makam as separate guide pages (one per way of holding it), though they describe one thing.\",\"where\":\"the makam entries in the guide list\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings says the makam guide is split into separate pages for each way of holding it; finding 7 only says the grid is busy with too many equal cards, which is a different complaint."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0151514
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings says makam appears as several separate guide pages that describe the same thing. Finding 7 says the grid has too many equally weighted cards, but that is about the screen feeling busy, not about duplicate makam entries."
+      }
+    ],
+    "liked": [],
+    "usd": 0.015547400000000003
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.030698800000000005
+}

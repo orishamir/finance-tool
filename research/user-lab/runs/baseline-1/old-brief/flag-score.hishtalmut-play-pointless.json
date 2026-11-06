@@ -1,0 +1,63 @@
+{
+  "case": "hishtalmut-play-pointless",
+  "sessions": 2,
+  "perKey": {
+    "k": {
+      "kind": "general",
+      "caught": 2,
+      "caughtIn10": 2,
+      "of": 2,
+      "byPersona": {
+        "careful-retiree-pc": {
+          "caught": 1,
+          "of": 1,
+          "ranks": [
+            7
+          ]
+        },
+        "first-job-phone": {
+          "caught": 1,
+          "of": 1,
+          "ranks": [
+            6
+          ]
+        }
+      },
+      "graderAgreement": 1
+    }
+  },
+  "againstLiked": {},
+  "usd": 0.3159928,
+  "rows": [
+    {
+      "task": "s13",
+      "session": "careful-retiree-pc",
+      "persona": "careful-retiree-pc",
+      "mode": "free text",
+      "raised": [
+        21,
+        22
+      ],
+      "ranks": {
+        "k": 7
+      },
+      "against": {},
+      "usd": 0.15331840000000002
+    },
+    {
+      "task": "s13",
+      "session": "first-job-phone",
+      "persona": "first-job-phone",
+      "mode": "free text",
+      "raised": [
+        25,
+        24
+      ],
+      "ranks": {
+        "k": 6
+      },
+      "against": {},
+      "usd": 0.1626744
+    }
+  ]
+}

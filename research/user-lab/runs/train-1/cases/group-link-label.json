@@ -1,0 +1,14 @@
+{
+ "id": "group-link-label",
+ "task": "t48",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "Under each group price the link 'חשבון במחירים האלה' does not say what it does.",
+   "where": "the links under the group-price rows",
+   "kind": "general",
+   "outside": false
+  }
+ ],
+ "liked": []
+}

@@ -1,0 +1,124 @@
+{
+  "task": "s21",
+  "persona": "careful-retiree-pc",
+  "repeat": 3,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T12:32:19.926Z",
+  "structured": {
+    "answer": "I'll call you or the bank before doing anything. I saw nothing at Harel I could call as safe as a deposit: the fee is about half a percent a year (0.54%–0.61%), there are more costs on top that aren't shown, the bond track has no result to show, and the high numbers are for shares.",
+    "confidence": "unsure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "First screen, row of track buttons",
+        "why": "English 'S&P 500' and words like 'עוקב מדד' made me feel the page was not for me; almost left"
+      },
+      {
+        "where": "Main table (screen 2)",
+        "why": "Too many numbers and rings in two close colours; couldn't tell what is safe"
+      },
+      {
+        "where": "אג\"ח סחיר row",
+        "why": "The one safe thing I know showed no return, only 'פחות מ־3 שנים'"
+      },
+      {
+        "where": "Return column",
+        "why": "Not sure whether '3 שנים 24.04%' means per year or in total"
+      }
+    ],
+    "used": [
+      "Title 'הראל' and date line",
+      "Product buttons with 'קופת גמל להשקעה' selected",
+      "Fee range line '0.54% עד 0.61%'",
+      "Table rows מניות, אג\"ח סחיר, כספי (שקלי)",
+      "Fee column 'מהחיסכון'",
+      "Note under table about past returns before fees and tax",
+      "Grey line about legal maximum and direct expenses"
+    ],
+    "skimmed": [
+      "Most table rows (עוקב מדד, גמיש, קיימות, הלכה)",
+      "Exposure rings and percentages",
+      "Fund size column (מיליון/מיליארד)",
+      "Bottom list of document sections"
+    ],
+    "skipped": [
+      "Folded sections קרנות מחקות, מרכזית לפיצויים, קרנות סל",
+      "מה כתוב במסמכים של הראל sections",
+      "Search box 'לא מצאתם שם?'",
+      "Footer links",
+      "Other products tabs (קרן השתלמות, חיסכון לכל ילד)"
+    ],
+    "unsure_meaning": [
+      "S&P 500",
+      "עוקב מדד",
+      "קופה numbers (15283 etc.)",
+      "חשיפה למניות ולמט\"ח",
+      "כספי (שקלי)",
+      "גמיש",
+      "קיימות",
+      "פחות מ־3 שנים",
+      "PF-10",
+      "הוצאות ישירות",
+      "קרנות מחקות / קרנות סל",
+      "green vs yellow in the rings",
+      "whether returns are per year or total"
+    ],
+    "not_found": [
+      "Anything about deposits or fixed interest",
+      "A plain sentence saying which track is safe",
+      "A return for the bond track",
+      "The total cost including the direct expenses"
+    ],
+    "findings": [
+      {
+        "what": "Opens with funds and English letters (S&P 500); nothing about safe saving, so it feels not for me",
+        "where": "Screen 1, track buttons"
+      },
+      {
+        "what": "Safe-sounding bond track shows no return, only 'פחות מ־3 שנים'",
+        "where": "Screen 2, אג\"ח סחיר row"
+      },
+      {
+        "what": "Extra costs ('הוצאות ישירות') mentioned but not shown, in small grey text",
+        "where": "Screen 3, under the table"
+      },
+      {
+        "what": "Very busy table, many numbers on a dark background; makes me anxious",
+        "where": "Screen 2"
+      },
+      {
+        "what": "Big '24.04%' for shares stands out and could tempt someone, but it's shares",
+        "where": "Screen 2, מניות row"
+      },
+      {
+        "what": "Ring colours green and yellow are hard to tell apart",
+        "where": "Screens 2–3, exposure column"
+      },
+      {
+        "what": "Unclear whether returns are per year or total",
+        "where": "Return column header"
+      },
+      {
+        "what": "Site name 'מקור' unknown to me; not sure who is behind it",
+        "where": "Header and footer"
+      }
+    ]
+  },
+  "steps": 4,
+  "reads": 4,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 38214,
+    "turns": 6,
+    "usd": 0.1340596,
+    "input": 10,
+    "cacheWrite": 8009,
+    "cacheRead": 31538,
+    "output": 3182,
+    "model": "claude-opus-5-5"
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "named": false,
+  "position": 0,
+  "why": "Finding 1 complains that \"the same names repeat at every company.\" That means track names showing up again across different companies. It doesn't say the company name is printed under each track even though the group heading already shows it. None of the other findings are about this repetition either.",
+  "usd": 0.0177
+}

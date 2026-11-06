@@ -1,0 +1,14 @@
+{
+ "id": "indices-13-unpriced",
+ "task": "t30",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "The page says 13 accounts are not computed with the chosen fund and lists them, leaving much of the market out of the comparison.",
+   "where": "the note listing the accounts not computed",
+   "kind": "general",
+   "outside": false
+  }
+ ],
+ "liked": []
+}

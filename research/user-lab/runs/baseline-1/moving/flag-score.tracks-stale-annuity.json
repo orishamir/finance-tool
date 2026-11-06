@@ -1,0 +1,57 @@
+{
+  "case": "tracks-stale-annuity",
+  "sessions": 2,
+  "perKey": {
+    "k": {
+      "kind": "general",
+      "caught": 1,
+      "caughtIn10": 1,
+      "of": 2,
+      "byPersona": {
+        "careful-retiree-pc": {
+          "caught": 1,
+          "of": 1,
+          "ranks": [
+            2
+          ]
+        },
+        "first-job-phone": {
+          "caught": 0,
+          "of": 1,
+          "ranks": [
+            0
+          ]
+        }
+      },
+      "graderAgreement": 1
+    }
+  },
+  "againstLiked": {},
+  "usd": 0.0572376,
+  "rows": [
+    {
+      "task": "s19",
+      "session": "careful-retiree-pc",
+      "persona": "careful-retiree-pc",
+      "mode": "findings",
+      "raised": null,
+      "ranks": {
+        "k": 2
+      },
+      "against": {},
+      "usd": 0.032514799999999996
+    },
+    {
+      "task": "s19",
+      "session": "first-job-phone",
+      "persona": "first-job-phone",
+      "mode": "findings",
+      "raised": null,
+      "ranks": {
+        "k": 0
+      },
+      "against": {},
+      "usd": 0.024722800000000003
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "id": "p14-dead-harel-pc",
+  "about": "For the lab only; never reaches a session. Planted problem, kind p14 (A control that changes nothing visible): see research/user-lab/planted.md.",
+  "purpose": "plant",
+  "pages": [
+    "/finance-tool/companies/512267592"
+  ],
+  "device": "pc",
+  "instance": {
+    "kind": "p14",
+    "mode": "page",
+    "url": "https://orishamir.github.io/finance-tool/companies/512267592",
+    "device": "pc",
+    "steps": [
+      [
+        "click",
+        "קופת גמל להשקעה"
+      ]
+    ],
+    "task": "harel",
+    "control": "planted/control-harel-pc",
+    "split": "score"
+  },
+  "plants": [
+    {
+      "id": "p14",
+      "kind": "general",
+      "problem": "A filter of what the money is invested in offers a chip for each kind, and every chip holds exactly one track, so filtering by it is no different from reading the list.",
+      "where": "the filter row under the product choice on the company page",
+      "counts": "A finding that the filter is pointless because every option holds one track (all the counts are 1).",
+      "notCounts": "Not understanding what the kinds mean."
+    }
+  ],
+  "changes": [
+    {
+      "id": "dead",
+      "type": "insert",
+      "at": {
+        "text": "כל המוצרים",
+        "closest": "[role=group]",
+        "up": 1
+      },
+      "position": "afterend",
+      "html": "<div class=\"flex flex-col gap-1.5\"><span class=\"text-sm font-medium\">במה הכסף מושקע</span><div role=\"group\" class=\"flex flex-wrap gap-2\"><button type=\"button\" aria-pressed=\"true\" class=\"min-h-target inline-flex items-center gap-1.5 px-3 rounded-md text-sm whitespace-nowrap bg-primary text-primary-foreground\">הכל<bdi dir=\"ltr\" class=\"inline-block min-w-[3.5ch] text-end tabular-nums opacity-80\">16</bdi></button><button type=\"button\" aria-pressed=\"false\" class=\"min-h-target inline-flex items-center gap-1.5 px-3 rounded-md text-sm whitespace-nowrap bg-secondary text-secondary-foreground hover:bg-accent\">כללי<bdi dir=\"ltr\" class=\"inline-block min-w-[3.5ch] text-end tabular-nums opacity-80\">1</bdi></button><button type=\"button\" aria-pressed=\"false\" class=\"min-h-target inline-flex items-center gap-1.5 px-3 rounded-md text-sm whitespace-nowrap bg-secondary text-secondary-foreground hover:bg-accent\">מניות<bdi dir=\"ltr\" class=\"inline-block min-w-[3.5ch] text-end tabular-nums opacity-80\">1</bdi></button><button type=\"button\" aria-pressed=\"false\" class=\"min-h-target inline-flex items-center gap-1.5 px-3 rounded-md text-sm whitespace-nowrap bg-secondary text-secondary-foreground hover:bg-accent\">מניות סחיר<bdi dir=\"ltr\" class=\"inline-block min-w-[3.5ch] text-end tabular-nums opacity-80\">1</bdi></button><button type=\"button\" aria-pressed=\"false\" class=\"min-h-target inline-flex items-center gap-1.5 px-3 rounded-md text-sm whitespace-nowrap bg-secondary text-secondary-foreground hover:bg-accent\">משולב סחיר<bdi dir=\"ltr\" class=\"inline-block min-w-[3.5ch] text-end tabular-nums opacity-80\">1</bdi></button><button type=\"button\" aria-pressed=\"false\" class=\"min-h-target inline-flex items-center gap-1.5 px-3 rounded-md text-sm whitespace-nowrap bg-secondary text-secondary-foreground hover:bg-accent\">עוקב מדד S&P 500<bdi dir=\"ltr\" class=\"inline-block min-w-[3.5ch] text-end tabular-nums opacity-80\">1</bdi></button><button type=\"button\" aria-pressed=\"false\" class=\"min-h-target inline-flex items-center gap-1.5 px-3 rounded-md text-sm whitespace-nowrap bg-secondary text-secondary-foreground hover:bg-accent\">עוקב מדדי מניות<bdi dir=\"ltr\" class=\"inline-block min-w-[3.5ch] text-end tabular-nums opacity-80\">1</bdi></button><button type=\"button\" aria-pressed=\"false\" class=\"min-h-target inline-flex items-center gap-1.5 px-3 rounded-md text-sm whitespace-nowrap bg-secondary text-secondary-foreground hover:bg-accent\">עוקב מדדים - גמיש<bdi dir=\"ltr\" class=\"inline-block min-w-[3.5ch] text-end tabular-nums opacity-80\">1</bdi></button><button type=\"button\" aria-pressed=\"false\" class=\"min-h-target inline-flex items-center gap-1.5 px-3 rounded-md text-sm whitespace-nowrap bg-secondary text-secondary-foreground hover:bg-accent\">עוקב מדדי אג\"ח<bdi dir=\"ltr\" class=\"inline-block min-w-[3.5ch] text-end tabular-nums opacity-80\">1</bdi></button><button type=\"button\" aria-pressed=\"false\" class=\"min-h-target inline-flex items-center gap-1.5 px-3 rounded-md text-sm whitespace-nowrap bg-secondary text-secondary-foreground hover:bg-accent\">אג\"ח סחיר<bdi dir=\"ltr\" class=\"inline-block min-w-[3.5ch] text-end tabular-nums opacity-80\">1</bdi></button><button type=\"button\" aria-pressed=\"false\" class=\"min-h-target inline-flex items-center gap-1.5 px-3 rounded-md text-sm whitespace-nowrap bg-secondary text-secondary-foreground hover:bg-accent\">אשראי ואג\"ח<bdi dir=\"ltr\" class=\"inline-block min-w-[3.5ch] text-end tabular-nums opacity-80\">1</bdi></button><button type=\"button\" aria-pressed=\"false\" class=\"min-h-target inline-flex items-center gap-1.5 px-3 rounded-md text-sm whitespace-nowrap bg-secondary text-secondary-foreground hover:bg-accent\">כספי (שקלי)<bdi dir=\"ltr\" class=\"inline-block min-w-[3.5ch] text-end tabular-nums opacity-80\">1</bdi></button><button type=\"button\" aria-pressed=\"false\" class=\"min-h-target inline-flex items-center gap-1.5 px-3 rounded-md text-sm whitespace-nowrap bg-secondary text-secondary-foreground hover:bg-accent\">קיימות<bdi dir=\"ltr\" class=\"inline-block min-w-[3.5ch] text-end tabular-nums opacity-80\">1</bdi></button><button type=\"button\" aria-pressed=\"false\" class=\"min-h-target inline-flex items-center gap-1.5 px-3 rounded-md text-sm whitespace-nowrap bg-secondary text-secondary-foreground hover:bg-accent\">הלכה<bdi dir=\"ltr\" class=\"inline-block min-w-[3.5ch] text-end tabular-nums opacity-80\">1</bdi></button></div></div>"
+    }
+  ]
+}

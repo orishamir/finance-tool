@@ -1,0 +1,136 @@
+{
+  "task": "p05-repeat-ta125-phone",
+  "persona": "careful-retiree-pc",
+  "repeat": 2,
+  "mode": "shots",
+  "device": "phone",
+  "startedAt": "2026-11-06T16:03:43.692Z",
+  "structured": {
+    "answer": "The page says to open an account at Psagot (\"פסגות\") and buy \"אי.בי.אי. מחקה ת\"א 125 (4A)\", ending with 86,045 ₪ after 10 years. That is for the page's own amounts (10,000 ₪ now and 500 ₪ a month), and a minus sign next to the fund worried me, so I would ask my son before doing anything.",
+    "confidence": "unsure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Top of page, the buttons for choosing what to follow",
+        "why": "English letters (MSCI World, S&P 500) at the very start; I almost left"
+      },
+      {
+        "where": "The boxes for today's amount and the monthly amount",
+        "why": "The numbers 10,000 and 500 were already filled in; I didn't know if they were mine, and I avoid sliders"
+      },
+      {
+        "where": "Box for the next option with '-1,030 ₪', and the fund row with '-0.04%'",
+        "why": "Minus signs made me think of losing money, like the fund that fell years ago"
+      },
+      {
+        "where": "Cost breakdown: account 18 ₪ more, fund 1,390 ₪ less, tax 342 ₪ more",
+        "why": "I couldn't tell what is more and what is less, or for whom"
+      }
+    ],
+    "used": [
+      "The headline 'איפה ואיך הכי זול להשקיע במדד'",
+      "The chosen button 'ת\"א-125' and the line about Israeli funds in shekels",
+      "'הפקדתם 70,000 ₪'",
+      "The box marked 'הבחירה שלכם · הזול' with 86,045 ₪",
+      "The list of banks in order with their final amounts",
+      "The fund card 'אי.בי.אי. מחקה ת\"א 125 (4A)', fees 0.1%"
+    ],
+    "skimmed": [
+      "The coloured bar of costs and its legend",
+      "Notes saying 'לא בחישוב', a different price for soldiers or students",
+      "The list of all the funds following ת\"א-125"
+    ],
+    "skipped": [
+      "The sliders",
+      "The little arrows that open each row",
+      "Everything after screen 7",
+      "The 'אינפלציה' button",
+      "The links 'התעריפון' and 'קיבלתם מחיר אחר?'"
+    ],
+    "unsure_meaning": [
+      "MSCI World, MSCI AC World, S&P 500",
+      "מדד (I know it as the price index from the news)",
+      "דמי משמרת",
+      "נאמן 0.025%",
+      "קרן מחקה, תכלית סל",
+      "(4A)",
+      "העמלות זו על זו",
+      "בכסף של היום",
+      "-0.04% בשנה · שנה אחת",
+      "-1,030 ₪ לעומת הבחירה שלכם",
+      "The dotted purple lines under the numbers",
+      "The bar's colours, which look alike (orange and yellow)"
+    ],
+    "not_found": [
+      "Whether any of this is as safe as a deposit",
+      "A place clearly asking for my own amount, rather than a number already filled in",
+      "A plain sentence saying whether the fund can lose money",
+      "My own bank's full name and terms (I didn't open the rows)"
+    ],
+    "findings": [
+      {
+        "what": "The page opens with English letters and words like מדד and קרן; someone like me feels it is not for her",
+        "where": "Screen 1, top"
+      },
+      {
+        "what": "The amounts are already filled in (10,000 and 500), so the big result isn't for my money, and nothing says so plainly",
+        "where": "Screens 1-2"
+      },
+      {
+        "what": "Minus signs next to the recommended fund and the second option are frightening and not explained",
+        "where": "Screen 2 (-1,030 ₪), screen 7 (-0.04%)"
+      },
+      {
+        "what": "The company at the top (Psagot) is not a bank I know; the familiar banks come lower",
+        "where": "Screen 4"
+      },
+      {
+        "what": "Small grey text on a black background is hard to read",
+        "where": "All screens, especially the legend and 'הפס נחתך'"
+      },
+      {
+        "what": "'בכסף של היום' and the inflation button aren't explained, so I don't know what the 86,045 ₪ means",
+        "where": "Screen 2"
+      },
+      {
+        "what": "The cost bar and its colours are hard to tell apart and to understand",
+        "where": "Screens 2-3"
+      },
+      {
+        "what": "A long list full of numbers and 'not in the calculation' notes is tiring",
+        "where": "Screens 4-6"
+      }
+    ]
+  },
+  "steps": 7,
+  "reads": 7,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 41289,
+    "turns": 9,
+    "usd": 0.1906274,
+    "input": 10,
+    "cacheWrite": 13326,
+    "cacheRead": 42797,
+    "output": 3771,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "p05-repeat-ta125-phone",
+    "screenshots": 14,
+    "changes": [
+      {
+        "id": "repeat",
+        "type": "insert",
+        "shots": 14,
+        "applied": 14,
+        "most": 6
+      }
+    ],
+    "neverShown": [],
+    "errors": []
+  }
+}

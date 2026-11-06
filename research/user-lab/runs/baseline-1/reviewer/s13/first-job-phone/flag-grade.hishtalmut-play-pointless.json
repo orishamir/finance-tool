@@ -1,0 +1,36 @@
+{
+  "case": "hishtalmut-play-pointless",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The 'שחקו עם המספרים' panel repeats what the graphic above already lets the reader do.\",\"where\":\"the 'שחקו עם המספרים' panel\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings say the 'שחקו עם המספרים' panel repeats what the graphic already lets you do; findings 1 and 5 are about the waterfall chart's example values and colours, not about redundancy."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0142954
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings say the 'שחקו עם המספרים' panel repeats what the graphic above already offers; findings 1 and 5 are about the waterfall chart's example values and colours, not about redundancy."
+      }
+    ],
+    "liked": [],
+    "usd": 0.014227400000000001
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0285228
+}

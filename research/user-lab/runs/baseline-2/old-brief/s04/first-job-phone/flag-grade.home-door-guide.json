@@ -1,0 +1,81 @@
+{
+  "case": "home-door-guide",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The home link 'להבין סוג של חיסכון' promises help with one kind of saving but opens only the general list of guides.\",\"where\":\"the link on the home page and where it leads\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Low confidence (3/10): doesn't know where to put S&P money, what it costs, or whether it suits them",
+      "Home form terms 'קרן השתלמות נזילה' and 'פיקדון שמסתיים' meant nothing to them",
+      "'מאיפה להתחיל' is confusing: does 'קרן חדשה מקיפה' mean they already have it or need to act?",
+      "Didn't understand what 'תקרה שנתית' means for them",
+      "'תגמולים ואישית לפיצויים' lost them completely",
+      "Doesn't know why to pick Tel Aviv indices, MSCI or Nasdaq over S&P",
+      "Wished every card had a 'בשפה פשוטה' line",
+      "'מדד' means different things (price index vs stock index), which is confusing",
+      "Jargon in investment cards: אג\"ח, מק\"מ, קופון, פדיון, סחיר, market-cap weighting",
+      "Jargon in the guide: מסלול, נזילה",
+      "Unclear whether 'invested in dollars' is a risk for someone earning shekels",
+      "Unclear who runs the fund that tracks the index and how to choose one",
+      "מק\"מ appears in two sections; unclear whether it is saving or investing",
+      "Couldn't find S&P 500 returns per year and how much they could lose",
+      "Couldn't find fees",
+      "Couldn't find actual steps to start or the minimum amount",
+      "Couldn't find whether S&P inside קרן השתלמות beats their own brokerage account",
+      "Couldn't find whether to keep a safety cushion first, and how big",
+      "Couldn't find whether they already have these through their job, or how to check",
+      "Would drop the home 'מה השאלה שלכם?' form and the 'שאלות שכולם שואלים' box",
+      "Would drop bond cards, extra indices, 'בניהול אישי' cards, the duplicate מק\"מ card and 'מה האתר עוד לא מכסה'"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader clicked the link, landed on the general guide page and scrolled to the S&P card without complaining that the link promised help with one kind of saving but led to the general list."
+      }
+    ],
+    "liked": [],
+    "usd": 0.06365520000000001
+  },
+  "b": {
+    "raised": [
+      "Low confidence (3/10): doesn't know where to put the money, what it costs, or whether it suits them",
+      "Home form terms 'קרן השתלמות נזילה' and 'פיקדון שמסתיים' meant nothing to them",
+      "'מאיפה להתחיל' confusing: does 'קרן חדשה מקיפה' mean they already have it or need to act?",
+      "Didn't understand what 'תקרה שנתית' means for them",
+      "'תגמולים ואישית לפיצויים' in the retirement section lost them completely",
+      "Doesn't know why they'd pick the Tel Aviv, MSCI or Nasdaq indices over the S&P 500",
+      "'מדד' means two different things (price index vs stock index), which is confusing",
+      "Jargon in the investment cards (אג\"ח, מק\"מ, קופון, פדיון, סחיר, market-cap weighting) not understood",
+      "Guide terms like 'מסלול' and 'נזילה' not understood",
+      "Unclear whether investing in dollars is a risk for someone who earns shekels",
+      "Unclear who runs the 'fund that follows it' and how to choose one",
+      "מק\"מ appears in two sections, so it's unclear if it's saving or investing",
+      "Couldn't find past returns or possible losses for the S&P 500",
+      "Couldn't find fees",
+      "Couldn't find the actual steps to start or the minimum amount",
+      "Couldn't find whether S&P 500 in a קרן השתלמות beats their own stock-market account",
+      "Couldn't find whether to build a safety cushion first, or how big it should be",
+      "Couldn't find how to check whether they already have some of these through work",
+      "Would drop the home question form and the common-questions box",
+      "Would drop the bond cards, extra indices, self-managed cards, duplicate מק\"מ card and the 'not covered yet' section"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader clicked 'להבין סוג של חיסכון', landed on the general guide page and scrolled to the S&P card without complaining, so the report never says the link promised one kind of saving but opened only the general list."
+      }
+    ],
+    "liked": [],
+    "usd": 0.058835200000000004
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.12249040000000001
+}

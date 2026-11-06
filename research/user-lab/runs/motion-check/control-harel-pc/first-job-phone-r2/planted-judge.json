@@ -1,0 +1,41 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "Most tracks show no return, only 'פחות מ־3 שנים' (less than 3 years), so the reader can't compare and ends up picking by the one familiar name.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "Fees appear only as small, nearly identical percentages, so the reader can't sense the real cost.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "The fee header shows two fee types (from savings / from deposit) with no plain explanation, so the main cost figure is hard to understand.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "There is no next step or sign-up guidance below the table.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "Jargon such as מט\"ח (foreign currency) and חשיפה (exposure) in the exposure charts.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 6,
+      "summary": "The 'הלכה יהודית' (Jewish law) tag and the 'PF-10' code are not explained.",
+      "serious": false,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.023658799999999997
+}

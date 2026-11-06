@@ -1,0 +1,112 @@
+{
+  "task": "s34",
+  "persona": "first-job-phone",
+  "repeat": 2,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T12:47:10.849Z",
+  "structured": {
+    "answer": "I'd pick option A, the coins: 66,513 ₪ against 19,595 ₪ and \"every shekel becomes 3.70 ₪ in the fund vs 1.09 ₪\" made it click that the keren is worth it because of the employer's 900 ₪ a month.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Top card \"+1,721 ₪\" (הכסף שלכם לבד, בלי המעסיק)",
+        "why": "Didn't get what this small number is for next to the big 66K; it looks like the fund only gives 1,721 more"
+      },
+      {
+        "where": "Option ב, \"+527 ₪ אותו כסף עובר לקרן\" with a thin green line",
+        "why": "No idea what this step means"
+      },
+      {
+        "where": "Coins in option א, pink striped coins",
+        "why": "Had to look at the table below to find out they are tax"
+      },
+      {
+        "where": "Option ג stacked columns with a white line",
+        "why": "Needed the legend; guessed the white line is the securities account"
+      }
+    ],
+    "used": [
+      "Heading and the three top cards (+900 ₪ בחודש, +32,225 ₪, +1,721 ₪)",
+      "Option א coins: 66,513 ₪ vs 19,595 ₪ נשאר בידיים",
+      "Line \"כל שקל שהפקדתם נהיה 3.70 ₪ בקרן ו-1.09 ₪\"",
+      "Option א table rows הפקדות המעסיק 54,000 vs אין, מס במשיכה",
+      "Year 6 version: 98,738 vs 23,973",
+      "\"מומלץ\" tag on option א",
+      "Bottom numbers of option ג"
+    ],
+    "skimmed": [
+      "Option ב waterfall chart and its number row",
+      "Option ג stacked columns and legend",
+      "Small bar charts with year selector above each option",
+      "Descriptions under each option heading"
+    ],
+    "skipped": [
+      "Grey/orange example text with assumptions and ⚠",
+      "Small text about 19 מסלולים and 14 תעריפים",
+      "\"מטבע אחד הוא 1,000 ₪\" note",
+      "שכירים/עצמאים tab",
+      "Note under waterfall chart"
+    ],
+    "unsure_meaning": [
+      "רווח אחרי דמי ניהול",
+      "מס במשיכה −13,974 ₪ (is that a loss?)",
+      "+527 ₪ אותו כסף עובר לקרן",
+      "striped pink coins/blocks",
+      "white line in option ג",
+      "+1,721 ₪ card",
+      "מסלול מיטב השתלמות עוקב מדד"
+    ],
+    "not_found": [
+      "What the fee costs me in shekels",
+      "What to actually do first to open/choose a keren"
+    ],
+    "findings": [
+      {
+        "what": "Tax shown as −13,974 ₪ in pink looks like losing money and scares me off",
+        "where": "Option א table and option ב number row"
+      },
+      {
+        "what": "\"+1,721 ₪\" card is confusing next to the much bigger numbers; reads like the fund only gives 1,721 extra",
+        "where": "Top cards, left"
+      },
+      {
+        "what": "\"+527 ₪ אותו כסף עובר לקרן\" step is unclear and nearly invisible as a thin line",
+        "where": "Option ב waterfall"
+      },
+      {
+        "what": "Striped pink coins not explained next to them, only in the table below",
+        "where": "Option א coins"
+      },
+      {
+        "what": "Option ג needs a legend to read; white line not obvious",
+        "where": "Option ג columns"
+      },
+      {
+        "what": "Fees only appear in small text as percents",
+        "where": "Under option א table"
+      },
+      {
+        "what": "Small bar chart with year selector above each option isn't explained",
+        "where": "Top of each option"
+      }
+    ]
+  },
+  "steps": 5,
+  "reads": 5,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 37494,
+    "turns": 7,
+    "usd": 0.13964700000000002,
+    "input": 8,
+    "cacheWrite": 9217,
+    "cacheRead": 24195,
+    "output": 3052,
+    "model": "claude-opus-5-5"
+  }
+}

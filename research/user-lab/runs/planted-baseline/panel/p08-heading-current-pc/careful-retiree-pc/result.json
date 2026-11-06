@@ -1,0 +1,142 @@
+{
+  "task": "p08-heading-current-pc",
+  "persona": "careful-retiree-pc",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-05T23:13:10.933Z",
+  "structured": {
+    "answer": "The account mostly pays 0% interest. The basic plan costs up to 10 ₪ a month, so I'll check with the bank that I'm on it. I should keep only what I need in the account, since 10,000 ₪ left there for ten years is worth about 8,203 ₪ in today's money. The page also mentions 15,000 ₪ as the point where the bank must send a letter. I'm not changing anything before I ask my son.",
+    "confidence": "unsure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Screen 2 vs screen 3, 'כמה עולה להשאיר כסף בעו\"ש'",
+        "why": "It says '1,797 ₪ פחות' and then 'המחיר של להשאיר 2,576 ₪'. I couldn't tell which is the cost."
+      },
+      {
+        "where": "Screen 1, fee paragraph with 01.10.2026 and 01.07.2027",
+        "why": "Two dates and a new order cancelling the plans. I couldn't tell what I will pay now and what I will pay later."
+      },
+      {
+        "where": "Top of screen 2",
+        "why": "The interest section seemed to start in the middle ('ולכן כסף שעשוי לצאת היום...'). I missed its beginning."
+      },
+      {
+        "where": "Screen 4, 'אין בישראל ביטוח פיקדונות'",
+        "why": "This frightened me about my deposits, and nothing explained what to do about it."
+      }
+    ],
+    "used": [
+      "'המסלול הבסיסי... עד 10.00 ₪ בחודש'",
+      "'אחרי 10 שנים 10,000 ₪ בעו\"ש שווים 8,203 ₪'",
+      "'רוב הבנקים משלמים בעו\"ש: 0%'",
+      "'אם היתרה נשארת מעל 15,000.00 ₪ במשך רבעון שלם... הודעה'",
+      "'4 מתוך 8 הבנקים... עד 10,000 ₪ בלבד; הכי הרבה 3% אצל דיסקונט'",
+      "'אין בישראל ביטוח פיקדונות'",
+      "Glossary row 'מסלול בסיסי'"
+    ],
+    "skimmed": [
+      "Fee change paragraph with 7.00/5.00/1.00 ₪",
+      "The three numbers under the chart",
+      "Glossary table",
+      "Footer 'אישי, לא מסחרי'"
+    ],
+    "skipped": [
+      "The chart",
+      "The slider for years",
+      "Fold 'חלק מהבנקים כן משלמים ריבית, בתנאים ועל סכום קטן בלבד'",
+      "Fold 'שחקו עם המספרים שלכם'",
+      "Link 'לעמוד של קרן כספית יומית'",
+      "Tags BANK-17, BANK-35, 'חוקים וכללים · 5'",
+      "'הצגת כל המונחים' folds",
+      "Top menu 'השקעה במדד'"
+    ],
+    "unsure_meaning": [
+      "קרן כספית יומית",
+      "מק\"מ",
+      "BANK-17 / BANK-35 / BANK-15 tags",
+      "small orange circle icons next to amounts",
+      "'בכסף של היום'",
+      "'הנחה של האתר'",
+      "dotted underlines on numbers",
+      "'צו' and the dates 01.10.2026 / 01.07.2027",
+      "'מזומן שקלי' button"
+    ],
+    "not_found": [
+      "One clear sentence saying how much to keep in the account",
+      "What my own bank charges me",
+      "What to do about the missing deposit insurance",
+      "Who is behind the site 'מקור'"
+    ],
+    "findings": [
+      {
+        "what": "Two different 'cost' numbers for the same 10,000 ₪ over 10 years (1,797 and 2,576). This is confusing.",
+        "where": "Screen 2 headline vs screen 3 'המחיר של להשאיר'"
+      },
+      {
+        "what": "Dark background with small pale grey text that is hard to read even enlarged",
+        "where": "Under the chart on screen 3, the legend on screen 2, the breadcrumb on screen 1"
+      },
+      {
+        "what": "It compares to 'קרן כספית יומית' without explaining it, using a return the site made up itself (3.25%)",
+        "where": "Screen 3"
+      },
+      {
+        "what": "'אין בישראל ביטוח פיקדונות' is alarming and nothing says what to do about it",
+        "where": "Screen 4, 'סיכונים ומה לא מוגן'"
+      },
+      {
+        "what": "Fee rules with several dates and amounts packed into one paragraph",
+        "where": "Screen 1, last paragraph"
+      },
+      {
+        "what": "No simple recommendation on how much to keep in the account",
+        "where": "Whole page"
+      },
+      {
+        "what": "The interest section seems to begin mid-sentence after scrolling",
+        "where": "Top of screen 2"
+      },
+      {
+        "what": "Codes like BANK-17 and small orange icons mean nothing to me",
+        "where": "Screen 1"
+      },
+      {
+        "what": "The years can be set with a slider",
+        "where": "Screen 2 calculator"
+      }
+    ]
+  },
+  "steps": 5,
+  "reads": 5,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 53448,
+    "turns": 7,
+    "usd": 0.1958144,
+    "input": 12,
+    "cacheWrite": 11487,
+    "cacheRead": 44152,
+    "output": 4752,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "p08-heading-current-pc",
+    "screenshots": 6,
+    "changes": [
+      {
+        "id": "heading",
+        "type": "text",
+        "shots": 6,
+        "applied": 6,
+        "most": 3
+      }
+    ],
+    "neverShown": [],
+    "errors": []
+  }
+}

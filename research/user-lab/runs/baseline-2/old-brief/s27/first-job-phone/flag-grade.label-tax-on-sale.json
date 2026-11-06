@@ -1,0 +1,86 @@
+{
+  "case": "label-tax-on-sale",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The label 'מס רק במכירה' states something the site does not know: what happens to tax while a foreign fund accumulates is an open question.\",\"where\":\"the label on foreign accumulating funds\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Unsure about the account choice because the next pair is only −43 ₪ behind",
+      "Youth prices at Leumi, Hapoalim, Mizrahi and Discount are marked 'לא בחישוב'; the page doesn't say whether they'd be cheaper",
+      "Didn't know what the 'אינפלציה' button would change",
+      "The 'אם הדולר לא זז מול השקל' caveat worried them",
+      "The coloured cost bar has too many colours",
+      "The coloured tags on funds were confusing",
+      "The 'למה חלק מהקרנות בלי מחיר בפסגות' section is hidden behind the popup",
+      "Didn't understand why the 'מה כתוב בפרסום, מול התעריפון' claims section matters; would cut it",
+      "Confused by the 'נטרול מט\"ח' section; would cut it",
+      "Confused that the waterfall starts from MTF + Jerusalem, which they never picked; would cut it",
+      "Didn't know whether the yearly percent ('בשנה · 4 שנים') is good or bad",
+      "Didn't know what the orange and yellow bar colours in the account list mean",
+      "Didn't understand '(4D)' vs '(4A)'",
+      "Didn't understand 'קרן מחקה' vs 'קרן סל'",
+      "Didn't understand 'נאמן' and 'קבועים / משתנים'",
+      "Didn't understand 'חשיפה לדולר'",
+      "Didn't understand 'עסקת החלף'",
+      "Didn't understand 'צוברת'",
+      "Didn't understand 'W-8BEN' and 'מס עיזבון אמריקאי'",
+      "Didn't understand the 'מס רק במכירה' popup, and it stayed on screen covering the left side of the page",
+      "Didn't understand which path 'הדרך מוצגת בלי דירוג' refers to",
+      "No next steps for opening the account, minimums or a monthly standing order",
+      "No breakdown of what Psagot's 1,057 ₪ cost is made of",
+      "No simple tax-at-sale figure, and no information on risk or the safety of the money"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader only says they didn't understand the 'מס רק במכירה' popup and that it covered the page; they never say the label claims something the site doesn't actually know."
+      }
+    ],
+    "liked": [],
+    "usd": 0.06597120000000001
+  },
+  "b": {
+    "raised": [
+      "Youth prices at Leumi/Hapoalim/Mizrahi/Discount are marked 'לא בחישוב', so the page can't say whether one beats Psagot for a young person",
+      "The note 'אם הדולר לא זז מול השקל' on the result card is a little worrying",
+      "The coloured cost bar has too many colours",
+      "The coloured tags in the fund list are confusing",
+      "Didn't understand why the 'מה כתוב בפרסום, מול התעריפון' claims matter",
+      "Doesn't know what 'נטרול מט\"ח' means, so the hedging section is confusing",
+      "The waterfall starts from MTF and Jerusalem at 79,176 ₪, which the reader never picked",
+      "Can't tell whether the yearly percent ('בשנה · 4 שנים') is good or bad",
+      "The meaning of the orange and yellow bar colours in the account list is unclear",
+      "Doesn't know what '(4D)' vs '(4A)' means",
+      "Unclear whether 'קרן מחקה' vs 'קרן סל' matters",
+      "Doesn't know what 'נאמן' and 'קבועים / משתנים' mean",
+      "Doesn't know what 'חשיפה לדולר' means",
+      "Doesn't know what 'עסקת החלף', 'צוברת', 'W-8BEN' and 'מס עיזבון אמריקאי' mean",
+      "The 'מס רק במכירה' popup text is hard to understand, and it stays on screen covering the left side of the page",
+      "Unclear which 'path' 'הדרך מוצגת בלי דירוג' refers to",
+      "No next steps: how to open the account and buy the fund, the minimum, and automatic monthly deposits",
+      "No breakdown of Psagot's 1,057 ₪ cost (monthly fee or per purchase)",
+      "Tax on selling isn't shown as a simple number or percent",
+      "No information on risk: market drops, or what happens if Ilin or Psagot has problems",
+      "Would drop the foreign funds (iShares, Vanguard, 'אין מחיר כאן')",
+      "Would drop the line chart in the sensitivity section"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader only says the 'מס רק במכירה' popup was hard to understand and covered the page; they never say the label claims something the site doesn't actually know about tax on accumulating foreign funds."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0643112
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.13028240000000002
+}

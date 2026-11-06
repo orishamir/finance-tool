@@ -1,0 +1,36 @@
+{
+  "case": "study-r1-grey-years",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"In the graph of the years everything is grey, so nothing stands out.\",\"where\":\"the year graph\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings says the year graph is all grey with nothing standing out: finding 5 calls a chart too busy with yellow, green and grey bars, which is close to the opposite complaint, and finding 1 is about grey text, not the graph."
+      }
+    ],
+    "liked": [],
+    "usd": 0.017727399999999997
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "No finding says the year graph is all grey with nothing standing out: finding 5 complains that option ג's bars are too busy and their colours are hard to tell apart, and finding 1 is about grey text on the page, not the graph."
+      }
+    ],
+    "liked": [],
+    "usd": 0.018255399999999998
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.035982799999999995
+}

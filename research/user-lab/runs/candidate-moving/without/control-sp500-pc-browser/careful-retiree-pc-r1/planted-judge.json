@@ -1,0 +1,47 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "Dark background with small grey text hard to read even enlarged, especially lines under result numbers",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "Slider shows 800 after typing 750 in the monthly deposit box",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "Inflation assumption hidden behind a button; 7% return presented like a fact",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "Cost bar chart has small numbers and hard-to-distinguish colours",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "Fund list busy with jargon tags and red minus figures",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 6,
+      "summary": "No warning that the investment can lose money, only a tiny currency caveat",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 7,
+      "summary": "Page opens with English index names, feels not aimed at the reader",
+      "serious": false,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.0335828
+}

@@ -1,0 +1,14 @@
+{
+ "id": "idx-r6-costs",
+ "task": "t55",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "A legend at the top of the account tab is not needed.",
+   "where": "the legend above the account list",
+   "kind": "taste",
+   "outside": false
+  }
+ ],
+ "liked": []
+}

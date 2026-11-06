@@ -1,0 +1,114 @@
+{
+  "task": "p08-heading-keren-phone",
+  "persona": "first-job-phone",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "phone",
+  "startedAt": "2026-11-05T23:13:39.884Z",
+  "structured": {
+    "answer": "I can take it out tax-free 6 years after the first deposit, and with about 300 ₪ a month from me and 900 from my employer I'd have around 66,000 ₪ in hand. I'm not sure if that number is for year 5 or year 6.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Calculator result under the chart (screens 3-4)",
+        "why": "The marker starts at 5 years, which is the taxed side. It shows a pink −13,974 and says 29,768 ₪ goes to income tax, then mentions 15,794 coming back, so I couldn't tell what I actually end up with."
+      },
+      {
+        "where": "Last big bar '66,5…' cut off at the left edge",
+        "why": "The number is cut off, and I wasn't sure if it's my final amount or for which year."
+      },
+      {
+        "where": "'נשאר בידיים 66,601 ₪ עד 66,280 ₪' at the bottom of the calculator",
+        "why": "It's a range, and I didn't know whether it refers to 5 or 6 years."
+      }
+    ],
+    "used": [
+      "Subtitle and 'אחרי 6 שנים מההפקדה הראשונה אפשר למשוך... בלי מס'",
+      "Chart labels 'לפני 6 שנים: מס' / 'מ-6 שנים: פטור ממס'",
+      "'300 ₪ בחודש מכם, 900 ₪ מהמעסיק'",
+      "Big numbers +54,000, +8,487, −13,974, 66,5…",
+      "'נשאר בידיים 66,601 ₪ עד 66,280 ₪'"
+    ],
+    "skimmed": [
+      "Paragraph about the 15,712 / 20,566 ₪ tax-exemption ceilings",
+      "Paragraph 'משיכה אחרי 5 שנים... 50,719... 29,768 למס הכנסה'",
+      "Input boxes (2.5%, 7.5%, 7%, 0.54%)",
+      "'שווה לדעת' facts"
+    ],
+    "skipped": [
+      "Grey notes on inflation and 'כסף של היום'",
+      "'חוקים וכללים' chips",
+      "'כדאי להכיר גם' / 'במה אפשר להשקיע' buttons",
+      "Toggle between שכירים and עצמאים",
+      "Link to the חשבון ניירות ערך page",
+      "'מי מציע ומי מצטרף' and everything below it (screens 6-13)"
+    ],
+    "unsure_meaning": [
+      "מסלול מדד",
+      "התשואה הוסיפה אחרי דמי ניהול",
+      "החזר ממס הכנסה (15,794)",
+      "(13245) after the fund name",
+      "11 המסלולים",
+      "Hatched pink box in the chart",
+      "Whether 66,601 is for 5 or 6 years"
+    ],
+    "not_found": [
+      "One clear 'you get X after 6 years' figure",
+      "A place to enter my own salary (I didn't see one)"
+    ],
+    "findings": [
+      {
+        "what": "The calculator defaults to 5 years (the taxed case), so the first result I see is a pink minus and 29,768 ₪ going to tax, even though the page says 6 years is tax-free",
+        "where": "Calculator, 'מושכים את הכסף אחרי 5 שנים'"
+      },
+      {
+        "what": "The final-amount bar number is cut off at the left edge ('66,5…')",
+        "where": "Bar breakdown under the chart"
+      },
+      {
+        "what": "The final amount is given as a range (66,601 to 66,280) and it isn't clear which year it is for",
+        "where": "Bottom of the calculator"
+      },
+      {
+        "what": "Tax goes out and then partly comes back (29,768 vs 15,794), which is confusing and scary",
+        "where": "Paragraph 'משיכה אחרי 5 שנים'"
+      },
+      {
+        "what": "Too many small explanatory lines and chips around the calculator",
+        "where": "Under the calculator"
+      }
+    ]
+  },
+  "steps": 5,
+  "reads": 5,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 34653,
+    "turns": 7,
+    "usd": 0.1462996,
+    "input": 8,
+    "cacheWrite": 9660,
+    "cacheRead": 24738,
+    "output": 3202,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "p08-heading-keren-phone",
+    "screenshots": 14,
+    "changes": [
+      {
+        "id": "heading",
+        "type": "text",
+        "shots": 14,
+        "applied": 14,
+        "most": 1
+      }
+    ],
+    "neverShown": [],
+    "errors": []
+  }
+}

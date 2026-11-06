@@ -1,0 +1,36 @@
+{
+  "case": "custom-index-change-answer",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"Beside the added index the link 'שינוי התשובה' does not say which answer it changes.\",\"where\":\"the line 'מדד שהוספתם, שמור במכשיר הזה · שינוי התשובה'\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings mentions the 'שינוי התשובה' link or its vague label; finding 1 covers the same added-index area, but its complaint is that no funds are shown, not that the link is unclear."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0161074
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "No finding says the 'שינוי התשובה' link is unclear about which answer it changes; finding 1 is about the same added-index area, but it complains that there are no funds and no result, which is a different problem."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0158994
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0320068
+}

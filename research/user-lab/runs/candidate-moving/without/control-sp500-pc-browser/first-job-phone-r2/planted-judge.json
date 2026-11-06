@@ -1,0 +1,35 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "The reader typed 750 for the monthly deposit, but the slider shows 800, so they can't tell which amount the result uses.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "The inflation figure only shows after pressing a small grey button, and the line about the dollar and the ECB next to it is confusing.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "Tax is the biggest cost (15,364 of 18,299 ₪), which feels alarming, and the small print '84% מהפסד' is unclear.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "The two best options differ by only 122 ₪, and the reader can't see why to choose one over the other.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "The fund chips use jargon (צוברת, עסקת החלף, מנוטרלת מט״ח), so the reader skipped them.",
+      "serious": false,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.025922800000000003
+}

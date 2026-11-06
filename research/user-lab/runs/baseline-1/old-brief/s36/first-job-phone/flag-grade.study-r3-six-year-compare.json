@@ -1,0 +1,78 @@
+{
+  "case": "study-r3-six-year-compare",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"A comparison with waiting until year 6 is always present, though it is not always relevant.\",\"where\":\"the year-6 comparison\",\"kind\":\"taste\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Page doesn't say clearly whether the employer money comes only with a keren (or e.g. as extra salary)",
+      "No comparison of the same deposits in a plain securities account (wanted a bar next to the keren)",
+      "In the column chart you have to look back and forth between the number on top and the label at the bottom",
+      "The 'מה היה' thumbnail is too small to read, hiding the key 3.70 vs 1.09 sentence",
+      "The example paragraph reads like confusing small print (fund names, codes, provider names)",
+      "The explanation about the dashed column only made sense after looking at the chart",
+      "The 68,837 sentence was confusing: it looked like keren vs securities but is early withdrawal vs waiting",
+      "The '19 מסלולים' line is unclear (doesn't know what a מסלול is) and was skipped",
+      "Didn't understand the dark grey/brown blocks at the bottom of the middle bars",
+      "Doesn't understand why the tax is larger than the whole return; nothing explains it",
+      "Jargon not understood: דמי ניהול, מסלול, מחקה, 4D, עוקב מדד",
+      "'עד התקרה בחוק' is unexplained (what ceiling?)",
+      "No information on what happens if you change jobs before 6 years",
+      "No information on whether the money is locked or can be withdrawn at any time",
+      "No information on how to open one or whether the employer has to agree",
+      "Would drop the 'הגובה נמתח בכל שנה' line",
+      "Would drop one of the two chart options since they tell the same story",
+      "Would drop the 1-12 year strip"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader was confused about what the 68,837 early-withdrawal-vs-waiting sentence compares, but never complains that the year-6 comparison is always shown even when it doesn't apply; they actually used the year-6 box and view and found them clear."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0603872
+  },
+  "b": {
+    "raised": [
+      "Unclear whether the employer's money comes only with a keren; the page doesn't say",
+      "No figure the reader could read for what the same 18,000 ₪ would become in a securities account",
+      "In the column chart the eye jumps between the number on top and the label at the bottom",
+      "The 'מה היה' thumbnail is too small to read, and it holds the key 3.70 vs 1.09 sentence",
+      "The example paragraph reads like confusing small print (fund names, codes, provider names)",
+      "The explanation of the dashed column only made sense after looking at the chart",
+      "The 68,837 ₪ sentence was confusing: it looked like keren vs. securities but was really about withdrawing early vs. waiting",
+      "The '19 מסלולים' line is unclear (what is a מסלול?) and the difference looks too small to matter",
+      "The 'הגובה נמתח בכל שנה' note was skipped as not useful",
+      "The dark grey and brown blocks at the bottom of the middle bars weren't understood",
+      "Nothing explains why the tax is bigger than the whole return",
+      "Jargon not understood: דמי ניהול, מסלול, מחקה, 4D, עוקב מדד",
+      "'עד התקרה בחוק' is unclear: what ceiling?",
+      "Wanted a securities-account bar right next to the keren in the main chart",
+      "Wanted to know whether the employer's 900 ₪ is paid without a keren",
+      "Wanted to know what happens when changing jobs before year 6",
+      "Wanted to know whether the money is locked or can be withdrawn at any time",
+      "Wanted to know how to open a keren and whether the employer has to agree",
+      "One of the two chart options is redundant and would be dropped",
+      "The 1–12 year strip would be dropped"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader was confused by what the 68,837 ₪ year-6 sentence compares, and actually used the year-6 box, but never says the year-6 comparison is always shown even when it doesn't apply."
+      }
+    ],
+    "liked": [],
+    "usd": 0.055907200000000004
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1162944
+}

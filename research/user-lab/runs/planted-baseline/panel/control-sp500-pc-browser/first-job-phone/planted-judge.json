@@ -1,0 +1,35 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "Inflation assumption (2%) hidden behind a small button; result only says 'in today's money'.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "Condition 'if the dollar doesn't move against the shekel' sits under the main number and a beginner can't judge it.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "Many jargon fund-type tags with counts in the S&P 500 funds section feel overwhelming.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "Chart colours explained only in a separate legend; had to guess which bar is tax.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "Top two pairs differ by only 122 ₪ and are both Psagot; unclear why it matters.",
+      "serious": false,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.031426800000000005
+}

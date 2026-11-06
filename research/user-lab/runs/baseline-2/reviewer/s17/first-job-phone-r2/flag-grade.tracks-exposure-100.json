@@ -1,0 +1,36 @@
+{
+  "case": "tracks-exposure-100",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The column of exposure to stocks and foreign currency is not explained, and shows figures above 100% with nothing saying how that can be.\",\"where\":\"the exposure column\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 7,
+        "why": "Finding 7 says the exposure column's ring charts are unexplained and shows odd figures like 101%, which is the same problem the person named."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0145994
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 7,
+        "why": "Finding 7 says the exposure column's ring charts weren't explained and points to odd figures like 101%, which is the same as the person's complaint about no explanation and values above 100%."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0146074
+  },
+  "third": null,
+  "ranks": {
+    "k": 7
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.029206799999999998
+}

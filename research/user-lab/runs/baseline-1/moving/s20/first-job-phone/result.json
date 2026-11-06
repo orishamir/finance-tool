@@ -1,0 +1,105 @@
+{
+  "task": "s20",
+  "persona": "first-job-phone",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T03:22:58.118Z",
+  "structured": {
+    "answer": "Harel has tons of products. I only saw the קופת גמל להשקעה tab: fees are all about 0.54–0.61%, so they don't matter for the choice, and מניות (24.04% over 3 years) or S&P 500 (13.7%) look best. I'd lean that way, but I never saw my own השתלמות/pension tabs.",
+    "confidence": "unsure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Product tabs at top (קופת גמל להשקעה preselected)",
+        "why": "I wanted my קרן השתלמות/pension but the page opened on גמל להשקעה, which I think is for older people; seeing everything means clicking 6 tabs"
+      },
+      {
+        "where": "Return column, many rows",
+        "why": "'פחות מ־3 שנים' instead of a number, so most tracks can't be compared"
+      },
+      {
+        "where": "Folds קרנות מחקות / קרנות סל at bottom",
+        "why": "Not sure how they differ or whether they count as what Harel offers me"
+      }
+    ],
+    "used": [
+      "Heading הראל",
+      "Product tabs with counts",
+      "Fee column 0.54%–0.61% מהחיסכון",
+      "Return column: מניות 24.04%/14.64%, S&P 500 13.7%/11.92%, כללי 13.5%/8.26%",
+      "Track names"
+    ],
+    "skimmed": [
+      "Track-type filter buttons row",
+      "Ring charts with מניות/מט\"ח percentages",
+      "Intro lines under heading"
+    ],
+    "skipped": [
+      "כסף מנוהל column on far left",
+      "Footnote lines under table (התקרה בחוק, PF-10)",
+      "Folds קרנות מחקות, מרכזית לפיצויים, קרנות סל",
+      "מה כתוב במסמכים של הראל section",
+      "Search box לא מצאתם שם",
+      "Footer"
+    ],
+    "unsure_meaning": [
+      "מט\"ח",
+      "ההפקדה vs מהחיסכון",
+      "תגמולים ופיצויים",
+      "מרכזית לפיצויים",
+      "לפני דמי ניהול",
+      "yellow vs teal dots in ring charts",
+      "PF-10",
+      "123 ממקור / מחושב / הזנה"
+    ],
+    "not_found": [
+      "My own קרן השתלמות track and its numbers",
+      "Fee in shekels per year",
+      "Returns for most tracks (only 'פחות מ־3 שנים')",
+      "A clear recommendation of which track to pick"
+    ],
+    "findings": [
+      {
+        "what": "Way too many options: 6 tabs of 16–19 tracks each plus folds; impossible to see 'everything' quickly, makes me want to do nothing",
+        "where": "Product tabs and folds"
+      },
+      {
+        "what": "Most tracks show 'פחות מ־3 שנים' instead of a return, so nothing to compare",
+        "where": "Return column"
+      },
+      {
+        "what": "Page opens on קופת גמל להשקעה, not the products I actually have",
+        "where": "Product tabs"
+      },
+      {
+        "what": "Fees only in tiny percents, all nearly the same; no shekel amount",
+        "where": "Fee column"
+      },
+      {
+        "what": "Ring charts with מניות/מט\"ח are unclear",
+        "where": "Exposure column"
+      },
+      {
+        "what": "Managed-money column at far left easy to miss",
+        "where": "Table left edge"
+      }
+    ]
+  },
+  "steps": 2,
+  "reads": 2,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 34586,
+    "turns": 4,
+    "usd": 0.1249508,
+    "input": 6,
+    "cacheWrite": 7446,
+    "cacheRead": 15894,
+    "output": 3109,
+    "model": "claude-opus-5-5"
+  }
+}

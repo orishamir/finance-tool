@@ -1,0 +1,74 @@
+{
+  "case": "cfc-exposure",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The fund table spells out the stock percentage and the currency ceiling of each fund, which the label 'חשיפה לדולר' already covers; the extra figures clutter.\",\"where\":\"the exposure figures in each version\",\"kind\":\"taste\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "The 'מניות עד 120%' figure in options 1 and 2 is unexplained and worrying (how can a fund hold over 100% in shares?)",
+      "Option 2 drops the bottom note that explains what the exposure ceiling means",
+      "Doesn't know what '(4A)' / '(4D)' mean",
+      "The 'עסקת החלף' tag means nothing to them",
+      "'מס גם על שינויי המטבע' raises a tax concern they want explained",
+      "In option 2 the exposure figures are grey small print that is easy to skip",
+      "Unclear whether the underlined numbers are clickable",
+      "'משתנה' fee is unclear: variable on what, and can it go higher?",
+      "Unclear whether to add up קבוע + משתנה + נאמן for the total fee",
+      "'נאמן' is unclear: trustee of what?",
+      "No total yearly cost in plain shekels",
+      "No date for the report the fees come from",
+      "No information on buying/selling costs",
+      "No tracking accuracy or performance data",
+      "No fund size shown",
+      "No figure for what the currency-change tax would actually cost",
+      "Would drop the paper numbers from the table"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 1,
+        "why": "The reader picks the calmer option 3, which shows only the currency ceiling, objects to the extra 'מניות עד 120%' stock figure in options 1 and 2, and lists it among things to drop. That is a clear part of the person's complaint that the extra exposure figures clutter the table, even though the reader's main reason is confusion rather than redundancy."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0557352
+  },
+  "b": {
+    "raised": [
+      "The 'מניות עד 120%' figure in options 1 and 2 worries and confuses them: nothing explains it, and holding more than 100% in shares (or in currency) makes no sense to them",
+      "Option 2 drops the bottom note that explains what the ceiling means",
+      "Doesn't know what (4A) / (4D) mean",
+      "The 'עסקת החלף' tag means nothing to them; they'd drop it",
+      "The 'מס גם על שינויי המטבע' tag raises a worry; they want to know what it would actually cost",
+      "The exposure column in option 1 is confusing",
+      "In option 2 the exposure figure is grey small print that's easy to skip",
+      "Fees: unclear what 'משתנה' is variable on, or whether it can go higher",
+      "Underlines under the numbers: unclear whether they can be clicked",
+      "Unclear whether the fixed, variable and trustee fees add up to one total; the page doesn't say",
+      "Doesn't know what 'נאמן' is a trustee of",
+      "Wants the total yearly cost in plain shekels",
+      "Wants the date of the report the fees come from",
+      "Wants to know whether there are buying or selling costs on top",
+      "Wants tracking accuracy and performance data",
+      "Wants fund size",
+      "Would drop the paper numbers from the table"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 1,
+        "why": "The reader prefers option 3 because it has a single currency ceiling, objects to the extra 'מניות עד 120%' figure in options 1 and 2, and lists it among things to drop, which matches the complaint that the extra exposure figures clutter the table (though the reader's stated reason is confusion more than redundancy)."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0595552
+  },
+  "third": null,
+  "ranks": {
+    "k": 1
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1152904
+}

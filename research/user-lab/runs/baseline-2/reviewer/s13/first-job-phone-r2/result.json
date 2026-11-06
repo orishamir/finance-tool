@@ -1,0 +1,104 @@
+{
+  "task": "s13",
+  "persona": "first-job-phone",
+  "repeat": 2,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T12:20:52.535Z",
+  "structured": {
+    "answer": "Keren hishtalmut is a savings fund my employer pays into (more than I do). After 6 years from the first deposit I can take it all out with no tax, earlier costs tax, so yes it's worth keeping; first thing is to ask HR which company and track I'm in.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Screen 1 bullets vs screen 4 / screen 7 warning",
+        "why": "Early-withdrawal tax shows as 'לפחות 31%' in one place and '47%' in another; didn't know which applies to me"
+      },
+      {
+        "where": "Screen 3 chart",
+        "why": "Not sure whether 66,513 ₪ is for 5 years (the marked bar) or the whole period; the top of the card with the input boxes was cut off"
+      },
+      {
+        "where": "Screen 6 fees table",
+        "why": "'עד 2% בשנה' as a percent; couldn't tell if that's a lot"
+      }
+    ],
+    "used": [
+      "Heading 'קרן השתלמות' and subtitle",
+      "'אחרי 6 שנים... בלי מס הכנסה ובלי מס רווחי הון' paragraph",
+      "Bar chart: 18,000 ₪ הפקדתם, +54,000 ₪ המעסיק הוסיף, −13,974 ₪ המס, 66,513 ₪ נשאר בידיים",
+      "'למה משתמשים בזה' first line and track chips (S&P 500 etc.)",
+      "Card 'מתי הכסף פנוי: כשעוברות 6 שנים'",
+      "Card 'מעבר בין מסלולים: בלי מס'",
+      "Fees table 'עד 2% בשנה', 'דמי יציאה: אין'",
+      "Orange warning that early withdrawal is expensive"
+    ],
+    "skimmed": [
+      "'מה מייחד' small notes under the chart (7%, 2%, 47%)",
+      "'שווה לדעת' list",
+      "'מי מציע ומי מפקח' cards",
+      "'מיסוי' cards",
+      "'סיכונים ומה לא מוגן' paragraphs",
+      "'מונחים' glossary heading"
+    ],
+    "skipped": [
+      "'שחקו עם המספרים שלכם' fold",
+      "'חוקים וכללים' chips",
+      "Links 'לעמוד של חשבון ניירות ערך', 'כל החברות', 'כמה העמלות האלה עולות לאורך זמן'",
+      "Small grey line about the chief economist",
+      "Screen 9"
+    ],
+    "unsure_meaning": [
+      "הפקדה מוטבת",
+      "הרווח הריאלי",
+      "ותק",
+      "משכורת קובעת",
+      "קופת גמל להשקעה",
+      "31% vs 47% tax on early withdrawal",
+      "Hatched pink part of the bars in the chart (guessed: tax)",
+      "The dark brown part of the bar (guessed: the money carried over)"
+    ],
+    "not_found": [
+      "Who runs my own fund / how to check which track I'm in",
+      "A clear yes/no on which track to pick"
+    ],
+    "findings": [
+      {
+        "what": "Two different early-withdrawal tax numbers (31% and 47%) in different places, confusing",
+        "where": "Screen 1 bullets vs screen 4 notes and screen 7 warning"
+      },
+      {
+        "what": "Fees shown only as a percent ('עד 2%'); no shekel amount so I can't tell if it matters",
+        "where": "Screen 6 'כמה זה עולה'"
+      },
+      {
+        "what": "Chart top with the input boxes was cut off; not clear which numbers are mine or the example's",
+        "where": "Screen 3"
+      },
+      {
+        "what": "Lots of jargon in the tax part I couldn't follow",
+        "where": "Screen 7 'מיסוי'"
+      },
+      {
+        "what": "Many small green 'חוקים וכללים' chips everywhere, noise",
+        "where": "Throughout"
+      }
+    ]
+  },
+  "steps": 8,
+  "reads": 8,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 38808,
+    "turns": 10,
+    "usd": 0.2022862,
+    "input": 12,
+    "cacheWrite": 15322,
+    "cacheRead": 56111,
+    "output": 3422,
+    "model": "claude-opus-5-5"
+  }
+}

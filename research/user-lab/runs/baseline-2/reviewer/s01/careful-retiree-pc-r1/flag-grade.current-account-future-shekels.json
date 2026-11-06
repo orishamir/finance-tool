@@ -1,0 +1,36 @@
+{
+  "case": "current-account-future-shekels",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"With 'בשקלים של העתיד' chosen, the figures ignore inflation, so they are wrong.\",\"where\":\"the chart and figures of the panel\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings says that the 'future shekels' figures leave out inflation. Finding 3 objects to the 5% return assumption, and finding 8 only says the word ריאלית isn't explained, so neither is the person's problem."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0170114
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the findings say the 'future shekels' figures ignore inflation: finding 3 is about the 5% return assumption, and finding 8 only says the word ריאלית isn't explained."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0164314
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.033442799999999995
+}

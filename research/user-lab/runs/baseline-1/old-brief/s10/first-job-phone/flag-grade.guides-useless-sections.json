@@ -1,0 +1,86 @@
+{
+  "case": "guides-useless-sections",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The guide home has sections that say nothing useful ('שני חלקים בכל חיסכון', 'מאיפה להתחיל').\",\"where\":\"the sections above or below the list of guides\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Page doesn't compare the places (קרן השתלמות / קופת גמל להשקעה / חשבון ניירות ערך) for holding the S&P 500, so the reader doesn't know which to use",
+      "In 'שני חלקים בכל חיסכון' the second line (מזומן, מק\"מ, קרן כספית, אג\"ח, מדד מניות) is a list of words the reader mostly doesn't know",
+      "Retirement cards 'קרן חדשה כללית' and 'תגמולים ואישית לפיצויים' are confusing; the 'בשפה פשוטה' line just repeats the title and explains nothing",
+      "Most cards under 'במה הכסף מושקע' are jargon",
+      "The grey 'יומית' / 'מתחדשת' buttons on the קרן כספית card are unexplained",
+      "Can't tell how MSCI World differs from MSCI AC World; the cards are walls of text",
+      "Unknown terms: מק\"מ, אג\"ח, קרן נאמנות, ברוקר, תגמולים, פיצויים, תקרה שנתית",
+      "'עם חשיפה לדולר או מנוטרלת ממנו' is unclear: good or bad?",
+      "'קרן שעוקבת אחריו' is unclear: who runs the fund and where to buy it",
+      "'במשקל לפי שווי השוק' and 'שווי החזקות הציבור' aren't understood",
+      "Unclear whether 'מסלול כללי' is the default the reader is probably in",
+      "Unclear which of the two kinds of קרן השתלמות (regular or בניהול אישי) the reader has",
+      "No lock period given for קרן השתלמות ('תקופה שקבע החוק' only)",
+      "No fee information anywhere",
+      "No returns or risk information (e.g. S&P 500 vs קרן כספית, possible losses)",
+      "No order of priority or amount of money needed for each step",
+      "No minimum amounts and no info on whether small monthly deposits are possible",
+      "Would drop the 'לילדים' section",
+      "Would drop the Tel Aviv index cards and most of the MSCI cards",
+      "Would drop the 'קרן חדשה כללית' and 'תגמולים ואישית לפיצויים' cards",
+      "Would drop the two 'בניהול אישי' cards",
+      "Would drop the מק\"מ and government bonds cards",
+      "Would drop the 'מה האתר עוד לא מכסה' section",
+      "Can't tell whether the S&P 500 is available in a given product without clicking into each card"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader found 'שני חלקים בכל חיסכון' and 'מאיפה להתחיל' the most useful sections and would keep them; their only complaint there was jargon in one line, which is a different problem from the sections saying nothing useful."
+      }
+    ],
+    "liked": [],
+    "usd": 0.07039519999999999
+  },
+  "b": {
+    "raised": [
+      "Doesn't know which 'place' (השתלמות, גמל להשקעה or securities account) to use for the S&P 500, and the page doesn't compare them",
+      "The second line of 'שני חלקים בכל חיסכון' is a list of terms the reader mostly doesn't know",
+      "The retirement cards 'קרן חדשה כללית' and 'תגמולים ואישית לפיצויים' are confusing, and the 'בשפה פשוטה' line just repeats the title",
+      "The 'בניהול אישי' cards seem meant for experts",
+      "Most cards under 'במה הכסף מושקע' are jargon",
+      "The 'יומית' and 'מתחדשת' buttons on the קרן כספית card are unexplained",
+      "Can't tell MSCI World from MSCI AC World; the cards are walls of text",
+      "Unknown terms: מק\"מ, אג\"ח, קרן נאמנות, ברוקר, תגמולים, פיצויים, תקרה שנתית",
+      "Unclear whether exposure to the dollar or neutralizing it is good or bad",
+      "'קרן שעוקבת אחריו': who runs it and where to buy it is unclear",
+      "'Weighted by market value' and 'value of public holdings' aren't understood",
+      "Unclear whether the 'מסלול כללי' is the default the reader is already in",
+      "Can't tell which kind of קרן השתלמות (regular or self-managed) the reader has",
+      "The page doesn't say how many years a קרן השתלמות is locked",
+      "No information on fees",
+      "No information on returns and risk",
+      "No suggested order of priority or how much money each step needs",
+      "No information on minimum amounts or small monthly deposits",
+      "Would drop the 'לילדים' section",
+      "Would drop the Tel Aviv index cards and one of the MSCI cards",
+      "Would drop the מק\"מ and government bond cards",
+      "Would drop 'מה האתר עוד לא מכסה'"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader calls 'שני חלקים בכל חיסכון' and 'מאיפה להתחיל' the most useful parts, and the only complaint about them (point 2) is about unknown terms, not about the sections saying nothing useful."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0667792
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.13717439999999997
+}

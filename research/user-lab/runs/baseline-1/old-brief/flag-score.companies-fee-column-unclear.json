@@ -1,0 +1,63 @@
+{
+  "case": "companies-fee-column-unclear",
+  "sessions": 2,
+  "perKey": {
+    "k": {
+      "kind": "general",
+      "caught": 2,
+      "caughtIn10": 2,
+      "of": 2,
+      "byPersona": {
+        "careful-retiree-pc": {
+          "caught": 1,
+          "of": 1,
+          "ranks": [
+            2
+          ]
+        },
+        "first-job-phone": {
+          "caught": 1,
+          "of": 1,
+          "ranks": [
+            9
+          ]
+        }
+      },
+      "graderAgreement": 1
+    }
+  },
+  "againstLiked": {},
+  "usd": 0.2814968,
+  "rows": [
+    {
+      "task": "s24",
+      "session": "careful-retiree-pc",
+      "persona": "careful-retiree-pc",
+      "mode": "free text",
+      "raised": [
+        23,
+        24
+      ],
+      "ranks": {
+        "k": 2
+      },
+      "against": {},
+      "usd": 0.1534664
+    },
+    {
+      "task": "s24",
+      "session": "first-job-phone",
+      "persona": "first-job-phone",
+      "mode": "free text",
+      "raised": [
+        24,
+        24
+      ],
+      "ranks": {
+        "k": 9
+      },
+      "against": {},
+      "usd": 0.1280304
+    }
+  ]
+}

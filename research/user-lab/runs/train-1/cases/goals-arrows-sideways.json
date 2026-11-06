@@ -1,0 +1,14 @@
+{
+ "id": "goals-arrows-sideways",
+ "task": "t08",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "The saved goals sit side by side, but their move buttons are up and down arrows that move a goal left or right.",
+   "where": "the row of saved goals at the top",
+   "kind": "general",
+   "outside": false
+  }
+ ],
+ "liked": []
+}

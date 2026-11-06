@@ -1,0 +1,91 @@
+{
+  "case": "tracks-warnings",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"Almost every row of the tracks table carries a date warning mark; the repeated warnings clutter the table though one note at the top would do.\",\"where\":\"the warning marks in the table rows\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "The fee shown is the 2025 average actually charged, which may not be what a new customer would pay",
+      "Returns are shown before fees and tax, so the real return is unclear",
+      "The '123 מקומי / מחושב / הזנתה' legend is confusing and not explained in words",
+      "The 'קיבוץ לפי' (group by) control was unclear until the reader saw the buttons underneath",
+      "Track-type names are confusing (מניות vs מניות סחיר vs עוקב מדדי מניות, what סחיר means, what 'גמיש' means)",
+      "Rows marked 'חדש' with no fees or returns are useless; hide them or move them to the bottom",
+      "The 'חוקים וכללים · 7' button gives no hint of what it shows",
+      "An unexplained 0.16% fee on deposits at הפניקס משולב סחיר",
+      "The reader doesn't know what מט\"ח exposure means; would drop that line",
+      "The coloured rings repeat the numbers and add nothing",
+      "Small orange clock icons next to almost every number are unexplained and add nothing; would drop them",
+      "The '>' arrows on each row have no label saying what they do",
+      "The difference between מהחיסכון and מההפקדות fees is never explained",
+      "Share exposure of 101% is confusing and worrying",
+      "A fee of 'עוד לא דווח' leaves it unclear what will actually be charged; the reader would rather be told than have to click",
+      "Exposure differs a lot between tracks of the same type, with no explanation",
+      "Missing: tax rules and the benefit for people aged 60 and over",
+      "Missing: risk information such as bad years and crash drawdowns",
+      "Missing: whether money can be withdrawn at any time, and whether there is a penalty",
+      "Missing: whether one can switch tracks or companies later",
+      "Missing: the minimum deposit",
+      "Missing: 10-year returns",
+      "The other product buttons are not needed; would drop them",
+      "The fund number column could go into the details"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 11,
+        "why": "The reader names the small orange clock icons beside almost every number as adding nothing and puts them first on the list to remove, which matches the person's complaint that the repeated date-warning marks clutter the table."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0991152
+  },
+  "b": {
+    "raised": [
+      "The fee shown is the 2025 average actually charged, not necessarily what a new customer would pay (and the page doesn't say whether it can be negotiated)",
+      "Returns are shown before fees and tax, so the real return isn't shown (no after-fee figure or 100,000 ₪ projection)",
+      "The '123 מקומי / מחושב / הזנתה' legend is confusing and isn't explained in words",
+      "The 'קיבוץ לפי' grouping control was only clear after looking at the buttons below it",
+      "Some of the investment-type filter button names are confusing",
+      "Rows marked 'חדש' with no fees or returns are useless and should go to the bottom or be hidden",
+      "Unclear what the 'חוקים וכללים · 7' button shows",
+      "An unexplained 0.16% deposit fee at הפניקס 15214",
+      "The meaning of 'מט\"ח' in the exposure column is unclear, so the reader would drop it",
+      "The coloured rings add nothing and should go",
+      "The orange clock icons next to almost every number aren't explained and add nothing, so the reader would drop them",
+      "The dotted purple underlines under percentages aren't explained",
+      "The '>' arrows on every row give no sign of what they do",
+      "'מהחיסכון' vs 'מההפקדות' is never explained",
+      "101% share exposure is confusing and worrying",
+      "The differences between track types (מניות / מניות סחיר / עוקב מדדי מניות, משולב סחיר / כללי) aren't explained",
+      "'עוקב מדדים - גמיש' isn't explained",
+      "'עוד לא דווח' on a fee leaves it unclear what will actually be charged",
+      "Exposure figures differ a lot between tracks of the same type, with no explanation",
+      "No information on tax or the benefits at age 60 and over",
+      "No risk information (bad years, drawdowns)",
+      "No information on withdrawals or penalties",
+      "No information on switching tracks or companies",
+      "No minimum deposit shown",
+      "No 10-year returns",
+      "The other product buttons aren't needed and could go",
+      "The fund number column could be moved into the details"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 11,
+        "why": "The reader points to the orange clock icons next to almost every number as repeated marks that add nothing and would drop them, which matches the person's complaint that the repeated date warnings clutter the table."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0781152
+  },
+  "third": null,
+  "ranks": {
+    "k": 11
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1772304
+}

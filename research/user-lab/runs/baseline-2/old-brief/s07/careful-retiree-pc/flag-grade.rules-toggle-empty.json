@@ -1,0 +1,98 @@
+{
+  "case": "rules-toggle-empty",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"A 'הצגת/הסתרת החוקים והכללים' button is repeated on sections across the site, and on some sections pressing it changes nothing because there are no rules there.\",\"where\":\"the show/hide rules buttons on the page's sections\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "The example rate (1.8%) is from one bank only (Leumi), so it is not representative",
+      "The page gives no number for what it costs to take money out early",
+      "The '123 מקור · 123 מחושב · 123 הזנתה' line at the top is confusing",
+      "The 'הבטחת קרן' note in brackets is hard to follow",
+      "Didn't understand what 'העוגן' means in the anchor-rate line",
+      "Unclear why age matters and which rules change at which age",
+      "The money-market fund the page recommends is not explained",
+      "Codes like TXI-03, BANK-06 and BANK-23 mean nothing to the reader",
+      "'חשבון במערכת סגורה' sounds too technical",
+      "The 'כסף נכנס ויוצא' withdrawal card says too little",
+      "The red early-breaking warning ends with 'שאלה פתוחה', which worries more than it helps",
+      "Only half understood the part about the Governor appointing a manager",
+      "Screens didn't join up, so some sentences may have been missed",
+      "The chart has a second thin line with no visible legend",
+      "Wanted the nominal (bank-statement) final amount shown next to the today's-money figure",
+      "The cost table doesn't say what exit fees cost; the rules column is empty and the ceiling is vague",
+      "Glossary rows seemed to appear twice while scrolling",
+      "Didn't understand 'ריבית הפריים' or how it affects their interest",
+      "Unclear whether the 'צמוד פריים' tax note matters to them",
+      "The securities-loss offset sentence assumes knowledge the reader doesn't have",
+      "Unclear why a fixed-deposit example adds 500 ₪ every month",
+      "Important auto-renewal information is buried at the bottom of the table",
+      "No side-by-side comparison of current rates across banks and terms",
+      "No plain explanation of what to do if the money is needed in an emergency",
+      "Unclear whether the reader personally qualifies for the tax exemption",
+      "No context on what happened to depositors when banks got into trouble",
+      "Would drop the glossary's 'איפה מופיע' column and most of the table",
+      "Would drop 'מה האתר לקח בחשבון' and 'הצגת כל הבדיקות'",
+      "Would drop the age field and most of the sliders in favour of a simple lump-sum example"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The report never mentions a repeated show/hide rules button or one that does nothing when pressed; it only mentions an empty rules column in the cost table and the age-rules question, which are about other things."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0779272
+  },
+  "b": {
+    "raised": [
+      "The 1.8% example comes from one bank (Leumi) only, so it is not a real comparison of rates",
+      "The cost of taking money out early is never given as a number",
+      "The '123 מקור · 123 מחושב · 123 הזנתה' line under the title is confusing",
+      "The bracketed 'הבטחת קרן' (principal guarantee) note is unclear",
+      "'העוגן' (the anchor rate) is not explained",
+      "The age field is puzzling: why age matters for a deposit, and which rules change at which age",
+      "The page recommends a money-market fund (קרן כספית) but does not explain it",
+      "Small codes like TXI-03, BANK-06 and BANK-23 mean nothing to the reader",
+      "'חשבון במערכת סגורה' sounds technical",
+      "The withdrawal card under 'כסף נכנס ויוצא' says very little",
+      "The 'כמה זה עולה' table has an empty 'חוקים וכללים' column and only 'according to tariff', so the actual cost is unknown",
+      "The early-break red box ends with 'שאלה פתוחה', which worries rather than helps",
+      "The part about the Governor appointing a manager is only half understood",
+      "Screens did not join up, so some sentences may have been missed",
+      "A thin second line on the chart is unexplained and there is no legend",
+      "The nominal (bank-statement) final amount is not shown next to the 'today's money' figure",
+      "Some glossary rows seem to appear twice",
+      "It is unclear whether the interest is tied to ריבית הפריים and what happens if it drops",
+      "The 'צמוד פריים ממוסה כפיקדון לא צמוד' tax note is unclear",
+      "The line about securities losses not being offset is written as if the reader should already know it",
+      "The fixed-deposit example odd-ly includes 500 ₪ monthly additions",
+      "Automatic renewal is important but buried at the bottom of the glossary",
+      "No real rates side by side for different terms and banks",
+      "No plain explanation of what to do if the money is needed in an emergency",
+      "Unclear whether the reader personally qualifies for the tax exemption, including anything age-related",
+      "No context on what actually happened to depositors when banks got into trouble",
+      "Would drop the glossary's 'איפה מופיע' column and most of the glossary",
+      "Would drop 'מה האתר לקח בחשבון' and 'הצגת כל הבדיקות'",
+      "Would drop the age field and most of the sliders in favour of one simple lump-sum example"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The report never mentions the repeated show/hide rules buttons or pressing one with no effect; the empty 'חוקים וכללים' column in the costs table is a different issue on a different part of the screen."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0741352
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1520624
+}

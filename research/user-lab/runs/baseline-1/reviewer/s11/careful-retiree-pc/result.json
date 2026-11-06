@@ -1,0 +1,123 @@
+{
+  "task": "s11",
+  "persona": "careful-retiree-pc",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T02:17:54.384Z",
+  "structured": {
+    "answer": "It seems worth having: my employer adds up to 7.5% of my salary and I put in 2.5%, and after 6 years from the first payment I can take it all out without tax (3 years if I've reached retirement age). But I didn't understand what the money is invested in, so I'd ask the bank which option is the safe one, and about the fee of up to 2% a year.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Screen 1, box 'מה הנעילה של קרן ההשתלמות קונה לכם?'",
+        "why": "It starts with 'מדד S&P 500' in English letters, coloured dots and a slider; I didn't know what it compares or what I'm meant to do."
+      },
+      {
+        "where": "Screen 2, numbers and the table of עלויות/מס",
+        "why": "Too many numbers, and a minus sign '‎-342.02 ₪' scared me; I couldn't tell whether it's a loss."
+      },
+      {
+        "where": "Screen 3, orange warning",
+        "why": "'47%' next to taking money out early; I wasn't sure whether that's the tax I'd lose."
+      }
+    ],
+    "used": [
+      "Subtitle under the heading: 'אחרי תקופה שקבעה החוק אפשר למשוך בפטור ממס'",
+      "'מה זה' section: 'עד 7.5% … ועד 2.5% מכם', '6 שנים אחרי התשלום הראשון'",
+      "'למה משתמשים בזה': 'הפקדות המעסיק קיימות רק כאן'",
+      "'הנעילה היא 6 שנים… למי שהגיע לגיל פרישה… רק 3 שנים'",
+      "Card 'מתי הכסף פנוי – כשעוברות 6 שנים' and 'עד 4 ימי עסקים'",
+      "'בפיקוח רשות שוק ההון'",
+      "Fees table: 'דמי ניהול מחיסכון עד 2% בשנה'",
+      "Orange warning 'משיכה לפני הזמן אפשרית, אבל יקרה'",
+      "'השווי עולה ויורד עם ההשקעות' under סיכונים"
+    ],
+    "skimmed": [
+      "S&P 500 comparison box and slider",
+      "Bars 17,370 / 16,955 and the עלויות/מס table",
+      "'ההפרש תלוי גם במי שבוחרים' bullets",
+      "'שווה לדעת' list",
+      "Tax cards under מיסוי",
+      "Glossary table מונחים"
+    ],
+    "skipped": [
+      "'שחקו עם המספרים שלכם' fold",
+      "'שינוי הסכומים' fold",
+      "'הצגת החברות' and 'כל החברות'",
+      "'הצגת החוקים והכללים' links",
+      "'מה האתר לקח בחשבון'",
+      "Top menu and footer links"
+    ],
+    "unsure_meaning": [
+      "S&P 500",
+      "מדד (stock index, not the price index)",
+      "מסלול כללי",
+      "חשבון ניירות ערך",
+      "קרן מחקה",
+      "דמי נאמן",
+      "הרווח הריאלי",
+      "ותק",
+      "‎-342.02 ₪",
+      "47%",
+      "TXH-09, KH-15, PF-18, PF-06, KH-22 tags",
+      "123 ממקור / 123 מחושב / 123 הזנה"
+    ],
+    "not_found": [
+      "A plain sentence saying which option inside the fund is safe like a deposit",
+      "Whether my own bank offers this fund",
+      "A simple sentence about how much the 2% fee takes in shekels"
+    ],
+    "findings": [
+      {
+        "what": "The explanation box opens with English letters 'S&P 500' and a comparison with a securities account. For someone just asking what a keren hishtalmut is, this is frightening and not relevant.",
+        "where": "Screen 1, 'מה הנעילה של קרן ההשתלמות קונה לכם?'"
+      },
+      {
+        "what": "A minus sign in '‎-342.02 ₪' among many numbers makes me back away without knowing whether it's a loss.",
+        "where": "Screen 2, bullet about המנהל של קרן ההשתלמות"
+      },
+      {
+        "what": "Dark background with small grey text; the notes are almost unreadable even enlarged.",
+        "where": "Whole page, e.g. 'ההכנסה: דוגמה של האתר', notes under the tables"
+      },
+      {
+        "what": "Too many numbers on one screen (17,370; 16,955; 415.84; 2,402.23; 2,922.17; 23,692...)",
+        "where": "Screen 2 top"
+      },
+      {
+        "what": "A slider to choose the years; I won't drag it",
+        "where": "Screen 1 bottom"
+      },
+      {
+        "what": "'47%' in the warning without a plain sentence saying it's tax I would pay",
+        "where": "Screen 3 orange box"
+      },
+      {
+        "what": "Unfamiliar company names and English code tags beside the rows",
+        "where": "Screen 3 fees table, screen 2 'שווה לדעת'"
+      },
+      {
+        "what": "It's a private site ('אתר אישי'), not a bank or the government, so I'm not sure how much to trust it",
+        "where": "Footer"
+      }
+    ]
+  },
+  "steps": 4,
+  "reads": 4,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 39521,
+    "turns": 6,
+    "usd": 0.1986046,
+    "input": 10,
+    "cacheWrite": 14480,
+    "cacheRead": 41023,
+    "output": 3726,
+    "model": "claude-opus-5-5"
+  }
+}

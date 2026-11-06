@@ -1,0 +1,98 @@
+{
+ "personas": [
+  "first-job-phone",
+  "careful-retiree-pc"
+ ],
+ "tasks": [
+  {
+   "key": "p14-dead-harel-pc",
+   "text": "You are thinking of opening an investment savings fund (kupat gemel lehashkaa) with Harel. This is Harel's page on a site you found. Use it to choose one of its tracks, and say why.",
+   "variant": "planted/p14-dead-harel-pc",
+   "device": "pc",
+   "findings": true,
+   "page": "https://orishamir.github.io/finance-tool/companies/512267592",
+   "steps": [
+    [
+     "click",
+     "קופת גמל להשקעה"
+    ]
+   ]
+  },
+  {
+   "key": "p14-dead-keren-phone",
+   "text": "You are self-employed and are thinking of opening a study fund (keren hishtalmut) and paying into it yourself. This is a page you found. Use its calculator to see roughly how much you would have if you took the money out after 4 years, and after 8 years.",
+   "variant": "planted/p14-dead-keren-phone",
+   "device": "phone",
+   "findings": true,
+   "start": "https://orishamir.github.io/finance-tool/guide/keren-hishtalmut",
+   "minutes": 10,
+   "actions": 30
+  },
+  {
+   "key": "p14-dead-sp500-pc",
+   "text": "You want to put money into an S&P 500 index fund every month. This is a page you found. Put in your own plan, 750 ₪ a month for 15 years with nothing at the start, and check what the page assumes about inflation. Then say where you would hold the money and how much you would end up with.",
+   "variant": "planted/p14-dead-sp500-pc",
+   "device": "pc",
+   "findings": true,
+   "start": "https://orishamir.github.io/finance-tool/indices/sp500",
+   "minutes": 10,
+   "actions": 30
+  },
+  {
+   "key": "p15-jump-keren-phone",
+   "text": "You are self-employed and are thinking of opening a study fund (keren hishtalmut) and paying into it yourself. This is a page you found. Use its calculator to see roughly how much you would have if you took the money out after 4 years, and after 8 years.",
+   "variant": "planted/p15-jump-keren-phone",
+   "device": "phone",
+   "findings": true,
+   "start": "https://orishamir.github.io/finance-tool/guide/keren-hishtalmut",
+   "minutes": 10,
+   "actions": 30
+  },
+  {
+   "key": "p15-jump-sp500-pc",
+   "text": "You want to put money into an S&P 500 index fund every month. This is a page you found. Put in your own plan, 750 ₪ a month for 15 years with nothing at the start, and check what the page assumes about inflation. Then say where you would hold the money and how much you would end up with.",
+   "variant": "planted/p15-jump-sp500-pc",
+   "device": "pc",
+   "findings": true,
+   "start": "https://orishamir.github.io/finance-tool/indices/sp500",
+   "minutes": 10,
+   "actions": 30
+  },
+  {
+   "key": "control-harel-pc",
+   "text": "You are thinking of opening an investment savings fund (kupat gemel lehashkaa) with Harel. This is Harel's page on a site you found. Use it to choose one of its tracks, and say why.",
+   "variant": "planted/control-harel-pc",
+   "device": "pc",
+   "findings": true,
+   "page": "https://orishamir.github.io/finance-tool/companies/512267592",
+   "steps": [
+    [
+     "click",
+     "קופת גמל להשקעה"
+    ]
+   ]
+  },
+  {
+   "key": "control-keren-phone-browser",
+   "text": "You are self-employed and are thinking of opening a study fund (keren hishtalmut) and paying into it yourself. This is a page you found. Use its calculator to see roughly how much you would have if you took the money out after 4 years, and after 8 years.",
+   "variant": "planted/control-keren-phone-browser",
+   "device": "phone",
+   "findings": true,
+   "start": "https://orishamir.github.io/finance-tool/guide/keren-hishtalmut",
+   "minutes": 10,
+   "actions": 30
+  },
+  {
+   "key": "control-sp500-pc-browser",
+   "text": "You want to put money into an S&P 500 index fund every month. This is a page you found. Put in your own plan, 750 ₪ a month for 15 years with nothing at the start, and check what the page assumes about inflation. Then say where you would hold the money and how much you would end up with.",
+   "variant": "planted/control-sp500-pc-browser",
+   "device": "pc",
+   "findings": true,
+   "start": "https://orishamir.github.io/finance-tool/indices/sp500",
+   "minutes": 10,
+   "actions": 30
+  }
+ ],
+ "parallel": 3,
+ "repeat": 2
+}

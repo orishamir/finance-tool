@@ -14,6 +14,19 @@
   "scope": "general",
   "sources": [
     {
+      "url": "https://www.gov.il/BlobFolder/policy/professional-directives-271125-1/he/IncomeTax_professional-directives-271125-1.pdf#page=4",
+      "title": "חוזר מס הכנסה 10/2025, קיזוז הפסדים, 27.11.2025",
+      "title_he": "חוזר מס הכנסה 10/2025, קיזוז הפסדים, 27.11.2025",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "pp.4-5, s.3.3.1",
+      "locator_he": "עמודים 4 עד 5, סעיף 3.3.1",
+      "page": 4,
+      "checked": "2026-11-06"
+    },
+    {
       "url": "https://www.btl.gov.il/Laws1/02_0103_100269.pdf",
       "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס\"ו-2005",
       "title_he": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס״ו-2005",

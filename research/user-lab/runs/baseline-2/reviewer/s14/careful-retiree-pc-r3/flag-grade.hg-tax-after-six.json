@@ -1,0 +1,36 @@
+{
+  "case": "hg-tax-after-six",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"With a high salary entered, the graphic says tax is due even after 6 years and shows a large income-tax figure, without making clear which money it is on.\",\"where\":\"the graphic and its sentences\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "liked": [],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 1,
+        "why": "Finding 1 complains about the large, unexplained negative figure in the chart (−64,761 ₪), which is most likely the income-tax amount the person also said was shown without making clear which money it applies to, so it matches a clear part of their problem."
+      }
+    ],
+    "usd": 0.0181474
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 1,
+        "why": "Finding 1 points to the large red negative bar (−64,761 ₪) on the results chart and says nothing nearby explains it, which matches the person's complaint that a large income-tax figure is shown without making clear which money it applies to."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0174674
+  },
+  "third": null,
+  "ranks": {
+    "k": 1
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0356148
+}

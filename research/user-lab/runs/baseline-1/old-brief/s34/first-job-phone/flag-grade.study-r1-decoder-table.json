@@ -1,0 +1,71 @@
+{
+  "case": "study-r1-decoder-table",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"A table exists only to decode the graph instead of the names and numbers being written on the graph, adding mental overhead.\",\"where\":\"the table under the graph\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "The title and subtitle (\"שרטוט לבחירה\") said nothing useful",
+      "The third card is confusing: the fund is 394 less on its own, but B shows +527",
+      "The fine-print jargon (דמי ניהול, מחקה, 4D, number codes) was skipped because it wasn't understood",
+      "Option B's steps run left to right, so a Hebrew reader sees the result first and the steps backwards",
+      "Option C has too much going on and is hard to read",
+      "Unclear why the +1,721 card is 'after 10 years' when everything else is about 5 or 6 years",
+      "Unclear what ברוטו means if your salary isn't 12,000",
+      "Can't find whether the employer offers this or how much they contribute",
+      "Can't find what happens if you change jobs before year 6",
+      "Can't find whether you can withdraw in an emergency in year 3, or the exact tax",
+      "Can't find how to open a fund or which one to pick",
+      "There's nowhere to enter your own salary",
+      "The second copy of A for year 6 repeats the year-6 card and could go",
+      "Option B could be dropped",
+      "Most of the grey fine print could be dropped"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader praised the table as the place they actually checked the numbers and never complained that it only decodes the graph or should be labels on the graph."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0458312
+  },
+  "b": {
+    "raised": [
+      "The title/subtitle \"שרטוט לבחירה\" told the reader nothing",
+      "Third card is confusing: it says the fund is ₪394 less on your own money, but B shows +527, and the reader gave up on it",
+      "B (מדרגות) runs left to right, so a Hebrew reader hits the result first and reads the steps backwards",
+      "C (כל השנים בעמודות) has too much going on and is hard to read",
+      "Didn't understand the jargon \"דמי ניהול\" and \"מסלול מחקה\"",
+      "Didn't understand \"(4D)\" and the long numbers in brackets",
+      "Unclear why the +1,721 card is about 10 years when everything else is 5 or 6 years",
+      "Unclear what \"ברוטו\" means for them if their salary isn't 12,000",
+      "Can't find how to tell whether their employer offers this and how much it puts in",
+      "Can't find what happens if they change jobs before year 6",
+      "Can't find whether they can withdraw in an emergency in year 3, and how much tax they'd pay",
+      "Can't find how to actually open a fund or which fund to pick",
+      "No place to type in their own salary and get their own numbers",
+      "The second copy of A for year 6 is redundant and would be dropped",
+      "Would drop B (מדרגות)",
+      "Would drop most of the grey fine print, keeping only the orange warning"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader relied on the table under A and praised it as where they checked the numbers; nowhere do they complain that it only exists to decode the graph or that labels should be on the graph."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0505672
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0963984
+}

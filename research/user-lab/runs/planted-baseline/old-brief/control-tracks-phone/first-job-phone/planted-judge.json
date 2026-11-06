@@ -1,0 +1,65 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "The intro paragraph uses 'החשיפה' (exposure) without explaining it, so the reader only half understood it.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "The '123 ממקור · 123 מחושב' line is confusing. The reader doesn't know why some numbers are from the source and others are calculated, or whether to trust one kind less. The dotted and solid underlines are also unexplained.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "The 'מיון' control is cut off, so the reader can't tell what it sorts by. Finding the S&P tracks meant scrolling through about 40 screens and roughly 140 tracks.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "The page doesn't explain how the 'מניות' and 'עוקב מדדי מניות' tracks differ from the S&P 500 tracks. Their higher returns (24–26%) tempted the reader, who couldn't judge them.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "The 'מניות 99% / מט\"ח 99%' figures make no sense to the reader, since both can't be 99% of the same whole, and 'מניות 101%' at Meitav made it worse. The reader gave up on these exposure figures.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 6,
+      "summary": "The reader can't tell 'מהחיסכון' from 'מההפקדות': are these two kinds of fee, and which one would they actually pay?",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 7,
+      "summary": "'פחות מ־3 שנים' is ambiguous: a new track or missing data? Because of it, the reader passed over the cheapest S&P track.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 8,
+      "summary": "Track terms such as 'סחיר', 'אג\"ח', 'משולב', 'גמיש' and 'כללי' aren't explained in terms of what they mean for the reader's money.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 9,
+      "summary": "Nothing explains why S&P 500 tracks that follow the same index show different returns, or what a fee gap like 0.58% vs 0.56% means in shekels.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 10,
+      "summary": "Practical information is missing: how to open an account, minimum deposit, withdrawals and tax, whether the fee can be negotiated, 1-year or worst-year returns, and a simple view for the reader's situation.",
+      "serious": false,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.0623948
+}

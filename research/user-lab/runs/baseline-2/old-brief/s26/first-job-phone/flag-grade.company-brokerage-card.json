@@ -1,0 +1,78 @@
+{
+  "case": "company-brokerage-card",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The securities-account card on a company's page does not look like the site's other product cards.\",\"where\":\"the securities-account card\",\"kind\":\"taste\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "The ₪10,000 minimum to open the account was unexpected; they'd have to save that much first",
+      "Unclear whether US shares or the S&P 500 can be bought here; foreign securities are marked 'לא ידוע'",
+      "Currency conversion is confusing: two rows (1.5 agorot per dollar and 0.5%), and 'מרווח ההמרה' has no cap",
+      "The long paragraph on foreign securities is heavy to read",
+      "The ad promises no conversion fees but the document charges 1.5 agorot per dollar, which is a little annoying",
+      "The ad says funds are exempt from the buy/sell fee but the document says 0.07%; they can't tell which is true",
+      "The 'דמי משמרת' comparison row was cut off and couldn't be read",
+      "Didn't understand what the fee-change notice is for",
+      "The 'מה כתוב במסמכים של פסגות' / 'חשבון ניירות ערך · 2' section looked like legal text, so they skipped it and would drop it",
+      "Doesn't know terms in the grey applies-to lists, like איגרות חוב and מק\"מ",
+      "Didn't understand what 'דמי ניהול פיקדון' is",
+      "Didn't understand 'חבר בורסה'",
+      "Wanted a total cost example, such as the yearly cost of investing ₪500 a month",
+      "Couldn't find whether there is a fee to deposit money or to close the account",
+      "Couldn't find what happens with less than ₪10,000",
+      "Would drop the clause numbers and dates, the blue 'בתעריפון' links, '123 ממקור' and the search box"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The report mentions the securities-account section only as legal-looking text it skipped, and never says the card looks different from the site's other product cards."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0562352
+  },
+  "b": {
+    "raised": [
+      "Small purchases cost relatively more because of the ₪2.00 minimum per trade",
+      "The ₪10,000 minimum to open an account was unexpected",
+      "Unclear whether US shares or the S&P 500 can be bought, since foreign securities are marked 'לא ידוע'",
+      "Not sure what the deposit management (holding) fee is",
+      "Confused by two currency conversion rows (1.5 agorot vs 0.5%) and the uncapped conversion spread",
+      "The foreign-securities paragraph is long and heavy to read",
+      "The ad says no conversion fees but the document charges 1.5 agorot per dollar",
+      "The ad says funds are exempt from the buy/sell fee but the document says 0.07%, so it's unclear which is true",
+      "The custody-fee comparison row was cut off and couldn't be read",
+      "Didn't understand what the 'notice of fee changes' is for",
+      "'חשבון בתנאים שלכם' didn't seem relevant to them",
+      "The 'מה כתוב במסמכים של פסגות / חשבון ניירות ערך · 2' section looked like legal text, so they skipped it",
+      "Didn't understand terms like מק\"מ, איגרות חוב and חבר בורסה in the grey applicability lists",
+      "Unclear whether קרן סל includes an S&P 500 fund",
+      "No clear yes/no on whether the S&P 500 can be bought here, or with which product",
+      "No example of total yearly cost",
+      "No information on deposit or account-closing fees",
+      "No information on what happens with less than ₪10,000",
+      "Would drop the clause numbers and dates in the ad-vs-documents section",
+      "Would drop the blue 'בתעריפון' links",
+      "Would drop '123 ממקור'",
+      "Would drop the search box on the left"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader skipped the securities-account section because it looked like legal text, but never said that the card looks different from the site's other product cards."
+      }
+    ],
+    "liked": [],
+    "usd": 0.057779199999999996
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.11401439999999999
+}

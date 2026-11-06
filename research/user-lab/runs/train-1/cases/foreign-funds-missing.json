@@ -1,0 +1,14 @@
+{
+ "id": "foreign-funds-missing",
+ "task": "t49",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "IBI and Altshuler are not compared on foreign funds, though they sell them.",
+   "where": "the foreign funds' prices by account",
+   "kind": "general",
+   "outside": true
+  }
+ ],
+ "liked": []
+}

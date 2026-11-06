@@ -1,0 +1,36 @@
+{
+  "case": "guides-useless-sections",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The guide home has sections that say nothing useful ('שני חלקים בכל חיסכון', 'מאיפה להתחיל').\",\"where\":\"the sections above or below the list of guides\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 4 is about the 'מאיפה להתחיל' section, but its complaint is an unexplained term (קרן חדשה מקיפה), not that the section says nothing useful, and no finding mentions 'שני חלקים בכל חיסכון' at all."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0181354
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 4 is about the 'מאיפה להתחיל' section, but it complains about an unexplained term (קרן חדשה מקיפה), not that the section says nothing useful, and no finding calls these sections empty."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0170674
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0352028
+}

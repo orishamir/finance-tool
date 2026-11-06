@@ -1,0 +1,13 @@
+{
+ "id": "hg-tax-after-six",
+ "task": "s14",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "With a high salary entered, the graphic says tax is due even after 6 years and shows a large income-tax figure, without making clear which money it is on.",
+   "where": "the graphic and its sentences",
+   "kind": "general"
+  }
+ ],
+ "liked": []
+}

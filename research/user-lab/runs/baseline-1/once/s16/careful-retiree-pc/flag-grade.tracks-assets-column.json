@@ -1,0 +1,36 @@
+{
+  "case": "tracks-assets-column",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The column 'נכסים בסוף ספטמבר' does not say it means the money pooled in the track; it reads as the fund's own assets.\",\"where\":\"that column's head\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings mention the 'נכסים בסוף ספטמבר' column or confusion between money in the track and the fund's own assets; finding 5 is about a different column, the return column."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0155514
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings mention the assets column 'נכסים בסוף ספטמבר' or that its header could be read as the fund's own assets. Finding 5 is about a header too, but it is the return column's header, so it is a different problem."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0158954
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0314468
+}

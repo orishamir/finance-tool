@@ -1,0 +1,36 @@
+{
+  "case": "tracks-r2-companies",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"Rows repeat their group's heading: each company row repeats the track kind in its name and again in a label, and under a heading 'עוקב מדד S&P 500' every row says it again.\",\"where\":\"the rows under each group heading\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings mentions rows repeating the track kind or the group heading; finding 3 is about too many numbers on each line and finding 6 is about unexplained jargon, which are different complaints."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0151634
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings mention rows repeating the group heading or the track kind. Finding 3 is about too many numbers on each line, not about repeated labels."
+      }
+    ],
+    "liked": [],
+    "usd": 0.014775400000000001
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0299388
+}

@@ -1,0 +1,39 @@
+{
+  "id": "p02-percent-keren-phone",
+  "about": "For the lab only; never reaches a session. Planted problem, kind p02 (A percentage where the money that matters is in shekels): see research/user-lab/planted.md.",
+  "purpose": "plant",
+  "pages": [
+    "/finance-tool/guide/keren-hishtalmut"
+  ],
+  "device": "phone",
+  "instance": {
+    "kind": "p02",
+    "mode": "page",
+    "url": "https://orishamir.github.io/finance-tool/guide/keren-hishtalmut",
+    "device": "phone",
+    "steps": [],
+    "task": "keren",
+    "control": "planted/control-keren-phone",
+    "split": "score"
+  },
+  "plants": [
+    {
+      "id": "p02",
+      "kind": "general",
+      "problem": "The difference in management fees between similar tracks is given only as a range of yearly percentages, with no word on what it costs in money.",
+      "where": "the paragraph under the study fund's calculator, about the example track",
+      "counts": "A finding that the fee range (0.48% to 0.7%) does not say what the difference means in money, or that a reader cannot tell whether the difference matters.",
+      "notCounts": "Not knowing what management fees are."
+    }
+  ],
+  "changes": [
+    {
+      "id": "pct-shown",
+      "type": "style",
+      "selector": "[data-pl=\"pct\"]",
+      "set": {
+        "--pl": "1"
+      }
+    }
+  ]
+}

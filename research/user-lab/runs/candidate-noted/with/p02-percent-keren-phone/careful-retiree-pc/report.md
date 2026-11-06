@@ -1,0 +1,79 @@
+# p02-percent-keren-phone: careful-retiree-pc
+
+shots mode, phone; 6 steps, 35 s, $0.17
+
+## Answer
+
+If I read it right, I can take the money out without tax six years after the first deposit (three if I've reached retirement age, and I have), and in their 5-year example, with 300 ₪ a month from me and 900 ₪ from the employer, I'd come away with roughly 50 to 66 thousand shekels. But the numbers didn't agree with each other and there was a red minus for tax, so I'll ask you and the fund before I sign anything.
+
+Confidence: unsure; gave up: false
+
+## Stuck
+
+- Calculator, screen 3: 'מושכים את הכסף אחרי 5 שנים' with the bar chart: The example opens at 5 years, the year with tax. I didn't know whether to move the little circle to 6, and I don't use sliders, so I stayed with the taxed example.
+- Bars with +54,000 / +8,487 / −13,974 / 66,5..: The bar captions are on the next screen, and at first I thought the 54,000 was my own money. The first bar's number was cut off. The red minus for tax scared me.
+- Screen 4 sentence: 'לחשבון נכנסים קודם 50,719 ₪, והקרן מעבירה 29,768 ₪ למס הכנסה... 15,794 ₪ מהם חוזרים': I couldn't tell whether I end up with 50,719, or 66 thousand, or the money that comes back too. A third of it to tax? That's a lot.
+- Screens 1-2 junction: The top of the sentence about how much is tax-free was hidden behind the top bar, so I saw only 15,712 ₪ and 20,566 ₪ without knowing what each one was.
+- Monthly amounts: The boxes say 2.5% and 7.5%, but the sentence says 300 ₪ and 900 ₪. They don't tell me whose salary that comes from.
+
+## Used
+
+- Heading and line under it: 'אחרי תקופה שקבע החוק אפשר למשוך בלי מס'
+- 'אחרי 6 שנים מההפקדה הראשונה אפשר למשוך... למי שהגיע לגיל הפרישה מספיקות 3 שנים'
+- 'אפשר למשוך גם לפני 6 השנים, אבל אז משלמים מס'
+- Calculator boxes: 2.5%, 7.5%, 7%, 0.54%
+- '300 ₪ בחודש מכם, 900 ₪ מהמעסיק'
+- Bar numbers +54,000, +8,487, −13,974, 66,5..
+- Sentence 'משיכה אחרי 5 שנים: ... 50,719 ₪ ... 29,768 ₪ ... 15,794 ₪'
+- 'הנחות של האתר, לא תחזית'
+- 'עד 4 ימי עסקים' under משיכה ומעבר
+
+## Skimmed
+
+- Year bar chart with gold/green/grey colours and pink stripes
+- 'כל הסכומים בכסף של היום' paragraph
+- שווה לדעת facts
+- מי מציע ומי מצטרף section
+
+## Skipped
+
+- 'במה אפשר להשקיע' buttons (S&P 500, מזומן שקלי)
+- The paragraph about 'מיטב השתלמות עוקב מדד S&P500 (13245)'
+- 'חוקים וכללים' badges, KH-19 / PF-18 codes
+- 'לעמוד של חשבון ניירות ערך' link
+- 'הצגת החברות' fold
+- Screens 7-13: I was tired by then
+
+## What would bother this person, most first
+
+- Screen 3-4 calculator: The example defaults to 5 years, the taxed case, with a big red minus. Nothing tells me what I'd get at 6 years without moving a marker.
+- Screen 3 bars and screen 4 sentence: Three different totals (50,719 / 66,5.. / plus 15,794 back), and I can't tell which is my money
+- Screens 3-4: The bar labels are on a different screen from the numbers, and one number is cut off by the up-arrow button
+- Screens 4-6: Dark background with grey text; the paragraphs under the chart are pale and tiring
+- Screens 2, 4, 5: English letters and codes: S&P 500, KH-19, PF-18
+- Screen 3: Close colours in the year chart (two golds, grey, green, pink stripes) with no sentence saying what they mean
+- Top of screen 2: The top bar covers the start of the paragraph about the tax-free limit
+- Screens 2-4: Nothing says whether the money can fall; the word מדד and S&P make it sound like the stock market
+
+## Not sure what it meant
+
+- מסלול השקעה / מסלול מדד: I don't know which מדד they mean
+- S&P 500, KH-19, PF-18
+- '123 ממקור', '123 מחושב', dotted vs dashed underlines
+- −13,974 versus 29,768 for the tax: which one is it?
+- 66,5.. (cut off) versus 50,719: which is what I'd have?
+- 'התשואה הוספה אחרי דמי ניהול' and 'כסף של היום'
+- 15,712 ₪ and 20,566 ₪: a limit on what?
+- Pink striped parts of the bars
+- Gold vs dark gold vs grey bars: close colours
+
+## Looked for and did not find
+
+- A clear sentence: 'after 6 years you'd have X ₪'
+- The total for 6 years without tax in the same plain words as the 5-year one
+- Whether it's guaranteed like a deposit, or can go down
+- Whose salary the 300/900 comes from
+
+## What it said along the way
+
+

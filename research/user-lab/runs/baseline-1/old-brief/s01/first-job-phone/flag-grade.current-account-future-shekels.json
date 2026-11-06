@@ -1,0 +1,84 @@
+{
+  "case": "current-account-future-shekels",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"With 'בשקלים של העתיד' chosen, the figures ignore inflation, so they are wrong.\",\"where\":\"the chart and figures of the panel\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "The page names פיקדונות and קרן כספית but never explains or compares them, and says nothing about the S&P 500",
+      "The cost table gives no shekel amount ('לפי התעריפון של הגורם המציע'), so the reader can't tell what the account costs",
+      "The '123 מקומת / מחושב / הזנה' colour key under the title is confusing",
+      "The basic/extended track line doesn't say what either track costs",
+      "The calculator defaults to a 5% return that a current account doesn't pay, so ₪74,044 makes the account look like it grows",
+      "'גיל (לא חובה)' and 'הצמדה: לא צמוד' meant nothing to the reader",
+      "The קרן כספית paragraph ('יחידות בקרן נפדות רק ביום מסחר') is hard to follow",
+      "שווה לדעת repeats מה זה, its codes (BANK-20 etc.) look internal, and 'מק\"ם' isn't explained",
+      "'ריבית צמודה למדד: 25% מהריבית הריאלית' in מיסוי isn't understood",
+      "The code 'TXI OQ11' in the red מעוטי הכנסה box is meaningless",
+      "Worried that Israel has no deposit insurance and that a current account isn't covered by the proposed ₪250,000 protection",
+      "מה האתר לקח בחשבון (lock icons, 'חסום: שאלה פתוחה') reads like the site's internal notes",
+      "The pink 'מס' line in the chart is a thin sliver and hard to see",
+      "Confused why deposits show ₪62,681 rather than the ₪70,000 actually deposited",
+      "The 'מס ₪2,005' row is confusing when the account pays no interest",
+      "The 'חוקים וכללים' column is empty and 'הצגת החוקים והכללים' is unclear",
+      "Doesn't understand the 'בשקלים של העתיד' option",
+      "Can't find how much interest banks pay on a positive balance today",
+      "'Expenses of the month' is too vague a guide for how much to keep in the account, and there's no word on an emergency fund",
+      "Nothing on what exactly to say to the bank",
+      "Would drop the red box, מי מציע ומי מפקח, the איפה מופיע column, and shrink כסף נכנס ויוצא"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader only says they didn't understand the 'בשקלים של העתיד' label and left the toggle on the default, so they never claim that the figures in that mode ignore inflation and are wrong."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0651072
+  },
+  "b": {
+    "raised": [
+      "The page names פיקדונות and קרן כספית but never explains or compares them, and says nothing about the S&P 500",
+      "The cost table gives no shekel amount, only 'לפי התעריפון של הגורם המציע'",
+      "The '123 מקומת / מחושב / הזנה' colour key under the title is confusing",
+      "The basic/extended track line doesn't say what either track costs",
+      "The calculator defaults to a 5% return for a current account, so the big ₪74,044 makes it look like the money grows",
+      "'גיל (לא חובה)' and 'הצמדה: לא צמוד' meant nothing to the reader",
+      "The קרן כספית paragraph is unclear ('יחידות בקרן נפדות רק ביום מסחר')",
+      "שווה לדעת repeats the ₪15,000 point and has codes (BANK-20 etc.) and the term מק\"ם that the reader didn't understand",
+      "'ריבית צמודה למדד: 25% מהריבית הריאלית' in מיסוי was not understood",
+      "The code 'TXI OQ11' in the red box meant nothing",
+      "Worried that Israel has no deposit insurance and that a current account is left out of the proposed ₪250,000 protection",
+      "'מה האתר לקח בחשבון' reads like the site's own notes (lock icons, 'חסום: שאלה פתוחה')",
+      "The pink tax line on the chart is a thin sliver and hard to see",
+      "Unclear why deposits show ₪62,681 rather than the ₪70,000 actually put in",
+      "'מס ₪2,005' in the year-10 rows is confusing when the account pays no interest",
+      "The 'חוקים וכללים' column in the cost table is empty",
+      "Did not understand the 'בשקלים של העתיד' toggle option",
+      "Did not understand terms like ניירות ערך, פירעון, יום מסחר, קיזוז הפסדים",
+      "Unclear what 'הצגת החוקים והכללים' refers to",
+      "Wanted the typical interest banks pay on a positive balance today",
+      "Wanted clear guidance on how much to keep in the current account and on an emergency fund",
+      "Wanted to know exactly what to say to the bank",
+      "Would drop the red 'מעוטי הכנסה' box, מי מציע ומי מפקח, the 'איפה מופיע' column and most of the מונחים table, and shrink כסף נכנס ויוצא"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader left the toggle on the default 'בכסף של היום' and only said they didn't understand 'בשקלים של העתיד'; they never said that in that view the figures ignore inflation and are wrong."
+      }
+    ],
+    "liked": [],
+    "usd": 0.06444720000000001
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.12955440000000001
+}

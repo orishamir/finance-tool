@@ -1,0 +1,100 @@
+{
+  "task": "control-keren-phone-browser",
+  "persona": "careful-retiree-pc",
+  "repeat": 1,
+  "mode": "browser",
+  "device": "phone",
+  "startedAt": "2026-11-06T02:03:54.298Z",
+  "structured": {
+    "answer": "After 8 years, putting in 500 ₪ a month, I'd have about 68,853 ₪ (I put in 48,000). For 4 years the calculator gives no number for self-employed people. It only says you'd pay tax before 6 years, so I'd ask.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Calculator, year 4 selected",
+        "why": "The bars for years 1-5 are empty and there's no amount for the fund. The only number, 25,725, is for 'אותו כסף בחשבון ניירות ערך', which isn't what I asked about."
+      },
+      {
+        "where": "Calculator defaults",
+        "why": "I wasn't given amounts, so I kept 500 ₪ and 7% without knowing if 7% is realistic."
+      }
+    ],
+    "used": [
+      "Opening text: 'אחרי 6 שנים... אפשר למשוך... בלי מס'",
+      "'לעצמאים... עד 20,566 ₪ בשנה'",
+      "The שכירים/עצמאים toggle",
+      "Year numbers under the chart (4 and 8)",
+      "Orange note 'לעצמאים עוד אין כאן חישוב למשיכה לפני 6 שנים'",
+      "Bars for year 8: הפקדתם 48,000, נשאר בידיים 68,853"
+    ],
+    "skimmed": [
+      "7.5% / 2.5% rules for employees",
+      "The small coloured bars in the year chart",
+      "The +9,581 and +11,272 columns"
+    ],
+    "skipped": [
+      "'כדאי להכיר גם' links (קופת גמל להשקעה, ניהול אישי)",
+      "'במה אפשר להשקיע' buttons including מדד S&P 500",
+      "Everything below the year-8 result",
+      "Sections שווה לדעת and מי מציע ומי מצטרף"
+    ],
+    "unsure_meaning": [
+      "במסלול מדד",
+      "הכנסה חייבת",
+      "אותו כסף בחשבון ניירות ערך",
+      "25,725 shown over an empty dashed box",
+      "Yellow vs green colours in the bars",
+      "Purple dotted underlines on numbers",
+      "תשואה 7% – where it comes from"
+    ],
+    "not_found": [
+      "Any amount for the fund itself after 4 years for self-employed",
+      "A plain sentence explaining the 4-year result"
+    ],
+    "findings": [
+      {
+        "what": "For self-employed people, there's no result for withdrawing before 6 years, only empty boxes and a note. A number from another product (25,725) is shown in the same spot, which is confusing.",
+        "where": "Calculator, years 1-5"
+      },
+      {
+        "what": "Red/pink 'לפני 6 שנים: מס' is alarming without saying how much",
+        "where": "Above the year chart"
+      },
+      {
+        "what": "A dark background and grey small text are hard to read",
+        "where": "Whole page, 'גררו את הסמן...' line"
+      },
+      {
+        "what": "'מסלול מדד' and S&P are used without explanation",
+        "where": "Sentence under the chart, investment buttons"
+      },
+      {
+        "what": "The 7% return is filled in by default with no note about risk",
+        "where": "Calculator field תשואה בשנה"
+      }
+    ]
+  },
+  "steps": 8,
+  "reads": 7,
+  "commands": 8,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 56912,
+    "turns": 17,
+    "usd": 0.25867019999999996,
+    "input": 32,
+    "cacheWrite": 17905,
+    "cacheRead": 215811,
+    "output": 3607,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "control-keren-phone-browser",
+    "screenshots": 8,
+    "changes": [],
+    "neverShown": [],
+    "errors": []
+  }
+}

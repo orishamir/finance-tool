@@ -1,0 +1,93 @@
+{
+  "case": "makam-duplicates",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The guide list still offers makam as separate guide pages (one per way of holding it), though they describe one thing.\",\"where\":\"the makam entries in the guide list\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "The cards are too short to compare products properly, even though the intro promises easy comparison",
+      "The \"מאיפה להתחיל\" section is aimed at salaried workers and has nothing for someone close to retirement",
+      "The top row of short-term cards (חשבון עובר ושב, פיקדון, תכנית חיסכון) was cut off, so only the titles showed",
+      "It's unclear how קרן כספית מתחדשת differs from a regular קרן כספית",
+      "\"אחרי תקופה שקבע החוק\" doesn't give the actual period",
+      "The תגמולים ואישית לפיצויים card is confusing: does a 61-year-old need to move the money now?",
+      "\"ואינו מתחייב לטווח מניות\" in מסלול כללי is unclear: does it mean more risk or less?",
+      "The אג\"ח cards (צמודה / לא צמודה) are confusing and full of jargon",
+      "The index cards are nearly identical, all say the same thing and mean nothing to this reader",
+      "מק\"מ appears in both halves of the page: is it a place to hold money or a thing to invest in?",
+      "\"מה האתר עוד לא מכסה\" should say straight away what's missing",
+      "Only some cards have a \"בשפה פשוטה\" line; the reader wanted one on every card",
+      "The terms קופון, פדיון and תשואת המק\"מ aren't explained",
+      "The מק\"מ auction description is meaningless, and it's unclear whether an individual can buy it",
+      "\"שווי שוק\" and \"במשקל לפי שווי השוק הסחיר\" aren't understood",
+      "The difference between MSCI AC World and MSCI World doesn't seem to matter or isn't explained",
+      "Can't tell קרן חדשה מקיפה from קרן חדשה כללית, or which one the reader has",
+      "\"עד תקרה שנתית\" doesn't say what the ceiling is",
+      "No management fees (דמי ניהול) are mentioned",
+      "No risk levels are shown",
+      "Nothing on guarantees if the bank or fund fails",
+      "Nothing on what changes at age 60+, such as pension timing and tax",
+      "No interest or return figures",
+      "No clear path for people close to retirement",
+      "Would drop \"לבחירה עצמית\"",
+      "Would drop \"לילדים\"",
+      "Gaps in the screenshots hid some card descriptions"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 10,
+        "why": "The reader is confused that מק\"מ appears as a separate entry in both halves of the guide (once where money is held and once in what it's invested in), which is the duplicated-makam-entries problem."
+      }
+    ],
+    "liked": [],
+    "usd": 0.07499120000000001
+  },
+  "b": {
+    "raised": [
+      "The cards are too short to compare products properly, despite the intro's promise",
+      "'מאיפה להתחיל' is aimed at employees, with nothing for someone near retirement",
+      "The top row of cards (חשבון עובר ושב, פיקדון, תכנית חיסכון) was cut off, so only their titles were visible",
+      "Unclear how קרן כספית מתחדשת differs from a regular קרן כספית",
+      "'אחרי תקופה שקבע החוק' doesn't give the actual period",
+      "The תגמולים ואישית לפיצויים card is confusing: do I need to move the money now, at 61?",
+      "'לבחירה עצמית' (self-managed, broker abroad) isn't relevant; would drop it",
+      "'מסלול כללי… אינו מתחייב לטווח מניות' is unclear: more risk or less?",
+      "Got lost in the אג\"ח cards (צמודה / לא צמודה): too much jargon",
+      "The index cards are near-identical and repetitive; would drop them first",
+      "מק\"מ appears twice, in both halves of the page: is it a place to hold money or an investment?",
+      "'מה האתר עוד לא מכסה' should state what's missing up front",
+      "Terms like קופון, פדיון and תשואת המק\"מ aren't explained",
+      "The מק\"מ auction description is meaningless; can individuals even buy it?",
+      "'שווי שוק' and 'במשקל לפי שווי השוק הסחיר' aren't understood",
+      "The difference between MSCI AC World and MSCI World isn't meaningful to the reader",
+      "Can't tell קרן חדשה מקיפה from קרן חדשה כללית, or which one applies",
+      "'עד תקרה שנתית' doesn't say what the ceiling is",
+      "No management fees (דמי ניהול) are mentioned anywhere",
+      "No risk levels: which products can lose money and how much",
+      "No information on guarantees if the bank or fund fails",
+      "Nothing specific to age 60+ (when to draw a pension, what tax applies)",
+      "No interest or return figures, even rough ones",
+      "No clear path for people close to retirement",
+      "Would drop 'לילדים' as not relevant",
+      "Screenshot gaps hid the end of the children's cards and the MSCI/נאסד\"ק card text"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 11,
+        "why": "The reader complains that מק\"מ shows up as two cards in both halves of the page and would drop the second one, which is the person's duplicated-makam problem in other words."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0755512
+  },
+  "third": null,
+  "ranks": {
+    "k": 10
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.15054240000000002
+}

@@ -1,0 +1,130 @@
+{
+  "task": "s17",
+  "persona": "careful-retiree-pc",
+  "repeat": 3,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T12:27:16.295Z",
+  "structured": {
+    "answer": "I didn't choose anything. I'll ask my son or the bank, because the only companies I saw (מור, אנליסט, מיטב) are ones I don't know, and I couldn't tell which track is as safe as a deposit. \"כספי (שקלי)\" at about 4.3% \"לפני דמי ניהול\" was the gentlest-sounding line.",
+    "confidence": "fairly sure",
+    "gave_up": true,
+    "stuck": [
+      {
+        "where": "Screen 1, rows of track buttons",
+        "why": "Mostly English letters and words like עוקב מדד; only the אג\"ח ממשלתי buttons looked familiar"
+      },
+      {
+        "where": "Screen 2, top of the table",
+        "why": "The first rows have no company name above them, so I didn't know whose tracks they are"
+      },
+      {
+        "where": "Return column",
+        "why": "Most rows say 'פחות מ־3 שנים' with no number at all"
+      },
+      {
+        "where": "Screen 5, 'מניות' row showing 101%",
+        "why": "More than 100% made no sense to me"
+      },
+      {
+        "where": "Screen 6",
+        "why": "Tired and anxious from the dense numbers, so I stopped"
+      }
+    ],
+    "used": [
+      "Heading 'כל המסלולים בכל החברות'",
+      "Selected button 'קופת גמל להשקעה 143'",
+      "Company header rows: מור, אנליסט, מיטב",
+      "Rows 'כספי (שקלי)' and 'אשראי ואג\"ח' with their 3-year returns",
+      "Fee column 'דמי ניהול ... מהחיסכון'",
+      "Column note 'לפני דמי ניהול'"
+    ],
+    "skimmed": [
+      "Introductory paragraph under the heading",
+      "Orange warning 'נתוני הרשות לא עודכנו מאז ספטמבר 2026'",
+      "Assets column (millions/billions)",
+      "Fee lines 'מההפקדות 0%'"
+    ],
+    "skipped": [
+      "Coloured ring charts and 'חשיפה למניות ולמט\"ח' percentages",
+      "'123 מקורו/מחושב/הזנתה' legend",
+      "Search box and 'קיבוץ לפי' toggle",
+      "Link 'מה זה קופת גמל להשקעה'",
+      "Screens 7 to 15"
+    ],
+    "unsure_meaning": [
+      "s&p 500 / S&P500",
+      "עוקב מדד / עוקב מדדים - גמיש",
+      "סחיר",
+      "מט\"ח",
+      "חשיפה",
+      "קופה numbers (15286, 8211...)",
+      "101% מניות",
+      "123 מקורו / מחושב / הזנתה",
+      "פחות מ־3 שנים",
+      "לפני דמי ניהול",
+      "whether fees are per year",
+      "the turquoise and yellow ring charts"
+    ],
+    "not_found": [
+      "Any bank name I know",
+      "A plain comparison with a bank deposit",
+      "A sentence saying which track is safe or low-risk",
+      "The company name for the first rows of the table"
+    ],
+    "findings": [
+      {
+        "what": "No familiar or bank company names; only unknown companies (מור, אנליסט, מיטב)",
+        "where": "Company header rows, screens 3–5"
+      },
+      {
+        "what": "Opens with English letters and stock-index tracks; nothing says which option is safe like a deposit",
+        "where": "Screen 1, track buttons"
+      },
+      {
+        "what": "Dense dark table full of numbers, long lines that are hard to follow from right to left",
+        "where": "Screens 2–6"
+      },
+      {
+        "what": "Small, pale grey text on black is hard to read",
+        "where": "Intro text, column headings, 123 legend"
+      },
+      {
+        "what": "Many rows show 'פחות מ־3 שנים' instead of a return",
+        "where": "Return column"
+      },
+      {
+        "what": "First group of rows has no visible company name",
+        "where": "Top of screen 2"
+      },
+      {
+        "what": "Odd value 101% shares",
+        "where": "Screen 5, מיטב 'מניות' row"
+      },
+      {
+        "what": "Warning that the data has not been updated, with no explanation of what that means for me",
+        "where": "Screen 1, orange box"
+      },
+      {
+        "what": "Returns shown before fees, so I can't tell what I would actually get",
+        "where": "Return column heading"
+      }
+    ]
+  },
+  "steps": 6,
+  "reads": 6,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 41473,
+    "turns": 9,
+    "usd": 0.1840922,
+    "input": 14,
+    "cacheWrite": 12858,
+    "cacheRead": 53361,
+    "output": 3525,
+    "model": "claude-opus-5-5"
+  }
+}

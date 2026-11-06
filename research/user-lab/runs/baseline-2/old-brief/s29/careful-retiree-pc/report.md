@@ -1,0 +1,117 @@
+# s29: careful-retiree-pc (old brief)
+
+pc; 81 s, $0.29
+
+# Where to invest monthly in the Tel Aviv 125, and how cheaply
+
+## 1. What I would do, and how sure I am
+
+I would open a securities account at **Pesagot** ("פסגות בית השקעות" is not on the page, only "פסגות ניירות ערך בע"מ"). Through that account I would buy a fixed amount every month of the fund **"אי.בי.אי. מחקה (4A) ת"א 125"**, number **5112628**.
+
+The page labels this pair "הבחירה שלכם · ★ הזול", which I take to mean it is the cheapest combination. With the example numbers, it says I would end up with **86,045 ₪** "בכסף של היום" (in today's money). That is from 70,000 ₪ put in: "סכום היום 10,000" now, plus "הפקדה חודשית 500" a month, over 10 years.
+
+I would also buy this fund rather than an ETF (קרן סל). Its fees are written plainly: "דמי ניהול: קבועים 0.1%, משתנים 0%, נאמן 0.025%". In the list of funds, the cheapest ETF, "תכלית סל (40)", leaves me "−1,030 ₪" less.
+
+**How sure:** about 70%. I trust the ranking. Pesagot comes first in both lists, and the gap to number 2, Leumi (82,968 ₪), is about 3,000 ₪, which feels like real money. I'm holding back for four reasons:
+
+- I didn't put my own numbers in.
+- The page itself warns: "בתשואה של 0% או של 10% הסדר משתנה ב־2 מקומות". So if returns are 0% or 10% instead of the 7% example, the order changes in two places.
+- It says nothing about whether Pesagot is safe or how hard it is to open an account there.
+- I don't know if my own bank would give me a better price if I asked. The page hints at this with "קיבלתם מחיר אחר? הזינו אותו".
+
+## 2. The parts I actually used
+
+- **The headline and sub-line at the top:** "איפה ואיך הכי זול להשקיע במדד, לאורך זמן". That is exactly my question.
+- **The index buttons:** I checked that "ת"א-125" was the one selected.
+- **The four boxes with sliders:** "סכום היום", "הפקדה חודשית", "שנים", "תשואה בשנה".
+- **The result box** with the three cards: "הפקדתם 70,000", "הבחירה שלכם 86,045", "הזוג הבא בתור 85,015".
+- **The cost bar** under "כמה זה עולה לכם ב־10 שנים, בכל אחד מהזוגות", together with its colour key.
+- **The two side-by-side boxes:** the fund box on the left (heading "כל הקרנות על מדד ת"א-125") and the account box on the right (heading "כל החשבונות").
+- **The table near the end**, starting "עכשיו: הראל סל (4A) ת"א 125, ירושלים. נשארים בסוף 79,910 ₪". Its green and red bars were the easiest thing on the whole page to understand.
+- **The small print at the very bottom**, especially "התשואה שבחישוב: תשואה לדוגמה, לא תחזית" and "נתונים נכון ל־05.11.2026".
+
+## 3. Going down the page block by block
+
+1. **Top menu** ("מקור", "מדריך", "חברות ומסלולים", "השקעה במדד", "חוקים וכללים"): skipped. I was already on the right tab.
+2. **Headline and sub-line:** used. "בוחרים חשבון ניירות ערך וקרן, ורואים כמה יישאר לכם" means: choose a securities account and a fund, and see how much you'll be left with. Clear, and it's what I want.
+3. **Index buttons:** used, just to confirm "ת"א-125". I noticed "הבחירה שלכם; האתר לא ממליץ על מדד" (the site doesn't recommend an index). Fine.
+4. **The text about the index:** read it once. "מדד של מאה עשרים וחמש החברות בעלות השווי הגבוה ביותר בבורסה בתל אביב" is plain: the 125 biggest companies on the Tel Aviv exchange. The line "אין קרן חוץ שמתמחה בישראל" tells me there's no point looking at foreign funds. Good to know.
+5. **The four slider boxes:** used, and these matter most to me. At 61, ten years is a fair horizon. "7%" a year is their example, not mine.
+6. **The "אינפלציה" button** with "לדוגמה של האתר · בכסף של היום": confused me. Is inflation already taken into account or not? I think "בכסף של היום" (in today's money) means yes, but I wasn't sure.
+7. **The result box with three cards:** used. The middle card says "נשאר לכם בעוד 10 שנים, אחרי דמי ניהול ומס, בכסף של היום". So that's what's left after fees and tax. That sentence is the most important one on the page for me.
+8. **The cost bar:** used. For Pesagot it shows 7,323 ₪ in total over 10 years.
+9. **"העלות אצלכם, לעומת הזוג השני"** (my cost compared with the second-best pair): read it and half understood. The account costs "18 ₪ יותר", the fund "1,390 ₪ פחות", and tax "342 ₪ יותר כי נשאר לכם יותר רווח". The tax line makes sense: I pay more tax because I made more. But I had to read it twice.
+10. **The fund box on the left:** used the top part and the list. I skimmed the tags ("קרן מחקה", "קרן סל", "מחזיקה את המניות", "צוברת", "כמה דרכים יחד"). The explanation at the bottom, "מול המדד: כמה הקרן הקדימה (+) או פיגרה (−) אחרי המדד", I did use. It means how far each fund was ahead of or behind the index.
+11. **The account box on the right:** used, the whole list from 1 to 15. The text at its top explains that a monthly purchase is priced as a standing order, and that "מחיר לקבוצות... לא נכנס לחישוב" (group prices aren't counted). That reassured me the ranking uses ordinary prices.
+12. **Footnote under the account list** about Interactive Israel ("אין נתון", no data, institutional clients only) and "+ הוספת חשבון בתנאים שקיבלתם": skimmed.
+13. **"מה הכי משנה את מה שיישאר לכם"** (what changes your result most) with the line chart: skimmed and then skipped. It tells me that adding years matters most ("12 שנים" gives "18,905 ₪ יותר"). That's true, but it doesn't answer *where* to invest.
+14. **"מתחילים מבחירה אחת, ורואים מה משפר אותה ובכמה"**, the chart of rising columns: skimmed. I understood the idea. Moving from Jerusalem to Pesagot gives "+5,022 ₪", and switching the fund adds "+1,113 ₪". But it repeats what I already knew, and the rows underneath ("עלות החשבון", "עלות הקרן", "מס") with plus and minus signs confused me.
+15. **"עכשיו: הראל סל... ירושלים"** with the two tables: used. "חשבון אחר, אותה קרן" (other account, same fund) shows clearly that Meitav Trade, Excellence and Altshuler Trade leave about 15,000–17,000 ₪ *less*. That shocked me, and it's useful.
+16. **The small print at the bottom:** read every line, because I'm careful. Most worrying: "בתשואה של 0% או של 10% הסדר משתנה ב־2 מקומות". Most confusing: "קרנות בחו"ל שהתעריפון שלהן נקבע לפי מספר המניות מחכות למחיר היחידה של הקרן, שעוד לא נאסף".
+17. **Footer** ("מסמכים", "פרמטרים", "מה האתר עוד לא מכסה"…): skipped. Though "מה האתר עוד לא מכסה" (what the site doesn't cover yet) might have been worth a click.
+
+## 4. In the lists, tables and charts: what I looked at and what I ignored
+
+**The cost bar**
+- Looked at the numbers inside: 5,555 (dark pink), 719 (green), 354 (orange), 693 (yellow). I had to scroll down to the colour key to work out that pink is "מס" (tax), green is "דמי ניהול הקרן" (the fund's management fee), orange is "עמלות קנייה ומכירה" (buying and selling commissions) and yellow is "דמי משמרת" (custody fees).
+- So what does it mean for my money? **Most of the cost is tax, which I can't change.** The fees I *can* change are small at Pesagot.
+
+**The fund list**
+- Looked at: the fund name, the number in blue (to write down), "מול המדד" (e.g. "−0.04%"), and "לעומת הבחירה" (e.g. "−1,030 ₪").
+- Ignored: the coloured tags, and the little "שנה אחת" / "3 שנים" beneath the percentages. Why does one fund show 3 years and the others 1? I let it go.
+- Also ignored the filter line "סנגו לפי תווית".
+
+**The account list**
+- Looked at: rank number, name, the big number (what's left), and the small number (what the account takes, e.g. "1,049 ₪").
+- The coloured bars I mostly ignored. I saw that some accounts have lots of red, which I think is "דמי ניהול חשבון" (account management fee), and those are the expensive ones.
+- I looked at every "לא בחישוב" (not in the calculation) note to see if one fits me. At Hapoalim: "לנשים מגיל 60 וגברים מגיל 65 (סגור למצטרפים)", a special price for women from 60 and men from 65. That caught my eye at 61, but it says it's closed to new joiners, so no use to me.
+- Rank 10 wasn't in what I saw. It went from 9, Discount, straight to 11, IBI. I assume it's Mercantile, from the later table.
+
+**The line chart in "מה הכי משנה"**
+- Looked only at the coloured labels on the right ("שנים", "הפקדה חודשית", "תשואה בשנה", "סכום היום") and the buttons "20% יותר" and so on.
+- Ignored the axes and the lines themselves. The table below the chart was clearer than the chart.
+
+**The column chart**
+- Looked at the "+5,022 ₪" and "+1,113 ₪" labels and the "86,045 ₪" at the top.
+- Ignored the "60,000 / 70,000 / 80,000" scale and the zigzag line at the bottom of the grey column.
+
+**The last two tables**
+- Looked at "נשאר בסוף" (left at the end), "לעומת עכשיו" (compared with now), and the green/red bars ("יותר כסף / פחות כסף").
+- That's where I could see at a glance what each account costs me.
+
+## 5. What I did not understand
+
+- **"(4A)" and "(40)"** in the fund names. Are these different kinds of the same index? Is one riskier?
+- **"קרן מחקה" versus "קרן סל"**: what's the practical difference for me? Can I buy the IBI tracking fund every month through Pesagot just like a share?
+- **"כמה דרכים יחד"**: what does this tag mean?
+- **"העמלות זו על זו"** in the colour key, in grey. Fees on top of fees?
+- **"מחזיקה את המניות"**: as opposed to what? Is not holding the shares dangerous?
+- **The numbers underlined with dots**: can I click them? Do they hide an explanation?
+- **"הזוג הבא בתור"**: who exactly is the next pair? The card doesn't say. I only worked out from the fund list that it's probably Pesagot with Tachlit.
+- **The "אינפלציה" button**: is inflation already in or not?
+- **"קרנות בחו"ל שהתעריפון שלהן נקבע לפי מספר המניות…"**: I didn't understand this whole sentence.
+- **"יש ספק אם נמכרת שם: וואן זירו, Interactive Brokers"**: does that mean I can't buy the fund there, or that they didn't check?
+
+## 6. What I wanted to know and could not find
+
+- **Which two places change in the order** at 0% or 10% return. There's a "פירוט" (details) link, but I want to know right away whether Pesagot stays first.
+- **Whether Pesagot is safe.** Who owns it, and what happens to my money if something happens to the company.
+- **How to actually start.** Opening an account online or in person, the minimum amount, and how to set up the monthly purchase.
+- **Whether the result holds for a shorter time**, say 5 years, because at my age I might want the money earlier. I could move the slider, but the page doesn't tell me whether the order changes.
+- **What it costs to move my existing money** from my current bank to Pesagot.
+- **Why exactly Meitav Trade and Excellence are so expensive.** Is it a minimum charge on every monthly purchase? Would it be different if I put in a lump sum once a year?
+- **Risk.** Nothing about how much I could lose in a bad year. Everything assumes "7%".
+
+## 7. If half of the page had to go, what goes first
+
+1. **First to go: "מה הכי משנה את מה שיישאר לכם"** with the line chart and its table. It doesn't help me choose where to invest.
+2. **Second: the column chart "מתחילים מבחירה אחת…"**. It repeats the same message with harder numbers.
+3. **Third: the tags and filters in the fund list** ("סנגו לפי תווית" and the coloured labels). Keep only name, number, fee and "לעומת הבחירה".
+4. **Fourth: one of the two account lists.** Either the right-hand list with the coloured bars, or the "חשבון אחר, אותה קרן" table at the end. I'd keep the table with the green and red bars, because it was clearer.
+
+**What must stay:**
+- The sliders.
+- The result box with "נשאר לכם… אחרי דמי ניהול ומס, בכסף של היום".
+- The fund's details and fees.
+- The "לא בחישוב" notes.
+- The warning that the return is only an example.

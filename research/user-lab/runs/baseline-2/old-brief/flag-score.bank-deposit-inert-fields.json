@@ -1,0 +1,63 @@
+{
+  "case": "bank-deposit-inert-fields",
+  "sessions": 2,
+  "perKey": {
+    "k": {
+      "kind": "general",
+      "caught": 1,
+      "caughtIn10": 1,
+      "of": 2,
+      "byPersona": {
+        "careful-retiree-pc": {
+          "caught": 0,
+          "of": 1,
+          "ranks": [
+            0
+          ]
+        },
+        "first-job-phone": {
+          "caught": 1,
+          "of": 1,
+          "ranks": [
+            6
+          ]
+        }
+      },
+      "graderAgreement": 0.5
+    }
+  },
+  "againstLiked": {},
+  "usd": 0.4268656,
+  "rows": [
+    {
+      "task": "s09",
+      "session": "careful-retiree-pc",
+      "persona": "careful-retiree-pc",
+      "mode": "free text",
+      "raised": [
+        34,
+        33
+      ],
+      "ranks": {
+        "k": 0
+      },
+      "against": {},
+      "usd": 0.2657912
+    },
+    {
+      "task": "s09",
+      "session": "first-job-phone",
+      "persona": "first-job-phone",
+      "mode": "free text",
+      "raised": [
+        24,
+        26
+      ],
+      "ranks": {
+        "k": 6
+      },
+      "against": {},
+      "usd": 0.1610744
+    }
+  ]
+}

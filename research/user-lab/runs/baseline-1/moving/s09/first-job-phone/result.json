@@ -1,0 +1,118 @@
+{
+  "task": "s09",
+  "persona": "first-job-phone",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T03:18:32.731Z",
+  "structured": {
+    "answer": "A deposit means locking money at the bank for a set time (the example is 12 months, Leumi) at a fixed rate like 1.8% a year, with 15% tax on the interest. What you give up is taking it out early: there's a fine the site doesn't calculate, and there's no state insurance. I'm not locking my 30k yet because the example showed I'd be left with 68,270 after putting in 70,000, and I didn't get why.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Calculator result card: 68,270 ₪ big, then נשאר לכם 68,270 vs ההפקדות שלכם 70,000",
+        "why": "At first I took 68,270 as growth from 10,000, then saw I'd put in 70,000, so it looks like you lose money. The 'בכסף של היום' toggle maybe explains it but I didn't get it"
+      },
+      {
+        "where": "Red box in מיסוי section",
+        "why": "Says breaking the deposit has a fine but the site doesn't calculate it, so I don't know what locking it really costs"
+      },
+      {
+        "where": "מיסוי paragraph with 69,840 and 10,920",
+        "why": "Big shekel numbers I didn't understand; skipped"
+      }
+    ],
+    "used": [
+      "Heading פיקדון and subtitle",
+      "Big number 68,270 ₪ and rows נשאר לכם / מס / ההפקדות שלכם",
+      "Fields סכום היום 10,000, ריבית בשנה 1.8, אינפלציה 2",
+      "תנאי המוצר box: Leumi, 12 months, לא צמוד",
+      "First line of למה משתמשים בזה",
+      "שווה לדעת: מס 15%, שבירת פיקדון",
+      "מיסוי card headings",
+      "Red box about שבירת פיקדון",
+      "First line of סיכונים: אין ביטוח פיקדונות"
+    ],
+    "skimmed": [
+      "מה זה paragraphs",
+      "מי מציע ומי מפקח",
+      "כסף נכנס ויוצא card",
+      "כמה זה עולה table",
+      "Chart (just the line going up)"
+    ],
+    "skipped": [
+      "Side navigation",
+      "Small grey notes under the calculator (25.10.2026 etc.)",
+      "הצגת החוקים והכללים links",
+      "הצגה כטבלה fold",
+      "מה האתר לקח בחשבון",
+      "מונחים glossary table",
+      "Footer"
+    ],
+    "unsure_meaning": [
+      "בכסף של היום / בשקלים של העתיד toggle",
+      "Why נשאר לכם (68,270) is less than ההפקדות שלכם (70,000)",
+      "מק\"מ",
+      "מוצרי שוק הכסף",
+      "צמוד למדד / לא צמוד",
+      "הבטחת קרן",
+      "ריבית ריאלית",
+      "חשבון במערכת סגורה",
+      "תחנות יציאה",
+      "Tags like TXI-03, BANK-06, TXI OQ14",
+      "69,840 / 10,920 numbers in מיסוי"
+    ],
+    "not_found": [
+      "How big the early-withdrawal fine is in shekels",
+      "A clear answer whether I end up with more or less than I put in",
+      "Which bank pays the most right now"
+    ],
+    "findings": [
+      {
+        "what": "Biggest number 68,270 ₪ sits right above 'ההפקדות שלכם 70,000' with no plain explanation; looks like you lose money in a deposit",
+        "where": "Calculator result card, screen 1"
+      },
+      {
+        "what": "Breaking the deposit is the main thing you give up, but the fine isn't calculated or given in shekels",
+        "where": "Red box, מיסוי section, screen 3"
+      },
+      {
+        "what": "Default amount 10,000 + 500/month, not my amount; first impression from the big number is misleading",
+        "where": "Calculator inputs, screen 1"
+      },
+      {
+        "what": "'אין ביטוח פיקדונות' is scary and sits far down",
+        "where": "סיכונים ומה לא מוגן, screen 3"
+      },
+      {
+        "what": "Code tags (TXI-03, BANK-06) mean nothing to me and clutter the lines",
+        "where": "שווה לדעת and מיסוי"
+      },
+      {
+        "what": "Lots of jargon (מק\"מ, צמוד, ריאלית, מערכת סגורה) without a simple explanation where I read it",
+        "where": "Throughout"
+      },
+      {
+        "what": "Glossary is very long; that's where I'd close the page",
+        "where": "מונחים, screens 3-4"
+      }
+    ]
+  },
+  "steps": 4,
+  "reads": 4,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 41522,
+    "turns": 6,
+    "usd": 0.18889319999999998,
+    "input": 8,
+    "cacheWrite": 13252,
+    "cacheRead": 27926,
+    "output": 3863,
+    "model": "claude-opus-5-5"
+  }
+}

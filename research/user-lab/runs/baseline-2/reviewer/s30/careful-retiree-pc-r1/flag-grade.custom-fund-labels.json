@@ -1,0 +1,36 @@
+{
+  "case": "custom-fund-labels",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"A fund the reader added gets labels ('צוברת', 'חשיפה לדולר') that the reader never gave, and the reader cannot choose its labels.\",\"where\":\"the added fund's row in the fund list\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the findings say the added fund gets labels the user never gave or that the user can't pick its labels; finding 6 complains about how many coloured tags there are and how they look, not about tags being assigned."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0158594
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "No finding says the added fund was given labels like 'צוברת' or 'חשיפה לדולר' that the reader never chose. Finding 6 complains about having too many coloured tags, and findings 1 and 4 talk about the added fund's missing price and its code, which are different problems."
+      }
+    ],
+    "liked": [],
+    "usd": 0.016379400000000002
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0322388
+}

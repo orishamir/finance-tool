@@ -1,0 +1,47 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "The default amounts don't match the reader's situation, and the big result figure sticks with them. The inputs can be changed, so this is a matter of defaults, not a blocker.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "There are too many near-identical funds in the list. The preselected cheapest fund kept the reader from giving up.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "Fund tags use jargon with no plain explanation. This is minor next to the main figures.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "The fund list's right-hand column shows red minus amounts and ranges that are scary and unclear. The reader can't read a main column. This is the fund list, not the account list in problem 6.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "The currency-hedging section is long and technical, and the reader would close the page there. It comes after the main answer, and it doesn't name the colour problem.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 6,
+      "summary": "The fund fee is shown only as a percentage, not in shekels. The reader wants more detail, and this is not problem 2's gap between options.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 7,
+      "summary": "The next-best option's '−43 ₪' figure doesn't say whether it is better or worse. That could lead to a wrong choice. Problem 2 is a percentage and problem 10 is the cost line, so neither matches.",
+      "serious": true,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.0426148
+}

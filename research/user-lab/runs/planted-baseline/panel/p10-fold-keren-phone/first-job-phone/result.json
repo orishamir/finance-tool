@@ -1,0 +1,140 @@
+{
+  "task": "p10-fold-keren-phone",
+  "persona": "first-job-phone",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "phone",
+  "startedAt": "2026-11-05T23:17:25.543Z",
+  "structured": {
+    "answer": "I can take it out tax-free 6 years after the first deposit (sooner too, but then I pay tax). How much I'd have, I couldn't tell: the only calculation was hidden behind \"הציגו את החישוב\" and I never saw it open.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Box 'כמה כסף נשאר לכם, ומתי?' with 'הציגו את החישוב' (screen 2)",
+        "why": "It's exactly my question, but the numbers are folded away. The next screen goes straight on to 'שווה לדעת', so I never saw a shekel amount"
+      },
+      {
+        "where": "15,712 ₪ / 20,566 ₪ בשנה at the top of screen 2",
+        "why": "The start of the sentence was cut off. I couldn't tell if that's what goes in, a limit, or what I'd end up with"
+      },
+      {
+        "where": "Orange box (screen 8)",
+        "why": "It sends me back up ('הסכומים מופיעים למעלה, ב\"מה קורה לכסף בקרן\"'), to the same fold I already couldn't see"
+      },
+      {
+        "where": "Glossary (screens 9-11)",
+        "why": "Got bored, it's just definitions. I'd have closed the page here"
+      }
+    ],
+    "used": [
+      "'אחרי 6 שנים מההפקדה הראשונה אפשר למשוך את הכסף בלי מס הכנסה ובלי מס רווחי הון'",
+      "'אחרי 6 שנים אין מס' under 'כשמושכים'",
+      "'אפשר למשוך גם לפני 6 השנים, אבל אז משלמים מס'",
+      "Heading 'כמה כסף נשאר לכם, ומתי?'",
+      "'עד 4 ימי עסקים' for getting the money"
+    ],
+    "skimmed": [
+      "מי מציע ומי מצטרף",
+      "משיכה ומעבר",
+      "כמה זה עולה (עד 2% בשנה, 0.34%–0.74%)",
+      "משיכה לפני 6 שנים: מה משלמים שכירים",
+      "סיכונים ומה מוגן",
+      "Glossary at the bottom"
+    ],
+    "skipped": [
+      "חוקים וכללים chips",
+      "כדאי להכיר גם / במה אפשר להשקיע chips",
+      "הצגת החברות / כל המסלולים",
+      "כמה העמלות האלה עולות לאורך זמן",
+      "The chief economist / Treasury paragraph",
+      "Footer"
+    ],
+    "unsure_meaning": [
+      "15,712 ₪ and 20,566 ₪ בשנה: a limit, or my money?",
+      "293,397 ₪",
+      "גבול / הגבול שבחוק",
+      "25% מהחלק שמעל האינפלציה",
+      "131 המסלולים",
+      "הפקדה מוטבת",
+      "ותק",
+      "מס רווחי הון"
+    ],
+    "not_found": [
+      "A shekel figure for how much I'd have after 6 years",
+      "A place to enter my salary or monthly deposit",
+      "How much my employer and I put in each month, in shekels"
+    ],
+    "findings": [
+      {
+        "what": "The answer to 'how much will I have' is hidden behind a fold ('הציגו את החישוב'). Scrolling, you never see a number",
+        "where": "מה קורה לכסף בקרן, screen 2"
+      },
+      {
+        "what": "Shekel figures show up with the start of the sentence cut off. You can't tell if they're limits or what you'd get",
+        "where": "Top of screen 2 (15,712 ₪, 20,566 ₪)"
+      },
+      {
+        "what": "The orange box points back up to the amounts instead of showing them",
+        "where": "Screen 8"
+      },
+      {
+        "what": "Fees are only in percent (עד 2%, 0.34%–0.74%), no shekels, so it feels like nothing",
+        "where": "כמה זה עולה"
+      },
+      {
+        "what": "Big number 293,397 ₪ with no explanation of what it means for me",
+        "where": "Screen 7"
+      },
+      {
+        "what": "Lots of 'חוקים וכללים' chips and a long glossary, too much noise on a phone",
+        "where": "Throughout, screens 9-11"
+      }
+    ]
+  },
+  "steps": 11,
+  "reads": 11,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 37317,
+    "turns": 13,
+    "usd": 0.25707860000000005,
+    "input": 14,
+    "cacheWrite": 21611,
+    "cacheRead": 76773,
+    "output": 3439,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "p10-fold-keren-phone",
+    "screenshots": 12,
+    "changes": [
+      {
+        "id": "fold-shown",
+        "type": "style",
+        "shots": 12,
+        "applied": 12,
+        "most": 1
+      },
+      {
+        "id": "fold-hide",
+        "type": "style",
+        "shots": 12,
+        "applied": 12,
+        "most": 1
+      },
+      {
+        "id": "fold-line",
+        "type": "insert",
+        "shots": 12,
+        "applied": 12,
+        "most": 1
+      }
+    ],
+    "neverShown": [],
+    "errors": []
+  }
+}

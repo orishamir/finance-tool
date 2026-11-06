@@ -1,0 +1,14 @@
+{
+ "id": "idx-r3-pricing",
+ "task": "t54",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "The ways of explaining which fund each account is priced on read unnaturally (E1, and E2 worse), and E3 asks the reader to choose how to price.",
+   "where": "the pricing explanation in each option",
+   "kind": "taste",
+   "outside": false
+  }
+ ],
+ "liked": []
+}

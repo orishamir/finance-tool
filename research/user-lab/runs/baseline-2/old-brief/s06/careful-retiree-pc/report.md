@@ -1,0 +1,91 @@
+# s06: careful-retiree-pc (old brief)
+
+pc; 50 s, $0.18
+
+I'm 61 and read every word slowly. Here's how it went.
+
+## 1. My answer: what I'd do, and how sure I am
+
+This page is a list of names with a sentence or two each. It doesn't tell me what to do. From the descriptions, I'd look into these three, in this order:
+
+1. **קופת גמל להשקעה** (an investment savings fund). The card says *"אפשר למשוך בכל עת, ובמשיכה משלמים מס על הרווח"*, meaning I can take the money out any time and pay tax only on the profit. At my age I don't want money locked away, so this sounded like the most sensible one for me.
+2. **קרן השתלמות** (a tax-advantaged savings fund, often paid into by an employer), if I have one through work. The card says *"אחרי תקופה שקבע החוק אפשר למשוך בפטור ממס"*, meaning after a legal waiting period I can withdraw it tax-free. It doesn't say how long that period is. I'd still want to check whether I already have one sitting somewhere.
+3. **פיקדון** (a bank deposit) or **קרן כספית** (a money-market fund) for money I can't afford to lose. The קרן כספית card says *"סיכון נמוך שהלוואה לא יחזיר"*, a low risk that a loan won't be repaid. That's the kind of sentence I want to read.
+
+I'd also check **קרן חדשה מקיפה** (a comprehensive pension fund). I'm close to retirement, and *"קצבה חודשית בפרישה"* (a monthly pension at retirement) is exactly what's on my mind.
+
+**How sure am I?** Not very. Maybe 4 out of 10. The page told me what each thing is. It didn't tell me which ones suit someone who is 61, what they cost, or what I'd actually earn.
+
+## 2. Which parts I actually used
+
+- **The top introduction**, the "מדריך" (guide) heading and the line under it.
+- **"שני חלקים בכל חיסכון"** ("every saving has two parts"). This was the most useful thing on the page.
+- **"מאיפה להתחיל"** ("where to start"), the three green links.
+- **"חיסכון עם הטבת מס"** ("savings with a tax benefit"), both cards.
+- **"פרישה"** ("retirement"), all three cards.
+- **"כסף שוטף וקצר"** ("everyday and short-term money"), the cards I could read.
+- **The footer line** *"אתר אישי, לא מסחרי, בלי קישורי שיווק"* ("a personal site, not commercial, no marketing links"). That made me trust it more. Nobody is selling me anything.
+
+## 3. Block by block, top to bottom
+
+| Block | What I did | Why |
+|---|---|---|
+| **Top menu** (מקור, מדריך, שאלות שכולם שואלים, חברות ומסלולים, השוואה למטרה, השקעה במדד) | Skimmed | "שאלות שכולם שואלים" ("questions everyone asks") and "השוואה למטרה" ("compare by goal") caught my eye for later. I didn't know what "מקור" meant here. |
+| **"מדריך" + "כל סוג של חיסכון והשקעה שהאתר מכסה"** ("every kind of saving and investment the site covers") | Read | It told me this is a catalogue. Fine. |
+| **"שני חלקים בכל חיסכון"** | Read twice and used it | *"איפה הכסף מוחזק... הוא קובע מי מחזיק את הכסף, מה המס ומתי אפשר למשוך"* (where the money is held decides who holds it, the tax, and when I can withdraw) and *"במה הכסף מושקע... הוא קובע מה עולה ויורד"* (what it's invested in decides what goes up and down). For the first time I understood that the "box" and what's inside it are two separate questions. |
+| **"מאיפה להתחיל"** | Used, but it didn't fit me | Only three lines: salaried workers, the basis for every salaried saver, money that has to stay put a while. Nothing for someone near retirement or someone with a lump sum. I felt left out. |
+| **"איפה הכסף מוחזק"** ("where the money is held") heading | Read | It's a good heading. |
+| **"כסף שוטף וקצר"** | Partly used | The first row of cards (חשבון עובר ושב = current account, פיקדון = deposit, תכנית חיסכון = savings plan) was cut off, and I only saw the last word, "ריבית" (interest). I read קרן כספית, קרן כספית מתחדשת and מק"מ. |
+| **"חיסכון עם הטבת מס"** | Used carefully | This one matters for my money. |
+| **"פרישה"** | Used carefully | It's the most relevant to my age. It was also the most confusing, see section 5. |
+| **"לילדים"** ("for children") | Skimmed and moved on | It's for children. Maybe grandchildren one day, but not now. |
+| **"לבחירה עצמית"** ("your own choice") | Skimmed | חשבון ניירות ערך (a securities account) and איגרות חוב ממשלתיות (government bonds) I read. The "בניהול אישי" ("self-managed") ones sound like a lot of responsibility and probably a fee for a מנהל תיקים (portfolio manager). |
+| **"במה הכסף מושקע"** ("what the money is invested in") + מסלול כללי, אג"ח צמודה / לא צמודה | Read slowly, half understood | See section 5. |
+| **The index cards** (S&P 500, MSCI, נאסד"ק 100, ת"א-35, ת"א-90, ת"א-125) | Skimmed and moved on | It's a wall of names and numbers. Each one is "a list of companies". I can't tell which one is for me. |
+| **מק"מ (second time) and מזומן שקלי** | Read | I noticed מק"מ appears twice on the page. |
+| **"מה האתר עוד לא מכסה"** ("what the site doesn't cover yet") | Read | Honest, but it didn't help me. |
+| **Footer** | Read the bottom line | The "not commercial" line and the date *"נתונים נכון ל־26.10.2026"* ("data correct as of 26.10.2026"). Good, it's recent. |
+
+## 4. Lists, tables and colours
+
+There are no tables or charts, only boxes (cards).
+
+- **What I looked at:** the bold title in each box and the first line of the description. On cards that had one, I read **"בשפה פשוטה:"** ("in plain words") first, because that's exactly what I want. I wish every card had it.
+- **The green coloured words** in "מאיפה להתחיל" (קרן השתלמות, קרן חדשה מקיפה, קרן כספית). I understood they're links and looked at them.
+- **The section headings** between the groups of boxes (כסף שוטף וקצר, חיסכון עם הטבת מס, פרישה, לילדים, לבחירה עצמית). They helped me find my way.
+- **What I ignored:** the small arrows ‹ on each box, the round button at the bottom left, the search box at the top, and the long descriptions of the indexes after the first few words.
+
+## 5. What I didn't understand
+
+- **The difference between "קרן חדשה מקיפה" and "קרן חדשה כללית".** The כללית one *"מקבלת את ההפקדות שמעל הסכום המרבי"* (takes the deposits above the maximum amount). Which maximum? Does this concern me?
+- **"תגמולים ואישית לפיצויים"** (a savings fund for contributions and personal severance pay). Even the "בשפה פשוטה" line, *"קופת גמל לתגמולים"*, didn't help me. *"כדי לקבל ממנה קצבה, מעבירים את הכסף לקרן פנסיה או לחברת ביטוח"* (to get a pension from it you move the money to a pension fund or insurance company). Do I need to do this now, at 61? It alarmed me a little.
+- **"קופון"** in the bond cards. What is that, in my money terms?
+- **"צמודה למדד המחירים לצרכן"** (linked to the consumer price index). I roughly understand it protects against prices rising, but it's not said plainly.
+- **"שווי השוק הצף"** (free-float market value) in the index cards. Jargon.
+- **"מסלול כללי... ואינו מתחייב לטווח מניות"** (a general track that doesn't commit to a range of stocks). So how much risk is it?
+- **"קרן כספית מתחדשת"** (a renewing money-market fund) versus a regular קרן כספית.
+- **מק"מ appears twice** with slightly different wording. Is it the same thing? Why does it appear in both places?
+- **"מזומן שקלי" (shekel cash) versus "קרן כספית" versus "פיקדון".** They all sound like "money that earns a bit of interest". Which is better?
+
+## 6. What I wanted to know and couldn't find
+
+- **What does it cost?** Not a word about דמי ניהול (management fees).
+- **How much does it earn?** No example of a return, not even roughly.
+- **How much risk** am I taking with each one? I'd like a simple scale like "safe / medium / risky".
+- **Something for my age:** a "close to retirement" or "I have a lump sum" option in "מאיפה להתחיל".
+- **How long** before I can take money out of a קרן השתלמות. It only says *"תקופה שקבע החוק"* ("a period set by law").
+- **Is my money guaranteed** if a bank or company collapses?
+- **What happens to the money** if I die. Only the pension card mentions *"ביטוח... למשפחה במקרה מוות"* (insurance for the family in case of death).
+- **A short comparison** of the three or four things that are relevant to me, side by side.
+
+## 7. If half the page had to go
+
+1. **The index cards first** (S&P 500, MSCI AC World, MSCI World, נאסד"ק 100, ת"א-35, ת"א-90, ת"א-125). That's seven boxes of names that told me nothing about my money.
+2. **"לילדים"**. Not for me.
+3. **"מה האתר עוד לא מכסה"**.
+4. **The second מק"מ and מזומן שקלי**, which repeat what I already read higher up.
+5. **The "בניהול אישי" ones**, if more room is still needed.
+
+**What must stay:** "שני חלקים בכל חיסכון", "חיסכון עם הטבת מס", "פרישה", and the "בשפה פשוטה" lines.
+
+**A note on the screenshots:** some text was cut off between them. I couldn't read the first row of boxes under "כסף שוטף וקצר" (current account, deposit, savings plan), and I only saw the start of the MSCI and נאסד"ק descriptions. The last two screenshots show almost the same part of the page.

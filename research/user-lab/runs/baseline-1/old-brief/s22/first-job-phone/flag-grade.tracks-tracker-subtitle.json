@@ -1,0 +1,80 @@
+{
+  "case": "tracks-tracker-subtitle",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"Only some rows (Altshuler, Analyst) carry an extra line 'עוקב …' under the company name; the inconsistency adds noise.\",\"where\":\"the company cells of the table\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Unsure what to do next with the fund number, and whether the fee alone is enough to decide",
+      "The sort runs from most expensive to cheapest, so the cheapest fund sits at the bottom and the reader nearly picked the wrong one",
+      "The '123 ממקור / מחושב / הזנתה' line is confusing",
+      "The word 'אין' under the fees was confusing until the notes explained it",
+      "'PF-06' is not explained",
+      "Ayalon's 40% stock/forex exposure seems odd for an S&P fund",
+      "'פחות מ־3 שנים' in the returns column is not understood",
+      "Returns are measured before fees, so they don't help the decision",
+      "The 'כסף מנוהל' column doesn't say whether bigger is better",
+      "The dotted underlines on numbers are not understood",
+      "'מט\"ח' is unclear, and so is why it matters",
+      "Unclear why some funds show 101% or 98% when they track the same index",
+      "Only some companies have an extra line under the name (e.g. 'עוקב S&P 500'), and it's unclear why",
+      "Can't find how to actually join Clal's fund",
+      "Can't find what the fee difference means in shekels",
+      "Can't find whether the fee can be negotiated or lowered",
+      "Can't find whether an existing fund can be moved",
+      "Would remove the top menu and 'לפי חברה'",
+      "Would remove the other product and investment buttons",
+      "Would remove the exposure rings",
+      "Would remove the search box",
+      "Would remove the footer"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 13,
+        "why": "The reader notices that only some companies (Altshuler, Analyst) have an extra 'עוקב…' line under the name and doesn't know why, which is the same inconsistency the person named."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0560912
+  },
+  "b": {
+    "raised": [
+      "Unsure whether the fee is all that matters and doesn't know what to do next with the fund number",
+      "The 'most expensive to cheapest' sort puts the cheapest fund at the bottom, on the second screen, and nearly led to picking מור",
+      "The '123 ממקור / מחושב / הזנתה' line is confusing and meaningless to them",
+      "The word 'אין' ('אין מההפקדות' under every fee) was confusing until the notes explained it",
+      "Doesn't know what 'PF-06' means",
+      "Ilon shows 40% exposure, which seems odd for an S&P fund",
+      "Doesn't understand why some returns say 'פחות מ־3 שנים'",
+      "Returns are shown before fees, so they don't help with the question",
+      "Doesn't know whether a bigger 'כסף מנוהל' figure is better",
+      "Dotted underlines on the numbers are unexplained",
+      "Unsure what 'מט\"ח' means or why it matters",
+      "Doesn't understand why exposure shows 101% or 98% when all the funds track the same index",
+      "Only some companies have an extra name line under them (e.g. 'עוקב S&P 500' for Altshuler, Analyst), and it's unclear why",
+      "Can't find how to actually join Clal's fund",
+      "Can't see what the fee difference means in shekels",
+      "Can't find whether the fee can be negotiated or lowered",
+      "Can't find whether an existing fund can be moved",
+      "Would drop the top menu, 'לפי חברה', the other product and investment buttons, the כסף מנוהל and returns columns, the rings, the search box and the footer"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 13,
+        "why": "The reader notices that only some companies (Altshuler, Analyst) carry an extra 'עוקב…' line under the name and is confused by it, which is the same inconsistency the person named."
+      }
+    ],
+    "liked": [],
+    "usd": 0.050139199999999995
+  },
+  "third": null,
+  "ranks": {
+    "k": 13
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1062304
+}

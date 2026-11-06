@@ -1,0 +1,74 @@
+{
+  "case": "guides-useless-sections",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The guide home has sections that say nothing useful ('שני חלקים בכל חיסכון', 'מאיפה להתחיל').\",\"where\":\"the sections above or below the list of guides\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "The page doesn't say what to do with retirement money at the reader's age (61)",
+      "No figures at all: no returns, fees or risk levels, so the products can't really be compared or chosen",
+      "'מאיפה להתחיל' has nothing aimed at someone near retirement, and the employee line may not fit",
+      "The cards in 'כסף שוטף וקצר' are cut off and can't be read properly",
+      "The retirement section is the hardest part to understand",
+      "'לילדים' isn't relevant to the reader (skipped, would drop)",
+      "'לבחירה עצמית' seems meant for experts (would drop)",
+      "The many 'מדד' cards all sound alike (would collapse them into one)",
+      "The footer's 'data correct as of' line is confusing because no data is shown",
+      "The 'יומית' and 'מתחדשת' buttons under קרן כספית aren't explained",
+      "Abbreviations like מק\"מ and אג\"ח aren't explained in the top block",
+      "'Exposure to the dollar or neutralised from it' is unclear: more or less risk?",
+      "'Investment committee discretion' raises questions about who decides and what they charge",
+      "The difference between MSCI AC World and MSCI World is unclear",
+      "The lock-up period for קרן השתלמות isn't stated",
+      "Nothing about a deposit guarantee if the bank or fund fails"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader praised 'שני חלקים בכל חיסכון' as the most useful part and used 'מאיפה להתחיל'; their only criticism of the latter is that it doesn't address near-retirees, which is a different complaint from saying it says nothing useful."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0570352
+  },
+  "b": {
+    "raised": [
+      "The page gives no figures (returns, fees, risk), so the reader can't actually decide",
+      "The intro promises easy comparison, but there are no figures to compare",
+      "'מאיפה להתחיל' doesn't fit someone near retirement (the employer-deposit line may not apply)",
+      "Cards in 'כסף שוטף וקצר' are cut off and can't be read properly",
+      "The retirement section is the hardest to understand",
+      "The 'לילדים' section isn't relevant to the reader (would drop it)",
+      "'לבחירה עצמית' seems meant for experts (would drop it)",
+      "The nine index cards all sound alike (would cut most of them)",
+      "The footer says 'data correct as of' but there are no numbers on the page",
+      "The 'יומית' and 'מתחדשת' buttons under קרן כספית aren't explained",
+      "The abbreviations מק\"מ and אג\"ח appear unexplained in the top block",
+      "The dollar-exposure / neutralised wording is unclear: more risk or less?",
+      "Retirement jargon: 'תגמולים ואישית לפיצויים', and מקיפה vs כללית at age 61",
+      "'Investment committee discretion': who decides, and what do they charge?",
+      "The difference between MSCI AC World and MSCI World is unclear",
+      "Nothing about what changes at the reader's age (60/67): withdrawals, tax",
+      "The lock-up period for קרן השתלמות isn't stated",
+      "No information on a deposit guarantee"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader says the 'שני חלקים בכל חיסכון' block was the most useful part and used 'מאיפה להתחיל'. Their only complaint about 'מאיפה להתחיל' is that it doesn't fit their age, which is a different problem from these sections saying nothing useful."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0672672
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.12430240000000001
+}

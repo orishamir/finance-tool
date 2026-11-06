@@ -1,0 +1,124 @@
+{
+  "task": "control-harel-pc",
+  "persona": "careful-retiree-pc",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-05T23:29:01.964Z",
+  "structured": {
+    "answer": "If anything, I'd take the \"כספי (שקלי)\" track: no shares, no foreign currency, all in shekels, 4.25% a year over 3 years, with a fee of about half a percent. But I'd ask my son or the bank whether that's really better than my deposit before I sign anything.",
+    "confidence": "unsure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Many rows in the return column",
+        "why": "\"פחות מ־3 שנים\" instead of a number; I couldn't tell whether the safe-looking אג\"ח tracks did well or badly"
+      },
+      {
+        "where": "Coloured circles in the shares/foreign-currency column",
+        "why": "Didn't understand what they show; the teal and yellow look alike in the dark"
+      },
+      {
+        "where": "Screen 2, all the numbers",
+        "why": "A busy dark table full of percentages, it made me anxious and I lost my place in the long lines"
+      }
+    ],
+    "used": [
+      "Title הראל",
+      "Fees line 0.54%–0.61% מהחיסכון, 0% מההפקדות",
+      "Row כספי (שקלי): 0% מניות, 0% מט\"ח, 4.25% over 3 years, 3.08% over 5 years",
+      "Row אג\"ח סחיר: 0% מניות",
+      "Line התקרה בחוק 1.05%",
+      "Sentence about past returns not saying what will happen"
+    ],
+    "skimmed": [
+      "Share-heavy rows (מניות סחיר, קיימות, עוקב מדדי מניות)",
+      "Managed-money amounts column",
+      "Row of product buttons at the top"
+    ],
+    "skipped": [
+      "Folds מה כתוב במסמכים של הראל",
+      "Search box לא מצאתם שם?",
+      "Links מה זה קופת גמל להשקעה / כל המסלולים בכל החברות",
+      "123 מקור / מחושב line",
+      "Footer links"
+    ],
+    "unsure_meaning": [
+      "S&P 500",
+      "עוקב מדד / עוקב מדדים",
+      "סחיר",
+      "כספי (שקלי), whether it's like a deposit",
+      "מט\"ח 96%",
+      "פחות מ־3 שנים",
+      "Coloured rings",
+      "Number next to the arrow icon (15283 etc.)",
+      "PF-10",
+      "הלכה יהודית tag",
+      "גמיש",
+      "תשואה... לפני דמי ניהול"
+    ],
+    "not_found": [
+      "A plain sentence saying which track is safe like a deposit",
+      "Comparison with bank deposit interest",
+      "Whether the money can lose value in the כספי track",
+      "A return after the fee"
+    ],
+    "findings": [
+      {
+        "what": "Dark background with grey small text; the law-ceiling and trading-fees lines are hard to read",
+        "where": "Bottom of table, screen 3"
+      },
+      {
+        "what": "Many tracks show 'פחות מ־3 שנים' instead of a return, including the safe-looking אג\"ח ones",
+        "where": "Return column, screens 1–2"
+      },
+      {
+        "what": "No word on which tracks are low-risk; I had to work it out from 0% מניות",
+        "where": "Table, all screens"
+      },
+      {
+        "what": "The biggest number, 13.7%, is on an English-letter all-shares track and grabs the eye",
+        "where": "עוקב מדד S&P 500 row, screen 2"
+      },
+      {
+        "what": "Coloured rings in two close colours, unclear what they mean",
+        "where": "Shares/foreign-currency column"
+      },
+      {
+        "what": "Returns shown before fees, so I can't tell what I actually get",
+        "where": "Column header תשואה שנתית ממוצעת לפני דמי ניהול"
+      },
+      {
+        "what": "Too many numbers per row, long lines are hard to follow from right to left",
+        "where": "Table, screen 2"
+      },
+      {
+        "what": "Same list of folds repeated as you scroll; feels like the page ends without telling me anything",
+        "where": "Screens 3–4"
+      }
+    ]
+  },
+  "steps": 4,
+  "reads": 4,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 41156,
+    "turns": 6,
+    "usd": 0.135624,
+    "input": 8,
+    "cacheWrite": 7758,
+    "cacheRead": 21740,
+    "output": 3459,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "control-harel-pc",
+    "screenshots": 6,
+    "changes": [],
+    "neverShown": [],
+    "errors": []
+  }
+}

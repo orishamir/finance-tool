@@ -1,0 +1,143 @@
+{
+  "task": "p09-disagree-sp500-pc",
+  "persona": "first-job-phone",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-05T23:15:26.528Z",
+  "structured": {
+    "answer": "Open a trading account at Psagot (פסגות) and buy \"ילין לפידות מחקה S&P 500 (4D)\". At the page's default of 10,000 ₪ now plus 500 ₪ a month for 10 years, you'd end up with about 86,900 ₪ in today's money after fees and tax. The page shows both 86,942 and 86,492 for the same choice, though.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Screen 1 vs screens 2 and 8, the final amount",
+        "why": "The top card says 86,942 ₪ for the cheapest pair, while the account list and the waterfall chart say 86,492 ₪ for the same Psagot + Yelin Lapidot choice. I don't know which is right."
+      },
+      {
+        "where": "Screen 1 sliders",
+        "why": "The task gave no amounts. I'd want 30,000 today, but I left the sliders as they were (10,000 + 500/month), so the result isn't for my real money."
+      },
+      {
+        "where": "Screen 2 coloured cost bar and legend",
+        "why": "There are lots of colours (עמלות קנייה ומכירה, דמי משמרת, דמי ניהול חשבון, המרת מטבע, מס...) and I couldn't tell what the bars mean for me."
+      },
+      {
+        "where": "Screens 6-8, hedging section",
+        "why": "Long charts and tables about the dollar and נטרול. I got lost and bored; this is where I'd close the page."
+      }
+    ],
+    "used": [
+      "Heading 'איפה ואיך הכי זול להשקיע במדד, לאורך זמן'",
+      "S&P 500 chip already selected",
+      "Sliders: סכום היום 10,000, הפקדה חודשית 500, שנים 10, תשואה 7%",
+      "Big card 'הבחירה שלכם · ★ הזול' 86,942 ₪, 'נשאר לכם בעוד 10 שנים, אחרי דמי ניהול ומס, בכסף של היום'",
+      "הפקדתם 70,000 ₪",
+      "Account card פסגות ניירות ערך, 1,057 ₪ over 10 years",
+      "Fund card ילין לפידות מחקה S&P 500 (4D), דמי ניהול 0%",
+      "Account list ranking: פסגות first with 86,492",
+      "Minus numbers in the fund list (−447, −1,268 etc.)",
+      "Waterfall chart 'הכי הרבה בכל המחירונים 86,492 ₪'"
+    ],
+    "skimmed": [
+      "Rest of the fund list on screens 3-5",
+      "Account list below rank 3 (מזרחי, אלטשולר, אקסלנס, מיטב, Interactive Brokers)",
+      "Sensitivity chart and table on screen 6",
+      "Hedging charts on screen 7"
+    ],
+    "skipped": [
+      "Inflation / ECB exchange rate line under sliders",
+      "Explanation paragraph 'למה חלק מהקרנות בלי מחיר בפסגות'",
+      "'חוקים וכללים' link",
+      "'לא בחישוב' fold-outs",
+      "Sources and the long text in the hedging section",
+      "Screens 9-10"
+    ],
+    "unsure_meaning": [
+      "דמי משמרת",
+      "נאמן 0.02%",
+      "צוברת",
+      "מחלקת דיבידנד",
+      "עסקת החלף",
+      "מנוטרלת מט\"ח / נטרול",
+      "מס גם על שינוי המטבע",
+      "מס דיבידנד בתוך הקרן",
+      "W-8BEN",
+      "(4D) vs (4A)",
+      "מול המדד +0.37%",
+      "עוד לא נאסף",
+      "קרן סל vs קרן מחקה",
+      "the colours in the cost bars"
+    ],
+    "not_found": [
+      "A clear 'how to start / open the account' step",
+      "The result for my own 30,000 ₪",
+      "The fee written in shekels next to the fund (only percentages)"
+    ],
+    "findings": [
+      {
+        "what": "The same winning choice shows two different totals: 86,942 ₪ in the top card and 86,492 ₪ in the account list and the waterfall chart (swapped digits). It makes me doubt every number.",
+        "where": "Screen 1 main card vs screen 2 account list and screen 8 chart"
+      },
+      {
+        "what": "No obvious next step after picking the pair: nothing tells you how to actually open the Psagot account and buy the fund",
+        "where": "Screens 1-2"
+      },
+      {
+        "what": "Too many fund tags with words a beginner doesn't know (עסקת החלף, מנוטרלת מט\"ח, מס דיבידנד בתוך הקרן, W-8BEN)",
+        "where": "Fund list, screens 2-5"
+      },
+      {
+        "what": "Coloured cost bars with a legend of 8 colours I can't follow",
+        "where": "Screen 2 top and account list"
+      },
+      {
+        "what": "The long dollar-hedging section with two charts and a table is where I'd close the page; it should be folded away",
+        "where": "Screens 6-8"
+      },
+      {
+        "what": "The fund fee is shown only as a small percent (0%, 0.02%), not in shekels like the account cost",
+        "where": "Fund card, screen 2"
+      },
+      {
+        "what": "The range 'בין +2,212 ל-−23,766' is scary and confusing",
+        "where": "Hedged fund row, screen 5"
+      },
+      {
+        "what": "English-only ETF rows with 'אין מחיר כאן' clutter the list",
+        "where": "Screens 4-5"
+      }
+    ]
+  },
+  "steps": 8,
+  "reads": 8,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 45870,
+    "turns": 10,
+    "usd": 0.2188416,
+    "input": 12,
+    "cacheWrite": 15315,
+    "cacheRead": 56168,
+    "output": 4252,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "p09-disagree-sp500-pc",
+    "screenshots": 11,
+    "changes": [
+      {
+        "id": "disagree",
+        "type": "number",
+        "shots": 11,
+        "applied": 11,
+        "most": 2
+      }
+    ],
+    "neverShown": [],
+    "errors": []
+  }
+}

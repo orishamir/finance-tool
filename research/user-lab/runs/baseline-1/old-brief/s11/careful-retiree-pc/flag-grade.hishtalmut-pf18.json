@@ -1,0 +1,84 @@
+{
+  "case": "hishtalmut-pf18",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The 'שווה לדעת' note 'קרן השתלמות: אין העברה חלקית, ואיחוד רק כשנזיל' reads as if a study fund could not be moved between companies without tax.\",\"where\":\"the 'שווה לדעת' block\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Not sure whether they count as 'reached retirement age'; the page doesn't say what that age is",
+      "If the 6-year rule applies, the money is locked until 67",
+      "Orange warning box (early withdrawal is expensive, 47%) was a bit scary",
+      "The '123 places / calculated / entered' markers at the top are confusing and unexplained",
+      "Didn't open 'play with your own numbers' for fear of breaking something",
+      "Codes like TXH-09 and KH-15 in 'worth knowing' mean nothing",
+      "Two cards in 'money in and out' were cut off and unreadable",
+      "'What the site took into account' text was cut off",
+      "The 415 ₪ difference seems tiny; the employer's 7.5% is left out of the comparison and isn't the headline, so they nearly concluded it isn't worth it",
+      "Confused that the example deposit is 500 ₪ but only 300 ₪ counts as a tax-favoured deposit",
+      "Unclear whether the costs of 2,402.23 are over 10 years or per year",
+      "Only half understands 'real profit', even after reading the terms table",
+      "Didn't understand the −342.02 ₪ to 2,106 ₪ range or whether they could come out worse off",
+      "Couldn't find what happens when they stop working or retire (employer deposits, leaving the money in)",
+      "Couldn't find what happens to the money if they die before withdrawing",
+      "Couldn't find whether starting at 61 is worth it compared with adding to the pension",
+      "Couldn't find how to learn their own first-payment date if they already have an old fund",
+      "Couldn't find the actual fees companies charge, only the ceiling",
+      "Would drop the 'worth knowing too' and 'what you can invest in' buttons",
+      "Would drop the 'where it appears' column",
+      "Would drop the 'who offers it and who supervises' section",
+      "Would drop the brokerage-account comparison and the paragraph about investment houses"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader only skimmed 'worth knowing', mentioning the new-account note and the meaningless codes, and never said anything about moving a study fund between companies or about partial transfers."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0658712
+  },
+  "b": {
+    "raised": [
+      "Doesn't know if they count as having reached retirement age; the page doesn't say what that age is",
+      "If the 6-year rule applies, the money is locked until age 67 ('years from today' worried them)",
+      "The orange early-withdrawal warning (47%, tax on the employer's part) scared them",
+      "The '123' source/calculation/input markers are confusing",
+      "Didn't open 'play with your own numbers' for fear of breaking something",
+      "Codes like TXH-09 and KH-15 mean nothing",
+      "Two cards in 'money in and out' were cut off and unreadable",
+      "'What the site took into account' text was cut off",
+      "The 415 ₪ difference seems tiny; employer money is left out of the comparison and isn't the headline",
+      "Example's 500 ₪ deposit versus only 300 ₪ tax-favoured is unclear",
+      "Unclear whether costs of 2,402.23 are over 10 years or per year",
+      "'Real profit' only half understood even after the terms table",
+      "The range −342.02 ₪ to 2,106 ₪ is not understood (could they come out worse?)",
+      "Missing: what happens when they stop working or retire",
+      "Missing: what happens to the money if they die before withdrawing",
+      "Missing: whether starting at 61 is worth it compared with extra pension",
+      "Missing: how to find their own first-payment date",
+      "Missing: actual fees charged in practice, not just the ceiling",
+      "Would drop the 'worth knowing too' and 'what you can invest in' buttons",
+      "Would drop the 'where it appears' column",
+      "Would drop 'who offers it and who supervises'",
+      "Would drop the brokerage-account comparison and the investment-house paragraph"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader skimmed 'שווה לדעת' and only complained about the codes there; they never say the study-fund transfer note suggests the fund can't be moved without tax."
+      }
+    ],
+    "liked": [],
+    "usd": 0.06327920000000001
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1291504
+}

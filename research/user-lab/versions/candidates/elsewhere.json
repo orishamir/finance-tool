@@ -1,0 +1,15 @@
+{
+ "id": "elsewhere",
+ "written": "2026-11-06",
+ "status": "candidate, not in any version; untested",
+ "built_from": "the founder's noise sample 1 (runs/noise-1/answers.json, item n04: a company's page complained of for giving no recommendation) and his note of 2026-11-06: \"a complaint such as 'i went to the harel's page, i cant compare harel to other companies' isnt a valid one. in the harel page you view it. a valid complain would be that its hard or impossible to compare different companies, and that its 5 obscure clicks away from the harel page for example\"",
+ "human_reason": "a need a page does not meet is a finding about the site, never about that page: either the site does not meet it anywhere, or the way to where it does is hard to find or long from here",
+ "mode": "browser sessions only (a reader with still pictures of one page cannot look elsewhere)",
+ "test_plan": [
+  "planted: on a page that serves one narrow purpose, remove or bury the way to where the site meets a common neighbouring need (several steps, an unlabelled link); the reader should name the long or hidden way, from where it started",
+  "control: the same page with that way one plainly labelled step away; the reader should not complain that this page does not meet the need",
+  "noise: a fresh founder sample of browser findings, with and without; it may not raise noise, and on n04-like findings it should lower it",
+  "held out: the browser run on the held-out live pages, with and without; the catch rate may not fall",
+  "not on the 15 findings of noise sample 1 (held-out screens) in any form"
+ ]
+}

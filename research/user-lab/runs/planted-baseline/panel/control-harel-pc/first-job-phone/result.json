@@ -1,0 +1,115 @@
+{
+  "task": "control-harel-pc",
+  "persona": "first-job-phone",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-05T23:28:49.449Z",
+  "structured": {
+    "answer": "I'd pick Harel's \"עוקב מדד S&P 500\" track (13414): it's the S&P everyone talks about, it shows 13.7% over 3 years and 11.92% over 5 while most others show only \"פחות מ־3 שנים\", and the fee (0.56%) is the same as all the rest anyway.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Return column, almost every row",
+        "why": "\"פחות מ־3 שנים / פחות מ־5 שנים\" instead of a number; not sure if it means too new or something else, so I could only compare the few rows with numbers"
+      },
+      {
+        "where": "Bottom of screen 1, row \"כללי\"",
+        "why": "Cut off at the edge, seemed to show 13.5% for 3 years; I didn't go back to check it"
+      },
+      {
+        "where": "Rings next to מניות / מט\"ח",
+        "why": "Didn't know what the coloured circles mean; guessed from the dots"
+      }
+    ],
+    "used": [
+      "Heading \"הראל\" and the selected tab \"קופת גמל להשקעה 16\"",
+      "Line \"16 מסלולים · דמי ניהול מ־0.54% עד 0.61%\"",
+      "Row \"עוקב מדד S&P 500\": 0.56%, 0%, 99% מניות, 13.7% 3 שנים, 11.92% 5 שנים, 2.3 מיליארד ₪",
+      "Return column of other rows (כספי 4.25%, קיימות 1.78%, mostly \"פחות מ־3 שנים\")"
+    ],
+    "skimmed": [
+      "Other track names in the table (אשראי ואג\"ח, מניות סחיר, משולב סחיר, עוקב מדדי מניות, אג\"ח סחיר, קיימות)",
+      "Column headers",
+      "Fold list \"מה כתוב במסמכים של הראל\""
+    ],
+    "skipped": [
+      "Grey text under the heading about data sources and companies",
+      "Note under the table (\"התקרה בחוק...\", \"בנוסף לדמי הניהול...\")",
+      "Paragraph \"התשואה היא תשואת עבר...\"",
+      "All the folds (didn't open any)",
+      "Search box \"לא מצאתם שם?\" and footer",
+      "\"?\" icons in the column headers"
+    ],
+    "unsure_meaning": [
+      "פחות מ־3 שנים / פחות מ־5 שנים",
+      "מט\"ח 99%",
+      "The teal/yellow rings",
+      "אג\"ח, אשראי",
+      "סחיר",
+      "123 מקור / 123 מחושב",
+      "PF-10",
+      "דמי ניהול מההפקדה 0%"
+    ],
+    "not_found": [
+      "Fee in shekels on my amount",
+      "What to do next / how to open the fund",
+      "Which track the page recommends for someone starting out",
+      "Explanation of why most rows show no return"
+    ],
+    "findings": [
+      {
+        "what": "Most rows show \"פחות מ־3 שנים\" instead of a return, so the table barely helps me compare",
+        "where": "Return column, screens 1–2"
+      },
+      {
+        "what": "Fees only in percent and nearly identical (0.54–0.61%); means nothing to me without shekels",
+        "where": "Fee column and the line above the table"
+      },
+      {
+        "what": "No next step or how to open the fund on the page",
+        "where": "Whole page"
+      },
+      {
+        "what": "Rings with colours I had to guess",
+        "where": "Exposure column"
+      },
+      {
+        "what": "Rows cut off between screens; missed some tracks (כללי, הלכה יהודית) in full",
+        "where": "Bottom of screen 1, between screens 2 and 3"
+      },
+      {
+        "what": "Important notes (past returns, extra costs) are small grey text I'd never read",
+        "where": "Under the table, screen 3"
+      },
+      {
+        "what": "Too many similar-looking tracks with jargon names (אשראי ואג\"ח, סחיר, גמיש)",
+        "where": "Track name column"
+      }
+    ]
+  },
+  "steps": 4,
+  "reads": 4,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 35346,
+    "turns": 6,
+    "usd": 0.1293714,
+    "input": 6,
+    "cacheWrite": 7623,
+    "cacheRead": 14617,
+    "output": 3272,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "control-harel-pc",
+    "screenshots": 6,
+    "changes": [],
+    "neverShown": [],
+    "errors": []
+  }
+}

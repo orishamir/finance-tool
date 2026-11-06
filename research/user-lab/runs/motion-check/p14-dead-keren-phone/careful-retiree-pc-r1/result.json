@@ -1,0 +1,116 @@
+{
+  "task": "p14-dead-keren-phone",
+  "persona": "careful-retiree-pc",
+  "repeat": 1,
+  "mode": "browser",
+  "device": "phone",
+  "startedAt": "2026-11-06T00:18:28.889Z",
+  "structured": {
+    "answer": "Paying 1,200 ₪ a month myself, the page shows about 60,600 ₪ in hand after 4 years (57,600 put in) and about 133,400 ₪ after 8 years (115,200 put in). These are rough: the self-employed button didn't work, so I set the employer's part to 0 and my own part to 10%, and the growth assumes 7% a year.",
+    "confidence": "unsure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Calculator toggle 'שכירים / עצמאים'",
+        "why": "Pressed 'עצמאים' three times (by its words and by position) and it stayed on 'שכירים'. I had to work around it by setting the employer's share to 0."
+      },
+      {
+        "where": "Choosing how much I deposit",
+        "why": "There is no box for a monthly amount for self-employed, only a percentage of a salary, so I had to guess a percentage (10% of 12,000)."
+      },
+      {
+        "where": "Tax at 8 years",
+        "why": "The top of the page says tax-free after 6 years, but at 8 years it still shows −4,209 under 'המס לקח', with only 'פטור עד התקרה' as explanation."
+      }
+    ],
+    "used": [
+      "Intro text: tax-free after 6 years; self-employed exemption up to 20,566 ₪ a year",
+      "Calculator fields 'ההפקדה שלכם, מהשכר' and 'הפקדת המעסיק, מהשכר'",
+      "Year numbers under the bar chart (4 and 8)",
+      "Bars 'הפקדתם' and 'נשאר בידיים'"
+    ],
+    "skimmed": [
+      "Rules paragraph about 7.5% / 2.5% / 15,712 ₪ for employees",
+      "Small bar chart over 12 years",
+      "Fields 'תשואה בשנה' and 'דמי ניהול בשנה' (left as they were)"
+    ],
+    "skipped": [
+      "'חוקים וכללים · 10'",
+      "Links 'כדאי להכיר גם' and 'במה אפשר להשקיע' (S&P 500 and others)",
+      "Sections 'שווה לדעת' and 'מי מציע ומי מצטרף'",
+      "Everything below the calculator"
+    ],
+    "unsure_meaning": [
+      "במסלול מדד",
+      "פטור עד התקרה",
+      "תשואה בשנה 7",
+      "דמי ניהול 0.54",
+      "מדד S&P 500",
+      "Dotted underlines under numbers",
+      "Striped pink parts of the bars"
+    ],
+    "not_found": [
+      "A working setting for self-employed people",
+      "A box to type a monthly or yearly deposit in shekels",
+      "A sentence explaining why there is still tax after 6 years",
+      "Whether the 7% is guaranteed or could be a loss"
+    ],
+    "findings": [
+      {
+        "what": "The 'עצמאים' button does nothing; the calculator stays on 'שכירים'",
+        "where": "Top of the calculator 'כמה כסף נשאר לכם, ומתי?'"
+      },
+      {
+        "what": "Tax of −4,209 still shows after 8 years, which seems to contradict 'tax-free after 6 years'; 'פטור עד התקרה' is not explained",
+        "where": "Bar 'המס לקח' and the chart heading"
+      },
+      {
+        "what": "The opening example shows an employer adding 54,000 and a red −13,974 tax, which is frightening and not about me",
+        "where": "Results bars, default state"
+      },
+      {
+        "what": "Small grey instruction text is hard to read on the dark background",
+        "where": "'גררו את הסמן, הקישו על הציר…' under the chart"
+      },
+      {
+        "what": "Close colours (two greens, pink stripes) are hard to tell apart",
+        "where": "Bar charts"
+      },
+      {
+        "what": "The 'מסלול מדד' and 7% return are presented with no word on whether they can fall",
+        "where": "Sentence above the results bars"
+      }
+    ]
+  },
+  "steps": 14,
+  "reads": 8,
+  "commands": 14,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 77009,
+    "turns": 25,
+    "usd": 0.3813412000000001,
+    "input": 46,
+    "cacheWrite": 26056,
+    "cacheRead": 374546,
+    "output": 4890,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "p14-dead-keren-phone",
+    "screenshots": 14,
+    "changes": [
+      {
+        "id": "dead-shown",
+        "type": "style",
+        "shots": 14,
+        "applied": 14,
+        "most": 1
+      }
+    ],
+    "neverShown": [],
+    "errors": []
+  }
+}

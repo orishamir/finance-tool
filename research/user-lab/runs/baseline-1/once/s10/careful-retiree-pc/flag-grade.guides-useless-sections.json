@@ -1,0 +1,36 @@
+{
+  "case": "guides-useless-sections",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The guide home has sections that say nothing useful ('שני חלקים בכל חיסכון', 'מאיפה להתחיל').\",\"where\":\"the sections above or below the list of guides\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 3 is about the same 'שני חלקים בכל חיסכון' section, but it complains about unexplained jargon rather than the section saying nothing useful, and finding 1 is about missing return and fee numbers across the whole page, not about empty filler sections."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0181714
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 3 points at the 'שני חלקים בכל חיסכון' section, but it complains about unexplained jargon rather than the section saying nothing useful, and finding 1 is about missing return and fee numbers across the whole page, not about empty filler sections."
+      }
+    ],
+    "liked": [],
+    "usd": 0.018183400000000002
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.03635480000000001
+}

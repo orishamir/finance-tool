@@ -1,0 +1,65 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "Minus signs on fund differences and the comparison box look like losses; it is unclear what they are compared against.",
+      "serious": true,
+      "names_listed": 6
+    },
+    {
+      "n": 2,
+      "summary": "The word 'מדד' isn't explained; an older reader may take it to mean the price index.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "The first option buttons are in English, so the page feels foreign.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "Small grey text on a dark background can't be read even when enlarged.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "Sliders plus pre-filled amount boxes make it unclear whether to type your own amount.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 6,
+      "summary": "No mention of risk and no comparison with a bank deposit.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 7,
+      "summary": "A floating round arrow button covers the text at the ends of lines.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 8,
+      "summary": "The cost strips use similar orange, yellow and red colours that can't be told apart.",
+      "serious": true,
+      "names_listed": 3
+    },
+    {
+      "n": 9,
+      "summary": "Too many numbers in a row in the bank list is tiring and makes the reader anxious.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 10,
+      "summary": "It is unclear who 'מקור' is and why they should be trusted.",
+      "serious": false,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.04314280000000001
+}

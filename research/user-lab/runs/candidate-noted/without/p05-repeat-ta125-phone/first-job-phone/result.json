@@ -1,0 +1,115 @@
+{
+  "task": "p05-repeat-ta125-phone",
+  "persona": "first-job-phone",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "phone",
+  "startedAt": "2026-11-06T02:54:46.717Z",
+  "structured": {
+    "answer": "Open an account at Pesagot and buy the IBI index fund \"אי.בי.אי. מחקה ת\"א 125 (4A)\" (5112628). The page says about 86,045 ₪ after 10 years, but that's for its example of 10,000 ₪ now plus 500 ₪ a month (70,000 ₪ put in), not my own amounts.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Fund list, percent under each fund name",
+        "why": "Every fund including the chosen one shows a minus percent (−0.04% בשנה · שנה אחת); looked like losing money and nearly put me off"
+      },
+      {
+        "where": "Amount fields on first screen",
+        "why": "They were set to 10,000 and 500, not my 30,000; I didn't change them, so the final figure isn't for my money"
+      },
+      {
+        "where": "Top result box",
+        "why": "'−1,030 ₪ לעומת הבחירה שלכם' at first read like a loss"
+      }
+    ],
+    "used": [
+      "Main heading",
+      "ת\"א-125 index button (already selected)",
+      "Big result box: הפקדתם 70,000 ₪, 86,045 ₪ 'הבחירה שלכם · הזול'",
+      "Account list ranking with Pesagot first",
+      "Fund card: אי.בי.אי. מחקה ת\"א 125 (4A), דמי ניהול 0.1%",
+      "Summary line: 'הכי הרבה בכל המחירונים: 86,045 ₪ ... פסגות'"
+    ],
+    "skimmed": [
+      "Other banks in the account list",
+      "Other ETFs in the fund list",
+      "Step chart (מנקודת ההתחלה ועד הכי הרבה)",
+      "Sensitivity chart, only the '12 שנים 18,905 ₪ יותר' row"
+    ],
+    "skipped": [
+      "ת\"א-125 explanation paragraph",
+      "Cost breakdown bars and colour legend",
+      "Small text above the account list",
+      "'לא בחישוב' notes under the banks",
+      "Explanatory paragraph under the fund list",
+      "Screens 12 and 13"
+    ],
+    "unsure_meaning": [
+      "נאמן 0.025%",
+      "דמי משמרת",
+      "בכסף של היום",
+      "קבועים / משתנים",
+      "(4A)",
+      "−0.04% בשנה · שנה אחת",
+      "Whether Pesagot (account) and IBI (fund manager) are separate companies"
+    ],
+    "not_found": [
+      "The result for my own amount (30,000 ₪ plus a few hundred a month)",
+      "A plain 'first step: how to open the account' instruction"
+    ],
+    "findings": [
+      {
+        "what": "Minus percentages on every fund including the recommended one look like losses and are scary",
+        "where": "Fund list under each fund name"
+      },
+      {
+        "what": "Default amounts 10,000/500 aren't my amounts, so the headline 86,045 isn't for me",
+        "where": "First screen input fields and result box"
+      },
+      {
+        "what": "Minus sign on '−1,030 ₪' in the comparison reads like losing money",
+        "where": "Top result box, second option"
+      },
+      {
+        "what": "Jargon like נאמן, דמי משמרת, קבועים/משתנים with no plain explanation",
+        "where": "Fund card and cost legend"
+      },
+      {
+        "what": "Very long page with many similar lists; I'd have stopped around the step chart",
+        "where": "Middle and lower page"
+      }
+    ]
+  },
+  "steps": 11,
+  "reads": 11,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 39983,
+    "turns": 13,
+    "usd": 0.2567724,
+    "input": 14,
+    "cacheWrite": 21210,
+    "cacheRead": 76182,
+    "output": 3590,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "p05-repeat-ta125-phone",
+    "screenshots": 14,
+    "changes": [
+      {
+        "id": "repeat",
+        "type": "insert",
+        "shots": 14,
+        "applied": 14,
+        "most": 6
+      }
+    ],
+    "neverShown": [],
+    "errors": []
+  }
+}

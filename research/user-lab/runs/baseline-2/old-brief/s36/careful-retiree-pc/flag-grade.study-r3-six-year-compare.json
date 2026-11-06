@@ -1,0 +1,77 @@
+{
+  "case": "study-r3-six-year-compare",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"A comparison with waiting until year 6 is always present, though it is not always relevant.\",\"where\":\"the year-6 comparison\",\"kind\":\"taste\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Option A's labels are split over two lines under the columns, so the reader keeps looking from the number at the top to the word at the bottom",
+      "The 'מומלץ' (recommended) badge doesn't say who recommends it or why",
+      "The page never shows the fund and a securities account side by side; the subtitle even says that comparison was removed",
+      "The small 'before' picture is too tiny to read easily",
+      "'אפשר לגרור את השנים' is unclear (drag what?)",
+      "'חלקים שמרחפים' (floating parts) means nothing to the reader",
+      "Fund codes, company names and 'מבין 14 שנאספו' in the assumptions paragraph read as meaningless code numbers",
+      "'הגובה נמתח בכל שנה' is confusing: what is the reader supposed to compare from year to year?",
+      "The dark brown and dark grey blocks under the bright colours are unclear",
+      "In the year-6 chart, a dark green box above 'המס לקח 0 ₪' makes the reader doubt the zero tax",
+      "It's not explained why the tax (13,974 ₪) is bigger than the return, or what is being taxed",
+      "The fee-range sentence about the 19 tracks never states its plain conclusion",
+      "Jargon ('מסלול מדד', 'S&P500', 'מחקה') isn't explained",
+      "Missing: what happens to the employer's 900 ₪ if the reader doesn't join",
+      "Missing: anything about age or retirement, such as taking money out tax-free before year 6",
+      "Missing: whether there is a ceiling on how much salary counts",
+      "The page doesn't say clearly that the amounts are in today's money",
+      "Would drop one of the two chart options (Option A)"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader valued the year-6 box and chart ('never remove' it) and never says the year-6 comparison is shown when it isn't relevant."
+      }
+    ],
+    "liked": [],
+    "usd": 0.062003199999999994
+  },
+  "b": {
+    "raised": [
+      "Option A's labels are split over two lines under the columns, so the reader keeps looking back and forth between number and word",
+      "The 'מומלץ' (recommended) badge is unexplained: recommended by whom, and why?",
+      "The page never shows the securities account side by side with the fund",
+      "The subtitle is confusing because it says the securities-account comparison was removed, and that comparison is why the reader came",
+      "'אפשר לגרור את השנים' is unclear: drag what?",
+      "'חלקים שמרחפים' (floating parts) means nothing to the reader",
+      "The small old picture is useful but hard to read",
+      "Fund codes, company names and '4D'/'מבין 14 שנאספו' in the assumptions paragraph read as meaningless code numbers",
+      "'הגובה נמתח בכל שנה' is confusing: can columns be compared across years or not?",
+      "Unsure what the dark brown and dark grey blocks under the bright colours mean",
+      "In the year-6 chart, a dark green box sits above 'המס לקח 0 ₪', which makes the zero-tax figure doubtful",
+      "Unclear why the tax (13,974 ₪) is bigger than the return, and what is being taxed",
+      "The sentence about 19 tracks and fees of 0.7% to 0.19% never states its point",
+      "Jargon such as 'מסלול מדד', 'S&P500' and 'מחקה' is not understood",
+      "Missing: what happens to the employer's 900 ₪ if the reader doesn't join",
+      "Missing: anything about age or retirement, such as tax-free early withdrawal at 61",
+      "Missing: whether there is a salary ceiling",
+      "Not stated clearly that the amounts are in today's money; the reader only worked it out from the inflation note",
+      "Would drop one chart option (A) and keep B"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader never complains that the year-6 comparison is always shown or sometimes irrelevant; they value the 'אם מחכים לשנה 6' box and would never remove it."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0595112
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1215144
+}

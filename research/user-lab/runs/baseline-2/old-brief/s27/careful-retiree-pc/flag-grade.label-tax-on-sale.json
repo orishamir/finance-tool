@@ -1,0 +1,86 @@
+{
+  "case": "label-tax-on-sale",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The label 'מס רק במכירה' states something the site does not know: what happens to tax while a foreign fund accumulates is an open question.\",\"where\":\"the label on foreign accumulating funds\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "A dark box headed 'מס רק במכירה' stays open on every screen and covers parts of the page, hiding numbers such as the yearly-return/% input box and parts of the hedging tables",
+      "Worry that Ylin Lapidot has only one year of history; its 0% fee could be a launch offer, and the page doesn't say whether it can go up",
+      "The cost breakdown bar has too many colours",
+      "The coloured tags in the fund list were confusing",
+      "The Psagot pricing note about monthly purchases counted as a standing order was hard to follow even after two readings",
+      "The foreign funds (no price, estate tax, W-8BEN form) aren't relevant; the reader would cut them first",
+      "The year-by-year hedging table was too much and partly hidden",
+      "The '+0.37%' figures were unclear (a return or something else?), and the explanation sat at the bottom, half under the popup",
+      "Didn't understand what '4D' and '4A' mean",
+      "Didn't understand the difference between a tracker fund and an ETF, or why ETFs cost more",
+      "Didn't understand 'מס גם על שינוי המטבע' (whether tax is due on a profit that came only from the dollar)",
+      "Didn't understand 'עמלות זו על זו' in the colour legend",
+      "Didn't understand why the popup about foreign funds ('an open question… shown without a ranking') stayed open over everything",
+      "Didn't understand 'עוד לא נאסף' (not collected by whom?)",
+      "Couldn't find exactly how the final tax is calculated (25% on profit only? anything for age?)",
+      "Wanted a ready-made answer for a 5-year horizon",
+      "Couldn't find how safe the money is if the broker or fund manager gets into trouble",
+      "Couldn't find how to start (opening an account, standing order, whether this fund allows one)",
+      "Couldn't find what separates the top two funds beyond the 43 ₪ (size, age, stability)",
+      "Would drop the coloured line chart under 'what matters most'",
+      "Would drop the dollar chart since 2002",
+      "Would drop the list of advert claims for each broker",
+      "Would drop the 'not in the calculation' discounts for young people, soldiers and students"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader complains that the 'מס רק במכירה' box covers the page and asks why it stays open, but never says the label claims something the site doesn't know, even though they quote the box's own 'open question' text."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0721992
+  },
+  "b": {
+    "raised": [
+      "The 'מס רק במכירה' popup stayed open on every screen and hid numbers (yearly-return box, hedging tables)",
+      "Ylin Lapidot has only one year of history, and its 0% fee might be a launch offer; can't find whether it can rise",
+      "Cost breakdown bar has too many colours",
+      "Psagot pricing note about standing orders ('3 of the 15 banks') is hard to follow",
+      "Year-by-year hedging table is too much and partly hidden",
+      "Coloured tags in the fund list are confusing",
+      "'+0.37%' figures are unclear: plus relative to what? The explanation sits at the bottom, half hidden",
+      "Doesn't know what '4D' and '4A' mean",
+      "Doesn't understand the difference between a tracker fund and an ETF, or why ETFs cost more",
+      "'מס גם על שינוי המטבע' is unclear: is a profit that comes only from the dollar taxed?",
+      "'עמלות זו על זו' in the colour legend is unclear",
+      "Popup text ('open question, shown without ranking') is unclear, and so is why it stayed open over everything",
+      "'עוד לא נאסף' is unclear: not collected by whom?",
+      "Can't find exactly how tax is calculated at the end, or whether anything applies at their age",
+      "Wants a ready answer for a 5-year horizon",
+      "Can't find how safe the money is if the broker or fund manager gets into trouble",
+      "Can't find how to start: opening an account, setting up a standing order",
+      "Can't find what differs between the top two funds apart from 43 ₪",
+      "Would drop the foreign funds (no price, need forms)",
+      "Would drop the year-by-year hedging tables and the dollar chart since 2002",
+      "Would drop the coloured line chart under 'what matters most'",
+      "Would drop the list of advert claims for each broker",
+      "Would drop the 'not in the calculation' discounts for young people and soldiers"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader complains that the 'מס רק במכירה' popup stays open and quotes its 'open question' text, but never says the label claims something the site doesn't know about tax on accumulating foreign funds."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0708632
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1430624
+}

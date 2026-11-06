@@ -1,0 +1,111 @@
+{
+  "case": "tracks-r1-returns",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The lists show the tracks but give no sense of the different companies.\",\"where\":\"all three lists\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Fees and returns are nearly the same across companies, so the choice feels like picking from a near-tie and leaves the reader unsure",
+      "In option ב, the cheapest first row (Infinity flexible index) looks like the best pick but isn't S&P, which nearly misled the reader",
+      "The top title and bullets are written for the designers, not for the user",
+      "The other product buttons aren't explained; the reader doesn't know what they are",
+      "There are too many 'במה הכסף מושקע' buttons, with unclear terms (הלכה, אג\"ח ממשלתי סחיר, כספי, כללי)",
+      "The reader doesn't understand how 'מניות' (active) differs from 'עוקב מדדי מניות'",
+      "The orange 'בציור בלבד… עוד 13 קבוצות' line is just a list of names and adds nothing",
+      "Option ב mixes every type in one list, so the reader must read small tags to find S&P; cheapest-first pulls the eye to unwanted tracks",
+      "Unclear whether 'מהחיסכון' and 'מההפקדות' are two separate fees that are both paid",
+      "The exposure figures (מט\"ח 97% vs 100%) are not understood",
+      "The reader doesn't know what the 5-digit 'קופה' number is",
+      "Unclear why well-known companies show 'פחות מ־3 שנים' returns",
+      "'לפני דמי ניהול ולפני מס' leaves the actual return unclear",
+      "Unclear what the '>' at the end of each row opens",
+      "No translation of the fee percentages into shekels (e.g. per ₪10,000)",
+      "No information on how to join or whether there's a minimum amount",
+      "No information on switching track or company later, or what it costs",
+      "No information on tax or when money can be withdrawn",
+      "No comparison of a kupat gemel with buying an S&P fund through a bank or app"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader's near-tie remark is about the tracks' numbers being almost the same, not about the lists failing to convey anything about the companies themselves, so no raised item matches the person's problem."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0689112
+  },
+  "b": {
+    "raised": [
+      "Fees and returns are almost the same for every company, so the choice feels like a near-tie and the companies are hard to tell apart",
+      "In option ב, the first row (Infinity's flexible index fund) looks cheapest but isn't S&P, and it nearly misled the reader",
+      "The top bullets speak to the designers, not to the user",
+      "Doesn't know what the other product types are (only recognised קופת גמל להשקעה)",
+      "Too many 'במה הכסף מושקע' buttons; terms like הלכה, אג\"ח ממשלתי סחיר and כספי mean nothing, and it's unclear whether 'כללי' means normal",
+      "Doesn't understand how 'מניות' differs from 'עוקב מדדי מניות'",
+      "The orange 'בציור בלבד' line is just a list of names (would drop it)",
+      "Option ב mixes every type in one list, so the small tags must be read to find S&P, and cheapest-first draws the eye to unwanted items (would drop ב)",
+      "Unclear whether 'מהחיסכון' and 'מההפקדות' are two separate fees that are both paid",
+      "Doesn't understand what 'חשיפה' figures like מט\"ח 97% vs 100% mean, or whether they're good or bad",
+      "Doesn't know what the 5-digit 'קופה' number is (would drop that column)",
+      "Unclear why well-known companies show returns 'פחות מ־3 שנים'",
+      "'לפני דמי ניהול ולפני מס' leaves unclear what the reader actually gets",
+      "Doesn't know what the '>' at the end of each row opens",
+      "Wanted the fee difference shown in shekels (e.g. per ₪10,000 a year)",
+      "Couldn't find how to join or whether there's a minimum amount",
+      "Couldn't find whether switching track or company later is possible or costs anything",
+      "Couldn't find tax rules or when the money can be withdrawn",
+      "Couldn't find whether a kupat gemel beats buying an S&P fund through a bank or app"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 1,
+        "why": "The reader says all the companies look the same on fees and returns, so the choice is a near-tie that one remark about Phoenix's size could tip. That matches, at least in part, the complaint that the lists give no sense of the different companies."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0657912
+  },
+  "third": {
+    "raised": [
+      "Fees and returns are nearly identical across companies, so the choice feels like picking from a near-tie and the reader is unsure",
+      "In option ב the cheapest first row (Infinity flexible) isn't an S&P track, which nearly misled the reader",
+      "The top title and bullets address the designers, not the user",
+      "The other product types (besides קופת גמל להשקעה) are not explained",
+      "The 'במה הכסף מושקע' list has too many buttons, and terms like הלכה, אג\"ח ממשלתי סחיר, כספי and כללי are unclear",
+      "The difference between 'מניות' and 'עוקב מדדי מניות' is unclear",
+      "The orange 'בציור בלבד' line is just a list of names",
+      "Option ב mixes all types in one list, so the reader must read small tags, and cheapest-first draws the eye to unwanted tracks",
+      "Unclear whether 'מהחיסכון' and 'מההפקדות' are two separate fees and whether both are paid",
+      "Unclear what the 'חשיפה' figures (מט\"ח 97% vs 100%) mean or whether they are good or bad",
+      "Unclear what the 5-digit 'קופה' number is (and the reader would drop that column)",
+      "Unclear why well-known companies show 'פחות מ־3 שנים' returns",
+      "Unclear what 'לפני דמי ניהול ולפני מס' means for the actual return",
+      "Unclear what the '>' at the end of each row opens",
+      "Missing: what the fee difference means in shekels",
+      "Missing: how to join and whether there is a minimum amount",
+      "Missing: whether the reader can switch track or company later and at what cost",
+      "Missing: tax rules and when money can be withdrawn",
+      "Missing: a comparison of kupat gemel vs buying an S&P fund through a bank or app",
+      "Would remove all of option ב",
+      "Would hide the rarely used investment-type buttons behind a 'more' button"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader says the companies' tracks look nearly the same in fees and returns, but blames the similar numbers, not missing information about the companies, so the person's complaint isn't stated."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0678912
+  },
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": false
+  },
+  "against": {},
+  "usd": 0.20259359999999998
+}

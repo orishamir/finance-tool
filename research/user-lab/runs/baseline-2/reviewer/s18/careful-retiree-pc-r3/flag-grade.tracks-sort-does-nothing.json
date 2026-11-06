@@ -1,0 +1,36 @@
+{
+  "case": "tracks-sort-does-nothing",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"Sorting by management fee does nothing visible: under each company heading there is one track, so the order does not change.\",\"where\":\"the sorted table\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 3,
+        "why": "Finding 3 says the table stays ordered by company size rather than by fee, so the cheapest track is buried in the middle; that is the visible effect the person meant when they said sorting by fee changes nothing."
+      }
+    ],
+    "liked": [],
+    "usd": 0.022799399999999997
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 3,
+        "why": "Finding 3 says the table, which is meant to be sorted by fee, still stays in company-size order with the cheapest track buried in the middle; that is the same symptom of the fee sort not visibly changing the order."
+      }
+    ],
+    "liked": [],
+    "usd": 0.022451400000000003
+  },
+  "third": null,
+  "ranks": {
+    "k": 3
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0452508
+}

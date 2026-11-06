@@ -1,0 +1,13 @@
+{
+ "id": "fund-list-past-gap-column",
+ "task": "s29",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "The fund list's column 'מול המדד' (each fund's past gap to its index) is not useful for choosing a fund, and the table does not show the information that matters for the choice.",
+   "where": "the columns of the fund list",
+   "kind": "taste"
+  }
+ ],
+ "liked": []
+}

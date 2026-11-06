@@ -1,0 +1,112 @@
+{
+  "task": "s09",
+  "persona": "first-job-phone",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T02:16:52.013Z",
+  "structured": {
+    "answer": "A פיקדון means locking money in the bank for a set time for a small interest rate (1.8% in the example), minus 15% tax. If you want it early, the bank has to agree and you pay a fine the page never puts in shekels. Their own example shows 70,000 ₪ put in and only 68,270 ₪ left after 10 years, so I wouldn't open one today.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Calculator result, top of page",
+        "why": "68,270 ₪ 'נשאר לכם' is less than 70,000 ₪ 'ההפקדות שלכם'. It looks like I lose money. I guess it's about 'בכסף של היום' and 2% inflation, but I'm not sure."
+      },
+      {
+        "where": "כמה זה עולה / red box about שבירת פיקדון",
+        "why": "I wanted to know what breaking the deposit costs. It only says 'לפי התעריפון' and 'שאלה פתוחה', no shekel number."
+      },
+      {
+        "where": "Glossary table at the bottom",
+        "why": "Long table, I got bored and would have closed the page there."
+      }
+    ],
+    "used": [
+      "Heading פיקדון and first line 'כסף שמפקידים בבנק לתקופה מוסכמת, ובתמורה הבנק משלם עליו ריבית'",
+      "Calculator: 68,270 ₪, נשאר לכם / מס 986.20 / ההפקדות שלכם 70,000 ₪, ריבית 1.8%, אינפלציה 2",
+      "שווה לדעת: מס 15%, שבירת פיקדון: הסכמת הבנק... והעלות",
+      "כסף נכנס ויוצא: משיכה בסוף התקופה שנקבעה בהסכם",
+      "כמה זה עולה: דמי יציאה לפי התעריפון",
+      "Red box: שבירת פיקדון לפני הזמן... הקנס הוא תנאי של הבנק",
+      "סיכונים: אין ביטוח פיקדונות",
+      "Glossary rows שבירת פיקדון and תחנת יציאה"
+    ],
+    "skimmed": [
+      "Rest of 'מה זה' paragraphs (8 סוגי פיקדון, צמוד למדד)",
+      "למה משתמשים בזה",
+      "מי מציע ומי מפקח",
+      "מיסוי cards",
+      "Glossary table מונחים"
+    ],
+    "skipped": [
+      "Grey notes under the calculator fields (dates, גיל field, תנאי המוצר בדוגמה)",
+      "הצגת החוקים והכללים links",
+      "הצגה כטבלה fold",
+      "Paragraph about פטור למעוט הכנסה and הפסד הון",
+      "מה האתר לקח בחשבון",
+      "Footer"
+    ],
+    "unsure_meaning": [
+      "68,270 ₪ vs 70,000 ₪: am I losing money?",
+      "בכסף של היום / בשקלים של העתיד",
+      "מק\"מ",
+      "מוצרי שוק הכסף",
+      "צמוד למדד / לא צמוד",
+      "ריבית ריאלית",
+      "ריבית הפריים",
+      "פטור למעוט הכנסה",
+      "תיאום מס",
+      "codes like TXI-03, BANK-06, TXI OQ14",
+      "חשבון במערכת סגורה"
+    ],
+    "not_found": [
+      "How much the early-break fine is in shekels",
+      "Which bank pays the most right now / a recommendation",
+      "A clear answer on whether a deposit beats just leaving money in the עו\"ש"
+    ],
+    "findings": [
+      {
+        "what": "The first big number (68,270 ₪) is lower than the 70,000 ₪ deposited right below it, so it reads like the deposit loses money and nothing next to it explains why",
+        "where": "Calculator box, top of page"
+      },
+      {
+        "what": "The cost of breaking a deposit is never given in shekels, only 'לפי התעריפון' and 'שאלה פתוחה'",
+        "where": "כמה זה עולה table and red box in מיסוי"
+      },
+      {
+        "what": "Red warning box and 'אין ביטוח פיקדונות' feel scary without saying how big the risk is",
+        "where": "מיסוי red box, סיכונים ומה לא מוגן"
+      },
+      {
+        "what": "Lots of jargon and code tags (TXI-03, BANK-06, מק\"מ, צמוד למדד) in the middle of sentences",
+        "where": "שווה לדעת, מה זה, מיסוי"
+      },
+      {
+        "what": "The example is 10,000 ₪ + 500/month, not my amount, and changing it means fiddling with fields",
+        "where": "Calculator controls"
+      },
+      {
+        "what": "Long glossary table at the end, too long to read on a phone",
+        "where": "מונחים"
+      }
+    ]
+  },
+  "steps": 4,
+  "reads": 4,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 37651,
+    "turns": 6,
+    "usd": 0.1863276,
+    "input": 8,
+    "cacheWrite": 13552,
+    "cacheRead": 27798,
+    "output": 3616,
+    "model": "claude-opus-5-5"
+  }
+}

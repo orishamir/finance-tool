@@ -1,0 +1,130 @@
+{
+  "task": "p02-percent-keren-phone",
+  "persona": "first-job-phone",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "phone",
+  "startedAt": "2026-11-06T03:03:30.800Z",
+  "structured": {
+    "answer": "After 6 years from the first deposit I can take the study fund out with no income tax. With 300 ₪ a month from me and 900 ₪ from the employer, the page shows about 66,5xx ₪ left after tax if I take it out at 5 years, and waiting to 6 years avoids roughly 14k of tax.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Text under the calculator, 'משיכה אחרי 5 שנים'",
+        "why": "50,719, 29,768 and 15,794 don't match the 66,5.. and −13,974 in the bars, so I couldn't tell how much I actually end up with"
+      },
+      {
+        "where": "Last bar 'נשאר בידיים'",
+        "why": "The number is cut off ('66,5') under the round scroll-up button"
+      },
+      {
+        "where": "Calculator default of 5 years",
+        "why": "It opens at the year when there's still tax, not at 6, so the first number I saw was the taxed one"
+      },
+      {
+        "where": "Between screen 2 and 3",
+        "why": "The top of the calculator (salary field?) didn't show; I never saw which salary it used"
+      }
+    ],
+    "used": [
+      "Subtitle and 'מה זה' paragraph: 'אחרי 6 שנים מההפקדה הראשונה אפשר למשוך... בלי מס הכנסה'",
+      "Chart labels 'לפני 6 שנים: מס' / 'מ־6 שנים: פטור ממס'",
+      "'קרן השתלמות במסלול מדד. 300 ₪ בחודש מכם, 900 ₪ מהמעסיק'",
+      "Bar numbers +54,000, +8,487, −13,974, 66,5..",
+      "Bar labels 'נשאר בידיים', 'המס לקח'"
+    ],
+    "skimmed": [
+      "Calculator fields 2.5%, 7.5%, 7%, 0.54%",
+      "Text under the calculator about 50,719 / 29,768 / 15,794",
+      "'שווה לדעת' list",
+      "'משיכה ומעבר' box"
+    ],
+    "skipped": [
+      "Paragraph about the tax-free limit 15,712 / 20,566",
+      "Chips 'כדאי להכיר גם' and 'במה אפשר להשקיע'",
+      "Assumptions text (inflation 2%, כסף של היום, track 13245)",
+      "'מי מציע ומי מצטרף' and the companies list",
+      "'כמה זה עולה' and everything after (screens 8-13)",
+      "'חוקים וכללים' tags"
+    ],
+    "unsure_meaning": [
+      "50,719 vs 66,5.. – which one is what I get",
+      "15,794 'חוזרים' – back to me from tax?",
+      "Bar colours: yellow = employer?, grey = me?, teal = return? (guessed)",
+      "Red striped part on bars 1-5 = tax (guessed)",
+      "'כל הסכומים בכסף של היום'",
+      "'קופת גמל'",
+      "'אג\"ח ממשלתית צמודה / לא צמודה', 'מזומן שקלי'",
+      "'KH-19', 'PF-18' tags",
+      "'חוקים וכללים · 10'",
+      "Dotted purple vs dashed underlines on numbers"
+    ],
+    "not_found": [
+      "The final number at 6 years (calculator stuck on 5 in what I saw)",
+      "Which salary the calculator assumes",
+      "A calculation for my own salary (9,500)"
+    ],
+    "findings": [
+      {
+        "what": "Two different totals: text says 50,719 goes in the account, bar says 66,5.. left in hand; I couldn't tell which is real",
+        "where": "Calculator result text under the bars"
+      },
+      {
+        "what": "Final 'נשאר בידיים' number is cut off by the round scroll-up button",
+        "where": "Bar chart in calculator, right side"
+      },
+      {
+        "what": "Calculator defaults to 5 years, the year with tax, so the first figure shown is the worse taxed one",
+        "where": "'מושכים את הכסף אחרי 5 שנים'"
+      },
+      {
+        "what": "Bar colours not explained right next to the bars; had to guess employer/me/return",
+        "where": "Year-by-year bar chart"
+      },
+      {
+        "what": "The red −13,974 and striped red block look alarming",
+        "where": "Waterfall bars"
+      },
+      {
+        "what": "Calculator's salary field hidden between screens; don't know what salary the example uses",
+        "where": "Top of calculator"
+      },
+      {
+        "what": "Lots of small chips with jargon (אג\"ח צמודה, קופת גמל להשקעה) before getting to the calculator",
+        "where": "End of 'מה זה' section"
+      }
+    ]
+  },
+  "steps": 7,
+  "reads": 7,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 42385,
+    "turns": 9,
+    "usd": 0.2003976,
+    "input": 10,
+    "cacheWrite": 14117,
+    "cacheRead": 44008,
+    "output": 3931,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "p02-percent-keren-phone",
+    "screenshots": 14,
+    "changes": [
+      {
+        "id": "pct-shown",
+        "type": "style",
+        "shots": 14,
+        "applied": 14,
+        "most": 1
+      }
+    ],
+    "neverShown": [],
+    "errors": []
+  }
+}

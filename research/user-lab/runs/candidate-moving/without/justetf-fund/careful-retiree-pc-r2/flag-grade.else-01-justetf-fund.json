@@ -1,0 +1,126 @@
+{
+  "case": "else-01-justetf-fund",
+  "stamp": "{\"keys\":[{\"id\":\"j-tabs\",\"kind\":\"general\",\"where\":\"the row of section names under the fund's header (Overview, Chart, Basics, Holdings, Performance and more)\",\"problem\":\"The row of section names looks like tabs that switch what is shown, but each one scrolls the page down to a section of the same long page; the jump is unexpected, and afterwards the row is no longer where it was, so going back means finding it again.\"},{\"id\":\"j-light\",\"kind\":\"taste\",\"where\":\"the whole page\",\"problem\":\"The page is light, white; he prefers a dark page.\"},{\"id\":\"j-dated\",\"kind\":\"general\",\"where\":\"the whole page\",\"problem\":\"The page does not look very modern or polished (minor).\"},{\"id\":\"j-performance\",\"kind\":\"general\",\"where\":\"the performance section\",\"problem\":\"The performance section is plain and basic.\"}],\"liked\":[{\"id\":\"j-facts-top\",\"what\":\"The most important facts about the fund (yearly cost, distribution policy, fund size) are at the top centre.\"},{\"id\":\"j-chart\",\"what\":\"The price chart: the time ranges right under it, green above 0% and red below, and the chosen range highlighted.\"},{\"id\":\"j-depth\",\"what\":\"More advanced information further down, in the basics section; the page is detailed.\"},{\"id\":\"j-holdings\",\"what\":\"The holdings section: easy to reach and easy to understand.\"},{\"id\":\"j-help\",\"what\":\"A ? mark beside terms such as the yearly cost, distribution policy and replication, explaining them.\"}]}",
+  "a": {
+    "problems": [
+      {
+        "id": "j-tabs",
+        "rank": 0,
+        "why": "The reader only saw an error page, so none of the findings mention the row of section names or how it scrolls."
+      },
+      {
+        "id": "j-light",
+        "rank": 0,
+        "why": "None of the findings mention that the page is light or that a dark page would be better."
+      },
+      {
+        "id": "j-dated",
+        "rank": 0,
+        "why": "Finding 3 is about trusting a broken site, not about the page looking old-fashioned or unpolished."
+      },
+      {
+        "id": "j-performance",
+        "rank": 0,
+        "why": "The reader never saw the performance section, so no finding says it is plain."
+      }
+    ],
+    "liked": [
+      {
+        "id": "j-facts-top",
+        "against": 0,
+        "why": "No finding complains about the key fund facts at the top."
+      },
+      {
+        "id": "j-chart",
+        "against": 0,
+        "why": "No finding mentions the price chart."
+      },
+      {
+        "id": "j-depth",
+        "against": 0,
+        "why": "No finding complains about the detailed information in the basics section."
+      },
+      {
+        "id": "j-holdings",
+        "against": 0,
+        "why": "No finding mentions the holdings section."
+      },
+      {
+        "id": "j-help",
+        "against": 0,
+        "why": "Finding 2 is about an error code that means nothing, not about the ? help marks beside fund terms."
+      }
+    ]
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "j-tabs",
+        "rank": 0,
+        "why": "The reader only saw an error page, so none of the findings mention the row of section names or how it scrolls the page."
+      },
+      {
+        "id": "j-light",
+        "rank": 0,
+        "why": "None of the findings say anything about the page being light or white, or about wanting a dark page."
+      },
+      {
+        "id": "j-dated",
+        "rank": 0,
+        "why": "Finding 3 says the site feels untrustworthy because it breaks, which is not the same as saying it looks dated or unpolished."
+      },
+      {
+        "id": "j-performance",
+        "rank": 0,
+        "why": "The reader never reached the performance section, and no finding mentions it."
+      }
+    ],
+    "liked": [
+      {
+        "id": "j-facts-top",
+        "against": 0,
+        "why": "No finding mentions the key facts at the top of the page."
+      },
+      {
+        "id": "j-chart",
+        "against": 0,
+        "why": "No finding mentions the price chart or its time ranges."
+      },
+      {
+        "id": "j-depth",
+        "against": 0,
+        "why": "No finding mentions the basics section or how detailed the page is."
+      },
+      {
+        "id": "j-holdings",
+        "against": 0,
+        "why": "No finding mentions the holdings section."
+      },
+      {
+        "id": "j-help",
+        "against": 0,
+        "why": "No finding mentions the ? help marks next to terms."
+      }
+    ]
+  },
+  "third": null,
+  "ranks": {
+    "j-tabs": 0,
+    "j-light": 0,
+    "j-dated": 0,
+    "j-performance": 0
+  },
+  "agreed": {
+    "j-tabs": true,
+    "j-light": true,
+    "j-dated": true,
+    "j-performance": true
+  },
+  "against": {
+    "j-facts-top": 0,
+    "j-chart": 0,
+    "j-depth": 0,
+    "j-holdings": 0,
+    "j-help": 0
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "id": "p12-sign-sp500-pc",
+  "about": "For the lab only; never reaches a session. Planted problem, kind p12 (A plus or minus whose good direction is unclear): see research/user-lab/planted.md.",
+  "purpose": "plant",
+  "pages": [
+    "/finance-tool/indices/sp500"
+  ],
+  "device": "pc",
+  "instance": {
+    "kind": "p12",
+    "mode": "page",
+    "url": "https://orishamir.github.io/finance-tool/indices/sp500",
+    "device": "pc",
+    "steps": [],
+    "task": "sp500",
+    "control": "planted/control-sp500-pc",
+    "split": "score"
+  },
+  "plants": [
+    {
+      "id": "p12",
+      "kind": "general",
+      "problem": "The cost comparison writes its differences as +1 ₪ and −58 ₪ (on a cost, so minus is good) right below a −43 ₪ that means less money (bad); the words \"more\" and \"less\" are gone.",
+      "where": "the line \"העלות אצלכם, לעומת הזוג השני\" under the cost bars",
+      "counts": "A finding that the plus and minus signs are confusing: the reader cannot tell whether a minus there is good or bad, or the signs mean opposite things in two places.",
+      "notCounts": "Not understanding what the three parts (account, fund, tax) are."
+    }
+  ],
+  "changes": [
+    {
+      "id": "sign-shown",
+      "type": "style",
+      "selector": "[data-pl=\"sign\"]",
+      "set": {
+        "--pl": "1"
+      }
+    }
+  ]
+}

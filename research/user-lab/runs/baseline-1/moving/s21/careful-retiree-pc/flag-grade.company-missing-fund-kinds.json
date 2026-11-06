@@ -1,0 +1,36 @@
+{
+  "case": "company-missing-fund-kinds",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"A company's page lists its provident and study funds but not its index-tracking funds or money-market funds.\",\"where\":\"the product choices at the top of the company page\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings say the company page leaves out index-tracking funds or money-market funds; finding 2 is about the track buttons pushing shares and the S&P 500 and saying nothing about safe saving, which is a different complaint."
+      }
+    ],
+    "liked": [],
+    "usd": 0.014703400000000002
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings mention that the company page is missing index-tracking funds or money-market funds as product choices. Finding 2 is about the track buttons pushing shares and index words with nothing about safe saving, which is a different issue."
+      }
+    ],
+    "liked": [],
+    "usd": 0.014623400000000002
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.029326800000000004
+}

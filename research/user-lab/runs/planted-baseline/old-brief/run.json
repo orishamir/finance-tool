@@ -1,0 +1,473 @@
+{
+  "personas": [
+    "first-job-phone",
+    "careful-retiree-pc"
+  ],
+  "tasks": [
+    {
+      "key": "p01-no-reference-sp500-pc",
+      "text": "You want to put money into an S&P 500 index fund every month for about ten years. This is a page you found. Use it to decide where to hold the money and which fund to buy, and say how much you would end up with.",
+      "variant": "planted/p01-no-reference-sp500-pc",
+      "device": "pc",
+      "findings": true,
+      "page": "https://orishamir.github.io/finance-tool/indices/sp500"
+    },
+    {
+      "key": "p01-no-reference-ta125-phone",
+      "text": "You want to put money into a fund that follows the 125 largest companies on the Tel Aviv stock exchange, every month for about ten years. This is a page you found. Use it to decide where to hold the money and which fund to buy, and say how much you would end up with.",
+      "variant": "planted/p01-no-reference-ta125-phone",
+      "device": "phone",
+      "findings": true,
+      "page": "https://orishamir.github.io/finance-tool/indices/ta125"
+    },
+    {
+      "key": "p02-percent-keren-phone",
+      "text": "Your new employer offers a study fund (keren hishtalmut). This is a page you found. Use it to understand roughly how much money you would have and when you could take it out.",
+      "variant": "planted/p02-percent-keren-phone",
+      "device": "phone",
+      "findings": true,
+      "page": "https://orishamir.github.io/finance-tool/guide/keren-hishtalmut"
+    },
+    {
+      "key": "p02-percent-sp500-pc",
+      "text": "You want to put money into an S&P 500 index fund every month for about ten years. This is a page you found. Use it to decide where to hold the money and which fund to buy, and say how much you would end up with.",
+      "variant": "planted/p02-percent-sp500-pc",
+      "device": "pc",
+      "findings": true,
+      "page": "https://orishamir.github.io/finance-tool/indices/sp500"
+    },
+    {
+      "key": "p02-percent-ta125-phone",
+      "text": "You want to put money into a fund that follows the 125 largest companies on the Tel Aviv stock exchange, every month for about ten years. This is a page you found. Use it to decide where to hold the money and which fund to buy, and say how much you would end up with.",
+      "variant": "planted/p02-percent-ta125-phone",
+      "device": "phone",
+      "findings": true,
+      "page": "https://orishamir.github.io/finance-tool/indices/ta125"
+    },
+    {
+      "key": "p03-colours-sp500-pc",
+      "text": "You want to put money into an S&P 500 index fund every month for about ten years. This is a page you found. Use it to decide where to hold the money and which fund to buy, and say how much you would end up with.",
+      "variant": "planted/p03-colours-sp500-pc",
+      "device": "pc",
+      "findings": true,
+      "page": "https://orishamir.github.io/finance-tool/indices/sp500"
+    },
+    {
+      "key": "p03-colours-ta125-phone",
+      "text": "You want to put money into a fund that follows the 125 largest companies on the Tel Aviv stock exchange, every month for about ten years. This is a page you found. Use it to decide where to hold the money and which fund to buy, and say how much you would end up with.",
+      "variant": "planted/p03-colours-ta125-phone",
+      "device": "phone",
+      "findings": true,
+      "page": "https://orishamir.github.io/finance-tool/indices/ta125"
+    },
+    {
+      "key": "p03-colours-tracks-pc",
+      "text": "You want to open an investment savings fund (kupat gemel lehashkaa) and are choosing a company and a track. This is a page you found. Use it to choose one, and say why.",
+      "variant": "planted/p03-colours-tracks-pc",
+      "device": "pc",
+      "findings": true,
+      "page": "https://orishamir.github.io/finance-tool/tracks/kupat-gemel-lehashkaa"
+    },
+    {
+      "key": "p04-far-legend-sp500-pc",
+      "text": "You want to put money into an S&P 500 index fund every month for about ten years. This is a page you found. Use it to decide where to hold the money and which fund to buy, and say how much you would end up with.",
+      "variant": "planted/p04-far-legend-sp500-pc",
+      "device": "pc",
+      "findings": true,
+      "page": "https://orishamir.github.io/finance-tool/indices/sp500"
+    },
+    {
+      "key": "p04-far-legend-ta125-phone",
+      "text": "You want to put money into a fund that follows the 125 largest companies on the Tel Aviv stock exchange, every month for about ten years. This is a page you found. Use it to decide where to hold the money and which fund to buy, and say how much you would end up with.",
+      "variant": "planted/p04-far-legend-ta125-phone",
+      "device": "phone",
+      "findings": true,
+      "page": "https://orishamir.github.io/finance-tool/indices/ta125"
+    },
+    {
+      "key": "p05-repeat-sp500-pc",
+      "text": "You want to put money into an S&P 500 index fund every month for about ten years. This is a page you found. Use it to decide where to hold the money and which fund to buy, and say how much you would end up with.",
+      "variant": "planted/p05-repeat-sp500-pc",
+      "device": "pc",
+      "findings": true,
+      "page": "https://orishamir.github.io/finance-tool/indices/sp500"
+    },
+    {
+      "key": "p05-repeat-ta125-phone",
+      "text": "You want to put money into a fund that follows the 125 largest companies on the Tel Aviv stock exchange, every month for about ten years. This is a page you found. Use it to decide where to hold the money and which fund to buy, and say how much you would end up with.",
+      "variant": "planted/p05-repeat-ta125-phone",
+      "device": "phone",
+      "findings": true,
+      "page": "https://orishamir.github.io/finance-tool/indices/ta125"
+    },
+    {
+      "key": "p05-repeat-tracks-pc",
+      "text": "You want to open an investment savings fund (kupat gemel lehashkaa) and are choosing a company and a track. This is a page you found. Use it to choose one, and say why.",
+      "variant": "planted/p05-repeat-tracks-pc",
+      "device": "pc",
+      "findings": true,
+      "page": "https://orishamir.github.io/finance-tool/tracks/kupat-gemel-lehashkaa"
+    },
+    {
+      "key": "p06-method-sp500-pc",
+      "text": "You want to put money into an S&P 500 index fund every month for about ten years. This is a page you found. Use it to decide where to hold the money and which fund to buy, and say how much you would end up with.",
+      "variant": "planted/p06-method-sp500-pc",
+      "device": "pc",
+      "findings": true,
+      "page": "https://orishamir.github.io/finance-tool/indices/sp500"
+    },
+    {
+      "key": "p06-method-ta125-phone",
+      "text": "You want to put money into a fund that follows the 125 largest companies on the Tel Aviv stock exchange, every month for about ten years. This is a page you found. Use it to decide where to hold the money and which fund to buy, and say how much you would end up with.",
+      "variant": "planted/p06-method-ta125-phone",
+      "device": "phone",
+      "findings": true,
+      "page": "https://orishamir.github.io/finance-tool/indices/ta125"
+    },
+    {
+      "key": "p07-word-keren-pc",
+      "text": "Your new employer offers a study fund (keren hishtalmut). This is a page you found. Use it to understand roughly how much money you would have and when you could take it out.",
+      "variant": "planted/p07-word-keren-pc",
+      "device": "pc",
+      "findings": true,
+      "page": "https://orishamir.github.io/finance-tool/guide/keren-hishtalmut"
+    },
+    {
+      "key": "p07-word-sp500-phone",
+      "text": "You want to put money into an S&P 500 index fund every month for about ten years. This is a page you found. Use it to decide where to hold the money and which fund to buy, and say how much you would end up with.",
+      "variant": "planted/p07-word-sp500-phone",
+      "device": "phone",
+      "findings": true,
+      "page": "https://orishamir.github.io/finance-tool/indices/sp500"
+    },
+    {
+      "key": "p07-word-tracks-pc",
+      "text": "You want to open an investment savings fund (kupat gemel lehashkaa) and are choosing a company and a track. This is a page you found. Use it to choose one, and say why.",
+      "variant": "planted/p07-word-tracks-pc",
+      "device": "pc",
+      "findings": true,
+      "page": "https://orishamir.github.io/finance-tool/tracks/kupat-gemel-lehashkaa"
+    },
+    {
+      "key": "p08-heading-current-pc",
+      "text": "Your salary goes into a current account at your bank. This is a page you found. Use it to find out what the account costs you and how much money it makes sense to keep in it.",
+      "variant": "planted/p08-heading-current-pc",
+      "device": "pc",
+      "findings": true,
+      "page": "https://orishamir.github.io/finance-tool/guide/current-account"
+    },
+    {
+      "key": "p08-heading-keren-phone",
+      "text": "Your new employer offers a study fund (keren hishtalmut). This is a page you found. Use it to understand roughly how much money you would have and when you could take it out.",
+      "variant": "planted/p08-heading-keren-phone",
+      "device": "phone",
+      "findings": true,
+      "page": "https://orishamir.github.io/finance-tool/guide/keren-hishtalmut"
+    },
+    {
+      "key": "p08-heading-sp500-pc",
+      "text": "You want to put money into an S&P 500 index fund every month for about ten years. This is a page you found. Use it to decide where to hold the money and which fund to buy, and say how much you would end up with.",
+      "variant": "planted/p08-heading-sp500-pc",
+      "device": "pc",
+      "findings": true,
+      "page": "https://orishamir.github.io/finance-tool/indices/sp500"
+    },
+    {
+      "key": "p09-disagree-keren-phone",
+      "text": "Your new employer offers a study fund (keren hishtalmut). This is a page you found. Use it to understand roughly how much money you would have and when you could take it out.",
+      "variant": "planted/p09-disagree-keren-phone",
+      "device": "phone",
+      "findings": true,
+      "page": "https://orishamir.github.io/finance-tool/guide/keren-hishtalmut"
+    },
+    {
+      "key": "p09-disagree-sp500-pc",
+      "text": "You want to put money into an S&P 500 index fund every month for about ten years. This is a page you found. Use it to decide where to hold the money and which fund to buy, and say how much you would end up with.",
+      "variant": "planted/p09-disagree-sp500-pc",
+      "device": "pc",
+      "findings": true,
+      "page": "https://orishamir.github.io/finance-tool/indices/sp500"
+    },
+    {
+      "key": "p09-disagree-ta125-phone",
+      "text": "You want to put money into a fund that follows the 125 largest companies on the Tel Aviv stock exchange, every month for about ten years. This is a page you found. Use it to decide where to hold the money and which fund to buy, and say how much you would end up with.",
+      "variant": "planted/p09-disagree-ta125-phone",
+      "device": "phone",
+      "findings": true,
+      "page": "https://orishamir.github.io/finance-tool/indices/ta125"
+    },
+    {
+      "key": "p10-fold-current-pc",
+      "text": "Your salary goes into a current account at your bank. This is a page you found. Use it to find out what the account costs you and how much money it makes sense to keep in it.",
+      "variant": "planted/p10-fold-current-pc",
+      "device": "pc",
+      "findings": true,
+      "page": "https://orishamir.github.io/finance-tool/guide/current-account"
+    },
+    {
+      "key": "p10-fold-keren-phone",
+      "text": "Your new employer offers a study fund (keren hishtalmut). This is a page you found. Use it to understand roughly how much money you would have and when you could take it out.",
+      "variant": "planted/p10-fold-keren-phone",
+      "device": "phone",
+      "findings": true,
+      "page": "https://orishamir.github.io/finance-tool/guide/keren-hishtalmut"
+    },
+    {
+      "key": "p10-fold-sp500-phone",
+      "text": "You want to put money into an S&P 500 index fund every month for about ten years. This is a page you found. Use it to decide where to hold the money and which fund to buy, and say how much you would end up with.",
+      "variant": "planted/p10-fold-sp500-phone",
+      "device": "phone",
+      "findings": true,
+      "page": "https://orishamir.github.io/finance-tool/indices/sp500"
+    },
+    {
+      "key": "p11-wall-keren-pc",
+      "text": "Your new employer offers a study fund (keren hishtalmut). This is a page you found. Use it to understand roughly how much money you would have and when you could take it out.",
+      "variant": "planted/p11-wall-keren-pc",
+      "device": "pc",
+      "findings": true,
+      "page": "https://orishamir.github.io/finance-tool/guide/keren-hishtalmut"
+    },
+    {
+      "key": "p11-wall-sp500-pc",
+      "text": "You want to put money into an S&P 500 index fund every month for about ten years. This is a page you found. Use it to decide where to hold the money and which fund to buy, and say how much you would end up with.",
+      "variant": "planted/p11-wall-sp500-pc",
+      "device": "pc",
+      "findings": true,
+      "page": "https://orishamir.github.io/finance-tool/indices/sp500"
+    },
+    {
+      "key": "p11-wall-tracks-phone",
+      "text": "You want to open an investment savings fund (kupat gemel lehashkaa) and are choosing a company and a track. This is a page you found. Use it to choose one, and say why.",
+      "variant": "planted/p11-wall-tracks-phone",
+      "device": "phone",
+      "findings": true,
+      "page": "https://orishamir.github.io/finance-tool/tracks/kupat-gemel-lehashkaa"
+    },
+    {
+      "key": "p12-sign-sp500-pc",
+      "text": "You want to put money into an S&P 500 index fund every month for about ten years. This is a page you found. Use it to decide where to hold the money and which fund to buy, and say how much you would end up with.",
+      "variant": "planted/p12-sign-sp500-pc",
+      "device": "pc",
+      "findings": true,
+      "page": "https://orishamir.github.io/finance-tool/indices/sp500"
+    },
+    {
+      "key": "p12-sign-ta125-phone",
+      "text": "You want to put money into a fund that follows the 125 largest companies on the Tel Aviv stock exchange, every month for about ten years. This is a page you found. Use it to decide where to hold the money and which fund to buy, and say how much you would end up with.",
+      "variant": "planted/p12-sign-ta125-phone",
+      "device": "phone",
+      "findings": true,
+      "page": "https://orishamir.github.io/finance-tool/indices/ta125"
+    },
+    {
+      "key": "p13-sort-harel-pc",
+      "text": "You are thinking of opening an investment savings fund (kupat gemel lehashkaa) with Harel. This is Harel's page on a site you found. Use it to choose one of its tracks, and say why.",
+      "variant": "planted/p13-sort-harel-pc",
+      "device": "pc",
+      "findings": true,
+      "page": "https://orishamir.github.io/finance-tool/companies/512267592",
+      "steps": [
+        [
+          "click",
+          "קופת גמל להשקעה"
+        ]
+      ]
+    },
+    {
+      "key": "p13-sort-tracks-pc",
+      "text": "You want to open an investment savings fund (kupat gemel lehashkaa) and are choosing a company and a track. This is a page you found. Use it to choose one, and say why.",
+      "variant": "planted/p13-sort-tracks-pc",
+      "device": "pc",
+      "findings": true,
+      "page": "https://orishamir.github.io/finance-tool/tracks/kupat-gemel-lehashkaa"
+    },
+    {
+      "key": "p13-sort-tracks-phone",
+      "text": "You want to open an investment savings fund (kupat gemel lehashkaa) and are choosing a company and a track. This is a page you found. Use it to choose one, and say why.",
+      "variant": "planted/p13-sort-tracks-phone",
+      "device": "phone",
+      "findings": true,
+      "page": "https://orishamir.github.io/finance-tool/tracks/kupat-gemel-lehashkaa"
+    },
+    {
+      "key": "p14-dead-harel-pc",
+      "text": "You are thinking of opening an investment savings fund (kupat gemel lehashkaa) with Harel. This is Harel's page on a site you found. Use it to choose one of its tracks, and say why.",
+      "variant": "planted/p14-dead-harel-pc",
+      "device": "pc",
+      "findings": true,
+      "page": "https://orishamir.github.io/finance-tool/companies/512267592",
+      "steps": [
+        [
+          "click",
+          "קופת גמל להשקעה"
+        ]
+      ]
+    },
+    {
+      "key": "p14-dead-keren-phone",
+      "text": "You are self-employed and are thinking of opening a study fund (keren hishtalmut) and paying into it yourself. This is a page you found. Use its calculator to see roughly how much you would have if you took the money out after 4 years, and after 8 years.",
+      "variant": "planted/p14-dead-keren-phone",
+      "device": "phone",
+      "findings": true,
+      "start": "https://orishamir.github.io/finance-tool/guide/keren-hishtalmut",
+      "minutes": 10,
+      "actions": 30
+    },
+    {
+      "key": "p14-dead-sp500-pc",
+      "text": "You want to put money into an S&P 500 index fund every month. This is a page you found. Put in your own plan, 750 ₪ a month for 15 years with nothing at the start, and check what the page assumes about inflation. Then say where you would hold the money and how much you would end up with.",
+      "variant": "planted/p14-dead-sp500-pc",
+      "device": "pc",
+      "findings": true,
+      "start": "https://orishamir.github.io/finance-tool/indices/sp500",
+      "minutes": 10,
+      "actions": 30
+    },
+    {
+      "key": "p15-jump-keren-phone",
+      "text": "You are self-employed and are thinking of opening a study fund (keren hishtalmut) and paying into it yourself. This is a page you found. Use its calculator to see roughly how much you would have if you took the money out after 4 years, and after 8 years.",
+      "variant": "planted/p15-jump-keren-phone",
+      "device": "phone",
+      "findings": true,
+      "start": "https://orishamir.github.io/finance-tool/guide/keren-hishtalmut",
+      "minutes": 10,
+      "actions": 30
+    },
+    {
+      "key": "p15-jump-sp500-pc",
+      "text": "You want to put money into an S&P 500 index fund every month. This is a page you found. Put in your own plan, 750 ₪ a month for 15 years with nothing at the start, and check what the page assumes about inflation. Then say where you would hold the money and how much you would end up with.",
+      "variant": "planted/p15-jump-sp500-pc",
+      "device": "pc",
+      "findings": true,
+      "start": "https://orishamir.github.io/finance-tool/indices/sp500",
+      "minutes": 10,
+      "actions": 30
+    },
+    {
+      "key": "p16-leftover-keren-phone",
+      "text": "Your new employer offers a study fund (keren hishtalmut). This is a page you found. Use it to understand roughly how much money you would have and when you could take it out.",
+      "variant": "planted/p16-leftover-keren-phone",
+      "device": "phone",
+      "findings": true,
+      "page": "https://orishamir.github.io/finance-tool/guide/keren-hishtalmut"
+    },
+    {
+      "key": "p16-leftover-sp500-pc",
+      "text": "You want to put money into an S&P 500 index fund every month for about ten years. This is a page you found. Use it to decide where to hold the money and which fund to buy, and say how much you would end up with.",
+      "variant": "planted/p16-leftover-sp500-pc",
+      "device": "pc",
+      "findings": true,
+      "page": "https://orishamir.github.io/finance-tool/indices/sp500"
+    },
+    {
+      "key": "p16-leftover-tracks-pc",
+      "text": "You want to open an investment savings fund (kupat gemel lehashkaa) and are choosing a company and a track. This is a page you found. Use it to choose one, and say why.",
+      "variant": "planted/p16-leftover-tracks-pc",
+      "device": "pc",
+      "findings": true,
+      "page": "https://orishamir.github.io/finance-tool/tracks/kupat-gemel-lehashkaa"
+    },
+    {
+      "key": "control-current-pc",
+      "text": "Your salary goes into a current account at your bank. This is a page you found. Use it to find out what the account costs you and how much money it makes sense to keep in it.",
+      "variant": "planted/control-current-pc",
+      "device": "pc",
+      "findings": true,
+      "page": "https://orishamir.github.io/finance-tool/guide/current-account"
+    },
+    {
+      "key": "control-harel-pc",
+      "text": "You are thinking of opening an investment savings fund (kupat gemel lehashkaa) with Harel. This is Harel's page on a site you found. Use it to choose one of its tracks, and say why.",
+      "variant": "planted/control-harel-pc",
+      "device": "pc",
+      "findings": true,
+      "page": "https://orishamir.github.io/finance-tool/companies/512267592",
+      "steps": [
+        [
+          "click",
+          "קופת גמל להשקעה"
+        ]
+      ]
+    },
+    {
+      "key": "control-keren-pc",
+      "text": "Your new employer offers a study fund (keren hishtalmut). This is a page you found. Use it to understand roughly how much money you would have and when you could take it out.",
+      "variant": "planted/control-keren-pc",
+      "device": "pc",
+      "findings": true,
+      "page": "https://orishamir.github.io/finance-tool/guide/keren-hishtalmut"
+    },
+    {
+      "key": "control-keren-phone",
+      "text": "Your new employer offers a study fund (keren hishtalmut). This is a page you found. Use it to understand roughly how much money you would have and when you could take it out.",
+      "variant": "planted/control-keren-phone",
+      "device": "phone",
+      "findings": true,
+      "page": "https://orishamir.github.io/finance-tool/guide/keren-hishtalmut"
+    },
+    {
+      "key": "control-keren-phone-browser",
+      "text": "You are self-employed and are thinking of opening a study fund (keren hishtalmut) and paying into it yourself. This is a page you found. Use its calculator to see roughly how much you would have if you took the money out after 4 years, and after 8 years.",
+      "variant": "planted/control-keren-phone-browser",
+      "device": "phone",
+      "findings": true,
+      "start": "https://orishamir.github.io/finance-tool/guide/keren-hishtalmut",
+      "minutes": 10,
+      "actions": 30
+    },
+    {
+      "key": "control-sp500-pc",
+      "text": "You want to put money into an S&P 500 index fund every month for about ten years. This is a page you found. Use it to decide where to hold the money and which fund to buy, and say how much you would end up with.",
+      "variant": "planted/control-sp500-pc",
+      "device": "pc",
+      "findings": true,
+      "page": "https://orishamir.github.io/finance-tool/indices/sp500"
+    },
+    {
+      "key": "control-sp500-pc-browser",
+      "text": "You want to put money into an S&P 500 index fund every month. This is a page you found. Put in your own plan, 750 ₪ a month for 15 years with nothing at the start, and check what the page assumes about inflation. Then say where you would hold the money and how much you would end up with.",
+      "variant": "planted/control-sp500-pc-browser",
+      "device": "pc",
+      "findings": true,
+      "start": "https://orishamir.github.io/finance-tool/indices/sp500",
+      "minutes": 10,
+      "actions": 30
+    },
+    {
+      "key": "control-sp500-phone",
+      "text": "You want to put money into an S&P 500 index fund every month for about ten years. This is a page you found. Use it to decide where to hold the money and which fund to buy, and say how much you would end up with.",
+      "variant": "planted/control-sp500-phone",
+      "device": "phone",
+      "findings": true,
+      "page": "https://orishamir.github.io/finance-tool/indices/sp500"
+    },
+    {
+      "key": "control-ta125-phone",
+      "text": "You want to put money into a fund that follows the 125 largest companies on the Tel Aviv stock exchange, every month for about ten years. This is a page you found. Use it to decide where to hold the money and which fund to buy, and say how much you would end up with.",
+      "variant": "planted/control-ta125-phone",
+      "device": "phone",
+      "findings": true,
+      "page": "https://orishamir.github.io/finance-tool/indices/ta125"
+    },
+    {
+      "key": "control-tracks-pc",
+      "text": "You want to open an investment savings fund (kupat gemel lehashkaa) and are choosing a company and a track. This is a page you found. Use it to choose one, and say why.",
+      "variant": "planted/control-tracks-pc",
+      "device": "pc",
+      "findings": true,
+      "page": "https://orishamir.github.io/finance-tool/tracks/kupat-gemel-lehashkaa"
+    },
+    {
+      "key": "control-tracks-phone",
+      "text": "You want to open an investment savings fund (kupat gemel lehashkaa) and are choosing a company and a track. This is a page you found. Use it to choose one, and say why.",
+      "variant": "planted/control-tracks-phone",
+      "device": "phone",
+      "findings": true,
+      "page": "https://orishamir.github.io/finance-tool/tracks/kupat-gemel-lehashkaa"
+    }
+  ],
+  "parallel": 3,
+  "repeat": 1,
+  "brief": "old fresh-reader brief (tools/old-brief.mjs)"
+}

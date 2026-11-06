@@ -1,0 +1,76 @@
+{
+  "case": "study-r2-per-shekel-sentence",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The sentence 'כל שקל שהפקדתם נהיה 4.57 ₪ בקרן ו־1.11 ₪ בחשבון ניירות ערך' does not help.\",\"where\":\"the per-shekel sentence\",\"kind\":\"taste\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Doesn't know what happens if they quit or need the money before year 6",
+      "Option A puts the tax block on top of the column, so it looked like money they get",
+      "Title 'בלי כדורים ובלי טבלה' means nothing to them",
+      "The 'מה היה' old preview is tiny and useless (would drop it)",
+      "Fund and code names in the example paragraph (מיטב השתלמות, 13245, פייר פיננשיאל, 4D, דמי ניהול 0.54%) lost them",
+      "Option A year-5 labels sit on the side with thin lines, so they're hard to match to the slices",
+      "Didn't understand 'מסלולים' / 'תעריפים' in the footnote",
+      "The 'העמודות נמתחות...' drawing note is irrelevant (would drop it)",
+      "Option B's intro says it shows only the last column, but it seems to show the same strip as A",
+      "Dotted purple underlines under the numbers: unclear whether they are links",
+      "What דמי ניהול really costs is unclear",
+      "'עד תקרה בחוק': the limit is not explained",
+      "Doesn't understand why the year-5 tax in the keren is so big",
+      "Unclear what a חשבון ניירות ערך is compared with just buying the S&P 500",
+      "Can't tell whether the money can be withdrawn before 6 years at all",
+      "Doesn't know whether the 300 ₪ comes off take-home pay",
+      "Doesn't know whether the employer's 900 ₪ is lost if they don't join",
+      "No information on how to actually join or whom to talk to"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader found the per-shekel sentence decisive and helpful, and never says it doesn't help."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0576392
+  },
+  "b": {
+    "raised": [
+      "Doesn't know what happens if they quit or need the money before year 6 (lose employer part? clock restart?)",
+      "In option A the striped tax block on top of the column looked like money you get, until the minus sign was noticed",
+      "Title 'בלי כדורים ובלי טבלה' means nothing; seems to refer to an unseen older version",
+      "The 'מה היה' old preview is tiny and irrelevant; would drop it first",
+      "Fund/code names in the example paragraph (מיטב השתלמות, 13245, פייר פיננשיאל, 4D, דמי ניהול 0.54%) were confusing; would drop them",
+      "In the A year-5 chart, side labels with thin lines pointing at small striped slices are hard to match",
+      "Didn't understand 'מסלולים' or 'תעריפים' in the footnote",
+      "The 'העמודות נמתחות...' drawing note is irrelevant; would drop it",
+      "B's intro says it shows only the last column, but it appears to show the same year-5 strip as A",
+      "Dotted purple underlines under numbers are unclear (links or not?)",
+      "Unclear how much 'דמי ניהול' actually takes",
+      "Unclear what the 'עד תקרה בחוק' limit is",
+      "Doesn't understand why the year-5 tax is so big (−13,974 vs −594)",
+      "Unclear what a 'חשבון ניירות ערך' really is compared with just buying the S&P 500",
+      "Can't find whether money can be withdrawn before 6 years at all, or only with tax",
+      "Can't find whether the 300 ₪ comes off take-home pay",
+      "Can't find whether the employer's 900 ₪ is lost if not joining",
+      "Can't find how to actually join or whom to talk to"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader didn't complain about the per-shekel sentence. They praised it as the line that decided their choice, so nothing on the list matches this problem."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0554392
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1130784
+}

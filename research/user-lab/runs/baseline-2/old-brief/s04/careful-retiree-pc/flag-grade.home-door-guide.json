@@ -1,0 +1,90 @@
+{
+  "case": "home-door-guide",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The home link 'להבין סוג של חיסכון' promises help with one kind of saving but opens only the general list of guides.\",\"where\":\"the link on the home page and where it leads\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "The קרן השתלמות card doesn't say how long 'תקופה שקבע החוק' is, which matters at 61",
+      "Nothing says what a קרן השתלמות costs, even though the home box promised 'כמה זה עולה'",
+      "Top menu: didn't know which item to press",
+      "'הכול נשמר במכשיר שלכם' is unclear: what is saved when nothing has been typed?",
+      "Search box skipped because they didn't want to guess the right word",
+      "'מה כבר יש לכם' asks for דמי ניהול, מסלול and עמלות, and they didn't know what to type",
+      "'קרן השתלמות נזילה' in the form: what does נזילה mean?",
+      "Not ready to type how much money they have, even with the on-device promise",
+      "Footer 'פרמטרים' means nothing to them",
+      "The examples 'מזומן, אג״ח, מדד מניות' in 'שני חלקים בכל חיסכון' lost them a little",
+      "'מק״מ' not understood",
+      "Pension section: three products with similar names; unclear difference between מקיפה and כללית",
+      "English-named cards and stock indexes under 'במה הכסף מושקע' made them give up",
+      "The קרן השתלמות card has no 'בשפה פשוטה' line",
+      "'מסלול' is used everywhere and never explained",
+      "'דמי ניהול' and 'העמלות' unclear; how much is normal?",
+      "'צמודה'/'לא צמודה', 'קרן שעוקבת אחריו', 'מנהל תיקים' not understood",
+      "'העברה למכשיר אחר': what is being saved, and should they worry?",
+      "Couldn't find whether it's worth opening one at 61 or whether it's too late",
+      "Couldn't find whether you can lose money in it",
+      "Couldn't find whether it still works after you stop working or retire",
+      "Nothing says what this means for their money or what to check on their own statement",
+      "Would drop everything under 'במה הכסף מושקע' (indexes, אג״ח cards)",
+      "Would drop 'לבחירה עצמית' and 'לילדים'",
+      "Would drop the home search box and footer links like 'פרמטרים'"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader used the link and felt the general guide page was the right place ('Good, I knew I was in the right place'), so they never complained that it leads to a general list instead of help with one kind of saving; their cost complaint is about what the card says, not about where the link goes."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0661832
+  },
+  "b": {
+    "raised": [
+      "The קרן השתלמות card doesn't say how long \"תקופה שקבע החוק\" is",
+      "Nothing says what a קרן השתלמות costs, even though the home box promised \"כמה זה עולה\"",
+      "Top menu: didn't know which item to press",
+      "\"הכול נשמר במכשיר שלכם\" is unclear: what is saved when nothing has been typed?",
+      "Search box: didn't want to guess the right word, so skipped it",
+      "\"מה כבר יש לכם\" asks for דמי ניהול, מסלול and עמלות, and the reader didn't know what to type",
+      "In the form, \"קרן השתלמות נזילה\" stopped them: what does נזילה mean?",
+      "Not ready to type how much money they have, even with the promise it stays on the device",
+      "Footer link \"פרמטרים\" means nothing to them",
+      "The examples \"מזומן, אג״ח, מדד מניות\" in \"שני חלקים\" lost them a little",
+      "Didn't know what \"מק״מ\" is",
+      "Pension section: three products with very similar names; the difference between מקיפה and כללית is confusing",
+      "\"לבחירה עצמית\" (מנהל תיקים, ברוקר בחו״ל) seems only for people with a lot of money",
+      "English cards and stock indexes are where they gave up",
+      "Not every card has a \"בשפה פשוטה\" line; the קרן השתלמות card lacks one",
+      "\"מסלול\" appears everywhere and is never explained",
+      "Unsure what דמי ניהול and עמלות are, and how much is normal",
+      "Don't understand צמודה / לא צמודה, \"קרן שעוקבת אחריו\", \"מנהל תיקים\"",
+      "\"העברה למכשיר אחר\" is unclear: what is saved, and should they worry?",
+      "Couldn't find whether a קרן השתלמות is worth opening at 61",
+      "Couldn't find whether you can lose money in it",
+      "Couldn't find whether it still works after retiring",
+      "Nothing says what this means for their money or what to check on their own statement",
+      "Would drop everything under \"במה הכסף מושקע\" (indexes, אג״ח cards) first",
+      "Would also drop \"לבחירה עצמית\", \"לילדים\", the home search box and footer links like \"פרמטרים\""
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader took the link to the general guide page without objecting and said they knew they were in the right place; their complaints are about what the card says, not about the link leading to the general list instead of one kind of saving."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0727152
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.13889839999999998
+}

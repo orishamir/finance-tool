@@ -1,0 +1,126 @@
+{
+  "case": "else-01-justetf-fund",
+  "stamp": "{\"keys\":[{\"id\":\"j-tabs\",\"kind\":\"general\",\"where\":\"the row of section names under the fund's header (Overview, Chart, Basics, Holdings, Performance and more)\",\"problem\":\"The row of section names looks like tabs that switch what is shown, but each one scrolls the page down to a section of the same long page; the jump is unexpected, and afterwards the row is no longer where it was, so going back means finding it again.\"},{\"id\":\"j-light\",\"kind\":\"taste\",\"where\":\"the whole page\",\"problem\":\"The page is light, white; he prefers a dark page.\"},{\"id\":\"j-dated\",\"kind\":\"general\",\"where\":\"the whole page\",\"problem\":\"The page does not look very modern or polished (minor).\"},{\"id\":\"j-performance\",\"kind\":\"general\",\"where\":\"the performance section\",\"problem\":\"The performance section is plain and basic.\"}],\"liked\":[{\"id\":\"j-facts-top\",\"what\":\"The most important facts about the fund (yearly cost, distribution policy, fund size) are at the top centre.\"},{\"id\":\"j-chart\",\"what\":\"The price chart: the time ranges right under it, green above 0% and red below, and the chosen range highlighted.\"},{\"id\":\"j-depth\",\"what\":\"More advanced information further down, in the basics section; the page is detailed.\"},{\"id\":\"j-holdings\",\"what\":\"The holdings section: easy to reach and easy to understand.\"},{\"id\":\"j-help\",\"what\":\"A ? mark beside terms such as the yearly cost, distribution policy and replication, explaining them.\"}]}",
+  "a": {
+    "problems": [
+      {
+        "id": "j-tabs",
+        "rank": 0,
+        "why": "No finding talks about the row of section names scrolling the page; finding 2 is about a settings popup's Save button instead."
+      },
+      {
+        "id": "j-light",
+        "rank": 0,
+        "why": "No finding mentions the page being light or white, or wanting a dark page."
+      },
+      {
+        "id": "j-dated",
+        "rank": 0,
+        "why": "No finding says the page looks old-fashioned or unpolished."
+      },
+      {
+        "id": "j-performance",
+        "rank": 0,
+        "why": "Finding 8 says the performance area has too much in it, which is the opposite of calling it plain and basic."
+      }
+    ],
+    "liked": [
+      {
+        "id": "j-facts-top",
+        "against": 0,
+        "why": "Finding 4 objects to jargon in the header facts, not to having the key facts at the top centre, and finding 3 is about the nearby daily-change number."
+      },
+      {
+        "id": "j-chart",
+        "against": 0,
+        "why": "Finding 5 complains that the chart and the table give different 1-year numbers, not about the time ranges, colours or highlighting."
+      },
+      {
+        "id": "j-depth",
+        "against": 8,
+        "why": "Finding 8 says the long tables and heat map are too much, which goes against the detail the person liked."
+      },
+      {
+        "id": "j-holdings",
+        "against": 0,
+        "why": "No finding complains about the holdings section."
+      },
+      {
+        "id": "j-help",
+        "against": 4,
+        "why": "Finding 4 says terms like Accumulating have no plain explanation, which goes against the ? help marks the person praised."
+      }
+    ]
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "j-tabs",
+        "rank": 0,
+        "why": "Finding 2 is about a jump to the bottom after pressing Save in a popup, not about the section row scrolling the page and then being hard to find again, and no other finding names this."
+      },
+      {
+        "id": "j-light",
+        "rank": 0,
+        "why": "None of the findings mentions the light, white page or wanting a dark one."
+      },
+      {
+        "id": "j-dated",
+        "rank": 0,
+        "why": "None of the findings says the page looks old-fashioned or unpolished."
+      },
+      {
+        "id": "j-performance",
+        "rank": 0,
+        "why": "Finding 8 says the performance area is too much on a phone, which is the opposite of the person's complaint that it is plain and basic."
+      }
+    ],
+    "liked": [
+      {
+        "id": "j-facts-top",
+        "against": 0,
+        "why": "Finding 4 complains about jargon such as 'Accumulating' in the header stats, which is a different aspect from where the key facts are placed."
+      },
+      {
+        "id": "j-chart",
+        "against": 0,
+        "why": "Finding 5 is about the chart's 1-year number not matching the table, not about the time ranges, the colours or the highlighted range."
+      },
+      {
+        "id": "j-depth",
+        "against": 0,
+        "why": "No finding complains about the detail in the basics section; finding 8 is about the performance and risk tables on a phone."
+      },
+      {
+        "id": "j-holdings",
+        "against": 0,
+        "why": "No finding mentions the holdings section."
+      },
+      {
+        "id": "j-help",
+        "against": 4,
+        "why": "Finding 4 says terms like 'Accumulating' have no plain explanation, which directly disputes the question-mark explanations the person liked."
+      }
+    ]
+  },
+  "third": null,
+  "ranks": {
+    "j-tabs": 0,
+    "j-light": 0,
+    "j-dated": 0,
+    "j-performance": 0
+  },
+  "agreed": {
+    "j-tabs": true,
+    "j-light": true,
+    "j-dated": true,
+    "j-performance": true
+  },
+  "against": {
+    "j-facts-top": 0,
+    "j-chart": 0,
+    "j-depth": 0,
+    "j-holdings": 0,
+    "j-help": 4
+  }
+}

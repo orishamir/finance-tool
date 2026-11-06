@@ -1,0 +1,83 @@
+{
+  "case": "label-warning-text",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The explanation that opens from the label 'מס רק במכירה' ('לא נמצא כלל שממסה יחיד על רווחים שקרן זרה צוברת … זו שאלה פתוחה') is hard to understand and reads as a warning.\",\"where\":\"the box that opens from the label\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Can't tell why to prefer the chosen fund over the next one (only −43 ₪ apart)",
+      "Chosen fund shows only one year of history ('שנה אחת'); unsure whether that matters or is risky",
+      "Young-people discount noted at banks, but the page doesn't say how much cheaper it would be",
+      "Didn't understand the 'לדולר של האתר · שער הדולר 3.16' line or the 'אינפלציה' button",
+      "Coloured tags on the fund rows carry no meaning they could read",
+      "Foreign/English funds marked 'אין מחיר כאן' made them stop reading the list",
+      "The 'מס רק במכירה' pop-up opened over the fund rows and hid them",
+      "Hedged fund's range (+2,212 to −23,766) scared them off",
+      "'פסגות · 3 טענות' was worrying, and they couldn't see what the claims were",
+      "The hedging section was too much to take in",
+      "Didn't understand why the waterfall starts from 'ירושלים' and 'MTF'",
+      "The W-8BEN and red 'מס רק במכירה' tags made them back away",
+      "Jargon not understood: 4D/4A, מנוטרלת מט\"ח, נאמן 0.02%",
+      "Jargon not understood: עסקה מחוץ, צבירה, חלוקת דיבידנד, UCITS, Accumulating/Distributing, W-8BEN",
+      "Doesn't understand how an index-tracking fund can beat the index (+0.37%)",
+      "Unsure whether '(S&P 500 (D4' in the waterfall is the same fund as '4D'",
+      "Couldn't find whether Psagot allows automatic monthly buys, or how to open the account",
+      "Wanted 30–40-year results shown directly",
+      "Wanted a simple yes/no on whether dollar hedging matters",
+      "Would drop the line chart in 'מה הכי משנה…'",
+      "Would drop or fold in the 'מה כתוב בפרסום' list",
+      "Would drop the waterfall chart itself"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The report's complaints about this pop-up are that it covered the fund rows (item 7) and that the red label made them back away (item 12); neither says the explanation text inside is hard to understand or reads as a warning."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0667552
+  },
+  "b": {
+    "raised": [
+      "Can't tell why to prefer the chosen fund over the next one, which is only −43 ₪ behind",
+      "Chosen fund shows only 'שנה אחת' (one year) of history, and it's unclear whether that matters",
+      "The young-people price ('מחיר אחר לצעירים') isn't included in the numbers, so the saving is unknown",
+      "Didn't understand the line 'לדולר של האתר · שער הדולר 3.16' or what the 'אינפלציה' button does",
+      "The fund-list tags had no clear meaning, and the foreign funds marked 'אין מחיר כאן' made the reader stop",
+      "The 'מס רק במכירה' pop-up opened over the fund rows and hid them",
+      "The hedged fund's range (+2,212 to −23,766) was confusing and scary",
+      "'פסגות · 3 טענות' was worrying, and the page doesn't show what the claims are",
+      "The hedging comparison section was too much to take in",
+      "Didn't understand why the waterfall chart starts at 'ירושלים' with 'MTF'",
+      "The red 'W-8BEN' and 'מס רק במכירה' tags were off-putting, and the reader backed away",
+      "Didn't understand '4D'/'4A', 'מנוטרלת מט\"ח' or 'נאמן 0.02%'",
+      "Didn't understand terms such as 'עסקה מחוץ', 'צבירה', 'חלוקת דיבידנד', 'UCITS', 'Accumulating/Distributing' and 'W-8BEN'",
+      "Didn't understand how an index-tracking fund can show '+0.37%' against the index",
+      "Unclear whether '(S&P 500 (D4' in the waterfall is the same fund as '4D'",
+      "Wanted to know whether Psagot allows automatic monthly buying, and how to open the account",
+      "Wanted the result for 30–40 years shown directly",
+      "Wanted a simple yes or no on whether dollar hedging matters",
+      "Would drop the line chart in 'מה הכי משנה…'",
+      "Would drop the 'מה כתוב בפרסום' list, or fold it into the account rows",
+      "Would drop the waterfall chart itself"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader's only complaints near 'מס רק במכירה' are that the pop-up covered the fund rows (#6) and that the red label was off-putting (#11), and neither says the box's explanation is hard to understand or reads as a warning."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0733952
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1401504
+}

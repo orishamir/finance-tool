@@ -1,0 +1,36 @@
+{
+  "case": "company-brokerage-card",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The securities-account card on a company's page does not look like the site's other product cards.\",\"where\":\"the securities-account card\",\"kind\":\"taste\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings say the securities-account card looks different from the site's other product cards; finding 3 is about readability and contrast across the whole page, not about this card being inconsistent."
+      }
+    ],
+    "liked": [],
+    "usd": 0.014911400000000002
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings say the securities-account card looks different from the site's other product cards; they cover fees, exchange rates, contrast, content and jargon instead."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0142994
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.029210800000000002
+}

@@ -80,7 +80,7 @@ function GuideDoor({ types }: { types: { id: string; name: string }[] }) {
 
 type Bounds = { horizon: Range; monthly: Range };
 
-/** The question, which the comparison and the holdings depend on (docs/design-spec.md 1a). The pre-rendered page and the first client render show
+/** The question, which the comparison and the holdings depend on (docs/design-system.md 6.9). The pre-rendered page and the first client render show
  * the card; a saved goal replaces it with the strip (in a box of at least the strip's height) and the card waits closed as "מטרה נוספת" (D12). */
 function QuestionBlock({ presets, meta, today, bounds }: { presets: Presets; meta: { rationale: string; rationaleHe?: string | null; signedOffOn: string | null }; today: string; bounds: Bounds }) {
   const { status, goals } = useGoals();

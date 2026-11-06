@@ -1,0 +1,75 @@
+{
+  "case": "study-r1-grey-years",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"In the graph of the years everything is grey, so nothing stands out.\",\"where\":\"the year graph\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "The subtitle about dragging the years (\"all drawings are live\") meant nothing to the reader",
+      "The left card (+1,721 ₪ / 394 ₪ less after 5 years) was confusing, and the reader didn't see why it was there",
+      "The grey small print about assumptions was only half understood; the reader couldn't follow the fund names and ID codes",
+      "The reader gave up counting the coins in the coin towers",
+      "The step showing the same money gaining +527 ₪ by moving into the fund was confusing, since the fund's fees are higher",
+      "In the coin towers, it was unclear whether the striped (tax) coins on top are inside the 66,513 or taken out of it",
+      "\"Up to the legal ceiling\" is unclear: what is the ceiling in shekels?",
+      "\"Across the 19 tracks\" is unclear: does the reader have to pick a track, and which one?",
+      "The salaried / self-employed switch was unclear, so the reader just assumed salaried and left it",
+      "Missing: what happens if the money is needed before 6 years, and whether it can be withdrawn at all",
+      "Missing: what happens if the reader leaves the job or retires at 64, and whether the 6-year clock keeps running",
+      "Missing: what happens if the market falls instead of rising 7%",
+      "Missing: whether the reader's age changes anything",
+      "Missing: how to check whether the employer offers this at all",
+      "Would drop the coin towers and the \"same drawing one year later\" repeat",
+      "Would drop the small print with the fund codes",
+      "Would drop the coloured legend line and the drag hints",
+      "Would drop option ב (steps), because option ג shows the same thing"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The report never says the year graph is all grey or that nothing stands out; it actually says the white line makes the gap obvious and the colours are clear."
+      }
+    ],
+    "liked": [],
+    "usd": 0.051231200000000005
+  },
+  "b": {
+    "raised": [
+      "The subtitle's 'drag the years' hint meant nothing to someone just looking at pictures",
+      "The left card (+1,721 ₪ / 394 ₪ less after 5 years) was confusing; why show it at all",
+      "The grey small print about assumptions was only half understood; it is full of fund names and ID codes nobody explains",
+      "The coin towers are too hard to count; reader gave up",
+      "The 'tax on withdrawal' step '+527 ₪, same money moves to the fund' was confusing, given the fund's higher fees",
+      "Striped coins sit on top of the yellow ones, so it's unclear whether they're inside the 66,513 or taken out",
+      "'Up to the legal ceiling' isn't explained; what is the ceiling in shekels",
+      "The 19-tracks range is confusing; do I have to pick a track, and which one",
+      "The salaried/self-employed switch was unclear; reader just assumed 'salaried'",
+      "Missing: what happens if the money is needed before 6 years, and can it be withdrawn",
+      "Missing: what happens on leaving the job or retiring early; does the 6-year clock keep running",
+      "Missing: what happens if the market falls instead of rising 7%",
+      "Missing: whether age changes anything",
+      "Missing: how to check whether the employer offers this",
+      "Would drop the 'same drawing one year later' repeat",
+      "Would drop the coloured legend line",
+      "Would drop option ב (steps) because ג already shows the same thing"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The report never complains that the year-columns graph is all grey or lacks contrast; it actually praises option ג for making the gap obvious."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0508312
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1020624
+}

@@ -1,0 +1,74 @@
+{
+  "case": "cfc-index-column",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"Text under the index name in the index column is unnecessary, and the column is wider than its content.\",\"where\":\"the index column\",\"kind\":\"taste\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Can't work out each fund's total cost; no single total-cost figure (e.g. in shekels)",
+      "The 'only funds with a report' note worries: which funds are missing, and might one be cheaper?",
+      "'(4A)'/'(4D)' codes in fund names are meaningless and annoying",
+      "'צוברת' tag meaning is unclear; reader has to guess",
+      "'עסקת החלף' (swap) tag is confusing and worrying about the safety of the money",
+      "Tax-on-currency-changes tag is important but tucked away in small grey text and not explained",
+      "'בדף הקרן במאיה' link: unknown what Maya is; leaves the site",
+      "In the first option the index column just repeats the name",
+      "Unclear what the 'משתנה' (variable) fee means and whether it can change",
+      "Underlined fee numbers: unclear whether they're clickable",
+      "Arrow on turquoise index names: unclear where it leads",
+      "Unclear what the 'נאמן' (trustee) fee is and why it's charged",
+      "Description referring to TA-35 needs knowledge of a second index",
+      "Missing: fund performance compared with its index over several years",
+      "Missing: whether there are buying or selling costs",
+      "Would drop or demote the security numbers",
+      "Would drop the 'צוברת' and 'חשיפה לדולר' tags"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader praises the descriptions under the index names and never says the column is too wide, so no raised item matches this complaint."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0484232
+  },
+  "b": {
+    "raised": [
+      "Can't work out the total cost of each fund; no single total-fee figure",
+      "Disclaimer about only some funds being covered worries them: which funds are missing, and might one be cheaper?",
+      "\"(4A)\"/\"(4D)\" codes in fund names mean nothing and annoy them",
+      "Unsure what the \"צוברת\" (accumulating) tag means; only guessing",
+      "\"עסקת החלף\" (swap) tag is confusing and worrying about risk",
+      "Tax-on-currency-changes tag is important but tucked away in small grey text and not explained",
+      "Doesn't know what \"מאיה\" is; won't click a link that leaves the site",
+      "In the first option the index column just repeats the name, so they skipped it",
+      "Unclear what \"משתנה\" (variable) fee means; could it go up?",
+      "Underlined fee numbers make them wonder whether they're meant to click",
+      "Turquoise index names with an arrow: unclear where it leads",
+      "Doesn't understand what the \"נאמן\" (trustee) fee is or why they pay it",
+      "Index description refers to TA-35, so they'd need to know a second index",
+      "Wants the fund's performance against its index over several years",
+      "Wants to know about buying or selling costs on top of management fees",
+      "Would drop the security numbers or make them less prominent",
+      "Would drop the \"צוברת\" and \"חשיפה לדולר\" tags"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader praises the descriptions under the index names as the most useful column, the opposite of calling them unnecessary, and never says anything about the column's width."
+      }
+    ],
+    "liked": [],
+    "usd": 0.050043199999999996
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0984664
+}

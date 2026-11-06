@@ -1,0 +1,87 @@
+{
+  "case": "tracks-r2-sort-buttons",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"Sorting uses separate sort buttons instead of clickable column heads.\",\"where\":\"the sort buttons above the table\",\"kind\":\"taste\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Option 3's coloured table shows 12 investment types the reader doesn't care about",
+      "Option 2's grouping by company buries the S&P lines: the reader had to scroll through all 16 Harel tracks",
+      "The grey explanation sentences between options are written for designers, not users",
+      "The menu row repeats in every option",
+      "Unclear how 'לפי חברה / לפי מוצר' differs from the option buttons",
+      "18 'במה הכסף מושקע' chips are confusing; only s&p 500 was recognisable",
+      "The 'קיבוץ לפי' control in option 2 is confusing: it reorders everything and it's unclear which to choose",
+      "The orange note looks like a note between designers",
+      "Returns are shown before fees and tax, so they aren't what the reader would actually get",
+      "No idea what the 'קופה' numbers (e.g. 13874) are for",
+      "The '% מההפקדה' fee is almost always 0%, so it seemed pointless",
+      "The exposure rings and 'מט\"ח' share: unclear why they matter, and all looked the same",
+      "Unsure whether bigger assets ('נכסים בסוף ספטמבר') is better",
+      "Doesn't understand why there are two fees or which one costs more",
+      "Unclear what 'פחות מ־3 שנים' means",
+      "Doesn't understand 'מניות' vs 'מניות סחיר', 'גמיש' or 'הלכה יהודית'",
+      "Unclear meaning of the dashes, 'חדש' and 'עוד לא דווח' in the coloured table",
+      "Unclear what a קופת גמל להשקעה is compared with a קרן השתלמות; the explanation link is small",
+      "Missing: what the fee difference means in shekels",
+      "Missing: the return after fees",
+      "Missing: whether money can be withdrawn anytime and the tax",
+      "Missing: the minimum amount and how to sign up",
+      "Missing: whether the fee can be negotiated"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader only says they left 'מיון לפי' on the fee option and never complains that sorting uses separate buttons instead of clickable column heads."
+      }
+    ],
+    "liked": [],
+    "usd": 0.05828320000000001
+  },
+  "b": {
+    "raised": [
+      "Option 3 adds 12 investment types the reader doesn't care about on top of the list.",
+      "Option 2's grouping by company means scrolling through all 16 Harel tracks before reaching another company's S&P line.",
+      "The grey explanation sentences between options are written for designers, not for users.",
+      "The menu row repeats in every option and isn't useful.",
+      "The 'לפי חברה / לפי מוצר' toggle is unclear: how is it different from the option buttons?",
+      "The 18 'במה הכסף מושקע' chips are confusing; only S&P 500 was recognisable.",
+      "In option 2, 'קיבוץ לפי' changes the whole order, and it's unclear which setting to choose.",
+      "The orange 'בשרטוט בלבד' note looks like a note between designers.",
+      "The return shown is before fees and tax, so it isn't what the reader would actually get.",
+      "The purpose of the 'קופה' numbers (e.g. 13874) is unclear.",
+      "The exposure rings and 'מט\"ח 97%' are unclear: why should the reader care?",
+      "It's unclear whether larger 'נכסים בסוף ספטמבר' is better.",
+      "Why are there two fees ('מהחיסכון' and 'מההפקדה'), and which costs more?",
+      "The meaning of 'פחות מ־3 שנים' is unclear.",
+      "The difference between 'מניות' and 'מניות סחיר', and the meaning of 'גמיש' and 'הלכה יהודית', is unclear.",
+      "The meaning of the dashes, 'חדש' and 'עוד לא דווח' in the coloured table is unclear.",
+      "It's unclear what a קופת גמל להשקעה is compared with a קרן השתלמות; the explanation link is small.",
+      "Missing: what the fee difference means in shekels.",
+      "Missing: the return after fees.",
+      "Missing: whether money can be withdrawn at any time, and the tax implications.",
+      "Missing: the minimum amount and how to sign up.",
+      "Missing: whether the fee can be negotiated.",
+      "Would drop option 3's heatmap columns other than the chosen type.",
+      "Would reduce the 18 investment chips to the common ones."
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader mentions 'מיון לפי' only to say they left it on the fee setting, which seemed right, and never complains about sort buttons or about column headers not being clickable."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0594192
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.11770240000000001
+}

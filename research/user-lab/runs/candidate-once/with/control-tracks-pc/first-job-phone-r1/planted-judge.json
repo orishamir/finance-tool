@@ -1,0 +1,53 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "The same labels repeat in every row ('מהחיסכון', 'מההפקדות', 'מניות', 'מט\"ח', '3 שנים / 5 שנים'), so the reader keeps re-reading them to find the one number that differs.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "The company header row scrolls away while the table header stays at the top, so the reader loses track of which company's tracks they are looking at.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "Many rows show 'פחות מ־3 שנים' where the return should be, so the reader can't compare returns and doesn't know what it means.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "Fees appear only as small percentages with nothing in shekels, so the gap between 0.56% and 0.73% looks trivial.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "There is no starting point or recommendation among 143 tracks that look alike, and the reader is close to giving up for today.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 6,
+      "summary": "The ring colours only make sense when matched to tiny dots next to the numbers, and the reader isn't sure they read the exposure rings correctly.",
+      "serious": true,
+      "names_listed": 1
+    },
+    {
+      "n": 7,
+      "summary": "The filter chips under 'במה הכסף מושקע' use unexplained jargon ('משולב סחיר', 'אג\"ח ממשלתי', 'עוקב מדדים - גמיש').",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 8,
+      "summary": "The underlined numbers look like links, though the reader didn't plan to tap them.",
+      "serious": false,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.03992280000000001
+}

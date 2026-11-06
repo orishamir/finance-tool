@@ -1,0 +1,65 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "The page doesn't explain how similar tracks differ, such as \"כללי\" or \"עוקב מדדי מניות\" compared with the S&P 500 track, so the reader can't tell which is the better choice. \"כללי\" is also cut off at the bottom of the first screen.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "There's no link or button for opening the account with Harel.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "The \"123 מקור / 123 מחושב\" line, the dotted underlines and the \"PF-10\" tag are unexplained.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "The note says there are direct expenses on top of the management fee but doesn't say how much they are, so they feel like hidden costs.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "Most rows show \"פחות מ־3 שנים\" instead of a return. The reader can't tell whether the track is new or the data is missing, so they treated those rows as blank and ignored them.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 6,
+      "summary": "\"מט\"ח\" and the yellow dot aren't explained, nor why the S&P track shows 99% of it, so the reader can't read part of the investment-mix rings.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 7,
+      "summary": "One row is highlighted in grey (the one with the \"עוקב מדדי אג\"ח\" tag), and the page doesn't say why.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 8,
+      "summary": "The difference between the two fees, \"מהחיסכון\" and \"מההפקדה\", is unclear.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 9,
+      "summary": "Words in the track names (\"אשראי\", \"אג\"ח\", \"סחיר\", \"גמיש\") and the \"הלכה יהודית\" tag aren't explained, so the reader can't understand most of the tracks.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 10,
+      "summary": "Practical information is missing: withdrawal rules and tax, the minimum or monthly deposit, what the fee means in shekels, how risky each track is in plain words, and whether the fee can be negotiated.",
+      "serious": false,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.0607548
+}

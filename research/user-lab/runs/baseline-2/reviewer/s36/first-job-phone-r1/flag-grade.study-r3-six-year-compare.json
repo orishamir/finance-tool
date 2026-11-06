@@ -1,0 +1,36 @@
+{
+  "case": "study-r3-six-year-compare",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"A comparison with waiting until year 6 is always present, though it is not always relevant.\",\"where\":\"the year-6 comparison\",\"kind\":\"taste\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 2 is about the year-6 bar sitting on the far left where it might be missed, which is a placement issue, not the complaint that the comparison is shown even when it isn't relevant."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0146154
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 2 is about where the year-6 bar sits and that it's easy to miss, not about the comparison showing up when it isn't relevant, so no finding names this problem."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0146154
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0292308
+}

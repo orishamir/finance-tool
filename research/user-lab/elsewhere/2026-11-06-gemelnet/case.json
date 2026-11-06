@@ -1,0 +1,32 @@
+{
+  "id": "else-02-gemelnet",
+  "date": "2026-11-06",
+  "url": "https://gemelnet.cma.gov.il/",
+  "device": "pc",
+  "goal_given_to_reviewer": "You have savings in a provident fund (קופת גמל). You opened this site to compare how your fund has done against other funds.",
+  "keys": [
+    { "id": "g-old", "kind": "general", "where": "the whole site, from the first page",
+      "problem": "It looks very old, like a site from the 1990s." },
+    { "id": "g-slow", "kind": "general", "where": "loading",
+      "problem": "It is slow to load (about two seconds)." },
+    { "id": "g-small-text", "kind": "general", "where": "the whole site",
+      "problem": "The text is very small." },
+    { "id": "g-where-begin", "kind": "general", "where": "the comparison screen",
+      "problem": "It is not clear where to begin." },
+    { "id": "g-filter-below", "kind": "general", "where": "the list of funds and its filter",
+      "problem": "The filter sits below the list it filters, not above it." },
+    { "id": "g-arrow", "kind": "general", "where": "choosing funds to compare",
+      "problem": "Choosing funds means selecting one and pressing an arrow button, which feels outdated; and the arrow replaces the chosen set instead of adding to it, which is surprising." },
+    { "id": "g-list-size", "kind": "general", "where": "the list of funds",
+      "problem": "Even after searching a company's name the list is very long, and the box showing it is tiny for that many funds." },
+    { "id": "g-hidden-dblclick", "kind": "general", "where": "the list of funds",
+      "problem": "A double click adds a fund to the comparison, which can only be discovered by accident." },
+    { "id": "g-size-importance", "kind": "general", "where": "the screen as first loaded",
+      "problem": "A graph takes much more space than the part to fill in; size reads as importance, so it is unclear whether the small controls at the top are the main thing to start with." },
+    { "id": "g-start-button", "kind": "general", "where": "the button that runs the comparison",
+      "problem": "The button that starts the comparison is small and an odd colour (pink), easy to miss." }
+  ],
+  "liked": [
+    { "id": "g-export", "what": "Results can be exported to Excel or XML." }
+  ]
+}

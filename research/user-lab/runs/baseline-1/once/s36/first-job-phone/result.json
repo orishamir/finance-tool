@@ -1,0 +1,109 @@
+{
+  "task": "s36",
+  "persona": "first-job-phone",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T16:31:29.550Z",
+  "structured": {
+    "answer": "I'd pick B, the rows one: each row's name and its shekel amount are together on the right, so I read straight down. In A I had to look up and down between the amounts at the top and the names at the bottom.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Small year 1–12 bar chart above both options",
+        "why": "Colours are not explained next to it; I guessed grey=my money, yellow=employer, teal=returns, pink stripes=tax"
+      },
+      {
+        "where": "Option A, −13,974 ₪ pink striped bar",
+        "why": "Scared me; not sure if tax is always taken or only when withdrawing before 6 years"
+      },
+      {
+        "where": "Option A, dashed box 83,978 ₪",
+        "why": "Not clear at first that this is a 'what if you wait' amount, not money I have"
+      },
+      {
+        "where": "Option A year-6 chart, tax '0 ₪'",
+        "why": "The tax bar is still drawn tall even though it says 0, which confused me"
+      }
+    ],
+    "used": [
+      "Heading 'קרן השתלמות: הסיפור של הכסף, שלב אחרי שלב'",
+      "Option A big bars and their top numbers: 18,000 / +54,000 / +8,487 / −13,974 / 66,513 / 83,978",
+      "Line 'אם מושכים עכשיו ושמים את הכסף בחשבון ניירות ערך עד שנה 6: 68,837 ₪, כלומר 15,141 ₪ פחות מאשר לחכות'",
+      "Option A year-6 version: 98,738, tax 0 ₪",
+      "Option B row labels with amounts on the right"
+    ],
+    "skimmed": [
+      "Small preview image at top",
+      "Year 1–12 mini bar chart",
+      "Paragraphs under section headings א and ב",
+      "Line 'בין 19 המסלולים שנאספו...'"
+    ],
+    "skipped": [
+      "Orange/grey example paragraph (salary 12,000, 2.5%/7.5%, track names)",
+      "שכירים/עצמאים toggle",
+      "'הגובה נמתח בכל שנה...' note",
+      "Footnote in preview image"
+    ],
+    "unsure_meaning": [
+      "מסלול מדד",
+      "התשואה הוסיפה אחרי דמי ניהול – how much were the fees?",
+      "Colours in the year 1–12 chart (yellow, teal, grey, pink hatched)",
+      "Dashed outline box 83,978 ₪",
+      "בין 19 המסלולים שנאספו",
+      "מומלץ tag – who recommends it and why"
+    ],
+    "not_found": [
+      "A colour key next to the small year chart",
+      "The fees in shekels",
+      "A big, clear number comparing a keren hishtalmut with a securities account"
+    ],
+    "findings": [
+      {
+        "what": "In A the amounts are at the top of the bars and the names at the bottom, so I keep looking back and forth to match them",
+        "where": "Option א, big waterfall chart"
+      },
+      {
+        "what": "The key comparison with a securities account (68,837 vs 83,978, 15,141 ₪ less) is a thin small line, not a big number",
+        "where": "Under the chart in both options"
+      },
+      {
+        "what": "Year 1–12 chart colours are never explained next to it",
+        "where": "Mini chart at top of both options"
+      },
+      {
+        "what": "Pink striped −13,974 ₪ tax looks scary and it's unclear when it applies",
+        "where": "Option א and ב, tax bar"
+      },
+      {
+        "what": "The dashed 'אם מחכים לשנה 6' box looks like a real bar, which is confusing",
+        "where": "Option א, rightmost bar"
+      },
+      {
+        "what": "A tax bar with '0 ₪' is still drawn as a full-height dark bar",
+        "where": "Option א, year 6 version"
+      },
+      {
+        "what": "Fees only mentioned as 'אחרי דמי ניהול' and as percentages, not in shekels",
+        "where": "Returns bar label and the 19-tracks line"
+      }
+    ]
+  },
+  "steps": 2,
+  "reads": 2,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 32840,
+    "turns": 4,
+    "usd": 0.12624980000000002,
+    "input": 6,
+    "cacheWrite": 7764,
+    "cacheRead": 16169,
+    "output": 3044,
+    "model": "claude-opus-5-5"
+  }
+}

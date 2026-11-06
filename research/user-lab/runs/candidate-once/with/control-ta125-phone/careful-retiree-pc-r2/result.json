@@ -1,0 +1,133 @@
+{
+  "task": "control-ta125-phone",
+  "persona": "careful-retiree-pc",
+  "repeat": 2,
+  "mode": "shots",
+  "device": "phone",
+  "startedAt": "2026-11-06T16:13:59.650Z",
+  "structured": {
+    "answer": "I haven't decided and I'll ask my son first. The page says to hold it at \"פסגות\" (which I never heard of) and buy \"אי.בי.אי. מחקה (4A) ת\"א 125\" (5112628). With their 10,000 ₪ to start and 500 ₪ a month, that leaves about 86,045 ₪ after 10 years, if their 7% a year holds. At Leumi or Hapoalim it would be about 81,000–83,000 ₪.",
+    "confidence": "unsure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "screen 2-3, the coloured cost bar and its key",
+        "why": "The numbers are in the bar and the colour names are listed below. I couldn't match them, and the colours are close."
+      },
+      {
+        "where": "screen 3, account at פסגות ניירות ערך בע\"מ",
+        "why": "A company I don't know, not a bank. I wouldn't give them money."
+      },
+      {
+        "where": "screen 7-8, fund list",
+        "why": "Every fund shows a minus (−0.04%, −0.54%, −1,733 ₪), which frightened me. I didn't understand what they lose."
+      },
+      {
+        "where": "screen 1, title",
+        "why": "'מדד' to me is the price index, and there are English buttons. It almost felt like it wasn't for me."
+      }
+    ],
+    "used": [
+      "title and ת\"א-125 button",
+      "סכום היום 10,000 and הפקדה חודשית 500 boxes",
+      "תשואה בשנה 7%",
+      "הפקדתם 70,000 ₪",
+      "הבחירה שלכם · הזול 86,045 ₪",
+      "account list: פסגות 86,045, לאומי 82,968, הפועלים 81,052",
+      "fund card אי.בי.אי. מחקה (4A) ת\"א 125, 5112628, marked הבחירה"
+    ],
+    "skimmed": [
+      "colour key for costs",
+      "החשבון/הקרן/המס differences (18 יותר, 1,390 פחות, 342 יותר)",
+      "'לא בחשבון מחיר אחר...' lines in each bank row",
+      "lower banks on screen 6 with red bars",
+      "other funds on screen 8",
+      "explanation paragraph about מול המדד"
+    ],
+    "skipped": [
+      "MSCI / S&P / נאסד\"ק buttons",
+      "sliders",
+      "אינפלציה button",
+      "Interactive Brokers and אינטראקטיב rows",
+      "fold arrows",
+      "screens 9-13"
+    ],
+    "unsure_meaning": [
+      "מדד (stock index vs price index)",
+      "דמי משמרת",
+      "נאמן 0.025%",
+      "קרן מחקה",
+      "קרן סל",
+      "4A",
+      "ETF",
+      "MTF",
+      "בכסף של היום",
+      "−0.04% בשנה · שנה אחת",
+      "dotted purple underlines under numbers",
+      "מחזיקה את המניות",
+      "דמי ניהול 0.1% קבועים, 0% משתנים"
+    ],
+    "not_found": [
+      "whether my own bank's deposits compare",
+      "a plain sentence saying whether this is safe",
+      "what happens if the stock exchange falls"
+    ],
+    "findings": [
+      {
+        "what": "Minus signs on every fund (−0.04%, −1,030 ₪, −1,733 ₪) look like losses and scare me away",
+        "where": "screens 2, 7, 8"
+      },
+      {
+        "what": "The recommended account is a company I don't know (פסגות), not a bank",
+        "where": "screens 3-4"
+      },
+      {
+        "what": "Cost numbers are in the bar but the colour names are in a separate key, so I had to look back and forth, and the colours are close",
+        "where": "screens 2-3, and the bars in each bank row"
+      },
+      {
+        "what": "Each bank row repeats 'לא בחשבון מחיר אחר לצעירים, לחיילים...', which I had to reread every time",
+        "where": "screens 4-6"
+      },
+      {
+        "what": "Dark background with many numbers is tiring and makes me anxious",
+        "where": "whole page"
+      },
+      {
+        "what": "The result depends on '7%' a year, which looks like a promise",
+        "where": "screen 2"
+      },
+      {
+        "what": "Pale grey small text above the bank list is hard to read",
+        "where": "top of screen 4"
+      },
+      {
+        "what": "English letters and jargon (MSCI, ETF, MTF, 4A, נאמן, דמי משמרת)",
+        "where": "screens 1, 3, 7, 8"
+      }
+    ]
+  },
+  "steps": 8,
+  "reads": 8,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 50263,
+    "turns": 10,
+    "usd": 0.22638780000000003,
+    "input": 10,
+    "cacheWrite": 15882,
+    "cacheRead": 44359,
+    "output": 4521,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "control-ta125-phone",
+    "screenshots": 14,
+    "changes": [],
+    "neverShown": [],
+    "errors": []
+  }
+}

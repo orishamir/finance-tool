@@ -1,0 +1,84 @@
+{
+  "case": "label-icons",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The icons on the fund labels are weak and do not help tell the labels apart.\",\"where\":\"the labels on fund rows\",\"kind\":\"taste\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Can't tell why to prefer the top fund over the next one, which is only 43 ₪ behind",
+      "Chosen fund shows 'one year' vs '4 years' for others; unclear whether a new fund matters",
+      "Young-people discount is flagged but the page doesn't say how much cheaper it would be",
+      "The 'site's dollar / exchange rate 3.16' line and the inflation button are confusing",
+      "Fund rows carry 4–6 coloured tags the reader couldn't read meaning into",
+      "Lower fund rows are English names with 'no price here', so the reader stopped",
+      "The 'tax only on sale' pop-up opens over the fund rows and hides them",
+      "The hedged fund's range (+2,212 to −23,766) scared the reader off",
+      "'Psagot · 3 claims' is worrying and the reader couldn't see what the claims were",
+      "Hedging comparison section is too much to take in",
+      "Waterfall chart starts from 'Jerusalem' and 'MTF', which the reader never chose",
+      "W-8BEN and the red 'tax only on sale' tag made the reader back away",
+      "Doesn't understand 4D/4A, 'currency-hedged', or the 0.02% trustee fee",
+      "Doesn't understand tag terms like 'עסקה מחוץ', 'צבירה', UCITS, Accumulating/Distributing",
+      "Doesn't understand how an index-tracking fund can beat the index (+0.37%)",
+      "Waterfall says 'D4' but everywhere else says '4D'; unsure if it's the same fund",
+      "Can't find whether Psagot allows automatic monthly purchases or how to open the account",
+      "Wants 30–40 year results shown directly",
+      "Wants a simple yes/no on whether to care about dollar hedging",
+      "Would drop the line chart in the 'what matters most' section",
+      "Would drop or fold in the 'advertised vs price list' list",
+      "Would drop the waterfall chart itself"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader says the coloured tags on fund rows didn't mean anything to them, but that's about not understanding the terms, not about the icons being weak or failing to tell the labels apart."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0675632
+  },
+  "b": {
+    "raised": [
+      "Can't tell why the chosen fund is better than the next one (only −43 ₪ apart)",
+      "The chosen fund shows only 'one year' of history; unclear whether being new matters",
+      "Young-people discount notes don't say how much cheaper it would be",
+      "The dollar-rate line and the 'אינפלציה' button are confusing",
+      "The 4–6 coloured tags on each fund row carry no meaning the reader can read",
+      "Lower fund rows are English names marked 'אין מחיר כאן', so the reader stopped",
+      "The 'מס רק במכירה' pop-up opens over the fund rows and hides them",
+      "The hedged fund's range (+2,212 to −23,766) is alarming",
+      "'פסגות · 3 טענות' is worrying and the claims themselves can't be seen",
+      "The hedging section is too much to take in",
+      "The waterfall starts from 'ירושלים'/'MTF', which the reader never chose",
+      "The W-8BEN and red 'מס רק במכירה' tags put the reader off",
+      "Doesn't understand 4D/4A, 'מנוטרלת מט\"ח' or the 0.02% trustee fee",
+      "Doesn't understand tag jargon (עסקה מחוץ, צבירה, UCITS, W-8BEN, etc.)",
+      "Confused how an index-tracking fund can beat the index (+0.37%)",
+      "The waterfall says 'D4' but everywhere else says '4D': is it the same fund?",
+      "Can't find how to open the account or set up an automatic monthly purchase",
+      "Wants 30–40 year results shown directly",
+      "Wants a simple yes/no on whether currency hedging matters",
+      "Would drop the line chart in 'מה הכי משנה'",
+      "Would drop the advertised-claims list, or fold it into the account rows",
+      "Would drop the waterfall chart itself"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader complains that the tags' meaning is unclear and full of jargon, but never mentions icons on the labels or that the labels are hard to tell apart visually."
+      }
+    ],
+    "liked": [],
+    "usd": 0.06641520000000001
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1339784
+}

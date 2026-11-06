@@ -1,0 +1,6 @@
+{
+  "named": false,
+  "position": 0,
+  "why": "No finding says that a note meant for testers or builders is visible, or that the text under the result looks internal or out of place. Finding 1 is about the main result, but it only questions the number and asks for an explanation (inflation, tax). That doesn't name the note.",
+  "usd": 0.017016
+}

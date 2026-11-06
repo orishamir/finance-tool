@@ -1,0 +1,135 @@
+{
+  "task": "p05-repeat-ta125-phone",
+  "persona": "careful-retiree-pc",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "phone",
+  "startedAt": "2026-11-06T16:03:40.692Z",
+  "structured": {
+    "answer": "I didn't decide. The page says the cheapest is an account at Psagot (\"פסגות\"), apparently with the fund \"אי.בי.אי. מחקה ת\"א 125 (4A)\", leaving about 86,045 ₪ after 10 years from 70,000 ₪ put in. But I don't know Psagot and I'll ask my son before doing anything.",
+    "confidence": "unsure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Screen 1, index buttons",
+        "why": "English letters (MSCI, S&P) and the word מדד made me feel the page wasn't for me; I only stayed because ת\"א-125 was already chosen"
+      },
+      {
+        "where": "Screen 2, two result boxes",
+        "why": "Not sure what 'בכסף של היום' and the 'אינפלציה' button do to the 86,045 figure, or whether the 7% is promised"
+      },
+      {
+        "where": "Screen 3, fund name",
+        "why": "The fund name was half-hidden behind the round arrow button and the next screen started mid-sentence, so I'm not sure which fund it is"
+      },
+      {
+        "where": "Screens 4-6, the list",
+        "why": "Too many numbers; I got tired and stopped after screen 6"
+      }
+    ],
+    "used": [
+      "Title and ת\"א-125 description",
+      "סכום היום 10,000 and הפקדה חודשית 500",
+      "הפקדתם 70,000 ₪",
+      "הבחירה שלכם · הזול 86,045 ₪",
+      "פסגות ניירות ערך בע\"מ, account fees 1,049 ₪",
+      "Fund name אי.בי.אי. מחקה ת\"א 125 (4A)",
+      "Ranked list: לאומי 82,968, הפועלים 81,052, דיסקונט 79,491, etc."
+    ],
+    "skimmed": [
+      "Colour bar and fee legend",
+      "Small text above the list about how prices are calculated",
+      "לא בחישוב notes under each bank",
+      "Bottom of the list (Altshuler, Excellence, Meitav, Interactive)"
+    ],
+    "skipped": [
+      "Sliders",
+      "The 85,015 'הזוג הבא בתור' box with the minus sign",
+      "Fold-out arrows on each row",
+      "Screens 7-13"
+    ],
+    "unsure_meaning": [
+      "מדד (I know it as the price index)",
+      "MSCI, S&P 500",
+      "4A",
+      "דמי משמרת",
+      "בכסף של היום",
+      "תשואה בשנה 7% (promised or not?)",
+      "לא בחישוב",
+      "Purple dotted underlines under numbers",
+      "−1,030",
+      "אין נתון"
+    ],
+    "not_found": [
+      "Whether this is safe like a deposit or can lose money",
+      "Who runs the site 'מקור'",
+      "Any comparison with bank deposits",
+      "A clear statement of which fund to buy and how"
+    ],
+    "findings": [
+      {
+        "what": "The page opens with English index names and 'מדד' in a stock sense; an older saver would think it's not for her and leave",
+        "where": "Screen 1"
+      },
+      {
+        "what": "Nothing says that the money can go down; the 7% looks like a promise",
+        "where": "Screen 2"
+      },
+      {
+        "what": "The cheapest option is a company I've never heard of, and the page doesn't say who is behind the site",
+        "where": "Screens 3-4"
+      },
+      {
+        "what": "The fund name is hidden behind the floating arrow button",
+        "where": "Screen 3 bottom"
+      },
+      {
+        "what": "Fee colours (yellow/orange, red/pink) are too close to tell apart",
+        "where": "Screens 2-3 colour bar"
+      },
+      {
+        "what": "Small grey text on a dark background is hard to read even enlarged",
+        "where": "Screens 2-4"
+      },
+      {
+        "what": "A long list with two numbers per row is overwhelming",
+        "where": "Screens 4-6"
+      },
+      {
+        "what": "A minus sign next to the second option is alarming without explanation",
+        "where": "Screen 2"
+      }
+    ]
+  },
+  "steps": 6,
+  "reads": 6,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 40496,
+    "turns": 8,
+    "usd": 0.17221,
+    "input": 10,
+    "cacheWrite": 11427,
+    "cacheRead": 37170,
+    "output": 3666,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "p05-repeat-ta125-phone",
+    "screenshots": 14,
+    "changes": [
+      {
+        "id": "repeat",
+        "type": "insert",
+        "shots": 14,
+        "applied": 14,
+        "most": 6
+      }
+    ],
+    "neverShown": [],
+    "errors": []
+  }
+}

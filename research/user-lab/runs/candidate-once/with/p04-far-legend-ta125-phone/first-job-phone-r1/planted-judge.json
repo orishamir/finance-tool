@@ -1,0 +1,6 @@
+{
+  "named": true,
+  "position": 2,
+  "why": "Finding 2 says the colour key for the cost bars is at the bottom, after 15 rows of bars, so the reader has to scroll back to match colours. That is the problem: the key is far from the bars.",
+  "usd": 0.017
+}

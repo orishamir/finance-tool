@@ -1,0 +1,138 @@
+{
+  "task": "p16-leftover-sp500-pc",
+  "persona": "first-job-phone",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-05T23:26:57.401Z",
+  "structured": {
+    "answer": "I'd open an account at פסגות and buy the \"ילין לפידות מחקה S&P 500 (4D)\" fund, because the page marks that pair \"הזול\". With the page's example (10,000 ₪ now, 500 ₪ a month, 10 years, 7%) it says I'd end up with about 86,500 ₪. I might take אלטשולר שחם instead because I know the name and it's only 43 ₪ less.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Top result box, 70,000 ₪ deposited → 86,492 ₪",
+        "why": "7% for 10 years should be about 70% more (~119,000). 86,492 looks way too low and I don't get why. Something about 'בכסף של היום' and 'אחרי דמי ניהול ומס'."
+      },
+      {
+        "where": "Fund list, first two rows",
+        "why": "The fund it picks for me is ילין לפידות, which I don't know. אלטשולר שחם, which I do know, is right under it at −43 ₪. Hesitated over which to take."
+      },
+      {
+        "where": "Amount fields at the top",
+        "why": "The example uses 10,000 ₪ but I have 30,000. I didn't change it, so I don't know my own final number."
+      },
+      {
+        "where": "Account list, small number under each total (1,057 / 4,541 / 26,817)",
+        "why": "Not sure what it is. Maybe the account's cost over 10 years?"
+      }
+    ],
+    "used": [
+      "Heading 'איפה ואיך הכי זול להשקיע במדד, לאורך זמן'",
+      "S&P 500 button",
+      "Fields: 10,000 now, 500 monthly, 10 years, 7%",
+      "Big numbers: 70,000 ₪ deposited, 86,492 ₪ 'הבחירה שלכם · הזול', 86,449 ₪ runner-up −43 ₪",
+      "Account list on the right: פסגות 86,492 at the top",
+      "Fund card: ילין לפידות מחקה S&P 500 (4D)",
+      "Fund rows with −43, −213, −447 etc.",
+      "Line 'הכי ישנה מספר השנים: 19,116 ₪ יותר'"
+    ],
+    "skimmed": [
+      "The coloured tags on each fund row",
+      "Foreign ETF rows (iShares, Vanguard), marked 'אין מחיר כאן'",
+      "Account rows 2–15 and their 'לא בחישוב' notes",
+      "Sensitivity chart and table",
+      "The 'עם נטרול מט\"ח או בלי' section and its bar charts / year table"
+    ],
+    "skipped": [
+      "Cost breakdown bar and its legend at the top of screen 2",
+      "Explanation text under the fund list ('למה חלק מהקרנות בלי מחיר')",
+      "Small grey text under the sliders (exchange rate, date)",
+      "Screens 8–10"
+    ],
+    "unsure_meaning": [
+      "בכסף של היום",
+      "דמי משמרת",
+      "נאמן 0.02%",
+      "צוברת / מחלקת דיבידנד",
+      "עסקת החלף",
+      "נטרול מט\"ח / מנוטרלת מט\"ח",
+      "(4D) / (4A) in fund names",
+      "The small numbers 1,057 / 4,541 under each account",
+      "−43 ₪ לעומת הבחירה שלכם: whether that's per year or for the whole 10 years",
+      "לא בחישוב",
+      "W-8BEN",
+      "אין שנה מלאה / עוד לא נאסף"
+    ],
+    "not_found": [
+      "An explanation, right next to the result, of why 70,000 grows only to 86,492 at 7%",
+      "A simple 'first step' telling me how to actually open the account and buy",
+      "The result for my own 30,000 without me having to change the fields"
+    ],
+    "findings": [
+      {
+        "what": "86,492 ₪ looks way too low against 70,000 at 7% for 10 years. Nothing next to it simply says why (inflation? tax?)",
+        "where": "Main result box, screen 1"
+      },
+      {
+        "what": "Too many coloured tags on every fund row. I couldn't read them and they all look alike",
+        "where": "Fund list, screens 2–4"
+      },
+      {
+        "what": "The recommended fund is from a house I don't know, while a well-known one is right below it at almost the same result",
+        "where": "Fund list, first two rows"
+      },
+      {
+        "what": "The fund list is very long and runs into foreign funds with 'אין מחיר כאן'. Too many options",
+        "where": "Screens 3–5"
+      },
+      {
+        "what": "The small number under each account total has no label I could see",
+        "where": "Account list, right column"
+      },
+      {
+        "what": "The example amount (10,000) isn't my amount, so the big number isn't really mine",
+        "where": "Fields at the top"
+      },
+      {
+        "what": "The currency hedging section is long and full of percents and minus signs. I got bored there",
+        "where": "Screens 6–7"
+      },
+      {
+        "what": "The range 'בין +2,212 ל־−23,766 ₪' is scary and not explained",
+        "where": "Hedged fund row, screen 5"
+      }
+    ]
+  },
+  "steps": 7,
+  "reads": 7,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 48747,
+    "turns": 9,
+    "usd": 0.2032472,
+    "input": 10,
+    "cacheWrite": 13592,
+    "cacheRead": 38856,
+    "output": 4335,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "p16-leftover-sp500-pc",
+    "screenshots": 11,
+    "changes": [
+      {
+        "id": "leftover",
+        "type": "insert",
+        "shots": 11,
+        "applied": 11,
+        "most": 1
+      }
+    ],
+    "neverShown": [],
+    "errors": []
+  }
+}

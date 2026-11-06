@@ -1,0 +1,65 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "Minus signs on the recommended fund (-0.04%) and on the alternative (-1,030 ₪) look like losses and scare the reader off",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "Page opens with English letters and index jargon on the index buttons; feels not meant for the reader",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "Dark background with small grey text is hard to read even when enlarged",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "Recommended account and fund are unfamiliar firms while big banks are ranked lower",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "Cost bar colours are too similar to tell apart",
+      "serious": true,
+      "names_listed": 3
+    },
+    {
+      "n": 6,
+      "summary": "The 7% return is only an example and the final 86,045 is not explained in plain words as an estimate",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 7,
+      "summary": "The 'בכסף של היום' / inflation button is unclear",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 8,
+      "summary": "Too many numbers per screen; dotted underlines with unknown meaning",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 9,
+      "summary": "Fund jargon in the fund box: קרן מחקה, נאמן, דמי משמרת, (4A)",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 10,
+      "summary": "Amount inputs come with sliders",
+      "serious": false,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.0438108
+}

@@ -1,0 +1,83 @@
+{
+  "case": "hg-huge-profit",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The graphic shows a very large profit figure with nothing explaining where it comes from.\",\"where\":\"the profit part of the graphic\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Doesn't know how much smaller the monthly paycheck will be",
+      "Doesn't know which company to pick or how to actually sign up",
+      "The '123 ממקור / מחושב / הזנתה' labels at the top are confusing",
+      "'מה זה' has too many numbers and terms before the reader sees what they mean for them",
+      "The 'closest alternative: securities account' link doesn't say whether it's better or worse",
+      "The codes TXH-09, KH-15, PF-18 in 'שווה לדעת' mean nothing",
+      "The 'תלוי בחברה' provider cards are confusing (depends on the company how?)",
+      "The taxation paragraph repeats the 7.5%/15,712 numbers already given",
+      "The 47% figure in the orange box is scary",
+      "Worried the benefit may be cut, after reading the chief economist's recommendation",
+      "Bars after year 6 still have a striped pink tax top even though it's tax-free",
+      "Can't see the year-6 or year-12 results without clicking; the default shows year 5, the bad year",
+      "Higher management fee giving more money seems backwards and lowers trust in the numbers",
+      "Unclear how much tax is really paid (−64,761 vs 47% withholding vs refund)",
+      "Unclear whether employer deposits above the ceiling hit the paycheck",
+      "Jargon words not understood (מסלול השקעה, מס רווחי הון, רווח ריאלי, etc.)",
+      "Missing: what happens to the fund if you leave the job",
+      "Missing: a simple comparison with investing the 750 in the S&P 500 yourself",
+      "Would cut the glossary table",
+      "Would cut the 'חוקים וכללים' chips everywhere",
+      "Would cut the small-print notes under the chart"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader quotes the profit column (+21,218) and the other figures but never says the profit figure is unexplained or too large. The closest complaint, about fees, is a different issue."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0640832
+  },
+  "b": {
+    "raised": [
+      "The '123 ממקור / מחושב / הזנתה / מונח' legend labels at the top are confusing and their purpose is unclear",
+      "'מה זה' piles on too many numbers and terms before showing what they mean for the reader",
+      "Unsure what to enter in the return and management-fee boxes of the calculator",
+      "The 'הכי קרוב לזה: חשבון ניירות ערך' link doesn't say whether the alternative is better or worse",
+      "The codes TXH-09, KH-15, PF-18 in 'שווה לדעת' mean nothing",
+      "The 'תלוי בחברה' provider cards are confusing: depends on the company how?",
+      "The taxation cards slide sideways (not worth the effort) and the paragraph below repeats the 7.5%/15,712 numbers",
+      "The 47% figure in the orange warning box is scary",
+      "The chief economist's recommendation to cut the benefit is worrying",
+      "In the 12-year chart, bars after year 6 still have a striped pink tax top even though it's supposed to be tax-free",
+      "The year-6 and year-12 results can't be seen without clicking; the default shows the bad year 5",
+      "The fee comparison where a higher fee gives more money seems backwards and lowers trust",
+      "Unclear how much tax is really paid (−64,761 vs 47% at source vs refund)",
+      "Unclear whether the employer deposit above the ceiling is taxed in the reader's paycheck",
+      "Jargon not understood (מסלול השקעה, מס רווחי הון, רווח ריאלי, משכורת קובעת, חברה מנהלת, נעילה, ניכוי)",
+      "Missing: how much the net monthly paycheck shrinks",
+      "Missing: which company/plan to pick and how to tell the employer",
+      "Missing: what happens to the fund on leaving the job",
+      "Missing: a comparison with investing the 750 directly in the S&P 500",
+      "Would cut the glossary table",
+      "Would cut the 'חוקים וכללים' chips everywhere",
+      "Would cut the small-print notes under the chart"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader mentions the profit column (+21,218) and says they didn't read its small note, but never says the profit figure is too big or lacks an explanation; the fee-comparison complaint is a different issue."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0637952
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1278784
+}

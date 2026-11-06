@@ -1,0 +1,6 @@
+{
+  "named": true,
+  "position": 5,
+  "why": "Finding 5 is about the account list and asks whether '0 ₪' means 'free' or 'zero difference'. That means the reader could not tell what the column measures: an amount of money, or a gap from some reference. That is the problem in question, though the reader only raises it for row 1, so this is a borderline match. Finding 2 doesn't count: it only says the negative numbers look scary and never says the reference is unclear. Finding 3 is about the comparison strip at the top of the screen, not the account list's last column.",
+  "usd": 0.024904
+}

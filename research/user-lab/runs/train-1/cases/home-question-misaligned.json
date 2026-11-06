@@ -1,0 +1,14 @@
+{
+ "id": "home-question-misaligned",
+ "task": "t07",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "In the home question card the three fields are not aligned: the years field sits lower because its label runs to two lines.",
+   "where": "the three fields of the question card",
+   "kind": "general",
+   "outside": false
+  }
+ ],
+ "liked": []
+}

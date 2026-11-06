@@ -1,0 +1,29 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "In self-employed mode there's no calculation for 1–5 years. The 4-year bar is empty, so the only number shown is the comparison figure (25,725), which is easy to mistake for the fund's number.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "Tapping '8' on the year numbers under the chart set the picker to 7, so the input you get isn't the one you chose.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "The 'נשאר בידיים' value at 8 years appears only above its column, not in the list below, and the white column is hard to see next to the others.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "The 'הכנסה חייבת בחודש' field in self-employed mode is unclear: it doesn't say whether it needs changing or what it affects.",
+      "serious": false,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.0225188
+}

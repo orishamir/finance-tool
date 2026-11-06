@@ -1,4 +1,4 @@
-// The home page's question card (docs/design-spec.md section 1a, flows 6.1): what it is for, the sum and the years, in
+// The home page's question card (docs/design-system.md 6.9, flows 6.1): what it is for, the sum and the years, in
 // everyday words, turned into the saved goal; one button opens the comparison. Everything typed is the person's (D7).
 // The purpose comes first and sets the questions under it (2026-10-25, the founder: the chips sat under the fields, only
 // "כרית ביטחון" changed anything, and it removed a field above the chip, so the page moved under the pointer).

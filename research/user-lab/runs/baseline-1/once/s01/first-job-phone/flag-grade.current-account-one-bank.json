@@ -1,0 +1,36 @@
+{
+  "case": "current-account-one-bank",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The current-account guide's interest example and chart are one bank's (Leumi) terms and one person's case, shown as if general, though most people's idle money earns nothing and slowly loses value.\",\"where\":\"the interest lines and the expanded chart\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 1,
+        "why": "Finding 1 makes the same complaint: the interest example shows the current account growing at 5% even though such accounts usually pay nothing, so it misleads about idle money."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0160194
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 1,
+        "why": "Finding 1 makes the same complaint: the example shows the current account earning 5% interest as if that were normal, when the page itself says the account often pays nothing. The person would recognise this as their own point."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0164394
+  },
+  "third": null,
+  "ranks": {
+    "k": 1
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.032458799999999996
+}

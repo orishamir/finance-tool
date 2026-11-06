@@ -1,0 +1,36 @@
+{
+  "case": "hg-within-ceiling",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"'כל ההפקדות ב־12 השנים בתוך התקרה של הפטור' is unclear, and seems not to make sense when the same sum is deposited every month.\",\"where\":\"the sentence under the graphic\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the findings says the sentence under the graphic about 12 years of deposits staying within the exemption ceiling is unclear or illogical; finding 7 mentions the ceiling, but it complains that the 15,712 ₪ figure isn't explained for a 30,000 salary, on different screens."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0189514
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings says the sentence about all 12 years of deposits being within the exemption ceiling is unclear or illogical; finding 7 is about a different thing, the 15,712 ₪ salary ceiling not being explained for a 30,000 salary."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0183714
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0373228
+}

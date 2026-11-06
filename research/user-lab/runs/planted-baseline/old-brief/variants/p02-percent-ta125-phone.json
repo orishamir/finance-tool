@@ -1,0 +1,38 @@
+{
+  "id": "p02-percent-ta125-phone",
+  "about": "For the lab only; never reaches a session. Planted problem, kind p02 (A percentage where the money that matters is in shekels): see research/user-lab/planted.md.",
+  "purpose": "plant",
+  "pages": [
+    "/finance-tool/indices/ta125"
+  ],
+  "device": "phone",
+  "instance": {
+    "kind": "p02",
+    "mode": "page",
+    "url": "https://orishamir.github.io/finance-tool/indices/ta125",
+    "device": "phone",
+    "steps": [],
+    "task": "ta125",
+    "control": "planted/control-ta125-phone",
+    "split": "tune"
+  },
+  "plants": [
+    {
+      "id": "p02",
+      "kind": "general",
+      "problem": "The gap between the chosen option and the next one is shown as a percentage, so the reader cannot see what it is worth in money.",
+      "where": "the next-option card beside the main result",
+      "counts": "A finding that the difference is given in percent where an amount in shekels was wanted (or that the percent is hard to make sense of).",
+      "notCounts": "General remarks that the two options are close, without the unit."
+    }
+  ],
+  "changes": [
+    {
+      "id": "percent",
+      "type": "text",
+      "selector": "span.flex-col.items-start",
+      "find": "‎−1,030 ₪",
+      "replace": "‎−1.2%"
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "Minus signs on fund figures look like losses and scare the reader away.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "The recommended account is an unfamiliar company, not a bank.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "The bar colours are explained in a separate key, so the reader had to look back and forth, and the colours are similar.",
+      "serious": false,
+      "names_listed": 3
+    },
+    {
+      "n": 4,
+      "summary": "The same caveat repeats in every bank row and had to be reread.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "The dark background and many numbers are tiring.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 6,
+      "summary": "The 7% yearly return looks like a promise.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 7,
+      "summary": "Small pale grey text above the bank list is hard to read.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 8,
+      "summary": "English letters and jargon (MSCI, ETF, נאמן, etc.).",
+      "serious": false,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.0414628
+}

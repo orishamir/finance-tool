@@ -1,0 +1,113 @@
+{
+  "task": "s13",
+  "persona": "first-job-phone",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T16:22:32.637Z",
+  "structured": {
+    "answer": "Keren hishtalmut is a savings fund through work: I put in a bit of my salary, my employer adds about three times as much, and after 6 years from the first deposit I can take it all out tax-free. Definitely worth having; just don't touch it before 6 years.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Line under the subtitle: '123 מקומות 123 חושב 123 הזנתה מונח הקישו להסבר'",
+        "why": "Looked like a legend for something but meant nothing to me"
+      },
+      {
+        "where": "Bars chart (years 1-12 and the big waterfall)",
+        "why": "Colours not explained next to them; guessed yellow = employer money, green = profit, red-striped = tax"
+      },
+      {
+        "where": "Early withdrawal tax",
+        "why": "Saw 'לפחות 31%' near the top and '47%' in the chart notes; not sure which applies to me"
+      }
+    ],
+    "used": [
+      "Heading 'קרן השתלמות' and subtitle",
+      "'אחרי 6 שנים מההפקדה הראשונה אפשר למשוך את הכסף בלי מס הכנסה ובלי מס רווחי הון'",
+      "'לשכירים... הפקדת המעסיק מגיעה רק לכאן'",
+      "Calculator big numbers: ₪18,000 הפקדתם, +₪54,000 המעסיק הוסיף, −₪13,974 המס, ₪66,513 נשאר בידיים",
+      "Bar labels 'מ־6 שנים: פטור ממס' / 'לפני 6 שנים: מס'",
+      "Card 'מתי הכסף פנוי: כשעוברות 6 שנים' and 'עד 4 ימי עסקים'",
+      "Card 'מעבר בין מסלולים: בלי מס'",
+      "'דמי ניהול מחיסכון עד 2% בשנה'"
+    ],
+    "skimmed": [
+      "Bullets on tax if withdrawing early",
+      "Calculator input fields (left at 12,000)",
+      "'שווה לדעת' list",
+      "'מי מציע ומי מפקח'",
+      "'מיסוי' cards",
+      "'סיכונים ומה לא מוגן'",
+      "'מונחים' table"
+    ],
+    "skipped": [
+      "Grey footnotes under the chart",
+      "Orange warning box",
+      "'שחקו עם המספרים שלכם' fold",
+      "'הצגת החברות' / 'כל החברות'",
+      "'חוקים וכללים' badges",
+      "Footer"
+    ],
+    "unsure_meaning": [
+      "123 מקומות / 123 חושב / 123 הזנתה",
+      "הרווח הריאלי",
+      "הפקדה מוטבת",
+      "ותק",
+      "נאמנות",
+      "מסלול מדד",
+      "גמל נט",
+      "טופס",
+      "עמית",
+      "31% vs 47% tax on early withdrawal",
+      "Chart bar colours"
+    ],
+    "not_found": [
+      "Which company runs my own fund / how to find out",
+      "Fee in shekels rather than percent"
+    ],
+    "findings": [
+      {
+        "what": "Unexplained row of '123 ...' labels right under the heading",
+        "where": "Screen 1, under subtitle"
+      },
+      {
+        "what": "Bar colours in the charts have no label next to them; had to guess what yellow/green/grey mean",
+        "where": "Screen 2, calculator charts"
+      },
+      {
+        "what": "Two different tax numbers for early withdrawal (31% and 47%) with no clear one for me",
+        "where": "Screen 1 bullets and screen 2 chart notes"
+      },
+      {
+        "what": "'חוקים וכללים · N' badge repeated on every paragraph, card and row; noise I read past again and again",
+        "where": "Throughout"
+      },
+      {
+        "what": "Fees only as '2% בשנה', no shekel amount, so it feels like nothing",
+        "where": "Screen 3, כמה זה עולה"
+      },
+      {
+        "what": "Lots of jargon in the long text (הרווח הריאלי, ותק, הפקדה מוטבת)",
+        "where": "Screens 1, 4"
+      }
+    ]
+  },
+  "steps": 5,
+  "reads": 5,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 35429,
+    "turns": 7,
+    "usd": 0.20102720000000002,
+    "input": 8,
+    "cacheWrite": 15984,
+    "cacheRead": 28316,
+    "output": 3373,
+    "model": "claude-opus-5-5"
+  }
+}

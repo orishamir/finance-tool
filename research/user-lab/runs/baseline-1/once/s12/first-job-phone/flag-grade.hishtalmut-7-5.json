@@ -1,0 +1,36 @@
+{
+  "case": "hishtalmut-7-5",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The guide's 7.5% does not say whether it is deposited to the study fund itself or to a pension fund.\",\"where\":\"the opening explanation of the guide\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 1 mentions the employer's 7.5%, but it complains that the number is left out of the comparison, not that the guide is unclear about whether it goes into the study fund or a pension fund."
+      }
+    ],
+    "liked": [],
+    "usd": 0.015539400000000002
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 1 mentions the employer's 7.5% but complains that it's missing from the headline comparison, not that it's unclear whether the money goes to the study fund or a pension fund, and no other finding raises that question."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0158954
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0314348
+}

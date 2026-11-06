@@ -1,0 +1,13 @@
+{
+ "id": "play-panel-broke-phone",
+ "task": "s03",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "On a phone, the fields in the 'שחקו עם המספרים' panel break out of line: they have different widths, sit at odd places and look oversized.",
+   "where": "the fields of the 'שחקו עם המספרים שלכם' panel on a phone",
+   "kind": "general"
+  }
+ ],
+ "liked": []
+}

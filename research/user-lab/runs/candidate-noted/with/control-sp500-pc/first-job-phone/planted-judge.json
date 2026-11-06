@@ -1,0 +1,47 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "Default example of 10,000 ₪ makes the big 86,492 stick even though it's not the reader's amount",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "'Now' section shows Jerusalem with a different fund, contradicting the Psagot choice at the top",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "About 20 funds with many unexplained coloured tags; too much choice",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "Unexplained jargon (נאמן, צוברת, עסקת החלף, מנוטרל מט\"ח, 4D/4A) on fund cards",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "Minus sign in '−43 ₪' in the next-best box looks like a loss at first",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 6,
+      "summary": "No guidance on next steps (opening an account, buying the fund)",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 7,
+      "summary": "Bar colours in the account list not explained next to them",
+      "serious": false,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.0476348
+}

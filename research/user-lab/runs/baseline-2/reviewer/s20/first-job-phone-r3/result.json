@@ -1,0 +1,114 @@
+{
+  "task": "s20",
+  "persona": "first-job-phone",
+  "repeat": 3,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T12:30:22.836Z",
+  "structured": {
+    "answer": "Harel has a lot (גמל להשקעה, השתלמות, pension, kids' savings…). In the tab that was open, the stocks track shows 24.04% a year over 3 years and the S&P 500 track 13.7%, both at about 0.56% fee, so I'd lean to stocks or S&P. But it's all under 'קופת גמל להשקעה', which I'm not sure is for me, so I wouldn't move money today.",
+    "confidence": "unsure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Product tabs, top",
+        "why": "The page opened on 'קופת גמל להשקעה', which sounds like it's for older people, and I don't know if that's where my Harel savings are"
+      },
+      {
+        "where": "Return column in the table",
+        "why": "Most rows only say 'פחות מ־3 שנים', so only a handful of tracks can be compared"
+      },
+      {
+        "where": "Folds 'קרנות סל' / 'קרנות מחקות' below the table",
+        "why": "Thought about opening them for the S&P, but the label didn't say exactly what's inside"
+      },
+      {
+        "where": "Between screens 2 and 3",
+        "why": "A few rows of the table seemed to be missing, so I may not have seen every track"
+      }
+    ],
+    "used": [
+      "Heading 'הראל' and the product tab row with counts",
+      "Track filter buttons (S&P 500, מניות…)",
+      "Fee range line 0.54%–0.61%",
+      "Table: track name, fee, 3- and 5-year return, money managed",
+      "Rows מניות (24.04%/14.64%, 7.3 billion) and עוקב מדד S&P 500 (13.7%/11.92%, 2.3 billion)"
+    ],
+    "skimmed": [
+      "Exposure column (מניות/מט\"ח percentages and rings)",
+      "Rows with no return shown",
+      "List 'מה כתוב במסמכים של הראל'"
+    ],
+    "skipped": [
+      "Grey line under the heading about data sources and 'כולל את החברות'",
+      "Line '123 ממקור 123 מחושב 123 הזנחה'",
+      "'התקרה בחוק' line and the note about direct costs, PF-10",
+      "Note about returns being before fees",
+      "Folds קרנות מחקות, מרכזיות לפיציים, קרנות סל, and the documents folds",
+      "Search box 'לא מצאתם שם?' and the footer"
+    ],
+    "unsure_meaning": [
+      "מט\"ח and its percentage (99% stocks and 99% מט\"ח together)",
+      "קופה number like 15283",
+      "החיסכון vs ההפקדה under the fee",
+      "תגמולים ואישית לפיצויים",
+      "קרן חדשה מקיפה / כללית",
+      "מרכזיות לפיצויים",
+      "קופת גמל להשקעה – whether it's for me",
+      "PF-10",
+      "Whether 24.04% is per year or total"
+    ],
+    "not_found": [
+      "What the קרן השתלמות tab shows (only saw the tab)",
+      "Fees in shekels",
+      "Returns for most tracks",
+      "A clear pointer to which track suits someone like me / a recommendation"
+    ],
+    "findings": [
+      {
+        "what": "Most tracks show 'פחות מ־3 שנים' instead of a return, so 'how it has done' can't be compared for most of them",
+        "where": "Return column of the table"
+      },
+      {
+        "what": "The page opens on 'קופת גמל להשקעה' without saying it was picked for me or what it is; I wanted my own Harel product",
+        "where": "Product tab row"
+      },
+      {
+        "what": "Fees only as percentages that all look the same (0.54–0.61%), nothing in shekels",
+        "where": "Fee column and line above the table"
+      },
+      {
+        "what": "Stocks and מט\"ח percentages add up to more than 100 (99% and 99%), which confused me",
+        "where": "Exposure column"
+      },
+      {
+        "what": "Lots of folds with similar names (קרנות סל, קרנות מחקות, קרנות סל וקרנות מחקות), no idea which to open",
+        "where": "Below the table and the documents section"
+      },
+      {
+        "what": "Column of numbers like 15283 with an icon, unclear what it is",
+        "where": "קופה column"
+      },
+      {
+        "what": "Some table rows seem missing between scrolls",
+        "where": "Between screens 2 and 3"
+      }
+    ]
+  },
+  "steps": 4,
+  "reads": 4,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 39071,
+    "turns": 6,
+    "usd": 0.1355966,
+    "input": 8,
+    "cacheWrite": 7788,
+    "cacheRead": 24403,
+    "output": 3419,
+    "model": "claude-opus-5-5"
+  }
+}

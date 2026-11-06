@@ -1,0 +1,109 @@
+{
+  "task": "p14-dead-keren-phone",
+  "persona": "careful-retiree-pc",
+  "repeat": 2,
+  "mode": "browser",
+  "device": "phone",
+  "startedAt": "2026-11-06T00:18:43.881Z",
+  "structured": {
+    "answer": "I don't have an answer: the \"עצמאים\" button wouldn't switch over after three presses, so the calculator only showed an employee with an employer. I couldn't get amounts for 4 or 8 years, and I'll ask my son or the bank.",
+    "confidence": "sure",
+    "gave_up": true,
+    "stuck": [
+      {
+        "where": "calculator toggle שכירים/עצמאים",
+        "why": "I pressed עצמאים three times, by its words and on the spot, and it stayed on שכירים. The fields still asked for an employer's share"
+      },
+      {
+        "where": "year bars 1-12 with 'גררו את הסמן'",
+        "why": "Choosing a year needs dragging a marker (a slider). I didn't try it, and the bars have no numbers on them"
+      }
+    ],
+    "used": [
+      "opening text: after 6 years you can withdraw without tax, before that you pay tax",
+      "for self-employed the break covers up to 20,566 ₪ a year",
+      "calculator heading 'כמה כסף נשאר לכם, ומתי?' and the עצמאים button",
+      "result at 5 years for an employee: 66,513 נשאר בידיים, −13,974 המס לקח"
+    ],
+    "skimmed": [
+      "coloured stacked bar chart of years 1-12",
+      "the 'כדאי להכיר גם' and 'במה אפשר להשקיע' bubbles"
+    ],
+    "skipped": [
+      "חוקים וכללים · 10 fold",
+      "everything below the result chart",
+      "שווה לדעת and מי מציע tabs"
+    ],
+    "unsure_meaning": [
+      "מסלול מדד",
+      "תשואה בשנה 7%",
+      "דמי ניהול 0.54",
+      "מדד S&P 500",
+      "מזומן שקלי",
+      "dotted underlines under the numbers",
+      "red striped boxes on the bars"
+    ],
+    "not_found": [
+      "a working self-employed mode of the calculator",
+      "a box to type how much I put in myself",
+      "a plain sentence giving the amount after 4 or after 8 years"
+    ],
+    "findings": [
+      {
+        "what": "The עצמאים button doesn't switch, so self-employed people can't use the calculator",
+        "where": "top of the calculator"
+      },
+      {
+        "what": "Choosing the year needs dragging a marker, and there's no box to type the year",
+        "where": "bar chart under the calculator"
+      },
+      {
+        "what": "A red minus number (−13,974) is the first thing that catches the eye and frightens",
+        "where": "result chart, המס לקח"
+      },
+      {
+        "what": "Dark background with light and grey small text is hard to read",
+        "where": "whole page, the hint line under the chart"
+      },
+      {
+        "what": "Many coloured bars with close colours and no sentence saying what they mean",
+        "where": "year chart"
+      },
+      {
+        "what": "Defaults assume an employer giving 900 ₪ a month, which doesn't fit someone self-employed",
+        "where": "calculator fields"
+      }
+    ]
+  },
+  "steps": 9,
+  "reads": 6,
+  "commands": 9,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 55681,
+    "turns": 18,
+    "usd": 0.26032560000000005,
+    "input": 34,
+    "cacheWrite": 17959,
+    "cacheRead": 217688,
+    "output": 3649,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "p14-dead-keren-phone",
+    "screenshots": 9,
+    "changes": [
+      {
+        "id": "dead-shown",
+        "type": "style",
+        "shots": 9,
+        "applied": 9,
+        "most": 1
+      }
+    ],
+    "neverShown": [],
+    "errors": []
+  }
+}

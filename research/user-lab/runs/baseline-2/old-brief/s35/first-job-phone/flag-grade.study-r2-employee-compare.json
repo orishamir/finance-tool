@@ -1,0 +1,77 @@
+{
+  "case": "study-r2-employee-compare",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"For a salaried employee the comparison with a securities account is beside the point: the account gets no employer money, so it is not a real choice.\",\"where\":\"the comparison in both options\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Title 'בלי כדורים ובלי טבלה' means nothing to the reader",
+      "Fund names, codes, the 4D rating and the 0.54% fee in the example paragraph were confusing",
+      "In option A the tax block sits on top of the column, which made it look like money you get",
+      "In the A year-5 chart, labels on the side with thin lines are hard to match to small slices",
+      "Didn't understand 'מסלולים' and 'תעריפים' in the footnote",
+      "B's intro says it shows only the last column, but it seems to show the same strip as A",
+      "Unclear whether the dotted purple underlines are links",
+      "Doesn't know how much 'דמי ניהול' actually takes",
+      "Doesn't know what the legal limit in 'עד תקרה בחוק' is",
+      "Doesn't understand why the year-5 tax is so large in the keren compared with the other account",
+      "Doesn't understand what a securities account really is compared with just buying the S&P 500",
+      "Wanted to know what happens if they leave the job before 6 years",
+      "Wanted to know whether money can be withdrawn before 6 years",
+      "Wanted to know whether the 300 ₪ comes off take-home pay",
+      "Wanted to know whether the employer's 900 ₪ is lost if they don't join",
+      "Wanted to know how to actually join and who to talk to",
+      "Would drop the 'מה היה' old preview",
+      "Would drop the 'העמודות נמתחות' notes",
+      "Would drop option A's year-5 stacked chart"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader never says the securities-account comparison is beside the point for salaried workers. The closest item (whether the employer's 900 ₪ is lost) is a question about the employer's money, not a claim that the comparison is the wrong one."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0542072
+  },
+  "b": {
+    "raised": [
+      "Unsure what happens if they quit or need the money before year 6 (e.g. losing the employer's part, the clock restarting)",
+      "In option A the striped tax block on top of the column looked like money they get",
+      "The title 'without balls and without a table' means nothing to them",
+      "The old 'מה היה' preview is tiny and irrelevant; it would be the first thing to drop",
+      "The example paragraph's fund name, codes, provider name and '4D' are confusing jargon",
+      "In A's year-5 chart, the side labels with thin lines are hard to match to the small slices",
+      "Did not understand 'מסלולים' and 'תעריפים' in the footnote",
+      "The 'העמודות נמתחות' drawing note is irrelevant; would drop it",
+      "B's intro says it shows only the last column, but it shows the same year-5 strip as A",
+      "Could not tell whether the dotted purple underlines are links",
+      "Unclear how much the management fee (דמי ניהול) actually takes",
+      "Unclear what the legal ceiling ('עד תקרה בחוק') is",
+      "Does not understand why the year-5 tax is so large (−13,974 against −594)",
+      "Unclear what a securities account really is compared with just buying the S&P 500",
+      "Does the 300 ₪ come off their take-home pay?",
+      "If they don't join, does the employer pay the 900 ₪ some other way, or is it lost?",
+      "How to actually join and who to talk to",
+      "Would drop option A's year-5 stacked chart"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader asks what a securities account is and whether the employer's 900 ₪ is lost if they don't join, but never says that comparing against a securities account is beside the point for a salaried employee."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0550032
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1092104
+}

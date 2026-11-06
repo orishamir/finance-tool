@@ -1,0 +1,150 @@
+{
+  "task": "p07-word-tracks-pc",
+  "persona": "careful-retiree-pc",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-05T23:12:44.718Z",
+  "structured": {
+    "answer": "If I have to pick from this page, I'd go with Harel, the \"כספי (שקלי)\" track: it's a name I know, it shows 0% in shares, and the fee is 0.57%. But I'm not putting in a shekel until I ask you or the bank what \"כספי\" means and whether it's really as safe as my deposit.",
+    "confidence": "unsure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Screen 1, the buttons under 'במה הכסף מושקע'",
+        "why": "Twenty buttons. 'עוקב מדד S&P 500', 'גמיש', 'סחיר', 'משולב'. I couldn't see which one means 'safe like a deposit'. Nothing there says 'safe' or 'deposit'."
+      },
+      {
+        "where": "Screen 2 onwards, the table",
+        "why": "Every row has six or seven numbers and a little coloured circle. I couldn't tell the two colours (green and yellow) apart well, and I didn't know what to look at first."
+      },
+      {
+        "where": "The returns column, 'פחות מ־3 שנים'",
+        "why": "I didn't understand if that's a return or a warning. Most of Harel's rows have no number there at all."
+      },
+      {
+        "where": "The 'חשיפה למניות ולמט\"ח' column",
+        "why": "I don't know what 'מט\"ח' is, and in some rows it says 99% shares and 99% מט\"ח. How can that make 198%? And one row at Meitav says '101%' shares."
+      }
+    ],
+    "used": [
+      "Title 'כל המסלולים בכל החברות' and 'קופת גמל להשקעה' already marked",
+      "Company names in the grey bars: הראל, מור, אנליסט, מיטב",
+      "Rows named 'כספי (שקלי)' and 'אג\"ח סחיר' and 'אשראי ואג\"ח'",
+      "Column 'דמי ניהול ... מהחיסכון': 0.55%–0.73%",
+      "The word 'מניות' showing 0% in the כספי row",
+      "Harel כספי: 0.57%, 3 שנים 4.25%, 5 שנים 3.08%, 67 מיליון ₪"
+    ],
+    "skimmed": [
+      "The two lines of text under the title (2025, ספטמבר 2026, רשות שוק ההון)",
+      "'123 מקור / 123 מחושב'",
+      "Rows of מור and אנליסט on screens 3–4",
+      "Meitav rows on screen 5"
+    ],
+    "skipped": [
+      "Every row with 'S&P 500' or 'S&P500' in the name",
+      "'מה זה קופת גמל להשקעה' link (I didn't open it)",
+      "The ? marks next to the column headings",
+      "The coloured circles",
+      "The search box",
+      "Screens 6–15, I stopped after five"
+    ],
+    "unsure_meaning": [
+      "S&P 500",
+      "מט\"ח",
+      "עוקב מדדים / עוקב מדד מניות: is מדד the price index from the news?",
+      "גמיש",
+      "סחיר",
+      "משולב",
+      "כספי (שקלי): money in shekels? Is it a deposit?",
+      "'פחות מ־3 שנים' in the returns column",
+      "'ברוטו'",
+      "'ממוצע'",
+      "'123 מקור · 123 מחושב'",
+      "Two fees: 'מהחיסכון' and 'מההפקדות'. Which one do I pay?",
+      "'עוד לא דווח' with an orange mark at Harel's הלכה row",
+      "'חדש' tag",
+      "101% shares at Meitav"
+    ],
+    "not_found": [
+      "Any bank: Hapoalim, Leumi, Discount, my bank",
+      "A sentence saying which track is safe or as safe as a deposit",
+      "A comparison with deposit interest",
+      "Whether I can lose money in a track",
+      "A plain recommendation for someone my age"
+    ],
+    "findings": [
+      {
+        "what": "Nothing says which tracks are safe or can lose money. Someone like me can't tell 'כספי' or 'אג\"ח סחיר' apart from a gamble.",
+        "where": "Filter buttons and the table, screens 1–5"
+      },
+      {
+        "where": "Screen 1 filter buttons and many rows",
+        "what": "English letters 'S&P 500' right on the first screen made me feel this isn't for me."
+      },
+      {
+        "where": "Whole page",
+        "what": "A dark background with grey and thin text is hard on my eyes even with glasses. The column headings and the line under the title are especially pale."
+      },
+      {
+        "what": "Too many numbers in every row: two fees, two returns, two exposures, money managed. It made me anxious.",
+        "where": "Table, screens 2–5"
+      },
+      {
+        "what": "I can't tell the green and yellow circles apart, and nothing in words says what they mean.",
+        "where": "'חשיפה' column"
+      },
+      {
+        "what": "'פחות מ־3 שנים' appears where I expected a number. I didn't know if it was bad.",
+        "where": "Returns column"
+      },
+      {
+        "what": "The percentages for 3 and 5 years. Is that per year or in total? '3 שנים 24.04%' looks enormous, and I don't trust it.",
+        "where": "Returns column"
+      },
+      {
+        "what": "Two management fees, 'מהחיסכון' and 'מההפקדות', and no plain explanation of which one I pay or what it means in shekels.",
+        "where": "Fee column"
+      },
+      {
+        "what": "Shares and מט\"ח percentages that add up to over 100%, even 101% shares. Confusing.",
+        "where": "Exposure column, screens 2–5"
+      },
+      {
+        "what": "The page is very long, with 143 tracks. I stopped after five screens.",
+        "where": "Whole table"
+      }
+    ]
+  },
+  "steps": 5,
+  "reads": 5,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 33552,
+    "turns": 7,
+    "usd": 0.14044399999999999,
+    "input": 8,
+    "cacheWrite": 9665,
+    "cacheRead": 27660,
+    "output": 2878,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "p07-word-tracks-pc",
+    "screenshots": 16,
+    "changes": [
+      {
+        "id": "word",
+        "type": "text",
+        "shots": 16,
+        "applied": 16,
+        "most": 1
+      }
+    ],
+    "neverShown": [],
+    "errors": []
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "Grey/white text on black; small grey lines unreadable even enlarged",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "Page opens with English letters and an index; reader would leave on first screen",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "2% inflation assumption hidden behind a button rather than shown by result",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "7% yearly return shown as plain number with no warning it isn't guaranteed",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "Cost bar chart colours hard to distinguish and numbers too small",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 6,
+      "summary": "Unexplained jargon on fund card (קרן מחקה, נאמן, עסקת החלף)",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 7,
+      "summary": "Typed 750 for monthly deposit but slider shows 800",
+      "serious": false,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.035514800000000006
+}

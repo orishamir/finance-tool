@@ -1,0 +1,85 @@
+{
+  "case": "label-warning-text",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The explanation that opens from the label 'מס רק במכירה' ('לא נמצא כלל שממסה יחיד על רווחים שקרן זרה צוברת … זו שאלה פתוחה') is hard to understand and reads as a warning.\",\"where\":\"the box that opens from the label\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Youth prices at Leumi, Hapoalim, Mizrahi and Discount are marked 'לא בחישוב', so the reader can't tell whether one is cheaper than Psagot",
+      "Didn't know what the 'אינפלציה' button would change",
+      "The note 'אם הדולר לא זז מול השקל' worried them a little",
+      "The coloured cost bar has too many colours and categories",
+      "The coloured tags in the fund list were confusing",
+      "A popup stayed on screen and hid parts of the page, such as the 'למה חלק מהקרנות בלי מחיר בפסגות' section",
+      "Didn't understand why the 'מה כתוב בפרסום, מול התעריפון' claims matter",
+      "Didn't understand the 'נטרול מט\"ח' section or the term",
+      "The waterfall starts from MTF and Jerusalem at 79,176 ₪, which they never picked",
+      "Couldn't tell whether the yearly percent 'בשנה · 4 שנים' is good or bad",
+      "Didn't know what the orange and yellow bars in the account list mean",
+      "Didn't know what '(4D)' vs '(4A)' mean",
+      "Unclear whether 'קרן מחקה' vs 'קרן סל' is a difference that matters",
+      "Didn't understand 'נאמן' or 'קבועים / משתנים'",
+      "Didn't understand 'עסקת החלף', 'צוברת', 'W-8BEN' or 'מס עיזבון אמריקאי'",
+      "Didn't understand the text in the 'מס רק במכירה' popup ('לא נמצא כלל שממסה יחיד…')",
+      "Unclear which 'path' 'הדרך מוצגת בלי דירוג' refers to",
+      "No next steps for opening the account, the minimum, or setting up automatic monthly deposits",
+      "No breakdown of what Psagot's 1,057 ₪ cost is made of",
+      "No simple number or percent for the tax paid when selling",
+      "No information on risk: market drops, or what happens if Ilin or Psagot has problems",
+      "Would cut the foreign funds (iShares, Vanguard, 'אין מחיר כאן')",
+      "Would cut the line chart in the sensitivity section"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 16,
+        "why": "The reader says outright that they didn't understand the 'מס רק במכירה' popup text, quoting the same 'לא נמצא כלל שממסה יחיד…' sentence, which matches the hard-to-understand part of the person's complaint."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0752072
+  },
+  "b": {
+    "raised": [
+      "Youth prices at Leumi/Hapoalim/Mizrahi/Discount are left out of the calculation and never shown, so the reader can't tell if one beats Psagot",
+      "The note 'אם הדולר לא זז מול השקל' on the result card was a little worrying",
+      "The coloured cost bar has too many colours to follow",
+      "The coloured tags on the fund list were confusing",
+      "The popup hides the section 'למה חלק מהקרנות בלי מחיר בפסגות'",
+      "Didn't see why the 'טענות' in 'מה כתוב בפרסום, מול התעריפון' matter",
+      "Didn't understand 'נטרול מט\"ח' / 'חשיפה לדולר' or the hedging section",
+      "The waterfall's starting point (MTF + ירושלים at 79,176 ₪) was confusing",
+      "Couldn't tell whether the yearly percent ('בשנה · 4 שנים') in the fund list is good or bad",
+      "Didn't know what the orange and yellow bar colours in the account list mean",
+      "Didn't understand '(4D)' vs '(4A)'",
+      "Unclear whether 'קרן מחקה' vs 'קרן סל' is a difference that matters",
+      "Didn't understand 'נאמן' and 'קבועים / משתנים'",
+      "Didn't understand 'עסקת החלף', 'צוברת', 'W-8BEN', 'מס עיזבון אמריקאי'",
+      "The 'מס רק במכירה' popup text ('לא נמצא כלל שממסה יחיד…') was not understood, and it stayed open covering the left side",
+      "Unclear which 'path' 'הדרך מוצגת בלי דירוג' means",
+      "No next steps: how to open the account and buy, minimums, automatic monthly deposit",
+      "No breakdown of what Psagot's 1,057 ₪ cost is made of",
+      "No simple number or percent for the tax paid on selling",
+      "No information on risk: market drops or what happens if Ilin or Psagot has problems",
+      "Would cut the foreign funds (iShares, Vanguard, 'אין מחיר כאן')",
+      "Would cut the line chart in the sensitivity section"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 15,
+        "why": "The reader quotes the same 'מס רק במכירה' popup text and says they didn't understand it, which matches the person's point that it is hard to understand."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0738272
+  },
+  "third": null,
+  "ranks": {
+    "k": 15
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1490344
+}

@@ -1,0 +1,128 @@
+{
+  "task": "s09",
+  "persona": "careful-retiree-pc",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T03:18:36.047Z",
+  "structured": {
+    "answer": "I understood that a fixed deposit pays a set interest for the agreed time, and that I give up taking the money out early: I need the bank's agreement and may pay a fine the site doesn't calculate. It also says deposits aren't insured, which scared me, so I'll ask my son and the bank before I do anything.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Example box: 68,270 ₪ big number vs 'ההפקדות שלכם 70,000 ₪'",
+        "why": "Looks like I get back less than I put in; didn't understand that 'בכסף של היום' meant after inflation"
+      },
+      {
+        "where": "Row under the title '123 מקור 123 מחושב 123 הזנתה'",
+        "why": "Didn't know what these labels meant"
+      },
+      {
+        "where": "'אין ביטוח פיקדונות' in שווה לדעת and סיכונים",
+        "why": "Frightened me about the safety of my deposit; I wasn't sure how worried to be"
+      },
+      {
+        "where": "כמה זה עולה table",
+        "why": "Only says 'לפי התעריפון', no actual amount for breaking the deposit"
+      }
+    ],
+    "used": [
+      "Title and line 'כסף שמפקידים בבנק לתקופה מוסכמת...'",
+      "מה זה paragraph on fixed/variable interest and renewal",
+      "Big number 68,270 ₪ and 'ההפקדות שלכם 70,000 ₪', 'מס 986.20'",
+      "שווה לדעת: 15% tax, שבירת פיקדון, אין ביטוח פיקדונות",
+      "מי מציע ומי מפקח: בנק ישראל",
+      "כמה זה עולה: דמי יציאה לפי התעריפון",
+      "Red box: שבירת פיקדון לפני הזמן, האתר לא מחשב",
+      "סיכונים ומה לא מוגן",
+      "Glossary entry קנס שבירה"
+    ],
+    "skimmed": [
+      "Chart in the example",
+      "מיסוי cards and the פטור למעוט הכנסה paragraph",
+      "Glossary table (מונחים)",
+      "למה משתמשים בזה second paragraph"
+    ],
+    "skipped": [
+      "Sliders and input boxes for the calculation",
+      "הצגה כטבלה fold",
+      "הצגת החוקים והכללים links",
+      "מה האתר לקח בחשבון / הצגת כל הבדיקות",
+      "הצגת כל המונחים / המונחים הכלליים folds",
+      "Right-side page menu",
+      "Footer links"
+    ],
+    "unsure_meaning": [
+      "123 מקור / 123 מחושב / 123 הזנתה",
+      "בכסף של היום / בשקלים של העתיד",
+      "TXI-03, BANK-06, BANK-23, TXI OQ14, TXI-17, TXI-04",
+      "קרן כספית",
+      "מק\"מ",
+      "צמוד למדד / לא צמוד",
+      "ריבית ריאלית",
+      "חשבון במערכת סגורה",
+      "מוצרי שוק הכסף",
+      "Dotted underlines under numbers"
+    ],
+    "not_found": [
+      "How much the fine for breaking a deposit actually costs",
+      "What the bank's current interest for a fixed deposit is, in a simple sentence",
+      "A clear sentence whether my money in a big bank is safe"
+    ],
+    "findings": [
+      {
+        "what": "'אין ביטוח פיקדונות' stated plainly, with no reassurance about big banks; alarming for someone who thinks deposits are the safe option",
+        "where": "שווה לדעת and סיכונים ומה לא מוגן"
+      },
+      {
+        "what": "Example shows 68,270 ₪ next to deposits of 70,000 ₪, which looks like a loss; the inflation meaning is hidden in a small toggle 'בכסף של היום'",
+        "where": "Example box, screen 1"
+      },
+      {
+        "what": "The cost of breaking a deposit, the main thing I give up, is not given: only 'לפי התעריפון' and 'האתר לא מחשב אותה'",
+        "where": "כמה זה עולה; red box in מיסוי"
+      },
+      {
+        "what": "Small grey text hard to read on the black background",
+        "where": "Notes under the calculator, under the cost table, footer"
+      },
+      {
+        "what": "Unexplained labels '123 מקור / מחושב / הזנתה' right under the title",
+        "where": "Top of screen 1"
+      },
+      {
+        "what": "Code tags like TXI-03, BANK-23 mean nothing to me",
+        "where": "שווה לדעת, מיסוי"
+      },
+      {
+        "what": "Sliders and many numbers in the calculator are busy and make me anxious",
+        "where": "ההנחות של הגרף panel"
+      },
+      {
+        "what": "Footer says 'אתר אישי'; I don't know who is behind it, so I wouldn't rely on it",
+        "where": "Footer"
+      },
+      {
+        "what": "All-dark page tires the eyes",
+        "where": "Whole page"
+      }
+    ]
+  },
+  "steps": 4,
+  "reads": 4,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 39008,
+    "turns": 6,
+    "usd": 0.18943800000000002,
+    "input": 8,
+    "cacheWrite": 13534,
+    "cacheRead": 27170,
+    "output": 3785,
+    "model": "claude-opus-5-5"
+  }
+}

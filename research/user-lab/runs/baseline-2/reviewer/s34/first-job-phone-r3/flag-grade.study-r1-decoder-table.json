@@ -1,0 +1,46 @@
+{
+  "case": "study-r1-decoder-table",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"A table exists only to decode the graph instead of the names and numbers being written on the graph, adding mental overhead.\",\"where\":\"the table under the graph\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 4,
+        "why": "Finding 4 makes the same complaint: you have to look at a separate key to read the chart because the values aren't labelled on it directly. It refers to a legend at the top rather than the table underneath, so this match is a judgement call."
+      }
+    ],
+    "liked": [],
+    "usd": 0.020327400000000002
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 4 makes a similar point about needing a legend instead of labels on the chart, but it is about the option ג legend at the top, not the decoding table under the graph, and no other finding complains about that table."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0231554
+  },
+  "third": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 4,
+        "why": "Finding 4 makes the same complaint: you need a separate legend to read the columns, and the line isn't labelled on the chart itself. It points to a legend at the top rather than the table under the graph, so this match is a judgement call."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0242034
+  },
+  "ranks": {
+    "k": 4
+  },
+  "agreed": {
+    "k": false
+  },
+  "against": {},
+  "usd": 0.0676862
+}

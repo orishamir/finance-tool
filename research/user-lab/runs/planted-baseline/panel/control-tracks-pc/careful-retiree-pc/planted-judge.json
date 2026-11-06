@@ -1,0 +1,53 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "Dark background, grey small text hard to read even enlarged; pale headings",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "English S&P 500 / index-tracker filters at top feel not meant for the reader",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "Too many numbers per row, repeated table, no explanatory sentence",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "No indication of low-risk tracks or comparison with bank deposit",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "Return shown before management fees; unclear if annual",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 6,
+      "summary": "Exposure rings' yellow and teal colours too similar and meaningless",
+      "serious": false,
+      "names_listed": 1
+    },
+    {
+      "n": 7,
+      "summary": "'Less than 3 years' in place of return looks like a link/warning, unexplained",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 8,
+      "summary": "Unfamiliar company names, no known bank",
+      "serious": false,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.0476228
+}

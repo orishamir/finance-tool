@@ -1,0 +1,91 @@
+# p12-sign-ta125-phone: careful-retiree-pc (old brief)
+
+phone; 66 s, $0.33
+
+# Using the page as myself: 61, careful, reading on my phone
+
+## 1. My answer
+
+**What I would do:** I would open an account with **פסגות** (Pesagot) and buy the fund **"אי.בי.אי. מחקה (4A) ת"א 125"**, fund number **5112628**. Each month I would put in ₪500, on top of ₪10,000 at the start.
+
+**What I would end up with:** The page says I would put in **"70,000 ₪"** in total, and after ten years I would have **"86,045 ₪"**. That is about ₪16,000 more than I put in. The page says this figure is **"אחרי דמי ניהול ומס, בכסף של היום"**, which means after fees and tax, in today's money.
+
+**How sure I am:**
+- **About the fund:** fairly sure. It came out on top in both lists, and its yearly fee of 0.1% looks low next to the others.
+- **About Pesagot:** only half sure. It isn't a bank, and the page never tells me whether my money is safe there.
+- **About the ₪86,045:** not sure at all. It rests on a 7% yearly return, and at the bottom the page admits **"תשואה לדוגמה, לא תחזית"**, an example and not a forecast. So I read it as "about 86,000 if things go averagely", not as a promise.
+- **About how much the choice matters:** Pesagot beats a big bank like Leumi by about ₪3,000 over ten years, which is roughly ₪25 a month. That is real money, but not life-changing. If moving to Pesagot turned out to be a hassle, I might just stay with my bank.
+
+## 2. Parts of the page I actually used
+
+- The top: the title, and the **"המדד"** buttons (I made sure **ת"א-125** was picked).
+- The boxes **"סכום היום"**, **"הפקדה חודשית"** and **"תשואה בשנה"** (amount today, monthly deposit, yearly return). I checked they said 10,000, 500 and 7%.
+- The result box with **"הפקדתם 70,000 ₪"** and **"הבחירה שלכם · הזול 86,045 ₪"**.
+- The long list of banks and brokers, from **פסגות** at number 1 down to **מיטב טרייד** at 15.
+- The fund box **"קרן אי.בי.אי. מחקה (4A) ת"א 125"** with its fees.
+- The list **"כל הקרנות על מדד ת"א-125"**.
+- The small print at the bottom, especially **"תשואה לדוגמה, לא תחזית"** and **"נתונים נכון ל-05.11.2026"**.
+
+## 3. Block by block
+
+1. **Title, "איפה ואיך הכי זול להשקיע במדד, לאורך זמן"** ("where and how it's cheapest to invest in an index, over time"): **Used.** It told me in plain words what the page is for.
+2. **Index buttons:** **Used.** I checked that ת"א-125 was selected and ignored MSCI and נאסד"ק. The line **"האתר לא ממליץ על מדד"** (the site doesn't recommend an index) was fine with me.
+3. **Description of ת"א-125:** **Skimmed.** The line **"אין קרן חוץ שמתמחה בישראל"** (no foreign fund specialises in Israel) confused me. Why would I want a foreign fund anyway?
+4. **Amount, monthly deposit, yearly return, with sliders:** **Used.** I didn't touch the sliders. On a phone I'm afraid of moving them by accident.
+5. **The "אינפלציה" button and "לדוגמה של האתר · בכסף של היום":** **Confused me.** Is inflation already counted, or do I have to press the button? I didn't press it.
+6. **The result box, 70,000 → 86,045:** **Used, and the most useful part of the page.**
+7. **The box "הזוג הבא בתור 85,015 ₪"** (the next pair in line): **Confused me.** It never says which bank and which fund that "pair" is. It just says "−1,030" and **"בחרו את הזוג הזה"** (choose this pair). Choose what?
+8. **"כמה זה עולה לכם ב-10 שנים"** (what it costs you over 10 years), with the coloured bar: **Skimmed.** I took away that the total cost is **7,323 ₪**, and that most of it, **5,555**, is tax.
+9. **"העלות אצלכם, לעומת הזוג השני"** (your cost compared with the other pair), with +18, −1,390 and +342: **Confused me.** Plus and minus of what? Is +342 in tax good for me or bad? The words **"כי נשאר לכם יותר רווח"** (because more profit is left for you) tell me I pay more tax because I earn more. I think that's fine, but I had to read it three times.
+10. **The Pesagot box, "מה החשבון גובה ב-10 שנים: 1,049 ₪"** (what the account charges over 10 years): **Used.** It's clear. There's also a link to **"התעריפון"**, their price list.
+11. **The list of 15 banks and brokers:** **Used.** I read every row, including the grey **"לא בחישוב"** (not included in the calculation) notes. One row made me stop: **הפועלים** has a different price **"לנשים מגיל 60 וגברים מגיל 65"** (for women from 60 and men from 65). That could be me, but it says **"סגור למצטרפים"**, closed to new customers. So no.
+12. **"אינטראקטיב ישראל" and "Interactive Brokers" with "אין נתון"** (no data): **Skipped** once I saw "no data".
+13. **The fund box, with "דמי ניהול 0.1% קבועים, 0% משתנים, נאמן 0.025%"** (fees: 0.1% fixed, 0% variable, trustee 0.025%): **Used, but I didn't fully understand it.** See section 5.
+14. **"כל הקרנות על מדד ת"א-125"**, the list of all funds on this index: **Used.** I checked that my fund lost the least to the index (**"‎−0.04% בשנה"**, per year) and that the others lose ₪1,030 to ₪1,733 more.
+15. **The paragraph "מול המדד…"** (compared with the index): **Skimmed.** I understood roughly that a smaller minus is better.
+16. **"מה הכי משנה את מה שיישאר לכם"** (what changes your end result the most), the coloured-lines chart: **Skimmed.** The main message was clear: two more years gives **"18,905 ₪ יותר"** (₪18,905 more). Staying invested matters more than which bank I use. That was reassuring and actually useful.
+17. **"מתחילים מבחירה אחת…"** (start from one choice), the step chart from 79,910 up: **Skimmed.** It starts from **"הראל סל, ירושלים"**, which I never chose. Why start there?
+18. **"עכשיו: הראל סל… 79,910"** (now: Harel Sal…) and the long green and red table: **Skimmed, then got confused.** Here Pesagot shows **84,932**, while above it showed **86,045**. It took me a while to see that this table uses a different fund. At first I thought the page contradicted itself.
+19. **Small print at the bottom:** **Used.** It's important that the 7% is only an example. **"בתשואה של 0% או של 10% הסדר משתנה ב-2 מקומות"** (at 0% or 10% return the order changes in 2 places) worried me a little. Which two places? I didn't open **"פירוט"** (details).
+20. **The footer, "מקור", "מסמכים", "פרמטרים"** (source, documents, parameters): **Skipped.**
+
+## 4. Lists, tables and charts
+
+- **Bank and broker list:** I looked at the name, the big number (what's left at the end) and the small number (what the account costs). I also read the **"לא בחישוב"** notes and **"מחיר להוראת קבע"** (price for a standing order). I ignored the coloured bars (orange, yellow, red, grey). I didn't bother scrolling back up to the legend to see what each colour meant. The numbers were enough for me.
+- **Fund list:** I looked at the name, the percentage **"בשנה · שנה אחת"** (per year · one year) and the shekel amount on the left. I ignored the purple **"מחזיקה את המניות"** (holds the shares) tags and the **"קרן סל" / "קרן מחקה"** tags, because I don't know what they're telling me.
+- **Coloured cost bar:** I looked only at the pink 5,555 and the total 7,323. I skipped the green, orange and yellow pieces.
+- **Coloured-lines chart:** I looked only at the yellow **"שנים"** (years) line, because it was the steepest, and at the table under it. I ignored the white vertical line and the dotted line, and the advice to drag the line. On a phone? No.
+- **Step chart:** I looked at the three numbers above the bars, 79,910, +5,022 and +1,113. I ignored the grey zigzag at the bottom of the first bar, the dotted line and **"הצעד הכי גדול שנשאר"** (the biggest step left).
+- **Green and red table:** I looked at the words **"עוד / פחות"** (more / less) and the amounts. The red bars were enough to show me that אלטשולר, אקסלנס and מיטב are expensive.
+- **Purple dotted underlines under every number:** I didn't press them, and I don't know what they're for.
+
+## 5. What I didn't understand
+
+- **"(4A)"** in the fund names. What is 4A?
+- The difference between **"קרן מחקה"** and **"קרן סל"**. Which one is safer for someone my age?
+- **"דמי ניהול… משתנים 0%"** and **"נאמן 0.025%"**. What is the "trustee", and do I pay this on top of the 0.1%?
+- **"‎−0.04% בשנה · שנה אחת"**. Is that one year or the average? The text below talks about **"בממוצע השנים המלאות"** (the average of full years).
+- **"הזוג הבא בתור"**: which pair is it?
+- **"העמלות זו על זו"** (fees on top of each other), the grey colour.
+- **"נשען על כלל מס פתוח: מוצג ולא מדורג"** (relies on an open tax rule: shown but not ranked), with a lock icon. No idea.
+- **"קרנות בחו"ל שהתעריפון שלהן נקבע לפי מספר המניות…"** (foreign funds whose price depends on the number of shares…). Does that affect me?
+- **"יש ספק אם נמכרת שם: וואן זירו"** (it's doubtful the fund is sold there: One Zero). So why is it third in the list?
+
+## 6. What I wanted to know and couldn't find
+
+- **Is my money safe at פסגות?** It isn't a bank. What happens if it closes?
+- **How do I actually set up ₪500 a month** at Pesagot? Is there a standing order? At לאומי it says **"מחיר להוראת קבע"**, but at Pesagot it doesn't.
+- **How hard is it to open an account,** for someone who isn't used to apps?
+- **How much could I lose in a bad year?** Every number assumes 7%. What if the market falls just when I'm 70 and want the money?
+- **A ready-made line saying "with 0% you'd have…".** The sliders exist, but I didn't want to touch them.
+- **How much of the 86,045 is actually profit** after inflation, compared with simply leaving the money in a deposit at the bank.
+
+## 7. If half the page had to go, this goes first
+
+1. The step chart **"מתחילים מבחירה אחת…"** and the long green and red table after it. It repeats the list from above with different numbers and confused me.
+2. The **"העלות אצלכם, לעומת הזוג השני"** box, with +18, −1,390 and +342.
+3. The **"הזוג הבא בתור"** box.
+4. The coloured bars inside the bank list.
+5. The coloured-lines chart. Only its main message should stay, in one sentence: "Staying in two more years is worth more than any bank."
+
+**What must stay:** the three input boxes, the result box with 70,000 → 86,045, the bank list (names, numbers and the "לא בחישוב" notes), the fund box with its number 5112628, and the line **"תשואה לדוגמה, לא תחזית"**.

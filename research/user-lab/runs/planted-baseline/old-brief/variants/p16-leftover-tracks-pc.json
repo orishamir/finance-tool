@@ -1,0 +1,40 @@
+{
+  "id": "p16-leftover-tracks-pc",
+  "about": "For the lab only; never reaches a session. Planted problem, kind p16 (The builders' own words left on the page): see research/user-lab/planted.md.",
+  "purpose": "plant",
+  "pages": [
+    "/finance-tool/tracks/kupat-gemel-lehashkaa"
+  ],
+  "device": "pc",
+  "instance": {
+    "kind": "p16",
+    "mode": "page",
+    "url": "https://orishamir.github.io/finance-tool/tracks/kupat-gemel-lehashkaa",
+    "device": "pc",
+    "steps": [],
+    "task": "tracks",
+    "control": "planted/control-tracks-pc",
+    "split": "score"
+  },
+  "plants": [
+    {
+      "id": "p16",
+      "kind": "general",
+      "problem": "The sentence on how the table is sorted ends with a developer's \"TODO\" note.",
+      "where": "the line above the track table that says how it is sorted",
+      "counts": "A finding that the TODO note is visible, or that unfinished or internal text shows on the page.",
+      "notCounts": "Wanting to sort by return (without noticing the note)."
+    }
+  ],
+  "changes": [
+    {
+      "id": "leftover",
+      "type": "text",
+      "find": {
+        "regex": "(בתוך כל חברה לפי דמי הניהול מהחיסכון, מהזול ליקר\\.)",
+        "flags": "g"
+      },
+      "replace": "$1 TODO: מיון לפי תשואה"
+    }
+  ]
+}

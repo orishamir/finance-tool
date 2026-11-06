@@ -1,0 +1,35 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "The slider shows 800 but the field shows 750, so the user can't tell which monthly deposit the result is based on. That makes the main figure unreliable.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "The 2% inflation rate sits behind a button and the main line only says 'in today's money'. This is a wish for more openness; the reader doesn't say the button fails, so it isn't listed problem 1.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "Tax appears as a huge pink bar labelled '84% of loss'. It reads like a loss and is unclear, so the user may misread a main cost figure.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "The reader doesn't recognise the recommended fund manager. That is personal hesitation, not a fault in the page.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "The filter chips and fee terms use jargon the reader doesn't understand. The complaint is general and mostly about secondary filters, so it reads as an annoyance rather than a blocker.",
+      "serious": false,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.025274800000000004
+}

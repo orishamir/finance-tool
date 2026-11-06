@@ -1,0 +1,117 @@
+{
+  "task": "s11",
+  "persona": "first-job-phone",
+  "repeat": 3,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T12:18:22.243Z",
+  "structured": {
+    "answer": "Keep the keren hishtalmut: it's money my employer and I put in from my salary, and after 6 years from the first deposit I can take it all out tax-free. If I take it out earlier they deduct up to 47%, so I won't touch it before then. I didn't really get the calculator, which said it only leaves 415.84 ₪ more and showed a range with a minus.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Calculator result (screens 2-3)",
+        "why": "The result is split across the scroll. All I saw was 16,935 ₪ cut off at the top and 'משאירה 415.84 ₪ יותר', which felt tiny for 10 years, and I couldn't tell what the bars were."
+      },
+      {
+        "where": "Paragraph under the calculator about 300 ₪ / 200 ₪",
+        "why": "It sounded like part of my deposit isn't tax-free after all. That contradicts 'הכול בפטור ממס' at the top and confused me."
+      },
+      {
+        "where": "Range bullets 'בין −342.02 ₪ לבין 2,106 ₪'",
+        "why": "The minus made me think the keren can come out worse than the alternative, and nothing told me when."
+      }
+    ],
+    "used": [
+      "Heading 'קרן השתלמות' and the subtitle",
+      "'מה זה' paragraph: 6 שנים אחרי התשלום הראשון, הכול בפטור ממס; לפני כן ממוסה",
+      "'מתי הכסף פנוי: כשעוברות 6 שנים' card",
+      "Fees table: דמי ניהול עד 2% בשנה, דמי יציאה אין",
+      "Orange warning box: משיכה לפני הזמן... מנכה במקור 47%",
+      "'ההפרש: קרן ההשתלמות משאירה 415.84 ₪ יותר'"
+    ],
+    "skimmed": [
+      "למה משתמשים בזה",
+      "Calculator inputs (שכיר, 12,000 ₪, 10,000 ₪ + 500 ₪)",
+      "שווה לדעת list",
+      "מי מציע ומי מפקח",
+      "מיסוי cards",
+      "Range bullets for investment houses / managers"
+    ],
+    "skipped": [
+      "Small table עלויות/מס",
+      "Grey notes (התשואה בשתי הדרכים היא 7%..., באוצר דנים...)",
+      "Slider (left at 10 years)",
+      "שינוי הסכומים fold",
+      "הצגת החוקים והכללים links",
+      "סיכונים ומה לא מוגן and everything below",
+      "Screens 7-8",
+      "Side navigation",
+      "Tags like TXH-09, PF-18"
+    ],
+    "unsure_meaning": [
+      "הפקדה מוטבת",
+      "הרווח הריאלי",
+      "נאמנות",
+      "מנכה במקור",
+      "TXH-09 / KH-15 / PF-18 codes",
+      "מסלול כללי, אג\"ח ממשלתית צמודה",
+      "415.84 ₪ יותר — more than what, and is that all?",
+      "−342.02 ₪ in the range",
+      "16,935 ₪ partially cut off — which side is it?",
+      "Teal vs yellow dots/colors in the comparison (guessed teal = keren, yellow = securities account)"
+    ],
+    "not_found": [
+      "A plain 'is it worth it: yes/no' statement for a salaried employee",
+      "Which company runs my keren and how to check it",
+      "What to do first (e.g. check my track / fees)"
+    ],
+    "findings": [
+      {
+        "what": "The calculator's headline gain (415.84 ₪ more after 10 years) is small and unexplained, so the keren looks hardly worth it",
+        "where": "Screen 3 top, 'ההפרש'"
+      },
+      {
+        "what": "Ranges with a minus sign (−342.02 ₪) scare without saying when the keren loses",
+        "where": "Screen 3 bullets 'ההפרש תלוי גם במי שבחרתם'"
+      },
+      {
+        "what": "The result is split by scroll; the big number 16,935 ₪ is cut off at the far left",
+        "where": "Screens 2-3"
+      },
+      {
+        "what": "The 300 ₪/200 ₪ 'הפקדה מוטבת' paragraph contradicts the simple 'הכול בפטור ממס' message",
+        "where": "Screen 3 under the calculator"
+      },
+      {
+        "what": "Fees shown only as 'עד 2%', no shekel amount, so it sounds like nothing",
+        "where": "Screen 5 כמה זה עולה"
+      },
+      {
+        "what": "The 47% early-withdrawal warning is the most useful fact but appears far down",
+        "where": "Screen 6 orange box"
+      },
+      {
+        "what": "Jargon codes and terms (TXH-09, נאמנות, ריאלי) with no plain explanation",
+        "where": "Screens 4-6"
+      }
+    ]
+  },
+  "steps": 6,
+  "reads": 6,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 43727,
+    "turns": 8,
+    "usd": 0.186614,
+    "input": 8,
+    "cacheWrite": 12297,
+    "cacheRead": 28530,
+    "output": 4125,
+    "model": "claude-opus-5-5"
+  }
+}

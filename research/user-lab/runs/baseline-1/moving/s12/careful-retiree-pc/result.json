@@ -1,0 +1,117 @@
+{
+  "task": "s12",
+  "persona": "careful-retiree-pc",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T03:19:58.514Z",
+  "structured": {
+    "answer": "It's savings the employer and I pay into from my salary, and the profits are tax-free if I wait 6 years (3 if I've reached pension age). It looks worth having because the employer adds money, but the money sits in shares that can fall, so I'll ask my son or the bank before I choose anything.",
+    "confidence": "unsure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Screen 1, box 'מה מייחד קרן השתלמות'",
+        "why": "It suddenly compares with 'S&P 500' and a 'חשבון ניירות ערך', which I don't know, and I didn't understand why I need that"
+      },
+      {
+        "where": "Screen 2, slider and two bars 17,370 / 16,955",
+        "why": "A slider I don't use, and amounts that seemed small for 10 years. I didn't understand what they were"
+      },
+      {
+        "where": "Screen 2, 'הפרש נע בין −342.02 ₪'",
+        "why": "A minus sign worried me. Can I lose money?"
+      },
+      {
+        "where": "Screen 4, 'סיכונים ומה לא מוגן'",
+        "why": "'המדינה לא ערבה לשווי הקרן': so it isn't safe like a deposit"
+      }
+    ],
+    "used": [
+      "Subtitle: 'אחרי תקופה שבעט החוק אפשר למשוך בפטור ממס'",
+      "'6 שנים אחרי התשלום הראשון... למי שהגיע לגיל הפרישה... 3 שנים'",
+      "'7.5% מהשכר מהמעסיק ועד 2.5% מכם'",
+      "Card 'מתי הכסף פנוי: כשעוברות 6 שנים'",
+      "Fees table 'דמי ניהול מחיסכון עד 2% בשנה', 'דמי יציאה אין'",
+      "Yellow box 'משיכה לפני הזמן אפשרית, אבל יקרה'",
+      "Risks section"
+    ],
+    "skimmed": [
+      "The calculator on screen 2 with the cost and tax table",
+      "'שווה לדעת'",
+      "'מי מציע ומי מפקח'",
+      "The tax cards ('מיסוי')"
+    ],
+    "skipped": [
+      "Buttons 'S&P 500 מדד', 'מסלול כללי', 'אג\"ח ממשלתית צמודה'",
+      "'שחקו עם המספרים שלכם'",
+      "The 'חוקים וכללים' tags",
+      "The 'מונחים' table",
+      "Screen 5"
+    ],
+    "unsure_meaning": [
+      "S&P 500",
+      "מסלול השקעה",
+      "חשבון ניירות ערך",
+      "הרווח הריאלי",
+      "תשואה בשנה",
+      "שכר נאמן",
+      "TXH-09, KH-15, PF-18",
+      "−342.02",
+      "ותק",
+      "מדד (in the comparison with S&P)",
+      "הפקדה מוטבת"
+    ],
+    "not_found": [
+      "A simple sentence saying whether this is safe like a deposit",
+      "Whether 2% fees is a lot or a little",
+      "A clear answer to whether it is worth having"
+    ],
+    "findings": [
+      {
+        "what": "Black background with pale grey writing; hard to read even enlarged",
+        "where": "The whole page"
+      },
+      {
+        "what": "Right at the start it moves to S&P 500 and a securities account, and that put me off",
+        "where": "Screen 1, 'מה מייחד קרן השתלמות' box"
+      },
+      {
+        "what": "A minus sign and many numbers in the comparison worried me",
+        "where": "Screen 2"
+      },
+      {
+        "what": "A slider I can't use",
+        "where": "Top of screen 2"
+      },
+      {
+        "what": "Small grey text: 'ההכנסה: דוגמה של האתר', 'גררו את הסמן'",
+        "where": "Screens 1-2"
+      },
+      {
+        "what": "Codes in English letters next to the facts",
+        "where": "'שווה לדעת'"
+      },
+      {
+        "what": "No one says plainly whether it's worth it and whether the money is guaranteed",
+        "where": "The whole page"
+      }
+    ]
+  },
+  "steps": 4,
+  "reads": 4,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 33339,
+    "turns": 6,
+    "usd": 0.18339940000000002,
+    "input": 10,
+    "cacheWrite": 15068,
+    "cacheRead": 41477,
+    "output": 2726,
+    "model": "claude-opus-5-5"
+  }
+}

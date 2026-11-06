@@ -1,0 +1,48 @@
+{
+  "case": "live-02-indices-cost-bar-legend",
+  "stamp": "{\"keys\":[{\"id\":\"legend-every-row\",\"problem\":\"Every row of the list repeats the same colour key under its bar (which colour is which kind of cost), so the same names are read again on every row instead of once for the whole list.\",\"where\":\"the small bar in each row of the list of accounts, and the line of coloured squares with names under it\",\"kind\":\"general\"},{\"id\":\"amounts-off-bar\",\"problem\":\"The amount each coloured part of a row's bar stands for is written apart from the bar, in a line under it, not on the part itself, so the eye goes back and forth between colour and number.\",\"where\":\"the small bar in each row of the list of accounts, and the amounts in the line under it\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "legend-every-row",
+        "rank": 0,
+        "why": "Finding 1 does complain about repetition on every row, but it's about fund-attribute tags in the fund list, not the cost colour key repeated under each account bar, so none of the findings names this problem."
+      },
+      {
+        "id": "amounts-off-bar",
+        "rank": 3,
+        "why": "Finding 3 names the same problem: on each account row the amounts are written on a separate line below the coloured bar segments, so the colours have to be matched to the numbers."
+      }
+    ],
+    "liked": [],
+    "usd": 0.019511399999999998
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "legend-every-row",
+        "rank": 0,
+        "why": "Finding 1 also complains about something repeated on every row, but it is about the descriptive tags in the fund list, not the colour key under each account row's bar, and finding 2 is about the chart's legend, so no finding names this problem."
+      },
+      {
+        "id": "amounts-off-bar",
+        "rank": 3,
+        "why": "Finding 3 says the amounts for each account row's coloured bar parts are written on a separate line below, so the reader had to match colour to number, which is the same problem."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0201674
+  },
+  "third": null,
+  "ranks": {
+    "legend-every-row": 0,
+    "amounts-off-bar": 3
+  },
+  "agreed": {
+    "legend-every-row": true,
+    "amounts-off-bar": true
+  },
+  "against": {},
+  "usd": 0.0396788
+}

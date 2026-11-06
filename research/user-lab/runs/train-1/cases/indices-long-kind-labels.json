@@ -1,0 +1,14 @@
+{
+ "id": "indices-long-kind-labels",
+ "task": "t29",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "The fund-kind labels carry whole explanations ('קרן סל: נסחרת כל היום', 'קרן מחקה: פעם ביום') instead of the short term alone.",
+   "where": "the labels on the fund rows",
+   "kind": "taste",
+   "outside": false
+  }
+ ],
+ "liked": []
+}

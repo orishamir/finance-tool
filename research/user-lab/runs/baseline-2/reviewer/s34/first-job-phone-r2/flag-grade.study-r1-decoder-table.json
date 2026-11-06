@@ -1,0 +1,36 @@
+{
+  "case": "study-r1-decoder-table",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"A table exists only to decode the graph instead of the names and numbers being written on the graph, adding mental overhead.\",\"where\":\"the table under the graph\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 4,
+        "why": "Finding 4 says the striped pink coins are explained only in the table below rather than next to them, which is the person's complaint that the graph has to be decoded through a separate table instead of being labelled directly."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0154754
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 4,
+        "why": "Finding 4 says the striped pink coins are explained only in the table below and not next to them, which is the person's point that the table is there to decode the graph instead of the graph being labeled directly."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0151314
+  },
+  "third": null,
+  "ranks": {
+    "k": 4
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0306068
+}

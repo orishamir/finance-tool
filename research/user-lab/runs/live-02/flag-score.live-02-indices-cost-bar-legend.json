@@ -1,0 +1,199 @@
+{
+  "case": "live-02-indices-cost-bar-legend",
+  "sessions": 9,
+  "perKey": {
+    "legend-every-row": {
+      "kind": "general",
+      "caught": 0,
+      "caughtIn10": 0,
+      "of": 9,
+      "byPersona": {
+        "careful-retiree-pc": {
+          "caught": 0,
+          "of": 3,
+          "ranks": [
+            0,
+            0,
+            0
+          ]
+        },
+        "self-directed-investor": {
+          "caught": 0,
+          "of": 3,
+          "ranks": [
+            0,
+            0,
+            0
+          ]
+        },
+        "student-small-amounts": {
+          "caught": 0,
+          "of": 3,
+          "ranks": [
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "graderAgreement": 0.8888888888888888
+    },
+    "amounts-off-bar": {
+      "kind": "general",
+      "caught": 0,
+      "caughtIn10": 0,
+      "of": 9,
+      "byPersona": {
+        "careful-retiree-pc": {
+          "caught": 0,
+          "of": 3,
+          "ranks": [
+            0,
+            0,
+            0
+          ]
+        },
+        "self-directed-investor": {
+          "caught": 0,
+          "of": 3,
+          "ranks": [
+            0,
+            0,
+            0
+          ]
+        },
+        "student-small-amounts": {
+          "caught": 0,
+          "of": 3,
+          "ranks": [
+            0,
+            0,
+            0
+          ]
+        }
+      },
+      "graderAgreement": 1
+    }
+  },
+  "againstLiked": {},
+  "usd": 0.3470538,
+  "rows": [
+    {
+      "task": "indices-lists",
+      "session": "careful-retiree-pc-r1",
+      "persona": "careful-retiree-pc",
+      "mode": "findings",
+      "raised": null,
+      "ranks": {
+        "legend-every-row": 0,
+        "amounts-off-bar": 0
+      },
+      "against": {},
+      "usd": 0.045464000000000004
+    },
+    {
+      "task": "indices-lists",
+      "session": "careful-retiree-pc-r2",
+      "persona": "careful-retiree-pc",
+      "mode": "findings",
+      "raised": null,
+      "ranks": {
+        "legend-every-row": 0,
+        "amounts-off-bar": 0
+      },
+      "against": {},
+      "usd": 0.034966800000000006
+    },
+    {
+      "task": "indices-lists",
+      "session": "careful-retiree-pc-r3",
+      "persona": "careful-retiree-pc",
+      "mode": "findings",
+      "raised": null,
+      "ranks": {
+        "legend-every-row": 0,
+        "amounts-off-bar": 0
+      },
+      "against": {},
+      "usd": 0.0350308
+    },
+    {
+      "task": "indices-lists",
+      "session": "self-directed-investor-r1",
+      "persona": "self-directed-investor",
+      "mode": "findings",
+      "raised": null,
+      "ranks": {
+        "legend-every-row": 0,
+        "amounts-off-bar": 0
+      },
+      "against": {},
+      "usd": 0.0320308
+    },
+    {
+      "task": "indices-lists",
+      "session": "self-directed-investor-r2",
+      "persona": "self-directed-investor",
+      "mode": "findings",
+      "raised": null,
+      "ranks": {
+        "legend-every-row": 0,
+        "amounts-off-bar": 0
+      },
+      "against": {},
+      "usd": 0.031174800000000003
+    },
+    {
+      "task": "indices-lists",
+      "session": "self-directed-investor-r3",
+      "persona": "self-directed-investor",
+      "mode": "findings",
+      "raised": null,
+      "ranks": {
+        "legend-every-row": 0,
+        "amounts-off-bar": 0
+      },
+      "against": {},
+      "usd": 0.0314388
+    },
+    {
+      "task": "indices-lists",
+      "session": "student-small-amounts-r1",
+      "persona": "student-small-amounts",
+      "mode": "findings",
+      "raised": null,
+      "ranks": {
+        "legend-every-row": 0,
+        "amounts-off-bar": 0
+      },
+      "against": {},
+      "usd": 0.0357788
+    },
+    {
+      "task": "indices-lists",
+      "session": "student-small-amounts-r2",
+      "persona": "student-small-amounts",
+      "mode": "findings",
+      "raised": null,
+      "ranks": {
+        "legend-every-row": 0,
+        "amounts-off-bar": 0
+      },
+      "against": {},
+      "usd": 0.0302468
+    },
+    {
+      "task": "indices-lists",
+      "session": "student-small-amounts-r3",
+      "persona": "student-small-amounts",
+      "mode": "findings",
+      "raised": null,
+      "ranks": {
+        "legend-every-row": 0,
+        "amounts-off-bar": 0
+      },
+      "against": {},
+      "usd": 0.07092219999999999
+    }
+  ]
+}

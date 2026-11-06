@@ -1,0 +1,94 @@
+{
+  "case": "makam-duplicates",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The guide list still offers makam as separate guide pages (one per way of holding it), though they describe one thing.\",\"where\":\"the makam entries in the guide list\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "The page never says how long the legal period is before a קרן השתלמות can be withdrawn tax-free",
+      "No interest rates, fees, numbers or age-specific guidance, so 'what does this mean for my money' goes unanswered",
+      "Didn't understand the 'מקור' menu item",
+      "'מאיפה להתחיל' is written for salaried workers, with nothing for someone near retirement",
+      "Confused about the difference between 'קרן כספית' and 'קרן כספית מתחדשת'",
+      "The 'פרישה' cards are about building up a pension, not about retiring",
+      "Unclear difference between 'מקיפה' and 'כללית' pension",
+      "'לבחירה עצמית' seems meant for experts, not for her",
+      "The six index cards all look alike",
+      "Screen 3 is just black",
+      "The 'בשפה פשוטה' plain-language line appears on only a few cards, not all",
+      "Descriptions get too technical (tracking fund, dollar exposure), so she stopped reading",
+      "Doesn't understand what 'exposed to the dollar or hedged' means for her money, or whether she can lose because of the dollar",
+      "Doesn't understand 'קופון' in the bond cards",
+      "Doesn't understand 'מסלול שאינו מתמחה ואינו מתחייב לטווח מניות'",
+      "מק\"מ appears twice, once as a place money is held and once as an investment, which is confusing",
+      "Doesn't understand 'תגמולים ואישית לפיצויים', even with the plain-language version",
+      "Unclear which countries 'developed and emerging markets' means, and whether it's riskier",
+      "Unclear who manages 'בניהול אישי'",
+      "No interest rate comparison and no management fees",
+      "No risk indication or safe/medium/risky scale on cards",
+      "Nothing on how to turn savings into a monthly pension at retirement",
+      "Doesn't say how much tax is paid on profit in a קופת גמל להשקעה",
+      "Doesn't say which products have a state guarantee",
+      "Doesn't say whether you can lose money in a קרן כספית",
+      "Would cut the index cards down to a single 'stock indexes' card",
+      "Would drop 'לבחירה עצמית'",
+      "Would drop 'לילדים'",
+      "Would drop 'מה האתר עוד לא מכסה'"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 16,
+        "why": "The reader notices that מק\"מ is listed twice in the guide, once as a place money is held and once as an investment, and is confused by it, which is the duplicate-entry problem the person named."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0672112
+  },
+  "b": {
+    "raised": [
+      "The page never says how long the legal period is before a קרן השתלמות can be withdrawn tax-free",
+      "There are no interest rates, fees or numbers and nothing about the reader's age, so 'what does this mean for my money' goes unanswered",
+      "Didn't understand the 'מקור' item in the top menu",
+      "'מאיפה להתחיל' is written for working employees, with nothing for someone close to retirement",
+      "Confused about the difference between 'קרן כספית' and 'קרן כספית מתחדשת'",
+      "The 'פרישה' section only covers building up a pension, not what happens at retirement or how to turn savings into a monthly pension",
+      "Unclear what the difference is between 'מקיפה' and 'כללית' pension",
+      "'לבחירה עצמית' seems meant for experts, not for the reader",
+      "The six index cards all look alike",
+      "Screen 3 is just black",
+      "The plain-language line ('בשפה פשוטה') appears on only a few cards, and the reader wanted it on all of them",
+      "Card descriptions get too technical, so the reader stopped reading partway",
+      "Didn't understand 'חשיפה לדולר או מנוטרלת ממנו' or whether the dollar could cause losses",
+      "Didn't understand 'קופון' in the bond cards",
+      "Didn't understand the 'מסלול שאינו מתמחה ואינו מתחייב לטווח מניות' description",
+      "מק\"מ appears twice, once as a place the money is held and once as an investment, which is confusing",
+      "Didn't understand 'תגמולים ואישית לפיצויים', even in its plain-language form",
+      "Unclear which countries 'developed and emerging markets' means and whether it's riskier",
+      "Unclear who does the managing in 'בניהול אישי'",
+      "No risk indication (for example safe / medium / risky) on the cards",
+      "Doesn't say how much tax is paid on profit in a קופת גמל להשקעה",
+      "Doesn't say which products have a state guarantee",
+      "Doesn't say whether you can lose money in a קרן כספית",
+      "Would cut the index cards down to a single 'stock indexes' card",
+      "Would drop 'לבחירה עצמית', 'לילדים' and 'מה האתר עוד לא מכסה'"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 16,
+        "why": "The reader points out that מק\"מ appears as two separate entries (where the money is held, and what it's invested in) and asks which one it really is, which is the same duplication the person raised."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0653752
+  },
+  "third": null,
+  "ranks": {
+    "k": 16
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1325864
+}

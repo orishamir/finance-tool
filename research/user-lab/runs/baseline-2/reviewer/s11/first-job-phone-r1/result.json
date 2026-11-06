@@ -1,0 +1,100 @@
+{
+  "task": "s11",
+  "persona": "first-job-phone",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T12:17:51.778Z",
+  "structured": {
+    "answer": "Keep the keren hishtalmut: my employer puts in up to 7.5% and I put in 2.5%, and after 6 years from the first payment I can take it all out tax-free. Taking it out earlier is possible but heavily taxed (up to 47%), so I leave it alone for 6 years.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Calculator result (screen 3)",
+        "why": "'קרן ההשתלמות משאירה 415.84 ₪ יותר' looked tiny, and costs 2,402 vs 466 made the keren look worse; only later saw the employer money is 'מחוץ להשוואה'"
+      },
+      {
+        "where": "Calculator salary field",
+        "why": "Asks for gross 'משכורת ברוטו', I only know my net 9,500, so I left 12,000"
+      },
+      {
+        "where": "Paragraph about 300 ₪ / 200 ₪ (screen 3)",
+        "why": "Didn't understand why only part of my deposit counts"
+      }
+    ],
+    "used": [
+      "Heading and 'מה זה' paragraph: 7.5% employer, 2.5% me, 6 years tax-free",
+      "'למה משתמשים בזה' first line: 'כמעט תמיד הצעד הראשון'",
+      "6-year bar 'נעול: משיכה ממוסה' / 'אפשר למשוך בפטור'",
+      "Card 'מתי הכסף פנוי — כשעוברות 6 שנים'",
+      "Fees table 'עד 2% בשנה' with company names",
+      "Orange warning 'משיכה לפני הזמן אפשרית, אבל יקרה' 47%"
+    ],
+    "skimmed": [
+      "Calculator result table (עלויות/מס)",
+      "'שווה לדעת' list",
+      "'מי מציע ומי מפקח'",
+      "'סיכונים ומה לא מוגן'",
+      "Tax cards carousel"
+    ],
+    "skipped": [
+      "'מונחים' glossary",
+      "Screen 8",
+      "'שינוי הסכומים' fold",
+      "'הצגת החוקים והכללים' links",
+      "'מה האתר לקח בחשבון'",
+      "Small grey notes under calculator"
+    ],
+    "unsure_meaning": [
+      "הפקדה מוטבת",
+      "הרווח הריאלי",
+      "ותק",
+      "codes like TXH-09, KH-15, PF-18",
+      "415.84 ₪ — whether it includes employer money",
+      "123 מקור/חושב/הנחה markers at top"
+    ],
+    "not_found": [
+      "Calculation with my own net salary",
+      "Clear shekel figure for how much the employer money adds"
+    ],
+    "findings": [
+      {
+        "what": "The headline difference 415.84 ₪ excludes the employer's money, making the keren look barely worth it, and costs look higher than the alternative",
+        "where": "Calculator result, screen 3"
+      },
+      {
+        "what": "Calculator asks for gross salary; a salaried person often only knows net",
+        "where": "Calculator, screen 2"
+      },
+      {
+        "what": "300 ₪ / 200 ₪ split explanation is confusing without explaining the term",
+        "where": "Screen 3 under results"
+      },
+      {
+        "what": "Codes like TXH-09, PF-18 mean nothing to a normal reader",
+        "where": "'שווה לדעת' and fees table"
+      },
+      {
+        "what": "Fees shown only as percent 'עד 2%', no shekel amount",
+        "where": "'כמה זה עולה' table"
+      }
+    ]
+  },
+  "steps": 7,
+  "reads": 7,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 39745,
+    "turns": 9,
+    "usd": 0.2022724,
+    "input": 10,
+    "cacheWrite": 14809,
+    "cacheRead": 38802,
+    "output": 3800,
+    "model": "claude-opus-5-5"
+  }
+}

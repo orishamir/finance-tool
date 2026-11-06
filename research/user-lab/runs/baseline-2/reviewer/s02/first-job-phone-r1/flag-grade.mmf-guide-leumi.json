@@ -1,0 +1,36 @@
+{
+  "case": "mmf-guide-leumi",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The money-market-fund guide compares with one named bank (Leumi) and cites that bank's deposit rate, in a page about a general product.\",\"where\":\"the comparison lines and their source\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the findings objects to comparing against one named bank (Leumi) or citing its deposit rate; finding 2 mentions the comparison bars but only complains that they use percent with no shekel example."
+      }
+    ],
+    "liked": [],
+    "usd": 0.015115400000000001
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings mention that the comparison is tied to one named bank (Leumi) or its deposit rate; finding 2 is about the same comparison bars, but it complains that they show percent instead of shekels."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0152474
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.030362800000000002
+}

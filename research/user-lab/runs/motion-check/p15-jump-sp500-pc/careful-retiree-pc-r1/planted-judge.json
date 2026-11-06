@@ -1,0 +1,6 @@
+{
+  "named": false,
+  "position": 0,
+  "why": "None of the findings say the result cards move, shift or jump, or that a line above the results appears and disappears. Finding 2 is about the slider rounding a typed value (750 to 800), not about the layout moving. Finding 6 is about a minus sign in a box. It isn't about a note that shows up and goes away.",
+  "usd": 0.017995999999999998
+}

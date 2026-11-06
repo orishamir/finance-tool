@@ -1,0 +1,59 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "First screen opens with English letters and investment jargon and nothing about safety; the reader says they would close the page.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "Many minus numbers, some in red, in the fund and account lists, with nothing saying whether they are losses or differences.",
+      "serious": true,
+      "names_listed": 6
+    },
+    {
+      "n": 3,
+      "summary": "Long, crowded fund list with coloured labels that mean nothing to the reader; it makes them anxious.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "The 'cheapest' recommendation is an unfamiliar company, not the reader's bank, and nothing says why to trust it.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "The return is filled in ahead of time at 7% and nothing makes clear it is a guess, so the result may look guaranteed.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 6,
+      "summary": "Small, pale-grey text on black (e.g. 'לא בחישוב', the explanations under each bank) is hard to read even with glasses.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 7,
+      "summary": "'−21.8% ב־2022' shown in large letters with no reassuring explanation.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 8,
+      "summary": "A chart on screen 6 has many lines in similar colours that the reader can't tell apart.",
+      "serious": false,
+      "names_listed": 3
+    },
+    {
+      "n": 9,
+      "summary": "Sliders are used for choosing the amounts; the reader gives no specific problem.",
+      "serious": false,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.0664428
+}

@@ -1,0 +1,89 @@
+{
+  "case": "company-kind-filter-always-one",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"On a company's page, the filter 'במה הכסף מושקע' is useless: each of its choices holds a single track.\",\"where\":\"the filter chips above the tracks list\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "The page had already picked the 'קופת גמל להשקעה' tab, and the reader doesn't know if that's where their savings are",
+      "The '123 ממקור / מחושב / הזנה' line is confusing",
+      "Product tabs are unclear: doesn't know how 'קרן חדשה מקיפה' differs from 'כללית', or what 'תגמולים ואישית לפיצויים' is",
+      "Doesn't know what the closed sections 'קרנות מחקות', 'מרכזית לפיצויים' and 'קרנות סל' are",
+      "The 'מה כתוב במסמכים של הראל' rows are closed, with no hint of what's inside",
+      "Doesn't understand the orange 'מט\"ח' number",
+      "9 of the 16 tracks show 'פחות מ־3 שנים' with no track record, which is worrying",
+      "Unclear why 'עוקב מדדי אג\"ח' shows 0% stocks but 96% מט\"ח, and whether that is risky",
+      "Doesn't understand 'סחיר', or how 'מניות סחיר' differs from 'מניות'",
+      "Doesn't understand what 'עוקב מדדים - גמיש' means",
+      "Doesn't understand 'PF-10'",
+      "Extra direct costs are mentioned but not shown: how much are they?",
+      "Returns are before fees and tax, so it's unclear what they actually get, or what tax applies",
+      "Can't find which track they are in now or what they actually pay",
+      "Wants returns after fees, in shekels",
+      "Wants to know how badly each track fell in a bad year",
+      "Wants last year's return",
+      "Wants to know how to switch tracks, and whether it costs anything or triggers tax",
+      "Wants to know what happens at retirement or withdrawal",
+      "Unsure whether the 2025 fees apply in 2026",
+      "Wants a phone number at Harel to negotiate fees",
+      "Would drop the 'לא מצאתם שם?' search box",
+      "Would drop the rings in the table and the '0% מההפקדות' line repeated 16 times",
+      "Would drop the 'במה הכסף מושקע' buttons because the table already shows everything"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader would drop the 'במה הכסף מושקע' buttons only because the table already shows everything, and never says each choice holds a single track, which is the person's actual point."
+      }
+    ],
+    "liked": [],
+    "usd": 0.07231119999999999
+  },
+  "b": {
+    "raised": [
+      "The page pre-selected the 'קופת גמל להשקעה' tab, and the reader doesn't know if that's their product",
+      "The '123 ממקור / מחושב / הזנה' line is confusing",
+      "The product tabs are unclear: no difference explained between קרן חדשה מקיפה and כללית, or what תגמולים ואישית לפיצויים is",
+      "The 'במה הכסף מושקע' buttons are redundant because the table already shows the same rows (would drop them)",
+      "Doesn't know what the closed sections קרנות מחקות / מרכזית לפיצויים / קרנות סל are",
+      "The 'מה כתוב במסמכים' section shows closed rows with no hint of what's inside",
+      "The '0% מההפקדות' line repeats in all 16 rows and is useless (would drop it)",
+      "Doesn't understand the orange מט\"ח number, e.g. bond tracker with 0% stocks but 96% מט\"ח: is it risky?",
+      "The rings in the table just repeat the percentages (would drop them)",
+      "The fund numbers (קופה) mean nothing",
+      "9 of 16 tracks show 'פחות מ־3 שנים' with no track record, which is worrying",
+      "Doesn't understand 'סחיר' or how מניות סחיר differs from מניות",
+      "Doesn't understand what 'עוקב מדדים - גמיש' means",
+      "Doesn't understand 'PF-10'",
+      "Extra direct costs are mentioned but the amount isn't shown",
+      "Returns are before fees and tax, so it's unclear what the saver actually gets",
+      "Can't find which track they're in now or what they actually pay",
+      "No returns after fees in shekels",
+      "No information on how badly tracks fell in a bad year",
+      "No last-year return",
+      "No info on how to switch tracks, its cost, or tax",
+      "No info on what happens at retirement or withdrawal",
+      "Unclear whether the 2025 fees apply in 2026",
+      "No Harel phone number for negotiating fees",
+      "The 'לא מצאתם שם?' search box is unneeded (would drop it)"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader calls the 'במה הכסף מושקע' buttons redundant because the table already shows all the rows, but never says each choice holds just one track, which was the person's point."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0696232
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1419344
+}

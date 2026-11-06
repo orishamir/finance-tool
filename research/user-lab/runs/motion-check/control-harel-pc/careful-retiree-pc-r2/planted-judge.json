@@ -1,0 +1,47 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "Dark background with small grey text is hard to read even when enlarged",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "Large table with many percentage columns; long lines made the reader lose their place",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "Most tracks show no return, only 'under 3 years'",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "Nothing says in words which track is the safe one; reader had to guess from '0% stocks'",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "Track names use English and unfamiliar jargon",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 6,
+      "summary": "Yellow and turquoise pie charts in the exposure column look alike",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 7,
+      "summary": "Site name 'מקור' is unfamiliar; unclear who runs the site",
+      "serious": false,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.0388028
+}

@@ -1,0 +1,134 @@
+{
+  "task": "s01",
+  "persona": "careful-retiree-pc",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T16:17:39.791Z",
+  "structured": {
+    "answer": "I didn't decide anything. I'll ask my son and then go to the bank clerk: the page says money left in the עו\"ש doesn't always earn interest and the bank must write to me if more than 15,000 ₪ sits there a whole quarter, but it never says how much the bank actually takes from me, and \"אין בישראל ביטוח פיקדונות\" frightened me.",
+    "confidence": "unsure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Calculator on screen 1",
+        "why": "Its default is 'תשואה 5%' and a big 74,044 ₪ on a page about a current account that 'לא תמיד מקבל ריבית'. I couldn't tell where the 5% comes from."
+      },
+      {
+        "where": "כמה זה עולה",
+        "why": "I came to find out what the bank charges, and it only says 'לפי התעריפון של הגורם המציע', with no amount."
+      },
+      {
+        "where": "Red box at top of screen 3 and 'סיכונים ומה לא מוגן'",
+        "why": "Red and 'אין ביטוח פיקדונות' scared me about my deposits. That's where I got tired and mostly stopped."
+      },
+      {
+        "where": "'למה משתמשים בזה' comparison",
+        "why": "It compares to 'קרן כספית יומית', which I don't know, so I couldn't tell what the alternative is."
+      }
+    ],
+    "used": [
+      "Title 'חשבון עובר ושב' and its subtitle",
+      "Paragraph on the 15,000.00 ₪ balance and the bank's duty to notify",
+      "Sentence that money left in the עו\"ש a full quarter belongs elsewhere",
+      "כמה זה עולה table: 'דמי חשבון קבועים', 'לפי התעריפון'",
+      "מי מציע ומי מפקח: under the Bank of Israel",
+      "סיכונים: no deposit insurance, the 250,000 ₪ proposal",
+      "Big number 74,044 ₪ and 'ההפקדות שלכם 62,681 ₪'"
+    ],
+    "skimmed": [
+      "Calculator inputs (סכום היום, הפקדה חודשית, כמה שנים, תשואה, אינפלציה)",
+      "שווה לדעת list with BANK codes",
+      "כסף נכנס ויוצא cards",
+      "מיסוי cards",
+      "מה האתר לקח בחשבון locked items",
+      "מונחים table"
+    ],
+    "skipped": [
+      "The chart itself",
+      "Sliders",
+      "הצגה כטבלה",
+      "מאיפה זה folds",
+      "הצגת כל הבדיקות",
+      "הצגת כל המונחים / המונחים הכלליים",
+      "הצגת החוקים והכללים links",
+      "Footer links"
+    ],
+    "unsure_meaning": [
+      "קרן כספית יומית",
+      "מק\"ם",
+      "מזומן שקלי",
+      "BANK-20 / BANK-23 / BANK-15",
+      "TXI OQ11, TXI OQ7, BANK OQ9",
+      "חסום: שאלה פתוחה",
+      "מחושב (purple tag)",
+      "ריבית צמודה למדד / הריבית הריאלית",
+      "קיזוז הפסדים",
+      "תשואה 5% on a current account",
+      "מסלול בסיסי / מסלול מורחב"
+    ],
+    "not_found": [
+      "How much my bank actually charges me for the current account",
+      "How much interest a deposit pays compared with the עו\"ש",
+      "A simple sentence saying where to move the money safely"
+    ],
+    "findings": [
+      {
+        "what": "'אין בישראל ביטוח פיקדונות' is stated plainly with no reassurance about the safety of ordinary bank deposits. It frightens someone whose money is all in deposits.",
+        "where": "סיכונים ומה לא מוגן, screen 3"
+      },
+      {
+        "what": "The cost section gives no amount, only 'לפי התעריפון של הגורם המציע'",
+        "where": "כמה זה עולה, screen 2"
+      },
+      {
+        "what": "The calculator defaults to 5% return and shows 74,044 ₪ for a current account that may pay no interest, which is confusing and misleading",
+        "where": "Calculator, screen 1"
+      },
+      {
+        "what": "A dark red box with a lock and a code, 'TXI OQ11', looks like an error or warning",
+        "where": "Top of screen 3"
+      },
+      {
+        "what": "Every locked item repeats 'עד שהשאלה תיסגר, האתר לא מחשב את זה' and 'חסום: שאלה פתוחה', so I have to reread it each time",
+        "where": "מה האתר לקח בחשבון, screen 3"
+      },
+      {
+        "what": "Small pale grey text on a dark background is hard to read even enlarged",
+        "where": "Notes under the calculator and tables, all screens"
+      },
+      {
+        "what": "The chart colours for מס and דמי ניהול are too close, and their numbers are written separately below the chart",
+        "where": "Chart, screen 1"
+      },
+      {
+        "what": "The alternative is named only with unfamiliar words, 'קרן כספית יומית' and 'מק\"ם'",
+        "where": "Top of screen 2, שווה לדעת"
+      },
+      {
+        "what": "Codes such as BANK-20 appear next to the facts and mean nothing to me",
+        "where": "שווה לדעת, screen 2"
+      },
+      {
+        "what": "It doesn't say who runs the site, only 'אתר אישי, לא מסחרי'",
+        "where": "Footer, screen 4"
+      }
+    ]
+  },
+  "steps": 4,
+  "reads": 4,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 39408,
+    "turns": 6,
+    "usd": 0.18064840000000001,
+    "input": 10,
+    "cacheWrite": 12285,
+    "cacheRead": 41742,
+    "output": 3699,
+    "model": "claude-opus-5-5"
+  }
+}

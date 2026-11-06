@@ -1,0 +1,83 @@
+{
+  "case": "hishtalmut-play-pointless",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The 'שחקו עם המספרים' panel repeats what the graphic above already lets the reader do.\",\"where\":\"the 'שחקו עם המספרים' panel\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "The page doesn't say what retirement age is, so he can't tell if he waits 3 years or 6",
+      "Nothing says which investment track suits someone his age; the track buttons are just names",
+      "The grey line '123 מקורות 123 חושבים 123 הזנתה' is confusing",
+      "He read the line on capital gains tax 'only on profit above inflation' twice and only half understood it",
+      "The green 'חוקים וכללים · X' chips are unexplained",
+      "The '47% מס במקור' note frightened him, and he doesn't get the annual-report refund since he doesn't file one",
+      "The 'שחקו עם המספרים שלכם' panel seemed unneeded because the calculator above already had his numbers",
+      "The codes TXH-09, KH-15, PF-18 mean nothing",
+      "The 'תלוי בחברה: הראל, אלטשולר שחם' boxes didn't tell him anything",
+      "The מיסוי cards repeat earlier content; the ceiling numbers appear for the third time",
+      "The chief economist's recommendation worried him that the tax benefit may not last 6 years",
+      "He didn't understand the glossary's 'איפה מופיע' column ('טופס', 'תקנון')",
+      "The year chart starts at year 5 and it wasn't clear he could click to year 6; he didn't catch what the colours meant",
+      "The 2% fee ceiling in the table doesn't match the 0.54% in the chart; unclear which applies to him",
+      "'Under 60 it's at least 31%' doesn't say what applies to a 61-year-old",
+      "Missing: whether the employer's money stays his if he leaves or retires before 6 years",
+      "Missing: whether he must withdraw after 6 years or can keep it growing tax-free",
+      "Missing: how the deposit shows on the payslip and how much take-home pay drops",
+      "Missing: what happens to the money on death / heirs",
+      "Would drop most of the glossary",
+      "Would drop the 'חשבון ניירות ערך' link"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 7,
+        "why": "The reader says he skipped the 'שחקו עם המספרים שלכם' panel because the calculator above already had his numbers. That is the same point as the person's: the panel repeats what the graphic already does."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0744152
+  },
+  "b": {
+    "raised": [
+      "The page never says what retirement age is, so the reader can't tell whether they wait 3 years or 6",
+      "Nothing says which investment track suits someone their age; the track buttons are just names",
+      "The grey line '123 מקורות 123 חושבים 123 הזנתה' is confusing",
+      "The ceilings paragraph and the 'tax only on profit above inflation' line are only half understood",
+      "The green 'חוקים וכללים · X' chips are unexplained",
+      "The '47% מס במקור' note is frightening",
+      "The 'שחקו עם המספרים שלכם' panel isn't needed because the calculator above already shows their numbers",
+      "The codes TXH-09, KH-15, PF-18 mean nothing",
+      "The 'תלוי בחברה: הראל, אלטשולר שחם' boxes tell the reader nothing",
+      "The 'מיסוי' cards repeat earlier content, and the ceilings appear for the third time",
+      "Worry that the tax benefit may be cut after the chief economist's recommendation",
+      "The glossary's 'איפה מופיע' column ('טופס', 'תקנון') isn't understood",
+      "The calculator opens on year 5 (a taxed year), it isn't obvious you can click or drag to year 6, and the colours aren't explained",
+      "The fees table says 'up to 2%' but the chart uses 0.54%, so it's unclear which applies",
+      "Tax for under-60s is given ('at least 31%') but not for someone aged 61",
+      "Unclear whether 47% is withheld and must be reclaimed through an annual report they don't file",
+      "Doesn't say what happens to the employer's money if they leave or retire before 6 years",
+      "Doesn't say whether the money must be taken out after 6 years or can keep growing",
+      "Doesn't say how the deposit shows on the payslip or how much take-home pay drops",
+      "Doesn't say what happens to the money on death or whether heirs get it",
+      "Would drop most of the glossary",
+      "Would drop the 'חשבון ניירות ערך' link"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 7,
+        "why": "Item 7 is the reader saying they didn't open the 'שחקו עם המספרים שלכם' panel because the calculator above already had their numbers, which is the same redundancy the person named; this is a borderline match, since the reader gives it as their reason for skipping the panel rather than as a direct complaint."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0789032
+  },
+  "third": null,
+  "ranks": {
+    "k": 7
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.15331840000000002
+}

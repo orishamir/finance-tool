@@ -1,0 +1,110 @@
+{
+  "task": "s07",
+  "persona": "first-job-phone",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T02:16:09.079Z",
+  "structured": {
+    "answer": "A deposit means the bank keeps your money for a fixed time and pays interest (the example shows 1.8% a year, with 15% tax on the interest). You can only take the money out at the end, or on exit dates, and if you break it early there's a fine that the page doesn't put a number on. On top of that, the big number made it look like I'd get back less than I put in (68,270 vs 70,000), so I'm not doing it for now.",
+    "confidence": "unsure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Calculator result: 68,270 ₪ vs 'ההפקדות שלכם 70,000 ₪'",
+        "why": "It looks like after 10 years you end up with less than you put in. The 'בכסף של היום' button might explain it, but nothing next to the number says so"
+      },
+      {
+        "where": "Red box about breaking a deposit",
+        "why": "I was looking for how much I lose if I take the money out early, and it says the site doesn't calculate it"
+      },
+      {
+        "where": "כמה זה עולה",
+        "why": "'דמי יציאה – לפי התעריפון' with no number in shekels"
+      }
+    ],
+    "used": [
+      "Heading פיקדון and the line under it",
+      "Big number 68,270 ₪ and the 70,000 ₪ deposits line",
+      "Example 1.8% interest, 10 years",
+      "'15%' tax in שווה לדעת",
+      "משיכה: בסוף התקופה שנקבעה בהסכם",
+      "Red box on breaking a deposit",
+      "'אם בנק קורס, אין חוק שמחזיר לכם את הכסף'",
+      "Glossary entries קנס שבירה and תחנת יציאה"
+    ],
+    "skimmed": [
+      "מה זה paragraphs",
+      "למה משתמשים בזה",
+      "מי מציע ומי מפקח",
+      "מיסוי cards",
+      "Glossary table"
+    ],
+    "skipped": [
+      "Calculator inputs/sliders",
+      "Small grey notes under the calculator",
+      "Paragraph about the 69,840 income limit and capital loss",
+      "מה האתר לקח בחשבון",
+      "הצגת החוקים והכללים links",
+      "Footer"
+    ],
+    "unsure_meaning": [
+      "בכסף של היום / בשקלים של העתיד",
+      "מק\"מ",
+      "מוצרי שוק הכסף",
+      "הבטחת קרן",
+      "ריבית הפריים",
+      "ריאלית",
+      "TXI-03, BANK-06, BANK-23 tags",
+      "חשבון במערכת סגורה",
+      "פטור למעוט הכנסה"
+    ],
+    "not_found": [
+      "How much the early-break penalty costs in shekels",
+      "An actual rate a real bank pays today",
+      "A clear statement of whether I gain or lose money in real terms"
+    ],
+    "findings": [
+      {
+        "what": "The main result (68,270) is lower than the total deposits (70,000), so it reads as losing money, and nothing next to the number explains why",
+        "where": "Calculator, first screen"
+      },
+      {
+        "what": "The penalty for breaking a deposit, the main cost of locking money away, isn't calculated or given in shekels",
+        "where": "Red box in מיסוי / כמה זה עולה"
+      },
+      {
+        "what": "The exit fee is just 'לפי התעריפון', with no amount",
+        "where": "כמה זה עולה"
+      },
+      {
+        "what": "The warning about no deposit insurance is scary and there's nothing to reassure you",
+        "where": "סיכונים ומה לא מוגן"
+      },
+      {
+        "what": "Lots of jargon and code tags (TXI-03 etc.) mean nothing to a normal person",
+        "where": "שווה לדעת, מיסוי"
+      },
+      {
+        "what": "The tax paragraph with 69,840 / 10,920 figures is dense and hard to follow",
+        "where": "מיסוי"
+      }
+    ]
+  },
+  "steps": 4,
+  "reads": 4,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 32351,
+    "turns": 6,
+    "usd": 0.1762946,
+    "input": 8,
+    "cacheWrite": 13879,
+    "cacheRead": 27253,
+    "output": 2989,
+    "model": "claude-opus-5-5"
+  }
+}

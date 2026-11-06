@@ -1,0 +1,136 @@
+{
+  "task": "p13-sort-harel-pc",
+  "persona": "careful-retiree-pc",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T03:09:14.821Z",
+  "structured": {
+    "answer": "I would choose Harel's \"כספי (שקלי)\" track: it has 0% shares and 0% foreign currency, gave 4.25% (3 years) and 3.08% (5 years), and the fee of 0.57% is under the 1.05% legal maximum. Before I move any money I'd ask my son and the bank how it compares with my deposits.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "אג\"ח סחיר row, return column",
+        "why": "It says only 'פחות מ־3 שנים' instead of a return, so I couldn't judge the bond track that sounded safest."
+      },
+      {
+        "where": "Return column header 'תשואה שנתית ממוצעת, לפני דמי ניהול'",
+        "why": "I wasn't sure whether 4.25% is per year or in total, or how much is left after the fee."
+      },
+      {
+        "where": "Between screen 2 and screen 3",
+        "why": "The table jumped. Of the 16 tracks I saw about ten and missed the rest."
+      },
+      {
+        "where": "'עוקב מדד' rows",
+        "why": "I thought מדד meant the price index, but these rows show 99% shares. Confusing."
+      }
+    ],
+    "used": [
+      "Harel name and the line about the 2025 average fees at the top",
+      "שם המסלול column",
+      "מניות / מט\"ח percentages",
+      "תשואה שנתית ממוצעת column (4.25% for 3 years, 3.08% for 5 years for כספי שקלי)",
+      "דמי ניהול 0.57% מהחיסכון, 0% מההפקדות",
+      "התקרה בחוק: 1.05% מהחיסכון",
+      "The note that past returns don't say what will happen next"
+    ],
+    "skimmed": [
+      "Product buttons row (קרן השתלמות, חיסכון לכל ילד etc.)",
+      "Number codes in the קופה column",
+      "Assets column (מיליון/מיליארד ₪)",
+      "Grey note about trading and custody costs"
+    ],
+    "skipped": [
+      "S&P 500 track",
+      "Folded sections under 'מה כתוב במסמכים של הראל'",
+      "Search box 'לא מצאתם שם?'",
+      "Links 'מה זה קופת גמל להשקעה' and 'כל המסלולים של קופת גמל להשקעה בכל החברות'",
+      "Footer"
+    ],
+    "unsure_meaning": [
+      "מט\"ח",
+      "פחות מ־3 שנים / פחות מ־5 שנים",
+      "עוקב מדד",
+      "סחיר",
+      "The coloured circles (turquoise and yellow)",
+      "The ? icons",
+      "PF-10",
+      "The number codes like 15287 with the little arrow icon",
+      "Whether 4.25% is per year or in total",
+      "123 מקור / 123 מחושב"
+    ],
+    "not_found": [
+      "What my bank deposits give, to compare",
+      "A plain sentence saying which track is safe or guaranteed",
+      "Returns for the bond track (אג\"ח סחיר)",
+      "The track rows between screen 2 and screen 3"
+    ],
+    "findings": [
+      {
+        "what": "The safest-sounding bond track shows no returns at all, only 'פחות מ־3 שנים', so I couldn't compare it.",
+        "where": "Table, אג\"ח סחיר row"
+      },
+      {
+        "what": "It's unclear whether the return percentages are per year or in total, and whether the fee comes off them.",
+        "where": "Table header 'תשואה שנתית ממוצעת, לפני דמי ניהול'"
+      },
+      {
+        "what": "Dark background with small grey text, hard to read even enlarged.",
+        "where": "Whole page, especially the notes under the table"
+      },
+      {
+        "what": "Many numbers and percentages in every row make the screen anxious-making.",
+        "where": "Screen 2 table"
+      },
+      {
+        "what": "Words I don't know: מט\"ח, סחיר, עוקב מדד, S&P 500.",
+        "where": "Track names and exposure column"
+      },
+      {
+        "what": "Coloured circles with no explanation; I couldn't tell what they meant.",
+        "where": "Exposure column"
+      },
+      {
+        "what": "Nothing compares these tracks with a bank deposit, which is what I wanted to know.",
+        "where": "Whole page"
+      },
+      {
+        "what": "Part of the table was missing between screens; I saw only about 10 of the 16 tracks.",
+        "where": "Between screen 2 and screen 3"
+      }
+    ]
+  },
+  "steps": 4,
+  "reads": 4,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 41963,
+    "turns": 6,
+    "usd": 0.1445998,
+    "input": 8,
+    "cacheWrite": 8612,
+    "cacheRead": 21759,
+    "output": 3566,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "p13-sort-harel-pc",
+    "screenshots": 6,
+    "changes": [
+      {
+        "id": "sort-shown",
+        "type": "style",
+        "shots": 6,
+        "applied": 6,
+        "most": 1
+      }
+    ],
+    "neverShown": [],
+    "errors": []
+  }
+}

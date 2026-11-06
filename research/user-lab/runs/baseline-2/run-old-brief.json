@@ -1,0 +1,639 @@
+{
+ "personas": [
+  "first-job-phone",
+  "careful-retiree-pc"
+ ],
+ "parallel": 3,
+ "repeat": 1,
+ "tasks": [
+  {
+   "key": "s01",
+   "text": "You keep your savings in your bank current account and want to understand what that costs you and whether some of the money would be better somewhere else.",
+   "shots": [
+    "research/user-lab/runs/baseline-2/screens/s01/screen-01.png",
+    "research/user-lab/runs/baseline-2/screens/s01/screen-02.png",
+    "research/user-lab/runs/baseline-2/screens/s01/screen-03.png",
+    "research/user-lab/runs/baseline-2/screens/s01/screen-04.png",
+    "research/user-lab/runs/baseline-2/screens/s01/screen-05.png",
+    "research/user-lab/runs/baseline-2/screens/s01/screen-06.png",
+    "research/user-lab/runs/baseline-2/screens/s01/screen-07.png"
+   ],
+   "device": "pc",
+   "findings": true
+  },
+  {
+   "key": "s02",
+   "text": "You heard about money-market funds as a place to park cash and want to understand what one is, what it earns and costs, and whether it suits money you may need soon.",
+   "shots": [
+    "research/user-lab/runs/baseline-2/screens/s02/screen-01.png",
+    "research/user-lab/runs/baseline-2/screens/s02/screen-02.png",
+    "research/user-lab/runs/baseline-2/screens/s02/screen-03.png",
+    "research/user-lab/runs/baseline-2/screens/s02/screen-04.png",
+    "research/user-lab/runs/baseline-2/screens/s02/screen-05.png",
+    "research/user-lab/runs/baseline-2/screens/s02/screen-06.png",
+    "research/user-lab/runs/baseline-2/screens/s02/screen-07.png",
+    "research/user-lab/runs/baseline-2/screens/s02/screen-08.png",
+    "research/user-lab/runs/baseline-2/screens/s02/screen-09.png"
+   ],
+   "device": "pc",
+   "findings": true
+  },
+  {
+   "key": "s03",
+   "text": "On your phone, you are reading about current accounts because your savings sit in one, and you want to see what would happen to your own money if it stays there.",
+   "shots": [
+    "research/user-lab/runs/baseline-2/screens/s03/screen-01.png",
+    "research/user-lab/runs/baseline-2/screens/s03/screen-02.png",
+    "research/user-lab/runs/baseline-2/screens/s03/screen-03.png",
+    "research/user-lab/runs/baseline-2/screens/s03/screen-04.png",
+    "research/user-lab/runs/baseline-2/screens/s03/screen-05.png",
+    "research/user-lab/runs/baseline-2/screens/s03/screen-06.png",
+    "research/user-lab/runs/baseline-2/screens/s03/screen-07.png",
+    "research/user-lab/runs/baseline-2/screens/s03/screen-08.png",
+    "research/user-lab/runs/baseline-2/screens/s03/screen-09.png",
+    "research/user-lab/runs/baseline-2/screens/s03/screen-10.png",
+    "research/user-lab/runs/baseline-2/screens/s03/screen-11.png"
+   ],
+   "device": "phone",
+   "findings": true
+  },
+  {
+   "key": "s04",
+   "text": "You came to the site's home page to start learning about saving. You have heard of one kind of saving and want the site to explain it to you.",
+   "shots": [
+    "research/user-lab/runs/baseline-2/screens/s04/screen-01.png",
+    "research/user-lab/runs/baseline-2/screens/s04/screen-02.png",
+    "research/user-lab/runs/baseline-2/screens/s04/screen-03.png",
+    "research/user-lab/runs/baseline-2/screens/s04/screen-04.png",
+    "research/user-lab/runs/baseline-2/screens/s04/screen-05.png",
+    "research/user-lab/runs/baseline-2/screens/s04/screen-06.png",
+    "research/user-lab/runs/baseline-2/screens/s04/screen-07.png"
+   ],
+   "device": "pc",
+   "findings": true
+  },
+  {
+   "key": "s05",
+   "text": "You want to understand the different kinds of saving and investing available in Israel, so you can work out which ones are worth looking into for your own money.",
+   "shots": [
+    "research/user-lab/runs/baseline-2/screens/s05/screen-01.png",
+    "research/user-lab/runs/baseline-2/screens/s05/screen-02.png",
+    "research/user-lab/runs/baseline-2/screens/s05/screen-03.png",
+    "research/user-lab/runs/baseline-2/screens/s05/screen-04.png",
+    "research/user-lab/runs/baseline-2/screens/s05/screen-05.png"
+   ],
+   "device": "pc",
+   "findings": true
+  },
+  {
+   "key": "s06",
+   "text": "You want to understand the different kinds of saving and investing available in Israel, so you can work out which ones are worth looking into for your own money.",
+   "shots": [
+    "research/user-lab/runs/baseline-2/screens/s06/screen-01.png",
+    "research/user-lab/runs/baseline-2/screens/s06/screen-02.png",
+    "research/user-lab/runs/baseline-2/screens/s06/screen-03.png",
+    "research/user-lab/runs/baseline-2/screens/s06/screen-04.png",
+    "research/user-lab/runs/baseline-2/screens/s06/screen-05.png"
+   ],
+   "device": "pc",
+   "findings": true
+  },
+  {
+   "key": "s07",
+   "text": "You have some money sitting idle and want to understand how a fixed bank deposit works, what it pays and what you give up by locking the money away.",
+   "shots": [
+    "research/user-lab/runs/baseline-2/screens/s07/screen-01.png",
+    "research/user-lab/runs/baseline-2/screens/s07/screen-02.png",
+    "research/user-lab/runs/baseline-2/screens/s07/screen-03.png",
+    "research/user-lab/runs/baseline-2/screens/s07/screen-04.png",
+    "research/user-lab/runs/baseline-2/screens/s07/screen-05.png",
+    "research/user-lab/runs/baseline-2/screens/s07/screen-06.png",
+    "research/user-lab/runs/baseline-2/screens/s07/screen-07.png",
+    "research/user-lab/runs/baseline-2/screens/s07/screen-08.png"
+   ],
+   "device": "pc",
+   "findings": true
+  },
+  {
+   "key": "s08",
+   "text": "You want to understand the different kinds of saving and investing available in Israel, so you can work out which ones are worth looking into for your own money.",
+   "shots": [
+    "research/user-lab/runs/baseline-2/screens/s08/screen-01.png",
+    "research/user-lab/runs/baseline-2/screens/s08/screen-02.png",
+    "research/user-lab/runs/baseline-2/screens/s08/screen-03.png",
+    "research/user-lab/runs/baseline-2/screens/s08/screen-04.png"
+   ],
+   "device": "pc",
+   "findings": true
+  },
+  {
+   "key": "s09",
+   "text": "You have some money sitting idle and want to understand how a fixed bank deposit works, what it pays and what you give up by locking the money away.",
+   "shots": [
+    "research/user-lab/runs/baseline-2/screens/s09/screen-01.png",
+    "research/user-lab/runs/baseline-2/screens/s09/screen-02.png",
+    "research/user-lab/runs/baseline-2/screens/s09/screen-03.png",
+    "research/user-lab/runs/baseline-2/screens/s09/screen-04.png",
+    "research/user-lab/runs/baseline-2/screens/s09/screen-05.png",
+    "research/user-lab/runs/baseline-2/screens/s09/screen-06.png",
+    "research/user-lab/runs/baseline-2/screens/s09/screen-07.png",
+    "research/user-lab/runs/baseline-2/screens/s09/screen-08.png"
+   ],
+   "device": "pc",
+   "findings": true
+  },
+  {
+   "key": "s10",
+   "text": "You want to understand the different kinds of saving and investing available in Israel, so you can work out which ones are worth looking into for your own money.",
+   "shots": [
+    "research/user-lab/runs/baseline-2/screens/s10/screen-01.png",
+    "research/user-lab/runs/baseline-2/screens/s10/screen-02.png",
+    "research/user-lab/runs/baseline-2/screens/s10/screen-03.png",
+    "research/user-lab/runs/baseline-2/screens/s10/screen-04.png"
+   ],
+   "device": "pc",
+   "findings": true
+  },
+  {
+   "key": "s11",
+   "text": "You are salaried and your employer offers a keren hishtalmut; you want to understand what it is, when you can take the money out and whether it is worth having.",
+   "shots": [
+    "research/user-lab/runs/baseline-2/screens/s11/screen-01.png",
+    "research/user-lab/runs/baseline-2/screens/s11/screen-02.png",
+    "research/user-lab/runs/baseline-2/screens/s11/screen-03.png",
+    "research/user-lab/runs/baseline-2/screens/s11/screen-04.png",
+    "research/user-lab/runs/baseline-2/screens/s11/screen-05.png",
+    "research/user-lab/runs/baseline-2/screens/s11/screen-06.png",
+    "research/user-lab/runs/baseline-2/screens/s11/screen-07.png",
+    "research/user-lab/runs/baseline-2/screens/s11/screen-08.png"
+   ],
+   "device": "pc",
+   "findings": true
+  },
+  {
+   "key": "s12",
+   "text": "You are salaried and your employer offers a keren hishtalmut; you want to understand what it is, when you can take the money out and whether it is worth having.",
+   "shots": [
+    "research/user-lab/runs/baseline-2/screens/s12/screen-01.png",
+    "research/user-lab/runs/baseline-2/screens/s12/screen-02.png",
+    "research/user-lab/runs/baseline-2/screens/s12/screen-03.png",
+    "research/user-lab/runs/baseline-2/screens/s12/screen-04.png",
+    "research/user-lab/runs/baseline-2/screens/s12/screen-05.png",
+    "research/user-lab/runs/baseline-2/screens/s12/screen-06.png",
+    "research/user-lab/runs/baseline-2/screens/s12/screen-07.png",
+    "research/user-lab/runs/baseline-2/screens/s12/screen-08.png",
+    "research/user-lab/runs/baseline-2/screens/s12/screen-09.png"
+   ],
+   "device": "pc",
+   "findings": true
+  },
+  {
+   "key": "s13",
+   "text": "You are salaried and your employer offers a keren hishtalmut; you want to understand what it is, when you can take the money out and whether it is worth having.",
+   "shots": [
+    "research/user-lab/runs/baseline-2/screens/s13/screen-01.png",
+    "research/user-lab/runs/baseline-2/screens/s13/screen-02.png",
+    "research/user-lab/runs/baseline-2/screens/s13/screen-03.png",
+    "research/user-lab/runs/baseline-2/screens/s13/screen-04.png",
+    "research/user-lab/runs/baseline-2/screens/s13/screen-05.png",
+    "research/user-lab/runs/baseline-2/screens/s13/screen-06.png",
+    "research/user-lab/runs/baseline-2/screens/s13/screen-07.png",
+    "research/user-lab/runs/baseline-2/screens/s13/screen-08.png",
+    "research/user-lab/runs/baseline-2/screens/s13/screen-09.png"
+   ],
+   "device": "pc",
+   "findings": true
+  },
+  {
+   "key": "s14",
+   "text": "You are salaried and your employer offers a keren hishtalmut. You entered your monthly salary of 30,000 to see what joining would mean for you in money.",
+   "shots": [
+    "research/user-lab/runs/baseline-2/screens/s14/screen-01.png",
+    "research/user-lab/runs/baseline-2/screens/s14/screen-02.png",
+    "research/user-lab/runs/baseline-2/screens/s14/screen-03.png",
+    "research/user-lab/runs/baseline-2/screens/s14/screen-04.png",
+    "research/user-lab/runs/baseline-2/screens/s14/screen-05.png",
+    "research/user-lab/runs/baseline-2/screens/s14/screen-06.png",
+    "research/user-lab/runs/baseline-2/screens/s14/screen-07.png",
+    "research/user-lab/runs/baseline-2/screens/s14/screen-08.png",
+    "research/user-lab/runs/baseline-2/screens/s14/screen-09.png"
+   ],
+   "device": "pc",
+   "findings": true
+  },
+  {
+   "key": "s15",
+   "text": "You are thinking of opening a kupat gemel lehashkaa and want to compare the tracks every company offers, to find a good one for your money.",
+   "shots": [
+    "research/user-lab/runs/baseline-2/screens/s15/screen-01.png",
+    "research/user-lab/runs/baseline-2/screens/s15/screen-02.png",
+    "research/user-lab/runs/baseline-2/screens/s15/screen-03.png",
+    "research/user-lab/runs/baseline-2/screens/s15/screen-04.png",
+    "research/user-lab/runs/baseline-2/screens/s15/screen-05.png",
+    "research/user-lab/runs/baseline-2/screens/s15/screen-06.png",
+    "research/user-lab/runs/baseline-2/screens/s15/screen-07.png",
+    "research/user-lab/runs/baseline-2/screens/s15/screen-08.png",
+    "research/user-lab/runs/baseline-2/screens/s15/screen-09.png",
+    "research/user-lab/runs/baseline-2/screens/s15/screen-10.png",
+    "research/user-lab/runs/baseline-2/screens/s15/screen-11.png",
+    "research/user-lab/runs/baseline-2/screens/s15/screen-12.png",
+    "research/user-lab/runs/baseline-2/screens/s15/screen-13.png",
+    "research/user-lab/runs/baseline-2/screens/s15/screen-14.png",
+    "research/user-lab/runs/baseline-2/screens/s15/screen-15.png"
+   ],
+   "device": "pc",
+   "findings": true
+  },
+  {
+   "key": "s16",
+   "text": "You are thinking of opening a kupat gemel lehashkaa and want to compare the tracks every company offers, to find a good one for your money.",
+   "shots": [
+    "research/user-lab/runs/baseline-2/screens/s16/screen-01.png",
+    "research/user-lab/runs/baseline-2/screens/s16/screen-02.png",
+    "research/user-lab/runs/baseline-2/screens/s16/screen-03.png",
+    "research/user-lab/runs/baseline-2/screens/s16/screen-04.png",
+    "research/user-lab/runs/baseline-2/screens/s16/screen-05.png",
+    "research/user-lab/runs/baseline-2/screens/s16/screen-06.png",
+    "research/user-lab/runs/baseline-2/screens/s16/screen-07.png",
+    "research/user-lab/runs/baseline-2/screens/s16/screen-08.png",
+    "research/user-lab/runs/baseline-2/screens/s16/screen-09.png",
+    "research/user-lab/runs/baseline-2/screens/s16/screen-10.png",
+    "research/user-lab/runs/baseline-2/screens/s16/screen-11.png",
+    "research/user-lab/runs/baseline-2/screens/s16/screen-12.png",
+    "research/user-lab/runs/baseline-2/screens/s16/screen-13.png",
+    "research/user-lab/runs/baseline-2/screens/s16/screen-14.png",
+    "research/user-lab/runs/baseline-2/screens/s16/screen-15.png"
+   ],
+   "device": "pc",
+   "findings": true
+  },
+  {
+   "key": "s17",
+   "text": "You are thinking of opening a kupat gemel lehashkaa and want to compare the tracks every company offers, to find a good one for your money.",
+   "shots": [
+    "research/user-lab/runs/baseline-2/screens/s17/screen-01.png",
+    "research/user-lab/runs/baseline-2/screens/s17/screen-02.png",
+    "research/user-lab/runs/baseline-2/screens/s17/screen-03.png",
+    "research/user-lab/runs/baseline-2/screens/s17/screen-04.png",
+    "research/user-lab/runs/baseline-2/screens/s17/screen-05.png",
+    "research/user-lab/runs/baseline-2/screens/s17/screen-06.png",
+    "research/user-lab/runs/baseline-2/screens/s17/screen-07.png",
+    "research/user-lab/runs/baseline-2/screens/s17/screen-08.png",
+    "research/user-lab/runs/baseline-2/screens/s17/screen-09.png",
+    "research/user-lab/runs/baseline-2/screens/s17/screen-10.png",
+    "research/user-lab/runs/baseline-2/screens/s17/screen-11.png",
+    "research/user-lab/runs/baseline-2/screens/s17/screen-12.png",
+    "research/user-lab/runs/baseline-2/screens/s17/screen-13.png",
+    "research/user-lab/runs/baseline-2/screens/s17/screen-14.png",
+    "research/user-lab/runs/baseline-2/screens/s17/screen-15.png"
+   ],
+   "device": "pc",
+   "findings": true
+  },
+  {
+   "key": "s18",
+   "text": "You want a kupat gemel lehashkaa that invests in stock indices, and you want to find the one with the lowest management fee.",
+   "shots": [
+    "research/user-lab/runs/baseline-2/screens/s18/screen-01.png",
+    "research/user-lab/runs/baseline-2/screens/s18/screen-02.png",
+    "research/user-lab/runs/baseline-2/screens/s18/screen-03.png"
+   ],
+   "device": "pc",
+   "findings": true
+  },
+  {
+   "key": "s19",
+   "text": "You want to compare the pension savings tracks (תגמולים ואישית לפיצויים) that companies offer, to choose a good track for your long-term retirement money.",
+   "shots": [
+    "research/user-lab/runs/baseline-2/screens/s19/screen-01.png",
+    "research/user-lab/runs/baseline-2/screens/s19/screen-02.png",
+    "research/user-lab/runs/baseline-2/screens/s19/screen-03.png",
+    "research/user-lab/runs/baseline-2/screens/s19/screen-04.png",
+    "research/user-lab/runs/baseline-2/screens/s19/screen-05.png",
+    "research/user-lab/runs/baseline-2/screens/s19/screen-06.png",
+    "research/user-lab/runs/baseline-2/screens/s19/screen-07.png",
+    "research/user-lab/runs/baseline-2/screens/s19/screen-08.png",
+    "research/user-lab/runs/baseline-2/screens/s19/screen-09.png",
+    "research/user-lab/runs/baseline-2/screens/s19/screen-10.png",
+    "research/user-lab/runs/baseline-2/screens/s19/screen-11.png",
+    "research/user-lab/runs/baseline-2/screens/s19/screen-12.png",
+    "research/user-lab/runs/baseline-2/screens/s19/screen-13.png",
+    "research/user-lab/runs/baseline-2/screens/s19/screen-14.png",
+    "research/user-lab/runs/baseline-2/screens/s19/screen-15.png",
+    "research/user-lab/runs/baseline-2/screens/s19/screen-16.png",
+    "research/user-lab/runs/baseline-2/screens/s19/screen-17.png",
+    "research/user-lab/runs/baseline-2/screens/s19/screen-18.png",
+    "research/user-lab/runs/baseline-2/screens/s19/screen-19.png"
+   ],
+   "device": "pc",
+   "findings": true
+  },
+  {
+   "key": "s20",
+   "text": "Your savings are with Harel and you want to see everything Harel offers, what each track costs and how it has done.",
+   "shots": [
+    "research/user-lab/runs/baseline-2/screens/s20/screen-01.png",
+    "research/user-lab/runs/baseline-2/screens/s20/screen-02.png",
+    "research/user-lab/runs/baseline-2/screens/s20/screen-03.png",
+    "research/user-lab/runs/baseline-2/screens/s20/screen-04.png"
+   ],
+   "device": "pc",
+   "findings": true
+  },
+  {
+   "key": "s21",
+   "text": "Your savings are with Harel and you want to see what Harel can offer you, what it costs and how it has done.",
+   "shots": [
+    "research/user-lab/runs/baseline-2/screens/s21/screen-01.png",
+    "research/user-lab/runs/baseline-2/screens/s21/screen-02.png",
+    "research/user-lab/runs/baseline-2/screens/s21/screen-03.png",
+    "research/user-lab/runs/baseline-2/screens/s21/screen-04.png"
+   ],
+   "device": "pc",
+   "findings": true
+  },
+  {
+   "key": "s22",
+   "text": "You want a keren hishtalmut that follows the S&P 500 and want to see which company offers it for the lowest management fee.",
+   "shots": [
+    "research/user-lab/runs/baseline-2/screens/s22/screen-01.png",
+    "research/user-lab/runs/baseline-2/screens/s22/screen-02.png",
+    "research/user-lab/runs/baseline-2/screens/s22/screen-03.png"
+   ],
+   "device": "pc",
+   "findings": true
+  },
+  {
+   "key": "s23",
+   "text": "You want a keren hishtalmut that follows the S&P 500 and want to see which company offers it for the lowest management fee.",
+   "shots": [
+    "research/user-lab/runs/baseline-2/screens/s23/screen-01.png",
+    "research/user-lab/runs/baseline-2/screens/s23/screen-02.png",
+    "research/user-lab/runs/baseline-2/screens/s23/screen-03.png"
+   ],
+   "device": "pc",
+   "findings": true
+  },
+  {
+   "key": "s24",
+   "text": "Your savings are with Harel and you want to see everything Harel offers, what each track costs and how it has done.",
+   "shots": [
+    "research/user-lab/runs/baseline-2/screens/s24/screen-01.png",
+    "research/user-lab/runs/baseline-2/screens/s24/screen-02.png",
+    "research/user-lab/runs/baseline-2/screens/s24/screen-03.png",
+    "research/user-lab/runs/baseline-2/screens/s24/screen-04.png",
+    "research/user-lab/runs/baseline-2/screens/s24/screen-05.png",
+    "research/user-lab/runs/baseline-2/screens/s24/screen-06.png",
+    "research/user-lab/runs/baseline-2/screens/s24/screen-07.png",
+    "research/user-lab/runs/baseline-2/screens/s24/screen-08.png",
+    "research/user-lab/runs/baseline-2/screens/s24/screen-09.png",
+    "research/user-lab/runs/baseline-2/screens/s24/screen-10.png",
+    "research/user-lab/runs/baseline-2/screens/s24/screen-11.png",
+    "research/user-lab/runs/baseline-2/screens/s24/screen-12.png",
+    "research/user-lab/runs/baseline-2/screens/s24/screen-13.png"
+   ],
+   "device": "pc",
+   "findings": true
+  },
+  {
+   "key": "s25",
+   "text": "Your savings are with Harel and you want to see everything Harel offers, what each track costs and how it has done.",
+   "shots": [
+    "research/user-lab/runs/baseline-2/screens/s25/screen-01.png",
+    "research/user-lab/runs/baseline-2/screens/s25/screen-02.png",
+    "research/user-lab/runs/baseline-2/screens/s25/screen-03.png",
+    "research/user-lab/runs/baseline-2/screens/s25/screen-04.png",
+    "research/user-lab/runs/baseline-2/screens/s25/screen-05.png",
+    "research/user-lab/runs/baseline-2/screens/s25/screen-06.png",
+    "research/user-lab/runs/baseline-2/screens/s25/screen-07.png",
+    "research/user-lab/runs/baseline-2/screens/s25/screen-08.png",
+    "research/user-lab/runs/baseline-2/screens/s25/screen-09.png",
+    "research/user-lab/runs/baseline-2/screens/s25/screen-10.png",
+    "research/user-lab/runs/baseline-2/screens/s25/screen-11.png",
+    "research/user-lab/runs/baseline-2/screens/s25/screen-12.png",
+    "research/user-lab/runs/baseline-2/screens/s25/screen-13.png"
+   ],
+   "device": "pc",
+   "findings": true
+  },
+  {
+   "key": "s26",
+   "text": "You are thinking of opening a securities account with Psagot Trade and want to know what it would charge you and what you can buy there.",
+   "shots": [
+    "research/user-lab/runs/baseline-2/screens/s26/screen-01.png",
+    "research/user-lab/runs/baseline-2/screens/s26/screen-02.png",
+    "research/user-lab/runs/baseline-2/screens/s26/screen-03.png",
+    "research/user-lab/runs/baseline-2/screens/s26/screen-04.png"
+   ],
+   "device": "pc",
+   "findings": true
+  },
+  {
+   "key": "s27",
+   "text": "You want to invest regularly in an S&P 500 fund for the long term at the lowest cost, and you are working out which fund to pick and what it would mean for you.",
+   "shots": [
+    "research/user-lab/runs/baseline-2/screens/s27/screen-01.png",
+    "research/user-lab/runs/baseline-2/screens/s27/screen-02.png",
+    "research/user-lab/runs/baseline-2/screens/s27/screen-03.png",
+    "research/user-lab/runs/baseline-2/screens/s27/screen-04.png",
+    "research/user-lab/runs/baseline-2/screens/s27/screen-05.png",
+    "research/user-lab/runs/baseline-2/screens/s27/screen-06.png",
+    "research/user-lab/runs/baseline-2/screens/s27/screen-07.png",
+    "research/user-lab/runs/baseline-2/screens/s27/screen-08.png",
+    "research/user-lab/runs/baseline-2/screens/s27/screen-09.png",
+    "research/user-lab/runs/baseline-2/screens/s27/screen-10.png",
+    "research/user-lab/runs/baseline-2/screens/s27/screen-11.png"
+   ],
+   "device": "pc",
+   "findings": true
+  },
+  {
+   "key": "s28",
+   "text": "You want to invest regularly in an S&P 500 fund for the long term at the lowest cost, and you want to see how much your money would come to after costs.",
+   "shots": [
+    "research/user-lab/runs/baseline-2/screens/s28/screen-01.png",
+    "research/user-lab/runs/baseline-2/screens/s28/screen-02.png",
+    "research/user-lab/runs/baseline-2/screens/s28/screen-03.png",
+    "research/user-lab/runs/baseline-2/screens/s28/screen-04.png",
+    "research/user-lab/runs/baseline-2/screens/s28/screen-05.png",
+    "research/user-lab/runs/baseline-2/screens/s28/screen-06.png",
+    "research/user-lab/runs/baseline-2/screens/s28/screen-07.png",
+    "research/user-lab/runs/baseline-2/screens/s28/screen-08.png",
+    "research/user-lab/runs/baseline-2/screens/s28/screen-09.png",
+    "research/user-lab/runs/baseline-2/screens/s28/screen-10.png",
+    "research/user-lab/runs/baseline-2/screens/s28/screen-11.png"
+   ],
+   "device": "pc",
+   "findings": true
+  },
+  {
+   "key": "s29",
+   "text": "You want to invest regularly in a fund that follows the Tel Aviv 125 index for the long term and want to know where and how to do it most cheaply.",
+   "shots": [
+    "research/user-lab/runs/baseline-2/screens/s29/screen-01.png",
+    "research/user-lab/runs/baseline-2/screens/s29/screen-02.png",
+    "research/user-lab/runs/baseline-2/screens/s29/screen-03.png",
+    "research/user-lab/runs/baseline-2/screens/s29/screen-04.png",
+    "research/user-lab/runs/baseline-2/screens/s29/screen-05.png",
+    "research/user-lab/runs/baseline-2/screens/s29/screen-06.png",
+    "research/user-lab/runs/baseline-2/screens/s29/screen-07.png",
+    "research/user-lab/runs/baseline-2/screens/s29/screen-08.png"
+   ],
+   "device": "pc",
+   "findings": true
+  },
+  {
+   "key": "s30",
+   "text": "You want to invest in the S&P 500 and already have a fund in mind that the list does not show. You added it (iShares S&P 500 Swap UCITS ETF USD (Acc), bought abroad, yearly fee 0.05%) to see how it compares.",
+   "shots": [
+    "research/user-lab/runs/baseline-2/screens/s30/screen-01.png",
+    "research/user-lab/runs/baseline-2/screens/s30/screen-02.png",
+    "research/user-lab/runs/baseline-2/screens/s30/screen-03.png",
+    "research/user-lab/runs/baseline-2/screens/s30/screen-04.png",
+    "research/user-lab/runs/baseline-2/screens/s30/screen-05.png",
+    "research/user-lab/runs/baseline-2/screens/s30/screen-06.png",
+    "research/user-lab/runs/baseline-2/screens/s30/screen-07.png",
+    "research/user-lab/runs/baseline-2/screens/s30/screen-08.png",
+    "research/user-lab/runs/baseline-2/screens/s30/screen-09.png",
+    "research/user-lab/runs/baseline-2/screens/s30/screen-10.png",
+    "research/user-lab/runs/baseline-2/screens/s30/screen-11.png"
+   ],
+   "device": "pc",
+   "findings": true
+  },
+  {
+   "key": "s31",
+   "text": "You want to invest in an index the page does not list, so you added your own and called it 'test'. Now you want to see where and how to invest in it most cheaply.",
+   "shots": [
+    "research/user-lab/runs/baseline-2/screens/s31/screen-01.png",
+    "research/user-lab/runs/baseline-2/screens/s31/screen-02.png",
+    "research/user-lab/runs/baseline-2/screens/s31/screen-03.png",
+    "research/user-lab/runs/baseline-2/screens/s31/screen-04.png",
+    "research/user-lab/runs/baseline-2/screens/s31/screen-05.png",
+    "research/user-lab/runs/baseline-2/screens/s31/screen-06.png"
+   ],
+   "device": "pc",
+   "findings": true
+  },
+  {
+   "key": "s32",
+   "text": "Designers drew options for how a company's page lists its exchange-traded funds. Imagine you are looking at one company's index funds to see what each one follows and costs, and pick the option you would rather use.",
+   "shots": [
+    "research/user-lab/runs/baseline-2/screens/s32/screen-01.png",
+    "research/user-lab/runs/baseline-2/screens/s32/screen-02.png",
+    "research/user-lab/runs/baseline-2/screens/s32/screen-03.png"
+   ],
+   "device": "pc",
+   "findings": true,
+   "note": "Drawings made by the site's designers, shown as options to choose from; any mark that one option is recommended is theirs."
+  },
+  {
+   "key": "s33",
+   "text": "Designers drew options for how a company's page lists its exchange-traded funds. Imagine you are looking at one company's index funds to see what each one follows and costs, and pick the option you would rather use.",
+   "shots": [
+    "research/user-lab/runs/baseline-2/screens/s33/screen-01.png",
+    "research/user-lab/runs/baseline-2/screens/s33/screen-02.png"
+   ],
+   "device": "pc",
+   "findings": true,
+   "note": "Drawings made by the site's designers, shown as options to choose from; any mark that one option is recommended is theirs."
+  },
+  {
+   "key": "s34",
+   "text": "Designers drew options for a chart on the keren hishtalmut page. Imagine you are salaried and deciding whether a keren hishtalmut is worth it over a plain securities account, and pick the option you would rather see.",
+   "shots": [
+    "research/user-lab/runs/baseline-2/screens/s34/screen-01.png",
+    "research/user-lab/runs/baseline-2/screens/s34/screen-02.png",
+    "research/user-lab/runs/baseline-2/screens/s34/screen-03.png",
+    "research/user-lab/runs/baseline-2/screens/s34/screen-04.png",
+    "research/user-lab/runs/baseline-2/screens/s34/screen-05.png"
+   ],
+   "device": "pc",
+   "findings": true,
+   "note": "Drawings made by the site's designers, shown as options to choose from; any mark that one option is recommended is theirs."
+  },
+  {
+   "key": "s35",
+   "text": "Designers drew options for a chart on the keren hishtalmut page. Imagine you are salaried, your employer offers a keren hishtalmut, and you want to know whether joining is worth it. Pick the option you would rather see.",
+   "shots": [
+    "research/user-lab/runs/baseline-2/screens/s35/screen-01.png",
+    "research/user-lab/runs/baseline-2/screens/s35/screen-02.png",
+    "research/user-lab/runs/baseline-2/screens/s35/screen-03.png",
+    "research/user-lab/runs/baseline-2/screens/s35/screen-04.png",
+    "research/user-lab/runs/baseline-2/screens/s35/screen-05.png"
+   ],
+   "device": "pc",
+   "findings": true,
+   "note": "Drawings made by the site's designers, shown as options to choose from; any mark that one option is recommended is theirs."
+  },
+  {
+   "key": "s36",
+   "text": "Designers drew options for a chart on the keren hishtalmut page. Imagine you are salaried and deciding whether a keren hishtalmut is worth it over a plain securities account, and pick the option you would rather see.",
+   "shots": [
+    "research/user-lab/runs/baseline-2/screens/s36/screen-01.png",
+    "research/user-lab/runs/baseline-2/screens/s36/screen-02.png",
+    "research/user-lab/runs/baseline-2/screens/s36/screen-03.png",
+    "research/user-lab/runs/baseline-2/screens/s36/screen-04.png"
+   ],
+   "device": "pc",
+   "findings": true,
+   "note": "Drawings made by the site's designers, shown as options to choose from; any mark that one option is recommended is theirs."
+  },
+  {
+   "key": "s37",
+   "text": "Designers drew options for the page that lists every kupat gemel lehashkaa track. Imagine you want to choose a track for your savings, and pick the option you would rather use.",
+   "shots": [
+    "research/user-lab/runs/baseline-2/screens/s37/screen-01.png",
+    "research/user-lab/runs/baseline-2/screens/s37/screen-02.png",
+    "research/user-lab/runs/baseline-2/screens/s37/screen-03.png",
+    "research/user-lab/runs/baseline-2/screens/s37/screen-04.png",
+    "research/user-lab/runs/baseline-2/screens/s37/screen-05.png",
+    "research/user-lab/runs/baseline-2/screens/s37/screen-06.png",
+    "research/user-lab/runs/baseline-2/screens/s37/screen-07.png",
+    "research/user-lab/runs/baseline-2/screens/s37/screen-08.png",
+    "research/user-lab/runs/baseline-2/screens/s37/screen-09.png"
+   ],
+   "device": "pc",
+   "findings": true,
+   "note": "Drawings made by the site's designers, shown as options to choose from; any mark that one option is recommended is theirs."
+  },
+  {
+   "key": "s38",
+   "text": "Designers drew options for the page that lists every kupat gemel lehashkaa track. Imagine you want to choose where to save, and pick the option you would rather use.",
+   "shots": [
+    "research/user-lab/runs/baseline-2/screens/s38/screen-01.png",
+    "research/user-lab/runs/baseline-2/screens/s38/screen-02.png",
+    "research/user-lab/runs/baseline-2/screens/s38/screen-03.png",
+    "research/user-lab/runs/baseline-2/screens/s38/screen-04.png",
+    "research/user-lab/runs/baseline-2/screens/s38/screen-05.png",
+    "research/user-lab/runs/baseline-2/screens/s38/screen-06.png",
+    "research/user-lab/runs/baseline-2/screens/s38/screen-07.png",
+    "research/user-lab/runs/baseline-2/screens/s38/screen-08.png",
+    "research/user-lab/runs/baseline-2/screens/s38/screen-09.png",
+    "research/user-lab/runs/baseline-2/screens/s38/screen-10.png"
+   ],
+   "device": "pc",
+   "findings": true,
+   "note": "Drawings made by the site's designers, shown as options to choose from; any mark that one option is recommended is theirs."
+  },
+  {
+   "key": "s39",
+   "text": "Designers drew options for how companies appear on the page listing every kupat gemel lehashkaa track. Imagine you want to compare companies to choose where to save, and pick the option you would rather use.",
+   "shots": [
+    "research/user-lab/runs/baseline-2/screens/s39/screen-01.png",
+    "research/user-lab/runs/baseline-2/screens/s39/screen-02.png",
+    "research/user-lab/runs/baseline-2/screens/s39/screen-03.png",
+    "research/user-lab/runs/baseline-2/screens/s39/screen-04.png",
+    "research/user-lab/runs/baseline-2/screens/s39/screen-05.png",
+    "research/user-lab/runs/baseline-2/screens/s39/screen-06.png",
+    "research/user-lab/runs/baseline-2/screens/s39/screen-07.png",
+    "research/user-lab/runs/baseline-2/screens/s39/screen-08.png",
+    "research/user-lab/runs/baseline-2/screens/s39/screen-09.png",
+    "research/user-lab/runs/baseline-2/screens/s39/screen-10.png"
+   ],
+   "device": "pc",
+   "findings": true,
+   "note": "Drawings made by the site's designers, shown as options to choose from; any mark that one option is recommended is theirs."
+  }
+ ]
+}

@@ -1,0 +1,38 @@
+{
+  "id": "p03-colours-ta125-phone",
+  "about": "For the lab only; never reaches a session. Planted problem, kind p03 (Two parts of a chart in colours a person would call the same): see research/user-lab/planted.md.",
+  "purpose": "plant",
+  "pages": [
+    "/finance-tool/indices/ta125"
+  ],
+  "device": "phone",
+  "instance": {
+    "kind": "p03",
+    "mode": "page",
+    "url": "https://orishamir.github.io/finance-tool/indices/ta125",
+    "device": "phone",
+    "steps": [],
+    "task": "ta125",
+    "control": "planted/control-ta125-phone",
+    "split": "score"
+  },
+  "plants": [
+    {
+      "id": "p03",
+      "kind": "general",
+      "problem": "Two different fees in the cost bars and their legend are two shades of the same orange, so the reader cannot tell which part of a bar is which fee.",
+      "where": "the cost bars under the result and their legend",
+      "counts": "A finding that two (or more) colours in the cost bars or legend look the same or too alike to tell apart.",
+      "notCounts": "A complaint that there are too many colours, or that the legend is hard to read, without saying two look alike."
+    }
+  ],
+  "changes": [
+    {
+      "id": "look-alike",
+      "type": "chart-colours",
+      "tokens": {
+        "--chart-cost-custody": "var(--palette-orange-400)"
+      }
+    }
+  ]
+}

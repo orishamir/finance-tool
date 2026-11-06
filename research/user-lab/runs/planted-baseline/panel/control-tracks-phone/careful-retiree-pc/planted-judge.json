@@ -1,0 +1,53 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "Black background with dense numbers tiring for older eyes",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "Safest tracks show 'less than 3 years' instead of a return, blocking comparison",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "No explanation of risk or whether a track is like a deposit",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "Fee shown only as percentage, no shekel amount or 'per year'",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "Unexplained jargon and English letters in track names",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 6,
+      "summary": "Large share-track returns like 24.04% could tempt or mislead",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 7,
+      "summary": "Unclear who the site 'מקור' is, hurting trust",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 8,
+      "summary": "Coloured rings with similar colours meaningless without labels",
+      "serious": false,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.03539880000000001
+}

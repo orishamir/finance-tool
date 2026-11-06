@@ -1,0 +1,111 @@
+{
+  "task": "s21",
+  "persona": "careful-retiree-pc",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T03:23:32.705Z",
+  "structured": {
+    "answer": "I didn't decide anything. I'll ask my son or the bank, because nothing on Harel's page looks like a safe deposit. It's all shares and index funds. The bond track that sounds safe (\"אג\"ח סחיר\") shows no return yet, and I can't tell whether the 0.54%–0.61% fee is more or less than what the bank takes from me.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Second row of buttons (S&P 500, עוקב מדד מניות)",
+        "why": "English letters and index words. It felt like the page wasn't for me and I nearly left."
+      },
+      {
+        "where": "Return column for אג\"ח סחיר",
+        "why": "Instead of a number it says 'פחות מ־3 שנים', so I couldn't see how the one safe-sounding option did."
+      },
+      {
+        "where": "'כספי (שקלי)' row, 4.25% / 3.08%",
+        "why": "I didn't know if this is per year or total, or whether it's like a deposit."
+      }
+    ],
+    "used": [
+      "Title 'הראל'",
+      "Line about management fees averaged in 2025",
+      "Product buttons, especially 'קופת גמל להשקעה' and 'חיסכון לכל ילד'",
+      "Table rows 'אג\"ח סחיר' and 'כספי (שקלי)'",
+      "Fee columns 'ההחיסכון 0.54%–0.61%' and 'ההפקדה 0%'",
+      "Legal ceiling line 1.05% / 4%",
+      "Note that the return is 'לפני דמי ניהול' and 'לא אומרת מה יקרה בהמשך'"
+    ],
+    "skimmed": [
+      "Most of the 16 table rows (shares, S&P 500, halacha tracks)",
+      "Assets column (מיליון ₪)",
+      "Bottom of table on second screen"
+    ],
+    "skipped": [
+      "Coloured ring charts and מניות/מט\"ח percentages",
+      "Folded sections קרנות מחקות, מרכזית לפיצויים, קרנות סל",
+      "'מה כתוב במסמכים של הראל' list",
+      "Search box 'לא מצאתם שם?'",
+      "Footer",
+      "'123 ממקור / מחושב / הזנה' line"
+    ],
+    "unsure_meaning": [
+      "S&P 500",
+      "עוקב מדד",
+      "גמיש",
+      "סחיר",
+      "כספי (שקלי)",
+      "מט\"ח",
+      "PF-10",
+      "פחות מ־3 שנים",
+      "123 ממקור / 123 מחושב / 123 הזנה",
+      "ההחיסכון vs ההפקדה",
+      "the coloured rings",
+      "3 שנים 4.25% — per year or total"
+    ],
+    "not_found": [
+      "Anything like a deposit or guaranteed product",
+      "A plain sentence saying which option is safe",
+      "Return figure for the bond track",
+      "What the bank charges me, to compare"
+    ],
+    "findings": [
+      {
+        "what": "Dark background with small grey text that's hard to read even enlarged",
+        "where": "Whole page, especially the ceiling and extra-expenses lines under the table"
+      },
+      {
+        "what": "Page opens with shares, S&P 500 and index words; nothing about safe saving",
+        "where": "Second row of track buttons on first screen"
+      },
+      {
+        "what": "The safe-sounding bond track shows 'פחות מ־3 שנים' instead of a return",
+        "where": "Row אג\"ח סחיר"
+      },
+      {
+        "what": "Crowded table full of numbers and coloured rings; the big 24.04% stands out and worries me",
+        "where": "Main table"
+      },
+      {
+        "what": "No explanation whether returns are per year or total",
+        "where": "Return column"
+      },
+      {
+        "what": "Many unexplained terms with no plain-language help",
+        "where": "Track names and folded sections"
+      }
+    ]
+  },
+  "steps": 2,
+  "reads": 2,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 31673,
+    "turns": 4,
+    "usd": 0.1227578,
+    "input": 6,
+    "cacheWrite": 7622,
+    "cacheRead": 15189,
+    "output": 2936,
+    "model": "claude-opus-5-5"
+  }
+}

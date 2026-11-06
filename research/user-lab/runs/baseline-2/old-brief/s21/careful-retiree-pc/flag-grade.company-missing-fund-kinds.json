@@ -1,0 +1,84 @@
+{
+  "case": "company-missing-fund-kinds",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"A company's page lists its provident and study funds but not its index-tracking funds or money-market funds.\",\"where\":\"the product choices at the top of the company page\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Page doesn't say which product or track is the reader's; it opened on the investment savings fund, which may not be theirs",
+      "Most tracks show only 'less than 3 years' with no track record",
+      "The 'from source / calculated / you entered' line is confusing because the reader entered nothing",
+      "The investment filter buttons are useless (almost all say 1), and terms like 'סחיר', 'עוקב מדדים - גמיש' and 'משולב' mean nothing",
+      "Extra direct expenses come out of the fund but aren't shown, so the reader doesn't know how much",
+      "The 'what Harel's documents say' sections are folded, so the reader didn't learn the small print and wants it opened up",
+      "Half the track names are jargon",
+      "The 'קופה' number column isn't explained (does it match the statement?)",
+      "The 'from deposits 0%' line is the same in every row and adds nothing",
+      "Doesn't understand 'מט\"ח' (foreign currency), the coloured rings, or the dotted underlines",
+      "The '>' arrows don't show that they open something",
+      "Doesn't understand the difference between fees 'from savings' and 'from deposits', or which one they pay",
+      "'PF-10' in the note is unexplained",
+      "Returns are before fees and before tax, so it's unclear what the reader actually keeps",
+      "Can't see how Harel compares with other companies on this page",
+      "Wants returns after fees and tax, in shekels",
+      "No guidance on what's sensible at 61, near retirement",
+      "No information on the cost, tax or time of switching tracks or companies",
+      "Wants information on their pension and study fund, not just this investment fund",
+      "Doesn't know whether they can ask Harel for a lower fee",
+      "Would drop the folded index fund / severance fund / ETF sections",
+      "Would drop the 'didn't find a name?' search box"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader never says the company page is missing index-tracking or money-market funds; they only skipped the folded index fund and ETF sections as not theirs."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0641352
+  },
+  "b": {
+    "raised": [
+      "Page opens on the investment savings fund and nothing says which product or track is theirs, so the table may be about someone else's money",
+      "Most tracks have no track record, just 'less than 3 years'",
+      "The high-return stocks track is 94% in shares, which feels too risky at 61",
+      "The 'from source / calculated / you entered' line is confusing because they entered nothing",
+      "The 'where the money is invested' filter buttons are useless: almost all say 1 and the labels are jargon",
+      "Direct expenses taken on top of fees aren't shown, so the amount is unknown",
+      "The 'what Harel's documents say' sections are folded, so the small print stays unknown",
+      "Half the track names are jargon",
+      "The fund number column has no explanation of whether it matches the statement",
+      "The 'from deposits 0%' line is 0% in every row, so it's pointless",
+      "Foreign currency, the coloured rings and the dotted underlines aren't understood",
+      "The '>' arrows don't show that they open something",
+      "Some rows got scrolled past without being read",
+      "The difference between fees from savings and fees from deposits, and which one they pay, isn't clear",
+      "'PF-10' in the note isn't understood",
+      "Returns are before fees and tax, so it's unclear what they actually keep, and there are no shekel figures after fees",
+      "No comparison with other companies on the page, so they can't tell whether 0.54% is cheap",
+      "No guidance on what's sensible at 61, near retirement",
+      "No information on the cost, tax or time involved in switching tracks or companies",
+      "Their pension and study fund aren't covered, only this investment fund",
+      "Unclear whether they can ask Harel for a lower fee",
+      "Would drop the folded index/severance/ETF sections and the name search box"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader sees the folded index-fund and ETF sections and skips them as 'not mine'. They never say index-tracking or money-market funds are missing from the product choices at the top."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0632872
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1274224
+}

@@ -1,0 +1,77 @@
+{
+  "case": "hg-not-entered",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The text says 'לא הזנתם אחוזים, אז החישוב לוקח את התקרה' although the percentage fields are filled in with default values.\",\"where\":\"the sentence under the graphic\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Unsure what to actually do next to join",
+      "Doesn't understand what the ₪15,712 ceiling means for someone earning 30,000",
+      "The 'מקור · מחושב · הזנתם' legend line under the title is confusing",
+      "The 'at least 31% under age 60' bullet was a bit scary",
+      "Doesn't know the terms on the 'כדאי להכיר גם' buttons",
+      "Doesn't know what return/management-fee values to enter",
+      "Small years 1–12 chart has no numbers, so it teaches little",
+      "Company cards under 'מי מציע ומי מפקח' not understood",
+      "Tax section is confusing",
+      "Chief economist's recommendation to cut the benefit was slightly worrying",
+      "Big chart colours have no legend and bars have no labels",
+      "Unclear whether −64,761 is a sure loss, and what the final tax is given '47% מס במקור' is not final",
+      "Doesn't understand terms like 'רווח ריאלי', 'הפקדה מוטבת', 'מסלול כללי', 'אג\"ח ממשלתית צמודה'",
+      "Unclear why company names appear under 'תלוי בחברה' and whether to pick one",
+      "Missing a clear statement of what you get after the full 6 years",
+      "Missing how much less take-home pay each month",
+      "Missing whether every employer gives 7.5%",
+      "Missing what happens to employer money above the ceiling and if it's taxed monthly",
+      "Would drop the terms table, rule tags/codes, 'כדאי להכיר גם', closest alternative, risks section, company cards and most chart notes"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The report never says that the sentence under the graphic claims no percentages were entered even though the fields have default values; its questions about the ceiling are about what the ceiling means, not about this contradiction."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0550312
+  },
+  "b": {
+    "raised": [
+      "Unsure what they actually have to do next to join",
+      "Doesn't understand what the ₪15,712 'תקרה' means for a ₪30,000 salary",
+      "The '123 מקור · 123 מחושב · 123 הזנתם' line under the title is confusing",
+      "The 'at least 31% under age 60' bullet was a bit scary",
+      "Doesn't know the words on the 'כדאי להכיר גם' buttons",
+      "Small years 1–12 chart has no numbers, so little is learned from it",
+      "Company cards under 'מי מציע ומי מפקח' / 'תלוי בחברה' not understood: should they pick one?",
+      "Tax section is confusing",
+      "Chief economist's recommendation to cut the benefit caused worry",
+      "Big chart colours aren't explained and bars have no labels",
+      "Unclear whether −64,761 is a certain loss, and what the final tax is after the '47% מס במקור'",
+      "Terms like 'רווח ריאלי', 'הפקדה מוטבת', 'מסלול כללי', 'אג\"ח ממשלתית צמודה' not understood",
+      "Missing a clear statement of what you get after the full 6 years",
+      "Missing how much less pay will reach the bank account each month",
+      "Missing practical steps (HR? choose company? cheapest S&P 500?)",
+      "Missing whether every employer gives 7.5%",
+      "Missing what happens to employer money above the ceiling and whether it's taxed monthly",
+      "Would drop terms table, rule tags/codes, source line, 'כדאי להכיר גם', closest alternative, risks, company cards and most chart notes"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The report never mentions the sentence saying no percentages were entered while the fields show default values; its ceiling confusion is about the reader's salary, not this contradiction."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0585512
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1135824
+}

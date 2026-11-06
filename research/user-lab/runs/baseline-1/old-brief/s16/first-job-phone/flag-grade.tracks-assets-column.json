@@ -1,0 +1,84 @@
+{
+  "case": "tracks-assets-column",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The column 'נכסים בסוף ספטמבר' does not say it means the money pooled in the track; it reads as the fund's own assets.\",\"where\":\"that column's head\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Doesn't understand Menora's extra 0.01% fee 'מההפקדה'",
+      "Unsure whether fee is the only thing that matters or whether ~0.5% is a good price; nothing to compare it to",
+      "The '123 מקור 123 מחושב 123 הזנה' legend is confusing; doesn't know what 'הזנה' means",
+      "Orange box saying data not updated since September 2026 is a bit worrying",
+      "Doesn't know what 'קרן השתלמות' or 'קרן חדשה מקיפה' are",
+      "Grouping by company meant a lot of scrolling to find all the S&P 500 tracks",
+      "Doesn't understand most filter chip terms (אג\"ח, סחיר, גמיש, קיימות, הלכה, כספי שקלי)",
+      "Doesn't understand the yellow 'מט\"ח' ring part or why an S&P 500 track shows מט\"ח 99%",
+      "Unsure whether dotted underlines are clickable",
+      "Unclear why there are two fees (savings vs deposit) and which hurts more",
+      "'מניות 101%' is confusing — how can it be over 100%",
+      "Ayalon S&P 500 track 15977 shows מניות 34% / מט\"ח 82%, which seems inconsistent",
+      "Unclear difference between 'עוקב מדדי מניות', 'עוקב מדד S&P 500' and 'מניות'",
+      "Unclear whether to subtract the fee from the pre-fee return themselves",
+      "No information on how to open an account, minimums or monthly deposits",
+      "No information on withdrawal timing and tax",
+      "No simple worked example of savings over time",
+      "No information on switching companies or tracks later",
+      "No one-click view of only S&P 500 tracks sorted by fee across all companies",
+      "Would drop most rows (bond, money-market, halacha tracks) behind the filter",
+      "Would drop the 'קופה' number column and 'מההפקדה' when 0%",
+      "Would drop the 'נכסים' column"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader read the נכסים column as a size signal and would drop it, but never says it's unclear whether it means the track's pooled money or the fund's own assets."
+      }
+    ],
+    "liked": [],
+    "usd": 0.06186319999999999
+  },
+  "b": {
+    "raised": [
+      "Doesn't understand Menora's extra 0.01% fee 'מההפקדה'",
+      "Unsure whether a 0.5% fee is good; nothing to compare it to",
+      "The '123 מקור/מחושב/הזנה' legend is confusing; 'הזנה' unclear",
+      "Orange 'data not updated since September' box was a bit worrying",
+      "Doesn't know what 'קרן השתלמות' or 'קרן חדשה מקיפה' are",
+      "Most filter chip terms not understood (אג\"ח, סחיר, גמיש, קיימות, הלכה, כספי)",
+      "The long table grouped by company meant a lot of scrolling",
+      "Doesn't understand 'מט\"ח' / the yellow ring segment, or why an S&P 500 track shows מט\"ח 99%",
+      "Unclear why there are two fees (savings vs deposit) and which hurts more",
+      "'מניות 101%' over 100% is confusing",
+      "Ayalon S&P 500 track showing מניות 34% / מט\"ח 82% is puzzling",
+      "Difference between 'עוקב מדדי מניות', 'עוקב מדד S&P 500' and 'מניות' unclear",
+      "Unclear whether to subtract the fee from the pre-fee return",
+      "Can't find whether a lower fee can be negotiated",
+      "Can't find how to open one or what the minimum deposit is",
+      "Can't find withdrawal rules and tax",
+      "Wants a simple worked savings example",
+      "Can't find whether you can switch company/track later",
+      "No one-click view of only S&P 500 tracks sorted by fee across all companies",
+      "Would remove most rows (bond, money-market, halacha tracks) behind a filter",
+      "Would drop the 'קופה' number column and 'מההפקדה' when it's 0%",
+      "Would drop the 'נכסים' column"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader uses the assets figure as a safety signal and later says they'd drop the column, but never says the heading fails to explain it is the money pooled in the track rather than the fund's own assets."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0673472
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1292104
+}

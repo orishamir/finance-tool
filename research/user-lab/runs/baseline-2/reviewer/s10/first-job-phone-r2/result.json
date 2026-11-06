@@ -1,0 +1,100 @@
+{
+  "task": "s10",
+  "persona": "first-job-phone",
+  "repeat": 2,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T12:16:56.224Z",
+  "structured": {
+    "answer": "From the guide, the things worth checking for me seem to be my existing קרן השתלמות, a קופת גמל להשקעה (you can withdraw any time), or a self-run investment account, with something like the S&P 500 inside. But the page doesn't say which is better, what it costs, or what to do first.",
+    "confidence": "unsure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Screen 2 top, 'כסף שוטף וקצר' cards",
+        "why": "Scroll jumped past the card titles; only saw the last lines of text, so I don't know which products those were"
+      },
+      {
+        "where": "Screen 3 top, 'לבחירה עצמית' cards",
+        "why": "Card titles cut off again; only fragments like 'בית השקעות... קונים, מוכרים ומחזיקים מניות'. This is the part most relevant to me and I missed it"
+      },
+      {
+        "where": "Index cards, screens 3-4",
+        "why": "Lots of similar cards (MSCI World, AC World, S&P, Nasdaq, TA-35/90/125) with no hint which one suits me"
+      }
+    ],
+    "used": [
+      "Heading 'מדריך' and subtitle 'כל סוג של חיסכון והשקעה'",
+      "'שני חלקים בכל חיסכון' paragraph",
+      "'מאיפה להתחיל' links",
+      "'חיסכון עם הטבת מס' cards: קרן השתלמות, קופת גמל להשקעה ('אפשר למשוך בכל עת')",
+      "'במה הכסף מושקע' heading and S&P 500 card"
+    ],
+    "skimmed": [
+      "מזומן שקלי / קרן כספית / מק\"מ cards",
+      "אגרות חוב ממשלתיות, מסלול כללי cards",
+      "MSCI / Nasdaq / TA index cards",
+      "'מה האתר עוד לא מכסה' card"
+    ],
+    "skipped": [
+      "'פרישה' section (pension cards)",
+      "'לילדים' section",
+      "Footer links and small grey line at bottom",
+      "Small grey line 'בכל עמוד של מוצר יש שורה...'"
+    ],
+    "unsure_meaning": [
+      "מק\"מ",
+      "אג\"ח",
+      "חשיפה לדולר או מנוטרלת ממנו",
+      "קרן חדשה כללית",
+      "תגמולים ואישית לפיצויים",
+      "מסלול כללי",
+      "'יומית' / 'מתחדשת' buttons on קרן כספית"
+    ],
+    "not_found": [
+      "Any fees, especially in shekels",
+      "Any recommendation or 'start here if you're like me' for someone with 30,000 ₪ in the bank",
+      "What the first practical step is",
+      "Returns or example of how money would grow",
+      "Names of companies/banks offering these"
+    ],
+    "findings": [
+      {
+        "what": "No guidance on which option fits a young saver with cash in the bank. The 'מאיפה להתחיל' links don't cover 'I have savings, want to invest'",
+        "where": "Screen 1, 'מאיפה להתחיל'"
+      },
+      {
+        "what": "Self-chosen investment account cards are hard to catch; titles easily missed while scrolling",
+        "where": "Screen 3 top, 'לבחירה עצמית'"
+      },
+      {
+        "what": "No fees or costs anywhere on the guide",
+        "where": "Whole page"
+      },
+      {
+        "what": "Too many look-alike index cards; no way to tell which matters",
+        "where": "Screens 3-4, 'במה הכסף מושקע'"
+      },
+      {
+        "what": "Jargon in card texts (מק\"מ, אג\"ח, מנוטרלת) without plain explanation",
+        "where": "Screen 3 cards"
+      }
+    ]
+  },
+  "steps": 4,
+  "reads": 4,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 36649,
+    "turns": 6,
+    "usd": 0.13555660000000003,
+    "input": 10,
+    "cacheWrite": 8191,
+    "cacheRead": 32743,
+    "output": 3172,
+    "model": "claude-opus-5-5"
+  }
+}

@@ -1,0 +1,91 @@
+{
+  "case": "mmf-guide-leumi",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The money-market-fund guide compares with one named bank (Leumi) and cites that bank's deposit rate, in a page about a general product.\",\"where\":\"the comparison lines and their source\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "The phrase \"סיכון נמוך שהלווה לא יחזיר\" in the summary was confusing at first",
+      "The \"123 מקור / חושב / הזנה\" row wasn't understood and looked like something for the site's builders",
+      "The 10% foreign-securities sentence leaves it unclear when sale money reaches the account",
+      "The open question about whether Friday trading is possible bothered the reader",
+      "The fee comes off the price daily and never shows as a separate charge, which is worrying",
+      "The closed \"שחקו עם המספרים שלכם\" box gave no hint of what it would answer",
+      "Small code labels (TXS-24, MF-16, etc.) mean nothing; the reader would drop them",
+      "Unclear how to tell which 2 of the 73 funds pay the tax themselves",
+      "No state guarantee on the fund and no insurance on deposits was sobering",
+      "The colours of the comparison bars are unexplained, and equal bars add nothing beyond the numbers",
+      "Unclear why the renewing fund (קרן כספית מתחדשת) is greyed out",
+      "\"אין תקרה בחוק\" on almost every cost line was a little scary",
+      "The cost section has no actual amounts, only \"set by the provider\"",
+      "\"מסלקה\" and the actual cut-off hour aren't explained",
+      "Real vs nominal gain, and what the site calculates and where, is unclear",
+      "Redemption suspension in unusual cases: when and how often hasn't been explained",
+      "The ISA average fee figure is mentioned but the number isn't shown",
+      "No shekel example of 3.25% minus fees minus tax",
+      "Missing: whether a money-market fund has ever lost money in Israel",
+      "Missing: how to choose one fund out of 73",
+      "Missing: whether it can be bought at one's own bank or needs a brokerage account",
+      "Missing: whether there is a minimum investment",
+      "Missing: whether the investor must report tax themselves",
+      "Would drop the \"מה האתר לקח בחשבון\" section",
+      "Would cut most of the glossary",
+      "Would drop the \"חוקים וכללים\" column in the cost table"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader quotes the comparison box's note naming Discount bank without objecting, and never complains that a general guide names or cites a particular bank, Leumi or any other."
+      }
+    ],
+    "liked": [],
+    "usd": 0.07472319999999999
+  },
+  "b": {
+    "raised": [
+      "The fee is never given as a number, so the real return (3.25% minus fee minus tax) is unknown, and the ISA average fee isn't shown",
+      "The phrase 'סיכון נמוך שהלווה לא יחזיר' was confusing and needed rereading",
+      "Didn't understand the '123 מקור / חושב / הזנה' row; it looked like something for the site's builders",
+      "The long sentence about 10% foreign securities doesn't make clear when the money from a sale arrives, or how to know which kind of fund you have",
+      "The open question about buying or selling on Fridays, still not checked, bothered the reader",
+      "Worried that the fee comes off the price every day and never shows as a separate charge",
+      "The closed 'שחקו עם המספרים שלכם' box gave no sign of what it would offer",
+      "Confused by '2 of 73 funds are taxed funds' and how to tell which ones they are",
+      "Didn't know what the bar colours in the comparison box mean",
+      "Bars of the same length add nothing beyond the numbers",
+      "Didn't understand why the renewing fund is greyed out",
+      "'אין תקרה בחוק' (no legal ceiling) on cost lines was a little scary",
+      "Rule codes such as MF-16, BRK-17 and TXS-24 mean nothing to the reader",
+      "Didn't understand 'מסלקה' or what time the cut-off hour actually is",
+      "Didn't understand real versus nominal gain, or what the site calculates and where",
+      "Unclear when and how often redemptions have been suspended",
+      "Wanted a worked shekel example (for example 50,000 ₪ for six months)",
+      "Wanted to know whether a money-market fund has ever lost money in Israel",
+      "Wanted guidance on how to pick one fund out of the 73",
+      "Unclear whether you can buy at your own bank or need a brokerage account",
+      "Unclear whether there is a minimum amount to invest",
+      "Unclear whether tax reporting is needed or the tax is taken off automatically",
+      "Would drop the 'הצגת החוקים והכללים' links",
+      "Would drop the 'מה האתר לקח בחשבון' section",
+      "Would cut most of the glossary"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The report never complains about comparing with one named bank or citing that bank's deposit rate; it mentions only the Discount current-account note, and only to describe it."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0755392
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1502624
+}

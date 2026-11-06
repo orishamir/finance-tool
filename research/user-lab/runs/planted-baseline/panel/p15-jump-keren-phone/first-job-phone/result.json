@@ -1,0 +1,110 @@
+{
+  "task": "p15-jump-keren-phone",
+  "persona": "first-job-phone",
+  "repeat": 1,
+  "mode": "browser",
+  "device": "phone",
+  "startedAt": "2026-11-05T23:24:38.677Z",
+  "structured": {
+    "answer": "After 8 years (500 ₪/month, defaults) about 68,853 ₪ \"נשאר בידיים\"; after 4 years the calculator gives no figure for self-employed, it just says withdrawing before 6 years is taxed.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Year 4 in the calculator (עצמאים)",
+        "why": "Only a number 25,725 over an empty dashed bar; its label was hidden under the floating up-arrow button, so I nearly took it as my 4-year amount"
+      },
+      {
+        "where": "Year 8 bars",
+        "why": "Reading from the right, the first number is 55,471 (same money in a securities account), not the fund result"
+      }
+    ],
+    "used": [
+      "Heading and intro line",
+      "'אחרי 6 שנים' rule in text",
+      "עצמאים toggle",
+      "Default fields 500 ₪/month, 7%, 0.54%",
+      "Year chart taps 4 and 8",
+      "Orange note 'לעצמאים עוד אין כאן חישוב למשיכה לפני 6 שנים'",
+      "'נשאר בידיים' 68,853 and 'הפקדתם' 48,000"
+    ],
+    "skimmed": [
+      "Paragraph about exemption ceilings (7.5%/2.5%, 15,712, 20,566)",
+      "Bar labels החזר המס / התשואה הוסיפה / המס לקח"
+    ],
+    "skipped": [
+      "חוקים וכללים · 10",
+      "כדאי להכיר גם / במה אפשר להשקיע chips",
+      "Line under the chart about depositing 13,205 more",
+      "Rest of page below calculator"
+    ],
+    "unsure_meaning": [
+      "הכנסה חייבת",
+      "החזר המס הוסיף +9,581",
+      "המס לקח 0",
+      "אותו כסף בחשבון ניירות ערך",
+      "מסלול מדד",
+      "the teal/yellow/grey bar colours"
+    ],
+    "not_found": [
+      "Any amount for withdrawing after 4 years as self-employed"
+    ],
+    "findings": [
+      {
+        "what": "No calculation for self-employed withdrawing before 6 years; years 1-5 are empty boxes, half the question unanswered",
+        "where": "Calculator year chart, עצמאים"
+      },
+      {
+        "what": "A lone number (25,725) shows above an empty dashed bar at year 4, looks like the result",
+        "where": "Calculator result area, years 1-5"
+      },
+      {
+        "what": "Floating up-arrow button covers the label of the rightmost bar",
+        "where": "Bottom right of calculator"
+      },
+      {
+        "what": "Rightmost (first-read in RTL) number is the comparison account, not the fund; the main answer is second",
+        "where": "Result bars at year 8"
+      },
+      {
+        "what": "'החזר המס הוסיף' adds money with no explanation of what tax refund it means",
+        "where": "Result bars"
+      },
+      {
+        "what": "Default income/deposit not obviously linked; unclear if I should change הכנסה חייבת",
+        "where": "Calculator fields"
+      }
+    ]
+  },
+  "steps": 7,
+  "reads": 7,
+  "commands": 7,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 55329,
+    "turns": 16,
+    "usd": 0.2523526,
+    "input": 30,
+    "cacheWrite": 17128,
+    "cacheRead": 196443,
+    "output": 3796,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "p15-jump-keren-phone",
+    "screenshots": 7,
+    "changes": [
+      {
+        "id": "jump-shown",
+        "type": "style",
+        "shots": 7,
+        "applied": 7,
+        "most": 1
+      }
+    ],
+    "neverShown": [],
+    "errors": []
+  }
+}

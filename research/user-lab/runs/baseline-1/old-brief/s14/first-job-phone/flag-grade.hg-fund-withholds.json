@@ -1,0 +1,85 @@
+{
+  "case": "hg-fund-withholds",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The sentence 'הקרן מנכה קודם … מס במקור, ו… מהם חוזרים רק אם מגישים דוח שנתי' is jargon; the reader does not understand what the fund deducts.\",\"where\":\"the early-withdrawal sentence of the graphic\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "The '123 ממקור / מחושב / הזנתה / מונח' legend labels at the top are confusing and their purpose is unclear",
+      "'מה זה' piles up too many terms and numbers (capital gains tax, 7.5%, 2.5%, ₪15,712, 20,566) before showing what they mean, so the reader skimmed",
+      "Doesn't know what to put in the calculator's return and management-fee boxes",
+      "'הכי קרוב לזה: חשבון ניירות ערך' doesn't say whether it is better or worse for the reader",
+      "The codes TXH-09, KH-15, PF-18 in 'שווה לדעת' mean nothing",
+      "The 'תלוי בחברה: ...' cards in 'מי מציע ומי מפקח' are confusing (depends on the company how?)",
+      "The 7.5%/15,712/20,566 paragraphs repeat across sections (the reader would cut them)",
+      "The 47% figure in the orange box is scary and only half reassured by 'זה לא המס הסופי'",
+      "The chief economist's recommendation to cut the benefit worries the reader that it might go away",
+      "Doesn't understand why the bars after year 6 still have a striped pink tax top if it's tax-free",
+      "Can't see the year-6 or year-12 numbers without clicking; the default shows year 5, the bad year",
+      "Higher management fee (0.7%) giving more money than 0.19% seems backwards and lowers trust",
+      "Confused about how much tax is really paid: −64,761 vs '47% מס במקור' vs getting back what was deducted beyond the actual tax",
+      "Unclear whether employer deposits above the ceiling being taxed that month hit the reader's paycheck",
+      "Doesn't understand terms: מסלול השקעה, מס רווחי הון, רווח ריאלי, משכורת קובעת, חברה מנהלת, נעילה, ניכוי",
+      "Missing: how much smaller the net monthly paycheck becomes",
+      "Missing: which company or plan to pick and how to tell the employer",
+      "Missing: what happens to the fund if the reader leaves the job",
+      "Missing: a comparison with investing the 750 in the S&P 500 directly",
+      "Would cut the glossary table (only used for 2 words)",
+      "Would cut the 'חוקים וכללים' chips",
+      "Would cut the small-print notes under the chart"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 13,
+        "why": "The reader says they can't tell how much tax they really pay given the '47% מס במקור' deduction and the line about getting back what was deducted beyond the actual tax, and they also list 'ניכוי' as a word they don't understand, so they don't understand what the fund deducts in the withdrawal explanation."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0729592
+  },
+  "b": {
+    "raised": [
+      "Doesn't know how much smaller the monthly net paycheck will be",
+      "Doesn't know which company to pick or how to sign up",
+      "The '123 ממקור / מחושב / הזנתה / מונח' legend labels are confusing",
+      "'מה זה' has too many numbers and terms (מס רווחי הון, 7.5%, 15,712, 20,566) before it shows what they mean for the reader",
+      "Return and management-fee inputs in the calculator: wouldn't know what values to enter",
+      "'הכי קרוב לזה: חשבון ניירות ערך' doesn't say whether it's better or worse",
+      "Codes TXH-09 / KH-15 / PF-18 in 'שווה לדעת' mean nothing",
+      "'תלוי בחברה' provider cards are confusing; depends on the company how?",
+      "Taxation cards slide sideways, so the reader didn't bother; the paragraph repeats earlier numbers",
+      "The 47% figure in the orange box is scary",
+      "The chief economist's recommendation to cut the benefit is worrying",
+      "Bars after year 6 still have a striped pink tax top even though it's supposed to be tax-free",
+      "Can't see the year-6 or year-12 results without clicking; the default shows year 5",
+      "The higher management fee shows more money, which seems backwards and lowers trust",
+      "Unclear how much tax is really paid: −64,761 vs 47% withheld at source and 'getting back what was deducted beyond the actual tax'",
+      "Unclear whether employer deposits above the ceiling are taxed in the paycheck",
+      "Doesn't understand terms like מסלול השקעה, מס רווחי הון, רווח ריאלי, משכורת קובעת, חברה מנהלת, נעילה, ניכוי",
+      "Doesn't know what happens to the fund if they leave the job",
+      "No comparison with investing the 750 in the S&P 500 directly",
+      "Would drop the glossary table (only used for 2 words)",
+      "Would drop the 'חוקים וכללים' chips",
+      "Repeated 7.5%/15,712/20,566 paragraphs",
+      "Would drop the small-print notes under the chart"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 15,
+        "why": "The reader says they don't understand the 47% withheld at source and the refund of 'what was deducted beyond the actual tax' (and lists 'ניכוי' as an unknown word), so they can't tell what is actually deducted. That is the person's complaint that the early-withdrawal deduction sentence is unclear jargon."
+      }
+    ],
+    "liked": [],
+    "usd": 0.06539919999999999
+  },
+  "third": null,
+  "ranks": {
+    "k": 13
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1383584
+}

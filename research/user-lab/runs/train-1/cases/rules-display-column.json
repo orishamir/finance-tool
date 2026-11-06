@@ -1,0 +1,14 @@
+{
+ "id": "rules-display-column",
+ "task": "t65",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "Option B puts the rules in a separate column of the table, which he did not want.",
+   "where": "option B's table",
+   "kind": "taste",
+   "outside": false
+  }
+ ],
+ "liked": []
+}

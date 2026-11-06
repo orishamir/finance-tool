@@ -1,0 +1,77 @@
+{
+  "case": "tracks-sort-does-nothing",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"Sorting by management fee does nothing visible: under each company heading there is one track, so the order does not change.\",\"where\":\"the sorted table\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Unsure the right filter was chosen; the separate S&P 500 button might have cheaper options",
+      "Fee shown is a 2025 average, so it may not be what a new member would pay",
+      "The '123 מקור · מחושב · הזנתה' line is confusing",
+      "The orange 'data not updated since September 2026' notice is worrying",
+      "Unclear what the 'קיבוץ לפי' switch would do",
+      "Investment-type buttons (עוקב מדדי מניות, עוקב מדד s&p 500, מניות, מניות סחיר) sound alike; unclear which means S&P 500",
+      "List is ordered by company size, not fee, so the reader had to scan it all by hand",
+      "Doesn't understand 'מט\"ח' or why מיטב shows 4% while others show about 98%",
+      "Unclear what the circle graphic is meant to show",
+      "Unclear difference between 'מהחיסכון' and 'מההפקדה'",
+      "Doesn't understand why almost all returns say 'פחות מ־3 שנים'",
+      "No way to sort by fee, cheapest first",
+      "No explanation of what the fee percentages mean in shekels",
+      "No information on whether a fee lower than the 2025 average can be had",
+      "No information on how to join or on a minimum amount",
+      "Would drop 'כסף מנוהל'",
+      "Would drop the blue code numbers",
+      "Would drop the search box",
+      "Would drop the returns column since it's mostly 'פחות מ־3 שנים'"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader never clicked the sort arrows and only says no fee sort could be found, so the report never says that sorting by fee makes no visible change because each company has just one track."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0511992
+  },
+  "b": {
+    "raised": [
+      "Unsure the right filter was chosen; the separate S&P 500 button might have cheaper options",
+      "The fee is a 2025 average, which may not be what a new member would pay",
+      "The '123 מקור · מחושב · הזנתה' line is confusing",
+      "The orange 'data not updated since September 2026' notice is worrying",
+      "Unclear what the 'קיבוץ לפי' switch would do",
+      "The investment-type buttons (עוקב מדדי מניות, s&p 500, מניות, מניות סחיר) sound alike; unclear which one means S&P 500",
+      "The list is ordered by company size, not fee, so the reader had to scan the whole list",
+      "Doesn't understand 'מט\"ח' or why מיטב shows 4% while the others show about 98%",
+      "Doesn't understand what the circle is meant to show",
+      "Unclear difference between מהחיסכון and מההפקדה fees",
+      "Unclear why most returns say 'פחות מ־3 שנים'",
+      "No way to sort by fee, cheapest first",
+      "No explanation of what the fee percentages mean in shekels",
+      "No information on whether a fee below the 2025 average is possible",
+      "No information on how to join or whether there is a minimum amount",
+      "Would drop 'כסף מנוהל'",
+      "Would drop the blue code numbers",
+      "Would drop the search box"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader never clicked the sort arrows. They only say they couldn't find a fee sort and that the list is ordered by size, so they never saw that a fee sort changes nothing because each company has one track."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0521472
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1033464
+}

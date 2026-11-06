@@ -1,0 +1,81 @@
+{
+  "case": "company-brokerage-card",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The securities-account card on a company's page does not look like the site's other product cards.\",\"where\":\"the securities-account card\",\"kind\":\"taste\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "The ad and the binding price list disagree, so the real cost is unclear and trust drops",
+      "The currency-exchange spread has no cap in the documents, which is worrying",
+      "Foreign securities are marked 'unknown'",
+      "'123 ממקור' line is confusing (sources count or page number?)",
+      "The price list has no publication date, so it may not be current",
+      "'11 fee lines collected' but only about five are visible",
+      "Two currency-exchange blocks (1.5 agorot per dollar vs 0.5%) are confusing: which do I pay, or both?",
+      "Fee for European/Asian shares is unclear, may change, and spans a wide 0.48%–1.5% range",
+      "The custody-fee 'document says otherwise' row is cut off, so the disagreement is never shown",
+      "The 'fee change notice · rules 1' item is not understood: what changed?",
+      "'חשבון בתנאים שלכם' button is not understood",
+      "Grey product lists after each fee are small and easy to miss",
+      "Unclear whether the quarterly custody fee applies to the whole portfolio and whether it has a minimum",
+      "Ordinary Israeli shares and government bonds are not listed under what you can buy",
+      "No clear answer on American shares",
+      "No info on custody minimum or on fees for closing the account or transferring shares",
+      "No info on dividend handling or tax-related fees",
+      "Page does not say which price wins when ad and document disagree",
+      "No simple yearly cost total example",
+      "Would drop the search box, the '123 ממקור' line, the small price-list links and section numbers, and the closed securities-account block; would shrink the European-shares paragraph"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The report only says it would drop the closed 'חשבון ניירות ערך · 2' block and never says that the card looks different from the site's other product cards."
+      }
+    ],
+    "liked": [],
+    "usd": 0.058619199999999996
+  },
+  "b": {
+    "raised": [
+      "The ad and the price list disagree ('the document says otherwise'), so it's unclear what they would really pay",
+      "No cap on the currency exchange spread is worrying",
+      "Foreign securities are marked 'unknown'",
+      "'123 ממקור' is confusing: a source count or a page number?",
+      "The price list has no publication date, so it may not be current",
+      "It says '11 fee lines collected' but only about five are visible",
+      "Two currency-exchange blocks (1.5 agorot vs 0.5%): which one applies, or both?",
+      "The fee on European/Asian shares is a wide range (0.48%–1.5%) and 'may change'",
+      "The custody-fee disagreement row was cut off, so the disagreement was never seen",
+      "'What protects the money' is collapsed, so important information was missed",
+      "'הודעה על שינוי בעמלות' isn't explained: what changed?",
+      "The 'חשבון בתנאים שלכם' button isn't understood",
+      "The grey product lists after each fee are small and easy to miss",
+      "Unclear whether custody is charged on the whole portfolio and whether there's a quarterly minimum",
+      "Ordinary Israeli shares and government bonds aren't listed under what you can buy",
+      "No information on fees for closing the account or transferring shares",
+      "No information on dividend handling or tax-related fees",
+      "The page doesn't say which price wins when the ad and the document disagree",
+      "No simple yearly total cost estimate",
+      "Would drop the search box, the '123 ממקור' line, the small price-list links, the section numbers and the closed 'חשבון ניירות ערך · 2' block",
+      "The long European-shares paragraph should shrink to one line"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader only mentions the closed 'חשבון ניירות ערך · 2' block as something to cut, and never says it looks different from the site's other product cards."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0616192
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1202384
+}

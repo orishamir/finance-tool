@@ -1,0 +1,36 @@
+{
+  "case": "tracks-chevron-not-link",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The '<' at the end of each row does not look like a link to the track's own page.\",\"where\":\"the arrow at the end of each row\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings mention the arrow at the end of each row, or that it isn't clear it links to the track's page."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0132634
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings mention the '<' arrow at the end of each row or say that it doesn't look like a link to the track's page."
+      }
+    ],
+    "liked": [],
+    "usd": 0.013287400000000001
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0265508
+}

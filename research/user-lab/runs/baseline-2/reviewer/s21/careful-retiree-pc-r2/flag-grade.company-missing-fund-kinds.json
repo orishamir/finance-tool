@@ -1,0 +1,36 @@
+{
+  "case": "company-missing-fund-kinds",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"A company's page lists its provident and study funds but not its index-tracking funds or money-market funds.\",\"where\":\"the product choices at the top of the company page\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 1,
+        "why": "Finding 1 says the product buttons offer nothing for safe saving, which overlaps with the missing money-market funds (the safe-saving product), though it never mentions index funds, so this is a borderline match."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0221594
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 1,
+        "why": "Finding 1 says the product buttons offer nothing for deposits or safe saving, which comes close to the person's complaint that money-market funds are missing from the company's product choices; it's a borderline match, and the reader never mentions index-tracking funds."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0202674
+  },
+  "third": null,
+  "ranks": {
+    "k": 1
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0424268
+}

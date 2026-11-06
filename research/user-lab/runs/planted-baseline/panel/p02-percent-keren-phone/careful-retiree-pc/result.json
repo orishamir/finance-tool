@@ -1,0 +1,123 @@
+{
+  "task": "p02-percent-keren-phone",
+  "persona": "careful-retiree-pc",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "phone",
+  "startedAt": "2026-11-05T23:02:51.676Z",
+  "structured": {
+    "answer": "At my age I could take it out after 3 years without tax (others wait 6). How much I'd have I couldn't really tell: with 300 ₪ a month from me and 900 from the employer the page showed about 54,000 put in over 5 years, roughly 66,000 at the end, and a red −13,974 for tax. I'll ask my son or the bank before deciding.",
+    "confidence": "unsure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Calculator result bars and the text under it",
+        "why": "Several numbers (54,000, 8,487, −13,974, 66,5…, 50,719, 29,768, 15,794) and I couldn't tell which one is what I keep"
+      },
+      {
+        "where": "Calculator opens at 5 years",
+        "why": "It starts in the taxed period, so the first thing I saw was a red minus and pink stripes"
+      },
+      {
+        "where": "Final total next to the bars",
+        "why": "Cut off at '66,5…' behind the round arrow button"
+      }
+    ],
+    "used": [
+      "Title and subtitle 'חיסכון דרך מקום העבודה… בלי מס'",
+      "'אחרי 6 שנים מההפקדה הראשונה… למי שהגיע לגיל הפרישה מספיקות 3 שנים'",
+      "'אפשר למשוך גם לפני 6 השנים, אבל אז משלמים מס'",
+      "'300 ₪ בחודש מכם, 900 ₪ מהמעסיק' and the +54,000 / −13,974 numbers",
+      "'הנחות של האתר, לא תחזית'",
+      "'בפיקוח רשות שוק ההון' and the names הראל, אלטשולר שחם"
+    ],
+    "skimmed": [
+      "Calculator input boxes (2.5, 7.5, 7, 0.54)",
+      "Paragraph about 'כסף של היום' and salary rising 2%",
+      "'שווה לדעת' facts",
+      "'מי מציע ומי מצטרף'"
+    ],
+    "skipped": [
+      "Investment track buttons (S&P 500, מזומן שקלי…)",
+      "The coloured bar chart over 12 years",
+      "'חוקים וכללים' badges and KH/PF codes",
+      "'הצגת החברות' fold",
+      "Everything after 'משיכה ומעבר' (screens 7–13)"
+    ],
+    "unsure_meaning": [
+      "S&P500 / מדד",
+      "מסלול מדד",
+      "תשואה",
+      "כסף של היום",
+      "29,768 to tax and 15,794 'חוזרים'",
+      "KH-19, KH-15, PF-18",
+      "חוקים וכללים · 10",
+      "Pink striped box in the bars"
+    ],
+    "not_found": [
+      "One plain sentence saying how much I'd have after 6 years (or 3 at my age)",
+      "Whether there is a safe track like a deposit"
+    ],
+    "findings": [
+      {
+        "what": "Default result is at 5 years, so a red minus (−13,974) and striped tax box come first and scare you off",
+        "where": "Calculator result, screen 3"
+      },
+      {
+        "what": "No single plain sentence with the amount you'd end up with; too many numbers",
+        "where": "Calculator result and text, screens 3–4"
+      },
+      {
+        "what": "Final number hidden behind the round scroll-up button",
+        "where": "Screen 3, '66,5…'"
+      },
+      {
+        "what": "English letters and 'מדד' used for a stock index without explanation",
+        "where": "Track buttons, screen 2; text, screen 4"
+      },
+      {
+        "what": "Dark background with grey small text is hard to read",
+        "where": "Chart hint line, column labels, whole page"
+      },
+      {
+        "what": "Codes like KH-19 and 'חוקים וכללים · 10' mean nothing",
+        "where": "Screens 2, 5, 6"
+      },
+      {
+        "what": "Retirement-age 3-year rule is buried mid-paragraph",
+        "where": "Screen 1"
+      }
+    ]
+  },
+  "steps": 6,
+  "reads": 6,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 35859,
+    "turns": 8,
+    "usd": 0.16878959999999998,
+    "input": 8,
+    "cacheWrite": 11952,
+    "cacheRead": 26808,
+    "output": 3389,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "p02-percent-keren-phone",
+    "screenshots": 14,
+    "changes": [
+      {
+        "id": "pct-shown",
+        "type": "style",
+        "shots": 14,
+        "applied": 14,
+        "most": 1
+      }
+    ],
+    "neverShown": [],
+    "errors": []
+  }
+}

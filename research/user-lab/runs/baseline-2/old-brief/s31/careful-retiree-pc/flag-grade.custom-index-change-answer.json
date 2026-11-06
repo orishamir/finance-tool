@@ -1,0 +1,83 @@
+{
+  "case": "custom-index-change-answer",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"Beside the added index the link 'שינוי התשובה' does not say which answer it changes.\",\"where\":\"the line 'מדד שהוספתם, שמור במכשיר הזה · שינוי התשובה'\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "No fund chosen or collected for the index, so the fund's own annual fee is unknown",
+      "The ranking changes in 4 places if the return is 0% or 10%, which worries the reader",
+      "פסגות, ranked cheapest, has 3 claims where the advert doesn't match the price list",
+      "The 'זר' tag next to 'test' isn't explained, and it's unclear how the site knows the index",
+      "'אפשר להחזיק אותו גם דרך קרן חוץ' doesn't say whether that is better or worse",
+      "The 'שינוי התשובה' link doesn't make clear which answer it changes",
+      "Unclear whether inflation is already included or needs the button",
+      "The top of the right-hand fund card was cut off",
+      "The intro paragraph above the list is long and dense",
+      "Rows 6 and 13 of the list weren't visible",
+      "Unclear what the radio circles on each row do",
+      "The grey 'העמלות זו על זו' bar and the '//' cut-bar mark aren't understood",
+      "Unclear whether ₪1,058 is for the whole 10 years or per year",
+      "Unclear whether uncollected unit prices for foreign funds make the Interactive figures wrong",
+      "'קרן מחקה' versus 'בחו\"ל' isn't explained (which is better for tax and risk)",
+      "No final amount shown for what the reader would have after 10 years",
+      "The full text of פסגות's claims isn't shown next to its row",
+      "Unclear which 4 places change, and the reader didn't feel confident clicking 'פירוט'",
+      "No information on whether the cheap providers are safe and easy to open, close and withdraw from",
+      "Would drop the 'לא בחישוב' deal lines, which make the list three times longer",
+      "Would drop the separate advert-vs-price-list section and put the warning on each row instead",
+      "Would cut most of the small print at the bottom"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 6,
+        "why": "The reader skipped the 'שינוי התשובה' link because they weren't sure which 'answer' it meant, which is the same problem the person named."
+      }
+    ],
+    "liked": [],
+    "usd": 0.06250320000000001
+  },
+  "b": {
+    "raised": [
+      "The site has no funds for the index, so the fund's annual fee is unknown",
+      "The ranking changes in 4 places if the return is 0% or 10%",
+      "The 'cheapest' company, פסגות, has 3 claims where the advert doesn't match the price list",
+      "The 'זר' tag next to the index name is not understood",
+      "Holding the index through a foreign fund (or קרן מחקה vs בחו\"ל): the page doesn't say which is better",
+      "The 'שינוי התשובה' link: unclear which answer it changes",
+      "Unclear whether inflation is already included or needs the button",
+      "The top of the right-hand card was cut off",
+      "The intro paragraph above the account list is long and dense",
+      "Rows 6 and 13 of the list did not show",
+      "The grey 'העמלות זו על זו' bar and the '//' cut-bar mark are not understood",
+      "Unclear what choosing a radio circle does",
+      "Unclear whether ₪1,058 is for 10 years or per year",
+      "Foreign funds waiting for an uncollected unit price: unclear if the Interactive figures are wrong",
+      "The amount you'd have after 10 years is not shown",
+      "פסגות's claims are not shown next to its row",
+      "The page doesn't show which 4 places change, and the reader wasn't confident to click 'פירוט'",
+      "No information on whether the cheap providers are safe and easy to use",
+      "Would drop the 'לא בחישוב' deal lines that make the list longer",
+      "Would drop the repeated 'מה כתוב בפרסום' section",
+      "Would drop most of the small print at the bottom"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 6,
+        "why": "The reader says they skipped the 'שינוי התשובה' link because they weren't sure which 'answer' it meant, which is the same problem as the link not saying what it changes."
+      }
+    ],
+    "liked": [],
+    "usd": 0.06817519999999999
+  },
+  "third": null,
+  "ranks": {
+    "k": 6
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1306784
+}

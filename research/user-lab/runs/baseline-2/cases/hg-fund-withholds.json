@@ -1,0 +1,13 @@
+{
+ "id": "hg-fund-withholds",
+ "task": "s14",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "The sentence 'הקרן מנכה קודם … מס במקור, ו… מהם חוזרים רק אם מגישים דוח שנתי' is jargon; the reader does not understand what the fund deducts.",
+   "where": "the early-withdrawal sentence of the graphic",
+   "kind": "general"
+  }
+ ],
+ "liked": []
+}

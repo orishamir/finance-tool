@@ -1,0 +1,136 @@
+{
+  "task": "p16-leftover-sp500-pc",
+  "persona": "careful-retiree-pc",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-05T23:27:09.000Z",
+  "structured": {
+    "answer": "I haven't decided. I'll ask my son or the bank. The page says the cheapest is a Psagot account with the 'ילין לפידות מחקה S&P 500' fund, ending with about 86,492 ₪ from 70,000 ₪ put in over 10 years (at 7% a year). Leumi would leave about 83,396 ₪, and I'd feel safer there.",
+    "confidence": "unsure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Screen 2, fund card and tags",
+        "why": "Too many coloured labels and unknown words (מחקה, צוברת, נאמן, מנוטרל מט\"ח). I couldn't tell which matter."
+      },
+      {
+        "where": "Screens 2-4, left column of minus amounts",
+        "why": "Red/minus numbers like −447, −3,671 frightened me. I didn't know whose loss that is."
+      },
+      {
+        "where": "Screen 4, English fund names",
+        "why": "iShares/Vanguard/UCITS. I felt it wasn't for me and stopped."
+      },
+      {
+        "where": "Choosing Psagot vs Leumi",
+        "why": "The cheapest is a firm I don't bank with. Leumi I know but it leaves less."
+      }
+    ],
+    "used": [
+      "Heading 'איפה ואיך הכי זול להשקיע במדד'",
+      "Default boxes: 10,000 today, 500 monthly, 10 years, 7%",
+      "Big result 86,492 ₪ 'הבחירה שלכם · הזול' and 'הפקדתם 70,000 ₪'",
+      "Right-hand list of accounts: פסגות 86,492, לאומי 83,396, הפועלים 81,471, דיסקונט 79,901",
+      "Fund name ילין לפידות מחקה S&P 500 (4D)"
+    ],
+    "skimmed": [
+      "S&P 500 description lines",
+      "Cost breakdown bar and legend at top of screen 2",
+      "Bank rows 4-15 with their notes 'לא בחישוב'",
+      "Fund list on screen 3"
+    ],
+    "skipped": [
+      "Sliders",
+      "Inflation button and dollar-rate line",
+      "'קיבלתם מחיר אחר? הזינו אותו' link",
+      "Fold-out arrows on bank rows",
+      "Screens 5-10"
+    ],
+    "unsure_meaning": [
+      "מדד (stock index vs price index)",
+      "מחקה",
+      "צוברת / מחלקת דיבידנד",
+      "נאמן 0.02%",
+      "מנוטרל מט\"ח",
+      "חשיפה לדולר",
+      "מס גם על שינוי המטבע",
+      "עסקת החלף",
+      "(4D)",
+      "UCITS, ETF, Accumulating/Distributing",
+      "Small numbers under each bank (1,057, 6,576): fees?",
+      "Minus numbers −43, −447 'לעומת הבחירה'",
+      "Colours in the stacked bars"
+    ],
+    "not_found": [
+      "A plain sentence saying which option is safe",
+      "Whether 7% a year is guaranteed",
+      "A simple explanation of what the bank charges in words"
+    ],
+    "findings": [
+      {
+        "what": "Very busy screens with many coloured tags and numbers. Anxiety-inducing for an older reader",
+        "where": "Screens 2-4"
+      },
+      {
+        "what": "Many minus amounts in the left column look like losses",
+        "where": "Fund list, screens 2-4"
+      },
+      {
+        "what": "English fund names and codes with no Hebrew explanation",
+        "where": "Screen 4"
+      },
+      {
+        "what": "Jargon in tags (מחקה, צוברת, נאמן, מנוטרל מט\"ח) is never explained in plain words",
+        "where": "Fund cards"
+      },
+      {
+        "what": "Small, pale notes I couldn't read well (הערה לבדוק, inflation line)",
+        "where": "Screen 1 result card and settings line"
+      },
+      {
+        "what": "Sliders as the main control; the 7% return is filled in as if certain",
+        "where": "Screen 1"
+      },
+      {
+        "what": "Opens with 'מדד', which I read as the price index",
+        "where": "Screen 1 heading"
+      },
+      {
+        "what": "Unknown companies (ילין לפידות, אינטראקטיב) next to known banks with no word about trust",
+        "where": "Screens 2 and 4"
+      }
+    ]
+  },
+  "steps": 4,
+  "reads": 4,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 46171,
+    "turns": 6,
+    "usd": 0.1499056,
+    "input": 10,
+    "cacheWrite": 8482,
+    "cacheRead": 32548,
+    "output": 3775,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "p16-leftover-sp500-pc",
+    "screenshots": 11,
+    "changes": [
+      {
+        "id": "leftover",
+        "type": "insert",
+        "shots": 11,
+        "applied": 11,
+        "most": 1
+      }
+    ],
+    "neverShown": [],
+    "errors": []
+  }
+}

@@ -1,0 +1,79 @@
+# s14: first-job-phone (old brief)
+
+pc; 59 s, $0.26
+
+## 1. What I'd do and how sure I am
+
+I'd join, and I'm about 85% sure.
+
+The line that decided it was "קרן השתלמות במסלול מדד. ₪750 בחודש מכם, ₪2,250 מהמעסיק". I put in 750 a month and my employer adds 2,250, three times my amount. The chart for 5 years shows ₪45,000 from me, +₪135,000 from them, +₪21,218 growth, then −₪64,761, which I think is tax for taking it out early. That leaves ₪136,457. So even if I take it out too early I get about three times what I put in.
+
+I also saw "S&P 500 מדד" in the list of what I can invest in. That's the thing I've heard about, so it made me feel OK.
+
+The other 15% is because I'm not sure what I actually have to do next. My salary of 30,000 is above some "תקרה" of ₪15,712, and I don't understand what that means for me.
+
+## 2. Parts of the page I actually used
+
+- The top title and the grey sentence under it: "חיסכון שהמעסיק ואתם מפקידים אליו מהשכר… אחרי תקופה שקבע החוק אפשר למשוך בפטור ממס".
+- "מה זה": the first two paragraphs and the bullets about taking money out before 6 years.
+- The calculator under "מה מייחד קרן השתלמות" ("כמה כסף נשאר לכם, ומתי?"), especially the big bar chart and the line with 750 / 2,250.
+- The notes under the chart, mainly "47% מס במקור" and the 0.7% vs 0.19% line.
+- "כסף נכנס ויוצא": "כשעוברות 6 שנים" and "עד 4 ימי עסקים".
+- "מיסוי": the paragraph with 7.5% / 2.5% / ₪15,712 and the orange warning box.
+
+## 3. Block by block
+
+- **Top menu:** skipped.
+- **Small line under the title** ("123 מקור · 123 מחושב · 123 הזנתם · מונח הקישו להסבר"): it confused me. I didn't get what "מקור" or "מחושב" meant, so I ignored it.
+- **"מה זה":** read it. It was clear: employer puts in, I put in, 6 years. The bullet "מתחת לגיל 60 זה לפחות 31%" scared me a bit, but I understood it was only for early withdrawal.
+- **"למה משתמשים בזה":** read it. "הפקדת המעסיק מגיעה רק לכאן" helped, because it means if I don't join, I lose that money.
+- **"כדאי להכיר גם" buttons** ("תגמולים ואישית לפיצויים", "קרן חדשה מקיפה"): skipped. I don't know these words.
+- **"במה אפשר להשקיע בתוכו":** skimmed and saw "S&P 500 מדד". That was all I needed.
+- **The green "חוקים וכללים · 15" tags:** skipped all of them, everywhere.
+- **Calculator, שכירים/עצמאים switch:** saw that "שכירים" was already chosen. Good.
+- **"תשואה בשנה 7%" / "דמי ניהול בשנה 0.54%" boxes:** looked at them and left them alone. I don't know what the right numbers are.
+- **Small bar chart, years 1–12:** skimmed it. I saw the line between 5 and 6 and "מ־6 שנים: פטור עד התקרה" vs "לפני 6 שנים: מס". There are no numbers on it, so I didn't learn much.
+- **Big bar chart:** used it a lot. This was the main thing.
+- **Notes under the chart:** skimmed. The 0.7% vs 0.19% line told me the fee difference is only about ₪1,700 over 5 years, which was useful. I mostly skipped the rest.
+- **"הכי קרוב לזה… חשבון ניירות ערך":** skipped.
+- **"שווה לדעת":** read the three titles and ignored the codes ("TXH-09" etc.). "אפשר להעביר… לחברה אחרת" was reassuring.
+- **"מי מציע ומי מפקח":** skimmed. "המעסיק לא יכול להתנות את ההפקדה בקרן מסוימת" was nice to know. I didn't understand the cards ("מי יכול להצטרף – תלוי בחברה: הראל, אלטשולר שחם").
+- **"כסף נכנס ויוצא":** used the 6 years and 4 days. Skimmed the rest.
+- **"כמה זה עולה":** looked at "דמי ניהול… עד 2% בשנה" only.
+- **"מיסוי":** read it. It's important but confusing (see section 5).
+- **Orange warning box:** read it. It said again that early withdrawal is expensive.
+- **"הכלכלן הראשי במשרד האוצר ממליץ לצמצם את ההטבה":** read it, got slightly worried, and calmed down at "לא נמצאה הצעת חוק".
+- **"סיכונים ומה לא מוגן":** skimmed the first lines. I read "החברה המנהלת קורסת" → the money moves to another company, so OK.
+- **"מונחים":** skimmed. I looked at "ותק" and "משכורת קובעת" and skipped the rest.
+
+## 4. Charts and tables
+
+**Big chart:** I read the numbers on top of the bars (45,000, +135,000, +21,218, −64,761, 136,457). I guessed the colours myself: grey = mine, yellow = employer, green = growth, pink striped = tax, white = what's left. Nothing on the screen told me which colour is which, and I couldn't see labels under the bars. I ignored the dotted lines between bars.
+
+**Small chart:** I looked at the circled "5", the dashed line, and the two labels above it. I ignored the bar colours.
+
+**Cost table:** I read the "סוג" and "תקרה" columns. I mostly ignored "על מה נגבה" and "תלוי בחברה".
+
+**Terms table:** I read "מונח" and "מה זה". I completely ignored "איפה מופיע" (the "תלוש שכר", "טופס" tags).
+
+## 5. What I didn't understand
+
+- **"פטור עד התקרה" and "על שכר של עד ₪15,712 בחודש".** I earn 30,000. Is part of my money taxed even after 6 years? The note says "חלק מההפקדות מעל התקרה, ולכן יש מס גם אחרי תום הנעילה", but the chart doesn't show me how much.
+- **"−64,761".** Is this money I'd definitely lose, or only if I take it out at 5 years? It also mentions "47% מס במקור" but then says "זה לא המס הסופי". So what is the final tax?
+- **"רווח ריאלי", "הפקדה מוטבת", "מסלול כללי", "אג"ח ממשלתית צמודה":** I don't understand these terms.
+- **The "מקור / מחושב / הזנתם" line at the top.**
+- **Why the company names (הראל, אלטשולר שחם, מיטב, הפניקס) appear under "תלוי בחברה".** Should I pick one of them?
+
+## 6. What I wanted and couldn't find
+
+- **What I get if I wait the full 6 years.** It's the most important number for me, and the chart only shows it when I click on 6. One clear sentence like "after 6 years you get ₪X" would have been enough.
+- **How much less I'll get in my bank account each month.** Is it exactly 750 less, or different because of tax?
+- **What I actually do now.** Do I tell HR? Do I pick a company myself? Which one has the S&P 500 option cheapest?
+- **Does every employer give 7.5%, or only some?**
+- **Since I earn above the ceiling, what happens to the extra money my employer puts in?** Is it taxed on my payslip every month?
+
+## 7. If half the page had to go
+
+Remove first: the "מונחים" table, the "חוקים וכללים · N" tags and codes, the "123 מקור/מחושב" line, "כדאי להכיר גם", "הכי קרוב לזה… חשבון ניירות ערך", "סיכונים ומה לא מוגן", the company cards under "מי מציע ומי מפקח", and most of the small notes under the chart.
+
+Keep: "מה זה", the calculator with the big chart, the 6-years / 4-days cards, and the tax paragraph plus the warning box.

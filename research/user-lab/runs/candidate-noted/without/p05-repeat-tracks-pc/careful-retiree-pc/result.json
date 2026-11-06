@@ -1,0 +1,146 @@
+{
+  "task": "p05-repeat-tracks-pc",
+  "persona": "careful-retiree-pc",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T02:54:46.918Z",
+  "structured": {
+    "answer": "If I must pick one: Harel (הראל), the \"כספי (שקלי)\" track. It says 0% shares, 4.25% over 3 years and a 0.57% fee, and Harel is a name I know. But I won't sign until I ask my son or the bank what \"כספי\" and \"סחיר\" mean.",
+    "confidence": "unsure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Screen 1, filter buttons",
+        "why": "Most buttons are about shares and 'S&P 500'. I saw 'אג\"ח ממשלתי 3', which I'd trust, but those tracks never appeared in the screens I read and I didn't click it"
+      },
+      {
+        "where": "Harel rows, return column",
+        "why": "Many safe-looking tracks (אג\"ח סחיר) show 'פחות מ־3 שנים' instead of a number, so I couldn't compare them"
+      },
+      {
+        "where": "Return figures '3 שנים 4.25%'",
+        "why": "I don't know if that's per year or for all three years"
+      },
+      {
+        "where": "Screen 6",
+        "why": "Tired. Every company repeats the same tracks and numbers, so I stopped there"
+      }
+    ],
+    "used": [
+      "Title 'כל המסלולים בכל החברות' and the selected 'קופת גמל להשקעה' button",
+      "Company names: הראל, מור, אנליסט, מיטב",
+      "Track names, especially 'כספי (שקלי)' and 'אג\"ח סחיר'",
+      "'מניות 0%' in the exposure column",
+      "Fee 'דמי ניהול ... מהחיסכון' 0.57% / 0.58% / 0.71%",
+      "Return '3 שנים 4.25%' for Harel כספי"
+    ],
+    "skimmed": [
+      "Asset-size column (מיליון/מיליארד)",
+      "Mor, Analyst and Meitav rows",
+      "Company summary bars (16 מסלולים · כסף מנוהל...)",
+      "Second line of the intro text"
+    ],
+    "skipped": [
+      "All share and S&P 500 tracks",
+      "Coloured ring charts",
+      "'?' help icons",
+      "'מה זה קופת גמל להשקעה' link",
+      "Top menu (מדריך, השקעה במדד, חוקים וכללים)",
+      "Search box",
+      "Screens 7–16"
+    ],
+    "unsure_meaning": [
+      "כספי (שקלי)",
+      "סחיר",
+      "עוקב מדד",
+      "גמיש",
+      "מט\"ח",
+      "S&P 500",
+      "קופה number with arrow icon (8211 etc.)",
+      "ההפקדות 0%",
+      "פחות מ־3 שנים",
+      "עוד לא דווח with orange mark",
+      "'לפני דמי ניהול' in the return header",
+      "whether 4.25% for 3 years is yearly or total",
+      "green vs yellow in the rings",
+      "dotted underlines on numbers"
+    ],
+    "not_found": [
+      "A plain sentence saying whether any track is as safe as a bank deposit",
+      "Comparison to deposit interest",
+      "The government bond (אג\"ח ממשלתי) tracks in the part I read",
+      "Returns after fees",
+      "Who runs this site"
+    ],
+    "findings": [
+      {
+        "what": "Dark background with small grey text; column headers hard to read even enlarged",
+        "where": "Whole page, table header"
+      },
+      {
+        "what": "Opens with shares, S&P 500 and English letters, so it feels like it isn't for someone looking for safe saving",
+        "where": "Screen 1 filter buttons"
+      },
+      {
+        "what": "Very busy: about 10 rows per screen, each with 6 or more numbers and a ring chart",
+        "where": "Screens 2–6"
+      },
+      {
+        "what": "Safe-looking tracks often show 'פחות מ־3 שנים' instead of a return, so I can't compare",
+        "where": "Return column, many rows"
+      },
+      {
+        "what": "Nothing says how safe each track is compared with a deposit",
+        "where": "Whole table"
+      },
+      {
+        "what": "Unclear whether 3-year and 5-year returns are per year or total",
+        "where": "Return column"
+      },
+      {
+        "what": "Returns shown 'לפני דמי ניהול', so I don't know what I'd actually get",
+        "where": "Return column header"
+      },
+      {
+        "what": "Green and yellow rings too close in colour to tell apart",
+        "where": "Exposure column"
+      },
+      {
+        "what": "Site name 'מקור' unknown to me; can't tell if it's official",
+        "where": "Top bar"
+      }
+    ]
+  },
+  "steps": 6,
+  "reads": 6,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 40642,
+    "turns": 8,
+    "usd": 0.1778136,
+    "input": 8,
+    "cacheWrite": 12212,
+    "cacheRead": 27028,
+    "output": 3734,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "p05-repeat-tracks-pc",
+    "screenshots": 17,
+    "changes": [
+      {
+        "id": "repeat-shown",
+        "type": "style",
+        "shots": 17,
+        "applied": 17,
+        "most": 143
+      }
+    ],
+    "neverShown": [],
+    "errors": []
+  }
+}

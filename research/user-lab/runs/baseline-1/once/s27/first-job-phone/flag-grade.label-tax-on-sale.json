@@ -1,0 +1,36 @@
+{
+  "case": "label-tax-on-sale",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The label 'מס רק במכירה' states something the site does not know: what happens to tax while a foreign fund accumulates is an open question.\",\"where\":\"the label on foreign accumulating funds\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "No finding questions whether the 'מס רק במכירה' tax label is accurate; finding 1 only says chips repeat on every fund, which is a different complaint."
+      }
+    ],
+    "liked": [],
+    "usd": 0.015175400000000002
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings mention the 'מס רק במכירה' label or doubt its tax claim. Finding 1 is about chips repeating, not about the label claiming something the site doesn't know."
+      }
+    ],
+    "liked": [],
+    "usd": 0.015563400000000002
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.030738800000000004
+}

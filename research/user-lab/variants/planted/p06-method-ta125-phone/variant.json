@@ -1,0 +1,40 @@
+{
+  "id": "p06-method-ta125-phone",
+  "about": "For the lab only; never reaches a session. Planted problem, kind p06 (A figure or column whose meaning needs the site's method): see research/user-lab/planted.md.",
+  "purpose": "plant",
+  "pages": [
+    "/finance-tool/indices/ta125"
+  ],
+  "device": "phone",
+  "instance": {
+    "kind": "p06",
+    "mode": "page",
+    "url": "https://orishamir.github.io/finance-tool/indices/ta125",
+    "device": "phone",
+    "steps": [],
+    "task": "ta125",
+    "control": "planted/control-ta125-phone",
+    "split": "tune"
+  },
+  "plants": [
+    {
+      "id": "p06",
+      "kind": "general",
+      "problem": "The fund list's column of differences is headed \"מול הבסיס\", a reference the page never names.",
+      "where": "the list of all funds on the index, the column of differences",
+      "counts": "A finding that the reader does not know what \"הבסיס\" is, or what the differences are measured against.",
+      "notCounts": "Not understanding the other column."
+    }
+  ],
+  "changes": [
+    {
+      "id": "method",
+      "type": "text",
+      "selector": "div.grid.items-end",
+      "find": {
+        "regex": "^לעומת הבחירה$"
+      },
+      "replace": "מול הבסיס"
+    }
+  ]
+}

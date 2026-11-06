@@ -1,0 +1,118 @@
+{
+  "task": "control-sp500-pc",
+  "persona": "first-job-phone",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T02:59:34.357Z",
+  "structured": {
+    "answer": "Open an account at Pesagot (פסגות) and buy \"ילין לפידות מחקה S&P 500 (4D)\". The page marks it as the cheapest and shows about 86,492 ₪ after 10 years. That's with the page's default amounts, 10,000 ₪ now plus 500 ₪ a month, not my 30,000.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Top result card 70,000 → 86,492 ₪",
+        "why": "Felt too low for 7% a year over 10 years (I expected about 70% more). I guessed the 'בכסף של היום' / אינפלציה note explains it but didn't open it"
+      },
+      {
+        "where": "Sliders (סכום היום 10,000, הפקדה חודשית 500)",
+        "why": "Left them at the defaults, so the final figure isn't for my own 30,000"
+      },
+      {
+        "where": "Fund list, column of red minus shekel figures",
+        "why": "Not sure if −447 ₪ etc. means losing money or just ending up with less than the top fund"
+      },
+      {
+        "where": "Account list, Pesagot at #1",
+        "why": "Not a bank, so I hesitated, but I've heard the name"
+      }
+    ],
+    "used": [
+      "Heading 'איפה ואיך הכי זול להשקיע במדד, לאורך זמן'",
+      "S&P 500 chip already selected",
+      "Default slider values 10,000 / 500 / 10 years / 7%",
+      "Result card 'הבחירה שלכם · ★ הזול' 86,492 ₪ and 'הפקדתם 70,000 ₪'",
+      "Account list: פסגות 86,492, לאומי 83,396",
+      "Fund name 'ילין לפידות מחקה S&P 500 (4D)' with 'הבחירה' and +0.37%",
+      "Red minus figures next to the other funds"
+    ],
+    "skimmed": [
+      "Coloured bar of costs and its legend",
+      "Bank descriptions 'לא בחישוב' under each account",
+      "Foreign ETFs (iShares, Vanguard) with 'אין מחיר כאן'",
+      "'מה הכי משנה את מה שיישאר לכם' chart and table"
+    ],
+    "skipped": [
+      "Grey explanation text under the account list",
+      "'למה חלק מהקרנות בלי מחיר בפסגות' explanation",
+      "'עם נטרול מט״ח או בלי' boxes",
+      "Screens 7-10",
+      "Inflation button and the exchange-rate note line"
+    ],
+    "unsure_meaning": [
+      "נאמן 0.02%",
+      "(4D) / (4A)",
+      "צוברת",
+      "נטרול מט״ח / מנוטרלת מט״ח",
+      "חשיפה לדולר",
+      "מס גם על שינוי המטבע",
+      "דמי משמרת",
+      "עוד לא נאסף",
+      "Red minus shekel figures like −447 ₪: a loss, or just less than the best?",
+      "בכסף של היום"
+    ],
+    "not_found": [
+      "The result for my own 30,000 ₪ (I didn't change the sliders)",
+      "A plain 'what to do first' step for opening the account"
+    ],
+    "findings": [
+      {
+        "what": "The headline result uses default amounts (10,000 + 500), so it's easy to walk away with a number that isn't yours",
+        "where": "Sliders and result card, screen 1"
+      },
+      {
+        "what": "86,492 from 70,000 paid in looks far too low for 7% a year; the 'today's money' adjustment is only a small line",
+        "where": "Result card, screen 1"
+      },
+      {
+        "what": "Red minus shekel amounts next to funds read like losses",
+        "where": "Fund list, screens 2-4"
+      },
+      {
+        "what": "A range like 'בין +2,212 ₪ ל־−23,766 ₪' is scary and unclear",
+        "where": "Hedged fund row, screen 5"
+      },
+      {
+        "what": "Lots of jargon tags on every fund (צוברת, חשיפה לדולר, מס גם על שינוי המטבע)",
+        "where": "Fund list, screens 2-5"
+      },
+      {
+        "what": "Top pick is a non-bank house and a fund manager I barely know",
+        "where": "Account list / fund card, screen 2"
+      }
+    ]
+  },
+  "steps": 6,
+  "reads": 6,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 40285,
+    "turns": 8,
+    "usd": 0.17257920000000002,
+    "input": 10,
+    "cacheWrite": 11606,
+    "cacheRead": 38556,
+    "output": 3599,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "control-sp500-pc",
+    "screenshots": 11,
+    "changes": [],
+    "neverShown": [],
+    "errors": []
+  }
+}

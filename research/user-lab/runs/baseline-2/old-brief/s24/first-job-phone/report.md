@@ -1,0 +1,68 @@
+# s24: first-job-phone (old brief)
+
+pc; 62 s, $0.32
+
+## 1. What I'd do, and how sure I am
+
+I'd move my savings into Harel's **"עוקב מדד S&P 500"** track, the one that follows the S&P 500, which I've heard I should invest in. It turns up in almost every product on the page, and in each one it shows the highest or almost the highest return:
+
+- In **"קרן השתלמות"**, fund 13502 charges **0.5%** a year of my savings and nothing from my deposits ("אין"). It returned **13.71%** a year over 3 years and **11.89%** over 5 years, and it manages **7.9 מיליארד ₪**. If I have a קרן השתלמות, I'd pick this one.
+- In **"קרן חדשה מקיפה"**, fund 13415 charges **0.16%** of my savings plus **1.47%** of each deposit. It returned **12.13%** over 3 years and **11.03%** over 5 years.
+
+I'm fairly sure about "S&P 500" as the choice. I'm not sure at all which product my own money is actually in. I'm salaried, so I guess it's pension, but nothing on the page says **"קרן חדשה מקיפה"** means pension, so I'm guessing. I also can't tell whether 0.16% plus 1.47% is more or less than a flat 0.5%. In the end I'd call Harel or check my statement before switching anything.
+
+## 2. Parts of the page I actually used
+
+- The **"הראל"** heading and the two lines under it. They told me when the fees and returns are from.
+- The **"כל המוצרים של הראל"** buttons, so I could see how many kinds of products there are.
+- The big table. I mainly used the **"המסלול"** names, **"דמי ניהול, ממוצע 2025"** and **"תשואה שנתית ממוצעת, לפני דמי ניהול"**.
+- The grey bar at the top of each product group, for example "16 מסלולים · כסף מנוהל 37.4 מיליארד ₪ · דמי ניהול מהחיסכון: מ־0.41% עד 0.67%". It gave me the price range at a glance.
+- The two notes under the table, plus the line **"התשואה היא תשואת עבר… לפני דמי הניהול ולפני מס. היא לא אומרת מה יקרה בהמשך"**.
+
+## 3. Block by block
+
+1. **Top menu** (מדריך, חוקים וכללים, השוואה למטרה…): skipped. **"השוואה למטרה"** made me curious, but I stayed on this page.
+2. **"הראל" header and text**: read it. "הממוצע שנגבה בפועל ב־2025" was useful, because it means these are real fees. The list of company names ("הראל פנסיה וגמל בע"מ · הראל קרנות נאמנות") I skimmed. **"123 מקור / 123 מחושב"** confused me. I didn't see why I'd care where a number came from.
+3. **Product buttons**: used them. I recognised **"קרן השתלמות"** and **"קופת גמל"**. **"קרן חדשה מקיפה"**, **"קרן חדשה כללית"**, **"תגמולים ואישית לפיצויים"** and **"מרכזית לפיצויים"** meant nothing to me. I didn't know which one I'm in.
+4. **"96 מסלולים ב־7 מוצרים… מסודרים לפי דמי הניהול מהחיסכון, מהזול ליקר"**: read it. It explained why the S&P 500 track isn't at the top of each group.
+5. **"קופת גמל להשקעה" group** (screens 1–2): used it. I found S&P 500 there at 0.56%, 13.7% and 11.92%.
+6. **"קרן השתלמות" group** (screens 3–4): used it the most. It had the cheapest S&P 500 track that takes nothing from my deposits.
+7. **"תגמולים ואישית לפיצויים"** (screens 4–5): skimmed. Its S&P 500 track (13501) looks almost the same as the השתלמות one. I didn't know what "תגמולים" is for, and rows like "לגילאי 50 עד 60" and "דקל קופת גמל לדמי מחלה" aren't for me.
+8. **"חיסכון לכל ילד"** (screen 6): skipped. I don't have kids.
+9. **"קרן חדשה מקיפה" and "קרן חדשה כללית"** (screens 6–9): used them, but they confused me. The deposit fee of **1.47%** or **1.14%** is so much bigger than everywhere else that I couldn't compare. And why does the same S&P 500 return only 12.13% over 3 years here, against 13.7% in the other products?
+10. **"מרכזית לפיצויים"** (screens 9–10): skipped. Names like **"קמ"פ"** and **"קופה לפנסיה תקציבית"** told me it isn't for me.
+11. **Footnotes under the table**: read them. **"אין: בסוג הקופה הזה מותר לגבות דמי ניהול רק מהחיסכון"** finally explained the "אין" I'd seen everywhere. The extra costs "שלא מופיעות כאן" worried me a bit, since it means the fee shown isn't the full cost.
+12. **"קרנות מחקות" and "קרנות סל"** (screens 10–12): they confused me. **"S&P 500 (4D)"** shows a 0% fixed fee, 0.1% variable and 0.025% trustee, which looks much cheaper. But I don't know what **"4A/4D"**, **"צוברת"**, **"חשיפה לדולר"**, **"מס גם על שינויי המטבע"** or **"נאמן"** mean, there's no return column, and I don't know if I can even move my savings into one.
+13. **"מה כתוב במסמכים של הראל"** (the closed list): skipped. Titles like **"קרן השתלמות · 8"** didn't tell me what's inside, so I didn't open them.
+14. **"לא מצאתם שם?" search box and footer**: skipped. I noticed "נתונים נכון ל־03.11.2026".
+
+## 4. Columns, colours and labels in the tables
+
+- **Looked at:** **"המסלול"** (the names); **"דמי ניהול"**, mainly the top number **"מהחיסכון"**, then **"מההפקדה"**; the return column with both lines, **"3 שנים"** and **"5 שנים"**; and the grey summary bars.
+- **Glanced at:** **"כסף מנוהל"**. Billions felt safer than "6 מיליון ₪", but I didn't really choose by it.
+- **Ignored:** the **"קופה"** number column (5-digit codes mean nothing to me), the rings and the teal and yellow dots for **"מניות"** / **"מט"ח"**. I understood that more teal means more stocks, but the percentages don't add up to 100 (99% מניות and 99% מט"ח?), so I gave up on them. I also ignored the dotted underlines, the little sorting arrows, the **"?"** icons and the arrows on the left of each row.
+- **"פחות מ־3 שנים"**: I understood it meant the track is too new to have a return, so I skipped those rows.
+
+## 5. What I didn't understand
+
+- Which product is my pension: **"קרן חדשה מקיפה"** or **"כללית"**? What's the difference?
+- **"מההפקדה"** compared with **"מהחיסכון"**: which one costs me more in real money?
+- Why the same S&P 500 index shows different returns in different products.
+- **"מט"ח"** at 99%, and what the rings are telling me.
+- Everything on the קרנות סל / מחקות cards: **"4A"**, **"4D"**, **"צוברת"**, **"נאמן"**, **"משתנים"**, **"קבועים"**.
+- **"123 מקור / מחושב"**.
+- **"עוד לא דווח"**, beyond the footnote's "השדה ריק".
+
+## 6. What I wanted and couldn't find
+
+- Which product and track **my** money is in now.
+- What the fee means in shekels for someone like me, for example on a ₪1,000 monthly deposit.
+- Whether I can ask Harel for a lower fee than the average shown.
+- How to switch tracks, and whether it costs anything or triggers tax.
+- Whether S&P 500 is risky for a 24-year-old, in one sentence.
+- Returns for the קרנות סל and מחקות, so I could compare them with the other tracks.
+- Whether Harel is cheap or expensive compared with other companies.
+
+## 7. If half the page had to go
+
+First to go would be **"מרכזית לפיצויים"**, **"חיסכון לכל ילד"**, the **"גילאי 50/60"** rows, **"תגמולים ואישית לפיצויים"**, the **"מה כתוב במסמכים"** list and the rings. After that, the **"קופה"** number column and the **"פחות מ־3 שנים"** tracks. I'd keep the product buttons, the track names, the fees, the returns and the footnote about **"אין"**.

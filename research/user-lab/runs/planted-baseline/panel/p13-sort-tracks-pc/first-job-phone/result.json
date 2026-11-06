@@ -1,0 +1,134 @@
+{
+  "task": "p13-sort-tracks-pc",
+  "persona": "first-job-phone",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-05T23:22:16.680Z",
+  "structured": {
+    "answer": "I'd open Harel's (הראל) S&P 500 track in a קופת גמל להשקעה. It's a name I know, the fee is \"0.56%\" and it shows \"13.7%\" for 3 years and \"11.92%\" for 5. It's what I came for and nothing in that row scared me.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Analyst block, 'עוקב מדדים - גמיש' 26.39%",
+        "why": "Much higher return tempted me, but I don't know what גמיש means and Analyst is less familiar than Harel"
+      },
+      {
+        "where": "Screens 6-8, middle of the long table",
+        "why": "Lost track of which company each row belonged to; company name only appears in the grey block header"
+      },
+      {
+        "where": "Several S&P 500 rows across companies",
+        "why": "They all look nearly the same (0.54%-0.71%, ~13%), too many to compare, so I fell back on the brand I know"
+      }
+    ],
+    "used": [
+      "Heading 'כל המסלולים בכל החברות'",
+      "Pre-selected 'קופת גמל להשקעה 143' button",
+      "Track names column (S&P 500 rows)",
+      "Big return numbers 3 שנים / 5 שנים",
+      "Fee 'מהחיסכון' percent",
+      "Company block headers הראל, מור, אנליסט, מיטב",
+      "כסף מנוהל figures like 2.3 מיליארד ₪"
+    ],
+    "skimmed": [
+      "Bond and כספי rows",
+      "Mor block",
+      "Meitav block",
+      "Last screen with 'חדש' tracks"
+    ],
+    "skipped": [
+      "Subheading text about 2025 and ספטמבר 2026 data",
+      "Track-type filter chips",
+      "Search box",
+      "'מה זה קופת גמל להשקעה' link",
+      "'?' help icons",
+      "Screens 9-14",
+      "Small text under the table",
+      "Footer and 'חוקים וכללים'"
+    ],
+    "unsure_meaning": [
+      "מט\"ח",
+      "מהחיסכון vs מההפקדה (two fees)",
+      "The coloured rings (guessed yellow = abroad)",
+      "3 שנים / 5 שנים: per year or total",
+      "פחות מ־3 שנים",
+      "עוד לא דווח",
+      "גמיש",
+      "הלכה יהודית",
+      "Numbers like 8521 next to each track"
+    ],
+    "not_found": [
+      "A recommendation or 'best for beginners' pick",
+      "Fee in shekels for my amount",
+      "How to actually open the fund / first step",
+      "Company name on each row"
+    ],
+    "findings": [
+      {
+        "what": "Company name only shows in the block header, so after a scroll I couldn't tell whose track a row was",
+        "where": "Main table, every block"
+      },
+      {
+        "what": "143 almost identical rows, too many to compare on a phone, no suggested pick",
+        "where": "Whole table"
+      },
+      {
+        "what": "Fee only as a percent, nothing in shekels, so 0.56% vs 0.71% looks like nothing",
+        "where": "דמי ניהול column"
+      },
+      {
+        "what": "Two fee numbers (מהחיסכון / מההפקדה) with no plain explanation",
+        "where": "Fee column"
+      },
+      {
+        "what": "Rings with מניות/מט\"ח percentages, unclear what the colours mean",
+        "where": "חשיפה column"
+      },
+      {
+        "what": "Table is too wide for a phone; the money column on the far left is easy to miss",
+        "where": "Table layout"
+      },
+      {
+        "what": "Lots of 'פחות מ־3 שנים' and 'עוד לא דווח' rows clutter the list",
+        "where": "New tracks, e.g. last screen"
+      },
+      {
+        "what": "Nothing tells me what to do next or how to open the fund",
+        "where": "Whole page"
+      }
+    ]
+  },
+  "steps": 9,
+  "reads": 9,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 38192,
+    "turns": 11,
+    "usd": 0.21633779999999997,
+    "input": 12,
+    "cacheWrite": 17060,
+    "cacheRead": 55849,
+    "output": 3432,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "p13-sort-tracks-pc",
+    "screenshots": 16,
+    "changes": [
+      {
+        "id": "sort-shown",
+        "type": "style",
+        "shots": 16,
+        "applied": 16,
+        "most": 1
+      }
+    ],
+    "neverShown": [],
+    "errors": []
+  }
+}

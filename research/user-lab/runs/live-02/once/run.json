@@ -1,0 +1,21 @@
+{
+ "personas": [
+  "self-directed-investor",
+  "careful-retiree-pc",
+  "student-small-amounts"
+ ],
+ "tasks": [
+  {
+   "key": "indices-lists",
+   "text": "You want to invest regularly in an S&P 500 fund for the long term at the lowest cost, and you are working out where to hold it and which fund to pick.",
+   "shots": [
+    "/home/ori/dev/finance-tool/research/user-lab/live/2026-11-06-02-indices-cost-bar-legend/screen.png"
+   ],
+   "device": "pc",
+   "findings": true
+  }
+ ],
+ "parallel": 3,
+ "repeat": 3,
+ "behaviour": "research/user-lab/versions/candidates/once.md"
+}

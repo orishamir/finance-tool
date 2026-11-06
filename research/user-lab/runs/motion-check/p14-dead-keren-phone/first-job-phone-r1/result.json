@@ -1,0 +1,118 @@
+{
+  "task": "p14-dead-keren-phone",
+  "persona": "first-job-phone",
+  "repeat": 1,
+  "mode": "browser",
+  "device": "phone",
+  "startedAt": "2026-11-06T00:17:46.658Z",
+  "structured": {
+    "answer": "With 300 ₪ a month, taking it out after 4 years leaves about 15,162 ₪ (14,400 of it is what I put in), and after 8 years about 34,412 ₪, with no tax. That's the employee mode with the employer part set to 0, because the self-employed button wouldn't switch.",
+    "confidence": "unsure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Toggle שכירים / עצמאים at top of calculator",
+        "why": "Tapped עצמאים three times (by text and by position); שכירים stayed chosen, nothing changed"
+      },
+      {
+        "where": "Text block under the bar chart (משיכה אחרי 4 שנים..., התשואה 7%..., מיטב השתלמות...)",
+        "why": "Too much text and numbers, got lost and scrolled back up"
+      },
+      {
+        "where": "First result 52,334 at 4 years",
+        "why": "Almost took it as my answer before noticing it includes 900 ₪ a month from an employer I don't have"
+      }
+    ],
+    "used": [
+      "Tab מה קורה לכסף בקרן",
+      "Calculator toggle שכירים/עצמאים (failed)",
+      "Field הפקדת המעסיק, מהשכר set to 0",
+      "Year slider / small bar chart 1-12 (set 4, then 8)",
+      "Big numbers above bars: הפקדתם, התשואה הוסיפה, המס לקח, נשאר בידיים",
+      "Line 'קרן השתלמות במסלול מדד. 300 ₪ בחודש מכם, 0 ₪ מהמעסיק'"
+    ],
+    "skimmed": [
+      "Intro paragraph under מה זה (only caught: after 6 years withdraw without tax)",
+      "Text under the chart about income tax refund, today's prices, 2% inflation, 11 tracks"
+    ],
+    "skipped": [
+      "שווה לדעת tab",
+      "מי מציע ומי מצטרף tab",
+      "חוקים וכללים · 14 button",
+      "Fields תשואה בשנה, דמי ניהול בשנה, משכורת ברוטו (left as default)",
+      "Everything below the calculator"
+    ],
+    "unsure_meaning": [
+      "התשואה הוסיפה אחרי דמי ניהול",
+      "החזר ממס הכנסה / לחשבון נכנסים קודם",
+      "כל הסכומים בכסף של היום",
+      "הפטור עוצר ... 15,712 ₪ בחודש",
+      "מיטב השתלמות עוקב מדד S&P500 (13245)",
+      "Pink striped box on the tax bar",
+      "Grey vs dark grey vs teal colours in the bars",
+      "Whether 300 ₪ a month from a 12,000 salary at 2.5% is a sensible self-employed amount"
+    ],
+    "not_found": [
+      "A working self-employed mode in the calculator",
+      "A plain field for 'how much I deposit per month' in shekels",
+      "Whether the 6-year rule is different for self-employed people"
+    ],
+    "findings": [
+      {
+        "what": "The עצמאים button doesn't respond, so a self-employed person can't get their own numbers",
+        "where": "Calculator toggle at top"
+      },
+      {
+        "what": "The default numbers include 900 ₪ a month from an employer, and the first big result (52,334) is wrong for a self-employed person, but it sticks in your head",
+        "where": "Bar chart result at default settings"
+      },
+      {
+        "what": "The deposit is only set as a % of gross salary, not as a shekel amount per month",
+        "where": "ההפקדה שלכם, מהשכר field"
+      },
+      {
+        "what": "Long dense paragraph full of numbers and links under the chart, easy to get lost in",
+        "where": "Below the bar chart"
+      },
+      {
+        "what": "Bar colours (grey/dark grey/teal/pink stripes) aren't explained next to the bars",
+        "where": "Big bar chart"
+      },
+      {
+        "what": "At 4 years you get back barely more than you put in, and the page doesn't say plainly that the money is locked until 6 years",
+        "where": "Result at year 4"
+      }
+    ]
+  },
+  "steps": 12,
+  "reads": 9,
+  "commands": 12,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 75580,
+    "turns": 23,
+    "usd": 0.38014860000000006,
+    "input": 44,
+    "cacheWrite": 25394,
+    "cacheRead": 378703,
+    "output": 5054,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "p14-dead-keren-phone",
+    "screenshots": 12,
+    "changes": [
+      {
+        "id": "dead-shown",
+        "type": "style",
+        "shots": 12,
+        "applied": 12,
+        "most": 1
+      }
+    ],
+    "neverShown": [],
+    "errors": []
+  }
+}

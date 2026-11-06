@@ -1,0 +1,65 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "The page says nothing about whether פסגות, the recommended account provider, is safe, or what happens to the money if something goes wrong there. This keeps the reader from feeling fully sure.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "The ת\"א-125 explanation (\"קרנות ישראליות שמחזיקות את המניות; אין קרן חוץ שמתחמחה בישראל\") needed two reads to understand.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "The sliders for the amounts are fiddly on a phone, so the reader used only the boxes.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "It is unclear whether the 7% return is before or after inflation, and what the \"אינפלציה\" button does. The reader was afraid to press it, so the meaning of the main result's \"today's money\" basis stays unclear.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "The cost-bar legend (החשבון / הקרן / המדינה) has headings in odd places, and the reader couldn't tell which colour belongs to whom, so they gave up on it.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 6,
+      "summary": "In the account list, the small number under the big one has no label. The reader only worked out later that it is the account's cost.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 7,
+      "summary": "The fund card lists a \"נאמן 0.025%\" fee without explaining who that is or why the reader pays it.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 8,
+      "summary": "The fund-list percentages (\"‎−0.04% בשנה · שנה אחת\") and the \"מול המדד\" explanation were only half understood and not trusted. The reader worried that the fund has only one year of history.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 9,
+      "summary": "The steps chart starts from הראל סל at ירושלים, which the reader never chose, and this confused them about what their choice was. It ends at the same answer as the top.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 10,
+      "summary": "The dotted purple underlines under numbers don't show whether they can be pressed.",
+      "serious": false,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.0790468
+}

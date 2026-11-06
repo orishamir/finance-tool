@@ -1,0 +1,96 @@
+{
+  "task": "s33",
+  "persona": "first-job-phone",
+  "repeat": 2,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T12:46:18.471Z",
+  "structured": {
+    "answer": "I'd pick the second option, because it tells me in plain Hebrew what's inside each index (\"חמש מאות החברות הגדולות בארצות הברית\") instead of just a code name. I still couldn't tell you what the fund would actually cost me.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "fee column, three lines per fund",
+        "why": "Didn't know if I pay קבוע + משתנה + נאמן together, or what 'משתנה' depends on"
+      },
+      {
+        "where": "tags under S&P 500 and MSCI funds",
+        "why": "'מס גם על שינויי המטבע' sounded like an extra tax and made me hesitate on the fund I actually wanted"
+      }
+    ],
+    "used": [
+      "Heading 'קרנות סל 4 קרנות'",
+      "Fund names, especially S&P 500",
+      "Index column 'המדד' / 'המדד ומה יש בו'",
+      "Plain-Hebrew description lines under each index on screen 2",
+      "Fee numbers 0.8% / 0.3% / 0.015% for S&P"
+    ],
+    "skimmed": [
+      "Tags under fund names (צוברת, מחזיקה את המניות, חשיפה לדולר)",
+      "Fee lines for the Tel Aviv funds"
+    ],
+    "skipped": [
+      "Grey line under heading 'רק הקרנות שהאתר אסף עליהן דוח...'",
+      "מספר נייר numbers",
+      "'בדף הקרן במאיה' links",
+      "'<' arrows next to index names"
+    ],
+    "unsure_meaning": [
+      "נאמן",
+      "צוברת",
+      "עסקת החלף",
+      "(4A) / (4D)",
+      "קבוע vs משתנה in the fee",
+      "מס גם על שינויי המטבע",
+      "MSCI AC World"
+    ],
+    "not_found": [
+      "Fee in shekels for my amount",
+      "Which fund is recommended or how to buy one",
+      "What the total yearly fee is"
+    ],
+    "findings": [
+      {
+        "what": "Fees only in small percents split into three lines; no total and no shekel amount, so I can't judge cost",
+        "where": "דמי ניהול column, both options"
+      },
+      {
+        "what": "Option 1 shows only index code names with no explanation of what's inside",
+        "where": "המדד column, screen 1"
+      },
+      {
+        "what": "'מס גם על שינויי המטבע' sounds like a scary extra tax with no explanation",
+        "where": "tags under S&P 500 and MSCI rows"
+      },
+      {
+        "what": "On screen 1 the tax tag sits at the far left end of a long tag row, easy to miss",
+        "where": "tag row, screen 1"
+      },
+      {
+        "what": "Jargon tags (צוברת, עסקת החלף, נאמן) with no explanation",
+        "where": "under fund names and in fee column"
+      },
+      {
+        "what": "Company name אי.בי.אי. I'm not sure I know from ads",
+        "where": "fund names"
+      }
+    ]
+  },
+  "steps": 2,
+  "reads": 2,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 27677,
+    "turns": 4,
+    "usd": 0.12120000000000002,
+    "input": 6,
+    "cacheWrite": 8980,
+    "cacheRead": 17180,
+    "output": 2295,
+    "model": "claude-opus-5-5"
+  }
+}

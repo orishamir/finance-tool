@@ -1,0 +1,47 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "A minus percentage beside the recommended fund in the fund list looks like a loss and nearly put the reader off it.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "Unclear whether the final amount accounts for inflation; 'בכסף של היום' and the inflation button are unclear.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "The minus sign on '−1,030 ₪ לעומת הבחירה שלכם' reads as money lost.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "Unclear whether 'המס 342 ₪ יותר' is good or bad.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "אי.בי.אי. is both the recommended fund manager and a fairly expensive account (#11, red bar), which is confusing.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 6,
+      "summary": "Terms such as נאמן, דמי משמרת, 4A and MTF are not explained.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 7,
+      "summary": "It isn't obvious that the 7% annual return is only an assumption.",
+      "serious": false,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.0531708
+}

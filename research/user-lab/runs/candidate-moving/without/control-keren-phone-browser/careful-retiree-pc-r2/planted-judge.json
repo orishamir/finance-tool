@@ -1,0 +1,41 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "With the self-employed (עצמאים) option, years 1-5 show only empty bars and no result, so part of the reader's question goes unanswered. The switch does respond, so this is not problem 1, and it says nothing about a tax line or the chart jumping, so it is not problem 2.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "A different column (securities account, 25,725) shows a big number where the fund's figure should be, so a reader could easily take it as the 4-year answer and decide wrongly.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "The round back-to-top button covers the end of one column label. This is a minor visual overlap.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "The calculator assumes 7% a year and says this is an assumption, not a forecast. Some readers may still read it as a promised return, but the page does disclose it.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "The intro says 3 years is enough at retirement age, but the calculator cannot model that case. This is a gap between the text and the tool, but the text itself gives the answer.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 6,
+      "summary": "The dark page with grey text is tiring to read. This is a matter of comfort and taste.",
+      "serious": false,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.027906800000000002
+}

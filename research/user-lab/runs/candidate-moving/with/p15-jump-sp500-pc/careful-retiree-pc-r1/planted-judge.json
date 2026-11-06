@@ -1,0 +1,6 @@
+{
+  "named": true,
+  "position": 5,
+  "why": "Finding 5 says that after typing in the inputs, the page jumped up near the results. That counts as the results moving when a number is changed. The \"sideways\" part doesn't fit, but the up-and-down jump caused by the input change does.",
+  "usd": 0.020844
+}

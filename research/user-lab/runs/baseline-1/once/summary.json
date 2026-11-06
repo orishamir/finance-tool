@@ -1,0 +1,149 @@
+{
+ "run": "research/user-lab/runs/baseline-1/once",
+ "sessions": "all",
+ "kinds": {
+  "headline": {
+   "cases": 36,
+   "pairs": 72,
+   "single10": [
+    17,
+    72
+   ],
+   "singleAny": [
+    17,
+    72
+   ],
+   "pooled10": [
+    12,
+    36
+   ],
+   "pooledAny": [
+    12,
+    36
+   ],
+   "byPersona": {
+    "careful-retiree-pc": {
+     "in10": 7,
+     "of": 36
+    },
+    "first-job-phone": {
+     "in10": 10,
+     "of": 36
+    }
+   },
+   "steadiness": null,
+   "ranks": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    2,
+    2,
+    2,
+    3,
+    3,
+    3,
+    3,
+    4,
+    5,
+    8
+   ],
+   "caughtCases": [
+    "companies-fee-column-unclear",
+    "current-account-chart-unrelated",
+    "current-account-one-bank",
+    "guides-useless-sections",
+    "hg-tax-after-six",
+    "rules-toggle-empty",
+    "study-r1-decoder-table",
+    "tracks-exposure-100",
+    "tracks-r2-companies",
+    "tracks-sort-does-nothing",
+    "tracks-stale-annuity",
+    "tracks-warnings"
+   ]
+  },
+  "outside": {
+   "cases": 7,
+   "pairs": 14,
+   "single10": [
+    3,
+    14
+   ],
+   "singleAny": [
+    3,
+    14
+   ],
+   "pooled10": [
+    2,
+    7
+   ],
+   "pooledAny": [
+    2,
+    7
+   ],
+   "byPersona": {
+    "careful-retiree-pc": {
+     "in10": 1,
+     "of": 7
+    },
+    "first-job-phone": {
+     "in10": 2,
+     "of": 7
+    }
+   },
+   "steadiness": null,
+   "ranks": [
+    3,
+    6,
+    7
+   ],
+   "caughtCases": [
+    "makam-duplicates",
+    "makam-under-products"
+   ]
+  },
+  "taste": {
+   "cases": 9,
+   "pairs": 18,
+   "single10": [
+    2,
+    18
+   ],
+   "singleAny": [
+    2,
+    18
+   ],
+   "pooled10": [
+    1,
+    9
+   ],
+   "pooledAny": [
+    1,
+    9
+   ],
+   "byPersona": {
+    "careful-retiree-pc": {
+     "in10": 1,
+     "of": 9
+    },
+    "first-job-phone": {
+     "in10": 1,
+     "of": 9
+    }
+   },
+   "steadiness": null,
+   "ranks": [
+    1,
+    3
+   ],
+   "caughtCases": [
+    "cfc-exposure"
+   ]
+  }
+ },
+ "findingsPerSession": 7.41
+}

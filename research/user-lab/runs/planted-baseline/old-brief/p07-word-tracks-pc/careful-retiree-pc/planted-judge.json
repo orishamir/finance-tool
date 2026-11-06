@@ -1,0 +1,6 @@
+{
+  "named": true,
+  "position": 9,
+  "why": "Section 5 asks about \"תשואה שנתית ממוצעת, ברוטו\": \"If 'ברוטו' means before fees, what did I actually get? Am I supposed to subtract 0.6% myself?\" This says the term is unclear and asks \"before what?\", so it counts as naming the problem. Problems the reader raised before it: (1) the 8521 track's top line is cut off, (2) the \"מקור/מחושב\" label is confusing, (3) the table is too long, (4) some screens have no company name, (5) the \"חדש\" rows are empty, (6) the rings can't be read, (7) the foreign-currency exposure is unclear, and (8) \"101% מניות\" is above 100%. That puts \"ברוטו\" about 9th. The count is approximate because some of the reader's remarks could be split or merged differently.",
+  "usd": 0.04648
+}

@@ -1,0 +1,36 @@
+{
+  "case": "label-icons",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The icons on the fund labels are weak and do not help tell the labels apart.\",\"where\":\"the labels on fund rows\",\"kind\":\"taste\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "No finding says the icons on the labels are weak or fail to set the labels apart; finding 3 is about telling the funds apart because of similar names and too many tags, and finding 5 is about jargon."
+      }
+    ],
+    "liked": [],
+    "usd": 0.017031400000000002
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Findings 3 and 5 are about the tags, but they complain that there are too many funds and tags and that the tag wording is jargon; neither says the icons on the labels are weak or fail to tell the labels apart."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0162034
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0332348
+}

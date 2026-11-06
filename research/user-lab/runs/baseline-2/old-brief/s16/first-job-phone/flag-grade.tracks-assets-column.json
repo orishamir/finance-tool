@@ -1,0 +1,75 @@
+{
+  "case": "tracks-assets-column",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The column 'נכסים בסוף ספטמבר' does not say it means the money pooled in the track; it reads as the fund's own assets.\",\"where\":\"that column's head\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Unsure whether the 2025 average fee shown is the fee they would actually pay (or whether it can be negotiated)",
+      "After choosing the S&P chip, the list still showed 'הכל 143', so the filter didn't seem to apply",
+      "'123 מקור / מחושב / הזנתה' is confusing; unclear why it matters",
+      "Orange notice that the authority's data hasn't been updated since September 2026 is a bit worrying",
+      "Most investment chips ('הלכה איסלאמית', 'אג\"ח ממשלתי סחיר', 'גמיש') meant nothing",
+      "The table is very long and needs a lot of scrolling",
+      "The company name disappears when scrolling mid-group; the first group's company was never shown",
+      "Stocks/foreign-currency rings not understood; איילון S&P track at 34% stocks was confusing",
+      "Didn't know the dotted underlines were clickable",
+      "Unclear whether 'מהחיסכון' and 'מההפקדות' are two fees and whether both are paid",
+      "Didn't understand 'גמיש', 'כללי', 'משולב סחיר'",
+      "Returns are 'לפני דמי ניהול'; unclear what people actually got after fees",
+      "Wanted a short list of only S&P 500 tracks sorted by fee, with company names always visible",
+      "No info on minimum deposit, how to open an account, or how long it takes",
+      "No info on withdrawing money (taxes, waiting time)",
+      "Wanted plain guidance like 'if you just want S&P 500, look here'",
+      "Would drop the 'קופה' number column",
+      "Would drop tracks marked 'עוד לא דווח' with '0 מיליון ₪'"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader only glanced at the assets column and took a bigger number as safer; they never said its head fails to explain that it means the money pooled in the track rather than the fund's own assets."
+      }
+    ],
+    "liked": [],
+    "usd": 0.052423199999999996
+  },
+  "b": {
+    "raised": [
+      "Unsure whether the 2025 average fee shown is what they'd actually pay, or whether it can be negotiated",
+      "The S&P chip didn't seem to filter the list, which still showed 'הכל 143'",
+      "'123 מקור / מחושב / הזנתה' was confusing and seemed irrelevant",
+      "The orange 'data not updated since September 2026' notice was a bit worrying",
+      "Investment chips like 'הלכה איסלאמית', 'גמיש', 'אג\"ח ממשלתי סחיר' meant nothing to them",
+      "The table is very long and needs a lot of scrolling",
+      "The company name is lost when scrolling mid-group; the first group's company was never identified",
+      "They didn't know the dotted underlines were clickable",
+      "Did not understand the stocks/foreign-currency rings, or why Ayalon's S&P 500 track shows 34% stocks",
+      "'מהחיסכון' vs 'מההפקדות' is unclear: two fees, do I pay both?",
+      "Did not understand 'גמיש', 'כללי', 'משולב סחיר' track types",
+      "'לפני דמי ניהול' leaves unclear what people actually got after fees",
+      "Couldn't get a short list of only S&P 500 tracks sorted by fee with company names always visible",
+      "No information on minimum deposit, how to open an account, or how long it takes",
+      "No information on withdrawing money (taxes, waiting time)",
+      "No plain-language pointer like 'if you just want S&P 500, look here'",
+      "Would drop the 'קופה' number column and the unreported '0 מיליון ₪' rows"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader only glanced at the assets column and took a bigger number as safer; they never said the head fails to say it means the money pooled in the track."
+      }
+    ],
+    "liked": [],
+    "usd": 0.053895200000000004
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.10631840000000001
+}

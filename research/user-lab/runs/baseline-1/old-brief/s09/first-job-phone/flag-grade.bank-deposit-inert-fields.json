@@ -1,0 +1,95 @@
+{
+  "case": "bank-deposit-inert-fields",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The bank-deposit guide asks for age, linkage and term, but those fields do not change its graph.\",\"where\":\"the input fields beside the graph\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Worried that Israel has no deposit insurance (no law returns money if the bank collapses)",
+      "Confused by the '123 מקור / מחושב / הזנה … לחצו על מספר' line",
+      "Only half understood the linked-to-index (צמוד למדד) / principal-guarantee paragraph and whether they'd want one",
+      "Didn't understand the word 'העוגן' in the anchor-rate line",
+      "Didn't see why the optional age field matters; skipped it and would drop it",
+      "Confused that the example deposit is 12 months while the calculator runs 10 years",
+      "Lost by 'קרן כספית יומית' and didn't understand the 'מזומן שקלי' chip",
+      "Codes like TXI-03 and BANK-06 mean nothing to them",
+      "'חשבון במערכת סגורה' unclear",
+      "'כמה זה עולה' gives no number for exit fees, so it doesn't help",
+      "Pink tax area in the chart is barely visible",
+      "Grey deposits line sits on top of the teal area, so they can't be told apart and the loss was missed",
+      "Unsure what the difference is between the today-money and future-shekels toggle",
+      "Didn't see why the 'איפה מופיע' column in the terms table matters",
+      "Didn't understand מק\"מ, קרנות כספיות, מוצרי שוק הכסף",
+      "Didn't understand ריבית הפריים or whether variable interest is good or bad for them",
+      "Didn't understand the 'הצגת החוקים והכללים' links",
+      "Didn't understand the loss-offset (הפסד הון מקוזז) paragraph; would drop it",
+      "Unclear whether ₪500 monthly can be added to the same deposit as the calculator assumes",
+      "Troubled that the site marks the tax treatment of a broken deposit as an open question",
+      "No side-by-side comparison of current interest rates across banks",
+      "Breaking-fine size not given in shekels or percent",
+      "No info on the minimum amount or how to open a deposit",
+      "No comparison of a deposit with the S&P 500 for someone their age",
+      "No figure for nominal interest earned in shekels before inflation",
+      "No info on whether an index-linked deposit would avoid the loss, or what it pays",
+      "Would drop the 'מה האתר לקח בחשבון' section",
+      "Would drop most of the terms (מונחים) table"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader questions why age matters and is confused by the 12-month example next to a 10-year calculator, but never says the age, linkage or term inputs fail to change the graph."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0731152
+  },
+  "b": {
+    "raised": [
+      "Can't know their own bank's interest rate, so stays unsure about the decision",
+      "Scared that Israel has no deposit insurance",
+      "The '123 מקור / מחושב / הזנה' line is confusing",
+      "Only half understood צמוד למדד / הבטחת קרן and whether to want one",
+      "Didn't understand the word העוגן",
+      "The age (גיל) field: didn't see why age matters; would drop it",
+      "Confused that the example deposit is 12 months while the calculator runs 10 years",
+      "קרן כספית יומית and the מזומן שקלי chip not understood",
+      "Codes like TXI-03 and BANK-06 mean nothing",
+      "חשבון במערכת סגורה unclear",
+      "כמה זה עולה gives no actual number",
+      "Chart: the pink tax line is barely visible and the grey deposits line overlaps the teal area",
+      "Unsure what the בכסף של היום / בשקלים של העתיד toggle does",
+      "The איפה מופיע column in מונחים seems irrelevant",
+      "Didn't understand מק\"מ, קרנות כספיות, מוצרי שוק הכסף",
+      "Didn't understand ריבית הפריים or whether changing interest is good or bad",
+      "The 'הצגת החוקים והכללים' links not understood",
+      "The הפסד הון מקוזז / loss-offset paragraph not understood; would drop it",
+      "Unclear whether ₪500 a month can be added to the same deposit",
+      "The site itself leaves tax on a broken deposit as an open question",
+      "No side-by-side comparison of current bank rates",
+      "No figure for the size of the breaking fine",
+      "No minimum amount or how-to-open information",
+      "No comparison of a deposit with the S&P 500",
+      "No figure for nominal interest earned in shekels",
+      "No answer on whether a linked (צמוד) deposit avoids the loss, or what it pays",
+      "Would drop מה האתר לקח בחשבון and most of the מונחים table"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader skipped the age field and asked why age matters, and noticed the 12-month vs 10-year mismatch, but never said that age, linkage or term fail to change the graph."
+      }
+    ],
+    "liked": [],
+    "usd": 0.06583119999999999
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1389464
+}

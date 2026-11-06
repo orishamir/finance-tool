@@ -1,0 +1,91 @@
+{
+  "case": "companies-fee-column-unclear",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The column 'דמי ניהול לפי …' in the company's tracks table is not explained.\",\"where\":\"the fee column head\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "The page never says which track is mine, and the fee shown is a 2025 average, not necessarily what I pay",
+      "The 60+ track rows are cut off between screens, so some numbers are missing (the comprehensive fund's figures and the provident fund's 5-year return)",
+      "The budgetary pension fund charges 1.33%, far more than anything else, and the page doesn't say why",
+      "The '123 מקורו / 123 מחושב' line is confusing",
+      "The track counts don't match: 105 vs '96 tracks in 7 products', with 9 buttons; this lowers trust",
+      "Doesn't understand 'קמ\"פ'",
+      "The footer date (03.11.2026) differs from the 'end of September' date at the top",
+      "Two fee figures (from savings vs from deposits): unclear whether both are paid and which one hurts more",
+      "Returns are shown before fees, so the real gain is lower",
+      "Many tracks show 'less than 3 years', with no return at all",
+      "The PF-06 and PF-10 codes mean nothing",
+      "'מניות 99% / מט\"ח 99%' don't add up as expected",
+      "Direct expenses are charged on top of the fees but not shown, so the true cost is unknown",
+      "Track names such as 'עוקב מדדים - גמיש', 'קיימות' and 'כספי (שקלי)' are not understood",
+      "The index-fund fee terms (fixed / variable / trustee) are not understood",
+      "No yearly cost and result in shekels",
+      "No last-year result and no sign of whether a track ever lost money",
+      "No comparison with other companies",
+      "No information on what happens if I move, or the cost of moving",
+      "No plain-language risk level for each track",
+      "Would remove the index-fund and ETF sections with their badges",
+      "Would remove the 'חיסכון לכל ילד' section",
+      "Would remove the 'לא מצאתם שם?' search box",
+      "Would remove the rings",
+      "Would remove the 'מרכזית לפיצויים' section"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 8,
+        "why": "The reader is confused by the fee column's two parts (from savings vs from deposits) and asks whether both are paid, which is a clear part of the column not being explained."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0704352
+  },
+  "b": {
+    "raised": [
+      "The page never shows which track is mine",
+      "The fee shown is a 2025 average, not necessarily what I pay",
+      "The age-60+ track numbers are cut off between screens (comprehensive pension row, provident fund's 5-year figure)",
+      "The budgetary pension fund's 1.33% fee is far higher and not explained",
+      "The '123 מקורו / 123 מחושב' line is confusing",
+      "The product counts don't match (105 vs 96 tracks in 7 products, but 9 buttons), which lowers trust",
+      "Didn't understand 'קמ\"פ'",
+      "The footer date (03.11.2026) differs from the 'end of September' date at the top",
+      "The two fee columns (מהחיסכון / מההפקדות) are unclear: do I pay both, and which costs me more?",
+      "Many tracks show 'less than 3 years' and have no return at all",
+      "The PF-06 / PF-10 codes mean nothing",
+      "'Shares 99% / FX 99%' doesn't add up",
+      "Direct expenses are charged on top of fees but aren't shown, so the full cost is unknown",
+      "Track-name terms (עוקב מדדים - גמיש, קיימות, כספי (שקלי)) not understood",
+      "Index-fund fee types (קבועים / משתנים / נאמן) not understood",
+      "No yearly example in shekels of cost and growth",
+      "No returns after fees",
+      "No last-year result, and no sign of whether a track ever lost money",
+      "No comparison with other companies",
+      "No information on what moving funds involves or costs",
+      "No plain-language risk level for each track",
+      "Would drop the index-fund and ETF sections and their badges",
+      "Would drop the 'חיסכון לכל ילד' section",
+      "Would drop the 'לא מצאתם שם?' search box",
+      "Would drop the rings",
+      "Would drop the central severance fund section"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 9,
+        "why": "The reader says they don't understand the fee column, which is split into מהחיסכון and מההפקדות: they ask whether they pay both, and say they don't know which one costs them more."
+      }
+    ],
+    "liked": [],
+    "usd": 0.08029120000000001
+  },
+  "third": null,
+  "ranks": {
+    "k": 8
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1507264
+}

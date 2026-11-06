@@ -1,0 +1,41 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "Small grey text on dark background makes notes on past returns and legal fee cap very hard to read",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "No plain statement of which track is low-risk or comparable to a deposit",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "Crowded table with many numbers, small circle charts and hard-to-distinguish green/yellow dots",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "'Less than 3 years' shown instead of a return in most rows, meaning unclear",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "English letters and jargon in track names",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 6,
+      "summary": "Large 13.7% on the S&P 500 track stands out and could tempt or frighten",
+      "serious": false,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.0330068
+}

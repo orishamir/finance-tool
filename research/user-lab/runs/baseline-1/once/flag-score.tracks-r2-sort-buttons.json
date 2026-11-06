@@ -1,0 +1,57 @@
+{
+  "case": "tracks-r2-sort-buttons",
+  "sessions": 2,
+  "perKey": {
+    "k": {
+      "kind": "taste",
+      "caught": 0,
+      "caughtIn10": 0,
+      "of": 2,
+      "byPersona": {
+        "careful-retiree-pc": {
+          "caught": 0,
+          "of": 1,
+          "ranks": [
+            0
+          ]
+        },
+        "first-job-phone": {
+          "caught": 0,
+          "of": 1,
+          "ranks": [
+            0
+          ]
+        }
+      },
+      "graderAgreement": 1
+    }
+  },
+  "againstLiked": {},
+  "usd": 0.0524536,
+  "rows": [
+    {
+      "task": "s39",
+      "session": "careful-retiree-pc",
+      "persona": "careful-retiree-pc",
+      "mode": "findings",
+      "raised": null,
+      "ranks": {
+        "k": 0
+      },
+      "against": {},
+      "usd": 0.0253268
+    },
+    {
+      "task": "s39",
+      "session": "first-job-phone",
+      "persona": "first-job-phone",
+      "mode": "findings",
+      "raised": null,
+      "ranks": {
+        "k": 0
+      },
+      "against": {},
+      "usd": 0.0271268
+    }
+  ]
+}

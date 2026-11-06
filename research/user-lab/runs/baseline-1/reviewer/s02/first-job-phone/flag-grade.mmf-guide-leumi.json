@@ -1,0 +1,36 @@
+{
+  "case": "mmf-guide-leumi",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The money-market-fund guide compares with one named bank (Leumi) and cites that bank's deposit rate, in a page about a general product.\",\"where\":\"the comparison lines and their source\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "No finding objects to the guide comparing against one named bank (Leumi) or citing that bank's deposit rate. Finding 2 is about whether the Bank of Israel–based 3.25% is net of fees, and finding 5 is about cluttering source codes, so neither matches."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0163594
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "No finding objects to comparing against one named bank (Leumi) and citing its deposit rate; finding 2 is about whether the 3.25% figure is net of fees, and findings 5 and 6 are about source codes and bar colours, not about singling out one bank."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0159394
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0322988
+}

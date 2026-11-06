@@ -1,0 +1,86 @@
+{
+  "case": "label-tax-on-sale",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The label 'מס רק במכירה' states something the site does not know: what happens to tax while a foreign fund accumulates is an open question.\",\"where\":\"the label on foreign accumulating funds\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Psagot's advert ('no management fees ever') conflicts with its price list (0.12% custody fee), so the reader is unsure about the account",
+      "Didn't touch the inflation button because it was unclear what it would change",
+      "The grey 'מס רק במכירה' pop-up covers other text, which can't be read",
+      "The section on why some funds have no price at Psagot is too technical",
+      "The coloured bar in each account row means nothing without a legend",
+      "The year-by-year hedging table is confusing",
+      "Doesn't understand 4D vs 4A, or 'מחקה' vs 'קרן סל'",
+      "Doesn't understand fund tags (swap deal, several ways together, currency tax, W-8BEN), or whether any are a danger",
+      "Doesn't understand '+0.37% שנה אחת' vs the index",
+      "Doesn't understand why the starting point is Bank of Jerusalem / MTF",
+      "Unclear whether the 699 custody fee is included in the result",
+      "Doesn't understand why the KTF fund is 'taxed only on sale', or whether that's good or bad",
+      "Can't find how to actually start, or whether monthly purchases can be automatic",
+      "Can't find whether the fund is safe (size, what happens if the manager has trouble)",
+      "Can't find what happens when withdrawing early or partly, or when tax is paid",
+      "Can't find pensioner/senior prices at banks still open to new customers",
+      "Wants a plain yes/no on currency hedging for someone their age",
+      "Wants to see results with 0% or bad years, not just 'order changes in 6 places'",
+      "Would drop the hedging section's table and bar charts",
+      "Would drop the sensitivity line chart and table",
+      "Would drop the foreign funds with no price",
+      "Would drop most of the coloured fund tags",
+      "Would drop the two tables under the step chart"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader mentions the 'מס רק במכירה' label only because it covers other text and to ask whether it's good or bad, and never questions whether the site actually knows the tax treatment it states."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0722032
+  },
+  "b": {
+    "raised": [
+      "Psagot advert promises no fees ever but the price list shows a 0.12% custody fee; unclear which is true or whether it's in the number",
+      "Unsure what the inflation button would change, so didn't touch it",
+      "The foreign-fund mention left them wondering whether they should hold the index that way",
+      "Grey 'מס רק במכירה' pop-up covers other text so they couldn't read what was under it",
+      "No pensioner/senior price available: Hapoalim's is closed to new customers, and none shown at the banks still open",
+      "The 'why some funds have no price at Psagot' section is too technical",
+      "Long year-by-year hedging table lost them",
+      "Coloured bar in each account row means nothing without a legend",
+      "Doesn't understand 4D vs 4A, or 'מחקה' vs 'קרן סל'",
+      "Doesn't understand tags like swap deal, several ways together, currency tax, W-8BEN; worried they are dangers",
+      "Confused by '+0.37% שנה אחת' vs the index; how can a fund beat the index?",
+      "Doesn't understand why the starting point is Bank of Jerusalem/MTF",
+      "Doesn't understand why the KTF fund is 'taxed only on sale' and whether that's good or bad",
+      "Can't find how to actually start, or whether monthly purchases can be automatic",
+      "Can't find whether the fund is safe (size, what if the manager has trouble)",
+      "Can't find what happens when taking money out early or partly, or when tax is paid",
+      "Wants a plain yes/no on currency hedging for someone their age",
+      "Can't see what they'd be left with in 0% or bad years",
+      "Would drop the hedging section's year-by-year table and bar charts",
+      "Would drop the sensitivity line chart and table",
+      "Would drop the foreign funds with no price",
+      "Would drop most of the coloured tags on funds",
+      "Would drop the two tables under the step chart"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader mentions the label only to say its pop-up hides other text and to ask why the fund is taxed only on sale and whether that's good; they never question whether the site actually knows this."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0756432
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1478464
+}

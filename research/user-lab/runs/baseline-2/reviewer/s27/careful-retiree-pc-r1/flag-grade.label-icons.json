@@ -1,0 +1,36 @@
+{
+  "case": "label-icons",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The icons on the fund labels are weak and do not help tell the labels apart.\",\"where\":\"the labels on fund rows\",\"kind\":\"taste\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 7,
+        "why": "Finding 7 says the labels under each fund are hard to tell apart, which is the core of the person's complaint, though it blames similar colours rather than weak icons, so this is a borderline match."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0208234
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 7,
+        "why": "Finding 7 says the labels under each fund are hard to tell apart, which is the core of the person's complaint, though it blames similar colours rather than weak icons."
+      }
+    ],
+    "liked": [],
+    "usd": 0.018671399999999998
+  },
+  "third": null,
+  "ranks": {
+    "k": 7
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0394948
+}

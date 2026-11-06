@@ -1,0 +1,84 @@
+{
+  "case": "hg-not-entered",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The text says 'לא הזנתם אחוזים, אז החישוב לוקח את התקרה' although the percentage fields are filled in with default values.\",\"where\":\"the sentence under the graphic\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "The '123 ממקור / מחושב / הזנתה / מונח' legend labels at the top are confusing and unexplained",
+      "'מה זה' throws too many numbers (7.5%, 2.5%, ₪15,712, 20,566, capital gains tax) at the reader before showing what they mean",
+      "'הכי קרוב לזה: חשבון ניירות ערך' doesn't say whether the alternative is better or worse",
+      "Codes like TXH-09, KH-15, PF-18 in 'שווה לדעת' are meaningless",
+      "The 'תלוי בחברה: הראל, אלטשולר שחם / מיטב' cards are confusing (depends on the company how?)",
+      "The 'מיסוי' cards slide sideways behind arrows, so the reader didn't bother with them",
+      "The 7.5%/15,712 numbers are repeated across 'מה זה', under the chart and in 'מיסוי'",
+      "The 47% early-withdrawal tax figure is scary",
+      "The chief economist's recommendation to cut the benefit is worrying (the benefit might go away)",
+      "Unclear why bars after year 6 in the 12-year chart still have a striped pink tax top if it's tax-free",
+      "Year-6 and year-12 results aren't visible without clicking; the default shows year 5, the bad year",
+      "Higher management fee (0.7%) shows more money than the lower fee (0.19%), which seems backwards and lowers trust",
+      "Unclear how much tax is really paid (−64,761 vs 47% at source vs getting the excess back)",
+      "Unclear whether employer deposits above the ceiling being taxed that month affect the reader's paycheck",
+      "Jargon not understood: מסלול השקעה, מס רווחי הון, רווח ריאלי, משכורת קובעת, חברה מנהלת, נעילה, ניכוי",
+      "Missing: how much smaller the net monthly paycheck gets",
+      "Missing: which company or plan to pick and how to tell the employer",
+      "Missing: what happens to the fund on leaving the job",
+      "Missing: comparison with putting the 750 into the S&P 500 directly",
+      "Would cut the 'מונחים' glossary table",
+      "Would cut the 'חוקים וכללים' chips",
+      "Would cut the 'מי מציע ומי מפקח' cards",
+      "Would cut the small-print notes under the chart"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader only skimmed the text under the chart and never mentions the 'you didn't enter percentages, so it takes the ceiling' sentence or its clash with the default values already filled in."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0695672
+  },
+  "b": {
+    "raised": [
+      "The '123 ממקור / מחושב / הזנתה / מונח' labels at the top are confusing, and their purpose is unclear",
+      "'מה זה' piles up too many numbers and terms before showing what they mean for the reader",
+      "'הכי קרוב לזה: חשבון ניירות ערך' doesn't say whether the alternative is better or worse",
+      "The codes TXH-09, KH-15 and PF-18 in 'שווה לדעת' mean nothing to the reader",
+      "The 'תלוי בחברה' cards under 'מי מציע ומי מפקח' are confusing: it's unclear how it depends on the company",
+      "The taxation cards slide sideways, which is a bother, and the paragraph under them repeats the 7.5%/15,712 numbers",
+      "The 47% figure in the orange box is scary",
+      "The chief economist's recommendation to cut the benefit raises worry that it might go away",
+      "In the 12-year chart, bars after year 6 still have a striped pink tax top even though that period is supposed to be tax-free",
+      "The year-6 and year-12 results can't be seen without clicking, and the default shows the bad year 5",
+      "The fee range claim, where a higher fee gives more money, seems backwards and lowers trust",
+      "It's unclear how much tax is really paid (−64,761 vs 47% withheld vs refund)",
+      "Unclear whether the employer deposit above the ceiling being taxed hits the reader's paycheck",
+      "Jargon not understood: מסלול השקעה, מס רווחי הון, רווח ריאלי, משכורת קובעת, חברה מנהלת, נעילה, ניכוי",
+      "Missing: how much smaller the net paycheck gets each month",
+      "Missing: which company or plan to pick and how to tell the employer",
+      "Missing: what happens to the fund if the reader leaves the job",
+      "Missing: a comparison with investing the 750 in the S&P 500 directly",
+      "Would cut the glossary table first",
+      "Would cut the 'חוקים וכללים' chips",
+      "Would cut the small-print notes under the chart"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader never says that the sentence claiming no percentages were entered contradicts the default values filled into the fields. They only skimmed the text under the chart, noticing 'לא תחזית'."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0612472
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1308144
+}

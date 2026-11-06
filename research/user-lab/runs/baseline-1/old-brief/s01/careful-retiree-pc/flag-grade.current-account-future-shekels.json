@@ -1,0 +1,82 @@
+{
+  "case": "current-account-future-shekels",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"With 'בשקלים של העתיד' chosen, the figures ignore inflation, so they are wrong.\",\"where\":\"the chart and figures of the panel\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "The page names alternatives but never shows side by side what each would give, so unsure which product to pick",
+      "The '123 מקמן / חושב / הזנה' row is confusing; doesn't know what מקמן means",
+      "The basic and extended package descriptions give no prices",
+      "Codes BANK-20, BANK-23, BANK-15 (and TXI OQ11, BANK OQ9) mean nothing",
+      "'כמה זה עולה' doesn't say how much the fee is, only refers to the bank's price list",
+      "Red box: unclear whether the low-income tax exemption applies; the site doesn't apply it, which worried them",
+      "No deposit insurance, and government help is discretionary; frightening",
+      "Age-based exemptions apply to them at 61 but the site doesn't calculate them",
+      "'ההפקדות שלכם' shows 62,681 instead of 70,000, with no label next to the number saying it's in today's money",
+      "Calculator assumes a 5% return for an account that often pays no interest, so they lost trust; should start at 0%",
+      "Pink tax line and orange fees line are too thin to see on the graph",
+      "The age field doesn't say what changes at the marked ages",
+      "Cost table's rules column is empty and ceiling column just refers to the price list",
+      "Doesn't understand 'הטבה בנקאית'",
+      "Couldn't find what interest banks actually pay on current accounts today",
+      "Couldn't find how much to keep in the current account and how much to move",
+      "Couldn't find whether a money-market fund is safe",
+      "Would drop the 'מונחים' terms table",
+      "Would drop 'מה האתר לקח בחשבון' (except the age line)",
+      "Would drop 'מי מציע ומי מפקח'",
+      "Would drop the future-shekels toggle and the inflation and age fields"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader had 'today's money' selected and ignored the future-shekels option; their deposits complaint is about a missing label, not about future-shekel figures ignoring inflation, and dropping the toggle isn't the same as saying it's wrong."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0648312
+  },
+  "b": {
+    "raised": [
+      "The row '123 מקמן / 123 חושב / 123 הזנה' is confusing; the reader doesn't know what מקמן means",
+      "The basic and extended packages in 'מה זה' come with no prices",
+      "Codes like BANK-20, BANK-23 and BANK-15 mean nothing to the reader",
+      "'כמה זה עולה' doesn't say how much the fixed account fee is; it only points to the bank's price list",
+      "The red box says it's unknown whether the low-income tax exemption applies; this worried the reader and didn't help",
+      "The risks section is frightening: there's no deposit insurance, government help is discretionary, and the 250,000 ₪ protection is only a proposal",
+      "The site doesn't calculate age-based exemptions, which is exactly the reader's situation at 61",
+      "'Your deposits' shows 62,681 instead of 70,000, with no label next to it saying this is in today's money",
+      "The calculator assumes a 5% return for an account that often pays nothing, so it should start at 0%",
+      "The pink tax line and orange fees line in the graph are too thin to see",
+      "The age field doesn't say what changes at the marked ages",
+      "In the cost table the ceiling column only points to the price list and the rules column is empty",
+      "The reader doesn't understand what 'הטבה בנקאית' is or whether to ask the bank for it",
+      "No typical range is given for the monthly bank charge in shekels",
+      "No range is given for the interest banks actually pay on current accounts today",
+      "There's no side-by-side figure comparing a current account, a money-market fund and a fixed deposit after tax and fees",
+      "No guidance on how much to keep in the current account and how much to move",
+      "The page doesn't say whether a money-market fund is safe without deposit insurance",
+      "The reader would drop the 'מונחים' glossary table",
+      "The reader would drop 'מה האתר לקח בחשבון' (except the age line) and 'מי מציע ומי מפקח'",
+      "The reader would drop the future-shekels toggle and the inflation and age fields"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader had today's money selected and ignored the future-shekels option; no item says the future-shekels figures wrongly ignore inflation (item 8 is about a missing label in today's-money mode, and item 21 only wants the toggle dropped)."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0677072
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1325384
+}

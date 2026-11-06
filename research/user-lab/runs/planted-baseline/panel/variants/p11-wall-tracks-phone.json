@@ -1,0 +1,41 @@
+{
+  "id": "p11-wall-tracks-phone",
+  "about": "For the lab only; never reaches a session. Planted problem, kind p11 (A wall of text before the answer): see research/user-lab/planted.md.",
+  "purpose": "plant",
+  "pages": [
+    "/finance-tool/tracks/kupat-gemel-lehashkaa"
+  ],
+  "device": "phone",
+  "instance": {
+    "kind": "p11",
+    "mode": "page",
+    "url": "https://orishamir.github.io/finance-tool/tracks/kupat-gemel-lehashkaa",
+    "device": "phone",
+    "steps": [],
+    "task": "tracks",
+    "control": "planted/control-tracks-phone",
+    "split": "score"
+  },
+  "plants": [
+    {
+      "id": "p11",
+      "kind": "general",
+      "problem": "Four paragraphs about what the product is come before any filter or track, so the list starts screens down.",
+      "where": "between the page's heading and the filters",
+      "counts": "A finding that a long text comes before the list or the choices, or that the reader must scroll through explanations to reach the tracks.",
+      "notCounts": "Wanting fewer filters."
+    }
+  ],
+  "changes": [
+    {
+      "id": "wall",
+      "type": "insert",
+      "at": {
+        "text": "דמי הניהול הם הממוצע שנגבה בפועל",
+        "closest": "p"
+      },
+      "position": "afterend",
+      "html": "<div class=\"flex flex-col gap-3 max-w-measure\"><p>קופת גמל להשקעה היא קופת גמל שמפקידים אליה בעצמכם, עד תקרה שנתית. החוק לא קובע תנאי גיל או תושבות לפתיחה, והחברה המנהלת מחליטה אם לקבל בקשת הצטרפות.</p><p>הכסף מושקע במסלול השקעה שבוחרים. על הרווחים בתוך הקופה לא משלמים מס. משלמים רק כשמושכים, ורק על הרווח.</p><p>חיסכון שצריך להישאר זמין: אין נעילה, ומושכים בכל עת. מעבר בין מסלולים לא ממוסה, ולכן אפשר לשנות את ההשקעה בדרך בלי לשלם מס על הרווח. מגיל 60 אפשר גם להעביר את הכסף לקופת גמל לקצבה.</p><p>חברות מנהלות של קופות גמל, בפיקוח רשות שוק ההון, ביטוח וחיסכון. לכל חברה יש עמוד עם כל המסלולים שלה.</p></div>"
+    }
+  ]
+}

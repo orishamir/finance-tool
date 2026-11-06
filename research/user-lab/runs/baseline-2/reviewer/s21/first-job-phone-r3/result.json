@@ -1,0 +1,116 @@
+{
+  "task": "s21",
+  "persona": "first-job-phone",
+  "repeat": 3,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T12:31:44.927Z",
+  "structured": {
+    "answer": "I'd put the money in Harel's \"מניות\" track. The fee is about 0.55%, the same as all the others, and it did best: \"24.04%\" for 3 years, \"14.64%\" for 5. I still don't know what \"קופת גמל להשקעה\" is, so finding that out is the first thing I'd do.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Product buttons, 'קופת גמל להשקעה 16' preselected",
+        "why": "Sounds like a pension thing for older people; not sure it's what I want, but it was already picked"
+      },
+      {
+        "where": "Return column, 'פחות מ־3 שנים' in most rows",
+        "why": "Couldn't tell if it means the track is new or something bad; can't compare those rows"
+      },
+      {
+        "where": "Return column '3 שנים 24.04%'",
+        "why": "Not sure if that's per year or total over 3 years"
+      },
+      {
+        "where": "Exposure column with the coloured rings, S&P 500 showing 99% מניות / 99% מט\"ח",
+        "why": "Didn't understand what the two percentages mean"
+      }
+    ],
+    "used": [
+      "Heading 'הראל'",
+      "Product buttons, 'קופת גמל להשקעה' selected",
+      "Track button 'עוקב מדד S&P 500'",
+      "Fee range line '0.54% עד 0.61%'",
+      "Fee column 'מההיסכון'",
+      "Return column for מניות (24.04% / 14.64%) and S&P 500 (13.7% / 11.92%)",
+      "Fund size '7.3 מיליארד ₪' for מניות"
+    ],
+    "skimmed": [
+      "Rest of the table rows (משולב סחיר, עוקב מדדי מניות, אג\"ח סחיר, כספי, קיימות, הלכה)",
+      "Exposure column",
+      "Fold headings קרנות מחקות / מרכזית לפיצויים / קרנות סל",
+      "'מה כתוב במסמכים של הראל' heading"
+    ],
+    "skipped": [
+      "Grey lines under the heading (2025, ספטמבר 2026, 123 מקור/מחושב/הזנה)",
+      "'?' icons",
+      "Small print under the table (בנוסף לדמי הניהול..., התקרה בחוק)",
+      "Grey paragraph about past returns",
+      "All folds",
+      "Search box 'לא מצאתם שם?'",
+      "Footer"
+    ],
+    "unsure_meaning": [
+      "קופת גמל להשקעה",
+      "ההפקדות",
+      "מט\"ח",
+      "פחות מ־3 שנים",
+      "אשראי ואג\"ח",
+      "גמיש",
+      "קיימות",
+      "כספי (שקלי)",
+      "התקרה בחוק",
+      "PF-10",
+      "what the coloured rings mean",
+      "תשואה שנתית ממוצעת: per year or total"
+    ],
+    "not_found": [
+      "What to do first / a recommended option",
+      "Fee in shekels on my amount",
+      "Plain explanation of whether קופת גמל להשקעה is for someone like me"
+    ],
+    "findings": [
+      {
+        "what": "Doesn't say which option fits me or what to do first",
+        "where": "Whole page"
+      },
+      {
+        "what": "Fees only in percent, all about the same, so they don't help me pick and I can't tell the cost in shekels",
+        "where": "Fee column"
+      },
+      {
+        "what": "Most tracks show 'פחות מ־3 שנים' instead of a number, so I can't compare them",
+        "where": "Return column"
+      },
+      {
+        "what": "Preselected product 'קופת גמל להשקעה' isn't explained in plain words up front",
+        "where": "Product buttons"
+      },
+      {
+        "what": "Ring charts and two percentages per row aren't clear",
+        "where": "Exposure column"
+      },
+      {
+        "what": "16 near-identical rows is too many options",
+        "where": "Main table"
+      }
+    ]
+  },
+  "steps": 4,
+  "reads": 4,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 34996,
+    "turns": 6,
+    "usd": 0.1297944,
+    "input": 8,
+    "cacheWrite": 7783,
+    "cacheRead": 22592,
+    "output": 3149,
+    "model": "claude-opus-5-5"
+  }
+}

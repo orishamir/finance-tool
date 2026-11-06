@@ -1,0 +1,107 @@
+# s13: careful-retiree-pc (old brief)
+
+pc; 59 s, $0.25
+
+# Keren hishtalmut: reading the page as a 61-year-old salaried employee
+
+## 1. My answer: what I would do, and how sure I am
+
+**I would say yes to the keren hishtalmut my employer offers.** I'm about 80% sure it's worth having and less sure about when I can take the money out tax-free.
+
+**Why yes.** For each shekel I put in, my employer puts in three. The page says the tax break covers *"עד 7.5% מהמעסיק ועד 2.5% מכם"* (up to 7.5% from the employer, up to 2.5% from me). The chart shows the same thing. In its example I put in ₪300 a month and the employer puts in ₪900. Even if I take the money out early, after 5 years, and pay tax, I'm left with **₪66,513** against the **₪18,000** I put in myself. I don't see how I lose by joining. My own part comes out of my take-home pay, but that seems a fair price.
+
+**Why I'm unsure about timing.** The page says *"אחרי 6 שנים מההפקדה הראשונה אפשר למשוך... בלי מס"* (after 6 years from the first deposit you can withdraw without tax). If I start now I'd be 67. It also says *"למי שהגיע לגיל הפרישה מספיקות 3 שנים"* (anyone who has reached retirement age only needs 3 years). That would be good news for me, but the page never says what retirement age is. I don't know if I'd wait 3 years or 6. I'd ask HR or the fund before signing.
+
+## 2. Which parts of the page I actually used
+
+- **The top summary** under the title "קרן השתלמות" (keren hishtalmut): a fund that both the employer and I pay into, and after a set time I can take it out tax-free.
+- **"מה זה"** (what it is), especially the 6-year and 3-year rules and the list of what you pay if you withdraw early.
+- **"למה משתמשים בזה"** (why people use it): *"לשכירים שהמעסיק מפקיד להם זה בדרך כלל הצעד הראשון"* (for employees whose employer pays in, this is usually the first step). That's me.
+- **The big bar chart** in "מה מייחד קרן השתלמות" (what makes a keren hishtalmut special). This is what convinced me.
+- **The orange warning box** in "מיסוי" (taxation), about withdrawing early.
+- **The "כסף נכנס ויוצא" cards** (money in and out): *"כשעוברות 6 שנים"* (once 6 years have passed) and *"עד 4 ימי עסקים"* (within 4 business days). I was glad to see the money arrives within 4 business days of asking.
+- **"דמי יציאה: אין"** (exit fees: none) in the cost table.
+
+## 3. Going down the page block by block
+
+- **Top menu bar** ("מקור", "מדריך", "חוקים וכללים" and so on): skipped. I was already on the page I wanted.
+- **"בעמוד הזה" list on the right** (on this page): skimmed. It helped me see how long the page was going to be.
+- **The line "123 מקור, 123 מחושב, 123 הזנה... לחצו על מספר כדי לראות מאיפה הוא"** ("source", "calculated", "input", "click a number to see where it comes from"): it confused me. I didn't know what "123" meant, and I didn't click anything. I don't trust a page that wants me to click on numbers.
+- **"מה זה"** (what it is): used, and I read every word. It's the most useful part. One line worried me: *"מתחת לגיל 60 זה לפחות 31%"* (under age 60 it is at least 31%). I'm 61, so does that mean I'd pay less? It doesn't say.
+- **The short grey labels like "חוקים וכללים · 15"** (rules and regulations · 15): skipped. I don't know what the numbers are, maybe a count of rules.
+- **"למה משתמשים בזה"** (why people use it): used. It says it plainly: the employer's money only arrives here, and after the waiting period the profits are tax-free. The catch is also plain: *"עד סוף התקופה, משיכה של כספי המעסיק ושל הרווחים ממוסה בכבדות"* (until the period ends, withdrawing the employer's money and the profits is heavily taxed).
+- **The round buttons "כדאי להכיר גם" and "במה אפשר להשקיע בתוכו"** (also worth knowing; what you can invest in inside it), with "S&P 500", "אג"ח ממשלתית" (government bonds) and so on: skipped. That's for people who know about investing.
+- **"כמה כסף נשאר לכם, ומתי?"** (how much money is left for you, and when?), with the "שכירים / עצמאים" switch (employees / self-employed): used. "שכירים" was already selected, which is me.
+- **The four boxes cut off at the top of the third screenshot:** I couldn't see them, so I couldn't use them. They may be where you type your own numbers.
+- **The small chart of 12 bars (years 1–12):** skimmed. I understood the light message: *"לפני 6 שנים: מס"* on the left and *"מ־6 שנים: פטור ממס"* on the right (before 6 years: tax; from 6 years: tax-free).
+- **The big chart:** used. More on it in point 4.
+- **The line about "19 המסלולים"** (19 investment tracks) and management fees of 0.7% versus 0.19%: half understood. Picking a cheaper track seems to be worth about ₪750 in the example. That's useful, but I wouldn't know how to choose one.
+- **The small-print assumptions** (7% return, 2% inflation, 47% tax at source): skimmed. The 47% scared me until I read that you get the difference back after filing an annual report.
+- **"הכי קרוב לזה... חשבון ניירות ערך"** (the closest alternative is a securities account): skipped. It doesn't apply to me.
+- **"שחקו עם המספרים שלכם"** (play with your own numbers): I didn't open it. It's closed, and I'd be afraid of putting in wrong numbers. With help, though, I'd want my own numbers.
+- **"שווה לדעת"** (worth knowing): skimmed. The three sentences are fine. The codes "TXH-09", "KH-15" and "PF-18" mean nothing to me.
+- **"מי מציע ומי מפקח"** (who offers it and who supervises): skimmed. The company names, Harel and Altshuler Shaham, are familiar, and that was reassuring.
+- **"כסף נכנס ויוצא"** (money in and out): used. These cards are clear.
+- **"כמה זה עולה"** (how much it costs), the table: used partly.
+- **"מיסוי"** (taxation), the cards and the orange box: used, but it was hard work. Too many numbers.
+- **"סיכונים ומה לא מוגן"** (risks and what isn't protected): read. It calmed me down: *"הנכסים מוחזקים בנאמנות, בנפרד מרכוש של החברה המנהלת"* (the assets are held in trust, separate from the management company's property). If the company collapses, my money isn't lost. It also warns that withdrawing resets the clock and that *"עולה ויורד עם ההשקעות"* (it goes up and down with the investments). That one matters to me at my age.
+- **"מונחים"** (terms), the glossary table: skimmed. I looked up "ותק" (seniority) and "הפקדה מוטבת" (eligible deposit). The column "איפה מופיע" (where it appears), with tags like "טופס" (form) and "תלוש שכר" (payslip), I skipped, except that I noticed "משכורת קובעת" (the salary used for the calculation) appears on my payslip. That's good to know.
+- **Footer:** I noticed *"אתר אישי, לא מסחרי, בלי קישורי שיווק"* (a personal, non-commercial site, no marketing links) and *"נתונים נכון ל־02.11.2026"* (figures correct as of 02.11.2026). Both made me trust it more.
+
+## 4. Lists, tables and charts: what I looked at and what I ignored
+
+**The big bar chart**
+- **Looked at:** the five labels at the bottom, "הפקדתם" (you deposited), "המעסיק הוסיף" (the employer added), "התשואה הוספה" (the return added), "המס לקח" (the tax took) and "נשארו בידיים" (left in your hands).
+- **Looked at:** the numbers on top, ₪18,000, +₪54,000, +₪8,487, −₪13,974 and ₪66,513.
+- **Looked at:** the bright yellow employer column. It's three times taller than mine, and that's the whole story for me.
+- **Looked at:** the pink striped box for tax.
+- **Ignored:** the dark brown and grey colours inside the columns, and the small dotted lines connecting them.
+- **Not noticed until later:** the "5 שנים" (5 years) at the top. Only then did I realise the example is a withdrawal *before* the tax-free point. I would also have liked to see what happens after 6 years.
+
+**The small 12-bar chart**
+- **Looked at:** only the two titles, "לפני 6 שנים: מס" and "מ־6 שנים: פטור ממס".
+- **Ignored:** the green, yellow and grey colours, and the "גררו את הסמן" instruction (drag the marker). I didn't try dragging anything.
+
+**The cost table**
+- **Looked at:** the "סוג" column (type) and the "תקרה" column (cap), so "עד 2% בשנה" (up to 2% a year) and "אין" (none) for exit fees.
+- **Skimmed:** the middle column, "על מה נגבה" (what it's charged on).
+- **Ignored:** "תלוי בחברה" (depends on the company) with the blue company names.
+
+**The tax cards**
+- **Read:** the three headings, "בהפקדה" (on deposit), "כל עוד הכסף בפנים" (while the money is inside) and "כשמושכים" (when you withdraw).
+- **Didn't use:** the little arrows on the sides, which I think hide more cards.
+
+**The glossary table**
+- **Used:** the "מונח" (term) and "מה זה" (what it is) columns.
+- **Ignored:** "איפה מופיע" (where it appears).
+
+## 5. What I did not understand
+
+- **"גיל הפרישה" (retirement age):** I don't know if I've reached it, and the page doesn't say.
+- **"מתחת לגיל 60 זה לפחות 31%" (under 60 it is at least 31%):** what happens to someone over 60, like me?
+- **"עד 25% מהרווח הריאלי" (up to 25% of the real profit):** I sort of understand. The glossary says it's the profit minus inflation, but I couldn't work it out in shekels myself.
+- **"משכורת קובעת של עד ₪15,712.00" (a determining salary of up to ₪15,712):** if I earn more, does my employer put in less, or do I just pay tax on part of it? I'm still not sure.
+- **"ניכוי במקור 47%" (47% tax withheld at source), and getting money back after "דוח שנתי" (annual report):** I don't file an annual report. Would I need to start?
+- **"הכלכלן הראשי במשרד האוצר המליץ לצמצם את ההטבה" (the Finance Ministry's chief economist recommended reducing the benefit):** should I worry that the rules will change on me?
+- **"123" and "חוקים וכללים · 4" (rules and regulations · 4):** what these are.
+
+## 6. What I wanted to know and could not find
+
+- **A simple answer for my age:** "If you're 61 and start now, you can take the money out tax-free in year X."
+- **The same chart after 6 years** (or after 3), so I can see what I'd get *without* paying tax.
+- **Whether I can leave the money in after it's free and keep the tax exemption,** or whether I have to take it out.
+- **What happens to the fund when I retire, or if I die:** does it go to my family?
+- **What to do if I already have an old keren hishtalmut** from a previous job.
+- **How to choose a track at my age.** The page talks about tracks going up and down but doesn't say what's sensible close to retirement.
+- **What the boxes at the top of the chart and the closed calculator do with my real salary.** I'd want to put in my own figures.
+
+## 7. If half the page had to go, what goes first
+
+1. **The glossary at the bottom ("מונחים")**, or at least its "איפה מופיע" column.
+2. **The round investment buttons** ("S&P 500", "אג"ח..." and the rest) and "כדאי להכיר גם".
+3. **"שווה לדעת" with its codes.** It only repeats what's already written above it.
+4. **The small 12-bar chart.** The big chart is enough.
+5. **"הכי קרוב לזה: חשבון ניירות ערך."**
+6. **The "123 מקור / מחושב / הזנה" line at the top.**
+
+**Keep:** "מה זה", "למה משתמשים בזה", the big chart, the "כסף נכנס ויוצא" cards, the orange warning box and the risks section. Those are what told me what this means for my money.

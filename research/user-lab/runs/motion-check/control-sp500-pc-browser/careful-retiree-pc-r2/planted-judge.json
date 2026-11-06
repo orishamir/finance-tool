@@ -1,0 +1,41 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "The first screen shows English letters and stock-index terms with nothing about safety or deposits, and the reader says they would leave right there. That means giving up on the page.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "The 2% inflation assumption sits behind a button, and the main line only says 'בכסף של היום'. The reader doesn't say the button is broken, so this is not problem 1. The information can still be reached, so it's a wish for more visibility.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "The 15-year cost chart is busy, and the reader couldn't tell what the big red-pink stripe means and was worried by it. They can't understand a main figure.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "The 7% yearly return is set by default with no warning that the fund can lose value. This could lead the reader to a wrong decision.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "Small grey text on a dark background is hard to read with glasses, across the whole page. This gets in the way of reading the main content.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 6,
+      "summary": "The fund card and chart legend use terms the reader doesn't know (קרן מחקה, נאמן, דמי משמרת), so they can't follow the key fund and cost information.",
+      "serious": true,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.028462800000000003
+}

@@ -289,7 +289,7 @@ export function HoldingWrapperChips({ row, onChange }: { row: ExposureRowView; o
 
 // ---------------------------------------------------------------- tags
 
-/** Every ranked or listed row carries the basis of its return next to the figure (design-system 9.2, roadmap R5 risk). */
+/** Every ranked or listed row carries the basis of its return next to the figure (design-system 9.2; D9: an entered return is never read as the site's view). */
 export function ReturnLabel({ row }: { row: ExposureRowView }) {
   const r = row.grossReturn;
   if (!r) return null;

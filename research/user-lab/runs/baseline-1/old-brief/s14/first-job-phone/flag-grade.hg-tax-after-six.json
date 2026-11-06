@@ -1,0 +1,81 @@
+{
+  "case": "hg-tax-after-six",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"With a high salary entered, the graphic says tax is due even after 6 years and shows a large income-tax figure, without making clear which money it is on.\",\"where\":\"the graphic and its sentences\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "The '123 ממקור / מחושב / הזנתה / מונח' labels at the top are confusing and their purpose is unclear",
+      "'מה זה' piles on too many numbers and terms before showing what they mean for the reader",
+      "The 'הכי קרוב לזה: חשבון ניירות ערך' link doesn't say whether that option is better or worse",
+      "Codes like TXH-09, KH-15, PF-18 mean nothing to the reader",
+      "The 'תלוי בחברה' provider cards are confusing (depends on the company how?)",
+      "The tax paragraph repeats the 7.5%/15,712/20,566 numbers already given elsewhere",
+      "The 47% tax in the orange box is scary",
+      "The chief economist's recommendation to cut the benefit is worrying, since the benefit might disappear",
+      "In the 12-year bar chart, bars after year 6 still have a striped pink (tax) top even though that period is tax-free",
+      "Year-6 and year-12 results can't be seen without clicking; the default shows year 5, the bad year",
+      "Fee range text implies a higher fee gives more money, which seems backwards and lowers trust",
+      "Unclear how much tax is really paid: −64,761 vs 47% withheld vs refund",
+      "Unclear whether employer deposits above the ceiling get taxed from the paycheck at a 30,000 salary",
+      "Many jargon words are not understood (מסלול השקעה, מס רווחי הון, רווח ריאלי, etc.)",
+      "No figure for how much smaller the net monthly paycheck gets",
+      "No guidance on which company/plan to pick or how to tell the employer",
+      "Missing what happens to the fund on leaving the job",
+      "Missing a simple comparison against investing the 750 in the S&P 500 directly",
+      "Would cut the glossary table",
+      "Would cut the 'חוקים וכללים' chips and the top legend",
+      "Would cut the small-print notes under the chart"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 9,
+        "why": "The reader asks why the bars after year 6 still show a striped pink tax top even though that period is supposed to be tax-free, and that is a clear part of the person's complaint that the graphic shows tax due even after 6 years."
+      }
+    ],
+    "liked": [],
+    "usd": 0.06733520000000001
+  },
+  "b": {
+    "raised": [
+      "Doesn't know how much smaller the monthly net paycheck will be",
+      "Doesn't know which company or plan to pick or how to sign up and tell the employer",
+      "Top legend labels ('123 ממקור / מחושב / הזנתה') are confusing and unexplained",
+      "'מה זה' section throws too many numbers and terms before showing what they mean for me",
+      "'הכי קרוב לזה: חשבון ניירות ערך' doesn't say if it is better or worse for me",
+      "Codes like TXH-09, KH-15, PF-18 mean nothing",
+      "Provider cards that only say 'תלוי בחברה' are confusing",
+      "The 7.5%/15,712/20,566 figures are repeated in several sections",
+      "The 47% withholding figure in the orange box is scary",
+      "The chief economist recommending a smaller benefit is worrying",
+      "In the 12-year chart, bars after year 6 still have a striped pink tax top though it's supposed to be tax-free",
+      "Year-6 and year-12 results aren't visible without clicking; the default shows year 5, the bad year",
+      "A higher management fee showing more money seems backwards and lowers trust",
+      "Unclear how much tax is actually paid given the −64,761 figure, 47% withholding and refund text",
+      "Unclear whether employer deposits above the ceiling get taxed on my paycheck",
+      "Jargon terms not understood (מסלול השקעה, מס רווחי הון, רווח ריאלי, etc.)",
+      "No information on what happens to the fund if I leave the job",
+      "No simple comparison with investing the 750 myself in the S&P 500",
+      "Would cut the glossary table first",
+      "Would cut the small-print notes under the chart"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 11,
+        "why": "Item 11 says the graphic still shows a striped pink tax part after year 6 even though it should be tax-free, which is the person's point that the graphic shows tax due after 6 years without making clear what it applies to."
+      }
+    ],
+    "liked": [],
+    "usd": 0.07432720000000001
+  },
+  "third": null,
+  "ranks": {
+    "k": 9
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.14166240000000002
+}

@@ -1,0 +1,131 @@
+{
+  "task": "control-sp500-pc",
+  "persona": "first-job-phone",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T03:09:23.983Z",
+  "structured": {
+    "answer": "I'd open an account at Psagot (פסגות) and buy the Yalin Lapidot S&P 500 index fund (ילין לפידות מחקה S&P 500 (4D), number 5139282), because the page marks that pair \"הזול\" (the cheapest). On the page's example of 10,000 ₪ now plus 500 ₪ a month for 10 years, I'd end up with about 86,500 ₪ (86,492 ₪) after paying in 70,000 ₪. I didn't change the numbers to my own 30,000 ₪, so my total would be different.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Screen 1, the input fields (סכום היום 10,000 / הפקדה חודשית 500)",
+        "why": "I have 30,000, not 10,000. It's a screenshot so I couldn't change it, and I kept the page's example. So the 86,492 isn't really my number."
+      },
+      {
+        "where": "Screen 1, the next-best box: '86,449 ₪' with '−43 ₪ לעומת הבחירה שלכם' under it",
+        "why": "For a second the minus 43 looked like a loss. Then I got it: it ends up 43 ₪ less than my choice."
+      },
+      {
+        "where": "Screen 2 onward, the fund list on the left",
+        "why": "There are about 20 funds with coloured tags that all look alike. I stopped reading them and went with the one the page had already picked."
+      },
+      {
+        "where": "Screen 9, 'עכשיו: ... ירושלים. נשארים בסוף 79,176 ₪'",
+        "why": "At the top the page said my choice was Psagot. Here it says 'now' is Jerusalem (ירושלים) with a different fund. I got confused about what 'now' means and which one I actually picked."
+      },
+      {
+        "where": "Screen 5, the currency-hedged fund (מנוטרלת מט\"ח) showing 'בין +2,212 ₪ ל־ −23,766 ₪'",
+        "why": "A wide range with a big minus. It scared me off that fund straight away."
+      }
+    ],
+    "used": [
+      "Big heading 'איפה ואיך הכי זול להשקיע במדד, לאורך זמן'",
+      "The S&P 500 button, which was already selected",
+      "The input boxes: 10,000 today, 500 a month, 10 years, 7%",
+      "Big numbers: 'הפקדתם 70,000 ₪' and 'הבחירה שלכם · הזול 86,492 ₪'",
+      "Account card 'פסגות ניירות ערך', 'מה החשבון גובה ב־10 שנים: 1,057 ₪'",
+      "Fund card 'ילין לפידות מחקה S&P 500 (4D) 5139282', 'דמי ניהול 0%'",
+      "The account ranking on the right: פסגות first, then לאומי at 83,396",
+      "The bar chart's top label, 'הכי הרבה בכל המחירונים 86,492 ₪ ילין לפידות... פסגות'"
+    ],
+    "skimmed": [
+      "The long list of funds with coloured tags (screens 2–5)",
+      "The 'לא בחשבון' notes under each bank",
+      "The sensitivity chart and its table, 'מה הכי משנה את מה שיישאר לכם' (screen 6)",
+      "The comparison table on screens 9–10"
+    ],
+    "skipped": [
+      "The small grey line about inflation and the dollar rate",
+      "The text 'למה חלק מהקרנות בלי מחיר בפסגות'",
+      "The whole section 'עם נטרול מט\"ח או בלי' and its yearly bar charts (screen 7)",
+      "The sources and 'השורה התחתונה' text (screen 8)",
+      "The foreign ETFs (iShares, Vanguard)",
+      "The footnotes at the bottom and 'חוקים וכללים'"
+    ],
+    "unsure_meaning": [
+      "נאמן 0.02%",
+      "דמי משמרת",
+      "צוברת",
+      "עסקת החלף",
+      "מנוטרל מט\"ח / חשיפה לדולר",
+      "(4D) vs (4A) in the fund names",
+      "מוטב / סם גם על שינוי המטבע",
+      "מס דיבידנד בתוך הקרן",
+      "The dotted underline under the numbers: is it a link?",
+      "The colours in the stacked bars (orange, yellow, red). I guessed red meant fees.",
+      "'−43 ₪' next to the second-best option",
+      "What 'עכשיו' means on screen 9 (Jerusalem?)"
+    ],
+    "not_found": [
+      "A clear first step, like an 'open an account' button or a link to Psagot",
+      "The result for my own 30,000 ₪ (I couldn't move the slider)",
+      "Why Psagot is cheapest, explained in plain words"
+    ],
+    "findings": [
+      {
+        "what": "The example starts at 10,000 ₪ and you have to change it yourself. The big 86,492 sticks in your head even though it isn't your amount.",
+        "where": "Screen 1, inputs and result"
+      },
+      {
+        "what": "The 'עכשיו' (now) section shows Jerusalem with a different fund. It contradicts the Psagot choice from the top and confused me.",
+        "where": "Screen 9"
+      },
+      {
+        "what": "About 20 funds in a row with lots of coloured tags I don't understand. Way too much choice.",
+        "where": "Screens 2–5, the fund list"
+      },
+      {
+        "what": "Jargon all over: נאמן, צוברת, עסקת החלף, מנוטרל מט\"ח, 4D/4A, and no plain explanation",
+        "where": "Fund cards and tags"
+      },
+      {
+        "what": "The minus sign in '−43 ₪' looks like a loss at first",
+        "where": "Screen 1, next-best box"
+      },
+      {
+        "what": "Nothing tells you what to actually do next (open an account, how to buy the fund)",
+        "where": "The whole page"
+      },
+      {
+        "what": "The colours in the bars aren't explained right next to them, so I had to guess",
+        "where": "Screens 2–4, the bars in the account list"
+      }
+    ]
+  },
+  "steps": 10,
+  "reads": 10,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 38980,
+    "turns": 12,
+    "usd": 0.23627160000000003,
+    "input": 12,
+    "cacheWrite": 19024,
+    "cacheRead": 64158,
+    "output": 3560,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "control-sp500-pc",
+    "screenshots": 11,
+    "changes": [],
+    "neverShown": [],
+    "errors": []
+  }
+}
