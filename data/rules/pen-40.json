@@ -18,10 +18,10 @@
       "value": 30,
       "unit": "pct",
       "source": {
-        "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz201634a.pdf",
-        "title": "חוזר פנסיה 2016-3-4, נספח ב' (CMA standard pension bylaw, January 2018 edition, copy on prisha.co.il), pp.56-57, s.94: \"30% לכל יתום\"",
-        "publisher": "Prisha.co.il (copy of CMA pension circular 2016-3-4, annex ב)",
-        "strength": "primary-mirror"
+        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf",
+        "title": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018, pp.56-57, s.94: \"30% לכל יתום\"",
+        "publisher": "רשות שוק ההון, ביטוח וחיסכון",
+        "strength": "primary"
       },
       "checked": "2026-10-25",
       "effective_from": null,
@@ -153,7 +153,7 @@
       "title": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018",
       "title_he": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018",
       "publisher": "gov.il",
-      "publisher_he": "אתר הממשלה (gov.il)",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
       "kind": "circular",
       "strength": "primary",
       "locator": "pp.56-57, s.94",

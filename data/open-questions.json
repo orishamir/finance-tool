@@ -1166,7 +1166,7 @@
   },
   {
     "id": "PEN OQ19",
-    "status": "open",
+    "status": "narrowed",
     "title_he": "מי מקבל כסף מקופת גמל לקצבה לתשלום קצבה, ובאילו מקדמים",
     "blocks_he": "חישוב הקצבה מקופת גמל לקצבה"
   },
@@ -1211,10 +1211,14 @@
   },
   {
     "id": "PEN OQ29",
-    "status": "open"
+    "status": "narrowed"
   },
   {
     "id": "PEN OQ30",
+    "status": "narrowed"
+  },
+  {
+    "id": "PEN OQ31",
     "status": "open"
   },
   {
