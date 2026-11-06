@@ -245,7 +245,7 @@
     "real-vs-nominal": "covered",
     "regulator": "covered",
     "reporting-obligation": "covered",
-    "switching-tax-event": "blocked:TXK-OQ1",
+    "switching-tax-event": "covered",
     "tax-at-deposit": "covered",
     "tax-at-exit": "covered",
     "tax-during": "covered",
