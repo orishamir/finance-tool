@@ -1,6 +1,6 @@
 # Glossary
 
-The site's Hebrew terms: what each means, the other spellings people meet, and where the meaning comes from. UI text is in `docs/copy.md`.
+The site's Hebrew terms: what each means, the other spellings people meet, and where the meaning comes from. The UI strings are in `site/app/copy.ts`; the voice and the word choices are in `docs/copy.md`.
 
 Every explanation in sections 1 to 3 comes from the il-finance rule base (`.claude/skills/il-finance/references/`), never from memory. Each row gives the official Hebrew term (the spelling of the most official source in the rule base), a plain one-line explanation, other spellings people meet in apps, ads and statements, and the source: the rule IDs, the document, the date it was checked and how strong it is. Explanations hold no figures; figures change and the site shows them as sourced numbers.
 
@@ -469,7 +469,7 @@ Where the rule base cannot explain a term, the term is listed in section 4 and t
 
 ## 2. The checklist ("מה לבדוק")
 
-The rows every guide page and track page shows. The name is what the row says; the explanation is what the row checks. Source: `docs/product.md` 3.3 and the dimension vocabulary in the rule base's README.
+The rows every track page and the goal comparison show; no guide or exposure page has them (D49). The name is what the row says; the explanation is what the row checks. Source: `docs/product.md` 3.3 and the dimension vocabulary in the rule base's README.
 
 | Row | Name | What it checks |
 |---|---|---|
@@ -582,7 +582,7 @@ These figures and lists exist, but the publisher's terms do not let the site cop
 |---|---|
 | **ממוצע דמי ניהול לקרן מסוימת (רשות ניירות ערך)** | the ISA category averages are in the rule base (MF-18, MF-19, ETF-17) but are not confirmed as the reference for a given fund (which category a fund falls in, and the period), and the ISA's terms forbid copying (MF-55, D22), so the average stays a link even once confirmed. Fund fees read "אין ממוצע להשוואה" with the link to the ISA report. |
 | **ממוצע עמלות של בנק (בנק ישראל)** | the Bank's FEES_DASH averages exist (BRK-26) but may not be republished without written consent (D20); no `averages` row is collected in any snapshot. Bank fees read "אין ממוצע להשוואה" with the link to the Bank's dashboard. |
-| **ממוצע עמלות לפי חבר בורסה (הבורסה)** | TASE's per-member averages exist (BRK-33) and are free to read, but republishing them needs TASE's written consent (BRK-37, D22) and their data period is not shown (BRK OQ8); none is collected. Non-bank broker fees read "אין ממוצע להשוואה" with the link to TASE's calculator, and the provider workbench's published-average level reads "אין ממוצע שנאסף" (`docs/copy.md` section 5), until consent is given or the founder asks. |
+| **ממוצע עמלות לפי חבר בורסה (הבורסה)** | TASE's per-member averages exist (BRK-33) and are free to read, but republishing them needs TASE's written consent (BRK-37, D22) and their data period is not shown (BRK OQ8); none is collected. Non-bank broker fees read "אין ממוצע להשוואה" with the link to TASE's calculator, until consent is given or the founder asks. |
 | **רשימת הקרנות של מאיה ורשימת קרנות החוץ** | the lists need a browser to export, and TASE's terms forbid republishing them (CAT-34, ETF-32, dependency 7, D22; `docs/data-inventory.md`), so neither is collected. The site shows the funds that have records and links out; it names no count for a list it did not read. |
 | **תשואת מק״מ כמספר** | the Bank of Israel's makam yield series is a link (D20). The makam exposure is "not evaluated: no sourced series" until the person enters a yield. |
 | **שער המטבע ההתחלתי לחשיפה בדולרים** | the S&P 500 exposure's run converts at A-03 and a start rate the person enters (D20); no sourced rate is shown. |
