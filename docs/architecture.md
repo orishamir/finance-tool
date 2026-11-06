@@ -1,12 +1,8 @@
 # Architecture
 
-Written 2026-10-22 by the engineer from `CLAUDE.md`, `docs/product.md` (D1 to D13), `docs/roadmap.md`, `docs/method.md` and `docs/data-schema.md`, with data-access facts from `research/discovery/data-landscape.md`.
-Status: **stack chosen by the founder on 2026-10-22: option C, React** (section 5). Hosting chosen by the founder on 2026-10-22: GitHub Pages from a public GitHub repository (section 6). Gap answers are recorded in section 8. History of this draft: Revised the same day: the founder made clear the site is used interactively (fields and graphs) on nearly every page, not read like articles; K8, 3.5, section 5 and section 7 were changed and the stack recommendation moved from A to B. Revised again the same day: the founder made a polished interface and good-looking graphs a priority. K12 and section 3.9 were added, and the recommendation moved from B to C (React, now with a TypeScript pipeline). Section 5 gives three stack options and section 6 three hosting options, each with a recommendation. Nothing is scaffolded until the founder picks.
+How the site is built: a React Router app pre-rendered to static files and served by GitHub Pages, a calculation engine that runs in the browser, and a refresh pipeline that keeps `data/` current, in one npm workspace. It describes the code as it is; the rules it serves are in `CLAUDE.md`, `docs/product.md`, `docs/method.md` and `docs/data-schema.md`.
 
-How to read it:
-
-- Section 1 lists what forces the design, each item traced to a decision or document. Sections 2 to 4 describe the system in a way that holds for every stack option. Sections 5 and 6 are the choices. Section 7 places the work in the five releases. Section 8 lists gaps in the existing docs that the architecture ran into.
-- No financial figure appears here. Where one matters, the data file, rule or formula is named.
+No financial figure appears here. Where one matters, the data file, rule or formula is named.
 
 ---
 
@@ -15,28 +11,28 @@ How to read it:
 | # | Driver | From |
 |---|---|---|
 | K1 | **No server-side personal data.** Every calculation that uses a person's inputs runs in their browser. The site is static files; there is no application server. | D1, product.md §4, data-schema §1 ("the engine runs in the browser") |
-| K2 | **Engine separate from the UI**, testable alone against `tests/golden/` and checkable by the finance-reviewer formula by formula. | Founder brief; method.md §13 |
+| K2 | **Engine separate from the UI**, testable alone against the golden scenarios (`tests/golden/`) and checkable by the finance-reviewer formula by formula. | Founder brief; method.md §13 |
 | K3 | **Every displayed number is a value object** (sourced, computed or entered) with source, date and state, and the page shows which. | CLAUDE.md, D3, D7, data-schema §1 |
 | K4 | **Rule gating.** An `open` rule never computes; `secondary` and `institution` rules compute and label; a figure past its `effective_to` stops the run with "figure not updated". | D10, method.md §13 |
 | K5 | **Data validated against the schema before every build**, including the cross-file checks in data-schema §4. | Founder brief; data-schema §4 |
 | K6 | **Scheduled refresh** at the cadences of product.md §6, keeping dated snapshots because no public archive exists, and never hiding a stale number. | D3, product.md §6 |
-| K7 | **Hebrew, right to left, both screen sizes (PC judged first, ground rule 8, 2026-10-28; was "phone first")**, with numbers, percentages, fund numbers and Latin names embedded in Hebrew text. | CLAUDE.md, product.md §2 |
-| K8 | **Interactive on nearly every page.** People change fields and watch graphs respond. Guide pages take optional inputs and carry a timeline graph (3.1), the catalogue shows a fit mark against the saved goal (3.10), and R2 to R5 are all tools (comparison, workbench, fee materiality, holdings). The person's goal and inputs follow them from page to page (*2026-10-26 and 2026-10-28, D34, D37:* the goal now stays on the goal pages and the workbench; the other pages run on their own plan, and the company and track pages show no fit mark). Only the rules, parameters and terms pages are pure reference. | founder, 2026-10-22; product.md 3.1, 3.10; roadmap.md |
-| K9 | **Saved state is local, versioned and portable**: automatic in R2, export and import in R3, revisit against the stored versions in R5. Old export files must keep importing. | 3.9, N3 |
-| K10 | **Data sources are awkward**: CMA CSVs are Windows-1255, data.gov.il has a WAF that rejects some queries, CBS requires a User-Agent, gov.il, TASE and ISA block scripts. All research fetches were made from a home machine, so access from cloud IPs is unverified. | data-landscape.md §1 |
-| K11 | **Non-commercial, small audience, one maintainer.** Low running cost and few moving parts beat scale. The founder does DevOps, so self-hosting is available but not required. | CLAUDE.md, founder brief |
-| K12 | **Polished interface and good-looking graphs.** Look and feel is a requirement, not a finishing touch. | founder, 2026-10-22 |
+| K7 | **Hebrew, right to left, both screen sizes, PC judged first** (ground rule 8), with numbers, percentages, fund numbers and Latin names embedded in Hebrew text. | CLAUDE.md, product.md §2 |
+| K8 | **Interactive on nearly every page.** People change fields and watch graphs respond. Guide pages take optional inputs and carry a timeline graph (3.1), and the tools (comparison, fees, holdings, indices, tracks) are interactive throughout. The goal stays on the goal pages and the workbench; the other pages run on their own plan, and the company and track pages show no fit mark (D34, D37). Only the rules, parameters and terms pages are pure reference. | founder; product.md 3.1, 3.10 |
+| K9 | **Saved state is local, versioned and portable**: saved automatically, exported and imported as a file, and revisited against the stored versions. Old export files must keep importing. | 3.9, N3 |
+| K10 | **Data sources are awkward**: CMA CSVs are Windows-1255, data.gov.il has a WAF that rejects some queries, CBS requires a User-Agent, gov.il, TASE and ISA block scripts. | data-landscape.md §1 |
+| K11 | **Non-commercial, small audience, one maintainer.** Low running cost and few moving parts beat scale. | CLAUDE.md, founder brief |
+| K12 | **Polished interface and good-looking graphs.** Look and feel is a requirement, not a finishing touch. | founder |
 
 ---
 
 ## 2. Shape of the system
 
 ```
- sources (data.gov.il CMA + MoF, BoI EDGE, CBS)        hand-collected (tariffs, funds, Maya fund list,
-            │  scheduled fetch                          catalog, deposit terms, rules figures, parameters)
-            ▼                                                       │  pull request
+ sources (data.gov.il CMA + MoF, CBS, ECB)             hand-collected (tariffs, funds, catalogue,
+            │  scheduled fetch (GitHub Actions)          deposit terms, rules figures, parameters)
+            ▼                                                       │  commit
    pipeline: fetch → raw archive → normalise → validate → diff ─────┤
-            │  commit (or PR when a sanity check trips)             │
+            │  commit (or pull request when a sanity check trips)   │
             ▼                                                       ▼
    data/  (JSON, git = snapshot history)             ◄┘
             │
@@ -45,15 +41,15 @@ How to read it:
           (first view of each page, dimension marks) → pre-rendered pages + search index
             │
             ▼
-   static host  ──────►  browser: interactive pages, engine in a Web Worker, local saved state,
-                         stale flags and effective-date checks computed against today's date
+   GitHub Pages ─────►  browser: interactive pages, engine in the page, local saved state,
+                        stale flags and effective-date checks computed against today's date
 ```
 
 Three properties matter more than any tool choice:
 
 1. **One engine, three runtimes.** The same engine package runs in tests (Node), at build time (to pre-render each page's first view, such as a guide timeline at the default scenario P-05, so a graph appears before any script runs) and in the browser (for the person's own inputs). It has no DOM, network or file access; callers hand it resolved data.
 2. **Time-dependent checks run in the browser, not at build.** Stale flags (D3) and the "figure not updated" stop (method §13) are computed against the reader's current date. If the refresh pipeline breaks and nothing rebuilds, the flags still fire. A flag computed at build would freeze in the "fresh" state exactly when it matters.
-3. **Git is the snapshot store for normalised data.** Every refresh is a commit; git history and each file's `checked` date are the record of what changed (no change log: removed 2026-10-24, D24). Raw downloads (the evidence) go to a separate archive (section 3.3).
+3. **Git is the snapshot store for normalised data.** Every refresh is a commit; git history and each file's `checked` date are the record of what changed (there is no change log, D24). Raw downloads (the evidence) go to a separate archive (section 3.3).
 
 ---
 
@@ -61,109 +57,113 @@ Three properties matter more than any tool choice:
 
 ### 3.1 Schema package
 
-One schema per collection in `docs/data-schema.md` §3, written once in code and used by the validator, the pipeline, the build, the engine's input types and the import of saved-state files (section 3.6). The value object is the base type; every collection is built from it, so a bare number fails validation by construction.
+`packages/schema`: one Zod schema per collection in `docs/data-schema.md` §3, written once and used by the validator, the pipeline, the build, the engine's input types and the import of saved-state files (section 3.6). The value object is the base type; every collection is built from it, so a bare number fails validation by construction.
 
-The schema package also exports JSON Schema files, so hand-edited JSON under `data/` gets autocompletion and inline errors in the editor through a `$schema` line.
+The package also exports JSON Schema files to `packages/schema/json/` (`npm run export-json-schema -w @finance-tool/schema`), so a hand-edited JSON file under `data/` that names one in a `$schema` line gets autocompletion and inline errors in the editor.
 
-`docs/data-schema.md` stays the human description. A test parses its field tables and fails if the code schema and the document disagree on a field name or a required flag, so the two cannot drift silently.
+`docs/data-schema.md` stays the human description. A test (`packages/schema/test/data-schema-doc.test.ts`) parses its field tables and fails if the code schema and the document disagree on a field name or a required flag, so the two cannot drift silently.
 
 ### 3.2 Validator
 
-Runs before every build, in CI on every change, and inside the pipeline before anything is committed. It fails the build; it never warns and continues.
+`packages/pipeline/src/validate.ts`, run as `npm run validate`. It runs in CI on every change, as part of `npm run check`, and inside the pipeline before anything is committed. A problem fails the run; it never warns and continues.
 
 Checks, data-schema §4 first:
 
 1. Schema of every file (§4 items 1, 3, 4, 5).
 2. Every `rule_ids` entry exists as a `### <ID>` heading in `.claude/skills/il-finance/references/`, and every `data/rules/` file's `strength` matches the rule base (§4 item 2). The rule base is markdown; the validator reads only headings and the strength line, it does not interpret rules.
-3. Every `formula` named in a record exists as an `F-nn` in `docs/method.md` (§4 item 6) **and** is either implemented in the engine's formula registry or listed as not yet implemented for the current release (section 3.4).
+3. Every `formula` named in a record exists as an `F-nn` in `docs/method.md` (§4 item 6) **and** is either implemented in the engine's formula registry or listed in its `pending` list (section 3.4).
 4. Exposure and fund cross-links (§4 item 8). Stored dimension marks equal the marks regenerated from `rule_ids` (§4 item 9).
-5. Removed 2026-10-24 (D24): the check that every changed value has a change-log line; there is no change log.
-6. Added here: guide and page content contains no bare digits outside the provenance component (section 3.7), with an explicit allow-list for things that are not figures (rule IDs, form numbers, section numbers of a law).
+5. (No check: there is no change log, D24.)
+6. No typed digit in the pinned-rules facts and answers (`data/parameters/pinned-rules.json`): every figure there is a `{ID:figure}` slot over one of the row's rules.
+
+The terms gate (section 3.3) is also a validator check: a series or fund list whose `terms_of_use.status` is not `confirmed` fails ("terms gate: not shipped").
 
 Staleness (§4 item 7) is **not** a build failure; it is computed in the browser (section 2, property 2). The validator only reports it.
 
 ### 3.3 Refresh pipeline
 
-A command-line program with one adapter per source. The scheduler (section 6) only calls it; the program is the same on a laptop, a CI runner or a home server.
+`packages/pipeline`: a command-line program with one adapter per source, run as `npm run refresh -- <source>... [--dry-run] [--no-archive] [--force]`. The scheduled workflows only call it; the program is the same on a laptop, a CI runner or a home machine.
 
-Per adapter: **fetch** (with the User-Agent and download-URL quirks from data-landscape.md §1) → **archive** the raw response, compressed, under `source/date`, recording its hash → **normalise** to the schema (including Windows-1255 to UTF-8 for CMA CSVs) → **validate** → **diff** against the current files → write the new snapshot or appended observations; the commit message of the refresh is the record (git history, `checked` dates; no change log, D24).
+Per adapter: **fetch** (with the User-Agent and download-URL quirks from data-landscape.md §1) → **archive** the raw response, compressed, recording its key and hash → **normalise** to the schema (including Windows-1255 to UTF-8 for CMA CSVs) → **validate** → **diff** against the current files → write the new snapshot or appended observations. The commit of the refresh is the record (git history, `checked` dates).
 
-| Adapter | Release | Cadence (product.md §6) | Writes to |
+| Adapter | Source | Cadence (product.md §6) | Writes to |
 |---|---|---|---|
-| CMA gemelnet, pensia-net (data.gov.il datastore API) | R1 | daily check; acts when a new `REPORT_PERIOD` appears | CMA fund records (gap 8.1), `data/averages/` |
-| BoI EDGE: policy rate, per-bank deposit averages, makam and bond yields, FX, fee averages | R2 | daily; monthly and quarterly flows checked daily, written when new | `data/series/`, `data/averages/` |
-| CBS CPI | R2 | daily check; monthly data | `data/series/cpi` |
-| MoF child-savings rates (data.gov.il) | R2 | daily | `data/series/mof-child-savings-rates` |
-| Tariffs, `data/funds/`, `data/catalog/`, `data/terms/deposits/` | R1 (catalog), R4 (rest) | manual | by hand or by the data-researcher agent, through a pull request |
-| Maya fund-list export (CAT-33, CAT-34) and TASE's list of foreign funds traded on TASE (ETF-32): the set the fund-variant workbench chooses from (product D17) | R4 | manual, monthly (the pages block scripts) | `data/fund-lists/` (data-schema §3.14), through a pull request |
+| `cma` (`adapters/cma.ts`) | CMA gemelnet and pensia-net, data.gov.il | daily check; acts when a new `REPORT_PERIOD` appears | `data/cma/<dataset>@<YYYY-MM>.json` (data-schema 3.13) |
+| `cbs-cpi` (`adapters/cbs-cpi.ts`) | CBS consumer price index | daily check; monthly data | `data/series/cbs-cpi.json` |
+| `mof-child-savings` (`adapters/mof-child-savings.ts`) | Ministry of Finance child-savings rates, data.gov.il | daily | `data/series/mof-child-savings-rates.json` |
+| `ecb-fx`, `ecb-fx-month-end` (`adapters/ecb-fx.ts`) | ECB euro reference rates (D26) | daily, after the ECB publishes | `data/series/ecb-fx.json`, `data/series/ecb-fx-month-end.json` |
+| none | tariffs, `data/funds/`, `data/catalog/`, `data/terms/deposits/`, rules figures, parameters | by hand | written by hand or by the data-researcher agent |
 
-**CMA adapter as built (2026-10-23).** `packages/pipeline/src/adapters/cma.ts`, run as `npm run refresh -- cma [--dry-run] [--no-archive] [--force]`. It reads the full 2024-today CSV (not the datastore API), keeps the latest `REPORT_PERIOD` and writes text fields exactly as received (untrimmed), like the hand-made snapshots. Sanity checks (pipeline configuration, in the adapter): a required column missing, replacement characters in a text field, row count under 80% of the stored period's, more than 20% of fund ids gone, a period older than the stored one. Exit code 0 = written or unchanged, 3 = sanity failed (nothing written), 1 = error. `--force` writes despite a sanity failure (never past a schema failure) and exists only so `refresh.yml` can open a pull request with the diff. Because `CURRENT_DATE` and the file hash change daily, "nothing changed" is decided on the normalised data, never on the hash. Pushes with the default `GITHUB_TOKEN` do not start `ci.yml`; set the secret `REFRESH_PUSH_TOKEN` so the refresh commit triggers CI and the deploy.
+The Bank of Israel series have no adapter on purpose: their terms of use forbid copying and publishing without the Bank's prior written consent and no data.gov.il copy exists, so under the terms gate they are not fetched into `data/` (D20; `packages/pipeline/src/cli.ts`). There is no fund list: TASE's terms forbid republishing the Maya export (CAT-43), so `data/fund-lists/` (data-schema 3.14) does not exist and the pages that would read it hold no list and say so.
 
-**ECB adapter as built (2026-11-03).** `packages/pipeline/src/adapters/ecb-fx.ts`, run as `npm run refresh -- ecb-fx ecb-fx-month-end`, on its own daily workflow (`refresh-rates.yml`, after the ECB publishes around 16:00 CET), so a failure in another source never holds the rates back. A move of more than 10% since the stored rate writes nothing and fails the run; the page keeps the last rate with its date, and the stale flag (D3) shows after 5 days.
+**CMA adapter.** It reads the full 2024-to-today CSV (not the datastore API), keeps the latest `REPORT_PERIOD` and writes text fields exactly as received (untrimmed). Sanity checks (pipeline configuration, in the adapter): a required column missing, replacement characters in a text field, row count under 80% of the stored period's, more than 20% of fund ids gone, a period older than the stored one. Because `CURRENT_DATE` and the file hash change daily, "nothing changed" is decided on the normalised data, never on the hash. `npm run renormalise:cma -w @finance-tool/pipeline` rebuilds the derived value objects of every stored CMA file from its own raw fields, with no download.
 
-**Commit policy.** A refresh that passes validation and the sanity checks is committed directly. A refresh that trips a sanity check (a field disappears, a row count drops sharply, a value outside a plausible range, an encoding change) opens a pull request instead and alerts. Sanity ranges are pipeline configuration, not site parameters: they never reach a displayed number.
+**ECB adapter.** It runs on its own daily workflow (`refresh-rates.yml`, after the ECB publishes around 16:00 CET), so a failure in another source never holds the rates back. A move of more than 10% since the stored rate writes nothing and fails the run; the page keeps the last rate with its date, and the stale flag (D3) shows after 5 days.
 
-**Terms gate.** A series whose `terms_of_use.status` is not confirmed is fetched and archived but not shipped to the site; the page shows the link-out instead (product.md dependency 7, fallback "link out and show no number"). Switching to the data.gov.il copy is a change of adapter, not of the site.
+**Exit codes and commit policy.** 0 = written or unchanged, 3 = a sanity check failed (that source writes nothing), 1 = error. A refresh that passes validation and the sanity checks is committed straight to `main`. A refresh that trips a sanity check (a field disappears, a row count drops sharply, a value outside a plausible range, an encoding change) is written once more with `--force` (never past a schema failure), only to give a pull request a diff to review, and nothing goes to `main`. Sanity ranges are pipeline configuration, not site parameters: they never reach a displayed number. A push made with the default `GITHUB_TOKEN` starts no workflow, so after its commit the refresh job dispatches `ci.yml` on `main`, which runs the checks and the deploy.
 
-**Raw archive.** CMA CSVs are several megabytes each and cumulative, so the normalised per-period extract goes in git and the raw file, compressed, is attached to a GitHub Release keyed by source and date (section 6), with its hash in the snapshot's `source` block. This keeps the repository small and still keeps the evidence D3 asks for.
+**Terms gate.** A series whose `terms_of_use.status` is not confirmed is not shipped to the site; the page shows the link-out instead (product.md dependency 7, fallback "link out and show no number"). Switching to a data.gov.il copy is a change of adapter, not of the site.
 
-**Failure.** A failed fetch changes nothing in `data/`, so the site keeps the last value with its date and the browser raises the stale flag (product.md §6, "on fetch failure"). A dead-man check alerts the founder when the daily job has not reported success.
+**Raw archive.** CMA CSVs are several megabytes each and cumulative, so the normalised per-period extract goes in git and the raw file, gzipped, is attached to a GitHub Release (`raw-cma-<period>`, section 6), with its archive key and hash in the snapshot's `raw` block. This keeps the repository small and still keeps the evidence D3 asks for. `--no-archive` skips the upload; the key and hash are still recorded.
 
-**Helpers for hand-collected data.** Small CLI commands that scaffold a new catalogue entry, tariff or fund record with empty value objects, and that read an exported saved-state file and turn its "not catalogued yet" names (3.10) into catalogue stubs for the founder to complete.
+**Failure.** A failed fetch changes nothing in `data/`, so the site keeps the last value with its date and the browser raises the stale flag (product.md §6, "on fetch failure"). A dead-man check (`refresh-watchdog.yml`, weekly) opens an issue when `refresh.yml` or `refresh-rates.yml` had no successful run in the last 3 days.
+
+**Helpers for hand-collected data** (`packages/pipeline/scripts/`): `extract-sources.ts` writes each rule record's `sources`, derivation and scope from the rule base; `gen-open-questions.ts` writes `data/open-questions.json` from the rule base's open-question sections; `gen-terms.ts` writes `data/terms/` and `data/dimensions/` from the glossary (`npm run gen:terms`).
 
 ### 3.4 Calculation engine
 
-A TypeScript package with no dependencies on the UI, the DOM, the network or the file system.
+`packages/engine`: TypeScript with no dependencies on the UI, the DOM, the network or the file system.
 
-**Structure follows `docs/method.md`.** One module per method section; one function per formula, named and headed by its ID (`F-40`), so the finance-reviewer can read the engine side by side with the method. A **formula registry** maps each F-ID to its implementation; wrapper records name their formulas (`tax_at_exit.formula` and so on, data-schema §3.3), and the engine dispatches through the registry. Adding a wrapper when a tier-2 instrument graduates (D2) is then a data change plus any new formulas, not a rewrite.
+**Structure follows `docs/method.md`.** Modules by method topic (`ledgers/`, `formulas/`, `fees/`, `holdings/`, `providers/`, `variants/`, `compare/`); one function per formula, named and headed by its ID (`F-40`), so the finance-reviewer can read the engine side by side with the method. A **formula registry** (`src/registry.ts`) maps each F-ID to its implementation and lists in `pending` the formulas not implemented yet; wrapper records name their formulas (`tax_at_exit.formula` and so on, data-schema §3.3), and the engine dispatches through the registry. Adding a wrapper when a tier-2 instrument graduates (D2) is then a data change plus any new formulas, not a rewrite.
 
-**Figure resolver.** The engine never reads a rule figure directly. It asks the resolver for `(rule ID, figure name, tax year)`. The resolver:
+**Figure resolver** (`src/resolver.ts`). The engine never reads a rule figure directly. It asks the resolver for `(rule ID, figure name, tax year)`. The resolver:
 
 - refuses a rule whose strength is `open` and raises a **blocked** result with the open-question ID, which the engine turns into B3 "listed, not ranked" for that wrapper (method §1, §12);
 - returns `secondary` and `institution` figures with a label that travels to every number they touch (D10);
 - refuses a figure whose `effective_to` is before the run date ("figure not updated", method §13);
 - records every rule it served. The run's **dimension checklist is derived from that record** (method §13: "derived from the rules used in the run, not hand-marked"), so a rule that enters the rule base as open turns a dimension to blocked without a page edit (3.3 "works when").
 
-**Inputs and outputs.** Inputs are typed by assumption ID (`A-01` … `A-29`) and parameter ID (`P-01` … `P-06`), each a value object, so the state of every input (sourced or entered) is known to the engine. Outputs are value objects with `state: computed` and `computed_from` (formula ID and input references), plus the monthly ledger series, fees by type, tax during and at exit, labels, G-flags and the rules used. Every comparison also returns its coverage line (method F-83): the candidate count and one outcome code with its reason for each candidate. The engine returns **codes, never Hebrew text**: the site maps codes (formula, G-ID, rule ID, deciding factor from F-80) to copy. This keeps the engine testable in isolation and the wording in one place.
+**Inputs and outputs.** Inputs are typed by assumption ID (`A-nn`) and parameter ID (`P-nn`), each a value object, so the state of every input (sourced or entered) is known to the engine. Outputs are value objects with `state: computed` and `computed_from` (formula ID and input references), plus the monthly ledger series, fees by type, tax during and at exit, labels, G-flags and the rules used. Every comparison also returns its coverage line (method F-83): the candidate count and one outcome code with its reason for each candidate. The engine returns **codes, never Hebrew text**: the site maps codes (formula, G-ID, rule ID, deciding factor from F-80) to copy. This keeps the engine testable in isolation and the wording in one place.
 
-**Arithmetic.** IEEE double precision, rounding only for display (method §13). The method uses fractional powers (F-02, F-07, F-24), which decimal libraries handle poorly; double precision is far beyond the agora-level accuracy the golden tolerance (P-06) will ask for. Dates are civil dates (`YYYY-MM-DD`) and month indices; no time zones inside the engine.
+**Arithmetic.** IEEE double precision, rounding only for display (method §13). The method uses fractional powers (F-02, F-07, F-24), which decimal libraries handle poorly; double precision is far beyond the agora-level accuracy the golden tolerance (P-06) asks for. Dates are civil dates (`YYYY-MM-DD`) and month indices; no time zones inside the engine.
 
 **Determinism.** Same inputs and same data version give the same output on every device (3.2 "two people with the same inputs get the same answer", 3.9 "imports on another phone and reproduces the same results"). No randomness, no dependence on the device's locale or clock inside the engine; the run date is an input.
 
-**Where it runs.** In the browser it runs in a Web Worker, so the sensitivity panel (F-81, many re-runs by bisection) never freezes a phone's UI. At build time it computes each page's first view (for example the guide timeline, F-67 with P-05) and the dimension marks; in the browser the same code re-runs on every field change.
+**Where it runs.** At build time it computes each page's first view (for example the guide timeline, F-67 with P-05) and the dimension marks. In the browser the same code re-runs on every field change, on the page's own thread (`site/app/lib/engine.ts` and the tools' modules); there is no Web Worker. Work that takes longer than a slider allows waits until the hand rests (ground rule 5).
 
 ### 3.5 Site
 
-**One interactive app, every page pre-rendered.** Each page is generated from `data/` at build so its first view arrives as HTML, then becomes interactive: fields the person can change, and graphs and numbers that recompute through the engine as they do. Pages: one guide page per tier-1 wrapper and exposure (3.1) with its optional inputs and timeline graph, the tier-2 "not covered yet" page, one catalogue page per managing company listing every fund and track from the CMA data (3.10) with search and the fit mark (from R4 also each fund manager's funds from the Maya list), and from R2 the tools. The rules, parameters and terms pages are reference text. Guide prose is written in Hebrew in content files; every figure inside it is a component that reads a value object, never a typed number (section 3.7).
+`site/`: React Router in framework mode, every route pre-rendered at build (`ssr: false`, the paths from `site/app/lib/paths.server.ts`), with no runtime server.
 
-**Inputs follow the person.** The goal, profile inputs and entered values live in one app-wide state, saved locally (3.6), so a horizon set on a guide page or a goal set in the comparison is already filled in on the catalogue and the workbench. Where an input appears on a page that product.md does not list it for, that is a product question, not an engineering one (gap 8.9).
+**One interactive app, every page pre-rendered.** Each page is generated from `data/` at build (the loaders read `data/`, `docs/` and `research/` through `site/app/lib/data.server.ts`) so its first view arrives as HTML, then becomes interactive: fields the person can change, and graphs and numbers that recompute through the engine as they do. The routes are in `site/app/routes.ts`: the guide (one page per tier-1 wrapper and exposure, with its optional inputs and timeline graph), the companies and their tracks from the CMA data (3.10), every track of one product (`/tracks`), the indices page (`/indices`), the rules, documents and parameters pages, the tier-2 "not covered yet" page, and the tools (goal comparison, idle cash, fees, holdings, the provident wrappers' provider listings, export and import). Pages held for the founder's review are off the site's links but still at their addresses (`site/app/lib/review.ts`, D32). Guide prose is written in Hebrew in content files (`site/app/content/guide/`); every figure inside it is a component that reads a value object, never a typed number (section 3.7).
 
-**Tools** (added from R2): goal comparison with presets and sensitivity, catalogue search and fit mark, fee materiality, holdings review, workbench, playbook (removed 2026-10-28, D38), revisit. They load a **resolved data bundle**: the rule figures for the current tax year, parameters, wrapper records, the tier-2 list, latest series values and averages, stamped with a `data_version` (commit and build date). A comparison's candidate set is built from the bundle and never from what a page happens to show (product D17, method F-83). Manager-level CMA data and fund lists are split into small files and loaded on demand.
+**Inputs.** The goal, profile inputs and entered values live in one app-wide state, saved locally (3.6). The goal is carried on the goal pages and the workbench; the other pages run on their own plan (D34, D37). Where an input appears on a page that product.md does not list it for, that is a product question, not an engineering one.
 
-**Provenance on every number.** One component renders every number. It takes a value object, never a bare number, and shows the state (sourced, computed, entered by you), and on tap: the source with its date, the rule and its strength, the formula and inputs for a computed number, "site parameter" with its rationale, and the stale flag. It uses the native HTML popover, so it works in the pre-rendered first view before any script has loaded.
+**Data bundles.** The tools load a **resolved data bundle**, pre-rendered as a static JSON resource (`compare-bundle.json`, `fees-data.json`, `holdings-bundle.json`, `workbench-bundle.json`): the rule figures for the current tax year, parameters, wrapper records, the tier-2 list, latest series values and averages, stamped with the build's version and data snapshot (`site`). A comparison's candidate set is built from the bundle and never from what a page happens to show (product D17, method F-83). Manager-level CMA data is split into small files and loaded on demand. Pages that need a bundle preload it with the HTML (`bundleLinks()`, `site/app/lib/bundle.ts`).
 
-**Right to left.** `lang="he" dir="rtl"` on the document; CSS logical properties only (start and end, never left and right), enforced by a stylelint rule; every number, fund number, ISIN and Latin name wrapped in an isolating element so bidi reordering cannot scramble "25%" or a security number; numbers and dates formatted with `Intl` for `he-IL`; a Hebrew web font self-hosted (no request to a font CDN, in keeping with D1). Layout is designed at phone width first and widened for PC.
+**Provenance on every number.** One component (`site/app/components/provenance.tsx`) renders every number. It takes a value object, never a bare number, and shows the state (sourced, computed, entered by you), and on tap: the source with its date, the rule and its strength, the formula and inputs for a computed number, "site parameter" with its rationale, and the stale flag. It opens in a native `<dialog>` (`site/app/components/Sheet.tsx`): a bottom sheet on a phone, a card beside the number on a PC.
 
-**Charts.** Our own SVG chart components (section 3.9), pre-rendered at build and redrawn in the browser on every field change. The direction of the time axis is a question for the founder (gap 8.6).
+**Right to left.** `lang="he" dir="rtl"` on the document; CSS logical properties only (start and end, never left and right); every number, fund number, ISIN and Latin name wrapped in an isolating element so bidi reordering cannot scramble "25%" or a security number; numbers and dates formatted with `Intl` for `he-IL`; the Hebrew and Latin web fonts self-hosted (no request to a font CDN, in keeping with D1).
 
-**Catalogue search.** A small client-side index built at build time over CMA fund names, `data/catalog/` names, `data/terms/` and, from R4, the Maya fund names. Hebrew normalisation before matching: final letter forms, geresh and gershayim against ASCII quotes, maqaf against hyphen, niqqud stripped, whitespace collapsed. A name with no match is recorded in local state as "not catalogued yet" (3.10). Since 2026-10-24 (UX audit) the index also holds fund numbers, company legal ids, TASE numbers and ISINs, and a name is saved only when the person presses "העתקה"; matches are ranked (exact, prefix, word, contained, all words) with one row per page; on a PC the header field is a combobox whose results open under it, and on a phone it stays the bottom sheet.
+**Charts.** Our own SVG chart components (section 3.9), pre-rendered at build and redrawn in the browser on every field change. Every chart axis runs left to right, time included (ground rule 6; this settled gap 8.6).
 
-**Shared behaviour added 2026-10-24 (UX audit).** One number parser (`parseNumber`, `lib/format.ts`) reads every typed number, with comma decimals; display rounding of shekel amounts is a display rule over unchanged method figures (design-system 2.7). The newest `checked` date in `data/` is read at build (`dataAsOf()` over `newestChecked()`) and baked in by `define: __DATA_AS_OF__` in the Vite config, for the footer. `RestoreScroll` replaces the router's scroll restoration: a position per history entry in `sessionStorage`, restored on back and forward with retries until the page is tall enough. Amended 2026-10-25: the position is kept under the history entry and the address together, because every page loaded fresh in a tab shares the entry key "default", and a typed address or a bookmark opened at the position last left on another page. The error boundary shows the not-found page for a 404 or for a missing data file on the static host, and a "משהו השתבש" page for any other failure. Only the Inter latin and Heebo hebrew font files are loaded and preloaded. Pages that need the engine preload their bundle (`bundleLinks()`), and the menu and search buttons stay disabled until hydration.
+**Search.** A client-side index built at build time (`search-index.json`, `site/app/routes/search-index.ts`) over wrapper names, the CMA fund names, `data/catalog/` names, `data/terms/`, fund numbers, company legal ids, TASE numbers and ISINs, and light entries for rules (title, id, figures as `{n, unit}` numbers, figure names, topic, address), parameters and documents. A second file, `search-texts.json`, holds the rule texts, term meanings and parameter rationales; it is fetched after the index loads and used only to re-rank or to answer a question-form query, and a pre-rendered page never waits for it. Neither file is fetched from a third party. Hebrew is normalised before matching (`site/app/lib/search.ts`): final letter forms, geresh and gershayim against ASCII quotes, maqaf against hyphen, niqqud stripped, whitespace collapsed. Matches are ranked (exact, prefix, word, contained, all words) with one row per page. On a PC the header field is a combobox whose results open under it; on a phone the search is a bottom sheet. A name with no match is recorded in local state as "not catalogued yet" (3.10) only when the person presses "העתקה".
 
-**Rules, documents and search as a knowledge layer (amended 2026-10-24, knowledge layer, D25).** Every rule record carries `sources[]` (extracted by script from the rule base, checked by the validator). The rules page (`/rules`, one page since the founder's correction the same evening) pre-renders the pinned questions of P-09 with their records and a light list of every rule (`{id, title, shelf, file, strength, likely_to_change, recheck_date, score, prefix, products}`; the filters are pure functions in `site/app/lib/rules-filter.ts`) whose filter state is the address (`?shelf=&product=&prefix=&changing=1&ids=&q=`, written with `history.replaceState`, never a navigation); the full records and their uses come from five resource routes `/rules-data/<shelf>.json` (`shelfBundle`, which also carries the records a card derives from), fetched once each through a module cache when a group opens, a filter shows cards, the hash names a rule or a text search needs the full text; `/rules/<shelf>` pre-renders a page that replaces itself with `/rules?shelf=<shelf>`. The product filter comes from `ruleProducts()`: the wrappers whose record cites the rule's id, the wrapper behind the rule's file (`fileProducts`), "common" for the provident-family file and "tier2" for the files of products the site does not cover. The shelf of a rule is derived at build (`shelfOf`, `site/app/lib/rule-shelves.ts`) from its first dimension, a default per research file and a short list of explicit moves, with no new field on the record. A rule's uses are computed at build and cached for the build: the pages that cite its id (a scan of `site/app/content/`, `routes/` and `components/`), whether `packages/engine/src/` mentions it, and the data collections that reference it (wrappers, exposures, dimensions, terms, parameters, funds, fees, deposit terms); the same scan gives the score that orders rules inside a group and picks the teasers. The documents page (`/documents`) is grouped at build: every `sources[]` entry and every sourced figure's `source` by document key (an id of `data/sources/documents.json` when the address or title matches, else the address without fragment and query), plus cards for the data collections. Search ships as two files: `search-index.json` holds today's entries plus light entries for rules (title, id, figures as `{n, unit}` numbers, figure names, topic, address), parameters and documents; `search-texts.json` holds the rule texts, term meanings and parameter rationales and is fetched after the index loads, used only to re-rank or to answer a question-form query. Neither file is fetched from a third party, and a pre-rendered page never waits for the second file. The questions page (`/questions`, added the same night) pre-renders the twelve P-09 rows with their records and uses; an answer is a string with `{ID:figure}` slots (parsed by `site/app/lib/answer-slots.ts`) that the page renders through the provenance component over `ruleFigure`, so an answer never carries a typed number, and the validator checks every slot against the row's rules. In the interface the set is named "חוקים וכללים" since that night and a single record has no noun; the code keeps `rule`.
+**Rules and documents.** Every rule record carries `sources[]` (extracted by script from the rule base, checked by the validator). The rules page (`/rules`) is one list with filters. It pre-renders the pinned rows of P-09 with their records, the "הידעת?" facts, and a light list of every rule (`{id, title, shelf, file, strength, likely_to_change, recheck_date, score, prefix, products}`); the filters are pure functions in `site/app/lib/rules-filter.ts`, and their state is the address (`?shelf=&product=&prefix=&changing=1&ids=&q=`, written with `history.replaceState`, never a navigation). The full records and their uses come from resource routes `/rules-data/<shelf>.json` (`shelfBundle`, which also carries the records a card derives from) and `/rules-data/companies.json` (the terms the site read at companies), each fetched once through a module cache when a group opens, a filter shows cards, the hash names a rule or a text search needs the full text. `/rules/<shelf>` pre-renders a line and a link and replaces itself with `/rules?shelf=<shelf>`. The product filter comes from `ruleProducts()`: the wrappers whose record cites the rule's id, the wrapper behind the rule's file (`fileProducts`), "common" for the provident-family file and "tier2" for the files of products the site does not cover. The shelf of a rule is derived at build (`shelfOf`, `site/app/lib/rule-shelves.ts`) from its first dimension, a default per research file and a short list of explicit moves, with no field on the record. A rule's uses are computed at build and cached for the build (`site/app/lib/rule-uses.server.ts`): the pages that cite its id (a scan of `site/app/content/`, `routes/` and `components/`), whether `packages/engine/src/` mentions it, and the data collections that reference it (wrappers, exposures, dimensions, terms, parameters, funds, fees, deposit terms); the same scan gives the score that orders rules inside a group and picks the teasers. A pinned answer or fact is a string with `{ID:figure}` slots (parsed by `site/app/lib/answer-slots.ts`) that the page renders through the provenance component over the rule's figure, so it never carries a typed number, and the validator checks every slot against the row's rules (3.2 item 6). The documents page (`/documents`) is grouped at build: every `sources[]` entry and every sourced figure's `source` by document key (an id of `data/sources/documents.json` when the address or title matches, else the address without fragment and query), plus cards for the data collections. In the interface the set of rules is named "חוקים וכללים" and a single record has no noun; the code keeps `rule`.
 
-**What the site does not load.** No analytics, no third-party scripts, no external fonts or CDNs at run time (D1, product.md §4). Pages carry `noindex` (gap 8.7).
+**Shared behaviour.** One number parser (`parseNumber`, `site/app/lib/format.ts`) reads every typed number, with comma decimals; display rounding of shekel amounts is a display rule over unchanged method figures (design-system 2.7). The newest `checked` date in `data/` is read at build (`newestChecked()`, `site/app/lib/data-as-of.ts`; `dataAsOf()` in `data.server.ts` is the same) and baked in by `define: __DATA_AS_OF__` in the Vite config, for the footer. `RestoreScroll` (`site/app/root.tsx`) replaces the router's scroll restoration: a position per history entry and address together, in `sessionStorage`, restored on back and forward with retries until the page is tall enough (the address is part of the key because every page loaded fresh in a tab shares the entry key "default"). The error boundary shows the not-found page for a 404 or for a missing data file on the static host, and a "משהו השתבש" page for any other failure. Only the Inter latin and Heebo hebrew font files are loaded, and both are preloaded. The menu and search buttons stay disabled until hydration.
+
+**What the site does not load.** No analytics, no third-party scripts, no external fonts or CDNs at run time (D1, product.md §4). Pages carry `noindex`.
 
 ### 3.6 Local saved state
 
-- **Store.** One state document per browser in IndexedDB, written automatically (3.9). It holds the person's goals, entered values (as value objects with `state: entered`, data-schema §1), holdings, saved comparisons and uncatalogued names.
-- **Versioned from the first write** (R2), even though export only arrives in R3 (N3). Every state document carries a format version; a chain of migrations upgrades any older version on load and on import. Import validates with the schema package and rejects a file it cannot read, without touching the existing state.
-- **Saved comparisons carry what they used.** A saved comparison stores its inputs, the `data_version`, and the actual figures, parameters and series values it read (small). Revisit (F-82, R5) compares those stored values with the current bundle, so the site never needs to ship old snapshots to the browser.
-- **Side stores (2026-10-24, UX audit).** The entered offers, the variant assumptions, the playbook ticks and the own rates are four device stores (`mekor.v2.offers`, `mekor.v2.variants`, `mekor.v2.playbook-ticks`, `mekor.v2.own-rates`), pending a merge into the state document, which awaits the founder's approval; the export file carries them in an optional `sideStores` field and the import validates each item and merges them (add: the device wins per provider or exposure and ticks are unioned; replace: the file's), and the document's version stays 3. Playbook ticks are keyed by the wrapper alone; old keys migrate once. `mekor.v2.own-rates` (a raw map goal id to wrapper id to percent a year, no version wrapper) keeps the person's own rate per goal and is in the export's `sideStores.ownRates`; `mekor.v2.imported-side` records the side items an "add" import brought, so the undo removes exactly those; a "replace" clears it. The import dedupe ignores id, order and import tag, and a failing item is left out and listed by field.
-
-- **Own-terms store (2026-10-24, scenario audit).** `mekor.v2.own-rates` keeps its key and its place in `sideStores.ownRates`, but a wrapper's entry may now be a bare number (a rate, the old form) or an object `{ rate?: number; fee?: number; provider?: string }`: the rate (percent a year) the bank offered for the deposit, the fund fee level (percent a year) for the representative instrument (D4), and, for the brokerage account, the id of the provider the person chose (2026-10-24, scenario audit; `splitOwnTerms` returns it as `ownProviders`, `RunGoal.ownProviders`, applied by `applyOwnProviders` to the compare bundle, which carries each brokerage provider's tariff lines built by `compare.server.ts` from the fee snapshots). `lib/own-rate.ts` exports `useOwnTerms` (the hook, one goal), `useOwnRates` (unchanged signature, keeps a stored fee), `splitOwnTerms` (to `ownRates` and `ownFees` for `RunGoal`), `termsOfGoal` and `parseOwnRates`; `lib/side-stores.ts` accepts either form on import, names an object that is not a rate or fee as a problem, and merges by JSON equality. The goal comparison takes the entered fee as a value object with `replaces` and applies it in `termsFor` before the F-81 scale. The offered deposit term of the idle-cash screen is not stored (page state; an open request asks whether the comparison should carry it). The merge into the saved state document still awaits the founder's approval, and the document stays version 3.
-- **Holdings (2026-10-24, scenario audit).** `Holding` gains `firstDepositOverSix` (an entered boolean true; declared in `lib/state.ts`) and a fee may be a sourced snapshot of the track's CMA average, dated at save time. The new goal fields `childAge` and `targetCost` are optional and absent in older saved goals (no version change).
-- **Phones may clear it.** Safari can delete a site's stored data after a period without a visit unless the site is added to the home screen. The site requests persistent storage where the browser supports it and ships a web-app manifest so it can be installed; this needs checking on a real iPhone in R2. Between R2 and R3 there is no export to fall back on (gap 8.5).
+- **Store.** One state document per browser in `localStorage` under `mekor.v2.state`, written automatically (product 3.9; `site/app/lib/state.ts`). It holds the person's goals, entered values (as value objects with `state: entered`, data-schema §1), holdings, the import record, saved comparisons and uncatalogued names.
+- **Versioned.** The document is version 3 under the unchanged key `mekor.v2.state` (N3). A chain of migrations upgrades any older version (the release 2 keys `mekor.v1.*`, version 2) on load and on import; an older site that finds version 3 refuses it and leaves it alone. Import validates with the schema and rejects a file it cannot read, without touching the existing state. The export file (`/transfer`) carries the version.
+- **Saved comparisons carry what they used.** A saved comparison stores its inputs, the build's version and data snapshot, and the actual figures, parameters and series values it read (small). Revisit (F-82) compares those stored values with the current bundle, so the site never needs to ship old snapshots to the browser.
+- **Side stores.** The entered offers, the variant assumptions, the playbook ticks and the own rates are four device stores on their own keys through `site/app/lib/device-store.ts` (`mekor.v2.offers`, `mekor.v2.variants`, `mekor.v2.playbook-ticks`, `mekor.v2.own-rates`), not merged into the state document, which awaits the founder's approval; the document's version stays 3. The export file carries them in an optional `sideStores` field, and the import validates each item and merges them (add: the device wins per provider or exposure and ticks are unioned; replace: the file's). Playbook ticks are keyed by the wrapper alone; old keys migrate once. `mekor.v2.imported-side` records the side items an "add" import brought, so the undo removes exactly those; a "replace" clears it. The import dedupe ignores id, order and import tag, and a failing item is left out and listed by field (`site/app/lib/side-stores.ts`).
+- **Own terms.** `mekor.v2.own-rates` (a map from goal id to wrapper id, no version wrapper; in the export as `sideStores.ownRates`) keeps the person's own terms per goal. A wrapper's entry is a bare number (a rate, percent a year) or an object `{ rate?: number; fee?: number; provider?: string }`: the rate the bank offered for the deposit, the fund fee level (percent a year) for the representative instrument (D4), and, for the brokerage account, the id of the provider the person chose. `site/app/lib/own-rate.ts` exports `useOwnTerms` (the hook, one goal), `useOwnRates` (keeps a stored fee), `splitOwnTerms` (to `ownRates`, `ownFees`, `ownProviders` and `ownIndices` for `RunGoal`), `termsOfGoal` and `parseOwnRates`; `applyOwnProviders` applies the chosen provider to the compare bundle, which carries each brokerage provider's tariff lines built by `compare.server.ts` from the fee snapshots. `lib/side-stores.ts` accepts either form on import, names an object that is not a rate or fee as a problem, and merges by JSON equality. The goal comparison takes the entered fee as a value object with `replaces` and applies it in `termsFor` before the F-81 scale. The offered deposit term of the idle-cash screen is page state and is not stored.
+- **Holdings.** `Holding` (`site/app/lib/state.ts`) has `firstDepositOverSix` (an entered boolean true) and a fee may be a sourced snapshot of the track's CMA average, dated at save time. The goal fields `childAge` and `targetCost` are optional and absent in older saved goals (no version change).
+- **Phones may clear it.** Safari can delete a site's stored data after a period without a visit unless the site is added to the home screen. The site ships no web-app manifest and makes no persistent-storage request; the export file is the backup.
 
 ### 3.7 How "every number traces to a source" is enforced
 
@@ -172,191 +172,79 @@ The rule is enforced in layers, so no single slip shows an untraced number:
 1. **Data:** the schema has no place for a bare number (3.1).
 2. **Engine:** outputs are computed value objects with their formula and inputs (3.4).
 3. **Rendering:** the only way to show a number is the provenance component, which takes a value object (3.5).
-4. **Content:** the validator rejects digits in guide prose outside that component (3.2 item 6).
-5. **End to end:** a browser test visits every page and fails on any text node containing a digit that is not inside a provenance element or on the allow-list.
+4. **Content:** the validator rejects typed digits in the pinned-rules facts and answers (3.2 item 6). There is no such check over guide prose.
+5. **End to end:** a browser crawl of every page that fails on any text node containing a digit that is not inside a provenance element or on the allow-list (chart ticks carry `data-scale` and are allowed). No such crawl is built.
 
 ### 3.8 Testing
 
-| Level | What | Tool |
+All tests run with Vitest from the repository root (`npm test`, `vitest.config.ts`: `packages/*/test/**` and `site/app/**`).
+
+| Level | What | Where |
 |---|---|---|
-| Engine, golden | Every scenario in `tests/golden/scenarios.md` as a machine-readable case; expected values come from the founder's spreadsheet; tolerance P-06 | unit test runner |
-| Engine, properties | Invariants that need no expected value: no fees and no tax gives the gross path; a higher fee never raises the value; real equals nominal when inflation is zero; a blocked rule always yields "listed, not ranked"; every candidate of a comparison appears exactly once in its coverage line (F-83) | property-based testing |
-| Engine, coverage of the method | Every F-ID in `docs/method.md` is implemented or listed as not yet implemented for the release | unit test |
-| Data | The validator (3.2) on the real `data/` and on fixtures that must fail | unit test runner |
-| Pipeline | Each adapter against recorded raw responses, including a Windows-1255 CSV | unit test runner |
-| Site | Phone and desktop sizes, right-to-left layout, the provenance crawl (3.7 item 5), import of every historical export format | Playwright (the qa-engineer agent) |
+| Engine, golden | Every scenario in `tests/golden/scenarios.md` as a machine-readable case; expected values come from the independent check (`tests/golden/expected_calc.py`, worked in `tests/golden/workings.md`); tolerance P-06 | `packages/engine/test/golden/` |
+| Engine, properties | Invariants that need no expected value: no fees and no tax gives the gross path; a higher fee never raises the value; real equals nominal when inflation is zero; a blocked rule always yields "listed, not ranked"; every candidate of a comparison appears exactly once in its coverage line (F-83) | `packages/engine/test/properties.test.ts` (fast-check) |
+| Engine, coverage of the method | Every F-ID in `docs/method.md` is implemented or in the registry's `pending` list | `packages/engine/test/registry.test.ts` |
+| Schema | The code schema against `docs/data-schema.md` | `packages/schema/test/` |
+| Data | The validator (3.2) on the real `data/` and on fixtures that must fail | `packages/pipeline/test/validate.test.ts` |
+| Pipeline | Each adapter against recorded raw responses, including Windows-1255 CSVs | `packages/pipeline/test/`, `fixtures/` |
+| Site | Library modules, the kit's guards and ratchets, saved-state migrations and import | `site/app/**/*.test.ts` |
 | Review | Engine against the method and the rule base after any engine or schema change | finance-reviewer agent |
 
-Engine and data tests run on every change; the browser tests run before each release and on changes to the site.
+Screenshots at both screen sizes, the movement script and the other checks a change needs are set by its size (CLAUDE.md, "Checking a change").
 
 ### 3.9 Look and feel
 
-Polished interface and good-looking graphs are a requirement (K12), so they get their own step and their own components rather than being left to a library's defaults.
+Polished interface and good-looking graphs are a requirement (K12), so they get their own components rather than being left to a library's defaults. Tokens and components are in `docs/design-system.md` and the kit (`site/app/components/kit/`, gallery at `/kit`); styling is Tailwind CSS over the tokens of `site/app/theme.css`; icons are `lucide-react`. When a major chart or page is drawn before it is built is set by CLAUDE.md (ground rule 1).
 
-- **Design before building pages.** Before the R1 pages are built, a design pass produces:
-  - design tokens: a Hebrew type scale and font, colour palette, spacing; dark only (founder, 2026-10-22; `docs/design-system.md`);
-  - the visual language for the three number states (sourced, computed, entered by you), the stale flag and "site parameter";
-  - a chart style guide;
-  - mockups of three key screens at phone and PC widths, for the founder to approve: a guide page, a company page of the catalogue and the R2 comparison.
-  Pages are then built to the approved mockups. Each later release starts with mockups of its new screens.
-- **Our own chart components, not an off-the-shelf chart library.** Charts are SVG components built from D3's scale, shape and axis modules, the approach interactive-graphics teams use. Off-the-shelf chart libraries are quick to start with but fight back on exactly what this site needs:
+- **Our own chart components, not an off-the-shelf chart library.** Charts are SVG components built from D3's scale, shape and array modules. Off-the-shelf chart libraries fight back on exactly what this site needs:
   - right-to-left layout with Hebrew labels, legend order and axis placement;
-  - the three number states drawn distinctly, so an "entered by you" return can never be mistaken for a sourced one (roadmap R5 risk);
+  - the three number states drawn distinctly, so an "entered by you" return can never be mistaken for a sourced one;
   - ranges and sensitivity bands (F-81);
   - annotations such as "locked until", "tie" and "blocked";
   - smooth transitions when a field changes;
   - the same chart pre-rendered as SVG at build, so it appears before any script runs.
-  A small set of chart types covers the product: value over time for several options, stacked fee drag, cumulative cost by provider, and a ranked bar with tie bands.
-- **Phone first interaction.** On a phone, touching and dragging across a chart shows a readout (no hover); on PC, hover does the same. Inputs that are changed often use controls that suit thumbs: sliders with a typed value beside them, steppers, and bottom sheets for the less common fields.
-- **Motion.** Numbers and graphs move to their new values when an input changes, briefly, and stay still when the device asks for reduced motion.
-- **Review.** Each release's screens are captured at phone and PC sizes by the qa-engineer, and the founder reviews the screenshots before the release ships.
+- **Touch and pointer.** On a phone, touching and dragging across a chart shows a readout (nothing depends on hover); on a PC, hover does the same. Inputs that are changed often use controls that suit thumbs: sliders with a typed value beside them, steppers, and bottom sheets for the less common fields.
+- **Motion.** Numbers and graphs move to their new values when an input changes, briefly, with the kit's own pieces and no animation library, and stay still when the device asks for reduced motion.
 
 ---
 
 ## 4. Repository layout
 
+One npm workspace (`package.json` `workspaces`: `packages/*` and `site`) with one lockfile, TypeScript throughout, Node 22.12 or later.
+
 ```
-docs/  research/  data/  tests/golden/        as today
-packages/schema/      schemas, types, JSON Schema export, data-schema.md consistency test
-packages/engine/      formulas by method section, registry, figure resolver; no I/O
-packages/pipeline/    adapters, normaliser, validator, CLI helpers
-site/                 pages, content, components, tools, worker wrapper around the engine
-infra/                scheduler definitions (CI workflows or systemd units), host config
+docs/  research/  data/        product docs, research, source data
+tests/golden/                  golden scenarios and the independent check (Python)
+packages/schema/               Zod schemas, types, JSON Schema export (json/), data-schema.md consistency test
+packages/engine/               formulas by method topic, registry, figure resolver; no I/O
+packages/pipeline/             adapters, validator, CLI (src/cli.ts), helpers (scripts/)
+site/                          React Router app: app/ (routes, components, kit, lib, content, copy.ts), scripts/, public/
+.github/workflows/             ci, refresh, refresh-rates, refresh-watchdog, roadmap
 ```
 
-A single workspace with one lockfile; versions pinned. The repository is not under git yet; scaffolding starts with `git init`, because the snapshots and CI all rely on it.
+Root commands: `npm run check` (typecheck, tests, validation and site build, what CI runs), `npm test`, `npm run validate`, `npm run refresh -- <source>`, `npm run dev`, `npm run build`.
 
 ---
 
-## 5. Stack options
+## 5. Stack
 
-Common to all three, so not part of the choice:
-- a TypeScript engine package (it must run in the browser, K1; separate from the UI, K2);
-- the schema-first validator (K5);
-- the pipeline in TypeScript, one language end to end (the first draft's Python pipeline is dropped: its only advantage was CSV handling, which TypeScript does well enough);
-- static hosting (K1);
-- Tailwind CSS with logical-property utilities for right-to-left layout;
-- our own D3-based SVG chart components (3.9);
-- Playwright for browser tests.
-
-What decides it is K8 and K12. The site is an interactive app on nearly every page, and it must look polished. Polish comes from many rounds of small refinements, so what matters is:
-- how good the ready-made interface parts are (sliders, number fields, bottom sheets, popovers, tabs) and whether they support right to left;
-- how easy animation is;
-- how fluently the builder, Claude, writes the framework, since that sets the cost of each round.
-
-### Option A: Astro, static first, with interactive islands
-
-Pre-rendered HTML pages, with interactive parts as Preact islands.
-
-- **For:** the lightest pages.
-- **Against:** nearly every page here is interactive, so most pages become islands, and the person's inputs have to be passed between islands and pages through a separate store. Not recommended for this site.
-
-### Option B: SvelteKit, pre-rendered
-
-One app with every route pre-rendered.
-
-- **For:**
-  - Built-in motion: values that glide to a new position make a graph animate when a field changes with almost no code.
-  - SVG charts sit naturally in its templates, and Svelte has a long record in newsroom interactive graphics.
-  - The smallest runtime of the three on a phone.
-- **Against:**
-  - A smaller and younger set of ready-made interface parts (shadcn-svelte on Bits UI), with right-to-left support less proven.
-  - Svelte 5 is recent, and Claude writes it less fluently than React, so the same level of polish takes more rounds.
-
-### Option C: React, pre-rendered (recommended; chosen 2026-10-22)
-
-One app with every route pre-rendered: React Router in framework mode with pre-rendering, no server.
-
-- **For:**
-  - The richest set of polished interface parts: shadcn/ui on Radix primitives, which accept a direction setting for right to left. The components are copied into the repository, so every detail can be changed.
-  - Motion (formerly Framer Motion) for transitions.
-  - The most examples, and the stack Claude writes most fluently, so look-and-feel iterations are fastest.
-- **Against:**
-  - The heaviest runtime of the three. It is noticeable mainly on old phones and is softened by pre-rendering the first view and running the engine in a worker.
-  - Animation needs a library rather than being built in.
-
-### Comparison
-
-| | A Astro + islands | B SvelteKit | C React |
-|---|---|---|---|
-| Interactive on every page, inputs carried between pages | awkward | natural | natural |
-| Ready-made interface parts with right-to-left support | via Preact/React, partly | younger, less proven | richest |
-| Animated graphs on field change | possible | built in | with a library |
-| How fluently Claude builds and refines it | good | fair | best |
-| Runtime weight on a phone | lightest | light | heaviest |
-| Languages | one | one | one |
-
-**Recommendation: C.** Between B and C it is close, and either can produce beautiful graphs: the graphs are our own components in both, and the look comes from the design pass (3.9) more than from the framework. What tips it to React is that polish is built by iteration. React has the deepest set of ready-made parts that handle right to left, and it is the framework in which each round of refinement is cheapest and least error-prone. The price is a heavier download on old phones. Choose B if that runtime weight, or Svelte's built-in motion, matters more to you than the larger component ecosystem.
+React, pre-rendered (React Router in framework mode, no server), chosen by the founder over Astro and SvelteKit because polish is built by iteration, and React has the richest set of right-to-left-capable interface parts and is the framework Claude refines most fluently; the price is a heavier download on old phones, softened by pre-rendering the first view.
 
 ---
 
 ## 6. Hosting and scheduled refresh
 
-The site is static files and the pipeline is one command, so this choice is reversible at low cost.
+**GitHub Pages, from a public repository** (`orishamir/finance-tool`), chosen by the founder; the site is static files and the pipeline is one command, so the choice is reversible at low cost.
 
-**Chosen by the founder on 2026-10-22: GitHub Pages, from a public repository** (`orishamir/finance-tool`). This is H1 with GitHub Pages as the static host. What follows from it:
-
-- **Address and paths.** The site is served at `https://orishamir.github.io/finance-tool/`. The app's `basename` and Vite's `base` are both `/finance-tool/`. The build lays out `site/build/client` for Pages: pre-rendered pages at the root, and React Router's SPA fallback as `404.html`, so a path without a pre-rendered page still loads the app.
-- **Deploy.** The `ci` workflow deploys `main` to Pages only after typecheck, tests, validation and build pass. Other branches and pull requests run the checks only. Each such run also keeps the built site as a workflow artifact, `finance-tool-site` (a `.tar.gz`, two weeks), to run offline: extract it, run `python3 -m http.server` in the folder and open `http://localhost:8000/` (added 2026-10-27). One difference from Pages: an address the build has no page for gets Python's own 404, not the site's not-found page.
-- **Everything in the repository is public.** That includes the founder interview in `docs/discovery.md`, the research, and every file under `data/`. So the terms gate (3.3) applies to the repository too: a series whose redistribution terms are unconfirmed (BoI EDGE, CBS; product.md dependency 7) is not committed to `data/` until the terms are confirmed or the data.gov.il copy is used. CMA and MoF data are under the data.gov.il open licence and can be committed.
-- **Raw archive.** The original file each refresh downloads is attached, compressed, to a GitHub Release in the same repository (one release per source and month). The raw files stay out of the git history, so clones stay small, and they need no extra service. Releases are public, which is fine for openly licensed data (CMA, MoF on data.gov.il). A file with unconfirmed terms is not attached (see above). Nothing on the site reads these files: they are evidence of what the source said on that date, and they let the pipeline re-derive fields later, for example the CMA fees once O11 confirms their definitions.
-- **Scheduled refresh.** GitHub disables scheduled workflows in a public repository after a stretch with no repository activity. The refresh commits keep it active; the dead-man check (3.3) catches it if not.
-- **Fallback for blocked fetches (H3).** A self-hosted runner attached to a public repository can be made to run code from a fork's pull request, which GitHub advises against. If a source blocks GitHub's runners, the refresh runs on the home machine from cron and pushes its commit, rather than as a self-hosted runner.
-
-| | H1 Managed | H2 Self-hosted | H3 Hybrid |
-|---|---|---|---|
-| Code | private GitHub repository | self-hosted git (for example Forgejo), or GitHub | GitHub |
-| Scheduled refresh | GitHub Actions cron on GitHub's runners | systemd timer or cron running the pipeline in a container | GitHub Actions on a **self-hosted runner** at the founder's place |
-| Build and serve | Actions builds; a static host with a free tier serves (Cloudflare or similar) | the same box builds; Caddy or nginx serves; a tunnel if served from home | Actions builds; the managed static host serves |
-| Raw archive | object storage (for example Cloudflare R2) | local disk with an off-site backup | object storage |
-| Alerts | failed-workflow email plus a dead-man check | dead-man check (for example healthchecks) | both |
-| For | nothing to run; free at this size | full control; fetches come from a home IP like the research did | fetches from a home IP; serving stays up when the home box is down (stale flags then fire, as designed) |
-| Against | cloud runner IPs may be blocked by the data.gov.il or CBS firewalls (K10, unverified) | the founder maintains uptime, TLS, patches and backups | two places to look when something breaks |
-
-**Recommendation: start on H1, with H3 as the planned fallback.** The first task of R1 is a spike that runs every R1 and R2 adapter from a GitHub-hosted runner. If a source rejects it, the refresh job moves to a self-hosted runner by changing one line in the workflow, and nothing else changes. H2 is the right choice if the founder would rather own the whole chain; the design does not depend on it.
+- **Address and paths.** The site is served at `https://orishamir.github.io/finance-tool/`. The app's `basename` and Vite's `base` are both `/finance-tool/`. After the build, `site/scripts/pages-layout.mjs` lays out `site/build/client` for Pages: pre-rendered pages at the root, and React Router's SPA fallback as `404.html`, so a path without a pre-rendered page still loads the app.
+- **Deploy.** The `ci` workflow deploys `main` to Pages only after typecheck, tests, validation and build pass. Pull requests run the checks only. A run on `main` also keeps the built site as a workflow artifact, `finance-tool-site` (a `.tar.gz`, two weeks), to run offline: extract it, run `python3 -m http.server` in the folder and open `http://localhost:8000/`. One difference from Pages: an address the build has no page for gets Python's own 404, not the site's not-found page.
+- **Everything in the repository is public.** That includes the founder interview in `docs/discovery.md`, the research, and every file under `data/`. So the terms gate (3.3) applies to the repository too: a series whose redistribution terms are unconfirmed is not committed to `data/` until the terms are confirmed or an open copy is used. CMA and MoF data are under the data.gov.il open licence and can be committed.
+- **Raw archive.** The original file each CMA refresh downloads is attached, gzipped, to a GitHub Release in the same repository (one release per report period). The raw files stay out of the git history, so clones stay small, and they need no extra service. Releases are public, which is fine for openly licensed data. A file with unconfirmed terms is not attached. Nothing on the site reads these files: they are evidence of what the source said on that date, and they let the pipeline re-derive fields later.
+- **Scheduled refresh.** `refresh.yml` runs daily at 05:30 UTC (CMA, CBS consumer price index, MoF child-savings rates, in one CLI call, committed together); `refresh-rates.yml` runs daily at 15:30 UTC (ECB rates). GitHub disables scheduled workflows in a public repository after a stretch with no repository activity; the refresh commits keep it active, and the dead-man check (3.3) catches it if not.
+- **Fallback for blocked fetches (H3).** A self-hosted runner attached to a public repository can be made to run code from a fork's pull request, which GitHub advises against. If a source blocks GitHub's runners, or the scheduled workflows stop, the refresh runs on the home machine (`npm run refresh -- cma cbs-cpi mof-child-savings`) and pushes its commit, rather than as a self-hosted runner.
 
 ---
 
 ## 7. Work by release
 
-What each release adds to each component. Capabilities and their order are those of `docs/roadmap.md`.
-
-| | R1 understand | R2 decide for a goal | R3 fees and holdings | R4 providers, funds, switching | R5 exposures, revisit, growth |
-|---|---|---|---|---|---|
-| **Schema and validator** | all collections R1 uses; cross-file checks; content digit check | series, averages | holdings and export format | `data/fees/`, `data/funds/`, `data/fund-lists/`, `data/terms/deposits/` in use | tier-2 records as they graduate |
-| **Pipeline** | CMA adapters, raw archive, dead-man check; runner spike (section 6); catalogue scaffolding helper | BoI, CBS, MoF adapters; terms gate | uncatalogued-names import helper | tariff and fund scaffolding helpers; fund-list import helper | none new |
-| **Engine** | resolver and gating; registry; F-01 to F-28, F-33, F-40 to F-46, F-50, F-51, F-54 as needed for the guide timelines (F-67); dimension marks | F-30 to F-32, F-47 to F-49 (blocked where the method says), F-52, F-53, F-60, F-80, F-81, F-83; worker | F-61, F-62, F-64, F-70, F-72 | F-12 to F-14 at full tariff detail, F-63, F-65, F-66 | F-71, F-82 |
-| **Site** | design pass and approved mockups (3.9); design tokens and chart components; app shell and shared input state; guide pages with optional inputs and live timeline graphs; tier-2 page, rules, parameters, terms; per-manager catalogue pages and search; provenance component | comparison tool with presets, ranking, ties, sensitivity, idle-cash preset; coverage line; catalogue fit mark | fee materiality, holdings review, track workbench | provider workbench, fund variants, bank products and Maya funds in the catalogue, playbook rendered from rule entries | exposure mode with entered returns; revisit and "what changed since" |
-| **Local state** | guide inputs and uncatalogued names, versioned | automatic saved state, manifest and persistence request | export and import with migrations | none new | saved comparisons re-run (they already store what they used, from R2) |
-| **Tests** | golden scenarios for the R1 formulas; property tests; provenance crawl | golden apartment and ETF-vs-provident cases; sensitivity cases | 3.5 and 3.6 cases on the founder's holdings; old-format import | provider ranking case (one versus ten trades a month) | revisit before and after a rule change |
-
-Two R1 items gate everything after them, in this order: the schema and validator, then the engine's resolver and registry. The guide pages cannot show a timeline until the formulas they use pass their golden scenarios, which need the founder's expected values (roadmap R1 risk).
-
-**As built, 2026-10-24.** What each of the last three releases actually added (the roadmap's status paragraphs say what is open in each):
-
-- **R3 as built.** Routes `/fees`, `/holdings`, `/workbench/tracks/:wrapper`, `/transfer`, with the resource routes `fees-data.json` and `holdings-bundle.json`. Engine modules `packages/engine/src/fees/` (`materiality.ts` F-61, `verdict.ts` F-62, `reference.ts` F-68, `computed.ts`) and `holdings/` (`fit.ts` F-70, `consolidation.ts` F-72, `workbench.ts` F-64, `cma.ts`); golden file `test/golden/r3.test.ts` (S42, S43, S46). Local state: the holdings and the import record joined the state document (`site/app/lib/state.ts`, version 2), and the export file `mekor-state` with its import check. Pipeline: no new adapter; the uncatalogued-names import runs through the same file.
-- **R4 as built.** *(2026-10-28, D38: `/switch/:wrapper` and its code are deleted; `variants/switching.ts`, F-66, stays.)* *(2026-11-03, D52: `/workbench/providers/brokerage-account` is deleted; the route serves the provident wrappers' listings only, the indices page runs F-63 for the houses, and the offers store has no page.)* *(2026-11-03, D53: `/workbench/funds/:exposure`, `lib/variants.ts` and the funds page's parts are deleted; F-65 stays in the engine, the indices page lists the funds, and the variant-assumptions store has no page.)* Routes `/workbench/providers/:wrapper`, `/workbench/funds/:exposure`, `/switch/:wrapper`, the companies list with bank and fund-manager pages, and `workbench-bundle.json`. Engine modules `providers/workbench.ts` (F-63), `variants/fund-variants.ts` (F-65), `variants/switching.ts` (F-66); F-18 stays in the registry's `pending`; golden file `r4.test.ts` (S44, S45, S38). Schema: `data/fees/` and `data/funds/` in use by the workbench; `data/fund-lists/` not created (TASE's terms, CAT-43), its import helper not written. Local state: three side stores on their own keys through `site/app/lib/device-store.ts` (offers, variant assumptions, playbook ticks), not yet merged into the state document (design-spec 16.5). Pipeline: tariffs and fund records written by hand from the browser; no adapter.
-- **R5 as built.** Exposure mode on `/goal/compare?mode=exposure`, the revisit strip and sheet on the pages that carry the saved goal (since 2026-10-28, D37: the home page, the goal pages and the workbench), the status card on `/not-covered`. Engine modules `compare/loss-filter.ts` (F-71), `compare/exposures.ts` (exposure mode over the holding wrapper of P-08), `compare/revisit.ts` (F-82 `revisit`, `diffVersions`); golden file `r5.test.ts` (S48, S49). Local state: `savedComparisons` in the state document, version 3 under the unchanged key `mekor.v2.state`; the site's `lib/revisit.ts` re-runs both modes. The change-log page was removed on 2026-10-24 (D24); no tier-2 record graduated, so the schema's wrapper ids are unchanged.
-
----
-
-## 8. Gaps the architecture found in the existing docs
-
-Each needs a decision or a document change; none is filled in here.
-
-1. **No collection for CMA fund records.** **Answered 2026-10-23:** `data/cma/<dataset>@<YYYY-MM>.json` (data-schema 3.13), refreshed daily. The catalogue (3.10, R1), the track workbench (F-64) and holdings review (3.6) read every fund and track per manager from the CMA datasets, and `data/catalog/` points to `cma_fund_id`, but `docs/data-schema.md` defines no collection that holds them. Proposal: `data/cma/<dataset>@<YYYY-MM>.json`, one normalised file per dataset per report period, holding only the fields the method uses, each in value-object form. Needs the founder's approval and an entry in data-schema §3; the field units wait for O11 (product.md dependency 4). **Approved by the founder on 2026-10-22**; added as `docs/data-schema.md` §3.13.
-2. **Tax-year figures over a multi-year horizon.** method.md §13 says a run in tax year `y` reads the figures for `y`; the golden scenarios fix every figure at 2026. The method does not say explicitly that today's figures apply to every future month of the projection. The engine will do that, as the scenarios do, once method.md states it.
-3. **`tests/cases/` or `tests/golden/`.** product.md says one, method.md and the repository use the other (method §13 already notes it). The architecture uses `tests/golden/`, which exists; product.md should be changed to match. **Answered 2026-10-23:** `tests/golden/`; product.md and roadmap.md changed.
-4. **Strength vocabularies differ.** **Answered:** data-schema §1 gives the mapping (`primary-mirror` and `entered` added to the rule base's words). `il-finance` uses `primary`, `institution`, `secondary` (and open questions); data-schema adds `primary-mirror` and `entered`. The validator will check `data/rules/` strength against the rule base, so the mapping between the two needs writing down in data-schema §1.
-5. **Saved state without export between R2 and R3.** On iPhones, browser-stored data can be cleared after a period without visits unless the site is installed to the home screen. Saved state ships in R2 and export in R3, so a friend's R2 goal can disappear with no backup. Options: move export and import to R2, or ship R2 with the install prompt and say so. A roadmap decision. **Founder, 2026-10-22: fine as is, not a concern now.** Revisit if a friend loses saved state.
-6. **Direction of the time axis in charts.** Text, legends and layout are right to left; whether time on a chart runs left to right or right to left is a UI choice not made anywhere. Proposal: left to right, as is common for time series; the founder decides. **Founder, 2026-10-22: yes, time runs left to right.**
-7. **Search engines and analytics.** The site is not for the general public (product.md §4) and holds no personal data on a server (D1). Proposal: `noindex` on every page and no analytics of any kind. Neither is written down yet. **Founder, 2026-10-22: not a concern now.** Nothing is added for either until it is raised again.
-8. **Data terms as a release gate.** **Answered 2026-10-23 (D20):** the Bank of Israel series are links, not numbers; since 2026-10-26 one figure, the policy rate, is quoted (D20 as amended). The terms gate (3.3) means BoI series stay hidden until EDGE terms are confirmed or the data.gov.il fallback is in place (dependency 7). If neither is done before R2, the idle-cash preset ships without the per-bank average, showing the link-out instead.
-
-9. **Which fields each page offers.** product.md 3.1 gives guide pages optional age, employment type and horizon, and an illustrative timeline. It does not say whether the amount, the monthly contribution or the return used by that graph can be changed on the guide page, or only in the comparison (3.2). The architecture supports either; the choice belongs in product.md. **Founder, 2026-10-22: every value behind the guide graph is editable, starting from the illustrative scenario** (product.md 3.1, appendix C; method.md F-67).
-
----
-
-## 9. Next step
-
-Stack chosen (C), hosting chosen (GitHub Pages), gap 8.9 answered. Scaffolding starts with `git init`, the workspace, the schema package and the validator. The design pass (3.9) runs alongside, and no page is built before its mockup is approved.
+All five releases of `docs/roadmap.md` are built. Release 1 computed F-01 to F-28, F-33, F-40 to F-46, F-50, F-51 and F-54 for the guide timelines (F-67); a formula in `docs/method.md` that is not implemented yet is in the engine registry's `pending` list with the release that was to bring it.
