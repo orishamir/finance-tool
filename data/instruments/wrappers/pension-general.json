@@ -177,8 +177,8 @@
     "value": false,
     "unit": "boolean",
     "source": {
-      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
-      "title": "Income Tax Ordinance, s.87(א)(2) (Tax Authority's text, p.145): the charge on provident money paid out against the rules reaches only sums a fund paid \"לחבריה\"; with the transfer regulations 2008, reg. 2(ב), which carry the payment dates over \"לעניין דיני המס\"",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=145",
+      "title": "Income Tax Ordinance, s.87(א)(2) (Tax Authority's text, p.145): the charge on provident money paid out against the rules reaches only sums a fund paid \"לחבריה\"; with the transfer regulations 2008, reg. 2(ב), which carry all payment dates over to the receiving fund (only \"לעניין דיני המס\" when it is an insurer's fund); except severance money moved to a \"new account\", taxed before it moves (Provident Funds Law s.23(א)(2א))",
       "publisher": "Israel Tax Authority",
       "strength": "primary"
     },
@@ -194,7 +194,7 @@
       "TXP-32"
     ],
     "state": "sourced",
-    "notes": "Track switch inside the fund within 3 business days, not a withdrawal (PF-23, PEN-17). A member's move to another pension fund or provident fund for annuity under the transfer regulations is not a payment to the member, so it is not taxed and the money keeps its tax history (TXP-32); the member is taxed only when money is paid out (TXP-13). Replaces the 2026-10-22 note, which left the move between funds open (SW OQ8)."
+    "notes": "Track switch inside the fund within 3 business days, not a withdrawal (PF-23, PEN-17). A member's move to another pension fund or provident fund for annuity under the transfer regulations is not a payment to the member, so it is not taxed and the money keeps its tax history (TXP-32); the member is taxed only when money is paid out (TXP-13). One exception (TXP-32): severance money moved to a \"new account\" in a provident fund for annuity that is not a pension fund or central fund, an account closed to further deposits, has income tax withheld on the part not exempt as severance before it moves (Provident Funds Law s.23(א)(2א), Amendment 13, ספר החוקים 2507 p.17, https://fs.knesset.gov.il/20/law/20_lsr_315848.pdf#page=5); severance money taxed that way but neither withdrawn nor moved counts as new-account money after three months (s.23(ב2)(1)). Transfer regulations, reg. 2(ב) (קובץ התקנות 6657 p.628): https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fpoeVB94OXb~VXxIiNxEmuFE=#page=4. A move to another pension fund is never this case, since the new account is never in a pension fund; a pension fund's severance money moved to a new account in a provident fund for annuity is. Replaces the 2026-10-22 note, which left the move between funds open (SW OQ8)."
   },
   "transfer_routes": [
     {
