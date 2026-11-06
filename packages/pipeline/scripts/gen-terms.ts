@@ -2,6 +2,11 @@
 // from research/glossary/terms/*.json and docs/glossary.md section 2. Re-runnable: it deletes and rewrites both
 // folders (but never data/terms/deposits/). Run: npx tsx packages/pipeline/scripts/gen-terms.ts
 //
+// Every run also refreshes each dimension's `rule_ids`: they are the ids of the data/rules/*.json records that list the
+// dimension in their `dimensions`, so a rule record added or changed since the last run shows up in data/dimensions/ even
+// when the glossary did not change. Commit that part as its own change. Never hand-edit a dimension's rule_ids; change the
+// rule record's `dimensions` (and the rule base's Dimensions line) and run this again.
+//
 // A research row that carries an `id` keeps it, so a record's file name does not change when another row with the same name
 // is added or removed; a new row gets the id below. The row's `source.publisher` and `seen_by` are written as they are.
 //
