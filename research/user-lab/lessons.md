@@ -51,6 +51,16 @@ site weighs more than one seen once.
   seen move: the page scrolling by itself, the control they used changing place, things on the screen shifting.
   Tested first where it was not built from: the planted "layout jumps when a number changes" kind, which every
   reviewer session had missed (`runs/motion-check`), and on clean pages, where nothing should be reported moving.
+- **Candidate tested (2026-11-06):** the instruction "you lose patience when the page moves under you"
+  (`versions/candidates/moving.md`), run with and without on the same panel (`runs/candidate-moving`, two personas,
+  twice each). The planted "layout jumps when a number changes": caught 6 of 8 with it, 0 of 8 without, though every
+  session in both arms was told of the move by the tool. Clean controls: no false alarm in either arm; with it, 10
+  findings about movement in 8 sessions, each one a move that session was told of and real on the live page (the
+  sideways jump on the S&P 500 page, issue #200, 4 of 4 against 0 of 4; fields reshuffling on the study fund page). The
+  justETF tabs: 0 of 4 in both arms, not a test: one session per arm was refused by justETF (HTTP 429), and with the
+  instruction no session clicked a section name. Cost: a movement finding takes a place in the first ten (on the S&P
+  500 control the slider showing 800 for a typed 750 fell from 4 of 4 to 2 of 4). Verdict: it generalises; it enters
+  a version only after the held-out benchmark shows no more noise and no lower catch rate. About $10.8.
 
 ### 2. גמל נט, the regulator's comparison (2026-11-06, PC)
 

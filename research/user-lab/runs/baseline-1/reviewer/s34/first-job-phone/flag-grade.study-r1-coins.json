@@ -1,0 +1,36 @@
+{
+  "case": "study-r1-coins",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The coins add nothing a simple bar would not show better.\",\"where\":\"the coin drawing\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "No finding says the coin drawing is pointless or that a simple bar would work better; finding 7 mentions the coin piles only to complain about the empty gap above them."
+      }
+    ],
+    "liked": [],
+    "usd": 0.015047400000000002
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "No finding says the coin drawing adds nothing a simple bar wouldn't show; finding 7 mentions the coin piles only for the empty gap above them, which is a different complaint."
+      }
+    ],
+    "liked": [],
+    "usd": 0.014807400000000002
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.029854800000000004
+}

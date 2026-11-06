@@ -749,7 +749,7 @@ async function serve() {
       if (!f) return `No field on the screen now is labelled "${a[0]}". Look at the screenshot: it may be elsewhere on the page or labelled in other words; you can also click it and type.`;
       await mark({ pt: { x: f.x, y: f.y } });
       await p.mouse.click(f.x, f.y, { clickCount: 3 });
-      if (!(await f.el.evaluate((e) => e.matches(":focus")).catch(() => true))) await f.el.focus().catch(() => {});
+      if (!(await f.el.evaluate((e) => e.matches(":focus")).catch(() => true))) await f.el.evaluate((e) => e.focus({ preventScroll: true })).catch(() => {});
       await p.keyboard.press("ControlOrMeta+A");
       await p.keyboard.type(a.slice(1).join(" "), { delay: 15 });
       // done with the field, as when a person clicks somewhere empty: the page takes the value, the focus leaves
@@ -798,8 +798,8 @@ async function serve() {
         return null;
       }, value);
       if (got === null) {
-        // an ARIA slider: focus it and use the keys
-        await f.el.focus();
+        // an ARIA slider: focus it without scrolling (a hand on a slider does not move the page) and use the keys
+        await f.el.evaluate((el) => el.focus({ preventScroll: true }));
         const now = Number(await f.el.getAttribute("aria-valuenow"));
         const steps = Math.round(Number(value) - now);
         for (let i = 0; i < Math.min(200, Math.abs(steps)); i++) await p.keyboard.press(steps > 0 ? "ArrowRight" : "ArrowLeft");

@@ -1,0 +1,74 @@
+{
+  "case": "company-brokerage-card",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The securities-account card on a company's page does not look like the site's other product cards.\",\"where\":\"the securities-account card\",\"kind\":\"taste\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "The advert says there are no management fees, but the document lists a 0.12% yearly custody fee",
+      "The cost of buying foreign shares is unknown, and the price 'may change'",
+      "The price list has no publication date",
+      "It says 11 fee lines were collected, but only 5 boxes are shown",
+      "The custody fee is shown per quarter, with no yearly figure beside it",
+      "Two different currency conversion boxes, and it's unclear which applies",
+      "The documents set no ceiling on the conversion margin, and the reader doesn't understand what that means",
+      "Unclear whether the advert's free mutual-fund trading matches the document's 0.07% fee on funds",
+      "The 'what protects the money' section is folded and couldn't be read",
+      "There is a fee change notice that worries the reader and couldn't be read",
+      "The reader doesn't understand the 'account on your terms' button",
+      "Unclear whether 'management fees' in the advert and 'custody fee' in the document are the same thing",
+      "The reader doesn't know what מק\"מ means",
+      "There is no plain yearly total cost example",
+      "Ordinary Israeli shares are missing from 'what you can buy'",
+      "No information on fees for closing the account or transferring holdings",
+      "Would drop the search box, top tabs, bottom buttons, the folded documents section, the quote dates and section numbers, and one currency box"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader only says they skipped the folded 'חשבון ניירות ערך · 2' section and never says the card looks different from the site's other product cards."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0534752
+  },
+  "b": {
+    "raised": [
+      "The advert says there are no management fees, but the document charges a 0.12% yearly custody fee, so the reader must phone to check",
+      "The cost of buying foreign shares is marked unknown, and the paragraph about Europe/Asia says the price may change and the customer must ask",
+      "The price list has no publication date, which worries the reader",
+      "\"11 fee lines collected\" doesn't match: the reader counts only 5 boxes",
+      "The custody fee is shown per quarter, not per year; the yearly figure should be shown there",
+      "Two different currency conversion boxes: it's unclear which one applies",
+      "There is no ceiling on the conversion margin, which makes the reader nervous; they also don't understand what the margin means",
+      "On mutual funds, the advert says no buy/sell fee but the document charges 0.07%, and the reader is unsure whether these are the same kind of fund",
+      "The \"what protects the money\" section is folded up and couldn't be read",
+      "The fee-change notice is worrying and couldn't be read",
+      "Doesn't understand what the \"account on your terms\" button means",
+      "Unclear whether management fees (advert) and custody fees (document) are the same thing",
+      "Doesn't know what מק\"מ means",
+      "No plain yearly total cost example",
+      "Ordinary Israeli shares are missing from \"what you can buy here\"",
+      "Can't find any information on a fee for closing the account or transferring holdings",
+      "Would remove the search box, top tabs, bottom buttons, the folded documents section, and the dates and section numbers under the quotes"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader only says they skipped the folded \"חשבון ניירות ערך · 2\" section and never says it looks unlike the site's other product cards."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0572152
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1106904
+}

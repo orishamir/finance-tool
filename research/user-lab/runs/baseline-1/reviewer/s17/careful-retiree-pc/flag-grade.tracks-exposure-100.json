@@ -1,0 +1,36 @@
+{
+  "case": "tracks-exposure-100",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The column of exposure to stocks and foreign currency is not explained, and shows figures above 100% with nothing saying how that can be.\",\"where\":\"the exposure column\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 5 is about the exposure column too, but it complains that the turquoise and yellow circles look alike, not that the column is unexplained or that figures go above 100%."
+      }
+    ],
+    "liked": [],
+    "usd": 0.015247400000000001
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 5 is the only one about the exposure column, and it complains that the turquoise and yellow circles look alike, not that the column is unexplained or shows figures above 100%."
+      }
+    ],
+    "liked": [],
+    "usd": 0.015407400000000002
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.030654800000000003
+}

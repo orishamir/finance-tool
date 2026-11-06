@@ -1,0 +1,18 @@
+{
+  "id": "noted",
+  "written": "2026-11-06",
+  "built_from": [
+    "elsewhere: gemelnet, where sessions wrote where they got stuck (where to begin, a search that changed nothing) in their account of getting stuck but not among the problems they ranked (the founder flagged both)",
+    "planted p07 (all three instances, planted-baseline panel arm): the unknown word was missed in 4 of 6 sessions, yet every one of the 6 listed it under words it was not sure it understood"
+  ],
+  "reason": "A person who has to guess what something means, or hesitates over where to go, is bothered by it even after working it out; the reviewer notices these moments and then leaves them out of what bothered it.",
+  "tested_on_not_built_from": [
+    "planted score-split instances of kinds about meaning and order, p07 excluded: p01-sp500-pc, p02-sp500-pc, p02-keren-phone, p05-tracks-pc, p05-ta125-phone, p06-sp500-pc, p08-current-pc, p08-sp500-pc, p12-sp500-pc, p13-tracks-pc, p13-harel-pc",
+    "held-out benchmark (runs/baseline-1), catch rate with and without"
+  ],
+  "negative_check": [
+    "planted clean controls control-sp500-pc, control-tracks-pc, control-ta125-phone: false alarms with and without",
+    "held-out benchmark noise, with and without (needs the founder's sample)"
+  ],
+  "status": "under test"
+}

@@ -1,0 +1,79 @@
+{
+  "case": "tracks-r2-sort-buttons",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"Sorting uses separate sort buttons instead of clickable column heads.\",\"where\":\"the sort buttons above the table\",\"kind\":\"taste\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Unsure whether the 0.04% fee difference between the top companies matters",
+      "Grey explanation under the tabs mentions option 3 before the reader has seen it, which is confusing",
+      "Product chip terms (תגמולים ואישית לפיצויים, קרן השתלמות, ביטוח מנהלים) mean little to the reader",
+      "Investment-type chips (אג\"ח, מט\"ח, גמיש, משולב סחיר, אשראי ואג\"ח) are confusing",
+      "Orange note seems meant for the designers, not for users",
+      "Option 2 (grouped by company) makes you scroll past irrelevant tracks to compare S&P 500 across companies",
+      "Option 3 table has no returns, and the other 11 columns aren't needed",
+      "The 'כל המסלולים' list under option 3 just repeats the option 1 list",
+      "The 'מההפקדה' fee and its differing values aren't understood; unclear whether it's paid on top of the fee on savings",
+      "Exposure rings, 'מט\"ח' and 'מניות 99%' on an S&P 500 track aren't understood",
+      "Unclear what 'לפני דמי ניהול' means for the actual return",
+      "Unclear what 'פחות מ־3 שנים' means: a new track, or something hidden",
+      "Unclear what 'עוד לא דווח' next to איילון means",
+      "Unclear what the 'קופה' number is for (would drop it, along with the rings)",
+      "Can't see what the fee difference means in shekels per year",
+      "No information on how to actually open a fund (minimum or monthly deposit, online)",
+      "No information on when money can be withdrawn or what tax applies",
+      "Unclear whether a lower fee can be negotiated",
+      "Wanted to read what the 'מה זה קופת גמל להשקעה' link says"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader used the 'מיון לפי' sort control without complaint and never asked for sorting by clicking column headers."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0558792
+  },
+  "b": {
+    "raised": [
+      "Option 3, marked recommended, helped less than option 1",
+      "The grey text under the tabs mentions option ג׳ before the reader has seen it",
+      "Product chip names (תגמולים ואישית לפיצויים, קרן השתלמות, ביטוח מנהלים) mean little to the reader",
+      "Investment chip labels (אג\"ח, מט\"ח, גמיש, משולב סחיר, אשראי ואג\"ח) are confusing",
+      "The orange note looks like it is for designers, not users",
+      "Option 2 makes you scroll past irrelevant tracks in each company to compare S&P 500 between companies",
+      "Option 3's table has no returns, and the other 11 columns aren't needed",
+      "The 'כל המסלולים' list under option 3 just repeats the option 1 list",
+      "Unclear what 'מההפקדה' means, why it differs between companies, and whether it's a second fee on top of the savings fee",
+      "Unclear what חשיפה, מט\"ח and the rings mean, and why an S&P 500 track shows 'מניות 99%'",
+      "Unclear what 'לפני דמי ניהול' means for the actual return",
+      "Unclear what 'פחות מ־3 שנים' means: a new track, or something hidden",
+      "Unclear what 'עוד לא דווח' next to איילון means",
+      "Unclear what the 'קופה' number is for",
+      "No way to see what the fee difference means in shekels per year",
+      "No information on how to open one (minimum deposit, monthly deposit, online)",
+      "No information on when the money can be taken out or what tax applies",
+      "No information on whether you can ask for a lower fee",
+      "Wanted to see what the 'מה זה קופת גמל להשקעה' link says",
+      "Would drop the קופה number, the rings and the מניות/מט\"ח detail from the rows"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader used 'מיון לפי' and didn't complain about it, and never mentions separate sort buttons versus clickable column heads."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0549752
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.11085439999999999
+}

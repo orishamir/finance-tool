@@ -1,0 +1,98 @@
+{
+  "case": "tracks-exposure-100",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The column of exposure to stocks and foreign currency is not explained, and shows figures above 100% with nothing saying how that can be.\",\"where\":\"the exposure column\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "The page doesn't show the fee difference in shekels; the reader had to work it out",
+      "Didn't understand the 'לפי חברה / לפי מוצר' tabs",
+      "Unclear whether this is the official site; 'אתר אישי' only appears at the very bottom",
+      "'123 מקור / מחושב / הזנתה' line is confusing; what is 'הזנתה'",
+      "Orange warning ('not updated since September 2026') worried them and contradicts the footer date of 03.11.2026",
+      "Other product buttons are noise",
+      "Didn't realise 'במה הכסף מושקע' grouping would put the כללי tracks together; no single side-by-side view",
+      "Track-type terms in the filter chips not understood (עוקב מדדים – גמיש, הלכה איסלאמית, משולב סחיר, what כללי holds)",
+      "The table is tiring: eight screens of similar rows",
+      "New tracks with 'עוד לא דווח' and '0 מיליון ₪' give nothing to judge and put them off",
+      "Unclear what the 7 in 'חוקים וכללים · 7' means",
+      "The 'קופה' number column is meaningless to them",
+      "The 'מההפקדה' line is 0% almost everywhere and not worth reading",
+      "The rings (donuts) are unclear, overlap, and add nothing beyond the numbers",
+      "Doesn't know whether a high 'מט\"ח' percentage is good or bad",
+      "Dotted underlines: unclear what clicking gives",
+      "Small grey tags tell them almost nothing",
+      "Didn't know the '<' arrows open more details",
+      "'מהחיסכון' versus 'מההפקדה' is never explained",
+      "'מניות 101%': how can more than all the money be in shares?",
+      "Why the 3-year return beats the 5-year in almost every row, and which to believe",
+      "No shekel illustration for their own amount (yearly cost, value after 5 years)",
+      "No return after fees",
+      "Unclear whether the fee can be negotiated or what fee they'd actually pay",
+      "No information on tax at their age",
+      "No information on how fast money can be withdrawn or on penalties",
+      "No guidance on which track suits a 61-year-old / no risk label",
+      "No worst-year figure for each track",
+      "No information on deposit limits or how to open an account"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 20,
+        "why": "The reader asks how 'מניות 101%' can mean more than all the money is in shares, which matches the person's point that the exposure column shows figures above 100% with no explanation."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0827312
+  },
+  "b": {
+    "raised": [
+      "The page doesn't show what the fee costs in shekels; the reader had to work it out",
+      "The difference between the 'לפי חברה / לפי מוצר' tabs is unclear",
+      "'מנתוני רשות שוק ההון' made the reader wonder if this is the official site; only the bottom says it is a personal site",
+      "The '123 מקור / מחושב / הזנתה' legend is confusing ('הזנתה' is unknown)",
+      "The orange 'not updated since September 2026' warning conflicts with the footer's 'נכון ל־03.11.2026', so it's unclear how old the data is",
+      "The other product buttons are noise for this user",
+      "No easy view of only the 'כללי' tracks side by side; the reader missed that 'במה הכסף מושקע' might group them and scrolled eight screens",
+      "Track-type terms in the filter chips aren't understood (עוקב מדדים – גמיש, הלכה איסלאמית, משולב סחיר, סחיר)",
+      "The big table is tiring: eight screens of very similar rows",
+      "New tracks showing 'עוד לא דווח' and '0 מיליון ₪' give nothing to judge and are off-putting",
+      "The meaning of the '7' in 'חוקים וכללים · 7' is unknown",
+      "The 'קופה' number column means nothing to the user",
+      "The 'מההפקדה' line is 0% almost everywhere and not worth showing",
+      "The rings are hard to read, overlap, and don't add anything beyond the numbers",
+      "The 'מט\"ח' percentage is unexplained: is high good or bad?",
+      "The dotted underlines under numbers are unclear: what happens if you click?",
+      "The small grey tags tell the reader nothing (except 'חדש')",
+      "The '<' arrows aren't recognisable as opening more details",
+      "'מהחיסכון' versus 'מההפקדה' is never explained",
+      "'מניות 101%': how can more than all the money be in shares?",
+      "Why the 3-year return beats the 5-year one, and which to believe",
+      "What a 'כללי' track actually holds isn't explained",
+      "Returns are shown only before fees, not after",
+      "No information on whether the fee can be negotiated, or what fee the reader would actually pay",
+      "No information on tax at withdrawal for someone their age",
+      "No information on how fast money can be withdrawn or on any penalties",
+      "No guidance on which track suits a 61-year-old; no risk labels",
+      "No worst-year figure for each track",
+      "No information on deposit limits or how to open an account"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 20,
+        "why": "The reader asks how 'מניות 101%' is possible, which is the person's point about exposure figures above 100% with no explanation (item 15, on the unexplained מט\"ח figure, also touches it)."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0883712
+  },
+  "third": null,
+  "ranks": {
+    "k": 20
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1711024
+}

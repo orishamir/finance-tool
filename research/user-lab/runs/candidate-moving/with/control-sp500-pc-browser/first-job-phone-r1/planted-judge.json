@@ -1,0 +1,35 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "The tax label \"(84% מהפסד)\" reads like a tax on a loss, which makes it hard to understand what the cost figure means.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "The monthly deposit slider shows 800 while the field shows 750, so it is unclear which amount the result uses.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "The result assumes the dollar doesn't move against the shekel, and that assumption isn't explained simply. This is a wish for more explanation.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "Part of the input row moved sideways after the first field was edited. This is a small layout shift, not the result cards jumping because a note appears and disappears.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "The inflation assumption is behind a button instead of showing as a number on the main screen. This is about where it is shown, not a button that does nothing.",
+      "serious": false,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.0251148
+}

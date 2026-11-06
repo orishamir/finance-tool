@@ -3,6 +3,11 @@
 //
 //   node research/user-lab/tools/old-brief.mjs <run.json> <out-folder> [--dry] [--parallel n]
 //
+// Two task forms are taken: "page" (captured at run time, below) and "shots" (ready-made pictures, as the panel's shots
+// mode: plain image paths, read relative to run.json's folder, then research/user-lab/, then the repository root, or
+// git:<commit>:<path>; they are copied into the session folder as screen-01.png, screen-02.png, ... in the given order).
+// A task's "note" goes after the prompt, as in the panel.
+//
 // What is kept from the old way: a one-line "who", the goal, the seven numbered questions, free text back, the default
 // Claude Code system prompt (no persona system prompt, no report form), only the Read tool, and screenshots only (it
 // never had a browser). What changes: the session is isolated as the panel's are (lib/session.mjs), which is stricter
@@ -13,7 +18,9 @@
 // Output: <out>/<task>/<persona>/ with prompt.md, transcript.jsonl, report.md (the free-text answer), result.json
 // ({ text, cost, variant }), and <out>/variants/<id>.json for the grader, the same layout score.mjs reads.
 import { copyFileSync, cpSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { execFileSync } from "node:child_process";
 import { dirname, join, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 import { READER_EFFORT, costOf, runSession, sessionDir } from "./lib/session.mjs";
 import { capture, loadVariant, summarise } from "./lib/variant.mjs";
 
@@ -28,6 +35,16 @@ if (!runPath || !outArg) {
 }
 const run = JSON.parse(readFileSync(runPath, "utf8"));
 const OUT = resolve(outArg);
+const LAB = resolve(dirname(fileURLToPath(import.meta.url)), "..");
+const REPO = resolve(LAB, "..", "..");
+const RUN_DIR = dirname(resolve(runPath));
+// a ready-made shot: a path (run.json's folder, then the lab, then the repository) or git:<commit>:<path>
+function shotBytes(spec) {
+  const m = spec.match(/^git:([0-9a-f]+):(.+)$/);
+  if (m) return execFileSync("git", ["show", `${m[1]}:${m[2]}`], { cwd: REPO, maxBuffer: 64 * 1024 * 1024 });
+  for (const base of [RUN_DIR, LAB, REPO]) if (existsSync(resolve(base, spec))) return readFileSync(resolve(base, spec));
+  throw new Error(`shot not found: ${spec}`);
+}
 mkdirSync(join(OUT, "variants"), { recursive: true });
 writeFileSync(join(OUT, "run.json"), JSON.stringify({ ...run, brief: "old fresh-reader brief (tools/old-brief.mjs)" }, null, 2) + "\n");
 
@@ -49,8 +66,8 @@ const QUESTIONS = `Use the page, as yourself, then answer in plain English, quot
 7. If half of the page had to go, what goes first.
 Answer as yourself, not as an expert reviewer; do not judge how the page is built, only whether it helped you.`;
 
-const tasks = run.tasks.filter((t) => t.page);
-const skipped = run.tasks.filter((t) => !t.page).map((t) => t.key);
+const tasks = run.tasks.filter((t) => t.page || t.shots);
+const skipped = run.tasks.filter((t) => !t.page && !t.shots).map((t) => t.key);
 const jobs = [];
 for (const t of tasks) for (const p of run.personas) jobs.push({ t, p });
 
@@ -59,6 +76,12 @@ const captured = {};
 async function screens(t) {
   if (captured[t.key]) return captured[t.key];
   captured[t.key] = (async () => {
+    if (t.shots) {
+      // ready-made pictures: read once here, copied into each session folder in order
+      if (!t.shots.length) throw new Error("no shots");
+      const files = t.shots.map((s, i) => ({ name: `screen-${String(i + 1).padStart(2, "0")}.png`, bytes: shotBytes(s) }));
+      return { files, names: files.map((f) => f.name), summary: null };
+    }
     const dir = join(OUT, t.key, "_screens");
     rmSync(dir, { recursive: true, force: true });
     mkdirSync(dir, { recursive: true });
@@ -84,9 +107,10 @@ async function one({ t, p }) {
     return console.log(`${t.key} / ${p}: not run (${e.message})`);
   }
   const dir = sessionDir();
-  for (const n of s.names) copyFileSync(join(s.dir, n), join(dir, n));
+  if (s.files) for (const f of s.files) writeFileSync(join(dir, f.name), f.bytes);
+  else for (const n of s.names) copyFileSync(join(s.dir, n), join(dir, n));
   const goal = t.text.replace(/This is a page you found\.\s*/, "A friend sent you screenshots of a web page that should help you. ");
-  const prompt = `${WHO[p](device)}\n\n${goal}\n${QUESTIONS}\n\nThe screenshots are in this folder, in reading order, top of the page first: ${s.names.join(", ")}. Read every one of them before you answer. Read nothing else.`;
+  const prompt = `${WHO[p](device)}\n\n${goal}\n${QUESTIONS}\n\nThe screenshots are in this folder, in reading order, top of the page first: ${s.names.join(", ")}. Read every one of them before you answer. Read nothing else.${t.note ? `\n\n${t.note.trim()}` : ""}`;
   writeFileSync(join(out, "prompt.md"), `# Prompt (default system prompt)\n\n${prompt}\n`);
   if (DRY) {
     cpSync(dir, join(out, "given"), { recursive: true });

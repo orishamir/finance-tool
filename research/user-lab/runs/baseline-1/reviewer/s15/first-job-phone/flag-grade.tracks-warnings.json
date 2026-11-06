@@ -1,0 +1,36 @@
+{
+  "case": "tracks-warnings",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"Almost every row of the tracks table carries a date warning mark; the repeated warnings clutter the table though one note at the top would do.\",\"where\":\"the warning marks in the table rows\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 4 is about the same orange '!' marks, but its complaint is that they look alarming and put the reader off some tracks; it never says they repeat on almost every row and clutter the table, which is the person's point."
+      }
+    ],
+    "liked": [],
+    "usd": 0.020267399999999998
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 4 points at the same orange '!' marks, but its complaint is that they look alarming and pushed the reader away from some funds, not that warnings repeated on almost every row clutter the table when one note at the top would do."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0221874
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0424548
+}

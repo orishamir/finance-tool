@@ -1,0 +1,104 @@
+{
+  "task": "control-sp500-pc-browser",
+  "persona": "first-job-phone",
+  "repeat": 1,
+  "mode": "browser",
+  "device": "pc",
+  "startedAt": "2026-11-06T02:04:43.264Z",
+  "structured": {
+    "answer": "I'd open an account at Psagot (פסגות ניירות ערך) and buy the fund \"ילין לפידות מחקה S&P 500 (4D)\", which the page marks \"הזול\". With 750 ₪ a month for 15 years the page says I'd have about 179,889 ₪ in today's money. It assumes 2% inflation a year and a 7% yearly return.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Monthly deposit slider",
+        "why": "I typed 750 but the slider showed 800, so for a moment I wasn't sure which one it was using"
+      },
+      {
+        "where": "Tax tooltip above the cost bars",
+        "why": "'(84% מהפסד)' reads like 'of a loss'. I didn't understand what loss it meant"
+      }
+    ],
+    "used": [
+      "Heading 'איפה ואיך הכי זול להשקיע במדד'",
+      "Fields סכום היום / הפקדה חודשית / שנים",
+      "Inflation box: 'אינפלציה בשנה 2%'",
+      "Result card 'הבחירה שלכם · הזול' 179,889 ₪ 'בכסף של היום'",
+      "Deposits 135,000 ₪",
+      "Account box פסגות ניירות ערך בע\"מ",
+      "Fund box ילין לפידות מחקה S&P 500 (4D)",
+      "Cost bar total 18,299 ₪"
+    ],
+    "skimmed": [
+      "Cost bar legend",
+      "'העלות אצלכם, לעומת הזוג השני' row (2 ₪ / 166 ₪ / 41 ₪)",
+      "Runner-up pair card (-122 ₪)"
+    ],
+    "skipped": [
+      "Index description text",
+      "Fund tag chips (צוברת, עסקת החלף, מנוטרלת מט״ח...)",
+      "Small text in the 'כל החשבונות' box",
+      "Cost breakdown buttons",
+      "Dollar rate line 3.17 ₪",
+      "Rest of the page below the first fund cards"
+    ],
+    "unsure_meaning": [
+      "דמי משמרת",
+      "נאמן 0.02%",
+      "עסקת החלף",
+      "צוברת",
+      "מנוטרלת מט״ח",
+      "(84% מהפסד)",
+      "4D in the fund name",
+      "'אם הדולר לא זז מול השקל'"
+    ],
+    "not_found": [
+      "Any explanation of where the 7% return comes from"
+    ],
+    "findings": [
+      {
+        "what": "The tax tooltip says '84% מהפסד', which reads like a loss and is scary and confusing",
+        "where": "Tooltip above the cost bars"
+      },
+      {
+        "what": "The slider shows 800 after typing 750 in the field",
+        "where": "הפקדה חודשית slider"
+      },
+      {
+        "what": "The inflation assumption is hidden behind a button and isn't shown next to the result",
+        "where": "'אינפלציה' button next to the inputs"
+      },
+      {
+        "what": "The cheapest fund company is a name I don't know (Yalin Lapidot), which made me hesitate",
+        "where": "Fund card"
+      },
+      {
+        "what": "Lots of jargon tags under the funds",
+        "where": "'כל הקרנות על מדד S&P 500' section"
+      }
+    ]
+  },
+  "steps": 7,
+  "reads": 4,
+  "commands": 7,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 49943,
+    "turns": 13,
+    "usd": 0.1889618,
+    "input": 18,
+    "cacheWrite": 12932,
+    "cacheRead": 97969,
+    "output": 3292,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "control-sp500-pc-browser",
+    "screenshots": 7,
+    "changes": [],
+    "neverShown": [],
+    "errors": []
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "case": "companies-fee-column-unclear",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The column 'דמי ניהול לפי …' in the company's tracks table is not explained.\",\"where\":\"the fee column head\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 3,
+        "why": "Finding 3 complains that the דמי ניהול column shows fee figures with no explanation of what they mean, which is the same unexplained fee column the person named."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0147314
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 3,
+        "why": "Finding 3 says the דמי ניהול column shows two fee lines with no explanation of what is actually paid, which matches the person's complaint that the fee column isn't explained."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0150514
+  },
+  "third": null,
+  "ranks": {
+    "k": 3
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.029782799999999998
+}

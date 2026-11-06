@@ -1,0 +1,86 @@
+{
+  "case": "hg-within-ceiling",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"'כל ההפקדות ב־12 השנים בתוך התקרה של הפטור' is unclear, and seems not to make sense when the same sum is deposited every month.\",\"where\":\"the sentence under the graphic\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Unclear whether 'לגיל הפרישה מספיקות 3 שנים' applies to someone who joins at 61",
+      "The page never says what the tax rate is for someone over 60",
+      "Deposits are worked out on the full 30,000 salary, but the exemption only covers up to 15,712, and the striped tax part is still there in year 12",
+      "The '123 ממקור / מחושב / הזנתה' row at the top is confusing",
+      "The menu bar cuts across the page in the middle of reading",
+      "Can't judge the default return (7) and management fee (0.54) in the calculator",
+      "The S&P500 line meant nothing to the reader",
+      "The note on 47% tax at source and the annual report is worrying: do I have to file a report myself?",
+      "Maximum fee of 2% versus 0.54% in the calculator: unclear which one applies",
+      "The tax cards half-run off the screen with little arrows, which is annoying",
+      "The chief economist line is worrying: will the benefit be cut?",
+      "The part about 'ותק' starting over when withdrawing is too complicated",
+      "The dark brown and dark grey blocks in the big chart weren't understood",
+      "The colour layers in the small 1–12 bars are too small to read",
+      "Unclear what clicking the green 'חוקים וכללים · N' tags does",
+      "No comparison of joining against not joining (is the 2,250 lost?)",
+      "No 6-year result shown in numbers; the chart starts at the worst case (5 years)",
+      "Missing: what 750 a month does to take-home pay",
+      "Missing: what happens if I stop working before 6 years",
+      "Would drop the company cards and 'הצגת החברות'",
+      "Would drop most of the terms table",
+      "Would drop 'הכי קרוב לזה' and the 'כדאי להכיר גם' buttons",
+      "Would drop the 19-tracks line"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader is confused about whether deposits above 15,712 are tax-free and why tax still shows in year 12, but never mentions the sentence under the graphic or says that 'all deposits are within the ceiling' is unclear or doesn't make sense."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0710192
+  },
+  "b": {
+    "raised": [
+      "Unclear whether 'לגיל הפרישה מספיקות 3 שנים' helps someone joining at 61",
+      "Tax rate for people over 60 is never stated (only 'מתחת לגיל 60 לפחות 31%')",
+      "Salary is over the 15,712 limit: unclear whether 750/2,250 is real, and why the striped tax part is still there in year 12 after the exemption",
+      "The '123 ממקור / מחושב / הזנתה' row at the top is confusing",
+      "The menu bar cuts across the page in the middle of reading",
+      "Can't judge the default return (7) and management fee (0.54) in the calculator",
+      "The S&P500 / 19-tracks lines mean little",
+      "'47% מס במקור… מניח שמגישים דוח שנתי' is worrying: must I file a report, and what is the final tax?",
+      "Unclear whether the 2% maximum fee or the 0.54% in the calculator applies",
+      "The tax cards half-run off the screen with little arrows",
+      "The chief economist line is worrying: will the benefit be cut?",
+      "The 'ותק שמתחיל מחדש… שליש מהיתרה' part is too complicated to understand",
+      "The dark brown and dark grey blocks in the big chart are not understood",
+      "The colour layers in the small 1–12 bars are too small to read",
+      "The 'חוקים וכללים · N' tags are everywhere, and it's never clear what clicking one does",
+      "Missing: a plain comparison of joining vs not joining (is the 2,250 lost?)",
+      "Missing: the 6-year result in numbers (the chart starts at the worst case, 5)",
+      "Missing: what 750 a month does to take-home pay after tax",
+      "Missing: what happens if I stop working before the 6 years",
+      "Would drop the company cards and 'הצגת החברות'",
+      "Would drop most of the terms table (מונחים)",
+      "Would drop 'הכי קרוב לזה' (securities account) and the 'כדאי להכיר גם' buttons",
+      "Would drop the Footer/codes (ignored TXH-09, KH-15, PF-18)"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader is confused about the 15,712 ceiling and the tax still showing in year 12. But they never mention the sentence under the graphic saying all 12 years of deposits are within the ceiling, or why that claim makes no sense when the same sum goes in every month."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0755072
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1465264
+}

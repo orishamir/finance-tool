@@ -1,0 +1,77 @@
+{
+  "case": "study-r3-six-year-compare",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"A comparison with waiting until year 6 is always present, though it is not always relevant.\",\"where\":\"the year-6 comparison\",\"kind\":\"taste\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "In option A the amount sits at the top of each bar and its label at the bottom, so the eyes keep moving up and down; would drop A",
+      "The 'מה היה' thumbnail is confusing and its text is too small, yet it's the only place that shows the securities account on its own",
+      "Fund names and numbers in the example paragraph (and 'S&P500') mean nothing",
+      "'תזוזה וסיפור' reads as designer talk",
+      "The little year bars are too small",
+      "The 'withdraw now into securities vs. wait' line had to be read twice and isn't the comparison the reader came for",
+      "Didn't understand 'הגובה נמתח בכל שנה…'",
+      "Unclear whether the dark brown/dark grey in the bars is more money or just carried over",
+      "Unclear whether the dotted-underlined numbers are clickable",
+      "Not explained why the year-5 tax is larger than the whole return (is the employer's money taxed?)",
+      "Didn't understand 'ברצועה' (which strip?)",
+      "Missing one plain, large sentence: keren X vs securities account Y",
+      "Nothing on whether age (61) matters or when the money can be taken out tax-free",
+      "Nothing on what happens if the market falls",
+      "The salary ceiling is mentioned but its number is never given",
+      "No guidance on checking whether the employer pays in or how to open a keren",
+      "Would drop the 19-tracks line"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 6,
+        "why": "The reader says the wait-versus-move comparison (waiting to year 6 beats moving the money) isn't the comparison they came for, which is a clear part of the person's point that the year-6 comparison isn't always relevant."
+      }
+    ],
+    "liked": [],
+    "usd": 0.05614319999999999
+  },
+  "b": {
+    "raised": [
+      "Option A puts each amount at the top of the bar and its label at the bottom, so the eyes keep moving up and down",
+      "Worry: the real percentages are in the employment contract, so none of this applies if the employer doesn't pay in",
+      "The 'מה היה' thumbnail is confusing and its text is too small, yet it's the only place showing the securities account on its own",
+      "Fund names and numbers in the example paragraph mean nothing",
+      "'תזוזה וסיפור' is designer jargon",
+      "The little year bars are too small",
+      "The 'if you withdraw now and put it in a securities account' comparison needed two reads and isn't the comparison the reader came for",
+      "Didn't understand 'הגובה נמתח בכל שנה…'",
+      "Dark brown and dark grey inside the bars are unclear (more money, or what was carried over?)",
+      "Unclear whether the dotted-underlined numbers are clickable",
+      "No explanation of why the year-5 tax is bigger than the whole return",
+      "Didn't understand the name 'S&P500'",
+      "Didn't understand 'ברצועה' (which strip?)",
+      "Missing one plain big sentence comparing the keren with the securities account",
+      "No information on whether age (61) matters for tax-free withdrawal",
+      "Nothing on what happens if the market falls",
+      "The salary ceiling is mentioned but its number is never given",
+      "No guidance on how to check whether the employer pays in or how to open a keren",
+      "Would drop option A",
+      "Would drop the 19-tracks line"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 7,
+        "why": "The reader says the withdraw-now-versus-wait comparison is not the comparison they came for, which matches the person's point that the year-6 comparison is shown even when it isn't relevant."
+      }
+    ],
+    "liked": [],
+    "usd": 0.05556319999999999
+  },
+  "third": null,
+  "ranks": {
+    "k": 6
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.11170639999999998
+}

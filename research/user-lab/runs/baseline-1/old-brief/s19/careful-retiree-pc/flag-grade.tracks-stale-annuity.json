@@ -1,0 +1,85 @@
+{
+  "case": "tracks-stale-annuity",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The page says its data is updated monthly, yet the figures are as of September, in November.\",\"where\":\"the data date at the top\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "The word \"חשיפה\" (exposure) in the introduction put the reader off",
+      "The \"123 מקור / מחושב / הזנה\" line was confusing and seemed pointless",
+      "The yellow warning says the data hasn't been updated since September, but the bottom says data as of 3 November, so which date is right?",
+      "\"מבטיח תשואה\" (guaranteed return) is confusing because it always shows \"לא דווח\", and it's unclear whether one can join",
+      "The \"הלכה יהודית\" and \"אג\"ח ממשלות\" filter buttons were confusing",
+      "Had to scroll past dozens of irrelevant S&P 500, shares and IRA rows (would remove them)",
+      "Didn't know what the fund (קופה) number with the little arrow is",
+      "Didn't understand מט\"ח or whether the yellow ring is good or bad (would remove the line)",
+      "Unclear difference between the fee from savings and the fee from deposits, and which matters at 61",
+      "Share exposure above 100% (101–103%) makes no sense",
+      "Infinity's negative deposit fee (−0.21%) has a warning icon and no explanation",
+      "Unclear what the self-managed track is and whether it suits them",
+      "Some track names seem cut off (start with \"ולפיצויים...\")",
+      "Fees are averages, and the page doesn't say what fee they would actually pay or whether it can be negotiated",
+      "No information on the cost, tax or timing of moving money between companies",
+      "No return after fees shown",
+      "No worst-year or loss figure for the over-60 tracks",
+      "No information on when or how they can withdraw (lump sum or pension)",
+      "No information on whether they'd be moved to another track automatically with age",
+      "No side-by-side summary of only the over-60 tracks",
+      "Brand-new tracks with \"עוד לא דווח\" and ₪0 managed should be dropped",
+      "The coloured rings are unnecessary and should be dropped"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 3,
+        "why": "Item 3 is the same problem: the reader was worried that the warning dates the figures to September even though the page is dated November. That stale-data contradiction is the core of the person's complaint."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0660632
+  },
+  "b": {
+    "raised": [
+      "The word \"חשיפה\" (exposure) in the introduction put the reader off",
+      "The \"123 מקור / מחושב / הזנה\" line was confusing and seemed pointless",
+      "The yellow warning says the data hasn't been updated since September 2026, but the bottom says data as of 03.11.2026, so which date is right? This worried the reader",
+      "\"מבטיח תשואה\" (guaranteed return) is confusing because everything next to it says \"לא דווח\"",
+      "\"הלכה יהודית\" filter is confusing",
+      "\"אג\"ח ממשלות\" filter is confusing",
+      "Had to scroll past dozens of irrelevant S&P 500, shares and IRA rows",
+      "Doesn't know what the \"קופה\" number with the arrow is",
+      "Doesn't understand what \"מט\"ח\" means, or whether its yellow ring is good or bad",
+      "Unclear whether the fee from savings or the fee from deposits matters more",
+      "Share exposure above 100% (101–103%) makes no sense",
+      "Infinity shows a negative deposit fee (−0.21%) with a warning icon and no explanation",
+      "Unclear whether the self-managed (\"בניהול אישי\") track suits them; it sounds dangerous",
+      "Some track names start with \"ולפיצויים...\" and look cut off",
+      "Can't find out what fee they would actually be charged, or whether it can be negotiated",
+      "No information on the cost, tax or timing of moving money between companies",
+      "No return shown after fees",
+      "No worst-year or loss figure for the tracks",
+      "No information on when or how they can withdraw (lump sum vs pension)",
+      "No information on whether they'd be moved to another track automatically with age",
+      "No side-by-side summary of only the over-60 tracks; had to build one on paper",
+      "New tracks marked \"עוד לא דווח\" with ₪0 managed are clutter and should go",
+      "The coloured rings are unnecessary and should go"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 3,
+        "why": "The reader sees that the warning says the figures haven't been updated since September, while the page is dated 3 November, and worries about which date is right; that is the same stale-date problem the person raised."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0652432
+  },
+  "third": null,
+  "ranks": {
+    "k": 3
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1313064
+}

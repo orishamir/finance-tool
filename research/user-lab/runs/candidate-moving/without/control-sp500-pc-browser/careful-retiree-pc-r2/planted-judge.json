@@ -1,0 +1,47 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "First screen uses English index names and 'invest in the index' jargon; a deposits-only saver would leave right away.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "The 2% inflation assumption is hidden behind a button; the main result only says 'in today's money'.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "Monthly deposit box shows 750 but the slider appears to sit at 800, which is confusing.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "Small grey text on a dark background, especially the lines under the big numbers, is hard for older eyes to read.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "The 15-year cost bar uses similar colours and many small numbers; the big pink tax bar is alarming.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 6,
+      "summary": "The main result does not warn that the assumed 7% growth could turn into losses.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 7,
+      "summary": "The recommended securities account is Psagot rather than the reader's own bank, with no reason given to trust it.",
+      "serious": false,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.0328628
+}

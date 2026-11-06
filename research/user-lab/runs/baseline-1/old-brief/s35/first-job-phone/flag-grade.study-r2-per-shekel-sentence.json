@@ -1,0 +1,78 @@
+{
+  "case": "study-r2-per-shekel-sentence",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The sentence 'כל שקל שהפקדתם נהיה 4.57 ₪ בקרן ו־1.11 ₪ בחשבון ניירות ערך' does not help.\",\"where\":\"the per-shekel sentence\",\"kind\":\"taste\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Doesn't know what happens if they need the money before 5 years or change jobs",
+      "The intro mentions balls and a table they never saw, so it meant nothing to them",
+      "The small preview picture's text is too tiny to read, and it shows the old version",
+      "The example line lost them at fund names, codes and management fees",
+      "Year 6 is shown as a second copy of the chart; they want to pick any year themselves",
+      "Option ב's two sides are hard to compare because the bar scales don't seem to match",
+      "The small print under the charts (paths/rates that were tested) is confusing",
+      "Unclear what the management fee takes off the profit; doesn't understand 'דמי ניהול' or the percentages",
+      "The striped pink/brown tax segment looks like a mistake",
+      "Dotted underlines under the numbers: unclear whether they are clickable",
+      "Doesn't understand 'מסלול' or the numbers in brackets",
+      "Doesn't know who פייר פיננשיאל טכנולוג'יז is or whether they need them",
+      "Doesn't understand 'עד תקרה בחוק'",
+      "Unclear whether the Yelin Lapidot fund is the one they'd get or just an example",
+      "Is the tax on early withdrawal always about that much?",
+      "Can't find whether the employer has to give 7.5%; wants to enter their own salary",
+      "Can't find who chooses the S&P track, them or the employer",
+      "Can't find whether the money is meant only for studies",
+      "Can't find whether there is any catch, or a reason not to join",
+      "Would drop the whole option ב section"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader praised the per-shekel sentence (\"basically decided it for me\") instead of saying it doesn't help, so nothing on the list names this problem."
+      }
+    ],
+    "liked": [],
+    "usd": 0.048483200000000004
+  },
+  "b": {
+    "raised": [
+      "Unsure what happens if the money is needed before 5 years or if they change jobs (the missing 15%)",
+      "Title/intro mentions balls and a table they never saw, so it meant nothing",
+      "Small preview picture text is too tiny to read and shows the old version",
+      "Example line loses them at fund names, codes and 'דמי ניהול'",
+      "Year-6 chart is a second copy; they would rather pick any year themselves",
+      "Option ב: the two sides are hard to compare and don't seem to use the same scale",
+      "Small print under the charts ('המסלולים שנספו', 'התעריפים שנספו') is confusing",
+      "Don't know what 'דמי ניהול' takes off the teal profit",
+      "Striped pink/brown tax segment looks like a mistake",
+      "Dotted underlines under numbers: unclear if they are clickable",
+      "Don't understand who 'פייר פיננשיאל טכנולוג'יז' is or whether they need them",
+      "Don't understand 'עד תקרה בחוק' or whether the ceiling affects them",
+      "Unclear whether the 'ילין לפידות' fund is the one they would get or just an example",
+      "Can't find whether early withdrawal is allowed at all, and whether the tax is always about that much",
+      "Can't find whether 7.5% from the employer is required, and want to enter their own salary",
+      "Can't find whether they or the employer choose the S&P option",
+      "Can't find whether the money is only for studies, or whether there is any catch",
+      "Would drop the whole option ב section"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader praises the per-shekel sentence as what decided it for them and never complains that it doesn't help."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0501432
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0986264
+}

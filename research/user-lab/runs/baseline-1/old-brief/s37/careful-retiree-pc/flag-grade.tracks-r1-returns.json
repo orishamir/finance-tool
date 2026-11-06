@@ -1,0 +1,83 @@
+{
+  "case": "tracks-r1-returns",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The lists show the tracks but give no sense of the different companies.\",\"where\":\"all three lists\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Nothing on the page says whether ~99% shares is sensible at age 61 (no age/risk guidance)",
+      "Top heading and bullets read as designer talk, not useful to the user",
+      "The 16 'במה הכסף מושקע' category buttons are confusing; names like מניות vs מניות סחיר, הלכה יהודית vs איסלאמית unclear",
+      "Option א table lacks returns, so can't judge whether a fund is good",
+      "Orange 'ציור בלבד' notes confused – thought rows were missing",
+      "Option ב mixed list puts shares, bonds and cash side by side; comparing them makes no sense",
+      "מט״ח column only half-understood – does 99% mean dollars, does shekel movement matter",
+      "Clock icons have unknown meaning",
+      "Dotted underlines under numbers – unclear whether clickable",
+      "'>' arrows – unclear what's behind them",
+      "101% shares figure – how can it exceed 100%",
+      "'עוד לא דווח' / 'חדש' – unclear whether a new track is risky",
+      "Unclear whether average return is before or after fee / what the user actually gets",
+      "Unclear why a מניות track has 25% מט״ח while S&P has 99%",
+      "Missing: what the fee means in shekels on a real balance",
+      "Missing: returns after fee and returns in a bad year",
+      "Missing: returns for other groups in option ג (only S&P shown)",
+      "Missing: info on withdrawing, switching, and tax after 60",
+      "Would cut the row of tabs (מקור, מדריכים…)",
+      "Would cut the 'לפי חברה / לפי מוצר' toggle",
+      "Would cut the coloured rings (redundant with numbers) and the קופה column"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the raised problems says the lists fail to show how the companies differ; the reader names companies only to shortlist tracks, and wanting to drop the company/product toggle is about cutting clutter."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0561152
+  },
+  "b": {
+    "raised": [
+      "Options א and ב (including the recommended א) show no returns, so the reader can't tell what a track did with people's money or whether it is any good",
+      "Nothing on the page says whether 99% shares is sensible for someone aged 61 or close to retirement",
+      "The top heading and its bullets are written for the designers, not for the user",
+      "The 16 'במה הכסף מושקע' buttons are confusing: the differences between categories such as מניות/מניות סחיר and the two הלכה options are unclear",
+      "The orange 'ציור בלבד' notes at first made the reader think rows were missing",
+      "Option ב's single mixed list puts shares, bonds and cash side by side, which makes comparing them meaningless",
+      "The מט״ח column is only half understood: does 99% mean dollars, and does that matter?",
+      "The coloured rings repeat the numbers next to them and add nothing",
+      "The meaning of the clock icons is unclear",
+      "The dotted underlines under numbers don't show whether they can be clicked",
+      "It's unclear what is behind the '>' arrows",
+      "A shares percentage of 101% is not understood",
+      "It's unclear whether tracks marked 'עוד לא דווח' or 'חדש' are risky",
+      "It's unclear what the return actually gives the reader, since the note says it is before the fee",
+      "It's unclear why a מניות track has 25% מט״ח while an S&P track has 99%",
+      "The fee is not shown in shekels for a given savings amount",
+      "Returns after fees, and returns in bad years, are missing",
+      "Option ג shows returns only for the S&P group, not for other groups",
+      "There is no information on withdrawing, switching or tax after age 60",
+      "The reader would drop the row of tabs",
+      "The reader would drop the 'לפי חברה / לפי מוצר' toggle",
+      "The reader would drop the 'קופה' number column"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The report never says the lists fail to convey the different companies, and the reader would even drop the 'לפי חברה' toggle."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0572752
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1133904
+}

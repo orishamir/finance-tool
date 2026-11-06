@@ -1,0 +1,89 @@
+{
+  "case": "hishtalmut-pf18",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The 'שווה לדעת' note 'קרן השתלמות: אין העברה חלקית, ואיחוד רק כשנזיל' reads as if a study fund could not be moved between companies without tax.\",\"where\":\"the 'שווה לדעת' block\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "The 47% figure in the orange early-withdrawal warning scared them",
+      "Fees vary by company, but the page doesn't say which company is cheap",
+      "The '123 מקור / מחושב / הנחה' legend at the top is confusing",
+      "The bullets comparing מיטב and ילין לפידות are fund names and numbers that mean nothing to them",
+      "The example of ₪10,000 plus ₪500 a month doesn't match a deposit of 2.5% of salary",
+      "At first they read the bars as total money, not profit only",
+      "The 'ההפרש תלוי גם במי שבוחרים' range has a negative difference and doesn't name the company",
+      "Codes TXH-09/KH-15/PF-18 in 'שווה לדעת' mean nothing to them",
+      "'אין תקרה כוללת' in the costs table sounded bad",
+      "They didn't understand the empty checkbox under the bars",
+      "They didn't understand the dotted or dashed underlines on words and numbers",
+      "Unclear what 'על ₪200 בחודש מעבר לזה אין פטור' means",
+      "'הרווח הריאלי' still fuzzy even after the glossary",
+      "They couldn't find the number the orange box points to in 'מה מייחד'",
+      "They didn't understand 'איחוד רק כשנזיל'",
+      "Couldn't find what happens to the keren on a job change, and whether the 6-year clock keeps running",
+      "Couldn't find whether they must withdraw after 6 years or can leave the money in",
+      "Couldn't find whether the 7.5% is on top of salary or taken out of it",
+      "Couldn't find whether the employer must give the full 7.5%",
+      "Couldn't find how to actually sign up",
+      "Would drop the 'הצגת החוקים והכללים' links",
+      "Would drop most of 'מי מציע ומי מפקח'",
+      "Would drop the 'תוך כמה זמן הכסף אצלכם / מתי מתחילים לספור' cards",
+      "Would drop 'מה האתר לקח בחשבון'",
+      "Would drop the glossary's 'איפה מופיע' column"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader only says they didn't understand 'איחוד רק כשנזיל' (#15) and never reads it as meaning a study fund can't be moved without tax; elsewhere they note switching is tax-free and keeps seniority, so the misleading reading isn't stated."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0886472
+  },
+  "b": {
+    "raised": [
+      "Page doesn't say which company is cheapest (fees up to 2%, companies named only)",
+      "The '123 מקור / מחושב / הנחה' line at the top is confusing",
+      "Example deposit of ₪10,000 plus ₪500 a month doesn't match the 2.5% salary deposit",
+      "Bars at first looked like total money, not just profit",
+      "The 'ההפרש תלוי גם במי שבוחרים' range with a negative difference is confusing and doesn't say which company",
+      "Code tags (TXH-09, KH-15, PF-18, PF-06, KH-22) mean nothing; would drop them",
+      "Small empty checkbox under the bars not understood",
+      "'אין תקרה כוללת' in the costs table sounded bad",
+      "Dotted/dashed underlines on numbers and words not understood",
+      "'על ₪200 בחודש מעבר לזה אין פטור' unclear: whose ₪200?",
+      "'הרווח הריאלי' still fuzzy even after checking the glossary",
+      "Orange box refers to a cost shown in 'מה מייחד' that the reader couldn't find",
+      "'איחוד רק כשנזיל' not understood",
+      "Couldn't find what happens to the keren when changing jobs, and whether the 6-year clock keeps running",
+      "Couldn't find whether the money must be withdrawn after 6 years or can stay",
+      "Couldn't find whether the 7.5% is on top of salary or taken out of it",
+      "Couldn't find whether the employer must give the full 7.5%",
+      "Couldn't find how to actually sign up",
+      "Would drop the 'הצגת החוקים והכללים' links",
+      "Would drop the bullets naming specific funds in the comparison",
+      "Would drop 'מי מציע ומי מפקח' except one sentence",
+      "Would drop the 'תוך כמה זמן הכסף אצלכם / מתי מתחילים לספור' cards",
+      "Would drop 'מה האתר לקח בחשבון' (cut off and closed)",
+      "Would drop the 'איפה מופיע' glossary column"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader only says they didn't understand 'איחוד רק כשנזיל' (item 13) and never says the note made the study fund look like it can't be moved without tax, so this touches the same text for a different reason."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0752072
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1638544
+}

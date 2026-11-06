@@ -1,0 +1,77 @@
+{
+  "case": "custom-fund-labels",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"A fund the reader added gets labels ('צוברת', 'חשיפה לדולר') that the reader never gave, and the reader cannot choose its labels.\",\"where\":\"the added fund's row in the fund list\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "My added fund gets no price or rank in the main fund list (\"אין מחיר כאן\", \"עוד לא נאסף\")",
+      "My fund's only number is for בנק ירושלים, not פסגות, and the lock note \"מוצג ולא מדורג\" makes it hard to trust",
+      "Interactive Brokers, where my fund would be bought, shows \"אין נתון\", which is frustrating",
+      "The fund list is very long with nearly identical rows, and my row gave nothing to compare",
+      "Unclear whether the \"לא בחישוב\" young-person deals apply to me at 24",
+      "The explanation of why some funds have no price at פסגות doesn't help me decide",
+      "The currency-hedging section (נטרול מט״ח) is confusing and I don't know if I should care",
+      "The staircase chart starts from MTF סל at ירושלים, which I never chose",
+      "My fund's name says Swap but it doesn't get the \"עסקת החלף\" tag the Israeli swap funds get",
+      "Didn't understand \"4D\"/\"4A\" in fund names",
+      "Didn't understand צוברת, עסקת החלף, נאמן, משמרת",
+      "Didn't understand מנוטרלת מט״ח and חשיפה לדולר",
+      "Didn't understand W-8BEN, US estate tax, dividend distribution",
+      "\"מס רק במכירה\" is red on my fund: is red bad?",
+      "Unclear whether my fund can be bought at וואן זירו / Interactive Brokers",
+      "No explanation of why my fund came out 20,000 ₪ lower (fees or tax)",
+      "Missing one plain sentence comparing my fund with the cheapest and saying why",
+      "Would drop the \"מה כתוב בפרסום, מול התעריפון\" section",
+      "Would drop the \"מה הכי משנה\" chart"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader notices the tags on their fund and asks about a missing swap tag, and doesn't understand some tag words, but never complains that the site gave labels they didn't provide or that they can't choose them."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0706592
+  },
+  "b": {
+    "raised": [
+      "My added fund gets no price or rank in the main fund list ('אין מחיר כאן', 'עוד לא נאסף'), so I only get half an answer",
+      "The only number for my fund (59,196 ₪) seems to be for בנק ירושלים, not פסגות, and the lock 'מוצג ולא מדורג' makes me unsure I can trust it",
+      "Interactive Brokers, where my fund would actually be bought, shows 'אין נתון'",
+      "The fund list is very long with near-identical Israeli fund rows, and my row gives nothing to compare",
+      "Many accounts are 'לא בחישוב' with young-person or soldier deals, and I can't tell if one applies to me at 24",
+      "The explanation of why some funds have no price at פסגות doesn't help me decide",
+      "The currency-hedging section (נטרול מט״ח) and its charts are confusing, and I don't know if I should care",
+      "The staircase chart starts from 'MTF סל' at ירושלים, which I never chose",
+      "My fund's name says Swap but it doesn't get the 'עסקת החלף' tag the Israeli swap funds get, and I don't know what to make of that",
+      "I don't understand '4D' and '4A' in the fund names",
+      "I don't understand the terms צוברת, עסקת החלף, נאמן, משמרת",
+      "I don't understand W-8BEN, מס עיזבון אמריקאי, חלוקת דיבידנד",
+      "'מס רק במכירה' is shown in red on my fund, which is unclear: is red bad?",
+      "'יש ספק אם נמכרת שם' leaves me unsure whether I can buy my fund at וואן זירו or Interactive Brokers",
+      "No explanation of why my fund came out about 20,000 ₪ lower (fees or tax?)",
+      "No plain one-sentence comparison of my fund against the cheapest",
+      "Would drop the 'מה כתוב בפרסום, מול התעריפון' section",
+      "Would drop the 'מה הכי משנה' chart"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader notices the 'צוברת' and 'חשיפה לדולר' tags on their fund but never objects that the site added them unasked or that they can't choose the labels; their only tag remark is about a missing 'עסקת החלף' tag, which is a different issue."
+      }
+    ],
+    "liked": [],
+    "usd": 0.07129920000000001
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1419584
+}

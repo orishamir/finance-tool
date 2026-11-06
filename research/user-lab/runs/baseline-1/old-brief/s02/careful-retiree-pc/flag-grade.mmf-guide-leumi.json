@@ -1,0 +1,85 @@
+{
+  "case": "mmf-guide-leumi",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The money-market-fund guide compares with one named bank (Leumi) and cites that bank's deposit rate, in a page about a general product.\",\"where\":\"the comparison lines and their source\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Return is not guaranteed and bank deposits aren't insured either, which worries the reader",
+      "Real return after costs is unknown: the page gives no typical management fee figure",
+      "Money can't be withdrawn the same minute, only on a trading day",
+      "The '123 מקור / חושב / הזנה' line at the top is confusing",
+      "The paragraph about the 10% foreign-securities rule and the clearing house (המסלקה) loses the reader",
+      "The open question about Friday redemptions worries the reader: even the site doesn't know",
+      "The 'play with your numbers' calculator is closed, so the reader can't enter their own amount",
+      "Tax text is hard to follow: exempt vs. taxable fund, nominal vs. real",
+      "Unclear what the small yellow dot on the current-account bar means",
+      "'אין תקרה בחוק' repeated in the fee table makes the reader uneasy",
+      "Law codes (MF-, TXS-, BANK-) and the rules column mean nothing to the reader",
+      "'מונח הקישו להסבר' isn't understood",
+      "Unclear whether the reader needs 'הצגת החוקים והכללים' next to each heading",
+      "Unclear how many days until the money reaches the current account",
+      "The actual time of 'השעה היעודה' isn't stated",
+      "Unclear whether the 0.1% distribution fee comes out of the reader's money",
+      "No worked example in shekels after fees and tax",
+      "No sense of whether such funds have lost money, or how big a drop could be",
+      "No guidance on choosing between funds, or whether the reader's own bank's offer is fine",
+      "Would drop the 'מה האתר לקח בחשבון' section",
+      "Would drop the 'איפה מופיע' column and most of the glossary",
+      "Would cut 'מי מציע ומי מפקח' down to one sentence",
+      "Would drop the 10% rule / clearing house / Friday paragraph"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The report never mentions Leumi or a single named bank's deposit rate in the comparison. It only notes Discount in passing as small print, without objecting to a named bank being used."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0748752
+  },
+  "b": {
+    "raised": [
+      "The '123 מקור / חושב / הזנה' line and 'מונח הקישו להסבר' at the top are confusing and unexplained",
+      "The paragraph on the 10% foreign-securities rule and the clearing house (המסלקה) loses the reader",
+      "The open question about Friday trading worries the reader, since even the site doesn't know",
+      "The 'שחקו עם המספרים שלכם' calculator is closed, so the reader couldn't enter their own amount",
+      "The fee table lists kinds of fees but no amounts, and the repeated 'אין תקרה בחוק' is unsettling",
+      "The tax text on exempt vs. liable funds and nominal vs. real gain is hard to follow",
+      "The meaning of the small yellow dot on the current-account bar is unclear",
+      "Law codes (MF-11, TXS-24, BANK-18, the 'חוקים וכללים' column) mean nothing to the reader",
+      "It's unclear whether 'הצגת החוקים והכללים' next to the headings is needed",
+      "The page never says what time 'השעה היעודה' is",
+      "The reader doesn't know their real return, since 3.25% is before fees and costs",
+      "It's unclear whether the 0.1% distribution fee ultimately comes out of the investor's money",
+      "No typical management fee figure is given; the ISA average is mentioned but not stated",
+      "No worked example in shekels of the return after fees and tax",
+      "The page doesn't say how many days it takes for redeemed money to reach the current account",
+      "No sense of whether such funds have lost money before, or how much",
+      "No guidance on how to choose between funds or whether one's own bank's offer is fine",
+      "Would drop 'מה האתר לקח בחשבון' as being about the site, not the reader",
+      "Would drop the glossary's 'איפה מופיע' column and most of the glossary",
+      "Would cut 'מי מציע ומי מפקח' down to one sentence",
+      "Would drop the 123 line, the law codes and the 10%/clearing house/Friday paragraph (already counted above)",
+      "Wants the comparison chart's 3.25% shown after costs (already counted above)"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The report never complains that the page names a single bank (Leumi) or cites that bank's deposit rate; it only mentions the Discount line as neutral small print."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0745832
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1494584
+}

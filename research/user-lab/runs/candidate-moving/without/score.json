@@ -1,0 +1,301 @@
+{
+  "summary": {
+    "control-keren-phone-browser": {
+      "sessions": 4,
+      "right": 0,
+      "partly": 0,
+      "wrong": 0,
+      "gaveUp": 0,
+      "confidentWrong": 0,
+      "agreement": null,
+      "case": null
+    },
+    "control-sp500-pc-browser": {
+      "sessions": 4,
+      "right": 0,
+      "partly": 0,
+      "wrong": 0,
+      "gaveUp": 0,
+      "confidentWrong": 0,
+      "agreement": null,
+      "case": null
+    },
+    "justetf-fund": {
+      "sessions": 4,
+      "right": 0,
+      "partly": 0,
+      "wrong": 0,
+      "gaveUp": 1,
+      "confidentWrong": 0,
+      "agreement": null,
+      "case": null
+    },
+    "p15-jump-keren-phone": {
+      "sessions": 4,
+      "right": 0,
+      "partly": 0,
+      "wrong": 0,
+      "gaveUp": 0,
+      "confidentWrong": 0,
+      "agreement": null,
+      "case": null
+    },
+    "p15-jump-sp500-pc": {
+      "sessions": 4,
+      "right": 0,
+      "partly": 0,
+      "wrong": 0,
+      "gaveUp": 0,
+      "confidentWrong": 0,
+      "agreement": null,
+      "case": null
+    }
+  },
+  "tasks": {
+    "control-keren-phone-browser": {
+      "case": null,
+      "rows": [
+        {
+          "session": "careful-retiree-pc-r1",
+          "steps": 8,
+          "seconds": 57,
+          "usd": 0.25867019999999996,
+          "confidence": "fairly sure",
+          "timedOut": false,
+          "error": null,
+          "grade": "no key",
+          "confidentWrong": false
+        },
+        {
+          "session": "careful-retiree-pc-r2",
+          "steps": 8,
+          "seconds": 69,
+          "usd": 0.30787960000000003,
+          "confidence": "fairly sure",
+          "timedOut": false,
+          "error": null,
+          "grade": "no key",
+          "confidentWrong": false
+        },
+        {
+          "session": "first-job-phone-r1",
+          "steps": 7,
+          "seconds": 42,
+          "usd": 0.18896400000000002,
+          "confidence": "fairly sure",
+          "timedOut": false,
+          "error": null,
+          "grade": "no key",
+          "confidentWrong": false
+        },
+        {
+          "session": "first-job-phone-r2",
+          "steps": 10,
+          "seconds": 55,
+          "usd": 0.24526420000000004,
+          "confidence": "fairly sure",
+          "timedOut": false,
+          "error": null,
+          "grade": "no key",
+          "confidentWrong": false
+        }
+      ]
+    },
+    "control-sp500-pc-browser": {
+      "case": null,
+      "rows": [
+        {
+          "session": "careful-retiree-pc-r1",
+          "steps": 8,
+          "seconds": 61,
+          "usd": 0.2430266,
+          "confidence": "fairly sure",
+          "timedOut": false,
+          "error": null,
+          "grade": "no key",
+          "confidentWrong": false
+        },
+        {
+          "session": "careful-retiree-pc-r2",
+          "steps": 7,
+          "seconds": 59,
+          "usd": 0.2033174,
+          "confidence": "fairly sure",
+          "timedOut": false,
+          "error": null,
+          "grade": "no key",
+          "confidentWrong": false
+        },
+        {
+          "session": "first-job-phone-r1",
+          "steps": 7,
+          "seconds": 50,
+          "usd": 0.1889618,
+          "confidence": "fairly sure",
+          "timedOut": false,
+          "error": null,
+          "grade": "no key",
+          "confidentWrong": false
+        },
+        {
+          "session": "first-job-phone-r2",
+          "steps": 7,
+          "seconds": 44,
+          "usd": 0.1752818,
+          "confidence": "fairly sure",
+          "timedOut": false,
+          "error": null,
+          "grade": "no key",
+          "confidentWrong": false
+        }
+      ]
+    },
+    "justetf-fund": {
+      "case": null,
+      "rows": [
+        {
+          "session": "careful-retiree-pc-r1",
+          "steps": 4,
+          "seconds": 61,
+          "usd": 0.17273300000000003,
+          "confidence": "sure",
+          "timedOut": false,
+          "error": null,
+          "grade": "no key",
+          "confidentWrong": false
+        },
+        {
+          "session": "careful-retiree-pc-r2",
+          "steps": 3,
+          "seconds": 23,
+          "usd": 0.092506,
+          "confidence": "sure",
+          "timedOut": false,
+          "error": null,
+          "grade": "gave up",
+          "confidentWrong": false
+        },
+        {
+          "session": "first-job-phone-r1",
+          "steps": 9,
+          "seconds": 104,
+          "usd": 0.3253556,
+          "confidence": "fairly sure",
+          "timedOut": false,
+          "error": null,
+          "grade": "no key",
+          "confidentWrong": false
+        },
+        {
+          "session": "first-job-phone-r2",
+          "steps": 10,
+          "seconds": 124,
+          "usd": 0.3782868,
+          "confidence": "fairly sure",
+          "timedOut": false,
+          "error": null,
+          "grade": "no key",
+          "confidentWrong": false
+        }
+      ]
+    },
+    "p15-jump-keren-phone": {
+      "case": null,
+      "rows": [
+        {
+          "session": "careful-retiree-pc-r1",
+          "steps": 9,
+          "seconds": 65,
+          "usd": 0.34612040000000005,
+          "confidence": "fairly sure",
+          "timedOut": false,
+          "error": null,
+          "grade": "no key",
+          "confidentWrong": false
+        },
+        {
+          "session": "careful-retiree-pc-r2",
+          "steps": 8,
+          "seconds": 70,
+          "usd": 0.3064392,
+          "confidence": "fairly sure",
+          "timedOut": false,
+          "error": null,
+          "grade": "no key",
+          "confidentWrong": false
+        },
+        {
+          "session": "first-job-phone-r1",
+          "steps": 7,
+          "seconds": 46,
+          "usd": 0.24398579999999997,
+          "confidence": "fairly sure",
+          "timedOut": false,
+          "error": null,
+          "grade": "no key",
+          "confidentWrong": false
+        },
+        {
+          "session": "first-job-phone-r2",
+          "steps": 8,
+          "seconds": 51,
+          "usd": 0.2739452,
+          "confidence": "fairly sure",
+          "timedOut": false,
+          "error": null,
+          "grade": "no key",
+          "confidentWrong": false
+        }
+      ]
+    },
+    "p15-jump-sp500-pc": {
+      "case": null,
+      "rows": [
+        {
+          "session": "careful-retiree-pc-r1",
+          "steps": 7,
+          "seconds": 49,
+          "usd": 0.192048,
+          "confidence": "fairly sure",
+          "timedOut": false,
+          "error": null,
+          "grade": "no key",
+          "confidentWrong": false
+        },
+        {
+          "session": "careful-retiree-pc-r2",
+          "steps": 7,
+          "seconds": 47,
+          "usd": 0.17972559999999999,
+          "confidence": "fairly sure",
+          "timedOut": false,
+          "error": null,
+          "grade": "no key",
+          "confidentWrong": false
+        },
+        {
+          "session": "first-job-phone-r1",
+          "steps": 7,
+          "seconds": 51,
+          "usd": 0.19686759999999998,
+          "confidence": "fairly sure",
+          "timedOut": false,
+          "error": null,
+          "grade": "no key",
+          "confidentWrong": false
+        },
+        {
+          "session": "first-job-phone-r2",
+          "steps": 7,
+          "seconds": 47,
+          "usd": 0.1830802,
+          "confidence": "fairly sure",
+          "timedOut": false,
+          "error": null,
+          "grade": "no key",
+          "confidentWrong": false
+        }
+      ]
+    }
+  }
+}

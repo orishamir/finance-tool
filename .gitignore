@@ -23,3 +23,5 @@ research/user-lab/runs/elsewhere-*/**/*.png
 research/user-lab/runs/planted-baseline/**/*.png
 # the baseline's neutral copies of the benchmark screens (rebuilt from bench/shots by the map)
 research/user-lab/runs/baseline-*/screens/
+research/user-lab/runs/candidate-*/**/*.png
+research/user-lab/runs/baseline-*/**/*.png

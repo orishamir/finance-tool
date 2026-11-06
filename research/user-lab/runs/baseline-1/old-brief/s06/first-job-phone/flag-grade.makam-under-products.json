@@ -1,0 +1,84 @@
+{
+  "case": "makam-under-products",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"Makam is listed under 'מוצרים' (products) though it is something bought inside an account, not a product of its own.\",\"where\":\"the group the makam entry sits in\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Page doesn't say whether the S&P 500 is bought through a provident fund for investment (קופת גמל להשקעה) or a securities account (חשבון ניירות ערך)",
+      "Nothing helps choose a specific fund, company or track, or says what they cost",
+      "Renewing money-market fund (קרן כספית מתחדשת) and makam (מק\"מ) lost them; they didn't follow 'buy for less than you get back'",
+      "'After a period set by law' doesn't say how long the money is locked",
+      "Couldn't tell the difference between the comprehensive (מקיפה) and general (כללית) new pension funds",
+      "'תגמולים ואישית לפיצויים' means nothing to them",
+      "Self-managed (בניהול אישי) cards seem to be for experts; unclear what self-managed means compared with the normal version",
+      "Couldn't tell from the title whether the 'what the site doesn't cover yet' section matters to them",
+      "Screen 3 is just an empty dark strip",
+      "Didn't understand bonds (אג\"ח), linked/unlinked, coupon, or interest linked to the price index",
+      "Didn't understand 'with exposure to the dollar or hedged from it', or whether that is good or bad",
+      "Didn't understand the general track (מסלול כללי) or 'not committed to a range of shares'",
+      "Didn't understand 'foreign broker' (ברוקר בחו\"ל) or 'tradable market value'",
+      "No fees shown for each product per year",
+      "No rough returns, or even which products are riskier",
+      "Tax not given in numbers: how much tax is paid and how much the tax-benefit options save",
+      "No guidance on what order a 24-year-old should put spare money into the products",
+      "Doesn't say which companies offer each product or whether there is a minimum amount",
+      "Would drop the TA-35, TA-90 and TA-125 index cards",
+      "Would drop the government bond cards",
+      "Would drop the kids section and the savings plan and shekel cash cards"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader only says makam confused them and they would drop its cards; they never say it is wrongly listed under products when it is bought inside an account."
+      }
+    ],
+    "liked": [],
+    "usd": 0.06337519999999999
+  },
+  "b": {
+    "raised": [
+      "The page doesn't say whether to buy the S&P 500 through a קופת גמל להשקעה or a securities account",
+      "Nothing helps choose a specific fund, company or track, or says what they cost",
+      "Lost on 'קרן כספית מתחדשת' and 'מק\"מ' (didn't follow 'קונים בפחות מהסכום שמקבלים בסוף')",
+      "'אחרי תקופה שקבע החוק' is vague: how long is the period?",
+      "Didn't understand the difference between קרן חדשה מקיפה and כללית",
+      "'תגמולים ואישית לפיצויים' means nothing to them",
+      "'בניהול אישי' cards seem to be for experts; unclear what it means compared with the normal version",
+      "Couldn't tell from the title whether 'מה האתר עוד לא מכסה' matters to them",
+      "Screen 3 is just an empty dark strip",
+      "Didn't understand אג\"ח, צמודה/לא צמודה, קופון, or interest linked to the price index",
+      "Didn't understand 'חשיפה לדולר או מנוטרלת ממנו' or whether it's good or bad",
+      "Didn't understand 'מסלול כללי' or 'לא מתחייב לטווח מניות'",
+      "Didn't understand 'ברוקר בחו\"ל' or 'שווי השוק הסחיר'",
+      "No expected return or risk level for each option",
+      "No tax amounts or tax savings in numbers",
+      "No guidance on what order to put money into products",
+      "No info on which companies offer each product or the minimum amount",
+      "Would drop the TA-35/TA-90/TA-125 index cards",
+      "Would drop the government bond cards and 'איגרות חוב ממשלתיות'",
+      "Would drop both מק\"מ cards and 'קרן כספית מתחדשת'",
+      "Would drop the two 'בניהול אישי' cards",
+      "Would drop 'לילדים' as not relevant to them",
+      "Would drop 'תכנית חיסכון' and 'מזומן שקלי' as already known"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The report says מק\"מ confused the reader and would drop its cards, but it never objects that מק\"מ is filed under products when it is really bought inside an account."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0579272
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.12130239999999999
+}

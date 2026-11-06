@@ -1,0 +1,36 @@
+{
+  "case": "hishtalmut-7-5",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The guide's 7.5% does not say whether it is deposited to the study fund itself or to a pension fund.\",\"where\":\"the opening explanation of the guide\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 5 is about the same 7.5% paragraph, but it complains that there is no simple 'is it worth it' sentence and that the point is buried; it never says it is unclear whether the 7.5% goes into the study fund or a pension fund."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0160314
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 5 is about the same 7.5% paragraph, but it complains that there is no simple 'is it worth it' sentence and that the point is buried, not that the text leaves unclear whether the money goes into the study fund or a pension fund."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0157594
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0317908
+}

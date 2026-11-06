@@ -1,0 +1,36 @@
+{
+  "case": "hg-tax-after-six",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"With a high salary entered, the graphic says tax is due even after 6 years and shows a large income-tax figure, without making clear which money it is on.\",\"where\":\"the graphic and its sentences\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the findings says that tax still shows up after 6 years at a high salary without saying which money it applies to: finding 3 is about the default 5-year view, and finding 7 only points to the unexplained ceiling, which may be the cause but is not this problem."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0198874
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the findings says that tax still shows up after 6 years at a high salary, or that it's unclear which money the large income-tax figure applies to. Finding 3 is about the default view being the 5-year withdrawal, finding 2 is about the red figure feeling scary, and finding 7 is about the ceiling not being explained, which may cause the tax but isn't the complaint itself."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0222754
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0421628
+}

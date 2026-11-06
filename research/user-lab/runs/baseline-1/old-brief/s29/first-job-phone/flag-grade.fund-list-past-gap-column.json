@@ -1,0 +1,121 @@
+{
+  "case": "fund-list-past-gap-column",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The fund list's column 'מול המדד' (each fund's past gap to its index) is not useful for choosing a fund, and the table does not show the information that matters for the choice.\",\"where\":\"the columns of the fund list\",\"kind\":\"taste\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "The page never explains how to open the account or set up the automatic monthly buy",
+      "Youth prices ('מחיר אחר לצעירים') are left out of the calculation, so banks might be cheaper for a 24-year-old",
+      "Doesn't know what yearly return to enter (is 7% a fair guess?)",
+      "The inflation toggle is confusing: is it on or off, and does it matter?",
+      "The small pieces of the cost bars are too small to follow",
+      "Paying more tax with the cheaper option is confusing and feels like a trick",
+      "The fund card's management-fee line (קבוע/משתנה/נאמן) is hard to follow",
+      "Gave up halfway through the footnote under the fund list ('מול המדד...')",
+      "The step chart starts from ירושלים/הראל סל, which the reader never chose, so its point is unclear",
+      "'The order changes in 2 places' at 0% or 10% is unsettling: which places?",
+      "The 'מול המדד' column: unclear whether a minus value is bad",
+      "The coloured bars inside the account rows mean nothing to the reader",
+      "'מחיר להוראת קבע' appears under Leumi but not פסגות: does פסגות's price assume manual monthly buys?",
+      "Doesn't understand terms like דמי משמרת, נאמן, קבוע/משתנה, העמלות זו על זו",
+      "Doesn't know the difference between קרן מחקה and קרן סל, or whether it matters",
+      "Doesn't know what (4A)/(40) in fund names mean",
+      "Doesn't understand the tags צבורה and מחזיקה את המניות",
+      "Doesn't understand 'נשען על כלל מס פתוח: מוצג ולא מדורג'",
+      "Unclear whether the dotted-underlined numbers are clickable",
+      "Wanted to know whether פסגות (not a bank) is safe",
+      "Wanted to know whether the large tax amount can be lowered, e.g. through a tax-saving account",
+      "Would remove the step chart and the two 'עכשיו: הראל סל... ירושלים' tables as answering an unasked question",
+      "Would remove the line chart, keeping only its one-sentence takeaway",
+      "Would remove the extra columns and tags in the fund list"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 24,
+        "why": "The reader would cut the fund list's extra columns (beyond the name and 'לעומת הבחירה'), which covers 'מול המדד' and partly matches the claim that it doesn't help the choice; their other remark about the column (item 11) is only confusion about what a minus means, not about whether it's useful."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0854912
+  },
+  "b": {
+    "raised": [
+      "The page never says how to open the account at פסגות or set up the automatic monthly buy",
+      "Youth prices at banks ('לא בחישוב: מחיר אחר לצעירים') are left out of the calculation, so a bank might be cheaper for a 24-year-old",
+      "Doesn't know what to enter for 'תשואה בשנה 7%' or whether 7% is a fair guess",
+      "The inflation control ('אינפלציה · לדוגמה של האתר · בכסף של היום') is confusing: is it on or off, and does it matter?",
+      "The smaller parts of the cost bars are too small to follow",
+      "The 'העלות אצלכם, לעומת הזול השני' comparison is confusing: paying more tax with the cheaper option felt like a trick",
+      "The fund card's management fee line (קבוע / משתנה / נאמן) lost the reader",
+      "The footnote under the fund list about 'מול המדד' was too hard, and the reader gave up halfway",
+      "The step chart starts from ירושלים and הראל סל, which the reader never chose",
+      "The bottom note 'הסדר משתנה ב־2 מקומות' made the reader nervous, because it doesn't say which places",
+      "The 'מול המדד' column: unclear whether a minus value is good or bad",
+      "The coloured bar inside each account row means nothing to the reader",
+      "Unclear what 'מחיר להוראת קבע' means, and whether פסגות's price assumes buying by hand",
+      "Terms not understood: דמי משמרת, העמלות זו על זו",
+      "Unclear how קרן מחקה differs from קרן סל, and whether it matters for buying",
+      "Unclear what (4A) and (40) mean in the fund names",
+      "Tags not understood: צבורה, מחזיקה את המניות",
+      "'נשען על כלל מס פתוח: מוצג ולא מדורג' not understood",
+      "Unclear whether the dotted underlines on numbers can be clicked",
+      "Wanted to know whether פסגות is safe, since it is not a bank",
+      "Wanted to know whether the tax can be lowered, for example with a tax-saving account",
+      "Would drop the step chart and the 'עכשיו: הראל סל... ירושלים' tables, then the line chart, then the extra columns and tags in the fund list"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader only says they didn't understand 'מול המדד' or whether its minus values are bad, and wants vague 'extra columns' dropped; they never say the column doesn't help in choosing a fund or that the table lacks the information that matters."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0746632
+  },
+  "third": {
+    "raised": [
+      "The page never says how to open the account or set up the monthly buy",
+      "Youth prices at banks ('מחיר אחר לצעירים') aren't counted, so a bank might be cheaper for a 24-year-old",
+      "Doesn't know what yearly return to enter; unsure if 7% is a fair guess",
+      "Inflation line confusing: is it on or off, and does it matter?",
+      "Small pieces of the cost bars are too small to follow",
+      "'Cost vs second cheapest' confusing: paying more tax with the cheaper option felt like a trick",
+      "Fund card management-fee line (קבוע/משתנה/נאמן) lost them",
+      "Footnote under the fund list about 'מול המדד' too hard; gave up halfway",
+      "Step chart and 'עכשיו: הראל סל... ירושלים' tables start from choices they never made; confusing and would drop them first",
+      "Bottom note 'order changes in 2 places at 0% or 10%' made them nervous: which places?",
+      "Coloured bar inside each account row meant nothing to them",
+      "'מחיר להוראת קבע' shown for Leumi and Bainleumi but not פסגות; does פסגות's price assume buying by hand?",
+      "Didn't know if a minus in the 'מול המדד' column is good or bad",
+      "Terms not understood: דמי משמרת, נאמן, קבוע/משתנה, העמלות זו על זו",
+      "Difference between קרן מחקה and קרן סל unclear",
+      "Meaning of (4A)/(40) in fund names unclear",
+      "Tags צבורה and מחזיקה את המניות not understood",
+      "'נשען על כלל מס פתוח: מוצג ולא מדורג' not understood",
+      "Unclear whether the dotted-underlined numbers are clickable",
+      "Wants to know if פסגות (not a bank) is safe",
+      "Wants to know if the tax can be lowered, e.g. through a tax-saving account",
+      "Line chart not useful; would drop it and keep only its first sentence",
+      "Would drop the extra columns and tags in the fund list"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 23,
+        "why": "Borderline match: the reader would drop the fund list's extra columns (which include 'מול המדד') and keep only the 'לעומת הבחירה' ranking, which says those columns don't help the choice. But 'מול המדד' isn't named there, and item 13 is only about not understanding the minus sign."
+      }
+    ],
+    "liked": [],
+    "usd": 0.08413119999999999
+  },
+  "ranks": {
+    "k": 23
+  },
+  "agreed": {
+    "k": false
+  },
+  "against": {},
+  "usd": 0.2442856
+}

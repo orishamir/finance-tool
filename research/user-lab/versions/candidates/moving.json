@@ -1,9 +1,76 @@
 {
   "id": "moving",
   "written": "2026-11-06",
-  "built_from": ["elsewhere: justETF section tabs that jump the page (the founder, 2026-11-06)"],
+  "built_from": [
+    "elsewhere: justETF section tabs that jump the page (the founder, 2026-11-06)"
+  ],
   "reason": "A person keeps a sense of where things are; when the page moves without their doing, they lose their place and have to find it again.",
-  "tested_on_not_built_from": ["planted p15 (2 instances, browser mode)"],
-  "negative_check": ["planted clean controls in browser mode (sp500 pc, study fund phone)", "held-out benchmark noise, with and without"],
-  "status": "under test"
+  "tested_on_not_built_from": [
+    "planted p15 (2 instances, browser mode)"
+  ],
+  "negative_check": [
+    "planted clean controls in browser mode (sp500 pc, study fund phone)",
+    "held-out benchmark noise, with and without"
+  ],
+  "status": "passed the planted test and the control check (2026-11-06); still to run on the held-out benchmark (noise and catch rate, with and without) before it enters a version",
+  "result": {
+    "date": "2026-11-06",
+    "runs": "runs/candidate-moving/without and runs/candidate-moving/with (identical but for behaviour); personas first-job-phone and careful-retiree-pc, repeat 2, reader effort medium, graders high",
+    "p15_caught_in_first_10": {
+      "without": "0 of 8",
+      "with": "6 of 8",
+      "by_instance_with": {
+        "p15-jump-sp500-pc (pc, tune split)": "4 of 4",
+        "p15-jump-keren-phone (phone, score split)": "2 of 4"
+      },
+      "note": "every p15 session in both arms received the plant as a moved: line (sp500: 42 px up after the years; keren: the year control moving 69 px), so the gap is the instruction, not delivery; one-sided Fisher p about 0.004"
+    },
+    "justetf_tabs": {
+      "without": "0 of 4",
+      "with": "0 of 4",
+      "note": "not a test of the instruction: one session per arm got HTTP 429 and saw no page; in the with arm none of the three loaded sessions clicked a section name, in the without arm two did, were told the page scrolled 3,389 and 1,230 px, and did not report it. Other justETF keys 0 of 4 in both; j-help (liked) complained of in 2 of 4 in both"
+    },
+    "controls": {
+      "false_alarms": {
+        "without": 0,
+        "with": 0,
+        "rule": "a finding about movement the session was never told of in a moved: line, or about something not on the screen"
+      },
+      "movement_findings": {
+        "without": "0 in 8 sessions",
+        "with": "10 in 8 sessions, every one matching a moved: line that session received",
+        "detail": [
+          "S&P 500 pc, 4 of 4 sessions: part of the screen jumped sideways on the first change of an input (115 px; the real defect of issue #200)",
+          "study fund phone, 4 of 4 sessions: the fields reshuffle when switching to self-employed (288 px up; real on the live page)",
+          "study fund phone, 1: a link at the top scrolled the page 2,784 px by itself (an in-page jump, real)",
+          "study fund phone, 1: the page scrolled 140 px when the year slider was moved; possibly the tool: act.mjs focuses an ARIA slider with el.focus() and no preventScroll, which can scroll the page itself"
+        ]
+      },
+      "findings_total": {
+        "without": 44,
+        "with": 44
+      },
+      "serious_by_grader": {
+        "without": "17 of 44",
+        "with": "17 of 44"
+      },
+      "names_absent_plant": {
+        "without": 0,
+        "with": 0
+      }
+    },
+    "cost_usd": {
+      "reader_sessions": {
+        "without": 4.7,
+        "with": 4.82
+      },
+      "planted_graders": {
+        "without": 0.37,
+        "with": 0.38
+      },
+      "justetf_flag_graders": "not recorded by grade-flag.mjs; about 0.5 estimated (32 grader calls)",
+      "total": "about 10.8"
+    },
+    "verdict": "Keep as a candidate that generalises: with the instruction p15 is caught 6 of 8 against 0 of 8 without, and the clean controls gain no false alarms (their new movement findings are all real and grounded, among them issue #200, missed 0 of 4 without). The justETF tabs were not exercised in the with arm, so that part is unanswered. It enters a version only after the held-out benchmark shows no rise in noise and no fall in catch rate. Cost to watch: movement findings take a place among the first 10 (44 findings in both arms, so another finding gave way)."
+  }
 }

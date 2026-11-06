@@ -1,0 +1,47 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "Grey small text on a dark background is hard to read, even enlarged, especially the lines under the big numbers. If the reader can't read the text around the main figures, they can't use the page.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "The 2% inflation assumption is behind a button. That is a wish for it to be easier to see, not a broken button, so it does not match problem 1.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "Part of the input row jumped sideways when the first number was typed. This is a small annoyance. Problem 2 is about a note above the result cards that makes the cards jump up and down, so it is a different problem.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "The 15-year cost chart uses close colours and tiny numbers inside its stacked bars, so a main figure is hard to understand.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "The reddish minus on −122 ₪ makes the second option look like a loss. This could cause a brief misreading, but it is about the runner-up option and is unlikely to change the choice.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 6,
+      "summary": "The recommended account is with a company the reader doesn't know rather than their own bank. This is a trust preference, not something that stops them using the page.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 7,
+      "summary": "English letters and jargon appear in the main title and fund name. This is a matter of style.",
+      "serious": false,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.0304148
+}

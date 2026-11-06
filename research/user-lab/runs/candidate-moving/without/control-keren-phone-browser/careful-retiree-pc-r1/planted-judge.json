@@ -1,0 +1,35 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "For self-employed users, years 1-5 show only empty boxes and a note, while a figure from another product (25,725) sits in the same spot. That makes the main result easy to misread.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "The red/pink 'לפני 6 שנים: מס' line above the chart is alarming because it doesn't say how much tax applies. The reader doesn't mention the chart jumping.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "Small grey hint text on a dark background is hard to read.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "The terms 'מסלול מדד' and S&P are used without explanation.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "The 7% default return has no note about risk.",
+      "serious": false,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.028196
+}

@@ -1,0 +1,77 @@
+{
+  "case": "company-kind-filter-always-one",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"On a company's page, the filter 'במה הכסף מושקע' is useless: each of its choices holds a single track.\",\"where\":\"the filter chips above the tracks list\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Doesn't know which product their savings are in; the page opened on the קופת גמל להשקעה tab, so their choice may be for a product they don't have",
+      "Unsure whether the higher-returning מניות track is actually better, given the past-returns caveat",
+      "The '123 ממקור · 123 מחושב · 123 הזנה' line is confusing and meaningless to them",
+      "Product tab names (תגמולים ואישית לפיצויים, מקיפה vs כללית) mean nothing to them",
+      "Filter chip names (משולב סחיר, עוקב מדדים - גמיש, כספי) are just words to them",
+      "The direct-expenses footer line makes them worry about hidden costs",
+      "Doesn't understand how קרנות מחקות / מרכזית לפיצויים / קרנות סל differ from what they already saw",
+      "The 'מה כתוב במסמכים של הראל' section looks like fine print; would drop it",
+      "The 'מההפקדה 0%' line is the same in every row and tells them nothing",
+      "Doesn't understand what מט\"ח means or what the donut charts and colours add beyond the number",
+      "Misread 'פחות מ־3 שנים / פחות מ־5 שנים' as a return value",
+      "Doesn't understand terms like אג\"ח, סחיר, אשראי, משולב, חשיפה",
+      "Returns are shown before fees; wants a single after-fees return figure",
+      "Can't find how to switch tracks or whether switching costs anything",
+      "No guidance on whether a 24-year-old should go all stocks, or plain-language explanations of the tracks",
+      "No comparison of Harel's S&P 500 track with other companies on the page itself",
+      "Would drop the 'לא מצאתם שם?' search box",
+      "Would drop the קופה column"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader mentions the filter chips, including the S&P 500 chip showing '1', but only says the chip names are unclear. They never say the filter is useless because each choice holds one track."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0594712
+  },
+  "b": {
+    "raised": [
+      "Unsure whether the open product tab (קופת גמל להשקעה) is the reader's own money; can't tell which product they hold",
+      "The 'מניות' row beats the S&P 500 track, but the reader doesn't know whether to trust past returns or whether it's simply better",
+      "The '123 ממקור · 123 מחושב · 123 הזנה' line is confusing and meaningless",
+      "Product tab names ('תגמולים ואישית לפיצויים', 'מקיפה' vs 'כללית') mean nothing to the reader",
+      "Filter chip labels ('משולב סחיר', 'עוקב מדדים - גמיש', 'כספי (שקלי)') are just jargon words",
+      "Can't tell how the closed sections 'קרנות מחקות / מרכזית לפיצויים / קרנות סל' differ from what was already shown",
+      "The 'מה כתוב במסמכים של הראל' section looks like fine print and would be dropped",
+      "The 'direct expenses not shown here' line raises worry about hidden costs, and those costs aren't given",
+      "The 'מההפקדה 0%' line is 0% in every row and tells nothing",
+      "Donut charts and the 'מט\"ח' exposure aren't understood; the ring and colours add nothing",
+      "'פחות מ־3 שנים / פחות מ־5 שנים' in place of a number is confusing",
+      "Jargon like 'חשיפה', 'אג\"ח', 'סחיר', 'אשראי' isn't understood",
+      "Returns are shown before fees, with no simple after-fee return",
+      "No information on how to switch tracks or whether switching costs anything",
+      "No plain-language explanation of what each track means, or whether a 24-year-old should go all stocks",
+      "No comparison with other companies' same track on the page itself",
+      "The 'לא מצאתם שם?' search box is unneeded and would be dropped",
+      "The 'קופה' number column is unexplained and would be dropped",
+      "The page doesn't help the reader work out which product their savings are in"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader only complains that the filter chip labels are jargon (they were even happy to see the 'S&P 500 1' chip) and never says each chip holds just one track, which makes the filter useless."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0628112
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1222824
+}

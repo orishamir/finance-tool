@@ -1,0 +1,87 @@
+{
+  "case": "general-track-exposure",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"In the guide list, 'general track' is listed among the exposures (kinds of investment), which does not make sense: it is a mix, not one kind.\",\"where\":\"the exposures group of the guide list\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "The page gives no costs, returns or risk level for any product",
+      "Nothing on the page is aimed at someone near retirement",
+      "Unclear what the menu item 'מקור' (source) means",
+      "Only half understood the line saying each product page lists what you can invest in",
+      "'קרן חדשה כללית' says 'above the maximum amount' without saying what that maximum is",
+      "Did not understand the 'תגמולים ואישית לפיצויים' card at all",
+      "The 'מסלול כללי' (general track) card doesn't say how much of the money is in shares",
+      "The seven index cards look the same, and none says how much you could lose",
+      "Unclear what the grey 'יומית'/'מתחדשת' buttons under קרן כספית are for",
+      "The 'בשפה פשוטה' (in simple language) line is missing from most boxes",
+      "Unclear whether 'exposure to the dollar or neutralised from it' is good or bad",
+      "'קרן שעוקבת אחריו': who runs such a fund and where to buy it is unclear",
+      "מק\"ם and אג\"ח are used before they are explained",
+      "Unclear whether the managing company's investment committee looks out for the saver",
+      "No information on management fees anywhere",
+      "No current deposit interest rates",
+      "No actual yearly ceiling for קופת גמל להשקעה",
+      "The legal waiting period for קרן השתלמות is not stated",
+      "Nothing on whether money is protected if the managing company fails",
+      "The tax rate on profit when withdrawing from קופת גמל להשקעה is not stated",
+      "Nothing on pension payout options at retirement (monthly payment vs lump sum)",
+      "Would drop the 'לילדים' (children) section",
+      "Would drop the 'לבחירה עצמית' (self-managed) section"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader's complaint about the general track is that it doesn't say how much is in shares, not that it is wrong to list a mixed track among the kinds of investment."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0648312
+  },
+  "b": {
+    "raised": [
+      "The page never says what any option costs, earns, or how risky it is",
+      "Nothing on the page for someone close to retirement (including the 'where to start' section, which is aimed at people still building up savings)",
+      "Doesn't know what the menu name 'מקור' means",
+      "Only half understood the line saying every product page lists what you can invest in",
+      "'קרן חדשה כללית' mentions a 'maximum amount' without saying what it is",
+      "Didn't understand 'תגמולים ואישית לפיצויים' at all",
+      "General track ('מסלול כללי') doesn't say how much of the money is in shares",
+      "The seven stock-index cards look the same and none says how much could be lost; they would be cut first",
+      "Wanted the 'in simple language' line on every box, not just some",
+      "Didn't understand what the grey 'יומית'/'מתחדשת' buttons are for",
+      "Doesn't understand 'exposure to the dollar or neutralised from it' or whether it's good or bad",
+      "Unclear who runs 'a fund that tracks it' and where to buy it",
+      "'מק\"ם' and 'אג\"ח' are used before they are explained",
+      "Unclear whether the managing company's investment committee looks out for the saver",
+      "No information on management fees anywhere",
+      "No current deposit interest rates",
+      "No actual yearly ceiling given for קופת גמל להשקעה",
+      "Doesn't say how many years the legal waiting period for קרן השתלמות is",
+      "Nothing on whether money is protected if the holding company fails",
+      "Doesn't say how much tax is due on profit when withdrawing from קופת גמל להשקעה",
+      "No explanation of pension payout options at retirement age (monthly vs lump sum)",
+      "Would drop the children's section",
+      "Would drop the self-managed section",
+      "Would drop 'תגמולים ואישית לפיצויים' and 'קרן חדשה כללית' as more confusing than helpful"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader brings up the general track only because it doesn't say what share of the money is in stocks; they never object that a mixed track is out of place in the exposures list."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0683512
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1331824
+}

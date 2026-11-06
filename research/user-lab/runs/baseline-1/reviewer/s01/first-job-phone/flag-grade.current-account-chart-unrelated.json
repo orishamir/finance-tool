@@ -1,0 +1,36 @@
+{
+  "case": "current-account-chart-unrelated",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The current-account guide shows a growth chart of money invested at a 10% yearly return, which has nothing to do with a current account.\",\"where\":\"the chart 'מה קורה לכסף לאורך הזמן' in the guide\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 1,
+        "why": "Finding 1 makes the same core complaint: the guide's calculator shows a current account growing at a yearly return, which misrepresents what a current account does, even though it cites the headline number and 5% rather than the chart and 10%."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0229194
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 1,
+        "why": "Finding 1 makes the same core complaint: the guide projects investment-style growth (an assumed yearly return) for a current account, which doesn't fit that product, though it points to the headline number at 5% rather than the chart at 10%."
+      }
+    ],
+    "liked": [],
+    "usd": 0.022179400000000002
+  },
+  "third": null,
+  "ranks": {
+    "k": 1
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0450988
+}

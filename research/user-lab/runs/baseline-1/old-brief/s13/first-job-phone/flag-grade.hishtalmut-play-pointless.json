@@ -1,0 +1,89 @@
+{
+  "case": "hishtalmut-play-pointless",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The 'שחקו עם המספרים' panel repeats what the graphic above already lets the reader do.\",\"where\":\"the 'שחקו עם המספרים' panel\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Unsure which company or track to pick, and what happens if they change jobs",
+      "The '123 מקור / חושב / הזנתם' legend at the top was confusing and got ignored",
+      "The ceiling paragraph (7.5% / 2.5% / 15,712 ₪) was hard and had to be read twice",
+      "Got lost in the grey small print under the big chart: too many numbers",
+      "Didn't know what 'הכי קרוב לזה… חשבון ניירות ערך' was",
+      "Didn't open 'שחקו עם המספרים שלכם' because it seemed to repeat the numbers they had already played with above",
+      "The 'שווה לדעת' codes (TXH-09 and others) were confusing, and the block repeats the 6 years",
+      "'הפקדה אחרי משיכה הולכת לחשבון חדש' wasn't clear until the risks section",
+      "The 'תלוי בחברה: הראל, אלטשולר שחם' boxes said nothing useful",
+      "The 'מיסוי' cards repeat what was already read",
+      "The orange warning box was only half understood: unclear which of 31%, 25% or 47% applies when",
+      "The chief-economist line was scary, suggesting the tax break might disappear",
+      "Couldn't work out what the grey, yellow and green layers in the small 12-bar chart mean",
+      "The term 'מסלול השקעה' wasn't clearly understood",
+      "Terms like 'רווחי הון', 'רווח ריאלי' and 'הפקדה מוטבת' would need looking up",
+      "The 47% withholding line: unclear whether money comes back or not",
+      "Unclear what 'גיל הפרישה' (the 3-year option) and 'לימודים' mean or what counts as studies",
+      "'תלוי בחברה' under who can join: can the company refuse them?",
+      "Couldn't find whether they can keep paying in themselves after leaving a job",
+      "Couldn't find whether it can be used for an apartment or borrowed against",
+      "Couldn't find how to check what the employer actually deposits, or how to ask for the full 7.5%",
+      "Couldn't find the practical steps to open one (who to call, what to tell HR)",
+      "Would drop the 'מונחים' glossary table",
+      "Would drop the 'חוקים וכללים · N' chips",
+      "Would drop most of 'מי מציע ומי מפקח'"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 6,
+        "why": "The reader skipped the 'שחקו עם המספרים שלכם' panel because they had already played with the numbers in the graphic above. That is the person's point that the panel repeats what the graphic above already lets the reader do."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0851312
+  },
+  "b": {
+    "raised": [
+      "Not sure which company or investment track to pick; the page doesn't guide the choice",
+      "Unclear what happens to the fund if I change jobs",
+      "The '123 מקור / חושב / הזנתם' colour legend was confusing and ignored",
+      "The ceiling paragraph (7.5% / 2.5% / 15,712 ₪) had to be read twice to understand",
+      "The grey small print under the big chart had too many numbers; got lost",
+      "Didn't know what 'הכי קרוב לזה… חשבון ניירות ערך' is",
+      "Didn't open the 'שחקו עם המספרים שלכם' box because it seemed to repeat the calculator above",
+      "'שווה לדעת' codes (TXH-09 etc.) were confusing, the block repeats the 6 years, and one line was only understood later",
+      "'תלוי בחברה' boxes said nothing useful (e.g. can the company refuse me?)",
+      "Most of the tax cards repeat things already read",
+      "The 31%/25%/47% tax rates in the warning box were confusing; unclear which applies when",
+      "The chief-economist line was worrying (the tax break might disappear)",
+      "Couldn't work out what the coloured layers in the small 12-bar chart mean",
+      "Terms like מסלול השקעה, רווחי הון, רווח ריאלי, הפקדה מוטבת weren't understood",
+      "The 47% withholding line was unclear: do I get money back?",
+      "Unclear what retirement age (3-year option) and 'studies' mean",
+      "Can't find whether I can keep paying in myself after leaving a job",
+      "Can't find whether it can be used for an apartment or borrowed against",
+      "Can't find how to check what my employer deposits or how to ask for the full 7.5%",
+      "Can't find the practical steps to open a fund",
+      "Would drop the glossary table",
+      "Would drop the 'חוקים וכללים · N' chips",
+      "Would drop most of 'מי מציע ומי מפקח'",
+      "Would drop most of the tax cards as repetitive"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 7,
+        "why": "The reader skipped the 'שחקו עם המספרים שלכם' box because they had already played with the numbers in the calculator above, which is the same redundancy the person named."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0775432
+  },
+  "third": null,
+  "ranks": {
+    "k": 6
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1626744
+}

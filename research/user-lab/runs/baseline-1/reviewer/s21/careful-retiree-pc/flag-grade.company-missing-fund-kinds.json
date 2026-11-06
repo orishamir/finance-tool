@@ -1,0 +1,36 @@
+{
+  "case": "company-missing-fund-kinds",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"A company's page lists its provident and study funds but not its index-tracking funds or money-market funds.\",\"where\":\"the product choices at the top of the company page\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings say the company page is missing its index-tracking funds or money-market funds; finding 2 only complains that terms like 'עוקב מדד' are jargon."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0147954
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "No finding says the company page is missing index-tracking or money-market fund products; finding 2 mentions 'עוקב מדד' only to complain about jargon."
+      }
+    ],
+    "liked": [],
+    "usd": 0.015015400000000002
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.029810800000000002
+}

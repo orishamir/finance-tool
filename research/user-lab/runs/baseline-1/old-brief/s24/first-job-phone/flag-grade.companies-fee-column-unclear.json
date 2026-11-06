@@ -1,0 +1,88 @@
+{
+  "case": "companies-fee-column-unclear",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The column 'דמי ניהול לפי …' in the company's tracks table is not explained.\",\"where\":\"the fee column head\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Unsure which product (pension, השתלמות etc.) they actually have",
+      "Can't tell if pension 'עוקב מדד S&P 500' is really S&P 500 since it shows only 'מניות 73%'",
+      "Doesn't know how to switch tracks",
+      "Didn't understand 'דמי הניהול הם הממוצע שנגבה בפועל': might they pay something different?",
+      "'123 מקורו / 123 מחושב' was confusing",
+      "'מרכזית לפיצויים' and 'תגמולים ואישית לפיצויים' mean nothing to them",
+      "Can't tell 'קרן חדשה מקיפה' from 'קרן חדשה כללית', or which is their pension",
+      "Got lost in the תגמולים group: everything starts with 'גמל -', and it's unclear how it differs from קופת גמל להשקעה",
+      "Confused by the קרנות מחקות/סל tables: is that another way to buy S&P 500, and what are the קבועים/משתנים/נאמן fees?",
+      "Coloured tags in the funds table were too much",
+      "Didn't understand the 'מהחיסכון' vs 'מההפקדה' fees: which is cheap or expensive, and which matters",
+      "Didn't understand terms such as מט\"ח, אג\"ח, כספי (שקלי), משולב סחיר, קיימות",
+      "Unclear why 'מניות' shows 21.45% vs S&P 13.71%: should they pick that instead?",
+      "Returns are before fees, so they don't know what they actually get after fees",
+      "Didn't understand 'עוד לא דווח'",
+      "Didn't understand '4A'/'4D' codes",
+      "Unclear whether 'גילאי 50 ומטה' is a default they're already in",
+      "Can't find what they're actually paying now",
+      "Can't find whether switching costs money or tax",
+      "No projection in shekels (e.g. in 10 years)",
+      "No risk information (e.g. drop in a bad year)",
+      "No comparison with other companies",
+      "Would drop the קרנות מחקות/סל tables, the documents list, the קופה column and the half-circle charts",
+      "Would also drop the מרכזית לפיצויים, חיסכון לכל ילד and תגמולים groups"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 11,
+        "why": "The reader didn't understand the fee column's 'מהחיסכון' vs 'מההפקדה' split, or which one matters, and that is a clear part of the fee column head going unexplained."
+      }
+    ],
+    "liked": [],
+    "usd": 0.061555200000000004
+  },
+  "b": {
+    "raised": [
+      "Not sure which Harel product they actually have",
+      "Can't tell if the pension S&P 500 track is really S&P 500, since it shows only 'מניות 73%'",
+      "Doesn't know how to switch tracks",
+      "Didn't understand 'דמי הניהול הם הממוצע שנגבה בפועל': does average mean they pay something different?",
+      "'123 מקורו / 123 מחושב' was confusing",
+      "Product names 'מרכזית לפיצויים' and 'תגמולים ואישית לפיצויים' mean nothing to them",
+      "'קרן חדשה מקיפה' and 'קרן חדשה כללית' sound almost the same; can't tell which is their pension",
+      "Got lost in the תגמולים group: everything starts with 'גמל -' and it's unclear how it differs from the first group",
+      "Fee columns are confusing: 'מהחיסכון' vs 'מההפקדה', whether it's cheap or expensive and which one matters",
+      "קרנות מחקות/סל tables are confusing: another S&P 500, unclear whether it's an alternative, and unclear 'קבועים / משתנים / נאמן' fees",
+      "Coloured tags in the funds table are too much",
+      "Terms like מט\"ח, אג\"ח, כספי (שקלי), משולב סחיר and קיימות aren't understood",
+      "Unclear why 'מניות' shows 21.45% over 3 years vs 13.71% for S&P 500; should they pick that instead?",
+      "Returns are shown before fees, so they don't know what they actually get after fees",
+      "'עוד לא דווח' isn't understood",
+      "'4A' / '4D' codes aren't understood",
+      "Unclear whether 'גילאי 50 ומטה' is a default they're already in",
+      "Can't find which tracks they currently have or what they're actually paying",
+      "No info on whether switching costs money or tax",
+      "No projection of what they'd end up with in shekels",
+      "No risk information, such as drops in a bad year",
+      "No comparison with other companies",
+      "Would drop the קרנות מחקות/סל tables, 'מה כתוב במסמכים של הראל', the קופה column and the half-circle charts",
+      "Would then drop the מרכזית לפיצויים, חיסכון לכל ילד and תגמולים ואישית לפיצויים groups"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 9,
+        "why": "The reader says they don't understand the fee column's 'מהחיסכון' vs 'מההפקדה' split or how to read it, which is a clear part of the fee column head not being explained."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0664752
+  },
+  "third": null,
+  "ranks": {
+    "k": 9
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1280304
+}
