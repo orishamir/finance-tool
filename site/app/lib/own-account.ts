@@ -27,8 +27,9 @@ export interface GroupCopy {
    */
   adopted?: GroupFee[];
   /** F-102: the group's own current-account price where its annex prints one (the record's `current_account` of the entry): exempt for
-   *  `forMonths` from joining. Read only where the bank's row counts its current account. A copy saved before it existed has none. */
-  currentAccount?: { exemptMonths: number };
+   *  `exemptMonths` from joining, with where the annex prints it. Read only where the bank's row counts its current account. A copy saved
+   *  before it existed has none; one saved before its source was kept (2026-11-06) has no `source`. */
+  currentAccount?: { exemptMonths: number; source?: { url: string; title: string; page?: number } };
 }
 
 /** The house an account is built on, by its provider id (so a newer price list is followed), and the group it started from, if any. */
@@ -62,7 +63,7 @@ export function priceEndsOf(prices: readonly Pick<GroupPrice, "value">[]): numbe
   return [...new Set(prices.flatMap((p) => (p.value?.for_months !== undefined ? [p.value.for_months] : [])))].sort((a, b) => a - b);
 }
 
-export const copyOfGroup = (s: Pick<FeesSnapshot, "snapshot">, e: GroupEntry): GroupCopy => ({ name: e.name_he, kind: e.kind, snapshot: s.snapshot, prices: e.prices.map((p) => structuredClone(p)), ...(e.current_account ? { currentAccount: { exemptMonths: e.current_account.for_months } } : {}) });
+export const copyOfGroup = (s: Pick<FeesSnapshot, "snapshot">, e: GroupEntry): GroupCopy => ({ name: e.name_he, kind: e.kind, snapshot: s.snapshot, prices: e.prices.map((p) => structuredClone(p)), ...(e.current_account ? { currentAccount: { exemptMonths: e.current_account.for_months, source: { url: e.current_account.source.url, title: e.current_account.source.title, ...(e.current_account.source.page !== undefined ? { page: e.current_account.source.page } : {}) } } } : {}) });
 
 /** The price list first, then each group or offer of the house's latest record that states at least one price in numbers, in the record's order. */
 export function startingPointsOf(s: FeesSnapshot): StartingPoint[] {
@@ -347,6 +348,7 @@ function enteredOf(t: SecuritiesTariff): Omit<EnteredTariff, "until"> {
   if (t.custody) out.custody = t.custody;
   if (t.fx !== undefined) out.fx = t.fx;
   if (t.fxStanding !== undefined) out.fxStanding = t.fxStanding;
+  if (t.fxSpread !== undefined) out.fxSpread = t.fxSpread;
   if (t.monthlyFee !== undefined) out.monthlyFee = t.monthlyFee;
   if (t.currentAccount !== undefined) out.currentAccount = t.currentAccount;
   if (t.cheaperOfStandingTrade) out.cheaperOfStandingTrade = true;
@@ -367,7 +369,13 @@ export function layeredTariff(b: Pick<CustomBroker, "base" | "untilYears" | "tra
     const parts = partsOf(b.base?.group ?? null, list, run, untilMonthsOf(b));
     const ends = [...new Set(parts.map((p) => p.end).filter(Number.isFinite))].sort((a, c) => a - c);
     // the stretch that ends at `ends[k]` holds the prices that have not ended by then; the last stretch, the ones that never end
-    const at = (k: number) => enteredOf(applyOwn(applyParts(list, parts.filter((p) => p.end >= (ends[k] ?? Infinity)), run), b, list));
+    const at = (k: number): EnteredTariff => {
+      const held = parts.filter((p) => p.end >= (ends[k] ?? Infinity));
+      const out = enteredOf(applyOwn(applyParts(list, held, run), b, list));
+      // F-102: the group's own current-account price keeps where its annex prints it, for the row's sources
+      const source = held.some((p) => p.fee === "account") ? b.base?.group?.currentAccount?.source : undefined;
+      return source ? { ...out, currentAccountSource: source } : out;
+    };
     let sequence: EnteredTariff = at(ends.length);
     for (let k = ends.length - 1; k >= 0; k--) sequence = { ...at(k), until: { months: ends[k]!, then: sequence } };
     return sequence;

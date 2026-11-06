@@ -135,10 +135,17 @@ function baseFrom(raw: unknown): BrokerBase | null | undefined {
     const wanted = Array.isArray(g.adopted) ? (g.adopted as unknown[]) : [];
     const adopted = kept.map((p) => p.fee).filter((f, i, all) => wanted.includes(f) && all.indexOf(f) === i);
     // the group's own current-account price (F-102): a whole number of months, or none
-    const ca = isObj(g.currentAccount) && Number.isInteger(g.currentAccount.exemptMonths) && (g.currentAccount.exemptMonths as number) > 0 ? { exemptMonths: g.currentAccount.exemptMonths as number } : null;
+    const ca = isObj(g.currentAccount) && Number.isInteger(g.currentAccount.exemptMonths) && (g.currentAccount.exemptMonths as number) > 0 ? { exemptMonths: g.currentAccount.exemptMonths as number, ...caSource(g.currentAccount.source) } : null;
     group = { name: g.name, kind: g.kind as GroupCopy["kind"], snapshot: g.snapshot, prices: kept, ...(adopted.length ? { adopted } : {}), ...(ca ? { currentAccount: ca } : {}) };
   }
   return { houseId: raw.houseId, houseName: raw.houseName, group };
+}
+
+/** Where the group's current-account price is printed (F-102), kept for the row's sources; a copy without it, or with a malformed one, has none. */
+function caSource(raw: unknown): { source?: { url: string; title: string; page?: number } } {
+  if (!isObj(raw) || typeof raw.url !== "string" || !raw.url || typeof raw.title !== "string" || !raw.title) return {};
+  const page = Number.isInteger(raw.page) && (raw.page as number) > 0 ? { page: raw.page as number } : {};
+  return { source: { url: raw.url, title: raw.title, ...page } };
 }
 
 /** `null`: the whole plan; `undefined`: not a number of years, so the entry is left out. */

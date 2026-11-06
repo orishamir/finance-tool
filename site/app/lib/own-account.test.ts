@@ -223,7 +223,8 @@ describe("the tariff built in layers (F-101)", () => {
   });
   it("a group whose annex exempts its current account pays nothing for it until the group's end, then the bank's minimum (F-102)", () => {
     // Mercantile's student annex (p.31): the teller action and the direct action "פטור", for 4 years from joining
-    expect(STUDENT.group!.currentAccount).toEqual({ exemptMonths: 48 });
+    expect(STUDENT.group!.currentAccount?.exemptMonths).toBe(48);
+    expect(STUDENT.group!.currentAccount?.source?.page).toBe(31);
     const counted = { ...list, currentAccount: 6.4 };
     const got = unwrap(layeredTariff(accountOn(STUDENT), counted, run));
     expect(got.currentAccount).toBe(0);

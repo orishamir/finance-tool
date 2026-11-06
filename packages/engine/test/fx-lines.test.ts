@@ -150,14 +150,39 @@ describe("a spread the price list limits (F-13, D56, D65)", () => {
   const fxOnly = (name: string) => { const r = read(name); return { ...r, lines: r.lines.filter((l: { base: string }) => l.base === "fx") }; };
   const buildOf = (name: string) => buildTariff(workbench({ providers: [], channel: "direct" }), { snapshot: fxOnly(name), level: "list" }, fxOnly(name));
   const tariffOf = (name: string) => buildOf(name).tariff;
-  it("is priced at its ceiling, on top of the conversion fee", () => {
-    expect(tariffOf("altshuler-trade@2026-11-05").fx).toBeCloseTo(0.007, 10); // no fee, "עד 0.7%"
-    expect(tariffOf("meitav-trade@2026-11-04").fx).toBeCloseTo(0.0093, 10); // 0.13% and "עד 0.8%"
-    expect(tariffOf("ibi@2026-11-04").fx).toBeCloseTo(0.007, 10); // "וללא עמלה", "עד 0.7%"
+  it("is priced at its ceiling, beside the conversion fee, in a field of its own", () => {
+    expect(tariffOf("altshuler-trade@2026-11-05")).toMatchObject({ fx: 0, fxSpread: expect.closeTo(0.007, 10) }); // no fee, "עד 0.7%"
+    expect(tariffOf("meitav-trade@2026-11-04")).toMatchObject({ fx: expect.closeTo(0.0013, 10), fxSpread: expect.closeTo(0.008, 10) }); // 0.13% and "עד 0.8%"
+    expect(tariffOf("ibi@2026-11-04")).toMatchObject({ fx: 0, fxSpread: expect.closeTo(0.007, 10) }); // "וללא עמלה", "עד 0.7%"
   });
   it("a spread with no ceiling is not priced: the fee alone", () => {
     expect(tariffOf("leumi@2026-11-04").fx).toBeCloseTo(0.0016, 10);
+    expect(tariffOf("leumi@2026-11-04").fxSpread).toBeUndefined();
     expect(fxLine("leumi@2026-11-04")).toMatchObject({ spread: { value: null } });
+  });
+  // finance review 2, should-fix 6: the spread is charged on every conversion, beside whichever conversion price applies
+  it("is charged on each conversion beside the fee: a lump sum, a monthly order, a recurring plan's free conversion and the sale", () => {
+    const at = (tariff: SecuritiesInput["tariff"]) => runSecurities(plain(tariff, { amountNow: 1_000 }), ctx);
+    // 1,000 now and 400 a month for 12 months, at no return: every conversion pays 0.13% and 0.8% of its amount
+    const merged = at({ fx: 0.0093 });
+    const apart = at({ fx: 0.0013, fxSpread: 0.008 });
+    expect(apart.fees.fx).toBeCloseTo(merged.fees.fx, 9);
+    expect(apart.nominal).toBeCloseTo(merged.nominal, 9);
+    // a recurring plan that converts free still pays the spread on its monthly orders
+    const plan = at({ fx: 0.0013, fxStanding: 0, fxSpread: 0.008 });
+    const planNoSpread = at({ fx: 0.0013, fxStanding: 0 });
+    expect(plan.fees.fx - planNoSpread.fees.fx).toBeGreaterThan(0.008 * 12 * 400 * 0.99);
+  });
+  it("stays beside a conversion price set over the house's list, and goes with the line when the line is removed or replaced (F-61)", () => {
+    const meitav = fxOnly("meitav-trade@2026-11-04");
+    const typed = buildTariff(workbench({ providers: [], channel: "direct" }), { snapshot: meitav, level: "entered", entered: { fx: 0.001, fxSpread: 0.008 } }, meitav).tariff;
+    expect(typed).toMatchObject({ fx: 0.001, fxSpread: 0.008 });
+    const input = plain({ fx: 0.0013, fxSpread: 0.008 });
+    expect(feeLines({ run: "runSecurities", input: plain({ fx: 0, fxSpread: 0.007 }) })).toContain("fx");
+    const removed = withoutFeeLine({ run: "runSecurities", input }, "fx");
+    expect(removed.run === "runSecurities" && removed.input.tariff.fxSpread).toBeFalsy();
+    const replaced = withFeeRate({ run: "runSecurities", input }, "fx", 0.002);
+    expect(replaced.run === "runSecurities" ? [replaced.input.tariff.fx, replaced.input.tariff.fxSpread] : null).toEqual([0.002, undefined]);
   });
   it("is listed among the values the row rests on", () => {
     const build = buildOf("meitav-trade@2026-11-04");

@@ -37,7 +37,7 @@ export function feeLines(plan: RunPlan): FeeLine[] {
       for (const t of chain) {
         if (configured(t.buy) || configured(t.sell)) has.add("trade");
         if (configured(t.custody)) has.add("custody");
-        if (typeof t.fx === "number" ? positive(t.fx) : configured(t.fx)) has.add("fx");
+        if ((typeof t.fx === "number" ? positive(t.fx) : configured(t.fx)) || positive(t.fxSpread)) has.add("fx");
         if (positive(t.monthlyFee)) has.add("fixed");
       }
       // F-102 is read from each stretch (F-101: a group exempt for a time); F-103 from the first tariff only, and the custodian's charge per
@@ -98,7 +98,7 @@ function changeLine(plan: RunPlan, line: FeeLine, rate: number): RunPlan {
     case "runSecurities": {
       // F-101: a tariff line is changed in every tariff of a price for a time; a tariff without the line stays as it is
       const { until, ...head } = plan.input.tariff;
-      if (until && (line === "trade" || line === "custody" || line === "fx" || line === "fixed")) {
+      if (until && (line === "trade" || line === "custody" || line === "fx" || line === "fixed" || line === "account")) {
         const part = (tariff: typeof head): typeof head | null => {
           try {
             const changed = changeLine({ run: "runSecurities", input: { ...plan.input, tariff } }, line, rate);
@@ -138,14 +138,21 @@ function changeLine(plan: RunPlan, line: FeeLine, rate: number): RunPlan {
           return { run: "runSecurities", input: { ...input, tariff } };
         case "custody":
           if (!tariff.custody && !tariff.perDividend) return noLine(plan, line);
-          // F-103: the custodian's charge per dividend is part of custody; removing custody removes it too
+          // F-103: the custodian's charge per dividend is part of custody; removing custody removes it too, and a custody line at another rate
+          // moves it in proportion, as a standing-order price moves with its line (F-12); a custody line at nothing gives no proportion, and the
+          // charge stays as printed
           if (rate === 0) {
             delete tariff.custody;
             delete tariff.perDividend;
-          } else if (tariff.custody) tariff.custody = { ...tariff.custody, rate };
+          } else if (tariff.custody) {
+            if (tariff.perDividend && tariff.custody.rate > 0) tariff.perDividend = (tariff.perDividend * rate) / tariff.custody.rate;
+            tariff.custody = { ...tariff.custody, rate };
+          }
           return { run: "runSecurities", input: { ...input, tariff } };
         case "fx":
           if (tariff.fx === undefined) return noLine(plan, line);
+          // F-13 (D65): the spread is part of the conversion line; a rate set here is the whole conversion's, so the spread goes with the old price
+          delete tariff.fxSpread;
           if (rate === 0) delete tariff.fx;
           else if (typeof tariff.fx === "number") tariff.fx = rate;
           else {
@@ -166,19 +173,13 @@ function changeLine(plan: RunPlan, line: FeeLine, rate: number): RunPlan {
           if (rate === 0) delete tariff.monthlyFee;
           else tariff.monthlyFee = rate;
           return { run: "runSecurities", input: { ...input, tariff } };
-        case "account": {
+        case "account":
+          // a sequence (F-101) is changed stretch by stretch above; a stretch that charges nothing (a group exempt for a time) stays at nothing,
+          // as a recurring plan's free conversion does (F-13)
           if (tariff.currentAccount === undefined) return noLine(plan, line);
-          if (rate !== 0) {
-            tariff.currentAccount = rate;
-            return { run: "runSecurities", input: { ...input, tariff } };
-          }
-          // without the line: out of every stretch of a sequence (F-101), not only the first
-          const drop = (t: typeof tariff): typeof tariff => {
-            const { currentAccount: _, until, ...rest } = t;
-            return until ? { ...rest, until: { ...until, then: drop(until.then as typeof tariff) } } : rest;
-          };
-          return { run: "runSecurities", input: { ...input, tariff: drop(tariff) } };
-        }
+          if (rate === 0) delete tariff.currentAccount;
+          else if (tariff.currentAccount > 0) tariff.currentAccount = rate;
+          return { run: "runSecurities", input: { ...input, tariff } };
         case "spread": {
           if (input.fund.halfSpread === undefined) return noLine(plan, line);
           const fund = { ...input.fund };

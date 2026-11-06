@@ -55,7 +55,7 @@ export type SecuritiesTariff = {
   custody?: Custody;
   /** F-17 monthly account fee in NIS. */
   monthlyFee?: number;
-  /** F-102 (D64): the monthly minimum of the current account at a bank, NIS a month. Read from the run's first tariff, whatever its periods. */
+  /** F-102 (D64): the monthly minimum of the current account at a bank, NIS a month. Each month reads its own stretch's (F-101: a group exempt for a time). */
   currentAccount?: number;
   /**
    * F-103 (D67): a charge for each dividend of a fund bought abroad, in the instrument's currency (`currency` must be set). Read from the run's
@@ -70,6 +70,12 @@ export type SecuritiesTariff = {
   fx?: number | Commission;
   /** F-13 (2026-10-31): the conversion of a monthly purchase on a recurring plan, where the tariff prints a price for one; `fx` otherwise, and always on a lump sum and at exit. */
   fxStanding?: number | Commission;
+  /**
+   * F-13 (D65, 2026-11-06): the conversion spread the price list limits, at its ceiling, a fraction of each conversion's amount. Its own field, so
+   * that no conversion price replaces it unseen: it is charged on every conversion beside whichever conversion fee applies (a lump sum, a monthly
+   * purchase on a standing order or a recurring plan, the sale), and a conversion price the person or a group sets leaves it in place.
+   */
+  fxSpread?: number;
   /** The instrument's currency, for tariff lines set in it: code and NIS per unit at the start. */
   currency?: { code: string; startRate: number };
   /**
@@ -269,7 +275,7 @@ export function runSecurities(input: SecuritiesInput, ctx: RunContext): RunResul
     const at = tariffAt(month);
     const terms = { fxRate: fxRate(eventMonth) };
     const order = (line: Commission | undefined, conversion: SecuritiesTariff["fx"]) => {
-      const fx = convert && tariff.currency ? fxFee(conversion, cash, terms) : 0;
+      const fx = convert && tariff.currency ? fxFee(conversion, cash, terms) + (at.fxSpread ?? 0) * cash : 0;
       const sized = buyWithCash(cash - fx, line, { ...terms, sharePrice: sharePrice(month) });
       return { fx, sized, cost: fx + sized.commission };
     };
@@ -330,19 +336,25 @@ export function runSecurities(input: SecuritiesInput, ctx: RunContext): RunResul
   if (mmfFree) book.cite("BANK-18");
   // F-102 with BANK-35: from the order's start the Governor caps managing a payment account (a current account included) by the month's
   // actions, lower for 0 to 2 actions than the minimum a bank's row counts. How the amended rules count an action is not in the rule base,
-  // so the run keeps the price list's minimum for the whole plan and flags the month the cap starts, where the plan reaches it and a
-  // counted minimum is above the lower cap: the figure may be too high from then on (method F-102).
+  // so the run keeps the price list's minimum for the whole plan and flags the first month, from the cap's start on, whose stretch charges a
+  // minimum above the lower cap (an exempt stretch charges nothing): the account's cost may be too high from then on (method F-102).
   if (tariff.currentAccount !== undefined) {
     const lowCap = book.amount("BANK-35", "account_fee_up_to_2_actions");
     const from = ctx.rules.find((r) => r.id === "BANK-35")?.figures?.account_fee_up_to_2_actions as { effective_from?: string | null } | undefined;
     const capMonth = from?.effective_from ? monthOfDate(ctx.runDate, from.effective_from) : 1;
-    let above = false;
-    for (let m = Math.max(1, capMonth); m <= T && !above; m++) above = (tariffAt(m).currentAccount ?? 0) > lowCap;
-    if (above) tally.flag("BANK-35", Math.max(1, capMonth));
+    for (let m = Math.max(1, capMonth); m <= T; m++) {
+      if ((tariffAt(m).currentAccount ?? 0) > lowCap) {
+        tally.flag("BANK-35", m);
+        break;
+      }
+    }
   }
   const custodyLineAt = (m: number) => (mmfFree ? undefined : tariffAt(m).custody);
 
   let exitYearFees = 0;
+  let accountCharged = false;
+  let eventCharged = false;
+  let eventInExitYear = false;
   let foreignTax = 0;
   let israeliDistTax = 0;
   let fundLevelTax = 0;
@@ -381,6 +393,12 @@ export function runSecurities(input: SecuritiesInput, ctx: RunContext): RunResul
         lots = removeFifo(lots, event / nav);
         units = totalUnits(lots);
         tally.fee("custody", event);
+        eventCharged = true;
+        // G-32: in the exit tax year it may be a custody fee the sale gain is reduced by (TXS-06), which the rule base does not settle
+        if (taxYearOf(m, first) === taxYearOf(T, first) && !eventInExitYear) {
+          eventInExitYear = true;
+          tally.flag("G-32", m);
+        }
       }
     }
 
@@ -398,6 +416,7 @@ export function runSecurities(input: SecuritiesInput, ctx: RunContext): RunResul
     tally.fee("custody", custody);
     tally.fee("fixed", fixed);
     tally.fee("account", account);
+    if (account > 0) accountCharged = true;
     tally.fee("manager", manager);
     if (taxYearOf(m, first) === taxYearOf(T, first)) exitYearFees += custody + fixed;
 
@@ -410,6 +429,9 @@ export function runSecurities(input: SecuritiesInput, ctx: RunContext): RunResul
     tally.point(m, I[m]!, units * nav);
   }
 
+  if (accountCharged) formulas.push("F-102");
+  if (eventCharged) formulas.push("F-103");
+
   // F-09 exit: sold at the bid; commission and FX fee paid out of the proceeds; consideration is the gross
   // sale value (G-20); the exit year's custody and account fees are deducted from the gain once (TXS-06).
   const value = totalUnits(lots) * nav;
@@ -418,7 +440,7 @@ export function runSecurities(input: SecuritiesInput, ctx: RunContext): RunResul
   const atExit = tariffAt(T);
   const commission = tradeCommission(atExit.sell, gross, { fxRate: fxRate(T), sharePrice: sharePrice(T) });
   tally.fee("trade", commission);
-  const fx = tariff.currency ? fxFee(atExit.fx, gross - commission, { fxRate: fxRate(T) }) : 0;
+  const fx = tariff.currency ? fxFee(atExit.fx, gross - commission, { fxRate: fxRate(T) }) + (atExit.fxSpread ?? 0) * (gross - commission) : 0;
   tally.fee("fx", fx);
   const proceeds = gross - commission - fx;
 

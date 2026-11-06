@@ -272,7 +272,9 @@ const rateOf: Record<FeeLine, (p: RunPlan) => number | undefined> = {
   fx: (p) => {
     if (p.run !== "runSecurities") return undefined;
     const fx = p.input.tariff.fx as number | { rate: number } | undefined;
-    return typeof fx === "object" ? fx.rate : fx;
+    const rate = typeof fx === "object" ? fx.rate : fx;
+    // F-13 (D65): the spread is part of the conversion's price, and a rate set for the line replaces both (F-61)
+    return rate === undefined ? undefined : rate + (p.input.tariff.fxSpread ?? 0);
   },
   fixed: (p) => (p.run === "runSecurities" ? p.input.tariff.monthlyFee : undefined),
   // F-102: the indices page alone counts a bank's current account; this page never runs it

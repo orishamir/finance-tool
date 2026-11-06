@@ -30,10 +30,14 @@ export interface EnteredTariff {
   fx?: number | Commission;
   /** F-13: the conversion of a monthly purchase on a recurring plan. */
   fxStanding?: number | Commission;
+  /** F-13 (D65): the spread the provider's list limits, at its ceiling, kept beside a conversion price the person or a group sets. Absent with `fx`: the list's spread, if any. */
+  fxSpread?: number;
   monthlyFee?: number;
   /** F-102 with F-101: the current account's monthly price in this stretch where a group's annex prints its own (0 for an exempt group);
    *  read only where the caller counts the bank's current account. Absent: the bank's ordinary minimum. */
   currentAccount?: number;
+  /** F-102: where the group's own current-account price is printed (`groups.entries[].current_account.source`), for the row's `lineSources`. */
+  currentAccountSource?: { url: string; title: string; page?: number };
   /** F-12, F-13: a monthly purchase may be placed the regular way, one flag for each side (see `SecuritiesTariff.cheaperOfStandingTrade`). */
   cheaperOfStandingTrade?: boolean;
   cheaperOfStandingFx?: boolean;
@@ -438,10 +442,12 @@ export function buildTariff(input: Omit<WorkbenchInput, "fund"> & { fund?: Workb
   }
 
   // Custody: a rate of the balance per period, with min and max.
+  let custodyAverage = false;
   if (entered?.custody) out.tariff.custody = entered.custody;
   else {
     const r = resolve("custody");
     if (r) {
+      custodyAverage = r.rate !== r.line.rate;
       // A zero rate prints no period (One Zero's "0 אחוז"): it charges nothing whatever the period is.
       const period = r.line.period ?? (r.rate.value === 0 ? "month" : null);
       if (period === null) throw new Unusable("line-without-value", `${r.line.id} has no period`);
@@ -476,6 +482,8 @@ export function buildTariff(input: Omit<WorkbenchInput, "fund"> & { fund?: Workb
       out.tariff.fx = entered.fx;
       if (entered.fxStanding !== undefined) out.tariff.fxStanding = entered.fxStanding;
       if (entered.cheaperOfStandingFx) out.tariff.cheaperOfStandingFx = true;
+      // F-13 (D65): a conversion price set over a house's list (F-101) keeps the list's spread, carried in the layers
+      if (entered.fxSpread) out.tariff.fxSpread = entered.fxSpread;
     } else {
       const r = resolve("fx");
       if (r) {
@@ -486,12 +494,14 @@ export function buildTariff(input: Omit<WorkbenchInput, "fund"> & { fund?: Workb
           if (typeof r.rate.value !== "number") throw new Unusable("line-without-value", `${r.line.id} rate has no value`);
           c.perCurrencyUnit = r.rate.value;
         } else c.rate = pct(r.rate, "pct_of_trade", `${r.line.id} rate`);
-        // F-13 (D56, D65): a spread the price list limits ("עד 0.7%") is priced at its ceiling, on top of the conversion fee; a spread with no
-        // ceiling (value null) is not priced. Only the list line carries it: an average row is what customers paid, spread and all.
+        // F-13 (D56, D65): a spread the price list limits ("עד 0.7%") is priced at its ceiling, beside the conversion fee and in a field of its
+        // own (`fxSpread`), charged on every conversion; a spread with no ceiling (value null) is not priced. Only the list line carries it: an
+        // average row is what customers paid, spread and all.
         const spread = r.rate === r.line.rate ? r.line.spread : null;
         if (spread && typeof spread.value === "number") {
           if (c.perCurrencyUnit !== undefined || hasBound(r.min) || hasBound(r.max)) throw new RecordInputError(`${r.line.id}: a priced spread beside a fee with bounds or a price per dollar is not modelled`);
-          c.rate += pct(spread, "pct_of_trade", `${r.line.id} spread`);
+          const s = pct(spread, "pct_of_trade", `${r.line.id} spread`);
+          if (s > 0) out.tariff.fxSpread = s;
         }
         if (hasBound(r.min) || hasBound(r.max)) {
           // The FX bounds are in USD where the bank sets them so: they stay in the trade currency (F-13, 2026-10-24).
@@ -528,8 +538,10 @@ export function buildTariff(input: Omit<WorkbenchInput, "fund"> & { fund?: Workb
   }
 
   // F-103 (D67): a charge for each corporate event of a security held abroad, read as one on each dividend of a fund bought abroad that pays
-  // dividends; an accumulating fund has no dividend, and a fund in Tel Aviv is never in the line's class. A list price at every level.
-  if (input.currency && input.fund?.distribution) {
+  // dividends; an accumulating fund has no dividend, and a fund in Tel Aviv is never in the line's class. It is part of the custody line (F-61)
+  // and follows it: at the list price where custody is at the list or the person's, left out where an average replaces custody, since an
+  // average is what customers paid, a custodian's charge passed on included (as the spread follows the conversion line, F-13).
+  if (input.currency && input.fund?.distribution && !custodyAverage) {
     const l = pick("corporate_event", "list");
     if (l) {
       if (l.rate.unit !== "usd_per_event") throw new RecordInputError(`${l.id}: unit is ${l.rate.unit}, expected usd_per_event`);
@@ -552,6 +564,9 @@ export function buildTariff(input: Omit<WorkbenchInput, "fund"> & { fund?: Workb
     if (own === undefined) {
       out.lineSources.push({ lineId: CURRENT_ACCOUNT_LINE, level: "list", url: m.source.url, publisher: m.source.publisher, strength: m.source.strength });
       out.strengths.push(m.source.strength);
+    } else if (entered?.currentAccountSource) {
+      // the group's own price is the bank's annex, as the ordinary minimum is the bank's price list
+      out.lineSources.push({ lineId: CURRENT_ACCOUNT_LINE, level: "entered", url: entered.currentAccountSource.url, publisher: m.source.publisher, strength: m.source.strength });
     }
   }
 
@@ -560,6 +575,9 @@ export function buildTariff(input: Omit<WorkbenchInput, "fund"> & { fund?: Workb
     const after = buildTariff(input, { ...p, level: "entered", entered: entered.until.then, layered: undefined }, snapshot);
     const { currency: _, ...then } = after.tariff;
     out.tariff.until = { months: entered.until.months, then };
+    // every stretch's sources are the row's: the ordinary current account after a group's exemption among them (F-102)
+    for (const x of after.lineSources) if (!out.lineSources.some((y) => y.lineId === x.lineId && y.url === x.url && y.level === x.level)) out.lineSources.push(x);
+    for (const x of after.strengths) if (!out.strengths.includes(x)) out.strengths.push(x);
     // a period that ends between two custody charges is refused here, so that the provider's row says so (the run refuses it too)
     checkTariffPeriods(out.tariff);
   }
