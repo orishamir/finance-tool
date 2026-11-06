@@ -1537,7 +1537,7 @@
   },
   {
     "id": "INS OQ14",
-    "status": "open"
+    "status": "narrowed"
   },
   {
     "id": "INS OQ15",
@@ -1545,6 +1545,10 @@
   },
   {
     "id": "INS OQ16",
+    "status": "open"
+  },
+  {
+    "id": "INS OQ17",
     "status": "open"
   },
   {
