@@ -57,3 +57,26 @@ Both parts of the clearing-house bylaws were read: [part A](https://content.tase
 | [חוק ניירות ערך (תיקון מס' 61)](https://fs.knesset.gov.il/20/law/20_lsr_382400.pdf): the definition of "הסדרי כשל"; a search of its text layer finds no "לקוח" in either reading direction | Knesset | primary | 2026-11-06 |
 
 The library has new `cite` records under the topics `clearing-default` and `etf-market-making`, and two `tried` lines: the 274701 link, and the bylaws' silence on what a client gets.
+
+## Fix pass (after the independent check, 2026-11-06)
+
+The check is `check.md` beside this report. Every page below was re-read in the library copy.
+
+Fixed:
+
+- **Must fix, the risk fund and the client.** `reg-15.json` and `brk-58.json` no longer say the client gets nothing from the fund. Both now say the client has no claim on it and that it does not cover a shortfall in a client's account when the client's own member fails. BRK-58 also says the fund is what lets a trade settle when the member on the other side fails (part B ch.ז s.1). The same correction is in the BRK-58 markdown and the summary of `regulators-and-protection.md`; the markdown had "no compensation".
+- **Should fix 1 (ETF-82, 274701 not linked).** `text_he` now says the quantity, spread and presence rules come from TASE's board decisions, which are not linked here, and that the linked guidelines cover the appointment and the exemptions. The 274698 source has a qualifier pointing to ETF open question 34. That question, finding the web address, is still open.
+- **Should fix 2 (BRK-58, no Israeli scheme).** The sentence now names its source: the Competition Authority and ISA joint report of 08/2019, p.22, "היעדרם של ביטוח פיקדונות וסכמת הגנה על נכסי לקוחות בישראל". I checked the quote against the library copy (`bac1ca2df2733bdb`). The report is added as a source on the record and in the markdown, and REG-16 is added to `derived_from`. The text dates the statement to 2019. "None found since" stays as REG open question 9.
+- **Should fix 3 (BRK-58, which securities).** `text_he` now covers clients' securities deposited at the TASE clearing house, open mutual-fund units included. It now says that securities at a clearing house abroad and securities registered in the client's own name are outside this (274627 p.6 ch.ב, opening definition and s.1א-ב). The markdown rule bullet lists the same exceptions, plus "others the board sets" (s.1ג).
+- **Should fix 4 (BRK-12 Figures date).** The line now reads p.20, update 84 of 27.2.20.
+- **Should fix 5 (BRK-12 order).** `text_he` now says the order is the set one and that the clearing house may depart from it if it could harm its operations or the members (274625 ch.ג'2 s.3.3, pp.34-35).
+- **Should fix 6 (ETF-82 category 4).** It now reads "מדדי חו״ל, כולל סחורות, שיש להם נגזרים פעילים חופפים".
+- **Should fix 9 (BRK-59 figure).** The figure source strength is now `institution`, matching the record and the source.
+
+Not fixed here:
+
+- **Should fix 7 (merge conflict on `data/rules/brk-12.json` with `rules-records`).** Whoever lands second has to resolve it. Keep this branch's record, then reapply any wording change from `rules-records` that still fits.
+- **Should fix 8 (53 data files list BRK-12 in `protection_rule_ids`).** This is outside the rule base. The lead has to decide whether those providers should also list BRK-58, the client-side record, or list it instead of BRK-12. That would change the investing page.
+- The duplicate BRK-54 and BRK-55 numbers are still as reported above.
+
+Checks: `npm run validate` passes. `npm test` passes: 105 files, 1589 tests. `packages/pipeline` passes 171 of 171. The Hebrew changed in four `text_he` lines (REG-15, BRK-58, BRK-12, ETF-82) waits for the Hebrew editor's batch. No tax finding.
