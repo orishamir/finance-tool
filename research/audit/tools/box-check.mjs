@@ -13,7 +13,9 @@
 // `--plans` types whole plans into the slider rows' boxes, past the sliders' ends too, then text that fails the
 // box's check ("abc", "-5") and the start plan again; after each it also lists every figure cut by the box that holds it ("CUT") and
 // every chart label drawn outside its chart. `--switch` then presses every index chip on the page in turn (another index, same page).
-// After each select it also says where a list's row named by the option went ("held": the row of the bank just marked, lens review S1).
+// After each select it also says how far the select itself moved on the screen ("held: field HELD", or "FIELD MOVED"): the control the hand is
+// on holds, and a list it re-sorts may slide below it (design-system 2.5a): "moved" says how many of the boxes that moved lie outside a
+// list's rows, the ones that may not.
 // `--rows` then taps every visible row of every list (role=radiogroup) and says how far the tapped row moved on the screen ("HELD" when
 // under a pixel, "ROW MOVED" otherwise), and when the tap changed another list's pick.
 import { createRequire } from "node:module";
@@ -118,6 +120,7 @@ const snapshot = () => {
       w: r.width,
       h: r.height,
       kids: e.childElementCount,
+      row: !!e.closest("[role=radiogroup] [data-pick-key]"), // a row of a list, which may slide when the list sorts again
       t: (e.innerText ?? e.textContent ?? "").replace(/\s+/g, " ").slice(0, 70),
     });
   }
@@ -145,10 +148,11 @@ function compare(a, b) {
   const byPos = hits.filter((c) => !hits.some((o) => o !== c && o.n.h <= c.n.h && o.n.w <= c.n.w && o.n.x >= c.n.x - 0.5 && o.n.y >= c.n.y - 0.5 && o.n.x + o.n.w <= c.n.x + c.n.w + 0.5 && o.n.y + o.n.h <= c.n.y + c.n.h + 0.5));
   const movers = changed.filter((c) => Math.abs(c.dy) > TOL && !c.hit);
   const moved = movers.length;
+  const outside = movers.filter((c) => !c.n.row).length;
   // the first block that moved, top to bottom: what the eye sees jump
   const first = movers.filter((c) => !c.n.inline && c.n.t).sort((x, y) => x.n.y - y.n.y)[0];
   const appeared = b.boxes.filter((x) => !was.has(x.id) && !x.inline && x.kids > 0).length;
-  return { hits: byPos, moved, first, appeared, pageH: b.pageH - a.pageH, wider: b.pageW > b.screenW + 1 };
+  return { hits: byPos, moved, outside, first, appeared, pageH: b.pageH - a.pageH, wider: b.pageW > b.screenW + 1 };
 }
 
 const browser = await chromium.launch({ executablePath: CHROME });
@@ -204,7 +208,7 @@ for (const path of paths.split(",")) {
       if (r.wider) console.log(`  ${label}: PAGE WIDER THAN THE SCREEN`);
       if (r.hits.length || r.moved || (WHOLE && Math.abs(r.pageH) > TOL)) {
         total += r.hits.length + (r.moved ? 1 : 0);
-        console.log(`  ${label}: page height ${r.pageH >= 0 ? "+" : ""}${Math.round(r.pageH)}, ${r.moved} moved${r.first ? ` (first: y ${Math.round(r.first.dy)} <${r.first.n.tag} ${r.first.n.cls}> "${r.first.n.t}")` : ""}, ${r.appeared} blocks new`);
+        console.log(`  ${label}: page height ${r.pageH >= 0 ? "+" : ""}${Math.round(r.pageH)}, ${r.moved} moved (${r.outside} outside a list's rows)${r.first ? ` (first: y ${Math.round(r.first.dy)} <${r.first.n.tag} ${r.first.n.cls}> "${r.first.n.t}")` : ""}, ${r.appeared} blocks new`);
         for (const c of r.hits.slice(0, 12)) console.log(`    h ${Math.round(c.dh)} w ${Math.round(c.dw)} y ${Math.round(c.dy)} <${c.n.tag} ${c.n.cls}> ${Math.round(c.n.w)}x${Math.round(c.n.h)} "${c.n.t}"`);
       }
     };
@@ -264,16 +268,12 @@ for (const path of paths.split(",")) {
       const values = await s.evaluate((e) => [...e.options].map((o) => o.value));
       for (const v of values.slice(0, 8)) {
         await onScreen(s);
-        const rowTop = (key) => page.evaluate((k) => { const e = k && [...document.querySelectorAll("[role=radiogroup] [data-pick-key]")].find((x) => x.dataset.pickKey === k); if (!e) return null; const r = e.getBoundingClientRect(); return { top: r.top, on: r.bottom > 0 && r.top < innerHeight }; }, key);
-        const was = await rowTop(v);
+        const y0 = (await s.boundingBox())?.y;
         await s.selectOption(v).catch(() => {});
         await after(`select ${i + 1} = ${v}`);
-        if (was?.on) {
-          const now = await rowTop(v);
-          const dy = Math.round((now?.top ?? NaN) - was.top);
-          if (Math.abs(dy) > TOL) total++;
-          console.log(`    held: row ${v} ${Math.abs(dy) > TOL ? `ROW MOVED ${dy}` : "HELD"}`);
-        }
+        const dy = Math.round(((await s.boundingBox())?.y ?? NaN) - y0);
+        if (!(Math.abs(dy) <= TOL)) total++;
+        console.log(`    held: field ${Math.abs(dy) <= TOL ? "HELD" : `FIELD MOVED ${dy}`} (select ${i + 1} = ${v})`);
       }
     }
     if (tapRows) {
