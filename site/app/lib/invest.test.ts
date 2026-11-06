@@ -310,6 +310,29 @@ describe("a bank's current account on the indices page (D64, F-102)", () => {
     }
   });
 
+  it("lists the bank's monthly minimum among the figure's inputs, with its price list as the source, wherever the row counts it (lens review S5)", () => {
+    const minimumOf = (v: typeof before, id: string) => (best(v, id).cost("x").computed_from!.inputs as Record<string, { value: unknown; source: { url: string }; state: string }>)["דמי ניהול חשבון עו״ש בחודש"];
+    for (const id of banks) {
+      const rec = bundle.snapshots.find((s) => s.id === id)!.current_account!.monthly_minimum;
+      const m = minimumOf(counted, id);
+      expect(m.value).toBe(rec.value);
+      expect(m.source.url).toBe(rec.source.url);
+      expect(m.state).toBe("sourced");
+      expect((best(counted, id).value.computed_from!.inputs as Record<string, unknown>)["דמי ניהול חשבון עו״ש בחודש"]).toBeDefined();
+    }
+    // not where nothing is counted: before the page counts it, at the bank marked as the person's own, at an investment house
+    expect(minimumOf(before, "leumi")).toBeUndefined();
+    expect(minimumOf(ownLeumi, "leumi")).toBeUndefined();
+    expect(minimumOf(counted, "psagot")).toBeUndefined();
+    // the bank's own figure on its own row weakens nothing (D31)
+    expect(best(counted, "leumi").value.weakest).toBe(best(before, "leumi").value.weakest);
+    // the pair's breakdown: its cost lines list the minimum, what was paid in (the plan alone) does not
+    const fundId = counted.houses.find((h) => h.provider.id === "leumi")!.best!.fund.rec.id;
+    const pc = pairCosts({ bundle, index: sp, plan: plan({ currentAccounts: { own: null } }), fundId, providerId: "leumi" })!;
+    expect((pc.account[0]!.cost.computed_from!.inputs as Record<string, unknown>)["דמי ניהול חשבון עו״ש בחודש"]).toBeDefined();
+    expect((pc.paidIn.computed_from!.inputs as Record<string, unknown>)["דמי ניהול חשבון עו״ש בחודש"]).toBeUndefined();
+  });
+
   it("an investment house, a foreign broker and a bank that charges nothing keep their figures", () => {
     for (const id of ["psagot", "ibi", "altshuler-trade", "meitav-trade", "excellence", "interactive-brokers", "interactive-israel", "one-zero", "pepper"]) {
       const h = before.houses.find((x) => x.provider.id === id);

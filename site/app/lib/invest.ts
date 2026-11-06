@@ -10,7 +10,7 @@ import { customFundGap, isCustomBrokerId, isCustomFund } from "./custom-entries"
 import { aliasRows } from "./search-aliases";
 import { fxRunInput } from "./fx";
 import { instrumentClassOf, fundRun, ruleContext, shortName, subjectOf, type FundAssumptions, type NotComparable, type WorkbenchBundle, type WorkbenchInputs } from "./providers";
-import { computed, type SiteValue, type Strength } from "./value";
+import { computed, ownBy, type SiteValue, type Strength } from "./value";
 
 // ---------------------------------------------------------------- the options
 
@@ -642,8 +642,19 @@ export function doubtOf(s: FeesSnapshot | undefined, option: OptionId): string |
 
 export const inputMap = (plan: WorkbenchInputs): Record<string, SiteValue> => ({ סכום: plan.values.amount, "הפקדה חודשית": plan.values.monthly, שנים: plan.values.years, תשואה: plan.values.returnV, אינפלציה: plan.values.inflation });
 const rulesOf = (row: ComparedProvider) => row.run.rules.map((u) => ({ id: u.id, strength: u.strength as Strength }));
-/** The plan's inputs and, on a run of something the person typed, what they typed: its sheet lists them (D7, D44). */
-const inputsOfRun = (ctx: Ctx, ...ids: string[]): Record<string, SiteValue> => Object.assign({}, inputMap(ctx.plan), ...ids.map((id) => ctx.bundle.entered?.inputs[id] ?? {}));
+/**
+ * The plan's inputs and, on a run of something the person typed, what they typed: its sheet lists them (D7, D44). A bank's row that counts a
+ * current account lists the bank's monthly minimum too, its current-account price list the source, so the figure that cost adds is one the
+ * sheet opens (F-102; lens review S5: the minimum was counted and shown nowhere). `ids[0]` is the row's house.
+ */
+const inputsOfRun = (ctx: Ctx, ...ids: string[]): Record<string, SiteValue> => {
+  const snap = ids[0] ? ctx.bundle.snapshots.find((s) => s.id === ids[0]) : undefined;
+  const current = snap ? currentAccountOf(ctx, snap) : null;
+  // D31: the bank's own figure, on the bank's own row (or an account built on it), weakens nothing
+  const bank = snap && current ? (ctx.bundle.snapshots.find((x) => x.id === houseOfSnap(ctx, snap)) ?? snap) : null;
+  const minimum = current && bank ? { [copy.pair.accountMinimum]: ownBy(current.monthly_minimum as SiteValue, bank.provider.name_he) } : {};
+  return Object.assign({}, inputMap(ctx.plan), minimum, ...ids.map((id) => ctx.bundle.entered?.inputs[id] ?? {}));
+};
 
 /**
  * The run's flags that are about the account's cost, not about what is left: BANK-35 says the current account counted in the cost may be too high
@@ -1044,7 +1055,8 @@ export function pairCosts(a: InvestArgs & { fundId: string; providerId: string }
   return {
     providerId: s.id,
     fundId: rec.id,
-    paidIn: computed(paidInReal, "nis", "F-05", inputs, { today: ctx.bundle.today, about: copy.pair.paidInAbout }),
+    // what was paid in rests on the plan alone: the account's minimum and what was typed for a house are not its inputs
+    paidIn: computed(paidInReal, "nis", "F-05", inputMap(ctx.plan), { today: ctx.bundle.today, about: copy.pair.paidInAbout }),
     left: computed(row.real, "nis", "F-65", inputs, { today: ctx.bundle.today, rules: rulesOf(row), about: nameOf(rec) }),
     account: lines,
     interaction: row.horizonCostBeforeTax - row.byType.reduce((t, x) => t + x.costBeforeTax, 0),

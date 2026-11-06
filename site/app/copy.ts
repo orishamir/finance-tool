@@ -3646,6 +3646,8 @@ export const invest = {
   pair: {
     paidIn: "הפקדתם",
     paidInAbout: "סך ההפקדות",
+    /** The bank's monthly current-account minimum among a row's inputs, with its price list as the source (F-102; lens review S5, 2026-11-07). */
+    accountMinimum: "דמי ניהול חשבון עו״ש בחודש",
     paidInNote: (months: number) => `הסכום ההתחלתי ועוד הפקדה חודשית, ${months} חודשים`,
     /** The same line with no monthly deposit (2026-11-05). */
     paidInOnce: "סכום חד־פעמי, בלי הפקדה חודשית",
