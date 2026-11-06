@@ -99,3 +99,57 @@ site weighs more than one seen once.
   noticed things up the list does not reach them. **Dropped.** The lesson: on those kinds the reviewer does not see the
   problem; it is not seeing it and leaving it out. Where it is the latter (the unknown word) is the one case it was
   built from.
+
+## Noise: what bothers no one
+
+The founder's yes or no on findings drawn at random from a run (`metric.md`, noise). A finding he says would bother no
+one is the reviewer's mistake, and its reason is learned like a miss's: in words that name nothing of the site.
+
+### 1. Sample 1 (2026-11-06, 12 findings of the held-out baseline and 3 of the movement instruction)
+
+- **Result:** `runs/noise-1/answers.json`. Of 12 ordinary findings, 3 would bother no one (25%; 9 to 53%), 4 are real
+  problems, 5 he could not tell. None of the 3 movement findings was noise (1 real, 2 could not tell), so that
+  instruction became the default (`versions/README.md`).
+- **The three he called noise, with his reasons:**
+  - Fees given only as a percent, "0.56 against 0.67 says nothing to me": "percentage means the most, it's exactly what
+    matters"; showing it first serves people who know what they look for, and showing what it means in money belongs
+    somewhere else, as an aid.
+  - A company's list of many similar products "with no recommendation, it makes me want to do nothing": "that's not the
+    point of the company page"; someone on one company's page "is looking for something about" that company and wants
+    a detailed table and good filtering. "We have to think about the context of the page too."
+  - A long wall of similar cards "with no beginner's starting point": a long set of options is good here, because
+    "using your eyes you can easily say: wait, I heard somewhere about this one, I wonder what that is."
+- **Where they came from:** all three from the same persona, the young first-job reader, and two repeat its card
+  almost word for word: "a fee written as a small percent sounds like nothing; a fee written in shekels you take
+  seriously", and "if more than a handful of options look alike, you would rather do nothing today". The card was
+  written from published studies of how people behave, not from a person. This is the evidence report's warning come
+  true on this site: a trait a model writes into a persona produces complaints the real audience does not have
+  (`evidence/2026-11-05-check.md`: "what hurts is invented detail"; the founder, 2026-11-05: a study is "a starting guess and never proof").
+- **Human reasons:**
+  - People judge a page by what they came to that page for. A list of one provider's products serves someone looking
+    for one of them; a reader who expects every page to make the whole decision for them complains about pages that
+    were never meant to. He sharpened it the same day: "a complaint such as 'I went to Harel's page, I can't compare
+    Harel to other companies' isn't a valid one. In the Harel page you view it. A valid complaint would be that it's
+    hard or impossible to compare different companies, and that it's 5 obscure clicks away from the Harel page, for
+    example." So a need a page does not meet is a finding about the **site**, never about that page: either the site
+    does not meet it anywhere, or the way to where it does is hard to find or long from here. "This page does not do
+    X" alone is noise.
+  - Which means a reader can only judge such a need fairly if it can look for X elsewhere on the site. A reader given
+    still pictures of one page cannot, so every "this page doesn't let me do X" from such a reader is unchecked: it
+    becomes valid only once someone has looked for X on the rest of the site and found it missing or far.
+  - A long list of options is not overload when people scan it for a name they have already heard; recognition is how
+    many people find their way in.
+  - The exact figure a field uses is what people who compare want first; a plainer translation is welcome beside it or
+    elsewhere, and its absence is not a fault on a page made for comparing. What he does want is a way to find what a
+    term means where it stands (his note on a real problem: an unexplained second fee, "that's why ? is important at
+    the top so someone who doesn't understand can find an explanation").
+- **Instruction change:** none yet. Two ways to test, in this order: (1) a panel of the real people's cards
+  (`~/finance-tool-private/people/`, kept out of the repository) against the study-made personas on the held-out
+  screens, scored for catches and judged for noise; (2) a candidate for browser sessions, in words that name nothing of
+  the site: when a page does not give you something you wanted, look for it on the rest of the site the way you
+  normally would; report it only if you could not find it, or finding it took more than you would put up with, and say
+  which (`versions/candidates/elsewhere.md`, not in any version yet). Neither may be built or checked on these 15
+  findings again: they come from held-out screens, so the next noise sample is drawn fresh. For still pictures, the
+  graders can sort a "this page does not do X" finding as unchecked rather than as a catch or as noise.
+- **For the site, not the reviewer:** where choosing an option rebuilds a form, he would soften the redraw ("a more
+  subtle redraw or animation ... would just make it less abrupt, but it's not that big deal").

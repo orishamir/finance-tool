@@ -87,6 +87,9 @@ not move; these say how a score is taken and read.
   alarm (true, but this person would not notice or be affected), or a hallucination (not on the screen). Only the last
   two are noise; the first goes to the founder's yes/no sample like any other. A few items appear in his sample twice,
   to see how steady that judgement is.
+  *(2026-11-06, the founder)* "This page does not do X" is not a finding about that page: it is valid only as "the site
+  does not do X" or "the way to X from here is long or hidden". A reader who could not look elsewhere on the site (still
+  pictures) leaves it unchecked; it is neither a catch nor counted as noise until someone has looked.
 - **Graders.** The matching rule is written down (`tools/score.mjs`), and how often two graders agree is reported
   with every score.
 - **Planted beside real.** The planted catch rate is reported next to the catch rate on his flags. A high planted score
