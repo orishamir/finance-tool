@@ -154,3 +154,88 @@ The founder has not yet checked any match.
 - Grader agreement is high mostly because most pairs are clear non-catches.
 - On free text, the two graders gave the same rank only half the time.
 - The founder has not checked any match yet.
+
+## Candidate moving, held out (2026-11-06)
+
+The step "No new noise" of `learning-loop.md` for `versions/candidates/moving.md` (one instruction: a person loses patience when the page moves under them).
+
+- **Run:** `run-moving.json` is `run-reviewer.json` unchanged plus `"behaviour": "research/user-lab/versions/candidates/moving.md"`; out to `moving/`. The prompts differ from the reviewer arm's only by the instruction's three lines (checked on a dry run).
+- **Readers:** the same 39 screens, the same two personas, one run each, reader effort medium. Still screenshots only: nothing moved in front of any session.
+- **Grading:** `grade-flag.mjs` with the same 52 case files, rebuilt from the grading stamps of the reviewer arm, so the keys are identical; two blind graders at high effort, a third on a split.
+- **Bar for this step:** headline single-run catches do not fall by more than 2 of 72, and no finding claims movement on a still screen. Noise needs the founder's sample and is not judged here.
+
+### Catch rate, with and without the instruction
+
+| | Without (reviewer arm) | With |
+|---|---|---|
+| **Headline, first 10, single run** | **13 of 72 (18%; 11 to 28%)** | **14 of 72 (19%; 12 to 30%)** |
+| first-job-phone alone | 8 of 36 | 6 of 36 |
+| careful-retiree-pc alone | 5 of 36 | 8 of 36 |
+| **Headline, first 10, pooled** | **8 of 36 (22%; 12 to 38%)** | **10 of 36 (28%; 16 to 44%)** |
+| Ranks of the hits | 1,1,1,1,2,3,3,3,3,3,5,6,7 | 1,1,1,1,2,3,3,4,4,5,5,5,5,7 |
+| Outside knowledge, single / pooled | 2 of 14 (14%; 4 to 40%) / 2 of 7 | 2 of 14 (14%; 4 to 40%) / 2 of 7 |
+| Taste, single / pooled | 1 of 18 (6%; 1 to 26%) / 1 of 9 | 0 of 18 (0%; 0 to 18%) / 0 of 9 |
+| Findings per session | 6.97 (544 in 78) | 6.92 (540 in 78) |
+
+All findings fell within the first 10, so "all findings" equals "first 10" in both arms.
+
+**Paired test on the headline single-run pairs.** Exact McNemar: 3 lost, 4 gained, two-sided p = 1.00. The two arms cannot be told apart.
+
+**Hits lost** (rank without the instruction):
+- guides-useless-sections (first-job-phone, 3)
+- hg-within-ceiling (first-job-phone, 3)
+- tracks-stale-annuity (first-job-phone, 6; careful-retiree-pc still caught it, at 2)
+- company-missing-fund-kinds (first-job-phone, 6), outside knowledge
+- cfc-exposure (careful-retiree-pc, 5), taste
+
+**Hits gained** (rank with the instruction):
+- hg-tax-after-six (careful-retiree-pc, 7; the graders split and a third settled it)
+- study-r1-decoder-table (first-job-phone, 4)
+- study-r1-grey-years (careful-retiree-pc, 3)
+- tracks-tracker-subtitle (careful-retiree-pc, 3)
+- makam-under-products (first-job-phone, 6), outside knowledge
+
+None of the gained or lost cases is about movement. The swing is what two single runs of the same readers give, not the instruction.
+
+**Graders, with the instruction:** they agreed on 102 of 104 pairs (kappa 0.93). They gave the same rank on 15 of the 15 pairs both called caught.
+
+### Claims of movement on still screens
+
+- **Moved, jumped or shifted: none in either arm.** Five findings with the instruction use the words in a figurative sense:
+  - the eye jumps between bars;
+  - big returns jump out;
+  - the numbers jump between two copies of a chart;
+  - a box moves on to another topic;
+  - an explanation is pushed aside in the layout.
+- **Something appeared, as an event: 3 with the instruction, 0 without.** The instruction itself counts "something appears" as the page moving.
+  - **s03, first-job-phone, rank 1:** "The sticky bar with tabs appeared on top of the text while I was scrolling and covered what I was reading". The session never scrolled; it read still pictures. The bar is drawn in the middle of the picture, likely because the picture is taller than a phone screen (1,200 px against 844), so a bar fixed to the top of the screen lands mid-picture. **This is a clear false alarm of the instruction's kind.**
+  - **s27, careful-retiree-pc, rank 4:** "A popup appeared over the list and covered what I was reading". The popup is open in the picture by design, since the state is after pressing the label. Without the instruction, the same persona described the same box as covering the list, with no event in the wording.
+  - **s28, first-job-phone, rank 6:** "a nav bar ... suddenly covers the middle of the list".
+
+### Verdict
+
+**Not passed.**
+- **Catch rate: passes.** It did not fall: 14 against 13 of 72 on the headline single run (a fall of 2 was allowed), and 10 against 8 of 36 pooled.
+- **Silence where its reason does not apply: fails.** On still screens, one finding claims something appeared while the reader scrolled, and two more use the instruction's appearance wording for overlays the pictures show.
+
+The candidate stays out of a version. Noise was not judged here.
+
+**A side finding for the lab, which affects both arms:**
+- Several baseline screens are taller than the device's screen, so sticky bars sit mid-picture.
+- Readers in both arms flag them as covering text: without the instruction on s27; with it on s03, s14 and s28.
+- Readers would not meet this on the real page.
+
+### Cost (list price, Opus 5.5)
+
+| | Readers | Graders | Total |
+|---|---|---|---|
+| With the instruction | $13.18 for 78 sessions | $3.29 | **$16.47** |
+
+## A flaw in the held-out screens (2026-11-06)
+
+On screens captured after steps (s01, s03, s04, s14, s27, s28, s30 and s31 had steps), the whole-page capture drew the
+site's sticky header where the window had been scrolled, mid-page, and left it off the top (seen on s28). Readers in
+both arms flagged it as covering the list (s27 without the instruction; s03, s14 and s28 with it), a problem no person
+sees. `bench/tools/shoot.mjs` now scrolls to the top before capturing. Before the next baseline: rebuild these eight
+screens, and cut every screen at the device's height (one picture per screen, as the panel's own capture does), not in
+1,200 and 1,800 px tiles; then run v0 again on them, so the next comparison starts from clean pictures.

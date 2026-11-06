@@ -23,6 +23,8 @@
 // up to ten things that would bother this person, most bothersome first).
 //   "cases": "calibration/cases.jsonl",   // where { "case": id } tasks are looked up (this is the default)
 //   "behaviour": "path/to/notes.md",       // optional: appended to every persona card (how real people behave)
+//   "behaviourBrowser": "path/to/notes.md", // optional: appended only in browser mode, for what only a session that
+//                                          // uses the page can perceive (movement); still screens never get it
 //   "parallel": 2, "repeat": 1, "model": "optional", "effort": "optional", "minutes": 12, "actions": 40
 // }
 // Each session is saved in <out>/<task>/<persona>[-rN]/: prompt.md, transcript.jsonl, report.md, result.json and, in
@@ -176,6 +178,7 @@ for (const t of tasks) {
   copyFileSync(join(variants[id].dir, "variant.json"), join(OUT, "variants", `${variants[id].id}.json`));
 }
 const behaviour = run.behaviour ? readFileSync(find(run.behaviour), "utf8") : "";
+const behaviourBrowser = run.behaviourBrowser ? readFileSync(find(run.behaviourBrowser), "utf8") : "";
 const repeat = run.repeat || 1;
 
 const jobs = [];
@@ -192,7 +195,8 @@ async function one({ t, p, r }) {
   const device = t.device || p.device || "pc";
   const minutes = t.minutes || run.minutes || 12;
   const actions = t.actions || run.actions || 40;
-  const card = behaviour ? `${p.card.trim()}\n\n${behaviour.trim()}` : p.card;
+  const notes = [behaviour, t.mode === "browser" ? behaviourBrowser : ""].map((x) => x.trim()).filter(Boolean).join("\n");
+  const card = notes ? `${p.card.trim()}\n\n${notes}` : p.card;
   const system = systemPrompt(card);
   let prompt, schema;
   const env = {};

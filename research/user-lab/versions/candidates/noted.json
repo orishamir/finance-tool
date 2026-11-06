@@ -14,5 +14,64 @@
     "planted clean controls control-sp500-pc, control-tracks-pc, control-ta125-phone: false alarms with and without",
     "held-out benchmark noise, with and without (needs the founder's sample)"
   ],
-  "status": "under test"
+  "status": "failed the planted test (2026-11-06): with the instruction 2 of 22 planted problems caught among the first 10 findings, the same as without (the bar was 3 more); not to enter a version as written",
+  "result": {
+    "date": "2026-11-06",
+    "runs": "runs/candidate-noted/without and runs/candidate-noted/with (identical but for behaviour); the 11 score-split instances and 3 clean controls of runs/planted-baseline/run.json copied unchanged; personas first-job-phone and careful-retiree-pc, parallel 3, repeat 1, reader effort medium, graders high; every change shown in all 56 sessions",
+    "planted_caught_in_first_10": {
+      "without": "2 of 22",
+      "with": "2 of 22",
+      "by_instance": {
+        "without": "p06-method-sp500-pc 2 of 2 (ranks 3 and 5); every other instance 0 of 2",
+        "with": "p06-method-sp500-pc 1 of 2 (rank 2), p12-sign-sp500-pc 1 of 2 (rank 3); every other instance 0 of 2"
+      },
+      "never_caught_in_either_arm": "p01, p02 (both instances), p05 (both), p08 (both), p13 (both)",
+      "for_reference": "the planted-baseline panel arm (same instances, an earlier run with no instruction) caught 1 of 22"
+    },
+    "controls": {
+      "false_alarms": {
+        "without": 7,
+        "with": 5,
+        "rule": "metric.md: a finding naming a problem planted on another copy of that page, absent there, as judged by the blind grader (namesAbsent in planted.json); the other half of the rule, a claim the screen contradicts, was not graded because the grader does not see the screens",
+        "detail": {
+          "without": "in 5 of 6 sessions: p06 three times, p03 three times, p04 once",
+          "with": "in 4 of 6 sessions: p03 three times, p06 once",
+          "note": "most are real complaints about the live page that resemble a plant (red minus gaps with no stated reference, look-alike legend colours); the earlier planted-baseline run counted 3 on the same controls, so the count moves by several between runs of the same arm"
+        }
+      },
+      "findings_total": {
+        "without": 43,
+        "with": 50
+      },
+      "about_not_understanding": {
+        "without": "14 of 43 (33%)",
+        "with": "23 of 50 (46%)",
+        "in_first_3": {
+          "without": 5,
+          "with": 8
+        },
+        "rule": "classified by the lead, blind to arm (findings shuffled across both arms): the finding says the reader could not tell what a word, number, sign, colour or mark means, or whether a figure is a promise or a guess; colours only too alike to tell apart, small grey text, missing information and English or jargon that only made the page feel not for them were not counted"
+      },
+      "serious_by_grader": {
+        "without": "22 of 43",
+        "with": "25 of 50"
+      }
+    },
+    "findings_total_planted_sessions": {
+      "without": 158,
+      "with": 177
+    },
+    "cost_usd": {
+      "reader_sessions": {
+        "without": 4.95,
+        "with": 5.06
+      },
+      "planted_graders": {
+        "without": 0.7,
+        "with": 0.77
+      },
+      "total": 11.49
+    },
+    "verdict": "Fails: the instruction made the readers report more of what they did not understand (14 of 43 control findings without, 23 of 50 with, and about 2 more findings a session), but that did not reach the planted problems of meaning and order: 2 of 22 in both arms, where the bar was 3 more. False alarms on the controls did not rise (7 without, 5 with). Kinds p01, p02, p05, p08 and p13 stayed at 0 in both arms, so these readers either do not see them or the plants are too quiet; an instruction about reporting what one noticed cannot help with what was never noticed. The p07 evidence it was built from (the word was listed as not understood but not ranked) is not tested here by design; a test on p07-like instances on other pages, or on the held-out benchmark, would be the next check if the instruction is reworked."
+  }
 }

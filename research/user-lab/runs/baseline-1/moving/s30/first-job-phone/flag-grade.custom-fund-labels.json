@@ -1,0 +1,36 @@
+{
+  "case": "custom-fund-labels",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"A fund the reader added gets labels ('צוברת', 'חשיפה לדולר') that the reader never gave, and the reader cannot choose its labels.\",\"where\":\"the added fund's row in the fund list\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 3 complains that the tag chips are jargon the reader doesn't understand, but no finding says the added fund was given labels the user never chose or that the labels can't be edited."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0145834
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 3 says the tag chips are jargon the reader doesn't understand, but no finding says the added fund gets labels the user never gave or that the user can't choose them."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0145234
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.029106800000000002
+}

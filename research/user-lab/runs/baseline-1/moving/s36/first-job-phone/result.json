@@ -1,0 +1,96 @@
+{
+  "task": "s36",
+  "persona": "first-job-phone",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T03:28:54.868Z",
+  "structured": {
+    "answer": "I'd pick option ב, the rows. On my phone the label and the shekel amount sit together on the right where I start reading, so I don't have to match tiny labels under bars with numbers floating on top like in א.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Option א, year-6 version, 'המס 0 ₪' column",
+        "why": "There's a dark green box on the tax bar even though the tax is 0, and I didn't get what it is"
+      },
+      {
+        "where": "Line 'אם מושכים עכשיו ושמים את הכסף בחשבון ניירות ערך עד שנה 6: 68,837 ₪'",
+        "why": "Couldn't tell straight away how 68,837 relates to the 66,513 'נשאר בידיים' figure, or which one is the securities account"
+      }
+    ],
+    "used": [
+      "Heading 'קרן השתלמות: הסיפור של הכסף, שלב אחרי שלב'",
+      "Big figures 18,000 ₪, +54,000 ₪, +8,487 ₪, −13,974 ₪, 66,513 ₪, 83,978 ₪",
+      "Labels 'המעסיק הוסיף', 'המס לקח', 'נשאר בידיים', 'אם מחכים לשנה 6'",
+      "Option ב's row layout with labels and numbers on the right",
+      "'מומלץ' badge on option א",
+      "Sentence about the securities account: 15,141 ₪ less than waiting",
+      "Year-6 view: 'המס 0 ₪', 98,738 ₪"
+    ],
+    "skimmed": [
+      "Small preview thumbnail under the intro",
+      "Intro text under the א and ב headings",
+      "Small year bar strip 1–12 with 'לפני 6 שנים: מס' / 'מ-6 שנים: פטור ממס'"
+    ],
+    "skipped": [
+      "Orange/grey example paragraph 'הדוגמה: שכר ברוטו 12,000 ₪...'",
+      "'בין 19 המסלולים שנאספו...' grey line",
+      "'הגובה נמתח בכל שנה...' note",
+      "'עצמאים' tab"
+    ],
+    "unsure_meaning": [
+      "Pink striped block: guessed it means tax",
+      "Teal colour: guessed it's the profit/return",
+      "Dark green box on the 0 ₪ tax bar in year 6",
+      "'אחרי דמי ניהול' under התשואה הוספה: not sure how much the fee took",
+      "Dotted grey box 83,978 ₪: guessed it's what I'd have if I wait"
+    ],
+    "not_found": [
+      "The securities account drawn as its own bar or row in the chart: it's only a sentence of text",
+      "Fees in shekels: they're only shown as percent"
+    ],
+    "findings": [
+      {
+        "what": "The comparison with a securities account, which is the whole question, isn't in the chart, only in one text line under it",
+        "where": "Below the chart in both options"
+      },
+      {
+        "what": "Labels under the columns are small and far from their big numbers, so you have to match them by eye on a phone",
+        "where": "Option א, column chart"
+      },
+      {
+        "what": "A dark green box on the tax column even though tax is 0 ₪, confusing",
+        "where": "Option א, year-6 chart"
+      },
+      {
+        "what": "The red striped −13,974 ₪ tax looks scary and isn't explained next to it",
+        "where": "Both options, 'המס לקח'"
+      },
+      {
+        "what": "Fees shown only as percents (0.7%, 0.19%) in small grey text",
+        "where": "Line 'בין 19 המסלולים...'"
+      },
+      {
+        "what": "Long dense example paragraph with orange warning text at the top that nobody will read on a phone",
+        "where": "Above section א"
+      }
+    ]
+  },
+  "steps": 2,
+  "reads": 2,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 32744,
+    "turns": 4,
+    "usd": 0.1224846,
+    "input": 6,
+    "cacheWrite": 7764,
+    "cacheRead": 16043,
+    "output": 2857,
+    "model": "claude-opus-5-5"
+  }
+}

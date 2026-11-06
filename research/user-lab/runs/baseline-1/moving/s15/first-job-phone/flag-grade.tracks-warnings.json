@@ -1,0 +1,36 @@
+{
+  "case": "tracks-warnings",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"Almost every row of the tracks table carries a date warning mark; the repeated warnings clutter the table though one note at the top would do.\",\"where\":\"the warning marks in the table rows\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the findings complains that a date warning mark repeated on almost every row clutters the table; finding 4 is about a warning icon next to 'not yet reported' fees looking scary and unexplained, which is a different complaint, and finding 1 is about too many similar rows, not repeated warnings."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0167874
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "No finding says the same date warning mark repeats on nearly every row and clutters the table; finding 4 is about a warning icon on 'עוד לא דווח' in the fee column looking scary and unexplained, which is a different mark and a different complaint."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0164754
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0332628
+}

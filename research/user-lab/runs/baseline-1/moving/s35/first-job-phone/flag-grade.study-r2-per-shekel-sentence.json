@@ -1,0 +1,36 @@
+{
+  "case": "study-r2-per-shekel-sentence",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The sentence 'כל שקל שהפקדתם נהיה 4.57 ₪ בקרן ו־1.11 ₪ בחשבון ניירות ערך' does not help.\",\"where\":\"the per-shekel sentence\",\"kind\":\"taste\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings mention the per-shekel sentence ('כל שקל שהפקדתם נהיה 4.57 ₪...') or say it doesn't help; they talk about the tax block, the charts, the waterfall, the assumptions text and the small bars."
+      }
+    ],
+    "liked": [],
+    "usd": 0.014727400000000002
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "No finding mentions the per-shekel sentence (4.57 ₪ / 1.11 ₪) or says it's unhelpful; the findings cover the tax block, charts, assumptions text and small bars instead."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0142394
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0289668
+}

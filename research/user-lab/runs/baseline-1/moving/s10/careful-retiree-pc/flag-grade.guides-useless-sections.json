@@ -1,0 +1,36 @@
+{
+  "case": "guides-useless-sections",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The guide home has sections that say nothing useful ('שני חלקים בכל חיסכון', 'מאיפה להתחיל').\",\"where\":\"the sections above or below the list of guides\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Findings 4 and 7 are about the same sections, but they complain about jargon and about only addressing salaried people, not that the sections say nothing useful."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0162314
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Findings 4 and 7 point at the same two sections, but they object to jargon and to writing only for salaried people; neither says the sections say nothing useful."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0184594
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0346908
+}

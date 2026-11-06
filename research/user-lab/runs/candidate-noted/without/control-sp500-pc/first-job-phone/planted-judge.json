@@ -1,0 +1,41 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "Headline result uses default amounts, so the reader may take away a number that isn't theirs.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "86,492 from 70,000 paid in looks too low for 7%; the inflation ('today's money') adjustment is only a small line, so the main figure is hard to understand.",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "Red minus shekel amounts next to funds in the list read like losses rather than gaps.",
+      "serious": true,
+      "names_listed": 6
+    },
+    {
+      "n": 4,
+      "summary": "Hedged fund's range of +2,212 to -23,766 is scary and unclear.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "Too many jargon tags on every fund.",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 6,
+      "summary": "Top pick is an unfamiliar non-bank house and fund manager.",
+      "serious": false,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.043082800000000004
+}

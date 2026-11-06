@@ -12,7 +12,7 @@
     "planted clean controls in browser mode (sp500 pc, study fund phone)",
     "held-out benchmark noise, with and without"
   ],
-  "status": "passed the planted test and the control check (2026-11-06); still to run on the held-out benchmark (noise and catch rate, with and without) before it enters a version",
+  "status": "enters v1 for browser sessions only (behaviourBrowser, 2026-11-06), the noise sample (runs/noise-1) still to answer",
   "result": {
     "date": "2026-11-06",
     "runs": "runs/candidate-moving/without and runs/candidate-moving/with (identical but for behaviour); personas first-job-phone and careful-retiree-pc, repeat 2, reader effort medium, graders high",
@@ -72,5 +72,136 @@
       "total": "about 10.8"
     },
     "verdict": "Keep as a candidate that generalises: with the instruction p15 is caught 6 of 8 against 0 of 8 without, and the clean controls gain no false alarms (their new movement findings are all real and grounded, among them issue #200, missed 0 of 4 without). The justETF tabs were not exercised in the with arm, so that part is unanswered. It enters a version only after the held-out benchmark shows no rise in noise and no fall in catch rate. Cost to watch: movement findings take a place among the first 10 (44 findings in both arms, so another finding gave way)."
+  },
+  "held_out": {
+    "date": "2026-11-06",
+    "runs": "runs/baseline-1/reviewer (without) and runs/baseline-1/moving (with, run-moving.json: run-reviewer.json plus the behaviour file); 39 held-out screens, still screenshots only, personas first-job-phone and careful-retiree-pc, one run each, reader effort medium; graded with grade-flag.mjs on the same 52 case files (keys rebuilt from the reviewer arm's grading stamps), two blind graders at high effort, a third on a split",
+    "headline_general_no_outside_36": {
+      "first_10_single": {
+        "without": "13 of 72 (18%; 11 to 28%)",
+        "with": "14 of 72 (19%; 12 to 30%)"
+      },
+      "by_persona_with": {
+        "first-job-phone": "6 of 36 (was 8)",
+        "careful-retiree-pc": "8 of 36 (was 5)"
+      },
+      "first_10_pooled": {
+        "without": "8 of 36 (22%; 12 to 38%)",
+        "with": "10 of 36 (28%; 16 to 44%)"
+      },
+      "ranks_of_hits": {
+        "without": [
+          1,
+          1,
+          1,
+          1,
+          2,
+          3,
+          3,
+          3,
+          3,
+          3,
+          5,
+          6,
+          7
+        ],
+        "with": [
+          1,
+          1,
+          1,
+          1,
+          2,
+          3,
+          3,
+          4,
+          4,
+          5,
+          5,
+          5,
+          5,
+          7
+        ]
+      },
+      "paired_single_mcnemar_exact": {
+        "lost": 3,
+        "gained": 4,
+        "p_two_sided": 1.0
+      },
+      "lost": [
+        "guides-useless-sections (first-job-phone, was rank 3)",
+        "hg-within-ceiling (first-job-phone, was 3)",
+        "tracks-stale-annuity (first-job-phone, was 6)"
+      ],
+      "gained": [
+        "hg-tax-after-six (careful-retiree-pc, rank 7, settled by a third grader)",
+        "study-r1-decoder-table (first-job-phone, 4)",
+        "study-r1-grey-years (careful-retiree-pc, 3)",
+        "tracks-tracker-subtitle (careful-retiree-pc, 3)"
+      ]
+    },
+    "general_outside_knowledge_7": {
+      "first_10_single": {
+        "without": "2 of 14 (14%; 4 to 40%)",
+        "with": "2 of 14 (14%; 4 to 40%)"
+      },
+      "first_10_pooled": {
+        "without": "2 of 7",
+        "with": "2 of 7"
+      },
+      "lost": [
+        "company-missing-fund-kinds (first-job-phone)"
+      ],
+      "gained": [
+        "makam-under-products (first-job-phone, 6)"
+      ]
+    },
+    "taste_9": {
+      "first_10_single": {
+        "without": "1 of 18 (6%; 1 to 26%)",
+        "with": "0 of 18 (0%; 0 to 18%)"
+      },
+      "first_10_pooled": {
+        "without": "1 of 9",
+        "with": "0 of 9"
+      },
+      "lost": [
+        "cfc-exposure (careful-retiree-pc)"
+      ],
+      "gained": []
+    },
+    "findings_per_session": {
+      "without": "6.97 (544 in 78)",
+      "with": "6.92 (540 in 78)"
+    },
+    "grader_agreement_with": "102 of 104 pairs (kappa 0.93); 2 splits, both hg-tax-after-six, settled by a third grader",
+    "movement_claims_on_still_screens": {
+      "moved_jumped_shifted": {
+        "without": 0,
+        "with": 0,
+        "note": "five findings in the with arm use 'jump', 'move' or 'pushed' figuratively (eye jumps, numbers jump out, a box moves on to another topic, an explanation pushed aside in the layout); none says the screen moved"
+      },
+      "appeared_in_time": {
+        "without": 0,
+        "with": 3,
+        "detail": [
+          "s03 first-job-phone, rank 1: 'The sticky bar with tabs appeared on top of the text while I was scrolling and covered what I was reading' (no scrolling was seen; the bar is drawn mid-picture because the slice is taller than a phone screen)",
+          "s27 careful-retiree-pc, rank 4: 'A popup appeared over the list and covered what I was reading' (the popup is open in the picture by design; the reviewer arm described the same box as covering, with no event)",
+          "s28 first-job-phone, rank 6: 'a nav bar ... suddenly covers the middle of the list'"
+        ],
+        "note": "the instruction itself counts something appearing as the page moving; the first is a clear claim of an event on a still screen, the other two are event wording over something the picture does show"
+      }
+    },
+    "cost_usd": {
+      "readers": 13.18,
+      "graders": 3.29,
+      "total": 16.47
+    },
+    "verdict": "Not passed. The catch rate holds: 14 of 72 against 13 of 72 on the headline single run (allowed fall: 2), pooled 10 against 8 of 36, McNemar p = 1.00 (3 lost, 4 gained). But the instruction did not stay silent on still screens: one finding claims a bar appeared while the reader was scrolling (s03, rank 1), and two more use appearance wording ('appeared', 'suddenly') for overlays the pictures show. No finding claims a move, jump or shift. Noise needs the founder's sample and is not judged here."
+  },
+  "decision": {
+    "date": "2026-11-06",
+    "what": "attached only in browser mode (panel.mjs \"behaviourBrowser\"); still screens never get it",
+    "why": "movement can be perceived only by a session that uses the page; on still screens the instruction has nothing true to report and produced the one false claim (s03, a header the capture drew mid-page, called a bar that appeared while scrolling). In browser mode it caught the planted jump 6 of 8 against 0 of 8, was silent where nothing moved, and its 10 findings on clean pages were all real moves (among them #199 and #200). The held-out catch rate held (14 against 13 of 72), so the instruction costs nothing measurable there.",
+    "open": "its findings on clean pages are in the founder noise sample (runs/noise-1, items n02, n03, n07); if he says they would not bother anyone, it leaves v1"
   }
 }

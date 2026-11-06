@@ -1,0 +1,183 @@
+{
+ "written": "2026-11-06",
+ "question": "Would this bother you, or someone else using the site?",
+ "answers": [
+  "Yes",
+  "No",
+  "Cant tell"
+ ],
+ "items": [
+  {
+   "source": "v0",
+   "draw": 3,
+   "page": "Investment provident fund tracks",
+   "device": "pc",
+   "what": "Fees only in percent, nothing in shekels, so 0.56 vs 0.67 says nothing to me",
+   "where": "Fee column",
+   "screen": "s18",
+   "persona": "first-job-phone",
+   "rank": 3,
+   "id": "n01"
+  },
+  {
+   "source": "moving-browser",
+   "page": "Study fund guide",
+   "device": "phone",
+   "what": "When I switched to עצמאים, the fields moved around and changed places (the return field jumped up next to the deposit).",
+   "where": "the calculator fields after picking עצמאים",
+   "session": "control-keren-phone-browser/first-job-phone-r1#2",
+   "id": "n02"
+  },
+  {
+   "source": "moving-browser",
+   "page": "S&P 500 page",
+   "device": "computer",
+   "what": "Part of the screen jumped sideways when I typed the first number.",
+   "where": "Input row after filling סכום היום",
+   "session": "control-sp500-pc-browser/careful-retiree-pc-r1#3",
+   "id": "n03"
+  },
+  {
+   "source": "v0",
+   "draw": 7,
+   "page": "Harel's company page",
+   "device": "pc",
+   "what": "16 tracks that look almost the same, with no recommendation. It makes me want to do nothing.",
+   "where": "Main table",
+   "screen": "s21",
+   "persona": "first-job-phone",
+   "rank": 5,
+   "id": "n04"
+  },
+  {
+   "source": "v0",
+   "draw": 11,
+   "page": "Investment provident fund tracks",
+   "device": "pc",
+   "what": "Turquoise and yellow circles that look almost the same",
+   "where": "Exposure column",
+   "screen": "s17",
+   "persona": "careful-retiree-pc",
+   "rank": 5,
+   "id": "n05"
+  },
+  {
+   "source": "v0",
+   "draw": 4,
+   "page": "Current account guide",
+   "device": "pc",
+   "what": "The first big number (74,044 ₪) assumes 5% a year on a current account, so it looks like my עו\"ש grows nicely. That's the opposite of the point.",
+   "where": "Calculator, screen 1",
+   "screen": "s01",
+   "persona": "first-job-phone",
+   "rank": 1,
+   "id": "n06"
+  },
+  {
+   "source": "moving-browser",
+   "page": "Study fund guide",
+   "device": "phone",
+   "what": "Clicking the tab scrolled the page by itself, a long way down.",
+   "where": "the tabs at the top",
+   "session": "control-keren-phone-browser/first-job-phone-r1#3",
+   "id": "n07"
+  },
+  {
+   "source": "v0",
+   "draw": 9,
+   "page": "Money-market fund guide",
+   "device": "pc",
+   "what": "Codes like MF-16 and BANK-18 everywhere mean nothing to me and clutter the screen",
+   "where": "cost table, שווה לדעת",
+   "screen": "s02",
+   "persona": "first-job-phone",
+   "rank": 5,
+   "id": "n08"
+  },
+  {
+   "source": "v0",
+   "draw": 8,
+   "page": "Current account guide",
+   "device": "pc",
+   "what": "Codes like TXI OQ11, BANK-20 mean nothing to me",
+   "where": "שווה לדעת, מה האתר לקח בחשבון",
+   "screen": "s01",
+   "persona": "first-job-phone",
+   "rank": 5,
+   "id": "n09"
+  },
+  {
+   "source": "v0",
+   "draw": 1,
+   "page": "Bank deposit guide",
+   "device": "pc",
+   "what": "The tax paragraph with 69,840 / 10,920 figures is dense and hard to follow",
+   "where": "מיסוי",
+   "screen": "s07",
+   "persona": "first-job-phone",
+   "rank": 6,
+   "id": "n10"
+  },
+  {
+   "source": "v0",
+   "draw": 0,
+   "page": "Guides list",
+   "device": "pc",
+   "what": "The guide is a long wall of more than 25 similar cards with no beginner's starting point, which is overwhelming",
+   "where": "מדריך page",
+   "screen": "s04",
+   "persona": "first-job-phone",
+   "rank": 2,
+   "id": "n11"
+  },
+  {
+   "source": "v0",
+   "draw": 10,
+   "page": "Bank deposit guide",
+   "device": "pc",
+   "what": "The cost of breaking a deposit is never given in shekels, only 'לפי התעריפון' and 'שאלה פתוחה'",
+   "where": "כמה זה עולה table and red box in מיסוי",
+   "screen": "s09",
+   "persona": "first-job-phone",
+   "rank": 2,
+   "id": "n12"
+  },
+  {
+   "source": "v0",
+   "draw": 6,
+   "page": "S&P 500 page",
+   "device": "pc",
+   "what": "The red tag 'מס רווח במכירה' on foreign funds scares me off without saying how much",
+   "where": "Foreign fund rows",
+   "screen": "s30",
+   "persona": "first-job-phone",
+   "rank": 3,
+   "id": "n13"
+  },
+  {
+   "source": "v0",
+   "draw": 2,
+   "page": "Study fund guide",
+   "device": "pc",
+   "what": "Too many numbers on one screen (17,370; 16,955; 415.84; 2,402.23; 2,922.17; 23,692...)",
+   "where": "Screen 2 top",
+   "screen": "s11",
+   "persona": "careful-retiree-pc",
+   "rank": 4,
+   "id": "n14"
+  },
+  {
+   "source": "v0",
+   "draw": 5,
+   "page": "Harel's company page",
+   "device": "pc",
+   "what": "Second fee '1.47% מההפקדות' looks big and isn't explained in words I understand",
+   "where": "קרן חדשה מקיפה table, screens 3–4",
+   "screen": "s25",
+   "persona": "careful-retiree-pc",
+   "rank": 2,
+   "id": "n15"
+  }
+ ],
+ "note": "v0: a seeded random draw of 12 from the 544 first-10 findings of runs/baseline-1/reviewer (draw.json); moving-browser: findings the movement instruction added on clean pages in browser mode (runs/candidate-moving/with). The founder sees only page, device, words and where, in this order."
+}

@@ -1,0 +1,36 @@
+{
+  "case": "home-door-guide",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The home link 'להבין סוג של חיסכון' promises help with one kind of saving but opens only the general list of guides.\",\"where\":\"the link on the home page and where it leads\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings say the link promises help with one kind of saving but opens the general list of guides; finding 2 is about where the card sits on the home page, not about where it leads."
+      }
+    ],
+    "liked": [],
+    "usd": 0.015543399999999999
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings says the home link promises one kind of saving and then opens the general guide list: finding 2 is about where the card sits on the home page, and findings 1 and 3 are about how the guide page is laid out."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0166474
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0321908
+}

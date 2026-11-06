@@ -110,6 +110,10 @@ for (const [sha, cases] of bySha) {
           // The page's text, for checking that the flagged element is on the rebuilt screen (raw/, ignored by git).
           mkdirSync(join(here, "..", "raw", "text", c.case), { recursive: true });
           writeFileSync(join(here, "..", "raw", "text", c.case, `${sc.name}-${width}.txt`), await page.evaluate(() => document.body.innerText));
+          // Back to the top first: steps can leave the page scrolled, and a whole-page capture then draws the sticky
+          // header where the window was, in the middle of the page, where no person ever sees it (readers flagged it).
+          await page.evaluate(() => window.scrollTo(0, 0));
+          await page.waitForTimeout(300);
           // The whole page, cut into tiles by clipping (no single huge image: Chrome and PNG both have height limits).
           const tileCss = phone ? 1200 : 1800;
           const total = await page.evaluate(() => Math.max(document.documentElement.scrollHeight, document.body.scrollHeight));

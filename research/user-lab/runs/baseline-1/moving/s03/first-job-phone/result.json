@@ -1,0 +1,120 @@
+{
+  "task": "s03",
+  "persona": "first-job-phone",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "phone",
+  "startedAt": "2026-11-06T03:16:11.229Z",
+  "structured": {
+    "answer": "My money is losing value sitting in the עו\"ש: the page's example says 10,000 ₪ is worth 8,203 ₪ in today's money after 10 years (1,797 ₪ less). A קרן כספית יומית would come out at 10,779 ₪. I have 30,000, so I lose more, but the page never showed me my own number.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Calculator 'כמה עולה להשאיר כסף בעו\"ש?'",
+        "why": "The field 'יתרה בעו\"ש' is stuck at 10,000 and I couldn't put in my 30,000, so I only have the example numbers, not mine"
+      },
+      {
+        "where": "Second calculator 'מה קורה לכסף לאורך הזמן'",
+        "why": "A huge 62,681 ₪ with 'ועוד 500 ₪ בחודש' and 0%, then 'ההפקדות שלכם 70,000 ₪'. It took me a while to get that I put in 70,000 and keep less, and for a moment the big number looked like a gain"
+      },
+      {
+        "where": "Chart in the first calculator",
+        "why": "Three lines and a shaded area. I went by the words on the chart ('בקרן כספית', 'המחיר של להשאיר 2,576 ₪'), not the legend"
+      }
+    ],
+    "used": [
+      "Heading 'חשבון עובר ושב'",
+      "'כמה עולה להשאיר כסף בעו\"ש?' – 8,203 ₪, 1,797 ₪ פחות",
+      "'רוב הבנקים לא משלמים ריבית על עו\"ש, ולכן הכסף מאבד מערכו'",
+      "Big numbers: בעו\"ש אחרי 10 שנים 8,203 ₪, בקרן כספית יומית 10,779 ₪, המחיר של להשאיר 2,576 ₪",
+      "'הכי קרוב לזה, באותה חזקה: קרן כספית יומית'",
+      "'4 מתוך 8 הבנקים... על עד 10,000 ₪ בלבד; הכי הרבה: 3%, אצל דיסקונט'",
+      "'אין ביטוח פיקדונות'"
+    ],
+    "skimmed": [
+      "מה זה paragraph about מסלול בסיסי / מורחב and the fees",
+      "למה משתמשים בזה",
+      "The second calculator 'מה קורה לכסף לאורך הזמן' and its chart",
+      "כסף נכנס ויוצא",
+      "כמה זה עולה",
+      "מיסוי",
+      "סיכונים ומה לא מוגן"
+    ],
+    "skipped": [
+      "Grey footnotes under the chart (2% inflation assumption, 3.25%)",
+      "Fold 'חלק מהבנקים כן משלמים ריבית, בתנאים ועל סכום קטן בלבד'",
+      "Fold 'הצגה כטבלה'",
+      "Links 'הצגת החוקים והכללים'",
+      "מה האתר לקח בחשבון / הצגת כל הבדיקות",
+      "מונחים section",
+      "Footer"
+    ],
+    "unsure_meaning": [
+      "מק\"מ",
+      "ריבית צמודה למדד / הריבית הריאלית",
+      "BANK-17, BANK-35, BANK-20 and the other tags",
+      "TXI OQ11 'שאלה פתוחה' / 'חסום'",
+      "'123 ממקור / 123 מחושב / 123 הזנתם' at the top",
+      "'בכסף של היום' versus 'בשקלים של העתיד'",
+      "Whether 62,681 is a good or a bad result",
+      "Dashed line versus the shaded area in the first chart"
+    ],
+    "not_found": [
+      "My own 30,000 ₪ in the calculator: I only saw the 10,000 example",
+      "Which קרן כספית to pick, who sells it and what it costs",
+      "Whether my bank is one of the 4 that pay interest",
+      "A clear first step to take today"
+    ],
+    "findings": [
+      {
+        "what": "The sticky 'מקור' bar with tabs appeared on top of the text while I was scrolling and covered what I was reading",
+        "where": "Screen 7, middle of the מונחים list"
+      },
+      {
+        "what": "The first big number is 15,000.00 ₪ (the notice threshold), not anything about my own money, and it stuck in my head",
+        "where": "Top, 'מה זה' paragraph"
+      },
+      {
+        "what": "The second calculator shows a huge 62,681 ₪ that looks like a gain, but it is less than the 70,000 deposited; easy to misread",
+        "where": "'מה קורה לכסף לאורך הזמן'"
+      },
+      {
+        "what": "Calculators start at 10,000, not my amount, and the shekel loss isn't shown for my balance",
+        "where": "'כמה עולה להשאיר כסף בעו\"ש?' field 'יתרה בעו\"ש'"
+      },
+      {
+        "what": "The red tax box with a lock and 'שאלה פתוחה' scares me without telling me anything I need",
+        "where": "Top of screen 6, מיסוי"
+      },
+      {
+        "what": "Codes like BANK-17, TXI OQ11 and TXI-17 sit in the middle of sentences and mean nothing to me",
+        "where": "Throughout"
+      },
+      {
+        "what": "The page points at קרן כספית but never says which one or how to buy it",
+        "where": "Under the first calculator"
+      },
+      {
+        "what": "Long paragraphs full of jargon (מסלול בסיסי/מורחב, פיקדונות וניירות ערך, הפסד הון)",
+        "where": "מה זה, מיסוי"
+      }
+    ]
+  },
+  "steps": 8,
+  "reads": 8,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 43853,
+    "turns": 10,
+    "usd": 0.2504562,
+    "input": 10,
+    "cacheWrite": 19241,
+    "cacheRead": 52141,
+    "output": 4303,
+    "model": "claude-opus-5-5"
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "findings": [
+    {
+      "n": 1,
+      "summary": "143 tracks in one long table with no recommendation or starting point, which feels overwhelming",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 2,
+      "summary": "Many rows show 'less than 3 years' instead of a return, so those tracks can't be compared",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 3,
+      "summary": "Fees are shown only as percents with no shekel amount, so the reader can't tell how much the difference matters",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 4,
+      "summary": "The same track names repeat under every company, so it's hard to tell what differs",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 5,
+      "summary": "The return column header doesn't say whether the figure is per year or total, or what 'before management fees' changes",
+      "serious": true,
+      "names_listed": 0
+    },
+    {
+      "n": 6,
+      "summary": "The exposure percents are confusing for a track called 'stocks'",
+      "serious": false,
+      "names_listed": 0
+    },
+    {
+      "n": 7,
+      "summary": "No next step and no explanation of how to open the fund",
+      "serious": false,
+      "names_listed": 0
+    }
+  ],
+  "usd": 0.0324708
+}

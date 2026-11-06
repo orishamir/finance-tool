@@ -1,0 +1,36 @@
+{
+  "case": "study-r1-grey-years",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"In the graph of the years everything is grey, so nothing stands out.\",\"where\":\"the year graph\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 3,
+        "why": "Finding 3 says the colours in the year columns (ג) are too close to tell apart on the dark background, which is the same complaint as the person's: the year graph is too uniformly grey for anything to stand out."
+      }
+    ],
+    "liked": [],
+    "usd": 0.020107399999999997
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 3,
+        "why": "Finding 3 says the colours in the stacked year columns (grey, turquoise, yellow) are too alike to tell apart on the dark background, which is a clear part of the person's complaint that the grey year graph has nothing that stands out, though this is a borderline match."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0192234
+  },
+  "third": null,
+  "ranks": {
+    "k": 3
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0393308
+}

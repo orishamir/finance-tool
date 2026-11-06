@@ -1,0 +1,140 @@
+{
+  "task": "p01-no-reference-sp500-pc",
+  "persona": "first-job-phone",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T02:52:46.743Z",
+  "structured": {
+    "answer": "Open a securities account at פסגות and buy ילין לפידות מחקה S&P 500 (4D), the pair the page marks \"★ הזול\". The page says about 86,492 ₪ after 10 years, but that's for its own numbers (10,000 ₪ today plus 500 ₪ a month at 7%), not my 30,000.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Inputs at top (סכום היום 10,000, הפקדה חודשית 500)",
+        "why": "These are the page's numbers, not mine. I didn't change them, so the 86,492 isn't really my result"
+      },
+      {
+        "where": "Fund list, הראל מחקה מנוטרלת מט\"ח row",
+        "why": "'בין +2,212 ל־ −23,766' is a wide range with a minus. It scared me off and I didn't understand why it's so different"
+      },
+      {
+        "where": "Fund rows with English names (iShares, Vanguard)",
+        "why": "'אין מחיר כאן' / 'עוד לא נאסף'. Not sure whether they're good or just missing"
+      },
+      {
+        "where": "Charts about the dollar per year (screens 6-7)",
+        "why": "Lost interest here and stopped scrolling"
+      }
+    ],
+    "used": [
+      "Heading 'איפה ואיך הכי זול להשקיע במדד, לאורך זמן'",
+      "S&P 500 chip already selected",
+      "Inputs: 10,000 ₪ today, 500 ₪ monthly, 10 years, 7%",
+      "Big figure 86,492 ₪ 'הבחירה שלכם · ★ הזול'",
+      "Account list: פסגות 86,492, לאומי 83,396, הפועלים 81,471, מיטב טרייד 63,507",
+      "Fund list top row ילין לפידות מחקה S&P 500 (4D) and the minus shekel numbers next to other funds"
+    ],
+    "skimmed": [
+      "Colour legend of costs (עמלות קנייה ומכירה, דמי משמרת, מס...)",
+      "'החשבון 1 ₪ יותר / הקרן 58 ₪ פחות / המס 14 ₪ יותר' line",
+      "Text under 'כל החשבונות'",
+      "'לא בחישוב' notes under banks",
+      "Chart 'מה הכי משנה את מה שיישאר לכם' and its table",
+      "'עם נטרול מט\"ח או בלי' section headings"
+    ],
+    "skipped": [
+      "Explanation block 'למה חלק מהקרנות בלי מחיר בפסגות'",
+      "Interactive Brokers / אינטראקטיב ישראל notes",
+      "Year-by-year dollar charts and table",
+      "Screens 8-10 entirely",
+      "Fund filter chips (קרן מחקה, צוברת, מחלקת דיבידנד etc.)"
+    ],
+    "unsure_meaning": [
+      "דמי משמרת",
+      "נאמן 0.02%",
+      "4D / 4A in fund names",
+      "צוברת / מחלקת דיבידנד",
+      "מנוטרלת מט\"ח",
+      "עסקת החלף",
+      "סיכון חליפין",
+      "W-8BEN",
+      "מחזיקה את המניות",
+      "−43 ₪ לעומת הבחירה שלכם",
+      "Dotted underlines under numbers"
+    ],
+    "not_found": [
+      "Result for my own 30,000 ₪ (I didn't change the inputs)",
+      "A clear first step / button to actually open the account",
+      "Whether ילין לפידות is a big trusted company"
+    ],
+    "findings": [
+      {
+        "what": "The result shown is for the page's 10,000 + 500/month, so the big number isn't mine. Easy to walk away with the wrong figure",
+        "where": "Top inputs and 86,492 ₪ card"
+      },
+      {
+        "what": "Cheapest fund is from a name I barely know, so I hesitated",
+        "where": "Fund list top row ילין לפידות"
+      },
+      {
+        "what": "Lots of tags per fund (צוברת, עסקת החלף, חשיפה לדולר, מס גם על שינוי המטבע...) and I didn't understand any of them",
+        "where": "Fund rows"
+      },
+      {
+        "what": "Wide range with a big minus scared me off a fund without explaining why",
+        "where": "הראל מחקה מנוטרלת מט\"ח row"
+      },
+      {
+        "what": "Many funds with 'אין מחיר כאן', so I don't know whether to ignore them",
+        "where": "iShares/Vanguard rows"
+      },
+      {
+        "what": "Long page of charts after the answer. I got bored and stopped",
+        "where": "Screens 6-7"
+      },
+      {
+        "what": "No obvious 'what to do now' step",
+        "where": "פסגות account card"
+      }
+    ]
+  },
+  "steps": 7,
+  "reads": 7,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 40496,
+    "turns": 9,
+    "usd": 0.19573279999999998,
+    "input": 10,
+    "cacheWrite": 14034,
+    "cacheRead": 38104,
+    "output": 3790,
+    "model": "claude-opus-5-5"
+  },
+  "variant": {
+    "id": "p01-no-reference-sp500-pc",
+    "screenshots": 11,
+    "changes": [
+      {
+        "id": "no-reference",
+        "type": "hide",
+        "shots": 11,
+        "applied": 11,
+        "most": 1
+      },
+      {
+        "id": "no-reference-arrow",
+        "type": "hide",
+        "shots": 11,
+        "applied": 11,
+        "most": 1
+      }
+    ],
+    "neverShown": [],
+    "errors": []
+  }
+}

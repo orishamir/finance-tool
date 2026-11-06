@@ -62,6 +62,12 @@ site weighs more than one seen once.
   500 control the slider showing 800 for a typed 750 fell from 4 of 4 to 2 of 4). Verdict: it generalises; it enters
   a version only after the held-out benchmark shows no more noise and no lower catch rate. About $10.8.
 
+- **Held out (2026-11-06):** on the 39 held-out screens (still pictures) the catch rate held, 14 of 72 with it
+  against 13 without; one session claimed a bar "appeared while I was scrolling" on a still picture, where the capture
+  had drawn the site's header mid-page. Movement can only be seen by a session that uses the page, so the instruction
+  is given only in browser sessions (v1, `versions/README.md`). On clean pages in the browser it also found, unprompted,
+  the guide's tab row that scrolls the page a long way down (#199): the very kind he called "a big one" on justETF.
+
 ### 2. גמל נט, the regulator's comparison (2026-11-06, PC)
 
 - **His problems:** looks like a 1990s site; slow to load; very small text; not clear where to begin; the filter
@@ -85,3 +91,11 @@ site weighs more than one seen once.
     report the way it now reports motion; not done yet.
 - **Partly the tool:** a session reads each screenshot at full resolution and can take a close-up, so small text
   costs it nothing, while a person at arm's length strains; "very small text" is hard for it to feel.
+- **Candidate tested (2026-11-06):** "what you were not sure you understood bothered you" (`versions/candidates/noted.md`),
+  built from these sessions and from the planted unknown word, which every session had listed among words it did not
+  understand but only two of six counted as a problem. On planted problems of meaning and order it was not built from:
+  2 of 22 with it, 2 of 22 without. Readers did report more of what they did not understand (a third of their findings
+  on clean pages without it, nearly half with it), but the planted problems were mostly never noticed at all, so moving
+  noticed things up the list does not reach them. **Dropped.** The lesson: on those kinds the reviewer does not see the
+  problem; it is not seeing it and leaving it out. Where it is the latter (the unknown word) is the one case it was
+  built from.

@@ -1,0 +1,125 @@
+{
+  "task": "s07",
+  "persona": "careful-retiree-pc",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T03:17:58.125Z",
+  "structured": {
+    "answer": "I understood what a fixed deposit is: money locked for a set time at a fixed or changing interest rate, 15% tax on the interest, and a fine from the bank if I break it early. But the page didn't tell me what my bank actually pays or what breaking would cost me, and it scared me with \"no deposit insurance\" and an example where I get back less than I put in, so I'll ask my son and the bank before doing anything.",
+    "confidence": "unsure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Calculator box, screen 1: \"נשאר לכם 68,270 ₪\" versus \"ההפקדות שלכם 70,000 ₪\"",
+        "why": "It looks as if the deposit gives back less than I put in. I didn't understand that \"בכסף של היום\" meant something else, and it frightened me."
+      },
+      {
+        "where": "\"סיכונים ומה לא מוגן\" and \"שווה לדעת\": \"אין ביטוח פיקדונות\"",
+        "why": "It contradicts what I believed, that a deposit is safe. I didn't know whether to believe it or how worried to be."
+      },
+      {
+        "where": "Red box \"שבירת פיקדון לפני הזמן\"",
+        "why": "I wanted to know what I lose by breaking a deposit, and it says the site doesn't calculate it and the fine is set by the bank."
+      },
+      {
+        "where": "\"כמה זה עולה\"",
+        "why": "It only says \"לפי התעריף של הגורם המציע\", with no number."
+      }
+    ],
+    "used": [
+      "Title and opening line \"כסף שמפקידים בבנק לתקופה מוסכמת\"",
+      "\"מה זה\" paragraphs: fixed/variable interest, automatic renewal, linked/unlinked",
+      "The example: 1.8%, 10 years, 68,270 versus 70,000",
+      "\"שווה לדעת\": 15% tax, breaking a deposit, no deposit insurance",
+      "Tax cards and red box about breaking a deposit",
+      "\"סיכונים ומה לא מוגן\" paragraphs",
+      "\"כמה זה עולה\" table"
+    ],
+    "skimmed": [
+      "Chart with the green area",
+      "\"למה משתמשים בזה\" paragraph about money market funds",
+      "\"מי מציע ומי מפקח\"",
+      "Low-income tax exemption paragraph with 69,840 and 10,920",
+      "Glossary table \"מונחים\" on screens 3–4"
+    ],
+    "skipped": [
+      "Sliders and input boxes in the calculator",
+      "\"הצגה כטבלה\" fold",
+      "\"הצגת החוקים והכללים\" links",
+      "\"הצגת כל הבדיקות\" fold",
+      "\"הצגת כל המונחים\" folds",
+      "Footer links",
+      "Side menu \"בעמוד הזה\""
+    ],
+    "unsure_meaning": [
+      "בכסף של היום / בשקלים של העתיד",
+      "מחושב (purple tag)",
+      "123 מקור / 123 מחושב / 123 הזנה",
+      "TXI-03, BANK-06, BANK-23, TXI OQ14, TXI-17, TXI-04",
+      "קרן כספית, מק\"מ, מוצרי שוק הכסף",
+      "מזומן שקלי",
+      "ריבית ריאלית",
+      "הבטחת קרן",
+      "חשבון במערכת סגורה",
+      "ריבית הפריים",
+      "pencil icons beside numbers"
+    ],
+    "not_found": [
+      "Actual current deposit rates at my bank or any bank",
+      "How much the fine for breaking a deposit actually is",
+      "Whether something equally safe pays more than a deposit",
+      "A plain sentence explaining why the example ends with less than was deposited"
+    ],
+    "findings": [
+      {
+        "what": "The example shows 68,270 ₪ left against 70,000 ₪ deposited, with no plain sentence saying why. It looks like the deposit loses money.",
+        "where": "Calculator box, screen 1"
+      },
+      {
+        "what": "\"אין ביטוח פיקדונות\" is alarming, and there is nothing next to it saying how likely a bank collapse is or what to do about it",
+        "where": "\"שווה לדעת\" and \"סיכונים ומה לא מוגן\""
+      },
+      {
+        "what": "Breaking a deposit early, the thing I most wanted to understand, isn't calculated, only \"הקנס הוא תנאי של הבנק\"",
+        "where": "Red box in \"מיסוי\", screen 3"
+      },
+      {
+        "what": "Costs say only \"לפי התעריף של הגורם המציע\", with no amount",
+        "where": "\"כמה זה עולה\""
+      },
+      {
+        "what": "Dark background with light grey small text is hard to read even enlarged",
+        "where": "Notes under the calculator inputs, small lines under tax cards, side menu"
+      },
+      {
+        "what": "Codes in English letters (TXI-03, BANK-06) mean nothing to me",
+        "where": "\"שווה לדעת\" and \"מיסוי\""
+      },
+      {
+        "what": "Busy calculator with sliders, pencils, tags and many numbers on the first screen",
+        "where": "Screen 1 lower half"
+      },
+      {
+        "what": "Unknown personal site; I wouldn't act on it alone",
+        "where": "Footer \"אתר אישי, לא מסחרי\""
+      }
+    ]
+  },
+  "steps": 4,
+  "reads": 4,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 37921,
+    "turns": 6,
+    "usd": 0.1852802,
+    "input": 8,
+    "cacheWrite": 13803,
+    "cacheRead": 26521,
+    "output": 3476,
+    "model": "claude-opus-5-5"
+  }
+}
