@@ -1,0 +1,13 @@
+{
+ "id": "current-account-future-shekels",
+ "task": "s01",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "With 'בשקלים של העתיד' chosen, the figures ignore inflation, so they are wrong.",
+   "where": "the chart and figures of the panel",
+   "kind": "general"
+  }
+ ],
+ "liked": []
+}

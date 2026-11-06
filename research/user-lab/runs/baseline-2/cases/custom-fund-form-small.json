@@ -1,0 +1,13 @@
+{
+ "id": "custom-fund-form-small",
+ "task": "s30",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "The form for adding a fund is cramped in a narrow panel and hard to move around in.",
+   "where": "the add-a-fund form",
+   "kind": "general"
+  }
+ ],
+ "liked": []
+}

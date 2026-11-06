@@ -1,0 +1,13 @@
+{
+ "id": "tracks-sort-does-nothing",
+ "task": "s18",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "Sorting by management fee does nothing visible: under each company heading there is one track, so the order does not change.",
+   "where": "the sorted table",
+   "kind": "general"
+  }
+ ],
+ "liked": []
+}

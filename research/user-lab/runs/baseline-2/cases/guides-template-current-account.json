@@ -1,0 +1,13 @@
+{
+ "id": "guides-template-current-account",
+ "task": "s10",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "The current-account guide carries template sections that do not fit it (who offers it, money in and out, tax and the like), padding the page.",
+   "where": "the sections 'who', 'in and out', 'tax' of the guide",
+   "kind": "general"
+  }
+ ],
+ "liked": []
+}

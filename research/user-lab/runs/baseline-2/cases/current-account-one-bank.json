@@ -1,0 +1,13 @@
+{
+ "id": "current-account-one-bank",
+ "task": "s01",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "The current-account guide's interest example and chart are one bank's (Leumi) terms and one person's case, shown as if general, though most people's idle money earns nothing and slowly loses value.",
+   "where": "the interest lines and the expanded chart",
+   "kind": "general"
+  }
+ ],
+ "liked": []
+}

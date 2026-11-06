@@ -1,0 +1,13 @@
+{
+ "id": "tracks-r2-companies",
+ "task": "s38",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "Rows repeat their group's heading: each company row repeats the track kind in its name and again in a label, and under a heading 'עוקב מדד S&P 500' every row says it again.",
+   "where": "the rows under each group heading",
+   "kind": "general"
+  }
+ ],
+ "liked": []
+}

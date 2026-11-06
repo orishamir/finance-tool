@@ -1,0 +1,13 @@
+{
+ "id": "tracks-warnings",
+ "task": "s15",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "Almost every row of the tracks table carries a date warning mark; the repeated warnings clutter the table though one note at the top would do.",
+   "where": "the warning marks in the table rows",
+   "kind": "general"
+  }
+ ],
+ "liked": []
+}

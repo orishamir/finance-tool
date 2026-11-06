@@ -1,0 +1,13 @@
+{
+ "id": "custom-fund-labels",
+ "task": "s30",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "A fund the reader added gets labels ('צוברת', 'חשיפה לדולר') that the reader never gave, and the reader cannot choose its labels.",
+   "where": "the added fund's row in the fund list",
+   "kind": "general"
+  }
+ ],
+ "liked": []
+}

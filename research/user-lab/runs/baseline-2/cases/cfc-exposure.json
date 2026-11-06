@@ -1,0 +1,13 @@
+{
+ "id": "cfc-exposure",
+ "task": "s32",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "The fund table spells out the stock percentage and the currency ceiling of each fund, which the label 'חשיפה לדולר' already covers; the extra figures clutter.",
+   "where": "the exposure figures in each version",
+   "kind": "taste"
+  }
+ ],
+ "liked": []
+}

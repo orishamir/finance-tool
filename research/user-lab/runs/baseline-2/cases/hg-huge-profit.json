@@ -1,0 +1,13 @@
+{
+ "id": "hg-huge-profit",
+ "task": "s14",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "The graphic shows a very large profit figure with nothing explaining where it comes from.",
+   "where": "the profit part of the graphic",
+   "kind": "general"
+  }
+ ],
+ "liked": []
+}

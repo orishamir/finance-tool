@@ -1,0 +1,13 @@
+{
+ "id": "study-r1-decoder-table",
+ "task": "s34",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "A table exists only to decode the graph instead of the names and numbers being written on the graph, adding mental overhead.",
+   "where": "the table under the graph",
+   "kind": "general"
+  }
+ ],
+ "liked": []
+}

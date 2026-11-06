@@ -1,0 +1,13 @@
+{
+ "id": "makam-duplicates",
+ "task": "s05",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "The guide list still offers makam as separate guide pages (one per way of holding it), though they describe one thing.",
+   "where": "the makam entries in the guide list",
+   "kind": "general"
+  }
+ ],
+ "liked": []
+}

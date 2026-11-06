@@ -1,0 +1,13 @@
+{
+ "id": "home-door-guide",
+ "task": "s04",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "The home link 'להבין סוג של חיסכון' promises help with one kind of saving but opens only the general list of guides.",
+   "where": "the link on the home page and where it leads",
+   "kind": "general"
+  }
+ ],
+ "liked": []
+}
