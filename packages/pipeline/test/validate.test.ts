@@ -436,7 +436,8 @@ describe("open questions (data-schema 3.15, 2026-10-26)", () => {
     // plus REG OQ26 to OQ28 (Insolvency Law amendments and other priorities; Insurance Supervision Law current wording; the clearing-house board's exclusions), opened 2026-11-06
     // plus PEN OQ24 to OQ30 (pension factors: tables, editions, fee adjustment) and PF OQ17 (the yearly report's insurance percent row), opened 2026-11-06
     // plus ETF OQ37 (what counts as a commodity for a fund), opened 2026-11-06
-    expect(items.length).toBe(550);
+    // plus TXS OQ24 (the US tax on dividends inside an exempt Israeli fund holding US shares), opened 2026-11-06
+    expect(items.length).toBe(551);
     expect(items.find((q) => q.id === "TXP OQ3")).toMatchObject({ file: "tax-pension-gemel-lekitzba.md", closedOn: "2026-10-26" });
     // a closure of the open-question hunt (main, 2026-10-26), struck with its bold title inside the strike
     expect(items.find((q) => q.id === "BRK OQ11")).toMatchObject({ file: "brokerage-account.md", closedOn: "2026-10-26" });
