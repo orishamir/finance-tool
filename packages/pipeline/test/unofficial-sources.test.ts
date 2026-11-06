@@ -16,3 +16,13 @@ describe("unofficialSources", () => {
     expect(unofficialSources(rec, articles)).toEqual([]);
   });
 });
+
+describe("unofficial-leftovers.json", () => {
+  it("names only files that still exist, so a deleted record's lines are struck too", async () => {
+    const { existsSync, readFileSync } = await import("node:fs");
+    const { join } = await import("node:path");
+    const list = JSON.parse(readFileSync(join(__dirname, "../src/unofficial-leftovers.json"), "utf8")) as string[];
+    const missing = list.filter((k) => !existsSync(join(__dirname, "../../../data", k.slice(0, k.indexOf(" ")))));
+    expect(missing).toEqual([]);
+  });
+});

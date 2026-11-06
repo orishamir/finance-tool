@@ -573,7 +573,12 @@ function checkUnofficialSources(files: string[], dataDir: string, report: (file:
       if (!leftovers.has(key)) report(f, `cites ${url}, which is not an official publication: cite the official text, and keep this one as a lead in notes`);
     }
   }
-  for (const key of leftovers) if (!seen.has(key)) report(join(dataDir, key.split(" ")[0]), `unofficial-leftovers.json still lists "${key}", which is gone: strike it (the list only shrinks)`);
+  // a leftover whose file is scanned here and no longer cites it is struck; a fixture directory without the file is left alone
+  const scanned = new Set(files.map((f) => relative(dataDir, f).split(/[\\/]/).join("/")));
+  for (const key of leftovers) {
+    const file = key.slice(0, key.indexOf(" "));
+    if (scanned.has(file) && !seen.has(key)) report(join(dataDir, file), `unofficial-leftovers.json still lists "${key}", which is gone: strike it (the list only shrinks)`);
+  }
 }
 
 function checkStaleUnknowns(files: string[], dataDir: string, rules: Map<string, RuleLike>, warn: (category: string, id: string) => void): void {
