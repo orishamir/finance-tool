@@ -182,7 +182,9 @@ to 25 of `research/2026-10-28-founder-patterns.md`.
   and phone (`table-layout: fixed`); figures use tabular digits and do not
   wrap; a block whose content varies keeps one height, sized for its
   longest case; a blank for a number has a fixed width; a list that
-  re-sorts keeps the tapped row where it was. The builder checks it with a
+  re-sorts keeps the tapped row where it was. One exception (2026-11-06,
+  D62): switching index on a phone may move what lies below the switch,
+  with a short, gentle transition, never a jump. The builder checks it with a
   script that changes the inputs and compares the boxes, and says so in the
   structure review. Patterns: `docs/design-system.md` 2.5a.
 - **Structure review before every merge** (founder, 2026-10-25). The lead
