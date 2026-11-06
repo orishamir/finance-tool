@@ -1,0 +1,84 @@
+{
+  "case": "hg-tax-after-six",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"With a high salary entered, the graphic says tax is due even after 6 years and shows a large income-tax figure, without making clear which money it is on.\",\"where\":\"the graphic and its sentences\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "No age question: unclear whether 3 or 6 years applies to a 61-year-old",
+      "Salary above the 15,712 ceiling: unclear whether the 136,457 already includes the monthly tax on employer money, or how the payslip is affected",
+      "The coloured '123 ממקור / מחושב / הזנתי' line is confusing",
+      "The 'under 60, at least 31%' bullet doesn't give the tax rate for someone over 60",
+      "'המחיר, לעומת קופת גמל להשקעה' went over the reader's head",
+      "The S&P 500 / אג\"ח buttons are too technical (would drop them first, along with the securities-account link)",
+      "Calculator input boxes are cut off, so the salary entered never shows",
+      "The three מיסוי cards repeat the intro",
+      "Orange box: 47% tax taken at source and a refund via tax return sounds like burdensome paperwork",
+      "The chief economist line about cutting the benefit is unsettling",
+      "The small year 1–12 bars have no numbers on them",
+      "The striped tax piece stays on bars after year 6; unclear why tax is still paid after 6 years",
+      "The dark-brown block and the light/dark stripes in the big chart are unexplained",
+      "No visible legend for the big chart",
+      "Why the 'מיטב השתלמות עוקב מדד S&P500' (13245) fund was picked, and what 13245 means, is unexplained",
+      "'הרווח הריאלי' still fuzzy even after the glossary",
+      "Why the word 'עמית' is used is unclear",
+      "No information on what happens if you stop working before 6 years",
+      "No numeric total for year 6 or year 12, only a bar",
+      "No comparison with putting the money into a pension instead",
+      "The מונחים glossary table could go; explain terms where they appear",
+      "The 'שווה לדעת' codes like TXH-09 could go"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 12,
+        "why": "The reader says the striped tax piece stays on bars 6–12 and can't understand why tax still seems due after 6 years, which is the core of the person's complaint that the graphic shows tax after 6 years without making clear which money it applies to."
+      }
+    ],
+    "liked": [],
+    "usd": 0.07924319999999999
+  },
+  "b": {
+    "raised": [
+      "Page never asks age; unclear whether 3 or 6 years applies to a 61-year-old when the chart says 6",
+      "Salary above ceiling: unclear whether 136,457 already includes tax on employer money above 15,712, or how the payslip is affected",
+      "The coloured '123 ממקור / מחושב / הזנתי' line is confusing",
+      "Early-withdrawal rate given only for under 60; rate for over-60s not stated",
+      "'המחיר, לעומת קופת גמל להשקעה' not understood",
+      "S&P 500 / bonds buttons too technical (would drop first)",
+      "Calculator input boxes cut off; salary of 30,000 never visible",
+      "Fees 'עד 2% בשנה' looks like a lot",
+      "The three מיסוי cards repeat the intro (would drop)",
+      "Orange box: 47% withheld at source and refund via tax return sounds like burdensome paperwork",
+      "Chief economist line about reducing the benefit is worrying (would drop)",
+      "Small bar chart bars have no numbers on them",
+      "Big chart: dark-brown block, light/dark stripes unexplained, no legend",
+      "Why tax still appears after 6 years (striped tops on bars 6–12)",
+      "Why fund 'מיטב... (13245)' was chosen and what 13245 means",
+      "'הרווח הריאלי' still unclear",
+      "Why the word 'עמית' in עמית-עצמאי / עמית-שכיר",
+      "What happens if work stops before 6 years",
+      "No number given for total at year 6 or year 12",
+      "Not shown whether it's better than putting the money into a pension",
+      "Glossary table could go; explain terms in place",
+      "'שווה לדעת' codes like TXH-09 not needed"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 14,
+        "why": "The reader asks why tax still shows after 6 years on the striped bars 6–12, and they also raise a separate point about not knowing which tax the figure includes for a salary above the ceiling. Together these match the person's complaint that tax shows after 6 years without saying which money it falls on."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0681032
+  },
+  "third": null,
+  "ranks": {
+    "k": 12
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1473464
+}

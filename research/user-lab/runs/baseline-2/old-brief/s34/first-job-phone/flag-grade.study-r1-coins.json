@@ -1,0 +1,75 @@
+{
+  "case": "study-r1-coins",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The coins add nothing a simple bar would not show better.\",\"where\":\"the coin drawing\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Unsure whether their own employer actually gives 7.5% (orange warning); would need to check, and couldn't find how",
+      "Subtitle 'שרטוט לבחירה' told them nothing",
+      "First top card (+1,721, 'all today's graphic shows') was confusing",
+      "Fund and company names in the assumptions paragraph were noise",
+      "Didn't count the coins; only saw one pile is huge and the other a thin line",
+      "Option B: nearly missed the thin green +527 step, and it added nothing after A",
+      "Option C: too many colours, and the white line took a moment to understand",
+      "Teal and pink-striped coins only understood after reading the table",
+      "Scared by the −13,974 withdrawal tax line",
+      "Didn't understand 'דמי ניהול' or how much it costs them",
+      "Didn't understand 'מסלול', 'מחקה', 'תקרה בחוק'",
+      "Didn't understand why year-5 tax is so large compared with 594 for securities",
+      "Coin scale note (1 coin = 1,000 ₪) never used",
+      "Missing: what happens if they change jobs before 6 years",
+      "Missing: emergency withdrawal and what is lost",
+      "Missing: how to actually open a fund",
+      "Missing: whether they can hold both a fund and a securities account",
+      "Would drop Option C, Option B, the assumptions paragraph and the first card"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 5,
+        "why": "The reader says they didn't count the coins and only took in that one pile is huge and the other is a thin line, which a simple bar would show just as well, so this is a clear part of the person's complaint that the coins add nothing."
+      }
+    ],
+    "liked": [],
+    "usd": 0.054123199999999996
+  },
+  "b": {
+    "raised": [
+      "The subtitle 'שרטוט לבחירה' (a draft to choose from) told the reader nothing",
+      "The first top card (+1,721 ₪) was confusing: why is the fund only 1,721 better?",
+      "The assumptions paragraph (fund track names, 4D, company name) was noise",
+      "The coin piles weren't read as coins, only as a huge pile against a thin line",
+      "Option B: the thin green +527 step was nearly missed, and B added nothing new after A",
+      "Option C: too many colours, the white line was slow to grasp, and the comparison was hard to feel",
+      "The teal and pink-striped coin colours were only understood after reading the table",
+      "The −13,974 withdrawal tax was scary at first",
+      "Didn't understand 'דמי ניהול' (management fees) or how much they cost",
+      "Didn't understand the terms מסלול (track), מחקה (index tracker), תקרה בחוק (legal ceiling)",
+      "Didn't understand why the year-5 tax is so large compared with 594 for the securities account",
+      "The 'one coin = 1,000 ₪' note was never used",
+      "Missing: what happens when you change jobs before 6 years",
+      "Missing: whether you can withdraw in an emergency and what you lose",
+      "Missing: how to actually open a fund (through the employer or alone)",
+      "Missing: how to find out what percentage your own employer gives",
+      "Missing: whether you can have both a fund and a securities account"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 4,
+        "why": "The reader says they didn't count the coins and only saw that one pile is huge and the other is a thin line, so the coins worked only as bar lengths, which is the person's point."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0568952
+  },
+  "third": null,
+  "ranks": {
+    "k": 4
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.11101839999999999
+}

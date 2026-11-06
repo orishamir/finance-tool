@@ -1,0 +1,72 @@
+{
+  "case": "study-r1-decoder-table",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"A table exists only to decode the graph instead of the names and numbers being written on the graph, adding mental overhead.\",\"where\":\"the table under the graph\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "The subtitle \"שרטוט לבחירה\" (a draft to choose from) told them nothing",
+      "The first top card (+1,721 ₪) was confusing until they worked out it meant without the employer; they would drop it",
+      "The assumptions paragraph was full of jargon and noise (fund track names, 4D, company names); they would drop it except the orange warning",
+      "In Option B they nearly missed the +527 step because it is a thin green line",
+      "Option B added nothing new after Option A; they would drop it",
+      "Option C had too many colours, the white line took a moment and needed the legend, and the comparison was hard to feel; they would drop it",
+      "In Option A, the teal and pink-striped coins only made sense after reading the table",
+      "The withdrawal tax line (−13,974) scared them",
+      "Did not understand \"דמי ניהול\" (management fees) or how much they cost",
+      "Did not understand the terms מסלול, מחקה and תקרה בחוק",
+      "Did not understand why the year-5 tax is so big (13,974) when the securities account pays only 594",
+      "Could not find what happens if they change jobs before 6 years",
+      "Could not find whether they can take money out in an emergency and what they would lose",
+      "Could not find how to actually open a fund (through the employer or on their own)",
+      "Could not find how to learn what percentage their own employer gives",
+      "Could not find whether they can have both the fund and a securities account"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 7,
+        "why": "The reader says they only understood the teal and pink-striped coins after reading the table, so the graph needed the table to decode it, which is the person's complaint."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0543072
+  },
+  "b": {
+    "raised": [
+      "Title/subtitle 'שרטוט לבחירה' told the reader nothing",
+      "First top card (+1,721) was confusing about why the fund is only slightly better; would drop it",
+      "Assumptions paragraph full of jargon and fund names that felt like noise; would drop it",
+      "Option B's '+527' step is a thin green line that is easy to miss, and B added nothing after A; would drop it",
+      "Option C has too many colours, and the white line was hard to work out (only clear from the legend); would drop it",
+      "Tax on withdrawal (−13,974) in the table was alarming",
+      "Teal and pink-striped coin colours could only be understood after reading the table",
+      "Did not understand 'דמי ניהול' (management fees) or how much it costs",
+      "Did not understand terms 'מסלול', 'מחקה', 'תקרה בחוק'",
+      "Unclear why the tax at year 5 is so large compared with 594 for the securities account",
+      "The coin scale note (1 coin = 1,000 ₪) was not useful",
+      "Couldn't find what happens on changing jobs before 6 years",
+      "Couldn't find whether money can be withdrawn in an emergency and at what cost",
+      "Couldn't find how to actually open a fund",
+      "Couldn't find how to learn the employer's percentage",
+      "Couldn't find whether one can hold both a fund and a securities account"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 7,
+        "why": "The reader says the teal and pink coin colours only made sense after reading the table under the graph, which is a clear part of the person's complaint that the graph has to be decoded through a separate table."
+      }
+    ],
+    "liked": [],
+    "usd": 0.053007200000000004
+  },
+  "third": null,
+  "ranks": {
+    "k": 7
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1073144
+}

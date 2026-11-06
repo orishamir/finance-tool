@@ -1,0 +1,96 @@
+{
+  "case": "account-card-parens",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The chosen account's name carries a parenthesis '(מותג של MEXEM LTD)' that clutters it.\",\"where\":\"the chosen account's card\",\"kind\":\"taste\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Psagot shows 'no data' and 'doubtful it's sold there', so unsure the winning fund can actually be bought there",
+      "'Can also hold it through a foreign fund' in the index description meant nothing",
+      "Didn't know whether to touch the 7% yearly return input",
+      "Tax being the biggest cost surprised them; didn't understand why",
+      "Too many confusing tags on the S&P 500 fund list (צובר, חלוקת דיבידנד, חשיפה לדולר, etc.)",
+      "Many fund rows say 'no price here', so they stopped reading",
+      "IBI/Altshuler/Psagot 'no data' boxes with long text about fees were confusing",
+      "Didn't get the 'why some funds have no price' and 'vs the index' sections",
+      "Currency-hedging section with its boxes and charts was confusing",
+      "Grey 'from the starting point' bar chart and 'click on a step' not understood",
+      "Small underlined numbers in the bank list (1,298, 2,749…) unexplained",
+      "Colour legends for fee types didn't connect to anything",
+      "Didn't understand צובר vs חלוקת דיבידנד",
+      "Didn't understand fund types (קרן מחקה, קרן סל, קרן חוץ בת\"א) or which suits them",
+      "Didn't understand נטרול מט\"ח and 4D/4A",
+      "Didn't understand דמי משמרת and the W-8BEN form requirement",
+      "Unclear whether 'vs the index +0.37%' is good",
+      "Why tax differs between pairs is unexplained",
+      "Why Psagot shows 'no data' but still wins is unexplained",
+      "Dotted underlines on numbers: unclear whether clickable",
+      "No plain yes/no on whether the winning fund can be bought at Psagot",
+      "No next step for opening the account",
+      "No suggestion to look at a 30-year horizon",
+      "No one-sentence total of costs in shekels for their choice",
+      "No guidance on whether 7% is a reasonable return",
+      "Would drop the currency-hedging section",
+      "Would drop the 'what the ad says' section and claims list",
+      "Would drop the grey 'from the starting point' chart",
+      "Would drop the long 'no data' boxes and the no-price funds",
+      "Would drop most of the fund tags"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The report never says anything about the '(מותג של MEXEM LTD)' parenthesis or clutter in the chosen account's name."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0674632
+  },
+  "b": {
+    "raised": [
+      "Psagot shows 'no data' and 'doubtful it is sold there', so unsure the winning fund can be bought there",
+      "'Can also hold it through a foreign fund' meant nothing",
+      "Didn't know whether to touch the 7% return slider",
+      "Tax being the biggest cost was surprising and not understood",
+      "The fund list has too many tags and many rows say 'no price here'",
+      "IBI/Altshuler/Psagot 'no data' boxes have long confusing text",
+      "'Why some funds have no price' and 'vs. the index' sections not understood",
+      "Currency-hedging section with boxes and charts was confusing",
+      "'From the starting point' grey bar chart and 'click on a step' not understood",
+      "Small underlined numbers in the bank list unclear",
+      "Colour legends for fee types not connected to anything",
+      "Terms 'accumulating' vs 'dividend distributing' unclear",
+      "Difference between fund types (index fund, ETF, foreign fund in TA) unclear",
+      "'Currency hedging' and '4D/4A' not understood",
+      "'Custody fees' and 'requires W-8BEN form' not understood",
+      "Unclear whether 'vs. index +0.37%' is good",
+      "Why tax differs between pairs not explained",
+      "Why Psagot shows no data yet still wins",
+      "Unclear whether dotted-underlined numbers are clickable",
+      "Wanted a plain yes/no on whether the winning fund can be bought at Psagot",
+      "No next step on how to open the account",
+      "Wanted a longer horizon (30 years) to be suggested",
+      "Wanted total costs in shekels stated in one sentence",
+      "Unsure whether 7% is a reasonable default",
+      "Would drop the 'what the ad says' section and claims list",
+      "Would drop most fund tags and 'no price here' funds"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The report never mentions the chosen account's name or the '(מותג של MEXEM LTD)' parenthesis cluttering it."
+      }
+    ],
+    "liked": [],
+    "usd": 0.06534319999999999
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1328064
+}

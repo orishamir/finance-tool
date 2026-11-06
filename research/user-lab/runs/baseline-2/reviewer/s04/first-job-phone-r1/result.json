@@ -1,0 +1,100 @@
+{
+  "task": "s04",
+  "persona": "first-job-phone",
+  "repeat": 1,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T12:08:16.300Z",
+  "structured": {
+    "answer": "On the home page, tap \"להבין סוג של חיסכון\" (or \"מדריך\" in the top menu). That opens a guide with a card for each type of saving, so you just find the one you heard of, like \"קרן השתלמות\" or \"מדד S&P 500\", and tap it.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Home page first screen",
+        "why": "The big form 'מה השאלה שלכם?' with amount fields and the 'מה הכי מתאים' button takes the main spot. The card I needed is in the left column, which I read last, so it looks like a side thing."
+      },
+      {
+        "where": "Guide page, card sections",
+        "why": "Lots of cards that look alike (indexes, bonds, kinds of גמל). I was scrolling without reading and almost lost track of what I was looking for."
+      },
+      {
+        "where": "Between screenshots 3→4 and 5→6",
+        "why": "The page jumped, so I missed some cards in between, like the top of 'כסף שוטף וקצר'."
+      }
+    ],
+    "used": [
+      "Card 'להבין סוג של חיסכון – מה זה, כמה זה עולה ואיך זה ממוסה'",
+      "Top menu item 'מדריך'",
+      "Guide heading 'כל סוג של חיסכון והשקעה שהאתר מכסה. לכל אחד אותו מבנה'",
+      "'מאיפה להתחיל' with the 'קרן השתלמות' link",
+      "Card 'קרן השתלמות'",
+      "Card 'מדד S&P 500'"
+    ],
+    "skimmed": [
+      "'שני חלקים בכל חיסכון' block",
+      "Section headings 'חיסכון עם הטבת מס', 'פרישה', 'לילדים', 'לבחירה עצמית', 'במה הכסף מושקע'",
+      "Tel Aviv index cards"
+    ],
+    "skipped": [
+      "Form 'מה השאלה שלכם?' and its fields",
+      "'שאלות שכולם שואלים'",
+      "Footer and the 'אתר אישי, לא מסחרי' line",
+      "'מה האתר עוד לא מכסה'",
+      "Cards for bonds, מק\"מ and pension"
+    ],
+    "unsure_meaning": [
+      "מק\"מ",
+      "אג\"ח ממשלתית צמודה / לא צמודה",
+      "מזומן שקלי",
+      "קופת גמל בניהול אישי",
+      "קופת גמל להשקעה",
+      "MSCI AC World",
+      "קרן שעוקבת אחריו",
+      "תגמולים ואישית לפיצויים",
+      "קרן כספית מתחדשת"
+    ],
+    "not_found": [
+      "What's actually inside a product card (I didn't see an open card)",
+      "A clear 'start here for beginners' pointer on the home page"
+    ],
+    "findings": [
+      {
+        "what": "The way in to explaining a type of saving is a side card in the left column. The big form takes the main spot, so a first-time visitor can miss it.",
+        "where": "Home page, first screen"
+      },
+      {
+        "what": "The guide is a long list of many cards that look the same, with no hint of which ones a beginner should read.",
+        "where": "Guide page, card sections"
+      },
+      {
+        "what": "Lots of jargon in the card descriptions (מק\"מ, צמודה, MSCI AC World, קרן שעוקבת)",
+        "where": "Guide page, cards under 'במה הכסף מושקע'"
+      },
+      {
+        "what": "Some cards appear twice and some product names repeat (מק\"מ shows up twice), which is confusing",
+        "where": "Guide page, 'כסף שוטף וקצר' and 'במה הכסף מושקע'"
+      },
+      {
+        "what": "Dark background and small grey text are hard to read on a phone",
+        "where": "Whole site"
+      }
+    ]
+  },
+  "steps": 7,
+  "reads": 7,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 36241,
+    "turns": 9,
+    "usd": 0.1850028,
+    "input": 10,
+    "cacheWrite": 13813,
+    "cacheRead": 37694,
+    "output": 3346,
+    "model": "claude-opus-5-5"
+  }
+}

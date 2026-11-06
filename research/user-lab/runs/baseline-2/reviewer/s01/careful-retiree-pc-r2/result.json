@@ -1,0 +1,121 @@
+{
+  "task": "s01",
+  "persona": "careful-retiree-pc",
+  "repeat": 2,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T12:05:06.894Z",
+  "structured": {
+    "answer": "I didn't decide anything; I'll ask my son or the bank clerk. The page didn't say what my current account costs (only 'לפי התעריפון של הגורם המציע'). It did say the bank must notify me and suggest alternatives if more than 15,000 ₪ sits in the account, and that deposits aren't insured.",
+    "confidence": "unsure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Example box on screens 1-2 (74,044 ₪, תשואה בשנה 5%)",
+        "why": "A current account earning 5% contradicts the line saying money in it doesn't always get interest; I couldn't tell what the example meant"
+      },
+      {
+        "where": "כמה זה עולה table",
+        "why": "I came to learn the cost and there is no number, only 'לפי התעריפון של הגורם המציע'"
+      },
+      {
+        "where": "סיכונים ומה לא מוגן",
+        "why": "'אין בישראל ביטוח פיקדונות' frightened me about my 400,000 ₪; the 250,000 ₪ guarantee is only a proposal"
+      },
+      {
+        "where": "Screens 3 and 5 starting mid-section",
+        "why": "Text started in the middle of a sentence, and there was a red box with 'שאלה פתוחה: TXI OQ11' I didn't understand"
+      }
+    ],
+    "used": [
+      "Title and subtitle 'חשבון עובר ושב'",
+      "מה זה paragraph: 15,000 ₪ notice, basic and extended fee packages",
+      "שווה לדעת list",
+      "מי מציע ומי מפקח: Bank of Israel",
+      "כמה זה עולה table",
+      "מיסוי cards",
+      "סיכונים ומה לא מוגן paragraphs"
+    ],
+    "skimmed": [
+      "Example calculator and chart (74,044 ₪)",
+      "מה האתר לקח בחשבון with locks",
+      "מונחים table"
+    ],
+    "skipped": [
+      "Sliders and input boxes",
+      "הצגה כטבלה",
+      "הצגת החוקים והכללים links",
+      "Most of כסף נכנס ויוצא",
+      "הצגת כל הבדיקות / הצגת כל המונחים folds",
+      "Quiz box 'מנגנון שקלי'",
+      "Screen 7 (tired)"
+    ],
+    "unsure_meaning": [
+      "קרן כספית",
+      "מק\"מ",
+      "BANK-20, BANK-23, BANK-15 tags",
+      "TXI OQ11, TXI OQ7, BANK OQ9 / שאלה פתוחה",
+      "חסום",
+      "הצמדה: לא צמוד",
+      "ריבית צמודה למדד / הריאלית",
+      "בשקלים של העתיד",
+      "The '123' marks and dotted underlines",
+      "מזומן שקלי"
+    ],
+    "not_found": [
+      "How much my bank actually charges me for the current account",
+      "A clear safe alternative (e.g. a deposit) with its interest rate",
+      "What to do with money above 15,000 ₪ in practice"
+    ],
+    "findings": [
+      {
+        "what": "No actual fee amounts; cost only 'לפי התעריפון של הגורם המציע'",
+        "where": "כמה זה עולה"
+      },
+      {
+        "what": "Example shows a current account growing at 5% to 74,044 ₪, contradicting 'not always gets interest'; the big number is misleading",
+        "where": "Example box, screens 1-2"
+      },
+      {
+        "what": "'אין בישראל ביטוח פיקדונות' is alarming and not explained in plain terms for a saver",
+        "where": "סיכונים ומה לא מוגן"
+      },
+      {
+        "what": "Dark red box with code 'TXI OQ11' looks like an error/warning",
+        "where": "Top of screen 5"
+      },
+      {
+        "what": "Small pale grey text on dark background hard to read",
+        "where": "Line under title, notes under calculator, חסום lines"
+      },
+      {
+        "what": "Codes like BANK-20 and TXI OQ11 mean nothing to an ordinary reader",
+        "where": "שווה לדעת, מה האתר לקח בחשבון"
+      },
+      {
+        "what": "Jargon such as קרן כספית, מק\"מ, צמוד למדד, ריאלית without simple explanation",
+        "where": "Screens 3-4"
+      },
+      {
+        "what": "Calculator with sliders and many numbers is busy and anxious-making",
+        "where": "Screens 1-2"
+      }
+    ]
+  },
+  "steps": 6,
+  "reads": 6,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 40969,
+    "turns": 8,
+    "usd": 0.19096280000000002,
+    "input": 8,
+    "cacheWrite": 13814,
+    "cacheRead": 25394,
+    "output": 3767,
+    "model": "claude-opus-5-5"
+  }
+}

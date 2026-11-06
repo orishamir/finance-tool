@@ -1,0 +1,86 @@
+{
+  "case": "tracks-warnings",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"Almost every row of the tracks table carries a date warning mark; the repeated warnings clutter the table though one note at the top would do.\",\"where\":\"the warning marks in the table rows\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Can't tell which company the first group (and some mid-page groups) belongs to; the group heading is hidden under the sticky column headers",
+      "Returns are shown before fees, which makes the reader less sure of the choice",
+      "Fees are 2025 averages, almost a year older than the returns",
+      "The '123 מקור · מחושב · הזנתה' legend is confusing; the reader doesn't know what 'הזנתה' means",
+      "The yellow 'not updated since September 2026' warning is worrying and seems to contradict the bottom date of 03.11.2026",
+      "The 'כללי 12' filter wasn't obvious until afterwards, and several investment-type button labels were confusing",
+      "The table is very long, about 15 screens of scrolling",
+      "The Ayalon group has nothing to compare: all rows are new, 'עוד לא דווח', '0 מיליון ₪'",
+      "The round charts and two rings mean nothing; '101%' shares makes no sense",
+      "Many rows show 'פחות מ־3/5 שנים', so they can't be judged",
+      "Jargon such as סחיר, גמיש, קיימי and משולב is never explained",
+      "Unclear whether 99% מט\"ח is good or bad",
+      "'עוד לא דווח' leaves unclear what fee a new track actually charges",
+      "Unclear difference between 'S&P 500' and 'עוקב מדד s&p 500'",
+      "No information on how much each track lost in a market drop or worst year",
+      "No return after fees already worked out",
+      "No tax information for over-60s (pension vs lump sum)",
+      "No information on whether tracks can be switched later and at what cost",
+      "No information on whether the fee can be negotiated",
+      "No information on how to open an account or the minimum amount",
+      "No plain-language risk line for each investment type",
+      "Would drop the 'מההפקדות' fee line, since it is almost always 0%",
+      "Would drop the 3-year return if only one return can stay"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader only says they ignored the small clock icons next to every number and never complains that the repeated per-row warnings clutter the table or should be one note at the top."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0666592
+  },
+  "b": {
+    "raised": [
+      "Could not tell which company some groups belong to; the group heading hides under the column titles that stay at the top of the screen",
+      "Returns are shown before fees, which adds uncertainty and leaves the reader to subtract the fee",
+      "Fees are averages from 2025, almost a year older than the returns",
+      "Confusing '123 מקור / מחושב / הזנתה' legend; unclear what הזנתה means",
+      "Yellow warning says data not updated since September, which conflicts with the 'נכון ל־03.11.2026' date at the bottom",
+      "Investment-type filter labels are confusing, and it wasn't obvious to press 'כללי' to avoid scrolling",
+      "The table is very long, about 15 screens of scrolling",
+      "The Ayalon group is all new rows with no data or 0 assets, so there is nothing to compare",
+      "Round charts and their two rings mean nothing, and '101%' shares makes no sense",
+      "Many rows are too new to have 3- or 5-year history, so they can't be judged",
+      "Jargon terms (סחיר, גמיש, קיימי, משולב) are not explained",
+      "Unclear whether 99% מט\"ח is good or bad",
+      "'עוד לא דווח' leaves it unclear what fee a new track actually charges",
+      "Confusing duplicate names: 'S&P 500' and 'עוקב מדד s&p 500'",
+      "No information on downside or worst-year losses",
+      "No return after fees already worked out",
+      "No tax information for people aged 60 and over (pension vs lump sum)",
+      "No information on switching tracks later or what it costs",
+      "No information on whether the fee can be negotiated",
+      "No information on how to open an account or the minimum amount",
+      "No simple risk description for each investment type",
+      "Would drop the 'מההפקדות' fee line because it is almost always 0%",
+      "Would drop the 3-year return and keep only the 5-year one"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader only says they ignored the small clock icons next to every number; they never complain that the repeated marks clutter the table or suggest one note at the top instead."
+      }
+    ],
+    "liked": [],
+    "usd": 0.07451920000000001
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1411784
+}

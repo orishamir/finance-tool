@@ -1,0 +1,36 @@
+{
+  "case": "current-account-chart-unrelated",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The current-account guide shows a growth chart of money invested at a 10% yearly return, which has nothing to do with a current account.\",\"where\":\"the chart 'מה קורה לכסף לאורך הזמן' in the guide\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 3,
+        "why": "Finding 3 makes the same complaint: the guide leads with a growth example (74,044 ₪ at a set return) even though a current account usually earns nothing, so the projection doesn't fit the product. The rate is different (5% vs 10%), but the person would still recognise this as their problem."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0179514
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 3,
+        "why": "Finding 3 makes the same complaint: the guide shows a return-based growth example for a current account, which usually earns nothing, so it is misleading. The person would see this as their problem even though the return rate quoted is different."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0172594
+  },
+  "third": null,
+  "ranks": {
+    "k": 3
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0352108
+}

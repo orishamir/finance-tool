@@ -1,0 +1,36 @@
+{
+  "case": "current-account-chart-unrelated",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The current-account guide shows a growth chart of money invested at a 10% yearly return, which has nothing to do with a current account.\",\"where\":\"the chart 'מה קורה לכסף לאורך הזמן' in the guide\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 2,
+        "why": "Finding 2 makes the same complaint: the guide shows a current account growing with interest, which doesn't fit a current account. The rate quoted is different (5% vs 10%), but the problem is the same."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0166074
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 2,
+        "why": "Finding 2 makes the same complaint: the guide shows a current account's money growing at a yearly return, which doesn't fit a current account, even though the reader quotes a different rate and location."
+      }
+    ],
+    "liked": [],
+    "usd": 0.016159399999999997
+  },
+  "third": null,
+  "ranks": {
+    "k": 2
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0327668
+}

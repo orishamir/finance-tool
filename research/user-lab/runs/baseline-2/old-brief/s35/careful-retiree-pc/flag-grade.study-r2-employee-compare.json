@@ -1,0 +1,78 @@
+{
+  "case": "study-r2-employee-compare",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"For a salaried employee the comparison with a securities account is beside the point: the account gets no employer money, so it is not a real choice.\",\"where\":\"the comparison in both options\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Unsure about the 6-year tax rule at age 61: what if the money is needed before 6 years / at retirement",
+      "Subtitle 'בלי כדורים ובלי טבלה' means nothing without having seen the old version",
+      "'מה היה' small picture is tiny, unreadable and pointless",
+      "Fine print is confusing: fund names, ID numbers, (4D), company names",
+      "Option B lays the parts left to right, so 'נשאר בידיים' comes before the start",
+      "Option B is missing the '300 ₪ בחודש מכם' cost line",
+      "Option B's left chart has no ₪ signs",
+      "Last screenshot is empty",
+      "Option A's striped tax block sits on top of the column and looks like added money",
+      "Tax block uses two colours (orange-striped and green-striped) without explanation",
+      "Doesn't understand why year-5 tax is larger than the whole profit: is employer money taxed?",
+      "Jargon not understood: דמי ניהול, מסלולים, תעריפים, מחקה, עד התקרה בחוק, הכול בכסף של היום",
+      "The 14-rate range suggests 19,595 is the best case and the account could be half that",
+      "What happens if they leave or change jobs before 6 years",
+      "If they don't join, do they get the 900 in salary or is it lost",
+      "How much less will actually reach the bank each month",
+      "What if the market falls, since the page assumes 7% every year",
+      "No place to enter their own salary instead of 12,000",
+      "Would drop Option B",
+      "Would drop the 'עצמאים' toggle"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader never says the securities-account comparison is beside the point for a salaried worker; they found it convincing, and their closest points (whether the 900 is lost, and the best-case range) don't say the comparison isn't a real choice."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0575672
+  },
+  "b": {
+    "raised": [
+      "Option B leaves out the line saying what it costs me (300 ₪ from you, 900 ₪ from the employer)",
+      "Unsure about age: at 61, what if the money is needed before 6 years, when tax wipes out the profit?",
+      "Subtitle phrase 'בלי כדורים ובלי טבלה' means nothing without having seen the old version",
+      "The 'מה היה' small picture is too tiny to read and pointless to show",
+      "Fine print fund names, ID numbers and company names are confusing",
+      "In Option B the parts run left to right, so 'נשאר בידיים' comes before the starting amount",
+      "Option B's left chart has no ₪ signs",
+      "In Option A the striped tax block sits on top of the column and looks like money being added",
+      "The tax block has two colours (orange-striped and green-striped) with no explanation",
+      "Unclear why year-5 tax is bigger than the whole profit; is the employer's money taxed too?",
+      "Jargon not understood: דמי ניהול, מסלולים, תעריפים, מחקה, עד התקרה בחוק, הכול בכסף של היום",
+      "Range of 14 tariffs suggests the 19,595 shown is the best case and the account could be half that",
+      "Missing: what happens if I leave or change jobs before 6 years",
+      "Missing: if I don't join, do I get the 900 in my salary or is it lost?",
+      "Missing: how much less actually reaches my bank account each month",
+      "Missing: what happens in bad market years; the page assumes 7% every year",
+      "Missing: a way to enter my own salary instead of 12,000",
+      "Would drop Option B and the 'עצמאים' toggle"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader uses the fund-versus-securities-account comparison as convincing and never says it is beside the point because the account gets no employer money; asking whether the 900 is paid as salary when not joining is a different question."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0541872
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1117544
+}

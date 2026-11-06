@@ -1,0 +1,69 @@
+{
+  "case": "cfc-index-column",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"Text under the index name in the index column is unnecessary, and the column is wider than its content.\",\"where\":\"the index column\",\"kind\":\"taste\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "The fees are just as confusing in both versions",
+      "In version 2 the S&P and MSCI rows are taller because the grey tags wrap onto a second line",
+      "The note under the heading makes the reader wonder which funds are missing and whether a cheaper one is among them",
+      "\"(4A)\" and \"(4D)\" in the fund names mean nothing to the reader",
+      "Not sure what \"צוברת\" means and wants it confirmed",
+      "Doesn't understand \"עסקת החלף\" (swap) and worries it's riskier",
+      "\"מס גם על שינויי המטבע\" is unclear: how much does it actually cost?",
+      "The page doesn't say what \"מאיה\" is",
+      "Unclear whether the underlined fee numbers can be clicked or have an explanation behind them",
+      "Unclear whether the fixed, variable and trustee fees add up, and what makes the variable fee change",
+      "Missing: one total yearly cost per fund, ideally in shekels",
+      "Missing: how each fund has performed over recent years",
+      "Missing: how big each fund is",
+      "Missing: a plain explanation of holding the shares vs a swap in terms of risk",
+      "Would remove the security number column first"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader praises the explanation under the index name rather than calling it unnecessary, and never says the index column is wider than its content. The only row-height complaint is about the grey tags wrapping, not the index text."
+      }
+    ],
+    "liked": [],
+    "usd": 0.049892000000000006
+  },
+  "b": {
+    "raised": [
+      "Fees are confusing in both versions",
+      "In version 2 the S&P and MSCI rows are taller because the grey tags wrap onto a second line",
+      "The note under the heading makes them wonder which funds are missing and whether a cheaper one is among them",
+      "\"(4A)\" and \"(4D)\" in the fund names mean nothing to them",
+      "Unsure what the \"צוברת\" tag means and wants it confirmed",
+      "Doesn't understand the \"עסקת החלף\" (swap) tag and worries it means more risk",
+      "Doesn't know how much \"מס גם על שינויי המטבע\" actually costs them",
+      "Not sure what \"מאיה\" is; the page doesn't say",
+      "Underlined fee numbers: unclear whether they can be clicked or have an explanation",
+      "Unclear whether the fixed, variable and trustee fees add up, and what makes the variable fee change",
+      "Wants one total yearly cost per fund, ideally in shekels",
+      "Wants past performance of each fund",
+      "Wants fund size",
+      "Would remove the security-number column first"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader praises the explanation under the index name instead of calling it unnecessary, never says the column is wider than its content, and their row-height complaint is about the tags in the fund-name column."
+      }
+    ],
+    "liked": [],
+    "usd": 0.05122
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.10111200000000001
+}

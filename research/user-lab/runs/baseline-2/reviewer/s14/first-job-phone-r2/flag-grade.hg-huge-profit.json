@@ -1,0 +1,36 @@
+{
+  "case": "hg-huge-profit",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The graphic shows a very large profit figure with nothing explaining where it comes from.\",\"where\":\"the profit part of the graphic\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 2,
+        "why": "Finding 2 says the headline result contains a big tax cut that isn't disclosed up front, which is the same complaint as a large profit figure with nothing explaining where it comes from; finding 1 is about a different bar, the unlabeled minus bar."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0207074
+  },
+  "b": {
+    "liked": [],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 2,
+        "why": "Finding 2 says the headline result includes a big tax cut without saying so up front, which is the person's complaint that the large profit figure doesn't explain where it comes from; finding 1 is about an unlabeled minus bar, not the profit figure."
+      }
+    ],
+    "usd": 0.0180674
+  },
+  "third": null,
+  "ranks": {
+    "k": 2
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0387748
+}

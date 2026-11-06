@@ -1,0 +1,74 @@
+{
+  "case": "hg-within-ceiling",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"'כל ההפקדות ב־12 השנים בתוך התקרה של הפטור' is unclear, and seems not to make sense when the same sum is deposited every month.\",\"where\":\"the sentence under the graphic\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Unsure what they actually have to do next (tell HR? pick a company?)",
+      "Doesn't understand what the ₪15,712 ceiling means for their ₪30,000 salary, or whether part is taxed even after 6 years",
+      "The '123 מקור · מחושב · הזנתם' line at the top is confusing",
+      "The early-withdrawal bullet (at least 31% tax under age 60) scared them",
+      "Didn't know the words on the 'כדאי להכיר גם' buttons",
+      "Don't know what return/management-fee values to enter in the calculator boxes",
+      "Small 1–12 year bar chart has no numbers, so little was learned from it",
+      "Didn't understand the provider cards and the company names under 'תלוי בחברה'",
+      "The chief economist's recommendation to cut the benefit was slightly worrying",
+      "The tax section is confusing",
+      "Big chart colours aren't explained and there are no labels under the bars",
+      "Unclear whether the −64,761 is a sure loss, and what the final tax is given '47% מס במקור' is 'not the final tax'",
+      "Jargon not understood: רווח ריאלי, הפקדה מוטבת, מסלול כללי, אג\"ח ממשלתית צמודה",
+      "Can't easily find the amount received after the full 6 years without clicking",
+      "Missing how much monthly take-home pay will drop",
+      "Unclear whether every employer gives 7.5%",
+      "Would drop the terms table, the rules tags/codes, the 'closest to this' securities account section, the risks section and most chart notes"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader is confused about the ceiling because their own salary is above it, but never says the sentence claiming all 12 years of deposits are within the exemption ceiling is unclear or contradictory."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0685952
+  },
+  "b": {
+    "raised": [
+      "Unsure what to actually do next (tell HR? pick a company? which is cheapest for S&P 500?)",
+      "Doesn't understand what the ₪15,712 'תקרה' means for a ₪30,000 salary",
+      "The '123 מקור · 123 מחושב · 123 הזנתם' legend line is confusing",
+      "'כדאי להכיר גם' buttons use unfamiliar terms",
+      "Small 1–12 year chart has no numbers, so little is learned from it",
+      "Company cards under 'מי מציע ומי מפקח' not understood",
+      "Tax section is important but confusing",
+      "Big chart has no colour legend and no labels under bars",
+      "Unclear whether part of the money is taxed even after 6 years; chart doesn't show how much",
+      "Unclear what −64,761 is and what the final tax is, given '47% מס במקור' is 'not the final tax'",
+      "Jargon not understood: רווח ריאלי, הפקדה מוטבת, מסלול כללי, אג\"ח ממשלתית צמודה",
+      "Unclear why company names appear under 'תלוי בחברה' and whether to pick one",
+      "The 6-year payout isn't stated plainly; only visible after clicking 6",
+      "Missing how much less net pay arrives each month",
+      "Missing whether every employer gives 7.5%",
+      "Missing what happens to employer deposits above the ceiling and whether they're taxed monthly",
+      "Would remove terms table, rule tags, legend line, related-products, risks, company cards and most chart notes"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader is confused about the ceiling in relation to their own above-ceiling salary, but never questions the sentence saying all deposits over 12 years stay within the exemption ceiling, or how that could make sense with the same deposit every month."
+      }
+    ],
+    "liked": [],
+    "usd": 0.06267120000000001
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1312664
+}

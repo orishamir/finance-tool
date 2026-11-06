@@ -1,0 +1,88 @@
+{
+  "case": "tracks-exposure-100",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The column of exposure to stocks and foreign currency is not explained, and shows figures above 100% with nothing saying how that can be.\",\"where\":\"the exposure column\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Once you scroll, the company name disappears, so you can't tell which company a row (e.g. fund 8211) belongs to",
+      "The page doesn't show what the fees would actually cost in shekels",
+      "The fees are from 2025 but the other figures are from September 2026, with no reason given",
+      "The legend's 'הזנתה' and the line and box styles are not understood",
+      "The orange 'not updated' warning is unsettling and seems to clash with the 03.11.2026 date at the bottom",
+      "It wasn't clear that the filter buttons could narrow the table to the 'כללי' tracks",
+      "The 'קיימי' filter is not understood",
+      "The two government-bond filters look like the same thing",
+      "The table is very long and tiring to scroll",
+      "The new Ayalon tracks are empty or not reported, some showing 0 million ₪",
+      "The note saying returns are before fees and not a forecast comes too late, at the very bottom",
+      "The 'מההפקדות' fee is almost always 0%, and 'עוד לא דווח' lowered confidence",
+      "The donut circles add nothing beyond the numbers",
+      "The foreign-currency (מט\"ח) exposure number is not understood, e.g. what 99% means",
+      "'מניות 101%': unclear how more than 100% can be in shares",
+      "Unclear why the same S&P 500 index has different fees at different companies",
+      "Returns are shown before fees, so the reader must subtract the fee themselves",
+      "Unclear whether the fee can be negotiated or whether the average is what they would pay",
+      "No worst-year or possible-loss information for each track",
+      "No information on withdrawal at 60+, tax, or turning the money into a monthly pension",
+      "No guidance on how to actually open a fund, and no contact details",
+      "No simple guidance for someone near retirement",
+      "The 'קופה' fund-number column could be dropped",
+      "The second row of filter buttons could be dropped"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 14,
+        "why": "The reader says they did not understand the foreign-currency figure in the exposure column, and later also asks how shares can be 101%. Together that matches the complaint that the column is unexplained and shows values above 100%."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0743352
+  },
+  "b": {
+    "raised": [
+      "Once you scroll, the company name disappears, so you can't tell which company a row (e.g. fund 8211) belongs to",
+      "The page doesn't say what you would actually pay, or what the numbers mean in shekels",
+      "The fee is a 2025 average while the other figures are from September 2026, and it isn't clear why",
+      "The legend is confusing: 'הזנתה' is unknown, and the dotted/solid/blue markers can't be matched to the table",
+      "The orange warning about data not updated since September 2026 is unsettling and seems to clash with the 03.11.2026 date at the bottom",
+      "It wasn't clear that the filter buttons (e.g. 'כללי 12') could be pressed to show only those tracks",
+      "'קיימי' in the filter buttons isn't understood",
+      "'אג\"ח ממשלתי סחיר' and 'אג\"ח ממשלות' look like the same thing",
+      "The table is very long, and scrolling through about fifteen screens is tiring",
+      "The new Ayalon tracks marked 'חדש'/'עוד לא דווח' (some at 0 million ₪) show nothing useful and clutter the table",
+      "The note saying returns are before fees and not a forecast sits at the bottom, too late, and should come first",
+      "The 'מההפקדות' fee line is almost always 0%, so it isn't useful, and 'עוד לא דווח' there lowers confidence in that company",
+      "The donut circles add nothing beyond the numbers",
+      "The foreign-currency (מט\"ח) exposure number isn't understood: is 99% good or dangerous?",
+      "'מניות 101%': how can more than 100% be in shares?",
+      "It's unclear why the same S&P 500 index track costs 0.54% at one company and 0.71% at another",
+      "Returns are shown before fees, so you have to work out the after-fee return yourself",
+      "It's unclear whether the average fee is what you would pay or whether it can be negotiated",
+      "There's no information on possible losses or the worst year (e.g. 2022)",
+      "There's no information on withdrawals at 60+, tax, or turning the savings into a monthly pension",
+      "There's no contact information or next step for actually opening a fund",
+      "There's no simple guidance on which tracks suit someone near retirement",
+      "The 'קופה' fund-number column is unnecessary in the main table",
+      "The second row of filter buttons is unnecessary"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 15,
+        "why": "The reader asks directly how 'מניות 101%' can mean more than 100% in shares. That is the person's complaint that the exposure column shows figures above 100% with no explanation (item 14, on not understanding the foreign-currency figure, also overlaps)."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0846672
+  },
+  "third": null,
+  "ranks": {
+    "k": 14
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1590024
+}

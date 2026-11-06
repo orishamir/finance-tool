@@ -1,0 +1,14 @@
+{
+ "id": "stairs-two-sided-bars",
+ "task": "t63",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "The two-sided bars and their heads 'כמו עכשיו', 'פחות', 'ההפרש בסוף' cannot be read: what a bar against 'now' means is unclear.",
+   "where": "the rows of choices under the stairs",
+   "kind": "general",
+   "outside": false
+  }
+ ],
+ "liked": []
+}

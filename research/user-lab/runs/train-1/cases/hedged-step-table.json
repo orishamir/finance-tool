@@ -1,0 +1,14 @@
+{
+ "id": "hedged-step-table",
+ "task": "t60",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "The step-by-step table explaining 2022 and 2025 in percent is unintuitive.",
+   "where": "the first table",
+   "kind": "general",
+   "outside": false
+  }
+ ],
+ "liked": []
+}

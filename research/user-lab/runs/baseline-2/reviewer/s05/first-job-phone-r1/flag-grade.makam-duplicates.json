@@ -1,0 +1,36 @@
+{
+  "case": "makam-duplicates",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The guide list still offers makam as separate guide pages (one per way of holding it), though they describe one thing.\",\"where\":\"the makam entries in the guide list\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the findings says makam has duplicate guide pages: finding 4 only calls מק\"מ jargon, finding 2 complains about many similar cards with no recommendation, and finding 6 is about a repeated screen, not repeated makam entries."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0163434
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the findings says makam is split into several guide pages for one product: finding 4 only calls מק\"מ jargon, finding 2 is about cards looking alike with no clear pick, and finding 6 is about a repeated screen, not a repeated makam entry."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0166834
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0330268
+}

@@ -1,0 +1,14 @@
+{
+ "id": "open-rule-label",
+ "task": "t46",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "Foreign funds carry a label 'נשען על כלל פתוח' that a reader cannot understand.",
+   "where": "the red label on foreign fund rows",
+   "kind": "general",
+   "outside": false
+  }
+ ],
+ "liked": []
+}

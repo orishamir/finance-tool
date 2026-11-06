@@ -1,0 +1,84 @@
+{
+  "case": "hg-not-entered",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The text says 'לא הזנתם אחוזים, אז החישוב לוקח את התקרה' although the percentage fields are filled in with default values.\",\"where\":\"the sentence under the graphic\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Page never asks age; unclear whether 3 or 6 years applies to someone over retirement age",
+      "Unclear whether the result includes monthly tax on employer money above the 15,712 ceiling, or how much take-home pay drops",
+      "The coloured '123 ממקור / מחושב / הזנתי' line is confusing; unclear what to do with it",
+      "Intro gives the early-withdrawal tax rate only for under 60; no rate stated for people over 60",
+      "'המחיר, לעומת קופת גמל להשקעה' is hard to understand",
+      "Calculator input boxes cut off; the 30,000 salary never visible",
+      "The three taxation cards repeat the intro",
+      "Orange box: 47% tax at source plus refund via tax return sounds like burdensome paperwork",
+      "Chief economist line about cutting the benefit is worrying",
+      "Small bar chart bars have no numbers on them",
+      "Doesn't understand why tax stripes still appear after year 6",
+      "Big chart: unexplained dark-brown block and light/dark stripes; no visible legend",
+      "Why the chart uses the fund 'מיטב השתלמות עוקב מדד S&P500' and what 13245 means",
+      "'הרווח הריאלי' still fuzzy even after the glossary",
+      "Why the word 'עמית' is used in 'עמית-עצמאי / עמית-שכיר'",
+      "Can't find what happens if they stop working before 6 years",
+      "No numeric total shown for year 6 or year 12",
+      "Can't find whether this is better than putting the money into a pension",
+      "Would drop the S&P/bond buttons and the securities-account link",
+      "Would drop the glossary table in favour of inline explanations",
+      "Would drop the three taxation cards",
+      "Would drop the chief economist line",
+      "Would drop the 'שווה לדעת' codes like TXH-09"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The report never says the text claims no percentages were entered while the fields show default values; its ceiling complaint is about tax on salary above 15,712, which is a different issue."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0615352
+  },
+  "b": {
+    "raised": [
+      "The page never asks my age, so it's unclear whether the 3-year or the 6-year rule applies to me",
+      "Unclear whether 136,457 includes the monthly tax on employer money above the 15,712 ceiling, and how much my take-home pay drops",
+      "The line of coloured '123's (ממקור / מחושב / הזנתי) is confusing",
+      "'Under 60 it's at least 31%' gives no tax rate for someone over 60",
+      "'המחיר, לעומת קופת גמל להשקעה' was hard to understand",
+      "The S&P 500 / bond investment buttons and the securities-account link are too technical and could go",
+      "The calculator input boxes were cut off, so the 30,000 salary never showed",
+      "The three taxation cards repeat the intro",
+      "The orange box's 47% tax at source and the refund through a tax return sound like a lot of paperwork",
+      "The chief economist's recommendation to cut the benefit is worrying and could be dropped",
+      "The small bar chart has no numbers on its bars",
+      "Unclear why tax still seems to apply after year 6 (striped tops on bars 6-12)",
+      "In the big chart, the dark-brown block and the two kinds of stripes aren't explained, and there's no legend",
+      "Unclear why the fund 'מיטב השתלמות עוקב מדד S&P500' was picked and what 13245 means",
+      "'הרווח הריאלי' is still fuzzy even after reading the glossary",
+      "Unclear why the word 'עמית' is used in עמית-עצמאי / עמית-שכיר",
+      "Couldn't find what happens to the fund if I stop working before 6 years",
+      "The year 6 and year 12 totals are shown only as bars, not as numbers",
+      "Couldn't find whether this beats putting the money into my pension",
+      "The glossary table could go; explaining each term where it appears would be enough",
+      "The codes in 'שווה לדעת' (e.g. TXH-09) could go"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader never mentions the sentence saying no percentages were entered while the fields show default values; they only say they left the 7% and 0.54% fields unchanged."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0694392
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1309744
+}

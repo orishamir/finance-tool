@@ -1,0 +1,90 @@
+{
+  "case": "tracks-warnings",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"Almost every row of the tracks table carries a date warning mark; the repeated warnings clutter the table though one note at the top would do.\",\"where\":\"the warning marks in the table rows\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Can't tell which company the top S&P row belongs to; the company row seems hidden under the sticky header",
+      "Unsure whether small fee differences (0.52% vs 0.59%) matter",
+      "The '123 מקומם / מחושב / הזנתה' legend is confusing",
+      "Orange 'data not updated since September 2026' warning leaves them unsure whether the data is old",
+      "Wanted an explanation of what קופת גמל להשקעה is",
+      "Unclear what the 'group by' control does",
+      "Doesn't understand most track-type labels (bonds, Islamic law, flexible, money market, etc.)",
+      "Table is very long, around 15 screens",
+      "Loses track of which company they're in while scrolling",
+      "Bottom notes ('not reported yet', past-return disclaimer) should be at the top",
+      "Ring charts and share/foreign-currency percentages are unclear; 101% shares is confusing",
+      "Deposit-fee line is almost always 0% and not worth showing",
+      "Fund number column is meaningless",
+      "Doesn't understand the difference between fee from savings and fee from deposits",
+      "Doesn't know whether high exposure to shares/foreign currency is good or bad",
+      "Unclear whether 'less than 3 years' means a new track or missing data",
+      "Doesn't understand 'not reported yet'",
+      "Doesn't understand why one company has several similar S&P tracks",
+      "Unclear whether 'before management fees' means they'd actually get less",
+      "Wants the fee difference shown in shekels for a monthly deposit",
+      "Can't find how to open a track (minimum amount, monthly deposits)",
+      "Can't find withdrawal and tax information",
+      "Wants to know if the fee is negotiable",
+      "No ranking or sort by fee within S&P tracks",
+      "Would drop the other product buttons"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader only mentions ignoring 'the little clock icons' and never says that warning marks repeated on almost every row clutter the table, or that one note would do."
+      }
+    ],
+    "liked": [],
+    "usd": 0.06280720000000001
+  },
+  "b": {
+    "raised": [
+      "Couldn't tell which company the top S&P row belongs to; its company row hides under the sticky table header",
+      "Doesn't know whether tiny fee differences (0.52% vs 0.59%) matter or what they mean in shekels",
+      "The '123 מקומם / מחושב / הזנתה' legend is confusing",
+      "Orange 'data not updated since September 2026' warning leaves them unsure whether the data is old or worrying",
+      "Wanted an explanation of what a קופת גמל להשקעה is",
+      "Unsure what the 'קיבוץ לפי' (group by) control does",
+      "Didn't understand most track-type labels (government bonds, Islamic law, flexible, money market, etc.)",
+      "The table is very long, around 15 screens",
+      "Lost track of which company they were looking at while scrolling",
+      "Bottom notes ('not reported yet', past-return disclaimer) should be at the top",
+      "Ring charts and the 101% shares figure are confusing",
+      "Fund number ('קופה') column is meaningless to them",
+      "Doesn't understand the difference between the fee from savings and the fee from deposits",
+      "Doesn't know if high exposure to shares or foreign currency is good or bad",
+      "Unclear whether 'פחות מ־3 שנים' means a new track or missing data",
+      "Doesn't understand 'עוד לא דווח' (not reported yet)",
+      "Confused why the same company has two or more similar S&P tracks",
+      "Unclear whether 'לפני דמי ניהול' means the actual return is lower",
+      "No information on how to open a track (minimum amount, monthly deposits)",
+      "No information on withdrawal timing or tax",
+      "Doesn't know whether the fee is negotiable",
+      "No ranking or sort by fee within S&P tracks",
+      "Would drop the deposit fee line since it's almost always 0%",
+      "Would drop the other product buttons",
+      "Ignored the clock icons and dotted underlines without understanding them"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader only says they ignored the little clock icons and never complains that the per-row date warnings repeat and clutter the table or that one note at the top would do."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0691672
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1319744
+}

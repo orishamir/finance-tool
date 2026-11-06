@@ -1,0 +1,114 @@
+{
+  "task": "s07",
+  "persona": "first-job-phone",
+  "repeat": 3,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T12:12:48.193Z",
+  "structured": {
+    "answer": "A פיקדון means the bank holds your money for a set time and pays interest, and you only get it back at the end or on an exit date. Breaking it early costs a fine the page doesn't put a number on, and it can eat the interest and even part of what you put in. The example also seemed to show me ending with 68,270 ₪ after putting in 70,000 ₪, so I'm not keen.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Screen 2, lines under the chart",
+        "why": "'נשאר לכם 68,270 ₪' right above 'ההפקדות שלכם 70,000 ₪' looks like the deposit loses money; I couldn't tell why"
+      },
+      {
+        "where": "Screen 3 'אין ביטוח פיקדונות' and screen 5 'סיכונים ומה לא מוגן'",
+        "why": "Scared me: if the bank collapses nothing gives the money back. Not sure how worried I should be"
+      },
+      {
+        "where": "'כמה זה עולה' table",
+        "why": "Only says 'לפי התעריפון של הגורם המציע', no shekel amount, so I couldn't tell what breaking or withdrawing costs"
+      }
+    ],
+    "used": [
+      "Heading 'פיקדון' and first line",
+      "Big number 68,270 ₪ and the example sentence (10,000 ₪, 500 ₪ a month, 1.8%, 10 years)",
+      "Lines under the chart: נשאר לכם / מס / ההפקדות שלכם",
+      "'שווה לדעת' list (מס 15%, שבירת פיקדון, אין ביטוח פיקדונות)",
+      "'כסף נכנס ויוצא': משיכה בסוף התקופה",
+      "'כמה זה עולה': דמי יציאה",
+      "Red box on breaking a deposit early",
+      "'אין בישראל ביטוח פיקדונות' paragraph",
+      "Glossary rows 'קנס שבירה' and 'תחנת יציאה'"
+    ],
+    "skimmed": [
+      "'מה זה' paragraphs beyond the first line",
+      "'למה משתמשים בזה'",
+      "Tax cards (אין הטבת מס / מס על הריבית / המס כבר שולם)",
+      "The rest of the glossary table",
+      "Chart axis"
+    ],
+    "skipped": [
+      "Input fields and sliders (left them at the example values)",
+      "Small grey text under the fields and 'תנאי המוצר בדוגמה'",
+      "Long tax paragraph with 69,840.00 ₪ / 10,920.00 ₪",
+      "Codes like TXI-17, BANK-06",
+      "Folds: הצגה כטבלה, הצגת כל הבדיקות, הצגת כל המונחים",
+      "'הצגת החוקים והכללים' links",
+      "'מי מציע ומי מפקח' paragraph",
+      "Footer"
+    ],
+    "unsure_meaning": [
+      "בכסף של היום / בשקלים של העתיד",
+      "נשאר לכם 68,270 vs ההפקדות שלכם 70,000",
+      "צמוד למדד / לא צמוד",
+      "הבטחת קרן",
+      "חשבון במערכת סגורה",
+      "ריבית הפריים",
+      "פטור למעוט הכנסה",
+      "הריבית הריאלית",
+      "מחושב tag",
+      "TXI / BANK codes"
+    ],
+    "not_found": [
+      "How much the early-break fine is in shekels",
+      "What the interest actually is right now at a specific bank (only the 1.8% example)",
+      "A clear first step: where and how to open one"
+    ],
+    "findings": [
+      {
+        "what": "The example shows 68,270 ₪ 'left' right next to 70,000 ₪ 'deposited', which reads like the deposit loses money, with no plain explanation next to it",
+        "where": "Screen 2, summary lines under the chart"
+      },
+      {
+        "what": "Breaking early is the main thing you give up, but there's no shekel figure; the red box says the site doesn't calculate it",
+        "where": "Screen 5 red box; screen 4 'כמה זה עולה'"
+      },
+      {
+        "what": "'אין ביטוח פיקדונות' with no context is alarming and makes me want to drop deposits altogether",
+        "where": "Screen 3 'שווה לדעת', screen 5 'סיכונים ומה לא מוגן'"
+      },
+      {
+        "what": "The cost table only says 'לפי התעריפון של הגורם המציע', so it's useless for judging fees",
+        "where": "Screen 4 'כמה זה עולה'"
+      },
+      {
+        "what": "The toggle 'בכסף של היום' / 'בשקלים של העתיד' isn't explained in words I understand",
+        "where": "Screen 1 calculator box"
+      },
+      {
+        "what": "Lots of codes (TXI-03, BANK-23, TXI OQ14) look like noise",
+        "where": "Screens 3 and 5"
+      }
+    ]
+  },
+  "steps": 8,
+  "reads": 8,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 52207,
+    "turns": 10,
+    "usd": 0.2374712,
+    "input": 12,
+    "cacheWrite": 16376,
+    "cacheRead": 57476,
+    "output": 4746,
+    "model": "claude-opus-5-5"
+  }
+}

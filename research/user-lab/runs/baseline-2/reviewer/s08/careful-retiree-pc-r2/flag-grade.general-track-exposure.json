@@ -1,0 +1,36 @@
+{
+  "case": "general-track-exposure",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"In the guide list, 'general track' is listed among the exposures (kinds of investment), which does not make sense: it is a mix, not one kind.\",\"where\":\"the exposures group of the guide list\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings say that 'general track' is wrongly placed among the exposures; the closest ones are about jargon, index cards and the money market fund label, which are different issues."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0145274
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings say that 'general track' is wrongly grouped as an exposure type; finding 7 is about how the קרן כספית is labelled, which is a different classification complaint."
+      }
+    ],
+    "liked": [],
+    "usd": 0.015303400000000002
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0298308
+}

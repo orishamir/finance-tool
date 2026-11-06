@@ -14,7 +14,8 @@ import { fileURLToPath } from "node:url";
 const here = dirname(fileURLToPath(import.meta.url));
 const args = process.argv.slice(2);
 const opt = (n) => { const i = args.indexOf(n); if (i < 0) return null; const v = args[i + 1]; args.splice(i, 2); return v; };
-const sessRe = opt("--sessions") ? new RegExp(opt("--sessions") ?? "") : null;
+const sessArg = opt("--sessions");
+const sessRe = sessArg ? new RegExp(sessArg) : null;
 const jsonOut = opt("--json");
 const [runDir] = args;
 if (!runDir) { console.error("usage: flag-summary.mjs <run-folder> [--sessions <regex>] [--json out.json]"); process.exit(2); }

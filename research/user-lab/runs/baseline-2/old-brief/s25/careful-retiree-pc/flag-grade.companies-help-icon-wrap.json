@@ -1,0 +1,91 @@
+{
+  "case": "companies-help-icon-wrap",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The help mark '?' in a column head drops onto its own line under the head's text and looks out of place.\",\"where\":\"the column heads with a '?' mark\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Two different dates in the intro paragraph (2025 fees vs Sept 2026 data) made them stop and reread",
+      "The '123 מקור / 123 מחושב' legend was confusing",
+      "Counts don't match: button says 105, text says 96 tracks in 7 products, and there are 10 buttons",
+      "The main table is very long and tiring",
+      "The explanation of 'אין' is only in a footnote; they wanted it at the top",
+      "Codes PF-06 and PF-10 mean nothing",
+      "Direct expenses are not included, so the fee shown isn't the full cost",
+      "Fund tags and fee terms (צוברת, חשיפה לדולר, קבועים/משתנים/נאמן) are jargon",
+      "The documents section is all collapsed, so it's unclear what's inside",
+      "'פחות מ־3 שנים' on many rows leaves nothing to compare",
+      "The same S&P 500 track shows different returns in different products, with no explanation",
+      "The purpose of the 'קופה' number column and its icon is unclear",
+      "The small ring charts mean nothing",
+      "The dotted underlines on numbers don't look clickable and their purpose is unclear",
+      "The differences between product types (קופת גמל להשקעה, תגמולים, מרכזית לפיצויים) are not explained",
+      "The difference between קרן חדשה מקיפה and קרן חדשה כללית is not explained",
+      "It's unclear whether foreign-currency (מט\"ח) exposure is good or bad",
+      "Unclear whether 'עוד לא דווח' means zero or unknown",
+      "No guidance on how to find which product and track is theirs",
+      "No fee shown in shekels",
+      "No comparison with other companies",
+      "No information on whether fees can be negotiated",
+      "No returns shown after fees and tax",
+      "No guidance on suitable risk by age",
+      "Would drop the 'חיסכון לכל ילד' section as irrelevant"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The report mentions the sorting arrows in the headers only to say it ignored them, and never mentions a '?' mark in a column head wrapping onto its own line."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0674952
+  },
+  "b": {
+    "raised": [
+      "Mixing two data dates in the top paragraph made the reader stop and reread",
+      "The '123 מקור / 123 מחושב' legend was confusing",
+      "Counts don't match: button says 105, text says 96 tracks in 7 products, and there are 10 buttons",
+      "The main table is very long and tiring",
+      "The explanation of 'אין' is in a footnote under the table, not at the top",
+      "Codes PF-06 and PF-10 mean nothing",
+      "Direct expenses are not shown, so the fee shown isn't the full cost",
+      "The tags and the three fees in the fund sections are jargon",
+      "The documents section is all collapsed, so it's unclear what's inside",
+      "Many rows show 'פחות מ־3 שנים', leaving nothing to compare",
+      "The same S&P 500 track shows different returns in different products, with no explanation",
+      "Unclear what the 'קופה' number column and its icon are for",
+      "The round charts/rings meant nothing",
+      "Didn't know the dotted-underlined numbers were clickable or why",
+      "Didn't understand the differences between product types (גמל להשקעה / תגמולים / מרכזית לפיצויים)",
+      "Didn't understand why both מקיפה and כללית pension funds exist",
+      "Unclear whether מט\"ח exposure is good or bad",
+      "Unclear whether 'עוד לא דווח' means zero or unknown",
+      "No help finding which product or track is the reader's own",
+      "No fee shown in shekels",
+      "No comparison with other companies",
+      "No information on whether fees can be negotiated",
+      "No returns after fees and tax",
+      "No guidance on risk by age near retirement",
+      "Would drop the קרנות מחקות and קרנות סל sections",
+      "Would drop the חיסכון לכל ילד section"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The report mentions the sorting arrows in the headers only as something it ignored, and never says that the '?' help mark drops onto its own line or looks out of place."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0655952
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1330904
+}

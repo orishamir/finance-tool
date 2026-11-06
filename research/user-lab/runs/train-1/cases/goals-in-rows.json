@@ -1,0 +1,14 @@
+{
+ "id": "goals-in-rows",
+ "task": "t11",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "The home page shows the current goal as a card and the other saved goals only as small chips; he wanted every goal shown alike, one per row.",
+   "where": "the saved-goals block at the top of the home page",
+   "kind": "taste",
+   "outside": false
+  }
+ ],
+ "liked": []
+}

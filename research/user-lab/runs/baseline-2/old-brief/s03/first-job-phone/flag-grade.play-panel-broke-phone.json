@@ -1,0 +1,82 @@
+{
+  "case": "play-panel-broke-phone",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"On a phone, the fields in the 'שחקו עם המספרים' panel break out of line: they have different widths, sit at odd places and look oversized.\",\"where\":\"the fields of the 'שחקו עם המספרים שלכם' panel on a phone\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Doesn't know what a קרן כספית is, how to buy one, or whether it's safe",
+      "The 3.25% rate is only the site's assumption, so the real return is unclear",
+      "The '123 ממקור/מחושב/הזנתם' legend is confusing",
+      "The fee-plan text and the 'BANK-35' tag lost them",
+      "Didn't understand the 'מזומן שקלי' button",
+      "The second calculator (₪500/month) is confusing and its link to the first one is unclear",
+      "The text about moving to another bank is cut off",
+      "'לפי התעריפון של הגורם המציע' tells them nothing",
+      "The red tax box ('הפטור למעוטי הכנסה... TXI OQ11') is completely confusing",
+      "The paragraph about losses from selling securities makes no sense to them",
+      "'אין בישראל ביטוח פיקדונות' is worrying",
+      "The locked 'חסום: פטורים לפי גיל ושימוש' checks are confusing",
+      "Didn't understand the y-axis note 'הציר האנכי לא מתחיל באפס'",
+      "Confused by two different cost numbers (₪1,797 vs ₪2,576)",
+      "Unclear what 'בכסף של היום' means",
+      "Jargon not understood: נזקפת, רווח הון, מסלול בסיסי/מורחב, הטבה",
+      "Can't find how to actually move money into a קרן כספית, or what it costs",
+      "Can't find whether their own bank pays interest",
+      "No rule of thumb for how much to leave in the current account",
+      "Nothing about the S&P 500 as an alternative",
+      "Would cut the legal parts of the risks section, 'מי מציע ומי מפקח' and the glossary"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The report never mentions the phone layout or the fields in the 'שחקו עם המספרים' panel being uneven, misplaced or oversized."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0584952
+  },
+  "b": {
+    "raised": [
+      "Legend '123 ממקור / מחושב / הזנתם' was confusing; didn't understand three kinds of numbers",
+      "Fee plans and 'BANK-35' text in 'מה זה' lost them",
+      "Didn't understand the 'מזומן שקלי' button",
+      "Second calculator (₪10,000 + ₪500/month) confusing; unclear how it relates to the first",
+      "Moving-to-another-bank part was cut off",
+      "'לפי התעריפון של הגורם המציע' tells nothing about cost",
+      "Red tax box (הפטור למעוטי הכנסה, TXI OQ11) completely confusing",
+      "Paragraph on loss from selling securities not understood",
+      "'אין בישראל ביטוח פיקדונות' was a little scary",
+      "Locked 'פטורים לפי גיל ושימוש' / 'חסום' confusing",
+      "Y-axis note 'הציר האנכי לא מתחיל באפס' not understood",
+      "Two different cost numbers (₪1,797 vs ₪2,576) confusing",
+      "Doesn't know what a קרן כספית is",
+      "Unclear what 'בכסף של היום' means",
+      "Jargon terms not understood (נזקפת, רווח הון, מסלול בסיסי/מורחב, הטבה)",
+      "Couldn't find how to move money into a קרן כספית, which one, or its cost",
+      "Couldn't find whether a קרן כספית is safe",
+      "Couldn't find whether their own bank pays interest",
+      "No rule of thumb for how much to leave in the current account",
+      "Nothing about the S&P 500 as an alternative",
+      "Would cut tax section, legal risk parts, provider/supervisor section, cost section, glossary, second calculator, and the legend"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The report never says anything about the calculator fields on a phone being misaligned, different widths or oversized; it only covers content and understanding."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0452552
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.10375039999999999
+}

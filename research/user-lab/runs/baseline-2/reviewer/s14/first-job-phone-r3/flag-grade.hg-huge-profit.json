@@ -1,0 +1,36 @@
+{
+  "case": "hg-huge-profit",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The graphic shows a very large profit figure with nothing explaining where it comes from.\",\"where\":\"the profit part of the graphic\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 1 is about an unlabeled negative deduction (−64,761 ₪) in the waterfall chart, not a very large profit figure with no explanation of where it comes from, and no other finding talks about the profit amount's origin."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0194914
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 1 complains about an unlabeled negative deduction (−64,761 ₪) in the waterfall, not about an unexplained very large profit figure, and none of the other findings mention the profit figure."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0188914
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.038382799999999995
+}

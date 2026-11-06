@@ -1,0 +1,36 @@
+{
+  "case": "tracks-assets-column",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The column 'נכסים בסוף ספטמבר' does not say it means the money pooled in the track; it reads as the fund's own assets.\",\"where\":\"that column's head\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings say the 'נכסים בסוף ספטמבר' column is unclear about whether it means money pooled in the track or the fund's own assets; the closest ones are about general busyness, the date warning, and the meaning of the return column."
+      }
+    ],
+    "liked": [],
+    "usd": 0.014579400000000001
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "No finding says the 'נכסים בסוף ספטמבר' column could be read as the fund's own assets rather than money pooled in the track; finding 2 is only about how hard the header text is to read, not what it means."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0145274
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.029106800000000002
+}

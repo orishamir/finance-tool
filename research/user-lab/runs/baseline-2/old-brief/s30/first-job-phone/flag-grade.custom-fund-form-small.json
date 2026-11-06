@@ -1,0 +1,73 @@
+{
+  "case": "custom-fund-form-small",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The form for adding a fund is cramped in a narrow panel and hard to move around in.\",\"where\":\"the add-a-fund form\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "The reader's own fund gets no final number in the main list (\"not collected yet\", \"no price here\").",
+      "The reader's fund comes out about 20,000 ₪ lower, which scared them off, and they can't tell whether the fund, the bank or tax causes it.",
+      "The lower part of the page and the waterfall chart start from Jerusalem MTF, which the reader never chose, and they don't know why.",
+      "The many coloured tags in the fund list are confusing.",
+      "The Interactive Brokers box is confusing: is that how to buy the reader's fund, when it shows a different fund?",
+      "The reader only partly understood why some funds have no price.",
+      "Psagot having 3 claims against what it advertises worried the reader.",
+      "The reader didn't understand the currency-hedging section and charts.",
+      "The small number under each bank and the orange, yellow and red bars in the account list aren't understood.",
+      "Jargon isn't understood: 4D, 4A, Swap, Acc, ISIN codes.",
+      "Terms aren't understood: currency-hedged, dollar exposure, accumulating vs. dividend, trustee, W-8BEN.",
+      "\"Open tax rule: shown but not ranked\" is unclear: is the 59,196 ₪ real?",
+      "The reader couldn't find one final number for their fund at Psagot, or whether they can buy it there.",
+      "The reader couldn't find which accounts let them buy a fund abroad, or what that costs.",
+      "There's no plain-words answer to whether a foreign fund is worth it.",
+      "The reader would remove the hedging section, the \"what changes most\" chart, the waterfall chart, the advertising-claims list and most tags.",
+      "The table that shows the reader's fund should be much higher up, next to the fund."
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The report never mentions the add-a-fund form or that it is cramped or hard to move around in."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0596152
+  },
+  "b": {
+    "raised": [
+      "My fund gets no final number in the main list, only 'not collected yet' / 'no price here'",
+      "My fund comes out about 20,000 ₪ lower, which scared me off, and I can't tell if the gap is from the fund, the bank or tax",
+      "The lower part of the page starts from Jerusalem MTF, which I never chose, and I don't know why",
+      "All the coloured tags in the fund list confused me",
+      "The Interactive Brokers box is confusing: it shows a different iShares fund, not mine",
+      "The explanation of why some funds have no price was only partly clear",
+      "Psagot having 3 claims against its advertising worried me",
+      "I didn't understand the currency-hedging section and charts",
+      "I didn't understand the small number under each bank or the orange, yellow and red bars in the account list",
+      "Jargon I didn't understand: 4D/4A, Swap, Acc, ISIN codes, hedged, dollar exposure, accumulating vs. dividend, trustee, W-8BEN",
+      "I didn't understand 'relies on an open tax rule: shown but not ranked', so is my 59,196 real?",
+      "I couldn't find one final number for my fund at Psagot, or whether I can buy it there",
+      "I couldn't find which accounts let me buy a fund abroad and what that costs",
+      "I couldn't find a plain yes or no on whether a foreign fund is worth it for me",
+      "I'd drop the hedging section, the 'what changes most' chart and table, the waterfall chart, the claims list and most of the tags",
+      "The table that showed my fund should be much higher up the page, next to my fund"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The report never mentions an add-a-fund form or a narrow, cramped panel, so none of the raised problems matches it."
+      }
+    ],
+    "liked": [],
+    "usd": 0.052551200000000006
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1121664
+}

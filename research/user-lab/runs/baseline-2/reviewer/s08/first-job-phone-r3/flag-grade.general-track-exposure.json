@@ -1,0 +1,36 @@
+{
+  "case": "general-track-exposure",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"In the guide list, 'general track' is listed among the exposures (kinds of investment), which does not make sense: it is a mix, not one kind.\",\"where\":\"the exposures group of the guide list\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "No finding says that 'general track' is a mix and doesn't belong among the kinds of investment; #3 is about whether an S&P 500 fund is its own product or sits inside a savings product, which is a different confusion."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0155634
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "No finding says that 'general track' is a mix and so doesn't belong among the exposures; finding 3 is about whether index funds are separate products, and finding 4 is about too many cards in the grid."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0152954
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0308588
+}

@@ -1,0 +1,36 @@
+{
+  "case": "tracks-sort-does-nothing",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"Sorting by management fee does nothing visible: under each company heading there is one track, so the order does not change.\",\"where\":\"the sorted table\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 1,
+        "why": "Finding 1 says the table stays in company order rather than fee order, which is the same visible failure of the fee sort that the person described."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0176634
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 1,
+        "why": "Finding 1 says the table isn't ordered by fee even though that's the sort. The person would recognise this as their complaint that sorting by fee does nothing visible."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0165434
+  },
+  "third": null,
+  "ranks": {
+    "k": 1
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.034206799999999996
+}

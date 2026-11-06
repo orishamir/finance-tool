@@ -1,0 +1,75 @@
+{
+  "case": "tracks-sort-does-nothing",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"Sorting by management fee does nothing visible: under each company heading there is one track, so the order does not change.\",\"where\":\"the sorted table\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Header says 11 tracks of 11 companies but only 9 companies could be found",
+      "Unclear whether the separate S&P 500 button counts as 'stock index' or which one to pick",
+      "Orange warning that the data hasn't been updated since September 2026 makes the numbers seem out of date",
+      "Most of the explanatory paragraph under the title didn't register",
+      "The 'מקור / מחושב / הזנחה' line was confusing, with no clear reason to use it",
+      "Didn't understand what the 'קיבוץ לפי' switch would do",
+      "Too many 'במה הכסף מושקע' options, so the reader had to guess which one meant 'stock index'",
+      "List is ordered by company size, not by fee, so rows had to be compared by eye",
+      "The ▼ sort arrow next to 'מהחיסכון' suggests a fee sort, but the list clearly isn't sorted by fee",
+      "Doesn't know what 'מט\"ח' means",
+      "Doesn't understand what the rings show",
+      "Unclear how fees 'מהחיסכון' and 'מההפקדות' differ and add up",
+      "Confused why מיטב's מט\"ח 4% differs so much from the others' ~98%",
+      "Grey lines show a range from a number to the same number ('מ־0.67% עד 0.67%')",
+      "No 'cheapest is…' summary line",
+      "No explanation of what the fee percentages mean in shekels",
+      "No link or button to open a track at the company",
+      "Would drop the returns column, since it mostly says 'פחות מ־3 שנים'",
+      "Would drop the 'כסף מנוהל' column and the blue numbers"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 9,
+        "why": "The reader sees the ▼ sort mark on the fee column but finds the list clearly isn't ordered by fee, which is the same symptom the person reported: the fee sort has no visible effect."
+      }
+    ],
+    "liked": [],
+    "usd": 0.056163199999999996
+  },
+  "b": {
+    "raised": [
+      "The count says 11 tracks from 11 companies, but only 9 companies could be found",
+      "Unclear whether the 'עוקב מדד s&p 500' option is part of 'עוקב מדדי מניות' or something different",
+      "The orange warning says the data hasn't been updated since September 2026, so the numbers may be old",
+      "The 'מקור / מחושב / הזנחה' control is confusing and it's unclear why anyone would use it",
+      "Unclear what changing the 'קיבוץ לפי' switch would do",
+      "Too many 'במה הכסף מושקע' options; had to guess which one means stock index",
+      "The list is not sorted by fee, so all rows had to be compared by eye",
+      "The ▼ next to 'מהחיסכון' suggests the list is sorted by fee, but it clearly isn't",
+      "Doesn't know the word 'מט\"ח'",
+      "Doesn't understand what the rings show",
+      "Unclear how 'מהחיסכון' and 'מההפקדות' differ and how they add up",
+      "Unclear why מיטב's 'מט\"ח 4%' is so different from the others' ~98%",
+      "Every grey company line says 'from X% to X%' with the same number twice",
+      "No explanation of what the fee difference means in shekels",
+      "No link or button to actually open a track with the company",
+      "Would drop the rings, the returns column, 'כסף מנוהל', the blue numbers, 'מקור/מחושב/הזנחה' and 'קיבוץ לפי'"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 8,
+        "why": "The reader says the ▼ fee-sort marker in the header suggests the list is sorted by fee but the order clearly doesn't follow it, which is the same visible problem: a fee sort that has no effect on the order."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0524552
+  },
+  "third": null,
+  "ranks": {
+    "k": 8
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1086184
+}

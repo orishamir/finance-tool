@@ -1,0 +1,14 @@
+{
+ "id": "indices-table-widths-shift",
+ "task": "t25",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "The table at the bottom of the index page changes its column widths when the inputs change, so the table jumps.",
+   "where": "the table at the bottom, between the two states",
+   "kind": "general",
+   "outside": false
+  }
+ ],
+ "liked": []
+}

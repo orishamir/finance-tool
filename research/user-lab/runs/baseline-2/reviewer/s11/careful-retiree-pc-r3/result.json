@@ -1,0 +1,109 @@
+{
+  "task": "s11",
+  "persona": "careful-retiree-pc",
+  "repeat": 3,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T12:19:05.971Z",
+  "structured": {
+    "answer": "A keren hishtalmut is savings from my salary: the employer adds up to 7.5% and I add 2.5%, and after 6 years I can take it all out without tax, but before that it's taxed and expensive. It sounds worth having because of the employer's part, but it isn't a guaranteed deposit, so I'll ask my son or the bank to help me pick the safest track and check the fees.",
+    "confidence": "fairly sure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Screen 2, comparison box with S&P 500 and slider",
+        "why": "English letters, fund numbers and a drag slider; I didn't touch it and only took from it that 6 years is the line"
+      },
+      {
+        "where": "Screen 3, number table",
+        "why": "Too many numbers, and a minus sign (342.02−) made me back off"
+      },
+      {
+        "where": "Screen 3, 'למי שהגיע לגיל פרישה... רק 3 שנים'",
+        "why": "Not sure whether this applies to me"
+      }
+    ],
+    "used": [
+      "Heading and first paragraph 'מה זה': employer 7.5%, me 2.5%, 6 years tax-free",
+      "'מתי הכסף פנוי: כשעוברות 6 שנים' card",
+      "'כמה זה עולה' table: management fee up to 2% a year, no exit fee",
+      "Orange warning box: early withdrawal is expensive, 47%",
+      "'סיכונים ומה לא מוגן': no state guarantee, value goes up and down",
+      "Familiar company names: הפניקס, הראל, אלטשולר שחם"
+    ],
+    "skimmed": [
+      "'למה משתמשים בזה' paragraph",
+      "'שווה לדעת' list",
+      "'מי מציע ומי מפקח' paragraph",
+      "Tax cards on screen 6"
+    ],
+    "skipped": [
+      "The slider and inputs on screen 2",
+      "Number table and cost/tax figures on screen 3",
+      "Fold links 'שינוי הסכומים', 'הצגת החברות', 'הצגת החוקים והכללים'",
+      "Screens 7 and 8 (tired)"
+    ],
+    "unsure_meaning": [
+      "S&P 500",
+      "מסלול כללי",
+      "מחקה",
+      "הפקדה מוטבת",
+      "ריאלי",
+      "נאמנות",
+      "Codes TXH-09, KH-15, PF-18, KH-22, PF-06",
+      "342.02− (minus)",
+      "Dotted underlines under words and numbers",
+      "47% מס"
+    ],
+    "not_found": [
+      "A clear statement of which track is safe like a deposit",
+      "A plain sentence saying whether it is worth it for me personally"
+    ],
+    "findings": [
+      {
+        "what": "Busy screen full of numbers, including a negative number, which frightens",
+        "where": "Screen 3, comparison results"
+      },
+      {
+        "what": "English 'S&P 500' and a drag slider right at the start of the special section",
+        "where": "Screen 2"
+      },
+      {
+        "what": "Small pale grey text on black is hard to read even enlarged",
+        "where": "Screens 2-3, notes like 'ההכנסה: דוגמה של האתר', 'הרווח נטו...'"
+      },
+      {
+        "what": "Unexplained codes like TXH-09, PF-06 next to items",
+        "where": "Screens 4-5"
+      },
+      {
+        "what": "Unknown site name 'מקור'; not clear who is behind it",
+        "where": "Top bar"
+      },
+      {
+        "what": "Retirement-age 3-year rule hidden in a small line among numbers",
+        "where": "Screen 3"
+      },
+      {
+        "what": "No clear guidance on which investment track is the safe one",
+        "where": "Screen 1, track chips"
+      }
+    ]
+  },
+  "steps": 6,
+  "reads": 6,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 39467,
+    "turns": 8,
+    "usd": 0.168542,
+    "input": 8,
+    "cacheWrite": 11441,
+    "cacheRead": 27410,
+    "output": 3575,
+    "model": "claude-opus-5-5"
+  }
+}

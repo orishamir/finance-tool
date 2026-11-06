@@ -1,0 +1,36 @@
+{
+  "case": "makam-under-products",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"Makam is listed under 'מוצרים' (products) though it is something bought inside an account, not a product of its own.\",\"where\":\"the group the makam entry sits in\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 3 mentions מק\"מ only as unexplained jargon that shows up twice, and no finding says it is wrongly grouped under 'מוצרים' when it is actually bought inside an account."
+      }
+    ],
+    "liked": [],
+    "usd": 0.014515400000000001
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 3 mentions מק\"מ only as unexplained jargon that shows up twice, and no finding says it is wrongly grouped under 'מוצרים' when it is bought inside an account."
+      }
+    ],
+    "liked": [],
+    "usd": 0.013999399999999999
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0285148
+}

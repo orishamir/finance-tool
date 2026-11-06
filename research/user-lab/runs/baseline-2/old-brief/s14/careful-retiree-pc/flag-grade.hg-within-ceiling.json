@@ -1,0 +1,84 @@
+{
+  "case": "hg-within-ceiling",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"'כל ההפקדות ב־12 השנים בתוך התקרה של הפטור' is unclear, and seems not to make sense when the same sum is deposited every month.\",\"where\":\"the sentence under the graphic\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Nothing on the page asks the user's age, so it's unclear whether the 3-year or the 6-year rule applies to someone aged 61",
+      "Unclear whether the 136,457 already counts the tax on employer money above the 15,712 ceiling, or whether take-home pay drops each month",
+      "The coloured '123 ממקור / מחושב / הזנתי' line is confusing",
+      "The early-withdrawal tax rate is given only for people under 60 ('לפחות 31%'); the rate for over-60s is missing",
+      "'המחיר, לעומת קופת גמל להשקעה' was not understood",
+      "The S&P 500 / אג\"ח investment buttons are too technical; would drop them along with the חשבון ניירות ערך link",
+      "The calculator input boxes were cut off, so the 30,000 salary never appeared",
+      "The three מיסוי cards repeat the intro; would drop them",
+      "The 47% tax withheld at source plus a refund through a tax return sounds like a lot of paperwork",
+      "The chief economist line about cutting the benefit was a bit worrying; would drop it",
+      "The small 12-bar chart has no numbers on its bars",
+      "In the big chart, the dark-brown block and the two kinds of stripes are unexplained, and there's no legend",
+      "Unclear why tax still seems to be paid after year 6 (striped tops on bars 6–12)",
+      "Unclear why the fund 'מיטב השתלמות עוקב מדד S&P500' was chosen and what 13245 means",
+      "'הרווח הריאלי' is still fuzzy even after reading the glossary",
+      "Unclear why the word 'עמית' is used in עמית-עצמאי / עמית-שכיר",
+      "Can't find what happens to the fund if work stops before 6 years",
+      "Can't find the year-6 or year-12 total as a number",
+      "Can't find whether this beats putting the 750 into a pension",
+      "Would drop the מונחים glossary table",
+      "Would drop the שווה לדעת codes"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The report never mentions the sentence saying all 12 years of deposits fall within the exemption ceiling, or says it makes no sense with equal monthly deposits; its ceiling worries are about salary above 15,712 and about tax stripes after year 6, which are different problems."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0656912
+  },
+  "b": {
+    "raised": [
+      "Page never asks age; unclear whether the 3-year (retirement age) or 6-year rule applies",
+      "Unclear whether 136,457 includes monthly tax on employer money above the 15,712 salary ceiling, or how much less take-home pay",
+      "The coloured '123 ממקור / מחושב / הזנתי' line is confusing",
+      "'מתחת לגיל 60 זה לפחות 31%' doesn't say what rate applies over 60",
+      "'המחיר, לעומת קופת גמל להשקעה' went over the reader's head",
+      "S&P 500 / אג\"ח buttons too technical (would drop first, with the securities-account link)",
+      "Calculator input boxes cut off; the 30,000 salary never visible",
+      "Didn't know what to change the yield and management fee values to",
+      "'עד 2% בשנה' fee looks high",
+      "The three מיסוי cards repeat the intro (would drop)",
+      "47% tax at source and a refund via tax return sounds like burdensome paperwork",
+      "Chief economist line about reducing the benefit made reader nervous (would drop)",
+      "Small bar chart bars have no numbers on them",
+      "Big chart: unexplained dark-brown block, light/dark stripes, no legend",
+      "Why tax still seems to be paid after 6 years (striped tops on bars 6–12)",
+      "Unclear why the 'מיטב השתלמות עוקב מדד S&P500' fund was chosen and what 13245 means",
+      "'הרווח הריאלי' still fuzzy despite glossary",
+      "Why the term 'עמית' in עמית-עצמאי / עמית-שכיר",
+      "Can't find what happens if they stop working before 6 years",
+      "No total for year 6 or year 12 shown as a number",
+      "Can't find whether this is better than adding to pension near retirement",
+      "Glossary table could go; explain words in place",
+      "'שווה לדעת' codes like TXH-09 could go"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The report never mentions the sentence saying all deposits over 12 years are within the exemption ceiling, or says it is unclear. Its ceiling worry (item 2) is about salary above 15,712 being taxed monthly, which is a different problem."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0688912
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1345824
+}

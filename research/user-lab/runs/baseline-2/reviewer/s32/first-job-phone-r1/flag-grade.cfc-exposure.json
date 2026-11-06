@@ -1,0 +1,36 @@
+{
+  "case": "cfc-exposure",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The fund table spells out the stock percentage and the currency ceiling of each fund, which the label 'חשיפה לדולר' already covers; the extra figures clutter.\",\"where\":\"the exposure figures in each version\",\"kind\":\"taste\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Findings 1 and 7 are about the same exposure column, but they say it is scary, unexplained or easy to miss, not that it repeats what the 'חשיפה לדולר' label already says and clutters the table."
+      }
+    ],
+    "liked": [],
+    "usd": 0.017247400000000003
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Findings 1 and 7 look at the same exposure figures, but they say the 120% number is scary and unexplained or easy to miss, not that it repeats what the 'חשיפה לדולר' label already says and clutters the table."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0178794
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0351268
+}

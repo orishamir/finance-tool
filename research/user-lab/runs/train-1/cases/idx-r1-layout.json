@@ -1,0 +1,14 @@
+{
+ "id": "idx-r1-layout",
+ "task": "t51",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "In the drawn layouts some text wraps awkwardly or is cut off.",
+   "where": "texts in the layouts, chiefly option C",
+   "kind": "general",
+   "outside": false
+  }
+ ],
+ "liked": []
+}

@@ -1,0 +1,14 @@
+{
+ "id": "hedging-r1-steady-dollar",
+ "task": "t58",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "Every option assumes the exchange rate does not change, so it draws a conclusion about hedged against unhedged funds that the reader should make from the possible outcomes.",
+   "where": "the comparison in all options",
+   "kind": "general",
+   "outside": true
+  }
+ ],
+ "liked": []
+}

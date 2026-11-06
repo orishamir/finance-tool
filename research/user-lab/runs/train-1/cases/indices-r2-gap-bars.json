@@ -1,0 +1,14 @@
+{
+ "id": "indices-r2-gap-bars",
+ "task": "t62",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "The bars of the gap between options mean nothing to the reader: they compare choices nobody holds.",
+   "where": "the gap bars in both options",
+   "kind": "general",
+   "outside": false
+  }
+ ],
+ "liked": []
+}

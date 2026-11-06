@@ -1,0 +1,116 @@
+{
+  "task": "s01",
+  "persona": "first-job-phone",
+  "repeat": 3,
+  "mode": "shots",
+  "device": "pc",
+  "startedAt": "2026-11-06T12:04:21.578Z",
+  "structured": {
+    "answer": "I didn't get a clear answer. What I took away is that money sitting in the עו\"ש with no interest doesn't grow, and the page says a קרן כספית beats the עו\"ש unless I need the money the same day. So I'd probably move part of the 30k, but the page never tells me what the עו\"ש costs me in shekels or what to do first.",
+    "confidence": "unsure",
+    "gave_up": false,
+    "stuck": [
+      {
+        "where": "Top calculator / big number 74,044 ₪",
+        "why": "On a page about the עו\"ש it shows the money growing at 5% a year, but my account pays nothing and further down the page says money in the עו\"ש doesn't grow. I didn't know which one to believe."
+      },
+      {
+        "where": "Chart with three lines",
+        "why": "There's no explanation next to the pink, teal and grey lines, so I had to guess what each one is."
+      },
+      {
+        "where": "כמה זה עולה",
+        "why": "I was looking for how much it costs and only found 'לפי התעריפון של הגורם המציע', no number."
+      },
+      {
+        "where": "Red box and padlocks 'חסום: שאלה פתוחה TXI OQ11'",
+        "why": "Looks like an error or something broken; I didn't understand it."
+      }
+    ],
+    "used": [
+      "Heading 'חשבון עובר ושב'",
+      "Line about a balance above 15,000 ₪ for a full quarter and the bank having to notify",
+      "'מול קרן כספית יומית העו\"ש עדיף רק כשצריך את הכסף באותו יום'",
+      "Cost table 'דמי חשבון קבועים… לפי התעריפון'",
+      "'כסף שיושב בעו\"ש בלי ריבית לא גדל'",
+      "'אין בישראל ביטוח פיקדונות'"
+    ],
+    "skimmed": [
+      "Calculator and chart (74,044 / 62,681 / 2,005 / 0 ₪)",
+      "Tax cards (מיסוי)",
+      "מה האתר לקח בחשבון with the padlocks",
+      "Terms table (מונחים)"
+    ],
+    "skipped": [
+      "מי מציע ומי מפקח",
+      "כסף נכנס ויוצא",
+      "Small grey text under the inputs",
+      "הצגת החוקים והכללים links",
+      "הצגה בטבלה",
+      "הצגת כל הבדיקות / הצגת כל המונחים",
+      "Footer"
+    ],
+    "unsure_meaning": [
+      "מק\"מ",
+      "הצמדה: לא צמוד",
+      "ריבית צמודה למדד / הריבית הריאלית",
+      "בשקלים של העתיד vs בכסף של היום",
+      "TXI OQ11, BANK-20 and the other codes",
+      "חסום: שאלה פתוחה",
+      "Pink, teal and grey lines in the chart",
+      "Where the 5% return comes from for a current account"
+    ],
+    "not_found": [
+      "How much the עו\"ש costs me in shekels",
+      "A concrete recommendation of where to move the money",
+      "A first step to take",
+      "How much of the money to leave in the עו\"ש"
+    ],
+    "findings": [
+      {
+        "what": "The first big number shows the עו\"ש money growing to 74,044 ₪ at 5% a year, which contradicts 'כסף שיושב בעו\"ש בלי ריבית לא גדל' further down. Misleading.",
+        "where": "Top calculator, screens 1-2"
+      },
+      {
+        "what": "The cost is never given in shekels, only 'לפי התעריפון'",
+        "where": "כמה זה עולה, screen 4"
+      },
+      {
+        "what": "Chart lines in three colours with no label next to them",
+        "where": "Chart, screen 2"
+      },
+      {
+        "what": "Red box and padlocks with internal codes (TXI OQ11, BANK OQ9) look like a bug",
+        "where": "Screen 5"
+      },
+      {
+        "what": "The alternative (קרן כספית) is mentioned in one line, with no link or explanation of what to do",
+        "where": "Screen 3"
+      },
+      {
+        "what": "'אין בישראל ביטוח פיקדונות' is scary and gives no guidance on what to do about it",
+        "where": "סיכונים, screen 5"
+      },
+      {
+        "what": "Codes like BANK-20 next to the facts mean nothing to a regular person",
+        "where": "שווה לדעת, screen 3"
+      }
+    ]
+  },
+  "steps": 7,
+  "reads": 7,
+  "commands": 0,
+  "refused": 0,
+  "timedOut": false,
+  "exitCode": 0,
+  "cost": {
+    "ms": 46500,
+    "turns": 9,
+    "usd": 0.235034,
+    "input": 10,
+    "cacheWrite": 18267,
+    "cacheRead": 34890,
+    "output": 4094,
+    "model": "claude-opus-5-5"
+  }
+}

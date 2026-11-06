@@ -1,0 +1,14 @@
+{
+ "id": "idle-cash-leumi",
+ "task": "t21",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "The idle-cash page's bank deposit rate is one bank's (Leumi) published rate, shown as if it were the general rate.",
+   "where": "the deposit line and its source",
+   "kind": "general",
+   "outside": false
+  }
+ ],
+ "liked": []
+}

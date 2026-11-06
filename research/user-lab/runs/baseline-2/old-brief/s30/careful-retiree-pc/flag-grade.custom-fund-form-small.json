@@ -1,0 +1,81 @@
+{
+  "case": "custom-fund-form-small",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The form for adding a fund is cramped in a narrow panel and hard to move around in.\",\"where\":\"the add-a-fund form\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Never got a clear answer about their own fund",
+      "Main fund list doesn't price their fund ('עוד לא נאסף', 'אין מחיר כאן')",
+      "Swap fund comes out ~19,980 ₪ worse while the similar Core fund comes out better, with no explanation",
+      "Lock note 'כלל מס פתוח' suggests the tax is uncertain, which is worrying",
+      "Swap and Core funds show the same ID code IE00B5BMR087",
+      "Coloured cost bar has too many colours",
+      "Too many coloured tags to read on every fund row",
+      "Long 'לא בחישוב' notes about soldiers/students are irrelevant",
+      "Interactive Brokers box prices the Core fund, not theirs, so it's only half useful",
+      "'מה הכי משנה' line chart doesn't help choose a fund",
+      "Currency-hedging section is confusing and based on only 4 years of data",
+      "Step chart assumes they start from MTF at Jerusalem, which they never said",
+      "Unclear whether a higher figure in the 'מול המדד' column is good or bad",
+      "Doesn't know what '4D'/'4A' mean in fund names",
+      "Doesn't understand what 'מס גם על שינוי המטבע' means in shekels",
+      "Unclear what 'נאמן 0.02%' is and whether it's charged on top",
+      "Wanted one clear line comparing their fund at 0.05% with the winner",
+      "Couldn't find which Israeli account can buy their fund, or what it costs there",
+      "Wanted a plain explanation of the tax on a swap fund held from Israel",
+      "Unsure whether their 0.05% fee was used in the 59,196 ₪ figure",
+      "No information on what happens if the foreign broker or fund company goes bust"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The report never mentions the add-a-fund form or that it's cramped in a narrow panel; it only says the fee they typed was accepted."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0669912
+  },
+  "b": {
+    "raised": [
+      "Never got a clear answer about their own iShares Swap fund, so confidence in the choice is low",
+      "The main fund list doesn't price their fund ('עוד לא נאסף', 'אין מחיר כאן')",
+      "The bottom table prices the Swap fund 19,980 ₪ worse, about 22,000 ₪ apart from the similar Core fund, with no explanation; the lock note 'כלל מס פתוח' is worrying",
+      "Their fund and iShares Core show the same ID code (IE00B5BMR087), so they wonder whether the page is looking at the right fund",
+      "The coloured cost bar has too many colours",
+      "The coloured tags in the fund list are too many to read on every row",
+      "The long 'לא בחישוב' notes about soldiers and students are irrelevant and get skipped",
+      "The Interactive Brokers box gives a figure for the Core fund, not theirs, so it is only half useful",
+      "The 'מה הכי משנה' chart is common sense and doesn't help them choose a fund",
+      "The currency-hedging section is confusing and rests on only 4 years of data",
+      "The step chart starts from MTF at Jerusalem, a holding they never entered",
+      "They don't know whether a bigger 'מול המדד' figure is better or worse",
+      "They don't understand what '4D' and '4A' mean in the fund names",
+      "They don't understand what 'מס גם על שינוי המטבע' means in shekels",
+      "They're unclear who the trustee is in 'נאמן 0.02%' and whether that fee is paid on top",
+      "Missing: one clear line showing their own fund's result next to the winner",
+      "Missing: which Israeli account can buy their fund, and what it costs there",
+      "Missing: a plain explanation of the tax on a swap fund held from Israel",
+      "Unclear whether their 0.05% fee was used in the 59,196 ₪ figure",
+      "Missing: information on safety if the foreign broker or the fund company goes bust"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The report never mentions an add-a-fund form or a cramped, narrow panel, so none of the raised problems matches this one."
+      }
+    ],
+    "liked": [],
+    "usd": 0.06601119999999999
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1330024
+}

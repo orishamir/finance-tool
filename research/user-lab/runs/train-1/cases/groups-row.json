@@ -1,0 +1,14 @@
+{
+ "id": "groups-row",
+ "task": "t43",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "The line about group prices ('לקבוצות' / 'מחיר אחר ל…') under an account's row is confusing as placed.",
+   "where": "the group-price lines under account rows",
+   "kind": "taste",
+   "outside": false
+  }
+ ],
+ "liked": []
+}

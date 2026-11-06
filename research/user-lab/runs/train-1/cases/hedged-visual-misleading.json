@@ -1,0 +1,14 @@
+{
+ "id": "hedged-visual-misleading",
+ "task": "t27",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "The visual 'עם נטרול מט״ח או בלי: לפי מה שיקרה לדולר' suggests a conclusion about hedged against unhedged funds that the data cannot support, and it sits near the top of the page instead of at the bottom.",
+   "where": "the hedged-or-not visual",
+   "kind": "general",
+   "outside": true
+  }
+ ],
+ "liked": []
+}

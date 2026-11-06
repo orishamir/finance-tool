@@ -1,0 +1,84 @@
+{
+  "case": "custom-index-change-answer",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"Beside the added index the link 'שינוי התשובה' does not say which answer it changes.\",\"where\":\"the line 'מדד שהוספתם, שמור במכשיר הזה · שינוי התשובה'\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "The site has no funds collected for the chosen index, so the reader doesn't know what to buy",
+      "The fund's own management fee isn't counted until the user adds a fund themselves",
+      "Has to go to 'מאיה' (Maya), which they've never heard of, to find a fund and come back",
+      "Doesn't know what the 'זר' tag next to their index means",
+      "Doesn't know what 'קרן חוץ' is or whether they want one",
+      "Skipped 'שינוי התשובה' because they didn't know which answer it changes",
+      "Doesn't know whether a 7% return is a sensible number",
+      "The 'קנייה חודשית מחושבת כהוראת קבע' / 'סכום חד־פעמי' explanation was too dense to follow",
+      "Can't tell if they count as young or a student for the cheaper prices, or which banks would get cheaper",
+      "Psagot's ad says something different from its price list, which made them less sure about Psagot",
+      "Note that the order changes in 4 places at 0% or 10% return worried them slightly",
+      "Unsure what 'מה החשבון גובה' means: whether 1,058 ₪ is per year or for all 10 years",
+      "The grey lines under names ('קרן מחקה', 'מחיר להוראת קבע') meant nothing to them",
+      "Doesn't know the term 'דמי משמרת'",
+      "Didn't realise the radio buttons, arrows and dotted-underlined numbers could be tapped",
+      "Doesn't understand 'העמלות זו על זו'",
+      "Doesn't understand 'בחו\"ל' as the account type at Interactive Brokers",
+      "Didn't understand the sentence about foreign funds waiting for the unit price",
+      "Couldn't get a final amount they'd end up with",
+      "Couldn't find how to actually open the account or what to do next",
+      "Would drop the 'מה כתוב בפרסום, מול התעריפון' block and its claims list",
+      "Would drop rows 6–17, the small print, the inflation/currency line and the footer"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 6,
+        "why": "The reader says they skipped 'שינוי התשובה' because they didn't know which answer it meant, which is the same problem the person named."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0637312
+  },
+  "b": {
+    "raised": [
+      "The site has no funds collected for the chosen index, so the reader doesn't know what to buy",
+      "The fund's own management fee isn't counted until the user adds a fund themselves",
+      "Never heard of 'מאיה' and would have to go there, find a fund, come back and type it in",
+      "The 'זר' tag next to the index is unclear",
+      "'אפשר להחזיק אותו גם דרך קרן חוץ' didn't help; doesn't know what a קרן חוץ is",
+      "Skipped 'שינוי התשובה' because they didn't know which answer it meant",
+      "Unsure whether the 7% return is a sensible number",
+      "'קנייה חודשית מחושבת כהוראת קבע' and 'סכום חד־פעמי' explanation too dense to follow",
+      "Can't tell whether at 24 they count as 'young', or which banks might be cheaper for them",
+      "Psagot's ad doesn't match its price list, which made them less sure about Psagot / '★ הזול'",
+      "'At 0% or 10% the order changes in 4 places' worried them slightly",
+      "Unsure whether 'מה החשבון גובה' / 1,058 ₪ is per year or for all 10 years",
+      "Grey sub-lines like 'קרן מחקה' and 'מחיר להוראת קבע' meant nothing to them",
+      "Didn't know the term 'דמי משמרת'",
+      "Didn't understand 'העמלות זו על זו'",
+      "Didn't realise the radio buttons, arrows and dotted-underlined numbers could be tapped",
+      "Didn't understand 'בחו\"ל' as Interactive Brokers' account type",
+      "Didn't understand the sentence about foreign funds priced by number of shares waiting for the unit price",
+      "No final shekel amount is shown, because it depends on the fund",
+      "Couldn't find how to actually open the account, or what the next step is",
+      "Would drop the 'מה כתוב בפרסום, מול התעריפון' block and its list of claims",
+      "Would drop rows 6–17, the long small print, the inflation/currency line, and the footer"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 6,
+        "why": "The reader says they skipped 'שינוי התשובה' because they didn't know which answer it meant, which is the same problem the person named: the link doesn't say which answer it changes."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0640232
+  },
+  "third": null,
+  "ranks": {
+    "k": 6
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1277544
+}

@@ -1,0 +1,14 @@
+{
+ "id": "own-terms-line-every-row",
+ "task": "t45",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "Every account row carries a teal line 'חשבון בתנאים שלכם, על בסיס …' that takes half the row and repeats on all rows.",
+   "where": "the teal line in each account row",
+   "kind": "general",
+   "outside": false
+  }
+ ],
+ "liked": []
+}

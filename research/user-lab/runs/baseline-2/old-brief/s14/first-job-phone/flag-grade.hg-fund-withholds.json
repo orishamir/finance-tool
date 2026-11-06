@@ -1,0 +1,76 @@
+{
+  "case": "hg-fund-withholds",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The sentence 'הקרן מנכה קודם … מס במקור, ו… מהם חוזרים רק אם מגישים דוח שנתי' is jargon; the reader does not understand what the fund deducts.\",\"where\":\"the early-withdrawal sentence of the graphic\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Unsure what to actually do next after deciding to join (tell HR? pick a company? which one is cheapest for S&P 500?)",
+      "Doesn't understand what the ₪15,712 'תקרה' ceiling means for a ₪30,000 salary, or how much is still taxed after 6 years",
+      "The '123 מקור · מחושב · הזנתם' legend line under the title is confusing",
+      "The 'under 60 it's at least 31%' bullet was a bit scary",
+      "'כדאי להכיר גם' buttons use unfamiliar words",
+      "Doesn't know what the right return/management-fee values to enter are",
+      "Small 1–12 year chart has no numbers, so little was learned from it",
+      "Didn't understand the company cards / why company names appear under 'תלוי בחברה'",
+      "Chief economist's recommendation to cut the benefit was slightly worrying",
+      "Big chart colours and bars aren't labelled; reader had to guess what each colour means",
+      "Unclear whether the −64,761 is a certain loss or only applies to withdrawing at 5 years",
+      "'47% מס במקור' is described as not the final tax, so what is the final tax?",
+      "Doesn't understand terms like 'רווח ריאלי', 'הפקדה מוטבת', 'מסלול כללי', 'אג\"ח ממשלתית צמודה'",
+      "Wanted a clear statement of how much you get after the full 6 years",
+      "Unclear how much less take-home pay arrives each month",
+      "Unclear whether every employer contributes 7.5%",
+      "Unclear whether employer money above the ceiling is taxed monthly on the payslip",
+      "Would drop the terms table, rule tags/codes, 'closest alternative', risks section and most notes under the chart"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 12,
+        "why": "The reader is confused by the 47% tax withheld at source on early withdrawal being 'not the final tax'. That is the same confusion about what the fund deducts in the early-withdrawal sentence."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0753712
+  },
+  "b": {
+    "raised": [
+      "Unsure what to actually do next (tell HR? pick a company? which is cheapest for S&P 500?)",
+      "Doesn't understand what the ₪15,712 'תקרה' ceiling means for a ₪30,000 salary",
+      "The '123 מקור · 123 מחושב · 123 הזנתם' legend line is confusing",
+      "The 'under 60 it's at least 31%' bullet was a bit scary",
+      "'כדאי להכיר גם' buttons use unfamiliar words",
+      "Small 1–12 year bar chart has no numbers, so little is learned from it",
+      "Company cards under 'מי מציע ומי מפקח' / 'תלוי בחברה' with company names not understood (should I pick one?)",
+      "The 'מיסוי' tax section is confusing",
+      "Chief economist's recommendation to cut the benefit was worrying",
+      "Big chart colours aren't explained and there are no labels under the bars",
+      "Unclear whether −₪64,761 is a definite loss or only when withdrawing at 5 years",
+      "'47% מס במקור' followed by 'זה לא המס הסופי' is confusing: what is the final tax?",
+      "Terms like 'רווח ריאלי', 'הפקדה מוטבת', 'מסלול כללי', 'אג\"ח ממשלתית צמודה' not understood",
+      "No clear statement of what you get after waiting the full 6 years (only shown on click)",
+      "Missing how much less take-home pay arrives each month",
+      "Unclear whether every employer gives 7.5% or only some",
+      "Unclear what happens to employer money above the ceiling (taxed monthly on payslip?)",
+      "Would drop the terms table, rule tags/codes, legend line, 'כדאי להכיר גם', securities-account comparison, risks section, company cards and most chart notes"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 12,
+        "why": "The reader is confused by the early-withdrawal withholding wording: it says '47% מס במקור' and then 'not the final tax'. That is the same confusion about what the fund deducts up front versus what comes back later."
+      }
+    ],
+    "liked": [],
+    "usd": 0.07019120000000001
+  },
+  "third": null,
+  "ranks": {
+    "k": 12
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1455624
+}

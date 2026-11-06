@@ -1,0 +1,14 @@
+{
+ "id": "compare-recommends-gemel",
+ "task": "t05",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "The goal comparison puts a kupat gemel lehashkaa first (or level with a securities account) although its own figures show a securities account at a cheaper broker would leave more money; the account is priced at one bank's tariff, so the pick misleads.",
+   "where": "the recommendation at the top of the comparison and the securities-account card",
+   "kind": "general",
+   "outside": true
+  }
+ ],
+ "liked": []
+}

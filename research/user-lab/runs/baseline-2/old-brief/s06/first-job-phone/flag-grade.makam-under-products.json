@@ -1,0 +1,88 @@
+{
+  "case": "makam-under-products",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"Makam is listed under 'מוצרים' (products) though it is something bought inside an account, not a product of its own.\",\"where\":\"the group the makam entry sits in\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "The page gives a map of options but no decision; unsure how to choose between them",
+      "The short-term bank cards' descriptions were cut off, so only titles were visible",
+      "The difference between קרן כספית מתחדשת and a regular קרן כספית is unclear",
+      "מק\"מ ('הלוואה קצרה למדינה') felt like something only for experts",
+      "Can't tell קרן חדשה מקיפה from קרן חדשה כללית, or which one they have",
+      "'תגמולים ואישית לפיצויים' was confusing",
+      "The 'בניהול אישי' cards seem meant for people with more money and knowledge",
+      "Unclear whether a committee deciding the investments in מסלול כללי is good or bad",
+      "Bond jargon (קופון, צמודה למדד, תשואת המק\"מ, פדיון) not understood",
+      "The MSCI card descriptions were cut off; the difference between AC World and World is unclear",
+      "'הכסף מושקע בדולרים' is worrying; unclear whether it means currency risk",
+      "Unclear why to pick one Tel Aviv index over another",
+      "מק\"מ appears in both halves of the page; unclear whether it is a container or a content",
+      "Terms like 'שווי השוק הסחיר' / 'שווי השוק הגבוה' not understood",
+      "No numbers: fees, returns, comparative risk, minimum amounts",
+      "No lock-up period information for most products",
+      "Only three 'if you're X, look at Y' starting cases",
+      "No guidance on checking what you already have through work",
+      "No comparison of קופת גמל להשקעה vs חשבון ניירות ערך for buying the S&P 500",
+      "Would drop the 'לילדים' section",
+      "Would drop the bond cards",
+      "Would drop two of the three Tel Aviv index cards",
+      "Would drop the duplicate מק\"מ and קרן כספית מתחדשת",
+      "Would drop the two 'בניהול אישי' cards",
+      "Would drop 'מה האתר עוד לא מכסה'"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 13,
+        "why": "The reader is confused that מק\"מ is listed under 'איפה הכסף מוחזק' (the container group) and asks whether it is really a container or a content, which is the same misplacement the person flagged."
+      }
+    ],
+    "liked": [],
+    "usd": 0.07227520000000001
+  },
+  "b": {
+    "raised": [
+      "The page gives a map, not a decision: the reader is unsure how to choose between options",
+      "Descriptions on the short-term cash cards (עובר ושב / פיקדון / תכנית חיסכון) are cut off",
+      "The difference between קרן כספית מתחדשת and a regular קרן כספית is unclear",
+      "מק\"מ ('הלוואה קצרה למדינה') felt like something for experts",
+      "Can't tell קרן חדשה מקיפה from קרן חדשה כללית",
+      "'תגמולים ואישית לפיצויים' is not understood",
+      "The בניהול אישי cards seem meant for people with more money and knowledge",
+      "מסלול כללי: unclear whether a committee deciding is good or bad",
+      "Bond cards use jargon the reader doesn't know (קופון, צמודה למדד, תשואת המק\"מ, פדיון)",
+      "Index card descriptions are cut off, so AC World vs World is unclear",
+      "'הכסף מושקע בדולרים' is worrying (currency risk?)",
+      "No reason given to pick one of ת\"א-35/125/90 over another",
+      "מק\"מ appears in both halves of the page: is it a container or a content?",
+      "'שווי השוק הסחיר' / 'שווי השוק הגבוה' not understood",
+      "No numbers: fees, returns, comparative risk, minimum amounts",
+      "Lock-up periods are missing for most products",
+      "Wants more 'if you're X, look at Y' cases beyond three",
+      "No guidance on how to check what you already have through work",
+      "No guidance on קופת גמל להשקעה vs חשבון ניירות ערך for buying the S&P 500",
+      "Would drop the 'לילדים' section",
+      "Would drop the bond cards",
+      "Would cut the Tel Aviv indices down to one",
+      "Would drop the 'מה האתר עוד לא מכסה' section"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 13,
+        "why": "The reader notices that מק\"מ is filed under 'איפה הכסף מוחזק' (the containers/products half) and asks whether it is really a container or a content, which is the person's point that it is something held inside an account rather than a product of its own."
+      }
+    ],
+    "liked": [],
+    "usd": 0.07466319999999999
+  },
+  "third": null,
+  "ranks": {
+    "k": 13
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1469384
+}

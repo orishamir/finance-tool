@@ -1,0 +1,14 @@
+{
+ "id": "indices-usd-notice",
+ "task": "t29",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "Notes like 'לידיעתכם: מטבע USD' under foreign funds add nothing the reader needs.",
+   "where": "the notes under the index heading and under foreign funds",
+   "kind": "general",
+   "outside": false
+  }
+ ],
+ "liked": []
+}

@@ -1,0 +1,63 @@
+{
+  "case": "label-warning-text",
+  "sessions": 2,
+  "perKey": {
+    "k": {
+      "kind": "general",
+      "caught": 2,
+      "caughtIn10": 0,
+      "of": 2,
+      "byPersona": {
+        "careful-retiree-pc": {
+          "caught": 1,
+          "of": 1,
+          "ranks": [
+            12
+          ]
+        },
+        "first-job-phone": {
+          "caught": 1,
+          "of": 1,
+          "ranks": [
+            15
+          ]
+        }
+      },
+      "graderAgreement": 1
+    }
+  },
+  "againstLiked": {},
+  "usd": 0.3108168,
+  "rows": [
+    {
+      "task": "s27",
+      "session": "careful-retiree-pc",
+      "persona": "careful-retiree-pc",
+      "mode": "free text",
+      "raised": [
+        23,
+        22
+      ],
+      "ranks": {
+        "k": 12
+      },
+      "against": {},
+      "usd": 0.1617824
+    },
+    {
+      "task": "s27",
+      "session": "first-job-phone",
+      "persona": "first-job-phone",
+      "mode": "free text",
+      "raised": [
+        23,
+        22
+      ],
+      "ranks": {
+        "k": 15
+      },
+      "against": {},
+      "usd": 0.1490344
+    }
+  ]
+}

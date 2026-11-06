@@ -1,0 +1,36 @@
+{
+  "case": "study-r1-decoder-table",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"A table exists only to decode the graph instead of the names and numbers being written on the graph, adding mental overhead.\",\"where\":\"the table under the graph\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the findings say that a table under the graph only serves to decode it when the labels and numbers should be on the graph itself; finding 4 is about colours that are hard to tell apart, and finding 3 is about minus signs in a table."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0168914
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings says that a table under the graph only serves to decode it, or that the names and numbers should be written on the graph itself. Finding 4 is about colours that are hard to tell apart, and finding 3 is about minus signs in the A table, which are different complaints."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0172234
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0341148
+}

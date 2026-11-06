@@ -1,0 +1,14 @@
+{
+ "id": "zero-cheaper-less-left",
+ "task": "t36",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "In the account list, an account shown charging less leaves less money than one charging more (for example One Zero against Psagot), with nothing explaining why.",
+   "where": "the 'מה החשבון גובה' and 'נשאר' columns of the account list",
+   "kind": "general",
+   "outside": false
+  }
+ ],
+ "liked": []
+}

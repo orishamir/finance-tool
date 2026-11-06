@@ -1,0 +1,36 @@
+{
+  "case": "study-r2-employee-compare",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"For a salaried employee the comparison with a securities account is beside the point: the account gets no employer money, so it is not a real choice.\",\"where\":\"the comparison in both options\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings says the securities-account comparison is beside the point for a salaried employee; they cover the tax figures, the year-6 view, ₪ signs, reading order, the assumptions and the bar strip."
+      }
+    ],
+    "liked": [],
+    "usd": 0.014203400000000001
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings questions whether a securities account is a relevant comparison for a salaried employee who gets no employer money; they cover tax display, missing views, ₪ signs, reading order, hidden assumptions and chart size."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0142994
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.028502800000000002
+}

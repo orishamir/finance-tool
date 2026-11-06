@@ -1,0 +1,77 @@
+{
+  "case": "study-r1-grey-years",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"In the graph of the years everything is grey, so nothing stands out.\",\"where\":\"the year graph\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Unsure whether their own employer really gives 7.5% (the orange warning leaves them uncertain)",
+      "The subtitle 'שרטוט לבחירה' told them nothing",
+      "The first top card (+1,721) was confusing: why is the fund only 1,721 better?",
+      "The assumptions paragraph (track names, fund names, 4D, company name) was noise",
+      "In option B the +527 step was nearly missed because it is a thin green line",
+      "Option B gave nothing new after option A",
+      "Option C has many colours and the white line took a while to understand (only clear from the legend)",
+      "The withdrawal tax line (−13,974) scared them",
+      "Teal and pink-striped coin colours were only understood after reading the table",
+      "Did not understand 'דמי ניהול' (management fees) or how much they cost",
+      "Did not understand 'מסלול', 'מחקה', 'תקרה בחוק'",
+      "Did not understand why the year-5 tax is so large (13,974) compared with 594 in the securities account",
+      "The '1 coin = 1,000 ₪' note was never used",
+      "Could not find what happens if they change jobs before 6 years",
+      "Could not find whether money can be withdrawn in an emergency and what is lost",
+      "Could not find how to actually open a fund (through the employer or alone)",
+      "Could not find how to find out their employer's percentage",
+      "Could not find whether they can have both the fund and a securities account",
+      "Would drop option C, option B, the assumptions paragraph and the first top card"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The report never says the year graph is all grey or that nothing stands out; it praises the year bar strip, and about option C's per-year bars it complains of too many colours, which is the opposite."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0475072
+  },
+  "b": {
+    "raised": [
+      "The subtitle \"שרטוט לבחירה\" (a draft to choose from) told them nothing",
+      "The first top card (+1,721 ₪) was confusing: why is the fund only 1,721 better?",
+      "The assumptions paragraph's fund and track names and jargon (S&P500 track, 'ילין לפידות מחקה', 4D, טכנולוג'יז) felt like noise",
+      "In option B they nearly missed the +527 step because it is a thin green line",
+      "Option B added nothing new after option A",
+      "Option C has too many colours, and the white line took a moment to understand",
+      "Option C makes the comparison with a securities account hard to feel",
+      "In option A, the teal and pink-striped coin colours only made sense after reading the table",
+      "The withdrawal tax of −13,974 was scary",
+      "Didn't understand 'דמי ניהול' (management fees) or how much they cost",
+      "Didn't understand 'מסלול', 'מחקה', 'תקרה בחוק'",
+      "Unclear why the tax at year 5 (13,974) is so much bigger than the securities account's (594)",
+      "Can't find what happens on changing jobs before 6 years",
+      "Can't find whether money can be withdrawn in an emergency and what is lost",
+      "Can't find how to actually open a fund (through the employer or alone)",
+      "Can't find how to learn what percentage their own employer gives",
+      "Can't find whether they can have both the fund and a securities account",
+      "Would drop options C and B, the assumptions paragraph and the first card"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The report never says the year graph is all grey with nothing standing out; its only complaint about the per-year chart (option C) is that it has too many colours, which is close to the opposite."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0475792
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0950864
+}

@@ -1,0 +1,36 @@
+{
+  "case": "company-missing-fund-kinds",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"A company's page lists its provident and study funds but not its index-tracking funds or money-market funds.\",\"where\":\"the product choices at the top of the company page\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 6 is about the same product buttons, but it says a listed product isn't explained, not that index-tracking or money-market funds are missing."
+      }
+    ],
+    "liked": [],
+    "usd": 0.014259400000000002
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "Finding 6 is about the same product buttons, but it complains that 'קופת גמל להשקעה' isn't explained, not that index-tracking or money-market funds are missing."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0145354
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.028794800000000002
+}

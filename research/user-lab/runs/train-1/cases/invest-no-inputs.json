@@ -1,0 +1,14 @@
+{
+ "id": "invest-no-inputs",
+ "task": "t16",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "The index page shows the plan's amounts (today, monthly, years, return, inflation) but none can be edited there, so a reader who only wants to compare where to buy an index cannot enter their own sums.",
+   "where": "the plan figures under the index chips",
+   "kind": "general",
+   "outside": false
+  }
+ ],
+ "liked": []
+}

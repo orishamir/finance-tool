@@ -1,0 +1,36 @@
+{
+  "case": "makam-duplicates",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The guide list still offers makam as separate guide pages (one per way of holding it), though they describe one thing.\",\"where\":\"the makam entries in the guide list\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings mention makam being split into several guide pages for one product; they cover placement, missing rates, contrast, jargon, index cards, trust and bond terms."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0142114
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings mention makam showing up as several separate guide pages for one thing; finding 5 is about too many index cards making the page feel aimed at investors, which is a different complaint."
+      }
+    ],
+    "liked": [],
+    "usd": 0.014671400000000001
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0288828
+}

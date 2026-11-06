@@ -1,0 +1,193 @@
+{
+ "run": "research/user-lab/runs/baseline-2/reviewer",
+ "sessions": "all",
+ "kinds": {
+  "headline": {
+   "cases": 36,
+   "pairs": 216,
+   "single10": [
+    46,
+    216
+   ],
+   "singleAny": [
+    46,
+    216
+   ],
+   "pooled10": [
+    14,
+    36
+   ],
+   "pooledAny": [
+    14,
+    36
+   ],
+   "byPersona": {
+    "careful-retiree-pc": {
+     "in10": 19,
+     "of": 108
+    },
+    "first-job-phone": {
+     "in10": 27,
+     "of": 108
+    }
+   },
+   "steadiness": {
+    "caughtOnlyOnce": 10,
+    "caughtMoreThanOnce": 13,
+    "meanShare": 0.213,
+    "groups": 72
+   },
+   "ranks": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    4,
+    4,
+    4,
+    4,
+    4,
+    5,
+    5,
+    5,
+    6,
+    6,
+    7,
+    7,
+    7,
+    7,
+    8,
+    8
+   ],
+   "caughtCases": [
+    "companies-fee-column-unclear",
+    "current-account-chart-unrelated",
+    "current-account-one-bank",
+    "guides-useless-sections",
+    "hg-fund-withholds",
+    "hg-huge-profit",
+    "hg-tax-after-six",
+    "hg-within-ceiling",
+    "label-warning-text",
+    "study-r1-decoder-table",
+    "tracks-exposure-100",
+    "tracks-r1-returns",
+    "tracks-sort-does-nothing",
+    "tracks-stale-annuity"
+   ]
+  },
+  "outside": {
+   "cases": 7,
+   "pairs": 42,
+   "single10": [
+    2,
+    42
+   ],
+   "singleAny": [
+    2,
+    42
+   ],
+   "pooled10": [
+    2,
+    7
+   ],
+   "pooledAny": [
+    2,
+    7
+   ],
+   "byPersona": {
+    "careful-retiree-pc": {
+     "in10": 1,
+     "of": 21
+    },
+    "first-job-phone": {
+     "in10": 1,
+     "of": 21
+    }
+   },
+   "steadiness": {
+    "caughtOnlyOnce": 2,
+    "caughtMoreThanOnce": 0,
+    "meanShare": 0.048,
+    "groups": 14
+   },
+   "ranks": [
+    1,
+    5
+   ],
+   "caughtCases": [
+    "company-missing-fund-kinds",
+    "makam-duplicates"
+   ]
+  },
+  "taste": {
+   "cases": 9,
+   "pairs": 54,
+   "single10": [
+    1,
+    54
+   ],
+   "singleAny": [
+    1,
+    54
+   ],
+   "pooled10": [
+    1,
+    9
+   ],
+   "pooledAny": [
+    1,
+    9
+   ],
+   "byPersona": {
+    "careful-retiree-pc": {
+     "in10": 1,
+     "of": 27
+    },
+    "first-job-phone": {
+     "in10": 0,
+     "of": 27
+    }
+   },
+   "steadiness": {
+    "caughtOnlyOnce": 1,
+    "caughtMoreThanOnce": 0,
+    "meanShare": 0.019,
+    "groups": 18
+   },
+   "ranks": [
+    7
+   ],
+   "caughtCases": [
+    "label-icons"
+   ]
+  }
+ },
+ "findingsPerSession": 6.91
+}

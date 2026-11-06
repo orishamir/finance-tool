@@ -1,0 +1,84 @@
+{
+  "case": "hishtalmut-pf18",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The 'שווה לדעת' note 'קרן השתלמות: אין העברה חלקית, ואיחוד רק כשנזיל' reads as if a study fund could not be moved between companies without tax.\",\"where\":\"the 'שווה לדעת' block\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Worried by the high cost of early withdrawal (tax up to 47% on the employer's part)",
+      "Calculator result (only 415.84 ₪ more) made the keren look not worth it; unclear that the employer money is left out",
+      "Doesn't know how to choose a fund, so unsure of the next step",
+      "Top menu / '123 מקור / חושב / הזנה' legend: unclear what clicking a number does",
+      "Fund-number lines about מיטב / ילין לפידות are too technical",
+      "Result bars cut off: only the bottom is visible, with a number cut off at '16,9…'",
+      "Doesn't understand where the extra '200 ₪ בחודש' above the benefited deposit comes from",
+      "Page shows the choice of company matters a lot but doesn't say which one to pick",
+      "'שווה לדעת' lines confusing, including 'אין העברה חלקית, ואיחוד רק כשנזיל'",
+      "Unknown codes TXH-09, KH-15, PF-18 etc.",
+      "מיסוי cards cut off and hard to follow sideways with the arrows",
+      "Doesn't understand 'בנאמנות'",
+      "'מה האתר לקח בחשבון' block shows only its heading",
+      "Result bar colours unclear until matched to the dots above",
+      "Doesn't understand 'הפקדה מוטבת' in practice",
+      "Doesn't understand 'הרווח הריאלי' and 'מדרגות המס'",
+      "Couldn't find what to actually do to open it (HR, online, form)",
+      "Couldn't find which company or track to pick, or whether S&P 500 is a good default",
+      "Couldn't find what happens when changing jobs",
+      "Couldn't find what a normal management fee is (only the 2% maximum and one example)",
+      "Couldn't find whether the 2.5% comes off take-home pay",
+      "Unclear whether the 6-year count restarts for deposits after a withdrawal",
+      "Would drop the מונחים table, the codes column and the self-employed paragraphs",
+      "Would drop the בית השקעות / המנהל bullets with long numbers"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 9,
+        "why": "The reader says the same 'שווה לדעת' note, 'אין העברה חלקית, ואיחוד רק כשנזיל', confused them; this is a partial match because they don't say it seemed to mean a fund can't be moved without tax."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0739432
+  },
+  "b": {
+    "raised": [
+      "Early-withdrawal tax of up to 47% on the employer's part scared them",
+      "The calculator result of only 415.84 ₪ more made the keren look tiny and was confusing until they realised employer money is left out",
+      "Doesn't know how to choose a fund or company; the page doesn't say which one or whether the S&P 500 track is a good default",
+      "Unclear what the '123 מקור / חושב / הזנה' legend means or what clicking a number does",
+      "Fund lines about מיטב / ילין לפידות with fund numbers were too technical",
+      "Result bars were cut off (number truncated at '16,9…')",
+      "Didn't understand where the '200 ₪ above that' comes from, or what 'הפקדה מוטבת' means in practice",
+      "The שווה לדעת lines were confusing, especially 'אין העברה חלקית, ואיחוד רק כשנזיל'",
+      "Didn't know what the codes TXH-09, KH-15, PF-18 etc. mean",
+      "מיסוי cards were cut off and hard to follow sideways with the arrows",
+      "Didn't understand 'בנאמנות'",
+      "Only the heading of 'מה האתר לקח בחשבון' was visible",
+      "Couldn't tell which colour in the result bars was which without matching to the dots",
+      "Didn't understand 'הרווח הריאלי' and 'מדרגות המס'",
+      "No practical next step: tell HR, open online, or fill in a form?",
+      "Unclear what happens on changing jobs: does the fund stay theirs and does the 6-year count continue",
+      "No indication of what a normal management fee is, only the 2% maximum and one example",
+      "Unclear whether the 2.5% comes off take-home pay",
+      "Unclear whether withdrawing at 6 years restarts the count for new deposits",
+      "Would drop the מונחים table, the codes column, the self-employed paragraphs, the בית השקעות/המנהל bullets, and the fund-name lines"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 8,
+        "why": "The reader names the same שווה לדעת wording, 'אין העברה חלקית, ואיחוד רק כשנזיל', as confusing, and the person would recognise that as their complaint about the misleading note, even though the reader never says it implies a taxed transfer."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0712712
+  },
+  "third": null,
+  "ranks": {
+    "k": 8
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.14521440000000002
+}

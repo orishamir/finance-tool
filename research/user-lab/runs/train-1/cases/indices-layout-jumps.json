@@ -1,0 +1,14 @@
+{
+ "id": "indices-layout-jumps",
+ "task": "t35",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "Lines of the index page move when inputs change: the hint 'בחרו קרן אחרת, והרשימה תסתדר מחדש' jumps to a new line, the cost-comparison line shifts sideways, and the tabs shift with the number of months.",
+   "where": "the result lines and tabs at the top, between the two states",
+   "kind": "general",
+   "outside": false
+  }
+ ],
+ "liked": []
+}

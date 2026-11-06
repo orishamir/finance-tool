@@ -1,0 +1,85 @@
+{
+  "case": "current-account-future-shekels",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"With 'בשקלים של העתיד' chosen, the figures ignore inflation, so they are wrong.\",\"where\":\"the chart and figures of the panel\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "The coloured-number key ('123 מקמר / חושב / הזנתם') and the word 'מקמר' are confusing",
+      "The basic vs extended fee packages, and what they would cost, are not understood",
+      "The calculator assumes a 5% return for an account that pays almost nothing, and nothing suggests trying 0%",
+      "Unclear whether the calculator shows 'בכסף של היום' or 'בשקלים של העתיד'",
+      "The BANK-20/BANK-23/BANK-15 tags mean nothing to the reader",
+      "The 'כסף נכנס ויוצא' section was partly cut off between screenshots",
+      "The cost table gives no numbers, only 'לפי התעריפון של הגורם המציע'",
+      "The dark red strip 'שאלה פתוחה: TXI OQ11' looks like a warning but is unclear",
+      "Worry that Israel has no deposit insurance and the 250,000 ₪ protection is only a proposal",
+      "'מה האתר לקח בחשבון' with its padlocks and 'חסום' reads like internal notes and should go",
+      "The terms table seems to appear twice",
+      "The chart colours (green area, pink line, pale line) have no legend",
+      "The deposits figure 62,681 doesn't match 10,000 + 500/month for 10 years (70,000)",
+      "The 'חוקים וכללים' column in the cost table is empty",
+      "Unclear whether the 'מזומן שקלי' chip can be clicked",
+      "No figure for how much is lost each year by keeping money at 0% while prices rise",
+      "No actual current interest rates for deposits or money market funds to compare",
+      "No guidance on how much to keep in the current account",
+      "Unclear whether a money market fund is protected if the fund or bank fails",
+      "No guidance on what to say to the bank",
+      "The 'כסף נכנס ויוצא' cards about moving shares are irrelevant and could go",
+      "Parts of 'למה משתמשים בזה' and the tax cards were lost between screenshots"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader is only unsure which money view is shown (item 4) and confused by the 62,681 sum (item 13), but never says the 'בשקלים של העתיד' figures ignore inflation and are wrong."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0626752
+  },
+  "b": {
+    "raised": [
+      "The coloured-number key ('123 מקמר / חושב / הזנתם') is confusing, and 'מקמר' isn't explained",
+      "The basic and extended fee packages, and what they cost, aren't clear",
+      "The calculator uses a 5% return for an account that usually pays nothing",
+      "It's unclear whether the figures are 'בכסף של היום' or 'בשקלים של העתיד'",
+      "Nothing suggests entering 0% to see what really happens to money in the current account",
+      "The tags BANK-20/BANK-23/BANK-15 (and BANK OQ9) mean nothing to the reader",
+      "Parts of the page (e.g. 'כסף נכנס ויוצא') were cut off between screenshots",
+      "The cost table gives no actual number, only 'לפי התעריפון'",
+      "The dark red strip 'שאלה פתוחה: TXI OQ11' looks like a warning but its meaning is unclear",
+      "Worry that Israel has no deposit insurance and the 250,000 ₪ protection is only a proposal",
+      "'מה האתר לקח בחשבון' reads like internal notes, full of padlocks and 'חסום'",
+      "The terms table appears twice",
+      "The chart colours (green area, pink line, pale line) have no legend",
+      "The deposits figure of 62,681 doesn't match 10,000 + 500/month × 10 years = 70,000",
+      "The 'חוקים וכללים' column in the cost table is empty",
+      "Unclear whether the 'מזומן שקלי' chip is clickable",
+      "Can't find how much money is lost each year at 0% interest with inflation",
+      "Can't find typical account fees in shekels",
+      "Can't find actual current interest rates for deposits and money market funds",
+      "Can't find guidance on how much to leave in the current account",
+      "Can't find whether a money market fund is protected if the fund company or bank fails",
+      "Can't find what to say to the bank",
+      "Would drop the 'כסף נכנס ויוצא' cards about moving shares"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader is only unsure which mode is showing (item 4) and finds the 62,681 deposits figure doesn't add up (item 14), but never says the 'בשקלים של העתיד' figures ignore inflation and are therefore wrong."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0692232
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1318984
+}

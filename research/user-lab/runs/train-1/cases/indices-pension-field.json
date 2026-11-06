@@ -1,0 +1,14 @@
+{
+ "id": "indices-pension-field",
+ "task": "t26",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "The index page has a field for the pension fund's insurance fee as a share of deposits, which has nothing to do with investing in an index.",
+   "where": "the assumptions fields",
+   "kind": "general",
+   "outside": false
+  }
+ ],
+ "liked": []
+}

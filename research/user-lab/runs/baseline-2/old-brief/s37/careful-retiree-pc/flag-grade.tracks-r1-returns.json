@@ -1,0 +1,82 @@
+{
+  "case": "tracks-r1-returns",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The lists show the tracks but give no sense of the different companies.\",\"where\":\"all three lists\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "Nothing on the page helps a 61-year-old decide whether a 99%-stock track suits them (no guidance by age)",
+      "The opening bullets speak to the designers, not to the user",
+      "The 'מקום' tab means nothing to the user",
+      "Several of the investment-type filter buttons are confusing",
+      "The orange note in option A shows most groups are cut off, including the bond groups the user wants",
+      "Option B mixes bonds, stocks and cash in one fee-sorted list, which makes comparison meaningless",
+      "The clock icons and dotted purple underlines are unexplained",
+      "Doesn't understand what 'מט\"ח 97%' means for them",
+      "Doesn't understand how shares can be 'מניות 101%'",
+      "Can't tell the investment groups apart ('מניות', 'מניות סחיר', 'עוקב מדדי מניות', 'גמיש', 'משולב סחיר', 'קיימות')",
+      "Unclear whether 'מההפקדות' means a fee on every deposit",
+      "Unclear how much is actually kept once returns are shown before fees and before tax",
+      "Unclear whether a 'פחות מ־3 שנים' track is riskier or just new",
+      "No risk information, such as how far a track fell in a bad year",
+      "Option C shows returns only for the S&P group, not for bonds or the general track",
+      "No practical rules on switching tracks or on tax at withdrawal",
+      "No information on how to actually join",
+      "The 'קופה' code column is meaningless and could go",
+      "The ring charts repeat the percentages and could go",
+      "The tabs and product buttons repeated above each option could go"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The report never says the lists fail to show how the companies differ. It only notes that the company choice hardly matters because returns are close, which is a different point."
+      }
+    ],
+    "liked": [],
+    "usd": 0.057031200000000004
+  },
+  "b": {
+    "raised": [
+      "Nothing on the page helps decide whether a 99%-stocks track suits a 61-year-old",
+      "The opening bullet points speak to the designers, not to the user",
+      "The tab \"מקום\" means nothing to the reader",
+      "Several investment-type filter buttons are confusing",
+      "The orange note shows that most groups are cut off, including the bond groups the reader wanted",
+      "Option ב mixes bond, stock and money-market tracks in one list sorted only by fee, which tells the reader nothing",
+      "The \"קופה\" column is just an unexplained code",
+      "The ring charts repeat the numbers next to them",
+      "The clock icons and dotted purple underlines are unexplained",
+      "Unclear what \"מט\"ח 97%\" means for the reader and whether it is good or bad",
+      "Unclear how \"מניות 101%\" can be over 100%",
+      "The differences between groups such as מניות, מניות סחיר, עוקב מדדי מניות, גמיש, משולב סחיר and קיימות are unclear",
+      "Unclear whether \"מההפקדות\" means a fee on every deposit",
+      "Returns are shown before fees and tax, so the reader can't tell what they actually keep",
+      "Unclear whether \"פחות מ־3 שנים\" means riskier or just new",
+      "No risk information, such as how far a track fell in a bad year",
+      "No guidance by age or for someone near retirement",
+      "Option C shows past returns only for the S&P group, not for the other groups",
+      "No practical rules on switching tracks or on tax at withdrawal",
+      "The full list of groups and tracks is cut off",
+      "No information on how to join",
+      "The tabs and product buttons are repeated above each option"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader only remarks that the choice of company hardly matters because returns are close, and never complains that the lists fail to show how the companies differ."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0555032
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.1125344
+}

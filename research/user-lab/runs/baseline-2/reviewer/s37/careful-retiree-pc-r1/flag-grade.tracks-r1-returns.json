@@ -1,0 +1,36 @@
+{
+  "case": "tracks-r1-returns",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The lists show the tracks but give no sense of the different companies.\",\"where\":\"all three lists\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings says the lists fail to tell the companies apart; they cover risk ordering, readability, number overload, jargon and repetition, and finding 8 only mentions a company row because of the 101% figure."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0157754
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the reader's findings says the lists fail to show how the companies differ; they cover track ordering, readability, number overload, jargon, the unexplained fund-number column and repetition instead."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0150834
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0308588
+}

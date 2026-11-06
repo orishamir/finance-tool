@@ -1,0 +1,14 @@
+{
+ "id": "indices-rate-for-ta-funds",
+ "task": "t29",
+ "keys": [
+  {
+   "id": "k",
+   "problem": "The dollar exchange rate is shown even where the funds are bought in shekels on the Tel Aviv exchange, where it does not matter to the reader.",
+   "where": "the exchange-rate line",
+   "kind": "general",
+   "outside": false
+  }
+ ],
+ "liked": []
+}

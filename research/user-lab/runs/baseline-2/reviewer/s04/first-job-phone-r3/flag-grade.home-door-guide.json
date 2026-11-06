@@ -1,0 +1,36 @@
+{
+  "case": "home-door-guide",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The home link 'להבין סוג של חיסכון' promises help with one kind of saving but opens only the general list of guides.\",\"where\":\"the link on the home page and where it leads\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "findings",
+  "a": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "No finding says the home link promises help with one kind of saving but opens the general guide list; finding 1 complains that the cards on the guide page are hard to tell apart, which is a different complaint about the destination page."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0168754
+  },
+  "b": {
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "None of the findings says the home link promises help with one kind of saving and then opens the general guide list; finding 1 only says the card grid is hard to search, which is a different complaint about where the link lands."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0170634
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.0339388
+}

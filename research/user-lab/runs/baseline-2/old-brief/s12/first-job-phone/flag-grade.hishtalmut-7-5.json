@@ -1,0 +1,81 @@
+{
+  "case": "hishtalmut-7-5",
+  "stamp": "{\"keys\":[{\"id\":\"k\",\"problem\":\"The guide's 7.5% does not say whether it is deposited to the study fund itself or to a pension fund.\",\"where\":\"the opening explanation of the guide\",\"kind\":\"general\"}],\"liked\":[]}",
+  "mode": "free text",
+  "a": {
+    "raised": [
+      "The '123 מקור · 123 חושב · 123 הזנתה · מונח' row is confusing and unexplained",
+      "Unclear what counts as 'השתלמות' (training) for the 3-year withdrawal option",
+      "Unknown terms in 'כדאי להכיר גם' (קרן חדשה מקיפה, תגמולים, אישית לפיצויים)",
+      "Doesn't know what 'אג\"ח ממשלתית צמודה' is",
+      "Calculator result was misleading: 17,370 ₪ looked like the total but is only net profit",
+      "The comparison leaves out the employer's money, so the 415.84 ₪ difference looks tiny and almost discouraging",
+      "The negative end of the range (₪−342.02) is confusing",
+      "'הפקדה אחרי משיכה הולכת לחשבון חדש' didn't mean much",
+      "The 'no law requires every employer to contribute' line leaves it unclear whether their employer must contribute",
+      "Company cards: the names mean nothing to them",
+      "Cost table shows only legal maximums, not the real price",
+      "'שכירים: אין ניכוי על ההפקדה שלכם' was not understood",
+      "The orange early-withdrawal warning is a bit scary and the tax-bracket part was not understood",
+      "The chief-economist note about cutting the benefit was slightly worrying",
+      "Can't find what happens if they leave the job before 6 years",
+      "Can't find what happens at 6 years if they don't withdraw",
+      "Can't find how to actually sign up or how to choose a company in simple terms",
+      "No simple total after 6 years that includes the employer's money",
+      "Would drop the grey tags, codes (TXH-09 etc.), 'חוקים וכללים' badges and the 123 row",
+      "Would drop the full glossary table (keep terms as hover links)",
+      "Would drop the 'שחקו עם המספרים שלכם' section"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader takes the 7.5% to be an employer deposit into the keren and never says it is unclear whether it goes to the study fund or a pension fund."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0710592
+  },
+  "b": {
+    "raised": [
+      "The '123 מקור · 123 חושב · 123 הזנתה · מונח' row is confusing and its meaning is unclear",
+      "Unclear what counts as 'השתלמות' (training) for the 3-year withdrawal option",
+      "The 'כדאי להכיר גם' items (קרן חדשה מקיפה, תגמולים, פיצויים) use unfamiliar terms",
+      "Does not know what 'אג\"ח ממשלתית צמודה' is",
+      "Calculator is confusing: the 17,370 figure looked like the total, and the 415.84 difference looked tiny",
+      "The comparison leaves out the employer's money, which is the main reason to join",
+      "The negative end of the difference range (₪−342.02) is confusing",
+      "'הפקדה אחרי משיכה הולכת לחשבון חדש' meant little to the reader",
+      "The 'no law requires every employer to contribute' line leaves it unclear whether the employer must contribute",
+      "The company names in the cards mean nothing to the reader",
+      "The cost table shows legal maximums, not the actual price",
+      "'שכירים: אין ניכוי על ההפקדה שלכם' is not understood",
+      "The orange early-withdrawal warning is a bit scary, and the tax-bracket part is not understood",
+      "The chief economist's recommendation to cut the benefit is slightly worrying",
+      "Grey source tags, codes (TXH-09 etc.) and 'חוקים וכללים · N' badges are noise and should go",
+      "Missing: what happens if the reader leaves the job before 6 years",
+      "Missing: what happens at 6 years if the money isn't withdrawn",
+      "Missing: how to actually sign up and how to choose a company in simple terms",
+      "Missing: a simple projected total that includes the employer's money",
+      "Would drop the company cards, full glossary table, cost table, 'כדאי להכיר גם' buttons, chief-economist note and 'שחקו עם המספרים שלכם'"
+    ],
+    "problems": [
+      {
+        "id": "k",
+        "rank": 0,
+        "why": "The reader takes the 7.5% to be the employer's deposit into the keren and never says it's unclear whether it goes to the study fund or a pension fund. Their questions about whether the employer has to contribute are a different issue."
+      }
+    ],
+    "liked": [],
+    "usd": 0.0697632
+  },
+  "third": null,
+  "ranks": {
+    "k": 0
+  },
+  "agreed": {
+    "k": true
+  },
+  "against": {},
+  "usd": 0.14082240000000001
+}
