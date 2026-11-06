@@ -1535,18 +1535,6 @@
             }
           }
         ],
-        "current_account": {
-          "price_he": "פטור מפעולה על ידי פקיד ומפעולה בערוץ ישיר",
-          "exempt": true,
-          "for_months": 24,
-          "source": {
-            "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
-            "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה - פעולות בסיסיות, סעיפים 1 ו־1.1",
-            "page": 31,
-            "quote": "פעולה על ידי פקיד ... פטור"
-          },
-          "inferred": "The annex prints the teller action and the direct-channel action 'פטור' for this group and no minimum row; the ordinary minimum is 'עמלת מינימום בסכום שאינו עולה על מחיר של פעולה אחת ע\"י הפקיד', so with the teller action free it is nothing. The seniors' column of the same rows says '50% הנחה (בכפוף למינימום)', and this group's says no minimum."
-        },
         "who_short_he": "חיילים משוחררים",
         "cheaper_he": "דמי ניהול בארץ 0.1% במקום 0.2%, בחוץ לארץ 0.125% במקום 0.25%",
         "ends_short_he": "שנתיים מההצטרפות לקבוצה"
@@ -1634,18 +1622,6 @@
             }
           }
         ],
-        "current_account": {
-          "price_he": "פטור מפעולה על ידי פקיד ומפעולה בערוץ ישיר",
-          "exempt": true,
-          "for_months": 48,
-          "source": {
-            "url": "https://www.mercantile.co.il/media/je0jxvjo/taarifon_private_full_11026.pdf",
-            "title": "תעריפון, נספח א' הטבות לקבוצות אוכלוסיה - פעולות בסיסיות, סעיפים 1 ו־1.1",
-            "page": 31,
-            "quote": "פעולה על ידי פקיד ... פטור"
-          },
-          "inferred": "The annex prints the teller action and the direct-channel action 'פטור' for this group and no minimum row; the ordinary minimum is 'עמלת מינימום בסכום שאינו עולה על מחיר של פעולה אחת ע\"י הפקיד', so with the teller action free it is nothing. The seniors' column of the same rows says '50% הנחה (בכפוף למינימום)', and this group's says no minimum."
-        },
         "who_short_he": "סטודנטים, עד גיל 36",
         "cheaper_he": "דמי ניהול 0.1% במקום 0.2%; קנייה ומכירה 0.25% במקום 0.4%",
         "ends_short_he": "4 שנים מההצטרפות"

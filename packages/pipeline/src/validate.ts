@@ -473,6 +473,8 @@ export function checkPricePremises(snap: PremiseSnapshot): string[] {
         if (!ca) out.push(`groups: ${e.name_he}: current_account on a record that prices no current account (D64)`);
         if (!e.ends_printed || !monthsIn(e.ends_he ?? "").includes(gca.for_months)) out.push(`groups: ${e.name_he}: current_account.for_months ${gca.for_months} is not the entry's printed end`);
         if (!/פטור/.test(gca.source.quote) || !/פטור/.test(gca.price_he)) out.push(`groups: ${e.name_he}: current_account is exempt, and its words and quote say "פטור"`);
+        // the quote names the minimum itself: a free teller action is not a free minimum (lens review M2, D56)
+        if (!/מינימום/.test(gca.source.quote)) out.push(`groups: ${e.name_he}: current_account's quote does not name the minimum ("מינימום"); an exemption read from other rows is not recorded (D56)`);
       }
     }
     out.push(...checkGroupWords(snap));

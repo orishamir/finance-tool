@@ -54,6 +54,14 @@ describe("what a ranked price rests on", () => {
     expect(checkPricePremises({ ...named, current_account: { monthly_minimum: { value: 5.3, unit: "nis_per_month", source: {} } } })[0]).toMatch(/source\.quote/);
     expect(checkPricePremises({ ...named, current_account: { monthly_minimum: { value: 0, unit: "nis_per_month", source: {} } } })).toEqual([]);
   });
+  it("records a group's free current account only where its quote names the minimum (lens review M2, D56)", () => {
+    const named = { ...base, availability: [entry("מניות, אגרות חוב וקרנות סל")] };
+    const group = (quote: string) => ({ ...named, groups: { state: "found", entries: [{ name_he: "סטודנטים", ends_printed: true, ends_he: "למשך 48 חודשים", prices: [], current_account: { price_he: "פטור", exempt: true, for_months: 48, source: { quote } } }] } });
+    const minimum = (quote: string) => checkPricePremises(group(quote)).filter((m) => m.includes("current_account"));
+    expect(minimum("עמלת מינימום פעולות פטור")).toEqual([]);
+    // Mercantile's annex: the teller action is free, the minimum is not printed for the group
+    expect(minimum("פעולה על ידי פקיד ... פטור")[0]).toMatch(/does not name the minimum/);
+  });
   it("passes a price whose document names the holding", () => {
     expect(checkPricePremises({ ...base, availability: [entry("מניות, אגרות חוב וקרנות סל")] })).toEqual([]);
   });

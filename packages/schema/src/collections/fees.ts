@@ -126,13 +126,14 @@ export const groupEntry = z.strictObject({
   ends_source: groupSource.optional(),
   prices: z.array(groupPrice).min(1),
   /**
-   * F-102 (D64): the group's own price for the current account a bank's row counts, where the group's annex prints one: `exempt` from the
-   * monthly minimum for `for_months` from joining (the entry's printed end), then the bank's ordinary minimum. Absent: the annex was not read
-   * for it, or prints nothing, and the group pays the ordinary minimum. `inferred`: what was read rather than printed (a minimum bounded by
-   * the price of a teller action, which the annex makes free).
+   * F-102 (D64): the group's own price for the current account a bank's row counts, where the group's annex prints the minimum itself
+   * free: `exempt` from the monthly minimum for `for_months` from joining (the entry's printed end), then the bank's ordinary minimum.
+   * Absent: the annex was not read for it, prints nothing, or leaves it unclear, and the group pays the ordinary minimum, the most the
+   * documents allow (D56). An exemption inferred from other rows (a free teller action under a minimum bounded by its price) is never
+   * recorded: Mercantile's was, and was removed (lens review M2, 2026-11-07).
    */
   current_account: z
-    .strictObject({ price_he: z.string().min(1), exempt: z.literal(true), for_months: z.number().int().positive(), source: groupSource, inferred: z.string().min(1).optional() })
+    .strictObject({ price_he: z.string().min(1), exempt: z.literal(true), for_months: z.number().int().positive(), source: groupSource })
     .optional(),
   /** What was inferred rather than read. */
   inferred: z.string().min(1).optional(),

@@ -222,21 +222,33 @@ describe("the tariff built in layers (F-101)", () => {
     expect(student.until!.then.custody).toEqual(list.custody);
   });
   it("a group whose annex exempts its current account pays nothing for it until the group's end, then the bank's minimum (F-102)", () => {
-    // Mercantile's student annex (p.31): the teller action and the direct action "פטור", for 4 years from joining
-    expect(STUDENT.group!.currentAccount?.exemptMonths).toBe(48);
-    expect(STUDENT.group!.currentAccount?.source?.page).toBe(31);
-    const counted = { ...list, currentAccount: 6.4 };
-    const got = unwrap(layeredTariff(accountOn(STUDENT), counted, run));
+    // Discount's first-degree students (annex, "עמלת מינימום פעולות פטור"), for 4 years from joining
+    const discount = house("discount");
+    const dStudent = point("סטודנטים לתואר ראשון", startingPointsOf(discount));
+    const dReading = listReading(bundle, discount, "il-etf", plan)!;
+    const dList = dReading.built.tariff as SecuritiesInput["tariff"];
+    const dAccount = (over: Partial<ReturnType<typeof brokerDraftOf>> = {}) => accountAt(discount, dStudent, over, "custom-broker-discount");
+    expect(dStudent.group!.currentAccount?.exemptMonths).toBe(48);
+    const counted = { ...dList, currentAccount: 5.9 };
+    const got = unwrap(layeredTariff(dAccount(), counted, dReading.run));
     expect(got.currentAccount).toBe(0);
     expect(got.until!.months).toBe(48);
-    expect(got.until!.then.currentAccount).toBe(6.4);
+    expect(got.until!.then.currentAccount).toBe(5.9);
     // a stay in the group shorter than its end ends the exemption with it
-    const short = unwrap(layeredTariff(accountOn(STUDENT, { untilYears: 2 }), counted, run));
+    const short = unwrap(layeredTariff(dAccount({ untilYears: 2 }), counted, dReading.run));
     expect(short.until!.months).toBe(24);
-    expect(short.until!.then.currentAccount).toBe(6.4);
+    expect(short.until!.then.currentAccount).toBe(5.9);
     // where the row does not count the current account (the person's own bank), the group adds nothing
-    expect(unwrap(layeredTariff(accountOn(STUDENT), list, run)).currentAccount).toBeUndefined();
-    // a group whose annex was not read for it pays the ordinary minimum throughout
+    expect(unwrap(layeredTariff(dAccount(), dList, dReading.run)).currentAccount).toBeUndefined();
+  });
+  it("a group whose annex leaves the minimum unclear pays the ordinary minimum throughout (D56, D64; lens review M2)", () => {
+    // Mercantile's students (p.31): the teller action and the direct action "פטור", and no row for the minimum, which is "not above
+    // the price of one teller action": the most the documents allow is the price list's 6.40 shekels
+    const counted = { ...list, currentAccount: 6.4 };
+    expect(STUDENT.group!.currentAccount).toBeUndefined();
+    const got = unwrap(layeredTariff(accountOn(STUDENT), counted, run));
+    expect(got.currentAccount).toBe(6.4);
+    expect(got.until?.then.currentAccount ?? 6.4).toBe(6.4);
     expect(unwrap(layeredTariff(accountOn(TOP), counted, run)).currentAccount).toBe(6.4);
   });
   it("a rate without a minimum keeps the list's minimum and maximum: silence is not zero", () => {
