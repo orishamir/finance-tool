@@ -18,7 +18,7 @@ const light: LightRule[] = [
   rule("TXH-02", { score: 5, products: ["keren-hishtalmut"] }),
   rule("KH-01", { shelf: "access", file: "keren-hishtalmut.md", products: ["keren-hishtalmut"], recheck_date: "2026-12-01" }),
   rule("PF-01", { shelf: "costs", file: "provident-family-common.md", products: ["common"] }),
-  rule("SW-X01", { shelf: "access", file: "switching-and-transfers.md" }),
+  rule("SW-01", { shelf: "access", file: "switching-and-transfers.md" }),
   rule("TXS-01", { file: "tax-securities-israeli.md", recheck_date: "2027-01-02" }),
 ];
 const hay = (full: Record<string, string> = {}): Haystacks => ({ light: new Map(light.map((r) => [r.id, lightHaystack(r)])), full: new Map(Object.entries(full).map(([k, v]) => [k, norm(v)])) });
@@ -41,7 +41,7 @@ describe("address", () => {
 
 describe("matchRules", () => {
   it("combines filters with AND", () => {
-    expect(ids(matchRules(light, { ...emptyFilters, shelf: "access" }, hay()))).toEqual(["KH-01", "SW-X01"]);
+    expect(ids(matchRules(light, { ...emptyFilters, shelf: "access" }, hay()))).toEqual(["KH-01", "SW-01"]);
     expect(ids(matchRules(light, { ...emptyFilters, product: "keren-hishtalmut", shelf: "state" }, hay()))).toEqual(["TXH-01", "TXH-02"]);
     expect(ids(matchRules(light, { ...emptyFilters, prefix: "TXH" }, hay()))).toEqual(["TXH-01", "TXH-02"]);
     expect(ids(matchRules(light, { ...emptyFilters, changing: true }, hay()))).toEqual(["TXH-01", "KH-01", "TXS-01"]);
@@ -60,15 +60,14 @@ describe("matchRules", () => {
 });
 
 describe("buildSections", () => {
-  it("orders shelves, files by rank and cards by score; experience last in access", () => {
+  it("orders shelves, files by rank and cards by score", () => {
     const s = buildSections(light, false);
     expect(s.map((x) => x.shelf)).toEqual(["state", "costs", "access"]);
     const state = s[0]!;
     expect(state.groups.map((g) => g.id)).toEqual(["state-tax-securities-israeli", "state-tax-hishtalmut"]);
     expect(state.groups[1]!.ids).toEqual(["TXH-02", "TXH-01"]);
     const access = s[2]!;
-    expect(access.groups.map((g) => g.id)).toEqual(["access-keren-hishtalmut", "access-experience"]);
-    expect(access.groups.at(-1)!.kind).toBe("experience");
+    expect(access.groups.map((g) => g.id)).toEqual(["access-keren-hishtalmut", "access-switching-and-transfers"]);
   });
   it("groups by recheck month, earliest first, when changing", () => {
     const s = buildSections(matchRules(light, { ...emptyFilters, changing: true }, hay()), true);

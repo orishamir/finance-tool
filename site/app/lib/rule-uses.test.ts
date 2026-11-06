@@ -19,7 +19,7 @@ describe("rule uses", () => {
   it("every rule has a score", () => {
     const s = ruleScores();
     expect(Object.keys(s).length).toBeGreaterThan(400);
-    expect(s["TXG-02"]!).toBeGreaterThan(s["SW-X01"] ?? 0);
+    expect(s["TXG-02"]!).toBeGreaterThan(0);
   });
   it("scores as the spec says", () => {
     expect(scoreOf({ figures: { a: { value: 1 } as never }, il_finance_file: "tax-general.md", strength: "primary", likely_to_change: "yes" }, 2, 3, 4)).toBe(6 + 3 + 4 + 2 + 1 + 1 + 1);

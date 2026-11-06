@@ -13,6 +13,44 @@
   "scope": "general",
   "sources": [
     {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-927/he/regulation_h_2017-3-7.pdf",
+      "title": "חוזר פנסיה 2017-3-7: הוראות לעניין זכויות וחובות עמיתים בקרן פנסיה חדשה מקיפה – עדכון, 1.1.2018",
+      "title_he": "חוזר פנסיה 2017-3-7: הוראות לעניין זכויות וחובות עמיתים בקרן פנסיה חדשה מקיפה – עדכון, 1.1.2018",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "pp.3-4, annex א (new s.24(א))",
+      "page": 3,
+      "quote": "מסלול ביטוח 75% לנכות ו-100% לשאירים (למעט גברים המצטרפים מגיל 41 ומעלה)",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-927/he/regulation_h_2017-3-7.pdf",
+      "title": "חוזר פנסיה 2017-3-7: הוראות לעניין זכויות וחובות עמיתים בקרן פנסיה חדשה מקיפה – עדכון, 1.1.2018",
+      "title_he": "חוזר פנסיה 2017-3-7: הוראות לעניין זכויות וחובות עמיתים בקרן פנסיה חדשה מקיפה – עדכון, 1.1.2018",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "pp.5-11, annex ב",
+      "page": 5,
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf",
+      "title": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018",
+      "title_he": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "circular",
+      "strength": "primary",
+      "locator": "pp.23-26, ss.25, 28, 29, 32-33",
+      "locator_he": "עמודים 23 עד 26, סעיפים 25, 28, 29, 32-33",
+      "page": 23,
+      "checked": "2026-10-25"
+    },
+    {
       "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4.pdf",
       "title": "חוזר פנסיה 2016-3-4, 29.9.2016",
       "title_he": "חוזר פנסיה 2016-3-4, 29.9.2016",
@@ -22,32 +60,6 @@
       "strength": "primary",
       "locator": "p.4, annex א ss.2-3",
       "page": 4,
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.prisha.co.il/UserFiles/File/pdf/hoz/hoz201737.pdf",
-      "title": "חוזר פנסיה 2017-3-7 – ... עדכון, 1.1.2018 (עותק באתר prisha.co.il)",
-      "publisher": "Prisha.co.il",
-      "publisher_he": "אתר פרישה (prisha.co.il)",
-      "kind": "circular",
-      "strength": "primary-mirror",
-      "mirror_host": "other",
-      "locator": "pp.3-4, annex א (new s.24(א)); pp.5-11, annex ב",
-      "page": 3,
-      "checked": "2026-10-25",
-      "qualifier": "(third-party host)"
-    },
-    {
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf",
-      "title": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018",
-      "title_he": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018",
-      "publisher": "gov.il",
-      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
-      "kind": "circular",
-      "strength": "primary",
-      "locator": "pp.23-26, ss.25, 28, 29, 32-33",
-      "locator_he": "עמודים 23 עד 26, סעיפים 25, 28, 29, 32-33",
-      "page": 23,
       "checked": "2026-10-25"
     }
   ]

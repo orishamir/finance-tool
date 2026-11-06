@@ -38,7 +38,7 @@ describe("guide and exposure prose cites general rules only", () => {
       });
     }
   }
-  // every site source file, not only the prose: the comparison (MKT-01) and the playbook (SW-X01 and the like) quote not-rules too
+  // every site source file, not only the prose: the comparison (MKT-01) quotes not-rules too
   const walk = (d: string): string[] => readdirSync(d).flatMap((f) => (statSync(join(d, f)).isDirectory() ? walk(join(d, f)) : [join(d, f)]));
   const code = (src: string) => src.replace(/\/\*[\s\S]*?\*\//g, "").replace(/^\s*\/\/.*$/gm, "");
   const tracked = (id: string) => Object.hasOwn(notRules, id) && !!rules.get(id) && rules.get(id)!.scope !== "general";
@@ -96,8 +96,8 @@ describe("scope helpers", () => {
     const shown = shownCompanies(pen37, own).map((c) => c.id);
     expect(shown).not.toContain("meitav");
     expect(chipName(pen37, own, undefined, more)).toBe(`${pen37.scope_institutions![0]!.name_he} ועוד ${shown.length - 1}`);
-    // a press report about two companies cites neither's document: it is about both
-    expect(shownCompanies(rules.get("IRA-28")! as unknown as RuleRecord, own).map((c) => c.id)).toEqual(["slice", "globalnet"]);
+    // a regulator's announcement about a company cites none of its documents: it is about it
+    expect(shownCompanies(rules.get("IRA-28")! as unknown as RuleRecord, own).map((c) => c.id)).toEqual(["slice"]);
   });
   it("drops 'לפי החברה' only on a source on the named company's own sites (D31; review, 2026-10-26)", () => {
     const all = Object.fromEntries([...rules].map(([id, r]) => [id, r as unknown as RuleRecord]));
@@ -140,8 +140,8 @@ describe("scope helpers", () => {
   });
 });
 
-// review, 2026-10-26: IRA-28 (a regulator's announcement and press articles) sat on Slice's and Globalnet's pages, SW-X01 (one forum
-// post) on Migdal's and Clal's, each under "מה כתוב במסמכים של …" with "נמצא במסמכים של …"
+// review, 2026-10-26: IRA-28 (then a regulator's announcement and press articles) sat on Slice's and Globalnet's pages, and a forum
+// post on Migdal's and Clal's, each under "מה כתוב במסמכים של …" with "נמצא במסמכים של …"
 describe("a company's section holds only records from its own documents", () => {
   const all = Object.fromEntries([...rules].map(([id, r]) => [id, r as unknown as RuleRecord]));
   const registry = new Map(loadInstitutionRegistry().map((r) => [r.id, r]));
@@ -159,9 +159,8 @@ describe("a company's section holds only records from its own documents", () => 
     // a filing on Maya is its filer's, not the exchange's
     expect(isOwnDocument({ url: "https://mayafiles.tase.co.il/rpdf/1/P1-00.pdf", title: "הראל, דוח שנתי" }, registry.get("tase")!)).toBe(false);
   });
-  it("IRA-28 is not on Slice's or Globalnet's page, nor SW-X01 on Migdal's or Clal's", () => {
-    for (const company of ["slice", "globalnet"]) expect(sectionIds(registryIdsOfPage(registry.get(company)!.cma_legal_id!))).not.toContain("IRA-28");
-    for (const company of ["migdal", "clal"]) expect(sectionIds(registryIdsOfPage(registry.get(company)!.cma_legal_id!))).not.toContain("SW-X01");
+  it("IRA-28 is not on Slice's page", () => {
+    expect(sectionIds(registryIdsOfPage(registry.get("slice")!.cma_legal_id!))).not.toContain("IRA-28");
   });
   it("no section lists a not-rule, and every record a section lists cites that company's own document", () => {
     const bad: string[] = [];
@@ -177,7 +176,6 @@ describe("a company's section holds only records from its own documents", () => 
   it("a record that is not general but is listed nowhere sits in the not-rules' group on /companies, and only a not-rule does", () => {
     const { companies, none } = noPageCompanyTerms(all, own);
     expect(none).toContain("IRA-28");
-    expect(none).toContain("SW-X01");
     expect(none.filter((id) => !Object.hasOwn(notRules, id))).toEqual([]);
     expect(companies.flatMap((c) => c.ids).filter((id) => Object.hasOwn(notRules, id))).toEqual([]);
   });

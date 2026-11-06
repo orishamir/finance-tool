@@ -2691,7 +2691,6 @@ export const ruleCardMore = {
   // 2026-10-25 (the founder: "הפניה" for a citation; a better Hebrew word): "מראה מקום", on a box that shows the citation
   copyCitation: "העתקת מראה המקום",
   citationLabel: "מראה מקום",
-  experienceTag: "ניסיון של אדם אחד",
 } as const;
 
 /** The rules front page and the five shelves (synthesis §3.4). */
@@ -2763,7 +2762,6 @@ export const rulesFront = {
     preset: "החוקים והכללים שעונים על השאלה",
     presetAll: "לכל החוקים והכללים",
   },
-  experience: { title: "ניסיון של אחרים", line: "עדויות של אנשים מהפורום, לא חוקים ולא כללים; מסומנות כך גם בעמוד ״איך עוברים״." },
 } as const;
 
 /** The documents page (synthesis §3.5). */

@@ -6,11 +6,11 @@
 import { useCallback, useDeferredValue, useEffect, useMemo, useRef, useState } from "react";
 import { Link, useLoaderData, useLocation, useNavigate } from "react-router";
 import type { Route } from "./+types/rules";
-import { rulesFront as copy, scopeWords, site, sourceBlock, system, topicName, ruleCardMore } from "../copy";
+import { rulesFront as copy, scopeWords, site, sourceBlock, system, topicName } from "../copy";
 import { NumberLegend, RuleCard, SlottedText, type RuleUses } from "../components/provenance";
 import { useSearchIndex } from "../components/search";
 import { PageShell } from "../components/shell";
-import { AskField, Button, Card, cx, DidYouKnow, Disclosure, FilterChip, FoldGroup, TableCols, Tag, useSoftSwap, type FactItem } from "../components/kit";
+import { AskField, Button, Card, cx, DidYouKnow, Disclosure, FilterChip, FoldGroup, TableCols, useSoftSwap, type FactItem } from "../components/kit";
 import { claimTopics, docGroup, docGroups, docsForTopics, editionText, pageHref, type CompanyDoc, type DocGroup } from "../lib/company-docs";
 import { fmt } from "../lib/format";
 import { buildSections, emptyFilters, facetCounts, filtersToSearch, isFiltering, isNarrowing, matchRules, parseFilters, passesFilters, type Filters, type Group, type LightRule } from "../lib/rules-filter";
@@ -703,7 +703,7 @@ function ClaimResults({ law, shown, onAll, company, names, docs, pd, failed, lig
 }
 
 function GroupBlock({ g, open, onToggle, pd, failed, lightById }: { g: Group; open: boolean; onToggle: (open: boolean) => void; pd: PageData; failed: Set<BundleId>; lightById: Map<string, LightRule> }) {
-  const title = g.kind === "experience" ? copy.experience.title : g.kind === "month" ? `${copy.changing.month.replace("{month}", monthName(g.month!))} ${g.month!.slice(0, 4)}` : (copy.subgroups[g.file!] ?? topicName(g.file!));
+  const title = g.kind === "month" ? `${copy.changing.month.replace("{month}", monthName(g.month!))} ${g.month!.slice(0, 4)}` : (copy.subgroups[g.file!] ?? topicName(g.file!));
   const missing = open && g.ids.some((id) => !pd.rules[id]);
   const broken = missing && g.ids.some((id) => !pd.rules[id] && failed.has(lightById.get(id)!.shelf));
   // once opened, the cards stay in the page, so the fold can close by height
@@ -713,12 +713,6 @@ function GroupBlock({ g, open, onToggle, pd, failed, lightById }: { g: Group; op
     <FoldGroup variant="section" id={g.id} className={scrollMargin} title={title} count={g.ids.length} open={open} onOpenChange={onToggle}>
       {wasOpen.current && (
         <>
-          {g.kind === "experience" && (
-            <p className="text-sm text-muted-foreground max-w-measure flex flex-wrap items-center gap-2 pb-1">
-              <Tag tone="neutral">{ruleCardMore.experienceTag}</Tag>
-              {copy.experience.line}
-            </p>
-          )}
           <ul className="grid gap-4 @3xl:grid-cols-2 pt-2">
             {g.ids.filter((id) => pd.rules[id]).map((id) => (
               <Card as="li" key={id} id={id} className={cx("min-w-0 [overflow-wrap:anywhere] flex flex-col", scrollMargin)}>

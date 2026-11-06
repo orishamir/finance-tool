@@ -92,7 +92,6 @@ const overrides: Record<string, ShelfId> = {
   "CS-05": "protection", "CS-18": "costs", "CS-30": "costs", "CS-20": "structure", "CS-26": "structure", "CS-27": "structure",
   "CAT-15": "protection", "CAT-16": "protection",
   "MKT-01": "structure",
-  "SW-X01": "access", "SW-X02": "access", "SW-X03": "access", "SW-X04": "access",
 };
 
 export function shelfOf(rule: Pick<RuleRecord, "id" | "dimensions" | "il_finance_file">): ShelfId {
@@ -104,9 +103,6 @@ export function shelfOf(rule: Pick<RuleRecord, "id" | "dimensions" | "il_finance
   if (first && byDimension[first]) return byDimension[first]!;
   return file ?? "structure";
 }
-
-/** True for the four forum accounts the rule base stores as rules (SW-X01 to SW-X04): shown last, labelled as one person's experience. */
-export const isExperience = (id: string) => /^SW-X\d+$/.test(id);
 
 /** The sub-group (the rule-base file) order inside a shelf: products a person meets first, then the cross-cutting files, then the plumbing. */
 export const fileOrder: readonly string[] = [
