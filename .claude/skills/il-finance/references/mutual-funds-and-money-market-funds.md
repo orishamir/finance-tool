@@ -19,7 +19,7 @@ A fund's life can be limited: the law's heading is "תקופת קיום הקרן
 - Source: [חוק השקעות משותפות בנאמנות, התשנ"ד-1994](https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf), p.5, ss.3, 4, 5(א) · primary · checked 2026-10-25. [חוק השקעות משותפות בנאמנות, התשנ"ד-1994](https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf), p.7, s.8 · primary · checked 2026-10-25.
 - Scope: general
 - Dimensions: regulator, protection
-- Likely to change: yes. Section 5(א)(3) changes six months after the law's publication of 2.8.2026, so 2.2.2027 by that count (the date itself is on Wikisource, unofficial; [ס"ח 3579](https://fs.knesset.gov.il/25/law/25_lsr_14375739.pdf#page=8), file p.8, s.4 "תחילתו של סעיף 3 שישה חודשים מיום פרסומו של חוק זה"). The 5786 amendment in ס"ח 3579 (p.1070 on) adds the private investment trust fund and deletes the definition "קרן ייחודית" (read 2026-10-26); the amendment at ס"ח התשפ"ו p.359 was not read (open question 17).
+- Likely to change: yes. Section 5(א)(3) changes six months after the law's publication of 2.8.2026, so 2.2.2027 by that count (the date itself is on Wikisource, unofficial; [ס"ח 3579](https://fs.knesset.gov.il/25/law/25_lsr_14375739.pdf#page=8), file p.8, s.4 "תחילתו של סעיף 3 שישה חודשים מיום פרסומו של חוק זה"). The 5786 amendment in ס"ח 3579 (p.1070 on) adds the private investment trust fund and deletes the definition "קרן ייחודית" (read 2026-10-26); the amendment at ס"ח התשפ"ו p.359 (ספר החוקים 3510) only lets the trustee's and the manager's guarantee under ss.9 and 13 come from a non-bank guarantor (open question 17, closed 2026-11-06).
 
 ### MF-02 Fund assets belong to the trustee for the unit holders, are separate, and cannot be attached
 - Rule: "נכסי הקרן יהיו מוקנים לנאמן לטובת בעלי היחידות, ויהיו רכוש נפרד מרכושו האחר" (section 76(א)). "נכסי קרן אינם ניתנים לעיקול" (section 79). The manager may not pledge fund assets except to carry out a transaction for the fund (section 79).
@@ -559,7 +559,7 @@ A fund's life can be limited: the law's heading is "תקופת קיום הקרן
 - Scope: general
 - Dimensions: `liquidity-lockup`
 - Proposed dimension: `fund-closure-merger`
-- Likely to change: yes, amendments to the law start 2.2.2027 (open question 17); these sections were not named among them.
+- Likely to change: yes, the amendments in ס"ח 3579 start 2.2.2027 and did not name these sections; the amendment in ס"ח 3510 (p.359) only lets the trustee's and the manager's guarantee under ss.9 and 13 come from a non-bank guarantor (open question 17, closed 2026-11-06).
 
 ### MF-61 TASE's bullet indices (מדדי בולט): the exchange's word, for an index
 - Rule: TASE launched three indices in November 2024, "המורכבים מתעודות התחייבות שמועד פדיונן הסופי חל במהלך אותה שנה": תל-בונד בולט 2029 שקלי, תל-בונד בולט 10/2028 צמוד and תל-בונד בולט 2029 ישראל. In its words: "מדדי בולט נועדו לאפשר למשקיעים לקבע תשואה לפדיון של תיק אג"ח בעל מאפיינים מוגדרים. בשונה מרוב המדדים, למדדי בולט יש מועד סופי וכאשר נפדית האג"ח האחרונה הנכללת בו, המדד מפסיק להתקיים". Proceeds of each bond that finally redeems move into a set filler (government bond or makam) at the same weight until the index holds only the filler; "כאשר אג"ח הפילר מגיעה לפדיון, המדד מגיע לסוף דרכו".
