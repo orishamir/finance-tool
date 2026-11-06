@@ -16,6 +16,8 @@ readers are judged by fresh readers (CLAUDE.md). Where a choice below names the 
 
 - **Direct and plain.** One idea per sentence. Point first, reason second. No softeners ("נשמח אם"), no exclamation marks, no "שימו לב".
 - **Addressing the reader:** plural imperative ("הדביקו", "בחרו", "הקישו") or impersonal ("אפשר", "יש"). Never "אתה" or "את". This keeps every line gender-neutral.
+- **Words that add something.** A sentence says what the screen does not already say: not the figure in the field above it, not the heading again, not how the site checks or sources its numbers, nothing about who made the site, and no name followed by itself in brackets. Under a result it speaks of the reader's choices (founder, 2026-11-02: "no you dont need to repeat what is written above. you need to say things about the user's choices there"; 2026-10-25: "you dont have to mention this in the actual sentence yeah?"; 2026-11-05: "remove the ()"). A line that every card or row of a list would carry is said once, above it.
+- **The exact word.** Say which: income tax or capital gains tax, never a bare "מס" where either could be meant; whose money (the employer's deposit, the person's own, the gains the fund made); a percent of what; inflation (the rise of prices) or an index's rise; and, where two figures stand together, which one the calculation uses (founder, 2026-11-02: "בכל מקום תבדיל בין מס רווחי הון למס הכנסה, שיהיה ברור"; "תהיה ספציפי יותר"; 2026-11-04: "its not clear which of these is being used - 0.07 or 0.15").
 - **Spelling:** ktiv maleh throughout. Gershayim inside acronyms (אג״ח, מק״מ, עו״ש). Maqaf between a prefix and a number or Latin word (ב־2026, ה־S&P 500).
 - **Names:** products, tracks and companies appear exactly as their source writes them. The site's words go beside them, never instead of them.
 - **No typed numbers.** Every figure comes from the number component with its source. In this file a figure's place is shown as `{שם}`, for example `{סכום}`, `{תאריך}`, `{שנים}`. Placeholders are filled by the site with value objects, never by typed figures; one and two are words ("מסלול אחד", "שני מסלולים"), from three a number.
@@ -34,6 +36,7 @@ readers are judged by fresh readers (CLAUDE.md). Where a choice below names the 
 - **Only the goal pages speak of a goal** (D37): the home page and the goal pages show and read the saved goal (the track browser has none, D34, D54); the indices page, the fee page, the guides, the exposure pages, holdings and idle cash never do.
 - **"למי ששלח לכם את האתר"** in the search's empty state: every friend reached the site through the founder's link, so this names the right person without naming anyone.
 - **The narrator is "האתר".** The site speaks of itself in the third person ("האתר לא הצליח לחשב…", "לפי הנתונים של האתר", "מוצרים שהאתר מכיר"), never "אנחנו". When it reports work in progress it speaks in the singular, as "טוען…": "בודק…", not "בודקים…".
+- **A page is named for what a person would call it, or come to do there**, not by the site's category for it: "בחירת קופה ומסלול" left open which fund and which track (founder, 2026-10-30: "think about it like 'what would the page's name be?'"; 2026-10-31: "seems too generic").
 - **Pages are named by their titles.** "שולחן העבודה" was a word of the documents; a sentence that points to another page quotes its title ("כל המסלולים בכל החברות"). Document ids (D11, D20), method gap codes (G-24) and developers' words ("קלט", "מוצמדים", "מנוע החישוב", "קטלוג", "סדרות", "ברשומה") stay out of what a reader sees.
 - **"יתווסף בהמשך"** is the register for pending work, and only while it is still true. The guide's "האתר עוד לא מחשב את זה" line says **"יתווסף בגרסה {מספר}"**, not "מתוכנן לגרסה", because the component appends a release number; the number stays until the code drops it.
 
@@ -46,6 +49,8 @@ readers are judged by fresh readers (CLAUDE.md). Where a choice below names the 
 - **"רשומה שנאספה"** for a hand-collected file under `data/`: "רשומה" stays only as this glossary term.
 - **"עוד לא דווח"** for an empty fee field in the regulator's data, everywhere: an empty field is not zero. Not "טרם דווח". **"אין"** is shown instead where a rule allows no such fee (a deposit fee on a product that may charge only from the balance, PF-06), without a caution mark.
 - **"לא נאסף" / "עוד לא נאספו"** says what the site has not collected; it never implies that a product or provider is missing or worse.
+- **Claim only what is known.** An unknown is said as unknown, never as a fact ("מס רק במכירה" where the site does not know what happens to the tax while the fund accumulates); a value the site filled in is a starting value, never "not entered"; "רוב" only for more than half; a promise ("updated monthly", "will appear on the page …") only while the data and the site keep it (founder, 2026-11-05: "its not that its 'מס רק במכירה' its that we dont know what happens to the מס while its accumulating"; 2026-11-02: "למה כתוב שלא הזנתי אחוזים, הכל מוזן בdefault"; 2026-11-03: "says it should update monthly and wasnt updated since september").
+- **A figure that looks impossible says how it can be.** A fund ahead of the index it tracks, a loss far larger than its neighbour's, a very large profit, a rate in a sentence: the words beside it say where it comes from and why it can be, or the figure is checked before it goes up (founder, 2026-10-29: "how are they achieving a higher yearly return than the index they are tracking?"; 2026-11-02: "מזה הרווח הענק הזה?", "לא ברור מה כתבת עם ה31%").
 - **"ניסיון"** for a forum account, the rule base's own label; the tag "ניסיון של אדם אחד" keeps it from reading as advice, and the forum reports together are "עדויות", the honest word ("עדויות של אנשים מהפורום, לא חוקים ולא כללים").
 - **"החברה קובעת"** for a figure a company sets, in the active voice, so it is not confused with the strength tag "לפי החברה".
 - **"עד"** before a "worth knowing" figure that is a legal cap, so a cap never reads as the rate charged. A cap set in the fee regulations is "שבתקנות", not "שבחוק".
@@ -115,7 +120,7 @@ readers are judged by fresh readers (CLAUDE.md). Where a choice below names the 
 - **"השאלות נסגרו; נותר: …"**: the good news and the remaining work are one line; "נותר" rather than "חסר", because nothing is missing from the person's side.
 - **"עבר לכיסוי מלא"** rather than "שודרג" or "עלה לרמה 1": tiers are a product-doc word; a friend reads "covered in full".
 - **"עוד לא נרשמו סגירות."** rather than "לא נסגר כלום": the data file may simply not exist yet, and the sentence says only what the site knows.
-- **"כשייסגר: יופיע ב…"** is one fixed sentence: the path is the same for every product, so it is said once, identically, on every card.
+- **"כשייסגר: יופיע ב…"** is one fixed sentence: the path is the same for every product, so it is said once, above the cards, not on each card (section 1, "Words that add something"), and it names only places the site has.
 - **"יש תשובה של מוסד; … לא סוגרת שאלת מס לצורך מעבר לכיסוי מלא"** states D23 without naming it: an institution's answer computes, labelled "לפי החברה", and full coverage still waits for a primary or secondary source.
 
 ## 8. Holdings, consolidation and moving to another device
@@ -234,7 +239,9 @@ Written by the Hebrew editor from section 1, the word choices above, `docs/gloss
 ### 10.5 Buttons, chips and labels — כפתורים, צ'יפים ותוויות
 
 - **כפתור שעושה פעולה: שם פעולה** (שם עצם) או **שם פועל** (ל־): "שמירה", "מחיקה", "העתקה", "ביטול", "לשמור את ההשוואה", "להציג עוד". לא ציווי ("שמרו") — הציווי שמור למשפטי הנחיה בגוף הטקסט. שתי הצורות חיות באתר זו לצד זו; הכלל: **כפתור קצר של פעולה אחת ← שם עצם; כפתור שמתאר תוצאה או כולל מושא ← שם פועל**.
-- **קישור ליעד: ל־ + היעד**: "לתוצאה", "לטופס המטרה", "לעמוד המדריך", "לכל הפרמטרים".
+- **קישור ליעד: ל־ + היעד**: "לתוצאה", "לטופס המטרה", "לעמוד המדריך", "לכל הפרמטרים". הקישור מבטיח רק את מה שיש ביעד: "לעמוד של עו״ש ופיקדון לשנה" מוביל לעמוד שמדבר על שניהם, ודלת "להבין סוג של חיסכון" לא מובילה סתם לרשימה (המייסד, 2026-10-26). עמוד שהוא חלק משלם מקשר גם לשלם (המייסד, 2026-10-24: "why is there no 'all rules' link").
+- **כל תווית אומרת מה היא או מה היא עושה.** כותרת עמודה, תג, צ'יפ או קישור מובנים בלי הסבר בצד: "בחירה של האתר", "השפעת השורות יחד" ו"שינוי התשובה" לא אמרו לקורא כלום, ושמות של משתנים (a, b) לא מגיעים לעמוד (המייסד, 2026-11-04: "מזה 'השפעת השורות יחד'?"; 2026-11-05: "what is שינוי התשובה??").
+- **כותרת קוראת לגוש בשם של מה שהוא עושה:** כרטיס שקובע מטרה שואל "מה המטרה שלכם?" ולא "מה השאלה שלכם?" (סעיף 2); כותרת שהיא שאלה נשאלת רק כשהגוש עונה עליה.
 - **כפתור שמכניס את האדם למצב של בחירה: שם פועל עם מושא**: "להזין ריבית אחרת", "לחזור לריבית שפורסמה", "להחליף מוצר".
 - **קישור־שאלה בשורת פריט: שאלה קצרה + ציווי**: "קיבלתם הצעה? הזינו אותה".
 - **אורך:** כפתור עד 3 מילים; צ'יפ עד 4; תווית שדה עד 7 (הארוכות שבאתר, "הירידה הגדולה ביותר שתסכימו לספוג בדרך למטרה", מוצדקות בסעיף 6 ונשארות).
