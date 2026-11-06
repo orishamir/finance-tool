@@ -343,12 +343,12 @@ export function runProvident(input: ProvidentInput, ctx: RunContext): ProvidentR
     // F-42 at this exit (2026-10-26): from 60 the reduced brackets apply first to this deemed interest, since s.125C(b) is a
     // maximum rate and s.121(ב)(1) gives the reduced brackets to all taxable income of an individual aged 60 or over; the
     // gains are the top slice above the other income Y, each part at min(bracket, 25%) (TXK-06, TXG-04, TXG-07). The manager
-    // withholds 20% with no age rule (reg. 3(א), TXK-26; Harel's 25% is its own unsettled statement, TXK-28), and the final tax
-    // is settled against it in the annual return: money comes back only on a part whose bracket is below 20%, and more is due
-    // on a part above it (TXK-26). The run flags that settlement (TXK-26), not G-21, whose evidence is a bank's or TASE
-    // member's withholding. With the refund not claimed (A-14 off) the run keeps the flat 25% and flags the relief it leaves
-    // out (TXK-06); since the withholding is 20%, that figure is above the tax on a part whose bracket is below 20% (left for
-    // the lead on 2026-10-26: correcting it moves golden S51).
+    // withholds 25% of the gains with no age rule, and nothing from the principal with its linkage (TXK-26, the Tax Authority's
+    // file 856, read 2026-11-06; reg. 3(א)'s text reads 20%, and which provision sets 25% is open, TXK OQ3). The final tax is
+    // settled against it in the annual return: money comes back on a part whose bracket is below 25% (TXK-26). The run flags
+    // that settlement (TXK-26), not G-21, whose evidence is a bank's or TASE member's withholding. With the refund not claimed
+    // (A-14 off) the run keeps the flat 25% and flags the relief it leaves out (TXK-06); with a 25% withholding that is the tax
+    // withheld (until 2026-11-06 the record read 20% and this figure was called an upper bound; golden S51 is unchanged).
     let incomeTax = t.tax;
     if (reachesAgeInYear(profile, T, book.amount("TXG-04", "age"), first)) {
       book.cite("TXG-07");
