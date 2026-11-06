@@ -440,7 +440,8 @@ describe("open questions (data-schema 3.15, 2026-10-26)", () => {
     // plus TXH OQ15 (how a study-fund withdrawal splits between deposits and gains), opened 2026-11-06
     // plus INS OQ17 (savings-policy withdrawal: partial floors, the two-year condition on one deposit, surrender charges, when the 30 days start), opened 2026-11-06
     // plus PEN OQ31 (where the bylaws' exception for money moved in only to start a pension came from), opened 2026-11-06
-    expect(items.length).toBe(554);
+    // plus TXP OQ17 (which annuities are paid "בשל עבודה"), opened 2026-11-07
+    expect(items.length).toBe(555);
     expect(items.find((q) => q.id === "TXP OQ3")).toMatchObject({ file: "tax-pension-gemel-lekitzba.md", closedOn: "2026-10-26" });
     // a closure of the open-question hunt (main, 2026-10-26), struck with its bold title inside the strike
     expect(items.find((q) => q.id === "BRK OQ11")).toMatchObject({ file: "brokerage-account.md", closedOn: "2026-10-26" });
@@ -472,6 +473,12 @@ describe("open questions (data-schema 3.15, 2026-10-26)", () => {
       expect.arrayContaining([expect.stringMatching(/^open_questions: TXP-OQ3 is closed/), expect.stringMatching(/^blocked_by: TXP-OQ3 is closed/), expect.stringMatching(/^dimensions.real-vs-nominal: PEN-OQ8 is closed/)]),
     );
     expect(messages.some((m) => m.includes("PEN-OQ7"))).toBe(false);
+  });
+
+  it("fails a record whose moving-tax mark is open while its own value says whether a move is taxed (no leftovers since SW OQ8, 2026-11-07)", () => {
+    const wrapper = { id: "pension-comprehensive", open_questions: [], switch_is_tax_event: { value: false }, dimensions: { "switching-tax-event": "blocked:SW-OQ8" } };
+    const { problems } = run({ "open-questions.json": fromMarkdown, "instruments/wrappers/pension-comprehensive.json": wrapper });
+    expect(problems.map((p) => p.message)).toEqual(expect.arrayContaining([expect.stringMatching(/^dimensions.switching-tax-event is blocked:SW-OQ8 but switch_is_tax_event is known \(false\); mark it covered/)]));
   });
 });
 

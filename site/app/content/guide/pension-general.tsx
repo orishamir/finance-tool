@@ -5,7 +5,6 @@ import type { GuideContent } from "./types";
 import type { SiteValue } from "../../lib/value";
 import { IdRef, Num, RuleRef, RulesLine, Term } from "../../components/provenance";
 import { Callout } from "../../components/kit";
-import { OpenSwitchTax } from "./open-tax";
 
 const N = ({ v }: { v: SiteValue | null }) => (v ? <Num value={v} /> : null);
 
@@ -27,7 +26,7 @@ export const content: GuideContent = {
       <RulesLine ids={["REG-17", "PEN-10"]} />
     </>
   ),
-  switchLine: "בין מסלולים בתוך הקרן בלי מס. אפשר לחזור לקרן המקיפה רק כשאתם לא עמיתים פעילים בקרן הכללית",
+  switchLine: "בלי מס הכנסה, גם בין מסלולים בתוך הקרן וגם במעבר לקרן פנסיה אחרת. לקרן המקיפה אפשר לחזור רק כשאתם לא עמיתים פעילים בקרן הכללית",
   switchRules: ["PEN-17", "PF-23", "SW-22"],
   termIds: ["זיכוי ממס", "הכנסה מזכה", "מקדם המרה", "קצבה מזכה", "משיכה שלא כדין", "איזון אקטוארי", "קופת גמל לקצבה"],
   afterTax: ({ figure }) => (
@@ -52,7 +51,6 @@ export const content: GuideContent = {
         משיכה שלא כקצבה אפשרית רק במקרים מסוימים. החוק קורא לה <Term id="משיכה שלא כדין">משיכה שלא כדין</Term>, והיא ממוסה על כל הסכום שמשולם: הגבוה מבין <N v={figure("TXP-18", "minimum_rate")} /> והשיעור השולי <RuleRef id="TXP-18" />. יש חריגים, כמו הוצאות רפואיות גבוהות.
       </p>
       <RulesLine ids={["TXP-14", "TXP-18", "PEN-26", "PEN-27", "PEN-30"]} />
-      <OpenSwitchTax />
     </>
   ),
   risks: () => (

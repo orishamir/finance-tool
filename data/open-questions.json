@@ -2082,10 +2082,15 @@
   },
   {
     "id": "TXP OQ15",
-    "status": "open"
+    "status": "closed",
+    "closed_on": "2026-11-07"
   },
   {
     "id": "TXP OQ16",
+    "status": "open"
+  },
+  {
+    "id": "TXP OQ17",
     "status": "open"
   },
   {
