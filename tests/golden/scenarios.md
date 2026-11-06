@@ -198,7 +198,7 @@ Exercises TXH-02 cap (15,712), TXH-03 employer excess taxed at τ_m (TXG-02), G-
 - Profile: salary 20,000; employer 7.5%, employee 2.5%.
 - Goal: horizon 7 years; other inputs as S23.
 - Expected: _(founder)_: employer line net of tax on the excess; own deposit capped at the benefited amount, excess flagged.
-  - Independent check, 2026-10-22 (steps in [workings.md](workings.md), section S25): Own money (500/month): real V_T/I_T = 42,362.61, nominal 50,355.83; benefited 392.80/month exempt, excess 107.20/month taxed 25% of its real gain at exit (257.96, institution source). Employer line: gross 151,841.38; less tax on the excess at deposit 8,374.46 (31%) and NI and health 3,287.65 (12.17%, inference), and 25% real on the excess gains at exit 773.87: net 139,405.39 nominal (deposit-time taxes subtracted at face value, as F-52). Subject to Q1.
+  - Independent check, 2026-10-22 (steps in [workings.md](workings.md), section S25): Own money (500/month): real V_T/I_T = 42,362.61, nominal 50,355.83; benefited 392.80/month exempt, excess 107.20/month taxed 25% of its real gain at exit (257.96, institution source). Employer line: gross 151,841.38; less tax on the excess at deposit 8,374.46 (31%) and NI and health 3,287.65 (12.17%), and 25% real on the excess gains at exit 773.87: net 139,405.39 nominal (deposit-time taxes subtracted at face value, as F-52). Subject to Q1.
 
 ### S26 Self-employed keren hishtalmut
 Exercises F-46 self-employed limb (TXH-05 deduction at τ_m, TXH-08 20,566 benefited), F-30 equal net outlay with a deduction.

@@ -1071,12 +1071,12 @@ def s23_s24_s25_s26():
         f'| 3 | Gains on the excess own deposits: 25% of the real gain at withdrawal (two managers state this; institution) | {L("TXH-11")} | tax {f2(ex_own["tax25real"])} |\n'
         f'| 4 | Employer 7.5% × 20,000 = 1,500: benefited {f2(emp_benef)}; excess {f2(emp_excess)} is salary when paid | {L("TXH-01", "TXH-03")} | — |\n'
         f'| 5 | Income tax on the excess at the marginal rate: salary 240,000 + {f2(12 * emp_excess)} a year is in the 31% band | {L("TXG-02", "TXH-03")} | {f2(dep_tax)} over 84 months |\n'
-        f'| 6 | Employee NI and health on the excess at the full salary rate 12.17% (salary is above 7,703 a month); that the excess is in the base is an inference | {L("TXG-35", "TXH-01")} | {f2(ni_health)} over 84 months |\n'
+        f'| 6 | Employee NI and health on the excess at the full salary rate 12.17% (salary is above 7,703 a month); National Insurance\'s circular 1473 puts the excess in the base, so no label since 2026-11-07 (that it falls in the month paid is the rule base\'s inference, which does not move this figure: salary plus excess stays inside the full-rate band) | {L("TXG-35", "TXH-26", "TXH-01")} | {f2(ni_health)} over 84 months |\n'
         f'| 7 | Gains on the employer excess: 25% of the real gain at withdrawal (institution) | {L("TXH-11")} | tax {f2(ex_emp["tax25real"])} |\n'
         f'| 8 | Benefited parts exempt after 6 years | {L("TXH-09")} | 0 |\n'
     )
     section('S25', 'Keren hishtalmut, salary above the determining-salary cap', 'computed', body,
-            f'Own money (500/month): real V_T/I_T = {f2(own_V / path.I(84))}, nominal {f2(own_V)}; benefited {f2(own_benef)}/month exempt, excess {f2(own_excess)}/month taxed 25% of its real gain at exit ({f2(ex_own["tax25real"])}, institution source). Employer line: gross {f2(empb["B"] + empx["B"])}; less tax on the excess at deposit {f2(dep_tax)} (31%) and NI and health {f2(ni_health)} (12.17%, inference), and 25% real on the excess gains at exit {f2(ex_emp["tax25real"])}: net {f2(emp_net)} nominal (deposit-time taxes subtracted at face value, as F-52). Subject to Q1.')
+            f'Own money (500/month): real V_T/I_T = {f2(own_V / path.I(84))}, nominal {f2(own_V)}; benefited {f2(own_benef)}/month exempt, excess {f2(own_excess)}/month taxed 25% of its real gain at exit ({f2(ex_own["tax25real"])}, institution source). Employer line: gross {f2(empb["B"] + empx["B"])}; less tax on the excess at deposit {f2(dep_tax)} (31%) and NI and health {f2(ni_health)} (12.17%), and 25% real on the excess gains at exit {f2(ex_emp["tax25real"])}: net {f2(emp_net)} nominal (deposit-time taxes subtracted at face value, as F-52). Subject to Q1.')
 
 
 
