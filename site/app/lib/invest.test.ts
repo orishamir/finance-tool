@@ -291,3 +291,45 @@ describe("places in a ranked list (F-80, P-01, 2026-11-05)", () => {
     expect(placesOf([100, 99.9, 50], 0)).toEqual([1, 1, 3]);
   });
 });
+
+describe("a bank's current account on the indices page (D64, F-102)", () => {
+  const before = buildInvest({ bundle, index: sp, plan: plan() });
+  const counted = buildInvest({ bundle, index: sp, plan: plan({ currentAccounts: { own: null } }) });
+  const ownLeumi = buildInvest({ bundle, index: sp, plan: plan({ currentAccounts: { own: "leumi" } }) });
+  const best = (v: typeof before, id: string) => v.houses.find((h) => h.provider.id === id)!.best!.price!;
+  const banks = bundle.snapshots.filter((s) => s.current_account && (s.current_account.monthly_minimum.value as number) > 0).map((s) => s.id);
+
+  it("with no bank marked, every bank whose price list charges for a current account has it as a line of its own, and leaves less", () => {
+    expect(banks.sort()).toEqual(["discount", "fibi", "hapoalim", "jerusalem", "leumi", "massad", "mercantile", "mizrahi-tefahot", "yahav"]);
+    for (const id of banks) {
+      const at = best(counted, id);
+      expect(at.lines.map((l) => l.line)).toContain("account");
+      // 240 monthly minimums of 4 to 9.50 shekels: more than a thousand shekels of today's money left behind, and less than three thousand
+      expect(best(before, id).valueN - at.valueN).toBeGreaterThan(900);
+      expect(best(before, id).valueN - at.valueN).toBeLessThan(3_000);
+    }
+  });
+
+  it("an investment house, a foreign broker and a bank that charges nothing keep their figures", () => {
+    for (const id of ["psagot", "ibi", "altshuler-trade", "meitav-trade", "excellence", "interactive-brokers", "interactive-israel", "one-zero", "pepper"]) {
+      const h = before.houses.find((x) => x.provider.id === id);
+      if (!h?.best?.price) continue;
+      expect(best(counted, id).valueN).toBe(h.best.price.valueN);
+    }
+  });
+
+  it("the bank the person marks leaves it out, and only that bank", () => {
+    expect(best(ownLeumi, "leumi").valueN).toBe(best(before, "leumi").valueN);
+    expect(best(ownLeumi, "leumi").lines.map((l) => l.line)).not.toContain("account");
+    expect(best(ownLeumi, "hapoalim").valueN).toBe(best(counted, "hapoalim").valueN);
+  });
+
+  it("re-sorts the list where the gap is smaller than the account (evidence: research/audit/2026-11-06-indices-pricing)", () => {
+    const order = (v: typeof before) => v.houses.filter((h) => h.best?.price).sort((a, b) => b.best!.price!.valueN - a.best!.price!.valueN).map((h) => h.provider.id);
+    // Yahav's current account (4 shekels) is the cheapest of the banks': it passes Hapoalim, and IBI passes Discount and Mercantile
+    expect(order(before).indexOf("hapoalim")).toBeLessThan(order(before).indexOf("yahav"));
+    expect(order(counted).indexOf("yahav")).toBeLessThan(order(counted).indexOf("hapoalim"));
+    expect(order(counted).indexOf("ibi")).toBeLessThan(order(counted).indexOf("discount"));
+    expect(counted.headline!.providerId).toBe(before.headline!.providerId);
+  });
+});

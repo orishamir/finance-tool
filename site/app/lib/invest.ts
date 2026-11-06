@@ -3,7 +3,7 @@
 // numbers come from the engine's provider workbench (F-63) and from the fund runs of F-65, over the bundle the other
 // workbench pages use. No fee, rate or rule figure is written here: tariffs are snapshots, fund fees are fund records,
 // exchange rates are the ECB's (D26). Nothing is chosen for the person (D27): an index is always an argument.
-import { STANDING_CONVERSION_BAND, STANDING_ORDER_BAND, beforeTax, buildTariff, costByWho, gapToIndex, sumFees, trackingBeyondFees, providerWorkbench, relativeGap, isTie, tieThreshold, type ComparedProvider, type FeeLine, type LayeredRun, type NotComparableProvider, type ProviderRow, type TariffBuild } from "@finance-tool/engine";
+import { STANDING_CONVERSION_BAND, STANDING_ORDER_BAND, beforeTax, buildTariff, costByWho, countsCurrentAccount, gapToIndex, sumFees, trackingBeyondFees, providerWorkbench, relativeGap, isTie, tieThreshold, type ComparedProvider, type FeeLine, type LayeredRun, type NotComparableProvider, type ProviderRow, type TariffBuild } from "@finance-tool/engine";
 import type { ExposureRecord, FeesSnapshot, FundRecord } from "@finance-tool/schema";
 import { invest as copy } from "../copy";
 import { customFundGap, isCustomBrokerId, isCustomFund } from "./custom-entries";
@@ -426,6 +426,18 @@ function genericSpec(ctx: Ctx, option: OptionId): Spec | null {
 /** The house whose price list a snapshot reads: its own, or, for an account built on a house (F-101), that house's. */
 const houseOfSnap = (ctx: Ctx, s: FeesSnapshot): string => ctx.bundle.entered?.bases?.[s.id] ?? s.id;
 
+/**
+ * The row counts a current account (F-102, D64): only on the indices page, at a bank whose record prices one, unless it is the bank the
+ * person marked as theirs. An account built on a bank (F-101) is an account at that bank, so it reads the bank's record and mark.
+ */
+function currentAccountOf(ctx: Ctx, s: FeesSnapshot): FeesSnapshot["current_account"] | null {
+  const marks = ctx.plan.currentAccounts;
+  if (!marks) return null;
+  const house = houseOfSnap(ctx, s);
+  const record = house === s.id ? s : ctx.bundle.snapshots.find((x) => x.id === house);
+  return record && countsCurrentAccount({ id: house, current_account: record.current_account }, marks.own) ? record.current_account! : null;
+}
+
 function runSlot(ctx: Ctx, spec: Spec, items: { s: FeesSnapshot; cand: Cand }[]): ProviderRow[] {
   const profile: { ageAtStart?: number; annualIncome?: number } = {};
   if (ctx.plan.age !== null) profile.ageAtStart = ctx.plan.age;
@@ -446,8 +458,14 @@ function runSlot(ctx: Ctx, spec: Spec, items: { s: FeesSnapshot; cand: Cand }[])
       const entered = ctx.bundle.entered?.tariffs[x.s.id];
       // an account built on a house (F-101): the house's own list tariff for this fund and reading, with the group's and the person's prices over it
       const layered = ctx.bundle.entered?.layered?.[x.s.id];
-      if (layered) return { snapshot: scoped(x.s, houseOfSnap(ctx, x.s)), level: "entered" as const, layered, ...(x.cand.band ? { band: x.cand.band } : {}) };
-      return entered ? { snapshot: scoped(x.s), level: "entered" as const, entered } : { snapshot: scoped(x.s), level: "list" as const, ...(x.cand.band ? { band: x.cand.band } : {}) };
+      const current = currentAccountOf(ctx, x.s);
+      const account = current ? { currentAccount: true } : {};
+      if (layered) {
+        // an account built on a bank keeps the bank's current account (its own record copies only the price lines)
+        const snap = scoped(x.s, houseOfSnap(ctx, x.s));
+        return { snapshot: current ? { ...snap, current_account: current } : snap, level: "entered" as const, layered, ...account, ...(x.cand.band ? { band: x.cand.band } : {}) };
+      }
+      return entered ? { snapshot: scoped(x.s), level: "entered" as const, entered } : { snapshot: scoped(x.s), level: "list" as const, ...account, ...(x.cand.band ? { band: x.cand.band } : {}) };
     }),
   });
   try {

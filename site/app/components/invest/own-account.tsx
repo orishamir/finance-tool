@@ -28,6 +28,8 @@ const pctCheck = percentCheck();
 /** The cost bars' colours by fee type: the index page's own (pair.tsx). */
 const LINE_CLASS: Record<string, string> = { trade: "bg-chart-cost-trade", custody: "bg-chart-cost-custody", fixed: "bg-chart-cost-fixed", fx: "bg-chart-cost-fx" };
 const lineClass = (l: string) => LINE_CLASS[l] ?? "bg-chart-cost-other";
+/** A bank's current account (F-102, D64) is shown as the account's fee, as on the index page's lists (pair.tsx `lineOf`). */
+const lineOf = (l: FeeLine): string => (l === "account" ? "fixed" : l);
 const FEE_OF_LINE: Record<string, FeeType> = { trade: "trade", custody: "custody", fixed: "fixed", fx: "conversion" };
 
 const plus = (n: number) => (n > 0 ? `⁦+${fmt.nisWhole(n)}⁩` : undefined);
@@ -173,7 +175,7 @@ function ListCell({ layer }: { layer: FeeLayers }) {
 /** The bars' parts for one account: its fee types in their colours, each with where its price comes from. */
 function costParts(pc: PairCosts, lines: readonly string[], source: (line: string) => ReactNode): CostPart[] {
   const n = (v: SiteValue) => (typeof v.value === "number" ? v.value : 0);
-  const parts: CostPart[] = lines.map((line) => ({ id: line, legendId: line, name: pairWords.lines[line] ?? pairWords.lines.other, value: pc.account.filter((l) => l.line === (line as FeeLine)).reduce((a, l) => a + n(l.cost), 0), className: lineClass(line), inside: true as const, source: source(line) }));
+  const parts: CostPart[] = lines.map((line) => ({ id: line, legendId: line, name: pairWords.lines[line] ?? pairWords.lines.other, value: pc.account.filter((l) => lineOf(l.line) === line).reduce((a, l) => a + n(l.cost), 0), className: lineClass(line), inside: true as const, source: source(line) }));
   return [...parts, { id: "remainder", legendId: "remainder", name: pairWords.remainder, about: pairWords.remainderAbout, value: pc.interaction, className: "bg-chart-cost-other", inside: true as const, source: p.costs.computed }];
 }
 const total = (parts: CostPart[]) => parts.reduce((a, x) => a + x.value, 0);
@@ -253,7 +255,7 @@ export function OwnAccountPanel({ headId, world, houseId, from, broker, others, 
   };
 
   // the bars: the house's price list against the account, one scale, every fee type in both so a part that falls to zero shrinks in its place
-  const lineIds = result && result.list ? [...new Set([...result.yours.account, ...result.list.account].map((l) => l.line as string))] : [];
+  const lineIds = result && result.list ? [...new Set([...result.yours.account, ...result.list.account].map((l) => lineOf(l.line)))] : [];
   const layerOf = (line: string) => layers?.find((l) => l.fee === FEE_OF_LINE[line]);
   const sourceYours = (line: string): ReactNode => {
     const l = layerOf(line);

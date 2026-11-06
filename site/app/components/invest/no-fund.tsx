@@ -10,7 +10,7 @@ import { fmt } from "../../lib/format";
 import { IconCopy, IconExternal } from "../icons";
 import { Num } from "../provenance";
 import { Button, Card, ChartLegend, CostStack, LongestCase, PickList, Swatch, Tag, cx, useChartPick, useHeldHeight, type CostPart, type PickRow } from "../kit";
-import { barScale, GroupLine, HouseLine, legendLines, lineClass, lineOf, LONGEST_AMOUNT, LONGEST_YEARS, nis } from "./pair";
+import { barScale, GroupLine, HouseLine, legendLines, lineClass, lineOf, LONGEST_AMOUNT, LONGEST_YEARS, nis, partName, OwnBankField } from "./pair";
 import { optionClass, reasonText } from "./parts";
 import { ProviderLink, providerName } from "./sections";
 import { AddEntryButton, BrokerTerms, FundTerms } from "./custom-entries";
@@ -49,7 +49,7 @@ function SubLine({ kind, cheapest, standing }: { kind: OptionId | null; cheapest
   );
 }
 
-export function NoFundAccountColumn({ view, bundle, years, monthly = 1, chosen, onPick }: { view: InvestView; bundle: WorkbenchBundle; years: number; /** At 0 no purchase runs on a standing order. */ monthly?: number; chosen: string | null; onPick: (id: string) => void }) {
+export function NoFundAccountColumn({ view, bundle, years, monthly = 1, chosen, onPick, ownBank }: { view: InvestView; bundle: WorkbenchBundle; years: number; /** At 0 no purchase runs on a standing order. */ monthly?: number; chosen: string | null; onPick: (id: string) => void; /** The bank where the person already has a current account, and its setter (D64). */ ownBank?: { value: string | null; onChange: (id: string | null) => void } }) {
   const legendPick = useChartPick();
   const { rows, ok, missing } = ordered(view);
   const heldKey = `${view.index.id}:${rows.length}`;
@@ -81,7 +81,7 @@ export function NoFundAccountColumn({ view, bundle, years, monthly = 1, chosen, 
     const g = h.generic;
     const from = h.provider.custom ? c.pair.sourceEntered : c.pair.sourceList(h.provider.short);
     const parts: CostPart[] = [
-      ...(g.lines ?? []).map((l) => ({ id: l.line, legendId: lineOf(l.line), name: c.pair.lines[lineOf(l.line)] ?? c.pair.lines.other, value: l.cost, className: lineClass[lineOf(l.line)] ?? "bg-chart-cost-other", source: from })),
+      ...(g.lines ?? []).map((l) => ({ id: l.line, legendId: lineOf(l.line), name: partName(l.line), value: l.cost, className: lineClass[lineOf(l.line)] ?? "bg-chart-cost-other", source: from })),
       { id: "remainder", name: c.pair.remainder, about: c.pair.remainderAbout, value: g.interaction ?? 0, className: "bg-chart-cost-other", source: c.pair.sourceComputed },
     ];
     return {
@@ -174,6 +174,7 @@ export function NoFundAccountColumn({ view, bundle, years, monthly = 1, chosen, 
           {c.pair.whichPrice}
           {saved.length > 0 && <> {c.pair.collectedSpan(`\u2066${fmt.date(saved[0]!)}\u2069`, `\u2066${fmt.date(saved.at(-1)!)}\u2069`)}</>}
         </span>
+        {ownBank && <OwnBankField view={view} bundle={bundle} value={ownBank.value} onChange={ownBank.onChange} />}
       </div>
       <div className="@container">
         <PickList

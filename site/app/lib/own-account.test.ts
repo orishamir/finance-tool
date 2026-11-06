@@ -563,6 +563,15 @@ describe("what the panel shows", () => {
   const withIt = withCustomEntries(bundle, [top], []);
   const result = ownAccountResult({ bundle: withIt, index, plan, broker: top })!;
 
+  it("an account built on a bank keeps the bank's current account, and leaves it out when the person marks that bank (D64)", () => {
+    const view = (own: string | null | undefined) => buildInvest({ bundle: withIt, index, plan: own === undefined ? plan : { ...plan, currentAccounts: { own } } });
+    const at = (v: ReturnType<typeof view>) => v.houses.find((h) => h.provider.id === top.id)!.best!.price!;
+    // Mercantile's price list: 6.40 shekels a month for the current account
+    expect(at(view(null)).lines.map((l) => l.line)).toContain("account");
+    expect(at(view(undefined)).valueN - at(view(null)).valueN).toBeGreaterThan(900);
+    expect(at(view("mercantile")).valueN).toBe(at(view(undefined)).valueN);
+  });
+
   it("gives the three numbers, each a value with its provenance", () => {
     expect(result).toBeTruthy();
     expect(result.left.state).toBe("computed");

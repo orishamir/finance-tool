@@ -3693,7 +3693,7 @@ export const invest = {
     taxBecauseMore: "כי נשאר לכם יותר רווח",
     taxBecauseLess: "כי נשאר לכם פחות רווח",
     who: { account: "החשבון:", fund: "הקרן:", state: "המדינה:" },
-    lines: { trade: "עמלות קנייה ומכירה", custody: "דמי משמרת", fixed: "דמי ניהול חשבון", fx: "המרת מטבע", other: "עמלות אחרות" } as Record<string, string>,
+    lines: { trade: "עמלות קנייה ומכירה", custody: "דמי משמרת", fixed: "דמי ניהול חשבון", fx: "המרת מטבע", other: "עמלות אחרות", account: "דמי ניהול חשבון עו״ש" } as Record<string, string>,
     lineAbout: (line: string) => `מה החשבון גובה: ${line}`,
     /** Where a part of a cost bar's price comes from, said in the box that opens on pointing at it or tapping it (2026-11-04). */
     sourceList: (house: string) => `מהתעריפון של ${house}`,
@@ -3740,6 +3740,13 @@ export const invest = {
     /** A row within the site's tie threshold of the first (P-01): it shares the first place, and no row is starred (2026-11-05). */
     tieTag: "תיקו",
     whichPrice: "המחיר בכל שורה הוא של לקוח רגיל, והדירוג לפיו. מחיר לקבוצות כתוב בשורה של הבנק או בית ההשקעות ולא נכנס לחישוב.",
+    /** D64 (2026-11-06): the bank where the person already has a current account; that bank's row leaves the current account out. */
+    ownBank: {
+      label: "הבנק שבו כבר יש לכם חשבון עו״ש",
+      none: "אף אחד מהם",
+      counted: "חשבון ניירות ערך בבנק צריך חשבון עו״ש באותו בנק, ולכן בשורה של כל בנק נספרים גם דמי העו״ש החודשיים שלו. בבית השקעות אין צורך בעו״ש.",
+      left: (bank: string) => `העו״ש ב${bank} כבר משולם, ולכן הוא לא נספר בשורה של ${bank}. בשורות של שאר הבנקים הוא נספר.`,
+    },
     yoursTag: "החשבון שלכם",
     standingTag: ownTermsCopy.provider.standingTag,
     standingNote: ownTermsCopy.provider.standingNote,

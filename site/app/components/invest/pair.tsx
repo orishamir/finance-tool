@@ -15,7 +15,7 @@ import { computed, ownBy, type SiteValue } from "../../lib/value";
 import { fmt } from "../../lib/format";
 import { IconLock } from "../icons";
 import { Num } from "../provenance";
-import { AlsoChanged, ClampedText, holdOnPick, MixedName, NameLine, Button, figureFit, Card, ChartLegend, CostStack, FeeWordsNote, LabelChip, LabelFilter, LabelRow, LongestCase, PickList, ProductIdLink, Sentence, Stat, StatRow, Swatch, Tag, cx, GroupPriceFold, useChartPick, type ChartPick, useHeldHeight, type CostPart, type FoldOrder, type GroupChoice, type PickRow } from "../kit";
+import { AlsoChanged, ClampedText, holdOnPick, MixedName, NameLine, Button, figureFit, Card, ChartLegend, CostStack, FeeWordsNote, LabelChip, LabelFilter, LabelRow, LongestCase, PickList, ProductIdLink, SelectField, Sentence, Stat, StatRow, Swatch, Tag, cx, GroupPriceFold, useChartPick, type ChartPick, useHeldHeight, type CostPart, type FoldOrder, type GroupChoice, type PickRow } from "../kit";
 import { groupNameOf, isGroupPrice, isGroupProvider, pickableGroups } from "../../lib/group-pick";
 import { optionClass, OptionTag, reasonText } from "./parts";
 import { ProviderLink, providerName } from "./sections";
@@ -32,7 +32,10 @@ export interface Pick {
 }
 
 export const lineClass: Record<string, string> = { trade: "bg-chart-cost-trade", custody: "bg-chart-cost-custody", fixed: "bg-chart-cost-fixed", fx: "bg-chart-cost-fx" };
-export const lineOf = (line: FeeLine) => (line in lineClass ? line : "other");
+/** A bank's current account (F-102, D64) is a fee for keeping an account too: it takes the account fee's colour and legend item, and its own name in its part. */
+export const lineOf = (line: FeeLine) => (line === "account" ? "fixed" : line in lineClass ? line : "other");
+/** A part's name: the line's own where it has one (the current account), else its legend item's. */
+export const partName = (line: FeeLine) => c.pair.lines[line] ?? c.pair.lines[lineOf(line)] ?? c.pair.lines.other;
 /** A legend names every account line whichever row or pair is shown, in one order, so its items keep their places from one pick to the next.
  * An index in shekels has no conversion line to name. */
 export const legendLines = (israeli: boolean, used: readonly string[]) => [...Object.keys(lineClass).filter((l) => l !== "fx" || !israeli), ...(used.includes("other") ? ["other"] : [])];
@@ -161,7 +164,7 @@ export const isoPct = (x: number, digits = 0) => `\u2066${signedPct(x, digits)}\
 
 function partsOf(pc: PairCosts, from: string): CostPart[] {
   const n = (v: SiteValue) => (typeof v.value === "number" ? v.value : 0);
-  const account = pc.account.map((l) => ({ id: l.line, legendId: lineOf(l.line), name: c.pair.lines[lineOf(l.line)] ?? c.pair.lines.other, value: n(l.cost), className: lineClass[lineOf(l.line)] ?? "bg-chart-cost-other", inside: true as const, source: from }));
+  const account = pc.account.map((l) => ({ id: l.line, legendId: lineOf(l.line), name: partName(l.line), value: n(l.cost), className: lineClass[lineOf(l.line)] ?? "bg-chart-cost-other", inside: true as const, source: from }));
   // the account's remainder no single line explains is part of what it takes, so the bar holds the whole cost (F-91)
   return [...account, { id: "remainder", name: c.pair.remainder, about: c.pair.remainderAbout, value: pc.interaction, className: "bg-chart-cost-other", inside: true as const, source: c.pair.sourceComputed }, { id: "fund", name: c.pair.fundLine, value: n(pc.fund), className: "bg-chart-cost-fund", inside: true as const, source: c.pair.sourceFund }, { id: "tax", name: c.pair.taxLine, value: n(pc.tax), className: "bg-chart-tax", inside: true as const, source: c.pair.sourceTax }];
 }
@@ -602,7 +605,26 @@ export const LONGEST_LEFT = 999_999_999;
 /** The most years a plan's sliders give, for a sentence's unseen longest case. */
 export const LONGEST_YEARS = 40;
 
-export function AccountColumn({ view, bundle, years, monthly = 1, pick, onPick, moved = null, group = null }: { view: InvestView; bundle: WorkbenchBundle; years: number; /** The plan's monthly deposit: at 0 no purchase runs on a standing order, and the list says so. */ monthly?: number; pick: Pick; onPick: OnPick; /** The tap before changed the fund too. */ moved?: Moved | null; /** The house's group picked in its fold: `pick.house` is then the held account priced at it, and this its house. */ group?: { house: string; key: string; name: string } | null }) {
+/**
+ * The bank where the person already has a current account (D64): that bank's row leaves its current account out, every other bank's row
+ * counts it (F-102). The banks are those whose record prices a current account; the line under the list says which way the rows count it,
+ * held at its longest case so a pick moves nothing below it.
+ */
+export function OwnBankField({ view, bundle, value, onChange }: { view: InvestView; bundle: WorkbenchBundle; value: string | null; onChange: (id: string | null) => void }) {
+  const banks = view.providers.filter((p) => bundle.snapshots.some((s) => s.id === p.id && s.current_account)).sort((a, b) => a.short.localeCompare(b.short, "he"));
+  if (banks.length === 0) return null;
+  const marked = banks.find((b) => b.id === value) ?? null;
+  return (
+    <div className="flex flex-col gap-1 pt-2">
+      <SelectField label={c.pair.ownBank.label} none={c.pair.ownBank.none} options={banks.map((b) => ({ id: b.id, name: b.short }))} value={marked?.id ?? null} onChange={onChange} />
+      <LongestCase className="text-xs text-muted-foreground max-w-measure" cases={[<span key="none">{c.pair.ownBank.counted}</span>, ...banks.map((b) => <span key={b.id}>{c.pair.ownBank.left(b.short)}</span>)]}>
+        <span>{marked ? c.pair.ownBank.left(marked.short) : c.pair.ownBank.counted}</span>
+      </LongestCase>
+    </div>
+  );
+}
+
+export function AccountColumn({ view, bundle, years, monthly = 1, pick, onPick, moved = null, group = null, ownBank }: { view: InvestView; bundle: WorkbenchBundle; years: number; /** The plan's monthly deposit: at 0 no purchase runs on a standing order, and the list says so. */ monthly?: number; pick: Pick; onPick: OnPick; /** The tap before changed the fund too. */ moved?: Moved | null; /** The house's group picked in its fold: `pick.house` is then the held account priced at it, and this its house. */ group?: { house: string; key: string; name: string } | null; /** The bank where the person already has a current account, and its setter (D64). */ ownBank?: { value: string | null; onChange: (id: string | null) => void } }) {
   const legendPick = useChartPick();
   // a row added or removed starts the held height over, so a removed row leaves no hole (D44)
   // the houses of the list: a picked group's held account stands beside its house, never as a row of its own (D43)
@@ -694,7 +716,7 @@ export function AccountColumn({ view, bundle, years, monthly = 1, pick, onPick, 
    * at once (the tie, on a computer), and the one-per-list marks it is laid out with: the cheapest's star, the way back after a tap.
    */
   const pricedCells = (p: Prov, wp: WayPrice, unseen?: { crown: boolean; back: boolean; tie: boolean }) => {
-    const parts: CostPart[] = [...wp.lines.map((l) => ({ id: l.line, legendId: lineOf(l.line), name: c.pair.lines[lineOf(l.line)] ?? c.pair.lines.other, value: l.cost, className: lineClass[lineOf(l.line)] ?? "bg-chart-cost-other", source: p.custom ? c.pair.sourceEntered : c.pair.sourceList(p.short) })), { id: "remainder", name: c.pair.remainder, about: c.pair.remainderAbout, value: wp.interaction, className: "bg-chart-cost-other", source: c.pair.sourceComputed }];
+    const parts: CostPart[] = [...wp.lines.map((l) => ({ id: l.line, legendId: lineOf(l.line), name: partName(l.line), value: l.cost, className: lineClass[lineOf(l.line)] ?? "bg-chart-cost-other", source: p.custom ? c.pair.sourceEntered : c.pair.sourceList(p.short) })), { id: "remainder", name: c.pair.remainder, about: c.pair.remainderAbout, value: wp.interaction, className: "bg-chart-cost-other", source: c.pair.sourceComputed }];
     const isYours = p.id === view.yourBroker;
     // shown on the row whether or not it is picked, so a pick never adds or removes a line (founder, 2026-10-27)
     const place = placeOf.get(p.id);
@@ -885,6 +907,7 @@ export function AccountColumn({ view, bundle, years, monthly = 1, pick, onPick, 
           {c.pair.whichPrice}
           {saved.length > 0 && <> {c.pair.collectedSpan(`\u2066${fmt.date(saved[0]!)}\u2069`, `\u2066${fmt.date(saved.at(-1)!)}\u2069`)}</>}
         </span>
+        {ownBank && <OwnBankField view={view} bundle={bundle} value={ownBank.value} onChange={ownBank.onChange} />}
       </div>
       <div className="@container">
       <PickList

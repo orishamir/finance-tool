@@ -123,6 +123,9 @@ function Page({ wb, compare, failed, data }: { wb: WorkbenchBundle | null; compa
   return <Body wb={wb} compare={compare} data={data} search={search} />;
 }
 
+/** The bank the person marked as theirs (D64), while a bank with a current account in the data has that id; else none. */
+const ownBankOf = (wb: WorkbenchBundle, id: string | null): string | null => (id && wb.snapshots.some((s) => s.id === id && s.current_account) ? id : null);
+
 function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: CompareBundle; data: Data; search: string }) {
   const navigate = useNavigate();
   const exposureId = exposureIdOf(useParams().slug, data.indices);
@@ -144,12 +147,16 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
       values: fi.values,
       fromGoal: fi.fromGoal,
       returnFromParameter: fi.returnFromParameter,
+      // a bank's row counts its current account, except at the bank the person marked as theirs (D64)
+      currentAccounts: { own: ownBankOf(wb, invest.bank) },
     }),
-    [fi],
+    [fi, wb, invest.bank],
   );
   // The result and the knobs' step figures price one or two pairs (a few ms) and follow a slider live; the two lists price every
   // account and fund (about 200 ms) and wait until the slider rests (founder, 2026-10-28: "sliding the sliders is very laggy").
   const plan = useSettled(livePlan, 250);
+  // the list shows the mark at once; the rows follow when the plan settles
+  const ownBankControl = useMemo(() => ({ value: ownBankOf(wb, invest.bank), onChange: invest.setBank }), [wb, invest.bank, invest.setBank]);
 
   const customs: CustomIndex[] = invest.customIndices;
   // the broker and fund the person typed join the data here and nowhere else: this page alone compares them (D44)
@@ -314,7 +321,7 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
               <>
                 <PairResult view={shownView} bundle={shownBundle} plan={livePlan} settled={plan} pick={shown} chosen={picks} onPick={onPick} />
                 <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_2.5rem_minmax(0,32.5rem)] xl:grid-cols-[minmax(0,5fr)_2.5rem_minmax(0,7fr)] items-start">
-                  <AccountColumn view={shownView} bundle={shownBundle} years={plan.years} monthly={plan.monthly} pick={shown} onPick={onPick} moved={movedNow} group={own?.group ? { house: own.house, key: own.group, name: groupNameOf(wb.snapshots.find((x) => x.id === own.house), own.group) } : null} />
+                  <AccountColumn view={shownView} bundle={shownBundle} years={plan.years} monthly={plan.monthly} pick={shown} onPick={onPick} moved={movedNow} ownBank={ownBankControl} group={own?.group ? { house: own.house, key: own.group, name: groupNameOf(wb.snapshots.find((x) => x.id === own.house), own.group) } : null} />
                   <span aria-hidden="true" className="hidden lg:grid place-items-center size-9 mt-10 rounded-full border border-input bg-popover text-xl text-muted-foreground justify-self-center">
                     +
                   </span>
@@ -326,7 +333,7 @@ function Body({ wb, compare, data, search }: { wb: WorkbenchBundle; compare: Com
               <>
                 <NoFundCall view={view} />
                 <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_2.5rem_minmax(0,32.5rem)] xl:grid-cols-[minmax(0,5fr)_2.5rem_minmax(0,7fr)] items-start">
-                  <NoFundAccountColumn view={view} bundle={bundle} years={plan.years} monthly={plan.monthly} chosen={genericHouse} onPick={setGenericHouse} />
+                  <NoFundAccountColumn view={view} bundle={bundle} years={plan.years} monthly={plan.monthly} chosen={genericHouse} onPick={setGenericHouse} ownBank={ownBankControl} />
                   <span aria-hidden="true" className="hidden lg:grid place-items-center size-9 mt-10 rounded-full border border-input bg-popover text-xl text-muted-foreground justify-self-center">
                     +
                   </span>
