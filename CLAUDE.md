@@ -140,7 +140,10 @@ catches about half or more with noise under 30%.
   and stop; do not guess or approximate. Site judgements (thresholds,
   bounds) live in `data/parameters/` and are not rules.
 - **General sources first; a company's term is never general.** Cite the
-  law, regulation or regulator (gov.il and the like) whenever one exists;
+  law, regulation or regulator (gov.il and the like) whenever one exists,
+  from its official publication (Reshumot, the Knesset, gov.il, the
+  regulator's or exchange's own site), never a copy such as Nevo, Wikisource
+  or a mirror: a copy only helps find the official text (founder, 2026-11-06);
   cite a company's document only for that company's own terms, which appear
   named or on that company's page, never as a fact about a product. A
   statement about the whole market comes from law or from a count over every
