@@ -97,8 +97,11 @@ The evidence behind them is `research/2026-10-28-founder-patterns.md`.
 
 ## Work order
 
-The main line is the indices page, then the guides; the workbench, holdings
-and idle-cash pages wait. This overrides the Roadmap issue's ranking, which
+The main line is the guides: knowledge first (D68). The site explains every
+kind of holding and every financial term, and the rule base, data and method
+behind each guide are complete, before any goal feature starts; the goal
+comparison, workbench, holdings and idle-cash pages wait. The indices page's
+work already built lands. This overrides the Roadmap issue's ranking, which
 counts what unblocks the most.
 
 The user lab (`research/user-lab/`) is a habit beside it, at most about 5% of
